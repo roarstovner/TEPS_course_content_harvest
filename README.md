@@ -1,7 +1,5 @@
-# README
+# Specification of data harvest for TEPS Course Content module
 
-
-# Specificiation of data harvest for TEPS Course Content
 
 The input are the institution, course code, year and semester:
 
