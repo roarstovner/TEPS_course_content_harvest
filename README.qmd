@@ -64,7 +64,7 @@ courses |>
 
 ## 3. Retrieve all htmls
 
-There should be something in the rvest-package that does this automatically? I imagine a function that adds an `html` variable to the above tibble.
+The `read_file` function can read urls!
 
 ## 4. Identify the css-selector corresponding to the full course text and collect them in a .xlsx
 
