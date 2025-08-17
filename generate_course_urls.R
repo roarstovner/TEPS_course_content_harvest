@@ -1,6 +1,3 @@
-# ========== 0. Clear environment ==========
-# rm(list = ls(all = TRUE))
-
 # ========== 1. Load packages ==========
 # library(dplyr)
 # library(readxl)
@@ -96,6 +93,7 @@ courses <- courses %>%
 View(courses)
 
 write.xlsx(courses, "course_urls_generated.xlsx", overwrite = TRUE)
+
 
 
 
