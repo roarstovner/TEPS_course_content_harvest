@@ -41,3 +41,6 @@ html_raw <- read_file(url)
 scraped_text <- scrape_oslomet_course(html_raw)
 
 cat(substr(scraped_text, 1, 1000))  # Forhaandsvisning
+
+writeLines(scraped_text, "oslomet_MGVM4100.txt")
+
