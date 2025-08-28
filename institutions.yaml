@@ -1,0 +1,119 @@
+aliases:
+  "OsloMet – storbyuniversitetet": "oslomet"
+  "Universitetet i Agder": "uia"
+  "Høgskolen i Innlandet": "inn"
+  "Høgskolen i Østfold": "hiof"
+  "Høgskulen på Vestlandet": "hvl"
+  "MF vitenskapelig høyskole": "mf"
+  "NLA Høgskolen": "nla"
+  "Nord universitet": "nord"
+  "Norges idrettshøgskole": "nih"
+  "Universitetet i Bergen": "uib"
+  "Universitetet i Oslo": "uio"
+  "Universitetet i Stavanger": "uis"
+  "Universitetet i Sørøst-Norge": "usn"
+  "UiT Norges arktiske universitet": "uit"
+  "Høgskulen i Volda": "hivolda"
+  "Norges teknisk-naturvitenskapelige universitet": "ntnu"
+  "NTNU": "ntnu"
+  "Norges miljø- og biovitenskapelige universitet": "nmbu"
+  "NMBU": "nmbu"
+  "Samisk høgskole": "samas"
+  "Sámi allaskuvla": "samas"
+  "Steinerhøyskolen": "steiner"
+
+institutions:
+  oslomet:
+    # Trenger KODE uten -1, CAPS. Beholder år og semester i URL.
+    url_pattern: "https://student.oslomet.no/studier/-/studieinfo/emne/{code_upper_nodashnum}/{year}/{semester_url}"
+    semester_style: "url"
+
+  uia:
+    # KODE uten -1, lowercase
+    url_pattern: "https://www.uia.no/studier/emner/{year}/{semester_url}/{code_lower_nodashnum}.html"
+    semester_style: "uia"
+
+  ntnu:
+    # KODE uten -1, CAPS. NTNU-sider fungerer uten år/semester i stien.
+    url_pattern: "https://www.ntnu.no/studier/emner/{code_upper_nodashnum}#tab=omEmnet"
+    semester_style: "plain"
+
+  inn:
+    # Edutorium krever ofte versjon, så behold koden "as is"
+    url_pattern: "https://studiekatalog.edutorium.no/inn/nb/emne/{course_code}/{year}-{semester_url}"
+    semester_style: "uia"
+
+  hivolda:
+    # KODE uten -1, CAPS
+    url_pattern: "https://www.hivolda.no/emne/{code_upper_nodashnum}"
+    semester_style: "plain"
+
+  hiof:
+    # KODE uten -1, lowercase
+    url_pattern: "https://www.hiof.no/studier/emner/lusp/lusp/{year}/{semester_url}/{code_lower_nodashnum}.html"
+    semester_style: "hiof"
+
+  hvl:
+    # KODE uten -1, CAPS
+    url_pattern: "https://www.hvl.no/studier/studieprogram/emne/{code_upper_nodashnum}"
+    semester_style: "plain"
+
+  mf:
+    # KODE uten -1, lowercase
+    url_pattern: "https://mf.no/studier/emner/{code_lower_nodashnum}"
+    semester_style: "plain"
+
+  nla:
+    # KODE uten -1, lowercase
+    url_pattern: "https://www.nla.no/studietilbud/emner/{year}/{code_lower_nodashnum}/"
+    semester_style: "plain"
+
+  nord:
+    # KODE uten -1, lowercase
+    url_pattern: "https://www.nord.no/studier/emner/{code_lower_nodashnum}"
+    semester_style: "plain"
+
+  nih:
+    # KODE uten -1, lowercase + år/semester i sti
+    url_pattern: "https://www.nih.no/studier/emner/{year}/{semester_url}/{code_lower_nodashnum}.html"
+    semester_style: "nih"
+
+  uib:
+    # UIB bruker ofte -l/-L som del av koden (ikke tall-versjon), så ikke strippe
+    url_pattern: "https://www4.uib.no/studier/emner/{code_lower}"
+    semester_style: "plain"
+
+  uio:
+    # Merk: UIO trenger normalt fakultet/institutt i stien; dette fungerer ikke generisk for alle
+    url_pattern: "https://www.uio.no/studier/emner/uv/ils/{course_code}/index.html"
+    semester_style: "plain"
+
+  uis:
+    # KODE uten -1, CAPS
+    url_pattern: "https://www.uis.no/nb/course/{code_upper_nodashnum}"
+    semester_style: "plain"
+
+  usn:
+    # Beholder versjon i koden (USN bruker ofte -1/-2)
+    url_pattern: "https://www.usn.no/studier/studie-og-emneplaner/#/emne/{course_code}_{year}_{semester_url}"
+    semester_style: "url"
+
+  uit:
+    # KODE uten -1, CAPS
+    url_pattern: "https://uit.no/utdanning/aktivt/emne/{code_upper_nodashnum}"
+    semester_style: "plain"
+
+  nmbu:
+    # KODE uten -1, CAPS
+    url_pattern: "https://www.nmbu.no/emne/{code_upper_nodashnum}"
+    semester_style: "plain"
+
+  samas:
+    # TODO: legg inn korrekt mønster når vi har en faktisk emne-URL
+    url_pattern: ""
+    semester_style: "plain"
+
+  steiner:
+    # TODO: legg inn korrekt mønster når vi har en faktisk emne-URL
+    url_pattern: ""
+    semester_style: "plain"
