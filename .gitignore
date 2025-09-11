@@ -1,4 +1,19 @@
-.Rproj.user
+# R session files
 .Rhistory
 .RData
 .Ruserdata
+
+# RStudio project settings
+.Rproj.user/
+*.Rproj
+!TEPS_course_content_harvest.Rproj
+
+# Excel temporary files
+~$*.xlsx
+
+# Cache & outputs
+data/cache/
+data/output/
+
+# OS / editor junk
+.vscode/
