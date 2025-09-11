@@ -1,0 +1,68 @@
+selectors:
+  oslomet:
+    fulltext: "#main-content"
+    course_name_no: ".page-title"
+
+  uia:
+    fulltext: ".col-md-8"
+    course_name_no: ".course-title"
+
+  ntnu:
+    fulltext: "#content-core"
+    course_name_no: ".page-title"
+
+  inn:
+    fulltext: ".course-page"
+    course_name_no: ".headline"
+
+  hivolda:
+    fulltext: "#main-content"
+    course_name_no: ".page-title"
+
+  hiof:
+    fulltext: ".pagecontent"
+    course_name_no: "h1"
+
+  hvl:
+    fulltext: ".article-body"
+    course_name_no: "h1"
+
+  mf:
+    fulltext: "#main"
+    course_name_no: "h1"
+
+  nla:
+    fulltext: "#content"
+    course_name_no: ".title"
+
+  nord:
+    fulltext: "#ac-trigger-0 , #ac-trigger-1 , #ac-trigger-5 , #ac-trigger-8 , #ac-trigger-6 , #ac-trigger-7 , #ac-trigger-2 , #ac-trigger-4 , #ac-trigger-3 , .ac-panel--inner , #ac-panel-2 .field__item , #ac-panel-0 li , p , .placeholder-text"
+    course_name_no: ".h1 span"
+
+  nih:
+    fulltext: "#main"
+    course_name_no: ".page-title"
+
+  uib:
+    fulltext: "dt , dd , .course-title , .pt-6"
+    course_name_no: ".course-title"
+
+  uio:
+    fulltext: "#vrtx-course-content"
+    course_name_no: "#hdr"
+
+  uis:
+    fulltext: "#block-page-content .link-- , #block-page-content .paragraph--with-title"
+    course_name_no: ".h1"
+
+  usn:
+    fulltext: "usn-study"
+    course_name_no: "usn-study"
+
+  uit:
+    fulltext: ".hovedfelt"
+    course_name_no: ".headline"
+
+  nmbu:
+    fulltext: ".layout"
+    course_name_no: "h1"
