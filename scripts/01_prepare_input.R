@@ -13,7 +13,7 @@
 # Den lager kun en renset og stabil basisfil (cache) for videre steg.
 
 # ========== 0. Clean ==========
-rm(list = ls(all = TRUE))   ## Fjern alt i milj??et ??? gj??r scriptet reproduserbart
+# rm(list = ls(all = TRUE))   ## Rense
 
 # ===== 1) Pakker =====
 suppressPackageStartupMessages({

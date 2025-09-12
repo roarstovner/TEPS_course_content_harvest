@@ -1,6 +1,26 @@
 # scripts/02_generate_urls.R
 # Run ALL generate_urls_*.R scripts from project root, one by one.
 
+if (!exists("%||%", inherits = TRUE)) {
+  `%||%` <- function(a,b) if (is.null(a) || length(a)==0) b else a
+}
+if (!exists("safe_read_yaml", inherits = TRUE)) {
+  safe_read_yaml <- function(path) {
+    tr <- try({
+      con <- file(path, "r", encoding = "UTF-8")
+      on.exit(try(close(con), silent=TRUE), add=TRUE)
+      yaml::read_yaml(con)
+    }, silent = TRUE)
+    if (!inherits(tr, "try-error") && !is.null(tr)) return(tr)
+    raw <- readBin(path, "raw", file.info(path)$size)
+    txt <- rawToChar(raw); Encoding(txt) <- "unknown"
+    txt <- sub("^\ufeff", "", txt)
+    txt <- gsub("\r\n?", "\n", txt)
+    txt <- gsub("\t", "  ", txt, fixed = TRUE)
+    yaml::yaml.load(txt)
+  }
+}
+
 stopifnot(dir.exists("R"), dir.exists("config"), file.exists("config/institutions.yaml"))
 
 options(warn = 1)                 # show warnings immediately
