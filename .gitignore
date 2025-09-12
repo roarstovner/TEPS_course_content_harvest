@@ -11,9 +11,28 @@
 # Excel temporary files
 ~$*.xlsx
 
-# Cache & outputs
-data/cache/
-data/output/
-
 # OS / editor junk
 .vscode/
+
+# Cache
+data/cache/*
+!data/cache/courses_std.RDS
+
+# Ignore all outputs by default
+data/output/*
+
+# But keep institution subfolders
+!data/output/*/
+
+# Inside those subfolders: ignore timestamped outputs
+data/output/*/course_urls_*.csv
+data/output/*/course_urls_*.txt
+data/output/*/candidates_*.csv
+data/output/*/candidates_*.txt
+
+# But keep "latest" outputs
+!data/output/*/course_urls_latest.csv
+!data/output/*/course_urls_latest.txt
+!data/output/*/candidates_latest.csv
+!data/output/*/candidates_latest.txt
+

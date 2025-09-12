@@ -60,21 +60,21 @@ course_urls_latest.txt
 
 ## 🔄 Pipeline
 
-### 1) Prepare input — `scripts/01_prepare_input.R`
-- Standardiserer kolonner (institusjon, kurskode, år, semester)
-- Lager hjelpe-tokens ved behov
+### 1) Klargjør input — `scripts/01_prepare_input.R`
+- Standardiserer kolonner (institusjon, kurskode, år, semester)  
+- Lager hjelpe-tokens ved behov  
 - Skriver `data/cache/courses_std.RDS`
 
-### 2) Generate URLs — `scripts/02_generate_urls.R`
-- Leser URL-mønstre fra `config/institutions.yaml`
-- Erstatter tokens (`{course_code}`, `{year}`, `{semester_url}`) robust
-- Håndterer institusjonsspesifikke semester-stiler (`H/V`, `host/vaar`, `1/2`, …)
+### 2) Generer URL-er — `scripts/02_generate_urls.R`
+- Leser URL-mønstre fra `config/institutions.yaml`  
+- Erstatter tokens (`{course_code}`, `{year}`, `{semester_url}`)  
+- Håndterer institusjonsspesifikke semester-stiler (`H/V`, `host/vaar`, `1/2`, …)  
 - Eksporterer tidsstemplete + `latest`-filer per institusjon
 
 ### 3) Scrape fulltekst — `scripts/03_scrape.R`
-- Leser CSS-selectors fra `config/selectors.yaml`
-- Parser HTML → `fulltext`
-- Rydder whitespace/linjeskift
+- Leser CSS-selectors fra `config/selectors.yaml`  
+- Parser HTML → `fulltext`  
+- Rydder whitespace/linjeskift  
 - Skriver strukturerte resultater til `data/output/`
 
 **Valgfritt:** `R/verify.R` kan sjekke HTTP-status (200/404) og logge resultater.
@@ -83,13 +83,13 @@ course_urls_latest.txt
 
 ## ⚙️ Konfigurasjon
 
-**`config/institutions.yaml`** — URL-mønstre og semester-stil per institusjon:
+**`config/institutions.yaml`** — URL-mønstre og semester-stil per institusjon:  
 ```yaml
 url_pattern: "https://www.uio.no/studier/emner/{year}/{semester_url}/{course_code}/index.html"
 semester_style: "host_vaar"   # alternativer: plain (H/V), host_vaar, ntnu (1/2), m.fl.
 ```
 
-**`config/selectors.yaml`** — CSS-selector for å hente fulltekst per institusjon:
+**`config/selectors.yaml`** — CSS-selector for å hente fulltekst per institusjon:  
 ```yaml
 fulltext: ".oslomet-margin-wrapper-top"
 ```
@@ -99,7 +99,7 @@ fulltext: ".oslomet-margin-wrapper-top"
 ## 📑 Modes og tokens
 
 ### 🔧 MODE
-`MODE` bestemmer hvilke år og semestre som genereres for en institusjon. Dette gjør det enkelt å styre om vi skal hente både høst og vår, eller bare én spesiell årgang.
+`MODE` bestemmer hvilke år og semestre som genereres for en institusjon:
 
 - `hv` → generer både høst (`YEAR_H`) og vår (`YEAR_V`)  
 - `single` → generer kun for ett bestemt år (`SINGLE_YEAR`)  
@@ -117,7 +117,7 @@ SINGLE_YEAR <- 2025
 ---
 
 ### 🔡 Tokens for kurskoder
-Mange institusjoner bruker ulike varianter av kurskoder (`MGVM4100`, `NO-155`, `PSY-1010`). For å få konsistente URL-er lager vi flere “tokens” som kan brukes i YAML-mønstrene:
+Mange institusjoner bruker ulike varianter av kurskoder (`MGVM4100`, `NO-155`, `PSY-1010`). For å få konsistente URL-er brukes flere “tokens” i YAML-mønstrene:
 
 - `{course_code}` → original kurskode fra input  
 - `{course_code_norm}` → standardisert kurskode (uten whitespace/feil)  
@@ -125,22 +125,22 @@ Mange institusjoner bruker ulike varianter av kurskoder (`MGVM4100`, `NO-155`, `
 - `{code_upper_nodash1}` → samme som over, men uten første bindestrek  
 - `{code_base}` → baseversjon (uten suffix eller årstall)  
 
-Dette gjør at YAML-konfigurasjon kan se slik ut:
+**Eksempel:**
 ```yaml
 url_pattern: "https://www.uib.no/emne/{code_upper_nodash1}"
 ```
-i stedet for å hardkode regler for hver variant i R-koden.
 
 ---
 
 ### 📤 Hvordan dette påvirker output
 Når `02_generate_urls.R` kjøres, kombineres:
 
-- **MODE** → styrer *hvilke år/semestre* som inkluderes  
+- **MODE** → styrer hvilke år/semestre som inkluderes  
 - **Tokens** → fyller inn placeholders i URL-mønstrene fra YAML  
 
 Resultatet lagres som tidsstemplete filer per institusjon i `data/output/<inst>/`, samt `course_urls_latest.*` som peker på den nyeste batchen.
 
+---
 
 ## 📂 Prosjektstruktur
 
@@ -163,7 +163,39 @@ Resultatet lagres som tidsstemplete filer per institusjon i `data/output/<inst>/
 
 ## ▶️ Bruk
 
-**Typisk kjøring i R:**
+### TEPS URL Pipeline (hvordan kjøre)
+
+Pipelinen består av tre steg:
+
+1. **Forbered input → cache**  
+   `scripts/01_prepare_input.R`  
+   Leser `data/input/courses.RDS`, standardiserer kolonner, og lager `data/cache/courses_std.RDS`.  
+   _Ingen URL-er bygges her – dette er bare klargjøring._
+
+2. **Generer URL-er**  
+   `scripts/02_generate_urls.R`  
+   Kjører alle `R/*/generate_urls_*.R`-skriptene (ett per institusjon).  
+   Hvert skript skriver til `data/output/<inst>/` og oppdaterer `course_urls_latest.{csv,txt}`  
+   (for UiA brukes `candidates_latest.{csv,txt}`).
+
+3. **Rydd utdata (valgfritt)**  
+   `R/cleanup_outputs.R`  
+   Fjerner gamle tidsstemplete filer og beholder kun `*_latest.*`.  
+   Valgfritt, men anbefales før commit til GitHub.
+
+### Én-klikks kjøring
+Du kan bruke master-runner:
+
+```r
+# scripts/00_run_all.R (øverst i fila settes noen enkle valg)
+CLEAN  <- TRUE   # kjør opprydding på slutten
+DRYRUN <- FALSE  # FALSE = faktisk slette gamle filer
+TEPS_INST <- ""  # "" = alle institusjoner; f.eks. "usn,uio" for bare et utvalg
+
+source("scripts/00_run_all.R")
+```
+
+### Typisk manuell kjøring i R
 ```r
 # 1) Forbered input
 source("scripts/01_prepare_input.R")
@@ -180,7 +212,7 @@ source("scripts/03_scrape.R")
 ## 📌 Notater
 
 - **Tegnkoding:** UTF-8 for all I/O  
-- **Formatpolicy:** CSV (output), YAML (config), RDS (cache/mellomlagring)  
+- **Formater:** CSV (output), YAML (config), RDS (cache/mellomlagring)  
 - **Tidsstempel:** `format(Sys.time(), "%Y%m%d-%H%M")` i filnavn  
 - **`latest`-filer:** peker alltid til nyeste batch  
 - **Utvidelser:** nye institusjoner legges til via YAML (ingen endring i R-kode nødvendig)
@@ -189,6 +221,9 @@ source("scripts/03_scrape.R")
 
 ## 🗺️ Roadmap
 
-- Scraping kommer for hver istitusjon enkeltvis i R/`institution_short` og automatisert i 03_scrape
-- Emnebeskrivelser og sider for emner på engelsk skal legges inn i tokens og yaml filene.
-- God helg! 
+- Utvikle scraping-funksjoner for alle institusjoner i `R/<inst>/generate_urls_*.R`  
+- Utvide tokens og YAML til også å dekke engelske emnebeskrivelser  
+- Bedre logging og feilhåndtering  
+- Samle og aggregere output på tvers av institusjoner for analyse
+
+---
