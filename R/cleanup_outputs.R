@@ -74,3 +74,4 @@ if (remove_empty) {
   }
   cat("\nEmpty subfolders cleanup done (if any).\n")
 }
+
