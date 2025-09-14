@@ -1,0 +1,141 @@
+institution: uib
+code: SPANDI201-0
+year: NA
+hv: NA
+url: https://www4.uib.no/studier/emner/spandi201
+status: 200
+course_name_no: Fagdidaktikk i spansk for lektorutdanninga 2
+----- FULLTEXT -----
+
+Navigasjonssti
+Forside
+Studier
+Emner
+
+Fagdidaktikk i spansk for lektorutdanninga 2
+
+Studiepoeng
+
+5
+
+Undervisningssemester
+
+VC%r
+
+Emnekode
+
+SPANDI201
+
+Talet pC% semester
+
+1
+
+UndervisningssprC%k
+
+Spansk og norsk
+
+Ressursar
+
+Timeplan
+
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust
+MC%l og innhald
+
+Emnet har som mC%l C% gje studentane ei vidare innfC8ring i fagfeltet spansk fagdidaktikk innanfor to hovudomrC%de:
+
+- SprC%k, tekst og kultur: kompetanse og danning
+
+- TekstforstC%ing og lC&ringsprosessar
+
+LC&ringsutbyte
+
+Etter fullfC8rt emne skal kandidaten
+
+- ha innsikt i spansk som dannings- og dugleiksfag
+
+- ha kunnskap om sentrale fagdidaktiske omgrep
+
+- ha innsikt i teoriar om sprC%k og kommunikasjon
+
+- kunne bruke dei tileigna omgrepa i analyse av lC&ringsprosessar i spanskfaget
+
+- kunne uttrykkje seg munnleg og skriftleg pC% spansk innan fagfeltet
+
+Studiepoeng, omfang
+5
+StudienivC% (studiesyklus)
+Bachelor
+Undervisningssemester
+VC%rsemesteret, 6. semester i lektorutdanningsprogrammet for studentar som tar faget som fag I. Emnet gC%r fC8rste gong vC%ren 2022
+Undervisningsstad
+Bergen
+Krav til forkunnskapar
+Ingen formelle krav
+TilrC%dde forkunnskapar
+Minimum 55 studiepoeng i spansk pC% 100-nivC% inkludert 5 studiepoeng spansk fagdidaktikk.
+Studiepoengsreduksjon
+PC% grunn av fagleg overlapp blir studiepoengutteljinga for SPANDI201 redusert med 5 studiepoeng om det blir kombinert med SPANDI201H.
+Krav til studierett
+Studentar pC% lektorutdanninga ved Det humanistiske fakultet med spansk som fag I
+Arbeids- og undervisningsformer
+
+FC8relesingar, seminar og rettleiing.
+
+Det blir normalt gitt 2 timar per veke i 8 veker.
+
+Om det melder seg fC&rre enn fem studentar til eit emne, kan undervisningstilbodet bli tilpassa studenttalet. Studentane vil i sC% fall bli informerte om det alternative undervisningsopplegget ved semesterstart og fC8r semesterregistreringsfristen 1. februar/1. september.
+
+Obligatorisk undervisningsaktivitet
+
+Det er obligatorisk med oppmC8te pC% 80 % av undervisinga. Undervisinga fC8reset aktiv deltaking og god fC8rebuing.
+
+For C% kunne gC% opp til eksamen mC% studentane munnleg og skriftleg ha lagt fram eit sjC8lvstendig arbeid der dei presenterer eit undervisingsopplegg som drC8ftast i lys av fagdidaktisk teori.
+
+Teksten skal skrivast pC% spansk og ha eit omfang pC% om lag 1000 ord, ikkje medrekna litteraturliste, plan for undervisingsopplegget, eventuelle digitale filer og andre vedlegg.
+
+Vurderingsformer
+Vurderinga skjer pC% grunnlag av ein munnleg eksamen pC% spansk med utgangspunkt i diskusjonar kring det obligatoriske arbeidskravet og pensumlitteraturen. NC&rare retningsliner for oppgC%vene vert gitt i studiet.
+Karakterskala
+Det blir nytta gradert karakterskala frC% A til F, der F er stryk.
+Vurderingssemester
+VC%r. Der er C2g vurdering tidleg i haustsemesteret for studentar med gyldig godkjenning av obligatoriske arbeidskrav.
+Litteraturliste
+
+Pensum utgjer omlag 350 sider. I litteraturlista ligg det opplysningar om kva tekstar som til ei kvar tid er pensum.
+
+Litteraturlista vil vere klar innan 01.07. for haustsemesteret og 01.12. for vC%rsemesteret.
+
+Emneevaluering
+Emneevalueringar blir gjennomfC8rte i trC%d med UiB sitt kvalitetssikringssystem.
+Hjelpemiddel til eksamen
+Ikkje aktuelt.
+Programansvarleg
+ProgramrC%det for lektorutdanninga har ansvar for fagleg innhald og oppbygging av studiet og for kvaliteten pC% studieprogrammet og alle emna der.
+Emneansvarleg
+Programstyret for spansk.
+Administrativt ansvarleg
+Det humanistiske fakultet ved Institutt for framandsprC%k har det administrative ansvaret for emnet og studieprogrammet.
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust
+Kontaktinformasjon
+Studierettleiar: studierettleiar@if.uib.no Eksamensadministrasjon: eksamen@if.uib.no
+Eksamensinformasjon
+Vurderingsordning
+Munnleg eksamen
+Varigheit
+1 time
+
+Dette bC8r du vite om eksamen
+
+Institutt for fremmedsprC%k
+
+Vurderingsordning
+
+Munnleg eksamen
+
+Varigheit
+
+1 time

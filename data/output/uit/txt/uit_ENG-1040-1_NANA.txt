@@ -1,0 +1,83 @@
+institution: uit
+code: ENG-1040-1
+year: NA
+hv: NA
+url: https://uit.no/utdanning/aktivt/emne/ENG-1040
+status: 200
+course_name_no: spring 2019
+ENG-1040 Language Acquisition - 10 ECTS
+----- FULLTEXT -----
+
+
+Startsida
+Emnekatalog
+Language Acquisition
+Application deadline
+
+Applicants from Nordic countries: 1 December for the spring semester and 1 June for the autumn semester.
+
+Exchange students and Fulbright students: 1 October for the spring semester and 15 April for the autumn semester.
+
+Application code: 9199 - Enkeltemner (ikke realfag), lavere grad (Nordic applicants).
+
+Type of course
+The course is directed at teacher training students (LC&rerutdanning 5.-10. trinn), but may be taken as a single course. The courseLRU-1301 Engelsk 5.-10. trinn: sprC%k og didaktikkis recommended, but not required.
+Admission requirements
+Higher Education Entrance Qualification (generell studiekompetanse) or prior learning and work experience (realkompetanse).
+Course content
+
+As adults we tend to take our own language competence for granted. This soon changes when we are faced with the prospect of learning a foreign language. This humbling experience has a tendency to make us realise how incredibly complex languages are and how much effort goes into learning them. Yet, very young children seem to acquire their native language effortlessly and in the course of a very short time. In this course, we will first study how children acquire their first language and then consider how a second language is learned. To what extent are the two situations different and to what extent the same? We will consider several aspects of first and second language acquisition, such as phonology, morphology, syntax and pragmatics. The emphasis will be on the acquisition of English as a native and a foreign language, but comparative elements may also be included; especially the first language acquisition of English will be compared to the acquisition of Norwegian.
+
+The course will provide the students with a good background in how English is acquired as a first and a second language, as well as some information on the acquisition of Norwegian, and the combination of these will provide them with a better basis for understanding the error patterns that can be observed in the English of Norwegian learners.
+
+Recommended prerequisites
+LRU-1301 English 5.-10. Year: Language and Didactics
+Objectives of the course
+
+The students have the following learning outcomes:
+
+Knowledge
+
+The student:
+
+is able to identify different characteristics of (English) child language
+is able to identify different characteristics of second language acquisition
+has a general overview of when different structures are acquired in first language acquisition
+is aware of differences between acquiring a native and a foreign language
+has some knowledge of different theoretical approaches to both first and second language acquisition.
+
+Skills
+
+The student:
+
+has an overview of various methods used in language acquisition studies
+is able to describe child language data
+is able to anticipate what kinds of errors Norwegian learners of English will make
+is able to discuss issues related language acquisition both orally and in writing.
+Language of instruction and examination
+Language of instruction and examination: English.
+Teaching methods
+
+The course will be taught four hours per week and will consist of lectures and seminars.
+
+Quality assurance: The course undergoes a midterm evaluation or an end-of-term evaluation every third year.
+
+Assessment
+
+The following coursework requirements must be completed and approved in order to take the final exam:
+
+Coursework requirement: One oral presentation.
+
+Assessment method: A written 4-hour digital school exam (in WISEflow).
+
+Performance in the course will be assessed on an A-F grades scale. Grades are A-E for passed and F for failed. A re-sit examination is offered in the event of an F grade. The deadline to register for a re-sit examination (in the Studentweb) is January 15th for the autumn semester and August 15th for the spring semester.
+
+Recommended reading/syllabus
+Pensumliste for ENG-1040 Language Acquisition
+Recommended reading/syllabus
+To be announced.
+
+Error rendering component
+
+   
+

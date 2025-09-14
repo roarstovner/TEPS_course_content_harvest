@@ -1,0 +1,10 @@
+institution: mf
+code: PPU1020-1
+year: NA
+hv: NA
+url: https://mf.no/studier/emner/ppu1020
+status: 200
+course_name_no: Pedagogikk 2, didaktikk 2 og praksis PPU1020
+----- FULLTEXT -----
+
+NA

@@ -1,0 +1,195 @@
+institution: uib
+code: TYS307L-0
+year: NA
+hv: NA
+url: https://www4.uib.no/studier/emner/tys307l
+status: 200
+course_name_no: Tysk sprC%k og litteraturvitskap for lektorstudentar
+----- FULLTEXT -----
+
+Navigasjonssti
+Forside
+Studier
+Emner
+
+Tysk sprC%k og litteraturvitskap for lektorstudentar
+
+Studiepoeng
+
+10
+
+Undervisningssemester
+
+Haust
+
+Emnekode
+
+TYS307L
+
+Talet pC% semester
+
+1
+
+UndervisningssprC%k
+
+Tysk
+
+Ressursar
+
+Timeplan
+Litteraturliste
+
+Litteraturliste
+
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust 2021 VC%r 2020 Haust 2020 VC%r 2019 Haust 2019 VC%r 2018 Haust 2018 VC%r 2017 Haust
+MC%l og innhald
+
+Den lingvistiske delen av emnet gir ei innfC8ring i sentrale deldisiplinar i tysk (germanistisk) sprC%kvitskap. Dette kan vere morfologi, syntaks, semantikk, fonologi, orddanning, tekstlingvistikk/tekstgrammatikk, pragmatikk eller fagdidaktikk
+
+Den litteraturvitskaplege delen av emnet gir ei innfC8ring i sentrale retningar innan moderne litteraturvitskapleg teori og metode med utgangspunkt i eit mindre utval av litterC&re verk. Dette kan t.d. vC&re metaforteori, sjangerlC&re, narratologi, hermeneutikk, psykoanalyse, resepsjonsteori, kritisk teori, postkolonial teori eller gender studies.
+
+Emnet inneheld C2g eit kurs i litteratursC8k og kildevurdering.
+
+LC&ringsutbyte
+
+Kunnskap:
+
+Studenten
+
+har kunnskap om sentrale deldisiplinar i germanistisk sprC%k- og litteraturvitenskap
+har kunnskap om fagterminologien og omgrepa i deldisiplinane
+har kunnskap om skrivetradisjonane og tekstkonvensjonane i deldisiplinane
+har kunnskap om litteratursC8k og kildevurdering
+
+Ferdigheiter:
+
+Studenten
+
+kan analysere tekstar ved hjelp av analyseverktya frC% dei ulike deldisiplinane
+kan bruke fagterminologien og omgrepa i deldisiplinane sjC8lvstendig
+kan diskutere og formidle aktuelle teoretiske problemstillingar bC%de munnleg og skriftleg
+kan fC% oversikt over litteraturen pC% eit fagfelt og bruke ulike former og metodar for litteratursC8k og kildevurdering
+
+Kompetanse:
+
+Studenten
+
+kan pC% eiga hand oppdatere og utvide kunnskapane sine om dei ulike deldisiplinane i germanistisk sprC%k- og litteraturvitskap
+tek til C% bli skriveteknisk fC8rebudd pC% C% ta til pC% skrivinga av masteroppgC%va
+Studiepoeng, omfang
+10
+StudienivC% (studiesyklus)
+Master
+Undervisningssemester
+Haust
+Undervisningsstad
+Bergen
+Krav til forkunnskapar
+-
+TilrC%dde forkunnskapar
+-
+Studiepoengsreduksjon
+TYS307 (10 stp.), TYS317 (5 stp), TYS316 (5 stp)
+Krav til studierett
+Opptak til lektorutdanninga med master i framandsprC%k ved Det humanistiske fakultet.
+Arbeids- og undervisningsformer
+
+Undervisninga blir gitt som forelesningar/seminar, der ein gC%r ut frC% at studentane deltek aktivt.
+
+2 dobbeltimar
+9 veker (til saman 9 dobbeltimar litteratur og 9 dobbeltimar lingvistikk)
+2-4 timars kurs i litteratursC8k og kildevurdering
+
+Om det melder seg fC% studentar til eit emne, kan undervisningsforma bli tilpassa studenttalet. Studentane vil i sC% fall bli informerte om det alternative undervisningsopplegget ved semesterstart og fC8r semesterregistreringsfristen 1. februar/1. september.
+
+Obligatorisk undervisningsaktivitet
+
+I lC8pet av semesteret skal det skrivast to korte (ca. 500 ord) C8vingsoppgC%ver (ei i kvar av disiplinane) og haldast to munnlege presentasjonar i tilknyting til undervisninga (ei i kvar av disiplinane).
+
+Det er C2g obligatorisk C% delta pC% kurset i litteratursC8k og kildevurdering.
+
+Arbeidskrava mC% vere godkjende av faglC&rar fC8r ein kan gC% opp til eksamen i emnet.
+
+Arbeidskrava er gyldige i undervisningssemesteret og det fC8lgjande semesteret.
+
+Vurderingsformer
+
+Vurdering skjer pC% grunnlag av ein 7 dagars heimeeksamen (omfang: 2500 ord) og ein munnleg eksamen (omfang: ca. 30 minutt).
+
+Den munnlege eksamenen skal innehalde ein inntil 10 minutt lang presentasjon av eit sjC8lvvalt pensumrelatert emne frC% den disiplinen ein har valt bort pC% heimeeksamen. PC% den C8vrige delen blir det stilt spC8rsmC%l om pensum og heimeeksamen.
+
+Ved utrekninga av den endelege karakteren tel heimeeksamen 50% og den munnlege eksamenen 50 %.
+
+Karakterskala
+Ved sensur nyttar ein karakterskalaen A-F, der F er stryk.
+Vurderingssemester
+
+Haust.
+
+Det er C2g vurdering tidleg i vC%rsemesteret for studentar med gyldig godkjenning av obligatoriske arbeidskrav.
+
+Litteraturliste
+Pensum er pC% inntil 150 sider i kvar av disiplinane.
+Emneevaluering
+Undervisninga blir evaluert i trC%d med UiB sitt kvalitetssikringssystem.
+Hjelpemiddel til eksamen
+-
+Programansvarleg
+Programstyret har ansvar for fagleg innhald og oppbygging av studiet og for kvaliteten pC% studieprogrammet og alle emna der.
+Administrativt ansvarleg
+Institutt for framandsprC%k
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust 2021 VC%r 2020 Haust 2020 VC%r 2019 Haust 2019 VC%r 2018 Haust 2018 VC%r 2017 Haust
+Kontaktinformasjon
+studierettleiar@if.uib.no
+Eksamensinformasjon
+Vurderingsordning
+Heimeeksamen og munnleg eksamen
+Trekkfrist
+27.10.2025
+Eksamensdel: Heimeeksamen
+OppgC%ve leverast ut
+10.11.2025, 09:00
+Innleveringsfrist
+17.11.2025, 13:00
+Eksamenssystem
+Inspera
+Digital eksamen
+Eksamensdel: Munnleg eksamen
+
+Dette bC8r du vite om eksamen
+
+Institutt for fremmedsprC%k
+
+Vurderingsordning
+
+Heimeeksamen og munnleg eksamen
+
+Trekkfrist
+
+27.10.2025
+
+Eksamensdel: Heimeeksamen
+
+
+
+OppgC%ve leverast ut
+
+10.11.2025, 09:00
+
+Innleveringsfrist
+
+17.11.2025, 13:00
+
+Eksamenssystem
+
+Inspera
+
+Digital eksamen
+
+Eksamensdel: Munnleg eksamen
+
+

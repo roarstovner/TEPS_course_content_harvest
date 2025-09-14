@@ -1,0 +1,136 @@
+institution: oslomet
+code: M1GNO2100-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/M1GNO2100/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+M1GNO2100 Norsk 1, emne 3 Emneplan
+Engelsk emnenavn
+Norwegian 1, Subject 3
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 1-7
+Omfang
+10.0 stp.
+StudieC%r
+2025/2026
+Pensum
+HCST 2025
+
+Timeplan
+HCST 2025
+Programplan
+GrunnskolelC&rerutdanning for trinn 1-7 (2025 HCST )
+Emnehistorikk
+2018 / 2019 2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Innledning
+
+Fagplanen som hC8yrer til dette emnet er lagt pC% emne M1GNO1100 Norsk 1, emne 1.
+
+Forkunnskapskrav
+
+Ingen.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgjande lC&ringsutbytte definert som kunnskap, ferdigheiter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har omfattande kunnskap om barns sprC%kutvikling
+har kunnskap om sprC%ket som system og sprC%ket i bruk
+har brei kunnskap om metodar i den fC8rste lese- og skriveopplC&ringa
+har kunnskap om eit utval skjC8nnlitterC&re tekstar i ulike sjangrar og medium, med vekt pC% dikt og bildebC8ker
+har kunnskap om kva som kjenneteiknar munnlege, skriftlege og multimodale tekstar, pC% nynorsk og bokmC%l, i ulike sjangrar og medium
+har kunnskap om sprC%kleg identitet, norsk som andresprC%k og fleirsprC%kleg praksis for trinn1-4
+har kunnskap om lC&remiddel for trinn 1-4, bC%de digitale og andre
+har kunnskap om lese-, skrive- og sprC%kvanskar
+
+Ferdigheiter
+
+Studenten
+
+kan bruke kunnskap om sprC%k og sprC%kutvikling i sprC%kstimulerande arbeid og gjere greie for fagdidaktiske val som skal fremje munnleg og skriftleg sprC%kutvikling for elevar pC% 1.-4. trinn
+kan planlegge, gjennomfC8re og evaluere elev- og klassesamtalar
+kan bruke kunnskap om kva som kjenneteiknar ulike tekstar og sjangrar i arbeid med munnlege, skriftlege og multimodale tekstar i ulike medium
+kan bruke ulike metodar i den fC8rste lese- og skriveopplC&ringa og tilpasse opplC&ringa for elevar med ulik bakgrunn og varierande ferdigheiter i norsk
+kan vurdere ulike norskfaglege lC&remiddel, digitale og andre for elevar pC% 1.-4. trinn
+kan kjenne att teikn pC% lese-, skrive- og sprC%kvanskar
+meistrar skriftleg nynorsk og bokmC%l og kan undervise elevar i begge mC%lformer
+
+Generell kompetanse
+
+Studenten
+
+kan legge til rette for at elevane utviklar og vidareutviklar grunnleggande sprC%kferdigheiter og blir tekstkyndige sprC%kbrukarar som kan delta aktivt i klasserommet og pC% andre sosiale arenaer
+kan planlegge og gjennomfC8re norskundervisning i sentrale emne og gjere greie for elevtilpassa fagdidaktiske val
+kan vurdere eigen praksis med gjeldande lC&replanar, fagkunnskap og fagdidaktisk innsikt som grunnlag
+Innhold
+
+I emne 3 byggjer arbeidet i norskfaget vidare pC% kunnskapane frC% emne 1 og 2. I emne 3 arbeider studentane sC&rleg med begynnaropplC&ringa og praktisk-estetiske arbeidsformer. Undervisninga knyter linjer tilbake til og utdjupar det grunnleggjande sprC%kperspektivet i emne 1, og byggjer vidare pC% og spissar tekstperspektivet i emne 2.
+
+Arbeids- og undervisningsformer
+
+SjC% fagplanen.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+Arbeidskrava mC% vere godkjende for at studentane skal kunne gC% opp til eksamen. SjC% fagplandelen ovanfor for nC&rare informasjon om krav til innlevering og vilkC%r ved manglande innlevering.
+
+Arbeidskrav 1: Fleirfagleg arbeid med begynnaropplC&ring
+
+Ei individuell oppgC%ve knytt til faga norsk, matematikk og pedagogikk og elevkunnskap om begynnaropplC&ring. Utgangspunktet for arbeidskravet er to observasjonsdagar i 1. klasse. Arbeidskravet inneheld ei skriftleg oppgC%ve med eit omfang pC% 2200 ord +/- 10 %. FC8remC%let med oppgC%va er C% fC% reflektert over fleirfaglege perspektiv knytt til begynnaropplC&ring.
+
+Dersom oppgC%va ikkje blir godkjend, kan arbeidet forbetrast og leverast inn C)in gong til.
+
+MC%lform: Nynorsk
+
+Arbeidskrav 2: Lage ei bildebok
+
+Studentane lager ei bildebok for 5-7-C%ringen i grupper pC% to til fire studentar. FC8remC%let med arbeidskravet er at studentane skal bruke estetiske arbeidsmC%tar og C% modellere ei arbeidsform som er tenkt brukt pC% smC%trinnet.
+
+MC%lform: Valfri.
+
+Arbeidskrav 3: Dikt, digitale og analoge uttrykksformer
+
+Studentane presenterer eit utval dikt i grupper ved bruk av digitale og analoge uttrykksformer, og bruk av musiske og dramapedagogiske element. FC8remC%let med arbeidskravet er C% utforske ulike uttrykksformer for tekstskaping og tekstpresentasjon som modellerer arbeidsformer til bruk pC% smC%trinnet. Arbeidet med diktframfC8ringa er eit samarbeid mellom musikk og norskfaget, og er dermed fagovergripande (jf. programplanen om fagovergripande tema ulike studieC%r). Det er krav om deltaking i kurs i musikk i samband med arbeidskravet.
+
+Obligatorisk 4: Krav om obligatorisk deltaking i faglige aktivitetar
+
+Det er obligatorisk deltaking i all undervisning, og dette er ogsC% eit arbeidskrav. FC8remC%let med undervisninga er C% fC% erfaring med varierte arbeidsmetodar til bruk i klasserommet. Studentane skal utvikle kunnskapar, ferdigheiter og generell kompetanse som dei ikkje kan tileigne seg berre ved lesing av pensum. I undervisninga opparbeider studentane profesjonskompetanse gjennom samhandling med medstudentar og faglC&rar. UndervisningsC8ktene inneheld studentaktive metodar som arbeid med lC&ringspartnar, litterC&re samtalar, drama, song, klassedialog, spontane og planlagde studentframlegg og gruppearbeid, i tillegg til formidling av kunnskapsstoff. Det er krav om oppmC8te pC% minimum 80 % i faglege aktivitetar og undervisning i alle emne. Ved frC%vC&r utover 20 %, og inntil 40 %, vil det bli gitt kompensatorisk arbeid som kan inkludere krav om oppmC8te. Form og omfang blir bestemt av faglC&rar. Ved frC%vC&r utover 40 %, vil studenten bli trekt frC% eksamen i emnet.FrC%vC&r dokumentert med for eksempel sjukemelding, gir ikkje fritak for kravet om deltaking og eventuelt kompensatorisk arbeid.
+
+Fagovergripande tema
+
+I programplanen er det beskrive ulike fagovergripande tema pC% dei ulike studieC%ra. Det er krav om deltaking i desse faglege aktivitetane.
+
+Knytt til emne 3 er fC8lgjande faglege aktivitetar:
+
+Fleirfagleg arbeid om begynnaropplC&ring (arbeidskrav 1)
+Lage ei bildebok (arbeidskrav 2)
+Verkstad om dikt og musikk (arbeidskrav 3)
+
+Manglande deltaking i faglege aktivitetar nemnd over medfC8rer at studenten ikkje fC%r ta eksamen i det emnet kravet om deltaking er knytt til. Sjukdom fritar ikkje for kravet om deltaking. Studentar som ikkje oppfyller kravet om deltaking, mC% snarast mogleg ta kontakt med faglC&rar.
+
+Vurdering og eksamen
+
+Individuell munnleg eksamen pC% om lag 20 minutt med 30 minutt fC8rebuing.
+
+Ny/utsett eksamen blir arrangert som ved ordinC&r eksamen.
+
+Hjelpemidler ved eksamen
+
+Alle hjelpemiddel tillatne i fC8rebuingsfasen.
+
+Vurderingsuttrykk
+
+Gradert skala A-F
+
+Sensorordning
+
+To interne sensorar. Ein tilsynssensor er tilknytt emnet etter retningslinjene for oppnemning og bruk av sensorar ved OsloMet.

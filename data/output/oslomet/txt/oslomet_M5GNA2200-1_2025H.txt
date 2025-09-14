@@ -1,0 +1,142 @@
+institution: oslomet
+code: M5GNA2200-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/M5GNA2200/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+M5GNA2200 Naturfag 1, emne 2 Emneplan
+Engelsk emnenavn
+Science Education 1, Part 2
+Studieprogram
+Skolefag for kroppsC8ving og idrettsfag
+GrunnskolelC&rerutdanning for trinn 5-10
+Naturfag 1 for trinn 5-10 i grunnskolen
+Omfang
+15.0 stp.
+StudieC%r
+2025/2026
+Pensum
+VCR 2026
+
+Timeplan
+VCR 2026
+Programplan
+Skolefag for kroppsC8ving og idrettsfag (2025 HCST )
+GrunnskolelC&rerutdanning for trinn 5-10 (2025 HCST )
+Emnehistorikk
+2018 / 2019 2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Innledning
+
+Fagplanen tilhC8rende dette emnet er lagt pC% emne M5GNA2100 Naturfag 1, emne 1.
+
+Forkunnskapskrav
+
+Ingen.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har kunnskap om elevers lC&ring i naturfag og hvordan en kan legge til rette for begrepsdannelse og utvikling av naturfaglig sprC%k pC% mellom- og ungdomstrinnet
+har kunnskap om hvordan en kan drive dialogisk, variert og utforskende undervisning med elever pC% mellom- og ungdomstrinnet
+har kunnskap om elevers hverdagsforestillinger i biologi, fysikk, geologi, kjemi og teknologi
+har kunnskap om progresjon i elevers lC&ring av naturfaglige fenomener
+har kunnskap om partikkelmodellen og kan bruke den for C% konkretisere oppbygging av ulike stoffer og for C% forklare grunnleggende fysiske endringer i dagliglivet og naturen
+har kunnskap om navnsetting, oppbygging og egenskaper til vanlige kjemiske stoffer, og kan bruke periodesystemet til C% forklare dette
+har grunnleggende kunnskap om kjemiske reaksjoner pC% makro- og mikronivC% med fokus pC% syre- og base-, fellings- og redoksreaksjoner
+har kunnskap om noen av menneskets organsystemer, pubertet, seksualitet og helse og hvordan en kan undervise temaene for elever pC% mellom- og ungdomstrinnet
+har kunnskap om livsprosesser i celler og oppbygging av celler
+har kunnskap om den biologiske systematikken, og hvordan grupper av organismer og arter er tilpasset norsk natur, samt hvorfor det er viktig med dette fokuset
+har kunnskap om C8kologi og bC&rekraftig utvikling og hvordan en kan undervise temaene gjennom tverrfaglig undervisning og bruk av varierte lC&ringsarenaer inne og ute
+har kunnskap om sentrale systemer som organsystemer, C8kosystemer, bergartssyklusen, solsystemet og systemet jord-sol-mC%ne og hvordan de kan introduseres for elevene ved C% vise hvordan bestanddeler i hvert system henger sammen
+har grunnleggende kunnskap om krefter og mekanikk, inkludert kinetisk og potensiell energi
+har grunnleggende kunnskap om elektrisitet og magnetisme
+har kunnskap om bC8lger, lyd og lys som fysiske fenomener og kan knytte dette til syn og hC8rsel
+har kunnskap om ytre og indre geologiske prosesser pC% jorda og med fokus pC% vanlige norske mineraler og bergarter
+har kunnskap om programmering og algoritmisk tenking og hvordan det kan brukes i naturfag
+
+Ferdigheter
+
+Studenten
+
+kan planlegge, gjennomfC8re og reflektere over egen undervisning pC% mellom- og ungdomstrinnet forankret i forskning, teori og praksis og med spesielt fokus pC% utforskende arbeidsmC%ter og integrasjon av alle grunnleggende ferdigheter
+kan gjennomfC8re aktiviteter, forsC8k og mC%linger inne og ute med bruk av egnet utstyr, bearbeide og presentere mC%ledata, samt vurdere nC8dvendige sikkerhetstiltak
+kan gjC8re beregninger i temaer det er relevant
+kan bruke, vurdere og utvikle relevante modeller til C% forklare naturfaglige fenomener i biologi, fysikk, geologi og kjemi, og kan argumentere for bruk av ulike former for modeller for C% stC8tte elevers lC&ring
+kan bruke formativ vurdering som grunnlag for tilrettelegging av undervisning og tilpasset opplC&ring pC% mellom- og ungdomstrinnet
+kan gjennomfC8re teknologiundervisning med fokus pC% C% designe og lage teknologiske produkter og knytte teknologi til relevante tema i naturfag
+
+Generell kompetanse
+
+Studenten
+
+har innsikt i naturfagets betydning som allmenndannende fag og naturvitenskapens metoder og tenkemC%ter med fokus pC% utforskende arbeidsmC%ter
+kan analysere og bruke gjeldende lC&replan for mellom- og ungdomstrinnet som utgangspunkt for naturfagundervisning
+kan drC8fte egen rolle, praksis og utviklingsmuligheter som naturfaglC&rer
+Innhold
+
+Emne 2 er delt i fire hovedtemaer:
+
+Naturfagdidaktikk 1-2
+Kropp og helse 1-2
+Jorda 1-2
+Kjemi 1-2
+Fysikk 1-2
+Arbeids- og undervisningsformer
+
+Se fagplanen.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+Retten til C% avlegge eksamen forutsetter godkjente arbeidskrav og deltakelse i bestemte faglige aktiviteter. NC&rmere informasjon om arbeidskrav og krav til deltakelse er beskrevet i den innledende delen av fagplanen. FC8lgende arbeidskrav mC% vC&re godkjent fC8r eksamen i emnet kan avlegges:
+
+Felles i temaene Fysikk 1-2, Kjemi 1-2, Jorda 1 og Kropp og helse 1-2:
+
+Individuell praktisk prC8ve i laboratorieteknikker og praktisk arbeid (inntil 30 minutter)
+
+I temaet Jorda 1-2:
+
+Individuell test i arter og objekter (20 minutter)
+
+Aktiviteter med obligatorisk deltakelse
+
+Fordi det er svC&rt vanskelig C% tilegne seg kunnskaper om feltarbeid i naturen pC% egen hC%nd er det knyttet 100 % deltakelse til feltkurset. Dersom studenten har gyldig fravC&r fra feltkurset, vil det bli tilrettelagt for ny gjennomfC8ring.
+
+I temaet Jorda 1-2:
+
+Feltkurs med for- og etterarbeid i Oslo-omrC%det uten overnatting (omfang 3-4 dager).
+
+Det er i tillegg krav om at studenten mC% gjennomfC8re flerfaglige arbeidskrav for C% fC% avlegge eksamen i emnet. Se programplanen for nC&rmere informasjon om arbeidskravene.
+
+Vurdering og eksamen
+
+Eksamensform
+
+Eksamen bestC%r av en 4-timers individuell skriftlig eksamen under tilsyn.
+
+Ny/utsatt eksamen
+
+Ny/utsatt eksamen arrangeres som ved ordinC&r eksamen.
+
+Hjelpemidler ved eksamen
+
+Kalkulator - ikke programmerbar.
+
+Formelhefte vil vC&re tilgjengelig pC% eksamen.
+
+Vurderingsuttrykk
+
+Det benyttes en gradert karakterskala fra A til E for bestC%tt og F for ikke bestC%tt eksamen.
+
+Sensorordning
+
+Eksamen vurderes av intern og ekstern sensor.

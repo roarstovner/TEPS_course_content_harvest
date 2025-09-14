@@ -1,0 +1,96 @@
+institution: nord
+code: VIT5001-1
+year: NA
+hv: NA
+url: https://www.nord.no/studier/emner/vit5001
+status: 200
+course_name_no: Vitenskapsteori og metodologi, 1-7
+----- FULLTEXT -----
+
+
+
+Emnet tar opp prinsipper for vitenskapelig forskningsarbeid og diskuterer sentrale vitenskapsteoretiske spC8rsmC%l innenfor forskningsfelt der en studerer lC&reryrket og relevante andre forskingsfelt. Det fokuseres pC% ulike typer forskningsdesign og metoder, innenfor bC%de kvalitative og kvantitative tradisjoner. Emnet tar ogsC% opp hvordan man gC%r fram for C% bli i stand til C% planlegge og gjennomfC8re et metodisk og vitenskapsteoretisk forsvarlig forskningsprosjekt i masterfaget.
+
+Studentene mC% ha bestC%tt alle emner fra fC8rste til tredje studieC%r for C% begynne i femte studieC%r.
+
+Kunnskap
+
+Studenten skal ha
+
+avansert kunnskap innenfor vitenskapsteori og forskningsmetode relevant for studiet av lC&reryrkets praksisfelt, nasjonalt og internasjonalt, samt hvordan forskerens posisjon fC%r betydning for forskningsprosessen.
+inngC%ende kunnskap om hele forskningsprosessen fra problemformulering til databearbeiding og datapresentasjon.
+inngC%ende kunnskap om aktuell forskning og aktuelle teorier knytta til lC&reryrkets forskningsfelt.
+inngC%ende kunnskap om nasjonale og internasjonale utdanningspolitiske fC8ringer som har relevans for egen fordypning gjennom masteroppgava.
+innsikt i hele forskningsprosessen fra problemformulering til kjelde- og databearbeiding og datapresentasjon
+avansert kunnskap om sammenhengen mellom generell vitenskapsteori og masterfagets disiplinC&re forskningsteori og vanlige metodebegrunnelser.
+
+Ferdigheter
+
+Studenten skal kunne
+
+planlegge et selvstendig forskningsarbeid med utgangspunkt i valgt tema og problemstilling, og plassere eget forskningsbidrag i en nasjonal og internasjonal kontekst.
+redegjC8re for, og drC8fte vitenskapsteoretisk perspektiv, design og forskningsmetode i samsvar med problemstilling og forskningsspC8rsmC%l i eget prosjekt.
+fC8lge etiske retningslinjer for forskning og reflektere kritisk over etiske aspekter knyttet til eget forskingsarbeid.
+finne fram og velge ut relevant forskning og teori gjennom sC8k etter trykte tekster og digitale databaser, nasjonalt og internasjonalt.
+
+Generell kompetanse
+
+Studenten skal kunne
+
+vise evne til kritisk vurdering av egen og andres forskning.
+kan anvende sine kunnskaper og ferdigheter pC% nye omrC%der for C% gjennomfC8re avanserte arbeidsoppgaver og prosjekter.
+bidra til nytenkning og innovasjon innenfor fagomrC%det.
+
+Kunnskap
+
+Studenten skal ha
+
+Ferdigheter
+
+Studenten skal kunne
+
+Generell kompetanse
+
+Studenten skal kunne
+
+Utover semesteravgift og pensumlitteratur forutsettes det at studenten disponerer en bC&rbar datamaskin.
+
+Obligatorisk
+
+Forelesning. Det forutsettes stor grad av selvstudium og kollokviearbeid mellom forelesningene.
+
+Studieprogrammet evalueres C%rlig av studentene gjennom emneundersC8kelser (midtveisevaluering og sluttevaluering). Evaluering inngC%r som en del av universitetets kvalitetssikringssystem.
+
+Sammensatt vurdering: Alle delene av vurderingen mC% vC&re godkjent og bestC%tt for C% fC% karakter i emnet.
+
+Arbeidskrav 1: Litteraturliste pC% sC&rpensum. Vurderingsform Godkjent/ikke godkjent. Teller 0/100 av karakteren.
+Arbeidskrav 2: En prosjektbeskrivelse pC% det planlagte masterprosjektet. Vurderingsform Godkjent/ikke godkjent. Teller 0/100 av karakteren.
+Arbeidskrav 3: En muntlig presentasjon av det planlagte masterprosjektet. Vurderingsform Godkjent/ikke godkjent. Teller 0/100 av karakteren.
+Hjemmeeksamen (HJ): Tema statistikk. Varighet 7 dager. Vurderingsform BestC%tt/ikke bestC%tt, teller 0/100 av karakteren.
+Oppgave: Oppgave innenfor omrC%det forskingsmetode. Vurderingsform A - F, beste A, ikke bestC%tt F. Teller 100/100 av karakteren.
+
+Sammensatt vurdering: Alle delene av vurderingen mC% vC&re godkjent og bestC%tt for C% fC% karakter i emnet.
+
+Generell informasjon om hjelpemidler til eksamen finner du her.
+
+Informasjon om ChatGPT/kunstig intelligens mm. finner du her.
+
+C generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er C% regne som fusk.
+
+Generell informasjon om hjelpemidler til eksamen finner du her.
+
+Informasjon om ChatGPT/kunstig intelligens mm. finner du her.
+
+C generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er C% regne som fusk.
+
+Med overlapp menes en faglig likhet mellom emner med samme faginnhold. Du vil derfor fC% fC8lgende reduksjon i studiepoeng om du har tatt emner som er angitt under:
+
+VIT5027 - Vitenskapsteori, empirisamling og forskningsetikk - 7.5 Studiepoeng
+
+VIT5028 - Vitenskapsteori, kvantitativ og kvalitativ analyse - 7.5 Studiepoeng
+
+Med overlapp menes en faglig likhet mellom emner med samme faginnhold. Du vil derfor fC% fC8lgende reduksjon i studiepoeng om du har tatt emner som er angitt under:
+
+VIT5027 - Vitenskapsteori, empirisamling og forskningsetikk - 7.5 Studiepoeng
+
+VIT5028 - Vitenskapsteori, kvantitativ og kvalitativ analyse - 7.5 Studiepoeng

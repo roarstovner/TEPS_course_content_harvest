@@ -1,0 +1,103 @@
+institution: oslomet
+code: MAMUS4100-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/MAMUS4100/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+MAMUS4100 Fysioterapi for muskelskjelettskader, sykdommer og plager - del 1 Emneplan
+Engelsk emnenavn
+Physical Therapy for Musculoskeletal Conditions - Part 1
+Studieprogram
+Masterstudium i helsevitenskap - spesialisering i fysioterapi for muskelskjeletthelse
+Omfang
+10.0 stp.
+StudieC%r
+2025/2026
+Pensum
+HCST 2025
+
+Timeplan
+HCST 2025
+Programplan
+Masterstudium i helsevitenskap - spesialisering i fysioterapi for muskelskjeletthelse (2025 HCST )
+Emnehistorikk
+2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Innledning
+
+UndervisningssprC%k: Norsk
+
+Dette emnet omfatter nyere kunnskap innen de vanligste muskelskjelettskader, sykdommer og plager (MUSSP) i et livslC8psperspektiv fra barn til eldre. Emnet undervises etter den kunnskapsbaserte praksismodellen med integrering av teoretisk og forskningsbasert kunnskap, klinisk erfaring, pasientens preferanser og kontekstuelle faktorer. Det vektlegges kritisk vurdering av dagens undersC8kelses- og behandlingsmetoder, av organisering og kvalitet pC% helsetjenester, og av fysioterapeuters rolle i tverrfaglig samarbeid og samhandling. Emnet omfatter ogsC% undervisning om implementering av dokumentert kunnskap og om fysioterapi i fremtidens primC&rhelsetjeneste, for eksempel fysioterapeuters oppgaver i oppfC8lgingsteam og primC&rhelseteam.
+
+Forkunnskapskrav
+
+Studenten mC% vC&re tatt opp pC% masterstudiet i helsevitenskap og ha autorisasjon som fysioterapeut.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert i kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+kan vurdere nyere kunnskap om de vanligste MUSSP
+kan kritisk vurdere dagens undersC8kelses- og behandlingsmetoder, inkludert bruk av standardiserte instrumenter for de mest vanlige MUSSP
+kan kritisk vurdere organisering og kvalitet av helsetjenester, og fysioterapeuters rolle i tverrfaglig samarbeid og samhandling
+kan redegjC8re for kunnskap om arbeid og MUSSP, og kritisk vurdere dagens tiltak for C% fremme arbeidsdeltakelse og hindre langvarig sykefravC&r
+kan redegjC8re for implementeringsmetoder for godt dokumentert kunnskap
+
+Ferdigheter
+
+Studenten kan
+
+bruke den kunnskapsbaserte praksismodellen i analyse av de mest vanlige MUSSP
+anvende og kritisk reflektere over nyere kunnskap om de vanligste MUSSP
+anvende og kritisk reflektere over bruk av standardiserte instrumenter i klinisk praksis
+anvende og kritisk reflektere over nyere kunnskap om arbeid og muskelskjeletthelse
+implementere godt dokumentert kunnskap i praksis
+
+Generell kompetanse
+
+Studenten kan
+
+formidle oppdatert fagkunnskap til samarbeidspartnere og befolkningen
+bidra til C% C8ke kvalitet ved dagens helsetjenester
+bidra til C% fremme arbeidsdeltakelse og hindre langtidssykefravC&r
+Arbeids- og undervisningsformer
+
+Emnet vil benytte varierte, studentaktive arbeidsformer. Arbeidsformene bestC%r av forelesninger, omvendt undervisning, seminarer, presentasjoner, gruppearbeid og selvstudier. Presentasjoner pC% seminarer er viktige for C% understC8tte lC&ringsprosessen og formidlingsevne etter endt emne. Undervisningen organiseres i 2 samlinger C  5 dager.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+For C% fremstille seg til eksamen mC% fC8lgende vC&re godkjent:
+
+Gruppearbeid (2-3 studenter), med innlevering av skriftlig gruppeoppgave. Omfang: 1000 ord (+/- 10)
+Innlevering av skriftlig tilbakemelding pC% en annen gruppes oppgave
+Vurdering og eksamen
+
+Individuell hjemmeeksamen over to uker. Omfang: 2500 ord (+/- 10 %).
+
+Ved engelsk gjennomfC8ring av emnet kan studenter som C8nsker det besvare eksamen pC% skandinavisk (norsk, svensk eller dansk).
+
+Hjelpemidler ved eksamen
+
+Alle hjelpemidler er tillatt sC% lenge regler for kildehenvisning fC8lges.
+
+Vurderingsuttrykk
+
+Gradert skala A-F.
+
+Sensorordning
+
+Hver besvarelse vurderes av en sensor.
+
+Ekstern sensor benyttes regelmessig, og minimum ved hver tredje gjennomfC8ring av emnet. Ved uttrekk av besvarelser til ekstern sensur skal uttrekket omfatte minimum 10 % av besvarelsene, men uansett ikke fC&rre enn 5 besvarelser. Ved uttrekk skal ekstern sensors vurdering komme alle studentene til gode.
+
+Emneoverlapp
+
+10 studiepoeng overlapp med MAFYS4000 Kunnskapsgrunnlag og praksis i fysioterapi, 20 stp.

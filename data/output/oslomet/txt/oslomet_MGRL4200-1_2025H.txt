@@ -1,0 +1,124 @@
+institution: oslomet
+code: MGRL4200-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/MGRL4200/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+MGRL4200 RLE og RLE-didaktikk 2 Emneplan
+Engelsk emnenavn
+RLE and RLE Education 2
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 1-7
+GrunnskolelC&rerutdanning for trinn 5-10
+Omfang
+15.0 stp.
+StudieC%r
+2025/2026
+Pensum
+VCR 2026
+
+Timeplan
+VCR 2026
+Programplan
+GrunnskolelC&rerutdanning for trinn 1-7 (2025 HCST )
+GrunnskolelC&rerutdanning for trinn 5-10 (2025 HCST )
+Emnehistorikk
+2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Innledning
+
+Fagplanen tilhC8rende dette emnet er lagt pC% emne MGRL4100 RLE og RLE-didaktikk 1.
+
+RLE og RLE-didaktikk 2 gir en avansert forstC%else av det RLE-didaktiske feltet og gaL
+r i dybden paL
+ noen ulike posisjoner i forskningsfeltet og noen sentrale perspektiver pC% lC&ring, danning og kritisk tenkning i skolefaget. Praktisk KRLE-undervisning, arbeidsmaL
+ter i skolen og forankringen dette har i fagforstaL
+else stC%r ogsaL
+ i fokus.
+
+Forkunnskapskrav
+
+Ingen
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskaper
+
+Studenten
+
+har bred kunnskap om det fagdidaktiske forskningsfeltet knyttet til religion og livssyn, etikk og filosofi og kan forstC% dette i lys av generelle kunnskapsteoretiske og pedagogiske posisjoner
+har bred kunnskap om fagforstC%elser, kunnskaps- og danningsforstC%elser i KRLE-feltet
+har oppnC%dd omfattende kunnskap om god utC8velse av skolefaget KRLE, blant annet om literacy, arbeidsmC%ter og lC&ringsressurser med relevans for KRLE-undervisning
+
+Ferdigheter
+
+Studenten
+
+kan utforske, analysere og drC8fte fagspC8rsmC%l knyttet til emnet pC% en faglig, og forskningsmessig forsvarlig mC%te
+kan forholde seg kritisk til ulike informasjonskilder, bC%de erfaringskunnskap og forskning og anvende slike kilder pC% en faglig og selvstendig mC%te
+kan analysere og forholde seg vurderende til eksisterende teorier, metoder og fortolkninger innenfor fagomrC%det og arbeide selvstendig med praktisk og teoretisk problemlC8sning
+kan gi faglig kompetente skriftlige og muntlige redegjC8relser innenfor emnet
+kan ta i bruk et stort tilfang av arbeidsmC%ter i undervisningen og bruke disse pC% en reflektert og adekvat mC%te, blant annet ulike utforskende arbeidsmC%ter, ekskursjoner, strukturert dialog i klasserommet, praktisk-estetiske arbeidsmC%ter m.m.
+
+Generell kompetanse
+
+Studenten
+
+kan bidra kunnskapsmessig til fagutvikling innenfor emnet pC% grunnopplC&ringsnivC%
+kan formidle forskningsbasert kunnskap innenfor emnet bC%de skriftlig og muntlig pC% en faglig forsvarlig mC%te
+kan bruke sin kunnskap med faglig integritet og etisk bevissthet
+Innhold
+
+Emnet gir forstC%else av ulike posisjoner og perspektiver i det fagdidaktiske forskningsfeltet knyttet til faget KRLE i den offentlige skolen og hvordan disse posisjonene er relatert til forskningsretninger innen kultur- og samfunnsfag. Debattene om skolefagets identitet og legitimitet stC%r sentralt. Videre blir ulike syn pC% kunnskap, danning, lC&ring og sosialisering undersC8kt med henblikk pC% hva de innebC&rer for fagutC8velsen. Og i nC&r sammenheng med fagforstC%elsen blir sentrale arbeidsformer i KRLE-undervisningen belyst.
+
+Arbeids- og undervisningsformer
+
+Undervisningen pC% emnet vil i hovedsak vC&re i form av forelesninger og/eller seminarer og veiledning. Emnet krever selvstendig arbeid og aktiv deltagelse i faglig fellesskap.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+Retten til C% avlegge eksamen forutsetter godkjente arbeidskrav og deltakelse i bestemte faglige aktiviteter.
+
+Deltakelse i faglig fellesarbeid
+
+Ferdigheten med C% formidle andres og egen forskning pC% en forsvarlig mC%te kan best oppC8ves gjennom dialog og diskusjon. Hver student skal derfor delta aktivt pC% minst 80% av de regulC&re seminar- og undervisningsaktivitetene i emnet.
+
+Dette arbeidskravet er rettet mot C% trene opp studentenes evne til C% reflektere selvstendig rundt faglige og didaktiske problemstillinger gjennom dialog og diskusjon. Ved manglende eller ikke-godkjent arbeidskrav, vil det gis en kompensatorisk oppgave.
+
+For studenter pC% programmet master grunnskolelC&rerutdanning mC% i tillegg fC8lgende arbeidskrav gjennomfC8res
+
+Gruppevis muntlig seminarframlegg pC% ca. 20 minutter, inkludert muntlig respons fra klassen. Arbeidskravet er knyttet til pensum i emne 2 og arbeid med praktisk RLE-undervisning. NC&rmere retningslinjer vil bli gitt.
+
+Dette arbeidskravet er rettet mot C% trene studentenes evne til C% reflektere selvstendig rundt didaktiske problemstillinger gjennom dialog og diskusjon. Ved manglende eller ikke-godkjent arbeidskrav vil det bli gitt en skriftlig kompensatorisk oppgave av tilsvarende omfang etter nC&rmere avtale med faglC&rer.
+
+For studenter pC% masterstudium skolerettet utdanningsvitenskap mC% i tillegg fC8lgende arbeidskrav gjennomfC8res:
+
+Studenten skal innen fastsatt frist levere en skisse pC% 1800 ord +/- ti prosent for masteroppgaven. Gjennom arbeidskravet skal studenten se emnet i sammenheng med masteroppgaven og vise en forstC%else for hva som er faglig relevante temaer C% arbeide videre med. Etter at skissen for masteroppgaven er levert, vil studenten fC% tildelt veileder for masteroppgaven.
+
+For generell informasjon om arbeidskrav, se den innledende fagplandelen.
+
+Vurdering og eksamen
+
+En individuell, skriftlig semesteroppgave (i form av et essay) med en selvvalgt problemstilling innen emnets omrC%de pC% 4500 ord +/- ti prosent.
+
+Ny/utsatt eksamen
+
+Ny/utsatt eksamen arrangeres som ved ordinC&r eksamen. Semesteroppgaven kan omarbeides C)n gang til ny eksamen.
+
+Hjelpemidler ved eksamen
+
+Alle hjelpemidler tillatt.
+
+Vurderingsuttrykk
+
+Det benyttes en gradert karakterskala fra A til E for bestC%tt og F for ikke bestC%tt eksamen.
+
+Sensorordning
+
+Det brukes to interne sensorer. En tilsynssensor er tilknyttet emnet, i henhold til retningslinjer for oppnevning og bruk av sensorer ved OsloMet.

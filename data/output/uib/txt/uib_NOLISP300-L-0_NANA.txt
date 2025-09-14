@@ -1,0 +1,158 @@
+institution: uib
+code: NOLISP300-L-0
+year: NA
+hv: NA
+url: https://www4.uib.no/studier/emner/nolisp300-l
+status: 200
+course_name_no: Nordisk: ProsjektfC8rebuande emne
+----- FULLTEXT -----
+
+Navigasjonssti
+Forside
+Studier
+Emner
+
+Nordisk: ProsjektfC8rebuande emne
+
+Studiepoeng
+
+10
+
+Undervisningssemester
+
+VC%r
+
+Emnekode
+
+NOLISP300-L
+
+Talet pC% semester
+
+1
+
+UndervisningssprC%k
+
+Norsk, ev. dansk og svensk
+
+Ressursar
+
+Timeplan
+
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust 2021 VC%r 2020 Haust 2020 VC%r 2019 Haust 2019 VC%r 2018 Haust 2018 VC%r
+MC%l og innhald
+
+MC%l:
+
+HovudmC%let med emnet er at studenten skal planlegge arbeidet med masteroppgC%va si i samrC%d med oppnemnd rettleiar. Dette skal gjerast gjennom lesing av eit individuelt pensum og skriving ut frC% det, og utforming av ei prosjektskisse.
+
+Innhald:
+
+Studentane fC8rebur seg teoretisk og praktisk til arbeidet med masteroppgC%va, dels i undervisning i gruppe, dels i samarbeid med rettleiar og dels ved sjC8lvstudium.
+
+LC&ringsutbyte
+
+Studenten skal ved avslutta emne ha fC8lgjande lC&ringsutbytte definert i kunnskap, ferdigheiter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har avansert kunnskap om eit sjC8lvvalt felt av nordistikken
+har kunnskap om utvalde teoretiske og metodiske problemstillingar i den stC8rre disiplinen som det sjC8lvvalde feltet inngC%r i
+
+Ferdigheiter
+
+Studenten
+
+kan finne og vurdere relevant forskingslitteratur
+kan bruke kunnskapen i avgrensa sjC8lvstendig forskingsarbeid pC% det sjC8lvvalde feltet
+kan framstille og drC8fte forskingslitteratur pC% det sjC8lvvalde feltet
+kan planlegge eit forskingsarbeid og formulerer planane skriftleg
+kan presentere og diskutere sine eigne forskingsplanar munnleg
+kan diskutere andre sine forskingsplanar munnleg
+
+Generell kompetanse
+
+Studenten
+
+har innsikt i kva komponentar som trengst i planar for eit forskingsarbeid
+Fulltid/deltid
+-
+Studiepoeng, omfang
+10
+StudienivC% (studiesyklus)
+Master
+Undervisningssemester
+VC%r
+Undervisningsstad
+Bergen
+Krav til forkunnskapar
+Ingen
+TilrC%dde forkunnskapar
+Ingen
+Studiepoengsreduksjon
+Det er 10 studiepoengs overlapp med NOLISP300. Det er 5 studiepoengs overlapp med NOLISP302 og 5 studiepoengs overlapp med NOLISP303(-L).
+Krav til studierett
+Emnet er ope for studentar med studierett pC% lektorutdanning med master i nordisk.
+Arbeids- og undervisningsformer
+
+Undervisninga kombinerer fC8relesingar og seminar fC8r og etter langpraksis.
+
+Individuell rettleiing gitt av rettleiaren, inntil fire timar per student, med slikt fokus som student og rettleiar finn tenleg (pensumgjennomgang, utkastvurdering osv.).
+
+Studenten mC% sette seg inn i mykje av fagstoffet gjennom sjC8lvstudium.
+
+Om det melder seg fC&rre enn fem studentar til eit emne, kan instituttet innfC8re redusert undervisning, jamfC8r instituttets retningslinjer for dette pC% Mitt UiB. PC% emne der dette kan verte aktuelt, vil studentane fC% informasjon om det ved semesterstart og fC8r semesterregistreringsfristen.
+
+Obligatorisk undervisningsaktivitet
+
+Levering av pensumliste for den individuelle delen (sjC% Litteraturliste) innan 15. mars.
+
+Seint i semesteret: Munnleg presentasjon av planane for masterprosjektet med bruk av presentasjonsprogram.
+
+Presentasjonen skal ta om lag 10 minutt.
+
+Diskusjon av presentasjonen til ein annan student, om lag 5 minutt.
+
+Godkjent aktivitet er gyldig i undervisningssemesteret.
+
+Vurderingsformer
+
+Vurderinga pC% emnet er ei semesteroppgC%ve utforma som ei prosjektskisse. Skissa er ein plan for masteroppgC%vearbeidet og skal vere pC% inntil 4000 ord. Ho skal normalt handsame tema, problemstilling/forskingsspC8rsmC%l, teoretisk grunnlag, faglitteratur og sekundC&rkjelder, eiga plassering i fagfeltet, avgrensing av primC&rkjeldene og vitskaplege metodar - alt tilpassa det planlagde arbeidet. Framdriftsplan og tekstdisposisjon skal vere med som vedlegg utanom dei 4000 orda.
+
+Eksamenssvaret skal skrivast pC% norsk, og studenten vel mC%lform sjC8lv. I samsvar med nasjonale retningslinjer blir det lagt vekt pC% om studenten skriv norsk korrekt og godt.
+
+Karakterskala
+Karakterskala A-F
+Vurderingssemester
+VC%r. Eksamen vert berre tilbydd i undervisningssemesteret. Ny eksamen pC%fC8lgande semester berre for studentar med rett til ny vurdering.
+Litteraturliste
+
+Pensumet er pC% ca. 650 sider av normal vanskegrad og bestC%r av ein fellesdel og ein individuell del.
+
+Disiplinspesifikke litteraturlister for fellesdelen vil vere klare innan 1. desember.
+
+Pensumet for den individuelle delen mC% settast saman av studenten i samrC%d med rettleiaren, som godkjenner pensumlista.
+
+Emneevaluering
+Evaluering blir gjennomfC8rt i trC%d med Universitetet i Bergen sitt kvalitetssikringssystem.
+Hjelpemiddel til eksamen
+Ikkje relevant.
+Programansvarleg
+Programstyret for nordisk
+Emneansvarleg
+Programstyret for nordisk
+Administrativt ansvarleg
+Institutt for lingvistiske, litterC&re og estetiske studium
+Institutt
+
+Institutt for lingvistiske, litterC&re og estetiske studium
+
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust 2021 VC%r 2020 Haust 2020 VC%r 2019 Haust 2019 VC%r 2018 Haust 2018 VC%r
+Kontaktinformasjon
+studierettleiar@lle.uib.no
+Institutt for lingvistiske, litterC&re og estetiske studier

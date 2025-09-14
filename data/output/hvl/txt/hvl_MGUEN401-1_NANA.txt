@@ -1,0 +1,10 @@
+institution: hvl
+code: MGUEN401-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGUEN401
+status: 200
+course_name_no: MGUEN401 Engelsk 2, emne 2 - Kommunikasjon i sprC%k, litteratur og kultur
+----- FULLTEXT -----
+
+NA

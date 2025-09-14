@@ -1,0 +1,84 @@
+institution: nord
+code: NOR5001-1
+year: NA
+hv: NA
+url: https://www.nord.no/studier/emner/nor5001
+status: 200
+course_name_no: Norsk 3A, 1-7
+----- FULLTEXT -----
+
+
+
+Emnet bygger pC% de norskfaglige emnene i mastersyklusens fC8rste del og tar sikte pC% C% videreutvikle studentenes norskfaglige og fagdidaktiske kompetanse, slik at de sammen med den etterfC8lgende fagmodulen skal ha det faglige og fagdidaktiske grunnlaget for arbeidet med masteroppgaven. Emnet har et sC&rlig fokus pC% grunnskolens tidlige trinn (1-7). Delemnene vil kunne bli vektet noe forskjellig avhengig av spesialkompetansen hos lC&rere som er involvert i det enkelte semester.
+
+Norsk 1 og Norsk 2
+
+Norsk 1 og Norsk 2
+
+Kunnskaper:
+
+Studenten
+
+har inngC%ende kunnskap i litteraturteori, litteraturdidaktikk, og litterC&r leseteori og norsk litteraturhistorie, ogsC% barnelitteraturhistorie
+har inngC%ende kunnskap om litteratur for barn med vekt pC% litterC&r kvalitet, sammensatte tekster og lesestimulering
+har inngC%ende kunnskap om grammatikk og grammatikkteori
+har inngC%ende kunnskap om arbeid med skriveopplC&ring pC% begynner- og mellomtrinnet, rettskriving, samt tidlig skriveopplC&ring pC% bokmC%l, nynorsk eller samisk
+har inngC%ende kunnskap om leseteori og lesedidaktikk for begynner- og mellomtrinnet
+har inngC%ende kunnskap om kommunikasjon og samtale
+
+Ferdigheter:
+
+Studenten
+
+kan bruke kunnskaper om litteraturteori, litteraturdidaktikk, litterC&r lesedidaktikk og barnelitteratur til C% planlegge og gjennomfC8re en tilpasset bruk av litteratur pC% begynner- og mellomtrinnet
+kan gjennomfC8re en faglig begrunnet og tilpasset undervisning i sammensatte tekster
+kan bruke grammatiske, skrive- og leseteoretiske og -didaktiske kunnskaper til C% legge til rette for opplC&ringen i skriving og lesing
+kan legge til rette for videreutvikling av muntlige aktiviteter
+
+Generell kompetanse:
+
+Studenten
+
+kan legge til rette for kunnskapsbasert utvikling av elevers skriftlige og muntlige kompetanse
+kan legge til rette for C% utvikle elevers bevissthet om den rollen som sprC%k og tekst spiller i et samfunn preget av multimodale medier
+kan vurdere egen praksis med gjeldende lC&replaner, faglig og fagdidaktisk innsikt som grunnlag
+
+Kunnskaper:
+
+Studenten
+
+Ferdigheter:
+
+Studenten
+
+Generell kompetanse:
+
+Studenten
+
+Utover semesteravgift og pensumlitteratur forutsettes det at studenten disponerer en bC&rbar datamaskin.
+
+Valgbart
+
+Undervisninga vil vC&re variert og blir gitt i form av forelesninger for hele studentgruppa, gruppeundervisning og rettledning til den enkelte studenten. BC%de fra et norskfaglig perspektiv og et yrkesperspektiv er det viktig at studentene legger stor vekt pC% selvstendig arbeid, bC%de individuelt og i grupper. En del av undervisninga vil foregC% som seminar der gruppa diskuterer forberedte studentframlegg.
+
+Studieprogrammet evalueres C%rlig av studentene gjennom emneundersC8kelser (midtveisevaluering og sluttevaluering). Evaluering inngC%r som en del av universitetets kvalitetssikringssystem.
+
+Se Kompetanseguiden for studieprogrammet.
+
+Sammensatt vurdering - alle delene mC% vC&re godkjent/bestC%tt for C% fC% karakter i emnet.
+
+OD: Obligatorisk deltakelse, min. 80% oppmC8te. Godkjent/ikke godkjent.
+
+AK: Studenten skal ha godkjent to arbeidskrav. Ett av arbeidskravene skal skrives pC% bokmC%l, ett pC% nynorsk. Godkjent/ikke godkjent.
+
+HJ: Hjemmeeksamen, tre dager. Valgfri mC%lform. 100% av karakteren. Karakterskala A-F.
+
+Sammensatt vurdering - alle delene mC% vC&re godkjent/bestC%tt for C% fC% karakter i emnet.
+
+OD: Obligatorisk deltakelse, min. 80% oppmC8te. Godkjent/ikke godkjent.
+
+AK: Studenten skal ha godkjent to arbeidskrav. Ett av arbeidskravene skal skrives pC% bokmC%l, ett pC% nynorsk. Godkjent/ikke godkjent.
+
+HJ: Hjemmeeksamen, tre dager. Valgfri mC%lform. 100% av karakteren. Karakterskala A-F.
+
+C generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er C% regne som fusk.

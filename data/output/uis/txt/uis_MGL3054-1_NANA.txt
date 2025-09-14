@@ -1,0 +1,133 @@
+institution: uis
+code: MGL3054-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MGL3054
+status: 200
+course_name_no: Fellesskap: Samfunnsfaglige perspektiv (MGL3054)
+----- FULLTEXT -----
+
+Emnekode
+
+MGL3054
+
+Versjon
+
+1
+
+Vekting (stp)
+
+15
+
+Semester undervisningsstart
+
+VC%r
+
+Antall semestre
+
+1
+
+Vurderingssemester
+
+VC%r
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitenskap og humaniora,
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Fakultet for utdanningsvitenskap og humaniora,
+
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhold
+
+ForstC%else for hvordan mennesker utvikler fellesskap og tilhC8righet er et av kjerneelementene i samfunnsfaget i skolen. Emnet Fellesskap vil gi innsikt i samfunnsfaglige tilnC&rminger til identitet, makt og samfunn. Sentralt i emnet stC%r faglige og fagdidaktiske problemstillinger knyttet til kunnskap om hvorfor og hvordan mennesker sC8ker sammen i samfunn. Faget utforsker samfunnsfaglige perspektiver pC% felleskap og identitetskonstruksjon i dybden. Det blir vektlagt hvordan samfunn og andre felleskap er pC%virket av historiske og samtidige forhold. Skolens rolle i utvikling av tilhC8righet blir spesielt belyst. Undervisning og pensum er spesielt rettet mot fremtidige lC&rere i barne- og ungdomsskolen. Emnet vil tematisere kulturforskjeller og identitetsbaserte motsetninger i elevers hverdag og i et internasjonalt miljC8.
+
+LC&ringsutbytte
+
+En kandidat som har fullfC8rt og bestC%tt emnet skal ha fC8lgende lC&ringsutbytte definert i form av:
+
+Kunnskap
+
+Kandidaten har:
+
+inngC%ende kunnskap om hvordan identitet og fellesskap blir pC%virket av historiske og nC%tidige forhold
+inngC%ende kunnskap om fagperspektiver pC% makt og dens mange uttrykksformer
+inngC%ende kunnskap om fagperspektiver pC% samfunnsformasjon og sosialt liv
+inngC%ende kunnskap om skoleinstitusjonens rolle i utviklingen av tilhC8righet og identitet
+
+Ferdigheter
+
+Kandidaten skal:
+
+kunne drC8fte historiske og samtidige hendelser eller samfunnsfenomen fra ulike perspektiv
+kunne drC8fte hvordan makt og maktrelasjoner har pC%virket og pC%virker identitet og samfunnsforhold
+kunne drC8fte problemstillinger knyttet til kulturforskjeller og sosial ulikhet i skolen
+
+Generell kompetanse
+
+Kandidaten kan:
+
+selvstendig og kritisk tilegne seg fag- og fagdidaktisk litteratur
+formidle og drC8fte fagperspektiv skriftlig og muntlig
+reflektere over lC&rerrollen og egen lC&rerpraksis i lys av fagperspektiv pC% makt og samfunn
+
+Forkunnskapskrav
+
+Et av fC8lgende alternativer:
+MGL2050 Samfunnsfag 1 (5.-10. trinn), MGL2051 Samfunnsfag 2 (5.-10. trinn)
+MGL1051 Samfunnsfag B, MGL2050 Samfunnsfag 1 (5.-10. trinn)
+
+60SP samfunnsvitenskapelige eller humanistiske fag
+
+Eksamen / vurdering
+
+VilkC%r for C% gC% opp til eksamen/vurdering
+
+1 skriftlig arbeidskrav
+
+Et skriftlig arbeidskrav med omfang pC% 500 ord (+/- 10).
+
+Alle obligatoriske krav mC% vC&re godkjent for C% fC% gC% opp til vurdering i emnet. Studenter som fC%r et eller flere av arbeidskravene vurdert til ikke-godkjent ved fC8rste innlevering, gis mulighet for C)n ny innlevering av oppgaven(e) i bearbeidet form.
+
+Fagperson(er)
+
+Emneansvarlig:
+Tord Austdal
+
+Studieprogramleder:
+Ingeborg KnC&velsrud
+
+Studiekoordinator:
+Kjersti Gjedrem
+
+Arbeidsformer
+
+Undervisningen bestC%r av forelesninger, diskusjoner og tekstarbeid
+
+Cpent for
+
+Fagdidaktikk for grunnskolen - erfaringsbasert masterprogram
+
+GrunnskolelC&rerutdanning for trinn 1 - 7, femC%rig masterprogram
+
+GrunnskolelC&rerutdanning for trinn 5 - 10, femC%rig masterprogram
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+SC8k etter pensumlitteratur i Leganto

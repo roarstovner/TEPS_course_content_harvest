@@ -1,0 +1,10 @@
+institution: hvl
+code: MGUNA401-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGUNA401
+status: 200
+course_name_no: MGUNA401 Naturfag 2, emne 2 - Fordypning i biologi for grunnskolen
+----- FULLTEXT -----
+
+NA

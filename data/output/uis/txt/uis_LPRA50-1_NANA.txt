@@ -1,0 +1,110 @@
+institution: uis
+code: LPRA50-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/LPRA50
+status: 200
+course_name_no: Praksis 7 uker del 2 (LPRA50)
+----- FULLTEXT -----
+
+Emnekode
+
+LPRA50
+
+Versjon
+
+1
+
+Vekting (stp)
+
+0
+
+Semester undervisningsstart
+
+VC%r, HC8st
+
+Antall semestre
+
+1
+
+Vurderingssemester
+
+VC%r, HC8st
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitenskap og humaniora,
+Institutt for kultur- og sprC%kvitenskap
+
+Fakultet for utdanningsvitenskap og humaniora,
+
+Institutt for kultur- og sprC%kvitenskap
+
+LC&ringsutbytte
+
+Kunnskap
+
+Etter praksisperioden skal studentene
+
+ha inngC%ende kunnskap om mC%loppnC%else i lC&ringsarbeid, arbeidsmC%ter, lC&remidler og vurderingsformer pC% ungdomstrinnet i grunnskolen og den videregC%ende skole
+ha inngC%ende kunnskap om samspillet mellom elever og mellom elev og lC&rer, om skoleledelse, klasseledelse, teamarbeid og skole-hjem-samarbeid
+ha inngC%ende kunnskap om forsknings- og utviklingsarbeidet i praksisskolen
+
+Ferdighet
+
+Etter praksisperioden skal studentene
+
+alene og sammen med andre kunne planlegge, tilpasse, variere og begrunne ulike undervisningsmetoder, gjennomfC8re, vurdere og analysere opplC&ring
+kunne utvikle mC%l for opplC&ringen, vurdere elevenes mC%loppnC%else og kunne vC&re tydelig leder og lede lC&ringsarbeid tilpasset ulike elever
+kunne kommunisere og samarbeide med alle parter i opplC&ringssystemet
+kunne bruke digitale verktC8y i undervisningen
+
+Generell kompetanse
+
+Etter praksisperioden skal studentene
+
+kunne analysere, vurdere og reflektere over fag, undervisning og elevenes lC&ring i lys av aktuelle lC&replaner
+kunne uttrykke bevissthet om forventningene om C% delta i forsknings- og utviklingsarbeid
+kritisk kunne analysere og vurdere egen og andres praksis med referanse til teori og forskning
+kunne bygge gode relasjoner og kommunisere godt med elever og kolleger
+ha innsikt i i ungdomskultur og sosialisering
+kunne identifisere, hC%ndtere og forebygge brudd pC% normer og regler
+kjenne til hva som fremmer og hemmer mC%loppnC%else
+
+Forkunnskapskrav
+
+MC% ha bestC%tt tidligere praksis.
+
+Eksamen / vurdering
+
+Fagperson(er)
+
+Studiekoordinator:
+Anne Marie Nygaard
+
+Praksiskoordinator:
+Kristin Henanger Haugen
+
+Praksiskoordinator:
+Lene BC%kind Sollie
+
+Emneansvarlig:
+Brita Strand Rangnes
+
+Praksis
+
+Kun C)n av de to 7-ukers praksisperiodene kan gjennomfC8res pC% en eventuell egen arbeidsplass.
+
+Det er mulighet for at deler av eller hele denne praksisperioden kan gjennomfC8res i regi av en av vC%re partnerinstitusjoner i utlandet.
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+SC8k etter pensumlitteratur i Leganto

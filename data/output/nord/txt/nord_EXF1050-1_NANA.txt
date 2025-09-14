@@ -1,0 +1,49 @@
+institution: nord
+code: EXF1050-1
+year: NA
+hv: NA
+url: https://www.nord.no/studier/emner/exf1050
+status: 200
+course_name_no: Examen facultatum
+----- FULLTEXT -----
+
+Emnet gir en innfC8ring i sentrale begreper, perspektiver og forstC%elsesmodeller innenfor samfunnsvitenskapene. Det gis introduksjon til vitenskapelig argumentasjon og vitenskapelige forklaringer, samt metode og forskningsetikk.
+
+Emnet gir en innfC8ring i sentrale begreper, perspektiver og forstC%elsesmodeller innenfor samfunnsvitenskapene. Det gis introduksjon til vitenskapelig argumentasjon og vitenskapelige forklaringer, samt metode og forskningsetikk.
+
+MC% vC&re tatt opp pC% studieprogrammet Lektorutdanning i samfunnsfag.
+
+Ved fullfC8rt emne skal studenten ha oppnC%dd fC8lgende lC&ringsutbytte:
+
+KUNNSKAPER
+
+ha bred kunnskap om sentrale tema, teorier og metoder
+ha kunnskap om fagtradisjonen og egenarten til samfunnsvitenskapene og deres plass i samfunnet
+
+FERDIGHETER
+
+kunne finne, vurdere og vise til fagstoff og fremstille det slik at det kaster lys over ei problemstilling kunne strukturere fagstoff, og presentere det i et skriftlig arbeid eller i muntlig form
+kunne arbeide bC%de selvstendig og i gruppe
+
+GENERELL KOMPETANSE
+
+kunne formidle sentralt fagstoff som teorier, problemstillinger og lC8sninger bC%de skriftlig, muntlig og gjennom andre relevante uttrykksformer
+kunne bidra til egen og andres faglige utvikling pC% en selvstendig og reflektert mC%te
+
+Ved fullfC8rt emne skal studenten ha oppnC%dd fC8lgende lC&ringsutbytte:
+
+KUNNSKAPER
+
+FERDIGHETER
+
+GENERELL KOMPETANSE
+
+Utover semesteravgift og pensumlitteratur forutsettes det at studenten disponerer en bC&rbar datamaskin.
+
+Obligatorisk
+
+Forelesninger
+
+Studieprogrammet evalueres C%rlig av studentene gjennom emneevalueringer og studieprogramevaluering. Evalueringene inngC%r som en del av universitetets kvalitetssikringssystem.
+
+Skriftlig skoleeksamen, 5 timer, karakterregel Bokstavkarakterer

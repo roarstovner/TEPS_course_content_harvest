@@ -1,0 +1,10 @@
+institution: ntnu
+code: MGLU5227-A
+year: NA
+hv: NA
+url: https://www.ntnu.no/studier/emner/MGLU5227#tab=omEmnet
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+NA

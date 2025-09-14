@@ -1,0 +1,104 @@
+institution: uis
+code: LKJBAC-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/LKJBAC
+status: 200
+course_name_no: Bacheloroppgave i kjemi - lektor (LKJBAC)
+----- FULLTEXT -----
+
+Emnekode
+
+LKJBAC
+
+Versjon
+
+1
+
+Vekting (stp)
+
+10
+
+Semester undervisningsstart
+
+HC8st
+
+Antall semestre
+
+2
+
+Vurderingssemester
+
+VC%r
+
+UndervisningssprC%k
+
+Engelsk, Norsk
+
+Tilbys av
+
+Det teknisk-naturvitenskapelige fakultet,
+Institutt for matematikk og fysikk
+
+Det teknisk-naturvitenskapelige fakultet,
+
+Institutt for matematikk og fysikk
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhold
+
+Studenten skal gjennom arbeidet med bacheloroppgaven fC% erfaring med et forskningsprosjekt der metoder fra kjemi og/ eller kjemifundamentert fagdidaktikk anvendes. Studenten arbeider med litteraturarbeid, praktisk arbeid, rapportskriving eller undervisningsrelaterte problemstillinger. Det konkrete innhold vil variere avhengig av den enkelte oppgave.
+
+LC&ringsutbytte
+
+Kunnskap
+
+Har oversikt over gjeldende internasjonal litteratur, vitenskapelig rapportering og etiske standarder for det aktuelle tema og kan forholde seg kritisk til ulike informasjonskilder.
+Demonstrere fordypet innsikt i og forstC%else av et bestemt tema.
+
+Ferdigheter
+
+Bruke relevante kjemi og/eller kjemibaserte fagdidaktiske metoder til C% formulere og analysere en aktuell faglig eller fagdidaktisk problemstilling i et omfang relevant for oppgaven.
+UtfC8re litteratursC8k og forfatte en vitenskapelig rapport.
+Presentere og formidle et selvstendig arbeid med bruk av fagomrC%dets terminologi og uttrykksformer.
+Kan anvende og analysere relevante metodeverktC8y og arbeidsmC%ter.
+Kan utrede problemstillingen og analysere resultat og egen konklusjon i forhold til problemstilling.
+
+Generell kompetanse
+
+ForstC% og fC8lge de etiske standarder for vitenskapelig arbeid.
+Kan formidle omfattende selvstendig arbeid.
+Kan analysere relevante teoretiske modeller eller studier stC8ttet av forskningsresultat.
+Har evne til refleksjon og kritisk vurdering av eget arbeid.
+Kan forsvare hC8y etisk atferd i faglige sammenhenger.
+
+Forkunnskapskrav
+
+Studenten mC% ha fullfC8rt minst 40 stp kjemi ihht gjeldende utdanningsplan.
+
+Eksamen / vurdering
+
+Fagperson(er)
+
+FaglC&rer:
+Malcolm Andrew Kelland
+
+Emneansvarlig:
+KC%re Bredeli JC8rgensen
+
+Arbeidsformer
+
+Selvstendig arbeid med litteratur. Individuell veiledning i det praktiske arbeidet og rapportskriving.
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+SC8k etter pensumlitteratur i Leganto

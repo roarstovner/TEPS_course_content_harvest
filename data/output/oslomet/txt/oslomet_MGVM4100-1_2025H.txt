@@ -1,0 +1,195 @@
+institution: oslomet
+code: MGVM4100-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/MGVM4100/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+MGVM4100 Vitenskapsteori og metode Emneplan
+Engelsk emnenavn
+Philosophy of Science and Research Methods
+Studieprogram
+Masterstudium i digitalt lC&ringsdesign
+GrunnskolelC&rerutdanning for trinn 1-7
+GrunnskolelC&rerutdanning for trinn 5-10
+Masterstudium i skolerettet utdanningsvitenskap med fordypning i skolefag, pedagogikk eller utdanningsledelse
+Masterstudium i skolerettet utdanningsvitenskap med fordypning i skolefag, pedagogikk eller utdanningsledelse
+Omfang
+15.0 stp.
+StudieC%r
+2025/2026
+Pensum
+VCR 2026
+HCST 2025
+
+Timeplan
+VCR 2026
+HCST 2025
+Programplan
+Masterstudium i digitalt lC&ringsdesign (2025 HCST )
+GrunnskolelC&rerutdanning for trinn 1-7 (2025 HCST )
+GrunnskolelC&rerutdanning for trinn 5-10 (2025 HCST )
+Masterstudium i skolerettet utdanningsvitenskap med fordypning i skolefag, pedagogikk eller utdanningsledelse (2025 HCST )
+Masterstudium i skolerettet utdanningsvitenskap med fordypning i skolefag, pedagogikk eller utdanningsledelse (2025 HCST )
+Emnehistorikk
+2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Fagplan
+
+Gjelder MGLU:
+
+Vitenskapsteori og metode
+
+(15 studiepoeng)
+
+Fagplanen ble godkjent i studieutvalget 14. november 2016
+
+Gjeldende fra hC8stsemesteret 2017
+
+Innledning
+
+Fagplanen bygger pC% forskrift om rammeplan for grunnskolelC&rerutdanningen for trinn 1-7/trinn 5-10, fastsatt av Kunnskapsdepartementet 7. juni 2016, nasjonale retningslinjer for grunnskolelC&rerutdanningen for trinn 1-7/trinn 5-10 av 1. september 2016 og programplan for grunnskolelC&rerutdanning for trinn 1-7/trinn 5-10 ved HC8gskolen i Oslo og Akershus, godkjent av studieutvalget 16. november 2016.
+
+Emnet skal danne grunnlag for arbeid med masteroppgaven og for at studentene skal kunne oppdatere seg pC% ny forskning og forholde seg kritisk til den gjennom et langt yrkesliv. Emnet har to hovedomrC%der, vitenskapsteori og forskningsmetode.
+
+I omrC%det vitenskapsteori vil det i tillegg til generell vitenskapsteori fokuseres sC&rlig pC% ulike teoretiske retninger med sC&rlig relevans for skole- og utdanningsforskning. I omrC%det forskningsmetode skal studentene fC% oversikt og forstC%else av en bredde av forskningsmetoder, sett i sammenheng med vitenskapsteorien, slik at de bC%de kan gjC8re bevisste metodevalg i tilknytning til masteroppgaven og senere forholde seg til forskning som har ulike metodiske tilnC&rminger.
+
+MC%lgruppe
+
+Studenter som er tatt opp til femC%rig grunnskolelC&rerutdanning for trinn 1-7 eller trinn 5-10.
+
+Opptakskrav
+
+Faget er tilgjengelig som valgfag for aktive studenter ved grunnskolelC&rerutdanningen, i trC%d med utdanningenes programplaner.
+
+LC&ringsutbytte
+
+LC&ringsutbyttet er nC&rmere beskrevet i emneplanen.
+
+Fagets innhold og oppbygging
+
+Faget bestC%r av ett emne pC% 15 studiepoeng.
+
+Skikkethetsvurdering
+
+LC&rerutdanningsinstitusjoner har ansvar for C% vurdere om studenter er skikket for lC&reryrket. LC8pende skikkethetsvurdering foregC%r gjennom hele studiet og inngC%r i en helhetsvurdering av studentens faglige og personlige forutsetninger for C% kunne fungere som lC&rer. En student som utgjC8r en mulig fare for elevers liv, fysiske og psykiske helse, rettigheter og sikkerhet, er ikke skikket for yrket. Studenter som viser liten evne til C% mestre lC&reryrket, skal sC% tidlig som mulig i utdanningen fC% melding om dette. De skal fC% rC%d og veiledning for C% gjC8re dem i stand til C% oppfylle kravene om lC&rerskikkethet eller fC% rC%d om C% avslutte utdanningen. Beslutninger om skikkethet kan fattes gjennom hele studiet.
+
+Se hC8gskolens nettsted for mer informasjon om skikkethetsvurdering.
+
+Arbeidskrav
+
+Arbeidskrav skal vC&re levert/utfC8rt innen fastsatt(e) frist(er). Gyldig fravC&r dokumentert med for eksempel sykemelding, gir ikke fritak for C% innfri arbeidskrav. Studenter som pC% grunn av sykdom eller annen dokumentert gyldig C%rsak ikke leverer/utfC8rer arbeidskrav innen fristen, kan fC% forlenget frist. Ny frist for C% innfri arbeidskrav avtales i hvert enkelt tilfelle med den aktuelle lC&reren.
+
+Arbeidskrav vurderes til "Godkjent" eller "Ikke godkjent". Studenter som leverer/utfC8rer arbeidskrav innen fristen, men som fC%r vurderingen "Ikke godkjent", har anledning til to nye innleveringer/utfC8relser. Studenten mC% da selv avtale ny innlevering av det aktuelle arbeidskravet med faglC&rer. Studenter som ikke leverer/utfC8rer arbeidskrav innen fristen og som ikke har dokumentert gyldig C%rsak, fC%r ingen nye forsC8k.
+
+I programplanen er de fagovergripende temaene pC% de ulike studieC%rene og semestrene beskrevet. I tilknytning til disse kan det vC&re krav til tilstedevC&relse og/eller andre arbeidskrav.
+
+NC&rmere informasjon om arbeidskrav finnes i emneplanen.
+
+Vurderings-/eksamensformer
+
+Se emneplanen under punktet Vurderings-/elsamensformer.
+
+Vurderingskriterier
+
+A: Fremragende. Har sC&rdeles gode kunnskaper innenfor emnet. Viser svC&rt god evne til faglig refleksjon samt svC&rt god evne til C% se sammenheng mellom teoretiske tema og praktisk anvendelse i forskning. Viser fremragende evne til selvstendig bruk av kunnskap.
+
+B: Meget god. Har meget gode kunnskaper innenfor emnet. Viser meget god evne til faglig refleksjon samt svC&rt god evne til C% se sammenheng mellom teoretiske tema og praktisk anvendelse i forskning. Viser meget god evne til selvstendig bruk av kunnskap.
+
+C: God. Har gode kunnskaper innenfor emnet. Viser god evne til faglig refleksjon samt god evne til C% se sammenheng mellom teoretiske tema og praktisk anvendelse i forskning. Viser god evne til selvstendig bruk av kunnskap.
+
+D: NoksC% god. Har noksC% gode kunnskaper innenfor emnet. Viser noksC% god evne til faglig refleksjon samt god evne til C% se sammenheng mellom teoretiske tema og praktisk anvendelse i forskning. Viser noksC% god evne til selvstendig bruk av kunnskap.
+
+E: Tilstrekkelig. Tilfredsstiller minimumskravene til kunnskap innenfor emnet. Viser tilstrekkelig evne til faglig refleksjon og til C% se sammenheng mellom teoretiske tema og praktisk anvendelse i forskning.
+
+F: Ikke bestC%tt. Kandidaten tilfredsstiller ikke minimumskravene til kunnskap innenfor emnet.
+
+Rettigheter og plikter ved eksamen
+
+Studentens rettigheter og plikter framgC%r av forskrift om studier og eksamen ved OsloMet - storbyuniversitetet. Forskriften beskriver blant annet vilkC%r for ny/utsatt eksamen, klageadgang og hva som regnes som fusk ved eksamen. Studenten er selv ansvarlig for C% melde seg opp til eventuell ny/utsatt eksamen.
+
+Innledning
+
+Vitenskapsteori er et verktC8y for studentene i utviklingen av masteroppgaven. Emnet gir et overblikk over viktige vitenskapelige tradisjoner og posisjoner og over ulike teoretiske tilnC&rminger. Forskningsmetoder mC% ses i sammenheng med bC%de vitenskapsteori, studentens arbeid med masteroppgaven og framtidige lC&rerarbeid.
+
+Emnet undervises pC% engelsk hvis engelsksprC%klige studenter tar emnet.
+
+Anbefalte forkunnskaper
+
+Ingen.
+
+Forkunnskapskrav
+
+Ingen.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskaper
+
+Studenten
+
+har avansert kunnskap om vitenskapelige tenkemC%ter
+har inngC%ende kunnskap om sentrale forskningsmetoder for innsamling, bearbeiding og analyse av forskningsdata
+har inngC%ende kunnskaper om forskningsetikk
+
+Ferdigheter
+
+Studenten
+
+kan anvende kunnskap om vitenskapsteori og metode til C% analysere og forholde seg kritisk til nasjonal og internasjonal forskning
+kan anvende relevante forskningsmetoder i forsknings- og utviklingsarbeid pC% en selvstendig mC%te
+
+Generell kompetanse
+
+Studenten
+
+har et teoretisk og metodisk grunnlag for C% planlegge og evaluere forsknings- og utviklingsarbeid som fremmer faglig og pedagogisk nytenkning i skolen
+kan anvende akademiske standarder i forskningsarbeid knyttet til prinsipper som troverdighet, etterrettelighet og nC8yaktighet
+kan vise etisk dC8mmekraft i relasjon til egen rolle som forsker
+Innhold
+
+Selv om temaene vitenskapsteori og forskningsmetode presenteres separat nedenfor, mC% de ses i sammenheng slik at studentene kan forstC% forholdet mellom kunnskapsformer og tilnC&rminger.
+
+Vitenskapsteori omfatter blant annet:
+
+innfC8ring i ulike vitenskapsteoretiske retninger og deres posisjon innenfor utdanningsforskning
+grunnlagsproblematikk knyttet til undervisning, fagutvikling og lC&ring sett i lys av ulike vitenskapsteoretiske tilnC&rminger
+forskningsetikk
+
+Forskningsmetode omfatter blant annet:
+
+fellesfaglige forskningsmetodiske begreper, herunder allmenn pC%litelighets- og gyldighetsproblematikk
+ulike forskningsmetoder med sC&rlig relevans for utdanningsmessige kontekster
+kunnskap om forskningsdesign og anvendelse av forskningsmetodikk i mastergradsarbeid
+Arbeids- og undervisningsformer
+
+Arbeidsformene veksler mellom forelesning, seminar og arbeidsoppgaver. Sentrale begreper diskuteres i forelesninger og seminarer. I tillegg mC% studentene studere pensumlitteraturen nC8ye for C% bli fortrolig med de relevante teoriene og metodene.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+Ingen arbeidskrav.
+
+Vurdering og eksamen
+
+Eksamen bestC%r av individuell skriftlig eksamen under tilsyn pC% seks timer.
+
+Ny/utsatt eksamen
+
+Ny/utsatt eksamen arrangeres som ved ordinC&r eksamen.
+
+Hjelpemidler ved eksamen
+
+Ingen hjelpemidler tillatt.
+
+Vurderingsuttrykk
+
+Det benyttes gradert karakterskala fra A til E for bestC%tt og F for ikke bestC%tt eksamen.
+
+Sensorordning
+
+Eksamen bedC8mmes av to interne sensorer. Emnet er underlagt tilsynssensur, i henhold til retningslinjer for oppnevning og bruk av sensorer.

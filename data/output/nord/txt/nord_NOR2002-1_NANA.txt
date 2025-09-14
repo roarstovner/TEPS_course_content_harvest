@@ -1,0 +1,86 @@
+institution: nord
+code: NOR2002-1
+year: NA
+hv: NA
+url: https://www.nord.no/studier/emner/nor2002
+status: 200
+course_name_no: Norsk 2B, 1-7
+----- FULLTEXT -----
+
+
+
+Norsk 2 bygger pC% Norsk 1, og gir mer omfattende og dyptgC%ende kunnskap om sentrale emner innenfor norskfaget. Studentene fC%r ogsC% videreutvikle sine egne sprC%kferdigheter, egen tekstkompetanse og formidlingsevne.
+
+Norsk 1A og 1B
+
+Norsk 1A og 1B
+
+Kunnskap
+
+Studenten
+
+har kunnskap om litteraturhistorie, ogsC% barnelitteraturhistorie, og bred kunnskap om skjC8nnlitteratur fra ulike tider, for barn, unge og voksne
+har bred kunnskap om litteraturdidaktiske tilnC&rminger og kunnskap om ulike litteraturteoretiske perspektiv
+har kunnskap om samisk litteratur og kultur
+har omfattende kunnskap om muntlig kommunikasjon, begynneropplC&ring og den videre opplC&ringen i lesing og skriving
+
+Ferdigheter
+
+Studenten
+
+kan bruke tekst- og litteraturkunnskap i analyse av et mangfold av tekster
+kan legge til rette for variert arbeid med skjC8nnlitterC&re og sakpregede tekster i tradisjonelle og moderne medium
+kan legge til rette for at elever pC% trinn 1-7 lC&rer C% lese, skrive og diskutere saktekster og skjC8nnlitterC&re tekster i ulike sjangere og medium
+kan skrive akademiske tekster pC% nynorsk og bokmC%l
+
+Generell kompetanse
+
+Studenten
+
+har innsikt i norskfagets historie og egenart som sprC%k-, litteratur-, kultur- og danningsfag
+kjenner til norskdidaktisk forskning og utviklingsarbeid og kan drC8fte forskningsetiske problemstillinger
+kan planlegge, gjennomfC8re og vurdere faglig og tverrfaglig utviklingsarbeid pC% trinn 1-7 i samarbeid med andre
+
+Kunnskap
+
+Studenten
+
+Ferdigheter
+
+Studenten
+
+Generell kompetanse
+
+Studenten
+
+Utover semesteravgift og pensumlitteratur forutsettes det at studenten disponerer en bC&rbar datamaskin
+
+Valgbart
+
+Det vektlegges bruk av varierte og relevante undervisningsmetoder og lC&ringsaktiviteter, som for eksempel individuelt og gruppebasert arbeid, bC%de skriftlig og muntlig, utprC8ving av ulike metoder, herunder ogsC% bruk av praktisk- estetiske tilnC&rmingsmC%ter. Praksiserfaringene danner sammen med faglig kunnskap og fagdidaktiske vurderinger den helhetlige kompetansen i faget i utdanningen.
+
+Studieprogrammet evalueres C%rlig av studentene gjennom emneundersC8kelser (midtveisevaluering og sluttevaluering). Evaluering inngC%r som en del av universitetets kvalitetssikringssystem.
+
+Se Kompetanseguiden for studieprogrammet.
+
+Sammensatt vurdering - alle delene mC% vC&re godkjent/bestC%tt for C% fC% karakter i emnet.
+
+HJ: Individuell hjemmeeksamen over 5 dager. Teller 100/100 av karakteren, karakterregel A-E, Beste A, Ikke bestC%tt F.
+
+MC%lform: Nynorsk
+
+OD: Obligatorisk deltakelse pC% undervisning vurderes til godkjent/ikke godkjent. Det er krav om minimum 80% deltakelse. Teller 0/100 av karakteren.
+
+AK: Studenten skal bestC% inntil tre faglige arbeidskrav for C% fC% gC% opp til eksamen, f.eks. skriving av fagtekst, skriving i andre sjangrer eller muntlig presentasjon. Godkjent/ikke godkjent.
+
+Sammensatt vurdering - alle delene mC% vC&re godkjent/bestC%tt for C% fC% karakter i emnet.
+
+HJ: Individuell hjemmeeksamen over 5 dager. Teller 100/100 av karakteren, karakterregel A-E, Beste A, Ikke bestC%tt F.
+
+MC%lform: Nynorsk
+
+OD: Obligatorisk deltakelse pC% undervisning vurderes til godkjent/ikke godkjent. Det er krav om minimum 80% deltakelse. Teller 0/100 av karakteren.
+
+AK: Studenten skal bestC% inntil tre faglige arbeidskrav for C% fC% gC% opp til eksamen, f.eks. skriving av fagtekst, skriving i andre sjangrer eller muntlig presentasjon. Godkjent/ikke godkjent.
+
+C generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er C% regne som fusk.

@@ -1,0 +1,106 @@
+institution: uis
+code: LPRA30-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/LPRA30
+status: 200
+course_name_no: FC8lgepraksis del 2 (LPRA30)
+----- FULLTEXT -----
+
+Emnekode
+
+LPRA30
+
+Versjon
+
+1
+
+Vekting (stp)
+
+0
+
+Semester undervisningsstart
+
+VC%r, HC8st
+
+Antall semestre
+
+1
+
+Vurderingssemester
+
+VC%r, HC8st
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitenskap og humaniora,
+Institutt for kultur- og sprC%kvitenskap
+
+Fakultet for utdanningsvitenskap og humaniora,
+
+Institutt for kultur- og sprC%kvitenskap
+
+LC&ringsutbytte
+
+Kunnskap
+
+Etter praksisperioden i vC%rsemesteret skal studentene
+
+ha kjennskap til klasseledelse og elevers lC&ringsmiljC8
+ha kunnskap om arbeid med lC&replanen(e) i fag(ene) og ha innsikt i arbeidet med planverket
+ha innsikt i vurdering av elevbesvarelser
+
+Ferdighet
+
+Etter praksisperioden i vC%rsemesteret skal studentene
+
+kunne planlegge, gjennomfC8re og vurdere undervisning
+kunne samhandle med elever og kolleger
+ha kunnskap om motivasjon og lC&ring
+
+Generell kompetanse
+
+Etter praksisperioden i vC%rsemesteret skal studentene
+
+kunne reflektere over fag, undervisning og elevenes lC&ring i lys av aktuelle lC&replaner
+kritisk kunne vurdere egen og andres undervisning
+kunne bygge gode relasjoner og kommunisere godt med elever og kolleger
+ha innsikt i egen utvikling som lC&rer og kan vurdere egen lC&rerkompetanse og eget lC&ringsbehov
+
+Forkunnskapskrav
+
+LPRA20 FC8lgepraksis del 1
+
+Eksamen / vurdering
+
+VilkC%r for C% gC% opp til eksamen/vurdering
+
+Det er krav om 100 prosent tilstedevC&relse i praksis for C% fC% bestC%tt.
+
+Praksisperioden inkluderer gjennomfC8ring og etterarbeid pC% campus. Alle de obligatoriske komponentene i emnet mC% vC&re godkjent.
+
+Fagperson(er)
+
+Praksiskoordinator:
+Lene BC%kind Sollie
+
+Praksiskoordinator:
+Kristin Henanger Haugen
+
+Studiekoordinator:
+Anne Marie Nygaard
+
+Emneansvarlig:
+Brita Strand Rangnes
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+SC8k etter pensumlitteratur i Leganto

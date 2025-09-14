@@ -1,0 +1,10 @@
+institution: inn
+code: MUS1001-1
+year: 2025
+hv: H
+url: https://studiekatalog.edutorium.no/inn/nb/emne/MUS1001-1/2025-host
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+NA

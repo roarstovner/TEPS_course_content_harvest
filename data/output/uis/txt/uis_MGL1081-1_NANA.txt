@@ -1,0 +1,169 @@
+institution: uis
+code: MGL1081-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MGL1081
+status: 200
+course_name_no: Naturfag B (MGL1081)
+----- FULLTEXT -----
+
+Emnekode
+
+MGL1081
+
+Versjon
+
+1
+
+Vekting (stp)
+
+30
+
+Semester undervisningsstart
+
+HC8st
+
+Antall semestre
+
+1
+
+Vurderingssemester
+
+HC8st
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitenskap og humaniora,
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Fakultet for utdanningsvitenskap og humaniora,
+
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhold
+
+I kurset legges det sC&rlig stor vekt pC% miljC8 og bC&rekraftig utvikling gjennom arbeid med C8kologi, klima, energi og miljC8. Fokus settes pC% C% utvikle kompetanse i C% undervise elever slik at de videreutvikler og opprettholder oppdagerglede, undring, naturglede og handlingskompetanse. Utdanningen skal ogsC% utvikle studentens egen kompetanse i C% lede utforskende arbeid og i C% videreutvikle elevenes utforskende ferdigheter. Didaktikk og fag skal sees i sammenheng.
+
+LC&ringsutbytte
+
+Kunnskap
+
+Studenten
+
+har forskningsbasert kunnskap om elevers lC&ring i naturfag og hvordan legge til rette for begrepsdannelse og utvikling av naturfaglig sprC%k
+har kunnskap om begrepet bC&rekraftig utvikling og miljC8utfordringer knyttet til biologisk mangfold
+har kunnskap om hvordan C% undervise elever om C8kologi og bC&rekraftig utvikling gjennom bruk av varierte lC&ringsarenaer inne og ute
+har kunnskap om navn, egenskaper og karakteristiske trekk til noen vanlige arter/grupper av organismer.
+har kunnskap om naturlige og menneskeskapte faktorer som former populasjoner, biotoper og C8kosystemer, og kan ta utgangspunkt i lokale eksempler
+ha kunnskap om hvordan naturlig seleksjon kan gi tilpasninger og hvordan denne og andre mekanismer kan fC8re til evolusjonC&r endring av arter og populasjoner
+har kunnskap om tverrfaglig undervisning som fremmer elevers handlingskompetanse for et bC&rekraftig liv i framtiden
+har kunnskap om ulike fornybare og ikke fornybare energikilder gjennom samfunnsmessige, miljC8messige og etiske problemstillinger
+har kunnskap om vC&r- og klimasystemer bC%de lokalt og globalt og kan drC8fte problemstillinger knyttet til klimaendringer
+har kunnskap om lC&ring om sentrale stoffers betydning og kretslC8p i naturfaglige- og miljC8sammenhenger
+har kunnskap om grunnleggende elektromagnetisme og dens betydning i naturfaglige og samfunnsmessige sammenhenger
+har kunnskap om lC&ring av sentrale begreper som bevaring, overfC8ring og kvalitet ved ulike energiformer gjennom C% knytte disse til ulike omrC%der av naturfaget
+
+Ferdigheter
+
+Studenten
+
+kan analysere, vurdere og dokumentere elevers lC&ring, og gi lC&ringsfremmende tilbakemeldinger tilpasset elevers forutsetninger og behov
+kan anvende en integrert naturfagundervisning og benytte naturfag som regifag i dagsaktuelle tverrfaglige sammenhenger i forbindelse med bC&rekraftig utvikling
+kan planlegge, gjennomfC8re og reflektere over egen undervisning forankret i forskning, teori og praksis og med spesielt fokus pC% utforskende arbeidsmC%ter
+kan tilrettelegge naturfagundervisning som fremmer alle grunnleggende ferdigheter
+kan anvende relevant naturfagutstyr knyttet til emnet
+
+Generell kompetanse
+
+Studenten
+
+har innsikt i fagdidaktisk forskning om undervisning og lC&ring i naturfag med fokus pC% progresjon og dybde i begrepsdanning, kritisk tenkning og argumentasjon
+kan bidra og delta i prosjekt for C% utvikle utforskende undervisningspraksis i naturfag
+kan knytte egen rolle som naturfaglC&rer til etiske, sosiale og C8konomiske problemstillinger som angC%r naturvitenskap og teknologi i samfunnet
+
+Forkunnskapskrav
+
+Ingen
+
+Eksamen / vurdering
+
+VilkC%r for C% gC% opp til eksamen/vurdering
+
+80 % obligatorisk tilstedevC&relse, ArtsprC8ve
+
+Da det er praktiske aktiviteter i de aller fleste undervisningsC8ktene, er det obligatorisk frammC8te til all undervisning med krav om minst 80 % tilstedevC&relse.
+
+Arbeidskravene omfatter inntil fire skriftlige og fire digitale arbeider. I tillegg kan det vC&re inntil tre teknologiprosjekter. Arbeidene mC% vC&re godkjent.
+
+ArtsprC8ve. Studenten mC% kunne bestemme et utvalg arter fra artspensum. PrC8ven mC% vC&re bestC%tt for C% gC% opp til eksamen. Tidspunkt for prC8ven blir bestemt etter avtale med studentene.
+
+Konsekvenser av ikke godkjent arbeidskrav er at adgang til prC8ving nektes. Jf. Forskrift om studier og eksamen ved Universitetet i Stavanger (eksamensforskriften), B' 3-8 nr. 3.
+
+Studenter som fC%r et eller flere av arbeidskravene vurdert til ikke-godkjent ved fC8rste innlevering, gis mulighet for C)n ny innlevering av oppgaven(e) i bearbeidet form.
+
+Fagperson(er)
+
+FaglC&rer:
+Kristine Marie Olsen
+
+FaglC&rer:
+Espen Lunde
+
+FaglC&rer:
+Elise Fosshaug
+
+Studieprogramleder:
+Ingeborg KnC&velsrud
+
+FaglC&rer:
+Frode Skarstein
+
+Praksiskoordinator:
+Karen Elizabeth Gilje Woie
+
+Studiekoordinator:
+Ida Margrethe Eikaas
+
+Studiekoordinator:
+Kjersti Gjedrem
+
+Arbeidsformer
+
+Med bakgrunn i fagets egenart - og mC%let for studiet - vil det veksles mellom forelesninger, seminarer, laboratoriearbeid, ekskursjoner, rapportskriving, prosjektarbeid og selvstudium.
+
+Det blir arrangert inntil fire ekskursjoner i StavangeromrC%det i undervisningstiden. NC&rmere avtaler om dato og tid vil bli avklart ved studiestart. Studentene mC% selv dekke utgifter til transport.
+
+Forventet arbeidsinnsats:
+
+Undervisning 134 timer
+Eksamen og obligatoriske prC8ver ca 6 timer
+Praksis (3x40) = 120 timer
+Egenaktivitet 540 timer
+
+Praksis
+
+Praksis 15 dager
+
+Cpent for
+
+GrunnskolelC&rerutdanning for trinn 1 - 7, femC%rig masterprogram
+
+GrunnskolelC&rerutdanning for trinn 5 - 10, femC%rig masterprogram
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+Pensumlisten finner du i Leganto

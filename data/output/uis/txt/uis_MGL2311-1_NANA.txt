@@ -1,0 +1,134 @@
+institution: uis
+code: MGL2311-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MGL2311
+status: 200
+course_name_no: Matematikk 2, emne 1 (5.-10. trinn) (MGL2311)
+----- FULLTEXT -----
+
+Emnekode
+
+MGL2311
+
+Versjon
+
+1
+
+Vekting (stp)
+
+15
+
+Semester undervisningsstart
+
+VC%r
+
+Antall semestre
+
+1
+
+Vurderingssemester
+
+VC%r
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitenskap og humaniora,
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Fakultet for utdanningsvitenskap og humaniora,
+
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhold
+
+Matematikk 2 er de siste 30 studiepoengene i matematikk i grunnskolelC&rerutdanningen for 5.-
+
+10. trinn, og gir grunnlag for videre fordyping innenfor matematikk/matematikk fagdidaktikk og hC8yere grads studium som en mastergrad. Emne 1 bestC%r av funksjonslC&re med tilhC8rende didaktiske aspekter. Studiet legger vekt pC% C% videreutvikle matematisk kunnskap, forstC%else og ferdigheter innen funksjonslC&re.
+
+Faget i lC&rerutdanningen
+
+Gjennom matematikkfaget for trinn 5-10 skal studentene utvikle undervisningskunnskap i matematikk. Dette innebC&rer at de mC% ha en solid og reflektert forstC%else for den matematikken elevene skal lC&re og hvordan denne utvikles videre pC% de neste trinnene i utdanningssystemet. Videre kreves matematikkfaglig kunnskap som er sC&regen for lC&rerprofesjonen. Slik kunnskap omfatter, i tillegg til selv C% kunne gjennomfC8re og forstC% matematiske prosesser og argumenter, ogsC% C% kunne analysere slike som foreslC%s av andre med tanke pC% C% vurdere deres holdbarhet og eventuelle potensial. Undervisningskunnskap innebC&rer ogsC% C% ha didaktisk kompetanse som gjC8r at studentene kan sette seg inn i elevenes perspektiv og lC&ringsprosesser, og gjennom variasjon og tilpasning kunne tilrettelegge matematikkundervisning for elever med ulike behov og med ulik kulturell og sosial bakgrunn pC% en slik mC%te at matematikk framstC%r som et meningsfullt fag for alle elever.
+
+LC&ringsutbytte
+
+Kunnskap
+
+Studenten skal:
+
+Kjenne grensebegrepet for reelle funksjoner, og kunne definere kontinuitet, deriverbarhet og integrasjon ved grensebegrepet.
+Kunne derivere elementC&re funksjoner, og bruke den deriverte til C% beskrive egenskaper funksjonen.
+Kunne forklare ideen bak analysens fundamentalteorem.
+Kunne regne med endelige og uendelige fC8lger og rekker.
+Kunne beregne den antideriverte ved substitusjon, delvis integrasjon og delbrC8ksoppspalting.
+Kunne lC8se 1. ordens lineC&re og separable differensiallikninger samt bruke disse i anvendelser.
+Kunne relatere det matematikkfaglige innholdet i emnet til matematikken pC% 5. til 10. trinn.
+
+Ferdigheter
+
+Studenten skal:
+
+Kunne vurdere elevenes lC&ring i faget som grunnlag for tilrettelegging av undervisning og tilpasset opplC&ring.
+Kunne bruke varierte undervisningsformer forankret i teori og egen erfaring, herunder valg, vurdering og utforming av oppgaver og aktiviteter.
+Kunne bruke digitale verktC8y i matematikkundervisning, inkludert programmering og kunstig intelligens, samt kunne reflektere kritisk over deres anvendelse i skolen.
+
+Generell kompetanse
+
+Studenten skal:
+
+Kunne delta og bidra i FoU-prosjekter og andre samarbeidsprosjekter med tanke pC% C% forbedre matematikkfagets praksis.
+
+Forkunnskapskrav
+
+MGL2113 Matematikk 1 emne 1, MGL2114 Matematikk 1 emne 2
+
+Eksamen / vurdering
+
+VilkC%r for C% gC% opp til eksamen/vurdering
+
+Arbeidskrav, 70% frammC8te
+
+Gjennom semesteret gjennomfC8res to arbeidskrav i funksjonslC&re. Hver av disse gjennomfC8res i forbindelse med undervisningen i kurset og har en varighet pC% inntil 90 minutter. Datoer for gjennomfC8ring annonseres ved emnets begynnelse og har obligatorisk deltagelse.
+
+Studenter som fC%r et arbeidskrav vurdert til ikke-godkjent ved fC8rste gjennomfC8ring gis mulighet for en ny innlevering av oppgaven i bearbeidet form.
+
+Det er krav om 70 % tilstedevC&relse i dette emnet.
+
+Fagperson(er)
+
+Emneansvarlig:
+Sean Peter KC%ss Martin
+
+Studieprogramleder:
+Vidar Kjetilstad
+
+FaglC&rer:
+Csmund Lillevik GjC&re
+
+Studiekoordinator:
+Kjersti Gjedrem
+
+Praksiskoordinator:
+Kitty Marie Garborg
+
+Arbeidsformer
+
+Undervisningen foregC%r hovedsakelig i form av seminarer og gruppearbeid der det legges sC&rlig vekt pC% aktiv studentdeltakelse. Det legges til rette for at studentgruppa skal fungere som et lC&ringsfellesskap, blant annet gjennom en ukentlig 'regnestue', der studentene samarbeider om oppgaver og problemstillinger. Det forutsettes at studentene arbeider betydelig med oppgaver utenom undervisningstiden.
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+SC8k etter pensumlitteratur i Leganto

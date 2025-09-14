@@ -1,0 +1,10 @@
+institution: mf
+code: AVH5055-1
+year: NA
+hv: NA
+url: https://mf.no/studier/emner/avh5055
+status: 200
+course_name_no: Masteroppgave Lektorprogram i KRLE/ religion og etikk og samfunnsfag AVH5055
+----- FULLTEXT -----
+
+NA

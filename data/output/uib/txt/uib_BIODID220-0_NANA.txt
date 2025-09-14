@@ -1,0 +1,160 @@
+institution: uib
+code: BIODID220-0
+year: NA
+hv: NA
+url: https://www4.uib.no/studier/emner/biodid220
+status: 200
+course_name_no: InnfC8ring i biologididaktikk
+----- FULLTEXT -----
+
+Navigasjonssti
+Forside
+Studier
+Emner
+
+InnfC8ring i biologididaktikk
+
+Studiepoeng
+
+15
+
+Undervisningssemester
+
+Haust, VC%r
+
+Emnekode
+
+BIODID220
+
+Talet pC% semester
+
+2
+
+UndervisningssprC%k
+
+Norsk
+
+Ressursar
+
+Timeplan
+Litteraturliste
+
+Litteraturliste
+
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust 2021 VC%r 2020 Haust 2020 VC%r 2019 Haust 2019 VC%r 2018 Haust 2018 VC%r 2017 Haust 2017 VC%r
+MC%l og innhald
+Emnet har som mC%l C% gje studentar eit fagdidaktisk og forskingsbasert grunnlag for C% utvikle kompetanse som lC&rarar i biologi og naturfag. Dei vil ogsC% bli utfordra til C% prC8ve ut denne kompetansen i praksis, og hauste eigne erfaringar som dei tek med seg tilbake i diskusjonar i emnet. Emnet tek opp biologi/naturfagdidaktikk som forskingsfelt, lC&ring i eit biologisk og evolusjonC&rt perspektiv, biologifaget sin historiske utvikling, skulefaget sine sC&rtrekk og utfordringar, ulike arbeidsmC%tar i faget, analyse av fagplanar og omsetting av disse til undervisning og vurdering, kva elevars bakgrunn, holdning til og motivasjon for biologi og naturfag har C% si for deira lC&ring og korleis kommunikasjon kan vere eit aktivt verkemiddel for lC&ring.
+LC&ringsutbyte
+
+Studenten skal ved avslutta emne ha fC8lgjande lC&ringsutbyte definert i kunnskapar, ferdigheiter og generell kompetanse:
+
+Kunnskapar
+
+Studenten
+
+Er kjent med biologi/naturfagfagdidaktikk som forskingsfelt og eit utval av fagdidaktisk forsking
+Skal ha kunnskap om kva som kan pC%verke elevanes motivasjon og interesse for faget
+Gjere greie for kva kjenneteikn biologi har som skulefag og vitskapsfag, og korleis biologi har utvikla seg som fag
+Kjenner til ulike arbeidsmC%tar i biologi og naturfag og korleis desse kan bidra til lC&ring
+Har grunnleggande kunnskapar om korleis oppbygginga til hjernen og nevrofysiologiske prosessar pC%verkar lC&ring, og korleis lC&ring kan settast inn i eit biologisk og evolusjonC&rt perspektiv
+
+Ferdigheiter
+
+Studenten kan
+
+analysere lC&replanar i biologi og naturfag og velje relevante arbeidsmC%tar og vurderingsformar i hC8ve til kompetansemC%la i lC&replanen
+reflektere over etiske problemstillingar og korleis ein kan leggje opp undervisning i etisk utfordrande eller kontroversielle tema i biologi
+leggje til rette for varierte og utforskande arbeidsmC%tar og nytte digitale verkty som bidreg til lC&ring og at elevane fC%r rC8ynsle med eit breitt spekter av biologifaget.
+nytte forskingsbaserte metodar for C% fC% kunnskap om elever, undervisning og lC&ring i faget
+utvikle skriftleg og munnleg kommunikasjon hos elevar som verkemiddel for lC&ring og formidling av kompetanse
+
+Generell kompetanse
+
+Studenten kan
+
+motivere elevar og skape interesse for biologi og naturfag
+nytte kunnskapar og erfaringar frC% praksis til C% grunngje val av arbeidsmC%tar i biologi
+definere tydlege lC&ringsmC%l for elevane , velje arbeidsmC%tar som er veleigna for at elevane skal nC% lC&ringsmC%la og i etterkant kunne evaluere i kva grad desse ble nC%dd
+Studiepoeng, omfang
+15 studiepoeng
+StudienivC% (studiesyklus)
+bachelor
+Undervisningssemester
+
+Haust og vC%r. Emnet gC%r over to semester, 10 sp haust og 5 sp vC%r. Oppstart kun om hausten.
+
+Emnet blir undervist siste gang hC8sten 2026.
+
+Emnet har eit avgrensa tal pC% plassar og inngC%r i undervisningsopptaket ved NT-fakultetet. Fristen for C% melde seg til undervisning i emnet er onsdag i veke 33. Du fC%r svar pC% om du har fC%tt plass pC% emnet pC% Studentweb seinast mC%ndag i veka etter fristen.
+
+Det er obligatorisk oppmC8te pC% fC8rste forelesing/orienteringsmC8tet, og du kan risikere C% miste plassen om du ikkje mC8ter. Dersom du ikkje kan mC8te pC% fC8rste forelesing/orienteringsmC8tet mC% du kontakte studieseksjonen pC% e-post: studie.bio@uib.no. Tidspunkt for fC8rste forelesing/orienteringsmC8tet finn du i timeplanen under B+RessursarB; C8vst til hC8gre eller pC% Mitt UiB.
+
+Krav til forkunnskapar
+Emnet skal normalt tas parallelt med langpraksis i lektorprogrammet i 7. og 8. semester. For C% kunne starte langpraksis mC% man ha bestC%tt minimum 150 sp blant emnar som inngC%r i programmet, der minimum 20 sp mC% vC&re fagdidaktikk/ pedagogikk.
+TilrC%dde forkunnskapar
+NATDID210
+Studiepoengsreduksjon
+Ingen
+Krav til studierett
+For opptak til emnet er det krav om studierett pC% lektorprogrammet ved Fakultet for naturvitskap og teknologi.
+Arbeids- og undervisningsformer
+Forelesning, gruppearbeid, skriftlige oppgaver og presentasjoner. 
+Obligatorisk undervisningsaktivitet
+
+Deltaking pC% 80 % av undervisningen. Innlevering av 2 skriftlege oppgC%ver, fagfellevurderinger og framlegg i C8ktene.
+
+OppgC%vene er gyldig i fire semester; inneverande og tre pC%fC8lgjande.
+
+For C% kunne ta eksamen i BIODID220 mC% normalt LAPRA101 og 102 vC&re bestC%tt.
+
+Vurderingsformer
+Mappevurdering.
+Karakterskala
+Det gis gradert karakter (A-F).
+Vurderingssemester
+Det er ordinC&r eksamen kvart semester.
+Litteraturliste
+Litteraturlista vil vC&re klar innan 1. juli for haustsemesteret og 1. desember for vC%rsemesteret
+Emneevaluering
+Studentane skal evaluere undervisninga i trC%d med UiB og instituttet sitt kvalitetssikringssystem. Evalueringar av emnet finn du i Studiekvalitetsdatabasen.
+Programansvarleg
+Programstyret har ansvar for fagleg innhald og oppbygging av studiet og for kvaliteten pC% studieprogrammet og alle emna der.
+Administrativt ansvarleg
+Fakultet for naturvitskap og teknologi ved institutt for biovitskap har det administrative ansvaret for emnet og studieprogrammet.
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust 2021 VC%r 2020 Haust 2020 VC%r 2019 Haust 2019 VC%r 2018 Haust 2018 VC%r 2017 Haust 2017 VC%r
+Kontaktinformasjon
+
+Emnet eigast av Institutt for biovitenskap.
+
+SpC8rsmC%l knyttet til obligatorikk og vurdering kan rettes til studie@bio.uib.no. For C8vrige spC8rsmC%l, kontakt studieveileder.laerer@mnfa.uib.no.
+
+Eksamensinformasjon
+Vurderingsordning
+Mappevurdering
+Trekkfrist
+01.11.2025
+Eksamenssystem
+Inspera
+Digital eksamen
+
+Dette bC8r du vite om eksamen
+
+Institutt for biovitenskap (BIO)
+
+Vurderingsordning
+
+Mappevurdering
+
+Trekkfrist
+
+01.11.2025
+
+Eksamenssystem
+
+Inspera
+
+Digital eksamen

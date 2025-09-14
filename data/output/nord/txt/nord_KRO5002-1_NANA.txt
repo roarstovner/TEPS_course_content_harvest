@@ -1,0 +1,87 @@
+institution: nord
+code: KRO5002-1
+year: NA
+hv: NA
+url: https://www.nord.no/studier/emner/kro5002
+status: 200
+course_name_no: Fra teori til problemstilling
+----- FULLTEXT -----
+
+
+
+Akademisk skriving i form av paper. Begrepene forskningsfelt og forskningsfront. Litteratur-review. Analyse og drC8fting av forskningslitteratur. Bruk av sC8keverktC8y og metode for innhenting, bearbeiding, systematisering og analyse av forskningslitteratur. Komponering og framstilling av en skriftlig oppgave i henhold til spesifikke krav. Utforming av prosjektplan og sC8knad om godkjenning av mastergradsoppgave. Spesialisering skal vC&re basert pC% forskningsprosjekter og forskningskompetanse i fagmiljC8et i kroppsC8ving, idrettsfag og friluftsliv.
+
+Opptak skjer pC% bakgrunn av generell studiekompetanse eller realkompetanse etter gjeldende regler. Emnet er for studenter tatt opp pC% lektorutdanning i kroppsC8ving og idrettsfag. For C% starte pC% emnet kreves gjennomfC8rt fC8rste syklus (de tre fC8rste C%r) i lektorutdanningen.
+
+For C% starte pC% emnet kreves gjennomfC8rt fC8rste syklus (de tre fC8rste C%r) i lektorutdanningen.
+
+Kunnskap
+
+Studenten:
+
+har kunnskap om begrepene forskningsfelt og forskningsfront, litteraturreview og prosjektbeskrivelse
+Har kunnskap om sC8keverktC8y og metode for innhenting, bearbeiding, systematisering og analyse av forskningslitteratur
+Har kunnskap om forskningsfronten pC% et valgt og avgrenset forskningsfelt.
+Har inngC%ende kunnskap om relevant forskningslitteratur.
+
+Ferdigheter
+
+Studenten:
+
+kan innhente, systematisere, referere, vurdere og diskutere relevant forskningslitteratur ved hjelp av ulike sC8keverktC8y og metoder.
+kan produsere tekster som forholder seg til faglige begrep og teorier, og til kriterier for akademisk skriving.
+Kan utforme prosjektplan og sC8knad om godkjenning av mastergradsoppgave.
+Kan orientere seg i faglitteratur, analysere og forholde seg kritisk til informasjonskilder og eksisterende teorier innen fagfeltet.
+
+Generell kompetanse
+
+Studenten:
+
+Har kunnskapsgrunnlag til C% utvikle problemstilling for egen mastergradsoppgave.
+Kan formidle og kommunisere faglige problemstillinger knyttet til profesjonsutC8velsen pC% et faglig avansert nivC%.
+
+Kunnskap
+
+Studenten:
+
+Ferdigheter
+
+Studenten:
+
+Generell kompetanse
+
+Studenten:
+
+Semesteravgift og pensumlitteratur.
+
+Valgfritt
+
+Forelesninger, teoriundervisning og seminarer.
+
+Selvstendig arbeid og arbeidskrav individuelt og i gruppe.
+
+Forelesninger, teoriundervisning og seminarer.
+
+Selvstendig arbeid og arbeidskrav individuelt og i gruppe.
+
+Studieprogrammet evalueres C%rlig av studentene gjennom emneundersC8kelser (midtveisevaluering og sluttevaluering). Evaluering inngC%r som en del av universitetets kvalitetssikringssystem.
+
+Samlet vurdering
+
+Arbeidskrav: 2 skriftlige arbeidskrav, som beskrives nC&rmere i emnets arbeidsplan. Godkjent / Ikke godkjent. Godkjent gir tilgang til endelig vurdering. Teller 0/100 av endelig karakter.
+
+Oppgave, individuell. Karakter A-F. Studenten har rett til inntil 6 timer veiledning. Teller 100/100 av endelig karakter.
+
+Samlet vurdering
+
+Arbeidskrav: 2 skriftlige arbeidskrav, som beskrives nC&rmere i emnets arbeidsplan. Godkjent / Ikke godkjent. Godkjent gir tilgang til endelig vurdering. Teller 0/100 av endelig karakter.
+
+Oppgave, individuell. Karakter A-F. Studenten har rett til inntil 6 timer veiledning. Teller 100/100 av endelig karakter.
+
+Alle hjelpemidler.
+
+Unntak: C generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er C% regne som fusk.
+
+Alle hjelpemidler.
+
+Unntak: C generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er C% regne som fusk.

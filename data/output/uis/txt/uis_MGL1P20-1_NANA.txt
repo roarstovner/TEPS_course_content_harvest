@@ -1,0 +1,134 @@
+institution: uis
+code: MGL1P20-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MGL1P20
+status: 200
+course_name_no: Praksis 1.-7., 2. C%r, 3. semester (15 dager) (MGL1P20)
+----- FULLTEXT -----
+
+Emnekode
+
+MGL1P20
+
+Versjon
+
+1
+
+Vekting (stp)
+
+0
+
+Semester undervisningsstart
+
+HC8st
+
+Antall semestre
+
+1
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitenskap og humaniora,
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Fakultet for utdanningsvitenskap og humaniora,
+
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhold
+
+Praksisstudiet har en integrerende funksjon i grunnskolelC&rerutdanningen. Dette forutsetter samarbeid mellom studenter, faglC&rer, praksislC&rere og skoleledelse.
+
+Studiets formC%l er C% bidra til kunnskaper og utvikle ferdigheter knyttet til C% vC&re lC&rer i profesjonell utC8velse av yrket, inkludert innsikt i kompleksitet og dilemmaer som knytter seg til lC&reryrket i norsk skole og i et mangfoldig klasserom. LC&rerarbeidet beskrives som et profesjonelt usikkert arbeid fordi det ikke er entydige standarder om hva som er god undervisning. Temaer belyses gjennom teoretiske- og profesjonsetiske perspektiv og gjennom utC8velse av profesjonell undervisning som didaktiske mC8ter rettet mot elever pC% 1.-7. trinn og vil vC&re gjennomgC%ende i alle emner.
+
+Dette er emnebeskrivelsen for studieC%ret 2024-2025. Merk at det kan komme endringer.
+
+I det andre studieC%r er elevmangfoldet og elevenes lC&ring tema.
+
+Praksisperioden i 2. studieC%r, 3. semester i grunnskolelC&rerutdanningens 1-7 tilsvarer 15 arbeidsdager. Den skal vC&re variert, veiledet og vurdert og foregC% i grunnskolen - norskfaget vektlegges.
+
+Estetiske lC&reprosesser er et tverrfaglig spor i 3. semester.
+
+Praksisperioden skal innbefatte en delperiode med vekt pC% forberedelse, en delperiode med vekt pC% gjennomfC8ring, og en delperiode med vekt pC% etterarbeid og vurdering.
+
+LC&ringsutbytte
+
+Kunnskap
+
+Kandidaten har kunnskaper om
+
+gjeldende nasjonalt lC&replanverk med vekt pC% norsk og matematikk
+lC&rerarbeidet, undervisning som samhandling og klasseledelse spesielt i fagene norsk og matematikk
+hvordan didaktisk tenkning utC8ves i undervisningen med vekt pC% planlegging og gjennomfC8ring og vurdering
+elever og elevers lC&reforutsetninger pC% 1-7. trinn og hvordan dette danner grunnlag for C% legge til rette for tilpasset undervisning i det flerkulturelle klasserom med vekt pC% ulike religioner og livssyn
+kommunikasjon og samspill som grunnlag for C% etablere en positiv lC&ringskultur med vekt pC% norsk og matematikk
+
+Ferdigheter
+
+Kandidaten kan
+
+samhandle og kommunisere med elever, medstudenter, kolleger pC% praksisskolen og faglC&rere
+bruke nasjonale og lokale lC&replaner med tanke pC% C% utvikle planer for elevers lC&ring
+planlegge, gjennomfC8re og vurdere undervisning sammen med medstudenter, praksislC&rere og faglC&rere
+utC8ve situasjonsorientert klasseledelse
+undervise og legge til rette for elevers lC&ring med ulike arbeidsmC%ter og med bC%de analoge og digitale ressurser
+anvende systematisk observasjon av elever som grunnlag for C% planlegge undervisning med vekt pC% norsk og matematikk
+
+Generell kompetanse
+
+Kandidaten
+
+har vilje og evne til C% ta til seg feedback fra elever, medstudenter og praksislC&rer som grunnlag for profesjonell utvikling
+kan diskutere og kommentere eget og medstudenters lC&rerarbeid i lys av nasjonale planer, praksisskolens lokale planer og teori
+
+Forkunnskapskrav
+
+BestC%tt praksis 1. C%r eller eksamensrett i emnet.
+
+Eksamen / vurdering
+
+VilkC%r for C% gC% opp til eksamen/vurdering
+
+Planlegge og gjennomfC8re situasjoner som oppstart, overganger og avslutning av undervisningsC8kter. Studenten prC8ves i en planlagt, gjennomfC8rt og vurdert overgangssituasjon i en undervisnings C8kt og skifte fra en lC&ringsarena til en annen i lC8pet av praksisperioden.
+Arbeidskrav knyttet til norsk, se emneplan for norsk. Vurderes av faglC&rer i norsk.
+
+Fagperson(er)
+
+Praksiskoordinator:
+Karen Elizabeth Gilje Woie
+
+Emneansvarlig:
+Ingeborg KnC&velsrud
+
+Emneansvarlig:
+Kitty Marie Garborg
+
+FaglC&rer:
+Ivar BjC8rnsen
+
+Arbeidsformer
+
+Observasjon av praksislC&rer, medstudenter og elever, samt drC8fting og refleksjon. Bruke et relevant utvalg arbeidsmetoder knyttet til norsk og matematikk.
+
+Cpent for
+
+GrunnskolelC&rerutdanning for trinn 1 - 7, femC%rig masterprogram
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+SC8k etter pensumlitteratur i Leganto

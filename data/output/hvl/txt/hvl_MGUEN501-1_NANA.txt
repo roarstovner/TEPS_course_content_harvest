@@ -1,0 +1,10 @@
+institution: hvl
+code: MGUEN501-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGUEN501
+status: 200
+course_name_no: MGUEN501 Engelsk 3, emne 1 - Undervisning og lC&ring i engelsk
+----- FULLTEXT -----
+
+NA

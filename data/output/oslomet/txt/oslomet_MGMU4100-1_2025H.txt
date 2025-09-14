@@ -1,0 +1,239 @@
+institution: oslomet
+code: MGMU4100-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/MGMU4100/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+MGMU4100 Musikk og musikkdidaktikk 1 Emneplan
+Engelsk emnenavn
+Music and Music Education 1
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 1-7
+GrunnskolelC&rerutdanning for trinn 5-10
+Omfang
+15.0 stp.
+StudieC%r
+2025/2026
+Pensum
+HCST 2025
+
+Timeplan
+HCST 2025
+Programplan
+GrunnskolelC&rerutdanning for trinn 1-7 (2025 HCST )
+GrunnskolelC&rerutdanning for trinn 5-10 (2025 HCST )
+Emnehistorikk
+2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Fagplan
+
+Musikk og musikkdidaktikk (15+15+15 studiepoeng)
+
+Fagplanen ble godkjent i studieutvalget 14. november 2016
+
+Revisjon godkjent av utdanningsutvalget 25. januar 2021
+
+Gjeldende fra hC8stsemesteret 2021
+
+Innledning
+
+Fagplanen bygger pC% forskrift om rammeplan for grunnskolelC&rerutdanningen for trinn 1-7/trinn 5-10, fastsatt av Kunnskapsdepartementet 7. juni 2016, nasjonale retningslinjer for grunnskolelC&rerutdanningen trinn 1-7/trinn 5-10 av 1. september 2016 og programplan for grunnskolelC&rerutdanning for trinn 1-7/trinn 5-10 ved HC8gskolen i Oslo og Akershus (HiOA), godkjent av studieutvalget 16. november 2016.
+
+Gjennom fagfordypningen i musikk og musikkdidaktikk vil studentene utvikle inngC%ende kunnskap om musikk bC%de som vitenskapsfag og som skolefag. Sentralt i fagfordypningen er forholdet mellom musikk og lC&ring i et multikulturelt samfunn i stadig forandring. I lC8pet av kurset fC%r studentene innsikt i sentrale teoretiske perspektiver innenfor forskningsfeltet musikkpedagogikk/musikkdidaktikk og utvikler forsknings- og utviklingskompetanse som er relevant for dette feltet. Studentene skal bli i stand til C% produsere ny kunnskap om hvordan teori, praksis og forskning samspiller i utviklingen av forskningsfeltet, og til kritisk refleksjon omkring musikkens, musikkundervisningens og musikkfagets rolle i skolen. Emnene skal gi et grunnlag for selvstendig arbeid med egen masteroppgave. Fagfordypningen inkluderer imidlertid ogsC% musikkutC8ving og praktiske tilnC&rminger til ulike typer av musikkundervisning.
+
+Kurset er C%pent for internasjonale studenter. Det innebC&rer at det vil bli holdt pC% engelsk dersom internasjonale studenter deltar, men at det i motsatt tilfelle vil holdes pC% norsk. Det finnes ogsC% en fagplan pC% engelsk.
+
+MC%lgruppe
+
+Studenter som er tatt opp til femC%rig grunnskolelC&rerutdanning for trinn 1-7/trinn 5-10.
+
+Opptakskrav
+
+Faget er tilgjengelig som valgfag for aktive studenter ved grunnskolelC&rerutdanningen.
+
+Opptak til Musikk og musikkdidaktikk krever fullfC8rt 60 studiepoeng Musikk pC% syklus 1.
+
+LC&ringsutbytte
+
+LC&ringsutbyttet er nC&rmere beskrevet i emneplanene.
+
+Fagets innhold og oppbygging
+
+Musikk og musikkdidaktikk (45 studiepoeng) er bygget opp av tre emner C  15 studiepoeng. Emnene er Musikk og musikkdidaktikk 1, Musikk og musikkdidaktikk 2 og Musikk og musikkdidaktikk 3. GrunnskolelC&rerstudenter mC% velge emne 1 og emne 2 innenfor et fag uavhengig om masteroppgaven skal vC&re i fagdidaktikk eller profesjonsrettet pedagogikk. Emne 3 kan byttes med andre emner, i trC%d med nasjonale retningslinjer.
+
+Fagfordypningen i musikk og musikkdidaktikk presenterer en rekke ulike perspektiver pC% musikkundervining. Den har et sC&rlig fokus pC% musikkundervisning i skolen, men inkluderer ogsC% ulike komparative perspektiver, for eksempel likheter og ulikheter mellom skolefag, musikalske kuturer og sjangre, og mellom det lokale og det globale. Disse perpektivene er relevante for C% problematisere og reflektere over hensikten med og mC%let for musikkundervisning.
+
+De ulike temaene som inngC%r i studiet er fordelt slik over de tre emnene:
+
+Musikk og musikkdidaktikk 1: Musikkundervisning i det 21. C%rhundret
+
+Musikk i et maktperspektiv
+
+Musikkundervisning, populC&rmusikk, medier og digitalisering
+
+Psykologiske perspektiver pC% musikkundervisning
+
+Perspektiver pC% musikkpedagogisk praksis: Planlegging og vurdering
+
+Etiske perspektiver pC% musikkundervisning
+
+Musikk og musikkdidaktikk 2: Kreativitet, musikkteknologi og kulturelt mangfold
+
+Musikkdidaktisk teori og musikkpsykologi
+
+Perspektiver pC% musikkpedagogisk praksis: Kreativitet og komposisjon
+
+PopulC&rmusikk, musikkteknologi og musikkundervisning
+
+Flerkulturelle og etnologiske perspektiver pC% musikkbegrepet og musikkundervisning
+
+Musikk og musikkdidaktikk 3: MusikklC&reren som forsker
+
+Musikkpedagogisk grunnlagstenkning
+
+Musikkpedagogikk/musikkdidaktikk som forskningsfelt
+
+Fagets arbeids- og undervisningsformer
+
+Arbeidet og undervisningen i faget veksler mellom forelesninger, seminargrupper, praktisk prosjektarbeid, responsbasert arbeid i tekstverksted, veiledning og selvstendig arbeid, alt etter hvilke deler av studiet en arbeider med. En stor del av undervisningen vil foregC% som tema- og blokkundervisning. Det legges vekt pC% studentaktive og dialogiske lC&ringsformer. Faget krever stor grad av selvstendig arbeid med C% lese, reflektere over og diskutere pensumtekster.
+
+LC&ringsledelse og dypere forstC%else av elevmangfold
+
+LC&reren er en viktig faktor for elevenes lC&ring. I musikkfaget er det imidlertid ikke bare mC%lbar og synlig lC&ring hos enkelteleven som stC%r i hC8ysetet, men like mye musikkopplevelser som ikke kan mC%les eller uttrykkes i ord. LC&reren har makt til bC%de C% skape gode opplevelser, men dessverre ogsC% til C% krenke enkeltelever gjennom sitt musikk- og elevsyn. En dypere forstC%else av elevmangfold i musikkfaget innebC&rer refleksjon over hvordan det kan skapes rom for musikkopplevelser og mestringsfC8lelse for alle og pC% alle nivC%er i klasserommet. FNs menneskerettighetserklC&ring anerkjenner alle menneskers iboende verdighet, og at undervisning skal gjenspeile denne grunnleggende verdien. Barnekonvensjonen sier at barnets rett til fullt ut C% delta i det kulturelle og kunstneriske liv skal respekteres og fremmes, og at tilgangen til egnede og like muligheter for kulturelle, kunstneriske, rekreasjons- og fritidsaktiviteter skal oppmuntres. Den sier dessuten at intet barn skal utsettes for nedverdigende behandling. Dette oppmuntrer til en fordypet refleksjon over etiske perspektiver pC% musikkundervisning.
+
+Forsknings- og utviklingsarbeid relatert til skolen
+
+Studiet bygger pC% aktuell forskningsbasert kunnskap og erfaring knyttet til de aktivitets- og erkjennelsesformene vi finner i gjeldende lC&replaner for musikkfaget i grunnskolen og i praksisfeltet. Gjennom studiet skal studentene fC% dypere innsikt i og erfaring med forsknings- og utviklingsarbeid relatert til skolen. Dette forsknings- og utviklingsarbeidet knytter seg til det norske og internasjonale forskningsfeltet musikkdidaktikk/musikkpedagogikk (Music Education) og danner grunnlaget for arbeidet med masteroppgaven.
+
+Utvikling av endringskompetanse
+
+Studentenes endringskompetanse utvikles i mC8te med teoretisk og praktisk fagkunnskap, samt gjennom felles refleksjon over egen praksis. I studiet fC%r studentene fordypet innsikt i samspillet mellom musikkfaglig og musikkdidaktisk kompetanse, lC&reridentitet og profesjonsutC8velse. Gjennom impulser fra pensumlitteraturen, som i syklus 2 gjerne representerer kritiske perspektiver pC% lC&ring og utdanning, og ved anvendelse av studentaktiv og dialogisk undervisning, settes studentene i stand til C% mC%tte forholde seg til andres syn og nye perspektiver. Derved utfordres studentene til C% bevege seg bort fra skrC%sikre standpunkter, og til C% i stedet utvikle et mer C%pent og fleksibelt syn pC% faget og musikklC&rerrollen som innebC&rer en forstC%else av at god profesjonsutC8velse alltid er gjenstand for forhandlinger. Slik vil studentene utvikle sin endringskompetanse.
+
+Klasseledelse og lC&rerrollen
+
+Musikk er et fag med mye lyd og aktivitet som fordrer en oppmerksom, tilstedevC&rende lC&rer i klasserommet. C finne en balanse mellom positiv uro og et trygt lC&ringsmiljC8 stC%r sentralt nC%r det gjelder klasseledelse i musikkfaget. Musikkfagets praktiske arbeidsmC%ter har i seg selv strukturerende elementer som i mange tilfeller gjC8r andre pedagogiske klasseledelsestiltak overflC8dige. For eksempel kan det C% lede klassesang eller samspillsaktiviteter uten mange ord, men i stedet gjennom selv C% synge og spille med, eller gjennom direksjon eller akkompagnement, vC&re noen av musikklC&rerens naturlige redskaper for synlig eller klingende musikalsk klasseledelse som ivaretar balansen mellom arbeidsro og arbeidsglede pC% fagets premisser. PC% et mer uuttalt nivC% vil ogsC% musikklC&rerens fagsyn, elevsyn og undervisningssyn pC%virke hans eller hennes klasseledelse og lC&rerrolle - se forrige avsnitt og avsnittet om lC&ringsledelse. For eksempel innebC&rer en grunnleggende dialogisk tilnC&rming til musikkundervisning at lC&reren ikke lukker dialogen i musikklasserommet ved C% presentere musikalsk kunnskap og ferdigheter som noe entydig som krever fasitsvar. Dialogisk klasseledelse i musikk C%pner i stedet for utforsking, undring og mangfold i musikklasserommet, noe som samsvarer med en holdning til musikkundervisning som er rustet for det 21. C%rhundret.
+
+Internasjonale perspektiver
+
+Musikken er i seg selv internasjonal og flerkulturell, og undervisningen bC&rer preg av C%penhet mot andre land og kulturers musikk og tenkning. Denne C%penheten kommer ogsC% til uttrykk gjennom valg av pensumlitteratur, hvor vektleggingen av internasjonale perspektiver forsterkes utover i studiet. Det musikkdidaktiske/musikkpedagogiske forskningsfeltet er et mangfoldig og veletablert internasjonalt felt som studentene gradvis innvies i gjennom studiet. Deltakelse ved internasjonale forskningskonferanser sammen med studiets undervisere og forskere, enten pC% norsk jord eller i utlandet, vil vC&re en mC%te C% fC% innsikt i feltet pC% for studentene. I syklus 2 vil stC8rstedelen av pensumlitteraturen vC&re pC% engelsk og vC&re hentet fra internasjonal forskningslitteratur.
+
+Praksistilknytning
+
+Musikk i lC&rerutdanningen er et profesjonsfag, og det legges vekt pC% at studentene fC%r erfaring i planlegging og gjennomfC8ring av musikktimer i skolen - i samarbeid med praksisskolen/praksisveileder og lC&rerne ved HiOA. I syklus 2 fordypes studentes refleksjon over egen praksis i lys av musikkdidaktisk forskningslitteratur som omhandler musikkpedagogisk praksis. De fleste studentene vil ogsC% selv gjennomfC8re undersC8kelser i praksisfeltet i forbindelse med sine masterprosjekter.
+
+PraksisopplC&ring
+
+PraksisopplC&ring er nC&rmere beskrevet i programplanen og plan for praksis.
+
+Skikkethetsvurdering
+
+LC&rerutdanningsinstitusjoner har ansvar for C% vurdere om studenter er skikket for lC&reryrket. LC8pende skikkethetsvurdering foregC%r gjennom hele studiet og inngC%r i en helhetsvurdering av studentens faglige og personlige forutsetninger for C% kunne fungere som lC&rer. En student som utgjC8r en mulig fare for elevers liv, fysiske og psykiske helse, rettigheter og sikkerhet, er ikke skikket for yrket. Studenter som viser liten evne til C% mestre lC&reryrket, skal sC% tidlig som mulig i utdanningen fC% melding om dette. De skal fC% rC%d og veiledning for C% gjC8re dem i stand til C% oppfylle kravene om lC&rerskikkethet eller fC% rC%d om C% avslutte utdanningen. Beslutninger om skikkethet kan fattes gjennom hele studiet.
+
+Se universitetets nettsted for mer informasjon om skikkethetsvurdering.
+
+Arbeidskrav
+
+Arbeidskrav skal vC&re levert/utfC8rt innen fastsatt(e) frist(er). Gyldig fravC&r dokumentert med for eksempel sykemelding, gir ikke fritak for C% innfri arbeidskrav. Studenter som pC% grunn av sykdom eller annen dokumentert gyldig C%rsak ikke leverer/utfC8rer arbeidskrav innen fristen, kan fC% forlenget frist. Ny frist for C% innfri arbeidskrav avtales i hvert enkelt tilfelle med den aktuelle lC&reren.
+
+Arbeidskrav vurderes til "Godkjent" eller "Ikke godkjent". Studenter som leverer/utfC8rer arbeidskrav innen fristen, men som fC%r vurderingen "Ikke godkjent", har anledning til to nye innleveringer/utfC8relser. Studenten mC% da selv avtale ny innlevering av det aktuelle arbeidskravet med faglC&rer. Studenter som ikke leverer/utfC8rer arbeidskrav innen fristen og som ikke har dokumentert gyldig C%rsak, fC%r ingen nye forsC8k.
+
+NC&rmere informasjon om arbeidskrav finnes i den enkelte emneplan.
+
+Vurderings-/eksamensformer
+
+Se emneplanene under punktet Vurderings-/eksamensformer.
+
+Samlet vurdering
+
+Det gis ingen samlet vurdering i Musikk og musikkdidaktikk. Emnene vil hver for seg bli oppfC8rt pC% vitnemC%let.
+
+Vurderingskriterier
+
+A: Fremragende. Viser fremragende kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser fremragende evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+B: Meget god. Viser meget gode kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser meget god evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+C: God. Viser gode kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser god evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+D: NoksC% god. Viser begrensede kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser begrenset evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+E: Tilstrekkelig. Tilfredsstiller minimumskravene til kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser noe evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+F: Ikke bestC%tt.Har utilstrekkelig kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser dC%rlig evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+Rettigheter og plikter ved eksamen
+
+Studentens rettigheter og plikter framgC%r av forskrift om studier og eksamen ved OsloMet - storbyuniversitetet. Forskriften beskriver blant annet vilkC%r for ny/utsatt eksamen, klageadgang og hva som regnes som fusk ved eksamen. Studenten er selv ansvarlig for C% melde seg opp til eventuell ny/utsatt eksamen.
+
+Innledning
+
+Sentralt i emnet stC%r temaer og problemstillinger som direkte eller indirekte er knyttet til musikkundervisning i det 21. C%rhundret, som mangfold og inkludering, etiske perspektiver pC% musikkundervisning, musikk og musikkundervisning i et maktperspektiv, og medienes og den teknologiske utviklingens betydning for barn og unges forhold til musikk.
+
+Forkunnskapskrav
+
+Se fagplanen.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har inngC%ende kunnskap om hvordan opplC&ringen i musikk kan tilpasses alle elevers forutsetninger og behov
+har inngC%ende kunnskap om begynneropplC&ring i musikk [trinn 1-7]
+har inngC%ende kunnskap om progresjon i undervisning og elevers lC&ring i musikk
+
+Ferdigheter
+
+Studenten
+
+kan analysere og forholde seg kritisk til nasjonal og internasjonal forskning pC% vitenskapsfeltet musikkdidaktikk og kan anvende denne kunnskapen i profesjonsutC8velsen
+kan planlegge og gjennomfC8re undervisning i musikkfaget som fremmer elevens vitenskapelige tenkemC%ter
+kan pC% avansert nivC% anvende prinsipper for musikkfagets lC&ringsorienterte vurdering og slik bidra til at elevene lC&rer C% reflektere over egen lC&ring og utvikling
+kan utvikle, gjennomfC8re og evaluere forskningsbasert begynneropplC&ring i musikk som er forankret i avansert kunnskap [trinn 1-7]
+kan vurdere digitale uttrykk og ressurser kritisk og bruke dem i opplC&ringen pC% mC%ter som styrker og utvikler musikkfagets didaktikk
+
+Generell kompetanse
+
+Studenten
+
+kan analysere og vurdere relevante musikkfaglige og etiske problemstillinger
+kan pC% systematisk vis planlegge, evaluere og revidere lC&ringsopplegg med musikkfaget som grunnlag
+kan bidra til utviklingsarbeid som fremmer faglig og pedagogisk nytenkning i musikkfaget i skolen
+Innhold
+
+Dette emnet har to hovedomrC%der. Det fC8rste er knyttet til arbeid med musikkundervisning. Det innebC&rer blant annet C% lage, gjennomfC8re og vurdere et forskningsbasert konsertforedrag for mellom- eller ungdomstrinnet over temaet musikk i et maktperspektiv i fordypningen i musikkorientering.
+
+Den andre hovedomrC%det er knyttet til arbeid med tekster. Temaer som behandles er psykologiske, praktiske og etiske perspektiver pC% musikkundervisning i det 21. C%rhundret.
+
+Arbeids- og undervisningsformer
+
+Se fagplanen.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+Retten til C% avlegge eksamen forutsetter godkjente arbeidskrav og deltakelse i bestemte faglige aktiviteter. Se nC&rmere informasjon i den innledende fagplandelen. FC8lgende arbeidskrav mC% vC&re godkjent fC8r eksamen kan avlegges:
+
+Framlegg og drC8fting av forskningsartikkel pC% ca. 30 minutter i grupper pC% 2 eller 3. Denne arbeidsformen skal utvikle studentens evne til C% sette seg inn i C% drC8fte kritisk innholdet i musikkdidaktisk forskningslitteratur.
+FramfC8ring av konsertforedrag i grupper som avslutning pC% fordypningsprosjekt i musikkorientering. Varighet: 30 minutter. Dette er en utforskende og kreativ arbeidsform som fremmer vitenskapelig tenkemC%te hos studenter og elever.
+Vurdering og eksamen
+
+Individuell muntlig eksamen med 15 minutters presentasjon over selvvalgt tema basert pC% pensum, og 10 minutter til spC8rsmC%l fra pensum fra sensorer.
+
+Ny/utsatt eksamen
+
+Ny/utsatt eksamen arrangeres som ved ordinC&r eksamen. Presentasjonen pC% 15 minutter mC% vC&re over et annet selvvalgt tema basert pC% pensum.
+
+Vurderingsuttrykk
+
+Det benyttes en gradert karakterskala fra A til E for bestC%tt og F for ikke bestC%tt eksamen.
+
+Sensorordning
+
+Det benyttes to interne sensorer. En tilsynssensor er tilknyttet emnet, i henhold til retningslinjer for oppnevning og bruk av sensorer ved OsloMet.

@@ -1,0 +1,119 @@
+institution: oslomet
+code: MGSF4200-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/MGSF4200/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+MGSF4200 Samfunnsfag og samfunnsfagdidaktikk 2 Emneplan
+Engelsk emnenavn
+Social Studies Education 2
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 1-7
+GrunnskolelC&rerutdanning for trinn 5-10
+Omfang
+15.0 stp.
+StudieC%r
+2025/2026
+Pensum
+VCR 2026
+
+Timeplan
+VCR 2026
+Programplan
+GrunnskolelC&rerutdanning for trinn 1-7 (2025 HCST )
+GrunnskolelC&rerutdanning for trinn 5-10 (2025 HCST )
+Emnehistorikk
+2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Innledning
+
+Fagplanen tilhC8rende dette emnet er lagt pC% emne MGSF4100 Samfunnsfag og samfunnsfagdidaktikk 1.
+
+I dette emnet vil studentene fC% avansert kunnskap om forskning innenfor samfunnsfagdidaktikken, for slik C% kunne bygge videre pC% dette nC%r de sC% skal skrive en masteroppgave.
+
+Forkunnskapskrav
+
+Se fagplanen.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har avansert kunnskap om geografididaktikk, samfunnskunnskapdidaktikk og historiedidaktikk
+har inngC%ende kunnskap om progresjon i samfunnsfagundervisningen og elevers lC&ring i samfunnsfag
+har inngC%ende kunnskap om hvordan opplC&ringen i samfunnsfag kan tilpasses alle elevers forutsetninger og behov
+
+Ferdigheter
+
+Studenten
+
+kan planlegge og gjennomfC8re undervisning i samfunnsfaget som fremmer elevens vitenskapelige tenkemC%ter
+kan pC% avansert nivC% anvende prinsipp for masterfagets lC&ringsorienterte vurdering og slik bidra til at elevene lC&rer C% reflektere over egen lC&ring og utvikling
+kan kritisk bruke forskningsbasert profesjonsrettet kunnskap i samfunnsfag til utforskning av nye problemomrC%der
+skal kunne anvende flere perspektiver i egen praksis, og synliggjC8re perspektivrikdom som en ressurs for elevenes samfunnsorientering
+kan vurdere digitale uttrykk og ressurser kritisk og bruke dem i opplC&ringen pC% mC%ter som styrker og utvikler samfunnsfagets didaktikk
+
+Generell kompetanse
+
+Studenten
+
+kan analysere og vurdere relevante faglige og etiske problemstillinger og bidra til utvikling av faglig felleskap pC% den enkelte skole
+kan pC% systematisk vis planlegge, evaluere og revidere lC&ringsopplegg med samfunnsfag som grunnlag
+kan pC% et avansert nivC% formidle og kommunisere om faglige problemstillinger knyttet til profesjonsutC8velsen i samfunnsfag og har profesjonsfaglig digital kompetanse
+kan bidra til utviklingsarbeid som fremmer faglig og pedagogisk nytenkning i skolen
+Innhold
+
+I dette emnet skal studentene fC% en grundig innfC8ring i det som skjer pC% forskningsfronten innenfor samfunnsfagdidaktikken. Artikler fra geografididaktikk, historiedidaktikk og samfunnskunnskapdidaktikk vil bli gjennomgC%tt og diskutert i seminarform.
+
+Arbeids- og undervisningsformer
+
+Se fagplanen.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+Retten til C% avlegge eksamen forutsetter godkjente arbeidskrav og deltakelse i bestemte faglige aktiviteter.
+
+Deltakelse i seminarundervisning
+
+Ferdigheten i C% formidle andres og egen forskning pC% en forsvarlig mC%te kan best oppC8ves gjennom dialog og diskusjon.
+
+Deltakelse pC% seminar. Undervisningen er organisert som seminarer basert pC% studentenes egenaktivitet, medansvar og kontinuerlige arbeidsinnsats. For C% avlegge eksamen kreves derfor minimum 80 prosent deltakelse i undervisningen. FormC%let med arbeidskravet er selvstendig lesning og refleksjon rundt samfunnsfaglige tekster, samt C% oppmuntre studentene til aktiv deltakelse. Ved manglende eller ikke-godkjent arbeidskrav, vil det gis en kompensatorisk oppgave.
+
+Skriftlig fagtekst med muntlig framlegg
+
+Hver student skal formulere en problemstilling og drC8fte minst to pensumtekster. Omfang 1500 ord (+/- 10 %) og kildehenvisninger i trC%d med APA-stilen. Teksten skal presenteres og drC8ftes med medstudenter pC% et eksamensseminar.
+FormC%let med arbeidskravet er C% trene opp studentenes evne til akademisk skriving og selvstendig refleksjon rundt fagdidaktiske problemstillinger. Arbeidskravet kan danne grunnlag for den individuelle semesteroppgaven.
+
+Merknad
+
+For studenter pC% masterprogrammet grunnskolelC&rerutdanning mC% i tillegg fC8lgende arbeidskrav gjennomfC8res:
+Studentene skal levere et refleksjonsnotat knyttet til praksis. Innholdet for refleksjonsnotatet blir avgjort i samrC%d mellom studenter og emneansvarlig og kan ta opp tematikker fra begge emnene i samfunnsfag og samfunnsfagsdidaktikk pC% 4. studieC%r.
+For studenter pC% masterstudium i skolerettet utdanningsvitenskap mC% i tillegg fC8lgende arbeidskrav gjennomfC8res:
+Studentene skal innen fastsatt frist levere en skisse pC% 1800 ord +/- ti prosent for masteroppgaven. Gjennom arbeidskravet skal studentene se emnet i sammenheng med masteroppgaven og vise en forstC%else for hva som er faglig relevante temaer C% arbeide videre med. NC%r skissen for masteroppgaven er levert, vil studenten fC% tildelt veileder for masteroppgaven.
+Vurdering og eksamen
+
+Individuell, skriftlig semesteroppgave: En skriftlig fagtekst med en selvvalgt problemstilling som tar utgangspunkt i pensum. Omfang 4500 ord (+/- 10 %) og kildehenvisninger i trC%d med APA-stilen. NC&rmere retningslinjer for oppgaven gis ved semesterstart.
+
+Ny/utsatt eksamen
+
+Ved ikke bestC%tt eksamen er det adgang til C% omarbeide eksamensbesvarelsen C)n gang. Utsatt eksamen arrangeres som ved ordinC&r eksamen.
+
+Hjelpemidler ved eksamen
+
+Alle hjelpemidler er tillatt sC% lenge de brukes etter regler for god akademisk henvisning. Presentasjonen skal vC&re kandidatens selvstendige arbeid, og kandidaten skal kunne stC% inne for innhold og form i alle deler av presentasjonen.
+
+Vurderingsuttrykk
+
+Det benyttes en gradert karakterskala fra A til E for bestC%tt og F for ikke bestC%tt eksamen.
+
+Sensorordning
+
+Det benyttes en intern og en ekstern sensor.

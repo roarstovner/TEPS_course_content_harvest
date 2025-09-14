@@ -1,0 +1,98 @@
+institution: oslomet
+code: MAMUS4200-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/MAMUS4200/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+MAMUS4200 Fysioterapi for muskelskjelettskader, sykdommer og plager - del 2 Emneplan
+Engelsk emnenavn
+Physical Therapy for Musculoskeletal Conditions - Part 2
+Studieprogram
+Masterstudium i helsevitenskap - spesialisering i fysioterapi for muskelskjeletthelse
+Omfang
+10.0 stp.
+StudieC%r
+2025/2026
+Pensum
+VCR 2026
+
+Timeplan
+VCR 2026
+Programplan
+Masterstudium i helsevitenskap - spesialisering i fysioterapi for muskelskjeletthelse (2025 HCST )
+Emnehistorikk
+2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Innledning
+
+UndervisningssprC%k: Norsk
+
+Dette emnet bygger pC% emne MAMUS4100. I dette emnet vil kunnskapsgrunnlaget for diagnostisering, forekomst, risikofaktorer, mekanismer, forlC8p og behandling for de vanligste former for muskelskjelettskader, sykdommer og plager (MUSSP) presenteres. Emnet innebC&rer en fordypning av eksisterende kunnskapsgrunnlag for undersC8kelse, behandling og forebyggende tiltak for de vanligste MUSSP. Temaene vil presenteres for hele livslC8psperspektivet.
+
+Anbefalte forkunnskaper
+
+GjennomfC8rt emne MAMUS4100.
+
+Forkunnskapskrav
+
+Studenten mC% vC&re tatt opp pC% masterstudiet i helsevitenskap og ha autorisasjon som fysioterapeut.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert i kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten kan
+
+vurdere kunnskap om funksjon, symptomer og helserelatert livskvalitet innen de mest vanlige MUSSP
+
+Ferdigheter
+
+Studenten kan
+
+anvende og kritisk reflektere over kunnskap om diagnostisering, forekomst, risikofaktorer, mekanismer og forlC8p i mC8te med pasienter med de vanligste MUSSP
+anvende og kritisk reflektere over bruk av retningslinjer for behandling av de mest vanlige MUSSP i klinisk praksis
+analysere og drC8fte resultater fra kartlegginger og undersC8kelser av barn/voksne/eldre personer med de mest vanlige MUSSP
+
+Generell kompetanse
+
+Studenten kan
+
+implementere oppdatert kunnskap om diagnostisering, undersC8kelse og behandling/forebygging ved de vanligste MUSSP
+formidle oppdatert fagkunnskap til samarbeidspartnere og befolkningen
+Arbeids- og undervisningsformer
+
+Emnet vil benytte varierte, studentaktive arbeidsformer. Undervisningen organiseres i 2 samlinger C  5 dager. Arbeidsformene bestC%r av forelesninger, omvendt undervisning, seminarer, presentasjoner, gruppearbeid og selvstudier. Presentasjoner pC% seminarer er viktige for C% understC8tte lC&ringsprosessen.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+For C% fremstille seg til eksamen mC% fC8lgende vC&re godkjent:
+
+muntlig presentasjon av en gruppeoppgave og gi tilbakemelding til en annen gruppe av varighet inntil 25 minutter
+individuell muntlig presentasjon av en oppgave og gi tilbakemelding til en medstudent av varighet inntil 15 minutter
+Vurdering og eksamen
+
+Individuell hjemmeeksamen over to uker. Omfang: 2500 ord (+/- 10 %).
+
+Hjelpemidler ved eksamen
+
+Alle hjelpemidler er tillatt sC% lenge regler for kildehenvisning fC8lges.
+
+Vurderingsuttrykk
+
+Gradert skala A-F.
+
+Sensorordning
+
+Hver besvarelse vurderes av en sensor.
+
+Ekstern sensor benyttes regelmessig, og minimum ved hver tredje gjennomfC8ring av emnet. Ved uttrekk av besvarelser til ekstern sensur skal uttrekket omfatte minimum 10 % av besvarelsene, men uansett ikke fC&rre enn 5 besvarelser. Ved uttrekk skal ekstern sensors vurdering komme alle studentene til gode.
+
+Emneoverlapp
+
+10 studiepoeng overlapp med MAFYS4000 Kunnskapsgrunnlag og praksis i fysioterapi, 20 stp.

@@ -1,0 +1,115 @@
+institution: uib
+code: MATDID350-0
+year: NA
+hv: NA
+url: https://www4.uib.no/studier/emner/matdid350
+status: 200
+course_name_no: Utvaldte emne i matematikkdidaktikk
+----- FULLTEXT -----
+
+Navigasjonssti
+Forside
+Studier
+Emner
+
+Utvaldte emne i matematikkdidaktikk
+
+Studiepoeng
+
+10
+
+Undervisningssemester
+
+Haust, VC%r
+
+Emnekode
+
+MATDID350
+
+Talet pC% semester
+
+1
+
+UndervisningssprC%k
+
+Norsk
+
+Ressursar
+
+Timeplan
+
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust
+MC%l og innhald
+Emnet har som mC%l C% gjere studenten klar til C% skrive masteroppgC%ve i matematikkdidaktikk. Gjennom arbeidet med emnet skal studenten utvikle kompetanse innan eit matematikkdidaktisk kunnskapsomrC%de og kunnskap om relevante forskingsmetodar.
+LC&ringsutbyte
+
+Studenten skal ved avslutta emne ha fC8lgjande lC&ringsutbyte:
+
+Kunnskap
+
+Studenten
+
+har inngC%ande kunnskap om eit matematikkdidaktisk forskningsomrC%de
+har inngC%ande kunnskap om utvalde forskingsmetodar relevant for forskningsomrC%det
+
+Ferdigheiter
+
+Studenten
+
+kan identifisere og analysere forskingslitteratur knytt til ei matematikkdidaktisk problemstilling
+kan planlegge eit matematikkdidaktisk masterprosjekt
+
+Generell kompetanse
+
+Studenten
+
+har forstC%ind av matematikkdidaktikk som forskingsfelt
+har forstC%ing av etiske problemstillingar knytt til matematikkdidaktisk forsking
+Studiepoeng, omfang
+10 studiepoeng
+StudienivC% (studiesyklus)
+Master
+Undervisningssemester
+Haust og/eller vC%r
+Krav til forkunnskapar
+Har bestC%tt minst 60 studiepoeng i matematikk, og bestC%tt MATDID220
+Obligatorisk undervisningsaktivitet
+
+Studenten les ei liste med matematikkdidaktiske forskingsartiklar, og les ogsC% avtalt litteratur om forskingsmetodar. Litteraturliste vert avtalt med rettleiar og emneansvarleg.
+
+Studenten er med pC% sC% mange seminar som det blir gjort avtale om med rettleiar og emneansvarleg. Rettleiar og emneansvarleg kan ogsC% avtale at stududenten skal presentere ein eller fleire artiklar.
+
+Vurderingsformer
+Munnleg eksamen
+Karakterskala
+BestC%tt/ikkje bestC%tt
+Litteraturliste
+Litteraturliste vert avtalt med rettleiar og emneansvarleg.
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust
+Kontaktinformasjon
+
+Emnet eigast av Matematisk institutt.
+
+Kontakt studieveileder@math.uib.no
+
+Eksamensinformasjon
+Vurderingsordning
+Munnleg eksamen
+Trekkfrist
+01.11.2025
+
+Dette bC8r du vite om eksamen
+
+Matematisk institutt
+
+Vurderingsordning
+
+Munnleg eksamen
+
+Trekkfrist
+
+01.11.2025

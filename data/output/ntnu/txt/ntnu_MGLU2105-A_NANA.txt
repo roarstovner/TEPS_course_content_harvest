@@ -1,0 +1,10 @@
+institution: ntnu
+code: MGLU2105-A
+year: NA
+hv: NA
+url: https://www.ntnu.no/studier/emner/MGLU2105#tab=omEmnet
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+NA

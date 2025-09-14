@@ -1,0 +1,16 @@
+institution: uit
+code: TYS-3090-1
+year: NA
+hv: NA
+url: https://uit.no/utdanning/aktivt/emne/TYS-3090
+status: 200
+course_name_no: hC8st 2020
+TYS-3090 Spesialemne i tysk sprC%kvitenskap - 10 stp
+----- FULLTEXT -----
+
+
+Startsida
+Emnekatalog
+Spesialemne i tysk sprC%kvitenskap
+   
+

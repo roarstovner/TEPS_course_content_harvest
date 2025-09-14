@@ -1,0 +1,181 @@
+institution: uis
+code: MGL1100-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MGL1100
+status: 200
+course_name_no: Pedagogikk og elevkunnskap 1. LC&rerens undervisning i det mangfoldige klasserom (MGL1100)
+----- FULLTEXT -----
+
+Emnekode
+
+MGL1100
+
+Versjon
+
+1
+
+Vekting (stp)
+
+15
+
+Semester undervisningsstart
+
+HC8st
+
+Antall semestre
+
+1
+
+Vurderingssemester
+
+HC8st
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitenskap og humaniora,
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Fakultet for utdanningsvitenskap og humaniora,
+
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhold
+
+OM FAGET PEDAGOGIKK OG ELEVKUNNSKAP
+
+Pedagogikk og elevkunnskap, ved Universitetet i Stavanger, er delt i to sykluser som til sammen utgjC8r 60 studiepoeng. PEL-fagets fC8rste 30 studiepoeng ligger pC% utdanningens fC8rste og andre semester, mens de siste 30 er lagt fjerde studieC%r. For C% styrke lC&rerkompetansen i et flerkulturelt og flerreligiC8st samfunn, utgjC8r emner knyttet til religion, livssyn og etikk en integrert modul i faget. For C% fC8lge opp rammeplanens fC8ringer om profesjonsretting og progresjon og med det utvikling av studentenes profesjonskompetanse, er innholdet ordnet i henhold til tre faglig overordnende og gjennomgC%ende begrepspar:
+
+LC&ring - undervisning: PEL-faget skal vC&re profesjonsrettet og utvikle studentenes forstC%else av at lC&rerarbeidet blant annet innebC&rer C% gjennomfC8re en undervisning som sikrer gode lC&ringsprosesser for alle elevene.
+Inkludering - mangfold: I Rammeplan for grunnskolelC&rerutdanningen er det understreket at studentene skal kvalifiseres for C% tilpasse opplC&ringen til alle elevene. Av den grunn vil det C% vC&re lC&rer i en inkluderende skole preget av elevmangfold vC&re en av de overordnede tematikkene i faget.
+Profesjonsutvikling - profesjonsfelleskap: LC&rerrollen er mangefasettert og i stadig forandring fordi lC&rerarbeidet endres i takt med samfunnet, i takt med myndighetenes krav til lC&reren og i takt med utviklingsprosesser i profesjonen. For C% forberede studentene pC% at lC&rerarbeid innebC&rer deltakelse i profesjonsfellesskap pC% ulike nivC%, vil de systematisk bli utfordret til C% lC&re sammen med andre.
+
+De overordnete begrepsparene skal danne grunnlag for utvikling av en profesjonskompetanse som bidrar til forutsetninger for C% mC8te elevmangfold og mangfold i skolens profesjonsfellesskap. Begrepsparene vil vektlegges ulikt i de ulike emnene, og vil tidvis vC&re naturlig integrert i hverandre. I pel 1 vektlegges sC&rlig begrepsparet lC&ring - undervisning. En slik orientering er og i samsvar med Forskrift om rammeplan for grunnskolelC&rerutdanning: https://lovdata.no/dokument/SF/forskrift/2016-06-07-860https://lovdata.no/dokument/SF/forskrift/2016-06-07-860.
+
+LC&ringsutbytte
+
+Kunnskap
+
+Studenten
+
+har kunnskap om lC&rerprofesjonen og lC&rerarbeidet
+har kunnskap om grunnskolens formC%l, danningsoppdraget og styringsdokumenter
+har kunnskap om ulike forstC%elser av lC&ring, mestring og motivasjon og hvordan tilrettelegge for dette, tilpasset elevene pC% 1.-7.trinn
+har kunnskap om sentrale didaktiske prinsipper som er relevante for elever pC% 1.-7. trinn, med vekt pC% begynneropplC&ringen.
+har kunnskap om sentrale kjennetegn ved elevene pC% 1.-7. trinns kognitive, sosiale, emosjonelle og kroppslige utvikling
+har kunnskap om varierte arbeidsmC%ter, bruk av digitale verktC8y, vurderingsformer og grunnleggende ferdigheter
+har kunnskap om hvordan tilrettelegge for deltakelse i klassefellesskapet og hvordan dette skaper vilkC%r for elevers lC&ring.
+
+Ferdigheter
+
+Studenten
+
+kan anvende fagbegrep og begrunne sine didaktiske valg i teori om lC&ring og undervisning, ogsC% i begynneropplC&ringen
+kan reflektere over og anvende forskningsbasert kunnskap til C% utC8ve god klasseledelse pC% 1.-7.trinn
+kan planlegge og gjennomfC8re systematisk observasjon og analysere data fra observasjon i en vitenskapsteoretisk kontekst.
+kan presentere ulike dilemmaer i lC&rerarbeidet med et profesjonsetisk utgangspunkt
+kan forholde seg til sjanger og formkrav i akademisk skriving, anvendelse av faglitteratur samt ivareta grunnleggende forskningsetiske krav
+
+Generell kompetanse
+
+Studenten
+
+kan til en viss grad planlegge, gjennomfC8re og vurdere egen og andres undervisning med utgangspunkt i eksisterende rammefaktorer og gjeldende lC&replanverk
+kan delta i faglige diskusjoner om profesjonsetiske aspekter ved lC&rerarbeidet for elever pC% 1.-7. trinn
+
+Forkunnskapskrav
+
+Ingen
+
+Eksamen / vurdering
+
+VilkC%r for C% gC% opp til eksamen/vurdering
+
+Refleksjonsoppgave, Gruppeoppgave, En individuell fagtekst., Obligatorisk undervisning
+
+Gruppeoppgave. Planlegging, gjennomfC8ring og refleksjon av observasjon knyttet til fC8rste praksisperiode. Vurdering: Godkjent/ikke godkjent.
+En individuell fagtekst pC% 1700 ord +/- 10%. Vurdering: Godkjent/ikke godkjent.
+Ulike refleksjonsoppgaver (individuell og gruppe) tilpasset undervisningstemaene. Oppgavene kan variere i modalitet (visuelle, auditive, skriftlige og/eller multimodale). Vurdering: Godkjent/ikke godkjent.
+
+Studenter som fC%r et eller flere av arbeidskravene vurdert til ikke-godkjent ved fC8rste innlevering, gis mulighet for C)n ny innlevering av oppgaven(e) i bearbeidet form.
+
+Obligatoriske undervisningsaktiviteter
+
+I Pedagogikk og elevkunnskap vil studentene bli utfordret pC% koplingen mellom teori og praksis. Deler av undervisningen vil gC% med til C% diskutere hvilke konsekvenser de faglige begrepene kan ha for arbeidet i skolen. Videre vil studentene fC% trening i C% analysere elevers lC&ring fra ulike perspektiv. Faget skal fC8re til faglig refleksjon, personlig vekst og yrkesetisk bevissthet. Evnen til kritisk refleksjon oppC8ves blant annet i diskusjoner der studentene anvender fagets begrepsapparat. I undervisningen vil studentene ogsC% mC8te ulike arbeidsmC%ter som alle har som formC%l C% dyktiggjC8re dem i lC&rergjerningen. Derfor vil 70 % tilstedevC&relse i undervisningen vC&re pC%krevd.
+
+Fagperson(er)
+
+FaglC&rer:
+Hans Erik Bugge
+
+FaglC&rer:
+Anne Marit AlvC&r Johansen
+
+FaglC&rer:
+BjC8rn Christian Borg
+
+FaglC&rer:
+Cystein NybC8e
+
+FaglC&rer:
+Paolo Haaland Scarbocci
+
+FaglC&rer:
+Kari VestbC8
+
+Studieprogramleder:
+Ingeborg KnC&velsrud
+
+FaglC&rer:
+Mette Irene Hvalby
+
+FaglC&rer:
+Cge Vigane
+
+Praksiskoordinator:
+Karen Elizabeth Gilje Woie
+
+Studiekoordinator:
+Kjersti Gjedrem
+
+Arbeidsformer
+
+C kunne delta i et profesjonsfellesskap fordrer evne til samhandling pC% ulike nivC%. Studentene vil derfor mC8te ulike arbeidsmC%ter, inkludert digitale verktC8y.
+
+Forventet arbeidsomfang for 15 stp er totalt 425 timer. Disse er tenkt fordelt pC% fC8lgende mC%te:
+
+Undervisning: 67 timer
+
+Andre obligatoriske aktiviteter (kurs, seminar, trepartsmC8te etc.): 10 timer
+
+Praksis: 60 timer
+
+Selvstendig arbeid med arbeidskrav og pensum: 288 timer
+
+Praksis
+
+5 dager med observasjonspraksis i skole og 5 dager observasjonspraksis i barnehage inngC%r i dette semesteret.
+
+Cpent for
+
+GrunnskolelC&rerutdanning for trinn 1 - 7, femC%rig masterprogram
+
+LC&ring og psykologi - C%rsstudium
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+Pensumlisten finner du i Leganto

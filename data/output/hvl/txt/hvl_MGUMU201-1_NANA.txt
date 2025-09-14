@@ -1,0 +1,10 @@
+institution: hvl
+code: MGUMU201-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGUMU201
+status: 200
+course_name_no: MGUMU201 Musikk 1, emne 2 - Eleven og musikkulturelle kontekstar
+----- FULLTEXT -----
+
+NA

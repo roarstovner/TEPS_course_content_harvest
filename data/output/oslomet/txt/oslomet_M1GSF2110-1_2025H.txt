@@ -1,0 +1,311 @@
+institution: oslomet
+code: M1GSF2110-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/M1GSF2110/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+M1GSF2110 Samfunnsfag 1, emne 1 Emneplan
+Engelsk emnenavn
+Social Studies 1, Subject 1
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 1-7
+Omfang
+30.0 stp.
+StudieC%r
+2025/2026
+Pensum
+VCR 2026
+
+Timeplan
+VCR 2026
+Programplan
+GrunnskolelC&rerutdanning for trinn 1-7 (2025 HCST )
+Emnehistorikk
+2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Fagplan
+
+FAGPLAN
+
+Samfunnsfag 1 (30 studiepoeng)
+
+Samfunnsfag 2 (30 studiepoeng)
+
+Social Studies 1 (30 ECTS credits)
+
+Social Studies 2 (30 ECTS credits)
+
+Fagplanen ble godkjent i studieutvalget 14. november 2016
+
+Redaksjonelle endringer foretatt 28. april 2018, 7. mars 2019 og 21. januar 2021
+
+Revisjon godkjent av utdanningsutvalget 3. mai 2021
+
+Gjeldende fra hC8stsemesteret 2021
+
+Innledning
+
+Fagplanen bygger pC% forskrift om rammeplan for grunnskolelC&rerutdanningen for trinn 1-7, fastsatt av Kunnskapsdepartementet 7. juni 2016, nasjonale retningslinjer for grunnskolelC&rerutdanningen trinn 1-7 av 1. september 2016 og programplan for grunnskolelC&rerutdanning for trinn 1-7 ved OsloMet, godkjent av studieutvalget 16. november 2016.
+
+FormC%let med samfunnsfaget i lC&rerutdanningen er C% fremme aktivt demokratisk medborgerskap og kritisk tenkning. Studentene skal forberedes til profesjonsrollen som samfunnsfagslC&rer for trinn 1-7.
+
+C fremme aktivt medborgerskap innebC&rer C% utvikle en bred forstC%else av ulike demokratiske prosesser, ha kunnskap om ulike politiske institusjoner og en kritisk forstC%else av hvordan ulike politiske pC%virkningskanaler er med pC% C% forme samfunnet vi lever i. Dette innebC&rer ogsC% C% fremme samfunnsverdier tuftet pC% menneskerettighetene. Gjennom vektlegging av sentrale verdier som mangfold, likestilling, demokrati og bC&rekraftig utvikling bidrar samfunnsfaget til at studentene utvikles til selvstendige og aktive deltakere i skolen og samfunnet.
+
+Samfunnsfagsstudiet fordeles mellom geografi, historie og samfunnskunnskap, samtidig som tverrfaglige tilnC&rminger vektlegges. Geografi C%pner for C% gripe sammenhenger mellom det lokale og det globale. Studentene fC%r C8ve opp forstC%else av det romlige perspektivet. Gjennom observasjon, kartlegging og refleksjon, tar faget studentene med pC% leting etter romlige mC8nstre og sammenhenger mellom natur og samfunn.
+
+Historie gir studenten oversikt over ulike historiske perioder for C% gi innsikt i hvordan menneskeskapte samfunn har forandret seg over tid. Faget gjC8r dem i stand til C% drC8fte ulike vilkC%r og forklaringer pC% forandring og kontinuitet. Historie handler ogsC% om hvordan vi arbeider med historiske kilder, former fortellinger om og forstC%else av fortiden og hvordan vi bruker historie i nC%tiden. Fortiden og historiefagets identitetsskapende rolle for enkeltindividet og samfunn tillegges ogsC% vekt.
+
+Samfunnskunnskap skal gi studentene innsikt i hvordan mennesker skaper ulike former for samhandling i sosiale nettverk, organisasjoner, institusjoner og samfunn. Studentene fC%r innsikt i ulike styreformer og hvordan disse pC%virker enkeltindividets og gruppers muligheter til C% delta i og pC%virke samfunnsutviklingen. Sentralt er ogsC% spC8rsmC%let om hva fordeling av ressurser og makt har C% si for sosial ulikhet, ekskludering og konflikt, pC% lokalt, nasjonalt og globalt nivC%.
+
+MC%lgruppe
+
+MC%lgruppen for emnene er studenter som er tatt opp til femC%rig grunnskolelC&rerutdanning for trinn 1-7 og lC&rere som C8nsker videreutdanning.
+
+Opptakskrav
+
+Emnene er tilgjengelig som valgfag for aktive studenter ved grunnskolelC&rerutdanningen og lC&rerutdanning for tosprC%klige lC&rere pC% OsloMet i trC%d med utdanningenes programplaner. Interne sC8kere som sC8ker opptak til Samfunnsfag 2 mens de fortsatt er aktive pC% Samfunnsfag 1, kan fC% opptak uten C% ha fullfC8rt Samfunnsfag 1.
+
+Eksterne sC8kere mC% ha bestC%tt lC&rerutdanning som kvalifiserer for arbeid i skolen. Opptak til Samfunnsfag 2 forutsetter fullfC8rt Samfunnsfag 1 eller tilsvarende.
+
+Dersom Samfunnsfag 1 og Samfunnsfag 2 tilbys som et C%rsstudium (60 studiepoeng), tas det opp til begge emner, og det kreves da ikke at Samfunnsfag 1 er bestC%tt fC8r studenten begynner pC% Samfunnsfag 2.
+
+SC8kere som Utdanningsdirektoratet har vurdert til C% ha lC&rerutdanning fra utlandet, men som mangler fag/studiepoeng for C% bli godkjent lC&rer i norsk grunnopplC&ring, kan ogsC% sC8ke. Slike sC8kere mC% i tillegg oppfylle kravet til generell studiekompetanse.
+
+LC&ringsutbytte
+
+LC&ringsutbyttet er nC&rmere beskrevet i emneplanene.
+
+Fagets innhold og oppbygging
+
+BC%de Samfunnsfag 1 og Samfunnsfag 2 bestC%r av ett emne pC% 30 studiepoeng. Samfunnsfag 2 bygger pC% Samfunnsfag 1. Minste kompetansegivende enhet for dette faget er 30 studiepoeng.
+
+Fagets arbeids- og undervisningsformer
+
+Undervisningen er variert med forelesninger, seminarer, gruppearbeid, plenumsdiskusjoner, estetiske arbeidsoppgaver og forberedte studentinnlegg. Vi legger opp til C% bruke lokalmiljC8et som ressurs med museumsbesC8k og ekskursjoner. Samfunnsfaget legger vekt pC% studentaktivitet og profesjonsrettet undervisning.
+
+Studentene blir kjent med ulike metoder for innsamling, bearbeiding, tolking og formidling av fagstoff i samfunnsfag. Dette inkluderer bC%de primC&re og sekundC&re kilder. Studentene skal kunne tilrettelegge for elevenes lC&ring av samfunnsfaglig innhold i skolen gjennom utforskende lC&ringsaktiviteter.
+
+Digitale verktC8y og medier har en sentral plass i undervisningen. Vi legger vekt pC% at studentene utvikler ferdigheter i C% bruke IKT, og at de oppC8ver et kritisk og reflektert forhold til hvordan digitale medier og sosiale medier kan brukes pC% en god og lC&ringsfremmende mC%te i klasserommet.
+
+Klasseledelse og lC&rerrollen
+
+Studentene skal lC&re om og trene pC% klasseledelse og lC&rerrollen i faget. Klasseledelse og lC&rerrollen sett fra samfunnsfaget innebC&rer C% lede klassen pC% en mC%te som fremmer positive holdninger til mangfold, likestilling, demokratiske verdier og bC&rekraftig utvikling. Et sentralt element i dette er C% skape et godt lC&ringsfellesskap, og studentene trenes i C% fremme et godt debattklima i klasserommet, samt C% delta i den offentlige debatten. Studentene skal gjC8re elevene sine i stand til C% bygge opp og begrunne argumenter. Klasseledelse i samfunnsfag handler ogsC% om C% kunne gjennomfC8re elevvalg, delta i elevrC%d og klasserC%d, samt fremme aktiv elevmedvirkning bC%de i vurderingsprosesser, metodevalg og temaer som er relevant for elevenes undervisning.
+
+Tilpasset opplC&ring
+
+Tilpasset opplC&ring i samfunnsfag handler om C% bruke elevenes historiske, geografiske og kulturelle erfaringer som en ressurs i undervisningen. C kjenne til varierte undervisningsformer, lC&ringsressurser og ulike vurderingsformer og C% kunne ta i bruk dette, er viktige forutsetninger for C% drive tilpasset opplC&ring i samfunnsfag.
+
+Studentene skal gjC8re seg kjent med eksplisitt skriveopplC&ring, begrepsinnlC&ring, og argumentasjonsverktC8y i samfunnsfag. Videre er det sentralt C% kunne lede verdidebatter der alle elevers bakgrunn blir hC8rt og respektert.
+
+BegynneropplC&ring
+
+For C% tilrettelegge for lC&ring i smC%trinnet mC% samfunnsfagslC&reren bruke elevaktive, praktiske og varierte arbeidsformer. Samfunnsfagundervisningen i lC&rerutdanningen preges av en tverrfaglig tilnC&rming. En slik tverrfaglig tilnC&rming hjelper de minste elevene til C% fC% en helhetlig forstC%else av komplekse temaer, som for eksempel bC&rekraftig utvikling.
+
+Vurdering
+
+Vurderingsformene i samfunnsfag er eksemplariske slik at studentene kan anvende dem i egen undervisning. Det legges vekt pC% varierte vurderingsformer for C% fremme ulike typer kunnskaper og ferdigheter. Vurdering for lC&ring sikres gjennom formativ vurdering av muntlige og skriftlige arbeidskrav. Den summative vurderingen gir et bilde av studentens oppnC%else av lC&ringsutbyttebeskrivelsene.
+
+Grunnleggende ferdigheter
+
+Undervisningen i samfunnsfag vektlegger informasjonsinnhenting, vurdering og argumentasjon. C trene seg i C% hC%ndtere og systematisere informasjon stimulerer og videreutvikler de grunnleggende ferdighetene, i sC&rdeleshet C% kunne lese, C% kunne regne og C% kunne bruke digitale verktC8y. Gjennom ulike tilnC&rminger blir studentene C8vd i analyse, refleksjon og argumentasjon, som fordrer og utvikler de grunnleggende ferdighetene C% kunne uttrykke seg muntlig og skriftlig.
+
+Digital kompetanse
+
+Digital kompetanse er i samfunnsfag rettet mot bC%de student, framtidig lC&rer og elevenes lC&ringsarbeid. Det vil bli brukt relevante digitale verktC8y i alle fagets emner. Som framtidig lC&rer mC% studentene vC&re i stand til C% benytte digitale hjelpemidler i planlegging, gjennomfC8ring og evaluering av lC&ringsarbeidet. Dette innebC&rer ogsC% C% kunne velge og vurdere egnede digitale verktC8y i elevenes lC&ringsarbeid. I tillegg er oppC8ving i kildesC8k, kildekritikk og kildebruk vesentlig. Studentene skal oppC8ve et kritisk og reflektert forhold til hvordan nye digitale medier kan brukes pC% en god og lC&ringsfremmende mC%te i klasserommet. I tillegg legges det vekt pC% C% oppC8ve et kritisk og reflektert forhold til hvordan de digitale mediene er med pC% C% forme samfunnet og de demokratiske prosessene.
+
+Det mangfoldige klasserommet
+
+Studentene skal kjenne til, erfare og kunne drC8fte hvordan det mangfoldige klasserommet rommer faglige og didaktiske ressurser for samfunnsfagslC&rere. De skal tilegne seg ferdigheter til C% avdekke marginaliseringsprosesser i samfunnet og i skolen. Det innebC&rer C% utvikle bevissthet om hva som kan skape skiller mellom B+viB; og B+de andreB;, og hvordan samfunnsfaget i skolen kan hindre stigma og gruppetenkning. SynliggjC8ring av majoritets- og minoritetssyn er sentralt. I undervisningen vil studentene analysere faglige temaer gjennom ulike perspektiver; det globale, regionale, nasjonale og lokale. Studentene vil i tillegg fC% erfaring med normkritiske perspektiver knyttet til kjC8nn, seksualitet og likestilling.
+
+Estetiske arbeidsmC%ter
+
+Samfunnsfaget ligger i skjC&ringspunktet mellom natur og kultur, mellom naturressurser og menneskelige utnyttelse av ressursgrunnlaget. Hvordan det kulturelle kommer til uttrykk i ulike historiske perioder og i ulike samfunnsformer, er dermed sentralt, og kulturelle uttrykk som litteratur, kunst og musikk hC8rer hjemme i samfunnsfaget. I undervisningen blir arbeid med estetiske arbeidsformer (tidslinjemodeller, dramatisering/storyline, ekskursjoner, figurative tilnC&rminger osv.) vektlagt.
+
+Internasjonale perspektiver
+
+HovedomrC%dene i samfunnsfaget - geografi, historie og samfunnskunnskap - mC% forstC%s i et globalt perspektiv. Ingen av de sentrale temaene i faget - mangfold, likestilling, menneskerettigheter, demokrati og bC&rekraftig utvikling - kan begrenses til nasjonale rammer. Samfunnsfaget tilstreber derfor C% synliggjC8re sammenhenger mellom det lokale, regionale, nasjonale og det globale.
+
+Alle emner i samfunnsfag har internasjonale perspektiver, men disse er sC&rlig framtredende i den regionale fordypningen i Samfunnsfag 2. Gjennom regionstudier, kontakt med internasjonale samarbeidsinstitusjoner og studietur (med arbeidskrav) styrkes samfunnsfagets internasjonale profil, og studentene fC%r innsikt i kulturer og lC&ringstradisjoner som er annerledes enn deres egen. KulturforstC%else kan styrke studentenes evne til C% bruke annerledeshet som en ressurs i klasserommet. Deler av pensum i samfunnsfag er pC% engelsk.
+
+Praksistilknytning
+
+Eksamen i emne 1 er praksisrettet og tar utgangspunkt i eksempler og erfaringer fra praksisperioden i vC%rsemesteret. Studenten formulerer en problemstilling fra praksis som begrunnes og drC8ftes i lys av relevant faglig, fagdidaktisk og pedagogisk litteratur. Studentene vil gjennom hele samfunnsfagsstudiet fC% reflektere rundt praksisrelaterte problemstillinger gjennom arbeidskrav, eksamener og FoU-oppgaven.
+
+Forskningsforankring
+
+Pensumlitteraturen i samfunnsfag er faglig oppdatert. I trC%d med progresjonen i faget avanserer studentene fra C% lese innfC8ringsbC8ker til C% lese forskningsartikler og klassiske tekster innen humaniora og samfunnsfag. BC%de norske og internasjonale perspektiver trekkes inn. I arbeidet med FoU-oppgaven lC&rer studentene C% sette seg inn sentrale teorier og forskningsbidrag knyttet til et selvvalgt tema, samt C% anvende dette i selvstendige analyser som kan bygge pC% eget datamateriale. De ansattes FoU-kompetanse trekkes ogsC% inn i undervisningen.
+
+Psykososialt lC&ringsmiljC8
+
+Samfunnsfagene tar opp mange temaer som er gjenstand for meningsbrytninger, som norsk og internasjonal politikk, innvandring, minoriteter og menneskerettigheter. Faget tar ogsC% opp temaer der lC&reren mC% vC&re seg bevisst bC%de sine perspektiver og sitt normative stC%sted. Samfunnsfaget skal vC&re et fag der elevene pC% en trygg mC%te kan lC&re seg C% uttrykke sine meninger og fC% aksept for disse, lC&re C% lytte og bli lyttet til. Klarer lC&reren C% skape et godt debatt- og lC&ringsfellesskap i klasserommet der alle stemmer blir hC8rt og anerkjent, vil dette fremme et godt psykososialt lC&ringsmiljC8. Livsmestring, som er et av de overordnede temaene for grunnopplC&ringen, betyr blant annet arbeid med identitetsdannelse, selvtillit og egenverd. Individers handlingsrom for grensesetting og bevissthet om seksuell trakassering som et samfunnsproblem vektlegges ogsC%.
+
+Samiske forhold og rettigheter
+
+Samisk historie og anerkjennelse av samer som urfolk inngC%r i samfunnsfagundervisningen. Samiske forhold blir belyst gjennom geografiske perspektiver som tar opp forholdet mellom ressursgrunnlag, nC&ringer, bosetting og levevis. Historiske perspektiver belyser samens historie, fornorskingspolitikken og i nyere tid anerkjennelse av samene som et urfolk. Perspektiver fra samfunnskunnskapen vektlegger identitet, mangfoldperspektivet og samenes rettigheter i en nasjonal og internasjonal sammenheng.
+
+BC&rekraftig utvikling
+
+Utdanning for bC&rekraftig utvikling er et gjennomgC%ende perspektiv i samfunnsfag. For C% forstC% kompleksiteten knyttet til bC&rekraftig utvikling, og for C% ruste dagens elever til C% gjC8re gode bC&rekraftige valg i framtiden, mC% undervisningen vC&re tverrfaglig, systemorientert og handlingsorientert. Samfunnsfaget i skolen har et spesielt ansvar for C% fremme elevenes handlingskompetanse slik at de aktivt kan forme egen framtid og livsvilkC%r. En slik kompetanse kan utvikles gjennom C% la elever fC% erfaringer med samarbeid, vurdering av ulike handlingsalternativer, og C% finne nye lC8sninger pC% problemer. Samfunnsfagsstudenter i lC&rerutdanningen vil arbeide med bC&rekraftig utvikling i ulike sammenhenger og ut ifra ulike perspektiver.
+
+PraksisopplC&ring
+
+PraksisopplC&ring er nC&rmere beskrevet i fagplan for praksisopplC&ring for trinn 1-7.
+
+Skikkethetsvurdering
+
+LC&rerutdanningsinstitusjoner har ansvar for C% vurdere om studenter er skikket for lC&reryrket. LC8pende skikkethetsvurdering foregC%r gjennom hele studiet og inngC%r i en helhetsvurdering av studentens faglige og personlige forutsetninger for C% kunne fungere som lC&rer. En student som utgjC8r en mulig fare for elevers liv, fysiske og psykiske helse, rettigheter og sikkerhet, er ikke skikket for yrket. Studenter som viser liten evne til C% mestre lC&reryrket, skal sC% tidlig som mulig i utdanningen fC% melding om dette. De skal fC% rC%d og veiledning for C% gjC8re dem i stand til C% oppfylle kravene om lC&rerskikkethet eller fC% rC%d om C% avslutte utdanningen. Beslutninger om skikkethet kan fattes gjennom hele studiet. Se universitetets nettsted for mer informasjon om skikkethetsvurdering.
+
+Arbeidskrav
+
+Arbeidskrav skal vC&re levert/utfC8rt innen fastsatt(e) frist(er). Gyldig fravC&r dokumentert med for eksempel sykemelding, gir ikke fritak for C% innfri arbeidskrav. Studenter som pC% grunn av sykdom eller annen dokumentert gyldig C%rsak ikke leverer/utfC8rer arbeidskrav innen fristen, kan fC% forlenget frist. Ny frist for C% innfri arbeidskrav avtales i hvert enkelt tilfelle med den aktuelle lC&reren.
+
+Arbeidskrav vurderes til "Godkjent" eller "Ikke godkjent". Studenter som leverer/utfC8rer arbeidskrav innen fristen, men som fC%r vurderingen "Ikke godkjent", har anledning til to nye innleveringer/utfC8relser. Studenten mC% da selv avtale ny innlevering av det aktuelle arbeidskravet med faglC&rer. Studenter som ikke leverer/utfC8rer arbeidskrav innen fristen og som ikke har dokumentert gyldig C%rsak, fC%r ingen nye forsC8k.
+
+De fagovergripende temaene pC% de ulike studieC%rene og semestrene er beskrevet i programplan for grunnskolelC&rerutdanning for trinn 1-7. I tilknytning til disse kan det vC&re krav til tilstedevC&relse og/eller andre arbeidskrav.
+
+Arbeidskrav omfatter ogsC% eventuelle krav om tilstedevC&relse. Undervisningsformene i studiet forutsetter kontinuitet, studentaktivitet og samhandling. Det stilles krav om oppmC8te pC% minimum 80 %. Ved fravC&r utover 20 %, og inntil 40 %, vil det gis en kompensatorisk oppgave eller arbeid som kan kreve oppmC8teplikt. Form og omfang avtales med faglC&rer. Ved fravC&r utover 40 % vil studenten trekkes fra eksamen.
+
+NC&rmere informasjon om arbeidskrav finnes i den enkelte emneplan.
+
+Vurderings-/eksamensformer
+
+Vurdering er nC&rmere beskrevet i emneplanene.
+
+Vurderingskriterier
+
+Generell kvalitativ beskrivelse av vurderingskriteriene
+
+A Fremragende
+
+Har svC&rt so god analytisk evne og kan bruke informasjon pC% en kreativ og kritisk mC%te. Viser hC8yt refleksjonsnivC% som inkluderer lC&ringsmC%l, fagets egenart og lC&rerens rolle knyttet til barn og unges lC&ring og utvikling. SvC&rt god evne til C% redegjC8re muntlig for faglig stoff, oppfatte problemstillinger og til presis begrunnelse for lC8sningsforslag.
+
+B Meget god
+
+Har meget gode kunnskaper og meget god evne til C% orientere seg innenfor kunnskapsfeltet. Kan vurdere informasjon kritisk og viser en meget god evne til refleksjon som inkluderer lC&ringsmC%l, fagets egenart og lC&rerens rolle knyttet til barn og unges lC&ring og utvikling. Meget god evne til C% redegjC8re muntlig for faglig stoff, oppfatte problemstillinger og til presis begrunnelse for lC8sningsforslag.
+
+C God
+
+Har gode kunnskaper og god evne til C% orientere seg innenfor kunnskapsfeltet. Kjenner til ulike informasjonskilder og viser god evne til refleksjon som inkluderer lC&ringsmC%l, fagets egenart og lC&rerens rolle knyttet til barn og unges lC&ring og utvikling. God evne til C% redegjC8re muntlig for faglig stoff, oppfatte problemstillinger og til C% begrunne lC8sningsforslag.
+
+D NoksC% god
+
+Har begrensete kunnskaper, men kjennskap til kunnskapsfeltet og viser noe evne til selvstendig anvendelse av kunnskapen. Viser noe evne til refleksjon som inkluderer lC&ringsmC%l, fagets egenart og lC&rerens rolle knyttet til barn og unges lC&ring og utvikling. Viser evne til C% redegjC8re muntlig for faglig stoff, oppfatte problemstillinger og til C% begrunne lC8sningsforslag.
+
+E Tilstrekkelig
+
+Tilfredsstiller minimumskravene til kunnskaper, men anvender kunnskapen pC% en uselvstendig mC%te. Lavt refleksjonsnivC% som inkluderer lC&ringsmC%l, fagets egenart og lC&rerens rolle knyttet til barn og unges lC&ring og utvikling. Viser noe evne til C% redegjC8re muntlig for faglig stoff, oppfatte problemstillinger og til C% begrunne lC8sningsforslag.
+
+F Ikke bestC%tt
+
+Har utilstrekkelige kunnskaper og viser utilstrekkelig kjennskap til lC&ringsmC%l, fagets egenart og lC&rerens rolle knyttet til barn og unges lC&ring og utvikling. Klarer i utilstrekkelig grad C% redegjC8re muntlig for faglig stoff, oppfatter ikke problemstillinger og klarer ikke C% begrunne lC8sningsforslag.
+
+Utfyllende kriterier framgC%r av retningslinjer som gjC8res tilgjengelig ved starten av emnet.
+
+Rettigheter og plikter ved eksamen
+
+Studentens rettigheter og plikter framgC%r av forskrift om studier og eksamen ved OsloMet. Forskriften beskriver blant annet vilkC%r for ny/utsatt eksamen, klageadgang og hva som regnes som fusk ved eksamen. Studenten er selv ansvarlig for C% melde seg opp til eventuell ny/utsatt eksamen.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har kunnskap om faglige og fagdidaktiske teorier og metoder i geografi, historie og samfunnskunnskap
+har kunnskap om vurdering for lC&ring i samfunnsfag
+har kunnskap om skolefaget samfunnsfag og samfunnsfagets styringsdokumenter i et historisk perspektiv
+har kunnskap om samspillet mellom mennesker, teknologi og natur med vekt pC% ressursfordeling og bC&rekraftig utvikling til ulike tider: I jeger-/sanker-samfunnet, jordbrukssamfunnet, industrisamfunnet og det postindustrielle samfunnet
+har kunnskap om sted og landskap som natur, kultur og historie
+har kunnskap om hovedtrekk i norsk og internasjonal historie
+har kunnskap om ulike perspektiver pC% bruk av IKT i samfunnsfagundervisningen og barn og unges digitale hverdag, digitale dC8mmekraft og samfunnsdeltakelse
+har kunnskap om samarbeid og konflikt omkring bC&rekraftig utvikling, FN og menneskerettigheter i et nasjonalt og globalt perspektiv
+har kunnskap om ideologier, makt og det norske styringssystem
+har kunnskap om medborgerskap, demokrati og demokratiseringsprosesser
+har kunnskap om samene som urfolk og de nasjonale minoritetene
+har kunnskap om kulturelt mangfold, globalisering og migrasjon
+har kunnskap om sosialisering, identitetsdanning og ulikhet i et samfunnsfaglig perspektiv
+
+Ferdigheter
+
+Studenten
+
+kan anvende faglige og fagdidaktiske kunnskaper og ferdigheter i geografi, historie og samfunnskunnskap i henhold til gjeldende lC&replan
+kan planlegge elevers lC&ringsarbeid og gi lC&ringsrettede tilbakemeldinger, inkludert gjennom bruk av digitale medier.
+kan lede lC&ringsprosesser i begynneropplC&ring med vekt pC% C% utvikle grunnleggende ferdigheter
+kan finne, tolke og vurdere ulike typer kilder for C% legge til rette for gode lC&ringsprosesser
+kan fremme bC&rekraftig handlingskompetanse og aktivt demokratisk medborgerskap hos elevene
+kan arbeide med verdier og holdninger i samfunnsfag, stimulere til undring og respekt for mangfold og bruke dette som en ressurs i arbeidet med elevene
+kan fremme politisk sosialisering og kritisk tenkning omkring samfunnsfaglige spC8rsmC%l hos barn og unge
+
+Generell kompetanse
+
+Studenten
+
+har overblikk over perioder og utviklingsmC8nstre og kan gjC8re greie for hvordan historie og kultur blir konstruert
+kan reflektere om forholdet mellom individ og samfunn og i dimensjonene tid og sted
+kan legge til rette for demokratisk lC&ringsfellesskap
+kan stimulere til at elevene kan undersC8ke selv, samarbeide og ta ansvar
+kan reflektere kritisk omkring lC&remidler og lC&ringsressurser i samfunnsfag
+Innhold
+
+Emnet gir en grunnleggende innfC8ring i samfunnsfagets hovedomrC%der (geografi, historie, samfunnskunnskap) og samfunnsfagdidaktikk. Studentene fC%r innblikk i lange historiske linjer fra jeger-/ sanker-samfunnet til det postindustrielle samfunnet, i et nasjonalt sC% vel som et internasjonalt perspektiv. Videre gir emnet innsikt i sentrale nC8kkelbegreper, fagdidaktiske problemstillinger og begynneropplC&ring i samfunnsfag. Emnet tar ogsC% for seg sentrale samfunnsfaglige problemstillinger i det norske samfunnet og setter disse inn i en global sammenheng. Studentene fC%r innsikt i samspillet mellom individ og samfunn, og mellom mennesker og natur.
+
+Arbeids- og undervisningsformer
+
+Se fagplanen.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+Retten til C% avlegge eksamen forutsetter godkjente arbeidskrav og deltakelse i bestemte faglige aktiviteter. NC&rmere informasjon finnes i den innledende fagplandelen.
+
+Estetiske arbeidskrav
+
+Studentene utformer estetiske arbeidskrav knyttet til to av emnets undervisningstemaer, som f. eks. et storyline-produkt, podcast eller film/animasjon. Arbeidet gjC8res i grupper pC% ca. fire studenter. Studenten skal i grupper gjennomfC8re et etterarbeid og presentere dette for faglC&rere og medstudenter. FormC%let med arbeidskravet er C% fremme estetiske arbeidsformer i arbeid med fagstoff.
+
+Didaktisk analyse av et undervisningsopplegg
+
+Studentene utvikler et digitalt undervisningsopplegg knyttet til ett av emnets undervisningstemaer. Arbeidet gjC8res i grupper pC% ca. fire studenter, og opplegget presenteres med muntlig framlegg pC% ca. 15 minutter. Studentene skriver en individuell fagtekst pC% bakgrunn av undervisningsopplegget. Omfang 2000 ord (+/-10%). FormC%let med arbeidskravet er C% utvikle studentenes muntlige og skriftlige ferdigheter, samt faglige og fagdidaktiske refleksjoner.
+
+Gruppepresentasjon av praksiserfaringer
+
+Praksisgruppene presenterer en problemstilling som bygger pC% erfaringer fra praksis. Problemstillingen skal begrunnes og drC8ftes i lys av faglitteratur og fagdidaktisk litteratur. Omfang av gruppepresentasjon er ca. 10 minutter. Gruppens presentasjon kan danne grunnlaget for den individuelle fagteksten som utgjC8r deleksamen 1.
+
+Det er i tillegg krav om at studenten mC% gjennomfC8re flerfaglig arbeidskrav for C% fC% avlegge eksamen i emnet. Se programplan for grunnskolelC&rerutdanning for trinn 1-7 for nC&rmere informasjon om arbeidskravene.
+
+Deltakelse pC% ekskursjon
+
+I lC8pet av semesteret blir det gjennomfC8rt en eller flere kortvarige endagsekskursjoner, med obligatorisk deltagelse. Ekskursjonen(e) vil vC&re tilknyttet sentrale undervisningstemaer i semesteret og vil kunne kreve studentaktivitet bC%de i forkant og etterkant, sC% vel som underveis i ekskursjonen. Eksempel pC% et mulige ekskursjonsmC%l er Demokratisenteret pC% Eidsvoll. Ekskursjonenes formC%l er C% utvikle faglig kompetanse i samfunnsfag, samt ekskursjon og bruk av lokal- og utemiljC8 som metode.
+
+Deltakelse pC% eksamensseminar
+
+Deltakelse pC% eksamensseminar der studentene diskuterer og legger fram lC8sningsforslag i grupper.
+
+Vurdering og eksamen
+
+Deleksamen 1: Individuell skriftlig oppgave (fagtekst) med selvvalgt problemstilling, og som kan bygge pC% arbeidskravet der studentene presenterer erfaringer fra praksis. Fagteksten skal inkludere bC%de faglige og fagdidaktiske perspektiver. Omfang: 4000 ord (+/- 10 %). NC&rmere beskrivelse av rammene for oppgaven vil foreligge ved semesterstart.
+
+Deleksamen 2: Individuell skriftlig eksamen under tilsyn (fem timer) uten hjelpemidler.
+
+Deleksamen 1 og 2 vektes 50/50 i samlet karakter for emnet.
+
+Ny/utsatt eksamen
+
+Ny/utsatt eksamen arrangeres som ved ordinC&r eksamen. Ved ikke bestC%tt eksamen pC% deleksamen 1 har studenten anledning til C% omarbeide tekstbesvarelsen fra ordinC&r eksamen til ny eksamen.
+
+Vurderingsuttrykk
+
+Det benyttes en gradert karakterskala fra A til E for bestC%tt og F for ikke bestC%tt eksamen.
+
+Sensorordning
+
+Eksamen vurderes av to interne sensorer. En tilsynssensor er tilknyttet emnet, i henhold til retningslinjer for oppnevning og bruk av sensorer ved OsloMet.
+
+Opptakskrav
+
+Se fagplanen.

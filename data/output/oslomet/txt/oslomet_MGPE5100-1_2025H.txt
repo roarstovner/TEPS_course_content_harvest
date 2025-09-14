@@ -1,0 +1,232 @@
+institution: oslomet
+code: MGPE5100-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/MGPE5100/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+MGPE5100 Pedagogikk fordypning 2: Profesjonsrettet pedagogikk Emneplan
+Engelsk emnenavn
+Professional pedagogy 2
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 1-7
+GrunnskolelC&rerutdanning for trinn 5-10
+Omfang
+15.0 stp.
+StudieC%r
+2025/2026
+Pensum
+HCST 2025
+
+Timeplan
+HCST 2025
+Programplan
+GrunnskolelC&rerutdanning for trinn 1-7 (2025 HCST )
+GrunnskolelC&rerutdanning for trinn 5-10 (2025 HCST )
+Emnehistorikk
+2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Fagplan
+
+Pedagogikk fordypning 2:
+
+Profesjonsrettet pedagogikk
+
+(15 studiepoeng)
+
+Fagplanen ble godkjent i studieutvalget 14. november 2016
+
+Revisjon godkjent av utdanningsutvalget 11. januar 2021
+
+Redaksjonell endring lagt inn 29. oktober 2021
+
+Gjeldende fra hC8stsemesteret 2022
+
+Innledning
+
+Fagplanen bygger pC% forskrift om rammeplan for grunnskolelC&rerutdanningen for trinn 1-7/trinn 5-10, fastsatt av Kunnskapsdepartementet 7. juni 2016, nasjonale retningslinjer for grunnskolelC&rerutdanningen trinn 1-7/trinn 5-10 av 1. september 2016 og programplan for grunnskolelC&rerutdanning for trinn 1-7/trinn 5-10 ved HC8gskolen i Oslo og Akershus, godkjent av studieutvalget 16. november 2016.
+
+Grunnskolen skal skape lC&ringssituasjoner som gir alle elever mulighet til utvikling og lC&ring ut fra egne forutsetninger. Det krever arbeid med eleven som del av fellesskapet i klassen, med stC8tte til elever som trenger sC&rlig oppfC8lging og med C% utnytte mulighetene som kan ligge i digitale lC&ringsomgivelser. Masterfaget Profesjonsrettet pedagogikk 2 gir mulighet til C% utforske muligheter og begrensninger i dette arbeidet.
+
+LC&rere forutsettes C% utvikle egen yrkespraksis som del av profesjonsfellesskapet ved egen skole, bC%de i utviklingsprosjekter og som del av daglig drift. Profesjonsrettet pedagogikk 2 tematiserer utfordringer som det kan innebC&re, med sC&rlig vekt pC% hvordan skolen kan utvikle strategier for C% stC8tte elever som trenger en forsterket oppfC8lging for C% hC%ndtere skolens krav. Norske klasserom er preget av pluralisme, bC%de ut fra sosioC8konomisk bakgrunn, kjC8nn, sprC%klig og kulturelt mangfold og funksjonsevne. I hvilken grad lC&reren klarer C% skape et klasserom for alle, er av betydning bC%de for mange involverte. I tillegg er det et omrC%de som mange lC&rere finner utfordrende. Det gir grunn til oppmerksomhet mot hvordan handlingsrommet kan brukes aktivt for C% bidra til at alle elever fC%r utnyttet sitt lC&ringspotensial, i et hverdagsliv i klasserommet preget av demokrati og kritikk. Det finnes ingen enkeltstC%ende metode som lC8ser disse utfordringene, men utformingen av lC8pende undervisning og klasseledelse har stor betydning. Studiet vektlegger hvordan en systematisk kan utnytte bC%de faget, lC&reren og medelever som klasserommets tre prinsipielle lC&ringsressurser.
+
+En fordypet forstC%else av mangfoldet i elevgruppa stC%r sentralt. Studentene utfordres til C% ta kritisk stilling til hvordan det C% vC&re del av et profesjonsfellesskap kan gi muligheter for C% bedre utnytte egne sterke sider og kompensere for de svake, og for C% bidra til utvikling av fellesskapet. Studiet utfordrer til kritisk ettertanke over og utvikling av egen yrkesidentitet, med utgangspunkt i eget skolefag fra grunnskolelC&rerutdanninga og skolens samfunnsmandat. Fundamentet for emnet er Pedagogikk og elevkunnskap 1 og Pedagogisk fordypning 1 Et klasserom for alle. PC% dette grunnlaget tematiserer emne 5 Profesjonsrettet pedagogikk 2 ledelse av elevene i klasserommet, skolens mC8te med elever som trenger spesiell oppfC8lging og ledelse av lokalt utviklingsarbeid.
+
+MC%lgruppe
+
+Studenter som er tatt opp til femC%rig grunnskolelC&rerutdanning for trinn 1-7/trinn 5-10.
+
+Opptakskrav
+
+Faget er tilgjengelig som valgfag for aktive studenter ved grunnskolelC&rerutdanningen
+
+LC&ringsutbytte
+
+LC&ringsutbytte er nC&rmere beskrevet i emneplanen.
+
+Fagets innhold og oppbygging
+
+Pedagogikk fordypning 2: Profesjonsrettet pedagogikk (15 studiepoeng) bestC%r av et emne og gjennomfC8res i niende semester.
+
+Fagets arbeids- og undervisningsformer
+
+Gjennom semesteret anvendes individuelt arbeid med pensumlitteratur, kollokviegrupper, oppgavearbeid i gruppe, forelesninger og casebasert dialogseminar. Studentene forutsettes C% engasjere seg aktivt i studentfellesskapet gjennom drC8ftinger, framlegg, analyse av utfordrende arbeidssituasjoner og begrunnede valg av mulige handlemC%ter.
+
+Hovedtemaene i faget ligger i forlengelsen av de gjennomgC%ende temaene i faget Pedagogikk og elevkunnskap, og skal ved det bidra til studentens erkjennelse av helhet og sammenheng i sitt studium:
+
+LC&ringsledelse og dypere forstC%else av elevmangfold - deltema
+Utvikling av endringskompetanse - deltema
+Klasseledelse og lC&rerrollen sett fra faget - deltema
+Praksistilknytning - beskrevet under punkt praksisopplC&ring
+Internasjonale perspektiver - deler av pensum pC% engelsk, vekt pC% den internasjonale forskningsfronten innen deltemaene generelt og innen studentens fordypningsomrC%de for masteroppgaven spesielt, setter eget fag i et internasjonalt perspektiv
+
+Arbeidsformene omfatter individuelt arbeid med pensumlitteratur, kollokviegrupper, oppgavearbeid i gruppe, forelesninger og casebasert dialogseminar. Studentene forutsettes C% engasjere seg aktivt i studentfellesskapet gjennom drC8ftinger, framlegg, analyse av utfordrende arbeidssituasjoner og begrunnede valg av mulige handlemC%ter.
+
+PraksisopplC&ring
+
+PraksisopplC&ring er nC&rmere beskrevet i programplanen. LC&ringsutbyttebeskrivelsene for emnene er konsistente med lC&ringsutbyttebeskrivelsene for praksisstudium i 2. syklus. I praksisperioden 9. semester utnytter studenten sitt nettverk fra praksisstudiet til C% finne hC%ndterlige mC%ter C% innhente empiri til masteroppgaven dersom dette er aktuelt.
+
+Skikkethetsvurdering
+
+LC&rerutdanningsinstitusjoner har ansvar for C% vurdere om studenter er skikket for lC&reryrket. LC8pende skikkethetsvurdering foregC%r gjennom hele studiet og inngC%r i en helhetsvurdering av studentens faglige og personlige forutsetninger for C% kunne fungere som lC&rer. En student som utgjC8r en mulig fare for elevers liv, fysiske og psykiske helse, rettigheter og sikkerhet, er ikke skikket for yrket. Studenter som viser liten evne til C% mestre lC&reryrket, skal sC% tidlig som mulig i utdanningen fC% melding om dette. De skal fC% rC%d og veiledning for C% gjC8re dem i stand til C% oppfylle kravene om lC&rerskikkethet eller fC% rC%d om C% avslutte utdanningen. Beslutninger om skikkethet kan fattes gjennom hele studiet. Se hC8gskolens nettsted for mer informasjon om skikkethetsvurdering.
+
+Arbeidskrav
+
+Retten til C% avlegge eksamen forutsetter godkjente arbeidskrav i bestemte faglige aktiviteter.
+
+Arbeidskrav skal vC&re levert/utfC8rt innen fastsatt(e) frist(er). Gyldig fravC&r dokumentert med for eksempel sykemelding, gir ikke fritak for C% innfri arbeidskrav. Studenter som pC% grunn av sykdom eller annen dokumentert gyldig C%rsak ikke leverer/utfC8rer arbeidskrav innen fristen, kan fC% forlenget frist. Ny frist for C% innfri arbeidskrav avtales i hvert enkelt tilfelle med fagansvarlig.
+
+Arbeidskrav vurderes til "Godkjent" eller "Ikke godkjent". Studenter som leverer/utfC8rer arbeidskrav innen fristen, men som fC%r vurderingen "Ikke godkjent", har anledning til to nye innleveringer/utfC8relser. Studenten mC% da selv avtale ny innlevering av det aktuelle arbeidskravet med faglC&rer. Studenter som ikke leverer/utfC8rer arbeidskrav innen fristen og som ikke har dokumentert gyldig C%rsak, fC%r ingen nye forsC8k.
+
+I programplanen er de fagovergripende temaene pC% de ulike studieC%rene og semestrene beskrevet. I tilknytning til disse kan det vC&re krav til tilstedevC&relse og/eller andre arbeidskrav.
+
+Vurderings-/eksamensformer
+
+Se emenplanen under punktet Vurderings-eksamensformer.
+
+Vurderingskriterier
+
+A: Fremragende. Viser fremragende kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser fremragende oversikt over emnet og en analytisk evne til selvstendig bruk av relevante kunnskaper. Viser hC8yt faglig og profesjonsetisk refleksjonsnivC% og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+B: Meget god. Viser meget gode kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser meget god oversikt over emnet og en analytisk evne til selvstendig bruk av relevant kunnskap. Viser hC8yt faglig og profesjonsetisk refleksjonsnivC% og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+C: God. Viser gode kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser god oversikt over emnet og en analytisk evne til selvstendig bruk av relevant kunnskap. Viser et tilfredsstillende faglig og profesjonsetisk refleksjonsnivC%, samt og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+D: NoksC% god. Viser begrensede kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser begrenset over emnet og en analytisk evne til selvstendig bruk av relevant kunnskap. Viser et tilfredsstillende faglig og profesjonsetisk refleksjonsnivC%, samt selvstendig refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+E: Tilstrekkelig. Tilfredsstiller minimumskravene til kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser noe evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+F: Ikke bestC%tt. Har utilstrekkelig kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser dC%rlig evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+Rettigheter og plikter ved eksamen
+
+Studentens rettigheter og plikter framgC%r av forskrift om studier og eksamen ved OsloMet - storbyuniversitetet. Forskriften beskriver blant annet vilkC%r for ny/utsatt eksamen, klageadgang og hva som regnes som fusk ved eksamen. Studenten er selv ansvarlig for C% melde seg opp til eventuell ny/utsatt eksamen.
+
+Forkunnskapskrav
+
+Ingen
+
+LC&ringsutbytte
+
+Faget skal gi handlingskompetanse innen det valgte fordypningsomrC%det, som del av arbeidet med C% skape et klasserom for alle. Videre skal faget bidra til studentens forutsetninger til C% utvikle en forskningsoversikt som kvalifiserer forskningsspC8rsmC%let og posisjonerer det innen kunnskapsfeltet.
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har avansert kunnskap om profesjonelt lC&rerarbeid, herunder spesialisert innsikt i ledelse av pedagogisk arbeid, utviklingsarbeid og sosialpedagogisk lC&rerarbeid
+har inngC%ende kunnskap om profesjonsretta forskning og forskningsetikk
+har avansert kunnskap om C% analysere utviklingsbehov, initiere lokalt utviklingsarbeid og bidra til kunnskapsutvikling om profesjonsutC8velse som del av dette utviklingsarbeidet
+
+Ferdigheter
+
+Studenten
+
+kan analysere faglige problemstillinger basert pC% kunnskap om profesjonelt lC&rerarbeid ut fra masterfagets egenart, verdigrunnlag og historie og bruke slik innsikt i undervisning, forsknings- og utviklingsarbeid
+kan ta et sC&rlig ansvar for C% utvikle og lede inkluderende faglige lC&ringsmiljC8 som fremmer lC&ring og danning for alle
+kan kritisk anvende forskningsbasert profesjonsretta kunnskap i masterfaget til C% anlysere utfordrende yrkessituasjoner, se handlingsalternativer og ta stilling til mulige lC8sninger
+
+Generell kompetanse
+
+Studenten
+
+kan identifisere, analysere og kritisk reflektere over faglige, profesjonsetiske og utdanningspolitiske problemstillinger av spesiell interesse og relevans for masterfaget
+kan pC% systematisk vis planlegge, prC8ve ut i praksis, evaluere og revidere opplegg for lC&ring og danning med masterfaget som grunnlag
+kan bidra til innovasjonsprosesser og ta ansvar for samarbeid og utviklingsarbeid som fremmer faglig og pedagogisk nytenkning i skolen
+Innhold
+
+Faget er bygget opp av fC8lgende tre deltemaer:
+
+Deltema 1: Pedagogisk kompetanse i klasserommet
+
+lC&reres personlige kunnskap og danning
+lC&rerens didaktiske kompetanse
+spesialpedagogiske utfordringer og dilemmaer
+
+Deltema 2: Sosialpedagogisk lC&rerarbeid
+
+sosiale ulikheter i skolen
+inkludering- marginalisering
+kommunikasjon og veiledning
+
+Deltema 3: FoU- arbeid i skolen
+
+forskningsbasert praksis
+lC&rerrollen i endring
+planlegging og gjennomfC8ring av FoU -arbeid
+Arbeids- og undervisningsformer
+
+Se fagplanen.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+Retten til C% avlegge eksamen forutsetter godkjente arbeidskrav og deltakelse i bestemte faglige aktiviteter.
+
+Arbeidskrav 1
+
+Studentene velger tema for masteroppgave og leverer en prosjektskisse, omfang 1800 ord +/- 10 %. Masterskissen kan utvikles individuelt eller i gruppe pC% inntil tre. FormC%let med arbeidskravet er C% definere temaomrC%det for masteroppgaven og utarbeide problemstilling.
+
+Arbeidskrav 2
+
+Praktisk gruppeoppgave med muntlig framlegg i seminar knyttet til ett av temaomrC%dene i emnet, ca. 10 minutter. FormC%let med arbeidskravet er C% fC% erfaring med C% legge fram argumentasjon og refleksjoner i en muntlig presentasjon.
+
+Arbeidskrav 3
+
+En skriftlig redegjC8relse av sC8k i databaser knyttet til masteroppgavens tema og problemstilling. Studenten skal velge ut tre artikler fra sC8ket og begrunne relevansen av artiklene for masteroppgaven. Omfang 1200 ord +/- 10 %. GjennomfC8res individuelt. FormC%let med arbeidskravet er C% fC% erfaring med sC8k i databaser og begrunne utvalg av artikler.
+
+Arbeidskrav 4
+
+Studenten skal sette opp en liste over selvvalgt pensum (ca. 300 sider) som skal godkjennes av faglC&rer .
+
+Krav om obligatorisk deltakelse/aktivitet:
+
+Deltakelse i masterskisseseminar
+Deltakelse i undervisning om sC8k i databaser
+Delta pC% to studentledede seminar for hvert av de tre temaene i emnet
+
+Manglende deltakelse i faglige aktiviteter nevnt over medfC8rer at studenten ikke fC%r avlegge eksamen i emnet. Sykdom fritar ikke fra kravet om deltakelse. For studenter med gyldig fravC&r vil det bli utformet en kompensatorisk oppgave/alternativ gjennomfC8ring. Form og omfang avtales med faglC&rer.
+
+Vurdering og eksamen
+
+Ny/utsatt eksamen arrangeres som ved ordinC&r eksamen.
+
+Skriftlig individuell hjemmeeksamen med varighet pC% 5 dager. Omfang: 2500 ord +/- 10 %.
+
+Ny og utsatt eksamen arrangeres som ved ordinC&r eksamen.
+
+Hjelpemidler ved eksamen
+
+Ingen hjelpemidler tillatt.
+
+Vurderingsuttrykk
+
+Det benyttes en gradert karakterskala fra A til E for bestC%tt og F for ikke bestC%tt eksamen.
+
+Sensorordning
+
+Eksamen vurderes av intern og ekstern sensor.

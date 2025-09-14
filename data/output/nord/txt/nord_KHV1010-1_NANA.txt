@@ -1,0 +1,100 @@
+institution: nord
+code: KHV1010-1
+year: NA
+hv: NA
+url: https://www.nord.no/studier/emner/khv1010
+status: 200
+course_name_no: Kunst og hC%ndverk 1B, 1-7
+----- FULLTEXT -----
+
+
+
+Emnet gir innfC8ring i hC%ndverkferdigheter, kunst- og designprosesser, visuell kommunikasjon og kulturforstC%else. Emnet vektlegger praktisk skapende arbeid. Form og fargeproblematikk danner grunnlaget for utforsking i to- og tredimensjonale uttrykksomrC%der. BC&rekraftige materialer, medier og teknologi i praktiske og estetiske lC&reprosesser stC%r sentralt i studiet.
+
+Kan tas som frittstC%ende fag i lC&rerutdanning. Tilbys ikke som enkeltstC%ende emne.
+
+Kan tas som frittstC%ende fag i lC&rerutdanning.
+
+LC&ringsutbytte
+
+KUNNSKAP
+
+Studenten
+
+har kunnskap om relevante materialer, teknikker, redskap og estetiske virkemidler med hovedvekt pC% tredimensjonale uttrykksformer
+har kunnskap om to- og tredimensjonale ytringsformer med tilhC8rende teorier om estetiske lC&ringsprosesser, opplevelse, leik og kreativitet, med hovedvekt pC% tredimensjonale uttrykksformer
+har kunnskap om digitale uttrykksformer, samt hvordan digitale medier kan pC%virke enkeltindividet og samfunnet
+
+FERDIGHETER
+
+Studenten
+
+kan beherske grunnleggende teknikker og ferdigheter med ulike verktC8y, i ulike materialer tilpasset to- og tredimensjonalt arbeid, med hovedvekt pC% tredimensjonalt arbeid.
+kan bruke fagets innhold, arbeidsmC%ter og teori i undervisningsplanlegging, gjennomfC8ring og lC&ringsorientert vurdering pC% en mC%te som ogsC% ivaretar de fem grunnleggende ferdighetene
+kan arbeide mC%lrettet med ideutvikling, dokumentasjon og vurdering, ogsC% av egne skapende prosesser
+kan bruke digitale verktC8y pC% ulike mC%ter gjennom en prosess
+kan uttrykke seg digitalt ved blant annet C% kunne grunnleggende bildebehandling og videoredigering.
+
+GENERELL KOMPETANSE
+
+Studenten
+
+er fortrolig med erfaringsbaserte lC&ringsformer og har innsikt i hvordan selvstendige undersC8kelser og skapende arbeidsformer kan bidra til C% lC8se ulike formrelaterte problem
+kan gjC8re rede for hvordan valg av materialer, arbeidsformer og tema ivaretar miljC8et
+kan gjC8re rede for hvordan kunst og hC%ndverk i tverrfaglige tema og prosjektarbeid og ivareta den estetiske dimensjonen i opplC&ringen i samhandling med andre fag
+
+LC&ringsutbytte
+
+KUNNSKAP
+
+Studenten
+
+FERDIGHETER
+
+Studenten
+
+GENERELL KOMPETANSE
+
+Studenten
+
+Semesteravgift, pensumlitteratur. I tillegg kr 400,- i materialkostnader knyttet til lC&remidler i emnet.
+
+Det forutsettes at studenten disponerer en bC&rbar datamaskin.
+
+Ekskursjoner til museum/atelier/verksteder lokalt og eksternt, kan tilkomme. Kompensatorisk faglig arbeid blir det lagt til rette for, om det ikke lar seg gjC8re C% delta pC% ekskursjoner.
+
+Semesteravgift, pensumlitteratur. I tillegg kr 400,- i materialkostnader knyttet til lC&remidler i emnet.
+
+Det forutsettes at studenten disponerer en bC&rbar datamaskin.
+
+Ekskursjoner til museum/atelier/verksteder lokalt og eksternt, kan tilkomme. Kompensatorisk faglig arbeid blir det lagt til rette for, om det ikke lar seg gjC8re C% delta pC% ekskursjoner.
+
+Valgbart.
+
+Valgbart.
+
+Arbeidsformene varierer mellom forelesninger, individuelt arbeid, gruppearbeid, utstillinger og muntlige presentasjoner. Dokumentasjon av arbeidsprosesser kan skje gjennom analoge- og eller digitale logger. Det kreves betydelig arbeidsinnsats gjennom selvstudium ut over oppsatt undervisningstid.
+
+Aktiv deltakelse og samarbeid mellom studentene er en forutsetning for C% kunne oppnC% emnets lC&ringsutbytter.
+
+Ekskursjoner til museum/atelier/verksteder lokalt og eksternt, kan tilkomme. Kompensatorisk faglig arbeid blir det lagt til rette for, om det ikke lar seg gjC8re C% delta pC% ekskursjoner.
+
+Arbeidsformene varierer mellom forelesninger, individuelt arbeid, gruppearbeid, utstillinger og muntlige presentasjoner. Dokumentasjon av arbeidsprosesser kan skje gjennom analoge- og eller digitale logger. Det kreves betydelig arbeidsinnsats gjennom selvstudium ut over oppsatt undervisningstid.
+
+Aktiv deltakelse og samarbeid mellom studentene er en forutsetning for C% kunne oppnC% emnets lC&ringsutbytter.
+
+Ekskursjoner til museum/atelier/verksteder lokalt og eksternt, kan tilkomme. Kompensatorisk faglig arbeid blir det lagt til rette for, om det ikke lar seg gjC8re C% delta pC% ekskursjoner.
+
+Studieprogrammet evalueres C%rlig av studentene gjennom emneundersC8kelser (midtveisevaluering og sluttevaluering). Evaluering inngC%r som en del av universitetets kvalitetssikringssystem.
+
+Studenten skal gjennomfC8re undervisningsopplegg i kunst og hC%ndverk.
+
+Arbeidskrav (AK): Ett praktisk-teoretisk arbeidskrav mC% vC&re godkjent fC8r endelig karakter i emnet kan settes.
+Obligatorisk deltakelse (OD): Minst 80% oppmC8te i undervisning. OD mC% vC&re godkjent fC8r endelig karakter i emnet kan settes.
+Mappe (MA): Praktisk individuelt skapende arbeid, samt visuell og skriftlig logg. Utstilling eller digital presentasjon av mappa. Muntlig samtale om mappa. Teller 100% av karakteren. A-F.
+
+Samlet vurdering, karakterregel A-E. Beste karakter; A. Ikke bestC%tt; F.
+
+Samlet vurdering, karakterregel A-E. Beste karakter; A. Ikke bestC%tt; F.
+
+C generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er C% regne som fusk.

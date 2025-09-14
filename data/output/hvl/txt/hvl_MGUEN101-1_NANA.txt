@@ -1,0 +1,10 @@
+institution: hvl
+code: MGUEN101-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGUEN101
+status: 200
+course_name_no: MGUEN101 Engelsk 1, emne 1 - Engelsk sprC%k, litteratur og tekstkunnskap med fagdidaktikk 1
+----- FULLTEXT -----
+
+NA

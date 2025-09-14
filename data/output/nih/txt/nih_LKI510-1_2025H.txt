@@ -1,0 +1,10 @@
+institution: nih
+code: LKI510-1
+year: 2025
+hv: H
+url: https://www.nih.no/studier/emner/2025/host/lki510.html
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+NA

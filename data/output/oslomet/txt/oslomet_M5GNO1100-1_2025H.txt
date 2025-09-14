@@ -1,0 +1,312 @@
+institution: oslomet
+code: M5GNO1100-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/M5GNO1100/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+M5GNO1100 Norsk, emne 1 Emneplan
+Engelsk emnenavn
+Norwegian, Subject 1
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 5-10
+Omfang
+15.0 stp.
+StudieC%r
+2025/2026
+Pensum
+HCST 2025
+
+Timeplan
+HCST 2025
+Programplan
+GrunnskolelC&rerutdanning for trinn 5-10 (2025 HCST )
+Emnehistorikk
+2017 / 2018 2018 / 2019 2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Fagplan
+
+FAGPLAN
+
+Norsk (60 studiepoeng)
+
+Fagplanen blei godkjent i studieutvalet 9. november 2016.
+
+Pensum oppdatert 23. mai 2017.
+
+Redaksjonelle endringar lagt inn 3. juli 2017, 30. januar 2020, 23. november 2020 og 4. mars 2021
+
+Gjeldande frC% haustsemesteret 2021
+
+Innleiing
+
+Fagplanen bygger pC% forskrift om rammeplan for grunnskulelC&rarutdanningane for trinn 5-10, fastsett av Kunnskapsdepartementet 7. juni 2016, nasjonale retningslinjer for grunnskulelC&rarutdanning trinn 5-10 av 1. september 2016 og programplan for grunnskulelC&rarutdanning for trinn 5-10 ved OsloMet - storbyuniversitetet, fastsett av studieutvalet 16. november 2016.
+
+Faget norsk i lC&rarutdanninga for grunnskulen skal utdanne lC&rarar som kan fC8rebu elevane i norsk skule pC% ei tekstleg, mediert og globalisert verd. Norskfaget er bC%de eit humanistisk fag, eit hermeneutisk tolkande fag og eit sprC%kfag. Studiet skal gjere studentane kjende med dei omgrepa, tenkemC%tane og uttrykksformene som er sC&rskilte for norskfaget og skil det frC% andre fag.
+
+GrunnskulelC&raren i norsk har eit sC&rskilt ansvar for C% utvikle elevane sin tolkingskompetanse. I eit tekstbasert samfunn er elevane si evne til C% forstC%, skape og bruke skriftleg og munnleg tekst ein fC8resetnad for at dei skal nC% sine livsmC%l, kunne fortsette C% lC&re og kunne delta pC% demokratiske og kulturelle arenaer. Tekst blir alltid skapt i gitte kontekstar og er meint C% verke i andre kontekstar. Evna til C% bruke tekst er derfor knytt til tolking av tekst og kontekst. I norskfaget blir kontekstmedvit trent gjennom tolking av tekst i bC%de historiske og samtidige kontekstar.
+
+Samstundes knyter tekstkompetanse seg til bruk av og kunnskap om sprC%k. Norskfaget handlar om sprC%k i vid tyding, og grunnskulelC&raren i norsk skal kunne bidra til at elevane opplever sprC%k som eit grammatisk, symbolsk og meiningsberande system, slik det kjem til uttrykk i fiktive og saksretta tekstsjangrar.
+
+Norskfaget har ogsC% eit sC&rskilt ansvar nC%r det gjeld C% vidarefC8re humanistiske og demokratiske verdiar. Dette skjer mellom anna i elevane sitt mC8te med tekst- og sprC%kmangfaldet som inngC%r i faget. Undervisning i tekstar med historiske og globale perspektiv kontrasterer og konfronterer elevens eigen kulturelle og verdimessige stC%stad, gjer han/henne merksam pC% sin eigen tradisjon, og trener refleksjon som kan auke mogelegheitene for C% forstC% andre menneskelege forhold og erfaringar.
+
+MC%lgruppe
+
+Studentar som har fC%tt opptak til femC%rig grunnskulelC&rarutdanning for trinn 5-10.
+
+Opptakskrav
+
+Faget er tilgjengeleg som valfag for aktive studentar ved grunnskulelC&rarutdanninga ved HiOA, i trC%d med programplanane for utdanninga.
+
+LC&ringsutbytte
+
+Fagplanen inkluderer lC&ringsutbytte i trC%d med dei nasjonale retningslinjene for faget Norsk1 og 2 trinn 5-10. SjC% nC&rare omtale i emneplanane.
+
+Fagleg innhald og oppbygging
+
+Norsk trinn (60 studiepoeng) er bygd opp av fire emne C  15 studiepoeng. I grunnskulelC&rarutdanninga trinn 5-10 mC% studenten ta 60 studiepoeng for at faget skal bli godkjend som del av utdanninga. Dette er begrunna med at 60 studiepoeng er minste kompetansegivande eining for 8.-10. trinn. Utdanninga skal forberede studenten til C% vere lC&rar for alle trinn frC% 5. til 10. trinn.
+
+Studiet er lagt opp for C% sikre god heilskap og progresjon frC% og med emne 1 til og med emne 4. SprC%k og tekstkunnskap blir undervist i eit fleirsprC%kleg, fleirkulturelt og didaktisk perspektiv til bruk for undervisning pC% mellomtrinn og ungdomstrinn.
+
+For studentar som tar faget i 1. og 2. studieC%r
+
+Norsk for trinn 5-10 er organisert som 45 studiepoeng i fC8rste studieC%r (emne 1, 2 og 3) og 15 studiepoeng i andre studieC%r (emne 4), til saman 60 studiepoeng.
+
+Haust: M5GNO1100 Norsk, emne 1, 15 studiepoeng
+
+VC%r: M5GNO1200 Norsk, emne 2, 15 studiepoeng
+
+VC%r: M5GNO1300 Norsk, emne 3, 15 studiepoeng
+
+Haust: M5GNO2100 Norsk, emne 4, 15 studiepoeng
+
+For studentar som tar faget i 3. studieC%r, eventuelt som del av eit anna studieprogram ved fakultetet/OsloMet, eller etter avtale med eksterne utdanningsinstitusjonar
+
+Norsk for trinn 5-10 er ogsC% eit tilbod organisert som 60 studiepoeng over eitt studieC%r. Undervisninga i faget er organisert i fire emne C  15 studiepoeng. Undervisninga skjer i hovudsak saman med studentane som tar faget i 1. og 2. studieC%r.
+
+Haust: M5GNO1100 Norsk, emne 1, 15 studiepoeng
+
+VC%r: M5GNO1200 Norsk, emne 2, 15 studiepoeng
+
+VC%r: M5GNO1300 Norsk, emne 3, 15 studiepoeng
+
+Haust og vC%r: M5GNO3100 Norsk, emne 4, 15 studiepoeng
+
+Klasseleiing og lC&rarrolla sett frC% faget
+
+Gjennom praksiserfaring, og fagleg samarbeid med faget pedagogikk og elevkunnskap fC%r studenten kunnskap om og innsikt i ulike tilnC&rmingsmC%tar knytt til klasseleiing og ulike roller ein har som lC&rar.
+
+Tilpassa opplC&ring
+
+Elevens rett til tilpassa opplC&ring er forankra i opplC&ringslova med forskrift. Tilpassa opplC&ring for ulike elevgrupper er eit gjennomgC%ande perspektiv i undervisninga i norskfaget.
+
+Studentane lC&rer C% vurdere korleis elevane utviklar seg, og korleis dei kan leggje til rette for den enkelte elev.
+
+Vurdering
+
+Gjennom studiet fC%r studenten mC8te ulike vurderingsmC%tar, bC%de formative og summative. Dei fC%r C8ving i C% vurdere kvarandre, og C% ta i mot vurdering frC% faglC&rar. BC%de i opplC&ringa pC% hC8gskulen og i praksis fC%r dei hC8ve til C% vurdere ulike typar elevarbeid.
+
+Grunnleggande ferdigheiter
+
+Dei grunnleggande ferdigheitene - digitale ferdigheiter, munnlege ferdigheiter, og C% kunne lese, C% kunne rekne og C% kunne skrive - er nC8kkelferdigheiter bC%de for studentanes eiga lC&ringa pC% hC8gskulenivC% og for C% kunne utvikle dei grunnleggande ferdigheitene til elevane i skulefaga. Ferdigheitene er ein integrert del av undervisninga i faget.
+
+Digital kompetanse
+
+Digital kompetanse er integrert i fagets arbeidsmC%tar, gjennom arbeidskrav og i tekstskriving. Studentane fC%r kunnskap om og opplC&ring i bruk av ulike pedagogiske og relevante digitale verktC8y.
+
+Berekraftig utvikling
+
+Gjennom tekstarbeid (fiksjonstekstar og saktekstar) skal studenten gjere seg kjent med litteratur knytt til spC8rsmC%l om klimatrugsmC%l og berekraftig utviking.
+
+LC&rararbeid i det mangfaldige klasserommet
+
+Studentane skal tileigne seg kunnskap og ferdigheiter som gjer dei i stand til C% mC8te og forstC% ulikskap og bruke mangfaldet som ein ressurs i norskfaget. KjC8nnsperspektiv er ein del av dette. Studentane skal kunne forstC% korleis barn og unges identitet blir danna og utvikla i eit samfunn med stort mangfald. Dette perspektivet blir vektlagt bC%de nC%r det gjeld sprC%k og litteraturarbeid. NC%r det gjeld sprC%karbeid, skal studentane mellom anna kunne legge til rette for lC&ring for elevar som har eit anna fC8rstesprC%k enn norsk.
+
+Yrkesretting
+
+Norskfaget skal i innhald og arbeidsmC%tar fC8rebu eleven pC% vidare opplC&ring ogsC% innan yrkesfaglege studieretningar. Gjennom studiet fC%r studenten kunnskap om korleis bevisste tekstval og arbeidsmC%tar med fokus pC% fagsprC%k kan fC8rebu elevar for yrkesfaglege studieretningar.
+
+Internasjonale perspektiv
+
+Som kultur- og sprC%kfag stC%r norskfaget i eit dynamisk forhold til internasjonale strC8ymingar. Norskfaget i skulen skal inkludere elevar som ikkje har norsk som heimesprC%k, men har norsk som opplC&ringssprC%k. Dette mangfaldet skal nyttast som ein ressurs bC%de ved at det synleggjer B+det norskeB; og ved at det endrar B+det norskeB; pC% ein inkluderande mC%te. Likskapen og ulikskapen med dei skandinaviske landa kan ogsC% utnyttast, og legge grunnen for eit framleis nC&rt kulturelt og demokratisk samarbeid landa mellom. Som didaktisk formidlings- og vitskapsfag drar norskfaget vekslar pC% kunnskapstilfang ogsC% frC% andre land.
+
+Psykososialt lC&ringsmiljC8
+
+I arbeid med norskfaget skal studentane lC&rast opp til C% sjC% sprC%k og tekst som formande element i den psykososiale utviklinga til elevane.
+
+Praksistilknyting
+
+I alle emna i faget stC%r intergrering i hC8ve til praksis og samarbeid med grunnskolen sentralt.
+
+Forskingsforankring
+
+I trC%d med Lov om universiteter og hC8gskoler skal utdanninga vere forsking- og utviklingsbasert (FoU). Gjennom forskingsbaserte lC&ringsprosessar skal studentane C8ve opp sjC8lvstende, analytiske ferdigheiter og kritiske refleksjon slik at dei som lC&rarar kan ta i bruk ny kunnskap og vidareutvikle bC%de seg sjC8lv, profesjonen sin og arbeidsplassen sin etter fullfC8rt utdanning.
+
+Samiske forhold og rettar
+
+Kunnskap om samisk sprC%k, litteratur og kultur er integrert i emne 1, 2 og 3.
+
+PraksisopplC&ring
+
+Om praksisopplC&ringa, sjC% programplanen.
+
+Overgangen mellom trinna nC%r det gjeld eige fag
+
+I opplC&ringa skal studentane bli kjende med korleis dei kan gjere overgangane i skulen lettare for elevane. Dette gjeld sC&rskild i overgang frC% mellomtrinn til ungdomstrinn, og frC% ungdomstrinn til vidaregC%ande skule.
+
+Skikkavurdering
+
+LC&rarutdanningsinstitusjonar har ansvar for C% vurdere om studentar er skikka for lC&raryrket. Kontinuerleg skikkavurdering med ei heilskapleg vurdering om kva slags faglege og personlege fC8resetnader studenten har for C% kunne fungere som lC&rar skjer gjennom heile studiet. Om studenten er ei mogleg fare for elevars liv, fysiske og psykiske helse, rettar og tryggleik, er studenten ikkje skikka for yrket. Studentar som viser manglande evne til C% meistre lC&raryrket, skal sC% tidleg som mogleg i utdanninga fC% melding om dette. Dei skal fC% rC%d og rettleiing som gjer dei dei i stand til C% oppfylle krava om C% vere skikka som lC&rarar eller fC% rC%d om C% avslutte utdanninga. Avgjerder om dette kan fattast gjennom heile studiet.
+
+SjC% universitetet sin nettstad for meir informasjon om skikkavurdering.
+
+Fagets arbeids- og undervisningsformer
+
+Undervisninga skjer over tre semester og er organisert i fire emne, sjC% over. Integrert praksis gir studentane hC8ve til C% arbeide med fagets innhald i skulen. Aktuelle arbeidsmC%tar er individuelt studiearbeid med lesing av pensum, forelesingar, klasse- og gruppearbeid, tekstproduksjon m.a. i digital mappe, munnlege framlegg, tilbakemelding pC% medstudentarbeid, ekskursjonar m.m. Det vert gjennomfC8rt fleirfaglege periodar og kurs i lC8pet av C%ret.
+
+I starten av studiet skal studentane ha nokre veker med grunnlagsundervisning i emne 1, inkludert fellesemnet B+LC&raren og sprC%ketB;.
+
+Estetiske arbeidsmC%tar
+
+Estetiske arbeidsmC%tar er ein sentral del av norskfaget, sjC% t.d. emne 2 og emne 4. Estetiske arbeidsmC%tar finst m.a. i det munnlege arbeidskravet med framfC8ring av eventyr og i det skriftlege mappearbeidskravet produksjon av samansett tekst knytt til emne 2.
+
+Arbeidskrav
+
+Arbeidskrav skal vere leverte/utfC8rte innan fastsett(e) frist(ar). Gyldig frC%vC&r dokumentert med for eksempel sjukemelding, gir ikkje fritak for C% innfri arbeidskrav. Studentar som pC% grunn av sjukdom eller annan dokumentert gyldig C%rsak ikkje leverer/utfC8rer arbeidskrav innan fristen, kan fC% forlenga frist. Ny frist for C% innfri arbeidskrav blir avtalt i kvart enkelt tilfelle med fagansvarleg.
+
+Arbeidskrav blir vurderte til "Godkjent" eller "Ikkje godkjent". Studentar som leverer/utfC8rer arbeidskrav innan fristen, men som fC%r vurderinga "Ikkje godkjent", har hC8ve til to nye innleveringar/gjennomfC8ringar. Studenten mC% dC% sjC8lv avtale ny innlevering av det aktuelle arbeidskravet med faglC&rar. Studentar som ikkje leverer/utfC8rer arbeidskrav innan fristen og som ikkje har dokumentert gyldig C%rsak, fC%r ingen nye forsC8k.
+
+I programplanen finn ein dei fagovergripande temaa pC% dei ulike studieC%ra og semestera. I tilknyting til desse kan det vere krav til oppmC8te og/eller andre arbeidskrav.
+
+NC&rare informasjon om arbeidskrav finst i den enkelte emneplanen.
+
+Deltaking i undervisning
+
+Det er obligatorisk deltaking i all undervisning. FC8remC%let med undervisninga er C% fC% erfaring med varierte arbeidsmetodar til bruk i klasserommet. Studentane skal utvikle kunnskapar, ferdigheiter og generell kompetanse som dei ikkje kan tileigne seg berre ved lesing av pensum. I undervisninga opparbeider studentane profesjonskompetanse gjennom samhandling med medstudentar og faglC&rar. Profesjonsfaget norsk har nC8ye samanheng mellom teoriforelesingar og arbeidsC8vingar, og obligatorisk oppmC8te i heile studiet er eit vilkC%r for C% tileigne seg grunnleggande undervisningskunnskap i faget.
+
+Dersom studentar ikkje oppfyller kravet om deltaking (80 prosent), mC% dei levere kompensasjonsoppgC%ver om sentrale profesjonsrelevante tema. Manglande deltaking i faglege aktivitetar nemnt over fC8rer til at studenten ikkje fC%r avleggje eksamen i det emnet kravet om deltaking er knytt til. Sjukdom fritar ikkje for kravet om deltaking.
+
+Vurderings-/eksamensformer
+
+SjC% den enkelte emneplan for informasjon om vurdering-/eksamensformer.
+
+Rettar og plikter ved eksamen
+
+Rettane og pliktene til eksamenskandidaten gC%r fram av forskrift om studier og eksamen ved OsloMet. Forskrifta beskriv mellom anna vilkC%r for ny/utsett eksamen, hC8ve til klage og kva som blir rekna som fusk ved eksamen.
+
+Vurderingskriterium for emne 1-4 for studentar som tar faget i 1. og 2. studieC%r Vurderingskriterium for emne 1-3 for studentar som tar faget i 3. studieC%r
+
+A, FramifrC%: Arbeidet viser framifrC% kunnskapar og ferdigheiter innanfor kompetanseomrC%da i faget. Det vitnar om framifrC% evne til fagleg refleksjon og sjC8lvstendig tenking. Arbeidet er sC&rs godt og korrekt formulert sprC%kleg.
+
+B, Mykje god: Arbeidet viser mykje gode kunnskapar og ferdigheiter innanfor kompetanseomrC%da i faget. Det vitnar om mykje god evne til fagleg refleksjon og sjC8lvstendig tenking. Arbeidet er mykje godt og korrekt formulert sprC%kleg.
+
+C, God: Arbeidet viser gode kunnskapar og ferdigheiter innanfor kompetanseomrC%da i faget. Det vitnar om god evne til fagleg refleksjon og sjC8lvstendig tenking. Og arbeidet er godt og korrekt formulert sprC%kleg.
+
+D, NoksC% god: Arbeidet viser varierande og/eller avgrensa kunnskapar og ferdigheiter innanfor kompetanseomrC%da i faget. Det vitnar om varierande og/eller avgrensa evne til fagleg refleksjon og sjC8lvstendig tenking. Arbeidet er delvis godt og korrekt sprC%kleg formulert
+
+E, Tilstrekkeleg: Arbeidet tilfredsstiller minimumskrava til kunnskapar og ferdigheiter innanfor kompetanseomrC%da i faget. Det vitnar av og til om evne til fagleg refleksjon og sjC8lvstendig tenking. Og arbeidet tilfredsstiller minimumskrava til god og korrekt sprC%kleg framstilling.
+
+F, Ikkje bestC%tt: Arbeidet viser utilstrekkelege kunnskapar og ferdigheiter innanfor kompetanseomrC%da i faget og/eller arbeidet tilfredsstiller ikkje minimumskrava til god og korrekt sprC%kleg framstilling. Evne til refleksjon og sjC8lvstendig tenking kjem ikkje til uttrykk.
+
+Vurderingskriterium for emne 4 for studentar som tar faget i 3. studieC%r
+
+A, FramifrC%: FramifrC% prestasjon som klC%rt merker seg ut. Kandidaten viser svC&rt god vurderingsevne, stor faglig oversikt og stor grad av sjC8lvstende. Arbeidet er sC&rleg godt utforma bC%de nC%r det gjeld innhald og sprC%k.
+
+B, Mykje god: Mykje god prestasjon som viser mykje god vurderingsevne og sjC8lvstende. Arbeidet er svC&rt godt utforma bC%de nC%r det gjeld innhald og sprC%k.
+
+C, God: Solid prestasjon som er tilfredsstillande pC% dei fleste omrC%da. Kandidaten syner god vurderingsevne og sjC8lvstende pC% dei fleste omrC%da. Arbeidet er godt utforma bC%de nC%r det gjeld innhald og sprC%k.
+
+D, NoksC% god: Ein akseptabel prestasjon med nokre vesentlege manglar. Kandidaten viser ein viss grad av vurderingsevne og sjC8lvstende. Arbeidet er noksC% godt utforma bC%de nC%r det gjeld innhald og sprC%k.
+
+E, Tilstrekkeleg: Prestasjon som tilfredsstiller minimumskrava, men ikkje meir. Arbeidet er tilfredsstillande utforma bC%de nC%r det gjeld innhald og sprC%k.
+
+F, Ikkje bestC%tt: Prestasjon som ikkje tilfredsstiller minimumskrava fagleg og og/eller nC%r det gjeld utforming av innhald og sprC%k.
+
+Utfyllande kriterium for FoU-oppgC%va vil gC% fram av retningslinjene som blir kunngjorde ved oppstart av emne 4.
+
+Forkunnskapskrav
+
+Ingen.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgjande lC&ringsutbytte definert som kunnskap, ferdigheiter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har omfattande kunnskap om sprC%ket som system og sprC%ket i bruk, og sprC%ket som tolkingsreiskap og forstC%ing
+har kunnskap om sprC%khistorie, talemC%l og sprC%klige endringsprosesser
+har omfattande kunnskap om norsk som fC8rste- og andresprC%k
+har kunnskap om nasjonale minoritetssprC%k og om nabosprC%k
+har kunnskap om gjeldande normering for nynorsk og bokmC%l
+har kunnskap om sprC%khistorie, sprC%klege endringsprosessar med sprC%kvariasjonar i eldre og nyare tid
+har kunnskap om sprC%klC&ring og sprC%kutvikling inkludert begynnaropplC&ring i lesing og skriving
+har brei kunnskap om lese- og skriveopplC&ring pC% mellomtrinn og ungdomstrinn og om utvikling av elevanes skriveferdigheiter inkludert digitale ferdigheiter
+
+Ferdigheter
+
+Studenten
+
+kan analysere variert norsk sprC%k og sprC%kbruk og gjere greie for faglege val som skal fremje munnleg og skriftleg sprC%kutvikling
+kan bruke kunnskap om grammatikk, sprC%k og tekst i analyse, respons og vurdering av munnlege og skriftlege, ogsC% mellomsprC%kstekstar
+kan kjenne att teikn pC% lese- og skrivevanskar
+meistrar skriftleg nynorsk og bokmC%l og kan undervise elevar i begge mC%lformer
+kan kartlegge og vurdere lese- og skriveferdigheiter og gi lC&ringsfremjande respons til alle elevar
+kan skrive fagtekstar pC% nynorsk og bokmC%l
+kan rettleie elevar i ulike former for skriftleg argumentasjon og retorikk for C% fremje lC&ring
+har kunnskap om gjeldande reglar for norsk som opplC&ringsmC%l og undervisningssprC%k
+
+Generell kompetanse
+
+Studenten
+
+kan legge til rette for at elevane utviklar grunnleggande sprC%kferdigheiter og blir tekstkyndige sprC%kbrukarar som kan delta aktivt i klasserommet og pC% andre sosiale arenaer
+kan formidle fagstoff om sprC%k i relevante uttrykksformer
+Innhold
+
+SprC%k er grunnleggande for tenking og handling, og er sentral i danning av mennesket og i formidling. Emne 1 gir systematisk kunnskap om C% forstC% og formulere samanhengar mellom sprC%k og lC&ring, og C8vingar i C% grunngje og nytte denne kunnskapen inngC%ande og kritisk. Ulike skrivehandlingar blir sett i samanheng med sentral teoretisk kunnskap og funksjonelle didaktiske perspektiv for C% skape situasjonar for lC&ring i ulike meiningsberande kontekstar.
+
+SprC%ket som system og sprC%ket i bruk
+Norsk sprC%k i eit historisk og kontrastivt perspektiv
+SprC%kutvikling og sprC%klC&ring (sC&rleg knytt til metasprC%kleg medvit og skriveutvikling)
+Nynorsk og bokmC%l
+SprC%kdidaktikk, nynorsk- og bokmC%lsdidaktikk
+Elevtekstanalyse og -vurdering
+Skrivestrategiar og teoriar om skriving
+Retorikk (knytt til skriving)
+SprC%khistorie, talemC%l og sprC%kleg variasjon
+Arbeids- og undervisningsformer
+
+SjC% fagplanen.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+Retten til C% avlegge eksamen har som vilkC%r godkjente arbeidskrav og deltaking i bestemte faglege aktivitetar. SjC% fagplandelen ovanfor for nC&rare informasjon om krav til innlevering og vilkC%r ved manglande innlevering.
+
+Individuell logg etter undervisning. MC%let er refleksjon over fagstoffet. MC%lform: valfri. Omfang: 2 loggar med omfang pC% 800 ord +/- 10 % per logg. Kommentar frC% faglC&rarar.
+PrC8ver om sprC%k. Ei individuell kunnskapsprC8ve (elektronisk) i grunnleggande grammatikk-kunnskap (fonologi, morfologi og syntaks) og ei individuell kunnskapsprC8ve (elektronisk) i nynorsk formverk. MC%let for prC8vene er C% dokumentere sprC%kmeistring. Omfang: Inntil ein time per prC8ve.
+Elevtekstanalyse. MC%let er C% C8ve opp ferdigheiter i vurdering av elevtekstar. MC%lform: nynorsk. Omfang: 2000 ord +/- 10 %. Kommentar pC% utkast frC% medstudent.
+Vurdering og eksamen
+
+Individuell skriftleg eksamen under tilsyn. Omfang: seks timar. Vekt pC% sprC%k, lC&ring og danning.
+
+MC%lform: Valfri.
+
+Ny/utsett eksamen blir gjennomfC8rt som ved ordinC&r eksamen.
+
+Hjelpemidler ved eksamen
+
+Ordbok og gjeldande lC&replan for grunnskulen.
+
+Vurderingsuttrykk
+
+Det blir nytta ein karakterskala frC% A til E for bestC%tt og F for ikkje bestC%tt.
+
+Sensorordning
+
+Det blir nytta to interne sensorar. Ein tilsynsynsensor er tilknytta emnet.

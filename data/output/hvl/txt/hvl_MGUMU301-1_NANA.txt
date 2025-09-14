@@ -1,0 +1,10 @@
+institution: hvl
+code: MGUMU301-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGUMU301
+status: 200
+course_name_no: MGUMU301 Musikk 2, emne 1 - Musikalske mC8te i og utanfor klasserommet
+----- FULLTEXT -----
+
+NA

@@ -1,0 +1,143 @@
+institution: uis
+code: MGL3122-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MGL3122
+status: 200
+course_name_no: Studere matematikkundervisning (MGL3122)
+----- FULLTEXT -----
+
+Emnekode
+
+MGL3122
+
+Versjon
+
+1
+
+Vekting (stp)
+
+15
+
+Semester undervisningsstart
+
+HC8st
+
+Antall semestre
+
+1
+
+Vurderingssemester
+
+HC8st
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitenskap og humaniora,
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Fakultet for utdanningsvitenskap og humaniora,
+
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhold
+
+Emnet fokuserer pC% lC&ring og undervisning av matematikk i skolen. Emnet gir innblikk i nyere teoretiske perspektiver pC% lC&ring og undervisning av matematikk. Ulike teoretiske perspektiver pC% matematikkundervisning vil bli presentert og diskutert, og emnet vil ogsC% gi studentene kjennskap til ulike tilnC&rminger til C% studere matematikkundervisning. Emnet er organisert rundt et forskningsprosjekt, og studentene vil dermed fC% praktisk erfaring med forskning pC% lC&ring og undervisning i matematikk som deltakere i et forskningsprosjekt.
+
+LC&ringsutbytte
+
+Kunnskap
+
+Etter kurset skal studenten:
+
+ha inngC%ende kunnskap om metoder for C% studere matematikkundervisning
+ha avansert kunnskap om ulike teorier om matematikkundervisning
+
+Ferdigheter
+
+Etter kurset skal studenten:
+
+kunne anvende teorier om matematikkundervisning i gjennomfC8ringen av et forskningsprosjekt
+kunne samle inn, bearbeide og analysere data for C% undersC8ke relevante problemstillinger knyttet til lC&ring og undervisning i matematikk
+kunne utarbeide og begrunne et metodologisk og praktisk metodisk grunnlag for et selvstendig masterprosjekt
+kunne bruke relevante forskningsmetoder og verktC8y, samt teoretiske rammeverk pC% en selvstendig mC%te
+
+Generell kompetanse
+
+Etter kurset skal studenten:
+
+kunne analysere relevante problemstillinger knyttet til matematikkdidaktikk som fagomrC%de og forskningsfelt samt arbeid som matematikklC&rer
+ha inngC%ende kjennskap til forskningsprosessen i gjennomfC8ringen av kvalitative og kvantitative undersC8kelser
+
+Forkunnskapskrav
+
+Et av fC8lgende alternativer:
+MGL1110 Matematikk 1 emne 1 (1.-7. trinn), MGL1111 Matematikk 1 emne 2 (1.-7. trinn), MGL1112 Matematikk 2 (1.-7. trinn)
+MGL2113 Matematikk 1 emne 1, MGL2114 Matematikk 1 emne 2, MGL2311 Matematikk 2, emne 1 (5.-10. trinn), MGL2312 Matematikk 2, emne 2 (5.-10. trinn)
+
+Eksamen / vurdering
+
+VilkC%r for C% gC% opp til eksamen/vurdering
+
+Arbeidskrav
+
+FC8lgende undervisningsaktiviteter er obligatoriske:
+
+Innsamling av data knyttet til forskningsprosjektet
+Transkripsjon av data fra forskningsprosjektet
+Presentasjon av pensumlitteratur
+
+Alle arbeidskrav mC% vC&re godkjent for C% gC% opp til eksamen. Studenter som fC%r et eller flere av arbeidskravene vurdert til ikke-godkjent ved fC8rste innlevering, gis mulighet for C)n ny innlevering av oppgaven(e) i bearbeidet form.
+
+Fagperson(er)
+
+FaglC&rer:
+Eva-Maria Reich
+
+FaglC&rer:
+Csmund Lillevik GjC&re
+
+FaglC&rer:
+Raymond Bjuland
+
+FaglC&rer:
+Janne Fauskanger
+
+FaglC&rer:
+Arne Jakobsen
+
+Studiekoordinator:
+Karen Elizabeth Gilje Woie
+
+Studieprogramleder:
+Ingeborg KnC&velsrud
+
+Arbeidsformer
+
+Det blir lagt opp til en kombinasjon av seminarer, workshops, praktisk arbeid og selvstudium i tilknytning til det forskningsprosjektet studentene deltar i gjennom kurset.
+
+Cpent for
+
+Fagdidaktikk for grunnskolen - erfaringsbasert masterprogram
+
+GrunnskolelC&rerutdanning for trinn 1 - 7, femC%rig masterprogram
+
+GrunnskolelC&rerutdanning for trinn 5 - 10, femC%rig masterprogram
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+Pensumlisten finner du i Leganto

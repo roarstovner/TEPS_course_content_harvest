@@ -1,0 +1,188 @@
+institution: oslomet
+code: MGKH3100-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/MGKH3100/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+MGKH3100 Kunst og hC%ndverk 2, emne 2 Emneplan
+Engelsk emnenavn
+Arts and Crafts 2, Subject 2
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 1-7
+GrunnskolelC&rerutdanning for trinn 5-10
+Omfang
+30.0 stp.
+StudieC%r
+2025/2026
+Pensum
+HCST 2025
+
+Timeplan
+HCST 2025
+Programplan
+GrunnskolelC&rerutdanning for trinn 1-7 (2025 HCST )
+GrunnskolelC&rerutdanning for trinn 5-10 (2025 HCST )
+Emnehistorikk
+2018 / 2019 2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Innledning
+
+Fagplanen tilhC8rende dette emnet er lagt pC% emne MGKH2100 Kunst og hC%ndverk 1, emne 1.
+
+Forkunnskapskrav
+
+Faget er tilgjengelig som valgfag for aktive studenter ved grunnskolelC&rerutdanningen trinn 1-7 og trinn 5-10 og lC&rerutdanning for tosprC%klige lC&rere pC% HiOA, i trC%d med utdanningenes programplaner. Interne sC8kere som sC8ker sC&rskilt opptak til Kunst og hC%ndverk 2 mens de fortsatt er aktive pC% Kunst og hC%ndverk 1, kan fC% opptak uten C% ha fullfC8rt Kunst og hC%ndverk 1.
+
+Eksterne sC8kere mC% ha bestC%tt lC&rerutdanning som kvalifiserer for arbeid i skolen. SC&rskilt opptak til Kunst og hC%ndverk 2 krever fullfC8rt Kunst og hC%ndverk 1 eller tilsvarende. Dersom Kunst og hC%ndverk 1 og Kunst og hC%ndverk 2 lyses ut som et C%rsstudium (60 studiepoeng), tas det opp til begge enheter, og det kreves da ikke at Kunst og hC%ndverk 1 er bestC%tt fC8r studenten begynner pC% Kunst og hC%ndverk 2.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Kunnskap felles for trinn 1-7 og trinn 5-10
+
+Studenten
+
+har kunnskap om ideutvikling, relevante forskningsmetoder, vurderings- og presentasjonsformer og om hvordan egne skapende prosesser kan vC&re utgangspunkt for refleksjon og utviklingsarbeid
+har kunnskap om hovedretninger innenfor hC%ndverk, design, arkitektur og kunst i ulike kulturer til ulike tider, og om den kommunikasjonen som ligger i slike visuelle, taktile og tredimensjonale uttrykk
+har kunnskap om hvordan lys, rom og farger pC%virker lC&ring og om hensiktsmessig organisering av verksteder og skolens C8vrige ute- og innemiljC8
+
+Kunnskap sC&rlig rettet mot trinn 1-7
+
+Studenten
+
+har kunnskap om C% anvende grunnleggende ferdigheter rettet mot barn og unges lC&rings- og erkjennelsesformer, tilpasset deres livsverden
+har kunnskap om analoge og digitale uttrykksformer i begynneropplC&ring
+
+Kunnskap sC&rlig rettet mot trinn 5-10
+
+Studenten
+
+har kunnskap om barn og unges lC&rings- og erkjennelsesformer, formsprC%k, kulturelle identitet og skapende evner
+har kunnskap om analoge og digitale plattformer for formidling og kommunikasjon mot de unges livsverden
+
+Ferdigheter
+
+Ferdigheter felles for trinn 1-7 og trinn 5-10
+
+Studenten
+
+kan utnytte materialers og mediers egenskaper og kvaliteter, vise innsikt i egne skapende prosesser og anvende denne innsikten i undervisnings- og utviklingsarbeid
+kan formidle, analysere og vurdere design, arkitektur og kunst i relevante lokale og globale kunst- og kulturhistoriske sammenhenger
+kan forklare og demonstrere hvordan regning og geometri kan brukes og defineres innenfor fagets egenart
+kan anvende digitale og analoge verktC8y i visuell kommunikasjon og som redskap i arbeid med flater, layout, og ulike skrifttyper
+kan bruke fagsprC%k sikkert og funksjonelt, vurdere kvalitet pC% lC&rebC8ker og lC&remidler og holde seg oppdatert pC% relevant faglitteratur og forskning
+
+Ferdigheter sC&rlig rettet mot trinn 5-10
+
+Studenten
+
+kan planlegge og tilrettelegge for lC&ring i kunst og hC%ndverk med utgangspunkt i elevenes livsverden pC% mC%ter som ivaretar tilpasset opplC&ring og fremmer samarbeid, demokrati og likeverd
+
+Generell kompetanse
+
+Generell kompetanse felles for trinn 1-7 og trinn 5-10
+
+Studenten
+
+kan veilede og stimulere og tilpasse opplC&ringen til elevers opplevelse, skapende mot og oppmuntre til oppfinnsomhet og gjenskapende arbeid i trC%d med globale og lokale utfordringer
+er orientert innenfor fagrelevant forskning og bruker gjeldende lC&replaner for grunnskolen som utgangspunkt for faglig utviklingsarbeid med forskningsmessig og etisk tilnC&rming
+viser endringsvilje og engasjement for kontinuerlig faglig selvutvikling og har motivasjon for utvikling av skolens faglige, pedagogiske og fysiske fellesskap
+Innhold
+
+Kunst og hC%ndverk 2 bygger pC% Kunst og hC%ndverk 1 og skal bidra til fordypet kunnskap om praktisk arbeid og ferdigheter i verkstedene med tilhC8rende fagdidaktisk refleksjon. Emnet skal gi videre innsikt i fagets visuelle og materielle kulturforankring. Studenten skal i lC8pet av studiet videreutvikle egne praktiske ferdigheter - bC%de analoge og digitale - og fC% erfaring med et utvalg av materialer, arbeidsmC%ter og tenkesett som gir lC&ringsutbytte i trC%d med lC&replanen for trinn 1-7 og trinn 5-10. Fagdidaktisk refleksjon og forholdet mellom lC&replan og profesjonspraksis problematiseres gjennom kritisk gransking av praksis og oppgaver, med fokus pC% undervisning, veiledning og vurdering. Sammenhenger mellom barns leik og lC&ring lC8ftes fram. Skapende arbeidsprosesser pC% verksteder knyttes til miljC8bevisst bruk av materialer og produksjonsmetoder. Studiet vektlegger utvikling av evne til C% oppfatte og forstC% andres budskap og selv kunne kommunisere i visuelle og fysiske ytringsformer. Studenten blir i vesentlig grad utfordret til C% lC&re i samhandling med andre. Forholdet mellom lC&replan og profesjonspraksis problematiseres. Fagdidaktisk refleksjon er en integrert del av oppgaver, praktisk undervisning, veiledning og vurdering. Utforskende arbeid skal fremme studentens lC&ring, selvstendighet, oppfinnsomhet, analytiske ferdigheter, gjennomfC8ringsevne og kritiske refleksjon. InnfC8ring i vitenskapsteori og forskningsmetoder skal bidra til utvikling av studentens selvstendighet, analytiske evner og kritiske refleksjon.
+
+Deleksamen 1 (praktiske utviklingsarbeid) tar utgangspunkt i et selvvalgt materialomrC%de. FormC%let med det praktiske utviklingsarbeidet er at studentene skal arbeide utforskende og praktisk skapende innenfor ett eller flere av fagets kjerneelementer. Kjerneelementene er hC%ndverksferdigheter, kunst- og designprosesser, visuell kommunikasjon og kulturforstC%else. Verkstedarbeid og utvikling av hC%ndverksferdigheter - og hC%ndlag i vid betydning - er sentralt. Praktisk utviklingsarbeid er rettet mot fagdidaktisk arbeid i grunnskolen. Studentenes egen utforskningsprosess skal dokumenteres gjennom logg, mappe eller lignende. Denne dokumentasjonen skal vise egen utforskningsprosess og fagstoff som er relevant prosjektet. Fagstoff hentes fra pensum og selvvalgt litteratur.
+
+Deleksamen 2 (FoU-oppgaven) har et omfang pC% 7000 ord (+/- 10%). Kunst og hC%ndverk er et praktisk, estetisk og visuelt fag, og den skriftlige rapporten skal derfor ogsC% inneholde bilder. Bildene kan vC&re i lC8pende tekst og/eller som vedlegg. Oppgaven skal ha en klart formulert problemstilling eller fokusomrC%de som det mC% vC&re mulig C% undersC8ke og utdype. FoU-oppgaven skal gi studentene muligheter til C% dokumentere faglig kunnskap og innsikt gjennom belysning og drC8fting av et kunst og hC%ndverksfaglig tema som er relevant i grunnskolen. Studenten kan velge C% skrive en teoretisk oppgave, en empirisk oppgave eller en kombinasjon. En teoretisk oppgave tar utgangspunkt i analyser og drC8ftinger i aktuelle forskningsarbeider innen et omrC%de og oppsummerer og sammenlikner. En empirisk oppgave bygger pC% ny informasjon som studenten selv samler inn eller bygger videre pC% analyse av materiale som andre har samlet inn.
+
+I oppgaver som bruker materiale studenten selv samler inn, er det et krav at dette innhentes slik at meldeplikten til NSD ikke utlC8ses. Hvis elever under myndighetsalder deltar i undersC8kelsen, skal foresatte gi samtykke. Gjennom oppgaven skal studenten dokumentere kjennskap til aktuell forskning pC% det omrC%det som studenten skriver om. Studenten skal bruke teori og annet fagstoff som grunnlag for C% undersC8ke problemstillingen. I metodedelen skal framgangsmC%ter dokumenteres slik at det er mulig C% se hvordan studenten har innhentet og brukt materialet, og hvordan han eller hun har kommet fram til resultatene. Resultatene skal drC8ftes ut fra alminnelige vitenskapelige krav til pC%litelighet og gyldighet.
+
+Arbeids- og undervisningsformer
+
+Arbeidet med deleksamen 1 (det praktisk utviklingsarbeidet, tilsvarende 15 stp.) er organisert som workshops, fagseminarer, verkstedarbeid, veiledning/veiledningsseminar, muntlig framlegg og presentasjon/utstilling. Hver kandidat fC% oppnevnt en faglig veileder. TemaomrC%de, problemstilling og opplegg for oppgaven skal godkjennes av veileder. Det praktiske utviklingsarbeidet er et individuelt arbeid.
+
+Arbeidet med deleksamen 2 (FoU-oppgaven, tilsvarende 15 stp.) er organisert som undervisning og kurs, veiledning/veiledningsseminar, muntlig framlegg og innlevering av skriftlig oppgave. Hver kandidat vil fC% oppnevnt en faglig veileder. TemaomrC%de, problemstilling og opplegg for oppgaven skal godkjennes av veileder.
+
+Undervisningen i emnet skal i tillegg til undervisning i faglige emner gi stC8tte for oppgavearbeidet. Sentrale temaer for denne undervisningen er
+
+Utdanningsvitenskap for lC&rere - Sentrale forskningstradisjoner og metoder
+Seminar i pedagogikk som tar opp sentrale utfordringer i dagens grunnskole
+Forskningsetikk og grunnlagsspC8rsmC%l
+Skriving i forskning om skole og undervisning og i lC&reryrket
+
+Oppgaveskrivingen er en problemlC8sningsprosess, der studenten gjennom en systematisk og etterprC8vbare metoder skal belyse den valgte problemstillingen. En del av dette vil gjerne vC&re C% utarbeide en oppdatert kunnskapsoversikt. Studenten vil ogsC% ofte samle et erfaringsmateriale og bruke aktuell utdanningsvitenskapelig metode til C% undersC8ke, systematisere og belyse materialet. Arbeidet med oppgaven skal gi erfaring med C% sC8ke og anvende litteratur og bygge pC% bC%de oppgitt pensum og selvvalgt pensum. Omtaler, analyser og vurderinger i oppgaven skal vC&re solid faglig utviklet og underbygget. Deleksamen 2 (FoU-oppgaven) er et individuelt arbeid. Framstillingen skal vC&re i samsvar med regler og retningslinjer for vitenskapelig og faglig forfatterskap.
+
+Studietur
+
+Det vil bli arrangert en studietur. Studenten er selv ansvarlig for alle utgifter knyttet til studieturen. For studenter som ikke har mulighet til C% delta pC% studieturen, fC8lges et alternativt opplegg hjemme. Informasjon om reisemC%l og kostnader gis ved semesterstart.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+Retten til C% avlegge eksamen forutsetter godkjente arbeidskrav og deltakelse i bestemte faglige aktiviteter. NC&rmere informasjon om arbeidskrav og krav til deltakelse er beskrevet i den innledende delen av fagplanen.
+
+Arbeidskrav og faglige aktiviteter med krav om deltakelse til deleksamen 1
+
+FC8lgende arbeidskrav mC% vC&re gjennomfC8rt fC8r deleksamen 1 (det praktiske utviklingsarbeidet) kan leveres til sensur:
+
+Innlevering av et notat pC% 400 ord +/- 10 % om plan for det praktiske utviklingsarbeidet. Notatet skal ha med omtale av emne, spC8rsmC%l en vil undersC8ke og aktuelt fagstoff studenten forventer C% sette seg inn. Notatet skal ogsC% beskrive hva slags materiale og teknikk(er) studenten planlegger C% arbeide med og hvordan hele prosessen skal dokumenteres.
+
+FC8lgende faglige aktiviteter har krav om deltakelse i tilknytning til deleksamen 1:
+
+Deltakelse pC% workshops fastsatt i gjeldende semesterplan.
+Deltakelse pC% fagseminarer fastsatt i gjeldende semesterplan.
+Deltakelse pC% minimum to veiledninger i seminar eller individuelt. Veileder setter opp tidspunkter og krav til bidrag.
+Presentasjon av Praktisk prosjekt pC% delingsseminar.
+
+Arbeidskrav og faglige aktiviteter med krav om deltakelse til deleksamen 2
+
+FC8lgende arbeidskrav mC% vC&re gjennomfC8rt fC8r deleksamen 2 (FoU-oppgaven) kan leveres til sensur:
+
+Innlevering av et notat pC% 400 ord +/- 10 % om opplegg for oppgaven. Notatet skal ha med omtale av emne, spC8rsmC%l en vil undersC8ke, aktuell forskningslitteratur og annet fagstoff studenten forventer C% sette seg inn som del av oppgavearbeidet, hva slags materiale studenten planlegger C% samle inn og undersC8ke, forskningsmetode studenten skal bruke, og skisse til oppgavedesign.
+Notat fC8r siste veiledning med utdrag av oppgavetekst pC% 1500 ord +/- 10 %.
+
+FC8lgende faglige aktiviteter har krav om deltakelse i tilknytning til deleksamen 2:
+
+Deltakelse pC% undervisning om utdanningsvitenskap og metode, forskningsetikk og grunnlagsspC8rsmC%l
+Deltakelse pC% undervisning i akademisk skriving og IKT
+Deltakelse pC% to veiledninger i seminar eller individuelt. Veileder setter opp tidspunkter og krav til bidrag.
+Deltakelse pC% delingskonferanse med eget framlegg og respons pC% medstudenters framlegg.
+Vurdering og eksamen
+
+Eksamensform
+
+Deleksamen 1: Et praktisk, individuelt utviklingsarbeid som presenteres/utstilles med tilhC8rende prosessdokumentasjon pC% angitt dato og sted.
+
+Deleksamen 2: Individuell FoU-oppgave med omfang pC% 7000 ord +/- 10% leveres elektronisk innen oppgitt frist. Oppgaven mC% oppfylle IKT-krav og bestemte krav til utforming. Slike kriterier publiseres pC% hC8gskolens lC&ringsplattform i god tid fC8r studenten begynner pC% sin oppgave. EgenerklC&ring vedrC8rende fusk og plagiering, samt egenerklC&ring knyttet til hvorfor oppgaven ikke utlC8ser krav fra NSD, skal ligge som vedlegg i FoU-oppgaven ved innlevering.
+
+Eksamensdelene vektes likt ved sammenslC%ing av karakter.
+
+Ny/utsatt eksamen
+
+Ved gyldig fravC&r eller ikke bestC%tt resultat, mC% kun den aktuelle eksamensdelen tas opp igjen.
+
+Deleksamen 1: Ny/utsatt eksamen arrangeres som ved ordinC&r eksamen. Ved ikke bestC%tt karakter vil det vC&re anledning til C% omarbeide det praktiske utviklingsarbeidet ved fC8rste ny og utsatt eksamen. Etter dette leveres ny oppgave. Dersom deleksamen 1 fC%r bestC%tt karakter, kan studenten ikke levere forbedret oppgave, men mC% eventuelt lage et nytt praktisk utviklingsarbeid ved ny eksamen. Dette innebC&rer at man skifter temaomrC%de, eventuelt materiale for undersC8kelse, faglig grunnlag og problemstilling. Innlevering av forbedret versjon av samme oppgave som ved tidligere eksamen er ikke tillatt, og slik innlevering vil ikke bli vurdert.
+
+Deleksamen 2: Ny/utsatt eksamen arrangeres som ved ordinC&r eksamen. Ved ikke-bestC%tt karakter vil det vC&re anledning til C% omarbeide oppgave ved fC8rste ny og utsatt eksamen. Etter dette leveres ny oppgave. Dersom FoU-oppgaven fC%r bestC%tt karakter, kan studenten ikke levere forbedret oppgave, men mC% eventuelt skrive ny FoU-oppgave ved ny eksamen. Dette innebC&rer at man skifter temaomrC%de, eventuelt materiale for undersC8kelse, faglig grunnlag og problemstilling. Innlevering av forbedret versjon av samme oppgave som ved tidligere eksamen er ikke tillatt, og slik innlevering vil ikke bli vurdert.
+
+Hjelpemidler ved eksamen
+
+Deleksamen 1: Alle.
+
+Deleksamen 2: Alle.
+
+Vurderingsuttrykk
+
+Det benyttes en gradert karakterskala fra A til E for bestC%tt og F for ikke bestC%tt eksamen. Beskrivelse av karakteruttrykk for deleksamenene er i fagplanens innledning.
+
+Sensorordning
+
+Deleksamen 1: To interne sensorer. En tilsynssensor er tilknyttet emnet, i henhold til retningslinjer for oppnevning og bruk av sensorer ved OsloMet.
+
+Deleksamen 2: Intern og ekstern sensor. Normalt er veileder intern sensor.

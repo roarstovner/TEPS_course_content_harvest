@@ -1,0 +1,263 @@
+institution: oslomet
+code: M1GMU2100-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/M1GMU2100/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+M1GMU2100 Musikk 1, emne 1 Emneplan
+Engelsk emnenavn
+Music 1, Part 1
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 1-7
+Musikk 1 for trinn 1-7 i grunnskolen
+Omfang
+15.0 stp.
+StudieC%r
+2025/2026
+Pensum
+VCR 2026
+
+Timeplan
+VCR 2026
+Programplan
+GrunnskolelC&rerutdanning for trinn 1-7 (2025 HCST )
+Emnehistorikk
+2018 / 2019 2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Fagplan
+
+Musikk 1 (30 studiepoeng)
+
+Musikk 2 (30 studiepoeng)
+
+Fagplanen ble godkjent i studieutvalget 14. november 2016
+
+Gjeldende fra hC8stsemesteret 2017
+
+Innledning
+
+Fagplanen bygger pC% forskrift om rammeplan for grunnskolelC&rerutdanningen for trinn 1-7, fastsatt av Kunnskapsdepartementet 7. juni 2016, nasjonale retningslinjer for grunnskolelC&rerutdanningen trinn 1-7 av 1. september 2016 og programplan for grunnskolelC&rerutdanning for trinn 1-7 ved OsloMet, godkjent av studieutvalget 16. november 2016.
+
+Musikkfaget i grunnskolen har som mC%l C% gi alle elever musikkopplC&ring slik at de kan ta aktivt del i musikk gjennom musisering, komponering og lytting. I musikkstudiet i lC&rerutdanningene for grunnskolen er det derfor lagt vekt pC% C% skape en god sammenheng mellom lC&rerstudentens egen musikalske utvikling, og fagdidaktisk kompetanse i C% planlegge, gjennomfC8re og vurdere musikkundervisning.
+
+Faget skal gi grunnleggende innsikt i musikk som et utC8vende, skapende og lyttende fag, estetiske lC&ringsprosesser og kreativitet, den norske og internasjonale musikkarven, i musikk som flerkulturelt samfunnsfenomen og i musikk som identitetsskapende uttrykksform. Det skal gi grunnlag for studentenes allmenne danning og faglige vekst og gi dem opplC&ring i C% kunne ta aktivt del i kultur-, skole- og fagutvikling i sitt framtidige yrke.
+
+Arbeidet med faget skal pC% alle nivC% omfatte forskningsbasert kunnskap og erfaring knyttet til de aktivitets- og erkjennelsesformene vi finner i musikkfaget i gjeldende lC&replaner for grunnskolen og i praksisfeltet. Studiet skal gi grunnlag for musikkfaglig samarbeid med andre fagomrC%der og instanser utenfor skolen. Utvikling av de utC8vende, personlige og kunstneriske sidene ved musikkfaget krever C8ving og modning over lang tid og er derfor sentrale pC% alle nivC%.
+
+Faget skal gjC8re studentene fortrolige med begynneropplC&ring i musikk, musikalsk barnekultur, og i grunnleggende ferdigheter og kompetanser, slik disse er utformet i gjeldende lC&replan for musikk i grunnskolen. Faget skal utvikle studentens personlige uttrykk og evne til kommunikasjon.
+
+MC%lgruppe
+
+Studenter som er tatt opp til femC%rig grunnskolelC&rerutdanning for trinn 1-7. LC&rere som C8nsker videreutdanning.
+
+Opptakskrav
+
+Faget er tilgjengelig som valgfag for aktive studenter ved grunnskolelC&rerutdanningen og lC&rerutdanning for tosprC%klige lC&rere pC% OsloMet, i trC%d med utdanningenes programplaner. Interne sC8kere som sC8ker opptak til Musikk 2 mens de fortsatt er aktive pC% Musikk 1, kan fC% opptak uten C% ha fullfC8rt Musikk 1.
+
+Eksterne sC8kere mC% ha bestC%tt lC&rerutdanning som kvalifiserer for arbeid i skolen. Opptak til Musikk 2 krever fullfC8rt Musikk 1 eller tilsvarende.
+
+Dersom Musikk 1 og Musikk 2 lyses ut som et C%rsstudium (60 studiepoeng), tas det opp til begge enheter, og det kreves da ikke at Musikk 1 er bestC%tt fC8r studenten begynner pC% Musikk 2.
+
+SC8kere som Utdanningsdirektoratet har vurdert til C% ha lC&rerutdanning fra utlandet, men som mangler fag/studiepoeng for C% bli godkjent lC&rer i norsk grunnopplC&ring, kan ogsC% sC8ke. Slike sC8kere mC% i tillegg oppfylle kravet til generell studiekompetanse.
+
+LC&ringsutbytte
+
+LC&ringsutbyttet er nC&rmere beskrevet i emneplanene.
+
+Fagets innhold og oppbygging
+
+Musikk 1 (30 studiepoeng) er bygget opp av to emner C  15 studiepoeng. Musikk 2 (30 studiepoeng) bestC%r av ett emne pC% 30 studiepoeng. Musikk 2 bygger pC% Musikk 1. Minste kompetansegivende enhet for dette faget er 30 studiepoeng.
+
+Studiets emner bestC%r gjennomgC%ende av hovedomrC%dene musikkutC8ving, musikkteori og musikkorientering, samt fagdidaktikk og metodikk. Fagdidaktisk teori, praksis og refleksjon rettet mot musikalsk arbeid pC% trinn 1-7 vil stC% sentralt i studiet.
+
+MusikkutC8ving
+
+FagomrC%det omfatter opplC&ring i sang, spill og bevegelsesaktiviteter rettet mot musikalsk arbeid pC% trinn 1-7.
+
+C utvikle gode vokale ferdigheter er en vesentlig del av en musikklC&rers kompetanseutvikling. Gjennom deltakelse i klassesang vil studentene fC% praktisk sangerfaring med repertoar fra ulike stilarter og perioder. Sentralt stC%r C% dyrke sang som fellesaktivitet og C% utvikle egen stemme. Sang vil inngC% i flere av emnene gjennom hele studiet, bC%de pC% Musikk I og 2.
+
+Spill omfatter spill pC% instrumenter som piano, gitar og klasseromsinstrumenter, samt bruk av digitale instrumenter. Akkompagnement til klassesang vil stC% sentralt. Studentene vil fC% grunnleggende opplC&ring i ulike stavspill, trommer og bandinstrumenter rettet mot bruk i klasserommet. Gjennom arbeidet med sang og instrumenter vil studentene tilegne seg et variert repertoar av sanger og musikkstykker. Studentene vil ogsC% utvikle grunnleggende ferdigheter i improvisasjon, bC%de pC% akustiske instrumenter og gjennom bruk av digitale verktC8y.
+
+Studentene fC%r individuell undervisning i to av instrumentene piano, gitar eller sang. Dersom studenten ikke har erfaring med piano fra fC8r, mC% dette vC&re ett av instrumentene som velges. Det andre instrumentet kan vC&re sang eller gitar. Studenten kan imidlertid ogsC% velge C% ha undervisning i det samme instrumentet gjennom hele studielC8pet.
+
+Videre vil studentene fC% opplC&ring i dans og bevegelse til musikk og lC&re et representativt utvalg danser fra ulike kulturer.
+
+Studentene vil delta i et korprosjekt som avsluttes med en konsert.
+
+PC% Musikk 2 vil studentene fC% anledning til C% videreutvikle og fordype kunnskap og utC8vende ferdigheter fra Musikk I. Her stC%r allsidig opplC&ring i musikalsk ledelse sammen med utC8vende og skapende virksomhet sentralt. Studentene vil fC% anledning til C% bruke det de har lC&rt pC% Musikk 1 i ulike former for musikalsk ledelse, som kor- og ensembleledelse og oppsetting av forestillinger. Studentenes kunnskaper og ferdigheter vil ogsC% brukes og utvikles i flerfaglig arbeid med fagovergripende profesjonstemaer.
+
+Musikkteori og musikkorientering
+
+Dette hovedomrC%det innbefatter fagdisiplinene musikkteori, hC8relC&re, arrangering, komponering og musikkorientering.
+
+Grunnleggende musikkteori utgjC8r basisfundamentet for tilegnelse, forstC%else og analyse av ulike former for musikk. Gjennom praktiske og teoretiske innfallsvinkler legges et grunnlag som i neste omgang vil brukes innen varierte former for pedagogisk sats og komponering. Enkle teknikker bygd pC% tradisjonell og grafisk notasjon stC%r sentralt i dette arbeidet. I tillegg vil digitale hjelpemidler trekkes naturlig inn bC%de som redskap og kreativt verktC8y. Problematikken rundt opphavsrett knyttet til digital kompetanse i musikk vil ogsC% inngC% som en del av dette temaet.
+
+I musikkorientering vil studentene tilegne seg kunnskap om norsk og internasjonal musikk fra ulike epoker, tradisjoner og kulturer, og utvikle evnen til C% lytte aktivt og reflekterende til et representativt utvalg av musikk. Arbeidet med musikkorientering har ogsC% et skolerettet, fagdidaktisk perspektiv, blant annet gjennom at det blir satt fokus pC% lyttemetodikk.
+
+Studentene vil i lC8pet av Musikk 2 gis anledning til C% utvikle sine kunnskaper og ferdigheter innenfor hvert av disse omrC%dene.
+
+Fagdidaktikk og metodikk
+
+Dette fagomrC%det er bC%de praktisk og teoretisk. Sentrale teoretiske perspektiver i Musikk I er lC&replaner i faget, musikkfagets historie og rolle, kunstfaglige lC&ringsmC%ter og barn og unges utvikling av musikalitet, kreativitet og identitet. Forskning og refleksjon om barnekultur og mangfoldstematikk stC%r ogsC% sentralt. Videre vil studentene lC&re C% planlegge, gjennomfC8re og vurdere musikkopplC&ring i grunnskolen.
+
+Fagdidaktikk pC% Musikk 2 er sC&rlig rettet mot skolen som lC&ringsmiljC8 og lC&ringsfellesskap i et mangfoldig samfunn. Sentrale temaer er kulturelt og musikalsk fellesskap og lC&ring, som samarbeid med det frivillige musikklivet og instanser utenfor skolen, og uformelle lC&reprosesser, for eksempel gjennom bruk av digitale plattformer. Videre omfatter emnet norsk og internasjonal forskningsbasert kunnskap knyttet til musikkopplC&ring for elever pC% trinn 1-7.
+
+Metodikkundervisningen pC% Musikk 2 vil, i tillegg til C% utdype kunnskap og ferdigheter fra Musikk I, blant annet sette sC8kelyset pC% hvordan digital teknologi kan brukes som kreativt verktC8y i klasserommet. Her vil digital teknologi kobles inn i komposisjons- og lydformingsaktiviteter, samt i ulike samspillaktiviteter som passer for mellomtrinnet.
+
+Fagets arbeids- og undervisningsformer
+
+Studentene vil mC8te varierte ulike arbeidsformer, metoder og lC&ringsmateriell for skolefaget musikk pC% trinn 1-7. Undervisning og lC&ring i studiet veksler mellom forelesninger, gruppearbeid, individuelt arbeid, C8ving, skriftlige oppgaver og praktisk prosjektarbeid, alt etter hvilke deler av studiet det arbeides med. Der det er naturlig, gis det plass for tema- og blokkundervisning. Det legges vekt pC% profesjonsrettet undervisning, og pC% studentaktive og dialogiske lC&ringsformer.
+
+Faste undervisningstimer gjennom studiet er normalt fordelt pC%:
+
+Metodikk
+Musikkdidaktikk
+Klassesang
+Musikkteori, hC8relC&re og arrangering
+Musikkorientering
+Spill og sang
+Kor- og ensembleledelse
+
+Digital kompetanse er integrert i ulike deler av studiet.
+
+Undervisning i ett eller flere temaer i studiet kan bli gitt pC% engelsk.
+
+Studietur
+
+Som en del av Musikk 1 arrangeres det en ukes studietur til Ole Bull Akademiet pC% Voss. Her gis det en innfC8ring i norsk vokal og instrumental folkemusikk og folkedans ledet av noen av landets fremste utC8vere innen kveding, spill og dans. Det forventes at alle deltar, da dette er en viktig faglig del av studiet. Studenter som likevel ikke kan delta, mC% selv sC8rge for C% tilegne seg tilsvarende kunnskaper og ferdigheter. Studentene mC% selv finansiere reise og opphold, mens utgiftene til det faglige opplegget dekkes av hC8gskolen.
+
+Klasseledelse og lC&rerrollen
+
+Musikk er et fag med mye lyd og aktivitet som fordrer en oppmerksom, tilstedevC&rende lC&rer i klasserommet. C finne en balanse mellom positiv uro og et trygt lC&ringsmiljC8 stC%r sentralt nC%r det gjelder klasseledelse i musikkfaget. Musikkfagets praktiske arbeidsmC%ter har i seg selv strukturerende elementer som i mange tilfeller gjC8r andre pedagogiske klasseledelsestiltak overflC8dige. For eksempel kan det C% lede klassesang eller samspillsaktiviteter uten mange ord, men i stedet gjennom selv C% synge og spille med, eller gjennom direksjon eller akkompagnement, vC&re noen av musikklC&rerens redskaper for musikalsk klasseledelse som ivaretar balansen mellom arbeidsro og arbeidsglede pC% fagets premisser. PC% et mer uuttalt nivC% vil ogsC% musikklC&rerens fagsyn og elevsyn pC%virke hans eller hennes klasseledelse og lC&rerrolle. For eksempel innebC&rer en grunnleggende dialogisk tilnC&rming til musikkundervisning at lC&reren ikke lukker dialogen i klasserommet ved C% presentere musikalsk kunnskap og ferdigheter som noe entydig som krever fasitsvar. Dialogisk klasseledelse i musikk C%pner i stedet for utforsking, undring og mangfold i musikklasserommet, noe som samsvarer med en holdning til musikkundervisning som er rustet for det 21. C%rhundret.
+
+BegynneropplC&ring
+
+Musikalske lytte- og samspillaktiviteter som kan knyttes opp mot tall- og sprC%kinnlC&ring inngC%r som en naturlig del av den musikkmetodiske undervisningen pC% trinn 1-7.
+
+Tilpasset opplC&ring
+
+Tilpasset opplC&ring i musikk handler for det fC8rste om C% bruke elevenes ulike musikalske erfaringer som en ressurs i undervisningen. I musikkfaget legges det dessuten vekt pC% C% tilrettelegge for aktiviteter som alle kan ta del i, og som kan bidra til mestring og musikkglede for alle. Studentene vil derfor mC8te varierte arbeidsmC%ter, undervisningsmetoder og lC&ringsmateriell for grunnskolefaget musikk pC% trinn 1-7. Studentene vil fC% innsikt i hvordan de kan tilpasse undervisningen for elever med ulike forutsetninger og interesser, og med ulik bakgrunn. Studentene lC&rer ogsC% C% tilpasse de enkelte aktivitetene i musikkfaget til ulike nivC%, for eksempel ved C% lage samspillarrangementer med differensierte spillestemmer som gir utfordringer til de mest C8vede, og som samtidig har oppgaver som er tilrettelagt for elever som ikke er sC% C8vede, eller som har spesielle behov.
+
+Vurdering - kartleggingsverktC8y og oppfC8lging
+
+Studentene vil lC&re C% tilrettelegge for, lede og vurdere musikkopplC&ring i grunnskolen. Dette innebC&rer blant annet C% utvikle vurderingskompetanse knyttet til lytte-, sang-, samspill- og bevegelsesuttrykk, samt improvisasjons- og komposisjonsprosesser pC% trinn 1-7. I dette arbeidet vil praksisopplC&ringen spille en vesentlig rolle ved C% gi gode rammer for fag- og vurderingspraksis i musikk pC% barne- og mellomtrinnet.
+
+Grunnleggende ferdigheter
+
+Studentene skal bli fortrolige med de grunnleggende ferdighetene C% kunne uttrykke seg muntlig og skriftlig, C% kunne lese og regne og C% kunne bruke digitale verktC8y i faget musikk, slik disse er beskrevet i gjeldende lC&replan for musikk i grunnskolen. Studentene vil aktivt utvikle og bruke de grunnleggende ferdighetene i musikk gjennom utdanningen. Dette er nC8dvendig bC%de for deres egen lC&ring av faget pC% hC8gskolenivC%, og for at de siden skal kunne utvikle elevenes grunnleggende ferdigheter i musikk i sin yrkesutC8velse. Studentene skal i tillegg lese og skrive fagtekster, samt delta i faglige samtaler, muntlige presentasjoner og annet musikkfaglig arbeid, og vil slik bli veiledet inn i musikkfagets kultur og tenkemC%ter. Slik vil studentene oppnC% en reell forstC%else av hvordan de grunnleggende ferdighetene i musikk utgjC8r en del av fagets kultur, og hvordan disse kan integreres i undervisningen i skolefaget musikk.
+
+Digital kompetanse
+
+Studentene vil fC% C8ving i C% bruke og vurdere ulike digitale verktC8y pC% forskjellige fysiske plattformer, som nettbrett, smarttelefoner og PC/Mac. Dette kan vC&re stC8tteprogrammer i den musikkteoretiske undervisningen eller musikkmetodiske programmer tilrettelagt for klasserommet. Studentene vil fC% innsikt i opphavsrettslige og etiske sider ved bruk av digitale verktC8y i undervisningen.
+
+LC&rerarbeid i det mangfoldige klasserommet
+
+Musikkfaget i lC&rerutdanningen skal gi grunnleggende innsikt i den norske og internasjonale musikkarven, og i musikk som flerkulturelt og mangfoldig samfunnsfenomen. Det innebC&rer at studentene skal utvikle C%penhet og toleranse for ulike musikalske sjangre og ulike kulturers musikk, i tillegg til bevissthet omkring kjC8nns- og likestillingsproblematikk i musikkfaget. Disse holdningene forventes det at studentene tar med seg videre inn i egen profesjonell virksomhet. Studentene skal tilegne seg kunnskap som gjC8r dem i stand til C% bruke det musikkulturelle mangfoldet som en ressurs i musikkfaget. Det innebC&rer C% utvikle bevissthet om hva som kan skape skiller mellom "oss" og "dem", og hva som kan bidra til uC8nsket marginalisering eller eksotisering av andre kulturers eller noen elevers musikk.
+
+Overgangen mellom trinnene nC%r det gjelder eget fag
+
+Studentene vil arbeide med tematikk knyttet til det helhetlige opplC&ringslC8pet, med vekt pC% overgangen fra barnetrinn til ungdomstrinn. Innsikt i barn og unges musikkultur vil gi en forstC%elsesramme for musikkdidaktiske tiltak rettet mot denne overgangen. Studentene vil gjC8res kjent med musikkfagets potensial nC%r det gjelder styrking av elevers identitet og selvfC8lelse, skoletilknytning, elevmedvirkning, mestring og motivasjon, temaer som er sentrale nC%r det gjelder C% mC8te utfordringer knyttet til det helhetlige opplC&ringslC8pet. For eksempel vil elevers skoletilknytning kunne styrkes gjennom fagovergripende fellesprosjekter eller forestillinger hvor musikk inngC%r.
+
+Estetiske arbeidsmC%ter
+
+Musikk er et estetisk fag, og alle arbeidsmC%ter, arbeidskrav og eksamener i faget er preget av estetisk tenkning og praksis.
+
+Internasjonale perspektiver
+
+Musikk er i seg selv internasjonal og flerkulturell, og undervisningen pC% Musikk 1 og 2 bC&rer preg av C%penhet mot andre kulturers musikk og tenkning. Denne C%penheten kommer ogsC% til uttrykk gjennom valg av pensumlitteratur, hvor vektleggingen av internasjonale perspektiver forsterkes utover i studiet. Mens pensum pC% Musikk 1 i hovedsak er preget av norsk musikkdidaktisk litteratur, vil pensum pC% Musikk 2 omfatte engelske tekster og internasjonal forskning, inkludert komparative perspektiver. Dette vil bidra til C% sette faget og fagfeltet inn i et stC8rre, internasjonalt perspektiv, noe som vil utvide studentenes horisont og gi dem dypere fagforstC%else og stC8rre spillerom nC%r de skal skrive FoU-oppgave i femte semester. Sjette semester er utdanningens internasjonale periode, der det blant annet legges til rette for internasjonal utveksling og praksisopplC&ring i utlandet.
+
+Praksistilknytning
+
+Musikk i lC&rerutdanningen er et profesjonsfag, og det legges stor vekt pC% at studentene fC%r erfaring i planlegging og gjennomfC8ring av musikktimer i skolen i samarbeid med praksisskolen/praksisveileder og lC&rerne ved OsloMet.
+
+Forskningsforankring
+
+Studiet bygger pC% aktuell forskningsbasert kunnskap og erfaring knyttet til de aktivitets- og erkjennelsesformene vi finner i gjeldende lC&replaner for musikkfaget i grunnskolen og i praksisfeltet. Musikk i lC&rerutdanningen knytter seg til det veletablerte norske og internasjonale forskningsfeltet musikkdidaktikk/musikkpedagogikk (Music Education). Studentene innvies gradvis i dette feltet gjennom arbeid med fagtekster, muntlige framlegg og FoU-oppgaven.
+
+Psykososialt lC&ringsmiljC8
+
+Alt arbeid med musikalske aktiviteter i skole og lC&rerutdanning er avhengig av at det psykososiale lC&ringsmiljC8et oppleves som trygt og inspirerende. Innen alle deler av musikkfaget i lC&rerutdanningen vektlegges derfor et inkluderende, positivt lC&ringsmiljC8.
+
+Samiske forhold og rettigheter
+
+Kunnskap om samisk kultur og musikk inngC%r som en naturlig del av musikkfaget. I emnet Musikkorientering 1 fC%r studentene kunnskap om bC%de tradisjonell og nyere samisk musikk.
+
+BC&rekraftig utvikling
+
+Musikere og komponister har til alle tider vC&rt opptatt av samfunnet de lever i. Mye av musikken som har blitt laget, og som lages i dag, er kommentarer til ulike samfunnsmessige problemer og utfordringer. Sanger og musikkstykker knyttet opp mot bC&rekraftig utvikling er en del av dette bildet, og inngC%r derfor som en naturlig del av musikkfaget. I emne 3 vil studentene dessuten delta i et fellesfaglig prosjekt hvor temaet bC&rekraftig utvikling behandles gjennom estetiske arbeidsmC%ter.
+
+PraksisopplC&ring
+
+PraksisopplC&ring er nC&rmere beskrevet i programplanen.
+
+Skikkethetsvurdering
+
+LC&rerutdanningsinstitusjoner har ansvar for C% vurdere om studenter er skikket for lC&reryrket. LC8pende skikkethetsvurdering foregC%r gjennom hele studiet og inngC%r i en helhetsvurdering av studentens faglige og personlige forutsetninger for C% kunne fungere som lC&rer. En student som utgjC8r en mulig fare for elevers liv, fysiske og psykiske helse, rettigheter og sikkerhet, er ikke skikket for yrket. Studenter som viser liten evne til C% mestre lC&reryrket, skal sC% tidlig som mulig i utdanningen fC% melding om dette. De skal fC% rC%d og veiledning for C% gjC8re dem i stand til C% oppfylle kravene om lC&rerskikkethet eller fC% rC%d om C% avslutte utdanningen. Beslutninger om skikkethet kan fattes gjennom hele studiet.
+
+Se universitetets nettsted for mer informasjon om skikkethetsvurdering.
+
+Arbeidskrav
+
+Arbeidskrav skal vC&re levert/utfC8rt innen fastsatt(e) frist(er). Gyldig fravC&r dokumentert med for eksempel sykemelding, gir ikke fritak for C% innfri arbeidskrav. Studenter som pC% grunn av sykdom eller annen dokumentert gyldig C%rsak ikke leverer/utfC8rer arbeidskrav innen fristen, kan fC% forlenget frist. Ny frist for C% innfri arbeidskrav avtales i hvert enkelt tilfelle med den aktuelle lC&reren.
+
+Arbeidskrav vurderes til "Godkjent" eller "Ikke godkjent". Studenter som leverer/utfC8rer arbeidskrav innen fristen, men som fC%r vurderingen "Ikke godkjent", har anledning til to nye innleveringer/utfC8relser. Studenten mC% da selv avtale ny innlevering av det aktuelle arbeidskravet med faglC&rer. Studenter som ikke leverer/utfC8rer arbeidskrav innen fristen og som ikke har dokumentert gyldig C%rsak, fC%r ingen nye forsC8k.
+
+I programplanen er de fagovergripende temaene pC% de ulike studieC%rene og semestrene beskrevet. I tilknytning til disse kan det vC&re krav om tilstedevC&relse og/eller andre arbeidskrav.
+
+Det er obligatorisk frammC8te (minimum 80 % tilstedevC&relse) i alle emner pC% Musikk 1 og Musikk 2. Manglende deltakelse i de faglige aktivitetene medfC8rer at studenten ikke fC%r avlegge eksamen. Kravet om deltakelse er knyttet til bruk av studentaktive og dialogiske lC&ringsformer, og at lC&ringen foregC%r i timene gjennom praktiske arbeidsmC%ter som seminararbeid, prosjektarbeid og musisering. Ved fravC&r utover 20 %, og inntil 40 %, vil det gis en kompensatorisk oppgave. Form og omfang avtales med faglC&rer. Ved fravC&r utover 40 % vil studenten trekkes fra eksamen.
+
+NC&rmere informasjon om arbeidskrav finnes i den enkelte emneplan.
+
+Vurderings-/eksamensformer
+
+Se emneplanene under punktet Vurderings-/eksamensformer.
+
+Vurderingskriterier for Musikk 1 og deleksamen 1 pC% Musikk 2
+
+A: Fremragende. Viser fremragende kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser fremragende evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+B: Meget god. Viser meget gode kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser meget god evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+C: God. Viser gode kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser god evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+D: NoksC% god. Viser begrensede kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser begrenset evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+E: Tilstrekkelig.Tilfredsstiller minimumskravene til kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser noe evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+F: Ikke bestC%tt. Har utilstrekkelig kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser dC%rlig evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+Vurderingskriterier for deleksamen 2 pC% Musikk 2 (FoU-oppgaven)
+
+A: Fremragende. Fremragende prestasjon som klart utmerker seg. Kandidaten viser svC&rt god vurderingsevne, stor faglig oversikt og stor grad av selvstendighet. Arbeidet er sC&rlig godt utformet bC%de innholdsmessig og sprC%klig.
+
+B: Meget god. Meget god prestasjon som viser meget god vurderingsevne og selvstendighet. Arbeidet er svC&rt godt utformet bC%de innholdsmessig og sprC%klig.
+
+C: God. Solid prestasjon som er tilfredsstillende pC% de fleste omrC%der. Kandidaten viser god vurderingsevne og selvstendighet pC% de fleste omrC%der. Arbeidet er godt utformet bC%de innholdsmessig og sprC%klig.
+
+D: NoksC% god. En akseptabel prestasjon med noen vesentlige mangler. Kandidaten viser en viss grad av vurderingsevne og selvstendighet. Arbeidet er noksC% godt utformet bC%de innholdsmessig og sprC%klig.
+
+E: Tilstrekkelig. Prestasjon som tilfredsstiller minimumskrav, men ikke mer. Arbeidet er tilfredsstillende utformet bC%de innholdsmessig og sprC%klig.
+
+F: Ikke bestC%tt. Prestasjon som ikke tilfredsstiller minimumskravene.
+
+Utfyllende kriterier framgC%r av retningslinjer som gjC8res tilgjengelig ved starten av emnet.
+
+Rettigheter og plikter ved eksamen
+
+Studentens rettigheter og plikter framgC%r av forskrift om studier og eksamen ved OsloMet. Forskriften beskriver blant annet vilkC%r for ny/utsatt eksamen, klageadgang og hva som regnes som fusk ved eksamen. Studenten er selv ansvarlig for C% melde seg opp til eventuell ny/utsatt eksamen.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har forskningsbasert kunnskap om lC&ring og estetiske og kreative lC&ringsprosesser knyttet til begynneropplC&ring i musikk
+har kunnskap om analoge og digitale lC&ringsressurser og lC&ringsmateriell for musikkfaget og kan vurdere disse kritisk
+har grunnleggende kunnskap om et bredt utvalg musikk fraB

@@ -1,0 +1,92 @@
+institution: nord
+code: NOR5004-1
+year: NA
+hv: NA
+url: https://www.nord.no/studier/emner/nor5004
+status: 200
+course_name_no: Norsk 3A, 5-10
+----- FULLTEXT -----
+
+
+
+Emnet bygger pC% de norskfaglige emnene i mastersyklusens fC8rste del og tar sikte pC% C% videreutvikle studentenes norskfaglige og fagdidaktiske kompetanse, slik at de sammen med den etterfC8lgende fagmodulen skal ha det faglige og fagdidaktiske grunnlaget for arbeidet med masteroppgaven. Delemnene vil kunne bli vektet noe forskjellig avhengig av spesialkompetansen hos lC&rere som er involvert i det enkelte semester.
+
+GjennomfC8rt Norsk 1, 30 stp, og Norsk 2, 30 stp, i MAGLU 5-10.
+
+GjennomfC8rt Norsk 1, 30 stp, og Norsk 2, 30 stp, i MAGLU 5-10.
+
+Kunnskaper:
+
+Studenten
+
+Har inngC%ende kunnskap i litteraturteori, litteraturdidaktikk, og litterC&r leseteori
+Har inngC%ende kunnskap i litteraturhistorie, litteraturhistoriografi, litteraturkritikk og litterC&r kvalitet
+Har inngC%ende kunnskap om grammatikk og grammatikkteori
+Har inngC%ende kunnskap om arbeid med skriveopplC&ring pC% mellom- og ungdomstrinnet, rettskriving, samt skriveopplC&ring pC% bokmC%l, nynorsk og samisk
+Har inngC%ende kunnskap om leseteori og lesedidaktikk for mellom- og ungdomstrinnet
+Har inngC%ende kunnskap om kommunikasjon og samtale
+
+Ferdigheter:
+
+Studenten
+
+Kan bruke kunnskaper om litteraturteori, litteraturdidaktikk og litterC&r lesedidaktikk til C% planlegge og gjennomfC8re en tilpasset bruk av litteratur pC% mellom- og ungdomstrinnet
+Kan gjennomfC8re en faglig fundert og tilpasset undervisning i litteraturhistorie
+Kan bruke grammatiske, skrive- og leseteoretiske og -didaktiske kunnskaper til C% legge til rette for den videreopplC&ringen i skriving og lesing
+Kan legge til rette for videreutvikling av muntlige aktiviteter
+
+Generell kompetanse:
+
+Studenten
+
+Kan legge til rette for kunnskapsbasert utvikling av elevers skriftlige og muntlige kompetanse
+Kan legge til rette for C% utvikle elevers bevissthet om den rollen som sprC%k og tekst spiller i et samfunn preget av multimodale medier
+Kan vurdere egen praksis med gjeldende lC&replaner, faglig og fagdidaktisk innsikt som grunnlag
+
+Kunnskaper:
+
+Studenten
+
+Ferdigheter:
+
+Studenten
+
+Generell kompetanse:
+
+Studenten
+
+Utover semesteravgift og pensumlitteratur forutsettes det at studenten disponerer en bC&rbar datamaskin.
+
+Valgbart
+
+Undervisninga vil vC&re variert og blir gitt i form av forelesninger for hele studentgruppa, gruppeundervisning og rettledning til den enkelte studenten. BC%de fra et norskfaglig perspektiv og et yrkesperspektiv er det viktig at studentene legger stor vekt pC% selvstendig arbeid, bC%de individuelt og i grupper. En del av undervisninga vil foregC% som seminar der gruppa diskuterer forberedte studentframlegg.
+
+Studieprogrammet evalueres C%rlig av studentene gjennom emneundersC8kelser (midtveisevaluering og sluttevaluering). Evaluering inngC%r som en del av universitetets kvalitetssikringssystem.
+
+Se Kompetanseguiden og emnebeskrivelse for praksis 4. studieC%r
+
+Sammensatt vurdering - alle delene mC% vC&re godkjent/bestC%tt for C% fC% karakter i emnet.
+
+OD: Obligatorisk deltakelse, min. 80% oppmC8te. Godkjent/ikke godkjent.
+
+AK: Studenten skal ha godkjent to arbeidskrav. Ett av arbeidskravene skal skrives pC% bokmC%l, ett pC% nynorsk. Godkjent/ikke godkjent
+
+HJ: Hjemmeeksamen, tre dager. Teller 100% av karakteren. Karakterskala A-F. Valgfri mC%lform.
+
+Sammensatt vurdering - alle delene mC% vC&re godkjent/bestC%tt for C% fC% karakter i emnet.
+
+OD: Obligatorisk deltakelse, min. 80% oppmC8te. Godkjent/ikke godkjent.
+
+AK: Studenten skal ha godkjent to arbeidskrav. Ett av arbeidskravene skal skrives pC% bokmC%l, ett pC% nynorsk. Godkjent/ikke godkjent
+
+HJ: Hjemmeeksamen, tre dager. Teller 100% av karakteren. Karakterskala A-F. Valgfri mC%lform.
+
+Alle hjelpemidler tillatt.
+
+C generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er C% regne som fusk.
+
+Alle hjelpemidler tillatt.
+
+C generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er C% regne som fusk.
+
+Norsk 1 og 2

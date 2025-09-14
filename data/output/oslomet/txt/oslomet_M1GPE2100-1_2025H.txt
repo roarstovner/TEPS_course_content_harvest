@@ -1,0 +1,163 @@
+institution: oslomet
+code: M1GPE2100-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/M1GPE2100/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+M1GPE2100 Pedagogikk og elevkunnskap 1, emne 3 Emneplan
+Engelsk emnenavn
+Pedagogy, Subject 3
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 1-7
+Omfang
+10.0 stp.
+StudieC%r
+2025/2026
+Pensum
+HCST 2025
+
+Timeplan
+HCST 2025
+Programplan
+GrunnskolelC&rerutdanning for trinn 1-7 (2025 HCST )
+Emnehistorikk
+2018 / 2019 2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Innledning
+
+Fagplanen tilhC8rende dette emnet er lagt pC% emne M1GPE1100 Pedagogikk og elevkunnskap 1, emne 1.
+
+Skolestart for 6-C%ringen er en viktig milepC&l i barns liv. Barna er i en overgangsfase fra barnehagebarn til skolebarn som skal vC&re fylt med utvikling og lC&ring for hvert enkelt barn. Det er avgjC8rende at skolen anerkjenner barnas kunnskap og erfaringer nC%r de kommer til skolen og at kjente arbeidsmC%ter fra barnehagen viderefC8res. Pedagogiske prinsipper som bC8r prege begynneropplC&ringen (1.-4.trinn) er en lekende, oppdagende og fysisk aktiv tilnC&rming til lC&ring. I dette emnet arbeider studentene spesielt med begynneropplC&ring i lesing, skriving og matematikk med stC8tte fra faget pedagogikk og elevkunnskap. Tidlig innsats og progresjon i elevenes utvikling av grunnleggende ferdigheter og fagkompetanse er ogsC% viktige prinsipper i pedagogikk og elevkunnskap.
+
+Forkunnskapskrav
+
+Ingen.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har inngC%ende kunnskap om sammenhengen i utdanningslC8pet og overgangen fra barnehage til skole
+har kunnskap om lek og lekens betydning for elever i smC%skolen
+har kunnskap om betydningen av skole-hjem samarbeid i begynneropplC&ringen
+har kunnskap om didaktiske prinsipp som er aktuelle i begynneropplC&ringen
+har kunnskap om sosiale, emosjonelle og kroppslige dimensjoner ved elevenes lC&ring
+har kunnskap om ulike lC&revansker og atferdsutfordringer
+har kunnskap om flersprC%klighet og flersprC%klig utvikling
+
+Ferdigheter
+
+Studenten
+
+kan anvende prinsipper om utforskende og lekende lC&ringsprosesser og begrunne didaktiske valg i teori om begynneropplC&ring
+kan reflektere over og anvende forskningsbasert kunnskap til C% etablere god klasseledelse fra skolestart og utvikle et trygt og inkluderende lC&ringsmiljC8 for elevene
+kan begrunne didaktiske valg i arbeid med barn med lC&re- og atferdsvansker
+kan legge til rette for vennskap og inkluderende relasjoner mellom barn i skolehverdagen
+kan legge til rette for samspill og dialogisk undervisning
+kan tilrettelegge for begynneropplC&ring i en flersprC%klig kontekst
+
+Generell kompetanse
+
+Studenten
+
+kan pC% et reflektert og faglig grunnlag vC&re i dialog med eleven og deres foresatte om elevenes lC&ring og utvikling
+har innsikt i hvordan de fC8rste C%rene i skolen danner grunnlaget for barnets sosiale og faglige mestring
+Innhold
+
+Emne 3 bestC%r av fC8lgende temaer med undertemaer:
+
+Tema 1: BegynneropplC&ring
+
+overgang barnehage - skole
+lek og vennskapsrelasjoner
+kroppslige og emosjonelle perspektiver
+fysisk lC&ringsmiljC8
+klasseledelse og organisering av lC&ringsaktiviteter i begynneropplC&ringen
+
+Tema 2: Barn, helse og livsmestring
+
+barn i vanskelige livssituasjoner
+lC&revansker
+tidlig innsats sosialt og faglig
+
+Tema 3: Inkludering, atferdsvansker og flersprC%klighet
+
+flersprC%klighet som normalitet
+anerkjennelse av samisk sprC%k og kultur i norsk skole
+inkluderende lC&ringsmiljC8 i en mangfoldig skole
+skole-hjem samarbeid
+skolens samarbeidspartnere - tverrprofesjonelt samarbeid
+Arbeids- og undervisningsformer
+
+Se fagplanen.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+InRetten til C% avlegge eksamen forutsetter godkjente arbeidskrav og deltakelse i bestemte faglige aktiviteter. For C% kunne avlegge eksamen i emne 3 mC% fC8lgende tre arbeidskrav vC&re godkjent:
+
+Arbeidskrav 1: Flerfaglig arbeid med begynneropplC&ring
+
+En individuell oppgave knyttet til fagene norsk, matematikk og pedagogikk og elevkunnskap om begynneropplC&ring. Utgangspunktet for arbeidskravet er to observasjonsdager i 1. klasse. Arbeidskravet er en skriftlig oppgave med et omfang pC% 2200 ord +/- 10 %. FormC%let med oppgaven er C% reflektere over flerfaglige perspektiver knyttet til begynneropplC&ring.
+
+Dersom oppgaven ikke blir godkjent, kan arbeidet forbedres og leveres inn C)n gang til.
+
+MC%lform: Nynorsk
+
+Arbeidskrav 2
+
+En indviduell oppgave i IKT og PEL knyttet til det tverrfaglige temaet uteskole.
+
+Hensikten med arbeidskravet er C% gjC8re seg kjent med barns forutsetninger for lek, lekende og kroppslig lC&ring ved overgang fra barnehage til skole. Innlevering av en digital presentasjon som deles med og diskuteres i grupper klassen. Innholdskrav beskrives nC&rmere i oppgaveteksten.
+
+Arbeidskrav 3
+
+Skriftlig individuelt arbeidskrav knyttet til fagdidaktikk og pel.
+
+Hensikten med arbeidskravet er at studenter fC%r erfaring med C% planlegge og reflektere over undervisning og elevers lC&ring i begynneropplC&ringen.
+
+Innholdskrav beskrives nC&rmere i oppgaveteksten.
+
+Arbeidskravene vurderes til "Godkjent" eller "Ikke godkjent". Studenter som leverer/utfC8rer arbeidskravene innen fristen, men som fC%r vurderingen "Ikke godkjent", har anledning til to nye innleveringer/utfC8relser. Studenten mC% da selv avtale ny innlevering av det aktuelle arbeidskravet med faglC&rer. Studenter som ikke leverer/utfC8rer arbeidskrav innen fristen og som ikke har dokumentert gyldig C%rsak, fC%r ingen nye forsC8k. For nC&rmere beskrivelse av arbeidskrav se fagplanen.
+
+Obligatorisk 4: Faglige aktiviteter med krav om deltakelse
+
+LC&ring i pedagogikk og elevkunnskap forutsetter samhandling med medstudenter og faglC&rere om sentrale utfordringer i faget knyttet til temaene i emnet. Faget skal vC&re profesjonsrettet og bidra til sammenheng i studiet og til kritisk tenkning, selvstendighet og refleksjon hos studenten. Faget skal utvikle kunnskaper, ferdigheter og generell kompetanse hos studenten, noe som ikke kan tilegnes kun ved lesing, men som mC% utvikles i dialog og ved tilstedevC&relse i undervisning. Gjennom studentaktive arbeidsformer som undervisningsC8vinger, dramatisering og rollespill skal studentene gis muligheter til C% utvikle ferdigheter som er relevante for profesjonelt lC&rerarbeid. Det kreves derfor oppmC8te pC% minimum 80 % forelesninger/faglige aktiviteter knyttet til dette emnet. Ved fravC&r utover 20 %, og inntil 40 %, vil det gis kompensatorisk arbeid som kan inkludere krav om oppmC8te. Form og omfang bestemmes av faglC&rer. Ved fravC&r utover 40 % vil studenten trekkes fra eksamen i emnet. Gyldig fravC&r dokumentert med for eksempel sykemelding, gir ikke fritak for kravet om deltakelse og eventuelt kompensatorisk arbeid.
+
+Fagovergripende tema
+
+I programplanen er det beskrevet ulike fagovergripende temaer pC% de ulike studieC%rene. Det er krav om deltakelse i disse faglige aktivitetene. Knyttet til emne 3 er fC8lgende faglige aktiviteter:
+
+kurs i forskningsmetode (aksjonsforskning-lC&ring)
+lesegruppe
+kurs i kroppsC8ving. Studentene skal ha kunnskap om begynneropplC&ring. For C% oppnC% dette skal studiet blant annet gi studentene innsikt i betydningen av barns behov for lC&ring gjennom lek og aktiv fysisk utfoldelse. Det arrangeres et kurs i kroppsC8ving for C% bidra til at studentene oppnC% dette. Rammene for kurset kommer frem i eget skriv.
+tema psykososialt miljC8
+
+INTER1200
+
+Manglende deltakelse i faglige aktiviteter nevnt over medfC8rer at studenten ikke fC%r avlegge eksamen i det emnet kravet om deltakelse er knyttet til. Sykdom fritar ikke for kravet om deltakelse. Studenter som ikke oppfyller kravet om deltakelse, mC% snarest mulig ta kontakt med faglC&rer.
+
+Vurdering og eksamen
+
+Individuell hjemmeeksamen, 3 dager.
+
+Ny/utsatt eksamen arrangeres som ved ordinC&r eksamen.
+
+Hjelpemidler ved eksamen
+
+Alle hjelpemidler tillatt.
+
+Vurderingsuttrykk
+
+Det benyttes en gradert karakterskala fra A til E for bestC%tt og F for ikke bestC%tt eksamen.
+
+Sensorordning
+
+Eksamen vurderes av intern og ekstern sensor.

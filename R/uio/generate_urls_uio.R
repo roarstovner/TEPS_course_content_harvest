@@ -186,6 +186,24 @@ local({
   }
   df$url <- urls
   
+  df$hv <- ""  # UiO bruker ikke H/V i path; tom streng er fint
+  
+  ts   <- format(Sys.time(), "%Y%m%d-%H%M")
+  outd <- file.path("data","output", inst_short)
+  dir.create(outd, recursive = TRUE, showWarnings = FALSE)
+  
+  csv_ts <- file.path(outd, sprintf("course_urls_%s_%s.csv", inst_short, ts))
+  txt_ts <- file.path(outd, sprintf("course_urls_%s_%s.txt", inst_short, ts))
+  
+  keep <- c("course_code_norm","year","hv","url")
+  write.csv(df[, keep, drop = FALSE], csv_ts, row.names = FALSE, fileEncoding = "UTF-8")
+  writeLines(df$url[nchar(df$url) > 0], txt_ts, useBytes = TRUE)
+  
+  file.copy(csv_ts, file.path(outd, "course_urls_latest.csv"), overwrite = TRUE)
+  file.copy(txt_ts, file.path(outd, "course_urls_latest.txt"), overwrite = TRUE)
+  cat("Skrev filer for uio (", nrow(df), " rader)\n", sep = "")
+  
+  
   # ---------- advarsel om uerstattede tokens ----------
   leftover <- grep("\\{[^}]+\\}", df$url, value = TRUE)
   if (length(leftover)) warning("Uerstattede tokens i noen URLer ??? sjekk YAML/slug-maps. Eksempel: ", leftover[1])
@@ -208,4 +226,3 @@ local({
   
   cat("Skrev filer for ", inst_short, " (", nrow(df), " rader)\n", sep = "")
 })
-

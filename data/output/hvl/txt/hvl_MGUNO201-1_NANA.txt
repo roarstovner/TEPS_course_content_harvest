@@ -1,0 +1,10 @@
+institution: hvl
+code: MGUNO201-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGUNO201
+status: 200
+course_name_no: MGUNO201 Norsk pC% mellomsteget 2: Litteratur- og tekstkunnskap
+----- FULLTEXT -----
+
+NA

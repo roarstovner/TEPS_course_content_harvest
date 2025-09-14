@@ -1,0 +1,195 @@
+institution: uis
+code: MGL1002-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MGL1002
+status: 200
+course_name_no: Kunst og hC%ndverk 1: Analoge og digitale kunst- og designprosesser ( 1.-10. trinn) (MGL1002)
+----- FULLTEXT -----
+
+Emnekode
+
+MGL1002
+
+Versjon
+
+1
+
+Vekting (stp)
+
+30
+
+Semester undervisningsstart
+
+HC8st
+
+Antall semestre
+
+1
+
+Vurderingssemester
+
+HC8st
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitenskap og humaniora,
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Fakultet for utdanningsvitenskap og humaniora,
+
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhold
+
+Innholdet i alle omrC%dene vil bestC% av tre komponenter: Praktisk skapende arbeid, fagdidaktikk og kunst og kulturforstC%else.
+
+Del 1. Praktisk skapende arbeid
+
+Det praktiske skapende arbeidet vil vC&re temaorganisert med utgangspunkt i kjerneelementene og kompetansemC%l for gjeldende lC&replanen i faget kunst og hC%ndverk for grunnskolen. Studentene vil fC% erfaring med ulike analoge og digitale teknikker innen to- og tredimensjonale uttrykksformer. Visuell kommunikasjon vil vC&re et tema som gC%r som en rC8d trC%d gjennom hele emnet.
+
+Det praktisk skapende arbeidet vil vC&re inndelt i ulike tema. Samtidens kunst og kultur vil vC&re kilde til opplevelser og inspirasjon til eget skapende arbeid i ulike materialer og teknikker. Fokuset i studiet vil bli rettet inn mot analoge og digitale bilder som uttrykksform og kommunikasjonsmiddel og mot studentenes egen bildefremstilling, eksperimentering og utforsking av ulike materialer, teknikker, redskaper og estetiske virkemidler som form, farge, komposisjon og tekstur. Studentene vil fC% erfaring med ulike medium innen analoge og digitale teknikker for C% visualisere og uttrykke idC)er, lC8se problemstillinger og forme bilder. Digitale verktC8y vil ogsC% bli brukt som hjelpemiddel i skapende prosesser, digitale presentasjoner og formidlingsformer.
+
+Tverrfaglige tema vil vC&re utgangspunkt for C% skape skulpturer i ulike tekstile teknikker kombinert med andre materialer. SkulpturomrC%de vil omfatte utforskning av skulptur som estetisk, visuelt og taktilt medium med vekt pC% fremstilling av ulike tredimensjonale uttrykk.
+
+Undervisningen vil ogsC% omfatte hC%ndverksferdigheter, materiallC&re og teknikker i tre og leire. PC% tre- og leireverkstedene vil studentene arbeide med design av ulike produkt i et bC&rekraftig og miljC8messig perspektiv. Studentene vil fC% grunnleggende opplC&ring i maskinbruk, hC%ndverktC8y og HMS pC% treverkstedet.
+
+Del 2. Kunst og kulturforstC%else
+
+Teori om kunst og formkultur vil bli satt inn i en pedagogisk sammenheng; kunst som kilde til innsikt, forstC%else, opplevelse, refleksjon og inspirasjon for skapende arbeid. Temaene i kunst og formkultur vil ogsC% vC&re med C% danne bakgrunn for studieturen som ligger til emnet Kunst og hC%ndverk 2.
+
+Del 3. Fagdidaktikk
+
+Fokus i studiet er rettet mot lC&reren som kulturbygger og eleven som aktC8r i skapende prosesser. Fagdidaktikken skal sette studentene i stand til C% planlegge og tilrettelegge for undervisning i faget pC% en god og reflektert mC%te i henhold til gjeldende lC&replaner.
+
+Tema for fagdidaktikken vil vC&re:
+
+- C oppdage naturen gjennom kunst, og kunsten gjennom natur
+
+- LC&replanen i kunst og hC%ndverk; hva er fagdidaktikk i kunst og hC%ndverk i grunnskolen
+
+- LC&replanen i kunst og hC%ndverk, kreativitet og skapende prosesser
+
+- Kunsthistoriske -ismer
+
+- C fotografere prosess og produkt
+
+- Det visuelle sprC%ket
+
+- Klasseledelse i kunst og hC%ndverk
+
+- Dialog med kunst: leken, det narrative, det dialogiske, det erfaringsbaserte, det skapende og det relasjonelle.
+
+- Barns todimensjonale formutvikling
+
+- Undervisningsplanlegging; Hva, hvordan og hvorfor
+
+B7 LC&reren som kulturbC&rer og kulturbygger; den dobbelte didaktikk
+
+- Tverrfaglig tema i skolen
+
+- Vurdering i faget kunst og hC%ndverk i grunnskolen
+
+LC&ringsutbytte
+
+Studenten skal med fullfC8rt og bestC%tt emne ha fC8lgende lC&ringsutbytte:
+
+Kunnskap
+
+har kunnskap om ulike materialer, redskaper, teknikker og estetiske virkemidler innen analogt og digitalt arbeid med bilde, skulptur, design og arkitektur
+har kunnskap om faget som kilde til erkjennelse, dannelse, meningsskaping, kommunikasjon og identitetsutvikling
+har kunnskap om psykologiske, kulturelle og sosiale faktorer som virker inn pC% barn og unges visuelle sprC%k, kreativitet, lek og identitet
+har kunnskap om det visuelle sprC%kets rolle som byggestein for C% ivareta og videreutvikle et demokrati i et flerkulturelt samfunn
+har kunnskap om lC&reren som leder, tilrettelegger og veileder for barn og unges skapende prosesser, kunstopplevelser og refleksjon
+har kunnskap om hvordan kunst- og designprosesser kan utvikle nysgjerrighet, kreativitet, mot, skaperglede og evne til C% lC8se problemer
+har kunnskap om bC&rekraftige materialer og produksjonsprosesser
+
+Ferdigheter
+
+Studenten:
+
+kan utvikle en idC) til ferdig form i ulike materialer
+kan eksperimentere med ulike materialer, redskaper, teknikker og estetiske virkemidler
+kan bruke kunst, design, arkitektur, nC&rmiljC8et og ulike tema som utgangspunkt for eget skapende arbeid og i undervisningssammenheng
+kan anvende digitale verktC8y i skapende arbeid
+kan lage utstillinger av visuelle produkter
+kan formidle kunst og formkultur pC% varierte mC%ter
+kan planlegge og vurdere undervisning med utgangspunkt i gjeldende lC&replan for grunnskolen
+kan tilrettelegge undervisning i grunnskolen slik at grunnleggende ferdigheter blir en naturlig del av faget
+
+Generell kompetanse
+
+Studenten:
+
+kan bruke kunst, kultur og elevenes erfaringsverden som ressurs og utgangspunkt for oppgaver og faglige samtaler
+har innsikt i og kan drC8fte faget kunst og hC%ndverks rolle i skolen i et moderne flerkulturelt samfunn med tanke pC% identitet, danning, kommunikasjon, bC&rekraftig utvikling og demokratisering
+kan tilrettelegge for gode og meningsfulle kunst og kulturmC8ter og skapende prosesser for elever i grunnskolen
+kan bruke faget kunst og hC%ndverk i tverrfaglig og tema- og prosjektarbeid og ivareta den estetiske dimensjon i opplC&ringen i samhandling med andre fag og som en del av skolehverdag generelt
+
+Forkunnskapskrav
+
+Ingen
+
+Eksamen / vurdering
+
+VilkC%r for C% gC% opp til eksamen/vurdering
+
+Undervisningsopplegg, Obligatorisk arbeidskrav, Obligatorisk oppmC8te, 70%
+
+Timeplanlagt praktisk skapende arbeid og teori som er knyttet opp mot arbeid pC% verksteder er obligatorisk.
+Gruppearbeid i fagdidaktikk og ekskursjoner i nC&rmiljC8et er obligatorisk og mC% vC&re godkjent for C% gC% opp til eksamen.
+Gruppeoppgave hvor studentene skal produsere et fagdidaktisk undervisningsopplegg knyttet til et eller flere av kjerneelementene i grunnskolen, samt fagdidaktisk refleksjoner omkring temaet. Omfang: ca. 3000 ord +/- 10%. Oppgaven er obligatorisk og mC% vC&re godkjent for C% gC% opp til eksamen.
+Ved fravC&r fra obligatorisk undervisning vil det i hvert enkelt tilfelle bli vurdert godkjenning eller underkjenning av studiet, men som hovedregel kreves det minimum 80% tilstedevC&relse i emnet.
+
+Konsekvenser av ikke godkjent arbeidskrav er at adgang til prC8ving nektes. Jf. Forskrift om studier og eksamen ved Universitetet i Stavanger (eksamensforskriften), B' 3-8 nr. 3.
+
+Studenter som fC%r et eller flere av arbeidskravene vurdert til ikke-godkjent ved fC8rste innlevering, gis mulighet for C)n ny innlevering av oppgaven(e) i bearbeidet form.
+
+Fagperson(er)
+
+Emneansvarlig:
+Hildegunn Kalviknes Tessmann
+
+FaglC&rer:
+Karen Aniela Aarre
+
+FaglC&rer:
+Pia Susanne Wall
+
+Studieprogramleder:
+Ingeborg KnC&velsrud
+
+Studiekoordinator:
+Kjersti Gjedrem
+
+Arbeidsformer
+
+Studiet vil bestC% av en veksling mellom eget skapende arbeid, fagdidaktikk og mC8ter med kunst og formkultur i faget. Arbeid pC% ulike verksted, forelesninger, individuelt arbeid, gruppearbeid, museumsbesC8k og ekskursjon i nC&rmiljC8et vil vC&re arbeidsformer pC% studiet. Det vil vC&re en veksling mellom sanseinntrykk, formell kunnskap, analyse, refleksjon, fabulering og handling i materialer. Veiledning og tilbakemelding fra faglC&rere gis underveis i studiet.
+
+Praksis
+
+15 dager med veiledet praksis.
+
+Cpent for
+
+GrunnskolelC&rerutdanning for trinn 1 - 7, femC%rig masterprogram
+
+GrunnskolelC&rerutdanning for trinn 5 - 10, femC%rig masterprogram
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+Pensumlisten finner du i Leganto

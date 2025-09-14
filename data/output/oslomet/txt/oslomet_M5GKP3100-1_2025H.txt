@@ -1,0 +1,216 @@
+institution: oslomet
+code: M5GKP3100-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/M5GKP3100/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+M5GKP3100 KroppsC8ving 2, emne 2 Emneplan
+Engelsk emnenavn
+Physical Education 2, Subject 2
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 5-10
+Omfang
+30.0 stp.
+StudieC%r
+2025/2026
+Pensum
+HCST 2025
+
+Timeplan
+HCST 2025
+Programplan
+GrunnskolelC&rerutdanning for trinn 5-10 (2025 HCST )
+Emnehistorikk
+2018 / 2019 2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Innledning
+
+Fagplanen tilhC8rende dette emnet er lagt pC% emne M5GKP2100 KroppsC8ving 1, emne 1.
+
+I KroppsC8ving 2 skal studentene utvikle kunnskap omkring kroppen som redskap for utvikling av de fysisk-motoriske ferdighetene gjennom ulike bevegelsesaktiviteter og trening. Det legges vekt pC% C% knytte teori til praksis, for C% utvikle en bredere kunnskap og forstC%else om kroppslig lC&ring i et organisk, mekanisk og motorisk perspektiv. AktivitetslC&refaget tar for seg nye og alternative bevegelsesaktiviteter, samt at studentene skal kunne videreutvikle sine ferdigheter i praktiske emner fra KroppsC8ving 1. Friluftslivsundervisningen vil vC&re knyttet til andre C%rstider og vil kreve C8kt involvering fra studentene i sC% vel planlegging som gjennomfC8ring av turene. Den didaktiske tilnC&rmingen referer seg til fagdidaktisk forsknings- og utviklingsarbeid, samt temaer som danning, mangfold, helse og friluftsliv. Det vil i tillegg pC%legges studentene stC8rre ansvar i undervisningen, gjennom refleksjon og studentstyrte fagdidaktiske undervisningsopplegg.
+
+Forkunnskapskrav
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert i kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten kan
+
+forklare den kjemiske oppbygningen av stoffer og de viktigste former for kjemiske bindinger og krefter
+gjC8re beregninger i forbindelse med kjemiske reaksjoner og kjemiske lC8sninger
+gjC8re rede for kjemisk likevekt, med eksempler fra syre/base og redoksreaksjoner
+beskrive fotometrisk mC%lemetode
+gjC8re rede for grunnleggende begreper innen kvalitetskontroll
+
+Ferdigheter
+
+Studenten har
+
+grunnleggende ferdigheter i praktisk laboratoriearbeid
+
+Generell kompetanse
+
+Studenten
+
+viser innsikt i sikkerhetsrutiner og hC%ndterer kjemikalier og biologisk materiale pC% en forsvarlig mC%te
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har kunnskap om fagdidaktisk forskning i kroppsC8ving
+har kunnskap om ulike vurderingsformer i kroppsC8ving, samt dokumentasjon av lC&ring i lys av kroppsC8vingsfagets egenart
+har kunnskap om kroppsC8ving og kroppslig lC&ring i et tverrfaglig perspektiv
+har kunnskap om dannelsesperspektivets innvirkning pC% undervisningen i kroppsC8ving
+har kunnskap om bevegelsesmiljC8, trening, livsstil og helse med formC%l om C% fremme et aktivt liv for barn og unge
+har kunnskap om menneskekroppens oppbygning og funksjon og dens betydning for motorisk og kroppslig lC&ring
+har grunnleggende kunnskap om perspektiver pC% helse
+har kunnskap om hvordan ulike bevegelsesmiljC8 pC%virker barn og unges lC&ring av bevegelser og motoriske ferdigheter
+
+Ferdigheter
+
+Studenten
+
+kan videreutvikle sitt aktivitetsrepertoar, sin kroppslige erfaring og arbeidsmC%ter for C% lede differensiert lC&ringsaktivitet
+kan anvende relevant teori og forskning for C% forbedre og utvikle egen undervisningskompetanse i kroppsC8ving
+kan legge til rette for elevenes lC&ring og dannelse i kroppsC8ving
+kan planlegge, gjennomfC8re og vurdere utviklingsarbeid knyttet til egen lC&rerkompetanse i kroppsC8ving
+kan bruke relevante treningsprinsipper og treningsmetoder i planlegging og gjennomfC8ring av trening og bevegelseslC&ring
+kan arbeide tverrfaglig med utgangspunkt i kroppsC8ving
+kan identifisere farer, vurdere og ivareta elevenes sikkerhet i ulike aktiviteter og miljC8
+kan utfC8re livreddende fC8rstehjelp, selvberging og livberging i vann utendC8rs
+
+Generell kunnskap
+
+Studenten
+
+kan bidra til nytekning og innovasjon i faget kroppsC8ving og til skoleutvikling med utgangspunkt i kroppsC8ving
+kan arbeide med mangfold og forskjellighet i kroppsC8ving og reflektere over fagets innhold og rolle i en flerkulturell skole
+kan utC8ve profesjonalitet som kroppsC8vingslC&rer
+Innhold
+
+KroppsC8ving 2, emne 2 bestC%r av:
+
+AktivitetslC&re 2
+Fagdidaktikk 2
+Kropp og lC&ring 2
+FoU-oppgaven
+
+AktivitetslC&re 2
+
+Ballspill 2 er en viderefC8ring av ballkurset fra KroppsC8ving 1, med fokus pC% nettspill og alternative ballspill. Studentene skal ogsC% utarbeide egenutviklede ballspill og gjennomfC8re studentstyrt undervisning.
+Dans gir et viktig bidrag til barn og unges helhetlige lC&ring og utvikling. I dansen er kroppen instrumentet og er grunnleggende knyttet til utvikling av den enkeltes identitet og egenverdi. Gjennom lekende utforsking av dansens grunnelementer fC%r studentene bevegelsesutfordringer og erfaringer. Sentralt i emnet stC%r det C% eksperimentere med kropp og rytmer, lC&re danser fra ulike kulturer og skape egne danser.
+Akrobatikk og turn vil bygge videre pC% det grunnleggende fokuset fra KroppsC8ving 1. Kurset vil ta for seg hvordan ulike lC&ringslandskap kan skape bevegelsesglede og fysisk-motorisk utvikling.
+Alternative bevegelsesaktiviteter II er en viderefC8ring av fokuset pC% kroppsC8ving I. Studentene vil fC% en bredere og mer allsidig erfaring med ulike bevegelsesaktiviteter.
+Friluftsliv skal gi studentene erfaring med opplevelse og mestring i natur. Naturen som matkilde, naturleikeplassen og turmetodikk er sentrale tema. Friluftslivsundervisningen er organisert som egne kurs og temadager. Ett av kursene vektlegger sjC8miljC8, selvberging og livberging i vann. Studentene skal ogsC% i grupper planlegge, gjennomfC8re og evaluere en egentur i nC&rmiljC8.
+
+Fagdidaktikk 2
+
+Fagdidaktikk 2 bygger videre pC% flere av temaene fra fagdidaktikk 1. Studentene skal reflektere videre rundt begrepene allmenndannelse, physical literacy og kroppslig dannelse. Mangfold, den flerkulturelle skolen, interkulturell lC&ring og inkluderende lC&ringsaktiviteter er sentrale temaer i faget. Studentene skal ogsC% tilegne seg kunnskap om teorier som setter kroppslig lC&ring og kroppen som erfaringsmedium i sentrum.
+Kroppen som symbol i kultur og samfunn stC%r ogsC% sentralt, der spesielt kroppsC8vingsfagets rolle og pC%virkning pC% barn og unges kroppsbilde og fysiske selvoppfatning blir vektlagt. Helse- og fitnessdiskursen vil av den grunn vC&re aktuelle tema i faget.
+Vurdering i kroppsC8ving kan oppleves som utfordrende i skolen. En ambisjon i undervisningen vil derfor vC&re C% komme fram til et tolkningsfellesskap om vurdering.
+
+Kropp og lC&ring 2
+
+Kropp, bevegelse og aktivitet. Temaet bestC%r av fysiologi og treningslC&re, og skal gi studentene kunnskap om hvordan man kan planlegge og gjennomfC8re fysisk aktivitet og trening for C% skape kroppslig utvikling i kroppsC8vingsfaget. Temaet bestC%r av bC%de praktisk og teoretisk undervisning.
+Kropp, bevegelse og funksjon. Temaet bestC%r av anatomi, bevegelseslC&re og motorikk, hvor man C8nsker C% skape en grunnleggende forstC%else for hvordan man kan skape og utvikle en bevegelse bC%de i et organisk, mekanisk og motorisk perspektiv.
+
+FoU-oppgaven
+
+Sentralt i emnet er FoU-oppgaven. Oppgaven skal ha en klart formulert problemstilling som det mC% vC&re mulig C% undersC8ke og utdype. FoU-oppgaven skal gi studentene muligheter til C% dokumentere faglig kunnskap og innsikt gjennom belysning og drC8fting av et faglig problem som er relevant i grunnskolen.
+
+Studentene skal velge C% fordype seg i ett eller flere temaer i fagplanen, og kan velge C% skrive en teoretisk oppgave, en empirisk oppgave eller en kombinasjon. En teoretisk oppgave tar utgangspunkt i analyser og drC8ftinger i aktuelle forskningsarbeider innen et omrC%de og oppsummerer og sammenlikner. En empirisk oppgave bygger pC% ny informasjon som studenten selv samler inn eller bygger videre pC% analyse av materiale som andre har samlet inn.
+
+I oppgaver som bruker materiale studenten selv samler inn, er det et krav at dette innhentes slik at meldeplikten til Sikt (kunnskapssektorens tjenesteleverandC8r) ikke utlC8ses. Hvis elever under myndighetsalder deltar i undersC8kelsen, skal foresatte gi samtykke. Gjennom oppgaven skal studenten dokumentere kjennskap til aktuell forskning pC% det omrC%det som studenten skriver om. Studenten skal bruke teori og annet fagstoff som grunnlag for C% undersC8ke problemstillingen. I metodedelen skal framgangsmC%ter dokumenteres slik at det er mulig C% se hvordan studenten har innhentet og brukt materialet, og hvordan han eller hun har kommet fram til resultatene. Resultatene skal drC8ftes ut fra alminnelige vitenskapelige krav til pC%litelighet og gyldighet.
+
+Arbeids- og undervisningsformer
+
+I tillegg til fagets arbeids- og undervisningsformer, som er beskrevet i den innledende fagplandelen, er arbeidet med FoU-oppgaven organisert som undervisning og kurs, veiledning/veiledningsseminar, muntlig framlegg og innlevering av skriftlig oppgave. Hver kandidat vil fC% oppnevnt en faglig veileder. TemaomrC%de, problemstilling og opplegg for oppgaven skal godkjennes av veileder.
+
+Undervisningen i emnet skal i tillegg til undervisning i faglige emner gi stC8tte for oppgavearbeidet. Sentrale temaer for denne undervisningen er:
+
+Utdanningsvitenskap for lC&rere - Sentrale forskningstradisjoner og metoder
+Seminar i pedagogikk som tar opp sentrale utfordringer i dagens grunnskole
+Forskningsetikk og grunnlagsspC8rsmC%l
+Skriving i forskning om skole og undervisning og i lC&reryrket
+
+Oppgaveskrivingen er en problemlC8sningsprosess, der studenten gjennom en systematisk og etterprC8vbare metoder skal belyse den valgte problemstillingen. En del av dette vil gjerne vC&re C% utarbeide en oppdatert kunnskapsoversikt. Studenten vil ogsC% ofte samle et erfaringsmateriale og bruke aktuell utdanningsvitenskapelig metode til C% undersC8ke, systematisere og belyse materialet. Arbeidet med oppgaven skal gi erfaring med C% sC8ke og anvende litteratur og bygge pC% bC%de oppgitt pensum og selvvalgt pensum. Omtaler, analyser og vurderinger i oppgaven skal vC&re solid faglig utviklet og underbygget.
+
+FoU-oppgaven er et individuelt arbeid. Framstillingen skal vC&re i samsvar med regler og retningslinjer for vitenskapelig og faglig forfatterskap.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+Retten til C% avlegge eksamen forutsetter godkjente arbeidskrav og deltakelse i bestemte faglige aktiviteter. Se mer informasjon om arbeidskrav i den innledende delen av fagplanen.
+
+Arbeidskrav 1: Det stilles krav om minimum 80 % deltakelse i all studentaktiv og praktisk-metodisk undervisning. Dersom studenten ikke har tilfredsstilt dette arbeidskravet, mistes retten til C% gC% opp til praktisk-muntlig eksamen samme studieC%r. Studenten mC% ta igjen tapt undervisning neste studieC%r.
+
+Arbeidskrav 2: GjennomfC8rt egentur friluftsliv pC% inntil tre dager. NC&rmere beskrivelse og formelle krav til oppgaven vil bli gitt sammen med kriterier til egentur.
+
+Arbeidskrav 3: 80 % aktiv deltakelse pC% friluftsliv kyst med overnatting. Omfang er fire dager. Ved manglende deltakelse kan studenten delta sammen med LUPE, hvis dette er praktisk mulig. Dersom studenten ikke har tilfredsstilt dette arbeidskravet, mistes retten til C% gC% opp til praktisk-muntlig eksamen samme studieC%r. Studenten mC% ta igjen tapt undervisning neste studieC%r.
+
+Arbeidskrav 4: Kropp, bevegelse og aktivitet. Gruppeoppgave knyttet til temaet aktivitetslC&re. Studentene skal planlegge og framfC8re en faglig forelesning om aktuelle temaer for resten av klassen. NC&rmere beskrivelse og formelle krav til oppgaven vil bli gitt sammen med oppgaveteksten.
+
+Arbeidskrav 5: Ball II. Studentene skal i gruppe utarbeide og utvikle et eget ballspill, og gjennomfC8re en C8kt pC% 60 minutter med medstudenter. Hensikten med arbeidskravet er C% tenke innovativt omkring ballundervisning, og at studentene skal kunne gjC8re didaktiske og pedagogiske betraktninger ved sin ballundervisning i kroppsC8ving.
+
+Arbeidskrav 6: FoU-oppgaven.
+
+Innlevering av et notat pC% 400 ord (+/- 10 %) om opplegg for oppgaven. Notatet skal ha med omtale av emne, spC8rsmC%l en vil undersC8ke, aktuell forskningslitteratur og annet fagstoff studenten forventer C% sette seg inn som del av oppgavearbeidet, hva slags materiale studenten planlegger C% samle inn og undersC8ke, forskningsmetode studenten skal bruke, og skisse til oppgavedesign.
+Notat fC8r siste veiledning med utdrag av oppgavetekst pC% 1500 ord (+/- 10%).
+Deltakelse pC% undervisning om utdanningsvitenskap og metode, forskningsetikk og grunnlagsspC8rsmC%l.
+Deltakelse pC% undervisning i akademisk skriving og IKT.
+Deltakelse pC% to veiledninger i seminar eller individuelt. Veileder setter opp tidspunkter og krav til bidrag.
+Deltakelse pC% FoU camp.
+Deltakelse pC% delingskonferanse med eget framlegg og respons pC% medstudenters framlegg.
+Vurdering og eksamen
+
+Eksamen i KroppsC8ving 2 bestC%r av to deleksamener. Deleksamen 1 og 2 vektes likt ved samlet karakter.
+
+Deleksamen 1:
+
+Individuell praktisk-muntlig eksamen. Omfang: ca. 30 minutter. Forberedelsestid: 24 timer.
+
+Deleksamen 2:
+
+Individuell FoU-oppgave med omfang pC% 7000 ord +/- 10% leveres elektronisk innen oppgitt frist. Oppgaven mC% oppfylle IKT-krav og bestemte krav til utforming. Slike kriterier publiseres pC% hC8gskolens lC&ringsplattform i god tid fC8r studenten begynner pC% sin oppgave. EgenerklC&ring vedrC8rende fusk og plagiering og egenerklC&ring knyttet til hvorfor oppgaven ikke utlC8ser NSD-krav, skal ligge som vedlegg i FoU-oppgaven ved innlevering.
+
+Ny/utsatt eksamen
+
+Ved gyldig fravC&r eller ikke bestC%tt resultat, mC% kun den aktuelle eksamensdelen tas opp igjen.
+
+Deleksamen 1:
+
+Ny/utsatt eksamen arrangeres som ved ordinC&r eksamen.
+
+Deleksamen 2:
+
+Ved ikke bestC%tt karakter vil det vC&re anledning til C% omarbeide oppgaven ved fC8rste ny/utsatt eksamen. Etter dette leveres ny oppgave. Dersom FoU-oppgaven fC%r bestC%tt karakter, kan studenten ikke levere forbedret oppgave, men mC% eventuelt skrive ny FoU-oppgave ved ny eksamen. Dette innebC&rer at man skifter temaomrC%de, eventuelt materiale for undersC8kelse, faglig grunnlag og problemstilling. Innlevering av forbedret versjon av samme oppgave som ved tidligere eksamen er ikke tillatt, og slik innlevering vil ikke bli vurdert.
+
+Hjelpemidler ved eksamen
+
+Gradert skala A-F
+
+Vurderingsuttrykk
+
+Ekstern og intern sensor vurderer minimum 20 % av besvarelsene. To interne sensorer vurderer de C8vrige. Ekstern sensors vurdering skal komme alle studentene til gode.
+
+Sensorordning
+
+Deleksamen 1:
+
+Det benyttes interne sensorer.
+
+Deleksamen 2:
+
+Det benyttes intern og ekstern sensor. Normalt er veileder intern sensor.
+
+Opptakskrav
+
+Se fagplanen.

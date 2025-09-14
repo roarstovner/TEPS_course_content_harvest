@@ -1,0 +1,10 @@
+institution: hvl
+code: MGUKH201-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGUKH201
+status: 200
+course_name_no: MGUKH201 Kunst og handverk 1, emne 2 - Grunnleggjande innfC8ring i kunst og handverk 2
+----- FULLTEXT -----
+
+NA

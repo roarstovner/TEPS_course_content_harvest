@@ -1,0 +1,64 @@
+institution: nord
+code: HI330LS-1
+year: NA
+hv: NA
+url: https://www.nord.no/studier/emner/hi330ls
+status: 200
+course_name_no: Masteroppgave for lektorutdanning i samfunnsfag
+----- FULLTEXT -----
+
+
+
+Emnet handlar om C% skrive ei masteroppgC%ve. Studentane vel sjC8lv emne for oppgC%va, og fakultetet legg til rette for tilknynting til eventuelle pC%gC%ande forskingsprosjekt eller tema som staben elles held pC% med forsking pC% knytt til historiefaget. Det er eit krav at oppgC%va er knytt til eit tema som vil vere relevant for undervisning i skolen pC% trinn 8-13.
+
+Studentane skal ha valt tema for mastergradsoppgC%va i lC8pet av haustsemesteret i 5. studieC%r. Studentar som har signert rettleiingskontrakt med ein rettleiar i staben veiledningskontrakt har krav pC% og tilbydast inntil 13 timar rettleiing. Rettleiinga omfattar rettleiingsmC8te, fC8rebuing til rettleiing, rettleiing via e-post, digitalt og telefon. Delar av rettleiinga kan ogsC% foregC% gruppevis. Studentene fC%r ogsC% tilbod om eit masterseminar der tekstar frC% arbeidet med emnet blir diskutert med faglC&rar og medstudentar i historie.
+
+Emnet handlar om C% skrive ei masteroppgC%ve. Studentane vel sjC8lv emne for oppgC%va, og fakultetet legg til rette for tilknynting til eventuelle pC%gC%ande forskingsprosjekt eller tema som staben elles held pC% med forsking pC% knytt til historiefaget. Det er eit krav at oppgC%va er knytt til eit tema som vil vere relevant for undervisning i skolen pC% trinn 8-13.
+
+Studentane skal ha valt tema for mastergradsoppgC%va i lC8pet av haustsemesteret i 5. studieC%r. Studentar som har signert rettleiingskontrakt med ein rettleiar i staben veiledningskontrakt har krav pC% og tilbydast inntil 13 timar rettleiing. Rettleiinga omfattar rettleiingsmC8te, fC8rebuing til rettleiing, rettleiing via e-post, digitalt og telefon. Delar av rettleiinga kan ogsC% foregC% gruppevis. Studentene fC%r ogsC% tilbod om eit masterseminar der tekstar frC% arbeidet med emnet blir diskutert med faglC&rar og medstudentar i historie.
+
+Det krev opptak pC% Lektorutdanning i samfunnsfag med fordjuping i historie.
+
+Det er krav om at studenten har greidd emnet MET5008 Forskningsdesign og metode del 1 og elles er oppmeldt HI301S Teori, metode og historiografi.
+
+Kunnskapar
+
+Studenten skal kunne planlegge og utfC8re eit sjC8lvstendig historiefagleg forskingsarbeid.
+Studenten skal ha avansert kunnskap om fagomrC%dets vitenskapsteori og metodar, relevant for C% skrive masteroppgC%va.
+
+Ferdigheiter
+
+Studenten skal kunne utforme sjC8lvstendige problemstillingar og diskutere dei pC% bakgrunn av relevant og sentral forskingslitteratur og kjelder som er knytt til tematikken i masteroppgC%va.
+Studenten skal kunne analysere og forholde seg til ulik informasjon og kjelder, og nytte desse til C% strukturere og formulere faglege resonnement knytt til temaet i masteroppgC%va.
+Studenten skal kunne analysere eksisterande teoriar, metodar og fortolkingar pC% fagomrC%det og arbeide sjC8lvstendig med praktisk og teoretisk problemlC8ysning.
+Studenten skal pC% sjC8lvstendig vis kunne bruke relevante metodar for forsking og fagleg utviklingsarbeid .
+Studenten skal pC% sjC8lvstendig vis kunne gjennomfC8re eit avgrensa forskingsarbeid under rettleiing og i trC%d med gjeldande forskingsetiske normer.
+
+Generell kompetanse
+
+Studenten skal kunne produsere ein stC8rre sjC8lvstendig, diskuterande tekst.
+Studenten skal kunne nytte sine kunnskapar og ferdigheiter pC% nye omrC%de for C% gjennomfC8re avanserte arbeidsoppgC%ver og prosjekt.
+Studenten skal kunne formidle eit omfattande sjC8lvstendig arbeid og meistre fagomrC%dets fagterminologi og uttrykksformer.
+Studenten skal kunne kommunisere om faglege problemstillingar, analyse og konklusjonar innanfor fagomrC%det, bC%de med spesialistar og til allmenta.
+
+Kunnskapar
+
+Ferdigheiter
+
+Generell kompetanse
+
+Ingen kostnadar utover semesteravgift og pensumlitteratur.
+
+Obligatorisk masteroppgC%ve.
+
+Individuell rettleiing og seminar.
+
+Crlige evalueringer som inngC%r i universitetets kvalitetssikringssystem.
+
+MasteroppgC%ve med munnleg - maksimalt 90 sider (oppgC%ver skriven av ein person) eller maksimalt 135 sider (OppgC%ver skrive av to i lag), karakterregel Bokstavkarakterar
+
+OppgC%ve - Midlertidig karakter fC8r munnleg justering, tel 0/100 av karakteren, karakterregel Bokstavkarakterar .
+
+MasteroppgC%ve med munnleg - maksimalt 90 sider (oppgC%ver skriven av ein person) eller maksimalt 135 sider (OppgC%ver skrive av to i lag), karakterregel Bokstavkarakterar
+
+FullfC8rt fjerde studieC%r.

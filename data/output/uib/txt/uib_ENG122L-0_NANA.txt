@@ -1,0 +1,212 @@
+institution: uib
+code: ENG122L-0
+year: NA
+hv: NA
+url: https://www4.uib.no/studier/emner/eng122l
+status: 200
+course_name_no: Amerikansk litteratur og kultur
+----- FULLTEXT -----
+
+Navigasjonssti
+Forside
+Studier
+Emner
+
+Amerikansk litteratur og kultur
+
+Studiepoeng
+
+10
+
+Undervisningssemester
+
+Haust
+
+Emnekode
+
+ENG122L
+
+Talet pC% semester
+
+1
+
+UndervisningssprC%k
+
+Engelsk
+
+Ressursar
+
+Timeplan
+Litteraturliste
+
+Litteraturliste
+
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2015 Haust 2015 VC%r 2014 Haust 2014 VC%r 2013 Haust 2013 VC%r 2012 Haust 2012 VC%r 2011 Haust 2011 VC%r 2010 Haust 2010 VC%r 2009 Haust 2009 VC%r 2008 Haust 2008 VC%r 2007 Haust
+MC%l og innhald
+
+Emnet gir ei innfC8ring i og kunnskap om ulike emne innafor amerikansk litteratur og kultur frC% eit historisk, sosialt, og estetisk perspektiv. Eit sentralt element i ENG122L er analyse av tekstar i hovudsjangrane prosa, poesi og drama. Desse vert undervist med auge pC% C% utvikle studentane sine ferdigheiter i C% identifisere og diskutere tematiske forhold og formelle og tematiske litterC&re og estetiske trekk, samstundes som ein tek opp ulike tilnC&rmingar til lesing og tolking.
+
+Studiet har som mC%l C% gjennom litteraturen gi auka kunnskap om mangfaldet i amerikansk kultur i eit historisk perspektiv, og forstC%ing av grunnleggjande premissar for utviklinga av litteraturen slik den speglar samfunnet. Studiet skal C2g utvikle evna til C% uttrykkje seg skriftleg og munnleg pC% engelsk.
+
+Gjennom analyser av ei rekkje litterC&re verk vil studentane fC% ei forstC%ing av dei viktigaste epokane og utviklingstrekka innanfor amerikansk litteratur og kultur, ofte i forhold til sentrale sosio-kulturelle og politiske samanhengar. Kurset har og som mC%l og utvikla studentens kritiske, analytiske, sprC%klege og ferdigheiter, i tillegg til ferdigheiter innan problemlC8ysing. Med hjelp av skriftlege og munnlege presentasjonar styrkar C2g studenten sine munnlege og skriftlege ferdigheiter i akademisk engelsk.
+
+LC&ringsutbyte
+
+Ved fullfC8rt emne har studenten fC8lgjande lC&ringsutbyte definert i kunnskapar, ferdigheiter og generell kompetanse:
+
+Kunnskapar
+
+Ved fullfC8rt emne har studenten
+
+- ei grunnleggjande forstC%ing av amerikansk litteratur og kultur i ein historisk kontekst
+
+- utvikla evna til sjC8lvstendig kritisk lesing av primC&rtekstar, grunna i analyser av litterC&re og ikkje-litterC&re tekstar
+
+- ei forstC%ing av tilhC8vet mellom primC&rtekstane og dei stC8rre historiske, sosiale og politiske rammene dei hC8yrer til og er i dialog med
+
+- ei forstC%ing av det som karakteriserer dei ulike litterC&re sjangrane studiet omfattar, sC% som roman, novelle, dikt, skodespel og ikkje-skjC8nnlitterC&re tekstar
+
+Ferdigheiter
+
+Ved fullfC8rt emne kan studenten
+
+- uttrykkja kunnskapen sin om amerikansk litteratur og kultur pC% skriftleg og munnleg akademisk engelsk, pC% ein organisert og hC8veleg mC%te
+
+- identifisere og analysere hovudtrekka i litterC&re verk, drama-sjangeren, og narrative teknikkar
+
+- skildre hovudperiodane og -bevegelsane i amerikansk litterC&r historie og samanhengane mellom desse
+
+- forstC% tilhC8vet mellom historisk-kulturelle kontekstar og tekstar
+
+- analysera tekstar i hC8ve til sjanger og sentrale litterC&re termar
+
+- lese pC% tvers av ulike periodar og tema
+
+- vise forstC%ing for at litterC&re tekstar kan verte analyserte med ulike teoretiske/metodiske tilnC&rmingar
+
+- bruke akademiske omgrep og metodar pC% ein kritisk mC%te
+
+Generell kompetanse
+
+Ved fullfC8rt emne kan studenten
+
+- vise kjennskap til grunnleggjande analytiske reiskap og teknikkar
+
+- respondere sjC8lvstendig og kreativt pC% ulike litterC&re verk pC% hC8veleg akademisk skriftleg og munnleg engelsk
+
+- skildre, analysere og tolke ulike litterC&re tekstar
+
+- diskutere og evaluere betydinga historiske og kulturelle kontekstar har for tolkinga av sprC%k og tekst
+
+- tenke og argumentere analytisk, kritisk og sjC8lvstendig om kursets innhald
+
+Studiepoeng, omfang
+10
+StudienivC% (studiesyklus)
+Bachelor
+Undervisningssemester
+Haust
+Undervisningsstad
+Bergen
+Krav til forkunnskapar
+Ingen formelle krav til forkunnskapar; men sjC% tilrC%dde forkunnskapar.
+TilrC%dde forkunnskapar
+Ein vil rC% til at studentane har fullfC8rt fC8rstesemesterstudiet.
+Studiepoengsreduksjon
+PC% grunn av fagleg overlapp fC%r ein ikkje studiepoengutteljing for ENG122L om det blir kombinert med ENG122.
+Krav til studierett
+Emnet er ope for studentar med opptak til lektorutdanninga ved UiB.
+Arbeids- og undervisningsformer
+
+Forelesing og seminar: opp til 72 timar.
+
+Det er venta at studentane er til stades og tek aktivt del i undervisninga. Dette ligg ogsC% til grunn for fC8rebuing til eksamen.
+
+Undervisningsformer og omfang av organisert undervisning
+
+Forelesing: totalt 44-48 timar
+
+Grupper/seminar: totalt 20-24 timar
+
+Obligatorisk undervisningsaktivitet
+
+Det er obligatorisk frammC8te pC% seminara. Studentane mC% vere til stades pC% minst 80% av seminarundervisninga.
+
+For C% kunne ta eksamen mC% studentane gjere ferdig og bestC% to ulike obligatoriske arbeidskrav i tilknyting til seminara. Desse vil vere ein kombinasjon av ein individuell munnleg presentasjon, og/eller ein munnleg presentasjon i grupper pC% to eller tre studentar, og/eller respons pC% slik munnleg presentasjon, og/eller eit kort skriftleg arbeid i seminaret med B+peer reviewB;, og/eller innleveringar av korte skriftlege arbeid pC% 300 ord, og/eller leiing av diskusjonar i seminara. Den eksakte kombinasjonen og fristar som gjeld vert annonsert pC% Mitt UiB i byrjinga av semesteret. Alle obligatoriske arbeidskrav mC% gjennomfC8rast i same semester.
+
+Godkjenninga av obligatoriske arbeidskrav er gyldig i undervisningssemesteret og to semester etter dette.
+
+Vurderingsformer
+Eksamen i emnet er ein 4 timars skoleeksamen, der studenten blir prC8va i heile pensumet.
+Karakterskala
+Ved sensur nyttar ein karakterskalaen A-F, der F er stryk.
+Vurderingssemester
+Haust. Eksamen vert gitt berre i undervisingsemesteret. Studentar med gyldig grunn for frC%vC&r kan ta eksamen i byrjinga av pC%fC8lgjande semester.
+Litteraturliste
+
+Pensum omfattar litterC&re periodar, historiske hendingar og representative tekstar innan skjC8nnlitteratur og sakprosa frC% 1600-talet.
+
+Litteraturlista vil vere klar innan 01.07. for haustsemesteret.
+
+Emneevaluering
+Undervisninga blir evaluert i trC%d med UiB sitt kvalitetssikringssystem.
+Hjelpemiddel til eksamen
+Ingen hjelpemiddel er tillatne ved eksamen.
+Programansvarleg
+Programstyret har ansvar for fagleg innhald og oppbygging av studiet og for kvaliteten pC% studieprogrammet og alle emna der.
+Emneansvarleg
+Programstyret for engelsk
+Administrativt ansvarleg
+Det humanistiske fakultet ved Institutt for framandsprC%k har det administrative ansvaret for emnet og studieprogrammet.
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2015 Haust 2015 VC%r 2014 Haust 2014 VC%r 2013 Haust 2013 VC%r 2012 Haust 2012 VC%r 2011 Haust 2011 VC%r 2010 Haust 2010 VC%r 2009 Haust 2009 VC%r 2008 Haust 2008 VC%r 2007 Haust
+Kontaktinformasjon
+
+Studierettleiar: studierettleiar@if.uib.no
+
+Eksamensadministrasjon: eksamen@if.uib.no
+
+Eksamensinformasjon
+
+Klokkeslett for oppstart av skriftlig eksamen kan endre seg fra kl 09.00 til 15.00 eller vice versa inntil 14 dager fC8r eksamen.
+
+Vurderingsordning
+Skriftleg skoleeksamen
+Dato
+04.12.2025, 09:00
+Varigheit
+4 timar
+Trekkfrist
+20.11.2025
+Eksamenssystem
+Inspera
+Digital eksamen
+
+Dette bC8r du vite om eksamen
+
+Institutt for fremmedsprC%k
+
+Vurderingsordning
+
+Skriftleg skoleeksamen
+
+Dato
+
+04.12.2025, 09:00
+
+Varigheit
+
+4 timar
+
+Trekkfrist
+
+20.11.2025
+
+Eksamenssystem
+
+Inspera
+
+Digital eksamen

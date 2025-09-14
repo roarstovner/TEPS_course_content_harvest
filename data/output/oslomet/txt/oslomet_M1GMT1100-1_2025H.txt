@@ -1,0 +1,300 @@
+institution: oslomet
+code: M1GMT1100-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/M1GMT1100/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+M1GMT1100 Matematikk 1, emne 1 Emneplan
+Engelsk emnenavn
+Mathematics 1, Subject 1
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 1-7
+Omfang
+10.0 stp.
+StudieC%r
+2025/2026
+Pensum
+HCST 2025
+
+Timeplan
+HCST 2025
+Programplan
+GrunnskolelC&rerutdanning for trinn 1-7 (2025 HCST )
+Emnehistorikk
+2017 / 2018 2018 / 2019 2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Fagplan
+
+FAGPLAN
+
+Matematikk 1 (30 studiepoeng)
+
+Matematikk 2 (30 studiepoeng)
+
+Mathematics 1 (30 ECTS credits)
+
+Mathematics 2 (30 ECTS credits)
+
+Fagplanen ble godkjent i studieutvalget 10. november 2016. Revisjon vedtatt pC% fullmakt av leder i studieutvalget 2. oktober 2017.Redaksjonelle endringer lagt inn 7. juni 2018, 9. august 2019, 25. november 2019, 23. november 2020, 29. januar 2021 og 16. januar 2022. Revisjon godkjent pC% fullmakt av leder i utdanningsutvalget 5. mars 2021 og 15. mai 2024. Gjeldende fra hC8stsemesteret 2024.
+
+Innledning
+
+Fagplanen bygger pC% forskrift om rammeplan for grunnskolelC&rerutdanningen for trinn 1-7, fastsatt av Kunnskapsdepartementet 7. juni 2016, nasjonale retningslinjer for grunnskolelC&rerutdanningen trinn 1-7 av 1. september 2016, revidert 17. oktober 2018, og programplan for grunnskolelC&rerutdanning for trinn 1-7 ved OsloMet - storbyuniversitetet, godkjent av studieutvalget 16. november 2016. Matematikk er en bC&rebjelke i vC%r tids teknologiske utvikling, og matematisk kunnskap er et viktig element i mange fagomrC%der og virksomheter. FormC%let med matematikkfaget i grunnskolelC&rerutdanningen for trinn 1-7 er at studentene skal tilegne seg en solid oversikt og trygghet i skolefaget matematikk og bli i stand til C% undervise etter gjeldende lC&replan pC% en faglig trygg og reflektert mC%te. Barnetrinnet trenger matematikklC&rere som kan inspirere og motivere, utfordre og stC8tte elevene i deres faglige utvikling. Det betyr C% kunne legge til rette for praktisk, utforskende og teoretisk arbeid som ivaretar og utvikler elevenes matematikkunnskap. Dette stiller store krav til lC&rernes faglige, didaktiske og metodiske kompetanse.
+
+Studentene vil fC% C8kt innsikt bC%de i de begrepene som er aktuelle for elever pC% barnetrinnet og i relasjoner mellom begrepene. Elevperspektivet vil vC&re framtredende i alle emnene. For alle elever er det viktig at de fC%r mulighet til C% bygge opp matematisk kompetanse ut fra egne forutsetninger. Dette fordrer at lC&rerstudentene utvikler en grundig undervisningskunnskap i matematikk. I tillegg mC% studentene ogsC% ha didaktisk kompetanse som gjC8r at de kan sette seg inn i elevenes perspektiv og lC&ringsprosesser, og gjennom variasjon og tilpasning kunne tilrettelegge matematikkundervisning for elever med ulike behov og med ulik kulturell og sosial bakgrunn pC% en slik mC%te at matematikk framstC%r som et meningsfullt fag for alle elever. Undervisningen skal pC% den mC%ten medvirke til at elevene opplever matematikkens rolle i en kulturell og samfunnsmessig sammenheng.
+
+Studentene mC% kunne se pC% matematikk som en skapende prosess og kunne stimulere elevene til C% bruke sine kreative evner. Til dette ligger ogsC% C% se muligheter og utfordringer forbundet med matematikkundervisning i det mangfoldige klasserommet.
+
+MC%lgruppe
+
+Studenter som er tatt opp til femC%rig grunnskolelC&rerutdanning for trinn 1-7.
+
+Opptakskrav
+
+Matematikk 1 (emne 1, 2 og 3) er obligatorisk i femC%rig grunnskolelC&rerutdanning for trinn 1-7. Matematikk 2 (emne 4) er tilgjengelig som valgfag for aktive studenter ved grunnskolelC&rerutdanningen og lC&rerutdanning for tosprC%klige lC&rere pC% OsloMet - storbyuniversitetet, i trC%d med utdanningenes programplaner. Interne sC8kere som sC8ker opptak til Matematikk 2 mens de fortsatt er aktive pC% Matematikk 1, kan fC% opptak uten C% ha fullfC8rt Matematikk 1.
+
+Eksterne sC8kere mC% ha bestC%tt lC&rerutdanning som kvalifiserer for arbeid i skolen. Opptak til Matematikk 2 (emne 5) krever fullfC8rt Matematikk 1 (emne 1, 2, 3 og 4) eller tilsvarende.
+
+SC8kere som Utdanningsdirektoratet har vurdert til C% ha lC&rerutdanning fra utlandet, men som mangler fag/studiepoeng for C% bli godkjent lC&rer i norsk grunnopplC&ring, kan ogsC% sC8ke. Slike sC8kere mC% i tillegg oppfylle kravet til generell studiekompetanse.
+
+LC&ringsutbytte
+
+LC&ringsutbyttet er nC&rmere beskrevet i emneplanene.
+
+Fagets innhold og oppbygging
+
+Matematikk 1 (30 studiepoeng) er bygget opp av fire emner, to emner C  10 studiepoeng og to emner pC% 5 studiepoeng. Matematikk 2 (30 studiepoeng) bestC%r av ett emne pC% 30 studiepoeng. Matematikk 2 bygger pC% Matematikk 1. Minste kompetansegivende enhet for dette faget er 30 studiepoeng. Fagets oppbygging er som tabellen under viser: HC8st: M1GMT1100 Matematikk 1, emne 1, 10 studiepoengVC%r: M1GMT1200 Matematikk 1, emne 2, 10 studiepoeng HC8st: M1GMT2101 Matematikk 1, emne 3, 5 studiepoeng HC8st: M1GMD2000 Matematikk 1, emne 3-1, 5 studiepoengHC8st: M1GMT3100 Matematikk 2, emne 4, 30 studiepoeng.
+
+Flerfaglige temaer
+
+I alle emner inngC%r det flerfaglige temaperioder, der flere fag er involvert i undervisningen om samme tema. I emne 1 er det flerfaglige temaet sprC%k og lC&ring. I emne 2 er det flerfaglige temaet vurdering. I emne 3 er det flerfaglige temaet begynneropplC&ring. I emne 5 er fokuset for det flerfaglige temaet bC&rekraftig utvikling.
+
+Klasseledelse og lC&rerrollen sett fra faget
+
+Studenten skal utvikle ulike strategier for klasseledelse. I tillegg til aspektene tilknyttet klasseledelse som studentene jobber med innenfor pedagogikk og elevkunnskap skal studentene i matematikk bli kjent med betydningen av og strategier for faglig styrt klasseledelse. Som framtidig matematikklC&rer skal studenten stC8tte elevene i deres tro pC% seg selv og at en gjennom hardt arbeid, individuelt og kollektivt, utvikler forstC%else av matematiske ideer og sammenhenger.
+
+BegynneropplC&ring
+
+Det legges spesielt vekt pC% begynneropplC&ring i emne 3. Her skriver studentene et flerfaglig FoU-arbeid om begynneropplC&ring med fokus pC% elever pC% 1.-4. trinn. Studentene skal opparbeide seg dybdekunnskap i og om matematikk i begynneropplC&ringen.
+
+I alle emner er tilpasset opplC&ring en viktig kompetanse C% kunne variere, tilpasse og tilrettelegge matematikkundervisningen for elevene. Studenten skal utvikle evnen til C% kunne tilrettelegge for tilpasset opplC&ring for alle elever gjennom arbeidsoppgaver, lC&restoff, intensitet i opplC&ringen, organisering av opplC&ringen, lC&remidler og arbeidsmC%ter i matematikk. Studenten skal tilegne seg kompetanse i C% tilpasse opplC&ringen til mangfoldet i elevgruppen. Inkludert i dette er kunnskap om elevers rett til fritak fra lC&replanen som medfC8rer utvikling av individuelle opplC&ringsmC%l. Matematikkvansker og tiltak for C% mC8te behovene til hC8yt presterende elever, blir spesielt behandlet i emne 2.
+
+Vurdering - kartleggingsverktC8y og oppfC8lging
+
+Studenten mC% kunne utvikle og kommunisere tydelige mC%l for opplC&ringen med utgangspunkt fra lC&replanen. Gjennom alle emnene arbeides det med C% forstC% ulike elevers tankegang. I emne 2 arbeides det spesielt med vurdering i matematikkfaget, og et av arbeidskravene er rettet spesielt mot vurdering i barnetrinnets matematikk. Vurdering i matematikkfaget inkluderer bruk og vurdering av kartleggingsprC8ver, nasjonale prC8ver, diagnostiske prC8ver og ulike observasjons- og vurderingsmC%ter. Dette sees i sammenheng med tilpasset opplC&ring.
+
+Grunnleggende ferdigheter
+
+Undervisningen i matematikk ivaretar pC% ulike mC%ter i alle emner de fem grunnleggende ferdigheter C% uttrykke seg muntlig, lesing, skriving, regning og digitale ferdigheter.
+
+Digital kompetanse
+
+I emnene blir det brukt relevante digitale hjelpemidler. Det legges vekt pC% C% utvikle studentenes matematiske kompetanse i og med bruk av digitale verktC8y for alle deler av lC&ringsarbeidet. Som framtidig lC&rer mC% studenten vC&re i stand til C% benytte digitale hjelpemidler i planlegging, gjennomfC8ring og evaluering av lC&ringsarbeidet. Dette innebC&rer ogsC% C% kunne velge og vurdere egnete digitale verktC8y i elevenes lC&ringsarbeid. For eksempel regneark, graftegnere og geometriprogrammer. I emne 2 er det et spesielt fokus pC% algoritmisk tenkning og programmering relevant i barneskolen.
+
+LC&rerarbeid i det mangfoldige klasserommet
+
+Studentene skal tilegne seg kunnskap og ferdigheter som gjC8r dem i stand til C% mC8te og forstC% ulikheter og bruke mangfoldet som en ressurs i matematikkfaget. Studentene skal forstC% hvordan barn og unges identitet blir dannet og utviklet i et samfunn med stort mangfold. I matematikkfaget betyr dette C% se muligheter og utfordringer forbundet med matematikkundervisning i det mangfoldige klasserommet. Studentene skal fC% kompetanse og kunnskap om kjC8nns- og likestillingsutfordringer i matematikkfaget. Studentene vil arbeide med regnealgoritmer og metoder fra ulike land og kulturer. Her er ogsC% historiske perspektiver som tar for seg matematikkens utvikling i ulike kulturer sentral.
+
+Overgangen mellom trinnene nC%r det gjelder eget fag
+
+I studiet vektlegges det at studenten ser sammenhenger i matematikk og skolefaget matematikk. Utdanningen gir studenten horisontkunnskap i matematikk gjennom C% arbeide med matematikk og matematikkdidaktikk knyttet til 1-7. trinn. I emne 2 arbeides det med overgangen mellom barnetrinn og ungdomstrinn. I emne 3 arbeides det med begynneropplC&ring. Her inngC%r ogsC% overgangen mellom barnehage og skole.
+
+Estetiske arbeidsmC%ter
+
+Matematikk er et skapende og kreativt fag. OpplC&ringen i alle emner har innslag av utforskende, lekende og kreative aktiviteter. I emne 3 har studentene arbeidskrav med estetiske arbeidsmC%ter.
+
+Internasjonale perspektiver
+
+Matematikk er en del av den globale kulturarven vC%r. Alle emnene bygger pC% internasjonal forskning om elevers lC&ringsprosesser i matematikkfaget. I alle emner er deler av pensumlitteraturen engelsk eller skandinavisk og inkluderer internasjonale perspektiver. I emne 5 jobbes det med sammenlikning og analyse av matematikkundervisning sett i lys av ulike kulturelle kontekster.
+
+Praksistilknytning
+
+Arbeid med og vurderinger av fagdidaktiske spC8rsmC%l inngC%r som en viktig del av faget. Studentenes arbeid med og erfaringer fra praksis i matematikkundervisning skal eksplisitt trekkes inn som en del av undervisningen. I tillegg til den ordinC&re praksisopplC&ringen vil studiet legge opp til hospitering ved skoler. Hospiteringen benyttes for at studentene skal gjennomfC8re observasjon og utprC8ving av undervisningsopplegg, slik at opplegg og teorier som blir tatt opp i emnene, kan bli prC8vd ut i samhandling med elever.
+
+Forskningsforankring
+
+I lC8pet av studiet arbeides det med C% utvikle studentens kompetanse i C% nyttiggjC8re seg forskning i utC8velsen av lC&rerprofesjonen. Studenten skal tilegne seg ferdigheter til C% finne, forstC%, vurdere, anvende og bidra til forsknings- og utviklingsarbeid.
+
+Gjennom mC8te med forskning skal studentene utvikle kritisk refleksjon over egen praksis. Emnene er forankret i internasjonal og nasjonal forskningslitteratur. Studentene arbeider med et FoU-arbeid i begynneropplC&ring i emne 3, og i emne 5 er den ene deleksamenen en stC8rre FoU-oppgave.
+
+Psykososialt lC&ringsmiljC8
+
+Studentene gjC8res bevisst pC% matematikkfagets egenart som et fag hvor prestasjoner blir veldig synlig. Dette knyttes opp mot elevens psykososiale lC&ringsmiljC8. Spesielt i emne 2 arbeides det med lC&rerens rolle i C% etablere en klasseromkultur hvor elever tC8r C% komme med sine lC8sninger, hvor det er akseptert C% forsC8ke selv om det blir feil, hvor elever lytter til hverandres forklaringer og elevene argumenterer pC% fagets premisser. Det arbeides med temaet matematikkvansker i emne 2.
+
+BC&rekraftig utvikling
+
+Matematikk er en viktig del av utviklingen i samfunnsomrC%der som teknologi, energiforvaltning og byggevirksomhet. Solid kompetanse i matematikk er dermed en forutsetning for en bC&rekraftig utvikling av samfunnet. I emne 4 er kritisk matematikkforstC%else en viktig del av emnet, og bC&rekraftig utvikling er organisert i et flerfaglig tema.
+
+Fagets arbeids- og undervisningsformer
+
+Studentene vil mC8te varierte arbeidsformer i emnene: forelesninger, studentsentrerte arbeidsC8kter, undervisningsC8velser, gruppearbeid, regneverksted, selvstudier, skriftlige og muntlige arbeidskrav og seminarer. Studentene forventes C% ta ansvar for egen lC&ring gjennom framlegg, kollokvier og ved fortlC8pende vurdering av egen lC&ringsprosess.
+
+Teoretisk arbeid i faget knyttes nC&rt til praktisk tilrettelegging av undervisning i faget. Arbeid med og vurderinger av fagdidaktiske spC8rsmC%l inngC%r som en viktig del i emnene. Studentenes arbeid med og erfaringer fra praksis i matematikkundervisning blir eksplisitt trukket inn som en del av undervisningen. I tillegg til den ordinC&re praksisopplC&ringen vil studiet legge opp til hospitering ved skoler. Hospiteringen benyttes for at studentene skal gjennomfC8re observasjon og utprC8ving av undervisningsopplegg, slik at opplegg og teorier som blir tatt opp i emnene, kan bli prC8vd ut i samhandling med elever.
+
+PraksisopplC&ring
+
+PraksisopplC&ring er nC&rmere beskrevet i programplanen og fagplan for praksis.
+
+Skikkethetsvurdering
+
+LC&rerutdanningsinstitusjoner har ansvar for C% vurdere om studenter er skikket for lC&reryrket. LC8pende skikkethetsvurdering foregC%r gjennom hele studiet og inngC%r i en helhetsvurdering av studentens faglige og personlige forutsetninger for C% kunne fungere som lC&rer. En student som utgjC8r en mulig fare for elevers liv, fysiske og psykiske helse, rettigheter og sikkerhet, er ikke skikket for yrket. Studenter som viser liten evne til C% mestre lC&reryrket, skal sC% tidlig som mulig i utdanningen fC% melding om dette. De skal fC% rC%d og veiledning for C% gjC8re dem i stand til C% oppfylle kravene om lC&rerskikkethet eller fC% rC%d om C% avslutte utdanningen. Beslutninger om skikkethet kan fattes gjennom hele studiet. Se universitetets nettsted for mer informasjon om skikkethetsvurdering.
+
+Arbeidskrav
+
+Arbeidskrav skal vC&re levert/utfC8rt innen fastsatt(e) frist(er). Arbeidskrav kan involvere fremfC8ringer og muntlig/skriftlig respons pC% andres arbeidskrav. NC&rmere retningslinjer gis i de ulike arbeidskravene. Gyldig fravC&r dokumentert med for eksempel sykemelding, gir ikke fritak for C% innfri arbeidskrav. Studenter som pC% grunn av sykdom eller annen dokumentert gyldig C%rsak ikke leverer/utfC8rer arbeidskrav innen fristen, kan fC% forlenget frist. Frist for ny innlevering av det aktuelle arbeidskravet bestemmes av faglC&rer i hvert enkelt tilfelle.
+
+Arbeidskrav vurderes til "Godkjent" eller "Ikke godkjent". Studenter som leverer/utfC8rer arbeidskrav innen fristen, men som fC%r vurderingen "Ikke godkjent", har anledning til C)n ny innlevering, med mindre det spesifiseres i det aktuelle arbeidskravet at man der har anledning til to forsC8k pC% ny innlevering. Studenten mC% selv avtale ny innlevering av det aktuelle arbeidskravet med faglC&rer. Studenter som ikke leverer/utfC8rer arbeidskrav innen fristen og som ikke har dokumentert gyldig C%rsak, fC%r ingen nye forsC8k.
+
+I programplanen er de fagovergripende temaene pC% de ulike studieC%rene og semestrene beskrevet. I tilknytning til disse kan det vC&re krav til tilstedevC&relse og/eller andre arbeidskrav.
+
+Arbeidskrav omfatter ogsC% krav om tilstedevC&relse. Nyere forskning anbefaler at matematikkdidaktikk i lC&rerutdanningen skal vektlegge handlingskompetanse. I alle emner i Matematikk trinn 1-7 blir undervisningen lagt opp i trC%d med disse anbefalingene. Dette forutsetter samhandling med andre studenter og faglC&rere om sentrale utfordringer i faget, vurdering av undervisning og undervisningsC8velser. Denne delen av en lC&rers handlingskompetanse kan ikke tilegnes kun ved lesing, men mC% opparbeides i reell dialog og ved tilstedevC&relse i undervisningen. Det kreves derfor oppmC8te pC% minimum 80 % i alle emner. Ved fravC&r utover 20 %, og inntil 40 %, vil det gis kompensatorisk arbeid som kan inkludere krav om oppmC8te. Form og omfang bestemmes av faglC&rer. Ved fravC&r utover 40 % vil studenten trekkes fra eksamen i emnet. Gyldig fravC&r dokumentert med for eksempel sykemelding, gir ikke fritak for kravet om deltakelse og eventuelt kompensatorisk arbeid.
+
+NC&rmere informasjon om arbeidskrav finnes i den enkelte emneplan.
+
+Vurderings-/eksamensformer
+
+Se den enkelte emneplan for informasjon om vurderings-/eksamensformer.
+
+Vurderingskriterier for emne 1, emne 2, emne 3 og emne 5 (deleksamen 1)
+
+A, fremragende:
+
+Fremragende prestasjon. Kandidaten viser svC&rt god faglig og didaktisk kunnskap, og svC&rt god evne til selvstendig bruk av kunnskapen, kritisk og kreativt. Viser sC&rdeles god oversikt over emnets faglige og didaktiske innhold, hC8yt refleksjonsnivC% med hensyn til lC&ringsmC%l, matematikkens egenart og lC&rerens rolle for hvordan barns matematiske kompetanse utvikler seg. SvC&rt gode evner til C% redegjC8re for faglig innhold, oppfatte problemstillinger og begrunne sine svar presist.
+
+B, Meget god:
+
+Meget god prestasjon. Kandidaten viser meget god faglig og didaktisk kunnskap, og meget god evne til selvstendig bruk av kunnskapen, kritisk og kreativt. Viser meget god oversikt over emnets faglige og didaktiske innhold, og meget god evne til refleksjon over lC&ringsmC%l, matematikkens egenart og lC&rerens rolle for hvordan barns matematiske kompetanse utvikler seg. Meget gode evner til C% redegjC8re for faglig innhold, oppfatte problemstillinger og begrunne sine svar presist.
+
+C. God:
+
+Jevnt god prestasjon. Kandidaten viser god innsikt i faglig og fagdidaktisk innhold med god evne til refleksjon og selvstendig bruk av kunnskapen. Viser god evne til refleksjon over lC&ringsmC%l, matematikkens egenart og lC&rerens rolle for hvordan barns matematiske kompetanse utvikler seg. Kandidaten viser gode evner til C% redegjC8re for faglig innhold, oppfatte problemstillinger og begrunne sine svar presist.
+
+D, NoksC% god:
+
+En prestasjon med enkelte vesentlige mangler. Kandidaten viser en del innsikt i de viktigste elementene av faglig og fagdidaktisk innhold, med en viss grad av evne til refleksjon og selvstendig bruk av kunnskapen. Kandidaten viser noe evne til refleksjon over lC&ringsmC%l, matematikkens egenart og lC&rerens rolle for hvordan barns matematiske kompetanse utvikler seg. Kandidaten viser noe evne til C% redegjC8re for faglig innhold, oppfatte problemstillinger og begrunne sine svar presist.
+
+E, Tilstrekkelig:
+
+Prestasjon som tilfredsstiller de faglige minimumskravene til kunnskap, men hvor kunnskapen anvendes pC% en mindre selvstendig mC%te. Kandidaten har noe innsikt i viktige elementer av faglig og fagdidaktisk innhold, men kandidatens innsikt er ufullstendig og preget av begrenset forstC%else for sammenhengene i emnet. Kandidaten bruker kunnskapen pC% en lite selvstendig mC%te og viser lavt refleksjonsnivC% om lC&ringsmC%l, fagets egenart og lC&rerens rolle for hvordan barns matematiske kompetanse utvikler seg. Kandidaten viser noe evne til C% redegjC8re for faglig innhold, oppfatte problemstillinger og begrunne sine svar.
+
+F, Ikke bestC%tt:
+
+Prestasjon som ikke tilfredsstiller de faglige minimumskravene. Utilstrekkelig kunnskap om fag og fagdidaktikk og om lC&rerens rolle for hvordan barns matematiske kompetanse utvikler seg. Viser lite innsikt i sammenhengen i det faglige innholdet og liten eller ingen evne til C% bruke kunnskapen pC% en selvstendig mC%te.
+
+Vurderingskriterier for emne 4 (deleksamen 2, FoU-oppgaven)
+
+A, Fremragende:
+
+Fremragende prestasjon som klart utmerker seg. Kandidaten viser svC&rt god vurderingsevne, stor faglig oversikt og stor grad av selvstendighet. Arbeidet er sC&rlig godt utformet bC%de innholdsmessig og sprC%klig.
+
+B, Meget god:
+
+Meget god prestasjon som viser meget god vurderingsevne og selvstendighet. Arbeidet er svC&rt godt utformet bC%de innholdsmessig og sprC%klig.
+
+C, God:
+
+Solid prestasjon som er tilfredsstillende pC% de fleste omrC%der. Kandidaten viser god vurderingsevne og selvstendighet pC% de fleste omrC%der. Arbeidet er godt utformet bC%de innholdsmessig og sprC%klig.
+
+D, NoksC% god:
+
+En akseptabel prestasjon med noen vesentlige mangler. Kandidaten viser en viss grad av vurderingsevne og selvstendighet. Arbeidet er noksC% godt utformet bC%de innholdsmessig og sprC%klig.
+
+E, Tilstrekkelig:
+
+Prestasjon som tilfredsstiller minimumskrav, men ikke mer. Arbeidet er tilfredsstillende utformet bC%de innholdsmessig og sprC%klig.
+
+F, Ikke bestC%tt:
+
+Prestasjon som ikke tilfredsstiller minimumskravene.
+
+Utfyllende kriterier framgC%r av retningslinjer som gjC8res tilgjengelig ved starten av emnet.
+
+Rettigheter og plikter ved eksamen Studentens rettigheter og plikter framgC%r av forskrift om studier og eksamen ved OsloMet - storbyuniversitetet. Forskriften beskriver blant annet vilkC%r for ny/utsatt eksamen, klageadgang og hva som regnes som fusk ved eksamen. Studenten er selv ansvarlig for C% melde seg opp til eventuell ny/utsatt eksamen.
+
+Forkunnskapskrav
+
+Ingen.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne 1 har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har kunnskap i barnetrinnets matematikk
+har dybdekunnskap om fC8lgende temaer som elevene arbeider med pC% barnetrinnet: tallregning knyttet til multiplikasjon og divisjon, rasjonale tall og statistikk
+har kunnskap om matematiske lC&rings- og utviklingsprosesser og hvordan legge til rette for at elever kan ta del i slike prosesser
+har kunnskap om ulike representasjoner og betydningen bruk av og overganger mellom representasjoner kan ha for elevers lC&ring har kunnskap om hvordan grunnleggende ferdigheter medvirker til utviklingen av matematisk kompetanse
+
+Ferdigheter
+
+Studenten
+
+kan planlegge, gjennomfC8re og vurdere matematikkundervisning i tallregning knyttet til multiplikasjon og divisjon og rasjonale tall, samt i statistikk, for alle elever pC% trinn 1-7 med fokus pC% variasjon og elevaktivitet
+kan kommunisere med elever, lytte til og vurdere elevers innspill i matematikk
+kan bruke arbeidsmC%ter som fremmer elevenes undring, kreativitet og evne til C% arbeide systematisk med utforskende aktiviteter, resonnering og argumentasjon
+kan analysere og vurdere elevers tenkemC%ter, argumentasjon og lC8sningsmetoder ut fra ulike perspektiv pC% kunnskap og lC&ring
+
+Generell kompetanse
+
+Studenten
+
+har innsikt i matematikkfagets betydning som allmenndannende fag og dets samspill med kultur, filosofi og samfunnsutvikling
+har innsikt i matematikkfagets betydning for utvikling av kritisk demokratisk kompetanse
+Innhold
+
+I emne 1 arbeides det med sentrale didaktiske og faglige sider ved matematikkundervisning pC% trinn 1-7, inkludert utforsking, argumentasjon, begrunnelse og kommunikasjon i matematikk. Det legges spesiell vekt pC% ulike aspekt ved tall og tallbehandling knyttet til multiplikasjon og divisjon. Utvikling av grunnleggende tallforstC%else er sentralt. Kunnskap om multiplikative strukturer knyttes til arbeid med varierte strategier pC% omrC%dene tall og regneoperasjoner. Grunnleggende begrepsmessig forstC%else av brC8k behandles grundig. Sentralt i emnet er ogsC% arbeid med begrepsutvikling innen statistikk.
+
+Arbeids- og undervisningsformer
+
+Se fagplanen.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+Retten til C% avlegge eksamen forutsetter godkjente arbeidskrav og deltakelse i bestemte faglige aktiviteter. Om krav til deltakelse i undervisningsaktiviteter, se avsnittet innledningsvis om "Arbeidskrav". Alle arbeidskravene er utformet med utgangspunkt i lC&ringsutbyttebeskrivelsene som hC8rer til emne 1. Dette er nC&rmere spesifisert i hvert enkelt tilfelle. FC8lgende arbeidskrav mC% vC&re godkjent fC8r eksamen i emne 1 kan avlegges:
+
+Arbeidskrav 1
+
+En skriftlig individuell oppgaveinnlevering knyttet til faglige og didaktiske tema. Omfang: tilsvarende fem sider.
+
+Arbeidskrav 2
+
+En skriftlig oppgaveinnlevering i gruppe knyttet til faglige og didaktiske tema med IKT-krav. Omfang: tilsvarende fem sider.
+
+Arbeidskrav 3
+
+Grunnleggende ferdigheter, sprC%k og lC&ring er en flerfaglig skriftlig gruppeoppgave i pedagogikk og elevkunnskap, matematikk og norsk (6 000 ord +/- 10 %) med pC%fC8lgende muntlig gruppefremfC8ring (10-15 minutter). Bruk av digitale verktC8y inngC%r bC%de i den skriftlige teksten og den muntlige framfC8ringa. FormC%let med arbeidskravet er trening i observasjon og utvikling av kompetanse i C% tolke observasjoner knyttet til teoretiske perspektiver, samt at studentene skal lC&re C% bruke digitale verktC8y. Innholdet i arbeidskravet baseres pC% observasjoner i praksis og relevant faglig teori.
+
+Dersom den skriftlige delen pC% arbeidskrav 3 ikke blir godkjent, kan arbeidet forbedres og leveres inn C)n gang til. Dersom studentene ikke mC8ter til den muntlige framfC8ringen, eller denne ikke blir godkjent, kan de etter nC&rmere vurdering fC% en ny mulighet til C% presentere gruppeoppgaven.
+
+Arbeidskrav 4: Faglige aktiviteter med krav om deltakelse
+
+Nyere forskning anbefaler at matematikkdidaktikk i lC&rerutdanningen skal vektlegge handlingskompetanse. Dette forutsetter samhandling med andre studenter og faglC&rere om sentrale utfordringer i faget, vurdering av undervisning og undervisningsC8velser. Denne delen av en lC&rers handlingskompetanse kan ikke tilegnes kun ved lesing, men mC% opparbeides i reell dialog og ved tilstedevC&relse i undervisningen. Det kreves derfor oppmC8te pC% minimum 80 %. Ved fravC&r utover 20 %, og inntil 40 %, vil det gis kompensatorisk arbeid som kan inkludere krav om oppmC8te. Form og omfang bestemmes av emneansvarlig. Ved fravC&r utover 40 % vil studenten trekkes fra eksamen i emnet. FravC&r dokumentert med for eksempel sykemelding, gir ikke fritak for kravet om deltakelse og eventuelt kompensatorisk arbeid.
+
+Vurdering og eksamen
+
+Individuell skriftlig eksamen under tilsyn. Varighet: fire timer.
+
+Ny/utsatt eksamen arrangeres som ved ordinC&r eksamen.
+
+Hjelpemidler ved eksamen
+
+Ett A4-ark (begge sider) med notater. Skrivesaker, linjal, passer. Kalkulator ikke tillatt.
+
+Vurderingsuttrykk
+
+Det benyttes en gradert karakterskala fra A til E for bestC%tt og F for ikke bestC%tt eksamen.
+
+Sensorordning
+
+Det benyttes to interne sensorer. En tilsynssensor er tilknyttet emnet, i henhold til retningslinjer for oppnevning og bruk av sensorer ved OsloMet - storbyuniversitetet.
+
+Opptakskrav
+
+Se fagplanen.

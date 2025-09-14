@@ -1,0 +1,10 @@
+institution: hvl
+code: MGUPP201-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGUPP201
+status: 200
+course_name_no: MGUPP201 Profesjonsrettet pedagogikk 1, emne 2 - Utforskende undervisning
+----- FULLTEXT -----
+
+NA

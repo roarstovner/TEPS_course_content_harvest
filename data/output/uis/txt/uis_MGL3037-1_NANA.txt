@@ -1,0 +1,10 @@
+institution: uis
+code: MGL3037-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MGL3037
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+NA

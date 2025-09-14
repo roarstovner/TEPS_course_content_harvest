@@ -1,0 +1,10 @@
+institution: uis
+code: MLI355-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MLI355
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+NA

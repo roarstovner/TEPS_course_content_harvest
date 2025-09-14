@@ -1,0 +1,10 @@
+institution: hvl
+code: MGUNA501-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGUNA501
+status: 200
+course_name_no: MGUNA501 Naturfag 3, emne 1 - Naturfaglig fordypning
+----- FULLTEXT -----
+
+NA

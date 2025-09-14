@@ -1,0 +1,10 @@
+institution: hiof
+code: LMUSPA10417-1
+year: 2026
+hv: V
+url: https://www.hiof.no/studier/emner/lusp/lusp/2026/var/lmuspa10417.html
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+NA

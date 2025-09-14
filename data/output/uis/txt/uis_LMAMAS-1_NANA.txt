@@ -1,0 +1,142 @@
+institution: uis
+code: LMAMAS-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/LMAMAS
+status: 200
+course_name_no: Masteroppgave i matematikk - lektor (LMAMAS)
+----- FULLTEXT -----
+
+Emnekode
+
+LMAMAS
+
+Versjon
+
+1
+
+Vekting (stp)
+
+30
+
+Semester undervisningsstart
+
+HC8st
+
+Antall semestre
+
+2
+
+Vurderingssemester
+
+VC%r
+
+UndervisningssprC%k
+
+Engelsk, Norsk
+
+Tilbys av
+
+Det teknisk-naturvitenskapelige fakultet,
+Institutt for matematikk og fysikk
+
+Det teknisk-naturvitenskapelige fakultet,
+
+Institutt for matematikk og fysikk
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhold
+
+Studenten skal gjennom arbeidet med masteroppgaven fC% erfaring med et forskningsprosjekt der metoder fra matematikk anvendes. Litteraturstudium og sC&rpensum. Modellerings-, simulerings- og beregningsarbeid. Rapportskriving. Det konkrete innhold vil variere avhengig av den enkelte oppgave. Valg av tema for oppgaven med forbehold for relevant veilederkapasitet.
+
+LC&ringsutbytte
+
+Kunnskap
+
+Har oversikt over gjeldende internasjonal litteratur, vitenskapelig rapportering og etiske standarder for det aktuelle tema og kan forholde seg kritisk til ulike informasjonskilder.
+Demonstrere fordypet innsikt i og forstC%else av et bestemt tema.
+Kunne sette det spesifikke tema i kontekst i det bredere fagfelt (matematikk), og ha innsikt i og kunne beskrive den underliggende teoribygning.
+
+Ferdigheter
+
+Bruke metoder i matematikk til C% formulere og analysere en aktuell faglig problemstilling.
+UtfC8re litteratursC8k og forfatte en vitenskapelig rapport.
+Presentere og formidle et selvstendig arbeid med bruk av fagomrC%dets terminologi og uttrykksformer.
+Kan anvende og analysere relevante metodeverktC8y og arbeidsmC%ter, spesifikt matematisk modellering, beregninger og/eller numeriske metoder.
+Kan utrede problemstillingen og analysere resultat og egen konklusjon i forhold til problemstilling.
+
+Generell kompetanse
+
+ForstC% og fC8lge de etiske standarder for vitenskapelig arbeid.
+Kan utfC8re og formidle omfattende selvstendig arbeid.
+Kan analysere relevante teoretiske modeller eller studier stC8ttet av forskningsresultat.
+Har evne til refleksjon og kritisk vurdering av eget arbeid.
+Kan forsvare hC8y etisk atferd i faglige sammenhenger.
+Kan benytte effektivt diverse relevant software, til beregninger og/eller skriftlig og muntlig presentasjon.
+
+Forkunnskapskrav
+
+Godkjent undervisningskompetanse i matematikk, og 120 stp i fag 1.
+
+Eksamen / vurdering
+
+Fagperson(er)
+
+FaglC&rer:
+David Ploog
+
+FaglC&rer:
+Eirik Eik Svanes
+
+FaglC&rer:
+Tore Selland Kleppe
+
+FaglC&rer:
+Michal Jakub Kapustka
+
+FaglC&rer:
+JC6rn Schulz
+
+FaglC&rer:
+David Duncan Mcnutt
+
+FaglC&rer:
+Tyson Ritter
+
+FaglC&rer:
+Martin Gunnar Gulbrandsen
+
+Emneansvarlig:
+Alex Bentley Nielsen
+
+FaglC&rer:
+SigbjC8rn Hervik
+
+FaglC&rer:
+Alexander Ulanovskii
+
+FaglC&rer:
+Jan Terje KvalC8y
+
+FaglC&rer:
+Alexander Rashkovskii
+
+Instituttleder:
+BjC8rn Henrik Auestad
+
+Arbeidsformer
+
+Selvstendig arbeid med litteratur. Individuell veiledning i det praktiske arbeidet og rapportskriving.
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+SC8k etter pensumlitteratur i Leganto

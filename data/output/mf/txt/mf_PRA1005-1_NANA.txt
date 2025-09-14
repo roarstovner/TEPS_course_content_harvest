@@ -1,0 +1,10 @@
+institution: mf
+code: PRA1005-1
+year: NA
+hv: NA
+url: https://mf.no/studier/emner/pra1005
+status: 200
+course_name_no: Praksis 5. semester - Lektorprogrammet PRA1005
+----- FULLTEXT -----
+
+NA

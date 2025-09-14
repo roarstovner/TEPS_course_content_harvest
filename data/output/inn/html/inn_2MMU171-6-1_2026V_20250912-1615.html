@@ -1,0 +1,2386 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]><html class="lt-ie9 lt-ie8 lt-ie7" lang="nb" dir="ltr"><![endif]-->
+<!--[if IE 7]><html class="lt-ie9 lt-ie8" lang="nb" dir="ltr"><![endif]-->
+<!--[if IE 8]><html class="lt-ie9" lang="nb" dir="ltr"><![endif]-->
+<!--[if gt IE 8]><!--><html lang="nb" dir="ltr"><!--<![endif]-->
+<head>
+<meta charset="utf-8" />
+<meta name="Generator" content="Drupal 7 (http://drupal.org)" />
+<link rel="shortcut icon" href="https://studiekatalog.edutorium.no/inn/sites/all/modules/custom/eac_inn/assets/favicon.png" type="image/png" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<meta name="MobileOptimized" content="width" />
+<meta name="HandheldFriendly" content="1" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title>Studiekatalog Høgskolen Innlandet</title>
+<style type="text/css" media="all">
+@import url("https://studiekatalog.edutorium.no/inn/modules/system/system.base.css?soooz9");
+@import url("https://studiekatalog.edutorium.no/inn/modules/system/system.menus.css?soooz9");
+@import url("https://studiekatalog.edutorium.no/inn/modules/system/system.messages.css?soooz9");
+@import url("https://studiekatalog.edutorium.no/inn/modules/system/system.theme.css?soooz9");
+</style>
+<style type="text/css" media="all">
+@import url("https://studiekatalog.edutorium.no/inn/modules/comment/comment.css?soooz9");
+@import url("https://studiekatalog.edutorium.no/inn/sites/all/modules/custom/eac_cd/eac_cd.css?soooz9");
+@import url("https://studiekatalog.edutorium.no/inn/sites/all/modules/custom/eac_cm/eac_cm.css?soooz9");
+@import url("https://studiekatalog.edutorium.no/inn/sites/all/modules/custom/eac_inn/eac_inn.css?soooz9");
+@import url("https://studiekatalog.edutorium.no/inn/sites/all/modules/custom/eac_pd/eac_pd.css?soooz9");
+@import url("https://studiekatalog.edutorium.no/inn/sites/all/modules/custom/edcat/edcat.css?soooz9");
+@import url("https://studiekatalog.edutorium.no/inn/sites/all/modules/custom/edcat_cron/edcat_cron.css?soooz9");
+@import url("https://studiekatalog.edutorium.no/inn/sites/all/modules/custom/edutorium_reading_list/edutorium_reading_list.css?soooz9");
+@import url("https://studiekatalog.edutorium.no/inn/sites/all/modules/custom/emweb_admin/emweb_admin.css?soooz9");
+@import url("https://studiekatalog.edutorium.no/inn/sites/all/modules/custom/emweb_api/emweb_api.css?soooz9");
+@import url("https://studiekatalog.edutorium.no/inn/modules/field/theme/field.css?soooz9");
+@import url("https://studiekatalog.edutorium.no/inn/modules/node/node.css?soooz9");
+@import url("https://studiekatalog.edutorium.no/inn/modules/user/user.css?soooz9");
+@import url("https://studiekatalog.edutorium.no/inn/sites/all/modules/contrib/views/css/views.css?soooz9");
+@import url("https://studiekatalog.edutorium.no/inn/sites/all/modules/contrib/ckeditor/css/ckeditor.css?soooz9");
+</style>
+<style type="text/css" media="all">
+@import url("https://studiekatalog.edutorium.no/inn/sites/all/modules/contrib/ctools/css/ctools.css?soooz9");
+</style>
+<style type="text/css" media="screen">
+@import url("https://studiekatalog.edutorium.no/inn/sites/all/themes/contrib/at_core/css/at.layout.css?soooz9");
+</style>
+<style type="text/css" media="all">
+@import url("https://studiekatalog.edutorium.no/inn/sites/all/themes/custom/eac_bi_theme/css/styles.base.css?soooz9");
+@import url("https://studiekatalog.edutorium.no/inn/sites/all/themes/custom/eac_bi_theme/css/styles.settings.css?soooz9");
+@import url("https://studiekatalog.edutorium.no/inn/sites/all/themes/custom/eac_bi_theme/css/styles.modules.css?soooz9");
+@import url("https://studiekatalog.edutorium.no/inn/sites/all/themes/custom/eac_bi_theme/css/styles.custom.css?soooz9");
+</style>
+<link type="text/css" rel="stylesheet" href="https://studiekatalog.edutorium.no/inn/sites/default/files/adaptivetheme/eac_bi_theme_files/eac_bi_theme.responsive.layout.css?soooz9" media="only screen" />
+<link type="text/css" rel="stylesheet" href="https://studiekatalog.edutorium.no/inn/sites/all/themes/custom/eac_bi_theme/css/responsive.custom.css?soooz9" media="only screen" />
+<link type="text/css" rel="stylesheet" href="https://studiekatalog.edutorium.no/inn/sites/all/themes/custom/eac_bi_theme/css/responsive.smartphone.portrait.css?soooz9" media="only screen and (max-width:320px)" />
+<link type="text/css" rel="stylesheet" href="https://studiekatalog.edutorium.no/inn/sites/all/themes/custom/eac_bi_theme/css/responsive.smartphone.landscape.css?soooz9" media="only screen and (min-width:321px) and (max-width:580px)" />
+<link type="text/css" rel="stylesheet" href="https://studiekatalog.edutorium.no/inn/sites/all/themes/custom/eac_bi_theme/css/responsive.tablet.portrait.css?soooz9" media="only screen and (min-width:581px) and (max-width:768px)" />
+<link type="text/css" rel="stylesheet" href="https://studiekatalog.edutorium.no/inn/sites/all/themes/custom/eac_bi_theme/css/responsive.tablet.landscape.css?soooz9" media="only screen and (min-width:769px) and (max-width:1024px)" />
+<link type="text/css" rel="stylesheet" href="https://studiekatalog.edutorium.no/inn/sites/all/themes/custom/eac_bi_theme/css/responsive.desktop.css?soooz9" media="only screen and (min-width:1025px)" />
+
+<!--[if lt IE 9]>
+<style type="text/css" media="screen">
+@import url("https://studiekatalog.edutorium.no/inn/sites/default/files/adaptivetheme/eac_bi_theme_files/eac_bi_theme.lt-ie9.layout.css?soooz9");
+</style>
+<![endif]-->
+<script type="text/javascript" src="https://studiekatalog.edutorium.no/inn/misc/jquery.js?v=1.4.4"></script>
+<script type="text/javascript" src="https://studiekatalog.edutorium.no/inn/misc/jquery-extend-3.4.0.js?v=1.4.4"></script>
+<script type="text/javascript" src="https://studiekatalog.edutorium.no/inn/misc/jquery-html-prefilter-3.5.0-backport.js?v=1.4.4"></script>
+<script type="text/javascript" src="https://studiekatalog.edutorium.no/inn/misc/jquery.once.js?v=1.2"></script>
+<script type="text/javascript" src="https://studiekatalog.edutorium.no/inn/misc/drupal.js?soooz9"></script>
+<script type="text/javascript" src="https://studiekatalog.edutorium.no/inn/misc/form.js?v=7.87"></script>
+<script type="text/javascript" src="https://studiekatalog.edutorium.no/inn/sites/default/files/languages/nb_QLjpyUiJS1L7zvvssuGZ5cwY_DldzY7U-1bjEr5sTUs.js?soooz9"></script>
+<script type="text/javascript" src="https://studiekatalog.edutorium.no/inn/sites/all/modules/contrib/better_exposed_filters/better_exposed_filters.js?soooz9"></script>
+<script type="text/javascript" src="https://studiekatalog.edutorium.no/inn/sites/all/modules/contrib/ctools/js/auto-submit.js?soooz9"></script>
+<script type="text/javascript" src="https://studiekatalog.edutorium.no/inn/sites/all/modules/custom/eac_cd/js/list.min.js?soooz9"></script>
+<script type="text/javascript" src="https://studiekatalog.edutorium.no/inn/sites/all/modules/custom/eac_cd/js/course-frontpage-list.js?soooz9"></script>
+<script type="text/javascript" src="https://studiekatalog.edutorium.no/inn/misc/collapse.js?v=7.87"></script>
+<script type="text/javascript" src="https://studiekatalog.edutorium.no/inn/misc/tableheader.js?soooz9"></script>
+<script type="text/javascript" src="https://studiekatalog.edutorium.no/inn/sites/all/themes/custom/eac_bi_theme/js/eq.js?soooz9"></script>
+<script type="text/javascript" src="https://studiekatalog.edutorium.no/inn/sites/all/themes/custom/eac_bi_theme/js/eq-gp.js?soooz9"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+jQuery.extend(Drupal.settings, {"basePath":"\/inn\/","pathPrefix":"nb\/","setHasJsCookie":0,"ajaxPageState":{"theme":"eac_bi_theme","theme_token":"rQns214qZCatn9pvKQW4qhjX0pFvnCgoKVxxiytWjvY","js":{"sites\/all\/modules\/custom\/edutorium_reading_list\/htmx.min.js":1,"sites\/all\/modules\/custom\/edutorium_reading_list\/reading_link.js":1,"misc\/jquery.js":1,"misc\/jquery-extend-3.4.0.js":1,"misc\/jquery-html-prefilter-3.5.0-backport.js":1,"misc\/jquery.once.js":1,"misc\/drupal.js":1,"misc\/form.js":1,"public:\/\/languages\/nb_QLjpyUiJS1L7zvvssuGZ5cwY_DldzY7U-1bjEr5sTUs.js":1,"sites\/all\/modules\/contrib\/better_exposed_filters\/better_exposed_filters.js":1,"sites\/all\/modules\/contrib\/ctools\/js\/auto-submit.js":1,"sites\/all\/modules\/custom\/eac_cd\/js\/list.min.js":1,"sites\/all\/modules\/custom\/eac_cd\/js\/course-frontpage-list.js":1,"misc\/collapse.js":1,"misc\/tableheader.js":1,"sites\/all\/themes\/custom\/eac_bi_theme\/js\/eq.js":1,"sites\/all\/themes\/custom\/eac_bi_theme\/js\/eq-gp.js":1},"css":{"modules\/system\/system.base.css":1,"modules\/system\/system.menus.css":1,"modules\/system\/system.messages.css":1,"modules\/system\/system.theme.css":1,"modules\/comment\/comment.css":1,"sites\/all\/modules\/custom\/eac_cd\/eac_cd.css":1,"sites\/all\/modules\/custom\/eac_cm\/eac_cm.css":1,"sites\/all\/modules\/custom\/eac_inn\/eac_inn.css":1,"sites\/all\/modules\/custom\/eac_pd\/eac_pd.css":1,"sites\/all\/modules\/custom\/eac_user\/eac_user.css":1,"sites\/all\/modules\/custom\/edcat\/edcat.css":1,"sites\/all\/modules\/custom\/edcat_cron\/edcat_cron.css":1,"sites\/all\/modules\/custom\/edutorium_reading_list\/edutorium_reading_list.css":1,"sites\/all\/modules\/custom\/emweb_admin\/emweb_admin.css":1,"sites\/all\/modules\/custom\/emweb_api\/emweb_api.css":1,"modules\/field\/theme\/field.css":1,"modules\/node\/node.css":1,"modules\/user\/user.css":1,"sites\/all\/modules\/contrib\/views\/css\/views.css":1,"sites\/all\/modules\/contrib\/ckeditor\/css\/ckeditor.css":1,"sites\/all\/modules\/contrib\/ctools\/css\/ctools.css":1,"sites\/all\/themes\/contrib\/at_core\/css\/at.layout.css":1,"sites\/all\/themes\/custom\/eac_bi_theme\/css\/styles.base.css":1,"sites\/all\/themes\/custom\/eac_bi_theme\/css\/styles.settings.css":1,"sites\/all\/themes\/custom\/eac_bi_theme\/css\/styles.modules.css":1,"sites\/all\/themes\/custom\/eac_bi_theme\/css\/styles.custom.css":1,"public:\/\/adaptivetheme\/eac_bi_theme_files\/eac_bi_theme.responsive.layout.css":1,"sites\/all\/themes\/custom\/eac_bi_theme\/css\/responsive.custom.css":1,"sites\/all\/themes\/custom\/eac_bi_theme\/css\/responsive.smartphone.portrait.css":1,"sites\/all\/themes\/custom\/eac_bi_theme\/css\/responsive.smartphone.landscape.css":1,"sites\/all\/themes\/custom\/eac_bi_theme\/css\/responsive.tablet.portrait.css":1,"sites\/all\/themes\/custom\/eac_bi_theme\/css\/responsive.tablet.landscape.css":1,"sites\/all\/themes\/custom\/eac_bi_theme\/css\/responsive.desktop.css":1,"public:\/\/adaptivetheme\/eac_bi_theme_files\/eac_bi_theme.lt-ie9.layout.css":1}},"better_exposed_filters":{"datepicker":false,"slider":false,"settings":[],"autosubmit":false,"views":{"course_frontpage":{"displays":{"default":{"filters":{"sem":{"required":true}}}}}}},"urlIsAjaxTrusted":{"\/inn\/nb\/emne":true},"currentPath":"emne","currentPathIsAdmin":false,"reading_list_config":{"endpoint":"https:\/\/studiekatalog.edutorium.no\/inn\/mimir_leganto","show_empty":1},"adaptivetheme":{"eac_bi_theme":{"layout_settings":{"bigscreen":"three-col-grail","tablet_landscape":"three-col-grail","tablet_portrait":"one-col-vert","smalltouch_landscape":"one-col-vert","smalltouch_portrait":"one-col-stack"},"media_query_settings":{"bigscreen":"only screen and (min-width:1025px)","tablet_landscape":"only screen and (min-width:769px) and (max-width:1024px)","tablet_portrait":"only screen and (min-width:581px) and (max-width:768px)","smalltouch_landscape":"only screen and (min-width:321px) and (max-width:580px)","smalltouch_portrait":"only screen and (max-width:320px)"}}}});
+//--><!]]>
+</script>
+<!--[if lt IE 9]>
+<script src="https://studiekatalog.edutorium.no/inn/sites/all/themes/contrib/at_core/scripts/html5.js?soooz9"></script>
+<![endif]-->
+</head>
+<body class="html not-front not-logged-in one-sidebar sidebar-first page-emne inn i18n-nb site-name-hidden atr-7.x-3.0 atv-7.x-3.2 lang-nb site-name-studiekatalog-høgskolen-innlandet section-emne">
+  <div id="skip-link" class="nocontent">
+    <a href="#main-content" class="element-invisible element-focusable">Hopp til hovedinnhold</a>
+  </div>
+    <main id="page-wrapper">
+  <div id="page" class="page">
+
+    <div id="header-wrapper" class="no-header-region">
+      <div class="container clearfix">
+
+        <div id="region-header-wrapper" class="clearfix">
+                  </div>
+
+        <header id="header" class="clearfix" role="banner">
+
+                      <div id="branding" class="branding-elements clearfix">
+
+              <!-- Logo -->
+                              <div id="logo"><a href="https://www.inn.no"><img class="site-logo" src="https://studiekatalog.edutorium.no/inn/sites/all/modules/custom/eac_inn/assets/logo-inn.svg" alt="Studiekatalog Høgskolen Innlandet" /></a></div>
+              
+                              <div class="element-invisible h-group" id="name-and-slogan">
+
+                                    <h1 class="element-invisible" id="site-name"><a href="/inn/nb" title="Hjemmeside">Studiekatalog Høgskolen Innlandet</a></h1>
+                 
+                 
+               </div><!-- /end #name-and-slogan -->
+              
+            </div><!-- /end #branding -->
+          
+                      <div id="menu-wrapper">
+              <div class="item-list"><ul id="edcat_simple_menu"><li class="odd first"><a href="/inn/nb/emne" class="active">Emner</a></li><li class="even"><a href="/inn/nb/program">Studieplaner</a></li><li class="odd"><a href="https://www.inn.no">Inn.no</a></li><li class="even"><a href="/inn/nb/hihm_2008_2013">HIHM 2008-2013</a></li><li class="odd last"><a href="/inn/nb/hil_2004_2013">HIL 2004-2013</a></li></ul></div>            </div>
+          
+        </header>
+      </div>
+    </div>
+
+          <div id="secondary-content-wrapper">
+        <div class="image-overlay clearfix">
+          <div class="container clearfix">
+            <div class="region region-secondary-content"><div class="region-inner clearfix"><div id="block-block-2" class="block block-block no-title odd first last block-count-1 block-region-secondary-content block-2" ><div class="block-inner clearfix">  
+  
+  <div class="block-content content"><p>Studiearkiv</p>
+</div>
+  </div></div></div></div>          </div>
+        </div>
+      </div>
+    
+        <div id="top-wrapper"></div>
+    <div id="content-wrapper">
+      <div class="container">
+        <div id="columns">
+          <div class="columns-inner clearfix">
+            <div id="content-column">
+              <div class="content-inner">
+
+                
+                
+                
+                <div id="main-content">
+
+                                                      
+                  
+                  <!-- region: Main Content -->
+                                      <div id="content">
+                      <div id="block-system-main" class="block block-system no-title odd first last block-count-2 block-region-content block-main" >  
+  
+  <div class="view view-course-frontpage view-id-course_frontpage view-display-id-default view-dom-id-1ee6997d71da4d95683f24de4c783fdd">
+        
+      <div class="view-filters">
+      <form class="ctools-auto-submit-full-form" action="/inn/nb/emne" method="get" id="views-exposed-form-course-frontpage-default" accept-charset="UTF-8"><div><div class="views-exposed-form">
+  <div class="views-exposed-widgets clearfix">
+          <div id="edit-sem-wrapper" class="views-exposed-widget views-widget-filter-start_semester">
+                        <div class="views-widget">
+          <div class="form-item form-type-select form-item-sem">
+  <label for="edit-sem">Startsemester </label>
+ <select id="edit-sem" name="sem" class="form-select"><option value="2029-spring">2029 Vår</option><option value="2028-autumn">2028 Høst</option><option value="2028-spring">2028 Vår</option><option value="2027-autumn">2027 Høst</option><option value="2027-spring">2027 Vår</option><option value="2026-autumn">2026 Høst</option><option value="2026-spring" selected="selected">2026 Vår</option><option value="2025-autumn">2025 Høst</option><option value="2025-spring">2025 Vår</option><option value="2024-autumn">2024 Høst</option><option value="2024-spring">2024 Vår</option><option value="2023-autumn">2023 Høst</option><option value="2023-spring">2023 Vår</option><option value="2022-autumn">2022 Høst</option><option value="2022-spring">2022 Vår</option><option value="2021-autumn">2021 Høst</option></select>
+</div>
+        </div>
+              </div>
+                    <div class="views-exposed-widget views-submit-button">
+      <div>Emnesøket gjelder kun fra 2022. Før dette må emnene finnes i studieplanen</div><input class="ctools-use-ajax ctools-auto-submit-click js-hide form-submit" type="submit" id="edit-submit-course-frontpage" value="Apply" /><div class="form-item form-type-textfield form-item-title-search">
+ <input class="search ctools-auto-submit-exclude form-text" placeholder="Søk i emnebeskrivelser" type="text" id="edit-title-search" name="title_search" value="2MMU171 6 1" size="60" maxlength="128" />
+</div>
+    </div>
+      </div>
+</div>
+</div></form>    </div>
+  
+  
+      <div class="view-content">
+      <table class="views-table cols-0" >
+       <tbody class="list">
+          <tr class="odd views-row-first">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/1BACF11/2026-var">1BACF11 Bacheloroppgave</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/1HAPR11/2026-var">1HAPR11 Helsefremmende arbeid i praksis</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/1MAVITEN/2026-var">1MAVITEN Vitenskapsteori og forskningsmetode</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/29ENG1510-2/2026-var">29ENG1510-2 Teaching and Learning English</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/29ENG1813-2/2026-var">29ENG1813-2 Teaching and Learning English</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/29ENG217-1/2026-var">29ENG217-1 Working with Oral and Written Texts</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/29ENG2510-2/2026-var">29ENG2510-2 Working with Oral and Written Texts</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/29ENG2813-2/2026-var">29ENG2813-2 Working with Oral and Written Texts</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/29LSUVM-2/2026-var">29LSUVM-2 Andrespråkslæring med fokus på skrivekyndighet</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/29NOR1813-2/2026-var">29NOR1813-2 Litteratur og sjanger</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2BBACH-1/2026-var">2BBACH-1 Bacheloroppgave</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2BBACHS-1/2026-var">2BBACHS-1 Bacheloroppgave</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2BKKKS-2/2026-var">2BKKKS-2 Kunst, kultur og kreativitet</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2BSTMC-1/2026-var">2BSTMC-1 Språk, tekst og matematikk</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/2ENL512-1/2026-spring">2ENL512-1 English language 1</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/2ENL512-31/2026-spring">2ENL512-31 English language 2</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/2ENL512-41/2026-spring">2ENL512-41 Literature and Culture 2</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2LUOPP3/2026-var">2LUOPP3 Masteroppgave</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2M310-1/2026-var">2M310-1 Litteraturteori</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2M312-1/2026-var">2M312-1 Språkteori</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2M313-1/2026-var">2M313-1 Musikkfagets teorigrunnlag</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2M317/2026-var">2M317 Musikalsk barne- og ungdomskultur</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MASTER17D/2026-var">2MASTER17D Masteroppgave</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MASTER17DE/2026-var">2MASTER17DE Masteroppgave - enreprenøriell</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MASTER510D/2026-var">2MASTER510D Masteroppgave</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MASTER510DE/2026-var">2MASTER510DE Masteroppgave - entreprenøriell</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/2MAT201/2026-spring">2MAT201 Mathematics II</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/2MAT301/2026-spring">2MAT301 Mathematics III</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MEN171-1/2026-var">2MEN171-1 Engelsk 1, emne 1: English language</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MEN171-3/2026-var">2MEN171-3 Engelsk 2, emne 3: Literature, culture and teaching English 2</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MEN171-4/2026-var">2MEN171-4 Engelsk 2, emne 4: Research and development in the English subject</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MEN171-6/2026-var">2MEN171-6 Engelsk: Assessing and researching English</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MEN171S-1/2026-var">2MEN171S-1 Engelsk 1, emne 1: English language</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MEN5101-1/2026-var">2MEN5101-1 Engelsk 1, emne 1: English language</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MEN5101-6/2026-var">2MEN5101-6 Engelsk: Assessing and researching English</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MEN5101S-1/2026-var">2MEN5101S-1 Engelsk 1, emne 1: English language</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MEN5101S-3/2026-var">2MEN5101S-3 Engelsk 2, emne 3: Research and development in the English subject</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MEN5102-3/2026-var">2MEN5102-3 Engelsk 2, emne 3: Research and development in the English subject</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MEN5102-4/2026-var">2MEN5102-4 Engelsk 2, emne 4: Literature, culture and teaching English 2</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MIKSAVH3/2026-var">2MIKSAVH3 Masteroppgave</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MIKSAVH3D/2026-var">2MIKSAVH3D Masteroppgave</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MIT4004/2026-var">2MIT4004 Vitenskapsteori og forskningsmetode</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MIT4005/2026-var">2MIT4005 Tilpasset opplæring i et didaktisk perspektiv</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MKRLE171-1/2026-var">2MKRLE171-1 KRLE 1, emne 1: Religioner og ideer i europeisk tradisjon</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MKRLE171-3/2026-var">2MKRLE171-3 KRLE 2, emne 3: Modernitet, religionsdidaktikk og kristent mangfold</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MKRLE171-4/2026-var">2MKRLE171-4 KRLE 2, emne 4: Religion, samfunn og estetikk</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MKRLE171-6/2026-var">2MKRLE171-6 KRLE: Religion, politikk og medier</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MKRLE5101-1/2026-var">2MKRLE5101-1 KRLE 1, emne 1: Religioner og ideer i europeisk tradisjon</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MKRLE5101-6/2026-var">2MKRLE5101-6 KRLE: Religion, politikk og medier</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MKRLE5102-3/2026-var">2MKRLE5102-3 KRLE 2, emne 3: Religion, samfunn og estetikk</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MKRLE5102-4/2026-var">2MKRLE5102-4 KRLE 2, emne 4: Modernitet, religionsdidaktikk og kristent mangfold</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MKRO5101-1/2026-var">2MKRO5101-1 Kroppsøving 1, emne 1: Kroppsøving som skolefag</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MKRO5101-6/2026-var">2MKRO5101-6 Kroppsøving: Undervisningspraksis til forskning, tur-retur</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MKRO5102-3/2026-var">2MKRO5102-3 Kroppsøving 2, emne 3: Kroppsøving i skole og samfunn</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2ML342/2026-var">2ML342 Nyere norsk litteratur</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2ML343/2026-var">2ML343 Corpora and language learning</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2ML353/2026-var">2ML353 Assessment in English language learning</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2ML355/2026-var">2ML355 Accents of English</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MMA171-2/2026-var">2MMA171-2 Matematikk 1, emne 2: Tall og algebra, statistikk og sannsynlighet og overgangen mellom barne- og ungdomstrinn</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MMA171-3/2026-var">2MMA171-3 Matematikk 2, emne 3: Algebraisk tenkning, geometri og programmering</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MMA171-4/2026-var">2MMA171-4 Matematikk 2, emne 4: Statistikk med anvendelser og FoU-oppgave</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MMA171-6/2026-var">2MMA171-6 Matematikk: Matematikkdidaktikk</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MMA171S-2/2026-var">2MMA171S-2 Matematikk 1, emne 2: Tall og algebra, statistikk og sannsynlighet og overgangen mellom barne- og ungdomstrinn</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MMA171V-2/2026-var">2MMA171V-2 Matematikk 1, emne 2: Tall og algebra, statistikk og sannsynlighet og overgangen mellom barne- og ungdomstrinn</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MMA5101-2/2026-var">2MMA5101-2 Matematikk 1, emne 2: Funksjoner, geometri og måling</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MMA5101-4/2026-var">2MMA5101-4 Matematikk 2, emne 4: Statistikk med anvendelser og FoU-oppgave</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MMA5101-6/2026-var">2MMA5101-6 Matematikk: Matematikkdidaktikk</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MMA5101S-2/2026-var">2MMA5101S-2 Matematikk 1, emne 2: Funksjoner, geometri og måling</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MMU171-1/2026-var">2MMU171-1 Musikk 1, emne1: Eleven, læreren og musikkfaget</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MMU171-3/2026-var">2MMU171-3 Musikk 2, emne 3: Musikk som sosial praksis</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MMU171-4/2026-var">2MMU171-4 Musikk 2, emne 4: Musikklæreren som forsker og formidler</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MMU171-6/2026-var">2MMU171-6 Musikk: Musikkfagets teorigrunnlag</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MMU5101-1/2026-var">2MMU5101-1 Musikk 1, emne 1: Eleven, læreren og musikkfaget</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MMU5101-3/2026-var">2MMU5101-3 Musikk 2, emne 3: Musikk som sosial praksis</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MMU5101-4/2026-var">2MMU5101-4 Musikk 2, emne 4: Musikklæreren som forsker og formidler</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MMU5101-6/2026-var">2MMU5101-6 Musikk: Musikkfagets teorigrunnlag</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MNF171-1/2026-var">2MNF171-1 Naturfag 1, emne 1: Naturfag på mellomtrinnet</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MNF171-3/2026-var">2MNF171-3 Naturfag 2, emne 3: Bærekraftig utvikling i naturfag på trinn 1-7</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MNF171-4/2026-var">2MNF171-4 Naturfag 2, emne 4: Forskning på undervisning og læring i naturfag på trinn 1-7</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MNF171-6/2026-var">2MNF171-6 Naturfag: Naturfagdidaktikk</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MNF171S-1/2026-var">2MNF171S-1 Naturfag 1, emne 1: Naturfag på mellomtrinnet</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MNF5101-1/2026-var">2MNF5101-1 Naturfag 1, emne 1: Naturfag på mellomtrinnet</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MNF5101-6/2026-var">2MNF5101-6 Naturfag: Naturfagdidaktikk</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MNF5101S-1/2026-var">2MNF5101S-1 Naturfag 1, emne 1: Naturfag på mellomtrinnet</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MNF5101S-3/2026-var">2MNF5101S-3 Naturfag 2, emne 3: Forskning på undervisning og læring i naturfag på trinn 5-10</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MNF5102-3/2026-var">2MNF5102-3 Naturfag 2, emne 3: Forskning på undervisning og læring i naturfag på trinn 5-10</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MNF5102-4/2026-var">2MNF5102-4 Naturfag 2, emne 4: Bærekraftig utvikling i naturfag på trinn 5-10</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MNK171-3/2026-var">2MNK171-3 Norsk 2, emne 3: Språk i norskfaget</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emnenn/2MNK171-4/2026-var">2MNK171-4 Norsk 2, emne 4: Tekstar i norskfaget</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MNK171-6/2026-var">2MNK171-6 Norsk: Vitenskapelige teorier og metoder i norskfaget</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MNK5101-2/2026-var">2MNK5101-2 Norsk 1, emne 2: Lesing og skriving</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MNK5101-4/2026-var">2MNK5101-4 Norsk 2, emne 4: Språklig variasjon i didaktisk perspektiv</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MNK5101-6/2026-var">2MNK5101-6 Norsk: Vitenskapelige teorier og metoder i norskfaget</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MNK5101S-2/2026-var">2MNK5101S-2 Norsk 1, emne 2: Lesing og skriving</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MPED-3/2026-var">2MPED-3 Profesjonsrettet pedagogikk emne 3: Fordypning i mangfolds- og inkluderingsperspektiver</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MPEL171-2/2026-var">2MPEL171-2 PEL 1, emne 2: Et læringsmiljø preget av mangfold</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MPEL171-4/2026-var">2MPEL171-4 PEL 2, emne 4: Profesjonsutøvelse</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MPEL171S-2/2026-var">2MPEL171S-2 PEL 1, emne 2: Et læringsmiljø preget av mangfold</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MPEL171S-4/2026-var">2MPEL171S-4 PEL 2, emne 4: Profesjonsutøvelse</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MPEL5101-2/2026-var">2MPEL5101-2 PEL 1, emne 2: Elevens læring og læringsmiljø</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MPEL5101-4/2026-var">2MPEL5101-4 PEL 2, emne 4: Profesjonsutøvelse</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MPEL5101S-2/2026-var">2MPEL5101S-2 PEL 1, emne 2: Elevens læring og læringsmiljø</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MPRA171-3/2026-var">2MPRA171-3 Praksisstudium 3. studieår</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MPRA171-4/2026-var">2MPRA171-4 Praksisstudium 4. studieår</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MPRA171S-3/2026-var">2MPRA171S-3 Praksisstudium 3. studieår</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MPRA171S-4/2026-var">2MPRA171S-4 Praksisstudium 4. studieår</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MPRA5101-3/2026-var">2MPRA5101-3 Praksisstudium 3. studieår</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MPRA5101-4/2026-var">2MPRA5101-4 Praksisstudium 4. studieår</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MROPPG2D/2026-var">2MROPPG2D Masteroppgave</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MRVIT/2026-var">2MRVIT Den forskende lærer - Vitenskapsteori, metode og etikk</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MSF5101-2/2026-var">2MSF5101-2 Samfunnsfag 1, emne 2: Stat, politikk og global utvikling</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MSF5101-4/2026-var">2MSF5101-4 Samfunnsfag 2, emne 4: Samfunnsforskning og skole</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MSF5101-6/2026-var">2MSF5101-6 Samfunnsfag: Demokrati, medborgerskap og flerkulturalitet</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2MULED/2026-var">2MULED Ledelse for læring, utvikling og trivsel</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2NOL51-1/2026-var">2NOL51-1 Språk- og tekststrukturer</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2NOL51-31/2026-var">2NOL51-31 Språk og samfunn</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2NOL51-41/2026-var">2NOL51-41 Litteratur og historie</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2PEDL51-22/2026-var">2PEDL51-22 Pedagogikk 2 – Skolen i samfunnet</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2PRALU2-22/2026-var">2PRALU2-22 Praksisopplæring 2. studieår</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2PRALU2-32/2026-var">2PRALU2-32 Praksisopplæring 3. studieår</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2PRALU2-42/2026-var">2PRALU2-42 Praksisopplæring 4. studieår</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/2PRO201/2026-spring">2PRO201 Programming II</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/2PROD101A/2026-spring">2PROD101A Production</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2SFL51-3/2026-var">2SFL51-3 Arbeids- og næringsliv</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2SFL51-4/2026-var">2SFL51-4 Global politikk </a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2SFLD51/2026-var">2SFLD51 Fagdidaktikk i samfunnsfag</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/2SPF101/2026-spring">2SPF101 Gamification</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2SPGL1-2/2026-var">2SPGL1-2 Spesialpedagogikk emne 2: Inkluderende arbeidsmåter</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/2SPILL101/2026-spring">2SPILL101 Game Design</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2TLE19/2026-var">2TLE19 Teaching and Learning English</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2%C3%98LA102N/2026-var">2ØLA102N Jordøkologi</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/2%C3%98LA103N/2026-var">2ØLA103N Økologisk plantekultur</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3BED100/2026-var">3BED100 Grunnleggende bedriftsøkonomi</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3BED200/2026-var">3BED200 Investering og finansiering</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3BED360/2026-var">3BED360 Virksomhetsstyring</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3EDM210/2026-var">3EDM210 Oppgjør for eiendomsmeglere</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3JUS120/2026-var">3JUS120 Arbeidsrett</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3JUS200/2026-var">3JUS200 Foretaksrett</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3KRI130/2026-var">3KRI130 Krisekommunikasjonsledelse</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3KRI220/2026-var">3KRI220 Internasjonal krisehåndtering</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3LED120/2026-var">3LED120 Human Resource Management</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3LED320/2026-var">3LED320 Prosjektledelse</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3LED350/2026-var">3LED350 Organisasjonsperspektiver på innovasjon</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3MAR120/2026-var">3MAR120 Markedskommunikasjon</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3MAR200/2026-var">3MAR200 Salg og salgsledelse</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3MAR240/2026-var">3MAR240 Forbrukeratferd</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3MET100/2026-var">3MET100 Informasjonskompetanse og metode</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3MET130/2026-var">3MET130 Statistikk for økonomer</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3MMF200/2026-var">3MMF200 Markedsføringsledelse og strategisk kommunikasjon</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3MMF240/2026-var">3MMF240 Tjenesteinnovasjon</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3MMF250/2026-var">3MMF250 Digitalisering, endring og ledelse</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3MMF300/2026-var">3MMF300 Masteroppgave</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3MMF350/2026-var">3MMF350 Masteroppgave</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3MM%C3%98300/2026-var">3MMØ300 Masteroppgave</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3MM%C3%98350/2026-var">3MMØ350 Masteroppgave</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3MSM130/2026-var">3MSM130 Kvantitativ metode</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3M%C3%98S100/2026-var">3MØS100 Økonomisk organisasjonsteori</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3M%C3%98S270/2026-var">3MØS270 Norsk regnskapsregulering (GRS)</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3ORG150/2026-var">3ORG150 Digitale arbeidsformer i organisasjoner</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3ORG220/2026-var">3ORG220 Organisasjonsutvikling og endringsledelse</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3PRA350/2026-var">3PRA350 Ekstern praksis</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3REG160/2026-var">3REG160 Videregående regnskap</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3REG250/2026-var">3REG250 Skatterett II - virksomhetsbeskatning</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3REG370/2026-var">3REG370 Etikk og samfunnsansvar</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3RIS200/2026-var">3RIS200 Nød- og støtteetatenes arbeid i akutte hendelser</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3RIS311/2026-var">3RIS311 Beredskapstrening og -øving</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3SA935/2026-var">3SA935 Fordypningsoppgave med metode</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3SAM100/2026-var">3SAM100 Makroøkonomi</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3SAM120/2026-var">3SAM120 Mikroøkonomi</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3SER250/2026-var">3SER250 Kundefokusert forretningsutvikling</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3SER320/2026-var">3SER320 Service- og interaksjonsdesign</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/3SER350/2026-var">3SER350 Informasjonsøkonomi og digitale markeder</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/4REFTR1/2026-var">4REFTR1 Fordypning i tverrprofesjonell rehabilitering</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/4RELM1/2026-var">4RELM1 Læring og mestring</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/4RELS1/2026-var">4RELS1 Ledelse og samhandling</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/6AE113/2026-spring">6AE113 Ecology and management of freshwater ecosystems</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/6AE121/2026-spring">6AE121 Wildlife Research</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/6AE124/2026-var">6AE124 Evolution</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/6AE124/2026-spring">6AE124 Evolution</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/6EV132/2026-var">6EV132 Norsk fauna</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/6EV150/2026-var">6EV150 Naturoppsyn</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/6EV298/2026-var">6EV298 Vitenskapelig metode og statistikk</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/6EV399/2026-var">6EV399 Master thesis in applied ecology</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/6EV399/2026-spring">6EV399 Master thesis in applied ecology</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/6JB242/2026-var">6JB242 Husdyrmiljø og innendørsmekanisering</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/6JB295/2026-var">6JB295 Rapport og analyse</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/6JB297/2026-var">6JB297 Bacheloroppgave i agronomi</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/6JB299/2026-var">6JB299 Bacheloroppgave i landbruksteknikk</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/ADK1002/2026-spring">ADK1002 Animation I &amp; principles</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/ADK1003/2026-spring">ADK1003 Game Design</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/ADK2002/2026-spring">ADK2002 3D-art &amp; generalisation III</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/ADK2005/2026-spring">ADK2005 Animation III &amp; acting</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/ADK2008/2026-spring">ADK2008 Concept art &amp; motion design II</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/ADK2010/2026-spring">ADK2010 Entrepreneurship and showreel</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/AE9120/2026-spring">AE9120 Applied models for fish and wildlife management</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/AGR1102/2026-var">AGR1102 Landbruk, miljø og samfunn</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/AGR1102N/2026-var">AGR1102N Landbruk, miljø og samfunn</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/AGR1103/2026-var">AGR1103 Planter og produksjon</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/AGR1103N/2026-var">AGR1103N Planter og produksjon</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/AGR1104N/2026-var">AGR1104N Rapport og analyse</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/AGR2202/2026-var">AGR2202 Vitenskapelig metode og statistikk</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/AGR2203/2026-var">AGR2203 Husdyrernæring</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/AKS4203/2026-var">AKS4203 Ledelse og koordinering </a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/AKS4204/2026-var">AKS4204 Anvendt forskningsmetode og prosjektplanlegging</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/AVR4005/2026-spring">AVR4005 Applied Game Technologies for VR/AR</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/BERKRIS1001S/2026-var">BERKRIS1001S Operativ kriseledelse og krisekommunikasjon</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/BERKRIS1003S/2026-var">BERKRIS1003S Krisehåndtering i komplekse organisasjoner</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/BIO4103/2026-spring">BIO4103 Introduction to Bioinformatics and Analysis of Biological Data</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/BIO4104/2026-spring">BIO4104 Methods in Molecular Biology</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/BIO4105/2026-spring">BIO4105 Bioproduction and Biorefining Technology</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/BIOING1100/2026-var">BIOING1100 Bioingeniørfaglig praksis I</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/BIOING1105/2026-var">BIOING1105  Generell og organisk kjemi</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/BIOING1107/2026-var">BIOING1107 Medisinsk cellebiologi, molekylærbiologi og genetikk del I</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/BIOING1205/2026-var">BIOING1205 Bioetikk, kommunikasjon og folkehelse</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/BIOING1209/2026-var">BIOING1209 Medisinsk mikrobiologi</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/BIOING1210/2026-var">BIOING1210 Medisinsk biokjemi</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/BIOING2302/2026-var">BIOING2302 Transfusjonsmedisin</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/BIOING2307/2026-var">BIOING2307 Bioingeniørfaglig praksis III</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/BIOING2901/2026-var">BIOING2901 Bacheloroppgave i bioingeniørfag</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/BRA2001/2026-var">BRA2001 Praksis i reiseliv og arrangement</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/BRA2005/2026-var">BRA2005 Ringvirkninger av reiseliv og arrangement</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/BRA2006/2026-var">BRA2006 Bacheloroppgave</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/BUK4009/2026-var">BUK4009 Praksisnær forskning og utviklingsarbeid</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/BVP2105/2026-var">BVP2105 Sosialpedagogisk og miljøterapeutisk arbeid</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/BVP2106/2026-var">BVP2106 Tiltaksarbeid i barnevernet</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/BVP2900/2026-var">BVP2900 Barnevernsfaglig fordypning</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/B%C3%86R1001/2026-var">BÆR1001 Bærekraftig samfunn - nye perspektiver på utvikling, utdanning, menneske og miljø</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/B%C3%98K1006/2026-var">BØK1006 Rammebetingelser for bærekraftige løsninger</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/B%C3%98K2001/2026-var">BØK2001 Innovasjonsprosesser for bærekraft</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/DIS1000/2026-var">DIS1000 Introduksjon til digital sikkerhet (Lillehammer)</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/FHV4003/2026-var">FHV4003 Kultur, samfunn og bærekraft</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/FHV4004/2026-var">FHV4004 Atferd, samfunn og helsekommunikasjon</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/FIL1001/2026-var">FIL1001 Etikk og moralske problemer</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/FIL1004/2026-spring">FIL1004 Language and Communication</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/FIL1005/2026-spring">FIL1005 Ethical Theories</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/FIL1009/2026-spring">FIL1009 Language and Communication</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/FOA1004/2026-var">FOA1004 Psykologi og kommunikasjon i folkehelse</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/FOA2001/2026-var">FOA2001 Levevaner og helse gjennom livsløpet</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/FOA2004/2026-var">FOA2004 Internship folkehelsearbeid</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/FYS1003/2026-var">FYS1003 Fysioterapeutisk undersøkelse</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/FYS1004/2026-var">FYS1004 Kropp, bevegelse og funksjon</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/FYS2003/2026-var">FYS2003 Klinisk fysioterapi 2</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/FYS2004/2026-spring">FYS2004 Fysioterapi i et samfunnsperspektiv</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/GLSM1002/2026-var">GLSM1002 Tidlig arbeid med tekst, språk og matematikk</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/HEL4002/2026-var">HEL4002 Helsesykepleiers arbeid med barn, unge og deres familier de første fem år av barnets liv</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/HEL4004/2026-var">HEL4004 Helsesykepleiers beredskap- og smittevernarbeid</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/HEL4006/2026-var">HEL4006 Helsesykepleiers grunnlag for en kunnskapsbasert tjeneste</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/HEL4007/2026-var">HEL4007 Helsesykepleiers grunnlag for en kunnskapsbasert tjeneste</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/HEV9003/2026-var">HEV9003 Brukermedvirkning og tverrfaglig samarbeid</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/HEV9003/2026-spring">HEV9003 User Participation and Interdisciplinary Collaboration </a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/HEV9004/2026-var">HEV9004 Barn og unges oppvekst og deltakelse</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/HEV9004/2026-spring">HEV9004 Children and Young People’s Upbringing and Participation </a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/HEV9006/2026-var">HEV9006 Fysisk aktivitet og folkehelse</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/HEV9006/2026-spring">HEV9006 Physical Activity and Public Health</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/HEV9007/2026-spring">HEV9007 Introduction to Rasch Measurement </a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/HEV9007/2026-var">HEV9007 Introduksjon til Rasch analyser</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/HEV9008/2026-spring">HEV9008 Statistical Rethinking. A course in Bayesian data analysis using R</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/HEV9013/2026-var">HEV9013 Kvalitativ analyse: Abduktiv metode i teori og praksis</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/HEV9013/2026-spring">HEV9013 Qualitative Analysis: Abductive Method in Theory and Practice</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/HIL4000/2026-var">HIL4000 Hematologi innen laboratoriemedisin</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/IDR1018/2026-var">IDR1018 Treningslære</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/IDR2002/2026-var">IDR2002 Aktivitetsmedisin</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/IDR2013/2026-var">IDR2013 Treningsfysiologi</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/IDR2014/2026-var">IDR2014 Internship i helse og treningsfysiologi</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/IDT2102/2026-var">IDT2102 Organisering og ledelse i idrett</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/IDTD1004/2026-var">IDTD1004 Trenings- og ernæringslære</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/IDTD1005/2026-spring">IDTD1005 Navigating the coaching identity</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/IDTD1007/2026-var">IDTD1007 Idrettspsykologi</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/INN3024/2026-spring">INN3024 Sustainable Business Model Innovation</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/INN3026/2026-spring">INN3026 Project Management in Innovation Processes</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/INN3040/2026-var">INN3040 Organisasjoner i endring</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/INN3041/2026-var">INN3041 Kvantitativ metode</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/INN3047/2026-var">INN3047 Ansvarlig innovasjon</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/INN3051/2026-spring">INN3051 Humour, communication, and leadership</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/INT1014/2026-spring">INT1014 Political Theory</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/INT1015/2026-var">INT1015 Internasjonal politikk</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/INT1022/2026-var">INT1022 Global samtidshistorie: verden siden 1989</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/INT2012/2026-spring">INT2012 Global Justice</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/INT2015/2026-var">INT2015 Finanskriser og global sårbarhet</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/INT2017/2026-var">INT2017 Finanskriser og global sårbarhet</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/INT2018/2026-spring">INT2018 Global Justice</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/JUS1007/2026-var">JUS1007 Examen philosophicum for jurister</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/JUS2009/2026-var">JUS2009 Privatrett II</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/JUS2011/2026-var">JUS2011 Forvaltningsrett og metode</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/JUS2016/2026-var">JUS2016 Obligasjonsrett</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KARR3002/2026-var">KARR3002 Karriere, karrierevalg og karriereveiledning - teoretiske perspektiver</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KDBA950/2026-var">KDBA950 Masteroppgave</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/KIUA1001/2026-spring">KIUA1001 Machine learning I</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KIUA1001/2026-var">KIUA1001 Maskinlæring I</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/KIUA1003/2026-spring">KIUA1003 Discrete Mathematics</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KIUA1003/2026-var">KIUA1003 Diskret matematikk</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KIUA1005/2026-var">KIUA1005 Programmering II</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/KIUA1005/2026-spring">KIUA1005 Programming II</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KIUA1013/2026-var">KIUA1013 Maskinlæring II</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/KIUA2000/2026-spring">KIUA2000 Interactive simulations</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KIUA2000/2026-var">KIUA2000 Interaktiv simulering</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/KIUA2002/2026-spring">KIUA2002 Computer Vision</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KIUA2002/2026-var">KIUA2002 Computer Vision</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KIUA2004/2026-var">KIUA2004 Utvikling I</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KIUA2006/2026-var">KIUA2006 Bruk av KI og ML innen kjemi</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/KIUA2006/2026-spring">KIUA2006 Use of AI and ML in biochemistry</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KIUA2007/2026-var">KIUA2007 Anvendt bioinformatikk for sekvensdataanalyse</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/KIUA2007/2026-spring">KIUA2007 Applied Bioinformatics for Sequence Data Analysis</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/KIUA2008/2026-spring">KIUA2008 Technology for soil and plant health</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KIUA2008/2026-var">KIUA2008 Teknologi for jord- og plantehelse</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/KIUA2011/2026-spring">KIUA2011  Artificial intelligence and philosophy</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KIUA2011/2026-var">KIUA2011 Kunstig intelligens og filosofi</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/KIUA2013/2026-spring">KIUA2013 AI from a societal perspective</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KIUA2013/2026-var">KIUA2013 Kunstig intelligens i et samfunnsperspektiv</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KLED160/2026-var">KLED160 Verdibevisst ledelse</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KLED180/2026-var">KLED180 Kunnskapsledelse</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KLED320/2026-var">KLED320 Prosjektledelse</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KMSM130/2026-var">KMSM130 Kvantitativ metode</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KM%C3%98S100/2026-var">KMØS100 Økonomisk organisasjonsteori</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KRI1001/2026-var">KRI1001 Samfunnssikkerhet, risiko og beredskap</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KRI1002/2026-var">KRI1002 Krisehåndtering og operativ ledelse</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KROI1003/2026-var">KROI1003 Kropp 2: Kroppen i et samfunnsvitenskapelig perspektiv</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KROI1004/2026-var">KROI1004 Undervisning og læring i kroppsøving og idrettsfag</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KROI2001/2026-var">KROI2001 Kroppsøving i fortid og nåtid</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KROI2002/2026-var">KROI2002 FoU-oppgave</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KSI4130/2026-var">KSI4130 Praksis med fokus på grunnleggende intensivsykepleie</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KSI4140/2026-var">KSI4140 Intensivmedisin og intensivsykepleie i krevende pasientsituasjoner</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KSI4260/2026-var">KSI4260 Praksis med fokus på intensivsykepleie i komplekse pasientsituasjoner</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KSK4131/2026-var">KSK4131 Kreftsykepleie og kreftbehandling</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KSK4140/2026-var">KSK4140 Praksis i spesialisthelsetjenesten med fokus på digital kompetanse og pasientsikkerhet</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KSK4271/2026-var">KSK4271 Praksis i kommunehelsetjenesten med fokus på kommunikasjon og samhandling</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KSO4130/2026-var">KSO4130 Praksis med fokus på operasjonssykepleierens funksjon og ansvarsområde</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KSO4140/2026-var">KSO4140 Operasjonssykepleie ved kirurgisk undersøkelse og behandling</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/KSO4260/2026-var">KSO4260 Praksis med fokus på operasjonssykepleie i komplekse pasientsituasjoner</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/LAN1102/2026-var">LAN1102 Landbruksmaskiner</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/LAN1102N/2026-var">LAN1102N Landbruksmaskiner</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/LAN2202/2026-var">LAN2202 Feltmekanisering 1 – våronn</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/LAN2203/2026-var">LAN2203 Traktorer og basismaskiner</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/LMSM130/2026-spring">LMSM130 Quantitative Methods</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MAOK4004/2026-var">MAOK4004 Wildlife monitoring</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/MAOK4004/2026-spring">MAOK4004 Wildlife monitoring</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MAOK4140/2026-var">MAOK4140 Applied Wildlife Ecology</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/MAOK4140/2026-spring">MAOK4140 Applied Wildlife Ecology</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MATTE2/2026-var">MATTE2 Eksperimentering i matematikk; Geometri, statistikk og sannsynlighet</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MBJ4003S/2026-var">MBJ4003S Sentrale temaer i økologi</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MBJ4004S/2026-var">MBJ4004S Studiedesign og statistisk metode</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MBJ4007S/2026-var">MBJ4007S Agroøkologi</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MBJ4900S/2026-var">MBJ4900S Masteroppgave i bærekraftig jordbruk</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MBP2002/2026-var">MBP2002 Music Business 4 – data og analyse</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MBP2003/2026-var">MBP2003 Artist- og musikkutvikling</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MER1004/2026-var">MER1004 Matkultur og matsosiologi</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MER1005/2026-var">MER1005 Samfunnsernæring</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MER2001/2026-var">MER2001 Matpedagogikk og matformidling</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MHC4009/2026-var">MHC4009 Psykisk helsearbeid i ulike kontekster</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MLT1003/2026-var">MLT1003 Innføring i bedriftsøkonomi og regnskap</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MPABL4004/2026-var">MPABL4004 Metode og vitenskapsteori 1</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MPABR4004/2026-var">MPABR4004 Metode og vitenskapsteori 1</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MPAL4005/2026-var">MPAL4005 Metode og vitenskapsteori 2</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MPAL4006/2026-var">MPAL4006 Internasjonal sommerskole</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MPAR4002/2026-var">MPAR4002 Innovasjonsteori</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MPAR4005/2026-var">MPAR4005 Metode og vitenskapsteori 2</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MPAR4007/2026-var">MPAR4007 Ledelse og organisering av offentlig forvaltning</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MPAR4015/2026-var">MPAR4015 Sammensatte trusler og totalforsvar</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MPSY3013/2026-var">MPSY3013 Avanserte kvantitative og kvalitative metoder</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MPSY3014/2026-var">MPSY3014 Miljøatferd og endringsarbeid</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MUS1004/2026-var">MUS1004 Musikkformidling 2</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MUS1011/2026-var">MUS1011 Musikkformidling 4</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MUS1012/2026-var">MUS1012 Praktisk musikkteori og hørelære 3: Komponering som skapende prosess</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MUS2000/2026-var">MUS2000 Forsknings- og utviklingsoppgave (FoU-oppgave)</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MUS2003/2026-var">MUS2003 Musikkvitenskapelig grunnlagstenkning: Aktuelle problemstillinger og kritiske perspektiver</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MUS4007/2026-var">MUS4007 Vitenskapsteori og metode 2</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/MUS4008/2026-var">MUS4008 Profesjonsfag 4: Tverrfaglig profesjonspedagogikk</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/M%C3%98LBA3002/2026-spring">MØLBA3002 Machine Learning</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/M%C3%98LBA3004/2026-spring">MØLBA3004 Business Forecasting</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/M%C3%98LBA4900/2026-spring">MØLBA4900 Master Thesis</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/M%C3%98LBA4950/2026-spring">MØLBA4950 Master Thesis</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/NMET130/2026-var">NMET130 Statistikk for økonomer</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/NOA3002/2026-var">NOA3002 Språkutvikling og andrespråksdidaktikk for voksne</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/NOAN3002/2026-var">NOAN3002 Didaktiske perspektiver på norsk som andrespråk for voksne</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/NSKTRINN2/2026-var">NSKTRINN2 Norsk språk og kultur, trinn 2 (B1)</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/NSKTRINN2/2026-spring">NSKTRINN2 Norwegian language and culture, Level 2 (B1)</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/NSKTRINN3-2/2026-var">NSKTRINN3-2 Norsk språk og kultur, trinn 3-2 (B2)</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/NSKTRINN3-2/2026-spring">NSKTRINN3-2 Norwegian language and culture, Level 3-2 (B2)</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/OLA1008/2026-var">OLA1008 Etikk og samfunnsansvar</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/OLA1012/2026-var">OLA1012 Verdiskapende prosjektledelse</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/OLA1013/2026-var">OLA1013 Prosjektledelse i praksis</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/OLA2007/2026-var">OLA2007 Arbeids- og organisasjonspsykologi</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/OLA2009/2026-var">OLA2009 HR-praksiser</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/OLA2012/2026-var">OLA2012 Arbeidsrett</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/PED1200/2026-var">PED1200 Pedagogikkens rolle og muligheter i dagens samfunn</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/PED2010/2026-var">PED2010 Bacheloroppgave i pedagogikk inkludert metode</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/PED2030/2026-var">PED2030 Individuell veiledning og rådgivning</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/PED2040/2026-var">PED2040 Gruppeveiledning og gruppeprosesser</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/PED3014/2026-var">PED3014 Aktuelle pedagogiske utfordringer</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/PEDA1000/2026-var">PEDA1000 Pedagogisk kompetanseutvikling</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/PEDD1002/2026-var">PEDD1002 Læring og undervisning</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/PEDD1004/2026-var">PEDD1004 Samfunn og utdanningspolitikk</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/PEDD2004/2026-var">PEDD2004 Spesialpedagogikk - deltakelse og marginalisering</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/PEDD2005/2026-var">PEDD2005 Bacheloroppgave med metode</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/PEDD2210/2026-var">PEDD2210 Individuell veiledning og rådgivning</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/PEDD2220/2026-var">PEDD2220 Gruppeveiledning og gruppeprosesser </a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/PPU3002/2026-var">PPU3002 Pedagogikk 2 - Skolen i samfunnet</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/PPU3004/2026-var">PPU3004 Fagdidaktikk i samfunnsfag II</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/PPU3006/2026-var">PPU3006 Fagdidaktikk i kroppsøving og idrettsfag II</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/PPU3008/2026-var">PPU3008 Språkfagenes didaktikk II</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/PPU3012/2026-var">PPU3012 Fagdidaktikk i religion, livssyn og etikk II</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/PPU3016/2026-var">PPU3016 Fagdidaktikk i naturfag II</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/PPU3018/2026-var">PPU3018 Fagdidaktikk i matematikk II</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/PPUPRA2/2026-var">PPUPRA2 Praksis 2. periode</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/PSY1010/2026-var">PSY1010 Psykologiske forskningsmetoder I</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/PSY1011/2026-var">PSY1011 Kognitiv psykologi</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/PSY2004/2026-var">PSY2004 Personlighetspsykologi</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/PSY2008/2026-var">PSY2008 Klinisk psykologi</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/PSY2301/2026-var">PSY2301 Biologisk psykologi</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/PSY2304/2026-var">PSY2304 Pedagogisk psykologi</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/PU1002/2026-var">PU1002 Arbeidsrett</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/PU1003/2026-var">PU1003 HR og organisasjonsutvikling</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/REGD2002/2026-var">REGD2002 Dokumentarserie</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/REGE2008/2026-var">REGE2008 Praksis</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/REGE2900/2026-var">REGE2900 Bachelorproduksjon </a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/REGF2005/2026-var">REGF2005 Praksis</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/REGF2011/2026-var">REGF2011 Musikkproduksjon II</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/REGF2012/2026-var">REGF2012 Sportsproduksjon II</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/REGF2900/2026-var">REGF2900 Bachelorproduksjon </a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/RJUS120/2026-var">RJUS120 Arbeidsrett</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/RLED120/2026-var">RLED120 Human Resource Management</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/RLED320/2026-var">RLED320 Prosjektledelse</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/RORG150/2026-var">RORG150 Digitale arbeidsformer i organisasjoner</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/RUPS4003/2026-var">RUPS4003 Relasjon, kommunikasjon og samhandling</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/RUPS4006/2026-var">RUPS4006 Forskning, formidling og fagutvikling</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/R%C3%98D1000/2026-var">RØD1000 Risikostyring, beredskapsplanlegging og øving for digital sikkerhet</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SBED100/2026-var">SBED100 Grunnleggende bedriftsøkonomi</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SBED200/2026-var">SBED200 Investering og finansiering</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SBED360/2026-var">SBED360 Virksomhetsstyring</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SIB3001/2026-var">SIB3001 Tilrettelegging for et inkluderende barnehagemiljø</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SJUS120/2026-var">SJUS120 Arbeidsrett</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SJUS200/2026-var">SJUS200 Foretaksrett</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/SKDK4002/2026-spring">SKDK4002 Digital Ethics</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/SKDK4006/2026-spring">SKDK4006 Perspectives on Artificial Intelligence</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/SKDK4007/2026-spring">SKDK4007 Digitally Mediated Language Practices in a Post-Digital Age</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/SKDK4008/2026-spring">SKDK4008 Digital Literature, Art, and Aesthetics</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/SKDK4009/2026-spring">SKDK4009 Cohesive learning design with VR simulation</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/SKDK4010/2026-spring">SKDK4010 Games and media culture</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SKO1103/2026-var">SKO1103 Tømmerets verdikjede</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SKO1110/2026-var">SKO1110 Landbruksvei</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SKO1160/2026-var">SKO1160 Grunnleggende økonomi</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SKO1170/2026-var">SKO1170 Praksis i næring eller forvaltning</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SKO2260/2026-var">SKO2260 Skogøkonomi</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SKO4002S/2026-var">SKO4002S Bærekraftig skogbruk</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SKO4006S/2026-var">SKO4006S Prosjektledelse</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SLED120/2026-var">SLED120 Human Resource Management</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SLED320/2026-var">SLED320 Prosjektledelse</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SMET100/2026-var">SMET100 Informasjonskompetanse og metode</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SMET130/2026-var">SMET130 Statistikk for økonomer</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SMF1082/2026-var">SMF1082 Norwegian Language course for beginners (A1)</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/SOA1001/2026-spring">SOA1001 Culture and Communication</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SOP3001/2026-var">SOP3001 Spesialpedagogisk praksisendring</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SOP3003/2026-var">SOP3003 Innovasjon, endring og veiledning</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SORG150/2026-var">SORG150 Digitale arbeidsformer i organisasjoner</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SOS1102/2026-var">SOS1102 Rammer for sosialt arbeid</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SOS2102/2026-var">SOS2102 Praksisstudier i sosialt arbeid</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SOS2104/2026-var">SOS2104 Tverrfaglig fordypningsprosjekt</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SOS2900/2026-var">SOS2900 Faglig fordypning i sosialt arbeid</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SOSD2104/2026-var">SOSD2104 Tverrfaglig fordypningsprosjekt</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SOSP3002/2026-var">SOSP3002 Sosialpedagogisk veiledning og utvikling av tiltak</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/SPE1008/2026-spring">SPE1008 Disability and Society</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SPE1008/2026-var">SPE1008 Disability and Society</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SPE2100/2026-var">SPE2100 Deltagelse og marginalisering</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SPE2150/2026-var">SPE2150 Bacheloroppgave i spesialpedagogikk</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SPE3002/2026-var">SPE3002 Spesialpedagogisk teori</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/SPED4002/2026-spring">SPED4002 Philosophy of science and research methods</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SPED4002/2026-var">SPED4002 Philosophy of science and research methods</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SPED4005/2026-var">SPED4005 Sustainability, Social Justice and Special Education</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/SPED4005/2026-spring">SPED4005 Sustainability, Social Justice and Special Education</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/SPIS2001/2026-spring">SPIS2001 Machine Learning and Artificial Intelligence in Games</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SPM1006/2026-var">SPM1006 Idrettsjuss</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SPM2001/2026-var">SPM2001 Ledelse i idrett </a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SPM2004/2026-var">SPM2004 Bacheloroppgave - Sport Management</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/SPORT1002/2026-spring">SPORT1002 Term paper in Sports and Outdoors Tourism</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SPP1000/2026-var">SPP1000 Spill- og mediekultur</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SPP1001/2026-var">SPP1001 Spill og framtidskompetanser</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SPP1002/2026-var">SPP1002 Helhetlig læringsdesign med VR-simulering</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SREG160/2026-var">SREG160 Videregående regnskap</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SREG250/2026-var">SREG250 Skatterett II - virksomhetsbeskatning</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SREG370/2026-var">SREG370 Etikk og samfunnsansvar</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SSAM100/2026-var">SSAM100 Makroøkonomi</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SSAM120/2026-var">SSAM120 Mikroøkonomi</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SYD1003/2026-var">SYD1003 Praksis i sykehjem</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SYD1004/2026-var">SYD1004 Sykepleie til eldre</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SYD2008/2026-var">SYD2008 Praksis i psykisk helsearbeid</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SYK1003/2026-var">SYK1003 Praksis i sykehjem</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SYK1004/2026-var">SYK1004 Sykepleie til eldre</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SYK2002/2026-var">SYK2002 Praksis i generell medisin og medisinske spesialiteter/generell kirurgi og kirurgiske spesialiteter 2</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SYK2004/2026-var">SYK2004 Sykepleie til pasienter med sammensatte omsorgsbehov</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SYK2005/2026-var">SYK2005 Sykepleie i et samfunnsperspektiv</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SYK2008/2026-var">SYK2008 Praksis i hjemmesykepleie</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/SYK2900/2026-var">SYK2900 Bacheloroppgave i sykepleie</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/TAN1003/2026-var">TAN1003 Tannpleie for barn og unge med fokus på pedagogikk og psykologi</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/TAN1004/2026-var">TAN1004 Praksis: Tannpleie for barn og unge</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/TAN2003/2026-var">TAN2003 Folkehelse og Eldretannpleie</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/TAN2004/2026-var">TAN2004 Innovasjon og ledelse i tannpleiefag og - funksjon</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/TAN2007/2026-var">TAN2007 Praksis: Tilrettelagte tannhelsetjenester</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/TAN2900/2026-var">TAN2900 Bacheloroppgave</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/TBU4002/2026-var">TBU4002 Miljøarbeid og miljøterapi</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/TBU4902/2026-var">TBU4902 Masteroppgave</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/TEKD2001/2026-var">TEKD2001 Dokumentarserie</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/TEKE2008/2026-var">TEKE2008 Praksis</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/TEKE2900/2026-var">TEKE2900 Bachelorproduksjon </a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/TEKF2005/2026-var">TEKF2005 Praksis </a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/TEKF2012/2026-var">TEKF2012 Musikkproduksjon II</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/TEKF2013/2026-var">TEKF2013 Sportsproduksjon II</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/TEKF2900/2026-var">TEKF2900 Bachelorproduksjon Flerkamera TV-produksjon</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/TVLED2011/2026-var">TVLED2011 Praksis</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/TVLED2017/2026-var">TVLED2017 Redaksjonen i arbeid</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/TVLED2900/2026-var">TVLED2900 Bachelorprosjekt i TV-ledelse</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/TVLED2901/2026-var">TVLED2901 Bacheloroppgave i TV-ledelse</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/ULED4001/2026-var">ULED4001 Praksisnær utdanningsforskning og pedagogisk analyse</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/ULED4003/2026-var">ULED4003 Profesjonsutvikling og ledelse i barnehage og skole </a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/ULED4005/2026-var">ULED4005 Koherens i og ledelse av forbedringsarbeid i barnehage og skole </a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/UTM1120/2026-var">UTM1120 Ferskvannsøkologi</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/UTM1133/2026-var">UTM1133 Økologi</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/UTM1140/2026-var">UTM1140 Wildlife ecology</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/UTM1140/2026-spring">UTM1140 Wildlife ecology</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/UTM1151/2026-var">UTM1151 Besøksforvaltning og naturveiledning</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/VEI3001/2026-var">VEI3001 Profesjonskvalifisering - veiledning av studenter og nyutdannede</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/VPL1102/2026-var">VPL1102 Metodisk arbeid</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/VPL2102/2026-var">VPL2102 Samfunnsmessige rammer for vernepleiefaglig arbeid</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/VPLD1102/2026-var">VPLD1102 Metodisk arbeid</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/VPLD2106/2026-var">VPLD2106 Praksis 2 - Helse og helsehjelp</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/%C3%98KA1014/2026-var">ØKA1014 Videregående regnskap</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/%C3%98KA1016/2026-var">ØKA1016 Grunnleggende bedriftsøkonomi</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/%C3%98KA1017/2026-var">ØKA1017 Organisasjonsforståelse</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/%C3%98KA1019/2026-spring">ØKA1019 Investments and Financial Management</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/%C3%98KA1020/2026-var">ØKA1020 Mikroøkonomi 1</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/%C3%98KA1022/2026-var">ØKA1022 Makroøkonomi</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/%C3%98KA1024/2026-spring">ØKA1024 Brand Management</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/%C3%98KA1026/2026-var">ØKA1026 Statistikk for økonomer</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/%C3%98KA2004/2026-var">ØKA2004 Virksomhetsstyring</a>          </td>
+              </tr>
+          <tr class="even">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/emne/%C3%98KA2010/2026-var">ØKA2010 Bacheloroppgave</a>          </td>
+              </tr>
+          <tr class="odd">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/%C3%98KA2013/2026-spring">ØKA2013 Big Data Analytics</a>          </td>
+              </tr>
+          <tr class="even views-row-last">
+                  <td class="views-field views-field-cd-title" >
+            <a href="/inn/nb/course/%C3%98KA2014/2026-spring">ØKA2014 Introduction to Forecasting Models</a>          </td>
+              </tr>
+      </tbody>
+</table>
+    </div>
+  
+  
+  
+  
+  
+  
+</div>
+  </div>                    </div>
+                  
+                  
+                </div>
+
+                <!-- Two column 2x50 -->
+                
+                
+              </div>
+            </div>
+
+            <div class="region region-sidebar-first sidebar"><div class="region-inner clearfix"><div id="block-eac-inn-toc" class="block block-eac-inn no-title odd first block-count-3 block-region-sidebar-first block-toc" ><div class="block-inner clearfix">  
+  
+  <div class="block-content content"></div>
+  </div></div><div id="block-eac-inn-links" class="block block-eac-inn no-title even block-count-4 block-region-sidebar-first block-links" ><div class="block-inner clearfix">  
+  
+  <div class="block-content content"></div>
+  </div></div><div id="block-eac-inn-link-admin" class="block block-eac-inn no-title odd last block-count-5 block-region-sidebar-first block-link-admin" ><div class="block-inner clearfix">  
+  
+  <div class="block-content content"></div>
+  </div></div></div></div>            
+            </div>
+        </div>
+      </div>
+    </div>
+
+    
+    
+          <div id="scrolltotop"><a href="#" title="Scroll To Top" class="scrolltotop"></a></div>
+      <div id="footer-wrapper">
+        <div class="container clearfix">
+          <footer id="footer" class="clearfix" role="contentinfo">
+            <div class="region region-footer"><div class="region-inner clearfix"><div id="block-block-1" class="block block-block no-title odd first last block-count-6 block-region-footer block-1" ><div class="block-inner clearfix">  
+  
+  <div class="block-content content">
+      <div class="container">
+        <div class="left">
+          <a href="https://www.inn.no" class="no-underline"><img alt="link to inn.no" class="logo-white-new" src="/inn/sites/all/modules/custom/eac_inn/assets/logo-white.svg"></a>
+        </div>
+        <div class="right">
+          <p>Dette studiearkivet tilhører <a href="https://www.inn.no/" rel="noopener noreferrer" target="_blank">Universitetet i Innlandet</a>. Spørsmål vedrørende innholdet i emnebeskrivelser og studieplaner rettes til <a href="https://www.inn.no/for-studenter/kontakt-studieadministrasjonen/" rel="noopener noreferrer" target="_blank">studieadministrasjonen</a> ved ditt fakultet.</p>
+        </div>
+     </div>
+    </div>
+  </div></div></div></div>          </footer>
+       </div>
+    </div>
+    
+  </div>
+</div>
+  <script type="text/javascript" src="https://studiekatalog.edutorium.no/inn/sites/all/modules/custom/edutorium_reading_list/htmx.min.js?soooz9"></script>
+<script type="text/javascript" src="https://studiekatalog.edutorium.no/inn/sites/all/modules/custom/edutorium_reading_list/reading_link.js?soooz9"></script>
+</body>
+</html>

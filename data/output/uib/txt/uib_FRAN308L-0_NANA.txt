@@ -1,0 +1,208 @@
+institution: uib
+code: FRAN308L-0
+year: NA
+hv: NA
+url: https://www4.uib.no/studier/emner/fran308l
+status: 200
+course_name_no: LitterC&rt sC&remne
+----- FULLTEXT -----
+
+Navigasjonssti
+Forside
+Studier
+Emner
+
+LitterC&rt sC&remne
+
+Studiepoeng
+
+10
+
+Undervisningssemester
+
+VC%r
+
+Emnekode
+
+FRAN308L
+
+Talet pC% semester
+
+1
+
+UndervisningssprC%k
+
+Fransk
+
+Ressursar
+
+Timeplan
+
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust 2021 VC%r 2020 Haust 2020 VC%r 2019 Haust 2019 VC%r 2018 Haust 2018 VC%r
+MC%l og innhald
+SiktemC%let for emnet er C% undersC8kje ei gitt ei litterC&r problemstilling som kan vera knytt til ein sjanger, ein periode, eit forfattarskap, eit litteraturvitskapleg grunnlagsproblem eller liknande.
+LC&ringsutbyte
+
+Studenten skal ved avslutta emne ha fC8lgjande lC&ringsutbytte:
+
+Kunnskapar
+
+Studenten
+
+har god innsikt i problemstillingar knytte til litteraturen og litteraturteorien som er blitt gjennomgC%tt
+har kjennskap til nyare forsking innan det aktuelle feltet
+
+Ferdigheiter
+
+Studenten
+
+er i stand til C% gjere greie for temaet emnet omhandlar
+kan driva forsking og anna fagleg utviklingsarbeid som gjeld temaet emnet omhandlar
+
+Generell kompetanse
+
+Studenten
+
+har oversyn over det temaet som er gjennomgC%tt, slik at han/ho kan representera fagfeltet i tverrfaglege og internasjonale samanhengar
+kan arbeide sjC8lvstendig med ei problemstilling, leite fram relevant bakgrunnsmateriale og presentere resultat frC% dette arbeidet i akademisk form
+kan planleggja og gjennomfC8ra rettleia arbeidsoppgC%ver som strekkjer seg over ei viss tid
+Fulltid/deltid
+-
+Studiepoeng, omfang
+10
+StudienivC% (studiesyklus)
+Master
+Undervisningssemester
+VC%r
+Undervisningsstad
+Bergen
+Krav til forkunnskapar
+Ingen formelle krav til forkunnskapar; men sjC% tilrC%dde forkunnskapar.
+TilrC%dde forkunnskapar
+Fransk 100- og 200-nivC% eller tilsvarande.
+Studiepoengsreduksjon
+PC% grunn av fagleg overlapp vert uttellinga i studiepeong for FRAN308L redusert med 10 studiepoeng om det vert kombinert med FRAN308 eller litterC&rt sC&remne FRAN303/304.
+Krav til studierett
+Emnet er ope for studentar med studierett pC% lektorutdanning med master i framandsprC%k ved Universitetet i Bergen.
+Arbeids- og undervisningsformer
+
+Det blir gjeve 2 fC8relesningar/seminar per veka i om lag 8-10 veker.
+
+Det vert brukt arbeids- og undervisningsformer som leggjer til rette for studentaktivitet, til dC8mes problembasert lC&ring der studentane mC% finne lC8ysingar saman med ein eller fleire medstudentar. Dersom ressursane tillC(t det, blir det halde seminarundervisning i mindre grupper - kombinert med tilbakemelding frC% undervisar og/eller medstudentar.
+
+Om det melder seg fC&rre enn fem studentar til eit emne, kan undervisningstilbodet bli tilpassa studentalet, til dC8mes ved at fC8relesingar vert erstatta av seminar eller eit meir individuelt tilpassa undervisningsopplegg . Studentane vil i sC% fall bli informerte om det alternative undervisningsopplegget ved semesterstart, og fC8r semesterregistreringsfristen 1. februar/1. september.
+
+Obligatorisk undervisningsaktivitet
+
+For C% ta eksamen i emnet, skal studentane i lC8pet av dei 7 fC8rste fC8relesingsvekene ha fC%tt godkjent eit munnleg innlegg (ca 15 minutt) knytt til pensum i emnet. Studentane utarbeider innlegget i samrC%d med faglC&rar. Manuskriptet til innlegget skal leverast samstundes med innlegget.
+
+I samband med eksamen skal det vera minst eitt rettleiingsmC8te. Dette mC8tet finn stad i lC8pet av eksamensperioden.
+
+Det blir kravd at studentane deltek pC% minimum 75% av undervisninga for C% fC% gC% opp til eksamen i emnet.
+
+Godkjenninga av obligatoriske arbeidskrav er gyldig i undervisningssemesteret og semesteret etter.
+
+Vurderingsformer
+
+Eksamen er ei tre vekers skriftleg rettleidd semesteroppgC%ve med oppgitt tema pC% pC% om lag 2500 ord. Studentane mC8ter til eitt rettleiingsmC8te i lC8pet av eksamensperioden.
+
+Som avslutning pC% emnet vert det arrangert ein munnleg eksamen som omfattar spC8rsmC%l om semesteroppgC%va og pensumet pC% omlag 20-30 minutt. .Munnleg og skriftleg eksamensdel tel 50 prosent kvar av samla karakter i emnet. Begge prC8vane mC% vere greidde i same semester.
+
+Ein har ikkje krav pC% rettleiing om eksamen utsettast til fC8lgjande semester.
+
+Karakterskala
+Det vert nytta gradert karakterskala frC% A til F, der F er stryk.
+Vurderingssemester
+VC%r. Der er C2g vurdering tidleg i haustsemesteret for studentar med gyldig godkjenning av obligatoriske arbeidskrav.
+Litteraturliste
+
+Pensum i litterC&r fordjuping er samansett av ein litterC&r del (2-4 litterC&re verk), og ein teoretisk del (om lag 75 sider).
+
+Ved semesterstart vil det bli opplyst om eventuelle endringar i pensum.
+
+Litteraturlista vil vere klar innan 01.07. for haustsemesteret og 01.12. for vC%rsemesteret.
+
+Emneevaluering
+Emneevalueringar vert gjennomfC8rte i trC%d med UiB sitt kvalitetssikringssystem.
+Hjelpemiddel til eksamen
+Ikkje aktuelt.
+Programansvarleg
+Programstyret har ansvar for fagleg innhald og oppbygging av studiet og for kvaliteten pC% studieprogrammet og alle emna der.
+Emneansvarleg
+Programstyret for fransk.
+Administrativt ansvarleg
+Det humanistiske fakultet ved Institutt for framandsprC%k har det administrative ansvaret for emnet og studieprogrammet.
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust 2021 VC%r 2020 Haust 2020 VC%r 2019 Haust 2019 VC%r 2018 Haust 2018 VC%r
+Kontaktinformasjon
+
+Studierettleiar: studierettleiar@if.uib.no
+
+Eksamensadministrasjon: eksamen@if.uib.no
+
+Eksamensinformasjon
+Vurderingsordning
+SemesteroppgC%ve og muntlig eksamen
+Trekkfrist
+24.09.2025
+Eksamenssystem
+Inspera
+Digital eksamen
+Eksamensdel: SemesteroppgC%ve
+Innleveringsfrist
+15.10.2025, 13:00
+Eksamenssystem
+Inspera
+Digital eksamen
+Eksamensdel: Munnleg eksamen
+Dato
+22.10.2025, 09:00
+Varigheit
+7 timar
+
+Dette bC8r du vite om eksamen
+
+Institutt for fremmedsprC%k
+
+Vurderingsordning
+
+SemesteroppgC%ve og muntlig eksamen
+
+Trekkfrist
+
+24.09.2025
+
+Eksamenssystem
+
+Inspera
+
+Digital eksamen
+
+Eksamensdel: SemesteroppgC%ve
+
+
+
+Innleveringsfrist
+
+15.10.2025, 13:00
+
+Eksamenssystem
+
+Inspera
+
+Digital eksamen
+
+Eksamensdel: Munnleg eksamen
+
+
+
+Dato
+
+22.10.2025, 09:00
+
+Varigheit
+
+7 timar

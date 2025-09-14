@@ -1,0 +1,110 @@
+institution: nord
+code: MAT5002-1
+year: NA
+hv: NA
+url: https://www.nord.no/studier/emner/mat5002
+status: 200
+course_name_no: Matematikk 3B, 1-7
+----- FULLTEXT -----
+
+Emnet fremmer en dypere utforskning av matematikkdidaktisk forskning og resultatene av denne forskningen. Deltakerne fordyper sin kunnskap om matematikkdidaktikk og bruker den i forskning.
+
+Studentene fordyper sine kunnskaper om matematikkdidaktikk videre med fokus pC% omrC%dene pC% 1.-7. trinn, inkludert tall og operasjoner, geometri, mC8nster, tidlig algebra, funksjonstenkning, databehandling og programmering/koding. De gjC8r seg kjent med aktuell forskning og fC%r mulighet til C% utvikle sine ferdigheter nC%r det gjelder undervisning, utvikling av undervisningsopplegg og matematikkdidaktisk forskning.
+
+Viktige tema relatert til de matematiske omrC%dene blir behandlet, som design av oppgaver og undervisningsC8kter, vurdering i klasserommet, hC%ndtering av lC&revansker og dyskalkuli, analyse av lC&rebC8ker, undervisning med IKT, C% skape muligheter for problemlC8sning, matematisk resonnering og C8ving i matematikk.
+
+Emnet fremmer videre grundig utforskning av matematikkdidaktisk forskning, forskningens resultater og metoder. I lC8pet av emnet fC%r studentene mulighet til C% planlegge og gjennomfC8re forskningsaktiviteter,
+
+Emnet avsluttes med at hver student skriver en oppgave-eksamen om et selvvalgt tema relatert til innholdet i emnet.
+
+Studentene fordyper sine kunnskaper om matematikkdidaktikk videre med fokus pC% omrC%dene pC% 1.-7. trinn, inkludert tall og operasjoner, geometri, mC8nster, tidlig algebra, funksjonstenkning, databehandling og programmering/koding. De gjC8r seg kjent med aktuell forskning og fC%r mulighet til C% utvikle sine ferdigheter nC%r det gjelder undervisning, utvikling av undervisningsopplegg og matematikkdidaktisk forskning.
+
+Viktige tema relatert til de matematiske omrC%dene blir behandlet, som design av oppgaver og undervisningsC8kter, vurdering i klasserommet, hC%ndtering av lC&revansker og dyskalkuli, analyse av lC&rebC8ker, undervisning med IKT, C% skape muligheter for problemlC8sning, matematisk resonnering og C8ving i matematikk.
+
+Emnet fremmer videre grundig utforskning av matematikkdidaktisk forskning, forskningens resultater og metoder. I lC8pet av emnet fC%r studentene mulighet til C% planlegge og gjennomfC8re forskningsaktiviteter,
+
+Emnet avsluttes med at hver student skriver en oppgave-eksamen om et selvvalgt tema relatert til innholdet i emnet.
+
+Opptak til programmet.
+
+GjennomfC8rt Matematikk 1, 30 stp, Matematikk 2, 30 stp, og Matematikk 3A i MAGLU 1-7
+
+Kunnskaper
+
+Kandidaten
+
+har omfattende forskningsbasert kunnskap om de store matematiske omrC%dene pC% 1.-7. trinn og didaktikken som hC8rer til
+har utvidet kunnskap om forskningsmetoder i didaktisk forskning
+har kunnskap om teorier om matematikkundervisning og debattene omkring denne undervisningen
+
+Ferdigheter
+
+Kandidaten
+
+kan systematisk evaluere matematikkdidaktisk forskning (design, metoder og resultater).
+kan utvikle, gjennomfC8re og evaluere forskningsbaserte lC&ringsmiljC8 og vurderinger for heterogene grupper av elever i matematikkundervisning pC% 1.-7. trinn
+kan analysere lC&rebC8ker, lC&replanmateriell og programvare for matematikkundervisning pC% 1.-7. trinn
+kan stille et forskningsspC8rsmC%l, designe og gjennomfC8re forskning, og evaluere funnene
+
+Generell kompetanse
+
+Kandidaten
+
+har matematikkglede, nysgjerrighet og interesse for C% lC&re matematikk og er motivert for C% vekke interessen for matematikk hos elevene sine
+liker C% jobbe videre med sin egen faglige utvikling
+kjenner matematikkutdanningens betydning for elevenes livsmestring
+er bevisst relevante etiske problemstillinger i lC&reryrket og forskningen og kan handle deretter
+
+Kunnskaper
+
+Kandidaten
+
+Ferdigheter
+
+Kandidaten
+
+Generell kompetanse
+
+Kandidaten
+
+Utover semesteravgift og pensumlitteratur forutsettes det at studenten disponerer en bC&rbar datamaskin.
+
+Valgbart
+
+Samlinger med forelesninger pC% campus, mellomperiodeoppgaver.
+
+Studieprogrammet evalueres C%rlig av studentene gjennom emneundersC8kelser (midtveisevaluering og sluttevaluering). Evaluering inngC%r som en del av universitetets kvalitetssikringssystem.
+
+Se Kompetanseguiden og emnebeskrivelse for praksis 4. studieC%r
+
+Obligatorisk oppmC8te (OD). Minimum 80%. Karakterregel: Godkjent/ikke godkjent.
+
+Arbeidskrav (AK). 2 Arbeidskrav: Godkjent/ikke godkjent. Som en del av arbeidskravet skal kandidaten levere en prosjektskisse til masteroppgaven.
+
+Oppgave (OP). Integrert teori og praksis. Karakterregel: A-F. Teller 100%. Ekstern sensor. Arbeidskrav og obligatorisk deltakelse mC% vC&re godkjent for C% fC% endelig karakter i emnet.
+
+Obligatorisk oppmC8te (OD). Minimum 80%. Karakterregel: Godkjent/ikke godkjent.
+
+Arbeidskrav (AK). 2 Arbeidskrav: Godkjent/ikke godkjent. Som en del av arbeidskravet skal kandidaten levere en prosjektskisse til masteroppgaven.
+
+Oppgave (OP). Integrert teori og praksis. Karakterregel: A-F. Teller 100%. Ekstern sensor. Arbeidskrav og obligatorisk deltakelse mC% vC&re godkjent for C% fC% endelig karakter i emnet.
+
+Alle hjelpemidler.
+
+C generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er C% regne som fusk.
+
+Alle hjelpemidler.
+
+C generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er C% regne som fusk.
+
+Med overlapp menes en faglig likhet mellom emner med samme faginnhold. Du vil derfor fC% fC8lgende reduksjon i studiepoeng om du har tatt emner som er angitt under:
+
+MAT5009 - Aktuell forskning i matematikkdidaktikk, del 2, mastermodul - 15 Studiepoeng
+
+MAT5013 - Matematikk 3C - Aktuelle temaer i matematikkdidaktikk - 2.5 Studiepoeng
+
+Med overlapp menes en faglig likhet mellom emner med samme faginnhold. Du vil derfor fC% fC8lgende reduksjon i studiepoeng om du har tatt emner som er angitt under:
+
+MAT5009 - Aktuell forskning i matematikkdidaktikk, del 2, mastermodul - 15 Studiepoeng
+
+MAT5013 - Matematikk 3C - Aktuelle temaer i matematikkdidaktikk - 2.5 Studiepoeng

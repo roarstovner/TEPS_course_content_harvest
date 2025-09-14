@@ -1,0 +1,307 @@
+institution: oslomet
+code: M5GPE1100-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/M5GPE1100/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+M5GPE1100 Pedagogikk og elevkunnskap 1, emne 1 Emneplan
+Engelsk emnenavn
+Pedagogy, Subject 1
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 5-10
+Omfang
+15.0 stp.
+StudieC%r
+2025/2026
+Pensum
+HCST 2025
+
+Timeplan
+HCST 2025
+Programplan
+GrunnskolelC&rerutdanning for trinn 5-10 (2025 HCST )
+Emnehistorikk
+2017 / 2018 2018 / 2019 2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Fagplan
+
+Pedagogikk og elevkunnskap 1
+
+(30 studiepoeng)
+
+Fagplanen ble godkjent i studieutvalget 18. november 2016
+
+Redaksjonell endring foretatt og pensum oppdatert 21. juni 2017
+
+Pensum oppdatert 3. juli 2017
+
+Redaksjonell endring foretatt 29. april 2018
+
+Gjeldende fra hC8stsemesteret 2018
+
+Innledning
+
+Fagplanen bygger pC% forskrift om rammeplan for grunnskolelC&rerutdanningen for trinn 5-10, fastsatt av Kunnskapsdepartementet 7. juni 2016, nasjonale retningslinjer for grunnskolelC&rerutdanningen trinn 5-10 av 1. september 2016 og programplan for grunnskolelC&rerutdanning for trinn 5-10 ved HC8gskolen i Oslo og Akershus, godkjent av studieutvalget 16. november 2016.
+
+Pedagogikk og elevkunnskap skal sammen med undervisningsfag og praksis bidra til at studentene opplever sammenheng og progresjon i utdanningen. Med grunnlag i nasjonale styringsdokumenter er det sentralt i faget at studentene blir kjent med skolens mandat og oppgave i samfunnet og blir rustet til C% ivareta forventninger og krav til lC&rerrollen. Faget har et overordnet ansvar for at studentene utvikler en profesjonell lC&reridentitet og utvikler kompetanse til C% hC%ndtere ulike profesjonsetiske utfordringer. Sammen med de andre fagene i utdanningen skal faget bidra til at studenten utvikler sosial og relasjonell kompetanse til C% mC8te elever, foresatte, kollegaer og andre samarbeidspartnere pC% en profesjonell mC%te.
+
+Sentralt i faget er hvordan oppdragelse, undervisning og deltakelse i inkluderende lC&ringsmiljC8 kan bidra til elevenes faglige, sosiale og personlige utvikling og lC&ring. Sammen med de andre fagene i utdanningen skal faget gi studentene innsikt i betydningen grunnleggende ferdigheter har for lC&ring i alle fag, samt hvordan kompetanse i samhandling, kommunikasjon, utforsking og skaping vil vC&re sentrale i framtidas skole.
+
+I samarbeid med andre fag skal studentene utvikle grunnleggende FoU-kompetanse slik at de kan fC% utbytte av forskningsbasert kunnskap og gjennomfC8re mindre, selvstendige FoU-prosjekt.
+
+Faget er inndelt i to emner; emne 1 og emne 2, som tar opp grunnleggende perspektiv under fagomrC%det.
+
+Det mangfoldige klasserommet Dagens samfunn er preget av mangfold og pluralisme. Til skolen kommer barn og unge som har del i ulike kulturer, religioner, livssyn og levemC%ter. I tillegg er det stor variasjon i elevenes sosiale bakgrunn og sprC%klige tilhC8righet. Skolen trenger lC&rere som kontinuerlig arbeider med C% skape et inkluderende klasserom. Temaer som berC8rer mangfold, pluralisme, demokrati og etikk er basert pC% et flerfaglig samarbeid mellom pedagogikk, KRLE og samfunnsfag og inngC%r i faget pC% syklus 1 og 2 som en modul tilsvarende 15 studiepoeng. Ved eksamen i emnene 1 og 2 er tilsvarende fem studiepoeng i hvert emne relatert til denne modulen. I emne1 inngC%r temaene skolens samfunnsmandat og livssynsmangfold. I emne 2 inngC%r temaene profesjonsetikk og oppvekst, sosialisering og identitet.
+
+MC%lgruppe
+
+Studenter som er tatt opp til femC%rig grunnskolelC&rerutdanning for trinn 5-10.
+
+Opptakskrav
+
+Faget er obligatorisk for studenter ved grunnskolelC&rerutdanningen for trinn 5-10, i trC%d med utdanningenes programplaner.
+
+LC&ringsutbytte
+
+LC&ringsutbyttene er beskrevet i emneplanene.
+
+Fagets innhold og oppbygging
+
+Pedagogikk og elevkunnskap 1 (30 studiepoeng) er bygget opp av to emner C  15 studiepoeng, Pedagogikk og elevkunnskap 1, emne 1 (15 studiepoeng) og Pedagogikk og elevkunnskap 1, emne 2 (15 studiepoeng).
+
+Faget er inndelt i to emner, emne 1: LC&reren, klassen og eleven og emne 2: LC&reren, elevmangfoldet og organisasjonen. Emne 1 introduseres med krav og forventninger til lC&rerrollen og refleksjoner over egne forutsetninger for lC&rerarbeid. Forholdet mellom lC&rerens undervisning og klasseledelse og elevenes lC&ring er sentralt, og emnet skal bidra til en grunnleggende kompetanse i didaktisk tenkning for planlegging av undervisning og gi en fC8rste innfC8ring i teorier om barn og unges utvikling og lC&ring. Videre belyser temaene skolens samfunnsmandat og livssynsmangfold og lC&rerens oppgaver i et mangfoldig og pluralistisk klasserom.
+
+Emne 2 har fokus pC% C% forstC% elevmangfoldet i klasserommet pC% bakgrunn av generelle tendenser i dagens samfunn som pC%virker barn og unges oppvekstmiljC8, samt ulikheter i oppvekstsvilkC%r. Emnet skal bidra til C% utvikle kompetanse til C% hC%ndtere utfordringer og muligheter bC%de i klassen som fellesskap og overfor enkelteleven. Videre er lC&rerens rolle med hensyn til samarbeid om eleven og deltakelse i skolen som profesjonelt fellesskap vektlagt. Profesjonsetiske spC8rsmC%l og forholdet mellom identitet, livssyn og verdier er temaer som belyser lC&rerens oppgaver i et mangfoldig klasserom. Videre skal emnet bidra til forstC%else av digital dC8mmekraft, inkludert kunnskap om opphavsrett, personvern, kildekritikk og digital mobbing.
+
+Undervisningen i pedagogikk og elevkunnskap 1 er fordelt med 15 studiepoeng over to semester fC8rste C%r og 15 studiepoeng i hC8stsemesteret andre C%r.
+
+Forskningsforankring Faget er forankret i pedagogikk som vitenskapsfag. Pensum tar sikte pC% C% ha med tekster i spennet mellom vitenskapelige tekster knyttet til grunnlagsproblemer i faget til nyere nasjonal og internasjonal klasseromsforskning. I undervisningen i faget vil studentene fC% C8ving i C% lese vitenskapelige tekster, akademisk skriving samt fC% innfC8ring i forskningsmetoder.
+
+Psykososialt lC&ringsmiljC8
+
+LC&rerens oppgave er C% fremme helse, trivsel og lC&ring. Sentrale temaer i faget pedagogikk og elevkunnskap er mestring, motivasjon, lC&ring og relasjoner. Faget vil arbeide med kunnskaper om disse temaene, ferdigheter i hvordan man utvikler og vedlikeholder et godt lC&ringsmiljC8 og holdninger til C% bC%de stC8tte og utfordre elevene.
+
+Samiske forhold og rettigheter Pedagogikkfaget skal bidra til interkulturell kompetanse som kvalifiserer studenten for C% ivareta opplC&ring om samiske forhold, samiske barns rettigheter og samenes status som anerkjent urfolk. Den interkulturelle kompetansen i pedagogikk innebefatter kunnskap om ulike samiske kulturuttrykk og sprC%k, levemC%ter og kamp for politiske og utdanningsmessige rettigheter i et historisk perspektiv.
+
+BC&rekraftig utvikling Gjennom kunnskapsformidling og relevant praksis skal utdanningen bidra til at studentene stiller spC8rsmC%l, ser sammenhenger og identifiserer problemer knyttet til bC&rekraftig utvikling. Denne kompetansen mC% utvikles gjennom hele studietiden og knyttes til alle fag. Etiske overveielser og evnen til C% se nye muligheter er avgjC8rende for bC&rekraftig utvikling, bC%de nasjonalt og globalt. Morgendagens skole krever lC&rere som kan inspirere sine elever til C% utforske og skape.
+
+Digital kompetanse
+
+Pedagogikkfaget skal bidra til at studenten forstC%r den gjensidige pC%virkningen mellom skole, teknologi og samfunn. Spesielt skal studenten kunne reflektere over utfordringer i lC&rerrollen, i klasseledelse og metoder for undervisning og lC&ring som fC8lge av utvikling i teknologien.
+
+Internasjonale perspektiver Pedagogikkfaget skal forberede studenten pC% et fremtidig yrke i et lC&ringsmiljC8 preget av mangfold og pluralisme. Det innebefatter kunnskap om skolens samfunnsmandat, elevens rettigheter, og kunnskap om hvordan ta i bruk elevenes ressurser i det mangfoldige klasserommet. Skoleutvikling mC% ses i et komparativt internasjonalt perspektiv som innebC&rer et hovedfokus i pedagogikkfaget pC% utvikling av lC&rerens profesjonelle handlekraft og endringskompetanse. Dette innebC&rer bruk av relevant og komparativ internasjonal forskning, faglitteratur og nettressurser.
+
+Fagets arbeids- og undervisningsformer
+
+I faget vil studentenes undervisning vC&re organisert i klasser og i seminar- eller i grupper. Studentene vil mC8te ulike arbeidsformer som for eksempel individuelt studiearbeid og gruppearbeid. Det blir lagt stor vekt pC% studentaktive arbeidsformer der studentene gis muligheter til C% utvikle ferdigheter som er relevante for profesjonelt lC&rerarbeid som gjennom for eksempel muntlige presentasjoner, undervisningsC8vinger, dramatisering og rollespill. Arbeid med studentenes erfaringer i praksisopplC&ring og ulike case er sentralt i faget. Individuelle skriveoppgaver med lC&rer og/eller studentrespons er sentralt i arbeid med faget.
+
+Under hvert emne inngC%r et flerfaglig prosjekt der sentrale lC&rerutdanningstema belyses ut fra ulike faglige perspektiv og som knyttes til relevante arbeidsformer for temaet. I flerfaglige prosjekt inngC%r ulike organiserings- arbeidsformer som felles kurs, klasse og gruppearbeid.
+
+PraksisopplC&ring
+
+Studenter, faglC&rere og praksislC&rere samarbeider om C% planlegge og oppsummere praksisperioder. Oppgaver studenter utfC8rer i praksis knyttes til undervisningen i pedagogikk og elevkunnskap. PraksisopplC&ring er nC&rmere beskrevet i programplanen og i en egen fagplan for praksis.
+
+Skikkethetsvurdering
+
+LC&rerutdanningsinstitusjoner har ansvar for C% vurdere om studenter er skikket for lC&reryrket. LC8pende skikkethetsvurdering foregC%r gjennom hele studiet og inngC%r i en helhetsvurdering av studentens faglige og personlige forutsetninger for C% kunne fungere som lC&rer. En student som utgjC8r en mulig fare for elevers liv, fysiske og psykiske helse, rettigheter og sikkerhet, er ikke skikket for yrket. Studenter som viser liten evne til C% mestre lC&reryrket, skal sC% tidlig som mulig i utdanningen fC% melding om dette. De skal fC% rC%d og veiledning for C% gjC8re dem i stand til C% oppfylle kravene om lC&rerskikkethet eller fC% rC%d om C% avslutte utdanningen. Beslutninger om skikkethet kan fattes gjennom hele studiet.
+
+Se universitetets nettsted for mer informasjon om skikkethetsvurdering.
+
+Arbeidskrav
+
+Retten til C% avlegge eksamen forutsetter godkjente arbeidskrav og deltakelse i bestemte faglige aktiviteter.
+
+Arbeidskrav kan vC&re muntlige eller skriftlige og skal vC&re levert/utfC8rt innen fastsatt(e) frist(er). Gyldig fravC&r dokumentert med for eksempel sykemelding, gir ikke fritak for C% innfri arbeidskrav. Studenter som pC% grunn av sykdom eller annen dokumentert gyldig C%rsak ikke leverer/utfC8rer arbeidskrav innen fristen, kan fC% forlenget frist. Ny frist for C% innfri arbeidskrav avtales i hvert enkelt tilfelle med fagansvarlig.
+
+Arbeidskrav vurderes til "Godkjent" eller "Ikke godkjent". Studenter som leverer/utfC8rer arbeidskrav innen fristen, men som fC%r vurderingen "Ikke godkjent", har anledning til to nye innleveringer/utfC8relser. Studenten mC% da selv avtale ny innlevering av det aktuelle arbeidskravet med faglC&rer. Studenter som ikke leverer/utfC8rer arbeidskrav innen fristen og som ikke har dokumentert gyldig C%rsak, fC%r ingen nye forsC8k.
+
+I programplanen er de fagovergripende temaene pC% de ulike studieC%rene og semestrene beskrevet. I tilknytning til disse kan det vC&re krav til tilstedevC&relse og/eller andre arbeidskrav.
+
+NC&rmere informasjon om arbeidskrav og krav til deltakelse i faglige aktiviteter finnes i den enkelte emneplan.
+
+Vurderings-/eksamensformer
+
+Se emneplanene under punktet Vurderings-/eksamensformer.
+
+Vurderingskriterier skriftlig eksamen
+
+A: Fremragende. Kandidaten viser en sC&rlig god forstC%else av sentrale begreper og perspektiver fra temaene.
+
+Kandidaten viser en sC&rlig god evne til C% anvende faglige begreper perspektiver i analyse og forstC%else av yrkesoppgavene som lC&rer.
+
+Kandidaten viser en sC&rlig god evne til C% se og vurdere pedagogiske valgmuligheter og begrunne og reflektere over egne valg.
+
+B: Meget god.Kandidaten viser en meget god forstC%else av sentrale begreper og perspektiver fra temaene.
+
+Kandidaten viser en meget god evne til C% anvende faglige begreper perspektiver i analyse og forstC%else av yrkesoppgavene som lC&rer.
+
+Kandidaten viser en meget god evne til C% se og vurdere pedagogiske valgmuligheter og begrunne og reflektere over egne valg.
+
+C: God. Kandidaten viser en god forstC%else av sentrale begreper og perspektiver fra temaene.
+
+Kandidaten viser en god evne til C% anvende faglige begreper perspektiver i analyse og forstC%else av yrkesoppgavene som lC&rer.
+
+Kandidaten viser en god evne til C% se og vurdere pedagogiske valgmuligheter og begrunne og reflektere over egne valg.
+
+D: NoksC% god. Kandidaten viser en noe begrenset forstC%else av sentrale begreper og perspektiver fra temaene.
+
+Kandidaten viser i noen grad evne til C% anvende faglige begreper perspektiver i analyse og forstC%else av yrkesoppgavene som lC&rer.
+
+Kandidaten viser i noen grad evne til C% se og vurdere pedagogiske valgmuligheter og begrunne og reflektere over egne valg.
+
+E: Tilstrekkelig. Kandidaten viser en klart begrenset evne til bruk av kunnskap fra de ulike kompetanseomrC%dene. Det betyr at kandidaten har en sammenhengende, men i all hovedsak refererende faglig framstilling, og i liten grad analyse og forstC%else av pedagogiske handlingsvalg.
+
+F: Ikke bestC%tt. Kandidaten viser utilstrekkelige kunnskaper innen temaene. Det vil si at det mangler tilstrekkelig pedagogikkfaglig forstC%else av yrkesoppgavene som lC&rer.
+
+Vurderingskriterier muntlig eksamen
+
+A: Fremragende. Fremragende prestasjon, som utmerker seg gjennom sC&rdeles god fagforstC%else, selvstendig refleksjon og originalitet. SC&rdeles god struktur og sammenheng i fremstillingene.
+
+B: Meget god. Meget god prestasjon der studenten viser meget god fagforstC%else og selvstendig refleksjon. Fremstillingene er sammenhengene og godt strukturert.
+
+C: God. Solid prestasjon. Studenten viser alminnelig god fagforstC%else og evne til selvstendig refleksjon. Studenten viser oversikt over det sentrale kunnskapsstoffet.
+
+D: NoksC% god. Prestasjonen er under gjennomsnittet. Fremstillingene har mangler nC%r det gjelder kunnskapsoversikt, strukturering, sammenheng og sentrering. Studentens forstC%else og egen refleksjon over stoffet er overfladisk.
+
+E: Tilstrekkelig. Prestasjonen tilfredsstiller minimumskrav til kunnskapsoversikt og faglig forstC%else. Det er store mangler i fagkunnskap og fagforstC%else og mangelfull sammenheng i fremstillinger.
+
+F: Ikke bestC%tt. Prestasjonen tilfredsstiller ikke minimumskravene til kunnskapsoversikt, forstC%else og til sammenheng i fremstillingene.
+
+Rettigheter og plikter ved eksamen
+
+Studentens rettigheter og plikter framgC%r av forskrift om studier og eksamen ved OsloMet. Forskriften beskriver blant annet vilkC%r for ny/utsatt eksamen, klageadgang og hva som regnes som fusk ved eksamen. Studenten er selv ansvarlig for C% melde seg opp til eventuell ny/utsatt eksamen.
+
+Forkunnskapskrav
+
+Ingen forkunnskapskrav.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har kunnskap om skolens formC%l og demokratiske mandat
+har kunnskap om skolens betyding lokalt og i en globalisert verden
+har kunnskap om krav og forventninger til lC&rerrollen
+har kunnskap elevens rettigheter i et nasjonalt og internasjonalt perspektiv
+har kunnskap om sentrale didaktiske prinsipp som er aktuelle for elevene
+har brei kunnskap om hvordan kompetanse i samhandling og grunnleggande ferdigheter kan bidra til C% C8ke lC&ringen til elevene
+har brei kunnskap om lC&ring, motivasjon og lC&ringsstrategier tilpasset elevene
+har kunnskap om elevenes kognitive, emosjonelle, kroppslige og sosiale utvikling
+har kunnskap om dagens skole i lys av religiC8st mangfold, norsk livssynshistorie og tema som kristendom, sekularisering og pluralisme
+
+Ferdigheter
+
+Studenten
+
+kan drC8fte hvordan menneskerettigheter og barns rettigheter er aktuelle i ulike skolesituasjoner
+kan reflektere over skolens normative grunnlag i lys av religiC8st- og livssynsmessig mangfold
+kan reflektere over og drC8fte skolens betydning lokalt og i en globalisert verden
+kan planlegge og gjennomfC8re systematisk observasjon og analysere data fra observasjonen
+kan anvende fagbegrep og begrunne sine didaktiske valg i teori om lC&ring og undervisning
+kan reflektere over og anvende forskningsbasert kunnskap til C% utC8ve god klasseledelse og utvikle et trygt og inkluderende lC&ringsmiljC8 for elevene
+kan fra tidlig i studiet anvende vitenskapsteoretisk og metodisk kunnskap i utformingen av FoU-prosjekt
+
+Generell kompetanse
+
+Studenten
+
+har kunnskap om og kan drC8fte pedagogiske og didaktiske muligheter og utfordringer i lys av skolens samfunnsmandat
+kan planlegge, gjennomfC8re og vurdere undervisning for elevene med utgangspunkt i eksisterende rammefaktorer og gjeldende lC&replanverk
+kan pC% et reflektert og faglig grunnlag vC&re i dialog med eleven og deres foresatte om elevenes lC&ring og utvikling
+Innhold
+
+Emne 1 bestC%r av fC8lgende temaer medundertemaer:
+
+Tema 1: LC&rerrollen
+
+sentrale lC&reroppgaver
+lC&reridentitet
+profesjonelle samtaler
+observasjon i klasserommet
+
+Tema 2: Didaktikk
+
+lC&rerplanen
+planlegging av undervisning
+klasseledelse og lC&ringsmiljC8
+
+Tema 3: Skolens samfunnsmandat
+
+demokratisk kompetanse
+elevens rettigheter i et nasjonalt og internasjonalt perspektiv
+
+Tema 4: Elevens utvikling og lC&ring
+
+teorier om lC&ring og utvikling
+grunnleggende ferdigheter
+lC&ringsstrategier
+motivasjon og mestring
+
+Tema 5: Livssynsmangfold
+
+sentrale religioner og livssyn i Norge
+norsk livssynshistorie
+Arbeids- og undervisningsformer
+
+Se fagplanen og programplanen.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+Retten til C% avlegge eksamen forutsetter godkjente arbeidskrav og deltakelse i bestemte faglige aktiviteter. FC8lgende arbeidskrav mC% vC&re godkjent fC8r eksamen i emne1kan avlegges:
+
+Arbeidskrav 1
+
+Studentene utvikler en undervisningsplan med begrunnelse, 500 ord +/- 10 %. PC% bakgrunn av undervisningsplanen gjennomfC8res undervisningsC8velse ca. 15 minutter. Arbeidskravet gjennomfC8res i gruppe. FormC%let med arbeidskravet er C% C8ve pC% didaktisk planlegging og C% fC% C8velse i C% undervise.
+
+Arbeidskrav 2
+
+I lC8pet av emnet skal studentene skrive fire fagnotat individuelt, hvorav ett er knyttet til tema 3 eller 5, se beskrivelse av tema under innhold. Alle fagnotaene godkjennes av faglC&rer. Hvert fagnotat skal ha et omfang pC% 750 ord +/- 10 %. Fagnotatene skal utfordre studentene til C% skrive akademiske tekster.
+
+Arbeidskrav 3
+
+Brev til foresatte, 750 ord +/- 10 %, utfC8res individuelt pC% studentens sidemC%l. Arbeidskravet er knytet til flerfaglig tema om lC&rerens profesjonelle sprC%k.
+
+Arbeidskrav 4
+
+Studentene deltar i lesegruppe (4-6 studenter) med medstudenter (ca. 1,5 time) tre ganger. Utvalgte tekster leses og diskuteres. Hensikten med arbeidskravet er C% fC% C8ving i C% lese forskningsbasert litteratur.
+
+Arbeidskravene vurderes til "godkjent" eller "ikke godkjent". Studenter som leverer/utfC8rer arbeidskrav innen fristen, men som fC%r vurderingen "ikke godkjent", har anledning til to nye innleveringer/ utfC8relser. Studenter mC% da selv avtale ny vurdering av det aktuelle arbeidskravet med faglC&rer. Se nC&rmere omtale av arbeidskrav i fagplanen.
+
+Faglige aktiviteter med krav om deltakelse
+
+LC&ring i pedagogikk og elevkunnskap forutsetter samhandling med medstudenter og faglC&rere om sentrale utfordringer i faget knyttet til temaene i emnet. Faget skal vC&re profesjonsrettet og bidra til sammenheng i studiet og til kritisk tenkning, selvstendighet og refleksjon hos studenten. Faget skal utvikle kunnskaper, ferdigheter og generell kompetanse hos studenten, noe som ikke kan tilegnes kun ved lesing, men som mC% utvikles i dialog og ved tilstedevC&relse i undervisning. Gjennom studentaktive arbeidsformer som undervisningsC8vinger, dramatisering og rollespill skal studentene gis muligheter til C% utvikle ferdigheter som er relevante for profesjonelt lC&rerarbeid. Det er derfor krav om minimum 80 % deltakelse i undervisningen. Studenter som ikke oppfyller kravet om deltakelse, mC% levere kompensatoriske oppgaver om sentrale tema i emnet. Sykdom fritar ikke for kravet om deltakelse.
+
+I tillegg til deltakelse i minst 80 % av undervisningen, er det krav om deltagelse i fC8lgende faglige aktiviteter:
+
+kurs om forskningsmetode (observasjon)
+kurs om akademisk skriving 1 (med litteratursC8k og kildekritikk)
+dramakurs
+flerfaglig tema knyttet til lC&rerens profesjonelle sprC%k. Kurs i stemmebruk og kurs i nynorsk inngC%r
+
+Manglende deltagelse i faglige aktiviteter nevnt over medfC8rer at studenten ikke fC%r avlegge eksamen i emnet. Sykdom fritar ikke for kravet om deltagelse. Studenter som ikke oppfyller kravet om deltakelse mC% snarest mulig ta kontakt med faglC&rer.
+
+Vurdering og eksamen
+
+6 timers individuell skriftlig eksamen under tilsyn.
+
+Ny/utsatt eksamen arrangeres som ordinC&r eksamen.
+
+Hjelpemidler ved eksamen
+
+LC&replan og opplC&ringslov.
+
+Vurderingsuttrykk
+
+Det benyttes gradert karakterskala fra A til E for bestC%tt og F for ikke bestC%tt eksamen.
+
+Sensorordning
+
+Eksamen vurderes av en intern og en ekstern sensor.

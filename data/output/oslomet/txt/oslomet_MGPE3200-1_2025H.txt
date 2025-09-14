@@ -1,0 +1,239 @@
+institution: oslomet
+code: MGPE3200-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/MGPE3200/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+MGPE3200 Pedagogikk fordypning 1: Digital pedagogikk Emneplan
+Engelsk emnenavn
+Technology enhanced pedagogy 1
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 1-7
+GrunnskolelC&rerutdanning for trinn 5-10
+Omfang
+30.0 stp.
+StudieC%r
+2025/2026
+Pensum
+VCR 2026
+
+Timeplan
+VCR 2026
+Programplan
+GrunnskolelC&rerutdanning for trinn 1-7 (2025 HCST )
+GrunnskolelC&rerutdanning for trinn 5-10 (2025 HCST )
+Emnehistorikk
+2018 / 2019 2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Fagplan
+
+Pedagogikk fordypning 1:
+
+Digitalt stC8ttet pedagogikk
+
+(30 studiepoeng)
+
+Fagplanen ble godkjent i studieutvalget 14. november 2016
+
+Redaksjonelle endringer foretatt 12. desember 2019
+
+Revisjon godkjent av utdanningsutvalget 17. februar 2020
+
+Revisjon godkjent pC% fullmakt av leder i utdanningsutvalget 5. november 2020
+
+Gjeldende fra hC8stsemesteret 2020
+
+Innledning
+
+Fagplanen bygger pC% forskrift om rammeplan for grunnskolelC&rerutdanningen for trinn 1-7/trinn 5-10 trinn, fastsatt av Kunnskapsdepartementet 7. juni 2016, nasjonale retningslinjer for grunnskolelC&rerutdanningen trinn 1-7/trinn 5-10 av 1. september 2016 og programplan for grunnskolelC&rerutdanning for trinn 1-7/trinn 5-10 ved OsloMet - storbyuniversitetet, godkjent av studieutvalget 16. november 2016.
+
+Digitalt stC8ttet pedagogikk omfatter et fellestema for fordypningene i profesjonsrettet pedagogikk, spesialpedagogikk og digitalt stC8ttet pedagogikk, og et fordypningstema i digitalt stC8ttet pedagogikk. Faget danner samtidig grunnlag for en pedagogisk mastergrad innen grunnskolelC&rerutdanningene. Ckt bruk av digitale verktC8y i skolen fC8rer til at lC&rerens undervisningspraksis er i stadig endring. Gjennom dette emnet skal studenten oppnC% en grunnleggende forstC%else av hvordan pedagogisk bruk av digitale verktC8y kan bidra til nye didaktiske arbeidsformer, samt problemstillinger som kan gi perspektiver pC% muligheter og begrensninger ved integrering av digitale verktC8y i undervisning. Det blir lagt vekt pC% teoretisk og praktisk innfC8ring i C% mestre disse nye didaktiske arbeidsformene. Faget kvalifiserer for ledelse av lC&ringsprosesser blant elever og kollegaer i en utdanning som skal bidra til lC&ring og danning for alle. Studentene fC%r utvidet kunnskap og kyndighet til C% hC%ndtere undervisningsrelaterte oppgaver i grunnskolen, og utvikle egen yrkespraksis som del av et profesjonelt fellesskap. Faget har oppmerksomhet mot sentrale pedagogiske temaer som skal realiseres arbeid med skolefag. Fordypningen inviterer derfor studenten til refleksjon over hvordan disse utfordringene kan hC%ndteres i grunnopplC&ringen. Disse utfordringene kommer til uttrykk pC% forskjellig mC%te i ulike fag og pC% ulike alderstrinn. Faget er utformet for C% stC8tte studentenes videreutvikling av et bredt yrkesrepertoar for C% arbeide profesjonelt med inkludering og forsterket opplC&ring i grunnskolen, ta ansvar for den profesjonelle samtale og kunne bidra til C% utvikle egen yrkespraksis i det kollegiale fellesskapet.
+
+MC%lgruppe
+
+Studenter som er tatt opp til femC%rig grunnskolelC&rerutdanning for trinn 1-7/trinn 5-10.
+
+Opptakskrav
+
+Faget er tilgjengelig som valgfag for aktive studenter ved grunnskolelC&rerutdanningen.
+
+LC&ringsutbytte
+
+LC&ringsutbytte er nC&rmere beskrevet i emneplanen.
+
+Fagets innhold og oppbygging
+
+Digitalt stC8ttet pedagogikk (30 studiepoeng) bestC%r av ett emne, med temaene B+et klasserom for alleB; og B+digitalt stC8ttet pedagogikkB;, og gjennomfC8res i sjette semester.
+
+Fagets arbeids- og undervisningsformer
+
+Faget er utformet for C% stC8tte studentenes videreutvikling av et bredt yrkesrepertoar for C% arbeide profesjonelt med inkludering og forsterket opplC&ring i grunnskolen. Det vil derfor bli vektlagt variasjon i organiserings- og arbeidsformer, som individuelt studiearbeid, gruppe- og kollokviearbeid, fagadministrativ bruk av LMS, seminardeltakelse, presentasjoner og vurderingsarbeid. Deler av undervisningen blir organisert som seminar med aktiv studentdeltakelse, der studentene presenterer og drC8fter sentrale faglige begreper og perspektiver for hverandre. Videre drC8fter de mulig hC%ndtering av caser fra klasserommet i lys av slike begreper og perspektiver og analyserer dialogiske kvaliteter i egen faglig kommunikasjon. Studiefagsevaluering gjennomfC8res av studenter og lC&rere i fellesskap. Det forventes aktiv deltagelse gjennom hele emnet. PraksisopplC&ring Studentene, faglC&rere og praksislC&rere samarbeider om C% planlegge og oppsummere praksisperioder. Oppgaver studenter utfC8rer i praksis vil kunne knyttes til undervisningen. PraksisopplC&ringen er nC&rmere beskrevet i programplanen og i en egen fagplan for praksis. Praksisrelaterte oppgaver Praksisrelaterte oppgaver inngC%r som arbeidskrav i studiet. Oppgavene innpasses i den enkelte students interessefelt og utdanningslC8p. Praksisrelaterte oppgaver kan for eksempel omfatte observasjon, intervju eller refleksjonsbaserte samhandlingsaktiviteter med fagpersoner i praksisfeltet, ved den pedagogisk-psykologisk tjenesten eller ved pedagogiske fagsentra mv. Deler av de praksisrelaterte oppgavene kan utfC8res som del av et utenlandsopphold. Skikkethetsvurdering LC&rerutdanningsinstitusjoner har ansvar for C% vurdere om studenter er skikket for lC&reryrket. LC8pende skikkethetsvurdering foregC%r gjennom hele studiet og inngC%r i en helhetsvurdering av studentens faglige og personlige forutsetninger for C% kunne fungere som lC&rer. En student som utgjC8r en mulig fare for elevers liv, fysiske og psykiske helse, rettigheter og sikkerhet, er ikke skikket for yrket. Studenter som viser liten evne til C% mestre lC&reryrket, skal sC% tidlig som mulig i utdanningen fC% melding om dette. De skal fC% rC%d og veiledning for C% gjC8re dem i stand til C% oppfylle kravene om lC&rerskikkethet eller fC% rC%d om C% avslutte utdanningen. Beslutninger om skikkethet kan fattes gjennom hele studiet. Se universitetets nettsted for mer informasjon om skikkethetsvurdering.
+
+Arbeidskrav
+
+Arbeidskrav skal vC&re levert/utfC8rt innen fastsatt(e) frist(er). Gyldig fravC&r dokumentert med for eksempel sykemelding, gir ikke fritak for C% innfri arbeidskrav. Studenter som pC% grunn av sykdom eller annen dokumentert gyldig C%rsak ikke leverer/utfC8rer arbeidskrav innen fristen, kan fC% forlenget frist. Ny frist for C% innfri arbeidskrav avtales i hvert enkelt tilfelle med den aktuelle lC&reren. Arbeidskrav vurderes til "Godkjent" eller "Ikke godkjent". Studenter som leverer/utfC8rer arbeidskrav innen fristen, men som fC%r vurderingen "Ikke godkjent", har anledning til en eller to nye innleveringer/utfC8relser. Studenten mC% da selv avtale ny innlevering av det aktuelle arbeidskravet med faglC&rer. Studenter som ikke leverer/utfC8rer arbeidskrav innen fristen og som ikke har dokumentert gyldig C%rsak, fC%r ingen nye forsC8k. LC&ring i faget forutsetter samhandling med medstudenter og faglC&rere om sentrale kunnskapsomrC%der. Emnet skal bidra til kritisk tenkning, selvstendighet og refleksjon hos studenten. Retten til C% avlegge eksamen forutsetter godkjente arbeidskrav og deltakelse i bestemte faglige aktiviteter.
+
+Vurderings-/eksamensformer
+
+Se emneplanen under punktet Vurderings-/eksamensformer.
+
+Vurderingskriterier
+
+A: Fremragende. Viser fremragende kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser fremragende oversikt over emnet og en analytisk evne til selvstendig bruk av relevante kunnskaper. Viser hC8yt faglig og profesjonsetisk refleksjonsnivC% og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+B: Meget god. Viser meget gode kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser meget god oversikt over emnet og en analytisk evne til selvstendig bruk av relevant kunnskap. Viser hC8yt faglig og profesjonsetisk refleksjonsnivC% og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+C: God. Viser gode kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser god oversikt over emnet og en analytisk evne til selvstendig bruk av relevant kunnskap. Viser et tilfredsstillende faglig og profesjonsetisk refleksjonsnivC%, samt og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+D: NoksC% god. Viser begrensede kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser begrenset over emnet og en analytisk evne til selvstendig bruk av relevant kunnskap. Viser et tilfredsstillende faglig og profesjonsetisk refleksjonsnivC%, samt selvstendig refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+E: Tilstrekkelig. Tilfredsstiller minimumskravene til kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser noe evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+F: Ikke bestC%tt. Har utilstrekkelig kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser dC%rlig evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+Rettigheter og plikter ved eksamen
+
+Studentens rettigheter og plikter framgC%r av forskrift om studier og eksamen ved OsloMet - storbyuniversitetet. Forskriften beskriver blant annet vilkC%r for ny/utsatt eksamen, klageadgang og hva som regnes som fusk ved eksamen. Studenten er selv ansvarlig for C% melde seg opp til eventuell ny/utsatt eksamen.
+
+Forkunnskapskrav
+
+Ingen.
+
+LC&ringsutbytte
+
+Etter fullfC8rt fag har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har bred kunnskap om teorier, muligheter og utfordringer knyttet til digitalt stC8ttet pedagogikk for skole, klasserom og lC&ring
+har kunnskaper om trender innen digitalt stC8ttet pedagogikk
+kjenner til nasjonal og internasjonal forskning og utvikling innen digitalt stC8ttet pedagogikk
+har bred kunnskap om didaktisk bruk av digitale verktC8y og evne til C% sette seg inn i ny teknologi
+har kunnskaper om digital dC8mmekraft
+kjenner til de digitale medienes rolle i et samfunnsmessig og praktisk perspektiv
+viser bred kunnskap om skolers og lC&reres oppdrag med C% utnytte klassen som fellesskap for C% skape inkluderende klasserom
+dokumenterer aktuell og oppdatert kunnskap og nyansert forstC%else om problemer skolen kan skape i forholdet til den enkelte elev, elevgruppe og lokalsamfunn
+viser bred kunnskap om digitale dimensjonen i barn og unges hverdagsliv
+
+Ferdigheter
+
+Studenten
+
+kan utvikle og vurdere digitale lC&ringsressurser for bruk i lC&ringsarbeid
+kan reflektere over bruk av digitale verktC8y for samarbeidslC&ring
+kan designe digitale lC&ringsaktiviteter og lC&ringsmiljC8 som fremmer aktive lC&ringsformer
+kan anvende sC8keverktC8y og kritisk evaluere informasjon fra digitale kilder
+kan reflektere over elevkulturens betydning for elevens lC&ring, og over handlingsrom for C% skape et klasserom for alle
+kan tilrettelegge for og anvende varierte metoder i forskjellige fag, som ivaretar hvordan ulike elever krever ulik tilrettelegging med hensyn til faginnhold, arbeidsmC%ter og progresjon
+
+Generell kompetanse
+
+Studenten
+
+kan planlegge, designe og gjennomfC8re undervisning i, med og om teknologi
+har innsikt i barn og unges mediebruk og hvordan legge til rette for utvikling av elevenes digitale dC8mmekraft
+kan formidle erfaringer om og bidra til utvikling av digital praksis i skolen
+kan analysere og forholde seg kritisk til nasjonal og internasjonal forskning innen de aktuelle temaene, og anvende denne kunnskapen i profesjonsutC8velsen
+viser evne og vilje til C% finne fram til egne profesjonelle kompetansebehov
+Viser god innsikt i og vilje til C% arbeide med pedagogisk utviklingsarbeid
+Innhold
+
+Emnet Digitalt stC8ttet pedagogikk (30 studiepoeng) er bygget opp av to deler:
+
+Fellestema - et klasserom for alle
+Fordypningstema - digitalt stC8ttet pedagogikk
+
+Del 1. Fellestema - et klasserom for alle
+
+Fellestemaet bestC%r av fC8lgende tre deltemaer, som har fC8lgende innhold:
+
+1. Inkludering og klassen som fellesskap:
+
+elevkultur for lC&ring og danning
+mangfold, likeverd og likestilling
+den digitale dimensjonen i barn og unges hverdagsliv
+
+2. Det profesjonelle mC8tet:
+
+kommunikasjon og samhandling
+pedagogisk veiledning
+interprofesjonelt samarbeid
+
+3. Utviklings- og endringsarbeid:
+
+lokalt utviklingsarbeid
+kritikk, analyse og handlingsrom
+kreativitet og utforskende virksomhet
+
+Del 2. Fordypningstema - digitalt stC8ttet pedagogikk 1
+
+Fordypningstemaet bestC%r av fC8lgende to deltemaer, som hver har fC8lgende innhold:
+
+Deltema 1. Digital kompetanse - som fag og forskningsfelt
+
+Profesjonsfaglig digital kompetanse
+21. C%rhundres kompetanser
+LC&ring og teknologi
+Digitalisering og skoleutvikling
+
+Deltema 2. Design og vurdering av digitale lC&ringsmiljC8er
+
+Undervisning og lC&ring i teknologirike omgivelser
+Utvikling og ledelse av digital praksis
+Aktive lC&ringsformer (med digitale verktC8y)
+Samarbeid ved bruk av digitale medier
+Aktuelle digitale teknologier for skolen
+Arbeids- og undervisningsformer
+
+Se fagplanen.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+Retten til C% avlegge eksamen i faget forutsetter 80% deltakelse i undervisningen pC% emnet og gjennomfC8ring av tre fordypningsspesifikke arbeidskrav.
+
+LC&ringsutbytte i pedagogikkfordypningene forutsetter samhandling med medstudenter og faglC&rere om sentrale tema og utfordringer i faget. Faget er profesjonsrettet og skal utvikle kunnskaper, ferdigheter og generell kompetanse hos studenten, noe som ikke kan tilegnes kun ved individuelle selvstudier, men som utvikles i dialog og ved deltakelse i undervisning. Dette bidrar til sammenheng i studiet, evne til kritisk tenkning, selvstendighet og refleksjon. Gjennom studentaktive arbeidsformer som for eksempel gruppearbeid, hverandreundervisning, C8velser i kommunikasjon, argumentasjon og muntlig fremstillingsevne gis muligheter for C% utvikle ferdigheter som er relevante for profesjonelt lC&rerarbeid.
+
+FC8lgende arbeidskrav mC% vC&re bestC%tt for C% kunne avlegge eksamen:
+
+Inviduell fagtekst der studentene diskuterer sammenhengen mellom temaet "Inkludering og klassen som fellesskap" og fagfordypningen. Studenten utvikler selv tema, tittel og problemstilling. Fagteksten skal ha et omfang pC% 2000 ord +/- 10 %.
+Individuell fagtekst for C% fC% innsikt i fagomrC%dets egenart: Studentene skal skrive et fagnotat om digital kompetanse knyttet til et skolefag eller begynneropplC&ring. FormC%let med arbeidskravet er C% stimulere refleksjon mellom forskningsfeltet og praksis. Omfang: 1500 ord +/- 10 %.
+Utvikling og vurdering av en digital lC&ringsressurs.
+Del 1 gruppeoppgave: Utvikling av en digital lC&ringsressurs for C% fremme aktive lC&ringsformer innen et skolefag eller begynneropplC&ring. Omfang: 5 til 10 arbeidstimer per student. Grupperapport 1500 ord +/- 10 %.
+Del 2 individuell oppgave: Vurdering av og tilbakemelding til en gruppes digitale lC&ringsressurs, Omfang per tilbakemelding: 500 ord +/- 10 %.
+
+Faglige aktiviteter med krav om deltakelse
+
+Krav om deltakelse skal bidra til C% kvalifisere for eksamen og knytte studiet til profesjonsfeltet. Det er krav om deltakelse i fC8lgende aktiviteter:
+
+Fellesforelesninger for de tre fordypningene. Her presenteres fagets innhold, og studenten fC%r dypere innsikt i bC%de fellesdelen og fagfordypningen
+Deltakelse i tre seminarer, ett for hver av arbeidskravene. Studenten skal trekke pC% kunnskaper fra bC%de fellestema og fordypningstema og vurdere sammenhenger
+
+Manglende deltakelse i faglige aktiviteter nevnt over medfC8rer at studenten ikke fC%r avlegge eksamen i emnet. Sykdom fritar ikke fra kravet om deltakelse. For studenter med gyldig fravC&r vil det bli utformet en kompensatorisk oppgave/alternativ gjennomfC8ring. Form og omfang avtales med faglC&rer.
+
+Vurdering og eksamen
+
+Vurderingsordning
+
+Individuell hjemmeeksamen over en uke. Studenten skal belyse og drC8fte momenter fra fellestemaet og fordypningstemaet. NC&rmere beskrivelse vil bli gitt. Omfang 4000 ord +/- 10 %.
+
+Ny/utsatt eksamen
+
+Ny/utsatt eksamen arrangeres som ved ordinC&r eksamen.
+
+Hjelpemidler ved eksamen
+
+Alle hjelpemidler tillatt.
+
+Vurderingsuttrykk
+
+Det benyttes en gradert karakterskala fra A til E for bestC%tt og F for ikke bestC%tt eksamen.
+
+Sensorordning
+
+Intern og ekstern sensor.

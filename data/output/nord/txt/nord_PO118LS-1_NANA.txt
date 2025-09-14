@@ -1,0 +1,76 @@
+institution: nord
+code: PO118LS-1
+year: NA
+hv: NA
+url: https://www.nord.no/studier/emner/po118ls
+status: 200
+course_name_no: Internasjonale relasjoner
+----- FULLTEXT -----
+
+Dette emnet gir generell kjennskap til ulike tema innenfor internasjonale relasjoner. Hovedvekten er lagt til C% forstC% hva internasjonale relasjoner er med utgangspunkt i sentrale teorier, perspektiver og modeller innenfor faget internasjonal politikk. Sentralt er ogsC% utenriks- og sikkerhetspolitiske temaer.
+
+Dette emnet gir generell kunnskap om ulike tema innenfor internasjonale relasjoner. Hovedvekten er lagt til C% forstC% hva internasjonale relasjoner er med utgangspunkt i sentrale teorier og perspektiver innenfor faget internasjonal politikk. Sentralt innenfor emne er teoretiske perspektiver, modeller og begrepsapparat som beskriver den internasjonale arena. Deretter ser vi nC&rmere pC% ulike utenriks - og sikkerhetspolitiske aspekter ved samhandling mellom stater. Makt pC% den internasjonale arena ogsC% sentralt. BC&rekraftsmC%lene blir tatt opp og drC8ftet i lys av sentrale problemstillinger. Vi skal ogsC% sette oss inn i utenriks- og sikkerhetspolitiske mC%l, virkemidler, endringsprosesser, utfordringer og dilemmaer. SpC8rsmC%l som blir belyst er blant annet: Hva er sentrale emner innenfor internasjonale relasjoner? Hvilke teorier, perspektiver og modeller kan vi benytte i analyser? Hvilke mC%l og virkemidler finnes? Hva er makt og hvordan kommer makt til syne innenfor dette fagfeltet?
+
+Emne er forbeholdt og obligatorisk for studenter pC% Lektorutdanningen i samfunnsfag som velger fordypning i Statsvitenskap.
+
+Kunnskap
+
+Har grunnleggende kunnskaper om den internasjonale arena med utgangspunkt i teoretiske og empiriske analyser.
+Har grunnleggende kunnskaper om utenrikspolitikk, sikkerhetspolitikk, makt og maktbruk slik dette kommer til uttrykk pC% den internasjonale arena.
+Har grunnleggende kunnskaper om norsk utenriks- og sikkerhetspolitikk
+
+Ferdigheter
+
+Kan drC8fte empiriske problemstillinger i lys av ulike teoretiske retninger innenfor faget.
+Kan oppdatere sin kunnskap innenfor tema utenriks- og sikkerhetspolitiske problemstillinger pC% den internasjonale arena, med spesiell vekt pC% norsk politikk.
+Kan framstille oppdatert faglig kunnskap, bC%de skriftlig og muntlig, om hvilke prosesser og strukturer som er sentrale pC% den internasjonale arena og hva som kan styre staters valg av utenriks- og sikkerhetspolitikk
+
+Generell kompetanse
+
+Ha kompetanse knyttet til grunnleggende spC8rsmC%l innenfor rammen av fagomrC%det internasjonal politikk.
+Ha kompetanse knyttet til det C% forstC% grunnlaget for hvorfor stater og andre aktC8rer handler som de gjC8r pC% den internasjonale arena
+Kan diskutere fagdidaktiske spC8rsmC%l i lys pensum
+
+Kunnskap
+
+Ferdigheter
+
+Generell kompetanse
+
+Ingen kostnader utover semesteravgift og pensumlitteratur. Det forutsettes at studentene disponerer en bC&rbar PC.
+
+Obligatorisk for lektorutdanningen i samfunnsfag og historie.
+
+Ukentlige forelesninger, seminarer og gruppearbeid gjennom semesteret. Det er ogsC% innlevering av tidligere gitte eksamensoppgaver med veiledning. Eksamen fC8lger lC&rested og krever derfor oppmC8te pC% Campus BodC8 for C% ta den individuelle skriftlige skoleeksamen.
+
+Crlige og halvC%rlige evalueringer som inngC%r i universitetets kvalitetssikringssystem.
+
+Eksamen er en 5 timers skriftlig individuell skoleeksamen. Skoleeksamen teller 100% av karakteren. Eksamen kan besvares pC% enten norsk eller engelsk. Bokstavkarakterer A-F (der F er stryk).
+
+Eksamenssted fC8lger undervisningssted.
+
+Eksamen er en 5 timers skriftlig individuell skoleeksamen. Skoleeksamen teller 100% av karakteren. Eksamen kan besvares pC% enten norsk eller engelsk. Bokstavkarakterer A-F (der F er stryk).
+
+Eksamenssted fC8lger undervisningssted.
+
+Penn, linjal og inntil 2 stk tosprC%klige ordbC8ker.
+
+C generere besvarelse ved hjelp av kunstig intelligens (KI) verktC8y, som ChatGPT eller lignende, og levere den helt eller delvis som egen besvarelse er C% regne som fusk.
+
+Penn, linjal og inntil 2 stk tosprC%klige ordbC8ker.
+
+C generere besvarelse ved hjelp av kunstig intelligens (KI) verktC8y, som ChatGPT eller lignende, og levere den helt eller delvis som egen besvarelse er C% regne som fusk.
+
+Ingen.
+
+Med overlapp menes en faglig likhet mellom emner med samme faginnhold. Du vil derfor fC% fC8lgende reduksjon i studiepoeng om du har tatt emner som er angitt under:
+
+PO118S - Internasjonale relasjoner - 10 Studiepoeng
+
+STA1006 - InnfC8ring i internasjonale relasjoner som akademisk disiplin - 5 Studiepoeng
+
+Med overlapp menes en faglig likhet mellom emner med samme faginnhold. Du vil derfor fC% fC8lgende reduksjon i studiepoeng om du har tatt emner som er angitt under:
+
+PO118S - Internasjonale relasjoner - 10 Studiepoeng
+
+STA1006 - InnfC8ring i internasjonale relasjoner som akademisk disiplin - 5 Studiepoeng
