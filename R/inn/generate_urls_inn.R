@@ -1,4 +1,4 @@
-# generate_urls_inn.R
+# R/inn/generate_urls_inn.R
 local({
   inst_short <- "inn"
   
@@ -10,6 +10,7 @@ local({
   `%||%` <- function(a,b) if (is.null(a) || length(a)==0) b else a
   get_cfg <- function(p) if (exists("safe_read_yaml")) safe_read_yaml(p) else yaml::read_yaml(p)
   
+  # --- data ---
   if (!exists("courses")) courses <- readRDS("data/cache/courses_std.RDS")
   df <- subset(courses, institution_short == inst_short & nzchar(course_code_norm))
   stopifnot(nrow(df) > 0)
@@ -30,16 +31,16 @@ local({
   pattern <- as.character(inst$url_pattern)[1]
   semester_style <- as.character(inst$semester_style %||% "uia")  # host/var i URL
   
-  # semester ??? label
+  # semester-label
   sem_url <- function(style, hv){
     hv <- toupper(ifelse(is.na(hv),"",hv))
     if (style %in% c("uia","hiof","nih")) return(ifelse(hv=="H","host", ifelse(hv=="V","var","")))
     if (style == "ntnu")                 return(ifelse(hv=="H","1",    ifelse(hv=="V","2","")))
     if (style %in% c("oslomet","plain_url")) {
-      lbl <- ifelse(hv=="H","H\u00D8ST", ifelse(hv=="V","V\u00C5R",""))
+      lbl <- ifelse(hv=="H","H\u00D8ST", ifelse(hv=="V","V\u00C5R",""))  # HØST/VÅR
       return(utils::URLencode(lbl, reserved = TRUE))
     }
-    if (style == "plain")                return(ifelse(hv=="H","H\u00F8st", ifelse(hv=="V","V\u00E5r","")))
+    if (style == "plain")                return(ifelse(hv=="H","H\u00F8st", ifelse(hv=="V","V\u00E5r",""))) # Høst/Vår
     ""
   }
   
@@ -52,7 +53,7 @@ local({
       H    = "H",
       V    = "V",
       hv   = have,
-      "next" = if (have == "V") "V" else "H",  # NB: "next" m?? siteres
+      "next" = if (have == "V") "V" else "H",  # NB: "next" må siteres
       have
     )
     if (!length(wants) || all(is.na(wants))) return(NULL)
@@ -70,27 +71,35 @@ local({
   out <- if (length(parts)) do.call(rbind, parts) else df[0,]
   stopifnot(nrow(out) > 0)
   
-  # bygg URL
+  # --- bygg URL (fiks: fjern trailing -<suffiks> som -1/-A) ---
+  strip_suffix <- function(code) sub("-[0-9A-Za-z]+$", "", code)
+  base_codes   <- strip_suffix(out$course_code_norm)
+  trimmed_n    <- sum(base_codes != out$course_code_norm, na.rm = TRUE)
+  
   urls <- character(nrow(out))
   for (i in seq_len(nrow(out))){
     s <- sem_url(semester_style, out$hv[i])
+    base_code <- base_codes[i]
     urls[i] <- tpl_sub(pattern, list(
       year                 = as.character(out$year[i]),
       semester             = s,
       semester_url         = s,
-      course_code          = out$course_code_norm[i],
+      course_code          = base_code,                         # <- bruk base_code uten -1/-A
       code_upper           = out$code_upper[i],
-      code_lower           = tolower(out$course_code_norm[i]),
+      code_lower           = tolower(base_code),
       code_upper_base      = out$code_base[i],
       code_lower_base      = tolower(out$code_base[i]),
       code_lower_nodashnum = out$code_lower_nodashnum[i]
     ))
   }
   out$url <- urls
+  
+  # dedupe
   out <- out[!duplicated(out$url), , drop=FALSE]
   
+  # varsel om uerstattede tokens
   if (any(grepl("\\{[^}]+\\}", out$url))) {
-    warning("Uerstattede tokens ??? sjekk YAML. Eksempel: ",
+    warning("Uerstattede tokens – sjekk YAML. Eksempel: ",
             grep("\\{[^}]+\\}", out$url, value=TRUE)[1])
   }
   
@@ -117,5 +126,7 @@ local({
   
   file.copy(csv_ts, file.path(outd,"course_urls_latest.csv"), overwrite=TRUE)
   file.copy(txt_ts, file.path(outd,"course_urls_latest.txt"), overwrite=TRUE)
-  cat("Skrev filer for ", inst_short, " (", nrow(out), " rader; MODE=", MODE, ")\n", sep="")
+  
+  cat("Skrev filer for ", inst_short, " (", nrow(out), " rader; MODE=", MODE, 
+      "; strip_suffiks=", trimmed_n, ")\n", sep="")
 })

@@ -65,82 +65,7 @@ local({
       H     = "H",
       V     = "V",
       hv    = have,
-      "next" = if (have == "V") "V" else "H",  # <— nøkkelen er sitert
-      have
-    )
-    if (!length(wants) || all(is.na(wants))) return(NULL)
-    
-    data.frame(
-      hv                   = wants,
-      year                 = ifelse(wants == "H", YEAR_H, YEAR_V),
-      course_code_norm     = df$course_code_norm[i],
-      code_lower_nodashnum = tolower(df$code_base[i]),
-      code_upper_nodashnum = df$code_base[i],
-      code_upper           = df$code_upper[i],
-      code_base            = df$code_base[i],
-      stringsAsFactors     = FALSE
-    )
-  }
-  
-  parts <- lapply(seq_len(nrow(df)), expand_one)
-  out <- if (length(parts)) do.call(rbind, parts) else df[0, ]
-  stopifnot(nrow(out) > 0)
-  
-  # --- bygg URL ---
-  urls <- character(nrow(out))
-  for (i in seq_len(nrow(out))) {
-    s <- sem_url(semester_style, out$hv[i])
-    urls[i] <- tpl_sub(pattern, list(
-      year                  = as.character(out$year[i]),
-      semester              = s,
-      semester_url          = s,
-      course_code           = out$course_code_norm[i],
-      code_lower_nodashnum  = out$code_lower_nodashnum[i],
-      code_upper_nodashnum  = out$code_upper_nodashnum[i],
-      code_upper            = out$code_upper[i],
-      code_lower            = tolower(out$course_code_norm[i]),
-      code_upper_base       = out$code_base[i],
-      code_lower_base       = tolower(out$code_base[i])
-    ))
-  }
-  out$url <- urls
-  
-  # --- dedupe + advarsel ---
-  out <- out[!duplicated(out$url), , drop = FALSE]
-  if (any(grepl("\\{[^}]+\\}", out$url))) {
-    warning("Uerstattede tokens ??? sjekk YAML. Eksempel: ",
-            grep("\\{[^}]+\\}", out$url, value = TRUE)[1])
-  }
-  
-  # --- eksport ---
-  ts   <- format(Sys.time(), "%Y%m%d-%H%M")
-  outd <- file.path("data", "output", inst_short)
-  dir.create(outd, TRUE, TRUE)
-  
-  csv_ts <- file.path(outd, sprintf("course_urls_%s_%s.csv", inst_short, ts))
-  txt_ts <- file.path(outd, sprintf("course_urls_%s_%s.txt", inst_short, ts))
-  
-  write.csv(out[, c("course_code_norm", "year", "hv", "url")],
-            csv_ts, row.names = FALSE, fileEncoding = "UTF-8")
-  writeLines(out$url[nchar(out$url) > 0], txt_ts, useBytes = TRUE)
-  
-  # per-sesong
-  split_out <- split(out, paste0(out$year, out$hv))
-  for (k in names(split_out)) {
-    o <- split_out[[k]]
-    write.csv(o[, c("course_code_norm", "year", "hv", "url")],
-              file.path(outd, sprintf("course_urls_%s_%s_%s.csv", inst_short, k, ts)),
-              row.names = FALSE, fileEncoding = "UTF-8")
-    writeLines(o$url[nchar(o$url) > 0],
-               file.path(outd, sprintf("course_urls_%s_%s_%s.txt", inst_short, k, ts)),
-               useBytes = TRUE)
-  }
-  
-  file.copy(csv_ts, file.path(outd, "course_urls_latest.csv"), overwrite = TRUE)
-  file.copy(txt_ts, file.path(outd, "course_urls_latest.txt"), overwrite = TRUE)
-  
-  cat("Skrev filer for ", inst_short, " (", nrow(out), " rader; MODE=", MODE, ")\n", sep = "")
-})
+      "next" = if (have == "V") "V" else "H",  # <
 # generate_urls_hivolda.R
 local({
   inst_short <- "hivolda"
@@ -295,74 +220,8 @@ local({
   }
   
   # ---------------------------
-  # 3) Mønster fra YAML
-  # ---------------------------
-  cfg  <- safe_read_yaml("config/institutions.yaml")
-  inst <- cfg$institutions[[inst_short]]
-  if (is.null(inst) || !nzchar(as.character(inst$url_pattern)[1])) {
-    stop("Mangler url_pattern i YAML for ", inst_short)
-  }
-  pattern <- as.character(inst$url_pattern)[1]
-  
-  # ---------------------------
-  # 4) Bygg URL-er
-  # ---------------------------
-  urls <- character(nrow(df))
-  
-  for (i in seq_len(nrow(df))) {
-    toks <- list(
-      year                  = "",
-      semester              = "",
-      semester_url          = "",
-      course_code           = df$course_code_norm[i],
-      code_upper            = df$code_upper[i],
-      code_lower            = tolower(df$course_code_norm[i]),
-      code_upper_base       = df$code_base[i],
-      code_lower_base       = tolower(df$code_base[i]),
-      code_upper_nodashnum  = df$code_base[i],
-      code_lower_nodashnum  = tolower(df$code_base[i]),
-      code_upper_nodash1    = df$code_base[i],
-      code_upper_nosfx1A    = sub("-(1|A)$", "", df$code_upper[i])
-    )
-    urls[i] <- tpl_sub(pattern, toks)
-  }
-  
-  out <- data.frame(
-    course_code_norm = df$course_code_norm,
-    year             = NA_integer_,
-    hv               = NA_character_,
-    url              = urls,
-    stringsAsFactors = FALSE
-  )
-  
-  # Dedupe + advarsel om uerstattede tokens
-  out <- out[!duplicated(out$url), , drop = FALSE]
-  if (any(grepl("\\{[^}]+\\}", out$url))) {
-    warning("Uerstattede tokens ??? sjekk YAML. Eksempel: ",
-            grep("\\{[^}]+\\}", out$url, value = TRUE)[1])
-  }
-  
-  # ---------------------------
-  # 5) Eksport
-  # ---------------------------
-  ts   <- format(Sys.time(), "%Y%m%d-%H%M")
-  outd <- file.path("data", "output", inst_short)
-  dir.create(outd, TRUE, TRUE)
-  
-  csv_ts <- file.path(outd, sprintf("course_urls_%s_%s.csv", inst_short, ts))
-  txt_ts <- file.path(outd, sprintf("course_urls_%s_%s.txt", inst_short, ts))
-  
-  utils::write.csv(out[, c("course_code_norm", "year", "hv", "url")],
-                   csv_ts, row.names = FALSE, fileEncoding = "UTF-8")
-  writeLines(out$url[nchar(out$url) > 0], txt_ts, useBytes = TRUE)
-  
-  # “latest”-pekere
-  file.copy(csv_ts, file.path(outd, "course_urls_latest.csv"), overwrite = TRUE)
-  file.copy(txt_ts, file.path(outd, "course_urls_latest.txt"), overwrite = TRUE)
-  
-  cat("Skrev filer for ", inst_short, " (", nrow(out), " rader)\n", sep = "")
-})
-# generate_urls_inn.R
+  # 3) M
+# R/inn/generate_urls_inn.R
 local({
   inst_short <- "inn"
   
@@ -374,6 +233,7 @@ local({
   `%||%` <- function(a,b) if (is.null(a) || length(a)==0) b else a
   get_cfg <- function(p) if (exists("safe_read_yaml")) safe_read_yaml(p) else yaml::read_yaml(p)
   
+  # --- data ---
   if (!exists("courses")) courses <- readRDS("data/cache/courses_std.RDS")
   df <- subset(courses, institution_short == inst_short & nzchar(course_code_norm))
   stopifnot(nrow(df) > 0)
@@ -394,95 +254,13 @@ local({
   pattern <- as.character(inst$url_pattern)[1]
   semester_style <- as.character(inst$semester_style %||% "uia")  # host/var i URL
   
-  # semester ??? label
+  # semester-label
   sem_url <- function(style, hv){
     hv <- toupper(ifelse(is.na(hv),"",hv))
     if (style %in% c("uia","hiof","nih")) return(ifelse(hv=="H","host", ifelse(hv=="V","var","")))
     if (style == "ntnu")                 return(ifelse(hv=="H","1",    ifelse(hv=="V","2","")))
     if (style %in% c("oslomet","plain_url")) {
-      lbl <- ifelse(hv=="H","H\u00D8ST", ifelse(hv=="V","V\u00C5R",""))
-      return(utils::URLencode(lbl, reserved = TRUE))
-    }
-    if (style == "plain")                return(ifelse(hv=="H","H\u00F8st", ifelse(hv=="V","V\u00E5r","")))
-    ""
-  }
-  
-  # utvid rader iht MODE
-  expand_one <- function(i){
-    have  <- toupper(df$semester_hv[i])  # "H"/"V"/NA
-    wants <- switch(
-      MODE,
-      both = c("H","V"),
-      H    = "H",
-      V    = "V",
-      hv   = have,
-      "next" = if (have == "V") "V" else "H",  # NB: "next" m?? siteres
-      have
-    )
-    if (!length(wants) || all(is.na(wants))) return(NULL)
-    data.frame(
-      hv   = wants,
-      year = ifelse(wants=="H", YEAR_H, YEAR_V),
-      course_code_norm     = df$course_code_norm[i],
-      code_upper           = df$code_upper[i],
-      code_base            = df$code_base[i],
-      code_lower_nodashnum = tolower(df$code_base[i]),
-      stringsAsFactors = FALSE
-    )
-  }
-  parts <- lapply(seq_len(nrow(df)), expand_one)
-  out <- if (length(parts)) do.call(rbind, parts) else df[0,]
-  stopifnot(nrow(out) > 0)
-  
-  # bygg URL
-  urls <- character(nrow(out))
-  for (i in seq_len(nrow(out))){
-    s <- sem_url(semester_style, out$hv[i])
-    urls[i] <- tpl_sub(pattern, list(
-      year                 = as.character(out$year[i]),
-      semester             = s,
-      semester_url         = s,
-      course_code          = out$course_code_norm[i],
-      code_upper           = out$code_upper[i],
-      code_lower           = tolower(out$course_code_norm[i]),
-      code_upper_base      = out$code_base[i],
-      code_lower_base      = tolower(out$code_base[i]),
-      code_lower_nodashnum = out$code_lower_nodashnum[i]
-    ))
-  }
-  out$url <- urls
-  out <- out[!duplicated(out$url), , drop=FALSE]
-  
-  if (any(grepl("\\{[^}]+\\}", out$url))) {
-    warning("Uerstattede tokens ??? sjekk YAML. Eksempel: ",
-            grep("\\{[^}]+\\}", out$url, value=TRUE)[1])
-  }
-  
-  # eksport
-  ts   <- format(Sys.time(), "%Y%m%d-%H%M")
-  outd <- file.path("data","output",inst_short); dir.create(outd, TRUE, TRUE)
-  
-  csv_ts <- file.path(outd, sprintf("course_urls_%s_%s.csv", inst_short, ts))
-  txt_ts <- file.path(outd, sprintf("course_urls_%s_%s.txt", inst_short, ts))
-  write.csv(out[,c("course_code_norm","year","hv","url")], csv_ts, row.names=FALSE, fileEncoding="UTF-8")
-  writeLines(out$url[nchar(out$url)>0], txt_ts, useBytes=TRUE)
-  
-  # per-sesong (praktisk ved MODE="both")
-  split_out <- split(out, paste0(out$year, out$hv))
-  for (k in names(split_out)){
-    o <- split_out[[k]]
-    write.csv(o[,c("course_code_norm","year","hv","url")],
-              file.path(outd, sprintf("course_urls_%s_%s_%s.csv", inst_short, k, ts)),
-              row.names=FALSE, fileEncoding="UTF-8")
-    writeLines(o$url[nchar(o$url)>0],
-               file.path(outd, sprintf("course_urls_%s_%s_%s.txt", inst_short, k, ts)),
-               useBytes=TRUE)
-  }
-  
-  file.copy(csv_ts, file.path(outd,"course_urls_latest.csv"), overwrite=TRUE)
-  file.copy(txt_ts, file.path(outd,"course_urls_latest.txt"), overwrite=TRUE)
-  cat("Skrev filer for ", inst_short, " (", nrow(out), " rader; MODE=", MODE, ")\n", sep="")
-})
+      lbl <- ifelse(hv=="H","H\u00D8ST", ifelse(hv=="V","V\u00C5R",""))  # H
 # ============================================
 # generate_urls_mf.R  (lowercase + nodashnum)
 # ============================================
@@ -534,71 +312,7 @@ local({
   }
   
   # ---------------------------
-  # 3) Mønster fra YAML
-  # ---------------------------
-  pattern <- as.character(
-    safe_read_yaml("config/institutions.yaml")$institutions[[inst_short]]$url_pattern
-  )[1]
-  if (!nzchar(pattern)) stop("Mangler url_pattern")
-  
-  # ---------------------------
-  # 4) Bygg URL-er
-  # ---------------------------
-  urls <- character(nrow(df))
-  
-  for (i in seq_len(nrow(df))) {
-    urls[i] <- tpl_sub(pattern, list(
-      year                  = "",
-      semester              = "",
-      semester_url          = "",
-      course_code           = df$course_code_norm[i],
-      code_lower_nodashnum  = tolower(df$code_base[i]),
-      code_upper            = df$code_upper[i],
-      code_lower            = tolower(df$course_code_norm[i]),
-      code_upper_base       = df$code_base[i],
-      code_lower_base       = tolower(df$code_base[i]),
-      code_upper_nodashnum  = df$code_base[i],
-      code_upper_nodash1    = df$code_base[i],
-      code_upper_nosfx1A    = sub("-(1|A)$", "", df$code_upper[i])
-    ))
-  }
-  
-  out <- data.frame(
-    course_code_norm = df$course_code_norm,
-    year             = NA_integer_,
-    hv               = NA_character_,
-    url              = urls,
-    stringsAsFactors = FALSE
-  )
-  
-  # ---------------------------
-  # 5) Deduplisering og varsel
-  # ---------------------------
-  out <- out[!duplicated(out$url), , drop = FALSE]
-  if (any(grepl("\\{[^}]+\\}", out$url))) {
-    warning("Uerstattede tokens ??? sjekk YAML. Eksempel: ",
-            grep("\\{[^}]+\\}", out$url, value = TRUE)[1])
-  }
-  
-  # ---------------------------
-  # 6) Eksport
-  # ---------------------------
-  ts   <- format(Sys.time(), "%Y%m%d-%H%M")
-  outd <- file.path("data", "output", inst_short)
-  dir.create(outd, TRUE, TRUE)
-  
-  csv_ts <- file.path(outd, sprintf("course_urls_%s_%s.csv", inst_short, ts))
-  txt_ts <- file.path(outd, sprintf("course_urls_%s_%s.txt", inst_short, ts))
-  
-  utils::write.csv(out[, c("course_code_norm", "year", "hv", "url")],
-                   csv_ts, row.names = FALSE, fileEncoding = "UTF-8")
-  writeLines(out$url[nchar(out$url) > 0], txt_ts, useBytes = TRUE)
-  
-  file.copy(csv_ts, file.path(outd, "course_urls_latest.csv"), TRUE)
-  file.copy(txt_ts, file.path(outd, "course_urls_latest.txt"), TRUE)
-  
-  cat("Skrev filer for ", inst_short, " (", nrow(out), " rader)\n", sep = "")
-})
+  # 3) M
 # generate_urls_nih.R
 local({
   inst_short <- "nih"
@@ -758,103 +472,7 @@ local({
     if (style %in% c("uia","hiof","nih")) return(ifelse(hv=="H","host", ifelse(hv=="V","var","")))
     if (style == "ntnu")                  return(ifelse(hv=="H","1",    ifelse(hv=="V","2","")))
     if (style %in% c("oslomet","plain_url")) {
-      lbl <- ifelse(hv=="H","H\u00D8ST", ifelse(hv=="V","V\u00C5R",""))   # HØST/VÅR
-      return(utils::URLencode(lbl, reserved = TRUE))
-    }
-    if (style == "plain")                 return(ifelse(hv=="H","H\u00F8st", ifelse(hv=="V","V\u00E5r",""))) # Høst/Vår
-    ""
-  }
-  
-  # --- hjelpefelt ---
-  df$code_lower_nodashnum <- tolower(df$code_base)
-  df$code_upper_nodashnum <- df$code_base
-  df$code_upper_nodash1   <- df$code_base
-  df$code_upper_nosfx1A   <- sub("-(1|A)$","", df$code_upper)
-  
-  # --- utvid rader iht MODE ---
-  expand_one <- function(i){
-    have  <- toupper(df$semester_hv[i])  # "H"/"V"/NA
-    wants <- switch(
-      MODE,
-      both = c("H","V"),
-      H    = "H",
-      V    = "V",
-      hv   = have,
-      "next" = if (have == "V") "V" else "H",
-      have
-    )
-    if (!length(wants) || all(is.na(wants))) return(NULL)
-    data.frame(
-      hv   = wants,
-      year = ifelse(wants=="H", YEAR_H, YEAR_V),
-      course_code_norm     = df$course_code_norm[i],
-      code_upper           = df$code_upper[i],
-      code_base            = df$code_base[i],
-      code_lower_nodashnum = tolower(df$code_base[i]),
-      code_upper_nodashnum = df$code_base[i],
-      code_upper_nodash1   = df$code_base[i],
-      code_upper_nosfx1A   = sub("-(1|A)$","", df$code_upper[i]),
-      stringsAsFactors = FALSE
-    )
-  }
-  parts <- lapply(seq_len(nrow(df)), expand_one)
-  out <- if (length(parts)) do.call(rbind, parts) else df[0,]
-  stopifnot(nrow(out) > 0)
-  
-  # --- bygg URL ---
-  urls <- character(nrow(out))
-  for (i in seq_len(nrow(out))){
-    s <- sem_url(semester_style, out$hv[i])
-    urls[i] <- tpl_sub(pattern, list(
-      year                 = as.character(out$year[i]),
-      semester             = s,
-      semester_url         = s,
-      course_code          = out$course_code_norm[i],
-      code_upper           = out$code_upper[i],
-      code_lower           = tolower(out$course_code_norm[i]),
-      code_upper_base      = out$code_base[i],
-      code_lower_base      = tolower(out$code_base[i]),
-      code_upper_nodashnum = out$code_upper_nodashnum[i],
-      code_lower_nodashnum = out$code_lower_nodashnum[i],
-      code_upper_nodash1   = out$code_upper_nodash1[i],
-      code_upper_nosfx1A   = out$code_upper_nosfx1A[i]
-    ))
-  }
-  out$url <- urls
-  
-  # dedupe og advarsel
-  out <- out[!duplicated(out$url), , drop=FALSE]
-  if (any(grepl("\\{[^}]+\\}", out$url)))
-    warning("Uerstattede tokens – sjekk YAML. Eksempel: ",
-            grep("\\{[^}]+\\}", out$url, value=TRUE)[1])
-  
-  # --- eksport ---
-  ts   <- format(Sys.time(), "%Y%m%d-%H%M")
-  outd <- file.path("data","output",inst_short); dir.create(outd, TRUE, TRUE)
-  
-  csv_ts <- file.path(outd, sprintf("course_urls_%s_%s.csv", inst_short, ts))
-  txt_ts <- file.path(outd, sprintf("course_urls_%s_%s.txt", inst_short, ts))
-  utils::write.csv(out[,c("course_code_norm","year","hv","url")], csv_ts, row.names=FALSE, fileEncoding="UTF-8")
-  writeLines(out$url[nchar(out$url)>0], txt_ts, useBytes=TRUE)
-  
-  # per-sesong (greit når MODE="both")
-  split_out <- split(out, paste0(out$year, out$hv))
-  for (k in names(split_out)){
-    o <- split_out[[k]]
-    write.csv(o[,c("course_code_norm","year","hv","url")],
-              file.path(outd, sprintf("course_urls_%s_%s_%s.csv", inst_short, k, ts)),
-              row.names=FALSE, fileEncoding="UTF-8")
-    writeLines(o$url[nchar(o$url)>0],
-               file.path(outd, sprintf("course_urls_%s_%s_%s.txt", inst_short, k, ts)),
-               useBytes=TRUE)
-  }
-  
-  # latest-pekere
-  file.copy(csv_ts, file.path(outd,"course_urls_latest.csv"), overwrite=TRUE)
-  file.copy(txt_ts, file.path(outd,"course_urls_latest.txt"), overwrite=TRUE)
-  
-  cat("Skrev filer for ", inst_short, " (", nrow(out), " rader; MODE=", MODE, ")\n", sep="")
-})
+      lbl <- ifelse(hv=="H","H\u00D8ST", ifelse(hv=="V","V\u00C5R",""))   # H
 # ============================================
 # generate_urls_nmbu.R  ({code_upper_nodash1} == basekode)
 # ============================================
@@ -906,71 +524,7 @@ local({
   }
   
   # ---------------------------
-  # 3) Mønster fra YAML
-  # ---------------------------
-  pattern <- as.character(
-    safe_read_yaml("config/institutions.yaml")$institutions[[inst_short]]$url_pattern
-  )[1]
-  if (!nzchar(pattern)) stop("Mangler url_pattern")
-  
-  # ---------------------------
-  # 4) Bygg URL-er
-  # ---------------------------
-  urls <- character(nrow(df))
-  
-  for (i in seq_len(nrow(df))) {
-    urls[i] <- tpl_sub(pattern, list(
-      year                 = "",
-      semester             = "",
-      semester_url         = "",
-      course_code          = df$course_code_norm[i],
-      code_upper_nodash1   = df$code_base[i],
-      code_upper           = df$code_upper[i],
-      code_lower           = tolower(df$course_code_norm[i]),
-      code_upper_base      = df$code_base[i],
-      code_lower_base      = tolower(df$code_base[i]),
-      code_upper_nodashnum = df$code_base[i],
-      code_lower_nodashnum = tolower(df$code_base[i]),
-      code_upper_nosfx1A   = sub("-(1|A)$", "", df$code_upper[i])
-    ))
-  }
-  
-  out <- data.frame(
-    course_code_norm = df$course_code_norm,
-    year             = NA_integer_,
-    hv               = NA_character_,
-    url              = urls,
-    stringsAsFactors = FALSE
-  )
-  
-  # ---------------------------
-  # 5) Deduplisering og varsel
-  # ---------------------------
-  out <- out[!duplicated(out$url), , drop = FALSE]
-  if (any(grepl("\\{[^}]+\\}", out$url))) {
-    warning("Uerstattede tokens ??? sjekk YAML. Eksempel: ",
-            grep("\\{[^}]+\\}", out$url, value = TRUE)[1])
-  }
-  
-  # ---------------------------
-  # 6) Eksport
-  # ---------------------------
-  ts   <- format(Sys.time(), "%Y%m%d-%H%M")
-  outd <- file.path("data", "output", inst_short)
-  dir.create(outd, TRUE, TRUE)
-  
-  csv_ts <- file.path(outd, sprintf("course_urls_%s_%s.csv", inst_short, ts))
-  txt_ts <- file.path(outd, sprintf("course_urls_%s_%s.txt", inst_short, ts))
-  
-  utils::write.csv(out[, c("course_code_norm", "year", "hv", "url")],
-                   csv_ts, row.names = FALSE, fileEncoding = "UTF-8")
-  writeLines(out$url[nchar(out$url) > 0], txt_ts, useBytes = TRUE)
-  
-  file.copy(csv_ts, file.path(outd, "course_urls_latest.csv"), TRUE)
-  file.copy(txt_ts, file.path(outd, "course_urls_latest.txt"), TRUE)
-  
-  cat("Skrev filer for ", inst_short, " (", nrow(out), " rader)\n", sep = "")
-})
+  # 3) M
 # ============================================
 # generate_urls_nord.R  (lowercase + nodashnum)
 # ============================================
@@ -1022,71 +576,7 @@ local({
   }
   
   # ---------------------------
-  # 3) Mønster fra YAML
-  # ---------------------------
-  pattern <- as.character(
-    safe_read_yaml("config/institutions.yaml")$institutions[[inst_short]]$url_pattern
-  )[1]
-  if (!nzchar(pattern)) stop("Mangler url_pattern")
-  
-  # ---------------------------
-  # 4) Bygg URL-er
-  # ---------------------------
-  urls <- character(nrow(df))
-  
-  for (i in seq_len(nrow(df))) {
-    urls[i] <- tpl_sub(pattern, list(
-      year                 = "",
-      semester             = "",
-      semester_url         = "",
-      course_code          = df$course_code_norm[i],
-      code_lower_nodashnum = tolower(df$code_base[i]),
-      code_upper           = df$code_upper[i],
-      code_lower           = tolower(df$course_code_norm[i]),
-      code_upper_base      = df$code_base[i],
-      code_lower_base      = tolower(df$code_base[i]),
-      code_upper_nodashnum = df$code_base[i],
-      code_upper_nodash1   = df$code_base[i],
-      code_upper_nosfx1A   = sub("-(1|A)$", "", df$code_upper[i])
-    ))
-  }
-  
-  out <- data.frame(
-    course_code_norm = df$course_code_norm,
-    year             = NA_integer_,
-    hv               = NA_character_,
-    url              = urls,
-    stringsAsFactors = FALSE
-  )
-  
-  # ---------------------------
-  # 5) Deduplisering og varsel
-  # ---------------------------
-  out <- out[!duplicated(out$url), , drop = FALSE]
-  if (any(grepl("\\{[^}]+\\}", out$url))) {
-    warning("Uerstattede tokens ??? sjekk YAML. Eksempel: ",
-            grep("\\{[^}]+\\}", out$url, value = TRUE)[1])
-  }
-  
-  # ---------------------------
-  # 6) Eksport
-  # ---------------------------
-  ts   <- format(Sys.time(), "%Y%m%d-%H%M")
-  outd <- file.path("data", "output", inst_short)
-  dir.create(outd, TRUE, TRUE)
-  
-  csv_ts <- file.path(outd, sprintf("course_urls_%s_%s.csv", inst_short, ts))
-  txt_ts <- file.path(outd, sprintf("course_urls_%s_%s.txt", inst_short, ts))
-  
-  utils::write.csv(out[, c("course_code_norm", "year", "hv", "url")],
-                   csv_ts, row.names = FALSE, fileEncoding = "UTF-8")
-  writeLines(out$url[nchar(out$url) > 0], txt_ts, useBytes = TRUE)
-  
-  file.copy(csv_ts, file.path(outd, "course_urls_latest.csv"), TRUE)
-  file.copy(txt_ts, file.path(outd, "course_urls_latest.txt"), TRUE)
-  
-  cat("Skrev filer for ", inst_short, " (", nrow(out), " rader)\n", sep = "")
-})
+  # 3) M
 # ============================================
 # generate_urls_ntnu.R  (fjern -1 eller -A: {code_upper_nosfx1A})
 # ============================================
@@ -1138,71 +628,7 @@ local({
   }
   
   # ---------------------------
-  # 3) Mønster fra YAML
-  # ---------------------------
-  pattern <- as.character(
-    safe_read_yaml("config/institutions.yaml")$institutions[[inst_short]]$url_pattern
-  )[1]
-  if (!nzchar(pattern)) stop("Mangler url_pattern")
-  
-  # ---------------------------
-  # 4) Bygg URL-er
-  # ---------------------------
-  urls <- character(nrow(df))
-  
-  for (i in seq_len(nrow(df))) {
-    urls[i] <- tpl_sub(pattern, list(
-      year                 = "",
-      semester             = "",
-      semester_url         = "",
-      course_code          = df$course_code_norm[i],
-      code_upper_nosfx1A   = sub("-(1|A)$", "", df$code_upper[i]),
-      code_upper           = df$code_upper[i],
-      code_lower           = tolower(df$course_code_norm[i]),
-      code_upper_base      = df$code_base[i],
-      code_lower_base      = tolower(df$code_base[i]),
-      code_upper_nodashnum = df$code_base[i],
-      code_lower_nodashnum = tolower(df$code_base[i]),
-      code_upper_nodash1   = df$code_base[i]
-    ))
-  }
-  
-  out <- data.frame(
-    course_code_norm = df$course_code_norm,
-    year             = NA_integer_,
-    hv               = NA_character_,
-    url              = urls,
-    stringsAsFactors = FALSE
-  )
-  
-  # ---------------------------
-  # 5) Deduplisering og varsel
-  # ---------------------------
-  out <- out[!duplicated(out$url), , drop = FALSE]
-  if (any(grepl("\\{[^}]+\\}", out$url))) {
-    warning("Uerstattede tokens ??? sjekk YAML. Eksempel: ",
-            grep("\\{[^}]+\\}", out$url, value = TRUE)[1])
-  }
-  
-  # ---------------------------
-  # 6) Eksport
-  # ---------------------------
-  ts   <- format(Sys.time(), "%Y%m%d-%H%M")
-  outd <- file.path("data", "output", inst_short)
-  dir.create(outd, TRUE, TRUE)
-  
-  csv_ts <- file.path(outd, sprintf("course_urls_%s_%s.csv", inst_short, ts))
-  txt_ts <- file.path(outd, sprintf("course_urls_%s_%s.txt", inst_short, ts))
-  
-  utils::write.csv(out[, c("course_code_norm", "year", "hv", "url")],
-                   csv_ts, row.names = FALSE, fileEncoding = "UTF-8")
-  writeLines(out$url[nchar(out$url) > 0], txt_ts, useBytes = TRUE)
-  
-  file.copy(csv_ts, file.path(outd, "course_urls_latest.csv"), TRUE)
-  file.copy(txt_ts, file.path(outd, "course_urls_latest.txt"), TRUE)
-  
-  cat("Skrev filer for ", inst_short, " (", nrow(out), " rader)\n", sep = "")
-})
+  # 3) M
 # R/run/generate_urls_oslomet.R ??? mini (base-R) med MODE-bryter
 
 local({
@@ -1391,125 +817,10 @@ local({
   
   cat("Skrev filer for ", inst_short, " (", nrow(out), " rader; MODE=", MODE, ")\n", sep = "")
 })
+# generate_urls_uia.R  
 # ============================================
-# UIA generator (uten precheck)
-# ============================================
-local({
-  inst_short <- "uia"
-  
-  # --- styringsvalg ---
-  MODE   <- "hv"      # "hv" (bruk H/V fra data), "H", "V" eller "both"
-  YEAR_H <- 2025L     # H??st-??r
-  YEAR_V <- 2026L     # V??r-??r
-  
-  # --- data ---
-  if (!exists("courses")) courses <- readRDS("data/cache/courses_std.RDS")
-  df <- subset(courses, institution_short == inst_short & nzchar(course_code_norm))
-  if (!nrow(df)) stop("Ingen rader for ", inst_short)
-  
-  # --- enkel templating ---
-  tpl_sub <- function(pattern, env){
-    out <- pattern
-    for (k in names(env)) {
-      out <- gsub(paste0("\\{", k, "\\}"),
-                  ifelse(is.na(env[[k]]), "", env[[k]]),
-                  out, perl = TRUE)
-    }
-    out
-  }
-  
-  # --- YAML (m??nster for UIA) ---
-  cfg  <- safe_read_yaml("config/institutions.yaml")
-  inst <- cfg$institutions[[inst_short]]
-  if (is.null(inst) || is.null(inst$url_pattern) || !nzchar(as.character(inst$url_pattern)[1])) {
-    stop("Mangler url_pattern i YAML for ", inst_short)
-  }
-  pattern <- as.character(inst$url_pattern)[1]
-  
-  # --- semesteretikett for UIA (host/var) ---
-  sem_uia <- function(hv) {
-    hv <- toupper(ifelse(is.na(hv), "", hv))
-    ifelse(hv == "H", "host", ifelse(hv == "V", "var", ""))
-  }
-  
-  # --- token til m??nsteret ---
-  # UIA bruker {code_lower_nodashnum} => bruk basekode i lower
-  df$code_lower_nodashnum <- tolower(df$code_base)
-  
-  # --- utvid rader i henhold til MODE ---
-  expand_one <- function(i){
-    have <- toupper(df$semester_hv[i])   # "H"/"V"/NA fra 01
-    wants <- switch(MODE,
-                    hv   = if (have %in% c("H","V")) have else c("H","V"),
-                    H    = "H",
-                    V    = "V",
-                    both = c("H","V"),
-                    have # fallback
-    )
-    if (!length(wants) || all(is.na(wants))) return(NULL)
-    data.frame(
-      hv                   = wants,
-      year                 = ifelse(wants == "H", YEAR_H, YEAR_V),
-      course_code_norm     = df$course_code_norm[i],
-      code_lower_nodashnum = df$code_lower_nodashnum[i],
-      stringsAsFactors = FALSE
-    )
-  }
-  pieces <- lapply(seq_len(nrow(df)), expand_one)
-  out <- if (length(pieces)) do.call(rbind, pieces) else df[0, ]
-  if (!nrow(out)) stop("Ingenting ?? generere for ", inst_short, " (MODE=", MODE, ")")
-  
-  # --- bygg URL ---
-  urls <- character(nrow(out))
-  for (i in seq_len(nrow(out))) {
-    s_lbl <- sem_uia(out$hv[i])  # "host"/"var"
-    urls[i] <- tpl_sub(pattern, list(
-      year                 = as.character(out$year[i]),
-      semester             = s_lbl,     # (ikke brukt av UIA-m??nsteret, men ok)
-      semester_url         = s_lbl,     # <- brukt av UIA
-      course_code          = out$course_code_norm[i],
-      code_lower_nodashnum = out$code_lower_nodashnum[i]
-    ))
-  }
-  out$url <- urls
-  
-  # --- advarsel hvis tokens st??r igjen ---
-  leftover <- grep("\\{[^}]+\\}", out$url, value = TRUE)
-  if (length(leftover)) warning("Uerstattede tokens i noen URLer ??? sjekk YAML. Eksempel: ", leftover[1])
-  
-  # --- dedupe identiske URLer ---
-  out <- out[!duplicated(out$url), , drop = FALSE]
-  
-  # --- eksport (kandidater) + sesongfiler + latest ---
-  ts   <- format(Sys.time(), "%Y%m%d-%H%M")
-  outd <- file.path("data","output", inst_short)
-  dir.create(outd, recursive = TRUE, showWarnings = FALSE)
-  
-  # samlet kandidater
-  csv_all <- file.path(outd, sprintf("candidates_%s_%s.csv", inst_short, ts))
-  txt_all <- file.path(outd, sprintf("candidates_%s_%s.txt", inst_short, ts))
-  utils::write.csv(out[, c("course_code_norm","year","hv","url")], csv_all,
-                   row.names = FALSE, fileEncoding = "UTF-8")
-  writeLines(out$url[nchar(out$url) > 0], txt_all, useBytes = TRUE)
-  
-  # sesong-spesifikke kandidater
-  split_out <- split(out, paste0(out$year, out$hv))
-  for (k in names(split_out)) {
-    o <- split_out[[k]]
-    p_csv <- file.path(outd, sprintf("candidates_%s_%s_%s.csv", inst_short, k, ts))
-    p_txt <- file.path(outd, sprintf("candidates_%s_%s_%s.txt", inst_short, k, ts))
-    utils::write.csv(o[, c("course_code_norm","year","hv","url")], p_csv,
-                     row.names = FALSE, fileEncoding = "UTF-8")
-    writeLines(o$url[nchar(o$url) > 0], p_txt, useBytes = TRUE)
-  }
-  
-  # "latest"-pekere (for kandidater)
-  file.copy(csv_all, file.path(outd, "candidates_latest.csv"), overwrite = TRUE)
-  file.copy(txt_all, file.path(outd, "candidates_latest.txt"), overwrite = TRUE)
-  
-  cat("UIA candidates: ", nrow(out), " rader (MODE=", MODE, ")\n", sep = "")
-})
-
+# spesiallogikk sem_uia trengtes
+# problemer med 
 # ============================================
 # generate_urls_uib.R  (lowercase + nodashnum)
 # ============================================
@@ -1561,71 +872,7 @@ local({
   }
   
   # ---------------------------
-  # 3) Mønster fra YAML
-  # ---------------------------
-  pattern <- as.character(
-    safe_read_yaml("config/institutions.yaml")$institutions[[inst_short]]$url_pattern
-  )[1]
-  if (!nzchar(pattern)) stop("Mangler url_pattern")
-  
-  # ---------------------------
-  # 4) Bygg URL-er
-  # ---------------------------
-  urls <- character(nrow(df))
-  
-  for (i in seq_len(nrow(df))) {
-    urls[i] <- tpl_sub(pattern, list(
-      year                 = "",
-      semester             = "",
-      semester_url         = "",
-      course_code          = df$course_code_norm[i],
-      code_lower_nodashnum = tolower(df$code_base[i]),
-      code_upper           = df$code_upper[i],
-      code_lower           = tolower(df$course_code_norm[i]),
-      code_upper_base      = df$code_base[i],
-      code_lower_base      = tolower(df$code_base[i]),
-      code_upper_nodashnum = df$code_base[i],
-      code_upper_nodash1   = df$code_base[i],
-      code_upper_nosfx1A   = sub("-(1|A)$", "", df$code_upper[i])
-    ))
-  }
-  
-  out <- data.frame(
-    course_code_norm = df$course_code_norm,
-    year             = NA_integer_,
-    hv               = NA_character_,
-    url              = urls,
-    stringsAsFactors = FALSE
-  )
-  
-  # ---------------------------
-  # 5) Deduplisering og varsel
-  # ---------------------------
-  out <- out[!duplicated(out$url), , drop = FALSE]
-  if (any(grepl("\\{[^}]+\\}", out$url))) {
-    warning("Uerstattede tokens ??? sjekk YAML. Eksempel: ",
-            grep("\\{[^}]+\\}", out$url, value = TRUE)[1])
-  }
-  
-  # ---------------------------
-  # 6) Eksport
-  # ---------------------------
-  ts   <- format(Sys.time(), "%Y%m%d-%H%M")
-  outd <- file.path("data", "output", inst_short)
-  dir.create(outd, TRUE, TRUE)
-  
-  csv_ts <- file.path(outd, sprintf("course_urls_%s_%s.csv", inst_short, ts))
-  txt_ts <- file.path(outd, sprintf("course_urls_%s_%s.txt", inst_short, ts))
-  
-  utils::write.csv(out[, c("course_code_norm", "year", "hv", "url")],
-                   csv_ts, row.names = FALSE, fileEncoding = "UTF-8")
-  writeLines(out$url[nchar(out$url) > 0], txt_ts, useBytes = TRUE)
-  
-  file.copy(csv_ts, file.path(outd, "course_urls_latest.csv"), TRUE)
-  file.copy(txt_ts, file.path(outd, "course_urls_latest.txt"), TRUE)
-  
-  cat("Skrev filer for ", inst_short, " (", nrow(out), " rader)\n", sep = "")
-})
+  # 3) M
 # R/run/generate_urls_uio.R ??? mini (base-R), kun URL-bygging for UiO
 
 local({
@@ -1814,6 +1061,24 @@ local({
   }
   df$url <- urls
   
+  df$hv <- ""  # UiO bruker ikke H/V i path; tom streng er fint
+  
+  ts   <- format(Sys.time(), "%Y%m%d-%H%M")
+  outd <- file.path("data","output", inst_short)
+  dir.create(outd, recursive = TRUE, showWarnings = FALSE)
+  
+  csv_ts <- file.path(outd, sprintf("course_urls_%s_%s.csv", inst_short, ts))
+  txt_ts <- file.path(outd, sprintf("course_urls_%s_%s.txt", inst_short, ts))
+  
+  keep <- c("course_code_norm","year","hv","url")
+  write.csv(df[, keep, drop = FALSE], csv_ts, row.names = FALSE, fileEncoding = "UTF-8")
+  writeLines(df$url[nchar(df$url) > 0], txt_ts, useBytes = TRUE)
+  
+  file.copy(csv_ts, file.path(outd, "course_urls_latest.csv"), overwrite = TRUE)
+  file.copy(txt_ts, file.path(outd, "course_urls_latest.txt"), overwrite = TRUE)
+  cat("Skrev filer for uio (", nrow(df), " rader)\n", sep = "")
+  
+  
   # ---------- advarsel om uerstattede tokens ----------
   leftover <- grep("\\{[^}]+\\}", df$url, value = TRUE)
   if (length(leftover)) warning("Uerstattede tokens i noen URLer ??? sjekk YAML/slug-maps. Eksempel: ", leftover[1])
@@ -1888,71 +1153,7 @@ local({
   }
   
   # ---------------------------
-  # 3) Mønster fra YAML
-  # ---------------------------
-  pattern <- as.character(
-    safe_read_yaml("config/institutions.yaml")$institutions[[inst_short]]$url_pattern
-  )[1]
-  if (!nzchar(pattern)) stop("Mangler url_pattern")
-  
-  # ---------------------------
-  # 4) Bygg URL-er
-  # ---------------------------
-  urls <- character(nrow(df))
-  
-  for (i in seq_len(nrow(df))) {
-    urls[i] <- tpl_sub(pattern, list(
-      year                 = "",
-      semester             = "",
-      semester_url         = "",
-      course_code          = df$course_code_norm[i],
-      code_upper           = df$code_upper[i],
-      code_lower           = tolower(df$course_code_norm[i]),
-      code_upper_base      = df$code_base[i],
-      code_lower_base      = tolower(df$code_base[i]),
-      code_upper_nodashnum = df$code_base[i],
-      code_lower_nodashnum = tolower(df$code_base[i]),
-      code_upper_nodash1   = df$code_base[i],
-      code_upper_nosfx1A   = sub("-(1|A)$", "", df$code_upper[i])
-    ))
-  }
-  
-  out <- data.frame(
-    course_code_norm = df$course_code_norm,
-    year             = NA_integer_,
-    hv               = NA_character_,
-    url              = urls,
-    stringsAsFactors = FALSE
-  )
-  
-  # ---------------------------
-  # 5) Deduplisering og varsel
-  # ---------------------------
-  out <- out[!duplicated(out$url), , drop = FALSE]
-  if (any(grepl("\\{[^}]+\\}", out$url))) {
-    warning("Uerstattede tokens ??? sjekk YAML. Eksempel: ",
-            grep("\\{[^}]+\\}", out$url, value = TRUE)[1])
-  }
-  
-  # ---------------------------
-  # 6) Eksport
-  # ---------------------------
-  ts   <- format(Sys.time(), "%Y%m%d-%H%M")
-  outd <- file.path("data", "output", inst_short)
-  dir.create(outd, TRUE, TRUE)
-  
-  csv_ts <- file.path(outd, sprintf("course_urls_%s_%s.csv", inst_short, ts))
-  txt_ts <- file.path(outd, sprintf("course_urls_%s_%s.txt", inst_short, ts))
-  
-  utils::write.csv(out[, c("course_code_norm", "year", "hv", "url")],
-                   csv_ts, row.names = FALSE, fileEncoding = "UTF-8")
-  writeLines(out$url[nchar(out$url) > 0], txt_ts, useBytes = TRUE)
-  
-  file.copy(csv_ts, file.path(outd, "course_urls_latest.csv"), TRUE)
-  file.copy(txt_ts, file.path(outd, "course_urls_latest.txt"), TRUE)
-  
-  cat("Skrev filer for ", inst_short, " (", nrow(out), " rader)\n", sep = "")
-})
+  # 3) M
 # ============================================
 # generate_urls_uit.R  ({code_upper_nodash1} == basekode)
 # ============================================
@@ -2004,71 +1205,7 @@ local({
   }
   
   # ---------------------------
-  # 3) Mønster fra YAML
-  # ---------------------------
-  pattern <- as.character(
-    safe_read_yaml("config/institutions.yaml")$institutions[[inst_short]]$url_pattern
-  )[1]
-  if (!nzchar(pattern)) stop("Mangler url_pattern")
-  
-  # ---------------------------
-  # 4) Bygg URL-er
-  # ---------------------------
-  urls <- character(nrow(df))
-  
-  for (i in seq_len(nrow(df))) {
-    urls[i] <- tpl_sub(pattern, list(
-      year                 = "",
-      semester             = "",
-      semester_url         = "",
-      course_code          = df$course_code_norm[i],
-      code_upper_nodash1   = df$code_base[i],
-      code_upper           = df$code_upper[i],
-      code_lower           = tolower(df$course_code_norm[i]),
-      code_upper_base      = df$code_base[i],
-      code_lower_base      = tolower(df$code_base[i]),
-      code_upper_nodashnum = df$code_base[i],
-      code_lower_nodashnum = tolower(df$code_base[i]),
-      code_upper_nosfx1A   = sub("-(1|A)$", "", df$code_upper[i])
-    ))
-  }
-  
-  out <- data.frame(
-    course_code_norm = df$course_code_norm,
-    year             = NA_integer_,
-    hv               = NA_character_,
-    url              = urls,
-    stringsAsFactors = FALSE
-  )
-  
-  # ---------------------------
-  # 5) Deduplisering og varsel
-  # ---------------------------
-  out <- out[!duplicated(out$url), , drop = FALSE]
-  if (any(grepl("\\{[^}]+\\}", out$url))) {
-    warning("Uerstattede tokens ??? sjekk YAML. Eksempel: ",
-            grep("\\{[^}]+\\}", out$url, value = TRUE)[1])
-  }
-  
-  # ---------------------------
-  # 6) Eksport
-  # ---------------------------
-  ts   <- format(Sys.time(), "%Y%m%d-%H%M")
-  outd <- file.path("data", "output", inst_short)
-  dir.create(outd, TRUE, TRUE)
-  
-  csv_ts <- file.path(outd, sprintf("course_urls_%s_%s.csv", inst_short, ts))
-  txt_ts <- file.path(outd, sprintf("course_urls_%s_%s.txt", inst_short, ts))
-  
-  utils::write.csv(out[, c("course_code_norm", "year", "hv", "url")],
-                   csv_ts, row.names = FALSE, fileEncoding = "UTF-8")
-  writeLines(out$url[nchar(out$url) > 0], txt_ts, useBytes = TRUE)
-  
-  file.copy(csv_ts, file.path(outd, "course_urls_latest.csv"), TRUE)
-  file.copy(txt_ts, file.path(outd, "course_urls_latest.txt"), TRUE)
-  
-  cat("Skrev filer for ", inst_short, " (", nrow(out), " rader)\n", sep = "")
-})
+  # 3) M
 # generate_urls_usn.R
 local({
   inst_short <- "usn"
@@ -2110,100 +1247,4 @@ local({
     if (style %in% c("uia","hiof","nih")) return(ifelse(hv=="H","host", ifelse(hv=="V","var","")))
     if (style == "ntnu")                  return(ifelse(hv=="H","1",    ifelse(hv=="V","2","")))
     if (style %in% c("oslomet","plain_url")) {
-      lbl <- ifelse(hv=="H","H\u00D8ST", ifelse(hv=="V","V\u00C5R",""))      # HØST/VÅR
-      return(utils::URLencode(lbl, reserved = TRUE))
-    }
-    if (style == "plain")                 return(ifelse(hv=="H","H\u00F8st", ifelse(hv=="V","V\u00E5r",""))) # Høst/Vår
-    ""
-  }
-  
-  # --- hjelpefelt ---
-  df$code_lower_nodashnum <- tolower(df$code_base)
-  df$code_upper_nodashnum <- df$code_base
-  df$code_upper_nodash1   <- df$code_base
-  df$code_upper_nosfx1A   <- sub("-(1|A)$","", df$code_upper)
-  
-  # --- utvid rader iht MODE ---
-  expand_one <- function(i){
-    have  <- toupper(df$semester_hv[i])  # "H"/"V"/NA
-    wants <- switch(
-      MODE,
-      both = c("H","V"),
-      H    = "H",
-      V    = "V",
-      hv   = have,
-      "next" = if (have == "V") "V" else "H",
-      have
-    )
-    if (!length(wants) || all(is.na(wants))) return(NULL)
-    data.frame(
-      hv   = wants,
-      year = ifelse(wants=="H", YEAR_H, YEAR_V),
-      course_code_norm     = df$course_code_norm[i],
-      code_upper           = df$code_upper[i],
-      code_base            = df$code_base[i],
-      code_lower_nodashnum = tolower(df$code_base[i]),
-      code_upper_nodashnum = df$code_base[i],
-      code_upper_nodash1   = df$code_base[i],
-      code_upper_nosfx1A   = sub("-(1|A)$","", df$code_upper[i]),
-      stringsAsFactors = FALSE
-    )
-  }
-  parts <- lapply(seq_len(nrow(df)), expand_one)
-  out <- if (length(parts)) do.call(rbind, parts) else df[0,]
-  stopifnot(nrow(out) > 0)
-  
-  # --- bygg URL ---
-  urls <- character(nrow(out))
-  for (i in seq_len(nrow(out))){
-    s <- sem_url(semester_style, out$hv[i])
-    urls[i] <- tpl_sub(pattern, list(
-      year                 = as.character(out$year[i]),
-      semester             = s,
-      semester_url         = s,
-      course_code          = out$course_code_norm[i],
-      code_upper           = out$code_upper[i],
-      code_lower           = tolower(out$course_code_norm[i]),
-      code_upper_base      = out$code_base[i],
-      code_lower_base      = tolower(out$code_base[i]),
-      code_upper_nodashnum = out$code_upper_nodashnum[i],
-      code_lower_nodashnum = out$code_lower_nodashnum[i],
-      code_upper_nodash1   = out$code_upper_nodash1[i],
-      code_upper_nosfx1A   = out$code_upper_nosfx1A[i]
-    ))
-  }
-  out$url <- urls
-  
-  # dedupe + advarsel om tokens
-  out <- out[!duplicated(out$url), , drop=FALSE]
-  if (any(grepl("\\{[^}]+\\}", out$url)))
-    warning("Uerstattede tokens – sjekk YAML. Eksempel: ",
-            grep("\\{[^}]+\\}", out$url, value=TRUE)[1])
-  
-  # --- eksport ---
-  ts   <- format(Sys.time(), "%Y%m%d-%H%M")
-  outd <- file.path("data","output",inst_short); dir.create(outd, TRUE, TRUE)
-  
-  csv_ts <- file.path(outd, sprintf("course_urls_%s_%s.csv", inst_short, ts))
-  txt_ts <- file.path(outd, sprintf("course_urls_%s_%s.txt", inst_short, ts))
-  utils::write.csv(out[,c("course_code_norm","year","hv","url")], csv_ts, row.names=FALSE, fileEncoding="UTF-8")
-  writeLines(out$url[nchar(out$url)>0], txt_ts, useBytes=TRUE)
-  
-  # per-sesong (kjekt når MODE="both")
-  split_out <- split(out, paste0(out$year, out$hv))
-  for (k in names(split_out)){
-    o <- split_out[[k]]
-    write.csv(o[,c("course_code_norm","year","hv","url")],
-              file.path(outd, sprintf("course_urls_%s_%s_%s.csv", inst_short, k, ts)),
-              row.names=FALSE, fileEncoding="UTF-8")
-    writeLines(o$url[nchar(o$url)>0],
-               file.path(outd, sprintf("course_urls_%s_%s_%s.txt", inst_short, k, ts)),
-               useBytes=TRUE)
-  }
-  
-  # latest-pekere
-  file.copy(csv_ts, file.path(outd,"course_urls_latest.csv"), overwrite=TRUE)
-  file.copy(txt_ts, file.path(outd,"course_urls_latest.txt"), overwrite=TRUE)
-  
-  cat("Skrev filer for ", inst_short, " (", nrow(out), " rader; MODE=", MODE, ")\n", sep="")
-})
+      lbl <- ifelse(hv=="H","H\u00D8ST", ifelse(hv=="V","V\u00C5R",""))      # H

@@ -8,23 +8,23 @@ selectors:
     course_name_no: ".course-title"
 
   ntnu:
-    fulltext: "#content-core"
-    course_name_no: ".page-title"
+    fulltext: "#content"
+    course_name_no: ".course-name , .course-code"
 
   inn:
-    fulltext: ".course-page"
-    course_name_no: ".headline"
+    fulltext: ".content-inner"
+    course_name_no: "#page-title"
 
   hivolda:
     fulltext: "#main-content"
     course_name_no: ".page-title"
 
   hiof:
-    fulltext: ".pagecontent"
+    fulltext: "#vrtx-fs-emne-content"
     course_name_no: "h1"
 
   hvl:
-    fulltext: ".article-body"
+    fulltext: ".l-2-col__main-content"
     course_name_no: "h1"
 
   mf:
@@ -40,11 +40,11 @@ selectors:
     course_name_no: ".h1 span"
 
   nih:
-    fulltext: "#main"
-    course_name_no: ".page-title"
+    fulltext: ".fs-body"
+    course_name_no: "h1"
 
   uib:
-    fulltext: "dt , dd , .course-title , .pt-6"
+    fulltext: ".accordion , .accordion__main , .vertical-reset-children .vertical-reset-children div , summary , #main-content li , p , .vertical-reset-children .vertical-reset-children .mt-12"
     course_name_no: ".course-title"
 
   uio:
