@@ -8,7 +8,7 @@ course_name_no: vC%r 2020
 LRU-3550 Didaktikk, samfunn, kultur - 10 stp
 ----- FULLTEXT -----
 
-
+
 Startsida
 Emnekatalog
 Didaktikk, samfunn, kultur
@@ -92,5 +92,5 @@ Ved bedC8mming av eksamen benyttes karakterer etter en skala fra A til E for bes
 
 Ved karakteren F/ ikke bestC%tt tilbys kontinuasjonseksamen pC%fC8lgende semester.
 
-   
-
+   
+

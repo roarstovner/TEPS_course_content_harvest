@@ -8,7 +8,7 @@ course_name_no: spring 2019
 ENG-1040 Language Acquisition - 10 ECTS
 ----- FULLTEXT -----
 
-
+
 Startsida
 Emnekatalog
 Language Acquisition
@@ -79,5 +79,5 @@ To be announced.
 
 Error rendering component
 
-   
-
+   
+

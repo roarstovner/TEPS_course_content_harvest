@@ -8,7 +8,7 @@ course_name_no: vC%r 2021
 LER-1451 Kristendom, religion, livssyn og etikk 1-7 - 15 stp
 ----- FULLTEXT -----
 
-
+
 Startsida
 Emnekatalog
 Kristendom, religion, livssyn og etikk 1-7
@@ -89,5 +89,5 @@ Ved karakter F/ikke bestC%tt tilbys kontinuasjonseksamen i begynnelsen av pC%fC8
 
 Pensum
 Pensumliste for LER-1451 Kristendom, religion, livssyn og etikk 1-7
-   
-
+   
+

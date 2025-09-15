@@ -8,7 +8,7 @@ course_name_no: hC8st 2020
 TYS-3025 Utdanning og danning i Tyskland med ekskursjon - 10 stp
 ----- FULLTEXT -----
 
-
+
 Startsida
 Emnekatalog
 Utdanning og danning i Tyskland med ekskursjon
@@ -68,5 +68,5 @@ Eksamen vurderes med bokstavkarakter A-F, der F regnes som stryk. Ved karakter F
 
 Error rendering component
 
-   
-
+   
+

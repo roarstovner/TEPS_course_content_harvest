@@ -7,9 +7,9 @@ status: 200
 course_name_no: 
 ----- FULLTEXT -----
 
-
+
 
 Error rendering component
 
-   
-
+   
+

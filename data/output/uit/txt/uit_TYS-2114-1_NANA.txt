@@ -8,7 +8,7 @@ course_name_no: vC%r 2022
 TYS-2114 Grammatikk i og for tyskundervisningen - 10 stp
 ----- FULLTEXT -----
 
-
+
 Startsida
 Emnekatalog
 Grammatikk i og for tyskundervisningen
@@ -94,5 +94,5 @@ Ved karakter F/ikke bestC%tt tilbys kontinuasjonseksamen i begynnelsen av pC%fC8
 
 Pensum
 Pensumliste for TYS-2114 Grammatikk i og for tyskundervisning
-   
-
+   
+

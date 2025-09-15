@@ -8,7 +8,7 @@ course_name_no: hC8st 2020
 LER-1453 Kristendom, religion, livssyn og etikk fellesemne - 15 stp
 ----- FULLTEXT -----
 
-
+
 Startsida
 Emnekatalog
 Kristendom, religion, livssyn og etikk fellesemne
@@ -94,5 +94,5 @@ Eksamen vurderes med bokstavkarakter A-F, der F regnes som stryk.
 
 Ved karakter F/ikke bestC%tt tilbys kontinuasjonseksamen i begynnelsen av pC%fC8lgende semester. Ved gyldig forfall tilbys utsatt eksamen i begynnelsen av pC%fC8lgende semester. 
 
-   
-
+   
+

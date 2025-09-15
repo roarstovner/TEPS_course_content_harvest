@@ -8,7 +8,7 @@ course_name_no: hC8st 2020
 LRU-3641 Masteremne i kroppsC8ving 5.-10 trinn, del 2 - 15 stp
 ----- FULLTEXT -----
 
-
+
 Startsida
 Emnekatalog
 Masteremne i kroppsC8ving 5.-10 trinn, del 2
@@ -68,5 +68,5 @@ individuelt muntlig framlegg pC% 30 minutter. Kort presentasjon av fagdidaktisk 
 
 Ved bedC8mmelse av eksamen benyttes gradert karakterer etter en skala fra A til E for bestC%tt, F som ikke bestC%tt, med A som beste karakter. Ved karakteren F tilbys kontinuasjonseksamen i begynnelsen av pC%fC8lgende semester.
 
-   
-
+   
+

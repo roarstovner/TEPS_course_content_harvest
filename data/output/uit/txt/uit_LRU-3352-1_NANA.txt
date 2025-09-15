@@ -8,7 +8,7 @@ course_name_no: hC8st 2020
 LRU-3352 Matematikkdidaktikk 5.-10. trinn - Kunnskap om matematikk - 15 stp
 ----- FULLTEXT -----
 
-
+
 Startsida
 Emnekatalog
 Matematikkdidaktikk 5.-10. trinn - Kunnskap om matematikk
@@ -82,5 +82,5 @@ Ved karakteren F/ikke bestC%tt kan en ta kontinuasjonseksamen i begynnelsen av p
 
 Pensum
 Pensumliste for LRU-3352 Kunnskap om Matematikk
-   
-
+   
+

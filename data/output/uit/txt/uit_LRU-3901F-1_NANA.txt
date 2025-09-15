@@ -8,7 +8,7 @@ course_name_no: vC%r 2022
 LRU-3901F Mastergradsoppgave i profesjonsfag 1.-7. trinn - 30 stp
 ----- FULLTEXT -----
 
-
+
 Startsida
 Emnekatalog
 Mastergradsoppgave i profesjonsfag 1.-7. trinn
@@ -67,5 +67,5 @@ Ved bedC8mming av eksamen benyttes karakterer etter en skala fra A til E for bes
 
 Ved karakteren F kan mastergradsoppgaven fremlegges for ny sensur i bearbeidet eller supplert form.
 
-   
-
+   
+

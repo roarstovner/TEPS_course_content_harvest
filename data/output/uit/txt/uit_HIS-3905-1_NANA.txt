@@ -8,7 +8,7 @@ course_name_no: vC%r 2015
 HIS-3905 Mastergradsoppgave i historie - integrert 10 sp PPU - 40 stp
 ----- FULLTEXT -----
 
-
+
 Startsida
 Emnekatalog
 Mastergradsoppgave i historie - integrert 10 sp PPU
@@ -88,5 +88,5 @@ Avheng av temaet i avhandlinga. Blir utarbeidd av studenten, etv. i samrC%d med 
 
 Error rendering component
 
-   
-
+   
+

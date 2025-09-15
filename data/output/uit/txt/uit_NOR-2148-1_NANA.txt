@@ -8,7 +8,7 @@ course_name_no: vC%r 2020
 NOR-2148 Krimlitteratur - 10 stp
 ----- FULLTEXT -----
 
-
+
 Startsida
 Emnekatalog
 Krimlitteratur
@@ -93,5 +93,5 @@ Pensumliste for NOR-2148 og NOR-2348 Krimlitteratur
 
 Error rendering component
 
-   
-
+   
+

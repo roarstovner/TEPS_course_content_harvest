@@ -8,7 +8,7 @@ course_name_no: hC8st 2019
 LER-2150 Engelsk 1-7 Fordypning - 5 stp
 ----- FULLTEXT -----
 
-
+
 Startsida
 Emnekatalog
 Engelsk 1-7 Fordypning
@@ -110,5 +110,5 @@ Ved karakter F/ikke bestC%tt tilbys kontinuasjonseksamen i begynnelsen av pC%fC8
 
 Error rendering component
 
-   
-
+   
+

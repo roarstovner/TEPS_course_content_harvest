@@ -8,7 +8,7 @@ course_name_no: hC8st 2020
 TYS-3023 Spesialemne med hospitering i tysk skole - 20 stp
 ----- FULLTEXT -----
 
-
+
 Startsida
 Emnekatalog
 Spesialemne med hospitering i tysk skole
@@ -77,5 +77,5 @@ Emnet vurderes med bokstavkarakterer fra A-F, der F er ikke-bestC%tt. Ved karakt
 
 Error rendering component
 
-   
-
+   
+

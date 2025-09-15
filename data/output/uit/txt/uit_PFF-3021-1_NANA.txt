@@ -8,7 +8,7 @@ course_name_no: vC%r 2026
 PFF-3021 Samfunnsfagsdidaktikk - 10 stp
 ----- FULLTEXT -----
 
-
+
 Startsida
 Emnekatalog
 Samfunnsfagsdidaktikk
@@ -79,5 +79,5 @@ Obligatorisk deltakelse
 BestC%tt praksis 4.studieC%r
 Kontinuasjonseksamen
 Det arrangeres kontinuasjonseksamen for studenter som ikke har bestC%tt siste ordinC&re eksamen i dette emnet.
-   
-
+   
+

@@ -8,7 +8,7 @@ course_name_no: vC%r 2021
 LRU-3909 Mastergradsoppgave i kroppsC8vingsdidaktikk - 30 stp
 ----- FULLTEXT -----
 
-
+
 Startsida
 Emnekatalog
 Mastergradsoppgave i kroppsC8vingsdidaktikk
@@ -69,5 +69,5 @@ Ved bedC8mming av eksamen benyttes karakterer etter en skala fra A til E for bes
 
 Ved karakteren F kan mastergradsoppgaven fremlegges for ny sensur i bearbeidet eller supplert form.
 
-   
-
+   
+

@@ -8,7 +8,7 @@ course_name_no: vC%r 2021
 LRU-3905 Mastergradsoppgave i samfunnsfagsdidaktikk - 30 stp
 ----- FULLTEXT -----
 
-
+
 Startsida
 Emnekatalog
 Mastergradsoppgave i samfunnsfagsdidaktikk
@@ -66,5 +66,5 @@ Ved bedC8mming av eksamen benyttes karakterer etter en skala fra A til E for bes
 
 Ved karakteren F kan mastergradsoppgaven fremlegges for ny sensur i bearbeidet eller supplert form.
 
-   
-
+   
+

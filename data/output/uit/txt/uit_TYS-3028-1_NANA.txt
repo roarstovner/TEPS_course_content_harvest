@@ -8,7 +8,7 @@ course_name_no: hC8st 2021
 TYS-3028 Hvordan lC&rer vi sprC%k? TysklC&rere og tyskelevene som forskere - 10 stp
 ----- FULLTEXT -----
 
-
+
 Startsida
 Emnekatalog
 Hvordan lC&rer vi sprC%k? TysklC&rere og tyskelevene som forskere
@@ -79,5 +79,5 @@ Eksamen vurderes med bokstavkarakter A-F, der F regnes som stryk. Ved karakter F
 
 Pensum
 Pensumliste for TYS-3028 Hvordan lC&rer vi sprC%k? TysklC&rere og tyskelevene som forskere
-   
-
+   
+
