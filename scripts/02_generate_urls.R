@@ -49,13 +49,18 @@ run_one <- function(script_path) {
   
   t0 <- Sys.time()
   res <- try(
-    source(script_path, local = new.env(parent = globalenv()), echo = FALSE, chdir = FALSE),
-    silent = FALSE
+    source(script_path,
+           local = new.env(parent = globalenv()),
+           echo = FALSE, chdir = FALSE,
+           encoding = "UTF-8"),
+    silent = TRUE
   )
   t1 <- Sys.time()
   
   if (inherits(res, "try-error")) {
-    cat("✗ ERROR in", script_path, ":\n", as.character(res), "\n")
+    msg <- try(conditionMessage(attr(res, "condition")), silent = TRUE)
+    if (inherits(msg, "try-error") || is.null(msg)) msg <- as.character(res)
+    cat("ERROR in ", script_path, ":\n", msg, "\n", sep = "")
     return(invisible(FALSE))
   }
   
