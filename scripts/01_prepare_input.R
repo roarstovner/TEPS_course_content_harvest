@@ -262,4 +262,3 @@ message("???? Lagret: ", normalizePath(path_cache_rds, winslash = "/"))
 
 ## Hurtigsjekk av felter og typer ??? fjern i batch-kj??ring om du vil ha helt stille logging
 str(courses_std)
-
