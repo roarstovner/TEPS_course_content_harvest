@@ -63,7 +63,7 @@ https://www.nla.no/studietilbud/emner/2026/mgl1krle101/
 https://www.nla.no/studietilbud/emner/2026/mgl1krle200/
 https://www.nla.no/studietilbud/emner/2026/mgl1krle211/
 https://www.nla.no/studietilbud/emner/2026/mgl1krle212/
-https://www.nla.no/studietilbud/emner/2026/mgl1kø101/
+https://www.nla.no/studietilbud/emner/2026/mgl1kC8101/
 https://www.nla.no/studietilbud/emner/2026/mgl1ma101/
 https://www.nla.no/studietilbud/emner/2026/mgl1ma102/
 https://www.nla.no/studietilbud/emner/2026/mgl1ma103/
@@ -87,9 +87,9 @@ https://www.nla.no/studietilbud/emner/2026/mgl5krle101/
 https://www.nla.no/studietilbud/emner/2026/mgl5krle200/
 https://www.nla.no/studietilbud/emner/2026/mgl5krle211/
 https://www.nla.no/studietilbud/emner/2026/mgl5krle212/
-https://www.nla.no/studietilbud/emner/2026/mgl5kø101/
+https://www.nla.no/studietilbud/emner/2026/mgl5kC8101/
 https://www.nla.no/studietilbud/emner/2026/mgl5ma101/
-https://www.nla.no/studietilbud/emner/2026/mgl5kø201/
+https://www.nla.no/studietilbud/emner/2026/mgl5kC8201/
 https://www.nla.no/studietilbud/emner/2026/mgl5ma102/
 https://www.nla.no/studietilbud/emner/2026/mgl5ma103/
 https://www.nla.no/studietilbud/emner/2026/mgl5ma201/
@@ -173,8 +173,8 @@ https://www.nla.no/studietilbud/emner/2026/mgl5krle213/
 https://www.nla.no/studietilbud/emner/2026/4mgl1krle211/
 https://www.nla.no/studietilbud/emner/2025/4mgl5ma102/
 https://www.nla.no/studietilbud/emner/2025/4mgl5ma101/
-https://www.nla.no/studietilbud/emner/2025/4mgl5kø201/
-https://www.nla.no/studietilbud/emner/2025/4mgl5kø101/
+https://www.nla.no/studietilbud/emner/2025/4mgl5kC8201/
+https://www.nla.no/studietilbud/emner/2025/4mgl5kC8101/
 https://www.nla.no/studietilbud/emner/2025/4mgl5ma202/
 https://www.nla.no/studietilbud/emner/2025/4mgl5ma201/
 https://www.nla.no/studietilbud/emner/2025/4mgl5ma103/

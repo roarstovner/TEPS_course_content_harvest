@@ -50,7 +50,7 @@ local({
   }
   
   # ---------------------------
-  # 3) Mønster fra YAML
+  # 3) Pattern fra YAML
   # ---------------------------
   cfg  <- safe_read_yaml("config/institutions.yaml")
   inst <- cfg$institutions[[inst_short]]
@@ -111,7 +111,7 @@ local({
                    csv_ts, row.names = FALSE, fileEncoding = "UTF-8")
   writeLines(out$url[nchar(out$url) > 0], txt_ts, useBytes = TRUE)
   
-  # “latest”-pekere
+  # latest filer 
   file.copy(csv_ts, file.path(outd, "course_urls_latest.csv"), overwrite = TRUE)
   file.copy(txt_ts, file.path(outd, "course_urls_latest.txt"), overwrite = TRUE)
   
