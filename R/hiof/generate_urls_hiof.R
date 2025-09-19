@@ -65,7 +65,7 @@ local({
       H     = "H",
       V     = "V",
       hv    = have,
-      "next" = if (have == "V") "V" else "H",  # <— nøkkelen er sitert
+      "next" = if (have == "V") "V" else "H",  
       have
     )
     if (!length(wants) || all(is.na(wants))) return(NULL)

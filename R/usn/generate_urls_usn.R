@@ -39,10 +39,10 @@ local({
     if (style %in% c("uia","hiof","nih")) return(ifelse(hv=="H","host", ifelse(hv=="V","var","")))
     if (style == "ntnu")                  return(ifelse(hv=="H","1",    ifelse(hv=="V","2","")))
     if (style %in% c("oslomet","plain_url")) {
-      lbl <- ifelse(hv=="H","H\u00D8ST", ifelse(hv=="V","V\u00C5R",""))      # HØST/VÅR
+      lbl <- ifelse(hv=="H","H\u00D8ST", ifelse(hv=="V","V\u00C5R",""))   
       return(utils::URLencode(lbl, reserved = TRUE))
     }
-    if (style == "plain")                 return(ifelse(hv=="H","H\u00F8st", ifelse(hv=="V","V\u00E5r",""))) # Høst/Vår
+    if (style == "plain")                 return(ifelse(hv=="H","H\u00F8st", ifelse(hv=="V","V\u00E5r",""))) # H/V
     ""
   }
   
@@ -106,7 +106,7 @@ local({
   # dedupe + advarsel om tokens
   out <- out[!duplicated(out$url), , drop=FALSE]
   if (any(grepl("\\{[^}]+\\}", out$url)))
-    warning("Uerstattede tokens – sjekk YAML. Eksempel: ",
+    warning("Uerstattede tokens, sjekk YAML. Eksempel: ",
             grep("\\{[^}]+\\}", out$url, value=TRUE)[1])
   
   # --- eksport ---
@@ -118,7 +118,7 @@ local({
   utils::write.csv(out[,c("course_code_norm","year","hv","url")], csv_ts, row.names=FALSE, fileEncoding="UTF-8")
   writeLines(out$url[nchar(out$url)>0], txt_ts, useBytes=TRUE)
   
-  # per-sesong (kjekt når MODE="both")
+  # per-sesong (hvis MODE="both")
   split_out <- split(out, paste0(out$year, out$hv))
   for (k in names(split_out)){
     o <- split_out[[k]]

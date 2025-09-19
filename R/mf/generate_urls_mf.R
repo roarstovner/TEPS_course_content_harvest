@@ -49,7 +49,7 @@ local({
   }
   
   # ---------------------------
-  # 3) Mønster fra YAML
+  # 3) Pattern fra YAML
   # ---------------------------
   pattern <- as.character(
     safe_read_yaml("config/institutions.yaml")$institutions[[inst_short]]$url_pattern
