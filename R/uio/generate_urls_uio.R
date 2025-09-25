@@ -179,6 +179,18 @@ local({
   pattern        <- as.character(inst$url_pattern)[1]
   semester_style <- as.character(inst$semester_style %||% "plain")
   
+  cfg  <- safe_read_yaml("config/institutions.yaml")
+  inst <- cfg$institutions[[inst_short]]
+  
+  message("UiO YAML keys at institutions$uio: ", paste(names(inst), collapse = ", "))
+  message("UiO YAML url_pattern (as read): ", as.character(inst$url_pattern)[1])
+  
+  pattern <- as.character(inst$url_pattern)[1]
+  if (is.null(pattern) || !nzchar(pattern)) {
+    stop("UiO: url_pattern is missing/empty in YAML. This will produce 0 URLs.")
+  }
+  
+  
   # ---------- tokens og URL-bygging ----------
   # UiO bruker normalt ikke semester i path; vi fyller likevel tokens hvis pattern krever det
   df$code_upper_nodash1 <- df$code_base  # basekode uten suffiks
