@@ -1,6 +1,8 @@
 # scripts/00_run_all.R
 # =====================
 # TEPS pipeline master runner
+# rm(list = ls(all.names = TRUE))
+
 
 options(stringsAsFactors = FALSE, warn = 1)
 
@@ -97,7 +99,7 @@ RUN_SCRAPE       <- TRUE
 
 # URL generation flags (step 02)
 SAVE_URL_CSV     <- TRUE
-SAVE_URL_TXT     <- FALSE
+SAVE_URL_TXT     <- TRUE
 
 # Scrape flags (step 04)
 SAVE_HTML        <- TRUE
@@ -192,13 +194,13 @@ if (CLEAN) {
 # =========================================================
 if (RUN_SCRAPE) {
   Sys.setenv(
-    TEPS_SAVE_HTML          = if (SAVE_HTML) "1" else "0",
-    TEPS_SAVE_TXT           = if (SAVE_TXT)  "1" else "0",
-    TEPS_REQ_DELAY_MS       = as.character(REQ_DELAY_MS),
+    TEPS_RUN_SCRAPE = "TRUE",
+    TEPS_SAVE_HTML  = if (SAVE_HTML) "TRUE" else "FALSE",
+    TEPS_SAVE_TXT   = if (SAVE_TXT)  "TRUE" else "FALSE",
+    TEPS_REQ_DELAY_MS = as.character(REQ_DELAY_MS),
     TEPS_MAX_PAGES_PER_INST = as.character(MAX_PAGES_INST),
-    TEPS_DRYRUN             = if (DRYRUN) "1" else "0",
-    TEPS_INST               = TEPS_INST,
-    TEPS_RUN_SCRAPE         = "1"
+    TEPS_DRYRUN     = if (DRYRUN) "TRUE" else "FALSE",
+    TEPS_INST       = TEPS_INST
   )
   ok4 <- run_script("scripts/03_scrape.R")
 } else {
