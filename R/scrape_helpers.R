@@ -93,3 +93,13 @@ gzip_html_dir <- function(dir_html, keep_last = 1L) {
   }
   invisible(n)
 }
+
+# safe_writeLines: writes UTF-8 text to file, auto-closes connection
+safe_writeLines <- function(txt, path, append = FALSE) {
+  ensure_dir(dirname(path))
+  mode <- if (append) "a" else "w"
+  con <- file(path, open = mode, encoding = "UTF-8")
+  on.exit(try(close(con), silent = TRUE), add = TRUE)
+  writeLines(txt, con, useBytes = TRUE)
+  invisible(path)
+}
