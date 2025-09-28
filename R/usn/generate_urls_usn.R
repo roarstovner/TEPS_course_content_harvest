@@ -80,6 +80,9 @@ local({
   }
   parts <- lapply(seq_len(nrow(df)), expand_one)
   out <- if (length(parts)) do.call(rbind, parts) else df[0,]
+  # normalize course_code for USN: MG2PE1-2 -> MG2PE1_2
+  out$course_code_usn <- gsub("-", "_", out$course_code_norm, fixed = TRUE)
+  
   stopifnot(nrow(out) > 0)
   
   # --- bygg URL ---
@@ -90,7 +93,7 @@ local({
       year                 = as.character(out$year[i]),
       semester             = s,
       semester_url         = s,
-      course_code          = out$course_code_norm[i],
+      course_code          = out$course_code_usn[i],
       code_upper           = out$code_upper[i],
       code_lower           = tolower(out$course_code_norm[i]),
       code_upper_base      = out$code_base[i],

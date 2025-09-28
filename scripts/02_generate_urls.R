@@ -6,31 +6,22 @@ if (!exists("%||%", inherits = TRUE)) {
 }
 if (!exists("safe_read_yaml", inherits = TRUE)) {
   safe_read_yaml <- function(path) {
-    tr <- try({
-      con <- file(path, "r", encoding = "UTF-8")
-      on.exit(try(close(con), silent=TRUE), add=TRUE)
-      yaml::read_yaml(con)
-    }, silent = TRUE)
+    tr <- try(yaml::read_yaml(path), silent = TRUE)
     if (!inherits(tr, "try-error") && !is.null(tr)) return(tr)
+    # fallback: read raw + force to UTF-8
     raw <- readBin(path, "raw", file.info(path)$size)
-    txt <- rawToChar(raw); Encoding(txt) <- "unknown"
-    txt <- sub("^\ufeff", "", txt)
-    txt <- gsub("\r\n?", "\n", txt)
-    txt <- gsub("\t", "  ", txt, fixed = TRUE)
-    yaml::yaml.load(txt)
+    yaml::yaml.load(enc2utf8(rawToChar(raw)))
   }
 }
 
 stopifnot(dir.exists("R"), dir.exists("config"), file.exists("config/institutions.yaml"))
 
-options(warn = 1)                 # show warnings immediately
-op <- options(encoding = "UTF-8") # avoid console issues
-on.exit(options(op), add = TRUE)
+options(warn = 1, encoding = "UTF-8")  # warnings & UTF-8 globally
 
 # 1) Find all scripts
 scripts <- unique(c(
-  Sys.glob(file.path("R", "generate_urls_*.R")),
-  Sys.glob(file.path("R", "*", "generate_urls_*.R"))
+  Sys.glob("R/generate_urls_*.R"),
+  Sys.glob("R/*/generate_urls_*.R")
 ))
 if (!length(scripts)) stop("No generate_urls_*.R files found under R/")
 
@@ -48,23 +39,14 @@ run_one <- function(script_path) {
   cat("==========================\n")
   
   t0 <- Sys.time()
-  res <- try(
-    source(script_path,
-           local = new.env(parent = globalenv()),
-           echo = FALSE, chdir = FALSE,
-           encoding = "UTF-8"),
-    silent = TRUE
-  )
+  ok <- try(source(script_path, local = new.env(parent = globalenv())), silent = TRUE)
   t1 <- Sys.time()
   
-  if (inherits(res, "try-error")) {
-    msg <- try(conditionMessage(attr(res, "condition")), silent = TRUE)
-    if (inherits(msg, "try-error") || is.null(msg)) msg <- as.character(res)
-    cat("ERROR in ", script_path, ":\n", msg, "\n", sep = "")
-    return(invisible(FALSE))
+  if (inherits(ok, "try-error")) {
+    cat("ERROR in", script_path, ":\n", as.character(ok), "\n")
+    return(FALSE)
   }
   
-  # Guess institution code from filename: generate_urls_<inst>.R
   inst <- sub("^generate_urls_([^.]+)\\.R$", "\\1", basename(script_path))
   outd <- file.path("data", "output", inst)
   cat("Output directory:", normalizePath(outd, winslash = "/", mustWork = FALSE), "\n")
@@ -72,17 +54,12 @@ run_one <- function(script_path) {
   if (dir.exists(outd)) {
     latest <- list.files(outd, pattern = "latest\\.(csv|txt)$", full.names = TRUE)
     if (length(latest)) {
-      cat("Latest files:\n")
-      for (p in latest) cat("  ", p, "\n", sep = "")
-    } else {
-      cat("No latest files found (script may have written timestamped files).\n")
+      cat("Latest files:\n", paste("  ", latest, collapse = "\n"), "\n")
     }
-  } else {
-    cat("No output directory found for", inst, "(script may have failed).\n")
   }
   
-  cat(sprintf("Finished in %.1f seconds\n", as.numeric(difftime(t1, t0, units = "secs"))))
-  invisible(TRUE)
+  cat(sprintf("Finished in %.1f seconds\n", difftime(t1, t0, units = "secs")))
+  TRUE
 }
 
 ok <- vapply(scripts, run_one, logical(1))

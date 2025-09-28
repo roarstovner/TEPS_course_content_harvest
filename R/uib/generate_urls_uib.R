@@ -2,6 +2,9 @@
 # generate_urls_uib.R  (lowercase + nodashnum)
 # ============================================
 local({
+  suppressWarnings({
+    options(showConnections = FALSE)
+  })
   inst_short <- "uib"
   
   # ---------------------------

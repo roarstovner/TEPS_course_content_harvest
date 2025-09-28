@@ -30,24 +30,74 @@ load_selectors <- function(inst_short, cfg_path = "config/selectors.yaml") {
   )
 }
 
-# ---- FETCH ----
 fetch_html <- function(url, max_tries = 4L, dryrun = FALSE) {
-  if (dryrun) return(list(ok = TRUE, status = NA_integer_, content = charToRaw("<html></html>")))
-  resp <- try(httr::RETRY(
-    "GET", url,
-    httr::add_headers(`User-Agent` = ua_string()),
-    times = max_tries, pause_min = 1, pause_cap = 6,
-    terminate_on = c(200L, 404L, 410L),
-    quiet = TRUE
-  ), silent = TRUE)
-  if (inherits(resp, "try-error") || is.null(resp)) {
-    return(list(ok = FALSE, status = NA_integer_, content = raw()))
+  if (dryrun) return(list(ok = TRUE, status = NA_integer_, content = raw(0)))
+  
+  # Ensure UiO print view (server-rendered)
+  u <- url
+  if (grepl("^https?://www\\.uio\\.no/", u, ignore.case = TRUE) &&
+      !grepl("[?&]vrtx=print($|&)", u, ignore.case = TRUE)) {
+    u <- paste0(u, if (grepl("\\?", u)) "&" else "?", "vrtx=print")
   }
-  status <- httr::status_code(resp)
-  ok <- status >= 200L && status < 400L
-  content <- if (ok) httr::content(resp, as = "raw") else raw()
+  
+  ua <- "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
+  # Build the common args once (each is a separate object, not a list of lists)
+  common_args <- list(
+    httr::user_agent(ua),
+    httr::add_headers(
+      "Accept"                    = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+      "Accept-Language"           = "nb-NO,nb;q=0.9,no;q=0.8,en;q=0.7",
+      "Cache-Control"             = "no-cache",
+      "Pragma"                    = "no-cache",
+      "Upgrade-Insecure-Requests" = "1",
+      "Referer"                   = sub("(^https?://[^/]+).*$", "\\1/", u)
+    ),
+    httr::timeout(30)
+  )
+  
+  # helper to attempt a specific HTTP version, using do.call to spread args
+  do_try <- function(http_ver) {
+    args <- c(
+      list("GET", u),
+      common_args,
+      list(
+        httr::config(http_version = http_ver),
+        terminate_on = c(200, 404, 410, 501),
+        pause_base = 1, pause_cap = 5, times = max_tries
+      )
+    )
+    resp <- do.call(httr::RETRY, args)
+    status  <- httr::status_code(resp)
+    content <- try(httr::content(resp, as = "raw"), silent = TRUE)
+    if (inherits(content, "try-error") || is.null(content)) content <- raw(0)
+    list(status = status, content = content)
+  }
+  
+  # Try HTTP/2 first; if 501, fall back to HTTP/1.1
+  r2 <- do_try(2)
+  if (r2$status == 501) {
+    r1 <- do_try(1.1)
+    status  <- r1$status
+    content <- r1$content
+  } else {
+    status  <- r2$status
+    content <- r2$content
+  }
+  
+  looks_like_json <- function(raw, nbytes = 512) {
+    if (!length(raw)) return(FALSE)
+    s <- rawToChar(raw[seq_len(min(nbytes, length(raw)))])
+    Encoding(s) <- "UTF-8"
+    s <- gsub("^\ufeff", "", s)
+    s <- trimws(s)
+    startsWith(s, "{") || startsWith(s, "[")
+  }
+  
+  ok <- status >= 200 && status < 300 && length(content) > 0 && !looks_like_json(content)
   list(ok = ok, status = status, content = content)
 }
+
+
 
 # ---- PARSE ----
 parse_fields <- function(raw_html, selectors) {
@@ -102,4 +152,19 @@ safe_writeLines <- function(txt, path, append = FALSE) {
   on.exit(try(close(con), silent = TRUE), add = TRUE)
   writeLines(txt, con, useBytes = TRUE)
   invisible(path)
+}
+
+
+# ============================
+# Text normalization helper
+# ============================
+normalize_text <- function(x) {
+  if (!is.character(x)) return(x)
+  # normalize line endings
+  x <- gsub("\r\n?", "\n", x)
+  # collapse runs of 2+ newlines into exactly 2
+  x <- gsub("\n{2,}", "\n\n", x)
+  # trim leading/trailing whitespace
+  x <- trimws(x)
+  x
 }

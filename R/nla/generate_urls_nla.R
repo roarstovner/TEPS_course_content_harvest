@@ -1,5 +1,9 @@
 # generate_urls_nla.R
 local({
+  suppressWarnings({
+    options(showConnections = FALSE)
+  })
+  
   inst_short <- "nla"
   
   # --- hva skal ut? ---
