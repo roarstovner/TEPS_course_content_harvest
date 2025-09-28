@@ -1,5 +1,9 @@
 # scripts/03_scrape.R
 # ====================
+# Scraper for TEPS pipeline
+# - Reads course_urls latest.csv per institution
+# - Fetches HTML, parses fields with selectors.yaml
+# - Saves HTML (optional), TXT (optional), CSV results
 
 suppressPackageStartupMessages({
   library(yaml)
@@ -10,37 +14,30 @@ suppressPackageStartupMessages({
   library(commonmark)
 })
 
-# Helpers that live in R/scrape_helpers.R:
-# - ensure_dir(path)
-# - load_selectors(inst, "config/selectors.yaml")
-# - fetch_html(url, max_tries = 4L, dryrun = FALSE)
-# - parse_fields(raw_html_bytes, selectors_for_inst)
-# - ts_now()
-# - safe_stub(inst, code, year, hv)
 source(file.path("R", "scrape_helpers.R"))
 
 `%||%` <- function(a, b) if (is.null(a) || length(a) == 0 || (is.character(a) && !nzchar(a))) b else a
 
 # -----------------------------------------------------------------------------
-# Config via environment variables (robust defaults)
+# Config via environment variables (use TRUE/FALSE only)
 # -----------------------------------------------------------------------------
-run_scrape     <- isTRUE(as.logical(Sys.getenv("TEPS_RUN_SCRAPE", "1")))
-save_html      <- isTRUE(as.logical(Sys.getenv("TEPS_SAVE_HTML",  "TRUE")))
-save_txt       <- isTRUE(as.logical(Sys.getenv("TEPS_SAVE_TXT",   "TRUE")))
-dryrun         <- isTRUE(as.logical(Sys.getenv("TEPS_DRYRUN",     "FALSE")))
-inst_env       <- Sys.getenv("TEPS_INST", "")
-req_delay_ms   <- as.integer(Sys.getenv("TEPS_REQ_DELAY_MS", "0"))           # e.g., 300
-max_pages_inst <- as.integer(Sys.getenv("TEPS_MAX_PAGES_PER_INST", "0"))     # 0 = unlimited
+RUN_SCRAPE     <- tolower(Sys.getenv("TEPS_RUN_SCRAPE", "TRUE"))  %in% c("true","1","yes","y")
+SAVE_HTML      <- tolower(Sys.getenv("TEPS_SAVE_HTML",  "TRUE"))  %in% c("true","1","yes","y")
+SAVE_TXT       <- tolower(Sys.getenv("TEPS_SAVE_TXT",   "TRUE"))  %in% c("true","1","yes","y")
+DRYRUN         <- tolower(Sys.getenv("TEPS_DRYRUN",     "FALSE")) %in% c("true","1","yes","y")
+INST_ENV       <- Sys.getenv("TEPS_INST", "")
+REQ_DELAY_MS   <- as.integer(Sys.getenv("TEPS_REQ_DELAY_MS", "0"))
+MAX_PAGES_INST <- as.integer(Sys.getenv("TEPS_MAX_PAGES_PER_INST", "0"))
 
 message(sprintf(
   "Starting 03_scrape.R  |  RUN=%s HTML=%s TXT=%s DRYRUN=%s INST=%s DELAY_MS=%s MAX_PAGES=%s",
-  as.character(run_scrape), as.character(save_html), as.character(save_txt),
-  as.character(dryrun), ifelse(nzchar(inst_env), inst_env, "<all>"),
-  as.character(req_delay_ms), as.character(max_pages_inst)
+  RUN_SCRAPE, SAVE_HTML, SAVE_TXT, DRYRUN,
+  ifelse(nzchar(INST_ENV), INST_ENV, "<all>"),
+  REQ_DELAY_MS, MAX_PAGES_INST
 ))
 
-if (!run_scrape) {
-  message("TEPS_RUN_SCRAPE=0 -> skipping scraping.")
+if (!RUN_SCRAPE) {
+  message("TEPS_RUN_SCRAPE=FALSE -> skipping scraping.")
   message("Done: scripts/03_scrape.R")
   invisible(return())
 }
@@ -63,7 +60,7 @@ safe_writeLines <- function(txt, path) {
   con <- file(path, open = "w", encoding = "UTF-8")
   on.exit(try(close(con), silent = TRUE), add = TRUE)
   writeLines(txt, con, useBytes = TRUE)
-  on.exit(NULL, add = FALSE)
+  invisible(path)
 }
 
 # Small write-probe to detect permission/OneDrive issues early
@@ -85,8 +82,8 @@ inst_dirs <- list.dirs(out_root, recursive = FALSE, full.names = FALSE)
 has_urls  <- function(inst) file.exists(file.path(out_root, inst, "course_urls_latest.csv"))
 inst_all  <- inst_dirs[sapply(inst_dirs, has_urls)]
 
-if (nzchar(inst_env)) {
-  sel <- unique(trimws(tolower(strsplit(inst_env, ",", fixed = TRUE)[[1]])))
+if (nzchar(INST_ENV)) {
+  sel <- unique(trimws(tolower(strsplit(INST_ENV, ",", fixed = TRUE)[[1]])))
   inst_all <- intersect(inst_all, sel)
 }
 if (!length(inst_all)) stop("No institutions to scrape (missing course_urls_latest.csv).")
@@ -111,7 +108,6 @@ for (inst in inst_all) {
   urls_df  <- try(safe_read_csv(path_csv), silent = TRUE)
   if (inherits(urls_df, "try-error")) { message("  Could not read ", path_csv); next }
   
-  # Minimal required columns (allow hv to be missing)
   required_min <- c("course_code_norm", "year", "url")
   miss <- setdiff(required_min, names(urls_df))
   if (length(miss)) {
@@ -131,7 +127,6 @@ for (inst in inst_all) {
   dir_html <- file.path(dir_inst, "html"); ensure_dir(dir_html)
   dir_txt  <- file.path(dir_inst, "txt");  ensure_dir(dir_txt)
   
-  # Result buffer
   res <- data.frame(
     institution_short = inst,
     course_code_norm  = urls_df$course_code_norm,
@@ -143,26 +138,24 @@ for (inst in inst_all) {
     bytes             = NA_integer_,
     sha1              = NA_character_,
     course_name_no    = NA_character_,
-    fulltext          = NA_character_,   # Markdown primarily; HTML fallback if MD is empty
+    fulltext          = NA_character_,
     stringsAsFactors  = FALSE
   )
   
   count <- 0L
   for (i in seq_len(nrow(urls_df))) {
     count <- count + 1L
-    if (max_pages_inst > 0L && count > max_pages_inst) break
+    if (MAX_PAGES_INST > 0L && count > MAX_PAGES_INST) break
     
     u   <- urls_df$url[i]
     cod <- urls_df$course_code_norm[i]
     yr  <- urls_df$year[i]
     hvv <- urls_df$hv[i]
     
-    # Fetch HTML
-    f <- fetch_html(u, max_tries = 4L, dryrun = dryrun)
+    f <- fetch_html(u, max_tries = 4L, dryrun = DRYRUN)
     res$status[i] <- f$status
     res$ok[i]     <- isTRUE(f$ok)
     
-    # Prepare defaults for parse results
     md <- ""
     parsed <- list(course_name_no = NA_character_, fulltext = "")
     
@@ -170,25 +163,18 @@ for (inst in inst_all) {
       res$bytes[i] <- length(f$content)
       res$sha1[i]  <- digest::digest(f$content, algo = "sha1", serialize = FALSE)
       
-      # Save raw HTML (optional)
-      if (save_html) {
+      # Save raw HTML
+      if (SAVE_HTML) {
         stub <- safe_stub(inst, cod, yr, hvv)
         fn_html <- file.path(dir_html, paste0(stub, "_", ts_now(), ".html"))
-        con_html <- file(fn_html, open = "wb")
-        on.exit(try(close(con_html), silent = TRUE), add = TRUE)
-        writeBin(f$content, con_html)
-        on.exit(NULL, add = FALSE)
+        writeBin(f$content, fn_html)
       }
       
-      # Parse with guard; if error -> keep defaults
       parsed_try <- try(parse_fields(f$content, sel), silent = TRUE)
       if (!inherits(parsed_try, "try-error") && !is.null(parsed_try)) {
         parsed <- parsed_try
-      } else {
-        warning(sprintf("[parse_fields] failed for %s", u))
       }
       
-      # Try HTML -> Markdown conversion
       if (is.character(parsed$fulltext) && nzchar(parsed$fulltext)) {
         md_try <- try(commonmark::html_to_md(parsed$fulltext), silent = TRUE)
         if (!inherits(md_try, "try-error") && is.character(md_try) && nzchar(md_try)) {
@@ -200,8 +186,8 @@ for (inst in inst_all) {
     res$course_name_no[i] <- parsed$course_name_no
     res$fulltext[i] <- if (nzchar(md)) md else (parsed$fulltext %||% "")
     
-    # ALWAYS write one .txt per URL when TEPS_SAVE_TXT=1
-    if (save_txt) {
+    # Write TXT
+    if (SAVE_TXT) {
       stub   <- safe_stub(inst, cod, yr, hvv)
       fn_txt <- file.path(dir_txt, paste0(stub, ".txt"))
       header <- paste0(
@@ -215,20 +201,18 @@ for (inst in inst_all) {
       )
       
       if (nzchar(md)) {
-        safe_writeLines(c(header, "----- MARKDOWN -----", md), fn_txt)
+        safe_writeLines(normalize_text(c(header, "----- MARKDOWN -----", md)), fn_txt)
       } else if (is.character(parsed$fulltext) && nzchar(parsed$fulltext)) {
-        safe_writeLines(c(header, "----- FULLTEXT (HTML) -----", parsed$fulltext), fn_txt)
+        safe_writeLines(normalize_text(c(header, "----- FULLTEXT (HTML) -----", parsed$fulltext)), fn_txt)
       } else if (!isTRUE(f$ok) || !length(f$content)) {
-        safe_writeLines(c(header, "----- FETCH FAILED -----"), fn_txt)
+        safe_writeLines(normalize_text(c(header, "----- FETCH FAILED -----")), fn_txt)
       } else {
-        safe_writeLines(c(header, "----- NO CONTENT -----"), fn_txt)
+        safe_writeLines(normalize_text(c(header, "----- NO CONTENT -----")), fn_txt)
       }
     }
     
-    # Delay between requests
-    if (req_delay_ms > 0L) Sys.sleep(req_delay_ms / 1000)
+    if (REQ_DELAY_MS > 0L) Sys.sleep(REQ_DELAY_MS / 1000)
     
-    # Progress + ETA every 50 courses
     if (i %% 50 == 0) {
       elapsed <- as.numeric(difftime(Sys.time(), start_time_inst, units = "secs"))
       avg_per_page <- elapsed / i
@@ -238,30 +222,32 @@ for (inst in inst_all) {
                   inst, i, nrow(urls_df), eta_min))
     }
     
-    # Periodic gzip to keep dirs small
-    if (save_html && i %% 200 == 0) {
+    if (SAVE_HTML && i %% 200 == 0) {
       invisible(gzip_html_dir(dir_html, keep_last = 1L))
     }
   }
   
-  # Write CSVs
   ts <- ts_now()
   csv_ts     <- file.path(dir_inst, sprintf("scrape_%s.csv", ts))
   csv_latest <- file.path(dir_inst, "scrape_latest.csv")
+  for (nm in names(res)) {
+    if (is.character(res[[nm]])) {
+      res[[nm]] <- normalize_text(res[[nm]])
+    }
+  }
   safe_write_csv(res, csv_ts)
   safe_write_csv(res, csv_latest)
   
-  # Compress old HTML to save space (keep last per course)
-  if (save_html) invisible(gzip_html_dir(dir_html, keep_last = 1L))
+  if (SAVE_HTML) invisible(gzip_html_dir(dir_html, keep_last = 1L))
   
   ok_n   <- sum(res$ok, na.rm = TRUE)
   fail_n <- nrow(res) - ok_n
   
-  # HTTP status summary
   stat_tbl <- sort(table(res$status), decreasing = TRUE)
-  if (length(stat_tbl)) cat("  HTTP status: ", paste(names(stat_tbl), stat_tbl, sep = "x", collapse = ", "), "\n")
+  if (length(stat_tbl)) {
+    cat("  HTTP status: ", paste(names(stat_tbl), stat_tbl, sep = "x", collapse = ", "), "\n")
+  }
   
-  # Failure log (useful operationally)
   fail_df <- subset(res, is.na(ok) | !ok | is.na(status) | status != 200)
   if (nrow(fail_df)) {
     safe_write_csv(fail_df, file.path(dir_inst, sprintf("scrape_fail_%s.csv", ts_now())))
@@ -271,7 +257,11 @@ for (inst in inst_all) {
   grand_fail <- grand_fail + fail_n
   
   cat("  Done:", inst, "| OK:", ok_n, "| FAIL:", fail_n, "\n")
-  cat("  Output:\n   ", gsub("^.+data/", "data/", csv_latest), "\n")
+  
+  cat("  Output:\n")
+  cat("   CSV : ", gsub("^.+data/", "data/", csv_latest), "\n", sep = "")
+  if (SAVE_HTML) cat("   HTML: ", gsub("^.+data/", "data/", dir_html), "\n", sep = "")
+  if (SAVE_TXT)  cat("   TXT : ", gsub("^.+data/", "data/", dir_txt),  "\n", sep = "")
 }
 
 cat("\nSummary: OK =", grand_ok, "| FAIL =", grand_fail, "\n")
