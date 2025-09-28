@@ -4,8 +4,8 @@ selectors:
     course_name_no: ".page-title"
 
   uia:
-    fulltext: ".col-md-8"
-    course_name_no: ".course-title"
+    fulltext: ".main-text"
+    course_name_no: "h1"
 
   ntnu:
     fulltext: "#content"
@@ -56,8 +56,8 @@ selectors:
     course_name_no: ".h1"
 
   usn:
-    fulltext: "usn-study"
-    course_name_no: "usn-study"
+    fulltext: ".usn-study"
+    course_name_no: "h1"
 
   uit:
     fulltext: ".hovedfelt"
