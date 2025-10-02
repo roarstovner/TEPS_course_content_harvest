@@ -1,0 +1,131 @@
+institution: uib
+code: MATDID210-0
+year: NA
+hv: NA
+url: https://www4.uib.no/studier/emner/matdid210
+status: 200
+course_name_no: Matematikkdidaktikk 1
+----- FULLTEXT -----
+
+Navigasjonssti
+Forside
+Studier
+Emner
+
+Matematikkdidaktikk 1
+
+Studiepoeng
+
+5
+
+Undervisningssemester
+
+Haust
+
+Emnekode
+
+MATDID210
+
+Talet pC% semester
+
+1
+
+UndervisningssprC%k
+
+Norsk/dansk
+
+Ressursar
+
+Timeplan
+
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust 2021 VC%r 2020 Haust 2020 VC%r 2019 Haust 2019 VC%r 2018 Haust 2018 VC%r 2017 Haust 2017 VC%r 2016 Haust 2016 VC%r
+MC%l og innhald
+
+Emnet undervises siste gang hC8sten 2025.
+
+Emnet tek for seg lC&ring og undervisning i faget matematikk. OgsC% kunnskapar om og refleksjon over forkunnskapar og kunnskapsutvikling hos elevane, og dessutan arbeids- og vurderingsformer knytt til lC&ring i matematikk stC%r sentralt. Kunnskap om pC% kva mC%te undervisning kan planleggast, tilpassast og gjennomfC8rast vil ogsC% hC8re med. OgsC% det spesielle forholdet mellom matematikk og andre samfunnsomrC%de vil bli belyst. Kunnskap og refleksjonar over matematikken sitt sC&rpreg og konsekvensar for mC%l, innhald og arbeidsmC%tar i opplC&ringa blir tatt opp.
+
+DC8me pC% emne som kan bli tekne opp:
+
+matematisk kompetanse
+diagnostiske oppgC%ver
+arbeidsformer
+matematikkhistorie
+digitale verktC8y
+matematikkvanskar
+problemlC8ysing
+undervisningskunnskap
+
+Emnet har fortrinnsvis fokus pC% ungdomstrinnet.
+
+LC&ringsutbyte
+
+Kunnskaper
+
+Kandidaten skal kunne
+
+gjere greie for teoriar som beskriv utvikling av matematiske omgrep og strukturen deira
+drC8fte korleis ulike lC&ringsteoriar kan gi grunnlag for ulike undervisningsformar og korleis lC&ringssynet pC%virker undervisningspraksisen
+gjere greie for eit utvida kompetanseomgrep for matematikk og kunne bruke dette til C% analysere undervisninga
+drC8fte kva kompetansar ein matematikklC&rar mC% stille med
+
+Ferdigheiter
+
+Kandidaten skal kunne
+
+bruke matematikkfagdidaktisk teori til C% analysere undervisning, elevars tenking, undervisningsopplegg, lC&replanar, lC&reverk og hjelpemiddel (som digitale verktC8y)
+eksemplifisere og bruke varierte undervisningsformer i matematikk
+eksemplifisere og bruke ulike representasjonsformer av matematiske omgrep og veksle mellom fagsprC%ket og det naturlege sprC%ket for C% kommunisere matematikkinnhald i undervisninga
+
+Generell kompetanse
+
+Kandidaten skal kunne
+
+utvikla ein reflektert haldning til sin eiga rolle som lC&rar og korleis han kan vidareutvikle sine lC&rarkompetansar
+bruke didaktisk teori og eiga erfaring til C% analysere matematikkfagets rolle i skulen og samfunnet pC% en sjC8lvstendig mC%te
+Undervisningssemester
+Haust. Emnet undervises siste gang hC8sten 2025.
+Undervisningsstad
+Bergen
+Krav til forkunnskapar
+Emnet mC% normalt tas parallelt med KOPRA103 og PEDA122.
+Krav til studierett
+Studierett knytt til Fakultet for naturvitskap og teknologi si integrerte lektorutdanning.
+Obligatorisk undervisningsaktivitet
+Obligatorisk oppmC8te pC% 75 %
+To obligatoriske arbeidsoppgC%ver/aktivitetar (gyldig i tre semester; inneverande og to pC%fC8lgjande).
+
+For C% kunne ta eksamen i MATDID210 mC% normalt KOPRA103 vC&re bestC%tt.
+
+Vurderingsformer
+ProsjektoppgC%ve
+Karakterskala
+Ved sensur av emnet vert karakterskalaen A-F nytta.
+Vurderingssemester
+Det er ordinC&r eksamen kvart semester
+Emneevaluering
+Studentane skal evaluere undervisninga i trC%d med UiB og instituttet sitt kvalitetssikringssystem.
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust 2021 VC%r 2020 Haust 2020 VC%r 2019 Haust 2019 VC%r 2018 Haust 2018 VC%r 2017 Haust 2017 VC%r 2016 Haust 2016 VC%r
+Kontaktinformasjon
+SpC8rsmC%l knyttet til obligatorikk og vurdering kan rettes til studieveileder@math.uib.no. For C8vrige spC8smC%l, kontakt lektor.realfag@uib.no.
+Eksamensinformasjon
+Vurderingsordning
+ProsjektoppgC%ve
+Trekkfrist
+01.11.2025
+
+Dette bC8r du vite om eksamen
+
+Matematisk institutt
+
+Vurderingsordning
+
+ProsjektoppgC%ve
+
+Trekkfrist
+
+01.11.2025

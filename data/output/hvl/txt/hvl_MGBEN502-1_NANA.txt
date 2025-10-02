@@ -1,0 +1,10 @@
+institution: hvl
+code: MGBEN502-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGBEN502
+status: 200
+course_name_no: MGBEN502 Engelsk 3, emne 2 - Forskningsdesign og metoder i engelsk undervisningsvitenskap
+----- FULLTEXT -----
+
+NA

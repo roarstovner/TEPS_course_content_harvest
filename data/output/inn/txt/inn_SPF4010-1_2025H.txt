@@ -1,0 +1,10 @@
+institution: inn
+code: SPF4010-1
+year: 2025
+hv: H
+url: https://studiekatalog.edutorium.no/inn/nb/emne/SPF4010-1/2025-host
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+NA

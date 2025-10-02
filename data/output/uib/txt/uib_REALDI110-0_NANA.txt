@@ -1,0 +1,134 @@
+institution: uib
+code: REALDI110-0
+year: NA
+hv: NA
+url: https://www4.uib.no/studier/emner/realdi110
+status: 200
+course_name_no: LC&ring i realfaga
+----- FULLTEXT -----
+
+Navigasjonssti
+Forside
+Studier
+Emner
+
+LC&ring i realfaga
+
+Studiepoeng
+
+10
+
+Undervisningssemester
+
+Haust
+
+Emnekode
+
+REALDI110
+
+Talet pC% semester
+
+1
+
+UndervisningssprC%k
+
+Norsk
+
+Ressursar
+
+Timeplan
+
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust
+MC%l og innhald
+
+MC%l:
+
+Emnet har som mC%l C% gje innsikt i korleis ein fremmar og kombinerer elevane si strukturelle og instrumentelle lC&ring og forstC%ing. Emnet har fokus pC% tilpassa opplC&ring gjennom C% skape engasjement og deltaking gjennom elevaktive arbeidsmC%tar.
+
+Innhald:
+
+Emnet tar opp fire hovudtema.
+
+1 LC&ring gjennom matematisk modellering og praktisk utforsking. Strukturell forstC%ing av matematiske objekt og utfC8ring av matematiske operasjonar. Bruk av forsC8k og oppgC%vetypar i naturfaga som er relevante for utvikling, diskusjon og testing av elevgenererte forklaringsidear og lC&ring av fagleg teori.
+
+2 LC&ring gjennom dialog i realfaga. Bruk av lC&ringsdialogar med ulike fC8remC%l, spC8rsmC%lstypar, organiseringar, oppfC8lging av elevinnspill i dialogar og opplC&ring i utforskande dialog.
+
+3 Presentasjon av fagstoff. Utfordringar og moglegheiter ved monologisk og dialogisk presentasjon av fagstoff. Forankring i elevar si tenking, bruk av ana-logiar og forenklingar og vitskaplege modellar, aktivering av elever gjennom oppgC%ver og dialog.
+
+4 SprC%kets rolle i lC&ringa. Innsikt i metodar som fremmar elevane si utvikling av fagsprC%k og forstC%ing gjennom tilrettelegging for kognitiv bearbeiding og utprC8vande sprC%kbruk.
+
+LC&ringsutbyte
+
+Studenten skal ved avslutta emne ha fC8lgjande lC&ringsutbytte:
+
+Kunnskap
+
+Studenten
+
+kan gje dC8me pC% sentrale funn frC% kjente undersC8kingar av lC&ring og undervisning i matematikk og naturfaga
+kan greie ut om rolla sprC%k og teikn spelar i elevar sine lC&ringsprosessar basert pC% omgrep sentrale i lC&ringsteoriar.
+kan gjere reie for korleis matematisk modellering, praktisk arbeid og ulike typar fagleg dialog kan fremma lC&ring
+kan greie ut om metodar for formidling av fagstoff, bruk av modeller og aktivering av elever.
+
+Ferdigheiter
+
+Studenten
+
+kan identifisere grunnidear i faglege emne og planlegge korte utforskande C8kter og modelleringsaktivitetar som fremmer kognitiv og sprC%kleg aktivitet hos elevane
+kan undersC8kje korleis ulike arbeidsmC%tar og dialogtypar verkar inn pC% elevar si deltaking og utvikling av grunnleggjande dugleikar
+kan drC8fte munnleg og skriftleg omgrepet djupnelC&ring og konkrete lC&ringsaktivitetar i lys av omgrep frC% sentrale lC&ringsteoriar
+
+Generell kompetanse
+
+Studenten
+
+kan gjere relevant bruk av vitskapelege forskingsresultat i munnleg og skriftleg kommunikasjon.
+kan formulere vitskaplege argument munnleg og skriftleg
+kan gjennomfC8re korrekt kjeldebruk og referanse-handsaming i skriftleg tekst
+Studiepoeng, omfang
+10 studiepoeng
+StudienivC% (studiesyklus)
+Bachelor
+Undervisningssemester
+Haust og vC%r. Emnet gC%r over to semester og startar om hausten.
+Krav til forkunnskapar
+Ingen. Emnet kan tas parallelt med PPUPRA101 og 102.
+Krav til studierett
+For oppstart pC% emnet er det krav om studierett pC% PPU heltid.
+Arbeids- og undervisningsformer
+Det vert brukt arbeids- og undervisningsformer som inneber diskusjon av faglege problemstillingar i grupper og plenum, arbeid med case- og problembaserte oppgC%ver i grupper og seminar med krav til forberedt deltaking.
+Obligatorisk undervisningsaktivitet
+
+Fire obligatoriske gruppeoppgC%ver (praktiske, skriftege og munnlege) knytt mellom anna til praksis
+
+(Gyldig i fire semester; inneverande og tre pC%fC8lgjande)
+
+Vurderingsformer
+
+I emnet nyttar ein fC8lgjande vurderingsformer:
+
+SemesteroppgC%ve knytt til praksis bestC%ande av to eller tre tekster basert pC% oppgitte tema
+Karakterskala
+Bokstavkarakterer med skalaen A, B, C, D, E, F
+Vurderingssemester
+Haust/VC%r
+Litteraturliste
+Litteraturlista vil vere klar innan 01. juli ved kursoppstart.
+Emneevaluering
+Studentane skal evaluere undervisninga i trC%d med UiB og instituttet sitt kvalitetssikringssystem.
+Hjelpemiddel til eksamen
+Ingen
+Programansvarleg
+Psykologisk fakultet
+Emneansvarleg
+Matematisk institutt har emneansvaret, men da emnet er et fellesemne or PPU-studentar pC% tvers av realfag, skal studieplanendringar godkjennast av Lektorutdanningsutvalet.
+Administrativt ansvarleg
+Matematisk institutt
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust
+Kontaktinformasjon
+Studierettleiar for emnet kan kontaktast her: studierettleiar@math.uib.no
+Matematisk institutt

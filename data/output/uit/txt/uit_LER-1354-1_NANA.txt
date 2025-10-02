@@ -1,0 +1,19 @@
+institution: uit
+code: LER-1354-1
+year: NA
+hv: NA
+url: https://uit.no/utdanning/aktivt/emne/LER-1354
+status: 200
+course_name_no: vC%r 2025
+LER-1354 KroppsC8ving fellesemne 5-10 - 15 stp
+----- FULLTEXT -----
+
+
+Startsida
+Emnekatalog
+KroppsC8ving fellesemne 5-10
+Timeplan
+Se timeplan
+
+   
+

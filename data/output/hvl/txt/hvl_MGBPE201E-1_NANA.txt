@@ -1,0 +1,10 @@
+institution: hvl
+code: MGBPE201E-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGBPE201E
+status: 200
+course_name_no: MGBPE201E Pedagogikk og elevkunnskap, emne 2 - LC&reren og eleven i mangfoldige lC&ringsmiljC8
+----- FULLTEXT -----
+
+NA

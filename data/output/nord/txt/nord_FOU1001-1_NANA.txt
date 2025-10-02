@@ -1,0 +1,110 @@
+institution: nord
+code: FOU1001-1
+year: NA
+hv: NA
+url: https://www.nord.no/studier/emner/fou1001
+status: 200
+course_name_no: Forsknings- og utviklingsoppgave
+----- FULLTEXT -----
+
+Dette obligatoriske emnet vil gC% over de 3 fC8rste studieC%rene. De to fC8rste studieC%rene vil FoU-kompetansen knyttes til fag. I 3. studieC%r vil en obligatorisk oppgave bli gitt i form av en FoU-oppgave der studentene videreutvikler sin kompetanse innenfor akademisk skriving og bruk av aktuell forskning. Det vil ogsC% bli tilbudt metodekurs i starten pC% 3. studieC%r, gitt ett arbeidskrav i form av en prosjektskisse, tildelt veileder og holdt FoU- seminar.
+
+MC%let med emnet er at arbeidet med forsking- og utvikling (FoU) -kompetansen og FoU- oppgaven skal fC% et omfang som skal bidra til C% C8ke kompetansen pC% veien fram mot masterarbeidet 5. studieC%r. FoU-kompetansen skal arbeides med over 1., 2. og i starten av 3. studieC%r. FoU-kompetansen blir vurdert 3.studieC%r i en FoU-oppgave. Forsknings- og utviklingsoppgaven er et skriftlig arbeid der studenten selv velger om oppgaven dreier seg om et undervisningsfag og /eller pedagogikk og elevkunnskap, eller et tverrfaglig tema.
+
+1.studieC%r: Her knyttes arbeid med FoU- kompetansen til PEL og gjennom praksis (bC%de gjennom undervisning, oppgaver og arbeidskrav). Stikkord for fokus her er:-Akademisk skriving-LitteratursC8k-KildehC%ndtering-Kildekritikk-Vitenskapelig metode-Kritisk refleksjon
+
+2. studieC%r: Her knyttes arbeid med FoU- kompetansen til undervisning av faginnhold i norsk/matematikk og gjennom praksis (undervisning, oppgaver og arbeidskrav).Her bygger en pC% punktene vist til pC% 1. C%ret og utvides med forskningsetikk og metodiske tilnC&rminger.
+
+3.studieC%r: I starten av tredje studieC%r arbeides det med en videreutvikling av FoU-kompetansen, og det gjennomfC8res metodekurs. FoU- kompetansen bli vurdert i studentens FoU- oppgave.
+
+Studentene vil fC% tilbud om veiledning i FoU- arbeidet, men har selv ansvar for C% ta kontakt med veileder. FoU- oppgaven som skrives kan knyttes til praksis for C% fC% frem utviklingsarbeidsperspektivet i FoU (innovasjoner/empiri). Arbeid med selve FoU- oppgaven (analyse, skriving av tekst) legges utenom praksis. I lC8pet av studieC%ret pC% vC%ren, vil studentene fC% tilbud om et FoU-seminar som er en del av veiledningsressursen. Den faglige vurderingen vil bli knyttet opp mot lC&ringsutbytte beskrivelsen.FoU-oppgaven er pC% 0 (null) poeng, men tilsvarer en arbeidsmengde pC% 10 poeng. Studentene mC% bestC% dette for C% kunne starte pC% masteroppgaven 5. studieC%r.
+
+MC%let med emnet er at arbeidet med forsking- og utvikling (FoU) -kompetansen og FoU- oppgaven skal fC% et omfang som skal bidra til C% C8ke kompetansen pC% veien fram mot masterarbeidet 5. studieC%r. FoU-kompetansen skal arbeides med over 1., 2. og i starten av 3. studieC%r. FoU-kompetansen blir vurdert 3.studieC%r i en FoU-oppgave. Forsknings- og utviklingsoppgaven er et skriftlig arbeid der studenten selv velger om oppgaven dreier seg om et undervisningsfag og /eller pedagogikk og elevkunnskap, eller et tverrfaglig tema.
+
+1.studieC%r: Her knyttes arbeid med FoU- kompetansen til PEL og gjennom praksis (bC%de gjennom undervisning, oppgaver og arbeidskrav). Stikkord for fokus her er:-Akademisk skriving-LitteratursC8k-KildehC%ndtering-Kildekritikk-Vitenskapelig metode-Kritisk refleksjon
+
+2. studieC%r: Her knyttes arbeid med FoU- kompetansen til undervisning av faginnhold i norsk/matematikk og gjennom praksis (undervisning, oppgaver og arbeidskrav).Her bygger en pC% punktene vist til pC% 1. C%ret og utvides med forskningsetikk og metodiske tilnC&rminger.
+
+3.studieC%r: I starten av tredje studieC%r arbeides det med en videreutvikling av FoU-kompetansen, og det gjennomfC8res metodekurs. FoU- kompetansen bli vurdert i studentens FoU- oppgave.
+
+Studentene vil fC% tilbud om veiledning i FoU- arbeidet, men har selv ansvar for C% ta kontakt med veileder. FoU- oppgaven som skrives kan knyttes til praksis for C% fC% frem utviklingsarbeidsperspektivet i FoU (innovasjoner/empiri). Arbeid med selve FoU- oppgaven (analyse, skriving av tekst) legges utenom praksis. I lC8pet av studieC%ret pC% vC%ren, vil studentene fC% tilbud om et FoU-seminar som er en del av veiledningsressursen. Den faglige vurderingen vil bli knyttet opp mot lC&ringsutbytte beskrivelsen.FoU-oppgaven er pC% 0 (null) poeng, men tilsvarer en arbeidsmengde pC% 10 poeng. Studentene mC% bestC% dette for C% kunne starte pC% masteroppgaven 5. studieC%r.
+
+Opptak til studieprogrammet. Tilbys ikke som enkeltemne.
+
+Kunnskap
+
+Studentene har kunnskap om
+
+vitenskapteoretiske spC8rsmC%lsstillinger innen utdanningsforskning
+metodiske utfordringer innen forskningsbasert erfaringslC&ring
+ulike metodiske tilnC&rminger i akademisk skriving
+
+Ferdigheter
+
+Studenten skal kunne
+
+analysere kritisk relevant forskingsarbeid knyttet til skole og undervisning
+arbeide med, og vurdere, utviklings- og endringsarbeid i skolen
+bruke sentral vitenskapteoretisk- og forskningsmetodisk kunnskap i utformingen av eget forskingsprosjekt ,og kunne skrive pC% en drC8ftende mC%te
+
+Generell kompetanse
+
+Studenten skal
+
+kunne arbeide med faglige, didaktiske og andre pedagogiske problemstillinger ut fra reelle problem i skolen
+vite hva som skal til for C% sette i gang og vurdere endrings- og utviklingsoppgaver knyttet til skolefaglege spC8rsmC%l
+kunne ta stilling til noen grunnleggende forskningsetiske problemstillinger
+
+Kunnskap
+
+Studentene har kunnskap om
+
+Ferdigheter
+
+Studenten skal kunne
+
+Generell kompetanse
+
+Studenten skal
+
+Ingen kostnader utover semesteravgift og pensumlitteratur.
+
+Obligatorisk.
+
+Selvstendig arbeid og forelesninger/seminarer. Individuell veiledning.
+
+Studieprogrammet evalueres C%rlig av studentene gjennom emneundersC8kelser (midtveisevaluering og sluttevaluering). Evaluering inngC%r som en del av universitetets kvalitetssikringssystem.
+
+Sammensatt vurdering: Alle delene beskrevet under mC% vC&re godkjent/bestC%tt, for C% fC% endelig karakter i emnet.
+
+Arbeidskrav: Prosjektskisse, 5. semester. Vurderes til godkjent/ikke godkjent, og teller 0/100 av karakteren.
+
+Oppgave (OP), individuelt eller parvis. 5. semester.
+
+FoU- oppgaven skal ha et omfang pC% 5000 (+/- 10%) ord ved individuell innlevering.
+
+Det C%pnes for at 2 studenter kan skrive sammen og da er omfanget 7000 (+/- 10 ord). Henvisninger i teksten er inkludert i dette omfanget, men ikke litteraturliste, sammendrag, forord eller eventuelle vedlegg.
+
+Studenten mC% ha studiepoeng i det undervisningsfaget som er FoU-oppgavens tema.
+
+Eksamen vurderes til bestC%tt eller ikke bestC%tt, og teller 100/100 av karakteren.
+
+Cvrige formelle krav vil gis i Retningslinjene for FoU- oppgave i GrunnskolelC&rerutdanningen som kommer i Canvas.
+
+Sammensatt vurdering: Alle delene beskrevet under mC% vC&re godkjent/bestC%tt, for C% fC% endelig karakter i emnet.
+
+Arbeidskrav: Prosjektskisse, 5. semester. Vurderes til godkjent/ikke godkjent, og teller 0/100 av karakteren.
+
+Oppgave (OP), individuelt eller parvis. 5. semester.
+
+FoU- oppgaven skal ha et omfang pC% 5000 (+/- 10%) ord ved individuell innlevering.
+
+Det C%pnes for at 2 studenter kan skrive sammen og da er omfanget 7000 (+/- 10 ord). Henvisninger i teksten er inkludert i dette omfanget, men ikke litteraturliste, sammendrag, forord eller eventuelle vedlegg.
+
+Studenten mC% ha studiepoeng i det undervisningsfaget som er FoU-oppgavens tema.
+
+Eksamen vurderes til bestC%tt eller ikke bestC%tt, og teller 100/100 av karakteren.
+
+Cvrige formelle krav vil gis i Retningslinjene for FoU- oppgave i GrunnskolelC&rerutdanningen som kommer i Canvas.
+
+C generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er C% regne som fusk.

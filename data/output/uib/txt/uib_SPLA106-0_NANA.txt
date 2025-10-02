@@ -1,0 +1,145 @@
+institution: uib
+code: SPLA106-0
+year: NA
+hv: NA
+url: https://www4.uib.no/studier/emner/spla106
+status: 200
+course_name_no: Spansk kulturkunnskap
+----- FULLTEXT -----
+
+Navigasjonssti
+Forside
+Studier
+Emner
+
+Spansk kulturkunnskap
+
+Studiepoeng
+
+5
+
+Undervisningssemester
+
+VC%r
+
+Emnekode
+
+SPLA106
+
+Talet pC% semester
+
+1
+
+UndervisningssprC%k
+
+Spansk
+
+Ressursar
+
+Timeplan
+
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust 2021 VC%r 2020 Haust 2020 VC%r 2019 Haust 2019 VC%r 2016 VC%r 2015 Haust 2015 VC%r 2014 Haust 2014 VC%r 2013 Haust 2013 VC%r 2012 Haust 2012 VC%r 2011 Haust 2011 VC%r 2010 Haust 2010 VC%r 2009 Haust
+MC%l og innhald
+Studiet skal gi studentane oversyn over hovuddraga i spansk historie og spanske samfunnstilhC8ve frC% det 20. hundreC%ret.
+LC&ringsutbyte
+Studentane vinn innsyn i sentrale tema og problemstillingar innan fagomrC%det spansk historie, kultur og tradisjonar. Vidare skal studentane analysera fagstoff og trekka eigne slutningar. Dei skal kunna vidareutvikla sin kunnskap, dugleik og forstC%ing gjennom vidare studium og yrkesliv.
+Fulltid/deltid
+Ikkje relevant
+Studiepoeng, omfang
+5 studiepoeng
+StudienivC% (studiesyklus)
+Bachelor
+Undervisningssemester
+
+VC%r
+
+Siste semester med undervisning er vC%ren 2027.
+
+Undervisningsstad
+Bergen
+Krav til forkunnskapar
+Ingen
+TilrC%dde forkunnskapar
+SPLA106 legg til grunn spanskkunnskapar som svarar til fullfC8rt SPLA101 eller SPLA103.
+Studiepoengsreduksjon
+PC% grunn av fagleg overlapp blir studiepoenguttellinga for SPLA106 redusert med 5 studiepoeng om det blir kombinert med SPLA106H.
+Krav til studierett
+Emnet er berre ope for studentar som er tekne opp til Integrert Lektorutdanning ved UiB.
+Arbeids- og undervisningsformer
+
+Det blir normalt undervist i sentrale delar av pensum. I tillegg til oversynsfC8relesingane, blir det undervist i historisk terminologi og tekstforstC%ing. SC&rleg er det lagt vekt pC% kulturforstC%ing gjennom analyse av utvalte tema. Totalt blir det gitt fC8relesingar 2 timar i veka i 4 veker.
+
+Er det svC&rt fC% studentar, blir undervisninga gitt i form av rettleiing.
+
+Obligatorisk undervisningsaktivitet
+Ingen
+Vurderingsformer
+Vurderingsforma er ein 2-timars skoleeksamen med kortsvarsoppgC%ver som blir skriven pC% spansk. Karakteren blir sett pC% grunnlag av bC%de innhald og sprC%k.
+Karakterskala
+Ved sensur av emnet nyttast karakterskalaen A-F, der F er stryk.
+Vurderingssemester
+
+VC%r. Der er C2g vurdering tidleg i haustsemesteret.
+
+Siste semester med vurdering er hC8sten 2027.
+
+Litteraturliste
+Pensum (om lag 200 s.) inkluderer eit oversynsverk og eit lite utval kjeldetekstar.
+Emneevaluering
+Undervisninga blir evaluert i trC%d med UiB sitt kvalitetssikringssystem.
+Hjelpemiddel til eksamen
+Studentane kan nytta eittsprC%kleg og tosprC%kleg (t.d. norsk-spansk/spansk-norsk) ordbok godkjend av instituttet pC% eksamen. Studentane mC% sjC8lve ta med ordbC8ker til eksamen, og halda seg orienterte om og retta seg etter reglane som gjeld for kontroll av ordbC8kene.
+Programansvarleg
+Programstyret har ansvaret for fagleg innhald og oppbygging av studiet, og for kvaliteten pC% studieprogrammet og alle emna der.
+Emneansvarleg
+Programstyret for spansk sprC%k og latinamerikastudium.
+Administrativt ansvarleg
+Det humanistiske fakultet ved Institutt for framandsprC%k har det administrative ansvaret for emnet og studieprogrammet.
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust 2021 VC%r 2020 Haust 2020 VC%r 2019 Haust 2019 VC%r 2016 VC%r 2015 Haust 2015 VC%r 2014 Haust 2014 VC%r 2013 Haust 2013 VC%r 2012 Haust 2012 VC%r 2011 Haust 2011 VC%r 2010 Haust 2010 VC%r 2009 Haust
+Kontaktinformasjon
+studieveileder@if.uib.no
+Eksamensinformasjon
+
+Klokkeslett for oppstart av skriftlig eksamen kan endre seg fra kl 09.00 til 15.00 eller vice versa inntil 14 dager fC8r eksamen.
+
+Vurderingsordning
+Skriftleg skoleeksamen
+Dato
+17.10.2025, 09:00
+Varigheit
+2 timar
+Trekkfrist
+03.10.2025
+Eksamenssystem
+Inspera
+Digital eksamen
+
+Dette bC8r du vite om eksamen
+
+Institutt for fremmedsprC%k
+
+Vurderingsordning
+
+Skriftleg skoleeksamen
+
+Dato
+
+17.10.2025, 09:00
+
+Varigheit
+
+2 timar
+
+Trekkfrist
+
+03.10.2025
+
+Eksamenssystem
+
+Inspera
+
+Digital eksamen

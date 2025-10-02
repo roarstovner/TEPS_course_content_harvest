@@ -1,0 +1,152 @@
+institution: oslomet
+code: M5GPE2100-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/M5GPE2100/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+M5GPE2100 Pedagogikk og elevkunnskap 1, emne 2 Emneplan
+Engelsk emnenavn
+Pedagogy, Subject 2
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 5-10
+Omfang
+15.0 stp.
+StudieC%r
+2025/2026
+Pensum
+HCST 2025
+
+Timeplan
+HCST 2025
+Programplan
+GrunnskolelC&rerutdanning for trinn 5-10 (2025 HCST )
+Emnehistorikk
+2018 / 2019 2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Innledning
+
+Fagplanen tilhC8rende dette emnet er lagt pC% emne M5GPE1100 Pedagogikk og elevkunnskap 1, emne 1.
+
+Forkunnskapskrav
+
+Ingen.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har brei kunnskap om varierte arbeids- og vurderingsformer inkludert digitale lC&ringsressurser for elevene
+har kunnskap om skolens samarbeidspartnere og hvordan disse bidrar til C% sikre barn en god oppvekst
+har kunnskap om ulike lC&revansker og tilpasnings- og atferdsutfordringer hos barn pC% trinn 5-10 og hvordan disse kommer til syne i opplC&ringen
+har kunnskap om barn i sorg og krise, overgrep mot barn og vanskelige livssituasjoner som barn kan komme i
+har kunnskap om sentrale prinsipp som fremmer inkluderende opplC&ring og tilpasset opplC&ring
+har kunnskap om hvordan det praktiske, skapende og estetiske kan pC%virke helse, trivsel og lC&ring
+har kunnskap om forholdet mellom identitet, livssyn og verdier hos elever
+har kunnskap om flersprC%klighet og lC&ring
+har kunnskap om analyse av profesjonsetiske dilemmaer
+
+Ferdigheter
+
+Studenten
+
+kan forklare forholdet mellom tilpasset opplC&ring og spesialundervisning
+kan samarbeide med kollegaer om planlegging, gjennomfC8ring og vurdering av undervisning og lC&ring
+kan kommunisere og samarbeide med elever og foresatte med ulike livssyn, ulike sosial bakgrunner, og ulike sprC%klige tilhC8righeter
+kan fra tidlig i studiet anvende vitenskapsteoretisk og metodisk kunnskap i utformingen av FoU-prosjekt
+kan kritisk analysere og anvende skolens verdigrunnlag
+kan kommunisere og samarbeide med elever og foresatte i en skole preget av mangfold og pluralisme
+kan hC%ndtere profesjonsetiske dilemmaer i skolen
+
+Generell kompetanse
+
+Studenten
+
+kan planlegge, gjennomfC8re og vurdere undervisning i teknologirike klasserom for elevene med utgangspunkt i eksisterende rammefaktorer og gjeldende lC&replanverk
+kan pC% et reflektert og faglig grunnlag vC&re i dialog med eleven og deres foresatte om elevenes lC&ring og utvikling
+har kunnskap om barn og unges identitetsutvikling og livsverden og anvender dette i sin pedagogiske refleksjon og praksis.
+Innhold
+
+Emne 2 bestC%r av fC8lgende temaer med undertemaer:
+
+Tema 1: Elevmangfold og undervisning:
+
+Tilpasset opplC&ring og spesialundervisning.
+Samarbeid om eleven.
+Arbeids og vurderingsformer.
+
+Tema 2: Profesjonsetikk:
+
+Etiske teorier.
+Profesjonsetiske dilemmaer i skolen.
+
+Tema 3: Oppvekst, sosialisering og identitet:
+
+Identitetsutvikling i det mangfoldige og pluralistiske samfunnet.
+Oppvekstbetingelser.
+Ulike sosialiseringsarenaer.
+
+Tema 4: LC&reren i organisasjonen:
+
+Samarbeid mellom skole og hjem.
+LC&reren i profesjonsfelleskapet.
+Skolen som organisasjon.
+Arbeids- og undervisningsformer
+
+Se fagplanen.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+Retten til C% avlegge eksamen forutsetter godkjente arbeidskrav og deltakelse i bestemte faglige aktiviteter. FC8lgende arbeidskrav mC% vC&re godkjent fC8r muntlig eksamen kan avlegges:
+
+Arbeidskrav 1
+
+Studentene skal gjennomfC8re intervju med en medstudent knyttet til tema 1. Ca. 10 minutter. Intervjuet skal transkriberes og vC&re utgangspunkt for et fagnotat, omfang 1000 ord +/- 10 %, gjennomfC8res individuelt. Arbeidskravet skal gi studentene mulighet til C% C8ve seg pC% intervju som forskningsmetode og til C% utvikle en kort akademisk tekst.
+
+Arbeidskrav 2
+
+Studentene skal gjennomfC8re et muntlig foredrag i klassen over en selvvalgt problemstilling under tema 3 (ca. 10 minutter). GjennomfC8res i par. FormC%let med arbeidskravet er fC% C8velse i muntlig formidling overfor en stC8rre gruppe.
+
+Arbeidskrav 3
+
+Studentene skal skrive et fagnotat om barn og unges oppvekst, sosialisering og identitetsutvikling i en mangfoldig og pluralistisk skole, omfang 1000 ord +/- 10 %, gjennomfC8res individuelt. FormC%let med arbeidskravet er at studentene skal uttrykke en selvstendig refleksjon knyttet til tematikken
+
+Arbeidskravene vurderes til "godkjent" eller "ikke godkjent". Studenter som leverer/utfC8rer arbeidskrav innen fristen, men som fC%r vurderingen "ikke godkjent", har anledning til to nye innleveringer/ utfC8relser. Studenter mC% da selv avtale ny vurdering av det aktuelle arbeidskravet med faglC&rer. For nC&rmere omtale av arbeidskrav se fagplanen.
+
+Faglige aktiviteter med krav om deltakelse
+
+LC&ring i pedagogikk og elevkunnskap forutsetter samhandling med medstudenter og faglC&rere om sentrale utfordringer i faget knyttet til temaene i emnet. Faget skal vC&re profesjonsrettet og bidra til sammenheng i studiet og til kritisk tenkning, selvstendighet og refleksjon hos studenten. Faget skal utvikle kunnskaper, ferdigheter og generell kompetanse hos studenten, noe som ikke kan tilegnes kun ved lesing, men som mC% utvikles i dialog og ved tilstedevC&relse i undervisning. Gjennom studentaktive arbeidsformer som undervisningsC8vinger, dramatisering og rollespill skal studentene gis muligheter til C% utvikle ferdigheter som er relevante for profesjonelt lC&rerarbeid. Det er derfor krav om minimum 80 % deltakelse i undervisningen. Studenter som ikke oppfyller kravet om deltakelse, mC% levere kompensatoriske oppgaver om sentrale tema i emnet. Sykdom fritar ikke for kravet om deltakelse.
+
+I tillegg til deltakelse i minst 80 % av undervisningen er det krav om deltagelse i fC8lgende faglige aktiviteter:
+
+kurs i forskningsmetode (intervju og aksjonsforskning-lC&ring)
+kurs i akademisk skriving 2 (intervju)
+flerfaglig tema om barn, ungdom og helse
+fC8rstehjelpskurs
+
+Manglende deltagelse i faglige aktiviteter nevnt over medfC8rer at studenten ikke fC%r avlegge eksamen i det emnet kravet om deltagelse er knyttet til. Sykdom fritar ikke for kravet om deltagelse. Studenter som ikke oppfyller kravet om deltakelse mC% snarest mulig ta kontakt med faglC&rer for avtale om alternativ gjennomfC8ring.
+
+Vurdering og eksamen
+
+Individuell muntlig eksamen. Ca. 30 minutter.
+
+Ny/utsatt eksamen arrangeres som ved ordinC&r eksamen.
+
+Hjelpemidler ved eksamen
+
+Ingen.
+
+Vurderingsuttrykk
+
+Det benyttes en gradert karakterskala fra A til E for bestC%tt og F for ikke bestC%tt
+
+Sensorordning
+
+Eksamen bedC8mmes av to interne sensorer. Emnet er underlagt tilsynssensur, i henhold til retningslinjer for oppnevning og bruk av sensorer.

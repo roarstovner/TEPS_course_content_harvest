@@ -1,0 +1,123 @@
+institution: nmbu
+code: PPXP100-1
+year: NA
+hv: NA
+url: https://www.nmbu.no/emne/PPXP100
+status: 200
+course_name_no: PPXP100 InnfC8ring i profesjonsfag og praksis
+----- FULLTEXT -----
+
+PPXP100 InnfC8ring i profesjonsfag og praksis
+
+Studiepoeng:10
+
+Ansvarlig fakultet:Fakultet for realfag og teknologi
+
+Emneansvarlig:Gerd Johansen
+
+Campus / nettbasert:Undervises campus Cs
+
+Undervisningens sprC%k:Norsk
+
+Antall plasser:35
+
+Frekvens:Crlig
+
+Forventet arbeidsmengde:300 timer inkludert 15 praksisdager med arbeidstid tilsvarende en lC&rer i full stilling.
+
+Undervisnings- og vurderingsperiode:Undervisning i augustblokk og januarblokk. Vurdering i augustblokk, hC8stparallell, januarblokk og vC%rparallell.
+
+Om dette emnet
+
+Emnet gir en innfC8ring i fagdidaktisk og pedagogisk tenkning samt praksis gjennom en kombinasjon av undervisning i profesjonsfag og praksisopplC&ring i august- og januarblokk.
+
+Hensikten med emnet er C% gi studenten en begynnende innsikt i hva det vil si C% vC&re lC&rer. Viktige elementer i emnet er C% delta i, observere og beskrive undervisning og elevers faglige og sosiale lC&ring. Emnet tar for seg at det er ulike tilnC&rminger til utdanning for bC&rekraftig utvikling og at bC&rekraftig utvikling henger tett sammen med demokrati og medborgerskap og folkehelse og livsmestring.
+
+Dette lC&rer du
+
+LC&ringsutbyttet er innenfor omrC%dene pedagogikk, fagdidaktikk og praksis.
+
+Kunnskap: Studenten
+
+har grunnleggende teoretisk og erfaringsbasert kunnskap om observasjon, planlegging og gjennomfC8ring av undervisning med utgangspunkt i lC&replanverket og elevgruppa
+har kunnskap om grunnleggende profesjonsetiske vurderinger og kan reflektere over disse
+har kunnskap om ulike perspektiv pC% utdanning for bC&rekraftig utdanning
+har kunnskap om hvordan og hvorfor digitale verktC8y kan benyttes i undervisning og reflektere over disse i et bC&rekraftsperspektiv
+
+Ferdighet: Studenten
+
+har lC&ringsfremmende og relasjonsbyggende kommunikasjon med elever, lC&rere og medstudenter
+kan lage enkle planer for undervisning
+
+Generell kompetanse: Studenten
+
+kan samarbeide i grupper og reflektere over gruppeprosessene
+kan skrive reflekterende tekst med utgangspunkt i egne erfaringer og faglitteratur
+kan bruke emnelitteraturen og erfaringer fra praksis til C% gjC8re egne refleksjoner om lC&ring, undervisning og utdanning for bC&rekraftig utvikling
+LC&ringsaktiviteter
+
+Emnet kombinerer praksisopplC&ring i skole med undervisning pC% campus. PraksisopplC&ring er i gruppe og fortrinnsvis i ungdomsskole. Praksis er totalt 15 dager: 5 dager i august og 10 dager i januar. Praksisen i august fokuserer pC% observasjon av undervisning og det C% ha god kommunikasjon med elever, lC&rere og medstudenter. Under praksisperioden i januar skal kommunikasjon og samhandling med elever og praksislC&rere videreutvikles. I januar skal praksisgruppa delta mer aktivt i undervisning og ha noe mer ansvar for C% planlegge undervisning samt fC% erfaringer med C% lede undervisning.
+
+Undervisningen pC% campus vil vektlegge varierte arbeidsmC%ter og undervisningsmetoder, med vekt pC% samarbeid og gruppeprosesser. Refleksjon over praksis og teori er sentralt.
+
+LC&ringsstC8tte
+Studentene veiledes i obligatoriske aktiviteter og i praksisopplC&ring.
+Pensum
+Oversikt over litteratur ligger i lC&ringsplattformen Canvas ved emnets start.
+Vurderingsordning, hjelpemiddel og eksamen
+
+Emnet bestC%r av to deler som vurderes hver for seg:
+
+PraksisopplC&ringen. Samlet vurdering som vurderes bestC%tt/ikke bestC%tt.
+
+Og en skriftlig individuell hjemmeeksamen.
+
+Karakteruttrykk: BestC%tt/ikke bestC%tt
+
+
+
+
+Om bruk av KI
+
+K2 - Spesifisert bruk av KI. Bruk av KI mC% vC&re i trC%d med retningslinjene for bruk av kunstig intelligens (KI) ved NMBU.
+
+KI i ulike former vil inngC% som en del av ordinC&r undervisning.
+
+Det gis anledning til C% bruke generativ KI (chatbot) for C% hjelpe til med rettskriving og grammatikk pC% hjemmeeksamen. Det vil si prompt som spC8r etter grammatikk pC% setningsnivC%. Det er ikke anledning C% be chatbot om hjelp til innhold i hjemmeeksamen. Begreper og teori skal forankres i emnets litteratur og studenten skal selv - og sammen med medstudenter, reflektere over praksis og teori.
+
+Her finner du KI-kategoriene beskrevet.
+
+Sensorordning
+
+- PraksislC&rer og emneansvarlig vurderer praksisopplC&ringen.
+
+- Ekstern sensor kontrollerer og godkjenner oppgavetekst og vurderingskriterier.
+
+- En intern sensor vurderer de skriftlige besvarelsene.
+
+Obligatorisk aktivitet
+15 dager praksisopplC&ring
+Minimum 80% deltakelse i undervisning pC% campus
+Plan for praksis i august
+Plan for praksis i januar
+Rapport fra praksis i august
+Undervisningstider
+Emnet bestC%r av tre uker teorisamlinger. To uker samling i augustblokka og en ukesamling i januarblokka. I periodene mellom samlingene kan lC&rere og studenter bruke digitale flater for C% skrive, informere, veilede, levere inn oppgaver og kommunisere med hverandre, samt ta kontakt med bibliotek og Skrivesenteret. PraksisopplC&ring i emnet bestC%r av 15 dager med gruppebasert veiledet praksis. 5 dager av praksisopplC&ringen gjennomfC8res i augustblokka, og 10 dager gjennomfC8res i januarblokka. Studentens praksisopplC&ring skal gjennomfC8res pC% en og samme praksisskole. I lC8pet av praksisperioden vil studentene fC% ett besC8k av lC&rere fra NMBU.
+Fortrinnsrett
+
+30 plasser er for 1. C%rs studenter pC% lektorprogrammet. Cvrige plasser gC%r til de studentene som er tatt opp til hC8yere C%rstrinn pC% lektorprogrammet.
+
+M-LUN
+
+Overlapp
+
+PPFD300 5 stp.
+
+PPPE300 5 stp.
+
+Opptakskrav
+Realfag
+
+TilgjengelighetserklC&ring
+PersonvernerklC&ring
+Endre cookies

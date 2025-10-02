@@ -1,0 +1,10 @@
+institution: hvl
+code: MGUUB101-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGUUB101
+status: 200
+course_name_no: MGUUB101 Teoretiske perspektiv pC% utdanning og bC&rekraftig utvikling i Afrika
+----- FULLTEXT -----
+
+NA

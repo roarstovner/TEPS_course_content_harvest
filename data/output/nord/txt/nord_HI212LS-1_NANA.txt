@@ -1,0 +1,80 @@
+institution: nord
+code: HI212LS-1
+year: NA
+hv: NA
+url: https://www.nord.no/studier/emner/hi212ls
+status: 200
+course_name_no: Bacheloroppgave i historie
+----- FULLTEXT -----
+
+Bacheloroppgaven i historie er et individuelt og selvstendig skriftlig arbeid der studenten gis en C8velse i C% behandle historiske kilder og faglitteratur pC% en selvstendig mC%te.
+
+Bacheloroppgaven i historie er et selvstendig skriftlig arbeid der studenten gis en C8velse i C% behandle historiske kilder og faglitteratur pC% en selvstendig mC%te.
+
+Studentene velger selv emne for oppgaven, men emnet skal vC&re relevant for undervisning i skolens trinn 8-13. Selvvalgt pensum skal ikke overlappe pensum fra andre kurs i historie. Emnet skal avklares med faglC&rer, med forbehold om veiledningskapasitet.
+
+Bacheloroppgaven skal ha et omfang pC% minimum 12 og maksimum 20 maskinskrevne sider (linjeavstand 1,5, skriftstC8rrelse 12 pkt.). Tittelside, innholdsfortegnelse, noter og litteraturliste kommer i tillegg. Studentene mC% fC8lge vanlige regler for bruk av og henvisninger til litteratur og andre hjelpemidler. Studenten legger opp rundt 600 sider litteratur som utgjC8r pensum for emnet.
+
+Studentene mC% fC8lge vanlige regler for bruk av og henvisninger til litteratur og andre hjelpemidler.
+
+Bacheloroppgaven i historie er et selvstendig skriftlig arbeid der studenten gis en C8velse i C% behandle historiske kilder og faglitteratur pC% en selvstendig mC%te.
+
+Studentene velger selv emne for oppgaven, men emnet skal vC&re relevant for undervisning i skolens trinn 8-13. Selvvalgt pensum skal ikke overlappe pensum fra andre kurs i historie. Emnet skal avklares med faglC&rer, med forbehold om veiledningskapasitet.
+
+Bacheloroppgaven skal ha et omfang pC% minimum 12 og maksimum 20 maskinskrevne sider (linjeavstand 1,5, skriftstC8rrelse 12 pkt.). Tittelside, innholdsfortegnelse, noter og litteraturliste kommer i tillegg. Studentene mC% fC8lge vanlige regler for bruk av og henvisninger til litteratur og andre hjelpemidler. Studenten legger opp rundt 600 sider litteratur som utgjC8r pensum for emnet.
+
+Studentene mC% fC8lge vanlige regler for bruk av og henvisninger til litteratur og andre hjelpemidler.
+
+Emnet er kun C%pent for studenter i Lektorutdanning i samfunnsfag.
+
+Studentene mC% ha fullfC8rt kurs i historie pC% grunnleggende nivC% med et omfang pC% 60 studiepoeng.
+
+Kunnskaper:
+
+Studenten skal i samrC%d med veileder finne fram til et tema og en historiefaglig problemstilling og evne C% belyse og drC8fte denne i en skriftlig framstilling.
+Studenten skal ha gode kunnskaper om det tema bacheloroppgaven omhandler.
+Studenten skal ha en viss oversikt over forskningslitteraturen rundt dette temaet.
+
+Ferdigheter:
+
+Studenten skal vise evne til C% velge ut faglitteratur/historiske kilder knyttet til bacheloroppgavens emne og problemstilling, og anvende litteraturen/kildene for historiefaglig argumentasjon.
+Studenten skal kunne kunne drC8fte et historisk problem skriftlig og muntlig.
+Studenten skal evne C% omgis kilder pC% en kritisk og reflektert mC%te.
+
+Generell kompetanse:
+
+Studenten skal vise evne til C% sette seg inn i forskningslitteratur/historiske kilder og ta selvstendig stilling til faglige spC8rsmC%l
+Studenten skal dokumentere dette i et skriftlig arbeid pC% 12 - 20 sider.
+Studenten skal vise evne til skriftlig og muntlig formidling av fagstoff.
+
+Kunnskaper:
+
+Ferdigheter:
+
+Generell kompetanse:
+
+Kostnader til semesteravgift og pensumlitteratur.
+
+Obligatorisk
+
+Det vil bli gitt en innledende orientering om retningslinjer for hvordan bacheloroppgaver kan skrives (2 timer informasjon ved semesterstart).
+
+Etter at studentene har valgt tema for oppgaven, vil de bli tildelt en veileder. Det er obligatorisk med veiledning under arbeidet med oppgaven. Studentene mC% ha avklart tema og gjennomfC8rt en fC8rste veiledning senest en mC%ned etter semesterstart. De skal avtale minst to veiledninger i lC8pet av kurset og kan ikke regne med veiledning den siste uka fC8r innlevering. Plan for veiledning avtales individuelt med veileder.
+
+Det vil bli gitt en innledende orientering om retningslinjer for hvordan bacheloroppgaver kan skrives (2 timer informasjon ved semesterstart).
+
+Etter at studentene har valgt tema for oppgaven, vil de bli tildelt en veileder. Det er obligatorisk med veiledning under arbeidet med oppgaven. Studentene mC% ha avklart tema og gjennomfC8rt en fC8rste veiledning senest en mC%ned etter semesterstart. De skal avtale minst to veiledninger i lC8pet av kurset og kan ikke regne med veiledning den siste uka fC8r innlevering. Plan for veiledning avtales individuelt med veileder.
+
+Crlige evalueringer som inngC%r i universitetets kvalitetssikringssystem.
+
+Bacheloroppgave- muntlig justering, 1 semestre, karakterregel Bokstavkarakterer
+
+Oppgave, - 1 person: 12-20 sider, 2 personer: 20-30 sider, teller 0/100 av karakteren, karakterregel Bokstavkarakterer .
+Arbeidskrav 1: Innlevering av tema og problemstilling. Teller 0/100 av karakteren, vurderes godkjent/ikke godkjent.
+Arbeidskrav 2: Innlevering av disposisjon og pC%begynt innledning (2-3 sider).Teller 0/100 av karakteren, vurderes godkjent/ikke godkjent.
+
+Bacheloroppgave- muntlig justering, 1 semestre, karakterregel Bokstavkarakterer
+
+C generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er C% regne som fusk.
+
+Ingen

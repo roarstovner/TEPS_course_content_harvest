@@ -1,0 +1,139 @@
+institution: nord
+code: MAT1009-1
+year: NA
+hv: NA
+url: https://www.nord.no/studier/emner/mat1009
+status: 200
+course_name_no: Matematikk 1B
+----- FULLTEXT -----
+
+
+
+Dette emnet bygger videre pC% matematikk 1A, hvor studentene ble kjent med hva det vil si C% vC&re matematikklC&rer og C% undervise i trC%d med forskningsbasert kunnskap. Det sentrale i arbeidet til en matematikklC&rer er C% kunne hjelpe elevene med C% utvikle en god forstC%else i matematikk. For C% lykkes med dette, trenger lC&reren en helhetlig undervisningskunnskap som inkluderer bC%de spesialisert matematikkunnskap og matematikkdidaktisk kunnskap. Det innebC&rer C% ha gode kunnskaper om hvordan barn lC&rer matematikk, og hvordan undervisningen kan planlegges og gjennomfC8res med utgangspunkt i elevenes tenkning. I kurset vil det derfor jobbes med spesialisert matematikkunnskap og matematikkdidaktisk kunnskap integrert. Dette emnet har fokus pC% lC&ring og undervisning i geometri, mC%ling, beskrivende statistikk, grunnleggende sannsynlighet og algebra, og hvordan barn utvikler geometrisk, stokastisk og algebraisk tenkning, samt mC%leforstC%else.
+
+Opptak til programmet.
+
+Dersom det er ledige plasser pC% emnet kan det tilbys frittstC%ende for kvalifiserte sC8kere.
+
+Opptak til programmet.
+
+Dersom det er ledige plasser pC% emnet kan det tilbys frittstC%ende for kvalifiserte sC8kere.
+
+Ingen utover opptakskravet.
+
+KUNNSKAPER
+
+Studenten skal
+
+ha spesialisert matematikkunnskap om geometri, mC%ling, beskrivende statistikk, grunnleggende sannsynlighet og algebra
+ha kunnskap om hvordan barn utvikler geometrisk, stokastisk og algebraisk tenkning
+ha undervisningskunnskap i mC%ling, og om hvordan mC%ling relateres til barns utvikling av algebraisk og geometrisk tenking, samt tallforstC%else
+ha kunnskap om sammenhengen mellom lC&rerens undervisningsmetode og elevenes lC&ring
+ha kunnskap om bruk av konkretiseringsmateriale og digitale ressurser i matematikkfaget
+ha kunnskap om vanlige interaksjonsmC8nstre og kommunikasjon knyttet til matematikkundervisning
+har kunnskap om matematikkfagets innhold i barnehagen og pC% ungdomstrinnet og om overgangene fra barnehage til skole og fra barnetrinn til ungdomstrinn
+ha grunnleggende kunnskap om matematikkvansker
+
+FERDIGHETER
+
+Studenten skal
+
+kunne planlegge, gjennomfC8re og vurdere matematikkundervisning for alle elever pC% trinn 1-7 med fokus pC% elevaktivitet
+kunne bruke arbeidsmC%ter som fremmer elevenes undring, kreativitet og evne til C% arbeide systematisk med utforskende aktiviteter, resonnering og argumentasjon
+kunne kommunisere med elever, lytte til, vurdere, gjC8re bruk av elevers innspill og stimulere elevenes matematiske tenking
+kunne analysere og vurdere elevers tenkemC%ter, argumentasjon og lC8sningsmetoder ut fra relevant teori
+kunne vurdere elevenes kunnskap og faglige utvikling basert pC% relevant teori
+
+GENERELL KOMPETANSE
+
+Studenten skal
+
+ha innsikt i matematikkfagets betydning som allmenndannende fag
+
+LC&ringsutbytter som gjelder nasjonal deleksamen (5 stp):
+
+Studenten skal innen algebraisk tenking
+
+ha dybdekunnskap om matematikken elevene arbeider med pC% barnetrinnet med spesiell vekt pC% begynneropplC&ringen
+ha kunnskap om ulike representasjoner og betydningen bruk av overganger mellom representasjoner kan ha for elevers lC&ring
+ha kunnskap om bruk av ulike lC&remidler, bC%de digitale og andre, og muligheter og begrensninger ved slike lC&remidler
+kunne analysere og vurdere elevers argumentasjon og lC8sningsmetoder ut fra ulike perspektiv pC% kunnskap og lC&ring
+
+KUNNSKAPER
+
+Studenten skal
+
+FERDIGHETER
+
+Studenten skal
+
+GENERELL KOMPETANSE
+
+Studenten skal
+
+LC&ringsutbytter som gjelder nasjonal deleksamen (5 stp):
+
+Studenten skal innen algebraisk tenking
+
+Utover semesteravgift og pensumlitteratur forutsettes det at studenten disponerer en bC&rbar datamaskin.
+
+Obligatorisk
+
+Det vil bli lagt vekt pC% varierte arbeidsformer, spesielt med tanke pC% C% forberede studentene pC% arbeidsmC%ter de selv vil mC%tte praktisere med egne elever. Undervisningen vil bestC% av studentaktive lC&ringsformer som problemlC8sing, gruppearbeid, individuelle oppgaver og samtaler/diskusjoner. Bruk av IKT som lC&ringsstC8tte i undervisningsarbeidet vil ogsC% bli vektlagt. Hver student skal gjennomfC8re arbeidsoppgaver knyttet til praksis.
+
+Aktiv deltakelse og samarbeid mellom studentene er en forutsetning for C% kunne oppnC% emnets lC&ringsutbytter.
+
+Det vil bli lagt vekt pC% varierte arbeidsformer, spesielt med tanke pC% C% forberede studentene pC% arbeidsmC%ter de selv vil mC%tte praktisere med egne elever. Undervisningen vil bestC% av studentaktive lC&ringsformer som problemlC8sing, gruppearbeid, individuelle oppgaver og samtaler/diskusjoner. Bruk av IKT som lC&ringsstC8tte i undervisningsarbeidet vil ogsC% bli vektlagt. Hver student skal gjennomfC8re arbeidsoppgaver knyttet til praksis.
+
+Aktiv deltakelse og samarbeid mellom studentene er en forutsetning for C% kunne oppnC% emnets lC&ringsutbytter.
+
+Studieprogrammet evalueres C%rlig av studentene gjennom emneundersC8kelser (midtveisevaluering og sluttevaluering). Evaluering inngC%r som en del av universitetets kvalitetssikringssystem.
+
+GLU 1-7 studenter har praksis i samsvar med praksisplan for GLU 1-7. Praksis er en del av matematikkfaget i lC&rerutdanninga, og erfaringer studentene gjC8r i praksis, mC% knyttes til undervisningen kurset, bC%de ved planlegging fC8r praksis, og analyse og drC8fting etter praksis. Hver student skal gjennomfC8re bC%de elevintervju og utprC8vinger av undervisningsopplegg i forbindelse med praksis.
+
+Arbeidskrav (AK): Studentene skal gjennomfC8re 2 - 3 arbeidskrav, som kan vC&re skriftlige innleveringer, prC8ver eller muntlige presentasjoner. Vurdering: Godkjent / Ikke godkjent.
+
+Obligatorisk deltakelse (OD): Minimum 80% deltakelse i undervisningen med bakgrunn i undervisningsmetodene. Vurdering: Godkjent / Ikke godkjent.
+
+AK og OD mC% vC&re godkjent for C% fC% endelig karakter i emnet.
+
+Eksamen:
+
+Oppgave (OP): Et skriftlig arbeid knyttet til utprC8ving i praksis. Vurdering: A-F. Individuell. Teller 67% av endelig karakter.
+Skriftlig eksamen (SK) - Nasjonal deleksamen i matematikk: 4 timer. Teller 33% av endelig karakter.
+
+Begge eksamenskomponenter mC% vC&re bestC%tt for C% fC% endelig karakter i emnet.
+
+Arbeidskrav (AK): Studentene skal gjennomfC8re 2 - 3 arbeidskrav, som kan vC&re skriftlige innleveringer, prC8ver eller muntlige presentasjoner. Vurdering: Godkjent / Ikke godkjent.
+
+Obligatorisk deltakelse (OD): Minimum 80% deltakelse i undervisningen med bakgrunn i undervisningsmetodene. Vurdering: Godkjent / Ikke godkjent.
+
+AK og OD mC% vC&re godkjent for C% fC% endelig karakter i emnet.
+
+Eksamen:
+
+Begge eksamenskomponenter mC% vC&re bestC%tt for C% fC% endelig karakter i emnet.
+
+Penn, linjal, og inntil 2 stk tosprC%klige ordbC8ker
+
+C generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er C% regne som fusk.
+
+Penn, linjal, og inntil 2 stk tosprC%klige ordbC8ker
+
+C generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er C% regne som fusk.
+
+Med overlapp menes en faglig likhet mellom emner med samme faginnhold. Du vil derfor fC% fC8lgende reduksjon i studiepoeng om du har tatt emner som er angitt under:
+
+MAT1003 - Matematikk 1B, 1-7 - 15 Studiepoeng
+
+MAT1005 - Matematikk 1B, 5-10 - 15 Studiepoeng
+
+MAT1018 - Matematikk 1D - Algebra og algebraisk tenkning, 1-7 - 7.5 Studiepoeng
+
+Med overlapp menes en faglig likhet mellom emner med samme faginnhold. Du vil derfor fC% fC8lgende reduksjon i studiepoeng om du har tatt emner som er angitt under:
+
+MAT1003 - Matematikk 1B, 1-7 - 15 Studiepoeng
+
+MAT1005 - Matematikk 1B, 5-10 - 15 Studiepoeng
+
+MAT1018 - Matematikk 1D - Algebra og algebraisk tenkning, 1-7 - 7.5 Studiepoeng

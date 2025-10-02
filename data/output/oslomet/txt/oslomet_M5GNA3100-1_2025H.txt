@@ -1,0 +1,203 @@
+institution: oslomet
+code: M5GNA3100-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/M5GNA3100/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+M5GNA3100 Naturfag 2, emne 3 Emneplan
+Engelsk emnenavn
+Science Education 2, Part 3
+Studieprogram
+Skolefag for kroppsC8ving og idrettsfag
+GrunnskolelC&rerutdanning for trinn 5-10
+Naturfag 2 for trinn 5-10 i grunnskolen
+Omfang
+30.0 stp.
+StudieC%r
+2025/2026
+Pensum
+HCST 2025
+
+Timeplan
+HCST 2025
+Programplan
+Skolefag for kroppsC8ving og idrettsfag (2025 HCST )
+GrunnskolelC&rerutdanning for trinn 5-10 (2025 HCST )
+Emnehistorikk
+2018 / 2019 2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Innledning
+
+Fagplanen tilhC8rende dette emnet er lagt pC% emne M5GNA2100 Naturfag 1, emne 1.
+
+Forkunnskapskrav
+
+Se under Opptakskrav i fagplanen.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har kunnskap om grunnleggende modeller og teorier for beskrivelse av naturen
+har kunnskap om tverrfaglig undervisning som fremmer barn og ungdoms handlingskompetanse for et bC&rekraftig liv i framtiden
+har kunnskap om elevers lC&ring i naturfag og hvordan en kan legge til rette for begrepsdannelse og utvikling av naturfaglig sprC%k pC% ulike trinn
+har kunnskap om hvordan en kan drive dialogisk, variert og utforskende undervisning med elever pC% ulike trinn
+har kunnskap om elevers hverdagsforestillinger i biologi, fysikk, geologi, kjemi og teknologi
+har kunnskap om progresjon i elevers lC&ring av naturfaglige fenomener
+har kunnskap om gener, arv og mekanismer bak evolusjon og naturlig utvalg
+har kunnskap om energi og sentrale begreper som bevaring, overfC8ring og energikvalitet og kan knytte disse til ulike omrC%der av naturfaget
+har kunnskap om ulike fornybare og ikke-fornybare energikilder og deres virkemC%te, og kan knytte disse til samfunnsmessige, miljC8messige og etiske problemstillinger
+har grunnleggende kunnskap om termofysikk og kan knytte denne til partikkelmodellen og fysiske endringer i dagliglivet og naturen
+har kunnskap om vC&r- og klimasystemer bC%de lokalt og globalt og kan knytte dette til klimaendringene
+har kunnskap om kretslC8p, uorganiske og organiske stoffer og deres reaksjoner og betydning i naturfaglige prosesser og i miljC8sammenhenger
+har kunnskap om elektronikk og elektromagnetisme og deres betydning i naturfaglige og samfunnsmessige sammenhenger
+har kunnskap om bruk av ulike modeller som viser stC8rrelsesordener i naturen, herunder fenomener utenfor solsystemet og vC%r forstC%else av hvordan universet har oppstC%tt og utviklet seg
+har kunnskap om kreative undervisningsprosesser hvor naturvitenskapelige begreper kan anvendes til C% beskrive og forklare form og funksjon hos noen teknologiske produkter
+har grunnleggende kunnskap om programmering og hvordan det kan brukes til C% fremme lC&ring i naturfag
+
+Ferdigheter
+
+Studenten
+
+kan gjennomfC8re aktiviteter, forsC8k og mC%linger inne og ute med bruk av egnet utstyr, bearbeide og presentere mC%ledata, samt vurdere nC8dvendige sikkerhetstiltak
+kan gjC8re beregninger i temaer det er relevant
+kan hC%ndtere kjemikalier og lage kjemiske blandinger og lC8sninger
+har kjennskap til og kan gjennomfC8re sentrale laboratorieteknikker og tester
+kan tilrettelegge praktisk, utforskende og kontekstbasert undervisning i naturfag og teknologi som gir god progresjon mellom ulike trinn
+kan bruke og utvikle programmer som lC8ser eller simulerer naturfaglige problemstillinger
+kan analysere, vurdere og dokumentere elevers lC&ring og gi lC&ringsfremmende tilbakemeldinger tilpasset elevers forutsetninger og behov
+kan finne, vurdere og henvise til naturfaglig og naturfagdidaktisk forskning, informasjon og fagstoff og anvende dette i undervisning og drC8fting med kollegaer
+kan anvende en integrert naturfagundervisning og benytte naturfag som regifag i tverrfaglige sammenhenger
+kan bruke naturfaglig kunnskap til C% drC8fte problemstillinger knyttet til bC&rekraftig utvikling og legge til rette for utdanning for bC&rekraftig utvikling
+
+Generell kompetanse
+
+Studenten
+
+har innsikt i fagdidaktisk forskning om undervisning og lC&ring i naturfag med fokus pC% progresjon og dybde i begrepsdanning, kritisk tenkning og argumentasjon
+har innsikt i vitenskapsteori og metoder innenfor naturfagdidaktisk forskning og kan bidra og delta i prosjekt for C% utvikle undervisningspraksis i naturfag
+kan knytte egen rolle som naturfaglC&rer til etiske, sosiale, C8konomiske og politiske problemstillinger som angC%r naturvitenskap og teknologi i samfunnet
+Innhold
+
+Naturfag 2, emne 3 er delt i seks hovedtemaer:
+
+Naturfagdidaktikk 2
+Jorda 2
+Kjemi 2
+Fysikk 2
+Teknologi og Design 2
+MiljC8 og bC&rekraftig utvikling
+
+FoU-oppgaven
+
+Sentralt i Naturfag 2 er FoU-oppgaven. Oppgaven skal ha en klart formulert problemstilling som det mC% vC&re mulig C% undersC8ke og utdype. FoU-oppgaven skal gi studentene muligheter til C% dokumentere fagdidaktisk kunnskap og innsikt gjennom belysning og drC8fting av en naturfaglig/miljC8faglig problemstilling som er relevant i grunnskolen.
+
+Studentene skal velge C% fordype seg i ett eller flere temaer i fagplanen, og kan velge C% skrive en teoretisk oppgave, en empirisk oppgave eller en kombinasjon. En teoretisk oppgave tar utgangspunkt i analyser og drC8ftinger i aktuelle forskningsarbeider innen et omrC%de og oppsummerer og sammenlikner. En empirisk oppgave bygger pC% ny informasjon som studenten selv samler inn eller bygger videre pC% analyse av materiale som andre har samlet inn.
+
+I oppgaver som bruker materiale studenten selv samler inn, er det et krav at dette innhentes slik at meldeplikten til Norsk senter for forskningsdata (NSD) ikke utlC8ses. Hvis elever under myndighetsalder deltar i undersC8kelsen, skal foresatte gi samtykke. Gjennom oppgaven skal studenten dokumentere kjennskap til aktuell forskning pC% det omrC%det som studenten skriver om. Studenten skal bruke teori og annet fagstoff som grunnlag for C% undersC8ke problemstillingen. I metodedelen skal framgangsmC%ter dokumenteres slik at det er mulig C% se hvordan studenten har innhentet og brukt materialet, og hvordan han eller hun har kommet fram til resultatene. Resultatene skal drC8ftes ut fra alminnelige vitenskapelige krav til pC%litelighet og gyldighet.
+
+Arbeids- og undervisningsformer
+
+Naturfag 2 vil delvis vC&re organisert i enfaglige temaer og delvis tverrfaglig i et miljC8tema.
+
+Arbeidet med FoU-oppgaven er organisert som undervisning og kurs, veiledning/veiledningsseminar, muntlig framlegg og innlevering av skriftlig oppgave. Hver kandidat vil fC% oppnevnt en faglig veileder. TemaomrC%de, problemstilling og opplegg for oppgaven skal godkjennes av veileder.
+
+Undervisningen skal i tillegg til undervisning i faglige emner gi stC8tte for oppgavearbeidet.
+
+Sentrale temaer for denne undervisningen er:
+
+Utdanningsvitenskap for lC&rere - Sentrale forskningstradisjoner og metoder
+Seminar i pedagogikk som tar opp sentrale utfordringer i dagens grunnskole
+Forskningsetikk og grunnlagsspC8rsmC%l
+Skriving i forskning om skole og undervisning og i lC&reryrket
+
+Oppgaveskrivingen er en problemlC8sningsprosess, der studenten gjennom systematiske og etterprC8vbare metoder skal belyse den valgte problemstillingen. En del av dette vil gjerne vC&re C% utarbeide en oppdatert kunnskapsoversikt. Studenten vil ogsC% ofte samle et erfaringsmateriale og bruke aktuell utdanningsvitenskapelig metode til C% undersC8ke, systematisere og belyse materialet. Arbeidet med oppgaven skal gi erfaring med C% sC8ke og anvende litteratur og bygge pC% bC%de oppgitt pensum og selvvalgt pensum. Omtaler, analyser og vurderinger i oppgaven skal vC&re solid faglig utviklet og underbygget.
+
+FoU-oppgaven er et individuelt arbeid. Framstillingen skal vC&re i samsvar med regler og retningslinjer for vitenskapelig og faglig forfatterskap.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+Retten til C% avlegge eksamen forutsetter godkjente arbeidskrav og deltakelse i bestemte faglige aktiviteter. NC&rmere informasjon om arbeidskrav og krav til deltakelse er beskrevet i den innledende delen av fagplanen.
+
+Arbeidskrav til deleksamen 1
+
+FC8lgende arbeidskrav mC% vC&re godkjent fC8r deleksamen 1 kan avlegges:
+
+I temaet Kjemi 2:
+
+Individuell test i navnsetting og kjemiske beregninger (30 minutter).
+
+I temaene MiljC8- og bC&rekraftig utvikling/Naturfagdidaktikk 2:
+
+Utvikle et undervisningsopplegg hvor estetiske lC&ringsprosesser stC%r sentralt. Presenteres i gruppe (15 minutter).
+
+I temaet Jorda 2:
+
+Digital rapport fra feltarbeid (poster-presentasjon), samt samling av 20 karakteristiske objekter fra feltlokaliteten. Presenteres i gruppe (10-15 minutter).
+
+Aktiviteter med obligatorisk deltagelse
+
+Fordi erfaringsdeling krever tilstedevC&relse, og noen typer kunnskap er vanskelig C% tilegne seg eller krever avansert utstyr er det knyttet 100% deltakelse til aktivitetene som er nevnt nedenfor.
+
+I temaene MiljC8- og bC&rekraftig utvikling/Naturfagdidaktikk 2
+
+Presentasjonsdag for undervisningsopplegg
+
+I temaet Jorda 2/Naturfagdidaktikk 2:
+
+Uteundervisning, inkludert feltkurs med for- og etterarbeid, med omfang pC% 2-4 dager. Dersom studenten har gyldig fravC&r, vil det bli tilrettelagt for ny gjennomfC8ring.
+
+I temaet Teknologi og design 2:
+
+All undervisning (inntil 4 dager).
+
+Arbeidskrav til deleksamen 2
+
+FC8lgende arbeidskrav, som alle er en del av studentenes arbeid med FoU-oppgaven, mC% vC&re godkjent fC8r deleksamen 2 kan avlegges:
+
+Innlevering av et notat pC% 400 ord +/- 10 % om opplegg for oppgaven. Notatet skal ha med omtale av emne, spC8rsmC%l en vil undersC8ke, aktuell forskningslitteratur og annet fagstoff studenten forventer C% sette seg inn som del av oppgavearbeidet, hva slags materiale studenten planlegger C% samle inn og undersC8ke, forskningsmetode studenten skal bruke, og skisse til oppgavedesign.
+Notat fC8r siste veiledning med utdrag av oppgavetekst pC% 1500 ord +/- 10 %.
+
+Aktiviteter med obligatorisk deltakelse til deleksamen 2
+
+Deltakelse pC% undervisning om utdanningsvitenskap og metode, forskningsetikk og grunnlagsspC8rsmC%l
+Deltakelse pC% undervisning i akademisk skriving og IKT.
+Deltakelse pC% to veiledninger i seminar eller individuelt. Veileder setter opp tidspunkter og krav til bidrag.
+Deltakelse pC% delingskonferanse med eget fremlegg med eget framlegg og respons pC% medstudenters framlegg.
+Vurdering og eksamen
+
+Eksamensform
+
+Eksamen bestC%r av to deleksamener.
+
+Deleksamen 1: Individuell muntlig eksamen med praktisk(e) innslag. Omfanget er 40 minutter forberedelsestid og ca. 40 minutter eksaminering. Temaene gjC8res kjent senest tre uker fC8r eksamensdagen. Eksamen omfatter faglig teori, fagdidaktikk og praktisk arbeid knyttet til ett av temaene. Alle trykte og skrevne hjelpemidler kan brukes i forberedelsestiden. Fagseksjonens samlinger er tilgjengelig.
+
+Deleksamen 2: Individuell FoU-oppgave med omfang pC% 7000 ord +/- 10% leveres elektronisk innen oppgitt frist. Oppgaven mC% oppfylle IKT-krav og bestemte krav til utforming. Slike kriterier publiseres pC% universitetets lC&ringsplattform i god tid fC8r studenten begynner pC% sin oppgave. EgenerklC&ring vedrC8rende fusk og plagiering og egenerklC&ring knyttet til hvorfor oppgaven ikke utlC8ser NSD-krav, skal ligge som vedlegg i FoU-oppgaven ved innlevering.
+
+Ny/utsatt eksamen
+
+Deleksamen 1: Ny/utsatt eksamen arrangeres pC% samme mC%te som ved ordinC&r eksamen.
+
+Deleksamen 2: Ved ikke bestC%tt karakter vil det vC&re anledning til C% omarbeide oppgaven ved fC8rste ny/utsatt eksamen. Etter dette leveres ny oppgave. Dersom FoU-oppgaven fC%r bestC%tt karakter, kan studenten ikke levere forbedret oppgave, men mC% eventuelt skrive ny FoU-oppgave ved ny eksamen. Dette innebC&rer at man skifter temaomrC%de, eventuelt materiale for undersC8kelse, faglig grunnlag og problemstilling. Innlevering av forbedret versjon av samme oppgave som ved tidligere eksamen er ikke tillatt, og slik innlevering vil ikke bli vurdert.
+
+Hjelpemidler ved eksamen
+
+Se under Vurdering/eksamen.
+
+Vurderingsuttrykk
+
+Det benyttes en gradert karakterskala fra A til E for bestC%tt og F for ikke bestC%tt eksamen. Deleksamenene vektes likt ved sammenslC%ing av karakter for emnet.
+
+Sensorordning
+
+Deleksamen 1: Eksamen vurderes av intern og ekstern sensor.
+
+Deleksamen 2: Det benyttes ekstern og intern sensor til FoU-oppgaven. Normalt er veileder intern sensor.

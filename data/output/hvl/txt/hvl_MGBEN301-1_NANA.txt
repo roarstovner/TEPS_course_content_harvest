@@ -1,0 +1,10 @@
+institution: hvl
+code: MGBEN301-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGBEN301
+status: 200
+course_name_no: MGBEN301 Engelsk 2, emne 1 - Mangfold i sprC%k, tekst og kultur
+----- FULLTEXT -----
+
+NA

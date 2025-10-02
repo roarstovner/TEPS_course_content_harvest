@@ -1,0 +1,148 @@
+institution: uis
+code: MGL3067-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MGL3067
+status: 200
+course_name_no: Forskning og profesjonsutvikling i kroppsC8vingsfaget (MGL3067)
+----- FULLTEXT -----
+
+Emnekode
+
+MGL3067
+
+Versjon
+
+1
+
+Vekting (stp)
+
+15
+
+Semester undervisningsstart
+
+HC8st
+
+Antall semestre
+
+1
+
+Vurderingssemester
+
+HC8st
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitenskap og humaniora,
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Fakultet for utdanningsvitenskap og humaniora,
+
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhold
+
+Profesjonsutvikling i kroppsC8ving
+Vurdering av kvalitativ og kvantitativ forskning i kroppsC8vingsfaget
+Forskningsetikk og lovverk
+
+LC&ringsutbytte
+
+Kunnskap:
+
+Studentene skal:
+
+ha kunnskap om profesjonsutvikling i kroppsC8vingsfaget
+ha inngC%ende kunnskap om forskningsprosesser innen kvalitative og kvantitative metoder og om ulike forskningstradisjoner innenfor kroppsC8vingsfaget
+kunne analysere vitenskapsteoretiske problemstillinger innenfor kroppsC8vingsfaget
+
+Ferdigheter:
+
+Etter fullfC8rt emne skal studentene:
+
+presentere et valgt problemomrC%de innen profesjonsutvikling i kroppsC8vingsfaget
+kunne analysere og vurdere vitenskapelige arbeider knyttet til ulike teoretiske og fagdidaktiske tradisjoner innenfor kroppsC8vingsfaget
+kunne bruke relevante forskningsmetoder pC% en selvstendig mC%te
+
+Generell kompetanse:
+
+Etter fullfC8rt emne skal studentene:
+
+kunne analysere og reflektere over fag- og forskningsetiske problemstillinger
+bidra til C% utvikle forskningsbasert profesjonskunnskap som kroppsC8vingslC&rer
+
+Forkunnskapskrav
+
+Et av fC8lgende alternativer:
+MGL1060 KroppsC8ving 1, MGL1061 KroppsC8ving 2
+MGL2060 KroppsC8ving 1 (5.-10.trinn), MGL2061 KroppsC8ving 2 (5.-10.trinn)
+
+Eksamen / vurdering
+
+VilkC%r for C% gC% opp til eksamen/vurdering
+
+Individuell skriftlig oppgave, Obligatorisk tilstedevC&relse, Gruppeoppgave
+
+Individuell skriftlig oppgave (1500 ord +/- 10 %). Denne oppgaven skal presenteres for klassen. Hver student skal ogsC% gi konstruktiv kritikk pC% en medstudent sin oppgave.
+Gruppeoppgave (2000 - 2500 ord) om valgt forskningsmetode.
+
+Arbeidskrav mC% vC&re godkjent for C% gC% opp til eksamen.
+
+Studenter som fC%r et eller flere av arbeidskravene vurdert til ikke-godkjent ved fC8rste innlevering, gis mulighet for C)n ny innlevering av oppgaven(e) i bearbeidet form.
+
+Fagperson(er)
+
+FaglC&rer:
+Wenche Olivia Sigurdsen
+
+Studiekoordinator:
+Karen Elizabeth Gilje Woie
+
+FaglC&rer:
+Silje Eikanger KvalC8
+
+FaglC&rer:
+Atle MjC%tveit
+
+Studieprogramleder:
+Ingeborg KnC&velsrud
+
+Arbeidsformer
+
+Forelesninger, diskusjoner, gruppearbeid og seminar presentasjoner.
+
+Arbeidsinnsatsen er beregnet slik:
+
+Undervisning/forelesning 60 timer
+Arbeidskrav 1+2 50 timer
+Forberedelser til undervisning 122 timer
+Muntlig presentasjon 40 timer
+Eksamen hjemmeeksamen 150 timer
+
+Beregnet arbeidsinnsats totalt 422 timer
+
+Cpent for
+
+Fagdidaktikk for grunnskolen - erfaringsbasert masterprogram
+
+GrunnskolelC&rerutdanning for trinn 1 - 7, femC%rig masterprogram
+
+GrunnskolelC&rerutdanning for trinn 5 - 10, femC%rig masterprogram
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+Pensumlisten finner du i Leganto

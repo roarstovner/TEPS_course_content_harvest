@@ -1,0 +1,10 @@
+institution: hvl
+code: MGUPR201-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGUPR201
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+NA

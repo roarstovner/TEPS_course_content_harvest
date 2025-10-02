@@ -1,0 +1,131 @@
+institution: oslomet
+code: MLEST1400-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/MLEST1400/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+MLEST1400 Profesjonsfag: lC&rerrollen, undervisning og elevmC8tet Emneplan
+Engelsk emnenavn
+Profesjonsfag: lC&rerrollen, undervisning og elevmC8tet
+Studieprogram
+LC&rerutdanning i praktiske og estetiske fag for trinn 1-13, design, kunst og hC%ndverk
+Omfang
+15.0 stp.
+StudieC%r
+2025/2026
+Programplan
+LC&rerutdanning i praktiske og estetiske fag for trinn 1-13, design, kunst og hC%ndverk (2025 HCST )
+Emnehistorikk
+2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Innledning
+
+Emnet bygger opp under den lC&rerfaglige plattformen i utdanningen og omfatter fagdidaktikk, pedagogikk og undervisningspraksis. Emnet skal bidra til studentens identitet som lC&rer og ta opp sentrale sider av design, kunst og hC%ndverk som skolefag, fagomrC%dets egenart og fagets metoder. Lov- og planverk for grunnopplC&ringen samt overgangen mellom ulike utdanningstrinn inngC%r.
+
+Emnet skal gi innsikt i barn og unges lC&ring samt barne- og ungdomskultur og skolefagets rolle i et samfunnsperspektiv. Undervisningspraksis i grunnskolen inngC%r i emnet. Praksis skal vC&re en arena for systematisk lC&ring og C8velse og gjennomfC8res i samarbeid med C8vrige emner i utdanningen og praksisskolen.
+
+LC&ringsutbytte
+
+Etter C% ha gjennomfC8rt dette emnet har studenten fC8lgende lC&ringsutbytte definert i form av kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Fagdidaktikk:
+
+Studenten
+
+Har kunnskap om lC&replaner, skolens verdigrunnlag og gjeldende plan og lovverk.
+Har kunnskap om fagets historie og egenart i en samfunnskontekst, herunder bC&rekraftsproblematikk, kulturelt mangfold og verdsetting av kulturelt mangfold.
+Har kunnskap om estetiske lC&reprosesser, kreativitet og barn og unges visuelle sprC%k.
+Har kunnskap om fagdidaktisk forskning, relevant for undervisningsplanlegging og fagutvikling.
+Har grunnleggende innsikt i akademisk skriving og kildehenvisning.
+
+Pedagogikk:
+
+Studenten
+
+Har kunnskap om lC&rerrollen, klasseledelse, skolen som organisasjon og overgangen mellom utdanningsnivC%er.
+Har kunnskap om praktiske og estetiske lC&ringsprosesser og betydningen for lC&ring, danning og identitetsutvikling hos barn og unge.
+Har kunnskap om barn og unge i vanskelige livssituasjoner, som mobbing, krenkelser, vold og seksuelle overgrep mot barn.
+Har kunnskap om barne- og ungdomskultur og fellesskapets betydning for et inkluderende skole- og lC&ringsmiljC8.
+Har kunnskap om observasjon som forskningsmetode og som verktC8y for undervisningsplanlegging
+
+Undervisningspraksis:
+
+Studenten
+
+Har kunnskap om lC&rerens rolle og profesjonelle hverdag, herunder rettigheter og plikter.
+Har kunnskap om samspill mellom elever, mellom elev og lC&rer og om klasseledelse og skolehjemsamarbeid.
+Har kunnskap om undervisningsplanlegging, lC&reprosesser, arbeidsmC%ter og lC&remidler rettet mot design, kunst og hC%ndverk.
+Har kunnskap om hvordan lokale, regionale og nasjonale satsninger pC%virker skolefag og undervisning.
+
+Ferdigheter
+
+Fagdidaktikk
+
+Studenten
+
+Kan analysere lC&replaner og begrunne valg av mC%l, innhold, arbeidsmC%ter og vurderingsformer ut fra fagdidaktisk teori.
+Kan vise profesjonsfaglig digital kompetanse i planlegging, organisering, gjennomfC8ring og vurdering av undervisning.
+Kan drC8fte og reflektere over skolefagets historiske utvikling.
+Kan drC8fte betydningen av faget i dag ut fra bC&rekraftsperspektiv, digitalisering og teknologisk utvikling.
+
+Pedagogikk
+
+Studenten
+
+Kan bidra til elevers kreative prosesser, estetisk opplevelse og estetisk erfaring.
+Kan anvende kunnskap om klasseledelse og barn og unges utvikling i undervisningsplanlegging.
+Kan identifisere mulige tegn pC% mobbing, vold og seksuelle overgrep og er kjent med relevante faginstanser for samarbeid og iverksettelse av nC8dvendige tiltak.
+Kan drC8fte barn- og ungdomskultur i en samtidskontekst og de praktiske og estetisk fagenes potensial for kommunikasjon, samhandling, dannelse og livsmestring.
+
+Undervisningspraksis
+
+Kan bruke observasjon av undervisningssituasjoner som grunnlag for analyse og faglig drC8fting.
+Kan planlegge, tilrettelegge, gjennomfC8re og vurdere undervisning, bC%de for enkelte C8kter og perioder.
+Kan utvikle mC%l for opplC&ringen og bruke ulike vurderingsmC%ter for C% fremme lC&ring, elevmedvirkning og lC&relyst.
+
+Kan inkludere tverrfaglige tema i undervisningsplaner og legge til rett for tverrfaglig samarbeid.
+
+Generell kompetanse
+
+Studenten
+
+Kan drC8fte undervisning, lC&ring og fag i lys av aktuelle lC&replaner og profesjonsetiske perspektiv.
+Kan ivareta krav til helse, miljC8 og sikkerhet i planlegging og gjennomfC8ring av undervisning.
+Kan motta og bruke tilbakemeldinger pC% egen praksis pC% en konstruktiv mC%te for videre utvikling.
+Arbeids- og undervisningsformer
+
+Undervisningsformene veksler mellom forelesninger, seminar, ulike former for gruppearbeid og selvstudium, og praktisk utprC8ving. Alle aspekter i emnet behandles ikke nC8dvendigvis i undervisningen, men skal dekkes av studenten selv gjennom lesing av pensum og deltagelse i kollokviegrupper. ForstC%else for prinsipp innen akademisk skriving oppC8ves gjennom konkrete C8velser i studiet.
+
+Undervisningspraksis inngC%r i emnet. Praksis legges fortrinnsvis til grunnskolen og vektlegger planlegging, gjennomfC8ring og evaluering av undervisning, fortrinnsvis i grupper. Praksis gjennomfC8res i samarbeid med praksisskolen. Studenten veiledes og vurderes bC%de underveis og ved avslutning av perioden. Resultatene dokumenteres i Veilednings- og vurderingshefte for praksis.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+Arbeidskrav mC% vC&re innfridd og vC&re vurdert til godkjent fC8r studentene kan fremstille seg til eksamen.
+
+GjennomfC8rt undervisningspraksis i gruppe pC% inntil fem studenter. Omfang: 20 dager (inkludert forberedelse og etterarbeid).
+En tverrprofesjonell oppgvae, Inter1100, i samarbeid med studenter ved andre studieretninger.
+En muntlig presentasjon i gruppe over et selvvalgt pedagogisk tema.
+Minimum 80% fremmC8te med deltagelse i obligatorisk undervisning.
+Vurdering og eksamen
+
+En individuell skriftlig, hjemmeeksamen over tre dager der fagdidaktikk, pedagogikk og praksiserfaringer inngC%r. Fagdidaktikk og pedagogikk vektes likt. Omfang totalt: 2500-3000 ord.
+
+Eksamensresultatet kan pC%klages.
+
+Hjelpemidler ved eksamen
+
+Alle hjelpemidler er tillatt sC% lenge regler for kildehenvisning fC8lges.
+
+Vurderingsuttrykk
+
+Gradert skala A-F.
+
+Sensorordning
+
+To sensorer. Ekstern sensor brukes jevnlig.

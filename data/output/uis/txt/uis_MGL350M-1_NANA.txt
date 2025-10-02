@@ -1,0 +1,137 @@
+institution: uis
+code: MGL350M-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MGL350M
+status: 200
+course_name_no: Masteroppgave i samfunnsfag, grunnskolelC&rerutdanning (MGL350M)
+----- FULLTEXT -----
+
+Emnekode
+
+MGL350M
+
+Versjon
+
+1
+
+Vekting (stp)
+
+45
+
+Semester undervisningsstart
+
+HC8st
+
+Antall semestre
+
+2
+
+Vurderingssemester
+
+VC%r
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitenskap og humaniora,
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Fakultet for utdanningsvitenskap og humaniora,
+
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhold
+
+En masteroppgave i samfunnsfag er et selvstendig faglig arbeid utarbeidet under veiledning. Innholdet kan vC&re drC8ftende, fortolkende eller ha en empirisk innretning. Studenter veiledes individuelt og i grupper gjennom prosjektutviklingen, og frem til innleveringen av oppgaven.
+
+Masteroppgaven kan skrives og leveres individuelt eller av to studenter sammen, forutsatt at sC8knad om dette innvilges. SC8knad sendes til masterkoordinator. De som leverer sammen, blir ogsC% vurdert samlet. I slike tilfeller skal studentene legge ved en erklC&ring, signert av begge, der de gjC8r rede for den enkeltes bidrag. Det er forventet at studentenes innsats og bidrag skal kunne betegnes som likeverdige.
+
+LC&ringsutbytte
+
+En kandidat med fullfC8rt og bestC%tt emne skal ha fC8lgende lC&ringsutbytte:
+
+Kunnskaper
+
+Har spesialisert innsikt i et avgrenset samfunnsfaglig og/eller samfunnsfagdidaktisk omrC%de (masteroppgaven)
+Har kunnskap om hvilke elementer som inngC%r i en prosjektbeskrivelse og masteroppgave, og sammenhengen mellom disse elementene i lys av relevant vitenskapsteori
+Har kunnskap om produksjon og analyse av den typen data som masteroppgaven retter seg mot
+
+Ferdigheter
+
+Kan formulere problemstilling og utarbeide en prosjektbeskrivelse som redegjC8r for tematikk og forskningsspC8rsmC%l, teoretisk og metodisk tilnC&rming og mulige forskningsetiske problemstillinger
+Kan gjennomfC8re et forskningsprosjekt og utvikle en masteroppgave som relaterer seg til aktuell forskning, teoretisk og metodologisk litteratur, og som vurderer relevante forskningsetiske problemstillinger
+Kan analysere faglige og fagdidaktiske problemstillinger basert pC% selvstendig tilegnet fagkunnskap, og bruke slik innsikt i undervisning, formidling og forsknings- og utviklingsarbeid i skolen
+Kan formidle eget forskningsprosjekt og kan presentere forskningsresultater bC%de skriftlig og muntlig
+
+Generell kompetanse
+
+Har kunnskap om forskningsprosessen
+Kan vurdere kvalitet, gyldighet og relevans av egne og andres forskningsarbeider og av publisert forsknings- og faglitteratur
+Kan identifisere og reflektere over aktuelle forskningsetiske problemstillinger i skolerelaterte forskningsprosjekt
+
+Forkunnskapskrav
+
+Et av fC8lgende alternativer:
+MGL1050 Samfunnsfag A (1.-10. trinn), MGL1051 Samfunnsfag B, MGL3052 Menneskerettigheter for lC&rere, MGL3054 Fellesskap: Samfunnsfaglige perspektiv
+MGL2050 Samfunnsfag 1 (5.-10. trinn), MGL2051 Samfunnsfag 2 (5.-10. trinn), MGL4052 Menneskerettigheter for lC&rere, MGL4054 Fellesskap: Samfunnsfaglige perspektiv
+MGL1051 Samfunnsfag B, MGL2050 Samfunnsfag 1 (5.-10. trinn), MGL3052 Menneskerettigheter for lC&rere, MGL3054 Fellesskap: Samfunnsfaglige perspektiv
+
+Studenten mC% ha bestC%tt en FoU-oppgave i lC8pet av studielC8pet sitt.
+
+Eksamen / vurdering
+
+VilkC%r for C% gC% opp til eksamen/vurdering
+
+Obligatorisk oppmC8te pC% fellesseminar 70%, Obligatorisk veiledning, Obligatorisk prosjektbeskrivelse 5-7 sider
+
+Obligatorisk deltakelse pC% fellesseminar, 70%
+
+Prosjektbeskrivelse
+
+Studenten skal levere en prosjektbeskrivelse pC% 5-7 sider som vurderes til godkjent/ikke godkjent.
+
+Obligatorisk veiledning
+
+Studenten mC% delta pC% minst 2 veiledningsC8kter for C% fC% adgang til C% levere masteroppgaven det aktuelle semesteret. Arbeidskravet mC% vC&re godkjent av veileder innen 15. mars.
+
+Obligatorisk arbeidskrav mC% vC&re godkjent for C% gC% opp til vurdering. Konsekvenser av ikke godkjent arbeidskrav er at adgang til prC8ving nektes. Jf. Forskrift om studier og eksamen ved Universitetet i Stavanger (eksamensforskriften), B' 3-8 nr. 3.
+
+Fagperson(er)
+
+FaglC&rer:
+Tord Austdal
+
+Studiekoordinator:
+Karen Elizabeth Gilje Woie
+
+Veileder:
+Ann Elisabeth Laksfoss Cardozo
+
+Studieprogramleder:
+Ingeborg KnC&velsrud
+
+Cpent for
+
+Fagdidaktikk for grunnskolen - erfaringsbasert masterprogram
+
+GrunnskolelC&rerutdanning for trinn 1 - 7, femC%rig masterprogram
+
+GrunnskolelC&rerutdanning for trinn 5 - 10, femC%rig masterprogram
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+SC8k etter pensumlitteratur i Leganto

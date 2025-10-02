@@ -1,0 +1,115 @@
+institution: uib
+code: SOS202-L-0
+year: NA
+hv: NA
+url: https://www4.uib.no/studier/emner/sos202-l
+status: 200
+course_name_no: BacheloroppgC%ve i sosiologi
+----- FULLTEXT -----
+
+Navigasjonssti
+Forside
+Studier
+Emner
+
+BacheloroppgC%ve i sosiologi
+
+Studiepoeng
+
+10
+
+Undervisningssemester
+
+VC%r
+
+Emnekode
+
+SOS202-L
+
+Talet pC% semester
+
+1
+
+UndervisningssprC%k
+
+Norsk
+
+Ressursar
+
+Timeplan
+
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust 2021 VC%r 2020 Haust 2020 VC%r 2019 Haust 2019 VC%r 2018 Haust 2018 VC%r 2017 Haust
+MC%l og innhald
+
+HovudmC%lsetjinga med bacheloroppgC%va er at studentane skal foreta ei sjC8lvstendig drC8fting og analyse av ei sosiologisk problemstilling med utgangspunkt i anten sosiologisk litteratur eller eit empirisk datamateriale.
+
+Emnet bestC%r av ei generell innfC8ring i skriving av ei bacheloroppgC%ve, og ei sjC8lvvalt sosiologisk fordjuping som skal resultere i ei sjC8lvstendig skriftleg oppgC%ve. OppgC%va skal ta utgangspunkt i eit tema/ei problemstilling som anten vert drC8fta ut frC% eit eller fleire teoretiske perspektiv, tidlegare forsking eller empirisk analyse av kvantitative eller kvalitative data frC% tidlegare forsking.
+
+LC&ringsutbyte
+Etter gjennomfC8ring av emnet skal studenten kunne
+Gjere greie for relevant faglitteratur om eit eige vald tema og vise innsikt i teoretiske og metodiske problemstillingar knytt til tema.
+Utforme ei sosiologisk problemstilling og eit opplegg for undersC8kingar og analyse av eit eige valt tema.
+Gjere eit utval og analysere ulike typar empirisk og/eller teoretisk materiale, samt disponere og framstille sjC8lvstendig eit skriftleg sosiologisk arbeid.
+GjennomfC8re ein sjC8lvstendig innsamling og analyse av relevant forskingslitteratur og empirisk materiale om eit avgrensa tema, og presentere denne analysen pC% ein kortfatta og oversikteleg mC%te.
+Studiepoeng, omfang
+10 studiepoeng
+StudienivC% (studiesyklus)
+Bachelor
+Undervisningssemester
+VC%r
+Krav til forkunnskapar
+
+MET102, SOS101, SOS103-L og eit av valemna SOS105-L eller SOS113-L
+
+eller
+
+MET103, MET104, SOS121, SOS122 og SOS123
+
+Studiepoengsreduksjon
+SOS202 (10 stp)
+Krav til studierett
+Emnet er ope for lektorstudentar med sosiologi som fag 2
+Arbeids- og undervisningsformer
+
+FC8relesingar, seminar og rettleiing.
+
+Ein har kun rett pC% rettleiing i eitt semester.
+
+Obligatorisk undervisningsaktivitet
+
+Innlevering av temavalg med litteraturgjennomgang.
+
+Arbeidskravet mC% vere godkjent fC8r studenten kan framstille seg for eksamen i emnet.
+
+Godkjende obligatoriske arbeidskrav har ingen tidsavgrensing
+
+Vurderingsformer
+Innlevering av ei bacheloroppgC%ve (6000 ord, +/-10%, ekskludert framside, innhaldsliste, litteraturliste, tabellar og vedlegg).
+Karakterskala
+Bokstavkarakter A-F
+Vurderingssemester
+
+Eksamen vert berre tilbydd i eksamenssemesteret.
+
+Studentar med gyldig fravC&r etter B' 5-5 i Studieforskrifta i UiB kan sC8ke om utsatt innleveringsfrist (kontinuasjonseksamen). SC8knaden sendes via Syk pC% eksamen innan innleveringsfristen.
+
+Det gis maksimalt 7 dagars utsatt frist.
+
+Litteraturliste
+Litteraturlista vil vere klar innan 01.12. for vC%rsemesteret.
+Emneevaluering
+Alle emne blir evaluert i trC%d med UiBs kvalitetssystem for utdanning.
+Hjelpemiddel til eksamen
+Alle
+Programansvarleg
+ProgramrC%det har ansvar for fagleg innhald og oppbygging av studiet og for kvaliteten pC% studieprogrammet og alle emna der.
+Administrativt ansvarleg
+Det samfunnsvitenskapelige fakultet ved Sosiologisk institutt har det administrative ansvaret for emnet.
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust 2021 VC%r 2020 Haust 2020 VC%r 2019 Haust 2019 VC%r 2018 Haust 2018 VC%r 2017 Haust
+Kontaktinformasjon
+studieveileder.sos@uib.no
+Sosiologisk institutt

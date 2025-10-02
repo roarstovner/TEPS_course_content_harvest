@@ -1,0 +1,151 @@
+institution: uis
+code: MGL4300-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MGL4300
+status: 200
+course_name_no: Pedagogikk og elevkunnskap 3 (MGL4300)
+----- FULLTEXT -----
+
+Emnekode
+
+MGL4300
+
+Versjon
+
+1
+
+Vekting (stp)
+
+15
+
+Semester undervisningsstart
+
+HC8st
+
+Antall semestre
+
+1
+
+Vurderingssemester
+
+HC8st
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitenskap og humaniora,
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Fakultet for utdanningsvitenskap og humaniora,
+
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhold
+
+Pedagogikk og elevkunnskap, ved Universitetet i Stavanger, er delt i to sykluser som til sammen utgjC8r 60 studiepoeng. PEL-fagets fC8rste 30 studiepoeng ligger pC% utdanningens fC8rste og andre semester, mens de siste 30 er lagt fjerde studieC%r. For C% styrke lC&rerkompetansen i et flerkulturelt og flerreligiC8st samfunn, utgjC8r emner knyttet til religion, livssyn og etikk en integrert modul i faget. For C% fC8lge opp rammeplanens fC8ringer om profesjonsretting og progresjon og med det utvikling av studentenes profesjonskompetanse, er innholdet ordnet i henhold til tre faglig overordnende og gjennomgC%ende begrepspar:
+
+LC&ring - undervisning: PEL-faget skal vC&re profesjonsrettet og utvikle studentenes forstC%else av at lC&rerarbeidet blant annet innebC&rer C% gjennomfC8re en undervisning som sikrer gode lC&ringsprosesser for alle elevene.
+Inkludering - mangfold: I Rammeplan for grunnskolelC&rerutdanningen er det understreket at studentene skal kvalifiseres for C% tilpasse opplC&ringen til alle elevene. Av den grunn vil det C% vC&re lC&rer i en inkluderende skole preget av elevmangfold vC&re en av de overordnede tematikkene i faget.
+Profesjonsutvikling - profesjonsfelleskap: LC&rerrollen er mangefasettert og i stadig forandring fordi lC&rerarbeidet endres i takt med samfunnet, i takt med myndighetenes krav til lC&reren og i takt med utviklingsprosesser i profesjonen. For C% forberede studentene pC% at lC&rerarbeid innebC&rer deltakelse i profesjonsfellesskap pC% ulike nivC%, vil de systematisk bli utfordret til C% lC&re sammen med andre.
+
+De overordnede begrepsparene skal danne grunnlag for utvikling av en profesjonskompetanse som bidrar til forutsetninger for C% mC8te elevmangfold og mangfold i skolens profesjonsfellesskap. Begrepsparene vil vektlegges ulikt i de ulike emnene, og vil tidvis vC&re naturlig integrert i hverandre.
+
+PC% PEL3 MGL 4300 reflekteres dette i fC8lgende spesifikke innholdskomponenter:
+
+LC&replananalyse og lC&rernes arbeid med realisering av lC&replanen
+
+Samarbeid med andre faggrupper og relevante instanser innenfor og utenfor skolen
+
+Profesjonsutvikling
+
+Skole-hjem-samarbeid i et pluralistisk samfunn
+
+Elevens danning og utdanning i et mangfoldig samfunn
+
+Flerkulturalitet og menneskerettigheters betydning i en mangfoldig skole
+
+LC&ringsutbytte
+
+Kunnskap
+
+Studenten har
+
+kunnskap om hvordan bruken av lC&ringsarenaer utenfor skolen kan styrke elevenes lC&ring
+inngC%ende kunnskap om lC&replanutvikling og lC&replanrealisering
+avansert kunnskap om elevens danning i et pluralistisk samfunn
+kunnskap om hvordan religiC8st og kulturelt mangfold i Norge fC%r betydning for elever, lC&rere og foresatte i skolehverdagen
+
+Ferdigheter
+
+Studenten kan
+
+analysere gjeldende lC&replanverk fra ulike perspektiv
+drC8fte og analysere utfordringer i realiseringen av gjeldende lC&replan og C8vrige styringsdokumenter
+kritisk analysere skolens verdigrunnlag bl.a. forholdet mellom kulturarv, felles verdier, kulturell forankring og mangfold
+begrunne, formidle og bruke dokumenter om menneskerettigheter og barns rettigheter i skolesammenheng
+
+Generell kompetanse
+
+Studenten kan
+
+pC% forskningsbasert grunnlag kritisk analysere og kommunisere om faglige problemstillinger knyttet til profesjonsutC8velsen
+pC% et reflektert og faglig grunnlag vC&re i dialog med eleven og deres foresatte om elevenes lC&ring og utvikling
+identifisere og analysere utfordringer i skolehverdagen i en pluralistisk skole og utnytte muligheter den gir
+stimulere til forstC%else av globale perspektiver ved skolens arbeid og bidra til respekt og anerkjennelse av urfolk, nasjonale minoriteter og minoriteter
+
+Forkunnskapskrav
+
+MGL2100 Pedagogikk og elevkunnskap 1. LC&rerens undervisning i det mangfoldige klasserom, MGL2200 Pedagogikk og elevkunnskap 2. Det inkluderende klasserom i en skole preget av mangfold.
+
+Eksamen / vurdering
+
+VilkC%r for C% gC% opp til eksamen/vurdering
+
+Gruppeoppgave, Individuell oppgave 1, Obligatorisk tilstedevC&relse
+
+1. Gruppeoppgave: digital presentasjon/produkt sammen med individuelt refleksjonsnotat knyttet til samarbeid skole-hjem i en pluralistisk skole. Vurdering: Godkjent/ikke godkjent.
+2. En individuell fagtekst (omfang 2500 ord +/- 10%). Temaet knyttes til lC&replananalyse. Vurdering: Godkjent /ikke godkjent.
+
+I Pedagogikk og elevkunnskap vil studentene bli utfordret pC% koplingen mellom teori og praksis. Deler av undervisningen vil gC% med til C% diskutere hvilke konsekvenser de faglige begrepene kan ha for arbeidet i skolen. Faget skal fC8re til faglig refleksjon, personlig vekst og yrkesetisk bevissthet. Evnen til kritisk refleksjon oppC8ves bl. a i diskusjoner der studentene anvender fagets begrepsapparat. I undervisningen vil studentene ogsC% mC8te et mangfold av arbeidsmC%ter som alle har som formC%l C% dyktiggjC8re dem i lC&rergjerningen. Derfor vil minimum 70 % tilstedevC&relse i undervisningen vC&re pC%krevd.
+
+Studenter som fC%r et eller flere av arbeidskravene vurdert til ikke-godkjent ved fC8rste innlevering, gis mulighet for C)n ny innlevering av oppgaven(e) i bearbeidet form.
+
+Fagperson(er)
+
+FaglC&rer:
+Finn Martinsen
+
+FaglC&rer:
+Alessandro Falcetta
+
+FaglC&rer:
+Vidar Kjetilstad
+
+Studiekoordinator:
+Kjersti Gjedrem
+
+Arbeidsformer
+
+C kunne delta i et profesjonsfellesskap fordrer evne til samhandling pC% ulike nivC%. Undervisningen vil bli organisert som plenumsforelesninger og som seminargrupper med stC8rre vekt pC% studentaktive arbeidsformer med ulike studentframlegg. Studentene vil mC8te et mangfold av arbeidsmC%ter og digitale verktC8y, noe som speiler arbeidet i skolen.
+
+Praksis
+
+15 dager veiledet praksis.
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+Pensumlisten finner du i Leganto

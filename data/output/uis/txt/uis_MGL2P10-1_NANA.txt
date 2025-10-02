@@ -1,0 +1,119 @@
+institution: uis
+code: MGL2P10-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MGL2P10
+status: 200
+course_name_no: Praksis 5.-10., 1. og 2. semester (5 dager observasjonspraksis + 20 dager) (MGL2P10)
+----- FULLTEXT -----
+
+Emnekode
+
+MGL2P10
+
+Versjon
+
+1
+
+Vekting (stp)
+
+0
+
+Semester undervisningsstart
+
+HC8st
+
+Antall semestre
+
+2
+
+Vurderingssemester
+
+VC%r
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitenskap og humaniora,
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Fakultet for utdanningsvitenskap og humaniora,
+
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhold
+
+Praksisperioden i 1. studieC%r i grunnskolelC&rerutdanningens trinn 5-10 tilsvarer 25 arbeidsdager, 10 dager hC8st og 15 dager vC%r. Den skal vC&re variert, veiledet og vurdert og foregC% i grunnskolen. I det fC8rste studieC%r er hovedtemaene lC&rerrollen, lC&rerarbeidet, skolen, eleven og lC&ring. Praksisperioden skal innbefatte en delperiode med vekt pC% forberedelse, en delperiode med vekt pC% gjennomfC8ring, og en delperiode med vekt pC% etterarbeid og vurdering.
+
+LC&ringsutbytte
+
+Kunnskap
+
+Kandidaten har kunnskaper om
+
+gjeldende opplC&ringslov og om nasjonalt lC&replanverk og lokale lC&replaner i norsk/matematikk
+lC&rerarbeidet, undervisning klasseledelse
+hvordan didaktisks tenkning utC8ves i undervisningen i matematikk/norsk, med vekt pC% planlegging og gjennomfC8ring og vurdering
+observasjonsmetoder og kartleggingsverktC8y med vekt pC% norsk/matematikk
+elever og elevers lC&reforutsetninger pC% 5-10. trinn ved den aktuelle praksisskole
+
+Ferdigheter
+
+Kandidaten kan:
+
+samhandle og kommunisere med elever, medstudenter, kolleger pC% praksisskolen og faglC&rere
+gjC8re seg kjent med nasjonale og lokale lC&replaner for C% planlegge for elevers lC&ring
+planlegge, gjennomfC8re og vurdere undervisning sammen med medstudenter, praksislC&rere og faglC&rere
+undervise ved hjelp av ulike arbeidsmC%te og ved bruk av bC%de analoge og digitale ressurser
+
+Generell kompetanse
+
+Kandidaten
+
+har vilje og evne til C% ta til seg tilbakemeldinger fra elever, medstudenter, praksislC&rer og faglC&rere som grunnlag for profesjonell utvikling
+kan diskutere og kommentere lC&rerarbeid i lys av nasjonale planer, praksisskolens lokale planer og teori
+
+Forkunnskapskrav
+
+Ingen
+
+Eksamen / vurdering
+
+VilkC%r for C% gC% opp til eksamen/vurdering
+
+5 observasjonsdager gjennomfC8rt pC% praksisskolen i 1. semester
+Planlegge og gjennomfC8re situasjoner som oppstart og avslutning av undervisningstimer, der studenten prC8ves i dette i lC8pet av praksisperioden.
+Arbeidskrav knyttet til norskfaget/matematikkfaget, se emneplan for faget.
+Individuell refleksjonsoppgave knyttet til profesjonsfaglig utvikling innen PFDK (profesjonsfaglig digital kompetanse) eller andre utvalgte lC&ringsutbytteformuleringer i praksisemnet. Kommenteres av praksislC&rer, vurderes av faglC&rer PEL 
+
+Fagperson(er)
+
+FaglC&rer:
+Karen Elizabeth Gilje Woie
+
+Emneansvarlig:
+Kitty Marie Garborg
+
+FaglC&rer:
+Ivar BjC8rnsen
+
+Cpent for
+
+GrunnskolelC&rerutdanning for trinn 5 - 10, femC%rig masterprogram
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+SC8k etter pensumlitteratur i Leganto

@@ -1,0 +1,176 @@
+institution: oslomet
+code: MGNT3200-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/MGNT3200/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+MGNT3200 Norsk tegnsprC%k 2 Emneplan
+Engelsk emnenavn
+Norwegian Sign Language, subject 2
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 1-7
+GrunnskolelC&rerutdanning for trinn 5-10
+Omfang
+30.0 stp.
+StudieC%r
+2025/2026
+Pensum
+VCR 2026
+
+Timeplan
+VCR 2026
+Programplan
+GrunnskolelC&rerutdanning for trinn 1-7 (2025 HCST )
+GrunnskolelC&rerutdanning for trinn 5-10 (2025 HCST )
+Emnehistorikk
+2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Innledning
+
+Fagplanen tilhC8rende dette emnet er lagt pC% emne MGNT3100 Norsk tegnsprC%k 1.
+
+Forkunnskapskrav
+
+Ingen.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Kunnskap felles for trinn 1-7 og trinn 5-10
+
+Studenten
+
+har utvidete kunnskaper om sprC%kstrukturer i norsk tegnsprC%k
+har kunnskap om sprC%klig variasjon og ulike tekster innen norsk tegnsprC%k
+har kjennskap til blandingsformer mellom norsk tegnsprC%k og norsk talesprC%k
+har kunnskap om flersprC%klighet hvor norsk tegnsprC%k inngC%r, der mC%let om funksjonell tosprC%klighet i opplC&ringen er sentralt
+har kjennskap til tegnsprC%kets status og tegnsprC%kliges historie, kultur og identitet, ogsC% internasjonalt
+har kunnskap om regelverk og gjeldende lC&replaner og andre undervisningsrelaterte dokumenter knyttet til norsk tegnsprC%k i skolen
+har kjennskap til vitenskapsteoretiske og metodiske perspektiver relevante for faget norsk tegnsprC%k
+
+Ferdigheter
+
+Ferdigheter felles for trinn 1-7 og trinn 5-10
+
+Studenten
+
+kan anvende sprC%kstrukturer og et basalt tegnforrC%d i norsk tegnsprC%k for C% kunne delta i samtaler og gjennomfC8re undervisning pC% basisnivC%
+kan avlese og forstC% ulike tekster pC% tegnsprC%k, med sprC%klig variasjon og blandingsformer
+kan oversette enkle tekster fra norsk til norsk tegnsprC%k og fra norsk tegnsprC%k til norsk
+kan beskrive og forklare sC&rtrekk ved dC8ves kultur, og se den i sammenheng med majoritetskulturen
+kan gjC8re rede for ulike syn pC% kommunikasjon og sprC%k i opplC&ringen av hC8rselshemmete gjennom historien
+
+Generell kompetanse
+
+Generell kompetanse felles for trinn 1-7 og trinn 5-10
+
+Studenten
+
+kan sette tydelige mC%l for undervisningen og vurdere elevenes lC&ringsutbytte
+kan legge til rette for varierte lC&ringsaktiviteter, ogsC% ved bruk av digitale ressurser, som formidler kunnskap om norsk tegnsprC%k som fremmer sprC%klig samhandling og elevenes grunnleggende ferdigheter og faglige utvikling
+
+Generell kompetanse sC&rlig rettet mot trinn 1-7
+
+Studenten
+
+kan planlegge, gjennomfC8re og vurdere undervisning i norsk tegnsprC%k pC% basisnivC%, for elever pC% trinn 1-7
+
+Generell kompetanse sC&rlig rettet mot trinn 5-10
+
+Studenten
+
+kan planlegge, gjennomfC8re og vurdere undervisning i norsk tegnsprC%k pC% basisnivC%, for elever pC% trinn 5-10
+Innhold
+
+I dette emnet arbeides det videre med sprC%kstrukturer i norsk tegnsprC%k, og ulike tekster, blandingsformer og sprC%klige variasjoner er en del av undervisningen. Studentens tegnforrC%d blir videreutviklet, samtidig som deres ferdigheter i avlesning, forstC%else og produksjon C8ker. PC% studiet brukes varierte lC&ringsaktiviteter og lC&ringsressurser for C% stC8tte opp under studentenes egen sprC%kinnlC&ring og faglige bevissthet. Disse lC&ringsaktivitetene gir studentene innsikt i hvordan planlegge, gjennomfC8re og vurdere lC&ringsaktiviteter i og pC% norsk tegnsprC%k, pC% et basisnivC%. Dette knyttes opp mot hvordan en som lC&rer kan stC8tte opp under elevenes grunnleggende ferdigheter i faget, tosprC%klighet og faglige kompetanse.
+
+Samtidig er arbeidet med FoU-oppgaven, som har et omfang pC% 7000 ord (+/- ti prosent), sentralt i emnet. Oppgaven skal ha en klart formulert problemstilling som det mC% vC&re mulig C% undersC8ke og utdype. Oppgaven skal gi studentene muligheter til C% dokumentere faglig kunnskap og innsikt gjennom belysning og drC8fting av en faglig problemstilling som er relevant for lC&rerarbeid i grunnskolen. Studentene kan velge C% skrive en teoretisk oppgave eller en oppgave som ogsC% er basert pC% empiri. Arbeidet med oppgaven skal gi erfaring med C% sC8ke og anvende litteratur og bygge pC% bC%de oppgitt og selvvalgt pensum.
+
+En teoretisk oppgave tar utgangspunkt i analyser og drC8ftinger i aktuelle forskningsarbeider innen et omrC%de og oppsummerer og sammenlikner. En empirisk oppgave bygger pC% ny informasjon som studenten selv samler inn, eller bygger videre pC% analyse av materiale som andre har samlet inn. I oppgaver som bruker materiale studenten selv samler inn, er det et krav at dette innhentes slik at meldeplikten til NSD ikke utlC8ses. Hvis elever under myndighetsalder deltar i undersC8kelsen, skal foresatte gi samtykke. Gjennom oppgaven skal studenten dokumentere kjennskap til aktuell forskning pC% det omrC%det som studenten skriver om. Studenten skal bruke teori og annet fagstoff som grunnlag for C% undersC8ke problemstillingen. I metodedelen skal framgangsmC%ter dokumenteres slik at det er mulig C% se hvordan studenten har innhentet og brukt materialet, og hvordan han eller hun har kommet fram til resultatene. Resultatene skal drC8ftes ut fra alminnelige vitenskapelige krav til pC%litelighet og gyldighet.
+
+Undervisningen i emnet skal i tillegg til undervisning i faglige emner gi stC8tte for arbeidet med FoU-oppgaven:
+
+Utdanningsvitenskap for lC&rere - Sentrale forskningstradisjoner og metoder.
+Seminar i pedagogikk som tar opp sentrale utfordringer i dagens grunnskole.
+Forskningsetikk og grunnlagsspC8rsmC%l.
+Skriving i forskning om skole og undervisning og i lC&reryrket.
+
+Deler av denne undervisningen vil kunne skje i hC8stsemesteret, mens studenten har sitt hovedfokus pC% emnet Norsk tegnsprC%k 1.
+
+Arbeids- og undervisningsformer
+
+Den praktiske undervisningen foregC%r gruppevis med faglC&rer.
+
+Det forutsettes aktiv bruk av video ved selvstudium. Det blir gitt fortlC8pende tilbakemeldinger fra faglC&rerne pC% studentenes tegnsprC%klige produksjon. Den praktiske undervisningen gis i hovedsak pC% norsk tegnsprC%k, den teoretiske undervisningen ogsC% pC% norsk. Det forventes at studentene ikke bruker talesprC%k i timer der undervisningen blir gitt pC% norsk tegnsprC%k. Det benyttes tolk ved behov.
+
+Undervisningen gis i form av forelesninger, veiledning og praktiske oppgaver. GjennomfC8ring av praktiske oppgaver skjer pC% norsk tegnsprC%k. Tavle, bilder, skrift, video og hC%ndalfabet vil ogsC% bli benyttet. Utstyr som hC8rselsvern og C8repropper vil benyttes i perioder.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+FC8lgende arbeidskrav og faglig aktivitet med krav om deltakelse mC% vC&re godkjent fC8r eksamen i emnet kan avlegges:
+
+Arbeidskrav
+
+Studentene skal levere til faglC&rer og fC% godkjent fem arbeidskrav.
+
+Arbeidskrav 1: Gruppeoppgave pC% video, inntil 2,5 minutter per gruppemedlem. Av praktiske hensyn bC8r gruppen bestC% av tre studenter.
+Arbeidskrav 2: Innlevering av et notat pC% 400 ord +/- 10 prosent om opplegg for FoU-oppgaven. Notatet skal ha med omtale av emne, spC8rsmC%l en vil undersC8ke, aktuell forskningslitteratur og annet fagstoff studenten forventer C% sette seg inn i som del av oppgavearbeidet, hva slags materiale studenten planlegger C% samle inn og undersC8ke, forskningsmetode studenten skal bruke, og skisse til oppgavedesign.
+Arbeidskrav 3: Individuell flervalgstest pC% universitetets digitale plattform(er) med spC8rsmC%l knyttet til utdanningshistorien for dC8ve og hC8rselshemmede.
+Arbeidskrav 4: Notat fC8r siste veiledning med utdrag av oppgavetekst (fra FoU-oppgaven) pC% 1500 ord +/- 10 prosent.
+Arbeidskrav 5: Individuell oppgave pC% video der studenten skal gjenfortelle en historie pC% norsk tegnsprC%k. Varighet:1-5 minutter.
+
+FormC%let med arbeidskravene er C% gi studenten tilstrekkelig veiledning i emnets faglige innhold og praktisk C8velse. Omfang vil spesifiseres i oppgavetekster eller individuelt i samarbeid med faglC&rer. Tidsfrister gjC8res elektronisk tilgjengelig for studentene ved semesterstart.
+
+For generelle regler om arbeidskrav, se programplan.
+
+Faglig aktivitet med krav om deltakelse
+
+Det er krav om tilstedevC&relse i den praktiske undervisningen i emnet. For C% fC% avlegge eksamen kreves minimum 80 prosent tilstedevC&relse. Sykdom og dokumentert fravC&r fritar ikke for kravet om deltakelse. Ved helt spesielle omstendigheter kan det etter avtale med faglC&rer gis kompensatoriske oppgaver ved overskridelse av fravC&ret.
+
+NC%r det gjelder undervisningen som er knyttet til FoU-oppgaven, framgC%r det av undervisningsplanen hvilke aktiviteter som har krav om tilstedevC&relse.
+
+Deltakelse pC% flerfaglig undervisning om utdanningsvitenskap og metode, knyttet til felles pensum og tema og faglige og fagdidaktiske tema i det faget studenten har valgt C% skrive oppgaven innenfor.
+Deltakelse pC% kurs i akademisk skriving og IKT.
+Deltakelse pC% to veiledninger i seminar eller individuelt. Veileder setter opp tidspunkter og krav til bidrag.
+Deltakelse pC% delingskonferanse med framlegg og som tilhC8rer til medstudenter.
+
+Det er i tillegg krav om at studenten mC% gjennomfC8re flerfaglige arbeidskrav for C% fC% avlegge eksamen i emnet. Se programplanen for nC&rmere informasjon om arbeidskravene.
+
+Vurdering og eksamen
+
+Avsluttende vurdering i emnet gjennomfC8res i vC%rsemesteret. Eksamen bestC%r av fC8lgende tre deler, som vektes 1/6, 2/6 og 3/6:
+
+Studenten fC%r en tekst presentert pC% video av en tegnsprC%kmodell. Studenten skal avlese modellen og sC% svare pC% et gitt antall spC8rsmC%l i etterkant, knyttet til innholdet i teksten. Varighet 30 minutter. Del 1 utgjC8r 1/6 av samlet karakter.
+
+En muntlig samtale hvor studenten skal besvare spC8rsmC%l og gjennomfC8re en samtale med sensorer knyttet til et tema. Temaet trekkes nC%r eksamen starter, og er ett av fem temaer studenten fC%r beskjed om pC% forhC%nd. Varighet 10-15 minutter. Del 2 utgjC8r 2/6 av samlet karakter.
+
+En individuell FoU-oppgave med omfang pC% 7000 ord +/- 10 prosent leveres elektronisk innen oppgitt frist. Oppgaven mC% oppfylle IKT-krav og bestemte krav til utforming. Slike kriterier publiseres pC% universitetets lC&ringsplattform i god tid fC8r studenten begynner pC% sin oppgave. EgenerklC&ring vedrC8rende fusk og plagiering og egenerklC&ring knyttet til hvorfor oppgaven ikke utlC8ser NSD-krav, skal ligge som vedlegg i FoU-oppgaven ved innlevering. Del 3 utgjC8r 3/6 av samlet karakter.
+
+Ny/utsatt eksamen
+
+Ved gyldig fravC&r eller ikke bestC%tt resultat mC% kun den aktuelle eksamensdelen tas opp igjen.
+
+Muntlig eksamen gjennomfC8res pC% samme mC%te ved ny/utsatt eksamen som ved ordinC&r eksamen.
+
+Ved ikke-bestC%tt karakter pC% FoU-oppgaven, vil det vC&re anledning til C% omarbeide oppgaven ved fC8rste ny/utsatt eksamen. Etter dette leveres ny oppgave. Dersom FoU-oppgaven fC%r bestC%tt karakter, kan studenten ikke levere forbedret oppgave, men mC% eventuelt skrive ny FoU-oppgave ved ny eksamen. Dette innebC&rer at man skifter temaomrC%de, eventuelt materiale for undersC8kelse, faglig grunnlag og problemstilling. Innlevering av forbedret versjon av samme oppgave som ved tidligere eksamen er ikke tillatt, og slik innlevering vil ikke bli vurdert.
+
+Studenter er selv ansvarlige for C% melde seg opp til eventuell ny/utsatt eksamen.
+
+Hjelpemidler ved eksamen
+
+Ingen hjelpemidler er tillatt til muntlig eksamen. Alle hjelpemidler er tillatt i arbeidet med FoU-oppgaven.
+
+Vurderingsuttrykk
+
+Det gis gradert bokstavkarakterskala fra A til F, der A er beste karakter og F er ikke bestC%tt.
+
+Sensorordning
+
+Eksamen vurderes av intern og ekstern sensor. Normalt er veileder intern sensor for FoU-oppgaven.

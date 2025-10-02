@@ -1,0 +1,205 @@
+institution: uib
+code: PEDA130-0
+year: NA
+hv: NA
+url: https://www4.uib.no/studier/emner/peda130
+status: 200
+course_name_no: InnfC8ring i pedagogikk for lektorstudentar
+----- FULLTEXT -----
+
+Navigasjonssti
+Forside
+Studier
+Emner
+
+InnfC8ring i pedagogikk for lektorstudentar
+
+Studiepoeng
+
+10
+
+Undervisningssemester
+
+Haust
+
+Emnekode
+
+PEDA130
+
+Talet pC% semester
+
+1
+
+UndervisningssprC%k
+
+Norsk
+
+Ressursar
+
+Timeplan
+Litteraturliste
+
+Litteraturliste
+
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r
+MC%l og innhald
+
+Emnet har som overordna mC%l C% gje ei innfC8ring i pedagogikk for lektorstudentar.
+
+For det fyrste vil emnet gje studentane fagleg forstC%ing for forventingar til kunnig og ansvarleg utC8ving av lC&rarrolla og lC&rargjerninga, med sC&rskild vekt pC% lovverk og tydinga av relasjonskompetanse, klasseleiing og etikk. I tillegg vil studentane fC% kunnskap om pedagogiske grunnomgrep og -spC8rsmC%l, som danning og tilhC8vet mellom tvang og fridom, som bidreg til C% gje retning til praksis i skulen.
+
+For det andre vil studentane verte introduserte for grunnleggjande allmenndidaktiske perspektiv og forskingsbaserte strategiar til bruk i planlegging og gjennomfC8ring av undervisning.
+
+For det tredje vil emnet gje studentane kunnskap om ungdom si oppleving av elevrolla og skulen og om fC8remC%l og funksjonar til skulen som institusjon.
+
+Gjennom deltaking i emnet vil studentane starte arbeidet med C% danne eigen profesjonell identitet og C8ve opp mellommenneskelege dygder som omsorg og respekt.
+
+Emnet inneheld ogsC% 10 dagar med praksis, C%tte av dei i skulen og to til for- og etterarbeid pC% campus. Undervisninga i emnet vil gjennomgC%ande stC8tte studentane i C% reflektere over praksiserfaringar og -observasjonar i ljos av pedagogisk teori.
+
+LC&ringsutbyte
+
+Studenten skal ved avslutta emne ha fC8lgjande lC&ringsutbyte definert i kunnskapar, ferdigheiter og generell kompetanse:
+
+Kunnskapar:
+
+Studenten
+
+kjenner til sentrale tema og grunnleggjande omgrep i pedagogikkfaget
+Har kunnskap om relevant lovverk og sentrale styringsdokument for lC&raryrket
+har fagleg forstC%ing for tydinga relasjonskompetanse og klasseleiing har i kunnig utC8ving av lC&rarrolla og lC&rargjerninga
+har innsikt i kva som kjenneteiknar pedagogiske relasjonar og kva for etisk ansvar dette inneber for lC&raren
+har brei kunnskap om allmenndidaktiske perspektiv og forskingsbaserte strategiar knytte til planlegging og gjennomfC8ring av undervisning
+har kunnskap om korleis unge kan oppleve elevrolla og skulen
+har kjennskap til skulen sine stC8ttefunksjonar og samarbeid med andre instansar i mC8te med sC&rskilde behov hos barn og unge
+har grunnleggjande kunnskap om fC8remC%l og funksjonar til skulen som institusjon
+
+Kunnskapar knytte direkte til praksis:
+
+har kunnskap om korleis lC&rarar i praksis legg til rette for undervisningsaktivitetar gjennom klasseleiing og relasjonskompetanse
+
+Ferdigheiter:
+
+Studenten
+
+kan drC8fte sentrale tema og grunnleggjande omgrep i pedagogikkfaget
+kan reflektere over lC&rarrolla pC% bakgrunn av praksis, faglitteratur og styringsdokument
+kan syne dC8mmekraft knytt til etiske utfordringar og dilemma i mC8te med elevar
+kan syne forstC%ing for mangfald og ulike behov hjC% elevar
+
+Ferdigheiter knytte direkte til praksis:
+
+kan gjere bruk av grunnleggjande klasseleiingsferdigheiter
+kan planleggje, grunngje og gjennomfC8re korte undervisningsaktivitetar
+kan reflektere over samspelet mellom elevar i og utanfor klasserommet
+kan bruke observasjon som metode for C% fC% innsikt i livet i skulen og identifisere pedagogikkfaglege problemstillingar
+
+Generell kompetanse:
+
+Studenten
+
+kan syne relasjonskompetanse og mellommenneskelege dygder
+forstC%r korleis unge kan oppleve det C% vere elev i dagens skule
+kan reflektere over samanhengen mellom klasseleiing, gode relasjonar og kva lC&ringsutbyte elevar fC%r gjennom undervisning
+kan orientere seg i, analysere og stille seg kritisk til ulike informasjonskjelder og teoriar som er relevante for pedagogisk verksemd
+kan sjC8lvstendig gjere greie for sentrale problemstillingar, kunnskapar og metodar innan pedagogikkfaget
+
+Generell kompetanse direkte knytt til praksis:
+
+kan syne relasjonskompetanse og mellommenneskelege dygder
+kan reflektere over samanhengen mellom klasseleiing, gode relasjonar og kva lC&ringsutbyte elevar fC%r gjennom undervisning
+Studiepoeng, omfang
+10
+StudienivC% (studiesyklus)
+Bachelor
+Undervisningssemester
+Haust
+Undervisningsstad
+Universitetet i Bergen og praksisskular.
+Krav til forkunnskapar
+Ingen.
+TilrC%dde forkunnskapar
+Ingen.
+Studiepoengsreduksjon
+PEDA120 + KOPRA101 = 10 studiepoeng i reduksjon.
+Krav til studierett
+Emnet er reservert for studentar pC% femC%rig lektorprogram.
+Arbeids- og undervisningsformer
+
+Undervisninga vert organisert gjennom fC8relesingar, seminar i mindre grupper og praksis i skulen. Seminarundervisninga legg vekt pC% studentaktive arbeidsmC%tar og det vert forventa at studentane mC8ter fC8rebudd til seminara. Kvar student har tilbod om 2 timar individuell rettleiing.
+
+Praksisperioden i skulen har eit omfang pC% 10 dagar, C%tte av dei i skulen og to til fC8re- og etterarbeid pC% campus, og vil innebere aktiv deltaking frC% lektorstudentane. Aktivitetar i praksis inkluderer observasjon av undervisning, gjennomfC8ring av korte undervisningsaktivitetar og deltaking i inspeksjon og anna relevant lC&rararbeid. GjennomfC8ring av praksis er obligatorisk og vert vurdert som godkjend/ikkje godkjend.
+
+Obligatorisk undervisningsaktivitet
+FC8rebudd deltaking pC% seminar
+GjennomfC8re ei mikroundervisningsC8kt med utgangspunkt i litteratur i emnet
+Innlevering av utkast til mappe til rettleiing
+100% deltaking i kortpraksis, som inkluderer bC%de utplassering i skulen og for- og etterarbeidsseminar pC% campus
+
+Antal forsC8k pC% kortpraksis:
+
+Kortpraksis er ein obligatorisk undervisningsaktivitet i emnet. Studentar som fC%r ikkje godkjent pC% kortpraksis kan ta kortpraksis pC% nytt C)in gong.
+
+Varigheit:
+
+Godkjende obligatoriske arbeidskrav (herunder kortpraksis) har ei varighet pC% tre semester
+
+Vurderingsformer
+
+I emnet nyttar ein fC8lgjande vurderingsform:
+
+Mappeeksamen med to oppgC%ver pC% 1500 ord (totalt 3000 ord +/- 10%)
+Karakterskala
+A-F
+Vurderingssemester
+Haust
+Litteraturliste
+Litteraturlista vil vere klar innan 1. juli for haustsemesteret.
+Emneevaluering
+Emnet vert evaluert i trC%d med Det psykologiske fakultet sine rutinar for deltakende evaluering og UiB sitt kvalitetssikringssystem.
+Hjelpemiddel til eksamen
+Alle.
+Programansvarleg
+Det matematisk-naturvitskapelege fakultetDet humanistiske fakultetDet samfunnsvitenskapelege fakultet
+Emneansvarleg
+Institutt for pedagogikk
+Administrativt ansvarleg
+Det psykologiske fakultet
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r
+Kontaktinformasjon
+Informasjonssenteret ved Det psykologiske fakultet
+Eksamensinformasjon
+Vurderingsordning
+Mappeeksamen -2 oppgaver
+Innleveringsfrist
+01.12.2025, 13:00
+Trekkfrist
+17.11.2025
+Eksamenssystem
+Inspera
+Digital eksamen
+
+Dette bC8r du vite om eksamen
+
+Institutt for pedagogikk
+
+Vurderingsordning
+
+Mappeeksamen -2 oppgaver
+
+Innleveringsfrist
+
+01.12.2025, 13:00
+
+Trekkfrist
+
+17.11.2025
+
+Eksamenssystem
+
+Inspera
+
+Digital eksamen

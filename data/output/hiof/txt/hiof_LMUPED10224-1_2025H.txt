@@ -1,0 +1,10 @@
+institution: hiof
+code: LMUPED10224-1
+year: 2025
+hv: H
+url: https://www.hiof.no/studier/emner/lusp/lusp/2025/host/lmuped10224.html
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+NA

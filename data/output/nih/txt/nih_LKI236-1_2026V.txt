@@ -1,0 +1,10 @@
+institution: nih
+code: LKI236-1
+year: 2026
+hv: V
+url: https://www.nih.no/studier/emner/2026/var/lki236.html
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+NA

@@ -1,0 +1,10 @@
+institution: hvl
+code: MGBSA503-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGBSA503
+status: 200
+course_name_no: MGBSA503 Samfunnsfag 3, emne 3 - Forskingsmetodar og kjeldekritikk
+----- FULLTEXT -----
+
+NA

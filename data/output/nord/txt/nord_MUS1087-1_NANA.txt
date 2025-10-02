@@ -1,0 +1,107 @@
+institution: nord
+code: MUS1087-1
+year: NA
+hv: NA
+url: https://www.nord.no/studier/emner/mus1087
+status: 200
+course_name_no: Musikkteknologi, komponering og arrangering
+----- FULLTEXT -----
+
+
+
+Emnet inneholder musikkteknologi, komponering/arrangering, lytting og musikkproduksjon.
+
+Forbeholdt studenter pC% fC8lgende studieprogram ved Nord universitet:
+
+lC&rerutdanning i praktiske og estetiske fag (malupe), bachelor i musikk og C%rsstudium i musikk.
+
+Forbeholdt studenter pC% fC8lgende studieprogram ved Nord universitet:
+
+Kunnskap
+
+Studenten
+
+har kunnskap om sentrale temaer, metoder og innfallsvinkler i musikkteknologi
+har kunnskap om grunnleggende arrangerings- og komponeringsprinsipper
+har grunnleggende kunnskap om lydteori
+
+Ferdigheter
+
+kan analysere, lage og arrangere musikk
+kan utvikle og kommunisere egne musikalske idC)er bC%de muntlig og skriftlig
+kan anvende noter og musikkteoretiske begreper i egen utC8velse og i undervisningssammenheng
+kan anvende aktiv lytting som metode for C% tilegne seg kunnskap om lydelige og musikalske forlC8p innenfor ulike musikkteknologiske praksiser
+
+Generell kompetanse
+
+Studenten
+
+kan anvende relevante musikkteknologiske verktC8y og metoder i utC8vende og skapende arbeid
+har innsikt i relevante etiske, estetiske og samfunnsrelaterte problemstillinger innenfor faget musikkteknologi
+har utviklet grunnleggende musikalsk forstC%else for det C% lage og arrangere musikk
+
+Kunnskap
+
+Studenten
+
+Ferdigheter
+
+Generell kompetanse
+
+Studenten
+
+Utover semesteravgift og pensumlitteratur forutsettes det at studenten disponerer en bC&rbar datamaskin.
+
+Obligatorisk emne
+
+Fysisk undervisning pC% Levanger.
+
+Undervisningen vil foregC% i klasse og i grupper. Undervisningsformene, som ogsC% involverer bruk av digitale verktC8y, varierer mellom praktisk musisering, gruppearbeid og diskusjoner. Studentaktive lC&ringsformer stC%r sentralt, og studentene vil fC% fortlC8pende veiledning. Det forventes en stor grad av egeninnsats i emnet.
+
+Fysisk undervisning pC% Levanger.
+
+Undervisningen vil foregC% i klasse og i grupper. Undervisningsformene, som ogsC% involverer bruk av digitale verktC8y, varierer mellom praktisk musisering, gruppearbeid og diskusjoner. Studentaktive lC&ringsformer stC%r sentralt, og studentene vil fC% fortlC8pende veiledning. Det forventes en stor grad av egeninnsats i emnet.
+
+Emnet evalueres ved slutten av semesteret.
+
+Sammensatt vurdering - alle delene mC% vC&re godkjent/bestC%tt for C% fC% karakter i emnet.
+
+Obligatorisk deltakelse (OD)
+
+Det kreves minimum 80 prosent obligatorisk deltakelse i undervisningen for C% fC% avsluttende vurdering i emnet. Vurderingsuttrykk: Godkjent/ikke godkjent. Teller 0/100 av karakteren.
+
+Arbeidskrav (AK)
+
+Arbeidskrav er spesifisert i emnets semesterplan og skal vC&re godkjent for C% fC% avsluttende vurdering i emnet. Vurderingsuttrykk: Godkjent/ikke godkjent. Teller 0/100 av karakteren.
+
+Eksamensform
+
+Mappeinnlevering (MA) bestC%ende av 2 arbeider som er knyttet til lC&ringsutbyttene i emnet.
+
+Vurderingsuttrykk: A-F. Teller 100/100 av karakteren.
+
+Sammensatt vurdering - alle delene mC% vC&re godkjent/bestC%tt for C% fC% karakter i emnet.
+
+Obligatorisk deltakelse (OD)
+
+Det kreves minimum 80 prosent obligatorisk deltakelse i undervisningen for C% fC% avsluttende vurdering i emnet. Vurderingsuttrykk: Godkjent/ikke godkjent. Teller 0/100 av karakteren.
+
+Arbeidskrav (AK)
+
+Arbeidskrav er spesifisert i emnets semesterplan og skal vC&re godkjent for C% fC% avsluttende vurdering i emnet. Vurderingsuttrykk: Godkjent/ikke godkjent. Teller 0/100 av karakteren.
+
+Eksamensform
+
+Mappeinnlevering (MA) bestC%ende av 2 arbeider som er knyttet til lC&ringsutbyttene i emnet.
+
+Vurderingsuttrykk: A-F. Teller 100/100 av karakteren.
+
+Alle hjelpemidler tillatt etter Nord universitet sine forskrifter og retningslinjer.
+
+Unntak: C generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er C% regne som fusk.
+
+Alle hjelpemidler tillatt etter Nord universitet sine forskrifter og retningslinjer.
+
+Unntak: C generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er C% regne som fusk.
+
+Det er en fordel med musikalsk erfaring, men ikke et krav.

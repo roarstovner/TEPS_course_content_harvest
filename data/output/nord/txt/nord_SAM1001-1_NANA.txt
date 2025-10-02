@@ -1,0 +1,140 @@
+institution: nord
+code: SAM1001-1
+year: NA
+hv: NA
+url: https://www.nord.no/studier/emner/sam1001
+status: 200
+course_name_no: Samfunnsfag 1A, 5-10
+----- FULLTEXT -----
+
+I SAM1001 blir du introdusert for samfunnsfag som skolefag, og vi dykker dypere ned i temaer knyttet til ett av lC&replanens fem kjerneelementer for samfunnsfag: Identitetsutvikling og fellesskap. Du vil bli kjent med teorier og begreper fra fagomrC%dene geografi, historie og samfunnskunnskap, og fC% prC8vd ut ulike metoder for samfunnsfagundervisning. 
+
+Emnet vil gi en introduksjon til samfunnsfaget i grunnskolelC&rerutdanninga. Metodiske og fagdidaktiske problemstillinger knyttet til de tre fagomrC%dene geografi, historie og samfunnskunnskap vil stC% sentralt. Emnet vil ogsC% ta opp utvalgte faglige temaer, med kjerneelementet identitetsutvikling og fellesskap som omdreiningspunkt.
+
+Ingen utover opptakskravet til Master grunnskolelC&rerutdanning 5-10.
+
+Ingen utover opptakskravet til Master grunnskolelC&rerutdanning 5-10.
+
+Kunnskaper:
+
+Studenten
+
+har kunnskap om samfunnsfag som skolefag, fagets plass i lC&replanen og nyere samfunnsfagsdidaktikk
+har kunnskap om sentrale historiske, geografiske og samfunnsfaglige begreper, teorier og metoder
+har kjennskap til grunnleggende ferdigheter i samfunnsfag
+har kunnskap om sentrale trekk ved det norske samfunnet i geografisk, historisk og nC%tidig perspektiv
+har kunnskap om ulike perspektiver pC% oppvekst i Norge i dag
+har kunnskap om Norge som flerkulturelt samfunn
+har kunnskap om de nasjonale minoritetenes historie og levekC%r i Norge, med sC&rlig vekt pC% samene
+
+Ferdigheter:
+
+Studenten
+
+kan anvende faglige og fagdidaktiske kunnskaper og ferdigheter i samfunnsfaglig opplC&ring og formidling etter gjeldende lC&replan og kritisk vurdere egen undervisning
+kan variere undervisningen, og tilpasse den til ulike elever og situasjoner
+kan arbeide med ulike kilder, pC% ulike arenaer og med ulike metoder, slik at samfunnsfagundervisningen kan gjC8res utforskende
+kan bruke og kritisk vurdere digitale verktC8y, lC&remidler og kilder i opplC&ringen
+
+Generell kompetanse:
+
+Studenten
+
+kan reflektere kritisk omkring samfunnsfaglige spC8rsmC%l og stimulere til kritisk tenking
+kan forstC% seg selv og omgivelsene i forhold til begrepene tid og rom
+
+Kunnskaper:
+
+Studenten
+
+Ferdigheter:
+
+Studenten
+
+Generell kompetanse:
+
+Studenten
+
+Utover semesteravgift, pensumlitteratur og feltarbeid/ekskursjoner forutsettes det at studenten disponerer en bC&rbar datamaskin.
+
+Valgbart
+
+Forelesninger og gruppearbeid
+
+Studentframlegg
+
+Ekskursjoner og feltarbeid
+
+Innleveringer
+
+Forelesninger og gruppearbeid
+
+Studentframlegg
+
+Ekskursjoner og feltarbeid
+
+Innleveringer
+
+Studieprogrammet evalueres C%rlig av studentene gjennom emneundersC8kelser (midtveisevaluering og sluttevaluering). Evaluering inngC%r som en del av universitetets kvalitetssikringssystem.
+
+Praksis er en integrert del av faget. Det er et sentralt fokus C% knytte sammen kunnskap og erfaringer fra undervisning i emnet og praksis. Det blir lagt vekt pC% at studentene skal dokumentere lC&ringsutbytte i tilknytning til praksis, for eksempel gjennom utvalgte arbeidskrav.
+
+Sammensatt vurdering - Alle delene mC% vC&re godkjent/bestC%tt fC8r man fC%r karakter i emnet.
+
+Obligatorisk deltakelse (OD)
+
+Deltakelse i undervisning er obligatorisk. Minimumskrav er 80 prosent deltakelse.
+
+Arbeidskrav (AK)
+
+Det vil bli gitt fire oppgaver som arbeidskrav i lC8pet av studieC%ret. Det vil kunne vC&re bC%de individuelle oppgaver og gruppeoppgaver. NC&rmere krav og opplysninger blir gitt i emnets semesterplaner.
+
+For C% kunne fC% endelig vurdering i emnet, mC% bC%de OD og AK vC&re vurdert til godkjent.
+
+Skriftlig skoleeksamen (SK/S)
+
+6 timer. Karakteruttrykk: A-F. Vektes 100% av karakteren.
+
+Sammensatt vurdering - Alle delene mC% vC&re godkjent/bestC%tt fC8r man fC%r karakter i emnet.
+
+Obligatorisk deltakelse (OD)
+
+Deltakelse i undervisning er obligatorisk. Minimumskrav er 80 prosent deltakelse.
+
+Arbeidskrav (AK)
+
+Det vil bli gitt fire oppgaver som arbeidskrav i lC8pet av studieC%ret. Det vil kunne vC&re bC%de individuelle oppgaver og gruppeoppgaver. NC&rmere krav og opplysninger blir gitt i emnets semesterplaner.
+
+For C% kunne fC% endelig vurdering i emnet, mC% bC%de OD og AK vC&re vurdert til godkjent.
+
+Skriftlig skoleeksamen (SK/S)
+
+6 timer. Karakteruttrykk: A-F. Vektes 100% av karakteren.
+
+Med overlapp menes en faglig likhet mellom emner med samme faginnhold. Du vil derfor fC% fC8lgende reduksjon i studiepoeng om du har tatt emner som er angitt under:
+
+GLB461 - Samfunnsfag 1 for 1.-7. trinn - 7.5 Studiepoeng
+
+GLU461 - Samfunnsfag 1, for 5.-10. trinn - 7.5 Studiepoeng
+
+SAM1011 - Samfunnsfag 1A 1-7 - 15 Studiepoeng
+
+SAM1006 - Samfunnsfag 1, 1-7 - 7.5 Studiepoeng
+
+SAM1007 - Samfunnsfag 1, 5-10 - 7.5 Studiepoeng
+
+SAM1012 - Samfunnsfag 1 - 7.5 Studiepoeng
+
+Med overlapp menes en faglig likhet mellom emner med samme faginnhold. Du vil derfor fC% fC8lgende reduksjon i studiepoeng om du har tatt emner som er angitt under:
+
+GLB461 - Samfunnsfag 1 for 1.-7. trinn - 7.5 Studiepoeng
+
+GLU461 - Samfunnsfag 1, for 5.-10. trinn - 7.5 Studiepoeng
+
+SAM1011 - Samfunnsfag 1A 1-7 - 15 Studiepoeng
+
+SAM1006 - Samfunnsfag 1, 1-7 - 7.5 Studiepoeng
+
+SAM1007 - Samfunnsfag 1, 5-10 - 7.5 Studiepoeng
+
+SAM1012 - Samfunnsfag 1 - 7.5 Studiepoeng

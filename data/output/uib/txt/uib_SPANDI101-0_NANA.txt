@@ -1,0 +1,182 @@
+institution: uib
+code: SPANDI101-0
+year: NA
+hv: NA
+url: https://www4.uib.no/studier/emner/spandi101
+status: 200
+course_name_no: Fagdidaktikk i spansk i lektorutdanninga 1
+----- FULLTEXT -----
+
+Navigasjonssti
+Forside
+Studier
+Emner
+
+Fagdidaktikk i spansk i lektorutdanninga 1
+
+Studiepoeng
+
+5
+
+Undervisningssemester
+
+Haust
+
+Emnekode
+
+SPANDI101
+
+Talet pC% semester
+
+1
+
+UndervisningssprC%k
+
+Spansk og norsk
+
+Ressursar
+
+Timeplan
+Litteraturliste
+
+Litteraturliste
+
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust 2021 VC%r 2020 Haust 2020 VC%r 2019 Haust 2019 VC%r 2018 Haust 2018 VC%r 2017 Haust 2017 VC%r 2016 Haust 2016 VC%r 2015 Haust 2015 VC%r 2014 Haust 2010 Haust 2010 VC%r 2009 Haust 2009 VC%r 2008 Haust 2007 Haust
+MC%l og innhald
+
+Emnet har som mC%lsetjing C% gje studentane ei grunnleggjande innfC8ring i fagfeltet spanskdidaktikk innan desse tre hovudomrC%da:
+
+- Spanskfaget si legitimering og sC&rpreg
+
+- SprC%klC&ring
+
+- SprC%k og kommunikasjon
+
+LC&ringsutbyte
+
+Studenten skal ved avslutta emne ha fC8lgjande lC&ringsutbyte definert i kunnskapar, ferdigheter og generell kompetanse:
+
+Kunnskap:
+
+Studenten
+
+har innsikt i sentrale styringsdokument for skolefaget
+har kunnskap om spanskfaget si utvikling som skolefag
+har kjennskap til sentrale sprC%klC&ringsteoriar og tilnC&rmingar
+
+Ferdigheiter:
+
+Studenten
+
+kan analysere styringsdokument for skolefaget
+kan reflektere over og drC8fte skolepraksis i lys av relevant fagdidaktisk teori
+kan uttrykkje seg munnleg og skriftleg pC% spansk innan fagfeltet.
+
+Generell kompetanse:
+
+Studenten
+
+kan reflektere over eiga lC&ring
+kan reflektere over og drC8fte problemstillingar knytte til spansk som skolefag
+
+kan gjere greie for og reflektere over elevar si lC&ring
+
+Studiepoeng, omfang
+5
+StudienivC% (studiesyklus)
+Bachelor
+Undervisningssemester
+Haust. Femte semester for studentar som tek spansk som fag II.
+Undervisningsstad
+Bergen
+Krav til forkunnskapar
+
+For studentar som tek spansk som fag I: PEDA 120 og KOPRA101
+
+For studentar som tek spansk som fag II: KOPRA102
+
+Minimum 15 studiepoeng i spansk.
+
+TilrC%dde forkunnskapar
+30 studiepoeng i spanskfaglege emne.
+Studiepoengsreduksjon
+PC% grunn av fagleg overlapp blir studiepoenguttellinga for SPANDI101 redusert med 5 studiepoeng om det blir kombinert med SPANSK621 eller SPANSK622.
+Krav til studierett
+Opptak til lektorutdanning ved Det humanistiske fakultet, UiB.
+Arbeids- og undervisningsformer
+
+12 timar fC8relesingar.
+
+Seminar: 2 (4) timar (i samsvar med talet pC% studentar).
+
+Seminar: 2 dagar for- og etterarbeid knytt til emnet KOPRA102 for studentar som tek spansk som fag I, og 2 dagar for- og etterarbeid knytt til praksisemnet KOPRA103 for studentar som tek spansk som fag II.
+
+Om det melder seg fC&rre enn fem studentar til eit emne, kan undervisningstilbodet bli tilpassa studenttalet. Studentane vil i sC% fall bli informerte om det alternative undervisningsopplegget ved semesterstart, og fC8r semesterregistreringsfristen 1. februar/1. september.
+
+Obligatorisk undervisningsaktivitet
+
+For C% fC% gC% opp til eksamen mC% studentane ha lagt fram eit sjC8lvstendig munnleg (om lag 10 minutt) eller skriftleg arbeid (om lag 1000 ord) der dei analyserer eit sprC%kfagleg spC8rsmC%l i lys av fagdidaktisk teori. Arbeidet skal gjerast pC% spansk.
+
+I tillegg mC% studentane ha gjennomfC8rt skolebesC8k (om lag 3 dagar) med for- og etterarbeid. SkolebesC8ket er knytt til fagdidaktikk og pedagogikk.
+
+Undervisninga er obligatorisk (80%), og det er venta at studentane er godt fC8rebudde til og aktivt deltakande i undervisninga.
+
+Vurderingsformer
+Eksamensforma er ein heimeeksamen i 3 dagar med oppgjeve emne, ca. 2500 ord. Heimeeksamen skal skrivast pC% spansk eller halvparten pC% spansk og den andre pC% norsk. NC&rare informasjon blir gitt i studiet.
+Karakterskala
+Ved sensur av emnet nyttar ein karakterskalaen A-F, der F er stryk.
+Vurderingssemester
+Haust. Det er C2g vurdering tidleg i vC%rsemesteret for studentar med gyldig godkjenning av obligatoriske arbeidskrav.
+Litteraturliste
+Pensum utgjer om lag 275 sider av normal vanskegrad. Institutt for framandsprC%k gjev framlegg om spesifisert pensumliste i emnet.
+Emneevaluering
+Undervisninga blir evaluert i trC%d med UiB sitt kvalitetssikringssystem.
+Programansvarleg
+ProgramrC%det for lektorutdanninga har ansvar for fagleg innhald og oppbygging av studiet og for kvaliteten pC% studieprogrammet og alle emna der.
+Administrativt ansvarleg
+Det humanistiske fakultet ved Institutt for framandsprC%k har det administrative ansvaret for emnet og studieprogrammet.
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust 2021 VC%r 2020 Haust 2020 VC%r 2019 Haust 2019 VC%r 2018 Haust 2018 VC%r 2017 Haust 2017 VC%r 2016 Haust 2016 VC%r 2015 Haust 2015 VC%r 2014 Haust 2010 Haust 2010 VC%r 2009 Haust 2009 VC%r 2008 Haust 2007 Haust
+Kontaktinformasjon
+Studierettleiar: studierettleiar@if.uib.no Eksamensadministrasjon: eksamen@if.uib.no
+Eksamensinformasjon
+Vurderingsordning
+Heimeeksamen
+OppgC%ve leverast ut
+25.11.2025, 13:00
+Innleveringsfrist
+28.11.2025, 13:00
+Trekkfrist
+11.11.2025
+Eksamenssystem
+Inspera
+Digital eksamen
+
+Dette bC8r du vite om eksamen
+
+Institutt for fremmedsprC%k
+
+Vurderingsordning
+
+Heimeeksamen
+
+OppgC%ve leverast ut
+
+25.11.2025, 13:00
+
+Innleveringsfrist
+
+28.11.2025, 13:00
+
+Trekkfrist
+
+11.11.2025
+
+Eksamenssystem
+
+Inspera
+
+Digital eksamen

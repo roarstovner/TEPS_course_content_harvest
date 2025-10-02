@@ -1,0 +1,10 @@
+institution: hiof
+code: LMBKHV10217-1
+year: 2026
+hv: V
+url: https://www.hiof.no/studier/emner/lusp/lusp/2026/var/lmbkhv10217.html
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+NA

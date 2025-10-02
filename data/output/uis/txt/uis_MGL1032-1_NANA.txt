@@ -1,0 +1,10 @@
+institution: uis
+code: MGL1032-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MGL1032
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+NA

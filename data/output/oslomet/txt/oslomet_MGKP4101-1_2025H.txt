@@ -1,0 +1,387 @@
+institution: oslomet
+code: MGKP4101-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/MGKP4101/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+MGKP4101 KroppsC8ving og kroppsC8vingsdidaktikk 1 Emneplan
+Engelsk emnenavn
+Physical Education Subject Pedagogy 1
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 1-7
+Omfang
+15.0 stp.
+StudieC%r
+2025/2026
+Pensum
+HCST 2025
+
+Timeplan
+HCST 2025
+Programplan
+GrunnskolelC&rerutdanning for trinn 1-7 (2025 HCST )
+Emnehistorikk
+2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Fagplan
+
+FAGPLAN
+
+KroppsC8ving og kroppsC8vingsdidaktikk
+
+(15+15+15 studiepoeng)
+
+Fagplanen ble godkjent i studieutvalget 10. november 2016
+
+Redaksjonelle endringer lagt inn 20. januar 2020 og 18. desember 2020
+
+Revisjon godkjent pC% fullmakt av leder i utdanningsutvalget 5. mars 2021
+
+Revisjon godkjent av utdanningsutvalget 24. januar 2022 og 21. februar 2022
+
+Gjeldende fra hC8stsemesteret 2022
+
+Innledning
+
+Fagplanen bygger pC% forskrift om rammeplan for grunnskolelC&rerutdanningen for trinn 1-7/trinn 5-10,
+
+fastsatt av Kunnskapsdepartementet 7. juni 2016, nasjonale retningslinjer for grunnskolelC&rerutdanningen
+
+trinn 1-7/trinn 5-10 av 1. september 2016 og programplan for grunnskolelC&rerutdanning for trinn 1-7/trinn
+
+5-10 ved OsloMet - storbyuniversitetet, godkjent av studieutvalget 16. november 2016.
+
+Faget skal representere en progresjon og utvidelse med utgangspunkt i kroppsC8vingsfaget i syklus 1.
+
+KroppsC8ving er et allmenndannende fag som skal inspirere til livslang aktivitet og bevegelsesglede.
+
+KroppsC8vingsdidaktikk er de refleksjoner en kan knytte til kroppsC8ving og undervisning av dette faget, som
+
+kan gi C8kt kunnskap om fagets beskaffenhet, om fagets legitimering og C8kt kunnskap om hvordan faget
+
+kan lC&res, undervises, utvikles og forskes pC%.
+
+Gjennom arbeidet med kroppsC8vingsdidaktikk skal studenten skaffe seg inngC%ende og avansert kunnskap
+
+om faget, fagets rolle og funksjon i skolen. Studenten skal kunne analysere og forholde seg kritisk til nyere
+
+nasjonal og internasjonal forskning og anvende denne kunnskapen i profesjonsutC8velsen. Studenten skal
+
+skaffe seg innsikt i sentrale undervisnings- og vurderingsformer i kroppsC8ving, hvordan disse bidrar til
+
+elevens lC&ring.
+
+MC%lgruppe
+
+Studenter som er tatt opp til femC%rig grunnskolelC&rerutdanning for trinn 1-7/trinn 5-10.
+
+Opptakskrav
+
+Faget er tilgjengelig som valgfag for aktive studenter ved grunnskolelC&rerutdanningen.
+
+Opptak til KroppsC8vingsdidaktikk krever fullfC8rt 60 studiepoeng kroppsC8ving pC% syklus 1.
+
+LC&ringsutbytte
+
+LC&ringsutbyttet er nC&rmere beskrevet i emneplanene.
+
+Fagets innhold og oppbygging
+
+KroppsC8ving og kroppsC8vingsdidaktikk (45 studiepoeng) er bygget opp av tre emner C  15 studiepoeng.
+
+Emnene er KroppsC8ving og kroppsC8vingsdidaktikk1, KroppsC8ving og kroppsC8vingsdidaktikk 2 og
+
+KroppsC8ving og kroppsC8vingsdidaktikk 3. GrunnskolelC&rerstudenter mC% velge emne 1 og emne 2 innenfor
+
+et fag uavhengig om masteroppgaven skal vC&re i fagdidaktikk eller profesjonsrettet pedagogikk. Emne 3
+
+kan byttes med andre emner i trC%d med nasjonale retningslinjer.
+
+KroppsC8ving og kroppsC8vingsdidaktikk 1 fokuserer pC% kroppsC8vingsforskning, vurdering og lC&ring i
+
+kroppsC8ving. Studentene vil i dette emnet ogsC% arbeide med digitale uttrykk og ressurser. KroppsC8ving og
+
+kroppsC8vingsdidaktikk 2 gir kunnskap om teoretiske perspektiv pC% kropp, fysisk aktivitet og lC&ring. Emnet
+
+fokuserer ogsC% pC% tilpasset opplC&ring og elevmangfold.KroppsC8ving og kroppsC8vingsdidaktikk 3 fokuserer
+
+pC% friluftslivsdidaktikk, og forskningsmetoder i kroppsC8ving. Studentene skal ogsC% jobbe med
+
+prosjektskissen for masteroppgaven i dette emnet.
+
+Fagets arbeids- og undervisningsformer
+
+Arbeid med kroppsC8ving og kroppsC8vingsdidaktikk krever varierte arbeidsformer. Store deler av
+
+undervisningen vil foregC% i form av forelesninger, seminarer og veiledning. I tillegg vil det benyttes praktisk
+
+arbeid/undervisning, ekskursjoner, bruk av digitale verktC8y, veiledet praksis og aktiv deltakelse i
+
+prosjekter. Det kreves stor grad av selvstendig arbeid med C% sette seg inn i pensum.
+
+LC&ringsledelse og dypere forstC%else av elevmangfold
+
+Emnene i masterfaget belyser bC%de barn og unges identitetsarbeid, og hvordan
+
+kroppsC8vingsundervisningen kan tilpasses alle elevers forutsetning og behov. I denne sammenheng
+
+diskuteres det ogsC% hvordan kroppsC8vingsfaget kan tilpasses et samfunn preget av mangfold. I
+
+mangfoldsperspektivet belyses kroppsC8ving med fokus blant annet pC% kjC8nn/seksualitet, etnisitet, religion,
+
+funksjonshemming og overvekt.
+
+Forsknings- og utviklingsarbeid relatert til skolen
+
+Undervisningen i masterfaget skal vC&re bC%de forskningsbasert og praksisnC&rt. Dette innebC&rer at
+
+studentene gjennom undervisning fC%r kjennskap til hvordan de kan anvende de teoretiske perspektivene i
+
+yrkesutC8velsen. Studentene vil ogsC% i undervisningen mC8te ulike eksempler pC% hvordan man kan
+
+gjennomfC8re praksisnC&re forskningsprosjekt i skolen. Masteroppgaven studentene skal skrive skal vC&re
+
+profesjonsretta og praksisorientert.
+
+Utvikling av endringskompetanse
+
+Studentenes endringskompetanse utvikles gjennom C8kt kunnskap, kompetanse og refleksjonsevne i faget.
+
+Arbeidskrav og vurderingsformer gir studentene mulighet til C% vise og oppC8ve evne til C% bli reflekterte
+
+praktikere, som for eksempel gjennom arbeid med vurdering for lC&ring.
+
+Klasseledelse og lC&rerrollen sett fra faget
+
+Undervisningen skal videreutvikle studenters kunnskap om klasseledelse/undervisning i fag.
+
+Undervisningen skal gi studenten avansert kunnskap om faget og fagdidaktiske problemstillinger, slik at
+
+studenten kan anvende disse innsikter til C% videreutvikle seg som profesjonsutC8ver i kroppsC8vingsfaget.
+
+Dette innebC&rer at studenten kan planlegge og gjennomfC8re/lede undervisning som fremmer elevens
+
+lC&ring i faget, og at studenten pC% et avansert nivC% kan formidle fagdidaktiske problemstillinger knyttet til
+
+profesjonsutC8velsen.
+
+Internasjonale perspektiver
+
+Studentene skal kunne analysere og forholde seg kritisk til nyere internasjonal forskning. Dette fordrer at
+
+en stor del av pensum er basert pC% internasjonal forskning pC% kroppsC8vingsfaget. Derfor er deler av pensum pC% engelsk.
+
+Praksistilknytning
+
+Masteroppgaven studentene skal skrive skal vC&re profesjonsretta og praksisorientert. Studentene skal
+
+gjennomfC8re 10 dagers praksis i lC8pet av emnet KroppsC8vingsdidaktikk 1. I lC8pet av denne praksisen skal
+
+studentene blant annet analysere og kritisk reflektere over hvordan de teoretiske perspektivene kan
+
+anvendes i praksis. Forskningslitteraturen som benyttes i emnene er for en stor del praksisbasert.
+
+PraksisopplC&ring
+
+PraksisopplC&ring er nC&rmere beskrevet i programplanen.
+
+Skikkethetsvurdering
+
+LC&rerutdanningsinstitusjoner har ansvar for C% vurdere om studenter er skikket for lC&reryrket. LC8pende
+
+skikkethetsvurdering foregC%r gjennom hele studiet og inngC%r i en helhetsvurdering av studentens faglige
+
+og personlige forutsetninger for C% kunne fungere som lC&rer. En student som utgjC8r en mulig fare for
+
+elevers liv, fysiske og psykiske helse, rettigheter og sikkerhet, er ikke skikket for yrket. Studenter som
+
+viser liten evne til C% mestre lC&reryrket, skal sC% tidlig som mulig i utdanningen fC% melding om dette. De skal
+
+fC% rC%d og veiledning for C% gjC8re dem i stand til C% oppfylle kravene om lC&rerskikkethet eller fC% rC%d om C%
+
+avslutte utdanningen. Beslutninger om skikkethet kan fattes gjennom hele studiet.
+
+Se universitetets nettsted for mer informasjon om skikkethetsvurdering.
+
+Arbeidskrav
+
+Det stilles krav om minimum 80 % deltakelse i all praktisk undervisning bC%de i og ved campus og
+
+undervisning som organiseres som egne kurs og seminarer. Kravet stilles av flere grunner:
+
+Mye av innholdet i praktiske aktiviteter kan man vanskelig lese seg til og er av en slik art at det ikke kan prC8ves til eksamen, for eksempel erfaringslC&ring, ferdighetslC&ring, progresjonsoppbygging og praksis.
+Noen aktiviteter som for eksempel svC8mming kan ikke prC8ves til praktisk-metodisk eksamen.
+Det mC% et visst antall deltakere til for C% kunne gjennomfC8re enkelte aktiviteter, for eksempel ballspill.
+Det er nC8dvendig C% sikre kompetanse hos studenter i livbergingsaktiviteter som svC8mming og orientering.
+Seminarene preges av studentaktiv undervisning som tar utgangspunkt i dialog og skal understC8tte studentenes C8velser i kritisk tenkning, selvstendighet og refleksjon. Dette fordrer tilstedevC&relse.
+
+Arbeidskrav skal vC&re levert/utfC8rt innen fastsatt(e) frist(er). Gyldig fravC&r dokumentert med for eksempel
+
+sykemelding, gir ikke fritak for C% innfri arbeidskrav. Studenter som pC% grunn av sykdom eller annen
+
+dokumentert gyldig C%rsak ikke leverer/utfC8rer arbeidskrav innen fristen, kan fC% forlenget frist. Ny frist for C%
+
+innfri arbeidskrav avtales i hvert enkelt tilfelle med fagansvarlig.
+
+Arbeidskrav vurderes til "Godkjent" eller "Ikke godkjent". Studenter som leverer/utfC8rer arbeidskrav innen
+
+fristen, men som fC%r vurderingen "Ikke godkjent", har anledning til to nye innleveringer/utfC8relser.
+
+Studenten mC% da selv avtale ny innlevering av det aktuelle arbeidskravet med faglC&rer. Studenter som
+
+ikke leverer/utfC8rer arbeidskrav innen fristen og som ikke har dokumentert gyldig C%rsak, fC%r ingen nye
+
+forsC8k.
+
+I programplanen er de fagovergripende temaene pC% de ulike studieC%rene og semestrene beskrevet. I
+
+tilknytning til disse kan det vC&re krav til tilstedevC&relse og/eller andre arbeidskrav.
+
+NC&rmere informasjon om arbeidskrav finnes i den enkelte emneplan.
+
+Vurderings-/eksamensformer
+
+Se emneplanene under punktet Vurderings-/eksamensformer.
+
+Samlet vurdering
+
+Det gis ingen samlet vurdering i KroppsC8ving og kroppsC8vingsdidaktikk. Emnene vil hver for seg bli
+
+oppfC8rt pC% vitnemC%let.
+
+Vurderingskriterier
+
+A: Fremragende. Viser fremragende kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget.
+
+Viser fremragende evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og
+
+tilrettelegging av et godt lC&ringsmiljC8.
+
+B: Meget god. Viser meget gode kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser
+
+meget god evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og
+
+tilrettelegging av et godt lC&ringsmiljC8.
+
+C: God. Viser gode kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser god evne til
+
+refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt
+
+lC&ringsmiljC8.
+
+D: NoksC% god. Viser begrensede kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser
+
+begrenset evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og
+
+tilrettelegging av et godt lC&ringsmiljC8.
+
+E: Tilstrekkelig. Tilfredsstiller minimumskravene til kunnskaper og ferdigheter innenfor
+
+kompetanseomrC%dene i faget. Viser noe evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l,
+
+fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+F: Ikke bestC%tt. Har utilstrekkelig kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser
+
+dC%rlig evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av
+
+et godt lC&ringsmiljC8.
+
+Rettigheter og plikter ved eksamen
+
+Studentens rettigheter og plikter framgC%r av forskrift om studier og eksamen ved OsloMet. Forskriften
+
+beskriver blant annet vilkC%r for ny/utsatt eksamen, klageadgang og hva som regnes som fusk ved
+
+eksamen. Studenten er selv ansvarlig for C% melde seg opp til eventuell ny/utsatt eksamen.
+
+Innledning
+
+KroppsC8ving og kroppsC8vingsdidaktikk 1 skal gi studentene inngC%ende kunnskap om forskning pC%
+
+kroppsC8ving. Emnet skal gi studentene ferdigheter i C% analysere og forholde seg kritisk til nasjonal og
+
+internasjonal forskning, samt C% kunne anvende denne kunnskapen i profesjonsutC8velsen. Emnet fokuserer
+
+pC% undervisning og lC&ring i kroppsC8vingsfaget, og pC% kritisk analyse av digitale uttrykk og ressurser i
+
+faget. Aktuelle problemstillinger i faget blir drC8ftet.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell
+
+kompetanse:
+
+Kunnskap
+
+Studenten
+
+har inngC%ende kunnskap om forskning pC% sentrale emner innen undervisning i kroppsC8ving og innen kroppsC8vingsdidaktikk
+har forskningsbasert kunnskap om utvalgte pedagogiske modeller for undervisning i kroppsC8ving
+har inngC%ende kunnskap basert pC% forskning om ulike former for vurdering i kroppsC8ving
+
+Ferdigheter
+
+Studenten
+
+kan, basert pC% vitenskapelig tenkemC%te, planlegge og gjennomfC8re undervisning og vurdering i kroppsC8ving og slik bidra til at elevene lC&rer C% reflektere over egen lC&ring
+kan pC% avansert nivC% sC8ke opp relevant forskningslitteratur knyttet til kroppsC8ving og kroppsC8vingsdidaktikk og trekke ut, vurdere og formidle innholdet skriftlig og muntlig
+kan vurdere digitale uttrykk og ressurser kritisk og bruke dem i opplC&ringen pC% mC%ter som styrker og utvikler kroppsC8vingsfagets didaktikk
+
+Generell kompetanse
+
+Studenten
+
+kan analysere og vurdere relevante faglige og etiske problemstillinger knyttet til undervisning i kroppsC8ving
+kan pC% avansert nivC% formidle og kommunisere faglige problemstillinger knyttet til profesjonsutC8velse knyttet til kroppsC8vingsfaget
+har profesjonsfaglig digital kompetanse
+Innhold
+
+KroppsC8ving og kroppsC8vingsdidaktikk 1 skal gi studentene inngC%ende kunnskap om forskning pC%
+
+kroppsC8vingsfaget. Emnet setter sC8kelys pC% undervisning i kroppsC8ving, og pC% hvordan utvalgte
+
+pedagogiske modeller og former for vurdering i faget kan fremme elevenes lC&ring. I emnet vil studentene
+
+blant annet arbeide med digitale uttrykk og ressurser, og kritisk analysere hvilke perspektiv de gir pC% fysisk
+
+aktivitet, bevegelse, kropp og kroppsC8ving. Aktuelle forskningsbaserte problemstillinger knyttet til
+
+kroppsC8vingsfaget vil bli drC8ftet.
+
+Arbeids- og undervisningsformer
+
+Undervisningen pC% emnet vil i hovedsak vC&re i form av forelesninger, gruppearbeid, seminarer og
+
+veiledning. Emnet krever stor grad av selvstendig arbeid med C% sette seg inn i pensum.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+FC8lgende arbeidskrav mC% vC&re godkjent fC8r eksamen kan avlegges:
+
+80 prosent deltakelse i undervisning som er tilrettelagt som seminar.
+Studentene skal gjennom gruppearbeid lage posters som de presenterer i ca. ti minutter for medstudenter.
+Vurdering og eksamen
+
+En individuell, skriftlig semesteroppgave etter selvvalgt tema innen emnets omrC%de med omfang pC% 4500 ord +/-10 %.
+
+Ny/utsatt eksamen
+
+Ved ikke bestC%tt karakter, kan semesteroppgaven omarbeides til ny eksamen C)n gang.
+
+Hjelpemidler ved eksamen
+
+Alle hjelpemidler tillatt.
+
+Vurderingsuttrykk
+
+Det benyttes gradert karakterskala fra A til E for bestC%tt og F for ikke bestC%tt eksamen.
+
+Sensorordning
+
+Det benyttes en intern og en ekstern sensor.

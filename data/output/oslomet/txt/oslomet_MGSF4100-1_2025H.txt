@@ -1,0 +1,221 @@
+institution: oslomet
+code: MGSF4100-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/MGSF4100/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+MGSF4100 Samfunnsfag og samfunnsfagdidaktikk 1 Emneplan
+Engelsk emnenavn
+Social Studies Education I
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 1-7
+GrunnskolelC&rerutdanning for trinn 5-10
+Omfang
+15.0 stp.
+StudieC%r
+2025/2026
+Pensum
+HCST 2025
+
+Timeplan
+HCST 2025
+Programplan
+GrunnskolelC&rerutdanning for trinn 1-7 (2025 HCST )
+GrunnskolelC&rerutdanning for trinn 5-10 (2025 HCST )
+Emnehistorikk
+2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Fagplan
+
+Samfunnsfag og samfunnsfagdidaktikk
+
+(15+15+15 studiepoeng)
+
+Fagplanen ble godkjent i studieutvalget 14. november 2016
+
+Redaksjonelle endringer lagt inn 30. januar 2020
+
+Gjeldende fra hC8stsemesteret 2020
+
+Innledning
+
+Fagplanen bygger pC% forskrift om rammeplan for grunnskolelC&rerutdanningen for trinn 1-7/trinn 5-10, fastsatt av Kunnskapsdepartementet 7. juni 2016, nasjonale retningslinjer for grunnskolelC&rerutdanningen trinn 1-7/trinn 5-10 og programplan for grunnskolelC&rerutdanning for trinn 1-7/trinn 5-10 ved OsloMet - storbyuniversitetet, godkjent av studieutvalget 9. november 2016.
+
+Samfunnsfag har en viktig rolle i norsk skole, spesielt siden faget er sC% tett knyttet til den nye lC&replanens (KunnskapslC8ftet 2020) tverrfaglige tema: Folkehelse og livsmestring, demokrati og medborgerskap og bC&rekraftig utvikling. Samfunnsfag har av den grunn store tverrfaglige fordeler, og er en viktig stC8tte for lC&rere som underviser i andre av grunnskolens fag. Faget hjelper lC&reren med C% kontekstualisere skole og fag i et samfunn som gjennomgC%r raske og omfattende endringer. Samfunnsfag er ogsC% et fag som innbyr til kritisk tenkning - et perspektiv som blir tildelt stadig stC8rre vekt i skolens lC&replaner.
+
+En viktig mC%lsetting med Samfunnsfagdidaktikk er C% utvikle studentenes kompetanse som brobyggere mellom fag og skole. Studentene skal bli kjent med samfunnsvitenskapens klassikere og grunnlagsproblemer i faget, samt tilegne seg avansert kunnskap om nyere samfunnsfagdidaktisk forskning i Norge og pC% internasjonalt hold. I lC8pet av syklus 1 har studentene fC%tt grunnleggende innsikt i samfunnsfagets ulike hovedomrC%der, geografi, historie og samfunnskunnskap, samt relevant fagdidaktisk teori. Studiet i syklus 2 gir ytterligere fagdidaktisk kvalifisering til arbeidet i grunnskolen samtidig som studentene fC%r anledning til C% utvikle sin egen forsknings- og utviklingskompetanse.
+
+Samfunnsfagsstudiet i syklus 2 gir et viktig bidrag til en bredere forstC%else av dybdelC&ring. Studiet er en dybdelC&ring i seg selv, all den tid studentene fC%r stor faglig kompetanse innen et selvvalgt felt.
+
+Den faglige tyngden samfunnsfagsstudier pC% syklus 2 gir studenten vil vC&re svC&rt nyttig i den fremtidige lC&rerens kommende arbeid med C% foreta faglige valg og vurderinger. De nye lC&replanene i skolen legger stC8rre ansvar pC% lC&rerens faglige kompetanse. Denne kompetansen fC%r du i dette studiet.
+
+MC%lgruppe
+
+Studenter som er tatt opp til femC%rig grunnskolelC&rerutdanning for trinn 1-7/trinn 5-10.
+
+Opptakskrav
+
+Faget er tilgjengelig som valgfag for aktive studenter ved grunnskolelC&rerutdanningen, i trC%d med utdanningenes programplaner.
+
+Opptak til Samfunnsfag og samfunnsfagdidaktikk krever fullfC8rt 60 studiepoeng samfunnsfag pC% syklus 1.
+
+LC&ringsutbytte
+
+LC&ringsutbyttet er nC&rmere beskrevet i emneplanene.
+
+Fagets innhold og oppbygging
+
+Samfunnsfag og samfunnsfagdidaktikk (45 studiepoeng) er bygget opp av tre emner C  15 studiepoeng. Emnene er Samfunnsfag og samfunnsfagdidaktikk 1 - Grunnlagsproblemer i samfunnsfag, Samfunnsfag og samfunnsfagdidaktikk 2 - Samfunnsfagdidaktisk forskning og Samfunnsfag og samfunnsfagdidaktikk 3 - Forskningsdesign i samfunnsfagdidaktikk. GrunnskolelC&rerstudenter mC% velge emne 1 og emne 2 innenfor et fag uavhengig om masteroppgaven skal vC&re i fagdidaktikk eller profesjonsrettet pedagogikk. Emne 3 kan byttes med andre emner i trC%d med nasjonale retningslinjer.
+
+Fagets arbeids- og undervisningsformer
+
+Det etterstrebes varierte arbeidsformer i samfunnsfag. De tre emnene i samfunnsfag vil imidlertid i stor grad bestC% av seminar- og gruppeundervisning med aktivt deltakende studenter, fordi vi C8nsker C% fremme selvstendig refleksjon rundt faglige og didaktiske problemstillinger knyttet til samfunnsfaget i skolen.
+
+LC&ringsledelse og dypere forstC%else av elevmangfold
+
+Mye samfunnsfagdidaktisk forskning fokuserer pC% lC&ringsledelse, samt en dypere forstC%else av elevers lC&ring og elevmangfold, og studentene fC%r en dybdeforstC%else av tematikken i lC8pet av emne 1 og emne 2. I samfunnsfag er dessuten perspektivrikdom en sentral ferdighet, bC%de i egen praksis og som en ressurs for elevenes samfunnsorientering.
+
+Forsknings- og utviklingsarbeid relatert til skolen
+
+Gjennom emnene og ved egen masteroppgave fC%r studentene en teoretisk og praktisk avansert innsikt i hvordan man forsker pC% og bedriver utviklingsarbeid relatert til skolen. Studentene skal bli kjent med grunnlagsproblemer i hovedemnene, med aktuell fagdidaktisk forskning og teori som er relevant for profesjonsutC8velsen som framtidige samfunnsfagslC&rere. Studentene skal utvikle evnen til C% velge og begrunne fagstoff med et kritisk blikk. De skal oppnC% forstC%else og kritisk kunne vurdere fagets samfunnsmessige begrunnelse.
+
+Utvikling av endringskompetanse
+
+Et sentralt aspekt i undervisning og pensum er nettopp kritisk refleksjon rundt egen lC&rerrolle. Gjennom seminarundervisning C8nsker vi C% skape et rom for samtale og diskusjon om egen og andres praksis.
+
+Klasseledelse og lC&rerrollen sett fra faget
+
+Store deler av pensum og seminarvirksomheten oppmuntrer til problematisering og refleksjon rundt klasseledelse og lC&rerrollen i samfunnsfag. Gjennom masteroppgaven vil studentene kunne fordype seg i utfordringer med klasseledelse og rollen som samfunnsfaglC&rer.
+
+Internasjonale perspektiver
+
+Deler av pensum er pC% engelsk og i andre nordiske sprC%k. Samfunnsfaget og samfunnsfagdidaktikken settes i et internasjonalt perspektiv. Studentene vil derav fC% et bredere perspektiv pC% norsk skole.
+
+Praksistilknytning
+
+Refleksjoner i seminarvirksomhet til ta sikte pC% C% knytte teoretisk kunnskap til egen og andres praksis. Masteroppgaven vil vC&re en forlengelse av denne tankegangen.
+
+PraksisopplC&ring
+
+PraksisopplC&ring er nC&rmere beskrevet i programplanen.
+
+Skikkethetsvurdering
+
+LC&rerutdanningsinstitusjoner har ansvar for C% vurdere om studenter er skikket for lC&reryrket. LC8pende skikkethetsvurdering foregC%r gjennom hele studiet og inngC%r i en helhetsvurdering av studentens faglige og personlige forutsetninger for C% kunne fungere som lC&rer. En student som utgjC8r en mulig fare for elevers liv, fysiske og psykiske helse, rettigheter og sikkerhet, er ikke skikket for yrket. Studenter som viser liten evne til C% mestre lC&reryrket, skal sC% tidlig som mulig i utdanningen fC% melding om dette. De skal fC% rC%d og veiledning for C% gjC8re dem i stand til C% oppfylle kravene om lC&rerskikkethet eller fC% rC%d om C% avslutte utdanningen. Beslutninger om skikkethet kan fattes gjennom hele studiet. Se universitetets nettsted for mer informasjon om skikkethetsvurdering.
+
+Arbeidskrav
+
+Arbeidskrav skal vC&re levert/utfC8rt innen fastsatt(e) frist(er). Gyldig fravC&r dokumentert med for eksempel sykemelding, gir ikke fritak for C% innfri arbeidskrav. Studenter som pC% grunn av sykdom eller annen dokumentert gyldig C%rsak ikke leverer/utfC8rer arbeidskrav innen fristen, kan fC% forlenget frist. Ny frist for C% innfri arbeidskrav avtales i hvert enkelt tilfelle med den aktuelle lC&reren.
+
+Arbeidskrav vurderes til "Godkjent" eller "Ikke godkjent". Studenter som leverer/utfC8rer arbeidskrav innen fristen, men som fC%r vurderingen "Ikke godkjent", har anledning til to nye innleveringer/utfC8relser. Studenten mC% da selv avtale ny innlevering av det aktuelle arbeidskravet med faglC&rer. Studenter som ikke leverer/utfC8rer arbeidskrav innen fristen og som ikke har dokumentert gyldig C%rsak, fC%r ingen nye forsC8k.
+
+I programplanen er de fagovergripende temaene pC% de ulike studieC%rene og semestrene beskrevet. I tilknytning til disse vil det vC&re krav til tilstedevC&relse og andre arbeidskrav.
+
+NC&rmere informasjon om arbeidskrav finnes i den enkelte emneplan.
+
+Vurderings-/eksamensformer
+
+Se emneplanene under punktet Vurderings-/eksamensformer.
+
+Samlet vurdering
+
+Det gis ingen samlet vurdering i Samfunnsfag og samfunnsfagdidaktikk. Emnene vil hver for seg bli oppfC8rt pC% vitnemC%let.
+
+Vurderingskriterier
+
+A: Fremragende. Viser fremragende kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser fremragende evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+B: Meget god. Viser meget gode kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser meget god evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+C: God. Viser gode kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser god evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+D: NoksC% god. Viser begrensede kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser begrenset evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+E: Tilstrekkelig. Tilfredsstiller minimumskravene til kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser noe evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+F: Ikke bestC%tt. Har utilstrekkelig kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser dC%rlig evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+Rettigheter og plikter ved eksamen
+
+Studentens rettigheter og plikter framgC%r av forskrift om studier og eksamen ved OsloMet. Forskriften beskriver blant annet vilkC%r for ny/utsatt eksamen, klageadgang og hva som regnes som fusk ved eksamen. Studenten er selv ansvarlig for C% melde seg opp til eventuell ny/utsatt eksamen.
+
+Innledning
+
+I emnet vil fokuset vC&re de sentrale teoriene og metodene i samfunnsfagene. Studentene skal oppnC% inngC%ende innsikt i og reflektere selvstendig rundt grunnlagsproblemer i samfunnsfag.
+
+Forkunnskapskrav
+
+Se fagplanen.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har inngC%ende innsikt i sentrale teorier i samfunnsfag
+har inngC%ende innsikt i sentrale forskningsmetoder i samfunnsfag
+har inngC%ende kunnskap om relevant forskning og teori og vitenskapelige tenkemC%ter, forskningsmetoder og etikk
+har inngC%ende kunnskap om hvordan samfunnsvitenskapelig teori og metode kan anvendes i skolerettet forskning
+
+Ferdigheter
+
+Studenten
+
+kan anvende og forholde seg kritisk til sentrale teorier og bruken av disse i analysen av praksisfeltet, samt planlegge og gjennomfC8re undervisning som fremmer elevens samfunnsvitenskapelige tenkemC%ter
+kan identifisere og drC8fte faglige problemstillinger basert pC% kunnskap om samfunnsfagets egenart, verdigrunnlag og historie og bruke slik innsikt i undervisning, forsknings- og utviklingsarbeid
+
+Generell kompetanse
+
+Studenten
+
+kan analysere og vurdere relevante faglige og etiske problemstillinger og bidra til utvikling av faglig felleskap pC% den enkelte skole
+kan pC% systematisk vis planlegge, evaluere og revidere lC&ringsopplegg med masterfaget som grunnlag
+kan pC% et avansert nivC% formidle og kommunisere om faglige problemstillinger i samfunnsfag knyttet til profesjonsutC8velsen, og har profesjonsfaglig digital kompetanse
+kan bidra til utviklingsarbeid i samfunnsfag som fremmer faglig og pedagogisk nytenkning i skolen
+Innhold
+
+Emnet skal gi inngC%ende innsikt i sentrale problemstillinger i samfunnsfag, samt oppmuntre til selvstendig refleksjon om hvordan samfunnsvitenskapelig teori og metode kan anvendes i skolerettet forskning. Studentene skal lese samfunnsvitenskapelige klassikere og andre sentrale tekster i faget, de skal reflektere rundt bruken av samfunnsfaglig teori og metode og utveksle disse refleksjonene i felleskap gjennom seminarer .
+
+Arbeids- og undervisningsformer
+
+Se fagplanen.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+Retten til C% avlegge eksamen forutsetter godkjente arbeidskrav og deltakelse i bestemte faglige aktiviteter.
+
+Deltakelse i seminarundervisning
+
+Ferdigheten i C% formidle andres og egen forskning pC% en forsvarlig mC%te kan best oppC8ves gjennom dialog og diskusjon.
+
+80 prosent deltakelse i undervisning som er tilrettelagt som seminarer
+Studentene skal i gruppe presentere svarene pC% refleksjonsspC8rsmC%l
+
+FormC%let med arbeidskravet er selvstendig lesning og refleksjon rundt samfunnsfaglige tekster, samt C% oppmuntre studentene til aktiv deltakelse. Ved manglende eller ikke-godkjent arbeidskrav, vil det gis en kompensatorisk oppgave.
+
+Vurdering og eksamen
+
+Individuell muntlig eksamen med presentasjon pC% omtrent 20 minutter om en problemstilling som handler om C% gjC8re teorien relevant for skolen, samt en utspC8rring pC% 10 minutter i etterkant av presentasjonen. Problemstillingen blir gitt to dager fC8r eksamen avholdes.
+
+Ny/utsatt eksamen
+
+Ny/utsatt eksamen arrangeres som ordinC&r eksamen.
+
+Hjelpemidler ved eksamen
+
+Egne notater.
+
+Vurderingsuttrykk
+
+Det benyttes en gradert karakterskala fra A til E for bestC%tt og F for ikke bestC%tt eksamen.
+
+Sensorordning
+
+Eksamen vurderes av to interne sensorer. En tilsynssensor er tilknyttet emnet, i henhold til retningslinjer for oppnevning og bruk av sensorer ved OsloMet.

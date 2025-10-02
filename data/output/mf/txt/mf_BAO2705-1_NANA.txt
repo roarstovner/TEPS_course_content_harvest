@@ -1,0 +1,10 @@
+institution: mf
+code: BAO2705-1
+year: NA
+hv: NA
+url: https://mf.no/studier/emner/bao2705
+status: 200
+course_name_no: Bacheloroppgave BAO2705
+----- FULLTEXT -----
+
+NA

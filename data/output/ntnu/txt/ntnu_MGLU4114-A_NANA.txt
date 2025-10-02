@@ -1,0 +1,10 @@
+institution: ntnu
+code: MGLU4114-A
+year: NA
+hv: NA
+url: https://www.ntnu.no/studier/emner/MGLU4114#tab=omEmnet
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+NA

@@ -1,0 +1,100 @@
+institution: nord
+code: NOR2004-1
+year: NA
+hv: NA
+url: https://www.nord.no/studier/emner/nor2004
+status: 200
+course_name_no: Norsk 2B, 5-10
+----- FULLTEXT -----
+
+
+
+Norsk 2 bygger pC% norsk 1 og omfattar norskundervisning for trinn 5-10 med vekt pC% ungdomstrinnet. Emnet gir historisk oversikt og meir omfattande kunnskap om sentrale sprC%klege emne, djupare innsikt i aktuelle fagdidaktiske spC8rsmC%l og eit betre grunnlag for arbeid med lC&ringsfremjande vurdering og tilpassa norskopplC&ring for alle elevar. Gjennom arbeid med sprC%k og tekstar fC%r studentane gode hC8ve til C% vidareutvikle sine eigne sprC%kferdigheiter og sin eigen tekstkompetanse og formidlingsevne.
+
+GjennomfC8rt Norsk 1, 30 stp, og Norsk 2A, 15 stp, i MAGLU 5-10.
+
+GjennomfC8rt Norsk 1, 30 stp, og Norsk 2A, 15 stp, i MAGLU 5-10.
+
+KUNNSKAP
+
+Studenten
+
+har omfattande kunnskap om norsk som fC8rste- og andresprC%k
+har kunnskap om nasjonale minoritetssprC%k og nabosprC%k
+har kunnskap om talemC%l med sosiolingvistikk og dialektar
+har kunnskap om sprC%khistorie, sprC%klege endringsprosessar i eldre og nyare tid og gjeldande normering av nynorsk og bokmC%l
+har omfattande kunnskap om munnleg kommunikasjon, retorikk, lesing og skriving og vidareutvikling av grunnleggande sprC%kferdigheiter
+
+FERDIGHEITER
+
+Studenten
+
+kan bruke kunnskap om grammatikk og sprC%k, tekstar og litteratur i analyse av munnlege, skriftlege og multimodale tekstar
+kan legge til rette for variert arbeid med sprC%k og litteratur i tradisjonelle og nye medium
+kan bruke relevante metodar og ny teknologi pC% mC%tar som fremjar samarbeid og fagleg progresjon i den vidare lese- og skriveopplC&ringa
+kan kartlegge og vurdere lese- og skriveferdigheiter og gi lC&ringsfremjande respons til alle elevar
+kan skrive akademiske tekstar pC% nynorsk og bokmC%l
+
+GENERELL KOMPETANSE
+
+Studenten
+
+har innsikt i norskfagets historie og eigenart som sprC%k-, kultur-, litteratur- og danningsfag
+kan formidle fagstoff om sprC%k, litteratur, tekstar og medium i relevante uttrykksformer
+kjenner til fagdidaktisk forsking og utviklingsarbeid og kan drC8fte forskingsetiske problemstillingar
+kan arbeide kritisk og sjC8lvstendig med faglege og fagdidaktiske problemstillingar
+kan planlegge, gjennomfC8re og vurdere fagleg og tverrfagleg utviklingsarbeid pC% trinn 5-10 i samarbeid med andre
+
+KUNNSKAP
+
+Studenten
+
+FERDIGHEITER
+
+Studenten
+
+GENERELL KOMPETANSE
+
+Studenten
+
+Utover semesteravgift og pensumlitteratur forutsettes det at studenten disponerer en bC&rbar datamaskin.
+
+Valgbart
+
+Det blir lagt vekt pC% bruk av varierte og relevante undervisningsmetodar og lC&ringsaktivitetar, som for eksempel individuelt og gruppebasert arbeid, bC%de skriftleg og munnleg, utprC8ving av ulike metodar, under dette ogsC% bruk av praktisk- estetiske tilnC&rmingsmC%tar. Praksiserfaringane dannar saman med fagleg kunnskap og fagdidaktiske vurderingar den heilskaplege kompetansen i faget i utdanninga.
+
+Studieprogrammet evalueres C%rlig av studentene gjennom emneundersC8kelser (midtveisevaluering og sluttevaluering). Evaluering inngC%r som en del av universitetets kvalitetssikringssystem.
+
+Praksis er en integrert del av emnet. I praksis skal studentene dokumentere oppnC%dd lC&ringsutbytte i praksisemnet for 3. studieC%r. Se Kompetanseguiden for detaljer.
+
+Sammensatt vurdering - alle delene mC% vC&re godkjent/bestC%tt for C% fC% karakter i emnet.
+
+OD: Obligatorisk deltaking, min. 80% oppmC8te. Godkjend/ikkje godkjend.
+
+AK: Studenten skal ha godkjend inntil to arbeidskrav for C% fC% karakter i emnet, td. skriving av fagtekst, skriving i andre sjangrar eller munnleg presentasjon. Godkjend/ikkje godkjend.
+
+SK: Skriftleg skoleeksamen, 6 timer. BokmC%l. Tel 100 % av karakteren. Karakterskala A-F.
+
+Sammensatt vurdering - alle delene mC% vC&re godkjent/bestC%tt for C% fC% karakter i emnet.
+
+OD: Obligatorisk deltaking, min. 80% oppmC8te. Godkjend/ikkje godkjend.
+
+AK: Studenten skal ha godkjend inntil to arbeidskrav for C% fC% karakter i emnet, td. skriving av fagtekst, skriving i andre sjangrar eller munnleg presentasjon. Godkjend/ikkje godkjend.
+
+SK: Skriftleg skoleeksamen, 6 timer. BokmC%l. Tel 100 % av karakteren. Karakterskala A-F.
+
+Skrivesaker.
+
+C generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er C% regne som fusk.
+
+Skrivesaker.
+
+C generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er C% regne som fusk.
+
+Med overlapp menes en faglig likhet mellom emner med samme faginnhold. Du vil derfor fC% fC8lgende reduksjon i studiepoeng om du har tatt emner som er angitt under:
+
+NOR1010 - Norsk 1C - Tekstlig og sprC%klig mangfold - 3 Studiepoeng
+
+Med overlapp menes en faglig likhet mellom emner med samme faginnhold. Du vil derfor fC% fC8lgende reduksjon i studiepoeng om du har tatt emner som er angitt under:
+
+NOR1010 - Norsk 1C - Tekstlig og sprC%klig mangfold - 3 Studiepoeng

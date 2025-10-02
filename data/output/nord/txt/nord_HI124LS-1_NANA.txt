@@ -1,0 +1,73 @@
+institution: nord
+code: HI124LS-1
+year: NA
+hv: NA
+url: https://www.nord.no/studier/emner/hi124ls
+status: 200
+course_name_no: Historisk teori, metode og didaktikk
+----- FULLTEXT -----
+
+Kurset gir ei elementC&r innfC8ring i historiefagleg teori, historiefagleg og samfunnsvitenskapeleg metode, og historiedidaktikk. MC%let med kurset er C% C8ve studentane opp til ei kritisk haldning til historiefaget, og C% gi dei innsikt i grunnlagsproblema historikarane stC%r overfor nC%r dei driv forsking og formidling av historie. Formidlingsdelen tar sikte pC% C% skape refleksjon om historiebruk. Her inngC%r det ein obligatorisk praksis som er knytt til didaktisk klasseromsformidling.
+
+Emnet tek sikte pC% C% C8va opp studentane si forstC%ing av korleis historiefaget vert utC8va av profesjonelle historikarar, og korleis framstillinga av fortida som historikarane produserar vert bruka av forskjellige aktC8rar i samfunnet. Dette vert gjort ved at underviserane tek studentane med pC% refleksjonar om grunnlagsproblem innan faget og visar eksemplar pC% korleis historie har vore bruka ved forskjellige hC8ve. Emnet inneheld og ei grunnleggjande innfC8ring i samfunnsvitenskapelig metode som er utgangspunktet for dei samfunnsmessige dataene som utgjer viktige samanhengar for mange av dei refleksjonane historikarane gjer. Den didaktiske delen gjer studentante kjent med grunnleggande begrepar og perspektivar innanfor historiedidaktikken, og fC8rebur dei pC% undervisningspraksisen som er knytt til emnet.
+
+Emnet er C%pent for studentar i lektorutdanning.
+
+Kunnskaper
+
+Studenten skal ha kunnskap om og forstC%ing for grunnleggande teoretiske og metodiske premiss for historiefaget.
+Studenten skal kjenne til grunnleggjande trekk ved samfunnsvitenskapeleg metode.
+Studenten skal ha kunnskap om kjeldekritikk i historievitskapen.
+Studenten skal ha kunnskaper om og forstC%else av grunnleggende premisser for C% undervise i historie.
+
+Ferdigheiter
+
+Studenten skal vise evne til C% drC8fte teoretiske og metodiske spC8rsmC%l knytta til historiefaget og samfunnsvitenskapane bC%de skriftleg og munnleg.
+Studenten skal kunne utC8ve historifagleg kjeldekritikk og kunne reflektere over historieforklaringar.
+Studenten skal kunne delta i eit fagleg fellesskap gjennom kollokvie/seminar der historierefleksjon foregC%r.
+Studenten skal kunne skrive korte tekstar kring historieteoretiske problemstillingar med tilhC8rande rettleiing, for C% C8ve seg opp i ein akademisk kultur.
+Studenten skal kunne reflektere over undervisning og undervisningsmetoder for historiefaget.
+
+Generell kompetanse
+
+Studenten skal vise evne til C% sette seg inn i teoretisk orientert faglitteratur, og gjC8re greie for teoretiske og metodiske forhold i eigne skriftlege arbeid.
+Studenten skal vise forstC%ing for korleis akademisk ordskifte i historiefaget gC%r fC8re seg.
+Studenten skal kunne diskutere fagdidaktiske spC8rsmC%l.
+
+Kunnskaper
+
+Ferdigheiter
+
+Generell kompetanse
+
+Ingen kostnader utover semesteravgift og pensumlitteratur.
+
+Obligatorisk for Lektorutdanning i samfunnsfag.
+
+FC8relesingar, seminar og skriving av oppgC%ver. Individuell veiledning i samband med praksis.
+
+Crlege evalueringar som er ein del av universitetet sitt system for C% sikra kvalitet.
+
+Her inngC%r det ein obligatorisk praksis som anten er knytt til didaktisk klasseromsformidling, museums-/webformidling, arkiv-/kjeldestudie eller historiske minne.
+
+- Obligatorisk deltaking (OD) - 60% pC% seminar. Teller 0/100 av karakteren. Vurderes godkjent / ikke godkjent.
+
+- Obligatorisk deltaking 2: Seminar om barn og unge i vanskelige livssituasjoner
+
+- To arbeidskrav, hvert pC% tre sider. Teller 0/100 av karakteren. Vurderes godkjent / ikke godkjent.
+
+- Munnleg eksamen. Karakterregel A-F.
+
+Eksamen kan besvares enten pC% norsk, eit anna skandinavisk sprC%k, eller pC% engelsk.
+
+- Obligatorisk deltaking (OD) - 60% pC% seminar. Teller 0/100 av karakteren. Vurderes godkjent / ikke godkjent.
+
+- Obligatorisk deltaking 2: Seminar om barn og unge i vanskelige livssituasjoner
+
+- To arbeidskrav, hvert pC% tre sider. Teller 0/100 av karakteren. Vurderes godkjent / ikke godkjent.
+
+- Munnleg eksamen. Karakterregel A-F.
+
+Eksamen kan besvares enten pC% norsk, eit anna skandinavisk sprC%k, eller pC% engelsk.
+
+Studentane mC% vC&re fC8rebudd pC% C% lesa engelske tekstar.

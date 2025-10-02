@@ -1,0 +1,146 @@
+institution: oslomet
+code: M5GEN2100-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/M5GEN2100/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+M5GEN2100 Engelsk, emne 4 Emneplan
+Engelsk emnenavn
+English, Subject 4
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 5-10
+Omfang
+15.0 stp.
+StudieC%r
+2025/2026
+Pensum
+HCST 2025
+
+Timeplan
+HCST 2025
+Programplan
+GrunnskolelC&rerutdanning for trinn 5-10 (2025 HCST )
+Emnehistorikk
+2018 / 2019 2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Innledning
+
+Fagplanen tilhC8rende dette emnet er lagt pC% emne M5GEN1100 Engelsk, emne 1.
+
+Forkunnskapskrav
+
+Ingen.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har omfattende kunnskap om hvordan barn og unge lC&rer sprC%k
+har kunnskap om sentrale dokumenter og ressurser for engelskfaget
+
+Ferdigheter
+
+Studenten
+
+kan bruke engelsk muntlig og skriftlig, sikkert og funksjonelt i ulike sjangre
+kan planlegge, lede og kritisk vurdere varierte og differensierte lC&ringsaktiviteter, ogsC% digitale, som fremmer dybdelC&ring og utvikling av de grunnleggende ferdighetene
+kan innhente og tilrettelegge informasjon om samfunnsspC8rsmC%l og kulturelle tema til bruk i undervisningen, blant annet i tverrfaglige prosjekt
+kan finne fram til, forstC%, vise til og reflektere over relevant engelskfaglig forskningslitteratur og skrive akademiske fagtekster
+
+Generell kompetanse
+
+Studenten
+
+kan reflektere kritisk over egen lC&ring og undervisningspraksis i lys av etiske grunnverdier og skolens ansvar for barn og unges personlige vekst
+kan arbeide selvstendig og sammen med andre for C% kartlegge og tilrettelegge for elevers lC&ring og utvikling
+kan vedlikeholde og utvikle egen sprC%klig og didaktisk kompetanse og bidra til faglig utvikling og nytenkning
+Innhold
+
+LC&reren med forskerblikk
+
+Anvendt sprC%klC&ringsteori
+Skriving og lesing som prosess.
+Lesing og skriving av akademiske fagtekster.
+Arbeid med utvikling og vurdering av alle grunnleggende ferdigheter i faget.
+LC&replan, lC&remidler og styringsdokumenter som ramme for utviklingsarbeid med problemstillinger i faget.
+Tverrfaglige prosjekter i undervisningen.
+
+Sentralt i emnet er arbeidet med semesteroppgaven. Oppgaven skal ha en klart formulert problemstilling som det mC% vC&re mulig C% undersC8ke og utdype. Oppgaven skal gi studentene muligheter til C% dokumentere faglig kunnskap og innsikt gjennom belysning og drC8fting av et faglig problemstilling som er relevant for lC&rerarbeid i grunnskolen. Studentene kan velge C% skrive en teoretisk oppgave eller en oppgave som ogsC% er basert pC% empiri. Arbeidet med oppgaven skal gi erfaring med C% sC8ke og anvende litteratur og bygge pC% bC%de oppgitt og selvvalgt pensum.
+
+En teoretisk oppgave tar utgangspunkt i analyser og drC8ftinger i aktuelle forskningsarbeider innen et omrC%de og oppsummerer og sammenlikner. En empirisk oppgave bygger pC% ny informasjon som studenten selv samler inn eller bygger videre pC% analyse av materiale som andre har samlet inn. I oppgaver som bruker materiale studenten selv samler inn, er det et krav at dette innhentes slik at meldeplikten til NSD ikke utlC8ses. Hvis elever under myndighetsalder deltar i undersC8kelsen, skal foresatte gi samtykke. Gjennom oppgaven skal studenten dokumentere kjennskap til aktuell forskning pC% det omrC%det som studenten skriver om. Studenten skal bruke teori og annet fagstoff som grunnlag for C% undersC8ke problemstillingen. I metodedelen skal framgangsmC%ter dokumenteres slik at det er mulig C% se hvordan studenten har innhentet og brukt materialet, og hvordan han eller hun har kommet fram til resultatene. Resultatene skal drC8ftes ut fra alminnelige vitenskapelige krav til pC%litelighet og gyldighet.
+
+Undervisningen i emne 4 for studentene som tar faget i 3. studieC%ret skal i tillegg til undervisning i faglige emner gi stC8tte for FoU-oppgavearbeidet:
+
+Utdanningsvitenskap for lC&rere - Sentrale forskningstradisjoner og metoder
+Seminar i pedagogikk som tar opp sentrale utfordringer i dagens grunnskole
+Forskningsetikk og grunnlagsspC8rsmC%l
+Skriving i forskning om skole og undervisning og i lC&reryrket
+Arbeids- og undervisningsformer
+
+Se fagplanen.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+For studenter som tar faget i 1. og 2. studieC%r
+
+FC8lgende arbeidskrav mC% vC&re godkjent fC8r eksamen i emnet kan avlegges:
+
+Deltakelse i lesegruppe med 3-4 studenter. Hver student velger en fagartikkel relatert til eget FoU-arbeid for semesteroppgaven. Alle i lesegruppen leser alle artiklene og drC8fter dem sammen i en undervisningstime. FormC%let med oppgaven er arbeid med lesing som prosess og utvikling av studentenes FoU-kompetanse gjennom kritisk og analytisk tilnC&rming til lesing av akademiske fagtekster.
+Individuelt skriftlig notat med et omfang pC% 1400 ord +/- 10 %. Skriving av semesteroppgaven i emne 4 ses som en prosess, og notatet brukes som utgangspunkt for eksamensinnleveringen. FormC%let med notatet er arbeid med problemstillinger i faget og utvikling av studentenes FoU-kompetanse. Notatet skal ha med omtale av emne, spC8rsmC%l en vil undersC8ke, aktuell forskningslitteratur og annet fagstoff studentene bruker i oppgavearbeidet, og beskrivelse av forskningsmetoden studentene skal bruke.
+Muntlig tilbakemelding pC% en medstudents notat i undervisningstimen. FormC%let med oppgaven er arbeid med lesing og skriving som prosess og analytisk tilnC&rming til fagtekster.
+Deltakelse pC% en veiledning i seminar eller individuelt. Veileder setter opp tidspunkter og krav til bidrag.
+Krav om deltakelse i undervisningen (som beskrevet under B+ArbeidskravB; i den innledende delen av fagplanen)
+
+For studenter som tar faget i 3. studieC%r
+
+FC8lgende arbeidskrav mC% vC&re gjennomfC8rt fC8r FoU-oppgaven kan leveres til sensur:
+
+Innlevering av et notat pC% 400 ord +/- 10 % om opplegg for oppgaven. Notatet skal ha med omtale av emne, spC8rsmC%l en vil undersC8ke, aktuell forskningslitteratur og annet fagstoff studenten forventer C% sette seg inn som del av oppgavearbeidet, hva slags materiale studenten planlegger C% samle inn og undersC8ke, forskningsmetode studenten skal bruke, og skisse til oppgavedesign.
+Notat fC8r siste veiledning med utdrag av oppgavetekst pC% 1500 ord +/- 10 %.
+Deltakelse pC% flerfaglig undervisning om utdanningsvitenskap og metode, knyttet til felles pensum og tema og faglige og fagdidaktiske tema i det faget studenten har valgt C% skrive oppgaven innenfor.
+Deltakelse pC% kurs i akademisk skriving og IKT.
+Deltakelse pC% to veiledninger i seminar eller individuelt. Veileder setter opp tidspunkter og krav til bidrag.
+Deltakelse pC% delingskonferanse med framlegg og som tilhC8rer til medstudenter.
+Deltakelse i undervisningen i engelskfaget (som beskrevet under B+ArbeidskravB; i den innledende delen av fagplanen).
+
+Tider for program med krav om deltakelse gC%r fram av undervisningsplanen. Frister for levering av arbeidskrav gC%r fram av undervisningsplanen. Undervisning, arbeidskrav og eksamen foregC%r og fullfC8res pC% engelsk.
+
+Vurdering og eksamen
+
+For studenter som tar faget i 1. og 2. studieC%r
+
+Eksamensform
+
+Skriftlig semesteroppgave, individuelt eller i gruppe pC% inntil tre studenter. EksamenssprC%ket er engelsk. Omfang ved individuell innlevering er 5000 ord +/- 10%, dersom to studenter skriver sammen er omfanget 7000 ord +/- 10 %, dersom tre studenter skriver sammen er omfanget 9000 ord +/- 10 %. Innleveringen mC% oppfylle IKT-krav og bestemte krav til utforming. Slike kriterier publiseres pC% universitetets lC&ringsplattform i god tid fC8r studenten begynner pC% sin oppgave. Semesteroppgaven skal leveres elektronisk. EgenerklC&ring vedrC8rende fusk og plagiering og egenerklC&ring knyttet til hvorfor oppgaven ikke utlC8ser NSD-krav, skal ligge som vedlegg ved innlevering.
+
+Ny/utsatt eksamen
+
+Ved ikke-bestC%tt karakter vil det vC&re anledning til C% omarbeide besvarelsen ved fC8rste ny/utsatt eksamen. Etter dette leveres ny oppgave. Dersom besvarelsen fC%r bestC%tt karakter, kan studenten ikke levere forbedret oppgave, men mC% eventuelt skrive ny besvarelse ved ny eksamen. Dette innebC&rer at man skifter temaomrC%de, eventuelt materiale for undersC8kelse, faglig grunnlag og problemstilling. Innlevering av forbedret versjon av samme besvarelse som ved tidligere eksamen i Emne 4 er ikke tillatt, og slik innlevering vil ikke bli vurdert.
+
+For studenter som tar faget i 3. studieC%r
+
+Eksamensform
+
+Individuell FoU-oppgave med omfang pC% 7000 ord +/- 10% leveres elektronisk innen oppgitt frist. EksamenssprC%ket er engelsk. Oppgaven mC% oppfylle IKT-krav og bestemte krav til utforming. Slike kriterier publiseres pC% hC8gskolens lC&ringsplattform i god tid fC8r studenten begynner pC% sin oppgave. EgenerklC&ring vedrC8rende fusk og plagiering og egenerklC&ring knyttet til hvorfor oppgaven ikke utlC8ser NSD-krav, skal ligge som vedlegg i FoU-oppgaven ved innlevering.
+
+Ny/utsatt eksamen Ved ikke-bestC%tt karakter vil det vC&re anledning til C% omarbeide oppgaven ved fC8rste ny/utsatt eksamen. Etter dette leveres ny oppgave. Dersom FoU-oppgaven fC%r bestC%tt karakter, kan studenten ikke levere forbedret oppgave, men mC% eventuelt skrive ny FoU-oppgave ved ny eksamen. Dette innebC&rer at man skifter temaomrC%de, eventuelt materiale for undersC8kelse, faglig grunnlag og problemstilling. Innlevering av forbedret versjon av samme oppgave som ved tidligere eksamen i Emne 4 er ikke tillatt, og slik innlevering vil ikke bli vurdert.
+
+Hjelpemidler ved eksamen
+
+Alle hjelpemidler er tillatt sC% lenge regler for kildehenvisning fC8lges.
+
+Vurderingsuttrykk
+
+Det benyttes en gradert karakterskala fra A til E for bestC%tt og F for ikke bestC%tt eksamen.
+
+Sensorordning
+
+Eksamen vurderes av intern og ekstern sensor. Normalt er veileder intern sensor.

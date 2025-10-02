@@ -1,0 +1,10 @@
+institution: mf
+code: PRA1001-1
+year: NA
+hv: NA
+url: https://mf.no/studier/emner/pra1001
+status: 200
+course_name_no: Praksis 1. semester - Lektorprogrammet PRA1001
+----- FULLTEXT -----
+
+NA

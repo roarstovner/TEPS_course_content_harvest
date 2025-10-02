@@ -1,0 +1,10 @@
+institution: ntnu
+code: LKRO001E-A
+year: NA
+hv: NA
+url: https://www.ntnu.no/studier/emner/LKRO001E#tab=omEmnet
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+NA

@@ -1,0 +1,109 @@
+institution: oslomet
+code: M5GEN1300-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/M5GEN1300/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+M5GEN1300 Engelsk, emne 3 Emneplan
+Engelsk emnenavn
+English, Subject 3
+Studieprogram
+Engelsk for trinn 5-10 i grunnskolen
+GrunnskolelC&rerutdanning for trinn 5-10
+Omfang
+15.0 stp.
+StudieC%r
+2025/2026
+Pensum
+VCR 2026
+
+Timeplan
+VCR 2026
+Programplan
+GrunnskolelC&rerutdanning for trinn 5-10 (2025 HCST )
+Emnehistorikk
+2017 / 2018 2018 / 2019 2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Innledning
+
+Fagplanen tilhC8rende dette emnet er lagt pC% emne M5GEN1100 Engelsk, emne 1.
+
+Forkunnskapskrav
+
+Ingen.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har omfattende kunnskap om flersprC%klighet som ressurs i klasserommet
+har kunnskap om engelsk som verdenssprC%k og hva dette innebC&rer for utviklingen av sprC%klig, kommunikativ og interkulturell kompetanse
+har detaljert kunnskap om tilegnelse av ordtilfang og om strukturer i engelsk fra lyd- til tekstnivC%
+kjenner til et rikt utvalg litteratur, film og andre kulturelle uttrykk som kan brukes i undervisningen
+
+Ferdigheter
+
+Studenten
+
+kan bruke engelsk muntlig og skriftlig, sikkert og funksjonelt i ulike sjangre
+kan kartlegge og vurdere grunnleggende sprC%kferdigheter, sette i verk tiltak for tilpasset opplC&ring og oppdage lese- og skrivevansker
+kan bruke underveis- og sluttvurdering for C% veilede elever i engelskopplC&ringen
+kan diskutere muntlig og skriftlig et rikt utvalg skjC8nn- og faglitteratur
+
+Generell kompetanse
+
+Studenten
+
+kan reflektere kritisk over egen lC&ring og undervisningspraksis i lys av etiske grunnverdier og skolens ansvar for barn og unges personlige vekst
+kan arbeide selvstendig og sammen med andre for C% kartlegge og tilrettelegge for elevers lC&ring og utvikling
+kan vedlikeholde og utvikle egen sprC%klig og didaktisk kompetanse og bidra til faglig utvikling og nytenkning
+Innhold
+
+Engelsk tekst, sprC%k og struktur:
+
+Engelskundervisning i flersprC%klige og flerkulturelle klasserom
+Engelsk som verdenssprC%k
+Kartlegging, vurdering og arbeid med grunnleggende ferdigheter i engelskfaget, med fokus pC% muntlige og skriveferdigheter
+Fordypning i engelsk struktur fra lyd- til tekstnivC%
+Kritiske og analytiske tilnC&rminger til litteratur og annen tekst
+Arbeids- og undervisningsformer
+
+Se fagplanen.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+FC8lgende arbeidskrav mC% vC&re godkjent fC8r eksamen i emnet kan avlegges:
+
+Oppgave i grupper pC% tre studenter, i form av digitalt sammensatt tekst (video pC% 3-5 minutter, spill, quiz, e.l.) og tekst pC% 500 ord +/- 10%. FormC%let med oppgaven er arbeid med formidling av fagstoff og undervisning av strukturer i engelsk fra lyd- til tekstnivC%.
+Tre timers individuell skriftlig oppgave under tilsyn i engelsk struktur fra lyd- til tekstnivC%. Skriveoppgaven gjennomfC8res i en undervisningstime pC% campus.
+Skriftlig oppgave i praksisgrupper med omfang pC% 1000 ord +/- 10 %. Oppgaven knytter undervisningen i faget sammen med erfaringer i praksis gjennom elevtekstanalyse. FormC%let med oppgaven er arbeid med grunnleggende ferdigheter og vurdering.
+Krav om deltakelse i undervisningen (som beskrevet under B+ArbeidskravB; i den innledende delen av fagplanen).
+Vurdering og eksamen
+
+Eksamensform
+
+Muntlig eksamen i par (ev. individuelt hvis nC8dvendig ut fra studenttall) med varighet 15 minutter til presentasjon av en gitt oppgave og 10 minutter per par til spC8rsmC%l fra sensorene. Det gis individuell karakter. EksamenssprC%ket er engelsk.
+
+Ny/utsatt eksamen
+
+Ny/utsatt eksamen arrangeres som ved ordinC&r eksamen. Av praktiske hensyn vil eksamen i par kunne gjennomfC8res som individuell eksamen ved ny/utsatt eksamen.
+
+Hjelpemidler ved eksamen
+
+Hver student kan ha med seg A4-ark med notater.
+
+Vurderingsuttrykk
+
+Det benyttes en gradert karakterskala fra A til E for bestC%tt og F for ikke bestC%tt eksamen.
+
+Sensorordning
+
+Eksamen vurderes av to interne sensorer. En tilsynssensor er tilknyttet emnet, i henhold til retningslinjer for oppnevning og bruk av sensorer ved OsloMet.

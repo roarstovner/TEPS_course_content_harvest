@@ -1,0 +1,174 @@
+institution: oslomet
+code: M5GNO2100-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/M5GNO2100/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+M5GNO2100 Norsk, emne 4 Emneplan
+Engelsk emnenavn
+Norwegian, Subject 4
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 5-10
+Omfang
+15.0 stp.
+StudieC%r
+2025/2026
+Pensum
+HCST 2025
+
+Timeplan
+HCST 2025
+Programplan
+GrunnskolelC&rerutdanning for trinn 5-10 (2025 HCST )
+Emnehistorikk
+2018 / 2019 2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Innledning
+
+Fagplanen som hC8yrer til dette emnet er lagt pC% emne M5GNO1100 Norsk, emne 1.
+
+Forkunnskapskrav
+
+Ingen.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgjande lC&ringsutbytte definert som kunnskap, ferdigheiter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har kunnskap om sjangrar, deriblant akademiske teksttypar
+har kunnskap om lC&remiddel, digitale og andre
+har kunnskap om og oversyn over teori knytt til faget
+har kunnskap om kriterium for vurdering av munnlege og skriftlege kunnskapar
+har innsikt i skulefagets historie og eigenart som sprC%k-, kultur-, litteratur- og danningsfag
+kjenner til fagdidaktisk forsking og utviklingsarbeid og kan drC8fte forskingsetiske problemstillingar
+har kunnskap om korleis ein kan vurdere truverdet til kjelder henta frC% Internett
+
+Ferdigheter
+
+Studenten
+
+kan vurdere ulike norskfaglege lC&remiddel, digitale og andre
+kan skrive akademiske fagtekstar pC% nynorsk og bokmC%l
+kan sjC% norskfaget i eit samfunnsperspektiv
+kan bruke ulike vurderingsmC%tar i norskfaget
+kan presentere akademiske problemstillingar munnleg
+kjenner til vitskaplege arbeidsmC%tar i norskfaget
+legge gjennomfC8re eit utviklings- og forskingsprosjekt
+kan vurdere truverdet til kjelder henta frC% Internett
+
+Generell kompetanse
+
+Studenten
+
+kan formidle fagstoff om sprC%k, litteratur, tekstar og medium i relevante uttrykksformer
+kan bruke faglege kunnskapar til kritisk refleksjon
+kan arbeide sjC8lvstendig og saman med andre med elevanes lC&ring og utvikling i faget og pC% tvers av fag
+kan legge til rette for at norskopplC&ringa fremjar elevdeltaking pC% offentlege arenaer
+Innhold
+
+Emne 4 C8ver studentane i didaktisk refleksjon og i skriving av fagtekstar. Studentane skal utvikle ein utvida refleksjon om kva norskfagleg kompetanse kan bety ogsC% pC% andre arenaer enn i skulen. Utvikla innsikter i norskfaglege tenkjemC%tar om sprC%k og tekst stC%r sentralt.
+
+Lesing og skriving av akademiske fagtekstar
+Norskfagleg formidling
+Didaktisk refleksjon
+Vurdering av munnlege og skriftlege tekstar
+LC&remiddelanalyse
+FoU-arbeid
+Arbeids- og undervisningsformer
+
+For studentar som tar faget i 3. studieC%r
+
+Arbeidet med FoU-oppgC%va er organisert som undervisning og kurs, rettleiing/rettleiingsseminar, innlevering av skriftleg oppgC%ve, munnleg framlegg og annan deltaking pC% konferanse der alle studentane presenterer oppgC%veomrC%da sine. Kvar kandidat vil fC% oppnemnt ein fagleg rettleiar. TemaomrC%de, problemstilling og opplegg for oppgC%va skal godkjennast av rettleiaren.
+
+Undervisninga i emnet skal mellom anna gje stC8tte til skriving av FoU-oppgC%va. I tillegg til norskfaglege emne, skal undervisninga ta opp fC8lgande tema:
+
+Utdanningsvitskap for lC&rarar, sentrale forskingstradisjonar og metodar.
+Forskingsetikk og grunnlagsspC8rsmC%l.
+Seminar i pedagogikk som tek opp sentrale utfordringar i dagens grunnskole.
+Skriving i forsking om skole og undervisning og i lC&raryrket.
+
+OppgC%veskriving er ein problemlC8ysingsprosess, der studenten skal belyse den valde problemstillinga si gjennom systematiske metodar som kan etterprC8vast. Ein del av dette arbeidet vil til dC8mes vere C% arbeide fram eit oppdatert kunnskapsoversyn. Studentar vil ogsC% ofte samle eit erfaringsmateriell og bruke utdanningsvitskapleg metode til C% undersC8ke, systematisere og belyse materialet. Arbeidet med oppgC%va skal gje erfaring i C% sC8ke og nytte litteratur og bygge pC% bC%de oppgitt og sjC8lvvald pensum. Omtalar, analysar og vurderingar i oppgC%va skal vere solid fagleg utvikla og underbygde.
+
+FoU-oppgC%va er eit individuelt arbeid. Framstillinga skal vere i samsvar med reglar og retningslinjer for vitskapleg og fagleg forfattarskap.
+
+I oppgC%ver som brukar materiale som studenten sjC8lv samlar inn, er det eit krav at dette skal hentast inn slik at meldeplikt til Norsk senter for forskningsdata (NSD) ikkje blir utlC8yst. FC8resette skal gje samtykke dersom elevane som deltar i undersC8kinga, er umyndige (B+under myndigheitsalderB;). Gjennom oppgC%va skal studenten dokumentera kjennskap til aktuell forsking pC% det omrC%det studenten skriv om. Studenten skal bruke teori og anna fagstoff som grunnlag for C% undersC8ke problemstillinga. Metodedelen skal dokumentera framgangsmC%tar pC% ein slik mC%te at det gjev hC8ve til C% sjC% korleis studenten har henta inn og brukt materialet og korleis han eller ho har kome fram til resultata. Resultata skal drC8ftast ut frC% dei vanlege vitskaplege krava til kva som er pC%liteleg og gyldig.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+Retten til C% avlegge eksamen har som vilkC%r godkjente arbeidskrav og deltaking i bestemte faglege aktivitetar. SjC% fagplandelen ovanfor for nC&rare informasjon om krav til innlevering og vilkC%r ved manglande innlevering.
+
+For studentar som tar faget i 1. og 2. studieC%r
+
+Individuell tale eller kC%seri. MC%let er trening i faglege, munnlege framstillingsformer. Omfang: 10 minutt. Respons frC% medstudentar og faglC&rar.
+Samandrag og problemstilling om FoU-arbeid. MC%let med arbeidet er at studenten skal komme i gang med planlegginga av FoU-arbeidet. Omfang: 800 ord. MC%lform: valfri.
+
+For studentar som tar faget i 3. studieC%r
+
+FC8lgande arbeidskrav mC% vere gjennomfC8rte fC8r FoU-oppgC%va kan leverast til sensur:
+
+Innlevering av eit notat pC% 400 ord +/- ti prosent om opplegg for oppgC%va. Notatet skal ha med omtale av emne, spC8rsmC%l studenten vil undersC8ke, aktuell forskingslitteratur og anna fagstoff han eller ho forventar C% sette seg inn i som del av arbeidet med oppgC%va, kva slags materiale studenten planlegg C% samle inn og undersC8ke, forskingsmetode studenten skal bruke og skisse til oppgC%vedesign. Same mC%lform som FoU-oppgC%va.
+Notat fC8r siste rettleiing med utdrag av oppgC%vetekst pC% 1500 ord +/- ti prosent. Same mC%lform som FoU-oppgC%va.
+
+Faglege aktivitetar med krav om deltaking:
+
+Delta pC% fleirfagleg undervisning om utdanningsvitskap og metode, forskingsetikk og grunnlagsspC8rsmC%l.
+Delta pC% kurs i akademisk skriving og IKT.
+Delta pC% to rettleiingar i seminar eller individuelt. Rettleiaren set opp tidspunkt og krav til bidrag.
+Delta pC% delingskonferanse med eige framlegg og respons pC% medstudentar sine framlegg.
+Vurdering og eksamen
+
+Vurdering for studentar som tar faget 1. og 2. studieC%r
+
+Eksamen bestC%r av to eksamensdelar.
+
+Deleksamen 1: Individuelt FoU-arbeid i fritt valt tema frC% dei fire emna i studiet. MC%lform: valfri. Omfang: Ca. 5000 ord. Rettleiing av faglC&rar.
+
+Deleksamen 2: Individuell prC8veforelesing. Omfang: 20 minutt.
+
+Deleksamen 1 og deleksamen 2 tel 50/50 ved samanslC%ing av karakter.
+
+Ny/utsett eksamen
+
+Deleksamen 1: Ny/utsett eksamen vert arrangert som ved ordinC&r eksamen.
+
+Deleksamen 2: Dersom FoU-arbeidet har fC%tt ein ikkje-bestC%tt karakter, vil det vere hC8ve til C% omarbeide oppgC%va ved fC8rste ny og utsett eksamen. Etter dette mC% studenten levere ny oppgC%ve.
+
+Vurdering for studentar som tar faget 3. studieC%r
+
+Individuell FoU-oppgC%ve mC% leverast elektronisk innan oppgitt frist. OppgC%va skal ha eit omfang pC% om lag 7000 ord og har valfri mC%lform. OppgC%va mC% oppfylle IKT-krav og andre fastsette krav til utforming. Slike kriterium blir publiserte pC% hC8gskulens lC&ringsplattform i god tid fC8r studenten begynner pC% oppgC%va si. OppgC%va som blir levert inn, skal ha som vedlegg ei eigenerklC&ring som gjeld fusk og plagiering og ei eigenerklC&ring om korfor oppgC%va ikkje utlC8yser NSD-krav (sjC% ovanfor).
+
+Ny/utsett eksamen
+
+Dersom FoU-oppgC%va har fC%tt ein ikkje-bestC%tt karakter, vil det vere hC8ve til C% omarbeide oppgC%va ved fC8rste ny og utsett eksamen. Etter dette mC% studenten levere ny oppgC%ve. Dersom FoU-oppgC%va har fC%tt ein bestC%tt karakter, kan studenten ikkje levere ei forbetra oppgC%ve, men mC% skrive ny FoU-oppgC%ve til ein eventuell ny eksamen. Dette inneber at studenten mC% skifta temaomrC%de, eventuelt materialet for undersC8kinga, fagleg grunnlag og problemstilling. Innlevering av forbetra versjon av same oppgC%ve som ved tidlegare eksamenar, er ikkje tillate. Slik innlevering vil ikkje bli vurdert.
+
+Hjelpemidler ved eksamen
+
+For studentar som tar faget 1. og 2. studieC%r:
+
+Alle tilgjengelege hjelpemiddel bC%de til deleksamen 1 og 2.
+
+For studentar som tar faget i 3. studieC%r:
+
+Alle hjelpemiddel tillatne.
+
+Vurderingsuttrykk
+
+Det blir nytta ein gradert karakterskala fra A til E for bestC%tt og F for ikkje bestC%tt eksamen.
+
+Sensorordning
+
+For studentar som tar faget 1. og 2. studieC%r:
+
+Intern og ekstern sensor bC%de til deleksamen 1 og 2.
+
+For studentar som tar faget i 3. studieC%r:
+
+Det blir nytta ekstern og intern sensor. Normalt er rettleiaren den interne sensoren.

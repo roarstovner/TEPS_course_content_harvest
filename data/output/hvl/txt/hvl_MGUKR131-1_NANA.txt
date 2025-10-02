@@ -1,0 +1,10 @@
+institution: hvl
+code: MGUKR131-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGUKR131
+status: 200
+course_name_no: MGUKR131 KRLE 1 - Kristendom, religion, livssyn og etikk
+----- FULLTEXT -----
+
+NA

@@ -1,0 +1,10 @@
+institution: hvl
+code: MGUNA131-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGUNA131
+status: 200
+course_name_no: MGUNA131 Naturfag 1, emne 1 - InnfC8ring i biologi for grunnskolen
+----- FULLTEXT -----
+
+NA

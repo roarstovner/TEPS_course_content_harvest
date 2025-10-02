@@ -1,0 +1,10 @@
+institution: uis
+code: MGLINT-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MGLINT
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+NA

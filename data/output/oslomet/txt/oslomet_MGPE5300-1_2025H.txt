@@ -1,0 +1,236 @@
+institution: oslomet
+code: MGPE5300-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/MGPE5300/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+MGPE5300 Pedagogikk fordypning 2: Spesialpedagogikk Emneplan
+Engelsk emnenavn
+Special Needs Education 2
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 1-7
+GrunnskolelC&rerutdanning for trinn 5-10
+Omfang
+15.0 stp.
+StudieC%r
+2025/2026
+Pensum
+HCST 2025
+
+Timeplan
+HCST 2025
+Programplan
+GrunnskolelC&rerutdanning for trinn 1-7 (2025 HCST )
+GrunnskolelC&rerutdanning for trinn 5-10 (2025 HCST )
+Emnehistorikk
+2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Fagplan
+
+Pedagogikk fordypning 2: Spesialpedagogikk
+
+(15 studiepoeng)
+
+Fagplanen ble godkjent i studieutvalget 14. november 2016
+
+Revisjon godkjent av utdanningsutvalget 11. januar 2021
+
+Redaksjonell endring lagt inn 29. oktober 2021
+
+Gjeldende fra hC8stsemesteret 2022
+
+Innledning
+
+Fagplanen bygger pC% forskrift om rammeplan for grunnskolelC&rerutdanningen for trinn 1-7/trinn 5-10, fastsatt av Kunnskapsdepartementet 7. juni 2016, nasjonale retningslinjer for grunnskolelC&rerutdanningen trinn 1-7/trinn 5-10 av 1. september 2016 og programplan for grunnskolelC&rerutdanning for trinn 1-7/trinn 5-10 ved HC8gskolen i Oslo og Akershus, godkjent av studieutvalget 16. november 2016.
+
+Spesialpedagogikk 2 gir studenten en utvidet mulighet til C% utforske det pedagogiske kunnskapsomrC%det og utvidet kompetanse for C% legge til rette opplC&ringstilbud for alle. Det krever evne til C% sette seg inn i bC%de generelle spesialpedagogiske perspektiver, og i konkret vanske- og diagnosekunnskap som blir relevant for C% gjC8re valg om metoder, tiltak og arbeidsmC%ter i den inkluderende skolen.
+
+Videre krever det innsikt i prinsipper og dilemmaer, bC%de pC% individ- og systemnivC%, for arbeid med elever som ikke fC%r eller kan fC% tilfredsstillende utbytte av den ordinC&re undervisningen, som befinner seg i en vanskelig livssituasjon eller har andre forutsetninger for C% delta i klassefellesskapet.
+
+Undervisningen vil fokusere pC% bC%de lC&reren som samarbeids- og rC%dgivningspartner for aktC8rerene rundt eleven (skole, kolleger, hjem, andre instanser) og lC&reren som den som har den daglige nC&rkontakten med elevene, som er klasseleder og relasjonsbygger.
+
+Oppmerksomheten rettes derfor mot bC%de systemforstC%else, sakkyndighet, inkluderingsteori, skolekultur og den spesialpedagogiske tiltakskjeden, og mot lC&rerens rolle som faglig veileder, rC%dgiver og samtalepartner.
+
+Faget gir en bred fordypning i sentrale spesialpedagogiske tema og problemstillinger for C% kunne skrive en masteroppgave der fokus er inkluderende opplC&ring, spesialpedagogiske perspektiver eller elevgrupper med andre forutsetninger for lC&ring.
+
+MC%lgruppe
+
+Studenter som er tatt opp til femC%rig grunnskolelC&rerutdanning for trinn 1-7/trinn 5-10.
+
+Opptakskrav
+
+Faget er tilgjengelig som valgfag for aktive studenter ved grunnskolelC&rerutdanningen.
+
+LC&ringsutbytte
+
+LC&ringsutbytte er nC&rmere beskrevet i emneplanen
+
+Fagets innhold og oppbygging
+
+Pedagogikk fordypning 2: Spesialpedagogikk (15 studiepoeng) bestC%r av et emne og gjennomfC8res i niende semester.
+
+Fagets arbeids- og undervisningsformer
+
+Individuelt arbeid med pensumlitteratur, kollokviegrupper, oppgavearbeid i gruppe, forelesninger, kontakt med spesialpedagogiske institusjoner eller organisasjoner, og seminar om vansker og diagnoser. Studentene forutsettes C% engasjere seg aktivt i studentfellesskapet gjennom deltakelse pC% forelesninger og andre aktiviteter, drC8ftinger, framleg og diskusjoner om tenkte eller erfarte situasjoner.
+
+Skikkethetsvurdering
+
+LC&rerutdanningsinstitusjoner har ansvar for C% vurdere om studenter er skikket for lC&reryrket. LC8pende skikkethetsvurdering foregC%r gjennom hele studiet og inngC%r i en helhetsvurdering av studentens faglige og personlige forutsetninger for C% kunne fungere som lC&rer. En student som utgjC8r en mulig fare for elevers liv, fysiske og psykiske helse, rettigheter og sikkerhet, er ikke skikket for yrket. Studenter som viser liten evne til C% mestre lC&reryrket, skal sC% tidlig som mulig i utdanningen fC% melding om dette. De skal fC% rC%d og veiledning for C% gjC8re dem i stand til C% oppfylle kravene om lC&rerskikkethet eller fC% rC%d om C% avslutte utdanningen. Beslutninger om skikkethet kan fattes gjennom hele studiet. Se hC8gskolens nettsted for mer informasjon om skikkethetsvurdering.
+
+Arbeidskrav
+
+Retten til C% avlegge eksamen forutsetter godkjente arbeidskrav i bestemte faglige aktiviteter.
+
+Arbeidskrav skal vC&re levert/utfC8rt innen fastsatt(e) frist(er). Gyldig fravC&r dokumentert med for eksempel sykemelding, gir ikke fritak for C% innfri arbeidskrav. Studenter som pC% grunn av sykdom eller annen dokumentert gyldig C%rsak ikke leverer/utfC8rer arbeidskrav innen fristen, kan fC% forlenget frist. Ny frist for C% innfri arbeidskrav avtales i hvert enkelt tilfelle med den aktuelle lC&reren.
+
+Arbeidskrav vurderes til "Godkjent" eller "Ikke godkjent". Studenter som leverer/utfC8rer arbeidskrav innen fristen, men som fC%r vurderingen "Ikke godkjent", har anledning til en eller to nye innleveringer/utfC8relser. Studenten mC% da selv avtale ny innlevering av det aktuelle arbeidskravet med faglC&rer. Studenter som ikke leverer/utfC8rer arbeidskrav innen fristen og som ikke har dokumentert gyldig C%rsak, fC%r ingen nye forsC8k.
+
+I programplanen er de fagovergripende temaene pC% de ulike studieC%rene og semestrene beskrevet. I tilknytning til disse kan det vC&re krav til tilstedevC&relse og/eller andre arbeidskrav.
+
+Vurderings-/eksamensformer
+
+Se emneplanen under punktet Vurderings-/eksamensformer.
+
+Vurdering - vurderingskriterier
+
+A: Fremragende. Viser fremragende kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser fremragende oversikt over faget og en analytisk evne til selvstendig bruk av relevante kunnskaper. Viser hC8yt faglig og profesjonsetisk refleksjonsnivC% og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+B: Meget god. Viser meget gode kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser meget god oversikt over faget og en analytisk evne til selvstendig bruk av relevant kunnskap. Viser hC8yt faglig og profesjonsetisk refleksjonsnivC% og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+C: God. Viser gode kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser god oversikt over faget og en analytisk evne til selvstendig bruk av relevant kunnskap. Viser et tilfredsstillende faglig og profesjonsetisk refleksjonsnivC%, samt og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+D: NoksC% god. Viser begrensede kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser begrenset over faget og en analytisk evne til selvstendig bruk av relevant kunnskap. Viser et tilfredsstillende faglig og profesjonsetisk refleksjonsnivC%, samt selvstendig refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+E: Tilstrekkelig. Tilfredsstiller minimumskravene til kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser noe evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+F: Ikke bestC%tt. Har utilstrekkelig kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser dC%rlig evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+Rettigheter og plikter ved eksamen
+
+Studentens rettigheter og plikter framgC%r av forskrift om studier og eksamen ved OsloMet - storbyuniversitetet. Forskriften beskriver blant annet vilkC%r for ny/utsatt eksamen, klageadgang og hva som regnes som fusk ved eksamen. Studenten er selv ansvarlig for C% melde seg opp til eventuell ny/utsatt eksamen.
+
+Forkunnskapskrav
+
+Faget er tilgjengelig for studenter som har fullfC8rt MGPE3300, Pedagogikk fordypning 1: Spesialpedagogikk 1, eller tilsvarende emne fra andre utdanningsinstitusjoner
+
+LC&ringsutbytte
+
+Faget skal gi kompetanse innen den valgte fordypningen, som del av arbeidet med C% skape en skole for alle. Videre skal faget bidra til at studenten utvikler bred oversikt over aktuell kunnskap, forskning og posisjoner innen kunnskapsfeltet som grunnlag for arbeid med masteroppgaven.
+
+Etter fullfC8rt fag har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse.
+
+Kunnskap
+
+Studenten
+
+har avansert kunnskap om hvordan inkludering og spesialpedagogiske prinsipper bidrar til C8kt opplC&ringstilpasning og opplC&ringskvalitet for alle elever
+har omfattende kunnskap om det spesialpedagogiske fagfeltet og spesialpedagogiske hjelpe- og stC8ttesystemer, herunder ogsC% kunnskap om foreldresamarbeid, samt interprofesjonelt samarbeid
+har inngC%ende kunnskaper om profesjonsetiske verdivalg
+har avansert kunnskap om vitenskapelige tenkemC%ter, teori og aktuell forskning innen det spesialpedagogiske fagfeltet
+har avansert kunnskap om C% analysere behov for endring og utvikling, initiere lokalt utviklingsarbeid og bidra til kunnskapsutvikling og kunnskapsspredning
+
+Ferdigheter
+
+Studenten
+
+kan analysere pedagogiske og spesialpedagogiske problemstillinger og dilemma basert pC% fagets verdigrunnlag og egenart
+kan analysere og forholde seg kritisk til nasjonal og internasjonal pedagogisk - spesialpedagogisk forskning og legge denne kunnskapen til grunn ved planlegging og gjennomfC8ring av opplC&ringen
+kan anvende lC&rings- og mestringsstrategier slik at elevene gis anledning til C% reflektere over og styrke egen utvikling og lC&ring
+kan vurdere og kritisk ta i bruk kartleggings- og testmateriell relatert til elevers sprC%kutvikling - lesing, skriving og regning
+kan veilede og rC%dgi ved spesialpedagogiske spC8rsmC%l og problemstillinger
+
+Generell kompetanse
+
+Studenten
+
+kan identifisere, analysere og kritisk reflektere over profesjonsetiske og spesialpedagogiske problemstillinger
+kan analysere, vurdere og hC%ndtere selvstendig faglige og etiske problemstillinger for C% fremme en inkluderende skole
+kan bidra til innovasjonsprosesser som fremmer pedagogisk og spesialpedagogisk nytenkning
+Innhold
+
+INNHOLD
+
+Studieemnet bestC%r av to hovedtemaer og to undertemaer.
+
+Hovedtemaer
+
+Endringsarbeid og rC%dgivning - forebyggende arbeid pC% ulike tiltaksnivC%
+
+Prinsipper, strategier og kommunikasjon i spesialpedagogisk arbeid
+Kompetanse for egen rC%dgiverrolle
+Veiledning av barn, voksne og kolleger, og samarbeidende hjelpeinstanser
+
+Pedagogisk systemarbeid - profesjonsfellesskap
+
+ForstC%else av skolekultur og tolkningsfelleskap
+Skolen som lC&rende organisasjon
+
+Undertemaer
+
+Spesialpedagogisk teori
+
+Inkludering og opplC&ringslov
+Spesialpedagogisk etikk
+
+Sakkyndighet i et individ- og systemperspektiv
+
+Sakkyndighet som prinsipp og praksis
+Diagnostisering - vurderingsformer
+Arbeids- og undervisningsformer
+
+Se fagplan.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+Retten til C% avlegge eksamen forutsetter godkjente arbeidskrav i bestemte faglige aktiviteter.
+
+Arbeidskrav
+
+FC8lgende arbeidskrav mC% vC&re godkjent fC8r eksamen kan avlegges:
+
+Arbeidskrav 1
+
+En fagtekst basert pC% et intervju med en fagperson om spesialpedagogisk arbeid i et individ- og systemperspektiv (omfang 800-1000 ord). GjennomfC8res som pararbeid.
+
+Arbeidskrav 2
+
+En skriftlig gjennomgang av forskningslitteratur knyttet til masteroppgavens tema (omfang 1600 ord +/-10%). Arbeidskravet gjennomfC8res individuelt, eller i par eller grupper pC% tre for studenter som planlegger C% skrive masteroppgaven sammen.
+
+Arbeidskrav 3
+
+Studentene velger tema for masteroppgaven og leverer en prosjektplan for masteroppgaven (omfang 1800 ord +/-10%). Arbeidskravet gjennomfC8res individuelt, eller i par eller grupper pC% tre for studenter som planlegger C% skrive masteroppgaven sammen.
+
+Arbeidskrav 2 og 3 er knyttet til masteroppgaven som skal leveres pC%fC8lgende semester, men alle arbeidskrav mC% vC&re godkjent for at studenten formelt blir tildelt veileder for oppgaven.
+
+Krav om obligatorisk deltakelse:
+
+Studenten mC% delta pC% minst 80% av obligatoriske aktiviteter, som omfatter
+
+4 masteroppgaveseminarer (MOS) i gruppe i lC8pet av semesteret
+Deltakelse i B+veiledningsrollespillB; i forbindelse med fire C8kter undervisning om veiledning og rC%dgivning, gennomfC8res i gruppe.
+Seminar om vansker, utfordringer og diagnoser
+Seminar med pensumarbeid og eksamensforberedelse
+
+Manglende deltakelse i faglige aktiviteter nevnt over medfC8rer at studenten ikke fC%r avlegge eksamen i emnet. Sykdom fritar ikke fra kravet om deltakelse. For studenter med gyldig fravC&r vil det bli utformet en kompensatorisk oppgave/alternativ gjennomfC8ring. Form og omfang avtales med faglC&rer.
+
+Vurdering og eksamen
+
+Individuell skriftlig hjemmeeksamen pC% 2000 ord +/-10% over tre dager.
+
+Ny/utsatt eksamen arrangeres som ved ordinC&r eksamen.
+
+Hjelpemidler ved eksamen
+
+Alle hjelpemidler.
+
+Vurderingsuttrykk
+
+Det benyttes gradert karakterskala fra A til E for bestC%tt og F for ikke bestC%tt eksamen.
+
+Sensorordning
+
+Eksamen blir vurdert av en ekstern og en intern sensor.

@@ -1,0 +1,176 @@
+institution: uis
+code: MGL300M-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MGL300M
+status: 200
+course_name_no: Masteroppgave i spesialpedagogikk, grunnskolelC&rerutdanning (MGL300M)
+----- FULLTEXT -----
+
+Emnekode
+
+MGL300M
+
+Versjon
+
+1
+
+Vekting (stp)
+
+45
+
+Semester undervisningsstart
+
+HC8st
+
+Antall semestre
+
+2
+
+Vurderingssemester
+
+VC%r
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitenskap og humaniora,
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Fakultet for utdanningsvitenskap og humaniora,
+
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhold
+
+En masteroppgave i spesialpedagogikk er et veiledet vitenskapelig arbeid, og den skal vC&re profesjonsrettet og praksisorientert. Innholdet kan omfatte en empirisk undersC8kelse eller kan vC&re rent teoretisk. Det empiriske arbeidet kan vC&re av kvalitativ og/eller kvantitativ art. I forbindelse med veiledning vil det bli arbeidet med en prosjektbeskrivelse og det kan bli tilbudt aktuelle metodeseminarer, samt eventuelle seminarer knyttet til databearbeiding.
+
+Masteroppgaven i spesialpedagogikk kan leveres individuelt eller av to kandidater sammen, forutsatt at sC8knad om dette innvilges. De to kandidatene mC% ta samme emne innen spesialpedagogikk. SC8knad sendes til masterkoordinator. De som leverer sammen, blir ogsC% vurdert samlet. I slike tilfeller skal kandidatene legge ved en erklC&ring, signert av begge, der de gjC8r rede for den enkeltes bidrag, disse skal vC&re likeverdige.
+
+LC&ringsutbytte
+
+En kandidat med fullfC8rt og bestC%tt emne skal ha fC8lgende lC&ringsutbytte:
+
+Kunnskaper
+
+Ha kunnskaper om planlegging, gjennomfC8ring og dokumentasjon av et selvstendig mastergradsprosjekt
+Kunne vurdere og anvende teori og metoder som er relevant for oppgavens problemstilling
+
+Ferdigheter
+
+Kunne planlegge og gjennomfC8re et selvstendig forskningsprosjekt og dokumentere dette gjennom en masteroppgave
+Kunne kritisk gjennomgC% forskningslitteratur pC% feltet
+Kunne formidle eget forskningsprosjekt pC% en faglig forsvarlig mC%te
+
+Generell kompetanse
+
+Kunne kritisk vurdere kvalitet, gyldighet og relevans av egne og andres forskningsarbeider
+Kunne identifisere og reflektere over aktuelle forskningsetiske problemstillinger i eget forskningsprosjekt
+
+Forkunnskapskrav
+
+Et av fC8lgende alternativer:
+MGL1100 Pedagogikk og elevkunnskap 1. LC&rerens undervisning i det mangfoldige klasserom, MGL1200 Pedagogikk og elevkunnskap 2. Det inkluderende klasserom i en skole preget av mangfold., MGL1500 Spesialpedagogikk (1.-10. trinn), MGL3300 Pedagogikk og elevkunnskap 3, MGL3400 Pedagogikk og elevkunnskap 4
+MGL2100 Pedagogikk og elevkunnskap 1. LC&rerens undervisning i det mangfoldige klasserom, MGL2200 Pedagogikk og elevkunnskap 2. Det inkluderende klasserom i en skole preget av mangfold., MGL2500 Spesialpedagogikk (5.-10. trinn), MGL4300 Pedagogikk og elevkunnskap 3, MGL4400 Pedagogikk og elevkunnskap 4
+MGL1500 Spesialpedagogikk (1.-10. trinn), MGL2100 Pedagogikk og elevkunnskap 1. LC&rerens undervisning i det mangfoldige klasserom, MGL2200 Pedagogikk og elevkunnskap 2. Det inkluderende klasserom i en skole preget av mangfold., MGL3300 Pedagogikk og elevkunnskap 3, MGL3400 Pedagogikk og elevkunnskap 4
+MGL2100 Pedagogikk og elevkunnskap 1. LC&rerens undervisning i det mangfoldige klasserom, MGL2200 Pedagogikk og elevkunnskap 2. Det inkluderende klasserom i en skole preget av mangfold., MGL2500 Spesialpedagogikk (5.-10. trinn), MGL3300 Pedagogikk og elevkunnskap 3, MGL3400 Pedagogikk og elevkunnskap 4
+
+Studenten mC% ha bestC%tt en FoU-oppgave i lC8pet av studielC8pet sitt.
+
+Eksamen / vurdering
+
+VilkC%r for C% gC% opp til eksamen/vurdering
+
+Prosjektbeskrivelse, Presentasjon av masteroppgave, Obligatorisk veiledning
+
+Prosjektbeskrivelse
+
+Kandidaten skal levere en prosjektbeskrivelse pC% 5-7 sider som vurderes til godkjent/ikke godkjent
+
+Obligatorisk veiledning
+
+Studenten mC% delta pC% minst 2 veiledningsC8kter for C% fC% adgang til C% levere masteroppgaven det aktuelle semesteret. Arbeidskravet mC% vC&re godkjent av veileder innen 15. mars.
+
+Muntlig presentasjon av masteroppgaven
+
+Kandidaten skal etter innlevering presentere og diskutere oppgaven i et muntlig framlegg. Varighet 20-30 minutter. Vurderingsordningen her er godkjent/ikke godkjent.
+
+Muntlig presentasjon mC% vC&re godkjent for C% fC% vurdering pC% masteroppgaven.
+
+Hvis en kandidat mC% levere ny eller bearbeidet oppgave, skal det avholdes ny presentasjon.
+
+Obligatorisk arbeidskrav mC% vC&re godkjent for C% gC% opp til vurdering. Konsekvenser av ikke godkjent arbeidskrav er at adgang til prC8ving nektes. Jf. Forskrift om studier og eksamen ved Universitetet i Stavanger (eksamensforskriften), B' 3-8 nr. 3.
+
+Fagperson(er)
+
+FaglC&rer:
+Jacqueline Michelle Peterson
+
+Veileder:
+Tone Rove Nilsen
+
+Veileder:
+Miriam Emilie Choi Natvik
+
+Veileder:
+Joachim Kolnes
+
+Veileder:
+Cystein NybC8e
+
+Veileder:
+Henning Plischewski
+
+Veileder:
+Inga Kjerstin Birkedal
+
+Veileder:
+Hege Rangnes
+
+FaglC&rer:
+Vibeke RC8nneberg
+
+FaglC&rer:
+Ksenia Solheim
+
+Veileder:
+Cse Kathrine Gjestsen
+
+Emneansvarlig:
+Vegard Moen
+
+Veileder:
+Nina Helgevold
+
+Studiekoordinator:
+Karen Elizabeth Gilje Woie
+
+Studieprogramleder:
+Ingeborg KnC&velsrud
+
+Cpent for
+
+Fagdidaktikk for grunnskolen - erfaringsbasert masterprogram
+
+GrunnskolelC&rerutdanning for trinn 1 - 7, femC%rig masterprogram
+
+GrunnskolelC&rerutdanning for trinn 1 - 7, femC%rig master, deltid
+
+GrunnskolelC&rerutdanning for trinn 5 - 10, femC%rig masterprogram
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+SC8k etter pensumlitteratur i Leganto

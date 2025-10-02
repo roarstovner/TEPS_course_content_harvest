@@ -1,0 +1,106 @@
+institution: nord
+code: MAT1007-1
+year: NA
+hv: NA
+url: https://www.nord.no/studier/emner/mat1007
+status: 200
+course_name_no: Matematikk 1 del B
+----- FULLTEXT -----
+
+
+
+Det C% vC&re matematikklC&rer betyr fC8rst og fremst C% kunne hjelpe barn med C% utvikle god kompetanse i matematikk. Det innebC&rer C% ha gode kunnskaper om hvordan barn lC&rer matematikk, og hvordan undervisningen kan legges opp med utgangspunkt i barnets uformelle matematikk. Dette emnet har fokus pC% C% undervise i trC%d med forskningsbasert kunnskap, med vekt pC% hvordan barn stokastisk og algebraisk tenkning.
+
+Opptak skjer pC% bakgrunn av generell studiekompetanse eller realkompetanse etter gjeldende regler. Emnet er for studenter tatt opp pC% lektorutdanning i kroppsC8ving og idrettsfag.
+
+Opptak skjer pC% bakgrunn av generell studiekompetanse eller realkompetanse etter gjeldende regler.
+
+Kunnskap
+
+Kandidaten
+
+Har bred kunnskap om hvordan barn utvikler stokastisk og algebraisk tenkning.
+Har bred kunnskap om undersC8kende matematikkundervisning knyttet spesielt til emene algebra og geometri.
+Har bred kunnskap om sammenhengen mellom lC&rerens undervisningsmetode og elevens utbytte av undervisningen
+Har kunnskap om vanlige interaksjonsmC8nstre og kommunikasjon knyttet til matematikk-undervisning
+Har kunnskap om bruk av konkretiserings-materiale og digitale ressurser i matematikk-faget.
+Har kunnskap om matematikkens historiske utvikling, spesielt utviklingen av algebra og av sannsynlighetsbegrepet.
+Har kunnskap om ulike didaktiske retninger innen stokastisk og algebraisk tenkning.
+Har kunnskap om planlegging av matematikkundervisning i trC%d med de 5 praksiser
+
+FERDIGHETER
+
+Kandidaten
+
+Kan planlegge, gjennomfC8re og vurdere matematikkundervisning for alle elever pC% trinn 8 - 12, med fokus pC% elevaktivitet generelt, og i trC%d med rammeverket "5 praksiser" spesielt.
+Kan bruke arbeidsmC%ter som fremmer elevenes engasjement, undring, kreativitet og evnen til C% arbeide systematisk med utforskende aktiviteter, resonnering og argumentasjon.
+Kan kommunisere med elever, lytte til, vurdere og gjC8re bruk av elevers innspill og stimulere elevenes matematiske tenkning.
+Kan tilpasse opplC&ringen til elevenes ulike behov; Kunne analysere og vurdere elevers tenkemC%ter, argumentasjon og lC8sningsmetoder ut fra relevant teori.
+
+GENERELL KOMPETANSE
+
+Kandidaten
+
+Har innsikt i matematikkfagets betydning som allmenndannende fag.
+
+Kunnskap
+
+Kandidaten
+
+FERDIGHETER
+
+Kandidaten
+
+GENERELL KOMPETANSE
+
+Kandidaten
+
+Utover semesteravgift og pensumlitteratur forutsettes det at studenten disponerer en bC&rbar datamaskin.
+
+Obligatorisk
+
+Det vil bli lagt vekt pC% varierte arbeidsformer, spesielt med tanke pC% C% forberede studentene pC% arbeidsmC%ter de selv vil mC%tte praktisere med egne elever. I tillegg til forelesninger vil en derfor vektlegge studentaktivitet, gruppearbeid, individuelle oppgaver og samtaler/diskusjoner. Bruk av IKT som lC&ringsstC8tte i undervisningsarbeid vil ogsC% bli vektlagt. Studentene vil ogsC% fC% anledning til C% prC8ve ut undervisningsideer diskutert i studiet gjennom sin praksis i skolen.
+
+Studieprogrammet evalueres C%rlig av studentene gjennom emneundersC8kelser (midtveisevaluering og sluttevaluering). Evaluering inngC%r som en del av universitetets kvalitetssikringssystem.
+
+Obligatorisk tilstedevC&relse. Lektorstudenter har praksis i samsvar med praksisplan for lektorutdanningen. Praksis er en del av matematikkfaget i lektorutdanningen, og erfaringer studentene gjC8r i praksis, mC% vC&re utgangspunkt for drC8fting og analyse i studiet. Hver student skal gjennomfC8re arbeidsoppgaver i forbindelse med praksis.
+
+Arbeidskrav:
+
+Studentene skal gjennomfC8re 2 - 3 arbeidskrav, som kan vC&re skriftlige innleveringer, prC8ver, muntlige presentasjoner, hvorav minst en av dem fra utprC8vinger i praksis. Det gis skriftlig eller muntlig tilbakemelding pC% hver av disse. Vurdering: Godkjent / Ikke godkjent. Arbeidskrav mC% vC&re godkjent for C% fC% endelig karakter i emnet.
+
+Obligatorisk deltakelse:
+
+Obligatorisk deltakelse i all timeplanlagt undervisning/aktivitet, minimum 80%, og i avtalt studentstyrt aktivitet.
+
+Obligatorisk deltakelse i arbeidskrav (100%).
+
+Obligatorisk deltakelse mC% vC&re godkjent for C% fC% gC% opp til eksamen.
+
+Skriftlig eksamen:
+
+5 timer. Individuell eksamen. Karakteruttrykk A-F. Teller 100/100.
+
+Arbeidskrav:
+
+Studentene skal gjennomfC8re 2 - 3 arbeidskrav, som kan vC&re skriftlige innleveringer, prC8ver, muntlige presentasjoner, hvorav minst en av dem fra utprC8vinger i praksis. Det gis skriftlig eller muntlig tilbakemelding pC% hver av disse. Vurdering: Godkjent / Ikke godkjent. Arbeidskrav mC% vC&re godkjent for C% fC% endelig karakter i emnet.
+
+Obligatorisk deltakelse:
+
+Obligatorisk deltakelse i all timeplanlagt undervisning/aktivitet, minimum 80%, og i avtalt studentstyrt aktivitet.
+
+Obligatorisk deltakelse i arbeidskrav (100%).
+
+Obligatorisk deltakelse mC% vC&re godkjent for C% fC% gC% opp til eksamen.
+
+Skriftlig eksamen:
+
+5 timer. Individuell eksamen. Karakteruttrykk A-F. Teller 100/100.
+
+Kalkulator.
+
+Gjeldende lC&replanverk.
+
+Kalkulator.
+
+Gjeldende lC&replanverk.

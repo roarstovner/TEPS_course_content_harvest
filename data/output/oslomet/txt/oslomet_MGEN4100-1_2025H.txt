@@ -1,0 +1,223 @@
+institution: oslomet
+code: MGEN4100-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/MGEN4100/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+MGEN4100 Engelsk og engelskdidaktikk 1 Emneplan
+Engelsk emnenavn
+English and English Subject Pedagogy I
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 1-7
+GrunnskolelC&rerutdanning for trinn 5-10
+Omfang
+15.0 stp.
+StudieC%r
+2025/2026
+Pensum
+HCST 2025
+
+Timeplan
+HCST 2025
+Programplan
+GrunnskolelC&rerutdanning for trinn 1-7 (2025 HCST )
+GrunnskolelC&rerutdanning for trinn 5-10 (2025 HCST )
+Emnehistorikk
+2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Fagplan
+
+Engelsk og engelskdidaktikk
+
+(15+15+15 studiepoeng)
+
+Fagplanen ble godkjent i studieutvalget 9. november 2016
+
+Revisjon godkjent i utdanningsutvalget 17. februar 2020
+
+Redaksjonell endring lagt inn 11. mai 2021
+
+Gjeldende fra hC8stsemesteret 2021
+
+Innledning
+
+Fagplanen bygger pC% forskrift om rammeplan for grunnskolelC&rerutdanningen for trinn 1-7/trinn 5-10 trinn, fastsatt av Kunnskapsdepartementet 7. juni 2016, nasjonale retningslinjer for grunnskolelC&rerutdanningen trinn 1-7/trinn 5-10 av 1. september 2016 og programplan for grunnskolelC&rerutdanning for trinn 1-7/trinn 5-10 ved OsloMet, godkjent av studieutvalget 16. november 2016.
+
+Engelskdidaktikk har som mC%lsetning C% gi inngC%ende kunnskap for C% forstC%, vurdere og utvikle engelskundervisning i norsk grunnskole. Faget tar utgangspunkt i teoretiske og metodologiske tilnC&rminger til hvordan barn og unge i et mangfoldig og flersprC%klig samfunn mC8ter engelskfaget i skolen. Faget fokuserer pC% tekst i vid forstand, dvs. muntlige, skriftlige og sammensatte tekster. MC%let er C% gi studentene inngC%ende kunnskap i faget slik at de blir i stand til C% utvikle sin egen og fremtidige elevers sprC%k- og tekstkompetanse og videreutvikle sin egen profesjonalitet som engelsklC&rer.
+
+MC%lgruppe
+
+Studenter som er tatt opp til femC%rig grunnskolelC&rerutdanning for trinn 1-7 og trinn 5-10.
+
+Opptakskrav
+
+Faget er tilgjengelig som valgfag for aktive studenter ved grunnskolelC&rerutdanningen, i trC%d med utdanningenes programplaner.
+
+Opptak til Engelskdidaktikk krever fullfC8rt 60 studiepoeng engelsk pC% syklus 1.
+
+LC&ringsutbytte
+
+LC&ringsutbyttet er nC&rmere beskrevet i emneplanene.
+
+Fagets innhold og oppbygging
+
+Engelskdidaktikk (45 studiepoeng) er bygget opp som tre emner C  15 studiepoeng. Emnene er Engelsk og engelskdidaktikk1, Engelsk og engelskdidaktikk 2 og Engelsk og engelskdidaktikk 3. GrunnskolelC&rerstudenter mC% velge emne 1 og emne 2 innenfor et fag uavhengig om masteroppgaven skal vC&re i fagdidaktikk eller profesjonsrettet pedagogikk. Emne 3 kan byttes med andre emner, i trC%d med nasjonale retningslinjer.
+
+I Engelsk og engelskdidaktikk1: Analytisk profesjonsutC8velse fC%r studentene avansert kunnskap om hvordan barn og unge tilegner seg sprC%k (med vekt pC% begynneropplC&ringen for studenter pC% trinn 1-7), videreutvikling av de grunnleggende ferdighetene, vurdering (inkludert e-assessment og utvikling av vurderingsoppgaver og vurderingskriterier), og valg av tekster som kan bidra til elevenes sprC%kutvikling, nytenkning og evne til refleksjon. I arbeid med tekst legges det vekt pC% sammensatte tekster og tekstproduksjon (multimodal design). Sentralt i Engelsk og engelskdidaktikk 1 stC%r utvikling av avansert digital kompetanse hos studentene, arbeid med vurdering og multimodal tekstproduksjon.
+
+Engelsk og engelskdidaktikk 2: Det mangfoldige klasserommet legger til rette for at studentene fC%r utvikle avansert kunnskap om engelskfaget i flersprC%klige og flerkulturelle klasserom, med sC&rlig vekt pC% elevmangfold, lC&rerens egen sprC%kbevissthet og det engelske sprC%kets plass globalt og i norsk skole.
+
+Engelsk og engelskdidaktikk 3: LC&reren som forsker legger til rette for at studentene fC%r utvikle avansert kunnskap om og ferdigheter i akademisk skriving pC% engelsk. Studentene fC%r anledning til C% utvikle en kritisk tilnC&rming til ulike sider ved lC&replanverket for grunnskolen med vekt pC% engelskfaget. Gjennom deltakelse i studentledete seminarer analyserer og presenterer deltakerne faglitteratur og leder diskusjoner omkring selvvalgte forskningsartikler. Sentralt i Engelsk og engelskdidaktikk 3 er arbeidet med prosjektskissen og gjennomgang av forskningslitteraturen som et steg mot selvstendig arbeid med masteroppgaven.
+
+Fagets arbeids- og undervisningsformer
+
+Undervisningen i Engelsk og engelskdidaktikk vil i hovedsak vC&re i form av forelesninger, seminarer og veiledning. Faget krever stor grad av selvstendig arbeid med C% lese, reflektere over og diskutere pensumtekster. ArbeidssprC%ket i faget er engelsk, bC%de muntlig og skriftlig. Undervisning, arbeidskrav og eksamen foregC%r og fullfC8res pC% engelsk.
+
+LC&ringsledelse og dypere forstC%else av elevmangfold
+
+Engelsk og engelskdidaktikk skal gi inngC%ende kunnskap om faktorer som pC%virker utvikling av barn og unges identitet, og hvordan opplC&ringen i engelskfaget kan tilpasses alle elevers forutsetninger og behov fra et sprC%klig, kulturelt, kjC8nns- og likestillingsperspektiv. Det legges vekt pC% studentens evne til C% planlegge, gjennomfC8re og vurdere undervisning for C% komme den enkelte eleven og en mangfoldig elevgruppe i mC8te. Studentene fC%r inngC%ende kunnskap om ulike vurderingsmetoder.
+
+Forsknings- og utviklingsarbeid relatert til skolen
+
+Forsknings- og utviklingsarbeid blir knyttet til ulike utdannings- og samfunnsmessige kontekster som klasserom, praksisfelt, historiske tradisjoner og samtidskultur. Faget gir forC8vrig inngC%ende kunnskap om og innsikt i bC%de forskningslitteratur og erfaringskunnskap. Tradisjoner i praktisk skolearbeid er en del av innholdet, og det legges til rette for utvikling av studentenes eget FoU-arbeid. Deler av fagstoffet er praktisk-metodisk orientert og koblet med didaktisk refleksjon.
+
+Utvikling av endringskompetanse
+
+Gjennom C% lese om og reflektere over nasjonal og internasjonal forskning, skal studentene bli i stand til C% vurdere utviklingen av engelskfaget pC% nasjonale og internasjonale arenaer. Denne fagbaserte kunnskapen skal bidra til studentenes analytiske evne til vurdere utviklingen av og framtidige endringer i engelskfaget. Det legges vekt pC% studentens egen endringskompetanse, som forutsetter evne til C% analysere og vurdere egne erfaringer i lys av forskning.
+
+Klasseledelse og lC&rerrollen sett fra faget
+
+Studiet legger til rette for at studentene skal videreutvikle sin utC8verkompetanse ved C% fC% mer inngC%ende kunnskap om og et kritisk blikk pC% lC&reprosesser, lC&rerens tilrettelegging for lC&ring i engelsk og forsknings- og utviklingsarbeid. Dette handler om lC&ringsledelse og dypere forstC%else av elevmangfold, forsknings- og utviklingsarbeid relatert til skolen og utvikling av endringskompetanse.
+
+Internasjonale perspektiver
+
+Det internasjonale perspektivet stC%r sentralt i engelskfaget. Engelsk er et verdenssprC%k og brukes som kontaktsprC%k for mennesker fra ulike land og kulturer. SprC%ket har stor betydning for internasjonalisering innen utdanning, kultur- og arbeidsliv og fritid. Et sprC%kfag som engelsk henter det meste av sitt fagstoff fra ulike deler av verden, bC%de nC%r det gjelder sprC%kopplC&ringen (engelsk i et flersprC%klig perspektiv), flerkulturell kompetanse og interkulturell kommunikasjon. I Engelskdidaktikk foregC%r all undervisning pC% engelsk og store deler av pensum er pC% engelsk.
+
+Praksistilknytning
+
+I studiet er det lagt vekt pC% C% gi studentene mer inngC%ende kunnskap om lC&ringsprosesser, barn- og unges utvikling og forsknings- og utviklingsarbeid i skolen. Gjennom arbeidet i engelskfaget og i praksisperioder i skolen videreutvikles studentenes forstC%else av de grunnleggende ferdighetene i faget og de fC%r en kritisk tilnC&rming til fagspesifikk literacy, lC&rersamarbeid, faglC&reridentitet og sin egen endringskompetanse.
+
+PraksisopplC&ring
+
+PraksisopplC&ring er nC&rmere beskrevet i programplanen.
+
+Skikkethetsvurdering
+
+LC&rerutdanningsinstitusjoner har ansvar for C% vurdere om studenter er skikket for lC&reryrket. LC8pende skikkethetsvurdering foregC%r gjennom hele studiet og inngC%r i en helhetsvurdering av studentens faglige og personlige forutsetninger for C% kunne fungere som lC&rer. En student som utgjC8r en mulig fare for elevers liv, fysiske og psykiske helse, rettigheter og sikkerhet, er ikke skikket for yrket. Studenter som viser liten evne til C% mestre lC&reryrket, skal sC% tidlig som mulig i utdanningen fC% melding om dette. De skal fC% rC%d og veiledning for C% gjC8re dem i stand til C% oppfylle kravene om lC&rerskikkethet eller fC% rC%d om C% avslutte utdanningen. Beslutninger om skikkethet kan fattes gjennom hele studiet.
+
+Se universitetets nettsted for mer informasjon om skikkethetsvurdering.
+
+Arbeidskrav
+
+Arbeidskrav skal vC&re levert/utfC8rt innen fastsatt(e) frist(er). Gyldig fravC&r dokumentert med for eksempel sykemelding, gir ikke fritak for C% innfri arbeidskrav. Studenter som pC% grunn av sykdom eller annen dokumentert gyldig C%rsak ikke leverer/utfC8rer arbeidskrav innen fristen, kan fC% forlenget frist. Ny frist for C% innfri arbeidskrav avtales i hvert enkelt tilfelle med fagansvarlig.
+
+Arbeidskrav vurderes til "Godkjent" eller "Ikke godkjent". Studenter som leverer/utfC8rer arbeidskrav innen fristen, men som fC%r vurderingen "Ikke godkjent", har anledning til to nye innleveringer/utfC8relser. Studenten mC% da selv avtale ny innlevering av det aktuelle arbeidskravet med faglC&rer. Studenter som ikke leverer/utfC8rer arbeidskrav innen fristen og som ikke har dokumentert gyldig C%rsak, fC%r ingen nye forsC8k.
+
+I programplanen er de fagovergripende temaene pC% de ulike studieC%rene og semestrene beskrevet. I tilknytning til disse kan det vC&re krav til tilstedevC&relse og/eller andre arbeidskrav.
+
+NC&rmere informasjon om arbeidskrav finnes i den enkelte emneplan.
+
+Vurderings-/eksamensformer
+
+Se punktet om Vurderings-/eksamensformer i emneplanene.
+
+Samlet vurdering
+
+Det gis ingen samlet vurdering i Engelsk og engelskdidaktikk. Emnene vil hver for seg bli oppfC8rt pC% vitnemC%let.
+
+Vurderingskriterier
+
+A: Fremragende. Viser fremragende kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser fremragende evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+B: Meget god. Viser meget gode kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser meget god evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+C: God. Viser gode kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser god evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+D: NoksC% god. Viser begrensede kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser begrenset evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+E: Tilstrekkelig. Tilfredsstiller minimumskravene til kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser noe evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+F: Ikke bestC%tt. Har utilstrekkelig kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser dC%rlig evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+Rettigheter og plikter ved eksamen
+
+Studentens rettigheter og plikter framgC%r av forskrift om studier og eksamen ved Oslomet - storbyuniversitet. Forskriften beskriver blant annet vilkC%r for ny/utsatt eksamen, klageadgang og hva som regnes som fusk ved eksamen. Studenten er selv ansvarlig for C% melde seg opp til eventuell ny/utsatt eksamen.
+
+Forkunnskapskrav
+
+Ingen.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har avansert kunnskap i engelskfaget og fagets didaktikk med vekt pC% grunnleggende ferdigheter
+har inngC%ende kunnskap om relevant forskning og teori og vitenskapelige tenkemC%ter, forskningsmetoder og etikk
+har inngC%ende kunnskap om hvordan opplC&ringen kan tilpasses alle elevers forutsetninger og behov
+har inngC%ende kunnskap om tekst, med fokus pC% sammensatte tekster
+har inngC%ende kunnskap om begynneropplC&ring (trinn 1-7)
+har inngC%ende kunnskap om progresjon i undervisning og elevers lC&ring
+
+Ferdigheter
+
+Studenten
+
+kan analysere og forholde seg kritisk til nasjonal og internasjonal forskning og anvende denne kunnskapen i profesjonsutC8velsen
+kan analysere faglige problemstillinger basert pC% kunnskap om engelskfagets egenart, verdigrunnlag og historie og bruke slik innsikt i undervisning
+kan planlegge og gjennomfC8re undervisning i engelskfaget som fremmer elevens vitenskapelige tenkemC%ter
+kan pC% et avansert nivC% anvende prinsipper for lC&ringsorientert vurdering i engelskfaget og slik bidra til at elvene lC&rer C% reflektere over sin egen lC&ring og utvikling
+kan utvikle, gjennomfC8re og evaluere forskningsbasert begynneropplC&ring som er forankret i avansert kunnskap (trinn 1-7)
+kan vurdere digitale uttrykk og ressurser kritisk og bruke dem i opplC&ringen pC% mC%ter som styrker og utvikler engelskfagets didaktikk.
+
+Generell kompetanse
+
+Studenten
+
+kan analysere og vurdere relevante faglige og etiske problemstillinger og bidra til utvikling av faglig felleskap pC% den enkelte skole
+kan pC% systematisk vis planlegge, evaluere og revidere lC&ringsopplegg med engelskfag som grunnlag
+kan pC% et avansert nivC% formidle og kommunisere om faglige problemstillinger knyttet til profesjonsutC8velsen
+har utviklet en avansert profesjonsfaglig digital kompetanse
+kan bidra til utviklingsarbeid som fremmer faglig og pedagogisk nytenkning i skolen
+Innhold
+
+I Engelsk og engelskdidaktikk 1 fC%r studentene avansert kunnskap om hvordan barn og unge tilegner seg sprC%k (med vekt pC% begynneropplC&ringen for studenter pC% trinn 1-7) og videreutvikling av de grunnleggende ferdighetene. Sentralt stC%r ogsC% vurdering (inkludert e-assessment og utvikling av vurderingsoppgaver og -kriterier) og valg av tekster som kan bidra til elevenes sprC%kutvikling, nytenkning og evne til refleksjon. I arbeid med tekst legges det vekt pC% studiet av sammensatte tekster og tekstproduksjon ( multimodal design). Sentralt i Engelsk og engelskdidaktikk 1 stC%r utvikling av avansert digital kompetanse hos studentene, arbeid med vurdering og multimodal tekstproduksjon.
+
+Arbeids- og undervisningsformer
+
+Se fagplanen.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+FC8lgende arbeidskrav mC% vC&re godkjent fC8r eksamen kan avlegges:
+
+Arbeidskrav 1: Framlegg i grupper (2-3 studenter) av en analyse og drC8fting av en av fagartiklene fra pensumlisten. Framleggets omfang skal vC&re 15-20 minutter og skal inkludere spC8rsmC%l til diskusjon. FormC%let med arbeidskravet er C% gi studentene erfaring med faglig formidling av forsknings- og utviklingsarbeid.
+
+Arbeidskrav 2: Individuelt arbeidskrav. Produksjon av en sammensatt tekst til undervisningsformC%l som knyttes til et tema innenfor Engelskdidaktikk 1: Analytisk profesjonsutC8velse. Veiledende omfang avhengig av modalitet pC% den sammensatte teksten er 1000 ord (f.eks. narrativ tekst), 8 sider (f.eks. bildebok) eller 3 minutter (f.eks. video) +/- 10%. I tillegg skal det leveres et notat pC% ca. 300 ord som drC8fter utformningen av teksten i lys av pensum. FormC%let med arbeidskravet er C% gi studentene mulighet C% fordype seg i tekstarbeid i engelsk.
+
+Vurdering og eksamen
+
+Muntlig eksamen i gruppe pC% tre studenter (eller par hvis nC8dvendig ut fra studenttall), med varighet 20 minutter til presentasjon av et gitt tema og 10 minutter per gruppe til spC8rsmC%l fra sensorer. Det gis individuell karakter. EksamenssprC%ket er engelsk.
+
+Ny/utsatt eksamen
+
+Ny/utsatt eksamen arrangeres som ved ordinC&r eksamen. Av praktiske hensyn vil gruppeeksamen kunne gjennomfC8res som individuell eksamen ved ny/utsatt eksamen, men med en varighet pC% 20 min
+
+Hjelpemidler ved eksamen
+
+Hver student kan ha med seg et A4-ark med notater.
+
+Vurderingsuttrykk
+
+Det benyttes en gradert karakterskala fra A til E for bestC%tt og F for ikke bestC%tt eksamen.
+
+Sensorordning
+
+Eksamen vurderes av en intern og en ekstern sensor.

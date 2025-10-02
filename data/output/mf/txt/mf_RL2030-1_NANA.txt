@@ -1,0 +1,10 @@
+institution: mf
+code: RL2030-1
+year: NA
+hv: NA
+url: https://mf.no/studier/emner/rl2030
+status: 200
+course_name_no: Islam: Tradisjon og mangfold - Lektorprogrammet RL2030
+----- FULLTEXT -----
+
+NA

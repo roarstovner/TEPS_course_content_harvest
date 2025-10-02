@@ -1,0 +1,308 @@
+institution: oslomet
+code: MGKH2100-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/MGKH2100/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+MGKH2100 Kunst og hC%ndverk 1, emne 1 Emneplan
+Engelsk emnenavn
+Arts and Crafts 1, Subject 1
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 1-7
+GrunnskolelC&rerutdanning for trinn 5-10
+Omfang
+30.0 stp.
+StudieC%r
+2025/2026
+Pensum
+VCR 2026
+
+Timeplan
+VCR 2026
+Programplan
+GrunnskolelC&rerutdanning for trinn 1-7 (2025 HCST )
+GrunnskolelC&rerutdanning for trinn 5-10 (2025 HCST )
+Emnehistorikk
+2018 / 2019 2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Fagplan
+
+Kunst og hC%ndverk 1 (30 studiepoeng)
+
+Kunst og hC%ndverk 2 (30 studiepoeng)
+
+Fagplanen ble godkjent i studieutvalget 9. november 2016
+
+Redaksjonelle endringer foretatt 29. desember 2020
+
+Gjeldende fra hC8stsemesteret 2021
+
+Innledning
+
+Fagplanen bygger pC% forskrift om rammeplan for grunnskolelC&rerutdanningen for trinn 1-7 og trinn 5-10, fastsatt av Kunnskapsdepartementet 7. juni 2016, nasjonale retningslinjer for grunnskolelC&rerutdanningen trinn 1-7 og trinn 5-10 av 1. september 2016 og programplan for grunnskolelC&rerutdanning for trinn 1-7 og trinn 5-10 ved OsloMet - storbyuniversitetet, godkjent av studieutvalget 16. november 2016.
+
+Kunst og hC%ndverk i utdanningen
+
+Kunst og hC%ndverk i grunnskolen er et allmenndannende fag som gjennom ulike estetiske lC&reprosesser skal gi elevene muligheter for C% tilegne og nyttiggjC8re seg de visuelt og fysisk sansbare ytringsformene som representerer vC%r kulturarv. Faget i lC&rerutdanninga omfatter hC%ndverksferdigheter, kunst- og designprosesser, visuell kommunikasjon og kulturforstC%else.I spennet mellom praktisk skapende arbeid, profesjonspraksis, fagteori og gjeldende lC&replaner, legges det sC&rlig vekt pC% at sammenhengene blir tydelige mellom egen faginnsikt og kompetanse i C% planlegge, gjennomfC8re og vurdere i skolefaget kunst og hC%ndverk.
+
+Faget skal gi grunnleggende forstC%else av lC&ring i praktiske, utforskende og sansbart kommuniserende fagomrC%der. Det kulturelle mangfoldet skal bli mC8tt med C%penhet i fagets skapende og kunstneriske ytringsformer. Kunnskap om fagets identitetsskapende karakter skal ivareta de kulturelle erfaringer studenter og elever bringer med seg. PC% tvers av landegrenser skal faget ta opp i seg kulturenes ytringsformer bC%de i fortid og samtid. Faget skal gi innsikt i forholdet mellom kvalitet og forbruk, natur og kultur, og kunne bruke sin egenart som bindeledd i samarbeid pC% tvers av fag. Gjennom praktisk skapende arbeid og refleksjon, vil studenten utvikle kunnskap om didaktiske muligheter som ligger i hC%ndverksmessige og kunstneriske sprC%kformer. Faget skal fremme studentens kritiske bevissthet og vilje til C% vC&re en aktiv medskaper av kultur i vC%r samtid. Arbeidet skal pC% alle nivC% omfatte forskningsbasert kunnskap og erfaring knyttet til de aktivitets- og erkjennelsesformer vi finner i faget, i gjeldende lC&replaner for grunnskolen og i praksisfeltet.
+
+Kunnskap om elevenes livsverden, uttrykks- og lC&ringsformer skal bidra til at studenten utvikler evner til elevaktive, undersC8kende arbeidsmC%ter som stimulerer til faglig oppfinnsomhet, problemlC8sning, mestring, gjennomfC8ringsevne og bC&rekraftig miljC8tenkning. Studenten skal etter fullfC8rt utdanning kunne gi elevene begynneropplC&ring, vC&re fortrolig med grunnleggende ferdigheter i faget, og kunne arbeide gjennomtenkt og ansvarlig med planlegging og tilpassing for elevenes lC&ring.
+
+MC%lgruppe
+
+Studenter som er tatt opp til femC%rig grunnskolelC&rerutdanning for trinn 1-7 og trinn 5-10. LC&rere som C8nsker videreutdanning. Dette gjelder bC%de Kunst og hC%ndverk 1 (30 studiepoeng) og Kunst og hC%ndverk 2 (30 studiepoeng).
+
+Opptakskrav
+
+Faget er tilgjengelig som valgfag for aktive studenter ved grunnskolelC&rerutdanningen trinn 1-7 og trinn 5-10 og lC&rerutdanning for tosprC%klige lC&rere ved OsloMet, i trC%d med utdanningenes programplaner. Interne sC8kere som sC8ker sC&rskilt opptak til Kunst og hC%ndverk 2 mens de fortsatt er aktive pC% Kunst og hC%ndverk 1, kan fC% opptak uten C% ha fullfC8rt Kunst og hC%ndverk 1.
+
+Eksterne sC8kere mC% ha bestC%tt lC&rerutdanning som kvalifiserer for arbeid i skolen. SC&rskilt opptak til Kunst og hC%ndverk 2 krever fullfC8rt Kunst og hC%ndverk 1 eller tilsvarende. Dersom Kunst og hC%ndverk 1 og Kunst og hC%ndverk 2 lyses ut som et C%rsstudium (60 studiepoeng), tas det opp til begge enheter, og det kreves da ikke at Kunst og hC%ndverk 1 er bestC%tt fC8r studenten begynner pC% Kunst og hC%ndverk 2.
+
+SC8kere som Utdanningsdirektoratet har vurdert til C% ha lC&rerutdanning fra utlandet, men som mangler fag/studiepoeng for C% bli godkjent lC&rer i norsk grunnopplC&ring, kan ogsC% sC8ke. Slike sC8kere mC% i tillegg oppfylle kravet til generell studiekompetanse.
+
+LC&ringsutbytte
+
+LC&ringsutbyttet er nC&rmere beskrevet i emneplanene.
+
+Fagets innhold og oppbygging
+
+Kunst og hC%ndverk 1 (30 studiepoeng) bestC%r av et emne pC% 30 studiepoeng. Kunst og hC%ndverk 2 er ogsC% et emne pC% 30 studiepoeng, og en del av dette emnet er FoU-oppgaven. Kunst og hC%ndverk 2 bygger pC% Kunst og hC%ndverk 1. Minste kompetansegivende enhet for dette faget er 30 studiepoeng.
+
+Fagovergripende emner
+
+Klasseledelse og lC&rerrollen sett fra faget
+
+Studenten skal utvikle identitet som kunst og hC%ndverkslC&rer. Dette gjC8res i samarbeid med praksisopplC&ringen. Gjennom undervisning ved HiOA og grunnskolepraksis i faget i Kunst og hC%ndverk, skal studenten utvikle verdier, arbeids- og vurderingsformer som setter ham/henne i stand til C% kunne lede elevgrupper og vC&re en god rollemodell for trinn 1-7 og trinn 5-10 i grunnskolen. LC&reryrket skal forankres i en reflektert etisk bevissthet om profesjonens samfunnsoppdrag. Undervisningen i Kunst og hC%ndverk differensieres og tilpasses slik at lC&restoffet om klasseledelse og lC&rerrollen rettes mot undervisning pC% trinn 1-7 og trinn 5-10.
+
+BegynneropplC&ring (gjelder trinn 1-7)
+
+Kunst og hC%ndverk legger vesentlig vekt pC% begynneropplC&ring, som gir grunnlaget for elevenes utvikling og forutsetninger for videreutvikling av fagkunnskap. Kunnskap om barns utvikling i to- og tredimensjonal form er sentralt i begynneropplC&ringen. Studenten skal ha kunnskap om og erfaring med verktC8y, materialer, teknikker som er egnet for Kunst og hC%ndverksundervisning i 1. klasse. Studenten skal ogsC% kunne tilrettelegge ulike typer rom og verksteder tilpasset begynneropplC&ring. 1. studieC%r skal alle studenter ved GrunnskolelC&rerutdanningen trinn 1-7 gjennomfC8re et kurs i begynneropplC&ring, hvor Kunst og hC%ndverk er ett av fagene som skal vC&re med. Dette organiseres som et samarbeid med fagene pC% trinnet.
+
+Tilpasset opplC&ring
+
+Retten til tilpasset opplC&ring er forankret i opplC&ringsloven med forskrift. Tilpasset opplC&ring kjennetegnes av variasjon, for eksempel gjennom arbeidsoppgaver, lC&restoff, intensitet i opplC&ringen, organisering av opplC&ringen, lC&remidler og arbeidsmC%ter. Kunst og hC%ndverk gir studenten kunnskap om og ferdigheter i C% anvende sansene i praktisk arbeid. Denne estetiske tilnC&rmingen til lC&restoffet kan styrke tilpasset opplC&ring og kan brukes flerfaglig bC%de pC% trinn 1-7 og trinn 5-10. OpplC&ringen skal tilpasses den enkelte elevs evner og forutsetninger og utdanningen mC% sikre at studenten tilegner seg kompetanse i C% tilpasse opplC&ringen til mangfoldet i elevgruppen. Inkludert i dette er kunnskap om elevers rett til fritak fra lC&replanen som medfC8rer utvikling av individuelle opplC&ringsmC%l.
+
+Vurdering - kartleggingsverktC8y og oppfC8lging
+
+Studenten mC% kunne utvikle og kommunisere tydelige mC%l for opplC&ringen, vurdere elevenes lC&ringsutbytte, gi elevene faglig relevante tilbakemeldinger og legge til rette for elevenes egenvurdering. Kunst og hC%ndverk skal gi opplC&ring i C% analysere og vurdere elevenes lC&ringsprosesser og resultat, og i C% gi tilbakemeldinger som stC8tter deres lC&ring. Studenten mC% ogsC% forstC% og bruke ulike vurderingskriterier, kartleggingsverktC8y og kvalitetsvurderingssystem i oppfC8lging av elevenes lC&ring og utvikling. Undervisning knyttet til sluttvurdering med karakter er spesielt rettet mot trinn 5-10.
+
+Grunnleggende ferdigheter
+
+De grunnleggende ferdighetene C% kunne lese, regne og skrive og bruke muntlige og digitale ferdigheter - er bC%de en forutsetning for utvikling av fagkunnskap og en del av fagkompetansen i Kunst og hC%ndverk. I Kunst og hC%ndverk er grunnleggende ferdigheter blant annet beskrivende geometri, analytisk tegning, komposisjonsprinsipper, lese mC8nstre og arbeidstegninger, digital bilde- og videokompetanse, konstruksjonsoppgaver, muntlige og visuelle presentasjoner. Studentene fC%r kunnskap om hvordan de kan arbeide med elevens utvikling av de grunnleggende ferdighetene i faget tilpasset trinn 1-7 og trinn 5-10.
+
+Digital kompetanse
+
+Digital kompetanse er i faget rettet mot bC%de bruk som student, som framtidig lC&rer og i elevenes lC&ringsarbeid. Det vil derfor bli brukt relevante digitale hjelpemidler i alle fagets emner. Det legges vekt pC% C% utvikle studentenes digital kompetanse i og med bruk av digitale verktC8y for alle deler av lC&ringsarbeidet. Som framtidig lC&rer mC% studenten vC&re i stand til C% benytte digitale hjelpemidler i planlegging, gjennomfC8ring og evaluering av lC&ringsarbeidet. Dette innebC&rer ogsC% C% kunne velge og vurdere egnet digitale verktC8y i elevenes lC&ringsarbeid. For eksempel bruk av digitale programmer og digitale verktC8y, sC% som bildebehandlingsverktC8y og video- og redigeringsprogrammer. Videre er det viktig at det blir brukt digitale uttrykksformer i skapende arbeid. Det vil ogsC% innebC&re C% arbeide med C% bevisstgjC8ring ift. holdninger til kildekritikk, personvern og kjennskap til regler om opphavsrett.
+
+LC&rerarbeid i det mangfoldige klasserommet
+
+Kunst og hC%ndverk inngC%r i en danningsprosess som sikrer at studenten innehar evne til C% se en sak fra ulike sider og pC% se profesjonsutC8velsen ut fra ulike perspektiv. Studenten skal utvikle evnen til C% analysere egne og andres holdninger og handlinger gjennom kritisk refleksjon, aleine og i et profesjonsfellesskap, og slik utvikle selvstendig handlingskompetanse og kunne ta egne valg. LC&rerarbeid i det mangfoldige klasserommet kan ogsC% omfatte fagovergripende emner som folkehelse og livsmestring, demokrati og medborgerskap. I undervisningen legges det stor vekt pC% praktisk arbeid i ulike materialer og teknikker. Dette innholdet og arbeidsmC%tene gir ogsC% rom for C% uttrykke seg og kommunisere pC% en annen mC%te enn gjennom verbalt sprC%k.
+
+Yrkesretting (gjelder trinn 5-10)
+
+Skolen - og herunder kunst og hC%ndverksfagets samfunnsoppdrag, er blant annet C% bidra til et demokratisk samfunn gjennom C% forberede elever for et framtidig yrkesliv. Studenten mC% derfor ha kunnskaper om og ferdigheter i faget som gjC8r dem i stand til C% ivareta dette oppdraget i skolehverdagen. Kunst og hC%ndverksfaget skal bevisstgjC8re studenten pC% at de skal undervise elever som skal velge bC%de studiespesialiserende fag og yrkesfag i videregC%ende skole. HC%ndverkskunnskaper og -ferdigheter er sC&rlig viktig for overgangen til yrkesfag i videregC%ende skole.
+
+Overgangen mellom trinnene
+
+Studenten pC% trinn 1-7 skal etter endt utdanning ha kunnskap om overgangen fra barnehage til skole, og overgangen mellom barne- og ungdomstrinn. Studenten pC% trinn 5-10 skal etter endt utdanning ha kunnskap om overgangen mellom barne- og ungdomstrinn og overgangen fra ungdomstrinn til videregC%ende skole. Kunnskap om barns utvikling i to- og tredimensjonal form er sentralt for C% kunne utC8ve Kunst og hC%ndverksfaget i alle disse overgangsfasene. Kunnskap om praktisk tilrettelegging av verksteder, materialkunnskap, hC%ndtering av utstyr, verktC8y og maskiner, HMS-regler, og rutiner samt fagdidaktiske tilpasninger til gjeldende trinn er sC&rlig viktig i disse overgangsfasene.
+
+Estetiske arbeidsmC%ter
+
+Estetiske lC&ringsprosesser gjennomsyrer hele kunst og hC%ndverksfaget, og blir derfor konkretisert i lC&ringsutbyttebeskrivelsene. I GrunnskolelC&rerutdanningen trinn 1-7, 2. studieC%r bidrar kunst og hC%ndverksfaget i prosjekt som gjennomfC8res av norskfaget.
+
+Internasjonale perspektiver
+
+Kunst og hC%ndverk 1 og 2 omfatter lokal, nasjonal og internasjonal formkultur, kunst og kulturhistorie. PC% Kunst og hC%ndverk 2 arrangeres det en studietur til utlandet.
+
+Kunst og hC%ndverk 1 har hovedsakelig pensum fra nordiske forfattere. Kunst og hC%ndverk 2 har bC%de nordisk- og engelsksprC%klig faglitteratur. OsloMet ligger nC&rt de store nasjonale kunst- og kulturinstitusjonene. Disse institusjonene viser ogsC% kunst av anerkjente kunstnere fra hele verden og gir dermed studentene direkte tilgang til det internasjonale kunstfeltet. PC% denne mC%ten forberedes studenter pC% en eventuelt studentutveksling.
+
+Praksistilknytning
+
+Praksisstudiet er en integrert del av Kunst og hC%ndverk i utdanningen. Dette innebC&rer C% forberede studentene pC% praksis i skolefaget Kunst og hC%ndverk, samt hvordan integrere estetiske arbeidsprosesser i andre skolefag. FaglC&rerne i Kunst og hC%ndverk deltar i praksisoppfC8lging ute pC% skolene og veileder studenter i praksis, samt oppsummering i etterkant av praksis.
+
+Forskningsforankring
+
+Kunst og hC%ndverksfaget er forskningsbasert og profesjonsrelevant. Kunst og hC%ndverk 1 er en innfC8ring i faget med faginnhold og pensum som ivaretar ogsC% forskningsforankringen. Kunst og hC%ndverk 2 er en viderefC8ring og fordypning i faget og er bygget opp rundt FoU-oppgave og praktisk utviklingsarbeid. Dette sikrer at studenten fC%r innsikt i faget som forskningsfelt, samt faglig relevante forskningsmetoder og -tradisjoner. Studenten fC%r med dette erfaring i C% lese forskningslitteratur og vitenskapelige tekster, skrive selvstendig akademisk tekst, samt drive praktisk utviklingsarbeid pC% faglig godt nivC%. Innholdet i undervisningen og faglitteraturen viser ogsC% progresjon fra Kunst og hC%ndverk 1 til Kunst og hC%ndverk 2.
+
+Psykososialt lC&ringsmiljC8
+
+I Kunst og hC%ndverk undervises det hovedsakelig pC% verksted med tett oppfC8lging av den enkelte student i form av kontinuerlig individuell veiledning. PC% verkstedet er undervisningsmetodene i hovedsak praktiske. Dette gjC8r at studentene jobber tett sammen over tid. Denne arbeidsformen gir rom C% skape et godt klassemiljC8. PC% denne mC%ten sikrer vi at studentene fC%r den nC8dvendige ferdighet, kunnskap og kompetanse som en lC&rer mC% ha for C% sammen med andre skolefag bidra til et trygt psykososialt skolemiljC8 og forebygge og hC%ndtere krenkelser, mobbing, trakassering og diskriminering.
+
+Samiske forhold og rettigheter
+
+Kunst og hC%ndverk skal kvalifisere studenten for C% ivareta opplC&ring om samiske forhold som er relevant for faget. Samisk kunst- og formkultur er en viktig del av den felles kulturarven.
+
+OpplC&ring for samiske elever stC%r i en sC&rstilling i norsk grunnopplC&ring. Studenten mC% derfor fC% kunnskap om det samiske innholdet i Kunst og hC%ndverksfaget.
+
+BC&rekraftig utvikling
+
+Kunst og hC%ndverk skal kvalifisere studenten til C% ivareta utdanning for bC&rekraftig utvikling som et tverrfaglig tema. Utdanningen skal gi forskningsbasert kunnskap om klima, miljC8 og utvikling og kompetanse i C% stC8tte elevenes lC&ring om, holdning til og handling for en bC&rekraftig utvikling. Studentene skal i Kunst og hC%ndverk ha kunnskap om og ferdigheter innenfor gjenbruksdidaktikk. Materialkunnskap og hC%ndverk sees i et bC&rekraftig perspektiv.
+
+PraksisopplC&ring
+
+Studenten skal blant annet fC% kjennskap til hvordan det arbeides med lokalt lC&replanarbeid i Kunst og hC%ndverk pC% praksisskolen. Studenten skal ogsC% fokusere pC% hvordan en organiserer undervisningen og arbeider pC% verksteder/ andre klasserom for C% skape et godt og inkluderende lC&ringsmiljC8 for elever i kunst- og hC%ndverksundervisningen. I praksisopplC&ringen skal det pC% 2. studieC%r arbeides med grunnleggende ferdigheter i Kunst og hC%ndverk. I praksisopplC&ring 3. studieC%r skal studenten spesielt jobbe med klasseledelse i Kunst og hC%ndverk.
+
+PraksisopplC&ring er nC&rmere beskrevet i programplanen.
+
+Skikkethetsvurdering
+
+LC&rerutdanningsinstitusjoner har ansvar for C% vurdere om studenter er skikket for lC&reryrket. LC8pende skikkethetsvurdering foregC%r gjennom hele studiet og inngC%r i en helhetsvurdering av studentens faglige og personlige forutsetninger for C% kunne fungere som lC&rer. En student som utgjC8r en mulig fare for elevers liv, fysiske og psykiske helse, rettigheter og sikkerhet, er ikke skikket for yrket. Studenter som viser liten evne til C% mestre lC&reryrket, skal sC% tidlig som mulig i utdanningen fC% melding om dette. De skal fC% rC%d og veiledning for C% gjC8re dem i stand til C% oppfylle kravene om lC&rerskikkethet eller fC% rC%d om C% avslutte utdanningen. Beslutninger om skikkethet kan fattes gjennom hele studiet. Se universitetets nettsted for mer informasjon om skikkethetsvurdering.
+
+Arbeidskrav og faglig aktivitet med krav om deltakelse
+
+Fordi det er vanskelig C% tilegne seg praktisk/estetisk kunnskap pC% egen hC%nd, og fordi erfaringsdeling og respons krever tilstedevC&relse, er det krav om 80 % deltakelse pC% fC8lgende aktiviteter: InnfC8ringer, C8velser, veiledning og framlegg. Deltakelse er viktig for utvikling av kunnskap og forstC%else i fagets praktiske, estetiske, didaktiske og teoretiske grunnlag, og nC8dvendig for C% kunne mestre arbeidskravene.
+
+Arbeidskrav skal vC&re levert/utfC8rt innen fastsatt(e) frist(er). Gyldig fravC&r dokumentert med for eksempel sykemelding, gir ikke fritak for C% innfri arbeidskrav. Studenter som pC% grunn av sykdom eller annen dokumentert gyldig C%rsak ikke leverer/utfC8rer arbeidskrav innen fristen, kan fC% forlenget frist. Ny frist for C% innfri arbeidskrav avtales i hvert enkelt tilfelle med den aktuelle lC&reren.
+
+Arbeidskrav vurderes til "Godkjent" eller "Ikke godkjent". Student som leverer/utfC8rer arbeidskrav innen fristen, men som fC%r vurderingen "Ikke godkjent", har anledning til C)n ny innleveringer/utfC8relser. Studenten mC% da selv avtale ny innlevering av det aktuelle arbeidskravet med faglC&rer. Studenter som ikke leverer/utfC8rer arbeidskrav innen fristen og som ikke har dokumentert gyldig C%rsak, fC%r ingen nye forsC8k.
+
+I programplanen er de fagovergripende temaene pC% de ulike studieC%rene og semestrene beskrevet. I tilknytning til disse kan det vC&re krav til tilstedevC&relse og/eller andre arbeidskrav.
+
+NC&rmere informasjon om arbeidskrav finnes i den enkelte emneplan.
+
+Vurderings-/eksamensformer
+
+Se emneplanene under punktet Vurderings-/eksamensformer
+
+Vurderingskriterier for emne 1 og deleksamen 1 i emne 2
+
+A: Fremragende. Viser fremragende kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser fremragende evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+B: Meget god. Viser meget gode kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser meget god evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+C: God. Viser gode kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser god evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+D: NoksC% god. Viser begrensede kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser begrenset evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+E: Tilstrekkelig. Tilfredsstiller minimumskravene til kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser noe evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+F: Ikke bestC%tt. Har utilstrekkelig kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser dC%rlig evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+Vurderingskriterier for deleksamen 2 i emne 2 (FoU-oppgaven)
+
+A: Fremragende. Fremragende prestasjon som klart utmerker seg. Kandidaten viser svC&rt god vurderingsevne, stor faglig oversikt og stor grad av selvstendighet. Arbeidet er sC&rlig godt utformet bC%de innholdsmessig og sprC%klig.
+
+B: Meget god. Meget god prestasjon som viser meget god vurderingsevne og selvstendighet. Arbeidet er svC&rt godt utformet bC%de innholdsmessig og sprC%klig.
+
+C: God. Solid prestasjon som er tilfredsstillende pC% de fleste omrC%der. Kandidaten viser god vurderingsevne og selvstendighet pC% de fleste omrC%der. Arbeidet er godt utformet bC%de innholdsmessig og sprC%klig.
+
+D: NoksC% god. En akseptabel prestasjon med noen vesentlige mangler. Kandidaten viser en viss grad av vurderingsevne og selvstendighet. Arbeidet er noksC% godt utformet bC%de innholdsmessig og sprC%klig.
+
+E: Tilstrekkelig. Prestasjon som tilfredsstiller minimumskrav, men ikke mer. Arbeidet er tilfredsstillende utformet bC%de innholdsmessig og sprpklig.
+
+F: Ikke bestC%tt. Prestasjon som ikke tilfredsstiller minimumskravene.
+
+Utfyllende kriterier framgC%r av retningslinjer som gjC8res tilgjengelig ved starten av emnet.
+
+Rettigheter og plikter ved eksamen
+
+Studentens rettigheter og plikter framgC%r av forskrift om studier og eksamen ved OsloMet. Forskriften beskriver blant annet vilkC%r for ny/utsatt eksamen, klageadgang og hva som regnes som fusk ved eksamen. Studenten er selv ansvarlig for C% melde seg opp til eventuell ny/utsatt eksamen.
+
+Forkunnskapskrav
+
+Ingen.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Kunnskap felles for trinn 1-7 og trinn 5-10
+
+Studenten
+
+har kunnskap om relevante materialer, teknikker, redskap og estetiske virkemidler
+har kunnskap om hvordan analoge og digitale uttrykksformer innenfor hC%ndverk, design, arkitektur og kunst kan tolkes og brukes som utgangspunkt for barn og unges skapende arbeid for barn og unge gjennom hele grunnskolelC8pet, - ogsC% i begynneropplC&ringen.
+har kunnskap om hvordan ulike medier kan brukes til formidling og faglig oppdatering
+
+Kunnskap sC&rlig rettet mot trinn 1-7
+
+Studenten
+
+har kunnskap om barns to- og tredimensjonale ytringsformer med tilhC8rende teorier om estetiske lC&ringsprosesser, opplevelse, leik og kreativitet
+
+Kunnskap sC&rlig rettet mot trinn 5-10
+
+Studenten
+
+har kunnskap om forholdene mellom natur, kulturelle uttrykksformer, verdisyn, kvalitet og etikk
+
+Ferdigheter
+
+Ferdigheter felles for trinn 1-7 og trinn 5-10
+
+Studenten
+
+kan arbeide mC%lrettet med ideutvikling, dokumentasjon og vurdering, ogsC% av egne skapende prosesser
+kan formidle mangfoldet i lokal og global kunst- og formkultur pC% varierte mC%ter og med det stimulere til helhetstenkning og miljC8bevissthet
+kan formidle valg av inspirasjonskilder, arbeidsmetoder, virkemidler, materialer, teknikker, verktC8y og lC&remidler
+kan bruke og vedlikeholde redskap, apparat og maskiner og ta ansvar for arbeidsmiljC8 og sikkerhet pC% verkstedene (HMS-rutiner)
+kan bruke tegning bC%de som sprC%kform og som verktC8y i skissearbeid, konseptutvikling og arbeidstegninger i gitt mC%lestokk
+kan bruke fagets innhold, arbeidsmC%ter og teori i undervisningsplanlegging, gjennomfC8ring og lC&ringsorientert vurdering pC% en mC%te som ogsC% ivaretar de fem grunnleggende ferdighetene
+kan organisere utstillinger av elevarbeider og pC% andre mC%ter synliggjC8re faget pC% ulike arenaer
+
+Generell kompetanse
+
+Generell kompetanse felles for trinn 1-7 og trinn 5-10
+
+Studenten
+
+kan gjC8re rede for hvordan skapende arbeid med materialer utfordrer sanser, engasjerer fC8lelser, krever konsentrasjon og aktiviserer kroppen
+kan utnytte elevmangfoldet som utgangspunkt for tilpasset opplC&ring
+kan gjC8re rede for hvordan valg av materialer, arbeidsformer og tema bidrar til gjenbruk, vedlikehold og omtanke for miljC8et
+kan innby andre fag til praktisk, teoretisk og didaktisk samarbeid og generere tverrfaglige og vitenskapelig utforskende arbeids- og forstC%elsesformer
+
+Generell kompetanse sC&rlig rettet mot trinn 5-10
+
+Studenten
+
+er fortrolig med erfaringsbaserte lC&ringsformer og har innsikt i hvordan selvstendige undersC8kelser og skapende arbeidsformer kan bidra til C% lC8se ulike form- relaterte problem
+Innhold
+
+Kunst og hC%ndverk 1 gir innfC8ring i hC%ndverksferdigheter, kunst og designprosesser, visuell kommunikasjon og kulturforstC%else. Emnet gir lC&ringsutbytte i trC%d med lC&replanen for trinn 1 - 7 og trinn 5-10. Fagdidaktikk og profesjonspraksis er en integrert del av arbeidet og tilpasses det trinn som studenten tilhC8rer. Studenten skal fC% erfaring med varierte arbeidsmetoder og ulike slags medier knyttet til begynneropplC&ring i gjeldende lC&replan for trinn 1-7 i grunnskolen. Emnet vektlegger arbeid med hC%ndverk, materialer, redskap og teknikker. Leik, ferdighetstrening og utforskning stC%r sentralt. Materialer, farger, former og digitale uttrykk bearbeides med metoder og verktC8y tilpasset trinn 1-7. Studenten skal fC% erfaring med varierte arbeidsmetoder og med hC%ndverk i ulike materialer og medier knyttet til gjeldende lC&replan for trinn 5-10 i grunnskolen. Arbeid pC% verksteder dreier seg om bruk av materialer og innsikt i analoge og digitale framstillingsmC%ter. Studiet legger til rette for at studenten skal utvikle evne til C% forstC% hvordan budskap kan formidles visuelt og gjennom materialer. Undervisningen tar opp skolefagets historie frem til i dag og legitimerer det som allmenndannende. Den forbereder studenten pC% sitt yrke med praktiske C8vinger relatert til fagets vitenskapelige perspektiver og metoder. Egne erfaringer i faget skal utvikle studentene til gode veiledere for elevene i deres skapende prosesser og gi kunnskap i lC&rings- og stC8tteformer som fremmer elevenes faglige utvikling. Det legges vekt pC% fagets relevans og legitimering som et allmenndannende fag i skolen, og pC% den fagteorien som har blitt utviklet.
+
+Arbeids- og undervisningsformer
+
+Kunst og hC%ndverk 1 er bygget opp rundt praktisk arbeid i ulike materialer og teknikker pC% verksteder. Fagstoff tilrettelegges, presenteres og arbeides med ogsC% i form av forelesninger, gruppearbeid, selvstudier (bC%de praktisk og teoretisk).
+
+Arbeidskrav og obligatoriske aktiviteter
+
+Retten til C% avlegge eksamen forutsetter godkjente arbeidskrav og deltakelse i bestemte faglige aktiviteter. NC&rmere informasjon om arbeidskrav og krav til deltakelse er beskrevet i den innledende delen av fagplanen.
+
+Undervisningen pC% Kunst og hC%ndverk 1 er bygget opp rundt fire arbeidskrav som dekker fagets hovedomrC%der hC%ndverksferdigheter, kunst- og designprosesser, visuell kommunikasjon og kulturforstC%else. Undervisningen er organisert slik at hver undervisningsperiode avsluttes med innlevering av et arbeidskrav. Dette er en mappeinnlevering som bestC%r av praktisk arbeid/produkt og ulike varianter av prosessdokumentasjon. Alle arbeidskravene utfC8res individuelt og innleveres pC% dato fastsatt av faglC&rer. De fire arbeidskravene dekker samlet fagets hovedomrC%der som nevnt ovenfor.
+
+FormC%let med arbeidskravene er at studentene skal arbeide praktisk skapende med disse hovedomrC%dene, samt knytte dette til relevant fagstoff og didaktikk. Implisitt i dette ligger ogsC% verkstedarbeid hvor utvikling av hC%ndverksferdigheter og hC%ndlag er sentralt.
+
+Det er i tillegg krav om at studenten mC% gjennomfC8re flerfaglige arbeidskrav for C% fC% avlegge eksamen i emnet. Se programplanen for nC&rmere informasjon om arbeidskravene.
+
+Vurdering og eksamen
+
+Eksamensform
+
+Individuell muntlig og digital presentasjon pC% 10 minutter av et trukket arbeidskrav videreutviklet og presentert i en didaktisk sammenheng. I tillegg er det 5 minutter per kandidat til spC8rsmC%l og kommentarer fra sensorene. Presentasjonen foretas pC% angitt rom med medstudenter som tilhC8rere.
+
+Kandidaten skal ogsC% levere et refleksjonsnotat pC% 1500 ord +/- 10 % knyttet til eksamenstemaet og forankret i faglitteratur, fC8r selve eksamensdagen. Frist for innlevering av refleksjonsnotatet (leveres digitalt) fastsettes av faglC&rer. Notatet gjC8res tilgjengelig for ekstern sensor fC8r eksamensdagen.
+
+Det gis 2 ukers forberedelsestid og veiledning fC8r eksamen.
+
+Ny/utsatt eksamen
+
+Ny/utsatt eksamen foregC%r som ved ordinC&r eksamen. Ved ikke bestC%tt karakter mC% bC%de den digitale presentasjonen og refleksjonsnotatet omarbeides.
+
+Hjelpemidler ved eksamen
+
+Alle.
+
+Vurderingsuttrykk
+
+Det benyttes en gradert karakterskala fra A til E for bestC%tt og F for ikke bestC%tt eksamen.
+
+Sensorordning
+
+Intern og ekstern sensor.

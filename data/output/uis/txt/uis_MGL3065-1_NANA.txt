@@ -1,0 +1,161 @@
+institution: uis
+code: MGL3065-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MGL3065
+status: 200
+course_name_no: LC&rerens undervisningskunnskap i kroppsC8ving (MGL3065)
+----- FULLTEXT -----
+
+Emnekode
+
+MGL3065
+
+Versjon
+
+1
+
+Vekting (stp)
+
+15
+
+Semester undervisningsstart
+
+HC8st
+
+Antall semestre
+
+1
+
+Vurderingssemester
+
+HC8st
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitenskap og humaniora,
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Fakultet for utdanningsvitenskap og humaniora,
+
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhold
+
+Innholdet sentreres rundt fC8lgende tema:
+
+Legitimering av kroppsC8vingsfaget og drC8fting av lC&replaner i kroppsC8vingsfaget. KroppsC8vingsfagets tradisjoner og innhold som begrensninger og muligheter for undervisning og lC&ring vil vC&re sentralt.
+KroppsC8ving som danning - og lC&ringsfag.
+LC&replanen, med fokus pC% de tre kjerneelementene og de tre tverrfaglige temaene
+Hvordan arbeide forskningsbasert med undervisning gjennom Lesson Study
+
+LC&ringsutbytte
+
+Kunnskaper
+
+Kandidaten skal ha:
+
+InngC%ende kunnskap innenfor omrC%det LC&reres undervisningskunnskap i kroppsC8ving
+Tilegnet seg avansert kunnskap om forskning pC% kroppsC8vingsundervisning og utvikling av undervisning gjennom Lesson Study.
+Kunnskap om kroppsC8vingsfagets bakgrunn og historiske utvikling i skolen
+Kjennskap til hvordan utdanningspolitikk implementeres gjennom reform- og utviklingsarbeid i dagens skole, og til praktiske utfordringer, dilemmaer og muligheter i kroppsC8vingsfaget.
+
+Ferdigheter
+
+Kandidaten skal kunne:
+
+DrC8fte kroppsC8vingsfagets ideologiske fundament, innhold og utC8velse i skolen bC%de nasjonalt og internasjonalt
+DrC8fte kroppsC8vingsfagets legitimering i skolen og utfordringen med samfunnets nytteverdi og fagets egenverdi
+GjennomfC8re en Lesson Study syklus med refleksjon og formidling av erfaringene
+Formidle forskning fra kroppsC8vingsfaget og reflektere over den praktiske anvendelsen
+
+Generell kompetanse
+
+Kandidaten skal kunne:
+
+Reflektere over kroppsC8vingslC&rerens dannings - og lC&ringsforstC%else
+Kommunisere om aktuelle problemstillinger, analyser og forskning knyttet til kroppsC8vingsfagets utvikling og utC8velse
+Diskutere relevante fag-, yrkes- og forskningsetiske problemstillinger i kroppsC8vingsfaget
+Utvikle undervisningskunnskap i kroppsC8ving gjennom systematisk samarbeidslC&ring i en Lesson Study syklus.
+
+Forkunnskapskrav
+
+Et av fC8lgende alternativer:
+MGL1060 KroppsC8ving 1, MGL1061 KroppsC8ving 2
+MGL2060 KroppsC8ving 1 (5.-10.trinn), MGL2061 KroppsC8ving 2 (5.-10.trinn)
+
+Eksamen / vurdering
+
+VilkC%r for C% gC% opp til eksamen/vurdering
+
+To individuelle fagtekster, Fagtekst knyttet til praksis, Presentasjon av tildelt forskningsartikkel, Obligatorisk tilstedevC&relse
+
+To individuelle fagtekster hver pC% 1000 ord (+/-10%).
+Fagtekst knyttet til en Lesson Study syklus i praksis pC% 2000 ord (+/-10%)
+Studentene skal presentere tildelt forskningsartikkel og lage en power-point presentasjon som legges ut pC% Canvas.
+
+Arbeidskravene mC% vC&re godkjent for C% fC% gC% opp til avsluttende vurdering. Studenter som fC%r et eller flere av arbeidskravene vurdert til ikke-godkjent ved fC8rste innlevering, gis mulighet for C)n ny innlevering av oppgaven(e) i bearbeidet form.
+
+Fagperson(er)
+
+FaglC&rer:
+Silje Eikanger KvalC8
+
+Studieprogramleder:
+Ingeborg KnC&velsrud
+
+FaglC&rer:
+Atle MjC%tveit
+
+Praksiskoordinator:
+Kitty Marie Garborg
+
+Studiekoordinator:
+Kjersti Gjedrem
+
+Arbeidsformer
+
+Forelesninger, diskusjoner, gruppearbeid, student og seminar presentasjoner
+
+Arbeidsinnsatsen er beregnet slik:
+
+Undervisning/forelesning 48 timer
+Arbeidskrav 1+2 40 timer
+Forberedelser til undervisning 59 timer
+Praksis, tre uker 135 timer
+Profesjonsdag og forberedelser 40 timer
+Praksisoppgave 40 timer
+Hjemmeeksamen 40 timer
+Eksamen: muntlig presentasjon 20 timer
+
+Beregnet arbeidsinnsats totalt 422 timer
+
+Praksis
+
+15 dagers praksis.
+
+Cpent for
+
+Fagdidaktikk for grunnskolen - erfaringsbasert masterprogram
+
+GrunnskolelC&rerutdanning for trinn 1 - 7, femC%rig masterprogram
+
+GrunnskolelC&rerutdanning for trinn 5 - 10, femC%rig masterprogram
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+Pensumlisten finner du i Leganto

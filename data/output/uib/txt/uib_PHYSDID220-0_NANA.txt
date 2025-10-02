@@ -1,0 +1,130 @@
+institution: uib
+code: PHYSDID220-0
+year: NA
+hv: NA
+url: https://www4.uib.no/studier/emner/physdid220
+status: 200
+course_name_no: Tilrettelegging for lC&ring i fysikk
+----- FULLTEXT -----
+
+Navigasjonssti
+Forside
+Studier
+Emner
+
+Tilrettelegging for lC&ring i fysikk
+
+Studiepoeng
+
+15
+
+Undervisningssemester
+
+Haust, VC%r
+
+Emnekode
+
+PHYSDID220
+
+Talet pC% semester
+
+2
+
+UndervisningssprC%k
+
+Norsk
+
+Ressursar
+
+Timeplan
+Litteraturliste
+
+Litteraturliste
+
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust 2021 VC%r 2020 Haust 2020 VC%r 2019 Haust 2019 VC%r 2018 Haust 2018 VC%r 2017 Haust 2017 VC%r
+MC%l og innhald
+
+MC%l:
+
+Emnet har som mC%l C% dyktiggjera studenten til C% kunne undervise i fysikk og naturfag pC% fagleg engasjerande og lC&rerike mC%tar.
+
+Emnet skal formidle forstC%ing for viktigheten av C% ta utgangspunkt i elevenes forkunnskaper og lC&ringsstrategiar og at vidareutvikling av disse krev tilrettelegging for observasjon, refleksjon, sprC%ksetting og fagleg dialog knytt til ulike former for problemlC8ysing
+
+Innhald:
+
+Emnet tar opp tema som analyse av lC&replaner, planlegging av undervisning, fagsyn, arbeidsmC%tar, vurdering for lC&ring og sluttvurdering samt refleksjon over eigen undervisningspraksis. Innan lC&ringsteori vil teori og metodar knytt til fagleg dialog, lesing, skriving, problemlC8ysing og omgrepa representasjonsformer, kunnskapstransformering og lC&ringsstrategiar bli tatt opp. Studenten vil ogsC% verta kjent med omgrepa allmenndanning, undervisning for berekraftig utvikling, utforskande arbeidsmC%tar, modellering, og utfordringar og moglegheiter knytt til bruk av IKT og praktiske arbeid i fysikk.
+
+LC&ringsutbyte
+
+Studenten skal ved avslutta emne ha fC8lgjande lC&ringsutbyte definert i kunnskapar, ferdigheiter og generell kompetanse:
+
+Kunnskapar
+
+Studenten har
+
+brei kunnskap om overordna grunngjevnader og mC%lsetningar for skulefaga naturfag og fysikk og korleis mC%la kan realiserast
+brei kunnskap om bruk av ulike elevaktive arbeidsmC%tar, lC&remiddel og lC&ringsressursar i fysikk og naturfag
+god kunnskap om prinsipp og metodar for tilrettelegging for lC&ring, utvikling av lC&ringsstrategiar og vurdering av skulearbeid
+
+Ferdigheiter
+
+Studenten kan
+
+identifisere faglege kjerneidear, konkretiseringar og progresjonslC8p, og leggja fram fagstoff slik at det blir tilgjengeleg for ulike elevar
+planlegge, grunngje, gjennomfC8re og vurdere undervisningsC8kter som fremmer utvikling av kompetansar
+kommunisere med elevane inn mot deira nivC% bC%de generelt, om fagstoffet og om deira lC&ring, og praktisere undervegsvurdering
+anvende elevaktive og utforskande arbeidsmC%tar og legga til rette for utvikling av miljC8medvit, handlingskompetanse og kritisk tenking.
+
+Generell kompetanse
+
+Studenten kan
+
+sC8ke opp relevant fag- og forskingslitteratur og bruke denne i argumentasjon om didaktiske val og vurderingar
+undersC8ke og reflektere innsiktsfult over undervisning og deltakarars responsar pC% denne alene og i samarbeide med kollegaer/medstudentar
+formidle fagdidaktiske problemstillingar og teoriar til kollegaer og til allmennheita
+Undervisningssemester
+
+Haust og vC%r. Emnet gC%r over to semester, 10 sp haust og 5 sp vC%r. Oppstart kun om hausten.
+
+Emnet blir undervist siste gang hC8sten 2026.
+
+Undervisningsstad
+Bergen
+Krav til forkunnskapar
+Emnet skal normalt tas parallelt med langpraksis i lektorprogrammet i 7. og 8. semester. For C% kunne starte langpraksis mC% man ha bestC%tt minimum 150 sp blant emnar som inngC%r i programmet, der minimum 20 sp mC% vC&re fagdidaktikk/ pedagogikk.
+TilrC%dde forkunnskapar
+NATDID210, PEDA120, PEDA121
+Krav til studierett
+For oppstart pC% emnet er det krav om studierett pC% lektorprogrammet ved Fakultet for naturvitskap og teknologi
+Arbeids- og undervisningsformer
+Forelesning og seminar
+Obligatorisk undervisningsaktivitet
+
+Tre obligatoriske skriftlige innleveringer inkludert innleveringer underveis og deltaking i responsgrupper.
+
+Tre munnlege oppgC%ver med framlegging pC% seminar
+
+Godkjent obligatorisk aktivitet er gyldig i 3 pC%fC8lgande semester etter godkjenninga.
+
+For C% kunne ta eksamen i PHYSDID220 mC% normalt emnet LAPRA101 og 102 vC&re bestC%tt.
+
+Vurderingsformer
+
+I emnet nyttar ein fC8lgjande vurderingsformer:
+
+Skriftlig oppgC%ve med krav til analyse av elevobservasjonar og erfaringar frC% praksis, utgjer 40 % av karakteren (fC8rste semester)
+Munnleg eksamen (andre semester)
+Vurderingssemester
+OppgC%va leveres haustsemester og munnleg eksamen er vC%rsemester
+Emneevaluering
+Studentane skal evaluere undervisninga i trC%d med UiB og instituttet sitt kvalitetssikringssystem.
+Institutt
+Institutt for fysikk og teknologi
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust 2021 VC%r 2020 Haust 2020 VC%r 2019 Haust 2019 VC%r 2018 Haust 2018 VC%r 2017 Haust 2017 VC%r
+Kontaktinformasjon
+SpC8rsmC%l knyttet til obligatorikk og vurdering kan rettes til studieveileder@ift.uib.no. For C8vrige spC8smC%l, kontakt lektor.realfag@uib.no.
+Institutt for fysikk og teknologi

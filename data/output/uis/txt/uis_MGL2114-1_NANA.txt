@@ -1,0 +1,158 @@
+institution: uis
+code: MGL2114-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MGL2114
+status: 200
+course_name_no: Matematikk 1 emne 2 (MGL2114)
+----- FULLTEXT -----
+
+Emnekode
+
+MGL2114
+
+Versjon
+
+1
+
+Vekting (stp)
+
+15
+
+Semester undervisningsstart
+
+VC%r
+
+Antall semestre
+
+1
+
+Vurderingssemester
+
+VC%r
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitenskap og humaniora,
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Fakultet for utdanningsvitenskap og humaniora,
+
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhold
+
+Emnet vil knyttes opp mot fC8lgende matematiske temaer: algebra, funksjonslC&re (uttrykk, likheter, likninger av 1. grad og 2.grad , ulikheter, lineC&re likningssystemer, funksjonsbegrep, ulike typer funksjoner, spesielt lineC&re funksjoner), grunnleggende euklidsk geometri (polygon og vinkelsummer, Thales' og Pythagoras' setninger), areal og volum, mC%ling, avbildninger og symmetri. Fagdidaktiske perspektiver hC8rer ogsC% med i de ulike temaene.
+
+Et sentralt tema i emnet vil vC&re algebraisk tenkning.
+
+Algebraisk tenkning innebC&rer sC8k etter samvariasjon, generelle strukturer, mC8nstre og relasjoner, beskrivelse av disse ved bruk av ord og symboler, og resonnering og argumentasjon. Dette skjer i arbeid med tall og regneoperasjoner, geometriske mC8nstre og samvariasjon mellom stC8rrelser. Et viktig aspekt ved algebraisk tenking er bruk av ord eller symboler til C% beskrive vilkC%r en stC8rrelse skal oppfylle, som for eksempel i arbeid med ligninger og ulikheter.
+
+Bruk av ulike representasjoner er nC8dvendig for C% gjC8re matematiske begrep og ideer tilgjengelige for elever. For C% utvikle sin matematiske forstC%else og evne til problemlC8sning trenger elevene C% arbeide med sammenhenger og overganger mellom ulike representasjoner. Studenten skal legge til rette for elevers arbeid med ulike representasjoner.
+
+Meningsfulle matematiske samtaler er sentralt i utviklingen av matematisk forstC%else. Gjennom samtale og diskusjon kan lC&rere inkludere alle elever i matematisk resonnering og argumentering, stimulere til kritisk matematisk tenking og drC8fte matematikkens rolle i samfunnet. Studenten skal legge til rette for meningsfulle matematiske samtaler med og mellom elever.
+
+LC&rere skal invitere elever til C% dele sin matematiske tenking, lytte til og vurdere denne med tanke pC% utvikling av matematisk kompetanse. Det skal legges til rette for undervisning ut fra elevenes ulike behov, der ulik kulturell, sprC%klig og sosial bakgrunn bC%de tas hensyn til men ogsC% ses som ressurs i undervisningen. Som framtidig matematikklC&rer skal studenten stC8tte elevene i deres tro pC% seg selv og at en gjennom hardt arbeid, individuelt og kollektivt, utvikler forstC%else av matematiske ideer og sammenhenger.
+
+LC&ringsutbytte
+
+Kunnskap
+
+Kandidaten skal ha:
+
+inngC%ende undervisningskunnskap i matematikken elevene arbeider med pC% trinn 5-10, sC&rlig overgangen fra aritmetikk til algebra, algebra og funksjoner, geometri og mC%ling
+kunnskap om sprC%kets rolle for lC&ring av matematikk
+kunnskap om vanlige interaksjonsmC8nster og kommunikasjon knyttet til matematikkundervisning
+kunnskap om C% uttrykke seg muntlig, lese, uttrykke seg skriftlig og kunne bruke digitale verktC8y i matematikkfaget
+kunnskap om matematikkfagets innhold pC% de ulike trinnene i grunnskolen og i videregC%ende skole, og om overgangene mellom trinnene i grunnskolen og ungdomstrinn/videregC%ende skole
+et bredt metoderepertoar for undervisning i matematikk
+innsikt i og erfaring med bruk av ulike lC&remidler, bC%de digitale og andre, og muligheter og begrensninger ved slike lC&remidler
+kunnskap om matematikkens historiske utvikling, spesielt utviklingen av funksjonsbegrepet
+
+Ferdigheter
+
+Kandidaten skal:
+
+kunne planlegge, gjennomfC8re og vurdere matematikkundervisning for alle elever pC% trinn 5-10, med fokus pC% variasjon og elevaktivitet, forankret i forskning, teori og praksis
+ha gode praktiske ferdigheter i muntlig og skriftlig kommunikasjon i matematikkfaget, og kompetanse til C% fremme slike ferdigheter hos elevene
+kunne bruke arbeidsmC%ter som fremmer elevenes undring, kreativitet og evne til C% arbeide systematisk med utforskende aktiviteter, begrunnelser, argumenter og bevis
+kunne vurdere elevenes mC%loppnC%else med og uten karakterer, og begrunne vurderingene
+kunne kommunisere med elever, enkeltvis og i ulike gruppesammensetninger, lytte til, vurdere og gjC8re bruk av elevers innspill, og institusjonalisere kunnskap
+kunne analysere og vurdere elevers tenkemC%ter, argumentasjon og lC8sningsmetoder fra ulike perspektiver pC% kunnskap og lC&ring
+
+Generell kompetanse
+
+Kandidaten skal:
+
+ha innsikt i matematikkfagets rolle innenfor andre fag og i samfunnet for C8vrig
+ha innsikt i matematikkfagets betydning for deltakelse i et demokratisk samfunn
+kunne initiere og lede lokalt utviklingsarbeid knyttet til matematikkundervisning
+kunne delta og bidra i FoU-prosjekter og andre samarbeidsprosjekter med tanke pC% C% forbedre matematikkfagets praksis
+
+Forkunnskapskrav
+
+Ingen
+
+Eksamen / vurdering
+
+VilkC%r for C% gC% opp til eksamen/vurdering
+
+MidtsemesterprC8ve, Skriftlig innlevering, Oppgave, Obligatorisk undervisning
+
+Det er tre arbeidskrav:
+
+1) En oppgave knyttet til planlegging, gjennomfC8ring og refleksjon om undervisning i praksis. Oppgaven leveres av praksisgruppen samlet, omfang 8 sider (akseptabelt avvik +/-12,5 %).
+
+2) En midtsemesterprC8ve, midt i semesteret.
+
+3) Et skriftlig innleveringsarbeid.
+
+Arbeidskravene mC% vC&re godkjent for C% stille seg til eksamen. I tillegg mC% studenten ha minst 70% godkjent obligatorisk undervisning.
+
+Fagperson(er)
+
+FaglC&rer:
+Eva-Maria Reich
+
+Emneansvarlig:
+Dag Torvanger
+
+Studiekoordinator:
+Kjersti Gjedrem
+
+Praksiskoordinator:
+Kitty Marie Garborg
+
+Arbeidsformer
+
+Undervisningen er basert pC% en forventning om at studentene i hC8yere grad kan arbeide pC% egen hC%nd. Det kan ikke forventes at alt pensum vil bli gjennomgC%tt i timene. Deler overlates til selvstudium og veiledet selvstudium.
+
+Vi anbefaler at studentene pC% et tidlig tidspunkt i studiet danner kollokviegrupper (3-5 deltakere). All erfaring viser at deltakelse i kollokvier er meget verdifullt bC%de faglig og sosialt.
+
+Arbeidsformene i undervisningssituasjonen skal variere, og studentene skal fC% kjennskap til ulike arbeidsformer som brukes i matematikkundervisning i grunnskolen som for eksempel forelesning, lC&rerstyrte aktiviteter/dialog, selvstendig arbeid, gruppearbeid, spill, konkurranser, puslespilloppgaver, diagnostiske aktiviteter. Bruk av IKT inngC%r som en naturlig del av studiet. Canvas vil bli brukt i kommunikasjonen mellom studenter og faglC&rere.
+
+Praksis
+
+15 dager praksis der studentene skal undervise i matematikk.
+
+Cpent for
+
+GrunnskolelC&rerutdanning for trinn 5 - 10, femC%rig masterprogram
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+SC8k etter pensumlitteratur i Leganto
