@@ -11,24 +11,29 @@ studieprogram <- dbh_data(
 )
 
 studieprogramkode <- studieprogram |>
-  group_by(Studieprogramkode) |>
-  slice(1) |>
-  pull(Studieprogramkode)
+  distinct(Studieprogramkode)
 
 emner_1 <- dbh_data(
   208, # dbh-tabell: Emner
   filters = list(
-    "Studieprogramkode" = studieprogramkode[1:80] #A hack? Throws an error if more than 80 study program
+    "Studieprogramkode" = studieprogramkode[1:80] #A hack? Throws an error if more than 80 study programs
   )
 )
 
 emner_2 <- dbh_data(
   208,
   filters = list(
-    "Studieprogramkode" = studieprogramkode[80:length(studieprogramkode)]
+    "Studieprogramkode" = studieprogramkode[81:160]
   )
 )
 
-courses <- bind_rows(emner_1, emner_2)
+emner_3 <- dbh_data(
+  208,
+  filters = list(
+    "Studieprogramkode" = studieprogramkode[161:length(studieprogramkode)]
+  )
+)
+
+courses <- reduce(list(emner_1, emner_2, emner_3), bind_rows)
 
 saveRDS(courses, "data/courses.RDS")

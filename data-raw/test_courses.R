@@ -36,3 +36,4 @@ test_courses <- courses |>
 
 
 saveRDS(test_courses, "data/test_courses.RDS")
+rm(courses, institusjonskoder, test_courses)
