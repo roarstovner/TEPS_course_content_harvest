@@ -1,0 +1,66 @@
+# scripts/02_generate_urls.R
+# Run ALL generate_urls_*.R scripts from project root, one by one.
+
+if (!exists("%||%", inherits = TRUE)) {
+  `%||%` <- function(a,b) if (is.null(a) || length(a)==0) b else a
+}
+if (!exists("safe_read_yaml", inherits = TRUE)) {
+  safe_read_yaml <- function(path) {
+    tr <- try(yaml::read_yaml(path), silent = TRUE)
+    if (!inherits(tr, "try-error") && !is.null(tr)) return(tr)
+    # fallback: read raw + force to UTF-8
+    raw <- readBin(path, "raw", file.info(path)$size)
+    yaml::yaml.load(enc2utf8(rawToChar(raw)))
+  }
+}
+
+stopifnot(dir.exists("R"), dir.exists("config"), file.exists("config/institutions.yaml"))
+
+options(warn = 1, encoding = "UTF-8")  # warnings & UTF-8 globally
+
+# 1) Find all scripts
+scripts <- unique(c(
+  Sys.glob("R/generate_urls_*.R"),
+  Sys.glob("R/*/generate_urls_*.R")
+))
+if (!length(scripts)) stop("No generate_urls_*.R files found under R/")
+
+# Sort: top-level R/ first, then subfolders
+scripts <- c(
+  sort(scripts[dirname(scripts) == "R"]),
+  sort(scripts[dirname(scripts) != "R"])
+)
+
+cat("Found", length(scripts), "scripts to run.\n")
+
+run_one <- function(script_path) {
+  cat("\n==========================\n")
+  cat(">>> Running:", script_path, "\n")
+  cat("==========================\n")
+  
+  t0 <- Sys.time()
+  ok <- try(source(script_path, local = new.env(parent = globalenv())), silent = TRUE)
+  t1 <- Sys.time()
+  
+  if (inherits(ok, "try-error")) {
+    cat("ERROR in", script_path, ":\n", as.character(ok), "\n")
+    return(FALSE)
+  }
+  
+  inst <- sub("^generate_urls_([^.]+)\\.R$", "\\1", basename(script_path))
+  outd <- file.path("data", "output", inst)
+  cat("Output directory:", normalizePath(outd, winslash = "/", mustWork = FALSE), "\n")
+  
+  if (dir.exists(outd)) {
+    latest <- list.files(outd, pattern = "latest\\.(csv|txt)$", full.names = TRUE)
+    if (length(latest)) {
+      cat("Latest files:\n", paste("  ", latest, collapse = "\n"), "\n")
+    }
+  }
+  
+  cat(sprintf("Finished in %.1f seconds\n", difftime(t1, t0, units = "secs")))
+  TRUE
+}
+
+ok <- vapply(scripts, run_one, logical(1))
+cat("\nSummary: SUCCESS =", sum(ok), " | FAIL =", sum(!ok), "\n")

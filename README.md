@@ -1,111 +1,229 @@
-# Specification of data harvest for TEPS Course Content module
+# 📚 TEPS Course Content Harvest
 
+Et R-basert rammeverk for å hente og strukturere emnebeskrivelser fra norske lærerutdanningsinstitusjoner.  
+Pipelinen er **konfigurerbar via YAML** og produserer per institusjon **URL-lister, HTML og fulltekst**.
 
-The input are the institution, course code, year and semester:
+---
 
-``` r
-courses <- read_xlsx("data-raw/courses.xlsx")
-courses |> slice(1:2)
+## ✨ Kort oppsummert
+
+- **Input:** institusjon, kurskode, år, semester (H/V)  
+- **Output:** URL-er, HTML, fulltekst  
+- **Dekning:** 17 institusjoner (per september 2025)  
+- **Design:** konfigurasjon i YAML → ingen hardkoding i R-koden
+
+---
+
+## 🛠️ Input
+
+Hovedinput finnes i:
+
+- `data/input/courses.RDS`  
+- `data-raw/courses.xlsx`
+
+**Eksempel (R):**
+```r
+head(courses)
+#   institution_short course_code year semester
+# 1           oslomet    MGVM4100 2024     H
+# 2               uia      NO-155 2024     V
 ```
 
-      institution_short course_code year semester
-    1           oslomet    MGVM4100 2024     høst
-    2               uia      NO-155 2024     Vår 
-
-This file should have at least one line for each teacher education
-institution with a five year integrated “Lektorprogram”. These are
-oslomet, uia, NTNU, INN, HiVolda, HiOF, HVL, MF, NLA, Nord, NIH, Samas,
-Steiner, UiB, UiO, UiS, USN, UiT.
-
-The output is a tibble with a course url, html, and full text from
-website, like this
-
-    # A tibble: 2 × 3
-      url                                                            html  fulltekst
-      <chr>                                                          <chr> <chr>    
-    1 https://student.oslomet.no/studier/-/studieinfo/emne/MGVM4100… <hea… M5GEN100…
-    2 https://[...]                                                  <hea… teksten …
-
-We want the entire pipeline to be computational, possibly consisting of
-these functions:
-
--   `course_url(institution_short, course_code, year, semester)`, which
-    ouputs the course_url.
--   `parse_html(institution_short, url)`, which outputs the full text of
-    course information with ok formatting.
-
-Ideally, the work is added to this repository.
-
-Below are some suggested steps. When the work proceeds, you will have
-more knowledge of this than me, so feel free to suggest changes.
-
-## 1. Create a file with one or more courses from each institution
-
-See `data-raw/courses.xlsx` for a start.
-
-## 2. Create `course_url` function
-
-We would create using the `dplyr` function “case_match” and simple
-string pasting.
-
-``` r
-courses |> 
-  slice(1:3) |> 
-  mutate(
-    url = case_match(
-      institution_short,
-      "oslomet" ~ paste("www.oslomet.no/courses", course_code, year, semester, "index.html", sep = "/"),
-      "uia" ~ paste("www.uia.no/course/info/", paste0(year, semester), course_code, "index.html", sep = "/")
-    )
-  )
+**Institusjoner dekket foreløpig (17):**
+```text
+hiof, hivolda, hvl, inn, mf, nih, nla, nmbu, nord,
+ntnu, oslomet, uia, uib, uio, uis, uit, usn
 ```
 
-      institution_short course_code year semester
-    1           oslomet    MGVM4100 2024     høst
-    2               uia      NO-155 2024     Vår 
-    3              NTNU        <NA>   NA     <NA>
-                                                       url
-    1 www.oslomet.no/courses/MGVM4100/2024/høst/index.html
-    2   www.uia.no/course/info//2024Vår /NO-155/index.html
-    3                                                 <NA>
+---
 
-(Koden over lager ikke riktige URLer. Jeg bare improviserte. 😸)
+## 📤 Output
 
-## 3. Retrieve all htmls
+For hver institusjon opprettes en egen mappe i `data/output/` med:
 
-The `read_file` function can read urls!
+- **Tidsstemplete filer**  
+  `course_urls_<inst>_YYYYMMDD-HHMM.csv` og `.txt`
+- **Latest-alias**  
+  `course_urls_latest.csv` og `.txt` (peker alltid til nyeste batch)
 
-## 4. Identify the css-selector corresponding to the full course text and collect them in a .xlsx
-
-These are the steps I’m most unsure about. I don’t know much about
-webscraping. I’m basing myself on the documentation of the R-package
-`rvest` and the relevant chapter of Rohan Alexander’s open textbook,
-“Telling Stories with Data”.
-
-I envision having a function `scrape_course(institution_short, html)`
-
-1.  Get the selector gadget:
-    https://rvest.tidyverse.org/articles/selectorgadget.html
-2.  Use it to find the css-selector corresponding to the full text of
-    the course webpage.
-3.  Add code that parses this css-selector, for example to the
-    `scrape_course` function.
-
-That last step might be something like this. Only code for “OsloMet” is
-shown.:
-
-``` r
-scrape_course <- function(institution_short, html){
-  if(institution_short == "oslomet"){
-    fulltekst <- html |> 
-      read_html() |> # the rest is from the 'rvest' package
-      html_elements(".oslomet-margin-wrapper-top") |> # this is the css-selector on oslomet pages
-      html_text2() |> #strip html code from html. Below is just to get nice formatting:
-      str_replace_all("  ", " ") |> # remove excessive whitespace
-      str_replace_all("[\r]", "") |> # remove carriage returns. Don't remember why I put it in brackets
-      str_replace_all("^[:space:]+", "") |> # remove spaces at the beginning of lines
-      str_replace_all("[\n]+", "\n\n") # replace any number of newlines with two newlines
-    return(fulltekst)
-  } 
-}
+**Eksempel (`data/output/uio`):**
+```text
+course_urls_uio_20250912-1114.csv
+course_urls_uio_20250912-1114.txt
+course_urls_latest.csv
+course_urls_latest.txt
 ```
+
+> **Merk:** Enkelte institusjoner kan ha alternative prefiks/filnavn (f.eks. `candidates_*`) iht. konfigurasjon.
+
+---
+
+## 🔄 Pipeline
+
+### 1) Klargjør input — `scripts/01_prepare_input.R`
+- Standardiserer kolonner (institusjon, kurskode, år, semester)  
+- Lager hjelpe-tokens ved behov  
+- Skriver `data/cache/courses_std.RDS`
+
+### 2) Generer URL-er — `scripts/02_generate_urls.R`
+- Leser URL-mønstre fra `config/institutions.yaml`  
+- Erstatter tokens (`{course_code}`, `{year}`, `{semester_url}`)  
+- Håndterer institusjonsspesifikke semester-stiler (`H/V`, `host/vaar`, `1/2`, …)  
+- Eksporterer tidsstemplete + `latest`-filer per institusjon
+
+### 3) Scrape fulltekst — `scripts/03_scrape.R`
+- Leser CSS-selectors fra `config/selectors.yaml`  
+- Parser HTML → `fulltext`  
+- Rydder whitespace/linjeskift  
+- Skriver strukturerte resultater til `data/output/`
+
+**Valgfritt:** `R/verify.R` kan sjekke HTTP-status (200/404) og logge resultater.
+
+---
+
+## ⚙️ Konfigurasjon
+
+**`config/institutions.yaml`** — URL-mønstre og semester-stil per institusjon:  
+```yaml
+url_pattern: "https://www.uio.no/studier/emner/{year}/{semester_url}/{course_code}/index.html"
+semester_style: "host_vaar"   # alternativer: plain (H/V), host_vaar, ntnu (1/2), m.fl.
+```
+
+**`config/selectors.yaml`** — CSS-selector for å hente fulltekst per institusjon:  
+```yaml
+fulltext: ".oslomet-margin-wrapper-top"
+```
+
+---
+
+## 📑 Modes og tokens
+
+### 🔧 MODE
+`MODE` bestemmer hvilke år og semestre som genereres for en institusjon:
+
+- `hv` → generer både høst (`YEAR_H`) og vår (`YEAR_V`)  
+- `single` → generer kun for ett bestemt år (`SINGLE_YEAR`)  
+- `next` → generer kun neste semester (automatisk, basert på dato)  
+- `both` → generer både nåværende og neste semester  
+
+**Eksempel (`oslomet` med MODE = single):**
+```r
+inst_short  <- "oslomet"
+MODE        <- "single"
+SINGLE_YEAR <- 2025
+```
+→ Genererer bare kurs-URL-er for 2025.
+
+---
+
+### 🔡 Tokens for kurskoder
+Mange institusjoner bruker ulike varianter av kurskoder (`MGVM4100`, `NO-155`, `PSY-1010`). For å få konsistente URL-er brukes flere “tokens” i YAML-mønstrene:
+
+- `{course_code}` → original kurskode fra input  
+- `{course_code_norm}` → standardisert kurskode (uten whitespace/feil)  
+- `{code_upper}` → versjon i UPPERCASE  
+- `{code_upper_nodash1}` → samme som over, men uten første bindestrek  
+- `{code_base}` → baseversjon (uten suffix eller årstall)  
+
+**Eksempel:**
+```yaml
+url_pattern: "https://www.uib.no/emne/{code_upper_nodash1}"
+```
+
+---
+
+### 📤 Hvordan dette påvirker output
+Når `02_generate_urls.R` kjøres, kombineres:
+
+- **MODE** → styrer hvilke år/semestre som inkluderes  
+- **Tokens** → fyller inn placeholders i URL-mønstrene fra YAML  
+
+Resultatet lagres som tidsstemplete filer per institusjon i `data/output/<inst>/`, samt `course_urls_latest.*` som peker på den nyeste batchen.
+
+---
+
+## 📂 Prosjektstruktur
+
+```text
+├── config/                  # YAML-konfigurasjon (URL-mønstre + CSS-selectors)
+├── data/
+│   ├── input/               # Input (Excel/RDS)
+│   ├── cache/               # Standardisert cache (RDS)
+│   └── output/              # Output per institusjon (17 mapper)
+├── data-raw/                # Opprinnelige Excel/selector-utkast
+├── R/                       # Fellesfunksjoner + institusjonsspesifikke moduler
+├── scripts/                 # Hovedpipeline (01–03)
+├── tests/                   # Tester/eksperimenter
+├── README.md                # Denne filen (vises på GitHub)
+├── README.qmd               # (valgfritt) Quarto med kjørbar kode → kan rendre til MD
+└── TEPS_course_content_harvest.Rproj
+```
+
+---
+
+## ▶️ Bruk
+
+### TEPS URL Pipeline (hvordan kjøre)
+
+Pipelinen består av tre steg:
+
+1. **Forbered input → cache**  
+   `scripts/01_prepare_input.R`  
+   Leser `data/input/courses.RDS`, standardiserer kolonner, og lager `data/cache/courses_std.RDS`.  
+   _Ingen URL-er bygges her – dette er bare klargjøring._
+
+2. **Generer URL-er**  
+   `scripts/02_generate_urls.R`  
+   Kjører alle `R/*/generate_urls_*.R`-skriptene (ett per institusjon).  
+   Hvert skript skriver til `data/output/<inst>/` og oppdaterer `course_urls_latest.{csv,txt}`  
+   (for UiA brukes `candidates_latest.{csv,txt}`).
+
+3. **Rydd utdata (valgfritt)**  
+   `R/cleanup_outputs.R`  
+   Fjerner gamle tidsstemplete filer og beholder kun `*_latest.*`.  
+   Valgfritt, men anbefales før commit til GitHub.
+
+### Én-klikks kjøring
+Du kan bruke master-runner:
+
+```r
+# scripts/00_run_all.R (øverst i fila settes noen enkle valg)
+CLEAN  <- TRUE   # kjør opprydding på slutten
+DRYRUN <- FALSE  # FALSE = faktisk slette gamle filer
+TEPS_INST <- ""  # "" = alle institusjoner; f.eks. "usn,uio" for bare et utvalg
+
+source("scripts/00_run_all.R")
+```
+
+### Typisk manuell kjøring i R
+```r
+# 1) Forbered input
+source("scripts/01_prepare_input.R")
+
+# 2) Generer URL-er
+source("scripts/02_generate_urls.R")
+
+# 3) Scrape fulltekst
+source("scripts/03_scrape.R")
+```
+
+---
+
+## 📌 Notater
+
+- **Tegnkoding:** UTF-8 for all I/O  
+- **Formater:** CSV (output), YAML (config), RDS (cache/mellomlagring)  
+- **Tidsstempel:** `format(Sys.time(), "%Y%m%d-%H%M")` i filnavn  
+- **`latest`-filer:** peker alltid til nyeste batch  
+- **Utvidelser:** nye institusjoner legges til via YAML (ingen endring i R-kode nødvendig)
+
+---
+
+## 🗺️ Roadmap
+
+- Utvikle scraping-funksjoner for alle institusjoner i `R/<inst>/generate_urls_*.R`  
+- Utvide tokens og YAML til også å dekke engelske emnebeskrivelser  
+- Bedre logging og feilhåndtering  
+- Samle og aggregere output på tvers av institusjoner for analyse
+
+---
