@@ -1,0 +1,152 @@
+institution: uis
+code: MGL3126-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MGL3126
+status: 200
+course_name_no: Saktekster (1.-10.) (MGL3126)
+----- FULLTEXT -----
+
+Emnekode
+
+MGL3126
+
+Versjon
+
+1
+
+Vekting (stp)
+
+15
+
+Semester undervisningsstart
+
+VC%r
+
+Antall semestre
+
+1
+
+Vurderingssemester
+
+VC%r
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitenskap og humaniora,
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Fakultet for utdanningsvitenskap og humaniora,
+
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhold
+
+Sentralt i emnet stC%r saktekstens uttrykksformer og funksjoner i ulike tekstkulturer, inkludert i skolen som institusjon og i lC&rerutdanningen. Med utgangspunkt i et dialogisk perspektiv og teorier om literacy, skal studentene arbeide med et bredt utvalg tekster og teksttyper, med sC&rlig blikk for tekster pC% de klassetrinnene i skolen som utdanningen retter seg mot. Studiet drC8fter skriveteori, tekstteori og diskursteori knyttet til saktekster - bC%de funksjonelle og litterC&re. OgsC% perspektiv som kan problematisere en slik klassifisering blir diskutert, og utforsket gjennom studentens egen literacy-praksis og praksiserfaring. SpC8rsmC%l knyttet til teksters intensjon og kvalitet blir brukt som inngang til forstC%else av saktekstens struktur og retorikk.
+
+LC&ringsutbytte
+
+En kandidat med fullfC8rt og bestC%tt emne skal ha fC8lgende lC&ringsutbytte:
+
+Kunnskap
+
+Kandidaten:
+
+har kunnskap om saktekst som fenomen og saktekstens typologi- og uttrykksformer i ulike tekstkulturer, i offentligheten og i skolen
+har inngC%ende kunnskap om tekstteori og literacy-praksiser som involverer bC%de tradisjonell papirtekst, multimodale tekster og digitale tekster og verktC8y
+har inngC%ende kunnskap om hvilken plass saktekster har i lC&replanen
+har inngC%ende kunnskap om metoder, forskningsdesign og forskning om saktekst og saktekstskriving, i og utenfor skolen
+
+Ferdigheter
+
+Kandidaten:
+
+kan med vekt pC% saktekster planlegge, gjennomfC8re og vurdere undervisning innenfor de grunnleggende ferdighetene lesing og skriving, og begrunne relaterte fagdidaktiske valg
+kan delta i literacy-relaterte diskusjoner om saktekstens plass i og utenfor skolen
+kan veilede og motivere elever i mestringsbyggende og kritisk bevisstgjC8rende skriving av saktekster, ut fra elevens ulike behov og forutsetninger
+kan vurdere sakpreget skriving, med vekt pC% de klassetrinnene i skolen som utdanningen retter seg mot
+kan bruke akademisk skriving og literacy-relaterte forskningsmetoder i arbeidet med sakorienterte skrivepraksiser i og utenfor skolen
+kan analysere og forholde seg kritisk til nasjonal og internasjonal forskning rundt saktekst og anvende denne kunnskapen i profesjonsutC8velsen
+
+Generell kompetanse
+
+Kandidaten:
+
+kan gjC8re greie for sentrale perspektiver ved fenomenet saktekst, og teorier knyttet til feltet
+kan reflektere over sakteksters form og funksjon i ulike tekstkulturer
+kan reflektere over og ytre seg om fagdidaktiske utfordringer knyttet til literacy og elevers mC8te med saktekster
+
+Forkunnskapskrav
+
+Et av fC8lgende alternativer:
+MGL1120 Norsk trinn 1-4, MGL1220 Norsk trinn 5-7, MGL1322 Norsk 2 (1.-7. trinn)
+MGL2120 Norsk 1, emne 1; Litteratur, lesing, samtale - med vekt pC% mellomtrinnet, MGL2121 Norsk 1, emne 2: SprC%kstrukturer og tekstskaping - med vekt pC% mellomtrinnet, MGL2322 Norsk 2 (5-10. trinn)
+
+Eksamen / vurdering
+
+VilkC%r for C% gC% opp til eksamen/vurdering
+
+Deltakelse i skrivegruppe, Muntlig seminarinnlegg
+
+1. Muntlig seminarinnlegg i gruppe: Ett muntlig seminarinnlegg. I innlegget skal norskdidaktiske problemstillinger knyttet til saktekst-relaterte literacy-praksiser drC8ftes. For grunnskolelC&rerstudentene skal arbeidskravet vC&re profesjonsrelatert og rettet mot trinn i skolen som er relevante for studentens utdanning. StC8tteark e.l. til presentasjonen skal sendes faglC&rer i forkant av presentasjonen.
+
+2. Bidrag i skrivegruppe tilknyttet semesteroppgaven, etteravtale med faglC&rer. Veiledning av semesteroppgaven skjer i skrivegruppene.
+
+Studenter har ikke krav pC% nye veiledningstimer ved nytt eksamensforsC8k/ nytt opptak. Studenter som fC%r ett eller flere av arbeidskravene vurdert til ikke-godkjent ved fC8rste innlevering, gis mulighet for C)n ny innlevering av oppgaven(e) i bearbeidet form. Alle arbeidskrav mC% vC&re godkjent for C% gC% opp til eksamen. Konsekvenser av ikke godkjent arbeidskrav er at adgang til prC8ving nektes, jf. Forskrift om studier og eksamen ved Universitetet i Stavanger (eksamensforskriften), B'2-8 nr. 3.
+
+Fagperson(er)
+
+Emneansvarlig:
+Eli Flatekval
+
+FaglC&rer:
+Magne Ivar Drangeid
+
+FaglC&rer:
+BjC8rn Kvalsvik Nicolaysen
+
+Studieprogramleder:
+Ingeborg KnC&velsrud
+
+FaglC&rer:
+Magne Ove Rogne
+
+Studiekoordinator:
+Ida Margrethe Eikaas
+
+FaglC&rer:
+Briten Russdal-Hamre
+
+Arbeidsformer
+
+Forelesninger, veiledning, seminar og gruppearbeid.
+
+Praksis
+
+15 dagers praksis.
+
+Overlapping
+
+Cpent for
+
+Cpent for studenter pC% masterlC8pet i norsk ved grunnskolelC&rerutdanningen (IGIS) og for studenter pC% masterlC8pet i nordisk og lesevitenskap (IKS).
+
+15 dagers praksis.
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+SC8k etter pensumlitteratur i Leganto

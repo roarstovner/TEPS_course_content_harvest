@@ -1,0 +1,10 @@
+institution: hvl
+code: MGUSA201-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGUSA201
+status: 200
+course_name_no: MGUSA201 Samfunnsfag 1, emne 2 - InnfC8ring i samfunnsfag 2
+----- FULLTEXT -----
+
+NA

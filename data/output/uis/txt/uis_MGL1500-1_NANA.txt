@@ -1,0 +1,179 @@
+institution: uis
+code: MGL1500-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MGL1500
+status: 200
+course_name_no: Spesialpedagogikk (1.-10. trinn) (MGL1500)
+----- FULLTEXT -----
+
+Emnekode
+
+MGL1500
+
+Versjon
+
+1
+
+Vekting (stp)
+
+30
+
+Semester undervisningsstart
+
+HC8st
+
+Antall semestre
+
+1
+
+Vurderingssemester
+
+HC8st
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitenskap og humaniora,
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Fakultet for utdanningsvitenskap og humaniora,
+
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhold
+
+Spesialpedagogikk bygger videre pC% perspektivene i faget Pedagogikk og elevkunnskap og skal gi studentene utvidet kunnskap om, og forstC%else av, spesialpedagogiske utfordringer i en skole for alle. Faget er organisert som et felles emne for trinn 1-7 og 5-10. Differensieringen mellom de to studieprogrammene ivaretas innenfor obligatoriske arbeidskrav, praksis og eksamen. Sentrale temaer i emnet er knyttet til skolens og lC&rerens utfordringer med C% ivareta alle elever i et mangfoldig lC&ringsmiljC8, nC&rmere bestemt inkluderende pedagogikk, trivsel og psykisk helse i skolen og utfordringer knyttet til lese- og skriveopplC&ringen. Emnet Spesialpedagogikk gir teoretisk og praktisk innsikt i hvordan perspektiver pC% deltakelse i lC&ringsfellesskap gir innhold og mening til mC%let om inkluderende opplC&ring.
+
+LC&ringsutbytte
+
+En student med fullfC8rt og bestC%tt emne skal ha fC8lgende lC&ringsutbytter:
+
+Kunnskap
+
+Studenten har brei kunnskap om
+
+spesialpedagogiske utviklingslinjer og den aktuelle situasjonen i skolen
+sentrale aspekter ved inkluderende pedagogikk med fokus pC% mangfold, deltakelse og lC&ring
+forhold som kan utfordre lC&ring
+individuelle og kontekstuelle risikofaktorer for sosiale og emosjonelle vansker
+generell pedagogisk tilnC&rming, samt spesielle tiltak, pC% individ og systemnivC%, i mC8te med barn/elever som viser sosiale og emosjonelle vansker.
+hvordan lese- og skriveopplC&ring kan bidra til mestring slik at alle elever lykkes med lC&ring, lesing og skriving
+
+Ferdigheter
+
+Studenten kan
+
+drC8fte forholdet mellom allmennpedagogikk og spesialpedagogikk
+bidra til utvikling av et inkluderende lC&ringsfellesskap
+identifisere og forebygge forhold som kan utfordre lC&ring
+analysere risikofaktorer og uttrykksformer, bC%de pC% individ og systemnivC%, knyttet til sosiale og emosjonelle vansker
+arbeide aktivt med forebygging og problemlC8sning, bC%de pC% individ og systemnivC%, knyttet til faglige, sosiale og emosjonelle vansker
+kjenne igjen og beskrive kvalitative trekk ved lese- og skriveferdighet hos elever med ulik alder
+planlegge, gjennomfC8re og vurdere evidensbasert tilpasset opplC&ring i lesing og skriving og gi adekvat stC8tte til elever som opplever utfordringer
+
+Generell kompetanse
+
+Kunne reflektere over opplC&ringens utilsiktede konsekvenser for elever i sC%rbare situasjoner
+ha en grunnleggende forstC%else av hva faglige, sosiale og emosjonelle vansker innebC&rer
+kunne forebygge, avdekke og avhjelpe faglige, sosiale og emosjonelle vansker og legge best mulig til rette for lC&ring
+studentene skal kunne reflektere over hvilken innvirkning lC&reren har for elevenes muligheter for selvrealisering og deltakelse i utdanning, yrkesliv og i samfunnet ellers hvor det kreves lesing eller skriving
+
+Forkunnskapskrav
+
+Et av fC8lgende alternativer:
+MGL1100 Pedagogikk og elevkunnskap 1. LC&rerens undervisning i det mangfoldige klasserom, MGL1200 Pedagogikk og elevkunnskap 2. Det inkluderende klasserom i en skole preget av mangfold.
+GLU1100 PEL 1. C%r ( 1. - 7. trinn) ; LC&rerens tilrettelegging for elevenes lC&ring og utvikling, GLU1200 PEL 2. C%r (1. - 7. trinn) ; Elevenes faglige, sosiale og personlige lC&ring og utvikling
+GLD1100 PEL 1. C%r ( 1. - 7. trinn) ; LC&rerens tilrettelegging for elevenes lC&ring og utvikling, GLD1200 PEL 2. C%r (1. - 7. trinn) ; Elevenes faglige, sosiale og personlige lC&ring og utvikling
+MGD1100 Pedagogikk og elevkunnskap 1. LC&rerens undervisning i det mangfoldige klasserom, MGD1200 PEL 2. C%r (1. - 7. trinn) ; Det inkluderende klasserom i en skole preget av mangfold
+MGL2100 Pedagogikk og elevkunnskap 1. LC&rerens undervisning i det mangfoldige klasserom, MGL2200 Pedagogikk og elevkunnskap 2. Det inkluderende klasserom i en skole preget av mangfold.
+
+Eksamen / vurdering
+
+VilkC%r for C% gC% opp til eksamen/vurdering
+
+Muntlig arbeidskrav i gruppe, Skriftlig fagtekst (gruppe), Individuell skriftlig fagtekst, 70 % obligatorisk tilstedevC&relse
+
+3 godkjente arbeidskrav og 70% obligatorisk tilstedevC&relse
+
+Arbeidskrav:
+
+1. Muntlig arbeidskrav i gruppe, omfang pC% produkt: 15-20 minutter
+
+2. Skriftlig fagtekst med utgangspunkt i case. 2-3 studenter skriver sammen. 2000 ord +/- 10%
+
+3. Individuell skriftlig fagtekst. 2000 ord +/- 10%. I arbeid med fagteksten, skal studenten finne og bruke ca. 70 sider med selvvalgt litteratur i tillegg til felles pensumlitteratur.
+
+Studenter som fC%r ett eller flere av arbeidskravene vurdert til ikke-godkjent ved fC8rste innlevering, gis mulighet for C)n ny innlevering av oppgaven(e) i bearbeidet form.
+
+Obligatoriske tilstedevC&relse
+
+I faget spesialpedagogikk vil studentene bli utfordret pC% koplingen mellom teori og praksis. Deler av undervisningen vil gC% med til C% diskutere hvilke konsekvenser de faglige begrepene kan ha for arbeidet i skolen. Faget skal fC8re til faglig refleksjon, personlig vekst og yrkesetisk bevissthet. Evnen til kritisk refleksjon oppC8ves blant annet i diskusjoner der studentene anvender fagets begrepsapparat. C kunne delta i profesjonsfellesskap fordrer evne til samhandling pC% ulike nivC%. I undervisningen vil studentene derfor mC8te arbeidsmC%ter som forelesninger, gruppeoppgaver, studentframlegg, refleksjonsnotat, diskusjoner, artikkelanalyser, casediskusjoner og digitale verktC8y som alle har som formC%l C% dyktiggjC8re dem i lC&rergjerningen. Derfor vil 70 % tilstedevC&relse vC&re pC%krevd.
+
+Fagperson(er)
+
+FaglC&rer:
+Trude Havik
+
+Emneansvarlig:
+Finn Martinsen
+
+FaglC&rer:
+Maren Stabel Tvedt
+
+FaglC&rer:
+Liv Jorunn Byrkjedal-SC8rby
+
+FaglC&rer:
+Ida Risanger SjursC8
+
+FaglC&rer:
+Hildegunn Fandrem
+
+FaglC&rer:
+Cse Kathrine Gjestsen
+
+Studieprogramleder:
+Ingeborg KnC&velsrud
+
+Studiekoordinator:
+Kjersti Gjedrem
+
+Arbeidsformer
+
+Forventet arbeidsomfang for 30 stp er totalt 850 timer. Disse er tenkt fordelt pC% fC8lgende mC%te:
+
+Undervisning: 150 timer
+
+Praksis (inkl. trepartsmC8te): 125 timer
+
+Selvstendig arbeid med arbeidskrav og pensum: 575 timer
+
+Praksis
+
+Praksis inngC%r i emnet. Praksis skal sC&rlig fokusere pC% undervisningssituasjoner der elever med behov for spesiell tilrettelegging, eller som har vedtak om spesialundervisning, fC%r opplC&ring i ordinC&re klasser. Av interesse er ogsC% arbeid med C% identifisere faglige- eller sosiale utfordringer i klassen/skolen. Aktuelle tema er skolens organisering av spesialundervisning og det spesialpedagogiske arbeidet, generelle retningslinjer og aktuelle utfordringer slik lC&rer vurderer dette.
+
+I praksisperioden vil det bli organisert en lC&ringssamtale med studenter, praksislC&rer og faglC&rer. Tema for samtalen kan vC&re spC8rsmC%l om hvordan inkludere alle elever til deltakelse i fellesskapet.
+
+Cpent for
+
+GrunnskolelC&rerutdanning for trinn 1 - 7, femC%rig masterprogram
+
+GrunnskolelC&rerutdanning for trinn 5 - 10, femC%rig masterprogram
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+Pensumlisten finner du i Leganto

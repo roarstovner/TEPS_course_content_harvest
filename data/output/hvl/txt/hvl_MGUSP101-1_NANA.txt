@@ -1,0 +1,10 @@
+institution: hvl
+code: MGUSP101-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGUSP101
+status: 200
+course_name_no: MGUSP101 Spesialpedagogikk 1, emne 1 - Spesialpedagogikk som fag og forskningsfelt
+----- FULLTEXT -----
+
+NA

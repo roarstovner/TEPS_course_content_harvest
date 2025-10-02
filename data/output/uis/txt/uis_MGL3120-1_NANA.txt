@@ -1,0 +1,148 @@
+institution: uis
+code: MGL3120-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MGL3120
+status: 200
+course_name_no: Bevis og argumentasjon pC% barnetrinnet (1.-7.trinn) (MGL3120)
+----- FULLTEXT -----
+
+Emnekode
+
+MGL3120
+
+Versjon
+
+1
+
+Vekting (stp)
+
+15
+
+Semester undervisningsstart
+
+HC8st
+
+Antall semestre
+
+1
+
+Vurderingssemester
+
+HC8st
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitenskap og humaniora,
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Fakultet for utdanningsvitenskap og humaniora,
+
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhold
+
+Dette emnet introduserer sentrale elementer relatert til det C% kunne trekke slutninger i matematikk.
+
+Matematisk sprC%k og symbolbruk, begrepsdanning.
+Definisjoner og oppbygning av matematikk
+Logikk
+Formulering av matematiske utsagn, nC8dvendige og tilstrekkelige betingelser.
+Betydningen av eksempler i vurdering av gyldigheten til matematiske utsagn.
+Ulike metoder og former for matematiske bevis, herunder slike som representasjonsbevis, direkte bevis, indirekte bevis, motsigelsesbevis og induksjonsbevis.
+Anvendelse av bevis og argumentasjon i matematikkundervisning i skolen.
+
+Det er en mC%lsetting at emnet i vesentlig grad skal undervises basert pC% problem og problemoppgaver. Studentene skal engasjeres i bevisfC8ring som gir mening for dem, og som i hovedsak er relatert til matematiske tema som er familiC&re.
+
+LC&ringsutbytte
+
+Kunnskap
+
+Etter endt studium skal studenten ha avansert kunnskap:
+
+Om argumentasjonsformer og modeller relatert til ulike typer matematiske bevis
+Om hvordan viten i matematikk utvikles gjennom definisjoner, undersC8kelser og eksperimenter og pC%fC8lgende bevisfC8ring
+Om eksemplifisering og eksempelrom
+Om grunnleggende utsagnslogikk
+
+Ferdigheter
+
+Etter endt studium skal studenten kunne:
+
+Sette opp modeller og gi logisk gyldige argument innen matematikk
+Sette seg inn i matematiske resonnement og verifisere de logiske argumentene
+Planlegge og gjennomfC8re egen undervisning som omhandler bevis, eksempelbruk og matematisk argumentasjon i skolen
+
+Generell kompetanse
+
+Etter endt studium skal studenten:
+
+Kunne initiere og lede undersC8kelser og eksperimenter som danner utgangspunkt for matematisk deduksjon
+Kunne vurdere de logiske konsekvensene av matematiske utsagn i skolematematikken, samt evaluere nC8yaktigheten i lC&reverk og oppgaver
+Kunne lede undervisning i matematisk bevisfC8ring og argumentasjon pC% barnetrinnet
+
+Forkunnskapskrav
+
+MGL1110 Matematikk 1 emne 1 (1.-7. trinn), MGL1111 Matematikk 1 emne 2 (1.-7. trinn), MGL1112 Matematikk 2 (1.-7. trinn)
+
+60 studiepoeng i matematikk fra syklus 1 i lC&rerutdanning eller tilsvarende kvalifikasjon i matematikk.
+
+Eksamen / vurdering
+
+VilkC%r for C% gC% opp til eksamen/vurdering
+
+2 Arbeidskrav
+
+Gjennom semesteret skal det leveres 2 obligatoriske arbeidskrav. Arbeidskrav 1 er didaktisk og i tilknytning til planlegging/utfC8relse av undervisningsopplegg relatert til kursets innhold. Arbeidskrav 2 er skriftlig oppgavelC8sning med tilhC8rende refleksjonsnotater til oppgavelC8sningene.
+
+Fagperson(er)
+
+Emneansvarlig:
+Sean Peter KC%ss Martin
+
+FaglC&rer:
+Csmund Lillevik GjC&re
+
+FaglC&rer:
+Cato Tveit
+
+Studieprogramleder:
+Ingeborg KnC&velsrud
+
+Praksiskoordinator:
+Kitty Marie Garborg
+
+Studiekoordinator:
+Kjersti Gjedrem
+
+Arbeidsformer
+
+Forelesning/undervisning, oppgaveregning, diskusjon, gruppearbeid. Det forutsettes at studentene arbeider med oppgaver og pensumlitteratur utenom undervisningstiden.
+
+Praksis
+
+15 dager praksis
+
+Cpent for
+
+Fagdidaktikk for grunnskolen - erfaringsbasert masterprogram
+
+GrunnskolelC&rerutdanning for trinn 1 - 7, femC%rig masterprogram
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+Pensumlisten finner du i Leganto

@@ -1,0 +1,143 @@
+institution: uib
+code: BIODI300-0
+year: NA
+hv: NA
+url: https://www4.uib.no/studier/emner/biodi300
+status: 200
+course_name_no: Biologididaktikk
+----- FULLTEXT -----
+
+Navigasjonssti
+Forside
+Studier
+Emner
+Feil i visning av eksamensinformasjon
+
+Vi opplever problemer med C% hente inn eksamensinformasjon for dette emnet. Det kan bety at viktig informasjon om eksamen kan mangle.
+
+Lukk
+
+Biologididaktikk
+
+Studiepoeng
+
+10
+
+Undervisningssemester
+
+Haust
+
+Emnekode
+
+BIODI300
+
+Talet pC% semester
+
+1
+
+UndervisningssprC%k
+
+Norsk
+
+Ressursar
+
+Timeplan
+
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r
+MC%l og innhald
+
+Det overordna mC%let i emnet er at studentane skal utvikle seg som profesjonsutC8varar knytt til undervisning av biologi. Emnet har to gjennomgC%ande hovudspC8rsmC%l: korleis og kvifor.
+
+I emnet blir det lagt stor vekt pC% varierte arbeidsmC%tar i biologi, inkludert andre lC&ringsarenaer enn klasserommet. Emnet har fokus pC% ulike utfordringar knytt til enkelte biologiske tema, som vanlege og kjente misforstC%ingar, kontroversielle tema, og etiske utfordringar.
+
+Emnet er gjennomgC%ande basert pC% forsking, henta frC% biologi- og naturfagdidaktikk i tillegg til andre relevante felt. LC&ring og undervisning blir satt inn i et biologisk og evolusjonC&rt perspektiv, og emnet byggjer pC% eit evolusjonspsykologisk lC&ringssyn.
+
+Emnet er lagt i same semester som ein lang praksisperiode der studentane fC%r undervise i biologi, og der dei kan teste ut kompetansen i praksis og bruke erfaringane i siste del av emnet.
+
+LC&ringsutbyte
+
+Studenten skal ved avslutta emne ha fC8lgjande lC&ringsutbyte definert i kunnskapar, ferdigheiter og generell kompetanse:
+
+Kunnskapar
+
+Studenten
+
+er godt kjent med biologididaktikk som forskingsfelt og har inngC%ande kunnskap om eit utval relevant forsking
+har inngC%ande kunnskap og erfaring med varierte arbeidsmC%tar i biologi og korleis og kvifor desse kan bidra til lC&ring
+har kunnskap om faktorar som kan pC%verke elevanes motivasjon og interesse for faget
+har kunnskap om utfordringar knytt til ulike biologiske tema som til dC8mes evolusjon
+har kunnskap om korleis lC&ring kan setjast inn i eit biologisk og evolusjonC&rt perspektiv
+
+Ferdigheiter
+
+Studenten
+
+kan definere tydlege lC&ringsmC%l for elevane, velje arbeidsmC%tar som er veleigna for at elevane skal nC% lC&ringsmC%la og kunne evaluere i kva grad mC%la vart nC%dd
+kan leggje til rette for gode lC&ringsprosessar i biologi basert pC% forsking frC% ulike felt, inkludert biologididaktikk og evolusjonspsykologi
+kan nytte varierte arbeidsmC%tar, inkludert alternative lC&ringsarenaer, digitale verktC8y og utforskande lC&ring, og kunne grunngje dei
+kan nytte og kritisk vurdere forskingsbaserte kjelder og metodar for C% fC% kunnskap om elevar, undervisning og lC&ring i faget
+kan analysere lC&replanar i biologi og velje relevante arbeidsmC%tar og vurderingsformar i hC8ve til kompetansemC%la i lC&replanen
+kan reflektere over etiske problemstillingar og korleis ein kan leggje opp undervisning i etisk utfordrande eller kontroversielle tema i biologi
+kan motivere elevar og leggje til rette for interesse for biologi
+
+Generell kompetanse
+
+Studenten
+
+kan nytte forsking frC% biologi, biologididaktikk og andre relevante kjelder til C% vidareutvikle seg som profesjonsutC8var
+
+Fulltid/deltid
+Fulltid
+Studiepoeng, omfang
+10 studiepoeng
+StudienivC% (studiesyklus)
+Master
+Undervisningssemester
+VC%r
+Krav til forkunnskapar
+
+PEDA131, REALDI200 og LANGPRAKSIS1
+
+Emnet skal normalt takast parallelt med LANGPRAKSIS2
+
+TilrC%dde forkunnskapar
+KPDAG5-MN, KPDAG6 og KPDAG7
+Studiepoengsreduksjon
+Overlapp med BIODID220: 10 studiepoeng
+Krav til studierett
+Studierett knytt til Fakultet for naturvitskap og teknologi sitt lektorprogram i naturvitskap og matematikk
+Arbeids- og undervisningsformer
+FC8relesing, gruppearbeid, workshops, feltundervisning, skriftlege oppgC%ver og munnlege presentasjonar.
+Obligatorisk undervisningsaktivitet
+Deltaking pC% 80 % av undervisinga.
+Innlevering av inntil 5 skriftlege oppgC%ver, samt fagfellevurderingar og framlegg i C8ktene, i gruppe og individuelt.
+
+Gyldig i fire semester, inneverande og tre pC%fC8lgande.
+
+Vurderingsformer
+
+I emnet nyttar ein fC8lgjande vurderingsformer:
+
+munnleg eksamen
+Karakterskala
+Bokstavkarakterar med skalaen A, B, C, D, E, F
+Vurderingssemester
+Haust/VC%r
+Litteraturliste
+Litteraturlista vil vere klar innan 1. desember.
+Emneevaluering
+Studentane skal evaluere undervisninga i trC%d med UiB og instituttet sitt kvalitetssikringssystem.
+Programansvarleg
+Lektorutdanningsutvalget ved MN og UiBs sentrale programstyre for lektorutdanning har ansvar for fagleg innhald og oppbygging av studiet og for kvaliteten pC% studieprogrammet. Matematisk institutt har det administrative ansvaret for programmet.
+Emneansvarleg
+Institutt for biovitenskap
+Administrativt ansvarleg
+Institutt for biovitskap
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r
+Kontaktinformasjon
+Studierettleiar kan kontaktast pC%: studie@bio.uib.no
+Institutt for biovitenskap (BIO)

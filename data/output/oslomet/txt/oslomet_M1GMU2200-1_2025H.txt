@@ -1,0 +1,45 @@
+institution: oslomet
+code: M1GMU2200-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/M1GMU2200/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+M1GMU2200 Musikk 1, emne 2 Emneplan
+Engelsk emnenavn
+Music 1, Part 2
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 1-7
+Musikk 1 for trinn 1-7 i grunnskolen
+Omfang
+15.0 stp.
+StudieC%r
+2025/2026
+Pensum
+VCR 2026
+
+Timeplan
+VCR 2026
+Programplan
+GrunnskolelC&rerutdanning for trinn 1-7 (2025 HCST )
+Emnehistorikk
+2018 / 2019 2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Innledning
+
+Fagplanen tilhC8rende dette emnet er lagt pC% emne M1GMU2100 Musikk 1, emne 1.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har kunnskap om musikkfagets historie og rolle i samfunnet, lC&replaner i faget og fagets lC&replanhistorie
+har forskningsbasert kunnskap om lC&ring og estetiske og kreative lC&ringsprosesser knyttet til begynneropplC&ring i musikk
+har kunnskap om musikalsk barnekultur og barns musikalske utvikling, uttrykksformer, kreativitet, identitet og faktorer som virker inn paB

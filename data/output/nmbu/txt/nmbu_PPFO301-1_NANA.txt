@@ -1,0 +1,131 @@
+institution: nmbu
+code: PPFO301-1
+year: NA
+hv: NA
+url: https://www.nmbu.no/emne/PPFO301
+status: 200
+course_name_no: PPFO301 InnfC8ring i utdanningsvitenskapelige forskningsmetoder
+----- FULLTEXT -----
+
+PPFO301 InnfC8ring i utdanningsvitenskapelige forskningsmetoder
+
+Studiepoeng:15
+
+Ansvarlig fakultet:Fakultet for realfag og teknologi
+
+Emneansvarlig:Edvin Cstergaard, Erling Krogh
+
+Campus / nettbasert:Undervises campus Cs
+
+Undervisningens sprC%k:Norsk
+
+Antall plasser:35
+
+Frekvens:Crlig, hC8stsemesteret.
+
+Forventet arbeidsmengde:Arbeidsmengde for studentene: ca. 375 timer.
+
+Undervisnings- og vurderingsperiode:LUR/Profesjonsmaster PPU, profil realfag: Emnet starter i hC8stparallellen og har undervisning og vurdering i hC8stparallellen.Profesjonsmaster PPU, profil naturbruk: Emnet har undervisning og vurdering i hC8stparallelen for heltidsstudenter og undervisning i hC8stparallelen og vurdering i vC%rparallelen for deltidsstudenter
+
+Om dette emnet
+
+Emnet tar for seg kvalitative og kvantitative metoder i utdanningsvitenskapelig forskning som redskaper for C% forske i lC&rings- og undervisningspraksiser. Det legges vekt pC% at valg av forskningsmetoder forutsetter innsikt i bC%de det virksomhetsomrC%det som forskningen dreier seg om og i forskerens deltagende rolle og faglige tilnC&rming. Felles tema i emnet er aksjonslC&ring/-forskning og forskningsmetoder som intervju, spC8rreskjema og observasjon, samt analysemetoder.
+
+LUR/Profesjonsmaster PPU, profil realfag: Profilen vektlegger forskningsmetodenes forskningsetiske og vitenskapsteoretiske grunnlag. SC&rskilte tema i profilen er case-studiemetodikk, fenomenologi samt kvantitative metoder.
+
+Profesjonsmaster PPU, profil naturbruk: Presentasjon av forskningsmetoder i profilen av emnet tar utgangspunkt i studentenes interesser i valg av tema og forskningsspC8rsmC%l i mastergradsoppgaven. Profilen gir kunnskaper om og erfaring med anerkjente vitenskapelige metoder som kan brukes i utforskning av egen lC&rerpraksis i tilretteleggelse for elevers lC&ring og/eller av arbeid med utvikling av skolens tematiske fordypninger i programomrC%de naturbruk. Videre redegjC8res det for aksjonslC&ring som strategi for involvering av elever og samarbeid mellom kolleger i utforskningen.
+
+Dette lC&rer du
+
+Etter gjennomfC8rt emne har kandidaten et grunnlag for C% bruke utdanningsvitenskapelig forskningsmetodikk i egen masteroppgave.
+
+LUR/Profesjonsmaster PPU, profil realfag:
+
+Kunnskap: Kandidaten har kunnskap om forskningsmetoder og -metodiske problemstillinger relatert til faglige, pedagogiske og fagdidaktiske spC8rsmC%l.
+
+Ferdighet: Kandidaten kan anvende kunnskapen i eget forskningsprosjekt. Kandidaten kan pC% et selvstendig og faglig grunnlag variere metoder fra forskning og faglig utviklingsarbeid.
+
+Generell kompetanse: Kandidaten kan reflektere over fagdidaktiske, vitenskapsteoretiske, forskningsmetodiske og forskningsetiske problemstillinger.
+
+Profesjonsmaster PPU, profil naturbruk:
+
+Kunnskap: Studenten kan
+
+gjC8re rede for og kritisk vurdere hvordan forskjellige kvalitative forskningsmetoder kan brukes i aksjonslC&ring knyttet til yrkesopplC&ring.
+begrunne valg av kvalitative forskningsmetoder som kan gi relevant dokumentasjon for C% besvare forskningsspC8rsmC%l relatert til problemstillingen i masteroppgaven
+
+Ferdigheter: Studenten kan
+
+bruke valgte anerkjente vitenskapelige forskningsmetoder for C% skaffe relevant dokumentasjon for analyse i masteroppgaven.
+
+Generell kompetanse: Studenten kan
+
+forklare, ivareta, overholde og reflektere omkring viktige etiske prinsipper ved bruk av kvalitative forkningsmetoder, som konfidensialitet, informert samtykke og hensyntaken til integriteteten til samtalepartnere/deltakere.
+LC&ringsaktiviteter
+
+LUR/Profesjonsmaster PPU, profil realfag: Kurset er basert pC% undervisning pC% dagssamlinger, samt eget arbeid med oppgaver og teori mellom samlingene.
+
+Profesjonsmaster PPU, profil naturbruk: Kurset er basert 4 fysiske samlinger pC% 2-3 dager samkjC8rt med PPUT 301, profil aksjonslC&ring. Samlingene vil ta utgangspunkt i praktiske C8velser knyttet til tilretteleggelse for lC&ring i naturbruk og etterlesninger og refleksjoner omkring forskningsmetoder som kan brukes for C% skaffe relevant datametariale for C% kunne svare pC% problemstilling og forskningsspC8rsmC%l i masteroppgaven. Refleksjoner under og mellom samlinger og arbeidet med avsluttende innleveringsoppgave blir veiledet.
+
+LC&ringsstC8tte
+
+LUR/Profesjonsmaster PPU, profil realfag: Arbeidet med de to individuelle oppgavene stC8ttes med veiledning fra lC&rere og medstudenter.
+
+Profesjonsmaster PPU, profil naturbruk: Arbeidet med valg og bruk av forskningsmetoder knyttet til masteroppgaven samt med den avsluttende innleveringsoppgaven stC8ttes med veiledning fra lC&rere, medstudenter og eventuelt av medstudenter som medforfattere om studenter velger C% levere en gruppeoppgave.
+
+Pensum
+
+LUR/Profesjonsmaster PPU, profil realfag: Litteraturen bestC%r av to deler: en del felles veiledende litteratur (ca. 800 sider) som det vil bli arbeidet med i fellesskap, og en del selvvalgt litteratur (ca. 300 sider) som den enkelte student velger ut fra en fordypning i metoden knyttet til eget forskningsprosjekt.
+
+Profesjonsmaster PPU, profil naturbruk: Litteraturen bestC%r av to deler. LC&rerne og studentene tar for seg felles veiledningslitteratur (ca. 500 sider) gjennom gruppeprosesser, refleksjoner og oppfC8lgingslitteratur basert pC% praktiske C8velser. Selvvalgt litteratur (ca. 600 sider) velges av den enkelte student, eller av en gruppe studenter som velger C% skrive sammen, basert pC% den valgte metoden eller de valgte metodene studenten eller studentgruppen skal bruke i eget forskningsprosjekt.
+
+Forutsatte forkunnskaper
+
+LUR/Profesjonsmaster PPU, profil realfag: PPFD301, PPPE301 og undervisningskompetanse i realfag.
+
+Profesjonsmaster PPU, profil naturbruk: PPFD301, PPFY300, PPYD300 eller tilsvarende. PPPE301, PPPE302 eller tilsvarende. Undervisningskompetanse i programfag i naturbruk og/eller i realfag
+
+Vurderingsordning, hjelpemiddel og eksamen
+
+LUR/Profesjonsmaster PPU, profil realfag: Skriftlig oppgave. Karakterregel: bestC%tt/ikke bestC%tt
+
+Profesjonsmaster PPU, profil naturbruk: Innleveringsoppgave som kan vC&re i multimodal form og leveres individuelt eller av en gruppe studenter. Karakterregel: bestC%tt/ikke bestC%tt
+
+
+
+Oppgave for heltidsstudenter Karakterregel: BestC%tt/ Ikke bestC%tt
+Om bruk av KI
+
+LUR/Profesjonsmaster PPU, profil realfag: I emnet tillates full bruk av KI (nivC% K3). Studenten skal gjC8re rede for hvordan og hvorfor KI er blitt brukt i arbeidet med de to skriftlige oppgavene i emnet. Videre skal studenten drC8fte hvordan og hvorfor KI-bruk bidrar til utvikling av egen faglig og forskningsmetodisk kompetanse.
+
+Profesjonsmaster PPU, profil naturbruk: I emnet tillates full bruk av KI (nivC% K3). Studenten skal begrunne hvorfor KI eventuelt er blitt brukt og gjC8re rede for hvordan KI i tilfelle er brukt og hva KI da har bidratt med i arbeidet med innleveringsoppgaven.
+
+Her finner du KI-kategoriene beskrevet.
+
+Sensorordning
+
+LUR/Profesjonsmaster PPU, profil realfag: Emneansvarlig og en intern sensor godkjenner opplegget for eksamen og kriterier for bedC8mmelse og foretar sensur av studentenes avsluttende oppgave. Ekstern sensur finner sted hvert tredje C%r.
+
+Profesjonsmaster PPU, profil naturbruk: Emneansvarlig og en intern sensor godkjenner opplegget for eksamen og kriterier for bedC8mmelse og foretar sensur av studentenes avsluttende oppgave.
+
+Obligatorisk aktivitet
+
+LUR/Profesjonsmaster PPU, profil realfag: Deltakelse pC% samlinger med krav om minimum 80% oppmC8te. Individuell skriftlig oppgave, vurderes godkjent/ikke godkjent.
+
+Profesjonsmaster PPU, profil naturbruk: Deltakelse pC% samlinger med krav om minimum 70 % oppmC8te. Innleveringsoppgaven kan vC&re i multimodal form, kan leveres individuelt eller i gruppe og skal vurderes som godkjent/ikke godkjent.
+
+Undervisningstider
+
+LUR/Profesjonsmaster PPU, profil realfag: Oversikt over samlingene vil bli lagt fram i juni 2025
+
+Profesjonsmaster PPU, profil naturbruk: Kurset har fire fysiske samlinger pC% 2-3 dager samkjC8rt med PPUT 301, profil aksjonslC&ring.
+
+Fortrinnsrett
+
+LUR/Profesjonsmaster PPU, profil realfag: M-LUN (LUR) og M-PPU (Profesjonsmaster PPU, profil realfag)
+
+Profesjonsmaster PPU, profil naturbruk: Profesjonsmaster PPU, profil naturbruk
+
+TilgjengelighetserklC&ring
+PersonvernerklC&ring
+Endre cookies

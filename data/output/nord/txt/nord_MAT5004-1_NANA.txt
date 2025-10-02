@@ -1,0 +1,124 @@
+institution: nord
+code: MAT5004-1
+year: NA
+hv: NA
+url: https://www.nord.no/studier/emner/mat5004
+status: 200
+course_name_no: Matematikk 3A, 5-10
+----- FULLTEXT -----
+
+I dette emnet vil studentene fordype sine kunnskaper innen matematikkdidaktikk, reflektere over aktuelle forskningsresultater og tilegne seg kunnskaper til bruk i egne forskningsprosjekt.
+
+I dette emnet vil studentene fordype sine kunnskaper om matematikkdidaktikk med fokus pC% 5.-10. trinn. De blir kjent med aktuell forskning og fC%r mulighet til C% utvikle sine ferdigheter nC%r det gjelder undervisning, utvikling av undervisningsopplegg og matematikkdidaktisk forskning.
+
+I emnet vil studentene bli introdusert for big ideas i matematikkundervisning generelt og i detalj, for eksempel innenfor omrC%dene geometri, tall og operasjoner (med naturlige tall, heltall og rasjonale tall), ligninger og funksjoner, algebra, elementC&r tallteori og stokastikk. Emnet gir ogsC% studentene en oversikt over undervisnings/lC&ringsbanene i matematikk for 1.-10- trinn.
+
+PC% tvers av alle omrC%dene sC% behandles viktige tema som design av oppgaver og undervisningsC8kter, vurdering i klasserommet, hC%ndtering av lC&revansker og dyskalkuli, analyse av lC&rebC8ker, undervisning med IKT, C% skape muligheter for problemlC8sning, matematisk resonnering og C8ving i matematikk.
+
+Emnet avsluttes med at hver student gir en presentasjon av et valgt tema relatert til innholdet i emnet.
+
+I dette emnet vil studentene fordype sine kunnskaper om matematikkdidaktikk med fokus pC% 5.-10. trinn. De blir kjent med aktuell forskning og fC%r mulighet til C% utvikle sine ferdigheter nC%r det gjelder undervisning, utvikling av undervisningsopplegg og matematikkdidaktisk forskning.
+
+I emnet vil studentene bli introdusert for big ideas i matematikkundervisning generelt og i detalj, for eksempel innenfor omrC%dene geometri, tall og operasjoner (med naturlige tall, heltall og rasjonale tall), ligninger og funksjoner, algebra, elementC&r tallteori og stokastikk. Emnet gir ogsC% studentene en oversikt over undervisnings/lC&ringsbanene i matematikk for 1.-10- trinn.
+
+PC% tvers av alle omrC%dene sC% behandles viktige tema som design av oppgaver og undervisningsC8kter, vurdering i klasserommet, hC%ndtering av lC&revansker og dyskalkuli, analyse av lC&rebC8ker, undervisning med IKT, C% skape muligheter for problemlC8sning, matematisk resonnering og C8ving i matematikk.
+
+Emnet avsluttes med at hver student gir en presentasjon av et valgt tema relatert til innholdet i emnet.
+
+Opptak til programmet.
+
+GjennomfC8rt Matematikk 1, 30 stp, og Matematikk 2, 30 stp, i MAGLU 5-10
+
+Kunnskaper
+
+Studenten
+
+har forskningsbasert kunnskap om de store matematiske omrC%dene pC% 5.-10. trinn og didaktikken som hC8rer til
+kjenner til big ideas i matematikkundervisningen og konkretiseringen av dem pC% 5.-10. trinn
+har kunnskap om hvordan lC&ringen av matematikk utvikler seg fra 1. til 10. trinn og hva de viktige milepC&lene er i denne undervisnings/lC&ringsbanen
+har kunnskap om viktige forskningsprosjekter i matematikkdidaktikk
+kjenner til essensen av dyskalkuli, egnede verktC8y (tester og intervjuer) til diagnoseverktC8y og metoder for utbedring
+har kunnskap om forskningsmetoder i didaktisk forskning
+
+Ferdigheter
+
+Studenten
+
+kan evaluere det matematiske innholdet i undervisningen og evaluere undervisningsmetoder
+kan analysere resultater fra matematikkdidaktisk forskning
+kan utvikle, gjennomfC8re og evaluere forskningsbaserte lC&ringsmiljC8 og vurderinger for matematikkundervisning pC% 5.-10. trinn
+kan analysere lC&rebC8ker, lC&replanmateriell og programvare for matematikkundervisning pC% 5.-10. trinn
+
+Generell kompetanse
+
+Studenten
+
+Kan identifisere og reflektere over sammenhenger mellom matematikkdidaktisk teori og lC&ring og undervisning av matematikk i skolen.
+Kan bruke matematikkdidaktisk forskning til C% bidra til skolens utviklingsarbeid.
+er bevisst relevante etiske problemstillinger i lC&reryrket og forskningsfeltet og kan handle deretter.
+
+Kunnskaper
+
+Studenten
+
+Ferdigheter
+
+Studenten
+
+Generell kompetanse
+
+Studenten
+
+Utover semesteravgift og pensumlitteratur forutsettes det at studenten disponerer en bC&rbar datamaskin.
+
+Valgbart.
+
+Samlinger med forelesninger pC% campus, mellomperiodeoppgaver.
+
+Studieprogrammet evalueres C%rlig av studentene gjennom emneundersC8kelser (midtveisevaluering og sluttevaluering). Evaluering inngC%r som en del av universitetets kvalitetssikringssystem.
+
+Se Kompetanseguiden og emnebeskrivelse for praksis 4. studieC%r
+
+Sammensatt vurdering: Alle delene beskrevet under mC% vC&re godkjent/bestC%tt for C% fC% endelig karakter i emnet.
+
+Obligatorisk deltagelse (OD). Minimum 80%. Karakterregel: Godkjent/ikke godkjent.
+
+Arbeidskrav (AK). 2 Arbeidskrav. Godkjent/ikke godkjent.
+
+Muntlig eksamen (MU). Karakterregel: A - F. Ekstern sensur.
+
+Sammensatt vurdering: Alle delene beskrevet under mC% vC&re godkjent/bestC%tt for C% fC% endelig karakter i emnet.
+
+Obligatorisk deltagelse (OD). Minimum 80%. Karakterregel: Godkjent/ikke godkjent.
+
+Arbeidskrav (AK). 2 Arbeidskrav. Godkjent/ikke godkjent.
+
+Muntlig eksamen (MU). Karakterregel: A - F. Ekstern sensur.
+
+Alle hjelpemidler.
+
+C generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er C% regne som fusk.
+
+Alle hjelpemidler.
+
+C generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er C% regne som fusk.
+
+Med overlapp menes en faglig likhet mellom emner med samme faginnhold. Du vil derfor fC% fC8lgende reduksjon i studiepoeng om du har tatt emner som er angitt under:
+
+MAT5008 - Aktuell forskning i matematikkdidaktikk, del 1, mastermodul - 15 Studiepoeng
+
+MAT5010 - Matematikk 3A - Fordypning i matematikkutdanning - 7.5 Studiepoeng
+
+MAT5014 - Matematikk 3D - Forskning i matematikkutdanning - 2.5 Studiepoeng
+
+MAT5012 - Matematikk 3B - Matematisk modellering og problemlC8sning, 5-10 - 2.5 Studiepoeng
+
+Med overlapp menes en faglig likhet mellom emner med samme faginnhold. Du vil derfor fC% fC8lgende reduksjon i studiepoeng om du har tatt emner som er angitt under:
+
+MAT5008 - Aktuell forskning i matematikkdidaktikk, del 1, mastermodul - 15 Studiepoeng
+
+MAT5010 - Matematikk 3A - Fordypning i matematikkutdanning - 7.5 Studiepoeng
+
+MAT5014 - Matematikk 3D - Forskning i matematikkutdanning - 2.5 Studiepoeng
+
+MAT5012 - Matematikk 3B - Matematisk modellering og problemlC8sning, 5-10 - 2.5 Studiepoeng

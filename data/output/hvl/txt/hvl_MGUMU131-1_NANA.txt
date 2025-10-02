@@ -1,0 +1,10 @@
+institution: hvl
+code: MGUMU131-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGUMU131
+status: 200
+course_name_no: MGUMU131 Musikk 1, emne 1 - Grunnleggjande musikklC&rarkompetanse
+----- FULLTEXT -----
+
+NA

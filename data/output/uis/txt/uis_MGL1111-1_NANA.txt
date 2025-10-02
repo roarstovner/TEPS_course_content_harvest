@@ -1,0 +1,169 @@
+institution: uis
+code: MGL1111-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MGL1111
+status: 200
+course_name_no: Matematikk 1 emne 2 (1.-7. trinn) (MGL1111)
+----- FULLTEXT -----
+
+Emnekode
+
+MGL1111
+
+Versjon
+
+1
+
+Vekting (stp)
+
+15
+
+Semester undervisningsstart
+
+HC8st
+
+Antall semestre
+
+1
+
+Vurderingssemester
+
+HC8st
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitenskap og humaniora,
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Fakultet for utdanningsvitenskap og humaniora,
+
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhold
+
+De faglige temaene i dette emnet er fC8rst og fremst geometri og mC%ling, algebra og funksjoner.
+
+Emnet skal forberede for matematikkundervisning i grunnskolen fra 1. til 7. trinn, i trC%d med relevant forskning og til enhver tid gjeldende lC&replan. Studiet er erfaringsbasert og forskningsbasert, det innebC&rer solid tilknytning til praksis. MatematikklC&rere mC% kunne analysere elevenes matematiske utvikling, vC&re gode matematiske veiledere og samtalepartnere, kunne velge ut og lage gode matematiske eksempler og oppgaver som fremmer alle elevers matematiske kompetanse, kreativitet og positive holdning til matematikk. Som framtidig matematikklC&rer skal studenten selv arbeide utforskende og kreativt med faget.
+
+Matematisk sprC%k og tenkning utvikles gjennom aktiviteter som fremmer resonnement, argumentasjon og begrunnelse. MatematikklC&rere mC% kunne gjennomfC8re og forstC% matematiske prosesser og argumenter, og analysere forslag fra andre med tanke pC% holdbarhet og potensial. Studenten skal selv ha en reflektert forstC%else av matematikken elevene skal lC&re og kunne gjC8re faget tilgjengelig for alle elever.
+
+Algebraisk tenkning innebC&rer sC8k etter samvariasjon, generelle strukturer, mC8nstre og relasjoner, beskrivelse av disse ved bruk av ord og symboler, og resonnering og argumentasjon. Dette skjer i arbeid med tall og regneoperasjoner, geometriske mC8nstre og sammenhenger, og samvariasjon mellom stC8rrelser. Et viktig aspekt ved algebraisk tenking er bruk av ord eller symboler til C% beskrive vilkC%r en stC8rrelse skal oppfylle, som for eksempel i arbeid med ligninger og ulikheter.
+
+Bruk av ulike representasjoner er nC8dvendig for C% gjC8re matematiske begrep og ideer tilgjengelige for elever. For C% utvikle sin matematiske forstC%else og evne til problemlC8sning trenger elevene C% arbeide med sammenhenger og overganger mellom ulike representasjoner. Studenten skal legge til rette for elevers arbeid med ulike representasjoner.
+
+Vurdering av lC&remidler, herunder bruk av digitale verktC8y, vil vC&re en viktig del av opplC&ringen.
+
+Meningsfulle matematiske samtaler er sentralt i utviklingen av matematisk forstC%else. Gjennom samtale og diskusjon kan lC&rere inkludere alle elever i matematisk resonnering og argumentering, stimulere til kritisk matematisk tenking og drC8fte matematikkens rolle i samfunnet. Studenten skal legge til rette for meningsfulle matematiske samtaler med og mellom elever.
+
+LC&rere skal invitere elever til C% dele sin matematiske tenking, lytte til og vurdere denne med tanke pC% utvikling av matematisk kompetanse. Det skal legges til rette for undervisning ut fra elevenes ulike behov, der ulik kulturell, sprC%klig og sosial bakgrunn bC%de tas hensyn til men ogsC% ses som ressurs i undervisningen. Som framtidig matematikklC&rer skal studenten stC8tte elevene i deres tro pC% seg selv og at en gjennom hardt arbeid, individuelt og kollektivt, utvikler forstC%else av matematiske ideer og sammenhenger.
+
+Semesterplaner med detaljbeskrivelse av innholdet vil foreligge ved semesterstart.
+
+LC&ringsutbytte
+
+Kunnskap
+
+Studenten har
+
+god kunnskap i geometri, algebra og funksjoner og kan knytte denne kunnskapen til undervisning pC% barnetrinnet
+god kunnskap om overgangen fra aritmetikk til algebra og om elevers begrepsutvikling innen geometri, algebra og funksjoner
+kunnskap om hvordan matematiske problem kan lC8ses med ulike strategier
+kunnskap om sprC%kets rolle for lC&ring av matematikk
+kunnskap om hvordan matematiske ideer kan representeres pC% ulike mC%ter
+grunnleggende kunnskap om programmering og digitale verktC8y i matematikk, f.eks. hvordan slike verktC8y kan brukes for visualisering og representasjon innen geometri, algebra og funksjoner
+kunnskap om matematikkfagets innhold i barnehagen og pC% ungdomstrinnet og om overgangene fra barnehage til skole og fra barnetrinn til ungdomstrinn
+kunnskap om et bredt metoderepertoar for undervisning i matematikk
+kunnskap om ulike teorier for lC&ring og ulike lC&rings- og kunnskapssyn
+
+Ferdigheter
+
+Studenten
+
+kan planlegge, gjennomfC8re og vurdere matematikkundervisning for alle elever pC% trinn 1-7 med fokus pC% variasjon og elevaktivitet, forankret i forskning, teori og praksis
+har kompetanse til C% fremme gode praktiske ferdigheter i muntlig, skriftlig og digital kommunikasjon hos elever
+kan bruke arbeidsmC%ter som fremmer elevenes undring, kreativitet og evne til C% arbeide systematisk med problemlC8sing, utforskende aktiviteter, begrunnelser, argumenter og bevis
+kan bruke og vurdere ulike observasjons- og vurderingsmC%ter, for C% tilpasse opplC&ringen til elevenes ulike behov
+kan kommunisere med elever, enkeltvis og i ulike gruppesammensetninger, lytte til, vurdere og gjC8re bruk av elevers innspill
+kan analysere og vurdere elevers tenkemC%ter, argumentasjon og lC8sningsmetoder fra ulike perspektiver pC% kunnskap og lC&ring
+
+Generell kompetanse
+
+Studenten
+
+har forstC%else for matematikkfagets betydning som allmenndannende fag og dets samspill med kultur, filosofi og samfunnsutvikling
+har innsikt i matematikkfagets betydning for utvikling av kritisk demokratisk kompetanse
+
+Forkunnskapskrav
+
+Ingen
+
+Eksamen / vurdering
+
+VilkC%r for C% gC% opp til eksamen/vurdering
+
+Arbeidskrav, 70% obligatorisk tilstedevC&relse
+
+Gjennom semesteret skal det leveres tre arbeidskrav (omtales som mappe). Til sammen skal arbeidene i mappen dekke fC8lgende komponenter:
+
+skriftlig arbeid
+muntlig arbeid
+bruk av digitale verktC8y
+
+Mappen vurderes til godkjent/ikke godkjent. For C% bli vurdert til godkjent mC% hvert enkelt arbeidskrav vC&re vurdert til godkjent. Dersom et arbeidskrav underkjennes ved fC8rste innlevering, gis mulighet for C)n ny innlevering av arbeidet i bearbeidet form.
+
+Krav om tilstedevC&relse:
+
+Matematikkfaget i lC&rerutdanning forutsetter aktivt engasjement over tid med medstudenter og faglC&rere. I faget blir forskjellige begreper, strategier og undervisningsopplegg diskutert og drC8ftet. Slik virksomhet foregC%r kontinuerlig i utdanningen. Profesjonsutdanningen krever derfor at studenter er til stede i undervisningen og i aktiviteter som inngC%r i studiet. Det er derfor krav om minimum 70 % tilstedevC&relse i undervisningen.
+
+Konsekvenser av ikke godkjent oppmC8te eller mappe er at adgang til skriftlig eksamen nektes, jf. Forskrift om studier og eksamen ved Universitetet i Stavanger (eksamensforskriften), B' 2-8 nr. 3.
+
+Fagperson(er)
+
+FaglC&rer:
+Eva-Maria Reich
+
+Studieprogramleder:
+Ingeborg KnC&velsrud
+
+FaglC&rer:
+Kjersti Melhus
+
+Praksiskoordinator:
+Karen Elizabeth Gilje Woie
+
+Studiekoordinator:
+Gro NjC&rheim
+
+Studiekoordinator:
+Kjersti Gjedrem
+
+Arbeidsformer
+
+Forelesning, lC&rerstyrte aktiviteter/dialog, selvstendig arbeid, gruppearbeid. Bruk av IKT inngC%r som en naturlig del av studiet. Canvas vil bli brukt i kommunikasjonen mellom studenter og faglC&rere.
+
+Praksis
+
+15 dager praksis
+
+Cpent for
+
+GrunnskolelC&rerutdanning for trinn 1 - 7, femC%rig masterprogram
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+Pensumlisten finner du i Leganto

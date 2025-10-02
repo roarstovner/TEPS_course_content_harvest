@@ -1,0 +1,10 @@
+institution: hvl
+code: MGUEN301-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGUEN301
+status: 200
+course_name_no: MGUEN301 Engelsk 2, emne 1 - Mangfold i kultur, sprC%k og tekst
+----- FULLTEXT -----
+
+NA

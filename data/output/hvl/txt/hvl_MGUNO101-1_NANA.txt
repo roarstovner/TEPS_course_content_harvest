@@ -1,0 +1,10 @@
+institution: hvl
+code: MGUNO101-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGUNO101
+status: 200
+course_name_no: MGUNO101 Norsk pC% mellomsteget 1: SprC%k- og tekstkunnskap
+----- FULLTEXT -----
+
+NA

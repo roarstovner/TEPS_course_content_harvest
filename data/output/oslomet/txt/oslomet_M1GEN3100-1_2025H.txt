@@ -1,0 +1,55 @@
+institution: oslomet
+code: M1GEN3100-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/M1GEN3100/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+M1GEN3100 Engelsk 2, emne 3 Emneplan
+Engelsk emnenavn
+English 2, Module 3
+Studieprogram
+Skolefag for kroppsC8ving og idrettsfag
+GrunnskolelC&rerutdanning for trinn 1-7
+Omfang
+30.0 stp.
+StudieC%r
+2025/2026
+Pensum
+HCST 2025
+
+Timeplan
+HCST 2025
+Programplan
+Skolefag for kroppsC8ving og idrettsfag (2025 HCST )
+GrunnskolelC&rerutdanning for trinn 1-7 (2025 HCST )
+Emnehistorikk
+2018 / 2019 2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Innledning
+
+Fagplanen tilhC8rende dette emnet er lagt pC% emne M1GEN2100 Engelsk 1, emne 1.
+
+Forkunnskapskrav
+
+Ingen.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har omfattende kunnskap om hvordan barn lC&rer sprC%k, med fokus pC% begynneropplC&ring
+har omfattende kunnskap om flersprC%klighet som ressurs i klasserommet
+har kunnskap om engelsk som verdenssprC%k og hva dette innebC&rer for utviklingen av sprC%klig, kommunikativ og interkulturell kompetanse
+har kunnskap om sentrale dokumenter og ressurser for engelskfaget
+har kunnskap om estetiske lC&ringsformer
+har detaljert kunnskap om tilegnelse av ordtilfang og om strukturer i engelsk fra lyd- til tekstnivC%
+har omfattende kunnskap om engelsk skjC8nnlitteratur fra ulike tider for barn og unge
+kjenner til et rikt utvalg sanger, rim, litteratur, film og andre kulturelle uttrykk som kan brukes i undervisning av barn B

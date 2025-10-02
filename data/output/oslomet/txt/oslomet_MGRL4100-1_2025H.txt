@@ -1,0 +1,235 @@
+institution: oslomet
+code: MGRL4100-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/MGRL4100/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+MGRL4100 RLE og RLE-didaktikk 1 Emneplan
+Engelsk emnenavn
+RLE and RLE Education 1
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 1-7
+GrunnskolelC&rerutdanning for trinn 5-10
+Omfang
+15.0 stp.
+StudieC%r
+2025/2026
+Pensum
+HCST 2025
+
+Timeplan
+HCST 2025
+Programplan
+GrunnskolelC&rerutdanning for trinn 1-7 (2025 HCST )
+GrunnskolelC&rerutdanning for trinn 5-10 (2025 HCST )
+Emnehistorikk
+2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Fagplan
+
+RLE og RLE-didaktikk
+
+(Religion, livssyn og etikk)
+
+15+15+15 studiepoeng
+
+Fagplanen ble godkjent i studieutvalget 14. november 2016
+
+Revisjon godkjent av utdanningsutvalget 14. februar 2019
+
+Redaksjonelle endringer lagt inn 1. februar 2020
+
+Revisjon godkjent av utdanningsutvalget 17. februar 2020
+
+Redaksjonelle endringer lagt inn 9. desember og 18. desember 2020
+
+Redaksjonelle endringer lagt inn 29. oktober 2021
+
+Gjeldende fra hC8stsemesteret 2022
+
+Innledning
+
+Fagplanen bygger pC% forskrift om rammeplan for grunnskolelC&rerutdanningen for trinn 1-7/trinn 5-10, fastsatt av Kunnskapsdepartementet 7. juni 2016, nasjonale retningslinjer for grunnskolelC&rerutdanningen trinn 1-7/trinn 5-10 av 1. september 2016 og programplan for grunnskolelC&rerutdanning for trinn 1-7/trinn 5-10 ved OsloMet, godkjent av studieutvalget 16. november 2016.
+
+Masterfagskursene i RLE-didaktikk har som mC%l C% gi studentene et bredt grunnlag for C% forstC%, vurdere og utvikle KRLE-undervisningen i norsk grunnskole, basert pC% forskningsbasert fagkunnskap, og bidra til at studentene utvikler en profesjonsrettet kompetanse i fagets didaktikk. RLE-didaktikk gir en utdypet forstC%else av hvordan religion og livssyn, etikk og filosofi kommer til uttrykk i ulike kontekster og gjennom ulike modaliteter som tekster, bilder, arkitektur og musikk.
+
+I tillegg gir masterfordypningen i RLE en utdypet forstC%else av skolen og klasserommet som mangfoldsarena mer overordnet, med vekt pC% religiC8st, kulturelt og livssynsmessig mangfold. En mastergrad i RLE gir sC%ledes ikke bare viktig undervisningskompetanse i skolefaget, men kvalifiserer ogsC% studenten som en overordnet ressursperson for skolen med tanke pC% mangfold knyttet til religion, kultur og etikk.
+
+I emne 1 ligger fokus pC% den sosiale, kulturelle og faglige konteksten for skolefaget og noen viktige innfallsvinkler til fagomrC%det. Emne 2 ser pC% RLE-didaktikk ut fra ulike teoretiske perspektiver og praktisk RLE-undervisning. Emne 3 fokuserer pC% mangfoldskompetanse knyttet til religions- og livssynsmangfold ved skolen, kontroversielle tema i undervisningen og utvikling av eget masterprosjekt.
+
+Et grunnleggende mC%l med denne masterfordypningen er C% gi en forstC%else av hvordan barn og unge i et mangfoldig og flerkulturelt samfunn mC8ter KRLE-faget i skolen og hvordan faget kan vC&re et mC8tested som bidrar til forstC%else for hverandres kulturelle stC%sted og livstolking. Skolefaget stimulerer til dialog og gjensidig anerkjennelse og sC8ker C% bidra til samhold og grunnleggende refleksjoner rundt viktige verdier i samfunnet.
+
+Gjennom arbeidet med masterfaget skal studenten, forankret i eget forskningsarbeid, skaffe seg inngC%ende og avansert kunnskap om faget, fagets rolle og funksjon i skolen og om fagets didaktikk. Studenten skal analysere og forholde seg kritisk til nyere nasjonal og internasjonal forskning og anvende denne kunnskapen i profesjonsutC8velsen. Studenten fC%r innsikt i sentrale undervisnings- og vurderingsformer og hvordan disse bidrar til elevens lC&ring. Vitenskapsteori og metode danner grunnlag for studiet og for studentens arbeid med masteroppgaven.
+
+MC%lgruppe
+
+Studenter som er tatt opp til femC%rig grunnskolelC&rerutdanning for trinn 1-7/trinn 5-10.
+
+Opptakskrav
+
+Faget er tilgjengelig som valgfag for aktive studenter ved grunnskolelC&rerutdanningen, i trC%d med utdanningenes programplaner.
+
+Opptak til RLE-didaktikk krever fullfC8rt 60 studiepoeng RLE pC% syklus 1.
+
+LC&ringsutbytte
+
+LC&ringsutbyttet er nC&rmere beskrevet i emneplanene.
+
+Fagets innhold og oppbygging
+
+RLE og RLE-didaktikk (45 studiepoeng) er bygget opp av tre emner C  15 studiepoeng. Emnene er RLE og RLE-didaktikk 1, RLE og RLE-didaktikk 2 og RLE og RLE-didaktikk 3. GrunnskolelC&rerstudenter mC% velge emne 1 og emne 2 innenfor et fag uavhengig om masteroppgaven skal vC&re i fagdidaktikk eller profesjonsrettet pedagogikk. Emne 3 kan byttes med andre emner i trC%d med nasjonale retningslinjer.
+
+Fagets arbeids- og undervisningsformer
+
+GjennomgC%ende vil undervisningen vC&re organisert som gruppeundervisning, seminarer hvor studentene deltar aktivt og selvstendig arbeid. Studentene skal gjennomfC8re arbeidskrav i lC8pet av faget, bC%de individuelt og i grupper.
+
+LC&ringsledelse og dypere forstC%else av elevmangfold
+
+I undervisningen fokuseres det pC% lC&ringsledelse og hvilke arbeidsmC%ter som er relevante i KRLE-undervisning. I den didaktiske tenkningen vektlegges forstC%else av elevmangfoldet, slik at lC&ringsledelse foregC%r pC% en adekvat mC%te. I KRLE er dessuten perspektivveksling en sentral ferdighet, bC%de i egen praksis og som en ressurs for elevenes samfunnsforstC%else.
+
+Forsknings- og utviklingsarbeid relatert til skolen
+
+I studiet vil studentene lC&re om skole- og klasseromsforskning i faget og ogsC% utfC8re slik forskning selv.
+
+Utvikling av endringskompetanse
+
+Et viktig aspekt i undervisning og pensum er kritisk refleksjon rundt egen lC&rerrolle. Seminarundervisning bidrar til C% skape rom for samtale og refleksjon omkring dette.
+
+Klasseledelse og lC&rerrollen sett fra faget
+
+AvgjC8rende for KRLE-lC&rerens profesjonalitet er innsikt i grunnleggende prinsipper for skolefaget og C% vC&re oppmerksom i forhold til den enkelte elevs livssynsmessige tilhC8righet og overbevisninger. En viktig del av lC&rerrollen i KRLE-faget er C% legge til rette for lC&ring basert pC% dialog og respekt. Klasseledelse er gjennomgC%ende kontekstuelt orientert og vil stC% i et forhold til de arbeidsmC%ter som benyttes.
+
+Internasjonale perspektiver
+
+Deler av pensum er pC% engelsk og andre nordiske sprC%k og faget er med sitt fokus pC% religions- og kulturforstC%else grunnleggende orientert ut fra internasjonale perspektiver.
+
+Praksistilknytning
+
+Praksis er en viktig lC&ringsarena for KRLE-faget der studenten skal lC&re hC%ndverkssiden av faget og gjC8re egne erfaringer med undervisning og klasseledelse. Praksis legger til rette for at studentene skal utvikle sin identitet som KRLE-lC&rer.
+
+PraksisopplC&ring
+
+PraksisopplC&ring er nC&rmere beskrevet i programplanen.
+
+Skikkethetsvurdering
+
+LC&rerutdanningsinstitusjoner har ansvar for C% vurdere om studenter er skikket for lC&reryrket. LC8pende skikkethetsvurdering foregC%r gjennom hele studiet og inngC%r i en helhetsvurdering av studentens faglige og personlige forutsetninger for C% kunne fungere som lC&rer. En student som utgjC8r en mulig fare for elevers liv, fysiske og psykiske helse, rettigheter og sikkerhet, er ikke skikket for yrket. Studenter som viser liten evne til C% mestre lC&reryrket, skal sC% tidlig som mulig i utdanningen fC% melding om dette. De skal fC% rC%d og veiledning for C% gjC8re dem i stand til C% oppfylle kravene om lC&rerskikkethet eller fC% rC%d om C% avslutte utdanningen. Beslutninger om skikkethet kan fattes gjennom hele studiet.
+
+Se universitetets nettsted for mer informasjon om skikkethetsvurdering.
+
+Arbeidskrav
+
+Arbeidskrav skal vC&re levert/utfC8rt innen fastsatt(e) frist(er). Gyldig fravC&r dokumentert med for eksempel sykemelding, gir ikke fritak for C% innfri arbeidskrav. Studenter som pC% grunn av sykdom eller annen dokumentert gyldig C%rsak ikke leverer/utfC8rer arbeidskrav innen fristen, kan fC% forlenget frist. Ny frist for C% innfri arbeidskrav avtales i hvert enkelt tilfelle med den aktuelle lC&reren. Dersom arbeidskravet i opprinnelig form ikke lenger lar seg gjennomfC8re, kan det erstattes med en kompensatorisk oppgave.
+
+Arbeidskrav vurderes til "Godkjent" eller "Ikke godkjent". Studenter som leverer/utfC8rer arbeidskrav innen fristen, men som fC%r vurderingen "Ikke godkjent", har anledning til to nye innleveringer/utfC8relser. Studenten mC% da selv avtale ny innlevering av det aktuelle arbeidskravet med faglC&rer. Studenter som ikke leverer/utfC8rer arbeidskrav innen fristen og som ikke har dokumentert gyldig C%rsak, fC%r ingen nye forsC8k.
+
+I programplanen er de fagovergripende temaene pC% de ulike studieC%rene og semestrene beskrevet. I tilknytning til disse kan det vC&re krav til tilstedevC&relse og/eller andre arbeidskrav.
+
+NC&rmere informasjon om arbeidskrav finnes i den enkelte emneplan.
+
+Vurderings-/eksamensformer
+
+Se emneplanene under punktet Vurderings-/eksamensformer.
+
+Samlet vurdering
+
+Det gis ingen samlet vurdering i RLE og RLE-didaktikk. Emnene vil hver for seg bli oppfC8rt pC% vitnemC%let.
+
+Vurderingskriterier
+
+A: Fremragende. Viser fremragende kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser fremragende evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+B: Meget god. Viser meget gode kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser meget god evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+C: God. Viser gode kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser god evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+D: NoksC% god. Viser begrensede kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser begrenset evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+E: Tilstrekkelig. Tilfredsstiller minimumskravene til kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser noe evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+F: Ikke bestC%tt. Har utilstrekkelig kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser dC%rlig evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+Rettigheter og plikter ved eksamen
+
+Studentens rettigheter og plikter framgC%r av forskrift om studier og eksamen ved OsloMet. Forskriften beskriver blant annet vilkC%r for ny/utsatt eksamen, klageadgang og hva som regnes som fusk ved eksamen. Studenten er selv ansvarlig for C% melde seg opp til eventuell ny/utsatt eksamen.
+
+Innledning
+
+I RLE- og RLE- didaktikk 1 ligger fokus pC% den sosiale, kulturelle og vitenskapelige konteksten for skolefaget og noen viktige innfallsvinkler til fagomrC%det.
+
+Forkunnskapskrav
+
+Ingen
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskaper
+
+Studenten
+
+har en bred oversikt over religiC8st, livssynsmessig og kulturelt mangfold i samfunnet og religionspolitiske debattlinjer i nasjonal sammenheng
+har fordypet kunnskap om rollen til religion i moderne samfunn og forstC%else av dynamikken i interreligiC8se relasjoner og mellom religion og kultur
+har tilegnet seg innsikt i kulturelle prosessers betydning for religiC8s endring (sekulariserings- og post-sekulariseringsteorier) og mC%ten globaliseringsprosesser paL
+virker religiC8se selvforstC%elser
+har fordypet innsikt i grunnlagsproblematikk knyttet til det RLE-faglige feltet og kan forstC% denne i lys av generelle kunnskapsteoretiske og vitenskapsfilosofiske posisjoner
+har avansert kunnskap om sprC%k og fortolkningsproblematikk med relevans for KRLE-undervisning
+
+Ferdigheter
+
+Studenten
+
+kan utforske, analysere og drC8fte fagspC8rsmC%l knyttet til emnet pC% en faglig og forskningsmessig forsvarlig mC%te
+kan forholde seg kritisk til ulike informasjonskilder, bC%de erfaringskunnskap og forskning, og anvende slike kilder pC% en faglig og selvstendig mC%te
+kan analysere og forholde seg vurderende til eksisterende teorier, metoder og fortolkninger innenfor fagomrC%det og arbeide selvstendig med praktisk og teoretisk problemlC8sning
+kan gi faglig kompetente skriftlige og muntlige redegjC8relser innenfor emnet
+
+Generell kompetanse
+
+Studenten
+
+kan bidra kunnskapsmessig til fagutvikling innenfor emnet pC% grunnopplC&ringsnivC%
+kan formidle forskningsbasert kunnskap innenfor emnet bC%de skriftlig og muntlig pC% en faglig forsvarlig mC%te
+kan bruke sin kunnskap med faglig integritet og etisk bevissthet
+Innhold
+
+Emnet gir forstC%else av religiC8s endring i moderniteten, samspillet mellom religioner, forholdet mellom religion og kultur, og hvilken rolle religioner spiller for utformingen av samfunn i nC%tid og i et historisk perspektiv. Temaet gir studentene teoretiske og praktiske redskaper til selv C% fortolke og forstC% religion og til C% hC%ndtere aktuelle utfordringer knyttet til religionsmC8ter og religionskonflikt i det moderne samfunn.
+
+Arbeids- og undervisningsformer
+
+Undervisningen pC% emnet vil i hovedsak vC&re i form av forelesninger og/eller seminarer og veiledning. Emnet krever selvstendig arbeid og aktiv deltagelse i faglig fellesskap.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+Retten til C% avlegge eksamen forutsetter godkjente arbeidskrav og deltakelse i bestemte faglige aktiviteter.
+
+Individuelt muntlig seminarframlegg pC% ca. 20 minutter, inkludert muntlig respons fra gruppen. Arbeidskravet er knyttet til pensum i emne 1. NC&rmere retningslinjer vil bli gitt.
+
+FormC%let med framlegget er C% C8ve evne til lesing, syntetisering og presentasjon av sentralt fagstoff for andre. Ved manglende eller ikke-godkjent arbeidskrav vil det bli gitt en skriftlig kompensatorisk oppgave av tilsvarende omfang etter nC&rmere avtale med faglC&rer.
+
+For generell informasjon om arbeidskrav, se den innledende fagplandelen.
+
+Vurdering og eksamen
+
+Individuell, muntlig eksamen pC% ca. 30 minutter. Hele pensum er grunnlag for eksamen. Det legges vekt pC% evne til C% kunne trekke linjer, fC% frem perspektiver og kontraster og C% se sammenhenger.
+
+Ny/utsatt eksamen
+
+Ny/utsatt eksamen arrangeres som ved ordinC&r eksamen.
+
+Hjelpemidler ved eksamen
+
+Ingen hjelpemidler tillatt.
+
+Vurderingsuttrykk
+
+Det gis gradert karakter pC% skalaen A-F, der A-E er bestC%tt og F er ikke bestC%tt.
+
+Sensorordning
+
+Det benyttes intern og ekstern sensor

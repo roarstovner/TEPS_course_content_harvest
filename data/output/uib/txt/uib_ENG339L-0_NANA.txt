@@ -1,0 +1,164 @@
+institution: uib
+code: ENG339L-0
+year: NA
+hv: NA
+url: https://www4.uib.no/studier/emner/eng339l
+status: 200
+course_name_no: Masteremne i engelsk lingvistikk I
+----- FULLTEXT -----
+
+Navigasjonssti
+Forside
+Studier
+Emner
+
+Masteremne i engelsk lingvistikk I
+
+Studiepoeng
+
+5
+
+Undervisningssemester
+
+Haust
+
+Emnekode
+
+ENG339L
+
+Talet pC% semester
+
+1
+
+UndervisningssprC%k
+
+Engelsk
+
+Ressursar
+
+Timeplan
+Litteraturliste
+
+Litteraturliste
+
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust 2021 VC%r 2020 Haust 2020 VC%r 2019 Haust 2019 VC%r 2018 Haust 2018 VC%r 2017 Haust 2017 VC%r 2016 Haust 2016 VC%r
+MC%l og innhald
+ENG339L er eit spesialisert studium i eit tema frC% engelsk lingvistikk. Innhaldet i emnet vil variere frC% semester til semester. Tilbodet kan til dC8mes vere kurs med tema frC% anvendt lingvistikk, teoretisk lingvistikk, historisk lingvistikk, eller kombinasjonar av desse.
+LC&ringsutbyte
+
+Ved fullfC8rt emne:
+
+Kunnskapar
+
+Studenten
+
+- har god innsikt i teoretiske og metodiske innfallsvinklar for det feltet som er blitt gjennomgC%tt og kjennskap til nyare forsking innanfor dette feltet
+
+Ferdigheiter
+
+Studenten
+
+- er i stand til C% anvende sine kunnskaper og ferdigheter i undervisning, formidling og/eller informasjon
+
+- har vidareutvikla evna til C% uttrykke akademiske idC)ar pC% skriftlig og munnleg engelsk
+
+Generell kompetanse
+
+Studenten
+
+- er i stand til C% halde fram med eiga kompetanseutvikling og spesialisering pC% ein sjC8lvstendig mC%te
+
+Studiepoeng, omfang
+5
+StudienivC% (studiesyklus)
+Master
+Undervisningssemester
+Haust
+Undervisningsstad
+Bergen
+Krav til forkunnskapar
+Bachelorgrad med spesialisering i engelsk eller tilsvarende
+Studiepoengsreduksjon
+Ingen
+Krav til studierett
+Emnet er ope for studentar med opptak til lektorutdanninga med master i framandsprC%k ved UiB.
+Arbeids- og undervisningsformer
+
+Seminar: opp til 16 timar.
+
+Det er venta at studentane er til stades og tek aktivt del i undervisninga. Dette ligg ogsC% til grunn for fC8rebuing til eksamen.
+
+Om det melder seg fC&rre enn fem studentar til eit emne, kan undervisningstilbodet bli tilpassa studentalet. Studentane vil i sC% fall bli informerte om det alternative undervisningsopplegget ved semesterstart, og fC8r semesterregistreringsfristen 1. februar/1. september.
+
+Obligatorisk undervisningsaktivitet
+Ingen
+Vurderingsformer
+Eksamen er ein tre timars skoleeksamen.
+Karakterskala
+Ved sensur nyttar ein karakterskalaen A-F, der F er stryk.
+Vurderingssemester
+Det blir arrangert eksamen i ENG339L kvart semester. Det er anbefalt at studentar fullfC8rer vurdering i det same semesteret dei fC8lger undervisning.
+Litteraturliste
+
+Pensum i emnet er sett saman av opptil 750 sider lingvistisk faglitteratur. I tillegg til pensum lyt studentane gjere bruk av tilrC%dd hjelpelitteratur og handbC8ker.
+
+Litteraturlista vil vere klar innan 01.07. for haustsemesteret.
+
+Emneevaluering
+Emneevalueringar blir gjennomfC8rte i trC%d med UiB sitt kvalitetssikringssystem.
+Hjelpemiddel til eksamen
+Ingen hjelpemiddel er tillatne ved eksamen.
+Programansvarleg
+Programstyret har ansvar for fagleg innhald og oppbygging av studiet og for kvaliteten pC% studieprogrammet og alle emna der.
+Emneansvarleg
+Programstyret for engelsk.
+Administrativt ansvarleg
+Det humanistiske fakultet ved Institutt for framandsprC%k har det administrative ansvaret for emnet og studieprogrammet.
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust 2021 VC%r 2020 Haust 2020 VC%r 2019 Haust 2019 VC%r 2018 Haust 2018 VC%r 2017 Haust 2017 VC%r 2016 Haust 2016 VC%r
+Kontaktinformasjon
+Studierettleiar: studierettleiar@if.uib.no Eksamensadministrasjon: eksamen@if.uib.no
+Eksamensinformasjon
+
+Klokkeslett for oppstart av skriftlig eksamen kan endre seg fra kl 09.00 til 15.00 eller vice versa inntil 14 dager fC8r eksamen.
+
+Vurderingsordning
+Skriftleg skoleeksamen
+Dato
+10.10.2025, 09:00
+Varigheit
+3 timar
+Trekkfrist
+26.09.2025
+Eksamenssystem
+Inspera
+Digital eksamen
+
+Dette bC8r du vite om eksamen
+
+Institutt for fremmedsprC%k
+
+Vurderingsordning
+
+Skriftleg skoleeksamen
+
+Dato
+
+10.10.2025, 09:00
+
+Varigheit
+
+3 timar
+
+Trekkfrist
+
+26.09.2025
+
+Eksamenssystem
+
+Inspera
+
+Digital eksamen

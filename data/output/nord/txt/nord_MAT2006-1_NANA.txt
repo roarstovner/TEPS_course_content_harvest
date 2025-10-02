@@ -1,0 +1,97 @@
+institution: nord
+code: MAT2006-1
+year: NA
+hv: NA
+url: https://www.nord.no/studier/emner/mat2006
+status: 200
+course_name_no: Matematikk 2B
+----- FULLTEXT -----
+
+Dette kurset tar for seg aktuell matematikk og undervisningslC&re for vgs. Kurset tar utgangspunkt i Matematikk 1T og har som mC%l C% forberede lC&rerstudenter i matematisk og didaktisk kompetanse relevant for dette nivC%et. I tillegg vil kurset gi en introduksjon til kodingssprC%ket Python.
+
+Kurset er en utviding av Matematikk 1. MC%let er C% utvikle studentenes kompetanse i matematikkundervisning pC% grunnskole og videregC%ende skole (matematikk fellesfag).
+
+Dette innebC&rer C% kunne planlegge, gjennomfC8re og vurdere et matematikkkurs. Hovedfokus pC% kurset er pC% ulike representasjoner av matematiske begrep, og er en fordypning av didaktiske aspekter innen algebraisk tenkning og funksjonssamenhenger samt geometrisk tenkning.
+
+Kurset er en utviding av Matematikk 1. MC%let er C% utvikle studentenes kompetanse i matematikkundervisning pC% grunnskole og videregC%ende skole (matematikk fellesfag).
+
+Dette innebC&rer C% kunne planlegge, gjennomfC8re og vurdere et matematikkkurs. Hovedfokus pC% kurset er pC% ulike representasjoner av matematiske begrep, og er en fordypning av didaktiske aspekter innen algebraisk tenkning og funksjonssamenhenger samt geometrisk tenkning.
+
+Opptak skjer pC% bakgrunn av generell studiekompetanse eller realkompetanse etter gjeldende regler. Emnet er for studenter tatt opp pC% lektorutdanning i kroppsC8ving og idrettsfag.
+
+Kunnskap:
+
+Studenten:
+
+har bred kunnskap om planlegging, gjennomfC8ring og vurdering av et matematikkurs i grunnskole og videregC%ende skole;
+har bred kunnskap om bruk av ulike representasjoner i matematikk; spesielt i temaene algebra, funksjoner, likningssystemer og trigonometri.
+har en solid forstC%else av sammenhengen mellom algebra og geometri
+har kunnskap om aktuell matematikkdidaktikk forskning, og forskningsmetodologien som brukes i forskningsfeltet
+har bred kunnskap om programmering og kan koble det til matematiske tema relevant for vgs.
+
+Ferdigheter
+
+Studenten:
+
+kan planlegge, gjennomfC8re og evaluere en hC8y-kvalitet matematikkundervisning;
+kan anvende didaktiske teorier i sin undervisning;
+kan analysere elevenes tankemC%te, og tilpasse sin undervisning til elevene.
+
+Generell kompetanse
+
+Studenten:
+
+kan identifisere relevante forskningspC8rsmC%l innen matematikkdidaktikk,
+kan delta og bidra i FoU-prosjekt og andre samarbeidsprosjekt med tanke pC% C% forbedre matematikkfagets undervisningspraksis
+
+Kunnskap:
+
+Studenten:
+
+Ferdigheter
+
+Studenten:
+
+Generell kompetanse
+
+Studenten:
+
+Semesteravgift og pensumlitteratur.
+
+Valgfritt
+
+Kurset veksler mellom forelesninger og studentaktive metoder.
+
+Studieprogrammet evalueres C%rlig av studentene gjennom emneevalueringer og studieprogramevaluering. Evalueringene inngC%r som en del av universitetets kvalitetssikringssystem.
+
+Samlet vurdering
+
+Arbeidskrav: Studentene vil ha ukentlige skriftlige innleveringer, samt 1-2 stC8rre arbeidskrav i lC8pet av semesteret.Vurdering: godkjent/ ikke godkjent. MC% vC&re godkjent for C% fC% endelig karakter i emnet.
+
+Obligatorisk deltakelse: OppmC8te: minimum 80% pC% all timeplanlagt aktivitet. Vurdering: godkjent / ikke godkjent. MC% vC&re godkjent for C% fC% endelig karakter i emnet.
+
+Skriftlig skoleeksamen, 5 timer. Penn og papir. Vurdering: A - F.
+
+Samlet vurdering
+
+Arbeidskrav: Studentene vil ha ukentlige skriftlige innleveringer, samt 1-2 stC8rre arbeidskrav i lC8pet av semesteret.Vurdering: godkjent/ ikke godkjent. MC% vC&re godkjent for C% fC% endelig karakter i emnet.
+
+Obligatorisk deltakelse: OppmC8te: minimum 80% pC% all timeplanlagt aktivitet. Vurdering: godkjent / ikke godkjent. MC% vC&re godkjent for C% fC% endelig karakter i emnet.
+
+Skriftlig skoleeksamen, 5 timer. Penn og papir. Vurdering: A - F.
+
+Kalkulator, to tosprC%klige ordbC8ker, gjeldende lC&replanverk, penn og linjal
+
+C generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er C% regne som fusk.
+
+Kalkulator, to tosprC%klige ordbC8ker, gjeldende lC&replanverk, penn og linjal
+
+C generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er C% regne som fusk.
+
+Med overlapp menes en faglig likhet mellom emner med samme faginnhold. Du vil derfor fC% fC8lgende reduksjon i studiepoeng om du har tatt emner som er angitt under:
+
+MAT2015 - Matematikk 2D - Programmering i matematikkfaget for lC&rere (8-13) - 5 Studiepoeng
+
+Med overlapp menes en faglig likhet mellom emner med samme faginnhold. Du vil derfor fC% fC8lgende reduksjon i studiepoeng om du har tatt emner som er angitt under:
+
+MAT2015 - Matematikk 2D - Programmering i matematikkfaget for lC&rere (8-13) - 5 Studiepoeng

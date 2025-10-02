@@ -1,0 +1,10 @@
+institution: ntnu
+code: MGLU1901-1
+year: NA
+hv: NA
+url: https://www.ntnu.no/studier/emner/MGLU1901#tab=omEmnet
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+NA

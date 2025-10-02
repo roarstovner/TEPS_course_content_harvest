@@ -1,0 +1,117 @@
+institution: nord
+code: MUS1085-1
+year: NA
+hv: NA
+url: https://www.nord.no/studier/emner/mus1085
+status: 200
+course_name_no: Samspill og ledelse 1.1
+----- FULLTEXT -----
+
+
+
+Emnet inneholder sang, spill, dans og ensembleledelse.
+
+Arbeid med samisk musikk og kulturforstC%else inngC%r ogsC% i dette emnet.
+
+Emnet inneholder sang, spill, dans og ensembleledelse.
+
+Arbeid med samisk musikk og kulturforstC%else inngC%r ogsC% i dette emnet.
+
+Forbeholdt studenter pC% fC8lgende studieprogram ved Nord universitet:
+
+lC&rerutdanning i praktiske og estetiske fag (malupe), bachelor i musikk og C%rsstudium i musikk.
+
+Forbeholdt studenter pC% fC8lgende studieprogram ved Nord universitet:
+
+Kunnskap
+
+Studenten
+
+har kunnskap om ledelse og lC&ringsmiljC8 i musikk
+har evne til C% arbeide skapende og kreativt i ulike formidlingssammenhenger, bC%de utC8vende og pedagogisk
+har grunnleggende kunnskap om bruk av dans og bevegelse i estetiske sammenhenger
+har grunnleggende kunnskap om samisk musikk og kultur
+
+Ferdigheter
+
+Studenten
+
+kan tilpasse seg musikalsk og sosialt i utC8vende virksomhet
+kan planlegge, gjennomfC8re og vurdere musikalske prosjekt
+kan lede, utC8ve og framfC8re musikk i ulike sammenhenger
+
+Generell kompetanse
+
+kan lede, kommunisere, formidle og organisere ulike musikk- og danseaktiviteter i forskjellige kontekster og grupper
+har innsikt i gruppeprosesser og sosiale relasjoner i ulike samspillsituasjoner
+kan tilrettelegge og lede musikalsk materiale i framfC8rings- og ledelsessammenheng
+
+Kunnskap
+
+Studenten
+
+Ferdigheter
+
+Studenten
+
+Generell kompetanse
+
+Utover semesteravgift og pensumlitteratur forutsettes det at studenten disponerer en bC&rbar datamaskin.
+
+Obligatorisk emne
+
+Fysisk undervisning pC% Levanger.
+
+Undervisningen vil foregC% i klasse og i grupper. Undervisningsformene, som ogsC% involverer bruk av digitale verktC8y, varierer mellom praktisk musisering, gruppearbeid og diskusjoner. Studentaktive lC&ringsformer stC%r sentralt, og studentene vil fC% fortlC8pende veiledning. Det forventes en stor grad av egeninnsats i emnet.
+
+Fysisk undervisning pC% Levanger.
+
+Undervisningen vil foregC% i klasse og i grupper. Undervisningsformene, som ogsC% involverer bruk av digitale verktC8y, varierer mellom praktisk musisering, gruppearbeid og diskusjoner. Studentaktive lC&ringsformer stC%r sentralt, og studentene vil fC% fortlC8pende veiledning. Det forventes en stor grad av egeninnsats i emnet.
+
+Emnet evalueres ved slutten av semesteret.
+
+Sammensatt vurdering - alle delene mC% vC&re godkjent/bestC%tt for C% fC% karakter i emnet.
+
+Obligatorisk deltakelse (OD)
+
+Det kreves minimum 80 prosent obligatorisk deltakelse i undervisningen for C% fC% avsluttende vurdering i emnet. Vurderingsuttrykk: Godkjent/ikke godkjent. Teller 0/100 av karakteren.
+
+Arbeidskrav (AK)
+
+Arbeidskrav er spesifisert i emnets semesterplan og skal vC&re godkjent for C% fC% avsluttende vurdering i emnet. Vurderingsuttrykk: Godkjent/ikke godkjent. Teller 0/100 av karakteren.
+
+Eksamensform
+
+Praktisk gruppeeksamen (PE).
+
+Varighet: Inntil 1 time per gruppe. Individuell karakter.
+
+Vurderingsuttrykk: BestC%tt/ikke bestC%tt. Teller 100/100 av karakteren.
+
+Sammensatt vurdering - alle delene mC% vC&re godkjent/bestC%tt for C% fC% karakter i emnet.
+
+Obligatorisk deltakelse (OD)
+
+Det kreves minimum 80 prosent obligatorisk deltakelse i undervisningen for C% fC% avsluttende vurdering i emnet. Vurderingsuttrykk: Godkjent/ikke godkjent. Teller 0/100 av karakteren.
+
+Arbeidskrav (AK)
+
+Arbeidskrav er spesifisert i emnets semesterplan og skal vC&re godkjent for C% fC% avsluttende vurdering i emnet. Vurderingsuttrykk: Godkjent/ikke godkjent. Teller 0/100 av karakteren.
+
+Eksamensform
+
+Praktisk gruppeeksamen (PE).
+
+Varighet: Inntil 1 time per gruppe. Individuell karakter.
+
+Vurderingsuttrykk: BestC%tt/ikke bestC%tt. Teller 100/100 av karakteren.
+
+Ingen ut over de som angis i eksamensoppgaven.
+
+C generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er C% regne som fusk.
+
+Ingen ut over de som angis i eksamensoppgaven.
+
+C generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er C% regne som fusk.
+
+Det er en fordel med musikalsk erfaring, men ikke et krav.

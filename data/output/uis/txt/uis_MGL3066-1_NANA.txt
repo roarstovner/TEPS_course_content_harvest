@@ -1,0 +1,164 @@
+institution: uis
+code: MGL3066-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MGL3066
+status: 200
+course_name_no: Fagdidaktiske vurderinger i kroppsC8vingsfaget (MGL3066)
+----- FULLTEXT -----
+
+Emnekode
+
+MGL3066
+
+Versjon
+
+1
+
+Vekting (stp)
+
+15
+
+Semester undervisningsstart
+
+VC%r
+
+Antall semestre
+
+1
+
+Vurderingssemester
+
+VC%r
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitenskap og humaniora,
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Fakultet for utdanningsvitenskap og humaniora,
+
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhold
+
+Fagdidaktikk i kroppsC8ving, elevens lC&ring og danning
+UtprC8ving, observasjoner og evaluering av undervisningsopplegg
+Inkluderende kroppsC8ving
+LC&ringsklima i kroppsC8ving
+
+LC&ringsutbytte
+
+Kunnskaper
+
+Kandidaten skal ha:
+
+Kunnskap om fagdidaktisk forskning i kroppsC8ving
+Kunnskap om betydningen av lC&ringsmiljC8 for elevenes lC&ring
+Kunnskap om ulike utfordringer og muligheter knyttet til inkludering i kroppsC8vingsundervisning
+
+Ferdigheter
+
+Kandidaten skal kunne:
+
+Observere og analysere kroppsC8vingsundervisning i lys av gjeldende lC&replan, reflektere over planlegging, gjennomfC8ring og evaluering av kroppsC8vingsundervisning
+Reflektere over hvordan livslang bevegelsesglede kan fremmes gjennom kroppsC8vingsfaget
+Arbeide med analysering av data knyttet til lC&ringsklima i kroppsC8ving.
+
+Generell kompetanse
+
+Kandidaten skal kunne:
+
+DrC8fte hvordan gode lC&ringsmiljC8 kan utvikles og pC%virke elevenes lC&ring i kroppsC8vingsundervisningen
+Analysere fagdidaktiske problemstillinger i kroppsC8ving i lys av forskningslitteratur
+Bidra til nytenkning og innovasjonsprosesser i kroppsC8vingsfaget
+
+Forkunnskapskrav
+
+Et av fC8lgende alternativer:
+MGL1060 KroppsC8ving 1, MGL1061 KroppsC8ving 2
+MGL2060 KroppsC8ving 1 (5.-10.trinn), MGL2061 KroppsC8ving 2 (5.-10.trinn)
+
+Eksamen / vurdering
+
+VilkC%r for C% gC% opp til eksamen/vurdering
+
+Obligatorisk oppmC8te, Arbeidskrav
+
+TilstedevC&relse ved datainnsamling i begge arbeidskravene
+To arbeidskrav pC% 3000 ord +/- 10 %
+
+Arbeidskrav mC% vC&re godkjent for C% gC% opp til eksamen.
+
+Studenter som fC%r et eller flere av arbeidskravene vurdert til ikke-godkjent ved fC8rste innlevering, gis mulighet for C)n ny innlevering av oppgaven(e) i bearbeidet form.
+
+Fagperson(er)
+
+FaglC&rer:
+Eva Leibinger
+
+FaglC&rer:
+Dag Ove GranC%s Hovdal
+
+FaglC&rer:
+Silje Eikanger KvalC8
+
+Studieprogramleder:
+Ingeborg KnC&velsrud
+
+FaglC&rer:
+Atle MjC%tveit
+
+Praksiskoordinator:
+Kitty Marie Garborg
+
+Studiekoordinator:
+Kjersti Gjedrem
+
+Arbeidsformer
+
+Forelesninger, diskusjoner, gruppearbeid, presentasjoner, praktisk utprC8ving av kroppsC8vingsundervisning.
+
+Arbeidsinnsatsen er beregnet slik:
+
+Forelesninger (/m forberedelse og etterarbeid) 102 timer
+
+Praktisk undervisning, workshop og seminarer (/m forberedelse og etterarbeid: 84 timer
+
+Arbeidskrav (1+2) 120 timer
+
+Eksamen (5 dager) 40 timer
+
+Selvstudium 75 timer
+
+Totalt: 421 timer
+
+Praksis
+
+15 dager praksis.
+
+Cpent for
+
+Fagdidaktikk for grunnskolen - erfaringsbasert masterprogram
+
+GrunnskolelC&rerutdanning for trinn 1 - 7, femC%rig masterprogram
+
+GrunnskolelC&rerutdanning for trinn 5 - 10, femC%rig masterprogram
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+SC8k etter pensumlitteratur i Leganto

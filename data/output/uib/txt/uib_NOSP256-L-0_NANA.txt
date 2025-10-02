@@ -1,0 +1,176 @@
+institution: uib
+code: NOSP256-L-0
+year: NA
+hv: NA
+url: https://www4.uib.no/studier/emner/nosp256-l
+status: 200
+course_name_no: Nordisk: SprC%kleg fordjupingsemne med BA-oppgC%ve
+----- FULLTEXT -----
+
+Navigasjonssti
+Forside
+Studier
+Emner
+
+Nordisk: SprC%kleg fordjupingsemne med BA-oppgC%ve
+
+Studiepoeng
+
+10
+
+Undervisningssemester
+
+VC%r
+
+Emnekode
+
+NOSP256-L
+
+Talet pC% semester
+
+1
+
+UndervisningssprC%k
+
+Norsk, ev. dansk og svensk.
+
+Ressursar
+
+Timeplan
+
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust 2021 VC%r 2020 Haust 2020 VC%r 2019 Haust 2019 VC%r 2018 Haust
+MC%l og innhald
+
+MC%l:
+
+Emnet skal gi ei grundig innfC8ring i eit avgrensa temaomrC%de innanfor nordisk sprC%kforsking. Det skal gi kunnskapar og ferdigheiter som gC%r ut over det studentane har tileigna seg pC% grunn-nivC%et.
+
+Innhald:
+
+Kva fagomrC%de emnet dekkjer, ligg ikkje fast, men varierer frC% gong til gong emnet blir tilbode.
+
+Tema vC%ren 2025: SprC%k og overtaling
+
+I dette emnet skal vi ta for oss tekstanalyse med vekt pC% ulike former for overtaling og argumentasjon. Vi skal undersC8kje ulike sprC%klege verkemiddel for C% framstilla personar, handlingar og saksforhold pC% visse mC%tar, og vi skal analysera argumentasjon ved hjelp av ulike modellar.
+
+Det er to grunnbC8ker i emnet. Den eine er skriven av Machin og Mayr og heiter B+How to do critical discourse analysisB;. Her fC%r ein ei innfC8ring i kritisk diskursanalyse, som er eit rammeverk for C% undersC8kje tekstar med tanke pC% kva dei eigentleg formidlar, og korleis denne formidlinga skjer. Den andre er skriven av JC8rgensen og Onsberg og heiter B+Praktisk argumentationB;. Her fC%r ein ei innfC8ring i retorisk argumentasjon, som er eit rammeverk for C% analysere, kritisere og sjC8lv produsere argumenterande tekstar.
+
+PC% pensumlista har vi elles ein del oversiktstekstar pluss tekstar som omhandlar konkrete undersC8kingar av ulike sprC%klege verkemiddel i alt frC% partileiardebattar, legemiddelreklame, krimjournalistikk, osv.
+
+LC&ringsutbyte
+
+Studenten skal ved avslutta emne ha fC8lgjande lC&ringsutbytte definert i kunnskap, ferdigheiter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har solid kunnskap pC% det feltet av nordisk sprC%kforsking som emnet omfattar
+har kunnskap om teoriar og metodar pC% feltet
+
+Ferdigheiter
+
+Studenten
+
+kan bruke kunnskapen frC% feltet i sprC%klege undersC8kingar av avgrensa omfang
+kan bruke fagrelevante metodar og vanleg brukte digitale verktC8y
+kan finne fram til og vurdere kvaliteten pC% faglitteratur
+skriv norsk korrekt og godt
+
+Generell kompetanse
+
+Studenten
+
+kan resonnere om fagrelevante etiske problemstillingar
+kan presentere og diskutere sprC%kvitskapleg stoff klart og forstC%eleg
+kan tileigne seg ny kunnskap pC% hC8gt fagleg nivC%
+Fulltid/deltid
+-
+Studiepoeng, omfang
+10 studiepoeng
+StudienivC% (studiesyklus)
+Bachelor
+Undervisningssemester
+VC%r
+Undervisningsstad
+Bergen
+Krav til forkunnskapar
+Ingen.
+TilrC%dde forkunnskapar
+Minst 25 studiepoeng i nordisk sprC%k.
+Studiepoengsreduksjon
+Ingen.
+Krav til studierett
+Emnet er ope for studentar med studierett pC% lektorutdanning der nordisk er fag 2.
+Arbeids- og undervisningsformer
+
+Undervisninga kombinerer fC8relesingar med seminar.
+
+BC%de undervisninga og vurderinga fC8reset at studentane fC8lgjer emneprogresjonen og arbeider aktivt med lC&restoffet.
+
+Studentar pC% utanlandsopphald fC%r nettbasert oppfC8lging.
+
+Om det melder seg fC&rre enn fem studentar til eit emne, kan instituttet innfC8re redusert undervisning, jamfC8r instituttets retningslinjer for dette pC% Mitt UiB. PC% emne der dette kan verte aktuelt, vil studentane fC% informasjon om det ved semesterstart og fC8r semesterregistreringsfristen.
+
+Undervisningsformer og omfang av organisert undervisning
+
+Studentane fC8lgjer undervisninga pC% NOSP256, som tilsvarar C)in dobbeltime fC8relesing i veka i 13 veker, men kan bli fordelt annleis.
+
+Studentar pC% utanlandsopphald fC%r nettbasert oppfC8lging.
+
+Undervisninga har delvis seminarform. Undervisningsopplegget har som fC8resetnad at studentane er til stades og deltek aktivt.
+
+Det blir ikkje gitt sC&rskild undervisning i individuelt opplagt pensum (jf. Litteraturliste).
+
+Om det melder seg fC&rre enn fem studentar til eit emne, kan instituttet innfC8re redusert undervisning, jamfC8r instituttets retningslinjer for dette pC% Mitt UiB. PC% emne der dette kan verte aktuelt, vil studentane fC% informasjon om det ved semesterstart og fC8r semesterregistreringsfristen.
+
+Obligatorisk undervisningsaktivitet
+
+Det er obligatorisk C% levere utkast til bacheloroppgC%va to gonger til fastsette fristar. Det fC8rste utkastet mC% vere pC% minst 500 ord og det andre pC% minst 2000 ord. Utkasta mC% ikkje vere lengre enn 4000 ord.
+
+Godkjend aktivitet er gyldig i undervisningssemesteret.
+
+Vurderingsformer
+
+PC% emnet nyttar ein rettleidd bacheloroppgC%ve og munnleg eksamen.
+
+BacheloroppgC%va er eit sjC8lvstendig forskingsarbeid av avgrensa omfang. BacheloroppgC%va skal ha eit omfang pC% inntil 4000 ord, litteraturliste og vedlegg ikkje medrekna.
+
+Munnleg eksamen tek for seg den delen av pensum som studenten ikkje har skrive bacheloroppgC%ve om.
+
+Det vert sett separate karakterar pC% bacheloroppgC%va og den munnlege eksamenen. Ved utrekning av samla karakter tel bacheloroppgC%va 60% og den munnlege eksamenen 40%. Kandidatane mC% greie begge eksamensdelane i same semester.
+
+Studenten skriv bokmC%l eller nynorsk etter eige val.
+
+I samsvar med nasjonale retningslinjer vert det lagt vekt pC% korrekt og god sprC%kbruk.
+
+Karakterskala
+A-F
+Vurderingssemester
+VC%r. Eksamen vert berre tilbydd i undervisningssemesteret. Ny eksamen pC%fC8lgande semester berre for studentar med rett til ny vurdering.
+Litteraturliste
+
+Pensumet er pC% om lag 650 sider av normal vanskegrad.
+
+Litteraturlista vil vere klar innan 1. desember.
+
+Den emneansvarlege fastset pensumet.
+
+Emneevaluering
+Evaluering blir gjennomfC8rt i trC%d med Universitetet i Bergen sitt kvalitetssikringssystem.
+Hjelpemiddel til eksamen
+Ingen hjelpemiddel pC% munnleg eksamen.
+Programansvarleg
+Programstyret for nordisk
+Emneansvarleg
+Programstyret for nordisk
+Administrativt ansvarleg
+Institutt for lingvistiske, litterC&re og estetiske studium
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust 2021 VC%r 2020 Haust 2020 VC%r 2019 Haust 2019 VC%r 2018 Haust
+Kontaktinformasjon
+studierettleiar@lle.uib.no
+Institutt for lingvistiske, litterC&re og estetiske studier

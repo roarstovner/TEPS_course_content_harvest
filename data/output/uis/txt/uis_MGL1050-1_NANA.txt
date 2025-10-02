@@ -1,0 +1,174 @@
+institution: uis
+code: MGL1050-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MGL1050
+status: 200
+course_name_no: Samfunnsfag A (1.-10. trinn) (MGL1050)
+----- FULLTEXT -----
+
+Emnekode
+
+MGL1050
+
+Versjon
+
+1
+
+Vekting (stp)
+
+30
+
+Semester undervisningsstart
+
+VC%r
+
+Antall semestre
+
+1
+
+Vurderingssemester
+
+VC%r
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitenskap og humaniora,
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Fakultet for utdanningsvitenskap og humaniora,
+
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhold
+
+I samfunnsfaget skal studentene gjennom C% tilegne seg kunnskap og myndiggjC8ring, utvikle evna si til kritisk refleksjon, resonnement og argumentasjon og utvikle verdier og holdninger som mangfoldige og demokratiske samfunn trenger. Samfunnsfag A skal forberede studentene til profesjonsrollen som samfunnsfaglC&rer i grunnskolen.
+
+LC&ringsutbytte
+
+Kunnskap
+
+Studenten har:
+
+Kunnskap om historieforstC%else og historiebruk
+Kunnskap om nasjonal og internasjonal politikk og C8konomi
+Kunnskap om demokrati, politisk og C8konomisk deltakelse
+Kunnskap om sentrale samfunnsfaglige teorier og metoder
+Kunnskap om samfunnsfag som skolefag og nyere samfunnsfagdidaktikk
+Kunnskap om sentrale samfunnsfaglige kilder i faget og kritisk vurdering av disse
+
+Ferdigheter
+
+Studenten skal kunne:
+
+Anvende faglige og fagdidaktiske kunnskaper og ferdigheter i geografi, historie og samfunnskunnskap i henhold til gjeldende lC&replan og kritisk vurdere egen undervisning
+Beskrive og analysere globale konflikter
+Fremme elevenes evne til nyskapning og kreativitet i arbeidet med samfunnsfaglige spC8rsmC%l
+Arbeide selvstendig med faglige spC8rsmC%l og analysere faglige problemstillinger ut fra fagomrC%dets fakta- og teorigrunnlag
+Kritisk vurdere lC&rebC8ker og andre lC&remidler til bruk i opplC&ringen
+Vurdere og bruke samfunnsfaglige kilder og materiale i arbeidet med utvikling av elevenes grunnleggende ferdigheter
+Bruke og vurdere digitale verktC8y og kilder i opplC&ringen, og bidra til at elevene kan forholde seg aktivt og kritisk til digitale medier
+Kan anvende faglige og fagdidaktiske kunnskaper og ferdigheter i samfunnsfaglig opplC&ring pC% 1.-7. trinn, tilpasset ulike grupper elever kan tilrettelegge for opplC&ring i geografi, historie og samfunnskunnskap tilpasset ulike grupper elever og individuelle behov
+
+Generell kompetanse
+
+Studenten kan:
+
+Reflektere kritisk over samfunnsfaglige spC8rsmC%l og stimulere til kritisk tenkning
+ForstC% aktuelle samfunnsforhold bC%de i et nC%tidig og i et historisk perspektiv
+Reflektere over egen praksis og oppdatere seg faglig
+Kommunisere og samarbeide med barn og foresatte med ulik sosial og kulturell bakgrunn
+
+Forkunnskapskrav
+
+Ingen
+
+Eksamen / vurdering
+
+VilkC%r for C% gC% opp til eksamen/vurdering
+
+Arbeidskrav 1, Arbeidskrav 2, Arbeidskrav 3, Kunnskapsquiz, StudiebesC8k/eksursjoner, 70% fremmC8te
+
+Studentene mC% bestC% en kunnskapsquiz. For C% bestC% mC% 90% av svarene vC&re riktige. Alt gjennomgC%tt pensum fram til quizen avholdes kan inngC% som spC8rsmC%l.
+
+De tre arbeidskravene i faget vil kunne vC&re skriftlige innleveringer (inntil 5 sider) eller muntlige/multimodale oppgaver. Hver oppgave mC% ha en mC%loppnC%else av B+middelsB; eller hC8yere for C% bli godkjent. Arbeidskravene vil vC&re spesielt tilpasset semesterets temabolker.
+
+Studenter som fC%r et eller flere av arbeidskravene vurdert til ikke-godkjent ved fC8rste innlevering, gis mulighet for C)n ny innlevering av oppgaven(e) i bearbeidet form.
+
+Det arrangeres kun studiebesC8k og ekskursjoner i nC&romrC%det og er av en varighet pC% inntil 8 timer. Deltagelse er nC8dvendige for C% kunne nC% lC&ringsutbyttene. De eksemplifiserer og konkretiserer pensum og er obligatoriske. Det gis ikke fritak fra studiebesC8k og ekskursjoner. Ved dokumentert sykdom gis det arbeidskrav som tilsvarer lC&ringsutbyttene fra studiebesC8k/ekskursjon.
+
+Fordi undervisningen i stor grad involverer studentene og at arbeidsmC%ter og diskusjoner anses som viktige for C% kunne utdanne seg til en god samfunnsfagslC&rer, kreves minst 70% tilstedevC&relse i C8vrig undervisning.
+
+Alle arbeidskrav mC% vC&re bestC%tt for C% kunne gC% opp til muntlig eksamen
+
+Fagperson(er)
+
+FaglC&rer:
+Tor Gunnar Tollaksen
+
+Emneansvarlig:
+Frode Fanebust
+
+FaglC&rer:
+Tord Austdal
+
+FaglC&rer:
+Linn Anne Margrethe Normand
+
+FaglC&rer:
+Nils Olav Cstrem
+
+Studieprogramleder:
+Ingeborg KnC&velsrud
+
+FaglC&rer:
+Ketil Fred Hansen
+
+FaglC&rer:
+Marie Smith-Solbakken
+
+FaglC&rer:
+Ann Elisabeth Laksfoss Cardozo
+
+Praksiskoordinator:
+Karen Elizabeth Gilje Woie
+
+Praksiskoordinator:
+Kitty Marie Garborg
+
+Studiekoordinator:
+Kjersti Gjedrem
+
+Arbeidsformer
+
+Individuelt arbeid, gruppearbeid, klasseundervisning, drC8ftinger i plenum, studentfremlegginger og ekskursjoner vil vC&re aktuelle arbeidsformer. Studiet krever aktiv deltagelse av studentene.
+
+Praksis
+
+Studentene skal ha 3 uker med veiledet praksis.
+
+Studenten skal planlegge, gjennomfC8re og vurdere elevenes lC&ringsarbeid pC% en selvstendig mC%te. Videre kunne ta hensyn til elevers ulike forutsetninger og ogsC% deres kulturelle bakgrunn, og derved vise evne til tilpasset undervisning.
+
+Cpent for
+
+GrunnskolelC&rerutdanning for trinn 1 - 7, femC%rig masterprogram
+
+GrunnskolelC&rerutdanning for trinn 5 - 10, femC%rig masterprogram
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+SC8k etter pensumlitteratur i Leganto

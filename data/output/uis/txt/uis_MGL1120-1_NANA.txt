@@ -1,0 +1,157 @@
+institution: uis
+code: MGL1120-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MGL1120
+status: 200
+course_name_no: Norsk trinn 1-4 (MGL1120)
+----- FULLTEXT -----
+
+Emnekode
+
+MGL1120
+
+Versjon
+
+1
+
+Vekting (stp)
+
+15
+
+Semester undervisningsstart
+
+HC8st
+
+Antall semestre
+
+1
+
+Vurderingssemester
+
+HC8st
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitenskap og humaniora,
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Fakultet for utdanningsvitenskap og humaniora,
+
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhold
+
+LC&rerutdanningsfaget norsk er et sammensatt og mangfoldig sprC%k-, kultur- og litteraturfag og en praksisarena for kvalifisert arbeid med sprC%k og tekster- i ulike sjangre og modaliteter, fra fortid og samtid. Faget legger et viktig grunnlag for kulturforstC%else, danning og kritisk tenkning, sC&rlig innsikt i hvordan sprC%k og tekster former og blir formet av kulturelle fellesskap. Norskfaget har en historisk og nasjonal basis samtidig som allmenne og internasjonale perspektiv er sentrale for forstC%elsen av det samfunnet vi er en del av. Norge er et flerkulturelt samfunn i endring, og norskfaget mC% hele tiden utvikles i trC%d med samfunnsutviklingen.
+
+Som sprC%kfag har norsk en sC&regen posisjon. SprC%ket spiller en fundamental rolle for lC&ring, kritisk tenkning og kommunikasjon. Det henger pC% den mC%ten tett sammen med identitetsutviklingen til den enkelte sprC%kbrukeren og med kultur- og samfunnsutviklingen gjennom historien. Samtidig er sprC%ket inngangen til aktiv deltakelse i arbeidsliv og demokratiske prosesser. Gjennom arbeid med sprC%k og tekster skal lC&rerutdanningens norskfag legge grunnlaget for at studentene pC% kvalifisert vis kan bidra til at elever blir trygge og aktive sprC%kbrukere som utvikler sprC%k- og tekstkunnskap tilpasset trinn og alder.
+
+LitterC&re tekster gC%r i aktiv dialog med kulturens utvikling og spenninger, livsvilkC%r og tenkemC%ter. BC%de fiksjons- og saktekster gir innblikk i kulturelle og historiske referanserammer og innbyr til refleksjon og kritisk tenkning. SkjC8nnlitteratur har ogsC% et sC&rlig potensial for C% styrke forestillingsevne og empati. Arbeid med tekster i ulike medier og sjangrer og fra ulike perspektiv - estetiske, kommunikative, kulturelle og historiske - skal legge grunnlaget for gode tekstvalg og faglig litteraturarbeid som innbyr elever pC% trinn 1-4 til opplevelser og tolkning, nyskaping og kritisk refleksjon.
+
+C lytte og tale, lese og skrive, se og vise er sentrale aktiviteter i all kommunikasjon og lC&ring. Norskfaget gir spesialisert kunnskap om slike prosesser og gode anledninger til C% praktisere dem i faglig arbeid. Studentene skal videreutvikle evnen til C% vurdere og diskutere egne og andres tekster og til C% bruke relevante tekster og medier i faglig arbeid. De skal lC&re C% forstC% hvordan elever utvikler og videreutvikler grunnleggende muntlig og skriftlig tekstkyndighet, og de skal bli rustet til fagspesifikk undervisning i lesing, skriving og muntlig aktivitet tilpasset elever med ulik bakgrunn og varierende ferdigheter pC% trinn 1-4.
+
+Universitetet i Stavanger definerer et studieC%r til 40 uker, og arbeidsmengden per 15 studiepoeng er estimert til 412 timer, det vil si 41,2 timer per uke i snitt (for 30 studiepoeng). Dette inkluderer forelesninger og seminarer og studenten sitt for- og etterarbeid knyttet til forelesninger og seminar, slik som C% lese pensum, sette seg inn i emneplanen sin omtale av lC&ringsmC%l, delta i kollokvie- eller lesegrupper osv. Timene inkluderer dessuten praksis, arbeidskrav og lignende. Tallet pC% sider for oppsatt pensum per 15 studiepoeng er beregnet til 1200-1500 sider, men vil til en viss grad vC&re avhengig av hvilke typer tekster som blir satt opp.
+
+LC&ringsutbytte
+
+Kunnskap
+
+Studenten:
+
+har kunnskap om sprC%ket som system og sprC%ket i bruk, med sC&rlig vekt pC% fonologi, morfologi og semantikk
+har god kunnskap om barns sprC%kutvikling
+har kunnskap om hva som kjennetegner muntlige, skriftlige og multimodale tekster, pC% bokmC%l og nynorsk, i ulike sjangrer og medier, med vekt pC% tekster for elever pC% smC%trinnet
+har kunnskap om et utvalg skjC8nnlitterC&re tekster, pC% bokmC%l og nynorsk, med vekt pC% litteratur for elever pC% 1.-4.trinn
+har bred kunnskap om metoder i den fC8rste lese- og skriveopplC&ringen for elever med norsk som fC8rstesprC%k og elever med norsk som andresprC%k
+har kunnskap om lC&remiddel for 1.-4. trinn, bC%de digitale og andre
+har kunnskap om elev- og klassesamtaler
+
+Ferdigheter
+
+Studenten:
+
+kan bruke kunnskap om sprC%k og sprC%kutvikling i sprC%kstimulerende arbeid og gjC8re greie for fagdidaktiske valg som skal fremme muntlig sprC%kutvikling for alle elever
+kan bruke kunnskap om hva som kjennetegner ulike tekster og sjangrer i arbeid med muntlige og multimodale tekster i ulike medium
+kan bruke ulike metoder i den fC8rste lese- og skriveopplC&ringen for elever med norsk som fC8rstesprC%k og elever med norsk som andresprC%k
+kan kartlegge og vurdere lese- og skriveferdigheter og gi lC&ringsfremmende respons til alle elever
+kan kjenne igjen tegn pC% lese-, skrive- og sprC%kvansker
+kan vurdere ulike norskfaglige lC&remiddel, digitale og andre for 1.-4.trinn
+
+Generell kompetanse
+
+Studenten:
+
+kan legge til rette for at elevene utvikler grunnleggende sprC%kferdigheter og blir tekstkyndige sprC%kbrukere som kan delta aktivt i klasserommet og pC% andre sosiale arenaer
+kan planlegge norskundervisning i sentrale emner for 1.-4. trinn og gjC8re greie for elevtilpassede fagdidaktiske valg
+kan vurdere praksis pC% 1.- 4. trinn med gjeldende lC&replaner, fagkunnskap og fagdidaktisk innsikt som grunnlag
+kan skrive enkle akademiske tekster
+
+Forkunnskapskrav
+
+Ingen
+
+Eksamen / vurdering
+
+VilkC%r for C% gC% opp til eksamen/vurdering
+
+Innlevering av fagtekst, Presentasjon av faglig emne, Obligatorisk undervisning
+
+Studenter som fC%r et eller flere av arbeidskravene vurdert til ikke-godkjent ved fC8rste innlevering, gis muligheten for ei ny innlevering av oppgaven (/-e) i bearbeidet form. Undervisningen er lagt opp slik at det norskfaglige lC&restoffet skal relateres til lC&reryrket gjennom fagdidaktiske refleksjoner sammen med studentene. Det er derfor et krav om minimum 70 % oppmC8te i norskundervisningen.
+
+Fagperson(er)
+
+FaglC&rer:
+Hanne EgenC&s Staurseth
+
+FaglC&rer:
+Ingri Dommersnes JC8lbo
+
+FaglC&rer:
+Cystein NybC8e
+
+FaglC&rer:
+GC8lin Christine Kaurin Nilsen
+
+Studieprogramleder:
+Ingeborg KnC&velsrud
+
+FaglC&rer:
+Eli Flatekval
+
+Praksiskoordinator:
+Ivar BjC8rnsen
+
+Praksiskoordinator:
+Kitty Marie Garborg
+
+FaglC&rer:
+Briten Russdal-Hamre
+
+Studiekoordinator:
+Kjersti Gjedrem
+
+Arbeidsformer
+
+ArbeidsmC%ter vil vC&re forelesninger, seminar, gruppearbeid, individuelt arbeid og oppgaveskriving. Praktisk-estetiske arbeidsmC%ter blir trukket inn pC% emneomrC%der som ligger til rette for dette, for eksempel norsk muntlig.
+
+Cpent for
+
+GrunnskolelC&rerutdanning for trinn 1 - 7, femC%rig masterprogram
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+Pensumlisten finner du i Leganto

@@ -1,0 +1,10 @@
+institution: inn
+code: 2ENL51-10-1
+year: 2026
+hv: V
+url: https://studiekatalog.edutorium.no/inn/nb/emne/2ENL51-10-1/2026-var
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+NA

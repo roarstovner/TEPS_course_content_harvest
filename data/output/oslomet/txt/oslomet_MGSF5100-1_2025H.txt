@@ -1,0 +1,121 @@
+institution: oslomet
+code: MGSF5100-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/MGSF5100/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+MGSF5100 Samfunnsfag og samfunnsfagdidaktikk 3 Emneplan
+Engelsk emnenavn
+Social Studies Education 3
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 1-7
+GrunnskolelC&rerutdanning for trinn 5-10
+Omfang
+15.0 stp.
+StudieC%r
+2025/2026
+Pensum
+HCST 2025
+
+Timeplan
+HCST 2025
+Programplan
+GrunnskolelC&rerutdanning for trinn 1-7 (2025 HCST )
+GrunnskolelC&rerutdanning for trinn 5-10 (2025 HCST )
+Emnehistorikk
+2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Innledning
+
+Fagplanen tilhC8rende dette emnet er lagt pC% emne MGSF4100 Samfunnsfag og samfunnsfagdidaktikk 1.
+
+Dette emnet tar sikte C% fC% studentene til C% utforme et samfunnsfagdidaktisk forskningsprosjekt ved C% forholde seg til og reflektere rundt andres tekster og skrive tekster selv.
+
+Forkunnskapskrav
+
+Se fagplanen.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har spesialisert innsikt i et avgrenset fagomrC%de innenfor samfunnsfag og samfunnsfagdidaktikk
+har avansert kunnskap om relevant forskning og teori og vitenskapelige tenkemC%ter, forskningsmetoder og etikk
+
+Ferdigheter
+
+Studenten
+
+kan kritisk anvende forskningsbasert profesjonsrettet kunnskap i samfunnsfag til utforskning av nye problemomrC%der
+skal kunne anvende flere perspektiver i egen praksis og synliggjC8re perspektivrikdom som en ressurs for elevenes samfunnsorientering
+
+Generell kompetanse
+
+Studenten
+
+kan pC% et avansert nivC% formidle og kommunisere om faglige problemstillinger knyttet til profesjonsutC8velsen og har profesjonsfaglig digital kompetanse
+kan bidra til utviklingsarbeid som fremmer samfunnsfaglig og pedagogisk nytenkning i skolen
+Innhold
+
+Gjennom gruppeveiledning, produksjon av egne tekster og lesing av andres tekster skal studenten finne retning for egen forskning. Mye av arbeidet innebC&rer C% finne eget relevant pensumstoff og bruke dette som en bakgrunn for prosjektskisse og litteraturgjennomgang til masteroppgaven.
+
+Arbeids- og undervisningsformer
+
+Undervisningen er seminarbasert og i stor grad drevet av studentene selv. Gruppeveiledning og tilbakemelding med fC8lgende faglige aktiviteter:
+
+Bidra med egenproduserte tekster.
+Lese og diskutere andre masteroppgaver i samfunnsfagdidaktikk.
+Lese medstudenters tekster og gi lC&ringsfremmende tilbakemelding
+Arbeidskrav og obligatoriske aktiviteter
+
+Retten til C% avlegge eksamen forutsetter godkjente arbeidskrav og deltakelse i bestemte faglige aktiviteter.
+
+Deltakelse pC% seminarundervisning
+
+Ferdigheten i C% formidle andres og egen forskning pC% en forsvarlig mC%te kan best oppC8ves gjennom dialog og diskusjon. Hver student skal derfor delta aktivt med forberedte innlegg til diskusjon i minst 8 seminarer.
+
+FormC%let med arbeidskravet er selvstendig lesning og refleksjon rundt akademisk skriving og forskningsmetode, samt C% oppmuntre studentene til aktiv deltakelse. Ved manglende eller ikke-godkjent arbeidskrav, vil det gis en kompensatorisk oppgave.
+
+Notat med tema og problemstilling for masteroppgaven
+
+Studenten skal levere et notat pC% 500 ord (+/- 10%) med tema, forelC8pig problemstilling og metodevalg til masteroppgaven med kildehenvisninger i trC%d med APA-stilen. Notatet danner grunnlag for tildeling av veileder.
+
+Prosjektskisse
+
+Studenten skal individuelt eller i gruppe pC% inntil tre velge tema for masteroppgaven og levere en prosjektskisse pC% 1800 ord (+/- 10 %) med kildehenvisninger i trC%d med APA-stilen.
+
+Litteraturgjennomgang
+
+Studenten skal individuelt eller i gruppe pC% inntil tre levere en gjennomgang av forskningslitteratur knyttet til masteroppgavens tema med et omfang pC% 1500 ord (+/- 10 %) med kildehenvisninger i trC%d med APA-stilen.
+
+Prosjektskisse og gjennomgangen av forskningslitteraturen skal vise forstC%else av hva som er faglig relevante temaer C% arbeide videre med i masteroppgaven. FormC%let med arbeidskravene er C% sette i gang skrivingen av masteroppgaven.
+
+Vurdering og eksamen
+
+Individuell muntlig eksamen
+
+Studenten gir en presentasjon av masterprosjektet pC% 20 minutter med digitale hjelpemidler. Studenten skal presentere og begrunne valg av tema og problemstilling, forskningslitteratur, metodevalg og forelC8pig innsamlet/tenkt materialedatagrunnlag for masteroppgaven. NC&rmere retningslinjer gis ved semesterstart.
+
+Ny/utsatt eksamen
+
+Ved ikke-bestC%tt eksamen er det adgang til C% omarbeide presentasjonen C)n gang. Utsatt eksamen arrangeres som ved ordinC&r eksamen.
+
+Hjelpemidler ved eksamen
+
+Alle hjelpemidler er tillatt.
+
+Vurderingsuttrykk
+
+BestC%tt/Ikke bestC%tt.
+
+Sensorordning
+
+Eksamen vurderes av to interne sensorer. En tilsynssensor er tilknyttet emnet, i henhold til retningslinjer for oppnevning og bruk av sensorer ved OsloMet.

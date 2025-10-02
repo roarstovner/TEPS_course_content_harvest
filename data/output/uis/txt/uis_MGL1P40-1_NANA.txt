@@ -1,0 +1,128 @@
+institution: uis
+code: MGL1P40-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MGL1P40
+status: 200
+course_name_no: Praksis 1.-7., 4. C%r 7. semester (15 dager) (MGL1P40)
+----- FULLTEXT -----
+
+Emnekode
+
+MGL1P40
+
+Versjon
+
+1
+
+Vekting (stp)
+
+0
+
+Semester undervisningsstart
+
+HC8st
+
+Antall semestre
+
+1
+
+Vurderingssemester
+
+HC8st
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitenskap og humaniora,
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Fakultet for utdanningsvitenskap og humaniora,
+
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhold
+
+Praksisstudium syklus 2
+
+De to siste studieC%ra skal studenten videreutvikle sin lC&rerkompetanse. Praksisstudiet skal i syklus 2 gi en mer inngC%ende kunnskap om lC&reprosesser, lC&rerens tilrettelegging for lC&ring av fag og forsknings- og utviklingsarbeid.
+
+Dette omhandler:
+
+LC&ringsledelse og dypere forstC%else av elevmangfold
+Forsknings- og utviklingsarbeid relatert til skolen
+Utvikling av endringskompetanse
+
+Praksisstudium 4. C%r 7. semester har fokus pC% forskings- og utviklingsarbeid i praksis
+
+Praksisstudiet har en integrerende funksjon i grunnskolelC&rerutdanningen. Dette forutsetter samarbeid mellom studenter, faglC&rer, praksislC&rere og skoleledelse.
+
+LC&ringsutbytte
+
+Kunnskap
+
+Kandidaten har:
+
+inngC%ende kunnskap om lC&reprosesser, tilrettelegging av undervisning, arbeidsmC%ter og vurderingsformer som fremmer inkluderende klasse- og lC&ringsmiljC8
+kunnskap om C% analysere og anvende nasjonale og lokale lC&rerplaner i undervisning og i forsknings- og utviklingsarbeid
+kunnskap om konkret forsknings- og utviklingsarbeid ved praksisskolen
+
+Ferdigheter
+
+Kandidaten kan:
+
+ta ansvar for C% utvikle og lede inkluderende, kreative, trygge og helsefremmende lC&ringsmiljC8er der opplC&ringen tilpasses elevenes behov
+kan analysere og anvende nasjonale og lokale lC&replaner i planlegging av undervisningen
+kan gjennomfC8re de fleste undervisningsC8ktene alene
+
+Generell kompetanse
+
+Kandidaten kan:
+
+anvende sine kunnskaper og ferdigheter til C% involvere og bygge relasjoner til elever og foresatte
+kritisk vurdere egen og andres praksis med referanse til teori og forskning
+styrke internasjonale og flerkulturelle perspektiv ved skolens arbeid, stimulere til demokratisk deltakelse og bC&rekraftig utvikling
+
+Forkunnskapskrav
+
+BestC%tt praksis Syklus1 eller ha eksamensrett i gjenstC%ende emner.
+
+Eksamen / vurdering
+
+VilkC%r for C% gC% opp til eksamen/vurdering
+
+Arbeidskrav i fag, se emnebeskrivelsen i fagene.
+
+Studenter som ikke har deltatt pC% utviklingssamtaler eller foreldremC8te, gjennomfC8rer dette fC8r neste praksisperiode MGL1P45 starter.
+
+Fagperson(er)
+
+Emneansvarlig:
+Ingeborg KnC&velsrud
+
+FaglC&rer:
+Ivar BjC8rnsen
+
+FaglC&rer:
+Kitty Marie Garborg
+
+Arbeidsformer
+
+Et relevant utvalg basert pC% praksisskolens lokale planer og basert pC% samarbeid med lC&rerutdanningsfaget/masterfaget som studenten har valgt 7. semester.
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+SC8k etter pensumlitteratur i Leganto

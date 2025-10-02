@@ -1,0 +1,126 @@
+institution: oslomet
+code: MLEST2300-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/MLEST2300/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+MLEST2300 Design, arkitektur og bC&rekraft Emneplan
+Engelsk emnenavn
+Design, architecture and sustainability
+Studieprogram
+LC&rerutdanning i praktiske og estetiske fag for trinn 1-13, design, kunst og hC%ndverk
+Omfang
+20.0 stp.
+StudieC%r
+2025/2026
+Programplan
+LC&rerutdanning i praktiske og estetiske fag for trinn 1-13, design, kunst og hC%ndverk (2025 HCST )
+Emnehistorikk
+2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Innledning
+
+Emnet tar opp formproblematikk, materialer og prosessarbeid slik det fremkommer i gjeldende lC&replaner. MiljC8 og bC&rekraft knyttes til emnet og belyses gjennom tema som forbrukskultur og materialkunnskap i en nasjonal og internasjonal kontekst. Gjenbruk og redesign sC% vel som teknologiske nyvinninger og innovasjon belyses i et fagdidaktisk og samfunnsetisk perspektiv. Praktisk, utforskende arbeid med materialer, konstruksjon og form er vektlagt. Undervisningspraksis inngaL
+r i emnet. Praksis skal vC&re en arena for systematisk lC&ring og gjennomfC8res i samarbeid med praksisstedet. Emnet inngC%r i internasjonalt semester.
+
+LC&ringsutbytte
+
+Etter C% ha gjennomfC8rt dette emnet har studenten fC8lgende lC&ringsutbytte definert i form av kunnskap, ferdigheter og generell kompetanse.
+
+Kunnskap
+
+Studenten:
+
+har kunnskap om ulike materialers egenskaper, samt teknikker og redskaper for bearbeiding av form, funksjon og uttrykk.
+kan ta i bruk kreative og stegvise prosesser i arbeid med design, arkitektur og bC&rekraft.
+har kunnskap om forbrukskultur, materialer, helse og miljC8 i et fagdidaktisk perspektiv.
+
+Kunnskap fra undervisningspraksis:
+
+Studenten:
+
+har kunnskap om lC&replaner innen fagomrC%det og grunnopplC&ringens tverrfaglige tema.
+har kunnskap om lC&rerens rolle som kulturformidler.
+
+Ferdigheter
+
+Studenten:
+
+behersker arbeid med formproblematikk og kan bearbeide ulike materialer og overflater.
+kan ta i bruk bC%de innovative, kreative og stegvise prosesser i arbeid med design, arkitektur og bC&rekraft.
+kan vurdere ulike materialers egenskaper og reflektere over forbruksmC8nster og -kultur i en internasjonal kontekst.
+kan anvende relevant fagkunnskap og forskning.
+
+Ferdigheter fra undervisningspraksis:
+
+Studenten:
+
+kan planlegge, gjennomfC8re og evaluere undervisning, rettet mot en bestemt mC%lgruppe.
+kan bruke et bredt utvalg arbeidsmC%ter og lC&remidler i undervisningen og pC% ulike lC&ringsarenaer.
+
+Generell kompetanse
+
+Studenten:
+
+kan kommunisere om bC&rekraft, ut fra kunnskap om fagets egenart
+kan drC8fte undervisning, lC&ring og fag ut fra samfunnsaktuelle problemstillinger,relevant forskning og profesjonsetiske perspektiver
+kan vurdere og kritisk reflektere over egen lC&rerkompetanse og eget lC&ringsbehov
+kan ivareta krav til helse, miljC8 og sikkerhet innen eget fagomrC%de
+Arbeids- og undervisningsformer
+
+I emnet vektlegges praktisk erfaring fra verkstedsarbeid, teoretiske studier individuelt og i gruppe. Fagteori i emnet legger vekt pC% forstC%else for og anvendelse av begreper og arbeidsformer. Helse, miljC8 og sikkerhet (HMS) relateres til praktiske erfaringer i verkstedet. Fagdidaktikk inngC%r i emnet og skal bidra til C% kontekstualisere eget praktisk arbeid og teoristudier, samt reise sentrale spC8rsmC%l om skolens oppgave og fagets egenart.
+
+Emnet mC% sees i sammenheng med C8vrige emner. ForstC%else for prinsipp innen akademisk skriving er gjennomgC%ende i studiet. Alle aspekter i emnet behandles ikke nC8dvendigvis i undervisningen, men skal dekkes av studenten selv gjennom lesning av pensumlitteratur, deltagelse i kollokviegrupper og praktisk, utforskende arbeid.
+
+Undervisningspraksis inngC%r i emnet. Praksis gjennomfC8res ved alternative praksisarenaer. Etter godkjenning av instituttet kan praksis gjennomfC8res ved en utenlandsk institusjon. Praksis omfatter planlegging, gjennomfC8ring av undervisning, tilpasset praksisarenaens behov. Studenten veiledes og vurderes bC%de underveis og ved avslutning av perioden. Veiledning og vurdering gjC8res fra instituttet. Resultatene dokumenteres i Veilednings- og vurderingshefte for praksis.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+Arbeidskrav mC% vC&re innfridd og vC&re vurdert til godkjent fC8r studentene kan fremstille seg til eksamen.
+
+Dokumentasjon av et praktisk/teoretisk arbeid, presentert og faglig drC8ftet i plenum
+GjennomfC8rt undervisningspraksis, fortrinnsvis i grupper. Omfang: 15 dager.
+En tverrprofesjonell oppgave, Inter1200, i samarbeid med studenter ved andre studieretninger
+Et muntlig praksisfremlegg.
+Minimum 80% deltagelse i obligatorisk undervisning.
+Vurdering og eksamen
+
+Eksamen bestC%r av to deler (deleksamen) og gjennomfC8res med utgangspunkt i et praktisk og skapende prosjekt i praksisgruppen, samt en individuell muntlig presentasjon med tilhC8rende refleksjonsnotat.
+
+Del 1. Praktisk skapende arbeid med dokumentasjon i gruppe
+
+Studentene utvikler og gjennomfC8rer et skapende prosjekt i praksisgruppen.
+Det leveres en felles prosjektdokumentasjon pC% 2000-4000 ord.
+Dette gruppearbeidet vurderes samlet og utgjC8r 40 % av sluttkarakteren.
+
+2. Individuell muntlig presentasjon med refleksjonsnotat
+
+Hver student gjennomfC8rer en muntlig presentasjon med utgangspunkt i et skriftlig refleksjonsnotat (ca. 1000 ord).
+Her skal studenten knytte sammen fagteori, fagdidaktikk og egne praksiserfaringer.
+Denne delen vurderes individuelt og utgjC8r 60 % av sluttkarakteren.
+
+Viktig C% merke seg:
+
+Begge deleksamener mC% vC&re vurdert til E eller bedre for at eksamen som helhet skal vC&re bestC%tt.
+Det er kun del 1. Praktisk skapende arbeid med dokumentasjon som kan pC%klages.
+Se undervisningsplanen for utfyllende informasjon.
+
+FravC&r - ikke bestC%tt
+
+Studenter som pC% grunn av gyldig fravC&r ikke avlegger eksamen, eller som fC%r vurderingen Ikke bestC%tt, kan melde seg opp til ny/utsatt eksamen. Ved framstilling til ny/utsatt eksamen kan enten en bearbeidet versjon av samme eksamensprosjekt leveres pC% nytt, eller ny eksamensbesvarelse leveres.
+
+Hjelpemidler ved eksamen
+
+Alle hjelpemidler er tillatt sC% lenge regler for kildehenvisning fC8lges.
+
+Vurderingsuttrykk
+
+Gradert skala A-F.
+
+Sensorordning
+
+To sensorer. Ekstern sensor brukes jevnlig.

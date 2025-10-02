@@ -1,0 +1,10 @@
+institution: hvl
+code: MGUKH401-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGUKH401
+status: 200
+course_name_no: MGUKH401 Kunst og handverk 2, emne 2 - FOU og fagleg fordjuping i kunst og handverk
+----- FULLTEXT -----
+
+NA

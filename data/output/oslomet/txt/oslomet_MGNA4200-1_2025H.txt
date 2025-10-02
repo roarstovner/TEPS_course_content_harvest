@@ -1,0 +1,114 @@
+institution: oslomet
+code: MGNA4200-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/MGNA4200/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+MGNA4200 Naturfag og naturfagdidaktikk 2 Emneplan
+Engelsk emnenavn
+Science Education 2
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 1-7
+GrunnskolelC&rerutdanning for trinn 5-10
+Omfang
+15.0 stp.
+StudieC%r
+2025/2026
+Pensum
+VCR 2026
+
+Timeplan
+VCR 2026
+Programplan
+GrunnskolelC&rerutdanning for trinn 1-7 (2025 HCST )
+GrunnskolelC&rerutdanning for trinn 5-10 (2025 HCST )
+Emnehistorikk
+2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Innledning
+
+Fagplanen tilhC8rende dette emnet er lagt til emne MGNA4100 Naturfag og naturfagdidaktikk 1.
+
+Naturfag og naturfagdidaktikk 2 gir studentene avansert og inngC%ende kunnskap om systemer og kretslC8p i naturfag, samt arbeid med C% tilrettelegge for utvikling av systemtenkning hos elever i grunnopplC&ringen. De vil ogsC% fC% utdypende kunnskap i hvordan de ivaretar sikkerhet og miljC8hensyn i organisering av undervisning og undervisningsmateriell. Studentene vil arbeide med tema som omfatter og integrerer de ulike fagomrC%dene i naturfaget. I tillegg vil de erfare ulike mC%ter C% gjC8re naturfaget relevant for elevmangfoldet i skolen.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har inngC%ende kunnskap om undervisning for systemforstC%else i utvalgte deler av naturfaget
+har inngC%ende kunnskap om hvordan legge til rette for variert naturfagundervisning med bruk av ulike representasjoner
+har inngC%ende kunnskap om praktisk arbeid i naturfag
+har inngC%ende kunnskap om programmering i naturfag og hvordan dette kan brukes i undervisning med elever
+kan tilpasse naturfagsundervisningen slik at den fremhever anvendelser, relevans og yrkesretting
+
+Ferdigheter
+
+Studenten
+
+kan pC% avansert nivC% anvende prinsipp for lC&ringsorientert vurdering og slik bidra til at elevene lC&rer C% reflektere over egen lC&ring og utvikling
+kan analysere og forholde seg kritisk til nasjonal og internasjonal forskning og anvende denne kunnskapen i profesjonsutC8velsen
+kan planlegge og gjennomfC8re undervisning (inkludert praktisk arbeid) i naturfaget som fremmer elevers systemtenkning og vitenskapelige tenkemC%te
+kan tilrettelegge for bruk av estetiske lC&ringsprosesser i naturfagundervisningen
+kan vurdere digitale uttrykk og ressurser kritisk og bruke dem i opplC&ringen pC% mC%ter som styrker og utvikler naturfagets didaktikk
+kan gjennomfC8re og vurdere naturfagsundervisning med fokus pC% praktisk arbeid og HMS
+kan gjennomfC8re og vurdere skolerelevant programmering
+
+Generell kompetanse
+
+Studenten
+
+kan pC% systematisk vis planlegge, evaluere og revidere ressurser, undervisning og kompetanse i naturfag
+kan pC% et avansert nivC% formidle og kommunisere om faglige problemstillinger knyttet til profesjonsutC8velsen og har profesjonsfaglig digital kompetanse
+kan bidra til utviklingsarbeid som fremmer faglig og naturfagdidaktisk nytenkning i skolen
+Innhold
+
+Studenten vil fC% utdypende kunnskap om sentrale og forskningsbaserte kjennetegn ved god naturfagundervisning med hovedfokus pC%:
+
+Konkrete tilnC&rminger til variert naturfagundervisning
+Muligheter i det utvidede klasserommet
+HMS
+Systemtenkning i naturfag
+Programmering i naturfag
+Arbeids- og undervisningsformer
+
+Undervisningen vil i hovedsak vC&re i form av forelesninger, seminarer, C8vingsoppgaver og veiledning. Emnet krever stor grad av selvstendig arbeid. Det forventes at C8vingsoppgaver innleveres til avtalt tid.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+Retten til C% avlegge eksamen forutsetter godkjente arbeidskrav og deltakelse i bestemte faglige aktiviteter. Se nC&rmere informasjon i den innledende fagplandelen. FC8lgende arbeidskrav mC% vC&re godkjent fC8r eksamen kan avlegges:
+
+UndersC8ke HMS-situasjonen pC% en skole med kartlegging av kjemikalier, naturfagutstyr og sikkerhetsrutiner. Muntlig presentasjon og diskusjon av funn i grupper (20 minutter).
+Deltakelse pC% ekskursjon i Oslo-omrC%det med vekt pC% temaet "andre lC&ringsarenaer". Omfang: 1 dag.
+Deltakelse pC% introduksjonsdag til masteroppgaven. Omfang: Inntil 1 dag.
+For studenter pC% programmet master i grunnskolelC&rerutdanning mC% i tillegg fC8lgende arbeidskrav gjennomfC8res:
+Lage en "omvendt undervisning"-sekvens i praksisgrupper med pC%fC8lgende oppfC8lgingsarbeid i klasserommet. Opplegget gjennomfC8res med elever i praksisperioden og erfaringene presenteres muntlig i refleksjonsseminar (10 minutter).
+For studenter pC% programmet master i skolerettet utdanningsvitenskap mC% i tillegg fC8lgende arbeidskrav gjennomfC8res:
+Lage en B+omvendt undervisningB;-sekvens i grupper, med forslag til elevaktive oppgaver som oppfC8lging av sekvensen. Undervisningsopplegget skal presenteres muntlig i undervisning (10 minutter).
+Skrive en individuell prosjektskisse for masteroppgaven etter nC&rmere retningslinjer med omfang pC% 1800 ord +/- 10%.
+Vurdering og eksamen
+
+Individuell muntlig eksamen i ca. 30 minutter.
+
+Ny/utsatt eksamen
+
+Ny/utsatt eksamen arrangeres som ved ordinC&r eksamen.
+
+Hjelpemidler ved eksamen
+
+Ingen hjelpemidler tillatt.
+
+Vurderingsuttrykk
+
+Det benyttes en gradert karakterskala fra A til E for bestC%tt og F for ikke bestC%tt eksamen.
+
+Sensorordning
+
+Eksamen vurderes av intern og ekstern sensor.

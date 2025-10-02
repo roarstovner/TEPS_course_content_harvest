@@ -1,0 +1,165 @@
+institution: oslomet
+code: M1GRL3100-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/M1GRL3100/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+M1GRL3100 RLE 2, emne 3 Emneplan
+Engelsk emnenavn
+Religion, Philosophy of Life and Ethics 2, Subject 3
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 1-7
+Omfang
+30.0 stp.
+StudieC%r
+2025/2026
+Pensum
+HCST 2025
+
+Timeplan
+HCST 2025
+Programplan
+GrunnskolelC&rerutdanning for trinn 1-7 (2025 HCST )
+Emnehistorikk
+2018 / 2019 2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Innledning
+
+Fagplanen tilhC8rende dette emnet er lagt pC% emne M1GRL2100 RLE 1, emne 1.
+
+Studiefaget RLE kvalifiserer for undervisning i skolefaget KRLE.
+
+Emnet skal utvide perspektivet pC% grunnleggende kultur- og religionsforstC%else og gir innfC8ring i religionsfenomenologi. Emnet omfatter fordypning i jC8dedom, kristendom, islam, hinduisme, buddhisme og sikhisme, med vekt pC% mangfold. Emnet omfatter ogsC% innfC8ring i nyreligiC8sitet og ungdomsreligiC8sitet.
+
+Studentene skal arbeide med ulike tilnC&rminger til fagstoffet; bC%de en systematisk og en mer overgripende tematisk tilnC&rming. Den systematiske tilnC&rmingen har fokus pC% atskilte tradisjoner og sC&rpreg ved tradisjonene. Den overgripende tematiske tilnC&rmingen har fokus pC% likheter og sammenhenger. Emnet omfatter ogsC% humanisme, vestlig filosofihistorie, samt fagdidaktikk, samt refleksjoner om studentenes egne holdninger i nC%r det gjelder mangfold og inkludering. MC%let er C% dyktiggjC8re studentene til C% kunne gjennomfC8re en inkluderende religions- og livssynsundervisning.
+
+En viktig del av arbeidet pC% emne 3 er FoU-oppgaven, hvor studenten skal gjC8re et selvstendig forskningsarbeid og sette seg inn i teori og metode som er sentralt i RLE-faget.
+
+Forkunnskapskrav
+
+Ingen.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har omfattende kunnskap om kristne tekster og om kristent mangfold lokalt og globalt
+har omfattende kunnskap om et utvalg av tekster og aktuelle perspektiv i religioner, religiC8se bevegelser og sekulC&re ideologier og om arbeidet med dette i skolen
+har kunnskap om filosofihistorie med vekt pC% nyere tid og pC% moderniteten og utfordringene knyttet til arbeidet med filosofiske problemstillinger i faget
+har kunnskap om pluralisering, sekularisering og religions- og livssynskritikk som undervisningstema og bakgrunnsorientering for andre deler av faget
+har kunnskap om sentrale etiske og filosofiske problemstillinger som minoritetsspC8rsmC%l, diskriminering og kroppsfokusering i barnekulturen
+har kunnskap om hvordan estetiske arbeidsformer kan vC&re med C% fremme lC&ring, motivasjon og variasjon i arbeidet med faget
+har kunnskap om forskning pC% barn i forhold til religion, livssyn og etikk
+
+Ferdigheter
+
+Studenten
+
+kan gjC8re grundig rede for tekster og kildekritikk, pC% ulike praksiser og mangfold og for aktuelle perspektiv i kristendommen og i andre lokalt valgte tradisjoner (jf. innledningen om lokale valg)
+kan lage undervisningsopplegg som benytter estetiske arbeidsformer og digitale verktC8y
+kan drC8fte aktuelle filosofiske og etiske problemstillinger ut fra ulike religiC8se, livssynsmessige og ideologiske posisjoner
+kan reflektere selvstendig over ulike arbeidsformer som blir benyttet i skolefaget
+kan drC8fte lokale lC&replaner og utvikle skisser til slike
+
+Generell kompetanse
+
+Studenten
+
+har omfattende kunnskap om religioner, livssyn og ideologier og kan bruke kunnskapen pC% ulike mC%ter i skolen generelt
+har omfattende kunnskap om aktuelle filosofiske og etiske problemstillinger og kan bruke dette pC% ulikt vis i og utenfor skolefaget
+kan drC8fte og bruke de grunnleggende ferdighetene i KRLE
+Innhold
+
+RLE 2 gir fordypning i alle de fire hovedomrC%dene (fagdidaktikk, kristendomskunnskap, religions- og livssynskunnskap, etikk og filosofi), dels i emner og perspektiv fra lC&replanen for grunnskolen, dels i emner eller perspektiv som utdanningsinstitusjonen eller studenten selv velger. RLE 2 skal videre gi fordypning i arbeidet med yngre (1.-4. trinn) og eldre (5.-7. trinn) barn og hvordan de lC&rer i faget.
+
+I forbindelse med praksis skal studenten arbeide med lokale lC&replaner og vurderinger som fremmer lC&ring og utvikling i faget og sC&rlig arbeide med utfordringer knyttet til lC&ringsorienterte vurderinger i holdnings- og trosspC8rsmC%l.
+
+Studiet legger vekt pC% bruk av estetiske arbeidsformer og digitale ressurser i faget. En skal sC&rlig arbeide med spC8rsmC%l knyttet til nyere religions- og filosofihistorie, aktuelle etiske spC8rsmC%l og med sammenlikninger av religioner. Det samme gjelder forskning om minoriteter, modernitet og sekularisering med relevans for skolen.
+
+Sentralt i emne 3 er FoU-oppgaven. Oppgaven skal ha en klart formulert problemstilling som det mC% vC&re mulig C% undersC8ke og utdype. FoU-oppgaven skal gi studentene muligheter til C% dokumentere faglig kunnskap og innsikt gjennom belysning og drC8fting av et RLE-faglig problem som er relevant i grunnskolen.
+
+Studentene skal velge C% fordype seg i ett eller flere temaer i fagplanen, og kan velge C% skrive en teoretisk oppgave, en empirisk oppgave eller en kombinasjon. En teoretisk oppgave tar utgangspunkt i analyser og drC8ftinger i aktuelle forskningsarbeider innen et omrC%de og oppsummerer og sammenlikner. En empirisk oppgave bygger pC% ny informasjon som studenten selv samler inn eller bygger videre pC% analyse av materiale som andre har samlet inn.
+
+I oppgaver som bruker materiale studenten selv samler inn, er det et krav at dette innhentes slik at meldeplikten til Norsk senter for forskningsdata (NSD) ikke utlC8ses. Hvis elever under myndighetsalder deltar i undersC8kelsen, skal foresatte gi samtykke. Gjennom oppgaven skal studenten dokumentere kjennskap til aktuell forskning pC% det omrC%det som studenten skriver om. Studenten skal bruke teori og annet fagstoff som grunnlag for C% undersC8ke problemstillingen. I metodedelen skal framgangsmC%ter dokumenteres slik at det er mulig C% se hvordan studenten har innhentet og brukt materialet, og hvordan han eller hun har kommet fram til resultatene. Resultatene skal drC8ftes ut fra alminnelige vitenskapelige krav til pC%litelighet og gyldighet.
+
+Arbeids- og undervisningsformer
+
+Emne 3 er organisert som undervisning og kurs, veiledning/veiledningsseminar, muntlig framlegg og skriftlig arbeid.
+
+Arbeidet med FoU-oppgaven er organisert som undervisning og kurs, veiledning/veiledningsseminar, muntlig framlegg og innlevering av skriftlig oppgave. Hver kandidat vil fC% oppnevnt en faglig veileder. TemaomrC%de, problemstilling og opplegg for oppgaven skal godkjennes av veileder.
+
+Undervisningen i emnet skal i tillegg til undervisning i faglige emner gi stC8tte for oppgavearbeidet. Sentrale temaer for denne undervisningen er
+
+Utdanningsvitenskap for lC&rere - Sentrale forskningstradisjoner og metoder
+Seminar i pedagogikk som tar opp sentrale utfordringer i dagens grunnskole
+Forskningsetikk og grunnlagsspC8rsmC%l
+Skriving i forskning om skole og undervisning og i lC&reryrket
+
+Oppgaveskrivingen er en problemlC8sningsprosess, der studenten gjennom en systematisk og etterprC8vbare metoder skal belyse den valgte problemstillingen. En del av dette vil gjerne vC&re C% utarbeide en oppdatert kunnskapsoversikt. Studenten vil ogsC% ofte samle et erfaringsmateriale og bruke aktuell utdanningsvitenskapelig metode til C% undersC8ke, systematisere og belyse materialet. Arbeidet med oppgaven skal gi erfaring med C% sC8ke og anvende litteratur og bygge pC% bC%de oppgitt og selvvalgt pensum. Omtaler, analyser og vurderinger i oppgaven skal vC&re solid faglig utviklet og underbygget.
+
+FoU-oppgaven er et individuelt arbeid. Framstillingen skal vC&re i samsvar med regler og retningslinjer for vitenskapelig og faglig forfatterskap.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+Retten til C% avlegge eksamen forutsetter godkjente arbeidskrav og deltakelse i bestemte faglige aktiviteter. Mer informasjon om arbeidskrav finnes i den innledende delen av fagplanen.
+
+Arbeidskrav og faglige aktiviteter med krav om deltakelse til deleksamen 1
+
+Det stilles krav om 80 % tilstedevC&relse i undervisningen. Ved fravC&r utover 20 %, og inntil 40 %, vil det gis en kompensatorisk oppgave. Form og omfang avtales med faglC&rer. Ved fravC&r utover 40 % vil studenten trekkes fra eksamen.
+Deltakelse i verksted: byvandring i Oslo. Gjennom verkstedet tilegnes kunnskap om humanisme, byutvikling og arkitektur. Krav om deltakelse begrunnes i at denne kompetansen ikke kan tilegnes ved teoretisk selvstudium. Ved manglende deltakelse mC% studenten utfC8re en kompensatorisk oppgave som avtales med faglC&rer.
+Deltakelse pC% ekskursjoner til Den katolske kirke, Holocaustsenteret, sikhtempel, fredagsbC8nn i moskC) og til Rikets Sal (Jehovas Vitner). Krav om deltakelse har sammenheng med at det faglige innholdet i ekskursjonene er en kompetanse som ikke kan tilegnes gjennom et teoretisk selvstudium. FravC&r pC% enkelte ekskursjoner kan etter avtale med faglC&rer tas igjen ved at studenten oppsC8ker ekskursjonsmC%let pC% egen hC%nd, fC%r en bekreftelse pC% oppmC8tet og skriver en rapport pC% 400 ord +/- 10 % fra besC8ket.
+Studentene skal, i grupper pC% 2-3 personer, lage en digital lC&ringsressurs om estetiske uttrykk i en hellig bygning som tempel, moske, synagoge, gurdvara eller kirke. LC&ringsressursen kan omfatte ulike kunstformer som bilder, statuer, eller arkitektur mer generelt, og skal vC&re relevant for arbeidet med KRLE-faget i skolen. En nC&rmere presisering av hva arbeidskravet innebC&rer, gis ved semesterstart.
+Deltakelse i et faglig seminar, der studentene gruppevis muntlig presenterer og diskuterer et utdrag fra pensum for eksempel en artikkel eller et kapittel i en fagbok. Det brukes omlag 15 minutter pC% hver presentasjon.
+
+Arbeidskrav og faglige aktiviteter med krav om deltakelse til deleksamen 2
+
+FC8lgende arbeidskrav mC% vC&re godkjent fC8r FoU-oppgaven kan leveres til sensur:
+
+Innlevering av et notat pC% 400 ord +/- 10 % om opplegg for oppgaven. Notatet skal ha med omtale av emne, spC8rsmC%l en vil undersC8ke, aktuell forskningslitteratur og annet fagstoff studenten forventer C% sette seg inn som del av oppgavearbeidet, hva slags materiale studenten planlegger C% samle inn og undersC8ke, forskningsmetode studenten skal bruke, og skisse til oppgavedesign.
+Notat fC8r siste veiledning med utdrag av oppgavetekst pC% 1500 ord +/- 10 %.
+
+FC8lgende krav om deltakelse mC% vC&re godkjent fC8r FoU-oppgaven kan leveres til sensur:
+
+Deltakelse pC% undervisning om utdanningsvitenskap og metode, forskningsetikk og grunnlagsspC8rsmC%l.
+Deltakelse pC% undervisning i akademisk skriving og IKT
+Deltakelse pC% to veiledninger i seminar eller individuelt. Veileder setter opp tidspunkter og krav til bidrag.
+Deltakelse pC% delingskonferanse med eget framlegg og respons pC% medstudenters framlegg.
+Vurdering og eksamen
+
+Eksamen bestC%r av to deleksamener:
+
+Deleksamen 1: Individuell muntlig eksamen, omfang ca. 30 minutter, med utgangspunkt i pensum for emnet.
+
+Deleksamen 2: Individuell FoU-oppgave med omfang pC% 7000 ord +/- 10% leveres elektronisk innen oppgitt frist. Oppgaven mC% oppfylle IKT-krav og bestemte krav til utforming. Slike kriterier publiseres pC% hC8gskolens lC&ringsplattform i god tid fC8r studenten begynner pC% sin oppgave. EgenerklC&ring vedrC8rende fusk og plagiering og egenerklC&ring knyttet til hvorfor oppgaven ikke utlC8ser NSD-krav, skal ligge som vedlegg i FoU-oppgaven ved innlevering.
+
+Eksamensdelene vektes 50/50 i samlet karakter for emnet.
+
+Ny/utsatt eksamen
+
+Ved gyldig fravC&r eller ikke bestC%tt resultat, mC% kun den aktuelle eksamensdelen tas opp igjen.
+
+Deleksamen 1: Ny/utsatt eksamen arrangeres som ved ordinC&r eksamen.
+
+Deleksamen 2: Ved ikke bestC%tt karakter vil det vC&re anledning til C% omarbeide oppgaven ved fC8rste ny/utsatt eksamen. Etter dette leveres ny oppgave. Dersom FoU-oppgaven fC%r bestC%tt karakter, kan studenten ikke levere forbedret oppgave, men mC% eventuelt skrive ny FoU-oppgave ved ny eksamen. Dette innebC&rer at man skifter temaomrC%de, eventuelt materiale for undersC8kelse, faglig grunnlag og problemstilling. Innlevering av forbedret versjon av samme oppgave som ved tidligere eksamen er ikke tillatt, og slik innlevering vil ikke bli vurdert.
+
+Hjelpemidler ved eksamen
+
+Alle hjelpemidler er tillatt sC% lenge regler for kildehenvisning fC8lges.
+
+Vurderingsuttrykk
+
+Det benyttes en gradert karakterskala fra A til E for bestC%tt og F for ikke bestC%tt eksamen.
+
+Sensorordning
+
+Deleksamen 1: Individuell muntlig eksamen vurderes av to interne sensorer. En tilsynssensor er tilknyttet emnet, i henhold til retningslinjer for oppnevning og bruk av sensorer ved OsloMet.
+
+Deleksamen 2: FoU-oppgaven vurderes av intern og ekstern sensor. Normalt er veileder intern sensor.

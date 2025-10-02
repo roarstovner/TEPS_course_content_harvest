@@ -1,0 +1,10 @@
+institution: hvl
+code: MGBEN204-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGBEN204
+status: 200
+course_name_no: MGBEN204 Engelsk 1, emne 2 - Engelsk litteratur og kultur med fagdidaktikk
+----- FULLTEXT -----
+
+NA

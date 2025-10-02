@@ -1,0 +1,92 @@
+institution: oslomet
+code: MFAGL4200-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/MFAGL4200/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+MFAGL4200 Praktisk estetisk prosjekt Emneplan
+Engelsk emnenavn
+Practical aesthetic project
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 1-7
+Omfang
+15.0 stp.
+StudieC%r
+2025/2026
+Programplan
+GrunnskolelC&rerutdanning for trinn 1-7 (2025 HCST )
+Emnehistorikk
+2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Innledning
+
+I dette emnet skal studentene gjennomfC8re et praktisk-estetisk prosjekt med tilknytning til fagdidaktikk. I emnet inngC%r avgrensning, planlegging,gjennomfC8ring og dokumentasjon av en praktisk-estetisk undersC8kelse. UndersC8kelsen bygger pC% en selvvalgt problemstilling og settes i sammenheng med relevante samtidsdiskurser og fagdidaktiske problemstillinger.
+
+LC&ringsutbytte
+
+Kunnskap
+
+Studenten:
+
+har inngC%ende kunnskap om relevante design-, kunst- og hC%ndverksfaglige teorier og metoder
+har avansert kunnskap om ulike diskurser innen utdanningsfeltet kunst og hC%ndverk
+har inngC%ende kunnskap om teknikk og materialer innen selvvalgt tema
+har kunnskap om hvordan C% gjennomfC8re, dokumentere, presentere og formidle egen praktisk-estetisk undersC8kelse
+
+Ferdigheter
+
+Studenten:
+
+kan anvende metoder for praktisk-estetisk utforskning og kunstnerisk utviklingsarbeid
+kan avgrense, planlegge, gjennomfC8re og dokumentere en stC8rre praktisk-estetisk undersC8kelse.
+kan anvende nasjonal og internasjonal forskning og egne erfaringer i arbeid med praktiske problemstillinger
+kan reflektere kritisk over eget og andres praktisk-estetiske arbeid i sammenheng med relevante samtidsdiskurser og fagdidaktiske problemstillinger
+
+Generell kompetanse
+
+Studenten
+
+kan anvende sine kunnskaper og ferdigheter pC% nye omrC%der
+kan gjennomfC8re analyser i egen praktisk estetisk undersC8kelse og bidra til kunnskapsutvikling og nytenkning
+kan reflektere over egen lC&ring og delta i kommunikasjon om sentrale utfordringer i praktisk-estetiske undersC8kelser
+Arbeids- og undervisningsformer
+
+Undervisningen bestC%r i forelesninger, workshops og seminar. Det gis individuell veiledning. Det stilles store krav til selvstendig, kreativt arbeid og kritisk refleksjon.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+Retten til C% avlegge eksamen forutsetter godkjente arbeidskrav og deltakelse i bestemte faglige aktiviteter. Se mer informasjon i den innledende delen av fagplanen.
+
+FC8lgende arbeidskrav er obligatoriske og mC% vC&re godkjent for C% fremstille seg til eksamen:
+
+en plan for presentasjon og visning av eget prosjekt med faglige begrunnelser. Presentert for medstudenter og lC&rer.
+Minimum 80% deltagelse pC% utvalgte lC&ringsaktiviteter. Hvilke lC&ringsaktiviteter som har krav til obligatorisk deltakelse synliggjC8res i Canvas og timeplanen (TP) fC8r studiestart.
+Vurdering og eksamen
+
+Deleksamen i to deler som inkluderer:
+
+1. Muntlig prosjektpresentasjon.
+
+2. Utstilling med dokumentasjon.
+
+Krav til dokumentasjon beskrives nC&rmere i eksamenstekst.
+
+Begge eksamensdeler mC% vC&re vurdert til bestC%tt for C% bestC% emnet.
+
+Den muntlige delen kan ikke pC%klages.
+
+Hjelpemidler ved eksamen
+
+Alle.
+
+Vurderingsuttrykk
+
+BestC%tt/ikke bestC%tt.
+
+Sensorordning
+
+To interne sensorer. Ekstern sensor brukes jevnlig. Eksamensresultatet kan ikke pC%klages.

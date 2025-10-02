@@ -1,0 +1,85 @@
+institution: nord
+code: MAT5007-1
+year: NA
+hv: NA
+url: https://www.nord.no/studier/emner/mat5007
+status: 200
+course_name_no: Matematikk 3
+----- FULLTEXT -----
+
+Dette kurset vil gi en solid forstC%else av sentrale matematiske konsepter og ferdigheter som er essensielle for undervisning pC% videregC%ende nivC%. Gjennom dette kurset vil det utvikles bC%de teoretisk kunnskap og undervisningsrelevante ferdigheter i algebra, funksjonslC&re og geometri.
+
+Emnet bygger pC% matematikk 1 og matematikk 2 for 8-13. Kurset innebC&rer C% kunne planlegge, gjennomfC8re og vurdere et matematikkkurs. Hovedfokus pC% kurset er pC% ulike matematikkemner for videregC%ende skole med fokus pC% algebra, funksjoner og geometri.
+
+FC8rste studieC%r i utdanningen mC% vC&re fullfC8rt med bestC%tt karakter.
+
+FC8rste studieC%r i utdanningen mC% vC&re fullfC8rt med bestC%tt karakter.
+
+Kunnskap:
+
+Studenten:
+
+Har god kunnskap om emnene algebra, funksjoner og geometri relevant for videregC%ende skole.
+Har kunnskap om egenskaper ved eksempelvis logaritmisk, rasjonale og eksponentielle funksjoner.
+Har kunnskap om koordinatgeometri og vektorer.
+Har kunnskap til ulike bevisfC8ringer i matematikk.
+
+Ferdighet:
+
+Studenten:
+
+Kan planlegge undervisning i algebra, geometri og funksjoner relevant for videregC%ende skole.
+Kan skape en matematisk modell for en situasjon fra hverdagen eller fra andre fagfelt, ved C% bruke eksempelvis eksponentiale funksjoner.
+Kan vurdere anvendeligheten av programmering som verktC8y i matematikkundervisning.
+
+Generell kompetanse
+
+Studenten:
+
+har innsikt i matematikkens nytte i samfunnet og i andre fagfelt.
+
+Kunnskap:
+
+Studenten:
+
+Ferdighet:
+
+Studenten:
+
+Generell kompetanse
+
+Studenten:
+
+Semesteravgift og pensumlitteratur.
+
+Obligatorisk
+
+Det vil bli lagt vekt pC% varierte arbeidsformer, spesielt med tanke pC% C% forberede studentene pC% arbeidsmC%ter de selv vil mC%tte praktisere med egne elever. Undervisningen vil bestC% av studentaktive lC&ringsformer som problemlC8sing, gruppearbeid, individuelle oppgaver og samtaler/diskusjoner. Bruk av IKT som lC&ringsstC8tte i undervisningsarbeid vil ogsC% bli vektlagt. Studentene vil ogsC% fC% anledning til C% prC8ve ut undervisningsideer diskutert i studiet gjennom sin praksis i skolen.
+
+Studieprogrammet evalueres C%rlig av studentene gjennom emneevalueringer og studieprogramevaluering. Evalueringene inngC%r som en del av universitetets kvalitetssikringssystem.
+
+Samlet vurdering
+
+Arbeidskrav: Studentene vil fC% 2 arbeidskrav i kurset. Arbeidskravene vil i hovedsak vC&re skriftlige innleveringer. Arbeidskravene mC% vC&re godkjent for C% fC% endelig karkter i emnet.
+
+Vurdering arbeidskrav: godkjent/ ikke godkjent
+
+Obligatorisk oppmC8te: OppmC8te undervisning: minimum 80%. Vurdering oppmC8te: godkjent / ikke godkjent. Obligatorisk deltakelse mC% vC&re godkjent for C% fC% endelig karakter i emnet.
+
+Eksamen: Skriftlig skoleeksamen, 5 timer. Vurdering eksamen: A - F.
+
+Samlet vurdering
+
+Arbeidskrav: Studentene vil fC% 2 arbeidskrav i kurset. Arbeidskravene vil i hovedsak vC&re skriftlige innleveringer. Arbeidskravene mC% vC&re godkjent for C% fC% endelig karkter i emnet.
+
+Vurdering arbeidskrav: godkjent/ ikke godkjent
+
+Obligatorisk oppmC8te: OppmC8te undervisning: minimum 80%. Vurdering oppmC8te: godkjent / ikke godkjent. Obligatorisk deltakelse mC% vC&re godkjent for C% fC% endelig karakter i emnet.
+
+Eksamen: Skriftlig skoleeksamen, 5 timer. Vurdering eksamen: A - F.
+
+Grafisk kalkulator
+
+C generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er C% regne som fusk.
+
+C generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er C% regne som fusk.

@@ -1,0 +1,98 @@
+institution: nord
+code: KRO2004-1
+year: NA
+hv: NA
+url: https://www.nord.no/studier/emner/kro2004
+status: 200
+course_name_no: Ferdighets- og prestasjons-utvikling i idrett
+----- FULLTEXT -----
+
+
+
+Innholdet i emnet vil ha hovedfokus pC% C% utvikle kunnskap om grunnlaget for ferdighets- og prestasjonsutvikling i idrett for den enkelte student.
+
+Opptak skjer pC% bakgrunn av generell studiekompetanse eller realkompetanse etter gjeldende regler. Emnet er for studenter tatt opp pC% lektorutdanning i kroppsC8ving og idrettsfag.
+
+For C% starte pC% emnet kreves gjennomfC8rt fC8rste studieC%r i lektorutdanningen.
+
+KUNNSKAP
+
+Studenten:
+
+Har inngC%ende kunnskap om en valgt idretts treningsprinsipper og treningsmetoder.
+
+FERDIGHET
+
+Studenten:
+
+Har faglig grunnlag for C% legge til rette for trening som kan bidra til C8kt prestasjon i en valgt idrett.
+
+GENERELL KOMPETANSE
+
+Studenten:
+
+Kan kritisk bruke og vurdere forskningsbasert kunnskap som grunnlag for C8kt prestasjon i valgt idrett.
+
+KUNNSKAP
+
+Studenten:
+
+FERDIGHET
+
+Studenten:
+
+GENERELL KOMPETANSE
+
+Studenten:
+
+Utover semesteravgift og pensumlitteratur forutsettes det at studenten disponerer en bC&rbar datamaskin.
+
+Obligatorisk
+
+Det er nC8dvendig med deltakelse og aktivt samarbeid mellom studentene for C% kunne oppnC% de C8nskede utbytteformuleringer vi har satt for emnet. Her vil blant annet undervisning, veiledning, egentrening og andre interaktive prosesser mellom medstudenter og mellom studenter og lC&rere vC&re essensielt.
+
+Studieprogrammet evalueres C%rlig av studentene gjennom emneundersC8kelser (midtveisevaluering og sluttevaluering). Evaluering inngC%r som en del av universitetets kvalitetssikringssystem.
+
+Studenter har praksis i samsvar med praksisplan for Lektorutdanningen i kroppsC8ving og idrettsfag. Praksis er en del av kroppsC8ving og idrettsfaget i lektorutdanninga, og erfaringer studentene gjC8r i praksis, mC% vC&re utgangspunkt for drC8fting og analyse i studiet. Hver student skal gjennomfC8re arbeidsoppgaver knyttet til praksis.
+
+Samlet vurdering
+
+Obligatorisk deltakelse:
+
+Obligatorisk deltakelse i undervisning, minimum 80%, og i avtalt studentstyrt aktivitet.
+
+Obligatorisk deltakelse i laboratoriearbeid (100%).
+
+Obligatorisk deltakelse mC% vC&re godkjent for C% fC% gC% opp til eksamen.
+
+Arbeidskrav: 1 skriftlig arbeidskrav, mC% vC&re godkjent for C% fC% endelig karakter i emnet
+
+Individuell skriftlig skoleeksamen. Varighet: 6 timer, karakteruttrykk A-F. Teller 100/100.
+
+Hjelpemidler til eksamen
+
+Hjelpemidler til eksamen er 20 selvvalgte vitenskapelige artikler, som er skrevet ut og levert emneansvarlig minst 3 dager fC8r eksamen og pensumboken B+Idrettens treningslC&reB; Gjerset (Red) (2015) Gyldendal ISBN 9788205391949. Det er ikke tillatt C% skrive notater hverken pC% artiklene eller i pensumbok. FC8r eksamen starter, fC%r studentene utdelt sine 20 vitenskapelige artikler, og har med pensumboken selv.
+
+C generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er C% regne som fusk.
+
+Samlet vurdering
+
+Obligatorisk deltakelse:
+
+Obligatorisk deltakelse i undervisning, minimum 80%, og i avtalt studentstyrt aktivitet.
+
+Obligatorisk deltakelse i laboratoriearbeid (100%).
+
+Obligatorisk deltakelse mC% vC&re godkjent for C% fC% gC% opp til eksamen.
+
+Arbeidskrav: 1 skriftlig arbeidskrav, mC% vC&re godkjent for C% fC% endelig karakter i emnet
+
+Individuell skriftlig skoleeksamen. Varighet: 6 timer, karakteruttrykk A-F. Teller 100/100.
+
+Hjelpemidler til eksamen
+
+Hjelpemidler til eksamen er 20 selvvalgte vitenskapelige artikler, som er skrevet ut og levert emneansvarlig minst 3 dager fC8r eksamen og pensumboken B+Idrettens treningslC&reB; Gjerset (Red) (2015) Gyldendal ISBN 9788205391949. Det er ikke tillatt C% skrive notater hverken pC% artiklene eller i pensumbok. FC8r eksamen starter, fC%r studentene utdelt sine 20 vitenskapelige artikler, og har med pensumboken selv.
+
+C generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er C% regne som fusk.
+
+Eksamen er et selvstendig arbeid som skal utfC8res av studenten selv. C generere besvarelse ved hjelp av kunstig intelligens eller med bidrag fra annen part og levere den helt eller delvis som egen besvarelse, er C% regne som fusk dersom ikke annet er opplyst for den enkelte eksamen. Ut over dette er alle tilgjengelige hjelpemidler tillatt i trC%d med korrekt kildebruk.

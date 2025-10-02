@@ -1,0 +1,10 @@
+institution: mf
+code: RL1013-1
+year: NA
+hv: NA
+url: https://mf.no/studier/emner/rl1013
+status: 200
+course_name_no: Kristendom: tradisjon og tolkning RL1013
+----- FULLTEXT -----
+
+NA

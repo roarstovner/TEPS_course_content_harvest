@@ -1,0 +1,145 @@
+institution: uib
+code: NATDID211-0
+year: NA
+hv: NA
+url: https://www4.uib.no/studier/emner/natdid211
+status: 200
+course_name_no: Kvalitet i naturfagsundervisninga
+----- FULLTEXT -----
+
+Navigasjonssti
+Forside
+Studier
+Emner
+
+Kvalitet i naturfagsundervisninga
+
+Studiepoeng
+
+5
+
+Undervisningssemester
+
+Haust
+
+Emnekode
+
+NATDID211
+
+Talet pC% semester
+
+1
+
+UndervisningssprC%k
+
+Norsk
+
+Ressursar
+
+Timeplan
+Litteraturliste
+
+Litteraturliste
+
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust 2021 VC%r 2020 Haust 2020 VC%r 2019 Haust 2019 VC%r 2018 Haust 2018 VC%r 2017 Haust 2017 VC%r 2016 Haust 2016 VC%r
+MC%l og innhald
+
+Emnet undervises siste gang hC8sten 2025.
+
+Emnet tek for seg kriterier for kvalitet i undervisninga og korleis dei kan brukast til C% leggje til rette for lC&ring i naturfaga. Emnet tek opp ulike undervisningsformar i naturfag og korleis dei pC%verkar elevane sine aktivitetar i klasserommet. Det vert lagt sC&rleg vekt pC% korleis kombinasjonar av metodane stC8ttar opp mot lC&ring. Emnet tek vidare opp rammekC%r for undervisninga som til dC8mes lC&replanar, lC&rebC8kar og andre ressursar.
+
+LC&ringsutbyte
+
+Studenten skal ved avslutta emne ha fC8lgjande lC&ringsutbyte definert i kunnskapar, ferdigheiter og generell kompetanse:
+
+Kunnskapar
+
+Studenten kan
+
+greie ut om kvalitetskriterier for ulike undervisningsformar og deira forankring i forskinga
+gjere rede for mC%tar C% gi og fC% tilbakemeldingar pC% i ulike undervisningssituasjonar
+gi dC8me pC% korleis undervisnings- og arbeidsformar kan utformast etter kvalitetskriteria
+
+Ferdigheitar
+
+Studenten kan
+
+identifisere passande undervisningsformar for C% oppnC% C8nska lC&ringsresultat
+bruke kunnskapar om tilbakemeldingar for C% vurdere undervisningskvalitet
+byggje aktivitetssekvensar som stC8ttar bestemte lC&ringsmC%l
+
+Generell kompetanse
+
+Studenten kan
+
+drC8fte ei avgrensa fagdidaktisk problemstilling basert pC% eigne erfaringar og litteratur
+finne frem informasjon til utvalde naturfaglege emne og vurdere relevansen
+bruke forsking og egne erfaringar til C% forbetre undervisningssekvensar i samspel med sine med-studentar
+Undervisningssemester
+Haust. Emnet undervises siste gang hC8sten 2025.
+Undervisningsstad
+Bergen
+Krav til forkunnskapar
+Ingen. Emnet mC% normalt takast parallelt med KOPRA103 og PEDA122
+TilrC%dde forkunnskapar
+PEDA120, PEDA121, NATDID210 og minimum 50 sp i naturfaglege emne
+Krav til studierett
+Studierett knytt til Fakultet for naturvitskap og teknologi sitt lektorprogram.
+Arbeids- og undervisningsformer
+22 timar (forelesning og seminar)
+Obligatorisk undervisningsaktivitet
+
+Tre obligatoriske oppgC%ver (skriftlege og munnlege) knytt til skulepraksis eller forelesingstema
+
+(Gyldig i fire semester; inneverande og tre pC%fC8lgjande)
+
+For C% kunne ta eksamen i NATDID211 mC% normalt KOPRA103 vC&re bestC%tt.
+
+Vurderingsformer
+i emnet nyttar ein fC8lgjande vurderingsform:
+ProsjektoppgC%ve
+Karakterskala
+Ved sensur av emnet vert karakterskalaen A-F nytta.
+Vurderingssemester
+Det er ordinC&r eksamen kvart semester
+Litteraturliste
+Litteraturlista vil vere klar innan 01.07 for haustsemesteret og 01.12 for vC%rsemesteret.
+Emneansvarleg
+Emneansvarleg og administrativ kontaktperson finn du pC% Mitt UiB.
+Administrativt ansvarleg
+Kjemisk institutt har det administrative ansvaret for emnet.
+Institutt
+Kjemisk institutt
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust 2021 VC%r 2020 Haust 2020 VC%r 2019 Haust 2019 VC%r 2018 Haust 2018 VC%r 2017 Haust 2017 VC%r 2016 Haust 2016 VC%r
+Kontaktinformasjon
+Studierettleiar kan kontaktast her: studieveileder@kj.uib.no. For C8vrige spC8rsmC%l om lektorutdanning, kontakt lektor.realfag@uib.no.
+Eksamensinformasjon
+Vurderingsordning
+ProsjektoppgC%ve
+Trekkfrist
+01.11.2025
+Eksamenssystem
+Inspera
+Digital eksamen
+
+Dette bC8r du vite om eksamen
+
+Kjemisk institutt
+
+Vurderingsordning
+
+ProsjektoppgC%ve
+
+Trekkfrist
+
+01.11.2025
+
+Eksamenssystem
+
+Inspera
+
+Digital eksamen

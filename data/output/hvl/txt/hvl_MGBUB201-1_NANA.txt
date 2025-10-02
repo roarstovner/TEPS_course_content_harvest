@@ -1,0 +1,10 @@
+institution: hvl
+code: MGBUB201-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGBUB201
+status: 200
+course_name_no: MGBUB201 Praksis i Afrika
+----- FULLTEXT -----
+
+NA

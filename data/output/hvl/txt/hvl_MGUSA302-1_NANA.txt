@@ -1,0 +1,10 @@
+institution: hvl
+code: MGUSA302-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGUSA302
+status: 200
+course_name_no: MGUSA302 Samfunnsfag 2, emne 1 - Mangfald, berekraft og historiemedvit
+----- FULLTEXT -----
+
+NA

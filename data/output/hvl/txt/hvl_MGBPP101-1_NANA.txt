@@ -1,0 +1,10 @@
+institution: hvl
+code: MGBPP101-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGBPP101
+status: 200
+course_name_no: MGBPP101 Profesjonsrettet pedagogikk 1, emne 1 - Pedagogikk og pedagogiske handlinger
+----- FULLTEXT -----
+
+NA

@@ -1,0 +1,10 @@
+institution: hvl
+code: MGBKR301-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGBKR301
+status: 200
+course_name_no: MGBKR301 KRLE 2, emne 1 - Hellige tekster, sekularisering, mangfold og religionskritikk
+----- FULLTEXT -----
+
+NA

@@ -1,0 +1,109 @@
+institution: nord
+code: MUS1075-1
+year: NA
+hv: NA
+url: https://www.nord.no/studier/emner/mus1075
+status: 200
+course_name_no: Musikkteknologi, del 1
+----- FULLTEXT -----
+
+Musikkteknologi, del 1
+
+Emnet gir deg bred kunnskap og ferdigheter i bruken av musikkteknologiske verktC8y til C% gjC8re opptak, bearbeide og manipulere lyd og bruke programmering i skapende, utC8vende og pedagogisk arbeid.
+
+Emnet skal bevisstgjC8re studenten om hvilke musikkteknologiske verktC8y man har til rC%dighet i egen lC&ring, komponering, utC8velse og undervisning i musikk.
+
+Emnet bruker digitale verktC8y til C% forme musikalske arbeider, ofte i samarbeid med andre fagemner i utdanningen. Kandidaten lC&rer C% bruke musikkteknologiske verktC8y strategisk og variert for C% oppnC% hensiktsmessige og kreative musikalske uttrykk.
+
+Emnet gir ogsC% studenten ferdigheter i C% utC8ve digital dC8mmekraft. Det innebC&rer C% fC8lge regler for opphavsrett i mC8te med egen og andres musikk og utvise nettetikk i samhandling med andre.
+
+Emnet gir deg bred kunnskap og ferdigheter i bruken av musikkteknologiske verktC8y til C% gjC8re opptak, bearbeide og manipulere lyd og bruke programmering i skapende, utC8vende og pedagogisk arbeid.
+
+Emnet skal bevisstgjC8re studenten om hvilke musikkteknologiske verktC8y man har til rC%dighet i egen lC&ring, komponering, utC8velse og undervisning i musikk.
+
+Emnet bruker digitale verktC8y til C% forme musikalske arbeider, ofte i samarbeid med andre fagemner i utdanningen. Kandidaten lC&rer C% bruke musikkteknologiske verktC8y strategisk og variert for C% oppnC% hensiktsmessige og kreative musikalske uttrykk.
+
+Emnet gir ogsC% studenten ferdigheter i C% utC8ve digital dC8mmekraft. Det innebC&rer C% fC8lge regler for opphavsrett i mC8te med egen og andres musikk og utvise nettetikk i samhandling med andre.
+
+Emnet er forbeholdt studenter pC% Crsstudium musikk og LC&rerutdanning i praktiske og estetiske fag for trinn 1-13, musikk
+
+Kunnskap
+
+har kunnskap om utvalgte tema innenfor lydteori.
+har kunnskap om programvare, instrumenter og verktC8y innenfor faget musikkteknologi.
+har kunnskap om sentrale temaer, metoder og problemstillinger innenfor faget musikkteknologi.
+har kunnskap om de estetiske og pedagogiske aspektene ved bruk av musikkteknologi i utC8vende, skapende og pedagogisk arbeid.
+
+Ferdigheter
+
+Kandidaten
+
+kan anvende relevante musikkteknologiske verktC8y, instrumenter, teknikker og uttrykksformer.
+kan anvende musikk-teknologisk kunnskap og metodikk i formidling av utC8vende og skapende arbeid.
+kan reflektere over og drC8fte egen praksis og begrunne faglige valg.
+kan anvende aktiv lytting som metode for C% tilegne seg kunnskap om lydlige og musikalske forlC8p innenfor ulike musikkteknologiske praksiser.
+
+Generell kompetanse
+
+kan oppdatere sin kunnskap innenfor fagomrC%det.
+har innsikt i relevante etiske, estetiske og samfunnsrelaterte problemstillinger innenfor faget musikkteknologi
+kan formidle sentralt musikk-teknologisk fagstoff, problemstillinger og lC8sninger bC%de muntlig og skriftlig i trC%d med relevante akademiske praksiser
+kan utveksle synspunkter og erfaringer om faget musikkteknologi med andre, og gjennom dette bidra til utvikling av god praksis
+
+Kunnskap
+
+Ferdigheter
+
+Kandidaten
+
+Generell kompetanse
+
+Utover semesteravgift og pensumlitteratur forutsettes det at studenten disponerer en bC&rbar datamaskin. I tillegg anbefales det at studenten investerer i nC8dvendig teknisk utstyr og programvare som brukes i emnet. Dette innebC&rer en merkostnad pC% ca. 4000 kroner. Denne programvaren er for C8vrig tilgjengelig pC% universitetets datalab.
+
+Teoretisk og praktisk emne.. Obligatorisk 
+
+Studentaktive, varierte og utforskende lC&ringsformer skal sikre at studentene utvikler kunnskaper og ferdigheter, individuelt og i samspill med andre, knyttet til lC&ringsutbyttene som er satt for dette emnet. Studentenes engasjement og erfaring gjennom arbeid med ulike musikkteknologiske verktC8y er avgjC8rende for hvor langt de kommer i C% oppnC% godt lC&ringsutbytte.
+
+Teoretisk undervisning i forelesning er viktig for C% kunne oppnC% lC&ringsutbytter gitt i emnet. Praktiske C8vinger med anvendte kunnskaper og ferdigheter er sentralt for C% oppnC% lC&ringsutbytter.
+
+Studentaktive, varierte og utforskende lC&ringsformer skal sikre at studentene utvikler kunnskaper og ferdigheter, individuelt og i samspill med andre, knyttet til lC&ringsutbyttene som er satt for dette emnet. Studentenes engasjement og erfaring gjennom arbeid med ulike musikkteknologiske verktC8y er avgjC8rende for hvor langt de kommer i C% oppnC% godt lC&ringsutbytte.
+
+Teoretisk undervisning i forelesning er viktig for C% kunne oppnC% lC&ringsutbytter gitt i emnet. Praktiske C8vinger med anvendte kunnskaper og ferdigheter er sentralt for C% oppnC% lC&ringsutbytter.
+
+Studieprogrammet evalueres C%rlig av studentene gjennom emneevalueringer og studieprogramevaluering. Evalueringene inngC%r som en del av universitetets kvalitetssikringssystem.
+
+Obligatorisk deltakelse (OD): 80 %. OD mC% vC&re godkjent for C% fC% gC% opp til eksamen.
+
+Abeidskrav (AK): Ett praktisk og to skriftlige arbeidskrav.
+
+Godkjent arbeidskrav settes som vilkC%r for C% fC% endelig karakter i emnet.
+
+Skriftlig individuell skoleeksamen 6 timer (SK),
+
+Karakteruttrykk A-F. Teller 100 %.
+
+Obligatorisk deltakelse (OD): 80 %. OD mC% vC&re godkjent for C% fC% gC% opp til eksamen.
+
+Abeidskrav (AK): Ett praktisk og to skriftlige arbeidskrav.
+
+Godkjent arbeidskrav settes som vilkC%r for C% fC% endelig karakter i emnet.
+
+Skriftlig individuell skoleeksamen 6 timer (SK),
+
+Karakteruttrykk A-F. Teller 100 %.
+
+Ingen hjelpemidler utover det som beskrives i eksamensoppgaven. 
+
+Ingen
+
+Med overlapp menes en faglig likhet mellom emner med samme faginnhold. Du vil derfor fC% fC8lgende reduksjon i studiepoeng om du har tatt emner som er angitt under:
+
+MUS1060 - Musikkteknologi, del 1 - 5 Studiepoeng
+
+MUS1068 - Musikkteknologi, del 1 - 10 Studiepoeng
+
+Med overlapp menes en faglig likhet mellom emner med samme faginnhold. Du vil derfor fC% fC8lgende reduksjon i studiepoeng om du har tatt emner som er angitt under:
+
+MUS1060 - Musikkteknologi, del 1 - 5 Studiepoeng
+
+MUS1068 - Musikkteknologi, del 1 - 10 Studiepoeng

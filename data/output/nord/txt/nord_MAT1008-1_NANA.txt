@@ -1,0 +1,108 @@
+institution: nord
+code: MAT1008-1
+year: NA
+hv: NA
+url: https://www.nord.no/studier/emner/mat1008
+status: 200
+course_name_no: Matematikk 1A
+----- FULLTEXT -----
+
+
+
+I dette emnet vil studentene fC% en innfC8ring i det C% vC&re matematikklC&rer og C% undervise i trC%d med forskningsbasert kunnskap. Det sentrale i arbeidet til en matematikklC&rer er C% kunne hjelpe elevene med C% utvikle en god forstC%else i matematikk. For C% lykkes med dette, trenger lC&reren en helhetlig undervisningskunnskap som inkluderer bC%de spesialisert matematikkunnskap og matematikkdidaktisk kunnskap. Det innebC&rer C% ha gode kunnskaper om hvordan barn lC&rer matematikk, og hvordan undervisningen kan planlegges og gjennomfC8res med utgangspunkt i elevenes tenkning. I emnet vil det derfor jobbes med spesialisert matematikkunnskap og matematikkdidaktisk kunnskap integrert. I matematikk 1A vil fokuset vC&re pC% lC&ring og undervisning i brC8k, desimaltall og prosent, grunnleggende algebra, og pC% hvordan barn utvikler additiv og multiplikativ tenkning.
+
+Kan tas som frittstC%ende fag i lC&rerutdanning.
+
+Kan tas som frittstC%ende fag i lC&rerutdanning.
+
+KUNNSKAPER
+
+Studenten skal
+
+ha spesialisert matematikkunnskap om tall, tallregning og grunnleggende algebra
+ha kunnskap om barns utvikling av tallbegrep og tallforstC%else
+ha kunnskaper om barns utvikling av additiv, multiplikativ og algebraisk tenkning
+ha kunnskap om undersC8kende matematikkundervisning
+ha kunnskap om sammenhengen mellom lC&rerens undervisningsmetode og elevenes lC&ring
+ha kunnskap om bruk av konkretiseringsmateriale og digitale ressurser i matematikkfaget
+ha kunnskap om matematikkens historiske utvikling, spesielt utviklingen av tallbegrep og tallsystemer
+
+FERDIGHETER
+
+Studenten skal
+
+kunne planlegge, gjennomfC8re og vurdere matematikkundervisning for alle elever pC% trinn 1-7 med utgangspunkt i elevenes kunnskaper og forankret i forskning.
+kunne bruke arbeidsmC%ter som fremmer elevenes undring, kreativitet og evne til C% arbeide systematisk med utforskende aktiviteter, resonnering og argumentasjon
+kunne kommunisere med elever, lytte til, vurdere, gjC8re bruk av elevers innspill og stimulere elevenes matematiske tenking
+kunne analysere og vurdere elevers tenkemC%ter, argumentasjon og lC8sningsmetoder ut fra relevant teori
+kunne vurdere elevenes kunnskap og faglige utvikling basert pC% relevant teori
+
+GENERELL KOMPETANSE
+
+Studenten skal
+
+ha innsikt i matematikkfagets betydning som allmenndannende fag
+
+KUNNSKAPER
+
+Studenten skal
+
+FERDIGHETER
+
+Studenten skal
+
+GENERELL KOMPETANSE
+
+Studenten skal
+
+Utover semesteravgift og pensumlitteratur forutsettes det at studenten disponerer en bC&rbar datamaskin.
+
+Obligatorisk
+
+Det vil bli lagt vekt pC% varierte arbeidsformer, spesielt med tanke pC% C% forberede studentene pC% arbeidsmC%ter de selv vil mC%tte praktisere med egne elever. Undervisningen vil bestC% av studentaktive lC&ringsformer som problemlC8sing, gruppearbeid, individuelle oppgaver og samtaler/diskusjoner. Bruk av IKT som lC&ringsstC8tte i undervisningsarbeid vil ogsC% bli vektlagt. Studentene vil ogsC% fC% anledning til C% prC8ve ut undervisningsideer diskutert i studiet gjennom sin praksis i skolen.
+
+Aktiv deltakelse og samarbeid mellom studentene er en forutsetning for C% kunne oppnC% emnets lC&ringsutbytter.
+
+Det vil bli lagt vekt pC% varierte arbeidsformer, spesielt med tanke pC% C% forberede studentene pC% arbeidsmC%ter de selv vil mC%tte praktisere med egne elever. Undervisningen vil bestC% av studentaktive lC&ringsformer som problemlC8sing, gruppearbeid, individuelle oppgaver og samtaler/diskusjoner. Bruk av IKT som lC&ringsstC8tte i undervisningsarbeid vil ogsC% bli vektlagt. Studentene vil ogsC% fC% anledning til C% prC8ve ut undervisningsideer diskutert i studiet gjennom sin praksis i skolen.
+
+Aktiv deltakelse og samarbeid mellom studentene er en forutsetning for C% kunne oppnC% emnets lC&ringsutbytter.
+
+Studieprogrammet evalueres C%rlig av studentene gjennom emneundersC8kelser (midtveisevaluering og sluttevaluering). Evaluering inngC%r som en del av universitetets kvalitetssikringssystem.
+
+GLU 1-7 studenter har praksis i samsvar med praksisplan for GLU 1-7. Praksis er en del av matematikkfaget i lC&rerutdanninga, og erfaringer studentene gjC8r i praksis, mC% knyttes til undervisningen i kurset, bC%de ved planlegging fC8r praksis, og analyse og drC8fting etter praksis. Hver student skal gjennomfC8re arbeidsoppgaver knyttet til praksis.
+
+MU (A-F): Muntlig eksaminasjon (individuell) 30 min.
+
+AK (G/IG): Studentene skal gjennomfC8re 2-3 arbeidskrav, som kan vC&re skriftlige innleveringer, prC8ver eller muntlige presentasjoner.
+
+OD (G/IG): Minimum 80% deltakelse i undervisningen.
+
+Arbeidskravene mC% vC&re godkjent for C% fC% endelig karakter i emnet.
+
+MU (A-F): Muntlig eksaminasjon (individuell) 30 min.
+
+AK (G/IG): Studentene skal gjennomfC8re 2-3 arbeidskrav, som kan vC&re skriftlige innleveringer, prC8ver eller muntlige presentasjoner.
+
+OD (G/IG): Minimum 80% deltakelse i undervisningen.
+
+Arbeidskravene mC% vC&re godkjent for C% fC% endelig karakter i emnet.
+
+Med overlapp menes en faglig likhet mellom emner med samme faginnhold. Du vil derfor fC% fC8lgende reduksjon i studiepoeng om du har tatt emner som er angitt under:
+
+MAT1006 - Matematikk 1 del A - 15 Studiepoeng
+
+MAT1002 - Matematikk 1A, 1-7 - 15 Studiepoeng
+
+MAT1004 - Matematikk 1A, 5-10 - 15 Studiepoeng
+
+MAT1015 - Matematikk 1A - Tall og regning - 7.5 Studiepoeng
+
+Med overlapp menes en faglig likhet mellom emner med samme faginnhold. Du vil derfor fC% fC8lgende reduksjon i studiepoeng om du har tatt emner som er angitt under:
+
+MAT1006 - Matematikk 1 del A - 15 Studiepoeng
+
+MAT1002 - Matematikk 1A, 1-7 - 15 Studiepoeng
+
+MAT1004 - Matematikk 1A, 5-10 - 15 Studiepoeng
+
+MAT1015 - Matematikk 1A - Tall og regning - 7.5 Studiepoeng

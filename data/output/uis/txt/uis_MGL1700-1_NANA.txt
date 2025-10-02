@@ -1,0 +1,148 @@
+institution: uis
+code: MGL1700-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MGL1700
+status: 200
+course_name_no: C vC&re lC&rer i det teknologirike klasserommet (MGL1700)
+----- FULLTEXT -----
+
+Emnekode
+
+MGL1700
+
+Versjon
+
+1
+
+Vekting (stp)
+
+30
+
+Semester undervisningsstart
+
+HC8st
+
+Antall semestre
+
+1
+
+Vurderingssemester
+
+HC8st
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitenskap og humaniora,
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Fakultet for utdanningsvitenskap og humaniora,
+
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhold
+
+Emnet vektlegger en kritisk undersC8kende tilnC&rming til lC&rerens profesjonsfaglige digitale kompetanse (PFDK). Dette innebC&rer at studentene blir kjent med og kan vurdere bruk av aktuelle digitale verktC8y/lC&ringsteknologier i undervisnings- og lC&ringssituasjoner. Emnet vil vC&re en kombinasjon av obligatorisk og selvvalgt pensum (lC&rebC8ker, nyere forskning, multimodale tekster mm).
+
+LC&ringsutbytte
+
+Kunnskap
+
+Studenten har kunnskap om
+
+forventninger og utfordringer knyttet til lC&rerrollen/lC&rerarbeidet i det digitale klasserommet i en digital medievirkelighet
+hvordan samspillet og interaksjon mellom lC&rer, elev og redskaper pC%virkes i digitale omgivelser
+hvordan digitale verktC8y kan bidra til skaperglede, engasjement og utforskertrang
+digital dC8mmekraft og hvordan denne kan utvikles
+
+Ferdigheter
+
+Studenten kan
+
+alene og i samarbeid med andre tilrettelegge for utforskende lC&ring med digitale og analoge verktC8y
+kan anvende mange ulike digitale lC&ringsteknologier og kritisk vurdere bruken av disse i forhold til fag, elev og situasjon
+knytte utvikling av elevers digitale dC8mmekraft til arbeid med digitale redskaper
+
+Generell kompetanse
+
+Studenten kan
+
+identifisere og analysere utfordringer knyttet til undervisning og lC&ring i det teknologirike klasserommet
+utvise kritisk dC8mmekraft i anvendelsen av digitale redskaper i undervisningen
+bidra i skolens utviklingsarbeid med hensyn til profesjonsfaglig digital kompetanse
+
+Forkunnskapskrav
+
+Et av fC8lgende alternativer:
+MGL1100 Pedagogikk og elevkunnskap 1. LC&rerens undervisning i det mangfoldige klasserom, MGL1200 Pedagogikk og elevkunnskap 2. Det inkluderende klasserom i en skole preget av mangfold.
+MGL2100 Pedagogikk og elevkunnskap 1. LC&rerens undervisning i det mangfoldige klasserom, MGL2200 Pedagogikk og elevkunnskap 2. Det inkluderende klasserom i en skole preget av mangfold.
+
+PEL 1 og 2.
+
+Eksamen / vurdering
+
+VilkC%r for C% gC% opp til eksamen/vurdering
+
+Minimum 70% tilstedevC&relse, Individuell oppgave, Gruppeoppgave
+
+I emnet har studentene fC8lgende arbeidskrav
+
+Beskrivelse muligheter og utfordringer ved didaktisk bruk av et gitt digitalt verktC8y i undervisningen (individuell oppgave, valgfri digital presentasjonsform)
+Med utgangspunkt i forskningslitteratur reflektere over forventninger og utfordringer knyttet til lC&rerrollen/lC&rerarbeidet i det digitale klasserommet (gruppeoppgave, valgfri digital presentasjonsform)
+
+Obligatoriske undervisningsaktivitetar
+
+Obligatorisk deltakelse pC% seminar og verkstedsarbeid pC% DDV. I tillegg er minimum 70 % tilstedevC&relse i annen undervisning pC%krevd.
+
+Fagperson(er)
+
+FaglC&rer:
+Paolo Haaland Scarbocci
+
+Emneansvarlig:
+Tarja Irene Tikkanen
+
+Studieprogramleder:
+Ingeborg KnC&velsrud
+
+FaglC&rer:
+Nina Helgevold
+
+Studiekoordinator:
+Kjersti Gjedrem
+
+Arbeidsformer
+
+Studentene vil mC8te et mangfold av arbeidsmC%ter og digitale verktC8y, som bl. a speiler arbeidet i skolen.
+
+Undervisningen vil bli organisert som plenumsforelesninger, seminargrupper og verkstedarbeid (DDV).
+
+I verkstedsarbeid (DDV) og gjennom praktisk arbeid i skolen vil studentene fC% muligheter til C% arbeide med ulike verktC8y som koding/blokkprogrammering, AR/VR/MR, produksjonsverktC8y for lyd og bilde, skaperverksted, E-sport, didaktisk bruk av ulike spill. Her vil studenten selv kunne pC%virke valg av fordypning.
+
+Praksis
+
+Tre uker med veiledet praksis i skole.
+
+Cpent for
+
+GrunnskolelC&rerutdanning for trinn 1 - 7, femC%rig masterprogram
+
+GrunnskolelC&rerutdanning for trinn 5 - 10, femC%rig masterprogram
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+SC8k etter pensumlitteratur i Leganto

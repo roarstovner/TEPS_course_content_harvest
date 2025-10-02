@@ -1,0 +1,10 @@
+institution: usn
+code: MG2SA9-1
+year: 2025
+hv: H
+url: https://www.usn.no/studier/studie-og-emneplaner/#/emne/MG2SA9-1_2025_H%C3%98ST
+status: 200
+course_name_no: En studie- og emneplan beskriver innhold, oppbygging og organisering av et studieprogram. Til hver studieplan er det knyttet emneplaner som beskriver de enkelte emnene, her finner du ogsC% pensumlister. Dersom du ikke finner de planene du er ute etter kan du kontakte postmottak@usn.no sC% vil vi lete opp planene for deg. I vC%rt dokumentarkiv har vi lagret planer tilbake til 2003, dette inkluderer de tidligere hC8yskolene.
+----- FULLTEXT -----
+
+En studie- og emneplan beskriver innhold, oppbygging og organisering av et studieprogram. Til hver studieplan er det knyttet emneplaner som beskriver de enkelte emnene, her finner du ogsC% pensumlister. Dersom du ikke finner de planene du er ute etter kan du kontakte postmottak@usn.no sC% vil vi lete opp planene for deg. I vC%rt dokumentarkiv har vi lagret planer tilbake til 2003, dette inkluderer de tidligere hC8yskolene.

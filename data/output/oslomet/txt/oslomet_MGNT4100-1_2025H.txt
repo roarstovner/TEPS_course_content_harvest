@@ -1,0 +1,220 @@
+institution: oslomet
+code: MGNT4100-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/MGNT4100/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+MGNT4100 Norsk tegnsprC%k og tegnsprC%kdidaktikk 1 Emneplan
+Engelsk emnenavn
+Norwegian Sign Language and Sign Language Subject Pedagogy I
+Studieprogram
+GrunnskolelC&rerutdanning for trinn 1-7
+GrunnskolelC&rerutdanning for trinn 5-10
+Omfang
+15.0 stp.
+StudieC%r
+2025/2026
+Pensum
+HCST 2025
+
+Timeplan
+HCST 2025
+Programplan
+GrunnskolelC&rerutdanning for trinn 1-7 (2025 HCST )
+GrunnskolelC&rerutdanning for trinn 5-10 (2025 HCST )
+Emnehistorikk
+2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Fagplan
+
+Fagplan
+
+Innledning
+
+Fagplanen bygger pC% forskrift om rammeplan for grunnskolelC&rerutdanningen for trinn 1-7/trinn 5-10 trinn, fastsatt av Kunnskapsdepartementet 7. juni 2016, nasjonale retningslinjer for grunnskolelC&rerutdanningen trinn 1-7/trinn 5-10 av 1. september 2016 og programplan for grunnskolelC&rerutdanning for trinn 1-7/trinn 5-10 ved OsloMet - storbyuniversitetet, godkjent av studieutvalget 16. november 2016.
+
+TegnsprC%k og tegnsprC%kdidaktikk har som mC%lsetning C% gi inngC%ende kunnskap for C% forstC%, vurdere og utvikle tegnsprC%kundervisning i norsk grunnskole. Faget tar utgangspunkt i teoretiske og metodologiske tilnC&rminger til hvordan barn og unge i et mangfoldig og flersprC%klig samfunn mC8ter tegnsprC%kfaget i skolen. Faget fokuserer pC% de grunnleggende ferdighetene i tegnsprC%k og tegnsprC%ktekster i vid forstand, dvs. avlesning og produksjon av spontane og planlagte sammensatte tegnsprC%ktekster, sC% vel som spontan og planlagt muntlig samhandling i ulike kontekster. MC%let er C% gi studentene inngC%ende kunnskap i faget slik at de blir i stand til C% utvikle sin egen og fremtidige elevers sprC%k- og tekstkompetanseog videreutvikle sin egen profesjonalitet som lC&rer i og pC% tegnsprC%k.
+
+MC%lgruppe
+
+Studenter som er tatt opp til femC%rig grunnskolelC&rerutdanning for trinn 1-7 og trinn 5-10.
+
+Opptakskrav
+
+Faget er tilgjengelig som valgfritt fag for aktive studenter ved grunnskolelC&rerutdanningene, i trC%d med utdanningenes programplaner.
+
+Opptak til Norsk tegnsprC%k og tegnsprC%kdidaktikk krever fullfC8rt 60 studiepoeng Norsk tegnsprC%k pC% syklus 1 i grunnskolelC&rerutdanningen.
+
+LC&ringsutbytte
+
+LC&ringsutbyttet er nC&rmere beskrevet i emneplanene.
+
+Fagets innhold og oppbygging
+
+Norsk tegnsprC%k og tegnsprC%kdidaktikk (45 studiepoeng) er bygget opp som tre emner C  15 studiepoeng. Emnene er Norsk tegnsprC%k og tegnsprC%kdidaktikk 1, Norsk tegnsprC%k og tegnsprC%kdidaktikk 2 og Norsk tegnsprC%k og tegnsprC%kdidaktikk 3. GrunnskolelC&rerstudenter mC% velge emne 1 og emne 2 innenfor et undervisningsfag, uavhengig av om masteroppgaven skal vC&re i fagdidaktikk eller profesjonsrettet pedagogikk. Emne 3 kan byttes med andre emner, i trC%d med nasjonale retningslinjer.
+
+HC8st: MGNT4100 Norsk tegnsprC%k og tegnsprC%kdidaktikk 1, 15 studiepoeng
+
+VC%r: MGNT4200 Norsk tegnsprC%k og tegnsprC%kdidaktikk 2, 15 studiepoeng
+
+HC8st: MGNT5100 Norsk tegnsprC%k og tegnsprC%kdidaktikk 3, 15 studiepoeng
+
+I Norsk tegnsprC%k og tegnsprC%kdidaktikk 1 - analytisk profesjonsforstC%else fC%r studentene avansert kunnskap om hvordan barn og unge tilegner seg sprC%k (for studenter pC% trinn 1-7 med sC&rlig vekt pC% hvordan tegnsprC%klige elever utvikler bimodal tosprC%klighet og begynneropplC&ringen i tegnsprC%k pC% 1.-4. trinn). I arbeid med videreutvikling av grunnleggende ferdigheter i tegnsprC%k legges det vekt pC% muntlige ferdigheter, avlesning, tekstskapingsprosesser og produksjon av sammensatte tekster (multimodal design). Sentralt stC%r utvikling av avansert digital kompetanse hos studentene, utvikling av vurderingsoppgaver og kriterier, samt valg av tegnsprC%ktekster som kan bidra til elevenes sprC%kutvikling, nytenkning og evne til refleksjon. Emnet legger til rette for at studentene skal videreutvikle sin utC8verkompetanse ved C% fC% mer inngC%ende kunnskap om og et kritisk blikk pC% lC&reprosesser, lC&rerens tilrettelegging for lC&ring i og pC% tegnsprC%k og forsknings- og utviklingsarbeid. Dette handler om lC&ringsledelse og dypere forstC%else av elevmangfold i skolen og utvikling av endringskompetanse.
+
+Norsk tegnsprC%k og tegnsprC%kdidaktikk 2 - tegnsprC%klC&reren som forsker og fagutvikler, har som mC%lsetting C% videreutvikle kunnskap for C% observere, forstC%, analysere, vurdere og utvikle undervisning i og pC% tegnsprC%k i norsk grunnskole, samt ulike aktuelle arbeids- og lC&ringsformer i grunnskolen. Faget legger til rette for at studentene fC%r utvikle sine kunnskaper om og ferdigheter i akademisk skriving. Studentene fC%r anledning til C% utvikle en kritisk tilnC&rming til ulike sider ved lC&replanverket for grunnskolen med vekt pC% tegnsprC%kfaget. MC%let er at studentene skal bli i stand til C% utvikle sin egen og fremtidige elevers sprC%k- og tekstkompetanse og videreutvikle sin egen profesjonalitet som lC&rer i og pC% tegnsprC%k. Gjennom deltakelse i studentledete seminarer analyserer og presenterer deltakerne fag- og forskningslitteratur.
+
+I Norsk tegnsprC%k og tegnsprC%kdidaktikk 3 - tegnsprC%k og mangfoldskompetanse, fC%r studentene utvikle avansert kunnskap om tegnsprC%kfaget i det flersprC%klige og flerkulturelle klasserommet, med sC&rlig vekt pC% elevmangfold, lC&rerens egen sprC%kbevissthet og sprC%klig mangfold bC%de globalt og i norsk skole.
+
+Emnet gir fordypning i aktuell forskning pC% omrC%dene tegnsprC%k og dC8vestudier (tegnsprC%kliges kultur og historie) med sC&rlig henblikk pC% mangfoldsperspektiver. Gjennom bruk av relevant og komparativ internasjonal forskning, faglitteratur og nettressurser, fC%r studenten internasjonale perspektiver pC% tegnsprC%k og dC8ve, bC%de i Norge og internasjonalt. Studentene skal bli kjent med internasjonal tegnkommunikasjon og med visuelle og taktile kommunikasjonsstrategier. Eksempler pC% aktuelle temaer er C% utforske hva ulike teknologiske utviklingsprosesser har C% si for dC8vesamfunnet og for tegnsprC%k, og hvordan man kan sikre gode sosialiseringsarenaer for tegnsprC%klige barn og unge. Aktuelle fagpolitiske spC8rsmC%l vil bli trukket inn i undervisningen. I dette emnet inngC%r ogsC% undervisning om digital kompetanse i mangfoldige samfunn. Sentralt i Norsk tegnsprC%k og tegnsprC%kdidaktikk 3 er arbeidet med prosjektskissen og gjennomgang av forskningslitteratur som et steg mot selvstendig arbeid med masteroppgaven.
+
+Fagets arbeids- og undervisningsformer
+
+Undervisningen i Norsk tegnsprC%k og tegnsprC%kdidaktikk er i hovedsak nettbasert. De to fC8rste emnene vil ha en oppstartsamling i begynnelsen av hvert semester. De ukentlige undervisningsC8ktene vil i hovedsak vC&re basert pC% en serie forberedte ferdiginnspilte video-presentasjoner og ta form av forelesninger, studentledete seminarer, diskusjoner og refleksjoner. Videre forventes det at studentene mC8tes ukentlig til video-medierte, studentdrevne grupper for C% jobbe med oppgaver og problemstillinger forberedt av lC&rer. Studentene vil ogsC% inviteres til jevnlige (online) dataverksted-mC8ter i tegnsprC%klig forskernettverk. Emnene krever stor grad av selvstendig arbeid med C% sette seg inn i pensum.
+
+LC&ringsledelse og dypere forstC%else av elevmangfold
+
+Norsk tegnsprC%k og tegnsprC%kdidaktikk skal gi inngC%ende kunnskap om faktorer som pC%virker utvikling av tegnsprC%klige barn og unges identitet, og hvordan opplC&ringen i tegnsprC%kfaget kan tilpasses alle elevers forutsetninger og behov fra et sprC%klig, kulturelt, kjC8nns- og likestillingsperspektiv. Det legges vekt pC% studentens evne til C% planlegge, gjennomfC8re og vurdere undervisning for C% komme den enkelte tegnsprC%klige eleven og en mangfoldig elevgruppe i mC8te. Studentene fC%r inngC%ende kunnskap om ulike vurderingsmetoder.
+
+Forsknings- og utviklingsarbeid relatert til skolen
+
+Forsknings- og utviklingsarbeid blir knyttet til ulike utdannings- og samfunnsmessige kontekster som klasserom, praksisfelt, historiske tradisjoner og samtidskultur. Faget gir inngC%ende kunnskap om og innsikt i bC%de nasjonal og internasjonal forskning og faglitteratur omkring opplC&ring av dC8ve (undervisning i og pC% tegnsprC%k), dC8vestudier (tegnsprC%kliges kultur og historie) og sprC%kvitenskapelige perspektiver pC% tegnsprC%k og dC8ves sprC%ksituasjon. Tradisjoner i praktisk skolearbeid er en del av innholdet, og det legges til rette for utvikling av studentenes eget FoU-arbeid. Deler av fagstoffet er praktisk-metodisk orientert og koblet med didaktisk refleksjon.
+
+Utvikling av endringskompetanse
+
+Gjennom C% lese om og reflektere over nasjonal og internasjonal forskning skal studentene bli i stand til C% vurdere utviklingen av tegnsprC%kfaget pC% nasjonale og internasjonale arenaer. Denne fagbaserte kunnskapen skal bidra til studentenes analytiske evne til C% vurdere utviklingen av og framtidige endringer i tegnsprC%kfaget. Det legges vekt pC% studentens egen endringskompetanse, som forutsetter evne til C% analysere, vurdere egne erfaringer i lys av forskning, samt bidra til aktuelle fagpolitiske debatter ut fra en teori- og forskningsbasert forstC%else.
+
+Klasseledelse og lC&rerrollen sett fra faget
+
+Studiet legger til rette for at studentene skal videreutvikle sin utC8verkompetanse ved C% fC% mer inngC%ende kunnskap om og et kritisk blikk pC% lC&reprosesser, lC&rerens tilrettelegging for lC&ring av og pC% tegnsprC%k og forsknings- og utviklingsarbeid. Dette handler om lC&ringsledelse og dypere forstC%else av elevmangfold, forsknings- og utviklingsarbeid relatert til skolen og utvikling av endringskompetanse.
+
+Internasjonale perspektiver
+
+Det internasjonale perspektivet stC%r sentralt i tegnsprC%kfaget. Tegnede sprC%k brukes overalt i verden, og faget henter det meste av sitt fagstoff fra ulike deler av verden, bC%de nC%r det gjelder sprC%kopplC&ringen (tegnsprC%k i et flersprC%klig perspektiv), flerkulturell kompetanse og interkulturell kommunikasjon. I tegnsprC%kdidaktikk foregC%r undervisningen pC% tegnsprC%k, og studentene fC%r mulighet til C% bli kjent med internasjonal tegnkommunikasjon, som brukes som kontaktsprC%k for mennesker fra ulike land og kulturer og har stor betydning for internasjonalisering innen utdanning, kultur- og arbeidsliv og fritid.
+
+Praksistilknytning
+
+I studiet er det lagt vekt pC% C% gi studentene mer inngC%ende kunnskap om lC&ringsprosesser, barn- og unges utvikling og forsknings- og utviklingsarbeid i skolen. Gjennom arbeidet i tegnsprC%kfaget og i praksisperioder i skolen videreutvikles studentenes forstC%else av de grunnleggende ferdighetene i faget og de fC%r en kritisk tilnC&rming til fagspesifikk literacy, lC&rersamarbeid, faglC&reridentitet og sin egen endringskompetanse.
+
+PraksisopplC&ring
+
+PraksisopplC&ring er nC&rmere beskrevet i programplanen.
+
+Skikkethetsvurdering
+
+LC&rerutdanningsinstitusjoner har ansvar for C% vurdere om studenter er skikket for lC&reryrket. LC8pende skikkethetsvurdering foregC%r gjennom hele studiet og inngC%r i en helhetsvurdering av studentens faglige og personlige forutsetninger for C% kunne fungere som lC&rer. En student som utgjC8r en mulig fare for elevers liv, fysiske og psykiske helse, rettigheter og sikkerhet, er ikke skikket for yrket. Studenter som viser liten evne til C% mestre lC&reryrket, skal sC% tidlig som mulig i utdanningen fC% melding om dette. De skal fC% rC%d og veiledning for C% gjC8re dem i stand til C% oppfylle kravene om lC&rerskikkethet eller fC% rC%d om C% avslutte utdanningen. Beslutninger om skikkethet kan fattes gjennom hele studiet.
+
+Se universitetets nettsted for mer informasjon om skikkethetsvurdering.
+
+Arbeidskrav
+
+Arbeidskrav skal vC&re levert/utfC8rt innen fastsatt(e) frist(er). Gyldig fravC&r dokumentert med for eksempel sykemelding, gir ikke fritak for C% innfri arbeidskrav. Studenter som pC% grunn av sykdom eller annen dokumentert gyldig C%rsak ikke leverer/utfC8rer arbeidskrav innen fristen, kan fC% forlenget frist. Ny frist for C% innfri arbeidskrav avtales i hvert enkelt tilfelle med fagansvarlig.
+
+Arbeidskrav vurderes til "Godkjent" eller "Ikke godkjent". Studenter som leverer/utfC8rer arbeidskrav innen fristen, men som fC%r vurderingen "Ikke godkjent", har anledning til to nye innleveringer/utfC8relser. Studenten mC% da selv avtale ny innlevering av det aktuelle arbeidskravet med faglC&rer. Studenter som ikke leverer/utfC8rer arbeidskrav innen fristen og som ikke har dokumentert gyldig C%rsak, fC%r ingen nye forsC8k.
+
+I programplanen er de fagovergripende temaene pC% de ulike studieC%rene og semestrene beskrevet. I tilknytning til disse kan det vC&re krav til tilstedevC&relse og/eller andre arbeidskrav.
+
+NC&rmere informasjon om arbeidskrav finnes i den enkelte emneplan.
+
+Vurderings-/eksamensformer
+
+NC&rmere informasjon om eksamen finnes i den enkelte emneplan.
+
+Samlet vurdering
+
+Det gis ingen samlet vurdering i Norsk tegnsprC%k og tegnsprC%kdidaktikk. Emnene vil hver for seg bli oppfC8rt pC% vitnemC%let.
+
+Vurderingskriterier
+
+A, Fremragende: Viser fremragende kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser fremragende evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+B, Meget god: Viser meget gode kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser meget god evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+C, God: Viser gode kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser god evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+D, NoksC% god: Viser begrensede kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser begrenset evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+E, Tilstrekkelig: Tilfredsstiller minimumskravene til kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser noe evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+F, Ikke bestC%tt: Har utilstrekkelig kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser dC%rlig evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+Rettigheter og plikter ved eksamen
+
+Studentens rettigheter og plikter framgC%r av forskrift om studier og eksamen ved OsloMet. Forskriften beskriver blant annet vilkC%r for ny/utsatt eksamen, klageadgang og hva som regnes som fusk ved eksamen. Studenten er selv ansvarlig for C% melde seg opp til eventuell ny/utsatt eksamen.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har avansert kunnskap i faget norsk tegnsprC%k og tegnsprC%kdidaktikk med vekt pC% grunnleggende ferdigheter i tegnsprC%k
+har inngC%ende kunnskap om ulike aktuelle arbeids- og lC&ringsformer for tegnsprC%kfaget i grunnskolen
+har inngC%ende kunnskap om relevant forskning pC% tegnsprC%klig undervisningspraksis
+har kunnskap om hvordan opplC&ringen i og pC% tegnsprC%k kan tilpasses alle elevers forutsetninger og behov
+har inngC%ende kunnskap om begynneropplC&ring (gjelder for trinn 1-7)
+har inngC%ende kunnskap om tegnsprC%ktekster, med fokus pC% sammensatte tekster
+har inngC%ende kunnskap om progresjon i undervisning og elevers lC&ring
+har god kunnskap om utviklingen av digital kompetanse og bruken av digitale hjelpemidler for bruk i opplC&ring i og pC% tegnsprC%k
+
+Ferdigheter
+
+Studenten
+
+kan forholde seg kritisk til relevant nasjonal og internasjonal forskning innen tegnsprC%kfeltet og anvende denne kunnskapen i profesjonsutC8velsen
+kan anvende relevante metoder til C% observere, analysere og reflektere kritisk over tegnsprC%klig pedagogisk praksis
+kan pC% et avansert nivC% anvende prinsipper for lC&ringsorientert vurdering i tegnsprC%kfaget og slik bidra til at elevene lC&rer C% reflektere over sin egen lC&ring og utvikling
+kan utvikle, gjennomfC8re og evaluere forskningsbasert begynneropplC&ring som er forankret i avansert kunnskap (gjelder for trinn 1-7)
+kan analysere og bruke metoder slik at elever utvikler metakognitiv kompetanse om egne muntlige ferdigheter, samt avlesnings- og tekstproduksjonsstrategier
+kan vurdere digitale uttrykk og ressurser kritisk og bruke dem i opplC&ringen pC% mC%ter som styrker og utvikler tegnsprC%kfagets didaktikk
+
+Generell kompetanse
+
+Studenten
+
+kan analysere og vurdere relevante faglige og etiske problemstillinger og bidra til utvikling av faglig felleskap pC% den enkelte skole
+kan planlegge, evaluere og revidere lC&ringsopplegg med tegnsprC%kfaget som grunnlag
+kan formidle og kommunisere om faglige og didaktiske problemstillinger knyttet til profesjonsutC8velsen
+har utviklet profesjonsfaglig digital kompetanse
+kan bidra til utviklingsarbeid som fremmer faglig og pedagogisk nytenkning i skolen
+Innhold
+
+I Norsk tegnsprC%k og tegnsprC%kdidaktikk 1 fC%r studentene fC%r studentene avansert kunnskap om hvordan barn og unge tilegner seg sprC%k (for studenter pC% trinn 1-7 med sC&rlig vekt pC% hvordan tegnsprC%klige elever utvikler bimodal tosprC%klighet og begynneropplC&ringen i tegnsprC%k pC% 1.-4. trinn). I arbeid med videreutvikling av grunnleggende ferdigheter i tegnsprC%k legges det vekt pC% muntlige ferdigheter, avlesning, tekstskapingsprosesser og produksjon av sammensatte tekster (multimodal design). Sentralt stC%r utvikling av avansert digital kompetanse hos studentene, utvikling av vurderingsoppgaver og kriterier, samt valg av tegnsprC%ktekster som kan bidra til elevenes sprC%kutvikling, nytenkning og evne til refleksjon. Emnet legger til rette for at studentene skal videreutvikle sin utC8verkompetanse ved C% fC% mer inngC%ende kunnskap om og et kritisk blikk pC% lC&reprosesser, lC&rerens tilrettelegging for lC&ring i og pC% tegnsprC%k og forsknings- og utviklingsarbeid. Dette handler om lC&ringsledelse og dypere forstC%else av elevmangfold i skolen og utvikling av endringskompetanse.
+
+Arbeids- og undervisningsformer
+
+Se fagplanen.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+Retten til C% avlegge eksamen forutsetter fC8lgende godkjente arbeidskrav:
+
+Individuelt levere og fC% godkjent resymC) av en artikkel eller et kapittel til C%tte av emnets undervisningsC8kter, hvor fire skal leveres skriftlig pC% 150 ord +/- 10 % og fire skal leveres pC% tegnsprC%k (video) pC% ca. 2 minutter. FormC%let med arbeidskravet er at studentene skal trenes i C% lese og trekke ut og formulere essens av forsknings- og faglitteratur.
+Framlegg, individuelt eller i par, av en analyse og drC8fting av C)n av fagartiklene fra pensumlisten. Framlegget presenteres pC% tegnsprC%k ved en nett-undervisningsC8kt, skal ha et omfang pC% 15-20 minutter og skal inkludere spC8rsmC%l til plenumsdiskusjon. FormC%let med arbeidskravet er C% gi studentene erfaring med faglig formidling av forsknings- og utviklingsarbeid.
+Individuelt produsere en sammensatt tekst pC% tegnsprC%k, spilt inn pC% video, over et selvvalgt tema innenfor dette emnet. Temaet godkjennes av faglC&reren i forkant. Tekstens omfang skal vC&re pC% 10 minutter +/- 10 %. FormC%let med arbeidskravet er C% gi studentene mulighet C% fordype seg i tekstarbeid i tegnsprC%k.
+Vurdering og eksamen
+
+Eksamensform
+
+Individuell muntlig eksamen pC% tegnsprC%k med varighet 20 minutter til presentasjon av et gitt tema og 10 minutter til spC8rsmC%l fra sensorer. Tema gis to uker fC8r eksamen.
+
+Ny/utsatt eksamen
+
+Ny/utsatt eksamen arrangeres som ved ordinC&r eksamen.
+
+Hjelpemidler ved eksamen
+
+Alle hjelpemidler er tillatt i forberedelsestiden. Hver student kan ha med seg et A4-ark med notater til eksamen.
+
+Vurderingsuttrykk
+
+Det benyttes en gradert karakterskala fra A til E for bestC%tt og F for ikke bestC%tt eksamen.
+
+Sensorordning
+
+Ved avsluttende vurdering/eksamen benyttes to interne sensorer, og det brukes regelmessig tilsynssensor i samsvar med retningslinjer for oppnevning og bruk av sensorer ved OsloMet.

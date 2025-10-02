@@ -1,0 +1,16 @@
+institution: uit
+code: LRU-3908-1
+year: NA
+hv: NA
+url: https://uit.no/utdanning/aktivt/emne/LRU-3908
+status: 200
+course_name_no: vC%r 2021
+LRU-3908 Mastergradsoppgave i naturfagdidaktikk - 30 stp
+----- FULLTEXT -----
+
+
+Startsida
+Emnekatalog
+Mastergradsoppgave i naturfagdidaktikk
+Emnetype
+Emnet er et fagvalg i integrert mastergradsprogram B

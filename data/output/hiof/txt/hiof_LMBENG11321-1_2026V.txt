@@ -1,0 +1,10 @@
+institution: hiof
+code: LMBENG11321-1
+year: 2026
+hv: V
+url: https://www.hiof.no/studier/emner/lusp/lusp/2026/var/lmbeng11321.html
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+NA

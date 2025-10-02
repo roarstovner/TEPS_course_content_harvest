@@ -1,0 +1,191 @@
+institution: uis
+code: MGL1060-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MGL1060
+status: 200
+course_name_no: KroppsC8ving 1 (MGL1060)
+----- FULLTEXT -----
+
+Emnekode
+
+MGL1060
+
+Versjon
+
+1
+
+Vekting (stp)
+
+30
+
+Semester undervisningsstart
+
+VC%r
+
+Antall semestre
+
+1
+
+Vurderingssemester
+
+VC%r
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitenskap og humaniora,
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Fakultet for utdanningsvitenskap og humaniora,
+
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhold
+
+Emnet legger vekt pC% undervisningskompetanse i ulike bevegelsesaktiviteter, uteaktiviteter og naturferdsel. Kunnskap om hvordan kroppsC8ving bidrar til elevens helhetlige utvikling, stC%r sentralt.
+
+Emnet har teoretisk og praktisk tilnC&rming. Studentene fC%r erfaring med ulike aktivitetsformer gjennom variert undervisning i kroppsC8ving. Det legges vekt pC% at studentene kan fremme kroppslig lC&ring og bevegelsesglede for alle elever.
+
+Teoretiske emner
+
+Fagdidaktikk og motorikk
+
+KroppsC8ving - fagets egenart og legitimering
+KroppsC8vingsdidaktikk (teori og praksis)
+Motorisk utvikling og lC&ring (teori og praksis)
+
+Praktiske emner
+
+SvC8mming/vanntilvenning/livredning inne og ute
+Dans
+Orientering
+LC8p, hopp og kast
+Ballskole
+Yoga
+SkC8yteskole
+
+Naturferdsel og uteaktiviteter:
+
+Teori knyttet til planlegging av ekskursjon
+Kanotur med nC&rmiljC8aktiviteter
+Skiaktiviteter
+
+LC&ringsutbytte
+
+Kunnskap
+
+Studenten skal ha kunnskap om:
+
+kroppsC8vingsfagets formC%l, egenart og legitimering
+hva som kan fremme bevegelsesglede for elever
+undervisningsplanlegging og gjennomfC8ring i kroppsC8ving
+vurdering i kroppsC8ving
+ulike bevegelsesaktiviteter i barne- og ungdomskultur
+motorisk lC&ring som kjerneverdi i kroppsC8vingsundervisning
+hvordan de tverrfaglige temaene knyttes opp mot kroppsC8vingsundervisning
+
+Ferdigheter
+
+Studenten skal kunne:
+
+planlegge, gjennomfC8re og reflektere over undervisning i kroppsC8ving ut fra lovverk, gjeldende lC&replan og profesjonsetiske retningslinjer
+legge til rette for lC&ringsarbeid som kan fremme bevegelsesglede i leik, nC&rmiljC8aktivitet og varierte bevegelsesformer
+vurdere elevenes kroppslige lC&ring og forutsetninger som grunnlag for tilpasset opplC&ring og lC&ringsfremmende tilbakemeldinger
+utvikle og bruke egne ferdigheter og kunnskaper innen leik, uteaktiviteter og naturferdsel, dans, idrett og andre bevegelsesaktiviteter som kan anvendes pC% undervisning i kroppsC8ving
+vurdere elevens mC%loppnC%else, begrunne vurderingene og legge til rette for elevens egenvurdering
+identifisere farer, vurdere og ivareta elevenes sikkerhet i ulike aktiviteter og bevegelsesmiljC8
+utfC8re livreddende fC8rstehjelp og livberging i vann
+
+Generell kompetanse
+
+Studenten skal kunne:
+
+drC8fte pC% hvilken mC%te kroppsC8ving kan bidra til elevens danning
+reflektere med elever, foresatte og kolleger om kroppsC8vingsfagets betydning for livslang bevegelsesglede
+arbeide med kroppsC8ving og bevegelsesaktivitet i tverrfaglig perspektiv
+reflektere over bC&rekraftig ferdsel i natur
+
+Forkunnskapskrav
+
+Ingen
+
+Anbefalte forkunnskaper
+
+Studenten bC8r vC&re svC8mmedyktig. I tillegg bC8r studenten vC&re i normalt god fysisk form slik at deltakelse i obligatoriske aktiviteter og turer kan gjennomfC8res.
+
+Eksamen / vurdering
+
+VilkC%r for C% gC% opp til eksamen/vurdering
+
+Skikurs, Kanotur, Arbeidskrav, Obligatorisk oppmC8te
+
+Profesjonskompetanse i kroppsC8ving utvikles gjennom aktiv deltakelse, utprC8ving av ulike aktiviteter og drC8fting av gode metodiske tilnC&rminger. Det kreves 80 % tilstedevC&relse i bC%de den praktiske og teoretiske undervisningen for C% fC% gC% opp til eksamen. Det forventes at studenter er aktiv deltakende i forbindelse med undervisningen i de praktiske emnene, inkludert ski- og kanoturen med overnatting. Utgifter til reise og overnatting pC% ski- og kanoturen blir dekket av UiS.
+
+Det er arbeidskrav knyttet til undervisning som mC% vC&re godkjent for C% fC% gC% opp til eksamen, herunder 80% deltakelse undervisning knyttet til ekskursjoner. Konsekvenser av ikke godkjent arbeidskrav og/eller obligatorisk ekskursjon er at adgang til prC8ving nektes. Jf. Forskrift om studier og eksamen ved Universitetet i Stavanger (eksamensforskriften), B' 3-8 nr. 3. Studenter som fC%r et eller flere av arbeidskravene vurdert til ikke-godkjent ved fC8rste innlevering, gis mulighet for C)n ny innlevering av oppgaven(e) i bearbeidet form.
+
+Studenter som mangler godkjenning grunnet fravC&r i en eller flere av de praktiske aktivitetene kan pC%legges C% ta opp igjen hele, - eller deler av emnet/emnene neste C%r for C% fC% avsluttende vurdering.
+
+Forberedelser til og gjennomfC8ring av praksis er obligatorisk.
+
+Studenten leverer en oppgave med praktisk-metodiske opplegg som knyttes til praksis. Oppgaven vurderes til godkjent/ikke godkjent.
+
+Estimert arbeidsbelastning KRC 1: 825 timer
+
+Teoriundervisning (forelesning, arbeidskrav og selvstudium): 216 timer
+Praktisk undervisning (egenC8ving og undervisning): 190 timer
+Kano og skitur (planlegging, reisetid og ekskursjon): 45 timer
+Eksamen (praktisk metodisk og skriftlig eksamen): 80 timer
+Praksis, trepartsmC8te og forberedelser: 160 timer
+Diverse: 119 timer
+
+Fagperson(er)
+
+Emneansvarlig:
+Dag Ove GranC%s Hovdal
+
+FaglC&rer:
+Ole-Vinjar Egeland
+
+FaglC&rer:
+Ellen Heggheim
+
+FaglC&rer:
+Cathrine Nyhus Hagum
+
+FaglC&rer:
+Cyvind Johannes Holtlien Salvesen
+
+Studiekoordinator:
+Kjersti Gjedrem
+
+Arbeidsformer
+
+I undervisningen vil studenten mC8te varierte arbeidsmC%ter gjennom en kombinasjon av praktiske aktiviteter, forelesninger, studentinstruksjon, studentframlegg, ekskursjoner og gruppearbeid. Gjennom den praktiske undervisningen brukes digitale hjelpemidler for C% utvikle gode bevegelseslC8sninger.
+
+Praksis
+
+Tre uker praksis.
+
+Cpent for
+
+GrunnskolelC&rerutdanning for trinn 1 - 7, femC%rig masterprogram
+
+GrunnskolelC&rerutdanning for trinn 5 - 10, femC%rig masterprogram
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+SC8k etter pensumlitteratur i Leganto

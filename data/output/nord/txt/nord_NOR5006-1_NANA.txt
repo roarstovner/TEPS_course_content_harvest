@@ -1,0 +1,75 @@
+institution: nord
+code: NOR5006-1
+year: NA
+hv: NA
+url: https://www.nord.no/studier/emner/nor5006
+status: 200
+course_name_no: Norsk 4 - Masteroppgave, 5-10
+----- FULLTEXT -----
+
+
+
+MasteroppgC%va utgjer ei skriftleg oppgC%ve basert pC% eit sjC8lvstendig forskingsarbeid, med fordjuping i eit tema innanfor fagomrC%det. Studenten fC%r tilbod om rettleiing undervegs i arbeidet med masteroppgC%va. MasteroppgC%va kan skrivast individuelt eller i par.
+
+Opptak til GrunnskolelC&rerutdanningen 5 - 10 og masterfaget norsk. BestC%tt 90 stp. i masterfaget og bestC%tt FoU-oppgave.
+
+BestC%tt 90 stp. i masterfaget og bestC%tt FoU-oppgave
+
+Kunnskap
+
+Studenten
+
+har avansert kunnskap om eit avgrensa omrC%de innanfor studiet av fag norskdidaktikk
+har inngC%ande kunnskap om krava for ein vitskapeleg tekst innan norskdidaktisk forsking
+
+Dugleik
+
+Studenten
+
+kan analysere faglege problemstillingar basert pC% kunnskap om eigenarten ved norskfaget, og bruke dette i undervisning, forskings- og utviklingsarbeid
+kan kritisk bruke forskingsbasert profesjonsretta kunnskap i norskfaget til C% utforske nye problemomrC%de i trC%d med god forskingsetikk
+kan gjennomfC8re sjC8lvstendige forskingsprosjekt i norskdidaktikk
+kan grunngje val av metodar for innsamling og analyse av datamateriale
+kan analysere og stille seg kritisk til kunnskapskjelder og pC%standskunnskap (faglitteratur og datamateriale) og bruke desse til C% strukturere og formulere faglege drC8ftingar
+
+Generell kompetanse
+
+Studenten
+
+kan pC% eit avansert nivC% formidle og kommunisere om faglege og forskingsetiske problemstillingar knytte til profesjonsutC8vinga og har profesjonsfagleg digital kompetanse
+kan gjere greie for og grunngje metodiske val opp fokus i forskingsfeltet
+kan analysere relevante problemstillingar knytte til undervisninga i skolen
+kan formidle resultat frC% omfattande sjC8lvstendig arbeid og kjenner fagsprC%k og fagsjangrar i fagdidaktikk generelt
+kan bidra til nytenking og innovasjonsprosessar i skulen
+
+Kunnskap
+
+Studenten
+
+Dugleik
+
+Studenten
+
+Generell kompetanse
+
+Studenten
+
+Det er ingen utgifter utover semesteravgift og pensumlitteratur, men det er ein fC8resetnad at studenten disponerer ein berbar datamaskin.
+
+Valgbart
+
+Det blir inngC%tt rettleiingskontrakt mellom student og rettleier. Rettleiing fC8regC%r individuelt og i gruppe. Det vil vera samlingar knytte til presentasjon av pC%gC%ande arbeid gjennom semesteret. Informasjon om samlingar, omfang og innhald vil bli gitt i lC8pet av haustsemesteret.
+
+Studieprogrammet blir evaluert C%rleg av studentane gjennom emneundersC8kingar (midtvegsevaluering og sluttevaluering). Evaluering inngC%r som ein del av universitetets kvalitetssikringssystem.
+
+Sammensatt vurdering - alle delene mC% vC&re godkjent/bestC%tt for C% fC% karakter i emnet.
+
+Obligatorisk deltakelse (OD): Krav om tilstedevC&relse pC% minst 80 % av undervisningen. Vurdering: Godkjent/ikke godkjent. Teller 0/100 av karakteren.
+
+Oppgave(OP): Skriftlig oppgave, masteroppgave. Gradert karakter A-F. Teller 100/100 av karakteren. Omfang pC% masteroppgaven: Individuell masteroppgave - 15000-25000 ord, og oppgave som skrives i par - 18000-28000 ord.
+
+Sammensatt vurdering - alle delene mC% vC&re godkjent/bestC%tt for C% fC% karakter i emnet.
+
+Obligatorisk deltakelse (OD): Krav om tilstedevC&relse pC% minst 80 % av undervisningen. Vurdering: Godkjent/ikke godkjent. Teller 0/100 av karakteren.
+
+Oppgave(OP): Skriftlig oppgave, masteroppgave. Gradert karakter A-F. Teller 100/100 av karakteren. Omfang pC% masteroppgaven: Individuell masteroppgave - 15000-25000 ord, og oppgave som skrives i par - 18000-28000 ord.

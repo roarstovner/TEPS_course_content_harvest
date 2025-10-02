@@ -1,0 +1,119 @@
+institution: uis
+code: MGL1P25-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MGL1P25
+status: 200
+course_name_no: Praksis 1.-7., 2. C%r 4. semester (15 dager) (MGL1P25)
+----- FULLTEXT -----
+
+Emnekode
+
+MGL1P25
+
+Versjon
+
+1
+
+Vekting (stp)
+
+0
+
+Semester undervisningsstart
+
+VC%r
+
+Antall semestre
+
+1
+
+Vurderingssemester
+
+VC%r
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitenskap og humaniora,
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Fakultet for utdanningsvitenskap og humaniora,
+
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhold
+
+LC&reren i mC8te med elevmangfoldet og elevenes lC&ring er hovedtema i 4. semester. Hvordan didaktikk utC8ves er fremdeles et gjennomgC%ende tema.
+
+Vitenskap og metode og etikk er et tverrfaglig spor dette semesteret og skal ivaretas som en innholdskomponent. Temauke om demokrati og medborgerskap i 4. semester.
+
+LC&ringsutbytte
+
+Kunnskap
+
+Kandidaten har kunnskap om
+
+gjeldende nasjonalt og lokalt lov- og lC&replanverk med hovedvekt pC% studentens valgfag
+elevers lC&ring som grunnlag for C% legge til rette for tilpasset undervisning i det flerkulturelle klasserom
+lC&rerrollen i valgfaget til studenten og om kontaktlC&rerrollen
+kommunikasjon og samspill som grunnlag for C% etablere et godt lC&ringsmiljC8
+
+Ferdigheter
+
+Kandidaten kan
+
+samhandle og kommunisere med elever, medstudenter og lC&rere pC% praksisskolen
+bruke nasjonale og lokale lC&replaner med tanke pC% C% utvikle planer for elevers lC&ring
+ta ansvar for C% planlegge, gjennomfC8re og vurdere undervisning
+anvende systematisk observasjon av elever som grunnlag for C% planlegge og vurdere undervisning med vekt pC% tilpasset opplC&ring
+
+Generell kompetanse
+
+Kandidaten
+
+kan reflektere over egen lC&rerrolle og eget lC&rerarbeid i lys av lC&ringsutbytteformuleringene som er formulert for perioden og i lys av tilbakemeldinger fra medstudenter, praksislC&rere og faglC&rere
+kan med grunnlag i teori og forskning, kritisk diskutere egen og andres praksis
+har utviklet lC&reridentitet og kommunikasjons- og relasjonskompetanse
+
+Forkunnskapskrav
+
+BestC%tt praksis 1. C%r og hC8st 2. C%r.
+
+Eksamen / vurdering
+
+VilkC%r for C% gC% opp til eksamen/vurdering
+
+Arbeidskrav knyttet til fag, se emneplan for valgfaget.
+
+Studenten skal C8ve pC% og prC8ves i C% ha ansvar for flere individuelt planlagde og gjennomfC8rte undervisningsC8kter.
+
+Fagperson(er)
+
+Praksiskoordinator:
+Karen Elizabeth Gilje Woie
+
+Emneansvarlig:
+Kitty Marie Garborg
+
+Arbeidsformer
+
+Observasjon av praksislC&rer, medstudenter og elever, samt drC8fting og refleksjon.
+
+Bruke et relevant og variert utvalg av arbeidsmetoder knyttet til undervisningsfagene/valgfaget.
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+SC8k etter pensumlitteratur i Leganto

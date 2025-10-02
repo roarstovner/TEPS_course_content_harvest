@@ -1,0 +1,10 @@
+institution: inn
+code: MUS1003-1
+year: 2026
+hv: V
+url: https://studiekatalog.edutorium.no/inn/nb/emne/MUS1003-1/2026-var
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+NA

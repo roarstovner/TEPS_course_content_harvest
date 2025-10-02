@@ -1,0 +1,141 @@
+institution: uis
+code: LMHIMAS-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/LMHIMAS
+status: 200
+course_name_no: Historie og historiedidaktikk masteroppgave (LMHIMAS)
+----- FULLTEXT -----
+
+Emnekode
+
+LMHIMAS
+
+Versjon
+
+1
+
+Vekting (stp)
+
+45
+
+Semester undervisningsstart
+
+HC8st
+
+Antall semestre
+
+2
+
+Vurderingssemester
+
+VC%r, HC8st
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitenskap og humaniora,
+Institutt for kultur- og sprC%kvitenskap
+
+Fakultet for utdanningsvitenskap og humaniora,
+
+Institutt for kultur- og sprC%kvitenskap
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhold
+
+Masteroppgaven kan ha svC&rt ulike typer problemstillinger. I noen oppgaver inngC%r bC%de en teoretisk og en empirisk del, der studenten gjennomfC8rer sin egen datainnsamling eller bruker tilgjengelige datakilder som er samlet inn av andre. Masteroppgaven kan ogsC% ha et rent historisk eller teoretisk siktemC%l. FormC%let kan for eksempel vC&re C% undersC8ke historiske data, gi oversikt over faglige bidrag for en viktig problemstilling, sammenfatte synspunkter og empiriske funn, og gi en syntese av status ved forskningsfronten. Eventuelt kan det ogsC% vC&re C% trekke opp sentrale spC8rsmC%l for framtidig forskning.
+
+Emnet for masteroppgaven mC% avklares i samrC%d mellom student og faglC&rer(e). Hver student vil inngC% en veiledningsavtale med veileder.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne skal kandidaten:
+
+Kunnskaper:
+
+ha grundige kunnskaper i C% arbeide med faglige problemstillinger, bruke bibliotek, arkiver og andre ressurser
+ha et reflektert forhold til forskningstradisjoner/-perspektiver knyttet til det historiske fagfeltet
+
+Ferdigheter:
+
+ha ferdigheter i C% velge og bruke vitenskapelige arbeidsmetoder for C% bringe fram ny kunnskap innen fagomrC%det
+kunne kritisk vurdere vitenskapelige tekster og forskningsresultater
+
+Generell kompetanse:
+
+ha evne til selvstendig arbeid og kritisk vitenskapelig granskning
+kunne anvende sine kunnskaper og ferdigheter til C% svare pC% problemstillinger knyttet til bruk av historie
+kunne redegjC8re for og reflektere kritisk over ulike tilnC&rminger til historie
+
+Forkunnskapskrav
+
+MC% ha fullfC8rt 30 studiepoeng pC% masternivC% (bare emne som gjelder i lektorutdanningen).
+
+Eksamen / vurdering
+
+VilkC%r for C% gC% opp til eksamen/vurdering
+
+Oppgaveseminar 75%
+
+Deltagelse pC% oppgaveseminar, 75% hvorav presentasjon og opponering er obligatorisk.
+
+Obligatorisk aktivitet mC% vC&re bestC%tt for C% fC% adgang til C% levere masteroppgaven.
+
+I tillegg mC% alle andre emner i programmet vC&re bestC%tt. Alternativt mC% man avlegge eksamen i resterende emner i det samme semestret som innleveringen av masteroppgaven.
+
+Fagperson(er)
+
+Emneansvarlig:
+Ketil Knutsen
+
+FaglC&rer:
+Finn Arne JC8rgensen
+
+FaglC&rer:
+Kristian Steinnes
+
+FaglC&rer:
+Markus Eldegard MindrebC8
+
+FaglC&rer:
+Marie-Theres Fojuth
+
+FaglC&rer:
+Dolly JC8rgensen
+
+FaglC&rer:
+Tyson Ashley Retz
+
+Studiekoordinator:
+Signe Ekenberg
+
+FaglC&rer:
+Alexandre DessinguC)
+
+FaglC&rer:
+David-Alexandre Thomas Wagner
+
+Arbeidsformer
+
+Individuelt arbeid, veiledning og oppgaveseminar.
+
+Cpent for
+
+Lektorutdanning for trinn 8-13
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+SC8k etter pensumlitteratur i Leganto

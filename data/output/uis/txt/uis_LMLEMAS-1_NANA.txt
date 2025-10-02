@@ -1,0 +1,132 @@
+institution: uis
+code: LMLEMAS-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/LMLEMAS
+status: 200
+course_name_no: MasteroppgC%va i lesevitskap (LMLEMAS)
+----- FULLTEXT -----
+
+Emnekode
+
+LMLEMAS
+
+Versjon
+
+1
+
+Vekting (stp)
+
+45
+
+Semester undervisningsstart
+
+Haust
+
+Antall semestre
+
+2
+
+Vurderingssemester
+
+VC%r, Haust
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitskap og humaniora ,
+Institutt for kultur- og sprC%kvitskap
+
+Fakultet for utdanningsvitskap og humaniora ,
+
+Institutt for kultur- og sprC%kvitskap
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhald
+
+Kandidaten vel sjC8lv sitt oppgC%veemne, i samrC%d med rettleiar.
+
+Emnet har mC%lformkrav som fC%r konsekvensar for andre emne i masterstudiet. Det inneber at minst ein skriftleg eksamen pC% masternivC% mC% skrivast pC% den mC%lforma som ein ikkje nyttar i masteroppgC%va. SprC%kfC8ringa i masteroppgC%va er sC%leis ein del av vurderingsgrunnlaget.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne skal studenten:
+
+Kunnskap:
+
+ha fC%tt innsyn i korleis eit vitskapleg arbeid typisk vert gjennomfC8rt, slik at ein i arbeid med eit overkomeleg materiale kan oppnC% erfaring som har overfC8ringsverdi til andre omrC%de.
+
+Ferdigheter:
+
+vite korleis eit velforma eksempel pC% forsking i fagomrC%det nordisk og lesevitskap ser ut slik at ein i prinsippet kan gC% vidare pC% eiga hand eller under rettleiing innafor prosjekt med tilsvarande og vidaregC%ande arbeid i framtida.
+vere trygg i fagomrC%det slik at ein kan undervise og formidle pC% anna vis eller utnytte i ulike yrkessamanhengar dei kunnskapar ein har skaffa seg.
+vere sC% trent i relevante arbeidsmC%tar at ein kan rettleie andre, i alle hC8ve pC% lC%gare nivC%, i framtida.
+vere sprC%kleg trygg og kunne uttrykkje seg fritt skriftleg i bC%e dei offisielle norske mC%lformene, og vere i stand til C% rettleie andre sprC%kleg.
+
+Generell kompetanse:
+
+ha fC%tt grunnleggjande forstC%ing av metodologiske, teoretiske og praktiske forhold som er relevante for kulturell orienteringsevne og framtidig fagleg arbeid i valde felt.
+
+Forkunnskapskrav
+
+GjennomfC8rt fC8rste C%r av masterstudiet.
+
+Eksamen / vurdering
+
+VilkC%r for C% gC% opp til eksamen/vurdering
+
+Deltaking pC% arbeidsseminar (75%), Godkjend prosjektskisse
+
+Studenten presenterer munnleg sitt masteroppgC%veprosjekt for sine medstudentar. Prosjektet vert diskutert i plenum med ein vald opponent og rettleiar til stades.
+Godkjend prosjektskisse
+
+Unntaksvis kan studentar fC% fritak frC% delar av seminaret for C% gjennomfC8re feltarbeid i utlandet.
+
+Fagperson(er)
+
+FaglC&rar:
+David Albert Natvig
+
+FaglC&rar:
+Sigrid Sandemose
+
+FaglC&rar:
+Hadle Oftedal Andersen
+
+FaglC&rar:
+Klaus Johan Myrvoll
+
+FaglC&rar:
+Yvonne Wilhelmina Henriette van Baal
+
+Studiekoordinator:
+Signe Ekenberg
+
+FaglC&rar:
+Andreas Benedikt Jager
+
+Arbeidsformer
+
+Arbeidsseminar, rettleiing.
+
+Overlapping
+
+Cpent for
+
+Lektorutdanning for trinn 8-13
+
+Emneevaluering
+
+Fakultetet avgjer om det skal gjennomfC8rast tidlegdialog i alle emne eller i utvalde grupper av emne. FC8remC%let er C% fC% tilbakemeldingat frC% studentane for C% gjere forbetringar i semesteret. I tillegg skal det gjennomfC8rast ei digital emneevaluering minst kvart tredje C%r for C% hente inn studentane sine erfaringar.
+
+Litteratur
+
+SC8k etter pensumlitteratur i Leganto

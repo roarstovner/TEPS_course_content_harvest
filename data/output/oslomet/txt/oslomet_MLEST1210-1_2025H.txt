@@ -1,0 +1,128 @@
+institution: oslomet
+code: MLEST1210-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/MLEST1210/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+MLEST1210 Tegning, trykk og visuell kommunikasjon Emneplan
+Engelsk emnenavn
+Draw, print and visual communication
+Studieprogram
+LC&rerutdanning i praktiske og estetiske fag for trinn 1-13, design, kunst og hC%ndverk
+Omfang
+15.0 stp.
+StudieC%r
+2025/2026
+Pensum
+HCST 2025
+
+Timeplan
+HCST 2025
+Programplan
+LC&rerutdanning i praktiske og estetiske fag for trinn 1-13, design, kunst og hC%ndverk (2025 HCST )
+Emnehistorikk
+2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Innledning
+
+Emnet omhandler grunnleggende problemstillinger innen skapende arbeid slik det kommer til uttrykk i skoleverkets gjeldende lC&replaner. Dette omfatter praktisk arbeid med ulike teknikker, materialer og redskaper. Det legges vekt pC% frihC%ndstegning, fra observasjon til formidling av visuelt budskap og kjennskap til enkle trykketeknikker. Aktiv bruk av fagterminologi vektlegges. Faglig og fagdidaktisk refleksjonsevne utvikles i mC8tet mellom eget og andres skapende arbeid og utprC8ving av teoretiske- og praktiske kunnskaper. DrC8fting av visuell kommunikasjon som del av allmenndannelse og skolefag vektlegges. Undervisningspraksis i grunnskolen inngC%r i emnet. Praksis skal vC&re en arena for systematisk lC&ring og gjennomfC8res i samarbeid med praksisskolen.
+
+LC&ringsutbytte
+
+Etter C% ha gjennomfC8rt dette emnet har studenten fC8lgende lC&ringsutbytte definert i form av kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har grunnleggende kunnskap om materialer, teknikker og redskaper innen tegning og trykk.
+har grunnleggende kunnskap om visuelle virkemidler og visuell kommunikasjon.
+har kunnskap om kreative og estetiske lC&ringsprosesser.
+har innsikt i relevant fagteori og ulike kunst- og kulturuttrykk, nasjonalt og internasjonalt.
+har innsikt i fagomrC%det som skolefag og kjennskap til lC&replaner for grunnskolen.
+
+Undervisningspraksis:
+
+Studenten
+
+kan reflektere over undervisning og lC&ring med utgangspunkt i gjeldende lC&replaner.
+
+Ferdigheter
+
+Studenten
+
+kan arbeide utforskende, kreativt og systematisk med tegning og grunnleggende trykketeknikker.
+kan utvikle en ide, anvende visuelle virkemidler og gjennomfC8re en prosess frem til ferdig produkt.
+kan dokumentere, reflektere over og formidle egen utC8vende prosess.
+kan fC8lge regler for helse, miljC8 og sikkerhet i verksteder.
+
+Undervisningspraksis:
+
+Studenten
+
+kan bruke observasjon av undervisningssituasjoner som grunnlag for profesjonell utvikling.
+kan planlegge for undervisning i trC%d med gjeldende lC&replaner.
+
+Generell kompetanse
+
+Studenten
+
+har generell verkstedskompetanse knyttet til tegning og trykk.
+kan identifisere etiske aspekt, herunder ogsC% personvern, opphavsrett og miljC8hensyn som knytter seg til produksjon og formidling av kunst- og kulturuttrykk.
+kan reflektere over egen og andres lC&reprosess og formulere konstruktive tilbakemeldinger.
+har innsikt i lC&rerens rolle og profesjonelle hverdag, herunder rettigheter og plikter.
+Arbeids- og undervisningsformer
+
+I emnet vektlegges praktisk erfaring fra verkstedsarbeid, teoretiske studier individuelt og i gruppe. Fagteori i emnet legger vekt pC% forstC%else for og anvendelse av begreper og arbeidsformer. HMS relateres til praktiske erfaringer i verkstedet. Fagdidaktikk inngC%r i emnet og skal bidra til C% kontekstualisere eget praktisk arbeid og teoristudier, samt reise sentrale spC8rsmC%l om skolens oppgave og fagets egenart.
+
+Emnet mC% sees i sammenheng med C8vrige emner. ForstC%else for prinsipp innen akademisk skriving er gjennomgC%ende i studiet. Alle aspekter i emnet behandles ikke nC8dvendigvis i undervisningen, men skal dekkes av studenten selv gjennom lesning av pensumlitteratur, deltagelse i kollokviegrupper og praktisk, utforskende arbeid.
+
+Undervisningspraksis inngC%r i emnet. Praksis legges fortrinnsvis til grunnskolen. Studentene deltar i praksislC&rers undervisning. Det legges vekt pC% observasjon, analyse og drC8fting av undervisning og den profesjonelle hverdag ved praksisskolen. Praksis gjennomfC8res i samarbeid med praksisskolen. Studenten veiledes og vurderes bC%de underveis og ved avslutning av perioden. Resultatene dokumenteres i Veilednings- og vurderingshefte for praksis.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+Arbeidskrav mC% vC&re innfridd og vC&re vurdert til godkjent fC8r studentene kan fremstille seg til eksamen.
+
+GjennomfC8rt undervisningspraksis, fortrinnsvis i grupper. Omfang: 10 dager.
+Minimum 80% deltagelse i obligatorisk undervisning.
+Vurdering og eksamen
+
+Eksamen er et praktisk, skapende prosjekt med tilhC8rende skriftlig refleksjon og gjennomfC8res individuelt. Arbeidet og den skriftlige refleksjonen vurderes samlet.
+
+1. Praktisk skapende arbeid
+
+Et ferdigstilt praktisk skapende arbeid med skisser, material- og teknikkutprC8vinger som vedlegg.
+
+2. Skriftlig oppgave
+
+Skriftlig refleksjon der fagteori, fagdidaktikk og praksiserfaringer inngC%r. Omfang pC% 1500-2000 ord. Se undervisningsplanene for nC&rmere informasjon om eksamen.
+
+Begge deler av eksamen mC% vC&re vurdert til E eller bedre for at eksamen skal vC&re bestC%tt. Eksamensresultatet kan pC%klages.
+
+FravC&r - ikke bestC%tt
+
+Studenter som pC% grunn av gyldig fravC&r ikke avlegger eksamen, eller som fC%r vurderingen Ikke bestC%tt, kan melde seg opp til ny/utsatt eksamen. Ved framstilling til ny/utsatt eksamen kan enten en bearbeidet versjon av samme eksamensprosjekt leveres pC% nytt, eller ny eksamensbesvarelse leveres.
+
+Hjelpemidler ved eksamen
+
+Alle hjelpemidler er tillatt sC% lenge regler for kildehenvisning fC8lges.
+
+Vurderingsuttrykk
+
+Gradert skala A-F
+
+Sensorordning
+
+To interne sensorer. Ekstern sensor brukes jevnlig.
+
+Emneoverlapp
+
+Emnet overlapper med FKH1002.
+
+Emnet overlapper med 10 stp mot FKH1000.
+
+Emnet overlapper 15 stp mot MLEST1200.

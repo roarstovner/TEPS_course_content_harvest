@@ -1,0 +1,10 @@
+institution: hvl
+code: LUPEKI204-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/LUPEKI204
+status: 200
+course_name_no: LUPEKI204 FoU-oppgave: Den forskende lC&rer
+----- FULLTEXT -----
+
+NA

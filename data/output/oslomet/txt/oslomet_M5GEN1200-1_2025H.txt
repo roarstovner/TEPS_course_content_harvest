@@ -1,0 +1,111 @@
+institution: oslomet
+code: M5GEN1200-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/M5GEN1200/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+M5GEN1200 Engelsk, emne 2 Emneplan
+Engelsk emnenavn
+English, Subject 2
+Studieprogram
+Engelsk for trinn 5-10 i grunnskolen
+GrunnskolelC&rerutdanning for trinn 5-10
+Omfang
+15.0 stp.
+StudieC%r
+2025/2026
+Pensum
+HCST 2025
+
+Timeplan
+HCST 2025
+Programplan
+GrunnskolelC&rerutdanning for trinn 5-10 (2025 HCST )
+Emnehistorikk
+2017 / 2018 2018 / 2019 2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Innledning
+
+Fagplanen tilhC8rende dette emnet er lagt pC% emne M5GEN1100 Engelsk, emne 1.
+
+Forkunnskapskrav
+
+Ingen.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+kjenner til litteratur og andre kulturelle uttrykk som kan brukes i undervisning av barn og unge
+kjenner forsknings- og utviklingsarbeid som er relevant for engelskfaget pC% trinn 5-10
+
+Ferdigheter
+
+Studenten
+
+kan bruke engelsk muntlig og skriftlig, sikkert og selvstendig
+kan planlegge og lede varierte og differensierte lC&ringsaktiviteter, ogsC% digitale, som fremmer dybdelC&ring og utvikling av de grunnleggende ferdighetene
+kan oppdage lese- og skrivevansker og legge til rette for tilpasset opplC&ring
+kan diskutere, muntlig og skriftlig, et utvalg av skjC8nn- og faglitteratur
+kan innhente og tilrettelegge informasjon om samfunnsspC8rsmC%l og kulturelle tema til bruk i undervisningen
+
+Generell kompetanse
+
+Studenten
+
+kan formidle relevant fagstoff og kommunisere pC% engelsk pC% en mC%te som er tilpasset elever pC% trinn 5-10
+kan reflektere over egen lC&ring og undervisningspraksis i lys av etiske grunnverdier og skolens ansvar for barn og unges personlige vekst
+kan arbeide selvstendig og sammen med andre for C% tilrettelegge for elevers lC&ring og utvikling
+kan vedlikeholde og utvikle sin egen sprC%klige og didaktiske kompetanse
+Innhold
+
+Elevers arbeid med engelsksprC%klige tekster:
+
+Analyse og valg av tekster for barn og unge
+Grunnleggende sjangerkunnskap
+Interkulturell kommunikasjon
+Tilpasset opplC&ring i forhold til en mangfoldig elevgruppe
+Kritisk bruk av digitale lC&ringskilder og verktC8y
+Arbeid med grunnleggende ferdigheter i engelskfaget, med fokus pC% lesing, regning og digitale ferdigheter
+Samfunnsliv, historie og kulturuttrykk i noen engelsktalende land
+
+Studieopphold i engelsksprC%klig land
+
+Som del av undervisning i emne 2 tilbys studentene et studieopphold ved en partnerinstitusjon i et engelsksprC%klig land. Studentene vil da fC% anledning til C% arbeide med det muntlige sprC%ket i en autentisk ramme og utvide sin kunnskap om engelsksprC%klig litteratur, kultur, samfunnsliv og historie. Kostnader i forbindelse med studieoppholdet dekkes av studentene selv. Informasjon om reisemC%l og kostnader gis ved semesterstart. Studieoppholdet er ikke obligatorisk, og studenter som av ulike C%rsaker ikke har anledning til C% delta pC% studieoppholdet, deltar i samme perioden pC% tilsvarende undervisningsopplegg med tilsvarende lC&ringsutbytte pC% OsloMet.
+
+Arbeids- og undervisningsformer
+
+Se fagplanen.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+FC8lgende arbeidskrav mC% vC&re godkjent fC8r eksamen i emnet kan avlegges:
+
+Individuell skriftlig oppgave, tekst pC% 900 ord +/- 10 %. FormC%let med oppgaven er arbeid med tekstanalyse og sjangerkunnskap, utvikling av studentenes skriveferdigheter og bruk av tekstbehandling og referanseverktC8y.
+Muntlig presentasjon i grupper pC% 3-4 studenter, med omfang 15 minutter. Studentene skal bruke praktiske-estetiske uttrykksformer i utformingen av presentasjonen, som for eksempel rollespill, drama eller sammensatte tekster (inkl. sosiale medier). FormC%let med oppgaven er arbeid med grunnleggende ferdigheter, interkulturell kommunikasjon og tilpasset opplC&ring.
+Krav om deltakelse i undervisningen (som beskrevet under B+ArbeidskravB; i den innledende delen av fagplanen).
+Vurdering og eksamen
+
+Individuell fem timers skriftlig eksamen under tilsyn. EksamenssprC%ket er engelsk.
+
+Ny/utsatt eksamen arrangeres som ved ordinC&r eksamen.
+
+Hjelpemidler ved eksamen
+
+Ingen hjelpemidler tillatt.
+
+Vurderingsuttrykk
+
+Det benyttes en gradert karakterskala fra A til E for bestC%tt og F for ikke bestC%tt eksamen.
+
+Sensorordning
+
+Eksamen vurderes av to interne sensorer. En tilsynssensor er tilknyttet emnet, i henhold til retningslinjer for oppnevning og bruk av sensorer ved OsloMet.

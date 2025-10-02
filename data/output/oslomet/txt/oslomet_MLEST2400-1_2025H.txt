@@ -1,0 +1,92 @@
+institution: oslomet
+code: MLEST2400-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/MLEST2400/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+MLEST2400 FoU-oppgave. Fordypning i selvvalgt omrC%de Emneplan
+Engelsk emnenavn
+FoU-oppgave. Fordypning i selvvalgt omrC%de
+Studieprogram
+LC&rerutdanning i praktiske og estetiske fag for trinn 1-13, design, kunst og hC%ndverk
+Omfang
+10.0 stp.
+StudieC%r
+2025/2026
+Programplan
+LC&rerutdanning i praktiske og estetiske fag for trinn 1-13, design, kunst og hC%ndverk (2025 HCST )
+Emnehistorikk
+2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Innledning
+
+I emnet arbeider studenten med en skriftlig og praktisk profesjonsrettet FoU-oppgave. Oppgaven inkluderer bC%de fag I og profesjonsfag, eventuelt ogsC% fag II. FoU-oppgaven skal belyse problemstillinger knyttet til de praktiske og estetiske fagenes egenart, kunnskapsgrunnlag, historie, praktiske og estetiske prosesser og/eller verdigrunnlag. I FoU-oppgaven skal studenten se flere av de praktiske og estetiske fagene i sammenheng. Arbeid med FoU-oppgaven krever metodisk fremgangsmC%te, kritisk refleksjon og selvstendig arbeid fra oppstart og gjennom hele emnet. Emnet inngC%r i internasjonalt semester.
+
+Forkunnskapskrav
+
+BestC%tt tidligere emner ved studiet, tilsvarende 110 studiepoeng. JamfC8r nasjonale retningslinjer for utdanningen.
+
+LC&ringsutbytte
+
+Etter C% ha gjennomfC8rt dette emnet har studenten fC8lgende lC&ringsutbytte definert i form av kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har kunnskap om sentrale problemstillinger for fagomrC%det design, kunst og hC%ndverk, nasjonalt og internasjonalt.
+har kunnskap om estetiske lC&reprosesser og tverrfaglig arbeid som grunnlag for profesjonsutC8velse.
+har kunnskap om ulike uttrykks- og formidlingsformer innen de praktiske og estetiske fagene.
+har kunnskap om ulike metoder innen forskning og utviklingsarbeid med relevans for praktiske og estetiske fag.
+
+Ferdigheter
+
+Studenten
+
+Kan anvende fagteori og internasjonal forskning om fagdidaktikk og praksiserfaringer som drC8ftingsgrunnlag i egen undersC8kelse.
+kan utvikle problemstilling, planlegge, gjennomfC8re, dokumentere og kritisk reflektere over et avgrenset prosjekt.
+kan vise praktisk hC%ndlag i arbeid med materialer, teknikker og uttrykksformer.
+kan anvende egnede metoder for gjennomfC8ring av en avgrenset undersC8kelse, behersker akademisk skriveform og viser innsikt i forskningsetikk.
+
+Generell kompetanse
+
+Studenten
+
+kan anvende faglig og profesjonsfaglig innsikt for C% drC8fte de praktisk estetiske fagene som del av allmenndannelsen og vurdere muligheter og utfordringer med samarbeid pC% tvers av ulike skolefag og lC&ringsarenaer.
+kan kommunisere om faglige problemstillinger, analyser og konklusjoner innen et avgrenset fagomrC%de.
+kan anvende sin profesjonskompetanse til C% stimulere til kulturforstC%else og til C% aktualisere tverrfaglige tema som demokrati og medborgerskap og folkehelse og livsmestring.
+Arbeids- og undervisningsformer
+
+I emnet vektlegges praktisk erfaring fra verkstedsarbeid, teoretiske studier hovedsakelig individuelt og gjennom noe veiledning i gruppe/plenum. Fagteori i emnet legger vekt pC% forstC%else for og anvendelse av begreper og arbeidsformer. Fagdidaktikk inngC%r i emnet og skal bidra til C% kontekstualisere eget praktisk arbeid og teoristudier, samt reise sentrale spC8rsmC%l om skolens oppgave og fagets egenart.
+
+Emnet mC% sees i sammenheng med C8vrige emner. ForstC%else for prinsipp innen akademisk skriving er gjennomgC%ende i studiet. Alle aspekter i emnet behandles ikke nC8dvendigvis i undervisningen, men skal dekkes av studenten selv gjennom lesning av pensumlitteratur, deltagelse i kollokviegrupper og praktisk, utforskende arbeid.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+Arbeidskrav mC% vC&re innfridd og vC&re vurdert til godkjent fC8r studentene kan fremstille seg til eksamen.
+
+Presentasjon av problemstilling i gruppe eller i plenum.
+Minimum 80% deltagelse ved obligatorisk undervisning
+Vurdering og eksamen
+
+Skriftlig profesjonsrettet FoU-oppgave basert pC% praktisk utforskning og teoristudier.
+
+Eksamen gjennomfC8res individuelt eller i gruppe pC% inntil 5 studenter. Tekstomfang: 4000 ord ved individuelt arbeid. For grupper inntil 6000 ord.
+
+Eksamensresultatet kan pC%klages.
+
+Hjelpemidler ved eksamen
+
+Alle hjelpemidler er tillatt sC% lenge regler for kildehenvisning fC8lges.
+
+Vurderingsuttrykk
+
+Gradert skala A-F.
+
+Sensorordning
+
+To sensorer. Ekstern sensor brukes jevnlig.

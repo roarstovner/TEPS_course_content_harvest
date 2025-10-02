@@ -1,0 +1,88 @@
+institution: nord
+code: MUS5005-1
+year: NA
+hv: NA
+url: https://www.nord.no/studier/emner/mus5005
+status: 200
+course_name_no: Komponering og arrangering
+----- FULLTEXT -----
+
+Emnet gir kompetanse i C% komponere, arrangere and transkribere musikk for et bredt spektrum av instrumenter og ensembler. Emnets profil er genre-uavhengig og gir rom for individuell spesialisering.
+
+Undervisningen vil dreie seg om komponering, arrangering og transkripsjon med Sibelius som notasjonsprogram.
+
+Forutsetninger for C% bli tatt opp til dette studiet er minimum 60 studiepoeng i musikk. Realkompetanse blir vurdert.
+
+Forutsetninger for C% bli tatt opp til dette studiet er minimum 60 studiepoeng i musikk. Realkompetanse blir vurdert.
+
+KUNNSKAP
+
+Studenten
+
+har inngC%ende kunnskap om ulike instrumentale og vokale ensembler, og instrumenters og stemmers egenart.
+har inngC%ende kunnskap om notasjon av musikk pC% notasjonsprogrammet Sibelius
+har inngC%ende kunnskap om bearbeidelse av musikalsk kildemateriale.
+har spesialisert kunnskap om skriftlig komponering, arrangering, og tilrettelegging av musikk for ulike ensembler.
+
+FERDIGHETER
+
+Studenten
+
+kan analysere. transkribere, komponere og arrangere musikk for ulike ensembler.
+kan anvende notasjonsprogrammet Sibelius til C% notere sine transkripsjoner, komposisjoner og arrangementer.
+kan komponere og arrangere musikk for en bestemt mC%lgruppe, for eksempel en skoleklasse.
+kan bruke et utvalg kompositoriske teknikker.
+
+GENERELL KOMPETANSE
+
+Studenten
+
+kan kommunisere og samarbeide med musikere innen ulike genrer.
+kan omsette ervervet kunnskap og ferdigheter fra emnet til en generell kompetanse som arrangC8r og komponist og bruke denne kompetansen pC% nye omrC%der innen sitt felt.
+
+KUNNSKAP
+
+Studenten
+
+FERDIGHETER
+
+Studenten
+
+GENERELL KOMPETANSE
+
+Studenten
+
+Utover semesteravgift og pensumlitteratur forutsettes det at studenten disponerer en bC&rbar eller stasjonC&r datamaskin med notasjonsprogrammet Sibelius.
+
+Obligatorisk teoriemne.
+
+Arbeidsformen vil vC&re lC&rerstyrt undervisning, arbeid i grupper og individuell veiledning.
+
+Mellom samlingene vil det bli gitt C8vingsoppgaver.
+
+Det er nC8dvendig med deltakelse og aktivt samarbeid mellom studentene for C% kunne oppnC% de C8nskede utbytteformuleringer i emnet. Dette inkluderer interaktive prosesser, ensemblemedvirkning og faglige samtaler med medstudenter og lC&rere.
+
+Arbeidsformen vil vC&re lC&rerstyrt undervisning, arbeid i grupper og individuell veiledning.
+
+Mellom samlingene vil det bli gitt C8vingsoppgaver.
+
+Det er nC8dvendig med deltakelse og aktivt samarbeid mellom studentene for C% kunne oppnC% de C8nskede utbytteformuleringer i emnet. Dette inkluderer interaktive prosesser, ensemblemedvirkning og faglige samtaler med medstudenter og lC&rere.
+
+Emnet evalueres etter hver samling. Evalueringene inngC%r som en del av universitetets kvalitetssikringssystem.
+
+Sammensatt vurdering - alle delene mC% vC&re godkjent/bestC%tt for C% fC% karakter i emnet.
+
+Obligatorisk deltakelse (OD) i undervisning, minimum 80 %, og i avtalt studentstyrt aktivitet. OD mC% vC&re godkjent for C% fC% karakter i emnet. Teller 0/100 av karakteren.
+Mappe med tre verker. Det gis veiledning pC% arbeidet med mappen. Studenten leverer til slutt samlet mappe og mappen gis en samlet karakter. Karakterregel A-F, Beste A, Ikke bestC%tt F. Teller 100/100 av karakteren.
+
+Sammensatt vurdering - alle delene mC% vC&re godkjent/bestC%tt for C% fC% karakter i emnet.
+
+Alle hjelpemidler er tillat.
+
+Unntak: C benytte ChatGPT eller lignende kunstig intelligens til C% skape eksamensproduktet og fremstille det helt eller delvis eget selvstendig arbeid, er C% regne som fusk.
+
+Alle hjelpemidler er tillat.
+
+Unntak: C benytte ChatGPT eller lignende kunstig intelligens til C% skape eksamensproduktet og fremstille det helt eller delvis eget selvstendig arbeid, er C% regne som fusk.
+
+Det forutsettes generell forkunnskap om musikkteori og bruk av notasjonsprogrammer.

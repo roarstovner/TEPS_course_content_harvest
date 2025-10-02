@@ -1,0 +1,217 @@
+institution: uis
+code: MGL1061-1
+year: NA
+hv: NA
+url: https://www.uis.no/nb/course/MGL1061
+status: 200
+course_name_no: KroppsC8ving 2 (MGL1061)
+----- FULLTEXT -----
+
+Emnekode
+
+MGL1061
+
+Versjon
+
+1
+
+Vekting (stp)
+
+30
+
+Semester undervisningsstart
+
+HC8st
+
+Antall semestre
+
+1
+
+Vurderingssemester
+
+HC8st
+
+UndervisningssprC%k
+
+Norsk
+
+Tilbys av
+
+Fakultet for utdanningsvitenskap og humaniora,
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Fakultet for utdanningsvitenskap og humaniora,
+
+Institutt for grunnskolelC&rerutdanning, idrett og spesialpedagogikk
+
+Timeplan
+
+Vis timeplan
+
+Vis timeplan
+
+Innhold
+
+Kurset bestC%r av teoretiske og praktiske emner.
+
+Fagdidaktikk og kroppsC8vingsfaget i et samfunnsperspektiv
+
+Praksis: Forskningsbasert undervisning gjennom Lesson Study
+Sosiologi: Refleksjon og kritisk tenking om kropp og bevegelse i kultur og samfunn
+Psykologi: Motivasjon og lC&ringsmiljC8
+
+Bevegelse, kropp og helse
+
+TreningslC&re og fysiologi: Kroppens funksjoner og aktivitetsprinsipper for C% utvikle elevers fysiske egenskaper
+BevegelseslC&re og Anatomi: Kroppen i bevegelse
+Fysisk aktivitet i skolen
+
+Praktiske emner
+
+Alternative bevegelsesaktiviteter i ulike bevegelsesmiljC8
+Naturferdsel og uteaktiviteter (hC8gfjell, nC&rmiljC8aktiviteter)
+Turnaktiviteter
+Ballaktiviteter
+Praktisk treningslC&re
+
+LC&ringsutbytte
+
+Kunnskap
+
+Studenten skal ha kunnskap om:
+
+fagdidaktisk forskning i kroppsC8ving
+vurdering og dokumentasjon av lC&ring i kroppsC8ving
+kroppsC8ving og kroppslig lC&ring i tverrfaglig perspektiv
+betydningen av deltakelse, medvirkning, samspill og respekt for andre i tilknytning til kroppsC8ving
+tilrettelegging av bevegelsesmiljC8 for C% fremme elevers kroppslige lC&ring og utvikling
+tilrettelegging for inkluderende lC&ringsmiljC8
+
+Ferdigheter
+
+Studenten:
+
+kan vurdere fagdidaktiske problemstillinger og bruke relevant teori og forskning til C% forbedre undervisning i kroppsC8ving
+kan planlegge, gjennomfC8re og vurdere utviklingsarbeid knyttet til egen lC&rerkompetanse og undervisning i kroppsC8ving
+kan planlegge, gjennomfC8re og vurdere tverrfaglige temaer med utgangspunkt i lC&replanen
+
+Generell kompetanse
+
+Studenten:
+
+kan utC8ve profesjonalitet som kroppsC8vingslC&rer
+kan bidra til nytenkning og innovasjon i faget kroppsC8ving og til skoleutvikling med utgangspunkt i kroppsC8ving
+kan arbeide med mangfold og forskjellighet i kroppsC8ving og reflektere over fagets innhold og rolle i grunnskolen
+
+Forkunnskapskrav
+
+Et av fC8lgende alternativer:
+MGL1060 KroppsC8ving 1
+GLU1060 KroppsC8ving 1 (1.-7. trinn)
+MGL2060 KroppsC8ving 1 (5.-10.trinn)
+
+Studenten mC% ha deltatt i og ha eksamensrett i KroppsC8ving 1.
+
+Eksamen / vurdering
+
+VilkC%r for C% gC% opp til eksamen/vurdering
+
+Uteaktiviteter og naturferdsel, Fjelltur, Undervisning, Arbeidskrav
+
+Profesjonskompetanse i kroppsC8ving utvikles gjennom aktiv deltakelse, utprC8ving av ulike aktiviteter og drC8fting av gode metodiske tilnC&rminger. Det kreves 80 % tilstedevC&relse i hvert delemne bC%de pC% den praktiske og teoretiske undervisningen for C% fC% gC% opp til eksamen. Det forventes at studenter er aktiv deltakende i forbindelse med undervisningen i de praktiske emnene, inkludert fjellturen med overnatting.
+
+For C% kunne levere FOU-oppgave mC% oppmC8te i fC8lgende vC&re godkjent:
+
+Sosiologi
+Psykologi
+FoU
+
+For C% kunne gC% opp til skoleeksamen mC% oppmC8te i fC8lgende vC&re godkjent:
+
+TreningslC&re m/fysiologi
+Praktisk treningslC&re
+BevegelseslC&re m/anatomi
+Fysisk aktivitet i skolen
+Naturferdsel og uteaktiviteter
+Ballaktiviteter
+Turnaktiviteter
+Alternative bevegelsesaktiviteter
+Planlegging og gjennomfC8ring av tur hC8yfjell
+
+Det er ett arbeidskrav knyttet til undervisning i hvert teoretiske emne som mC% vC&re godkjent for C% fC% gC% opp til avsluttende eksamen. Arbeidskravene vil vC&re skriftlig eller praktisk rettet. Studenter som fC%r ett eller flere av arbeidskravene vurdert til ikke-godkjent ved fC8rste innlevering, gis mulighet for C)n ny innlevering i bearbeidet form. Alle arbeidskrav og/eller ekskursjoner mC% vC&re godkjent for C% gC% opp til skriftlig eksamen, jmf. Forskrift om studier og eksamen ved Universitetet i Stavanger (eksamensforskriften), B' 3-8 nr. 3.
+
+Studenter som mangler godkjenning grunnet fravC&r i teoretisk og praktisk undervisning kan pC%legges C% ta opp igjen hele, - eller deler av emnet/emnene neste C%r for C% fC% avsluttende vurdering.
+
+Forberedelser og gjennomfC8ring av praksis er obligatorisk. Studenter fC%r tilbud om utveksling til Valencia og Leicester i praksisperioden.
+
+Estimert arbeidsbelastning KRC 2: 825 timer
+
+Teoriundervisning (forelesning, arbeidskrav og selvstudium): 296 timer
+Praktisk undervisning (egenC8ving og undervisning): 110 timer
+Naturferdsel og uteaktiviteter (planlegging, reisetid og ekskursjon): 60 timer
+Eksamen (praktisk metodisk og skriftlig eksamen): 140 timer
+Praksis, trepartsmC8te og forberedelser: 160 timer
+Diverse: 59 timer
+
+Fagperson(er)
+
+FaglC&rer:
+Ole-Petter Vinjevoll
+
+FaglC&rer:
+Ellen Heggheim
+
+FaglC&rer:
+Dag Ove GranC%s Hovdal
+
+FaglC&rer:
+Cathrine Nyhus Hagum
+
+FaglC&rer:
+Nina SC8mme Kvarstein
+
+FaglC&rer:
+BjC8rnar Kjellstadli
+
+FaglC&rer:
+Ole-Vinjar Egeland
+
+FaglC&rer:
+Cge Vigane
+
+FaglC&rer:
+Eva Leibinger
+
+Emneansvarlig:
+Atle MjC%tveit
+
+FaglC&rer:
+Silje Eikanger KvalC8
+
+FaglC&rer:
+Gerd Lise Midtgaard Nilsen Nordbotten
+
+Studiekoordinator:
+Kjersti Gjedrem
+
+Arbeidsformer
+
+I undervisningen vil studenten mC8te varierte arbeidsmC%ter gjennom en kombinasjon av praktiske aktiviteter, forelesninger, ekskursjoner, presentasjoner og gruppearbeid.
+
+Praksis
+
+Praksis: 15 dager
+
+Cpent for
+
+GrunnskolelC&rerutdanning for trinn 1 - 7, femC%rig masterprogram
+
+GrunnskolelC&rerutdanning for trinn 5 - 10, femC%rig masterprogram
+
+Emneevaluering
+
+Fakultetet avgjC8r om det skal gjennomfC8res tidligdialog i alle emner eller i utvalgte grupper av emner. FormC%let er C% fC% tilbakemeldinger fra studentene for forbedringer i semesteret. I tillegg skal det gjennomfC8res en digital emneevaluering minst hvert tredje C%r for C% innhente studentenes erfaringer.
+
+Litteratur
+
+Pensumlisten finner du i Leganto

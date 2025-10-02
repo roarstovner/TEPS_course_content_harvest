@@ -1,0 +1,10 @@
+institution: mf
+code: RL1014-1
+year: NA
+hv: NA
+url: https://mf.no/studier/emner/rl1014
+status: 200
+course_name_no: Hellige skrifter RL1014
+----- FULLTEXT -----
+
+NA

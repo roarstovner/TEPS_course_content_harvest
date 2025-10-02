@@ -1,0 +1,157 @@
+institution: uib
+code: HIS303L-0
+year: NA
+hv: NA
+url: https://www4.uib.no/studier/emner/his303l
+status: 200
+course_name_no: Historie: forskingsproblem og kjeldearbeid for lektorstudentar
+----- FULLTEXT -----
+
+Navigasjonssti
+Forside
+Studier
+Emner
+
+Historie: forskingsproblem og kjeldearbeid for lektorstudentar
+
+Studiepoeng
+
+10
+
+Undervisningssemester
+
+Haust, VC%r
+
+Emnekode
+
+HIS303L
+
+Talet pC% semester
+
+1
+
+UndervisningssprC%k
+
+Norsk / skandinavisk
+
+Ressursar
+
+Timeplan
+
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust 2021 VC%r 2020 Haust 2020 VC%r
+MC%l og innhald
+
+Studentane skal lC&re C% formulere historiske problem og klargjere kva litteratur og kjelder som kan nyttast til C% lC8yse problemet. Metodiske problem knytte til bruken av ymse kjeldetypar hC8yrer med til emnet.
+
+I dette emnet lC&rer studenten korleis dei skal fC8rebu ei forskingsoppgC%ve med sC&rleg vekt pC% problemformulering, avgrensing og kjeldekunnskap.
+
+Studentane skriv ei oppgC%ve. OppgC%va vil kunne innehalde avgrensing av tema, problemformulering og drC8fting av kva litteratur og kjelder som vil vera relevante for testing av hypotesar som er avleidde av problemformuleringa, gi konkrete dC8me pC% slike kjelder, drC8fte problem knytt til bruken av dei og gjerne ogsC% dC8me pC% analyse.
+
+LC&ringsutbyte
+
+Studenten skal ved avslutta emne ha fC8lgjande lC&ringsutbyte definert i kunnskap, ferdigheiter og generell kompetanse:
+
+Kunnskapar
+
+Studenten har djupare innsikt i historisk metode knytt til bruken av ulike kjeldetypar innan eit historisk tema.
+
+Ferdigheiter
+
+Studenten kan utvikle og formulere historiske problemstillingar innan eit avgrensa tema.
+Studenten er i stand til C% klargjere og avgrense kva litteratur og kjelder som kan nyttast til C% lC8yse problemet.
+Studenten kan analysere forskingslitteratur/kjelder sjC8lvstendig og trekkje eigne konklusjonar pC% grunnlag av dette formidla i skriftleg arbeid.
+
+Generell kompetanse
+
+Studenten har grunnleggjande kompetanse i C% kartlegge og vurdere kjeldemateriale for historisk forsking
+Studenten kan formulere eit sjC8lvstendig forskingsprosjekt innan ei avgrensa tidsramme.
+studenten har sjC8lvstendige evner til C% analysere, syntetisere og dokumentere vitskaplege framstillingar.
+Fulltid/deltid
+-
+Studiepoeng, omfang
+10
+StudienivC% (studiesyklus)
+Master
+Undervisningssemester
+VC%r
+Undervisningsstad
+Bergen. Men undervisninga vil delvis vere organisert slik at det vil vere praktisk mogleg for ein student C% arbeida med kjelder andre stader enn i Bergen.
+Krav til forkunnskapar
+Ingen
+TilrC%dde forkunnskapar
+Normal studieprogresjon i lektorprogrammet
+Studiepoengsreduksjon
+HIS303L har fagleg overlapp med HIS303, og dei to emna kan ikkje kombinerast.
+Krav til studierett
+Opptak til lektorutdanning med master i historie eller religionsvitskap (med historie som fag 1) ved Det humanistiske fakultet.
+Arbeids- og undervisningsformer
+Studenten fC%r rettleiing i arbeidet med oppgC%va. Undervisninga skjer i masterseminar og studenten vil kunne leggja fram utkast til diskusjon i masterseminaret.
+Obligatorisk undervisningsaktivitet
+
+Ingen
+
+Vurderingsformer
+
+SemesteroppgC%ve pC% 4000-6000 ord. Studentane fC%r ei individuell tilbakemelding pC% oppgC%va.
+
+OppgC%va kan leverast pC% norsk, svensk, dansk eller engelsk.
+
+Karakterskala
+BestC%tt/ikkje bestC%tt
+Vurderingssemester
+
+VC%r
+
+Det er C2g mogleg C% ta eksamen tidleg i undervisingsfritt semester (haust).
+
+Litteraturliste
+Studentane set i samrC%d med rettleiar opp ei liste med relevant litteratur.
+Emneevaluering
+Studentane vil med jamne mellomrom bli bedne om C% evaluera emnet.
+Hjelpemiddel til eksamen
+Ingen
+Programansvarleg
+Institutt for arkeologi, historie, kultur- og religionsvitskap, Det humanistiske fakultet.
+Emneansvarleg
+Institutt for arkeologi, historie, kultur- og religionsvitskap
+Administrativt ansvarleg
+Institutt for arkeologi, historie, kultur- og religionsvitskap
+Emnebeskrivelse
+Vel emnebeskrivelse for semester
+> 2026 VC%r (Neste semester)2025 Haust (Noverande semester)2025 VC%r (Forrige semester)2024 Haust 2024 VC%r 2023 Haust 2023 VC%r 2022 Haust 2022 VC%r 2021 Haust 2021 VC%r 2020 Haust 2020 VC%r
+Kontaktinformasjon
+studierettleiar@ahkr.uib.no
+Eksamensinformasjon
+Vurderingsordning
+SemesteroppgC%ve
+Innleveringsfrist
+05.01.2026, 13:00
+Trekkfrist
+22.12.2025
+Eksamenssystem
+Inspera
+Digital eksamen
+
+Dette bC8r du vite om eksamen
+
+Institutt for arkeologi, historie, kultur- og religionsvitenskap
+
+Vurderingsordning
+
+SemesteroppgC%ve
+
+Innleveringsfrist
+
+05.01.2026, 13:00
+
+Trekkfrist
+
+22.12.2025
+
+Eksamenssystem
+
+Inspera
+
+Digital eksamen

@@ -1,0 +1,10 @@
+institution: hvl
+code: MGUNA231-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGUNA231
+status: 200
+course_name_no: MGUNA231 Naturfag 1, emne 2 - InnfC8ring i fysikk og kjemi for grunnskulen
+----- FULLTEXT -----
+
+NA

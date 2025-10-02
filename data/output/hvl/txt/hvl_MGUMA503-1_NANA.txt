@@ -1,0 +1,10 @@
+institution: hvl
+code: MGUMA503-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/MGUMA503
+status: 200
+course_name_no: MGUMA503 Matematikk 3, emne 3 - Matematikkdidaktikk i forskningsfeltet
+----- FULLTEXT -----
+
+NA

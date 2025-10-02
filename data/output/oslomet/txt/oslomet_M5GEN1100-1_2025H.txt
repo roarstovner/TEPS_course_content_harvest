@@ -1,0 +1,295 @@
+institution: oslomet
+code: M5GEN1100-1
+year: 2025
+hv: H
+url: https://student.oslomet.no/studier/-/studieinfo/emne/M5GEN1100/2025/H%C3%98ST
+status: 200
+course_name_no: 
+----- FULLTEXT -----
+
+EPN-V2
+M5GEN1100 Engelsk, emne 1 Emneplan
+Engelsk emnenavn
+English, Subject 1
+Studieprogram
+Engelsk for trinn 5-10 i grunnskolen
+GrunnskolelC&rerutdanning for trinn 5-10
+Omfang
+15.0 stp.
+StudieC%r
+2025/2026
+Pensum
+HCST 2025
+
+Timeplan
+HCST 2025
+Programplan
+GrunnskolelC&rerutdanning for trinn 5-10 (2025 HCST )
+Emnehistorikk
+2017 / 2018 2018 / 2019 2019 / 2020 2020 / 2021 2021 / 2022 2022 / 2023 2023 / 2024 2024 / 2025 2025 / 2026
+(function() { var select = document.getElementById('_no_oslomet_liferay_portlet_epn_EpnPortlet_v2_termSwitcher'); if (select) { } })();
+Fagplan
+
+Engelsk (60 studiepoeng)
+
+Fagplanen ble godkjent i studieutvalget 9. november 2016
+
+Endringer godkjent pC% fullmakt av leder i utdanningsutvalget 21. mars 2019
+
+Revisjon godkjent pC% fullmakt av prodekan 14. januar 2020
+
+Redaksjonell endring lagt inn 27. juni 2022
+
+Gjeldende fra hC8stsemesteret 2022
+
+Innledning
+
+Fagplanen bygger pC% forskrift om rammeplan for grunnskolelC&rerutdanningene for trinn 5-10, fastsatt av Kunnskapsdepartementet 7. juni 2016, nasjonale retningslinjer for grunnskolelC&rerutdanningen trinn 5-10 av 1. september 2016 og programplan for grunnskolelC&rerutdanning for trinn 5-10 ved OsloMet - storbyuniversitetet (OsloMet), godkjent av studieutvalget 16. november 2016.
+
+Engelsk har en unik stilling som verdenssprC%k og gir oss anledning til C% delta i det globale fellesskapet. Vi trenger engelsk i utdanning, arbeidsliv og fritid og for C% utvikle mellommenneskelig kommunikasjon og forstC%else i en verden i stadig endring. EngelsklC&rerens hovedoppgave er derfor C% utvikle bC%de sin egen og elevenes sprC%klige, kommunikative og interkulturelle kompetanse.
+
+Engelsk er et sprC%k-, kultur-, og litteraturfag. EngelsklC&rere skal legge til rette for engelskundervisning i trC%d med relevant forsknings- og utviklingsarbeid og gjeldende lC&replan. EngelsklC&rerne mC% vC&re trygge sprC%kmodeller i klasserommet og ha innsikt i egne lC&ringsstrategier. De mC% kunne lede lC&ringsarbeidet i faget til beste for en mangfoldig elevgruppe, fra elevene starter pC% 5. trinn til de blir mer selvstendige sprC%kbrukere mot slutten av barnetrinnet og pC% ungdomstrinnet. Dette innebC&rer at lC&rerstudentene gjennom engelskstudiet skal fC% innsikt i hvordan de grunnleggende ferdighetene er en integrert del av arbeidet med faget. EngelsklC&rerne mC% ha solid kunnskap om hvordan barn og unge tilegner seg sprC%k og hvordan faget kan tilpasses aldersgruppen. De mC% ogsC% ha kunnskaper om det engelske sprC%kets strukturer og om hvordan engelsksprC%klige tekster og andre kulturelle uttrykk kan benyttes for C% fremme elevenes sprC%kutvikling, nytenkning og evne til kritisk refleksjon.
+
+MC%lgruppe
+
+Studenter som er tatt opp til femC%rig grunnskolelC&rerutdanning for trinn 5-10.
+
+Opptakskrav
+
+Faget er tilgjengelig som valgfag for aktive studenter ved grunnskolelC&rerutdanningen, i trC%d med programplanen.
+
+LC&ringsutbytte
+
+LC&ringsutbyttet er nC&rmere beskrevet i emneplanene.
+
+Fagets innhold og oppbygging
+
+Engelsk (60 studiepoeng) er bygget opp av fire emner C  15 studiepoeng. I grunnskolelC&rerutdanningen trinn 5-10 mC% studenten ta 60 studiepoeng for at faget skal godkjennes som del av utdanningen. Dette er begrunnet i at 60 studiepoeng er minste kompetansegivende enhet for 8.-10. trinn. Utdanningen skal forberede studenten til C% vC&re lC&rer for alle trinn fra 5. til 10. trinn.
+
+For studenter som tar faget i 1. og 2. studieC%r
+
+Engelsk for 5.-10. trinn tilbys organisert som 45 studiepoeng i fC8rste studieC%r og 15 studiepoeng i andre studieC%r, til sammen 60 studiepoeng. Undervisning i emne 1, 2 og 3 gis i fC8rste studieC%r, og undervisning i emne 4 gis i fC8rste semester av andre studieC%r.
+
+HC8st: M5GEN1100 Engelsk, emne 1, 15 studiepoengHC8st og vC%r: M5GEN1200 Engelsk, emne 2, 15 studiepoengVC%r: M5GEN1300 Engelsk, emne 3, 15 studiepoengHC8st: M5GEN2100 Engelsk, emne 4, 15 studiepoeng
+
+For studenter som tar faget i 3. studieC%r, evt. som del av et annet studieprogram ved fakultetet/OsloMet, eller etter avtale med eksterne utdanningsinstitusjoner
+
+Engelsk for 5.-10 trinn tilbys ogsC% organisert som 60 studiepoeng over ett studieC%r. Undervisningen i faget er organisert i fire emner C  15 studiepoeng. Undervisningen foregC%r i all hovedsak sammen med studentene som tar faget i 1. og 2. studieC%r (emne 4 arrangeres separat).
+
+HC8st: M5GEN1100 Engelsk, emne 1, 15 studiepoengHC8st og vC%r: M5GEN1200 Engelsk, emne 2, 15 studiepoengVC%r: M5GEN1300 Engelsk, emne 3, 15 studiepoengHC8st og vC%r: M5GEN3100 Engelsk, emne 4, 15 studiepoeng (gjelder fra og med termin 2022 hC8st)
+
+Emne 1 og 2 omfatter engelskundervisning for mellom- og ungdomstrinnet, med vekt pC% det som kjennetegner elevene i denne aldersgruppen og deres sprC%kutvikling i engelsk. Emnet gir en innfC8ring i engelskdidaktikk, sprC%klige tema og et variert utvalg av litteratur, bC%de skjC8nnlitteratur og sakprosa, og andre kulturelle uttrykk fra den engelsksprC%klige verden. Utviklingen av egen sprC%kferdighet og litteratur- og tekstkompetanse stC%r sentralt. I tillegg dreier disse emnene seg om varierte aktiviteter og metoder for engelskopplC&ringen i grunnskolen.
+
+Emne 3 og 4 bygger pC% de to fC8rste emnene og gir dypere innsikt i engelskdidaktiske spC8rsmC%l i opplC&ringen av elever pC% slutten av barneskolen (5.-7. trinn) og pC% ungdomstrinnet. Emne 3 og 4 omfatter videreutvikling av studentens egen sprC%kferdighet og tekstkompetanse. Studentene vil videreutvikle sine kunnskaper om sprC%kets strukturer, om litteratur og andre kulturelle uttrykk og om samfunnsspC8rsmC%l i engelsktalende land. Emnene gir C8kt erfaring i bruk av inspirerende og lC&ringsfremmende aktiviteter og arbeidsmC%ter og C8kt innsikt i valg og bruk av tekster og andre lC&ringsressurser.
+
+Fagovergripende tema med relevans for engelskfaget i grunnskolelC&rerutdanningen for trinn 5-10
+
+Klasseledelse og lC&rerrollen sett fra faget
+
+Klasseledelse i engelskfaget betyr C% sikre alle elever de beste muligheter til C% lC&re C% forstC% og bruke det engelske sprC%ket. LC&reren mC% kunne skape gode arbeidsforhold og et inkluderende lC&ringsmiljC8 der elevene trygt fC%r bruke hele seg og utvikle sin kommunikative kompetanse pC% engelsk sammen med andre.
+
+Tilpasset opplC&ring
+
+Gjennom studiet utvikler studentene sin innsikt i hva det innebC&rer C% gi tilpasset opplC&ring i engelskfaget. Studentene bevisstgjC8res om hvilke didaktiske valg de kan foreta i engelskopplC&ringen ut fra de enkelte elevenes kognitive og sosiale utviklingsnivC% og deres sprC%klige og kulturelle bakgrunn.
+
+Vurdering - kartleggingsverktC8y og oppfC8lging
+
+Studentene arbeider med vurdering for, av og som lC&ring gjennom mC8tet med ulike typer elevtekster og fC%r anledning til C% C8ve seg pC% C% gi lC&ringsfremmende tilbakemeldinger med og uten karakter. De fC%r kjennskap til formativ bruk av kartleggingsverktC8y. Vurderingsarbeidet knyttes ogsC% opp mot studentenes egne praksiserfaringer.
+
+Grunnleggende ferdigheter
+
+Det C% kunne lytte og forstC%, snakke, lese og skrive er sentrale ferdigheter i sprC%kfaget engelsk. Sammen med digital kompetanse og det C% kunne regne i engelsk er de ogsC% grunnleggende for elevenes lC&ring og utvikling. Studentene bygger sin egen kompetanse i og om de grunnleggende ferdighetene med relevans for engelskopplC&ringen i skolen.
+
+Digital kompetanse
+
+Digital kompetanse er i engelsk rettet mot bruk som student, som framtidig lC&rer og i elevenes lC&ringsarbeid. Det vil bli brukt relevante digitale medier i alle fagets emner. Det legges vekt pC% C% utvikle studentenes profesjonsfaglig digitale kompetanse i og med bruk av digitale verktC8y for alle deler av lC&ringsarbeidet. Som framtidig lC&rer mC% studenten vC&re i stand til C% benytte digitale verktC8y i planlegging, gjennomfC8ring og evaluering av lC&ringsarbeidet. Dette innebC&rer ogsC% C% kunne velge og vurdere relevante digitale verktC8y i elevenes lC&ringsarbeid. Studentenes skal ha et kritisk og reflektert forhold til hvordan de nye digitale mediene kan brukes pC% en god og lC&ringsfremmende mC%te i klasserommet. Kildekritikk, opphavsrett og personvern er sentrale omrC%der i digitale sammenhenger som ogsC% inngC%r i engelskfaget.
+
+LC&rerarbeid i det mangfoldige klasserommet
+
+I engelskstudiet fC%r studentene forskningsbasert innsikt i hvordan elever lC&rer et andre- og tredjesprC%k og hva som kjennetegner undervisning i et mangfoldig klasserom fra et sprC%klig, kulturelt, kjC8nns- og likestillingsperspektiv. Gjennom sine praksiserfaringer blir studentene mer bevisst elevers individuelle sC&rtrekk, deres sprC%klige og kulturelle bakgrunn og fC%r anledning til C% utvikle sitt engelskdidaktiske repertoar slik at de kan gi tilpasset opplC&ring til beste for alle elevene. Studentene skal tilegne seg kunnskap og ferdigheter som gjC8r de i stand til C% mC8te og forstC% ulikhet og bruke mangfoldet som en ressurs i engelskundervisningen.
+
+Yrkesretting
+
+EngelskopplC&ring vil ikke vC&re helt det samme for elever som velger C% utdanne seg til et yrkesfag som for elever som velger studieforberedende retning i videregC%ende skole. Engelsk trinn 5-10 skal bevisstgjC8re studentene pC% elevenes ulike behov nC%r det gjelder framtidig yrkesvalg. Dette har konsekvenser for didaktiske valg av mC%l, innhold og arbeidsmC%ter i opplC&ringen.
+
+Overgangen mellom trinnene nC%r det gjelder engelskfaget
+
+Studiet tar sikte pC% C% gjC8re studentene i stand til C% ta de grep innenfor engelskfaget som kan bidra til C% lette elevenes overgang fra barnetrinn til ungdomstrinn og videre til videregC%ende opplC&ring. Sentralt i dette arbeidet stC%r kunnskap om elevenes utvikling i vid forstand, faglig progresjon og lC&ringsfremmende vurdering.
+
+Estetiske arbeidsmC%ter
+
+Estetiske arbeidsmC%ter i engelskfaget kan fremme affektive mC%l som motivasjon, kreativitet og lC&reglede. Ved C% legge vekt pC% innhold, arbeidsmC%ter og vurdering som involverer alle sanser i tillegg til rent kognitive prosesser, fC%r studentene erfaring med ulike deler av faget. Estetiske arbeidsmC%ter kan vC&re rollespill, der deltakerne fC%r utforske andre perspektiver enn sine egne, og aktiviteter som gir rom for sprC%kets lydlige og visuelle uttrykksformer.
+
+Internasjonale perspektiver
+
+En internasjonal orientering er sentral i engelskfaget, siden verdenssprC%ket engelsk brukes som kontaktsprC%k for mennesker fra ulike land og kulturer. Faget henter det meste av sitt lC&restoff fra ulike deler av den engelsksprC%klige verden, spesielt nC%r det gjelder forskning, kulturkunnskap og et variert utvalg tekster. I lC8pet av studiet legges det til rette for et studieopphold ved en partnerskapsinstitusjon i et engelsksprC%klig land.
+
+Praksistilknytning
+
+Tilknytningen til praksisfeltet stC%r sentralt i engelskfaget bC%de nC%r det gjelder fagdidaktisk innhold i studiet og i praksisperiodene ute i skolen. Studentene fC%r der anledning til C% prC8ve ut rollen som engelsklC&rer og som sprC%kmodell. De fC%r arbeide med valg og formidling av lC&restoff, med C% tilpasse opplC&ringen til mangfoldige elevgrupper og vurdere elevenes lC&ring.
+
+Forskningsforankring
+
+Undervisningen i engelskfaget er forsknings- og utviklingsbasert. Pensumlitteraturen gir studenter basiskunnskap i fag og fagdidaktikk med innhold som fremmer kritisk tenkning. Studentene fC%r anledning til C% reflektere over og begrunne sitt praktiske lC&rerarbeid ut fra relevant teori. De blir kjent med vitenskapelige tenkemC%ter, metodisk framstilling og akademisk skriving pC% engelsk.
+
+Psykososialt lC&ringsmiljC8
+
+I engelskstudiet blir studentene del av et aksepterende lC&ringsmiljC8 preget av hC8ye forventninger, der de trygt kan utvikle seg i det tempoet som er naturlig for den enkelte. Dette kommer til uttrykk i en dialogisk tilnC&rming til deltakelse og i tilbakemeldinger pC% studieoppgaver. I praksisperiodene ute i skolen fC%r studentene anledning til selv C% skape et trygt og godt lC&ringsmiljC8 for elevene.
+
+Samiske forhold og rettigheter
+
+I engelskstudiet er urfolk i engelsksprC%klige land et viktig tema. Studentene arbeider med dette temaet i tilknytning til noen av pensumtekstene. I den forbindelse er det naturlig C% trekke forbindelseslinjer til vC%rt eget urfolk, samene, gjennom sammenlikning av sprC%k, rettigheter, kulturer og levevilkC%r.
+
+BC&rekraftig utvikling
+
+Kunnskap og bevissthet om hva som kjennetegner en bC&rekraftig utvikling har sin plass i engelskstudiet, blant annet som tema i flere av de litterC&re tekstene pC% pensum. I tillegg til kunnskapsformidlingen vil oppC8vingen av studentenes evne til C% stille kritiske spC8rsmC%l, analysere, se sammenhenger og identifisere utfordringer vC&re en viktig del av utdanning til bC&rekraftig utvikling.
+
+PraksisopplC&ring
+
+PraksisopplC&ring er nC&rmere beskrevet i programplanen.
+
+Skikkethetsvurdering
+
+LC&rerutdanningsinstitusjoner har ansvar for C% vurdere om studenter er skikket for lC&reryrket. LC8pende skikkethetsvurdering foregC%r gjennom hele studiet og inngC%r i en helhetsvurdering av studentens faglige og personlige forutsetninger for C% kunne fungere som lC&rer. En student som utgjC8r en mulig fare for elevers liv, fysiske og psykiske helse, rettigheter og sikkerhet, er ikke skikket for yrket. Studenter som viser liten evne til C% mestre lC&reryrket, skal sC% tidlig som mulig i utdanningen fC% melding om dette. De skal fC% rC%d og veiledning for C% gjC8re dem i stand til C% oppfylle kravene om lC&rerskikkethet eller fC% rC%d om C% avslutte utdanningen. Beslutninger om skikkethet kan fattes gjennom hele studiet.
+
+Se universitetets nettsted for mer informasjon om skikkethetsvurdering.
+
+Fagets arbeids- og undervisningsformer
+
+Engelsk er et sprC%k som studenter i grunnutdanningen og elever i skolen mC8ter og arbeider med i tillegg til skolesprC%ket norsk. Studentene utvikler sin evne til C% se flersprC%klighet som en ressurs i arbeidet med engelsk. Et rikt og variert utvalg av tekster bC%de til personlig og faglig vekst og til bruk i undervisning for bC%de gutter og jenter pC% 5.-10. trinn er en integrert del av studiet. Flerkulturelle perspektiver i engelskfaget tematiseres i arbeidet med selve sprC%ket som uttrykk for kultur, gjennom arbeidet med tekster fra ulike land og perioder og ikke minst fokus pC% sprC%kbruk tilpasset kontekst.
+
+ArbeidssprC%ket i studiet er engelsk, bC%de muntlig og skriftlig. Undervisning, arbeidskrav og eksamen foregC%r og fullfC8res pC% engelsk. Studiearbeidet bestC%r av varierte arbeidsformer. Noe av lC&restoffet vil bli formidlet gjennom forelesninger; annet vil tas opp i ulike former for verksteder (workshops) og seminarer ledet av faglC&rere eller studenter. I tillegg vil fagstoff vC&re tilgjengelig pC% hC8gskolens lC&ringsplattform. Det forventes at studentene tilegner seg en del av pensumlitteraturen pC% egen hC%nd.
+
+I tillegg til forelesninger og profesjonsfaglige verksteder vil studiearbeidet vC&re knyttet til innlevering av arbeidskrav i form av ulike typer tekster. Studentene skriver, gjC8r muntlige opptak eller lager multimodale tekster som svar pC% relevante oppgaver i forkant som forberedelse til eller i etterkant som konsolidering av ulike undervisningstemaer. Antall arbeidskrav stC%r i avsnittet "Arbeidskrav" under hvert emne. Det blir gitt krav til omfang pC% skriftlige tekster og antall minutters tale nC%r det gjelder muntlige innlegg. Likeledes blir det gitt kriterier for godkjenning av disse som arbeidskrav.
+
+Arbeidskrav
+
+Arbeidskrav skal vC&re levert/utfC8rt innen fastsatt(e) frist(er). Gyldig fravC&r dokumentert med for eksempel sykemelding, gir ikke fritak for C% innfri arbeidskrav. Studenter som pC% grunn av sykdom eller annen dokumentert gyldig C%rsak ikke leverer/utfC8rer arbeidskrav innen fristen, kan fC% forlenget frist. Ny frist for C% innfri arbeidskrav avtales i hvert enkelt tilfelle med den fagansvarlige lC&reren.
+
+Arbeidskrav vurderes til "Godkjent" eller "Ikke godkjent". Studenter som leverer/utfC8rer arbeidskrav innen fristen, men som fC%r vurderingen "Ikke godkjent", har anledning til to nye innleveringer/utfC8relser. Studenten mC% da selv avtale ny innlevering av det aktuelle arbeidskravet med faglC&rer. Studenter som ikke leverer/utfC8rer arbeidskrav innen fristen og som ikke har dokumentert gyldig C%rsak, fC%r ingen nye forsC8k.
+
+I programplanen er de fagovergripende temaene pC% de ulike studieC%rene og semestrene beskrevet. I tilknytning til disse kan det vC&re krav til tilstedevC&relse og/eller andre arbeidskrav.
+
+Faglig aktivitet med krav om deltakelse
+
+LC&ringsprosessen i engelskstudiet forutsetter samhandling med andre studenter og faglC&rere om sentrale utfordringer i faget, vurdering av undervisning og utvikling av muntlige ferdigheter. Denne delen av en lC&rers handlingskompetanse kan ikke tilegnes kun ved lesing, men mC% opparbeides i reell dialog og ved tilstedevC&relse i undervisningen. Alle fire emner i engelskfaget har derfor fC8lgende krav om deltakelse:
+
+Deltakelse i minimum 80 prosent av undervisningen. Studenter som ikke oppfyller kravet om deltakelse, mC% levere kompensasjonsoppgaver om sentrale profesjonsrelevante tema.
+
+Manglende deltakelse i faglige aktiviteter som er nevnt over, medfC8rer at studenten ikke fC%r avlegge eksamen i det emnet kravet om deltakelse er knyttet til. Sykdom fritar ikke for kravet om deltakelse.
+
+NC&rmere informasjon om arbeidskrav finnes i den enkelte emneplan.
+
+Vurderings-/eksamensformer
+
+Se emneplanene under punktet Vurderings-/eksamensformer.
+
+Vurderingskriterier for emne 1, 2 og 3
+
+A: Fremragende. Viser fremragende kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser fremragende evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+B: Meget god. Viser meget gode kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser meget god evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+C: God. Viser gode kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser god evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+D: NoksC% god. Viser begrensede kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser begrenset evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+E: Tilstrekkelig. Tilfredsstiller minimumskravene til kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser noe evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+F: Ikke bestC%tt. Har utilstrekkelig kunnskaper og ferdigheter innenfor kompetanseomrC%dene i faget. Viser dC%rlig evne til refleksjon og selvstendig tenkning i forhold til lC&ringsmC%l, fagets egenart og tilrettelegging av et godt lC&ringsmiljC8.
+
+Vurderingskriterier for emne 4
+
+A: Fremragende. Fremragende prestasjon som klart utmerker seg. Kandidaten viser svC&rt god vurderingsevne, stor faglig oversikt og stor grad av selvstendighet.
+
+B: Meget god. Meget god prestasjon som viser meget god vurderingsevne og selvstendighet.
+
+C: God. Solid prestasjon som er tilfredsstillende pC% de fleste omrC%der. Kandidaten viser god vurderingsevne og selvstendighet pC% de fleste omrC%der.
+
+D: NoksC% god. En akseptabel prestasjon med noen vesentlige mangler. Kandidaten viser en viss grad av vurderingsevne og selvstendighet.
+
+E: Tilstrekkelig. Prestasjon som tilfredsstiller minimumskrav, men ikke mer.
+
+F: Ikke bestC%tt. Prestasjon som ikke tilfredsstiller minimumskravene.
+
+Utfyllende kriterier framgC%r av retningslinjer som gjC8res tilgjengelig ved starten av emnet.
+
+Rettigheter og plikter ved eksamen
+
+Studentens rettigheter og plikter framgC%r av forskrift om studier og eksamen ved OsloMet. Forskriften beskriver blant annet vilkC%r for ny/utsatt eksamen, klageadgang og hva som regnes som fusk ved eksamen. Studenten er selv ansvarlig for C% melde seg opp til eventuell ny/utsatt eksamen.
+
+Forkunnskapskrav
+
+Ingen.
+
+LC&ringsutbytte
+
+Etter fullfC8rt emne har studenten fC8lgende lC&ringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+
+Kunnskap
+
+Studenten
+
+har kunnskap om hvordan barn og unge lC&rer sprC%k
+har kunnskap om flersprC%klighet som ressurs i klasserommet
+har kunnskap om lC&replanverket, nasjonale prC8ver og lC&remidler for engelskfaget
+har kunnskap om tilegnelse av ordforrC%d og om strukturer i engelsk fra lyd- til tekstnivC%
+kjenner forsknings- og utviklingsarbeid som er relevant for engelskfaget pC% trinn 5-10
+
+Ferdigheter
+
+Studenten
+
+kan bruke engelsk muntlig og skriftlig, sikkert og selvstendig
+kan bruke underveis- og sluttvurdering for C% veilede elever i engelskopplC&ringen
+kan planlegge og lede varierte og differensierte lC&ringsaktiviteter, ogsC% digitale, som fremmer dybdelC&ring og utvikling av de grunnleggende ferdighetene
+
+Generell kompetanse
+
+Studenten
+
+kan formidle relevant fagstoff og kommunisere pC% engelsk pC% en mC%te som er tilpasset elever pC% trinn 5-10
+kan reflektere over egen lC&ring og undervisningspraksis i lys av etiske grunnverdier og skolens ansvar for barn og unges personlige vekst
+kan arbeide selvstendig og sammen med andre for C% tilrettelegge for elevers lC&ring og utvikling
+kan vedlikeholde og utvikle sin egen sprC%klige og didaktiske kompetanse
+Innhold
+
+C vC&re engelsklC&rer:
+
+SprC%klC&ringsteorier, strategier og metoder
+FlersprC%klighet som ressurs i klasserommet
+Engelsk i Norge og verden
+LC&replan og lC&remidler, inkludert digitale lC&remidler
+InnfC8ring i grunnleggende ferdigheter i engelskfaget
+InnfC8ring i engelsk sprC%k og struktur
+InnfC8ring i tekst og kultur
+Vurdering av og for lC&ring
+EngelsklC&reren som sprC%kmodell
+Arbeids- og undervisningsformer
+
+Se fagplanen.
+
+Arbeidskrav og obligatoriske aktiviteter
+
+FC8lgende arbeidskrav mC% vC&re godkjent fC8r eksamen i emnet kan avlegges:
+
+Individuell skriftlig oppgave, tekst pC% 900 ord +/- 10 %. FormC%let med oppgaven er drC8fting av sentrale teoretiske begreper innen sprC%klC&ring og -undervisning, utvikling av studentenes egne skriveferdigheter og arbeid med digital tekstbehandling.
+Oppgave i par i form av lydfil pC% 2-3 minutter fra hver student og skriftlig tekst pC% 500 ord +/- 10% fra hver student. Oppgaven fokuserer pC% arbeid med lC&replanen og lC&remidler og lC&reren som sprC%kmodell, samt utvikling av studentenes digitale kompetanse.
+Krav om deltakelse i undervisningen (som beskrevet under B+ArbeidskravB; i den innledende delen av fagplanen).
+Vurdering og eksamen
+
+Muntlig eksamen i grupper pC% tre studenter (eller par hvis nC8dvendig ut fra studenttall), med varighet pC% 15 minutter til presentasjon av en gitt oppgave og 10 minutter til spC8rsmC%l per gruppe fra sensorene. Det gis individuell karakter. EksamenssprC%ket er engelsk.
+
+Ny/utsatt eksamen arrangeres som ved ordinC&r eksamen. Av praktiske hensyn vil gruppeeksamen kunne gjennomfC8res som individuell eksamen ved ny/utsatt eksamen.
+
+Hjelpemidler ved eksamen
+
+Hver student kan ha med seg et A4-ark med notater.
+
+Vurderingsuttrykk
+
+Det benyttes en gradert karakterskala fra A til E for bestC%tt og F for ikke bestC%tt eksamen
+
+Sensorordning
+
+Eksamen vurderes av to interne sensorer. En tilsynssensor er tilknyttet emnet, i henhold til retningslinjer for oppnevning og bruk av sensorer ved OsloMet.
