@@ -1,0 +1,482 @@
+institution: hvl
+code: LUPEF103-1
+year: NA
+hv: NA
+url: https://www.hvl.no/studier/studieprogram/emne/LUPEF103
+
+----- BODY -----
+SamtykkeDetaljar[#IABV2SETTINGS#]Om For å gjere nettsidene våre best mogleg, brukar vi informasjonskapslar (cookiar)Her kan du velje kva cookiar du vil godkjenne. Du kan når som helst endre tillatinga du gir her.Consent SelectionStrengt nødvendige cookiar BrukarinnstillingarStatistikkMarkedsføringVis detaljarDetaljarStrengt nødvendige cookiar   44Desse cookiane er nødvendige for at nettstaden skal virke. Azure2Learn more about this providerAI_bufferUsed in context with the "AI_sentBuffer" in order to limit the number of data-server-updates (Azure).  This synergy also allows the website to detect any duplicate data-server-updates. Utløp: SessionType: HTML Local StorageAI_sentBufferUsed in context with the "AI_buffer" in order to limit the number of data-server-updates (Azure). This synergy also allows the website to detect any duplicate data-server-updates. Utløp: SessionType: HTML Local StorageCookiebot2Learn more about this provider1.gifUsed to count the number of sessions to the website, necessary for optimizing CMP product delivery. Utløp: SessionType: Pixel TrackerCookieConsentStores the user's cookie consent state for the current domainUtløp: 1 yearType: HTTP CookieGoogle1Learn more about this providerSome of the data collected by this provider is for the purposes of personalization and measuring advertising effectiveness.test_cookieUsed to check if the user's browser supports cookies.Utløp: 1 dayType: HTTP CookieLinkedIn2Learn more about this providerbcookieUsed in order to detect spam and improve the website's security. Utløp: 1 yearType: HTTP Cookieli_gcStores the user's cookie consent state for the current domainUtløp: 180 daysType: HTTP CookieMatterport1Learn more about this providersc_anonymous_idUsed in context with the 3D-view-function on the website.Utløp: PersistentType: HTML Local StorageMicrosoft8Learn more about this provider``Used by Microsoft Power BI platform to display graphics on the website.Utløp: PersistentType: HTML Local Storagemanifests.artifactsUsed by Microsoft Power BI platform to display graphics on the website.Utløp: PersistentType: HTML Local Storagemanifests.extensionsUsed by Microsoft Power BI platform to display graphics on the website.Utløp: PersistentType: HTML Local Storagemanifests.productsUsed by Microsoft Power BI platform to display graphics on the website.Utløp: PersistentType: HTML Local Storagemanifests.tabsUsed by Microsoft Power BI platform to display graphics on the website.Utløp: PersistentType: HTML Local StorageesctxThis cookie is necessary for the login function on the website. Utløp: SessionType: HTTP CookiestsservicecookieUsed in connection with the synchronisation between the website and third-party Data Management Platform. The cookie serves to monitor this process for security reasons.  Utløp: SessionType: HTTP Cookiex-ms-gateway-sliceUsed in connection with the synchronisation between the website and third-party Data Management Platform. The cookie serves to monitor this process for security reasons.  Utløp: SessionType: HTTP CookieNtnu3Learn more about this providerCOOKIE_SUPPORTThis cookie determines whether the browser accepts cookies.Utløp: 1 yearType: HTTP CookieJSESSIONID [x2]Preserves users states across page requests.Utløp: SessionType: HTTP CookiePinterest2Learn more about this providerar_debugChecks whether a technical debugger-cookie is present. Utløp: 1 yearType: HTTP Cookieis_euDetermines whether the user is located within the EU and therefore is subject to EU's data privacy regulations. Utløp: SessionType: HTML Local StorageVimeo1Learn more about this provider__cf_bmThis cookie is used to distinguish between humans and bots. This is beneficial for the website, in order to make valid reports on the use of their website.Utløp: 1 dayType: HTTP Cookieapp.powerbi.comwww.hvl.no8ARRAffinity [x4]Used to distribute traffic to the website on several servers in order to optimise response times.Utløp: SessionType: HTTP CookieARRAffinitySameSite [x4]Used to distribute traffic to the website on several servers in order to optimise response times.Utløp: SessionType: HTTP Cookiecdn-2.matterport.comembed.lyvimeo.com4_cfuvid [x4]This cookie is a part of the services provided by Cloudflare - Including load-balancing, deliverance of website content and serving DNS connection for website operators. Utløp: SessionType: HTTP Cookiecontent.powerapps.com1cookietestThis cookie is used to determine if the visitor has accepted the cookie consent box.Utløp: SessionType: HTTP Cookiecontent.powerapps.comjs.monitor.azure.com2ai_session [x2]Preserves users states across page requests.Utløp: 1 dayType: HTTP Cookiejobbnorge.no1SERVERIDThis cookie is used to assign the visitor to a specific server - this function is necessary for the functionality of the website.Utløp: SessionType: HTTP Cookiev.hvl.no1PHPSESSIDPreserves user session state across page requests.Utløp: SessionType: HTTP Cookiewidget.sndcdn.com1sc_anonymous_idUsed in context with the 3D-view-function on the website.Utløp: 10 yearsType: HTTP Cookiewww.hvl.no3.AspNetCore.Antiforgery.#Helps prevent Cross-Site Request Forgery (CSRF) attacks.Utløp: SessionType: HTTP Cookie.AspNetCore.Correlation.#Preserves the visitor's session state across page requests.Utløp: 1 dayType: HTTP Cookie.AspNetCore.OpenIdConnect.Nonce.#Preserves the visitor's session state across page requests.Utløp: 1 dayType: HTTP Cookiewww.unesco.org1TS#Used to ensure website security and fraud detection.Utløp: SessionType: HTTP CookieBrukarinnstillingar  4Desse cookiane brukar vi for å lagre innstillingane dine , f.eks. visningsspråk. LinkedIn1Learn more about this providerlidcRegisters which server-cluster is serving the visitor. This is used in context with load balancing, in order to optimize user experience.  Utløp: 1 yearType: HTTP CookieNtnu1Learn more about this providerGUEST_LANGUAGE_IDDetermines the preferred language of the visitor. Allows the website to set the preferred language upon the visitor's re-entry. Utløp: 1 yearType: HTTP Cookiehvl.cloud.panopto.eu1UserSettingsThis cookie is used to determine the preferred quality of video content, this is based on visitor settings. Utløp: 400 daysType: HTTP Cookierapport-dv.uhad.no1tableau_localeThe cookie determines the preferred language and country-setting of the visitor - This allows the website to show content most relevant to that region and language.Utløp: SessionType: HTTP CookieStatistikk  18Desse cookiane brukar vi for å finne ut korleis du brukar nettsidene våre. Denne kunnskapen hjelper oss til å bygge betre og meir brukarvennlege nettsider. Google3Learn more about this providerSome of the data collected by this provider is for the purposes of personalization and measuring advertising effectiveness._gaRegisters a unique ID that is used to generate statistical data on how the visitor uses the website.Utløp: 2 yearsType: HTTP Cookie_ga_#Used by Google Analytics to collect data on the number of times a user has visited the website as well as dates for the first and most recent visit. Utløp: 2 yearsType: HTTP Cookie_gatUsed to send data to Google Analytics about the visitor's device and behavior. Tracks the visitor across devices and marketing channels.Utløp: 1 dayType: HTTP CookieHotjar3Learn more about this provider_hjSession_#Collects statistics on the visitor's visits to the website, such as the number of visits, average time spent on the website and what pages have been read.Utløp: 1 dayType: HTTP Cookie_hjSessionUser_#Collects statistics on the visitor's visits to the website, such as the number of visits, average time spent on the website and what pages have been read.Utløp: 1 yearType: HTTP Cookie_hjTLDTestRegisters statistical data on users' behaviour on the website. Used for internal analytics by the website operator. Utløp: SessionType: HTTP CookieMicrosoft2Learn more about this providerWFESessionIdStores data on the time spent on the website and its sub-pages, during the current session. Utløp: SessionType: HTTP CookiefpcRegisters a unique ID that is used to generate statistical data on how the visitor uses the website.Utløp: 30 daysType: HTTP CookieSoundcloud1Learn more about this providernumber(#)Used to track user’s interaction with embedded content.Utløp: SessionType: HTML Local StorageVimeo1Learn more about this providervuidCollects data on the user's visits to the website, such as which pages have been read.Utløp: 2 yearsType: HTTP Cookiecontent.powerapps.comjs.monitor.azure.com2ai_user [x2]Used by Microsoft Application Insights software to collect statistical usage and telemetry information. The cookie stores a unique identifier to recognize users on returning visits over time.Utløp: 1 yearType: HTTP Cookiehvl.no1pageviewCountThis cookie is used to identify the frequency of visits and how long the visitor is on the website. The cookie is also used to determine how many and which subpages the visitor visits on a website – this information can be used by the website to optimize the domain and its subpages.Utløp: SessionType: HTTP Cookiesc-static.net2u_scsidRegisters data on visitors' website-behaviour. This is used for internal analysis and website optimization. Utløp: SessionType: HTML Local StorageX-ABThis cookie is used by the website’s operator in context with multi-variate testing. This is a tool used to combine or change content on the website. This allows the website to find the best variation/edition of the site. Utløp: 1 dayType: HTTP Cookiewww.hvl.no3.EPiForm_BIDThis cookie is used to distinguish the browser that the visitor is using. The server automatically assigns an ID string to that browser, so that the website can identify the visitor again when reentering the website.Utløp: 3 monthsType: HTTP Cookie.EPiForm_VisitorIdentifierThis cookie is used to identify the visitor when reentering the website, by using the ID string contained in the .EPiForm_BID cookie.Utløp: 3 monthsType: HTTP CookieEPiStateMarkerThis cookie is used to distinguish the browser that the visitor is using. The server automatically assigns an ID string to that browser, so that the website can identify the visitor again when reentering the website.Utløp: SessionType: HTTP CookieMarkedsføring  61Desse cookiane brukar vi for å gi deg målretta reklame etter at du har besøkt nettsida vår.  Meta Platforms, Inc.6Learn more about this providerlastExternalReferrerDetects how the user reached the website by registering their last URL-address.Utløp: PersistentType: HTML Local StoragelastExternalReferrerTimeDetects how the user reached the website by registering their last URL-address.Utløp: PersistentType: HTML Local Storagelog/errorUsed to detect and log potential tracking errors.Utløp: SessionType: Pixel TrackertopicsLastReferenceTimeCollects data on the user across websites - This data is used to make advertisement more relevant.Utløp: PersistentType: HTML Local Storage_fbcThis cookie is used by Facebook to target advertisement based on user behavior and preferences across multiple websites. The cookie contains an encrypted ID which allows Facebook to identify the user across websites.  Utløp: 3 monthsType: HTTP Cookie_fbpUsed by Facebook to deliver a series of advertisement products such as real time bidding from third party advertisers.Utløp: 3 monthsType: HTTP CookieGoogle7Learn more about this providerSome of the data collected by this provider is for the purposes of personalization and measuring advertising effectiveness.IDEUsed by Google DoubleClick to register and report the website user's actions after viewing or clicking one of the advertiser's ads with the purpose of measuring the efficacy of an ad and to present targeted ads to the user.Utløp: 400 daysType: HTTP Cookiereceive-cookie-deprecationCollects information on user behaviour on multiple websites. This information is used in order to optimize the relevance of advertisement on the website.Utløp: 180 daysType: HTTP CookieNIDRegisters a unique ID that identifies a returning user's device. The ID is used for targeted ads.Utløp: 6 monthsType: HTTP Cookiepagead/1p-user-list/#Tracks if the user has shown interest in specific products or events across multiple websites and detects how the user navigates between sites. This is used for measurement of advertisement efforts and facilitates payment of referral-fees between websites.Utløp: SessionType: Pixel Tracker_gcl_auUsed by Google AdSense for experimenting with advertisement efficiency across websites using their services.  Utløp: 2 yearsType: HTTP Cookie_gidUsed to send data to Google Analytics about the visitor's device and behavior. Tracks the visitor across devices and marketing channels.Utløp: 1 dayType: HTTP Cookie_gcl_lsTracks the conversion rate between the user and the advertisement banners on the website - This serves to optimise the relevance of the advertisements on the website. Utløp: PersistentType: HTML Local StoragePinterest2Learn more about this provider_pin_unauthUsed by Pinterest to track the usage of services.Utløp: 1 yearType: HTTP Cookiev3/Used by Pinterest to track the usage of services.Utløp: SessionType: Pixel TrackerYouTube38Learn more about this provider#-# [x2]Used to track user’s interaction with embedded content.Utløp: SessionType: HTML Local StorageiU5q-!O9@[#COOKIETABLE_ADVERTISING#]nbsp;[x2]Registers a unique ID to keep statistics of what videos from YouTube the user has seen.Utløp: SessionType: HTML Local StorageLAST_RESULT_ENTRY_KEY [x2]Used to track user’s interaction with embedded content.Utløp: SessionType: HTTP CookienextId [x2]Used to track user’s interaction with embedded content.Utløp: SessionType: HTTP Cookierequests [x2]Used to track user’s interaction with embedded content.Utløp: SessionType: HTTP Cookieyt.innertube::nextId [x2]Registers a unique ID to keep statistics of what videos from YouTube the user has seen.Utløp: PersistentType: HTML Local Storageytidb::LAST_RESULT_ENTRY_KEY [x2]Used to track user’s interaction with embedded content.Utløp: PersistentType: HTML Local StorageYtIdbMeta#databases [x2]Used to track user’s interaction with embedded content.Utløp: PersistentType: IndexedDByt-remote-cast-available [x2]Stores the user's video player preferences using embedded YouTube videoUtløp: SessionType: HTML Local Storageyt-remote-cast-installed [x2]Stores the user's video player preferences using embedded YouTube videoUtløp: SessionType: HTML Local Storageyt-remote-connected-devices [x2]Stores the user's video player preferences using embedded YouTube videoUtløp: PersistentType: HTML Local Storageyt-remote-device-id [x2]Stores the user's video player preferences using embedded YouTube videoUtløp: PersistentType: HTML Local Storageyt-remote-fast-check-period [x2]Stores the user's video player preferences using embedded YouTube videoUtløp: SessionType: HTML Local Storageyt-remote-session-app [x2]Stores the user's video player preferences using embedded YouTube videoUtløp: SessionType: HTML Local Storageyt-remote-session-name [x2]Stores the user's video player preferences using embedded YouTube videoUtløp: SessionType: HTML Local Storage__Secure-ROLLOUT_TOKENPendingUtløp: 180 daysType: HTTP Cookie__Secure-YECStores the user's video player preferences using embedded YouTube videoUtløp: SessionType: HTTP CookieLogsDatabaseV2:V#||LogsRequestsStoreUsed to track user’s interaction with embedded content.Utløp: PersistentType: IndexedDBremote_sidNecessary for the implementation and functionality of YouTube video-content on the website.  Utløp: SessionType: HTTP CookieServiceWorkerLogsDatabase#SWHealthLogNecessary for the implementation and functionality of YouTube video-content on the website.  Utløp: PersistentType: IndexedDBTESTCOOKIESENABLEDUsed to track user’s interaction with embedded content.Utløp: 1 dayType: HTTP CookieVISITOR_INFO1_LIVETries to estimate the users' bandwidth on pages with integrated YouTube videos.Utløp: 180 daysType: HTTP CookieYSCRegisters a unique ID to keep statistics of what videos from YouTube the user has seen.Utløp: SessionType: HTTP Cookiehvl.no1#GUID#23PendingUtløp: SessionType: HTTP Cookiesc-static.net7_schn1Sets a unique ID for the visitor, that allows third party advertisers to target the visitor with relevant advertisement. This pairing service is provided by third party advertisement hubs, which facilitates real-time bidding for advertisers.Utløp: 1 dayType: HTTP Cookie_scidSets a unique ID for the visitor, that allows third party advertisers to target the visitor with relevant advertisement. This pairing service is provided by third party advertisement hubs, which facilitates real-time bidding for advertisers.Utløp: 13 monthsType: HTTP Cookie_scid_rSets a unique ID for the visitor, that allows third party advertisers to target the visitor with relevant advertisement. This pairing service is provided by third party advertisement hubs, which facilitates real-time bidding for advertisers.Utløp: 13 monthsType: HTTP Cookie_screloadUsed by Snapchat to implement advertisement content on the website - The cookie detects the efficiency of the ads and collects visitor data for further visitor segmentation.Utløp: SessionType: HTTP Cookieu_sclidSets a unique ID for the visitor, that allows third party advertisers to target the visitor with relevant advertisement. This pairing service is provided by third party advertisement hubs, which facilitates real-time bidding for advertisers.Utløp: PersistentType: HTML Local Storageu_sclid_rSets a unique ID for the visitor, that allows third party advertisers to target the visitor with relevant advertisement. This pairing service is provided by third party advertisement hubs, which facilitates real-time bidding for advertisers.Utløp: PersistentType: HTML Local Storageu_scsid_rSets a unique ID for the visitor, that allows third party advertisers to target the visitor with relevant advertisement. This pairing service is provided by third party advertisement hubs, which facilitates real-time bidding for advertisers.Utløp: SessionType: HTML Local StorageUklassifisert  39Desse cookiane har ikkje ein eigen kategori, eller er i ferd med å kategoriserast.  Meta Platforms, Inc.1Learn more about this providermultiFbcPendingUtløp: PersistentType: HTML Local StorageBoost.ai2Learn more about this providerboostai.conversation.idPendingUtløp: SessionType: HTML Local Storageboostai.conversation.last_interactionPendingUtløp: SessionType: HTML Local StorageCloudflare1Learn more about this providercf.turnstile.uPendingUtløp: PersistentType: HTML Local StorageMicrosoft2Learn more about this providerGeocoderCache#objectsPendingUtløp: PersistentType: IndexedDBesctx-#PendingUtløp: SessionType: HTTP CookieWikiMedia1Learn more about this providerWMF-UniqPendingUtløp: 1 yearType: HTTP Cookiehvl.cloud.panopto.eu1Panopto.UserSettings[:anonymous:]PendingUtløp: PersistentType: HTML Local Storagerapport-dv.uhad.no28tab.viz./t/DUCT/views/AndelOpenAccess/AndelOpenAccess#0PendingUtløp: PersistentType: HTML Local Storagetab.viz./t/DUCT/views/Bibliometriportal/FHS#0PendingUtløp: PersistentType: HTML Local Storagetab.viz./t/DUCT/views/Bibliometriportal/FLKI#0PendingUtløp: PersistentType: HTML Local Storagetab.viz./t/DUCT/views/Bibliometriportal/FTMS#0PendingUtløp: PersistentType: HTML Local Storagetab.viz./t/DUCT/views/Bibliometriportal-SammenligningavNVI-resultaterperr/NVI-resultaterperr#0PendingUtløp: PersistentType: HTML Local Storagetab.viz./t/DUCT/views/OpenAccess-Prosentfordeling/StatusOpenAccess-prosentfordeling#0PendingUtløp: PersistentType: HTML Local Storagetab.viz./t/DUCT/views/WalloffameV3/Walloffame#0PendingUtløp: PersistentType: HTML Local Storagetab.viz.session.0DE026F878284F40ABC3902ABD8539BE-1:2PendingUtløp: PersistentType: HTML Local Storagetab.viz.session.3FAF5CD8B82B4E908673DB9F35DD047F-1:0PendingUtløp: PersistentType: HTML Local Storagetab.viz.session.7ADD247877324D6EBA60DF8D84A3A7CE-1:0PendingUtløp: PersistentType: HTML Local Storagetab.viz.session.C1245C5E5BCE4BCFB5286259EAB30EFA-1:0PendingUtløp: PersistentType: HTML Local Storagetab.viz.session.C255DB802E2145409BB6A979D41AEF18-1:0PendingUtløp: PersistentType: HTML Local Storagetab.viz.session.E7025EF692C14E02B0234CE0202F2B5E-1:0PendingUtløp: PersistentType: HTML Local Storagetab.viz.session.management.rootsPendingUtløp: PersistentType: HTML Local Storagetab.viz.session.routes.0DE026F878284F40ABC3902ABD8539BE-1:2PendingUtløp: PersistentType: HTML Local Storagetab.viz.session.routes.28D20B2864774651919C2A90163C7A58-1:0PendingUtløp: PersistentType: HTML Local Storagetab.viz.session.routes.29501A48F2B8436DB78F4206533898E8-1:0PendingUtløp: PersistentType: HTML Local Storagetab.viz.session.routes.3F51967328354823A0A5FF2424DB31DC-1:2PendingUtløp: PersistentType: HTML Local Storagetab.viz.session.routes.3FAACDD87BD04493A1AB0FED6438FCA1-1:2PendingUtløp: PersistentType: HTML Local Storagetab.viz.session.routes.3FAF5CD8B82B4E908673DB9F35DD047F-1:0PendingUtløp: PersistentType: HTML Local Storagetab.viz.session.routes.4B4331572C824DEAA54C3E3279615E2F-1:0PendingUtløp: PersistentType: HTML Local Storagetab.viz.session.routes.60878C260FC24E29BF253D305B1AF636-1:0PendingUtløp: PersistentType: HTML Local Storagetab.viz.session.routes.7ADD247877324D6EBA60DF8D84A3A7CE-1:0PendingUtløp: PersistentType: HTML Local Storagetab.viz.session.routes.90A5FBA5B3F34B81B1FD09D944BC73AE-1:0PendingUtløp: PersistentType: HTML Local Storagetab.viz.session.routes.C1245C5E5BCE4BCFB5286259EAB30EFA-1:0PendingUtløp: PersistentType: HTML Local Storagetab.viz.session.routes.C255DB802E2145409BB6A979D41AEF18-1:0PendingUtløp: PersistentType: HTML Local Storagetab.viz.session.routes.E7025EF692C14E02B0234CE0202F2B5E-1:0PendingUtløp: PersistentType: HTML Local Storagetab.viz.session.routes.ECE2FDFA6FD34D218AA13D969DA22A5B-1:0PendingUtløp: PersistentType: HTML Local Storagesc-static.net1_ScCbtsPendingUtløp: 7 daysType: HTTP Cookiewww.hvl.no2hvlConversationIdPendingUtløp: SessionType: HTML Local StoragehvlConversationTimestampPendingUtløp: SessionType: HTML Local StorageCross-domain consent[#BULK_CONSENT_DOMAINS_COUNT#] [#BULK_CONSENT_TITLE#]List of domains your consent applies to: [#BULK_CONSENT_DOMAINS#]Cookie-erklæringa er sist oppdatert 11.09.2025 av Cookiebot[#IABV2_TITLE#][#IABV2_BODY_INTRO#][#IABV2_BODY_LEGITIMATE_INTEREST_INTRO#][#IABV2_BODY_PREFERENCE_INTRO#][#IABV2_LABEL_PURPOSES#][#IABV2_BODY_PURPOSES_INTRO#][#IABV2_BODY_PURPOSES#][#IABV2_LABEL_FEATURES#][#IABV2_BODY_FEATURES_INTRO#][#IABV2_BODY_FEATURES#][#IABV2_LABEL_PARTNERS#][#IABV2_BODY_PARTNERS_INTRO#][#IABV2_BODY_PARTNERS#]OmNår du besøker nettsidene våre, legg nettlesaren din igjen elektroniske spor og informasjon. Informasjonen blir brukt til å betre innhaldet på nettsidene våre.  Du kan når som helst endre tillatinga du gir her. Do not sell or share my personal informationAvvis alle Godta utvalde Customize Godta alle
+
+    Hopp til innhald
+
+
+
+    
+
+
+    
+        
+
+    
+    
+
+    
+
+
+        
+            
+                    
+
+            
+                Studietilbod
+                            
+                            Forsking
+                            
+                            Samarbeid
+                            
+                    
+                    
+                        Åpne søk
+                    
+                    
+                        Lukk søk
+                    
+                
+
+                
+                    
+                        Åpne meny
+                    
+                    
+                        Lukk meny
+                    
+                
+
+                    English
+            
+        
+
+        
+        
+    
+
+
+
+    
+        
+                            Framsida
+                        
+                        
+                            Studium
+                        
+                        
+                            Emne
+                        
+            
+
+    
+        
+            
+                
+                    
+                        
+                        
+                                    For studentar
+                                
+                                
+                                    Studentliv
+                                
+                                
+                                    Biblioteket
+                                
+                                
+                                    Om HVL
+                                
+                                
+                                    Ledige stillingar
+                                
+                                
+                                    For tilsette
+                                
+                        
+                
+            
+        
+
+    
+        
+            
+                
+                    Søk i nettstedet
+                    
+                        
+                            Søk
+                        
+                    
+                
+            
+            
+        
+    
+
+                LUPEF103 Profesjonsfag: Lærerrollen og elevenes læring og utvikling 
+                
+                    Emneplan for studieåret 2025/2026
+                
+
+                    
+                            Tidlegare studieår
+
+                    
+                
+                    
+                                
+                                
+                                        Studiepoeng: 15
+                                
+                            
+
+                            
+                                
+                                
+                                    Studiested: Bergen
+                                
+                            
+
+                            
+                                
+                                
+                                    Undervisningssemester: Vår
+                                
+                            
+
+                            
+                                
+                                
+                                    Undervisningsspråk: Norsk
+                                
+                            
+
+                            
+                                
+                                
+
+                                    Vurderingssemester: Vår
+
+                                
+                            
+
+                            
+                                
+                                
+                                    Emneansvarlig: May Britt Revheim Brekke
+                                
+                            
+
+
+                        
+                                
+                                    Pensum-/litteraturliste
+                                
+                            
+
+                            
+                            
+                                Inngår i:
+                                
+                                            Lærerutdanning i kroppsøving og idrettsfag | trinn 1-13
+                                        
+                                        
+                                            Lærerutdanning i musikk | trinn 1-13
+                                        
+                                
+                    
+
+
+                            Innhold og oppbygning
+                            Profesjonsfaget er et verdi- og danningsfag som skal gi studentene identitet som lærer i skolen, og slik danne den lærerfaglige plattformen i utdanningen. Kjernen i profesjonsfaget dreier seg om oppdragelse, utdanning og danning, og skal ivareta sammenhengen mellompraktiske og estetiske fagområder, pedagogikk, fagdidaktikk og praksis.I dette emnet står undervisningssituasjonen sentralt. Studentene skal opparbeide seg kunnskap om sosial, faglig og personlig læring og utvikling, og få innsikt i hvordan en kan legge til rette for gode læringsprosesser hos elevene.Sentrale team i emnet er:Introduksjon til pedagogikk som fag - og forskingsfelt Læring, motivasjon og utvikling Didaktikk Lærerrollen og klasseledelseMandat, verdigrunnlag og styringsdokument for grunnskole, videregående skole og kulturskole 
+
+                            Læringsutbytte
+                            Ved fullført emne skal studenten ha følgende totale læringsutbytte: Kunnskaper Studenten har kunnskap om læringsteori og barn og unges utvikling, danning og læring i ulike kontekster, spesielt knyttet til de praktiske og estetiske fagenes formelle og uformelle praksiser har forskningsbasert kunnskap om klasseledelse, hva som skal til for å fremme et godt læringsmiljø og hva som fremmer læring har kunnskap om sentrale didaktiske prinsipper har kunnskap om gjeldende lov- og planverk for grunnopplæringen, og om overganger mellom ulike trinn har kunnskap om barn og unge i vanskelige livssituasjoner, med kunnskap om for eksempel mobbing, vold og seksuelle overgrep mot barn og unge Ferdigheter Studenten kan bruke fagbegreper og begrunne sine didaktiske valg i teori om læring og undervisning kan samarbeide om planlegging, gjennomføring og vurdering av undervisning og læring kan analysere læreplaner og begrunne valg av mål, innhold, arbeidsmåter og vurderingsformer med utgangspunkt i pedagogisk og fagdidaktisk teori og praksis kan identifisere særskilte behov hos barn og unge, blant annet tegn på mobbing, seksuelle overgrep og voldGenerell kompetanse Studenten kan planlegge, gjennomføre og kritisk vurdere egen og andres undervisning med utgangspunkt i eksisterende rammefaktorer og gjeldende læreplanverk kan drøfte og vurdere profesjonsfaglige tema innen eget masterfag i lys av didaktisk og pedagogisk teori 
+
+                            Krav til forkunnskaper
+                            Ingen
+
+
+                            Undervisnings- og læringsformer
+                            Det vil være varierte og forskningsbaserte lærings- og undervisningsformer med vekt på studentaktivitet.Gjennom arbeidet med emnet vil det være ulike øvinger, både muntlige og skriftlige, organisert individuelt eller i grupper. 
+
+                            Obligatorisk læringsaktivitet
+                            Følgende obligatoriske læringsaktiviteter må være godkjente for at studenten kan framstille seg til eksamen: Et individuelt, skriftlig arbeid knyttet til pedagogisk og fagdidaktisk grunnlag for egen undervisningsplan Ett muntlig eller digitalt arbeid i gruppe knyttet til planlegging, gjennomføring og vurdering av undervisning og læring Et studentdrevet seminar knyttet til læring og motivasjonDe obligatoriske læringsaktivitetene må være godkjent av emneansvarlig senest 2 uker før studenten kan framstille seg til eksamen. Dersom en obligatorisk læringsaktivitet blir vurdert som ikke godkjent, skal det bli gitt en begrunnelse for dette. Studenter som ikke får godkjent en obligatorisk læringsaktivitet vil, så langt det lar seg gjøre innen fastsatte frister, få ett nytt forsøk i inneværende semester.Nærmere retningslinjer for læringsaktivitet gis ved semesterstart.
+
+                            Vurderingsform
+                            Hjemmeeksamen, 3 dager. Karakterskala A-F, der F tilsvarer ikke bestått.
+
+
+                            Hjelpemidler ved eksamen
+                            Alle hjelpemidler er tillatt.
+                                Mer om hjelpemidler
+
+                            Faglig overlapping
+                            
+                                        KRO1003 - Profesjonsfag: Lærarrolla og elevane si læring og utvikling -
+                                        Reduksjon: 
+                                        15 studiepoeng
+                                    
+                            
+                
+            
+        
+    
+    
+    
+    
+        
+                                
+                                    For studentar
+                                
+                            
+                            
+                                
+                                    For praksisfeltet
+                                
+                            
+                            
+                                
+                                    For tilsette
+                                
+                            
+                    
+                        
+                            
+                                Vår Facebook-side
+                            
+                        
+                    
+                    
+                        
+                            
+                                Vår Instagram-side
+                            
+                        
+                    
+                    
+                        
+                            
+                                Vår TikTok-side
+                            
+                        
+                    
+                    
+                        
+                                
+                                    Vår Snapchat-side
+                                
+                        
+                    
+                    
+                        
+                            
+                                Vår LinkedIn-side
+                            
+                        
+                    
+                    
+                        
+                            
+                                Vår Youtube-side
+                            
+                        
+                    
+            
+            
+                
+                        
+                            Kontaktinfo og opningstider
+                        
+                        
+                            Sentralbord: 55 58 58 00
+                        
+                
+                
+                        
+                            Krise- og beredskapsnummer
+                        
+                
+                    Tilgjengelegheitserklæring
+                    Personvern
+            
+        
+
+        
+            
+                
+                            Førde
+                        
+                            Sogndal
+                        
+                            Bergen
+                        
+                            Stord
+                        
+                            Haugesund
+                    
+        
+    
+
+document.addEventListener('DOMContentLoaded',function(){if(typeof FindApi === 'function'){var api = new FindApi();api.setApplicationUrl('/');api.setServiceApiBaseUrl('/find_v2/');api.processEventFromCurrentUri();api.bindWindowEvents();api.bindAClickEvent();api.sendBufferedEvents();}})
+
+    
+        
+            Hei! 👋 Har du spørsmål om studier eller studentliv? Våre studenter er tilgjengelige på chat akkurat nå. Klikk her for å starte en samtale!
+            
+        
+            
+                Chat  
+            
+        
+    
+
+
+
+    const conversationIdKeyName = "hvlConversationId";
+    const conversationStartedTimestampKeyName = 'hvlConversationTimestamp';
+    const dayInMilliseconds = 7200000;
+    const isLargeScreen = window.innerWidth > 1024;
+
+    const options = {
+        chatPanel: {
+            proactive: {
+                enabled: true,
+                mode: 'soft',
+                delay: 30000, // 30 seconds
+                message: 'Velkommen! Hvordan kan jeg hjelpe deg?',
+            },
+            enableProactiveOnSmallScreens: true,
+            header: {
+                filters: { filterValues: "hvl.no" },
+                title: "Chat"
+            },
+            settings: {
+                conversationId: sessionStorage.getItem(conversationIdKeyName),
+            }
+        }
+    };
+
+    // URLs that trigger proactivity
+    const endpoints = [
+        "https://hvl.dev.local/studentliv/", "https://hvl.dev.local/studentliv", "https://inte.hvl.no/studentliv/", "https://inte.hvl.no/studentliv", 
+        "https://prep.hvl.no/studentliv/", "https://prep.hvl.no/studentliv", "https://www.hvl.no/studentliv/", "https://www.hvl.no/studentliv",
+        "https://prep.hvl.no/studier/", "https://prep.hvl.no/studier", "https://www.hvl.no/studier/", "https://www.hvl.no/studier",
+        "https://prep.hvl.no/hvorfor-studere-ved-hvl/", "https://prep.hvl.no/hvorfor-studere-ved-hvl", "https://www.hvl.no/hvorfor-studere-ved-hvl/", "https://www.hvl.no/hvorfor-studere-ved-hvl", 
+    ]
+
+    const dates = {
+        '2025-03-31T18:00:00': [1],
+        '2025-04-15T18:00:00': [1, 2, 3, 4, 5]
+    };
+
+    const boost = window.boostInit('hvl', options);
+
+    function triggerBoost() {
+        boost.chatPanel.triggerAction(5147);
+    }
+
+    function validateDay(day, hvlDate) {
+        if (!day)
+            return false;
+
+        for (let [key, value] of Object.entries(dates)) {
+            if (hvlDate < new Date(key)) {
+                return value.indexOf(day) > -1;
+            }
+        }
+        return false;
+    }
+    
+    // Only some URLs trigger proactivity
+    function validateUrl() {
+        return endpoints.some(x => window.location.href.startsWith(x))
+    }
+    
+    function shouldUseProactivity() {
+        const date = new Date();
+        const hvlDate = new Date(date.toLocaleString("en-US", { timezone: "Europe/Oslo" }));
+        const hour = hvlDate.getHours();
+        const day = hvlDate.getDay();
+        const minutes = hvlDate.getMinutes();
+
+        const startTimePassed = 12 <= hour || (11 <= hour && 30 <= minutes);
+        const endTimePassed = 15 <= hour;
+        
+        return startTimePassed && !endTimePassed && validateDay(day, hvlDate) && validateUrl();
+    }
+
+    let openChatAndHideChatSpeechBubble = false;
+    
+    function showChat() { 
+        boost.chatPanel.show();
+        openChatAndHideChatSpeechBubble = true;
+    }
+
+    document.getElementById('openChatButton').onclick = function (_) {
+        showChat();
+    }
+    
+    if (window.location.href.indexOf("code") > -1 && isLargeScreen) {
+        showChat();
+    }
+
+    const conversationStartedTimestamp = sessionStorage.getItem(
+        conversationStartedTimestampKeyName
+    );
+
+    if (conversationStartedTimestamp && Date.now() - Number(conversationStartedTimestamp) >= dayInMilliseconds) {
+        sessionStorage.removeItem(conversationIdKeyName);
+        sessionStorage.removeItem(conversationStartedTimestampKeyName);
+    }
+
+    boost.chatPanel.addEventListener('conversationIdChanged', function (event) {
+        sessionStorage.setItem(conversationIdKeyName, event.detail.conversationId);
+        sessionStorage.setItem(conversationStartedTimestampKeyName, Date.now());
+    });
+    
+    
+    // Auto open chat window, or speech bubble on mobile, at certain times and URLs
+    if (shouldUseProactivity()) {
+    
+        if (isLargeScreen) {
+            openChatAndHideChatSpeechBubble = true;
+             
+             setTimeout(function () {
+                triggerBoost(); // Open chat
+            }, 5000);
+        }
+
+        const chatSpeechBubble = document.getElementById('chatSpeechBubble');
+        const isHiddenChatSpeechBubble = sessionStorage.getItem('hideChatSpeechBubble') !== 'true';
+
+        if (!isLargeScreen && chatSpeechBubble && isHiddenChatSpeechBubble && !openChatAndHideChatSpeechBubble) {
+
+            document.getElementById('closethis').onclick = function (_) {
+                document.getElementById('chatSpeechBubble').style.display = 'none';
+                sessionStorage.setItem('hideChatSpeechBubble', 'true');
+            }
+
+            // Show after 5 seconds
+            setTimeout(function () {
+                chatSpeechBubble.style.display = 'inline-block';
+            }, 5000);
+
+            // Trigger the exit animation after 10 seconds (+5 secs of waiting before showing)
+            setTimeout(function () {
+                chatSpeechBubble.classList.remove('fadeIn');
+                chatSpeechBubble.classList.add('fadeOut');
+
+                chatSpeechBubble.addEventListener('animationend', function () {
+                    chatSpeechBubble.style.display = 'none';
+                });
+            }, 15000);
+        }
+    }
+Chat

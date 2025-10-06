@@ -1,0 +1,60 @@
+# =========================================================
+# GLOBAL PARSING RULES (default)
+# Brukes av alle institusjoner som ikke har egen YAML,
+# og som base for de som har overstyringer.
+# =========================================================
+
+# Minimum antall tegn før teksten anses som gyldig
+min_chars: 400
+
+# Start parsing etter disse linjene
+keep_after:
+  - "(?i)om emnet"
+  - "(?i)emnebeskrivelse"
+  - "(?i)beskrivelse av emnet"
+  - "(?i)about the course"
+  - "(?i)course description"
+
+# Stopp parsing før disse linjene
+stop_before:
+  - "(?i)kontakt"
+  - "(?i)publisert"
+  - "(?i)oppdatert"
+  - "(?i)sist endret"
+  - "(?i)last updated"
+  - "(?i)personvern"
+  - "(?i)informasjonskapsler"
+  - "(?i)cookies?"
+  - "(?i)tilgjengelighetserklæring"
+  - "(?i)privacy"
+  - "(?i)share (this )?page"
+  - "(?i)facebook|twitter|linkedin"
+  - "(?i)tilbake til oversikten"
+  - "(?i)sideansvarlig"
+
+# Seksjonsmønstre (brukes av .promote_headers)
+# Disse konverteres til ## Headere i teksten.
+sections:
+  Emnebeskrivelse:
+    - "(?i)^\\s*(om emnet|emnebeskrivelse|about the course|course description)\\s*:?$"
+  Læringsutbytte:
+    - "(?i)^\\s*(læringsutbytte|mål for emnet|learning outcomes?)\\s*:?$"
+    - "(?i)^\\s*(etter fullført emne|etter endt kurs)\\s*:?$"
+  Innhold:
+    - "(?i)^\\s*(innhold|course content|content|temaer i emnet|temaoversikt)\\s*:?$"
+  Arbeidsformer:
+    - "(?i)^\\s*(arbeidsformer|undervisningsformer|arbeidsmåter|learning activities|teaching methods)\\s*:?$"
+  Arbeidskrav:
+    - "(?i)^\\s*(arbeidskrav|obligatoriske aktiviteter|obligatorisk arbeid|coursework requirements?)\\s*:?$"
+  Undervisning:
+    - "(?i)^\\s*(undervisning|forelesning(er)?|seminar(er)?|praktisk undervisning)\\s*:?$"
+  Vurdering:
+    - "(?i)^\\s*(vurdering|eksamen|vurderingsform|vurderingsordning|assessment|examination)\\s*:?$"
+  Forkunnskapskrav:
+    - "(?i)^\\s*(forkunnskap(er)?|opptakskrav|prerequisites?|admission requirements?)\\s*:?$"
+  Pensum:
+    - "(?i)^\\s*(pensum|litteratur|reading list|syllabus|obligatorisk litteratur|anbefalt litteratur)\\s*:?$"
+  Læringsaktiviteter:
+    - "(?i)^\\s*(læringsaktiviteter|learning activities)\\s*:?$"
+  Annet:
+    - "(?i)^\\s*(annet|merknader|other information)\\s*:?$"

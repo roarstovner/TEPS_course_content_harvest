@@ -1,68 +1,289 @@
-selectors:
-  oslomet:
-    fulltext: "#main-content"
-    course_name_no: ".page-title"
+# ============================================================
+# TEPS: Selectors for parsing Chromote-rendered HTMLs
+# Full-content capture (safe + robust + future-proof)
+# ============================================================
 
-  uia:
-    fulltext: ".main-text"
-    course_name_no: "h1"
+global:
+  heading_map:
+    h1: "#"
+    h2: "##"
+    h3: "###"
+    h4: "###"
 
-  ntnu:
-    fulltext: "#content"
-    course_name_no: ".course-name , .course-code"
+# ------------------------------------------------------------
+hiof:
+  selector_main: "#vrtx-main-content, main, #content, .vrtx-content"
+  selector_exclude:
+    - "header"
+    - "footer"
+    - "nav"
+    - "aside"
+    - ".breadcrumb"
+    - ".breadcrumbs"
+    - ".menu"
+    - ".sidebar"
+    - ".toc"
+    - ".skiplink"
+    - "script"
+    - "style"
 
-  inn:
-    fulltext: ".content-inner"
-    course_name_no: "#page-title"
+hivolda:
+  selector_main: "main, article, #main, .node__content, .region-content"
+  selector_exclude:
+    - "header"
+    - "footer"
+    - "nav"
+    - "aside"
+    - ".breadcrumb"
+    - ".breadcrumbs"
+    - ".menu"
+    - ".sidebar"
+    - ".toc"
+    - ".skiplink"
+    - "script"
+    - "style"
 
-  hivolda:
-    fulltext: "#main-content"
-    course_name_no: ".page-title"
+hvl:
+  selector_main: "main, .page-content, .content, #main-content, article"
+  selector_exclude:
+    - "header"
+    - "footer"
+    - "nav"
+    - "aside"
+    - ".breadcrumb"
+    - ".breadcrumbs"
+    - ".menu"
+    - ".sidebar"
+    - ".toc"
+    - ".skiplink"
+    - "script"
+    - "style"
 
-  hiof:
-    fulltext: "#vrtx-fs-emne-content"
-    course_name_no: "h1"
+inn:
+  selector_main: "main, #content, .region-content, article, .node__content"
+  selector_exclude:
+    - "header"
+    - "footer"
+    - "nav"
+    - "aside"
+    - ".breadcrumb"
+    - ".breadcrumbs"
+    - ".menu"
+    - ".sidebar"
+    - ".toc"
+    - ".skiplink"
+    - "script"
+    - "style"
 
-  hvl:
-    fulltext: ".l-2-col__main-content"
-    course_name_no: "h1"
+mf:
+  selector_main: "main, #content, .node__content, .content, article"
+  selector_exclude:
+    - "header"
+    - "footer"
+    - "nav"
+    - "aside"
+    - ".breadcrumb"
+    - ".breadcrumbs"
+    - ".menu"
+    - ".sidebar"
+    - ".toc"
+    - ".skiplink"
+    - "script"
+    - "style"
 
-  mf:
-    fulltext: "#main"
-    course_name_no: "h1"
+nih:
+  selector_main: "main, #content, .content, article, .region-content"
+  selector_exclude:
+    - "header"
+    - "footer"
+    - "nav"
+    - "aside"
+    - ".breadcrumb"
+    - ".breadcrumbs"
+    - ".menu"
+    - ".sidebar"
+    - ".toc"
+    - ".skiplink"
+    - "script"
+    - "style"
 
-  nla:
-    fulltext: "#content"
-    course_name_no: ".title"
+nla:
+  selector_main: "main, #content, article, .node__content, .region-content"
+  selector_exclude:
+    - "header"
+    - "footer"
+    - "nav"
+    - "aside"
+    - ".breadcrumb"
+    - ".breadcrumbs"
+    - ".menu"
+    - ".sidebar"
+    - ".toc"
+    - ".skiplink"
+    - "script"
+    - "style"
 
-  nord:
-    fulltext: "#ac-trigger-0 , #ac-trigger-1 , #ac-trigger-5 , #ac-trigger-8 , #ac-trigger-6 , #ac-trigger-7 , #ac-trigger-2 , #ac-trigger-4 , #ac-trigger-3 , .ac-panel--inner , #ac-panel-2 .field__item , #ac-panel-0 li , p , .placeholder-text"
-    course_name_no: ".h1 span"
+nmbu:
+  selector_main: "main, #content, .page-content, .region-content, article"
+  selector_exclude:
+    - "header"
+    - "footer"
+    - "nav"
+    - "aside"
+    - ".breadcrumb"
+    - ".breadcrumbs"
+    - ".menu"
+    - ".sidebar"
+    - ".toc"
+    - ".skiplink"
+    - "script"
+    - "style"
 
-  nih:
-    fulltext: ".fs-body"
-    course_name_no: "h1"
+nord:
+  selector_main: "main, .layout-content, #content, article, .node__content"
+  selector_exclude:
+    - "header"
+    - "footer"
+    - "nav"
+    - "aside"
+    - ".breadcrumb"
+    - ".breadcrumbs"
+    - ".menu"
+    - ".sidebar"
+    - ".toc"
+    - ".skiplink"
+    - "script"
+    - "style"
 
-  uib:
-    fulltext: ".accordion , .accordion__main , .vertical-reset-children .vertical-reset-children div , summary , #main-content li , p , .vertical-reset-children .vertical-reset-children .mt-12"
-    course_name_no: ".course-title"
+ntnu:
+  selector_main: "#content, main, .liferay-fjord-main, #vrtx-main-content, article"
+  selector_exclude:
+    - "header"
+    - "footer"
+    - "nav"
+    - "aside"
+    - ".breadcrumb"
+    - ".breadcrumbs"
+    - ".menu"
+    - ".sidebar"
+    - ".toc"
+    - ".skiplink"
+    - "script"
+    - "style"
+  fallback_main: "main, article, #content"
 
-  uio:
-    fulltext: "#vrtx-course-content"
-    course_name_no: "#hdr"
+oslomet:
+  selector_main: "main, #content, .app-container, .course-content, #content-main, .article-content"
+  selector_exclude:
+    - "header"
+    - "footer"
+    - "nav"
+    - "aside"
+    - ".breadcrumb"
+    - ".breadcrumbs"
+    - ".menu"
+    - ".sidebar"
+    - ".toc"
+    - ".skiplink"
+    - "script"
+    - "style"
 
-  uis:
-    fulltext: "#block-page-content .link-- , #block-page-content .paragraph--with-title"
-    course_name_no: ".h1"
+uia:
+  selector_main: "#vrtx-main-content, main, #vrtx-content, #vrtx-fs-emne-content, article"
+  selector_exclude:
+    - "header"
+    - "footer"
+    - "nav"
+    - "aside"
+    - ".breadcrumb"
+    - ".breadcrumbs"
+    - ".menu"
+    - ".sidebar"
+    - ".toc"
+    - ".skiplink"
+    - "script"
+    - "style"
 
-  usn:
-    fulltext: ".usn-study"
-    course_name_no: "h1"
+uib:
+  selector_main: "main, #block-uib-content, .region-content, .box__main, article"
+  selector_exclude:
+    - "header"
+    - "footer"
+    - "nav"
+    - "aside"
+    - ".breadcrumb"
+    - ".breadcrumbs"
+    - ".menu"
+    - ".sidebar"
+    - ".toc"
+    - ".skiplink"
+    - "script"
+    - "style"
+  fallback_main: "main, article, #content"
 
-  uit:
-    fulltext: ".hovedfelt"
-    course_name_no: ".headline"
+uio:
+  selector_main: "#vrtx-main-content, #vrtx-content, #vrtx-course-content, main, article"
+  selector_exclude:
+    - "header"
+    - "footer"
+    - "nav"
+    - "aside"
+    - ".breadcrumb"
+    - ".breadcrumbs"
+    - ".menu"
+    - ".sidebar"
+    - ".toc"
+    - ".skiplink"
+    - "script"
+    - "style"
+  fallback_main: "main, article, #content"
 
-  nmbu:
-    fulltext: ".layout"
-    course_name_no: "h1"
+uis:
+  selector_main: "main, #content, .layout-content, .page-content, article"
+  selector_exclude:
+    - "header"
+    - "footer"
+    - "nav"
+    - "aside"
+    - ".breadcrumb"
+    - ".breadcrumbs"
+    - ".menu"
+    - ".sidebar"
+    - ".toc"
+    - ".skiplink"
+    - "script"
+    - "style"
+
+usn:
+  selector_main: "main, .main-content, usn-main, usn-study, .layout-container, .page-content, #usn-app"
+  selector_exclude:
+    - "header"
+    - "footer"
+    - "nav"
+    - "aside"
+    - ".breadcrumb"
+    - ".breadcrumbs"
+    - ".menu"
+    - ".sidebar"
+    - ".toc"
+    - ".skiplink"
+    - "script"
+    - "style"
+  fallback_main: "main, article, #content"
+
+uit:
+  selector_main: "main, #block-uittheme-content, .region-content, article, .page-content, #uit-content"
+  selector_exclude:
+    - "header"
+    - "footer"
+    - "nav"
+    - "aside"
+    - ".breadcrumb"
+    - ".breadcrumbs"
+    - ".menu"
+    - ".sidebar"
+    - ".toc"
+    - ".skiplink"
+    - "script"
+    - "style"
+  fallback_main: "main, article, #content"

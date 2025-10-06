@@ -1,0 +1,644 @@
+institution: uio
+code: BIOS5930L-2
+year: 2024
+hv: 
+url: https://www.uio.no/studier/emner/matnat/ibv/BIOS5930L/?vrtx=print
+
+----- BODY -----
+
+    
+  
+
+     
+  
+  
+  
+  
+  
+  
+
+  
+  Hopp til hovedinnhold
+    
+        
+          
+            English
+            Dette nettstedet bruker informasjons­kapsler
+            Noen informasjonskapsler er nødvendige for at nettsidene skal fungere, og du kan ikke velge dem bort. Andre informasjonskapsler er nødvendige for å samle statistikk, slik at vi kan forbedre og videreutvikle nettstedet. Du kan selv velge om du vil godta disse. Du kan trekke tilbake samtykke når som helst.
+            
+              Godta
+              Avslå
+            
+            Detaljer for informasjons­kapsler
+          
+        
+      
+  
+
+
+
+    
+
+  
+    
+  
+  
+  
+  
+
+  
+  
+    
+        
+    
+  
+  
+  
+
+  
+  
+  
+    
+
+   
+
+    
+
+           
+           
+                  UiO
+                  
+                    
+                  
+
+                  
+                    Universitetet i Oslo
+                  
+            
+            
+
+            
+
+            
+              No
+              En
+            
+          
+            
+            This page is not available in English
+            Go to English frontpage
+          
+        Meny
+        
+    
+      
+        For ansatte
+            Mine studier
+              
+          
+          
+          
+            Søk i nettsidene til UiO
+            Søk
+          
+        
+          
+        
+  
+            
+              
+                  
+  Forsiden
+    
+    
+  Forskning
+    
+    
+  Studier
+    
+    
+  Livet rundt studiene
+    
+    
+  Tjenester og verktøy
+    
+    
+  Om UiO
+    
+    
+  Personer
+    
+  For ansatte
+            Mine studier
+              
+          
+          
+     
+     
+   
+     
+         Undermeny
+              Studier
+             Emner
+             Matematikk og naturvitenskap
+            Biovitenskap
+
+      BIOS5930L
+      
+
+  
+
+     
+    
+            
+            Studier
+      	  >
+        
+            
+            Emner
+      	  >
+        
+            
+            Matematikk og naturvitenskap
+      	  >
+        
+            
+            Biovitenskap
+      	  >
+        
+          BIOS5930L
+        
+    
+  
+
+         
+       
+          
+            
+              
+        
+        
+        
+        
+          
+          
+            
+              
+              
+              
+            
+          
+        
+      
+              
+      
+        BIOS5930L – Masteroppgave i biovitenskap, Lektorprogrammet
+      
+        Fakta om emnet
+        Studiepoeng
+              
+              
+                30
+              
+            
+          
+          
+          
+          
+          
+          
+            
+              
+                
+              
+              
+            
+            Nivå
+            
+              
+              
+                Master
+              
+            
+          
+          
+          
+          
+          
+          
+          
+            
+              
+                
+              
+              
+            
+            
+            
+          
+          
+          
+          
+          
+          
+             
+          
+          
+            
+              
+                
+              
+              
+            
+            
+            
+          
+          
+          
+          
+          
+          
+          
+            
+              
+                
+              
+              
+            
+            
+            
+          
+          
+          
+          
+          
+          
+          
+            
+              
+                
+              
+              
+            
+            
+            
+          
+          
+          
+          
+          
+          
+             
+          
+          
+          
+          
+          
+        
+        Fakta om emnet
+        Undervisning
+            
+              
+              
+                
+        Vår og høst
+      
+      
+      
+              
+            
+          
+          
+          
+          
+          
+          
+          
+            
+              
+                
+              
+              
+            
+            Eksamen
+            
+              
+              
+                
+        Vår og høst
+      
+      
+              
+            
+          
+          
+          
+          
+          
+          
+          
+            
+              
+                
+              
+              
+            
+            Undervisningsspråk
+            
+              
+              
+                
+         
+           
+           Norsk (engelsk på forespørsel)
+           
+         
+       
+              
+            
+          
+          
+          
+          
+          
+          
+             
+          
+          
+          
+          
+          
+        
+              
+                
+                Beskrivelse av emnet
+      
+            
+              
+              
+                
+              
+            
+            Kort om emnet
+          
+        
+      
+        
+        
+          
+          
+          
+            
+          
+          
+            
+              
+              
+                
+              
+            
+            Hva lærer du?
+          
+        
+      
+        
+        
+          
+          
+          
+            
+          
+          
+            
+              
+              
+                
+              
+            
+            Opptak til emnet
+          
+        
+      
+        
+        
+      
+        
+        
+          
+          
+            
+              
+              
+                
+              
+            
+            Undervisning
+          
+        
+      
+        
+        
+          
+          
+          
+            
+          
+          
+            
+              
+              
+                
+              
+            
+            Eksamen
+          
+        
+      
+      
+            
+            
+      
+      
+        
+      
+      
+            
+              
+              
+            
+
+              
+              
+        
+        
+          
+            
+          
+          Kort om emnet
+          Masteroppgaven er en obligatorisk del av Lektorprogrammet (master - 5 år), studieretning realfag. Oppgaven har et omfang på 30 studiepoeng og tilsvarer et semesters heltidsstudium.Regelverk rundt masteroppgaven er angitt i regler for emner, emnegrupper og grader ved Det matematisk-naturvitenskapelige fakultet.
+        
+      
+        
+        
+          
+            
+          
+          Hva lærer du?
+          Etter å ha fullført emnetKan du gjennomføre et selvstendig forsknings- eller utviklingsprosjekt under veiledning og i tråd med gjeldende forskningsetiske normerkan du ta kritiske og reflekterte valg blant metoder og verktøy innenfor fagområdetkan du bidra til fagområdets utvikling og analysere dets muligheter og begrensninger: faglig, etisk og samfunnsmessigbehersker du skriftlig og muntlig kommunikasjon av faglig arbeid til fagfeller og allmennhetenkan du anvende dine kunnskaper og ferdigheter på nye områder for å gjennomføre arbeidsoppgaver og prosjekterOpptak til emnet
+          Emnet er forbeholdt studenter på Lektorprogrammet, studieretning realfag. Opptak på emnet forutsetter at programmets progresjonskrav er oppfylt og at 80-gruppen i biologi er fullført.
+        
+      
+
+              
+        
+        
+      
+        
+        
+      
+        
+        
+      
+              
+              
+        
+        
+          
+            
+          
+          Undervisning
+          I arbeidet med masteroppgaven skal du gjennomføre et selvstendig, tidsavgrenset forsknings- eller utviklingsprosjekt under veiledning. Ta kontakt med studieinfo@ibv.uio.no for å få mer informasjon.
+        
+      
+              
+        
+        
+      
+              
+        
+        
+          
+            
+          
+          Eksamen
+          Etter at masteroppgaven er innlevert innen en frist avsluttes masterstudiet med en muntlig mastergradseksamen i løpet av 3-6 uker. Kandidaten holder først en presentasjon på rundt 30 minutter der det gis en oversikt over masteroppgaven. Etter presentasjonen holder de oppnevnte sensorene en eksaminasjon med utgangspunkt i oppgaven. Muntlig presentasjon og eksaminasjon er offentlig, jf. UH-lovens § 3-9(3).Se regler for emner, emnegrupper og grader ved Det matematisk-naturvitenskapelige fakultet for utfyllende informasjon om avsluttende mastergradseksamen.
+        
+      
+              
+        
+        
+      
+        
+        
+          
+            
+          
+          Eksamensspråk
+          Du kan besvare eksamen på norsk, svensk, dansk eller engelsk.
+        
+      
+        
+        
+          
+            
+          
+          Karakterskala
+          Ved MN-fakultetet skal masteroppgaver sensureres etter bokstavkarakterskalaen A-F, jf. § 6.1 i Forskrift om studier og eksamener ved UiO.Les mer om karakterskalaen.
+        
+      
+        
+        
+      
+              
+                  Mer om eksamen ved UiO
+
+Kildebruk og referanser
+	Hvordan bruke KI som student
+	Tilrettelegging på eksamen
+	Trekk fra eksamen
+	Syk på eksamen / utsatt eksamen
+	Begrunnelse og klage
+	Ta eksamen på nytt
+	Fusk/forsøk på fusk
+Andre veiledninger og ressurser finner du på fellessiden om eksamen ved UiO.
+
+
+            
+            
+            
+              
+                Sist hentet fra FS (Felles studentsystem)
+                5. okt. 2025 03:37:52
+              
+            
+          
+            
+      
+            
+              
+            
+            
+          
+                Kontakt
+                    Institutt for biovitenskap
+
+
+              
+          
+        
+      
+       
+     
+
+    
+    
+            
+              
+                
+                  
+                    
+                
+                
+                
+                  
+                    
+                      
+                        
+                          
+   Kontakt
+   Kontakt ossFinn frem
+
+
+   Om nettstedet
+   Bruk av informasjonskapslerTilgjengelighetserklæring
+ 
+                        
+                      
+                    
+                  
+                
+                
+                   Ansvarlig for denne siden
+                   
+                     
+                       Studieredaktør
+                     
+                   
+                   
+
+
+
+
+    
+      
+        Logg inn
+      
+    
+
+
+
+                
+              
+            
+        
+    

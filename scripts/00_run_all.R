@@ -5,14 +5,41 @@
 
 options(stringsAsFactors = FALSE, warn = 1)
 
-# Suppress "closing unused connection" warnings
+# Suppress "closing unused connection" warnings completely
 suppressWarnings({
   options(showConnections = FALSE)
 })
 
-# =====================
+suppressPackageStartupMessages({
+  library(yaml)
+  library(httr)
+  library(xml2)
+  library(rvest)
+  library(digest)
+})
+
+
+# ============================================================
+# Custom warning handler
+# ============================================================
+warning_handler <- function(w) {
+  if (grepl("closing unused connection", conditionMessage(w))) {
+    invokeRestart("muffleWarning")
+  } else {
+    message("[WARN] ", conditionMessage(w))
+    try(invokeRestart("muffleWarning"), silent = TRUE)
+  }
+}
+
+options(warning.expression = quote({
+  if (exists("warning_handler", inherits = TRUE))
+    warning_handler(last.warning)
+}))
+
+
+# ============================================================
 # Helpers
-# =====================
+# ============================================================
 get_env_or_default <- function(var, default) {
   val <- Sys.getenv(var, "")
   if (nzchar(val)) return(val)
@@ -101,41 +128,57 @@ run_script <- function(path, env_list = list()) {
   invisible(ok)
 }
 
-# =====================
+
+# ============================================================
 # Defaults (constants)
-# =====================
-DEFAULT_CLEAN          <- TRUE
-DEFAULT_DRYRUN         <- TRUE
-DEFAULT_TEPS_INST      <- ""
-DEFAULT_RUN_SCRAPE     <- TRUE
+# ============================================================
+DEFAULT_CLEAN            <- TRUE
+DEFAULT_DRYRUN           <- FALSE
+DEFAULT_TEPS_INST        <- ""
+DEFAULT_RUN_SCRAPE       <- TRUE
+DEFAULT_RUN_PARSE_HTML   <- TRUE
 
-DEFAULT_SAVE_URL_CSV   <- TRUE
-DEFAULT_SAVE_URL_TXT   <- TRUE
+DEFAULT_SAVE_URL_CSV     <- TRUE
+DEFAULT_SAVE_URL_TXT     <- TRUE
+DEFAULT_SAVE_HTML        <- TRUE
+DEFAULT_SAVE_TXT         <- TRUE
 
-DEFAULT_SAVE_HTML      <- TRUE
-DEFAULT_SAVE_TXT       <- TRUE
-DEFAULT_REQ_DELAY_MS   <- 100L
-DEFAULT_MAX_PAGES_INST <- 0L
+DEFAULT_REQ_DELAY_MS     <- 100L
+DEFAULT_MAX_PAGES_INST   <- 0L
 
-# ---- Project root ----
+DEFAULT_RAW_SCRAPE       <- FALSE
+DEFAULT_CHROMOTE_ONLY    <- TRUE
+
+
+# ============================================================
+# Project root
+# ============================================================
 proj <- find_root(); setwd(proj)
 
-# =====================
-# ---- Read env overrides ----
+
+# ============================================================
+# Read env overrides
+# ============================================================
 CLEAN          <- as_bool(get_env_or_default("TEPS_CLEAN",  if (DEFAULT_CLEAN)  "TRUE" else "FALSE"))
 DRYRUN         <- as_bool(get_env_or_default("TEPS_DRYRUN", if (DEFAULT_DRYRUN) "TRUE" else "FALSE"))
 TEPS_INST      <- get_env_or_default("TEPS_INST", DEFAULT_TEPS_INST)
 RUN_SCRAPE     <- as_bool(get_env_or_default("TEPS_RUN_SCRAPE", if (DEFAULT_RUN_SCRAPE) "TRUE" else "FALSE"))
+RUN_PARSE_HTML <- as_bool(get_env_or_default("TEPS_RUN_PARSE_HTML", if (DEFAULT_RUN_PARSE_HTML) "TRUE" else "FALSE"))
 
 SAVE_URL_CSV   <- as_bool(get_env_or_default("TEPS_SAVE_URL_CSV", if (DEFAULT_SAVE_URL_CSV) "TRUE" else "FALSE"))
 SAVE_URL_TXT   <- as_bool(get_env_or_default("TEPS_SAVE_URL_TXT", if (DEFAULT_SAVE_URL_TXT) "TRUE" else "FALSE"))
-
 SAVE_HTML      <- as_bool(get_env_or_default("TEPS_SAVE_HTML", if (DEFAULT_SAVE_HTML) "TRUE" else "FALSE"))
 SAVE_TXT       <- as_bool(get_env_or_default("TEPS_SAVE_TXT",  if (DEFAULT_SAVE_TXT)  "TRUE" else "FALSE"))
 REQ_DELAY_MS   <- as.integer(get_env_or_default("TEPS_REQ_DELAY_MS", as.character(DEFAULT_REQ_DELAY_MS)))
 MAX_PAGES_INST <- as.integer(get_env_or_default("TEPS_MAX_PAGES_PER_INST", as.character(DEFAULT_MAX_PAGES_INST)))
 
-# ---- Echo effective config ----
+TEPS_RAW           <- as_bool(get_env_or_default("TEPS_RAW", if (DEFAULT_RAW_SCRAPE) "TRUE" else "FALSE"))
+TEPS_CHROMOTE_ONLY <- as_bool(get_env_or_default("TEPS_CHROMOTE_ONLY", if (DEFAULT_CHROMOTE_ONLY) "TRUE" else "FALSE"))
+
+
+# ============================================================
+# Echo config
+# ============================================================
 cat("Project root: ", proj, "\n", sep="")
 cat("CLEAN=", CLEAN, "  DRYRUN=", DRYRUN,
     if (nzchar(TEPS_INST)) paste0("  TEPS_INST=", TEPS_INST) else "", "\n", sep="")
@@ -143,10 +186,12 @@ cat("URL: csv=", SAVE_URL_CSV, "  txt=", SAVE_URL_TXT, "\n", sep="")
 cat("SCRAPE: run=", RUN_SCRAPE,
     "  save_html=", SAVE_HTML, "  save_txt=", SAVE_TXT,
     "  delay_ms=", REQ_DELAY_MS, "  max_pages_inst=", MAX_PAGES_INST, "\n", sep="")
+cat("MODE: raw=", TEPS_RAW, "  chromote_only=", TEPS_CHROMOTE_ONLY, "  parse_html=", RUN_PARSE_HTML, "\n", sep="")
 
-# =====================
+
+# ============================================================
 # (01) Prepare cache
-# =====================
+# ============================================================
 Sys.setenv(
   TEPS_TARGET_YEAR = "2024",
   TEPS_MODE        = "hv",
@@ -156,9 +201,10 @@ Sys.setenv(
 )
 ok1 <- run_script("scripts/01_prepare_input.R")
 
-# =====================
+
+# ============================================================
 # (02) Generate URLs
-# =====================
+# ============================================================
 Sys.setenv(
   TEPS_INST          = TEPS_INST,
   TEPS_SAVE_URL_CSV  = if (SAVE_URL_CSV) "1" else "0",
@@ -169,19 +215,10 @@ ok2 <- run_script("scripts/02_generate_urls.R",
                                   SAVE_URL_CSV = SAVE_URL_CSV,
                                   SAVE_URL_TXT = SAVE_URL_TXT))
 
-# Remove TXT if disabled
-if (!SAVE_URL_TXT) {
-  inst_dirs <- list.dirs("data/output", recursive = FALSE, full.names = TRUE)
-  inst_dirs <- inst_dirs[file.info(inst_dirs)$isdir]
-  for (d in inst_dirs) {
-    f <- file.path(d, "course_urls_latest.txt")
-    if (file.exists(f)) { unlink(f, force = TRUE); cat("Removed: ", f, "\n", sep="") }
-  }
-}
 
-# =====================
+# ============================================================
 # (03) Cleanup (optional)
-# =====================
+# ============================================================
 if (CLEAN) {
   ok3 <- run_script("R/cleanup_outputs.R", env_list = list(dry_run = DRYRUN))
 } else {
@@ -189,9 +226,10 @@ if (CLEAN) {
   ok3 <- TRUE
 }
 
-# =====================
+
+# ============================================================
 # (04) Scrape (optional)
-# =====================
+# ============================================================
 if (RUN_SCRAPE) {
   Sys.setenv(
     TEPS_RUN_SCRAPE     = "TRUE",
@@ -202,14 +240,33 @@ if (RUN_SCRAPE) {
     TEPS_DRYRUN         = if (DRYRUN) "TRUE" else "FALSE",
     TEPS_INST           = TEPS_INST
   )
-  ok4 <- run_script("scripts/03_scrape.R")
+  
+  if (TEPS_CHROMOTE_ONLY) {
+    ok4 <- run_script("scripts/03_scrape_chromote_only.R")
+  } else if (TEPS_RAW) {
+    ok4 <- run_script("scripts/03_scrape_raw.R")
+  } else {
+    ok4 <- run_script("scripts/03_scrape.R")
+  }
 } else {
   ok4 <- TRUE
   cat("\nScrape skipped (set TEPS_RUN_SCRAPE=1 to enable).\n")
 }
 
-# =====================
+
+# ============================================================
+# (05) Parse HTML → TXT
+# ============================================================
+if (RUN_PARSE_HTML) {
+  ok5 <- run_script("scripts/04_parse_html.R")
+} else {
+  ok5 <- TRUE
+  cat("\nHTML parsing skipped (set TEPS_RUN_PARSE_HTML=1 to enable).\n")
+}
+
+
+# ============================================================
 # Finish
-# =====================
+# ============================================================
 cat("\nAll done. Status: ",
-    if (ok1 && ok2 && ok3 && ok4) "OK" else "with errors (see above).", "\n", sep="")
+    if (ok1 && ok2 && ok3 && ok4 && ok5) "OK" else "with errors (see above).", "\n", sep="")

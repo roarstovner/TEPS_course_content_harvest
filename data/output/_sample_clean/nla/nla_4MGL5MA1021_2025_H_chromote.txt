@@ -1,0 +1,177 @@
+Alle versjoner:
+
+4MGL5MA102 (2025—2026)
+
+4MGL5MA102 (2024—2025)
+
+4MGL5MA102 (2023—2024)
+
+4MGL5MA102 (2022—2023)
+
+4MGL5MA102 (2021—2022)
+
+4MGL5MA102 (2020—2021)
+
+4MGL5MA102 (2019—2020)
+
+4MGL5MA102 (2018—2019)
+
+Emnekode:  4MGL5MA102
+
+Emnenavn:  Matematikk 1, modul 2 5-10
+
+Undervisningssemester:  Høst
+
+Steder:  Oslo
+
+Studieår:  2025–2026
+
+Undervisningsspråk:  Norsk
+
+Studiepoeng:  10 poeng
+
+Enkeltemne:  Nei
+
+## Forkunnskapskrav
+
+Se programplan.
+
+## Relevans i studieprogrammet
+
+Valgfritt fag i grunnskolelærerutdanningen 5.-10. trinn, men obligatorisk for studenter med matematikk som undervisningsfag (enten masterfag eller andre undervisningsfag).
+
+## Innledning
+
+I matematikk 1 arbeides det med matematikkdidaktiske og matematikkfaglige tema som er relevante for alle som skal undervise i matematikk på trinnene 5-10. Matematikk 1 er delt i tre moduler à 10 studiepoeng. Den andre modulen fokuserer på å gi en dypere matematikkfaglig og matematikkdidaktisk forståelse rettet mot mellom- og ungdomstrinnet med særlig fokus på de matematikkfaglige emnene geometri, måling, statistikk og sannsynlighet.
+
+## Læringsutbytte
+
+Etter fullført emne har kandidaten følgende læringsutbytte:
+
+Kunnskap
+
+Kandidaten
+
+- har dybdekunnskap i matematikken elevene arbeider med på trinn 5-10, med fokus på geometri, måling, statistikk og sannsynlighet.
+
+- har kunnskap om ulike sider av geometri, både knyttet til målinger og beregninger, og geometriske bevis.
+
+- har kunnskap om statistikk og sannsynlighetsregning med innsikt i hva som kjennetegner tilfeldighet og usikkerhet.
+
+- har kunnskap om bruk av ulike læremidler, både digitale og andre, og muligheter og begrensninger ved slike læremidler, med spesielt fokus på dynamisk geometriprogram
+
+- har kunnskap om algoritmisk tenkning og hvordan dette kan brukes i programmering for å fremme elevers matematiske forståelse
+
+- har kunnskap om matematiske læring- og utviklingsprosesser og hvordan legge til rette for at elever kan ta del i slike prosesser
+
+- har kunnskap om matematikkfagets innhold på de ulike trinnene i grunnskolen og i videregående skole og om overgangene fra barnetrinn til ungdomstrinn og fra ungdomstrinn til videregående skole
+
+Ferdigheter
+
+Kandidaten
+
+- kan anvende matematikkfaglige kunnskaper på et høyere nivå enn grunnskole.
+
+- har gode praktiske ferdigheter i muntlig og skriftlig kommunikasjon i matematikkfaget, og kompetanse til å fremme slike ferdigheter hos elevene
+
+- kan analysere og vurdere elevers tenkemåter, argumentasjon og løsningsmetoder ut fra ulike perspektiver på kunnskap og læring
+
+- kan planlegge, gjennomføre og vurdere matematikkundervisning for alle elever på trinn 5-10, med fokus på kjerneelementer, variasjon og elevaktivitet
+
+- kan reflektere rundt og bruke arbeidsmåter som fremmer elevenes undring, kreativitet og evne til å arbeide systematisk med utforskende aktiviteter, resonnering og argumentasjon
+
+Generell kompetanse
+
+Kandidaten
+
+- har innsikt i matematikkfagets betydning som allmenndannende fag og dets samspill med andre fag, kultur, filosofi og samfunnsutvikling
+
+- har innsikt i matematikkfagets betydning for utvikling av kritisk demokratisk kompetanse
+
+## Innhold
+
+Innholdet bygger på gjeldende læreplan i matematikk for grunnskolen, samt beskrivelsen av faget Matematikk 1 i Nasjonale retningslinjer for GLU 5-10.
+
+Blant annet jobbes det med følgende matematiske temaer:
+
+- Måling og måleusikkerhet
+
+- Omkrets, areal og volum - praktiske og teoretiske tilnærminger
+
+- Egenskaper og definisjoner ved geometriske figurer
+
+- Trigonometri
+
+- Bevis i geometri
+
+- Sannsynlighetsmodeller ved uniform og binomisk sannsynlighet
+
+- Kombinatorikk
+
+- Beskrivende statistikk
+
+Det jobbes også med følgende fagdidaktiske temaer:
+
+- Van Hiele-modellen
+
+- Problemløsning som arbeidsmetode
+
+- Oppbygging av argumentasjon og bevis i matematikk
+
+- Digitale ferdigheter knyttet til bruk av dynamisk geometriprogram
+
+- Programmering i matematikk
+
+## Arbeids- og undervisningsformer
+
+Erfaringer fra praksisfeltet skal være sentrale utgangspunkt for fagstudiet, og faglige og didaktiske kunnskaper skal prøves ut i praksis. For å ivareta dette, vil det gjennomføres en tverrfaglig praksisoppgave som beskrevet i praksisplan.
+
+Ellers vil mye av fagstoffet dekkes gjennom forelesninger, men det forutsettes også selvstudium.
+
+## Arbeidsomfang
+
+Arbeidsmengde for student: ca.300 timer
+
+## Arbeidskrav
+
+Studentene skal gjennomføre følgende obligatoriske arbeidskrav:
+
+- En tverrfaglig praksisoppgave.
+
+- To matematikkfaglige oppgaver i kursets fagstoff.
+
+- Det er krav om frammøte og aktiv deltagelse som angitt i undervisningsplanen.
+
+Nærmere opplysninger om arbeidskravenes innhold, art og tidspunkt for gjennomføring vil bli gitt i årsplanen for faget ved studiestart. Obligatoriske arbeidskrav vurderes som godkjent eller ikke godkjent og teller ikke ved fastsettelse av endelig karakter for studiet. Alle obligatoriske oppgaver må være godkjente før studenten kan gå opp til eksamen.
+
+## Vurderingsuttrykk arbeidskrav
+
+Godkjent / Ikke godkjent
+
+## Avsluttende vurdering
+
+Individuell, skriftlig eksamen på 6 klokketimer.
+
+## Vurderingsuttrykk avsluttende vurdering
+
+Skriftlig eksamen vurderes med gradert karakter A til F, der F er ikke bestått.
+
+## Tillatte hjelpemidler
+
+Skrivesaker, kalkulator uten grafisk display, LK20, passer, linjal, gradskive og inntil 1 A4-side med notater.
+
+## Eksamensspråk
+
+Norsk. Andre språk må godkjennes etter søknad.
+
+## Praksis
+
+Her henvises til egen praksisplan for grunnskolelærerutdanningen og beskrivelse av praksisoppgave.
+
+## Evaluering av emnet
+
+Emnet evalueres i henhold til kvalitetssystemet for NLA Høgskolen.
+
+## Digital litteraturliste
+
+Litteratur og faglige ressurser finner du her.

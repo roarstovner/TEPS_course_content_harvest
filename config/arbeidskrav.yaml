@@ -1,0 +1,22 @@
+global:
+  include:
+    - "arbeidskrav"
+    - "obligatorisk(e)? aktivitet(er)?"
+    - "innlevering"
+    - "oppgave"
+    - "rapport"
+    - "presentasjon"
+  exclude:
+    - "oppmøte"
+    - "deltakelse"
+    - "tilstede"
+    - "frammøte"
+    - "80[%]"
+    - "75[%]"
+
+usn:
+  include:
+    - "arbeidskrav"
+    - "innlevering"
+    - "refleksjonsnotat"
+    - "prosjektoppgave"

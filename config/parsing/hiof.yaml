@@ -1,0 +1,19 @@
+selector_main: "#vrtx-fs-emne-content"
+selector_exclude:
+  - "div.vrtx-date-info"
+  - "nav"
+  - "footer"
+  - "header"
+  - "#toc"
+  - "#vrtx-fs-emne-right-column"
+
+# heading-levels: definer hvordan vi konverterer H1, H2 osv. til markdown
+heading_map:
+  h1: "#"
+  h2: "##"
+  h3: "###"
+
+# optional regex for å filtrere ut unødige tekster (ikke nødvendig for HiØ)
+remove_patterns:
+  - "(?i)informasjon om cookies"
+  - "(?i)tilgjengelighetserklæring"

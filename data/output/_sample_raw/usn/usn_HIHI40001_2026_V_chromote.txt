@@ -1,0 +1,659 @@
+institution: usn
+code: HI-ØHI4000-1
+year: 2026
+hv: V
+url: https://www.usn.no/studier/studie-og-emneplaner/#/emne/HI_ØHI4000_1_2026_V%C3%85R
+
+----- BODY -----
+
+
+    
+        *:not(:defined),
+        [unresolved] {
+            visibility: hidden;
+        }
+
+        usn-icon:not(:defined) {
+            width: 1em;
+            height: 1em;
+            display: inline-block;
+        }
+    Studie- og emneplaner - Universitetet i Sørøst-Norge
+	<!--
+	if (typeof window.corepublish === 'undefined') { window.corepublish = {}; } 
+  window.corepublish.mode = 'cplib'; 
+ var CPLIBHTMLROOT = 'https://corepublish.usn.no/cplib-common'; var CPLIBSTARTTIME = new Date(); if (typeof cplibJsLoaded == 'undefined') { var cplibJsLoaded = false; } 
+	function ctAddEventListener(evt,fn) { if (window.addEventListener) { window.addEventListener(evt,fn); } else if (evt == 'corepublishInitLoaded') { if (window.corepublishInitDone && window.corepublishInitDone == true) {  fn.call(); } else {  setTimeout(function() {  ctRunWhenCplibLoaded(fn); }, 100) }}}
+	function ctRunWhenCplibLoaded(fn) { if (cplibJsLoaded == true) { fn.call() } else  {  setTimeout(function() { ctRunWhenCplibLoaded(fn); }, 100) }}
+	ctAddEventListener('corepublishInitLoaded',function() { ctShowRetinaImages(); }); 
+
+	ctAddEventListener('sessionrefresh.loaded',function() { ctRunWhenCplibLoaded(function() { window.corepublish.sessionrefreshdialog = new SessionRefreshDialog(1440, 'service.php', (window.ctwebuserloggedin) );} ); }); 
+
+	ctRunWhenCplibLoaded(function() { ctOidcAuthenticate(); });
+
+	-->
+	
+    
+
+
+
+
+
+    
+    
+
+    
+
+    
+    
+                                                            
+                            
+                                                
+
+                            
+                                            
+            Studier
+        
+                    
+            Finn studier
+        
+                    
+        
+            Videreutdanning
+        
+                    
+        
+            Søknad og opptak
+        
+                    
+            Ledige studieplasser
+        
+            
+            
+            Studie- og emneplaner
+        
+                    
+        
+            Utveksling til utlandet
+        
+                    
+        
+            Praksis
+        
+                    
+        
+            Vi hjelper deg med studievalget
+        
+                    
+        
+            Studiestart
+        
+                    
+        
+            Utdanning med lønn
+        
+                    
+        
+            Studentliv
+        
+                    
+            Livet som student
+        
+                    
+        
+            Bolig og velferd
+        
+                    
+        
+            Muligheter under studiene
+        
+                    
+        
+            Tilrettelegging og studentstøtte
+        
+            
+            
+            Alumni
+        
+            
+            
+            Forskning
+        
+                    
+            Forskningsgrupper og senter
+        
+                    
+            Barnehage, skole og høyere utdanning
+        
+                    
+        
+            Friluftsliv, idrett og kroppsøving
+        
+                    
+        
+            Helse og velferd
+        
+                    
+        
+            Humanistiske fag
+        
+                    
+        
+            Kunstnerisk utviklingsarbeid
+        
+                    
+        
+            Maritim virksomhet
+        
+                    
+        
+            Natur, helse og miljø
+        
+                    
+        
+            Naturvitenskap
+        
+                    
+        
+            Synsvitenskap
+        
+                    
+        
+            Teknologi
+        
+                    
+        
+            Tradisjonskunst og praktisk- estetiske fag
+        
+                    
+        
+            Økonomi, ledelse og regulering
+        
+            
+            
+            Oppdragsforskning
+        
+                    
+        
+            Doktorgradsutdanning
+        
+                    
+            Våre ph.d.-utdanninger
+        
+                    
+        
+            Ph.d.-handbok
+        
+                    
+        
+            Stipendiatsiden
+        
+                    
+        
+            Disputaser
+        
+                    
+        
+            Doktorkreering
+        
+                    
+        
+            Industriforskerskolen i komplekse systemer
+        
+                    
+        
+            Nærings- og offentlig-ph.d.
+        
+            
+            
+            Strategiske forskningsområder
+        
+                    
+            Demokrati, samfunnsorganisering og styring
+        
+                    
+        
+            Energi, klima og miljø
+        
+                    
+        
+            Fremtidens helse og velferdstjenester
+        
+                    
+        
+            Oppvekst, tilhørighet og livsmestring
+        
+                    
+        
+            Regional verdiskapning
+        
+            
+            
+            Forskningsformidling
+        
+                    
+            Lørdagsuniversitetet
+        
+                    
+        
+            Forskingsdagane
+        
+                    
+        
+            Forskningsforedrag på bestilling
+        
+                    
+        
+            Forskningstimen
+        
+            
+            
+            Prosjekter
+        
+                    
+            Prosjekter finansiert av Forskningsrådet
+        
+                    
+        
+            Fremragende sentre
+        
+                    
+        
+            EU-finansierte forsknings- og innovasjonsprosjekter
+        
+                    
+        
+            Andre prosjekter
+        
+                    
+        
+            Internasjonale utdanningsprosjekter
+        
+            
+            
+            Ekspertliste
+        
+                    
+        
+            FoUI-eksperter
+        
+                    
+        
+            Publisert forskning
+        
+            
+            
+            Om USN
+        
+                    
+            Organisering
+        
+                    
+            Organisasjonskart
+        
+                    
+        
+            Leiinga
+        
+                    
+        
+            Styret
+        
+                    
+        
+            Råd, utval og ombod
+        
+                    
+        
+            Fakultet
+        
+            
+            
+            Strategi og visjon
+        
+                    
+        
+            Biblioteket
+        
+                    
+        
+            IT-tjenester
+        
+                    
+            Brukerveiledninger
+        
+            
+            
+            Kvalitetssystemet
+        
+                    
+            Si ifra
+        
+            
+            
+            Regelverk
+        
+                    
+        
+            Beredskap og krisehandsaming
+        
+                    
+        
+            Campusene
+        
+                    
+        
+            Ledige stillinger
+        
+                    
+            Jobbe hos USN?
+        
+            
+            
+            Kontakt oss
+        
+                    
+            Ansatte
+        
+                    
+        
+            Presse
+        
+                    
+            Toppledelse
+        
+                    
+        
+            Ekspertliste
+        
+            
+            
+            Samarbeid med oss
+        
+                    
+        
+            Campusene
+        
+            
+            
+                                        favorite_border0
+                                    
+                                Mine studier
+                                    
+            Du har ikke markert noen studier som dine favoritter. Du kan gjøre det ved å klikke på hjertesymbolet når du finner et studium som interesserer deg.
+         
+                                                                    
+                                        
+                                            search
+                                    
+                                                                    
+                                                            
+            
+                            
+                                                                        
+                                                                                    
+                                                en
+                                            
+                                                                            
+                                                                    
+                                                                                    no
+                                                                            
+                                                            
+                                                                                                                                                        For studenter east
+                                                                                                                            For ansatte east
+                                                    
+                                    
+            
+                                                                        
+                                
+                        
+                                    en
+                                
+                                                                                                                            favorite_border0
+                        Meny
+                        close
+
+    
+        
+        
+            
+    
+        
+            
+                
+                                            StudierStudie- og emneplaner                        
+            
+        
+                    
+                
+            
+                
+
+
+
+            
+    
+        
+            
+                
+                                    
+
+                
+                
+                                
+                                
+                    En studie- og emneplan beskriver innhold, oppbygging og organisering av et studieprogram. Til hver studieplan er det knyttet emneplaner som beskriver de enkelte emnene, her finner du også pensumlister. Dersom du ikke finner de planene du er ute etter kan du kontakte postmottak@usn.no så vil vi lete opp planene for deg. I vårt dokumentarkiv har vi lagret planer tilbake til 2003, dette inkluderer de tidligere høyskolene.
+
+
+                
+                
+                            
+        
+            
+    
+
+    /** nast hack */
+    var el = document.querySelector('.sitelocator .last span');
+    var link = document.createElement('a');
+    link.innerHTML = el.innerHTML;
+    link.href = "#";
+    el.parentElement.replaceChild(link, el);
+
+        
+    
+        
+        
+                    
+    
+        
+        
+                    
+    
+
+
+
+
+    
+
+            
+                                    
+                        Kontakt
+                                                    
+                                Sentralbord: 31 00 80 00E-post: postmottak@usn.no
+ 
+
+Fakturaadresse
+	Kontaktinformasjon
+	Pressekontakt
+	Finn en ansatt
+	Ledige stillinger
+	Registrering av tilleggsopplysninger
+
+                            
+                                            
+                                    
+                        Campuser
+                                                    
+                                        Bø
+                                    
+                                                                    
+                                        Hønefoss
+                                    
+                                                                    
+                                        Drammen
+                                    
+                                                                    
+                                        Kongsberg
+                                    
+                                                                    
+                                        Notodden
+                                    
+                                                                    
+                                        Porsgrunn
+                                    
+                                                                    
+                                        Rauland
+                                    
+                                                                    
+                                        Vestfold
+                                    
+                                                            
+                                    
+                        Utdanningsområder
+                                                    
+                                        Helse- og sosialfag
+                                    
+                                                                    
+                                        Historie og idéhistorie
+                                    
+                                                                    
+                                        Idrett, kroppsøving og friluftsliv
+                                    
+                                                                    
+                                        IT, informatikk og informasjonssystemer
+                                    
+                                                                    
+                                        Jus
+                                    
+                                                                    
+                                        Kunst, håndverk og musikk
+                                    
+                                                                    
+                                        Lærer og lektorutdanning
+                                    
+                                                                    
+                                        Maritime studier
+                                    
+                                                                    
+                                        Matematikk, naturfag og miljøfag
+                                    
+                                                                    
+                                        Medier, kommunikasjon og markedsføring
+                                    
+                                                                    
+                                        Optometri
+                                    
+                                                                    
+                                        Pedagogiske fag
+                                    
+                                                                    
+                                        Samfunnsvitenskap og kulturstudier
+                                    
+                                                                    
+                                        Språk og litteratur
+                                    
+                                                                    
+                                        Teknologi, ingeniørfag og lysdesign
+                                    
+                                                                    
+                                        Økonomi, ledelse og innovasjon
+                                    
+                                                            
+                            
+        
+        
+            
+                
+                                            Følg oss
+                        
+                                                                                                                            
+                                    
+                                                                                                                            
+                                    
+                                                                                                                            
+                                    
+                                                                                                                            
+                                    
+                                                                                                                            
+                                    
+                                                                                                                            
+                                    
+                                                    
+                                    
+                
+                                            
+                                                            Tilgjengelighetserklæring
+                                                            Personvernerklæring og cookies
+                                                    
+                                    
+                
+                    
+                        
+                
+                
+                    
+                                                    
+                                
+
+
+	.st0{fill:#FFFFFF;}
+
+                                                    
+                                
+
+
+	.st0{clip-path:url(#SVGID_00000111877096498377741950000014321534846099733686_);fill:#FFFFFF;}
+
+                                                    
+                                
+                                            
+                
+            
+        
+    
+        window.addEventListener('CookieInformationConsentGiven', function() {
+            if (CookieInformation.getConsentGivenFor('cookie_cat_statistic')) {
+                /*<![CDATA[*/
+                (function() {
+                    var sz = document.createElement('script'); sz.type = 'text/javascript'; sz.async = true;
+                    sz.src = '//siteimproveanalytics.com/js/siteanalyze_6000479.js';
+                    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(sz, s);
+                })();
+                /*]]>*/
+            }
+        }, false);
+    window.cpstatInfo = '{"l":"no_NO","i":1,"h":"www.usn.no","q":200,"n":"html","o":"430623-3213161"}';
+window.cpstatDomain = "www."+"usn."+"no/";
+ctAddEventListener('corepublishInitLoaded',function() { cpRegisterStatistics(); } );
+
+        (function(w,d,s,l,i){
+            w[l]=w[l]||[];
+            w[l].push({'gtm.start': new Date().getTime(),'event': 'gtm.js',});
+            var f=d.getElementsByTagName(s)[0], j=d.createElement(s), dl=l!='dataLayer'?'&l='+l:'';
+            j.async=true;
+            j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+            f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-5D76WX');
+    
+    function init_components(src){
+        function load_components(){
+            const script = document.createElement('script');
+            script.src= src;
+            script.async=false;
+            document.head.appendChild(script);
+        }
+        "WebComponents" in window && window.WebComponents.ready === true ?
+        load_components :
+        window.addEventListener('WebComponentsReady', load_components);
+    }
+init_components('/javascript/webcomponents/webcomponents.js?version=1.226.2')init_components('/javascript/webcomponents/webcomponents.module.js?version=1.226.2')
