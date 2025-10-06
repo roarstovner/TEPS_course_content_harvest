@@ -255,7 +255,7 @@ uis:
     - "style"
 
 usn:
-  selector_main: "main, .main-content, usn-main, usn-study, .layout-container, .page-content, #usn-app"
+  selector_main: "#usn-study, main, .main-content, #usn-main, .layout-container, .page-content, #usn-app"
   selector_exclude:
     - "header"
     - "footer"
@@ -269,10 +269,10 @@ usn:
     - ".skiplink"
     - "script"
     - "style"
-  fallback_main: "main, article, #content"
+  fallback_main: "body, main, article, #content"
 
 uit:
-  selector_main: "main, #block-uittheme-content, .region-content, article, .page-content, #uit-content"
+  selector_main: ".study-content, main, #block-uittheme-content, .region-content, article, .page-content, #uit-content, #content"
   selector_exclude:
     - "header"
     - "footer"
@@ -286,4 +286,5 @@ uit:
     - ".skiplink"
     - "script"
     - "style"
-  fallback_main: "main, article, #content"
+  fallback_main: "body, main, article, #content"
+
