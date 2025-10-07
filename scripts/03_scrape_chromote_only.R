@@ -49,42 +49,35 @@ cat("Institutions to scrape: ", paste(inst_all, collapse = ", "), "\n", sep="")
 # -------------------------------------------------------------------
 # Helper: render full JS page using Chromote
 # -------------------------------------------------------------------
-render_page_chromote <- function(url, wait_selector = "body", wait_time = 8, inst = NULL) {
-  if (DRYRUN) return("")
-  
-  # --- USN-specific override ---
-  if (!is.null(inst) && tolower(inst) == "usn") {
-    wait_selector <- "usn-study"
-    wait_time <- 15  # give the heavy <usn-study> component time to render
-  }
-  
+render_page_chromote <- function(url, wait_selector = "usn-study", wait_time = 12) {
+  message("[Chromote] Navigating: ", url)
   b <- chromote::ChromoteSession$new()
-  on.exit(try(b$close(), silent = TRUE), add = TRUE)
-  
   b$Page$navigate(url)
   
-  # Wait for selector OR timeout
-  b$Runtime$evaluate(sprintf("
-    new Promise(resolve => {
-      const start = Date.now();
-      const check = () => {
-        const ready = document.readyState === 'complete';
-        const hasEl = document.querySelector('%s');
-        const waited = (Date.now() - start) / 1000;
-        if (ready && hasEl) resolve(true);
-        else if (waited > %d) resolve(false);
-        else setTimeout(check, 300);
-      };
-      check();
-    });
-  ", wait_selector, wait_time))
+  # Wait for <usn-study> to exist (max wait_time sec)
+  for (i in seq_len(wait_time)) {
+    has_study <- b$Runtime$evaluate(
+      "!!document.querySelector('usn-study')"
+    )$result$value
+    if (isTRUE(has_study)) break
+    Sys.sleep(1)
+  }
   
-  Sys.sleep(wait_time)
-  html <- b$DOM$getDocument()
-  src  <- b$DOM$getOuterHTML(nodeId = html$root$nodeId)[["outerHTML"]]
-  Encoding(src) <- "UTF-8"
-  enc2utf8(src)
+  # Try to read shadowRoot if available
+  html_usn <- b$Runtime$evaluate(
+    "document.querySelector('usn-study')?.shadowRoot?.innerHTML || ''"
+  )$result$value
+  
+  # Fallback to normal body if empty
+  if (is.null(html_usn) || nchar(html_usn) < 500) {
+    message("[Fallback] Using <body> instead of shadowRoot")
+    html_usn <- b$Runtime$evaluate("document.body.outerHTML")$result$value
+  }
+  
+  b$close()
+  enc2utf8(html_usn)
 }
+
 
 # -------------------------------------------------------------------
 # Scrape one institution (with progress, ETA & CSV log)

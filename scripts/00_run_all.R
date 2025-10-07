@@ -4,6 +4,8 @@
 # rm(list = ls(all.names = TRUE))
 
 options(stringsAsFactors = FALSE, warn = 1)
+options(show.error.messages = FALSE)
+
 
 # Suppress "closing unused connection" warnings completely
 suppressWarnings({
@@ -175,6 +177,9 @@ MAX_PAGES_INST <- as.integer(get_env_or_default("TEPS_MAX_PAGES_PER_INST", as.ch
 TEPS_RAW           <- as_bool(get_env_or_default("TEPS_RAW", if (DEFAULT_RAW_SCRAPE) "TRUE" else "FALSE"))
 TEPS_CHROMOTE_ONLY <- as_bool(get_env_or_default("TEPS_CHROMOTE_ONLY", if (DEFAULT_CHROMOTE_ONLY) "TRUE" else "FALSE"))
 
+RUN_ARBEIDSKRAV  <- as_bool(get_env_or_default("TEPS_RUN_ARBEIDSKRAV", "TRUE"))
+RUN_QA_CHECK     <- as_bool(get_env_or_default("TEPS_RUN_QA_CHECK", "TRUE"))
+
 
 # ============================================================
 # Echo config
@@ -264,9 +269,32 @@ if (RUN_PARSE_HTML) {
   cat("\nHTML parsing skipped (set TEPS_RUN_PARSE_HTML=1 to enable).\n")
 }
 
+# ============================================================
+# (06) Arbeidskrav extraction
+# ============================================================
+if (RUN_ARBEIDSKRAV) {
+  ok6 <- run_script("scripts/06_arbeidskrav_manually.R")
+} else {
+  ok6 <- TRUE
+  cat("\nArbeidskrav extraction skipped (set TEPS_RUN_ARBEIDSKRAV=1 to enable).\n")
+}
+
+# ============================================================
+# (07) QA check
+# ============================================================
+if (RUN_QA_CHECK) {
+  ok7 <- run_script("scripts/05_qacheck.R")
+} else {
+  ok7 <- TRUE
+  cat("\nQA check skipped (set TEPS_RUN_QA_CHECK=1 to enable).\n")
+}
 
 # ============================================================
 # Finish
 # ============================================================
 cat("\nAll done. Status: ",
-    if (ok1 && ok2 && ok3 && ok4 && ok5) "OK" else "with errors (see above).", "\n", sep="")
+    if (ok1 && ok2 && ok3 && ok4 && ok5 && ok6 && ok7)
+      "✅ OK"
+    else
+      "⚠️  Completed with warnings/errors (see above).",
+    "\n", sep = "")

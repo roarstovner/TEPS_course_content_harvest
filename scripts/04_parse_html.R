@@ -119,14 +119,33 @@ for (inst in inst_dirs) {
     
     # store row with FULL text
     write_idx <- write_idx + 1L
+    # Hent kurskode fra filnavn 
+    course_code <- sub("_.*$", "", basename(out_path))
+    
+    # fra course_urls_latest.csv hvis det finnes
+    url_file <- file.path(inst_root, "course_urls_latest.csv")
+    if (file.exists(url_file)) {
+      urls <- try(read.csv(url_file, header = TRUE), silent = TRUE)
+      if (!inherits(urls, "try-error") && "course_code" %in% names(urls) && "url" %in% names(urls)) {
+        url_match <- urls$url[match(course_code, urls$course_code)]
+      } else {
+        url_match <- NA
+      }
+    } else {
+      url_match <- NA
+    }
+    
+    # Legg til rad i riktig format
     inst_rows[[write_idx]] <- data.frame(
-      institution = inst,
-      file        = basename(out_path),
-      text        = txt,
-      nchar       = nchar(txt),
-      clean_path  = out_path,
+      institution      = inst,
+      course_code      = course_code,
+      url              = url_match,
+      fulltekst_renset = txt,
+      arbeidskrav      = NA,          # placeholder, kan fylles i senere
+      status_code      = NA,          # fra scraping 
       stringsAsFactors = FALSE
     )
+    
     
     # compact progress: dot per 10 files
     if (i %% 10L == 0L) { cat("."); flush.console() }
@@ -163,3 +182,4 @@ if (length(agg_rows)) {
 } else {
   cat("\n=== ⚠️ Done. Nothing aggregated. ===\n")
 }
+
