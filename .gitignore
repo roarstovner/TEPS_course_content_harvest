@@ -36,3 +36,10 @@ data/output/*/candidates_*.txt
 !data/output/*/candidates_latest.csv
 !data/output/*/candidates_latest.txt
 
+# Ignore heavy raw folders
+data/output/*/html_raw/
+data/output/*/txt_raw/
+
+# Keep cleaned text
+!data/output/*/txt_clean/
+
