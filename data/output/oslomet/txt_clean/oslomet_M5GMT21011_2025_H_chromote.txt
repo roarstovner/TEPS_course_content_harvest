@@ -1,0 +1,61 @@
+## Programplaner og emneplaner - Student
+## EPN-V2
+##  M5GMT2101 Matematikk, emne 4 Emneplan
+##  Innledning
+Fagplanen tilhørende dette emnet er lagt på emne M5GMT1100 Matematikk, emne 1.
+Sentralt i emnet er arbeid med ulike sider av geometri og måling. I den sammenheng arbeides det også med utvikling av matematisk språk og tenkning med vekt på bevis og matematisk teoribygging. I dette emnet fordyper studenten seg i noen av de matematikkdidaktiske og matematikkfaglige temaene fra matematikk 1. Blikket er mer rettet mot forskning enn i matematikk 1. En vesentlig del av dette emnet er å gjennomføre et utviklingsarbeid.
+##  Forkunnskapskrav
+Ingen.
+##  Læringsutbytte
+Etter fullført emne har studenten følgende læringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+Kunnskap
+Studenten
+- har dybdekunnskap om matematikken elevene arbeider med på trinn 5-10
+- har kunnskap om matematiske læring- og utviklingsprosesser og hvordan legge til rette for at elever kan ta del i slike prosesser
+- har kunnskap om interaksjonsmønster, kommunikasjon og språkets rolle for læring av matematikk og ulike syn på læring av matematikk
+- har kunnskap om ulike representasjoner og betydningen bruk av og overganger mellom representasjoner kan ha for elevers læring
+- har kunnskap om bruk av ulike læremidler, både digitale og andre, og muligheter og begrensninger ved slike læremidler
+- har kunnskap om matematikkfagets innhold på de ulike trinnene i grunnskolen og i videregående skole og om overgangene fra barnetrinn til ungdomstrinn og fra ungdomstrinn til videregående skole
+- har kunnskap knyttet til ulike matematiske bevis- og argumentasjonsformer og om matematisk teoribygging
+- har kunnskap om ulike teorier for læring, og om sammenheng mellom læringssyn og fag- og kunnskapssyn
+- har kunnskap om metoder innenfor matematikkdidaktisk forsking
+Ferdigheter
+Studenten
+- kan planlegge, gjennomføre og vurdere matematikkundervisning for alle elever på trinn 5-10, med fokus på variasjon og elevaktivitet
+- kan bruke arbeidsmåter som fremmer elevenes undring, kreativitet og evne til å arbeide systematisk med utforskende aktiviteter, resonnering og argumentasjon
+- kan kommunisere med elever, lytte til, vurdere, gjøre bruk av elevers innspill og stimulere elevenes matematiske tenking
+- kan analysere og vurdere elevers tenkemåter, argumentasjon og løsningsmetoder ut fra ulike perspektiv på kunnskap og læring
+- kan formidle spesialkunnskap innen et utvalgt matematikkdidaktisk og/eller matematikkfaglig emne relevant for trinn 5-10
+- kan gjennomføre enkle matematikkdidaktiske undersøkelser
+- kan bruke varierte undervisningsformer forankret i teori og egen praksis
+- kan arbeide teoriforankret og systematisk med å forebygge og oppdage matematikkvansker og tilrettelegge for mestring hos elever med ulike typer matematikkvansker
+Generell kompetanse
+Studenten
+- kan initiere og lede utviklingsarbeid knyttet til matematikkundervisning
+- kan delta og bidra i FoU-prosjekt og andre samarbeidsprosjekt med tanke på å forbedre matematikkfagets undervisningspraksis
+##  Innhold
+- Geometri og måling.
+- Utvalgt tema til fordypning.
+- Bevis og teoribygging i matematikk.
+- Matematikkdidaktisk forskning og forskningsmetode, herunder Lesegruppe 2.
+- Arbeid med matematikkvansker
+##  Arbeids- og undervisningsformer
+Se fagplanen.
+##  Arbeidskrav og obligatoriske aktiviteter
+Retten til å avlegge eksamen forutsetter godkjente arbeidskrav og deltakelse i bestemte faglige aktiviteter.
+Arbeidskravene er ment å bidra til å kvalitetssikre at studentene har kunnskap, ferdigheter og generell kompetanse knyttet til emne 4. Følgende arbeidskrav må være godkjent før avsluttende eksamen kan avlegges:
+- En oppgaveinnlevering knyttet til matematiske og fagdidaktiske emner. Dette arbeide skal være en estetisk oppgave. Gruppeinnlevering. Omfang 2000 ord +/- ti prosent.
+- Krav om deltakelse i undervisningen (som beskrevet under «Arbeidskrav» i den innledende delen av fagplanen).
+##  Vurdering og eksamen
+Eksamen består av to komponenter:
+- Komponent 1: Skriftlig utviklingsarbeid i gruppe. Normalt fire studenter per gruppe. Omfang: mellom 7000 og 10000 ord.
+- Komponent 2: Individuell muntlig eksamen som tar utgangspunkt i det skriftlige utviklingsarbeidet, men som også vil omfatte andre spørsmål knyttet til pensum for emne 4. Omfang: ca. 30 minutter.
+Begge komponenter må være gjennomført for at vurdering skal kunne foretas. De to eksamenskomponentene vurderes samlet. Det gis én individuell karakter på eksamen.
+Ny/utsatt eksamen
+Ny/utsatt eksamen gjennomføres som ved ordinær eksamen. Ved ikke bestått karakter i emnet får studenten en begrunnelse for om utviklingsarbeidet må omarbeides før ny muntlig eksamen. Begge komponenter vurderes samlet ved ny eksamen. Utviklingsarbeidet fra ordinær eksamen kan eventuelt omarbeides én gang. Ved ytterligere forsøk må nytt utviklingsarbeid skrives. Da inngår studenten i en ny gruppe, hvis mulig. Ellers blir det tilrettelagt for et individuelt utviklingsarbeid med mindre omfang. I begge tilfeller skal den muntlige eksamenen gjennomføres på nytt på samme måte som ved ordinær eksamen.
+##  Hjelpemidler ved eksamen
+Alle hjelpemidler er tillatt på den skriftlige besvarelsen så lenge regler for kildehenvisning følges.
+##  Vurderingsuttrykk
+Det benyttes en karakterskala fra A til E for bestått og F for ikke bestått.
+##  Sensorordning
+Begge eksamenskomponentene vurderes av en intern og en ekstern sensor.

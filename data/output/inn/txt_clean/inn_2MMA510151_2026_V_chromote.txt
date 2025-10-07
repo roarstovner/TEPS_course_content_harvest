@@ -1,0 +1,64 @@
+## Statusmelding
+- 2025 Høst
+- 2024 Høst
+- 2023 Høst
+- Emnekode
+2MMA5101-5
+Studiepoeng
+15
+Undervisningssemestre
+2025 Høst
+Undervisningsspråk
+Norsk
+Undervisningssted
+Hamar
+Forkunnskapskrav
+Anbefalte forkunnskaper: 2MMA5101-4 Matematikk 2, emne 4
+- Emnekode
+2MMA5101-5
+- Studiepoeng
+15
+- Undervisningssemestre
+2025 Høst
+- Undervisningsspråk
+Norsk
+- Undervisningssted
+Hamar
+- Forkunnskapskrav
+Anbefalte forkunnskaper: 2MMA5101-4 Matematikk 2, emne 4
+- Matriser, determinanter, lineær uavhengighet, basis, rang, lineær transformasjon, egenverdi, diagonalisering
+- Matriseregningens anvendelser innen blant annet biologi
+- Lineærtransformasjoner og deres geometriske egenskaper i planet, tilhørende matriser i planet og rommet
+- Lineære ligningssystemer og deres kobling til matriser
+- Eksempler og definisjoners betydning for begrepsdannelse og bevis i matematikken
+- Sammenhengen mellom matriser som avbildninger og deres kobling til skolematematikken
+- Algebraisk argumentasjon og bevis
+- Utvikling av algebraisk tenkning
+## Læringsutbytte
+Ved bestått emne har studenten oppnådd følgende læringsutbytte:
+Studenten
+- har inngående kunnskap om matriser
+- har inngående kunnskap om forbindelser og analogier mellom emner fra skolematematikken og lineær algebra
+- har kunnskap om betydningen av eksempler og definisjoner i dannelsen av matematiske begreper og for matematisk begrunnelse og bevisføring
+- har inngående kunnskap om sammenhengene mellom generalisering, argumentasjon og algebra
+- har inngående kunnskap om matematikkdidaktisk forskning som er relevant for undervisning innenfor de matematiske kunnskapsområdene tall og tallforståelse, algebra og geometri på trinn 5-10 i grunnskolen
+Studenten
+- kan bruke de vanligste metodene i lineær algebra og begrunne hvorfor de virker
+- kan bruke eksempler, begreper og definisjoner i matematisk begrunnelse
+- kan bruke egenverdier på diskrete lineære dynamiske systemer, blant annet anvendt på populasjonsdynamikk
+- kan bruke matriser til å representere avbildninger i planet, i forbindelse med løsning av ligningssystemer og til å finne formler for tallfølger
+- kan anvende digitale verktøy til å utforske forbindelser og analogier mellom emner fra skolematematikken og lineær algebra
+- kan bruke algebra til argumentasjon, utforskning og generalisering
+Studenten
+- kan reflektere over hvordan man kan hjelpe elever til å verdsette eksemplers, begrepers og definisjoners plass i matematikken og dermed gi dem større innsikt i matematikkens egenart
+- kan reflektere over hvordan man kan motivere elever ved å se anvendelser av matematikk i yrkeslivet og innen andre fag
+- har inngående forståelse av algebraens posisjon og rolle i skole- og vitenskapsfaget matematikk
+Undervisningen kan bestå av: individuelt arbeid, veiledning, arbeid i grupper, forelesninger, klasseundervisning, seminarer og omvendt undervisning.
+Ved oppstart av hvert semester blir det delt ut en undervisningsplan med beskrivelse av undervisningen det aktuelle semesteret. Det vil i tillegg bli utarbeidet arbeidsprogrammer for spesifiserte perioder med detaljert oversikt over organisering, aktuelt lesestoff, øvingsoppgaver og innleveringsoppgaver.
+Et nettbasert studiestøttesystem benyttes i undervisningen. Et utvalg av digitale/tekniske undervisningsverktøy vil bli brukt i kurset.
+- Inntil tre innleveringsoppgaver individuelt og/eller i grupper
+- Deltakelse på seminarer, nettseminarer og nettstøtte som blir presisert i undervisningsplanen
+- 75% obligatorisk deltakelse i undervisning i henhold til undervisningsplanen. Studenten er selv ansvarlig for å bli registrert.
+Individuell muntlig eksamen.
+Prestasjonen vurderes med graderte bokstavkarakterer fra A-F, der E er laveste ståkarakter.
+## Pensum

@@ -1,0 +1,53 @@
+## Statusmelding
+- 2026 Vår
+- 2025 Vår
+- 2024 Vår
+- 2023 Vår
+- Emnekode
+2MMA5101-4
+Studiepoeng
+15
+Undervisningssemestre
+2026 Vår
+Undervisningsspråk
+Norsk
+Undervisningssted
+Hamar
+Forkunnskapskrav
+Emner 2MMA5101-1 Matematikk emne 1 og 2MMA5101-2 eller tilsvarende, må være bestått.
+- Emnekode
+2MMA5101-4
+- Studiepoeng
+15
+- Undervisningssemestre
+2026 Vår
+- Undervisningsspråk
+Norsk
+- Undervisningssted
+Hamar
+- Forkunnskapskrav
+Emner 2MMA5101-1 Matematikk emne 1 og 2MMA5101-2 eller tilsvarende, må være bestått.
+- Resonnering og argumentasjon
+- Modellering og anvendelser
+- Forskningsmetoder knyttet til læring og undervisning i matematikk
+- Bruk av forskning og undersøkelser som undervisningsverktøy
+- Fordypning i utvalgte matematikkdidaktiske temaer, deriblant tilpasset opplæring.
+- Dynamisk programvare og digitale verktøy i matematikkundervisningen
+- Programmering: Statistiske mål som gjennomsnitt og standardavvik. Simulere sannsynlighet
+## Læringsutbytte
+Ved bestått emne har studenten oppnådd følgende læringsutbytte:
+Studenten
+- har kunnskap om å arbeide med og undervise i ulike typer argumentasjonsformer og resonneringsformer innenfor det matematiske kunnskapsområdet statistikk
+- har kunnskap om statistikk og statistiske metoder og kan relatere denne kunnskapen til utviklingsarbeid ved skolen og det matematikkfaglige innholdet på trinn 5–10
+- har kunnskap om metoder som er relevante for matematikkdidaktisk forsking
+- har kunnskap om tekstprogrammering
+- har kunnskap om hvordan modellering kan gjennomføres i grunnskolen.
+Studenten
+- kan formidle spesialkunnskap innen et utvalgt matematikkdidaktisk tema relevant for trinn 5-10.
+- kan benytte forskningsmetoder til å gjennomføre enkle matematikkdidaktiske undersøkelser
+- kan planlegge variert undervisning med bakgrunn i matematikkdidaktisk teori
+- kan gjennomføre enkle matematikkdidaktiske undersøkelser og kritisk vurdere resultater av slike undersøkelser
+Studenten
+- kan lede utviklingsarbeid knyttet til matematikkundervisning
+- kan bidra i FoU-prosjekt og andre samarbeidsprosjekt med tanke på å forbedre matematikkfagets undervisningspraksis
+- kan anvende forskningsbasert litteratur knyttet til matematikkundervisning

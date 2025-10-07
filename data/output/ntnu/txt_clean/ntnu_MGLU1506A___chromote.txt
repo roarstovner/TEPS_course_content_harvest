@@ -1,0 +1,61 @@
+## Om emnet
+## Faglig innhold
+Naturfag 1 (5-10) emne 1 dekker sentrale områder av naturfaget for 5.-10. trinn og gir kunnskaper innenfor fysikk, kjemi, geologi, biologi, teknologi, matematikk og naturfagdidaktikk. Emnet gir grunnleggende kunnskap i mekanikk, krefter, partikler, periodesystemet, solsystemet, mineraler og bergarter, samt økologi. Emnet gir også innsikt i didaktiske tema som bruk av modeller, praktisk og variert undervisning, hverdagsforestillinger og vurdering i naturfag. Emnet dekker ikke hele den faglige bredden i grunnskolefaget for 5.-10. trinn. Bredden kan oppnås gjennom å ta Naturfag 1 emne 2 og Naturfag 2. Denne emnebeskrivelsen for Naturfag 1 for 5.-10. bygger på Nasjonale retningslinjer for grunnskolelærerutdanningen 5.-10. trinn fra 2024.
+## Læringsutbytte
+KUNNSKAP
+Studenten
+- har kunnskap om praktisk arbeid og variert undervisning i naturfag
+- har kunnskap om bruk av modeller i naturfagundervisning
+- har grunnleggende kunnskap om kinematikk, krefter og vekselvirkninger mellom legemer, inkludert elektrisk ladde partikler, og kan bruke denne kunnskapen som grunnlag for elevers læring av mekanikk og elektrisitet
+- har kunnskap om sentrale begreper som energibevaring, -overføring og -kvalitet, samt ulike energiformer og kan knytte disse til ulike områder av naturfaget
+- har grunnleggende kunnskap om solsystemet
+- har kunnskap om bølger, lyd og lys
+- har kunnskap om bruk av partikkelmodellen for å konkretisere oppbygging av ulike stoffer og for å forklare fysiske endringer og fenomener i dagliglivet og i naturen
+- har forståelse av periodesystemet og hvordan det har betydning for oppbygning av kjemiske stoffer, bindinger mellom atomer og reaksjoner
+- har grunnleggende kunnskap om vanlige norske mineraler og bergarter
+- har kunnskap om økologi og økologiske prosesser
+FERDIGHETER
+Studenten
+- kan planlegge, gjennomføre og reflektere over egen undervisning på mellom- og ungdomstrinnet forankret i forskning, teori og praksis og med spesielt fokus på utforskende arbeidsmåter og integrasjon av alle grunnleggende ferdigheter i fysikk, kjemi, og teknologi
+- kan gjennomføre aktiviteter og målinger, i fysikk og kjemi, med bruk av relevant utstyr, vurdere nødvendige sikkerhetstiltak og gjøre beregninger med og uten digitale verktøy
+- kan bruke formativ vurdering i fysikk og kjemi som grunnlag for tilrettelegging av undervisning og tilpasset opplæring på mellom- og ungdomstrinnet
+- kan gjennomføre undervisning i teknologi og design med fokus på prosessen ved å designe og lage teknologiske produkter og knytte teknologi til relevante tema i naturfag
+GENERELL KOMPETANSE
+Studenten
+- har innsikt i naturvitenskapens metoder og tenkemåter og naturfagets betydning som allmenndannende fag
+- kan analysere og bruke gjeldende læreplan for mellom- og ungdomstrinnet som utgangspunkt for naturfagundervisning i tema knyttet til kjemi, fysikk, og teknologi
+## Læringsformer og aktiviteter
+Det vil bli brukt varierte arbeidsformer tilpasset de ulike deler av faget. Erfaringsbasert og utforskende læring med utgangspunkt i studentaktive læringselementer som feltarbeid (observasjon, undersøkelser og kartlegging av naturen), laboratoriearbeid (forsøk og eksperimenter) og argumentering står sentralt. Introduksjon til, og enkel bruk av IKT-verktøy, faglig og didaktisk, til animasjoner, simuleringer og modelleringer innenfor naturfaglige tema inngår i oppbygningen av studentenes digitale kompetanse. Forelesningsformen vil, sammen med samtaleundervisning i klasse, bli brukt til å gi oversikt, avklare faglige problem, presentere sentral kunnskap og arbeide med eksempler og oppgaver. Studentaktive arbeidsformer med selvstudium, individuelt arbeid og arbeid i grupper med oppgaver og prosjekter er viktige deler av studiet. Litteratur, undervisningsmateriell og andre læringskilder vil gis både på norsk og engelsk. Det forventes at studentene behersker begge språk på et nivå som muliggjør bruk av disse læringskilder. Videre forventes det at studentene bruker universitetets bibliotek og andre kilder til informasjon og læring aktivt og forbereder seg til planlagt undervisning. Studentenes arbeid med emnet vil bli vurdert med både formative og summative vurderingsformer. Studentene vil i løpet av studiet bli gitt et antall obligatoriske arbeidskrav, skriftlige og muntlige oppgaver og praktisk arbeid. Detaljene i forbindelse med organiseringen av undervisningen finnes i semesterplanen.
+## Obligatoriske aktiviteter
+- Obligatorisk aktivitet i henhold til emnebeskrivelsen
+- EPN-SK-OBLIG1
+- Obligatorisk aktivitet i henhold til embeskrivelsen
+## Mer om vurdering
+Obligatoriske arbeidskrav til skriftlig eksamen i fysikk:
+1. Ferdighetstrening med rapportering. Krav om 75 % tilstedeværelse på laboratoriearbeid. Det er obligatorisk å være til stede på laboratorieaktivitetene på tidspunktet disse gjennomføres, jf. semesterplanen i emnet.
+2. Innleveringsoppgaver/tester som dekker utvalgte læringsutbytteformuleringer og/eller rapporter (muntlig, digital eller skriftlig) fra laboratoriearbeid. Det gis ikke kompensatorisk arbeid for manglende obligatorisk tilstedeværelse.­ ­­Obligatoriske arbeidskrav vurderes som godkjent/ikke godkjent.
+Obligatoriske arbeidskrav til skriftlig eksamen i kjemi:
+1. Ferdighetstrening med rapportering. Krav om 75 % tilstedeværelse på laboratoriearbeid. Det er obligatorisk å være til stede på laboratorieaktivitetene på tidspunktet disse gjennomføres, jf. semesterplanen i emnet.
+2. Innleveringsoppgaver/tester som dekker utvalgte læringsutbytteformuleringer og/eller rapporter (muntlig, digital eller skriftlig) fra laboratoriearbeid. Det gis ikke kompensatorisk arbeid for manglende obligatorisk tilstedeværelse. Obligatoriske arbeidskrav vurderes som godkjent/ikke godkjent.
+Studentene kan bli vurdert, pålagt arbeidskrav og oppmøte knyttet til fellesfaglige tema.
+Vurderingsordning med 3 delvurderinger:
+- Skriftlig eksamen, Individuell, 4 Timer, Karakter A-F, Teller 51%. Kommentar til vurdering: Eksamen i fysikk. Tillatte hjelpemidler: Fagfornyelsen (2020), læreplanen i naturfag hentet fra nettsidene til Utdanningsdirektoratet. Tabeller i fysikk uten notater, tusjmarkeringer tillatt. Bestemt, enkel kalkulator jf. NTNU reglement.
+- Skriftlig eksamen, Individuell, 4 timer, Karakter A-F, Teller 49%. Kommentar til vurdering: Eksamen i kjemi. Tillatte hjelpemidler: Fagfornyelsen (2020), læreplanen i naturfag hentet fra nettsidene til Utdanningsdirektoratet. Tabeller i kjemi uten notater, tusjmarkeringer tillatt. Bestemt, enkel kalkulator jf. NTNU reglement.
+- Utøvende aktivitet: Ekskursjon i biologi (Økosystem 1), Gruppe, Bestått/ikke-bestått. Praktisering av feltarbeidsmetoder, registrering av arter og naturtyper. Tillatte hjelpemidler: Alle hjelpemidler tillatt
+Delvurderinger kan tas opp eller forbedres enkeltvis. Alle delvurderinger må være bestått for å få karakter i emnet. Det er anledning til å klage på delvurderinger i emnet (gjelder ikke muntlig og praktisk delvurdering).
+## Spesielle vilkår
+Krever opptak til studieprogram:
+Grunnskolelærerutdanning 5.-10. trinn (MGLU5-10) - enkelte retninger
+## Anbefalte forkunnskaper
+Det er en fordel å ha bakgrunn fra ett eller flere av fagene fysikk, kjemi, biologi og matematikk (programfag) fra videregående skole.
+## Kursmateriell
+Endelig pensumliste legges ut på Blackboard før studiestart.
+## Studiepoengreduksjon
+## Andre sider om emnet
+-  Blackboard - VÅR-2019
+## Fagområder
+- Biologi
+- Fysikk
+- Kjemi
+- Lærer- og lektorutdanning
+- Naturfag

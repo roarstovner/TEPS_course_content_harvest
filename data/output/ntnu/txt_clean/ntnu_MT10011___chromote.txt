@@ -1,0 +1,71 @@
+## Om emnet
+## Faglig innhold
+Grunnleggende kjemiske begreper: stoffmengde, konsentrasjon og støkiometri. Regler for navnsetting av kjemiske forbindelser. Fundamentale resultater fra kvantemekanikken: atomorbitaler og prinsippet for oppbygningen av det periodiske system. Gassers egenskaper: trykkenheter, damptrykk av væsker, ideell gasslov, Daltons lov. Kjemisk likevekt: massevirkningsloven, syre- baselikevekter, bufferløsninger, løselighet og felling, kompleksdannelse. Grunnleggende termokjemi og kjemisk termodynamikk: arbeid og varme, indre energi, entalpi, entropi og Gibbs' energi. Elektrokjemi: Galvaniske celler, standardpotensiale, Nernst ligning og sammenhengen mellom elektrokjemi og termokjemi.
+Emnet belyser generelle aspekter ved kjemifaget, og danner grunnlag for videre fordypning. Praktiske labferdigheter gis gjennom laboratoriekurset. Obligatorisk sikkerhetskurs, som inkluderer brannslukking og førstehjelp, kreves bestått for å få begynne på laboratoriekurset.
+Del 1:
+- Gasser (ideell gasslov og Daltons lov)
+- Molbegrepet
+- Balansere reaksjonsligninger
+- Periodesystemet og periodiske trender
+- Kjemiske forbindelser
+- Navnsetting
+- Atomets oppbygging
+- Bindinger (både intra- og intermolekylære), inkludert elektronegativitet, Lewis-strukturer, polaritet og VSEPR-modellen
+- Organisk kjemi
+- Miljøkjemi
+Del 2:
+- Kjemisk likevekt
+Massevirkningsloven og likevektskonstanten
+Syre og base (inkludert pH og bufferløsninger) som et spesialtilfelle av kjemisk likevekt
+Komplekslikevekter.
+Løselighet.
+- Massevirkningsloven og likevektskonstanten
+- Syre og base (inkludert pH og bufferløsninger) som et spesialtilfelle av kjemisk likevekt
+- Komplekslikevekter.
+- Løselighet.
+- Termokjemi
+Varmekapasitet og kalorimetri
+Spontanitet, entalpi, entropi og Gibbs' energi
+Clausius-Clapeyron og van't Hoff relasjonene
+- Varmekapasitet og kalorimetri
+- Spontanitet, entalpi, entropi og Gibbs' energi
+- Clausius-Clapeyron og van't Hoff relasjonene
+- Elektrokjemi
+Galvaniske celler
+Nernst ligning
+- Galvaniske celler
+- Nernst ligning
+## Læringsutbytte
+Etter å ha gjennomført emnet, er kandidaten i stand til å:
+- Bruke regler for kjemisk nomenklatur til å sette navn på kjemiske forbindelser.
+- Balansere kjemiske reaksjonsligninger og utføre støkiometriske beregninger.
+- Forklare hva kjemisk likevekt er, og bruke massevirkningsloven til å beregne likevektskonstanter og sammensetning ved likevekt for ulike reaksjonstyper, inkludert beregninger av løselighet, løselighetsprodukt og pH-beregninger.
+- Beregne endring i entalpi, entropi og Gibbs' energi for en kjemisk reaksjon, og sette dette i sammenheng med kjemisk likevekt og spontanitet.
+- Forstå prinsippet for galvaniske celler, konsentrasjonsceller og elektrolyseceller og sammenhengen mellom likevektskonstanten, endring i Gibbs' energi og cellepotensialet for en elektrokjemisk celle. Se sammenhengen mellom elektrokjemi, termodynamikk og arbeid.
+- Kjenne til prinsippene for grønn kjemi og anvende disse til å belyse kjemiens rolle i et bærekraftig samfunn.
+- Utføre enkle kjemiske analyser i et laboratorium.
+- Vurdere sikkerhet og planlegge og gjennomføre sikre eksperimenter i laboratoriet
+## Læringsformer og aktiviteter
+Forelesninger (48 timer) og øvinger (40 timer). Laboratoriekurs (30 timer). 92 timer selvstudium.
+Obligatoriske aktiviteter (skriftlige øvinger og laboratoriearbeid) må være godkjent for å gå opp til avsluttende skriftlig eksamen. Det blir gitt informasjon om krav til antall godkjente øvinger på starten av semesteret. Eksamen kan inkludere problemstillinger og beregninger fra laboratoriedelen av emnet.
+## Obligatoriske aktiviteter
+- Øving
+- Laboratoriekurs
+## Mer om vurdering
+Eksamen teller 100% på karakteren i faget.
+Obligatoriske aktiviteter (skriftlige øvinger og laboratoriearbeid) må være godkjent for å gå opp til avsluttende skriftlig eksamen. Det blir gitt informasjon om krav til antall godkjente øvinger på starten av semesteret. Eksamen kan inkludere problemstillinger og beregninger fra laboratoriedelen av emnet.
+## Spesielle vilkår
+Krever opptak til studieprogram:
+Lektorutdanning i geografi for trinn 8 − 13 (MLGEOG)
+Lektorutdanning i realfag for trinn 8 – 13 (MLREAL)
+Nanoteknologi (MTNANO)
+## Anbefalte forkunnskaper
+Første del av emnet tilsvarer en repetisjon av grunnleggende kjemiske begreper fra naturfag i ungdomsskole og videregående skole, samt Fysikk 1 fra videregående skole. Resten av emnet bygger på dette. NTNUs forkurs i kjemi anbefales sterkt for kandidater som ikke har bakgrunn tilsvarende Kjemi 1 fra videregående skole.
+## Forkunnskapskrav
+Emnet krever opptak til MLREAL, MLGEOG eller MTNANO og underliggende krav der.
+## Kursmateriell
+Oppgis ved semesterstart.
+Læreboka må leses.
+## Studiepoengreduksjon
+## Fagområder
+- Teknologiske fag

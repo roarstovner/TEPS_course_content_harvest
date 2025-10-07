@@ -1,0 +1,69 @@
+- 2025 Høst
+- 2024 Høst
+- 2023 Høst
+- Emnekode
+2MMA5101-3
+Studiepoeng
+15
+Undervisningssemestre
+2025 Høst
+Undervisningsspråk
+Norsk
+Undervisningssted
+Hamar
+Forkunnskapskrav
+Anbefalte forkunnskaper: 2MMA5101-1 Matematikk emne 1 og 2MMA5101-2 Matematikk emne 2
+- Emnekode
+2MMA5101-3
+- Studiepoeng
+15
+- Undervisningssemestre
+2025 Høst
+- Undervisningsspråk
+Norsk
+- Undervisningssted
+Hamar
+- Forkunnskapskrav
+Anbefalte forkunnskaper: 2MMA5101-1 Matematikk emne 1 og 2MMA5101-2 Matematikk emne 2
+- Geometri
+Aksiomatisk oppbygning av euklidsk geometri
+Trigonometri med utledning av sinus- og cosinussetningen
+Vektorer og vektorregning, metriske egenskaper til vektorer i planet, skalarproduktet og projeksjoner
+Avbildninger i planet og kongruensavbildninger
+Kjenne til grunnskolegeometriens begrensninger og behovet for trigonometri
+- Aksiomatisk oppbygning av euklidsk geometri
+- Trigonometri med utledning av sinus- og cosinussetningen
+- Vektorer og vektorregning, metriske egenskaper til vektorer i planet, skalarproduktet og projeksjoner
+- Avbildninger i planet og kongruensavbildninger
+- Kjenne til grunnskolegeometriens begrensninger og behovet for trigonometri
+- Matematisk analyse
+Logaritmefunksjoner og trigonometriske funksjoner
+Grenseverdi og kontinuitet
+Derivasjon og anvendelser
+Funksjonsdrøfting
+Integrasjon, integrasjonsteknikker og anvendelser
+Differensiallikninger
+- Logaritmefunksjoner og trigonometriske funksjoner
+- Grenseverdi og kontinuitet
+- Derivasjon og anvendelser
+- Funksjonsdrøfting
+- Integrasjon, integrasjonsteknikker og anvendelser
+- Differensiallikninger
+- Matematisk teoridannelse
+- Bevis og argumentasjon
+- Eksperimenterende og utforskende arbeidsmåter
+- Vurdering for læring og tilpasset undervisning
+- Programmering: sentrale begreper, programmering med utvalgte verktøy
+## Læringsutbytte
+Ved bestått emne har studenten oppnådd følgende læringsutbytte:
+Studenten
+- har kunnskap knyttet til ulike matematiske bevis- og argumentasjonsformer og om matematisk teoribygging
+- har kunnskap om matematisk analyse og kan relatere denne kunnskapen til det matematikkfaglige innholdet på trinn 5–10
+- har kunnskap om grunnlaget og oppbygningen av euklidsk geometri og videre linjer fra geometrien i grunnskolen, og kan relatere denne kunnskapen til det matematikkfaglige innholdet på trinn 5–10
+- har kunnskap om grunnleggende begreper i programmering
+Studenten
+- kan formidle spesialkunnskap innen geometri og matematisk analyse og knytte dette til relevant fagdidaktisk arbeid for trinn 5–10
+- kan vurdere elevenes læring i faget som grunnlag for tilrettelegging av undervisning og tilpasset opplæring
+- kan bruke varierte undervisningsformer forankret i teori og egen praksis
+Studenten
+- kan bidra i utviklingsarbeid knyttet til matematikkundervisning

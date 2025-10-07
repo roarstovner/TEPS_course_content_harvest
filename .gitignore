@@ -43,3 +43,6 @@ data/output/*/txt_raw/
 # Keep cleaned text
 !data/output/*/txt_clean/
 
+# Ignore old archived data
+data/archive/
+

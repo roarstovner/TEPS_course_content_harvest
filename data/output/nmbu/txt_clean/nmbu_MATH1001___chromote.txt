@@ -1,0 +1,63 @@
+Studiepoeng:10
+Ansvarlig fakultet:Fakultet for realfag og teknologi
+Emneansvarlig:Ole Løseth Elvetun
+Campus / nettbasert:Undervises campus Ås
+Undervisningens språk:Norsk
+Frekvens:Årlig
+Forventet arbeidsmengde:Forelesninger 56 timer, regneverksted 56 timer og selvstudium 138 timer.
+Undervisnings- og vurderingsperiode:Emnet starter i høstparallellen. Emnet har undervisning/vurdering i høstparallellen.
+## Om dette emnet
+Emnet tar for seg et utvalg matematiske metoder, (kontinuerlige) funksjoner i én eller to variable og vektorer i to eller tre dimensjoner som beskriver viktige fenomener innenfor naturvitenskap og økonomi.
+Bestemmelse av stigningstall og ekstremalpunkter beskrives ved hjelp av derivasjonsbegrepet. Optimering av funksjoner i én variabel.
+Bestemmelse av arealer og uendelig summering (rekker) knyttes til integrasjonsbegrepet.
+Eksempler på løsning av enkle ordinære differensiallikninger.
+## Dette lærer du
+Kunnskap
+Når emnet er gjennomført, skal studenten ha lært grunnleggende begreper, metoder og teknikker knyttet opp mot emnets innhold.
+Ferdigheter
+Studenten skal sitte igjen med regneferdigheter som, sammen med teorien, gjør at hen behersker standardmetoder for å studere et utvalg av funksjoner i en og to variabler, rekker, vektorer og enkle differensialligninger.
+Generell kompetanse
+Studenten skal kunne knytte teorien opp mot relevante praktiske problemer og kunne anvende den videre i studieforløpet.
+- Læringsaktiviteter
+I løpet av en uke får studentene gjennomgått det viktigste om hvert tema i emnet på to forelesninger.
+I tillegg gis det øvingsoppgaver med følgende siktemål: Innlæring av regneteknikk og metoder, gi matematisk forståelse av temaene og vise hvordan temaene er knyttet til praktiske anvendelser. Det tilbys regneverksted med øvingslærere flere ganger i løpet av uken for å få hjelp til oppgavene.
+I løpet av en uke får studentene gjennomgått det viktigste om hvert tema i emnet på to forelesninger.
+I tillegg gis det øvingsoppgaver med følgende siktemål: Innlæring av regneteknikk og metoder, gi matematisk forståelse av temaene og vise hvordan temaene er knyttet til praktiske anvendelser. Det tilbys regneverksted med øvingslærere flere ganger i løpet av uken for å få hjelp til oppgavene.
+- Læringsstøtte
+Faglig veiledning og støtte gis i forbindelse med forelesninger og regneverksted. Nyttig informasjon legges også ut på kurshjemmesidene i Canvas.
+I tillegg til regneverkstedet er det mulig for studentene å søke faglig hjelp på fakultetets (RealTek) orakeltjeneste i undervisningsperioden.
+Faglig veiledning og støtte gis i forbindelse med forelesninger og regneverksted. Nyttig informasjon legges også ut på kurshjemmesidene i Canvas.
+I tillegg til regneverkstedet er det mulig for studentene å søke faglig hjelp på fakultetets (RealTek) orakeltjeneste i undervisningsperioden.
+- Pensum
+Kunngjøres i Canvas.
+- Forutsatte forkunnskaper
+Matematikk R1, S1 eller tilsvarende.
+Spesielt: Enkel algebra med tall og bokstaver (inklusive brøkregning og de tre kvadratsetningene), prosentregning, enkel geometri i planet (inklusive Pytagoras setning), løsning av likninger med én ukjent og likningssystemer med to ukjente, kjennskap til lineære og kvadratiske funksjoner.
+Matematikk R1, S1 eller tilsvarende.
+Spesielt: Enkel algebra med tall og bokstaver (inklusive brøkregning og de tre kvadratsetningene), prosentregning, enkel geometri i planet (inklusive Pytagoras setning), løsning av likninger med én ukjent og likningssystemer med to ukjente, kjennskap til lineære og kvadratiske funksjoner.
+- Vurderingsordning, hjelpemiddel og eksamen
+3,5 timers skriftlig eksamen i Wiseflow.
+Hjelpemiddelkode A2: ingen utdelt kalkulator, spesifiserte andre hjelpemidler.
+Kalkulator vil være tilgjengelig i Wiseflow.
+Skriftlig eksamen Karakterregel: Bokstavkarakterer  Hjelpemiddel: A2 Ingen kalkulator, spesifiserte andre hjelpemidler
+3,5 timers skriftlig eksamen i Wiseflow.
+Hjelpemiddelkode A2: ingen utdelt kalkulator, spesifiserte andre hjelpemidler.
+Kalkulator vil være tilgjengelig i Wiseflow.
+- Om bruk av KI
+K1 - Ingen bruk av KI
+Her finner du KI-kategoriene beskrevet.
+- Sensorordning
+Ekstern sensor vil bli brukt til å vurdere eksamensoppgaver.
+- Obligatorisk aktivitet
+Obligatoriske aktiviteter og oppgaver kunngjøres i Canvas.
+Obligatoriske innleveringer må være godkjent i det pågående undervisningsåret.
+Obligatoriske aktiviteter og oppgaver kunngjøres i Canvas.
+Obligatoriske innleveringer må være godkjent i det pågående undervisningsåret.
+- Merknader
+Obligatoriske aktiviteter må være godkjent i det pågående undervisningsåret.
+- Undervisningstider
+4 timer forelesning og opptil 8 timer regneverksted.
+- Overlapp
+5 studiepoeng overlapp med ECN102
+- Opptakskrav
+MATRS - Generell studiekompetanse + R1 (eller S1)

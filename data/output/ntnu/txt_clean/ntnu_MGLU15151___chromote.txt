@@ -1,0 +1,51 @@
+## Om emnet
+## Faglig innhold
+I dette emnet arbeider studentene med matematikkdidaktiske og matematikkfaglige temaer som er viktige for alle som skal undervise i matematikk på trinnene 5-10, med spesiell vekt på algebra og algebraisk tenkning. Dette innebærer blant annet arbeid med generalisering og bevis, likninger, funksjonsbegrepet og funksjonsanalyse, samt matematisk modellering. Sentralt i emnet er spørsmål knyttet til elevers læring innen algebra og mulige tilnærminger i undervisning av algebra. Matematikkens natur, ulike representasjonsformer og hvilken rolle de kan ha for elevers læring og læreres undervisning er også et tema som tas opp i emnet.
+## Læringsutbytte
+KUNNSKAP
+Studenten
+- har dybdekunnskap om algebraiske aspekter ved matematikken elevene arbeider med på trinn 5-10
+- har kunnskap om ulike innfallsvinkler i arbeidet med likninger og utfordringer elever kan ha innen temaet
+- har kunnskap om generalisering og bevis og hvordan lærer kan støtte elever i arbeidet med det
+- har kunnskap om funksjonsbegrepet og funksjonsanalyse, inkludert derivasjon, integrasjon, og kan relatere disse begrepene til det matematikkfaglige innholdet i trinn 5-10
+- har kjennskap til matematisk modellering og hvordan den kan arbeides med på trinn 5-10
+- har kunnskap om utfordringer elever kan oppleve i arbeid med algebraiske symboler og kunnskap om undervisningstilnærminger som kan støtte deres forståelse og ferdigheter
+- har kjennskap til ulike digitale hjelpemidler som kan brukes i arbeid med algebra og hvordan de kan brukes til i undervisningen for å støtte elevers læring
+- har kunnskap om programmeringsbegreper som funksjoner og datastrukturer og kan bruke dem i arbeid med algebra på trinn 5-10
+- har kunnskap om ulike typer oppgaver i matematikk
+- har kunnskap om ulike representasjoner og overganger mellom dem, betydningen bruk av ulike representasjoner kan ha for elevers læring
+- har kunnskap om matematikkens natur og hvordan den spiller en rolle i læring og undervisning av faget
+FERDIGHETER
+Studenten
+- kan planlegge undervisning innen algebra på trinn 5-10 som tar hensyn til sentrale matematiske ideer i det gitte temaet elever skal lære og utfordringer elever kan ha innen temaet
+- kan benytte ulike digitale verktøy i undervisningen av algebra på trinn 5-10
+- kan analysere kognitive krav og muligheter for elevers læring som kan ligge i ulike oppgaver innen algebra for trinn 5-10
+GENERELL KOMPETANSE
+Studenten
+- har kunnskap om matematikkens natur, dens betydning i samfunnet og matematikkfagets rolle i skolen
+- kan delta og bidra i lokalt utviklingsarbeid med tanke på å forbedre undervisningspraksis
+## Læringsformer og aktiviteter
+Arbeidsformene veksler mellom arbeid med oppgaver, individuelt og i gruppe, diskusjoner, foredrag, og eventuelt muntlige og skriftlige studentpresentasjoner. Utforskende læringsprosesser skal fremme studentenes selvstendighet, analytiske ferdigheter og kritisk refleksjon.
+## Obligatoriske aktiviteter
+- Obligatoriske arbeidskrav iht. emnebeskrivelsen
+## Mer om vurdering
+Obligatoriske arbeidskrav:
+- inntil 8 skriftlige arbeidskrav,
+- obligatorisk deltakelse på inntil 4 verksteder,
+- arbeid med et praksisoppdrag
+Obligatoriske arbeidskrav vurderes som godkjent/ikke godkjent.
+Studentene kan bli vurdert, pålagt arbeidskrav og oppmøte knyttet til fellesfaglige tema.
+## Vurdering
+1. Muntlig eksamen
+2. Skriftlig eksamen (4 timer) er nasjonal deleksamen.
+Delvurderinger kan tas opp eller forbedres enkeltvis. Alle delvurderinger må være bestått for å få karakter i emnet.
+Under eksaminasjon på muntlig eksamen er det tillatt å bruke skriftlige notater som hjelpemiddel. Det er ingen forberedelses tid til muntlig eksamen.
+## Spesielle vilkår
+Krever opptak til studieprogram:
+Grunnskolelærerutdanning 5.-10. trinn (MGLU5-10) - enkelte retninger
+## Kursmateriell
+Endelig pensumliste legges ut på Blackboard før studiestart. Den kan også søkes opp på Innsida.
+## Studiepoengreduksjon
+## Fagområder
+- Lærer- og lektorutdanning
+- Matematikk

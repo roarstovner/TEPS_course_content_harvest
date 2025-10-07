@@ -1,0 +1,35 @@
+##  Matematikk 3A, 5-10
+I dette emnet vil studentene fordype sine kunnskaper om matematikkdidaktikk med fokus på 5.-10. trinn. De blir kjent med aktuell forskning og får mulighet til å utvikle sine ferdigheter når det gjelder undervisning, utvikling av undervisningsopplegg og matematikkdidaktisk forskning.
+I emnet vil studentene bli introdusert for big ideas i matematikkundervisning generelt og i detalj, for eksempel innenfor områdene geometri, tall og operasjoner (med naturlige tall, heltall og rasjonale tall), ligninger og funksjoner, algebra, elementær tallteori og stokastikk. Emnet gir også studentene en oversikt over undervisnings/læringsbanene i matematikk for 1.-10- trinn.
+På tvers av alle områdene så behandles viktige tema som design av oppgaver og undervisningsøkter, vurdering i klasserommet, håndtering av lærevansker og dyskalkuli, analyse av lærebøker, undervisning med IKT, å skape muligheter for problemløsning, matematisk resonnering og øving i matematikk.
+Emnet avsluttes med at hver student gir en presentasjon av et valgt tema relatert til innholdet i emnet.
+Kunnskaper
+Studenten
+- har forskningsbasert kunnskap om de store matematiske områdene på 5.-10. trinn og didaktikken som hører til
+- kjenner til big ideas i matematikkundervisningen og konkretiseringen av dem på 5.-10. trinn
+- har kunnskap om hvordan læringen av matematikk utvikler seg fra 1. til 10. trinn og hva de viktige milepælene er i denne undervisnings/læringsbanen
+- har kunnskap om viktige forskningsprosjekter i matematikkdidaktikk
+- kjenner til essensen av dyskalkuli, egnede verktøy (tester og intervjuer) til diagnoseverktøy og metoder for utbedring
+- har kunnskap om forskningsmetoder i didaktisk forskning
+Ferdigheter
+Studenten
+- kan evaluere det matematiske innholdet i undervisningen og evaluere undervisningsmetoder
+- kan analysere resultater fra matematikkdidaktisk forskning
+- kan utvikle, gjennomføre og evaluere forskningsbaserte læringsmiljø og vurderinger for matematikkundervisning på 5.-10. trinn
+- kan analysere lærebøker, læreplanmateriell og programvare for matematikkundervisning på 5.-10. trinn
+Generell kompetanse
+Studenten
+- Kan identifisere og reflektere over sammenhenger mellom matematikkdidaktisk teori og læring og undervisning av matematikk i skolen.
+- Kan bruke matematikkdidaktisk forskning til å bidra til skolens utviklingsarbeid.
+- er bevisst relevante etiske problemstillinger i læreryrket og forskningsfeltet og kan handle deretter.
+Sammensatt vurdering: Alle delene beskrevet under må være godkjent/bestått for å få endelig karakter i emnet.
+Obligatorisk deltagelse (OD). Minimum 80%. Karakterregel: Godkjent/ikke godkjent.
+Arbeidskrav (AK). 2 Arbeidskrav. Godkjent/ikke godkjent.
+Muntlig eksamen (MU). Karakterregel: A - F. Ekstern sensur.
+Alle hjelpemidler.
+Å generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er å regne som fusk.
+Med overlapp menes en faglig likhet mellom emner med samme faginnhold. Du vil derfor få følgende reduksjon i studiepoeng om du har tatt emner som er angitt under:
+MAT5008 - Aktuell forskning i matematikkdidaktikk, del 1, mastermodul - 15 Studiepoeng
+MAT5010 - Matematikk 3A - Fordypning i matematikkutdanning - 7.5 Studiepoeng
+MAT5014 - Matematikk 3D - Forskning i matematikkutdanning - 2.5 Studiepoeng
+MAT5012 - Matematikk 3B - Matematisk modellering og problemløsning, 5-10 - 2.5 Studiepoeng

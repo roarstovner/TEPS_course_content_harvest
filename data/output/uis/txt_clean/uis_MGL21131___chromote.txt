@@ -1,0 +1,69 @@
+Dette er emnebeskrivelsen for studieåret 2025-2026. Merk at det kan komme endringer.
+## Emnekode
+MGL2113
+## Versjon
+1
+## Vekting (stp)
+15
+## Semester undervisningsstart
+Høst
+## Antall semestre
+1
+## Vurderingssemester
+Høst
+## Undervisningsspråk
+Norsk
+Vis timeplan
+## Innhold
+De faglige temaene som blir tatt opp i dette emnet er først og fremst tall og tallregning, statistikk og sannsynlighet.
+Emnet skal forberede for matematikkundervisning i grunnskolen fra 5. til 10. trinn, i tråd med relevant forskning og til enhver tid gjeldende læreplan. Studiet er erfaringsbasert og forskningsbasert, det innebærer solid tilknytning til praksis. Matematikklærere må kunne analysere elevenes matematiske utvikling, være gode matematiske veiledere og samtalepartnere, kunne velge ut og lage gode matematiske eksempler og oppgaver som fremmer alle elevers matematiske kompetanse, kreativitet og positive holdning til matematikk. Som framtidig matematikklærer skal studenten selv arbeide utforskende og kreativt med faget.
+Matematisk språk og tenkning utvikles gjennom aktiviteter som fremmer resonnement, argumentasjon og begrunnelse. Matematikklærere må kunne gjennomføre og forstå matematiske prosesser og argumenter, og analysere forslag fra andre med tanke på holdbarhet og potensial. Studenten skal selv ha en reflektert forståelse av matematikken elevene skal lære og kunne gjøre faget tilgjengelig for alle elever.
+Bruk av ulike representasjoner er nødvendig for å gjøre matematiske begrep og ideer tilgjengelige for elever. For å utvikle sin matematiske forståelse og evne til problemløsning trenger elevene å arbeide med sammenhenger og overganger mellom ulike representasjoner. Studenten skal legge til rette for elevers arbeid med ulike representasjoner.
+Meningsfulle matematiske samtaler er sentralt i utviklingen av matematisk forståelse. Gjennom samtale og diskusjon kan lærere inkludere alle elever i matematisk resonnering og argumentering, stimulere til kritisk matematisk tenking og drøfte matematikkens rolle i samfunnet. Studenten skal legge til rette for meningsfulle matematiske samtaler med og mellom elever.
+Lærere skal invitere elever til å dele sin matematiske tenking, lytte til og vurdere denne med tanke på utvikling av matematisk kompetanse. Det skal legges til rette for undervisning ut fra elevenes ulike behov, der ulik kulturell, språklig og sosial bakgrunn både tas hensyn til men også ses som ressurs i undervisningen. Som framtidig matematikklærer skal studenten støtte elevene i deres tro på seg selv og at en gjennom hardt arbeid, individuelt og kollektivt, utvikler forståelse av matematiske ideer og sammenhenger.
+Detaljert semesterplan vil foreligge ved semesterstart.
+## Læringsutbytte
+Kunnskap
+Studenten skal ha:
+-  inngående undervisningskunnskap i matematikken elevene arbeider med på trinn 5-10, særlig tallforståelse, sannsynlighetsregning og statistikk
+-  kunnskap om språkets rolle for læring av matematikk
+-  kunnskap om vanlige interaksjonsmønster og kommunikasjon knyttet til matematikkundervisning
+-  kunnskap om kjerneelementene i matematikk, med særlig vekt på utforsking og problemløsning.
+-  kunnskap om hvordan programmering og digitale verktøy kan brukes til å utforske og løse matematiske problemer innen emnene tall, statistikk og sannsynlighet, f.eks. hvordan programmering kan brukes til å simulere utfall i stokastiske forsøk.
+-  kunnskap om ulike teorier for læring, og om sammenheng mellom læringssyn og fag- og kunnskapssyn
+-  innsikt i og erfaring med bruk av ulike læremidler, både digitale og andre, og muligheter og begrensninger ved slike læremidler
+-  kunnskap om matematikkens historiske utvikling, spesielt utviklingen av tallbegrepet og sannsynlighetsbegrepet
+Ferdigheter
+Studenten skal:
+-  kunne bruke arbeidsmåter som fremmer elevenes undring, kreativitet og evne til å arbeide systematisk med utforskende aktiviteter, begrunnelser, argumenter og bevis
+-  kunne kommunisere med elever, enkeltvis og i ulike gruppesammensetninger, lytte til, vurdere og gjøre bruk av elevers innspill, og institusjonalisere kunnskap
+-  kunne analysere og vurdere elevers tenkemåter, argumentasjon og løsningsmetoder fra ulike perspektiver på kunnskap og læring
+-  kunne forebygge og oppdage matematikkvansker og tilrettelegge for mestring hos elever med ulike typer matematikkvansker
+Generell kompetanse
+-  Studenten skal ha innsikt i matematikkfagets betydning for deltakelse i et demokratisk samfunn
+## Forkunnskapskrav
+Det forutsettes at studenten ved semesterstart behersker grunnleggende matematikkunnskaper fra grunnskole og videregående skole.
+## Eksamen / vurdering
+All pensumlitteratur, forelesninger og øvingsaktiviteter kan bli prøvd ved eksaminering.
+## Vilkår for å gå opp til eksamen/vurdering
+- Deltakelse på kollokviegrupper og gjennomføring av arbeid gitt til disse.
+- Refleksjonstekst om erfaringer med matematikkfaget
+- Deltakelse på praksisprosjekt med opp til 3 obligatoriske dager.
+- To skriftlige arbeidskrav med matematisk/fagdidaktisk arbeid. Ett arbeid vil også inneholde en digital komponent.
+Studenter som får et eller flere av arbeidskravene vurdert til ikke-godkjent ved første innlevering, gis mulighet for én ny innlevering av oppgaven(e) i bearbeidet form.
+Obligatoriske arbeider må være bestått for å kunne gå opp til eksamen.
+For å kunne stille seg til skriftlig eksamen kreves 70 % oppmøte i undervisningen. Dersom dette ikke er innfridd, må studenten ta emnet på nytt et senere år.
+## Fagperson(er)
+## Emneansvarlig:
+## Praksiskoordinator:
+## Faglærer:
+## Studiekoordinator:
+## Arbeidsformer
+Undervisningen er basert på en forventning om at studentene i høy grad kan arbeide på egen hånd. Det kan ikke forventes at alt pensum vil bli gjennomgått i timene. Deler overlates til selvstudium og veiledet selvstudium.
+Vi anbefaler at studentene på et tidlig tidspunkt i studiet danner kollokviegrupper. All erfaring viser at deltakelse i kollokvier er meget verdifullt både faglig og sosialt.
+Arbeidsformene i undervisningssituasjonen skal variere, og studentene skal få kjennskap til ulike arbeidsformer som brukes i matematikkundervisning i grunnskolen som for eksempel forelesning, lærerstyrte aktiviteter/dialog, selvstendig arbeid, gruppearbeid, spill, konkurranser, puslespilloppgaver, diagnostiske aktiviteter. Canvas vil bli brukt i kommunikasjonen mellom studenter og faglærere.
+## Praksis
+5 dager med observasjonspraksis og 5 dager praksis inngår i dette semesteret.
+## Åpent for
+## Emneevaluering
+## Litteratur

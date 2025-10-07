@@ -1,0 +1,41 @@
+## Om emnet
+## Faglig innhold
+Emnet gir en introduksjon til prosedyreorientert programmering, med Python som språk, samt erfaring med å gjennomføre et lite programmeringsprosjekt med anvendelse for undervisning i realfag i ungdomsskole og videregående. Konsepter som dekkes: Variable og datatyper, tallrepresentasjon og dens betydning i beregninger (f.eks. avrundingsfeil). Input og output. Kontrollstrukturer: Sekvens, valg, løkker, rekursjon. Strukturering og oppdeling av programmer; funksjoner og moduler. Datastrukturer: Strenger, lister, tupler, arrays, mengder og ordbøker (dictionary). Filbehandling og unntaksbehandling. Enkle numeriske beregninger med visualisering og plotting.
+## Læringsutbytte
+Kunnskaper:
+- K1: Kan forklare grunnleggende prinsipper for digital representasjon av informasjon.
+- K2: Kan forklare formål og virkemåte til sentrale mekanismer for prosedyreorientert programmering i Python.
+- K3: Kan anvende kunnskap om programmeringsmekanismer til å løse ulike typer problemer, som å forklare resultatet av et program, fylle inn manglende deler av programmer, finne og rette feil i programmer og skrive kode for å løse praktiske problemer.
+Ferdigheter.
+- F1: Kan gjennomføre et lite programmeringsprosjekt.
+- F2: Kan diskutere programmeringsproblemer med medstudenter.
+- F3: Kan etterstrebe læringsutbytter på en selvregulert måte, ved å bestemme egen hastighet og ambisjonsnivå.
+Generell kompetanse:
+- G1: Kan reflektere om muligheter og utfordringer ved programmering som virkemiddel i undervisning av realfag i ungdomsskole og videregående.
+## Læringsformer og aktiviteter
+Obligatorisk aktivitet
+Det er to ting som er obligatoriske i emnet: (1) Studenten må ha minst 80% oppmøte på de ukentlige seminarene, som inkluderer diskusjoner med medstudenter fasilitert av fagstaben. Instituttet kan i særskilte tilfeller innvilge søknad om lavere oppmøte. (2) Studenten må levere en enkel fremdriftsplan tidlig i semesteret, fristen for dette vil bli kunngjort ved semesterstart. De obligatoriske aktivitetene må være godkjent for at man skal kunne få karakter i emnet.
+I tillegg til de obligatoriske aktivitetene vil digitale læringsressurser bli gjort tilgjengelig for studentene for selvstudium underveis.
+## Obligatoriske aktiviteter
+- Seminar
+- Fremdriftsplan
+## Mer om vurdering
+Vurdering i emnet skjer i form av en mestringsstige hvor hver enkelt student kan velge eget ambisjonsnivå og fremdriftsplan. Emnet er delt opp i 9 moduler, hvor man må bestå 5 for å ta E, 6 for D, 7 for C, 8 for B, 9 for A. For å bestå en modul må man bestå modulens test og levere et godkjent inkrement av et individuelt programeringsprosjekt. Tellende modultester må tas under tilsyn, høsten 2025 kan dette gjøres hver fredag underveis i undervisningssemesteret. Testene må tas i rekkefølge, og man må ha bestått den første testen før man kan ta den andre, osv. Man kan maksimalt bestå en test per uke. Eventuelt feilet test kan tas om igjen ved neste tilgjengelige tidspunkt.
+I prosjektet skal hver student skrive sin unike, individuelle Python-kode, for bruk i realfagsundervisning i videregående skole innen studentens LUR-disiplin (biologi / kjemi / fysikk / matematikk / informatikk). Det skal dessuten leveres en kort rapport som reflekterer over erfaringer fra prosjektet og mulig pedagogisk bruk av programmet. Prosjektet utvikles iterativt for godkjenning til gradvis høyere nivå, hvor nivåene må gjøres i rekkefølge, dvs. man må ha levert første nivå før man kan levere andre nivå, osv. Ved eventuelt ikke godkjent prosjektlevering kan man fikse på de manglene som er blitt påpekt og levere på nytt.
+Det oppnås kun én samlet karakter i emnet. Man må ha oppnådd et nivå tilsvarende E / bestått i både testserien og prosjektet for å bestå emnet. Ved ulikt nivå på de to vurderingskomponentene ved semesterslutt, vil sluttkarakter være bestemt av laveste nivå.
+Ved frivillig gjentak, stryk eller gyldig fravær, må hele mappen tas på nytt.
+## Spesielle vilkår
+Krever opptak til studieprogram:
+Lektorutdanning i realfag for trinn 8 – 13 (MLREAL)
+## Anbefalte forkunnskaper
+Ingen.
+## Forkunnskapskrav
+Ingen.
+## Kursmateriell
+Digitale læringsressurser. Vil bli gjort tilgjengelig dels i starten av og dels underveis i semesteret.
+## Studiepoengreduksjon
+## Andre sider om emnet
+-  Blackboard - HØST-2024
+-  Blackboard - HØST-2023
+## Fagområder
+- Informatikk

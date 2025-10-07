@@ -1,0 +1,35 @@
+##  Matematikk 2B, 5-10
+Opptak til programmet.
+Dersom det er ledige plasser på emnet kan det tilbys frittstående for kvalifiserte søkere.
+MAT1004 Matematikk 1A, 5-10
+MAT1005 Matematikk 1B, 5-10
+MAT2003 Matematikk 2A, 5-10
+KUNNSKAP
+Studentene skal
+- ha avansert kunnskap om undervisning i matematikk på mellomtrinn og ungdomstrinn med høye kognitive krav
+- ha kunnskaper om ulike representasjonsformer og overgangen mellom disse
+- ha kunnskaper om ulike typer av elevers resonnements- og argumentasjonsformer
+- ha solid kunnskap i emnene multiplikativ tenkning, geometrisk tenkning og algebraisk tenkning med funksjoner på mellomtrinn og ungdomstrinn
+- ha kunnskap om algoritmisk tenkning og problemløsning ved hjelp av programmering
+- ha kunnskap om matematikkdidaktisk forskning
+- ha kunnskap om matematikkvansker og kjennetegn på slike vansker
+FERDIGHETER
+Studenten skal
+- kunne planlegge, gjennomføre og vurdere undervisning av høy kvalitet, i tråd med relevant forskning
+- kunne inkludere programmering i matematikkundervisning på mellomtrinn og ungdomstrinn
+- kunne gjennomføre enkle matematikkdidaktiske undersøkelser
+- kunne forebygge og oppdage matematikkvansker, og tilrettelegge undervisning for elever med slike vansker
+GENERELL KOMPETANSE
+Studenten skal
+- kunne initiere og lede utviklingsarbeid knyttet til matematikkundervisning
+- kunne delta og bidra i FoU-prosjekt og andre samarbeidsprosjekt med tanke på å forbedre matematikkfagets undervisningspraksis
+Sammensatt vurdering: Alle delene beskrevet under må være godkjent/bestått for å få endelig karakter i emnet.
+Arbeidskrav (AK): Studentene skal gjennomføre 2-3 arbeidskrav, som kan være skriftlige innleveringer, prøver eller muntlige presentasjoner. Vurdering: Godkjent / Ikke godkjent.
+Obligatorisk deltakelse (OD): Minimum 80% deltakelse i undervisningen. Vurdering: Godkjent / Ikke godkjent. All timeplanlagt aktivitet regnes som obligatorisk.
+Muntlig eksamen (MU): Individuell. 30 minutter. Ekstern sensur. Vurdering: A-F. Teller 100 % av karakter.
+Kalkulator, gjeldende læreplanverk, penn og linjal
+Å generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er å regne som fusk.
+Med overlapp menes en faglig likhet mellom emner med samme faginnhold. Du vil derfor få følgende reduksjon i studiepoeng om du har tatt emner som er angitt under:
+MAT2009 - Matematikk 2A - Algebra og funksjonssammenhenger - 7.5 Studiepoeng
+MAT2011 - Matematikk 2C - Læring og undervisning i matematikk 2 - 7.5 Studiepoeng
+MAT2013 - Matematikk 2D - Programmering i matematikkfaget for lærere, 5-10 - 7.5 Studiepoeng

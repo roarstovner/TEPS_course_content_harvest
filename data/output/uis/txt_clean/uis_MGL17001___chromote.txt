@@ -1,0 +1,60 @@
+Dette er emnebeskrivelsen for studieåret 2025-2026. Merk at det kan komme endringer.
+## Emnekode
+MGL1700
+## Versjon
+1
+## Vekting (stp)
+30
+## Semester undervisningsstart
+Høst
+## Antall semestre
+1
+## Vurderingssemester
+Høst
+## Undervisningsspråk
+Norsk
+Vis timeplan
+## Innhold
+Emnet vektlegger en kritisk undersøkende tilnærming til lærerens profesjonsfaglige digitale kompetanse (PFDK). Dette innebærer at studentene blir kjent med og kan vurdere bruk av aktuelle digitale verktøy/læringsteknologier i undervisnings- og læringssituasjoner. Emnet vil være en kombinasjon av obligatorisk og selvvalgt pensum (lærebøker, nyere forskning, multimodale tekster mm).
+## Læringsutbytte
+Kunnskap
+Studenten har kunnskap om
+-  forventninger og utfordringer knyttet til lærerrollen/lærerarbeidet i det digitale klasserommet i en digital medievirkelighet
+-  hvordan samspillet og interaksjon mellom lærer, elev og redskaper påvirkes i digitale omgivelser
+-  hvordan digitale verktøy kan bidra til skaperglede, engasjement og utforskertrang
+-  digital dømmekraft og hvordan denne kan utvikles
+Ferdigheter
+Studenten kan
+-  alene og i samarbeid med andre tilrettelegge for utforskende læring med digitale og analoge verktøy
+-  kan anvende mange ulike digitale læringsteknologier og kritisk vurdere bruken av disse i forhold til fag, elev og situasjon
+-  knytte utvikling av elevers digitale dømmekraft til arbeid med digitale redskaper
+Generell kompetanse
+Studenten kan
+-  identifisere og analysere utfordringer knyttet til undervisning og læring i det teknologirike klasserommet
+-  utvise kritisk dømmekraft i anvendelsen av digitale redskaper i undervisningen
+-  bidra i skolens utviklingsarbeid med hensyn til profesjonsfaglig digital kompetanse
+## Forkunnskapskrav
+PEL 1 og 2.
+## Eksamen / vurdering
+Prosjektoppgaven skal knyttes til arbeidskrav og læringsutbytteformuleringene. Omfang ca 4500 ord +/- 10%
+## Vilkår for å gå opp til eksamen/vurdering
+I emnet har studentene følgende arbeidskrav
+- Beskrivelse muligheter og utfordringer ved didaktisk bruk av et gitt digitalt verktøy i undervisningen (individuell oppgave, valgfri digital presentasjonsform)
+- Med utgangspunkt i forskningslitteratur reflektere over forventninger og utfordringer knyttet til lærerrollen/lærerarbeidet i det digitale klasserommet (gruppeoppgave, valgfri digital presentasjonsform)
+Obligatoriske undervisningsaktivitetar
+Obligatorisk deltakelse på seminar og verkstedsarbeid på DDV. I tillegg er minimum 70 % tilstedeværelse i annen undervisning påkrevd.
+## Fagperson(er)
+## Faglærer:
+## Emneansvarlig:
+## Studieprogramleder:
+## Faglærer:
+## Studiekoordinator:
+## Arbeidsformer
+Studentene vil møte et mangfold av arbeidsmåter og digitale verktøy, som bl. a speiler arbeidet i skolen.
+Undervisningen vil bli organisert som plenumsforelesninger, seminargrupper og verkstedarbeid (DDV).
+I verkstedsarbeid (DDV) og gjennom praktisk arbeid i skolen vil studentene få muligheter til å arbeide med ulike verktøy som koding/blokkprogrammering, AR/VR/MR, produksjonsverktøy for lyd og bilde, skaperverksted, E-sport, didaktisk bruk av ulike spill. Her vil studenten selv kunne påvirke valg av fordypning.
+## Praksis
+Tre uker med veiledet praksis i skole.
+## Åpent for
+## Emneevaluering
+## Litteratur

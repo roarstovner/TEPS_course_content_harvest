@@ -1,0 +1,45 @@
+##  Emnebeskrivelse
+## Mål og innhald
+Emnet fokuserer på sentrale sider av undervisning og læring av matematikk:
+Del 1:
+- Aspektar ved matematikkfaget: danning og nytte, demokratisk kompetanse, matematikk som skulefag og som vitskapsfag
+- Planlegging og gjennomføring av matematikkundervisning
+- Matematisk modellering
+- Digitale verktøy (GeoGebra)
+Del 2:
+- Kommunikasjon i klasserommet og støtte til elevenes arbeid med matematikk
+- Vurdering av matematikklæring
+- Elever med ulike føresetnader
+- Internasjonale undersøkningar av matematikkundervisning
+- Representasjonar, bevis og argumentasjon i matematikkundervisninga
+## Læringsutbyte
+Studenten skal ved avslutta emne ha følgjande læringsutbyte definert i kunnskapar, ferdigheiter og generell kompetanse:
+Kunnskapar
+Studenten
+- har kunnskap om karakteristiske trekk ved matematikk som skulefag og vitskapsfag og fagets plass i samfunnet
+- har kunnskap om sentrale aspekt ved læringsfremmande matematikkundervisning
+- har kunnskap om variasjon i elevers føresetnader for matematikklæring
+- har kunnskap om kommunikasjon, matematiske representasjonar, bevis og argumentasjon i matematikkundervisninga
+- har kunnskap om matematisk modellering i matematikkundervisninga
+Ferdigheiter
+Studenten
+- kan på bakgrunn av teori og forsking planlegge og gjennomføre variert og tilpassa undervisning som understøtter elevane si matematikklæring
+- kan leggje til rette for elevane si matematikklæring blant anna gjennom kommunikasjon i klasserommet og gjennom vurdering
+- kan dokumentere og evaluere matematikkundervisning, matematikklæring og matematiske kompetansar
+- kan gjennomføre faglege drøftingar av blant anna mål for, kvalitet av, utvikling av og utfordringar ved matematikkundervisninga
+- kan planleggje undervisningsaktivtetar som vert støtta av digitale verktøy
+Generell kompetanse
+Studenten
+- kan knytte matematikkdidaktisk teori saman med ulike former for undervisningspraksis
+- kan gjennomføre kritiske refleksjonar over matematikklæraren si profesjonsutøving
+## Undervisningssemester
+Haust og vår. Emnet går over to semester, 10 sp haust og 5 sp vår. Oppstart kun om hausten.
+Emnet blir undervist siste gang høsten 2026.
+## Undervisningsstad
+- Presentasjon av undervisningsopplegg og minst to samlingar med opplæring og praksis knytt til GeoGebra
+- Refleksjonsnotat
+- To obligatoriske veiledningssamtaler
+(Gyldig i fire semester; inneverande og tre påfølgjande)
+Del 1: Munnleg eksamen (haust)
+Del 2: Prosjektoppgåve (vår)
+Kvar del teller 50%. Begge deler må være bestått.

@@ -1,0 +1,76 @@
+Alle versjoner:
+4MGL5MA101 (2025—2026)
+4MGL5MA101 (2024—2025)
+4MGL5MA101 (2023—2024)
+4MGL5MA101 (2022—2023)
+4MGL5MA101 (2021—2022)
+4MGL5MA101 (2020—2021)
+4MGL5MA101 (2019—2020)
+4MGL5MA101 (2018—2019)
+Emnekode:  4MGL5MA101
+Emnenavn:  Matematikk 1, modul 1 5-10
+Undervisningssemester:  Høst
+Steder:  Oslo
+Studieår:  2025–2026
+Undervisningsspråk:  Norsk
+Studiepoeng:  10 poeng
+Enkeltemne:  Nei
+## Forkunnskapskrav
+Se programplan
+## Relevans i studieprogrammet
+Valgfritt fag i grunnskolelærerutdanningen 5.‒10. trinn, men obligatorisk for studenter med matematikk som undervisningsfag (enten masterfag eller andre undervisningsfag).
+## Innledning
+I matematikk 1 arbeides det med matematikkdidaktiske og matematikkfaglige tema som er relevante for alle som skal undervise i matematikk på trinnene 5‒10. Matematikk 1 er delt i tre moduler à 10 studiepoeng.
+Den første modulen fokuserer særlig på emnene aritmetikk, algebra og funksjoner. I tillegg berører modulen grunnleggende matematikkdidaktiske tema gjennom arbeid med de matematikkfaglige emnene. Målet med denne modulen er å utvikle studentenes matematiske forståelse og undervisningskunnskap innen disse matematiske emnene på et faglig nivå som er representativt for mellom- og ungdomstrinnet. Kjerneelementer fra læreplanen i matematikk er sentrale i emnet.
+## Læringsutbytte
+Etter fullført emne har kandidaten følgende læringsutbytte:
+Kunnskap
+Kandidaten
+- har dybdekunnskap om matematikken elevene arbeider med på trinn 5‒10, særlig tallforståelse og regning, brøk, desimaltall og prosent, overgangen fra aritmetikk til algebra, algebra og funksjoner
+- har kunnskap om ulike aspekter ved og representasjoner for brøk og sammenhengen mellom desimaltall, brøk og prosent
+- har kunnskap om den historiske utviklingen av tallbegrepet og betydningen av ulike tallsystemer
+- har kunnskap om pedagogisk bruk av regneark og graftegner i matematikkundervisningen
+- har kunnskap om interaksjonsmønster, kommunikasjon og språkets rolle for læring av matematikk og ulike syn på læring av matematikk
+- har kunnskap om matematiske lærings- og utviklingsprosesser og hvordan legge til rette for at elever kan ta del i slike prosesser
+- har kunnskap om matematikkfagets innhold, spesielt knyttet til de matematiske kunnskapsområdene tallforståelse, aritmetikk, algebra og funksjoner, på de ulike trinnene i grunnskolen og i videregående skole
+Ferdigheter
+Kandidaten
+- kan kommunisere med elever, lytte til, vurdere, gjøre bruk av elevers innspill og stimulere elevenes matematiske tenking
+- har gode praktiske ferdigheter i muntlig og skriftlig kommunikasjon i matematikkfaget, og kompetanse til å fremme slike ferdigheter hos elevene
+- kan analysere og vurdere elevers tenkemåter, argumentasjon og løsningsmetoder ut fra ulike perspektiver på kunnskap og læring
+- kan planlegge, gjennomføre og vurdere matematikkundervisning for alle elever på trinn 5-10, med fokus på kjerneelementer, variasjon og elevaktivitet
+- kan reflektere rundt og bruke arbeidsmåter som fremmer elevenes undring, kreativitet og evne til å arbeide systematisk med utforskende aktiviteter, resonnering og argumentasjon
+Generell kompetanse
+Kandidaten
+- har innsikt i matematikkfagets betydning som allmenndannende fag og dets samspill med andre fag, kultur, filosofi og samfunnsutvikling
+- har innsikt i matematikkfagets betydning for utvikling av kritisk demokratiskkompetanse
+## Innhold
+Innholdet bygger på gjeldende læreplan i matematikk for grunnskolen, samt beskrivelsen av faget Matematikk 1 i Nasjonale retningslinjer for GLU 5-10.
+Blant annet jobbes det med følgende matematiske temaer:
+- Tall og tallsystemer
+- Regneartene
+- Primtall og primtallsfaktorisering
+- Kvadratrøtter og kubikkrøtter
+- Ulike aspekter ved og representasjoner av brøk
+- Konkretisering av brøk
+- Regning med brøk, desimaltall og prosent
+- Utvidelser av tallområdet
+- Regning med negative tall
+- Algebraiske regneregler, potensregning og regnerekkefølge
+- Proporsjonalitet og omvendt proporsjonalitet
+- Prealgebra, figurtall og tallfølger
+- Lineære ligninger, ulikheter og ligningssystemer
+- Andregradsligninger
+- Funksjonsbegrepet og variabler
+- Lineære funksjoner og polynomfunksjoner
+- Eksponentialfunksjoner og sammenhengen med prosentvis endring
+- Kjøp og salg, lån og personlig økonomi
+Det jobbes også med følgende fagdidaktiske temaer:
+- Kjerneelementer i matematikkfaget
+- Matematisk forståelse og kompetanse
+- Kommunikasjon i matematikkundervisning
+- Digitale ferdigheter knyttet til bl.a. bruk av regneark og graftegner
+- Varierte arbeidsformer og undervisningsmetoder
+- Misoppfatninger i tallregning, brøkregning og algebra
+- Programmering
+## Arbeids- og undervisningsformer

@@ -1,0 +1,61 @@
+## Programplaner og emneplaner - Student
+## EPN-V2
+##  MGNA4200 Naturfag og naturfagdidaktikk 2 Emneplan
+##  Innledning
+Fagplanen tilhørende dette emnet er lagt til emne MGNA4100 Naturfag og naturfagdidaktikk 1.
+Naturfag og naturfagdidaktikk 2 gir studentene avansert og inngående kunnskap om systemer og kretsløp i naturfag, samt arbeid med å tilrettelegge for utvikling av systemtenkning hos elever i grunnopplæringen. De vil også få utdypende kunnskap i hvordan de ivaretar sikkerhet og miljøhensyn i organisering av undervisning og undervisningsmateriell. Studentene vil arbeide med tema som omfatter og integrerer de ulike fagområdene i naturfaget. I tillegg vil de erfare ulike måter å gjøre naturfaget relevant for elevmangfoldet i skolen.
+##  Læringsutbytte
+Etter fullført emne har studenten følgende læringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+Kunnskap
+Studenten
+- har inngående kunnskap om undervisning for systemforståelse i utvalgte deler av naturfaget
+- har inngående kunnskap om hvordan legge til rette for variert naturfagundervisning med bruk av ulike representasjoner
+- har inngående kunnskap om praktisk arbeid i naturfag
+- har inngående kunnskap om programmering i naturfag og hvordan dette kan brukes i undervisning med elever
+- kan tilpasse naturfagsundervisningen slik at den fremhever anvendelser, relevans og yrkesretting
+Ferdigheter
+Studenten
+- kan på avansert nivå anvende prinsipp for læringsorientert vurdering og slik bidra til at elevene lærer å reflektere over egen læring og utvikling
+- kan analysere og forholde seg kritisk til nasjonal og internasjonal forskning og anvende denne kunnskapen i profesjonsutøvelsen
+- kan planlegge og gjennomføre undervisning (inkludert praktisk arbeid) i naturfaget som fremmer elevers systemtenkning og vitenskapelige tenkemåte
+- kan tilrettelegge for bruk av estetiske læringsprosesser i naturfagundervisningen
+- kan vurdere digitale uttrykk og ressurser kritisk og bruke dem i opplæringen på måter som styrker og utvikler naturfagets didaktikk
+- kan gjennomføre og vurdere naturfagsundervisning med fokus på praktisk arbeid og HMS
+- kan gjennomføre og vurdere skolerelevant programmering
+Generell kompetanse
+Studenten
+- kan på systematisk vis planlegge, evaluere og revidere ressurser, undervisning og kompetanse i naturfag
+- kan på et avansert nivå formidle og kommunisere om faglige problemstillinger knyttet til profesjonsutøvelsen og har profesjonsfaglig digital kompetanse
+- kan bidra til utviklingsarbeid som fremmer faglig og naturfagdidaktisk nytenkning i skolen
+##  Innhold
+Studenten vil få utdypende kunnskap om sentrale og forskningsbaserte kjennetegn ved god naturfagundervisning med hovedfokus på:
+- Konkrete tilnærminger til variert naturfagundervisning
+- Muligheter i det utvidede klasserommet
+- HMS
+- Systemtenkning i naturfag
+- Programmering i naturfag
+##  Arbeids- og undervisningsformer
+Undervisningen vil i hovedsak være i form av forelesninger, seminarer, øvingsoppgaver og veiledning. Emnet krever stor grad av selvstendig arbeid. Det forventes at øvingsoppgaver innleveres til avtalt tid.
+##  Arbeidskrav og obligatoriske aktiviteter
+Retten til å avlegge eksamen forutsetter godkjente arbeidskrav og deltakelse i bestemte faglige aktiviteter. Se nærmere informasjon i den innledende fagplandelen. Følgende arbeidskrav må være godkjent før eksamen kan avlegges:
+- Undersøke HMS-situasjonen på en skole med kartlegging av kjemikalier, naturfagutstyr og sikkerhetsrutiner. Muntlig presentasjon og diskusjon av funn i grupper (20 minutter).
+- Deltakelse på ekskursjon i Oslo-området med vekt på temaet "andre læringsarenaer". Omfang: 1 dag.
+- Deltakelse på introduksjonsdag til masteroppgaven. Omfang: Inntil 1 dag.
+- For studenter på programmet master i grunnskolelærerutdanning må i tillegg følgende arbeidskrav gjennomføres:
+Lage en "omvendt undervisning"-sekvens i praksisgrupper med påfølgende oppfølgingsarbeid i klasserommet. Opplegget gjennomføres med elever i praksisperioden og erfaringene presenteres muntlig i refleksjonsseminar (10 minutter).
+- Lage en "omvendt undervisning"-sekvens i praksisgrupper med påfølgende oppfølgingsarbeid i klasserommet. Opplegget gjennomføres med elever i praksisperioden og erfaringene presenteres muntlig i refleksjonsseminar (10 minutter).
+- For studenter på programmet master i skolerettet utdanningsvitenskap må i tillegg følgende arbeidskrav gjennomføres:
+Lage en «omvendt undervisning»-sekvens i grupper, med forslag til elevaktive oppgaver som oppfølging av sekvensen. Undervisningsopplegget skal presenteres muntlig i undervisning (10 minutter).
+Skrive en individuell prosjektskisse for masteroppgaven etter nærmere retningslinjer med omfang på 1800 ord +/- 10%.
+- Lage en «omvendt undervisning»-sekvens i grupper, med forslag til elevaktive oppgaver som oppfølging av sekvensen. Undervisningsopplegget skal presenteres muntlig i undervisning (10 minutter).
+- Skrive en individuell prosjektskisse for masteroppgaven etter nærmere retningslinjer med omfang på 1800 ord +/- 10%.
+##  Vurdering og eksamen
+Individuell muntlig eksamen i ca. 30 minutter.
+Ny/utsatt eksamen
+Ny/utsatt eksamen arrangeres som ved ordinær eksamen.
+##  Hjelpemidler ved eksamen
+Ingen hjelpemidler tillatt.
+##  Vurderingsuttrykk
+Det benyttes en gradert karakterskala fra A til E for bestått og F for ikke bestått eksamen.
+##  Sensorordning
+Eksamen vurderes av intern og ekstern sensor.

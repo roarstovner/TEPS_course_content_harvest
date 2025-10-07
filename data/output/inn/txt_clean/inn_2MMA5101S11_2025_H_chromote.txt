@@ -1,0 +1,119 @@
+- 2025 Høst
+- 2024 Høst
+- Emnekode
+2MMA5101S-1
+Studiepoeng
+15
+Undervisningssemestre
+2025 Høst
+Undervisningsspråk
+Norsk
+Undervisningssted
+Hamar
+Forkunnskapskrav
+Ingen
+- Emnekode
+2MMA5101S-1
+- Studiepoeng
+15
+- Undervisningssemestre
+2025 Høst
+- Undervisningsspråk
+Norsk
+- Undervisningssted
+Hamar
+- Forkunnskapskrav
+Ingen
+- Faglige og fagdidaktiske perspektiv knyttet til de matematiske kunnskapsområdene
+Tall og tallforståelse
+Tallbegrep og tallforståelse
+Posisjonssystemet og de fire regningsarter
+Brøk, desimaltall og prosent
+Utvidelser av tallområdet
+Primtall og delelighet
+Algebra
+Overgang mellom tallregning og algebra og innføring av variabelbegrepet
+Figurtall, konkreter og elevaktive arbeidsformer i algebralæringen
+Regning med algebraiske uttrykk
+Likninger og ulikheter
+Algebraisk tenkning
+Beskrivende statistikk
+Sentralmål og spredningsmål
+Fremstilling av statistikk i tabeller og diagrammer
+Sannsynlighetsbegrepet og sannsynlighetsmodeller
+Sammensatte forsøk
+Betinget sannsynlighet
+Kombinatorikk
+- Tall og tallforståelse
+Tallbegrep og tallforståelse
+Posisjonssystemet og de fire regningsarter
+Brøk, desimaltall og prosent
+Utvidelser av tallområdet
+Primtall og delelighet
+- Tallbegrep og tallforståelse
+- Posisjonssystemet og de fire regningsarter
+- Brøk, desimaltall og prosent
+- Utvidelser av tallområdet
+- Primtall og delelighet
+- Algebra
+Overgang mellom tallregning og algebra og innføring av variabelbegrepet
+Figurtall, konkreter og elevaktive arbeidsformer i algebralæringen
+Regning med algebraiske uttrykk
+Likninger og ulikheter
+Algebraisk tenkning
+- Overgang mellom tallregning og algebra og innføring av variabelbegrepet
+- Figurtall, konkreter og elevaktive arbeidsformer i algebralæringen
+- Regning med algebraiske uttrykk
+- Likninger og ulikheter
+- Algebraisk tenkning
+- Beskrivende statistikk
+Sentralmål og spredningsmål
+Fremstilling av statistikk i tabeller og diagrammer
+Sannsynlighetsbegrepet og sannsynlighetsmodeller
+Sammensatte forsøk
+Betinget sannsynlighet
+Kombinatorikk
+- Sentralmål og spredningsmål
+- Fremstilling av statistikk i tabeller og diagrammer
+- Sannsynlighetsbegrepet og sannsynlighetsmodeller
+- Sammensatte forsøk
+- Betinget sannsynlighet
+- Kombinatorikk
+- Matematikkfaglige perspektiver på overgangen mellom barne- og ungdomstrinn
+- Arbeidsformer og metoder i matematikkundervisning sett fra et elev- og lærerperspektiv
+- Problemstillinger knyttet til tilpasset opplæring
+- Teorier om læring og de konsekvenser dette har for matematikkundervisning
+- Matematikk og kommunikasjon
+Språkets betydning i matematikkfaget og matematikkens språk
+- Språkets betydning i matematikkfaget og matematikkens språk
+- Matematikklærerkompetanser
+- Norske læreplaner
+## Læringsutbytte
+Ved bestått emne har studenten oppnådd følgende læringsutbytte:
+Studenten
+- har dybdekunnskap i de matematiske kunnskapsområdene tall og tallforståelse, algebra, statistikk og sannsynlighet for trinnene 5-10
+- har kunnskap om matematikkfagets innhold, spesielt knyttet til de matematiske kunnskapsområdene tall og tallforståelse, algebra, statistikk og sannsynlighet på de ulike trinnene i grunnskolen og om overgangen fra barnetrinn til ungdomstrinn
+- har kunnskap om matematikkens historiske utvikling, spesielt utviklingen av tallbegrep og tallsystemer
+- har kunnskap om matematiske lærings- og utviklingsprosesser, med særlig vekt på til de matematiske kunnskapsområdene tall og tallforståelse, algebra, statistikk og sannsynlighet, og tilrettelegging for elevers deltakelse i slike prosesser med og bruk av ulike læremidler, herunder digitale
+- har kunnskap om interaksjonsmønster, kommunikasjon og språkets rolle for læring av matematikk og om ulike syn på læring av matematikk
+- har kunnskap om ulike representasjoner og betydningen som bruk av og overganger mellom representasjoner kan ha for elevers læring
+Studenten
+- kan planlegge, gjennomføre og vurdere matematikkundervisning med særlig vekt på de matematiske kunnskapsområdene tall og tallforståelse, algebra, statistikk og sannsynlighet for alle elever på trinn 5-10, med fokus på variasjon og elevaktivitet
+- kan vise til eksempler på arbeidsmåter som fremmer elevenes undring, kreativitet og evne til å arbeide systematisk med utforskende aktiviteter, resonnering og argumentasjon
+- kan gjennom samtaler stimulere elevenes matematiske tenkning
+- kan sette seg inn i elevers matematiske tenkning og uttrykksformer
+- kan legge til rette for tilpasset matematikkopplæring i elevgrupper med ulike behov
+Studenten
+- har kjennskap til i matematikkfagets betydning som allmenndannende fag og dets samspill med kultur, filosofi og samfunnsutvikling
+- har kjennskap til i matematikkfagets betydning for utvikling av kritisk demokratisk kompetanse
+Undervisningen kan bestå av: individuelt arbeid, veiledning, arbeid i grupper, forelesninger, klasseundervisning, seminarer og omvendt undervisning. Det kan være aktuelt med ekskursjoner i løpet av studiet.
+Ved oppstart av hvert semester blir det delt ut en undervisningsplan med beskrivelse av undervisningen det aktuelle semesteret. Det vil i tillegg bli utarbeidet arbeidsprogrammer for spesifiserte perioder med detaljert oversikt over organisering, aktuelt lesestoff, øvingsoppgaver og innleveringsoppgaver.
+Et nettbasert studiestøttesystem benyttes i undervisningen. Et utvalg av digitale/tekniske undervisningsverktøy vil bli brukt i kurset.
+Praksis
+Praksisstudiet er en integrert del av fagene som inngår i utdanningen. Alle fag i utdanningen har sammen med praksisstudiet ansvar for at studentene utvikler identitet som lærer. Det skal være nær kopling mellom innhold og arbeidsmåter i lærerutdanningsfagene og praksisstudiet. Veiledning og vurdering av studenter i praksisstudiet er et felles ansvarsområde for faglærerne i grunnskolelærerutdanningene, praksislærer og rektor. Studentene skal utføre oppgaver i praksisperioden i henhold til undervisningsplanen og delta på profesjonsseminar på høgskolen.
+- to skriftlige gruppeoppgaver
+- inntil to individuelle oppgaver, skriftlig og/eller muntlig
+- 75% deltakelse i undervisning i henhold til undervisningsplanen. Studenten er selv ansvarlig for å bli registrert.
+Individuell skriftlig 5 timers eksamen
+Prestasjonen vurderes med graderte bokstavkarakterer fra A-F, der E er laveste ståkarakter.
+## Pensum

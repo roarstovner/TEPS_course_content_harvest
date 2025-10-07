@@ -1,0 +1,60 @@
+Studiepoeng:60
+Ansvarlig fakultet:Fakultet for realfag og teknologi
+Emneansvarlig:Hans Erik Lefdal
+Campus / nettbasert:Undervises campus Ås
+Undervisningens språk:Norsk
+Frekvens:Årlig
+Forventet arbeidsmengde:1500 timer
+Undervisnings- og vurderingsperiode:Vår- og høstparallell
+## Om dette emnet
+## Dette lærer du
+Etter fullført masteroppgave skal studenten kunne:
+- Gjennomføre et selvstendig forsknings- og utviklingsarbeid ut fra en begrunnet problemstilling/forskningsspørsmål.
+- Benytte relevante teorier og forskningsmetoder som verktøy i forskningsarbeidet.
+- Analysere og trekke konklusjoner ut av et selvstendig gjennomført forskningsprosjekt.
+- Formidle prosjektets forsknings- og erfaringsbaserte kunnskap (basert på selvstendig forskningsprosjekt) både skriftlig og muntlig.
+- Lese, forstå og bruke forskningslitteratur.
+- Følge forskningsetiske retningslinjer.
+Mer spesifikt skal studenten kunne:
+- utvikle en problemstilling / et forskningsspørsmål som er begrunnet ut ifra relevans for fagfelt og/eller praksis.
+- avgrense oppgaven tilstrekkelig slik at den er gjennomførbar.
+- ta i bruk anerkjente forskningstilnærminger og -metoder som er relevante og begrunnet
+- vurdere forskningsarbeidet med hensyn på forskningsetikk, herunder eventuelle nødvendige godkjenninger fra NSD
+- drøfte muligheter og utfordringer med metodevalg
+- anvende fag/yrkesdidaktisk teori og forskingslitteratur som er relevant for valgt problemstilling/forskningsspørsmål
+- arbeide selvstendig og evt. delta i relevante forskningsgrupper
+- skrive masteroppgaven ihht. akademisk stil og krav, med en tydelig sammenheng mellom oppgavens ulike deler.
+- analysere og drøfte resultater og funn og begrunne hvordan de har framkommet
+- besvare og drøfte problemstilling/forskningsspørsmål med nødvendige forbehold og implikasjoner.
+- Læringsaktiviteter
+Selvstendig arbeid under veiledning.
+Mastergradsforum med seminarer i vårsemesteret.
+Selvstendig arbeid under veiledning.
+Mastergradsforum med seminarer i vårsemesteret.
+- Læringsstøtte
+Studenten har rett til 80 timer veiledning totalt inklusiv sensurering av masteroppgaven. Det forventes at studenten arbeider selvstendig utover dette veiledningstilbudet.
+- Pensum
+Undervisningsmateriell utvikles individuelt.
+- Forutsatte forkunnskaper
+Krever opptak på lektorprogrammet ved NMBU. Dette masteremnet skal normalt være det eneste emnet som gjenstår i mastergraden.
+- Vurderingsordning, hjelpemiddel og eksamen
+Skriftlig oppgave med muntlig forsvar, teller 100%
+Masteroppgave med justerende muntlig Karakterregel: Bokstavkarakterer   Masteroppgave Karakterregel: Bokstavkarakterer
+- Om bruk av KI
+K3 - Full bruk av KI.
+Bruk av KI er tillatt, men må være i tråd med retningslinjene for bruk av kunstig intelligens (KI) ved NMBU.
+Her finner du KI-kategoriene beskrevet.
+K3 - Full bruk av KI.
+Bruk av KI er tillatt, men må være i tråd med retningslinjene for bruk av kunstig intelligens (KI) ved NMBU.
+Her finner du KI-kategoriene beskrevet.
+- Sensorordning
+Intern og ekstern sensor vurderer masteroppgaven og muntlig eksamen.
+- Obligatorisk aktivitet
+Utfylt kontrakt mellom student og veileder(e), med detaljert framdriftsplan, leveres fakultetet før arbeidet med masteroppgaven kan starte.
+- Undervisningstider
+Studenten arbeider fulltid med oppgaven i to semestre.
+Mastergradsforum med seminar.
+Studenten arbeider fulltid med oppgaven i to semestre.
+Mastergradsforum med seminar.
+- Opptakskrav
+Masteroppgaven på 60 sp innvilges kun etter søknad til Undervisningsutvalget på RealTek.

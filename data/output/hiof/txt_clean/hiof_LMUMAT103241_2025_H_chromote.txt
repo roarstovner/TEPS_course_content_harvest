@@ -1,0 +1,88 @@
+## Fakta om emnet
+## Innholdsfortegnelse
+- Emnet er tilknyttet følgende studieprogram
+- Anbefalte forkunnskaper
+- Undervisningssemester
+- Innhold
+- Studentens læringsutbytte etter bestått emne
+- Undervisnings- og læringsformer
+- Arbeidsomfang
+- Praksis
+- Arbeidskrav - vilkår for å avlegge eksamen
+- Eksamen
+- Sensorordning
+- Evaluering av emnet
+- Litteratur
+## Emnet er tilknyttet følgende studieprogram
+Emnet er obligatorisk for studenter som velger matematikk som
+- masterfordypning (150 studiepoeng) i Grunnskolelærerutdanning 5-10
+- undervisningsfag (90 studiepoeng) i kombinasjon med Profesjonsrettet pedagogikk som masterfordypning i Grunnskolelærerutdanning 5-10
+- undervisningsfag (60 studiepoeng) i kombinasjon med Norsk som masterfordypning i Grunnskolelærerutdanning 5-10
+## Anbefalte forkunnskaper
+Bygger på emnet MAT101 (5-10)
+## Undervisningssemester
+3. semester (høst).
+## Innhold
+Innholdet bygger på gjeldende læreplan i matematikk for grunnskolen og på Nasjonale retningslinjer for fag GLU 5-10. I dette emnet fordyper studenten seg i matematikkdidaktiske og matematikkfaglige tema (Tall, statistikk, kombinatorikk og sannsynlighet) fra MAT101. De matematiske temaene er integrert med matematikkdidaktikk. Der kan følgende lærestoff inngå:
+Tall
+- Dybdekunnskap i regneartene
+- Dybdekunnskap om regning med brøk og negative tall
+- Primtall og primtallsfaktorisering
+- Enkel kongruensregning
+- Begrunnelser for delelighetsregler med noen konkrete bevis
+- Kjennskap til diofantiske ligninger og løsning av enkle diofantiske ligninger
+- Enkle bevis
+Statistikk, sannsynlighet og kombinatorikk
+- Enkel kombinatorikk og binominalformelen.
+- Sannsynlighetsmodeller og utfall.
+- Regning i grunnleggende diskrete sannsynlighetsfordelinger (binomiske og hypergeometriske), begge ved hjelp av valgtre (trediagram), formler og resonnement.
+- Kjennskap til forventningsverdi og normalfordeling.
+Til alle temaer skal det knyttes fagdidaktikk. Det betyr at temaene tilknyttes mellomtrinnets og ungdomstrinnets matematikk, at kjerneområdene settes i sammenheng med lærestoffet. Dette kan skje i emnet og ved et nært samarbeid med praksisfeltet.
+Didaktiske temaer
+- Problemløsning i tall, kombinatorikk og sannsynlighet som metode, med eksempler og problemer knyttet til de faglige emnene.
+- Matematikkvansker: kartlegging og strategiopplæring av elever med matematikkvansker.
+- Digitale ferdigheter i matematikk: nettressurser, applikasjoner og programmer.
+- Ulike læremidlers begrensninger og muligheter; spesielt fokus på tilpasset opplæring, ulike arbeidsmåter og oppgavetyper.
+- Flerkulturelle og samiske perspektiver, for eksempel kjennskap til ulike kulturers oppstilling av de fire regneartene.
+## Studentens læringsutbytte etter bestått emne
+Kunnskap
+Studenten
+- har kunnskap knyttet til ulike matematiske bevis- og argumentasjonsformer og om matematiske teoribygninger innenfor tall, kombinatorikk og sannsynlighet
+- forstår hvordan den digitale utviklingen utvider og forandrer matematikkfagets innhold, begrepsapparat, vurderingsformer og arbeidsmetoder
+- forstår hvordan den digitale utviklingen skaper behov for kritisk vurdering av læremidler og læringsressurser i matematikk
+Ferdigheter
+Studenten
+- kan formidle spesialkunnskap innen et relevant matematikkdidaktisk og/eller matematikkfaglig emne
+- kan vurdere elevenes læring i faget som grunnlag for tilrettelegging av undervisning og tilpasset opplæring
+- kan bruke varierte undervisningsformer forankret i teori og egen praksis
+- kan arbeide teoriforankret og systematisk med kartlegging av matematikkvansker og opplæring tilpasset elever som har matematikkvansker
+- kan anvende digital teknologi, læremidler og læringsressurser for å kunne tilrettelegge for elevers læring i matematikk
+Generell kompetanse
+Studenten
+- kan initiere og lede utviklingsarbeid knyttet til matematikkundervisning
+- kan kritisk drøfte digital teknologi, læringsmidler og læringsressuser, inkludert digitale, med henblikk på utvikling av matematikkfaget og matematikkundervisningen
+- kan anvende og videreutvikle egne digitale ferdigheter i matematikk og tilrettelegge for utvikling av elevers digitale ferdigheter som redskap for læring og i matematikk
+## Undervisnings- og læringsformer
+Studentene skal arbeide i basisgrupper, andre grupperinger og individuelt.
+De skal møte varierte arbeidsmåter i emnet: forelesninger, fagdidaktikk refleksjon, oppgaveregning med ulike typer oppgaver, arbeid med konkrete og utforskende arbeidsmåter. Undervisningen bygger på forskningsbasert kunnskap. IKT skal inngå som en sentral del av emnet og brukes som et redskap for læring, veiledning, samarbeid og dokumentasjon.
+## Arbeidsomfang
+Emnet er beregnet til totalt 400 timers arbeidsinnsats, inkl. timeplanlagt undervisning, selvstudium, arbeidskrav, eksamensforberedelser og eksamensgjennomføring.
+## Praksis
+Det er tre uker praksis i 3. semester. Se nærmere informasjon i programplan for Grunnskolelærerutdanning 5-10 og Plan for praksis (5-10).
+MAT103 har hovedansvar for praksisperioden.
+## Arbeidskrav - vilkår for å avlegge eksamen
+- Oppgavesett. Studentene får i løpet av semesteret sju oppgavesett av faglig og didaktisk karakter i tilknytning til emnet det arbeides med. Disse oppgavene rettes og kommenteres av medstudenter i matematikktimene på oppgitte datoer. Studentene må være til stede under rettingene. Studentene må ha deltatt på og fått godkjent 6 av 7 oppgavesett. De som ved semesterets slutt mangler ett godkjent oppgavesett, får tilbud om å gjøre og rette nye oppgaver på en dato som oppgis av fagansvarlig.
+- Obligatorisk deltakelse i undervisningen, minimum 75 % oppmøte
+- Studentene skal prøve ut et opplegg med tekstprogrammering med medstudenter. I etterkant skal det skrives et refleksjonsnotat med utgangspunkt i gjennomføringen.
+- Deltakelse på profesjonsdager
+- En skriftlig innlevering/oppgave, hvor tema er kritisk drøfting av et digitalt læremiddel studentene er blitt kjent med i praksis (jf. Plan for praksis)
+Arbeidskrav vurderes til godkjent / ikke godkjent. Arbeidskrav må være godkjent før studenten kan fremstille seg til eksamen.
+## Eksamen
+Muntlig individuell eksamen. Varighet: ca. 30 minutter.
+Ingen hjelpemidler tillatt.
+Karakterregel: A-F.
+## Sensorordning
+Ekstern og intern sensur.
+## Evaluering av emnet
+Emnet evalueres i henhold til HiØs kvalitetssystem.
+## Litteratur

@@ -1,0 +1,65 @@
+Dette er emnebeskrivelsen for studieåret 2025-2026. Merk at det kan komme endringer.
+## Emnekode
+MGL4120
+## Versjon
+1
+## Vekting (stp)
+15
+## Semester undervisningsstart
+Høst
+## Antall semestre
+1
+## Vurderingssemester
+Høst
+## Undervisningsspråk
+Norsk
+Vis timeplan
+## Innhold
+Dette emnet gir en innføring i grunnleggende matematiske og logiske metoder. Gjennom emnets aktiviteter vil studentene utvikle evnen til å formalisere og utføre matematiske resonnementer både selvstendig og sammen med elever.
+Emnet omfatter:
+- Matematisk språk, symbolbruk og begrepsdanning.
+- Mengdelære.
+- Egenskaper ved hele, reelle og komplekse tall.
+- Utsagnslogikk.
+- Bevismetoder, inkludert direkte bevis, indirekte bevis, motsigelsesbevis og ulike typer induksjonsbevis.
+- Anvendelse av bevis og matematisk argumentasjon i matematikkundervisning i skolen.
+- Ekvivalensrelasjoner og funksjoner.
+- Kardinalitet til mengder.
+## Læringsutbytte
+Kunnskap
+Etter endt studium skal studenten ha kunnskap om:
+-  Grunnleggende mengdelære, herunder notasjon, terminologi og operasjoner for mengder.
+-  Egenskaper ved hele, reelle og komplekse tall.
+-  Grunnleggende utsagnslogikk, herunder logiske konnektiver, åpne og sammensatte utsagn, logisk evkvialens og kontradisksjon.
+-  Ekvivalensrelasjoner og definisjon av funksjonsbegrepet som en ekvivalensrelasjon.
+-  Kardinalitet til mengder, herunder tellbarhet og overtellbarhet.
+Ferdigheter
+Etter endt studium skal studenten kunne:
+-  Forstå, formalisere og gjennomføre matematiske resonnementer ved å anvende ulike metoder for bevis.
+-  Sette seg inn i matematiske resonnement og verifisere de logiske argumentene.
+-  Planlegge og gjennomføre egen undervisning som omhandler bevis og matematisk argumentasjon i skolen.
+Generell kompetanse
+Etter endt studium skal studenten:
+-  Kunne initiere og lede undersøkelser og eksperimenter som danner utgangspunkt for matematisk deduksjon.
+-  Kunne vurdere de logiske konsekvensene av matematiske utsagn i skolematematikken, samt evaluere graden av nøyaktighet i læremidler og oppgaver.
+## Forkunnskapskrav
+60 studiepoeng i matematikk fra syklus 1 i lærerutdanning eller tilsvarende kompetanse i matematikk.
+## Eksamen / vurdering
+## Vilkår for å gå opp til eksamen/vurdering
+Gjennom semesteret skal det leveres to skriftlige arbeidskrav. Hvert arbeidskrav skal inkludere et kort refleksjonsnotat som beskriver prosessen med å løse oppgavene.
+## Fagperson(er)
+## Emneansvarlig:
+## Faglærer:
+## Studieprogramleder:
+## Praksiskoordinator:
+## Studiekoordinator:
+## Arbeidsformer
+Seminarundervisning med forelesning, oppgaveregning, diskusjon og gruppearbeid.
+Det legges opp til at studentgruppen skal fungere som et læringsfellesskap, blant annet gjennom en 'regnestue' der studentene kan samles for å arbeide med oppgaver og problemstillinger i fellesskap.
+Det forutsettes at studentene arbeider med oppgaver utenom undervisningstiden.
+Notater fra undervisningen vil bli delt i læringsplattformen Canvas.
+## Praksis
+15 dagers praksis.
+## Åpent for
+## Emneevaluering
+## Litteratur

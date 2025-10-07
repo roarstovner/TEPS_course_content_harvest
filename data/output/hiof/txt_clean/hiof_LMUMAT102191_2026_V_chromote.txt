@@ -1,0 +1,167 @@
+## Fakta om emnet
+## Innholdsfortegnelse
+- Emnet er tilknyttet følgende studieprogram
+- Undervisningssemester
+- Innhold
+- Studentens læringsutbytte etter bestått emne
+- Undervisnings- og læringsformer
+- Arbeidsomfang
+- Praksis
+- Arbeidskrav - vilkår for å avlegge eksamen
+- Eksamen
+- Sensorordning
+- Evaluering av emnet
+- Litteratur
+## Emnet er tilknyttet følgende studieprogram
+Emnet er obligatorisk for studenter som velger matematikk som
+-
+masterfordypning (150 studiepoeng) i Grunnskolelærerutdanning 5-10
+-
+undervisningsfag (90 studiepoeng) i kombinasjon med Profesjonsrettet pedagogikk som masterfordypning i Grunnskolelærerutdanning 5-10
+-
+undervisningsfag (60 studiepoeng) i kombinasjon med Norsk som masterfordypning i Grunnskolelærerutdanning 5-10
+I emnet inngår nasjonal deleksamen i regi av Kunnskapsdepartementet og Nasjonalt organ for kvalitet i utdanningen (NOKUT). Det tas forbehold om endringer i emnet som følge av instruksjoner om nasjonal deleksamen.
+## Undervisningssemester
+2. semester (vår).
+## Innhold
+Innholdet bygger på gjeldende læreplan i matematikk for grunnskolen og Nasjonale retningslinjer for fag GLU 5-10. Følgende lærestoff inngår i emnet:
+-
+Overgang fra aritmetikk til algebra; eksperimentering og generalisering av figurtall og andre tallmønster
+-
+Ferdighetstrening i algebra
+-
+Ligninger og ulikheter av første grad med og uten brøk. Ulike representasjoner i løsningene, for eksempel grafisk, geometrisk og algebraisk, på papir og digitalt
+-
+Ligninger med to ukjente; ulike løsningsmetoder, med og uten tekst, på papiret og digitalt
+-
+Andregradslikninger; Ulike representasjoner i løsningene, for eksempel grafisk, geometrisk og algebraisk, på papir og digitalt
+-
+Funksjonsbegrepet, definisjonsmengde og løsningsmengde
+-
+Utforske ulike typer funksjoner med praktiske oppgaver som utgangspunkt; Lineære, proporsjonale, omvendt proporsjonale, andregradsfunksjoner og eksponentialfunksjoner
+-
+Ulike representasjonsmåter for funksjoner; tekst, situasjon, graf, algebra, tabell
+-
+Bruk av geometriprogram og graftegner (som GeoGebra) i geometri og funksjoner
+-
+Egenskaper ved to- og tredimensjonale figurer
+-
+Geometriske konstruksjoner (med passer og digitalt) og geometriske steder
+-
+Kongruensavbildninger med og uten digitale verktøy, symmetrier og mønstre fra den samiske kulturen og andre kulturer
+-
+Den pytagoreiske læresetning og formlikhet
+-
+Perspektivtegninger med flere forsvinningspunkt, med og uten digitale verktøy
+-
+Målinger; lengder, omkrets, vinkler, areal, overflate, volum og tid og målestokk. Omgjøring mellom enheter. Utledning av formler.
+-
+Blokkprogrammering knyttet til det faglige innholdet.
+Til alle temaer skal det knyttes fagdidaktikk. Det betyr at temaene tilknyttes mellomtrinnets og ungdomstrinnets matematikk. Dette kan skje i emnet og ved et nært samarbeid med praksisfeltet.
+Fagdidaktiske temaer:
+-
+Kartlegging og diagnostisk undervisning innenfor algebra, funksjoner, geometri og målinger
+-
+Læring og undervisning i matematikk med hovedvekt på trinn 5 - 10.
+-
+Presentasjon av forskningsresultater om hvordan elever lærer og hva god matematikkundervisning er
+-
+Overgangen mellom ulike skoleslag
+-
+Muntlige ferdigheter i matematikk; språk, kommunikasjon, språk av 1. og 2.orden, den matematiske samtalen og tospråklighet
+-
+Å kunne lese i matematikk; symbolspråk, representasjoner, ulike tekster og lesestrategier
+-
+Å kunne skrive i matematikk; tenkeskriving og presentasjonsskriving
+-
+Digitale ferdigheter i matematikk; geometriprogram og graftegner (som GeoGebra), regneark, programmeringsverktøy, digitale læringsmidler og læringsressurser innenfor emnets temaer
+-
+Vurdering av og for læring; ulike elevbesvarelser og oppgaveformuleringer
+-
+Psykososialt læringsmiljø knyttet til det tverrfaglige temaet Folkehelse og livsmestring i matematikkfaget
+Gjennom de ulike faglige temaene skal studentene lære om og erfare ulike arbeidsmåter som er relevante for arbeidet på trinn 5-10. Arbeidsmåtene i emnet skal være preget av utforsking, forståelse, de skal fremme kreativitet og undring hos kommende elever.
+I studieplanen presenteres ulike fagovergripende temaer som ivaretas gjennom flerfaglige aktiviteter.
+## Studentens læringsutbytte etter bestått emne
+Kunnskap
+Studenten
+-
+har dybdekunnskap innenfor algebra, funksjoner, geometri og måling som elevene arbeider med på trinn 5-10
+-
+har kunnskap om ulike representasjoner innenfor alle de matematikkfaglige temaene i emnet og den betydningen som bruk av og overganger mellom representasjoner kan ha for elevers læring
+-
+har kunnskap om matematiske læring- og utviklingsprosesser og hvordan legge til rette for at elever kan ta del i slike prosesser
+-
+har kunnskap om interaksjonsmønster, kommunikasjon og språkets rolle for læring av matematikk
+-
+har kunnskap de grunnleggende ferdighetene muntlige ferdigheter, å kunne lese og å kunne skrive og progresjonen innenfor hver av disse
+-
+har kunnskap om overgangene fra barnetrinn til ungdomstrinn og fra ungdomstrinn til videregående skole
+-
+forstår hvordan digitale læremidler og læringsressurser bidrar til elevers læring av matematikk og har kunnskap om læring i digitale omgivelser
+-
+forstår grunnleggende prinsipper i algoritmisk tankegang og dens betydning for digitalisering i matematikkfaget
+-
+kunnskap om hvordan det psykososiale læringsmiljøet påvirker læring
+Ferdigheter
+Studenten
+-
+kan observere, planlegge, gjennomføre og vurdere matematikkundervisning for alle elever, med fokus på variasjon og elevaktivitet
+-
+kan bruke arbeidsmåter som fremmer elevenes undring, kreativitet og evne til å arbeide systematisk med utforskende aktiviteter, begrunnelser, argumenter og bevis
+-
+kan reflektere over hvordan man kan kommunisere med elever, lytte til, vurdere, gjøre bruk av elevers innspill og stimulere elevenes matematiske tenkning
+-
+kan analysere og vurdere elevers tenkemåter, argumentasjon og løsningsmetoder ut fra ulike perspektiv på kunnskap og læring
+-
+kan vurdere elevenes måloppnåelse med og uten karakterer, begrunne vurderingene og gi læringsfremmende framovermeldinger
+-
+kan anvende digitale læremidler og læringsressurser i matematikk, også for å kunne legge til rette for elevers læring av matematikk og skape rammene for utvikling av elevers kreativitet, problemløsingsevner og algoritmisk tankegang i matematikk
+Generell kompetanse
+Studenten
+-
+har innsikt i matematikkfagets betydning for utvikling av kritisk demokratisk kompetanse
+-
+kan tilpasse og reflektere over ulike arbeidsmåter som fremmer læring i matematikk, også i digitale omgivelser.
+-
+kan reflektere over betydningen digitale arbeidsmetoder, vurderingsformer, læremidler og læringsressurser har for egen profesjonsutøvelse i matematikkfaget
+Nasjonal deleksamen skal prøve følgende fire av de ovennevnte læringsutbyttebeskrivelser anvendt på det matematikkfaglige emnet algebraisk tenkning:
+Studenten
+-
+har dybdekunnskap om matematikken elevene arbeider med på trinn 5-10
+-
+har kunnskap om ulike representasjoner og betydningen bruk av og overganger mellom representasjoner kan ha for elevers læring
+-
+har kunnskap om bruk av ulike læremidler, både digitale og andre, og muligheter og begrensninger ved slike læremidler
+-
+kan analysere og vurdere elevers argumentasjon og løsningsmetoder ut fra ulike perspektiv på kunnskap og læring
+Algebraisk tenkning går på tvers av ulike matematiske temaer som det jobbes med på 5.-10. trinn. Slik tenkning innebærer søk etter samvariasjon, generelle strukturer, mønstre og relasjoner, beskrivelse av disse ved bruk av ord og symboler, og resonnering og argumentasjon. Det skjer her i arbeid med tall og regneoperasjoner, og situasjoner fra matematikk eller "virkeligheten" som omhandler samvariasjon mellom størrelser. Et viktig aspekt ved algebraisk tenking er bruk av ord eller symboler til å beskrive vilkår en størrelse skal oppfylle, som for eksempel i arbeid med ligninger og ulikheter.
+## Undervisnings- og læringsformer
+Studentene skal arbeide i basisgrupper, andre grupperinger og individuelt.
+Studentene skal møte varierte arbeidsmåter i emnet: Forelesninger, oppgaveregning med ulike typer oppgaver, arbeid med konkreter og ta del i utforskende arbeidsmåter. Undervisningen bygger på forskningsbasert kunnskap. IKT skal inngå som en sentral del av emnet og brukes som et redskap for læring, veiledning, samarbeid og dokumentasjon.
+## Arbeidsomfang
+Emnet er beregnet til totalt 400 timers arbeidsinnsats, inkl. timeplanlagt undervisning, selvstudium, arbeidskrav, eksamensforberedelser og eksamensgjennomføring.
+## Praksis
+Studentene har tre uker praksis i 2. semester. Se nærmere informasjon i studieplan for Grunnskolelærerutdanning 5-10 og Plan for praksis (5-10).
+MAT102 har hovedansvar for praksisperioden. Det er knyttet arbeidskrav til praksisperioden; se pkt. Arbeidskrav.
+## Arbeidskrav - vilkår for å avlegge eksamen
+-
+Delta og få godkjent sju av ni oppgavesett
+-
+Deltakelse på profesjonsdager
+-
+Observasjonsoppgave. Skriftlig innlevering (jf. Plan for praksis)
+Oppgavesett
+Studentene får i løpet av semesteret ni oppgavesett av faglig og didaktisk karakter i tilknytning til temaet det arbeides med. Disse oppgavene rettes og kommenteres av medstudenter i matematikktimene på oppgitte datoer. Studentene må være til stede under rettingene, og alle oppgavene må være gjort. Minimum to av arbeidskravene skal framføres muntlig i smågrupper slik at det er sammenheng mellom eksamensform og arbeidskrav. Perspektivene fra nasjonale retningslinjer, vurdering og grunnleggende ferdigheter, skal inngå i arbeidskravene. Dessuten inkluderes akademisk refleksjon og blokkprogrammering i disse oppgavesettene. Studentene må få godkjent 7 av 9 slike oppgavesett. De som ved semesterets slutt mangler ett godkjent oppgavesett, får tilbud om å gjøre og rette nye oppgaver på en dato som oppgis av fagansvarlig.
+Arbeidskrav vurderes til godkjent / ikke godkjent. Arbeidskravene må være godkjent av faglærer før studenten kan fremstille seg til eksamen.
+## Eksamen
+Emnet har to deleksamener:
+Deleksamen 1: Individuell, muntlig eksamen (vekting 2/3). Varighet: 30 minutter. Studenten skal presentere et selvvalgt matematikkdidaktisk tema knyttet til utbyttebeskrivelsene. I resten av eksaminasjonen eksamineres det med utgangspunkt i emnets temaer, både i matematikkfaglige og matematikkdidaktiske oppgaver. Tillatt hjelpemiddel: På presentasjonen av det selvvalgte temaet kan studenten bruke notatark. Karakterregel: A-F.
+Deleksamen 2: Individuell, skriftlig nasjonal deleksamen (vekting 1/3). Varighet 4 timer. Det arrangeres en nasjonal deleksamen i temaet algebraisk tenkning. Denne eksamen har et omfang på 5 studiepoeng. Karakterregel: A-F. Ingen hjelpemidler tillatt.
+Begge deleksamenene må være bestått for å få bestått resultat i emnet. Det gis en samlet sluttkarakter i emnet etter karakterregel A-F.
+## Sensorordning
+Deleksamen 1: Intern og ekstern sensur.
+Deleksamen 2 (nasjonal deleksamen): Ekstern sensur
+## Evaluering av emnet
+Emnet evalueres i henhold til HiØs kvalitetssystem.
+## Litteratur
+Gjeldende litteraturliste for 2024 Vår finner du i Leganto

@@ -1,0 +1,46 @@
+## MGBMA201 Matematikk 1, emne 2 - Den utforskende matematikklærer - med fokus på mellomtrinnet
+##  Emneplan for studieåret 2025/2026
+## Innhold og oppbygning
+Matematikk 1, emne 2, 15 sp er andre del av 30 sp obligatorisk kurs i matematikk. Innhold i kurset og praksis vil sees i sammenheng.
+Mens det i emne 1 var et særlig fokus på begynneropplæring, vil lærerkunnskap i matematikk som introduseres og arbeides med på mellomtrinnet, få mer plass i emne 2. Kunnskap om matematikkfagets innhold på ungdomstrinnet vil bli introdusert og arbeidet med for å gi kunnskap til å legge til rette for god overgang mellom barneskole og ungdomstrinn. I studiet arbeides det med matematikklæring og undervisning i henhold til gjeldene læreplan. Det vektlegges kreativitet, utforskende arbeid, resonnering og argumentasjon innen faget, samt matematiske samtaler i klasserommet som stimulerer til kritisk matematisk tenkning. Ulike perspektiv på kunnskap og læring virker inn på hvordan en forstår og praktiserer undervisning i matematikk. Denne kunnskapen legger grunnlag for utforskning og vurdering av arbeidsmåter og av elevers læring. Kunnskap om muligheter og begrensninger ved ulike representasjoner og ulike læremidler er et gjennomgående tema. Tilpasset opplæring sees i dette emnet i sammenheng med språklig og kulturelt mangfold i matematikkundervisningen. Studentene skal få innsikt i matematikken elevene skal lære og utvikle dybdekunnskap om sentrale matematiske begrep og prosesser. Algebraisk tenkning er sentralt i emnet og tema for nasjonal deleksamen. Algebraisk tenkning innebærer søk etter samvariasjon, generelle strukturer, mønstre og relasjoner, beskrivelser av disse ved bruk av ord og symboler og resonnering og argumentasjon. Det knyttes til matematiske og ikke-matematiske situasjoner som omhandler samvariasjon, og til beskrivelser av størrelser som oppfyller bestemte vilkår som i arbeidet med likninger og ulikheter. I emnet vektlegges arbeid med et utvidet tallområde, hvor grunnleggende begrepsmessig forståelse av brøk behandles grundig. Det arbeides også med tema som sannsynlighet og kombinatorikk.
+## Læringsutbytte
+Ved fullført emne skal studenten ha følgende totale læringsutbytte:
+Kunnskaper
+Studenten
+- har dybdekunnskap om matematikken elevene arbeider med på barnetrinnet med spesiell vekt på begynneropplæringen *
+- har dybdekunnskap om algebraisk tenkning, inkludert søk etter samvariasjon, generelle strukturer, mønstre og relasjoner, som elevene arbeider med på barnetrinnet
+- har dybdekunnskap om et utvidet tallområde som elever arbeider med på barnetrinnet, med spesiell vekt på mellomtrinnet
+- har kunnskap om kombinatorikk og sannsynlighet
+- har kunnskap om ulike representasjoner og betydningen bruk av og overganger mellom representasjoner kan ha for elevers læring *
+- har kunnskap om interaksjonsmønster og kommunikasjon for læring av matematikk og om ulike syn på læring av matematikk
+- har kunnskap om matematikkfagets innhold på ungdomstrinnet med særlig blikk på overgangen fra mellomtrinn til ungdomstrinn
+- har kunnskap om bruk av ulike læremidler, både digitale og andre, og muligheter og begrensninger ved slike læremidler *
+Ferdigheter
+Studenten
+- kan planlegge, gjennomføre og vurdere matematikkundervisning i emnets matematikkfaglige tema, for alle elever med fokus på variasjon, kreativitet og elevaktivitet
+- kan bruke og utforske arbeidsmåter som fremmer elevenes evne til å arbeide systematisk med utforskende aktiviteter, resonnering og argumentasjon
+- kan analysere og vurdere elevers argumentasjon og løsningsmetoder ut fra ulike perspektiv på kunnskap og læring *
+- kan kommunisere med elever, lytte til, vurdere, gjøre bruk av elevers innspill og stimulere elevers matematiske tenkning i arbeid med tall, algebra, enkle funksjoner, kombinatorikk og sannsynlighet
+- kan legge til rette for tidlig innsats og tilpasse opplæringen ut fra elevenes ulike behov, der ulike kulturelle, språklige og sosial bakgrunn både tas hensyn til og brukes som ressurs i undervisningen
+Generell kompetanse
+Studenten
+- har innsikt i matematikkfagets betydning for utvikling av kritisk demokratisk kompetanse, deriblant innsikt i de tverrfaglige temaene i læreplanen
+Kulepunktene merket med * er hentet fra nasjonal deleksamen. For ytterligere informasjon se nasjonal emneplan.
+## Krav til forkunnskaper
+Ingen
+## Undervisnings- og læringsformer
+Arbeidsformene er varierte og kan være forelesning, fagseminar, observasjon, gruppearbeid i større og mindre grupper, studentframlegg og individuell veiledning. Arbeidsformene stiller krav om selvstendig fordypning i pensumlitteratur og aktiv tilnærming til problemstillinger studentene blir presentert for. En forventer at studentene organiserer kollokviegrupper.
+## Obligatorisk læringsaktivitet
+- Innlevering av et faglig arbeid
+- Bidrag på seminar
+- Deltakelse på minimum 80% av undervisningen
+Minst en av de obligatoriske læringsaktivitetene vil være knyttet til praksis. Semesterplanen vil gi nærmere retningslinjer for obligatoriske læringsaktiviteter.
+De obligatoriske læringsaktivitetene må være godkjent av emneansvarlig senest 2 uker før studenten kan framstille seg til eksamen. Dersom en obligatorisk læringsaktivitet blir vurdert som ikke godkjent, skal det bli gitt en begrunnelse for dette. Studenter som ikke får godkjent en obligatorisk læringsaktivitet vil, så langt det lar seg gjøre innen fastsatte frister, få ett nytt forsøk i inneværende semester.
+## Vurderingsform
+- Del 1: Skoleeksamen, 4 timer. Vekting 2/3 av endelig karakter.
+- Del 2: Individuell skriftlig nasjonal deleksamen, 4 timer. Vekting 1/3 av endelig karakter.
+Begge deler må være bestått for å få karakter i emnet. Ved ikke bestått på en av delene, kan den delen som ikke er bestått bli tatt som ny eksamen.
+Karakterskala A-F, der F tilsvarer ikke bestått.
+## Hjelpemidler ved eksamen
+Del 1 - Skoleeksamen: Enkel kalkulator, Casio fx-82 (alle typar: ES, ES Plus, EX, Solar m.m.)
+Del 2 - Individuell skriftlig nasjonal deleksamen: Ingen hjelpemidler
