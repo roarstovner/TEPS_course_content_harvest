@@ -72,7 +72,8 @@ course_urls_latest.txt
 | 2️⃣ | `scripts/02_generate_urls.R` | Genererer URL-er fra YAML-mønstre |
 | 3️⃣ | `scripts/03_scrape_chromote_only.R` | Rendre og lagre HTML med Chromote |
 | 4️⃣ | `scripts/04_parse_html.R` | Parse HTML → renset tekst (Markdown-lignende format) |
-| 5️⃣ | `scripts/05_qacheck.R` | QA: sjekker at hovedseksjoner finnes (Læringsutbytte, Vurdering, osv.) |
+| 6️⃣ | `scripts/06_arbeidskrav_manually.R` | Ekstraherer *Arbeidskrav*-seksjoner |
+| 7️⃣ | `scripts/05_qacheck.R` | QA-sjekk av seksjoner og tekstlengde |
 
 Alle parametere styres gjennom miljøvariabler i `00_run_all.R`.
 
@@ -225,6 +226,100 @@ uis          | Mangler hovedseksjoner   | 75
 uio          | OK                       | 47
 hiof         | OK                       | 56
 ```
+
+------------------------------------------------------------------------
+
+## 🧩 Steg 6 – Arbeidskrav-ekstraksjon
+
+**Fil:** `scripts/06_arbeidskrav_manually.R`
+
+Etter at kurs­tekstene er renset i steg 4, trekkes ut egne deltekster for
+seksjonen **Arbeidskrav** (hvis den finnes).  
+Skriptet bruker regulære uttrykk for å finne teksten mellom overskriften
+`## Arbeidskrav` og neste seksjon.
+
+### 📘 Metode
+
+- søker etter linjer som matcher `(?i)^##\\s*arbeidskrav`
+- lagrer alt frem til neste `##`-overskrift
+- fjerner overflødig whitespace, HTML-rester og punktmerking
+- legger resultatet i ny kolonne `arbeidskrav` i `courses_clean.csv`
+
+### 📁 Output
+
+Hver institusjons `courses_clean.csv` får nå kolonner:
+
+| Kolonne | Beskrivelse |
+|----------|--------------|
+| `institution` | institusjonsforkortelse |
+| `course_code` | kurskode hentet fra filnavn |
+| `url` | original lenke til emnesiden |
+| `fulltekst_renset` | hele rensede emneteksten |
+| `arbeidskrav` | utdrag mellom *## Arbeidskrav* og neste seksjon |
+| `status_code` | (valgfritt) HTTP-status fra scraping |
+
+### 💾 Filplassering
+
+```text
+data/output/<inst>/courses_clean.csv
+```
+
+Hvis `Arbeidskrav` ikke finnes i teksten, blir kolonnen tom, men
+beholdes for strukturens skyld.
+
+------------------------------------------------------------------------
+
+## 🔍 Steg 7 – Kvalitetskontroll (QA)
+
+**Fil:** `scripts/05_qacheck.R`
+
+Skriptet kontrollerer at hver renset kurs­tekst inneholder
+hovedseksjoner som *Læringsutbytte*, *Arbeidskrav*, *Vurdering*,
+*Undervisning* eller *Pensum*, og at teksten ikke er for kort.
+
+### 📊 Hva som sjekkes
+
+| Parameter | Forklaring |
+|------------|-------------|
+| `found_sections` | antall forekomster av nøkkelord |
+| `n_chars` | antall tegn i teksten |
+| `status` | OK / Mangler hovedseksjoner / For kort |
+
+### 📁 Output
+
+To CSV-rapporter lagres i `_aggregated`-mappen:
+
+```text
+data/output/_aggregated/qa_section_check_detailed.csv
+data/output/_aggregated/qa_section_summary.csv
+```
+
+**Eksempel på sammendrag:**
+
+```text
+institution | status                    | n_files
+-------------|---------------------------|---------
+uis          | Mangler hovedseksjoner    | 75
+uio          | OK                        | 47
+hiof         | For kort / mulig feil sel | 4
+```
+
+------------------------------------------------------------------------
+
+## ⚙️ Miljøvariabler for nye steg
+
+I `scripts/00_run_all.R` kan du aktivere eller deaktivere disse delene
+av pipelinen:
+
+```r
+Sys.setenv(
+  TEPS_RUN_ARBEIDSKRAV = "TRUE",  # kjør arbeidskrav-ekstraksjon
+  TEPS_RUN_QA_CHECK     = "TRUE"  # kjør QA-sjekk
+)
+```
+
+Begge kjører automatisk etter parsing-steget dersom variablene står til
+`TRUE`.
 
 ------------------------------------------------------------------------
 

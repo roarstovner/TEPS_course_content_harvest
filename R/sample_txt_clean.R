@@ -42,3 +42,4 @@ for (inst_path in inst_dirs) {
 
 cat("\n📦 Sampling done!\n")
 cat("Se mappen: ", normalizePath(sample_dir), "\n", sep = "")
+

@@ -1,22 +1,177 @@
+# ==========================================================
+# TEPS arbeidskrav-konfigurasjon v2.1 (2025-10-07)
+# ----------------------------------------------------------
+# Improved from analysis of arbeidskrav_detailed dataset
+# Covers all 17 TEPS institutions with refined include/exclude
+# ==========================================================
+
 global:
   include:
-    - "arbeidskrav"
-    - "obligatorisk(e)? aktivitet(er)?"
-    - "innlevering"
-    - "oppgave"
-    - "rapport"
-    - "presentasjon"
+    # ---- Core Norwegian/Nynorsk forms ----
+    - "(?i)arbeidskrav"
+    - "(?i)obligatorisk(e)?\\s+(aktivitet(er)?|arbeid|oppgave(r)?)"
+    - "(?i)studiekrav"
+    - "(?i)innlever(ing|e)"
+    - "(?i)oppg(av|åv)e(r)?"
+    - "(?i)rapport"
+    - "(?i)refleksjon(snotat)?"
+    - "(?i)mappe"
+    - "(?i)prosjekt(oppgave)?"
+    - "(?i)presentasjon|framlegg|framføring"
+    - "(?i)konsert|forestilling|produksjon|performance"
+    - "(?i)praksis(oppg(av|åv)e|rapport)?"
+    - "(?i)fagfellevurdering|peer review"
+    - "(?i)læringslogg|refleksjonslogg"
+    # ---- Assessment verbs / conditions ----
+    - "(?i)må\\s+(være|vere)\\s+(godkjent|bestått)"
+    - "(?i)må\\s+få\\s+godkjent"
+    - "(?i)vurderes\\s+til\\s+(godkjent|ikke\\s+godkjent|bestått)"
+    - "(?i)skal\\s+leveres"
+    - "(?i)må\\s+gjennomføres"
+    - "(?i)kreves\\s+for\\s+eksamen"
+    - "(?i)fullføres\\s+før\\s+eksamen"
+    - "(?i)del\\s+av\\s+vurderingsgrunnlaget"
+    # ---- English equivalents ----
+    - "(?i)mandatory\\s+(assignment(s)?|coursework|activities?)"
+    - "(?i)compulsory\\s+(assignment|task|activity)"
+    - "(?i)course\\s+requirements?"
+    - "(?i)work\\s+requirement(s)?"
+    - "(?i)assessment\\s+requirement(s)?"
+    - "(?i)approved\\s+(assignment|task|activity)"
+    - "(?i)assignments?\\s+must\\s+(be\\s+)?(approved|passed)"
+    - "(?i)completion\\s+of\\s+(coursework|assignments?)"
+    - "(?i)students?\\s+must\\s+(complete|pass)\\s+(mandatory|compulsory)\\s+(activities|assignments?)"
   exclude:
-    - "oppmøte"
-    - "deltakelse"
-    - "tilstede"
-    - "frammøte"
-    - "80[%]"
-    - "75[%]"
+    # ---- Oppmøte/deltakelse patterns ----
+    - "(?i)oppm(ø|o)te"
+    - "(?i)deltakelse"
+    - "(?i)tilstede(værelse)?"
+    - "(?i)framm(ø|o)te"
+    - "(?i)aktiv\\s+deltakelse"
+    - "(?i)aktiv\\s+studentdeltakelse"
+    - "(?i)deltakelse\\s+(på|i)\\s+(seminar|undervisning|forelesning)"
+    - "(?i)oppm(ø|o)te\\s+(på|i)"
+    - "\\b(60|70|75|80|85|90)\\s?%\\b"
+    # ---- English equivalents ----
+    - "(?i)attendance"
+    - "(?i)class\\s+attendance"
+    - "(?i)compulsory\\s+attendance"
+    - "(?i)active\\s+participation"
+    - "(?i)participation\\s+(in|at)"
+    - "(?i)presence\\s+(in|at)"
+    - "(?i)participation\\s+in\\s+(seminars?|classes?)"
+
+# ==========================================================
+# Institution-specific adjustments
+# ==========================================================
+
+uit:
+  include:
+    - "(?i)obligatoriske\\s+arbeidskrav"
+  exclude: []
+
+uis:
+  include:
+    - "(?i)refleksjonsoppgave"
+    - "(?i)gruppepresentasjon"
+    - "(?i)prosjektoppgave"
+
+uio:
+  include:
+    - "(?i)obligatorisk(e)?\\s+aktivitet(er)?"
+    - "(?i)innlevering"
+  exclude:
+    - "(?i)deltakelse"
+    - "(?i)oppm(ø|o)te"
+    - "(?i)aktiv\\s+deltakelse"
+
+uib:
+  include:
+    - "(?i)innlevering"
+    - "(?i)oppgåve"
+    - "(?i)fagfellevurdering"
+  exclude:
+    - "(?i)deltaking"
+    - "\\b80\\s?%\\b"
+
+uia:
+  include:
+    - "(?i)mappeinnlevering"
+    - "(?i)praksisrapport"
+  exclude:
+    - "(?i)oppm(ø|o)te"
 
 usn:
   include:
-    - "arbeidskrav"
-    - "innlevering"
-    - "refleksjonsnotat"
-    - "prosjektoppgave"
+    - "(?i)refleksjonsnotat"
+    - "(?i)prosjektoppgave"
+
+ntnu:
+  include:
+    - "(?i)obligatoriske\\s+aktiviteter"
+    - "(?i)labrapport"
+  exclude:
+    - "(?i)attendance"
+
+hvl:
+  include:
+    - "(?i)praksis"
+    - "(?i)refleksjon"
+    - "(?i)gruppeprosjekt"
+  exclude:
+    - "(?i)deltaking"
+
+inn:
+  include:
+    - "(?i)refleksjonsnotat"
+    - "(?i)praksisrapport"
+
+nord:
+  include:
+    - "(?i)praksisoppgave"
+    - "(?i)prosjekt"
+
+hiof:
+  include:
+    - "(?i)arbeidskrav"
+    - "(?i)innlevering"
+
+oslomet:
+  include:
+    - "(?i)refleksjonsoppgave"
+
+mf:
+  include:
+    - "(?i)studiekrav"
+    - "(?i)FoU-oppgave"
+    - "(?i)tema"
+    - "(?i)bestått praksis"
+
+nla:
+  include:
+    - "(?i)refleksjon"
+    - "(?i)konsert"
+    - "(?i)framlegg"
+
+nih:
+  include:
+    - "(?i)mappe"
+    - "(?i)refleksjon"
+    - "(?i)undervisningsopplegg"
+  exclude:
+    - "\\b80\\s?%\\b"
+    - "(?i)deltakelse"
+
+hivolda:
+  include:
+    - "(?i)praksis"
+    - "(?i)refleksjon"
+
+nmbu:
+  include:
+    - "(?i)obligatorisk(e)?\\s+(aktivitet(er)?|innlevering(er)?)"
+    - "(?i)refleksjonsnotat"
+    - "(?i)må\\s+(være|vere)\\s+godkjent"
+  exclude:
+    - "(?i)oppm(ø|o)te"
+    - "(?i)deltakelse"

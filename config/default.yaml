@@ -43,13 +43,11 @@ sections:
   Innhold:
     - "(?i)^\\s*(innhold|course content|content|temaer i emnet|temaoversikt)\\s*:?$"
   Arbeidsformer:
-    - "(?i)^\\s*(arbeidsformer|undervisningsformer|arbeidsmåter|learning activities|teaching methods)\\s*:?$"
-  Arbeidskrav:
-    - "(?i)^\\s*(arbeidskrav|obligatoriske aktiviteter|obligatorisk arbeid|coursework requirements?)\\s*:?$"
+    - "(?i)^\\s*(arbeidsformer|undervisningsformer|arbeidsmåter|arbeidsmetoder|learning activities|teaching methods|study methods)\\s*:?$"
   Undervisning:
     - "(?i)^\\s*(undervisning|forelesning(er)?|seminar(er)?|praktisk undervisning)\\s*:?$"
   Vurdering:
-    - "(?i)^\\s*(vurdering|eksamen|vurderingsform|vurderingsordning|assessment|examination)\\s*:?$"
+    - "(?i)^\\s*(vurdering|eksamen|eksamen og vurdering|vurderingsform|vurderingsordning|assessment|examination|grading)\\s*:?$"
   Forkunnskapskrav:
     - "(?i)^\\s*(forkunnskap(er)?|opptakskrav|prerequisites?|admission requirements?)\\s*:?$"
   Pensum:
@@ -57,4 +55,5 @@ sections:
   Læringsaktiviteter:
     - "(?i)^\\s*(læringsaktiviteter|learning activities)\\s*:?$"
   Annet:
-    - "(?i)^\\s*(annet|merknader|other information)\\s*:?$"
+    - "(?i)^\\s*(annet|merknader|remarks|other information|additional information|course information)\\s*:?$"
+
