@@ -1,0 +1,48 @@
+## Programplaner og emneplaner - Student
+## EPN-V2
+##  M5GMT3100 Matematikk, emne 4 Emneplan
+##  Innledning
+Fagplanen tilhørende dette emnet er lagt på emne M5GMT1100 Matematikk, emne 1.
+Sentralt i emnet er arbeid med ulike sider av geometri og måling. I den sammenheng arbeides det også med utvikling av matematisk språk og tenkning med vekt på bevis og matematisk teoribygging. I dette emnet fordyper studenten seg i noen av de matematikkdidaktiske og matematikkfaglige temaene fra matematikk 1. Blikket er mer rettet mot forskning enn i matematikk 1. En vesentlig del av dette emnet er å gjennomføre et utviklingsarbeid.
+##  Forkunnskapskrav
+Ingen.
+##  Læringsutbytte
+Etter fullført emne har studenten følgende læringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+Kunnskap
+Studenten
+- har dybdekunnskap om matematikken elevene arbeider med på trinn 5-10
+- har kunnskap om matematiske læring- og utviklingsprosesser og hvordan legge til rette for at elever kan ta del i slike prosesser
+- har kunnskap om interaksjonsmønster, kommunikasjon og språkets rolle for læring av matematikk og ulike syn på læring av matematikk
+- har kunnskap om ulike representasjoner og betydningen bruk av og overganger mellom representasjoner kan ha for elevers læring
+- har kunnskap om bruk av ulike læremidler, både digitale og andre, og muligheter og begrensninger ved slike læremidler
+- har kunnskap om matematikkfagets innhold på de ulike trinnene i grunnskolen og i videregående skole og om overgangene fra barnetrinn til ungdomstrinn og fra ungdomstrinn til videregående skole
+- har kunnskap knyttet til ulike matematiske bevis- og argumentasjonsformer og om matematisk teoribygging
+- har kunnskap om ulike teorier for læring, og om sammenheng mellom læringssyn og fag- og kunnskapssyn
+- har kunnskap om metoder innenfor matematikkdidaktisk forsking
+Ferdigheter
+Studenten
+- kan planlegge, gjennomføre og vurdere matematikkundervisning for alle elever på trinn 5-10, med fokus på variasjon og elevaktivitet
+- kan bruke arbeidsmåter som fremmer elevenes undring, kreativitet og evne til å arbeide systematisk med utforskende aktiviteter, resonnering og argumentasjon
+- kan kommunisere med elever, lytte til, vurdere, gjøre bruk av elevers innspill og stimulere elevenes matematiske tenking
+- kan analysere og vurdere elevers tenkemåter, argumentasjon og løsningsmetoder ut fra ulike perspektiv på kunnskap og læring
+- kan formidle spesialkunnskap innen et utvalgt matematikkdidaktisk og/eller matematikkfaglig emne relevant for trinn 5-10
+- kan gjennomføre enkle matematikkdidaktiske undersøkelser
+- kan bruke varierte undervisningsformer forankret i teori og egen praksis
+- kan arbeide teoriforankret og systematisk med å forebygge og oppdage matematikkvansker og tilrettelegge for mestring hos elever med ulike typer matematikkvansker
+Generell kompetanse
+Studenten
+- kan initiere og lede utviklingsarbeid knyttet til matematikkundervisning
+- kan delta og bidra i FoU-prosjekt og andre samarbeidsprosjekt med tanke på å forbedre matematikkfagets undervisningspraksis
+##  Innhold
+- Geometri og måling.
+- Utvalgt tema til fordypning.
+- Bevis og teoribygging i matematikk.
+- Matematikkdidaktisk forskning og forskningsmetode, herunder Lesegruppe 2.
+- Arbeid med matematikkvansker.
+##  Arbeids- og undervisningsformer
+Arbeidet med FoU-oppgaven er organisert som undervisning og kurs, veiledning/veiledningsseminar, muntlig framlegg og innlevering av skriftlig oppgave. Hver kandidat vil få oppnevnt en faglig veileder. Temaområde, problemstilling og opplegg for oppgaven skal godkjennes av veileder.
+Undervisningen i emnet skal i tillegg til undervisning i faglige emner gi støtte for oppgavearbeidet. Sentrale temaer for denne undervisningen er
+- utdanningsvitenskap for lærere - Sentrale forskningstradisjoner og metoder
+- seminar i pedagogikk som tar opp sentrale utfordringer i dagens grunnskole
+- forskningsetikk og grunnlagsspørsmål
+- skriving i forskning om skole og undervisning og i læreryrket

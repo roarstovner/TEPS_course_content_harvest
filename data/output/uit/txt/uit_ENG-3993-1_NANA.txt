@@ -1,19 +1,0 @@
-institution: uit
-code: ENG-3993-1
-year: NA
-hv: NA
-url: https://uit.no/utdanning/aktivt/emne/ENG-3993
-status: 200
-course_name_no: autumn 2017
-ENG-3993 Master's Thesis in English and Education - 40 ECTS
------ FULLTEXT -----
-
-
-Startsida
-Emnekatalog
-Master's Thesis in English and Education
-
-Error rendering component
-
-   
-

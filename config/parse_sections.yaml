@@ -1,0 +1,31 @@
+global:
+  min_chars: 400
+  keep_after: []
+  stop_before: []
+  sections:
+    Innhold: ["Innhold", "Emneinnhold", "Course content"]
+    Læringsutbytte: ["Læringsutbytte", "Learning outcome"]
+    Arbeidsformer: ["Arbeidsformer", "Teaching and learning methods"]
+    Arbeidskrav: ["Arbeidskrav", "Course requirements", "Mandatory assignments"]
+    Vurderingsordning: ["Vurdering", "Vurderingsordning", "Assessment", "Eksamen"]
+    Litteratur: ["Pensum", "Litteratur", "Reading list"]
+
+# --- institution overrides ---
+usn:
+  render_with_chromote: true
+  wait_selector: "usn-study"
+  sections:
+    Arbeidskrav: ["Arbeidskrav", "Vilkår for eksamen"]
+    Vurderingsordning: ["Vurdering", "Vurderingsordning", "Eksamen"]
+
+uio:
+  sections:
+    KortOmEmnet: ["Kort om emnet", "Om emnet"]
+
+uia:
+  sections:
+    Undervisning: ["Undervisningsformer", "Teaching forms"]
+
+hvl:
+  sections:
+    Læringsutbytte: ["Kunnskap", "Ferdigheter", "Generell kompetanse"]

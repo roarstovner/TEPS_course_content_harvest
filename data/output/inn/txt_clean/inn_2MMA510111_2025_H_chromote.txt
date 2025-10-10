@@ -1,0 +1,108 @@
+- 2025 Høst
+- 2024 Høst
+- 2023 Høst
+- Emnekode
+2MMA5101-1
+Studiepoeng
+15
+Undervisningssemestre
+2025 Høst
+Undervisningsspråk
+Norsk
+Undervisningssted
+Hamar
+Forkunnskapskrav
+Ingen
+- Emnekode
+2MMA5101-1
+- Studiepoeng
+15
+- Undervisningssemestre
+2025 Høst
+- Undervisningsspråk
+Norsk
+- Undervisningssted
+Hamar
+- Forkunnskapskrav
+Ingen
+- Faglige og fagdidaktiske perspektiv knyttet til de matematiske kunnskapsområdene
+Tall og tallforståelse
+Tallbegrep og tallforståelse
+Posisjonssystemet og de fire regningsarter
+Brøk, desimaltall og prosent
+Utvidelser av tallområdet
+Primtall og delelighet
+Algebra
+Overgang mellom tallregning og algebra og innføring av variabelbegrepet
+Figurtall, konkreter og elevaktive arbeidsformer i algebralæringen
+Regning med algebraiske uttrykk
+Likninger og ulikheter
+Algebraisk tenkning
+Beskrivende statistikk
+Sentralmål og spredningsmål
+Fremstilling av statistikk i tabeller og diagrammer
+Sannsynlighetsbegrepet og sannsynlighetsmodeller
+Sammensatte forsøk
+Betinget sannsynlighet
+Kombinatorikk
+- Tall og tallforståelse
+Tallbegrep og tallforståelse
+Posisjonssystemet og de fire regningsarter
+Brøk, desimaltall og prosent
+Utvidelser av tallområdet
+Primtall og delelighet
+- Tallbegrep og tallforståelse
+- Posisjonssystemet og de fire regningsarter
+- Brøk, desimaltall og prosent
+- Utvidelser av tallområdet
+- Primtall og delelighet
+- Algebra
+Overgang mellom tallregning og algebra og innføring av variabelbegrepet
+Figurtall, konkreter og elevaktive arbeidsformer i algebralæringen
+Regning med algebraiske uttrykk
+Likninger og ulikheter
+Algebraisk tenkning
+- Overgang mellom tallregning og algebra og innføring av variabelbegrepet
+- Figurtall, konkreter og elevaktive arbeidsformer i algebralæringen
+- Regning med algebraiske uttrykk
+- Likninger og ulikheter
+- Algebraisk tenkning
+- Beskrivende statistikk
+Sentralmål og spredningsmål
+Fremstilling av statistikk i tabeller og diagrammer
+Sannsynlighetsbegrepet og sannsynlighetsmodeller
+Sammensatte forsøk
+Betinget sannsynlighet
+Kombinatorikk
+- Sentralmål og spredningsmål
+- Fremstilling av statistikk i tabeller og diagrammer
+- Sannsynlighetsbegrepet og sannsynlighetsmodeller
+- Sammensatte forsøk
+- Betinget sannsynlighet
+- Kombinatorikk
+- Matematikkfaglige perspektiver på overgangen mellom barne- og ungdomstrinn
+- Arbeidsformer og metoder i matematikkundervisning sett fra et elev- og lærerperspektiv
+- Problemstillinger knyttet til tilpasset opplæring
+- Teorier om læring og de konsekvenser dette har for matematikkundervisning
+- Matematikk og kommunikasjon
+Språkets betydning i matematikkfaget og matematikkens språk
+- Språkets betydning i matematikkfaget og matematikkens språk
+- Matematikklærerkompetanser
+- Norske læreplaner
+## Læringsutbytte
+Ved bestått emne har studenten oppnådd følgende læringsutbytte:
+Studenten
+- har dybdekunnskap i de matematiske kunnskapsområdene tall og tallforståelse, algebra, statistikk og sannsynlighet for trinnene 5-10
+- har kunnskap om matematikkens historiske utvikling, spesielt utviklingen av tallbegrep og tallsystemer
+- har kunnskap om matematiske lærings- og utviklingsprosesser, med særlig vekt på de matematiske kunnskapsområdene tall og tallforståelse, algebra, statistikk og sannsynlighet, og tilrettelegging for elevers deltakelse i slike prosesser med bruk av ulike læremidler
+- har kunnskap om interaksjonsmønster, kommunikasjon og språkets rolle for læring av matematikk og om ulike syn på læring av matematikk
+- har kunnskap om ulike representasjoner og betydningen som bruk av og overganger mellom representasjoner kan ha for elevers læring
+Studenten
+- kan planlegge, gjennomføre og vurdere matematikkundervisning med særlig vekt på de matematiske kunnskapsområdene tall og tallforståelse, algebra, statistikk og sannsynlighet for alle elever på trinn 5-10, med fokus på variasjon og elevaktivitet
+- kan vise til eksempler på arbeidsmåter som fremmer elevenes undring, kreativitet og evne til å arbeide systematisk med utforskende aktiviteter, resonnering og argumentasjon
+- kan gjennom samtaler stimulere elevenes matematiske tenkning
+- kan sette seg inn i elevers matematiske tenkning og uttrykksformer
+- kan legge til rette for tilpasset matematikkopplæring i elevgrupper med ulike behov
+Studenten
+- har kjennskap til i matematikkfagets betydning som allmenndannende fag og dets samspill med kultur, filosofi og samfunnsutvikling
+- har kjennskap til i matematikkfagets betydning for utvikling av kritisk demokratisk kompetanse

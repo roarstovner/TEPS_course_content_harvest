@@ -1,0 +1,51 @@
+## MGBMA301 Matematikk 2, emne 1 - Den utprøvende matematikklærer
+##  Emneplan for studieåret 2025/2026
+## Innhold og oppbygning
+I grunnskolelærarutdanningen 1-7 ligger emnene i Matematikk 2 i 6. semester. Matematikk 2 er delt i to deler:
+- Emne 1 - Den utprøvende matematikklæreren
+- Emne 2 - Matematikklæraren som forsker
+I Matematikk 2 fordyper studentene seg i noen av de matematikkdidaktiske og matematikkfaglige tema fra Matematikk 1. Temaene er fordelt mellom Emne 1 og Emne 2 og jobbes mer forskningsrettet og konsentrert på. Undervisningen i emnene foregår parallelt, og i sammenheng med hverandre. De som følger Matematikk 2 har mulighet å søke plass på utvekslingsprogram til Kina.
+Matematikk 2 gir grunnlag for opptak til masterprogram, master i matematikkdidaktikk med spesialisering GLU 1-7 eller Begynneropplæring i norsk og matematikk.
+I Matematikk 2 emne 1 vil studenten arbeide videre med argumentasjon og bevis i matematikk knyttet til matematikkemner som undervises i på barnetrinnet. Studenten vil få kunnskap om hvordan matematiske teorier er systematisk bygget opp. Didaktiske ferdigheter som å kartlegge og tilrettelegge for alle elever med et særlig fokus på elever med matematikkvansker, vil vektlegges.
+## Læringsutbytte
+Ved fullført emne skal studenten ha følgende læringsutbytte:
+Kunnskaper
+Studenten har
+- kunnskaper om ulike typer argumentasjonsformer og matematiske bevis innen de matematiske hovedområder på trinn 1-7
+- kunnskaper om den systematiske oppbygging av matematiske teorier eksempelvis i tallære og euklidsk geometri
+- kunnskap om progresjonen i matematikkfaglige emnene gjennom grunnskolen
+- kunnskaper om overgangen fra barnehage til skole og overgangen mellom trinnene i skolen, med særlig fokus på algebraisk tenkning, måling og geometri
+- kunnskap i teori om matematikkvansker og kartlegging av disse
+Ferdigheter
+Studenten kan
+- formidle spesialkunnskap innen et utvalg av matematikkdidaktiske emner som er relevant for trinn 1-7
+- vurdere elevenes læring i faget for å kunne tilrettelegge undervisning og tilpasset opplæring med og uten digitale verktøy
+- bruke varierte undervisningsformer kritisk og forankret i teori og egen erfaring
+- legge til rette for arbeid med grunnleggende ferdigheter i matematikk, forankret i teori og forskning
+- arbeide teoriforankret og systematisk med forebygging av matematikkvansker og tilpasset opplæring
+- planlegge og vurdere matematikkundervisning med digitale verktøy på en kritisk måte
+Generell kompetanse
+Studenten kan
+- initiere og lede utviklingsarbeid knyttet til matematikkundervisning
+## Krav til forkunnskaper
+Ingen
+## Anbefalte forkunnskaper
+MGBMA101 - Begynneropplæring i matematikk
+MGBMA201 - Den utforskende matematikklærer - med fokus på mellomtrinnet
+Eller tilsvarende
+## Undervisnings- og læringsformer
+Detaljer i forbindelse med organiseringen av undervisning i emnet vil fremkomme i fremdriftsplanen som blir utdelt ved emnets start. Gjennom studiet skal studentene få erfaring med arbeidsformer som er relevante i grunnskolen og som skal gi grunnlag for diskusjoner om skolens arbeidsformer. Det blir benyttet forelesning, verksted, diskusjon, studentpresentasjon, gruppearbeid og individuelt arbeid.
+Deler av pensum arbeides med som selvstudium og det anbefales at lærestoffet bearbeides gjennom studentorganiserte kollokviegrupper. Veiledning inngår i de fleste aktiviteter.
+Studentene må regne med at deler av undervisningen er obligatorisk. Dette kan for eksempel være undervisningsøkter med gruppediskusjoner, oppgaveskriving, verksteder eller framlegg. Oversikt over de obligatoriske læringsaktivitetene blir gitt ved semesterstart.
+Dersom obligatoriske læringsaktiviteter blir tilbudt digitalt, skal studentene være synlige i det digitale rommet. Det vil i slike tilfeller ikke bli gjort opptak av undervisningen. I de tilfeller der opptak er aktuelt, vil studentene få beskjed om dette, og kan skru av kameraene sine dersom de ønsker det.
+## Obligatorisk læringsaktivitet
+Det er tre obligatoriske læringsaktiviteter som er inkludert i emnet:
+- Sammen i gruppe fremlegge matematikkdidaktisk forskningsartikkel og innlede til diskusjon. Forankret i læringsutbyttet «formidle spesialkunnskap innen et utvalg av [...] matematikkdidaktiske emner som er relevant for trinn 1-7».
+- Planlegge et kort undervisningsopplegg i tråd med aktive og lekbaserte læringsformer som skal prøves ut på medstudenter. Utprøving skjer gruppevis. Det leveres inn et individuelt skriftlig refleksjonsnotat. Forankret i læringsutbyttet «bruke varierte undervisningsformer kritisk og forankret i teori og egen erfaring».
+- Gruppevis gjennomføre et utviklingsarbeid knyttet til bruk av digitale verktøy innenfor ett av de matematiske temaene undervist på barneskole. Forankret i læringsutbyttet «initiere og lede utviklingsarbeid knyttet til matematikkundervisning» og «planlegge og vurdere matematikkundervisning med digitale verktøy på en kritisk måte».
+De obligatoriske læringsaktivitetene må være godkjent av emneansvarlig senest 2 uker før studenten kan framstille seg til eksamen. Dersom en obligatorisk læringsaktivitet blir vurdert som ikke godkjent, skal det bli gitt en begrunnelse for dette. Studenter som ikke får godkjent en obligatorisk læringsaktivitet vil, så langt det lar seg gjøre innen fastsatte frister, få ett nytt forsøk i inneværende semester.
+## Vurderingsform
+Skoleeksamen, 5 timer.
+Karakterskala A-F, der F tilsvarer ikke bestått.
+## Hjelpemidler ved eksamen
+Spesifiserte hjelpemiddel: Digitale verktøyprogram der dette er oppgitt ved eksamen.

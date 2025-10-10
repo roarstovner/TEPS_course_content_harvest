@@ -1,0 +1,64 @@
+## Statusmelding
+- 2025 Høst
+- 2024 Høst
+- 2023 Høst
+- Emnekode
+2SALGL1-2
+Studiepoeng
+15
+Undervisningssemestre
+2025 Høst
+Undervisningsspråk
+Norsk
+Undervisningssted
+Hamar
+Forkunnskapskrav
+Ingen
+- Emnekode
+2SALGL1-2
+- Studiepoeng
+15
+- Undervisningssemestre
+2025 Høst
+- Undervisningsspråk
+Norsk
+- Undervisningssted
+Hamar
+- Forkunnskapskrav
+Ingen
+Emnet vil ha fokus på den praktiske delen av medieutvikling. Studentene vil lære grunnleggende teknikker for utvikling av film, redigering og animasjon med fokus på hvordan dette kan brukes i undervisningen.
+- Filmatiske virkemidler
+- Filmanalyse
+- Fortellerteknikk
+- Animasjon i teori og praksis
+- VR i skolen
+- Utvikle undervisningsopplegg som bruker film og animasjon
+## Læringsutbytte
+Ved bestått emne har studenten oppnådd følgende læringsutbytte:
+Studenten
+- har kunnskaper om animasjonsprinsipper og filmatiske virkemidler
+- har kunnskap om bruk av film og animasjon i undervisning
+- har kunnskap om historiefortelling
+- Har forståelse hvordan barn og unge benytter bilder, film, tekst, lyd og animasjon i ulike digitale medier
+- har kunnskap om hvordan produksjon av digitalt innhold kan benyttes til å lage rammeverk for læring
+- har kunnskap bruk av VR i skolen
+Studenten
+- kan bruke digitale medieproduksjon i skolen
+- kan lage forskjellige typer animasjoner
+- kan anvende animasjon og digital filmproduksjon for å skape læring
+- kan analysere en films filmatiske og narrative egenskaper
+- Kan bruke VR i undervisning
+Studenten
+- kan utvikle en digital resurs som bruker animasjoner
+- kan lage undervingsopplegg som bruker film
+- kan legge til rett for skapende og kreative læringsprosesser gjennom digitale ressurser
+Emnet er lagt opp som en kombinasjon av forelesninger, praktiske øvinger, selvstudium og veiledning.
+Praksis
+Praksis er en integrert del av studiet. Faget og praksis er knyttet sammen blant annet gjennom praktiske oppgaver som studentene skal forberede på høgskolen og gjennomføre i praksisperioden, og studentenes erfaringer fra praksis vil være gjenstand for etterarbeid og fagdidaktisk refleksjon på høgskolen.
+Vi viser til gjeldende Plan for praksisopplæringen for detaljert informasjon om innhold i praksisperiodene. Plan for praksisopplæringen og fagplanene supplerer hverandre.
+Studenter som tar emnet som videreutdanning har ikke praksisopplæring.
+- Oppgaver i henhold til semesterplanen.
+- 75 % obligatorisk fremmøte til undervisning i henhold til semesterplanen. Studenten er selv ansvarlig for å bli registrert.
+Mappeinnlevering i henhold til semesterplanen med justerede muntlig eksamen.
+Prestasjonen vurderes med graderte bokstavkarakterer fra A-F, der E er laveste ståkarakter.
+## Pensum

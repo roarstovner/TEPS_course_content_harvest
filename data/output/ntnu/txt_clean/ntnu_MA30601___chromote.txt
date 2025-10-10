@@ -1,0 +1,16 @@
+## Om emnet
+## Faglig innhold
+I emnet vil en arbeide med å identifisere og karakterisere aspekter som er relevante for å beskrive og forklare læring av matematikk. Eksempler vil særlig bli hentet fra analyse (funksjonslære) og algebra. En vil behandle sentrale elementer fra matematikkdidaktisk teori så som begrepsdefinisjon/begrepsbilde, prosess/objekt og prototypebegrepet, og eksemplifisere disse gjennom for eksempel funksjonsbegrepet og relaterte begrep. Betydningen av representasjoner og overganger mellom representasjoner blir vektlagt. IKT-verktøy og matematikklæring diskuteres i lys av teorien om instrumentell genesis. Modellering som arbeidsform drøftes i sammenheng med teorien om Realistisk Matematikkundervisning (RME). Videre vil en arbeide med en innholdsanalyse av algebra. Ulike aspekter ved algebra vil bli diskutert (bl.a. generalisering og problemløsning) sammen med en tilhørende diskusjon av de ulike rollene til bokstavsymbolene (variabel, ukjent) og likhetstegnet. En vil også behandle ulike teorier for kunnskap og læring, spesielt sosiokulturelle teorier, samt ulike syn på og filosofier for matematikk.
+## Læringsutbytte
+Etter fullført emne skal studenten, med grunnlag i relevant teori, kunne designe og implementere klasseromsbaserte undersøkelser innenfor et gitt matematikkfaglig emne. Studenten skal videre kunne anvende de teoretiske begrepene i en analyse av observasjoner fra klasserommet med tanke på elevers læring av matematikk. Emnet gir, sammen med emnene MA3061 og RFEL3100, det faglige grunnlaget for å kunne skrive en masteroppgave med matematikkdidaktisk innretning.
+## Læringsformer og aktiviteter
+Undervisningen legges opp som seminarer der en veksler mellom forelesninger, gruppearbeid og diskusjon, samt studentpresentasjoner. Emnet forutsetter en høy grad av studentdeltakelse slik at tilstedeværelse i undervisningen er viktig for å få tilstrekkelig læringsutbytte. Emnet gis på høsten i partallsår. Deler av emnet kan bli gitt på engelsk.
+## Anbefalte forkunnskaper
+Det anbefales minimum 60 studiepoeng matematikk og fullført minst 30 studiepoeng av praktisk-pedagogisk utdanning/profesjonsfaget for opptak til emnet.
+## Kursmateriell
+Litteraturen er basert på matematikkdidaktiske forskningsartikler og oppgis ved semesterstart.
+## Andre sider om emnet
+- Faglærers emneside
+## Fagområder
+- Matematikkdidaktikk
+- Matematikk

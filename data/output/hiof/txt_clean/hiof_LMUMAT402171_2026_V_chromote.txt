@@ -1,0 +1,97 @@
+## Fakta om emnet
+## Innholdsfortegnelse
+- Emnet er tilknyttet følgende studieprogram
+- Absolutte forkunnskaper
+- Undervisningssemester
+- Innhold
+- Studentens læringsutbytte etter bestått emne
+- Undervisnings- og læringsformer
+- Arbeidsomfang
+- Praksis
+- Arbeidskrav - vilkår for å avlegge eksamen
+- Eksamen
+- Sensorordning
+- Evaluering av emnet
+- Litteratur
+## Emnet er tilknyttet følgende studieprogram
+Emnet er obligatorisk for studenter som velger matematikk som
+-
+masterfordypning (150 studiepoeng) i Grunnskolelærerutdanning 5-10
+-
+undervisningsfag (90 studiepoeng) i kombinasjon med Profesjonsrettet pedagogikk som masterfordypning i Grunnskolelærerutdanning 5-10
+## Absolutte forkunnskaper
+-
+Bestått praksisperioder i 3. studieår
+-
+Bestått minimum 150 studiepoeng fra 1.-3. studieår
+-
+Bestått 60 studiepoeng fra masterfordypningsfaget
+-
+Bestått FoU-oppgaven i 3. studieår
+## Undervisningssemester
+8. semester (vår)
+## Innhold
+De sentrale temaene i emnet er tallbegrepet og algebra og ulike perspektiver på disse som er relevante for undervisning i grunnskolen. I emnet vil den historiske utviklingen av tallbegrepet tas opp, spesielt utvikling av ulike tallmengder og regning med de fire regneartene. Elevenes begrepsutvikling er et annet sentralt tema i dette emnet. Rollen av ulike semiotiske representasjoner vil bli drøftet i denne sammenheng. I emnet vil en også se på ulike perspektiver på elevers læring av algebra, hvordan arbeide meningsfullt med algebra og hvordan dette kan hjelpe elevene til å utvikle en god forståelse for dette temaet. Det er også fokus på å møte flerspråklige elever i matematikkundervisningen, og spesielt vil ulike kulturers algoritmer drøftes i denne sammenheng.
+## Studentens læringsutbytte etter bestått emne
+Kunnskap
+Studenten
+-
+har inngående kunnskap om den historiske utviklingen av ulike aspekter knyttet til tallbegrepet
+-
+har inngående kunnskap om elevers forståelse for de fire regneartene, brøk, desimaltall og prosent
+-
+har inngående kunnskap om prealgebra og elevers forståelse av algebra
+-
+har kunnskap om matematiske begreper og algoritmer i ulike kulturer
+-
+har inngående kunnskap om ulike grunnleggende tema innen tallteori som er relevante for arbeid i skolen
+-
+har inngående kunnskap om betydningen av semiotiske representasjoner for begrepslæring i matematikk
+Ferdigheter
+Studenten
+-
+kan gjøre greie for betydning av tallbegrepets historiske utvikling og dets grunnlag for matematikkundervisning i skolen
+-
+kan bruke forskningsbasert kunnskap innen tallteori og algebra til å planlegge og vurdere undervisning og bruke dette til å analysere episoder fra praksis
+-
+kan kritisk anvende forskningsbasert kunnskap om tallbegrep og algebra til utforsking av nye problemområder
+Generell kompetanse
+Studenten
+-
+har kunnskap om matematikk som et fag i utvikling
+-
+kan anvende avansert faglig kunnskap til å styrke internasjonale og flerkulturelle perspektiver
+## Undervisnings- og læringsformer
+Det vil bli lagt opp til varierte undervisningsformer:
+-
+forelesinger
+-
+gruppearbeid
+-
+seminar med muntlige presentasjoner og tilbakemelding fra lærere og medstudenter
+-
+selvstudium og arbeid i kollokviegrupper
+## Arbeidsomfang
+Emnet er beregnet til totalt 400 timers arbeidsinnsats, inkl. timeplanlagt undervisning, selvstudium, arbeidskrav, eksamensforberedelser og eksamensgjennomføring.
+## Praksis
+Det er fire uker praksis i 8. semester. Se nærmere informasjon i studieplan for Grunnskolelærerutdanning 5-10 og Plan for praksis (5-10).
+MAT402 har hovedansvar for praksisperioden.
+## Arbeidskrav - vilkår for å avlegge eksamen
+-
+Individuell fagtekst knyttet til temaene i emnet. Cirka 100 sider med valgfritt pensum skal knyttes opp mot denne oppgaven og godkjennes av faglærer.
+-
+Deltakelse på fem artikkelseminarer der studentene presenterer og diskuterer artikler. Notat må leveres i læringsplattformen før seminaret og bli godkjent
+-
+Presentasjon av fagteksten for lærere og/eller medstudenter. Dette kan foregå underveis i arbeidet med fagteksten.
+-
+Deltakelse på profesjonsdager.
+Arbeidskrav vurderes til godkjent / ikke godkjent. Arbeidskravene må være godkjente før studenten kan framstille seg til eksamen.
+## Eksamen
+Skriftlig eksamen, individuell, varighet 6 timer. Tillatte hjelpemidler: Notater i henhold til nærmere retningslinjer fra emneansvarlig.
+Karakterregel: A-F
+## Sensorordning
+Intern og ekstern sensor.
+## Evaluering av emnet
+Emnet evalueres i henhold til HiØs kvalitetssystem.
+## Litteratur
+Gjeldende litteraturliste for 2024 Vår finner du i Leganto

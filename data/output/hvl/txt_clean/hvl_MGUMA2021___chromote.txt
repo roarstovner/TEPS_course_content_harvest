@@ -1,0 +1,58 @@
+## MGUMA202 Matematikk 1, emne 2 - Læring i matematikk
+##  Emneplan for studieåret 2025/2026
+## Innhold og oppbygning
+I Matematikk 1 møter studentene matematikkdidaktiske og matematikkfaglege tema som er relevante for matematikkundervisning på trinnene 5-10.
+Matematikk 1 er delt opp i følgende emner:
+- Emne 1: Undervisning i matematikk
+- Emne 2: Læring i matematikk
+Denne planen omtaler emne 2.
+Til sammen dekker emne 1 og 2 læringsutbyttet for Matematikk 1 som er beskrevet i de Nasjonale retningslinjene for Grunnskulelærarutdanningen 5-10.
+Begge emner i Matematikk 1 omfatter matematikkdidaktiske og matematikkfaglige tema som er viktige for alle som skal undervise i matematikk på 5.-10. trinn. Matematikklærerrollen og undervisning og læring i matematikk står i fokus. Dette inkluderer ulike undervisningsformer, språk og kommunikasjon i matematikkfaget, læremiddel og verktøy, og læringsteorier knyttet opp mot matematikkfaget. De matematiske temaene er tall og algebra, funksjonslære, geometri, måling, statistikk og sannsynlighetsregning.
+Arbeidet i emne 2 vil integrere både faglige og didaktiske aspekter. De matematikkfaglige temaene i dette emnet er; geometri, måling, statistikk og sannsynlighetsregning. Dette innebærer arbeid med analytisk geometri, transformasjonsgeometri og målinger. Sentralt er også arbeid med beskrivende statistikk og sannsynlighetsregning. Studentene skal skaffe seg innsikt i bruk av statistikk i samfunnet, og hva som kjennetegner tilfeldighet og usikkerhet. Emnet tar for seg hvordan en kan jobbe med temaet bærekraftig utvikling i matematikkfaget.
+I emnet vil forskningsorienterte aktiviteter som å lese og diskutere pensumrelevante matematikkdidaktiske artikler være aktuelt.
+I emnet blir det også vektlagt spesielt arbeid med fagdidaktiske tema som språk, matematikkvansker, kartlegging og vurdering.
+## Læringsutbytte
+Ved fullført emne skal studenten ha følgende totale læringsutbytte:
+Kunnskap
+Studenten har
+- dybdekunnskap om, og undervisningskunnskap i matematikken elevene arbeider med på trinn 5-10, knyttet til geometri, måling, statistikk og sannsynlighetsregning.
+- kunnskap om ulike representasjoner og betydningen bruk av og overganger mellom representasjoner kan ha for elevers læring.
+- kunnskap om matematikkfagets innhold på de ulike trinnene i grunnskolen og i videregående skole innenfor geometri, måling, statistikk og sannsynlighetsregning.
+- kunnskap om kommunikasjon og språkets rolle for læring av matematikk og ulike syn på læring av matematikk.
+- kunnskap om matematiske lærings- og utviklingsprosesser og hvordan legge til rette for at elever kan ta del i slike prosesser
+- kunnskap om matematikkvansker og tilrettelegging for mestring hos elever med ulike typer matematikkvansker
+- kunnskap om algoritmisk tenking og programmering
+- kunnskap om hvordan matematikkfaget kan bidra til å belyse temaer innen bærekraft
+Ferdigheter
+Studenten kan
+- planlegge, gjennomføre og vurdere matematikkundervisning for alle elever på trinn 5-10, med fokus på variasjon og elevaktivitet, knyttet til geometri, måling, statistikk og sannsynlighetsregning, med og uten bruk av digitale verktøy
+- bruke arbeidsmåter som fremmer problemløsning, elevenes undring, kreativitet og evne til å arbeide systematisk med utforskende aktiviteter, begrunnelser, argumenter og bevis, knyttet til geometri, måling, statistikk og sannsynlighetsregning
+- kommunisere med elever, enkeltvis og i ulike gruppesammensetninger, lytte til, vurdere og gjøre bruk av elevers innspill og stimulere elevenes matematiske tenking, knyttet til geometri, måling, statistikk og sannsynlighetsregning
+- analysere og vurdere elevers tenkemåter, argumentasjon og løsningsmetoder knyttet til geometri, måling, statistikk og sannsynlighetsregning
+- vurdere elevenes måloppnåelse med og uten karakterer, begrunne vurderingene og gi læringsfremmende framovermeldinger
+- tilpasse opplæringen til elevenes ulike behov gjennom valg og bruk av kartleggingsprøver og ulike observasjons- og vurderingsmåter
+- bruke programmering til å løse matematiske problemer i statistikk, sannsynlighet og geometri med bruk av variabler, løkker, vilkår og funksjoner
+Generell kompetanse
+Studenten har
+- forståelse for matematikkfagets betydning som allmenndannende fag og dets samspill med andre fag, kultur, filosofi og samfunnsutvikling
+- innsikt i matematikkfagets betydning for utvikling av kritisk demokratisk kompetanse
+## Krav til forkunnskaper
+Ingen
+## Undervisnings- og læringsformer
+Detaljer i forbindelse med organiseringen av undervisning i emnet vil fremkomme i semesterplanen som blir utdelt ved emnets start. Enkelte av øktene kan bli obligatoriske. Dette vil i så fall bli nærmere spesifisert i semesterplanen.
+Gjennom studiet skal studentene få erfaring med arbeidsformer som er relevante i grunnskolen og som skal gi grunnlag for diskusjoner om skolens arbeidsformer.
+Arbeidsformene skal veksle mellom forelesning, diskusjoner, arbeid med oppgaver individuelt og i gruppe.
+Deler av pensum arbeides med som selvstudium og det legges opp til at deler av lærestoffet arbeides med gjennom kollokviegrupper. Veiledning inngår som en naturlig del i de fleste aktiviteter.
+## Obligatorisk læringsaktivitet
+Tre obligatoriske læringsaktiviteter knyttes til emnet. Presiseringer knyttet til om læringsaktivitet er individuelt eller i gruppe, og om det er skriftlig eller muntlig kommer frem av semesterplanen:
+- 2 læringsaktiviteter knyttet til emnets matematikkfaglige og didaktiske tema. Minst en av disse må ivareta kravet om akademisk lesing
+- 1 læringsaktivitet knyttet til praksis.
+Semesterplanen vil gi nærmere retningslinjer for læringsaktivitetene.
+Noen av undervisningsøktene vil være obligatoriske. Hvilke økter dette er snakk om vil framkomme i semesterplanen som utdeles ved semesterstart.
+De obligatoriske læringsaktivitetene må være godkjent av emneansvarlig senest 2 uker før studenten kan framstille seg til eksamen. Dersom en obligatorisk læringsaktivitet blir vurdert som ikke godkjent, skal det bli gitt en begrunnelse for dette. Studenter som ikke får godkjent en obligatorisk læringsaktivitet vil, så langt det lar seg gjøre innen fastsatte frister, få ett nytt forsøk i inneværende semester.
+## Vurderingsform
+Muntlig eksamen, inntil 40 minutter.
+Emneansvarlig informerer om detaljer knyttet til gjennomføringen av eksamen.
+Karakterskala A-F, der F tilsvarer ikke bestått.
+## Hjelpemidler ved eksamen
+Spesifiserte hjelpemiddel: Notat fra en forberedt del.

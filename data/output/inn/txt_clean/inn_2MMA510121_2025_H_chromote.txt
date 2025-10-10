@@ -1,0 +1,125 @@
+## Statusmelding
+- 2026 Vår
+- 2025 Vår
+- 2024 Vår
+- 2023 Vår
+- Emnekode
+2MMA5101-2
+Studiepoeng
+15
+Undervisningssemestre
+2026 Vår
+Undervisningsspråk
+Norsk
+Undervisningssted
+Hamar
+Forkunnskapskrav
+Anbefalte forkunnskaper: 2MMA5101-1 Matematikk emne 1
+- Emnekode
+2MMA5101-2
+- Studiepoeng
+15
+- Undervisningssemestre
+2026 Vår
+- Undervisningsspråk
+Norsk
+- Undervisningssted
+Hamar
+- Forkunnskapskrav
+Anbefalte forkunnskaper: 2MMA5101-1 Matematikk emne 1
+- Faglige og fagdidaktiske perspektiv knyttet til de matematiske kunnskapsområdene
+Funksjoner
+Koordinatsystemet
+Funksjonsbegrepet og dets historie
+Proporsjonalitet og omvendt proporsjonalitet
+Lineære funksjoner, annengradsfunksjoner og polynomfunksjoner av grad tre og høyere
+Eksponentialfunksjoner
+Matematisk modellering
+Geometri
+Plane- og tredimensjonale geometriske figurer
+Lengde, areal, volum og tid
+Måling og måleusikkerhet
+Konstruksjon – med passer og linjal og med digitale verktøy
+Formlikhet og kongruens
+Symmetri
+Programmering
+Sentrale begreper
+Analog programmering
+Programmering og programmeringsverktøy for elever på mellomtrinnet
+- Funksjoner
+Koordinatsystemet
+Funksjonsbegrepet og dets historie
+Proporsjonalitet og omvendt proporsjonalitet
+Lineære funksjoner, annengradsfunksjoner og polynomfunksjoner av grad tre og høyere
+Eksponentialfunksjoner
+Matematisk modellering
+- Koordinatsystemet
+- Funksjonsbegrepet og dets historie
+- Proporsjonalitet og omvendt proporsjonalitet
+- Lineære funksjoner, annengradsfunksjoner og polynomfunksjoner av grad tre og høyere
+- Eksponentialfunksjoner
+- Matematisk modellering
+- Geometri
+Plane- og tredimensjonale geometriske figurer
+Lengde, areal, volum og tid
+Måling og måleusikkerhet
+Konstruksjon – med passer og linjal og med digitale verktøy
+Formlikhet og kongruens
+Symmetri
+Programmering
+Sentrale begreper
+Analog programmering
+Programmering og programmeringsverktøy for elever på mellomtrinnet
+- Plane- og tredimensjonale geometriske figurer
+- Lengde, areal, volum og tid
+- Måling og måleusikkerhet
+- Konstruksjon – med passer og linjal og med digitale verktøy
+- Formlikhet og kongruens
+- Symmetri
+- Programmering
+Sentrale begreper
+Analog programmering
+Programmering og programmeringsverktøy for elever på mellomtrinnet
+- Sentrale begreper
+- Analog programmering
+- Programmering og programmeringsverktøy for elever på mellomtrinnet
+- Arbeidsformer og metoder i matematikkundervisning sett fra et elev- og lærerperspektiv med vekt på temaene funksjoner, geometri og måling
+- Vurdering for og av læring i matematikk, kartleggingsverktøy og problemstillinger knyttet til tilpasset opplæring
+- Begrepet matematisk kompetanse
+- Grunnleggende ferdigheter i matematikk
+- Regning som grunnleggende ferdighet og nasjonale prøver i regning
+- Matematikkvansker
+## Læringsutbytte
+Ved bestått emne har studenten oppnådd følgende læringsutbytte:
+Studenten
+- har dybdekunnskap i de matematiske kunnskapsområdene funksjoner og geometri
+- har kunnskap om matematikkfagets innhold, spesielt knyttet de matematiske kunnskapsområdene funksjoner og geometri, på de ulike trinnene i grunnskolen og i videregående skole og om overgangene fra barnetrinn til ungdomstrinn og fra ungdomstrinn til videregående skole
+- Har kunnskap om ulike representasjoner og betydningen som bruk av og overganger mellom representasjoner kan ha for elevers læring
+- har kunnskap om lærings- og utviklingsprosesser knyttet til de matematiske kunnskapsområdene funksjoner og geometri, og tilrettelegging for elevers deltakelse i slike prosesser med varierte arbeidsformer og bruk ulike læremidler, herunder digitale
+- har kunnskap om hvordan grunnleggende ferdigheter medvirker til utviklingen av matematisk kompetanse, og hvordan regning er en grunnleggende ferdighet i alle skolefag og i hverdags- og arbeidsliv
+- har grunnleggende kunnskap om programmering, og programmeringens plass i matematikkfaget
+Studenten
+- kan planlegge, gjennomføre og vurdere matematikkundervisning med særlig vekt på de matematiske kunnskapsområdene funksjoner og geometri for alle elever på trinn 5-10, med fokus på variasjon og elevaktivitet
+- kan bruke arbeidsmåter som fremmer elevenes undring, kreativitet og evne til å arbeide systematisk med utforskende aktiviteter, resonnering og argumentasjon
+- kan kommunisere med elever, lytte til, vurdere, gjøre bruk av elevers innspill og stimulere elevenes matematiske tenking
+- kan analysere og vurdere elevers tenkemåter, argumentasjon og løsningsmetoder ut fra ulike perspektiv på kunnskap og læring
+- kan vurdere elevenes måloppnåelse eksemplifisert ved de matematiske kunnskapsområdene funksjoner og geometri, begrunne vurderingene og gi læringsfremmende framovermeldinger tilpasset den enkelte elev
+- kan planlegge, gjennomføre og vurdere matematikkundervisning i programmering i grunnskolens trinn 5-7
+- kan forebygge og oppdage matematikkvansker og tilrettelegge for mestring hos elever med ulike typer matematikkvansker
+Studenten
+- har innsikt i matematikkfagets betydning som allmenndannende fag og dets samspill med kultur, filosofi og samfunnsutvikling
+- har innsikt i matematikkfagets betydning for utvikling av kritisk demokratisk kompetanse
+Undervisningen kan bestå av: individuelt arbeid, veiledning, arbeid i grupper, forelesninger, klasseundervisning, seminarer og omvendt undervisning. Det kan være aktuelt med ekskursjoner i løpet av studiet.
+Ved oppstart av hvert semester blir det delt ut en semesterplan med beskrivelse av undervisningen det aktuelle semesteret. Det vil i tillegg bli utarbeidet arbeidsprogrammer for spesifiserte perioder med detaljert oversikt over organisering, aktuelt lesestoff, øvingsoppgaver og innleveringsoppgaver.
+Et nettbasert studiestøttesystem benyttes i undervisningen. Et utvalg av digitale/tekniske undervisningsverktøy vil bli brukt i kurset.
+Praksis
+Praksisstudiet er en integrert del av fagene som inngår i utdanningen. Alle fag i utdanningen har sammen med praksisstudiet ansvar for at studentene utvikler identitet som lærer. Det skal være nær kopling mellom innhold og arbeidsmåter i lærerutdanningsfagene og praksisstudiet. Veiledning og vurdering av studenter i praksisstudiet er et felles ansvarsområde for faglærerne i grunnskolelærerutdanningene, praksislærer og rektor. Studentene skal utføre oppgaver i praksisperioden i henhold til undervisningsplanen og delta på profesjonsseminar på høgskolen
+- Inntil tre innleveringsoppgaver
+- Deltakelse på seminarer og nettseminarer, nettstøtte, kurs, ekskursjoner og utedager som blir presisert i undervisningsplan
+- 75% obligatorisk frammøte til undervisning i henhold til undervisningsplan. Studenten er selv ansvarlig for å bli registrert.
+- Kalkulator
+Eksamen er todelt:
+Del 1: Individuell skriftlig 4 timers eksamen (nasjonal deleksamen). Prestasjonen vurderes med graderte bokstavkarakterer fra A-F, der E er laveste ståkarakter, og teller 1/3 av karakteren i Matematikk 1, emne 2.
+Del 2: Individuell skriftlig 5 timers eksamen. Prestasjonen vurderes med graderte bokstavkarakterer fra A-F, der E er laveste ståkarakter, og teller 2/3 av karakteren i Matematikk 1, emne 2.
+Både del 1 og del 2 må være vurdert til bestått for at emnet skal vurderes til bestått.
+## Pensum

@@ -1,0 +1,22 @@
+##  Matematikk 3
+Kunnskap:
+Studenten:
+- Har god kunnskap om emnene algebra, funksjoner og geometri relevant for videregående skole.
+- Har kunnskap om egenskaper ved eksempelvis logaritmisk, rasjonale og eksponentielle funksjoner.
+- Har kunnskap om koordinatgeometri og vektorer.
+- Har kunnskap til ulike bevisføringer i matematikk.
+Ferdighet:
+Studenten:
+- Kan planlegge undervisning i algebra, geometri og funksjoner relevant for videregående skole.
+- Kan skape en matematisk modell for en situasjon fra hverdagen eller fra andre fagfelt, ved å bruke eksempelvis eksponentiale funksjoner.
+- Kan vurdere anvendeligheten av programmering som verktøy i matematikkundervisning.
+Generell kompetanse
+Studenten:
+- har innsikt i matematikkens nytte i samfunnet og i andre fagfelt.
+Samlet vurdering
+Arbeidskrav: Studentene vil få 2 arbeidskrav i kurset. Arbeidskravene vil i hovedsak være skriftlige innleveringer. Arbeidskravene må være godkjent for å få endelig karkter i emnet.
+Vurdering arbeidskrav: godkjent/ ikke godkjent
+Obligatorisk oppmøte: Oppmøte undervisning: minimum 80%. Vurdering oppmøte: godkjent / ikke godkjent. Obligatorisk deltakelse må være godkjent for å få endelig karakter i emnet.
+Eksamen: Skriftlig skoleeksamen, 5 timer. Vurdering eksamen: A - F.
+- Grafisk kalkulator
+Å generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er å regne som fusk.

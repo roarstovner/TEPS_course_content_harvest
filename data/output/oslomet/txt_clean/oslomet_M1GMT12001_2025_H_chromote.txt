@@ -1,0 +1,58 @@
+## Programplaner og emneplaner - Student
+## EPN-V2
+##  M1GMT1200 Matematikk 1, emne 2 Emneplan
+##  Innledning
+Fagplanen tilhørende dette emnet er lagt på emne M1GMT1100 Matematikk 1, emne 1.
+##  Forkunnskapskrav
+Ingen.
+##  Læringsutbytte
+Etter fullført emne 2 har studenten følgende læringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+Kunnskap
+Studenten
+- har kunnskap i barnetrinnets matematikk
+- har dybdekunnskap om temaene geometri, algoritmisk tenkning, algebra og funksjoner som elevene arbeider med på barnetrinnet
+- har kunnskap om matematiske lærings- og utviklingsprosesser og hvordan legge til rette for at elever kan ta del i slike prosesser
+- har kunnskap om ulike representasjoner og betydningen bruk av og overganger mellom representasjoner kan ha for elevers læring
+- har kunnskap om bruk av ulike læremidler, både digitale og andre, og muligheter og begrensninger ved slike læremidler
+- har kunnskap om matematikkfagets innhold på ungdomstrinnet og om overgangen fra barnetrinn til ungdomstrinn
+Ferdigheter
+Studenten
+- kan planlegge, gjennomføre og vurdere matematikkundervisning om geometri, algoritmisk tenkning, algebra og funksjoner for alle elever på trinn 1-7 med fokus på variasjon og elevaktivitet
+- kan kommunisere med elever, lytte til, vurdere, gjøre bruk av elevers innspill og stimulere elevenes matematiske tenking
+- kan bruke arbeidsmåter som fremmer elevenes undring, kreativitet og evne til å arbeide systematisk med utforskende aktiviteter, resonnering og argumentasjon
+- kan analysere og vurdere elevers tenkemåter, argumentasjon og løsningsmetoder
+- kan vurdere elevenes måloppnåelse, begrunne vurderingene og gi læringsfremmende framovermeldinger
+- kan oppdage matematikkvansker og kan implementere tiltak anbefalt for å forebygge disse, og kan tilrettelegge for mestring hos elever med ulike typer matematikkvansker
+Generell kompetanse
+Studenten
+- har innsikt i matematikkfagets betydning som allmenndannende fag og dets samspill med kultur, filosofi og samfunnsutvikling
+- har innsikt i matematikkfagets betydning for utvikling av kritisk demokratisk kompetanse
+##  Innhold
+I emne 2 arbeides det med sentrale didaktiske og faglige sider ved matematikkundervisning på trinn 1-7, inkludert utforsking, argumentasjon, begrunnelse og kommunikasjon i matematikk. Det legges spesiell vekt på utforskning av sammenhenger mellom tall, og hvordan generalisering av egenskaper ved tall og samvariasjon av størrelser legger til rette for algebraisk tenking. Det arbeides med geometri og algoritmisk tenkning. I tillegg vil det arbeides spesielt med matematisk argumentasjon og matematiske bevis relevant på trinn 1-7, samt med vurdering og diagnostisk undervisning.
+##  Arbeids- og undervisningsformer
+Se fagplanen.
+##  Arbeidskrav og obligatoriske aktiviteter
+Retten til å avlegge eksamen forutsetter godkjente arbeidskrav og deltakelse i bestemte faglige aktiviteter. Om krav til deltakelse i undervisningsaktiviteter, se avsnittet innledningsvis om "Arbeidskrav". Alle arbeidskravene er utformet med utgangspunkt i læringsutbyttebeskrivelsene som hører til emne 2. Dette er nærmere spesifisert i hvert enkelt tilfelle. Følgende arbeidskrav må være godkjent før eksamen i emne 2 kan avlegges:
+Arbeidskrav 1
+En skriftlig individuell oppgaveinnlevering knyttet til faglige og didaktiske tema. Omfang: tilsvarende fem sider. Arbeidskravet inkluderer også etterarbeid med retting og vurdering av andre studenters arbeidskrav for at de skal få anledning til å opparbeide ferdigheter i å vurdere måloppnåelse, begrunne vurderinger og gi læringsfremmende framovermeldinger.
+Arbeidskrav 2: Undervisningsplanlegging og vurdering
+En flerfaglig oppgave i samarbeid mellom norsk, pedagogikk og elevkunnskap og matematikk der studentene i grupper gjennomfører undervisningsaktiviteter i norsk og matematikk i praksis. Deretter vurderer og reflekterer de over arbeidet i en skriftlig tekst på 2000 ord +/- 10 % i grupper på 2-3 og presenterer utvalgte perspektiver muntlig i et refleksjonsseminar. Formålet med arbeidskravet er økt kunnskap om og ferdighet i vurdering av undervisningskvalitet.
+Dersom arbeidskravet ikke blir godkjent, får studentene en ny frist til å levere et nytt forbedret arbeidskrav én gang. Dersom studentene ikke møter til den muntlige framføringa, eller denne ikke blir godkjent, kan de etter næmere vurdering få én ny mulighet til å presentere gruppeoppgaven.
+Målform: Bokmål.
+Arbeidskrav 3
+Individuell skriftlig regneprøve under tilsyn på OsloMet. Ingen hjelpemidler. Varighet: 3 timer. For dette arbeidskravet er det anledning til to nye forsøk dersom man får "ikke godkjent".
+Obligatorisk 4: Faglige aktiviteter med krav om deltakelse
+Nyere forskning anbefaler at matematikkdidaktikk i lærerutdanningen skal vektlegge handlingskompetanse. Dette forutsetter samhandling med andre studenter og faglærere om sentrale utfordringer i faget, vurdering av undervisning og undervisningsøvelser. Denne delen av en lærers handlingskompetanse kan ikke tilegnes kun ved lesing, men må opparbeides i reell dialog og ved tilstedeværelse i undervisningen. Det kreves derfor oppmøte på minimum 80 %. Ved fravær utover 20 %, og inntil 40 %, vil det gis kompensatorisk arbeid som kan inkludere krav om oppmøte. Form og omfang bestemmes av emneansvarlig. Ved fravær utover 40 % vil studenten trekkes fra eksamen i emnet. Gyldig fravær dokumentert med for eksempel sykemelding, gir ikke fritak for kravet om deltakelse og eventuelt kompensatorisk arbeid.
+##  Vurdering og eksamen
+Eksamensform
+Individuell muntlig eksamen. Varighet: 25-30 minutter.
+Ny/utsatt eksamen
+Ny/utsatt eksamen arrangeres som ved ordinær eksamen.
+##  Hjelpemidler ved eksamen
+Ingen hjelpemidler.
+##  Vurderingsuttrykk
+Det benyttes en gradert karakterskala fra A til E for bestått og F for ikke bestått eksamen.
+##  Sensorordning
+Det benyttes to interne sensorer. En tilsynssensor er tilknyttet emnet, i henhold til retningslinjer for oppnevning og bruk av sensorer ved OsloMet - storbyuniversitetet.
+##  Opptakskrav
+Se fagplanen.

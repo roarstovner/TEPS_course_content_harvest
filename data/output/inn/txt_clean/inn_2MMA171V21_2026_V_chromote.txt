@@ -1,0 +1,105 @@
+- 2026 Vår
+- 2025 Vår
+- 2024 Vår
+- 2023 Vår
+- Emnekode
+2MMA171V-2
+Studiepoeng
+15
+Undervisningssemestre
+2026 Vår
+Undervisningsspråk
+Norsk
+Undervisningssted
+Hamar
+Forkunnskapskrav
+Anbefalt 2MMA171-1/2MMA171S-1 Matematikk 1, emne 1
+- Emnekode
+2MMA171V-2
+- Studiepoeng
+15
+- Undervisningssemestre
+2026 Vår
+- Undervisningsspråk
+Norsk
+- Undervisningssted
+Hamar
+- Forkunnskapskrav
+Anbefalt 2MMA171-1/2MMA171S-1 Matematikk 1, emne 1
+- Grunnskolens matematikk knyttet til fagområdene
+Tall og algebra. Videreføring av temaet Tall og regning fra Emne 1 med vekt på
+Tallære
+Prealgebra og algebra
+Algebra og innføring av variabelbegrepet
+Statistikk og sannsynlighet
+Beskrivende statistikk
+Sannsynlighet og sannsynlighetsmodeller
+Funksjoner og funksjonsbegrepet
+Algebraisk tenkning
+- Tall og algebra. Videreføring av temaet Tall og regning fra Emne 1 med vekt på
+Tallære
+Prealgebra og algebra
+Algebra og innføring av variabelbegrepet
+- Tallære
+- Prealgebra og algebra
+- Algebra og innføring av variabelbegrepet
+- Statistikk og sannsynlighet
+Beskrivende statistikk
+Sannsynlighet og sannsynlighetsmodeller
+- Beskrivende statistikk
+- Sannsynlighet og sannsynlighetsmodeller
+- Funksjoner og funksjonsbegrepet
+- Algebraisk tenkning
+- Overgangen mellom barne- og ungdomstrinn
+- Arbeidsformer og metoder i matematikkundervisning sett fra et elev- og lærerperspektiv med vekt på de matematiske kunnskapsområdene tall, algebra og statistikk og sannsynlighet
+- Formativ og summativ vurdering i matematikk, kartleggingsverktøy og problemstillinger knyttet til tilpasset opplæring med vekt på de matematiske kunnskapsområdene tall, algebra og statistikk og sannsynlighet
+- Begrepet matematisk kompetanse
+- Kommunikasjon i klasserommet
+- Grunnleggende ferdigheter i matematikk
+- Regning som grunnleggende ferdighet og nasjonale prøver i regning
+- Didaktisk bruk av digitale verktøy
+- Programmering
+Programmering og programmeringsverktøy for trinnene 5-7
+Programmering i grunnskolen med vekt på overgangen mellom barne- og ungdomsskole
+- Programmering og programmeringsverktøy for trinnene 5-7
+- Programmering i grunnskolen med vekt på overgangen mellom barne- og ungdomsskole
+- Norske læreplaner
+Arbeid med norske lærerplaner generelt og gjeldende læreplan spesielt
+- Arbeid med norske lærerplaner generelt og gjeldende læreplan spesielt
+## Læringsutbytte
+Ved bestått emne har studenten oppnådd følgende læringsutbytte:
+Studenten
+- har dybdekunnskap i de matematiske kunnskapsområdene tall, algebra, statistikk og sannsynlighet
+- har kunnskap om prealgebra og algebraisk tenkning
+- har kunnskap om ulike representasjoner og overganger mellom disse
+- har kunnskap om elevers utvikling av begreper i tall og algebra, elevers møte med funksjoner og funksjonsbegrepet og overgangen mellom barne- og ungdomstrinn
+- har kunnskap om lærings- og utviklingsprosesser knyttet til temaene tall, algebra og statistikk og sannsynlighet
+- har kunnskap om varierte arbeidsformer og bruk av ulike læremidler, herunder digitale
+- har kunnskap om hvordan grunnleggende ferdigheter medvirker til utviklingen av matematisk kompetanse, og hvordan regning er en grunnleggende ferdighet i alle skolefag og i hverdags- og arbeidsliv
+- har helhetlig kunnskap om algoritmisk tenkning og programmering i matematikkfaget i grunnskolen
+- har god horisontkunnskap i matematikkfaget i gjeldende læreplan
+Studenten
+- kan planlegge, gjennomføre og vurdere matematikkundervisning med særlig vekt på temaene tall og algebra, statistikk og sannsynlighet for alle elever på trinn 1–7
+- kan bruke arbeidsmåter som fremmer elevenes undring, kreativitet og evne til å arbeide systematisk med utforskende aktiviteter, resonnering og argumentasjon
+- kan kommunisere med elever, lytte til, vurdere, gjøre bruk av elevers innspill og stimulere elevenes matematiske tenking
+- kan analysere og vurdere elevers tenkemåter, argumentasjon og løsningsmetoder ut fra ulike perspektiv på kunnskap og læring
+- kan bruke gjeldende læreplan aktivt i planlegging av matematikkundervisning
+- kan vurdere elevenes måloppnåelse eksemplifisert ved de matematiske kunnskapsområdene tall, algebra og statistikk og sannsynlighet, begrunne vurderingene og gi læringsfremmende framovermeldinger
+- kan planlegge, gjennomføre og vurdere undervisning i programmering i grunnskolens trinn 5-7
+- kan bruke varierte arbeidsformer med utgangspunkt i kjerneelementene i matematikk
+Studenten
+- har innsikt i matematikkfagets betydning
+som allmenndannende fag
+for kultur, filosofi og samfunnsutvikling
+for utvikling av kritisk demokratisk kompetanse
+- som allmenndannende fag
+- for kultur, filosofi og samfunnsutvikling
+- for utvikling av kritisk demokratisk kompetanse
+Undervisningen kan bestå av: individuelt arbeid, veiledning, arbeid i grupper, forelesninger, klasseundervisning, seminarer og omvendt undervisning. Det kan være aktuelt med ekskursjoner i løpet av studiet.
+Ved oppstart av hvert semester blir det delt ut en semesterplan med beskrivelse av undervisningen det aktuelle semesteret. Det vil i tillegg bli utarbeidet arbeidsprogrammer for spesifiserte perioder med detaljert oversikt over organisering, aktuelt lesestoff, øvingsoppgaver og innleveringsoppgaver.
+Et utvalg av digitale/tekniske undervisningsverktøy vil bli brukt i kurset.
+- Inntil tre innleveringsoppgaver, individuelt og/eller i gruppe.
+- Deltakelse på seminarer og nettseminarer, nettstøtte, kurs, ekskursjoner og utedager som blir presisert i semesterplanene
+- 80 prosent obligatorisk frammøte til undervisning i henhold til undervisningsplanen. Studenten er selv ansvarlig for å bli registrert.
+Individuell muntlig eksamen. Prestasjonen vurderes med graderte bokstavkarakterer fra A-F, der E er laveste ståkarakter.
+## Pensum

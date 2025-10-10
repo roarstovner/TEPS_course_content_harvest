@@ -1,0 +1,61 @@
+## Om emnet
+## Faglig innhold
+Dette emnet inneholder temaer som belyser matematikkens rolle i utvalgte praktiske og teoretiske situasjoner. Man vil se på ulike modeller som brukes når man studerer ulike fenomener i naturen og samfunnet, og matematikken som brukes i disse modellene vil være sentral. Et annet tema er elevers begrepsutvikling og matematiseringsprosesser i modellering.
+De matematiske temaene i emnet kommer fra flere ulike områder. Man vil blant annet arbeide med kontekster for ubegrenset og begrenset vekst, samt for rate og endring.
+Matematisk modellering vil bli diskutert fra ulike perspektiver, inkludert et kognitivt perspektiv. Forskjellene mellom problemløsning og matematisk modellering vil være sentrale. Andre viktige temaer vil være overgangen fra modeller av realistiske kontekster til elevers modeller for matematisk resonnering og matematisering av virkelige kontekster.
+Det vil bli lagt vekt på å gi studentene praktisk erfaring med bruk av digitale verktøy i matematikkundervisning, spesielt i undervisning der modellering er sentralt. Videre så vil aktuell litteratur om matematisk modellering bli tatt opp og diskutert.
+## Læringsutbytte
+Kunnskap
+Studenten
+- har avansert kunnskap om hvordan utvalgte begreper som funksjoner, med spesiell oppmerksomhet på rate og endring, og differenslikninger kan brukes i praktiske og teoretiske situasjoner,
+- har avansert kunnskap om hvordan statistikk kan brukes i modellering,
+- har kunnskap om ulike modelleringssykluser og hvordan disse anvendes i praktiske og teoretiske situasjoner,
+- har kunnskap om hvordan utvikle matematiske modelleringsoppgaver og hvordan de er annerledes enn problemløsningsoppgaver,
+- har kunnskap om overgangen fra modeller av realistiske situasjoner til modeller for matematisk resonnering,
+- har avansert kunnskap om hvordan IKT kan integreres i undervisning i matematisk modellering.
+Ferdigheter
+Studenten
+- kan organisere elevers muligheter for læring av matematikk gjennom modellering,
+- kan bruke ulike kontekster der endringsprosesser kan forklares gjennom begrepet endringsrate,
+- kan støtte overgangen fra modeller av realistiske kontekster til modeller for matematisk resonnering,
+- kan planlegge og gjennomføre klasseromsbaserte aktiviteter relatert til modellering av ulike fenomener,
+- kan analysere observasjoner av modelleringsaktiviteter i matematikklasserommet,
+- kan planlegge og analysere bruken av IKT-verktøy i matematikkundervisning knyttet til modellering,
+- kan bruke statistikk til å modellere ulike realistiske fenomener.
+Generell kompetanse
+Studenten
+- har didaktisk kompetanse som muliggjør matematikkundervisning i et modelleringsperspektiv,
+- har didaktisk kompetanse som gjør det mulig å skille mellom modellering som et mål for undervisning og modellering som en metode for undervisning,
+- har didaktisk kompetanse som muliggjør design og gjennomføring av undervisning, der IKT-basert modellering er sentralt.
+## Læringsformer og aktiviteter
+Arbeidsformene veksler mellom forelesning, litteraturstudier, arbeid med oppgaver (individuelt og i gruppe), diskusjoner, samt muntlige og studentpresentasjoner. Faglige diskusjoner og annen faglig samhandling er en viktig arbeids- og læringsform, og det forventes at alle studentene bidrar aktivt i slike aktiviteter.
+Undervisningsspråk
+Norsk eller engelsk
+## Obligatoriske aktiviteter
+- En muntlig presentasjon
+- Opp til åtte skriftlige oppgaver
+## Mer om vurdering
+Det er følgende obligatoriske arbeidskrav i emnet:
+- Én muntlig presentasjon
+- Opp til åtte skriftlige oppgaver. Det vil bli opplyst om antallet i starten av semesteret.
+De obligatoriske arbeidskravene blir vurdert som godkjent/ikke godkjent og alle må være godkjent.
+Studentene kan bli vurdert, pålagt arbeidskrav og oppmøte knyttet til fellesfaglige tema.
+## Vurdering
+Skriftlig skoleeksamen på Inspera (6 timer). Eksamen vil bli vurdert med bokstavkarakterene A til F.
+Tillatte hjelpemidler under eksamen er bare kalkulator. Listen over kalkulatormodeller som er tillatt i eksamen er:
+Casio FX-82CW, Casio FC100 V2, Casio fx-82ES PLUS, Casio fx-82EX, Casio fx-991es plus og Casio fx-991ex
+Citizen SR-270X og Citizen SR-270X College
+Hewlett Packard HP30S
+SHARP EL-W506X-SL
+Math Numeri 624
+## Spesielle vilkår
+Krever opptak til studieprogram:
+Grunnskolelærerutdanning 5.-10. trinn (MGLU5-10) - enkelte retninger
+## Anbefalte forkunnskaper
+Matematikk 1 og 2 (til sammen 60 sp) eller tilsvarende.
+## Forkunnskapskrav
+Bestått Matematikk 1 (30 sp) eller tilsvarende.
+## Kursmateriell
+Kursmateriellet er i hovedsak vitenskapelige artikler på engelsk. Den endelige pensumlisten vil legges ut på Blackboard i starten av semesteret.
+## Fagområder
+- Matematikkdidaktikk

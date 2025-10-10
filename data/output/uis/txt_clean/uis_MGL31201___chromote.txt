@@ -1,0 +1,62 @@
+Dette er emnebeskrivelsen for studieåret 2025-2026. Merk at det kan komme endringer.
+## Emnekode
+MGL3120
+## Versjon
+1
+## Vekting (stp)
+15
+## Semester undervisningsstart
+Høst
+## Antall semestre
+1
+## Vurderingssemester
+Høst
+## Undervisningsspråk
+Norsk
+Vis timeplan
+## Innhold
+Dette emnet introduserer sentrale elementer relatert til det å kunne trekke slutninger i matematikk.
+- Matematisk språk og symbolbruk, begrepsdanning.
+- Definisjoner og oppbygning av matematikk
+- Logikk
+- Formulering av matematiske utsagn, nødvendige og tilstrekkelige betingelser.
+- Betydningen av eksempler i vurdering av gyldigheten til matematiske utsagn.
+- Ulike metoder og former for matematiske bevis, herunder slike som representasjonsbevis, direkte bevis, indirekte bevis, motsigelsesbevis og induksjonsbevis.
+- Anvendelse av bevis og argumentasjon i matematikkundervisning i skolen.
+Det er en målsetting at emnet i vesentlig grad skal undervises basert på problem og problemoppgaver. Studentene skal engasjeres i bevisføring som gir mening for dem, og som i hovedsak er relatert til matematiske tema som er familiære.
+## Læringsutbytte
+Kunnskap
+Etter endt studium skal studenten ha avansert kunnskap:
+-  Om argumentasjonsformer og modeller relatert til ulike typer matematiske bevis
+-  Om hvordan viten i matematikk utvikles gjennom definisjoner, undersøkelser og eksperimenter og påfølgende bevisføring
+-  Om eksemplifisering og eksempelrom
+-  Om grunnleggende utsagnslogikk
+Ferdigheter
+Etter endt studium skal studenten kunne:
+-  Sette opp modeller og gi logisk gyldige argument innen matematikk
+-  Sette seg inn i matematiske resonnement og verifisere de logiske argumentene
+-  Planlegge og gjennomføre egen undervisning som omhandler bevis, eksempelbruk og matematisk argumentasjon i skolen
+Generell kompetanse
+Etter endt studium skal studenten:
+-  Kunne initiere og lede undersøkelser og eksperimenter som danner utgangspunkt for matematisk deduksjon
+-  Kunne vurdere de logiske konsekvensene av matematiske utsagn i skolematematikken, samt evaluere nøyaktigheten i læreverk og oppgaver
+-  Kunne lede undervisning i matematisk bevisføring og argumentasjon på barnetrinnet
+## Forkunnskapskrav
+60 studiepoeng i matematikk fra syklus 1 i lærerutdanning eller tilsvarende kvalifikasjon i matematikk.
+## Eksamen / vurdering
+Muntlig eksamen på inntil 30 minutter.
+## Vilkår for å gå opp til eksamen/vurdering
+Gjennom semesteret skal det leveres 2 obligatoriske arbeidskrav. Arbeidskrav 1 er didaktisk og i tilknytning til planlegging/utførelse av undervisningsopplegg relatert til kursets innhold. Arbeidskrav 2 er skriftlig oppgaveløsning med tilhørende refleksjonsnotater til oppgaveløsningene.
+## Fagperson(er)
+## Emneansvarlig:
+## Faglærer:
+## Studieprogramleder:
+## Praksiskoordinator:
+## Studiekoordinator:
+## Arbeidsformer
+Forelesning/undervisning, oppgaveregning, diskusjon, gruppearbeid. Det forutsettes at studentene arbeider med oppgaver og pensumlitteratur utenom undervisningstiden.
+## Praksis
+15 dager praksis
+## Åpent for
+## Emneevaluering
+## Litteratur

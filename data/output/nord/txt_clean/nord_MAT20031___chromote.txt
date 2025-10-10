@@ -1,0 +1,38 @@
+##  Matematikk 2A, 5-10
+Opptak til programmet.
+Dersom det er ledige plasser på emnet kan det tilbys frittstående for kvalifiserte søkere.
+MAT1004 Matematikk 1A, 5-10
+MAT1005 Matematikk 1B, 5-10
+Kunnskap
+Studentene skal
+- ha dybdekunnskap om planlegging, gjennomføring og vurdering av matematikkundervisning på mellomtrinnet og ungdomstrinnet
+- ha kunnskaper om bruk av ulike typer matematiske samtaler i undervisningen, som f.eks. bruk av åpne og målrettede matematiske samtaler
+- ha kunnskaper om ulike typer av resonnements- og argumentasjonsformer
+- ha kunnskap om matematikkdidaktisk forskning
+- ha fordypet kunnskap om undervisning i statistikk og sannsynlighetsregning
+- ha fordypet kunnskap om stokastiske hendelser og stokastisk tenkning
+- ha kunnskap om algoritmisk tenkning og problemløsning ved hjelp av programmering
+- ha kunnskap om vanlige interaksjonsmønstre og kommunikasjon knyttet til matematikkundervisning
+- ha kunnskap om elevers utvikling av sannsynlighetsbegrepet
+Ferdigheter
+Studenten skal
+- kunne planlegge, gjennomføre og vurder undervisning av høy kvalitet, i tråd med relevant forskning
+- kunne inkludere programmering i matematikkundervisning
+- kunne gjennomføre enkle matematikkdidaktiske undersøkelser
+- kunne bruke åpne og målrettede matematiske samtaler for å oppnå ulike matematikkfaglige mål i undervisningen
+Generell kompetanse
+Studenten skal
+- kunne initiere og lede utviklingsarbeid knyttet til matematikkundervisning
+- kunne delta og bidra i FoU-prosjekt og andre samarbeidsprosjekt med tanke på å forbedre matematikkfagets undervisningspraksis
+Sammensatt vurdering: Alle delene beskrevet under må være godkjent/bestått for å få endelig karakter i emnet.
+Arbeidskrav (AK):
+Studentene skal gjennomføre 4 arbeidskrav, som kan være skriftlige innleveringer, prøver eller muntlige presentasjoner. Godkjent / Ikke godkjent. Arbeidskrav må være godkjent for å få endelig karakter i emnet.
+Obligatorisk deltakelse (OD):
+Minimum 80% deltakelse i undervisningen. Godkjent / Ikke godkjent. All timeplanlagt aktivitet er obligatorisk.
+Oppgave (OP):
+Individuell. Vurdering: A - F. Teller 100 % av karakter.
+Alle hjelpemidler
+Unntak: Å generere besvarelse ved hjelp av ChatGPT eller lignende kunstig intelligens og levere den helt eller delvis som egen besvarelse er å regne som fusk.
+Med overlapp menes en faglig likhet mellom emner med samme faginnhold. Du vil derfor få følgende reduksjon i studiepoeng om du har tatt emner som er angitt under:
+MAT2014 - Matematikk 2B - Statistikk og sannsynlighet for lærere - 7.5 Studiepoeng
+MAT2011 - Matematikk 2C - Læring og undervisning i matematikk 2 - 7.5 Studiepoeng

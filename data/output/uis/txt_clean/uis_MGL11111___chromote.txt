@@ -1,0 +1,76 @@
+Dette er emnebeskrivelsen for studieåret 2025-2026. Merk at det kan komme endringer.
+## Emnekode
+MGL1111
+## Versjon
+1
+## Vekting (stp)
+15
+## Semester undervisningsstart
+Høst
+## Antall semestre
+1
+## Vurderingssemester
+Høst
+## Undervisningsspråk
+Norsk
+Vis timeplan
+## Innhold
+De faglige temaene i dette emnet er først og fremst geometri og måling, algebra og funksjoner.
+Emnet skal forberede for matematikkundervisning i grunnskolen fra 1. til 7. trinn, i tråd med relevant forskning og til enhver tid gjeldende læreplan. Studiet er erfaringsbasert og forskningsbasert, det innebærer solid tilknytning til praksis. Matematikklærere må kunne analysere elevenes matematiske utvikling, være gode matematiske veiledere og samtalepartnere, kunne velge ut og lage gode matematiske eksempler og oppgaver som fremmer alle elevers matematiske kompetanse, kreativitet og positive holdning til matematikk. Som framtidig matematikklærer skal studenten selv arbeide utforskende og kreativt med faget.
+Matematisk språk og tenkning utvikles gjennom aktiviteter som fremmer resonnement, argumentasjon og begrunnelse. Matematikklærere må kunne gjennomføre og forstå matematiske prosesser og argumenter, og analysere forslag fra andre med tanke på holdbarhet og potensial. Studenten skal selv ha en reflektert forståelse av matematikken elevene skal lære og kunne gjøre faget tilgjengelig for alle elever.
+Algebraisk tenkning innebærer søk etter samvariasjon, generelle strukturer, mønstre og relasjoner, beskrivelse av disse ved bruk av ord og symboler, og resonnering og argumentasjon. Dette skjer i arbeid med tall og regneoperasjoner, geometriske mønstre og sammenhenger, og samvariasjon mellom størrelser. Et viktig aspekt ved algebraisk tenking er bruk av ord eller symboler til å beskrive vilkår en størrelse skal oppfylle, som for eksempel i arbeid med ligninger og ulikheter.
+Bruk av ulike representasjoner er nødvendig for å gjøre matematiske begrep og ideer tilgjengelige for elever. For å utvikle sin matematiske forståelse og evne til problemløsning trenger elevene å arbeide med sammenhenger og overganger mellom ulike representasjoner. Studenten skal legge til rette for elevers arbeid med ulike representasjoner.
+Vurdering av læremidler, herunder bruk av digitale verktøy, vil være en viktig del av opplæringen.
+Meningsfulle matematiske samtaler er sentralt i utviklingen av matematisk forståelse. Gjennom samtale og diskusjon kan lærere inkludere alle elever i matematisk resonnering og argumentering, stimulere til kritisk matematisk tenking og drøfte matematikkens rolle i samfunnet. Studenten skal legge til rette for meningsfulle matematiske samtaler med og mellom elever.
+Lærere skal invitere elever til å dele sin matematiske tenking, lytte til og vurdere denne med tanke på utvikling av matematisk kompetanse. Det skal legges til rette for undervisning ut fra elevenes ulike behov, der ulik kulturell, språklig og sosial bakgrunn både tas hensyn til men også ses som ressurs i undervisningen. Som framtidig matematikklærer skal studenten støtte elevene i deres tro på seg selv og at en gjennom hardt arbeid, individuelt og kollektivt, utvikler forståelse av matematiske ideer og sammenhenger.
+Semesterplaner med detaljbeskrivelse av innholdet vil foreligge ved semesterstart.
+## Læringsutbytte
+Kunnskap
+Studenten har
+-  god kunnskap i geometri, algebra og funksjoner og kan knytte denne kunnskapen til undervisning på barnetrinnet
+-  god kunnskap om overgangen fra aritmetikk til algebra og om elevers begrepsutvikling innen geometri, algebra og funksjoner
+-  kunnskap om hvordan matematiske problem kan løses med ulike strategier
+-  kunnskap om språkets rolle for læring av matematikk
+-  kunnskap om hvordan matematiske ideer kan representeres på ulike måter
+-  grunnleggende kunnskap om programmering og digitale verktøy i matematikk, f.eks. hvordan slike verktøy kan brukes for visualisering og representasjon innen geometri, algebra og funksjoner
+-  kunnskap om matematikkfagets innhold i barnehagen og på ungdomstrinnet og om overgangene fra barnehage til skole og fra barnetrinn til ungdomstrinn
+-  kunnskap om et bredt metoderepertoar for undervisning i matematikk
+-  kunnskap om ulike teorier for læring og ulike lærings- og kunnskapssyn
+Ferdigheter
+Studenten
+-  kan planlegge, gjennomføre og vurdere matematikkundervisning for alle elever på trinn 1-7 med fokus på variasjon og elevaktivitet, forankret i forskning, teori og praksis
+-  har kompetanse til å fremme gode praktiske ferdigheter i muntlig, skriftlig og digital kommunikasjon hos elever
+-  kan bruke arbeidsmåter som fremmer elevenes undring, kreativitet og evne til å arbeide systematisk med problemløsing, utforskende aktiviteter, begrunnelser, argumenter og bevis
+-  kan bruke og vurdere ulike observasjons- og vurderingsmåter, for å tilpasse opplæringen til elevenes ulike behov
+-  kan kommunisere med elever, enkeltvis og i ulike gruppesammensetninger, lytte til, vurdere og gjøre bruk av elevers innspill
+-  kan analysere og vurdere elevers tenkemåter, argumentasjon og løsningsmetoder fra ulike perspektiver på kunnskap og læring
+Generell kompetanse
+Studenten
+-  har forståelse for matematikkfagets betydning som allmenndannende fag og dets samspill med kultur, filosofi og samfunnsutvikling
+-  har innsikt i matematikkfagets betydning for utvikling av kritisk demokratisk kompetanse
+## Forkunnskapskrav
+## Eksamen / vurdering
+Skriftlig eksamen og nasjonal deleksamen
+Vurderingen består av en skriftlig skoleeksamen som teller 2/3, samt en nasjonal deleksamen som teller 1/3.Hver eksamensdel må være bestått for å kunne få en samlet karakter i emnet.
+## Vilkår for å gå opp til eksamen/vurdering
+Gjennom semesteret skal det leveres tre arbeidskrav (omtales som mappe). Til sammen skal arbeidene i mappen dekke følgende komponenter:
+- skriftlig arbeid
+- muntlig arbeid
+- bruk av digitale verktøy
+Mappen vurderes til godkjent/ikke godkjent. For å bli vurdert til godkjent må hvert enkelt arbeidskrav være vurdert til godkjent. Dersom et arbeidskrav underkjennes ved første innlevering, gis mulighet for én ny innlevering av arbeidet i bearbeidet form.
+Krav om tilstedeværelse:
+Matematikkfaget i lærerutdanning forutsetter aktivt engasjement over tid med medstudenter og faglærere. I faget blir forskjellige begreper, strategier og undervisningsopplegg diskutert og drøftet. Slik virksomhet foregår kontinuerlig i utdanningen. Profesjonsutdanningen krever derfor at studenter er til stede i undervisningen og i aktiviteter som inngår i studiet. Det er derfor krav om minimum 70 % tilstedeværelse i undervisningen.
+Konsekvenser av ikke godkjent oppmøte eller mappe er at adgang til skriftlig eksamen nektes, jf. Forskrift om studier og eksamen ved Universitetet i Stavanger (eksamensforskriften), § 2-8 nr. 3.
+## Fagperson(er)
+## Faglærer:
+## Studieprogramleder:
+## Emneansvarlig:
+## Praksiskoordinator:
+## Studiekoordinator:
+## Arbeidsformer
+Forelesning, lærerstyrte aktiviteter/dialog, selvstendig arbeid, gruppearbeid. Bruk av IKT inngår som en naturlig del av studiet. Canvas vil bli brukt i kommunikasjonen mellom studenter og faglærere.
+## Praksis
+15 dager praksis
+## Åpent for
+## Emneevaluering
+## Litteratur

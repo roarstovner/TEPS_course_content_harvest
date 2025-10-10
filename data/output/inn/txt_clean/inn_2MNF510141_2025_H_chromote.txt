@@ -1,0 +1,68 @@
+## Statusmelding
+- 2025 Vår
+- 2024 Vår
+- 2023 Vår
+- Emnekode
+2MNF5101-4
+Studiepoeng
+15
+Undervisningssemestre
+2025 Vår
+Undervisningsspråk
+Norsk
+Undervisningssted
+Hamar
+Forkunnskapskrav
+2MNF5101-1 Naturfag 1, emne 1 og 2MNF5101-2 Naturfag 1, emne 2 eller tilsvarende, må være bestått.
+- Emnekode
+2MNF5101-4
+- Studiepoeng
+15
+- Undervisningssemestre
+2025 Vår
+- Undervisningsspråk
+Norsk
+- Undervisningssted
+Hamar
+- Forkunnskapskrav
+2MNF5101-1 Naturfag 1, emne 1 og 2MNF5101-2 Naturfag 1, emne 2 eller tilsvarende, må være bestått.
+- Stjerners livsløp
+- Big Bang-teorien
+- Liv og dets utvikling (ursuppeteori og replikerende molekyler)
+- Blokkprogrammering og tekstbasert programmering
+- Modellering av naturfaglige fenomener
+- Tverrfaglig T&D-undervisning
+- Algoritmisk tenkning og programmering i naturfag på mellom- og ungdomstrinnet
+- Forskningsmetodikk og forskningsetikk
+- Forskning på undervisning og læring i naturfag
+## Læringsutbytte
+Ved bestått emne har studenten oppnådd følgende læringsutbytte:
+Studenten
+- har kunnskap om hvordan store strukturer i universet dannes og kan gjøre rede for livsløpet til stjerner
+- har kjennskap til teorier om universets og livets utvikling, og kan drøfte representasjoner knyttet til dette
+- har kunnskap om algoritmisk tenkning og hvordan det kan anvendes i naturfagundervisningen
+- har innsikt i sentrale forskningsmetoder med relevans for studier knyttet til skolens naturfag
+- har kunnskap om det emnet som den enkelte har fordypet seg i gjennom FoU-oppgaven i naturfag
+Studenten
+- kan bruke algoritmisk tenkning, modellering og programmering til å utforske naturfaglige modeller og problemstillinger
+- kan legge til rette for utvikling av algoritmisk tankegang på mellom- og ungdomstrinnet
+- kan tilrettelegge for tverrfaglig undervisning med fokus på teknologi på mellom- og ungdomstrinnet
+- kan finne, vurdere og henvise til naturfaglig og naturfagdidaktisk forskning, informasjon og fagstoff og anvende dette i undervisning og drøfting med kollegaer og i skriftlige arbeider
+- kan kritisk analysere relevant naturfagdidaktisk forskningslitteratur og hvilken betydning denne kan ha for undervisning og elevers læring i naturfag
+- kan anvende vitenskapsteoretisk og metodisk kunnskap i utformingen av en egen FoU-oppgave i naturfag og har tilegnet seg ferdigheter i akademisk skriving
+Studenten
+- har innsikt i vitenskapsteori og metoder innenfor naturfagdidaktisk forskning og kan bidra og delta i prosjekt for å utvikle undervisningspraksis i naturfag
+- kan på et forskningsmessig grunnlag analysere og formidle et sammensatt fagstoff i egen FoU-oppgave i naturfag
+- kan selvstendig forholde seg til forskningsetiske problemstillinger
+Studiet består av individuelt arbeid og gruppearbeid, ekskursjoner, lærerledet undervisning, veiledning og praktisk arbeid ute og inne.
+Praksis
+Praksisstudiet er en integrert del av fagene som inngår i utdanningen. Alle fag i utdanningen har sammen med praksisstudiet ansvar for at studentene utvikler identitet som lærer. Det skal være nær kopling mellom innhold og arbeidsmåter i lærerutdanningsfagene og praksisstudiet. Veiledning og vurdering av studenter i praksisstudiet er et felles ansvarsområde for faglærerne i grunnskolelærerutdanningene, praksislærer og rektor.
+Studentene skal utføre oppgaver i praksisperioden i henhold til undervisningsplanen og delta på profesjonsseminar på høgskolen.
+- Inntil fem arbeidskrav, som presiseres i gjeldende undervisningsplan. Arbeidskravene kan både være knyttet til naturfaglige temaer og til FOU-oppgaven.
+- 75 % obligatorisk deltagelse i undervisning i henhold til undervisningsplanen. Studenten er selv ansvarlig for å bli registrert
+- Alle
+- Hjemmeeksamen over 3 dager (teller 40%)
+- FoU-oppgave (teller 60%)
+Det forutsettes at begge deleksamener er bestått for at emnet skal være bestått
+Prestasjonen vurderes med graderte bokstavkarakterer fra A-F, der E er laveste ståkarakter.
+## Pensum

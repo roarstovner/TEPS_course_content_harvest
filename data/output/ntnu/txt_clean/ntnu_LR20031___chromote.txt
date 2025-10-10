@@ -1,0 +1,29 @@
+## Om emnet
+## Faglig innhold
+Emnet omhandler undervisning og læring knyttet til forskjellige skolefag der programmering inngår som arbeidsmåte og læringsmål. Eksempler vil særlig bli hentet fra matematikk og naturfag. Emnet gir et grunnlag for å planlegge, gjennomføre, evaluere og reflektere over undervisning. Å analysere og se sammenhenger mellom ulike perspektiver, teorier og forskningsstudier inngår i læringsmålene for emnet.
+## Læringsutbytte
+Kunnskap
+Etter å ha gjennomført emnet skal studenten
+- kjenne strukturen av programmer bygd opp i programmeringsmiljøer relevante for skolen
+- kunne forklare hvordan et utvalg programmeringsteknikker effektiviserer og forbedrer kode
+- kunne gjøre rede for komponentene fra algoritmisk tenkning (Computational Thinking) og relatere disse til undervisning.
+Ferdigheter
+Etter å ha gjennomført emnet skal studenten
+- beherske bruk av løkker, variable, vilkår og funksjoner i programmeringsspråkene som behandles i emnet
+- kunne utvikle og prøve ut enkle programmer og algoritmer i et utvalg programmeringsspråk relevante for skolen
+- kunne planlegge, gjennomføre og reflektere over læring og undervisning, basert på forsknings- og erfaringsbasert kunnskap og teori om undervisning i fag der programmering inngår
+- kunne identifisere og vurdere programmering som skal inngå i enkle teknologiske løsninger, forstå vanskelighetsgrad, arbeidsomfang og egnethet i en undervisningssituasjon
+Generell kompetanse
+Etter å ha gjennomført emnet skal studenten
+- kunne analysere læreplaner og bidra i utvikling av lokale planer som grunnlag for planlegging, gjennomføring og vurdering i undervisningen
+## Læringsformer og aktiviteter
+I undervisningen blir det lagt vekt på varierte arbeidsformer. Tidlig i semesteret vil studentene møte arbeidskrav som går ut på at de må gjøre seg kjent med programmeringsverktøya i emnet. Undervisninga kan være en blanding av nettbaserte forelesninger, omvendt undervisning og seminarer på campus. Det vil videre bli gitt oppgaver der studentene skal utarbeide undervisningsøkter med programmering som anvendt teknologi.
+## Obligatoriske aktiviteter
+- Obligatoriske arbeidskrav
+## Mer om vurdering
+Det vil bli gitt inntil seks obligatoriske arbeidskrav i emnet. Obligatoriske arbeidskrav må være godkjent før vurdering kan gjennomføres.
+Studentene kan bli vurdert, pålagt arbeidskrav og oppmøte knyttet til fellesfaglige tema.
+## Studiepoengreduksjon
+## Fagområder
+- Program/system-utvikling
+- Fagdidaktikk

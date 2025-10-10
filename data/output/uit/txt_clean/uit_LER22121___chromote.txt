@@ -1,0 +1,59 @@
+##    Emnetype
+Emnet er et fagvalg i grunnskolelærerutdanningen for 5.-10. trinn. Emnet kan ikke tas som enkeltemne.
+Forkunnskapskrav og anbefalte forkunnskaper:
+Jf. opptakskrav og progresjonskrav i studieplanen for grunnskolelærerutdanning for 5.-10. trinn.
+## Studiepoengreduksjon
+Du vil få en reduksjon i antall studiepoeng (som oppgitt under), dersom du avlegger eksamen i dette emnet og har bestått følgende emne(r) fra før av:
+##    Innhold
+##    Hva lærer du
+Etter bestått emne har studentene følgende læringsutbytte:
+Kunnskaper
+Studenten skal ha matematisk og didaktisk kunnskap om:
+Modellering og anvendelser
+- ulike funksjonstyper
+- grensebetraktninger, grunnleggende derivasjon og integrasjon
+- normal, binomisk og hypergeometrisk sannsynlighetsfordeling
+Abstraksjon og generalisering
+- læringsprosesser og matematisk begrepsforståelse
+- formalisering og symbolspråk
+Utforsking og problemløysing
+- utforskende arbeidsformer i matematikk
+- problemløsing i matematikk
+- algoritmisk tenkning, blokk- og tekstprogrammering
+Resonnering og argumentasjon
+- ulike matematiske bevis- og argumentasjonsformer
+- proporsjonal resonnering
+Representasjon og kommunikasjon
+- vurdering for læring
+- matematikkvansker, kartlegging og tilpasset undervisning
+Ferdigheter
+Studenten skal kunne:
+- relatere det matematikkfaglige innholdet til undervisning på 5-10 trinn
+- bruke varierte undervisningsformer forankret i teori og egen praksis
+- analysere og vurdere elevers matematiske kunnskap (knyttet til emnets temaer) som grunnlag for tilrettelegging av undervisning
+- arbeide teoriforankret og systematisk med matematikkvansker, kartlegging og tilpasset opplæring
+- formulere og løse matematiske problemer ved bruk av både tekst- og blokkprogrammering
+Kompetanse
+Studenten skal ha kompetanse i å:
+- bruke ulike undervisnings- og vurderingsformer
+- vurdere elevers matematiske argumentasjon
+- gjøre bruk av ulike representasjonsformer i matematikk
+- utforske matematiske egenskaper og sammenhenger ved hjelp av programmering
+##    Undervisnings- og eksamensspråk
+##    Undervisning
+Studentene skal fordype seg i kompleksiteten i de matematiske temaene, nøkkelkunnskaper og sentrale elementer i den matematiske kunnskapen. Samtidig skal de matematiske emnene relateres til ungdomsskolematematikken som en basis for elevenes videre læring og virke. Studentene vil møte et variert utvalg av undervisnings- og arbeidsformer som f. eks individuelt arbeid og gruppearbeid. Utforskende og kreative arbeidsformer vil bli vektlagt.
+Kvalitetssikring
+Emnet evalueres i henhold til instituttets retningslinjer.
+Praksis
+For nærmere informasjon om praksis, se egen praksisplan.
+## Timeplan
+##  Eksamen
+## Obligatoriske arbeidskrav:
+Følgende arbeidskrav må være gjennomført og godkjent før man kan framstille seg til eksamen:
+##    Mer info om arbeidskrav
+Følgende arbeidskrav må være gjennomført og godkjent før man kan fremstille seg til eksamen:
+- 70 % deltakelse på undervisning
+- en innlevering med respons fra medstudenter knyttet til matematiske tema fra emnet
+- en innlevering med respons fra medstudenter knyttet til matematikkdidaktiske tema
+- gjøre rede for og vurdere matematisk argumentasjon med respons fra medstudenter
+##    Kontinuasjonseksamen

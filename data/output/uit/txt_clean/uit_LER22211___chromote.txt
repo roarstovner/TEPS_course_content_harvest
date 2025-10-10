@@ -1,0 +1,51 @@
+##    Emnetype
+Emnet er et fagvalg i grunnskolelærerutdanningen for 1.-7. trinn. Emnet kan ikke tas som enkeltemne.
+Forkunnskapskrav
+Jf. opptakskrav og progresjonskrav i studieplanen for grunnskolelærerutdanning for 1.-7. trinn.
+## Studiepoengreduksjon
+Du vil få en reduksjon i antall studiepoeng (som oppgitt under), dersom du avlegger eksamen i dette emnet og har bestått følgende emne(r) fra før av:
+##    Innhold
+##    Hva lærer du
+Etter bestått emne har studentene følgende læringsutbytte:
+Kunnskaper
+Studenten skal ha kunnskap om
+- brøk
+- algebra
+- geometri
+- vurdering
+- programmering
+- utforskende matematikkundervisning
+Studenten skal ha kunnskap om elevers matematiske tenkning og:
+- hvordan elever utvikler brøkforståelse
+- hvordan elever utvikler algebraisk tenkning og forståelse
+- hvordan elever utvikler forståelse for for geometri
+- hvordan elever utvikler algoritmisk tenkning
+Studenten skal ha kunnskap om undervisning i matematikk og:
+- ulike representasjoner brukt i brøkundervisningen
+- progresjon i læring av brøk, fra illustrasjon til brøkregning
+- vurdering og vurderingsformer
+Ferdigheter
+Studenten skal kunne
+- analysere og vurdere elevers matematiske kunnskap knyttet til emnets temaer
+- vurdere og velge ut relevante forskningsartikler
+Kompetanse
+Studenten skal ha kompetanse i å
+- initiere, utvikle, delta og bidra i FoU-prosjekt og samarbeidsprosjekt med tanke på å forbedre matematikkfagets undervisningspraksis
+- vurdere og gi tilbakemelding til elever
+##    Undervisnings- og eksamensspråk
+##    Undervisning
+Studentene vil møte et variert utvalg av undervisnings- og arbeidsformer, som individuelt arbeid og gruppearbeid. Utforskende og kreative arbeidsformer vil bli vektlagt.
+Kvalitetssikring
+Emnet evalueres i henhold til instituttets retningslinjer.
+Praksis
+For nærmere informasjon om praksis, se egen praksisplan.
+## Timeplan
+##  Eksamen
+## Obligatoriske arbeidskrav:
+Følgende arbeidskrav må være gjennomført og godkjent før man kan framstille seg til eksamen:
+##    Mer info om arbeidskrav
+Følgende arbeidskrav må være gjennomført og godkjent før man kan fremstille seg til eksamen:
+- 70 % deltakelse på undervisning
+- presentasjon av elevers matematiske utvikling til et av emnets temaer
+- fagtekst knyttet til undervisning eller læring i brøk, algebra, geometri eller vurdering. Maks 2500 ord.
+##    Kontinuasjonseksamen

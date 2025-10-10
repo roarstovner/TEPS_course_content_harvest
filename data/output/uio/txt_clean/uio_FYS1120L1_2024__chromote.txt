@@ -1,0 +1,94 @@
+## Fakta om emnet
+## Beskrivelse av emnet
+-        Kort om emnet
+-        Hva lærer du?
+-        Opptak til emnet
+-      Overlappende emner
+-        Undervisning
+-        Eksamen
+## Timeplan, pensum og eksamensdato
+-     Høst 2025
+-     Høst 2024
+-     Høst 2023
+-     Høst 2022
+-     Høst 2021
+## Kort om emnet
+Emnet beskriver grunnleggende elektriske og magnetiske fenomener, samt lover for elektriske kretser, både ved likestrøm og vekselstrøm. Emnet gir en grundig innføring i Maxwells likninger fram til elektromagnetiske bølger.
+## Hva lærer du?
+Etter å ha fullført emnet:
+- har du omfattende kunnskap om elektriske og magnetiske felt, kilder til feltene, Maxwells ligninger både på integral- og differensiell form, og du kan beregne slike felter både ved å bruke analytiske og numeriske metoder.
+- kan du redegjøre for elektriske og magnetiske krefter, samt energi lagret i elektriske og magnetiske felt.
+- kjenner du til grunnleggende fenomener innen elektrisitet og magnetisme og kan gjøre rede for en rekke teknologiske løsninger som mange bruker daglig.
+- kan du formidle et tema fra relevant fysikk for medstudenter.
+- kan du analysere en lineær elektrisk krets og beregne strømmer og spenningsforskjeller i ulike deler av kretsen, både for likestrøm og vekselstrøm.
+- har du kunnskap om hvorfor både tradisjonelle og numeriske løsningsmetoder er viktig for faget, og har erfaringer med å anvende begge typer metoder ved problemstillinger innen elektromagnetisme.
+## Opptak til emnet
+Dette emnet er kun for studenter som er tatt opp ved Lektorprogrammet (master) (under utfasing), studieretning realfag.
+Studenter det gjelder vil bli meldt til emnet, og skal ikke melde seg selv i Studentweb.
+## Spesielle opptakskrav
+I tillegg til generell studiekompetanse eller realkompetanse må du dekke spesielle opptakskrav.
+Du må ha:
+- Matematikk R1 (eller Matematikk S1 og S2) + R2
+Matematikk R1 (eller Matematikk S1 og S2) + R2
+Og en av disse:
+- Fysikk (1+2)
+Fysikk (1+2)
+- Kjemi (1+2)
+Kjemi (1+2)
+- Biologi (1+2)
+Biologi (1+2)
+- Informasjonsteknologi (1+2)
+Informasjonsteknologi (1+2)
+- Geofag (1+2)
+Geofag (1+2)
+- Teknologi og forskningslære (1+2)
+Teknologi og forskningslære (1+2)
+De spesielle opptakskravene kan også dekkes med fag fra videregående opplæring før Kunnskapsløftet, eller på andre måter.
+## Anbefalte forkunnskaper
+- MAT1100 – Kalkulus
+- IN1900 – Introduksjon i programmering for naturvitenskapelige anvendelser
+- MAT1110 – Kalkulus og lineær algebra
+- FYS1100 – Mekanikk og modellering eller FYS-MEK1110 – Mekanikk (nedlagt)
+- MEK1100 – Feltteori og vektoranalyse
+## Overlappende emner
+-  10 studiepoeng overlapp med  FYS1120 – Elektromagnetisme.
+## Undervisning
+FYS1120L følger undervisningen til FYS1120 – Elektromagnetisme.
+Det er obligatorisk oppmøte til første forelesning. Du mister plassen på emnet dersom gyldig forfall til første forelesning ikke er meldt Fysisk institutt på studieinfo@fys.uio.no før forelesningen starter!
+Emnet går over et semester med 6 timer undervisning per uke:
+- 2 timer med felles interaktiv forelesning
+- 2 timer med felles seminarundervisning
+- 2 timer med felles gruppeundervisning
+Emnet inkluderer følgende obligatoriske aktiviteter, som må være godkjent før avsluttende eksamen:
+- Godkjent gjennomføring av minimum 30 læringsaktiviteter som består av: oppgavelevering med hverandrevurdering, hvorav begge deler må være godkjent (2 poeng hver, 20 mulige poeng); deltagelse på seminarer (2 poeng hver, 20 mulige poeng); deltagelse på gruppeundervisning (1 poeng hver, 10 mulige poeng), prosjektinnlevering (10 poeng hver, 20 mulige poeng).
+- Skriftlig innlevering og muntlig presentasjon av Computational Essay
+Reglement for obligatoriske innleveringer finner du her.
+## Eksamen
+- Avsluttende eksamen: 4 timers skriftlig eksamen som teller 100 % ved sensurering.
+Dette emnet har obligatoriske øvelser som må være godkjent før avsluttende eksamen.
+Ved oppgaveskriving må du gjøre deg kjent med reglene for kildebruk og referanser. Ved brudd på reglene kan du bli mistenkt for forsøk på fusk.
+Som eksamensforsøk i dette emnet teller også forsøk i følgende tilsvarende emner: FYS1120 – Elektromagnetisme
+## Hjelpemidler til eksamen
+- Godkjent kalkulator
+- Rottman: "Matematisk formelsamling"
+- Øgrim og Lian eller Angell og Lian: "Fysiske størrelser og enheter"
+## Eksamensspråk
+Eksamensoppgaven gis på norsk. Du kan besvare eksamenen på norsk, svensk, dansk eller engelsk.
+## Karakterskala
+Emnet bruker karakterskala fra A til F, der A er beste karakter og F er stryk. Les mer om karakterskalaen.
+## Adgang til ny eller utsatt eksamen
+Dette emnet tilbyr både utsatt og ny eksamen. Les mer:
+- Syk på eksamen / utsatt eksamen
+Syk på eksamen / utsatt eksamen
+- Trekk under eksamen / ta eksamen på nytt
+Trekk under eksamen / ta eksamen på nytt
+## Mer om eksamen ved UiO
+- Kildebruk og referanser
+- Hvordan bruke KI som student
+- Tilrettelegging på eksamen
+- Trekk fra eksamen
+- Syk på eksamen / utsatt eksamen
+- Begrunnelse og klage
+- Ta eksamen på nytt
+- Fusk/forsøk på fusk
+Andre veiledninger og ressurser finner du på fellessiden om eksamen ved UiO.

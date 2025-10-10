@@ -1,0 +1,72 @@
+Studiepoeng:10
+Ansvarlig fakultet:Fakultet for realfag og teknologi
+Emneansvarlig:Gerd Johansen
+Campus / nettbasert:Undervises campus Ås
+Undervisningens språk:Norsk
+Antall plasser:35
+Frekvens:Årlig
+Forventet arbeidsmengde:300 timer inkludert 15 praksisdager med arbeidstid tilsvarende en lærer i full stilling.
+Undervisnings- og vurderingsperiode:Undervisning i augustblokk og januarblokk. Vurdering i augustblokk, høstparallell, januarblokk og vårparallell.
+## Om dette emnet
+Emnet gir en innføring i fagdidaktisk og pedagogisk tenkning samt praksis gjennom en kombinasjon av undervisning i profesjonsfag og praksisopplæring i august- og januarblokk.
+Hensikten med emnet er å gi studenten en begynnende innsikt i hva det vil si å være lærer. Viktige elementer i emnet er å delta i, observere og beskrive undervisning og elevers faglige og sosiale læring. Emnet tar for seg at det er ulike tilnærminger til utdanning for bærekraftig utvikling og at bærekraftig utvikling henger tett sammen med demokrati og medborgerskap og folkehelse og livsmestring.
+## Dette lærer du
+Læringsutbyttet er innenfor områdene pedagogikk, fagdidaktikk og praksis.
+Kunnskap: Studenten
+- har grunnleggende teoretisk og erfaringsbasert kunnskap om observasjon, planlegging og gjennomføring av undervisning med utgangspunkt i læreplanverket og elevgruppa
+- har kunnskap om grunnleggende profesjonsetiske vurderinger og kan reflektere over disse
+- har kunnskap om ulike perspektiv på utdanning for bærekraftig utdanning
+- har kunnskap om hvordan og hvorfor digitale verktøy kan benyttes i undervisning og reflektere over disse i et bærekraftsperspektiv
+Ferdighet: Studenten
+- har læringsfremmende og relasjonsbyggende kommunikasjon med elever, lærere og medstudenter
+- kan lage enkle planer for undervisning
+Generell kompetanse: Studenten
+- kan samarbeide i grupper og reflektere over gruppeprosessene
+- kan skrive reflekterende tekst med utgangspunkt i egne erfaringer og faglitteratur
+- kan bruke emnelitteraturen og erfaringer fra praksis til å gjøre egne refleksjoner om læring, undervisning og utdanning for bærekraftig utvikling
+- Læringsaktiviteter
+Emnet kombinerer praksisopplæring i skole med undervisning på campus. Praksisopplæring er i gruppe og fortrinnsvis i ungdomsskole. Praksis er totalt 15 dager: 5 dager i august og 10 dager i januar. Praksisen i august fokuserer på observasjon av undervisning og det å ha god kommunikasjon med elever, lærere og medstudenter. Under praksisperioden i januar skal kommunikasjon og samhandling med elever og praksislærere videreutvikles. I januar skal praksisgruppa delta mer aktivt i undervisning og ha noe mer ansvar for å planlegge undervisning samt få erfaringer med å lede undervisning.
+Undervisningen på campus vil vektlegge varierte arbeidsmåter og undervisningsmetoder, med vekt på samarbeid og gruppeprosesser. Refleksjon over praksis og teori er sentralt.
+Emnet kombinerer praksisopplæring i skole med undervisning på campus. Praksisopplæring er i gruppe og fortrinnsvis i ungdomsskole. Praksis er totalt 15 dager: 5 dager i august og 10 dager i januar. Praksisen i august fokuserer på observasjon av undervisning og det å ha god kommunikasjon med elever, lærere og medstudenter. Under praksisperioden i januar skal kommunikasjon og samhandling med elever og praksislærere videreutvikles. I januar skal praksisgruppa delta mer aktivt i undervisning og ha noe mer ansvar for å planlegge undervisning samt få erfaringer med å lede undervisning.
+Undervisningen på campus vil vektlegge varierte arbeidsmåter og undervisningsmetoder, med vekt på samarbeid og gruppeprosesser. Refleksjon over praksis og teori er sentralt.
+- Læringsstøtte
+Studentene veiledes i obligatoriske aktiviteter og i praksisopplæring.
+- Pensum
+Oversikt over litteratur ligger i læringsplattformen Canvas ved emnets start.
+- Vurderingsordning, hjelpemiddel og eksamen
+Emnet består av to deler som vurderes hver for seg:
+Praksisopplæringen. Samlet vurdering som vurderes bestått/ikke bestått.
+Og en skriftlig individuell hjemmeeksamen.
+Karakteruttrykk: Bestått/ikke bestått
+Emnet består av to deler som vurderes hver for seg:
+Praksisopplæringen. Samlet vurdering som vurderes bestått/ikke bestått.
+Og en skriftlig individuell hjemmeeksamen.
+Karakteruttrykk: Bestått/ikke bestått
+- Om bruk av KI
+K2 - Spesifisert bruk av KI. Bruk av KI må være i tråd med retningslinjene for bruk av kunstig intelligens (KI) ved NMBU.
+KI i ulike former vil inngå som en del av ordinær undervisning.
+Det gis anledning til å bruke generativ KI (chatbot) for å hjelpe til med rettskriving og grammatikk på hjemmeeksamen. Det vil si prompt som spør etter grammatikk på setningsnivå. Det er ikke anledning å be chatbot om hjelp til innhold i hjemmeeksamen. Begreper og teori skal forankres i emnets litteratur og studenten skal selv - og sammen med medstudenter, reflektere over praksis og teori.
+Her finner du KI-kategoriene beskrevet.
+K2 - Spesifisert bruk av KI. Bruk av KI må være i tråd med retningslinjene for bruk av kunstig intelligens (KI) ved NMBU.
+KI i ulike former vil inngå som en del av ordinær undervisning.
+Det gis anledning til å bruke generativ KI (chatbot) for å hjelpe til med rettskriving og grammatikk på hjemmeeksamen. Det vil si prompt som spør etter grammatikk på setningsnivå. Det er ikke anledning å be chatbot om hjelp til innhold i hjemmeeksamen. Begreper og teori skal forankres i emnets litteratur og studenten skal selv - og sammen med medstudenter, reflektere over praksis og teori.
+Her finner du KI-kategoriene beskrevet.
+- Sensorordning
+- Praksislærer og emneansvarlig vurderer praksisopplæringen.
+- Ekstern sensor kontrollerer og godkjenner oppgavetekst og vurderingskriterier.
+- En intern sensor vurderer de skriftlige besvarelsene.
+- Praksislærer og emneansvarlig vurderer praksisopplæringen.
+- Ekstern sensor kontrollerer og godkjenner oppgavetekst og vurderingskriterier.
+- En intern sensor vurderer de skriftlige besvarelsene.
+- Obligatorisk aktivitet
+15 dager praksisopplæring
+Minimum 80% deltakelse i undervisning på campus
+Plan for praksis i august
+Plan for praksis i januar
+Rapport fra praksis i august
+- 15 dager praksisopplæring
+- Minimum 80% deltakelse i undervisning på campus
+- Plan for praksis i august
+- Plan for praksis i januar
+- Rapport fra praksis i august
+- Undervisningstider

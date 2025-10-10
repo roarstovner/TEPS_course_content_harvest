@@ -1,0 +1,85 @@
+##    Emnetype
+Emnet er et fagvalg i grunnskolelærerutdanningen for 5.-10. trinn. Emnet kan ikke tas som enkeltemne.
+Forkunnskapskrav
+Jf. opptakskrav og progresjonskrav i studieplanen for grunnskolelærerutdanning for 5.-10. trinn.
+## Studiepoengreduksjon
+Du vil få en reduksjon i antall studiepoeng (som oppgitt under), dersom du avlegger eksamen i dette emnet og har bestått følgende emne(r) fra før av:
+##    Innhold
+##    Hva lærer du
+Etter bestått emne har studentene følgende læringsutbytte:
+Kunnskaper
+Målet er å oppnå en dyp og detaljert kunnskap i den matematikken som blir undervist på 5.-10. trinn. Særlig viktig er det å forstå sammenhenger og oppbygging, kunne grunngi metoder og regler, og ha evne til å resonnere og argumentere. Undervisninga vil fokusere lite på tradisjonell oppgaveløsning og mer på utforsking, diskusjon og begrunnelser.
+Kunnskaper
+Studenten har kunnskap om:
+- Algebra og funksjoner
+pre-algebra
+formell og uformell løsning av likninger og ulikheter
+mønster, generalisert aritmetikk, enkle algebraiske bevis og resonnement
+modellering og den algebraiske syklusen
+elevers utvikling av kompetanse i algebra med vekt på vanlige misoppfatninger og utfordringer
+hva en funksjon er (funksjonsbegrepet)
+bestemte typer funksjoner, med særlig vekt på lineære funksjoner og annengradsfunksjoner, og hvordan man arbeider med disse på ungdomstrinnet
+måter å uttrykke algebra og funksjoner på (formel, tabell, graf, situasjon), oversetting mellom representasjonsformer og betydningen dette har for undervisning i algebra og funksjonslære
+bruk av Geogebra for tegning av grafer
+- pre-algebra
+- formell og uformell løsning av likninger og ulikheter
+- mønster, generalisert aritmetikk, enkle algebraiske bevis og resonnement
+- modellering og den algebraiske syklusen
+- elevers utvikling av kompetanse i algebra med vekt på vanlige misoppfatninger og utfordringer
+- hva en funksjon er (funksjonsbegrepet)
+- bestemte typer funksjoner, med særlig vekt på lineære funksjoner og annengradsfunksjoner, og hvordan man arbeider med disse på ungdomstrinnet
+- måter å uttrykke algebra og funksjoner på (formel, tabell, graf, situasjon), oversetting mellom representasjonsformer og betydningen dette har for undervisning i algebra og funksjonslære
+- bruk av Geogebra for tegning av grafer
+- Geometri og måling
+sentrale begreper i plangeometri, og sammenhengen mellom disse
+transformasjonsgeometri, konstruksjoner, enkle geometriske bevis og resonnement
+bruk av Geogebra i geometri
+oppbygging av aktuelle måleenheter, måling som verktøy og måleusikkerhet
+elevers utvikling av kompetanse i geometri og måling med vekt på vanlige misoppfatninger og utfordringer
+- sentrale begreper i plangeometri, og sammenhengen mellom disse
+- transformasjonsgeometri, konstruksjoner, enkle geometriske bevis og resonnement
+- bruk av Geogebra i geometri
+- oppbygging av aktuelle måleenheter, måling som verktøy og måleusikkerhet
+- elevers utvikling av kompetanse i geometri og måling med vekt på vanlige misoppfatninger og utfordringer
+- Statistikk og sannsynlighet
+sannsynlighetsbegrepet, gjennom studium av kombinatorikk, modeller og konkretisering av sammensatte forsøk
+ulike diagram, sentralmål, spredningsmål og kritisk holdning til statistikk
+bruk av regneark for statistikk og sannsynlighet
+- sannsynlighetsbegrepet, gjennom studium av kombinatorikk, modeller og konkretisering av sammensatte forsøk
+- ulike diagram, sentralmål, spredningsmål og kritisk holdning til statistikk
+- bruk av regneark for statistikk og sannsynlighet
+- Felles for alle matematikkemnene
+bevis og ulike bevistyper, uformelle bevis og elevers resonnering og argumentasjon
+- bevis og ulike bevistyper, uformelle bevis og elevers resonnering og argumentasjon
+Ferdigheter
+Studenten kan:
+- utføre og forstå regneoperasjoner knyttet til tema i emnet
+- kommunisere med elever, lytte til, vurdere, gjøre bruk av elevers innspill og stimulere elevenes matematiske tenkning
+- bruke IKT som verktøy for undervisning i geometri, algebra, funksjonslære, statistikk og sannsynlighet
+Kompetanse
+Studenten har kompetanse i å:
+- analysere og vurdere elevers tenkemåter, argumentasjon og løsningsmetoder ut fra ulike perspektiv på kunnskap og læring
+- vurdere om elevene sine ideer er matematisk holdbare
+- planlegge, gjennomføre og vurdere matematikkundervisning for alle elever med fokus på variasjon og elevaktivitet
+- bruke arbeidsmåter som fremmer elevenes undring, kreativitet og evne til å arbeide systematisk med utforskende aktiviteter, begrunnelser, argumenter og bevis
+- vurdere og ha innsikt i matematikkfagets betydning for utvikling av kritisk demokratisk kompetanse
+##    Undervisnings- og eksamensspråk
+##    Undervisning
+Studentene skal fordype seg i kompleksiteten i den grunnleggende matematikken, nøkkelkunnskaper og sentrale elementer i matematisk kunnskap. Studentene vil møte et variert utvalg av undervisnings- og læringsformer som individuelt arbeid, gruppearbeid, forelesninger og seminarer.
+For å studere hvordan elever tenker vil det brukes video der elever løser oppgaver, aktiviteter og diskusjoner. For å studere hvordan man planlegger og gjennomfører undervisning vil man prøve ut materiell, analysere video av undervisning og diskutere hva som skiller god og dårlig undervisning.
+Kvalitetssikring
+Emnet evalueres i henhold til instituttets retningslinjer.
+Praksis
+For nærmere informasjon om praksis, se egen praksisplan.
+## Timeplan
+##  Eksamen
+## Obligatoriske arbeidskrav:
+Følgende arbeidskrav må være gjennomført og godkjent før man kan framstille seg til eksamen:
+##    Mer info om arbeidskrav
+Følgende arbeidskrav må være gjennomført og godkjent før man kan fremstille seg til eksamen:
+- 70 % deltakelse på undervisning
+- demonstrasjon med bruk av IKT i funksjonslære og/eller geometri med et skriftlig refleksjonsnotat (ca. 1500 ord).
+- muntlig presentasjon innenfor temaet statistikk og/eller sannsynlighet med respons fra medstudenter
+- skriftlig besvarelse (maks 3000 ord) knyttet til bevis og ulike bevistyper, uformelle bevis og elevers resonnering og argumentasjon
+- test i matematiske regneferdigheter
+##    Kontinuasjonseksamen

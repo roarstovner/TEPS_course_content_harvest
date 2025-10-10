@@ -1,0 +1,68 @@
+Dette er emnebeskrivelsen for studieåret 2025-2026. Merk at det kan komme endringer.
+## Emnekode
+MGL2312
+## Versjon
+1
+## Vekting (stp)
+15
+## Semester undervisningsstart
+Vår
+## Antall semestre
+1
+## Vurderingssemester
+Vår
+## Undervisningsspråk
+Norsk
+Vis timeplan
+## Innhold
+Faget i lærerutdanningen
+Matematikklærere skal legge til rette for helhetlig matematikkundervisning i tråd med relevant forskning og til enhver tid gjeldende læreplan. Dette krever ulike typer kompetanse. For eksempel skal lærerne kunne analysere elevenes matematiske utvikling, være gode matematiske veiledere og samtalepartnere, kunne velge ut og lage gode matematiske eksempler og oppgaver, og kunne evaluere og velge materiell til bruk i matematikkundervisningen. De må kunne se på matematikk som en skapende prosess og kunne stimulere elevene til å bruke sine kreative evner. Dette krever solid faglig forståelse og oversikt, noe Matematikk 2 skal hjelpe studenten å utvikle.
+Presentasjon av emnet (15 stp)
+I dette emnet er det faglige og didaktiske arbeidet knyttet opp mot de matematiske emnene geometri (med bl.a. trigonometri, vektorer, logisk oppbygging av geometrien, symmetri) og tallteori (med bl.a. diofantiske likninger, primtall, faktorisering, delelighet, restklasser). Logisk argumentasjon og bevisføring er en viktig komponent.
+Semesterplaner med detaljbeskrivelse av innholdet vil foreligge ved semesterstart.
+## Læringsutbytte
+Kunnskap
+Studenten har:
+-  inngående kunnskap i geometri og tallteori, med vekt på systematisk oppbygging av matematikken
+-  kunnskap knyttet til ulike matematiske bevis- og argumentasjonsformer
+-  innsikt i og erfaring med bruk av ulike læremidler, både digitale og andre, og muligheter og begrensninger ved slike læremidler
+-  god kunnskap om den matematiske oppdagelsesprosessen: eksperimentering, hypotesedannelse, begrunnelse og falsifisering, generalisering, og om hvordan legge til rette slik at elever kan ta del i denne prosessen
+Ferdigheter
+Studenten:
+-  kan planlegge, gjennomføre og vurdere matematikkundervisning for alle elever på trinn 5-10, med fokus på variasjon og elevaktivitet, forankret i forskning, teori og praksis
+-  har gode praktiske ferdigheter i muntlig og skriftlig kommunikasjon i matematikkfaget, og kompetanse til å fremme slike ferdigheter hos elevene
+-  kan bruke arbeidsmåter som fremmer elevenes undring, kreativitet og evne til å arbeide systematisk med utforskende aktiviteter, begrunnelser, argumenter og bevis
+-  kan analysere og vurdere elevers tenkemåter, argumentasjon og løsningsmetoder fra ulike perspektiver på kunnskap og læring
+-  kan bruke programmering og andre digitale verktøy, som for eksempel regneark og dynamiske geometriprogram, i eget matematisk arbeid
+Generell kompetanse
+Studenten har:
+-  forståelse for matematikkfagets betydning som allmenndannende fag og dets samspill med kultur, filosofi og samfunnsutvikling
+-  innsikt i matematikkfagets rolle innenfor andre fag og i samfunnet for øvrig
+-  innsikt i matematikkfagets betydning for deltakelse i et demokratisk samfunn
+## Forkunnskapskrav
+## Eksamen / vurdering
+## Vilkår for å gå opp til eksamen/vurdering
+Gjennom semesteret skal det leveres to arbeidskrav. Disse vil ha karakter av mindre didaktiske oppgaver og oppgaveløsing. Hvert arbeidskravene vurderes til godkjent/ikke godkjent. Dersom et arbeidskrav underkjennes ved første innlevering, gis mulighet for én ny innlevering av arbeidet i bearbeidet form.
+Det er krav om 70 % tilstedeværelse i dette emnet.
+Konsekvenser av ikke godkjent oppmøte eller arbeidskrav er at adgang til skriftlig eksamen nektes, jf. Forskrift om studier og eksamen ved Universitetet i Stavanger (eksamensforskriften), § 3-8 nr. 3.
+## Fagperson(er)
+## Emneansvarlig:
+## Faglærer:
+## Praksiskoordinator:
+## Studiekoordinator:
+## Praksiskoordinator:
+## Arbeidsformer
+Undervisningen er basert på en forventning om at studentene i høyere grad kan arbeide på egen hånd. Det kan ikke forventes at alt pensum vil bli gjennomgått i timene. Deler overlates til selvstudium og veiledet selvstudium.
+Vi anbefaler at studentene på et tidlig tidspunkt i studiet danner kollokviegrupper (3-5 deltakere). All erfaring viser at deltakelse i kollokvier er meget verdifullt både faglig og sosialt.
+Arbeidsformene i undervisningssituasjonen skal variere, og studentene skal få kjennskap til ulike arbeidsformer som brukes i matematikkundervisning i grunnskolen som for eksempel forelesning, lærerstyrte aktiviteter/dialog, selvstendig arbeid, gruppearbeid, diagnostiske aktiviteter.
+Bruk av IKT inngår som en naturlig del av studiet. Canvas vil bli brukt i kommunikasjonen mellom studenter og faglærere.
+Forventet arbeidsmengde: 412,5 timer:
+Undervisning: 88 timer
+Forberedelse og etterarbeid: 210,5
+Praksis: 60 timer
+Innleveringer: 30 timer
+Eksamen med forberedelse: 24
+## Praksis
+15 dagers praksis.
+## Emneevaluering
+## Litteratur

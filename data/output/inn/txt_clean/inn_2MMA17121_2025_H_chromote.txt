@@ -1,0 +1,107 @@
+## Statusmelding
+- 2026 Vår
+- 2025 Vår
+- 2024 Vår
+- 2023 Vår
+- Emnekode
+2MMA171-2
+Studiepoeng
+15
+Undervisningssemestre
+2026 Vår
+Undervisningsspråk
+Norsk
+Undervisningssted
+Hamar
+Forkunnskapskrav
+Anbefalte forkunnskaper: 2MMA171-1 Matematikk 1, emne 1
+- Emnekode
+2MMA171-2
+- Studiepoeng
+15
+- Undervisningssemestre
+2026 Vår
+- Undervisningsspråk
+Norsk
+- Undervisningssted
+Hamar
+- Forkunnskapskrav
+Anbefalte forkunnskaper: 2MMA171-1 Matematikk 1, emne 1
+- Grunnskolens matematikk knyttet til fagområdene
+Grunnskolens matematikk knyttet til fagområdene
+- tall og algebra, algebraisk tenkning og funksjonstenkning
+tall og algebra, algebraisk tenkning og funksjonstenkning
+- statistikk og sannsynlighet
+statistikk og sannsynlighet
+- Overgangen mellom barne- og ungdomstrinn
+Overgangen mellom barne- og ungdomstrinn
+- Sammenheng mellom lærerens undervisningsmetode og elevenes læring i matematikk med vekt på tall, algebra og statistikk og sannsynlighet
+Sammenheng mellom lærerens undervisningsmetode og elevenes læring i matematikk med vekt på tall, algebra og statistikk og sannsynlighet
+- Begrepet matematisk kompetanse
+Begrepet matematisk kompetanse
+- Kommunikasjon i matematikklasserommet
+Kommunikasjon i matematikklasserommet
+- Matematikkvansker og stort læringspotensial
+Matematikkvansker og stort læringspotensial
+- Didaktisk bruk av digitale verktøy
+Didaktisk bruk av digitale verktøy
+- Algoritmisk tenkning
+Algoritmisk tenkning
+- Programmering og programmeringsverktøy med vekt på 5.-7. trinn
+Programmering og programmeringsverktøy med vekt på 5.-7. trinn
+## Læringsutbytte
+Studenten
+- har dybdekunnskap om matematikken elevene arbeider med i tall og algebra, statistikk og sannsynlighet
+har dybdekunnskap om matematikken elevene arbeider med i tall og algebra, statistikk og sannsynlighet
+- har kunnskap om ulike representasjoner og betydningen bruk av og overganger mellom representasjoner kan ha for elevers læring
+har kunnskap om ulike representasjoner og betydningen bruk av og overganger mellom representasjoner kan ha for elevers læring
+- har kunnskap om elevers utvikling av algebraisk tenkning, statistikk og sannsynlighet og overgangen mellom barne- og ungdomstrinn
+har kunnskap om elevers utvikling av algebraisk tenkning, statistikk og sannsynlighet og overgangen mellom barne- og ungdomstrinn
+- har kunnskap om varierte arbeidsformer og bruk av ulike læremidler, herunder digitale
+har kunnskap om varierte arbeidsformer og bruk av ulike læremidler, herunder digitale
+- har kunnskap om hvordan grunnleggende ferdigheter medvirker til utviklingen av matematisk kompetanse
+har kunnskap om hvordan grunnleggende ferdigheter medvirker til utviklingen av matematisk kompetanse
+- har helhetlig kunnskap om algoritmisk tenkning og programmering i matematikkfaget i grunnskolen
+har helhetlig kunnskap om algoritmisk tenkning og programmering i matematikkfaget i grunnskolen
+- har kunnskap om matematikkfagets innhold på ungdomstrinnet og om overgangen fra barnetrinn til ungdomstrinn
+har kunnskap om matematikkfagets innhold på ungdomstrinnet og om overgangen fra barnetrinn til ungdomstrinn
+Studenten
+- kan planlegge, gjennomføre og vurdere matematikkundervisning med særlig vekt på temaene tall og algebra, statistikk og sannsynlighet for alle elever på trinn 1–7
+kan planlegge, gjennomføre og vurdere matematikkundervisning med særlig vekt på temaene tall og algebra, statistikk og sannsynlighet for alle elever på trinn 1–7
+- kan bruke arbeidsmåter som fremmer elevenes undring, kreativitet og evne til å arbeide systematisk med utforskende aktiviteter, resonnering og argumentasjon
+kan bruke arbeidsmåter som fremmer elevenes undring, kreativitet og evne til å arbeide systematisk med utforskende aktiviteter, resonnering og argumentasjon
+- kan kommunisere med elever, lytte til, vurdere, gjøre bruk av elevers innspill og stimulere elevenes matematiske tenking
+kan kommunisere med elever, lytte til, vurdere, gjøre bruk av elevers innspill og stimulere elevenes matematiske tenking
+- kan analysere og vurdere elevers tenkemåter, argumentasjon og løsningsmetoder ut fra ulike perspektiv på kunnskap og læring
+kan analysere og vurdere elevers tenkemåter, argumentasjon og løsningsmetoder ut fra ulike perspektiv på kunnskap og læring
+- kan vurdere elevenes måloppnåelse eksemplifisert ved de matematiske kunnskapsområdene tall, algebra og statistikk og sannsynlighet, begrunne vurderingene og gi læringsfremmende framovermeldinger
+kan vurdere elevenes måloppnåelse eksemplifisert ved de matematiske kunnskapsområdene tall, algebra og statistikk og sannsynlighet, begrunne vurderingene og gi læringsfremmende framovermeldinger
+- kan planlegge, gjennomføre og vurdere undervisning i algoritmisk tenkning og programmering med vekt på grunnskolens trinn 5-7
+kan planlegge, gjennomføre og vurdere undervisning i algoritmisk tenkning og programmering med vekt på grunnskolens trinn 5-7
+- kan forebygge og oppdage matematikkvansker, og tilrettelegge for mestring hos elever med ulike typer matematikkvansker
+kan forebygge og oppdage matematikkvansker, og tilrettelegge for mestring hos elever med ulike typer matematikkvansker
+Studenten
+- har innsikt i matematikkfagets betydning
+har innsikt i matematikkfagets betydning som allmenndannende fag og dets samspill med kultur, filosofi og samfunnsutvikling
+har innsikt i matematikkfagets betydning for utvikling av kritisk demokratisk kompetanse
+- har innsikt i matematikkfagets betydning som allmenndannende fag og dets samspill med kultur, filosofi og samfunnsutvikling
+har innsikt i matematikkfagets betydning som allmenndannende fag og dets samspill med kultur, filosofi og samfunnsutvikling
+- har innsikt i matematikkfagets betydning for utvikling av kritisk demokratisk kompetanse
+har innsikt i matematikkfagets betydning for utvikling av kritisk demokratisk kompetanse
+Undervisningen kan bestå av: individuelt arbeid, veiledning, arbeid i grupper, forelesninger, klasseundervisning, seminarer og omvendt undervisning. Det kan være aktuelt med ekskursjoner i løpet av studiet.
+Ved oppstart av hvert semester blir det delt ut en semesterplan med beskrivelse av undervisningen det aktuelle semesteret. Det vil i tillegg bli utarbeidet arbeidsprogrammer for spesifiserte perioder med detaljert oversikt over organisering, aktuelt lesestoff, øvingsoppgaver og innleveringsoppgaver.
+Et utvalg av digitale/tekniske undervisningsverktøy vil bli brukt i kurset.
+Praksis
+Praksisstudiet er en integrert del av fagene som inngår i utdanningen. Alle fag i utdanningen har sammen med praksisstudiet ansvar for at studentene utvikler identitet som lærer. Det skal være nær kopling mellom innhold og arbeidsmåter i lærerutdanningsfagene og praksisstudiet. Veiledning og vurdering av studenter i praksisstudiet er et felles ansvarsområde for faglærerne i grunnskolelærerutdanningene, praksislærer og rektor.
+Studentene skal utføre oppgaver i praksisperioden i henhold til undervisningsplanen og delta på profesjonsseminar på høgskolen.
+- Inntil tre innleveringsoppgaver, individuelt og/eller i grupper
+Inntil tre innleveringsoppgaver, individuelt og/eller i grupper
+- Deltakelse på undervisning og seminarer som blir presisert i undervisningsplanene
+Deltakelse på undervisning og seminarer som blir presisert i undervisningsplanene
+- 75 % obligatorisk frammøte til undervisning i henhold til undervisningsplanen. Studenten er selv ansvarlig for å bli registrert
+75 % obligatorisk frammøte til undervisning i henhold til undervisningsplanen. Studenten er selv ansvarlig for å bli registrert
+Eksamen er todelt:
+Del 1: Individuell skriftlig 4 timers eksamen (nasjonal deleksamen). Prestasjonen vurderes med graderte bokstavkarakterer fra A-F, der E er laveste ståkarakter, og teller 1/3 av karakteren i Matematikk 1, emne 2.
+Del 2: Individuell muntlig eksamen. Prestasjonen vurderes med graderte bokstavkarakterer fra A-F, der E er laveste ståkarakter, og teller 2/3 av karakteren i Matematikk 1, emne 2.
+Både del 1 og del 2 må være vurdert til bestått for at emnet skal vurderes til bestått.
+## Pensum

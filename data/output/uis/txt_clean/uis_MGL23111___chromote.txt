@@ -1,0 +1,57 @@
+Dette er emnebeskrivelsen for studieåret 2025-2026. Merk at det kan komme endringer.
+## Emnekode
+MGL2311
+## Versjon
+1
+## Vekting (stp)
+15
+## Semester undervisningsstart
+Vår
+## Antall semestre
+1
+## Vurderingssemester
+Vår
+## Undervisningsspråk
+Norsk
+Vis timeplan
+## Innhold
+Matematikk 2 er de siste 30 studiepoengene i matematikk i grunnskolelærerutdanningen for 5.-
+10. trinn, og gir grunnlag for videre fordyping innenfor matematikk/matematikk fagdidaktikk og høyere grads studium som en mastergrad. Emne 1 består av funksjonslære med tilhørende didaktiske aspekter. Studiet legger vekt på å videreutvikle matematisk kunnskap, forståelse og ferdigheter innen funksjonslære.
+Faget i lærerutdanningen
+Gjennom matematikkfaget for trinn 5-10 skal studentene utvikle undervisningskunnskap i matematikk. Dette innebærer at de må ha en solid og reflektert forståelse for den matematikken elevene skal lære og hvordan denne utvikles videre på de neste trinnene i utdanningssystemet. Videre kreves matematikkfaglig kunnskap som er særegen for lærerprofesjonen. Slik kunnskap omfatter, i tillegg til selv å kunne gjennomføre og forstå matematiske prosesser og argumenter, også å kunne analysere slike som foreslås av andre med tanke på å vurdere deres holdbarhet og eventuelle potensial. Undervisningskunnskap innebærer også å ha didaktisk kompetanse som gjør at studentene kan sette seg inn i elevenes perspektiv og læringsprosesser, og gjennom variasjon og tilpasning kunne tilrettelegge matematikkundervisning for elever med ulike behov og med ulik kulturell og sosial bakgrunn på en slik måte at matematikk framstår som et meningsfullt fag for alle elever.
+## Læringsutbytte
+Kunnskap
+Studenten skal:
+-  Kjenne grensebegrepet for reelle funksjoner, og kunne definere kontinuitet, deriverbarhet og integrasjon ved grensebegrepet.
+-  Kunne derivere elementære funksjoner, og bruke den deriverte til å beskrive egenskaper funksjonen.
+-  Kunne forklare ideen bak analysens fundamentalteorem.
+-  Kunne regne med endelige og uendelige følger og rekker.
+-  Kunne beregne den antideriverte ved substitusjon, delvis integrasjon og delbrøksoppspalting.
+-  Kunne løse 1. ordens lineære og separable differensiallikninger samt bruke disse i anvendelser.
+-  Kunne relatere det matematikkfaglige innholdet i emnet til matematikken på 5. til 10. trinn.
+Ferdigheter
+Studenten skal:
+-  Kunne vurdere elevenes læring i faget som grunnlag for tilrettelegging av undervisning og tilpasset opplæring.
+-  Kunne bruke varierte undervisningsformer forankret i teori og egen erfaring, herunder valg, vurdering og utforming av oppgaver og aktiviteter.
+-  Kunne bruke digitale verktøy i matematikkundervisning, inkludert programmering og kunstig intelligens, samt kunne reflektere kritisk over deres anvendelse i skolen.
+Generell kompetanse
+Studenten skal:
+-  Kunne delta og bidra i FoU-prosjekter og andre samarbeidsprosjekter med tanke på å forbedre matematikkfagets praksis.
+## Forkunnskapskrav
+## Eksamen / vurdering
+FOU-oppgave og skriftlig eksamen
+FOU-oppgaven er et fagdidaktisk arbeid som skal oppfylle de formelle kravene til en akademisk oppgave. Den kan gjennomføres individuelt eller i små grupper, avhengig av tema og arbeidsform, noe som avgjøres av faglærer. Ved gruppearbeid vil hele gruppen få samme karakter. Omfang: 4000 ord +/- 20 %.Alle vurderingene må være bestått for å få karakter i emnet.
+## Vilkår for å gå opp til eksamen/vurdering
+Gjennom semesteret gjennomføres to arbeidskrav i funksjonslære. Hver av disse gjennomføres i forbindelse med undervisningen i kurset og har en varighet på inntil 90 minutter. Datoer for gjennomføring annonseres ved emnets begynnelse og har obligatorisk deltagelse.
+Studenter som får et arbeidskrav vurdert til ikke-godkjent ved første gjennomføring gis mulighet for en ny innlevering av oppgaven i bearbeidet form.
+Det er krav om 70 % tilstedeværelse i dette emnet.
+## Fagperson(er)
+## Emneansvarlig:
+## Studieprogramleder:
+## Faglærer:
+## Studiekoordinator:
+## Praksiskoordinator:
+## Arbeidsformer
+Undervisningen foregår hovedsakelig i form av seminarer og gruppearbeid der det legges særlig vekt på aktiv studentdeltakelse. Det legges til rette for at studentgruppa skal fungere som et læringsfellesskap, blant annet gjennom en ukentlig 'regnestue', der studentene samarbeider om oppgaver og problemstillinger. Det forutsettes at studentene arbeider betydelig med oppgaver utenom undervisningstiden.
+## Emneevaluering
+## Litteratur

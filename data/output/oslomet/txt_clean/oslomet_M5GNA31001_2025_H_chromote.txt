@@ -1,0 +1,65 @@
+## Programplaner og emneplaner - Student
+## EPN-V2
+##  M5GNA3100 Naturfag 2, emne 3 Emneplan
+##  Innledning
+Fagplanen tilhørende dette emnet er lagt på emne M5GNA2100 Naturfag 1, emne 1.
+##  Forkunnskapskrav
+Se under Opptakskrav i fagplanen.
+##  Læringsutbytte
+Etter fullført emne har studenten følgende læringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+Kunnskap
+Studenten
+- har kunnskap om grunnleggende modeller og teorier for beskrivelse av naturen
+- har kunnskap om tverrfaglig undervisning som fremmer barn og ungdoms handlingskompetanse for et bærekraftig liv i framtiden
+- har kunnskap om elevers læring i naturfag og hvordan en kan legge til rette for begrepsdannelse og utvikling av naturfaglig språk på ulike trinn
+- har kunnskap om hvordan en kan drive dialogisk, variert og utforskende undervisning med elever på ulike trinn
+- har kunnskap om elevers hverdagsforestillinger i biologi, fysikk, geologi, kjemi og teknologi
+- har kunnskap om progresjon i elevers læring av naturfaglige fenomener
+- har kunnskap om gener, arv og mekanismer bak evolusjon og naturlig utvalg
+- har kunnskap om energi og sentrale begreper som bevaring, overføring og energikvalitet og kan knytte disse til ulike områder av naturfaget
+- har kunnskap om ulike fornybare og ikke-fornybare energikilder og deres virkemåte, og kan knytte disse til samfunnsmessige, miljømessige og etiske problemstillinger
+- har grunnleggende kunnskap om termofysikk og kan knytte denne til partikkelmodellen og fysiske endringer i dagliglivet og naturen
+- har kunnskap om vær- og klimasystemer både lokalt og globalt og kan knytte dette til klimaendringene
+- har kunnskap om kretsløp, uorganiske og organiske stoffer og deres reaksjoner og betydning i naturfaglige prosesser og i miljøsammenhenger
+- har kunnskap om elektronikk og elektromagnetisme og deres betydning i naturfaglige og samfunnsmessige sammenhenger
+- har kunnskap om bruk av ulike modeller som viser størrelsesordener i naturen, herunder fenomener utenfor solsystemet og vår forståelse av hvordan universet har oppstått og utviklet seg
+- har kunnskap om kreative undervisningsprosesser hvor naturvitenskapelige begreper kan anvendes til å beskrive og forklare form og funksjon hos noen teknologiske produkter
+- har grunnleggende kunnskap om programmering og hvordan det kan brukes til å fremme læring i naturfag
+Ferdigheter
+Studenten
+- kan gjennomføre aktiviteter, forsøk og målinger inne og ute med bruk av egnet utstyr, bearbeide og presentere måledata, samt vurdere nødvendige sikkerhetstiltak
+- kan gjøre beregninger i temaer det er relevant
+- kan håndtere kjemikalier og lage kjemiske blandinger og løsninger
+- har kjennskap til og kan gjennomføre sentrale laboratorieteknikker og tester
+- kan tilrettelegge praktisk, utforskende og kontekstbasert undervisning i naturfag og teknologi som gir god progresjon mellom ulike trinn
+- kan bruke og utvikle programmer som løser eller simulerer naturfaglige problemstillinger
+- kan analysere, vurdere og dokumentere elevers læring og gi læringsfremmende tilbakemeldinger tilpasset elevers forutsetninger og behov
+- kan finne, vurdere og henvise til naturfaglig og naturfagdidaktisk forskning, informasjon og fagstoff og anvende dette i undervisning og drøfting med kollegaer
+- kan anvende en integrert naturfagundervisning og benytte naturfag som regifag i tverrfaglige sammenhenger
+- kan bruke naturfaglig kunnskap til å drøfte problemstillinger knyttet til bærekraftig utvikling og legge til rette for utdanning for bærekraftig utvikling
+Generell kompetanse
+Studenten
+- har innsikt i fagdidaktisk forskning om undervisning og læring i naturfag med fokus på progresjon og dybde i begrepsdanning, kritisk tenkning og argumentasjon
+- har innsikt i vitenskapsteori og metoder innenfor naturfagdidaktisk forskning og kan bidra og delta i prosjekt for å utvikle undervisningspraksis i naturfag
+- kan knytte egen rolle som naturfaglærer til etiske, sosiale, økonomiske og politiske problemstillinger som angår naturvitenskap og teknologi i samfunnet
+##  Innhold
+Naturfag 2, emne 3 er delt i seks hovedtemaer:
+- Naturfagdidaktikk 2
+- Jorda 2
+- Kjemi 2
+- Fysikk 2
+- Teknologi og Design 2
+- Miljø og bærekraftig utvikling
+FoU-oppgaven
+Sentralt i Naturfag 2 er FoU-oppgaven. Oppgaven skal ha en klart formulert problemstilling som det må være mulig å undersøke og utdype. FoU-oppgaven skal gi studentene muligheter til å dokumentere fagdidaktisk kunnskap og innsikt gjennom belysning og drøfting av en naturfaglig/miljøfaglig problemstilling som er relevant i grunnskolen.
+Studentene skal velge å fordype seg i ett eller flere temaer i fagplanen, og kan velge å skrive en teoretisk oppgave, en empirisk oppgave eller en kombinasjon. En teoretisk oppgave tar utgangspunkt i analyser og drøftinger i aktuelle forskningsarbeider innen et område og oppsummerer og sammenlikner. En empirisk oppgave bygger på ny informasjon som studenten selv samler inn eller bygger videre på analyse av materiale som andre har samlet inn.
+I oppgaver som bruker materiale studenten selv samler inn, er det et krav at dette innhentes slik at meldeplikten til Norsk senter for forskningsdata (NSD) ikke utløses. Hvis elever under myndighetsalder deltar i undersøkelsen, skal foresatte gi samtykke. Gjennom oppgaven skal studenten dokumentere kjennskap til aktuell forskning på det området som studenten skriver om. Studenten skal bruke teori og annet fagstoff som grunnlag for å undersøke problemstillingen. I metodedelen skal framgangsmåter dokumenteres slik at det er mulig å se hvordan studenten har innhentet og brukt materialet, og hvordan han eller hun har kommet fram til resultatene. Resultatene skal drøftes ut fra alminnelige vitenskapelige krav til pålitelighet og gyldighet.
+##  Arbeids- og undervisningsformer
+Naturfag 2 vil delvis være organisert i enfaglige temaer og delvis tverrfaglig i et miljøtema.
+Arbeidet med FoU-oppgaven er organisert som undervisning og kurs, veiledning/veiledningsseminar, muntlig framlegg og innlevering av skriftlig oppgave. Hver kandidat vil få oppnevnt en faglig veileder. Temaområde, problemstilling og opplegg for oppgaven skal godkjennes av veileder.
+Undervisningen skal i tillegg til undervisning i faglige emner gi støtte for oppgavearbeidet.
+Sentrale temaer for denne undervisningen er:
+- Utdanningsvitenskap for lærere - Sentrale forskningstradisjoner og metoder
+- Seminar i pedagogikk som tar opp sentrale utfordringer i dagens grunnskole
+- Forskningsetikk og grunnlagsspørsmål
+- Skriving i forskning om skole og undervisning og i læreryrket

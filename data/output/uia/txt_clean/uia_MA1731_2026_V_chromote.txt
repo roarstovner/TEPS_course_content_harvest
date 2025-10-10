@@ -1,0 +1,77 @@
+## MA-173 Innføringsemne i matematikk for skolen (Vår 2026)
+## Innholdsfortegnelse
+- Emnet er tilknyttet følgende studieprogram
+- Undervisningsspråk
+- Læringsutbytte
+- Innhold
+- Undervisnings- og læringsformer
+- Vilkår for å gå opp til eksamen
+- Eksamen
+- Studentevaluering
+- Opptakskrav hvis tilbudt som enkeltemne
+- Reduksjon i studiepoeng
+## Emnet er tilknyttet følgende studieprogram
+-  Grunnskolelærerutdanning for trinn 5-10, 5-årig masterprogram
+## Undervisningsspråk
+## Læringsutbytte
+KUNNSKAP
+Etter fullført emne har studenten kunnskap om
+- matematikkfaget i skolen slik det omtales i gjeldende læreplan, med spesiell vekt på kompetansemål og kjerneelementer
+matematikkfaget i skolen slik det omtales i gjeldende læreplan, med spesiell vekt på kompetansemål og kjerneelementer
+- tallsystemer og tallregning, med vekt på rasjonale tall
+tallsystemer og tallregning, med vekt på rasjonale tall
+- algebraens sentrale betydning og bruk i matematikk, og kjennetegn ved algebraisk tenkning
+algebraens sentrale betydning og bruk i matematikk, og kjennetegn ved algebraisk tenkning
+- funksjonsbegrepet, med vekt på ulike representasjonsformer
+funksjonsbegrepet, med vekt på ulike representasjonsformer
+- grunnleggende geometri, med vekt på måling
+grunnleggende geometri, med vekt på måling
+- grunnleggende kombinatorikk, sannsynlighetsbegrepet og enkle sannsynlighetsmodeller, samt beskrivende statistikk
+grunnleggende kombinatorikk, sannsynlighetsbegrepet og enkle sannsynlighetsmodeller, samt beskrivende statistikk
+- grunnleggende prinsipper i programmering
+grunnleggende prinsipper i programmering
+- tilpasset opplæring for elever i ulike læringssituasjoner, herunder betydningen av ulike uttrykksformer og overganger mellom disse
+tilpasset opplæring for elever i ulike læringssituasjoner, herunder betydningen av ulike uttrykksformer og overganger mellom disse
+- ulike undervisningsformer og læremidler, digitale og analoge, samt muligheter og begrensninger ved disse
+ulike undervisningsformer og læremidler, digitale og analoge, samt muligheter og begrensninger ved disse
+- matematikkdidaktisk teori knyttet til undervisning, elevenes læring og lærerens undervisningskunnskaper
+matematikkdidaktisk teori knyttet til undervisning, elevenes læring og lærerens undervisningskunnskaper
+FERDIGHETER
+Etter fullført emne kan studenten
+- formidle matematikk på en faglig trygg og didaktisk gjennomtenkt måte
+formidle matematikk på en faglig trygg og didaktisk gjennomtenkt måte
+- planlegge, gjennomføre og reflektere over egen undervisning ved hjelp av didaktisk teori
+planlegge, gjennomføre og reflektere over egen undervisning ved hjelp av didaktisk teori
+- planlegge, gjennomføre og reflektere over tilpasset opplæring for elever i ulike læringssituasjoner
+planlegge, gjennomføre og reflektere over tilpasset opplæring for elever i ulike læringssituasjoner
+- ta i bruk ulike undervisningsformer og læremidler, digitale og analoge, basert på muligheter og begrensninger ved disse
+ta i bruk ulike undervisningsformer og læremidler, digitale og analoge, basert på muligheter og begrensninger ved disse
+- analysere og vurdere elevers matematiske arbeid ved hjelp av didaktisk teori
+analysere og vurdere elevers matematiske arbeid ved hjelp av didaktisk teori
+GENERELL KOMPETANSE
+Etter fullført emne kan studenten
+- reflektere didaktisk omkring undervisning av sentrale emner i matematikk på trinn 5-10, samt reflektere helhetlig over elevers totale læringssituasjon
+reflektere didaktisk omkring undervisning av sentrale emner i matematikk på trinn 5-10, samt reflektere helhetlig over elevers totale læringssituasjon
+## Innhold
+Sentrale matematiske emner på mellom- og ungdomstrinnet, med særskilt vekt på algebraisk tenkning. Drøfting av problemstillinger knyttet til læring og undervisning av matematikk på mellom- og ungdomstrinnet. Bruk av digitale verktøy.
+Faget i praksis Læreren som tilrettelegger for læring i matematikk. Planlegging og gjennomføring av undervisning etter spesifikk undervisningsmodell. Refleksjon over erfaringer knyttet til dette i praksisoppfølging.
+## Undervisnings- og læringsformer
+Ulike former for seminarundervisning. 20 dager praksis for grunnskolelærerstudenter. Enkeltemnestudenter skal utføre et didaktisk arbeid av tilsvarende omfang som praksis. Arbeidsformene inkluderer arbeid med digitale verktøy. Krav om minimum 70 % tilstedeværelse. Eventuelle obligatoriske arbeidskrav informeres om i Canvas. Mer informasjon gis ved semesterstart. Totalt arbeidsomfang: 800 timer.
+## Vilkår for å gå opp til eksamen
+Alle obligatoriske deler av kurset må godkjennes, som angitt ved semesterstart i Canvas. Disse delene inkluderer:
+- Oppmøte: Minimum 70 % oppmøte.
+Oppmøte: Minimum 70 % oppmøte.
+- Oppgaver og prosjekter: Spesifikke detaljer vil bli gitt ved semesterstart i Canvas.
+Oppgaver og prosjekter: Spesifikke detaljer vil bli gitt ved semesterstart i Canvas.
+- Praksis: For enkeltemnestudenter erstattes kravene for bestått praksis med alternativt didaktisk arbeid.
+Praksis: For enkeltemnestudenter erstattes kravene for bestått praksis med alternativt didaktisk arbeid.
+## Eksamen
+Deleksamen 1: Muntlig eksamen knyttet til samtlige av emnets læringsmål. Bokstavkarakter. Teller 1/2 av totalkarakteren.
+Deleksamen 2: 6-timers skriftlig eksamen knyttet til samtlige av emnets læringsmål. Bokstavkarakter. Teller 1/3 av totalkarakteren.
+Deleksamen 3: 4-timers nasjonalt gitt skriftlig eksamen i temaet algebraisk tenkning. Bokstavkarakter. Teller 1/6 av totalkarakteren.
+## Studentevaluering
+Emneansvarlig fastsetter i samråd med studenttillitsvalgt evalueringsform og om emnene skal ha midtveis- eller sluttevaluering i tråd med kvalitetssystemet kapittel 4.1.
+## Opptakskrav hvis tilbudt som enkeltemne
+For enkeltemnestudenter: fullført lærerutdanning
+## Reduksjon i studiepoeng
+Innholdet i dette emnet dekkes helt eller delvis av annet emne. Tas ett av disse emnene i tillegg, reduseres studiepoengene som følger:

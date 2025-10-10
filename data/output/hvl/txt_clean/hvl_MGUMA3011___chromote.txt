@@ -1,0 +1,60 @@
+## MGUMA301 Matematikk 2, emne 1 - Perspektiv på matematikkfaget
+##  Emneplan for studieåret 2025/2026
+## Innhold og oppbygning
+I Matematikk 2 fordyper studentene seg i noen av de matematikkdidaktiske og matematikkfaglige tema fra Matematikk 1. Fokus er mer konsentrert og forskingsrettet enn i Matematikk 1.
+Matematikk 2 er delt opp i følgende emner:
+- Emne 1: Perspektiv på matematikkfaget (15 studiepoeng)
+- Emne 2: Problemløsning og handlingskompetanse i matematikk (15 studiepoeng)
+Til sammen dekker emne 1 og 2 læringsutbyttet for Matematikk 2 beskrevet i de Nasjonale retningslinjene for Grunnskulelærarutdanninga 5-10.
+Denne emneplanen omtaler emne 1.
+Emne 1 har fokus på tre sentrale perspektiv knyttet til matematikkfaget.
+- Matematikkfagets betydning som allmenndannende fag og dets samspill med andre fag, kultur, filosofi og samfunnsutvikling
+- Matematikkfagets betydning for utvikling av elevers kritisk demokratiske kompetanse
+- Tilpasset opplæring
+Matematikkfaglige tema i emne 1 er matematisk analyse, statistiske metoder, funksjonslære, matematisk modellering og programmering. Gjennom arbeidet med emnet skal studenten få innsikt i begreper som er sentrale i disse temaene. Det arbeides med matematiske modellers rolle og anvendelse i et faglig prosess- og danningsrelatert perspektiv. Studentene skal sette seg inn i nyere matematikkdidaktisk forskning knyttet til emnets tema og utvikle ferdigheter og kompetanse i å vurdere læring og legge til rette for tilpasset opplæring for alle elever.
+Det vil være forventet at studenten i forbindelse med arbeidskravene søker støtte for valg og analyser i pensumrelevante matematikkdidaktiske artikler.
+## Læringsutbytte
+Ved fullført emne skal studenten ha følgende totale læringsutbytte:
+Kunnskaper
+Studenten
+- har kunnskap om matematisk analyse, statistisk analyse og enkle matematiske modeller og kan relatere denne kunnskapen til det matematikkfaglige innholdet på trinn 5-10.
+- har inngående kunnskap om interaksjonsmønster, kommunikasjon og språkets rolle for læring av matematikk
+- har kunnskap om matematiske modellers rolle og anvendelse i et faglig prosess- og danningsrelatert perspektiv
+- har kunnskap om matematikkdidaktisk forskning med relevans for utvikling av undervisningskunnskap i matematikk og elevers læring i faget
+- har kunnskap om programmering som er aktuell for ungdomstrinnet
+- har kunnskap om tilpasset opplæring og om flerkulturalitet som ressurs i matematikkfaget
+Ferdigheter
+Studenten
+- kan bruke digitale verktøy til illustrasjon, simuleringer og beregninger knyttet til matematiske modeller
+- kan legge til rette for elevers arbeid med modellering i ulike didaktiske perspektiv.
+- kan vurdere elevenes læring i faget som grunnlag for tilrettelegging av undervisning og tilpassa opplæring
+- kan tilpasse opplæringen i matematikk ut fra elevenes behov og gjeldende læreplan
+- kan kommunisere med elever, lytte til, vurdere, gjøre bruk av elevers innspill og stimulere elevers matematiske tenkning i arbeid med matematisk analyse, statistikk, funksjonslære og modellering
+- kan bruke programmeringsspråk aktuelle for ungdomstrinnet til å løse matematiske problemer med bruk av løkker, vilkår og funksjoner
+Generell kompetanse
+Studenten
+- har forståelse for matematikkfagets betydning som allmenndannende fag og dets samspill med andre fag, kultur, filosofi og samfunnsutvikling
+- har forståelse for matematikkfagets betydning i utvikling av kritisk demokratisk kompetanse
+## Krav til forkunnskaper
+Ingen
+## Anbefalte forkunnskaper
+MGUMA101/MGUMA102 Undervisning i matematikk
+MGUMA201/MGUMA202 Læring i matematikk
+eller tilsvarende 30 stp.
+## Undervisnings- og læringsformer
+Detaljer i forbindelse med organiseringen av undervisning i emnet vil fremkomme i semesterplanen som blir utdelt ved emnets start.
+Gjennom studiet skal studentene få erfaring med arbeidsformer som er relevante i grunnskolen og som skal gi grunnlag for diskusjoner om skolens arbeidsformer.
+Det blir brukt forelesninger, diskusjoner, presentasjoner, gruppearbeid og individuelt arbeid.
+Deler av pensum arbeides med som selvstudium, og det anbefales at lærestoffet bearbeides gjennom kollokviegrupper. Veiledning inngår som en naturlig del i de fleste aktiviteter.
+Det er mulig å gjennomføre deler av emnet gjennom en måneds utveksling i Kina i regi av HVL. Eksamen blir avlagt ved HVL på ordinært vis.
+## Obligatorisk læringsaktivitet
+- En obligatorisk læringsaktivitet hvor erfaringer fra praksis, matematiske og matematikkdidaktiske temaer inngår.
+Ytterlige presiseringer knyttet til om læringsaktiviteten er individuelt eller i gruppe, og om den er skriftlig eller muntlig, kommer frem av semesterplanen.
+Læringsaktiviteten i emnet skal knyttes til fagovergripende tema slik de står beskrevet i studieprogramplanen.
+Noen av undervisningsøktene kan være obligatoriske. Hvilke økter dette er snakk om, vil fremkomme i semesterplanen som utdeles ved semesterstart.
+De obligatoriske læringsaktivitetene må være godkjent av emneansvarlig senest 2 uker før studenten kan framstille seg til eksamen. Dersom en obligatorisk læringsaktivitet blir vurdert som ikke godkjent, skal det bli gitt en begrunnelse for dette. Studenter som ikke får godkjent en obligatorisk læringsaktivitet vil, så langt det lar seg gjøre innen fastsatte frister, få ett nytt forsøk i inneværende semester.
+## Vurderingsform
+Skoleeksamen, 6 timer.
+Karakterskala A-F, der F tilsvarer ikke bestått.
+## Hjelpemidler ved eksamen
+Enkel kalkulator er tillatt. Ellers ingen hjelpemidler. Standardnormalfordelingstabellen kommer som vedlegg til eksamensoppgavene.

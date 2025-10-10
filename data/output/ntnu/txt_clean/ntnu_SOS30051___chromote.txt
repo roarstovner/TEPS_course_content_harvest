@@ -1,0 +1,26 @@
+## Om emnet
+## Faglig innhold
+Emnet omfatter anvendt statistisk dataanalyse med både kontinuerlige variabler og kategorivariabler. Hovedvekten legges på hvordan vanlig (OLS) regresjon kan brukes til å analysere både lineære og kurvelineære sammenhenger mellom et sett med forklaringsvariabler (X) og en kontinuerlig avhengige variabler (Y). Det vil også bli gitt en innføring i logistisk regresjon.
+## Læringsutbytte
+Kunnskapsmål - studenten skal:
+- kunne lese samfunnsvitenskapelig faglitteratur der regresjonsmodeller benyttes.
+Ferdighetsmål - studenten skal:
+- kunne gjennomføre analyser ved hjelp av de analysemodellene det undervises i.
+## Læringsformer og aktiviteter
+Forelesninger tilsvarende 2 timer pr. uke, og øvinger/seminar med veiledning tilsvarende 2 timer pr. uke. Enkelte forelesninger kan komme til å bli holdt på engelsk.
+## Mer om vurdering
+Vurderingsform: Individuell skriftlig oppgave.
+## Anbefalte forkunnskaper
+Ingen.
+## Forkunnskapskrav
+SOS1002 eller IDRSA1016/IDRSA1017 eller tilsvarende. Forkunnskapskravet må være innfridd for å få starte på emnet.
+## Kursmateriell
+Foreligger ved semesterstart.
+## Studiepoengreduksjon
+## Fagområder
+- Idrettsvitenskap
+- Organisasjons/arbeidslivsfag
+- Medier og kommunikasjon
+- Samfunnsvitenskapelige fag
+- Sosiologi
+- Statsvitenskap

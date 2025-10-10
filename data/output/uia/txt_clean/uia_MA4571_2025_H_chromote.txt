@@ -1,0 +1,42 @@
+## MA-457 Grunnleggende algebra (Høst 2025)
+## Innholdsfortegnelse
+- Emnet er tilknyttet følgende studieprogram
+- Undervisningsspråk
+- Forkunnskapskrav
+- Læringsutbytte
+- Innhold
+- Undervisnings- og læringsformer
+- Vilkår for å gå opp til eksamen
+- Eksamen
+- Studentevaluering
+## Emnet er tilknyttet følgende studieprogram
+-  Grunnskolelærerutdanning for trinn 1-7, 5-årig masterprogram
+## Undervisningsspråk
+## Forkunnskapskrav
+Fullført 60 studiepoeng i masterfaget
+## Læringsutbytte
+Studenten
+- har avanserte kunnskaper om hva algebraisk tenkning betyr og at det involverer analytiske og deduktive prosesser, symbolisering og manipulering av uttrykk
+- har solid innsikt i hva algebra i skolen innebærer i form av å kunne forklare og uttrykke sammenhenger og strukturer i arbeid med tall og deres operasjoner, funksjonsrelasjoner og deres struktur samt modelleringsspråk
+- kan forklare og bruke de matematiske kjerneelementer, som beskrevet i LK-20, med spesiell vekt på Resonnering og argumentasjon og Abstraksjon og generalisering.
+- kan gjennom utforsking, problemløsning, hensiktsmessig representasjon, abstraksjon og generalisering oppdage og gjøre rede for viktige resultater og sammenhenger mellom begreper innen algebra, tallteori og geometri.
+- kan kommunisere matematikk en selv har utviklet og sette seg inn i, og forstå, andres matematiske ideer og resonnementer.
+## Innhold
+Emnet behandler fortrolighet med tall, talloperasjoner og tallegenskaper, hva som menes med å tenke matematisk og hva algebraisk tenkning betyr og involverer i grunnskolen. I arbeid med resonnering og argumentasjon kommer vi inn på eksempler på bevis innenfor tallteori, geometri, algebra og sannsynlighetsregning. Vi skal bli oppmerksomme på hva som er premisser og konklusjoner i påstander, og få kjennskap til ulike former for logiske argument som direkte- og indirekte bevis og bevis ved bruk av generiske eksempler.
+Faget i praksis. I løpet av de 5 dagene i praksis skal det legges til rette for at studenten får erfaring med bruk av ulike undervisningsressurser i matematikk og elevaktive undervisningsmetoder.
+## Undervisnings- og læringsformer
+Undervisningen vil gis i form av fellesundervisning, arbeid i smågrupper, obligatoriske innleveringer og muntlige presentasjoner.
+Det er obligatoriske arbeidskrav som kan gjennomføres enten ved fysisk deltakelse eller ved innleveringer. Nærmere spesifikasjoner om arbeidskravene blir gitt i Canvas ved semesterstart.
+Forventet arbeidsomfang i emnet er omtrent 267 timer.
+Det inngår 5 dager praksis for grunnskolelærerstudentene. Disse skal være en forberedelse til praksisperioden i 8. semester. Andre studenter skal utføre et didaktisk arbeid av tilsvarende omfang som praksis.
+## Vilkår for å gå opp til eksamen
+Grunnskolelærerstudenter må ha
+- godkjent arbeidskrav som går frem av Canvas
+- godkjent praksis
+Andre studenter må ha
+- godkjent arbeidskrav som går frem av Canvas
+- godkjent didaktisk arbeid tilsvarende omfang som praksis
+## Eksamen
+Individuell skriftlig eksamen. Gradert karakter.
+## Studentevaluering
+Emneansvarlig fastsetter i samråd med studenttillitsvalgt evalueringsform og om emnene skal ha midtveis- eller sluttevaluering i tråd med kvalitetssystemet kapittel 4.1. Informasjon om evalueringsform for emnet publiseres i Canvas.

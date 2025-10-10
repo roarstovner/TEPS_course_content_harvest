@@ -1,0 +1,92 @@
+Studiepoeng:30
+Ansvarlig fakultet:Fakultet for realfag og teknologi
+Emneansvarlig:Birgitte Bjønness, Margrethe Naalsund
+Campus / nettbasert:Undervises campus Ås
+Undervisningens språk:Engelsk, norsk
+Frekvens:Profesjonsmaster PPU, profil realfag: Hvert vårsemester.Profesjonsmaster PPU, profil naturbruk: Heltidsstudenter: hvert vårsemester. Deltidsstudenter: hvert høst- og vårsemester.
+Profesjonsmaster PPU, profil realfag: Hvert vårsemester.
+Profesjonsmaster PPU, profil naturbruk: Heltidsstudenter: hvert vårsemester. Deltidsstudenter: hvert høst- og vårsemester.
+Forventet arbeidsmengde:900 timer
+Undervisnings- og vurderingsperiode:Profesjonsmaster PPU, profil realfag: Vårparallell.Profesjonsmaster PPU, profil naturbruk: Heltidsstudenter: veiledning og vurdering i vårparallell. Deltidsstudenter: veiledning i høst- og vårsemester, vurdering i vårparallell
+Profesjonsmaster PPU, profil realfag: Vårparallell.
+Profesjonsmaster PPU, profil naturbruk: Heltidsstudenter: veiledning og vurdering i vårparallell. Deltidsstudenter: veiledning i høst- og vårsemester, vurdering i vårparallell
+## Om dette emnet
+Profesjonsmaster PPU, profil realfag: Masteroppgaven består av et selvstendig forskningsarbeid som gjennomføres i det siste semesteret av studiet. Masteroppgaven kan skrives som monografi eller vitenskapelig artikkel. Studenten får veiledning underveis av en oppnevnt veileder og evt. biveiledere(e). Veiledningen skal sikre at studenten får råd om litteratur, om datainnsamling og eventuelt laboratoriearbeid, og at forskningsetiske retningslinjer følges. Masteroppgaven er profesjonsfaglig rettet. Vi tilbyr masteroppgaver innen fagdidaktikk i fag 1.
+Profesjonsmaster PPU, profil naturbruk: Masteroppgaven består av et selvstendig forsknings- eller utviklingsprosjekt som gjennomføres i det siste semesteret av masterstudiet for heltidsstudenter og i de to siste semestrene av studiet for deltidsstudenter. Masteroppgaven kan leveres skriftlig eller i multimodal form og utføres individuelt eller i samarbeid mellom to eller tre studenter. Dersom oppgaven leveres av to eller tre studenter, må hver students selvstendige del av prosjektet dokumenteres. Studenten eller studentene får veiledning underveis av en oppnevnt veileder og evt. biveiledere(e). Veiledningen skal sikre at studenten eller studentene får råd om utførelse av aksjonslæringsprosjekt og eventuelt feltarbeid samt annen datainnsamling og litteratur. Veiledning skal også følge opp overholdelse av forskningsetiske retningslinjer. Masteroppgaven er profesjonsfaglig rettet.
+## Dette lærer du
+Profesjonsmaster PPU, profil realfag:
+Etter fullført masteroppgave skal studenten kunne:
+- Gjennomføre et selvstendig forsknings- og utviklingsarbeid ut fra en begrunnet problemstilling/forskningsspørsmål.
+- Benytte relevante teorier og forskningsmetoder som verktøy i forskningsarbeidet.
+- Analysere og trekke konklusjoner ut av et selvstendig gjennomført forskningsprosjekt.
+- Formidle prosjektets forsknings- og erfaringsbaserte kunnskap (basert på selvstendig forskningsprosjekt) både skriftlig og muntlig.
+- Lese, forstå og bruke forskningslitteratur.
+- Følge forskningsetiske retningslinjer.
+Mer spesifikt skal studenten kunne:
+- utvikle en problemstilling / et forskningsspørsmål som er begrunnet ut ifra relevans for fagfelt og/eller praksis.
+- avgrense oppgaven tilstrekkelig slik at den er gjennomførbar.
+- ta i bruk anerkjente forskningstilnærminger og -metoder som er relevante og begrunnet
+- vurdere forskningsarbeidet med hensyn på forskningsetikk, herunder eventuelle nødvendige godkjenninger fra NSD
+- drøfte muligheter og utfordringer med metodevalg
+- anvende fag/yrkesdidaktisk teori og forskingslitteratur som er relevant for valgt problemstilling/forskningsspørsmål
+- arbeide selvstendig og evt. delta i relevante forskningsgrupper
+- skrive masteroppgaven ihht. akademisk stil og krav, med en tydelig sammenheng mellom oppgavens ulike deler.
+- analysere og drøfte resultater og funn og begrunne hvordan de har framkommet
+- besvare og drøfte problemstilling/forskningsspørsmål med nødvendige forbehold og implikasjoner.
+Profesjonsmaster PPU, profil naturbruk: Etter fullført masteroppgave skal studenten kunne:
+- Utvikle, gjennomføre og vise et selvstendig forsknings- eller utviklingsprosjekt, individuelt eller i samarbeid med andre, ut fra en begrunnet problemstilling med underliggende forskningsspørsmål.
+- Bruke relevante yrkespedagogiske perspektiver, yrkespraksis og kvalitative forskningsmetoder som verktøy i arbeidet med forsknings- eller utviklingsprosjektet
+- Analysere og trekke konklusjoner fra forsknings- eller utviklingsprosjektet
+- Presentere, dele og kritisk drøfte kunnskap utviklet i forsknings- eller utviklingsprosjektet med kolleger eller andre samarbeidspartnere i opplæring.
+- Dokumentere utforskningen i masteroppgaven skriftlig, muntlig og eventuelt gjennom andre uttrykksformer.
+- Forstå, drøfte og bruke relevant og anerkjent yrkespedagogisk fagstoff.
+- Redegjøre for samt drøfte overholdelse av forskningsetiske retningslinjer i forbindelse med bruk av aksjonslæring som strategi for prosjektet
+Mer spesifikt skal studenten kunne:
+- Utvikle og begrunne problemstilling og underliggende forskningsspørsmål ut fra opplevde behov og nåsituasjon innenfor yrkesopplæring.
+- Bruke yrkespedagogiske perspektiver, annen teori og yrkespraksis som er relevant for aksjonen og resonnere faglig omkring perspektiver, teori og praksis (flyttet)
+- Bruke aksjonslæring som strategi for forsknings- eller utviklingsprosjekt samt relevante kvalitative forskningsmetoder
+- Vurdere forsknings- eller utviklingsprosjektet med hensyn på forskningsetikk, herunder eventuelle nødvendige godkjenninger fra NSD
+- Drøfte muligheter og utfordringer omkring metodevalg.
+- Reflektere omkring egen utvikling og rollen som deltakende og samarbeidende forsker i aksjonslæringsprosjektet
+- Dokumentere et selvstendig bidrag og profesjonell deltagelse i et samarbeid om aksjonslæring
+- Gjennomføre masteroppgaven skriftlig, muntlig og eventuelt i andre uttrykksformer med en tydelig, logisk og kommuniserbar sammenheng mellom oppgavens ulike deler.
+- Analysere og drøfte resultater og funn og begrunne hvordan de har framkommet
+- Besvare og drøfte problemstilling med underliggende forskningsspørsmål med nødvendige forbehold og implikasjoner.
+- Læringsaktiviteter
+Profesjonsmaster PPU, profil realfag: Selvstendig arbeid under veiledning. Mastergradsforum med seminarer i vårsemesteret.
+Profesjonsmaster PPU, profil naturbruk: Selvstendig arbeid, individuelt og i grupper, under veiledning. I tillegg arrangeres mastergradsforum med seminarer i vårsemesteret for heltidsstudenter, i høst- og vårsemesteret siste studieår for deltidsstudenter.
+Profesjonsmaster PPU, profil realfag: Selvstendig arbeid under veiledning. Mastergradsforum med seminarer i vårsemesteret.
+Profesjonsmaster PPU, profil naturbruk: Selvstendig arbeid, individuelt og i grupper, under veiledning. I tillegg arrangeres mastergradsforum med seminarer i vårsemesteret for heltidsstudenter, i høst- og vårsemesteret siste studieår for deltidsstudenter.
+- Læringsstøtte
+Profesjonsmaster PPU, profil realfag: Hver student har rett til 40 timers veiledning. Det forventes at studenten arbeider selvstendig utover dette veiledningstilbudet. Masterforumet tilbyr også støtte under dette arbeidet.
+Profesjonsmaster PPU, profil naturbruk: Studenter som leverer individuell oppgave, har rett til 40 timers veiledning. Om studenten samarbeider med andre studenter om masteroppgaven, økes tidsrammen for veiledning av masteroppgaven med 20 timer for hver student, med rett til 60 timer veiledning for masteroppgave med to studenter, 80 timer for masteroppgave med tre studenter. Studenten eller studentene arbeider selvstendig utover dette veiledningstilbudet. Veiledning i masterforumet tilbyr også støtte fra veileder innenfor rammene gitt ovenfor.
+Profesjonsmaster PPU, profil realfag: Hver student har rett til 40 timers veiledning. Det forventes at studenten arbeider selvstendig utover dette veiledningstilbudet. Masterforumet tilbyr også støtte under dette arbeidet.
+Profesjonsmaster PPU, profil naturbruk: Studenter som leverer individuell oppgave, har rett til 40 timers veiledning. Om studenten samarbeider med andre studenter om masteroppgaven, økes tidsrammen for veiledning av masteroppgaven med 20 timer for hver student, med rett til 60 timer veiledning for masteroppgave med to studenter, 80 timer for masteroppgave med tre studenter. Studenten eller studentene arbeider selvstendig utover dette veiledningstilbudet. Veiledning i masterforumet tilbyr også støtte fra veileder innenfor rammene gitt ovenfor.
+- Pensum
+Undervisningsmateriell utvikles individuelt.
+- Forutsatte forkunnskaper
+Profesjonsmaster PPU, profil realfag: Krever opptak på lektorprogrammet eller profsjonsmaster PPU i profil i realfag ved NMBU. Dette masteremnet skal normalt være det eneste emnet som gjenstår i mastergraden.
+Profesjonsmaster PPU, profil naturbruk: Krever opptak på profesjonsmaster med praktisk pedagogisk utdanning med profil yrkespedagogikk i naturbruk.
+Profesjonsmaster PPU, profil realfag: Krever opptak på lektorprogrammet eller profsjonsmaster PPU i profil i realfag ved NMBU. Dette masteremnet skal normalt være det eneste emnet som gjenstår i mastergraden.
+Profesjonsmaster PPU, profil naturbruk: Krever opptak på profesjonsmaster med praktisk pedagogisk utdanning med profil yrkespedagogikk i naturbruk.
+- Vurderingsordning, hjelpemiddel og eksamen
+Profesjonsmaster PPU, profil realfag: Skriftlig oppgave med muntlig forsvar, teller 100%.
+Profesjonsmaster PPU, profil naturbruk: Skriftlig eller multimodal oppgave med muntlig forsvar teller 100 %.
+Masteroppgave Karakterregel: Bokstavkarakterer   Masteroppgave med justerende muntlig Karakterregel: Bokstavkarakterer
+Profesjonsmaster PPU, profil realfag: Skriftlig oppgave med muntlig forsvar, teller 100%.
+Profesjonsmaster PPU, profil naturbruk: Skriftlig eller multimodal oppgave med muntlig forsvar teller 100 %.
+- Om bruk av KI
+I emnet tillates full bruk av KI (nivå K3). Studenten skal gjøre rede for hvordan og hvorfor KI er blitt brukt i arbeidet med oppgaven. Videre skal studenten drøfte hvordan og hvorfor KI-bruk bidrar til utvikling av egen faglig og forskningsmetodisk kompetanse.
+Her finner du KI-kategoriene beskrevet.
+- Sensorordning
+Intern og ekstern sensor vurderer masteroppgaven og muntlig eksamen.
+- Obligatorisk aktivitet
+Profesjonsmaster PPU, profil realfag: Utfylt kontrakt mellom student og veileder(e), med detaljert framdriftsplan, leveres fakultetet før arbeidet med masteroppgaven kan starte.
+Profesjonsmaster PPU, profil naturbruk: Signert kontrakt mellom student (er) og veileder(e) med framdriftsplan leveres fakultetet før arbeidet med masteroppgaven kan starte.
+Profesjonsmaster PPU, profil realfag: Utfylt kontrakt mellom student og veileder(e), med detaljert framdriftsplan, leveres fakultetet før arbeidet med masteroppgaven kan starte.
+Profesjonsmaster PPU, profil naturbruk: Signert kontrakt mellom student (er) og veileder(e) med framdriftsplan leveres fakultetet før arbeidet med masteroppgaven kan starte.
+- Undervisningstider
+Profesjonsmaster PPU, profil realfag: Studenten arbeider fulltid med oppgaven i ett semester. Mastergradsforum med seminar.
+Profesjonsmaster PPU, profil naturbruk: Heltid: Studenten(e) arbeider fulltid med oppgaven i ett semester. Mastergradsforum med seminar, nettbasert og/eller fysisk oppmøte. Deltid: Studenten(e) arbeider deltid, 50 %, med oppgaven i høst- og vårsemester. Mastergradsforum med seminar, nettbasert og/eller fysisk oppmøte.
+Profesjonsmaster PPU, profil realfag: Studenten arbeider fulltid med oppgaven i ett semester. Mastergradsforum med seminar.
+Profesjonsmaster PPU, profil naturbruk: Heltid: Studenten(e) arbeider fulltid med oppgaven i ett semester. Mastergradsforum med seminar, nettbasert og/eller fysisk oppmøte. Deltid: Studenten(e) arbeider deltid, 50 %, med oppgaven i høst- og vårsemester. Mastergradsforum med seminar, nettbasert og/eller fysisk oppmøte.

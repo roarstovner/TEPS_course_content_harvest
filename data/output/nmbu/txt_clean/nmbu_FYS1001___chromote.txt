@@ -1,0 +1,74 @@
+Studiepoeng:10
+Ansvarlig fakultet:Fakultet for realfag og teknologi
+Emneansvarlig:Elise Bergli
+Campus / nettbasert:Undervises campus Ås
+Undervisningens språk:Norsk
+Frekvens:Årlig
+Forventet arbeidsmengde:250 timer: 17 timer pr uke i 15 uker.
+Undervisnings- og vurderingsperiode:Emnet starter i vårparallellen. Emnet har undervisning/vurdering i vårparallellen, .
+## Om dette emnet
+Undervisningen er temabasert. I tilknytning til temaene arbeider studentene med relaterte fysikkemner (eksempler i parentes): Biofysikk (lys, elektriske felt, radioaktivitet), Klima (mekanikk, gasslover, elektromagnetisk stråling), Bioenergi (varmelære, induksjon og vekselstrøm), Solenergi (atom- og kjernefysikk, elektriske kretser)
+Innholdsoversikt:
+- Bevegelse (kinematikk) og dens årsak (dynamikk), med spesiell vekt på energibegrepet og mekanikkens bevaringssatser.
+- Væskers fysiske egenskaper.
+- Stoffer og gassers termiske egenskaper og varmelærens hovedsetninger.
+- Bølgebevegelse, lys og optikk.
+- Elektrisitet, magnetisme og elektromagnetisk stråling.
+- Enkel atomteori, kjernefysikk og strålingsfysikk.
+## Dette lærer du
+Å forstå og å kunne bruke grunnleggende begreper og naturlover i fysikk.
+Å tilegne seg naturvitenskapelig fagspråk og termer.
+Å forstå hvordan enkle prinsipper kan brukes til å beskrive kompliserte fenomener i naturen. Å forstå hvordan kunnskap om fysikk anvendes for å forstå biologiske systemer, fornybar energiproduksjon og klimaspørsmål.
+Å erfare hvor tett sammenvevd de forskjellige naturvitenskapelige disiplinene egentlig er.
+Å bli motivert til å arbeide videre i sitt studium med en realflerfaglig redskapskasse.
+Studentene skal gis en operativ forståelse av de viktigste fysiske begrepene, grunnleggende fysisk tenkemåte og evnen til å analysere og løse kvantitative problemer innen:
+- Bevegelse (kinematikk) og dens årsak (dynamikk), med spesiell vekt på energibegrepet og mekanikkens bevaringslover
+- Væskers fysiske egenskaper
+- Stoffer og gassers termiske egenskaper og varmelærens hovedsetninger.
+- Bølgebevegelse, lys og optikk.
+- Elektrisitet, magnetisme og elektromagnetisk stråling.
+- Enkel atomteori, kjernefysikk og strålingsfysikk.
+Studentene skal også kjenne til og forstå sentrale problemstillinger innen biologisk fysikk, klima og klimaendringer og fornybar energi (solenergi og bioenergi).
+Studentene skal kunne:
+- analysere en beskrevet problemstilling ved å anvende grunnleggende lover og prinsipper fra fysikk
+- løse regneoppgaver ved å anvende grunnleggende lover og prinsipper fra fysikk.
+- forklare hvordan fenomener i biologi og i miljøfysikk kan forklares kvalitativt med bakgrunn i grunnleggende lover og prinsipper fra fysikk
+- samarbeide om læring og om problemløsning
+- se sammenhengen mellom fysikk og andre naturvitenskapelige fag
+Studentene skal forstå hvorfor grunnleggende kunnskaper i fysikk er nødvendige for å kunne forstå og beskrive naturen og for å kunne forstå og løse miljøproblemer.
+Studentene skal også forstå at fysikk og naturvitenskap er et menneskeskapt redskap vi bruker for å utforske naturen og at det alltid er naturen selv som er fasit.
+- Læringsaktiviteter
+## Arbeidsformer
+FORELESNINGER med gjennomgang av sentrale begrep, teori, eksempler, fysikkdemonstrasjoner og auditoriumsaktiviterer.
+REGNEØVELSER OG VEILEDEDE KOLLOKVIER hvor forståelses- og regneoppgaver drøftes og gjennomgås og hvor hjelpelærer deltar i diskusjon eller annet studiearbeid.
+LABORATORIEØVELSER hvor studentene selv undersøker fysikkfenomener, studerer fornybar energiteknologi og får opplæring i bruk av enkelt måleutstyr.
+SELVSTUDIUM hvor studenten arbeider i kollokvier og selvstendig med å lese og drøfte teori, regne og diskutere oppgaver.
+## Arbeidsformer
+FORELESNINGER med gjennomgang av sentrale begrep, teori, eksempler, fysikkdemonstrasjoner og auditoriumsaktiviterer.
+REGNEØVELSER OG VEILEDEDE KOLLOKVIER hvor forståelses- og regneoppgaver drøftes og gjennomgås og hvor hjelpelærer deltar i diskusjon eller annet studiearbeid.
+LABORATORIEØVELSER hvor studentene selv undersøker fysikkfenomener, studerer fornybar energiteknologi og får opplæring i bruk av enkelt måleutstyr.
+SELVSTUDIUM hvor studenten arbeider i kollokvier og selvstendig med å lese og drøfte teori, regne og diskutere oppgaver.
+- Læringsstøtte
+Aktiv nettside med kursinformasjon, meldingstjeneste og læringsressurser. Orakeltjeneste hvor hjelpelærere gjennomgår pensum eller oppgaver etter studentenes ønske.
+- Pensum
+Blir opplyst på Canvas ved oppstart.
+- Forutsatte forkunnskaper
+R1 eller S1+S2 fra videregående skole eller MATH100.
+- Anbefalte forkunnskaper
+Fysikk 1 og R2 fra videregående skole.
+- Vurderingsordning, hjelpemiddel og eksamen
+Skriftlig avsluttende prøve; 3,5 timer.
+Skriftlig eksamen Karakterregel: Bokstavkarakterer  Hjelpemiddel: B1 Utdelt kalkulator, ingen andre hjelpemidler
+- Om bruk av KI
+K1 - ingen bruk av KI
+Her finner du KI-kategoriene beskrevet.
+- Sensorordning
+Ekstern sensor deltar sammen med intern sensor ved utformingen av eksamensoppgavene og sensorveiledningen. Ekstern sensor kontrollerer intern sensors vurdering av et tilfeldig utvalg kandidater som en kalibrering med visse mellomrom i henhold til instituttets retningslinjer for sensur.
+- Obligatorisk aktivitet
+Obligatoriske laboratorieoppgaver og ukentlige obligatoriske øvelser.
+- Merknader
+Emnet er beregnet for studenter uten forkunnskaper som vil ha en kort og intensiv innføring i fysikk og i eksempler på fagets anvendelser innen biologi og miljøtema. Emnet åpner muligheten, også for studenter uten annen fysikkbakgrunn, til å ta bestemte fysikkemner innen meteorologi og klima, elektronikk, måleteknikk og statikk. Emnet gir også muligheten til å ta emnegruppe i fysikk for studenter uten forkunnskaper fra videregående skole.
+- Undervisningstider
+Undervisningsperioden består av 13 ukers undervisningsperiode og 2 uker eksamensperiode. I undervisningsperioden tilbys: Forelesninger: 2 x 2 timer x 13 uker = 52 timer. Forelesningsseminar og gjesteforelesninger: 2 timer x 13 uker = 26 timer. Oppgavegjennomgang: 2 timer x 14 uker = 28 timer Regne- og kollokvieverksted: 2 timer x 14 uker = 28 timer. Regne- og kollokvieverksted for studenter uten fysikkbakgrunn: 4 timer x 14 uker = 56 timer. Laboratorieøvelser: 2 x 5 timer = 10 timer (obligatorisk). Obligatoriske innleveringsoppgaver: 12 x 4 timer: 48 timer
+- Opptakskrav
+GSK

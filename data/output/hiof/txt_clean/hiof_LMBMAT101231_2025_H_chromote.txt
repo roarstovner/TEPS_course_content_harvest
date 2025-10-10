@@ -1,0 +1,91 @@
+## Fakta om emnet
+## Innholdsfortegnelse
+- Emnet er tilknyttet følgende studieprogram
+- Undervisningssemester
+- Innhold
+- Studentens læringsutbytte etter bestått emne
+- Undervisnings- og læringsformer
+- Arbeidsomfang
+- Praksis
+- Arbeidskrav - vilkår for å avlegge eksamen
+- Eksamen
+- Sensorordning
+- Evaluering av emnet
+- Litteratur
+## Emnet er tilknyttet følgende studieprogram
+Emnet er obligatorisk for studenter i Grunnskolelærerutdanning 1-7 (300 studiepoeng).
+## Undervisningssemester
+1. semester (høst).
+## Innhold
+Innholdet bygger på gjeldende læreplan for grunnskolen og Nasjonale retningslinjer for fag GLU 1-7. Følgende lærestoff gjennomgås i emnet:
+Tall:
+- regning i historiske tallsystemer og i andre tallsystemer samt andre kulturers måte å uttrykke tall og tallregning på
+- utvikling av tallbegrepet med ulike representasjonsformer for tall og overgangen mellom disse formene med spesielt fokus på begynneropplæringen
+- oppbygging av posisjonssystemet
+- utvikdelse av tallmengder fra naturlige tall til de reelle tallene
+- ulike typer strategier i de fire regneartene
+- hoderegning - ulike strategier
+- regnearket: lage enkle formler og bruke ferdiglagde formler
+- enkel tallære: partall, oddetall, primtall, faktorisering
+Statistikk:
+- ulike diagrammer: blant annet søyle, linje og sektor
+- sentralmål: gjennomsnitt, typetall og median
+- spredningsmål: variasjonsbredde og standardavvik
+Kombinatorikk og sannsynlighetsberegning:
+- bruk av multiplikasjonsprinsippet
+- sannsynlighet og kombinatorikk for ulike typer utvalg
+- sannsynlighetsberegning knyttet til konkrete eksempler
+Innføring i programmering
+Til alle temaer overfor skal det knyttes fagdidaktikk. Det betyr at temaene tilknyttes barneskolens matematikk, at kjerneområdene settes i sammenheng med lærestoffet, at studentene oppdager elevenes tenkemåter og feilmønstre og at studentene får erfaring med hjelpemidler og konkretiseringsmateriell. Dette kan skje i emnet eller ved et nært samarbeid med praksisfeltet. Temaer som naturlig hører til begynneropplæringen skal komme tydelig frem, for eksempel: tallbegrepet, posisjonstallsystemet og regneartene.
+Didaktiske temaer:
+- gjeldende læreplan med vekt på ulike kompetanser og de grunnleggende ferdighetene
+- overgang fra barnehage til skole og fra barneskole til ungdomsskole med fokus på tall
+- kommunikasjon i matematikk
+- kunne planlegge, gjennomføre og vurdere undervisning i matematikk med spesielt fokus på begynneropplæring innen tall
+- vurdering for læring
+- bli kjent med ulike typer trykte og digitale hjelpemidler i matematikk, og vurdere disse i forhold til elevenes læring.
+- digitale ferdigheter i matematikk; regneark, kalkulator, læremidler og læringsressurser
+Gjennom arbeidet med alle temaene skal studentene lære om og erfare ulike arbeidsformer som er relevante for arbeidet på 1.-7. trinn. Arbeidsmåtene skal være preget av utforsking, og de skal fremme kreativitet og undring hos elevene. Det skal fokuseres på begynneropplæringen.
+Fagovergripende temaer: Det flerkulturelle samfunnet, psykososialt læringsmiljø og estetiske læringsprosesser er fagovergripende temaer som presenteres i flerfaglige aktiviteter. Disse er nærmere beskrevet i studieplanen for studiet.
+## Studentens læringsutbytte etter bestått emne
+Kunnskap
+Studenten
+- har kunnskap om algoritmisk tenkning
+- har dybdekunnskap innenfor tall, statistikk, kombinatorikk og sannsynlighet elevene arbeider med på barnetrinnet med spesiell vekt på begynneropplæringen
+- har kunnskap om matematikkens historiske utvikling, spesielt utviklingen av tallbegrep og tallsystemer
+- har kunnskap om hvordan grunnleggende ferdigheter medvirker til utviklingen av matematisk kompetanse
+- har kunnskap om bruk av ulike læremidler og læringsressurser, både digital og andre, og muligheter og begrensninger ved slike læremidler og læringsressurser
+- har kunnskap om interaksjonsmønster, kommunikasjon og språkets rolle for læring av matematikk og om ulike syn på læring av matematikk
+- har kunnskap om matematikkfagets innhold i barnehagen og på ungdomstrinnet og om overgangene fra barnehage til skole og fra barnetrinnet til ungdomstrinn
+Ferdigheter
+Studenten
+- kan planlegge, gjennomføre og vurdere matematikkundervisning for alle elever på trinn 1-7 med fokus på variasjon og elevaktivitet
+- kan bruke varierte arbeidsmåter som fremmer elevenes undring, kreativitet og evne til å arbeide systematisk med utforskende aktiviteter, resonnering og argumentasjon
+- kan vurdere elevenes måloppnåelse, begrunne vurderingene og gi læringsfremmende framovermeldinger
+- kan kommuniserer med elever, lytte til, vurdere, gjøre bruk av elevers innspill og stimulere elevenes matematisk tenkning
+- kan anvende digitale læremidler og læringsressurser, også for å legge til rette for elevers læring av matematikk
+Generell kompetanse
+Studenten
+- har innsikt i matematikkfagets betydning som allmenndannende fag og dets samspill med kultur, filosofi og samfunnsutvikling
+- kan tilpasse og reflektere over ulike arbeidsmåter som fremmer læring i matematikk, også i digitale omgivelser
+- har innsikt i matematikkfagets betydning for utvikling av kritisk demokratisk kompetanse
+## Undervisnings- og læringsformer
+Studentene skal arbeide i basisgrupper og individuelt. De skal møte varierte arbeidsformer: forelesninger, oppgaveregning med ulike typer oppgaver, diskusjoner, arbeid med konkrete og utforskende arbeidsmåter. Undervisningen bygger på forskningsbasert kunnskap. IKT skal inngå som en sentral del av matematikkstudiet og brukes som et redskap for læring, veiledning, samarbeid og dokumentasjon.
+## Arbeidsomfang
+Emnet er beregnet til totalt 400 timers arbeidsinnsats, inkl. timeplanlagt undervisning, selvstudium, arbeidskrav, eksamensforberedelser og eksamensgjennomføring.
+## Praksis
+Det er to uker praksis i 1. semester inkludert en uke observasjonspraksis. Se nærmere informasjon i programplan for Grunnskolelærerutdanning 1-7 og Plan for praksis (1-7).
+NOR101 har ansvar for praksis.
+## Arbeidskrav - vilkår for å avlegge eksamen
+- Studentene får i løpet av semesteret åtte oppgavesett av faglig og didaktisk karakter i tilknytning til emnet det arbeides med. Studentene må få godkjent 6 av de 8 oppgavesettene. Oppgavene rettes og kommenteres av medstudenter i matematikktimene på oppgitte datoer. Studentene må være til stede under rettingene. Det kan komme spørsmål fra disse oppgavene på eksamen. De som ved semesterets slutt mangler ett godkjent oppgavesett, får tilbud om å gjøre og rette nye oppgaver på en dato som oppgis av fagansvarlig.
+- Obligatorisk deltakelse i undervisningen. Minimum 80 % oppmøte
+Arbeidskrav vurderes til godkjent / ikke godkjent. Arbeidskravene må være godkjent av faglærer før studenten kan fremstille seg til eksamen.
+## Eksamen
+Skriftlig skoleeksamen, individuell. Varighet: 6 timer.
+Kandidaten prøves både i matematikkfaglige og matematikkdidaktiske oppgaver. Tillatt hjelpemiddel: Godkjent kalkulator.
+Karakterregel: A-F.
+## Sensorordning
+Intern og ekstern sensur.
+## Evaluering av emnet
+Emnet evalueres i henhold til HiØs kvalitetssystem.
+## Litteratur

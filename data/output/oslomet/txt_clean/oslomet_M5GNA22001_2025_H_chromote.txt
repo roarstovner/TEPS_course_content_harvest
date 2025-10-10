@@ -1,0 +1,73 @@
+## Programplaner og emneplaner - Student
+## EPN-V2
+##  M5GNA2200 Naturfag 1, emne 2 Emneplan
+##  Innledning
+Fagplanen tilhørende dette emnet er lagt på emne M5GNA2100 Naturfag 1, emne 1.
+##  Forkunnskapskrav
+Ingen.
+##  Læringsutbytte
+Etter fullført emne har studenten følgende læringsutbytte definert som kunnskap, ferdigheter og generell kompetanse:
+Kunnskap
+Studenten
+- har kunnskap om elevers læring i naturfag og hvordan en kan legge til rette for begrepsdannelse og utvikling av naturfaglig språk på mellom- og ungdomstrinnet
+- har kunnskap om hvordan en kan drive dialogisk, variert og utforskende undervisning med elever på mellom- og ungdomstrinnet
+- har kunnskap om elevers hverdagsforestillinger i biologi, fysikk, geologi, kjemi og teknologi
+- har kunnskap om progresjon i elevers læring av naturfaglige fenomener
+- har kunnskap om partikkelmodellen og kan bruke den for å konkretisere oppbygging av ulike stoffer og for å forklare grunnleggende fysiske endringer i dagliglivet og naturen
+- har kunnskap om navnsetting, oppbygging og egenskaper til vanlige kjemiske stoffer, og kan bruke periodesystemet til å forklare dette
+- har grunnleggende kunnskap om kjemiske reaksjoner på makro- og mikronivå med fokus på syre- og base-, fellings- og redoksreaksjoner
+- har kunnskap om noen av menneskets organsystemer, pubertet, seksualitet og helse og hvordan en kan undervise temaene for elever på mellom- og ungdomstrinnet
+- har kunnskap om livsprosesser i celler og oppbygging av celler
+- har kunnskap om den biologiske systematikken, og hvordan grupper av organismer og arter er tilpasset norsk natur, samt hvorfor det er viktig med dette fokuset
+- har kunnskap om økologi og bærekraftig utvikling og hvordan en kan undervise temaene gjennom tverrfaglig undervisning og bruk av varierte læringsarenaer inne og ute
+- har kunnskap om sentrale systemer som organsystemer, økosystemer, bergartssyklusen, solsystemet og systemet jord-sol-måne og hvordan de kan introduseres for elevene ved å vise hvordan bestanddeler i hvert system henger sammen
+- har grunnleggende kunnskap om krefter og mekanikk, inkludert kinetisk og potensiell energi
+- har grunnleggende kunnskap om elektrisitet og magnetisme
+- har kunnskap om bølger, lyd og lys som fysiske fenomener og kan knytte dette til syn og hørsel
+- har kunnskap om ytre og indre geologiske prosesser på jorda og med fokus på vanlige norske mineraler og bergarter
+- har kunnskap om programmering og algoritmisk tenking og hvordan det kan brukes i naturfag
+Ferdigheter
+Studenten
+- kan planlegge, gjennomføre og reflektere over egen undervisning på mellom- og ungdomstrinnet forankret i forskning, teori og praksis og med spesielt fokus på utforskende arbeidsmåter og integrasjon av alle grunnleggende ferdigheter
+- kan gjennomføre aktiviteter, forsøk og målinger inne og ute med bruk av egnet utstyr, bearbeide og presentere måledata, samt vurdere nødvendige sikkerhetstiltak
+- kan gjøre beregninger i temaer det er relevant
+- kan bruke, vurdere og utvikle relevante modeller til å forklare naturfaglige fenomener i biologi, fysikk, geologi og kjemi, og kan argumentere for bruk av ulike former for modeller for å støtte elevers læring
+- kan bruke formativ vurdering som grunnlag for tilrettelegging av undervisning og tilpasset opplæring på mellom- og ungdomstrinnet
+- kan gjennomføre teknologiundervisning med fokus på å designe og lage teknologiske produkter og knytte teknologi til relevante tema i naturfag
+Generell kompetanse
+Studenten
+- har innsikt i naturfagets betydning som allmenndannende fag og naturvitenskapens metoder og tenkemåter med fokus på utforskende arbeidsmåter
+- kan analysere og bruke gjeldende læreplan for mellom- og ungdomstrinnet som utgangspunkt for naturfagundervisning
+- kan drøfte egen rolle, praksis og utviklingsmuligheter som naturfaglærer
+##  Innhold
+Emne 2 er delt i fire hovedtemaer:
+- Naturfagdidaktikk 1-2
+- Kropp og helse 1-2
+- Jorda 1-2
+- Kjemi 1-2
+- Fysikk 1-2
+##  Arbeids- og undervisningsformer
+Se fagplanen.
+##  Arbeidskrav og obligatoriske aktiviteter
+Retten til å avlegge eksamen forutsetter godkjente arbeidskrav og deltakelse i bestemte faglige aktiviteter. Nærmere informasjon om arbeidskrav og krav til deltakelse er beskrevet i den innledende delen av fagplanen. Følgende arbeidskrav må være godkjent før eksamen i emnet kan avlegges:
+Felles i temaene Fysikk 1-2, Kjemi 1-2, Jorda 1 og Kropp og helse 1-2:
+- Individuell praktisk prøve i laboratorieteknikker og praktisk arbeid (inntil 30 minutter)
+I temaet Jorda 1-2:
+- Individuell test i arter og objekter (20 minutter)
+Aktiviteter med obligatorisk deltakelse
+Fordi det er svært vanskelig å tilegne seg kunnskaper om feltarbeid i naturen på egen hånd er det knyttet 100 % deltakelse til feltkurset. Dersom studenten har gyldig fravær fra feltkurset, vil det bli tilrettelagt for ny gjennomføring.
+I temaet Jorda 1-2:
+- Feltkurs med for- og etterarbeid i Oslo-området uten overnatting (omfang 3-4 dager).
+Det er i tillegg krav om at studenten må gjennomføre flerfaglige arbeidskrav for å få avlegge eksamen i emnet. Se programplanen for nærmere informasjon om arbeidskravene.
+##  Vurdering og eksamen
+Eksamensform
+Eksamen består av en 4-timers individuell skriftlig eksamen under tilsyn.
+Ny/utsatt eksamen
+Ny/utsatt eksamen arrangeres som ved ordinær eksamen.
+##  Hjelpemidler ved eksamen
+Kalkulator - ikke programmerbar.
+Formelhefte vil være tilgjengelig på eksamen.
+##  Vurderingsuttrykk
+Det benyttes en gradert karakterskala fra A til E for bestått og F for ikke bestått eksamen.
+##  Sensorordning
+Eksamen vurderes av intern og ekstern sensor.

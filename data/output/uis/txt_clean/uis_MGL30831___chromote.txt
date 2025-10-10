@@ -1,0 +1,66 @@
+Dette er emnebeskrivelsen for studieåret 2025-2026. Merk at det kan komme endringer.
+## Emnekode
+MGL3083
+## Versjon
+1
+## Vekting (stp)
+15
+## Semester undervisningsstart
+Vår
+## Antall semestre
+1
+## Vurderingssemester
+Vår
+## Undervisningsspråk
+Norsk
+Vis timeplan
+## Innhold
+Det er et stadig økende behov for å kjenne til varierte måter å undervise i skolen på, og både digitale ferdigheter og kjerneelementet teknologi fra læreplanen kan være et godt utgangspunkt. Digitale teknologier kan bidra til å forenkle komplekse naturfaglige konsept, men på samme tid også være fremmedgjørende uten en kritisk vurdering av den. Teknologi handler også om å forstå prinsipper og virkemåter ved både analoge og digitale teknologier for å kunne skape hensiktsmessige produkt. Videre vil emnet også ha fokus på å modellere, designe og skape produkt basert på kravspesifikasjoner. Her vil både elektroniske komponenter, materialvalg, varierte sammenføyningsteknikker og analoge verktøy være sentralt i planlegging og gjennomføring av slike prosjekt.
+## Læringsutbytte
+En kandidat med fullført og bestått emne skal ha følgende læringsutbytter:
+Kunnskap
+Kandidaten
+-  har inngående innsikt i hva som menes med digital kompetanse i naturfag både for lærere og elever
+-  har utvidet kunnskap om hvordan man kan utvikle enkle animasjoner og simuleringer til egen undervisning - og hvordan bruk av dette kan påvirke læringsutbytte til elevene.
+-  har utvidet kunnskap om hvordan bruk av digitale teknologier kan bidra til engasjement og mestringsopplevelser - men samtidig også manglende læringsutbytte ved ukritisk bruk
+-  har utdypende innsikt i teknologi som begrep og hvordan både digital og analog teknologi kan implementeres i skolen.
+Ferdigheter
+Kandidaten
+-  kan alene og sammen med andre planlegge og gjennomføre undervisning for utforskning og bedre læring i naturfag i teknologirike undervisningssituasjoner
+-  kan anvende flere digitale teknologier i praktiske sammenhenger i naturfag
+-  kan kritisk vurdere bruken av digitale teknologier for et best mulig læringsutbytte.
+-  kan alene og sammen med andre planlegge og gjennomføre teknologiprosjekt med fokus på materialvalg, verktøy og sammenføyningsteknikker.
+Generell kompetanse
+Kandidaten 
+-  kan anvende et utvalg teknologiske og analoge redskaper som et ledd i variert undervisning
+-  har innsikt i fagdidaktisk forskning om undervisning og læring i naturfag med fokus på digitale verktøy
+-  kan analysere, vurdere og utvise dømmekraft i anvendelsen av digitale teknologier i naturfag
+-  har innsikt i fagdidaktisk forskning om undervisning i teknologi som begrep, og hvordan man kan sikre best mulig læringsutbytte
+## Forkunnskapskrav
+## Eksamen / vurdering
+Mappeeksamen
+Mappeeksamen som består av to mapper som utarbeides gjennom semesteret. Mappe 1 (individuell eksamen) består av arbeidskrav 1 og 2 som er bearbeidet og leveres samlet mot slutten av semesteret. Omfang av mappeelementene står definert under obligatoriske arbeidskrav. Vekting: 2/3. Bokstavkarakter A-F Mappe 2 (gruppeeksamen) består av arbeidskrav 3 som er bearbeidet og leveres mot slutten av semesteret. Omfang av mappen står definert under obligatoriske arbeidskrav. Vekting: 1/3. Bokstavkarakter A-F Ved ikke bestått kan det velges mellom å bearbeide de allerede innleverte elementene, eller velge å erstatte et eller flere element med nye bearbeida elementer. Ved stryk blir det ikke gitt mulighet for veiledning. Den/de bearbeida mappen blir levert i den ordinære perioden for kontinuasjonseksamen.
+## Vilkår for å gå opp til eksamen/vurdering
+Obligatorisk oppmøte, arbeidskrav
+Obligatoriske krav
+Det er obligatorisk oppmøte til praktisk undervisning hvor studentene må være på campus eller andre læringsarenaer med hensyn til egnede lokaler, utstyr og gruppearbeid.
+Tre digitale arbeider. Arbeidene må være godkjent og vil være utgangspunkt for det som blir vurdering til eksamen.
+Arbeidskrav 1 (individuell, 2500 ord): Refleksjonsmappe som tar for seg hva som menes med teknologibegrepet og digital kompetanse i naturfagklasserommet ved å knytte refleksjoner til litteraturen og konkrete eksempler fra et klasserom.
+Arbeidskrav 2 (individuell, multimodal innlevering): Utvikle en mappe som tar for seg koding i naturfag og praktisk gjennomføring av dette. Mikrokontrollere som Arduino eller Micro:Bit skal benyttes. Kandidaten skal demonstrere kodeferdigheter, og at opplegget har en relevant tilknytning til et kompetansemål i naturfag.
+Arbeidskrav 3 (gruppe, 1500 ord): Utvikle et skriftlig produkt som tar for seg de ulike stegene i teknologi og desingprosessen. Her vil det følge en kravspesifikasjon som ramme for opplegget - men studentene gjennomfører de andre teknologi og design-prosessene.
+Alle arbeidskrav må være godkjent for å gå opp til eksamen. Konsekvenser av ikke godkjent arbeidskrav er at adgang til prøving nektes. Jf. Forskrift om studier og eksamen ved Universitetet i Stavanger (eksamensforskriften), § 2-8 nr. 3.
+Studenter som får et eller flere av arbeidskravene vurdert til ikke-godkjent ved første innlevering, gis mulighet for én ny innlevering av oppgaven(e) i bearbeidet form.
+## Fagperson(er)
+## Emneansvarlig:
+## Faglærer:
+## Studieprogramleder:
+## Praksiskoordinator:
+## Studiekoordinator:
+## Arbeidsformer
+Undervisningen vil veksle mellom forelesninger og praktisk arbeid. Dette innebærer blant annet å planlegge og gjennomføre undervisningsopplegg hvor digital og analog teknologi spiller en hovedrolle. Vi skal utvikle egne animasjoner, utforske og utvide egne kodeferdigheter samt skape egne produkt ved å bruke materialer og verktøy.
+Arbeidsinnsats totalt 425 timer:
+- Undervisning 42 timer
+- Egeninnsats 383 timer (inkluderer selvstudie, praksis, arbeidskrav og eksamen)
+## Åpent for
+## Emneevaluering
+## Litteratur
