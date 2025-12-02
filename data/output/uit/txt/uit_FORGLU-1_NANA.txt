@@ -1,15 +1,0 @@
-institution: uit
-code: FORGLU-1
-year: NA
-hv: NA
-url: https://uit.no/utdanning/aktivt/emne/FORGLU
-status: 200
-course_name_no: 
------ FULLTEXT -----
-
-
-
-Error rendering component
-
-   
-

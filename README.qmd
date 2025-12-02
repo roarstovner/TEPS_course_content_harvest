@@ -34,7 +34,7 @@ output
 We want the entire pipeline to be computational, possibly consisting of these functions:
 
 - `course_url(institution_short, course_code, year, semester)`, which ouputs the course_url.
-- `parse_html(institution_short, url)`, which outputs the full text of course information with ok formatting.
+- `extract_fulltext(institution_short, url)`, which outputs the full text of course information with ok formatting.
 
 Ideally, the work is added to this repository.
 

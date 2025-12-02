@@ -1,16 +1,0 @@
-institution: uit
-code: TYS-3190-1
-year: NA
-hv: NA
-url: https://uit.no/utdanning/aktivt/emne/TYS-3190
-status: 200
-course_name_no: hC8st 2020
-TYS-3190 Spesialemne i tysk litteraturvitenskap - 10 stp
------ FULLTEXT -----
-
-
-Startsida
-Emnekatalog
-Spesialemne i tysk litteraturvitenskap
-   
-
