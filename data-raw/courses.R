@@ -1,39 +1,44 @@
 ## code to prepare `courses` dataset goes here
 
-library(rdbhapi)
-library(tidyverse)
+institution_short <- function(institution_code, cfg = NULL){
+  if(is.null(cfg)) cfg <- yaml::yaml.load_file(input = "config/institutions.yaml")
+  
+  lookup <- unlist(cfg$aliases)
+  
+  lookup[institution_code]
+}
 
-studieprogram <- dbh_data(
+studieprogram <- rdbhapi::dbh_data(
   347, # dbh-tabell: Studieprogram
   filters = list(
-    "Studiumkode" = c("INTMASTER", "IMALU5-10", "IMALU1-7", "LUPE", "GLU1-7", "GLU5-10") # de to siste er fireårig
+    "Studiumkode" = c("INTMASTER", "IMALU5-10", "IMALU1-7", "LUPE")#, "GLU1-7", "GLU5-10") # de to siste er fireårig
   )
 )
 
-studieprogramkode <- studieprogram |>
-  distinct(Studieprogramkode)
+studieprogramkode <- unique(studieprogram$Studieprogramkode)
 
-emner_1 <- dbh_data(
-  208, # dbh-tabell: Emner
-  filters = list(
-    "Studieprogramkode" = studieprogramkode[1:80] #A hack? Throws an error if more than 80 study programs
-  )
+# rdbhapi doesn't handle larger chunks than 80
+studieprogramkode_chunks <- split(
+  studieprogramkode, 
+  ceiling(seq_along(studieprogramkode) / 80)
 )
 
-emner_2 <- dbh_data(
-  208,
-  filters = list(
-    "Studieprogramkode" = studieprogramkode[81:160]
+courses_list <- lapply(studieprogramkode_chunks, function(chunk) {
+  rdbhapi::dbh_data(
+    208,
+    filters = list("Studieprogramkode" = chunk)
   )
-)
+})
 
-emner_3 <- dbh_data(
-  208,
-  filters = list(
-    "Studieprogramkode" = studieprogramkode[161:length(studieprogramkode)]
-  )
-)
+courses <- do.call(rbind, emner_list)
 
-courses <- reduce(list(emner_1, emner_2, emner_3), bind_rows)
+courses <- courses |> 
+  dplyr::mutate(
+    institution_short = unname(institution_short(Institusjonskode)),
+    Emnekode_raw = Emnekode,
+    Emnekode = canon_remove_trailing_num(Emnekode),
+  ) |> 
+  dplyr::relocate(institution_short) |> 
+  dplyr::relocate(Emnekode_raw, .before = Emnekode)
 
 saveRDS(courses, "data/courses.RDS")
