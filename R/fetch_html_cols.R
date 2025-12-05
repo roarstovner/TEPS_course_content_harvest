@@ -25,7 +25,7 @@ fetch_html_cols <- function(urls, .progress = TRUE) {
   
   html <- character(length(urls))
   html[!is_valid] <- NA_character_
-  html[is_valid] <- purrr::map_chr(http_resps, function(x) if (is.null(x$result)) NA_character_ else x$result)
+  html[is_valid] <- purrr::map_chr(http_resps, function(x) if (is.null(x$result)) NA_character_ else httr2::resp_body_html(x$result))
   
   html_error <- vector("list", length(urls))
   html_error[is_valid] <- purrr::map(http_resps, "error")
@@ -43,6 +43,5 @@ fetch_html_cols_single <- function(url) {
     httr2::req_user_agent(
       "TEPS research project - https://uni.oslomet.no/teps/ - robast@oslomet.no"
     ) |> 
-    httr2::req_perform() |>
-    httr2::resp_body_string()
+    httr2::req_perform()
 }

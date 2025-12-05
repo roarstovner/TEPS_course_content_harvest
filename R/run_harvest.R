@@ -11,7 +11,7 @@ courses <- readRDS("data/courses.RDS")
 courses <- courses |> 
   filter(
     institution_short == "hivolda",
-    #Årstall %in% c(2017, 2018, 2019, 2020, 2021,)
+    Årstall %in% c(2017)
   ) |> 
   add_course_id() |> 
   validate_courses("initial") |>
