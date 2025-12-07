@@ -26,62 +26,61 @@ add_course_url_hivolda <- function(course_code){
 }
 
 add_course_url_uio <- function(course_code, faculty_name, field_name) {
-  
-  # Fakultets-slugs
+  # Fakultets-slugs (fra Avdelingsnavn)
   uio_fac_map <- c(
-    "det humanistiske fakultet"                  = "hf",
-    "det juridiske fakultet"                     = "jus",
-    "det matematisk-naturvitenskapelige fakultet"= "matnat",
-    "det medisinske fakultet"                    = "med",
-    "det odontologiske fakultet"                 = "odont",
-    "det samfunnsvitenskapelige fakultet"        = "sv",
-    "det teologiske fakultet"                    = "teologi",
-    "det utdanningsvitenskapelige fakultet"      = "uv"
+    "det humanistiske fakultet"                   = "hf",
+    "det juridiske fakultet"                      = "jus",
+    "det matematisk-naturvitenskapelige fakultet" = "matnat",
+    "det medisinske fakultet"                     = "med",
+    "det odontologiske fakultet"                  = "odont",
+    "det samfunnsvitenskapelige fakultet"         = "sv",
+    "det teologiske fakultet"                     = "teologi",
+    "det utdanningsvitenskapelige fakultet"       = "uv"
   )
   
-  # Institutt-slugs
-  uio_inst_map <- list(
+  # Institutt-slugs (fra Fagnavn / institutt-navn)
+  uio_inst_map <- c(
     # HF
-    "institutt for arkeologi, konservering og historiske studier" = c("hf","iakh"),
-    "institutt for kulturstudier og orientalske sprak"            = c("hf","ikos"),
-    "institutt for filosofi, ide- og kunsthistorie og klassiske sprak" = c("hf","ifikk"),
-    "institutt for litteratur, omradestudier og europeiske sprak" = c("hf","ilos"),
-    "institutt for lingvistiske og nordiske studier"              = c("hf","iln"),
-    "institutt for medier og kommunikasjon"                       = c("hf","imk"),
+    "institutt for arkeologi, konservering og historiske studier" = "iakh",
+    "institutt for kulturstudier og orientalske sprak"            = "ikos",
+    "institutt for filosofi, ide- og kunsthistorie og klassiske sprak" = "ifikk",
+    "institutt for litteratur, omradestudier og europeiske sprak" = "ilos",
+    "institutt for lingvistiske og nordiske studier"              = "iln",
+    "institutt for medier og kommunikasjon"                       = "imk",
     # SV
-    "institutt for sosiologi og samfunnsgeografi"                 = c("sv","iss"),
-    "institutt for statsvitenskap"                                = c("sv","statsvitenskap"),
-    "psykologisk institutt"                                       = c("sv","psi"),
-    "sosialantropologisk institutt"                               = c("sv","sai"),
-    "okonomisk institutt"                                         = c("sv","oekonomi"),
+    "institutt for sosiologi og samfunnsgeografi"                 = "iss",
+    "institutt for statsvitenskap"                                = "statsvitenskap",
+    "psykologisk institutt"                                       = "psi",
+    "sosialantropologisk institutt"                               = "sai",
+    "okonomisk institutt"                                         = "oekonomi",
     # MATNAT
-    "institutt for informatikk"                                   = c("matnat","ifi"),
-    "institutt for geofag"                                        = c("matnat","geofag"),
-    "kjemisk institutt"                                           = c("matnat","kjemi"),
-    "fysisk institutt"                                            = c("matnat","fys"),
-    "matematisk institutt"                                        = c("matnat","math"),
-    "institutt for biovitenskap"                                  = c("matnat","ibv"),
-    "farmasoytisk institutt"                                      = c("matnat","farmasi"),
-    "institutt for teoretisk astrofysikk"                         = c("matnat","astro"),
-    "institutt for teknologisystemer"                             = c("matnat","its"),
+    "institutt for informatikk"                                   = "ifi",
+    "institutt for geofag"                                        = "geofag",
+    "kjemisk institutt"                                           = "kjemi",
+    "fysisk institutt"                                            = "fys",
+    "matematisk institutt"                                        = "math",
+    "institutt for biovitenskap"                                  = "ibv",
+    "farmasoytisk institutt"                                      = "farmasi",
+    "institutt for teoretisk astrofysikk"                         = "astro",
+    "institutt for teknologisystemer"                             = "its",
     # MED
-    "institutt for helse og samfunn"                              = c("med","helsam"),
-    "institutt for medisinske basalfag"                           = c("med","imb"),
-    "institutt for klinisk medisin"                               = c("med","klinmed"),
+    "institutt for helse og samfunn"                              = "helsam",
+    "institutt for medisinske basalfag"                           = "imb",
+    "institutt for klinisk medisin"                               = "klinmed",
     # ODONT
-    "institutt for oral biologi"                                  = c("odont","iob"),
-    "institutt for klinisk odontologi"                            = c("odont","iko"),
+    "institutt for oral biologi"                                  = "iob",
+    "institutt for klinisk odontologi"                            = "iko",
     # UV
-    "institutt for larerutdanning og skoleforskning"              = c("uv","ils"),
-    "institutt for spesialpedagogikk"                             = c("uv","isp"),
-    "institutt for pedagogikk"                                    = c("uv","iped"),
+    "institutt for larerutdanning og skoleforskning"              = "ils",
+    "institutt for spesialpedagogikk"                             = "isp",
+    "institutt for pedagogikk"                                    = "iped",
     # Generiske
-    "det samfunnsvitenskapelige fakultet"                         = c("sv","sv"),
-    "det teologiske fakultet"                                     = c("teologi","tf")
+    "det samfunnsvitenskapelige fakultet"                         = "sv",
+    "det teologiske fakultet"                                     = "tf"
   )
   
   fac_slug  <- uio_fac_map[faculty_name]
-  inst_slug <- uio_inst_map[[field_name]][2]
+  inst_slug <- uio_inst_map[field_name]
   
   glue::glue(
     "https://www.uio.no/studier/emner/{fac_slug}/{inst_slug}/{toupper(course_code)}/"
