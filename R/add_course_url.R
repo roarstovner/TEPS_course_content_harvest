@@ -26,39 +26,50 @@ add_course_url_hivolda <- function(course_code){
 }
 
 add_course_url_uio <- function(course_code, faculty_name) {
-  
+  # Map fra Avdelingsnavn -> (faculty_slug, inst_slug)
   uio_map <- list(
-    "Biologisk institutt"                                         = c("matnat", "ibv"),
-    "Det utdanningsvitenskapelige fakultet"                       = c("uv", "uv"),
-    "Fysisk institutt"                                            = c("matnat", "fys"),
+    "Biologisk institutt" = c("matnat", "ibv"),
+    "Det utdanningsvitenskapelige fakultet" = c("uv", "uv"),
+    "Fysisk institutt" = c("matnat", "fys"),
     "Institutt for arkeologi, konservering og historiske studier" = c("hf", "iakh"),
-    "Institutt for biovitenskap"                                  = c("matnat", "ibv"),
-    "Institutt for geofag"                                        = c("matnat", "geofag"),
-    "Institutt for informatikk"                                   = c("matnat", "ifi"),
-    "Institutt for lingvistiske og nordiske studier"              = c("hf", "iln"),
-    
-    # OBS: denne tok du rett fra konsollen, ikke fra kopiert tekst
+    "Institutt for biovitenskap" = c("matnat", "ibv"),
+    "Institutt for geofag" = c("matnat", "geofag"),
+    "Institutt for informatikk" = c("matnat", "ifi"),
+    "Institutt for lingvistiske og nordiske studier" = c("hf", "iln"),
     "Institutt for litteratur, områdestudier og europeiske språk" = c("hf", "ilos"),
-    
-    "Institutt for lærerutdanning og skoleforskning"              = c("uv", "ils"),
-    "Institutt for medier og kommunikasjon"                       = c("hf", "imk"),
-    "Institutt for molekylær biovitenskap"                        = c("matnat", "ibv"),
-    "Institutt for nordistikk og litteraturvitenskap"             = c("hf", "iln"),
-    "Institutt for sosiologi og samfunnsgeografi"                 = c("sv", "iss"),
-    "Kjemisk institutt"                                           = c("matnat", "kjemi"),
-    "Klassisk og romansk institutt"                               = c("hf", "ilos"),
-    "Matematisk institutt"                                        = c("matnat", "math"),
-    "Naturfagsenteret"                                            = c("matnat", "naturfag")
+    "Institutt for lærerutdanning og skoleforskning" = c("uv", "ils"),
+    "Institutt for medier og kommunikasjon" = c("hf", "imk"),
+    "Institutt for molekylær biovitenskap" = c("matnat", "ibv"),
+    "Institutt for nordistikk og litteraturvitenskap" = c("hf", "iln"),
+    "Institutt for sosiologi og samfunnsgeografi" = c("sv", "iss"),
+    "Kjemisk institutt" = c("matnat", "kjemi"),
+    "Klassisk og romansk institutt" = c("hf", "ifikk"),
+    "Matematisk institutt" = c("matnat", "math"),
+    "Naturfagsenteret" = c("matnat", "naturfagsenteret")
   )
   
+  # Sørg for at key-strengene faktisk blir tolket som UTF-8
+  names(uio_map) <- enc2utf8(names(uio_map))
+  faculty_name   <- enc2utf8(faculty_name)
   
-  pair <- uio_map[[faculty_name]]
+  n <- length(course_code)
+  fac_slug  <- character(n)
+  inst_slug <- character(n)
   
-  # Hvis instituttet ikke finnes i listen → returner NA
-  if (is.null(pair)) return(NA_character_)
+  for (i in seq_len(n)) {
+    key  <- faculty_name[i]
+    pair <- uio_map[[key]]
+    if (is.null(pair)) {
+      fac_slug[i]  <- NA_character_
+      inst_slug[i] <- NA_character_
+    } else {
+      fac_slug[i]  <- pair[1]
+      inst_slug[i] <- pair[2]
+    }
+  }
   
-  fac_slug  <- pair[1]
-  inst_slug <- pair[2]
-  
-  glue::glue("https://www.uio.no/studier/emner/{fac_slug}/{inst_slug}/{toupper(course_code)}/")
+  glue::glue(
+    "https://www.uio.no/studier/emner/{fac_slug}/{inst_slug}/{toupper(course_code)}/"
+  )
 }
+
