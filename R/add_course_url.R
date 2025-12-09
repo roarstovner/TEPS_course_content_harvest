@@ -25,6 +25,7 @@ add_course_url_hivolda <- function(course_code){
   glue::glue("https://www.hivolda.no/emne/{course_code}")
 }
 
+# Note: uio_map does not contain all `Avdelingsnavn` at UiO, so might need to be updated when new courses are added.
 add_course_url_uio <- function(course_code, faculty_name) {
   # Map fra Avdelingsnavn -> (faculty_slug, inst_slug)
   uio_map <- list(
@@ -41,7 +42,7 @@ add_course_url_uio <- function(course_code, faculty_name) {
     "Institutt for medier og kommunikasjon" = c("hf", "imk"),
     "Institutt for molekylær biovitenskap" = c("matnat", "ibv"),
     "Institutt for nordistikk og litteraturvitenskap" = c("hf", "iln"),
-    "Institutt for sosiologi og samfunnsgeografi" = c("sv", "iss"),
+    "Institutt for sosiologi og samfunnsgeografi" = c("sv", "sv"), #skjønner ikke hvorfor denne er annerledes
     "Kjemisk institutt" = c("matnat", "kjemi"),
     "Klassisk og romansk institutt" = c("hf", "ifikk"),
     "Matematisk institutt" = c("matnat", "math"),
@@ -49,24 +50,11 @@ add_course_url_uio <- function(course_code, faculty_name) {
   )
   
   # Sørg for at key-strengene faktisk blir tolket som UTF-8
-  names(uio_map) <- enc2utf8(names(uio_map))
-  faculty_name   <- enc2utf8(faculty_name)
+  #names(uio_map) <- enc2utf8(names(uio_map))
+  #faculty_name   <- enc2utf8(faculty_name)
   
-  n <- length(course_code)
-  fac_slug  <- character(n)
-  inst_slug <- character(n)
-  
-  for (i in seq_len(n)) {
-    key  <- faculty_name[i]
-    pair <- uio_map[[key]]
-    if (is.null(pair)) {
-      fac_slug[i]  <- NA_character_
-      inst_slug[i] <- NA_character_
-    } else {
-      fac_slug[i]  <- pair[1]
-      inst_slug[i] <- pair[2]
-    }
-  }
+  fac_slug <- faculty_name |> purrr::map_chr(\(x) uio_map[[x]][1] %||% NA_character_)
+  inst_slug <- faculty_name |> purrr::map_chr(\(x) uio_map[[x]][2] %||% NA_character_)
   
   glue::glue(
     "https://www.uio.no/studier/emner/{fac_slug}/{inst_slug}/{toupper(course_code)}/"
