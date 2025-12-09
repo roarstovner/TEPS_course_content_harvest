@@ -6,34 +6,35 @@ source("R/extract_fulltext.R")
 source("R/add_course_url.R")
 source("R/checkpoint.R")
 
-# 1. Les inn alle kurs
-courses_all <- readRDS("data/courses.RDS")
+courses <- readRDS("data/courses.RDS")
 
-# 2. Velg institusjonene vi vil høste nå
-inst_keep <- c("hivolda", "hiof", "uio")
-
-courses <- courses_all |>
+uio_all <- courses |>
   filter(
-    institution_short %in% inst_keep
-    # og evt. år:
-    # Årstall %in% c(2017, 2018, 2019, 2020, 2021)
+    institution_short == "uio",
   ) |>
   add_course_id() |>
-  validate_courses("initial") |>
-  add_course_url() |>
-  validate_courses("with_url")
+  add_course_url()
 
-# 3. Hent HTML med checkpoint (felles fil for alle tre)
-courses <- fetch_html_with_checkpoint(
-  courses,
-  checkpoint_path = "data/checkpoint/html_uio_hivolda_hiof.RDS"
+
+# UiO does not store old versions of their Emneplan, so you only need the distinct urls created.
+# This makes historical UiO data rather limited, and looking up their Emneplan might give the wrong result.
+# I therefore only keep the latest version of each individual url.
+uio <- uio_all |>
+  slice_max(Årstall, n = 1, with_ties = FALSE, by = "url")
+
+uio <- fetch_html_with_checkpoint(
+  uio,
+  checkpoint_path = "data/checkpoint/html_uio.RDS"
 )
 
-# 4. Ekstraher fulltekst
-courses$fulltext <- extract_fulltext(courses$institution_short, courses$html)
+uio$fulltext <- extract_fulltext(uio$institution_short, uio$html)
 
-# Hvis du vil ha dem separat etterpå:
-courses_hivolda <- dplyr::filter(courses, institution_short == "hivolda")
-courses_hiof    <- dplyr::filter(courses, institution_short == "hiof")
-courses_uio     <- dplyr::filter(courses, institution_short == "uio")
+uio <- uio |>
+  select(course_id, html, html_error, html_success, fulltext) |> 
+  right_join(uio_all, by = "course_id") |> 
+  relocate(contains("html"), fulltext, .after = last_col())
 
+saveRDS(
+  uio,
+  file = "data/html_uio.RDS"
+)
