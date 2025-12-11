@@ -50,7 +50,7 @@ fetch_html_with_checkpoint <- function(courses, checkpoint_path = "data/checkpoi
   }
   
   # Fetch HTML for remaining courses
-  html_cols <- fetch_html_cols(courses_to_fetch$url, .progress = .progress)
+  html_cols <- fetch_html_cols(courses_to_fetch$url, courses_to_fetch$institution_short, .progress = .progress)
   courses_fetched <- dplyr::bind_cols(
     courses_to_fetch |> dplyr::select(course_id),
     html_cols

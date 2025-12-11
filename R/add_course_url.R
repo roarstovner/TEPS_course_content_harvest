@@ -1,15 +1,55 @@
 add_course_url <- function(df) {
   df |>
-    mutate(
-      url = case_match(
+    dplyr::mutate(
+      url = dplyr::case_match(
         institution_short,
-        "hiof" ~ add_course_url_hiof(Emnekode, Årstall, Semesternavn),
+        
+        "hiof"    ~ add_course_url_hiof(Emnekode, Årstall, Semesternavn),
         "hivolda" ~ add_course_url_hivolda(Emnekode),
-        "uio"    ~ add_course_url_uio(Emnekode, Avdelingsnavn),
-        .default = NA_character_
+        "uio"     ~ add_course_url_uio(Emnekode, Avdelingsnavn),
+        "ntnu"    ~ add_course_url_ntnu(Emnekode, Årstall),
+        "uia"     ~ add_course_url_uia(Emnekode, Årstall, Semesternavn),
+        "uit"     ~ add_course_url_uit(Emnekode),
+        "uib"     ~ add_course_url_uib(Emnekode),
+        "nord"    ~ add_course_url_nord(Emnekode),
+        "hvl"     ~ add_course_url_hvl(Emnekode),
+        
+        .default  = NA_character_
       )
     )
 }
+
+
+add_course_url_ntnu <- function(course_code, year) {
+  glue::glue("https://www.ntnu.no/studier/emner/{toupper(course_code)}/{year}")
+}
+
+add_course_url_uia <- function(course_code, year, semester) {
+  # enkel mapping av semester til slug
+  sem <- ifelse(
+    semester == "Vår",  "var",
+    ifelse(semester == "Høst", "host", tolower(semester))
+  )
+  
+  glue::glue("https://www.uia.no/studier/emner/{year}/{sem}/{tolower(course_code)}.html")
+}
+
+add_course_url_uit <- function(course_code) {
+  glue::glue("https://uit.no/utdanning/aktivt/emne/{toupper(course_code)}")
+}
+
+add_course_url_uib <- function(course_code) {
+  glue::glue("https://www4.uib.no/studier/emner/{tolower(course_code)}")
+}
+
+add_course_url_nord <- function(course_code) {
+  glue::glue("https://www.nord.no/studier/emner/{tolower(course_code)}")
+}
+
+add_course_url_hvl <- function(course_code) {
+  glue::glue("https://www.hvl.no/studier/studieprogram/emne/{course_code}")
+}
+
 
 add_course_url_hiof <- function(course_code, year, semester){
   is_historical <- year < 2021 | (year == 2021 & semester == "Vår")
@@ -60,4 +100,3 @@ add_course_url_uio <- function(course_code, faculty_name) {
     "https://www.uio.no/studier/emner/{fac_slug}/{inst_slug}/{toupper(course_code)}/"
   )
 }
-
