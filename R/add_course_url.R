@@ -7,7 +7,7 @@ add_course_url <- function(df) {
         "hiof"    ~ add_course_url_hiof(Emnekode, Årstall, Semesternavn),
         "hivolda" ~ add_course_url_hivolda(Emnekode),
         "uio"     ~ add_course_url_uio(Emnekode, Avdelingsnavn),
-        "ntnu"    ~ add_course_url_ntnu(Emnekode),
+        "ntnu"    ~ add_course_url_ntnu(Emnekode, Årstall),
         "uia"     ~ add_course_url_uia(Emnekode, Årstall, Semesternavn),
         "uit"     ~ add_course_url_uit(Emnekode),
         "uib"     ~ add_course_url_uib(Emnekode),
@@ -20,8 +20,8 @@ add_course_url <- function(df) {
 }
 
 
-add_course_url_ntnu <- function(course_code) {
-  glue::glue("https://www.ntnu.no/studier/emner/{toupper(course_code)}")
+add_course_url_ntnu <- function(course_code, year) {
+  glue::glue("https://www.ntnu.no/studier/emner/{toupper(course_code)}/{year}")
 }
 
 add_course_url_uia <- function(course_code, year, semester) {
