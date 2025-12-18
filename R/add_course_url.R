@@ -4,33 +4,42 @@ add_course_url <- function(df) {
       url = dplyr::case_match(
         institution_short,
         
-        "hiof"    ~ add_course_url_hiof(Emnekode, Årstall, Semesternavn),
-        "hivolda" ~ add_course_url_hivolda(Emnekode),
-        "uio"     ~ add_course_url_uio(Emnekode, Avdelingsnavn),
-        "ntnu"    ~ add_course_url_ntnu(Emnekode, Årstall),
+        "oslomet" ~ add_course_url_oslomet(Emnekode, Årstall, Semesternavn),
         "uia"     ~ add_course_url_uia(Emnekode, Årstall, Semesternavn),
-        "uit"     ~ add_course_url_uit(Emnekode),
-        "uib"     ~ add_course_url_uib(Emnekode),
-        "nord"    ~ add_course_url_nord(Emnekode),
+        "ntnu"    ~ add_course_url_ntnu(Emnekode, Årstall),
+        "inn"     ~ add_course_url_inn(Emnekode, Årstall, Semesternavn),
+        
+        "hivolda" ~ add_course_url_hivolda(Emnekode),
+        "hiof"    ~ add_course_url_hiof(Emnekode, Årstall, Semesternavn),
         "hvl"     ~ add_course_url_hvl(Emnekode),
+        
+        "mf"      ~ add_course_url_mf(Emnekode),
+        "nla"     ~ add_course_url_nla(Emnekode, Årstall),
+        
+        "nord"    ~ add_course_url_nord(Emnekode),
+        "nih"     ~ add_course_url_nih(Emnekode, Årstall, Semesternavn),
+        
+        "uib"     ~ add_course_url_uib(Emnekode),
+        "uio"     ~ add_course_url_uio(Emnekode, Avdelingsnavn),
+        "uis"     ~ add_course_url_uis(Emnekode),
+        "usn"     ~ add_course_url_usn(Emnekode, Årstall, Semesternavn),
+        "uit"     ~ add_course_url_uit(Emnekode),
+        "nmbu"    ~ add_course_url_nmbu(Emnekode),
         
         .default  = NA_character_
       )
     )
 }
 
-
 add_course_url_ntnu <- function(course_code, year) {
   glue::glue("https://www.ntnu.no/studier/emner/{toupper(course_code)}/{year}")
 }
 
 add_course_url_uia <- function(course_code, year, semester) {
-  # enkel mapping av semester til slug
   sem <- ifelse(
     semester == "Vår",  "var",
     ifelse(semester == "Høst", "host", tolower(semester))
   )
-  
   glue::glue("https://www.uia.no/studier/emner/{year}/{sem}/{tolower(course_code)}.html")
 }
 
@@ -50,24 +59,22 @@ add_course_url_hvl <- function(course_code) {
   glue::glue("https://www.hvl.no/studier/studieprogram/emne/{course_code}")
 }
 
-
-add_course_url_hiof <- function(course_code, year, semester){
+add_course_url_hiof <- function(course_code, year, semester) {
   is_historical <- year < 2021 | (year == 2021 & semester == "Vår")
-  semester <- dplyr::case_match(semester, "Vår" ~ "var", "Høst" ~ "host")
-  if_else(
+  sem <- dplyr::case_match(semester, "Vår" ~ "var", "Høst" ~ "host")
+  
+  dplyr::if_else(
     is_historical,
-    glue::glue("https://www.hiof.no/studier/emner/historiske-emner/lu/{year}/{semester}/{tolower(course_code)}.html"),
-    glue::glue("https://www.hiof.no/studier/emner/lusp/lusp/{year}/{semester}/{tolower(course_code)}.html")
+    glue::glue("https://www.hiof.no/studier/emner/historiske-emner/lu/{year}/{sem}/{tolower(course_code)}.html"),
+    glue::glue("https://www.hiof.no/studier/emner/lusp/lusp/{year}/{sem}/{tolower(course_code)}.html")
   )
 }
 
-add_course_url_hivolda <- function(course_code){
+add_course_url_hivolda <- function(course_code) {
   glue::glue("https://www.hivolda.no/emne/{course_code}")
 }
 
-# Note: uio_map does not contain all `Avdelingsnavn` at UiO, so might need to be updated when new courses are added.
 add_course_url_uio <- function(course_code, faculty_name) {
-  # Map fra Avdelingsnavn -> (faculty_slug, inst_slug)
   uio_map <- list(
     "Biologisk institutt" = c("matnat", "ibv"),
     "Det utdanningsvitenskapelige fakultet" = c("uv", "uv"),
@@ -82,21 +89,63 @@ add_course_url_uio <- function(course_code, faculty_name) {
     "Institutt for medier og kommunikasjon" = c("hf", "imk"),
     "Institutt for molekylær biovitenskap" = c("matnat", "ibv"),
     "Institutt for nordistikk og litteraturvitenskap" = c("hf", "iln"),
-    "Institutt for sosiologi og samfunnsgeografi" = c("sv", "sv"), #skjønner ikke hvorfor denne er annerledes
+    "Institutt for sosiologi og samfunnsgeografi" = c("sv", "sv"),
     "Kjemisk institutt" = c("matnat", "kjemi"),
     "Klassisk og romansk institutt" = c("hf", "ifikk"),
     "Matematisk institutt" = c("matnat", "math"),
     "Naturfagsenteret" = c("matnat", "naturfagsenteret")
   )
   
-  # Sørg for at key-strengene faktisk blir tolket som UTF-8
-  #names(uio_map) <- enc2utf8(names(uio_map))
-  #faculty_name   <- enc2utf8(faculty_name)
-  
-  fac_slug <- faculty_name |> purrr::map_chr(\(x) uio_map[[x]][1] %||% NA_character_)
+  fac_slug  <- faculty_name |> purrr::map_chr(\(x) uio_map[[x]][1] %||% NA_character_)
   inst_slug <- faculty_name |> purrr::map_chr(\(x) uio_map[[x]][2] %||% NA_character_)
   
-  glue::glue(
-    "https://www.uio.no/studier/emner/{fac_slug}/{inst_slug}/{toupper(course_code)}/"
+  glue::glue("https://www.uio.no/studier/emner/{fac_slug}/{inst_slug}/{toupper(course_code)}/")
+}
+
+add_course_url_oslomet <- function(course_code, year, semester) {
+  sem <- ifelse(
+    semester == "Vår",  "var",
+    ifelse(semester == "Høst", "host", tolower(semester))
   )
+  glue::glue("https://student.oslomet.no/studier/-/studieinfo/emne/{toupper(course_code)}/{year}/{sem}")
+}
+
+add_course_url_inn <- function(course_code, year, semester) {
+  sem <- ifelse(
+    semester == "Vår",  "var",
+    ifelse(semester == "Høst", "host", tolower(semester))
+  )
+  glue::glue("https://studiekatalog.edutorium.no/inn/nb/emne/{course_code}/{year}-{sem}")
+}
+
+add_course_url_mf <- function(course_code) {
+  glue::glue("https://mf.no/studier/emner/{tolower(course_code)}")
+}
+
+add_course_url_nla <- function(course_code, year) {
+  glue::glue("https://www.nla.no/studietilbud/emner/{year}/{tolower(course_code)}/")
+}
+
+add_course_url_nih <- function(course_code, year, semester) {
+  sem <- ifelse(
+    semester == "Vår",  "var",
+    ifelse(semester == "Høst", "host", tolower(semester))
+  )
+  glue::glue("https://www.nih.no/studier/emner/{year}/{sem}/{tolower(course_code)}.html")
+}
+
+add_course_url_uis <- function(course_code) {
+  glue::glue("https://www.uis.no/nb/course/{toupper(course_code)}")
+}
+
+add_course_url_usn <- function(course_code, year, semester) {
+  sem <- ifelse(
+    semester == "Vår",  "var",
+    ifelse(semester == "Høst", "host", tolower(semester))
+  )
+  glue::glue("https://www.usn.no/studier/studie-og-emneplaner/#/emne/{course_code}_{year}_{sem}")
+}
+
+add_course_url_nmbu <- function(course_code) {
+  glue::glue("https://www.nmbu.no/emne/{toupper(course_code)}")
 }
