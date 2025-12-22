@@ -8,23 +8,25 @@ source("R/checkpoint.R")
 
 courses <- readRDS("data/courses.RDS")
 
-ntnu <- courses |>
-  filter(
-         institution_short == "ntnu",
-    # evt. år:
-    # Årstall %in% 2004:2007
-  ) |>
-  add_course_id() |>
-  validate_courses("initial") |>
-  add_course_url() |> 
-  validate_courses("with_url")
-
-ntnu <- fetch_html_with_checkpoint(
-  ntnu,
-  checkpoint_path = "data/checkpoint/html_ntnu.RDS"
-)
-
-ntnu$fulltext <- extract_fulltext(ntnu$institution_short, ntnu$html)
-
-saveRDS(ntnu, file = "data/html_ntnu.RDS")
-
+for (inst in unique(courses$institution_short)) {
+  
+  df <- courses |>
+    filter(
+      institution_short == inst
+      # evt. år:
+      # Årstall %in% 2004:2007
+    ) |>
+    add_course_id() |>
+    validate_courses("initial") |>
+    add_course_url() |>
+    validate_courses("with_url")
+  
+  df <- fetch_html_with_checkpoint(
+    df,
+    checkpoint_path = paste0("data/checkpoint/html_", inst, ".RDS")
+  )
+  
+  df$fulltext <- extract_fulltext(df$institution_short, df$html)
+  
+  saveRDS(df, file = paste0("data/html_", inst, ".RDS"))
+}
