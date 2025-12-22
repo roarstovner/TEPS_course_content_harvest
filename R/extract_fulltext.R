@@ -1,3 +1,5 @@
+# R/extract_fulltext.R
+
 extract_fulltext <- function(institution_short, raw_html) {
   
   safe_extract_oslomet <- purrr::possibly(extract_fulltext_oslomet, otherwise = NA_character_)
@@ -24,9 +26,7 @@ extract_fulltext <- function(institution_short, raw_html) {
   safe_extract_nmbu    <- purrr::possibly(extract_fulltext_nmbu,    otherwise = NA_character_)
   
   purrr::map2_chr(institution_short, raw_html, \(inst, html) {
-    if (is.na(html) || !nzchar(html)) {
-      return(NA_character_)
-    }
+    if (is.na(html) || !nzchar(html)) return(NA_character_)
     
     switch(
       inst,
@@ -62,7 +62,9 @@ extract_fulltext <- function(institution_short, raw_html) {
   doc <- rvest::read_html(raw_html)
   node <- rvest::html_element(doc, css)
   if (length(node) == 0) return(NA_character_)
+  
   txt <- rvest::html_text2(node)
+  txt <- stringr::str_squish(txt)
   if (!nzchar(txt)) NA_character_ else txt
 }
 
@@ -70,9 +72,12 @@ extract_fulltext <- function(institution_short, raw_html) {
   doc <- rvest::read_html(raw_html)
   nodes <- rvest::html_elements(doc, css)
   if (length(nodes) == 0) return(NA_character_)
+  
   txt <- rvest::html_text2(nodes)
+  txt <- stringr::str_squish(txt)
   txt <- txt[nzchar(txt)]
   if (length(txt) == 0) return(NA_character_)
+  
   paste(txt, collapse = "\n")
 }
 
@@ -80,15 +85,17 @@ extract_fulltext_oslomet <- function(raw_html) .extract_one(raw_html, "#main-con
 extract_fulltext_uia     <- function(raw_html) .extract_one(raw_html, ".main-text")
 extract_fulltext_ntnu    <- function(raw_html) .extract_one(raw_html, "#content")
 extract_fulltext_inn     <- function(raw_html) .extract_one(raw_html, ".content-inner")
+
 extract_fulltext_hivolda <- function(raw_html) .extract_one(raw_html, "#main-content")
 extract_fulltext_hvl     <- function(raw_html) .extract_one(raw_html, ".l-2-col__main-content")
+
 extract_fulltext_mf      <- function(raw_html) .extract_one(raw_html, "#main")
 extract_fulltext_nla     <- function(raw_html) .extract_one(raw_html, "#content")
+
 extract_fulltext_nih     <- function(raw_html) .extract_one(raw_html, ".fs-body")
 extract_fulltext_uio     <- function(raw_html) .extract_one(raw_html, "#vrtx-course-content")
 extract_fulltext_uit     <- function(raw_html) .extract_one(raw_html, ".hovedfelt")
 extract_fulltext_nmbu    <- function(raw_html) .extract_one(raw_html, ".layout")
-
 
 extract_fulltext_nord <- function(raw_html) {
   .extract_many(
@@ -118,20 +125,10 @@ extract_fulltext_usn <- function(raw_html) {
   .extract_many(raw_html, ".usn-study")
 }
 
-
-
 extract_fulltext_hiof <- function(raw_html) {
-  doc <- rvest::read_html(raw_html)
-  
-  css_options <- c("#vrtx-fs-emne-content", "main .entry-content", ".entry-content")
-  
-  for (css in css_options) {
-    node <- rvest::html_element(doc, css)
-    if (length(node) > 0) {
-      txt <- rvest::html_text2(node)
-      if (nzchar(txt)) return(txt)
-    }
+  for (css in c("#vrtx-fs-emne-content", "main .entry-content", ".entry-content")) {
+    txt <- .extract_one(raw_html, css)
+    if (!is.na(txt)) return(txt)
   }
-  
   NA_character_
 }
