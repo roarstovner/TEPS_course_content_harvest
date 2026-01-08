@@ -6,7 +6,7 @@
 #' @param urls A character vector containing URLs to fetch
 #'
 #' @return A data frame with columns:
-#'   \item{html}{The HTML content (or NULL if failed)}
+#'   \item{html}{Character vector with HTML content, or NA if failed}
 #'   \item{html_success}{Logical indicating if the fetch was successful}
 #'   \item{html_error}{Error object if fetch failed (or NULL if successful)}
 #'
@@ -19,45 +19,58 @@
 #' @export
 #' @noRd
 fetch_html_cols <- function(urls, institution = NULL, .progress = TRUE) {
-  is_valid <- !is.na(urls)
-
+  is_valid <- !is.na(urls) & nzchar(urls)
+  
+  if (is.null(institution)) {
+    institution <- rep(NA_character_, length(urls))
+  }
+  
   http_resps <- purrr::map2(
-    urls[is_valid], 
+    urls[is_valid],
     institution[is_valid],
-    purrr::safely(function(url, inst) fetch_html_cols_single(url, inst)), 
+    purrr::safely(function(url, inst) fetch_html_cols_single(url, inst)),
     .progress = .progress
   )
   
+  # html (character)
   html <- character(length(urls))
   html[!is_valid] <- NA_character_
-  html[is_valid] <- purrr::map_chr(http_resps, function(x) if (is.null(x$result)) NA_character_ else httr2::resp_body_html(x$result))
+  html[is_valid] <- purrr::map_chr(http_resps, function(x) {
+    if (is.null(x$result)) return(NA_character_)
+    httr2::resp_body_string(x$result)
+  })
   
+  # errors (list)
   html_error <- vector("list", length(urls))
+  html_error[!is_valid] <- replicate(sum(!is_valid), NULL, simplify = FALSE)
   html_error[is_valid] <- purrr::map(http_resps, "error")
   
+  # success (logical)
   html_success <- logical(length(urls))
   html_success[!is_valid] <- NA
-  html_success[is_valid] = vapply(html_error[is_valid], is.null, logical(1))
-
-  tibble::tibble(html, html_error, html_success)
+  html_success[is_valid] <- vapply(html_error[is_valid], is.null, logical(1))
+  
+  tibble::tibble(html = html, html_error = html_error, html_success = html_success)
 }
 
 fetch_html_cols_single <- function(url, institution = NULL) {
+  # Institution-specific overrides (optional)
   if (!is.null(institution)) {
-    result <- switch(institution,
+    resp <- switch(
+      institution,
       "ntnu" = fetch_html_cols_single_ntnu(url),
-      "uio" = fetch_html_cols_single_uio(url),
-      NULL  # returns NULL if no match, will fall through to default
+      # "uio"  = fetch_html_cols_single_uio(url),  # behold hvis du har den
+      NULL
     )
-    if (!is.null(result)) return(result)
+    if (!is.null(resp)) return(resp)
   }
   
-  # Default fetch logic
+  # Default fetch
   url |>
     httr2::request() |>
     httr2::req_user_agent(
       "TEPS research project - https://uni.oslomet.no/teps/ - robast@oslomet.no"
-    ) |> 
+    ) |>
     httr2::req_perform()
 }
 
@@ -73,20 +86,19 @@ fetch_html_cols_single <- function(url, institution = NULL) {
 #'
 #' @noRd
 fetch_html_cols_single_ntnu <- function(url) {
-  html_content <- url |>
+  resp <- url |>
     httr2::request() |>
     httr2::req_user_agent(
       "TEPS research project - https://uni.oslomet.no/teps/ - robast@oslomet.no"
-    ) |> 
-    httr2::req_perform() |>
-    httr2::resp_body_string()
+    ) |>
+    httr2::req_perform()
   
-  # Check for "no information available" message
+  html_content <- httr2::resp_body_string(resp)
+  
   no_info_pattern <- "Det finnes ingen informasjon for dette studieåret|There is no information available for the given academic year"
-  
   if (stringr::str_detect(html_content, no_info_pattern)) {
     rlang::abort("No course information available for this academic year", class = "ntnu_no_info_error")
   }
   
-  html_content
+  resp
 }
