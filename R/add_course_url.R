@@ -7,6 +7,8 @@ add_course_url <- function(df) {
         "hiof"    ~ add_course_url_hiof(Emnekode, Årstall, Semesternavn),
         "hivolda" ~ add_course_url_hivolda(Emnekode),
         "uio"     ~ add_course_url_uio(Emnekode, Avdelingsnavn),
+        "uis"     ~ add_course_url_uis(Emnekode),
+        "usn"     ~ NA_character_,  # USN requires version discovery via resolve_course_urls()
         "ntnu"    ~ add_course_url_ntnu(Emnekode, Årstall),
         "uia"     ~ add_course_url_uia(Emnekode, Årstall, Semesternavn),
         "uit"     ~ add_course_url_uit(Emnekode),
@@ -96,7 +98,47 @@ add_course_url_uio <- function(course_code, faculty_name) {
   fac_slug <- faculty_name |> purrr::map_chr(\(x) uio_map[[x]][1] %||% NA_character_)
   inst_slug <- faculty_name |> purrr::map_chr(\(x) uio_map[[x]][2] %||% NA_character_)
   
-  glue::glue(
-    "https://www.uio.no/studier/emner/{fac_slug}/{inst_slug}/{toupper(course_code)}/"
+  glue::glue("https://www.uio.no/studier/emner/{fac_slug}/{inst_slug}/{toupper(course_code)}/")
+}
+
+add_course_url_oslomet <- function(course_code, year, semester) {
+  sem <- ifelse(
+    semester == "Vår",  "var",
+    ifelse(semester == "Høst", "host", tolower(semester))
   )
+  glue::glue("https://student.oslomet.no/studier/-/studieinfo/emne/{toupper(course_code)}/{year}/{sem}")
+}
+
+add_course_url_inn <- function(course_code, year, semester) {
+  sem <- ifelse(
+    semester == "Vår",  "var",
+    ifelse(semester == "Høst", "host", tolower(semester))
+  )
+  glue::glue("https://studiekatalog.edutorium.no/inn/nb/emne/{course_code}/{year}-{sem}")
+}
+
+add_course_url_mf <- function(course_code) {
+  glue::glue("https://mf.no/studier/emner/{tolower(course_code)}")
+}
+
+add_course_url_nla <- function(course_code, year) {
+  glue::glue("https://www.nla.no/studietilbud/emner/{year}/{tolower(course_code)}/")
+}
+
+add_course_url_nih <- function(course_code, year, semester) {
+  sem <- ifelse(
+    semester == "Vår",  "var",
+    ifelse(semester == "Høst", "host", tolower(semester))
+  )
+  glue::glue("https://www.nih.no/studier/emner/{year}/{sem}/{tolower(course_code)}.html")
+}
+
+add_course_url_uis <- function(course_code) {
+  glue::glue("https://www.uis.no/nb/course/{toupper(course_code)}")
+}
+
+# USN URL generation removed - requires version discovery via resolve_course_urls()
+
+add_course_url_nmbu <- function(course_code) {
+  glue::glue("https://www.nmbu.no/emne/{toupper(course_code)}")
 }
