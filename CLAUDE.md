@@ -70,8 +70,14 @@ Creates unique course identifiers combining institution, raw course code, year, 
 ### `add_course_url(df)` - R/add_course_url.R:1
 Dispatches to institution-specific URL builders using `case_match()`. Returns tibble with `url` column added. Returns NA for institutions requiring URL discovery.
 
-### `resolve_course_urls(df, checkpoint_path, .progress)` - R/resolve_course_urls.R:14
-Discovers URLs for courses where URL is NA (institutions like USN requiring trial-and-error). Uses checkpointing to avoid re-discovering. Returns df with `url` and `url_version` columns filled in.
+### `resolve_course_urls(df, checkpoint_path, .progress)` - R/resolve_course_urls.R:11
+Discovers URLs for courses where URL is NA (institutions like USN requiring trial-and-error). Uses checkpointing to avoid re-discovering. Dispatches to institution-specific batch resolvers via `group_modify()` + `case_match()`. Returns df with `url` and `url_version` columns filled in.
+
+### `resolve_urls_usn_batch(df, max_version, .progress)` - R/resolve_course_urls.R:111
+Batch URL resolver for USN that reuses a single Chrome session. Navigates via hash changes instead of creating new sessions per URL. Uses `read_usn_live_html()` to extract Shadow DOM content and validate that displayed year/semester matches the requested one.
+
+### `read_usn_live_html(session)` - R/resolve_course_urls.R:267
+Extracts rendered text content from a USN LiveHTML session by traversing Shadow DOM via JavaScript. The caller is responsible for: (1) creating the session with `rvest::read_html_live()`, (2) waiting for content to render, and (3) closing the session when done. Returns content string or NULL on error.
 
 ### `fetch_html_with_checkpoint(courses, checkpoint_path, .progress)` - R/checkpoint.R:28
 Downloads HTML for courses not already in checkpoint. Automatically skips completed courses and handles failures gracefully.
@@ -85,6 +91,7 @@ Validates required columns exist at pipeline stages: "initial", "with_url", "wit
 ## Running the Pipeline
 
 ### Basic workflow for a single institution:
+
 ```r
 source("R/utils.R")
 source("R/fetch_html_cols.R")
@@ -258,10 +265,24 @@ Used in older code but current pipeline uses `Emnekode_raw` to preserve granular
 ### USN
 - **Requires URL version discovery** - course plan URLs include a version number that can't be determined from metadata
 - URL pattern: `https://www.usn.no/studier/studie-og-emneplaner/#/emne/{CODE}_{VERSION}_{YEAR}_{SEMESTER}`
-- Version numbers (1, 2, 3, ...) indicate revisions to the course plan
-- `resolve_course_urls()` tries versions 1-5 to find valid pages
+- Version numbers (1, 2, 3, ...) indicate revisions to the course plan, each valid for specific year ranges
+- **Silent redirects**: Invalid version+year combos redirect to other pages without changing the URL
+- `validate_usn_url()` verifies displayed year matches requested year by extracting "Undervisningsstart høst YYYY" from rendered page
+- `resolve_course_urls()` tries versions 1-5, only accepting URLs where displayed year matches
+- Returns NA when no version exists for that year/semester (course wasn't offered)
+- Uses `rvest::read_html_live()` for JavaScript rendering (hash fragment routing)
 - Uses its own harvest script: `R/run_harvest_usn.R`
-- Validation checks for course content keywords ("emnebeskrivelse", "studiepoeng", "læringsutbytte")
+
+**Shadow DOM**: USN renders course content inside Shadow DOM (web components). Standard `html_text()` cannot access this content. Use `read_usn_live_html(session)` to extract content:
+```r
+session <- rvest::read_html_live(url)
+Sys.sleep(5)  # Wait for JS rendering
+content <- read_usn_live_html(session)
+session$session$close()
+```
+The function uses JavaScript to recursively traverse shadow roots and extract text content.
+
+**Session reuse optimization**: `resolve_urls_usn_batch()` reuses a single Chrome session for all URL validations by navigating via hash changes (`window.location.hash = '#/emne/...'`) instead of creating new sessions per URL. This is much faster since Chrome startup (~2-3s) is avoided for each URL.
 
 ### Institutions with Multiple CSS Selectors
 Some institutions (nord, uib, uis, usn) need `.extract_many()` to capture content from multiple elements because course info is spread across accordions or sections.
@@ -317,3 +338,9 @@ data-raw/
 - Normal - HTML is large
 - Checkpoint files are in .gitignore
 - Can delete and restart if needed: checkpoint will rebuild
+
+### Content not captured from JavaScript-rendered pages?
+- Some sites use Shadow DOM (web components) which `html_text()` cannot access
+- For USN, use `read_usn_live_html(session)` to extract Shadow DOM content
+- For other sites, use `session$session$Runtime$evaluate("javascript code")` to execute JS
+- Use `session$view()` to open browser and visually debug what's rendered
