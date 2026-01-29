@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.usn.no)",
+      "WebFetch(domain:corepublish.usn.no)",
+      "WebSearch",
+      "WebFetch(domain:rvest.tidyverse.org)",
+      "Bash(Rscript:*)",
+      "Bash(\"C:\\\\Program Files\\\\R\\\\R-4.5.2\\\\bin\\\\Rscript.exe\" \"C:/Users/Roar/AppData/Local/Temp/claude/c--Users-Roar-OneDrive---OsloMet-Forskning-TEPS-course-content-harvest/a41f7c3c-421c-4c6d-9f46-918c7061f14a/scratchpad/diagnose_usn_url.R\")",
+      "Bash(\"C:\\\\Program Files\\\\R\\\\R-4.5.2\\\\bin\\\\Rscript.exe\" -e \"\ncheckpoint <- readRDS\\(''data/checkpoint/usn_urls.RDS''\\)\nvalid_2022 <- checkpoint[!is.na\\(checkpoint[[''url'']]\\) & grepl\\(''2022'', checkpoint[[''url'']]\\), ]\nprint\\(head\\(valid_2022, 5\\)\\)\n\")",
+      "Bash(\"C:\\\\Program Files\\\\R\\\\R-4.5.2\\\\bin\\\\Rscript.exe\" \"C:/Users/Roar/AppData/Local/Temp/claude/c--Users-Roar-OneDrive---OsloMet-Forskning-TEPS-course-content-harvest/a41f7c3c-421c-4c6d-9f46-918c7061f14a/scratchpad/check_checkpoint.R\")",
+      "Bash(\"C:\\\\Program Files\\\\R\\\\R-4.5.2\\\\bin\\\\Rscript.exe\" \"C:/Users/Roar/AppData/Local/Temp/claude/c--Users-Roar-OneDrive---OsloMet-Forskning-TEPS-course-content-harvest/a41f7c3c-421c-4c6d-9f46-918c7061f14a/scratchpad/check_checkpoint2.R\")",
+      "Bash(\"C:\\\\Program Files\\\\R\\\\R-4.5.2\\\\bin\\\\Rscript.exe\" -e \"testthat::test_file\\(''tests/test_usn_early_exit.R''\\)\")",
+      "Bash(\"C:\\\\Program Files\\\\R\\\\R-4.5.2\\\\bin\\\\Rscript.exe\":*)",
+      "Bash(\"C:\\\\Program Files\\\\R\\\\R-4.5.2\\\\bin\\\\Rscript.exe\" \"tests/test_usn_resolve.R\")"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -Command \"[System.Reflection.Assembly]::LoadWithPartialName('System.Windows.Forms') | Out-Null; [console]::beep(294,100); [console]::beep(370,100); [console]::beep(440,80); Start-Sleep -Milliseconds 50; [console]::beep(370,80); [console]::beep(440,200); $balloon = New-Object System.Windows.Forms.NotifyIcon; $balloon.Icon = [System.Drawing.SystemIcons]::Information; $balloon.BalloonTipTitle = 'Claude Code'; $balloon.BalloonTipText = 'Awaiting your input'; $balloon.Visible = $True; $balloon.ShowBalloonTip(5000)\""
+          }
+        ]
+      }
+    ]
+  }
+}
