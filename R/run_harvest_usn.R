@@ -10,21 +10,24 @@ source("R/checkpoint.R")
 courses <- readRDS("data/courses.RDS")
 
 df <- courses |>
-  filter(institution_short == "usn") |>
+  filter(
+    institution_short == "usn",
+    Årstall %in% c(2018)
+  ) |>
   add_course_id() |>
   validate_courses("initial") |>
-  add_course_url() |>  # Returns NA for USN
-  validate_courses("with_url") |>  # Will have NA urls - that's expected
-  # New step: Discover URLs through version trial-and-error
+  add_course_url() |>
+  validate_courses("with_url") |>
   resolve_course_urls(
     checkpoint_path = "data/checkpoint/usn_urls.RDS"
   )
 
-# Fetch HTML for discovered URLs
-df <- fetch_html_with_checkpoint(
-  df,
-  checkpoint_path = "data/checkpoint/html_usn.RDS"
-)
+# Add html_success and html_error columns for consistency with other institutions
+df <- df |>
+  mutate(
+    html_success = !is.na(html) & html != "",
+    html_error = vector("list", n())
+  )
 
 # Extract fulltext
 df$fulltext <- extract_fulltext(df$institution_short, df$html)
