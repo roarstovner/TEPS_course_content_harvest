@@ -21,6 +21,7 @@ extract_fulltext <- function(institution_short, raw_html) {
       "hivolda" = extract_fulltext_hivolda(html),
       "hiof"     = extract_fulltext_hiof(html),
       "uio"     = safe_extract_uio(html),
+      "usn"     = extract_fulltext_usn(html),
       NA_character_
     )
   }, 
@@ -110,6 +111,23 @@ extract_fulltext_uio <- function(raw_html) {
   raw_html |>
     rvest::read_html() |>
     rvest::html_elements("#vrtx-course-content") |>
-    rvest::html_text2() |> 
+    rvest::html_text2() |>
     purrr::pluck(1, .default = NA_character_)
+}
+
+extract_fulltext_usn <- function(raw_html) {
+  # USN "html" is pre-extracted text from the course content shadow DOM.
+  if (is.na(raw_html) || !nzchar(raw_html)) {
+    return(NA_character_)
+  }
+
+  raw_html |>
+    # Remove UI artifacts (Material Icons text)
+    stringr::str_remove_all("keyboard_backspace") |>
+    # Trim whitespace from each line
+    stringr::str_replace_all("(?m)^[ \\t]+|[ \\t]+$", "") |>
+    # Collapse multiple blank lines to single blank line
+    stringr::str_replace_all("\\n{3,}", "\n\n") |>
+    # Trim leading/trailing whitespace
+    stringr::str_trim()
 }

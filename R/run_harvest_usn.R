@@ -12,12 +12,9 @@ courses <- readRDS("data/courses.RDS")
 df <- courses |>
   filter(
     institution_short == "usn",
-    Årstall %in% c(2018)
   ) |>
   add_course_id() |>
-  validate_courses("initial") |>
-  add_course_url() |>
-  validate_courses("with_url") |>
+  add_course_url() |> 
   resolve_course_urls(
     checkpoint_path = "data/checkpoint/usn_urls.RDS"
   )
@@ -42,3 +39,10 @@ cat("URLs discovered:", sum(!is.na(df$url)), "\n")
 cat("URLs not found:", sum(is.na(df$url)), "\n")
 cat("HTML fetched successfully:", sum(df$html_success, na.rm = TRUE), "\n")
 cat("Fulltext extracted:", sum(!is.na(df$fulltext)), "\n")
+
+# test
+
+usn_urls <- read_url_checkpoint("data/checkpoint/usn_urls.RDS")
+usn_urls <- usn_urls |> left_join(courses |> add_course_id(), by = "course_id")
+fulltext <- usn_urls  |> mutate(fulltext = extract_fulltext(institution_short, html))
+
