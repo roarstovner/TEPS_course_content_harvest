@@ -35,6 +35,11 @@ resolve_course_urls <- function(df,
     needs_resolution <- dplyr::anti_join(needs_resolution, checkpoint, by = "course_id")
   }
 
+  # Return early if nothing left to resolve (all in checkpoint)
+  if (nrow(needs_resolution) == 0) {
+    return(df)
+  }
+
   # Dispatch to institution-specific batch resolvers (enables reuse of chromium sessions)
 
   resolve_batch <- function(df, inst, .progress) {
