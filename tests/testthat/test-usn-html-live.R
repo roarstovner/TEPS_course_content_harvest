@@ -22,7 +22,7 @@ test_that("USN batch resolution finds valid courses and rejects fake ones", {
   expect_false(is.na(result$url[result$Emnekode == "LH-NOD1000"]),
                info = "LH-NOD1000 should have a valid URL")
 
-  # LRFY240 (physics for teacher education) should have a URL
+  # MG1FOU (FOU thesis) should have a URL
   expect_false(is.na(result$url[result$Emnekode == "MG1FOU"]),
                info = "MG1FOU should have a valid URL")
 

@@ -103,7 +103,7 @@ resolve_course_urls <- function(df,
 #' @param max_version Maximum version number to try per course (default: 5)
 #' @param .progress Show progress bar
 #' @return df with url and url_version columns added
-resolve_urls_usn_batch <- function(df, max_version = 5, .progress = TRUE) {
+resolve_urls_usn_batch <- function(df, max_version = 3, .progress = TRUE) {
   if (nrow(df) == 0) {
     return(df |> dplyr::mutate(url = NA_character_, html = NA_character_))
   }
@@ -223,7 +223,15 @@ resolve_urls_usn_batch <- function(df, max_version = 5, .progress = TRUE) {
 #' @export
 read_usn_live_html <- function(session) {
 
-  shadow_js <- "
+  # Wrap in IIFE to avoid const re-declaration errors on repeated calls
+  shadow_js <- "(function() {
+  // Block-level elements that should have newlines after them (like html_text2)
+  const blockElements = new Set([
+    'P', 'DIV', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6',
+    'LI', 'TR', 'BR', 'SECTION', 'ARTICLE', 'HEADER', 'FOOTER',
+    'BLOCKQUOTE', 'PRE', 'HR', 'DT', 'DD'
+  ]);
+
   function getTextWithShadow(node) {
     let text = '';
     if (node.shadowRoot) {
@@ -234,12 +242,25 @@ read_usn_live_html <- function(session) {
         text += child.textContent;
       } else if (child.nodeType === Node.ELEMENT_NODE) {
         text += getTextWithShadow(child);
+        // Add newline after block elements for readable formatting
+        if (blockElements.has(child.tagName)) {
+          text += '\\n';
+        }
       }
     }
     return text;
   }
-  getTextWithShadow(document.body);
-  "
+
+  // Navigate to the course content in nested shadow DOMs
+  var usnStudy = document.querySelector('usn-study');
+  if (usnStudy && usnStudy.shadowRoot) {
+    var subjectEl = usnStudy.shadowRoot.querySelector('usn-study-subject');
+    if (subjectEl && subjectEl.shadowRoot) {
+      return getTextWithShadow(subjectEl.shadowRoot);
+    }
+  }
+  return '';
+})();"
 
   tryCatch({
     js_result <- session$session$Runtime$evaluate(shadow_js)
