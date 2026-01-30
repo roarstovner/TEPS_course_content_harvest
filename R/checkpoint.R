@@ -22,6 +22,20 @@ write_checkpoint <- function(checkpoint_df, checkpoint_path = "data/checkpoint_h
   invisible(checkpoint_df)
 }
 
+#' Append a single row to checkpoint (for incremental updates)
+#'
+#' Reads existing checkpoint, appends row, writes back.
+#' Useful for crash recovery during long-running operations.
+#'
+#' @param row A single-row tibble to append
+#' @param path Path to checkpoint RDS file
+#' @return Invisible updated checkpoint
+checkpoint_append_row <- function(row, path) {
+  existing <- read_checkpoint(path)
+  updated <- dplyr::bind_rows(existing, row)
+  write_checkpoint(updated, path)
+}
+
 #' Fetch HTML with checkpoint support
 #'
 #' @param courses A tibble with course_id and url columns
