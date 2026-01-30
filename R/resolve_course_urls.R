@@ -25,26 +25,42 @@ resolve_course_urls <- function(df,
 
   # Load checkpoint if exists (unless checkpointing disabled)
   checkpoint <- if (!is.null(checkpoint_path)) {
-    read_url_checkpoint(checkpoint_path)
+    read_checkpoint(checkpoint_path)
   } else {
     NULL
   }
 
   # Skip courses already resolved in checkpoint
+  n_needs_resolution <- nrow(needs_resolution)
   if (!is.null(checkpoint)) {
     needs_resolution <- dplyr::anti_join(needs_resolution, checkpoint, by = "course_id")
   }
 
   # Return early if nothing left to resolve (all in checkpoint)
   if (nrow(needs_resolution) == 0) {
-    return(df)
+    cli::cli_alert_success("All {n_needs_resolution} courses found in checkpoint")
+    # Merge checkpoint data back into df
+    update_cols <- intersect(c("course_id", "url", "html"), names(checkpoint))
+    if ("html" %in% names(checkpoint) && !"html" %in% names(df)) {
+      df <- df |> dplyr::mutate(html = NA_character_)
+    }
+    return(df |>
+      dplyr::rows_update(
+        checkpoint |> dplyr::select(dplyr::all_of(update_cols)),
+        by = "course_id",
+        unmatched = "ignore"
+      ))
   }
 
   # Dispatch to institution-specific batch resolvers (enables reuse of chromium sessions)
+  n_from_checkpoint <- n_needs_resolution - nrow(needs_resolution)
+  if (n_from_checkpoint > 0) {
+    cli::cli_alert_info("Found {n_from_checkpoint} courses in checkpoint, resolving {nrow(needs_resolution)} remaining")
+  }
 
-  resolve_batch <- function(df, inst, .progress) {
+  resolve_batch <- function(df, inst, checkpoint_path, .progress) {
     if (inst == "usn") {
-      resolve_urls_usn_batch(df, .progress = .progress)
+      resolve_urls_usn_batch(df, checkpoint_path = checkpoint_path, .progress = .progress)
     } else {
       df |> dplyr::mutate(url = NA_character_)
     }
@@ -52,7 +68,7 @@ resolve_course_urls <- function(df,
 
   resolved <- needs_resolution |>
     dplyr::group_by(institution_short) |>
-    dplyr::group_modify(~ resolve_batch(.x, .y$institution_short, .progress = .progress)) |>
+    dplyr::group_modify(~ resolve_batch(.x, .y$institution_short, checkpoint_path, .progress)) |>
     dplyr::ungroup()
 
   # Update checkpoint (only if checkpointing enabled)
@@ -73,7 +89,8 @@ resolve_course_urls <- function(df,
       )
     }
 
-    write_url_checkpoint(updated_checkpoint, checkpoint_path)
+    write_checkpoint(updated_checkpoint, checkpoint_path)
+    cli::cli_alert_success("Checkpoint saved with {nrow(updated_checkpoint)} courses")
   }
 
   # Merge back into original df
@@ -103,7 +120,7 @@ resolve_course_urls <- function(df,
 #' @param max_version Maximum version number to try per course (default: 5)
 #' @param .progress Show progress bar
 #' @return df with url and url_version columns added
-resolve_urls_usn_batch <- function(df, max_version = 3, .progress = TRUE) {
+resolve_urls_usn_batch <- function(df, max_version = 3, checkpoint_path = NULL, .progress = TRUE) {
   if (nrow(df) == 0) {
     return(df |> dplyr::mutate(url = NA_character_, html = NA_character_))
   }
@@ -115,83 +132,99 @@ resolve_urls_usn_batch <- function(df, max_version = 3, .progress = TRUE) {
   # Initial wait for page to fully load
   Sys.sleep(3)
 
-  # Process each course
-  results <- purrr::pmap(
-    list(df$Emnekode, df$Årstall, df$Semesternavn),
-    .progress = .progress,
-    function(course_code, year, semester) {
+  # Initialize results storage
+  results <- vector("list", nrow(df))
+  if (.progress) pb <- cli::cli_progress_bar(total = nrow(df))
 
-      # Convert semester to USN format
-      sem <- dplyr::case_match(
-        semester,
-        "Vår" ~ "VÅR",
-        "Høst" ~ "HØST",
-        .default = toupper(semester)
-      )
+  for (i in seq_len(nrow(df))) {
+    course_id <- df$course_id[i]
+    course_code <- df$Emnekode[i]
+    year <- df$Årstall[i]
+    semester <- df$Semesternavn[i]
 
-      # Normalize expected semester for comparison
-      expected_sem_norm <- dplyr::case_match(
-        tolower(semester),
-        "vår" ~ "vår",
-        "høst" ~ "høst",
-        .default = tolower(semester)
-      )
+    # Convert semester to USN format
+    sem <- dplyr::case_match(
+      semester,
+      "Vår" ~ "VÅR",
+      "Høst" ~ "HØST",
+      .default = toupper(semester)
+    )
 
-      # Try version numbers
-      for (version in seq_len(max_version)) {
-        hash <- glue::glue("#/emne/{course_code}_{version}_{year}_{sem}")
-        full_url <- paste0(base_url, hash)
+    # Normalize expected semester for comparison
+    expected_sem_norm <- dplyr::case_match(
+      tolower(semester),
+      "vår" ~ "vår",
+      "høst" ~ "høst",
+      .default = tolower(semester)
+    )
 
-        tryCatch({
-          # Navigate by changing the hash (much faster than new session)
-          session$session$Runtime$evaluate(
-            sprintf("window.location.hash = '%s';", hash)
+    # Default result
+    result_url <- NA_character_
+    result_html <- NA_character_
+
+    # Try version numbers
+    for (version in seq_len(max_version)) {
+      hash <- glue::glue("#/emne/{course_code}_{version}_{year}_{sem}")
+      full_url <- paste0(base_url, hash)
+
+      tryCatch({
+        # Navigate by changing the hash (much faster than new session)
+        session$session$Runtime$evaluate(
+          sprintf("window.location.hash = '%s';", hash)
+        )
+
+        # Wait for content to render (shorter wait since page is already loaded)
+        Sys.sleep(2)
+
+        # Extract Shadow DOM content
+        html_content <- read_usn_live_html(session)
+
+        if (!is.null(html_content)) {
+          # Early exit: if course code not in content, version doesn't exist.
+          # Versions are sequential, so higher versions won't exist either.
+          if (!stringr::str_detect(html_content, stringr::fixed(course_code))) {
+            break
+          }
+
+          # Check for the expected year/semester pattern
+          pattern <- "Undervisningsstart\\s+(høst|vår)\\s+(\\d{4})"
+          match <- stringr::str_match(
+            html_content,
+            stringr::regex(pattern, ignore_case = TRUE)
           )
 
-          # Wait for content to render (shorter wait since page is already loaded)
-          Sys.sleep(2)
+          if (!is.na(match[1])) {
+            displayed_year <- as.integer(match[3])
+            displayed_sem <- tolower(match[2])
 
-          # Extract Shadow DOM content
-          html_content <- read_usn_live_html(session)
-
-          if (!is.null(html_content)) {
-            # Early exit: if course code not in content, version doesn't exist.
-            # Versions are sequential, so higher versions won't exist either.
-            if (!stringr::str_detect(html_content, stringr::fixed(course_code))) {
+            if (displayed_year == year && displayed_sem == expected_sem_norm) {
+              result_url <- full_url
+              result_html <- html_content
               break
             }
 
-            # Check for the expected year/semester pattern
-            pattern <- "Undervisningsstart\\s+(høst|vår)\\s+(\\d{4})"
-            match <- stringr::str_match(
-              html_content,
-              stringr::regex(pattern, ignore_case = TRUE)
-            )
-
-            if (!is.na(match[1])) {
-              displayed_year <- as.integer(match[3])
-              displayed_sem <- tolower(match[2])
-
-              if (displayed_year == year && displayed_sem == expected_sem_norm) {
-                return(list(url = full_url, html = html_content))
-              }
-
-              # Early exit: if version 1's teaching start is after requested year,
-              # the course didn't exist yet. No need to check higher versions.
-              if (version == 1 && displayed_year > year) {
-                break
-              }
+            # Early exit: if version 1's teaching start is after requested year,
+            # the course didn't exist yet. No need to check higher versions.
+            if (version == 1 && displayed_year > year) {
+              break
             }
           }
-        }, error = function(e) {
-          message("Error checking version ", version, " for ", course_code, ": ", e$message)
-        })
-      }
-
-      # No valid version found
-      list(url = NA_character_, html = NA_character_)
+        }
+      }, error = function(e) {
+        message("Error checking version ", version, " for ", course_code, ": ", e$message)
+      })
     }
-  )
+
+    results[[i]] <- list(url = result_url, html = result_html)
+
+    # Checkpoint after each course
+    if (!is.null(checkpoint_path)) {
+      row <- tibble::tibble(course_id = course_id, url = result_url, html = result_html)
+      checkpoint_append_row(row, checkpoint_path)
+    }
+
+    if (.progress) cli::cli_progress_update(id = pb)
+  }
 
   # Clean up the browser session
   tryCatch(
@@ -275,23 +308,4 @@ read_usn_live_html <- function(session) {
     message("Error in read_usn_live_html: ", conditionMessage(e))
     NULL
   })
-}
-
-#' Read URL resolution checkpoint
-#'
-#' @param checkpoint_path Path to checkpoint RDS file
-#' @return A tibble with course_id and url columns, or NULL if no checkpoint exists
-read_url_checkpoint <- function(checkpoint_path) {
-  if (!file.exists(checkpoint_path)) return(NULL)
-  readRDS(checkpoint_path)
-}
-
-#' Write URL resolution checkpoint
-#'
-#' @param checkpoint_df A tibble with course_id and url columns
-#' @param checkpoint_path Path to checkpoint RDS file
-write_url_checkpoint <- function(checkpoint_df, checkpoint_path) {
-  dir.create(dirname(checkpoint_path), recursive = TRUE, showWarnings = FALSE)
-  saveRDS(checkpoint_df, checkpoint_path)
-  invisible(checkpoint_df)
 }

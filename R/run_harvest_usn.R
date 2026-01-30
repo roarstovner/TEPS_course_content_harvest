@@ -42,7 +42,7 @@ cat("Fulltext extracted:", sum(!is.na(df$fulltext)), "\n")
 
 # test
 
-usn_urls <- read_url_checkpoint("data/checkpoint/usn_urls.RDS")
+usn_urls <- read_checkpoint("data/checkpoint/usn_urls.RDS")
 usn_urls <- usn_urls |> left_join(courses |> add_course_id(), by = "course_id")
 fulltext <- usn_urls  |> mutate(fulltext = extract_fulltext(institution_short, html))
 
