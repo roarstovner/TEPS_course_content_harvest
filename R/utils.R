@@ -12,6 +12,14 @@ canon_semester_name <- function(semester_name) {
   )
 }
 
+semester_to_url <- function(semester) {
+  dplyr::case_match(semester,
+    "Vår"  ~ "var",
+    "Høst" ~ "host",
+    .default = tolower(semester)
+  )
+}
+
 
 #' Add Course ID
 #'
