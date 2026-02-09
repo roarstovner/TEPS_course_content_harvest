@@ -8,8 +8,11 @@ source("R/checkpoint.R")
 
 courses <- readRDS("data/courses.RDS")
 
-for (inst in unique(courses$institution_short)) {
-  
+# Institutions that need special handling (have their own run_harvest_*.R scripts)
+skip_institutions <- c("usn")  # USN requires URL version discovery
+
+for (inst in setdiff(unique(courses$institution_short), skip_institutions)) {
+
   df <- courses |>
     filter(
       institution_short == inst

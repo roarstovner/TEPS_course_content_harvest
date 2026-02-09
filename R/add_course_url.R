@@ -3,29 +3,29 @@ add_course_url <- function(df) {
     dplyr::mutate(
       url = dplyr::case_match(
         institution_short,
-        
+
         "oslomet" ~ add_course_url_oslomet(Emnekode, Årstall, Semesternavn),
         "uia"     ~ add_course_url_uia(Emnekode, Årstall, Semesternavn),
         "ntnu"    ~ add_course_url_ntnu(Emnekode, Årstall),
         "inn"     ~ add_course_url_inn(Emnekode, Årstall, Semesternavn),
-        
+
         "hivolda" ~ add_course_url_hivolda(Emnekode),
         "hiof"    ~ add_course_url_hiof(Emnekode, Årstall, Semesternavn),
         "hvl"     ~ add_course_url_hvl(Emnekode),
-        
+
         "mf"      ~ add_course_url_mf(Emnekode),
         "nla"     ~ add_course_url_nla(Emnekode, Årstall),
-        
+
         "nord"    ~ add_course_url_nord(Emnekode),
         "nih"     ~ add_course_url_nih(Emnekode, Årstall, Semesternavn),
-        
+
         "uib"     ~ add_course_url_uib(Emnekode),
         "uio"     ~ add_course_url_uio(Emnekode, Avdelingsnavn),
         "uis"     ~ add_course_url_uis(Emnekode),
-        "usn"     ~ add_course_url_usn(Emnekode, Årstall, Semesternavn),
+        "usn"     ~ NA_character_,  # USN requires version discovery via resolve_course_urls()
         "uit"     ~ add_course_url_uit(Emnekode),
         "nmbu"    ~ add_course_url_nmbu(Emnekode),
-        
+
         .default  = NA_character_
       )
     )
@@ -138,13 +138,7 @@ add_course_url_uis <- function(course_code) {
   glue::glue("https://www.uis.no/nb/course/{toupper(course_code)}")
 }
 
-add_course_url_usn <- function(course_code, year, semester) {
-  sem <- ifelse(
-    semester == "Vår",  "var",
-    ifelse(semester == "Høst", "host", tolower(semester))
-  )
-  glue::glue("https://www.usn.no/studier/studie-og-emneplaner/#/emne/{course_code}_{year}_{sem}")
-}
+# USN URL generation removed - requires version discovery via resolve_course_urls()
 
 add_course_url_nmbu <- function(course_code) {
   glue::glue("https://www.nmbu.no/emne/{toupper(course_code)}")
