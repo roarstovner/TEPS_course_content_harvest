@@ -4,7 +4,7 @@ selectors:
     course_name_no: ".page-title"
 
   uia:
-    fulltext: ".main-text"
+    fulltext: "#right-main"
     course_name_no: "h1"
 
   ntnu:
