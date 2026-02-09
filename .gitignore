@@ -14,6 +14,9 @@
 # OS / editor junk
 .vscode/
 
+# Claude Code local settings
+.claude/settings.local.json
+
 meetings/
 writing/
 data/checkpoint/

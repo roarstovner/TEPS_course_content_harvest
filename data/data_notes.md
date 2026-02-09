@@ -5,6 +5,11 @@ UiO does not offer the Emneplan by year, only the newest version of the Emneplan
 
 # USN
 
-- **Low success rate for Vår courses**: Many courses in DBH are listed for Vår (when students are enrolled), but teaching starts in Høst. USN's website indexes by "Undervisningsstart", so these Vår URLs return NA.
-- **Some courses unavailable**: Some plans are PDF-only, not yet published, or show placeholders for future years ("Emneplanen for dette semesteret er ikke klar ennå").
-- **Version numbers**: Most courses have 1-2 versions. The resolver tries versions 1-3 by default.
+- **Expected ~30% success rate**: Not a bug. Breakdown of 318 unique active course codes:
+  - 39% autumn-start (only autumn pages)
+  - 11% spring-start (only spring pages)
+  - 25% have pages in both semesters
+  - 25% have no USN course pages at all
+- **"New" courses (status=2)**: ~5% success. Pages created when courses become "Active" (status=1), where success jumps to ~81%.
+- **Whole-year courses**: Autumn page only; spring semester entries return NA (expected).
+- **Checkpoint can have stale failures**: If resolver had timing/network issues, valid pages may be marked as failures. Fix by removing NA entries from checkpoint and re-running.
