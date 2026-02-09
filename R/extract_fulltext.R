@@ -82,7 +82,7 @@ extract_fulltext <- function(institution_short, raw_html) {
 }
 
 extract_fulltext_oslomet <- function(raw_html) .extract_one(raw_html, "#main-content")
-extract_fulltext_uia     <- function(raw_html) .extract_one(raw_html, ".main-text")
+extract_fulltext_uia     <- function(raw_html) .extract_one(raw_html, "#right-main")
 extract_fulltext_ntnu    <- function(raw_html) .extract_one(raw_html, "#content")
 extract_fulltext_inn     <- function(raw_html) .extract_one(raw_html, ".content-inner")
 extract_fulltext_hvl     <- function(raw_html) .extract_one(raw_html, ".l-2-col__main-content")
