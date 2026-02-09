@@ -36,11 +36,7 @@ add_course_url_ntnu <- function(course_code, year) {
 }
 
 add_course_url_uia <- function(course_code, year, semester) {
-  sem <- ifelse(
-    semester == "Vår",  "var",
-    ifelse(semester == "Høst", "host", tolower(semester))
-  )
-  glue::glue("https://www.uia.no/studier/emner/{year}/{sem}/{tolower(course_code)}.html")
+  glue::glue("https://www.uia.no/studier/emner/{year}/{semester_to_url(semester)}/{tolower(course_code)}.html")
 }
 
 add_course_url_uit <- function(course_code) {
@@ -61,12 +57,11 @@ add_course_url_hvl <- function(course_code) {
 
 add_course_url_hiof <- function(course_code, year, semester) {
   is_historical <- year < 2021 | (year == 2021 & semester == "Vår")
-  sem <- dplyr::case_match(semester, "Vår" ~ "var", "Høst" ~ "host")
-  
+
   dplyr::if_else(
     is_historical,
-    glue::glue("https://www.hiof.no/studier/emner/historiske-emner/lu/{year}/{sem}/{tolower(course_code)}.html"),
-    glue::glue("https://www.hiof.no/studier/emner/lusp/lusp/{year}/{sem}/{tolower(course_code)}.html")
+    glue::glue("https://www.hiof.no/studier/emner/historiske-emner/lu/{year}/{semester_to_url(semester)}/{tolower(course_code)}.html"),
+    glue::glue("https://www.hiof.no/studier/emner/lusp/lusp/{year}/{semester_to_url(semester)}/{tolower(course_code)}.html")
   )
 }
 
@@ -103,19 +98,11 @@ add_course_url_uio <- function(course_code, faculty_name) {
 }
 
 add_course_url_oslomet <- function(course_code, year, semester) {
-  sem <- ifelse(
-    semester == "Vår",  "var",
-    ifelse(semester == "Høst", "host", tolower(semester))
-  )
-  glue::glue("https://student.oslomet.no/studier/-/studieinfo/emne/{toupper(course_code)}/{year}/{sem}")
+  glue::glue("https://student.oslomet.no/studier/-/studieinfo/emne/{toupper(course_code)}/{year}/{semester_to_url(semester)}")
 }
 
 add_course_url_inn <- function(course_code, year, semester) {
-  sem <- ifelse(
-    semester == "Vår",  "var",
-    ifelse(semester == "Høst", "host", tolower(semester))
-  )
-  glue::glue("https://studiekatalog.edutorium.no/inn/nb/emne/{course_code}/{year}-{sem}")
+  glue::glue("https://studiekatalog.edutorium.no/inn/nb/emne/{course_code}/{year}-{semester_to_url(semester)}")
 }
 
 add_course_url_mf <- function(course_code) {
@@ -127,11 +114,7 @@ add_course_url_nla <- function(course_code, year) {
 }
 
 add_course_url_nih <- function(course_code, year, semester) {
-  sem <- ifelse(
-    semester == "Vår",  "var",
-    ifelse(semester == "Høst", "host", tolower(semester))
-  )
-  glue::glue("https://www.nih.no/studier/emner/{year}/{sem}/{tolower(course_code)}.html")
+  glue::glue("https://www.nih.no/studier/emner/{year}/{semester_to_url(semester)}/{tolower(course_code)}.html")
 }
 
 add_course_url_uis <- function(course_code) {
