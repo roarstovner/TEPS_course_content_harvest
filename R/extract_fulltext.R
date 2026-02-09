@@ -47,12 +47,12 @@ extract_fulltext <- function(institution_short, raw_html) {
       
       "uib"     = safe_extract_uib(html),
       "uio"     = safe_extract_uio(html),
-      
+
       "uis"     = safe_extract_uis(html),
-      "usn"     = safe_extract_usn(html),
+      "usn"     = extract_fulltext_usn(html),
       "uit"     = safe_extract_uit(html),
       "nmbu"    = safe_extract_nmbu(html),
-      
+
       NA_character_
     )
   }, .progress = TRUE)
@@ -85,15 +85,12 @@ extract_fulltext_oslomet <- function(raw_html) .extract_one(raw_html, "#main-con
 extract_fulltext_uia     <- function(raw_html) .extract_one(raw_html, ".main-text")
 extract_fulltext_ntnu    <- function(raw_html) .extract_one(raw_html, "#content")
 extract_fulltext_inn     <- function(raw_html) .extract_one(raw_html, ".content-inner")
-
-extract_fulltext_hivolda <- function(raw_html) .extract_one(raw_html, "#main-content")
 extract_fulltext_hvl     <- function(raw_html) .extract_one(raw_html, ".l-2-col__main-content")
 
 extract_fulltext_mf      <- function(raw_html) .extract_one(raw_html, "#main")
 extract_fulltext_nla     <- function(raw_html) .extract_one(raw_html, "#content")
 
 extract_fulltext_nih     <- function(raw_html) .extract_one(raw_html, ".fs-body")
-extract_fulltext_uio     <- function(raw_html) .extract_one(raw_html, "#vrtx-course-content")
 extract_fulltext_uit     <- function(raw_html) .extract_one(raw_html, ".hovedfelt")
 extract_fulltext_nmbu    <- function(raw_html) .extract_one(raw_html, ".layout")
 
@@ -121,14 +118,57 @@ extract_fulltext_uis <- function(raw_html) {
   )
 }
 
-extract_fulltext_usn <- function(raw_html) {
-  .extract_many(raw_html, ".usn-study")
+extract_fulltext_hiof <- function(raw_html) {
+  raw_html |>
+    rvest::read_html() |>
+    # Alekandras
+    rvest::html_elements(paste(
+      "#vrtx-fs-emne-content",
+      "main .entry-content",
+      ".entry-content",
+      sep = ", "
+    )) |>
+    # Min
+    # rvest::html_elements("#vrtx-fs-emne-content") |>
+    rvest::html_text2() |>
+    purrr::pluck(1, .default = NA_character_)
 }
 
-extract_fulltext_hiof <- function(raw_html) {
-  for (css in c("#vrtx-fs-emne-content", "main .entry-content", ".entry-content")) {
-    txt <- .extract_one(raw_html, css)
-    if (!is.na(txt)) return(txt)
+# THIS WAS LOST IN A MERGE. POSSIBLY THE CORRECT HIVOLDA VERSION?
+# extract_fulltext_hivolda <- function(raw_html) {
+#   raw_html |>
+#     rvest::read_html() |>
+#     rvest::html_elements("article.content-emweb") |>
+
+extract_fulltext_hivolda <- function(raw_html) {
+  raw_html |>
+    rvest::read_html() |>
+    rvest::html_elements("#main-content") |>
+    rvest::html_text2() |>
+    purrr::pluck(1, .default = NA_character_)
+}
+
+extract_fulltext_uio <- function(raw_html) {
+  raw_html |>
+    rvest::read_html() |>
+    rvest::html_elements("#vrtx-course-content") |>
+    rvest::html_text2() |>
+    purrr::pluck(1, .default = NA_character_)
+}
+
+extract_fulltext_usn <- function(raw_html) {
+  # USN "html" is pre-extracted text from the course content shadow DOM.
+  if (is.na(raw_html) || !nzchar(raw_html)) {
+    return(NA_character_)
   }
-  NA_character_
+
+  raw_html |>
+    # Remove UI artifacts (Material Icons text)
+    stringr::str_remove_all("keyboard_backspace") |>
+    # Trim whitespace from each line
+    stringr::str_replace_all("(?m)^[ \\t]+|[ \\t]+$", "") |>
+    # Collapse multiple blank lines to single blank line
+    stringr::str_replace_all("\\n{3,}", "\n\n") |>
+    # Trim leading/trailing whitespace
+    stringr::str_trim()
 }
