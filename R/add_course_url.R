@@ -98,7 +98,10 @@ add_course_url_uio <- function(course_code, faculty_name) {
 }
 
 add_course_url_oslomet <- function(course_code, year, semester) {
-  glue::glue("https://student.oslomet.no/studier/-/studieinfo/emne/{toupper(course_code)}/{year}/{semester_to_url(semester)}")
+  # WORKAROUND: OsloMet's website only accepts "HØST" in URLs
+  # VÅR URLs return 404 errors, but HØST URLs work for all courses
+  # Course content appears to be the same across semesters
+  glue::glue("https://student.oslomet.no/studier/-/studieinfo/emne/{toupper(course_code)}/{year}/HØST")
 }
 
 add_course_url_inn <- function(course_code, year, semester) {

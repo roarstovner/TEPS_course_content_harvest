@@ -69,3 +69,35 @@ UiO does not offer the Emneplan by year, only the newest version of the Emneplan
 - **"New" courses (status=2)**: ~5% success. Pages created when courses become "Active" (status=1), where success jumps to ~81%.
 - **Whole-year courses**: Autumn page only; spring semester entries return NA (expected).
 - **Checkpoint can have stale failures**: If resolver had timing/network issues, valid pages may be marked as failures. Fix by removing NA entries from checkpoint and re-running.
+
+# hivolda
+
+Disse dataene må dessverre lages på nytt. Jeg må finne ut av hvordan den skiller mellom semestrene. Helt usikker akkurat nå! Se på https://www.hivolda.no/emne/MGL5-10NO2B/12177 og hvordan det skiller seg fra https://www.hivolda.no/emne/MGL5-10NO2B/6255. Emneplanen er endret, men ikke det vi har høstet inn.
+
+# OsloMet
+
+## URL Semester Issue
+**Critical limitation**: OsloMet's website only accepts "HØST" (autumn) in course URLs. Spring semester URLs return 404 errors regardless of URL format tested:
+- Tested variations: `VÅR`, `vår`, `var`, `VAR`, `V%C3%85R` (URL-encoded)
+- All variations failed for spring courses
+- Only `HØST` works consistently
+
+## Workaround Implementation
+**Solution**: Always use "HØST" in URLs regardless of actual semester.
+- URL pattern: `https://student.oslomet.no/studier/-/studieinfo/emne/{CODE}/{YEAR}/HØST`
+- Success rate: **100%** in testing (15/15 courses, both semesters)
+- Text extraction: 3,700-30,000 characters per course
+
+## Implications
+- **Course content appears semester-agnostic**: Content fetched via HØST URLs works for courses offered in both semesters
+- Spring (VÅR) courses successfully retrieved using HØST URLs
+- Some courses may only exist in one semester (returns 404 with HØST URL if course doesn't exist at all)
+- The `semester` column in output data reflects DBH registration, not the URL used
+
+## Technical Details
+- **URL pattern**: `https://student.oslomet.no/studier/-/studieinfo/emne/{CODE}/{YEAR}/HØST`
+  - Course code: Uppercase (e.g., `M1GPE1200`)
+  - Semester: Always "HØST" (hardcoded workaround)
+- **Website platform**: Liferay portal with JavaScript-driven semester selection
+- **CSS selector**: `#main-content`
+- **Validation**: Tested with 16 diverse courses (2018-2025), then 15 course validation confirmed 100% success
