@@ -9,6 +9,53 @@ This is an R-based web scraping pipeline that harvests course descriptions from 
 **Input:** Course metadata from `data/courses.RDS` (typically sourced from DBH database via rdbhapi)
 **Output:** Same data with added `url`, `html`, and `fulltext` columns
 
+## Chainlink Issue Tracking (MANDATORY)
+All development work MUST be tracked using chainlink. No exceptions.
+
+Start every work session
+chainlink session start
+
+Mark what you're working on
+chainlink session work <issue_id>
+
+Add discoveries/notes as you work
+chainlink comment <issue_id> "Found: ..."
+
+End session with handoff notes
+chainlink session end --notes "Completed X, Y pending"
+
+### Issue Management
+Create issues
+chainlink create "Issue title" -p <low|medium|high|critical>
+chainlink subissue <parent_id> "Subtask title"
+
+Track dependencies
+chainlink block <blocked_id> <blocker_id>
+chainlink unblock <blocked_id> <blocker_id>
+
+Find work
+chainlink ready          # Issues with no open blockers
+chainlink next           # Suggested next issue
+chainlink list           # All open issues
+chainlink tree           # Hierarchical view
+
+Update progress
+chainlink update <id> -s <open|in_progress|review|closed>
+chainlink close <id>
+chainlink comment <id> "Progress update..."
+
+Milestones
+chainlink milestone create "v1.0"
+chainlink milestone add <milestone_id> <issue_id>
+
+### Rules
+Create issues BEFORE starting work - No undocumented changes
+Use session work - Always mark current focus
+Add comments - Document discoveries, blockers, decisions
+Close with notes - Future you will thank present you
+Large features - Break into subissues, never exceed 500 lines per file
+
+
 ## Core Pipeline Architecture
 
 ### Sequential Processing Steps
@@ -191,6 +238,8 @@ Used in older code but current pipeline uses `Emnekode_raw` to preserve granular
 - Special error detection: checks for "no information available" message and raises ntnu_no_info_error
 
 ### UiO
+- **No historical course plans**: UiO only publishes the **latest version** of each course plan. The base URL always returns the current plan; there is no way to access older versions. Semester-specific URLs (`/h24/`, `/v25/`) contain **logistics only** (instructors, schedule, exam dates) — NOT course plan content. Do NOT switch to semester-specific URLs.
+- Data should be filtered to current year only (same as other no-year institutions)
 - Requires faculty/department slugs derived from `Avdelingsnavn`
 - Uses hardcoded mapping in `add_course_url_uio()` (R/add_course_url.R:77)
 - URL pattern: `https://www.uio.no/studier/emner/{faculty}/{inst}/{CODE}/`
