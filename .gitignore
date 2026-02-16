@@ -20,4 +20,10 @@
 meetings/
 writing/
 data/checkpoint/
+data/*.RDS
+data/data_notes.html
+data/data_notes_files/
 archive/
+temp/
+nul
+_ul
