@@ -14,14 +14,14 @@ add_course_url <- function(df) {
         "hvl"     ~ add_course_url_hvl(Emnekode),
 
         "mf"      ~ add_course_url_mf(Emnekode),
-        "nla"     ~ add_course_url_nla(Emnekode, Årstall),
+        "nla"     ~ add_course_url_nla(Emnekode),
 
         "nord"    ~ add_course_url_nord(Emnekode),
         "nih"     ~ add_course_url_nih(Emnekode, Årstall, Semesternavn),
 
         "uib"     ~ add_course_url_uib(Emnekode),
         "uio"     ~ add_course_url_uio(Emnekode, Avdelingsnavn),
-        "uis"     ~ add_course_url_uis(Emnekode),
+        "uis"     ~ add_course_url_uis(Emnekode_raw),
         "usn"     ~ NA_character_,  # USN requires version discovery via resolve_course_urls()
         "uit"     ~ add_course_url_uit(Emnekode),
         "nmbu"    ~ add_course_url_nmbu(Emnekode),
@@ -69,6 +69,9 @@ add_course_url_hivolda <- function(course_code) {
   glue::glue("https://www.hivolda.no/emne/{course_code}")
 }
 
+# UiO only publishes the LATEST course plan at the base URL.
+# Semester-specific URLs (/h24/, /v25/) contain logistics only (schedule, exams),
+# NOT course plan content. Always use the base URL without year/semester.
 add_course_url_uio <- function(course_code, faculty_name) {
   uio_map <- list(
     "Biologisk institutt" = c("matnat", "ibv"),
@@ -105,23 +108,30 @@ add_course_url_oslomet <- function(course_code, year, semester) {
 }
 
 add_course_url_inn <- function(course_code, year, semester) {
-  glue::glue("https://studiekatalog.edutorium.no/inn/nb/emne/{course_code}/{year}-{semester_to_url(semester)}")
+  dplyr::if_else(
+    year >= 2022,
+    glue::glue("https://studiekatalog.edutorium.no/inn/nb/emne/{course_code}/{year}-{semester_to_url(semester)}"),
+    NA_character_
+  )
 }
 
 add_course_url_mf <- function(course_code) {
   glue::glue("https://mf.no/studier/emner/{tolower(course_code)}")
 }
 
-add_course_url_nla <- function(course_code, year) {
-  glue::glue("https://www.nla.no/studietilbud/emner/{year}/{tolower(course_code)}/")
+add_course_url_nla <- function(course_code) {
+  glue::glue("https://www.nla.no/for-studenter/Studie-%20og%20emneplaner/emneplan/{course_code}")
 }
 
 add_course_url_nih <- function(course_code, year, semester) {
   glue::glue("https://www.nih.no/studier/emner/{year}/{semester_to_url(semester)}/{tolower(course_code)}.html")
 }
 
-add_course_url_uis <- function(course_code) {
-  glue::glue("https://www.uis.no/nb/course/{toupper(course_code)}")
+add_course_url_uis <- function(course_code_raw) {
+  # UiS URLs use the raw course code with dash replaced by underscore (e.g., BYG100-1 → BYG100_1)
+  # The /nb/student/course/ path covers more courses than /nb/course/
+  code <- gsub("-", "_", course_code_raw)
+  glue::glue("https://www.uis.no/nb/student/course/{toupper(code)}")
 }
 
 # USN URL generation removed - requires version discovery via resolve_course_urls()

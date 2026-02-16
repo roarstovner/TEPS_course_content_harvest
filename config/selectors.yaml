@@ -16,7 +16,7 @@ selectors:
     course_name_no: "#page-title"
 
   hivolda:
-    fulltext: "#main-content"
+    fulltext: "article.content-emweb"
     course_name_no: ".page-title"
 
   hiof:
@@ -28,12 +28,12 @@ selectors:
     course_name_no: "h1"
 
   mf:
-    fulltext: "#main"
+    fulltext: "main"
     course_name_no: "h1"
 
   nla:
-    fulltext: "#content"
-    course_name_no: ".title"
+    fulltext: ".page-course-plan"
+    course_name_no: "h1"
 
   nord:
     fulltext: "#ac-trigger-0 , #ac-trigger-1 , #ac-trigger-5 , #ac-trigger-8 , #ac-trigger-6 , #ac-trigger-7 , #ac-trigger-2 , #ac-trigger-4 , #ac-trigger-3 , .ac-panel--inner , #ac-panel-2 .field__item , #ac-panel-0 li , p , .placeholder-text"
@@ -60,7 +60,7 @@ selectors:
     course_name_no: "h1"
 
   uit:
-    fulltext: ".hovedfelt"
+    fulltext: ".hovedfelt > main > div.col-md-12"
     course_name_no: ".headline"
 
   nmbu:

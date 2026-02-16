@@ -59,18 +59,22 @@ fetch_html_cols_single <- function(url, institution = NULL) {
     resp <- switch(
       institution,
       "ntnu" = fetch_html_cols_single_ntnu(url),
-      # "uio"  = fetch_html_cols_single_uio(url),  # behold hvis du har den
+      "hvl"  = fetch_html_cols_single_hvl(url),
       NULL
     )
     if (!is.null(resp)) return(resp)
   }
   
   # Default fetch
+  ua <- if (!is.null(institution) && institution == "hiof") {
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+  } else {
+    "TEPS research project - https://uni.oslomet.no/teps/ - robast@oslomet.no"
+  }
+
   url |>
     httr2::request() |>
-    httr2::req_user_agent(
-      "TEPS research project - https://uni.oslomet.no/teps/ - robast@oslomet.no"
-    ) |>
+    httr2::req_user_agent(ua) |>
     httr2::req_perform()
 }
 
@@ -100,5 +104,33 @@ fetch_html_cols_single_ntnu <- function(url) {
     rlang::abort("No course information available for this academic year", class = "ntnu_no_info_error")
   }
   
+  resp
+}
+
+#' Fetch HTML for a single HVL course URL
+#'
+#' Fetches the HTML and checks for the "course not found" error page
+#' that indicates the course doesn't exist.
+#'
+#' @param url Character string containing the HVL course URL
+#'
+#' @return httr2 response object, or throws an error if the page
+#'   shows 'Vi kunne ikkje finne emnet du ser etter'
+#'
+#' @noRd
+fetch_html_cols_single_hvl <- function(url) {
+  resp <- url |>
+    httr2::request() |>
+    httr2::req_user_agent(
+      "TEPS research project - https://uni.oslomet.no/teps/ - robast@oslomet.no"
+    ) |>
+    httr2::req_perform()
+
+  html_content <- httr2::resp_body_string(resp)
+
+  if (stringr::str_detect(html_content, "Vi kunne ikkje finne emnet du ser etter")) {
+    rlang::abort("Course not found (soft 404)", class = "hvl_not_found_error")
+  }
+
   resp
 }

@@ -9,10 +9,9 @@
     inn      = ".content-inner",
     hvl      = ".l-2-col__main-content",
     hivolda  = "article.content-emweb",
-    mf       = "#main",
-    nla      = "#content",
+    mf       = "main",
+    nla      = ".page-course-plan",
     nih      = ".fs-body",
-    uit      = ".hovedfelt",
     nmbu     = ".layout",
     hiof     = "#vrtx-fs-emne-content, main .entry-content, .entry-content",
     uio      = "#vrtx-course-content"
@@ -23,7 +22,8 @@
             .ac-panel--inner, #ac-panel-2 .field__item, #ac-panel-0 li, p, .placeholder-text",
     uib  = ".accordion, .accordion__main, .vertical-reset-children .vertical-reset-children div,
             summary, #main-content li, p, .vertical-reset-children .vertical-reset-children .mt-12",
-    uis  = "#block-page-content .link--, #block-page-content .paragraph--with-title"
+    uis  = "#block-page-content .link--, #block-page-content .paragraph--with-title",
+    uit  = ".hovedfelt > main > div.col-md-12"
   )
 )
 
@@ -37,9 +37,13 @@ extract_fulltext <- function(institution_short, raw_html) {
     if (inst == "usn") return(.cleanup_usn_text(html))
 
     if (inst %in% names(.selectors$single)) {
-      safe_extract_one(html, .selectors$single[[inst]])
+      txt <- safe_extract_one(html, .selectors$single[[inst]])
+      if (inst == "nla" && !is.na(txt)) txt <- .pre_nla(txt)
+      txt
     } else if (inst %in% names(.selectors$many)) {
-      safe_extract_many(html, .selectors$many[[inst]])
+      txt <- safe_extract_many(html, .selectors$many[[inst]])
+      if (inst == "uit" && !is.na(txt)) txt <- .pre_uit(txt)
+      txt
     } else {
       NA_character_
     }
@@ -65,6 +69,24 @@ extract_fulltext <- function(institution_short, raw_html) {
   if (length(txt) == 0) return(NA_character_)
 
   paste(txt, collapse = "\n")
+}
+
+.pre_nla <- function(txt) {
+  # Strip year dropdown: "Vis for år\n2025 — 20262024 — 2025...\n"
+  txt <- stringr::str_remove(txt, "Vis for år\\n(?:\\d{4} — \\d{4})+\\n")
+  # Strip "Last ned PDF" line
+  txt <- stringr::str_remove(txt, "Last ned PDF\\n")
+  # Truncate at "Digital litteraturliste" (removes link text + repeated year content)
+  txt <- stringr::str_remove(txt, "(?s)Digital litteraturliste.*$")
+  # Remove repeated year content: first "Evaluering av emnet" section + everything after
+  txt <- stringr::str_remove(txt, "(?s)Evaluering av emnet\\n.+?Ekspander alle.*$")
+  stringr::str_trim(txt)
+}
+
+.pre_uit <- function(txt) {
+  # Strip "Error rendering component" artifact from broken UI widget
+  txt <- stringr::str_remove(txt, "(?s)Error rendering component.*$")
+  stringr::str_trim(txt)
 }
 
 .cleanup_usn_text <- function(raw_html) {
