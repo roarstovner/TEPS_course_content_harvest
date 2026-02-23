@@ -12,6 +12,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 
 ### Changed
+- Regenerate data_notes.md after year filtering and samas addition (#78)
+- Re-run dedup pipeline after hivolda re-harvest (#84)
+- Re-investigate Hivolda URL pattern and re-harvest (#63)
+- Test and run full hivolda harvest (#83)
+- Add resolve step to run_harvest.R main loop (#82)
+- Hook hivolda into resolve_batch() dispatcher (#81)
+- Add resolve_urls_hivolda_batch() to resolve_course_urls.R (#80)
+- Update add_course_url_hivolda() to return NA (#79)
 - Harvest samas: write R/run_harvest_samas.R (#72)
 - Harvest samas: map website course codes to DBH Emnekode_raw (#71)
 - Harvest samas: download PDFs and extract text with pdftools (#70)

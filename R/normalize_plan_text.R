@@ -7,8 +7,9 @@
 #'
 #' @param institution_short Character vector of institution short names.
 #' @param fulltext Character vector of raw fulltext.
+#' @param .progress Passed to purrr::map2_chr for progress reporting.
 #' @return Character vector of normalized text. NA input -> NA output.
-normalize_plan_text <- function(institution_short, fulltext) {
+normalize_plan_text <- function(institution_short, fulltext, .progress = "Normalize plan texts") {
   stopifnot(length(institution_short) == length(fulltext))
 
   purrr::map2_chr(institution_short, fulltext, \(inst, txt) {
@@ -21,7 +22,7 @@ normalize_plan_text <- function(institution_short, fulltext) {
     txt <- .normalize_generic(txt)
 
     txt
-  })
+  }, .progress = .progress)
 }
 
 
@@ -29,10 +30,10 @@ normalize_plan_text <- function(institution_short, fulltext) {
 #'
 #' @param normalized_text Character vector of normalized text (from normalize_plan_text).
 #' @return Character vector of hash strings. NA input -> NA output.
-build_plan_id <- function(normalized_text) {
+build_plan_id <- function(normalized_text, .progress = "Building plan IDs") {
   purrr::map_chr(normalized_text, \(txt) {
     if (is.na(txt) || !nzchar(txt)) return(NA_character_)
-    rlang::hash(txt)
+    digest::digest(txt, algo = "sha256", serialize = FALSE)
   })
 }
 

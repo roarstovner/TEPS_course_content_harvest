@@ -9,7 +9,7 @@ add_course_url <- function(df) {
         "ntnu"    ~ add_course_url_ntnu(Emnekode, Årstall),
         "inn"     ~ add_course_url_inn(Emnekode, Årstall, Semesternavn),
 
-        "hivolda" ~ add_course_url_hivolda(Emnekode),
+        "hivolda" ~ NA_character_,  # Hivolda requires URL discovery via resolve_course_urls()
         "hiof"    ~ add_course_url_hiof(Emnekode, Årstall, Semesternavn),
         "hvl"     ~ add_course_url_hvl(Emnekode),
 
@@ -65,9 +65,8 @@ add_course_url_hiof <- function(course_code, year, semester) {
   )
 }
 
-add_course_url_hivolda <- function(course_code) {
-  glue::glue("https://www.hivolda.no/emne/{course_code}")
-}
+# Hivolda URL generation removed - requires URL discovery via resolve_course_urls()
+# Base page /emne/{CODE} lists semester-specific version URLs with numeric IDs
 
 # UiO only publishes the LATEST course plan at the base URL.
 # Semester-specific URLs (/h24/, /v25/) contain logistics only (schedule, exams),

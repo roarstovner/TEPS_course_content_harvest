@@ -1,29 +1,31 @@
 # Data Quality Notes
 
-Generated: 2026-02-14
+Generated: 2026-02-17
 
 ## Overview
 
 | Institution | Rows | Codes | Years | Fulltext OK | Rate | Median chars | Unique plans | Dedup % |
 |------------|-----:|------:|-------|------------:|-----:|-------------:|-------------:|--------:|
 | hiof | 1712 | 240 | 2017-2025 | 846 | 49.4% | 7190 | 826 | 2.4% |
-| hivolda | 1182 | 113 | 2017-2025 | 1182 | 100% | 4384 | 99 | 91.6% |
-| hvl | 3599 | 392 | 2017-2025 | 2883 | 80.1% | 4484 | 296 | 89.7% |
+| hivolda | 1182 | 113 | 2017-2025 | 594 | 50.3% | 4672 | 556 | 6.4% |
+| hvl | 670 | 346 | 2025 | 591 | 88.2% | 4484 | 296 | 49.9% |
 | inn | 2368 | 262 | 2018-2024 | 1282 | 54.1% | 4184 | 542 | 56.7% |
-| mf | 603 | 67 | 2011-2025 | 309 | 51.2% | 4298 | 27 | 91.3% |
-| nih | 184 | 34 | 2021-2025 | 81 | 44.0% | 2341 | 81 | 0% |
-| nla | 2074 | 209 | 2017-2025 | 2074 | 100% | 34864 | 209 | 89.9% |
-| nmbu | 335 | 18 | 2014-2025 | 207 | 61.8% | 5787 | 10 | 95.2% |
-| nord | 3664 | 453 | 2016-2025 | 3654 | 99.7% | 5269 | 440 | 88.0% |
+| mf | 55 | 29 | 2025 | 51 | 92.7% | 4458 | 26 | 49.0% |
+| nih | 184 | 34 | 2021-2025 | 81 | 44.0% | 2341 | 81 | 0.0% |
+| nla | 365 | 189 | 2025 | 365 | 100.0% | 5311 | 189 | 48.2% |
+| nmbu | 29 | 15 | 2025 | 19 | 65.5% | 5787 | 10 | 47.4% |
+| nord | 540 | 294 | 2025 | 540 | 100.0% | 5592 | 294 | 45.6% |
 | ntnu | 5735 | 409 | 2004-2025 | 3791 | 66.1% | 4936 | 1531 | 59.6% |
-| oslomet | 1705 | 179 | 2018-2025 | 1705 | 100% | 12226 | 702 | 57.3% |
+| oslomet | 1705 | 179 | 2018-2025 | 1705 | 100.0% | 12226 | 702 | 57.3% |
+| samas | 130 | 68 | 2025 | 128 | 98.5% | 26959 | 6 | 95.3% |
+| steiner | 18 | 18 | 2025 | 15 | 83.3% | 5515 | 15 | 0.0% |
 | uia | 2374 | 237 | 2020-2025 | 1130 | 47.6% | 4406 | 701 | 38.0% |
-| uib | 2613 | 171 | 2004-2025 | 1616 | 61.8% | 7780 | 105 | 93.5% |
-| uio | 1767 | 109 | 2003-2025 | 93 | 5.3% | 3489 | 92 | 1.1% |
-| uis | 2920 | 316 | 2007-2025 | 1208 | 41.4% | 4064 | 109 | 91.0% |
-| uit | 6693 | 621 | 2004-2025 | 6693 | 100% | 4080 | 554 | 91.5% |
+| uib | 187 | 99 | 2025 | 177 | 94.7% | 8110 | 94 | 46.9% |
+| uio | 100 | 54 | 2025 | 52 | 52.0% | 3878 | 52 | 0.0% |
+| uis | 353 | 197 | 2025 | 204 | 57.8% | 4109 | 109 | 46.6% |
+| uit | 559 | 286 | 2025 | 545 | 97.5% | 4012 | 267 | 51.0% |
 | usn | 3036 | 401 | 2018-2025 | 1189 | 39.2% | 10600 | 1148 | 3.4% |
-| **Total** | **42564** | | | **29943** | **70.3%** | | **7472** | |
+| **Total** | **21302** | | | **13305** | **62.5%** | | **7517** | |
 
 **Columns:**
 - **Rows**: Total course-semester rows in harvested data (from DBH)
@@ -34,15 +36,21 @@ Generated: 2026-02-14
 - **Unique plans**: Distinct course plans after normalization and deduplication
 - **Dedup %**: Percentage of rows removed by deduplication (1 - unique/has_plan)
 
+## Year coverage
+
+Institutions fall into two groups based on URL structure:
+
+**Year-specific URLs** (historical data available): HiOF, INN, NIH, NTNU, OsloMet, UiA, USN.
+These institutions include the year (and sometimes semester) in their course page URLs, so we can harvest distinct content for each year.
+
+**No year in URL** (current year only): HVL, Hivolda, MF, NLA, NMBU, Nord, Samas, Steiner, UiB, UiO, UiS, UiT.
+These institutions serve the same (latest) page regardless of year. Data is filtered to 2025 only to avoid duplicating current content across historical years. Hivolda is an exception: it has semester-specific pages discoverable via URL resolution, so it retains historical data.
+
 ## Interpreting the dedup ratio
 
-High dedup (>80%) is expected and normal for institutions where:
-- The same course plan text is reused across multiple years (hivolda, hvl, nla, nord, uit, uib, uis, mf, nmbu)
-- DBH registers courses for both semesters but only one plan page exists
+High dedup (>40%) is expected for current-year-only institutions where DBH registers courses for both semesters but only one plan page exists.
 
-Low dedup (<20%) means most rows have genuinely different content, typically because:
-- Plans change frequently between years (usn, hiof)
-- Only one year of data is available (uio, nih)
+Low dedup (<10%) means most rows have genuinely different content, typically because plans change between years/versions (HiOF, USN) or each row is truly distinct (NIH, Steiner, UiO).
 
 ## Per-Institution Notes
 
@@ -52,42 +60,47 @@ Low dedup (<20%) means most rows have genuinely different content, typically bec
 
 - **49.4% success rate**: Many older URLs (pre-2021) return 404
 - Historical courses (before autumn 2021) use a different URL structure; the URL builder has fallback logic
-- Two CSS selectors used: old structure (`#LiteralFullBeskrivelse`) and new (`.description-section`)
+- Two CSS selectors used: old structure (`#vrtx-fs-emne-content`) and new (`.entry-content`)
+- HiOF required a browser-like user agent to avoid 403 blocks (see #27)
+- `normalize_plan_text` strips "Sist hentet fra FS" timestamps and "Litteraturlista er sist oppdatert" lines
 
 ---
 
 ### Hivolda (Volda University College)
 
-- **100% fulltext rate** but **91.6% dedup**: The URL builder ignores year/semester and always fetches `https://www.hivolda.no/emne/{CODE}`, which returns the latest version
-- The website uses numeric IDs to distinguish versions (e.g., `/emne/MGL5-10NO2B/12177` vs `/emne/MGL5-10NO2B/6255`), but these IDs cannot be derived from metadata
-- **Known issue (see #63)**: All years got the same content; only 99 unique plans from 1182 rows. Data needs re-harvesting once the ID-to-year mapping is understood
-- Data should be treated as "latest version only" until resolved
+- **Re-harvested 2026-02-16** with URL discovery (see #63, #79-#83)
+- The base URL `/emne/{CODE}` returns only the latest version. Semester-specific pages have numeric IDs (e.g., `/emne/MGL5-10NO2B/12177`) that cannot be derived from metadata
+- `resolve_urls_hivolda_batch()` scrapes the base page to discover semester links, mapping "Haust" to "Høst" for matching
+- Result: 594/1182 rows with fulltext (up from 1182 identical pages). 556 unique plans (up from 99)
+- 588 NA rows = course not offered in that semester (legitimate missing data)
 
 ---
 
 ### HVL (Western Norway University of Applied Sciences)
 
-- **80.1% success rate**: 716 rows have HTML but extraction returned empty
-- These are likely pages where the CSS selector doesn't match (website structure variation)
-- High dedup (89.7%) suggests stable course plans across years
+- **Filtered to 2025 only** (no year in URL; see #74, #77)
+- **88.2% success rate**: 79 rows have no content
+- 716 rows in the original harvest were soft-404 "course not found" pages; these are now detected during fetch and marked as `html=NA` (see #66)
+- Uses `.extract_one()` with selector `.l-2-col__main-content`
 
 ---
 
 ### INN (Inland Norway University of Applied Sciences)
 
 - **54.1% success rate**: 1086 rows have no HTML (URLs return 404 or errors)
-- 30 pages are placeholder/error pages ("Emnesøket gjelder kun fra...") filtered as NA by normalize_plan_text
+- URL builder filters out pre-2022 courses (return NA), as INN's website only covers 2022+ (see #26)
+- 30 pages are placeholder/error pages ("Emnesøket gjelder kun fra...") filtered as NA by `normalize_plan_text` (see #53)
 - Year range 2018-2024 (no 2025 data in DBH extract)
-- Moderate dedup (56.7%) indicates regular plan updates
+- INN publishes some courses in both Norwegian and English, causing lower dedup than expected. `normalize_plan_text` strips 35 NO/EN field labels and normalizes language metadata (see #52)
 
 ---
 
 ### MF (MF Norwegian School of Theology)
 
-- **51.2% success rate**: 294 pages return 404
-- Small institution (67 unique course codes)
-- Very high dedup (91.3%): only 27 unique plans from 309 successful fetches
-- Normalize strips from "Emneansvarlig" to end (removes teacher names, marketing)
+- **Filtered to 2025 only** (no year in URL; see #74, #77)
+- **92.7% success rate**: 4 pages return 404 (discontinued courses)
+- CSS selector was fixed from `#main` to `main` (see #25)
+- `normalize_plan_text` strips from "Emneansvarlig" to end (removes teacher names, contact info, marketing content)
 
 ---
 
@@ -95,119 +108,131 @@ Low dedup (<20%) means most rows have genuinely different content, typically bec
 
 - **44% success rate**: 103 of 184 pages return 404
 - Small institution (34 codes), short year range (2021-2025)
-- No deduplication (100% unique) - each plan row is distinct
+- No deduplication (0%) — each fetched plan is distinct
 - Shortest median content (2341 chars)
 
 ---
 
 ### NLA (NLA University College)
 
-- **100% fulltext rate** with very high median content (34,864 chars)
-- High character count suggests the CSS selector captures more than just the course plan (possibly entire page including navigation/boilerplate)
-- High dedup (89.9%): 209 unique plans from 2074 rows
+- **Filtered to 2025 only** (no year in URL; see #74, #77)
+- **100% fulltext rate** (365/365)
+- Original harvest failed (0% extraction) because NLA's `/studietilbud/emner/` URLs are React-rendered. Fix: switched to `/for-studenter/Studie-%20og%20emneplaner/emneplan/{CODE}` with selector `.page-course-plan` (see #55)
+- `.pre_nla()` in `extract_fulltext.R` strips year dropdown, "Last ned PDF" link, and truncates at "Digital litteraturliste" to remove reading lists (reduced median from 34.9K to 5.3K chars; see #67)
 
 ---
 
 ### NMBU (Norwegian University of Life Sciences)
 
-- Only 18 unique course codes in harvest (small DBH subset)
-- **61.8% success rate**: 128 pages return 404
-- Extremely high dedup (95.2%): only 10 unique plans from 207 rows
+- **Filtered to 2025 only** (no year in URL; see #74, #77)
+- Only 15 unique course codes in current year
+- **65.5% success rate**: 10 pages return 404 (discontinued courses)
 
 ---
 
 ### Nord (Nord University)
 
-- **99.7% success rate**: Near-perfect fetch rate (only 10 failures)
-- High dedup (88%): Course plans stable across years
-- 453 unique codes spanning 2016-2025
+- **Filtered to 2025 only** (no year in URL; see #74, #77)
+- **100% success rate** (540/540)
+- Uses `.extract_many()` for accordion-structured content
 
 ---
 
 ### NTNU (Norwegian University of Science and Technology)
 
-- **66.1% success rate**: 1944 rows with no HTML
-- URL includes year but not semester; special error detection for "no information available" pages
-- Normalize strips from "Kontaktinformasjon" to end (teacher names, exam dates, timetable)
-- Moderate dedup (59.6%) with wide year range (2004-2025)
+- **66.1% success rate**: 1944 rows with no HTML (older courses no longer online)
+- URL includes year but not semester; special error detection for "no information available" pages (`ntnu_no_info_error`)
+- `normalize_plan_text` strips from "Kontaktinformasjon" to end (teacher names, exam dates, JS artifacts, timetable)
+- Wide year range (2004-2025) with genuine content evolution across years
 
 ---
 
 ### OsloMet (Oslo Metropolitan University)
 
-**Re-harvested 2026-02-14** (original harvest returned only error pages due to client-side rendering).
-
-- **100% fulltext rate** (1705/1705 rows have content)
-- 60 rows contain error pages ("Siden du leter etter finnes ikke") which are filtered as NA by normalize_plan_text, leaving 1645 rows with genuine content
-- Median 12,226 chars per page (highest after NLA and USN)
-
-**URL semester issue**: OsloMet's website only accepts "HØST" (autumn) in URLs. All semester variants for spring return 404. Workaround: always use "HØST" regardless of actual semester. Course content appears semester-agnostic.
-
+- **Re-harvested 2026-02-14** (see #57, #61)
+- Original harvest returned only error pages because OsloMet was using client-side rendering (React/Liferay). The site later switched to server-side rendering, fixing the issue
+- **100% fulltext rate** (1705/1705), but 60 rows contain error pages ("Siden du leter etter finnes ikke") which are filtered as NA by `normalize_plan_text`, leaving 1645 rows with genuine content
+- **URL semester issue**: OsloMet's website only accepts "HØST" (autumn) in URLs. Spring semester URLs return 404. Workaround: always use "HØST" regardless of actual semester (see #1)
 - URL pattern: `https://student.oslomet.no/studier/-/studieinfo/emne/{CODE}/{YEAR}/HØST`
-- The `semester` column in output reflects DBH registration, not the URL used
+
+---
+
+### Samas (Sámi University of Applied Sciences)
+
+- **New institution, added 2026-02-16** (see #69-#72)
+- **Filtered to 2025 only**
+- Course plans are published as PDFs (labeled "Oahppoplána") linked from course pages at `samas.no/se/oahput`
+- Text extracted with `pdftools::pdf_text()`, not HTML scraping
+- 128/130 rows with fulltext (98.5%). 2 courses (PED-6501, SAAL 2) had no PDF on their pages
+- Very high dedup (95.3%) with only 6 unique plans — multiple course codes share the same PDF document (program-level plans covering several courses)
+- Highest median content (26,959 chars) because PDFs contain full program plans
+
+---
+
+### Steiner (Rudolf Steiner University College)
+
+- **New institution, added 2026-02-16** (see #68, #73)
+- **Filtered to 2025 only** (18 rows)
+- Course plans harvested from 5 subject-area PDFs at `steinerhoyskolen.no`, split by course heading pattern
+- 15/18 rows with fulltext (83.3%). 3 missing courses are Praksis modules (M-LP1/2/3) with no PDF content
+- No deduplication (0%) — each of the 15 plans is distinct
 
 ---
 
 ### UiA (University of Agder)
 
-**Verified 2026-02-09**: Pipeline working correctly with updated CSS selector.
-
 - **47.6% success rate**: Website only has courses from **2020 onwards**; 2013-2019 courses return 404
-- Filter applied in `R/run_harvest_uia.R` to only process 2020+ courses
-
-**Whole-year courses**: DBH registers courses for both semesters, but UiA typically publishes only one page. Of 1150 courses in both semesters: 76.3% have autumn page only, 16.8% spring only, 0.3% both.
-
-**URL vs content semester mismatch**: 37% of autumn URLs contain spring-semester content. UiA publishes some spring courses under autumn URLs only.
-
+- **Whole-year courses**: DBH registers courses for both semesters, but UiA typically publishes only one page. Of 1150 courses in both semesters: 76.3% have autumn page only, 16.8% spring only, 0.3% both
+- **URL vs content semester mismatch**: 37% of autumn URLs contain spring-semester content
 - URL pattern: `https://www.uia.no/studier/emner/{year}/{semester}/{course_code}.html`
-- CSS selector: `#right-main`
 
 ---
 
 ### UiB (University of Bergen)
 
-- **61.8% success rate**: 997 rows with no HTML
-- Wide year range (2004-2025); older pages likely no longer available
-- Very high dedup (93.5%): only 105 unique plans from 1616 rows
-- Uses `.extract_many()` for multiple content sections (accordion structure)
+- **Filtered to 2025 only** (no year in URL; see #74, #77)
+- **94.7% success rate**: 10 rows with no content
+- Uses `.extract_many()` for accordion-structured content
 
 ---
 
 ### UiO (University of Oslo)
 
-- **5.3% success rate (by design)**: UiO only publishes the latest version of each course plan, not historical versions
-- Only 93 rows have content (out of 1767 total rows spanning 2003-2025)
-- Content was harvested only for 2025 or the last year a discontinued course was offered
-- Requires faculty/department slugs derived from `Avdelingsnavn` (hardcoded mapping)
+- **Filtered to 2025 only** (see #74, #76)
+- **52% success rate**: UiO only publishes the **latest version** of each course plan
+- Semester-specific URLs (`/h24/`, `/v25/`) contain **logistics only** (instructors, schedule, exam dates) — NOT course plan content. The base URL always returns the current plan (see #76)
+- Requires faculty/department slugs derived from `Avdelingsnavn` (hardcoded mapping in `add_course_url_uio()`)
 - URL pattern: `https://www.uio.no/studier/emner/{faculty}/{inst}/{CODE}/`
 
 ---
 
 ### UiS (University of Stavanger)
 
-- **41.4% success rate**: 1576 rows with no HTML
-- Wide year range (2007-2025); older pages no longer available
-- Very high dedup (91%): only 109 unique plans from 1208 rows
-- Uses `.extract_many()` for accordion-style content
+- **Filtered to 2025 only** (no year in URL; see #74, #77)
+- **57.8% success rate**: 149 rows with no content
+- Website completely redesigned (migrated to Drupal); old URL pattern `/nb/course/{CODE}` returned 100% 404s. New URL pattern: `/nb/student/course/{CODE}_1` where CODE uses `Emnekode_raw` with dash replaced by underscore (see #19-#24)
+- Uses `.extract_many()` for content sections
 
 ---
 
 ### UiT (The Arctic University of Norway)
 
-- **100% fulltext rate** (6693/6693 rows)
-- However, 2817 rows contain "Error rendering component" artifacts in the text
-- These are stripped by normalize_plan_text (.pre_uit) but may indicate partially rendered pages
-- Very high dedup (91.5%): 554 unique plans from 6519 rows with valid plan IDs
-- 174 rows have fulltext but normalize to NA (likely rendering errors with no real content)
+- **Filtered to 2025 only** (no year in URL; see #74, #77)
+- **97.5% success rate** (545/559)
+- All UiT pages contain "Access denied to page component" HTML comments and "Error rendering component" artifacts — this is a persistent issue on UiT's website, not a scraping problem (see #64)
+- CSS selector changed from `.hovedfelt` (single) to `.hovedfelt > main > div.col-md-12` (many) to work around the broken component (see #60)
+- `.pre_uit()` strips remaining "Error rendering component" text and breadcrumb artifacts
+- 14 rows have fulltext that normalizes to NA (rendering errors with no real content)
 
 ---
 
 ### USN (University of South-Eastern Norway)
 
-- **39.2% success rate (expected)**: Requires URL version discovery via JavaScript-rendered pages
-- Course plan URLs include a version number that can't be determined from metadata alone
+- **39.2% success rate (expected)**: USN requires URL version discovery via JavaScript-rendered pages
+- Course plan URLs include a version number (1-5) that cannot be determined from metadata alone
+- URL pattern: `https://www.usn.no/studier/studie-og-emneplaner/#/emne/{CODE}_{VERSION}_{YEAR}_{SEMESTER}`
+- **Silent redirects**: Invalid version+year combos redirect to other pages without changing the URL. Validation checks that displayed year matches requested year
+- Uses Shadow DOM extraction via `rvest::read_html_live()` with session reuse for performance
 - Breakdown: ~39% autumn-start only, ~11% spring-start only, ~25% both semesters, ~25% no page at all
 - "New" courses (status=2) have ~5% success; "Active" (status=1) courses ~81%
-- Uses Shadow DOM extraction via `rvest::read_html_live()`
 - Low dedup (3.4%): Plans change frequently between versions/years
-- High median chars (10,600) - comprehensive course plan content

@@ -4,12 +4,13 @@
   source("R/extract_fulltext.R")
   source("R/add_course_url.R")
   source("R/checkpoint.R")
+  source("R/resolve_course_urls.R")
 
   courses <- readRDS("data/courses.RDS")
 
   # Institutions ready to harvest (validated pipelines)
   harvest_list <- c("nord", "nih", "uib", "uit", "inn",
-  "hvl", "mf", "hiof")
+  "hvl", "mf", "hiof", "hivolda")
 
   # Institutions whose URLs have no year component — current content only
   no_year_insts <- c("uit", "uib", "nord", "hvl", "mf")
@@ -19,10 +20,13 @@
 
     df <- courses |>
       filter(institution_short == inst) |>
-      { if (inst %in% no_year_insts) filter(., Årstall == max(Årstall)) else . }() |>
+      (\(df) if (inst %in% no_year_insts) filter(df, Årstall == max(Årstall)) else df)() |>
       add_course_id() |>
       validate_courses("initial") |>
       add_course_url() |>
+      resolve_course_urls(
+        checkpoint_path = paste0("data/checkpoint/urls_", inst, ".RDS")
+      ) |>
       validate_courses("with_url")
 
     message(inst, ": ", sum(!is.na(df$url)), "/",

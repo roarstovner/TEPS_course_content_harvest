@@ -6,6 +6,7 @@
 #' plus the original data with plan_content_id added.
 #'
 #' @param df Combined data frame from all html_*.RDS files.
+#' @param .progress Passed to normalize_plan_text for progress reporting.
 #' @return A list with two elements:
 #'   - `plans`: Tibble of unique plans (plan_content_id, institution_short, Emnekode,
 #'              fulltext_normalized, year_from, year_to)

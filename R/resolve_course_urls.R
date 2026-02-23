@@ -61,6 +61,8 @@ resolve_course_urls <- function(df,
   resolve_batch <- function(df, inst, checkpoint_path, .progress) {
     if (inst == "usn") {
       resolve_urls_usn_batch(df, checkpoint_path = checkpoint_path, .progress = .progress)
+    } else if (inst == "hivolda") {
+      resolve_urls_hivolda_batch(df, .progress = .progress)
     } else {
       df |> dplyr::mutate(url = NA_character_)
     }
@@ -108,6 +110,81 @@ resolve_course_urls <- function(df,
       by = "course_id",
       unmatched = "ignore"
     )
+}
+
+#' Resolve URLs for a batch of Hivolda courses
+#'
+#' For each unique Emnekode, fetches the base page /emne/{CODE} and parses
+#' the "Semestre" section to find semester-specific version URLs.
+#' Link text uses Nynorsk ("Haust") which is mapped to Bokmål ("Høst").
+#'
+#' @param df A tibble with Emnekode, Årstall, Semesternavn columns
+#' @param .progress Show progress bar
+#' @return df with url column filled in where possible
+resolve_urls_hivolda_batch <- function(df, .progress = TRUE) {
+  if (nrow(df) == 0) return(df |> dplyr::mutate(url = NA_character_))
+
+  unique_codes <- unique(df$Emnekode)
+  cli::cli_alert_info("Discovering URLs for {length(unique_codes)} unique Hivolda course codes")
+
+  if (.progress) pb <- cli::cli_progress_bar(total = length(unique_codes))
+
+  # Build lookup: Emnekode + year + semester -> URL
+  lookup_rows <- list()
+
+  for (code in unique_codes) {
+    tryCatch({
+      base_url <- paste0("https://www.hivolda.no/emne/", code)
+      page <- rvest::read_html(base_url)
+
+      # Find all links under the course page that match /emne/{CODE}/{ID}
+      links <- page |>
+        rvest::html_elements("a") |>
+        purrr::keep(~ grepl(paste0("/emne/", code, "/\\d+"), rvest::html_attr(.x, "href")))
+
+      for (link in links) {
+        href <- rvest::html_attr(link, "href")
+        text <- trimws(rvest::html_text2(link))
+
+        # Parse "2024 Haust" or "2023 Vår" from link text
+        m <- stringr::str_match(text, "(\\d{4})\\s+(\\S+)")
+        if (!is.na(m[1])) {
+          year <- as.integer(m[2])
+          # Map Nynorsk to Bokmål: Haust -> Høst
+          sem_raw <- m[3]
+          sem <- dplyr::case_match(
+            tolower(sem_raw),
+            "haust" ~ "Høst",
+            "vår"   ~ "Vår",
+            .default = sem_raw
+          )
+
+          full_url <- paste0("https://www.hivolda.no", href)
+          lookup_rows <- c(lookup_rows, list(tibble::tibble(
+            Emnekode = code, Årstall = year, Semesternavn = sem, url = full_url
+          )))
+        }
+      }
+    }, error = function(e) {
+      cli::cli_alert_warning("Failed to fetch listing for {code}: {e$message}")
+    })
+
+    if (.progress) cli::cli_progress_update(id = pb)
+  }
+
+  if (length(lookup_rows) == 0) {
+    cli::cli_alert_warning("No semester URLs discovered")
+    return(df |> dplyr::mutate(url = NA_character_))
+  }
+
+  lookup <- dplyr::bind_rows(lookup_rows) |>
+    dplyr::distinct(Emnekode, Årstall, Semesternavn, .keep_all = TRUE)
+  cli::cli_alert_success("Discovered {nrow(lookup)} semester URLs across {length(unique_codes)} course codes")
+
+  # Join lookup to df, replacing the NA url column
+  df |>
+    dplyr::select(-url) |>
+    dplyr::left_join(lookup, by = c("Emnekode", "Årstall", "Semesternavn"))
 }
 
 #' Resolve URLs for a batch of USN courses using a single browser session
