@@ -9,53 +9,6 @@ This is an R-based web scraping pipeline that harvests course descriptions from 
 **Input:** Course metadata from `data/courses.RDS` (typically sourced from DBH database via rdbhapi)
 **Output:** Same data with added `url`, `html`, and `fulltext` columns
 
-## Chainlink Issue Tracking (MANDATORY)
-All development work MUST be tracked using chainlink. No exceptions.
-
-Start every work session
-chainlink session start
-
-Mark what you're working on
-chainlink session work <issue_id>
-
-Add discoveries/notes as you work
-chainlink comment <issue_id> "Found: ..."
-
-End session with handoff notes
-chainlink session end --notes "Completed X, Y pending"
-
-### Issue Management
-Create issues
-chainlink create "Issue title" -p <low|medium|high|critical>
-chainlink subissue <parent_id> "Subtask title"
-
-Track dependencies
-chainlink block <blocked_id> <blocker_id>
-chainlink unblock <blocked_id> <blocker_id>
-
-Find work
-chainlink ready          # Issues with no open blockers
-chainlink next           # Suggested next issue
-chainlink list           # All open issues
-chainlink tree           # Hierarchical view
-
-Update progress
-chainlink update <id> -s <open|in_progress|review|closed>
-chainlink close <id>
-chainlink comment <id> "Progress update..."
-
-Milestones
-chainlink milestone create "v1.0"
-chainlink milestone add <milestone_id> <issue_id>
-
-### Rules
-Create issues BEFORE starting work - No undocumented changes
-Use session work - Always mark current focus
-Add comments - Document discoveries, blockers, decisions
-Close with notes - Future you will thank present you
-Large features - Break into subissues, never exceed 500 lines per file
-
-
 ## Core Pipeline Architecture
 
 ### Sequential Processing Steps
