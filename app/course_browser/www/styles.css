@@ -45,3 +45,18 @@
 .dt-row-selected {
   background-color: var(--bs-primary-bg-subtle) !important;
 }
+
+/* Diff tab */
+.diff-container {
+  max-height: calc(100vh - 120px);
+  overflow: auto;
+  font-size: 0.82rem;
+}
+
+.diff-container table {
+  width: 100%;
+}
+
+.diff-container .diffobj-container {
+  max-width: 100%;
+}

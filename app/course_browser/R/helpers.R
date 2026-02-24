@@ -65,3 +65,46 @@ load_course_html <- function(course_id, inst, cache, data_dir = "../../data") {
   if (nrow(row) == 0) return(NULL)
   row$html[[1]]
 }
+
+#' Render an HTML diff between two text strings
+#'
+#' Splits text into lines/sentences, runs diffobj::diffChr, returns
+#' self-contained HTML string suitable for embedding in a Shiny UI.
+#'
+#' @param text_a Character(1), the "old" version
+#' @param text_b Character(1), the "new" version
+#' @param banner_a Label for old version
+#' @param banner_b Label for new version
+#' @param mode "sidebyside" or "unified"
+#' @return HTML string, or NULL if inputs are invalid
+render_diff_html <- function(text_a, text_b, banner_a = "A", banner_b = "B",
+                             mode = "sidebyside") {
+  if (is.na(text_a) || is.na(text_b)) return(NULL)
+
+  # Split into lines at sentence boundaries for readable diffs
+  split_to_lines <- function(txt) {
+    txt <- trimws(txt)
+    # Split on double+ whitespace or period-space boundaries
+    lines <- unlist(strsplit(txt, "(?<=\\.)\\s+|\\n+", perl = TRUE))
+    lines <- trimws(lines)
+    lines[nzchar(lines)]
+  }
+
+  lines_a <- split_to_lines(text_a)
+  lines_b <- split_to_lines(text_b)
+
+  diff_obj <- diffobj::diffChr(
+    lines_a, lines_b,
+    format = "html",
+    mode = mode,
+    tar.banner = banner_a,
+    cur.banner = banner_b,
+    pager = "off",
+    style = list(html.output = "diff.w.style"),
+    context = 3L,
+    word.diff = TRUE
+  )
+
+  # diffobj returns a Diff object; as.character gives the HTML
+  paste(as.character(diff_obj), collapse = "\n")
+}

@@ -2,6 +2,7 @@ library(shiny)
 library(bslib)
 library(DT)
 library(dplyr, warn.conflicts = FALSE)
+library(diffobj)
 
 # ── Global ──────────────────────────────────────────────────────────────────
 
@@ -78,23 +79,36 @@ ui <- page_navbar(
     )
   ),
 
-  # ── Compare tab ──
+  # ── Diff tab ──
   nav_panel(
-    "Compare",
+    "Diff",
     layout_sidebar(
       sidebar = sidebar(
-        width = 280,
-        selectizeInput("compare_inst", "Institution",
+        width = 300,
+        selectizeInput("diff_inst", "Institution",
           choices = inst_choices, multiple = FALSE,
           options = list(placeholder = "Pick institution")
         ),
-        selectizeInput("compare_code", "Course code",
+        selectizeInput("diff_code", "Course code",
           choices = NULL, multiple = FALSE,
           options = list(placeholder = "Pick course code")
         ),
-        helpText("Shows up to 6 most recent versions side by side.")
+        tags$hr(),
+        tags$strong("Versions"),
+        DTOutput("diff_versions_table", height = "auto"),
+        tags$hr(),
+        selectInput("diff_a", "Version A (old)", choices = NULL),
+        selectInput("diff_b", "Version B (new)", choices = NULL),
+        radioButtons("diff_mode", "Diff content",
+          choices = c("Normalized text" = "normalized", "Raw fulltext" = "raw"),
+          selected = "normalized"
+        ),
+        radioButtons("diff_layout", "Layout",
+          choices = c("Side by side" = "sidebyside", "Unified" = "unified"),
+          selected = "sidebyside"
+        )
       ),
-      uiOutput("compare_panels")
+      uiOutput("diff_output")
     )
   )
 )
@@ -206,64 +220,137 @@ server <- function(input, output, session) {
     )
   })
 
-  # ── Compare: cascading course code selector ──
+  # ── Diff: cascading course code selector ──
   observe({
-    inst <- input$compare_inst
+    inst <- input$diff_inst
     if (is.null(inst) || inst == "") {
-      updateSelectizeInput(session, "compare_code", choices = character(0), server = TRUE)
+      updateSelectizeInput(session, "diff_code", choices = character(0), server = TRUE)
       return()
     }
+    # Only show course codes that have 2+ distinct plan versions
     codes <- courses |>
-      filter(institution_short == inst, !is.na(fulltext), nchar(fulltext) > 0) |>
+      filter(institution_short == inst, !is.na(plan_content_id)) |>
+      group_by(Emnekode_raw) |>
+      filter(n_distinct(plan_content_id) >= 2) |>
+      ungroup() |>
       pull(Emnekode_raw) |>
       unique() |>
       sort()
-    updateSelectizeInput(session, "compare_code", choices = codes, server = TRUE)
+    updateSelectizeInput(session, "diff_code", choices = codes, server = TRUE)
   })
 
-  # ── Compare: filtered data for selected course code ──
-  compare_data <- reactive({
-    inst <- input$compare_inst
-    code <- input$compare_code
+  # ── Diff: version data for selected course ──
+  diff_versions <- reactive({
+    inst <- input$diff_inst
+    code <- input$diff_code
     if (is.null(inst) || inst == "" || is.null(code) || code == "") return(NULL)
 
     courses |>
       filter(
         institution_short == inst,
         Emnekode_raw == code,
-        !is.na(fulltext), nchar(fulltext) > 0
+        !is.na(plan_content_id)
       ) |>
-      arrange(desc(Årstall), Semesternavn) |>
-      head(6)
+      arrange(Årstall, Semesternavn) |>
+      group_by(plan_content_id) |>
+      summarise(
+        year_from = min(Årstall),
+        year_to = max(Årstall),
+        semesters = n(),
+        fulltext = first(fulltext),
+        fulltext_normalized = first(fulltext_normalized),
+        .groups = "drop"
+      ) |>
+      arrange(year_from, year_to) |>
+      mutate(
+        version = paste0("V", row_number()),
+        label = paste0(version, " (", year_from,
+                       ifelse(year_from == year_to, "", paste0("-", year_to)),
+                       ")"),
+        hash_short = substr(plan_content_id, 1, 8)
+      )
   })
 
-  # ── Compare: side-by-side panels ──
-  output$compare_panels <- renderUI({
-    df <- compare_data()
-    if (is.null(df) || nrow(df) == 0) {
-      return(tags$p(class = "text-muted", "Select an institution and course code to compare plans."))
+  # ── Diff: version timeline table ──
+  output$diff_versions_table <- renderDT({
+    vers <- diff_versions()
+    if (is.null(vers) || nrow(vers) == 0) return(NULL)
+    display <- data.frame(
+      Ver = vers$version,
+      Years = ifelse(vers$year_from == vers$year_to,
+                     as.character(vers$year_from),
+                     paste0(vers$year_from, "-", vers$year_to)),
+      N = vers$semesters,
+      Hash = vers$hash_short,
+      stringsAsFactors = FALSE
+    )
+    datatable(display,
+      selection = "none", rownames = FALSE,
+      options = list(dom = "t", paging = FALSE, ordering = FALSE,
+                     columnDefs = list(list(width = "30px", targets = c(0, 2))))
+    )
+  }, server = FALSE)
+
+  # ── Diff: update A/B dropdowns when versions change ──
+  observeEvent(diff_versions(), {
+    vers <- diff_versions()
+    if (is.null(vers) || nrow(vers) < 2) {
+      updateSelectInput(session, "diff_a", choices = character(0))
+      updateSelectInput(session, "diff_b", choices = character(0))
+      return()
+    }
+    choices <- setNames(vers$version, vers$label)
+    n <- nrow(vers)
+    updateSelectInput(session, "diff_a", choices = choices, selected = vers$version[n - 1])
+    updateSelectInput(session, "diff_b", choices = choices, selected = vers$version[n])
+  })
+
+  # ── Diff: render diff output ──
+  output$diff_output <- renderUI({
+    vers <- diff_versions()
+    va <- input$diff_a
+    vb <- input$diff_b
+    if (is.null(vers) || is.null(va) || is.null(vb) || va == "" || vb == "") {
+      return(tags$p(class = "text-muted",
+        "Select an institution and course code with multiple plan versions."))
+    }
+    if (va == vb) {
+      return(tags$p(class = "text-muted", "Version A and B are the same. Pick two different versions."))
     }
 
-    cards <- lapply(seq_len(nrow(df)), function(i) {
-      row <- df[i, ]
-      sem_label <- paste(row$Semesternavn, row$Årstall)
-      status_lbl <- status_labels[as.character(row$Status)]
-      nchars <- nchar(row$fulltext)
+    row_a <- vers[vers$version == va, ]
+    row_b <- vers[vers$version == vb, ]
+    if (nrow(row_a) == 0 || nrow(row_b) == 0) return(NULL)
 
-      card(
-        class = "compare-card",
-        card_header(
-          tags$strong(sem_label),
-          tags$span(class = "text-muted ms-2", paste0("(", status_lbl, ", ", nchars, " chars)"))
-        ),
-        card_body(
-          tags$div(class = "fulltext-display", row$fulltext)
-        )
-      )
-    })
+    use_normalized <- (input$diff_mode == "normalized")
+    text_a <- if (use_normalized) row_a$fulltext_normalized else row_a$fulltext
+    text_b <- if (use_normalized) row_b$fulltext_normalized else row_b$fulltext
 
-    # Arrange in a responsive grid: 2 columns on wide screens
-    layout_column_wrap(width = 1 / 2, !!!cards)
+    diff_html <- render_diff_html(
+      text_a, text_b,
+      banner_a = row_a$label,
+      banner_b = row_b$label,
+      mode = input$diff_layout
+    )
+
+    if (is.null(diff_html)) {
+      return(tags$p(class = "text-muted", "Could not compute diff (missing text)."))
+    }
+
+    # Check if texts are identical
+    if (identical(trimws(text_a), trimws(text_b))) {
+      note <- if (use_normalized) {
+        "Normalized texts are identical. The hash change may be a bug — try switching to 'Raw fulltext' to see what differs."
+      } else {
+        "Raw texts are identical."
+      }
+      return(tags$div(
+        tags$div(class = "alert alert-info", note),
+        tags$div(class = "diff-container", HTML(diff_html))
+      ))
+    }
+
+    tags$div(class = "diff-container", HTML(diff_html))
   })
 }
 

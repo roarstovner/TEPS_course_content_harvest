@@ -38,6 +38,6 @@ deduplicate_plans <- function(df) {
 
   list(
     plans = plans,
-    courses = dplyr::select(courses, -fulltext_normalized)
+    courses = courses
   )
 }

@@ -7,11 +7,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- Add plan version diff view to course browser app (#86)
 - Deduplicate course plans across years (#38)
 
 ### Fixed
 
 ### Changed
+- Write commit message for diff tab changes (#88)
 - Regenerate data_notes.md after year filtering and samas addition (#78)
 - Re-run dedup pipeline after hivolda re-harvest (#84)
 - Re-investigate Hivolda URL pattern and re-harvest (#63)
