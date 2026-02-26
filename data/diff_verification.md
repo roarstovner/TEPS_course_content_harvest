@@ -101,3 +101,10 @@ Original issues:
 # NMBU
 # SAMAS
 # Steiner
+# UiA
+
+- the fulltext is kind of unreadable. Is everything on one line? Without newlines? If this can be fixed, it should be fixed!
+- EN-157 2020 and 2021 differ only by "Emneansvarlige: Erik Mustad Charles Ivan Armstrong"
+- NO-503 2023 and 2024-2025 differ by "Haust" and "Sist henta frå FS (Felles studentsystem) 23. juli". These are not real changes.
+- PED160 2021 and 2022 differ only by "Emneansvarlige: Adina Marie Nydahl Alexandra Lazareva"
+- REL421 differs only by "Vår" and "Vår, Høst"

@@ -24,6 +24,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 - Update data_notes.md. We must do something else than using the  thing. What about using data_notes.qmd? Then we can keep the code, but its much easier to update manually? (#124)
 - Implement NLA JSON-based multi-year extraction (#113)
+- Verify course plans: uia (#93)
 - Verify course plans: oslomet (#92)
 - Check that samas has course plans only (#85)
 - Write commit message for diff tab changes (#88)
