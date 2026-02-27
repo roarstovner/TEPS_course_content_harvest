@@ -97,8 +97,6 @@ ui <- page_navbar(
         tags$strong("Versions"),
         DTOutput("diff_versions_table", height = "auto"),
         tags$hr(),
-        selectInput("diff_a", "Version A (old)", choices = NULL),
-        selectInput("diff_b", "Version B (new)", choices = NULL),
         radioButtons("diff_mode", "Diff content",
           choices = c("Normalized text" = "normalized", "Raw fulltext" = "raw"),
           selected = "normalized"
@@ -291,66 +289,59 @@ server <- function(input, output, session) {
     )
   }, server = FALSE)
 
-  # ── Diff: update A/B dropdowns when versions change ──
-  observeEvent(diff_versions(), {
-    vers <- diff_versions()
-    if (is.null(vers) || nrow(vers) < 2) {
-      updateSelectInput(session, "diff_a", choices = character(0))
-      updateSelectInput(session, "diff_b", choices = character(0))
-      return()
-    }
-    choices <- setNames(vers$version, vers$label)
-    n <- nrow(vers)
-    updateSelectInput(session, "diff_a", choices = choices, selected = vers$version[n - 1])
-    updateSelectInput(session, "diff_b", choices = choices, selected = vers$version[n])
-  })
-
-  # ── Diff: render diff output ──
+  # ── Diff: render all consecutive diffs (newest pair on top) ──
   output$diff_output <- renderUI({
     vers <- diff_versions()
-    va <- input$diff_a
-    vb <- input$diff_b
-    if (is.null(vers) || is.null(va) || is.null(vb) || va == "" || vb == "") {
+    if (is.null(vers) || nrow(vers) < 2) {
       return(tags$p(class = "text-muted",
         "Select an institution and course code with multiple plan versions."))
     }
-    if (va == vb) {
-      return(tags$p(class = "text-muted", "Version A and B are the same. Pick two different versions."))
-    }
-
-    row_a <- vers[vers$version == va, ]
-    row_b <- vers[vers$version == vb, ]
-    if (nrow(row_a) == 0 || nrow(row_b) == 0) return(NULL)
 
     use_normalized <- (input$diff_mode == "normalized")
-    text_a <- if (use_normalized) row_a$fulltext_normalized else row_a$fulltext
-    text_b <- if (use_normalized) row_b$fulltext_normalized else row_b$fulltext
+    n <- nrow(vers)
 
-    diff_html <- render_diff_html(
-      text_a, text_b,
-      banner_a = row_a$label,
-      banner_b = row_b$label,
-      mode = input$diff_layout
-    )
+    # Build list of diff blocks, newest pair first
+    diff_blocks <- lapply(seq(n, 2), function(i) {
+      row_a <- vers[i - 1, ]
+      row_b <- vers[i, ]
 
-    if (is.null(diff_html)) {
-      return(tags$p(class = "text-muted", "Could not compute diff (missing text)."))
-    }
+      text_a <- if (use_normalized) row_a$fulltext_normalized else row_a$fulltext
+      text_b <- if (use_normalized) row_b$fulltext_normalized else row_b$fulltext
 
-    # Check if texts are identical
-    if (identical(trimws(text_a), trimws(text_b))) {
-      note <- if (use_normalized) {
-        "Normalized texts are identical. The hash change may be a bug — try switching to 'Raw fulltext' to see what differs."
-      } else {
-        "Raw texts are identical."
+      diff_html <- render_diff_html(
+        text_a, text_b,
+        banner_a = row_a$label,
+        banner_b = row_b$label,
+        mode = input$diff_layout
+      )
+
+      if (is.null(diff_html)) {
+        return(tags$div(
+          class = "diff-pair",
+          tags$h5(paste(row_a$label, "vs", row_b$label)),
+          tags$p(class = "text-muted", "Could not compute diff (missing text).")
+        ))
       }
-      return(tags$div(
-        tags$div(class = "alert alert-info", note),
-        tags$div(class = "diff-container", HTML(diff_html))
-      ))
-    }
 
-    tags$div(class = "diff-container", HTML(diff_html))
+      note <- NULL
+      if (identical(trimws(text_a), trimws(text_b))) {
+        note <- if (use_normalized) {
+          tags$div(class = "alert alert-info",
+            "Normalized texts are identical. Try 'Raw fulltext' to see what differs.")
+        } else {
+          tags$div(class = "alert alert-info", "Raw texts are identical.")
+        }
+      }
+
+      tags$div(
+        class = "diff-pair",
+        tags$h5(paste(row_a$label, "vs", row_b$label)),
+        note,
+        tags$div(class = "diff-container", HTML(diff_html))
+      )
+    })
+
+    do.call(tagList, diff_blocks)
   })
 }
 

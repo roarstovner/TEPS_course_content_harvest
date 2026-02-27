@@ -47,8 +47,22 @@
 }
 
 /* Diff tab */
+.diff-pair {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.diff-pair:last-child {
+  border-bottom: none;
+}
+
+.diff-pair h5 {
+  margin-bottom: 0.75rem;
+  color: #495057;
+}
+
 .diff-container {
-  max-height: calc(100vh - 120px);
   overflow: auto;
   font-size: 0.82rem;
 }

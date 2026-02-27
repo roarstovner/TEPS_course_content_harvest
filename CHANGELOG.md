@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- Show all consecutive version diffs stacked vertically in course browser (#111)
 - Add plan version diff view to course browser app (#86)
 - Deduplicate course plans across years (#38)
 
