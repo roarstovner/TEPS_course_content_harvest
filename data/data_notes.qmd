@@ -1,33 +1,58 @@
-# Data Quality Notes
+---
+title: "Data Quality Notes"
+format: gfm
+execute:
+  echo: false
+  warning: false
+---
 
-Generated: 2026-02-24
+```{r}
+#| label: setup
+library(dplyr)
+
+df    <- readRDS("courses_with_plan_id.RDS")
+plans <- readRDS("plan_lookup.RDS")
+
+summary_tbl <- df |>
+  group_by(institution_short) |>
+  summarise(
+    Rows         = n(),
+    Codes        = n_distinct(Emnekode_raw),
+    year_min     = min(Årstall),
+    year_max     = max(Årstall),
+    `Fulltext OK`= sum(!is.na(fulltext) & nchar(fulltext) > 0),
+    has_plan_id  = sum(!is.na(plan_content_id)),
+    `Median chars` = round(median(nchar(fulltext[!is.na(fulltext) & nchar(fulltext) > 0]), na.rm = TRUE)),
+    `Unique plans` = n_distinct(plan_content_id, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  mutate(
+    Years     = ifelse(year_min == year_max, as.character(year_min), paste0(year_min, "-", year_max)),
+    Rate      = sprintf("%.1f%%", `Fulltext OK` / Rows * 100),
+    `Dedup %` = sprintf("%.1f%%", (1 - `Unique plans` / has_plan_id) * 100)
+  ) |>
+  select(Institution = institution_short, Rows, Codes, Years,
+         `Fulltext OK`, Rate, `Median chars`, `Unique plans`, `Dedup %`)
+
+total_rows     <- nrow(df)
+total_fulltext <- sum(!is.na(df$fulltext) & nchar(df$fulltext) > 0)
+total_rate     <- sprintf("%.1f%%", total_fulltext / total_rows * 100)
+total_plans    <- nrow(plans)
+```
+
+Generated: `r Sys.Date()`
 
 ## Overview
 
-| Institution | Rows | Codes | Years | Fulltext OK | Rate | Median chars | Unique plans | Dedup % |
-|------------|-----:|------:|-------|------------:|-----:|-------------:|-------------:|--------:|
-| hiof | 1712 | 240 | 2017-2025 | 846 | 49.4% | 7190 | 826 | 2.4% |
-| hivolda | 1182 | 113 | 2017-2025 | 594 | 50.3% | 4672 | 556 | 6.4% |
-| hvl | 670 | 346 | 2025 | 591 | 88.2% | 4484 | 296 | 49.9% |
-| inn | 2368 | 262 | 2018-2024 | 1282 | 54.1% | 4184 | 542 | 56.7% |
-| mf | 55 | 29 | 2025 | 51 | 92.7% | 4458 | 26 | 49.0% |
-| nih | 184 | 34 | 2021-2025 | 81 | 44.0% | 2341 | 81 | 0.0% |
-| nla | 365 | 189 | 2025 | 365 | 100.0% | 5311 | 189 | 48.2% |
-| nmbu | 29 | 15 | 2025 | 19 | 65.5% | 5787 | 10 | 47.4% |
-| nord | 540 | 294 | 2025 | 540 | 100.0% | 5592 | 294 | 45.6% |
-| ntnu | 5735 | 409 | 2004-2025 | 3791 | 66.1% | 4936 | 1531 | 59.6% |
-| oslomet | 1705 | 179 | 2018-2025 | 1705 | 100.0% | 12226 | 702 | 57.3% |
-| samas | 130 | 68 | 2025 | 128 | 98.5% | 26959 | 6 | 95.3% |
-| steiner | 18 | 18 | 2025 | 15 | 83.3% | 5515 | 15 | 0.0% |
-| uia | 2374 | 237 | 2020-2025 | 1130 | 47.6% | 4406 | 701 | 38.0% |
-| uib | 187 | 99 | 2025 | 177 | 94.7% | 8110 | 94 | 46.9% |
-| uio | 100 | 54 | 2025 | 52 | 52.0% | 3878 | 52 | 0.0% |
-| uis | 353 | 197 | 2025 | 204 | 57.8% | 4109 | 109 | 46.6% |
-| uit | 559 | 286 | 2025 | 545 | 97.5% | 4012 | 267 | 51.0% |
-| usn | 3036 | 401 | 2018-2025 | 1189 | 39.2% | 10600 | 1148 | 3.4% |
-| **Total** | **21302** | | | **13305** | **62.5%** | | **7517** | |
+```{r}
+#| label: summary-table
+knitr::kable(summary_tbl)
+```
+
+**Total**: `r total_rows` rows, `r total_fulltext` with fulltext (`r total_rate`), `r total_plans` unique plans.
 
 **Columns:**
+
 - **Rows**: Total course-semester rows in harvested data (from DBH)
 - **Codes**: Unique course codes (Emnekode_raw)
 - **Fulltext OK**: Rows with successfully extracted course plan text

@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- Replace generate_data_notes.R with data_notes.qmd (#125)
 - Implement UiS PDF harvest for historical course plans (#119)
 - Add multi-year harvesting for HVL using year-specific URL pattern (#115)
 - Add historical course plan harvesting for UiB using start_semester URL parameter (#117)
@@ -20,6 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Update data_notes.md. We must do something else than using the  thing. What about using data_notes.qmd? Then we can keep the code, but its much easier to update manually? (#124)
 - Implement NLA JSON-based multi-year extraction (#113)
 - Verify course plans: oslomet (#92)
 - Check that samas has course plans only (#85)
