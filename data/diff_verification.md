@@ -89,7 +89,8 @@ The diff is bad. Hash picks up non-changes.
 
 # USN
 
-
+- fulltexts looks good, but they do contain all the literature assigned in the course 
+- 
 
 # UIT
 # NMBU

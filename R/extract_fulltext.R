@@ -145,6 +145,90 @@ extract_nla_json <- function(raw_html, academic_year) {
   paste(parts, collapse = "\n\n")
 }
 
+#' Parse UiS semester dropdown to discover available years and their URLs
+#'
+#' @param raw_html Character string of the base course page HTML
+#' @return A tibble with columns: label, url, type ('html' or 'pdf'), year (integer)
+.parse_uis_semester_dropdown <- function(raw_html) {
+  if (is.na(raw_html) || !nzchar(raw_html)) {
+    return(tibble::tibble(label = character(), url = character(),
+                          type = character(), year = integer()))
+  }
+
+  doc <- rvest::read_html(raw_html)
+  sel <- rvest::html_element(doc, "select#fs-semester-select")
+  if (length(sel) == 0) {
+    return(tibble::tibble(label = character(), url = character(),
+                          type = character(), year = integer()))
+  }
+
+  options <- rvest::html_elements(sel, "option")
+  if (length(options) == 0) {
+    return(tibble::tibble(label = character(), url = character(),
+                          type = character(), year = integer()))
+  }
+
+  values <- rvest::html_attr(options, "value")
+  labels <- trimws(rvest::html_text(options))
+
+  # Determine type: absolute URLs starting with http are PDFs, relative are HTML
+  type <- dplyr::if_else(grepl("^https?://", values), "pdf", "html")
+
+  # For HTML options, prepend base URL
+  urls <- dplyr::if_else(
+    type == "html",
+    paste0("https://www.uis.no", values),
+    values
+  )
+
+  # Extract year from label: "2025 - 2026" → 2025 (autumn start year)
+  year <- as.integer(stringr::str_extract(labels, "^\\d{4}"))
+
+  # Parse data-older JSON for even older entries
+  older_json <- rvest::html_attr(sel, "data-older")
+  if (!is.na(older_json) && older_json != "[]" && nzchar(older_json)) {
+    older <- jsonlite::fromJSON(older_json, simplifyDataFrame = FALSE)
+    if (length(older) > 0) {
+      older_labels <- purrr::map_chr(older, "label", .default = NA_character_)
+      older_urls   <- purrr::map_chr(older, "url", .default = NA_character_)
+      older_years  <- as.integer(stringr::str_extract(older_labels, "^\\d{4}"))
+      older_type   <- rep("pdf", length(older))
+
+      labels <- c(labels, older_labels)
+      urls   <- c(urls, older_urls)
+      type   <- c(type, older_type)
+      year   <- c(year, older_years)
+    }
+  }
+
+  tibble::tibble(label = labels, url = urls, type = type, year = year)
+}
+
+#' Extract text from a PDF file
+#'
+#' @param pdf_raw Raw bytes of a PDF file (from httr2 response body)
+#' @return Character string of extracted text
+extract_fulltext_pdf <- function(pdf_raw) {
+  safe <- purrr::possibly(.extract_fulltext_pdf_one, otherwise = NA_character_)
+  purrr::map_chr(pdf_raw, safe)
+}
+
+.extract_fulltext_pdf_one <- function(pdf_raw) {
+  if (is.null(pdf_raw) || length(pdf_raw) == 0) return(NA_character_)
+
+  tmp <- tempfile(fileext = ".pdf")
+  on.exit(unlink(tmp), add = TRUE)
+  writeBin(pdf_raw, tmp)
+
+  pages <- pdftools::pdf_text(tmp)
+  if (length(pages) == 0) return(NA_character_)
+
+  txt <- paste(pages, collapse = "\n")
+  txt <- stringr::str_replace_all(txt, "\\n{3,}", "\n\n")
+  txt <- stringr::str_trim(txt)
+  if (!nzchar(txt)) NA_character_ else txt
+}
+
 .cleanup_usn_text <- function(raw_html) {
   raw_html |>
     stringr::str_remove_all("keyboard_backspace") |>
