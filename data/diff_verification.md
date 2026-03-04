@@ -34,3 +34,64 @@ The diff is bad. Hash picks up non-changes.
 
 - There's a table at the bottom of many pages. It shows the cells squashed rowwise "VurderingsformGrupperingVarighetKarakterskalaAndelKommentarHjelpemidlerOmfangOppgaveIndividuellA" Is it possible to retrieve the table structure in the fulltext?
 - In MGL1-7PRO-1, you have both "Emneansvarlig:" and "Godkjent av:" that counts towards the diffs. Changes in Emneansvarlig is not a change in the course plan. 
+
+# HiOF
+
+- fulltexts have "Sist hentet fra FS (Felles studentsystem) DD. mmm. YYYY" at the end of all course texts. This should be deleted. I think this is a problem with many of the institutions? Inventigate.
+- Litteraturlister shows in fulltext. This should be part of data_notes.md, and should possibly be noted for every institution.
+- Diff LMBKHV10217 2023-2024 vs 2025: The diff is whether each section has a space after or not. "Kunnskap Studenten har kunnskap om [...]" vs "KunnskapStudenten har kunnskap om [...]"
+- Diff LMBKHV10217 2020 vs 2021: Same. The diff is whether each section has a space after or not. "Kunnskap Kandidaten har kunnskap om [...]" vs "KunnskapKandidaten har kunnskap om [...]"
+- LMUFRA11221, 2023 vs 2024: "Emneansvarlig: Anje Müller Gjesdal" is part of the diff.
+- LMUKRLE10321: The space after each section "Kunnskap"/"Ferdigheter"/"Kompetanse" is here as well.
+
+# HVL
+
+- fulltext only has 2025 courses. Is this correct? Should it not have *any* 2024 courses? I think only the last version of the course plan is available on the website, but this still seems almost strange.
+- What? There seems to be an easy URL pattern for older courses. See here: `https://www.hvl.no/studier/studieprogram/emne/2023/lupeki302` We probably should harvest a lot more HVL-plans!
+- Could not compare Diffs. Fulltexts look OK.
+
+# MF
+
+- fulltexts look good
+- diffs NA, because only 2025 is harvestable.
+
+# NLA
+
+- fulltexts look good
+- But there is a simple html pattern to retrieve older years! `https://www.nla.no/for-studenter/Studie-%20og%20emneplaner/emneplan/4MGL1ENG101/2023-2024`. We should harvest them!
+
+# NORD
+
+- fulltexts look good.
+- There's a simple URL pattern to harvest earlier years! `https://www.nord.no/studier/emner/smi5004?year=2023&semester=H%C3%98ST`
+
+# NIH
+
+- fulltexts look good
+- diffs look good
+
+# UIB
+
+- fulltexts look good
+- UiB only had data from 2025. Now using `?start_semester={YEAR}{H|V}` parameter for historical plans.
+  - https://www4.uib.no/studier/emner/realdi110?start_semester=2024H
+  - https://www4.uib.no/studier/emner/realdi110?start_semester=2025V
+- RESOLVED: URL builder updated to include year+semester, harvest script no longer filters to latest year only.
+
+# UIO
+
+- fulltexts look good
+- diffs nonexsistent because it's a "2025 only" course.
+
+# UIS
+
+- old course descriptions are available as pdf `https://www6.uis.no/Stine/EMNE/2024/H%C3%98ST/Bokm%C3%A5l/MHI330_1.pdf` using the following URL format. I'm not sure what the suffix "_1" means. We should try to harvest these course plans. Must use a pdf to text converter and temporarily store pdfs, probably.
+
+# USN
+
+
+
+# UIT
+# NMBU
+# SAMAS
+# Steiner

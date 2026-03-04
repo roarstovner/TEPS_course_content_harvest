@@ -10,7 +10,7 @@
     hvl      = ".l-2-col__main-content",
     hivolda  = "article.content-emweb",
     mf       = "main",
-    nla      = ".page-course-plan",
+
     nih      = ".fs-body",
     nmbu     = ".layout",
     hiof     = "#vrtx-fs-emne-content, main .entry-content, .entry-content",
@@ -37,9 +37,7 @@ extract_fulltext <- function(institution_short, raw_html) {
     if (inst == "usn") return(.cleanup_usn_text(html))
 
     if (inst %in% names(.selectors$single)) {
-      txt <- safe_extract_one(html, .selectors$single[[inst]])
-      if (inst == "nla" && !is.na(txt)) txt <- .pre_nla(txt)
-      txt
+      safe_extract_one(html, .selectors$single[[inst]])
     } else if (inst %in% names(.selectors$many)) {
       txt <- safe_extract_many(html, .selectors$many[[inst]])
       if (inst == "uit" && !is.na(txt)) txt <- .pre_uit(txt)
@@ -71,22 +69,80 @@ extract_fulltext <- function(institution_short, raw_html) {
   paste(txt, collapse = "\n")
 }
 
-.pre_nla <- function(txt) {
-  # Strip year dropdown: "Vis for år\n2025 — 20262024 — 2025...\n"
-  txt <- stringr::str_remove(txt, "Vis for år\\n(?:\\d{4} — \\d{4})+\\n")
-  # Strip "Last ned PDF" line
-  txt <- stringr::str_remove(txt, "Last ned PDF\\n")
-  # Truncate at "Digital litteraturliste" (removes link text + repeated year content)
-  txt <- stringr::str_remove(txt, "(?s)Digital litteraturliste.*$")
-  # Remove repeated year content: first "Evaluering av emnet" section + everything after
-  txt <- stringr::str_remove(txt, "(?s)Evaluering av emnet\\n.+?Ekspander alle.*$")
-  stringr::str_trim(txt)
-}
 
 .pre_uit <- function(txt) {
   # Strip "Error rendering component" artifact from broken UI widget
   txt <- stringr::str_remove(txt, "(?s)Error rendering component.*$")
   stringr::str_trim(txt)
+}
+
+extract_nla_json <- function(raw_html, academic_year) {
+  safe <- purrr::possibly(.extract_nla_json_one, otherwise = NA_character_)
+  purrr::map2_chr(raw_html, academic_year, safe)
+}
+
+.extract_nla_json_one <- function(raw_html, academic_year) {
+  if (is.na(raw_html) || !nzchar(raw_html)) return(NA_character_)
+  if (is.na(academic_year)) return(NA_character_)
+
+  doc <- rvest::read_html(raw_html)
+  scripts <- rvest::html_elements(doc, "script")
+  script_texts <- rvest::html_text(scripts)
+
+  idx <- grep("EmneplanPage", script_texts, fixed = TRUE)
+  if (length(idx) == 0) return(NA_character_)
+
+  script_text <- script_texts[idx[1]]
+
+  # Extract the JSON object from the script tag
+  json_match <- regmatches(script_text, regexpr("\\{.*\\}", script_text))
+  if (length(json_match) == 0) return(NA_character_)
+
+  parsed <- jsonlite::fromJSON(json_match, simplifyVector = FALSE)
+  items <- parsed$props$items
+  if (is.null(items)) return(NA_character_)
+
+  year_data <- items[[academic_year]]
+  if (is.null(year_data)) return(NA_character_)
+
+  parts <- character()
+
+  # Extract title
+  if (!is.null(year_data$title) && nzchar(year_data$title)) {
+    parts <- c(parts, year_data$title)
+  }
+
+  # Extract table items: "title: content" lines
+  if (!is.null(year_data$table)) {
+    for (item in year_data$table) {
+      if (!is.null(item$title) && !is.null(item$content) && nzchar(item$content)) {
+        parts <- c(parts, paste0(item$title, ": ", item$content))
+      }
+    }
+  }
+
+  # Extract accordion items: title + html_text of content
+  if (!is.null(year_data$accordions)) {
+    for (item in year_data$accordions) {
+      section_parts <- character()
+      if (!is.null(item$title) && nzchar(item$title)) {
+        section_parts <- c(section_parts, item$title)
+      }
+      if (!is.null(item$content) && nzchar(item$content)) {
+        content_doc <- rvest::read_html(paste0("<div>", item$content, "</div>"))
+        content_text <- rvest::html_text2(rvest::html_element(content_doc, "div"))
+        if (!is.na(content_text) && nzchar(content_text)) {
+          section_parts <- c(section_parts, content_text)
+        }
+      }
+      if (length(section_parts) > 0) {
+        parts <- c(parts, paste(section_parts, collapse = "\n"))
+      }
+    }
+  }
+
+  if (length(parts) == 0) return(NA_character_)
+  paste(parts, collapse = "\n\n")
 }
 
 .cleanup_usn_text <- function(raw_html) {

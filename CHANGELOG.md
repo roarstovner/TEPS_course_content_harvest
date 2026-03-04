@@ -7,6 +7,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- Add multi-year harvesting for HVL using year-specific URL pattern (#115)
+- Add historical course plan harvesting for UiB using start_semester URL parameter (#117)
+- Add year-specific URL patterns for NLA, NORD harvesting (#112)
 - Show all consecutive version diffs stacked vertically in course browser (#111)
 - Add plan version diff view to course browser app (#86)
 - Deduplicate course plans across years (#38)
@@ -16,6 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Implement NLA JSON-based multi-year extraction (#113)
 - Verify course plans: oslomet (#92)
 - Check that samas has course plans only (#85)
 - Write commit message for diff tab changes (#88)

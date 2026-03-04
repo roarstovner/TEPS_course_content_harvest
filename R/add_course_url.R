@@ -11,15 +11,15 @@ add_course_url <- function(df) {
 
         "hivolda" ~ NA_character_,  # Hivolda requires URL discovery via resolve_course_urls()
         "hiof"    ~ add_course_url_hiof(Emnekode, Årstall, Semesternavn),
-        "hvl"     ~ add_course_url_hvl(Emnekode),
+        "hvl"     ~ add_course_url_hvl(Emnekode, Årstall),
 
         "mf"      ~ add_course_url_mf(Emnekode),
         "nla"     ~ add_course_url_nla(Emnekode),
 
-        "nord"    ~ add_course_url_nord(Emnekode),
+        "nord"    ~ add_course_url_nord(Emnekode, Årstall, Semesternavn),
         "nih"     ~ add_course_url_nih(Emnekode, Årstall, Semesternavn),
 
-        "uib"     ~ add_course_url_uib(Emnekode),
+        "uib"     ~ add_course_url_uib(Emnekode, Årstall, Semesternavn),
         "uio"     ~ add_course_url_uio(Emnekode, Avdelingsnavn),
         "uis"     ~ add_course_url_uis(Emnekode_raw),
         "usn"     ~ NA_character_,  # USN requires version discovery via resolve_course_urls()
@@ -43,16 +43,20 @@ add_course_url_uit <- function(course_code) {
   glue::glue("https://uit.no/utdanning/aktivt/emne/{toupper(course_code)}")
 }
 
-add_course_url_uib <- function(course_code) {
-  glue::glue("https://www4.uib.no/studier/emner/{tolower(course_code)}")
+add_course_url_uib <- function(course_code, year, semester) {
+  sem_code <- dplyr::case_match(semester, "Vår" ~ "V", "Høst" ~ "H", .default = "H")
+  glue::glue("https://www4.uib.no/studier/emner/{tolower(course_code)}?start_semester={year}{sem_code}")
 }
 
-add_course_url_nord <- function(course_code) {
-  glue::glue("https://www.nord.no/studier/emner/{tolower(course_code)}")
+add_course_url_nord <- function(course_code, year, semester) {
+  # NORD uses academic years starting in autumn (HOEST).
+  # Spring courses belong to the previous autumn's academic year.
+  url_year <- dplyr::if_else(semester == "Vår", year - 1L, year)
+  glue::glue("https://www.nord.no/studier/emner/{tolower(course_code)}?year={url_year}&semester=HOEST")
 }
 
-add_course_url_hvl <- function(course_code) {
-  glue::glue("https://www.hvl.no/studier/studieprogram/emne/{course_code}")
+add_course_url_hvl <- function(course_code, year) {
+  glue::glue("https://www.hvl.no/studier/studieprogram/emne/{year}/{course_code}")
 }
 
 add_course_url_hiof <- function(course_code, year, semester) {

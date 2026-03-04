@@ -31,9 +31,6 @@ selectors:
     fulltext: "main"
     course_name_no: "h1"
 
-  nla:
-    fulltext: ".page-course-plan"
-    course_name_no: "h1"
 
   nord:
     fulltext: "#ac-trigger-0 , #ac-trigger-1 , #ac-trigger-5 , #ac-trigger-8 , #ac-trigger-6 , #ac-trigger-7 , #ac-trigger-2 , #ac-trigger-4 , #ac-trigger-3 , .ac-panel--inner , #ac-panel-2 .field__item , #ac-panel-0 li , p , .placeholder-text"

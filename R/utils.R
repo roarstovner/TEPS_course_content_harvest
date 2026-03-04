@@ -12,6 +12,13 @@ canon_semester_name <- function(semester_name) {
   )
 }
 
+nla_academic_year <- function(year, semester) {
+  dplyr::case_match(semester,
+    "Høst" ~ paste0(year, "-", year + 1),
+    "Vår"  ~ paste0(year - 1, "-", year)
+  )
+}
+
 semester_to_url <- function(semester) {
   dplyr::case_match(semester,
     "Vår"  ~ "var",

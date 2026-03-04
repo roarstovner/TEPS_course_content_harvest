@@ -9,7 +9,7 @@ source("R/checkpoint.R")
 courses <- readRDS("data/courses.RDS")
 
 df <- courses |>
-  filter(institution_short == "uib", Årstall == max(Årstall)) |>
+  filter(institution_short == "uib") |>
   add_course_id() |>
   validate_courses("initial") |>
   add_course_url() |>
