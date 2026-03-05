@@ -9,10 +9,10 @@
   courses <- readRDS("data/courses.RDS")
 
   # Institutions ready to harvest (validated pipelines)
-  harvest_list <- c("nord", "nih", "uib", "uit", "inn", "hvl", "mf", "hiof", "hivolda")
+  harvest_list <- c("uit") #c("nord", "nih", "uib", "uit", "inn", "hvl", "mf", "hiof", "hivolda")
 
   # Institutions whose URLs have no year component — current content only
-  no_year_insts <- c("uit", "mf")
+  no_year_insts <- c("mf")
 
   for (inst in harvest_list) {
     message("=== Starting: ", inst, " ===")

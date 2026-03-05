@@ -95,10 +95,25 @@ Original issues:
 # USN
 
 - fulltexts looks good, but they do contain all the literature assigned in the course 
-- 
+- HI-MOD4000, 2018 V 2019: "høst" and "vår" shows up as diff and probably should not? 
+- LDKH102, 2024 vs 2025: "Kunnskap" and "KUNNSKAP" shows up as diff and probably should not. Same with other headings "Ferdigheter"/"FERDIGHETER", "Generell kompetanse:"/"GENERELL KOMPETANSE"
+- LH-HID4000-1 2021 VS 2022: Diff "Vår21" and "Vår22". Also "Deltakelse/Obligatoriske arbeidskrav"/"Obligatorisk aktivitet og krav til tilstedeværelse" seems to be a heading that changes between many course plans at this time?
+- MG1KR3 2024 VS 2025: Vurderingsformer"/"Eksamensformer" seems to be a change that's unrelated to the course plan.
+- VG1MA6 2023 VS 2024: "Høst23"/"Høst24" probably should not be a diff. It's in the assigned readings.
 
 # UIT
+
+- fulltexts look good.
+- only 2025 years. But there is a "gammeltemne" url pattern: https://uit.no/utdanning/emner/gammeltemne?p_document_id=619810&ar=2020&semester=V. This works when I type 2020, because it says "VÅR 2020" in the heading. If I change the URL to ar=2019 or ar=2021, it doesn't update. Other URLs to test with:
+  - https://uit.no/utdanning/emner/gammeltemne?p_document_id=330720&ar=2013&semester=H
+  - the web page for accessing older urls. Just change the year. (This works in the browser.) https://uit.no/utdanning/emner?ar=2014&semester=H&p_fagkode=36488,37903 The fagkode just filters the school and kindergarten teacher courses.
+
 # NMBU
+
+- fulltexts look good.
+- NMBU is genuinely a one year only institution
+- Note that the "emneansvarlig" is mentioned in the text, so this must be handled during deduplication
+
 # SAMAS
 # Steiner
 # UiA

@@ -3,6 +3,7 @@
 .RData
 .Ruserdata
 Rprof.out
+.Renviron
 
 # RStudio project settings
 .Rproj.user/

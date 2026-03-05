@@ -23,7 +23,7 @@ add_course_url <- function(df) {
         "uio"     ~ add_course_url_uio(Emnekode, Avdelingsnavn),
         "uis"     ~ add_course_url_uis(Emnekode_raw),
         "usn"     ~ NA_character_,  # USN requires version discovery via resolve_course_urls()
-        "uit"     ~ add_course_url_uit(Emnekode),
+        "uit"     ~ NA_character_,  # UiT requires document ID discovery via resolve_course_urls()
         "nmbu"    ~ add_course_url_nmbu(Emnekode),
 
         .default  = NA_character_
@@ -39,9 +39,8 @@ add_course_url_uia <- function(course_code, year, semester) {
   glue::glue("https://www.uia.no/studier/emner/{year}/{semester_to_url(semester)}/{tolower(course_code)}.html")
 }
 
-add_course_url_uit <- function(course_code) {
-  glue::glue("https://uit.no/utdanning/aktivt/emne/{toupper(course_code)}")
-}
+# UiT URL generation removed - requires document ID discovery via resolve_course_urls()
+# Active page /utdanning/aktivt/emne/{CODE} has a <select> dropdown with historical document IDs
 
 add_course_url_uib <- function(course_code, year, semester) {
   sem_code <- dplyr::case_match(semester, "Vår" ~ "V", "Høst" ~ "H", .default = "H")

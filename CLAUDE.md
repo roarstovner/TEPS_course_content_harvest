@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is an R-based web scraping pipeline that harvests course descriptions from Norwegian higher education institutions. It takes course metadata (institution, course code, year, semester) and produces structured data with URLs, HTML, and extracted text from institutional course webpages.
 
 **Input:** Course metadata from `data/courses.RDS` (typically sourced from DBH database via rdbhapi)
-**Output:** Same data with added `url`, `html`, and `fulltext` columns
+**Output:** Same data with added `url`, `html`, and `fulltext` columns (plus `fulltext_no` for non-Norwegian institutions like Samas)
 
 ## Core Pipeline Architecture
 
@@ -233,6 +233,22 @@ The function uses JavaScript to recursively traverse shadow roots and extract te
 
 **Session reuse optimization**: `resolve_urls_usn_batch()` reuses a single Chrome session for all URL validations by navigating via hash changes (`window.location.hash = '#/emne/...'`) instead of creating new sessions per URL. This is much faster since Chrome startup (~2-3s) is avoided for each URL.
 
+### UiT
+- **Requires document ID discovery** - historical course plans use `p_document_id` parameter
+- Active page (`/utdanning/aktivt/emne/{CODE}`) has a `<select>` dropdown listing all semesters with document IDs
+- Option text format: `{CODE}: H 2020` or `{CODE}: V 2021` (H=Høst, V=Vår)
+- Historical URL pattern: `https://uit.no/utdanning/emner/emne?p_document_id={ID}`
+- Discontinued courses (status 3/4) still have working active pages with dropdowns
+- Same CSS selector works for both active and historical pages
+- Uses standard harvest pipeline in `run_harvest.R` (with `resolve_course_urls()` for URL discovery)
+
+### Samas (Sámi University)
+- Course plans are in Sami (North/Lule/South Sami), not Norwegian
+- `fulltext` contains the original Sami text; `fulltext_no` contains the Norwegian translation
+- Translation is a separate post-harvest step using `R/translate_samas.R`
+- Uses `ellmer::batch_chat_text()` with Anthropic Claude Sonnet for cost-effective batch translation
+- Batch checkpoint stored in `data/checkpoint/samas_translation_batch.json`
+
 ### Institutions with Multiple CSS Selectors
 Some institutions (nord, uib, uis, usn) need `.extract_many()` to capture content from multiple elements because course info is spread across accordions or sections.
 
@@ -248,6 +264,7 @@ R/
 ├── resolve_course_urls.R  # URL discovery for institutions needing trial-and-error
 ├── fetch_html_cols.R      # HTML downloading with httr2
 ├── extract_fulltext.R     # CSS selector-based text extraction
+├── translate_samas.R      # Sami→Norwegian translation via ellmer + Anthropic batch API
 ├── checkpoint.R           # Checkpoint read/write/resume logic
 └── generate_data_notes.R  # (deprecated, replaced by data/data_notes.qmd)
 
@@ -264,7 +281,8 @@ data/
 ├── data_notes.md          # Data quality documentation (rendered from data_notes.qmd)
 └── checkpoint/
     ├── html_{inst}.RDS    # HTML fetch checkpoints
-    └── usn_urls.RDS       # USN URL discovery checkpoint
+    ├── usn_urls.RDS       # USN URL discovery checkpoint
+    └── samas_translation_batch.json  # Anthropic batch API state for Samas translations
 
 data-raw/
 └── courses.R              # Script to create courses.RDS
