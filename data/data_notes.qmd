@@ -186,11 +186,10 @@ Low dedup (<10%) means most rows have genuinely different content, typically bec
 
 - **New institution, added 2026-02-16** (see #69-#72)
 - **Filtered to 2025 only**
-- Course plans are published as PDFs (labeled "Oahppoplána") linked from course pages at `samas.no/se/oahput`
-- Text extracted with `pdftools::pdf_text()`, not HTML scraping
-- 128/130 rows with fulltext (98.5%). 2 courses (PED-6501, SAAL 2) had no PDF on their pages
-- Very high dedup (95.3%) with only 6 unique plans — multiple course codes share the same PDF document (program-level plans covering several courses)
-- Highest median content (26,959 chars) because PDFs contain full program plans
+- **0% fulltext rate**: No reliable matching between DBH course codes and website course codes (see #85, #89, #90)
+- Samas publishes course plans as PDFs ("Oahppoplána") at `samas.no/se/oahput`, but the website uses its own codes (SÁM-1005, DUO-1014, SER 103) that do NOT correspond to DBH codes (V1SAM-1100-1, V1DUO-1140-1, etc.)
+- ~98% of DBH rows are V1/V5 teacher education courses. These only appear in program-level PDFs ("PROGRÁMMAPLÁNA") that list course names and credits but contain no per-course descriptions
+- Individual course plan PDFs exist on the website for standalone courses, but none match any DBH course codes in the data
 
 ---
 

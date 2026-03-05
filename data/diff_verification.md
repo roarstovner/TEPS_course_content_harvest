@@ -1,13 +1,18 @@
 # OsloMet
 
-The diff is bad. Hash picks up non-changes.
+**FIXED** (2026-02-26): Added `.pre_oslomet()` normalization in `R/normalize_plan_text.R`:
+- Replaced semicolons (`;` → ` `) — OsloMet 2022 pages used semicolons as section separators, causing false diffs with other years. Replace (not remove) to avoid concatenating words that had no surrounding space.
+- Stripped uppercase `\bVÅR\b` and `\bHØST\b` — appear as column headers in pensum tables and semester tags in course listings, not substantive plan content.
 
+Verified fixes: M1GBO4100 (2021=2022 ✓), M1GEN2100 (2021=2022 ✓), M5GPE5100 (2021-2025 all same ✓), MGVM4100 (2020-2022 same, 2023-2025 same ✓).
+
+Original issues:
 - M1GBO4100: the diff between 2021 and 2022 is mainly (only?) semicolons appearing in 2022.
 - M1GEN2100 differs only with semicolons between 2022 and 2023.
 - M1GEN2100 differs by semicolons between 2021 and 2022 AND by changing VÅR to HØST. Is the latter a real change? I'd say no.
 - M5GPE5100 is special, as it has v1 spanning 2021-2025 and v2 only for 2022. What gives? It's the semicolons again. Seems to be something happening in 2022.
-- MAMUS4100 shouldn't be in the data at all. Is it reported wrong in FS, that is, courses.RDS has it in the wrong study program?
-- MGNA4100 has the semicolon problem before and after 2022, 2021 -> 2022 -> 2023
+- MAMUS4100 shouldn't be in the data at all. Is it reported wrong in FS, that is, courses.RDS has it in the wrong study program? (OPEN: appears in courses.RDS under two OsloMet institutes)
+- MGNA4100 has the semicolon problem before and after 2022, 2021 -> 2022 -> 2023 (remaining diffs appear to be real content changes)
 - MGVM4100 differs only in VÅR and HØST between v4 2023-2025 and v5 2024. The 2022 semicolon problems are present here as well.
 
 # NTNU

@@ -134,7 +134,16 @@ build_plan_id <- function(normalized_text, .progress = "Building plan IDs") {
 .pre_oslomet <- function(txt) {
   # Filter error pages as NA
   if (grepl("Siden du leter etter finnes ikke", txt, fixed = TRUE)) return(NA_character_)
-  txt
+
+  txt |>
+    # Replace semicolons with spaces - OsloMet 2022 pages used semicolons as
+    # section separators, causing false diffs with other years. Replace (not
+    # remove) to avoid concatenating words that had no surrounding space.
+    stringr::str_replace_all(";", " ") |>
+    # Strip uppercase VÅR/HØST - appear as column headers in pensum tables and
+    # semester tags in course listings (e.g. "( VÅR )"), not substantive content.
+    stringr::str_remove_all("\\bVÅR\\b") |>
+    stringr::str_remove_all("\\bHØST\\b")
 }
 
 .pre_mf <- function(txt) {

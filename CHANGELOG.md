@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Deduplicate course plans across years (#38)
 
 ### Fixed
+- Fix false diffs in dedup pipeline: OsloMet semicolons and VÅR/HØST normalization (#112)
 - Fix samas course plan matching: subject-based matching assigns wrong course plans (#90)
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
