@@ -21,7 +21,7 @@ Rprof.out
 meetings/
 writing/
 data/checkpoint/
-data/html_*.RDS
+data/*.RDS
 data/data_notes.html
 data/data_notes_files/
 archive/
