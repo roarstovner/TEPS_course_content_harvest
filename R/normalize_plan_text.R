@@ -173,11 +173,12 @@ build_plan_id <- function(normalized_text, .progress = "Building plan IDs") {
     # Remove times HH:MM(:SS)
     stringr::str_remove_all("\\b\\d{1,2}:\\d{2}(?::\\d{2})?\\b") |>
     # Remove "Emneansvarlig(e): Name" (captures name up to next known heading)
-    stringr::str_remove_all("Emneansvarlige?:?\\s*[A-ZÆØÅ][a-zæøåA-ZÆØÅ .,-]+(?=\\s+(?:Undervisning|Varighet|Studiepoeng|Semester|Faglærer|Ansvarlig|$))") |>
+    # Use \\p{L} (Unicode letter) to match accented names like Müller, Gjesdal
+    stringr::str_remove_all("Emneansvarlige?:?\\s*\\p{Lu}[\\p{L} .,-]+(?=\\s+(?:Undervisning|Varighet|Studiepoeng|Semester|Faglærer|Ansvarlig|$))") |>
     # Remove "Faglærer(e): Name" (same approach)
-    stringr::str_remove_all("Faglærer[e]?:?\\s*[A-ZÆØÅ][a-zæøåA-ZÆØÅ .,-]+(?=\\s+(?:Undervisning|Varighet|Studiepoeng|Semester|Ansvarlig|$))") |>
+    stringr::str_remove_all("Faglærer[e]?:?\\s*\\p{Lu}[\\p{L} .,-]+(?=\\s+(?:Undervisning|Varighet|Studiepoeng|Semester|Ansvarlig|$))") |>
     # Remove "Godkjent av: Name" (same approach)
-    stringr::str_remove_all("Godkjent av:?\\s*[A-ZÆØÅ][a-zæøåA-ZÆØÅ .,-]+(?=\\s+(?:Undervisning|Varighet|Studiepoeng|Semester|Kunnskap|Læringsutbytte|Ansvarlig|$))") |>
+    stringr::str_remove_all("Godkjent av:?\\s*\\p{Lu}[\\p{L} .,-]+(?=\\s+(?:Undervisning|Varighet|Studiepoeng|Semester|Kunnskap|Læringsutbytte|Ansvarlig|$))") |>
     # Remove JS artifacts
     stringr::str_remove_all("function\\s*\\([^)]*\\)\\s*\\{[^}]*\\}") |>
     stringr::str_remove_all("\\$\\([^)]+\\)\\.[^;]+;") |>

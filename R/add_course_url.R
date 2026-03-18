@@ -14,7 +14,7 @@ add_course_url <- function(df) {
         "hvl"     ~ add_course_url_hvl(Emnekode, Årstall),
 
         "mf"      ~ add_course_url_mf(Emnekode),
-        "nla"     ~ add_course_url_nla(Emnekode),
+        "nla"     ~ add_course_url_nla(Emnekode, Årstall, Semesternavn),
 
         "nord"    ~ add_course_url_nord(Emnekode, Årstall, Semesternavn),
         "nih"     ~ add_course_url_nih(Emnekode, Årstall, Semesternavn),
@@ -121,8 +121,11 @@ add_course_url_mf <- function(course_code) {
   glue::glue("https://mf.no/studier/emner/{tolower(course_code)}")
 }
 
-add_course_url_nla <- function(course_code) {
-  glue::glue("https://www.nla.no/for-studenter/Studie-%20og%20emneplaner/emneplan/{course_code}")
+add_course_url_nla <- function(course_code, year, semester) {
+  # NLA uses academic year ranges: Autumn 2023 → 2023-2024, Spring 2024 → 2023-2024
+  start_year <- dplyr::if_else(semester == "Vår", year - 1L, year)
+  end_year <- start_year + 1L
+  glue::glue("https://www.nla.no/for-studenter/Studie-%20og%20emneplaner/emneplan/{course_code}/{start_year}-{end_year}")
 }
 
 add_course_url_nih <- function(course_code, year, semester) {

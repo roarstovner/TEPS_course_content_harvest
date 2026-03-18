@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- NLA: Harvest historical course plans using year-based URL pattern (#125)
+- HVL: Harvest historical course plans using year-based URL pattern (#124)
 - Failed to translate Samas course plans from Sami to Norwegian using ellmer + Anthropic (#114)
 - Replace generate_data_notes.R with data_notes.qmd (#125)
 - Implement UiS PDF harvest for historical course plans (#119)
@@ -18,12 +20,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Deduplicate course plans across years (#38)
 
 ### Fixed
+- Fix Emneansvarlig regex for non-ASCII names (ü, é, etc.) (#116)
 - Fix issues discovered during course plan diff verification (#111)
 - Fix false diffs in dedup pipeline: OsloMet semicolons and VÅR/HØST normalization (#112)
 - Fix samas course plan matching: subject-based matching assigns wrong course plans (#90)
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Commit normalization fixes and rerun dedup pipeline (#115)
 - Harvest historical UiT course plans via document ID discovery (#113)
 - Verify course plans for all institutions (#91)
 - Update data_notes.md. We must do something else than using the  thing. What about using data_notes.qmd? Then we can keep the code, but its much easier to update manually? (#124)

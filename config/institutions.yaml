@@ -49,7 +49,7 @@ institutions:
     semester_style: "hiof"
 
   hvl:
-    url_pattern: "https://www.hvl.no/studier/studieprogram/emne/{code_upper_nodashnum}"
+    url_pattern: "https://www.hvl.no/studier/studieprogram/emne/{year}/{code_upper_nodashnum}"
     semester_style: "plain"
 
   mf:
@@ -57,8 +57,8 @@ institutions:
     semester_style: "plain"
 
   nla:
-    url_pattern: "https://www.nla.no/studietilbud/emner/{year}/{code_lower_nodashnum}/"
-    semester_style: "plain"
+    url_pattern: "https://www.nla.no/for-studenter/Studie-%20og%20emneplaner/emneplan/{course_code}/{academic_year}"
+    semester_style: "nla"
 
   nord:
     url_pattern: "https://www.nord.no/studier/emner/{code_lower_nodashnum}?year={url_year}&semester=HOEST"
