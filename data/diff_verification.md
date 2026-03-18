@@ -106,6 +106,7 @@ Original issues:
   - **FIXED** (2026-03-18): Generic `tolower()` added to normalization pipeline.
 - LH-HID4000-1 2021 VS 2022: Diff "Vår21" and "Vår22". Also "Deltakelse/Obligatoriske arbeidskrav"/"Obligatorisk aktivitet og krav til tilstedeværelse" seems to be a heading that changes between many course plans at this time?
 - MG1KR3 2024 VS 2025: Vurderingsformer"/"Eksamensformer" seems to be a change that's unrelated to the course plan.
+  - **FIXED** (2026-03-18): Template-wide USN rename in 2025 (170/170 courses used "Vurderingsformer" in 2024, 180/180 use "Eksamensformer" in 2025). Generic normalization now maps "eksamensformer" → "vurderingsformer".
 - VG1MA6 2023 VS 2024: "Høst23"/"Høst24" probably should not be a diff. It's in the assigned readings.
   - **FIXED** (2026-03-18): Generic 2-digit season+year removal (e.g. "Høst23") added to normalization.
 

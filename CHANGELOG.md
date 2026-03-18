@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Deduplicate course plans across years (#38)
 
 ### Fixed
+- UiA: Fulltext unreadable — everything on one line? (#120)
 - Fix Emneansvarlig regex for non-ASCII names (ü, é, etc.) (#116)
 - Fix issues discovered during course plan diff verification (#111)
 - Fix false diffs in dedup pipeline: OsloMet semicolons and VÅR/HØST normalization (#112)
@@ -27,6 +28,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Decide: USN Vurderingsformer/Eksamensformer heading change — normalize or real diff? (#117)
 - Commit normalization fixes and rerun dedup pipeline (#115)
 - Harvest historical UiT course plans via document ID discovery (#113)
 - Verify course plans for all institutions (#91)

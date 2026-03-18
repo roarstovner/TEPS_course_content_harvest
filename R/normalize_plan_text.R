@@ -184,6 +184,8 @@ build_plan_id <- function(normalized_text, .progress = "Building plan IDs") {
     stringr::str_remove_all("\\$\\([^)]+\\)\\.[^;]+;") |>
     # Case-fold to lowercase (fixes USN KUNNSKAP/Kunnskap etc.)
     tolower() |>
+    # Normalize heading synonyms (USN renamed "Vurderingsformer" → "Eksamensformer" in 2025)
+    stringr::str_replace_all("\\beksamensformer\\b", "vurderingsformer") |>
     # Remove 2-digit season+year patterns (e.g. "Høst23", "Vår 22") - before standalone season removal
     stringr::str_remove_all("(høst|vår|haust|autumn|spring)\\s*\\d{2}\\b") |>
     # Remove standalone semester words
