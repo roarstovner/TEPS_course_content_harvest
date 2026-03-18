@@ -3,6 +3,7 @@
 **FIXED** (2026-02-26): Added `.pre_oslomet()` normalization in `R/normalize_plan_text.R`:
 - Replaced semicolons (`;` → ` `) — OsloMet 2022 pages used semicolons as section separators, causing false diffs with other years. Replace (not remove) to avoid concatenating words that had no surrounding space.
 - Stripped uppercase `\bVÅR\b` and `\bHØST\b` — appear as column headers in pensum tables and semester tags in course listings, not substantive plan content.
+- (2026-03-18) VÅR/HØST removal moved to generic pipeline via `tolower()` + semester word removal.
 
 Verified fixes: M1GBO4100 (2021=2022 ✓), M1GEN2100 (2021=2022 ✓), M5GPE5100 (2021-2025 all same ✓), MGVM4100 (2020-2022 same, 2023-2025 same ✓).
 
@@ -32,22 +33,27 @@ Original issues:
 - 2SFL51-1, 2022, Vår: Undervisningssemestre has the wrong year.
 - 2ENLBA, 2024, Vår: Wrong Undervisningssemestre and Startsemestre
 - 2ENL51-12, 2022-2024 to 2023-2024: Some of the keywords has been translated from Norwegian to English and does not indicate a real course plan change, like "Obligatoriske aktiviteter" to "Compulsory activities" and "Individuell" to "Individual". Wonder whether this is systemic across more courses? Especially the english courses with EN-code?
+  - **FIXED** (2026-03-18): Added "Compulsory activities", "Work requirements", "Assessment methods", "Teaching and learning activities", "Obligatoriske aktiviteter" to INN label stripping.
 - 2ENL512-2: This also has the Norwegian to English keyword change. (Note that it also has other changes, so the course plan does change!)
 - other diffs look legit.
 
 # hivolda
 
 - There's a table at the bottom of many pages. It shows the cells squashed rowwise "VurderingsformGrupperingVarighetKarakterskalaAndelKommentarHjelpemidlerOmfangOppgaveIndividuellA" Is it possible to retrieve the table structure in the fulltext?
-- In MGL1-7PRO-1, you have both "Emneansvarlig:" and "Godkjent av:" that counts towards the diffs. Changes in Emneansvarlig is not a change in the course plan. 
+- In MGL1-7PRO-1, you have both "Emneansvarlig:" and "Godkjent av:" that counts towards the diffs. Changes in Emneansvarlig is not a change in the course plan.
+  - **FIXED** (2026-03-18): "Emneansvarlige?:" (plural) handled generically. "Godkjent av:" added to generic normalization.
 
 # HiOF
 
 - fulltexts have "Sist hentet fra FS (Felles studentsystem) DD. mmm. YYYY" at the end of all course texts. This should be deleted. I think this is a problem with many of the institutions? Inventigate.
 - Litteraturlister shows in fulltext. This should be part of data_notes.md, and should possibly be noted for every institution.
 - Diff LMBKHV10217 2023-2024 vs 2025: The diff is whether each section has a space after or not. "Kunnskap Studenten har kunnskap om [...]" vs "KunnskapStudenten har kunnskap om [...]"
+  - **FIXED** (2026-03-18): `.pre_hiof()` inserts space after heading when immediately followed by uppercase letter.
 - Diff LMBKHV10217 2020 vs 2021: Same. The diff is whether each section has a space after or not. "Kunnskap Kandidaten har kunnskap om [...]" vs "KunnskapKandidaten har kunnskap om [...]"
 - LMUFRA11221, 2023 vs 2024: "Emneansvarlig: Anje Müller Gjesdal" is part of the diff.
 - LMUKRLE10321: The space after each section "Kunnskap"/"Ferdigheter"/"Kompetanse" is here as well.
+
+**FIXED** (2026-03-18): Space-after-heading fix in `.pre_hiof()` resolves LMBKHV10217 and LMUKRLE10321 diffs.
 
 # HVL
 
@@ -97,9 +103,11 @@ Original issues:
 - fulltexts looks good, but they do contain all the literature assigned in the course 
 - HI-MOD4000, 2018 V 2019: "høst" and "vår" shows up as diff and probably should not? 
 - LDKH102, 2024 vs 2025: "Kunnskap" and "KUNNSKAP" shows up as diff and probably should not. Same with other headings "Ferdigheter"/"FERDIGHETER", "Generell kompetanse:"/"GENERELL KOMPETANSE"
+  - **FIXED** (2026-03-18): Generic `tolower()` added to normalization pipeline.
 - LH-HID4000-1 2021 VS 2022: Diff "Vår21" and "Vår22". Also "Deltakelse/Obligatoriske arbeidskrav"/"Obligatorisk aktivitet og krav til tilstedeværelse" seems to be a heading that changes between many course plans at this time?
 - MG1KR3 2024 VS 2025: Vurderingsformer"/"Eksamensformer" seems to be a change that's unrelated to the course plan.
 - VG1MA6 2023 VS 2024: "Høst23"/"Høst24" probably should not be a diff. It's in the assigned readings.
+  - **FIXED** (2026-03-18): Generic 2-digit season+year removal (e.g. "Høst23") added to normalization.
 
 # UIT
 
@@ -115,11 +123,23 @@ Original issues:
 - Note that the "emneansvarlig" is mentioned in the text, so this must be handled during deduplication
 
 # SAMAS
+
+- Only has program plans and study plans out, no course plans. Also, courses listed in program plans do not match DBH courses.
+
 # Steiner
+- something is odd with white spaces. Possibly, spaces should be limited to one or two in a row. Or is it tabs? Maybe we should keep it, although we need a wide window for it to be readable
+- Side XX av XX should be removed?
+- We could remove page numbers.
+- Steiner is a one year institution, so no diffs.
+
 # UiA
 
 - the fulltext is kind of unreadable. Is everything on one line? Without newlines? If this can be fixed, it should be fixed!
 - EN-157 2020 and 2021 differ only by "Emneansvarlige: Erik Mustad Charles Ivan Armstrong"
+  - **FIXED** (2026-03-18): "Emneansvarlige?" (plural) handled in generic normalization.
 - NO-503 2023 and 2024-2025 differ by "Haust" and "Sist henta frå FS (Felles studentsystem) 23. juli". These are not real changes.
+  - **FIXED** (2026-03-18): "Haust" added to UiA breadcrumb patterns + generic semester removal. Nynorsk "Sist henta frå FS" handled generically.
 - PED160 2021 and 2022 differ only by "Emneansvarlige: Adina Marie Nydahl Alexandra Lazareva"
+  - **FIXED** (2026-03-18): Same Emneansvarlige fix as EN-157.
 - REL421 differs only by "Vår" and "Vår, Høst"
+  - **FIXED** (2026-03-18): Generic semester word removal handles this.

@@ -80,15 +80,20 @@ build_plan_id <- function(normalized_text, .progress = "Building plan IDs") {
   txt |>
     # Remove breadcrumb: "Forside > Studier > Emner > YYYY > Høst YYYY > TITLE"
     # Ends at second occurrence of course code pattern or title in parens
-    stringr::str_remove("Forside\\s*>\\s*Studier\\s*>\\s*Emner\\s*>\\s*\\d{4}\\s*>\\s*(?:Høst|Vår)\\s+\\d{4}\\s*>\\s*") |>
-    # Remove "(Høst/Vår YYYY)" from title
-    stringr::str_remove_all("\\((Høst|Vår)\\s+\\d{4}\\)")
+    stringr::str_remove("Forside\\s*>\\s*Studier\\s*>\\s*Emner\\s*>\\s*\\d{4}\\s*>\\s*(?:Høst|Vår|Haust)\\s+\\d{4}\\s*>\\s*") |>
+    # Remove "(Høst/Vår/Haust YYYY)" from title
+    stringr::str_remove_all("\\((Høst|Vår|Haust)\\s+\\d{4}\\)")
 }
 
 .pre_hiof <- function(txt) {
   txt |>
     stringr::str_remove_all("Sist hentet fra FS[^\n]*") |>
-    stringr::str_remove_all("Litteraturlista er sist oppdatert[^\n]*")
+    stringr::str_remove_all("Litteraturlista er sist oppdatert[^\n]*") |>
+    # Insert missing space when heading runs into uppercase content (e.g. "KunnskapStudenten")
+    stringr::str_replace_all(
+      "(Kunnskap|Ferdigheter|Generell kompetanse|Kompetanse)(?=[A-ZÆØÅ])",
+      "\\1 "
+    )
 }
 
 .pre_inn <- function(txt) {
@@ -113,7 +118,10 @@ build_plan_id <- function(normalized_text, .progress = "Building plan IDs") {
     "Course content", "Learning outcomes", "Learning outcome",
     "Knowledge", "Skills",
     "General competence", "Teaching and working methods",
-    "Examination", "Reading list", "Course coordinator"
+    "Examination", "Reading list", "Course coordinator",
+    "Compulsory activities", "Work requirements",
+    "Assessment methods", "Teaching and learning activities",
+    "Obligatoriske aktiviteter"
   )
 
   for (label in inn_labels) {
@@ -125,8 +133,6 @@ build_plan_id <- function(normalized_text, .progress = "Building plan IDs") {
     stringr::str_remove("Statusmelding\\s*\\n?Emnebeskrivelsen for valgt semester er ikke publisert enda\\.[^\n]*") |>
     # Remove semester value lines (e.g. "2023 Spring, 2024 Spring") before season stripping
     stringr::str_remove_all("(?m)^\\d{4}\\s+(?:Høst|Vår|Autumn|Spring)(?:,\\s*\\d{4}\\s+(?:Høst|Vår|Autumn|Spring))*\\s*$") |>
-    # Remove semester words (year already stripped generically)
-    stringr::str_remove_all("\\b(Høst|Vår|Autumn|Spring)\\b") |>
     # Normalize language metadata value: "Engelsk" -> "English"
     stringr::str_replace_all("\\bEngelsk\\b", "English")
 }
@@ -139,11 +145,7 @@ build_plan_id <- function(normalized_text, .progress = "Building plan IDs") {
     # Replace semicolons with spaces - OsloMet 2022 pages used semicolons as
     # section separators, causing false diffs with other years. Replace (not
     # remove) to avoid concatenating words that had no surrounding space.
-    stringr::str_replace_all(";", " ") |>
-    # Strip uppercase VÅR/HØST - appear as column headers in pensum tables and
-    # semester tags in course listings (e.g. "( VÅR )"), not substantive content.
-    stringr::str_remove_all("\\bVÅR\\b") |>
-    stringr::str_remove_all("\\bHØST\\b")
+    stringr::str_replace_all(";", " ")
 }
 
 .pre_mf <- function(txt) {
@@ -160,8 +162,8 @@ build_plan_id <- function(normalized_text, .progress = "Building plan IDs") {
 
 .normalize_generic <- function(txt) {
   txt |>
-    # Remove "Sist hentet fra FS..." timestamp (UiA, HiOF) - before date patterns
-    stringr::str_remove_all("Sist hentet fra FS \\(Felles studentsystem\\)\\s*\\d{1,2}\\.\\s*\\S+\\s*\\d{4}\\s*\\d{2}:\\d{2}(?::\\d{2})?\\s*") |>
+    # Remove "Sist hentet/henta fra/frå FS..." timestamp (UiA, HiOF) - before date patterns
+    stringr::str_remove_all("Sist hent(?:et|a) fr(?:a|å) FS \\(Felles studentsystem\\)[^\n]*") |>
     # Remove Norwegian date-time format: "12. feb. 2026 02:50:04" - before year removal
     stringr::str_remove_all("\\d{1,2}\\.\\s*(?:jan|feb|mar|apr|mai|jun|jul|aug|sep|okt|nov|des)\\.?\\s*\\d{4}\\s*\\d{2}:\\d{2}(?::\\d{2})?") |>
     # Remove dates: dd.mm.yyyy
@@ -170,13 +172,21 @@ build_plan_id <- function(normalized_text, .progress = "Building plan IDs") {
     stringr::str_remove_all("\\b(19|20)\\d{2}\\b") |>
     # Remove times HH:MM(:SS)
     stringr::str_remove_all("\\b\\d{1,2}:\\d{2}(?::\\d{2})?\\b") |>
-    # Remove "Emneansvarlig: Name" (captures name up to next known heading)
-    stringr::str_remove_all("Emneansvarlig:?\\s*[A-ZÆØÅ][a-zæøåA-ZÆØÅ .,-]+(?=\\s+(?:Undervisning|Varighet|Studiepoeng|Semester|Faglærer|Ansvarlig|$))") |>
+    # Remove "Emneansvarlig(e): Name" (captures name up to next known heading)
+    stringr::str_remove_all("Emneansvarlige?:?\\s*[A-ZÆØÅ][a-zæøåA-ZÆØÅ .,-]+(?=\\s+(?:Undervisning|Varighet|Studiepoeng|Semester|Faglærer|Ansvarlig|$))") |>
     # Remove "Faglærer(e): Name" (same approach)
     stringr::str_remove_all("Faglærer[e]?:?\\s*[A-ZÆØÅ][a-zæøåA-ZÆØÅ .,-]+(?=\\s+(?:Undervisning|Varighet|Studiepoeng|Semester|Ansvarlig|$))") |>
+    # Remove "Godkjent av: Name" (same approach)
+    stringr::str_remove_all("Godkjent av:?\\s*[A-ZÆØÅ][a-zæøåA-ZÆØÅ .,-]+(?=\\s+(?:Undervisning|Varighet|Studiepoeng|Semester|Kunnskap|Læringsutbytte|Ansvarlig|$))") |>
     # Remove JS artifacts
     stringr::str_remove_all("function\\s*\\([^)]*\\)\\s*\\{[^}]*\\}") |>
     stringr::str_remove_all("\\$\\([^)]+\\)\\.[^;]+;") |>
+    # Case-fold to lowercase (fixes USN KUNNSKAP/Kunnskap etc.)
+    tolower() |>
+    # Remove 2-digit season+year patterns (e.g. "Høst23", "Vår 22") - before standalone season removal
+    stringr::str_remove_all("(høst|vår|haust|autumn|spring)\\s*\\d{2}\\b") |>
+    # Remove standalone semester words
+    stringr::str_remove_all("\\b(høst|vår|haust|autumn|spring|sommer|summer)\\b") |>
     # Normalize whitespace
     stringr::str_squish()
 }

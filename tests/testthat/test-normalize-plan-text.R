@@ -30,7 +30,7 @@ test_that("mismatched lengths error", {
 test_that("4-digit years are removed", {
   result <- normalize_plan_text("hivolda", "Kurs opprettet 2020 og oppdatert 2023")
   expect_false(grepl("2020|2023", result))
-  expect_true(grepl("Kurs opprettet", result))
+  expect_true(grepl("kurs opprettet", result))
 })
 
 test_that("dates dd.mm.yyyy are removed", {
@@ -52,13 +52,53 @@ test_that("Norwegian date-time format is removed", {
 test_that("Sist hentet fra FS timestamp is removed", {
   input <- "Kursinnhold her. Sist hentet fra FS (Felles studentsystem) 9. feb. 2026 11:30:35"
   result <- normalize_plan_text("hivolda", input)
-  expect_false(grepl("Sist hentet", result))
-  expect_true(grepl("Kursinnhold", result))
+  expect_false(grepl("Sist hentet", result, ignore.case = TRUE))
+  expect_true(grepl("kursinnhold", result))
 })
 
 test_that("whitespace is normalized", {
   result <- normalize_plan_text("hivolda", "  Mye   ekstra    mellomrom  ")
-  expect_equal(result, "Mye ekstra mellomrom")
+  expect_equal(result, "mye ekstra mellomrom")
+})
+
+test_that("tolower: KUNNSKAP and Kunnskap normalize identically", {
+  a <- normalize_plan_text("hivolda", "KUNNSKAP om faget")
+  b <- normalize_plan_text("hivolda", "Kunnskap om faget")
+  expect_equal(a, b)
+  expect_true(grepl("kunnskap", a))
+})
+
+test_that("semester words are removed generically", {
+  result <- normalize_plan_text("hivolda", "Undervisning Vår og Høst og Haust")
+  expect_false(grepl("vår|høst|haust", result))
+  expect_true(grepl("undervisning", result))
+})
+
+test_that("2-digit season+year removed", {
+  result <- normalize_plan_text("hivolda", "Oppstart Høst23 og Vår 22")
+  expect_false(grepl("23|22", result))
+  expect_true(grepl("oppstart", result))
+})
+
+test_that("Emneansvarlige (plural) is removed", {
+  input <- "Intro Emneansvarlige: Ola Nordmann Undervisning her"
+  result <- normalize_plan_text("hivolda", input)
+  expect_false(grepl("ola nordmann", result))
+  expect_true(grepl("undervisning", result))
+})
+
+test_that("Godkjent av: Name is removed", {
+  input <- "Intro Godkjent av: Kari Nordmann Undervisning her"
+  result <- normalize_plan_text("hivolda", input)
+  expect_false(grepl("kari nordmann", result))
+  expect_true(grepl("undervisning", result))
+})
+
+test_that("Nynorsk Sist henta frå FS is removed", {
+  input <- "Kursinnhold\nSist henta frå FS (Felles studentsystem) 9. feb. 2026 11:30:35"
+  result <- normalize_plan_text("hivolda", input)
+  expect_false(grepl("sist henta", result))
+  expect_true(grepl("kursinnhold", result))
 })
 
 # --- NTNU pre-processing ---
@@ -66,16 +106,16 @@ test_that("whitespace is normalized", {
 test_that("NTNU: Kontaktinformasjon section stripped to end", {
   input <- "Faglig innhold\nViktig tekst\nKontaktinformasjon\nNavn: Ola\nEksamen: dato"
   result <- normalize_plan_text("ntnu", input)
-  expect_true(grepl("Viktig tekst", result))
-  expect_false(grepl("Kontaktinformasjon", result))
-  expect_false(grepl("Ola", result))
+  expect_true(grepl("viktig tekst", result))
+  expect_false(grepl("kontaktinformasjon", result))
+  expect_false(grepl("ola", result))
 })
 
 test_that("NTNU: course-details-portlet removed", {
   input <- "course-details-portlet ENG3901 Masteroppgave"
   result <- normalize_plan_text("ntnu", input)
   expect_false(grepl("course-details-portlet", result))
-  expect_true(grepl("Masteroppgave", result))
+  expect_true(grepl("masteroppgave", result))
 })
 
 test_that("NTNU: moment.locale removed", {
@@ -88,22 +128,22 @@ test_that("NTNU: year dropdown removed", {
 
   input <- "Velg studieår Studieår 2024/2025 Studieår 2023/2024 Studiepoeng 30"
   result <- normalize_plan_text("ntnu", input)
-  expect_false(grepl("Velg studieår", result))
-  expect_false(grepl("Studieår", result))
-  expect_true(grepl("Studiepoeng", result))
+  expect_false(grepl("velg studieår", result))
+  expect_false(grepl("studieår", result))
+  expect_true(grepl("studiepoeng", result))
 })
 
 test_that("NTNU: Undervisningsstart line removed", {
   input <- "Nivå Master\nUndervisningsstart Høst 2024 / Vår 2025\nVarighet 2 semestre"
   result <- normalize_plan_text("ntnu", input)
-  expect_false(grepl("Undervisningsstart", result))
-  expect_true(grepl("Varighet", result))
+  expect_false(grepl("undervisningsstart", result))
+  expect_true(grepl("varighet", result))
 })
 
 test_that("NTNU: Blackboard links removed", {
   input <- "Andre sider om emnet Blackboard - VÅR-2024 Fagområder"
   result <- normalize_plan_text("ntnu", input)
-  expect_false(grepl("Blackboard", result))
+  expect_false(grepl("blackboard", result))
 })
 
 # --- UiT pre-processing ---
@@ -111,16 +151,16 @@ test_that("NTNU: Blackboard links removed", {
 test_that("UiT: breadcrumbs removed", {
   input <- "Startsida\nEmnekatalog\nKursnavn og innhold"
   result <- normalize_plan_text("uit", input)
-  expect_false(grepl("Startsida", result))
-  expect_false(grepl("Emnekatalog", result))
-  expect_true(grepl("Kursnavn", result))
+  expect_false(grepl("startsida", result))
+  expect_false(grepl("emnekatalog", result))
+  expect_true(grepl("kursnavn", result))
 })
 
 test_that("UiT: Error rendering component removed", {
   input <- "Læringsutbytte Error rendering component Innhold"
   result <- normalize_plan_text("uit", input)
-  expect_false(grepl("Error rendering", result))
-  expect_true(grepl("Læringsutbytte", result))
+  expect_false(grepl("error rendering", result))
+  expect_true(grepl("læringsutbytte", result))
 })
 
 # --- UiA pre-processing ---
@@ -128,14 +168,22 @@ test_that("UiT: Error rendering component removed", {
 test_that("UiA: breadcrumb removed without eating content", {
   input <- "Forside > Studier > Emner > 2025 > Høst 2025 > EN-148 Fagdidaktikk (Høst 2025) Studiepoeng: 7.5"
   result <- normalize_plan_text("uia", input)
-  expect_false(grepl("Forside", result))
-  expect_true(grepl("Studiepoeng", result))
+  expect_false(grepl("forside", result))
+  expect_true(grepl("studiepoeng", result))
 })
 
 test_that("UiA: (Høst YYYY) removed from title", {
   input <- "EN-148 Fagdidaktikk (Høst 2025) EN-148 Fagdidaktikk (Høst 2025) Studiepoeng"
   result <- normalize_plan_text("uia", input)
-  expect_false(grepl("\\(Høst", result))
+  expect_false(grepl("\\(høst", result))
+})
+
+test_that("UiA: Haust breadcrumb handled", {
+  input <- "Forside > Studier > Emner > 2025 > Haust 2025 > NO-503 Nynorsk (Haust 2025) Studiepoeng"
+  result <- normalize_plan_text("uia", input)
+  expect_false(grepl("forside", result))
+  expect_false(grepl("\\(haust", result, ignore.case = TRUE))
+  expect_true(grepl("studiepoeng", result))
 })
 
 # --- HiOF pre-processing ---
@@ -143,14 +191,20 @@ test_that("UiA: (Høst YYYY) removed from title", {
 test_that("HiOF: Sist hentet fra FS removed", {
   input <- "Kursinnhold\nSist hentet fra FS (Felles studentsystem) 12. feb. 2026 02:50:04"
   result <- normalize_plan_text("hiof", input)
-  expect_false(grepl("Sist hentet", result))
+  expect_false(grepl("sist hentet", result))
 })
 
 test_that("HiOF: Litteraturlista sist oppdatert removed", {
   input <- "Pensum\nLitteraturlista er sist oppdatert 16.08.2016\nAnnet innhold"
   result <- normalize_plan_text("hiof", input)
-  expect_false(grepl("Litteraturlista er sist oppdatert", result))
-  expect_true(grepl("Annet innhold", result))
+  expect_false(grepl("litteraturlista er sist oppdatert", result))
+  expect_true(grepl("annet innhold", result))
+})
+
+test_that("HiOF: space inserted after heading before uppercase", {
+  input <- "KunnskapStudenten skal lære"
+  result <- normalize_plan_text("hiof", input)
+  expect_true(grepl("kunnskap studenten", result))
 })
 
 # --- INN pre-processing ---
@@ -158,15 +212,15 @@ test_that("HiOF: Litteraturlista sist oppdatert removed", {
 test_that("INN: status banner removed", {
   input <- "Statusmelding\nEmnebeskrivelsen for valgt semester er ikke publisert enda. Her er siste versjon\nKursinnhold"
   result <- normalize_plan_text("inn", input)
-  expect_false(grepl("Statusmelding", result))
-  expect_true(grepl("Kursinnhold", result))
+  expect_false(grepl("statusmelding", result))
+  expect_true(grepl("kursinnhold", result))
 })
 
 test_that("INN: Startsemestre metadata removed", {
   input <- "Startsemestre\n2026 Høst\nEmnekode\nABC123"
   result <- normalize_plan_text("inn", input)
-  expect_false(grepl("Startsemestre", result))
-  expect_true(grepl("ABC123", result))
+  expect_false(grepl("startsemestre", result))
+  expect_true(grepl("abc123", result))
 })
 
 test_that("INN: placeholder pages return NA", {
@@ -178,32 +232,40 @@ test_that("INN: placeholder pages return NA", {
 test_that("INN: Norwegian field labels stripped", {
   input <- "ABC123 Testkurs\nEmnekode\nABC123\nStudiepoeng\n15\nEmnets innhold\nViktig faglig innhold"
   result <- normalize_plan_text("inn", input)
-  expect_false(grepl("Emnekode", result))
-  expect_false(grepl("Studiepoeng", result))
-  expect_false(grepl("Emnets innhold", result))
-  expect_true(grepl("Viktig faglig innhold", result))
+  expect_false(grepl("emnekode", result))
+  expect_false(grepl("studiepoeng", result))
+  expect_false(grepl("emnets innhold", result))
+  expect_true(grepl("viktig faglig innhold", result))
 })
 
 test_that("INN: English field labels stripped", {
   input <- "ABC123 Test\nCourse code\nABC123\nNumber of credits\n15\nCourse content\nImportant content"
   result <- normalize_plan_text("inn", input)
-  expect_false(grepl("Course code", result))
-  expect_false(grepl("Number of credits", result))
-  expect_false(grepl("Course content", result))
-  expect_true(grepl("Important content", result))
+  expect_false(grepl("course code", result, ignore.case = TRUE))
+  expect_false(grepl("number of credits", result, ignore.case = TRUE))
+  expect_false(grepl("course content", result, ignore.case = TRUE))
+  expect_true(grepl("important content", result))
+})
+
+test_that("INN: additional English labels stripped", {
+  input <- "ABC123\nCompulsory activities\nSome requirement\nAssessment methods\nWritten exam\nWork requirements\nAttendance"
+  result <- normalize_plan_text("inn", input)
+  expect_false(grepl("compulsory activities", result, ignore.case = TRUE))
+  expect_false(grepl("assessment methods", result, ignore.case = TRUE))
+  expect_false(grepl("work requirements", result, ignore.case = TRUE))
 })
 
 test_that("INN: Engelsk normalized to English", {
   input <- "Språk\nEngelsk\nInnhold her"
   result <- normalize_plan_text("inn", input)
-  expect_false(grepl("Engelsk", result))
-  expect_true(grepl("English", result))
+  expect_false(grepl("engelsk", result))
+  expect_true(grepl("english", result))
 })
 
 test_that("INN: semester value lines stripped", {
   input <- "ABC123 Test\n2023 Høst, 2024 Høst\nInnhold her"
   result <- normalize_plan_text("inn", input)
-  expect_true(grepl("Innhold her", result))
+  expect_true(grepl("innhold her", result))
 })
 
 # --- MF pre-processing ---
@@ -212,14 +274,14 @@ test_that("MF: Emneansvarlig section stripped to end", {
   input <- "Kursinnhold viktig tekst\nEmneansvarlig\nOla Nordmann\nForsteamanuensis\nola@mf.no\nStudentlivet på MF"
   result <- normalize_plan_text("mf", input)
   expect_true(grepl("viktig tekst", result))
-  expect_false(grepl("Ola Nordmann", result))
-  expect_false(grepl("Studentlivet", result))
+  expect_false(grepl("ola nordmann", result))
+  expect_false(grepl("studentlivet", result))
 })
 
 test_that("MF: Kontakt studieveileder removed", {
   input <- "Emneinfo Kontakt studieveileder Innholdsfortegnelse"
   result <- normalize_plan_text("mf", input)
-  expect_false(grepl("Kontakt studieveileder", result))
+  expect_false(grepl("kontakt studieveileder", result))
 })
 
 # --- OsloMet pre-processing ---
@@ -234,7 +296,7 @@ test_that("OsloMet: real content is preserved", {
   input <- "EPN-V2\nMGVM4100 Vitenskapsteori og metode Emneplan\nStudiepoeng 15"
   result <- normalize_plan_text("oslomet", input)
   expect_false(is.na(result))
-  expect_true(grepl("Vitenskapsteori", result))
+  expect_true(grepl("vitenskapsteori", result))
 })
 
 # --- Unknown institution passes through ---
@@ -242,7 +304,7 @@ test_that("OsloMet: real content is preserved", {
 test_that("unknown institution applies only generic normalization", {
   result <- normalize_plan_text("unknown_inst", "Kurs i 2023 med eksamen 15.12.2023")
   expect_false(grepl("2023", result))
-  expect_true(grepl("Kurs i", result))
+  expect_true(grepl("kurs i", result))
 })
 
 # --- build_plan_id ---

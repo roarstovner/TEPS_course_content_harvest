@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- Failed to translate Samas course plans from Sami to Norwegian using ellmer + Anthropic (#114)
 - Replace generate_data_notes.R with data_notes.qmd (#125)
 - Implement UiS PDF harvest for historical course plans (#119)
 - Add multi-year harvesting for HVL using year-specific URL pattern (#115)
@@ -17,11 +18,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Deduplicate course plans across years (#38)
 
 ### Fixed
+- Fix issues discovered during course plan diff verification (#111)
 - Fix false diffs in dedup pipeline: OsloMet semicolons and VÅR/HØST normalization (#112)
 - Fix samas course plan matching: subject-based matching assigns wrong course plans (#90)
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Harvest historical UiT course plans via document ID discovery (#113)
+- Verify course plans for all institutions (#91)
 - Update data_notes.md. We must do something else than using the  thing. What about using data_notes.qmd? Then we can keep the code, but its much easier to update manually? (#124)
 - Implement NLA JSON-based multi-year extraction (#113)
 - Verify course plans: uia (#93)
