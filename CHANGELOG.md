@@ -7,6 +7,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- Re-run dedup pipeline and re-render data notes after hivolda/steiner re-extraction (#134)
+- Re-extract NTNU fulltext to apply JS artifact cleanup (#130)
+- Re-harvest Steiner PDFs to apply whitespace and page number cleanup (#132)
+- Re-extract hivolda fulltext to apply table cell fix (#131)
 - Steiner: Clean up whitespace and page numbers in fulltext (#121)
 - NORD: Harvest historical course plans using year+semester URL params (#126)
 - NLA: Harvest historical course plans using year-based URL pattern (#125)
@@ -32,6 +36,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Stage and prepare commit for hivolda/steiner re-extraction (#135)
 - Decide: USN Vurderingsformer/Eksamensformer heading change — normalize or real diff? (#117)
 - Commit normalization fixes and rerun dedup pipeline (#115)
 - Harvest historical UiT course plans via document ID discovery (#113)
