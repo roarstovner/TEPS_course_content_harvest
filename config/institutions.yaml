@@ -61,7 +61,7 @@ institutions:
     semester_style: "nla"
 
   nord:
-    url_pattern: "https://www.nord.no/studier/emner/{code_lower_nodashnum}?year={url_year}&semester=HOEST"
+    url_pattern: "https://www.nord.no/studier/emner/{code_lower_nodashnum}?year={year}&semester={HØST|VÅR}"
     semester_style: "nord"
 
   nih:

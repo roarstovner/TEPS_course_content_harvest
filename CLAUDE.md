@@ -195,6 +195,12 @@ Used in older code but current pipeline uses `Emnekode_raw` to preserve granular
 
 ## Institution-Specific Quirks
 
+### NORD
+- URL requires Norwegian characters in semester param: `HØST` or `VÅR` (not ASCII `HOEST`)
+- ASCII `HOEST` falls back to a generic "Gjeldende emnebeskrivelse" page without year-specific content
+- The site maps each semester to its academic year automatically (e.g. `VÅR&year=2023` → 2022/23 plan)
+- URL pattern: `https://www.nord.no/studier/emner/{code}?year={year}&semester={HØST|VÅR}`
+
 ### NTNU
 - URL includes year but not semester
 - Special error detection: checks for "no information available" message and raises ntnu_no_info_error

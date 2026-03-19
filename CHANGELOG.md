@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- Steiner: Clean up whitespace and page numbers in fulltext (#121)
+- NORD: Harvest historical course plans using year+semester URL params (#126)
 - NLA: Harvest historical course plans using year-based URL pattern (#125)
 - HVL: Harvest historical course plans using year-based URL pattern (#124)
 - Failed to translate Samas course plans from Sami to Norwegian using ellmer + Anthropic (#114)
@@ -20,6 +22,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Deduplicate course plans across years (#38)
 
 ### Fixed
+- hivolda: Squashed table cells in fulltext extraction (#119)
+- NTNU: Investigate JS artifacts after 'Vis detaljert timeplan' (#118)
 - UiA: Fulltext unreadable — everything on one line? (#120)
 - Fix Emneansvarlig regex for non-ASCII names (ü, é, etc.) (#116)
 - Fix issues discovered during course plan diff verification (#111)

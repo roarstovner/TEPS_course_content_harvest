@@ -37,7 +37,10 @@ extract_fulltext <- function(institution_short, raw_html) {
     if (inst == "usn") return(.cleanup_usn_text(html))
 
     if (inst %in% names(.selectors$single)) {
-      safe_extract_one(html, .selectors$single[[inst]])
+      if (inst == "hivolda") html <- .add_table_cell_breaks(html)
+      txt <- safe_extract_one(html, .selectors$single[[inst]])
+      if (inst == "ntnu" && !is.na(txt)) txt <- .post_ntnu(txt)
+      txt
     } else if (inst %in% names(.selectors$many)) {
       txt <- safe_extract_many(html, .selectors$many[[inst]])
       if (inst == "uit" && !is.na(txt)) txt <- .pre_uit(txt)
@@ -69,6 +72,20 @@ extract_fulltext <- function(institution_short, raw_html) {
   paste(txt, collapse = "\n")
 }
 
+
+.add_table_cell_breaks <- function(html) {
+  # Insert newlines before closing </td> and </th> so html_text2() treats
+  # cells as block-level content instead of squashing them together.
+  html |>
+    stringr::str_replace_all("</td>", "\n</td>") |>
+    stringr::str_replace_all("</th>", "\n</th>")
+}
+
+.post_ntnu <- function(txt) {
+  # Strip JS artifacts from timetable widget (toggleRooms, etc.)
+  txt <- stringr::str_remove(txt, "(?s)Vis detaljert timeplan.*$")
+  stringr::str_trim(txt)
+}
 
 .pre_uit <- function(txt) {
   # Strip "Error rendering component" artifact from broken UI widget

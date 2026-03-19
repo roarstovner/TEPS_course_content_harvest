@@ -126,7 +126,14 @@ extract_emner_from_pdf <- function(pdf_path, subject, wrapper_url) {
     next_starts <- all_starts[all_starts > start]
     end <- if (length(next_starts) > 0) next_starts[1] - 1 else length(pages)
 
-    emne_text <- paste(pages[start:end], collapse = "\n\n")
+    emne_text <- paste(pages[start:end], collapse = "\n\n") |>
+      # Remove page number markers (e.g. "Side 1 av 3")
+      stringr::str_remove_all("Side\\s+\\d+\\s+av\\s+\\d+") |>
+      # Remove leading/trailing whitespace per line
+      stringr::str_replace_all("(?m)^[ \\t]+|[ \\t]+$", "") |>
+      # Collapse 3+ newlines to 2
+      stringr::str_replace_all("\\n{3,}", "\n\n") |>
+      stringr::str_trim()
     first_line <- str_trim(str_split(pages[start], "\n")[[1]][1])
 
     tibble(

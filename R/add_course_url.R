@@ -48,10 +48,12 @@ add_course_url_uib <- function(course_code, year, semester) {
 }
 
 add_course_url_nord <- function(course_code, year, semester) {
-  # NORD uses academic years starting in autumn (HOEST).
-  # Spring courses belong to the previous autumn's academic year.
-  url_year <- dplyr::if_else(semester == "Vår", year - 1L, year)
-  glue::glue("https://www.nord.no/studier/emner/{tolower(course_code)}?year={url_year}&semester=HOEST")
+  # NORD accepts HØST/VÅR (Norwegian characters) as semester params.
+  # ASCII "HOEST" falls back to a generic page without year-specific content.
+  # The site maps each semester to its academic year automatically
+  # (e.g. VÅR 2023 → 2022/23, HØST 2023 → 2023/24).
+  url_semester <- dplyr::case_match(semester, "Vår" ~ "V\u00c5R", "Høst" ~ "H\u00d8ST", .default = "H\u00d8ST")
+  glue::glue("https://www.nord.no/studier/emner/{tolower(course_code)}?year={year}&semester={url_semester}")
 }
 
 add_course_url_hvl <- function(course_code, year) {
