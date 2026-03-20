@@ -41,6 +41,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Stage uncommitted R changes from prior sessions (#140)
 - HiOF: Document Litteraturlister in fulltext in data_notes (#128)
 - INN: Missing/wrong fulltext for several 2022 courses (#123)
 - Update data_notes.qmd for UiS reharvest (#138)

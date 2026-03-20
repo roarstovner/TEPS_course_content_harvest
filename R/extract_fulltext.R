@@ -48,7 +48,7 @@ extract_fulltext <- function(institution_short, raw_html) {
     } else {
       NA_character_
     }
-  }, .progress = TRUE)
+  }, .progress = "Extracting fulltext")
 }
 
 .extract_one <- function(raw_html, css) {

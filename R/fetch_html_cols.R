@@ -18,7 +18,7 @@
 #'
 #' @export
 #' @noRd
-fetch_html_cols <- function(urls, institution = NULL, .progress = TRUE) {
+fetch_html_cols <- function(urls, institution = NULL, .progress = "Fetching HTML") {
   is_valid <- !is.na(urls) & nzchar(urls)
   
   if (is.null(institution)) {

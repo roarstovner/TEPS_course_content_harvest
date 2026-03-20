@@ -9,7 +9,7 @@
   courses <- readRDS("data/courses.RDS")
 
   # Institutions ready to harvest (validated pipelines)
-  harvest_list <- c("uit") #c("nord", "nih", "uib", "uit", "inn", "hvl", "mf", "hiof", "hivolda")
+  harvest_list <- c("ntnu", "nord") #c("nord", "nih", "uib", "uit", "inn", "hvl", "mf", "hiof", "hivolda")
 
   # Institutions whose URLs have no year component — current content only
   no_year_insts <- c("mf")
@@ -46,6 +46,3 @@
   sum(!is.na(df$fulltext)), "/", nrow(df), " with
   fulltext ===\n")
   }
-
-  # Institutions with non-standard pipelines (PDFs, URL discovery, etc.)
-  source("R/run_harvest_steiner.R")

@@ -49,27 +49,30 @@ fetch_html_with_checkpoint <- function(courses,
   
   # 1) Les eksisterende checkpoint (hvis finnes)
   checkpoint <- read_checkpoint(checkpoint_path)
-  
+
   # 2) Finn hvilke vi må hente (ikke i checkpoint enda)
   if (is.null(checkpoint)) {
+    message("No checkpoint found at ", checkpoint_path)
     to_fetch <- courses
   } else {
+    message("Checkpoint: ", nrow(checkpoint), " courses already fetched")
     to_fetch <- dplyr::anti_join(courses, checkpoint, by = "course_id")
   }
-  
+
   # 3) Dropp rader uten URL (ellers sløser du tid og får NA-feil)
   to_fetch <- dplyr::filter(to_fetch, !is.na(url), nzchar(url))
-  
+  message("To fetch: ", nrow(to_fetch), " courses with URLs")
+
   # Hvis ingenting gjenstår: returner courses + checkpoint-data
   if (nrow(to_fetch) == 0) {
     if (!is.null(checkpoint)) {
+      message("All courses in checkpoint, skipping fetch")
       return(dplyr::left_join(
         courses,
         dplyr::select(checkpoint, course_id, html, html_error, html_success),
         by = "course_id"
       ))
     } else {
-      # Ingen checkpoint og ingenting å hente -> returner bare NA-kolonner
       return(dplyr::mutate(courses,
                            html = NA_character_,
                            html_error = list(NULL),
@@ -78,29 +81,34 @@ fetch_html_with_checkpoint <- function(courses,
     }
   }
   
-  # 4) Hent HTML-kolonner for rest
-  html_cols <- fetch_html_cols(
-    urls        = to_fetch$url,
-    institution = to_fetch$institution_short,
-    .progress   = .progress
-  )
-  
-  fetched <- dplyr::bind_cols(
-    dplyr::select(to_fetch, course_id),
-    html_cols
-  ) |>
-    dplyr::select(course_id, html, html_error, html_success)
-  
-  # 5) Oppdater checkpoint og lagre
-  updated <- if (is.null(checkpoint)) fetched else dplyr::bind_rows(checkpoint, fetched)
-  updated <- dplyr::distinct(updated, course_id, .keep_all = TRUE) # ekstra sikkerhet
-  
-  write_checkpoint(updated, checkpoint_path)
+  # 4) Hent HTML én om gangen med inkrementell checkpoint
+  for (i in seq_len(nrow(to_fetch))) {
+    row <- to_fetch[i, ]
+    html_cols <- fetch_html_cols(
+      urls        = row$url,
+      institution = row$institution_short,
+      .progress   = FALSE
+    )
+    fetched_row <- dplyr::bind_cols(
+      dplyr::select(row, course_id),
+      html_cols
+    ) |>
+      dplyr::select(course_id, html, html_error, html_success)
+
+    checkpoint <- dplyr::bind_rows(checkpoint, fetched_row)
+    write_checkpoint(checkpoint, checkpoint_path)
+
+    if (.progress) {
+      message(sprintf("[%d/%d] %s", i, nrow(to_fetch), row$course_id))
+    }
+  }
+
+  checkpoint <- dplyr::distinct(checkpoint, course_id, .keep_all = TRUE)
   
   # 6) Returner full courses med html-kolonner joinet inn
   dplyr::left_join(
     courses,
-    dplyr::select(updated, course_id, html, html_error, html_success),
+    dplyr::select(checkpoint, course_id, html, html_error, html_success),
     by = "course_id"
   )
 }
