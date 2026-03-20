@@ -44,7 +44,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
-
+- OsloMet MAMUS4100: Appears under two institutes in courses.RDS (#122)
 - Stage uncommitted R changes from prior sessions (#140)
 - HiOF: Document Litteraturlister in fulltext in data_notes (#128)
 - INN: Missing/wrong fulltext for several 2022 courses (#123)
