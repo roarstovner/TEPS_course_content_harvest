@@ -26,6 +26,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Deduplicate course plans across years (#38)
 
 ### Fixed
+- Diagnose NORD harvest returning 0 fulltexts (#136)
 - hivolda: Squashed table cells in fulltext extraction (#119)
 - NTNU: Investigate JS artifacts after 'Vis detaljert timeplan' (#118)
 - UiA: Fulltext unreadable — everything on one line? (#120)

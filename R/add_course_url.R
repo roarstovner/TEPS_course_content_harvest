@@ -52,7 +52,8 @@ add_course_url_nord <- function(course_code, year, semester) {
   # ASCII "HOEST" falls back to a generic page without year-specific content.
   # The site maps each semester to its academic year automatically
   # (e.g. VÅR 2023 → 2022/23, HØST 2023 → 2023/24).
-  url_semester <- dplyr::case_match(semester, "Vår" ~ "V\u00c5R", "Høst" ~ "H\u00d8ST", .default = "H\u00d8ST")
+  # Must be percent-encoded for httr2 (server returns 400 on raw UTF-8).
+  url_semester <- dplyr::case_match(semester, "Vår" ~ "V%C3%85R", "Høst" ~ "H%C3%98ST", .default = "H%C3%98ST")
   glue::glue("https://www.nord.no/studier/emner/{tolower(course_code)}?year={year}&semester={url_semester}")
 }
 
