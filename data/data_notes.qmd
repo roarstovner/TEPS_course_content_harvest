@@ -88,6 +88,7 @@ Low dedup (<10%) means most rows have genuinely different content, typically bec
 - Two CSS selectors used: old structure (`#vrtx-fs-emne-content`) and new (`.entry-content`)
 - HiOF required a browser-like user agent to avoid 403 blocks (see #27)
 - `normalize_plan_text` strips "Sist hentet fra FS" timestamps and "Litteraturlista er sist oppdatert" lines
+- **Litteraturlister (reading lists)** are included in the fulltext — only the timestamp line is stripped, not the reading list content itself (book titles, authors, ISBNs, etc.). This differs from NLA, which truncates at "Digital litteraturliste" to remove reading lists entirely
 
 ---
 
@@ -117,6 +118,8 @@ Low dedup (<10%) means most rows have genuinely different content, typically bec
 - 30 pages are placeholder/error pages ("Emnesøket gjelder kun fra...") filtered as NA by `normalize_plan_text` (see #53)
 - Year range 2018-2024 (no 2025 data in DBH extract)
 - INN publishes some courses in both Norwegian and English, causing lower dedup than expected. `normalize_plan_text` strips 35 NO/EN field labels and normalizes language metadata (see #52)
+- **Wrong-year content**: Some 2022 courses (e.g., 2ENL512-1, 2NOL51-5, 2SFL51-1, 2ENLBA) display "Undervisningssemestre" for a different year than requested. This is an upstream issue in INN's system — the URL includes the correct year, but INN's server may serve a different version. No client-side fix is possible (see #123)
+- **Missing plans**: A few 2022 courses (e.g., 2EXPHIL51, 2PEDL51-2-1, 2ENL512-3) return pages with no course plan content. These are not caught by the "Emnesøket" filter since the page structure differs; fulltext may contain navigation/header text instead of plan content (see #123)
 
 ---
 

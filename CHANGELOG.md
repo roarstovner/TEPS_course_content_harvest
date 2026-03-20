@@ -7,6 +7,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- UIS: Harvest historical course plans from PDF archive (#127)
+- Re-harvest NORD with year-specific URLs (#129)
+- Harvest NTNU course data (#133)
 - Re-run dedup pipeline and re-render data notes after hivolda/steiner re-extraction (#134)
 - Re-extract NTNU fulltext to apply JS artifact cleanup (#130)
 - Re-harvest Steiner PDFs to apply whitespace and page number cleanup (#132)
@@ -26,6 +29,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Deduplicate course plans across years (#38)
 
 ### Fixed
+- Fix batch-only checkpointing in fetch_html_with_checkpoint (#139)
 - Diagnose NORD harvest returning 0 fulltexts (#136)
 - hivolda: Squashed table cells in fulltext extraction (#119)
 - NTNU: Investigate JS artifacts after 'Vis detaljert timeplan' (#118)
@@ -37,6 +41,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- HiOF: Document Litteraturlister in fulltext in data_notes (#128)
+- INN: Missing/wrong fulltext for several 2022 courses (#123)
 - Update data_notes.qmd for UiS reharvest (#138)
 - Stage NORD fix for commit (#137)
 - Stage and prepare commit for hivolda/steiner re-extraction (#135)
