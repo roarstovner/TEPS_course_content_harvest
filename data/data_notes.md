@@ -1,7 +1,7 @@
 # Data Quality Notes
 
 
-Generated: 2026-03-19
+Generated: 2026-03-20
 
 ## Overview
 
@@ -271,13 +271,20 @@ each row is truly distinct (NIH, Steiner, UiO).
 
 ### UiS (University of Stavanger)
 
-- **Filtered to 2025 only** (no year in URL; see \#74, \#77)
-- **57.8% success rate**: 149 rows with no content
+- **Multi-year harvest** (2007–2025), 2920 rows across 316 unique course
+  codes
+- **31.4% overall success rate** (917/2920 with fulltext); 36% of unique
+  URLs succeed (1053/2920 HTML fetched)
+- **No year in URL** — URL pattern `/nb/student/course/{CODE}_1` returns
+  only the current course plan. Historical course plans are not
+  available through the web interface (see \#127 for PDF archive)
+- The same URL is shared across all year-rows for a given course, so
+  many year-rows inherently have no content (2070 duplicate URLs)
 - Website completely redesigned (migrated to Drupal); old URL pattern
-  `/nb/course/{CODE}` returned 100% 404s. New URL pattern:
-  `/nb/student/course/{CODE}_1` where CODE uses `Emnekode_raw` with dash
-  replaced by underscore (see \#19-#24)
+  `/nb/course/{CODE}` returned 100% 404s (see \#19-#24)
 - Uses `.extract_many()` for content sections
+- Success rate increases with recency: 0% before 2014, rising to 58% in
+  2025
 
 ------------------------------------------------------------------------
 

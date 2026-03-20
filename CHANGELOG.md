@@ -37,6 +37,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Update data_notes.qmd for UiS reharvest (#138)
+- Stage NORD fix for commit (#137)
 - Stage and prepare commit for hivolda/steiner re-extraction (#135)
 - Decide: USN Vurderingsformer/Eksamensformer heading change — normalize or real diff? (#117)
 - Commit normalization fixes and rerun dedup pipeline (#115)
