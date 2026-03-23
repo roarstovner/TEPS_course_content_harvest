@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+
 - UIS: Harvest historical course plans from PDF archive (#127)
 - Re-harvest NORD with year-specific URLs (#129)
 - Harvest NTNU course data (#133)
@@ -19,6 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - NLA: Harvest historical course plans using year-based URL pattern (#125)
 - HVL: Harvest historical course plans using year-based URL pattern (#124)
 - Failed to translate Samas course plans from Sami to Norwegian using ellmer + Anthropic (#114)
+- Translate Samas course plans from Sami to Norwegian using ellmer + Anthropic (#114)
 - Replace generate_data_notes.R with data_notes.qmd (#125)
 - Implement UiS PDF harvest for historical course plans (#119)
 - Add multi-year harvesting for HVL using year-specific URL pattern (#115)
@@ -29,6 +31,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Deduplicate course plans across years (#38)
 
 ### Fixed
+
 - Fix batch-only checkpointing in fetch_html_with_checkpoint (#139)
 - Diagnose NORD harvest returning 0 fulltexts (#136)
 - hivolda: Squashed table cells in fulltext extraction (#119)
@@ -41,6 +44,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+
 - Stage uncommitted R changes from prior sessions (#140)
 - HiOF: Document Litteraturlister in fulltext in data_notes (#128)
 - INN: Missing/wrong fulltext for several 2022 courses (#123)
@@ -51,6 +55,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Commit normalization fixes and rerun dedup pipeline (#115)
 - Harvest historical UiT course plans via document ID discovery (#113)
 - Verify course plans for all institutions (#91)
+- Harvest historical UiT course plans via document ID discovery (#113)
 - Update data_notes.md. We must do something else than using the  thing. What about using data_notes.qmd? Then we can keep the code, but its much easier to update manually? (#124)
 - Implement NLA JSON-based multi-year extraction (#113)
 - Verify course plans: uia (#93)
