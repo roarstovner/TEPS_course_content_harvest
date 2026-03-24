@@ -37,7 +37,7 @@ extract_fulltext <- function(institution_short, raw_html) {
     if (inst == "usn") return(.cleanup_usn_text(html))
 
     if (inst %in% names(.selectors$single)) {
-      if (inst == "hivolda") html <- .add_table_cell_breaks(html)
+      if (inst %in% c("hivolda", "inn")) html <- .add_table_cell_breaks(html)
       txt <- safe_extract_one(html, .selectors$single[[inst]])
       if (inst == "ntnu" && !is.na(txt)) txt <- .post_ntnu(txt)
       txt

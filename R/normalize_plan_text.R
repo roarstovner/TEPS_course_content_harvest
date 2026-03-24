@@ -50,6 +50,7 @@ build_plan_id <- function(normalized_text, .progress = "Building plan IDs") {
     inn     = .pre_inn(txt),
     mf      = .pre_mf(txt),
     oslomet = .pre_oslomet(txt),
+    steiner = .pre_steiner(txt),
     uis     = .pre_uis(txt),
     usn     = .pre_usn(txt),
     txt
@@ -134,6 +135,12 @@ build_plan_id <- function(normalized_text, .progress = "Building plan IDs") {
   }
 
   txt |>
+    # Remove table header artifacts from overlap tables (concatenated or separated)
+    stringr::str_remove_all("NameCreditsDateComment") |>
+    stringr::str_remove_all("(?m)^Name\\s*$") |>
+    stringr::str_remove_all("(?m)^Credits\\s*$") |>
+    stringr::str_remove_all("(?m)^Date\\s*$") |>
+    stringr::str_remove_all("(?m)^Comment\\s*$") |>
     # Remove status banner
     stringr::str_remove("Statusmelding\\s*\\n?Emnebeskrivelsen for valgt semester er ikke publisert enda\\.[^\n]*") |>
     # Remove semester value lines (e.g. "2023 Spring, 2024 Spring") before season stripping
@@ -185,6 +192,12 @@ build_plan_id <- function(normalized_text, .progress = "Building plan IDs") {
     stringr::str_remove_all("Powered by TCPDF[^\n]*") |>
     # PDF pages: strip "side N" page numbers
     stringr::str_remove_all("(?m)^\\s*side\\s+\\d+\\s*$")
+}
+
+.pre_steiner <- function(txt) {
+  txt |>
+    # Strip PDF page number artifacts: "Side 12 av 28"
+    stringr::str_remove_all("(?m)^\\s*Side\\s+\\d+\\s+av\\s+\\d+\\s*$")
 }
 
 .pre_usn <- function(txt) {

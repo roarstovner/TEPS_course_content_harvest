@@ -31,6 +31,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Deduplicate course plans across years (#38)
 
 ### Fixed
+- Fix UiA fulltext: add proper linebreaks to make text readable (#145)
+- Fix Steiner fulltext: remove page number artifacts like 'Siden 12 av 15' (#144)
+- Fix INN fulltext: investigate and remove 'NameCreditsDateComment' artifact (#143)
 - Fix USN diff: investigate whether 'godkjent emneplan' names and dates affect diffs (#147)
 - Fix UiS diff: strip fagpersoner names, 'powered by tcpdf', and version dates from extracted text (#146)
 - Fix HIVOLDA diff: strip 'godkjent av' and 'emneansvarleg' names from extracted text (#142)

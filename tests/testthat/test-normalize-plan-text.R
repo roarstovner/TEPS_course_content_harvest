@@ -291,6 +291,20 @@ test_that("INN: semester value lines stripped", {
   expect_true(grepl("innhold her", result))
 })
 
+test_that("INN: NameCreditsDateComment artifact stripped (concatenated)", {
+  input <- "Emnet overlapper med\nNameCreditsDateComment 2EN48-7 English Thesis10"
+  result <- normalize_plan_text("inn", input)
+  expect_false(grepl("namecreditsdatecomment", result))
+  expect_true(grepl("english thesis", result))
+})
+
+test_that("INN: Name/Credits/Date/Comment table headers stripped (separated)", {
+  input <- "Emnet overlapper med\nName\nCredits\nDate\nComment\n2EN48-7 English Thesis\n10"
+  result <- normalize_plan_text("inn", input)
+  expect_false(grepl("^name$", result))
+  expect_true(grepl("english thesis", result))
+})
+
 # --- MF pre-processing ---
 
 test_that("MF: Emneansvarlig section stripped to end", {
@@ -364,6 +378,22 @@ test_that("UiS: Emnebeskrivelsen er hentet fra stripped", {
   result <- normalize_plan_text("uis", input)
   expect_false(grepl("emnebeskrivelsen er hentet", result))
   expect_true(grepl("innhold", result))
+})
+
+# --- Steiner pre-processing ---
+
+test_that("Steiner: PDF page numbers stripped", {
+  input <- "Innhold\n                         Side 12 av 28\nMer tekst"
+  result <- normalize_plan_text("steiner", input)
+  expect_false(grepl("side \\d+ av \\d+", result))
+  expect_true(grepl("innhold", result))
+  expect_true(grepl("mer tekst", result))
+})
+
+test_that("Steiner: multiple page numbers stripped", {
+  input <- "Tekst\n  Side 1 av 15\nMellom\n  Side 2 av 15\nSlutt"
+  result <- normalize_plan_text("steiner", input)
+  expect_false(grepl("side \\d+ av \\d+", result))
 })
 
 # --- USN pre-processing ---
