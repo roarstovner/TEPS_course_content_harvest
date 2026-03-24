@@ -207,6 +207,29 @@ test_that("HiOF: space inserted after heading before uppercase", {
   expect_true(grepl("kunnskap studenten", result))
 })
 
+# --- HIVOLDA pre-processing ---
+
+test_that("HIVOLDA: Emneansvarleg + name on next line stripped", {
+  input <- "Innhold her\nEmneansvarleg:\nIngeborg Katrin Lid Berget\nPensum\nListe"
+  result <- normalize_plan_text("hivolda", input)
+  expect_false(grepl("ingeborg|berget", result))
+  expect_true(grepl("innhold|pensum", result))
+})
+
+test_that("HIVOLDA: Godkjent av + name on next line stripped", {
+  input <- "Innhold her\nGodkjent av:\nSilje Ims Lied"
+  result <- normalize_plan_text("hivolda", input)
+  expect_false(grepl("silje|lied", result))
+  expect_true(grepl("innhold", result))
+})
+
+test_that("HiOF: multiline Emneansvarlige block stripped", {
+  input <- "Studiested:\nHalden\nEmneansvarlige:\nRagnhild Louise Næsje\nChristian Bjørn Bjerke\nUndervisningsspråk:\nNorsk"
+  result <- normalize_plan_text("hiof", input)
+  expect_false(grepl("ragnhild|næsje|bjerke", result))
+  expect_true(grepl("undervisningsspråk", result))
+})
+
 # --- INN pre-processing ---
 
 test_that("INN: status banner removed", {
@@ -297,6 +320,66 @@ test_that("OsloMet: real content is preserved", {
   result <- normalize_plan_text("oslomet", input)
   expect_false(is.na(result))
   expect_true(grepl("vitenskapsteori", result))
+})
+
+# --- UiS pre-processing ---
+
+test_that("UiS: Kontakt section stripped to end (HTML pages)", {
+  input <- "Innhold\nKontakt\nEmneansvarlig:\nBerit Aarrestad\nFaglærer:\nSara Sedberg"
+  result <- normalize_plan_text("uis", input)
+  expect_false(grepl("kontakt|aarrestad|sedberg", result))
+  expect_true(grepl("innhold", result))
+})
+
+test_that("UiS: EMNE Versjon header stripped (PDF pages)", {
+  input <- "EMNE LFYBAC_1 BOKMÅL Versjon 14.Jun.2019 15:15\nInnhold"
+  result <- normalize_plan_text("uis", input)
+  expect_false(grepl("emne lfybac|versjon", result))
+  expect_true(grepl("innhold", result))
+})
+
+test_that("UiS: Fagpersoner section stripped (PDF pages)", {
+  input <- "Innhold\nFagpersoner\n-Diana Lucia Quintero Castro (Faglærer)\n\nAnnet"
+  result <- normalize_plan_text("uis", input)
+  expect_false(grepl("fagpersoner|diana|quintero", result))
+  expect_true(grepl("innhold", result))
+})
+
+test_that("UiS: Powered by TCPDF stripped", {
+  input <- "Innhold\nPowered by TCPDF (www.tcpdf.org)"
+  result <- normalize_plan_text("uis", input)
+  expect_false(grepl("tcpdf", result))
+  expect_true(grepl("innhold", result))
+})
+
+test_that("UiS: 'side N' page numbers stripped (PDF pages)", {
+  input <- "Innhold\n                                   side 2\nMer innhold"
+  result <- normalize_plan_text("uis", input)
+  expect_false(grepl("side 2", result))
+  expect_true(grepl("innhold", result))
+})
+
+test_that("UiS: Emnebeskrivelsen er hentet fra stripped", {
+  input <- "Innhold\nEmnebeskrivelsen er hentet fra Felles studentsystem Versjon 1"
+  result <- normalize_plan_text("uis", input)
+  expect_false(grepl("emnebeskrivelsen er hentet", result))
+  expect_true(grepl("innhold", result))
+})
+
+# --- USN pre-processing ---
+
+test_that("USN: Godkjent emneplan heading stripped", {
+  input <- "Innhold\nGodkjent emneplan\nLitteratur"
+  result <- normalize_plan_text("usn", input)
+  expect_false(grepl("godkjent emneplan", result))
+  expect_true(grepl("innhold|litteratur", result))
+})
+
+test_that("USN: Godkjent date line stripped", {
+  input <- "Innhold\nGodkjent 22.11.2022.\nLitteratur"
+  result <- normalize_plan_text("usn", input)
+  expect_false(grepl("godkjent \\.", result))
+  expect_true(grepl("innhold|litteratur", result))
 })
 
 # --- Unknown institution passes through ---

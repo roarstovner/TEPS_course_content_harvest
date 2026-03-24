@@ -31,6 +31,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Deduplicate course plans across years (#38)
 
 ### Fixed
+- Fix USN diff: investigate whether 'godkjent emneplan' names and dates affect diffs (#147)
+- Fix UiS diff: strip fagpersoner names, 'powered by tcpdf', and version dates from extracted text (#146)
+- Fix HIVOLDA diff: strip 'godkjent av' and 'emneansvarleg' names from extracted text (#142)
+- Fix HiOF diff: strip 'emneansvarlige' names from extracted text (#141)
 
 - Fix batch-only checkpointing in fetch_html_with_checkpoint (#139)
 - Diagnose NORD harvest returning 0 fulltexts (#136)

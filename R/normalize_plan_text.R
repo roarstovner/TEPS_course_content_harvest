@@ -46,9 +46,12 @@ build_plan_id <- function(normalized_text, .progress = "Building plan IDs") {
     uit     = .pre_uit(txt),
     uia     = .pre_uia(txt),
     hiof    = .pre_hiof(txt),
+    hivolda = .pre_hivolda(txt),
     inn     = .pre_inn(txt),
     mf      = .pre_mf(txt),
     oslomet = .pre_oslomet(txt),
+    uis     = .pre_uis(txt),
+    usn     = .pre_usn(txt),
     txt
   )
 }
@@ -89,6 +92,8 @@ build_plan_id <- function(normalized_text, .progress = "Building plan IDs") {
   txt |>
     stringr::str_remove_all("Sist hentet fra FS[^\n]*") |>
     stringr::str_remove_all("Litteraturlista er sist oppdatert[^\n]*") |>
+    # Strip "Emneansvarlig(e):" + name lines until next "Heading:" line
+    stringr::str_remove("(?m)^Emneansvarlige?:\\s*\\n(?:(?![A-ZÆØÅ][\\w ]+:)[^\\n]*\\n?)*") |>
     # Insert missing space when heading runs into uppercase content (e.g. "KunnskapStudenten")
     stringr::str_replace_all(
       "(Kunnskap|Ferdigheter|Generell kompetanse|Kompetanse)(?=[A-ZÆØÅ])",
@@ -158,6 +163,37 @@ build_plan_id <- function(normalized_text, .progress = "Building plan IDs") {
 }
 
 
+.pre_hivolda <- function(txt) {
+  txt |>
+    # Strip "Emneansvarleg:" + following name line
+    stringr::str_remove("(?m)^Emneansvarleg:\\s*\\n[^\\n]*") |>
+    # Strip "Godkjent av:" + following name line
+    stringr::str_remove("(?m)^Godkjent av:\\s*\\n[^\\n]*")
+}
+
+.pre_uis <- function(txt) {
+  txt |>
+    # HTML pages: strip from "Kontakt" heading to end (names + version line)
+    stringr::str_remove("(?m)^Kontakt\\s*\\n[\\s\\S]*$") |>
+    # HTML pages: strip "Emnebeskrivelsen er hentet fra..." line
+    stringr::str_remove_all("Emnebeskrivelsen er hentet fra[^\n]*") |>
+    # PDF pages: strip "EMNE ... Versjon ..." header line
+    stringr::str_remove_all("(?m)^\\s*EMNE\\s+\\S+\\s+\\S+\\s+Versjon[^\n]*") |>
+    # PDF pages: strip "Fagpersoner" section (heading + name lines with roles)
+    stringr::str_remove("(?s)Fagpersoner\\s*\\n.*?(?=\\n\\n|$)") |>
+    # PDF pages: strip "Powered by TCPDF..."
+    stringr::str_remove_all("Powered by TCPDF[^\n]*") |>
+    # PDF pages: strip "side N" page numbers
+    stringr::str_remove_all("(?m)^\\s*side\\s+\\d+\\s*$")
+}
+
+.pre_usn <- function(txt) {
+  txt |>
+    # Strip "Godkjent emneplan" heading + optional "Godkjent DD.MM.YYYY..." line
+    stringr::str_remove_all("(?m)^Godkjent emneplan\\s*$") |>
+    stringr::str_remove_all("(?m)^Godkjent\\s+\\d{1,2}\\.\\d{1,2}\\.\\d{4}[^\n]*")
+}
+
 # --- Generic normalization (all institutions) ---
 
 .normalize_generic <- function(txt) {
@@ -172,9 +208,9 @@ build_plan_id <- function(normalized_text, .progress = "Building plan IDs") {
     stringr::str_remove_all("\\b(19|20)\\d{2}\\b") |>
     # Remove times HH:MM(:SS)
     stringr::str_remove_all("\\b\\d{1,2}:\\d{2}(?::\\d{2})?\\b") |>
-    # Remove "Emneansvarlig(e): Name" (captures name up to next known heading)
+    # Remove "Emneansvarlig/Emneansvarleg(e): Name" (captures name up to next known heading)
     # Use \\p{L} (Unicode letter) to match accented names like Müller, Gjesdal
-    stringr::str_remove_all("Emneansvarlige?:?\\s*\\p{Lu}[\\p{L} .,-]+(?=\\s+(?:Undervisning|Varighet|Studiepoeng|Semester|Faglærer|Ansvarlig|$))") |>
+    stringr::str_remove_all("Emneansvarl(?:ig|eg)e?:?\\s*\\p{Lu}[\\p{L} .,-]+(?=\\s+(?:Undervisning|Varighet|Studiepoeng|Semester|Faglærer|Ansvarlig|$))") |>
     # Remove "Faglærer(e): Name" (same approach)
     stringr::str_remove_all("Faglærer[e]?:?\\s*\\p{Lu}[\\p{L} .,-]+(?=\\s+(?:Undervisning|Varighet|Studiepoeng|Semester|Ansvarlig|$))") |>
     # Remove "Godkjent av: Name" (same approach)
