@@ -1,6 +1,41 @@
 # R/extract_fulltext.R
 
-# CSS selectors by extraction mode
+#' Config-driven CSS extraction (replaces institution-specific dispatching)
+#'
+#' @param html Character vector of raw HTML strings
+#' @param selector CSS selector string
+#' @param mode "single" (html_element) or "multi" (html_elements, collapsed)
+#' @param pre_fn Optional function applied to HTML string before parsing
+#' @param post_fn Optional function applied to extracted text after parsing
+#' @return Character vector of extracted text (NA where extraction fails)
+extract_fulltext_css <- function(html, selector, mode = "single",
+                                 pre_fn = NULL, post_fn = NULL) {
+  safe_extract <- purrr::possibly(function(h) {
+    if (!is.null(pre_fn)) h <- pre_fn(h)
+    doc <- rvest::read_html(h)
+    text <- if (mode == "single") {
+      node <- rvest::html_element(doc, selector)
+      if (length(node) == 0) return(NA_character_)
+      rvest::html_text2(node)
+    } else {
+      nodes <- rvest::html_elements(doc, selector)
+      if (length(nodes) == 0) return(NA_character_)
+      txt <- rvest::html_text2(nodes)
+      txt <- txt[nzchar(txt)]
+      if (length(txt) == 0) return(NA_character_)
+      paste(txt, collapse = "\n")
+    }
+    if (!is.null(post_fn)) text <- post_fn(text)
+    if (is.na(text) || !nzchar(text)) NA_character_ else text
+  }, otherwise = NA_character_)
+
+  purrr::map_chr(html, function(h) {
+    if (is.na(h) || !nzchar(h)) return(NA_character_)
+    safe_extract(h)
+  })
+}
+
+# CSS selectors by extraction mode (legacy — used by extract_fulltext())
 .selectors <- list(
   single = list(
     oslomet  = "#main-content",

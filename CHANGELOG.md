@@ -51,6 +51,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Phase 1: Create R/institution_config.R with all 20 institution configs (#151)
+- Phase 2: Extract strategy functions into R/harvest_strategies.R (#152)
+- Implement harvest_pdf_split() for Steiner (#158)
+- Implement harvest_html_pdf_discovery() for UiS (#157)
+- Refactor extract_fulltext.R to config-driven extract_fulltext_css() (#156)
 - OsloMet MAMUS4100: Appears under two institutes in courses.RDS (#122)
 - Stage uncommitted R changes from prior sessions (#140)
 - HiOF: Document Litteraturlister in fulltext in data_notes (#128)
