@@ -51,6 +51,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Config-driven harvest pipeline refactor (#150)
+- Phase 5: Verify refactored output matches existing data (#155)
 - Phase 4: Delete old scripts and config files (#154)
 - Phase 3: Create R/harvest.R with harvest_institution() and harvest_all() (#153)
 - Implement ensure_output_columns() for uniform output shape (#160)
