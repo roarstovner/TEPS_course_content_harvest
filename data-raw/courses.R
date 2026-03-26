@@ -1,11 +1,12 @@
 ## code to prepare `courses` dataset goes here
 
-institution_short <- function(institution_code, cfg = NULL){
-  if(is.null(cfg)) cfg <- yaml::yaml.load_file(input = "config/institutions.yaml")
-  
-  lookup <- unlist(cfg$aliases)
-  
-  lookup[institution_code]
+institution_short <- function(institution_code) {
+  source("R/institution_config.R", local = TRUE)
+  lookup <- vapply(institution_configs, \(x) x$code, character(1))
+  # Invert: code -> name
+  names(lookup) <- NULL
+  inv <- setNames(names(institution_configs), vapply(institution_configs, \(x) x$code, character(1)))
+  inv[institution_code]
 }
 
 studieprogram <- rdbhapi::dbh_data(

@@ -18,15 +18,25 @@ Before starting, gather:
 
 ## Procedure
 
-### Step 1: Add institution mapping to config/institutions.yaml
+### Step 1: Add config entry to R/institution_config.R
 
-Add the institution code to short name mapping:
+Add a new entry to the `institution_configs` list:
 
-```yaml
-institutions:
-  # ... existing entries ...
-  "1234": "newuni"
+```r
+newuni = list(
+  code = "1234",
+  strategy = "standard",          # or url_discovery, shadow_dom, etc.
+  selector = ".main-content",     # CSS selector for course plan content
+  selector_mode = "single",       # "single" (html_element) or "multi" (html_elements)
+  year_in_url = TRUE              # FALSE if institution doesn't use year in URLs
+)
 ```
+
+Optional config fields:
+- `pre_fn`: Function applied to HTML before parsing (e.g., `.add_table_cell_breaks`)
+- `post_fn`: Function applied to extracted text after parsing (e.g., `.post_ntnu`)
+- `fetch_fn`: Custom fetch function (e.g., `fetch_html_cols_single_ntnu`)
+- `user_agent`: `"browser"` to use browser User-Agent (e.g., HiOF needs this to avoid 403)
 
 ### Step 2: Add URL builder to R/add_course_url.R
 
@@ -51,124 +61,64 @@ Adapt the URL pattern based on actual institution URLs. Check if the institution
 - Requires lowercase/uppercase course codes
 - Has different URL patterns for historical courses
 
-### Step 3: Add CSS selector to config/selectors.yaml
-
-```yaml
-selectors:
-  # ... existing entries ...
-  newuni:
-    fulltext: ".main-content"  # Adjust to actual selector
-    course_name_no: "h1"       # Selector for course title
-```
-
-**Finding the right selector:**
-- Use browser DevTools (F12) to inspect the course page
-- Use SelectorGadget browser extension
-- Test selector returns complete course info without extraneous content
-- Some institutions need multiple selectors (use comma-separated list)
-
-### Step 4: Add extraction function to R/extract_fulltext.R
-
-1. Add safe wrapper near the top with other safe_extract functions:
+### Step 3: Test with harvest_institution()
 
 ```r
-safe_extract_newuni <- purrr::possibly(extract_fulltext_newuni, otherwise = NA_character_)
-```
-
-2. Add case to the switch statement in `extract_fulltext()`:
-
-```r
-"newuni" = safe_extract_newuni(html),
-```
-
-3. Add extraction function at the bottom:
-
-```r
-extract_fulltext_newuni <- function(raw_html) {
-  .extract_one(raw_html, ".main-content")  # Use selector from Step 3
-}
-```
-
-Use `.extract_many()` instead if content is spread across multiple elements (accordions, tabs, etc.):
-
-```r
-extract_fulltext_newuni <- function(raw_html) {
-  .extract_many(raw_html, c(".section-1", ".section-2", ".section-3"))
-}
-```
-
-### Step 5: Test with small sample
-
-```r
+source("R/institution_config.R")
 source("R/utils.R")
 source("R/add_course_url.R")
+source("R/resolve_course_urls.R")
 source("R/fetch_html_cols.R")
 source("R/extract_fulltext.R")
 source("R/checkpoint.R")
+source("R/harvest_strategies.R")
+source("R/harvest.R")
 
-# Load and filter test data
-test <- readRDS("data/courses.RDS") |>
-  filter(institution_short == "newuni") |>
-  slice(1:3) |>
-  add_course_id() |>
-  add_course_url()
+courses <- readRDS("data/courses.RDS")
 
-# Verify URLs look correct
-test |> select(Emnekode, Årstall, Semesternavn, url)
+# Test with a specific year first
+result <- harvest_institution("newuni", courses, year = 2025)
 
-# Test fetching
-test <- fetch_html_with_checkpoint(
-  test,
-  checkpoint_path = "data/checkpoint/test_newuni.RDS"
-)
-test |> count(html_success)
-
-# Test extraction
-test$fulltext <- extract_fulltext(test$institution_short, test$html)
-test$fulltext[1]  # Inspect result
+# Inspect results
+result |> dplyr::select(Emnekode, url, html_success, fulltext) |> head()
+result$fulltext[1]  # Inspect extracted text
 ```
 
-### Step 6: Expand testing gradually
-
-Once small sample works, test by year:
+### Step 4: Run full harvest
 
 ```r
-test_2020 <- readRDS("data/courses.RDS") |>
-  filter(institution_short == "newuni", Årstall == 2020) |>
-  add_course_id() |>
-  add_course_url()
-
-# Continue with fetch and extraction...
+# Harvest all years
+result <- harvest_institution("newuni", courses)
+saveRDS(result, "data/html_newuni.RDS")
 ```
 
-Add more years progressively as validation succeeds.
-
-### Step 7: Run full harvest
-
-Add to `R/run_harvest.R` or create institution-specific script if needed:
-
-```r
-# In run_harvest.R, add to institutions vector:
-institutions <- c(..., "newuni")
-```
+Or include in `harvest_all()` — it will automatically pick up the new config entry.
 
 ## Special Cases
 
-### Institution requires URL discovery (like USN)
+### Institution requires URL discovery (like UiT, USN)
 
 If URLs can't be determined from metadata alone:
-1. Have `add_course_url_newuni()` return `NA_character_`
-2. Add resolver function to `R/resolve_course_urls.R`
-3. Add case to `resolve_course_urls()` dispatch
-4. Create institution-specific harvest script
+1. Set `strategy = "url_discovery"` in config
+2. Have `add_course_url_newuni()` return `NA_character_`
+3. Add resolver function to `R/resolve_course_urls.R`
+4. Add case to `resolve_course_urls()` dispatch
 
-### Institution uses JavaScript rendering
+### Institution uses JavaScript rendering (like USN)
 
-If content is loaded via JavaScript:
-1. Use `rvest::read_html_live()` instead of `httr2`
-2. Add custom fetch logic in `R/fetch_html_cols.R`
-3. May need to handle Shadow DOM (see USN implementation)
+If content is loaded via JavaScript/Shadow DOM:
+1. Set `strategy = "shadow_dom"` in config
+2. Add custom strategy function in `R/harvest_strategies.R`
 
 ### Institution has "no content" detection (like NTNU)
 
-Add error detection in fetch function to identify pages that exist but have no course info.
+Add a custom `fetch_fn` to the config that detects empty/error pages and raises an error.
+
+### Institution needs multiple CSS selectors
+
+Set `selector_mode = "multi"` in config and use a comma-separated CSS selector string:
+
+```r
+selector = ".section-1, .section-2, .accordion-body",
+selector_mode = "multi"
+```

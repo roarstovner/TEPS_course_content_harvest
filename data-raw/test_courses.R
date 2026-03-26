@@ -1,8 +1,11 @@
 ## code to prepare `test_courses` dataset goes here
 courses <- readRDS("data/courses.RDS")
 
-cfg <- yaml::yaml.load_file(input = "config/institutions.yaml")
-institusjonskoder <- cfg$aliases |> unlist()
+source("R/institution_config.R", local = TRUE)
+institusjonskoder <- setNames(
+  names(institution_configs),
+  vapply(institution_configs, \(x) x$code, character(1))
+)
 
 test_courses <- courses |> 
   dplyr::filter(

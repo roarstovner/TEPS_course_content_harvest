@@ -9,7 +9,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is an R-based web scraping pipeline that harvests course descriptions from Norwegian higher education institutions. It takes course metadata (institution, course code, year, semester) and produces structured data with URLs, HTML, and extracted text from institutional course webpages.
 
 **Input:** Course metadata from `data/courses.RDS` (typically sourced from DBH database via rdbhapi)
-**Output:** Same data with added `url`, `html`, and `fulltext` columns (plus `fulltext_no` for non-Norwegian institutions like Samas)
+**Output:** Same data with added `url`, `html`, and `fulltext` columns
 
 ## Core Pipeline Architecture
 
@@ -42,28 +42,21 @@ This is an R-based web scraping pipeline that harvests course descriptions from 
    - Checkpoints stored in `data/checkpoint/html_{institution}.RDS`
 
 5. **Text Extraction** (`R/extract_fulltext.R`)
-   - Uses institution-specific CSS selectors from `config/selectors.yaml`
-   - Two helper functions: `.extract_one()` for single elements, `.extract_many()` for multiple
+   - Config-driven: `extract_fulltext_css()` uses selector and mode from institution config
+   - Pre/post processing functions referenced directly in config (e.g., `pre_fn = .add_table_cell_breaks`)
    - Wrapped in `purrr::possibly()` for safe execution (returns NA on failure)
 
 ### Main Entry Points
 
-- **`R/run_harvest.R`**: Loop-based processing of standard institutions (skips those needing special handling)
-- **`R/run_harvest_usn.R`**: USN-specific workflow with URL version discovery
-- **`R/run_harvest_uio.R`**: UiO-specific workflow (or other institutions needing tailored processing)
+- **`R/harvest.R`**: `harvest_institution()` harvests a single institution; `harvest_all()` loops all
+- Both dispatch to strategy functions in `R/harvest_strategies.R` via config from `R/institution_config.R`
 
-## Configuration Files
+### Institution Configuration (`R/institution_config.R`)
 
-### `config/institutions.yaml`
-- Maps institution codes (e.g., "1175") to short names (e.g., "oslomet")
-- Semester style conventions per institution
+Single source of truth for all institution config — a plain R list, no YAML files.
+Each institution declares: strategy, CSS selectors, selector mode, `year_in_url`, pre/post functions, fetch overrides.
 
-### `config/selectors.yaml`
-- CSS selectors for text extraction per institution
-- `fulltext`: Main content selector
-- `course_name_no`: Course name/title selector
-
-**Important:** When institutions change their website structure, update selectors here first, then test extraction.
+**Important:** When institutions change their website structure, update selectors in `R/institution_config.R`, then test extraction.
 
 ## Key Functions
 
@@ -85,69 +78,57 @@ Extracts rendered text content from a USN LiveHTML session by traversing Shadow 
 ### `fetch_html_with_checkpoint(courses, checkpoint_path, .progress)` - R/checkpoint.R:28
 Downloads HTML for courses not already in checkpoint. Automatically skips completed courses and handles failures gracefully.
 
-### `extract_fulltext(institution_short, raw_html)` - R/extract_fulltext.R:3
-Extracts clean text from HTML using institution-specific CSS selectors. Returns character vector with extracted text.
+### `harvest_institution(institution_short, courses, year, refetch)` - R/harvest.R:14
+Main entry point for harvesting a single institution. Reads config, filters courses, dispatches to the appropriate strategy function, and ensures uniform output columns.
+
+### `harvest_all(courses, year, refetch, institutions)` - R/harvest.R:56
+Loops through all (or specified) institutions, calls `harvest_institution()` for each, saves results to `data/html_{inst}.RDS`.
+
+### `extract_fulltext_css(html, selector, mode, pre_fn, post_fn)` - R/extract_fulltext.R:11
+Config-driven CSS extraction. Replaces the old institution-dispatching `extract_fulltext()`. Takes selector and mode from institution config.
+
+### `get_institution_config(inst)` - R/institution_config.R:173
+Returns the config list for an institution. Config includes strategy, selector, selector_mode, year_in_url, pre/post functions, fetch overrides.
 
 ### `validate_courses(df, stage)` - R/utils.R:55
 Validates required columns exist at pipeline stages: "initial", "with_url", "with_html".
 
 ## Running the Pipeline
 
-### Basic workflow for a single institution:
+### Harvest a single institution:
 
 ```r
-source("R/utils.R")
-source("R/fetch_html_cols.R")
-source("R/extract_fulltext.R")
-source("R/add_course_url.R")
-source("R/checkpoint.R")
-
-courses <- readRDS("data/courses.RDS")
-
-df <- courses |>
-  filter(institution_short == "hivolda") |>
-  add_course_id() |>
-  validate_courses("initial") |>
-  add_course_url() |>
-  validate_courses("with_url")
-
-df <- fetch_html_with_checkpoint(
-  df,
-  checkpoint_path = "data/checkpoint/html_hivolda.RDS"
-)
-
-df$fulltext <- extract_fulltext(df$institution_short, df$html)
-saveRDS(df, "data/html_hivolda.RDS")
-```
-
-### USN workflow (with URL discovery):
-```r
-source("R/run_harvest_usn.R")  # Handles URL version discovery
-```
-
-Or manually:
-```r
+source("R/institution_config.R")
 source("R/utils.R")
 source("R/add_course_url.R")
 source("R/resolve_course_urls.R")
+source("R/fetch_html_cols.R")
 source("R/extract_fulltext.R")
+source("R/checkpoint.R")
+source("R/harvest_strategies.R")
+source("R/harvest.R")
 
 courses <- readRDS("data/courses.RDS")
-
-df <- courses |>
-  filter(institution_short == "usn") |>
-  add_course_id() |>
-  add_course_url() |>  # Returns NA for USN
-  resolve_course_urls(checkpoint_path = "data/checkpoint/usn_urls.RDS")  # Discovers URLs AND fetches HTML
-
-# No fetch_html_with_checkpoint needed - HTML already captured during URL resolution
-df$fulltext <- extract_fulltext(df$institution_short, df$html)
-saveRDS(df, "data/html_usn.RDS")
+result <- harvest_institution("hivolda", courses)
+saveRDS(result, "data/html_hivolda.RDS")
 ```
 
-### Run all standard institutions:
+### Harvest a specific year:
+
 ```r
-source("R/run_harvest.R")  # Loops through standard institutions (skips USN, UiO)
+result <- harvest_institution("oslomet", courses, year = 2025)
+```
+
+### Re-harvest (ignore checkpoints):
+
+```r
+result <- harvest_institution("ntnu", courses, refetch = TRUE)
+```
+
+### Harvest all institutions:
+
+```r
+harvest_all()  # Reads courses.RDS, loops all institutions, saves results
 ```
 
 ### Regenerate data quality notes:
@@ -161,11 +142,11 @@ Edit `data/data_notes.qmd` directly to update per-institution prose notes.
 
 Use the `/add-institution` skill for step-by-step guidance on adding support for a new institution. The procedure involves:
 
-1. Add institution mapping to `config/institutions.yaml`
+1. Add config entry to `R/institution_config.R` (strategy, selector, year_in_url, etc.)
 2. Add URL builder function to `R/add_course_url.R`
-3. Add CSS selector to `config/selectors.yaml`
-4. Add extraction function to `R/extract_fulltext.R`
-5. Test with small sample, then expand gradually
+3. Test with `harvest_institution("newuni", courses)`
+
+For standard institutions, no changes to `extract_fulltext.R` or `harvest_strategies.R` are needed — the config-driven pipeline handles it automatically. Complex strategies (shadow DOM, PDF split, etc.) need custom strategy functions in `R/harvest_strategies.R`.
 
 See `.claude/skills/add-institution.md` for detailed instructions and code templates.
 
@@ -228,7 +209,7 @@ Used in older code but current pipeline uses `Emnekode_raw` to preserve granular
   - If version 1's teaching start > requested year → course didn't exist yet, stop checking
 - Returns NA when no version exists for that year/semester (course wasn't offered)
 - Uses `rvest::read_html_live()` for JavaScript rendering (hash fragment routing)
-- Uses its own harvest script: `R/run_harvest_usn.R`
+- Uses `shadow_dom` strategy in `R/harvest_strategies.R`
 
 **Shadow DOM**: USN renders course content inside Shadow DOM (web components). Standard `html_text()` cannot access this content. Use `read_usn_live_html(session)` to extract content:
 ```r
@@ -248,37 +229,30 @@ The function uses JavaScript to recursively traverse shadow roots and extract te
 - Historical URL pattern: `https://uit.no/utdanning/emner/emne?p_document_id={ID}`
 - Discontinued courses (status 3/4) still have working active pages with dropdowns
 - Same CSS selector works for both active and historical pages
-- Uses standard harvest pipeline in `run_harvest.R` (with `resolve_course_urls()` for URL discovery)
+- Uses `url_discovery` strategy (with `resolve_course_urls()` for URL discovery)
 
 ### Samas (Sámi University)
-- Course plans are in Sami (North/Lule/South Sami), not Norwegian
-- `fulltext` contains the original Sami text; `fulltext_no` contains the Norwegian translation
-- Translation is a separate post-harvest step using `R/translate_samas.R`
-- Uses `ellmer::batch_chat_text()` with Anthropic Claude Sonnet for cost-effective batch translation
-- Batch checkpoint stored in `data/checkpoint/samas_translation_batch.json`
+- Uses `noop` strategy — fulltext is set to NA (course plans are in Sami, not Norwegian)
 
 ### Institutions with Multiple CSS Selectors
-Some institutions (nord, uib, uis, usn) need `.extract_many()` to capture content from multiple elements because course info is spread across accordions or sections.
+Some institutions (nord, uib, uis, uit) use `selector_mode = "multi"` to capture content from multiple elements because course info is spread across accordions or sections.
 
 ## File Structure
 
 ```
 R/
-├── run_harvest.R          # Main loop: process standard institutions
-├── run_harvest_usn.R      # USN-specific workflow with URL discovery
-├── run_harvest_uio.R      # UiO-specific workflow
+├── harvest.R              # Entry points: harvest_institution(), harvest_all()
+├── harvest_strategies.R   # Strategy implementations: harvest_standard(), harvest_shadow_dom(), etc.
+├── institution_config.R   # Institution registry: strategy, selectors, pre/post fns, fetch overrides
 ├── utils.R                # add_course_id, validate_courses, normalization
 ├── add_course_url.R       # Institution-specific URL builders
 ├── resolve_course_urls.R  # URL discovery for institutions needing trial-and-error
 ├── fetch_html_cols.R      # HTML downloading with httr2
-├── extract_fulltext.R     # CSS selector-based text extraction
-├── translate_samas.R      # Sami→Norwegian translation via ellmer + Anthropic batch API
+├── extract_fulltext.R     # extract_fulltext_css() (config-driven), extract_nla_json(), helpers
 ├── checkpoint.R           # Checkpoint read/write/resume logic
-└── generate_data_notes.R  # (deprecated, replaced by data/data_notes.qmd)
-
-config/
-├── institutions.yaml      # Institution metadata and URL patterns
-└── selectors.yaml         # CSS selectors per institution
+├── normalize_plan_text.R  # Dedup preprocessing
+├── deduplicate_plans.R    # Dedup pipeline
+└── run_dedup.R            # Dedup entry point
 
 data/
 ├── courses.RDS            # Input: course metadata
@@ -289,8 +263,7 @@ data/
 ├── data_notes.md          # Data quality documentation (rendered from data_notes.qmd)
 └── checkpoint/
     ├── html_{inst}.RDS    # HTML fetch checkpoints
-    ├── usn_urls.RDS       # USN URL discovery checkpoint
-    └── samas_translation_batch.json  # Anthropic batch API state for Samas translations
+    └── urls_{inst}.RDS    # URL discovery checkpoints
 
 data-raw/
 └── courses.R              # Script to create courses.RDS
@@ -304,8 +277,8 @@ data-raw/
 
 ### Empty or wrong extracted text?
 - Verify CSS selector using browser dev tools on actual course page
-- Update config/selectors.yaml if website structure changed
-- Check if institution needs `.extract_many()` instead of `.extract_one()`
+- Update selector in `R/institution_config.R` if website structure changed
+- Check if institution needs `selector_mode = "multi"` instead of `"single"`
 - Some institutions have different structures for different years
 
 ### HTML download fails?
