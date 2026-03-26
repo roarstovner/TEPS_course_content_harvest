@@ -3,7 +3,7 @@ canon_remove_trailing_num <- function(x) {
 }
 
 canon_semester_name <- function(semester_name) {
-  case_match(
+  dplyr::case_match(
     semester_name,
     "Vår" ~ "spring",
     "Høst" ~ "autumn",

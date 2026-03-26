@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- Add progress bar to fetch_html_with_checkpoint instead of per-row messages (#161)
 
 - UIS: Harvest historical course plans from PDF archive (#127)
 - Re-harvest NORD with year-specific URLs (#129)
@@ -31,6 +32,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Deduplicate course plans across years (#38)
 
 ### Fixed
+- Namespace-qualify case_match in canon_semester_name (#162)
 - Fix UiA fulltext: add proper linebreaks to make text readable (#145)
 - Fix Steiner fulltext: remove page number artifacts like 'Siden 12 av 15' (#144)
 - Fix INN fulltext: investigate and remove 'NameCreditsDateComment' artifact (#143)

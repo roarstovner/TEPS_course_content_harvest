@@ -1,5 +1,7 @@
 ## code to prepare `courses` dataset goes here
 
+source("R/utils.R", local = TRUE)
+
 institution_short <- function(institution_code) {
   source("R/institution_config.R", local = TRUE)
   lookup <- vapply(institution_configs, \(x) x$code, character(1))
@@ -31,7 +33,7 @@ courses_list <- lapply(studieprogramkode_chunks, function(chunk) {
   )
 })
 
-courses <- do.call(rbind, emner_list)
+courses <- do.call(rbind, courses_list)
 
 courses <- courses |> 
   dplyr::mutate(

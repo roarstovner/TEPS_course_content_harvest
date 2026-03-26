@@ -83,7 +83,13 @@ fetch_html_with_checkpoint <- function(courses,
   }
   
   # 4) Hent HTML én om gangen med inkrementell checkpoint
-  for (i in seq_len(nrow(to_fetch))) {
+  n <- nrow(to_fetch)
+  if (.progress) pb <- progress::progress_bar$new(
+    format = "  Fetching [:bar] :current/:total (:percent) ETA: :eta",
+    total = n, clear = FALSE
+  )
+
+  for (i in seq_len(n)) {
     row <- to_fetch[i, ]
     html_cols <- fetch_html_cols(
       urls        = row$url,
@@ -100,9 +106,7 @@ fetch_html_with_checkpoint <- function(courses,
     checkpoint <- dplyr::bind_rows(checkpoint, fetched_row)
     write_checkpoint(checkpoint, checkpoint_path)
 
-    if (.progress) {
-      message(sprintf("[%d/%d] %s", i, nrow(to_fetch), row$course_id))
-    }
+    if (.progress) pb$tick()
   }
 
   checkpoint <- dplyr::distinct(checkpoint, course_id, .keep_all = TRUE)
