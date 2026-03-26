@@ -18,17 +18,18 @@
 #'
 #' @export
 #' @noRd
-fetch_html_cols <- function(urls, institution = NULL, .progress = "Fetching HTML") {
+fetch_html_cols <- function(urls, institution = NULL, config = NULL,
+                            .progress = "Fetching HTML") {
   is_valid <- !is.na(urls) & nzchar(urls)
-  
+
   if (is.null(institution)) {
     institution <- rep(NA_character_, length(urls))
   }
-  
+
   http_resps <- purrr::map2(
     urls[is_valid],
     institution[is_valid],
-    purrr::safely(function(url, inst) fetch_html_cols_single(url, inst)),
+    purrr::safely(function(url, inst) fetch_html_cols_single(url, inst, config)),
     .progress = .progress
   )
   
@@ -53,9 +54,15 @@ fetch_html_cols <- function(urls, institution = NULL, .progress = "Fetching HTML
   tibble::tibble(html = html, html_error = html_error, html_success = html_success)
 }
 
-fetch_html_cols_single <- function(url, institution = NULL) {
-  # Institution-specific overrides (optional)
-  if (!is.null(institution)) {
+fetch_html_cols_single <- function(url, institution = NULL, config = NULL) {
+  # Config-driven fetch: use fetch_fn if provided
+
+  if (!is.null(config) && !is.null(config$fetch_fn)) {
+    return(config$fetch_fn(url))
+  }
+
+  # Legacy fallback: institution-specific overrides (for callers without config)
+  if (!is.null(institution) && is.null(config)) {
     resp <- switch(
       institution,
       "ntnu" = fetch_html_cols_single_ntnu(url),
@@ -64,9 +71,11 @@ fetch_html_cols_single <- function(url, institution = NULL) {
     )
     if (!is.null(resp)) return(resp)
   }
-  
-  # Default fetch
-  ua <- if (!is.null(institution) && institution == "hiof") {
+
+  # User agent: config-driven or legacy fallback
+  ua <- if (!is.null(config) && !is.null(config$user_agent) && config$user_agent == "browser") {
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+  } else if (is.null(config) && !is.null(institution) && institution == "hiof") {
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
   } else {
     "TEPS research project - https://uni.oslomet.no/teps/ - robast@oslomet.no"

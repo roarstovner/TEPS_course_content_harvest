@@ -42,7 +42,7 @@ harvest_standard <- function(df, config, refetch = FALSE) {
   cp <- strategy_checkpoint_path(config, "html")
   clear_if_refetch(cp, refetch)
 
-  df <- fetch_html_with_checkpoint(df, checkpoint_path = cp)
+  df <- fetch_html_with_checkpoint(df, checkpoint_path = cp, config = config)
 
   df$fulltext <- extract_fulltext_css(
     df$html,
@@ -68,7 +68,7 @@ harvest_url_discovery <- function(df, config, refetch = FALSE) {
   df <- resolve_course_urls(df, checkpoint_path = url_cp)
 
   # Fetch HTML
-  df <- fetch_html_with_checkpoint(df, checkpoint_path = html_cp)
+  df <- fetch_html_with_checkpoint(df, checkpoint_path = html_cp, config = config)
 
   # Extract fulltext
   df$fulltext <- extract_fulltext_css(
@@ -188,7 +188,8 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
   df_html <- df_matched |> dplyr::filter(url_type == "html", !is.na(url))
 
   if (nrow(df_html) > 0) {
-    df_html <- fetch_html_with_checkpoint(df_html, checkpoint_path = html_cp)
+    df_html <- fetch_html_with_checkpoint(df_html, checkpoint_path = html_cp,
+                                           config = config)
     df_html$fulltext <- extract_fulltext_css(
       df_html$html,
       config$selector,
@@ -473,7 +474,8 @@ harvest_json_extract <- function(df, config, refetch = FALSE) {
     dplyr::filter(!is.na(url)) |>
     dplyr::mutate(course_id = paste0("nla_", Emnekode))
 
-  unique_fetched <- fetch_html_with_checkpoint(unique_codes, checkpoint_path = html_cp)
+  unique_fetched <- fetch_html_with_checkpoint(unique_codes, checkpoint_path = html_cp,
+                                                 config = config)
 
   # Join HTML back to all rows by Emnekode
   html_lookup <- unique_fetched |>

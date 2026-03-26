@@ -41,7 +41,8 @@ checkpoint_append_row <- function(row, path) {
 #' @return courses tibble with html, html_error, html_success columns added
 fetch_html_with_checkpoint <- function(courses,
                                        checkpoint_path = "data/checkpoint/checkpoint_html.RDS",
-                                       .progress = TRUE) {
+                                       .progress = TRUE,
+                                       config = NULL) {
   # 0) Guardrails: vi forventer disse kolonnene
   if (!all(c("course_id", "url", "institution_short") %in% names(courses))) {
     stop("courses must contain: course_id, url, institution_short")
@@ -87,6 +88,7 @@ fetch_html_with_checkpoint <- function(courses,
     html_cols <- fetch_html_cols(
       urls        = row$url,
       institution = row$institution_short,
+      config      = config,
       .progress   = FALSE
     )
     fetched_row <- dplyr::bind_cols(
