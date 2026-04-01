@@ -100,31 +100,6 @@ anonymize_fulltext <- function(institution_short, fulltext,
   # Filter placeholder/error pages as NA
   if (grepl("Emnesøket gjelder kun fra", txt, fixed = TRUE)) return(NA_character_)
 
-  inn_labels <- c(
-    "Startsemestre", "Startsemester", "Emnekode", "Studiepoeng",
-    "Undervisningssemestre", "Undervisnings- og eksamensspråk",
-    "Undervisningssted", "Forkunnskapskrav", "Anbefalte forkunnskaper",
-    "Krav til forkunnskaper",
-    "Emnets innhold", "Læringsutbytte", "Kunnskap", "Ferdigheter",
-    "Generell kompetanse", "Arbeids- og undervisningsformer",
-    "Eksamen", "Vurderingsordning", "Vurderingsformer",
-    "Pensum", "Arbeidskrav", "Emneansvarlig", "Sist revidert",
-    "Course code", "Number of credits", "Teaching semester",
-    "Language of instruction and examination",
-    "Campus", "Required prerequisite knowledge",
-    "Course content", "Learning outcomes", "Learning outcome",
-    "Knowledge", "Skills",
-    "General competence", "Teaching and working methods",
-    "Examination", "Reading list", "Course coordinator",
-    "Compulsory activities", "Work requirements",
-    "Assessment methods", "Teaching and learning activities",
-    "Obligatoriske aktiviteter"
-  )
-
-  for (label in inn_labels) {
-    txt <- gsub(label, "", txt, fixed = TRUE)
-  }
-
   txt |>
     stringr::str_remove_all("NameCreditsDateComment") |>
     stringr::str_remove_all("(?m)^Name\\s*$") |>

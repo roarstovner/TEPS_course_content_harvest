@@ -272,21 +272,21 @@ test_that("INN: placeholder pages return NA", {
   expect_true(is.na(result))
 })
 
-test_that("INN: field labels stripped", {
-  input <- "ABC123\nEmnekode\nABC123\nStudiepoeng\n15\nEmnets innhold\nViktig faglig innhold"
+test_that("INN: structural headings preserved for readability", {
+  input <- "Emnekode\nABC123\nStudiepoeng\n15\nEmnets innhold\nViktig faglig innhold"
   result <- anonymize_fulltext("inn", input, .progress = FALSE)
-  expect_false(grepl("Emnekode", result))
-  expect_false(grepl("Studiepoeng", result))
-  expect_false(grepl("Emnets innhold", result))
+  expect_true(grepl("Emnekode", result))
+  expect_true(grepl("Studiepoeng", result))
+  expect_true(grepl("Emnets innhold", result))
   expect_true(grepl("Viktig faglig innhold", result))
 })
 
-test_that("INN: English field labels stripped", {
+test_that("INN: English structural headings preserved for readability", {
   input <- "Course code\nABC123\nNumber of credits\n15\nCourse content\nImportant content"
   result <- anonymize_fulltext("inn", input, .progress = FALSE)
-  expect_false(grepl("Course code", result))
-  expect_false(grepl("Number of credits", result))
-  expect_false(grepl("Course content", result))
+  expect_true(grepl("Course code", result))
+  expect_true(grepl("Number of credits", result))
+  expect_true(grepl("Course content", result))
   expect_true(grepl("Important content", result))
 })
 

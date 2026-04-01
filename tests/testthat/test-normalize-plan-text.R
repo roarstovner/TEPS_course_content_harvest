@@ -19,17 +19,44 @@ test_that("vectorized input works", {
 })
 
 test_that("tolower is applied", {
-  expect_equal(normalize_plan_text("KUNNSKAP om Faget"), "kunnskap om faget")
+  expect_equal(normalize_plan_text("STUDENTEN Skal Lære"), "studenten skal lære")
 })
 
 test_that("KUNNSKAP and Kunnskap normalize identically", {
   a <- normalize_plan_text("KUNNSKAP om faget")
   b <- normalize_plan_text("Kunnskap om faget")
   expect_equal(a, b)
+  # Both should have "kunnskap" stripped (structural heading)
+  expect_false(grepl("kunnskap", a))
 })
 
 test_that("whitespace is squished", {
   expect_equal(normalize_plan_text("  Mye   ekstra    mellomrom  "), "mye ekstra mellomrom")
+})
+
+test_that("structural heading labels are stripped", {
+  result <- normalize_plan_text("Emnekode ABC123 Studiepoeng 15 Emnets innhold Viktig tekst")
+  expect_false(grepl("emnekode", result))
+  expect_false(grepl("studiepoeng", result))
+  expect_false(grepl("emnets innhold", result))
+  expect_true(grepl("abc123", result))
+  expect_true(grepl("viktig tekst", result))
+})
+
+test_that("English structural heading labels are stripped", {
+  result <- normalize_plan_text("Course code ABC123 Number of credits 15 Course content Important")
+  expect_false(grepl("course code", result))
+  expect_false(grepl("number of credits", result))
+  expect_false(grepl("course content", result))
+  expect_true(grepl("abc123", result))
+  expect_true(grepl("important", result))
+})
+
+test_that("learning outcome and learning outcomes both stripped", {
+  a <- normalize_plan_text("Learning outcome: understand concepts")
+  b <- normalize_plan_text("Learning outcomes: understand concepts")
+  expect_false(grepl("learning outcome", a))
+  expect_false(grepl("learning outcomes", b))
 })
 
 test_that("eksamensformer replaced with vurderingsformer", {

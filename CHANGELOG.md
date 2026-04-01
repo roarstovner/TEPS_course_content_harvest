@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- Move INN heading stripping from anonymize to normalize layer (#169)
 - Update README.qmd and CLAUDE.md to document anonymization pipeline (#165)
 - Add anonymize_fulltext() to produce readable course_plan column (#164)
 - Add progress bar to fetch_html_with_checkpoint instead of per-row messages (#161)

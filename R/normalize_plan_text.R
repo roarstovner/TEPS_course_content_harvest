@@ -15,6 +15,29 @@ normalize_plan_text <- function(course_plan, .progress = "Normalize plan texts")
 
     txt |>
       tolower() |>
+      # Remove structural heading labels (lossy — these are section headers, not content)
+      # Covers Norwegian and English headings found across institutions (esp. INN)
+      stringr::str_remove_all(paste0("\\b(", paste(collapse = "|", c(
+        # Norwegian headings
+        "startsemestre", "startsemester", "emnekode", "studiepoeng",
+        "undervisningssemestre", "undervisnings- og eksamensspråk",
+        "undervisningssted", "forkunnskapskrav", "anbefalte forkunnskaper",
+        "krav til forkunnskaper",
+        "emnets innhold", "læringsutbytte", "kunnskap", "ferdigheter",
+        "generell kompetanse", "arbeids- og undervisningsformer",
+        "eksamen", "vurderingsordning", "vurderingsformer",
+        "pensum", "arbeidskrav", "emneansvarlig", "sist revidert",
+        "obligatoriske aktiviteter",
+        # English headings
+        "course code", "number of credits", "teaching semester",
+        "language of instruction and examination",
+        "campus", "required prerequisite knowledge",
+        "course content", "learning outcomes?", "knowledge", "skills",
+        "general competence", "teaching and working methods",
+        "examination", "reading list", "course coordinator",
+        "compulsory activities", "work requirements",
+        "assessment methods", "teaching and learning activities"
+      )), ")\\b")) |>
       # Remove all standalone season words (lossy — "vår" = "our" is acceptable loss here)
       stringr::str_remove_all("\\b(høst|vår|haust|autumn|spring|sommer|summer)\\b") |>
       stringr::str_replace_all("\\beksamensformer\\b", "vurderingsformer") |>
