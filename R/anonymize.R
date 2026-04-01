@@ -208,12 +208,6 @@ anonymize_fulltext <- function(institution_short, fulltext,
     stringr::str_remove_all("\\b(19|20)\\d{2}\\b") |>
     # Remove times HH:MM(:SS)
     stringr::str_remove_all("\\b\\d{1,2}:\\d{2}(?::\\d{2})?\\b") |>
-    # Remove "Emneansvarlig/Emneansvarleg(e): Name"
-    stringr::str_remove_all("Emneansvarl(?:ig|eg)e?:?\\s*\\p{Lu}[\\p{L} .,-]+(?=\\s+(?:Undervisning|Varighet|Studiepoeng|Semester|Faglærer|Ansvarlig|$))") |>
-    # Remove "Faglærer(e): Name"
-    stringr::str_remove_all("Faglærer[e]?:?\\s*\\p{Lu}[\\p{L} .,-]+(?=\\s+(?:Undervisning|Varighet|Studiepoeng|Semester|Ansvarlig|$))") |>
-    # Remove "Godkjent av: Name"
-    stringr::str_remove_all("Godkjent av:?\\s*\\p{Lu}[\\p{L} .,-]+(?=\\s+(?:Undervisning|Varighet|Studiepoeng|Semester|Kunnskap|Læringsutbytte|Ansvarlig|$))") |>
     # Remove JS artifacts
     stringr::str_remove_all("function\\s*\\([^)]*\\)\\s*\\{[^}]*\\}") |>
     stringr::str_remove_all("\\$\\([^)]+\\)\\.[^;]+;") |>
