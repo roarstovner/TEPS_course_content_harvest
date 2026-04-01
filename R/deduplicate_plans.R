@@ -6,20 +6,20 @@
 #' plus the original data with plan_content_id added.
 #'
 #' @param df Combined data frame from all html_*.RDS files.
-#' @param .progress Passed to normalize_plan_text for progress reporting.
+#'   Must include a `course_plan` column (from anonymize_fulltext).
 #' @return A list with two elements:
 #'   - `plans`: Tibble of unique plans (plan_content_id, institution_short, Emnekode,
-#'              fulltext_normalized, year_from, year_to)
+#'              course_plan, fulltext_normalized, year_from, year_to)
 #'   - `courses`: The original df with plan_content_id column added.
 deduplicate_plans <- function(df) {
   stopifnot(
-    all(c("institution_short", "Emnekode", "Årstall", "fulltext") %in% names(df))
+    all(c("institution_short", "Emnekode", "Årstall", "course_plan") %in% names(df))
   )
 
-  # Add normalized text and plan ID
+  # Normalize anonymized text and build plan ID
   courses <- df |>
     dplyr::mutate(
-      fulltext_normalized = normalize_plan_text(institution_short, fulltext),
+      fulltext_normalized = normalize_plan_text(course_plan),
       plan_content_id = build_plan_id(fulltext_normalized)
     )
 
@@ -31,7 +31,7 @@ deduplicate_plans <- function(df) {
     dplyr::summarise(
       year_from = min(Årstall),
       year_to = max(Årstall),
-      fulltext = dplyr::first(fulltext),
+      course_plan = dplyr::first(course_plan),
       fulltext_normalized = dplyr::first(fulltext_normalized),
       .groups = "drop"
     )

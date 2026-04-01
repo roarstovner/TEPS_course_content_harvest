@@ -4,6 +4,7 @@
 library(dplyr)
 
 # Source required functions
+source("R/anonymize.R")
 source("R/normalize_plan_text.R")
 source("R/deduplicate_plans.R")
 
@@ -17,7 +18,14 @@ courses_raw <- html_files |>
 
 cat("Loaded", nrow(courses_raw), "course rows from", length(html_files), "files\n\n")
 
-# Run deduplication
+# Anonymize fulltext -> course_plan
+cat("Anonymizing fulltext...\n")
+courses_raw$course_plan <- anonymize_fulltext(
+  courses_raw$institution_short,
+  courses_raw$fulltext
+)
+
+# Run deduplication (normalizes course_plan and builds plan IDs)
 cat("Running deduplication...\n")
 result <- deduplicate_plans(courses_raw)
 

@@ -93,6 +93,15 @@ Returns the config list for an institution. Config includes strategy, selector, 
 ### `validate_courses(df, stage)` - R/utils.R:55
 Validates required columns exist at pipeline stages: "initial", "with_url", "with_html".
 
+### `anonymize_fulltext(institution_short, fulltext)` - R/anonymize.R:14
+Removes PII (names, emails, phone numbers), dates, years, seasons, and institution-specific boilerplate from raw fulltext. Returns readable anonymized text preserving case and paragraph structure. Uses institution-specific handlers (`.anon_*()`) followed by generic cleanup (`.anon_generic()`).
+
+### `normalize_plan_text(course_plan)` - R/normalize_plan_text.R:14
+Applies lossy dedup-specific transforms on already-anonymized `course_plan`: `tolower()`, heading synonym normalization ("eksamensformer" → "vurderingsformer"), and `str_squish()`. No longer takes `institution_short` parameter.
+
+### `deduplicate_plans(df)` - R/deduplicate_plans.R:14
+Takes combined data with `course_plan` column, normalizes text, builds content hashes, and produces a plan lookup table. Returns list with `plans` (unique plans) and `courses` (original data with `plan_content_id`).
+
 ## Running the Pipeline
 
 ### Harvest a single institution:
@@ -130,6 +139,14 @@ result <- harvest_institution("ntnu", courses, refetch = TRUE)
 ```r
 harvest_all()  # Reads courses.RDS, loops all institutions, saves results
 ```
+
+### Anonymize and deduplicate:
+
+```r
+source("R/run_dedup.R")  # Loads html_*.RDS, anonymizes fulltext → course_plan, deduplicates
+```
+
+Pipeline: `fulltext` → `course_plan` (anonymized, readable) → `fulltext_normalized` (lossy, for hashing)
 
 ### Regenerate data quality notes:
 ```bash
@@ -250,9 +267,10 @@ R/
 ├── fetch_html_cols.R      # HTML downloading with httr2
 ├── extract_fulltext.R     # extract_fulltext_css() (config-driven), extract_nla_json(), helpers
 ├── checkpoint.R           # Checkpoint read/write/resume logic
-├── normalize_plan_text.R  # Dedup preprocessing
-├── deduplicate_plans.R    # Dedup pipeline
-└── run_dedup.R            # Dedup entry point
+├── anonymize.R            # PII removal: fulltext → course_plan (readable, anonymized)
+├── normalize_plan_text.R  # Lossy normalization for dedup hashing (tolower + synonyms + squish)
+├── deduplicate_plans.R    # Groups identical plans by content hash
+└── run_dedup.R            # Entry point: anonymize + normalize + dedup pipeline
 
 data/
 ├── courses.RDS            # Input: course metadata

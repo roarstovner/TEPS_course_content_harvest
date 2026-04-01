@@ -16,61 +16,66 @@ extracted full text
 
 ## Quick Start: Running the Pipeline
 
-The main pipeline is in `R/run_harvest.R`. Here’s the basic workflow:
+The main entry points are in `R/harvest.R`:
 
 ``` r
-# 1. Load required functions
+# Load all pipeline functions
+source("R/institution_config.R")
 source("R/utils.R")
+source("R/add_course_url.R")
+source("R/resolve_course_urls.R")
 source("R/fetch_html_cols.R")
 source("R/extract_fulltext.R")
-source("R/add_course_url.R")
 source("R/checkpoint.R")
+source("R/harvest_strategies.R")
+source("R/harvest.R")
 
-# 2. Load course data
+# Harvest a single institution
 courses <- readRDS("data/courses.RDS")
+result <- harvest_institution("hivolda", courses)
+saveRDS(result, "data/html_hivolda.RDS")
 
-# 3. Filter to the institution you want to process
-courses <- courses |> 
-  filter(institution_short == "hivolda") |>  # Change this to your institution
-  add_course_id() |> 
-  validate_courses("initial") |>
-  add_course_url() |> 
-  validate_courses("with_url")
-
-# 4. Fetch HTML (with automatic checkpointing). If this fails, just run it again, and it will start where it failed.
-courses <- fetch_html_with_checkpoint(
-  courses,
-  checkpoint_path = "data/checkpoint/html_hivolda.RDS"  # One file per institution
-)
-
-# 5. Extract full text from HTML
-fulltext <- extract_fulltext(courses$institution_short, courses$html)
+# Or harvest all institutions at once
+harvest_all()
 ```
 
-### What Each Step Does
+### What Happens Under the Hood
 
-1.  **`add_course_id()`**: Creates unique identifiers for each course
-2.  **`validate_courses()`**: Checks that required columns exist
-3.  **`add_course_url()`**: Generates the correct URL for each course
-4.  **`fetch_html_with_checkpoint()`**: Downloads HTML (skips
-    already-downloaded courses)
-5.  **`extract_fulltext()`**: Extracts clean text from HTML using CSS
-    selectors
+1.  **`get_institution_config()`**: Looks up strategy, CSS selectors,
+    and overrides
+2.  **`apply_year_filter()`**: Filters to relevant years based on config
+3.  **`add_course_id()`**: Creates unique identifiers for each course
+4.  **`add_course_url()`**: Generates the correct URL for each course
+5.  **Strategy dispatch**: Routes to the right harvesting strategy
+    (standard, URL discovery, etc.)
+6.  **`ensure_output_columns()`**: Guarantees uniform output shape
 
 ### About Checkpointing
 
 The pipeline uses **checkpointing** to avoid re-downloading data. If the
 script stops or crashes:
 
--   Already-downloaded HTML is saved in checkpoint_path, which should be
-    updated to `data/checkpoint/html_{institution}.RDS`
--   Re-running the script will skip courses already in the checkpoint
--   This saves time and is polite to institutional servers
+- Already-downloaded HTML is saved in checkpoint_path, which should be
+  updated to `data/checkpoint/html_{institution}.RDS`
+- Re-running the script will skip courses already in the checkpoint
+- This saves time and is polite to institutional servers
 
 ## Adding a New Institution
 
-To add support for a new institution, you need to modify **two key
-files**:
+To add support for a new institution, you need to modify **two files**:
+
+### 1. Add config entry to `R/institution_config.R`
+
+``` r
+# Add to the institution_configs list:
+newuni = list(
+  code = "1234",
+  strategy = "standard",          # or url_discovery, shadow_dom, etc.
+  selector = ".main-content",     # CSS selector for course plan content
+  selector_mode = "single",       # "single" or "multi"
+  year_in_url = TRUE
+)
+```
 
 **How to find CSS selectors:**
 
@@ -81,27 +86,13 @@ files**:
     https://rvest.tidyverse.org/articles/selectorgadget.html
 5.  Test your selector to make sure it captures all course text
 
-For one particularly gnarly selector, asking an LLM with thinking
-enabled to return “the full info about Emneplan, but without extraneous
-elements” got the right selector.
+### 2. Add URL builder to `R/add_course_url.R`
 
-### 1. Update `R/add_course_url.R`
-
-Add a case for your institution and create a URL-building function.
+Add a case to `case_match()` and create a URL-building function:
 
 ``` r
-add_course_url <- function(df) {
-  df |>
-    mutate(
-      url = case_match(
-        institution_short,
-        "hiof" ~ add_course_url_hiof(Emnekode, Årstall, Semesternavn),
-        "hivolda" ~ add_course_url_hivolda(Emnekode),
-        "newuni" ~ add_course_url_newuni(Emnekode, Årstall, Semesternavn),  # Add this
-        .default = NA_character_
-      )
-    )
-}
+# In add_course_url(), add:
+"newuni" ~ add_course_url_newuni(Emnekode, Årstall, Semesternavn),
 
 # Create a helper function for your institution
 add_course_url_newuni <- function(course_code, year, semester) {
@@ -110,73 +101,80 @@ add_course_url_newuni <- function(course_code, year, semester) {
 }
 ```
 
-Add the institution’s URL pattern:
-
-**URL pattern tokens** you can use: - `{year}` - Year (e.g., “2024”) -
-`{semester}` - Semester label - `{course_code}` - Original course code -
-`{tolower(code_lower)}` - Course code in lowercase
-
-### 2. Update `R/extract_fulltext.R`
-
-Add a case for extracting text from your institution’s HTML:
-
-``` r
-extract_fulltext <- function(institution_short, raw_html) {
-  purrr::map2_chr(institution_short, raw_html, \(inst, html) {
-    if(is.na(html)) {
-      return(NA_character_)
-    }
-
-    switch(
-      inst,
-      "hivolda" = extract_fulltext_hivolda(html),
-      "newuni" = extract_fulltext_newuni(html),  # Add this
-      "unsupported institution"
-    )
-  })
-}
-
-# Create extraction function using the correct CSS selector
-extract_fulltext_newuni <- function(raw_html) {
-  raw_html |> 
-    rvest::read_html() |> 
-    rvest::html_elements(".main-content") |> 
-    rvest::html_text2()
-}
-```
-
 ### 3. Test Your Changes
 
-Run the pipeline with a small sample from your new institution:
-
 ``` r
-# Test with a few courses first
-test_courses <- readRDS("data/courses.RDS") |>
-  filter(institution_short == "newuni") |>
-  slice(1:3) |>  # Just 3 courses for testing
-  add_course_id() |>
-  add_course_url()
+# Load pipeline and test
+courses <- readRDS("data/courses.RDS")
+result <- harvest_institution("newuni", courses, year = 2025)
 
-# Check URLs look correct
-test_courses |> select(Emnekode, Årstall, Semesternavn, url)
-
-# Try fetching HTML
-test_courses <- fetch_html_with_checkpoint(
-  test_courses,
-  checkpoint_path = "data/checkpoint/test_newuni.RDS"
-)
-
-# Check if HTML was retrieved
-test_courses |> count(html_success)
-
-# Try extracting text
-fulltext <- extract_fulltext(test_courses$institution_short, test_courses$html)
-fulltext[1]  # Inspect first result
+# Inspect results
+result |> select(Emnekode, url, html_success, fulltext) |> head()
+result$fulltext[1]  # Inspect first result
 ```
 
-Expand a little bit at a time, for example by year:
-`filter(Årstall %in% c(2017, 2018))` Add more years as the pipeline
-works.
+Expand a little bit at a time, for example by year. Add more years as
+the pipeline works.
+
+## Post-Harvest: Anonymization and Deduplication
+
+After harvesting, run `R/run_dedup.R` to anonymize and deduplicate
+course plans:
+
+``` r
+source("R/run_dedup.R")
+```
+
+This runs a three-stage pipeline:
+
+1.  **Anonymize** (`anonymize_fulltext()`): Removes PII (teacher names,
+    emails, phone numbers), dates, years, and seasons from `fulltext`,
+    producing a readable `course_plan` column
+2.  **Normalize** (`normalize_plan_text()`): Applies lossy transforms
+    (lowercasing, heading synonyms, whitespace squishing) on
+    `course_plan` for content hashing
+3.  **Deduplicate** (`deduplicate_plans()`): Groups identical normalized
+    texts under a shared `plan_content_id`
+
+**Output columns:**
+
+<table>
+<colgroup>
+<col style="width: 38%" />
+<col style="width: 61%" />
+</colgroup>
+<thead>
+<tr>
+<th>Column</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>course_plan</code></td>
+<td>Anonymized, readable text (primary column for consumers)</td>
+</tr>
+<tr>
+<td><code>fulltext</code></td>
+<td>Raw extracted text (kept for debugging)</td>
+</tr>
+<tr>
+<td><code>fulltext_normalized</code></td>
+<td>Lossy normalized text (internal, for hashing)</td>
+</tr>
+<tr>
+<td><code>plan_content_id</code></td>
+<td>SHA-256 hash of <code>fulltext_normalized</code></td>
+</tr>
+</tbody>
+</table>
+
+**Output files:**
+
+- `data/courses_with_plan_id.RDS` — all course rows with `course_plan` +
+  `plan_content_id`
+- `data/plan_lookup.RDS` — one row per unique plan per course code per
+  institution
 
 ## Data Structure
 
@@ -212,11 +210,14 @@ offered)
 
 After processing, you’ll have:
 
-    # A tibble: 2 × 5
-      course_id                    url                   html  html_success fulltext
-      <chr>                        <chr>                 <chr> <lgl>        <chr>   
-    1 oslomet_ABC123_2024_autumn_1 https://student.oslo… <htm… TRUE         ABC123 …
-    2 oslomet_XYZ456_2024_spring_1 https://student.oslo… <htm… TRUE         XYZ456 …
+    # A tibble: 2 × 6
+      course_id                    url       html  html_success fulltext course_plan
+      <chr>                        <chr>     <chr> <lgl>        <chr>    <chr>      
+    1 oslomet_ABC123_2024_autumn_1 https://… <htm… TRUE         ABC123 … ABC123 Cou…
+    2 oslomet_XYZ456_2024_spring_1 https://… <htm… TRUE         XYZ456 … XYZ456 Ano…
+
+- `course_plan` is the anonymized version of `fulltext` (no names,
+  emails, dates, or years). Use this column for analysis.
 
 ## Key Functions Reference
 
@@ -235,10 +236,15 @@ patterns.
 Downloads HTML from URLs with automatic checkpointing. Skips
 already-downloaded courses.
 
-### `extract_fulltext(institution_short, raw_html)`
+### `harvest_institution(institution_short, courses, year, refetch)`
 
-Extracts clean text from raw HTML using institution-specific CSS
-selectors.
+Main entry point: harvests a single institution using its configured
+strategy.
+
+### `harvest_all(courses, year, refetch, institutions)`
+
+Loops through all (or specified) institutions, harvests each, saves
+results.
 
 ### `validate_courses(df, stage)`
 
@@ -257,8 +263,9 @@ verify: `courses |> select(url) |> head()`
 automated requests
 
 **Extracted text is empty or wrong?** - Verify your CSS selector using
-browser dev tools - Check `config/selectors.yaml` matches the HTML
-structure - Some pages may have different structures for different years
+browser dev tools - Update selector in `R/institution_config.R` if
+website structure changed - Some pages may have different structures for
+different years
 
 **Checkpoint file is huge?** - This is normal - HTML is large -
 Checkpoint files are in `.gitignore` and won’t be committed
@@ -266,20 +273,24 @@ Checkpoint files are in `.gitignore` and won’t be committed
 ## File Organization
 
     ├── R/
-    │   ├── run_harvest.R           # Main pipeline script
-    │   ├── utils.R                 # Helper functions (add_course_id, validation)
-    │   ├── add_course_url.R        # URL generation logic
-    │   ├── fetch_html_cols.R       # HTML downloading
-    │   ├── extract_fulltext.R      # Text extraction
-    │   └── checkpoint.R            # Checkpoint management
-    ├── config/
-    │   ├── institutions.yaml       # URL patterns and aliases
-    │   └── selectors.yaml          # CSS selectors per institution
+    │   ├── harvest.R              # Entry points: harvest_institution(), harvest_all()
+    │   ├── harvest_strategies.R   # Strategy implementations
+    │   ├── institution_config.R   # Institution registry (strategy, selectors, overrides)
+    │   ├── utils.R                # Helper functions (add_course_id, validation)
+    │   ├── add_course_url.R       # URL generation logic
+    │   ├── resolve_course_urls.R  # URL discovery for USN, UiT, etc.
+    │   ├── fetch_html_cols.R      # HTML downloading
+    │   ├── extract_fulltext.R     # Config-driven text extraction
+    │   ├── checkpoint.R           # Checkpoint management
+    │   ├── anonymize.R            # PII removal: fulltext → course_plan
+    │   ├── normalize_plan_text.R  # Lossy normalization for dedup hashing
+    │   ├── deduplicate_plans.R    # Groups identical plans by content hash
+    │   └── run_dedup.R            # Entry point for anonymize + dedup pipeline
     ├── data/
-    │   ├── courses.RDS             # Input course data
-    │   └── checkpoint/             # Checkpoint files (not in git)
+    │   ├── courses.RDS            # Input course data
+    │   └── checkpoint/            # Checkpoint files (not in git)
     └── data-raw/
-        └── courses.R               # script that creates courses.RDS
+        └── courses.R              # script that creates courses.RDS
 
 ## Need Help?
 

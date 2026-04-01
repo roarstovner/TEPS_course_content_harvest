@@ -121,6 +121,35 @@ result$fulltext[1]  # Inspect first result
 
 Expand a little bit at a time, for example by year. Add more years as the pipeline works.
 
+## Post-Harvest: Anonymization and Deduplication
+
+After harvesting, run `R/run_dedup.R` to anonymize and deduplicate course plans:
+
+```{r}
+#| eval: false
+source("R/run_dedup.R")
+```
+
+This runs a three-stage pipeline:
+
+1. **Anonymize** (`anonymize_fulltext()`): Removes PII (teacher names, emails, phone numbers), dates, years, and seasons from `fulltext`, producing a readable `course_plan` column
+2. **Normalize** (`normalize_plan_text()`): Applies lossy transforms (lowercasing, heading synonyms, whitespace squishing) on `course_plan` for content hashing
+3. **Deduplicate** (`deduplicate_plans()`): Groups identical normalized texts under a shared `plan_content_id`
+
+**Output columns:**
+
+| Column | Description |
+|--------|-------------|
+| `course_plan` | Anonymized, readable text (primary column for consumers) |
+| `fulltext` | Raw extracted text (kept for debugging) |
+| `fulltext_normalized` | Lossy normalized text (internal, for hashing) |
+| `plan_content_id` | SHA-256 hash of `fulltext_normalized` |
+
+**Output files:**
+
+- `data/courses_with_plan_id.RDS` — all course rows with `course_plan` + `plan_content_id`
+- `data/plan_lookup.RDS` — one row per unique plan per course code per institution
+
 ## Data Structure
 
 ### Input Data (`data/courses.RDS`)
@@ -147,12 +176,14 @@ After processing, you'll have:
 ```{r}
 #| echo: false
 output <- tribble(
-  ~course_id, ~url, ~html, ~html_success, ~fulltext,
-  "oslomet_ABC123_2024_autumn_1", "https://student.oslomet.no/...", "<html>...</html>", TRUE, "ABC123 Course Description...",
-  "oslomet_XYZ456_2024_spring_1", "https://student.oslomet.no/...", "<html>...</html>", TRUE, "XYZ456 Another course..."
+  ~course_id, ~url, ~html, ~html_success, ~fulltext, ~course_plan,
+  "oslomet_ABC123_2024_autumn_1", "https://student.oslomet.no/...", "<html>...</html>", TRUE, "ABC123 Course Description...", "ABC123 Course Description...",
+  "oslomet_XYZ456_2024_spring_1", "https://student.oslomet.no/...", "<html>...</html>", TRUE, "XYZ456 Another course...", "XYZ456 Another course..."
 )
 output
 ```
+
+- `course_plan` is the anonymized version of `fulltext` (no names, emails, dates, or years). Use this column for analysis.
 
 ## Key Functions Reference
 
@@ -209,7 +240,11 @@ Validates that required columns exist at each pipeline stage:
 │   ├── resolve_course_urls.R  # URL discovery for USN, UiT, etc.
 │   ├── fetch_html_cols.R      # HTML downloading
 │   ├── extract_fulltext.R     # Config-driven text extraction
-│   └── checkpoint.R           # Checkpoint management
+│   ├── checkpoint.R           # Checkpoint management
+│   ├── anonymize.R            # PII removal: fulltext → course_plan
+│   ├── normalize_plan_text.R  # Lossy normalization for dedup hashing
+│   ├── deduplicate_plans.R    # Groups identical plans by content hash
+│   └── run_dedup.R            # Entry point for anonymize + dedup pipeline
 ├── data/
 │   ├── courses.RDS            # Input course data
 │   └── checkpoint/            # Checkpoint files (not in git)
