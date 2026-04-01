@@ -15,6 +15,8 @@ normalize_plan_text <- function(course_plan, .progress = "Normalize plan texts")
 
     txt |>
       tolower() |>
+      # Remove all standalone season words (lossy — "vår" = "our" is acceptable loss here)
+      stringr::str_remove_all("\\b(høst|vår|haust|autumn|spring|sommer|summer)\\b") |>
       stringr::str_replace_all("\\beksamensformer\\b", "vurderingsformer") |>
       stringr::str_squish()
   }, .progress = .progress)

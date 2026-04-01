@@ -34,6 +34,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Deduplicate course plans across years (#38)
 
 ### Fixed
+- Season word removal corrupts content (vår=our) (#168)
 - Namespace-qualify case_match in canon_semester_name (#162)
 - Fix UiA fulltext: add proper linebreaks to make text readable (#145)
 - Fix Steiner fulltext: remove page number artifacts like 'Siden 12 av 15' (#144)
@@ -55,6 +56,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Fix test-normalize-plan-text.R broken by old 2-arg signature (#175)
+- Add tests for anonymize_fulltext() (#167)
 - Config-driven harvest pipeline refactor (#150)
 - Phase 5: Verify refactored output matches existing data (#155)
 - Phase 4: Delete old scripts and config files (#154)

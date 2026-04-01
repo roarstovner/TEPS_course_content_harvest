@@ -218,6 +218,15 @@ anonymize_fulltext <- function(institution_short, fulltext,
     stringr::str_remove_all("\\+47\\s*\\d[\\d ]{6,}") |>
     # Remove Norwegian date-time format: "12. feb. 2026 02:50:04"
     stringr::str_remove_all("\\d{1,2}\\.\\s*(?:jan|feb|mar|apr|mai|jun|jul|aug|sep|okt|nov|des)\\.?\\s*\\d{4}\\s*\\d{2}:\\d{2}(?::\\d{2})?") |>
+    # Remove 2-digit season+year patterns (e.g. "Høst23", "Vår 22")
+    stringr::str_remove_all("(?i)(høst|vår|haust|autumn|spring)\\s*\\d{2}\\b") |>
+    # Remove season words in semester context (next to year or semester keywords)
+    # e.g. "Høst 2024", "2024 Vår", "Undervisningssemester: Vår", "Semester: Autumn"
+    # Must run BEFORE year removal so "Høst 2024" matches as a unit
+    # Preserves "vår" meaning "our" in normal prose
+    stringr::str_remove_all("(?i)(høst|vår|haust|autumn|spring|sommer|summer)\\s+(\\d{4})") |>
+    stringr::str_remove_all("(?i)(\\d{4})\\s+(høst|vår|haust|autumn|spring|sommer|summer)") |>
+    stringr::str_remove_all("(?i)(?<=(?:semester|undervisning|oppstart|startsemester|eksamen)[:\\s]{0,3})(høst|vår|haust|autumn|spring|sommer|summer)") |>
     # Remove dates: dd.mm.yyyy
     stringr::str_remove_all("\\d{1,2}\\.\\d{1,2}\\.\\d{4}") |>
     # Remove 4-digit years
@@ -233,10 +242,6 @@ anonymize_fulltext <- function(institution_short, fulltext,
     # Remove JS artifacts
     stringr::str_remove_all("function\\s*\\([^)]*\\)\\s*\\{[^}]*\\}") |>
     stringr::str_remove_all("\\$\\([^)]+\\)\\.[^;]+;") |>
-    # Remove 2-digit season+year patterns (e.g. "Høst23", "Vår 22")
-    stringr::str_remove_all("(?i)(høst|vår|haust|autumn|spring)\\s*\\d{2}\\b") |>
-    # Remove standalone semester words
-    stringr::str_remove_all("(?i)\\b(høst|vår|haust|autumn|spring|sommer|summer)\\b") |>
     # Light whitespace cleanup: collapse 3+ newlines to 2, trim trailing spaces per line
     stringr::str_replace_all("(?m)[ \\t]+$", "") |>
     stringr::str_replace_all("\\n{3,}", "\n\n") |>
