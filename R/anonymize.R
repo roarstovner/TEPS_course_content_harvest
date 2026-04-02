@@ -42,6 +42,7 @@ anonymize_fulltext <- function(institution_short, fulltext,
     usn     = .anon_usn(txt),
     uib     = .anon_uib(txt),
     nmbu    = .anon_nmbu(txt),
+    uio     = .anon_uio(txt),
     txt
   )
 }
@@ -177,6 +178,13 @@ anonymize_fulltext <- function(institution_short, fulltext,
   txt |>
     # Strip "Emneansvarlig:Name" (colon directly followed by name, same line)
     stringr::str_remove_all("Emneansvarlig:?\\s*\\p{Lu}[\\p{L} .,-]+(?=\\n|$)")
+}
+
+.anon_uio <- function(txt) {
+  txt |>
+    # Strip person name before parenthesized email: "Tom Lindstrøm (lindstro@math.uio.no)"
+    # Keeps organizational names + emails (handled by generic email removal)
+    stringr::str_remove_all("\\p{Lu}\\p{Ll}+(?:\\s+\\p{Lu}\\p{Ll}+)+\\s*(?=\\([\\w.+-]+@)")
 }
 
 

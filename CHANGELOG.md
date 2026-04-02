@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- Spot-check 6 institutions without anon handler for PII leaks (#172)
 - Update CLAUDE.md docs for year removal layer change (#177)
 - Move blanket year removal from anonymize to normalize layer (#176)
 - Year removal hits non-year 4-digit numbers (#171)

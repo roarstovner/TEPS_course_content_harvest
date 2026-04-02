@@ -461,6 +461,28 @@ test_that("UiB: Eksamensadministrasjon line stripped", {
   expect_false(grepl("Eksamensadministrasjon", result))
 })
 
+# --- UiO ---
+
+test_that("UiO: person name before parenthesized email stripped", {
+  input <- "Ta kontakt med Tom Lindstrøm (lindstro@math.uio.no) for info"
+  result <- anonymize_fulltext("uio", input, .progress = FALSE)
+  expect_false(grepl("Tom Lindstrøm", result))
+  expect_true(grepl("Ta kontakt med", result))
+})
+
+test_that("UiO: multi-word person name before email stripped", {
+  input <- "kontakt med Anders Mattias Lundmark (a.m.lundmark@geo.uio.no) eller studieadmin"
+  result <- anonymize_fulltext("uio", input, .progress = FALSE)
+  expect_false(grepl("Anders Mattias Lundmark", result))
+  expect_true(grepl("studieadmin", result))
+})
+
+test_that("UiO: organizational name before email preserved", {
+  input <- "studieadministrasjonen ved Matematisk institutt (studieinfo@math.uio.no) for info"
+  result <- anonymize_fulltext("uio", input, .progress = FALSE)
+  expect_true(grepl("Matematisk institutt", result))
+})
+
 # --- NMBU ---
 
 test_that("NMBU: Emneansvarlig:Name stripped", {
