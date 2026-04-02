@@ -204,8 +204,15 @@ anonymize_fulltext <- function(institution_short, fulltext,
     stringr::str_remove_all("(?i)(?<=(?:semester|undervisning|oppstart|startsemester|eksamen)[:\\s]{0,3})(høst|vår|haust|autumn|spring|sommer|summer)") |>
     # Remove dates: dd.mm.yyyy
     stringr::str_remove_all("\\d{1,2}\\.\\d{1,2}\\.\\d{4}") |>
-    # Remove 4-digit years
-    stringr::str_remove_all("\\b(19|20)\\d{2}\\b") |>
+    # Remove years in administrative contexts only (content years like "etter 1945" preserved)
+    # Blanket year removal for dedup lives in normalize_plan_text()
+    # Admin keywords + year: "Opprettet 2020" → "Opprettet", "Gyldig fra 2023" → "Gyldig fra"
+    stringr::str_replace_all(
+      "(?i)(opprettet|oppdatert|revidert|vedtatt|godkjent|gjeldende(?: fra)?|gyldig(?: fra)?|sist (?:endret|revidert|oppdatert))\\s+\\d{4}\\b",
+      "\\1"
+    ) |>
+    # Remove academic year ranges: "2023/2024", "2023/24"
+    stringr::str_remove_all("\\b\\d{4}/\\d{2,4}\\b") |>
     # Remove times HH:MM(:SS)
     stringr::str_remove_all("\\b\\d{1,2}:\\d{2}(?::\\d{2})?\\b") |>
     # Remove JS artifacts

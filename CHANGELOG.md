@@ -7,6 +7,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- Update CLAUDE.md docs for year removal layer change (#177)
+- Move blanket year removal from anonymize to normalize layer (#176)
+- Year removal hits non-year 4-digit numbers (#171)
 - Audit generic name-after-label regexes — consider removing (#170)
 - Move INN heading stripping from anonymize to normalize layer (#169)
 - Update README.qmd and CLAUDE.md to document anonymization pipeline (#165)

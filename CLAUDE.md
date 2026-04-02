@@ -94,10 +94,10 @@ Returns the config list for an institution. Config includes strategy, selector, 
 Validates required columns exist at pipeline stages: "initial", "with_url", "with_html".
 
 ### `anonymize_fulltext(institution_short, fulltext)` - R/anonymize.R:14
-Removes PII (names, emails, phone numbers), dates, years, seasons, and institution-specific boilerplate from raw fulltext. Returns readable anonymized text preserving case and paragraph structure. Uses institution-specific handlers (`.anon_*()`) followed by generic cleanup (`.anon_generic()`).
+Removes PII (names, emails, phone numbers), dates, seasons, administrative year references (e.g., "Opprettet 2020", "2023/2024"), and institution-specific boilerplate from raw fulltext. Content years (e.g., "etter 1945", "NOU 2015:2") are preserved. Returns readable anonymized text preserving case and paragraph structure. Uses institution-specific handlers (`.anon_*()`) followed by generic cleanup (`.anon_generic()`).
 
 ### `normalize_plan_text(course_plan)` - R/normalize_plan_text.R:14
-Applies lossy dedup-specific transforms on already-anonymized `course_plan`: `tolower()`, heading synonym normalization ("eksamensformer" → "vurderingsformer"), and `str_squish()`. No longer takes `institution_short` parameter.
+Applies lossy dedup-specific transforms on already-anonymized `course_plan`: `tolower()`, heading synonym normalization ("eksamensformer" → "vurderingsformer"), blanket 4-digit year removal, and `str_squish()`. No longer takes `institution_short` parameter.
 
 ### `deduplicate_plans(df)` - R/deduplicate_plans.R:14
 Takes combined data with `course_plan` column, normalizes text, builds content hashes, and produces a plan lookup table. Returns list with `plans` (unique plans) and `courses` (original data with `plan_content_id`).
@@ -268,7 +268,7 @@ R/
 ├── extract_fulltext.R     # extract_fulltext_css() (config-driven), extract_nla_json(), helpers
 ├── checkpoint.R           # Checkpoint read/write/resume logic
 ├── anonymize.R            # PII removal: fulltext → course_plan (readable, anonymized)
-├── normalize_plan_text.R  # Lossy normalization for dedup hashing (tolower + synonyms + squish)
+├── normalize_plan_text.R  # Lossy normalization for dedup hashing (tolower + synonyms + year removal + squish)
 ├── deduplicate_plans.R    # Groups identical plans by content hash
 └── run_dedup.R            # Entry point: anonymize + normalize + dedup pipeline
 

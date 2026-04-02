@@ -132,8 +132,8 @@ source("R/run_dedup.R")
 
 This runs a three-stage pipeline:
 
-1. **Anonymize** (`anonymize_fulltext()`): Removes PII (teacher names, emails, phone numbers), dates, years, and seasons from `fulltext`, producing a readable `course_plan` column
-2. **Normalize** (`normalize_plan_text()`): Applies lossy transforms (lowercasing, heading synonyms, whitespace squishing) on `course_plan` for content hashing
+1. **Anonymize** (`anonymize_fulltext()`): Removes PII (teacher names, emails, phone numbers), dates, seasons, and administrative year references from `fulltext`, producing a readable `course_plan` column. Content years (e.g., "etter 1945") are preserved.
+2. **Normalize** (`normalize_plan_text()`): Applies lossy transforms (lowercasing, heading synonyms, blanket year removal, whitespace squishing) on `course_plan` for content hashing
 3. **Deduplicate** (`deduplicate_plans()`): Groups identical normalized texts under a shared `plan_content_id`
 
 **Output columns:**
@@ -183,7 +183,7 @@ output <- tribble(
 output
 ```
 
-- `course_plan` is the anonymized version of `fulltext` (no names, emails, dates, or years). Use this column for analysis.
+- `course_plan` is the anonymized version of `fulltext` (no names, emails, dates, or administrative years). Content years like historical references are preserved. Use this column for analysis.
 
 ## Key Functions Reference
 

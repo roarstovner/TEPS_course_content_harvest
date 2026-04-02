@@ -91,6 +91,18 @@ test_that("sommer/summer removed", {
   expect_true(grepl("sommerkurs", result))
 })
 
+test_that("4-digit years are removed (lossy)", {
+  result <- normalize_plan_text("Utviklingen i Europa etter 1945 og finanskrisen i 2008")
+  expect_false(grepl("1945|2008", result))
+  expect_true(grepl("utviklingen i europa etter", result))
+})
+
+test_that("plans differing only in year normalize identically", {
+  a <- normalize_plan_text("Godkjent Pensum for studieåret. Opprettet Læringsutbytte")
+  b <- normalize_plan_text("Godkjent Pensum for studieåret. Opprettet Læringsutbytte")
+  expect_equal(a, b)
+})
+
 # --- build_plan_id ---
 
 test_that("same input produces same hash", {

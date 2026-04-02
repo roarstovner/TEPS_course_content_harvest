@@ -51,9 +51,50 @@ test_that("phone numbers with Tlf prefix are removed", {
   expect_false(grepl("22 85 50 00", result))
 })
 
-test_that("4-digit years are removed", {
+test_that("administrative years after keywords are removed", {
   result <- anonymize_fulltext("hivolda", "Opprettet 2020 og oppdatert 2023", .progress = FALSE)
   expect_false(grepl("2020|2023", result))
+  expect_true(grepl("Opprettet", result))
+  expect_true(grepl("oppdatert", result))
+})
+
+test_that("years after various admin keywords are removed", {
+  cases <- list(
+    c("Revidert 2022", "Revidert"),
+    c("Vedtatt 2021", "Vedtatt"),
+    c("Godkjent 2023", "Godkjent"),
+    c("Gjeldende fra 2024", "Gjeldende fra"),
+    c("Gyldig fra 2023", "Gyldig fra"),
+    c("Sist endret 2022", "Sist endret"),
+    c("Sist revidert 2021", "Sist revidert")
+  )
+  for (case in cases) {
+    result <- anonymize_fulltext("hivolda", case[1], .progress = FALSE)
+    expect_false(grepl("\\d{4}", result), info = paste("Year not removed from:", case[1]))
+    expect_true(grepl(case[2], result, ignore.case = TRUE),
+                info = paste("Keyword lost from:", case[1]))
+  }
+})
+
+test_that("academic year ranges are removed", {
+  result <- anonymize_fulltext("hivolda", "Pensum for 2023/2024 og 2024/25", .progress = FALSE)
+  expect_false(grepl("2023/2024", result))
+  expect_false(grepl("2024/25", result))
+})
+
+test_that("content years are preserved", {
+  cases <- c(
+    "Studenten skal kunne de viktigste utviklingene i Europa etter 1945",
+    "Finanskrisen i 2008 er sentral",
+    "Litteratur fra 2000-tallet",
+    "Se NOU 2015:2 for bakgrunn",
+    "Jf. LOV-2005-04-01-15",
+    "Oppgaven skal være på 2000 ord"
+  )
+  for (input in cases) {
+    result <- anonymize_fulltext("hivolda", input, .progress = FALSE)
+    expect_true(grepl("(19|20)\\d{2}", result), info = paste("Content year removed from:", input))
+  }
 })
 
 test_that("dates dd.mm.yyyy are removed", {
@@ -432,7 +473,7 @@ test_that("NMBU: Emneansvarlig:Name stripped", {
 # --- Unknown institution ---
 
 test_that("unknown institution applies only generic anonymization", {
-  input <- "Kurs med info@test.no og telefon 2023"
+  input <- "Kurs med info@test.no oppdatert 2023"
   result <- anonymize_fulltext("unknown_inst", input, .progress = FALSE)
   expect_false(grepl("info@test\\.no", result))
   expect_false(grepl("2023", result))
