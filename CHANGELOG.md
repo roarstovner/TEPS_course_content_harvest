@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- Document or remove OsloMet semicolon replacement (#174)
 - Spot-check 6 institutions without anon handler for PII leaks (#172)
 - Update CLAUDE.md docs for year removal layer change (#177)
 - Move blanket year removal from anonymize to normalize layer (#176)
@@ -40,6 +41,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Deduplicate course plans across years (#38)
 
 ### Fixed
+- Fix variable name bug in data-raw/courses.R (#163)
 - Season word removal corrupts content (vår=our) (#168)
 - Namespace-qualify case_match in canon_semester_name (#162)
 - Fix UiA fulltext: add proper linebreaks to make text readable (#145)

@@ -360,11 +360,19 @@ test_that("OsloMet: Emneansvarlig + name stripped", {
   expect_true(grepl("Innhold", result))
 })
 
-test_that("OsloMet: semicolons replaced with spaces", {
-  input <- "Tema1;Tema2;Tema3"
+test_that("OsloMet: bare semicolons (2022 artifacts) are removed", {
+  input <- "Innhold\n;\nMer tekst\n ; \nSlutt"
   result <- anonymize_fulltext("oslomet", input, .progress = FALSE)
-  expect_false(grepl(";", result))
-  expect_true(grepl("Tema1 Tema2 Tema3", result))
+  expect_false(grepl("(?m)^\\s*;\\s*$", result, perl = TRUE))
+  expect_true(grepl("Innhold", result))
+  expect_true(grepl("Slutt", result))
+})
+
+test_that("OsloMet: content semicolons are preserved", {
+  input <- "Tema1; Tema2 og ulike tilnærminger; Tema3"
+  result <- anonymize_fulltext("oslomet", input, .progress = FALSE)
+  expect_true(grepl(";", result))
+  expect_true(grepl("Tema1; Tema2", result))
 })
 
 # --- MF ---

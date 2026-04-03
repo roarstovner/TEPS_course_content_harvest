@@ -116,7 +116,9 @@ anonymize_fulltext <- function(institution_short, fulltext,
   if (grepl("Siden du leter etter finnes ikke", txt, fixed = TRUE)) return(NA_character_)
 
   txt |>
-    stringr::str_replace_all(";", " ") |>
+    # Remove bare semicolons (2022 website rendering artifacts); preserve real punctuation
+    stringr::str_remove_all("(?m)^\\s*;\\s*$") |>
+    stringr::str_remove_all("(?<=\\s);(?=\\s)") |>
     # Strip "Emneansvarlig\n\nName" (label line + following name line)
     stringr::str_remove("(?m)^Emneansvarlig[ \\t]*\\n+\\p{Lu}[\\p{L} .,-]+(?=\\n|$)")
 }
