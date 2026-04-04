@@ -15,7 +15,7 @@ This project harvests course descriptions from Norwegian teacher education insti
 
 **Input:** A tibble as output by `rdbhapi` with course metadata (institution, course code, year, semester)
 
-**Output:** The same tibble with added course URL, raw HTML, and extracted full text
+**Output:** The same tibble with added course URL, raw HTML, and extracted text
 
 ## Quick Start: Running the Pipeline
 
@@ -115,8 +115,8 @@ courses <- readRDS("data/courses.RDS")
 result <- harvest_institution("newuni", courses, year = 2025)
 
 # Inspect results
-result |> select(Emnekode, url, html_success, fulltext) |> head()
-result$fulltext[1]  # Inspect first result
+result |> select(Emnekode, url, html_success, extracted_text) |> head()
+result$extracted_text[1]  # Inspect first result
 ```
 
 Expand a little bit at a time, for example by year. Add more years as the pipeline works.
@@ -132,7 +132,7 @@ source("R/run_dedup.R")
 
 This runs a three-stage pipeline:
 
-1. **Anonymize** (`anonymize_fulltext()`): Removes PII (teacher names, emails, phone numbers), dates, seasons, and administrative year references from `fulltext`, producing a readable `course_plan` column. Content years (e.g., "etter 1945") are preserved.
+1. **Anonymize** (`anonymize_fulltext()`): Removes PII (teacher names, emails, phone numbers), dates, seasons, and administrative year references from `extracted_text`, producing a readable `course_plan` column. Content years (e.g., "etter 1945") are preserved.
 2. **Normalize** (`normalize_plan_text()`): Applies lossy transforms (lowercasing, heading synonyms, blanket year removal, whitespace squishing) on `course_plan` for content hashing
 3. **Deduplicate** (`deduplicate_plans()`): Groups identical normalized texts under a shared `plan_content_id`
 
@@ -141,9 +141,9 @@ This runs a three-stage pipeline:
 | Column | Description |
 |--------|-------------|
 | `course_plan` | Anonymized, readable text (primary column for consumers) |
-| `fulltext` | Raw extracted text (kept for debugging) |
-| `fulltext_normalized` | Lossy normalized text (internal, for hashing) |
-| `plan_content_id` | SHA-256 hash of `fulltext_normalized` |
+| `extracted_text` | Raw extracted text (kept for debugging) |
+| `course_plan_normalized` | Lossy normalized text (internal, for hashing) |
+| `plan_content_id` | SHA-256 hash of `course_plan_normalized` |
 
 **Output files:**
 
@@ -176,14 +176,14 @@ After processing, you'll have:
 ```{r}
 #| echo: false
 output <- tribble(
-  ~course_id, ~url, ~html, ~html_success, ~fulltext, ~course_plan,
+  ~course_id, ~url, ~html, ~html_success, ~extracted_text, ~course_plan,
   "oslomet_ABC123_2024_autumn_1", "https://student.oslomet.no/...", "<html>...</html>", TRUE, "ABC123 Course Description...", "ABC123 Course Description...",
   "oslomet_XYZ456_2024_spring_1", "https://student.oslomet.no/...", "<html>...</html>", TRUE, "XYZ456 Another course...", "XYZ456 Another course..."
 )
 output
 ```
 
-- `course_plan` is the anonymized version of `fulltext` (no names, emails, dates, or administrative years). Content years like historical references are preserved. Use this column for analysis.
+- `course_plan` is the anonymized version of `extracted_text` (no names, emails, dates, or administrative years). Content years like historical references are preserved. Use this column for analysis.
 
 ## Key Functions Reference
 
@@ -241,7 +241,7 @@ Validates that required columns exist at each pipeline stage:
 │   ├── fetch_html_cols.R      # HTML downloading
 │   ├── extract_fulltext.R     # Config-driven text extraction
 │   ├── checkpoint.R           # Checkpoint management
-│   ├── anonymize.R            # PII removal: fulltext → course_plan
+│   ├── anonymize.R            # PII removal: extracted_text → course_plan
 │   ├── normalize_plan_text.R  # Lossy normalization for dedup hashing
 │   ├── deduplicate_plans.R    # Groups identical plans by content hash
 │   └── run_dedup.R            # Entry point for anonymize + dedup pipeline

@@ -15,6 +15,10 @@ Rprof.out
 
 # OS / editor junk
 .vscode/
+__pycache__/
+
+# Chainlink cache
+.chainlink/.cache/
 
 # Claude Code local settings
 .claude/settings.local.json

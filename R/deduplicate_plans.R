@@ -9,7 +9,7 @@
 #'   Must include a `course_plan` column (from anonymize_fulltext).
 #' @return A list with two elements:
 #'   - `plans`: Tibble of unique plans (plan_content_id, institution_short, Emnekode,
-#'              course_plan, fulltext_normalized, year_from, year_to)
+#'              course_plan, course_plan_normalized, year_from, year_to)
 #'   - `courses`: The original df with plan_content_id column added.
 deduplicate_plans <- function(df) {
   stopifnot(
@@ -19,8 +19,8 @@ deduplicate_plans <- function(df) {
   # Normalize anonymized text and build plan ID
   courses <- df |>
     dplyr::mutate(
-      fulltext_normalized = normalize_plan_text(course_plan),
-      plan_content_id = build_plan_id(fulltext_normalized)
+      course_plan_normalized = normalize_plan_text(course_plan),
+      plan_content_id = build_plan_id(course_plan_normalized)
     )
 
   # Build plan lookup: one row per unique plan per course code per institution
@@ -32,7 +32,7 @@ deduplicate_plans <- function(df) {
       year_from = min(Årstall),
       year_to = max(Årstall),
       course_plan = dplyr::first(course_plan),
-      fulltext_normalized = dplyr::first(fulltext_normalized),
+      course_plan_normalized = dplyr::first(course_plan_normalized),
       .groups = "drop"
     )
 

@@ -13,7 +13,7 @@ cat("=== UiO Validation Report Data Collection ===\n\n")
 total_courses <- nrow(uio_data)
 url_success <- sum(!is.na(uio_data$url))
 html_success <- sum(uio_data$html_success, na.rm = TRUE)
-text_success <- sum(!is.na(uio_data$fulltext))
+text_success <- sum(!is.na(uio_data$extracted_text))
 
 cat("Total courses:", total_courses, "\n")
 cat("URL generation success:", url_success, "/", total_courses,
@@ -25,7 +25,7 @@ cat("Text extraction success:", text_success, "/", total_courses,
 
 # Text length statistics
 if (text_success > 0) {
-  text_lengths <- nchar(uio_data$fulltext[!is.na(uio_data$fulltext)])
+  text_lengths <- nchar(uio_data$extracted_text[!is.na(uio_data$extracted_text)])
   cat("\nText length statistics:\n")
   cat("  Min:", min(text_lengths), "chars\n")
   cat("  Max:", max(text_lengths), "chars\n")

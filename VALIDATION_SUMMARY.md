@@ -9,8 +9,8 @@
 | Metric | Value |
 |--------|-------|
 | Total course-year rows | 32,494 |
-| Rows with fulltext | 23,386 (71.9%) |
-| Rows without fulltext (NA) | 9,108 (28.0%) |
+| Rows with extracted text | 23,386 (71.9%) |
+| Rows without extracted text (NA) | 9,108 (28.0%) |
 | Unique plans after dedup | 5,376 |
 | Overall dedup ratio | 77.0% |
 | Compression factor | 4.4x |
@@ -32,9 +32,9 @@
 | nih | 184 | 82 | 55.4% | Low - small dataset, annual edits |
 | hiof | 1,712 | 827 | 51.7% | Low - genuine changes |
 
-## NA Fulltext by Institution
+## NA Text by Institution
 
-| Institution | Total | NA Fulltext | % NA |
+| Institution | Total | NA Text | % NA |
 |-------------|-------|-------------|------|
 | uio | 1,767 | 1,674 | 94.7% |
 | nih | 184 | 103 | 56.0% |
@@ -123,7 +123,7 @@ Course EN-153 has 5 versions with growing text lengths (5,013-5,235 chars). Cont
 ### Caveats
 1. **INN language switching** (Norwegian vs English field labels) inflates version count. Stripping common field labels during normalization would improve dedup from 75% to an estimated 85-90%.
 2. **INN error pages** (9 course codes sharing placeholder text) should be filtered as NA rather than treated as valid plans.
-3. **28% of rows have NA fulltext** -- this is a harvesting/URL issue, not a dedup issue, but it limits overall coverage.
+3. **28% of rows have NA extracted text** -- this is a harvesting/URL issue, not a dedup issue, but it limits overall coverage.
 
 ### Recommendations for Normalization Improvements
 1. **Strip common field labels** in `normalize_plan_text()`: Remove Norwegian and English variants of standard labels ("Studiepoeng"/"Number of credits", "Undervisningssemester"/"Teaching semester", etc.) before hashing. This would primarily benefit INN.

@@ -10,7 +10,7 @@
 #' @param year Optional integer — if given, only harvest this year
 #' @param refetch Logical — if TRUE, ignore checkpoints and re-download everything
 #' @return Data frame with DBH columns plus course_id, url, html, html_error,
-#'   html_success, fulltext
+#'   html_success, extracted_text
 harvest_institution <- function(institution_short, courses, year = NULL,
                                 refetch = FALSE) {
   config <- get_institution_config(institution_short)
@@ -38,8 +38,8 @@ harvest_institution <- function(institution_short, courses, year = NULL,
 
   result <- ensure_output_columns(result)
 
-  message(institution_short, ": ", sum(!is.na(result$fulltext)), "/",
-          nrow(result), " with fulltext")
+  message(institution_short, ": ", sum(!is.na(result$extracted_text)), "/",
+          nrow(result), " with extracted text")
   result
 }
 
@@ -103,7 +103,7 @@ log_summary <- function(inst, result) {
   n <- nrow(result)
   n_url <- sum(!is.na(result$url))
   n_html <- sum(result$html_success, na.rm = TRUE)
-  n_text <- sum(!is.na(result$fulltext))
-  message(sprintf("  %s: %d courses, %d URLs, %d HTML, %d fulltext",
+  n_text <- sum(!is.na(result$extracted_text))
+  message(sprintf("  %s: %d courses, %d URLs, %d HTML, %d extracted text",
                   inst, n, n_url, n_html, n_text))
 }

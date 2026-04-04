@@ -19,22 +19,22 @@ summary_tbl <- df |>
     codes      = n_distinct(Emnekode_raw),
     year_min   = min(Årstall),
     year_max   = max(Årstall),
-    has_fulltext = sum(!is.na(fulltext) & nchar(fulltext) > 0),
+    has_text = sum(!is.na(extracted_text) & nchar(extracted_text) > 0),
     has_plan_id  = sum(!is.na(plan_content_id)),
-    median_chars = round(median(nchar(fulltext[!is.na(fulltext) & nchar(fulltext) > 0]), na.rm = TRUE)),
+    median_chars = round(median(nchar(extracted_text[!is.na(extracted_text) & nchar(extracted_text) > 0]), na.rm = TRUE)),
     unique_plans = n_distinct(plan_content_id, na.rm = TRUE),
     .groups = "drop"
   ) |>
   mutate(
     years     = ifelse(year_min == year_max, as.character(year_min), paste0(year_min, "-", year_max)),
-    rate      = sprintf("%.1f%%", has_fulltext / rows * 100),
+    rate      = sprintf("%.1f%%", has_text / rows * 100),
     dedup_pct = sprintf("%.1f%%", (1 - unique_plans / has_plan_id) * 100)
   ) |>
-  select(institution_short, rows, codes, years, has_fulltext, rate, median_chars, unique_plans, dedup_pct)
+  select(institution_short, rows, codes, years, has_text, rate, median_chars, unique_plans, dedup_pct)
 
 total_rows     <- nrow(df)
-total_fulltext <- sum(!is.na(df$fulltext) & nchar(df$fulltext) > 0)
-total_rate     <- sprintf("%.1f%%", total_fulltext / total_rows * 100)
+total_text <- sum(!is.na(df$extracted_text) & nchar(df$extracted_text) > 0)
+total_rate     <- sprintf("%.1f%%", total_text / total_rows * 100)
 total_plans    <- nrow(plans)
 
 # --- Write markdown ----------------------------------------------------------
@@ -49,25 +49,25 @@ w("Generated: ", Sys.Date())
 w("")
 w("## Overview")
 w("")
-w("| Institution | Rows | Codes | Years | Fulltext OK | Rate | Median chars | Unique plans | Dedup % |")
+w("| Institution | Rows | Codes | Years | Extracted OK | Rate | Median chars | Unique plans | Dedup % |")
 w("|------------|-----:|------:|-------|------------:|-----:|-------------:|-------------:|--------:|")
 
 for (i in seq_len(nrow(summary_tbl))) {
   s <- summary_tbl[i, ]
   w(sprintf("| %s | %d | %d | %s | %d | %s | %d | %d | %s |",
             s$institution_short, s$rows, s$codes, s$years,
-            s$has_fulltext, s$rate, s$median_chars, s$unique_plans, s$dedup_pct))
+            s$has_text, s$rate, s$median_chars, s$unique_plans, s$dedup_pct))
 }
 
 w(sprintf("| **Total** | **%d** | | | **%d** | **%s** | | **%d** | |",
-          total_rows, total_fulltext, total_rate, total_plans))
+          total_rows, total_text, total_rate, total_plans))
 
 w("")
 w("**Columns:**")
 w("- **Rows**: Total course-semester rows in harvested data (from DBH)")
 w("- **Codes**: Unique course codes (Emnekode_raw)")
-w("- **Fulltext OK**: Rows with successfully extracted course plan text")
-w("- **Rate**: Fulltext success rate (Fulltext OK / Rows)")
+w("- **Extracted OK**: Rows with successfully extracted course plan text")
+w("- **Rate**: Extraction success rate (Extracted OK / Rows)")
 w("- **Median chars**: Median character count of extracted text")
 w("- **Unique plans**: Distinct course plans after normalization and deduplication")
 w("- **Dedup %**: Percentage of rows removed by deduplication (1 - unique/has_plan)")
@@ -111,7 +111,7 @@ w("")
 w("- **Re-harvested 2026-02-16** with URL discovery (see #63, #79-#83)")
 w("- The base URL `/emne/{CODE}` returns only the latest version. Semester-specific pages have numeric IDs (e.g., `/emne/MGL5-10NO2B/12177`) that cannot be derived from metadata")
 w("- `resolve_urls_hivolda_batch()` scrapes the base page to discover semester links, mapping \"Haust\" to \"Høst\" for matching")
-w("- Result: 594/1182 rows with fulltext (up from 1182 identical pages). 556 unique plans (up from 99)")
+w("- Result: 594/1182 rows with extracted text (up from 1182 identical pages). 556 unique plans (up from 99)")
 w("- 588 NA rows = course not offered in that semester (legitimate missing data)")
 
 w("")
@@ -161,7 +161,7 @@ w("")
 w("### NLA (NLA University College)")
 w("")
 w("- **Filtered to 2025 only** (no year in URL; see #74, #77)")
-w("- **100% fulltext rate** (365/365)")
+w("- **100% extraction rate** (365/365)")
 w("- Original harvest failed (0% extraction) because NLA's `/studietilbud/emner/` URLs are React-rendered. Fix: switched to `/for-studenter/Studie-%20og%20emneplaner/emneplan/{CODE}` with selector `.page-course-plan` (see #55)")
 w("- `.pre_nla()` in `extract_fulltext.R` strips year dropdown, \"Last ned PDF\" link, and truncates at \"Digital litteraturliste\" to remove reading lists (reduced median from 34.9K to 5.3K chars; see #67)")
 
@@ -200,7 +200,7 @@ w("### OsloMet (Oslo Metropolitan University)")
 w("")
 w("- **Re-harvested 2026-02-14** (see #57, #61)")
 w("- Original harvest returned only error pages because OsloMet was using client-side rendering (React/Liferay). The site later switched to server-side rendering, fixing the issue")
-w("- **100% fulltext rate** (1705/1705), but 60 rows contain error pages (\"Siden du leter etter finnes ikke\") which are filtered as NA by `normalize_plan_text`, leaving 1645 rows with genuine content")
+w("- **100% extraction rate** (1705/1705), but 60 rows contain error pages (\"Siden du leter etter finnes ikke\") which are filtered as NA by `normalize_plan_text`, leaving 1645 rows with genuine content")
 w("- **URL semester issue**: OsloMet's website only accepts \"HØST\" (autumn) in URLs. Spring semester URLs return 404. Workaround: always use \"HØST\" regardless of actual semester (see #1)")
 w("- URL pattern: `https://student.oslomet.no/studier/-/studieinfo/emne/{CODE}/{YEAR}/HØST`")
 
@@ -211,7 +211,7 @@ w("### Samas (Sámi University of Applied Sciences)")
 w("")
 w("- **New institution, added 2026-02-16** (see #69-#72)")
 w("- **Filtered to 2025 only**")
-w("- **0% fulltext rate**: No reliable matching between DBH course codes and website course codes (see #85, #89, #90)")
+w("- **0% extraction rate**: No reliable matching between DBH course codes and website course codes (see #85, #89, #90)")
 w("- Samas publishes course plans as PDFs (\"Oahppoplána\") at `samas.no/se/oahput`, but the website uses its own codes (SÁM-1005, DUO-1014, SER 103) that do NOT correspond to DBH codes (V1SAM-1100-1, V1DUO-1140-1, etc.)")
 w("- ~98% of DBH rows are V1/V5 teacher education courses. These only appear in program-level PDFs (\"PROGRÁMMAPLÁNA\") that list course names and credits but contain no per-course descriptions")
 w("- Individual course plan PDFs exist on the website for standalone courses, but none match any DBH course codes in the data")
@@ -224,7 +224,7 @@ w("")
 w("- **New institution, added 2026-02-16** (see #68, #73)")
 w("- **Filtered to 2025 only** (18 rows)")
 w("- Course plans harvested from 5 subject-area PDFs at `steinerhoyskolen.no`, split by course heading pattern")
-w("- 15/18 rows with fulltext (83.3%). 3 missing courses are Praksis modules (M-LP1/2/3) with no PDF content")
+w("- 15/18 rows with extracted text (83.3%). 3 missing courses are Praksis modules (M-LP1/2/3) with no PDF content")
 w("- No deduplication (0%) — each of the 15 plans is distinct")
 
 w("")
@@ -277,7 +277,7 @@ w("- **97.5% success rate** (545/559)")
 w("- All UiT pages contain \"Access denied to page component\" HTML comments and \"Error rendering component\" artifacts — this is a persistent issue on UiT's website, not a scraping problem (see #64)")
 w("- CSS selector changed from `.hovedfelt` (single) to `.hovedfelt > main > div.col-md-12` (many) to work around the broken component (see #60)")
 w("- `.pre_uit()` strips remaining \"Error rendering component\" text and breadcrumb artifacts")
-w("- 14 rows have fulltext that normalizes to NA (rendering errors with no real content)")
+w("- 14 rows have extracted text that normalizes to NA (rendering errors with no real content)")
 
 w("")
 w("---")

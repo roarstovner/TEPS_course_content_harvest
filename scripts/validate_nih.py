@@ -125,18 +125,18 @@ verified = sum(1 for c in test_courses if c.get('has_course_code'))
 print(f'Pages with course code: {verified}/{fetch_success}\n')
 
 # Step 4: Extract fulltext
-print('Step 4: Extracting fulltext...')
+print('Step 4: Extracting text...')
 for course in test_courses:
     if course['html_success']:
-        course['fulltext'] = extract_fulltext_nih(course['html'])
-        course['text_length'] = len(course['fulltext']) if course['fulltext'] else 0
+        course['extracted_text'] = extract_fulltext_nih(course['html'])
+        course['text_length'] = len(course['extracted_text']) if course['extracted_text'] else 0
 
-extraction_success = sum(1 for c in test_courses if c.get('fulltext'))
-print(f'Fulltext extracted: {extraction_success}/{fetch_success}\n')
+extraction_success = sum(1 for c in test_courses if c.get('extracted_text'))
+print(f'Text extracted: {extraction_success}/{fetch_success}\n')
 
 # Statistics
 if extraction_success > 0:
-    lengths = [c['text_length'] for c in test_courses if c.get('fulltext')]
+    lengths = [c['text_length'] for c in test_courses if c.get('extracted_text')]
     print('Text length statistics:')
     print(f'  Min: {min(lengths)} characters')
     print(f'  Max: {max(lengths)} characters')
@@ -153,12 +153,12 @@ print(f'Text extraction: {extraction_success}/{fetch_success} ({100*extraction_s
 
 # Sample
 if extraction_success > 0:
-    sample = next(c for c in test_courses if c.get('fulltext'))
+    sample = next(c for c in test_courses if c.get('extracted_text'))
     print('\n=== SAMPLE EXTRACTION ===')
     print(f'Course: {sample["code"]}')
     print(f'Text length: {sample["text_length"]} characters')
     print('First 500 characters:')
-    print(sample['fulltext'][:500])
+    print(sample['extracted_text'][:500])
     print('...\n')
 
 # Save detailed results for later analysis
@@ -172,7 +172,7 @@ with open(results_path, 'w') as f:
         f.write(f'   Fetch: {"OK" if course["html_success"] else "FAILED"}\n')
         if course.get('has_course_code'):
             f.write(f'   Course code found: YES\n')
-        if course.get('fulltext'):
+        if course.get('extracted_text'):
             f.write(f'   Text extracted: {course["text_length"]} chars\n')
         if course.get('html_error'):
             f.write(f'   Error: {course["html_error"]}\n')

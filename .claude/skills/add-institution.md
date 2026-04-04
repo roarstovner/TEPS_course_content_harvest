@@ -80,8 +80,8 @@ courses <- readRDS("data/courses.RDS")
 result <- harvest_institution("newuni", courses, year = 2025)
 
 # Inspect results
-result |> dplyr::select(Emnekode, url, html_success, fulltext) |> head()
-result$fulltext[1]  # Inspect extracted text
+result |> dplyr::select(Emnekode, url, html_success, extracted_text) |> head()
+result$extracted_text[1]  # Inspect extracted text
 ```
 
 ### Step 4: Run full harvest

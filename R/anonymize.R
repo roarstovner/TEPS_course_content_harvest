@@ -6,7 +6,7 @@
 #' and institution-specific boilerplate. Preserves case and paragraph structure.
 #'
 #' @param institution_short Character vector of institution short names.
-#' @param fulltext Character vector of raw fulltext.
+#' @param fulltext Character vector of raw extracted text.
 #' @param .progress Passed to purrr::map2_chr for progress reporting.
 #' @return Character vector of anonymized text. NA input -> NA output.
 anonymize_fulltext <- function(institution_short, fulltext,

@@ -9,7 +9,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is an R-based web scraping pipeline that harvests course descriptions from Norwegian higher education institutions. It takes course metadata (institution, course code, year, semester) and produces structured data with URLs, HTML, and extracted text from institutional course webpages.
 
 **Input:** Course metadata from `data/courses.RDS` (typically sourced from DBH database via rdbhapi)
-**Output:** Same data with added `url`, `html`, and `fulltext` columns
+**Output:** Same data with added `url`, `html`, and `extracted_text` columns
 
 ## Core Pipeline Architecture
 
@@ -94,7 +94,7 @@ Returns the config list for an institution. Config includes strategy, selector, 
 Validates required columns exist at pipeline stages: "initial", "with_url", "with_html".
 
 ### `anonymize_fulltext(institution_short, fulltext)` - R/anonymize.R:14
-Removes PII (names, emails, phone numbers), dates, seasons, administrative year references (e.g., "Opprettet 2020", "2023/2024"), and institution-specific boilerplate from raw fulltext. Content years (e.g., "etter 1945", "NOU 2015:2") are preserved. Returns readable anonymized text preserving case and paragraph structure. Uses institution-specific handlers (`.anon_*()`) followed by generic cleanup (`.anon_generic()`).
+Removes PII (names, emails, phone numbers), dates, seasons, administrative year references (e.g., "Opprettet 2020", "2023/2024"), and institution-specific boilerplate from raw extracted text. Content years (e.g., "etter 1945", "NOU 2015:2") are preserved. Returns readable anonymized text preserving case and paragraph structure. Uses institution-specific handlers (`.anon_*()`) followed by generic cleanup (`.anon_generic()`).
 
 ### `normalize_plan_text(course_plan)` - R/normalize_plan_text.R:14
 Applies lossy dedup-specific transforms on already-anonymized `course_plan`: `tolower()`, heading synonym normalization ("eksamensformer" → "vurderingsformer"), blanket 4-digit year removal, and `str_squish()`. No longer takes `institution_short` parameter.
@@ -143,10 +143,10 @@ harvest_all()  # Reads courses.RDS, loops all institutions, saves results
 ### Anonymize and deduplicate:
 
 ```r
-source("R/run_dedup.R")  # Loads html_*.RDS, anonymizes fulltext → course_plan, deduplicates
+source("R/run_dedup.R")  # Loads html_*.RDS, anonymizes extracted_text → course_plan, deduplicates
 ```
 
-Pipeline: `fulltext` → `course_plan` (anonymized, readable) → `fulltext_normalized` (lossy, for hashing)
+Pipeline: `extracted_text` → `course_plan` (anonymized, readable) → `course_plan_normalized` (lossy, for hashing)
 
 ### Regenerate data quality notes:
 ```bash
@@ -249,7 +249,7 @@ The function uses JavaScript to recursively traverse shadow roots and extract te
 - Uses `url_discovery` strategy (with `resolve_course_urls()` for URL discovery)
 
 ### Samas (Sámi University)
-- Uses `noop` strategy — fulltext is set to NA (course plans are in Sami, not Norwegian)
+- Uses `noop` strategy — extracted_text is set to NA (course plans are in Sami, not Norwegian)
 
 ### Institutions with Multiple CSS Selectors
 Some institutions (nord, uib, uis, uit) use `selector_mode = "multi"` to capture content from multiple elements because course info is spread across accordions or sections.
@@ -267,7 +267,7 @@ R/
 ├── fetch_html_cols.R      # HTML downloading with httr2
 ├── extract_fulltext.R     # extract_fulltext_css() (config-driven), extract_nla_json(), helpers
 ├── checkpoint.R           # Checkpoint read/write/resume logic
-├── anonymize.R            # PII removal: fulltext → course_plan (readable, anonymized)
+├── anonymize.R            # PII removal: extracted_text → course_plan (readable, anonymized)
 ├── normalize_plan_text.R  # Lossy normalization for dedup hashing (tolower + synonyms + year removal + squish)
 ├── deduplicate_plans.R    # Groups identical plans by content hash
 └── run_dedup.R            # Entry point: anonymize + normalize + dedup pipeline

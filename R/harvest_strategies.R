@@ -1,7 +1,7 @@
 # R/harvest_strategies.R
 # Strategy implementations for the config-driven harvest pipeline.
 # Each function receives (df, config, refetch) and returns df with
-# url, html, html_error, html_success, fulltext columns.
+# url, html, html_error, html_success, extracted_text columns.
 
 # --- Helpers ---
 
@@ -30,7 +30,7 @@ ensure_output_columns <- function(df) {
   if (!"html" %in% names(df)) df$html <- NA_character_
   if (!"html_error" %in% names(df)) df$html_error <- vector("list", nrow(df))
   if (!"html_success" %in% names(df)) df$html_success <- NA
-  if (!"fulltext" %in% names(df)) df$fulltext <- NA_character_
+  if (!"extracted_text" %in% names(df)) df$extracted_text <- NA_character_
   df
 }
 
@@ -44,7 +44,7 @@ harvest_standard <- function(df, config, refetch = FALSE) {
 
   df <- fetch_html_with_checkpoint(df, checkpoint_path = cp, config = config)
 
-  df$fulltext <- extract_fulltext_css(
+  df$extracted_text <- extract_fulltext_css(
     df$html,
     config$selector,
     config$selector_mode,
@@ -71,7 +71,7 @@ harvest_url_discovery <- function(df, config, refetch = FALSE) {
   df <- fetch_html_with_checkpoint(df, checkpoint_path = html_cp, config = config)
 
   # Extract fulltext
-  df$fulltext <- extract_fulltext_css(
+  df$extracted_text <- extract_fulltext_css(
     df$html,
     config$selector,
     config$selector_mode,
@@ -100,7 +100,7 @@ harvest_shadow_dom <- function(df, config, refetch = FALSE) {
     )
 
   # USN returns pre-rendered text, not raw HTML — use cleanup, not CSS extraction
-  df$fulltext <- .cleanup_usn_text(df$html)
+  df$extracted_text <- .cleanup_usn_text(df$html)
   df
 }
 
@@ -190,7 +190,7 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
   if (nrow(df_html) > 0) {
     df_html <- fetch_html_with_checkpoint(df_html, checkpoint_path = html_cp,
                                            config = config)
-    df_html$fulltext <- extract_fulltext_css(
+    df_html$extracted_text <- extract_fulltext_css(
       df_html$html,
       config$selector,
       config$selector_mode,
@@ -200,7 +200,7 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
   } else {
     df_html <- df_html |>
       dplyr::mutate(html = NA_character_, html_error = list(NULL),
-                    html_success = NA, fulltext = NA_character_)
+                    html_success = NA, extracted_text = NA_character_)
   }
 
   # --- Process PDF subset ---
@@ -235,14 +235,14 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
         .progress = TRUE
       )
 
-      fulltext <- extract_fulltext_pdf(purrr::map(pdf_results, "raw"))
+      extracted_text <- extract_fulltext_pdf(purrr::map(pdf_results, "raw"))
 
       fetched_pdf <- tibble::tibble(
         course_id = to_fetch_pdf$course_id,
         html = NA_character_,
         html_error = purrr::map(pdf_results, \(r) r$error),
         html_success = purrr::map_lgl(pdf_results, \(r) r$success),
-        fulltext = fulltext
+        extracted_text = extracted_text
       )
 
       updated_pdf <- dplyr::bind_rows(existing_pdf, fetched_pdf)
@@ -253,13 +253,13 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
 
     df_pdf <- df_pdf |>
       dplyr::left_join(
-        updated_pdf |> dplyr::select(course_id, html, html_error, html_success, fulltext),
+        updated_pdf |> dplyr::select(course_id, html, html_error, html_success, extracted_text),
         by = "course_id"
       )
   } else {
     df_pdf <- df_pdf |>
       dplyr::mutate(html = NA_character_, html_error = list(NULL),
-                    html_success = NA, fulltext = NA_character_)
+                    html_success = NA, extracted_text = NA_character_)
   }
 
   # --- Handle unmatched rows ---
@@ -267,7 +267,7 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
   if (nrow(df_none) > 0) {
     df_none <- df_none |>
       dplyr::mutate(html = NA_character_, html_error = list(NULL),
-                    html_success = NA, fulltext = NA_character_)
+                    html_success = NA, extracted_text = NA_character_)
   }
 
   # --- Combine and clean up ---
@@ -341,13 +341,13 @@ harvest_pdf_split <- function(df, config, refetch = FALSE) {
   }
 
   # --- Join fulltext ---
-  pdf_lookup <- pdf_emner |> dplyr::select(join_key, url, fulltext)
+  pdf_lookup <- pdf_emner |> dplyr::select(join_key, url, extracted_text)
 
   df <- df |>
     dplyr::left_join(pdf_lookup, by = "join_key") |>
     dplyr::select(-join_key)
 
-  message(sum(!is.na(df$fulltext)), "/", nrow(df), " rows with fulltext")
+  message(sum(!is.na(df$extracted_text)), "/", nrow(df), " rows with extracted text")
   df
 }
 
@@ -430,7 +430,7 @@ harvest_pdf_split <- function(df, config, refetch = FALSE) {
     tibble::tibble(
       pdf_emne_name = first_line,
       url = wrapper_url,
-      fulltext = emne_text
+      extracted_text = emne_text
     )
   })
 }
@@ -484,17 +484,17 @@ harvest_json_extract <- function(df, config, refetch = FALSE) {
   df <- dplyr::left_join(df, html_lookup, by = "Emnekode")
 
   # Extract year-specific fulltext from JSON
-  df$fulltext <- extract_nla_json(df$html, df$academic_year)
+  df$extracted_text <- extract_nla_json(df$html, df$academic_year)
   df
 }
 
 # --- Strategy: noop ---
-# Set fulltext = NA (no harvestable course plan content)
+# Set extracted_text = NA (no harvestable course plan content)
 # Used by: samas
 
 harvest_noop <- function(df, config) {
   df$url <- NA_character_
-  df$fulltext <- NA_character_
-  message("0/", nrow(df), " rows with fulltext (noop strategy)")
+  df$extracted_text <- NA_character_
+  message("0/", nrow(df), " rows with extracted text (noop strategy)")
   df
 }

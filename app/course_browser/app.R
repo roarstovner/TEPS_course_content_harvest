@@ -19,7 +19,7 @@ names(status_choices) <- status_labels[as.character(status_choices)]
 # Lighter table for browse display
 browse_cols <- c(
   "course_id", "institution_short", "Emnekode_raw", "Emnenavn",
-  "Årstall", "Semesternavn", "Status", "url", "fulltext", "plan_content_id"
+  "Årstall", "Semesternavn", "Status", "url", "extracted_text", "course_plan", "plan_content_id"
 )
 
 # ── UI ──────────────────────────────────────────────────────────────────────
@@ -51,7 +51,7 @@ ui <- page_navbar(
           choices = status_choices, multiple = TRUE,
           options = list(placeholder = "All statuses")
         ),
-        checkboxInput("browse_has_text", "Only with fulltext", value = FALSE),
+        checkboxInput("browse_has_text", "Only with extracted text", value = FALSE),
         actionButton("browse_clear", "Clear filters", class = "btn-sm btn-outline-secondary")
       ),
 
@@ -63,12 +63,16 @@ ui <- page_navbar(
         tags$div(
           class = "browse-viewer",
           radioButtons("browse_view", NULL,
-            choices = c("Plaintext" = "text", "Rendered HTML" = "html"),
+            choices = c("Plaintext" = "text", "Course plan" = "plan", "Rendered HTML" = "html"),
             inline = TRUE
           ),
           conditionalPanel(
             "input.browse_view === 'text'",
             uiOutput("browse_fulltext")
+          ),
+          conditionalPanel(
+            "input.browse_view === 'plan'",
+            uiOutput("browse_courseplan")
           ),
           conditionalPanel(
             "input.browse_view === 'html'",
@@ -98,7 +102,7 @@ ui <- page_navbar(
         DTOutput("diff_versions_table", height = "auto"),
         tags$hr(),
         radioButtons("diff_mode", "Diff content",
-          choices = c("Normalized text" = "normalized", "Raw fulltext" = "raw"),
+          choices = c("Normalized text" = "normalized", "Raw extracted text" = "raw"),
           selected = "normalized"
         ),
         radioButtons("diff_layout", "Layout",
@@ -143,7 +147,7 @@ server <- function(input, output, session) {
       df <- df[df$Status %in% as.integer(input$browse_status), ]
 
     if (input$browse_has_text)
-      df <- df[!is.na(df$fulltext) & nchar(df$fulltext) > 0, ]
+      df <- df[!is.na(df$extracted_text) & nchar(df$extracted_text) > 0, ]
 
     df
   })
@@ -158,7 +162,7 @@ server <- function(input, output, session) {
       Year        = df$Årstall,
       Semester    = df$Semesternavn,
       Status      = status_labels[as.character(df$Status)],
-      Text        = ifelse(!is.na(df$fulltext) & nchar(df$fulltext) > 0, "Yes", "No"),
+      Text        = ifelse(!is.na(df$extracted_text) & nchar(df$extracted_text) > 0, "Yes", "No"),
       URL         = ifelse(
         is.na(df$url), "",
         paste0('<a href="', htmltools::htmlEscape(df$url),
@@ -195,8 +199,17 @@ server <- function(input, output, session) {
   output$browse_fulltext <- renderUI({
     sel <- selected_course()
     if (is.null(sel)) return(tags$p(class = "text-muted", "Select a row to view course plan text."))
-    txt <- sel$fulltext
-    if (is.na(txt) || nchar(txt) == 0) return(tags$p(class = "text-muted", "No fulltext available for this course."))
+    txt <- sel$extracted_text
+    if (is.na(txt) || nchar(txt) == 0) return(tags$p(class = "text-muted", "No extracted text available for this course."))
+    tags$div(class = "fulltext-display", txt)
+  })
+
+  # ── Browse: course plan (anonymized) display ──
+  output$browse_courseplan <- renderUI({
+    sel <- selected_course()
+    if (is.null(sel)) return(tags$p(class = "text-muted", "Select a row to view anonymized course plan."))
+    txt <- sel$course_plan
+    if (is.na(txt) || nchar(txt) == 0) return(tags$p(class = "text-muted", "No course plan available for this course."))
     tags$div(class = "fulltext-display", txt)
   })
 
@@ -255,8 +268,8 @@ server <- function(input, output, session) {
         year_from = min(Årstall),
         year_to = max(Årstall),
         semesters = n(),
-        fulltext = first(fulltext),
-        fulltext_normalized = first(fulltext_normalized),
+        extracted_text = first(extracted_text),
+        course_plan_normalized = first(course_plan_normalized),
         .groups = "drop"
       ) |>
       arrange(year_from, year_to) |>
@@ -305,8 +318,8 @@ server <- function(input, output, session) {
       row_a <- vers[i - 1, ]
       row_b <- vers[i, ]
 
-      text_a <- if (use_normalized) row_a$fulltext_normalized else row_a$fulltext
-      text_b <- if (use_normalized) row_b$fulltext_normalized else row_b$fulltext
+      text_a <- if (use_normalized) row_a$course_plan_normalized else row_a$extracted_text
+      text_b <- if (use_normalized) row_b$course_plan_normalized else row_b$extracted_text
 
       diff_html <- render_diff_html(
         text_a, text_b,
@@ -327,7 +340,7 @@ server <- function(input, output, session) {
       if (identical(trimws(text_a), trimws(text_b))) {
         note <- if (use_normalized) {
           tags$div(class = "alert alert-info",
-            "Normalized texts are identical. Try 'Raw fulltext' to see what differs.")
+            "Normalized texts are identical. Try 'Raw extracted text' to see what differs.")
         } else {
           tags$div(class = "alert alert-info", "Raw texts are identical.")
         }

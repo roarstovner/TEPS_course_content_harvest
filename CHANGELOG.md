@@ -7,6 +7,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- Rename `fulltext` → `extracted_text` and `fulltext_normalized` → `course_plan_normalized` columns (#180)
+- Add course_plan toggle to Shiny app plaintext viewer (#179)
+- Anonymization code audit fixes (#166)
 - Document or remove OsloMet semicolon replacement (#174)
 - Spot-check 6 institutions without anon handler for PII leaks (#172)
 - Update CLAUDE.md docs for year removal layer change (#177)

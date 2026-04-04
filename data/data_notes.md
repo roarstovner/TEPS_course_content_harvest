@@ -1,39 +1,40 @@
 # Data Quality Notes
 
 
-Generated: 2026-03-20
+Generated: 2026-04-04
 
 ## Overview
 
-| Institution | Rows | Codes | Years | Fulltext OK | Rate | Median chars | Unique plans | Dedup % |
+| Institution | Rows | Codes | Years | Extracted OK | Rate | Median chars | Unique plans | Dedup % |
 |:---|---:|---:|:---|---:|:---|---:|---:|:---|
 | hiof | 1712 | 240 | 2017-2025 | 846 | 49.4% | 7190 | 821 | 3.0% |
-| hivolda | 1182 | 113 | 2017-2025 | 594 | 50.3% | 4684 | 555 | 6.6% |
-| hvl | 670 | 346 | 2025 | 591 | 88.2% | 4484 | 296 | 49.9% |
-| inn | 2368 | 262 | 2018-2024 | 1282 | 54.1% | 4184 | 542 | 56.7% |
-| mf | 55 | 29 | 2025 | 51 | 92.7% | 4458 | 26 | 49.0% |
+| hivolda | 1182 | 113 | 2017-2025 | 594 | 50.3% | 4702 | 548 | 7.7% |
+| hvl | 3604 | 393 | 2017-2025 | 3335 | 92.5% | 4117 | 1654 | 50.4% |
+| inn | 2368 | 262 | 2018-2024 | 1284 | 54.2% | 4169 | 542 | 56.8% |
+| mf | 55 | 29 | 2025 | 51 | 92.7% | 4222 | 26 | 49.0% |
 | nih | 184 | 34 | 2021-2025 | 81 | 44.0% | 2341 | 81 | 0.0% |
-| nla | 365 | 189 | 2025 | 365 | 100.0% | 5311 | 189 | 48.2% |
-| nmbu | 29 | 15 | 2025 | 19 | 65.5% | 5787 | 10 | 47.4% |
-| nord | 540 | 294 | 2025 | 540 | 100.0% | 5592 | 294 | 45.6% |
-| oslomet | 1705 | 179 | 2018-2025 | 1705 | 100.0% | 12226 | 593 | 64.0% |
+| nla | 365 | 189 | 2025 | 316 | 86.6% | 5356 | 262 | 17.1% |
+| nmbu | 29 | 15 | 2025 | 23 | 79.3% | 6012 | 12 | 47.8% |
+| nord | 3664 | 455 | 2016-2025 | 3654 | 99.7% | 4994 | 1610 | 55.9% |
+| ntnu | 5735 | 409 | 2004-2025 | 3770 | 65.7% | 4556 | 1529 | 59.4% |
+| oslomet | 1708 | 182 | 2018-2025 | 1708 | 100.0% | 12215 | 668 | 59.3% |
 | samas | 130 | 68 | 2025 | 0 | 0.0% | NA | 0 | NaN% |
-| steiner | 18 | 18 | 2025 | 15 | 83.3% | 5027 | 15 | 0.0% |
-| uia | 2374 | 237 | 2020-2025 | 1130 | 47.6% | 4449 | 689 | 39.0% |
-| uib | 187 | 99 | 2025 | 177 | 94.7% | 8110 | 94 | 46.9% |
-| uio | 100 | 54 | 2025 | 52 | 52.0% | 3878 | 52 | 0.0% |
-| uis | 353 | 197 | 2025 | 204 | 57.8% | 4109 | 109 | 46.6% |
+| steiner | 36 | 18 | 2025 | 30 | 83.3% | 5027 | 15 | 50.0% |
+| uia | 2992 | 251 | 2013-2025 | 1130 | 37.8% | 4450 | 689 | 39.0% |
+| uib | 2619 | 177 | 2004-2025 | 1590 | 60.7% | 6700 | 837 | 47.4% |
+| uio | 100 | 54 | 2025 | 96 | 96.0% | 4350 | 52 | 45.8% |
+| uis | 2921 | 316 | 2007-2025 | 917 | 31.4% | 5207 | 494 | 46.1% |
 | uit | 6693 | 621 | 2004-2025 | 3161 | 47.2% | 4106 | 2349 | 25.7% |
-| usn | 3036 | 401 | 2018-2025 | 1189 | 39.2% | 10600 | 1145 | 3.7% |
 
-**Total**: 21701 rows, 12002 with fulltext (55.3%), 7948 unique plans.
+**Total**: 36097 rows, 22586 with extracted text (62.6%), 12370 unique
+plans.
 
 **Columns:**
 
 - **Rows**: Total course-semester rows in harvested data (from DBH)
 - **Codes**: Unique course codes (Emnekode_raw)
-- **Fulltext OK**: Rows with successfully extracted course plan text
-- **Rate**: Fulltext success rate (Fulltext OK / Rows)
+- **Extracted OK**: Rows with successfully extracted course plan text
+- **Rate**: Extraction success rate (Extracted OK / Rows)
 - **Median chars**: Median character count of extracted text
 - **Unique plans**: Distinct course plans after normalization and
   deduplication
@@ -79,6 +80,11 @@ each row is truly distinct (NIH, Steiner, UiO).
 - HiOF required a browser-like user agent to avoid 403 blocks (see \#27)
 - `normalize_plan_text` strips “Sist hentet fra FS” timestamps and
   “Litteraturlista er sist oppdatert” lines
+- **Litteraturlister (reading lists)** are included in the extracted
+  text — only the timestamp line is stripped, not the reading list
+  content itself (book titles, authors, ISBNs, etc.). This differs from
+  NLA, which truncates at “Digital litteraturliste” to remove reading
+  lists entirely
 
 ------------------------------------------------------------------------
 
@@ -90,8 +96,8 @@ each row is truly distinct (NIH, Steiner, UiO).
   `/emne/MGL5-10NO2B/12177`) that cannot be derived from metadata
 - `resolve_urls_hivolda_batch()` scrapes the base page to discover
   semester links, mapping “Haust” to “Høst” for matching
-- Result: 594/1182 rows with fulltext (up from 1182 identical pages).
-  556 unique plans (up from 99)
+- Result: 594/1182 rows with extracted text (up from 1182 identical
+  pages). 556 unique plans (up from 99)
 - 588 NA rows = course not offered in that semester (legitimate missing
   data)
 
@@ -120,6 +126,16 @@ each row is truly distinct (NIH, Steiner, UiO).
 - INN publishes some courses in both Norwegian and English, causing
   lower dedup than expected. `normalize_plan_text` strips 35 NO/EN field
   labels and normalizes language metadata (see \#52)
+- **Wrong-year content**: Some 2022 courses (e.g., 2ENL512-1, 2NOL51-5,
+  2SFL51-1, 2ENLBA) display “Undervisningssemestre” for a different year
+  than requested. This is an upstream issue in INN’s system — the URL
+  includes the correct year, but INN’s server may serve a different
+  version. No client-side fix is possible (see \#123)
+- **Missing plans**: A few 2022 courses (e.g., 2EXPHIL51, 2PEDL51-2-1,
+  2ENL512-3) return pages with no course plan content. These are not
+  caught by the “Emnesøket” filter since the page structure differs;
+  extracted text may contain navigation/header text instead of plan
+  content (see \#123)
 
 ------------------------------------------------------------------------
 
@@ -145,7 +161,7 @@ each row is truly distinct (NIH, Steiner, UiO).
 ### NLA (NLA University College)
 
 - **Filtered to 2025 only** (no year in URL; see \#74, \#77)
-- **100% fulltext rate** (365/365)
+- **100% extraction rate** (365/365)
 - Original harvest failed (0% extraction) because NLA’s
   `/studietilbud/emner/` URLs are React-rendered. Fix: switched to
   `/for-studenter/Studie-%20og%20emneplaner/emneplan/{CODE}` with
@@ -191,7 +207,7 @@ each row is truly distinct (NIH, Steiner, UiO).
 - Original harvest returned only error pages because OsloMet was using
   client-side rendering (React/Liferay). The site later switched to
   server-side rendering, fixing the issue
-- **100% fulltext rate** (1705/1705), but 60 rows contain error pages
+- **100% extraction rate** (1705/1705), but 60 rows contain error pages
   (“Siden du leter etter finnes ikke”) which are filtered as NA by
   `normalize_plan_text`, leaving 1645 rows with genuine content
 - **URL semester issue**: OsloMet’s website only accepts “HØST” (autumn)
@@ -206,7 +222,7 @@ each row is truly distinct (NIH, Steiner, UiO).
 
 - **New institution, added 2026-02-16** (see \#69-#72)
 - **Filtered to 2025 only**
-- **0% fulltext rate**: No reliable matching between DBH course codes
+- **0% extraction rate**: No reliable matching between DBH course codes
   and website course codes (see \#85, \#89, \#90)
 - Samas publishes course plans as PDFs (“Oahppoplána”) at
   `samas.no/se/oahput`, but the website uses its own codes (SÁM-1005,
@@ -226,7 +242,7 @@ each row is truly distinct (NIH, Steiner, UiO).
 - **Filtered to 2025 only** (18 rows)
 - Course plans harvested from 5 subject-area PDFs at
   `steinerhoyskolen.no`, split by course heading pattern
-- 15/18 rows with fulltext (83.3%). 3 missing courses are Praksis
+- 15/18 rows with extracted text (83.3%). 3 missing courses are Praksis
   modules (M-LP1/2/3) with no PDF content
 - No deduplication (0%) — each of the 15 plans is distinct
 
@@ -273,8 +289,8 @@ each row is truly distinct (NIH, Steiner, UiO).
 
 - **Multi-year harvest** (2007–2025), 2920 rows across 316 unique course
   codes
-- **31.4% overall success rate** (917/2920 with fulltext); 36% of unique
-  URLs succeed (1053/2920 HTML fetched)
+- **31.4% overall success rate** (917/2920 with extracted text); 36% of
+  unique URLs succeed (1053/2920 HTML fetched)
 - **No year in URL** — URL pattern `/nb/student/course/{CODE}_1` returns
   only the current course plan. Historical course plans are not
   available through the web interface (see \#127 for PDF archive)
@@ -300,8 +316,8 @@ each row is truly distinct (NIH, Steiner, UiO).
   component (see \#60)
 - `.pre_uit()` strips remaining “Error rendering component” text and
   breadcrumb artifacts
-- 14 rows have fulltext that normalizes to NA (rendering errors with no
-  real content)
+- 14 rows have extracted text that normalizes to NA (rendering errors
+  with no real content)
 
 ------------------------------------------------------------------------
 

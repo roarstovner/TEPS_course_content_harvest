@@ -18,11 +18,11 @@ courses_raw <- html_files |>
 
 cat("Loaded", nrow(courses_raw), "course rows from", length(html_files), "files\n\n")
 
-# Anonymize fulltext -> course_plan
-cat("Anonymizing fulltext...\n")
+# Anonymize extracted_text -> course_plan
+cat("Anonymizing extracted text...\n")
 courses_raw$course_plan <- anonymize_fulltext(
   courses_raw$institution_short,
-  courses_raw$fulltext
+  courses_raw$extracted_text
 )
 
 # Run deduplication (normalizes course_plan and builds plan IDs)

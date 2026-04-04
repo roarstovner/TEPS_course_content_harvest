@@ -20,23 +20,23 @@ summary_tbl <- df |>
     Codes        = n_distinct(Emnekode_raw),
     year_min     = min(Årstall),
     year_max     = max(Årstall),
-    `Fulltext OK`= sum(!is.na(fulltext) & nchar(fulltext) > 0),
+    `Extracted OK`= sum(!is.na(extracted_text) & nchar(extracted_text) > 0),
     has_plan_id  = sum(!is.na(plan_content_id)),
-    `Median chars` = round(median(nchar(fulltext[!is.na(fulltext) & nchar(fulltext) > 0]), na.rm = TRUE)),
+    `Median chars` = round(median(nchar(extracted_text[!is.na(extracted_text) & nchar(extracted_text) > 0]), na.rm = TRUE)),
     `Unique plans` = n_distinct(plan_content_id, na.rm = TRUE),
     .groups = "drop"
   ) |>
   mutate(
     Years     = ifelse(year_min == year_max, as.character(year_min), paste0(year_min, "-", year_max)),
-    Rate      = sprintf("%.1f%%", `Fulltext OK` / Rows * 100),
+    Rate      = sprintf("%.1f%%", `Extracted OK` / Rows * 100),
     `Dedup %` = sprintf("%.1f%%", (1 - `Unique plans` / has_plan_id) * 100)
   ) |>
   select(Institution = institution_short, Rows, Codes, Years,
-         `Fulltext OK`, Rate, `Median chars`, `Unique plans`, `Dedup %`)
+         `Extracted OK`, Rate, `Median chars`, `Unique plans`, `Dedup %`)
 
 total_rows     <- nrow(df)
-total_fulltext <- sum(!is.na(df$fulltext) & nchar(df$fulltext) > 0)
-total_rate     <- sprintf("%.1f%%", total_fulltext / total_rows * 100)
+total_text <- sum(!is.na(df$extracted_text) & nchar(df$extracted_text) > 0)
+total_rate     <- sprintf("%.1f%%", total_text / total_rows * 100)
 total_plans    <- nrow(plans)
 ```
 
@@ -49,14 +49,14 @@ Generated: `r Sys.Date()`
 knitr::kable(summary_tbl)
 ```
 
-**Total**: `r total_rows` rows, `r total_fulltext` with fulltext (`r total_rate`), `r total_plans` unique plans.
+**Total**: `r total_rows` rows, `r total_text` with extracted text (`r total_rate`), `r total_plans` unique plans.
 
 **Columns:**
 
 - **Rows**: Total course-semester rows in harvested data (from DBH)
 - **Codes**: Unique course codes (Emnekode_raw)
-- **Fulltext OK**: Rows with successfully extracted course plan text
-- **Rate**: Fulltext success rate (Fulltext OK / Rows)
+- **Extracted OK**: Rows with successfully extracted course plan text
+- **Rate**: Extraction success rate (Extracted OK / Rows)
 - **Median chars**: Median character count of extracted text
 - **Unique plans**: Distinct course plans after normalization and deduplication
 - **Dedup %**: Percentage of rows removed by deduplication (1 - unique/has_plan)
@@ -88,7 +88,7 @@ Low dedup (<10%) means most rows have genuinely different content, typically bec
 - Two CSS selectors used: old structure (`#vrtx-fs-emne-content`) and new (`.entry-content`)
 - HiOF required a browser-like user agent to avoid 403 blocks (see #27)
 - `normalize_plan_text` strips "Sist hentet fra FS" timestamps and "Litteraturlista er sist oppdatert" lines
-- **Litteraturlister (reading lists)** are included in the fulltext — only the timestamp line is stripped, not the reading list content itself (book titles, authors, ISBNs, etc.). This differs from NLA, which truncates at "Digital litteraturliste" to remove reading lists entirely
+- **Litteraturlister (reading lists)** are included in the extracted text — only the timestamp line is stripped, not the reading list content itself (book titles, authors, ISBNs, etc.). This differs from NLA, which truncates at "Digital litteraturliste" to remove reading lists entirely
 
 ---
 
@@ -97,7 +97,7 @@ Low dedup (<10%) means most rows have genuinely different content, typically bec
 - **Re-harvested 2026-02-16** with URL discovery (see #63, #79-#83)
 - The base URL `/emne/{CODE}` returns only the latest version. Semester-specific pages have numeric IDs (e.g., `/emne/MGL5-10NO2B/12177`) that cannot be derived from metadata
 - `resolve_urls_hivolda_batch()` scrapes the base page to discover semester links, mapping "Haust" to "Høst" for matching
-- Result: 594/1182 rows with fulltext (up from 1182 identical pages). 556 unique plans (up from 99)
+- Result: 594/1182 rows with extracted text (up from 1182 identical pages). 556 unique plans (up from 99)
 - 588 NA rows = course not offered in that semester (legitimate missing data)
 
 ---
@@ -119,7 +119,7 @@ Low dedup (<10%) means most rows have genuinely different content, typically bec
 - Year range 2018-2024 (no 2025 data in DBH extract)
 - INN publishes some courses in both Norwegian and English, causing lower dedup than expected. `normalize_plan_text` strips 35 NO/EN field labels and normalizes language metadata (see #52)
 - **Wrong-year content**: Some 2022 courses (e.g., 2ENL512-1, 2NOL51-5, 2SFL51-1, 2ENLBA) display "Undervisningssemestre" for a different year than requested. This is an upstream issue in INN's system — the URL includes the correct year, but INN's server may serve a different version. No client-side fix is possible (see #123)
-- **Missing plans**: A few 2022 courses (e.g., 2EXPHIL51, 2PEDL51-2-1, 2ENL512-3) return pages with no course plan content. These are not caught by the "Emnesøket" filter since the page structure differs; fulltext may contain navigation/header text instead of plan content (see #123)
+- **Missing plans**: A few 2022 courses (e.g., 2EXPHIL51, 2PEDL51-2-1, 2ENL512-3) return pages with no course plan content. These are not caught by the "Emnesøket" filter since the page structure differs; extracted text may contain navigation/header text instead of plan content (see #123)
 
 ---
 
@@ -144,7 +144,7 @@ Low dedup (<10%) means most rows have genuinely different content, typically bec
 ### NLA (NLA University College)
 
 - **Filtered to 2025 only** (no year in URL; see #74, #77)
-- **100% fulltext rate** (365/365)
+- **100% extraction rate** (365/365)
 - Original harvest failed (0% extraction) because NLA's `/studietilbud/emner/` URLs are React-rendered. Fix: switched to `/for-studenter/Studie-%20og%20emneplaner/emneplan/{CODE}` with selector `.page-course-plan` (see #55)
 - `.pre_nla()` in `extract_fulltext.R` strips year dropdown, "Last ned PDF" link, and truncates at "Digital litteraturliste" to remove reading lists (reduced median from 34.9K to 5.3K chars; see #67)
 
@@ -179,7 +179,7 @@ Low dedup (<10%) means most rows have genuinely different content, typically bec
 
 - **Re-harvested 2026-02-14** (see #57, #61)
 - Original harvest returned only error pages because OsloMet was using client-side rendering (React/Liferay). The site later switched to server-side rendering, fixing the issue
-- **100% fulltext rate** (1705/1705), but 60 rows contain error pages ("Siden du leter etter finnes ikke") which are filtered as NA by `normalize_plan_text`, leaving 1645 rows with genuine content
+- **100% extraction rate** (1705/1705), but 60 rows contain error pages ("Siden du leter etter finnes ikke") which are filtered as NA by `normalize_plan_text`, leaving 1645 rows with genuine content
 - **URL semester issue**: OsloMet's website only accepts "HØST" (autumn) in URLs. Spring semester URLs return 404. Workaround: always use "HØST" regardless of actual semester (see #1)
 - URL pattern: `https://student.oslomet.no/studier/-/studieinfo/emne/{CODE}/{YEAR}/HØST`
 
@@ -189,7 +189,7 @@ Low dedup (<10%) means most rows have genuinely different content, typically bec
 
 - **New institution, added 2026-02-16** (see #69-#72)
 - **Filtered to 2025 only**
-- **0% fulltext rate**: No reliable matching between DBH course codes and website course codes (see #85, #89, #90)
+- **0% extraction rate**: No reliable matching between DBH course codes and website course codes (see #85, #89, #90)
 - Samas publishes course plans as PDFs ("Oahppoplána") at `samas.no/se/oahput`, but the website uses its own codes (SÁM-1005, DUO-1014, SER 103) that do NOT correspond to DBH codes (V1SAM-1100-1, V1DUO-1140-1, etc.)
 - ~98% of DBH rows are V1/V5 teacher education courses. These only appear in program-level PDFs ("PROGRÁMMAPLÁNA") that list course names and credits but contain no per-course descriptions
 - Individual course plan PDFs exist on the website for standalone courses, but none match any DBH course codes in the data
@@ -201,7 +201,7 @@ Low dedup (<10%) means most rows have genuinely different content, typically bec
 - **New institution, added 2026-02-16** (see #68, #73)
 - **Filtered to 2025 only** (18 rows)
 - Course plans harvested from 5 subject-area PDFs at `steinerhoyskolen.no`, split by course heading pattern
-- 15/18 rows with fulltext (83.3%). 3 missing courses are Praksis modules (M-LP1/2/3) with no PDF content
+- 15/18 rows with extracted text (83.3%). 3 missing courses are Praksis modules (M-LP1/2/3) with no PDF content
 - No deduplication (0%) — each of the 15 plans is distinct
 
 ---
@@ -236,7 +236,7 @@ Low dedup (<10%) means most rows have genuinely different content, typically bec
 ### UiS (University of Stavanger)
 
 - **Multi-year harvest** (2007–2025), 2920 rows across 316 unique course codes
-- **31.4% overall success rate** (917/2920 with fulltext); 36% of unique URLs succeed (1053/2920 HTML fetched)
+- **31.4% overall success rate** (917/2920 with extracted text); 36% of unique URLs succeed (1053/2920 HTML fetched)
 - **No year in URL** — URL pattern `/nb/student/course/{CODE}_1` returns only the current course plan. Historical course plans are not available through the web interface (see #127 for PDF archive)
 - The same URL is shared across all year-rows for a given course, so many year-rows inherently have no content (2070 duplicate URLs)
 - Website completely redesigned (migrated to Drupal); old URL pattern `/nb/course/{CODE}` returned 100% 404s (see #19-#24)
@@ -252,7 +252,7 @@ Low dedup (<10%) means most rows have genuinely different content, typically bec
 - All UiT pages contain "Access denied to page component" HTML comments and "Error rendering component" artifacts — this is a persistent issue on UiT's website, not a scraping problem (see #64)
 - CSS selector changed from `.hovedfelt` (single) to `.hovedfelt > main > div.col-md-12` (many) to work around the broken component (see #60)
 - `.pre_uit()` strips remaining "Error rendering component" text and breadcrumb artifacts
-- 14 rows have fulltext that normalizes to NA (rendering errors with no real content)
+- 14 rows have extracted text that normalizes to NA (rendering errors with no real content)
 
 ---
 

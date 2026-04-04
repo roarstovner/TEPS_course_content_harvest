@@ -12,7 +12,7 @@ text from course webpages.
 (institution, course code, year, semester)
 
 **Output:** The same tibble with added course URL, raw HTML, and
-extracted full text
+extracted text
 
 ## Quick Start: Running the Pipeline
 
@@ -109,8 +109,8 @@ courses <- readRDS("data/courses.RDS")
 result <- harvest_institution("newuni", courses, year = 2025)
 
 # Inspect results
-result |> select(Emnekode, url, html_success, fulltext) |> head()
-result$fulltext[1]  # Inspect first result
+result |> select(Emnekode, url, html_success, extracted_text) |> head()
+result$extracted_text[1]  # Inspect first result
 ```
 
 Expand a little bit at a time, for example by year. Add more years as
@@ -129,7 +129,7 @@ This runs a three-stage pipeline:
 
 1.  **Anonymize** (`anonymize_fulltext()`): Removes PII (teacher names,
     emails, phone numbers), dates, seasons, and administrative year
-    references from `fulltext`, producing a readable `course_plan`
+    references from `extracted_text`, producing a readable `course_plan`
     column. Content years (e.g., “etter 1945”) are preserved.
 2.  **Normalize** (`normalize_plan_text()`): Applies lossy transforms
     (lowercasing, heading synonyms, blanket year removal, whitespace
@@ -156,16 +156,16 @@ This runs a three-stage pipeline:
 <td>Anonymized, readable text (primary column for consumers)</td>
 </tr>
 <tr>
-<td><code>fulltext</code></td>
+<td><code>extracted_text</code></td>
 <td>Raw extracted text (kept for debugging)</td>
 </tr>
 <tr>
-<td><code>fulltext_normalized</code></td>
+<td><code>course_plan_normalized</code></td>
 <td>Lossy normalized text (internal, for hashing)</td>
 </tr>
 <tr>
 <td><code>plan_content_id</code></td>
-<td>SHA-256 hash of <code>fulltext_normalized</code></td>
+<td>SHA-256 hash of <code>course_plan_normalized</code></td>
 </tr>
 </tbody>
 </table>
@@ -212,12 +212,12 @@ offered)
 After processing, you’ll have:
 
     # A tibble: 2 × 6
-      course_id                    url       html  html_success fulltext course_plan
-      <chr>                        <chr>     <chr> <lgl>        <chr>    <chr>      
-    1 oslomet_ABC123_2024_autumn_1 https://… <htm… TRUE         ABC123 … ABC123 Cou…
-    2 oslomet_XYZ456_2024_spring_1 https://… <htm… TRUE         XYZ456 … XYZ456 Ano…
+      course_id                  url   html  html_success extracted_text course_plan
+      <chr>                      <chr> <chr> <lgl>        <chr>          <chr>      
+    1 oslomet_ABC123_2024_autum… http… <htm… TRUE         ABC123 Course… ABC123 Cou…
+    2 oslomet_XYZ456_2024_sprin… http… <htm… TRUE         XYZ456 Anothe… XYZ456 Ano…
 
-- `course_plan` is the anonymized version of `fulltext` (no names,
+- `course_plan` is the anonymized version of `extracted_text` (no names,
   emails, dates, or administrative years). Content years like historical
   references are preserved. Use this column for analysis.
 
@@ -284,7 +284,7 @@ Checkpoint files are in `.gitignore` and won’t be committed
     │   ├── fetch_html_cols.R      # HTML downloading
     │   ├── extract_fulltext.R     # Config-driven text extraction
     │   ├── checkpoint.R           # Checkpoint management
-    │   ├── anonymize.R            # PII removal: fulltext → course_plan
+    │   ├── anonymize.R            # PII removal: extracted_text → course_plan
     │   ├── normalize_plan_text.R  # Lossy normalization for dedup hashing
     │   ├── deduplicate_plans.R    # Groups identical plans by content hash
     │   └── run_dedup.R            # Entry point for anonymize + dedup pipeline

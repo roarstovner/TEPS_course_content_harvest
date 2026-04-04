@@ -80,17 +80,17 @@ for (i in 1:nrow(test_courses)) {
 verified <- sum(test_courses$has_course_code, na.rm = TRUE)
 cat('Pages with course code:', verified, '/', fetch_success, '\n\n')
 
-# Step 5: Extract fulltext
-cat('Step 5: Extracting fulltext...\n')
-test_courses$fulltext <- extract_fulltext(test_courses$institution_short, test_courses$html)
-test_courses$text_length <- nchar(test_courses$fulltext)
+# Step 5: Extract text
+cat('Step 5: Extracting text...\n')
+test_courses$extracted_text <- extract_fulltext(test_courses$institution_short, test_courses$html)
+test_courses$text_length <- nchar(test_courses$extracted_text)
 
-extraction_success <- sum(!is.na(test_courses$fulltext) & test_courses$fulltext != '', na.rm = TRUE)
-cat('Fulltext extracted:', extraction_success, '/', fetch_success, '\n\n')
+extraction_success <- sum(!is.na(test_courses$extracted_text) & test_courses$extracted_text != '', na.rm = TRUE)
+cat('Text extracted:', extraction_success, '/', fetch_success, '\n\n')
 
 # Calculate statistics
 if (extraction_success > 0) {
-  valid_lengths <- test_courses$text_length[!is.na(test_courses$fulltext) & test_courses$fulltext != '']
+  valid_lengths <- test_courses$text_length[!is.na(test_courses$extracted_text) & test_courses$extracted_text != '']
   cat('Text length statistics (valid extractions):\n')
   cat('  Min:', min(valid_lengths), 'characters\n')
   cat('  Max:', max(valid_lengths), 'characters\n')
@@ -117,11 +117,11 @@ cat('Text extraction:', extraction_success, '/', fetch_success,
 # Show sample extraction
 if (extraction_success > 0) {
   cat('\n=== SAMPLE EXTRACTION ===\n')
-  sample_idx <- which(!is.na(test_courses$fulltext) & test_courses$fulltext != '')[1]
+  sample_idx <- which(!is.na(test_courses$extracted_text) & test_courses$extracted_text != '')[1]
   cat('Course:', test_courses$Emnekode_raw[sample_idx], '\n')
   cat('Text length:', test_courses$text_length[sample_idx], 'characters\n')
   cat('First 500 characters:\n')
-  cat(substr(test_courses$fulltext[sample_idx], 1, 500), '\n...\n')
+  cat(substr(test_courses$extracted_text[sample_idx], 1, 500), '\n...\n')
 }
 
 cat('\nValidation complete!\n')
