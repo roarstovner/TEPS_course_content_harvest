@@ -10,7 +10,9 @@ institution_configs <- list(
     strategy = "standard",
     selector = "#main-content",
     selector_mode = "single",
-    year_in_url = TRUE
+    year_in_url = TRUE,
+    section_strategy = "html_headings",
+    section_heading_level = "h2"
   ),
 
   uia = list(
@@ -18,7 +20,9 @@ institution_configs <- list(
     strategy = "standard",
     selector = "#right-main",
     selector_mode = "single",
-    year_in_url = TRUE
+    year_in_url = TRUE,
+    section_strategy = "html_headings",
+    section_heading_level = "h2"
   ),
 
   ntnu = list(
@@ -28,7 +32,9 @@ institution_configs <- list(
     selector_mode = "single",
     year_in_url = TRUE,
     post_fn = .post_ntnu,
-    fetch_fn = fetch_html_cols_single_ntnu
+    fetch_fn = fetch_html_cols_single_ntnu,
+    section_strategy = "html_headings",
+    section_heading_level = "h3"
   ),
 
   inn = list(
@@ -37,7 +43,9 @@ institution_configs <- list(
     selector = ".content-inner",
     selector_mode = "single",
     year_in_url = TRUE,
-    pre_fn = .add_table_cell_breaks
+    pre_fn = .add_table_cell_breaks,
+    section_strategy = "html_headings",
+    section_heading_level = "h2"
   ),
 
   hivolda = list(
@@ -46,7 +54,8 @@ institution_configs <- list(
     selector = "article.content-emweb",
     selector_mode = "single",
     year_in_url = TRUE,
-    pre_fn = .add_table_cell_breaks
+    pre_fn = .add_table_cell_breaks,
+    section_strategy = "text_split"
   ),
 
   hiof = list(
@@ -55,7 +64,9 @@ institution_configs <- list(
     selector = "#vrtx-fs-emne-content, main .entry-content, .entry-content",
     selector_mode = "single",
     year_in_url = TRUE,
-    user_agent = "browser"
+    user_agent = "browser",
+    section_strategy = "html_headings",
+    section_heading_level = "h2"
   ),
 
   hvl = list(
@@ -64,7 +75,9 @@ institution_configs <- list(
     selector = ".l-2-col__main-content",
     selector_mode = "single",
     year_in_url = TRUE,
-    fetch_fn = fetch_html_cols_single_hvl
+    fetch_fn = fetch_html_cols_single_hvl,
+    section_strategy = "html_headings",
+    section_heading_level = "h3"
   ),
 
   mf = list(
@@ -72,13 +85,16 @@ institution_configs <- list(
     strategy = "standard",
     selector = "main",
     selector_mode = "single",
-    year_in_url = FALSE
+    year_in_url = FALSE,
+    section_strategy = "html_headings",
+    section_heading_level = "h2"
   ),
 
   nla = list(
     code = "8223",
     strategy = "json_extract",
-    year_in_url = FALSE
+    year_in_url = FALSE,
+    section_strategy = "json_nla"
   ),
 
   nord = list(
@@ -90,7 +106,8 @@ institution_configs <- list(
       ".ac-panel--inner, #ac-panel-2 .field__item, #ac-panel-0 li, p, .placeholder-text"
     ),
     selector_mode = "multi",
-    year_in_url = TRUE
+    year_in_url = TRUE,
+    section_strategy = "accordion_nord"
   ),
 
   nih = list(
@@ -98,7 +115,9 @@ institution_configs <- list(
     strategy = "standard",
     selector = ".fs-body",
     selector_mode = "single",
-    year_in_url = TRUE
+    year_in_url = TRUE,
+    section_strategy = "html_headings",
+    section_heading_level = "h2"
   ),
 
   uib = list(
@@ -111,7 +130,9 @@ institution_configs <- list(
       ".vertical-reset-children .vertical-reset-children .mt-12"
     ),
     selector_mode = "multi",
-    year_in_url = TRUE
+    year_in_url = TRUE,
+    section_strategy = "details_uib",
+    section_heading_level = "h2"
   ),
 
   uio = list(
@@ -119,7 +140,9 @@ institution_configs <- list(
     strategy = "standard",
     selector = "#vrtx-course-content",
     selector_mode = "single",
-    year_in_url = FALSE
+    year_in_url = FALSE,
+    section_strategy = "html_headings",
+    section_heading_level = "h2"
   ),
 
   uis = list(
@@ -127,13 +150,16 @@ institution_configs <- list(
     strategy = "html_pdf_discovery",
     selector = "#block-page-content .link--, #block-page-content .paragraph--with-title",
     selector_mode = "multi",
-    year_in_url = TRUE
+    year_in_url = TRUE,
+    section_strategy = "html_headings",
+    section_heading_level = "h2"
   ),
 
   usn = list(
     code = "1176",
     strategy = "shadow_dom",
-    year_in_url = TRUE
+    year_in_url = TRUE,
+    section_strategy = "text_split"
   ),
 
   uit = list(
@@ -142,7 +168,9 @@ institution_configs <- list(
     selector = ".hovedfelt > main > div.col-md-12",
     selector_mode = "multi",
     year_in_url = TRUE,
-    post_fn = .pre_uit
+    post_fn = .pre_uit,
+    section_strategy = "html_headings",
+    section_heading_level = "h2"
   ),
 
   nmbu = list(
@@ -150,19 +178,23 @@ institution_configs <- list(
     strategy = "standard",
     selector = ".layout",
     selector_mode = "single",
-    year_in_url = FALSE
+    year_in_url = FALSE,
+    section_strategy = "html_headings",
+    section_heading_level = "h3"
   ),
 
   samas = list(
     code = "0217",
     strategy = "noop",
-    year_in_url = FALSE
+    year_in_url = FALSE,
+    section_strategy = "noop"
   ),
 
   steiner = list(
     code = "8225",
     strategy = "pdf_split",
-    year_in_url = FALSE
+    year_in_url = FALSE,
+    section_strategy = "text_split"
   )
 )
 

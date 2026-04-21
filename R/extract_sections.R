@@ -11,35 +11,22 @@
 # Remaining strategies (accordion_nord, details_uib, json_nla) are stubs
 # until #187–#189.
 
-# Strategy assignment (explicit mapping; will migrate to institution_config
-# in issue #190). Each entry: strategy name + optional heading level +
-# optional selector override. Selectors default to the institution's
-# config selector.
-.section_strategies <- list(
-  oslomet = list(strategy = "html_headings", heading_level = "h2"),
-  ntnu    = list(strategy = "html_headings", heading_level = "h3"),
-  uio     = list(strategy = "html_headings", heading_level = "h2"),
-  hiof    = list(strategy = "html_headings", heading_level = "h2"),
-  hvl     = list(strategy = "html_headings", heading_level = "h3"),
-  uia     = list(strategy = "html_headings", heading_level = "h2"),
-  nih     = list(strategy = "html_headings", heading_level = "h2"),
-  mf      = list(strategy = "html_headings", heading_level = "h2"),
-  nmbu    = list(strategy = "html_headings", heading_level = "h3"),
-  uit     = list(strategy = "html_headings", heading_level = "h2"),
-  inn     = list(strategy = "html_headings", heading_level = "h2",
-                 pre_fn = .add_table_cell_breaks, text_fallback = TRUE),
-  uis     = list(strategy = "html_headings", heading_level = "h2"),
-
-  hivolda = list(strategy = "text_split"),
-  usn     = list(strategy = "text_split"),
-  steiner = list(strategy = "text_split"),
-
-  nord    = list(strategy = "accordion_nord"),
-  uib     = list(strategy = "details_uib", heading_level = "h2"),
-  nla     = list(strategy = "json_nla"),
-
-  samas   = list(strategy = "noop")
-)
+# Section-extraction config lives on each institution in
+# R/institution_config.R (fields: section_strategy, section_heading_level).
+# Selector and pre_fn are reused from the institution's existing fields.
+.section_cfg <- function(institution_short) {
+  ic <- get_institution_config(institution_short)
+  if (is.null(ic$section_strategy)) {
+    stop("No section_strategy for institution: ", institution_short)
+  }
+  list(
+    strategy      = ic$section_strategy,
+    heading_level = ic$section_heading_level,
+    selector      = ic$selector,
+    pre_fn        = ic$pre_fn,
+    institution   = institution_short
+  )
+}
 
 #' Extract sections from course HTML for one institution
 #'
@@ -58,9 +45,7 @@ extract_sections <- function(institution_short, html, extracted_text, course_id)
   stopifnot(length(html) == length(course_id))
   stopifnot(length(extracted_text) == length(html))
 
-  cfg <- .section_strategies[[institution_short]]
-  if (is.null(cfg)) stop("No section extraction strategy for: ", institution_short)
-  cfg$institution <- institution_short
+  cfg <- .section_cfg(institution_short)
 
   fn <- .section_strategy_fn(cfg$strategy)
   safe_fn <- purrr::possibly(fn, otherwise = .empty_sections())
@@ -74,9 +59,11 @@ extract_sections <- function(institution_short, html, extracted_text, course_id)
   } else NULL
 
   rows <- purrr::pmap(list(html, extracted_text, course_id), function(h, txt, cid) {
-    out <- safe_fn(h, txt, cfg)
+    input <- list(html = h, extracted_text = txt, course_id = cid,
+                  institution = institution_short)
+    out <- safe_fn(input, cfg)
     if (!is.null(fallback_fn) && nrow(out) < 3) {
-      fb <- fallback_fn(h, txt, cfg)
+      fb <- fallback_fn(input, cfg)
       if (nrow(fb) > nrow(out)) out <- fb
     }
     tibble::tibble(
@@ -95,10 +82,10 @@ extract_sections <- function(institution_short, html, extracted_text, course_id)
     strategy,
     html_headings  = extract_sections_html,
     text_split     = extract_sections_text,
-    accordion_nord = .extract_sections_stub("accordion_nord", "#187"),
-    details_uib    = .extract_sections_stub("details_uib", "#188"),
-    json_nla       = .extract_sections_stub("json_nla", "#189"),
-    noop           = function(html, txt, cfg) .empty_sections(),
+    accordion_nord = extract_sections_nord,
+    details_uib    = extract_sections_uib,
+    json_nla       = extract_sections_nla,
+    noop           = function(input, cfg) .empty_sections(),
     .extract_sections_stub(strategy, "unknown")
   )
 }
@@ -121,14 +108,15 @@ extract_sections <- function(institution_short, html, extracted_text, course_id)
 #'      already captures all descendants).
 #'   4. Otherwise recurse into children.
 #'
-#' @param html Character scalar of raw HTML.
+#' @param input List with `html`, `extracted_text`, `course_id`, `institution`.
 #' @param cfg Section-extraction config list (must include `heading_level`
 #'   and `selector`).
-extract_sections_html <- function(html, extracted_text, cfg) {
+extract_sections_html <- function(input, cfg) {
+  html <- input$html
   if (is.na(html) || !nzchar(html)) return(.empty_sections())
 
   heading_level <- cfg$heading_level %||% "h2"
-  selector <- cfg$selector %||% get_institution_config(cfg$institution)$selector
+  selector <- cfg$selector
 
   if (!is.null(cfg$pre_fn)) html <- cfg$pre_fn(html)
 
@@ -203,10 +191,10 @@ extract_sections_html <- function(html, extracted_text, cfg) {
 #' their content concatenated in document order (with a blank line
 #' between chunks), matching html_headings' behaviour.
 #'
-#' @param html Ignored — included for strategy-function signature parity.
-#' @param extracted_text Character scalar of pre-extracted plain text.
+#' @param input List with `html`, `extracted_text`, `course_id`, `institution`.
 #' @param cfg Section-extraction config list (unused for now).
-extract_sections_text <- function(html, extracted_text, cfg) {
+extract_sections_text <- function(input, cfg) {
+  extracted_text <- input$extracted_text
   if (is.na(extracted_text) || !nzchar(extracted_text)) return(.empty_sections())
 
   lines <- stringr::str_split_1(extracted_text, "\\r?\\n")
@@ -268,6 +256,217 @@ extract_sections_text <- function(html, extracted_text, cfg) {
   )
 }
 
+#' accordion_nord strategy — Nord's accordion-based course pages
+#'
+#' Each section lives in a `div.ac` block containing `button.ac-trigger`
+#' (the section heading) and `div.ac-panel > .ac-panel--inner` (the body).
+#' The trigger button also contains a nested "Kopier lenke / Kopiert"
+#' copy-link label which is stripped before matching.
+#'
+#' @param input List with `html`, `extracted_text`, `course_id`, `institution`.
+#' @param cfg Section-extraction config list (unused for now).
+extract_sections_nord <- function(input, cfg) {
+  html <- input$html
+  if (is.na(html) || !nzchar(html)) return(.empty_sections())
+
+  doc <- rvest::read_html(html)
+  items <- rvest::html_elements(doc, "div.ac")
+  if (length(items) == 0) return(.empty_sections())
+
+  sections <- list()
+
+  for (item in items) {
+    trigger <- rvest::html_element(item, "button.ac-trigger")
+    panel <- rvest::html_element(item, ".ac-panel--inner")
+    if (is.na(trigger) || is.na(panel)) next
+
+    # Strip nested copy-link label from the trigger text.
+    copy_span <- rvest::html_element(trigger, ".copy-accordion-anchor")
+    if (!is.na(copy_span)) xml2::xml_remove(copy_span)
+    heading_text <- trimws(rvest::html_text2(trigger))
+
+    section <- match_heading_to_section(heading_text)
+    if (is.na(section)) next
+
+    body <- trimws(rvest::html_text2(panel))
+    if (!nzchar(body)) next
+
+    sections[[section]] <- c(sections[[section]], body)
+  }
+
+  if (length(sections) == 0) return(.empty_sections())
+
+  tibble::tibble(
+    section  = names(sections),
+    raw_text = vapply(sections, function(v) paste(v, collapse = "\n\n"),
+                      character(1))
+  )
+}
+
+#' details_uib strategy — UiB hybrid details/summary + h2 sections
+#'
+#' UiB course pages use two parallel structures:
+#'   - `<details><summary>Heading</summary>...body...</details>` for
+#'     accordion-style sections (e.g. Krav til forkunnskaper, Vurderingsformer,
+#'     Litteraturliste).
+#'   - Top-level `<h2>` headings for the main content blocks (Mål og
+#'     innhold, Læringsutbytte).
+#'
+#' We run both passes and concatenate matches into the canonical section
+#' buckets. The h2 pass skips any `<details>` subtrees so their content
+#' isn't double-counted.
+#'
+#' @param input List with `html`, `extracted_text`, `course_id`, `institution`.
+#' @param cfg Section-extraction config list (unused for now).
+extract_sections_uib <- function(input, cfg) {
+  html <- input$html
+  if (is.na(html) || !nzchar(html)) return(.empty_sections())
+
+  doc <- rvest::read_html(html)
+  sections <- list()
+  add <- function(section, text) {
+    text <- trimws(text)
+    if (is.na(section) || !nzchar(text)) return(invisible())
+    sections[[section]] <<- c(sections[[section]], text)
+  }
+
+  # Pass 1: details/summary accordion sections.
+  for (d in rvest::html_elements(doc, "details")) {
+    summary <- rvest::html_element(d, "summary")
+    if (is.na(summary)) next
+    section <- match_heading_to_section(rvest::html_text2(summary))
+    if (is.na(section)) next
+    # Body = details text minus the summary text.
+    summary_text <- rvest::html_text2(summary)
+    body <- rvest::html_text2(d)
+    body <- stringr::str_remove(body, stringr::fixed(summary_text))
+    add(section, body)
+  }
+
+  # Pass 2: top-level h2 sections. DFS that skips <details> subtrees.
+  current_section <- NA_character_
+  chunks <- character()
+  flush <- function() {
+    add(current_section, paste(chunks[nzchar(chunks)], collapse = "\n"))
+    chunks <<- character()
+  }
+
+  visit <- function(node) {
+    tag <- tolower(rvest::html_name(node))
+    if (tag == "details") return(invisible())
+    if (tag == "h2") {
+      flush()
+      current_section <<- match_heading_to_section(rvest::html_text2(node))
+      return(invisible())
+    }
+    # If this subtree contains no h2 and no <details>, emit as leaf.
+    if (length(rvest::html_elements(node, "h2, details")) == 0) {
+      if (!is.na(current_section)) {
+        chunks <<- c(chunks, rvest::html_text2(node))
+      }
+      return(invisible())
+    }
+    for (k in rvest::html_children(node)) visit(k)
+  }
+
+  body_root <- rvest::html_element(doc, "body")
+  if (is.na(body_root)) body_root <- doc
+  for (k in rvest::html_children(body_root)) visit(k)
+  flush()
+
+  if (length(sections) == 0) return(.empty_sections())
+
+  tibble::tibble(
+    section  = names(sections),
+    raw_text = vapply(sections, function(v) paste(v, collapse = "\n\n"),
+                      character(1))
+  )
+}
+
+#' json_nla strategy — NLA embeds course data as JSON in a script tag
+#'
+#' Reuses the JSON discovery logic from `.extract_nla_json_one()`
+#' (R/extract_fulltext.R): locate the EmneplanPage script block, parse
+#' the JSON, index into `props$items[[academic_year]]`, then map the
+#' per-item `title` fields (from `table` and `accordions`) to canonical
+#' sections via the heading map.
+#'
+#' The academic year is derived from `course_id` (format
+#' `nla_CODE_YEAR_SEMESTER_STATUS`): autumn → "YEAR-(YEAR+1)",
+#' spring → "(YEAR-1)-YEAR".
+#'
+#' @param input List with `html`, `extracted_text`, `course_id`, `institution`.
+#' @param cfg Section-extraction config list (unused for now).
+extract_sections_nla <- function(input, cfg) {
+  html <- input$html
+  if (is.na(html) || !nzchar(html)) return(.empty_sections())
+
+  academic_year <- .nla_academic_year_from_course_id(input$course_id)
+  if (is.na(academic_year)) return(.empty_sections())
+
+  doc <- rvest::read_html(html)
+  scripts <- rvest::html_elements(doc, "script")
+  script_texts <- rvest::html_text(scripts)
+  idx <- grep("EmneplanPage", script_texts, fixed = TRUE)
+  if (length(idx) == 0) return(.empty_sections())
+
+  json_match <- regmatches(script_texts[idx[1]],
+                           regexpr("\\{.*\\}", script_texts[idx[1]]))
+  if (length(json_match) == 0) return(.empty_sections())
+
+  parsed <- jsonlite::fromJSON(json_match, simplifyVector = FALSE)
+  year_data <- parsed$props$items[[academic_year]]
+  if (is.null(year_data)) return(.empty_sections())
+
+  sections <- list()
+  add <- function(section, text) {
+    text <- trimws(text %||% "")
+    if (is.na(section) || !nzchar(text)) return(invisible())
+    sections[[section]] <<- c(sections[[section]], text)
+  }
+
+  # table items: plain title + content
+  for (item in year_data$table %||% list()) {
+    section <- match_heading_to_section(item$title %||% NA_character_)
+    add(section, item$content)
+  }
+
+  # accordion items: title + html-rendered content
+  for (item in year_data$accordions %||% list()) {
+    section <- match_heading_to_section(item$title %||% NA_character_)
+    if (is.na(section)) next
+    body <- item$content %||% ""
+    if (nzchar(body)) {
+      body_doc <- rvest::read_html(paste0("<div>", body, "</div>"))
+      body <- rvest::html_text2(rvest::html_element(body_doc, "div"))
+    }
+    add(section, body)
+  }
+
+  if (length(sections) == 0) return(.empty_sections())
+
+  tibble::tibble(
+    section  = names(sections),
+    raw_text = vapply(sections, function(v) paste(v, collapse = "\n\n"),
+                      character(1))
+  )
+}
+
+# Parse course_id like "nla_CODE_2024_spring_1" into the academic-year
+# key used in NLA's JSON ("2023-2024" for spring 2024, "2024-2025" for
+# autumn 2024).
+.nla_academic_year_from_course_id <- function(course_id) {
+  if (is.na(course_id)) return(NA_character_)
+  # course_id format: {inst}_{code}_{year}_{semester}_{status}
+  m <- stringr::str_match(course_id, "_(\\d{4})_(spring|autumn|summer)_\\d+$")
+  if (is.na(m[1, 1])) return(NA_character_)
+  year <- as.integer(m[1, 2])
+  semester <- m[1, 3]
+  if (semester == "autumn") paste0(year, "-", year + 1)
+  else if (semester == "spring") paste0(year - 1, "-", year)
+  else NA_character_
+}
+
 .empty_sections <- function() {
   tibble::tibble(section = character(), raw_text = character())
 }
@@ -276,7 +475,7 @@ extract_sections_text <- function(html, extracted_text, cfg) {
 # dispatcher is safe to call across all institutions now.
 .extract_sections_stub <- function(strategy_name, issue_ref) {
   warned <- FALSE
-  function(html, extracted_text, cfg) {
+  function(input, cfg) {
     if (!warned) {
       message(sprintf("[extract_sections] strategy '%s' not yet implemented (%s)",
                       strategy_name, issue_ref))
