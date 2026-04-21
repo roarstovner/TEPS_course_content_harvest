@@ -67,6 +67,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Add __pycache__ and .chainlink/.cache to .gitignore (#181)
 - Fix test-normalize-plan-text.R broken by old 2-arg signature (#175)
 - Add tests for anonymize_fulltext() (#167)
 - Config-driven harvest pipeline refactor (#150)
