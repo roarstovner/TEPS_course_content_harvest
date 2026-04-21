@@ -7,6 +7,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- Add section extraction config to institution_config.R (#190)
+- json_nla extraction strategy (#189)
+- details_uib extraction strategy (#188)
+- accordion_nord extraction strategy (#187)
+- text_split extraction strategy (#186)
+- Core extraction dispatcher + html_headings strategy (#185)
 - Create section heading map (section_heading_map.R) (#184)
 - Rename `fulltext` → `extracted_text` and `fulltext_normalized` → `course_plan_normalized` columns (#180)
 - Add course_plan toggle to Shiny app plaintext viewer (#179)
