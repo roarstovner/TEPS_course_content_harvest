@@ -58,7 +58,7 @@ extract_sections <- function(institution_short, html, extracted_text, course_id)
                     otherwise = .empty_sections())
   } else NULL
 
-  rows <- purrr::pmap(list(html, extracted_text, course_id), function(h, txt, cid) {
+  rows <- purrr::pmap(list(html, extracted_text, course_id), .progress = institution_short, function(h, txt, cid) {
     input <- list(html = h, extracted_text = txt, course_id = cid,
                   institution = institution_short)
     out <- safe_fn(input, cfg)
@@ -465,6 +465,47 @@ extract_sections_nla <- function(input, cfg) {
   if (semester == "autumn") paste0(year, "-", year + 1)
   else if (semester == "spring") paste0(year - 1, "-", year)
   else NA_character_
+}
+
+#' Collect raw heading-candidate texts for diagnostic purposes
+#'
+#' Returns the set of heading strings that a given strategy *would*
+#' try to match against the pattern table — before any matching
+#' occurs. Used by run_extract_sections.R to surface unmapped
+#' heading texts that suggest pattern-table additions (#192).
+#'
+#' Returns character() for strategies that don't have a heading
+#' concept (text_split, json_nla, noop).
+.collect_heading_candidates <- function(html, strategy, institution_config) {
+  if (is.na(html) || !nzchar(html)) return(character())
+  doc <- rvest::read_html(html)
+
+  if (strategy == "html_headings") {
+    heading_level <- institution_config$section_heading_level %||% "h2"
+    container <- rvest::html_element(doc, institution_config$selector)
+    if (is.na(container)) return(character())
+    nodes <- rvest::html_elements(container, heading_level)
+    return(vapply(nodes, rvest::html_text2, character(1)))
+  }
+
+  if (strategy == "accordion_nord") {
+    triggers <- rvest::html_elements(doc, "button.ac-trigger")
+    out <- vapply(triggers, function(t) {
+      copy_span <- rvest::html_element(t, ".copy-accordion-anchor")
+      if (!is.na(copy_span)) xml2::xml_remove(copy_span)
+      trimws(rvest::html_text2(t))
+    }, character(1))
+    return(out)
+  }
+
+  if (strategy == "details_uib") {
+    summaries <- rvest::html_elements(doc, "details > summary")
+    h2s <- rvest::html_elements(doc, "h2")
+    return(c(vapply(summaries, rvest::html_text2, character(1)),
+             vapply(h2s, rvest::html_text2, character(1))))
+  }
+
+  character()
 }
 
 .empty_sections <- function() {
