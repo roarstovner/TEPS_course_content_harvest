@@ -16,6 +16,12 @@ courses_raw <- html_files |>
   lapply(readRDS) |>
   bind_rows()
 
+# Legacy html_*.RDS files use `fulltext`; current pipeline uses `extracted_text`.
+if (!"extracted_text" %in% colnames(courses_raw) &&
+    "fulltext" %in% colnames(courses_raw)) {
+  courses_raw$extracted_text <- courses_raw$fulltext
+}
+
 cat("Loaded", nrow(courses_raw), "course rows from", length(html_files), "files\n\n")
 
 # Anonymize extracted_text -> course_plan
