@@ -7,6 +7,7 @@ library(diffobj)
 # ── Global ──────────────────────────────────────────────────────────────────
 
 courses <- load_courses()
+sections <- load_sections()
 
 # Pre-compute filter choices
 inst_choices <- sort(unique(courses$institution_short))
@@ -63,7 +64,8 @@ ui <- page_navbar(
         tags$div(
           class = "browse-viewer",
           radioButtons("browse_view", NULL,
-            choices = c("Plaintext" = "text", "Course plan" = "plan", "Rendered HTML" = "html"),
+            choices = c("Plaintext" = "text", "Course plan" = "plan",
+                        "Sections" = "sections", "Rendered HTML" = "html"),
             inline = TRUE
           ),
           conditionalPanel(
@@ -73,6 +75,10 @@ ui <- page_navbar(
           conditionalPanel(
             "input.browse_view === 'plan'",
             uiOutput("browse_courseplan")
+          ),
+          conditionalPanel(
+            "input.browse_view === 'sections'",
+            uiOutput("browse_sections_ui")
           ),
           conditionalPanel(
             "input.browse_view === 'html'",
@@ -212,6 +218,39 @@ server <- function(input, output, session) {
     if (is.na(txt) || nchar(txt) == 0) return(tags$p(class = "text-muted", "No course plan available for this course."))
     tags$div(class = "fulltext-display", txt)
   })
+
+  # ── Browse: sections display ──
+  output$browse_sections_ui <- renderUI({
+    sel <- selected_course()
+    if (is.null(sel)) return(tags$p(class = "text-muted", "Select a row to view extracted sections."))
+    if (is.null(sections)) return(tags$p(class = "text-muted", "No sections data available (data/sections_raw.RDS not found)."))
+    rows <- sections[sections$course_id == sel$course_id, , drop = FALSE]
+    if (nrow(rows) == 0) return(tags$p(class = "text-muted", "No sections extracted for this course."))
+    DTOutput("browse_sections_table")
+  })
+
+  output$browse_sections_table <- renderDT({
+    sel <- selected_course()
+    req(sel, sections)
+    rows <- sections[sections$course_id == sel$course_id, , drop = FALSE]
+    display <- data.frame(
+      Section = rows$section,
+      Text    = gsub("\n", "<br>", htmltools::htmlEscape(rows$raw_text), fixed = TRUE),
+      stringsAsFactors = FALSE
+    )
+    datatable(
+      display,
+      selection = "none",
+      escape = FALSE,
+      rownames = FALSE,
+      options = list(
+        dom = "t",
+        paging = FALSE,
+        ordering = FALSE,
+        columnDefs = list(list(width = "160px", targets = 0))
+      )
+    )
+  }, server = TRUE)
 
   # ── Browse: rendered HTML display ──
   output$browse_html_frame <- renderUI({
