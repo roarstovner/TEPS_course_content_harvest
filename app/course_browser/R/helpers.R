@@ -42,6 +42,19 @@ load_courses <- function(data_dir = "../../data") {
   readRDS(path)
 }
 
+#' Load extracted sections table
+#' @param data_dir Path to data/ directory
+#' @return tibble with course_id, institution_short, section, raw_text;
+#'   NULL if the file does not exist
+load_sections <- function(data_dir = "../../data") {
+  path <- file.path(data_dir, "sections_raw.RDS")
+  if (!file.exists(path)) return(NULL)
+  df <- readRDS(path)
+  # raw_text is named in the source file — drop the names for cleaner display
+  attr(df$raw_text, "names") <- NULL
+  df
+}
+
 #' Load raw HTML for a single course on demand
 #' @param course_id The course_id to look up
 #' @param inst The institution_short value
