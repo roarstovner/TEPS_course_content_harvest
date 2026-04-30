@@ -30,12 +30,21 @@ cat("Running deduplication...\n")
 result <- deduplicate_plans(courses_raw)
 
 # Save outputs
-saveRDS(result$plans, "data/plan_lookup.RDS")
-saveRDS(result$courses, "data/courses_with_plan_id.RDS")
+saveRDS(result$plans, "data/course_plans.RDS")
+
+offerings <- result$courses |>
+  mutate(
+    has_extracted_text = !is.na(extracted_text) & nchar(extracted_text) > 0,
+    extracted_text_nchar = nchar(extracted_text)
+  ) |>
+  select(-url, -html, -html_error, -html_success, -extracted_text,
+         -course_plan, -course_plan_normalized,
+         -any_of(c("url.x", "url.y")))
+saveRDS(offerings, "data/course_offerings.RDS")
 
 cat("Saved outputs:\n")
-cat("  - data/plan_lookup.RDS\n")
-cat("  - data/courses_with_plan_id.RDS\n\n")
+cat("  - data/course_plans.RDS\n")
+cat("  - data/course_offerings.RDS\n\n")
 
 # Print summary statistics
 cat("=== DEDUPLICATION SUMMARY ===\n\n")

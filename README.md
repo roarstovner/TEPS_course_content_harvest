@@ -172,9 +172,9 @@ This runs a three-stage pipeline:
 
 **Output files:**
 
-- `data/courses_with_plan_id.RDS` — all course rows with `course_plan` +
-  `plan_content_id`
-- `data/plan_lookup.RDS` — one row per unique plan per course code per
+- `data/course_offerings.RDS` — all course rows with DBH metadata +
+  `plan_content_id` FK
+- `data/course_plans.RDS` — one row per unique plan per course code per
   institution
 
 ## Data Structure
