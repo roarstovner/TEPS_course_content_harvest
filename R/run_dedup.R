@@ -38,19 +38,27 @@ result <- deduplicate_plans(courses_raw)
 # Save outputs
 saveRDS(result$plans, "data/course_plans.RDS")
 
-offerings <- result$courses |>
+# Internal/working file: keep url + text columns for the course_browser app and
+# any QA work. Drop only the heavy raw HTML blob and transient fetch flags.
+offerings_full <- result$courses |>
   mutate(
     has_extracted_text = !is.na(extracted_text) & nchar(extracted_text) > 0,
     extracted_text_nchar = nchar(extracted_text)
   ) |>
-  select(-url, -html, -html_error, -html_success, -extracted_text,
-         -course_plan, -course_plan_normalized,
+  select(-html, -html_error, -html_success,
          -any_of(c("url.x", "url.y")))
+saveRDS(offerings_full, "data/course_offerings_full.RDS")
+
+# Published slim dataset: drop url and all text columns; keep only DBH metadata
+# plus the plan_content_id FK and lightweight summary columns.
+offerings <- offerings_full |>
+  select(-url, -extracted_text, -course_plan, -course_plan_normalized)
 saveRDS(offerings, "data/course_offerings.RDS")
 
 cat("Saved outputs:\n")
 cat("  - data/course_plans.RDS\n")
-cat("  - data/course_offerings.RDS\n\n")
+cat("  - data/course_offerings.RDS (slim, published)\n")
+cat("  - data/course_offerings_full.RDS (internal, with text)\n\n")
 
 # Print summary statistics
 cat("=== DEDUPLICATION SUMMARY ===\n\n")

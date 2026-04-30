@@ -275,8 +275,9 @@ R/
 data/
 ├── courses.RDS            # Input: course metadata
 ├── html_{inst}.RDS        # Output: processed data per institution
-├── course_offerings.RDS   # Published dataset: DBH metadata + plan_content_id FK (no HTML/text blobs)
-├── course_plans.RDS       # Published dataset: deduplicated course plan texts
+├── course_offerings.RDS       # Published dataset (slim): DBH metadata + plan_content_id FK, no url/text/html
+├── course_offerings_full.RDS  # Internal: same rows as offerings but with url + extracted_text + course_plan + course_plan_normalized (used by course_browser)
+├── course_plans.RDS           # Published dataset: deduplicated course plan texts
 ├── data_notes.qmd         # Data quality notes (Quarto source; render to regenerate data_notes.md)
 ├── data_notes.md          # Data quality documentation (rendered from data_notes.qmd)
 └── checkpoint/

@@ -147,7 +147,8 @@ This runs a three-stage pipeline:
 
 **Output files:**
 
-- `data/course_offerings.RDS` — all course rows with DBH metadata + `plan_content_id` FK
+- `data/course_offerings.RDS` — published slim dataset: course rows with DBH metadata + `plan_content_id` FK (no url, no text)
+- `data/course_offerings_full.RDS` — internal working file: same rows plus `url`, `extracted_text`, `course_plan`, `course_plan_normalized`; used by the course_browser app
 - `data/course_plans.RDS` — one row per unique plan per course code per institution
 
 ## Data Structure
