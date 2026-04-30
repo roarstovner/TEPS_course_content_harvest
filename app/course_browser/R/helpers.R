@@ -34,10 +34,16 @@ institution_labels <- c(
 )
 
 #' Load course offerings data
+#'
+#' Reads the internal (full) offerings file with url + text columns. The
+#' published slim file `course_offerings.RDS` lacks these and is unsuitable
+#' for the browser.
+#'
 #' @param data_dir Path to data/ directory
-#' @return tibble of course offerings (no heavy pipeline columns)
+#' @return tibble of course offerings with url, extracted_text, course_plan,
+#'   course_plan_normalized
 load_courses <- function(data_dir = "../../data") {
-  path <- file.path(data_dir, "course_offerings.RDS")
+  path <- file.path(data_dir, "course_offerings_full.RDS")
   if (!file.exists(path)) stop("Data file not found: ", path)
   readRDS(path)
 }
