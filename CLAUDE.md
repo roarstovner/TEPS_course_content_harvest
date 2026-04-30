@@ -150,7 +150,7 @@ Pipeline: `extracted_text` → `course_plan` (anonymized, readable) → `course_
 
 ### Regenerate data quality notes:
 ```bash
-quarto render data/data_notes.qmd  # Reads courses_with_plan_id.RDS + plan_lookup.RDS
+quarto render data/data_notes.qmd  # Reads course_offerings.RDS + course_plans.RDS
 ```
 Run this after re-harvesting any institution or re-running the dedup pipeline (`R/run_dedup.R`).
 Edit `data/data_notes.qmd` directly to update per-institution prose notes.
@@ -275,8 +275,8 @@ R/
 data/
 ├── courses.RDS            # Input: course metadata
 ├── html_{inst}.RDS        # Output: processed data per institution
-├── courses_with_plan_id.RDS  # All institutions combined, with plan_content_id
-├── plan_lookup.RDS        # Deduplicated plan lookup table
+├── course_offerings.RDS   # Published dataset: DBH metadata + plan_content_id FK (no HTML/text blobs)
+├── course_plans.RDS       # Published dataset: deduplicated course plan texts
 ├── data_notes.qmd         # Data quality notes (Quarto source; render to regenerate data_notes.md)
 ├── data_notes.md          # Data quality documentation (rendered from data_notes.qmd)
 └── checkpoint/

@@ -10,8 +10,8 @@ execute:
 #| label: setup
 library(dplyr)
 
-df    <- readRDS("courses_with_plan_id.RDS")
-plans <- readRDS("plan_lookup.RDS")
+df    <- readRDS("course_offerings.RDS")
+plans <- readRDS("course_plans.RDS")
 
 summary_tbl <- df |>
   group_by(institution_short) |>
@@ -20,9 +20,9 @@ summary_tbl <- df |>
     Codes        = n_distinct(Emnekode_raw),
     year_min     = min(Årstall),
     year_max     = max(Årstall),
-    `Extracted OK`= sum(!is.na(extracted_text) & nchar(extracted_text) > 0),
+    `Extracted OK`= sum(has_extracted_text),
     has_plan_id  = sum(!is.na(plan_content_id)),
-    `Median chars` = round(median(nchar(extracted_text[!is.na(extracted_text) & nchar(extracted_text) > 0]), na.rm = TRUE)),
+    `Median chars` = round(median(extracted_text_nchar[has_extracted_text], na.rm = TRUE)),
     `Unique plans` = n_distinct(plan_content_id, na.rm = TRUE),
     .groups = "drop"
   ) |>
@@ -35,7 +35,7 @@ summary_tbl <- df |>
          `Extracted OK`, Rate, `Median chars`, `Unique plans`, `Dedup %`)
 
 total_rows     <- nrow(df)
-total_text <- sum(!is.na(df$extracted_text) & nchar(df$extracted_text) > 0)
+total_text <- sum(df$has_extracted_text)
 total_rate     <- sprintf("%.1f%%", total_text / total_rows * 100)
 total_plans    <- nrow(plans)
 ```

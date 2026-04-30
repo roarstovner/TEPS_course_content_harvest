@@ -33,16 +33,13 @@ institution_labels <- c(
   usn      = "USN"
 )
 
-#' Load courses data, dropping heavy columns
+#' Load course offerings data
 #' @param data_dir Path to data/ directory
-#' @return tibble with html and html_error columns removed
+#' @return tibble of course offerings (no heavy pipeline columns)
 load_courses <- function(data_dir = "../../data") {
-  path <- file.path(data_dir, "courses_with_plan_id.RDS")
+  path <- file.path(data_dir, "course_offerings.RDS")
   if (!file.exists(path)) stop("Data file not found: ", path)
-  df <- readRDS(path)
-  df$html <- NULL
-  df$html_error <- NULL
-  df
+  readRDS(path)
 }
 
 #' Load raw HTML for a single course on demand
