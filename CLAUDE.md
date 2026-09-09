@@ -155,6 +155,15 @@ quarto render data/data_notes.qmd  # Reads course_offerings.RDS + course_plans.R
 Run this after re-harvesting any institution or re-running the dedup pipeline (`R/run_dedup.R`).
 Edit `data/data_notes.qmd` directly to update per-institution prose notes.
 
+### Run the course browser:
+```bash
+Rscript R/build_browser_data.R                      # after run_dedup.R or extract_sections
+Rscript -e 'shiny::runApp("app/course_browser")'
+```
+`build_browser_data.R` must be re-run whenever `course_plans.RDS`,
+`course_offerings_full.RDS`, or `sections_raw.RDS` change — the app reads only
+the prebuilt `data/browser_data.RDS`.
+
 ## Adding a New Institution
 
 Use the `/add-institution` skill for step-by-step guidance on adding support for a new institution. The procedure involves:
@@ -278,15 +287,75 @@ data/
 ├── course_offerings.RDS       # Published dataset (slim): DBH metadata + plan_content_id FK, no url/text/html
 ├── course_offerings_full.RDS  # Internal: same rows as offerings but with url + extracted_text + course_plan + course_plan_normalized (used by course_browser)
 ├── course_plans.RDS           # Published dataset: deduplicated course plan texts
+├── sections_raw.RDS           # Extracted sections, one row per (course_id, section)
+├── browser_data.RDS           # Slim payload for course_browser (build with R/build_browser_data.R)
 ├── data_notes.qmd         # Data quality notes (Quarto source; render to regenerate data_notes.md)
 ├── data_notes.md          # Data quality documentation (rendered from data_notes.qmd)
 └── checkpoint/
     ├── html_{inst}.RDS    # HTML fetch checkpoints
     └── urls_{inst}.RDS    # URL discovery checkpoints
 
+app/
+└── course_browser/        # Plan-centric concordance browser (Shiny)
+    ├── app.R              # UI + server: Concordance, Trend, Coverage, Diff tabs
+    ├── R/search.R         # Search engine, KWIC snippets, match highlighting
+    ├── R/data.R           # Payload loading, labels, optional term set, diff renderer
+    └── www/styles.css
+
 data-raw/
 └── courses.R              # Script to create courses.RDS
 ```
+
+## Course Browser
+
+`app/course_browser` is **plan-centric**: the unit is the unique course plan
+(~11k), not the offering (~33k). 66% of offerings share their plan text, so an
+offering-level browser makes you read the same paragraph repeatedly. Offering
+coverage (years, semesters, count) is rolled onto each plan instead.
+
+- **Concordance** — ad-hoc literal or regex search over plan text, or scoped to
+  one extracted section. All matches highlighted, shown as numbered
+  keyword-in-context snippets, with full plan / sections / source HTML for
+  provenance.
+- **Trend** — occurrence of the current search by year, optionally by
+  institution or Fagnavn. Plans count in `year_from`, so this measures uptake in
+  new or revised plans, not the share of plans in force.
+- **Coverage** — share of offerings with extracted text per institution-year.
+  41% of offerings have no text, so denominators are not comparable across
+  institutions without checking this first.
+- **Diff** — consecutive plan versions for one course code.
+
+**Query syntax.** In literal mode, whitespace separates terms and every term
+must be present — `livsmestring dybdelæring` is AND, not a phrase. Wrap a
+phrase in double quotes (`"folkehelse og livsmestring"`) to search it as one
+term. Each term gets its own highlight colour (cycling after four) and its own
+count in the legend. Regex mode takes the whole box as a single pattern.
+
+AND is implemented in `parse_query()` rather than as a regex, deliberately.
+Regex has no AND operator, and the lookahead that emulates one is a trap on
+this data: `(?=.*a)(?=.*b)` silently matches nothing without `(?s)` because
+plan text contains newlines, costs ~80 min over 11k plans unless anchored with
+`^`, and even anchored matches zero-width — so it can filter but never
+highlight, and reports a hit count of 1 per plan. Two `stri_count_fixed` passes
+give the same 120 plans in 0.019s with real per-term counts and highlighting.
+
+**Search performance.** `build_search_index()` keeps a pre-lowercased copy of
+every searchable text. A literal case-insensitive search then reduces to
+`stri_count_fixed` on already-folded text (~0.01s over 11k plans); regex
+queries cannot use that path — lowercasing a pattern would corrupt it (`\S`
+becomes `\s`) — so they run case-insensitively against the original text
+(~0.5s). Match *positions* are computed only for the selected plan, never for
+the whole result set, and overlapping ranges from different terms are merged by
+`merge_locs()` so the markup never nests.
+
+**Deep links.** `?q=livsmestring&scope=learning_outcomes&regex=1&inst=ntnu,uit`
+restores a search, so a query can be bookmarked or cited. Percent-encode spaces
+in a multi-term query (`?q=livsmestring%20dybdel%C3%A6ring`).
+
+**Optional term set.** Point `TEPS_BROWSER_TERMS` at a terms YAML (same shape as
+`emneplan_LK20/LK20_terms.yaml`: a `terms:` list of `id`/`label`/`regex`), or
+drop a `browser_terms.yaml` in the repo root, to get a dropdown of predefined
+terms. Absent, the control hides itself and ad-hoc search is unaffected.
 
 ## Common Issues
 

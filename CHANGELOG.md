@@ -13,6 +13,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   selector, strip FS timestamps / bare "Ingen" rows (#198)
 
 ### Added
+- Rewrite course_browser as a plan-centric concordance browser (#204):
+  ad-hoc fulltext search with highlighted matches, keyword-in-context snippets,
+  section-scoped search, Trend and Coverage views, deep-linkable queries
+- course_browser: AND search — whitespace-separated terms must all be present,
+  `"quoted phrases"` stay one term, each term highlighted in its own colour with
+  per-term counts (#204)
+- `R/build_browser_data.R` builds `data/browser_data.RDS`, the slim payload the
+  browser loads (plans + offering rollup + plan-level sections + coverage) (#204)
 - Reconnaissance scan for candidate extra sections (credit_overlap, praksis) (#201)
 - Test across all institutions and iterate heading patterns (#192)
 - Deterministic QA pre-pass for sections_raw (suspect report) (#197)
