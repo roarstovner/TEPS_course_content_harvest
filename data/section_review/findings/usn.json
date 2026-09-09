@@ -1,0 +1,184 @@
+{
+  "institution_short": "usn",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "USN extraction quality is mediocre-to-poor: the five sections that map cleanly to USN's flat heading structure (course_content, learning_outcomes, teaching_methods) are generally correct, but every course exhibits a structural boundary failure at the Eksamensformer heading. The text splitter consistently reads one heading too far, so assessment content bleeds into coursework_requirements while assessment itself captures only the 'Hjelpemidler til eksamen' value or a stamp string. reading_list is systematically polluted: the splitter anchors at the end of the bibliography page rather than the true section boundary, causing it to pull in the 'Emnet inngår i følgende studier' footer plus – for courses with large Leganto reading lists – a 30,000+ character blob that begins with learning-outcomes fragments before the actual references start. course_content is additionally truncated in all practice-course variants (MG*PR*) due to a fixed character cap.",
+  "findings": [
+    {
+      "section": "coursework_requirements",
+      "error_type": "merged_sections",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "usn_MG1PR1-1_2025_autumn_1",
+        "usn_HIOLJ4000-1_2025_spring_1",
+        "usn_MG2RL5-1_2025_autumn_1"
+      ],
+      "evidence": "Studenten mister retten til å fremstille seg til eksamen dersom kravet ikke oppfylles, jf. universitets- og høyskoleloven § 11-4 andre ledd og forskrift om studier og eksamen ved USN § 7-1 første ledd.\nEksamensformer\nBestått/ikke bestått.",
+      "description": "The splitter fails to cut at the 'Eksamensformer' heading. The legal boilerplate sentence ending the Obligatoriske aktiviteter section is immediately followed by 'Eksamensformer' and the actual assessment text, all concatenated into the coursework_requirements row. By the codebook, the graded/pass-fail assessment result belongs in assessment, not in coursework_requirements. This pattern appears in every course that has the legal-rights boilerplate sentence immediately before 'Eksamensformer' (all practice courses and most regular courses).",
+      "root_cause_hypothesis": "The heading map does not recognise 'Eksamensformer' as a boundary when it appears inline (no blank line before it, or immediately after the boilerplate sentence that ends with a period). The splitter may be matching the next registered heading rather than the immediately following one.",
+      "suggested_fix": "Add 'Eksamensformer' and 'Vurderingsformer' as explicit section-boundary patterns. Strip the legal-rights boilerplate sentence ('Studenten mister retten til å fremstille seg til eksamen dersom kravet ikke oppfylles, jf. universitets- og høyskoleloven § 11-4...') from coursework_requirements in a post-processing step, or treat it as the terminal delimiter of that section.",
+      "confidence": "high"
+    },
+    {
+      "section": "assessment",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "usn_MG1PR1-1_2025_autumn_1",
+        "usn_MG1SA3-1_2025_autumn_1",
+        "usn_MG2RL5-1_2025_autumn_1"
+      ],
+      "evidence": "assessment (1 chars): `.`  |  assessment (26 chars): `Alle hjelpemidler tillatt.`  |  assessment (4 chars): `Alle`",
+      "description": "Because the Eksamensformer text bleeds into coursework_requirements (see finding above), the assessment row is left with only the content of 'Hjelpemidler til eksamen' (a one-word or one-sentence aids statement) or even a single punctuation mark. This is the inverse of the merged_sections error: the real assessment description is missing from assessment and the aids statement is a wrong-content capture. By the codebook, assessment must contain the graded-exam design (exam type, duration, weight), not the exam-aids rule.",
+      "root_cause_hypothesis": "Same boundary failure as the coursework_requirements merged_sections finding: the 'Eksamensformer' heading is not recognised as a split point, so the text assigned to assessment starts from 'Hjelpemidler til eksamen' onward.",
+      "suggested_fix": "Fix the Eksamensformer boundary (see above). The assessment section should start at 'Eksamensformer'/'Vurderingsformer' and end before 'Hjelpemidler til eksamen' (which is metadata, not assessment design, and should be excluded or placed in a separate field).",
+      "confidence": "high"
+    },
+    {
+      "section": "assessment",
+      "error_type": "formatting_noise",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "usn_MG1KR7-1_2024_autumn_1",
+        "usn_MG2NO3-1_2018_autumn_2",
+        "usn_MG1EN1-1_2018_autumn_1"
+      ],
+      "evidence": "Godkjent emneplan\nEndringsbeskrivelse\n\nMasteroppgaven er en skriftlig hjemmeeksamen...\nGodkjent emneplan\nGodkjent 15.03.2024.\nEndringsbeskrivelse\nDet er lagt inn veiledningsseminarer...",
+      "description": "The assessment section (when it does capture something) begins with 'Godkjent emneplan' and/or 'Endringsbeskrivelse' navigation/approval strings, and ends with the same strings repeated with a date and a change-log note. These are administrative metadata from the USN page frame, not assessment content. The Endringsbeskrivelse text (change-log) is also included, which is entirely extraneous to assessment. The codebook explicitly excludes administrative boilerplate.",
+      "root_cause_hypothesis": "The shadow-DOM extractor captures the full rendered text in linear reading order. The 'Godkjent emneplan' button label and the 'Endringsbeskrivelse' section appear in the DOM both before and after the core sections, causing them to be captured as part of the surrounding sections.",
+      "suggested_fix": "Add a post-processing strip for patterns matching: 'Godkjent emneplan', 'Godkjent \\d{2}\\.\\d{2}\\.\\d{4}', 'Godkjent \\w+ \\d{2}.', 'Endringsbeskrivelse' and everything after it up to the next real section heading. These strings can be stripped from all sections globally.",
+      "confidence": "high"
+    },
+    {
+      "section": "reading_list",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "usn_MG1PR1-1_2025_autumn_1",
+        "usn_MG1KR7-1_2022_autumn_1",
+        "usn_MG1KR7-1_2024_autumn_1"
+      ],
+      "evidence": "Emnet inngår i følgende studier\n\nEmnet inngår i følgende studier\nGrunnskolelærerutdanning for trinn 1-7 (Kull 2025 HØST)",
+      "description": "For courses where the actual reading list is empty or not published ('Pensum-/litteraturliste er ikke publisert ennå'), the reading_list row contains only the 'Emnet inngår i følgende studier' footer section (the list of programmes the course belongs to), duplicated. This is administrative boilerplate, not reading list content. The codebook says if the reading list is absent, return nothing (or a single note); instead the extractor fills it with the footer block.",
+      "root_cause_hypothesis": "The splitter assigns everything after the 'Litteratur' heading up to the end of the page to reading_list. The 'Emnet inngår i følgende studier' block appears on the page after Litteratur and is therefore included. When no real literature is present, the footer dominates the section.",
+      "suggested_fix": "Strip the 'Emnet inngår i følgende studier' block and all lines that match '\\w+ \\(Kull \\d{4} (HØST|VÅR)\\)' from reading_list. Additionally, if the resulting reading_list contains only 'Pensum-/litteraturliste er ikke publisert ennå', emit an empty/null row rather than the placeholder.",
+      "confidence": "high"
+    },
+    {
+      "section": "reading_list",
+      "error_type": "merged_sections",
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": [
+        "usn_MG1SA3-1_2025_autumn_1",
+        "usn_MG2SA3-1_2025_autumn_1",
+        "usn_MG2NO1-1_2018_autumn_1"
+      ],
+      "evidence": "reading_list (35919 chars) begins: 'Emnet inngår i følgende studier\\n\\nkan legge til rette for at elever får forståelse for hvordan kultur og historie kan konstrueres og brukes\\n\\nSamfunnsfag, emne 3 (MG2SA3) Drammen Høst25...'",
+      "description": "For courses with large Leganto reading lists, the reading_list blob starts with fragments from the learning_outcomes section (the last few outcome items) followed by study-programme names with dates, before the actual bibliography. This indicates the splitter is beginning the reading_list capture mid-way through the learning_outcomes section. The reading list is typically 30,000–35,000 characters for these courses, a massive over-capture that makes the whole blob unusable as a clean bibliography. The codebook says to extract verbatim reading list text, not merge it with outcomes.",
+      "root_cause_hypothesis": "The Leganto widget ('Click to view interactive reading list in Leganto') is embedded in the DOM at a position that disrupts the section boundary detection. The shadow-DOM extraction concatenates content in DOM order, and the widget appears between the last outcome items and the reading list entries, causing the splitter to anchor the 'Litteratur' boundary too early (at the widget's location) while actual learning_outcomes text above it spills over.",
+      "suggested_fix": "Strip learning-outcome fragments from the start of reading_list: if reading_list starts with text matching outcome patterns (e.g., 'kan ...', 'har kunnskap om ...', 'Kandidaten') before the first book/article reference, trim to the first citation marker ('Book', 'Article', 'BookChapter', 'Click to view interactive reading list in Leganto'). Also strip all 'Emnet inngår i følgende studier' and programme-name lines from reading_list.",
+      "confidence": "high"
+    },
+    {
+      "section": "course_content",
+      "error_type": "truncated",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "usn_MG1PR1-1_2025_autumn_1",
+        "usn_MG1PR3-1_2025_autumn_1",
+        "usn_MG1PR4-1_2025_autumn_1"
+      ],
+      "evidence": "course_content (1899 chars) ends: '…[truncated 399 chars]' — the year-specific content paragraph ('Faglig innhold i emnet førsteårspraksis / tredjeårspraksis / fjerdeårspraksis') is cut off mid-sentence.",
+      "description": "In practice-course plans (MG1PR*, MG2PR*), the 'Faglig innhold i emnet' section has two sub-blocks: a generic multi-year preamble shared across all years, followed by a year-specific paragraph. The extractor always truncates within or just before the year-specific paragraph. The truncation marker '…[truncated N chars]' appears systematically. The codebook requires full verbatim content; dropping the year-specific paragraph is a significant loss since it is the only differentiating content between practice years.",
+      "root_cause_hypothesis": "A fixed character cap (around 1800–2000 chars) is applied to course_content during extraction or post-processing of the shadow-DOM text. The generic preamble alone approaches this cap, leaving no room for the year-specific paragraph.",
+      "suggested_fix": "Increase or remove the character cap on course_content. If a cap must exist, raise it to at least 5,000 characters. Verify no deliberate truncation in the strategy pipeline for 'shadow_dom' courses.",
+      "confidence": "high"
+    },
+    {
+      "section": "teaching_methods",
+      "error_type": "merged_sections",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "usn_MG1KR7-1_2022_autumn_1",
+        "usn_LH-PRA1000-1_2018_autumn_1",
+        "usn_MG2KH1-1_2022_autumn_1"
+      ],
+      "evidence": "teaching_methods starts: 'Obligatorisk aktivitet og krav til tilstedeværelse\\n\\nArbeidet med masteroppgaven er i utgangspunktet et selvstendig arbeid...'",
+      "description": "In several courses, the teaching_methods row begins with the heading 'Obligatorisk aktivitet og krav til tilstedeværelse' or 'Praksis', followed by the actual Læringsaktiviteter content, then repeats the next-section heading again. This means the splitter is consuming one heading before the true teaching_methods boundary. The codebook clearly separates teaching methods (how the course is organised) from obligatory coursework gates. The heading noise also means coursework content is duplicated across teaching_methods and coursework_requirements.",
+      "root_cause_hypothesis": "The text splitter uses heading matching to delimit sections, but when a section heading appears mid-text or is preceded by a 'Praksis' sub-heading, the splitter picks up the wrong anchor. In plans that have a 'Praksis' subsection inside 'Læringsaktiviteter', the splitter breaks at 'Praksis' and restarts teaching_methods from there, capturing both subsection names.",
+      "suggested_fix": "Filter leading and trailing heading-text artefacts from teaching_methods: strip any line that is an exact match to a known section heading ('Obligatorisk aktivitet og krav til tilstedeværelse', 'Praksis', 'Arbeidskrav', 'Eksamensformer', etc.) when it appears as the first or last line of a section row.",
+      "confidence": "high"
+    },
+    {
+      "section": "learning_outcomes",
+      "error_type": "truncated",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "usn_MG2NO3-1_2018_autumn_2",
+        "usn_MG2NO1-1_2018_autumn_1",
+        "usn_LH-NOD1000-1_2021_spring_1"
+      ],
+      "evidence": "learning_outcomes (101 chars): 'KUNNSKAP\\nKandidaten\\nhar kunnskap om språkhistorie og språklege endringsprosessar i eldre og nyare tid'  (full plan has 12 more outcome items).",
+      "description": "In older-format courses (primarily 2018 plans with separate 'KUNNSKAP/FERDIGHEITER/GENERELL KOMPETANSE' blocks), the learning_outcomes row captures only the first 1–3 outcome items. The remaining items, including the full FERDIGHEITER and GENERELL KOMPETANSE blocks, end up in reading_list (Course 10) or are missing entirely (Course 22). By the codebook, all outcome statements from all subgroups must be included.",
+      "root_cause_hypothesis": "In 2018 plans, the Leganto reading-list widget is inserted into the DOM at a position close to the end of the Læringsutbytte section. The shadow-DOM text concatenation picks up the widget content immediately after the first few outcomes, causing the splitter to advance to the next section boundary early. The 'Click to view interactive reading list in Leganto' string or its nearby DOM elements apparently trigger a premature section cut.",
+      "suggested_fix": "Remove 'Click to view interactive reading list in Leganto' and related Leganto widget strings as preprocessing before section splitting. These strings should not influence section boundaries. Also check whether the Leganto widget causes a section-break signal in the splitter's heading-detection regex.",
+      "confidence": "high"
+    },
+    {
+      "section": "prerequisites",
+      "error_type": "empty_placeholder",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": [
+        "usn_MG1PR1-1_2025_autumn_1",
+        "usn_HIOLJ4000-1_2025_spring_1",
+        "usn_NMI4000-1_2025_spring_1"
+      ],
+      "evidence": "prerequisites (6 chars): 'Ingen.'  |  prerequisites (5 chars): 'Ingen'",
+      "description": "Prerequisites rows containing only 'Ingen' or 'Ingen.' are emitted as content rows rather than treated as empty/null. By the codebook definition, prerequisites means 'subject-matter entry requirements'; a nil value ('Ingen') conveys real information (no prerequisite) but is borderline with an empty_placeholder. The flags correctly tag these as 'empty'. The concern is downstream: a downstream consumer of prerequisites should distinguish 'no prerequisite stated' from 'section missing', which is not possible with current output. This is a low-severity issue since 'Ingen' is technically the correct verbatim text.",
+      "root_cause_hypothesis": "The extraction correctly captures the verbatim value. The issue is a flagging/downstream schema concern: there is no canonical null vs. explicit-nil distinction.",
+      "suggested_fix": "Map prerequisites values of exactly 'Ingen' or 'Ingen.' (case-insensitive, trimmed) to a null/empty row at post-processing, or emit a structured null flag. This aligns with how the codebook says to handle genuinely absent sections.",
+      "confidence": "medium"
+    },
+    {
+      "section": "cross_section",
+      "error_type": "formatting_noise",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "usn_LRMF510-1_2024_spring_1",
+        "usn_MG2KH1-1_2022_autumn_1",
+        "usn_MG1SA3-1_2022_spring_1"
+      ],
+      "evidence": "assessment (812 chars) begins: 'Endringsbeskrivelse\\n\\nObligatorisk aktivitet og krav til tilstedeværelse\\nEmnet undervises samlingsbasert...'",
+      "description": "In courses with an 'Endringsbeskrivelse' section (change log) appearing between Hjelpemidler and the end of the plan, the change-log text is mixed into the assessment or coursework_requirements section. The Endringsbeskrivelse contains previous exam form descriptions, removed obligation items, and administrative change metadata — none of which belongs in any codebook section. For Course 4 (LRMF510), the entire assessment row is the change-log, while the actual 'Vurderingsformer' content ('Muntlig eksamen, 30 minutter.') is missing from assessment.",
+      "root_cause_hypothesis": "The splitter does not recognise 'Endringsbeskrivelse' as a section to skip or strip. It falls within the range assigned to assessment or coursework_requirements and is included verbatim. 'Utgifter i emnet' (expenses note in Course 28) has the same issue.",
+      "suggested_fix": "Add 'Endringsbeskrivelse', 'Utgifter i emnet', 'Evaluering av emnet', and 'Annet' to a strip-list of USN-specific administrative sections that should not appear in any codebook section. Strip their heading and all content until the next recognised heading.",
+      "confidence": "high"
+    },
+    {
+      "section": "assessment",
+      "error_type": "missing_section",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "usn_LRMF510-1_2024_spring_1",
+        "usn_MG1SA3-1_2022_spring_1",
+        "usn_MG2EN5-1_2025_autumn_1"
+      ],
+      "evidence": "LRMF510 assessment row contains only change-log text; ground truth has 'Muntlig eksamen, 30 minutter.'  |  MG2EN5 assessment row: 'Annet\\n\\nAnnet\\nEmneplan godkjent 25.03.25.'",
+      "description": "In courses with Endringsbeskrivelse or 'Annet' sections appearing before the Vurderingsformer content, the assessment row captures only those administrative sections while the actual exam form description is absent. The real assessment text (exam type, duration, grading) is not captured at all. This is distinct from the universal Eksamensformer boundary failure: here the Vurderingsformer heading is in the table of contents but the content ends up in neither assessment nor any other section.",
+      "root_cause_hypothesis": "When Endringsbeskrivelse or Annet appears between Hjelpemidler and Vurderingsformer in the page DOM, the splitter assigns those blocks to assessment (everything after Hjelpemidler) and never returns to pick up Vurderingsformer. In older 2018 plans that use 'Vurderingsformer' as the heading (rather than 'Eksamensformer'), the boundary pattern may not match, causing the content to be silently dropped.",
+      "suggested_fix": "Ensure 'Vurderingsformer' is registered as a boundary heading for assessment, in addition to 'Eksamensformer'. Strip 'Annet', 'Endringsbeskrivelse', and 'Evaluering av emnet' blocks before applying section boundaries so they do not interfere with assessment detection.",
+      "confidence": "medium"
+    }
+  ]
+}

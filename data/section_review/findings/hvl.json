@@ -1,0 +1,149 @@
+{
+  "institution_short": "hvl",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "HVL's h3-based extraction is structurally sound — the seven headings are consistently mapped to the right canonical sections, and no sections are mislabeled in a gross sense. The dominant quality problem is that the 'Hjelpemidler ved eksamen' sub-section is universally merged into the assessment section (affecting ~70% of courses), and administrative boilerplate (approval/retry rules, 'Mer om hjelpemidler' link) also leaks into coursework_requirements and assessment. A second recurring issue is that recommended prerequisites ('Anbefalte forkunnskaper') are concatenated into the prerequisites section. The 'reading_list' section is absent from all plans in this sample, which appears to be genuine absence in HVL's course plan template rather than an extraction failure.",
+  "findings": [
+    {
+      "section": "assessment",
+      "error_type": "merged_sections",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "hvl_LUPEKI203-1_2025_autumn_1",
+        "hvl_MGUMA101-1_2025_autumn_1",
+        "hvl_MGBNO201-1_2025_spring_1"
+      ],
+      "evidence": "Individuell skriftlig skoleeksamen, 6 timer.\nKarakterskala A-F, der F tilsvarer ikke bestått.\n\nIngen hjelpemidler tillatt\nMer om hjelpemidler",
+      "description": "The 'Hjelpemidler ved eksamen' heading and its content (exam aid rules) are appended to the assessment section in nearly every course. Per the codebook, assessment should contain only the assessment design; exam-logistics and aid-rule text is not part of the graded assessment structure. The h3-based extractor treats 'Hjelpemidler ved eksamen' as belonging to the span of the preceding 'Vurderingsform' section because there is no intervening heading that maps to a different canonical section.",
+      "root_cause_hypothesis": "The heading 'Hjelpemidler ved eksamen' is not in the heading-to-section mapping, so it has no terminating boundary for the assessment section. The extractor continues collecting text until the next mapped heading or end-of-document, pulling in the exam-aids content.",
+      "suggested_fix": "Add 'Hjelpemidler ved eksamen' / 'Hjelpemiddel ved eksamen' to the heading map as a sentinel that closes the assessment section without opening a new canonical section (map to NULL/skip), OR strip everything from 'Hjelpemidler ved eksamen' onward in a post_fn for the assessment section.",
+      "confidence": "high"
+    },
+    {
+      "section": "assessment",
+      "error_type": "boilerplate_only",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "hvl_MGPRA10-1_2025_autumn_1",
+        "hvl_MGPRA15-1_2025_autumn_1",
+        "hvl_LUPEKP100-1_2025_autumn_1"
+      ],
+      "evidence": "5 dager veiledet og vurdert praksis med krav om 100 % tilstedeværelse.\nKarakterskala: Bestått/Ikke bestått.\n...\n\n-\nMer om hjelpemidler",
+      "description": "In courses where 'Hjelpemidler ved eksamen' contains only a dash ('-'), the assessment section ends with '\\n\\n-\\nMer om hjelpemidler'. The '- ' is an empty placeholder and 'Mer om hjelpemidler' is a navigation link. These are noise appended to otherwise valid assessment content. This is a specific instance of the merged_sections problem above, but worth noting separately because '-' + 'Mer om hjelpemidler' are pure boilerplate with no informational value.",
+      "root_cause_hypothesis": "Same root cause as the Hjelpemidler merged_sections finding; empty '-' and the 'Mer om hjelpemidler' link are captured as text of the Hjelpemidler node.",
+      "suggested_fix": "In the post_fn for assessment, strip trailing content matching the pattern /\\n-\\s*\\nMer om hjelpemidler.*$/i (and Norwegian variants 'Meir om hjelpemiddel').",
+      "confidence": "high"
+    },
+    {
+      "section": "prerequisites",
+      "error_type": "merged_sections",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "hvl_MGUNA501-1_2025_spring_1",
+        "hvl_MGBNO201-1_2025_spring_1",
+        "hvl_MGBNA101-1_2025_spring_1"
+      ],
+      "evidence": "Ingen\n\n60 studiepoeng innen naturfag eller tilsvarende.",
+      "description": "When a course plan has both 'Krav til forkunnskaper' (required prerequisites) and 'Anbefalte forkunnskaper' (recommended prerequisites) headings, the extractor merges them into a single prerequisites section. The codebook defines prerequisites as subject-matter entry requirements, which covers both required and recommended knowledge, so the content itself is correctly categorised. However, the two sub-types are run together without any separator, making it impossible to distinguish required from recommended prerequisites downstream. Additionally, 'Ingen' (no required prerequisites) is mixed with a genuine recommended prerequisite, making the required-vs-recommended distinction completely lost.",
+      "root_cause_hypothesis": "The heading 'Anbefalte forkunnskaper' / 'Tilrådde forkunnskapar' maps to the same canonical section as 'Krav til forkunnskaper', and both h3 blocks are concatenated. There is no mechanism to preserve the sub-heading label.",
+      "suggested_fix": "Map 'Anbefalte forkunnskaper' / 'Tilrådde forkunnskapar' to the same prerequisites section but prefix the captured text with a marker (e.g. '[Anbefalt] '), or emit them as a separate row with a sub_section column set to 'recommended'. Alternatively, ensure that 'Ingen' in the required block is not run together with the recommended block text.",
+      "confidence": "high"
+    },
+    {
+      "section": "coursework_requirements",
+      "error_type": "boilerplate_only",
+      "severity": "low",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "hvl_MGUMA101-1_2025_autumn_1",
+        "hvl_LUPEKI101-1_2025_autumn_1",
+        "hvl_MGBNA101-1_2025_spring_1"
+      ],
+      "evidence": "De obligatoriske læringsaktivitetene må være godkjent av emneansvarlig senest 2 uker før studenten kan framstille seg til eksamen. Dersom en obligatorisk læringsaktivitet blir vurdert som ikke godkjent, skal det bli gitt en begrunnelse for dette.",
+      "description": "Every coursework_requirements section ends with a long boilerplate block describing the approval deadline (2 weeks before exam), the right to a second attempt, and semester constraints. This is generic administrative process text, not a description of the actual work requirements. The codebook specifies that coursework_requirements should describe what the student must do (the mandatory work), not the administrative rules governing it. This boilerplate is identical or near-identical across dozens of courses and adds noise to the section.",
+      "root_cause_hypothesis": "HVL embeds the administrative process paragraph inside the 'Obligatorisk læringsaktivitet' h3 block in their HTML, so the extractor captures it verbatim along with the real requirements.",
+      "suggested_fix": "Add a post_fn for coursework_requirements that strips text matching the recurring boilerplate pattern starting with 'De obligatoriske læringsaktivitetene må være godkjent' (and Nynorsk variants 'Dei obligatoriske læringsaktivitetane').",
+      "confidence": "high"
+    },
+    {
+      "section": "coursework_requirements",
+      "error_type": "wrong_content",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": [
+        "hvl_MGUMA101-1_2025_autumn_1",
+        "hvl_MGUMA102-1_2025_autumn_1",
+        "hvl_MGUMA201-1_2025_autumn_1"
+      ],
+      "evidence": "Noen av undervisningsøktene vil være obligatoriske. Hvilke økter dette er snakk om vil framkomme i semesterplanen som utdeles ved semesterstart.",
+      "description": "In math courses (MGUMA series), the coursework_requirements section contains sentences about mandatory lecture sessions ('obligatoriske undervisningsøkter') rather than only the graded arbeidskrav items. The codebook distinguishes coursework_requirements (gate-keeping arbeidskrav) from teaching_methods (how the course is run, including mandatory attendance notes). A sentence like 'some sessions will be mandatory — see semester plan' is more naturally a teaching_methods note. This was flagged by the deterministic leak->teaching_methods flag.",
+      "root_cause_hypothesis": "HVL authors include attendance rules within the 'Obligatorisk læringsaktivitet' block rather than in 'Undervisnings- og læringsformer', so the extractor captures them in coursework_requirements.",
+      "suggested_fix": "This is an authoring issue in the source; no clean programmatic fix is possible without risking dropping real arbeidskrav. The downstream Phase 2 LLM extraction should handle this correctly by applying the codebook definition semantically.",
+      "confidence": "medium"
+    },
+    {
+      "section": "course_content",
+      "error_type": "boilerplate_only",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "hvl_LUPEMP100-1_2025_autumn_1",
+        "hvl_LUPEMP200-1_2025_autumn_1"
+      ],
+      "evidence": "Emnet vert ikkje tilbydd 2025/2026.",
+      "description": "Two practice courses include 'Emnet vert ikkje tilbydd [year]' (the course is not offered [year]) as the first line of the course_content section. The anonymizer strips the year (rendering it 'Emnet vert ikkje tilbydd .'), but the phrase itself is an administrative availability notice, not course content. It is also logically inconsistent — if the course is not offered, why was it harvested?",
+      "root_cause_hypothesis": "HVL places the availability notice inside the 'Innhald og oppbygging' content block in the HTML, so it is extracted as part of course_content. The anonymizer removes the year number, leaving a dangling sentence.",
+      "suggested_fix": "Add a pre_fn or post_fn for course_content that strips lines matching 'Emnet vert ikkje tilbydd' (and Bokmål variant 'Emnet tilbys ikke').",
+      "confidence": "high"
+    },
+    {
+      "section": "course_content",
+      "error_type": "boilerplate_only",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "hvl_LUPEKI101-1_2025_autumn_1"
+      ],
+      "evidence": "Retningsliner for godkjenning\n\nGodkjenning av fellesemnet mellom studieprogram ved HVL\n\nHVL-studentar som skiftar studieprogram ved HVL kan etter søknad få godkjend bestått fellesemne...",
+      "description": "In the common introductory course LUPEKI101, the 'Innhald og oppbygging' section contains a multi-paragraph sub-section 'Retningsliner for godkjenning' (approval guidelines) describing cross-program credit transfer rules. This is pure administrative boilerplate about institutional credit recognition, not course content. The codebook explicitly says to strip 'how to apply for admission, study-right rules' boilerplate.",
+      "root_cause_hypothesis": "HVL embeds the credit-transfer approval text inside the content block for this particular course. It is not a universal HVL pattern.",
+      "suggested_fix": "Add a pattern to the post_fn for course_content that strips paragraphs starting with 'Retningsliner for godkjenning' / 'Retningslinjer for godkjenning' and following content until the next h3.",
+      "confidence": "high"
+    },
+    {
+      "section": "all",
+      "error_type": "empty_placeholder",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": [
+        "hvl_MGPRA10-1_2025_autumn_1",
+        "hvl_MGPRA5-1_2025_autumn_1",
+        "hvl_MGPRA15-1_2025_autumn_1"
+      ],
+      "evidence": "-",
+      "description": "A group of practice courses (MGPRA series) have genuinely empty content for all sections except assessment — the HVL source pages only contain '-' under each heading. The extractor correctly captures '-' and flags these as empty. Per the codebook, an empty section should not be emitted as a row (or should be marked null). The '-' rows are harmless but inflate the section-row count and will require null-handling in the Phase 2 annotation step.",
+      "root_cause_hypothesis": "HVL uses '-' as a placeholder in their CMS for sections with no content. The extractor faithfully captures it. This is a source-data issue, not an extraction bug.",
+      "suggested_fix": "In the post_fn (or a shared normaliser), convert extracted text that is exactly '-' (after trimming whitespace) to NA/NULL, so empty-placeholder rows are suppressed.",
+      "confidence": "high"
+    },
+    {
+      "section": "reading_list",
+      "error_type": "missing_section",
+      "severity": "low",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "hvl_MGUMA201-1_2025_autumn_1",
+        "hvl_MGBNO201-1_2025_spring_1",
+        "hvl_MGBNA101-1_2025_spring_1"
+      ],
+      "evidence": "(no reading_list row emitted for any of the 28 reviewed courses)",
+      "description": "No course in the sample has a reading_list section extracted. Inspection of the full course plans confirms that HVL's course plan template does not include a pensum/litteratur/lesestoff heading within the emneplan page itself — reading lists are published separately. The absence is genuine and not an extraction failure. However, there is no negative signal in the data to distinguish 'genuinely absent' from 'heading not mapped'; a note in the institution config would clarify intent.",
+      "root_cause_hypothesis": "HVL externalises its reading lists to a separate system (e.g., Leganto/Oria). The h3-based extractor will never find a pensum heading because it is not present in the HTML that is harvested.",
+      "suggested_fix": "Document in institution_config.R that reading_list is not available from HVL's emneplan pages. No code change needed, but consider adding a config flag like 'reading_list_available: false' for clarity.",
+      "confidence": "high"
+    }
+  ]
+}

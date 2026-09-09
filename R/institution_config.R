@@ -45,7 +45,11 @@ institution_configs <- list(
     year_in_url = TRUE,
     pre_fn = .add_table_cell_breaks,
     section_strategy = "html_headings",
-    section_heading_level = "h2"
+    # inn marks most section headings with <div class="label"> (and the facts
+    # box with <div class="facts-label">); only Læringsutbytte and Pensum are
+    # real <h2>. Only 3 h2s existed, which under-segmented the page (#198).
+    # Walk h2 plus the class-marked divs so all heading levels are caught.
+    section_heading_selector = "h2, div.label, div.facts-label"
   ),
 
   hivolda = list(

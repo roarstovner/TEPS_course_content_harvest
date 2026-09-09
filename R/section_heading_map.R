@@ -9,13 +9,33 @@
 #' so that the first match wins.
 section_heading_patterns <- tibble::tribble(
   ~pattern,                                ~section,                 ~exact,
+  # --- coursework_requirements ---
+  # NB: placed BEFORE assessment on purpose. The matcher returns the first
+  # substring match scanning top-to-bottom, so gate headings that also contain
+  # "eksamen" (e.g. "Arbeidskrav - vilkår for å avlegge eksamen" (hiof),
+  # "Vilkår for å gå opp til eksamen" (uis, uia)) must be tested before the
+  # assessment "eksamen" pattern, otherwise they leak into assessment (#198).
+  "vilkår for å gå opp til eksamen",       "coursework_requirements", FALSE,
+  "vilkår for å avlegge eksamen",          "coursework_requirements", FALSE,
+  "vilkår for å framstille seg til eksamen", "coursework_requirements", FALSE,
+  "obligatorisk læringsaktivitet",         "coursework_requirements", FALSE,
+  "obligatorisk undervisningsaktivitet",   "coursework_requirements", FALSE,
+  "obligatoriske aktiviteter",             "coursework_requirements", FALSE,
+  "arbeidskrav",                           "coursework_requirements", FALSE,
+  "studiekrav",                            "coursework_requirements", FALSE,
+  "compulsory activities",                 "coursework_requirements", FALSE,
+  "work requirements",                     "coursework_requirements", FALSE,
+  "coursework requirements",               "coursework_requirements", FALSE,
+
   # --- assessment ---
   "vurdering og eksamen",                  "assessment",             FALSE,
+  "avsluttende vurdering",                 "assessment",             FALSE,
   "mer om vurdering",                      "assessment",             FALSE,
   "vurderingsordning",                     "assessment",             FALSE,
   "vurderingsformer",                      "assessment",             FALSE,
   "vurderingsform",                        "assessment",             FALSE,
   "eksamensformer",                        "assessment",             FALSE,
+  "vurdering",                             "assessment",             FALSE,
   "eksamen",                               "assessment",             FALSE,
   "assessment methods",                    "assessment",             FALSE,
   "examination",                           "assessment",             FALSE,
@@ -39,6 +59,16 @@ section_heading_patterns <- tibble::tribble(
   "læringsutbytte",                        "learning_outcomes",      FALSE,
   "læringsmål",                            "learning_outcomes",      FALSE,
   "lærer du",                              "learning_outcomes",      FALSE,
+  # læringsutbytte sub-headings (knowledge/skills/general competence) — these
+  # appear as their own heading nodes at some institutions (e.g. inn's
+  # div.label), so map them to learning_outcomes rather than dropping them.
+  # NB: ordered AFTER prerequisites so "forkunnskap" still wins over "kunnskap".
+  "generell kompetanse",                   "learning_outcomes",      FALSE,
+  "kunnskaper",                            "learning_outcomes",      FALSE,
+  "kunnskapar",                            "learning_outcomes",      FALSE,
+  "kunnskap",                              "learning_outcomes",      FALSE,
+  "ferdigheter",                           "learning_outcomes",      FALSE,
+  "ferdigheiter",                          "learning_outcomes",      FALSE,
   "learning outcomes",                     "learning_outcomes",      FALSE,
   "learning outcome",                      "learning_outcomes",      FALSE,
 
@@ -52,20 +82,15 @@ section_heading_patterns <- tibble::tribble(
   "undervisningsopplegg",                  "teaching_methods",       FALSE,
   "læringsaktiviteter",                    "teaching_methods",       FALSE,
   "læringsformer",                         "teaching_methods",       FALSE,
+  "arbeidsformer",                         "teaching_methods",       FALSE,
+  "arbeidsmåter",                          "teaching_methods",       FALSE,
+  "arbeidsmåtar",                          "teaching_methods",       FALSE,
+  "praktisk organisering",                 "teaching_methods",       FALSE,
   "undervisning",                          "teaching_methods",       TRUE,
   "teaching",                              "teaching_methods",       TRUE,
   "teaching and working methods",          "teaching_methods",       FALSE,
   "teaching and learning activities",      "teaching_methods",       FALSE,
   "teaching methods",                      "teaching_methods",       FALSE,
-
-  # --- coursework_requirements ---
-  "obligatorisk læringsaktivitet",         "coursework_requirements", FALSE,
-  "obligatorisk undervisningsaktivitet",   "coursework_requirements", FALSE,
-  "obligatoriske aktiviteter",             "coursework_requirements", FALSE,
-  "arbeidskrav",                           "coursework_requirements", FALSE,
-  "compulsory activities",                 "coursework_requirements", FALSE,
-  "work requirements",                     "coursework_requirements", FALSE,
-  "coursework requirements",               "coursework_requirements", FALSE,
 
   # --- reading_list ---
   "pensumlitteratur",                      "reading_list",           FALSE,
@@ -104,6 +129,14 @@ section_heading_patterns <- tibble::tribble(
 match_heading_to_section <- function(heading) {
   if (is.na(heading) || !nzchar(trimws(heading))) return(NA_character_)
   heading_lower <- tolower(trimws(heading))
+
+  # Denylist: language/expression metadata fields whose text collides with a
+  # real pattern (e.g. "eksamensspråk" contains "eksamen") but which are NOT
+  # the section. Return NA so they are dropped rather than mis-routed (#198,
+  # nla json maps "Eksamensspråk" into assessment).
+  if (grepl("eksamensspråk|vurderingsspråk", heading_lower)) {
+    return(NA_character_)
+  }
 
   exact <- section_heading_patterns$exact %||% rep(FALSE, nrow(section_heading_patterns))
   eq <- section_heading_patterns$pattern == heading_lower

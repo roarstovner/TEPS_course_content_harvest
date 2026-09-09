@@ -1,0 +1,212 @@
+{
+  "institution_short": "uis",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "Extraction quality for UiS is poor-to-moderate, with two dominant structural failures affecting the majority of courses. First, a systematic page-break split in older PDF-sourced plans causes the learning_outcomes section to be truncated at the first page-boundary keyword (typically 'Kunnskap'), with the remainder of the outcomes block misrouted to reading_list. Second, the assessment section consistently absorbs the full coursework_requirements block because the extractor does not cut at 'Vilkår for å gå opp til eksamen/vurdering'. HTML-sourced courses (newer, with 'Vis timeplan' header) show a different but equally serious failure: heading-misdetection causes large blobs of course_content, learning_outcomes, and prerequisites text to spill across section boundaries. reading_list is generally well-extracted for HTML-sourced courses with real literature but completely wrong for PDF courses where the slot captures spilled learning-outcomes text instead.",
+  "findings": [
+    {
+      "section": "learning_outcomes",
+      "error_type": "truncated",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "uis_LPRA40-1_2017_autumn_1",
+        "uis_LPRA50-1_2015_autumn_1",
+        "uis_LPRA50-1_2018_autumn_1"
+      ],
+      "evidence": "learning_outcomes (49 chars): 'Etter praksisperioden skal studentene:\\n  Kunnskap'",
+      "description": "For older PDF-sourced plans (lektorpraksis courses LPRA20, LPRA40, LPRA50 and similarly structured courses), the learning_outcomes extraction stops after the introductory phrase and the first sub-heading 'Kunnskap', leaving all actual outcome bullets unextracted. The full Kunnskap/Ferdighet/Generell kompetanse block is present in the ground-truth plan but absent from the extracted section. This affects courses 5-12 (LPRA40 and LPRA50 series) and course 3 (LPRA20).",
+      "root_cause_hypothesis": "A page-break artefact ('side 1 / EMNE LPRA40_1 BOKMÅL Versjon ...') appears in the middle of the learning-outcomes block in the extracted text. The section splitter likely treats the next heading-like token after this noise as the section end, cutting the extraction prematurely after 'Kunnskap'.",
+      "suggested_fix": "Strip 'side N' page-number lines and 'EMNE .* Versjon .*' running-header lines from the extracted text before section splitting, so the Kunnskap/Ferdighet/Generell kompetanse bullets are not separated from the section header by a false boundary.",
+      "confidence": "high"
+    },
+    {
+      "section": "reading_list",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "uis_LPRA40-1_2017_autumn_1",
+        "uis_LPRA50-1_2016_autumn_1",
+        "uis_LPRA50-1_2019_autumn_1"
+      ],
+      "evidence": "reading_list (965 chars): 'vurderingsformer på ungdomstrinnet i grunnskolen og den videregående skole\\n       ●   ha kunnskap om ulike sider ved lærerrollen...'",
+      "description": "The reading_list slot captures the tail of the learning-outcomes block (Ferdighet + Generell kompetanse bullets) rather than any literature. This is the direct consequence of the truncated learning_outcomes failure above: the remaining outcome text is unanchored and the extractor assigns it to the next available section slot. The actual reading list ('Ingen' or no literature) is either missing or a trivially correct 'Ingen'. Affects the same LPRA* courses.",
+      "root_cause_hypothesis": "Same root cause as the learning_outcomes truncation: once the page-break noise causes the section boundary to fire mid-block, the orphaned text is routed to reading_list because that heading appears next in the document after the page artefact.",
+      "suggested_fix": "Same fix as learning_outcomes truncation: strip page-number/running-header noise. Additionally, add a guard so that text that matches the bullet-list pattern of learning outcomes (hvert ●-bullet starting with 'ha kunnskap', 'kunne', 'alene og') is not classified as reading_list.",
+      "confidence": "high"
+    },
+    {
+      "section": "assessment",
+      "error_type": "merged_sections",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "uis_MGL3122-1_2021_autumn_2",
+        "uis_MGL1051-1_2022_autumn_1",
+        "uis_MGL3065-1_2023_spring_1"
+      ],
+      "evidence": "assessment for uis_MGL3122-1_2021_autumn_2 ends with: '...Arbeidskrav\\n70% oppmøte\\nPraktisk arbeid i tilslutning til forskningsprosjektet er obligatorisk...'",
+      "description": "Across nearly all courses reviewed, the assessment section includes the full text that appears under the heading 'Vilkår for å gå opp til eksamen/vurdering' (arbeidskrav, obligatorisk oppmøte, attendance requirements, submission specifications). By codebook definition, this content belongs in coursework_requirements, not assessment. The extractor does not cut at 'Vilkår for å gå opp til eksamen/vurdering' and instead appends everything up to the next major heading (Fagperson/Arbeidsformer) into assessment.",
+      "root_cause_hypothesis": "'Vilkår for å gå opp til eksamen/vurdering' is not mapped as a section boundary in the heading map. The extractor treats it as continuation text inside the 'Eksamen/vurdering' block. This is the known cross-institution assessment/coursework_requirements conflation failure mode.",
+      "suggested_fix": "Add 'Vilkår for å gå opp til eksamen/vurdering' and 'Obligatoriske krav' as explicit section-boundary headings mapped to coursework_requirements. Cut the assessment section at those headings so the exam description ends before the arbeidskrav listing begins.",
+      "confidence": "high"
+    },
+    {
+      "section": "assessment",
+      "error_type": "formatting_noise",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "uis_LPRA40-1_2019_autumn_1",
+        "uis_LPRA50-1_2018_autumn_1",
+        "uis_LMAMAS-1_2016_autumn_2"
+      ],
+      "evidence": "assessment starts with: 'Vekt     Varighet   Karakter    Hjelpemidler\\n                                   Praksis                                     1/1      6 Uker     Bestått -'",
+      "description": "Assessment sections from PDF-sourced plans retain the full space-padded table layout (heavy whitespace, repeated headers like 'Åpen for', 'Emneevaluering', 'Powered by TCPDF'). These are formatting artefacts from PDF text extraction, not assessment content. 'Åpen for / Lektorutdanning for trinn 8-13' and 'Emneevaluering' boilerplate regularly appear inside the assessment section.",
+      "root_cause_hypothesis": "PDF text extraction does not strip tabular whitespace, and the section splitter does not recognise 'Åpen for' and 'Emneevaluering' as administrative headings that mark the end of relevant content.",
+      "suggested_fix": "Add 'Åpen for' and 'Emneevaluering' as stop-headings for the assessment section in PDF-sourced plans. Strip runs of whitespace from PDF text before section splitting. Drop 'Powered by TCPDF' footer lines.",
+      "confidence": "high"
+    },
+    {
+      "section": "course_content",
+      "error_type": "merged_sections",
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": [
+        "uis_MGL3122-1_2021_autumn_2",
+        "uis_MGL1044-1_2025_autumn_1",
+        "uis_MGL1110-1_2025_autumn_1"
+      ],
+      "evidence": "course_content for uis_MGL3122-1_2021_autumn_2 is 24227 chars and includes full reading-list URL strings: '&rft.genre=article&rft.atitle=Content%20Knowledge%20for%20Teaching...'",
+      "description": "For at least some HTML-sourced plans, the course_content section captures a massive blob that includes the Innhold text plus the full reading list (Litteratur section with bibliographic references and long resolver URLs). This produces a 24 000-char 'course_content' that is in fact a merge of course_content + reading_list. The real reading_list is then either empty or minimal ('Bok').",
+      "root_cause_hypothesis": "The 'Litteratur' heading in the HTML source is not being matched as a section boundary, so the CSS selector or splitter continues accumulating text through the Litteratur block into course_content. Likely a heading-match failure or the Litteratur heading is rendered as a non-heading element in the HTML.",
+      "suggested_fix": "Ensure 'Litteratur', 'Pensum', and 'Lesestoff' are registered as section-boundary headings for the reading_list section in the UiS heading map. Audit the CSS selector to confirm it does not capture elements beyond the section container.",
+      "confidence": "high"
+    },
+    {
+      "section": "reading_list",
+      "error_type": "empty_placeholder",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "uis_MGL3122-1_2021_autumn_2",
+        "uis_LPRA20-1_2015_autumn_2",
+        "uis_LPRA20-1_2019_autumn_1"
+      ],
+      "evidence": "reading_list (3 chars): 'Bok'",
+      "description": "When course_content absorbs the entire reading list (course 1), the reading_list slot receives only the section label 'Bok' (the type header of the first reference). This is an empty/degenerate extraction — 'Bok' is a bibliographic category label, not a literature reference. Separately, courses with 'Ingen' (courses 3, 4) are genuinely empty but are flagged as empty; those flags are correctly calibrated.",
+      "root_cause_hypothesis": "Consequence of the course_content blob over-capture described above. The 'Bok' token is the first text node after a heading that the splitter treats as the start of a new section.",
+      "suggested_fix": "Fix the Litteratur heading-boundary issue (see course_content merged_sections finding). Post-extraction: suppress reading_list rows whose entire text matches only bibliographic category keywords ('Bok', 'Bokkapittel', 'Annet', 'E-bok') with no title or author.",
+      "confidence": "high"
+    },
+    {
+      "section": "cross_section",
+      "error_type": "merged_sections",
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": [
+        "uis_MGL1044-1_2025_autumn_1",
+        "uis_MGL1110-1_2025_autumn_1",
+        "uis_MGL1322-1_2025_autumn_1"
+      ],
+      "evidence": "course_content for uis_MGL1044-1_2025_autumn_1 (3808 chars) contains 'Læringsutbytte\\nKandidaten skal etter fullført studium ha følgende læringsutbytte...' — the full learning-outcomes block embedded inside course_content.",
+      "description": "For HTML-sourced courses using the newer UiS web template ('Vis timeplan / Pensumlisten finner du i Leganto'), the section splitter fails to detect the 'Læringsutbytte' heading as a boundary when it follows 'Innhold' without a clear structural break. As a result, the entire learning_outcomes block (sometimes also prerequisites and coursework_requirements) is absorbed into course_content. A separate learning_outcomes row may or may not be produced, but the content in course_content is a merge of at least two canonical sections.",
+      "root_cause_hypothesis": "The newer UiS web template renders headings in a CSS-styled element (e.g., an h2/h3 without the same class as older pages), so the heading map does not fire on 'Læringsutbytte', 'Forkunnskapskrav', or related headings in this layout.",
+      "suggested_fix": "Audit the UiS CSS selector configuration and heading-recognition pattern against the newer web template. Add 'Læringsutbytte', 'Forkunnskapskrav', 'Eksamen / vurdering' (with space around slash) as explicit boundary headings for the newer layout variant.",
+      "confidence": "high"
+    },
+    {
+      "section": "prerequisites",
+      "error_type": "merged_sections",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "uis_MGL1110-1_2025_autumn_1",
+        "uis_LPRA40-1_2019_autumn_1"
+      ],
+      "evidence": "prerequisites for uis_MGL1110-1_2025_autumn_1 (2012 chars) starts with: '- Denne testen tas tidlig i semesteret for å kartlegge det faglige grunnlaget...' — coursework description, not a subject prerequisite.",
+      "description": "In several courses the prerequisites slot captures text that belongs to coursework_requirements (details about the forkunnskapstest, attendance rules, 'Dersom dette kravet ikke er tilfredsstilt...'). Conversely, for uis_LPRA40-1_2019_autumn_1, prerequisites contains page-number noise ('side 1 / EMNE LPRA40_1 BOKMÅL Versjon') prepended to the actual prerequisite text.",
+      "root_cause_hypothesis": "Two distinct causes: (1) heading misrouting in the newer HTML template causes coursework text to land under the Forkunnskapskrav heading boundary; (2) PDF page-header noise prepended before the Forkunnskapskrav content in older plans.",
+      "suggested_fix": "For the HTML template issue: fix the nested section boundary detection so 'Vilkår for å gå opp til eksamen/vurdering' fires before the Forkunnskapskrav text is consumed. For PDF noise: strip 'side N' and 'EMNE .* Versjon .*' running headers before splitting.",
+      "confidence": "medium"
+    },
+    {
+      "section": "coursework_requirements",
+      "error_type": "wrong_content",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "uis_LPRA50-1_2015_autumn_1",
+        "uis_LPRA50-1_2016_autumn_1"
+      ],
+      "evidence": "coursework_requirements (122 chars): 'Underveisvurdering av praksisveileder etter tre uker. Sluttvurdering etter seks uker med karakteren bestått/Ikke bestått.'",
+      "description": "For LPRA50 courses in 2015 and 2016, a coursework_requirements row is produced but contains the assessment criterion text ('Underveisvurdering av praksisveileder etter tre uker. Sluttvurdering...') which describes the graded evaluation rubric — this is assessment content, not a coursework gate. The actual coursework gate ('Skriftlig arbeidskrav etter perioden med karakteren Godkjent/Ikke godkjent' and 'Må ha gjennomført og bestått all tidligere praksis') is present in the ground-truth plan but not captured in coursework_requirements.",
+      "root_cause_hypothesis": "The splitter extracts the sentence appearing just under 'Vilkår for å gå opp til eksamen/vurdering' heading and routes it to coursework_requirements, but picks the wrong sentence (a continuation of the assessment narrative rather than the gating requirement).",
+      "suggested_fix": "Ensure the coursework_requirements section captures all content from 'Vilkår for å gå opp til eksamen/vurdering' through the next major heading, not just the first sentence.",
+      "confidence": "medium"
+    },
+    {
+      "section": "teaching_methods",
+      "error_type": "missing_section",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "uis_MGL3122-1_2021_autumn_2",
+        "uis_MGL1051-1_2022_autumn_1",
+        "uis_MGL1500-1_2021_autumn_1"
+      ],
+      "evidence": "Ground truth for uis_MGL3122-1_2021_autumn_2 contains 'Arbeidsformer\\nDet blir lagt opp til en kombinasjon av seminarer, workshops, praktisk arbeid og selvstudium...' — no teaching_methods row in extractor output.",
+      "description": "The teaching_methods section ('Arbeidsformer') is present in the ground-truth plan for most HTML-sourced courses but is absent from the extractor output. The 'Arbeidsformer' heading and its text are either swallowed into assessment (via the coursework block) or into coursework_requirements (for MGL1322 course 19 where it is bizarrely routed there). For UiS, 'Arbeidsformer' is a standard, consistently-named section but it appears to be unregistered as a target section or overshadowed by another heading match.",
+      "root_cause_hypothesis": "'Arbeidsformer' is likely not in the heading map for teaching_methods, or when it appears after 'Fagperson(er)' it is beyond the section boundary that is being actively collected. For the newer HTML template, the section appears after the assessment cluster and may be outside the CSS selector scope.",
+      "suggested_fix": "Add 'Arbeidsformer' and 'Arbeids- og undervisningsformer' as headings mapped to teaching_methods in the UiS heading map. Ensure the selector captures content after 'Fagperson(er)'.",
+      "confidence": "high"
+    },
+    {
+      "section": "learning_outcomes",
+      "error_type": "wrong_content",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "uis_MGL1322-1_2025_autumn_1",
+        "uis_MGL1110-1_2025_autumn_1"
+      ],
+      "evidence": "reading_list for uis_MGL1322-1_2025_autumn_1 starts: '• har kunnskap om ulike litteratur- og språkteorier og relevante forskingsperspektiv...' — full Kunnskap/Ferdigheter/Generell kompetanse block in the reading_list slot.",
+      "description": "For newer HTML-sourced courses where the course_content blob absorbs læringsutbytte, the actual Kunnskap/Ferdigheter/Generell kompetanse bullet-list text ends up in reading_list (mirroring the pattern seen in PDF courses, but triggered by different root cause). This is the same symptom as finding #2 but occurs in HTML-sourced plans via a different path: the heading boundary for 'Læringsutbytte' fires too late, and the outcome text is found floating after the reading_list heading region.",
+      "root_cause_hypothesis": "In the newer UiS template, 'Læringsutbytte' is not detected as a section start, so the outcome bullets spill past the next recognized boundary (often 'Litteratur' / reading_list), causing learning-outcomes text to be assigned to reading_list.",
+      "suggested_fix": "Same fix as the HTML cross_section merged_sections finding: register 'Læringsutbytte' as a hard section boundary in the newer template. Validate that the reading_list extractor does not capture bullet text beginning with 'har kunnskap', 'kan', 'Kandidaten'.",
+      "confidence": "high"
+    },
+    {
+      "section": "course_content",
+      "error_type": "formatting_noise",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": [
+        "uis_LPRA40-1_2019_autumn_1",
+        "uis_LPRA50-1_2018_autumn_1",
+        "uis_LPRA50-1_2019_autumn_1"
+      ],
+      "evidence": "course_content contains: '                                                 side 1\\n                                   EMNE LPRA50_1 BOKMÅL Versjon 01.Jun.2018 11:30'",
+      "description": "PDF running headers ('side N' page numbers and 'EMNE LPRA40_1 BOKMÅL Versjon DD.Mon.YYYY HH:MM') appear inside the course_content extraction. These are formatting artefacts from PDF text extraction that do not belong in any canonical section.",
+      "root_cause_hypothesis": "PDF text extraction does not strip page headers/footers; they appear as text at arbitrary positions in the extracted content and the section splitter passes them through.",
+      "suggested_fix": "Add a pre-processing step for UiS PDF sources that removes lines matching 'side \\d+' and 'EMNE [A-Z0-9_]+ BOKMÅL Versjon \\d{2}\\.\\w+\\.\\d{4}' before section splitting.",
+      "confidence": "high"
+    },
+    {
+      "section": "learning_outcomes",
+      "error_type": "wrong_content",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "uis_LFYBAC-1_2022_autumn_1",
+        "uis_LMAMAS-1_2016_autumn_2"
+      ],
+      "evidence": "learning_outcomes for uis_LFYBAC-1_2022_autumn_1 ends with: 'Studenten må ha fullført minst 40 stp fysikk ihht gjeldende utdanningsplan.' — prerequisite requirement appended to learning outcomes.",
+      "description": "For bachelor/master thesis courses, a prerequisite requirement sentence ('Studenten må ha fullført minst 40 stp fysikk...') is appended at the end of the learning_outcomes block instead of being captured in prerequisites. The ground-truth plan has this sentence between the learning-outcomes block and the assessment section, with no explicit 'Forkunnskapskrav' heading.",
+      "root_cause_hypothesis": "The prerequisite sentence appears in the source without a heading, so it is treated as a continuation of the learning-outcomes block. Without a 'Forkunnskapskrav' heading to trigger section switching, the extractor cannot separate it.",
+      "suggested_fix": "Add a pattern-based detection for headingless prerequisite sentences (e.g., text matching 'Studenten må ha fullført minst .* stp' or 'Godkjent undervisningskompetanse') and route them to prerequisites even without an explicit heading.",
+      "confidence": "medium"
+    }
+  ]
+}

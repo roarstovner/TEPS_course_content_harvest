@@ -20,11 +20,12 @@
     stop("No section_strategy for institution: ", institution_short)
   }
   list(
-    strategy      = ic$section_strategy,
-    heading_level = ic$section_heading_level,
-    selector      = ic$selector,
-    pre_fn        = ic$pre_fn,
-    institution   = institution_short
+    strategy         = ic$section_strategy,
+    heading_level    = ic$section_heading_level,
+    heading_selector = ic$section_heading_selector,
+    selector         = ic$selector,
+    pre_fn           = ic$pre_fn,
+    institution      = institution_short
   )
 }
 
@@ -66,6 +67,7 @@ extract_sections <- function(institution_short, html, extracted_text, course_id)
       fb <- fallback_fn(input, cfg)
       if (nrow(fb) > nrow(out)) out <- fb
     }
+    out <- .clean_sections(out)
     tibble::tibble(
       course_id         = rep(cid, nrow(out)),
       institution_short = rep(institution_short, nrow(out)),
@@ -130,6 +132,26 @@ extract_sections_html <- function(input, cfg) {
     doc
   }
 
+  # Heading nodes are normally identified by tag (e.g. "h2"). Some
+  # institutions mark section headings with a CSS class instead (e.g. inn's
+  # `div.label`); `section_heading_selector` lets the same DOM-walk treat any
+  # matching element as a section boundary. We precompute the heading node set
+  # and identify membership by xml_path (stable per node).
+  heading_sel <- cfg$heading_selector
+  if (!is.null(heading_sel)) {
+    heading_paths <- vapply(rvest::html_elements(container, heading_sel),
+                            xml2::xml_path, character(1))
+    is_heading <- function(node) xml2::xml_path(node) %in% heading_paths
+    has_nested <- function(node) {
+      length(rvest::html_elements(node, heading_sel)) > 0
+    }
+  } else {
+    is_heading <- function(node) tolower(rvest::html_name(node)) == heading_level
+    has_nested <- function(node) {
+      length(rvest::html_elements(node, heading_level)) > 0
+    }
+  }
+
   sections <- list()
   state <- new.env()
   state$current_section <- NA_character_
@@ -147,17 +169,14 @@ extract_sections_html <- function(input, cfg) {
   }
 
   visit <- function(node) {
-    tag <- tolower(rvest::html_name(node))
-
-    if (tag == heading_level) {
+    if (is_heading(node)) {
       flush()
       state$current_section <- match_heading_to_section(rvest::html_text2(node))
       return(invisible())
     }
 
-    # Does this subtree contain any headings at the target level?
-    nested <- rvest::html_elements(node, heading_level)
-    if (length(nested) == 0) {
+    # Does this subtree contain any headings? If not, emit it as a leaf.
+    if (!has_nested(node)) {
       if (!is.na(state$current_section)) {
         state$chunks <- c(state$chunks, rvest::html_text2(node))
       }
@@ -481,10 +500,13 @@ extract_sections_nla <- function(input, cfg) {
   doc <- rvest::read_html(html)
 
   if (strategy == "html_headings") {
-    heading_level <- institution_config$section_heading_level %||% "h2"
+    # Mirror extract_sections_html: prefer the class-based heading selector
+    # when configured (e.g. inn's div.label), else the heading tag.
+    heading_sel <- institution_config$section_heading_selector %||%
+      (institution_config$section_heading_level %||% "h2")
     container <- rvest::html_element(doc, institution_config$selector)
     if (is.na(container)) return(character())
-    nodes <- rvest::html_elements(container, heading_level)
+    nodes <- rvest::html_elements(container, heading_sel)
     return(vapply(nodes, rvest::html_text2, character(1)))
   }
 
@@ -510,6 +532,53 @@ extract_sections_nla <- function(input, cfg) {
 
 .empty_sections <- function() {
   tibble::tibble(section = character(), raw_text = character())
+}
+
+#' Post-process a strategy's (section, raw_text) output for one course.
+#'
+#' Applies cheap, high-precision cleanup shared across all strategies (#198):
+#'   - strips trailing FS page-generation timestamps,
+#'   - drops a leading line that merely repeats the section's own heading,
+#'   - removes rows that are empty or a bare negation placeholder ("Ingen").
+#' Fuzzy cleanup (exam-logistics tables, reading-list null-redirects, inline
+#' arbeidskrav/eksamen boundary splits) is deliberately left to the later
+#' Phase-2 LLM lifting, not done here.
+.clean_sections <- function(out) {
+  if (nrow(out) == 0) return(out)
+  out$raw_text <- mapply(.clean_section_text, out$raw_text, out$section,
+                         USE.NAMES = FALSE)
+  keep <- mapply(.keep_section_row, out$raw_text, out$section,
+                 USE.NAMES = FALSE)
+  out[keep, , drop = FALSE]
+}
+
+.clean_section_text <- function(text, section) {
+  if (is.na(text)) return(text)
+  # Trailing FS (Felles studentsystem) page-generation timestamp is admin
+  # boilerplate appended at harvest time, never section content.
+  text <- stringr::str_remove(
+    text, "(?s)\\s*Sist hentet fra FS \\(Felles studentsystem\\).*$")
+  # A leading line that merely repeats this section's own heading is noise
+  # (e.g. uia "Læringsutbytte" echoed as the first body line). Use an EXACT
+  # match against the heading patterns (not the substring matcher) so we never
+  # delete real one-line content that merely contains a section keyword
+  # (e.g. "Ingen pensumliste tilgjengelig" or "Vurdering skjer ved eksamen").
+  lines <- stringr::str_split_1(text, "\\r?\\n")
+  if (length(lines) >= 1) {
+    norm_first <- tolower(trimws(stringr::str_remove(lines[1], "[:：]\\s*$")))
+    eq <- section_heading_patterns$pattern == norm_first
+    if (any(eq) && identical(section_heading_patterns$section[which(eq)[1]], section)) {
+      text <- paste(lines[-1], collapse = "\n")
+    }
+  }
+  trimws(text)
+}
+
+.keep_section_row <- function(text, section) {
+  if (is.na(text) || !nzchar(trimws(text))) return(FALSE)
+  # Bare negation placeholder ("Ingen", "Ingen.", "None") — absence, not content.
+  if (grepl("^(ingen|none|n/a)\\.?$", tolower(trimws(text)))) return(FALSE)
+  TRUE
 }
 
 # Strategy stub — returns empty for unimplemented strategies so the

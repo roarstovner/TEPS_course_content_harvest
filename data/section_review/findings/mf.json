@@ -1,0 +1,182 @@
+{
+  "institution_short": "mf",
+  "n_courses_reviewed": 15,
+  "n_suspects_reviewed": 7,
+  "overall_assessment": "MF extraction quality is severely degraded by a systematic heading-mapping error: the h2 heading 'Studiekrav' is mapped to course_content, causing every course to have its course_content field filled with coursework requirements instead of subject-matter prose, while coursework_requirements is never emitted. A second systemic problem is a section-boundary failure between learning_outcomes and the text that follows it (Overlappende emner, then Litteraturliste), causing learning_outcomes to be truncated mid-content and the overflow — still outcome text — to spill into reading_list. Together these two bugs mean that three canonical sections (course_content, coursework_requirements, learning_outcomes) are consistently wrong across the full institution.",
+  "findings": [
+    {
+      "section": "course_content",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "mf_BAO2705-1_2025_autumn_1",
+        "mf_RL1013-1_2025_autumn_1",
+        "mf_SAM1050-1_2025_spring_1"
+      ],
+      "evidence": "Studiekrav\nFor å få avsluttende vurdering må studenten:\n- Få godkjent tema, problemstilling og en forskningsoversikt\n- Få godkjent deltagelse i gruppeveiledning",
+      "description": "The course_content field contains the 'Studiekrav' (coursework requirements) block in every single course reviewed. The actual subject-matter prose — which appears before 'Om studiet / Studiekrav' in the source — is never captured. Per the codebook, course_content should contain text describing the topics and themes the course is about, not mandatory-work gates to the exam.",
+      "root_cause_hypothesis": "The h2-heading extractor maps the heading 'Studiekrav' (which appears under the 'Om studiet' section on MF pages) to the course_content slot, presumably because 'Studiekrav' is the first h2 the selector sees. The actual content prose appears above 'Om studiet' and has no h2 heading of its own, so it is never targeted.",
+      "suggested_fix": "Add a rule that maps 'Studiekrav' (and the synonymous heading 'Om studiet') to coursework_requirements, not course_content. Capture the unheaded introductory prose block (the text between the course title/Timeplan link and the 'Om studiet' h2) as course_content instead.",
+      "confidence": "high"
+    },
+    {
+      "section": "coursework_requirements",
+      "error_type": "missing_section",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "mf_PPU1010-1_2025_autumn_1",
+        "mf_PPU1020-1_2025_autumn_1",
+        "mf_RL1010-1_2025_spring_1"
+      ],
+      "evidence": "No coursework_requirements row is emitted for any of the 15 reviewed courses, even though all courses have a Studiekrav block with 3–7 mandatory items.",
+      "description": "The coursework_requirements section is never produced. All 15 courses have an explicit 'Studiekrav' block listing pass/fail gates to the exam (attendance thresholds, mandatory assignments, approved practice periods). Per the codebook, this is exactly coursework_requirements. The content is instead routed to course_content (see separate finding), so the canonical section is doubly wrong: misrouted rather than missing outright.",
+      "root_cause_hypothesis": "Same root cause as the course_content wrong_content finding: the heading 'Studiekrav' is not in the extractor's heading-to-section map for coursework_requirements.",
+      "suggested_fix": "Add 'Studiekrav', 'Obligatoriske aktiviteter', 'Obligatorisk læringsaktivitet' as heading aliases for coursework_requirements in the MF heading map.",
+      "confidence": "high"
+    },
+    {
+      "section": "learning_outcomes",
+      "error_type": "truncated",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "mf_BAO2705-1_2025_autumn_1",
+        "mf_PPU1015-1_2025_autumn_1",
+        "mf_PPU1010-1_2025_autumn_1"
+      ],
+      "evidence": "learning_outcomes (91 chars): 'KUNNSKAP\nStudenten har:\n- god kunnskap om et emne som er relevant innenfor studieprogrammet' — source has 8 more KUNNSKAP bullets plus full FERDIGHETER and GENERELL KOMPETANSE blocks.",
+      "description": "The learning_outcomes section is cut off after only the first few items in many courses. For BAO2705 the extractor captures only 91 chars of a ~600-char outcomes block. For multi-submodule courses (PPU1010, PPU1015, PPU1020) the truncation is more severe: only Delemne A outcomes are partially captured; Delemne B, C and GENERELL KOMPETANSE are lost. Per the codebook, all outcome statements must be returned.",
+      "root_cause_hypothesis": "The h2 heading 'Læringsutbytte' is correctly identified, but the extractor stops at the next h2 boundary. In longer plans the next h2 ('Overlappende emner' or 'Litteraturliste') comes too early, cutting the outcomes block. For BAO2705 specifically the boundary appears to be hit inside the KUNNSKAP block, suggesting the extractor may also have a character-count cap or the h2 for 'Læringsutbytte' is not found in some courses and 'KUNNSKAP' subheadings (h3/bold) are not picked up.",
+      "suggested_fix": "Extend the section boundary to consume all content between 'Læringsutbytte' and the next semantically unrelated h2 (i.e. 'Overlappende emner', 'Litteraturliste', 'Emneansvarlig'). Do not cut at intermediate structural markers like sub-module headers (DELEMNE A/B/C) or competence-category headers (KUNNSKAP, FERDIGHETER, GENERELL KOMPETANSE).",
+      "confidence": "high"
+    },
+    {
+      "section": "reading_list",
+      "error_type": "merged_sections",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "mf_PPU1010-1_2025_autumn_1",
+        "mf_PPU1015-1_2025_autumn_1",
+        "mf_PPU1020-1_2025_autumn_1"
+      ],
+      "evidence": "reading_list starts with '- reflektere over og utvikle egen faglige praksis\\n- videreutvikle sin kompetanse...\\nDELEMNE C: PRAKSIS 30 DAGER\\nKunnskap\\nStudenten har:' — this is learning_outcomes text, not a reading list.",
+      "description": "The reading_list field is filled with the overflow from the truncated learning_outcomes section. In courses with multi-sub-module outcomes (PPU1010, PPU1015, PPU1020), outcomes for Delemne B/C and GENERELL KOMPETANSE spill into reading_list, which then also contains the genuine (boilerplate-only) reading list note at the end. Per the codebook, reading_list should contain syllabus literature, not outcome statements.",
+      "root_cause_hypothesis": "The h2 'Litteraturliste' heading is the trigger for the reading_list section. Because learning_outcomes content overruns its boundary into the 'Litteraturliste' h2 block, the reading_list captures everything from that overflow point to the end of the page.",
+      "suggested_fix": "Fix the learning_outcomes boundary first (see that finding). After that fix, reading_list should start cleanly at 'Litteraturliste'. Additionally, strip the overflow outcome text from reading_list by anchoring the reading_list start strictly at the 'Litteraturliste' h2, ignoring any text before that h2 that may have been concatenated.",
+      "confidence": "high"
+    },
+    {
+      "section": "assessment",
+      "error_type": "formatting_noise",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "mf_BAO2705-1_2025_autumn_1",
+        "mf_RL1013-1_2025_autumn_1",
+        "mf_SAM1000L-1_2025_spring_1"
+      ],
+      "evidence": "Individuell skriftlig oppgave - Ordinær eksamen\nInnleveringsdato:\n28. mai 2026\nInnleveringsfrist:\n15:00\nTrekkfrist:\n1. mai 2026\nSensur kunngjøres innen:\n18. juni 2026",
+      "description": "Every assessed course includes a detailed exam-logistics table (specific date, start time, deadline, trekkfrist, sensur date) inside the assessment field. Per the codebook, 'exam-logistics tables (specific dates, rooms, registration deadlines)' must be excluded; only the assessment design is kept. The logistics data is identical to what appears on FS/Studentweb and adds no analytical value.",
+      "root_cause_hypothesis": "The 'Avsluttende vurdering/eksamen' h2 block on MF pages embeds the 'Eksamensdatoer' table immediately after the assessment description. The extractor captures everything under that h2 without filtering out the logistics sub-block.",
+      "suggested_fix": "Strip content matching the pattern 'Eksamensdatoer' header and following lines up to the next h2. Alternatively, stop capturing at the first occurrence of 'Eksamensdato:' or 'Innleveringsdato:' within the assessment block.",
+      "confidence": "high"
+    },
+    {
+      "section": "assessment",
+      "error_type": "boilerplate_only",
+      "severity": "low",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "mf_PPU1015-1_2025_autumn_1",
+        "mf_SAM1050-1_2025_spring_1",
+        "mf_RL5065-1_2025_autumn_1"
+      ],
+      "evidence": "For å få avsluttende vurdering må studenten innen fastsatte frister ha oppfylt studiekravene.",
+      "description": "Every assessment field ends with the boilerplate sentence 'For å få avsluttende vurdering må studenten innen fastsatte frister ha oppfylt studiekravene.' This is a generic cross-reference to the studiekrav block, not assessment design. Per the codebook, this is administrative boilerplate and should be stripped.",
+      "root_cause_hypothesis": "This sentence appears verbatim in the source immediately after the real assessment description and before the Eksamensdatoer table. The extractor captures the full block without filtering out this formulaic sentence.",
+      "suggested_fix": "Add this exact sentence (and its variant 'For å få avsluttende vurdering må studenten innen fastsatte frister ha oppfylt studiekravene.') to the MF post-processing strip list for the assessment section.",
+      "confidence": "high"
+    },
+    {
+      "section": "assessment",
+      "error_type": "merged_sections",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "mf_PRA1005-1_2025_autumn_1"
+      ],
+      "evidence": "assessment field: 'Emnet vurderes med avsluttende godkjenning av oppfylte studiekrav. Emnet vurderes til bestått eller ikke bestått.\\n\\n- god kunnskap om undervisning i religions- og livssynsemner\\n...'",
+      "description": "In PRA1005 the assessment block is one short sentence (pass/fail verdict), after which the extractor incorrectly continues into the learning_outcomes block (starting with 'Kunnskap\\nStudenten har' bullets) and then into the contact/footer noise. This is a severe section-merge: learning_outcomes are absorbed into assessment. The flagged learning_outcomes field for this course is only 22 chars ('Kunnskap\\nStudenten har'), confirming the outcomes were stolen by assessment.",
+      "root_cause_hypothesis": "PRA1005 lacks sub-module heading structure in its outcomes block; the 'Læringsutbytte' h2 is present but a boundary error causes the extractor to begin consuming outcomes content from inside the assessment h2 block. Likely the 'Avsluttende vurdering/eksamen' block ends at the next h2, and for this short course the next h2 is 'Læringsutbytte', but the extractor may have the order wrong or there is no h2 between the assessment sentence and the outcomes.",
+      "suggested_fix": "Ensure the assessment section boundary ends at 'Læringsutbytte' h2 and does not consume it. Also, the 'Emneansvarlig' name+email block and 'Studentlivet på MF' footer that appears in the assessment output must be stripped; add these as post-processing strip patterns.",
+      "confidence": "high"
+    },
+    {
+      "section": "prerequisites",
+      "error_type": "missing_section",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "mf_PPU1015-1_2025_autumn_1",
+        "mf_PPU1020-1_2025_autumn_1",
+        "mf_SAM1050-1_2025_spring_1"
+      ],
+      "evidence": "PPU1015 source: 'Forkunnskapskrav: 140 stp. emner inkl PED1010'; SAM1050 source: 'Forkunnskaper\nDet anbefales at studenten har avlagt eksamen i SAM1000 eller tilsvarende.'",
+      "description": "Subject-matter prerequisites are present in several courses but are never emitted as a prerequisites section. PPU1015 and PPU1020 have a 'Forkunnskapskrav' line embedded in the course-content prose block; SAM1050 has a 'Forkunnskaper' paragraph. Per the codebook, these are canonical prerequisites. None are captured.",
+      "root_cause_hypothesis": "On MF pages, prerequisites appear either as inline text in the content block (no h2 heading of their own) or under a 'Forkunnskaper' paragraph-level label. The h2-heading extractor cannot pick up inline or paragraph-level prerequisite statements.",
+      "suggested_fix": "Add a regex-based pass over the course_content prose to detect and extract lines matching 'Forkunnskapskrav:' or 'Forkunnskaper' paragraphs into the prerequisites section. Alternatively, treat 'Forkunnskaper' as a section-level heading alias for prerequisites in the heading map.",
+      "confidence": "high"
+    },
+    {
+      "section": "learning_outcomes",
+      "error_type": "formatting_noise",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": [
+        "mf_RL1010-1_2025_spring_1",
+        "mf_RL1010L-1_2025_autumn_2",
+        "mf_SAM1050-1_2025_spring_1"
+      ],
+      "evidence": "learning_outcomes ends with: 'Overlappende emner\nEmnet RL1010 overlapper med RL1010L, KRLE1010 (8 stp) og KRLE1011 (10 stp). En slik faglig overlapping medfører at: - studenter som har KRLE1011 fra før, vil få 0 poeng uttelling...'",
+      "description": "The learning_outcomes field is polluted with the 'Overlappende emner' (overlapping courses) block. This is purely administrative content about credit deductions for students who previously took equivalent courses. Per the codebook, this is generic boilerplate that must be stripped from all sections.",
+      "root_cause_hypothesis": "The 'Overlappende emner' block appears immediately after learning outcomes and before 'Litteraturliste' in the page. It has no h2 heading or it falls inside the 'Læringsutbytte' h2 boundary, so it gets consumed by learning_outcomes.",
+      "suggested_fix": "Add 'Overlappende emner' as a stop-boundary for the learning_outcomes section, or add a post-processing strip rule removing content from 'Overlappende emner' onward within any section.",
+      "confidence": "high"
+    },
+    {
+      "section": "reading_list",
+      "error_type": "boilerplate_only",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "mf_RL1013-1_2025_autumn_1",
+        "mf_SAM1000L-1_2025_spring_1",
+        "mf_SAM1080L-1_2025_spring_1"
+      ],
+      "evidence": "reading_list: 'Noe av litteraturen er digital, annet finnes kun i papirutgave. Kompendier kan være tilgjengelige i Canvas. På MF får du automatisk tilgang til digital litteratur...'",
+      "description": "For the majority of courses the reading_list field contains only the generic MF library access instructions (digital vs. paper access, Oria login, Nasjonalbiblioteket note, 'MERK: Sjekk at litteraturlisten viser riktig semester') and in several cases also faculty contact info and 'Studentlivet på MF' footer. No actual reading list items (titles, authors, editions) are present because MF links to an external reading list rather than embedding one on the course page. Per the codebook, if the reading list is only a link/note, that note is acceptable as a single string; however, the faculty contact block and footer must be stripped.",
+      "root_cause_hypothesis": "MF stores reading lists externally (linked from the page). The 'Litteraturliste' block on the page only contains the library-access boilerplate and a 'Litteraturlisten for emnet finner du via lenken under' pointer. The extractor captures this entire block including the 'Emneansvarlig' and 'Studentlivet på MF' footer that follows, because these have no h2 boundary of their own.",
+      "suggested_fix": "Strip 'Emneansvarlig' block (name, title, email pattern) and 'Studentlivet på MF' footer from the reading_list output. The library-access boilerplate ('Noe av litteraturen er digital...') is technically correct content given MF's architecture, but consider also stripping it as institution-level boilerplate that carries no per-course information.",
+      "confidence": "high"
+    },
+    {
+      "section": "course_content",
+      "error_type": "missing_section",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "mf_RL5045-1_2025_autumn_1",
+        "mf_SAM1050-1_2025_spring_1",
+        "mf_RL5065-1_2025_autumn_1"
+      ],
+      "evidence": "RL5045 ground truth contains 3 paragraphs of subject-matter prose ('Emnet legger vekt på å se kristendommen i et historisk perspektiv...') under Timeplan; extractor course_content = Studiekrav block only.",
+      "description": "The introductory subject-matter prose (describing what the course is about) is completely absent from the extracted course_content in every course reviewed. This prose appears between the 'Timeplan' link and the 'Om studiet' heading in the MF page structure and carries no h2 heading of its own. The codebook defines course_content as text describing subject matter, topics, and themes — this is the primary candidate. The extractor instead captures the Studiekrav block under course_content (see separate finding), so course_content is both wrong-content and missing the actual content simultaneously.",
+      "root_cause_hypothesis": "The unheaded introductory prose block is not targeted by the h2-heading extractor because it has no h2 heading. The strategy needs a fallback to capture text in named regions before the first h2.",
+      "suggested_fix": "Add a rule to extract the text block between the course title / 'Timeplan' marker and the first 'Om studiet' h2 (or first h2 in the 'Om studiet' section) as course_content. This region consistently contains subject-matter prose on MF pages.",
+      "confidence": "high"
+    }
+  ]
+}

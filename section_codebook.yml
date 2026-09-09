@@ -1,0 +1,210 @@
+# section_codebook.yml
+#
+# Coding instrument for the seven canonical sections of a Norwegian course
+# plan (emnebeskrivelse / emneplan). Two uses:
+#
+#   1. NOW — a shared *rubric*: the section definitions below give the QA
+#      review agents one consistent, cross-institution standard for what each
+#      section means, so they judge extractions the same way. Render to a
+#      human-readable codebook with promptbook for the team.
+#   2. LATER (Phase 2) — run via `pb_annotate()` over the de-duplicated,
+#      anonymized `course_plan` text (one call per distinct plan_content_id)
+#      to extract the verbatim text of each section.
+#
+# SCOPE OF THIS STEP: extract VERBATIM SECTION TEXT only. No coded/typed
+# fields (no assessment form, weight, grading scale, teaching-method type,
+# topic lists, etc.) — that downstream coding is a separate, later instrument.
+# Sections that are naturally itemised (outcomes, assessment components,
+# arbeidskrav, prerequisites, readings) are returned as a LIST OF STRINGS, one
+# string per item; prose sections are a single string.
+#
+# Input unit: the FULL anonymized course_plan for one course offering (not the
+# pre-segmented sections_raw rows). The model both locates and lifts the
+# section text, which is robust to the rule-based extractor's boundary errors.
+#
+# Load:   promptbook::read_promptbook("section_codebook.yml")
+
+schema_version: 1
+title: "Norwegian Course Plan Section Codebook"
+version: "0.1.0"
+description: >
+  Extracts the verbatim text of seven canonical sections from a Norwegian
+  higher-education course plan (emnebeskrivelse) — course content, learning
+  outcomes, teaching methods, assessment, prerequisites, coursework
+  requirements, and reading list. Definitions are harmonised across
+  institutions so the same canonical section means the same thing whether the
+  source is UiO, HiØf, NTNU, or any other Norwegian institution. This
+  instrument lifts text only; typed coding of that text is a later step.
+  Source text is in Bokmål, Nynorsk, or English. Developed for the TEPS
+  course-content harvest project.
+author: "TEPS project"
+
+prompt:
+  system: |
+    You are an expert analyst of Norwegian higher-education course plans
+    (emnebeskrivelser / emneplaner). You will be given the full text of one
+    course plan and must lift the text of each section defined below.
+
+    The text may be in Norwegian Bokmål, Norwegian Nynorsk, or English. Treat
+    them equivalently and keep the source language.
+
+    General rules:
+    - Extract VERBATIM text. Copy the wording from the source; do not
+      summarise, paraphrase, translate, or add anything.
+    - Extract only what is present. If a section is absent, return an empty
+      list (for list-valued variables) or null (for the single-valued
+      variable). Do NOT invent or infer content that is not stated.
+    - Assign each piece of text to the ONE canonical section it belongs to by
+      meaning, NOT by the heading the institution happened to use. Institutions
+      use different and sometimes misleading headings; the definitions below
+      are the authority, not the source headings.
+    - Pay special attention to the assessment vs. coursework-requirements
+      distinction (see those two definitions) — they are routinely conflated
+      in the source and must be separated here.
+    - Strip generic administrative boilerplate (registration via Studentweb,
+      how to apply for admission, study-right rules, capacity limits, contact
+      info, "Godkjent dd.mm.yyyy" approval stamps). It is not course content.
+    - For list-valued sections, return one string per item (e.g. one learning
+      outcome, one assessment component) — do not merge items into one blob,
+      and do not split a single item across several strings.
+  user: |
+    Institution: {institution_short}
+
+    Course plan text:
+
+    {course_plan}
+
+variables:
+
+  # ── course_content ─────────────────────────────────────────────────────────
+  - name: course_content
+    label: "Course content"
+    description: >
+      A faithful copy of the text describing the SUBJECT MATTER, topics, and
+      themes the course covers — what the course is ABOUT. Source headings
+      include "Innhold", "Emnets innhold", "Faginnhold", "Mål og innhold",
+      "Om emnet", "Innhald", "Course content". Exclude learning outcomes (what
+      the student will be able to do — that is `learning_outcomes`), teaching
+      arrangements (`teaching_methods`), and administrative blurb. If "Mål og
+      innhold" bundles aims with content, keep only the content-describing part
+      here. Return as a single string (this section is normally prose).
+    type: text
+    required: false
+    group: descriptive
+
+  # ── learning_outcomes ───────────────────────────────────────────────────────
+  - name: learning_outcomes
+    label: "Learning outcomes"
+    description: >
+      Statements of what the student KNOWS or CAN DO after completing the
+      course (læringsutbytte / læringsmål / "what you learn" / learning
+      outcomes). Norwegian plans usually group these under "Kunnskap",
+      "Ferdigheter", and "Generell kompetanse" (knowledge / skills / general
+      competence). Return ONE string per individual outcome statement — split
+      bullet lists into separate strings; do not return one merged blob. You
+      may prefix a string with its source grouping verbatim if present (e.g.
+      "Kunnskap: ..."). Exclude subject-matter topics (those are
+      `course_content`).
+    type: text
+    multiple: true
+    group: descriptive
+
+  # ── teaching_methods ────────────────────────────────────────────────────────
+  - name: teaching_methods
+    label: "Teaching and learning methods"
+    description: >
+      Text describing how the course is TAUGHT and how students work: lectures,
+      seminars, group work, lab/practical work, fieldwork, practicum/placement
+      (praksis), supervision, digital/online teaching, self-study, etc. Source
+      headings include "Undervisnings- og arbeidsformer", "Arbeids- og
+      undervisningsformer", "Læringsaktiviteter", "Undervisningsopplegg",
+      "Teaching and learning activities". Return one string per distinct
+      method/activity when the source itemises them; if it is a single prose
+      paragraph, return it as one string. Exclude mandatory work that gates the
+      exam (that is `coursework_requirements`) and anything graded
+      (`assessment`).
+    type: text
+    multiple: true
+    group: descriptive
+
+  # ── assessment ──────────────────────────────────────────────────────────────
+  - name: assessment
+    label: "Assessment / examination"
+    description: >
+      Text describing the FINAL, GRADED assessment(s) that determine the course
+      grade (vurdering / eksamen / vurderingsform / vurderingsordning /
+      examination). Return ONE string per assessment component (e.g. a written
+      exam plus a portfolio = two strings). CRITICAL: do NOT include mandatory
+      coursework that only gates access to the exam (arbeidskrav, obligatorisk
+      deltakelse, obligatoriske aktiviteter) — that text goes in
+      `coursework_requirements`, even when the source lists it under the same
+      "Vurdering/Eksamen" heading. Also exclude exam-logistics tables (specific
+      dates, rooms, registration deadlines) — keep only the assessment design.
+    type: text
+    multiple: true
+    group: assessment
+
+  # ── coursework_requirements ─────────────────────────────────────────────────
+  - name: coursework_requirements
+    label: "Coursework requirements (arbeidskrav)"
+    description: >
+      Text describing mandatory work a student must complete and get APPROVED
+      to be allowed to sit the exam, but which is NOT itself graded toward the
+      final grade: arbeidskrav, obligatoriske aktiviteter, obligatorisk
+      deltakelse/oppmøte (mandatory attendance), compulsory assignments. Source
+      headings include "Arbeidskrav", "Obligatorisk læringsaktivitet",
+      "Obligatoriske aktiviteter", "Work requirements". Return one string per
+      requirement. Distinguishing these from `assessment` is the single most
+      important call in this codebook: if it is graded toward the grade it is
+      assessment; if it is a pass/approve gate to access the exam it is a
+      coursework requirement.
+    type: text
+    multiple: true
+    group: assessment
+
+  # ── prerequisites ───────────────────────────────────────────────────────────
+  - name: prerequisites
+    label: "Prerequisites"
+    description: >
+      Text stating SUBJECT-MATTER entry requirements: required or recommended
+      prior knowledge and prior courses (forkunnskapskrav, anbefalte
+      forkunnskaper, krav til forkunnskaper, required/recommended prerequisite
+      knowledge). Return one string per requirement. EXCLUDE all generic
+      administrative content even when it appears under a "forkunnskaper/opptak"
+      heading: admission to the programme, study-right rules,
+      application/registration via Studentweb, capacity limits, and "you must
+      apply each semester" boilerplate. (This boilerplate is what makes the
+      same canonical section look different across institutions — strip it so
+      it does not.)
+    type: text
+    multiple: true
+    group: assessment
+
+  # ── reading_list ────────────────────────────────────────────────────────────
+  - name: reading_list
+    label: "Reading list / syllabus literature"
+    description: >
+      Text listing required and recommended literature, course materials, and
+      syllabus (pensum, pensumlitteratur, litteratur, lesestoff, læremidler,
+      reading list). Return one string per reference where the text is
+      itemised; if the reading list is only a free-text note or a link (no
+      itemised list), return a single string capturing it. Reading lists are
+      often long or truncated in the source — extract what is present without
+      inventing.
+    type: text
+    multiple: true
+    group: descriptive
+
+groups:
+  descriptive:
+    label: "Descriptive sections"
+    description: >
+      Content, outcomes, teaching, reading — lower-ambiguity sections.
+    model: fast
+  assessment:
+    label: "Assessment-cluster sections"
+    description: >
+      Assessment, coursework requirements, prerequisites — the interpretive
+      sections where cross-institution conflation happens; needs the stronger
+      model.
+    model: strong

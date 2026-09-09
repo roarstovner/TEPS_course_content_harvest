@@ -1,0 +1,116 @@
+{
+  "institution_short": "nih",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "NIH's h2-heading-based extraction is structurally sound for the core sections (course_content, learning_outcomes, teaching_methods, coursework_requirements, assessment) and correctly handles the standard plan layout. Three recurring problems degrade data quality: (1) the reading_list is almost always a null-redirect placeholder 'Se emnearkivet' with no actual content; (2) plagiarism-check boilerplate is systematically absorbed into assessment; (3) the newer 'Forkrav' / 'Hvem kan ta dette emnet?' heading pair is handled inconsistently — empty-placeholder prerequisites are emitted and the meaningful 'Emnet bygger på...' prerequisite text is sometimes dropped entirely. The teaching_methods section is correctly extracted across the board; the deterministic leak->course_content flags appear to be false positives.",
+  "findings": [
+    {
+      "section": "reading_list",
+      "error_type": "boilerplate_only",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "nih_LKI100-1_2022_autumn_1",
+        "nih_LKI110-1_2021_autumn_2",
+        "nih_LKI120-1_2021_autumn_2"
+      ],
+      "evidence": "Se emnearkivet",
+      "description": "The reading_list section captures only 'Se emnearkivet' (14 chars) — a redirect to an external archive page, not an actual reading list. The codebook defines reading_list as itemised or noted literature present in the plan; a bare archive redirect is content-free boilerplate. Affects at least 14 of 28 courses (courses 1–8, 12–15, 19–21); courses that have a real entry (e.g. 'Pensumliste for høsten 2024') are handled correctly.",
+      "root_cause_hypothesis": "NIH's plan template allows substituting a real reading list with a pointer to a separate semester-specific archive. The h2-based extractor faithfully extracts whatever text follows 'Kjernelitteratur' regardless of whether it is informative.",
+      "suggested_fix": "After extraction, apply a post-processing filter: if reading_list text matches the pattern /^Se emnearkivet\\.?$/i, replace with NULL (or drop the row). A URL-only reading_list (202-char 'Ettersom vi er i en overgangsfase…https://…') should also be treated as boilerplate-only and nullified, or at minimum flagged separately.",
+      "confidence": "high"
+    },
+    {
+      "section": "assessment",
+      "error_type": "boilerplate_only",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "nih_LKI110-1_2021_autumn_2",
+        "nih_LKI110-1_2023_autumn_1",
+        "nih_LKI125-1_2022_spring_1"
+      ],
+      "evidence": "Vi gjør oppmerksom på at oppgaver som leveres i WISEflow vil bli kjørt gjennom plagiatkontrollprogrammet Urkund.",
+      "description": "The assessment section repeatedly captures a boilerplate sentence about plagiarism checking via WISEflow/Urkund (and later Canvas). Per the codebook, assessment should contain only the graded assessment design; exam-logistics and administrative notices must be excluded. This sentence appears verbatim in 10+ courses and adds no information about assessment form, weight, or grading scale.",
+      "root_cause_hypothesis": "NIH appends this notice at the end of the 'Vurdering/eksamen' block in its plan template. The h2-based splitter takes the full block up to the next heading, so this boilerplate is always included.",
+      "suggested_fix": "Add a post-extraction strip rule for the NIH assessment section: remove sentences matching the pattern /Vi gjør oppmerksom på at oppgaver som leveres i (WISEflow|Canvas).*(plagiatkontroll|plagiat)/i. The same rule likely applies to other institutions using WISEflow.",
+      "confidence": "high"
+    },
+    {
+      "section": "coursework_requirements",
+      "error_type": "formatting_noise",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "nih_LKI100-1_2022_autumn_1"
+      ],
+      "evidence": "Undervisningsopplegg\n\nPeriode/årsplanlegging\nArbeidskrav må være godkjent for å kunne gå opp til vurdering/eksamen.",
+      "description": "In course 1, the h2 heading 'Undervisningsopplegg' (and its sub-label 'Periode/årsplanlegging') is absorbed into the coursework_requirements text instead of being treated as a section boundary. The source plan has 'Undervisningsopplegg' as a standalone h2 between 'Arbeidskrav' and 'Vurdering/eksamen', but the extractor either does not map this heading to any canonical section (so the text falls into the previous block) or it is an unusual variant heading that the splitter passes through. The result is that the raw section text contains a spurious heading string.",
+      "root_cause_hypothesis": "The h2-to-section mapping does not include 'Undervisningsopplegg' as a split point. When an unmapped h2 appears within a section block, the splitter treats it as body text, embedding the heading string into the preceding section's content.",
+      "suggested_fix": "Add 'Undervisningsopplegg' to the list of h2 patterns that trigger a section boundary. Map it to teaching_methods (or a discard bucket) so it terminates the Arbeidskrav block rather than polluting it. More generally, any unrecognised h2 should at minimum terminate the current section block.",
+      "confidence": "high"
+    },
+    {
+      "section": "prerequisites",
+      "error_type": "empty_placeholder",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "nih_LKI110-1_2025_autumn_1",
+        "nih_LKI130-1_2025_autumn_1",
+        "nih_LKI120-1_2025_autumn_1"
+      ],
+      "evidence": "Ingen emner i programmet",
+      "description": "When the 'Forkrav' heading is present and its body is 'Ingen emner i programmet' or 'Ingen emner', the extractor emits a prerequisites row with this near-empty content. The codebook says to return an empty list when the section is absent; a 'no prerequisites' declaration is semantically equivalent to absence for downstream coding. Emitting these rows creates noise without informative content.",
+      "root_cause_hypothesis": "The h2 splitter extracts whatever text follows 'Forkrav' without checking for null-equivalent values.",
+      "suggested_fix": "Add a post-extraction rule: if prerequisites text matches /^Ingen emner(\\.| i programmet\\.?)?$/i, treat as NULL and drop the row (or normalise to an empty list).",
+      "confidence": "high"
+    },
+    {
+      "section": "prerequisites",
+      "error_type": "missing_section",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "nih_LKI205-1_2024_autumn_1"
+      ],
+      "evidence": "Hvem kan ta dette emnet?\n\nEmnet bygger på 1. år LUPE.",
+      "description": "Course 25 has 'Hvem kan ta dette emnet?' as an h2 heading with the body 'Emnet bygger på 1. år LUPE.' — a meaningful entry requirement (the course requires completion of year 1 of the LUPE programme). No prerequisites row is produced in the extractor output; the text is silently dropped. This is because the heading 'Hvem kan ta dette emnet?' is not mapped to any canonical section, and there is no 'Forkrav' heading in this plan to trigger the prerequisites slot. The meaningful prerequisite is lost entirely.",
+      "root_cause_hypothesis": "The h2 heading map covers 'Forkrav' but not 'Hvem kan ta dette emnet?'. Unrecognised headings cause the subsequent text to be dropped (or absorbed elsewhere) rather than routed to prerequisites.",
+      "suggested_fix": "Add 'Hvem kan ta dette emnet?' (and variants such as 'Hvem kan ta emnet') to the heading map as a prerequisites trigger. Body text that is purely administrative ('Programstudenter LUPE') should then be stripped by the existing boilerplate filter; substantive text like 'Emnet bygger på...' will be preserved.",
+      "confidence": "high"
+    },
+    {
+      "section": "coursework_requirements",
+      "error_type": "wrong_content",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "nih_LKI110-1_2023_autumn_1",
+        "nih_LKI110-1_2024_autumn_1",
+        "nih_LKI110-1_2025_autumn_1"
+      ],
+      "evidence": "100 % oppmøte under praktisk eksamen.",
+      "description": "Several LKI110 plans include '100 % oppmøte under praktisk eksamen.' in the Arbeidskrav block. The extractor files this under coursework_requirements, but per the codebook the distinction is whether the requirement gates access to the exam (coursework_requirements) or is part of the exam itself (assessment). Mandatory attendance at the practical exam is a condition of the exam sitting, not a pre-exam gate — it more naturally belongs in the assessment description. Misfiling it in coursework_requirements overstates the arbeidskrav burden.",
+      "root_cause_hypothesis": "The h2 splitter assigns all content under 'Arbeidskrav' to coursework_requirements, even when individual items describe exam-day conditions.",
+      "suggested_fix": "In the phase-2 LLM extraction step this will be resolved by meaning-based assignment. For the rule-based extractor, no deterministic fix is easily available; annotate as a known edge case in the data notes. Optionally, a pattern-match rule ('oppmøte under .* eksamen') could reroute such items to assessment.",
+      "confidence": "medium"
+    },
+    {
+      "section": "teaching_methods",
+      "error_type": "other",
+      "severity": "low",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "nih_LKI110-1_2021_autumn_2",
+        "nih_LKI120-1_2021_autumn_2",
+        "nih_LKI110-1_2023_autumn_1"
+      ],
+      "evidence": "Emnets innhold belyses gjennom praktiske aktiviteter, diskusjoner/refleksjon, studentfremlegg og litteratur.",
+      "description": "The deterministic QA flags teaching_methods with 'leak->course_content' on 10 of 28 courses because the section text begins with 'Emnets innhold belyses gjennom...' — a phrase containing 'innhold'. On review, this is a false positive: the text is genuinely about teaching and learning methods (how content is illuminated, how students work), not a repetition of course content. The extraction is correct; the heuristic is overfiring on the word 'innhold' in a methods context. No data quality problem with the extraction itself.",
+      "root_cause_hypothesis": "The leak detector uses a keyword match ('innhold') to flag suspected cross-section contamination, without checking whether the word is the subject or object of the sentence.",
+      "suggested_fix": "Tighten the leak heuristic: require that 'innhold'-containing text in teaching_methods either (a) duplicates text already present in course_content, or (b) describes topics rather than methods. A simple exact-overlap check between teaching_methods and course_content text would eliminate these false positives.",
+      "confidence": "high"
+    }
+  ]
+}

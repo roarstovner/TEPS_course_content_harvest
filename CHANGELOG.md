@@ -6,7 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Fixed
+- Section extractor bugs from QA pre-pass: route arbeidskrav/vilkår gate
+  headings to coursework_requirements instead of assessment, add missing
+  heading patterns, fix inn under-segmentation via class-based heading
+  selector, strip FS timestamps / bare "Ingen" rows (#198)
+
 ### Added
+- Reconnaissance scan for candidate extra sections (credit_overlap, praksis) (#201)
+- Test across all institutions and iterate heading patterns (#192)
+- Deterministic QA pre-pass for sections_raw (suspect report) (#197)
+- Section review agent harness (prepare packets + dispatch + aggregate) (#200)
+- Section codebook (promptbook rubric) + agent findings schema (#199)
+- Entry point script + diagnostics (run_extract_sections.R) (#191)
 - Add section extraction config to institution_config.R (#190)
 - json_nla extraction strategy (#189)
 - details_uib extraction strategy (#188)

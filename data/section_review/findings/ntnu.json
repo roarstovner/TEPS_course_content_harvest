@@ -1,0 +1,135 @@
+{
+  "institution_short": "ntnu",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "NTNU's h3-heading-based extractor correctly identifies and labels the five main sections present (course_content, learning_outcomes, teaching_methods, coursework_requirements, prerequisites), and section boundaries are accurate. The two critical defects are (1) the assessment section universally captures exam-logistics tables with specific dates, rooms, times, and a raw JavaScript function fragment instead of assessment design, and (2) the teaching_methods section for the PPU/Fagdidaktikk 2 family consistently absorbs two to three paragraphs of mandatory-attendance boilerplate that belong in coursework_requirements. The reading_list section is absent across all 28 courses despite some plans referencing reading materials, and the prerequisites section for the large PPU family captures only a single boilerplate sentence that, while technically present in the source, contains no subject-matter information — a borderline boilerplate-only issue. Random controls confirm the same defects occur outside the suspect set and are not limited to the PPU4621/4623/4625/4627/4629 series.",
+  "findings": [
+    {
+      "section": "assessment",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "ntnu_PPU4621-1_2017_autumn_1",
+        "ntnu_PPU4623-1_2023_autumn_1",
+        "ntnu_PPU4729-1_2016_autumn_1"
+      ],
+      "evidence": "Ordinær eksamen - Høst 2018\nHjemmeeksamen\nKarakter Bokstavkarakterer Vekting 100/100 Dato Utlevering 28.11.2018 Innlevering 28.11.2018 Varighet 6 timer Eksamenssystem Inspera Assessment",
+      "description": "The assessment section is filled entirely with exam-logistics table rows (specific dates, utlevering/innlevering times, rooms, Eksamenssystem) rather than assessment design. The codebook explicitly says to 'exclude exam-logistics tables (specific dates, rooms, registration deadlines) — keep only the assessment design.' What the source actually contains under 'Mer om vurdering' — language rules, pass/fail conditions for sub-assessments, grade-appeal rules — is partially present in the teaching_methods section instead (see separate finding) but is itself not assessment design either. The assessment section as extracted is therefore almost entirely wrong-content: logistics rather than design.",
+      "root_cause_hypothesis": "NTNU renders the vurdering section as a structured exam-schedule table that is scraped as flat text. The h3-heading extractor assigns everything between the 'Vurdering' h3 and the next heading to assessment, which is the logistics table. The actual prose assessment description ('Mer om vurdering') appears under the teaching_methods heading boundary because NTNU places it inside the 'Læringsformer og aktiviteter' section in the DOM.",
+      "suggested_fix": "Strip lines matching the pattern 'Ordinær/Utsatt eksamen - (Høst|Vår|Sommer) \\d{4}' and subsequent logistics rows (Karakter, Dato, Tid, Sted, Eksamenssystem, Varighet). Also strip the trailing JavaScript function fragment ('function toggleRooms(target) {...}'). Extract the 'Mer om vurdering' sub-block (language rules, pass/fail sub-assessment rules) into the assessment section as prose, or at minimum remove it from teaching_methods.",
+      "confidence": "high"
+    },
+    {
+      "section": "assessment",
+      "error_type": "formatting_noise",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "ntnu_PPU4621-1_2017_autumn_1",
+        "ntnu_PPU4621-1_2019_autumn_1",
+        "ntnu_PPU4757-1_2010_autumn_1"
+      ],
+      "evidence": "function toggleRooms(target) { const examRoomsDiv = $(target).closest(\".exam-rooms\"); const examRoomsButton = examRoomsDiv.find(\"button\"); const roomListDivs = examRoomsDiv.find(\"div.room-list\"); roomListDivs.toggleClass(\"d-none\");",
+      "description": "Every course's assessment section ends with a raw JavaScript function body ('function toggleRooms(target) {...}'). This is HTML-page JavaScript for toggling exam-room visibility that has leaked into the extracted text. It is noise with zero content value.",
+      "root_cause_hypothesis": "The CSS selector for NTNU captures the entire exam-info div including an inline <script> tag or a JS-containing <button> element. The text extractor does not strip script content.",
+      "suggested_fix": "Add a post-processing step that drops any text block matching the regex 'function\\s+\\w+\\s*\\(' or 'const\\s+\\w+\\s*=' from the assessment section output. Alternatively, exclude <script> nodes from the CSS selector before text extraction.",
+      "confidence": "high"
+    },
+    {
+      "section": "teaching_methods",
+      "error_type": "merged_sections",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "ntnu_PPU4621-1_2018_autumn_1",
+        "ntnu_PPU4623-1_2020_autumn_1",
+        "ntnu_PPU4681-1_2018_spring_1"
+      ],
+      "evidence": "NTNU er tillagt et sertifiseringsansvar [...] Det er avgjørende at studentene utvikler seg som selvstendige og ansvarlige lærere [...] Det er derfor obligatorisk oppmøte i undervisningen. Det kreves 75 % oppmøte for å kunne fremstille seg til eksamen. Alle obligatoriske aktiviteter må være godkjente før kandidaten kan framstille seg til eksamen.",
+      "description": "The teaching_methods section consistently absorbs 2–3 paragraphs of mandatory-attendance/obligation boilerplate that belongs in coursework_requirements. This includes the NTNU certification-responsibility paragraph, the 75% attendance requirement, and the 'alle obligatoriske aktiviteter må være godkjente' statement. By codebook definition, mandatory work that gates exam access belongs in coursework_requirements. The actual coursework_requirements row only captures the short bulleted list under the 'Obligatoriske aktiviteter' subheading, missing the preceding prose.",
+      "root_cause_hypothesis": "NTNU places the 75%-attendance text inside the 'Læringsformer og aktiviteter' h3 section in the DOM, before the 'Obligatoriske aktiviteter' inline sub-list. The extractor correctly follows the h3 boundary and captures everything up to the next h3, so the attendance boilerplate lands in teaching_methods rather than coursework_requirements.",
+      "suggested_fix": "Add a split rule: within the teaching_methods text block, identify the paragraph starting with 'NTNU er tillagt et sertifiseringsansvar' (or more generally: any paragraph containing 'obligatorisk oppmøte' or 'obligatoriske aktiviteter må være godkjente') and move it — along with all subsequent paragraphs up to the next h3 — into coursework_requirements, prepended before the bulleted list already captured there.",
+      "confidence": "high"
+    },
+    {
+      "section": "reading_list",
+      "error_type": "missing_section",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "ntnu_PPU4729-1_2016_autumn_1",
+        "ntnu_HIST3485-1_2019_spring_1",
+        "ntnu_PPU4625-1_2019_autumn_1"
+      ],
+      "evidence": "Kursmateriell\n\nOppgis senere.",
+      "description": "No course in the 28-course sample has a reading_list section extracted. Several courses have a 'Kursmateriell' section in the source ('Oppgis senere.' or 'See curriculum published at the start of the semester'). The codebook says: 'if the reading list is only a free-text note or a link (no itemised list), return a single string capturing it.' The extractor produces no reading_list rows at all, meaning the heading map does not include any NTNU reading-list heading.",
+      "root_cause_hypothesis": "NTNU uses 'Kursmateriell' as the heading for reading list/syllabus. If the heading map maps only 'Pensum', 'Pensumlitteratur', 'Litteratur' etc. but not 'Kursmateriell', this section is silently dropped.",
+      "suggested_fix": "Add 'Kursmateriell' to the heading-to-section map, mapped to reading_list. Also consider 'Faglig innhold: Kursmateriell' if the heading appears as a sub-heading.",
+      "confidence": "high"
+    },
+    {
+      "section": "prerequisites",
+      "error_type": "boilerplate_only",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "ntnu_PPU4621-1_2017_autumn_1",
+        "ntnu_PPU4623-1_2018_autumn_1",
+        "ntnu_PPU4656-1_2022_spring_1"
+      ],
+      "evidence": "Beståtte eksamener i henhold til studieplanen. Forkunnskapskravet må være innfridd for å få starte på emnet.",
+      "description": "Across all PPU/Fagdidaktikk courses, the prerequisites section contains only the single boilerplate sentence 'Beståtte eksamener i henhold til studieplanen. Forkunnskapskravet må være innfridd for å få starte på emnet.' This is a generic study-plan-level requirement, not a subject-matter prerequisite. The codebook says prerequisites should state 'required or recommended prior knowledge and prior courses' and explicitly says to 'exclude all generic administrative content even when it appears under a forkunnskaper heading'. This single sentence has no subject-matter specificity and should be treated as administrative boilerplate. A smaller number of courses (e.g., ntnu_HIST3485-1_2019_spring_1, ntnu_PPU4700-1_2012_autumn_1) have more meaningful prerequisites such as 'Fullført utvekslingsopphold' or 'Opptak til femårig lærerutdanning', which are richer but still mostly programme-admission requirements rather than subject-matter prerequisites.",
+      "root_cause_hypothesis": "NTNU's Forkunnskapskrav section is consistently populated with a single shared boilerplate sentence across PPU courses. The extractor faithfully captures what is there; the source itself contains no subject-matter prerequisite information for these courses.",
+      "suggested_fix": "Add a post-processing filter: if the prerequisites text exactly matches the known NTNU boilerplate strings ('Beståtte eksamener i henhold til studieplanen. Forkunnskapskravet må være innfridd for å få starte på emnet.' or 'Opptak til femårig lærerutdanning og beståtte eksamener i henhold til forskrift.'), set the section to empty/null rather than emitting it as a meaningful prerequisite. This is a downstream codebook-enforcement decision rather than an extractor bug.",
+      "confidence": "high"
+    },
+    {
+      "section": "assessment",
+      "error_type": "missing_section",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "ntnu_PPU4700-1_2012_autumn_1",
+        "ntnu_PPU4611-1_2018_autumn_1"
+      ],
+      "evidence": "Vurderingsordning Skriftlig eksamen",
+      "description": "Course 24 (PPU4700) has no assessment section extracted at all, despite having 'Vurderingsordning Skriftlig eksamen' in the header and being a graded course. Course 27 (PPU4611 — Praksis 1) similarly has no assessment section. For PPU4700 this appears to be because the logistics table is absent or structured differently in older course pages; for PPU4611 (a practice course with 'Praktisk eksamen') the vurdering section may use a different heading or be absent. The codebook requires an assessment section whenever graded assessment exists.",
+      "root_cause_hypothesis": "Older NTNU pages (pre-2015) may not have the same HTML structure with a renderable exam table. The extractor finds nothing to place in assessment. For practice courses, assessment may appear under a non-standard heading.",
+      "suggested_fix": "When no assessment row is extracted but the course metadata contains a non-empty 'Vurderingsordning' field, emit a diagnostic flag so the issue is visible downstream. Separately, map additional heading variants for practice-course assessment (e.g., 'Sluttvurdering', 'Praktisk eksamen').",
+      "confidence": "medium"
+    },
+    {
+      "section": "teaching_methods",
+      "error_type": "boilerplate_only",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": [
+        "ntnu_PPU4623-1_2021_autumn_1",
+        "ntnu_PPU4625-1_2021_autumn_1",
+        "ntnu_PPU4656-1_2022_spring_1"
+      ],
+      "evidence": "NTNU er tillagt et sertifiseringsansvar som skal sikre at studentene behersker de områder som er grunnleggende for den kommende yrkesutøvelsen.",
+      "description": "Beyond the misplaced attendance requirements (covered in finding 3), the entire 'NTNU certification responsibility' paragraph is NTNU institutional boilerplate repeated verbatim across dozens of courses. By the codebook rule to 'strip generic administrative boilerplate', this institutional self-description should not appear in teaching_methods. It describes an institutional obligation, not a teaching or learning method.",
+      "root_cause_hypothesis": "NTNU embeds this paragraph in the 'Læringsformer og aktiviteter' DOM section; since the extractor assigns everything under that h3 to teaching_methods, the boilerplate is included. There is no post-processing step to remove known NTNU boilerplate strings.",
+      "suggested_fix": "Add a post-processing blocklist for the NTNU certification-responsibility paragraph: match on 'NTNU er tillagt et sertifiseringsansvar' and drop the containing sentence/paragraph from teaching_methods output.",
+      "confidence": "high"
+    },
+    {
+      "section": "learning_outcomes",
+      "error_type": "truncated",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "ntnu_PPU4623-1_2019_autumn_1",
+        "ntnu_PPU4625-1_2019_autumn_1",
+        "ntnu_PPU4627-1_2019_autumn_1"
+      ],
+      "evidence": "kan reise faglig relevante problemstillinger, undersøke og drøfte disse kritisk og selvstendig gjennom teoretisk og empirisk kunnskap og slik bidra til utvikling av p\n…[truncated 8 chars]",
+      "description": "Several learning_outcomes sections (all 1508–1510 chars, suggesting a fixed character limit) are truncated mid-sentence: '...bidra til utvikling av p[raksiser]'. The ground truth shows the full sentence ends with 'praksiser'. This affects courses where the learning outcomes text hits a ceiling; the last outcome statement is cut off.",
+      "root_cause_hypothesis": "The checkpoint or sections_raw storage has a character-length cap (around 1510 chars) that truncates the text field before the full learning_outcomes section is saved.",
+      "suggested_fix": "Increase or remove the character limit on the sections_raw text field. The truncation point is consistent across affected courses suggesting a hard cap rather than a CSS extraction issue.",
+      "confidence": "high"
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+{
+  "institution_short": "uio",
+  "n_courses_reviewed": 13,
+  "n_suspects_reviewed": 5,
+  "overall_assessment": "The h2-heading-based extractor produces a fundamentally flawed section split for UiO: it never emits learning_outcomes or coursework_requirements as separate sections, merging them instead into course_content and teaching_methods respectively. Every single course has its assessment section contaminated by UiO's universal site-navigation footer. The prerequisites section almost universally begins with Studentweb/admission boilerplate instead of subject-matter entry requirements.",
+  "findings": [
+    {
+      "section": "learning_outcomes",
+      "error_type": "missing_section",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "uio_HIS4015L-1_2025_spring_1",
+        "uio_HIS1200L-1_2025_autumn_1",
+        "uio_PROF3025-1_2025_autumn_1"
+      ],
+      "evidence": "Hva lærer du?\nå bidra til nytenkning og tilrettelegge for historiefaglig dybdelæring i skolen\nå finne, tilegne deg og anvende faglitteratur...",
+      "description": "UiO uses the h2 heading 'Hva lærer du?' for learning outcomes, but the extractor never emits a learning_outcomes section. All 13 courses show the 'Hva lærer du?' block absorbed into course_content because the extractor maps 'Hva lærer du?' to course_content (or has no mapping for it) rather than to learning_outcomes. The codebook defines learning_outcomes as statements of what the student knows/can do after completing the course — exactly what 'Hva lærer du?' contains.",
+      "root_cause_hypothesis": "The h2-heading-to-section map either omits 'Hva lærer du?' entirely, causing the content to fall through into whatever section started before it (course_content), or the heading is not recognised as starting a new section boundary at all.",
+      "suggested_fix": "Add 'Hva lærer du?' (and common variants: 'Læringsutbytte', 'Hva lærer du', 'Learning outcomes') to the heading map pointing to learning_outcomes. This single change would fix the issue across all UiO courses.",
+      "confidence": "high"
+    },
+    {
+      "section": "course_content",
+      "error_type": "merged_sections",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "uio_HIS4015L-1_2025_spring_1",
+        "uio_KJM5050-1_2025_spring_1",
+        "uio_PROF1010-1_2025_autumn_1"
+      ],
+      "evidence": "course_content contains both 'Gjennom emnet får studentene praktisk øvelse...' (content) AND 'å bidra til nytenkning og tilrettelegge for historiefaglig dybdelæring i skolen' (outcome bullet).",
+      "description": "Because 'Hva lærer du?' is not treated as a section boundary, all learning-outcome bullets are concatenated onto the end of the course_content prose. The codebook requires course_content to cover only the subject matter / topics (what the course is about), explicitly excluding learning outcomes.",
+      "root_cause_hypothesis": "Consequence of the missing 'Hva lærer du?' heading mapping. The section started by 'Kort om emnet' runs until the next known h2 heading ('Opptak til emnet'), swallowing all intervening content.",
+      "suggested_fix": "Same fix as for learning_outcomes: map 'Hva lærer du?' to learning_outcomes as a section boundary. That boundary will automatically stop the course_content section at the right place.",
+      "confidence": "high"
+    },
+    {
+      "section": "coursework_requirements",
+      "error_type": "missing_section",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "uio_HIS1200L-1_2025_autumn_1",
+        "uio_PROF3025-1_2025_autumn_1",
+        "uio_HIS4015L-1_2025_spring_1"
+      ],
+      "evidence": "Obligatoriske aktiviteter:\nFor å kunne levere eksamen i emnet må du bestå følgende obligatoriske aktiviteter:\nOppmøte første smågruppemøte med læringsassistent...",
+      "description": "No course in the sample ever produces a coursework_requirements row. UiO uses the sub-heading 'Obligatoriske aktiviteter' (and 'Obligatoriske forhold i undervisningen') within the 'Undervisning' h2 section to describe mandatory gate requirements (arbeidskrav). Because these are sub-headings (not h2), the extractor does not recognise them as section boundaries and the content flows into teaching_methods. The codebook explicitly defines coursework_requirements as mandatory work that gates exam access but is not graded — exactly this content.",
+      "root_cause_hypothesis": "The extractor only splits on h2 headings. UiO places arbeidskrav under 'Undervisning' as a prose subsection or sub-heading (h3/bold), so it is never cut as a separate section.",
+      "suggested_fix": "Add a sub-heading pattern match for 'Obligatoriske aktiviteter', 'Obligatoriske forhold i undervisningen', 'Arbeidskrav' within the teaching_methods section, and route that content to coursework_requirements. Alternatively, post-process teaching_methods by detecting the 'Obligatoriske aktiviteter:' pattern and splitting there.",
+      "confidence": "high"
+    },
+    {
+      "section": "prerequisites",
+      "error_type": "boilerplate_only",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "uio_HIS1200L-1_2025_autumn_1",
+        "uio_TYSK4091-1_2025_autumn_1",
+        "uio_NDID4009-1_2025_spring_1"
+      ],
+      "evidence": "Studenter må hvert semester søke og få plass på undervisningen og melde seg til eksamen i Studentweb.\nDersom du ikke allerede har studieplass ved UiO, kan du søke opptak til våre studieprogrammer.",
+      "description": "The 'Opptak til emnet' heading is mapped to prerequisites, but UiO opens this section with 2–4 sentences of generic Studentweb/admission boilerplate that applies to every single course across the institution. The codebook explicitly says to exclude 'admission to the programme, study-right rules, application/registration via Studentweb, capacity limits, and you must apply each semester boilerplate'. These two boilerplate sentences appear before the actual 'Obligatoriske forkunnskaper' sub-heading in nearly all courses.",
+      "root_cause_hypothesis": "UiO's 'Opptak til emnet' section always begins with the institutional boilerplate template before any course-specific prerequisites. The extractor captures the entire section verbatim with no stripping.",
+      "suggested_fix": "Add a pre_fn for UiO prerequisites that strips the two known boilerplate sentences: 'Studenter må hvert semester søke og få plass på undervisningen og melde seg til eksamen i Studentweb.' and 'Dersom du ikke allerede har studieplass ved UiO, kan du søke opptak til våre studieprogrammer.' These are fixed strings and can be removed deterministically.",
+      "confidence": "high"
+    },
+    {
+      "section": "prerequisites",
+      "error_type": "wrong_content",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "uio_HIS1200L-1_2025_autumn_1"
+      ],
+      "evidence": "Særemneundervisning:\nAlle studenter må melde seg opp til særemneundervisning... Oppmelding til særemner skjer i StudentWeb... Du er dessverre ikke garantert å få plass på særemnegruppen du har prioritert.",
+      "description": "For HIS1200L the prerequisites section includes several paragraphs about how to sign up for seminar groups (særemneundervisning), which seminar topics are offered, and how group switching works. This is pure logistics/administrative content (how to register for teaching slots), not subject-matter entry requirements. The codebook says to exclude administrative content even when it appears under a 'forkunnskaper/opptak' heading.",
+      "root_cause_hypothesis": "UiO places course-specific enrollment logistics inside 'Opptak til emnet' for courses with seminar sub-enrollment (HIS1200L type). The extractor captures the whole section without distinguishing logistics from prerequisites.",
+      "suggested_fix": "This is harder to strip deterministically since it is course-specific; however, the Phase 2 LLM annotator (pb_annotate) can be instructed to exclude enrollment logistics paragraphs from prerequisites. For deterministic pre_fn, consider detecting and dropping paragraphs starting with 'Særemneundervisning:' or containing 'melde deg opp til' followed by seminar-group content.",
+      "confidence": "medium"
+    },
+    {
+      "section": "teaching_methods",
+      "error_type": "merged_sections",
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": [
+        "uio_HIS4015L-1_2025_spring_1",
+        "uio_HIS1200L-1_2025_autumn_1",
+        "uio_PROF1010-1_2025_autumn_1"
+      ],
+      "evidence": "Obligatoriske aktiviteter:\nInnlevering av undervisningsopplegg, lærerveiledning og elevversjon\nVurderers ut fra følgende kriterier:\nOpplegget må være i tråd med formål...\nAlle de obligatoriske aktivitetene må være godkjent for å kunne gjennomføre undervisningsopplegget, og dermed avlegge eksamen i emnet.",
+      "description": "The teaching_methods section for most practice-heavy courses contains the full text of the 'Obligatoriske aktiviteter' subsection — a mandatory coursework gate that must be approved before sitting the exam. By the codebook definition, this belongs in coursework_requirements, not teaching_methods. The deterministic flag 'leak->coursework_requirements' correctly identifies this in 4 of 5 suspect courses.",
+      "root_cause_hypothesis": "UiO uses 'Undervisning' as one h2 section covering both teaching forms and obligatory activity requirements. The extractor has no sub-heading boundary and thus the entire section lands in teaching_methods.",
+      "suggested_fix": "Same fix as the missing coursework_requirements section: detect 'Obligatoriske aktiviteter' (and 'Obligatoriske forhold i undervisningen:') as a sub-section boundary within teaching_methods and split content from that point onward into coursework_requirements.",
+      "confidence": "high"
+    },
+    {
+      "section": "assessment",
+      "error_type": "boilerplate_only",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "uio_HIS4015L-1_2025_spring_1",
+        "uio_PROMO4-1_2025_autumn_3",
+        "uio_NATDID4009-1_2025_spring_1"
+      ],
+      "evidence": "Mer om eksamen ved UiO\nKildebruk og referanser\nHvordan bruke KI som student\nTilrettelegging på eksamen\nTrekk fra eksamen\nSyk på eksamen / utsatt eksamen\nBegrunnelse og klage\nTa eksamen på nytt\nFusk/forsøk på fusk\nAndre veiledninger og ressurser finner du på fellessiden om eksamen ved UiO.",
+      "description": "Every single course's assessment section ends with UiO's universal site-navigation footer listing 8–10 links ('Mer om eksamen ved UiO', 'Kildebruk og referanser', 'Hvordan bruke KI som student', etc.). This is pure web-page chrome, not assessment design. The codebook says to exclude exam-logistics and to keep only assessment design. These footer items are meaningless for research purposes and inflate every assessment section.",
+      "root_cause_hypothesis": "The 'Eksamen' h2 section on UiO course pages extends to the end of the page and includes a standard institutional footer block rendered as regular text. The CSS selector or HTML extractor does not strip the footer.",
+      "suggested_fix": "Add a post_fn for UiO assessment that strips from 'Mer om eksamen ved UiO' (inclusive) to the end of the text. This is a fixed string marker present in every course and can be removed with a simple str_remove pattern: `str_remove(text, regex('\\nMer om eksamen ved UiO.*', dotall = TRUE))`.",
+      "confidence": "high"
+    },
+    {
+      "section": "assessment",
+      "error_type": "merged_sections",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "uio_KJM5050-1_2025_spring_1",
+        "uio_KJM5930L-2_2025_spring_1",
+        "uio_PROF1010-1_2025_autumn_1"
+      ],
+      "evidence": "Faglige krav for å kunne avlegge eksamen:\nDe obligatoriske komponentene i emnet må være godkjent for du kan avlegge eksamen.",
+      "description": "Several courses include within assessment a 'Faglige krav for å kunne avlegge eksamen' paragraph that describes the arbeidskrav gate condition ('obligatoriske komponenter must be approved before sitting the exam'). By the codebook this belongs in coursework_requirements — it is a pass/approve gate to access the exam, not the assessment itself. Equally, KJM5050 lists 'arbeidskrav i emnet' as one of three 'vurdering' components, conflating a coursework requirement with a graded assessment component.",
+      "root_cause_hypothesis": "UiO places the gate-condition language inside the 'Eksamen' section, so it falls into assessment. The extractor captures the full section without semantic splitting.",
+      "suggested_fix": "Add a post_fn for assessment that detects 'Faglige krav for å kunne avlegge eksamen' and moves that paragraph (and everything following it up to the Eksamensspråk heading) to coursework_requirements. This pattern is reliable across UiO courses.",
+      "confidence": "high"
+    },
+    {
+      "section": "teaching_methods",
+      "error_type": "formatting_noise",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "uio_FYS5930L-2_2025_spring_1"
+      ],
+      "evidence": "Her finner du eksempler på masteroppgaver i fysikk.\nTa kontakt med Ellen K. Henriksen eller Grete Stavik Døvle for flere muligheter og for å få mer informasjon.",
+      "description": "The teaching_methods section for FYS5930L contains a contact-person sentence with a staff name (not anonymised at this point — though in the actual course_plan the name would be redacted by anonymize.R). The sentence 'Ta kontakt med [navn]' is administrative contact information, not a description of teaching methods. The codebook says to exclude administrative blurb.",
+      "root_cause_hypothesis": "UiO includes informal contact sentences inside the 'Undervisning' section for some courses; the extractor captures them verbatim.",
+      "suggested_fix": "Add a pattern to the UiO pre_fn or post_fn for teaching_methods that removes sentences matching 'Ta kontakt med .* for (flere muligheter|mer informasjon)' — a reliable marker for these administrative asides.",
+      "confidence": "medium"
+    }
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "institution_short": "uia",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "UiA's h2-heading-based extractor performs well on section boundaries for standard academic courses, but has two structural problems that affect most courses: (1) coursework requirements ('Vilkår for å gå opp til eksamen') are consistently merged into the assessment row because both appear under the same h2 run before the next boundary, and (2) single-student admission boilerplate ('Opptakskrav for enkeltemnestudenter: fullført lærerutdanning...') is captured in prerequisites alongside genuine subject-matter prerequisites. A recurring minor issue is that 'Faget i praksis' sub-sections are appended to course_content and sometimes learning_outcomes because they sit inside the same h2 block.",
+  "findings": [
+    {
+      "section": "assessment",
+      "error_type": "merged_sections",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "uia_EN-153-1_2020_autumn_1",
+        "uia_IDR136-1_2022_autumn_1",
+        "uia_KH-214-1_2024_spring_1"
+      ],
+      "evidence": "Krav om 70 % obligatorisk fremmøte i undervisningen må være oppfylt. Praksis må være bestått for å kunne gå opp til eksamen. [...] Eksamen består av tre deleksamener: to innleveringer...",
+      "description": "The extractor captures the entire content under the h2 heading that spans both 'Vilkår for å gå opp til eksamen' and 'Eksamen' into the assessment row. The attendance requirement, approved arbeidskrav, and passed practice (all codebook coursework_requirements) are merged with the graded examination description (codebook assessment). This violates the single most important separation in the codebook: coursework gates vs. graded assessment. Affects all non-praksis courses with a 'Vilkår for å gå opp til eksamen' section (courses 6–8, 15–20, 21–28).",
+      "root_cause_hypothesis": "UiA formats 'Vilkår for å gå opp til eksamen' as a sub-heading (h3 or bold text) inside the same h2 block that contains 'Eksamen', so the h2-heading splitter treats them as one section and assigns everything to assessment.",
+      "suggested_fix": "Add 'Vilkår for å gå opp til eksamen' (and common variants) to the heading map, mapping to coursework_requirements. If this sub-heading appears before the exam description within the same h2 block, split the block at that boundary: text before the exam sub-heading goes to coursework_requirements, text after (the actual exam description) goes to assessment.",
+      "confidence": "high"
+    },
+    {
+      "section": "prerequisites",
+      "error_type": "boilerplate_only",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "uia_EN-153-1_2020_autumn_1",
+        "uia_IDR136-1_2022_autumn_1",
+        "uia_ERN209-1_2025_spring_1"
+      ],
+      "evidence": "For enkeltemnestudenter: fullført lærerutdanning rettet inn mot grunnskolen/videregående opplæring, samt eventuelle forkunnskapskrav.",
+      "description": "The extractor pulls the 'Opptakskrav hvis tilbudt som enkeltemne' block into the prerequisites row alongside (or instead of) real subject-matter prerequisites. The codebook explicitly says to exclude admission/study-right boilerplate from prerequisites. In courses 15–20 the extracted prerequisites row contains only this admission text. In courses 24 and 26 it is appended after a real prerequisite, diluting it. The text is registration/admission boilerplate, not a subject-matter entry requirement.",
+      "root_cause_hypothesis": "The h2 heading 'Opptakskrav hvis tilbudt som enkeltemne' (or a nearby heading such as 'Forkunnskapskrav') is being mapped or lumped into the prerequisites section. Because both appear late in the page after course details, the splitter may be extending the prerequisites block to consume this heading.",
+      "suggested_fix": "Add 'Opptakskrav hvis tilbudt som enkeltemne', 'Tilbys som enkeltemne', 'Tilgang for privatister', and 'Reduksjon i studiepoeng' to a blocklist of headings whose content should be silently dropped (not assigned to any canonical section). Alternatively, map them to a null/discard bucket.",
+      "confidence": "high"
+    },
+    {
+      "section": "prerequisites",
+      "error_type": "empty_placeholder",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": [
+        "uia_PRA044-1_2020_autumn_1",
+        "uia_PRA044-1_2023_autumn_1",
+        "uia_PRA1-101-1_2020_autumn_1"
+      ],
+      "evidence": "Ingen.\n(or)\nIngen",
+      "description": "Multiple courses emit a prerequisites row containing only 'Ingen.' or 'Ingen' (5–6 chars). The codebook says to return an empty list when a section is absent; a bare negation token ('Ingen') is not a substantive prerequisite and should not be emitted as a row. The deterministic flag correctly identifies these as 'empty'.",
+      "root_cause_hypothesis": "The h2-heading splitter extracts whatever text appears between the 'Forkunnskapskrav' heading and the next heading, regardless of content length or semantic value. It has no filter for single-word negation strings.",
+      "suggested_fix": "Add a post-filter: if the extracted text for prerequisites matches '^\\s*[Ii]ngen\\.?\\s*$', suppress the row entirely (do not emit a prerequisites section).",
+      "confidence": "high"
+    },
+    {
+      "section": "course_content",
+      "error_type": "merged_sections",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "uia_EN-153-1_2020_autumn_1",
+        "uia_ERN129-1_2023_autumn_1",
+        "uia_MA-445-1_2024_autumn_1"
+      ],
+      "evidence": "Faget i praksis\nUndervisningen fokuserer på forberedelse til praksis, planlegging og gjennomføring av undervisningsopplegg, samt vurdering av opplegg i etterkant.",
+      "description": "In all courses that have a 'Faget i praksis' sub-section inside the h2 'Innhold'/'Innhald' block, the extractor appends this text to course_content. 'Faget i praksis' is a logistics/practice note (preparation for practicum) that belongs at most to teaching_methods, not to course_content (what the course is about). This inflates course_content with boilerplate describing practice-placement preparation rather than subject-matter topics.",
+      "root_cause_hypothesis": "UiA uses 'Faget i praksis' as a sub-section (h3 or bold text) within the same h2 block as 'Innhold'. The h2 splitter picks up the entire block including the sub-section text.",
+      "suggested_fix": "Either (a) add 'Faget i praksis' to the heading map as a sub-heading that triggers a cut within the course_content block (discarding or routing to teaching_methods), or (b) add a post-extraction strip: remove any content from 'Faget i praksis' onward within the course_content value.",
+      "confidence": "high"
+    },
+    {
+      "section": "learning_outcomes",
+      "error_type": "merged_sections",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "uia_PRA2-302-1_2020_autumn_1",
+        "uia_PRA1-302-1_2020_autumn_1",
+        "uia_PRA2-201-1_2020_autumn_1"
+      ],
+      "evidence": "Faget i praksis\nHvert semester har studenten ett eller flere fokusfag. Det/de aktuelle fagene har særegne læringsutbytter knyttet til praksisstudiet som synliggjør fagets egenart (arbeidsformer etc.) i praksisperioden.",
+      "description": "In many praksis courses, a boilerplate paragraph about 'Faget i praksis' is appended to the learning_outcomes row because this sub-section sits inside the same h2 block as 'Læringsutbytte'. This text is an administrative note about how subject-specific outcomes are detailed in a separate system; it is not itself a learning outcome. Additionally, in some courses (e.g. PRA2-302) the 'Læringsutbytte' heading is repeated as the first line of the extracted text, which is formatting noise.",
+      "root_cause_hypothesis": "The h2 splitter captures everything between the 'Læringsutbytte' heading and the next h2 heading ('Innhold'). The 'Faget i praksis' sub-section and the repeated heading both fall within this range.",
+      "suggested_fix": "Add 'Faget i praksis' as a cut-point within the learning_outcomes block (strip from that point onward). Also strip any leading repetition of the section heading ('Læringsutbytte') as formatting noise.",
+      "confidence": "high"
+    },
+    {
+      "section": "learning_outcomes",
+      "error_type": "truncated",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": [
+        "uia_PRA1-202-1_2020_autumn_1",
+        "uia_PRA2-202-1_2020_autumn_1",
+        "uia_PRA2-301-1_2020_autumn_1"
+      ],
+      "evidence": "Faget i praksis\nHvert semester har studenten ett eller flere fokusfag. Det/de aktuell\n…[truncated 73 chars]",
+      "description": "In several courses the learning_outcomes text ends with a truncation marker ('…[truncated N chars]'). The truncated portion is the tail of the 'Faget i praksis' boilerplate rather than actual outcome statements, so no real outcome content is lost. However, the presence of the truncation marker itself constitutes formatting noise in the stored value and indicates a character-limit applied somewhere in the pipeline.",
+      "root_cause_hypothesis": "A character cap (likely in the packet-rendering step or the sections_raw storage) cuts off the text. The last real learning outcome is fully present; only the trailing 'Faget i praksis' boilerplate is truncated.",
+      "suggested_fix": "Once the 'Faget i praksis' trailing boilerplate is stripped (per the merged_sections fix above), these truncations will no longer appear. If a cap is applied elsewhere, ensure it is raised above the typical LO block length (≈1600 chars for these courses).",
+      "confidence": "medium"
+    },
+    {
+      "section": "assessment",
+      "error_type": "boilerplate_only",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "uia_PRA044-1_2020_autumn_1"
+      ],
+      "evidence": "Sist hentet fra FS (Felles studentsystem) 9. feb. 2026 07:17:18",
+      "description": "One course (uia_PRA044-1_2020_autumn_1) has an FS system timestamp appended at the end of the assessment row: 'Sist hentet fra FS (Felles studentsystem) 9. feb. 2026 07:17:18'. This is administrative page-generation metadata, not assessment content. The 2023 and 2024 versions of the same course do not have this line, suggesting it was present on the page at harvest time in 2020.",
+      "root_cause_hypothesis": "The page included this FS metadata line within the same DOM block as the Eksamen section, which the CSS selector captured as part of the extracted text.",
+      "suggested_fix": "Add a post-extraction strip matching the pattern 'Sist hentet fra FS \\(Felles studentsystem\\).*' to the UiA pre/post-fn or as a generic anonymization rule.",
+      "confidence": "high"
+    },
+    {
+      "section": "cross_section",
+      "error_type": "missing_section",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "uia_EN-153-1_2020_autumn_1",
+        "uia_ERN129-1_2023_autumn_1",
+        "uia_IDR136-1_2022_autumn_1"
+      ],
+      "evidence": "Vilkår for å gå opp til eksamen\nKrav om 70 % obligatorisk fremmøte [...] Praksis må være bestått [...] Bestått arbeidskrav (nærmere informasjon i semesterplanen)",
+      "description": "No coursework_requirements section is emitted for any of the 28 courses reviewed. Many courses have clearly stated coursework gates under 'Vilkår for å gå opp til eksamen' — attendance requirements, approved arbeidskrav, passed practice — which are canonical coursework_requirements per the codebook. These are currently merged into assessment (see finding 1), resulting in a complete absence of the coursework_requirements section across all UiA courses.",
+      "root_cause_hypothesis": "The heading map does not include 'Vilkår for å gå opp til eksamen' as a trigger for coursework_requirements, so no rows are ever emitted for this section. The only way to fix this is to split the merged assessment block (see finding 1).",
+      "suggested_fix": "Map 'Vilkår for å gå opp til eksamen' to coursework_requirements in the heading map. Where this sub-heading is embedded within an 'Eksamen' h2 block, split the block at the sub-heading boundary.",
+      "confidence": "high"
+    }
+  ]
+}

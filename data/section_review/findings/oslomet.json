@@ -1,0 +1,128 @@
+{
+  "institution_short": "oslomet",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "Two distinct populations. (1) The 20 suspects are praksis/grunnskolelærer offerings whose per-offering emneplan page is a stub: every heading literally reads 'Se fagplanen.', with the real content living in a separate fagplan document that nonetheless appears in extracted_text but is never section-mapped. The extractor faithfully lifts the 'Se fagplanen.' stubs, so all seven sections are empty placeholders and the substantive plan text is lost. (2) For normal emneplans (the controls) extraction quality is good: the critical assessment vs. coursework_requirements split is handled correctly, and content/outcomes/coursework are well separated. Residual problems are genuine source stubs in teaching_methods, pointer/placeholder text in prerequisites, and a few courses where OsloMet's own page mis-files content under the wrong heading, which the heading-driven splitter then propagates.",
+  "findings": [
+    {
+      "section": "all",
+      "error_type": "empty_placeholder",
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": ["oslomet_M1GP4200-1_2021_autumn_1", "oslomet_M1GP1000-1_2018_autumn_1", "oslomet_M5GP4100-1_2021_autumn_1"],
+      "evidence": "prerequisites/learning_outcomes/course_content/teaching_methods/coursework_requirements/assessment all = \"Se fagplanen.\"",
+      "description": "For the praksis/GP family of offerings every canonical section is emitted as the placeholder string 'Se fagplanen.' These pages are stubs that defer to a separate fagplan; per the codebook, placeholder text ('Se fagplanen.', 'Ingen.', '-') is not section content and such sections should be treated as absent rather than emitted as rows.",
+      "root_cause_hypothesis": "Not a selector bug: the per-offering emneplan page genuinely contains only 'Se fagplanen.' under each heading. The splitter dutifully assigns the placeholder to each section. The substantive fagplan text is present elsewhere in extracted_text but is never reached by the heading map.",
+      "suggested_fix": "Detect placeholder-only sections (regex ^\\s*(Se fagplanen\\.?|Ingen\\.?|-)\\s*$, case-insensitive) and drop them / mark section absent. Separately, flag these stub offerings so the downstream LLM pass can be pointed at the embedded fagplan text instead.",
+      "confidence": "high"
+    },
+    {
+      "section": "all",
+      "error_type": "missing_section",
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": ["oslomet_M1GP4200-1_2021_autumn_1", "oslomet_M5GP4200-1_2022_autumn_1", "oslomet_M1GP1000-1_2020_autumn_1"],
+      "evidence": "Ground truth contains 'Organisering og arbeidsmåter', 'Observasjon', 'Undervisning', 'Veiledning'... yet teaching_methods = 'Se fagplanen.'",
+      "description": "The fagplan body present in extracted_text for the praksis offerings carries real course_content and teaching_methods (organisering, observasjon, undervisning, veiledning, etc.), but none of it is extracted into any section. Per the codebook these are clearly present sections that were not extracted at all.",
+      "root_cause_hypothesis": "The heading map only recognises the OsloMet emneplan headings (Innhold, Arbeids- og undervisningsformer, ...). The appended fagplan uses different headings (FAGPLAN/Innledning/Organisering og arbeidsmåter) that fall outside the map, so its content is never segmented.",
+      "suggested_fix": "When a section resolves to placeholder-only, fall back to parsing the embedded fagplan: add fagplan heading synonyms (Innledning->course_content, 'Organisering og arbeidsmåter'/Observasjon/Undervisning/Veiledning->teaching_methods) or route the whole fagplan blob to the LLM extractor.",
+      "confidence": "high"
+    },
+    {
+      "section": "cross_section",
+      "error_type": "duplicate",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": ["oslomet_M1GP4200-1_2021_autumn_1", "oslomet_M5GP4100-1_2020_autumn_2", "oslomet_M5GP4200-1_2023_autumn_1"],
+      "evidence": "course_content and assessment both = \"Se fagplanen.\\n\\nSe fagplanen.\" (the string concatenated twice)",
+      "description": "In the praksis offerings, course_content and assessment each contain the placeholder twice. Two adjacent source headings collapse into one section: e.g. assessment absorbs the following 'Hjelpemidler/Vurderingsuttrykk/Sensorordning' stubs, and course_content absorbs a neighbouring stub. This both duplicates content and would (for real pages) merge sections.",
+      "root_cause_hypothesis": "The splitter does not cut a new boundary at sub-headings it doesn't recognise (Hjelpemidler ved eksamen, Vurderingsuttrykk, Sensorordning), so their bodies are appended to the preceding mapped section.",
+      "suggested_fix": "Add the trailing OsloMet sub-headings (Hjelpemidler ved eksamen, Vurderingsuttrykk, Sensorordning, Pensum, Timeplan) as recognised boundaries that terminate the assessment section, and de-duplicate identical consecutive lines within a section.",
+      "confidence": "high"
+    },
+    {
+      "section": "teaching_methods",
+      "error_type": "empty_placeholder",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": ["oslomet_M5GMT1200-1_2019_autumn_1", "oslomet_MGEN4200-1_2021_spring_2", "oslomet_MGNT5100-1_2022_autumn_2"],
+      "evidence": "teaching_methods = \"Se fagplanen.\" while the emneplan body has full content elsewhere",
+      "description": "Several otherwise well-populated emneplans have the 'Arbeids- og undervisningsformer' field stubbed as 'Se fagplanen.' in the source. The extractor correctly captures what is on the page (genuinely empty, NOT a selector miss) but emits a placeholder row. Per the codebook this section should be treated as absent.",
+      "root_cause_hypothesis": "Genuine source stub: OsloMet authors leave 'Arbeids- og undervisningsformer' as 'Se fagplanen.' for many master-level GLU emner. Confirmed not a selector bug because sibling courses (e.g. MLEST1400, MGKP4101) extract real teaching_methods from the same selector.",
+      "suggested_fix": "Same placeholder-detection rule as above; drop 'Se fagplanen.' teaching_methods rather than emitting them. No selector change needed.",
+      "confidence": "high"
+    },
+    {
+      "section": "prerequisites",
+      "error_type": "boilerplate_only",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": ["oslomet_M5GNA3100-1_2020_autumn_1", "oslomet_M1GEN2100-1_2022_autumn_1", "oslomet_M5GMT1200-1_2019_autumn_1"],
+      "evidence": "prerequisites = \"Se under Opptakskrav i fagplanen.\"  /  \"Ingen.\\n\\nSe fagplanen.\"  /  \"Ingen.\"",
+      "description": "Prerequisites rows frequently hold only pointer/placeholder text ('Se under Opptakskrav i fagplanen.', 'Ingen.', 'Se fagplanen.') rather than subject-matter entry requirements. Per the codebook prerequisites should hold required/recommended prior knowledge; placeholder and cross-reference text should yield an absent section.",
+      "root_cause_hypothesis": "OsloMet puts real entry requirements under 'Opptakskrav' in the fagplan, while the emneplan 'Forkunnskapskrav' field is a stub. The mapped field is captured verbatim but is contentless.",
+      "suggested_fix": "Treat placeholder/pointer phrases as empty for prerequisites; optionally map the fagplan 'Opptakskrav' block to prerequisites after stripping admission/Studentweb boilerplate.",
+      "confidence": "high"
+    },
+    {
+      "section": "cross_section",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": ["oslomet_MGMT5100-1_2023_autumn_1"],
+      "evidence": "prerequisites = \"Eksamensinnhold: Laeringsutbyttene  Eksamensform: Skriftlig hjemmeeksamen over 3 dager...\"; learning_outcomes = \"Bestaatt/ikke bestaatt\"; teaching_methods = \"1 intern og 1 ekstern\"; course_content begins with the arbeidskrav list",
+      "description": "In MGMT5100 the OsloMet source page itself is mis-structured (text filed under the wrong headings), and the heading-driven splitter faithfully propagates the errors: assessment text lands in prerequisites, the grading scale ('Bestaatt/ikke bestaatt') lands in learning_outcomes, the sensor count ('1 intern og 1 ekstern') lands in teaching_methods, and an arbeidskrav block is prepended to course_content. Multiple sections violate their codebook definitions simultaneously.",
+      "root_cause_hypothesis": "Garbage-in source: the live emneplan has content under mismatched headings. A purely heading-positional splitter cannot recover from this; only content-aware extraction can.",
+      "suggested_fix": "Add a sanity filter: reject obvious field-junk per section (learning_outcomes that match only a grading scale like 'Bestaatt/ikke bestaatt'; teaching_methods that match only a sensor pattern like 'N intern(e)? og N ekstern(e)?'; prerequisites that start with 'Eksamensform'/'Eksamensinnhold'). Route such courses to the LLM pass.",
+      "confidence": "high"
+    },
+    {
+      "section": "learning_outcomes",
+      "error_type": "field_or_language_junk",
+      "severity": "medium",
+      "prevalence": "rare",
+      "example_course_ids": ["oslomet_MGMT5100-1_2023_autumn_1"],
+      "evidence": "learning_outcomes = \"Bestaatt/ikke bestaatt\" (20 chars); teaching_methods = \"1 intern og 1 ekstern\" (21 chars)",
+      "description": "Short non-content strings are emitted as full sections: a grading expression as learning_outcomes and a sensor-count as teaching_methods. Neither matches its codebook definition (outcome statements / teaching activities).",
+      "root_cause_hypothesis": "Same mis-structured source as the cross_section finding; the deterministic 'short' flag caught the learning_outcomes case but not the teaching_methods one.",
+      "suggested_fix": "Combine length + pattern heuristics to suppress these: drop learning_outcomes/teaching_methods rows under ~30 chars that match grading-scale or sensor-ordning patterns.",
+      "confidence": "high"
+    },
+    {
+      "section": "learning_outcomes",
+      "error_type": "formatting_noise",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": ["oslomet_MGNT5100-1_2022_autumn_2", "oslomet_M1GEN2100-1_2022_autumn_1"],
+      "evidence": "\"har;fordypet;kunnskap om spraaklig variasjon,;flersprraaklighet;og spraakendring;blant tegnspraaklige;\"  and stray '¿' / standalone ';' lines",
+      "description": "Outcome text is polluted with literal semicolons replacing spaces/line breaks and with stray glyphs ('¿', lone ';' lines). The text is correctly labelled but noisy, which will harm the dedup hash and any later itemisation into one-string-per-outcome.",
+      "root_cause_hypothesis": "Upstream HTML-to-text / anonymisation artefact (non-breaking spaces or list markup rendered as ';', mojibake for apostrophes) rather than the splitter.",
+      "suggested_fix": "In the pre_fn, normalise repeated ';' between words back to spaces/newlines, drop standalone punctuation-only lines, and fix the '¿' mojibake before sectioning.",
+      "confidence": "medium"
+    },
+    {
+      "section": "course_content",
+      "error_type": "formatting_noise",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": ["oslomet_MGEN4200-1_2021_spring_2", "oslomet_MGNT5100-1_2022_autumn_2"],
+      "evidence": "course_content begins with \"Fagplanen tilhoerende dette emnet er lagt paa emne MGEN4100 ...\"",
+      "description": "A cross-reference administrative line ('Fagplanen tilhoerende dette emnet er lagt paa emne ...') is merged into the start of course_content. Per the codebook administrative blurb should be stripped from course_content.",
+      "root_cause_hypothesis": "The 'Innledning' block (which here is only a pointer to another emne's fagplan) is mapped to course_content along with the genuine content paragraph.",
+      "suggested_fix": "Drop leading lines matching 'Fagplanen tilhoerende dette emnet er lagt paa ...' (and similar pointer phrases) from course_content during post-processing.",
+      "confidence": "medium"
+    },
+    {
+      "section": "assessment",
+      "error_type": "formatting_noise",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": ["oslomet_MGMT5100-1_2023_autumn_1", "oslomet_M5GMT1200-1_2019_autumn_1", "oslomet_M1GEN2100-1_2022_autumn_1"],
+      "evidence": "assessment includes \"Ny/utsatt eksamen ...\" and \"Alle hjelpemidler tillatt.\" / \"Hver student kan ha med seg et A4-ark med notater.\"",
+      "description": "Assessment rows reliably contain the correct exam design but also append re-sit logistics ('Ny/utsatt eksamen ...') and permitted-aids notes. The codebook says to keep assessment design and exclude exam logistics; these are borderline logistics that slightly dilute the section. (Note: the core assessment-vs-coursework split is correct here, which is the key positive.)",
+      "root_cause_hypothesis": "The 'Ny/utsatt eksamen' and 'Hjelpemidler ved eksamen' sub-blocks are not treated as boundaries and are folded into assessment.",
+      "suggested_fix": "Optionally split or trim the 'Ny/utsatt eksamen' and 'Hjelpemidler ved eksamen' sub-blocks out of assessment; low priority since they are still assessment-adjacent and the grade-determining design is captured correctly.",
+      "confidence": "medium"
+    }
+  ]
+}

@@ -34,3 +34,7 @@ temp/
 tmp/
 nul
 _ul
+
+# Section review packets are regenerated from sections_raw.RDS by
+# R/prepare_section_review.R; the findings they produce are kept.
+data/section_review/packets/
