@@ -17,8 +17,9 @@ Rprof.out
 .vscode/
 __pycache__/
 
-# Chainlink cache
+# Chainlink cache and local issue database
 .chainlink/.cache/
+.chainlink/issues.db*
 
 # Claude Code local settings
 .claude/settings.local.json
