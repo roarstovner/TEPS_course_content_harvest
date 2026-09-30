@@ -12,8 +12,8 @@ resolve_course_urls <- function(df,
                                 checkpoint_path = "data/checkpoint/url_resolution.RDS",
                                 .progress = TRUE) {
   # Guardrails
-  if (!all(c("course_id", "url", "institution_short") %in% names(df))) {
-    stop("df must contain: course_id, url, institution_short")
+  if (!all(c("course_id", "url", "institution") %in% names(df))) {
+    stop("df must contain: course_id, url, institution")
   }
 
   # Only process rows where url is NA
@@ -71,8 +71,8 @@ resolve_course_urls <- function(df,
   }
 
   resolved <- needs_resolution |>
-    dplyr::group_by(institution_short) |>
-    dplyr::group_modify(~ resolve_batch(.x, .y$institution_short, checkpoint_path, .progress)) |>
+    dplyr::group_by(institution) |>
+    dplyr::group_modify(~ resolve_batch(.x, .y$institution, checkpoint_path, .progress)) |>
     dplyr::ungroup()
 
   # Update checkpoint (only if checkpointing enabled)

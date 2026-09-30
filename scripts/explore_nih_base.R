@@ -4,7 +4,7 @@
 courses <- readRDS('data/courses.RDS')
 
 # Filter for NIH
-nih_courses <- courses[courses$institution_short == 'nih', ]
+nih_courses <- courses[courses$institution == 'nih', ]
 
 # Show summary
 cat('Total NIH courses:', nrow(nih_courses), '\n')

@@ -9,7 +9,7 @@ library(diffobj)
 courses <- load_courses()
 
 # Pre-compute filter choices
-inst_choices <- sort(unique(courses$institution_short))
+inst_choices <- sort(unique(courses$institution))
 names(inst_choices) <- institution_labels[inst_choices]
 year_range <- range(courses$Årstall)
 semester_choices <- c("Vår", "Høst", "Sommer")
@@ -18,7 +18,7 @@ names(status_choices) <- status_labels[as.character(status_choices)]
 
 # Lighter table for browse display
 browse_cols <- c(
-  "course_id", "institution_short", "Emnekode_raw", "Emnenavn",
+  "course_id", "institution", "Emnekode_raw", "Emnenavn",
   "Årstall", "Semesternavn", "Status", "url", "extracted_text", "course_plan", "plan_content_id"
 )
 
@@ -136,7 +136,7 @@ server <- function(input, output, session) {
     df <- courses[, browse_cols]
 
     if (length(input$browse_inst) > 0)
-      df <- df[df$institution_short %in% input$browse_inst, ]
+      df <- df[df$institution %in% input$browse_inst, ]
 
     df <- df[df$Årstall >= input$browse_year[1] & df$Årstall <= input$browse_year[2], ]
 
@@ -156,7 +156,7 @@ server <- function(input, output, session) {
   output$browse_table <- renderDT({
     df <- browse_filtered()
     display <- data.frame(
-      Institution = institution_labels[df$institution_short],
+      Institution = institution_labels[df$institution],
       Code        = df$Emnekode_raw,
       Name        = df$Emnenavn,
       Year        = df$Årstall,
@@ -219,7 +219,7 @@ server <- function(input, output, session) {
     if (is.null(sel)) return(tags$p(class = "text-muted", "Select a row to view rendered HTML."))
 
     raw_html <- load_course_html(
-      sel$course_id, sel$institution_short, html_cache
+      sel$course_id, sel$institution, html_cache
     )
     if (is.null(raw_html) || is.na(raw_html))
       return(tags$p(class = "text-muted", "No HTML available for this course."))
@@ -240,7 +240,7 @@ server <- function(input, output, session) {
     }
     # Only show course codes that have 2+ distinct plan versions
     codes <- courses |>
-      filter(institution_short == inst, !is.na(plan_content_id)) |>
+      filter(institution == inst, !is.na(plan_content_id)) |>
       group_by(Emnekode_raw) |>
       filter(n_distinct(plan_content_id) >= 2) |>
       ungroup() |>
@@ -258,7 +258,7 @@ server <- function(input, output, session) {
 
     courses |>
       filter(
-        institution_short == inst,
+        institution == inst,
         Emnekode_raw == code,
         !is.na(plan_content_id)
       ) |>

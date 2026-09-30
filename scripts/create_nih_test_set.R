@@ -4,7 +4,7 @@
 courses <- readRDS('data/courses.RDS')
 
 # Filter for NIH using which()
-idx <- which(courses$institution_short == 'nih')
+idx <- which(courses$institution == 'nih')
 nih_courses <- courses[idx, ]
 
 # Show summary

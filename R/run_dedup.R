@@ -21,7 +21,7 @@ cat("Loaded", nrow(courses_raw), "course rows from", length(html_files), "files\
 # Anonymize extracted_text -> course_plan
 cat("Anonymizing extracted text...\n")
 courses_raw$course_plan <- anonymize_fulltext(
-  courses_raw$institution_short,
+  courses_raw$institution,
   courses_raw$extracted_text
 )
 
@@ -52,7 +52,7 @@ cat("Overall dedup ratio:", sprintf("%.2f%%", overall_dedup_ratio * 100), "\n\n"
 cat("=== PER-INSTITUTION BREAKDOWN ===\n\n")
 
 inst_summary <- result$courses |>
-  group_by(institution_short) |>
+  group_by(institution) |>
   summarise(
     rows = n(),
     unique_plans = n_distinct(plan_content_id),
@@ -61,12 +61,12 @@ inst_summary <- result$courses |>
   mutate(
     dedup_pct = (1 - unique_plans / rows) * 100
   ) |>
-  arrange(institution_short)
+  arrange(institution)
 
 for (i in seq_len(nrow(inst_summary))) {
   cat(sprintf(
     "%s: %d rows, %d unique plans, %.1f%% dedup\n",
-    inst_summary$institution_short[i],
+    inst_summary$institution[i],
     inst_summary$rows[i],
     inst_summary$unique_plans[i],
     inst_summary$dedup_pct[i]

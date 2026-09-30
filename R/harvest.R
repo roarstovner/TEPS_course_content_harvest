@@ -5,25 +5,25 @@
 
 #' Harvest one institution
 #'
-#' @param institution_short Character, e.g. "oslomet"
+#' @param institution Character, e.g. "oslomet"
 #' @param courses Data frame from courses.RDS (pre-filtered or not)
 #' @param year Optional integer — if given, only harvest this year
 #' @param refetch Logical — if TRUE, ignore checkpoints and re-download everything
 #' @return Data frame with DBH columns plus course_id, url, html, html_error,
 #'   html_success, extracted_text
-harvest_institution <- function(institution_short, courses, year = NULL,
+harvest_institution <- function(institution, courses, year = NULL,
                                 refetch = FALSE) {
-  config <- get_institution_config(institution_short)
+  config <- get_institution_config(institution)
 
   df <- courses |>
-    dplyr::filter(institution_short == !!institution_short) |>
+    dplyr::filter(institution == !!institution) |>
     apply_year_filter(config, year) |>
     add_course_id() |>
     validate_courses("initial") |>
     add_course_url() |>
     validate_courses("with_url")
 
-  message(institution_short, ": ", sum(!is.na(df$url)), "/", nrow(df), " URLs")
+  message(institution, ": ", sum(!is.na(df$url)), "/", nrow(df), " URLs")
 
   result <- switch(config$strategy,
     standard           = harvest_standard(df, config, refetch),
@@ -38,7 +38,7 @@ harvest_institution <- function(institution_short, courses, year = NULL,
 
   result <- ensure_output_columns(result)
 
-  message(institution_short, ": ", sum(!is.na(result$extracted_text)), "/",
+  message(institution, ": ", sum(!is.na(result$extracted_text)), "/",
           nrow(result), " with extracted text")
   result
 }

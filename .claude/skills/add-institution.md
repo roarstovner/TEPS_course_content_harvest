@@ -5,7 +5,7 @@ Add support for harvesting course descriptions from a new Norwegian higher educa
 ## Usage
 
 ```
-/add-institution <institution_short_name>
+/add-institution <institution>
 ```
 
 ## Prerequisites

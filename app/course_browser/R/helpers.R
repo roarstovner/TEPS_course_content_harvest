@@ -47,7 +47,7 @@ load_courses <- function(data_dir = "../../data") {
 
 #' Load raw HTML for a single course on demand
 #' @param course_id The course_id to look up
-#' @param inst The institution_short value
+#' @param inst The institution value
 #' @param cache A reactiveValues object used for caching (keys: inst, data)
 #' @param data_dir Path to data/ directory
 #' @return Character string of raw HTML, or NULL if not found

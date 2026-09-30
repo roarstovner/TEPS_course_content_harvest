@@ -133,7 +133,7 @@ test_that("vectorized hashing works", {
 
 test_that("deduplicate_plans returns correct structure", {
   df <- tibble::tibble(
-    institution_short = rep("hivolda", 4),
+    institution = rep("hivolda", 4),
     Emnekode = rep("TEST101", 4),
     Årstall = c(2020, 2021, 2022, 2023),
     course_plan = c("Same plan text", "Same plan text", "Updated plan", "Updated plan")
@@ -149,7 +149,7 @@ test_that("deduplicate_plans returns correct structure", {
 
 test_that("deduplicate_plans reduces identical plans", {
   df <- tibble::tibble(
-    institution_short = rep("hivolda", 4),
+    institution = rep("hivolda", 4),
     Emnekode = rep("TEST101", 4),
     Årstall = c(2020, 2021, 2022, 2023),
     course_plan = c("Same plan text", "Same plan text", "Updated plan", "Updated plan")
@@ -166,7 +166,7 @@ test_that("deduplicate_plans reduces identical plans", {
 
 test_that("deduplicate_plans computes correct year ranges", {
   df <- tibble::tibble(
-    institution_short = rep("hivolda", 4),
+    institution = rep("hivolda", 4),
     Emnekode = rep("TEST101", 4),
     Årstall = c(2020, 2021, 2022, 2023),
     course_plan = c("Plan A", "Plan A", "Plan B", "Plan B")
@@ -181,7 +181,7 @@ test_that("deduplicate_plans computes correct year ranges", {
 
 test_that("deduplicate_plans handles NA course_plan", {
   df <- tibble::tibble(
-    institution_short = c("hivolda", "hivolda"),
+    institution = c("hivolda", "hivolda"),
     Emnekode = c("TEST101", "TEST102"),
     Årstall = c(2020, 2020),
     course_plan = c("Real plan", NA_character_)

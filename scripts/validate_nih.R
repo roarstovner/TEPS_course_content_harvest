@@ -82,7 +82,7 @@ cat('Pages with course code:', verified, '/', fetch_success, '\n\n')
 
 # Step 5: Extract text
 cat('Step 5: Extracting text...\n')
-test_courses$extracted_text <- extract_fulltext(test_courses$institution_short, test_courses$html)
+test_courses$extracted_text <- extract_fulltext(test_courses$institution, test_courses$html)
 test_courses$text_length <- nchar(test_courses$extracted_text)
 
 extraction_success <- sum(!is.na(test_courses$extracted_text) & test_courses$extracted_text != '', na.rm = TRUE)

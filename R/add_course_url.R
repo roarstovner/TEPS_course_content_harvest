@@ -2,7 +2,7 @@ add_course_url <- function(df) {
   df |>
     dplyr::mutate(
       url = dplyr::case_match(
-        institution_short,
+        institution,
 
         "oslomet" ~ add_course_url_oslomet(Emnekode, Årstall, Semesternavn),
         "uia"     ~ add_course_url_uia(Emnekode, Årstall, Semesternavn),

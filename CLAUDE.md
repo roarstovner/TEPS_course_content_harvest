@@ -78,7 +78,7 @@ Extracts rendered text content from a USN LiveHTML session by traversing Shadow 
 ### `fetch_html_with_checkpoint(courses, checkpoint_path, .progress)` - R/checkpoint.R:28
 Downloads HTML for courses not already in checkpoint. Automatically skips completed courses and handles failures gracefully.
 
-### `harvest_institution(institution_short, courses, year, refetch)` - R/harvest.R:14
+### `harvest_institution(institution, courses, year, refetch)` - R/harvest.R:14
 Main entry point for harvesting a single institution. Reads config, filters courses, dispatches to the appropriate strategy function, and ensures uniform output columns.
 
 ### `harvest_all(courses, year, refetch, institutions)` - R/harvest.R:56
@@ -93,11 +93,11 @@ Returns the config list for an institution. Config includes strategy, selector, 
 ### `validate_courses(df, stage)` - R/utils.R:55
 Validates required columns exist at pipeline stages: "initial", "with_url", "with_html".
 
-### `anonymize_fulltext(institution_short, fulltext)` - R/anonymize.R:14
+### `anonymize_fulltext(institution, fulltext)` - R/anonymize.R:14
 Removes PII (names, emails, phone numbers), dates, seasons, administrative year references (e.g., "Opprettet 2020", "2023/2024"), and institution-specific boilerplate from raw extracted text. Content years (e.g., "etter 1945", "NOU 2015:2") are preserved. Returns readable anonymized text preserving case and paragraph structure. Uses institution-specific handlers (`.anon_*()`) followed by generic cleanup (`.anon_generic()`).
 
 ### `normalize_plan_text(course_plan)` - R/normalize_plan_text.R:14
-Applies lossy dedup-specific transforms on already-anonymized `course_plan`: `tolower()`, heading synonym normalization ("eksamensformer" → "vurderingsformer"), blanket 4-digit year removal, and `str_squish()`. No longer takes `institution_short` parameter.
+Applies lossy dedup-specific transforms on already-anonymized `course_plan`: `tolower()`, heading synonym normalization ("eksamensformer" → "vurderingsformer"), blanket 4-digit year removal, and `str_squish()`. No longer takes `institution` parameter.
 
 ### `deduplicate_plans(df)` - R/deduplicate_plans.R:14
 Takes combined data with `course_plan` column, normalizes text, builds content hashes, and produces a plan lookup table. Returns list with `plans` (unique plans) and `courses` (original data with `plan_content_id`).
@@ -291,7 +291,7 @@ data-raw/
 
 ### URLs look wrong?
 - Check the institution-specific URL builder in R/add_course_url.R
-- Print sample: `courses |> filter(institution_short == "inst") |> add_course_url() |> select(url) |> head()`
+- Print sample: `courses |> filter(institution == "inst") |> add_course_url() |> select(url) |> head()`
 
 ### Empty or wrong extracted text?
 - Verify CSS selector using browser dev tools on actual course page

@@ -2,7 +2,7 @@
 
 source("R/utils.R", local = TRUE)
 
-institution_short <- function(institution_code) {
+institution_from_code <- function(institution_code) {
   source("R/institution_config.R", local = TRUE)
   lookup <- vapply(institution_configs, \(x) x$code, character(1))
   # Invert: code -> name
@@ -37,11 +37,11 @@ courses <- do.call(rbind, courses_list)
 
 courses <- courses |> 
   dplyr::mutate(
-    institution_short = unname(institution_short(Institusjonskode)),
+    institution = unname(institution_from_code(Institusjonskode)),
     Emnekode_raw = Emnekode,
     Emnekode = canon_remove_trailing_num(Emnekode),
   ) |> 
-  dplyr::relocate(institution_short) |> 
+  dplyr::relocate(institution) |> 
   dplyr::relocate(Emnekode_raw, .before = Emnekode)
 
 saveRDS(courses, "data/courses.RDS")
