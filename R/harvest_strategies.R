@@ -137,6 +137,7 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
       codes_to_discover$Emnekode_raw,
       codes_to_discover$url,
       \(code, base_url) {
+        polite_pause(config$request_delay)
         tryCatch({
           resp <- base_url |>
             httr2::request() |>
@@ -220,6 +221,7 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
       pdf_results <- purrr::map(
         to_fetch_pdf$url,
         \(pdf_url) {
+          polite_pause(config$request_delay)
           tryCatch({
             resp <- pdf_url |>
               httr2::request() |>

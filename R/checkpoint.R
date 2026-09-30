@@ -42,7 +42,8 @@ checkpoint_append_row <- function(row, path) {
 fetch_html_with_checkpoint <- function(courses,
                                        checkpoint_path = "data/checkpoint/checkpoint_html.RDS",
                                        .progress = TRUE,
-                                       config = NULL) {
+                                       config = NULL,
+                                       save_every = 50) {
   # 0) Guardrails: vi forventer disse kolonnene
   if (!all(c("course_id", "url", "institution") %in% names(courses))) {
     stop("courses must contain: course_id, url, institution")
@@ -91,6 +92,7 @@ fetch_html_with_checkpoint <- function(courses,
 
   for (i in seq_len(n)) {
     row <- to_fetch[i, ]
+    polite_pause(config$request_delay)
     html_cols <- fetch_html_cols(
       urls        = row$url,
       institution = row$institution,
@@ -104,7 +106,9 @@ fetch_html_with_checkpoint <- function(courses,
       dplyr::select(course_id, html, html_error, html_success)
 
     checkpoint <- dplyr::bind_rows(checkpoint, fetched_row)
-    write_checkpoint(checkpoint, checkpoint_path)
+    # Rewriting the whole checkpoint after every page grows quadratically with
+    # its size; save periodically instead (a crash loses < save_every pages).
+    if (i %% save_every == 0 || i == n) write_checkpoint(checkpoint, checkpoint_path)
 
     if (.progress) pb$tick()
   }

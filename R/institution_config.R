@@ -31,6 +31,7 @@ institution_configs <- list(
     selector = "#content",
     selector_mode = "single",
     year_in_url = TRUE,
+    request_delay = 10,  # robots.txt: Crawl-delay: 10 for all user agents
     post_fn = .post_ntnu,
     fetch_fn = fetch_html_cols_single_ntnu,
     section_strategy = "html_headings",
@@ -135,6 +136,7 @@ institution_configs <- list(
     ),
     selector_mode = "multi",
     year_in_url = TRUE,
+    request_delay = 10,  # robots.txt: Crawl-delay: 10 for all user agents
     section_strategy = "details_uib",
     section_heading_level = "h2"
   ),

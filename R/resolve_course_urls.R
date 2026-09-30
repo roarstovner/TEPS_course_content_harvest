@@ -137,6 +137,7 @@ resolve_urls_hivolda_batch <- function(df, .progress = TRUE) {
   for (code in unique_codes) {
     tryCatch({
       base_url <- paste0("https://www.hivolda.no/emne/", code)
+      polite_pause()
       page <- rvest::read_html(base_url)
 
       # Find all links under the course page that match /emne/{CODE}/{ID}
@@ -212,6 +213,7 @@ resolve_urls_uit_batch <- function(df, .progress = TRUE) {
   for (code in unique_codes) {
     tryCatch({
       base_url <- paste0("https://uit.no/utdanning/aktivt/emne/", toupper(code))
+      polite_pause()
       page <- rvest::read_html(base_url)
 
       # Find <option> elements with p_document_id in value

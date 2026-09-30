@@ -54,6 +54,16 @@ fetch_html_cols <- function(urls, institution = NULL, config = NULL,
   tibble::tibble(html = html, html_error = html_error, html_success = html_success)
 }
 
+# Pause between requests to the same site. An institution can override the
+# default with `request_delay` in institution_config.R (seconds, or a
+# c(min, max) range), e.g. to honour a robots.txt Crawl-delay.
+DEFAULT_REQUEST_DELAY <- c(3, 5)
+
+polite_pause <- function(delay = NULL) {
+  delay <- delay %||% DEFAULT_REQUEST_DELAY
+  Sys.sleep(runif(1, min(delay), max(delay)))
+}
+
 fetch_html_cols_single <- function(url, institution = NULL, config = NULL) {
   # Config-driven fetch: use fetch_fn if provided
 
