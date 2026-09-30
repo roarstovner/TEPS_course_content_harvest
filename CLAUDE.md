@@ -290,9 +290,9 @@ R/
 ├── normalize_plan_text.R  # Lossy normalization for dedup hashing (tolower + synonyms + year removal + squish)
 ├── deduplicate_plans.R    # Groups identical plans by content hash
 ├── run_dedup.R            # Entry point: anonymize + normalize + dedup pipeline
-├── qa_sections.R          # Deterministic QA pre-pass over sections_raw.RDS
 └── audit/                 # Audit harness for /audit-institutions
     ├── utils.R            # Shared helpers + allowed finding enums per check
+    ├── qa_sections.R      # Deterministic pre-pass over sections_raw.RDS (feeds prepare_sections.R)
     ├── prepare_{check}.R  # Pre-pass + review packets (sections, fulltext, anonymization)
     └── aggregate.R        # Verify + merge agent findings into a report
 

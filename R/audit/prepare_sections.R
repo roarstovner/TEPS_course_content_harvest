@@ -12,7 +12,7 @@
 # Inputs (regenerate in this order if stale):
 #   data/course_offerings_full.RDS   Rscript R/run_dedup.R
 #   data/sections_raw.RDS            Rscript R/run_extract_sections.R
-#   data/sections_qa_suspects.RDS    Rscript R/qa_sections.R
+#   data/sections_qa_suspects.RDS    Rscript R/audit/qa_sections.R
 #
 # Outputs:
 #   data/audit/sections/packets/{inst}.md
@@ -41,7 +41,7 @@ dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
 audit_require_fresh("data/sections_raw.RDS", "data/course_offerings_full.RDS",
                     "Run Rscript R/run_extract_sections.R.")
 audit_require_fresh("data/sections_qa_suspects.RDS", "data/sections_raw.RDS",
-                    "Run Rscript R/qa_sections.R.")
+                    "Run Rscript R/audit/qa_sections.R.")
 
 sec      <- readRDS("data/sections_raw.RDS")
 suspects <- readRDS("data/sections_qa_suspects.RDS")
@@ -95,7 +95,7 @@ for (inst in institutions) {
   lines <- audit_packet_header(CHECK, inst, selected, paste(
     "For each course, audit the **Extractor output** against the **Full course",
     "plan** using the definitions in `section_codebook.yml`. Rows already",
-    "flagged by the deterministic pre-pass (R/qa_sections.R) are marked `⚑ flags: …`."
+    "flagged by the deterministic pre-pass (R/audit/qa_sections.R) are marked `⚑ flags: …`."
   ))
 
   for (i in seq_len(nrow(selected))) {
