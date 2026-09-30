@@ -192,17 +192,16 @@ for (inst in institutions) {
     left_join(parsed, by = "course_id") |>
     mutate(flag_uncaptured = coalesce(uncap_n >= UNCAP_MIN, FALSE))
   df$score <- as.vector(as.matrix(df[flag_cols]) %*% weights)
-  df$score[!df$has_html] <- 0
+  df$score[!df$has_html & df$txt_nchar == 0] <- 0
 
-  # Suspects need a parsed page for the uncaptured-text evidence; random
-  # controls come from the parsed pool too.
+  # Eligible: parsed pages (so the uncaptured-text evidence exists) and text
+  # without a stored page (PDF sources: steiner, part of uis).
   pool <- df |>
-    filter(has_html, course_id %in% parse_ids) |>
+    filter(course_id %in% parse_ids | (!has_html & txt_nchar > 0)) |>
     select(course_id, dedup_key, score)
   selected <- audit_sample(pool, SUSPECT_N, RANDOM_N, SEED)
   failed <- df |>
-    filter(!has_html | html_success %in% FALSE) |>
-    filter(!is.na(url)) |>
+    filter(!has_html, txt_nchar == 0, !is.na(url)) |>
     distinct(html_error_msg, .keep_all = TRUE) |>
     head(FAILED_N)
   selected <- bind_rows(selected,
@@ -213,6 +212,7 @@ for (inst in institutions) {
   # ── Packet ──
   fetch_summary <- df |>
     mutate(outcome = case_when(has_html ~ "page fetched",
+                               txt_nchar > 0 ~ "text without stored page (PDF source)",
                                is.na(url) ~ "no URL",
                                .default = coalesce(str_trunc(html_error_msg, 90), "not fetched"))) |>
     count(outcome, sort = TRUE) |> head(6)
@@ -265,7 +265,13 @@ for (inst in institutions) {
       sprintf("### Extracted text (%d chars — audit this)", r$txt_nchar),
       "",
       audit_fence(audit_trunc(coalesce(r$extracted_text, "(empty)"), TEXT_TRUNC)),
-      "",
+      "")
+    if (!r$has_html) {
+      lines <- c(lines, "### Page text not in extracted text",
+                 "", "_(no stored page: the text comes from a PDF — judge the text on its own)_", "")
+      next
+    }
+    lines <- c(lines,
       sprintf("### Page text not in extracted text (%d chars, %s of non-chrome page text)",
               r$uncap_n %|% 0L,
               if (is.na(r$uncap_share)) "n/a" else sprintf("%.0f%%", 100 * r$uncap_share)),
