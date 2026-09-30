@@ -35,3 +35,12 @@ temp/
 tmp/
 nul
 _ul
+
+# OJS course browser POC — generated Parquet + Quarto render output
+app/course_browser_ojs/data/
+app/course_browser_ojs/index.html
+app/course_browser_ojs/index_files/
+app/course_browser_ojs/.quarto/
+
+/.quarto/
+**/*.quarto_ipynb
