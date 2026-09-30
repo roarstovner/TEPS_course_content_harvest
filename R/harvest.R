@@ -56,6 +56,10 @@ harvest_institution <- function(institution, courses, year = NULL,
 harvest_all <- function(courses = NULL, year = NULL, refetch = FALSE,
                         institutions = NULL) {
   if (is.null(courses)) courses <- readRDS("data/courses.RDS")
+  if (!is.data.frame(courses)) {
+    stop("`courses` must be a data frame, not ", class(courses)[1], ". ",
+         "Did you mean harvest_all(institutions = ...)?", call. = FALSE)
+  }
 
   configs <- load_all_configs()
   inst_names <- if (!is.null(institutions)) institutions else names(configs)
