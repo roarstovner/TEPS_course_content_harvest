@@ -234,9 +234,10 @@ for (inst in institutions) {
             as.integer(median(df$txt_nchar[df$txt_nchar > 0]))),
     sprintf("- Pre-pass flag counts (all offerings): %s",
             paste(sprintf("%s %d", str_remove(flag_cols, "^flag_"), flag_counts), collapse = ", ")),
-    sprintf("- %d recurring lines (site chrome and shared headings, on >= %.0f%% of %d parsed pages) left out of the page text below, e.g.: %s",
-            length(chrome), 100 * CHROME_FRAC, length(parse_ids),
-            paste0("\"", str_trunc(head(chrome, 8), 40), "\"", collapse = ", ")),
+    if (length(parse_ids) == 0) "- No stored pages (text comes from PDFs)" else
+      sprintf("- %d recurring lines (site chrome and shared headings, on >= %.0f%% of %d parsed pages) left out of the page text below, e.g.: %s",
+              length(chrome), 100 * CHROME_FRAC, length(parse_ids),
+              paste0("\"", str_trunc(head(chrome, 8), 40), "\"", collapse = ", ")),
     "- Fetch outcomes:",
     paste0("  - ", fetch_summary$outcome, ": ", fetch_summary$n),
     ""

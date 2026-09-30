@@ -60,7 +60,10 @@ subset), call the Agent tool with:
 
 Send up to ten Agent calls in one message so they run in parallel, then the
 rest. Agents run in the background: wait for their completion notifications,
-do not poll. If an agent fails or writes no file, dispatch it once more.
+do not poll. An agent's own "wrote the file" is not proof: the aggregator
+lists **stale reports** (findings file older than its packet). For each one,
+resume that agent with SendMessage and ask it to write the file; if it has
+ended, dispatch it once more.
 
 ### 4. Verify and aggregate
 

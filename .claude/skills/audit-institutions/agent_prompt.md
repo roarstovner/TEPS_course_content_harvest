@@ -36,6 +36,9 @@ Your task:
 - Do not invent problems to fill the report. If the step works well for this
   institution, say so and return few or no findings.
 
-Output: write one JSON object following the schema to `{OUT}` (set `"check":
+Output: write one JSON object following the schema to `{OUT}`. If that file
+already exists, Read it first (the Write tool refuses to overwrite a file you
+have not read), then replace it completely — do not merge with the old
+content. Check that the Write succeeded. Set `"check":
 "{CHECK}"`, `"institution": "{INST}"`, `"model": "{MODEL}"`). Then reply with a
 3–5 line summary of the most important findings.

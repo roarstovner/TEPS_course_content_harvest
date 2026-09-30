@@ -83,7 +83,11 @@ for (f in files) {
   obj <- read_json_safely(f)
   if (is.null(obj)) next
   inst <- str_remove(basename(f), "\\.json$")
+  # A report older than its institution's packet was written for an earlier
+  # packet (or the agent never wrote this run's file); it cannot be verified.
+  packet <- file.path(base_dir, "packets", paste0(inst, ".md"))
   reports[[inst]] <- tibble(institution = inst,
+                            stale = file.exists(packet) && file.mtime(f) < file.mtime(packet),
                             model = chr(obj$model),
                             n_courses_reviewed = obj$n_courses_reviewed %||% NA_integer_,
                             overall_assessment = chr(obj$overall_assessment))
@@ -109,8 +113,11 @@ bad_enum <- function(x, allowed, field) {
 sample_path <- file.path(base_dir, "sample.csv")
 sample_ids <- if (file.exists(sample_path)) read.csv(sample_path, stringsAsFactors = FALSE) else NULL
 
+# Bullet glyphs (incl. the private-use bullets PDFs emit) are formatting that
+# agents cannot reliably copy, so they are ignored on both sides.
 norm_txt <- function(x) {
   x |>
+    str_remove_all("[\\p{Co}•·▪◦‣⁃]") |>
     str_replace_all("[“”«»]", "\"") |>
     str_replace_all("[‘’]", "'") |>
     str_to_lower() |>
@@ -142,8 +149,13 @@ evidence_status <- function(evidence, inst) {
   if (all(vapply(frags, \(f) grepl(f, pk, fixed = TRUE), logical(1)))) "verified" else "not_found"
 }
 
+in_sample <- function(inst) !is.null(sample_ids) & inst %in% sample_ids$institution
+stale_insts <- reports$institution[reports$stale]
+
+# NA when the ids are fine or cannot be checked (institution has no rows in
+# sample.csv, e.g. findings from an earlier run that was not repeated).
 ids_status <- function(ids, inst) {
-  if (is.null(sample_ids)) return(NA_character_)
+  if (!in_sample(inst)) return(NA_character_)
   ids <- str_split_1(ids %|% "", ";\\s*")
   ids <- ids[nzchar(ids)]
   if (length(ids) == 0) return("no ids")
@@ -164,19 +176,24 @@ findings <- findings |>
     evidence_check = evidence_status(evidence, institution)
   ) |>
   ungroup() |>
-  mutate(schema_problem = na_if(schema_problem, ""),
-         # NA = could not be checked (packet or sample.csv missing)
+  mutate(ids_problem = if_else(institution %in% stale_insts, NA_character_, ids_problem),
+         evidence_check = if_else(institution %in% stale_insts, "stale", evidence_check),
+         schema_problem = na_if(schema_problem, ""),
+         # NA = could not be checked (stale report, or no packet / sample.csv rows)
          verified = case_when(
            !is.na(schema_problem) | !is.na(ids_problem) |
              evidence_check %in% c("not_found", "missing", "too_short") ~ FALSE,
-           evidence_check == "verified" & !is.null(sample_ids) ~ TRUE,
+           evidence_check == "verified" & in_sample(institution) ~ TRUE,
            .default = NA))
 
 # ── Compare with previous run ────────────────────────────────────────────────
-git_json <- function(ref, path) {
+# Previous version of a findings file, or NULL when it did not exist at `ref`
+# or is unchanged since (institution not re-run).
+git_json_changed <- function(ref, path) {
   out <- suppressWarnings(system2("git", c("show", paste0(ref, ":", path)),
                                   stdout = TRUE, stderr = FALSE))
   if (!is.null(attr(out, "status"))) return(NULL)
+  if (identical(out, readLines(path, warn = FALSE))) return(NULL)
   tryCatch(jsonlite::fromJSON(paste(out, collapse = "\n"), simplifyVector = FALSE),
            error = function(e) NULL)
 }
@@ -185,7 +202,7 @@ changes <- NULL
 if (!identical(compare_ref, "none")) {
   changes <- purrr::map(files, \(f) {
     inst <- str_remove(basename(f), "\\.json$")
-    old <- git_json(compare_ref, f)
+    old <- git_json_changed(compare_ref, f)
     if (is.null(old)) return(NULL)
     key <- \(d) unique(paste(d$target, d$error_type, sep = " / "))
     old_keys <- key(parse_findings(old, inst))
@@ -254,11 +271,14 @@ report <- c(
   sprintf("%d findings across %d institutions (from %d agent reports in `%s`%s).",
           nrow(findings), n_distinct(findings$institution), nrow(reports), find_dir,
           if (nzchar(models)) paste0("; model: ", models) else ""),
-  sprintf("Mechanical verification: %d passed (✓), %d failed (✗), %d not checkable (?, packet or sample.csv missing).",
+  sprintf("Mechanical verification: %d passed (✓), %d failed (✗), %d not checkable (?, stale report or no packet).",
           sum(findings$verified %in% TRUE), sum(findings$verified %in% FALSE),
           sum(is.na(findings$verified))),
   "Sorted by severity then prevalence. Source: `R/audit/aggregate.R`.",
   "",
+  if (length(stale_insts) > 0) c(
+    sprintf("**Stale reports** (older than their packet — not from this run, or the agent never wrote its file): %s",
+            paste(stale_insts, collapse = ", ")), "") else character(),
   "## Failed verification — check by hand before acting",
   "",
   "Unknown course ids or evidence that does not occur verbatim in the packet.",
@@ -284,6 +304,9 @@ writeLines(report, paste0(out_stem, "_report.md"))
 cat(sprintf("Aggregated %d findings from %d reports (%d verified, %d failed, %d not checkable) -> %s_report.md\n",
             nrow(findings), nrow(reports), sum(findings$verified %in% TRUE),
             sum(findings$verified %in% FALSE), sum(is.na(findings$verified)), out_stem))
+if (length(stale_insts) > 0) {
+  cat("Stale reports (older than their packet):", paste(stale_insts, collapse = ", "), "\n")
+}
 if (nrow(unverified) > 0) {
   cat("\nFailed verification:\n")
   print(as.data.frame(unverified), row.names = FALSE)
