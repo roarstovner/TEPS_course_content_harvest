@@ -28,7 +28,7 @@ db = DuckDBClient.of({
 
 plans = Array.from(await db.query("SELECT * FROM plans"), r => ({
   plan_content_id: r.plan_content_id,
-  institution_short: r.institution_short,
+  institution: r.institution,
   Emnekode: r.Emnekode,
   Emnenavn: r.Emnenavn,
   year_from: Number(r.year_from),
@@ -39,7 +39,7 @@ plans = Array.from(await db.query("SELECT * FROM plans"), r => ({
 
 offerings = Array.from(await db.query("SELECT * FROM offerings"), r => ({
   plan_content_id: r.plan_content_id,
-  institution_short: r.institution_short,
+  institution: r.institution,
   Emnekode_raw: r.Emnekode_raw,
   Emnenavn: r.Emnenavn,
   year: Number(r.year),
@@ -49,7 +49,7 @@ offerings = Array.from(await db.query("SELECT * FROM offerings"), r => ({
 ```
 
 ```{ojs}
-institutions = ["(all)", ...Array.from(new Set(plans.map(d => d.institution_short))).sort()]
+institutions = ["(all)", ...Array.from(new Set(plans.map(d => d.institution))).sort()]
 
 yearExtent = [
   plans.reduce((m, d) => Math.min(m, d.year_from), Infinity),
@@ -60,7 +60,7 @@ viewof inst = Inputs.select(institutions, {label: "Institution"})
 viewof minYear = Inputs.range(yearExtent, {step: 1, value: yearExtent[0], label: "Plan active in / after"})
 
 prefiltered = plans.filter(d =>
-  (inst === "(all)" || d.institution_short === inst) && d.year_to >= minYear
+  (inst === "(all)" || d.institution === inst) && d.year_to >= minYear
 )
 
 viewof hits = Inputs.search(prefiltered, {
@@ -79,9 +79,9 @@ md`**${plans.length}** unique plans · **${prefiltered.length}** after filters �
 ::: {.g-col-12 .g-col-lg-6}
 ```{ojs}
 viewof picked = Inputs.table(hits, {
-  columns: ["institution_short", "Emnekode", "Emnenavn", "year_from", "year_to", "n_offerings"],
+  columns: ["institution", "Emnekode", "Emnenavn", "year_from", "year_to", "n_offerings"],
   header: {
-    institution_short: "Inst",
+    institution: "Inst",
     Emnekode: "Code",
     Emnenavn: "Name",
     year_from: "From",
@@ -104,7 +104,7 @@ picked
   ? html`
       <h3 style="margin-bottom:0.1rem">${picked.Emnekode} — ${picked.Emnenavn ?? ""}</h3>
       <p style="color:#666; margin-top:0">
-        ${picked.institution_short} · plan active
+        ${picked.institution} · plan active
         ${picked.year_from}${picked.year_to !== picked.year_from ? "–" + picked.year_to : ""}
         · used by ${usedBy.length} offering${usedBy.length === 1 ? "" : "s"}
       </p>

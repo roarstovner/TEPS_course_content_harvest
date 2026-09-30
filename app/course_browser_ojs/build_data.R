@@ -55,7 +55,7 @@ plans_out <- plans |>
   left_join(plan_meta, by = "plan_content_id") |>
   transmute(
     plan_content_id   = as.character(plan_content_id),
-    institution_short = as.character(institution_short),
+    institution       = as.character(institution),
     Emnekode          = as.character(Emnekode),
     Emnenavn          = as.character(Emnenavn),
     year_from         = as.integer(year_from),
@@ -69,7 +69,7 @@ offerings_out <- offerings |>
   filter(!is.na(plan_content_id)) |>
   transmute(
     plan_content_id   = as.character(plan_content_id),
-    institution_short = as.character(institution_short),
+    institution       = as.character(institution),
     Emnekode_raw      = as.character(Emnekode_raw),
     Emnenavn          = as.character(Emnenavn),
     year              = as.integer(Årstall),

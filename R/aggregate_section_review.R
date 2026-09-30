@@ -34,11 +34,11 @@ for (f in files) {
                   error = function(e) { warning("Bad JSON: ", f, " (", e$message, ")");
                                         NULL })
   if (is.null(obj)) next
-  inst <- obj$institution_short %||% str_remove(basename(f), "\\.json$")
+  inst <- obj$institution %||% str_remove(basename(f), "\\.json$")
   fnd <- obj$findings %||% list()
   for (x in fnd) {
     rows[[length(rows) + 1]] <- tibble(
-      institution_short     = inst,
+      institution           = inst,
       section               = chr(x$section),
       error_type            = chr(x$error_type),
       severity              = chr(x$severity),
@@ -56,7 +56,7 @@ for (f in files) {
 findings <- bind_rows(rows) |>
   mutate(.sev = SEV_ORDER[severity] %|% 9L,
          .prev = PREV_ORDER[prevalence] %|% 9L) |>
-  arrange(.sev, .prev, institution_short) |>
+  arrange(.sev, .prev, institution) |>
   select(-.sev, -.prev)
 
 saveRDS(findings, "data/section_review/findings_all.RDS")
@@ -64,7 +64,7 @@ saveRDS(findings, "data/section_review/findings_all.RDS")
 # ── Report ───────────────────────────────────────────────────────────────────
 by_type <- findings |> count(error_type, severity, sort = TRUE)
 by_sec  <- findings |> count(section, sort = TRUE)
-n_inst  <- n_distinct(findings$institution_short)
+n_inst  <- n_distinct(findings$institution)
 
 esc <- function(x) str_replace_all(x %|% "", "\\|", "\\\\|") |> str_squish()
 md_tbl <- function(df) {
@@ -76,7 +76,7 @@ md_tbl <- function(df) {
 }
 
 top <- findings |>
-  transmute(institution_short, section, error_type, severity, prevalence,
+  transmute(institution, section, error_type, severity, prevalence,
             example = str_trunc(example_course_ids, 60),
             suggested_fix = str_trunc(suggested_fix, 140))
 

@@ -10,8 +10,8 @@
 # human/LLM review.
 #
 # Inputs:
-#   data/sections_raw.RDS          (course_id, institution_short, section, raw_text)
-#   data/courses_with_plan_id.RDS  (course_id, institution_short, course_plan, ...)
+#   data/sections_raw.RDS          (course_id, institution, section, raw_text)
+#   data/courses_with_plan_id.RDS  (course_id, institution, course_plan, ...)
 #                                  — used as full-text ground truth for coverage
 #                                    and "one section swallowed the whole plan".
 #
@@ -62,7 +62,7 @@ sec <- sec |>
 # ── Flag 2: length outliers within institution × section ─────────────────────
 # Robust z-score on log(nchar) using median/MAD. Computed on non-empty rows.
 sec <- sec |>
-  group_by(institution_short, section) |>
+  group_by(institution, section) |>
   mutate(
     .lognc = if_else(nchar > 0 & !flag_empty, log(nchar), NA_real_),
     .med   = median(.lognc, na.rm = TRUE),
@@ -125,7 +125,7 @@ sec <- sec |>
 
 # ── Flag 6: identical section text shared across many courses (boilerplate) ───
 sec <- sec |>
-  group_by(institution_short, section, norm) |>
+  group_by(institution, section, norm) |>
   mutate(dup_text_freq = n()) |>
   ungroup() |>
   mutate(flag_boilerplate = !flag_empty & dup_text_freq >= BOILERPLATE_MIN)
@@ -136,7 +136,7 @@ zero_section_courses <- plans |>
   filter(plan_nchar > 50, !course_id %in% have_sections) |>
   left_join(
     readRDS("data/sections_raw.RDS") |>
-      distinct(course_id, institution_short),  # (empty for these by definition)
+      distinct(course_id, institution),  # (empty for these by definition)
     by = "course_id"
   )
 
@@ -147,7 +147,7 @@ flag_cols <- c("flag_empty", "flag_short", "flag_long", "flag_blob",
 suspects <- sec |>
   mutate(n_flags = rowSums(across(all_of(flag_cols)))) |>
   filter(n_flags > 0) |>
-  select(course_id, institution_short, section, nchar, plan_frac,
+  select(course_id, institution, section, nchar, plan_frac,
          dup_text_freq, leak_sections, all_of(flag_cols), n_flags, raw_text)
 
 saveRDS(suspects, "data/sections_qa_suspects.RDS")
@@ -162,7 +162,7 @@ flag_summary <- sec |>
   arrange(desc(n))
 
 by_inst_sec <- sec |>
-  group_by(institution_short, section) |>
+  group_by(institution, section) |>
   summarise(across(all_of(flag_cols), sum), n = n(), .groups = "drop") |>
   mutate(n_susp = rowSums(across(all_of(flag_cols)))) |>
   arrange(desc(n_susp))
@@ -188,7 +188,7 @@ fmt_tbl <- function(df) {
 
 leak_examples <- suspects |>
   filter(flag_leak) |>
-  count(institution_short, section, leak_sections, sort = TRUE) |>
+  count(institution, section, leak_sections, sort = TRUE) |>
   head(20)
 
 report <- c(

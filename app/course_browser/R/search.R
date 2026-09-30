@@ -11,7 +11,7 @@
 
 library(stringi)
 
-PLAN_KEYS <- c("plan_content_id", "institution_short", "Emnekode")
+PLAN_KEYS <- c("plan_content_id", "institution", "Emnekode")
 
 SECTION_LABELS <- c(
   learning_outcomes       = "Læringsutbytte",

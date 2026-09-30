@@ -42,7 +42,7 @@ dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
 sec      <- readRDS("data/sections_raw.RDS")
 suspects <- readRDS("data/sections_qa_suspects.RDS")
 plans    <- readRDS("data/courses_with_plan_id.RDS") |>
-  select(course_id, institution_short, course_plan, plan_content_id)
+  select(course_id, institution, course_plan, plan_content_id)
 
 flag_cols <- c("flag_empty", "flag_short", "flag_long", "flag_blob",
                "flag_leak", "flag_dup_in_course", "flag_boilerplate")
@@ -62,7 +62,7 @@ susp_lbl <- suspects |>
 
 # Course-level suspicion score (sum of flags across its sections)
 course_score <- suspects |>
-  group_by(course_id, institution_short) |>
+  group_by(course_id, institution) |>
   summarise(n_flags = sum(n_flags), .groups = "drop")
 
 trunc_note <- function(x, n) {
@@ -73,26 +73,26 @@ trunc_note <- function(x, n) {
 }
 
 # ── Per-institution packet builder ───────────────────────────────────────────
-institutions <- sort(unique(sec$institution_short))
+institutions <- sort(unique(sec$institution))
 manifest <- list()
 
 for (inst in institutions) {
   set.seed(SEED)
 
-  inst_plans <- plans |> filter(institution_short == inst)
+  inst_plans <- plans |> filter(institution == inst)
   if (nrow(inst_plans) == 0) next
 
   # Suspect courses: highest score first, one per distinct plan.
   susp_ids <- course_score |>
-    filter(institution_short == inst) |>
-    inner_join(inst_plans, by = c("course_id", "institution_short")) |>
+    filter(institution == inst) |>
+    inner_join(inst_plans, by = c("course_id", "institution")) |>
     arrange(desc(n_flags)) |>
     distinct(plan_content_id, .keep_all = TRUE) |>
     head(SUSPECT_N) |>
     pull(course_id)
 
   # Random control: courses with extracted sections, not suspects, distinct plan.
-  have_sec_ids <- sec |> filter(institution_short == inst) |> pull(course_id)
+  have_sec_ids <- sec |> filter(institution == inst) |> pull(course_id)
   rand_pool <- inst_plans |>
     filter(course_id %in% have_sec_ids, !course_id %in% susp_ids) |>
     distinct(plan_content_id, .keep_all = TRUE)
@@ -159,7 +159,7 @@ for (inst in institutions) {
   path <- file.path(out_dir, paste0(inst, ".md"))
   writeLines(lines, path)
   manifest[[inst]] <- tibble(
-    institution_short = inst,
+    institution = inst,
     n_suspect = length(susp_ids),
     n_random  = length(rand_ids),
     packet    = path

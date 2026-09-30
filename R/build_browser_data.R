@@ -29,13 +29,13 @@ sections_raw <- if (file.exists(sections_path)) readRDS(sections_path) else NULL
 
 message("Rolling offerings up to plan level...")
 
-# `plans` is keyed by (plan_content_id, institution_short, Emnekode); a handful
+# `plans` is keyed by (plan_content_id, institution, Emnekode); a handful
 # of plan_content_ids are shared across course codes, so join on all three.
-plan_keys <- plans |> select(plan_content_id, institution_short, Emnekode)
+plan_keys <- plans |> select(plan_content_id, institution, Emnekode)
 
 offering_rollup <- offerings |>
   filter(!is.na(plan_content_id)) |>
-  semi_join(plan_keys, by = c("plan_content_id", "institution_short", "Emnekode")) |>
+  semi_join(plan_keys, by = c("plan_content_id", "institution", "Emnekode")) |>
   summarise(
     Emnenavn = first(na.omit(Emnenavn)),
     Fagnavn = {
@@ -49,12 +49,12 @@ offering_rollup <- offerings |>
     semesters = paste(sort(unique(Semesternavn)), collapse = ", "),
     url = first(na.omit(url)),
     course_ids = list(course_id),
-    .by = c(plan_content_id, institution_short, Emnekode)
+    .by = c(plan_content_id, institution, Emnekode)
   )
 
 plans <- plans |>
   left_join(offering_rollup,
-            by = c("plan_content_id", "institution_short", "Emnekode")) |>
+            by = c("plan_content_id", "institution", "Emnekode")) |>
   mutate(
     n_offerings = coalesce(n_offerings, 0L),
     plan_nchar = nchar(course_plan)
@@ -76,15 +76,15 @@ if (!is.null(sections_raw)) {
 
   course_to_plan <- offerings |>
     filter(!is.na(plan_content_id)) |>
-    select(course_id, plan_content_id, institution_short, Emnekode)
+    select(course_id, plan_content_id, institution, Emnekode)
 
   sections <- sections_raw |>
     select(course_id, section, raw_text) |>
     inner_join(course_to_plan, by = "course_id") |>
     filter(!is.na(raw_text), nchar(raw_text) > 0) |>
     slice_max(nchar(raw_text), n = 1, with_ties = FALSE,
-              by = c(plan_content_id, institution_short, Emnekode, section)) |>
-    select(plan_content_id, institution_short, Emnekode, section, raw_text)
+              by = c(plan_content_id, institution, Emnekode, section)) |>
+    select(plan_content_id, institution, Emnekode, section, raw_text)
 
   message("  ", nrow(sections), " plan-level sections across ",
           n_distinct(sections$section), " section types")
@@ -102,10 +102,10 @@ coverage <- offerings |>
     n_offerings = n(),
     n_harvested = sum(has_extracted_text, na.rm = TRUE),
     n_plans = n_distinct(plan_content_id[!is.na(plan_content_id)]),
-    .by = c(institution_short, Årstall)
+    .by = c(institution, Årstall)
   ) |>
   mutate(pct_harvested = n_harvested / n_offerings) |>
-  arrange(institution_short, Årstall)
+  arrange(institution, Årstall)
 
 # ── Write ────────────────────────────────────────────────────────────────────
 

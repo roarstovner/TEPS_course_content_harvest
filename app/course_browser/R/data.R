@@ -44,7 +44,7 @@ load_browser_data <- function(data_dir = "../../data") {
 #' read per institution and cached for as long as the user stays on it.
 #'
 #' @param course_id Offering to look up
-#' @param inst institution_short value
+#' @param inst institution value
 #' @param cache reactiveValues with `inst` and `data` slots
 #' @param data_dir Path to the data/ directory
 #' @return Character(1) of raw HTML, or NULL

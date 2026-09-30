@@ -28,12 +28,12 @@ term_set <- load_term_set()
 # Join key shared by plans and sections: a plan_content_id can recur across
 # course codes, so all three key columns are needed to identify a plan.
 make_key <- function(df) {
-  paste(df$plan_content_id, df$institution_short, df$Emnekode, sep = "\r")
+  paste(df$plan_content_id, df$institution, df$Emnekode, sep = "\r")
 }
 plan_key <- make_key(plans)
 section_key <- if (is.null(sections)) NULL else make_key(sections)
 
-inst_choices <- sort(unique(plans$institution_short))
+inst_choices <- sort(unique(plans$institution))
 names(inst_choices) <- institution_labels[inst_choices]
 year_range <- range(c(plans$year_from, plans$year_to), na.rm = TRUE)
 fag_choices <- sort(unique(na.omit(plans$Fagnavn)))
@@ -100,7 +100,7 @@ ui <- page_navbar(
           "Occurrence of the current search across plans, using the filters set
            on the Concordance tab."),
         selectInput("trend_facet", "Break down by",
-          choices = c("Nothing" = "none", "Institution" = "institution_short",
+          choices = c("Nothing" = "none", "Institution" = "institution",
                       "Subject" = "Fagnavn")),
         selectInput("trend_y", "Show",
           choices = c("Share of plans" = "proportion", "Number of plans" = "n_with")),
@@ -216,7 +216,7 @@ server <- function(input, output, session) {
   # Plans passing the metadata filters, as row indices into `plans`
   plan_subset <- reactive({
     keep <- plans$year_to >= input$years[1] & plans$year_from <= input$years[2]
-    if (length(input$inst) > 0) keep <- keep & plans$institution_short %in% input$inst
+    if (length(input$inst) > 0) keep <- keep & plans$institution %in% input$inst
     if (length(input$fag) > 0) keep <- keep & plans$Fagnavn %in% input$fag
     which(keep)
   })
@@ -295,7 +295,7 @@ server <- function(input, output, session) {
     res <- results()
     p <- plans[res$plan_row, ]
     display <- data.frame(
-      Inst = institution_labels[p$institution_short],
+      Inst = institution_labels[p$institution],
       Code = p$Emnekode,
       Name = p$Emnenavn,
       Years = ifelse(p$year_from == p$year_to, as.character(p$year_from),
@@ -339,7 +339,7 @@ server <- function(input, output, session) {
         class = "detail-head",
         tags$h5(paste0(p$Emnekode, " — ", p$Emnenavn %||% "")),
         tags$div(class = "text-muted small",
-          paste0(institution_labels[p$institution_short], " · ",
+          paste0(institution_labels[p$institution], " · ",
                  if (p$year_from == p$year_to) p$year_from
                  else paste0(p$year_from, "–", p$year_to),
                  " · ", p$n_offerings, " offering",
@@ -415,7 +415,7 @@ server <- function(input, output, session) {
     p <- plans[sel$plan_row, ]
     rows <- sections[
       sections$plan_content_id == p$plan_content_id &
-        sections$institution_short == p$institution_short &
+        sections$institution == p$institution &
         sections$Emnekode == p$Emnekode, , drop = FALSE]
     if (nrow(rows) == 0) {
       return(tags$p(class = "text-muted", "No sections extracted for this plan."))
@@ -457,7 +457,7 @@ server <- function(input, output, session) {
     if (is.null(ids) || !length(ids)) {
       return(tags$p(class = "text-muted", "No offering to fetch HTML for."))
     }
-    raw <- load_course_html(ids[1], p$institution_short, html_cache)
+    raw <- load_course_html(ids[1], p$institution, html_cache)
     if (is.null(raw) || is.na(raw)) {
       return(tags$p(class = "text-muted", "No HTML stored for this offering."))
     }
@@ -508,7 +508,7 @@ server <- function(input, output, session) {
     }
     if (facet != "none") {
       p <- p + facet_wrap(vars(.data[[facet]]),
-                          labeller = if (facet == "institution_short")
+                          labeller = if (facet == "institution")
                             as_labeller(institution_labels) else "label_value")
     }
     p
@@ -534,7 +534,7 @@ server <- function(input, output, session) {
   })
 
   output$coverage_plot <- renderPlot({
-    ggplot(coverage, aes(x = Årstall, y = institution_short, fill = pct_harvested)) +
+    ggplot(coverage, aes(x = Årstall, y = institution, fill = pct_harvested)) +
       geom_tile(colour = "white", linewidth = 0.4) +
       scale_fill_viridis_c(labels = scales::label_percent(), limits = c(0, 1),
                            option = "D", name = "Harvested") +
@@ -548,7 +548,7 @@ server <- function(input, output, session) {
 
   output$coverage_table <- renderDT({
     d <- coverage |>
-      mutate(Institution = institution_labels[institution_short],
+      mutate(Institution = institution_labels[institution],
              pct_harvested = round(100 * pct_harvested)) |>
       select(Institution, Year = Årstall, Offerings = n_offerings,
              Harvested = n_harvested, `%` = pct_harvested, Plans = n_plans)
@@ -564,7 +564,7 @@ server <- function(input, output, session) {
       return()
     }
     codes <- plans |>
-      filter(institution_short == inst) |>
+      filter(institution == inst) |>
       count(Emnekode) |>
       filter(n >= 2) |>
       pull(Emnekode) |>
@@ -575,7 +575,7 @@ server <- function(input, output, session) {
   diff_versions <- reactive({
     req(input$diff_inst, input$diff_code, nzchar(input$diff_code))
     plans |>
-      filter(institution_short == input$diff_inst, Emnekode == input$diff_code) |>
+      filter(institution == input$diff_inst, Emnekode == input$diff_code) |>
       arrange(year_from, year_to) |>
       mutate(
         version = paste0("V", row_number()),

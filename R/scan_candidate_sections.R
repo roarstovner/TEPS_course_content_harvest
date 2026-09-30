@@ -37,7 +37,7 @@ candidates <- tibble::tribble(
 
 html_files <- list.files("data", pattern = "^html_.*\\.RDS$", full.names = TRUE)
 courses_raw <- html_files |> lapply(readRDS) |> bind_rows()
-institutions <- sort(unique(courses_raw$institution_short))
+institutions <- sort(unique(courses_raw$institution))
 
 # Per institution, collect the set of heading texts each sampled course carries,
 # then test each candidate regex against that course's headings.
@@ -48,7 +48,7 @@ for (inst in institutions) {
   ic <- get_institution_config(inst)
   strat <- ic$section_strategy
   if (is.null(strat) || strat %in% c("noop", "text_split", "json_nla")) next
-  df <- courses_raw |> filter(institution_short == inst, !is.na(html), nzchar(html))
+  df <- courses_raw |> filter(institution == inst, !is.na(html), nzchar(html))
   if (nrow(df) == 0) next
   if (nrow(df) > SAMPLE_N) { set.seed(42); df <- df[sample(nrow(df), SAMPLE_N), ] }
   n <- nrow(df)
@@ -70,7 +70,7 @@ for (inst in institutions) {
       praksis_examples <- c(praksis_examples, paste0(inst, ": ", pk[1]))
     }
   }
-  rows[[inst]] <- tibble(institution_short = inst, n_sampled = n,
+  rows[[inst]] <- tibble(institution = inst, n_sampled = n,
                          candidate = names(hit_counts), n_hit = as.integer(hit_counts))
 }
 
@@ -79,8 +79,8 @@ res <- bind_rows(rows) |>
 
 # Wide table: candidate × institution coverage %.
 wide <- res |>
-  select(candidate, institution_short, pct) |>
-  tidyr::pivot_wider(names_from = institution_short, values_from = pct)
+  select(candidate, institution, pct) |>
+  tidyr::pivot_wider(names_from = institution, values_from = pct)
 
 summary_tbl <- res |>
   group_by(candidate) |>

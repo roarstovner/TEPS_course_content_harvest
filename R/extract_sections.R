@@ -1,8 +1,8 @@
 # R/extract_sections.R
 # Structured section extraction from course HTML.
 #
-# Entry point: extract_sections(institution_short, html, extracted_text,
-# course_id) — returns a long tibble (course_id, institution_short,
+# Entry point: extract_sections(institution, html, extracted_text,
+# course_id) — returns a long tibble (course_id, institution,
 # section, raw_text).
 #
 # Strategies:
@@ -14,10 +14,10 @@
 # Section-extraction config lives on each institution in
 # R/institution_config.R (fields: section_strategy, section_heading_level).
 # Selector and pre_fn are reused from the institution's existing fields.
-.section_cfg <- function(institution_short) {
-  ic <- get_institution_config(institution_short)
+.section_cfg <- function(institution) {
+  ic <- get_institution_config(institution)
   if (is.null(ic$section_strategy)) {
-    stop("No section_strategy for institution: ", institution_short)
+    stop("No section_strategy for institution: ", institution)
   }
   list(
     strategy         = ic$section_strategy,
@@ -25,28 +25,28 @@
     heading_selector = ic$section_heading_selector,
     selector         = ic$selector,
     pre_fn           = ic$pre_fn,
-    institution      = institution_short
+    institution      = institution
   )
 }
 
 #' Extract sections from course HTML for one institution
 #'
 #' Vectorised over the row inputs. All rows are assumed to share
-#' `institution_short`. Returns a long tibble:
-#'   course_id <chr>, institution_short <chr>, section <chr>, raw_text <chr>
+#' `institution`. Returns a long tibble:
+#'   course_id <chr>, institution <chr>, section <chr>, raw_text <chr>
 #'
-#' @param institution_short Character scalar.
+#' @param institution Character scalar.
 #' @param html Character vector of raw HTML.
 #' @param extracted_text Character vector of pre-extracted plain text
 #'   (used by text_split and by html_headings' text-split fallback).
 #'   Same length as `html`.
 #' @param course_id Character vector of course ids (same length as `html`).
-extract_sections <- function(institution_short, html, extracted_text, course_id) {
-  stopifnot(length(institution_short) == 1)
+extract_sections <- function(institution, html, extracted_text, course_id) {
+  stopifnot(length(institution) == 1)
   stopifnot(length(html) == length(course_id))
   stopifnot(length(extracted_text) == length(html))
 
-  cfg <- .section_cfg(institution_short)
+  cfg <- .section_cfg(institution)
 
   fn <- .section_strategy_fn(cfg$strategy)
   safe_fn <- purrr::possibly(fn, otherwise = .empty_sections())
@@ -59,9 +59,9 @@ extract_sections <- function(institution_short, html, extracted_text, course_id)
                     otherwise = .empty_sections())
   } else NULL
 
-  rows <- purrr::pmap(list(html, extracted_text, course_id), .progress = institution_short, function(h, txt, cid) {
+  rows <- purrr::pmap(list(html, extracted_text, course_id), .progress = institution, function(h, txt, cid) {
     input <- list(html = h, extracted_text = txt, course_id = cid,
-                  institution = institution_short)
+                  institution = institution)
     out <- safe_fn(input, cfg)
     if (!is.null(fallback_fn) && nrow(out) < 3) {
       fb <- fallback_fn(input, cfg)
@@ -70,7 +70,7 @@ extract_sections <- function(institution_short, html, extracted_text, course_id)
     out <- .clean_sections(out)
     tibble::tibble(
       course_id         = rep(cid, nrow(out)),
-      institution_short = rep(institution_short, nrow(out)),
+      institution       = rep(institution, nrow(out)),
       section           = out$section,
       raw_text          = out$raw_text
     )

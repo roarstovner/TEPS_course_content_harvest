@@ -27,14 +27,14 @@ cat("Loaded", nrow(courses_raw), "course rows from",
 
 # ── Extraction ──────────────────────────────────────────────────────────────
 
-institutions <- sort(unique(courses_raw$institution_short))
+institutions <- sort(unique(courses_raw$institution))
 
 cat("Extracting sections per institution...\n")
 sections_list <- purrr::map(institutions, function(inst) {
-  df <- courses_raw |> filter(institution_short == inst)
+  df <- courses_raw |> filter(institution == inst)
   cat(sprintf("  %-8s %d courses\n", inst, nrow(df)))
   extract_sections(
-    institution_short = inst,
+    institution = inst,
     html              = df$html %||% rep(NA_character_, nrow(df)),
     extracted_text    = df$extracted_text %||% rep(NA_character_, nrow(df)),
     course_id         = df$course_id
@@ -55,18 +55,18 @@ canonical_sections <- sort(unique(section_heading_patterns$section))
 
 denom <- courses_raw |>
   filter(!is.na(extracted_text), nzchar(extracted_text)) |>
-  count(institution_short, name = "n_courses")
+  count(institution, name = "n_courses")
 
 coverage <- sections_raw |>
-  distinct(institution_short, course_id, section) |>
-  count(institution_short, section, name = "n_with") |>
-  left_join(denom, by = "institution_short") |>
+  distinct(institution, course_id, section) |>
+  count(institution, section, name = "n_with") |>
+  left_join(denom, by = "institution") |>
   mutate(pct = n_with / n_courses * 100)
 
-for (inst in sort(unique(denom$institution_short))) {
-  total <- denom$n_courses[denom$institution_short == inst]
+for (inst in sort(unique(denom$institution))) {
+  total <- denom$n_courses[denom$institution == inst]
   cat(sprintf("%-8s (%d courses with text)\n", inst, total))
-  rows <- coverage |> filter(institution_short == inst) |> arrange(section)
+  rows <- coverage |> filter(institution == inst) |> arrange(section)
   if (nrow(rows) == 0) {
     cat("  (no sections extracted)\n")
     next
@@ -114,7 +114,7 @@ unmapped_for_institution <- function(inst, rows) {
 }
 
 for (inst in institutions) {
-  rows <- courses_raw |> filter(institution_short == inst)
+  rows <- courses_raw |> filter(institution == inst)
   if (!"html" %in% colnames(rows)) next
   cat(sprintf("  scanning %s...\n", inst))
   unmapped <- unmapped_for_institution(inst, rows)
