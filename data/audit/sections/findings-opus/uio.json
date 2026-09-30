@@ -1,0 +1,94 @@
+{
+  "check": "sections",
+  "institution": "uio",
+  "model": "opus",
+  "n_courses_reviewed": 13,
+  "n_suspects_reviewed": 5,
+  "overall_assessment": "course_content and learning_outcomes are correct and complete in all 13 courses (Kunnskap/Ferdigheter/Generell kompetanse groups are kept intact), but the h2-only split leaves the UiO exam navigation/logistics block in almost every assessment row and admission boilerplate from 'Opptak til emnet' in every prerequisites row, and coursework requirements never get their own row. They are filed under teaching_methods or assessment instead. Most serious: sections are cut from raw HTML, not from the anonymized plan, so names and emails removed from course_plan reappear in sections_raw. The pre-pass leak->coursework_requirements flags are real problems; HIS4015L's course_content leak->teaching_methods flag is a false alarm, triggered by the prose line 'Undervisningsopplegget skal foregå ...'.",
+  "findings": [
+    {
+      "target": "cross_section",
+      "error_type": "other",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": ["uio_MAT5930L-2_2025_spring_1", "uio_PROF3025-1_2025_spring_1"],
+      "evidence": "Ta kontakt med Tom Lindstrøm (lindstro@math.uio.no) eller studieadministrasjonen ved Matematisk institutt (studieinfo@math.uio.no)",
+      "description": "Personal data that anonymization removed from course_plan comes back in sections_raw. The ground-truth plan reads 'Ta kontakt med () eller studieadministrasjonen ved Matematisk institutt ()', but teaching_methods still has the lecturer's name and personal email. PROF3025's prerequisites row likewise has 'lektorprogrammet@ils.uio.no', where the plan has 'via e-post til .'. Across all UiO rows in data/sections_raw.RDS, 18 of 96 courses carry an email address (16 teaching_methods, 2 prerequisites rows). The section text therefore does not match the anonymized ground truth and is not safe to publish.",
+      "root_cause_hypothesis": "R/run_extract_sections.R passes df$html to extract_sections(), and extract_sections_html() walks the raw HTML of #vrtx-course-content. anonymize_fulltext() (.anon_uio(), which targets exactly the 'Name (email@...)' pattern, plus .anon_generic()) runs only on extracted_text -> course_plan in run_dedup.R, so section text never passes through it.",
+      "suggested_fix": "In R/run_extract_sections.R, after bind_rows(sections_list), add `sections_raw$raw_text <- anonymize_fulltext(sections_raw$institution, sections_raw$raw_text)`. Alternatively, call it inside extract_sections() after .clean_sections(). Also add an email/phone regex flag to R/audit/qa_sections.R so the pre-pass catches this kind of leak.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "formatting_noise",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": ["uio_PROMO4-1_2025_autumn_4", "uio_NOR1000-1_2025_spring_1", "uio_PROF3025-1_2025_spring_1"],
+      "evidence": "Mer om eksamen ved UiO\nKildebruk og referanser\nHvordan bruke KI som student\nTilrettelegging på eksamen\nTrekk fra eksamen",
+      "description": "All 13 assessment rows end with the generic UiO exam navigation link list ('Mer om eksamen ved UiO … Fusk/forsøk på fusk … Andre veiledninger og ressurser finner du på fellessiden om eksamen ved UiO.'), and most also carry exam logistics: Eksamensspråk, 'Adgang til ny eller utsatt eksamen' (resit rules), and 'Hjelpemidler til eksamen' (exam aids). In short plans the noise outweighs the real content: PROMO4's 423-char assessment row holds one sentence of real content. Across all UiO rows, 88 of 96 assessment rows contain the link list.",
+      "root_cause_hypothesis": "uio uses section_heading_level = \"h2\". 'Eksamen' is the last h2 in #vrtx-course-content, and its h3 children (Hjelpemidler til eksamen, Eksamensspråk, Karakterskala, Adgang til ny eller utsatt eksamen, Mer om eksamen ved UiO) are not treated as boundaries. Their text is emitted as leaf text into assessment. The existing 'eksamensspråk' denylist in match_heading_to_section() never fires because h3 is never evaluated as a heading.",
+      "suggested_fix": "In R/institution_config.R, set `section_heading_selector = \"h2, h3\"` for uio. In match_heading_to_section() (R/section_heading_map.R), extend the denylist regex with `mer om eksamen ved uio|adgang til ny eller utsatt eksamen|hjelpemidler til eksamen|overlappende emner` so these h3 blocks return NA and are dropped. Without this, 'Mer om eksamen ved UiO' would match 'eksamen' and route back to assessment. Optionally add a `karakterskala` -> assessment pattern if the grading scale should be kept.",
+      "confidence": "high"
+    },
+    {
+      "target": "teaching_methods",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": ["uio_HIS1200L-1_2025_spring_1", "uio_HIS4015L-1_2025_spring_1", "uio_KJM5930L-2_2025_spring_1"],
+      "evidence": "For å kunne levere mappeeksamen i emnet må du få godkjent alle følgende obligatoriske aktiviteter:",
+      "description": "Coursework requirements (pass/approve gates to the exam) are filed under teaching_methods, and no UiO course ever gets a coursework_requirements row (0 of 96 in sections_raw). In the packet this affects HIS1200L ('Obligatoriske aktiviteter:' list), HIS4015L ('Obligatoriske aktiviteter' + 'Alle de obligatoriske aktivitetene må være godkjent …'), PROF3025 ('Obligatoriske forhold i undervisningen:'), PROF1005 ('Obligatoriske komponenter'), KJM5930L (HMS course + attendance at 6 of 9 sessions required to sit the exam) and KJM5050 (refleksjonsnotat gate). Across all UiO rows, 34 of 96 teaching_methods rows contain a line starting with 'Obligatorisk'. The codebook makes this the single most important split.",
+      "root_cause_hypothesis": "UiO has no separate heading for obligatoriske aktiviteter. They appear inside the 'Undervisning' h2 block as plain paragraphs (e.g. `<p>Obligatoriske aktiviteter</p><ul>…`, `<p>Obligatoriske forhold i undervisningen:</p>`), so no heading-level setting in extract_sections_html() can split them.",
+      "suggested_fix": "Add an opt-in pseudo-heading rule for uio, e.g. config `section_pseudo_heading = \"p\"`. In extract_sections_html(), treat a <p> whose whole trimmed text is at most 60 chars (trailing ':' stripped) and matches a section pattern as a boundary. Add patterns 'obligatoriske komponenter', 'obligatoriske forhold', 'obligatorisk:' -> coursework_requirements, and 'gjennomføring av praksis', 'undervisningssted' -> teaching_methods, so later pseudo-headings switch back. Gates written as plain prose with no pseudo-heading (KJM5930L) need the Phase-2 LLM lift.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "wrong_content",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": ["uio_PROF3025-1_2025_spring_1", "uio_PROF1005-1_2025_spring_1", "uio_KJM5930L-2_2025_spring_1"],
+      "evidence": "Faglige krav for å kunne avlegge eksamen: De obligatoriske komponentene i emnet må være godkjent for å kunne fremstille seg til eksamen.",
+      "description": "Exam-gating coursework statements inside the Eksamen block are kept in assessment. Examples: PROF3025/PROF1005 'Faglige krav for å kunne avlegge eksamen', KJM5930L 'Obligatoriske aktiviteter må være godkjent for å kunne gå opp til eksamen.', and KJM5050 'For at arbeidskravet skal være bestått, må 75 % av arbeidene som inngår, være godkjent' plus the refleksjonsnotat gate. By the codebook these belong in coursework_requirements. The graded assessment design itself is intact, so the impact is lower than the teaching_methods case, but downstream coding could count arbeidskrav as an assessment component. The pre-pass leak->coursework_requirements flags on KJM5050 and KJM5930L are real.",
+      "root_cause_hypothesis": "This is the same mechanism as the teaching_methods finding. Inside the 'Eksamen' h2 block, UiO marks the gate with a <p> pseudo-heading ('Faglige krav for å kunne avlegge eksamen:') or with plain prose, and the h2 DOM-walk cannot cut there.",
+      "suggested_fix": "With the pseudo-heading rule from the teaching_methods finding, add 'krav for å kunne avlegge eksamen' -> coursework_requirements in R/section_heading_map.R, above the assessment 'eksamen' pattern. Add 'sensurordning' and 'sensurering' -> assessment so the following pseudo-headings route back to assessment. Leave one-sentence prose gates (KJM5930L, KJM5050) to the Phase-2 lift.",
+      "confidence": "medium"
+    },
+    {
+      "target": "prerequisites",
+      "error_type": "boilerplate_only",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": ["uio_TYSK4091-1_2025_spring_1", "uio_NOR1000-1_2025_spring_1", "uio_HIS1200L-1_2025_spring_1"],
+      "evidence": "Studenter må hvert semester søke og få plass på undervisningen og melde seg til eksamen i Studentweb.",
+      "description": "Every prerequisites row starts with 'Opptak til emnet' admission, study-right and Studentweb text. For 6 of 13 packet courses (TYSK4091, NOR1000, PROMO4, PROMO8, KJM5930L, MAT5930L), the row holds only that boilerplate and no subject-matter prerequisite at all. In the other 7, the real 'Obligatoriske forkunnskaper'/'Anbefalte forkunnskaper' text follows the boilerplate. The worst cases are HIS1200L (the whole særemne registration procedure) and PROF3025 (progression-control and e-mail instructions). Across all UiO rows, 45 of 96 prerequisites rows contain no 'forkunnskap' text, so every UiO course looks as if it has prerequisites.",
+      "root_cause_hypothesis": "The 'opptak til emnet' -> prerequisites pattern in R/section_heading_map.R captures UiO's h2 'Opptak til emnet', which is an admission block. The genuine prerequisites are h3 sub-blocks ('Obligatoriske forkunnskaper', 'Anbefalte forkunnskaper') inside it, and with heading_level h2 both are concatenated into one row.",
+      "suggested_fix": "Together with `section_heading_selector = \"h2, h3\"` for uio, add an institution-level heading override, e.g. config `section_heading_overrides = list(\"opptak til emnet\" = NA)`, consulted before match_heading_to_section(). The h2 admission text is then dropped, only the h3 forkunnskaper blocks populate prerequisites, and courses without them emit no prerequisites row. Known trade-off: the embedded '80-gruppen i kjemi er fullført' condition in KJM5930L/MAT5930L would be lost; leave it to the Phase-2 lift.",
+      "confidence": "high"
+    },
+    {
+      "target": "teaching_methods",
+      "error_type": "other",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": ["uio_RELDID4009-1_2025_spring_1", "uio_PROF3025-1_2025_spring_1", "uio_KJM5930L-2_2025_spring_1"],
+      "evidence": "Adgang til undervisning: Undervisningen er kun åpen for studenter med opptak i emnet.",
+      "description": "Otherwise-correct teaching_methods text contains admin boilerplate that the codebook says to strip. Examples: 'Adgang til undervisning' access rules (RELDID4009, NDID4009, PROF3025, PROF1005), 'Undervisningssted' and 'Eventuelle utgifter … Reiseutgifter refunderes ikke' (PROF3025), travel-insurance advice (KJM5930L), and re-teaching entitlement rules (NOR1000). It is minor noise; the teaching description itself is complete.",
+      "root_cause_hypothesis": "UiO writes these as inline paragraphs or <p> pseudo-headings inside the 'Undervisning' h2 block, so they are emitted as leaf text into teaching_methods.",
+      "suggested_fix": "If the pseudo-heading rule is added, map the pseudo-headings 'adgang til undervisning', 'undervisningssted' and 'eventuelle utgifter' to NA for uio. Otherwise, in .clean_section_text() for teaching_methods, drop paragraphs starting with 'Adgang til undervisning', 'Undervisningssted' or 'Eventuelle utgifter', and paragraphs containing 'personskadeforsikring'.",
+      "confidence": "medium"
+    },
+    {
+      "target": "reading_list",
+      "error_type": "merged_sections",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": ["uio_HIS4015L-1_2025_spring_1"],
+      "evidence": "Studentene skal nyttiggjøre seg av den fagdidaktikken som ligger som teorier og praksis i bøkene som er oppsatt på pensum.",
+      "description": "In HIS4015L a 'Pensum' paragraph, and after it the whole 'Gjennomføring av praksis' description, are merged into teaching_methods, so no reading_list row is emitted. UiO emne pages normally keep pensum on the semester page, so the absence of reading_list rows (0 of 96) is otherwise expected. This is the only case in the packet where the plan has a pensum block.",
+      "root_cause_hypothesis": "'Pensum' is a plain <p> inside the 'Undervisning' h2 block, not a heading, so extract_sections_html() cannot cut there.",
+      "suggested_fix": "This is covered by the pseudo-heading rule proposed for coursework requirements. An exact-match <p>Pensum</p> would start reading_list, and 'gjennomføring av praksis' -> teaching_methods would switch back.",
+      "confidence": "medium"
+    }
+  ]
+}

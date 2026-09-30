@@ -1,0 +1,4 @@
+"institution","n_suspect","n_random","packet"
+"mf",14,8,"data/audit/anonymization/packets/mf.md"
+"nih",0,8,"data/audit/anonymization/packets/nih.md"
+"uio",4,8,"data/audit/anonymization/packets/uio.md"

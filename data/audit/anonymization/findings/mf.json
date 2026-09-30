@@ -1,0 +1,58 @@
+{
+  "check": "anonymization",
+  "institution": "mf",
+  "model": "opus",
+  "n_courses_reviewed": 22,
+  "n_suspects_reviewed": 14,
+  "overall_assessment": "Personal data is removed reliably for MF. Every offering (51/51 in a full-data scan) ends in the same 'Emneansvarlig' contact block, and .anon_mf() cuts it off together with the names, e-mails and marketing text. No names, e-mails or titles are left, and no course content is removed. The main gap is administrative dates: the 'Eksamensdatoer' block keeps full exam, withdrawal-deadline and grading dates (e.g. '18. november 2026') in 27/51 plans, and these account for all 14 admin_date pre-pass flags. There are also two small defects in the season regex and some low-level MF page boilerplate that is not stripped.",
+  "findings": [
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": ["mf_SAM1080L-1_2025_spring_1", "mf_PPU1020-1_2025_autumn_1", "mf_RL5075-1_2025_autumn_1"],
+      "evidence": "Eksamensdato: 18. november 2026 Starttidspunkt: Varighet: 4 timer Trekkfrist: 1. november 2026 Sensur kunngjøres innen: 9. desember 2026",
+      "description": "Under the rubric, administrative dates must be removed. MF pages have an 'Eksamensdatoer' block listing specific exam dates, submission and hand-out dates, withdrawal deadlines ('Trekkfrist') and grading deadlines ('Sensur kunngjøres innen'). These are written as '<day>. <full month name> <year>'. Only the clock times are stripped (e.g. 'Starttidspunkt: [−9:00−]'), so every date stays in course_plan. This affects all 14 suspects in the packet and 27/51 MF offerings. None of the 8 random controls has the block, which explains why they are clean. The dates also come from a later harvest (2026/2027 dates on 2025 offerings), so they can mislead as well as add noise. normalize_plan_text() removes only the 4-digit year, which leaves day+month strings such as '18. november' that change every year and will break content-hash dedup across harvests.",
+      "root_cause_hypothesis": "R/anonymize.R .anon_generic(): the date-time regex (\\d{1,2}\\.\\s*(?:jan|feb|...|des)\\.?\\s*\\d{4}\\s*\\d{2}:\\d{2}) only matches an abbreviated month directly followed by the year. In '17. august 2026 13:00' the 'ust' after 'aug' breaks the match, and the dd.mm.yyyy rule does not apply. .anon_mf() does not target the Eksamensdatoer block.",
+      "suggested_fix": "In .anon_mf(), strip the whole block before the generic step: stringr::str_remove(\"(?m)^Eksamensdatoer\\\\s*\\\\n[\\\\s\\\\S]*?(?=^Læringsutbytte\\\\b)\"). In all 27 affected MF offerings the next heading is 'Læringsutbytte'. This also removes the dangling 'Starttidspunkt:'/'Innleveringsfrist:' labels. Do not add a generic full-month-name date rule instead, because it would also delete content dates such as '22. juli 2011'. Add a test with an MF Eksamensdatoer snippet to tests/testthat/test-anonymize.R.",
+      "confidence": "high"
+    },
+    {
+      "target": "admin_date",
+      "error_type": "text_corruption",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": ["mf_PPU1010-1_2025_autumn_1"],
+      "evidence": "Semester:  og vår Språk: Norsk",
+      "description": "The semester label 'Semester: Høst og vår' is only half removed. The first season word is deleted and ' og vår' is left behind, which reads as a broken phrase. This happens in 4/51 MF offerings (every page whose raw text is 'Semester: Høst og vår'). The single-season forms 'Semester: Høst' and 'Semester: Vår' are removed cleanly.",
+      "root_cause_hypothesis": "R/anonymize.R .anon_generic(): the lookbehind rule (?<=(?:semester|...)[:\\s]{0,3})(høst|vår|...) only removes the season word directly after the label. The second season word in a 'X og Y' list has no qualifying lookbehind.",
+      "suggested_fix": "In .anon_generic(), extend the lookbehind alternative to take an optional coordinated second season: (?i)(?<=(?:semester|undervisning|oppstart|startsemester|eksamen)[:\\s]{0,3})(høst|vår|haust|autumn|spring|sommer|summer)\\b(?:\\s+(?:og|and|/)\\s+(høst|vår|haust|autumn|spring|sommer|summer)\\b)?. Alternatively, in .anon_mf(), replace the whole '(?m)^Semester:[^\\n]*' line with 'Semester:'.",
+      "confidence": "high"
+    },
+    {
+      "target": "admin_date",
+      "error_type": "text_corruption",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": ["mf_SAM2080L-1_2025_spring_1"],
+      "evidence": "semesteret 2026 har SAM2080L skriftlig skoleeksamen (6 timer) som vurderingsform.",
+      "description": "The raw sentence 'Vårsemesteret 2026 har SAM2080L skriftlig skoleeksamen …' (directly under the heading 'Avsluttende vurdering/eksamen') became 'semesteret 2026 har SAM2080L …'. The season prefix was cut out of the compound word, which garbles the sentence. The administrative semester-year stamp '2026' was left in, even though the rubric requires semester labels with a year to be removed. Only 1/51 MF offerings is affected.",
+      "root_cause_hypothesis": "R/anonymize.R .anon_generic(): the lookbehind season rule matches because the heading word 'eksamen' plus '\\n\\n' satisfies (?<=(?:...|eksamen)[:\\s]{0,3}), and the rule has no trailing \\b, so it removes 'Vår' from inside 'Vårsemesteret'. The season+year rules require the pattern (season)\\s+(\\d{4}), so compounds such as 'Vårsemesteret 2026' or 'høstsemesteret 2025' are never removed as a unit.",
+      "suggested_fix": "In .anon_generic(): (1) add a trailing \\b to the season group of the lookbehind rule, and use [: \\t]{0,3} instead of [:\\s]{0,3} so it cannot reach across a heading line break. (2) Before that rule, add stringr::str_remove_all(\"(?i)\\\\b(høst|vår|haust)semester(?:et)?\\\\s+\\\\d{4}\\\\b\"), or replace the match with a neutral 'I semesteret', so the compound label and its year go together.",
+      "confidence": "high"
+    },
+    {
+      "target": "boilerplate",
+      "error_type": "boilerplate_left",
+      "severity": "low",
+      "prevalence": "widespread",
+      "example_course_ids": ["mf_RL1016-1_2025_autumn_1", "mf_SAM1050-1_2025_autumn_1", "mf_RL5065-1_2025_autumn_1"],
+      "evidence": "Tilgang til litteratur Noe av litteraturen er digital, annet finnes kun i papirutgave. Kompendier kan være tilgjengelige i Canvas.",
+      "description": "Plans contain MF-wide page boilerplate that is not course content. The same four-line library-access notice ('Tilgang til litteratur … Dersom du ikke kan komme til MF, kan du søke om tilgang via ditt lokale folkebibliotek.') appears in 41/51 plans, and navigation link labels remain: 'Timeplan' in 51/51 and 'Søk opptak' in 8/51. .anon_mf() already strips sibling UI strings ('Vis flere', 'Kontakt studieveileder') and the 'Studentlivet på MF' marketing tail, so this is the same kind of text the handler is meant to remove. It is not personal data. It adds identical non-course text (Oria, Nasjonalbiblioteket, Canvas) to every MF plan, which inflates text-length and similarity measures.",
+      "root_cause_hypothesis": "R/anonymize.R .anon_mf() only targets 'Emneansvarlig…$', 'Kontakt studieveileder' and 'Vis flere'. The library notice sits just before the Emneansvarlig block and the nav labels sit in the header, so neither is covered.",
+      "suggested_fix": "In .anon_mf(), add stringr::str_remove(\"Tilgang til litteratur\\\\s*\\\\n[\\\\s\\\\S]*?lokale folkebibliotek\\\\.\\\\s*\") and stringr::str_remove_all(\"(?m)^(?:Timeplan|Søk opptak)[ \\\\t]*\\\\n?\"), and add an MF snippet test in tests/testthat/test-anonymize.R.",
+      "confidence": "medium"
+    }
+  ]
+}

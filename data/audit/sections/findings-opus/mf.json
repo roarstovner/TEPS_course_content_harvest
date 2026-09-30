@@ -1,0 +1,130 @@
+{
+  "check": "sections",
+  "institution": "mf",
+  "model": "opus",
+  "n_courses_reviewed": 20,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "Section extraction for MF is poor, and the cause is systematic. MF pages use WordPress accordions (details.wp-block-mf-accordion-item > summary). The only h2 elements are 'Om studiet', 'Emneansvarlig' and 'Studentlivet på MF', so the configured html_headings/h2 strategy finds fewer than 3 sections and every course falls back to text_split on the unanonymized extracted_text. That heuristic treats any short line after a blank line as a heading if it contains a pattern keyword. It also never sees the intro block. As a result, course content, teaching methods and most prerequisites are never extracted. Arbeidskrav are filed under assessment. Learning outcomes lose or misroute bullets. Exam-date tables, credit-overlap text, library boilerplate and the course-owner contact block (names and @mf.no emails) end up in sections. All pre-pass flags are true positives: the course_content leak and boilerplate flags, the learning_outcomes leak->reading_list flag and the PPU1015 long flag. Institution-wide checks on sections_raw (51 mf courses) show the same patterns, so the problems are not limited to the sample.",
+  "findings": [
+    {
+      "target": "course_content",
+      "error_type": "missing_section",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": ["mf_SAM1080L-1_2025_spring_1", "mf_RL1016-1_2025_autumn_1", "mf_PED1010-1_2025_autumn_1"],
+      "evidence": "**course_content** (25 chars)  ⚑ flags: leak->coursework_requirements,boilerplate … Obligatoriske aktiviteter",
+      "description": "No course in the packet has its actual course description in course_content, for example 'Dette emnet gir en innføring i samfunnsvitenskapelige perspektiver på identitet …' in SAM1080L. The course_content row holds only the accordion label 'Obligatoriske aktiviteter' (19/20 packet courses; 39/51 mf courses). In the rest it holds the arbeidskrav list (PPU1020; 12/51 mf courses). In RL1013, the Delemne C description landed in learning_outcomes instead, because the line 'Delemne C: Kirkekunnskap (2,5 studiepoeng)' contains the substring 'kunnskap'. Every course needs this section, so downstream analysis of course topics gets nothing for MF.",
+      "root_cause_hypothesis": "The mf config (R/institution_config.R) has section_strategy='html_headings' with section_heading_level='h2'. On MF pages, h2 appears only on the accordion wrapper 'Om studiet' and on the 'Emneansvarlig'/'Studentlivet på MF' page chrome. extract_sections_html() therefore returns fewer than 3 sections, and extract_sections() falls back to extract_sections_text(). In the extracted text, the description sits after 'Timeplan / Kontakt studieveileder' with no heading before it, so current_section is NA and the text is dropped. 'Om studiet' matches the course_content pattern 'om studiet', so the next non-blank line, the first accordion summary 'Obligatoriske aktiviteter', becomes the course_content body.",
+      "suggested_fix": "Give mf a DOM strategy that fits its markup, modelled on extract_sections_nord(). (a) course_content is html_text2() of the intro block, div.wp-block-group immediately preceding div.template-study-subject__accordion (XPath preceding-sibling::div[contains(@class,'wp-block-group')][1]). (b) Each details.wp-block-mf-accordion-item maps its <summary> through match_heading_to_section() and takes div.wp-block-mf-accordion-item__body as the body. Also remove 'om studiet' from section_heading_patterns, or deny-list it; it is an accordion wrapper title, not a content heading. A quick check with extract_sections_uib(), whose details/summary pass already exists, correctly produced coursework_requirements, assessment and the full learning_outcomes for PRA1005.",
+      "confidence": "high"
+    },
+    {
+      "target": "coursework_requirements",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": ["mf_RL1016-1_2025_autumn_1", "mf_PED1010-1_2025_autumn_1", "mf_PPU1020-1_2025_autumn_1"],
+      "evidence": "**assessment** (865 chars) … Bestå et skrivekurs … Studenter som ikke oppfyller de obligatoriske aktivitetene, kan ikke gå opp til eksamen i emnet.",
+      "description": "The body of MF's 'Obligatoriske aktiviteter' accordion is a pass/approve gate: required attendance, approved assignments and 'Studenter som ikke oppfyller de obligatoriske aktivitetene, kan ikke gå opp til eksamen'. By the codebook this is coursework_requirements. In 18/20 packet courses (37/51 mf) it is filed at the top of the assessment row, before the graded exam description. In PPU1020 (12/51 mf) it is filed under course_content. Only RL1013 (2/51 mf) gets a coursework_requirements row. Assessment rows therefore mix gates with graded components, and coursework_requirements is almost always absent.",
+      "root_cause_hypothesis": "This happens in the text_split fallback, extract_sections_text(). The body's first line, 'For å få avsluttende vurdering må studenten:', is at most 80 characters, follows a blank line, and contains the assessment pattern 'avsluttende vurdering'. It is therefore taken as an assessment heading. The accordion summary 'Obligatoriske aktiviteter' itself is never tested, because it directly follows 'Om studiet' without a blank line. When the lead-in is longer than 80 characters ('… få godkjent følgende obligatoriske aktiviteter:') no heading fires, and the text stays in course_content. RL1013 works only because its lead-in is 'Listen over obligatoriske aktiviteter:'.",
+      "suggested_fix": "Use the summary-based mf strategy from the course_content finding. The summary 'Obligatoriske aktiviteter' already maps to coursework_requirements, because that pattern precedes the assessment patterns, and the whole body stays together. Independently, harden extract_sections_text() so body sentences cannot become headings. Accept a candidate only if it has at most 5 words, does not end with '.', and does not start with a lowercase letter. Also require patterns to match at word boundaries (\\\\b) rather than as a fixed substring.",
+      "confidence": "high"
+    },
+    {
+      "target": "learning_outcomes",
+      "error_type": "truncated",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": ["mf_PED1010-1_2025_autumn_1", "mf_PRA1001-1_2025_autumn_1", "mf_PPU1020-1_2025_autumn_1"],
+      "evidence": "Studenten har: god kunnskap om sosialisering og motivasjon for læring",
+      "description": "Individual outcome bullets silently disappear. Typically the first bullet after 'Studenten har:' is lost: 'god kunnskap om pedagogikk, med vekt på skolens oppgaver, læring og danning' in PED1010, 'bred kunnskap om samfunnsfaglig forskning …' in SAM1000L and 'inngående kunnskap om forholdet mellom utdanning og etikk' in PED5610. So are later bullets that follow a blank line, such as '-kunnskap om jødedom, islam, hinduisme buddhisme i Norge' in RL1010/RL1010L and 'har inngående kunnskap om og kan anvende pedagogisk teori på et avansert nivå' in PPU1020. In PRA1001 the only Kunnskap outcome is gone, leaving an empty 'Studenten har' stub. Across all mf courses, 39/51 lose at least one outcome, 89 bullets in total. This matches the known failure mode 'learning outcomes cut short'.",
+      "root_cause_hypothesis": "In extract_sections_text(), a line that follows a blank line, is at most 80 characters and contains a pattern substring is consumed as a heading. The heading line itself is discarded. MF's extracted_text puts a blank line between 'Studenten har:' and the first <li>, and outcome bullets naturally contain 'kunnskap', 'vurdering', 'litteratur' or 'eksamen'. So the first short bullet is read as a learning_outcomes sub-heading and dropped. Longer bullets over 80 characters survive, for example the first SAM1080L bullet.",
+      "suggested_fix": "Use the summary-based mf strategy, which takes the Læringsutbytte accordion body whole; the <p><b>Kunnskap</b></p> labels are then harmless. In extract_sections_text(), add the heading-candidate guards from the coursework finding: at most 5 words, a word-boundary match, no leading lowercase letter and no trailing period. A heading line should also never be discarded when it is longer than the matched pattern plus trailing ':'; keep it as content instead.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": ["mf_PRA1005-1_2025_autumn_1", "mf_PPU1015-1_2025_autumn_1", "mf_RL1013-1_2025_autumn_1"],
+      "evidence": "Emnet vurderes til bestått eller ikke bestått. god kunnskap om undervisning i religions- og livssynsemner",
+      "description": "The same false-positive headings also send body text to the wrong section. In PRA1005 the bullet 'god kunnskap om læring, arbeidsmåter og vurderingsformer' matches 'vurderingsformer', so the remaining four Kunnskap outcomes are appended to assessment. In PPU1015 the bullet 'orientere seg i og forholde seg kritisk til faglitteratur' matches 'litteratur', so three Generell kompetanse outcomes and the 'DELEMNE C: PRAKSIS 30 DAGER' label land in reading_list; this is the cause of the pre-pass 'long' flag. In RL1013 'Delemne C: Kirkekunnskap' matches 'kunnskap', so a course-content paragraph is filed as learning_outcomes. Across mf, 22 outcome bullets sit in a non-learning_outcomes section.",
+      "root_cause_hypothesis": "extract_sections_text() matches unanchored substrings with a first-match-wins order in section_heading_patterns, so 'vurderingsformer' (assessment) and 'litteratur' (reading_list) fire inside ordinary outcome sentences, and 'kunnskap' fires inside compounds like 'Kirkekunnskap'.",
+      "suggested_fix": "The same fixes apply as for the truncation finding: the mf DOM strategy, plus word-count, word-boundary and case guards on text_split heading candidates. With the DOM strategy only <summary> text is ever matched against the pattern table.",
+      "confidence": "high"
+    },
+    {
+      "target": "prerequisites",
+      "error_type": "missing_section",
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": ["mf_SAM1050-1_2025_autumn_1", "mf_PPU1015-1_2025_autumn_1", "mf_PPU1020-1_2025_autumn_1"],
+      "evidence": "Forkunnskapskrav: 140 stp. emner inkl PED1010 … Det anbefales at studenten har avlagt eksamen i SAM1000 eller tilsvarende.",
+      "description": "MF puts prerequisites in the intro block, as '<p><b>Forkunnskaper</b></p><p>…</p>' or as an inline 'Forkunnskapskrav: …' line. In the packet only SAM2080L gets a prerequisites row; SAM1050, PPU1015 and PPU1020 lose theirs completely. Across mf, 8/51 courses mention Forkunnskap and only 2 have a prerequisites row.",
+      "root_cause_hypothesis": "Three separate text_split artefacts, all in extract_sections_text(). (1) SAM1050: 'Forkunnskaper' opens prerequisites, but the content line itself is at most 80 characters, follows a blank line and contains 'eksamen', so it is consumed as an assessment heading and prerequisites ends up empty. (2) PPU1015: the whole line 'Forkunnskapskrav: 140 stp. …' matches 'forkunnskapskrav' and is consumed as a heading, and its inline content goes with it. (3) PPU1020: the line is over 80 characters and sits before any recognised heading, where current_section is NA, so it is dropped.",
+      "suggested_fix": "In the mf DOM strategy, split the intro block at <p><b>…</b></p> labels and at paragraphs beginning 'Forkunnskap(er|skrav):', and route each through match_heading_to_section(). For inline 'Label: content' lines in extract_sections_text(), split at the first ':' and treat the remainder as the first content line of the new section instead of discarding it.",
+      "confidence": "high"
+    },
+    {
+      "target": "teaching_methods",
+      "error_type": "missing_section",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": ["mf_SAM1000L-1_2025_autumn_1", "mf_PRA1005-1_2025_autumn_1", "mf_RL1014-1_2025_autumn_1"],
+      "evidence": "Arbeidsform og organisering … Undervisningen består av en kombinasjon av forelesninger, skriveseminarer, metodeseminarer og eksamensseminarer.",
+      "description": "No mf course has a teaching_methods row (0/51). The 'Arbeidsform og organisering' paragraphs exist in 8/51 plans (SAM1000L, PRA1004, PRA1005 in the packet) but are dropped with the intro block. In RL1014 the paragraph sits inside the Obligatoriske aktiviteter accordion and ends up in assessment. Teaching descriptions embedded in the intro prose, for example BAO2705's 'Undervisningen er delt inn i forelesninger og veiledning', are lost too.",
+      "root_cause_hypothesis": "section_heading_patterns (R/section_heading_map.R) has no singular 'arbeidsform'; it only has 'arbeidsformer' and 'arbeids- og undervisningsformer'. So 'Arbeidsform og organisering' never matches. In most courses the label is also in the intro block, which text_split never assigns to a section.",
+      "suggested_fix": "Add 'arbeidsform og organisering' and 'arbeidsform' as teaching_methods patterns, placed after the coursework/assessment rows. In the mf DOM strategy, split the intro block at the 'Arbeidsform og organisering' paragraph and route the paragraphs that follow it to teaching_methods.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "formatting_noise",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": ["mf_SAM1080L-1_2025_spring_1", "mf_RL1010-1_2025_autumn_1", "mf_PPU1020-1_2025_autumn_1"],
+      "evidence": "Skriftlig skoleeksamen - Ordinær eksamen Eksamensdato: 18. november 2026 Starttidspunkt: 9:00 Varighet: 4 timer Trekkfrist: 1. november 2026",
+      "description": "The 'Eksamensdatoer' accordion is appended to assessment: exam dates, start times, durations, withdrawal deadlines and grading dates. These are exam logistics, which the codebook excludes from assessment. It appears in 13/20 packet courses and 27/51 mf assessment rows. The data are also current-calendar values (2026/2027 dates) attached to 2025 offerings. The sub-headers for resit sittings are dropped while their dates are kept, so the table is incoherent as well.",
+      "root_cause_hypothesis": "The label 'Eksamensdatoer' matches the assessment pattern 'eksamen' in R/section_heading_map.R. In the DOM it is a separate accordion item (details#examen) with a dl/dt/dd table.",
+      "suggested_fix": "In match_heading_to_section(), deny-list 'eksamensdatoer' and 'eksamensdato' (return NA), next to the existing 'eksamensspråk' denylist. In the mf DOM strategy, skip details#examen entirely.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "other",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": ["mf_SAM1080L-1_2025_spring_1", "mf_PRA1005-1_2025_autumn_1", "mf_SAM1040L-1_2025_autumn_1"],
+      "evidence": "Emneansvarlig … Studentlivet på MF Vurderer du å studere på MF? Bli litt bedre kjent med hvordan det er å være MF-student: Les studenthistorier Studenttilbud og -miljø",
+      "description": "Page chrome after the accordion is appended to whichever section is last: reading_list in 41/51 mf courses, learning_outcomes in the 10 practicum courses without a Litteraturliste (PRA1001/1004/1005). This chrome is the 'Emneansvarlig' contact card, with the course owner's first name, full name, job title and @mf.no email, plus the 'Studentlivet på MF' promo links. Every one of the 51 mf courses has an @mf.no address in sections_raw. The anonymized course_plan does not contain this block, so the section data re-introduces personal data that the anonymization step removed, besides being navigation noise.",
+      "root_cause_hypothesis": "The text_split fallback runs on the raw, unanonymized extracted_text (the selector is 'main', which includes the contact block). 'Emneansvarlig' and 'Studentlivet på MF' match no pattern, so nothing closes the previous section. More generally, run_extract_sections.R feeds extracted_text, not course_plan, to extract_sections(), so any text_split institution can leak PII the same way.",
+      "suggested_fix": "Restrict the mf section container to div.template-study-subject__accordion plus the intro block, excluding #studentradgiver / .template-study-subject__contact. Add stop headings to match_heading_to_section() that close the current section and return NA: 'emneansvarlig', 'studentlivet', 'kontakt', 'overlappende emner'. As a safety net, run anonymize_fulltext(institution, raw_text) over sections_raw before saving, or strip e-mail addresses in .clean_section_text().",
+      "confidence": "high"
+    },
+    {
+      "target": "reading_list",
+      "error_type": "boilerplate_only",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": ["mf_RL1014-1_2025_autumn_1", "mf_PED5610-1_2025_autumn_1", "mf_BAO2705-1_2025_autumn_1"],
+      "evidence": "Noe av litteraturen er digital, annet finnes kun i papirutgave. Kompendier kan være tilgjengelige i Canvas.",
+      "description": "MF publishes its reading lists in Leganto, and the page has only a link 'Litteraturlisten for <semester>'. The reading_list row therefore consists of the identical 4-sentence 'Tilgang til litteratur' library-access notice, which is institution-wide boilerplate, followed by the contact/navigation chrome. The only course-specific part, the link label, is often not even in reading_list: in 18/51 mf courses 'Litteraturliste / Litteraturlisten for høst 2026' is attached to learning_outcomes instead (see the merged_sections finding). No MF reading_list row contains actual literature.",
+      "root_cause_hypothesis": "The 'Tilgang til litteratur' h4 block (#block-emnelegantoinfo) sits inside the Litteraturliste accordion body. In text_split its label matches the pattern 'litteratur' and opens reading_list.",
+      "suggested_fix": "In the mf strategy, drop #block-emnelegantoinfo from the Litteraturliste body. Emit reading_list as just the link text plus href (the Leganto list URL), in line with the codebook's 'if the reading list is only a link, return a single string capturing it'. Also consider a harvest-side follow-up to fetch the public Leganto list.",
+      "confidence": "high"
+    },
+    {
+      "target": "learning_outcomes",
+      "error_type": "merged_sections",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": ["mf_RL1014-1_2025_autumn_1", "mf_RL1016-1_2025_autumn_1", "mf_SAM1000L-1_2025_autumn_1"],
+      "evidence": "studenter som har KRLE1021 fra før, vil få 5 poeng uttelling for RL1014 på karakterutskriften eller vitnemålet. Litteraturliste Litteraturlisten for høst 2026",
+      "description": "The learning_outcomes row absorbs the following accordion items. First, the 'Overlappende emner' credit-reduction text, for example 'Studenter som har K1020 fra før, vil få 5 poeng uttelling …'. This is administrative and belongs to no canonical section; it appears in 29/51 mf learning_outcomes rows. Second, the 'Litteraturliste / Litteraturlisten for <semester>' label, which belongs to reading_list (18/51). This confirms the pre-pass leak->reading_list flag.",
+      "root_cause_hypothesis": "In the extracted text, the accordion summaries 'Overlappende emner' and 'Litteraturliste' directly follow the last <li> with no blank line. extract_sections_text() therefore never tests them as headings, and they are appended to learning_outcomes. 'Overlappende emner' would map to nothing anyway, which is the known failure mode 'headings that map to nothing'.",
+      "suggested_fix": "In the mf DOM strategy every <summary> is a boundary, regardless of blank lines. Add 'overlappende emner' (and 'studiepoengsreduksjon') as a drop/stop heading returning NA in match_heading_to_section(), so its body is discarded rather than appended.",
+      "confidence": "high"
+    }
+  ]
+}

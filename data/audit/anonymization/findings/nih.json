@@ -1,0 +1,22 @@
+{
+  "check": "anonymization",
+  "institution": "nih",
+  "model": "opus",
+  "n_courses_reviewed": 8,
+  "n_suspects_reviewed": 0,
+  "overall_assessment": "Anonymization is safe for NIH. The packet and a scan of all 81 offerings found no names, e-mails or phone numbers, and nothing was over-removed (only whitespace changes). The one real gap is administrative semester-year stamps in inflected form ('høsten 2024', 'våren 2025', 'høsten2025') on the reading-list link line. The generic season+year regex only matches the bare forms 'Høst 2024'/'Vår 2025', so these stamps stay in about 38% of NIH plans.",
+  "findings": [
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": ["nih_LKI236-1_2025_spring_1", "nih_LKI510-1_2025_autumn_2"],
+      "evidence": "Pensumliste for våren 2025.",
+      "description": "Semester labels with a year must be removed under the rubric, but they survive on the reading-list line under 'Kjernelitteratur': 'Pensumliste for våren 2025.' (LKI236) and 'Anbefalt litteratur for høsten2025.' (LKI510, with no space before the year). A scan of all 81 NIH offerings finds this line in 31 plans, in variants such as 'Pensumliste/Pensumlista for høsten 2024.', '… for høsten 2024 og våren 2025.' and '… for høsten 2025-våren 2026.'. The stamps also get through dedup normalization, because normalize_plan_text() strips only the bare words '\\b(høst|vår)\\b', not 'høsten'/'våren', and its year regex cannot match the glued form 'høsten2025'. Plans with otherwise identical content from spring and autumn offerings can therefore get different plan_content_ids. Outside the packet, a related gap is hyphenated academic years in another NIH boilerplate sentence ('Studiehåndbok 2023-2024', 'studieåret 2023- 2024' plus an archive URL ending '/2023-2024/', about 14 plans). The slash-only pattern \\d{4}/\\d{2,4} does not catch these.",
+      "root_cause_hypothesis": "R/anonymize.R .anon_generic(): the pattern '(?i)(høst|vår|haust|autumn|spring|sommer|summer)\\s+(\\d{4})' requires whitespace right after the base season word. It misses the definite forms 'høsten'/'våren'/'hausten' and the glued 'høsten2025' (probably a missing space between HTML text nodes in the link label). NIH has no .anon_nih() handler. The academic-year pattern '\\b\\d{4}/\\d{2,4}\\b' only handles slashes.",
+      "suggested_fix": "Add .anon_nih() to the switch in .anon_institution() with str_replace_all(\"(?mi)^(Pensumlist[ea]|Anbefalt litteratur) for (?:høsten|våren)\\\\s*\\\\d{4}(?:\\\\s*(?:og|-)\\\\s*(?:høsten|våren)\\\\s*\\\\d{4})?\\\\.?[ \\\\t]*$\", \"\\\\1.\"). Also add str_remove_all(\"(?i)(?<=studiehåndbok |studieåret )\\\\d{4}\\\\s*-\\\\s*\\\\d{2,4}\") and remove the '/\\\\d{4}-\\\\d{4}/' archive-URL year segment. Alternatively, widen the generic rule to '(?i)\\\\b(høst|vår|haust)(?:en)?\\\\s*\\\\d{4}\\\\b', accepting a small risk for historical 'våren 1940'-type content. In normalize_plan_text(), extend the season regex to '\\\\b(høst|vår|haust)(?:en|a)?\\\\b' so these words cannot split dedup hashes. Add tests to tests/testthat/test-anonymize.R for 'Pensumliste for våren 2025.' and 'Anbefalt litteratur for høsten2025.'.",
+      "confidence": "high"
+    }
+  ]
+}

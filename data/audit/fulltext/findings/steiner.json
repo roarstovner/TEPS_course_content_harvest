@@ -1,0 +1,46 @@
+{
+  "check": "fulltext",
+  "institution": "steiner",
+  "model": "sonnet",
+  "n_courses_reviewed": 8,
+  "n_suspects_reviewed": 0,
+  "overall_assessment": "Steiner text comes from PDF course plans and is largely complete (learning outcomes, content, work requirements, assessment all present) with a consistent facts box. Problems are one clear wrong-course mismatch and recurring PDF artefacts (page numbers, hard line wraps, stray page-break blank lines).",
+  "findings": [
+    {
+      "target": "whole_text",
+      "error_type": "wrong_page",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": ["steiner_M-PEL2.2_2025_spring_1"],
+      "evidence": "Pedagogikk og elevkunnskap 1, emne 5\n\nEmnekode og emnenavn                 PEL1.5 Pedagogikk og elevkunnskap 1, emne 5. FoU-\noppgave",
+      "description": "The offering is M-PEL2.2 (Pedagogikk og elevkunnskap 2, emne 2) but the extracted text is the plan for PEL1.5 (Pedagogikk og elevkunnskap 1, emne 5, FoU-oppgave), a different course. The plan for this course code is therefore not captured at all. Only 1 of 8 sampled courses, but such mismatches are silent.",
+      "root_cause_hypothesis": "pdf_split strategy maps course codes to PDF sections/pages by code or position; M-PEL2.2 is mapped to the wrong section (or the split looks up the wrong code pattern, e.g. PEL2.2 falling back to a neighbouring/PEL1.5 section).",
+      "suggested_fix": "In the pdf_split routine, verify that the 'Emnekode og emnenavn' line in the split text contains the requested code (normalised, e.g. PEL2.2 from M-PEL2.2) and set extracted_text to NA when it does not; then fix the code-to-section mapping for PEL2.x (check whether the PDF actually contains PEL2.2).",
+      "confidence": "high"
+    },
+    {
+      "target": "page_chrome",
+      "error_type": "junk_included",
+      "severity": "low",
+      "prevalence": "widespread",
+      "example_course_ids": ["steiner_M-NAT1_2_2025_spring_1", "steiner_M-NOR1_1_2025_spring_1", "steiner_M-MAT1_1_2025_spring_1"],
+      "evidence": "kan gi læringsrettet tilbakemelding og vurdering i naturfagene\n\n10\n\n   kan anvende naturfaglige kunnskaper",
+      "description": "Bare PDF page numbers (e.g. '10', '11', '12', '9') appear as standalone lines, often in the middle of a bullet list or sentence, and trailing at the end of the text. Non-plan text per the rubric.",
+      "root_cause_hypothesis": "PDF text extraction (pdf_split in R/harvest_strategies.R) keeps the page footer number from each page; no post_fn removes it.",
+      "suggested_fix": "Add a post-processing step for steiner that removes lines matching ^\\s*\\d{1,3}\\s*$ and rejoins the text across the page break.",
+      "confidence": "high"
+    },
+    {
+      "target": "whole_text",
+      "error_type": "formatting",
+      "severity": "low",
+      "prevalence": "widespread",
+      "example_course_ids": ["steiner_M-SAM1_1_2025_spring_1", "steiner_M-MAT1_1_2025_spring_1", "steiner_M-PEL2.2_2025_spring_1"],
+      "evidence": "kan lede læringsprosesser i begynneropplæringen med vekt på å historiefagets\n\nidentitetsdannende kvaliteter, samt utvikle grunnleggende ferdigheter",
+      "description": "PDF layout leaks into the text: lines are hard-wrapped mid-sentence, bullets appear as mixed glyphs/indentation ('•' and blank-indented items), sentences are split by blank lines at page breaks, words are hyphen-wrapped ('FoU-\\noppgave'), and facts-box labels are aligned with runs of spaces. Structure is readable but bullets/paragraphs cannot be told from wrapped lines.",
+      "root_cause_hypothesis": "Plain PDF text extraction with layout preservation (pdftools/pdf_text) without reflow.",
+      "suggested_fix": "Add a post_fn that joins wrapped lines within a paragraph (line not ending in punctuation followed by lowercase start), dehyphenates, normalises bullet characters to '- ', collapses runs of spaces in the facts box, and removes blank lines inside a sentence.",
+      "confidence": "medium"
+    }
+  ]
+}

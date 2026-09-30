@@ -1,0 +1,46 @@
+{
+  "check": "sections",
+  "institution": "nih",
+  "model": "opus",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "Section extraction for NIH is highly accurate. The html_headings strategy splits on the FS/Vortex h2 headings (Kort om emnet, Læringsutbytte, Læringsformer og aktiviteter, Arbeidskrav, Vurdering/eksamen, Kjernelitteratur), and in all 28 courses content, outcomes, teaching, coursework and assessment are complete and correctly separated. All pre-pass leak-> flags are false alarms: body text that starts with a heading keyword ('Emnets innhold belyses…', the list item 'Undervisningsopplegg', 'Arbeidskravsanalyse') is not an h2, so the DOM walk correctly does not split there. The reading_list empty/long flags come from pointer-only literature notes. There are two real defects: admission text in prerequisites and WISEflow plagiarism boilerplate in assessment.",
+  "findings": [
+    {
+      "target": "prerequisites",
+      "error_type": "boilerplate_only",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": ["nih_LKI110-1_2025_autumn_1", "nih_LKI226-1_2025_autumn_1", "nih_LKI430-1_2025_autumn_1"],
+      "evidence": "Forkrav Ingen emner i programmet Hvem kan ta dette emnet? Programstudenter LUPE",
+      "description": "In the newer (2025) NIH layout the extractor merges two h2 blocks into prerequisites: 'Forkrav' and 'Hvem kan ta dette emnet?'. The second block holds only study-right or admission text ('Programstudenter LUPE'; elsewhere in NIH 'Studenter ved årsstudiet Treningslære og LUPE (Fag 2).'). The codebook explicitly excludes this from prerequisites. The 'Forkrav' text in every packet example is 'Ingen emner i programmet', which means no prerequisite courses, so it is really an absence placeholder. The result is a prerequisites row of 'Ingen emner i programmet\\n\\nProgramstudenter LUPE' with no real prerequisite content. Any presence or absence coding of prerequisites for these courses is wrong. All four 2025 courses in the packet are affected. Across the institution, 23 of 81 NIH courses have a prerequisites row and nearly all end with the admission line.",
+      "root_cause_hypothesis": "R/section_heading_map.R maps the pattern 'hvem kan ta dette emnet' to prerequisites, so extract_sections_html() puts the admission block into the same bucket as 'Forkrav'. .keep_section_row() in R/extract_sections.R drops only a bare 'Ingen', not 'Ingen emner i programmet' or 'Ingen krav til emner'.",
+      "suggested_fix": "(1) Remove 'hvem kan ta dette emnet' from section_heading_patterns, or add it to the NA denylist in match_heading_to_section(). The h2 then closes the Forkrav section and its admission text is dropped. The codebook excludes study-right text for every institution, so this is safe globally. (2) In .keep_section_row(), treat prerequisites text matching '^ingen( krav til)? emner( i programmet)?\\\\.?$' (case-insensitive) as an absence placeholder and drop it. Keep variants that carry content, such as 'Ingen emner i programmet. Emnet er knyttet opp mot LKI205 …'.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "formatting_noise",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": ["nih_LKI110-1_2021_autumn_2", "nih_LKI235-1_2023_autumn_2", "nih_LKI226-1_2025_autumn_1"],
+      "evidence": "Vi gjør oppmerksom på at oppgaver som leveres i WISEflow vil bli kjørt gjennom plagiatkontrollprogrammet Urkund.",
+      "description": "The assessment text is otherwise correct, but it often ends with a generic plagiarism-check notice. This is administrative boilerplate, not assessment design, and the codebook says to strip it. The wording varies by year: 'Vi gjør oppmerksom på … plagiatkontrollprogrammet Urkund', 'Det gjøres oppmerksom på at oppgaver som leveres i WISEflow vil bli kjørt gjennom plagiatkontroll', '… leveres i Canvas og WISEflow blir sjekket for plagiat'. Because of these variants, the pre-pass boilerplate flag (identical text in 25 or more courses) never fires. The notice appears in 9 of 28 packet courses and 28 of 81 NIH assessment rows. There are also a few minor exam-logistics fragments in the same section, for example 'Tillatte hjelpemidler: Kalkulator' in LKI235 and 'Leveres til midtveisevaluering i perioden uke 40-42.' in LKI100 2025.",
+      "root_cause_hypothesis": "NIH puts the notice inside the 'Vurdering/eksamen' h2 block. Neither .clean_section_text() in R/extract_sections.R nor .anon_nih() in R/anonymize.R strips it; the text is also present in course_plan.",
+      "suggested_fix": "In .clean_section_text(), when section == 'assessment', remove lines matching '(?im)^.*oppmerksom på at oppgaver som leveres i .*(plagiat|urkund).*$' and '(?im)^.*(blir sjekket for|kjørt gjennom) plagiat.*$', then trimws(). This is a fixed-phrase, high-precision rule, so it fits the file's 'cheap, high-precision cleanup' scope. The same regex could also go into .anon_nih() so that course_plan is cleaned as well.",
+      "confidence": "high"
+    },
+    {
+      "target": "reading_list",
+      "error_type": "empty_placeholder",
+      "severity": "low",
+      "prevalence": "widespread",
+      "example_course_ids": ["nih_LKI120-1_2021_autumn_2", "nih_LKI236-1_2024_spring_2", "nih_LKI111-1_2024_autumn_1"],
+      "evidence": "Kjernelitteratur Se emnearkivet … Kjernelitteratur Pensumliste for høsten 2024.",
+      "description": "No NIH reading_list row contains any literature. Every row is one of three kinds of pointer, and together they account for the pre-pass flags on reading_list. (a) 'Se emnearkivet' is a pure cross-reference placeholder, flagged 'empty' (8 of the 20 suspects). (b) The 2023-24 transitional note 'Ettersom vi er i en overgangsfase … Studiehåndbok 2023-2024 …' is flagged 'long', but only as a length artifact within the institution. (c) 'Pensumliste for høsten 2024.' and 'Pensumlista for høsten 2025.' are the anchor text of a link to an external SharePoint document; html_text2() drops the href. The codebook allows a link-only note to be kept as one string, so the extractor copies the plan faithfully. The flags are false alarms as extraction errors. Downstream users should still know that NIH reading_list rows carry no literature, and that 'Se emnearkivet' rows are empty placeholders.",
+      "root_cause_hypothesis": "NIH does not publish its syllabus on the course page; it lives in an archive or in a SharePoint document. The html_headings DOM walk keeps only the link text. This is a source limitation, not a splitter bug.",
+      "suggested_fix": "In .keep_section_row(), drop reading_list rows that match '^se emnearkivet\\\\.?$' (case-insensitive). Optionally add a reading_list_pointer_only flag for rows matching '^(pensumlist[ae]|ettersom vi er i en overgangsfase)'. Do not naively append the <a href>: the SharePoint URLs contain personal staff paths (personal/<username>_nih_no), which would add PII.",
+      "confidence": "medium"
+    }
+  ]
+}

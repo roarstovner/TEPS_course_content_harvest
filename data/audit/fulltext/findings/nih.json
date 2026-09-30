@@ -1,0 +1,46 @@
+{
+  "check": "fulltext",
+  "institution": "nih",
+  "model": "sonnet",
+  "n_courses_reviewed": 10,
+  "n_suspects_reviewed": 2,
+  "overall_assessment": "Extraction with .fs-body is clean and faithful for the fetched pages: no chrome, no wrong-year or wrong-page content, and uncaptured text is only breadcrumb, title, contact name and FS timestamp. The two 'short' suspects are false alarms (courses genuinely lack a 'Kort om emnet' section). Remaining issues are the empty reading list and possibly missing facts-box metadata, plus a high 404 rate.",
+  "findings": [
+    {
+      "target": "reading_list",
+      "error_type": "missing_content",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": ["nih_LKI221-1_2024_autumn_1", "nih_LKI105-1_2023_spring_1", "nih_LKI106-1_2025_spring_1"],
+      "evidence": "Kjernelitteratur\nPensumliste for våren 2025.",
+      "description": "The reading list section is either an empty 'Kjernelitteratur' heading (e.g. LKI221 ends with it), a pointer ('Se emnearkivet') or a placeholder sentence; no actual literature is captured. The missing text is not listed under uncaptured page text, so the literature is probably loaded separately (external list or dynamic element) and is not inside .fs-body in the fetched HTML.",
+      "root_cause_hypothesis": "Reading list is rendered from a separate source (e.g. Leganto/pensum link or JS) not present in the static HTML fetched by the standard strategy.",
+      "suggested_fix": "Inspect the raw html of a course for a literature link/iframe; if a URL exists, fetch it in a custom strategy, or at least drop empty trailing 'Kjernelitteratur' headings and record reading_list as NA.",
+      "confidence": "medium"
+    },
+    {
+      "target": "metadata",
+      "error_type": "missing_content",
+      "severity": "low",
+      "prevalence": "widespread",
+      "example_course_ids": ["nih_LKI105-1_2023_spring_1", "nih_LKI510-1_2025_autumn_2"],
+      "evidence": "1 år\", \"½ år\", \"Ansvarlig avdeling:",
+      "description": "The recurring-lines list shows the page has a facts box (duration, 'Ansvarlig avdeling:', presumably credits/level), but none of the extracted texts contain credits, level, language or responsible department; the .fs-body selector seems to cover only the plan sections.",
+      "root_cause_hypothesis": "Facts box sits outside .fs-body; selector in R/institution_config.R is single and narrow.",
+      "suggested_fix": "Check the page HTML for the facts-box container and switch nih to selector_mode 'multi' with both .fs-body and the facts-box selector, if metadata is wanted in the text.",
+      "confidence": "low"
+    },
+    {
+      "target": "whole_text",
+      "error_type": "empty_or_failed",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": ["nih_LKI152-1_2024_spring_2"],
+      "evidence": "Fetch error: HTTP 404 Not Found.",
+      "description": "103 of 184 offerings (56%) return 404. Many are probably courses not offered in that year, but the sampled failure is an English-language (ENG) course, which may live under a different URL pattern (English site) than the Norwegian /studier/emner/{year}/{var|host}/{code}.html.",
+      "root_cause_hypothesis": "add_course_url_nih builds only the Norwegian URL; English courses or courses whose plan spans two semesters may have different paths.",
+      "suggested_fix": "Check the 404 list by language and status; for ENG courses try the English site path (e.g. nih.no/en/studies/courses/...) in R/add_course_url.R.",
+      "confidence": "low"
+    }
+  ]
+}

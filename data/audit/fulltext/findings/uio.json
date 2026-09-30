@@ -1,0 +1,34 @@
+{
+  "check": "fulltext",
+  "institution": "uio",
+  "model": "sonnet",
+  "n_courses_reviewed": 8,
+  "n_suspects_reviewed": 0,
+  "overall_assessment": "UiO extraction works well: all 8 fetched pages yield the full plan (description, learning outcomes, admission, teaching, exam) with readable structure, and no pre-pass flags fired. The only systematic defect is a generic UiO-wide exam-links boilerplate block appended to every text; the facts box (credits, level) appears not to be captured.",
+  "findings": [
+    {
+      "target": "page_chrome",
+      "error_type": "junk_included",
+      "severity": "low",
+      "prevalence": "widespread",
+      "example_course_ids": ["uio_PROMO5-1_2025_spring_3", "uio_SVLEP1000-1_2025_spring_1", "uio_HIS4015L-1_2025_spring_1"],
+      "evidence": "Mer om eksamen ved UiO\nKildebruk og referanser\nHvordan bruke KI som student\nTilrettelegging på eksamen\nTrekk fra eksamen",
+      "description": "Every extracted text ends with the same generic UiO-wide 'Mer om eksamen ved UiO' link list and the sentence 'Andre veiledninger og ressurser finner du på fellessiden om eksamen ved UiO.' This is site-wide boilerplate, not part of this course's plan, and it adds identical noise to all 8 of 8 texts (and will inflate similarity/dedup signals).",
+      "root_cause_hypothesis": "Selector #vrtx-course-content includes the shared exam-info widget at the end of the exam section; no post_fn strips it.",
+      "suggested_fix": "Add a post_fn for uio in R/institution_config.R that removes everything from the line 'Mer om eksamen ved UiO' to the end of the text (including 'Andre veiledninger og ressurser finner du på fellessiden om eksamen ved UiO.'), or drop that node via a pre_fn before html_text.",
+      "confidence": "high"
+    },
+    {
+      "target": "metadata",
+      "error_type": "missing_content",
+      "severity": "low",
+      "prevalence": "widespread",
+      "example_course_ids": ["uio_SVLEP1000-1_2025_spring_1", "uio_TYSK4091-1_2025_spring_1"],
+      "evidence": "Sist hentet fra FS (Felles studentsystem) 30. sep. 2026 13:47:28",
+      "description": "The facts box (credits, level, teaching semester, language) is not in any extracted text; the page text outside the selector shows only breadcrumbs, title and FS timestamp, and credits/level lines appear to have been filtered as recurring chrome, so they are not visible for verification. Metadata like credits and level is available from DBH, so impact is small.",
+      "root_cause_hypothesis": "Facts box lies outside #vrtx-course-content.",
+      "suggested_fix": "Only if facts-box data is wanted from the page: add a second selector (selector_mode multi) for the UiO course-facts element; otherwise rely on DBH metadata.",
+      "confidence": "low"
+    }
+  ]
+}
