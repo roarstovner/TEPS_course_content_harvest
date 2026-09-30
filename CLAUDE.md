@@ -107,12 +107,12 @@ Takes combined data with `course_plan` column, normalizes text, builds content h
 ### Harvest a single institution:
 
 ```r
-source("R/institution_config.R")
 source("R/utils.R")
 source("R/add_course_url.R")
 source("R/resolve_course_urls.R")
 source("R/fetch_html_cols.R")
 source("R/extract_fulltext.R")
+source("R/institution_config.R")
 source("R/checkpoint.R")
 source("R/harvest_strategies.R")
 source("R/harvest.R")
