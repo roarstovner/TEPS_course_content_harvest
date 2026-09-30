@@ -470,7 +470,7 @@ harvest_json_extract <- function(df, config, refetch = FALSE) {
 
   unique_codes <- df |>
     dplyr::distinct(Emnekode, .keep_all = TRUE) |>
-    dplyr::select(Emnekode, url, institution_short) |>
+    dplyr::select(Emnekode, url, institution) |>
     dplyr::filter(!is.na(url)) |>
     dplyr::mutate(course_id = paste0("nla_", Emnekode))
 

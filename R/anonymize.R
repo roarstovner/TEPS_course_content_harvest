@@ -5,15 +5,15 @@
 #' Removes PII (names, emails, phone numbers), dates, years, seasons,
 #' and institution-specific boilerplate. Preserves case and paragraph structure.
 #'
-#' @param institution_short Character vector of institution short names.
+#' @param institution Character vector of institution short names.
 #' @param fulltext Character vector of raw extracted text.
 #' @param .progress Passed to purrr::map2_chr for progress reporting.
 #' @return Character vector of anonymized text. NA input -> NA output.
-anonymize_fulltext <- function(institution_short, fulltext,
+anonymize_fulltext <- function(institution, fulltext,
                                .progress = "Anonymizing fulltext") {
-  stopifnot(length(institution_short) == length(fulltext))
+  stopifnot(length(institution) == length(fulltext))
 
-  purrr::map2_chr(institution_short, fulltext, \(inst, txt) {
+  purrr::map2_chr(institution, fulltext, \(inst, txt) {
     if (is.na(txt) || !nzchar(txt)) return(NA_character_)
 
     txt <- .anon_institution(inst, txt)

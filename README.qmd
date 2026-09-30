@@ -25,12 +25,12 @@ The main entry points are in `R/harvest.R`:
 #| eval: false
 
 # Load all pipeline functions
-source("R/institution_config.R")
 source("R/utils.R")
 source("R/add_course_url.R")
 source("R/resolve_course_urls.R")
 source("R/fetch_html_cols.R")
 source("R/extract_fulltext.R")
+source("R/institution_config.R")
 source("R/checkpoint.R")
 source("R/harvest_strategies.R")
 source("R/harvest.R")
@@ -163,7 +163,7 @@ courses |> slice(1:2)
 ```
 
 Key columns:
-- `institution_short`: Short code (e.g., "oslomet", "uia")
+- `institution`: Short code (e.g., "oslomet", "uia")
 - `Emnekode_raw`: Original course code from DBH
 - `Emnekode`: Normalized course code (trailing numbers removed)
 - `Årstall`: Year
@@ -197,7 +197,7 @@ Generates the correct URL for each course based on institution-specific patterns
 ### `fetch_html_with_checkpoint(courses, checkpoint_path, .progress = TRUE)`
 Downloads HTML from URLs with automatic checkpointing. Skips already-downloaded courses.
 
-### `harvest_institution(institution_short, courses, year, refetch)`
+### `harvest_institution(institution, courses, year, refetch)`
 Main entry point: harvests a single institution using its configured strategy.
 
 ### `harvest_all(courses, year, refetch, institutions)`
@@ -205,9 +205,9 @@ Loops through all (or specified) institutions, harvests each, saves results.
 
 ### `validate_courses(df, stage)`
 Validates that required columns exist at each pipeline stage:
-- `"initial"`: institution_short, Emnekode, Årstall
-- `"with_url"`: institution_short, course_id, url
-- `"with_html"`: institution_short, course_id, url, html, html_success
+- `"initial"`: institution, Emnekode, Årstall
+- `"with_url"`: institution, course_id, url
+- `"with_html"`: institution, course_id, url, html, html_success
 
 ## Troubleshooting
 

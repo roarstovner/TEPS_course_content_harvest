@@ -36,14 +36,14 @@ cat("Expected: LH-NOD1000 and LRFY240 should have URLs, FAKE999 should be NA\n")
 courses <- readRDS(here::here("data/courses.RDS"))
 
 hits <- courses |>
-  filter(institution_short == "usn") |>
+  filter(institution == "usn") |>
   add_course_id() |>
   filter(
     course_id %in% c("usn_MG1NO1-2_2025_autumn_1")
   ) |>
   add_course_url() |>
   resolve_course_urls(checkpoint_path = NULL) |>
-  select(course_id, institution_short, Årstall, Semesternavn, contains("url"))
+  select(course_id, institution, Årstall, Semesternavn, contains("url"))
 
 cat("\nResults for MG1NO1-2:\n")
 print(hits)

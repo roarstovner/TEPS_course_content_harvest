@@ -44,8 +44,8 @@ fetch_html_with_checkpoint <- function(courses,
                                        .progress = TRUE,
                                        config = NULL) {
   # 0) Guardrails: vi forventer disse kolonnene
-  if (!all(c("course_id", "url", "institution_short") %in% names(courses))) {
-    stop("courses must contain: course_id, url, institution_short")
+  if (!all(c("course_id", "url", "institution") %in% names(courses))) {
+    stop("courses must contain: course_id, url, institution")
   }
   
   # 1) Les eksisterende checkpoint (hvis finnes)
@@ -93,7 +93,7 @@ fetch_html_with_checkpoint <- function(courses,
     row <- to_fetch[i, ]
     html_cols <- fetch_html_cols(
       urls        = row$url,
-      institution = row$institution_short,
+      institution = row$institution,
       config      = config,
       .progress   = FALSE
     )

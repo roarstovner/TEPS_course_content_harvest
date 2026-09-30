@@ -13,7 +13,7 @@ plans <- readRDS("data/course_plans.RDS")
 # --- Summary table -----------------------------------------------------------
 
 summary_tbl <- df |>
-  group_by(institution_short) |>
+  group_by(institution) |>
   summarise(
     rows       = n(),
     codes      = n_distinct(Emnekode_raw),
@@ -30,7 +30,7 @@ summary_tbl <- df |>
     rate      = sprintf("%.1f%%", has_text / rows * 100),
     dedup_pct = sprintf("%.1f%%", (1 - unique_plans / has_plan_id) * 100)
   ) |>
-  select(institution_short, rows, codes, years, has_text, rate, median_chars, unique_plans, dedup_pct)
+  select(institution, rows, codes, years, has_text, rate, median_chars, unique_plans, dedup_pct)
 
 total_rows     <- nrow(df)
 total_text <- sum(df$has_extracted_text)
@@ -55,7 +55,7 @@ w("|------------|-----:|------:|-------|------------:|-----:|-------------:|----
 for (i in seq_len(nrow(summary_tbl))) {
   s <- summary_tbl[i, ]
   w(sprintf("| %s | %d | %d | %s | %d | %s | %d | %d | %s |",
-            s$institution_short, s$rows, s$codes, s$years,
+            s$institution, s$rows, s$codes, s$years,
             s$has_text, s$rate, s$median_chars, s$unique_plans, s$dedup_pct))
 }
 

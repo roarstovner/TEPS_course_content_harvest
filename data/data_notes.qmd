@@ -14,7 +14,7 @@ df    <- readRDS("course_offerings.RDS")
 plans <- readRDS("course_plans.RDS")
 
 summary_tbl <- df |>
-  group_by(institution_short) |>
+  group_by(institution) |>
   summarise(
     Rows         = n(),
     Codes        = n_distinct(Emnekode_raw),
@@ -31,7 +31,7 @@ summary_tbl <- df |>
     Rate      = sprintf("%.1f%%", `Extracted OK` / Rows * 100),
     `Dedup %` = sprintf("%.1f%%", (1 - `Unique plans` / has_plan_id) * 100)
   ) |>
-  select(Institution = institution_short, Rows, Codes, Years,
+  select(Institution = institution, Rows, Codes, Years,
          `Extracted OK`, Rate, `Median chars`, `Unique plans`, `Dedup %`)
 
 total_rows     <- nrow(df)

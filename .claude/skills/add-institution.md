@@ -5,7 +5,7 @@ Add support for harvesting course descriptions from a new Norwegian higher educa
 ## Usage
 
 ```
-/add-institution <institution_short_name>
+/add-institution <institution>
 ```
 
 ## Prerequisites
@@ -64,12 +64,12 @@ Adapt the URL pattern based on actual institution URLs. Check if the institution
 ### Step 3: Test with harvest_institution()
 
 ```r
-source("R/institution_config.R")
 source("R/utils.R")
 source("R/add_course_url.R")
 source("R/resolve_course_urls.R")
 source("R/fetch_html_cols.R")
 source("R/extract_fulltext.R")
+source("R/institution_config.R")
 source("R/checkpoint.R")
 source("R/harvest_strategies.R")
 source("R/harvest.R")

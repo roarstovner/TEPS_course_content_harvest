@@ -62,11 +62,11 @@ extract_fulltext_css <- function(html, selector, mode = "single",
   )
 )
 
-extract_fulltext <- function(institution_short, raw_html) {
+extract_fulltext <- function(institution, raw_html) {
   safe_extract_one  <- purrr::possibly(.extract_one,  otherwise = NA_character_)
   safe_extract_many <- purrr::possibly(.extract_many, otherwise = NA_character_)
 
-  purrr::map2_chr(institution_short, raw_html, \(inst, html) {
+  purrr::map2_chr(institution, raw_html, \(inst, html) {
     if (is.na(html) || !nzchar(html)) return(NA_character_)
 
     if (inst == "usn") return(.cleanup_usn_text(html))

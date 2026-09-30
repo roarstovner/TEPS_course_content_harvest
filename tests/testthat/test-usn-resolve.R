@@ -13,7 +13,7 @@ test_that("USN URL resolution handles LH-NOD1000 across multiple years", {
 
   test_data <- courses |>
     filter(
-      institution_short == "usn",
+      institution == "usn",
       Emnekode == "LH-NOD1000",
       Årstall %in% c(2024, 2022, 2018),
       Semesternavn == "Høst"

@@ -34,7 +34,7 @@ semester_to_url <- function(semester) {
 #' year, semester, and status information.
 #'
 #' @param dbh_df A data frame containing course information with columns:
-#'   `institution_short`, `Emnekode_raw`, `Årstall`, `Semesternavn`, and `Status`.
+#'   `institution`, `Emnekode_raw`, `Årstall`, `Semesternavn`, and `Status`.
 #'
 #' @return A data frame with an additional `course_id` column placed first.
 #'   The course_id format is: `{institution}_{code}_{year}_{semester}_{status}`.
@@ -47,7 +47,7 @@ add_course_id <- function(dbh_df) {
   dbh_df |>
     dplyr::mutate(
       course_id = paste(
-        institution_short,
+        institution,
         Emnekode_raw, # Using `Emnekode_raw` instead of `Emnekode` may result in fewer duplicates if the raw code is more granular, but could miss normalization or grouping benefits provided by `Emnekode`.
         Årstall,
         canon_semester_name(Semesternavn),
@@ -71,9 +71,9 @@ validate_courses <- function(df, stage = c("initial", "with_url", "with_html")) 
   stage <- match.arg(stage)
 
   required <- switch(stage,
-    initial = c("institution_short", "Emnekode", "Årstall"),
-    with_url = c("institution_short", "course_id", "url"),
-    with_html = c("institution_short", "course_id", "url", "html", "html_success"),
+    initial = c("institution", "Emnekode", "Årstall"),
+    with_url = c("institution", "course_id", "url"),
+    with_html = c("institution", "course_id", "url", "html", "html_success"),
     c() # default case: returns empty character vector if stage does not match
   )
   

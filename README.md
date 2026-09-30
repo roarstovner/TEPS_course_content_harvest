@@ -20,12 +20,12 @@ The main entry points are in `R/harvest.R`:
 
 ``` r
 # Load all pipeline functions
-source("R/institution_config.R")
 source("R/utils.R")
 source("R/add_course_url.R")
 source("R/resolve_course_urls.R")
 source("R/fetch_html_cols.R")
 source("R/extract_fulltext.R")
+source("R/institution_config.R")
 source("R/checkpoint.R")
 source("R/harvest_strategies.R")
 source("R/harvest.R")
@@ -189,7 +189,7 @@ courses |> slice(1:2)
 ```
 
     # A tibble: 2 × 25
-      institution_short Institusjonskode Institusjonsnavn       Avdelingskode
+      institution Institusjonskode Institusjonsnavn       Avdelingskode
       <chr>             <chr>            <chr>                  <chr>        
     1 uib               1120             Universitetet i Bergen 220440       
     2 uib               1120             Universitetet i Bergen 220440       
@@ -200,7 +200,7 @@ courses |> slice(1:2)
     #   `NUS-kode` <chr>, Status <int>, Statusnavn <chr>, Underv.språk <chr>,
     #   Navn <chr>, Fagkode <chr>, Fagnavn <chr>, `Oppgave (ny fra h2012)` <int>
 
-Key columns: - `institution_short`: Short code (e.g., “oslomet”,
+Key columns: - `institution`: Short code (e.g., “oslomet”,
 “uia”) - `Emnekode_raw`: Original course code from DBH - `Emnekode`:
 Normalized course code (trailing numbers removed) - `Årstall`: Year -
 `Semesternavn`: Semester name (“Vår” or “Høst”) - `Status`: Course
@@ -238,7 +238,7 @@ patterns.
 Downloads HTML from URLs with automatic checkpointing. Skips
 already-downloaded courses.
 
-### `harvest_institution(institution_short, courses, year, refetch)`
+### `harvest_institution(institution, courses, year, refetch)`
 
 Main entry point: harvests a single institution using its configured
 strategy.
@@ -251,8 +251,8 @@ results.
 ### `validate_courses(df, stage)`
 
 Validates that required columns exist at each pipeline stage: -
-`"initial"`: institution_short, Emnekode, Årstall - `"with_url"`:
-institution_short, course_id, url - `"with_html"`: institution_short,
+`"initial"`: institution, Emnekode, Årstall - `"with_url"`:
+institution, course_id, url - `"with_html"`: institution,
 course_id, url, html, html_success
 
 ## Troubleshooting

@@ -38,7 +38,7 @@ test_that("USN resolution works for specific course from courses.RDS", {
   courses <- readRDS(here::here("data/courses.RDS"))
 
   hits <- courses |>
-    filter(institution_short == "usn") |>
+    filter(institution == "usn") |>
     add_course_id() |>
     filter(course_id %in% c("usn_MG1NO1-2_2025_autumn_1")) |>
     add_course_url() |>
