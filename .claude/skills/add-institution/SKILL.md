@@ -1,3 +1,9 @@
+---
+name: add-institution
+description: Step-by-step procedure for adding harvesting support for a new Norwegian higher education institution — config entry in R/institution_config.R, URL builder in R/add_course_url.R, and a test harvest. Use when asked to add, onboard or support a new institution.
+argument-hint: <institution>
+---
+
 # Add Institution
 
 Add support for harvesting course descriptions from a new Norwegian higher education institution.

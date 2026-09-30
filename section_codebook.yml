@@ -68,7 +68,7 @@ prompt:
       outcome, one assessment component) — do not merge items into one blob,
       and do not split a single item across several strings.
   user: |
-    Institution: {institution_short}
+    Institution: {institution}
 
     Course plan text:
 

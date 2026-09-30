@@ -1,28 +1,26 @@
-# R/prepare_section_review.R
-# Build per-institution review packets for the section-extraction QA agents
-# (issue #200, stage A of the section-QA plan).
+# R/audit_prepare_sections.R
+# Build per-institution review packets for the `sections` audit
+# (.claude/skills/audit-institutions/checks/sections.md; issue #200).
 #
-# Each packet is a self-contained markdown file an in-Claude-Code review agent
-# reads to audit one institution's section extraction. It contains a stratified
-# sample of course offerings: deterministic SUSPECTS (from
-# sections_qa_suspects.RDS) plus a RANDOM control slice, each shown as
+# Each packet is a self-contained markdown file one review agent reads to audit
+# one institution's section extraction. It contains a stratified sample of
+# course offerings: deterministic SUSPECTS (from sections_qa_suspects.RDS) plus
+# a RANDOM control slice, each shown as
 #   (a) the full anonymized course_plan  — ground truth, and
 #   (b) the extractor's sections_raw rows — what to audit.
 #
-# The agent compares (b) against (a) using section_codebook.yml as the rubric
-# and emits findings per section_review_findings_schema.md. No API calls happen
-# here — this only prepares input files.
+# Inputs (regenerate in this order if stale):
+#   data/course_offerings_full.RDS   Rscript R/run_dedup.R
+#   data/sections_raw.RDS            Rscript R/run_extract_sections.R
+#   data/sections_qa_suspects.RDS    Rscript R/qa_sections.R
 #
 # Outputs:
-#   data/section_review/packets/{inst}.md
-#   data/section_review/manifest.csv
+#   data/audit/sections/packets/{inst}.md
+#   data/audit/sections/manifest.csv, sample.csv
 #
-# Run:  Rscript R/prepare_section_review.R
+# Run:  Rscript R/audit_prepare_sections.R [inst ...]
 
-suppressMessages({
-  library(dplyr)
-  library(stringr)
-})
+source("R/audit_utils.R")
 
 # ── Tunables ─────────────────────────────────────────────────────────────────
 SUSPECT_N   <- 20     # suspect courses per institution (distinct plans)
@@ -35,14 +33,21 @@ SECT_TRUNC  <- 5000   # max chars of each section raw_text shown. Must stay
                       # length is expected, judge it as such.
 SEED        <- 42
 
-out_dir <- "data/section_review/packets"
+CHECK   <- "sections"
+out_dir <- file.path(audit_dir(CHECK), "packets")
 dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
 
 # ── Load ─────────────────────────────────────────────────────────────────────
+audit_require_fresh("data/sections_raw.RDS", "data/course_offerings_full.RDS",
+                    "Run Rscript R/run_extract_sections.R.")
+audit_require_fresh("data/sections_qa_suspects.RDS", "data/sections_raw.RDS",
+                    "Run Rscript R/qa_sections.R.")
+
 sec      <- readRDS("data/sections_raw.RDS")
 suspects <- readRDS("data/sections_qa_suspects.RDS")
-plans    <- readRDS("data/courses_with_plan_id.RDS") |>
-  select(course_id, institution, course_plan, plan_content_id)
+plans    <- readRDS("data/course_offerings_full.RDS") |>
+  select(course_id, institution, course_plan, plan_content_id,
+         Emnekode_raw, Emnenavn, Årstall, Semesternavn)
 
 flag_cols <- c("flag_empty", "flag_short", "flag_long", "flag_blob",
                "flag_leak", "flag_dup_in_course", "flag_boilerplate")
@@ -62,78 +67,54 @@ susp_lbl <- suspects |>
 
 # Course-level suspicion score (sum of flags across its sections)
 course_score <- suspects |>
-  group_by(course_id, institution) |>
-  summarise(n_flags = sum(n_flags), .groups = "drop")
-
-trunc_note <- function(x, n) {
-  x <- x %||% ""
-  if (is.na(x)) x <- ""
-  if (nchar(x) > n) paste0(substr(x, 1, n), "\n…[truncated ", nchar(x) - n,
-                           " chars]") else x
-}
+  group_by(course_id) |>
+  summarise(score = sum(n_flags), .groups = "drop")
 
 # ── Per-institution packet builder ───────────────────────────────────────────
 institutions <- sort(unique(sec$institution))
+requested <- audit_args_institutions()
+if (length(requested) > 0) institutions <- intersect(institutions, requested)
 manifest <- list()
+sample   <- list()
 
 for (inst in institutions) {
-  set.seed(SEED)
-
   inst_plans <- plans |> filter(institution == inst)
   if (nrow(inst_plans) == 0) next
 
-  # Suspect courses: highest score first, one per distinct plan.
-  susp_ids <- course_score |>
-    filter(institution == inst) |>
-    inner_join(inst_plans, by = c("course_id", "institution")) |>
-    arrange(desc(n_flags)) |>
-    distinct(plan_content_id, .keep_all = TRUE) |>
-    head(SUSPECT_N) |>
-    pull(course_id)
-
-  # Random control: courses with extracted sections, not suspects, distinct plan.
+  # Courses with extracted sections are eligible as random controls; suspects
+  # are eligible regardless.
   have_sec_ids <- sec |> filter(institution == inst) |> pull(course_id)
-  rand_pool <- inst_plans |>
-    filter(course_id %in% have_sec_ids, !course_id %in% susp_ids) |>
-    distinct(plan_content_id, .keep_all = TRUE)
-  rand_ids <- if (nrow(rand_pool) > 0)
-    rand_pool |> slice_sample(n = min(RANDOM_N, nrow(rand_pool))) |> pull(course_id)
-  else character()
-
-  selected <- tibble(course_id = c(susp_ids, rand_ids),
-                     kind = c(rep("SUSPECT", length(susp_ids)),
-                              rep("RANDOM",  length(rand_ids))))
+  pool <- inst_plans |>
+    left_join(course_score, by = "course_id") |>
+    mutate(score = coalesce(score, 0)) |>
+    filter(score > 0 | course_id %in% have_sec_ids) |>
+    transmute(course_id, dedup_key = plan_content_id, score)
+  selected <- audit_sample(pool, SUSPECT_N, RANDOM_N, SEED)
   if (nrow(selected) == 0) next
 
-  lines <- c(
-    sprintf("# Section-extraction review packet — %s", inst),
-    "",
-    sprintf("%d courses: %d suspects + %d random controls.",
-            nrow(selected), length(susp_ids), length(rand_ids)),
-    "",
-    "Read `section_codebook.yml` (section definitions = the rubric) and",
-    "`section_review_findings_schema.md` (your output format) before starting.",
+  lines <- audit_packet_header(CHECK, inst, selected, paste(
     "For each course, audit the **Extractor output** against the **Full course",
-    "plan** using the codebook definitions. Aggregate recurring problems into",
-    "findings; emit one JSON object per the schema.",
-    ""
-  )
+    "plan** using the definitions in `section_codebook.yml`. Rows already",
+    "flagged by the deterministic pre-pass (R/qa_sections.R) are marked `⚑ flags: …`."
+  ))
 
   for (i in seq_len(nrow(selected))) {
     cid  <- selected$course_id[i]
     kind <- selected$kind[i]
-    plan_txt <- inst_plans$course_plan[match(cid, inst_plans$course_id)]
+    meta <- inst_plans[match(cid, inst_plans$course_id), ]
+    plan_txt <- meta$course_plan
     rows <- sec |> filter(course_id == cid) |>
       left_join(susp_lbl, by = c("course_id", "section"))
 
     lines <- c(lines,
       sprintf("---\n\n## COURSE %d — `%s`  [%s]", i, cid, kind),
       "",
+      sprintf("- %s (%s) · %s %s", meta$Emnekode_raw, meta$Emnenavn,
+              meta$Semesternavn, meta$Årstall),
+      "",
       "### Full course plan (anonymized — ground truth)",
       "",
-      "```",
-      trunc_note(plan_txt, PLAN_TRUNC),
-      "```",
+      audit_fence(audit_trunc(plan_txt, PLAN_TRUNC)),
       "",
       "### Extractor output (sections_raw — audit these)",
       ""
@@ -148,9 +129,7 @@ for (inst in institutions) {
           sprintf("**%s** (%d chars)%s", rows$section[j],
                   nchar(rows$raw_text[j] %||% ""), flhdr),
           "",
-          "```",
-          trunc_note(rows$raw_text[j], SECT_TRUNC),
-          "```",
+          audit_fence(audit_trunc(rows$raw_text[j], SECT_TRUNC)),
           "")
       }
     }
@@ -160,15 +139,13 @@ for (inst in institutions) {
   writeLines(lines, path)
   manifest[[inst]] <- tibble(
     institution = inst,
-    n_suspect = length(susp_ids),
-    n_random  = length(rand_ids),
+    n_suspect = sum(selected$kind == "SUSPECT"),
+    n_random  = sum(selected$kind == "RANDOM"),
     packet    = path
   )
-  cat(sprintf("  %-8s %2d suspects + %2d random -> %s\n",
-              inst, length(susp_ids), length(rand_ids), path))
+  sample[[inst]] <- mutate(selected, institution = inst, .before = 1)
+  cat(sprintf("  %-8s %2d suspects + %2d random -> %s\n", inst,
+              manifest[[inst]]$n_suspect, manifest[[inst]]$n_random, path))
 }
 
-manifest_df <- bind_rows(manifest)
-write.csv(manifest_df, "data/section_review/manifest.csv", row.names = FALSE)
-cat(sprintf("\nWrote %d packets + manifest to data/section_review/\n",
-            nrow(manifest_df)))
+audit_write_index(CHECK, bind_rows(manifest), bind_rows(sample))

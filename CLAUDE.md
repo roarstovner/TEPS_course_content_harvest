@@ -164,6 +164,16 @@ Rscript -e 'shiny::runApp("app/course_browser")'
 `course_offerings_full.RDS`, or `sections_raw.RDS` change — the app reads only
 the prebuilt `data/browser_data.RDS`.
 
+## Auditing a Pipeline Step Across Institutions
+
+Use the `/audit-institutions <sections|fulltext|anonymization> [inst ...]` skill
+to check a pipeline step for every institution with one review agent per
+institution. R scripts build a review packet per institution
+(`R/audit_prepare_{check}.R`), the agents write findings to
+`data/audit/{check}/findings/{inst}.json`, and `R/audit_aggregate.R` verifies
+them (course ids and verbatim quotes must be in the packet) and writes a ranked
+cross-institution report. See `.claude/skills/audit-institutions/SKILL.md`.
+
 ## Adding a New Institution
 
 Use the `/add-institution` skill for step-by-step guidance on adding support for a new institution. The procedure involves:
@@ -174,7 +184,7 @@ Use the `/add-institution` skill for step-by-step guidance on adding support for
 
 For standard institutions, no changes to `extract_fulltext.R` or `harvest_strategies.R` are needed — the config-driven pipeline handles it automatically. Complex strategies (shadow DOM, PDF split, etc.) need custom strategy functions in `R/harvest_strategies.R`.
 
-See `.claude/skills/add-institution.md` for detailed instructions and code templates.
+See `.claude/skills/add-institution/SKILL.md` for detailed instructions and code templates.
 
 ## Important Data Patterns
 
@@ -279,7 +289,11 @@ R/
 ├── anonymize.R            # PII removal: extracted_text → course_plan (readable, anonymized)
 ├── normalize_plan_text.R  # Lossy normalization for dedup hashing (tolower + synonyms + year removal + squish)
 ├── deduplicate_plans.R    # Groups identical plans by content hash
-└── run_dedup.R            # Entry point: anonymize + normalize + dedup pipeline
+├── run_dedup.R            # Entry point: anonymize + normalize + dedup pipeline
+├── qa_sections.R          # Deterministic QA pre-pass over sections_raw.RDS
+├── audit_utils.R          # Audit harness: shared helpers + allowed finding enums per check
+├── audit_prepare_{check}.R  # Audit harness: pre-pass + review packets (sections, fulltext, anonymization)
+└── audit_aggregate.R      # Audit harness: verify + merge agent findings into a report
 
 data/
 ├── courses.RDS            # Input: course metadata
@@ -291,6 +305,7 @@ data/
 ├── browser_data.RDS           # Slim payload for course_browser (build with R/build_browser_data.R)
 ├── data_notes.qmd         # Data quality notes (Quarto source; render to regenerate data_notes.md)
 ├── data_notes.md          # Data quality documentation (rendered from data_notes.qmd)
+├── audit/{check}/         # Audit harness output: packets/ (gitignored), findings/, findings_report.md, synthesis.md
 └── checkpoint/
     ├── html_{inst}.RDS    # HTML fetch checkpoints
     └── urls_{inst}.RDS    # URL discovery checkpoints

@@ -13,6 +13,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   selector, strip FS timestamps / bare "Ingen" rows (#198)
 
 ### Added
+- `/audit-institutions` skill: per-institution review agents for section
+  extraction, fulltext extraction and anonymization, with packet builders
+  (`R/audit_prepare_{check}.R`), mechanical verification of agent findings and
+  comparison with the previous run (`R/audit_aggregate.R`). Replaces the
+  section-only review harness; findings moved to `data/audit/sections/`
 - Rewrite course_browser as a plan-centric concordance browser (#204):
   ad-hoc fulltext search with highlighted matches, keyword-in-context snippets,
   section-scoped search, Trend and Coverage views, deep-linkable queries
@@ -94,6 +99,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Move the add-institution skill to `.claude/skills/add-institution/SKILL.md`
+  so Claude Code registers it
+- Section QA scripts read `course_offerings_full.RDS` (renamed in #194)
 - Untrack .chainlink/issues.db and add to .gitignore (#183)
 - Rename institution_short to institution across codebase and data (#182)
 - Add __pycache__ and .chainlink/.cache to .gitignore (#181)

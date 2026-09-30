@@ -11,7 +11,7 @@
 #
 # Inputs:
 #   data/sections_raw.RDS          (course_id, institution, section, raw_text)
-#   data/courses_with_plan_id.RDS  (course_id, institution, course_plan, ...)
+#   data/course_offerings_full.RDS (course_id, institution, course_plan, ...)
 #                                  — used as full-text ground truth for coverage
 #                                    and "one section swallowed the whole plan".
 #
@@ -47,8 +47,8 @@ sec <- readRDS("data/sections_raw.RDS") |>
     norm  = tolower(txt)
   )
 
-cat("Loading courses_with_plan_id.RDS (ground-truth lengths) ...\n")
-plans <- readRDS("data/courses_with_plan_id.RDS") |>
+cat("Loading course_offerings_full.RDS (ground-truth lengths) ...\n")
+plans <- readRDS("data/course_offerings_full.RDS") |>
   transmute(course_id,
             plan_nchar = nchar(str_squish(course_plan %||% "")))
 
