@@ -1,4 +1,4 @@
-# R/audit_prepare_anonymization.R
+# R/audit/prepare_anonymization.R
 # Build per-institution review packets for the `anonymization` audit
 # (.claude/skills/audit-institutions/checks/anonymization.md).
 #
@@ -23,9 +23,9 @@
 # Inputs:  data/html_{inst}.RDS (harvest output: extracted_text)
 # Outputs: data/audit/anonymization/packets/{inst}.md, manifest.csv, sample.csv
 #
-# Run:  Rscript R/audit_prepare_anonymization.R [inst ...]
+# Run:  Rscript R/audit/prepare_anonymization.R [inst ...]
 
-source("R/audit_utils.R")
+source("R/audit/utils.R")
 source("R/anonymize.R")
 
 # ── Tunables ─────────────────────────────────────────────────────────────────

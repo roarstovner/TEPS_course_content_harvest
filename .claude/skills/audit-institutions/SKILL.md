@@ -39,7 +39,7 @@ rebuild them, the packet builder, and the rubric the agents apply.
   its source.
 - If a harvest is running (an R session writing `data/html_*.RDS`), audit only
   institutions whose `html_{inst}.RDS` is already written, and say so.
-- Build packets: `Rscript R/audit_prepare_{check}.R [inst ...]`.
+- Build packets: `Rscript R/audit/prepare_{check}.R [inst ...]`.
 - Sanity-check the printed summary and skim the head of one packet (not
   empty, not garbled, course ids present). Note institutions with very few
   courses; their findings carry less weight.
@@ -53,9 +53,10 @@ subset), call the Agent tool with:
 - `model`: `--model` or the recipe default
 - `description`: `Audit {check}: {inst}`
 - `prompt`: everything below the line in `agent_prompt.md`, with
-  `{CHECK}`, `{INST}`, `{MODEL}`, `{WORKDIR}` (absolute repo path),
-  `{PACKET}` = `data/audit/{check}/packets/{inst}.md` and
-  `{OUT}` = `data/audit/{check}/findings[-{tag}]/{inst}.json` filled in.
+  `{CHECK}`, `{INST}`, `{MODEL}`, `{WORKDIR}` (absolute path of the repo or
+  worktree that holds the packets), `{PACKET}` =
+  `data/audit/{check}/packets/{inst}.md` and `{OUT}` =
+  `data/audit/{check}/findings[-{tag}]/{inst}.json` filled in.
 
 Send up to ten Agent calls in one message so they run in parallel, then the
 rest. Agents run in the background: wait for their completion notifications,
@@ -64,7 +65,7 @@ do not poll. If an agent fails or writes no file, dispatch it once more.
 ### 4. Verify and aggregate
 
 ```bash
-Rscript R/audit_aggregate.R {check} [--dir data/audit/{check}/findings-{tag}]
+Rscript R/audit/aggregate.R {check} [--dir data/audit/{check}/findings-{tag}]
 ```
 
 Read `data/audit/{check}/findings_report.md` (or `findings-{tag}_report.md`).
@@ -139,14 +140,14 @@ institution subsets when iterating on a fix.
 | `checks/{check}.md` | Recipe: default model, pipeline, rubric, enums, known failure modes |
 | `agent_prompt.md` | Prompt template for the review agents |
 | `findings_schema.md` | JSON schema the agents write |
-| `R/audit_utils.R` | Shared helpers; `AUDIT_CHECKS` holds the allowed enums (keep in sync with the recipes) |
-| `R/audit_prepare_{check}.R` | Deterministic pre-pass + packet builder per check |
-| `R/audit_aggregate.R` | Verification, merge, comparison with previous run, report |
+| `R/audit/utils.R` | Shared helpers; `AUDIT_CHECKS` holds the allowed enums (keep in sync with the recipes) |
+| `R/audit/prepare_{check}.R` | Deterministic pre-pass + packet builder per check |
+| `R/audit/aggregate.R` | Verification, merge, comparison with previous run, report |
 | `data/audit/{check}/` | `packets/` (gitignored), `manifest.csv`, `sample.csv`, `findings/`, `findings_report.md`, `synthesis.md` |
 
 ## Adding a check
 
 1. `checks/{name}.md` with the same sections as the existing recipes.
-2. Enums in `AUDIT_CHECKS` in `R/audit_utils.R`.
-3. `R/audit_prepare_{name}.R`: deterministic flags → one score per course →
+2. Enums in `AUDIT_CHECKS` in `R/audit/utils.R`.
+3. `R/audit/prepare_{name}.R`: deterministic flags → one score per course →
    `audit_sample()` → packet via `audit_packet_header()` → `audit_write_index()`.

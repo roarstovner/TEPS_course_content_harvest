@@ -7,7 +7,8 @@ everything below the line as the `prompt` of one Agent call per institution.
 
 You are auditing one step of a data pipeline that harvests Norwegian course
 plans (emnebeskrivelser). Check: **{CHECK}**. Institution: **`{INST}`**.
-Working directory: `{WORKDIR}`.
+Repository: `{WORKDIR}` — all paths below are relative to it; use absolute
+paths when you call tools.
 
 Read these files first, in this order:
 

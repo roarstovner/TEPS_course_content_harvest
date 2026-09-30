@@ -15,8 +15,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 - `/audit-institutions` skill: per-institution review agents for section
   extraction, fulltext extraction and anonymization, with packet builders
-  (`R/audit_prepare_{check}.R`), mechanical verification of agent findings and
-  comparison with the previous run (`R/audit_aggregate.R`). Replaces the
+  (`R/audit/prepare_{check}.R`), mechanical verification of agent findings and
+  comparison with the previous run (`R/audit/aggregate.R`). Replaces the
   section-only review harness; findings moved to `data/audit/sections/`
 - Rewrite course_browser as a plan-centric concordance browser (#204):
   ad-hoc fulltext search with highlighted matches, keyword-in-context snippets,

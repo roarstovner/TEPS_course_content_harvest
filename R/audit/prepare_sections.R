@@ -1,4 +1,4 @@
-# R/audit_prepare_sections.R
+# R/audit/prepare_sections.R
 # Build per-institution review packets for the `sections` audit
 # (.claude/skills/audit-institutions/checks/sections.md; issue #200).
 #
@@ -18,9 +18,9 @@
 #   data/audit/sections/packets/{inst}.md
 #   data/audit/sections/manifest.csv, sample.csv
 #
-# Run:  Rscript R/audit_prepare_sections.R [inst ...]
+# Run:  Rscript R/audit/prepare_sections.R [inst ...]
 
-source("R/audit_utils.R")
+source("R/audit/utils.R")
 
 # ── Tunables ─────────────────────────────────────────────────────────────────
 SUSPECT_N   <- 20     # suspect courses per institution (distinct plans)

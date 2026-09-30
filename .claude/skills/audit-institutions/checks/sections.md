@@ -11,14 +11,14 @@ course plan into the seven canonical sections correctly.
 
 ## Pipeline (orchestrator)
 
-Rebuild whatever is stale, in this order. `R/audit_prepare_sections.R` refuses
+Rebuild whatever is stale, in this order. `R/audit/prepare_sections.R` refuses
 to run on stale inputs.
 
 ```bash
 Rscript R/run_dedup.R              # html_*.RDS -> course_offerings_full.RDS (only if harvest changed)
 Rscript R/run_extract_sections.R   # -> data/sections_raw.RDS
 Rscript R/qa_sections.R            # -> data/sections_qa_suspects.RDS (deterministic pre-pass)
-Rscript R/audit_prepare_sections.R [inst ...]   # -> data/audit/sections/packets/
+Rscript R/audit/prepare_sections.R [inst ...]   # -> data/audit/sections/packets/
 ```
 
 Pre-pass flags shown in packets (`⚑ flags: …`): `empty`, `short`/`long`

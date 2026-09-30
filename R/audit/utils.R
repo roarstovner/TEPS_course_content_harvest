@@ -1,7 +1,7 @@
-# R/audit_utils.R
+# R/audit/utils.R
 # Shared helpers for the per-institution audit harness
-# (.claude/skills/audit-institutions). Each check has an R/audit_prepare_{check}.R
-# that builds one review packet per institution; R/audit_aggregate.R verifies
+# (.claude/skills/audit-institutions). Each check has an R/audit/prepare_{check}.R
+# that builds one review packet per institution; R/audit/aggregate.R verifies
 # and merges the findings the review agents write back.
 #
 # Layout per check:

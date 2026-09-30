@@ -18,7 +18,7 @@ anonymization code itself, so a fix in `R/anonymize.R` can be re-audited
 straight away.
 
 ```bash
-Rscript R/audit_prepare_anonymization.R [inst ...]   # -> data/audit/anonymization/packets/
+Rscript R/audit/prepare_anonymization.R [inst ...]   # -> data/audit/anonymization/packets/
 ```
 
 Per course the packet shows the anonymized plan and every span that

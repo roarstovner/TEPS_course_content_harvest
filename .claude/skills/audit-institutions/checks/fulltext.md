@@ -16,7 +16,7 @@ Needs only the harvest output. Re-harvest an institution first if its
 extraction config changed (`harvest_institution()`, see CLAUDE.md).
 
 ```bash
-Rscript R/audit_prepare_fulltext.R [inst ...]   # -> data/audit/fulltext/packets/
+Rscript R/audit/prepare_fulltext.R [inst ...]   # -> data/audit/fulltext/packets/
 ```
 
 `samas` is skipped (no extracted text by design). Per course the packet shows

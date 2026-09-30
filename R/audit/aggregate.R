@@ -1,4 +1,4 @@
-# R/audit_aggregate.R
+# R/audit/aggregate.R
 # Verify and merge per-institution audit findings
 # (data/audit/{check}/findings/*.json) into one ranked table + markdown report.
 # Part of the audit harness in .claude/skills/audit-institutions.
@@ -23,9 +23,9 @@
 #   data/audit/{check}/findings_report.md  ranked report
 # A non-default --dir <path> writes <basename>_all.RDS / <basename>_report.md.
 #
-# Run:  Rscript R/audit_aggregate.R <check> [--dir <findings dir>] [--compare <git ref>|none]
+# Run:  Rscript R/audit/aggregate.R <check> [--dir <findings dir>] [--compare <git ref>|none]
 
-source("R/audit_utils.R")
+source("R/audit/utils.R")
 
 # ── Arguments ────────────────────────────────────────────────────────────────
 args <- commandArgs(trailingOnly = TRUE)
@@ -35,7 +35,7 @@ opt <- function(name, default) {
 }
 check <- args[1]
 if (is.na(check) || !check %in% names(AUDIT_CHECKS)) {
-  stop("Usage: Rscript R/audit_aggregate.R <", paste(names(AUDIT_CHECKS), collapse = "|"),
+  stop("Usage: Rscript R/audit/aggregate.R <", paste(names(AUDIT_CHECKS), collapse = "|"),
        "> [--dir <findings dir>] [--compare <git ref>|none]", call. = FALSE)
 }
 base_dir    <- audit_dir(check)
@@ -257,7 +257,7 @@ report <- c(
   sprintf("Mechanical verification: %d passed (✓), %d failed (✗), %d not checkable (?, packet or sample.csv missing).",
           sum(findings$verified %in% TRUE), sum(findings$verified %in% FALSE),
           sum(is.na(findings$verified))),
-  "Sorted by severity then prevalence. Source: `R/audit_aggregate.R`.",
+  "Sorted by severity then prevalence. Source: `R/audit/aggregate.R`.",
   "",
   "## Failed verification — check by hand before acting",
   "",

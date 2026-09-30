@@ -2,7 +2,7 @@
 
 Every per-institution review agent writes exactly one JSON object in this
 format, whatever the check. A fixed schema keeps the reports
-machine-mergeable: `R/audit_aggregate.R` verifies them and merges them into
+machine-mergeable: `R/audit/aggregate.R` verifies them and merges them into
 one ranked cross-institution report.
 
 The report is an **audit of a pipeline step**, not a coding of course plans:
@@ -79,7 +79,7 @@ each finding is a *type* of problem with that step, backed by examples.
   examples.
 - Split a finding when the root cause differs, even if the symptom looks the
   same (e.g. a heading pattern missing vs. a selector cutting the page).
-- **Verification is mechanical.** `R/audit_aggregate.R` rejects findings whose
+- **Verification is mechanical.** `R/audit/aggregate.R` rejects findings whose
   `example_course_ids` are not in the packet or whose `evidence` does not
   occur verbatim in the packet (case and whitespace are ignored). Copy quotes;
   do not retype them.

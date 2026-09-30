@@ -1,4 +1,4 @@
-# R/audit_prepare_fulltext.R
+# R/audit/prepare_fulltext.R
 # Build per-institution review packets for the `fulltext` audit
 # (.claude/skills/audit-institutions/checks/fulltext.md).
 #
@@ -24,9 +24,9 @@
 # Inputs:  data/html_{inst}.RDS (harvest output)
 # Outputs: data/audit/fulltext/packets/{inst}.md, manifest.csv, sample.csv
 #
-# Run:  Rscript R/audit_prepare_fulltext.R [inst ...]
+# Run:  Rscript R/audit/prepare_fulltext.R [inst ...]
 
-source("R/audit_utils.R")
+source("R/audit/utils.R")
 
 # ── Tunables ─────────────────────────────────────────────────────────────────
 SUSPECT_N     <- 20

@@ -169,8 +169,8 @@ the prebuilt `data/browser_data.RDS`.
 Use the `/audit-institutions <sections|fulltext|anonymization> [inst ...]` skill
 to check a pipeline step for every institution with one review agent per
 institution. R scripts build a review packet per institution
-(`R/audit_prepare_{check}.R`), the agents write findings to
-`data/audit/{check}/findings/{inst}.json`, and `R/audit_aggregate.R` verifies
+(`R/audit/prepare_{check}.R`), the agents write findings to
+`data/audit/{check}/findings/{inst}.json`, and `R/audit/aggregate.R` verifies
 them (course ids and verbatim quotes must be in the packet) and writes a ranked
 cross-institution report. See `.claude/skills/audit-institutions/SKILL.md`.
 
@@ -291,9 +291,10 @@ R/
 ├── deduplicate_plans.R    # Groups identical plans by content hash
 ├── run_dedup.R            # Entry point: anonymize + normalize + dedup pipeline
 ├── qa_sections.R          # Deterministic QA pre-pass over sections_raw.RDS
-├── audit_utils.R          # Audit harness: shared helpers + allowed finding enums per check
-├── audit_prepare_{check}.R  # Audit harness: pre-pass + review packets (sections, fulltext, anonymization)
-└── audit_aggregate.R      # Audit harness: verify + merge agent findings into a report
+└── audit/                 # Audit harness for /audit-institutions
+    ├── utils.R            # Shared helpers + allowed finding enums per check
+    ├── prepare_{check}.R  # Pre-pass + review packets (sections, fulltext, anonymization)
+    └── aggregate.R        # Verify + merge agent findings into a report
 
 data/
 ├── courses.RDS            # Input: course metadata
