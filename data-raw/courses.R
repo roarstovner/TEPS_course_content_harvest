@@ -3,10 +3,11 @@
 source("R/utils.R", local = TRUE)
 
 institution_from_code <- function(institution_code) {
+  # institution_config.R references pre/post and fetch functions defined here
+  source("R/extract_fulltext.R", local = TRUE)
+  source("R/fetch_html_cols.R", local = TRUE)
   source("R/institution_config.R", local = TRUE)
-  lookup <- vapply(institution_configs, \(x) x$code, character(1))
   # Invert: code -> name
-  names(lookup) <- NULL
   inv <- setNames(names(institution_configs), vapply(institution_configs, \(x) x$code, character(1)))
   inv[institution_code]
 }
@@ -35,7 +36,16 @@ courses_list <- lapply(studieprogramkode_chunks, function(chunk) {
 
 courses <- do.call(rbind, courses_list)
 
-courses <- courses |> 
+# Studieprogramkode is only unique within an institution: the same code (e.g.
+# "LUPE", "LREAL") can exist at several institutions. Keep only courses whose
+# (Institusjonskode, Studieprogramkode) pair matches a teacher education
+# programme from table 347.
+studieprogram_keys <- dplyr::distinct(studieprogram, Institusjonskode, Studieprogramkode)
+
+courses <- courses |>
+  dplyr::semi_join(studieprogram_keys, by = c("Institusjonskode", "Studieprogramkode"))
+
+courses <- courses |>
   dplyr::mutate(
     institution = unname(institution_from_code(Institusjonskode)),
     Emnekode_raw = Emnekode,
