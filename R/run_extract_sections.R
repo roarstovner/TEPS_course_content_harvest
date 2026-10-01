@@ -3,6 +3,10 @@
 # section extraction, anonymizes section text, writes data/sections_raw.RDS,
 # prints diagnostics (coverage per canonical section + list of unmapped
 # headings for #192).
+#
+#   Rscript R/run_extract_sections.R              # all institutions
+#   Rscript R/run_extract_sections.R uia oslomet  # only these; their rows are
+#                                                 # replaced in sections_raw.RDS
 
 library(dplyr)
 
@@ -13,8 +17,13 @@ source("R/section_heading_map.R")
 source("R/extract_sections.R")
 source("R/anonymize.R")
 
+only <- commandArgs(trailingOnly = TRUE)
+
 cat("Loading harvested data...\n")
 html_files <- list.files("data", pattern = "^html_.*\\.RDS$", full.names = TRUE)
+if (length(only)) {
+  html_files <- html_files[sub("^html_(.*)\\.RDS$", "\\1", basename(html_files)) %in% only]
+}
 courses_raw <- html_files |> lapply(readRDS) |> bind_rows()
 
 # Saved RDS files still use the legacy `fulltext` column name; the pipeline's
@@ -51,6 +60,11 @@ sections_raw <- sections_raw |>
   mutate(raw_text = anonymize_text(institution, raw_text,
                                    .progress = "Anonymizing sections")) |>
   filter(!is.na(raw_text))
+if (length(only) && file.exists("data/sections_raw.RDS")) {
+  sections_raw <- readRDS("data/sections_raw.RDS") |>
+    filter(!institution %in% only) |>
+    bind_rows(sections_raw)
+}
 
 saveRDS(sections_raw, "data/sections_raw.RDS")
 cat(sprintf("\nSaved %d section rows to data/sections_raw.RDS\n\n",

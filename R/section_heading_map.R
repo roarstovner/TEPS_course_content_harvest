@@ -196,11 +196,10 @@ match_heading_to_section <- function(heading, word_start = FALSE) {
   # Denylist: language/expression metadata fields whose text collides with a
   # real pattern (e.g. "eksamensspråk" contains "eksamen") but which are NOT
   # the section (#198, nla json maps "Eksamensspråk" into assessment; inn's
-  # "Language of instruction and examination" would hit "examination").
-  # ".drop", not NA: as an NA sub-heading, uio's <h3>Eksamensspråk</h3> handed
-  # its bare value ("Nynorsk.") back to assessment (#241).
+  # "Language of instruction and examination" would hit "examination"). As a
+  # sub-heading, NA keeps uio's "Eksamensspråk" block in assessment.
   if (grepl("eksamensspråk|vurderingsspråk|language of instruction", heading_lower)) {
-    return(".drop")
+    return(NA_character_)
   }
 
   exact <- section_heading_patterns$exact %||% rep(FALSE, nrow(section_heading_patterns))

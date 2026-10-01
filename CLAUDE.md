@@ -152,6 +152,7 @@ Pipeline: `extracted_text` → `course_plan` (anonymized, readable) → `course_
 
 ```bash
 Rscript R/run_extract_sections.R  # html_*.RDS → data/sections_raw.RDS + coverage/unmapped-heading diagnostics
+Rscript R/run_extract_sections.R uia oslomet  # only these; replaces their rows in sections_raw.RDS
 ```
 
 Splits each course into the seven canonical sections, anonymizes each section's
@@ -208,7 +209,8 @@ Other `section_*` config fields:
   mapped heading (oslomet's programme "Fagplan" block stays out); one naming
   the section already open ("Kunnskap") stays as content. A `<p>` in a list
   item is skipped unless that `<li>` holds a section heading (oslomet's
-  accordion). An unmapped `h3` hands its text back to the parent section.
+  accordion). An unmapped `h3` ("Karakterskala") hands its text back to the
+  parent section, keeping the heading as its first line.
 - `section_inline_coursework`: move "Arbeidskrav (AK): …" / "Obligatorisk
   deltakelse …" lines from assessment to coursework_requirements (nord).
 
@@ -221,8 +223,8 @@ no digits, no "Label: value", no closing full stop). Patterns mapped to
 `".drop"` end the current section and their text is discarded: admission
 headings ("Opptak til emnet", "Opptakskrav", "Hvem kan ta dette emnet?") and
 exam logistics ("Mer om eksamen ved UiO", "Hjelpemidler", "Sensorordning",
-resit headings such as "Ny/utsatt eksamen", "Eksamensspråk"). The grading
-scale ("Karakterskala") stays in assessment.
+resit headings such as "Ny/utsatt eksamen"). Exam language and grading scale
+stay in assessment.
 
 **Cleanup** (`.clean_sections()`): removes `.drop` rows, strips notices and
 page widgets from assessment/coursework (`.section_noise`: plagiarism and

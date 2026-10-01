@@ -172,7 +172,6 @@ extract_sections_html <- function(input, cfg) {
                                has_nested)
   sub_rest <- attr(subs, "rest") %||% character()
   sub_lead <- attr(subs, "lead") %||% character()
-  sub_label <- attr(subs, "label") %||% character()
   sub_head <- attr(subs, "head") %||% character()
   is_sub <- function(node) xml2::xml_path(node) %in% names(subs)
   has_nested_any <- function(node) {
@@ -231,14 +230,13 @@ extract_sections_html <- function(input, cfg) {
         state$chunks <- c(state$chunks, sub_head[[path]])
       }
       flush()
-      # An unmapped heading tag (e.g. <h3>Karakterskala</h3>) returns the
-      # text that follows it to the enclosing section.
+      # An unmapped sub-heading (<h3>Karakterskala</h3>, a bold group label)
+      # returns to the enclosing section and stays as the first line there.
       state$current_section <- if (is.na(sub)) state$parent_section else sub
+      if (is.na(sub)) state$chunks <- rvest::html_text2(node)
       # An inline lead (<p><em>Faget i praksis</em>I løpet ...) starts its
       # section with the rest of the paragraph as its first text.
       if (inline && nzchar(sub_rest[[path]])) state$chunks <- sub_rest[[path]]
-      # A bold group label stays as the first line of the returned text.
-      if (path %in% sub_label) state$chunks <- rvest::html_text2(node)
       return(invisible())
     }
 
@@ -718,8 +716,8 @@ extract_sections_nla <- function(input, cfg) {
 #'   - its last line after <br> equals one (<p>... utvikling.<br>Faget i
 #'     praksis</p>): attribute "head" holds the lines before it;
 #'   - it is all bold and names no section (<p><strong>Vurdering for studentar
-#'     som tar faget 3. studieår</strong></p>): a group label (attribute
-#'     "label", value NA), which ends a sub-section and keeps its text.
+#'     som tar faget 3. studieår</strong></p>): a group label (value NA),
+#'     which ends a sub-section and keeps its text.
 #' A <p> inside a list item is skipped unless that <li> holds a section heading
 #' (oslomet wraps each whole section in an accordion <li>; #240).
 .subheading_sections <- function(container, selector, is_heading, has_heading) {
@@ -793,7 +791,6 @@ extract_sections_nla <- function(input, cfg) {
   head <- vapply(lines[keep & tail], function(l) paste(l[-length(l)], collapse = "\n"),
                  character(1))
   attr(out, "head") <- stats::setNames(head, paths[keep & tail])
-  attr(out, "label") <- paths[keep & label]
   out
 }
 
