@@ -472,16 +472,16 @@ test_that("UiB: Eksamensadministrasjon line stripped", {
 # --- UiO ---
 
 test_that("UiO: person name before parenthesized email stripped", {
-  input <- "Ta kontakt med Tom Lindstrøm (lindstro@math.uio.no) for info"
+  input <- "Ta kontakt med Per Hansen (per.hansen@math.uio.no) for info"
   result <- anonymize_text("uio", input, .progress = FALSE)
-  expect_false(grepl("Tom Lindstrøm", result))
+  expect_false(grepl("Per Hansen", result))
   expect_true(grepl("Ta kontakt med", result))
 })
 
 test_that("UiO: multi-word person name before email stripped", {
-  input <- "kontakt med Anders Mattias Lundmark (a.m.lundmark@geo.uio.no) eller studieadmin"
+  input <- "kontakt med Ola Kristian Nordmann (o.k.nordmann@geo.uio.no) eller studieadmin"
   result <- anonymize_text("uio", input, .progress = FALSE)
-  expect_false(grepl("Anders Mattias Lundmark", result))
+  expect_false(grepl("Ola Kristian Nordmann", result))
   expect_true(grepl("studieadmin", result))
 })
 
@@ -559,9 +559,9 @@ test_that("uis Fagperson(er) staff list is removed, surrounding text kept", {
   input <- paste(
     "adgang til prøving nektes.",
     "Fagperson(er)",
-    "- Dag Ove Granås Hovdal (Faglærer)",
-    "- Karen Elizabeth Gilje Woie (Studiekoordinator)",
-    "- Atle Mjåtveit (Emneansvarlig)",
+    "- Per Olav Hansen Berg (Faglærer)",
+    "- Kari Elisabeth Nordmann Lie (Studiekoordinator)",
+    "- Åse Ødegård (Emneansvarlig)",
     "Arbeidsformer",
     "Forelesninger og seminar.",
     sep = "\n"
@@ -571,7 +571,7 @@ test_that("uis Fagperson(er) staff list is removed, surrounding text kept", {
 })
 
 test_that("Name (Role) lines are removed at any institution", {
-  result <- anonymize_text("hvl", "Innhald\nKari Anne van der Berg (Faglærar)\nTekst.",
+  result <- anonymize_text("hvl", "Innhald\nKari Anne van der Nordmann (Faglærar)\nTekst.",
                            .progress = FALSE)
   expect_equal(result, "Innhald\nTekst.")
 })
@@ -585,8 +585,30 @@ test_that("parenthesised non-roles and prose are kept", {
 })
 
 test_that("approver name is removed but the role is kept", {
-  result <- anonymize_text("usn", "Godkjent av dekan Arild Hovland", .progress = FALSE)
+  result <- anonymize_text("usn", "Godkjent av dekan Ola Nordmann", .progress = FALSE)
   expect_equal(result, "Godkjent av dekan")
   expect_equal(anonymize_text("usn", "Godkjent av Dekan", .progress = FALSE),
                "Godkjent av Dekan")
+})
+
+# --- Signature lines (#238) ---
+
+test_that("signature lines 'Name, dekan' are removed with their date stamp", {
+  for (line in c("17.03.20 Ola Kristian Nordmann, dekan",
+                 "19.11 2020 Ola Nordmann, dekan",
+                 "21.03.2021\u00a0Ola Nordmann, dekan",
+                 "Kari Nordmann Lie, prodekan",
+                 "Per Hansen, instituttleder ")) {
+    input <- paste("Vurdering skjer i samråd med student.", line, "", "Endringer", sep = "\n")
+    result <- anonymize_text("usn", input, .progress = FALSE)
+    expect_equal(result, "Vurdering skjer i samråd med student.\n\nEndringer", label = line)
+  }
+})
+
+test_that("prose and references with a role after a comma are kept", {
+  for (t in c("eit felles ansvarsområde for praksislærar, rektor og faglærar",
+              "Nordmann, O. (2024). Rektor som rettsanvender. Oslo: Universitetsforlaget.",
+              "Ordningen er godkjent av fakultetet, dekan og prodekan.")) {
+    expect_equal(anonymize_text("usn", t, .progress = FALSE), t, label = t)
+  }
 })

@@ -188,7 +188,7 @@ anonymize_text <- function(institution, text,
 
 .anon_uio <- function(txt) {
   txt |>
-    # Strip person name before parenthesized email: "Tom Lindstrøm (lindstro@math.uio.no)"
+    # Strip person name before parenthesized email: "Per Hansen (per.hansen@math.uio.no)"
     # Keeps organizational names + emails (handled by generic email removal)
     stringr::str_remove_all("\\p{Lu}\\p{Ll}+(?:\\s+\\p{Lu}\\p{Ll}+)+\\s*(?=\\([\\w.+-]+@)")
 }
@@ -211,6 +211,17 @@ anonymize_text <- function(institution, text,
   "\\p{Lu}[\\p{L}.'’-]*(?:[ \\t]+(?:\\p{Lu}[\\p{L}.'’-]*|van|von|de|der|den|da|di|af))+",
   "[ \\t]*\\((?i:", paste(.staff_roles, collapse = "|"), ")\\)[ \\t]*(?:\\n|$)"
 )
+# A signature line "17.03.20 Ola Nordmann, dekan": optional date stamp, a
+# capitalised name, then ", role" ending the line (usn approval stamps; #238).
+# \h, not [ \t]: some stamps have a no-break space after the date.
+.signature_roles <- c("dekan", "prodekan", "studiedekan", "instituttleder",
+                      "instituttleiar", "rektor", "prorektor",
+                      "studieprogramleder", "studieprogramleiar")
+.signature_line_regex <- paste0(
+  "(?m)^[\\h]*(?:\\d[\\d.\\h]*[\\h]+)?",
+  "\\p{Lu}[\\p{L}.'’-]*(?:[\\h]+(?:\\p{Lu}[\\p{L}.'’-]*|van|von|de|der|den|da|di|af))+",
+  "[\\h]*,[\\h]*(?i:", paste(.signature_roles, collapse = "|"), ")[\\h]*(?:\\n|$)"
+)
 .approved_by_name_regex <- paste0(
   "([Gg]odkjent av (?:[Dd]ekan(?:en)?|[Pp]rodekan|[Ii]nstitutt(?:nest)?leder|",
   "[Ss]tudieprogramleder))[ \\t]+\\p{Lu}\\p{Ll}+(?:[ \\t]+\\p{Lu}[\\p{L}-]+)+"
@@ -222,8 +233,10 @@ anonymize_text <- function(institution, text,
     stringr::str_remove_all("Sist hent(?:et|a) fr(?:a|å) FS \\(Felles studentsystem\\)[^\n]*") |>
     # Remove email addresses
     stringr::str_remove_all("\\b[\\w.+-]+@[\\w.-]+\\.[a-zA-Z]{2,}\\b") |>
-    # Remove staff list lines "- Ingrid Nielsen (Emneansvarlig)" (#237)
+    # Remove staff list lines "- Ola Nordmann (Emneansvarlig)" (#237)
     stringr::str_remove_all(.staff_line_regex) |>
+    # Remove signature lines "17.03.20 Ola Nordmann, dekan" (#238)
+    stringr::str_remove_all(.signature_line_regex) |>
     # Keep the role, drop the name: "Godkjent av dekan Ola Nordmann" (#237)
     stringr::str_replace_all(.approved_by_name_regex, "\\1") |>
     # Remove phone numbers: +47 XX XX XX XX, Tlf: XXXXXXXX, telefon: XX XX XX XX
