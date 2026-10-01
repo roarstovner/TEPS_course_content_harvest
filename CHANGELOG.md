@@ -99,6 +99,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Keep Sonnet review packets <= ~150 KB (#233)
 - Hyphenated academic years not removed (#230)
 - Parenthesised e-mail leaves '()' behind (#229)
 - mf: remove Eksamensdatoer block and library notice (#228)
