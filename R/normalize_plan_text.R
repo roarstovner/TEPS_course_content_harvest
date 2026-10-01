@@ -6,7 +6,7 @@
 #' on top of already-anonymized course_plan text. The result is suitable for
 #' content hashing but not for human reading.
 #'
-#' @param course_plan Character vector of anonymized text (from anonymize_fulltext).
+#' @param course_plan Character vector of anonymized text (from anonymize_text).
 #' @param .progress Passed to purrr::map_chr for progress reporting.
 #' @return Character vector of normalized text. NA input -> NA output.
 normalize_plan_text <- function(course_plan, .progress = "Normalize plan texts") {

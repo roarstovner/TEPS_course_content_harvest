@@ -6,7 +6,7 @@
 #' plus the original data with plan_content_id added.
 #'
 #' @param df Combined data frame from all html_*.RDS files.
-#'   Must include a `course_plan` column (from anonymize_fulltext).
+#'   Must include a `course_plan` column (from anonymize_text).
 #' @return A list with two elements:
 #'   - `plans`: Tibble of unique plans (plan_content_id, institution, Emnekode,
 #'              course_plan, course_plan_normalized, year_from, year_to)

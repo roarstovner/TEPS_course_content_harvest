@@ -2,7 +2,7 @@
 # Build per-institution review packets for the `anonymization` audit
 # (.claude/skills/audit-institutions/checks/anonymization.md).
 #
-# Audits anonymize_fulltext() (R/anonymize.R): extracted_text -> course_plan.
+# Audits anonymize_text() (R/anonymize.R): extracted_text -> course_plan.
 # The course_plan is recomputed here with the current code, so a fix to
 # anonymize.R can be re-audited without re-running the dedup pipeline.
 # For each sampled course the packet shows
@@ -120,8 +120,8 @@ for (inst in institutions) {
     select(-any_of(c("html", "html_error"))) |>
     filter(!is.na(extracted_text), nzchar(extracted_text))
   if (nrow(df) == 0) next
-  df$course_plan <- anonymize_fulltext(df$institution, df$extracted_text,
-                                       .progress = FALSE)
+  df$course_plan <- anonymize_text(df$institution, df$extracted_text,
+                                   .progress = FALSE)
   df <- df |>
     mutate(
       plan      = coalesce(course_plan, ""),

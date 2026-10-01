@@ -1,7 +1,8 @@
 # run_extract_sections.R
 # Section-extraction pipeline: reads html_*.RDS files, runs per-institution
-# section extraction, writes data/sections_raw.RDS, prints diagnostics
-# (coverage per canonical section + list of unmapped headings for #192).
+# section extraction, anonymizes section text, writes data/sections_raw.RDS,
+# prints diagnostics (coverage per canonical section + list of unmapped
+# headings for #192).
 
 library(dplyr)
 
@@ -10,6 +11,7 @@ source("R/extract_fulltext.R")      # pre/post fns used by institution_config
 source("R/institution_config.R")
 source("R/section_heading_map.R")
 source("R/extract_sections.R")
+source("R/anonymize.R")
 
 cat("Loading harvested data...\n")
 html_files <- list.files("data", pattern = "^html_.*\\.RDS$", full.names = TRUE)
@@ -41,6 +43,14 @@ sections_list <- purrr::map(institutions, function(inst) {
   )
 })
 sections_raw <- bind_rows(sections_list)
+
+# Sections are cut from un-anonymized html/extracted_text, so the personal data
+# anonymize_text() strips from course_plan (e-mails, contact and approval
+# lines) has to be stripped here too before saving (#208).
+sections_raw <- sections_raw |>
+  mutate(raw_text = anonymize_text(institution, raw_text,
+                                   .progress = "Anonymizing sections")) |>
+  filter(!is.na(raw_text))
 
 saveRDS(sections_raw, "data/sections_raw.RDS")
 cat(sprintf("\nSaved %d section rows to data/sections_raw.RDS\n\n",

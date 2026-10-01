@@ -93,8 +93,8 @@ Returns the config list for an institution. Config includes strategy, selector, 
 ### `validate_courses(df, stage)` - R/utils.R:55
 Validates required columns exist at pipeline stages: "initial", "with_url", "with_html".
 
-### `anonymize_fulltext(institution, fulltext)` - R/anonymize.R:14
-Removes PII (names, emails, phone numbers), dates, seasons, administrative year references (e.g., "Opprettet 2020", "2023/2024"), and institution-specific boilerplate from raw extracted text. Content years (e.g., "etter 1945", "NOU 2015:2") are preserved. Returns readable anonymized text preserving case and paragraph structure. Uses institution-specific handlers (`.anon_*()`) followed by generic cleanup (`.anon_generic()`).
+### `anonymize_text(institution, text)` - R/anonymize.R:13
+Removes PII (names, emails, phone numbers), dates, seasons, administrative year references (e.g., "Opprettet 2020", "2023/2024"), and institution-specific boilerplate from raw text. Applied to `extracted_text` (→ `course_plan`, in `R/run_dedup.R`) and to each section's `raw_text` (in `R/run_extract_sections.R`). Content years (e.g., "etter 1945", "NOU 2015:2") are preserved. Returns readable anonymized text preserving case and paragraph structure. Uses institution-specific handlers (`.anon_*()`) followed by generic cleanup (`.anon_generic()`).
 
 ### `normalize_plan_text(course_plan)` - R/normalize_plan_text.R:14
 Applies lossy dedup-specific transforms on already-anonymized `course_plan`: `tolower()`, heading synonym normalization ("eksamensformer" → "vurderingsformer"), blanket 4-digit year removal, and `str_squish()`. No longer takes `institution` parameter.

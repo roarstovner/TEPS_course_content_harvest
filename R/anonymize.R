@@ -1,19 +1,20 @@
 # R/anonymize.R
 
-#' Anonymize fulltext to produce readable course_plan text
+#' Anonymize course text
 #'
 #' Removes PII (names, emails, phone numbers), dates, years, seasons,
 #' and institution-specific boilerplate. Preserves case and paragraph structure.
+#' Used on extracted_text (-> course_plan) and on section text (sections_raw).
 #'
 #' @param institution Character vector of institution short names.
-#' @param fulltext Character vector of raw extracted text.
+#' @param text Character vector of raw text (extracted_text or a section).
 #' @param .progress Passed to purrr::map2_chr for progress reporting.
 #' @return Character vector of anonymized text. NA input -> NA output.
-anonymize_fulltext <- function(institution, fulltext,
-                               .progress = "Anonymizing fulltext") {
-  stopifnot(length(institution) == length(fulltext))
+anonymize_text <- function(institution, text,
+                           .progress = "Anonymizing text") {
+  stopifnot(length(institution) == length(text))
 
-  purrr::map2_chr(institution, fulltext, \(inst, txt) {
+  purrr::map2_chr(institution, text, \(inst, txt) {
     if (is.na(txt) || !nzchar(txt)) return(NA_character_)
 
     txt <- .anon_institution(inst, txt)

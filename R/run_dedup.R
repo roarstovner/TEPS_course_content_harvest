@@ -26,7 +26,7 @@ cat("Loaded", nrow(courses_raw), "course rows from", length(html_files), "files\
 
 # Anonymize extracted_text -> course_plan
 cat("Anonymizing extracted text...\n")
-courses_raw$course_plan <- anonymize_fulltext(
+courses_raw$course_plan <- anonymize_text(
   courses_raw$institution,
   courses_raw$extracted_text
 )

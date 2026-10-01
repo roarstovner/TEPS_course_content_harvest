@@ -127,7 +127,7 @@ source("R/run_dedup.R")
 
 This runs a three-stage pipeline:
 
-1.  **Anonymize** (`anonymize_fulltext()`): Removes PII (teacher names,
+1.  **Anonymize** (`anonymize_text()`): Removes PII (teacher names,
     emails, phone numbers), dates, seasons, and administrative year
     references from `extracted_text`, producing a readable `course_plan`
     column. Content years (e.g., “etter 1945”) are preserved.

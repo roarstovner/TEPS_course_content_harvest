@@ -1,6 +1,6 @@
 # Check: anonymization
 
-Audits **anonymization**: whether `anonymize_fulltext()` (`R/anonymize.R`)
+Audits **anonymization**: whether `anonymize_text()` (`R/anonymize.R`)
 turns `extracted_text` into a `course_plan` with no personal data or
 administrative dates left, without destroying course content.
 
