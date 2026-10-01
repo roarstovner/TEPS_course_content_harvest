@@ -144,6 +144,8 @@ section_heading_patterns <- tibble::tribble(
   # uia: what students do with the subject during placement. Practicum is a
   # teaching method in the codebook (#201 keeps praksis there by default).
   "faget i praksis",                       "teaching_methods",       FALSE,
+  "praksis",                               "teaching_methods",       TRUE,
+  "gjennomføring av praksis",              "teaching_methods",       TRUE,
   "undervisning",                          "teaching_methods",       TRUE,
   "teaching",                              "teaching_methods",       TRUE,
   "teaching and working methods",          "teaching_methods",       FALSE,

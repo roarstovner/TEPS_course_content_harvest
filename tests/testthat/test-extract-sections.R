@@ -232,6 +232,13 @@ test_that("exam-logistics headings end the assessment section", {
   expect_equal(match_heading_to_section("Eksamen og hjelpemidler"), "assessment")
 })
 
+test_that("practicum headings are teaching methods (#247)", {
+  expect_equal(match_heading_to_section("Praksis"), "teaching_methods")
+  expect_equal(match_heading_to_section("Gjennomføring av praksis"), "teaching_methods")
+  # exact rows only: other headings that mention praksis are unchanged
+  expect_true(is.na(match_heading_to_section("Praksisrapport")))
+})
+
 test_that("resit heading variants are dropped (#241)", {
   for (h in c("Vilkår for ny/utsatt eksamen", "Ny/utsett eksamen",
               "Ny eller utsatt eksamen", "Kontinuasjonseksamen")) {
