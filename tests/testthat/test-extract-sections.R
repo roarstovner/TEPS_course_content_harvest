@@ -199,3 +199,21 @@ test_that("nmbu exam-table line is removed but a sentence before it is kept", {
   res <- .clean_sections(tibble::tibble(section = "assessment", raw_text = one), "nmbu")
   expect_equal(res$raw_text, one)
 })
+
+test_that("admission sentences are removed from prerequisites, real ones kept (#211)", {
+  txt <- paste("Opptak skjer på bakgrunn av generell studiekompetanse eller realkompetanse.",
+               "Kan tas som frittstående fag i lærerutdanning.",
+               "Bestått MGL101 og opptak til lærerutdanningen.",
+               "Emnet bygger på Norsk 1.", sep = "\n")
+  res <- .clean_sections(tibble::tibble(section = "prerequisites", raw_text = txt), "nord")
+  expect_equal(res$raw_text, "Bestått MGL101 og opptak til lærerutdanningen.\nEmnet bygger på Norsk 1.")
+})
+
+test_that("recommendations that mention admission are kept (#211)", {
+  txt <- paste("I tillegg til generell studiekompetanse bør studenten ha engelsk.",
+               "Generell studiekompetanse inklusive lulesamisk fra videregående skole.",
+               "Kan tas som frittstående fag i lærerutdanning. Bygger på 1A 1-7",
+               "Generell studiekompetanse", sep = "\n")
+  res <- .clean_sections(tibble::tibble(section = "prerequisites", raw_text = txt), "nord")
+  expect_equal(res$raw_text, paste(strsplit(txt, "\n")[[1]][1:3], collapse = "\n"))
+})

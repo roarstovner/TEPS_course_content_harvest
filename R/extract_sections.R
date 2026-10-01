@@ -724,11 +724,38 @@ extract_sections_nla <- function(input, cfg) {
   if (nrow(out) == 0) return(out)
   exam <- out$section %in% c("assessment", "coursework_requirements")
   out$raw_text[exam] <- .strip_section_noise(out$raw_text[exam], institution)
+  pre <- out$section == "prerequisites"
+  out$raw_text[pre] <- vapply(out$raw_text[pre], .strip_admission_lines,
+                              character(1), USE.NAMES = FALSE)
   out$raw_text <- mapply(.clean_section_text, out$raw_text, out$section,
                          USE.NAMES = FALSE)
   keep <- mapply(.keep_section_row, out$raw_text, out$section,
                  USE.NAMES = FALSE)
   out[keep, , drop = FALSE]
+}
+
+# Admission/study-right sentences inside a prerequisites block with no heading
+# of their own (nord, uib, oslomet; #211). A line is removed only if it has an
+# admission phrase and nothing that looks like a real or recommended
+# prerequisite (a course code, "bestått", "forkunnskap", credits, "bør",
+# "i tillegg til", ...).
+.admission_line_regex <- paste0(
+  "(?i)opptak skjer|frittstående (?:fag|emne)|studierett|",
+  "tilgjengelig som valgfag|søke opptak|enkeltemnestudent|krever opptak til|",
+  "^\\s*opptak til (?:studie|lektor|lærer|master|bachelor|grunnskole)|",
+  "^\\s*generell studiekompetanse\\.?\\s*$"
+)
+.real_prerequisite_regex <- paste0(
+  "\\b[A-ZÆØÅ]{2,}[A-ZÆØÅ0-9-]*\\d{2,}|",
+  "(?i:bestått|forkunnskap|studiepoeng|\\bstp\\b|\\bsp\\b|",
+  "\\bbør\\b|anbefal|fordel|rå til|i tillegg|inklusive|bygger på)"
+)
+
+.strip_admission_lines <- function(text) {
+  lines <- stringr::str_split_1(text, "\n")
+  admin <- grepl(.admission_line_regex, lines, perl = TRUE) &
+    !grepl(.real_prerequisite_regex, lines, perl = TRUE)
+  paste(lines[!admin], collapse = "\n")
 }
 
 # Lines in an assessment block that state a coursework gate (#212). nord

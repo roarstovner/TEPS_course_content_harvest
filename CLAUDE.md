@@ -217,7 +217,8 @@ exam logistics ("Mer om eksamen ved UiO", "Hjelpemidler", "Sensorordning").
 
 **Cleanup** (`.clean_sections()`): removes `.drop` rows, strips notices and
 page widgets from assessment/coursework (`.section_noise`: plagiarism and
-ChatGPT/COVID notices, uib banner and footer, …), drops placeholder-only rows
+ChatGPT/COVID notices, uib banner and footer, …), removes admission sentences
+from prerequisites (`.strip_admission_lines()`), drops placeholder-only rows
 (`.placeholder_phrases`: "Ingen", "Se fagplanen.", "-", Leganto pointers).
 
 **Privacy:** sections are cut from raw `html`/`extracted_text`, so
