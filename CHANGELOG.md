@@ -99,6 +99,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Exam-logistics rules from #215: COVID sentence, resit heading variants (#241)
+- Sub-heading detection gaps: oslomet <li> guard, uia run-together <em> (#240)
+- usn approval lines '<Name>, dekan' survive anonymization (#238)
 - Section extraction fixes from audit 2026-10-01 (#207)
 - Re-run sections audit after the extractor fixes (#216)
 - Strip exam logistics and admin notices from assessment (#215)
