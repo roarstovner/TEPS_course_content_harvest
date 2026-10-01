@@ -168,7 +168,12 @@ extract_sections_html <- function(input, cfg) {
   # Sub-headings inside a section (uia's <p><em>Faget i praksis</em></p>,
   # uio's <h3>Obligatoriske forkunnskaper</h3> or <p>Obligatorisk aktivitet:</p>)
   # switch to their own section until the next heading of either kind.
-  subs <- .subheading_sections(container, cfg$subheading_selector, is_heading)
+  subs <- .subheading_sections(container, cfg$subheading_selector, is_heading,
+                               has_nested)
+  sub_rest <- attr(subs, "rest") %||% character()
+  sub_lead <- attr(subs, "lead") %||% character()
+  sub_label <- attr(subs, "label") %||% character()
+  sub_head <- attr(subs, "head") %||% character()
   is_sub <- function(node) xml2::xml_path(node) %in% names(subs)
   has_nested_any <- function(node) {
     has_nested(node) ||
@@ -203,11 +208,37 @@ extract_sections_html <- function(input, cfg) {
     }
 
     if (is_sub(node)) {
+      # Sub-headings act only inside a mapped section: under an unmapped
+      # heading (oslomet's programme "Fagplan" block) their text stays out.
+      if (is.na(state$parent_section)) return(invisible())
+      path <- xml2::xml_path(node)
+      sub <- subs[[path]]
+      inline <- path %in% names(sub_rest)
+      # A sub-heading naming the section already open ("Kunnskap" or
+      # "Kunnskap: Studenten kan ..." inside learning outcomes) is a group
+      # label: keep it as content, on its own line (#240, #249).
+      if (!is.na(sub) && identical(sub, state$current_section)) {
+        state$chunks <- c(state$chunks, if (inline) {
+          paste(sub_lead[[path]], sub_rest[[path]], sep = "\n")
+        } else {
+          rvest::html_text2(node)
+        })
+        return(invisible())
+      }
+      # A heading on the last line of a paragraph: the lines before it
+      # belong to the section that is open.
+      if (path %in% names(sub_head)) {
+        state$chunks <- c(state$chunks, sub_head[[path]])
+      }
       flush()
-      sub <- subs[[xml2::xml_path(node)]]
       # An unmapped heading tag (e.g. <h3>Karakterskala</h3>) returns the
       # text that follows it to the enclosing section.
       state$current_section <- if (is.na(sub)) state$parent_section else sub
+      # An inline lead (<p><em>Faget i praksis</em>I løpet ...) starts its
+      # section with the rest of the paragraph as its first text.
+      if (inline && nzchar(sub_rest[[path]])) state$chunks <- sub_rest[[path]]
+      # A bold group label stays as the first line of the returned text.
+      if (path %in% sub_label) state$chunks <- rvest::html_text2(node)
       return(invisible())
     }
 
@@ -676,29 +707,94 @@ extract_sections_nla <- function(input, cfg) {
 #' Find sub-heading nodes for html_headings
 #'
 #' Returns a named character vector: names are xml_paths of sub-heading nodes,
-#' values their section (NA = an unmapped heading tag, which hands the text
+#' values their section (NA = an unmapped sub-heading, which hands the text
 #' that follows back to the enclosing section). Heading tags (h3-h6) match like
-#' main headings. Other elements (<p>) count only when their whole text, minus
-#' a trailing colon, equals a heading pattern, so ordinary sentences and
-#' list-like paragraphs never split a section.
-.subheading_sections <- function(container, selector, is_heading) {
+#' main headings. A <p> counts when, minus a trailing colon,
+#'   - its whole text equals a heading pattern ("whole"), so ordinary
+#'     sentences and list-like paragraphs never split a section;
+#'   - it opens with an <em>/<strong> run, or a first line before <br>, that
+#'     equals one (uia's <p><em>Faget i praksis</em>I løpet ...</p>):
+#'     attributes "lead" and "rest" hold the label and the remaining text;
+#'   - its last line after <br> equals one (<p>... utvikling.<br>Faget i
+#'     praksis</p>): attribute "head" holds the lines before it;
+#'   - it is all bold and names no section (<p><strong>Vurdering for studentar
+#'     som tar faget 3. studieår</strong></p>): a group label (attribute
+#'     "label", value NA), which ends a sub-section and keeps its text.
+#' A <p> inside a list item is skipped unless that <li> holds a section heading
+#' (oslomet wraps each whole section in an accordion <li>; #240).
+.subheading_sections <- function(container, selector, is_heading, has_heading) {
   none <- stats::setNames(character(), character())
   if (is.null(selector)) return(none)
   nodes <- rvest::html_elements(container, selector)
   nodes <- nodes[!vapply(nodes, is_heading, logical(1))]
   if (length(nodes) == 0) return(none)
 
-  text <- stringr::str_remove(stringr::str_squish(rvest::html_text2(nodes)),
-                              "[:：]$")
-  is_htag <- grepl("^h[1-6]$", tolower(xml2::xml_name(nodes)))
-  in_list <- !vapply(xml2::xml_find_first(nodes, "ancestor::li"),
-                     inherits, logical(1), what = "xml_missing")
+  exact <- function(x) {
+    x <- stringr::str_remove(stringr::str_squish(x), "[:：]$")
+    sec <- section_heading_patterns$section[match(tolower(x),
+                                                  section_heading_patterns$pattern)]
+    sec[is.na(x) | !nzchar(x) | nchar(x) > 80] <- NA_character_
+    sec
+  }
 
-  section <- section_heading_patterns$section[match(tolower(text),
-                                                    section_heading_patterns$pattern)]
-  section[is_htag] <- vapply(text[is_htag], match_heading_to_section, character(1))
-  keep <- nzchar(text) & !in_list & (is_htag | (!is.na(section) & nchar(text) <= 80))
-  stats::setNames(section[keep], vapply(nodes[keep], xml2::xml_path, character(1)))
+  raw <- rvest::html_text2(nodes)
+  is_htag <- grepl("^h[1-6]$", tolower(xml2::xml_name(nodes)))
+  li <- xml2::xml_find_all(nodes, "ancestor::li[1]", flatten = FALSE)
+  in_list <- vapply(li, function(l) length(l) > 0 && !has_heading(l[[1]]),
+                    logical(1))
+
+  section <- exact(raw)
+  htext <- stringr::str_squish(raw[is_htag])
+  section[is_htag] <- vapply(htext, match_heading_to_section, character(1))
+  whole <- !is.na(section)
+  whole[is_htag] <- nzchar(htext)
+  open <- !is_htag & !whole
+
+  # Leading <em>/<strong> run
+  lead <- xml2::xml_find_first(
+    nodes, "./node()[normalize-space()][1][self::em or self::strong or self::b]")
+  has_lead <- !vapply(lead, inherits, logical(1), what = "xml_missing")
+  lead_raw <- rep(NA_character_, length(nodes))
+  lead_raw[has_lead] <- stringr::str_trim(rvest::html_text2(lead[has_lead]))
+  lead_section <- exact(lead_raw)
+  inline <- open & !is.na(lead_section)
+
+  # First or last line of a <p> split by <br>
+  lines <- lapply(stringr::str_split(raw, "\n"),
+                  function(l) stringr::str_trim(l[nzchar(stringr::str_trim(l))]))
+  multi <- lengths(lines) > 1
+  first <- vapply(lines, function(l) if (length(l)) l[1] else NA_character_, character(1))
+  last <- vapply(lines, function(l) if (length(l)) l[length(l)] else NA_character_, character(1))
+  br_lead <- open & !inline & multi & !is.na(exact(first))
+  lead_raw[br_lead] <- first[br_lead]
+  lead_section[br_lead] <- exact(first)[br_lead]
+  inline <- inline | br_lead
+  tail <- open & !inline & multi & !is.na(exact(last))
+
+  bold_name <- rep(NA_character_, length(nodes))
+  bold_name[has_lead] <- tolower(xml2::xml_name(lead[has_lead]))
+  label <- open & !inline & !tail & bold_name %in% c("strong", "b") &
+    stringr::str_squish(lead_raw) == stringr::str_squish(raw) &
+    nchar(stringr::str_squish(raw)) <= 80
+
+  section[inline] <- lead_section[inline]
+  section[tail] <- exact(last)[tail]
+  keep <- !in_list & (whole | inline | tail | label)
+  paths <- vapply(nodes, xml2::xml_path, character(1))
+  out <- stats::setNames(section[keep], paths[keep])
+
+  sel <- keep & inline
+  rest <- mapply(function(r, l) {
+    after <- stringr::str_sub(r, stringr::str_locate(r, stringr::fixed(l))[, "end"] + 1)
+    stringr::str_remove(after, "^\\s*[:：]?\\s*")
+  }, raw[sel], lead_raw[sel], USE.NAMES = FALSE)
+  attr(out, "rest") <- stats::setNames(as.character(rest), paths[sel])
+  attr(out, "lead") <- stats::setNames(lead_raw[sel], paths[sel])
+  head <- vapply(lines[keep & tail], function(l) paste(l[-length(l)], collapse = "\n"),
+                 character(1))
+  attr(out, "head") <- stats::setNames(head, paths[keep & tail])
+  attr(out, "label") <- paths[keep & label]
+  out
 }
 
 .empty_sections <- function() {
@@ -790,13 +886,21 @@ extract_sections_nla <- function(input, cfg) {
 # Notices and page widgets with no heading of their own, so .drop cannot catch
 # them (#215). Applied to assessment and coursework_requirements only, so a
 # course that teaches about AI keeps "kunstig intelligens" in its content.
-# "all" applies to every institution; other entries per institution. Each
-# pattern removes whole lines (or, with (?s), a trailing block).
+# "all" applies to every institution; other entries per institution. Most
+# patterns remove whole lines (or, with (?s), a trailing block).
 .section_noise <- list(
   all = c(
     "(?m)^.*(?:plagiatkontroll|for plagiat).*$",                 # nih
     "(?m)^.*(?:ChatGPT|kunstig intelligens|artificial intelligence).*$", # nord
-    "(?m)^.*(?:[Cc]ovid-19|[Kk]orona).*$",                       # nord
+    # COVID notices: the sentence only, since the line may also hold the
+    # assessment itself (nord PO111LS; #241)
+    paste0("(?m)(?:\\b(?i:pga|jf|ca|evt)\\.[ \t]*)?",
+           "(?=[^.!?\n ])[^.!?\n]*(?i:covid|korona)[^.!?\n]*(?:[.!?]+[ \t]*|$)"),
+    # stock resit sentence in running text (oslomet; #241)
+    paste0("(?i)(?:Deleksamen \\d:[ \t]*)?Ny(?:/| og | eller )ut(?:satt|sett) ",
+           "eksamen (?:arrangeres|gjennomføres|foregår|blir arrangert|",
+           "blir gjennomført|vert arrangert|vert gjennomført) ",
+           "(?:som (?:ved )?)?ordinær(?:e)? eksamen\\.?[ \t]*"),
     "(?m)^.*[Mm]idlertidig forskrift.*$",
     "(?m)^.*endres vurderingsform.*$",
     "(?m)^MERK: (?:Våren|Høsten) \\d{4}.*$",

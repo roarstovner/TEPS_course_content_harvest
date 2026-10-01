@@ -94,7 +94,7 @@ Returns the config list for an institution. Config includes strategy, selector, 
 Validates required columns exist at pipeline stages: "initial", "with_url", "with_html".
 
 ### `anonymize_text(institution, text)` - R/anonymize.R:13
-Removes PII (names, emails, phone numbers), dates, seasons, administrative year references (e.g., "Opprettet 2020", "2023/2024"), and institution-specific boilerplate from raw text. Applied to `extracted_text` (→ `course_plan`, in `R/run_dedup.R`) and to each section's `raw_text` (in `R/run_extract_sections.R`). Content years (e.g., "etter 1945", "NOU 2015:2") are preserved. Returns readable anonymized text preserving case and paragraph structure. Uses institution-specific handlers (`.anon_*()`) followed by generic cleanup (`.anon_generic()`).
+Removes PII (names, emails, phone numbers, staff lists "Name (Role)", signature lines "Name, dekan"), dates, seasons, administrative year references (e.g., "Opprettet 2020", "2023/2024"), and institution-specific boilerplate from raw text. Applied to `extracted_text` (→ `course_plan`, in `R/run_dedup.R`) and to each section's `raw_text` (in `R/run_extract_sections.R`). Content years (e.g., "etter 1945", "NOU 2015:2") are preserved. Returns readable anonymized text preserving case and paragraph structure. Uses institution-specific handlers (`.anon_*()`) followed by generic cleanup (`.anon_generic()`).
 
 ### `normalize_plan_text(course_plan)` - R/normalize_plan_text.R:14
 Applies lossy dedup-specific transforms on already-anonymized `course_plan`: `tolower()`, heading synonym normalization ("eksamensformer" → "vurderingsformer"), blanket 4-digit year removal, and `str_squish()`. No longer takes `institution` parameter.
@@ -200,8 +200,15 @@ Other `section_*` config fields:
   first match; uis needs `#block-page-content`).
 - `section_subheading_selector`: elements inside a section that switch to
   another section (uio `"h3, h4, p"`; `"p"` for uia, oslomet, hiof, hvl, nmbu,
-  mf). A `<p>` counts only if its whole text (minus a trailing colon) equals a
-  heading pattern; an unmapped `h3` hands its text back to the parent section.
+  mf). A `<p>` counts if its whole text (minus a trailing colon) equals a
+  heading pattern, or if its leading `<em>`/`<strong>` run or its first or
+  last `<br>`-separated line does (uia `<p><em>Faget i praksis</em>I løpet
+  …</p>`). A whole-bold `<p>` that names no section is a group label: it ends
+  a sub-section and returns to the parent. Sub-headings act only under a
+  mapped heading (oslomet's programme "Fagplan" block stays out); one naming
+  the section already open ("Kunnskap") stays as content. A `<p>` in a list
+  item is skipped unless that `<li>` holds a section heading (oslomet's
+  accordion). An unmapped `h3` hands its text back to the parent section.
 - `section_inline_coursework`: move "Arbeidskrav (AK): …" / "Obligatorisk
   deltakelse …" lines from assessment to coursework_requirements (nord).
 
@@ -213,7 +220,9 @@ match "kunnskap", and only accepts heading-shaped lines (capitalised, ≤ 8 word
 no digits, no "Label: value", no closing full stop). Patterns mapped to
 `".drop"` end the current section and their text is discarded: admission
 headings ("Opptak til emnet", "Opptakskrav", "Hvem kan ta dette emnet?") and
-exam logistics ("Mer om eksamen ved UiO", "Hjelpemidler", "Sensorordning").
+exam logistics ("Mer om eksamen ved UiO", "Hjelpemidler", "Sensorordning",
+resit headings such as "Ny/utsatt eksamen", "Eksamensspråk"). The grading
+scale ("Karakterskala") stays in assessment.
 
 **Cleanup** (`.clean_sections()`): removes `.drop` rows, strips notices and
 page widgets from assessment/coursework (`.section_noise`: plagiarism and

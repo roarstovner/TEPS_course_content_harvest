@@ -20,8 +20,8 @@ test_that("short English sub-headings only match exactly", {
 })
 
 test_that("language metadata headings are not filed as assessment", {
-  expect_true(is.na(match_heading_to_section("Language of instruction and examination")))
-  expect_true(is.na(match_heading_to_section("Eksamensspråk")))
+  expect_equal(match_heading_to_section("Language of instruction and examination"), ".drop")
+  expect_equal(match_heading_to_section("Eksamensspråk"), ".drop")
 })
 
 # --- Placeholder rows (#210) ---
@@ -81,6 +81,89 @@ test_that("sentences and list items never act as sub-headings", {
   s <- sections_of(html, html_cfg("p"))
   expect_equal(names(s), "course_content")
   expect_match(s[["course_content"]], "Klasseledelse")
+})
+
+test_that("paragraphs in an accordion <li> that holds a section heading split (#240)", {
+  html <- "<main><ul>
+    <li><h2>Arbeidskrav og obligatoriske aktiviteter</h2><div>
+      <p>To innleveringer.</p><ul><li><p>Vurdering</p></li></ul></div></li>
+    <li><h2>Vurdering og eksamen</h2><div>
+      <p>Individuell munnleg eksamen.</p>
+      <p><strong>Ny/utsatt eksamen</strong></p>
+      <p>Ny eksamen blir arrangert som ved ordinær eksamen.</p></div></li>
+    <li><h2>Hjelpemidler ved eksamen</h2><div><p>Ingen.</p></div></li></ul></main>"
+  s <- sections_of(html, html_cfg("p"))
+  expect_equal(s[["assessment"]], "Individuell munnleg eksamen.")
+  # A list item inside the section is still not a sub-heading.
+  expect_match(s[["coursework_requirements"]], "To innleveringer\\.\\s+Vurdering$")
+})
+
+test_that("a bold label after a dropped sub-heading returns to the parent (#240)", {
+  html <- "<main><ul><li><h2>Vurdering og eksamen</h2><div>
+    <p><strong>Vurdering for studentar som tar faget 1. og 2. studieår</strong></p>
+    <p>Individuell prøveforelesing.</p>
+    <p><strong>Ny/utsett eksamen</strong></p><p>Som ved ordinær eksamen.</p>
+    <p><strong>Vurdering for studentar som tar faget 3. studieår</strong></p>
+    <p>Individuell FoU-oppgåve.</p></div></li></ul></main>"
+  s <- sections_of(html, html_cfg("p"))
+  expect_false(grepl("ordinær", s[["assessment"]]))
+  expect_match(s[["assessment"]], "^Vurdering for studentar som tar faget 1\\. og 2\\. studieår\n")
+  expect_match(s[["assessment"]], "faget 3\\. studieår\nIndividuell FoU-oppgåve\\.$")
+})
+
+test_that("an emphasised lead that equals a heading splits its paragraph (#240)", {
+  html <- "<main>
+    <h2>Innhold</h2><p>Motorisk utvikling.</p>
+    <p><em>Faget i praksis</em>I løpet av emnet planlegger studentene en økt.</p>
+    <p><strong>Merk</strong> at dette ikke er en overskrift.</p>
+    <h2>Vurdering</h2><p>Skriftlig eksamen.</p>
+    <p><strong>Arbeidskrav:</strong> To innleveringer.</p></main>"
+  s <- sections_of(html, html_cfg("p"))
+  expect_equal(s[["course_content"]], "Motorisk utvikling.")
+  expect_match(s[["teaching_methods"]], "^I løpet av emnet planlegger studentene en økt\\.")
+  expect_match(s[["teaching_methods"]], "Merk at dette ikke er en overskrift\\.$")
+  expect_equal(s[["assessment"]], "Skriftlig eksamen.")
+  expect_equal(s[["coursework_requirements"]], "To innleveringer.")
+})
+
+test_that("a heading on its own line inside a <p> splits it (#240)", {
+  html <- "<main><h2>Innhold</h2>
+    <p>Bærekraftig utvikling. <br>Faget i praksis </p>
+    <p>I praksisperioden vektlegges utforskende arbeidsmåter.</p>
+    <h2>Innhold</h2><p>Geografi.</p>
+    <p>Faget i praksis<br>Emnet har et fagdidaktisk perspektiv.</p></main>"
+  s <- sections_of(html, html_cfg("p"))
+  expect_equal(s[["course_content"]], "Bærekraftig utvikling.\n\nGeografi.")
+  expect_match(s[["teaching_methods"]], "^I praksisperioden vektlegges")
+  expect_match(s[["teaching_methods"]], "Emnet har et fagdidaktisk perspektiv\\.$")
+})
+
+test_that("the stock resit sentence is removed from assessment (#241)", {
+  txt <- "Muntlig eksamen. Deleksamen 1: Ny/utsatt eksamen arrangeres som ved ordinær eksamen. Karakter A-F."
+  out <- tibble::tibble(section = "assessment", raw_text = txt)
+  expect_equal(.clean_sections(out, "oslomet")$raw_text, "Muntlig eksamen. Karakter A-F.")
+})
+
+test_that("an inline label for the open section stays as content (#240)", {
+  html <- "<main><h2>Læringsutbytte</h2>
+    <p><strong>Kunnskap</strong>Kandidaten har kunnskap om lesing.</p>
+    <p><strong>Ferdigheter:</strong> Kandidaten kan planlegge.</p></main>"
+  s <- sections_of(html, html_cfg("p"))
+  # (.clean_section_text still drops a leading "Kunnskap" line; #249)
+  expect_match(s[["learning_outcomes"]], "Kandidaten har kunnskap om lesing\\.")
+  expect_match(s[["learning_outcomes"]], "\nFerdigheter:\nKandidaten kan planlegge\\.$")
+})
+
+test_that("sub-headings under an unmapped heading do not collect text (#240)", {
+  html <- "<main><ul>
+    <li><h2>Fagplan</h2><div><p>Læringsutbytte</p><p>Programmets mål.</p>
+      <p>Arbeidskrav</p><p>Programmets krav.</p></div></li>
+    <li><h2>Læringsutbytte</h2><div><p>Emnets mål.</p>
+      <p>Kunnskap</p><p>Studenten kan lese.</p></div></li></ul></main>"
+  s <- sections_of(html, html_cfg("p"))
+  expect_equal(names(s), "learning_outcomes")
+  # The group label naming the open section stays as content.
+  expect_equal(s[["learning_outcomes"]], "Emnets mål.\nKunnskap\nStudenten kan lese.")
 })
 
 test_that("admission text is dropped and h3 prerequisites are kept (uio)", {
@@ -149,6 +232,21 @@ test_that("exam-logistics headings end the assessment section", {
   expect_equal(match_heading_to_section("Eksamen og hjelpemidler"), "assessment")
 })
 
+test_that("resit heading variants are dropped (#241)", {
+  for (h in c("Vilkår for ny/utsatt eksamen", "Ny/utsett eksamen",
+              "Ny eller utsatt eksamen", "Kontinuasjonseksamen")) {
+    expect_equal(match_heading_to_section(h), ".drop", label = h)
+  }
+})
+
+test_that("uio: an exam-language sub-heading drops its value, grading scale stays (#241)", {
+  html <- "<main><h2>Eksamen</h2><p>Skriftlig eksamen, 4 timer.</p>
+    <h3>Eksamensspråk</h3><p>Nynorsk.</p>
+    <h3>Karakterskala</h3><p>Bestått/ikke bestått.</p></main>"
+  s <- sections_of(html, html_cfg("h3, h4, p"))
+  expect_equal(s[["assessment"]], "Skriftlig eksamen, 4 timer.\n\nBestått/ikke bestått.")
+})
+
 test_that("notices are stripped from assessment but not from course content", {
   txt <- paste("Skriftlig eksamen, 4 timer.",
                "Å generere besvarelse ved hjelp av ChatGPT er å regne som fusk.",
@@ -159,6 +257,21 @@ test_that("notices are stripped from assessment but not from course content", {
   res <- .clean_sections(out, "nord")
   expect_equal(res$raw_text[1], "Skriftlig eksamen, 4 timer.")
   expect_equal(res$raw_text[2], "Bruk av ChatGPT i skolen.")
+})
+
+test_that("a COVID sentence is removed without the rest of its line (#241)", {
+  txt <- paste("3 timers skoleeksamen erstattes av 3 timers hjemmeeksamen.",
+               "Dette er et ekstraordinært tiltak i forbindelse med koronapandemien.",
+               "Karakter A-F.")
+  out <- tibble::tibble(section = "assessment", raw_text = txt)
+  expect_equal(.clean_sections(out, "nord")$raw_text,
+               "3 timers skoleeksamen erstattes av 3 timers hjemmeeksamen. Karakter A-F.")
+  txt <- paste("Skriftlig eksamen.",
+               "Pga. koronasituasjonen vil kravet om oppmøte ikkje bli handheva",
+               "Grunna korona vert det følgande endringar:",
+               "Koronatiltak gjeld ikkje lenger.", sep = "\n")
+  out <- tibble::tibble(section = "assessment", raw_text = txt)
+  expect_equal(.clean_sections(out, "uib")$raw_text, "Skriftlig eksamen.")
 })
 
 test_that("uib footer and error banner are removed", {

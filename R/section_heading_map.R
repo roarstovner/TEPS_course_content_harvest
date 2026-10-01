@@ -41,7 +41,13 @@ section_heading_patterns <- tibble::tribble(
   "adgang til ny eller utsatt eksamen",    ".drop",                  TRUE,
   "resit an examination",                  ".drop",                  TRUE,
   "ny/utsatt eksamen",                     ".drop",                  TRUE,
+  "ny/utsett eksamen",                     ".drop",                  TRUE,
   "ny og utsatt eksamen",                  ".drop",                  TRUE,
+  "ny og utsett eksamen",                  ".drop",                  TRUE,
+  "ny eller utsatt eksamen",               ".drop",                  TRUE,
+  "vilkår for ny/utsatt eksamen",          ".drop",                  TRUE,
+  "syk på eksamen / utsatt eksamen",       ".drop",                  TRUE,
+  "kontinuasjonseksamen",                  ".drop",                  TRUE,
   "hjelpemidler til eksamen",              ".drop",                  TRUE,
   "hjelpemiddel til eksamen",              ".drop",                  TRUE,
   "hjelpemidler ved eksamen",              ".drop",                  TRUE,
@@ -78,6 +84,8 @@ section_heading_patterns <- tibble::tribble(
   "forkrav",                               "prerequisites",          FALSE,
   "required prerequisite knowledge",       "prerequisites",          FALSE,
   "recommended prerequisite knowledge",    "prerequisites",          FALSE,
+  "formal prerequisite knowledge",         "prerequisites",          TRUE,
+  "recommended previous knowledge",        "prerequisites",          TRUE,
   "prerequisites",                         "prerequisites",          FALSE,
 
   # --- .drop: headings that end a section but carry no course content ---
@@ -187,11 +195,12 @@ match_heading_to_section <- function(heading, word_start = FALSE) {
 
   # Denylist: language/expression metadata fields whose text collides with a
   # real pattern (e.g. "eksamensspråk" contains "eksamen") but which are NOT
-  # the section. Return NA so they are dropped rather than mis-routed (#198,
-  # nla json maps "Eksamensspråk" into assessment; inn's "Language of
-  # instruction and examination" would hit "examination").
+  # the section (#198, nla json maps "Eksamensspråk" into assessment; inn's
+  # "Language of instruction and examination" would hit "examination").
+  # ".drop", not NA: as an NA sub-heading, uio's <h3>Eksamensspråk</h3> handed
+  # its bare value ("Nynorsk.") back to assessment (#241).
   if (grepl("eksamensspråk|vurderingsspråk|language of instruction", heading_lower)) {
-    return(NA_character_)
+    return(".drop")
   }
 
   exact <- section_heading_patterns$exact %||% rep(FALSE, nrow(section_heading_patterns))
