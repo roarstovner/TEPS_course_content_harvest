@@ -99,6 +99,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Staff name lists 'Name (Role)' survive anonymization (uis Fagperson(er)) (#237)
+- Anonymize sections_raw: sections are cut from un-anonymized text (#208)
 - Move the add-institution skill to `.claude/skills/add-institution/SKILL.md`
   so Claude Code registers it
 - Section QA scripts read `course_offerings_full.RDS` (renamed in #194)

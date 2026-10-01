@@ -61,7 +61,7 @@ cat(sprintf("\nSaved %d section rows to data/sections_raw.RDS\n\n",
 cat("=== COVERAGE PER INSTITUTION ===\n")
 cat("(% of courses with extracted_text that have each canonical section)\n\n")
 
-canonical_sections <- sort(unique(section_heading_patterns$section))
+canonical_sections <- setdiff(sort(unique(section_heading_patterns$section)), ".drop")
 
 denom <- courses_raw |>
   filter(!is.na(extracted_text), nzchar(extracted_text)) |>

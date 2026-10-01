@@ -12,7 +12,9 @@ institution_configs <- list(
     selector_mode = "single",
     year_in_url = TRUE,
     section_strategy = "html_headings",
-    section_heading_level = "h2"
+    section_heading_level = "h2",
+    # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
+    section_subheading_selector = "p"
   ),
 
   uia = list(
@@ -22,7 +24,9 @@ institution_configs <- list(
     selector_mode = "single",
     year_in_url = TRUE,
     section_strategy = "html_headings",
-    section_heading_level = "h2"
+    section_heading_level = "h2",
+    # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
+    section_subheading_selector = "p"
   ),
 
   ntnu = list(
@@ -60,7 +64,22 @@ institution_configs <- list(
     selector_mode = "single",
     year_in_url = TRUE,
     pre_fn = .add_table_cell_breaks,
-    section_strategy = "text_split"
+    # Drupal fields (div.field-<name> + div.label) name each part of the plan;
+    # the exam table is the unlabelled field-assessments-row (#214).
+    section_strategy = "html_fields",
+    section_fields = c(
+      "field-course-content"             = "course_content",
+      "field-learning-outcome"           = "learning_outcomes",
+      "field-learning-outcome-knowledge" = "learning_outcomes",
+      "field-learning-outcome-skills"    = "learning_outcomes",
+      "field-learning-outcome-qualif"    = "learning_outcomes",
+      "field-work-learn-activities"      = "teaching_methods",
+      "field-assessment-requirements"    = "coursework_requirements",
+      "field-assessments-row"            = "assessment",
+      "field-req-preq-knowledge"         = "prerequisites",
+      "field-course-codes-refs"          = "prerequisites",
+      "field-curriculum"                 = "reading_list"
+    )
   ),
 
   hiof = list(
@@ -71,7 +90,9 @@ institution_configs <- list(
     year_in_url = TRUE,
     user_agent = "browser",
     section_strategy = "html_headings",
-    section_heading_level = "h2"
+    section_heading_level = "h2",
+    # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
+    section_subheading_selector = "p"
   ),
 
   hvl = list(
@@ -82,7 +103,9 @@ institution_configs <- list(
     year_in_url = TRUE,
     fetch_fn = fetch_html_cols_single_hvl,
     section_strategy = "html_headings",
-    section_heading_level = "h3"
+    section_heading_level = "h3",
+    # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
+    section_subheading_selector = "p"
   ),
 
   mf = list(
@@ -91,8 +114,11 @@ institution_configs <- list(
     selector = "main",
     selector_mode = "single",
     year_in_url = FALSE,
-    section_strategy = "html_headings",
-    section_heading_level = "h2"
+    # WordPress page: details/summary accordions plus an untitled intro block
+    # (only three h2s, none of them plan sections) (#213).
+    section_strategy = "details_mf",
+    section_intro_selector = "article .content-body > div.wp-block-group",
+    section_subheading_selector = "p"
   ),
 
   nla = list(
@@ -112,7 +138,10 @@ institution_configs <- list(
     ),
     selector_mode = "multi",
     year_in_url = TRUE,
-    section_strategy = "accordion_nord"
+    section_strategy = "accordion_nord",
+    # Arbeidskrav/obligatorisk deltakelse are lines inside the vurdering
+    # accordion, not a heading of their own (#212).
+    section_inline_coursework = TRUE
   ),
 
   nih = list(
@@ -148,7 +177,10 @@ institution_configs <- list(
     selector_mode = "single",
     year_in_url = FALSE,
     section_strategy = "html_headings",
-    section_heading_level = "h2"
+    section_heading_level = "h2",
+    # h3 carries Obligatoriske/Anbefalte forkunnskaper inside "Opptak til
+    # emnet"; <p>Obligatoriske aktiviteter:</p> sits inside "Undervisning".
+    section_subheading_selector = "h3, h4, p"
   ),
 
   uis = list(
@@ -157,6 +189,9 @@ institution_configs <- list(
     selector = "#block-page-content .link--, #block-page-content .paragraph--with-title",
     selector_mode = "multi",
     year_in_url = TRUE,
+    # The multi selector's first match is a link, so html_headings found no
+    # sections and every page fell back to text_split (#214).
+    section_selector = "#block-page-content",
     section_strategy = "html_headings",
     section_heading_level = "h2"
   ),
@@ -186,7 +221,9 @@ institution_configs <- list(
     selector_mode = "single",
     year_in_url = FALSE,
     section_strategy = "html_headings",
-    section_heading_level = "h3"
+    section_heading_level = "h3",
+    # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
+    section_subheading_selector = "p"
   ),
 
   samas = list(
