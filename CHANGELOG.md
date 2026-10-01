@@ -99,6 +99,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Strip exam logistics and admin notices from assessment (#215)
+- Stricter text_split heading detection (hivolda, usn, uis) (#214)
+- mf: details/summary section strategy instead of h2 (#213)
+- Split coursework requirements written inline (nord, uio) (#212)
+- Stop filing admission text under prerequisites (#211)
+- Drop placeholder and pointer-only section rows (#210)
+- Add missing heading patterns to section_heading_map.R (#209)
 - Staff name lists 'Name (Role)' survive anonymization (uis Fagperson(er)) (#237)
 - Anonymize sections_raw: sections are cut from un-anonymized text (#208)
 - Move the add-institution skill to `.claude/skills/add-institution/SKILL.md`
