@@ -433,3 +433,12 @@ test_that("recommendations that mention admission are kept (#211)", {
   res <- .clean_sections(tibble::tibble(section = "prerequisites", raw_text = txt), "nord")
   expect_equal(res$raw_text, paste(strsplit(txt, "\n")[[1]][1:3], collapse = "\n"))
 })
+
+test_that("nla: sections are read from the EmneplanPage JSON in a <script>", {
+  f <- test_path("../../data/html_nla.RDS")
+  skip_if_not(file.exists(f), "harvested nla data not available")
+  d <- readRDS(f)
+  d <- d[!is.na(d$html), ][1:20, ]
+  out <- extract_sections("nla", d$html, d$extracted_text, d$course_id)
+  expect_gt(nrow(out), 0)
+})

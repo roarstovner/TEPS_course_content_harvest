@@ -232,7 +232,8 @@ resit headings such as "Ny/utsatt eksamen"). Exam language and grading scale
 stay in assessment.
 
 HTML is parsed by `.read_doc()`, which drops `script`, `style`, `select` and
-`label` (ntnu script text, uib semester picker).
+`label` (ntnu script text, uib semester picker); `json_nla` parses the page
+itself because its data is in a `<script>`.
 
 **Cleanup** (`.clean_sections()`): removes `.drop` rows, strips notices and
 page widgets from assessment/coursework (`.section_noise`: plagiarism and

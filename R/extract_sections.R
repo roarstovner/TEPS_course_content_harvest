@@ -628,7 +628,7 @@ extract_sections_nla <- function(input, cfg) {
   academic_year <- .nla_academic_year_from_course_id(input$course_id)
   if (is.na(academic_year)) return(.empty_sections())
 
-  doc <- .read_doc(html)
+  doc <- rvest::read_html(html)  # not .read_doc(): the data is in a <script>
   scripts <- rvest::html_elements(doc, "script")
   script_texts <- rvest::html_text(scripts)
   idx <- grep("EmneplanPage", script_texts, fixed = TRUE)
