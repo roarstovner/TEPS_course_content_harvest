@@ -552,3 +552,41 @@ test_that("smoke test: no dates in output", {
   expect_false(grepl("\\d{1,2}\\.\\d{1,2}\\.\\d{4}", result))
   expect_false(grepl("\\d{1,2}:\\d{2}", result))
 })
+
+# --- Staff name lists (#237) ---
+
+test_that("uis Fagperson(er) staff list is removed, surrounding text kept", {
+  input <- paste(
+    "adgang til prøving nektes.",
+    "Fagperson(er)",
+    "- Dag Ove Granås Hovdal (Faglærer)",
+    "- Karen Elizabeth Gilje Woie (Studiekoordinator)",
+    "- Atle Mjåtveit (Emneansvarlig)",
+    "Arbeidsformer",
+    "Forelesninger og seminar.",
+    sep = "\n"
+  )
+  result <- anonymize_text("uis", input, .progress = FALSE)
+  expect_equal(result, "adgang til prøving nektes.\nArbeidsformer\nForelesninger og seminar.")
+})
+
+test_that("Name (Role) lines are removed at any institution", {
+  result <- anonymize_text("hvl", "Innhald\nKari Anne van der Berg (Faglærar)\nTekst.",
+                           .progress = FALSE)
+  expect_equal(result, "Innhald\nTekst.")
+})
+
+test_that("parenthesised non-roles and prose are kept", {
+  for (t in c("Vekting (SP): 15", "Reduksjon (SP)",
+              "Studentene leser Ibsen og Hamsun (various episodes)",
+              "Emneansvarlig informerer om detaljer knyttet til eksamen.")) {
+    expect_equal(anonymize_text("uis", t, .progress = FALSE), t, label = t)
+  }
+})
+
+test_that("approver name is removed but the role is kept", {
+  result <- anonymize_text("usn", "Godkjent av dekan Arild Hovland", .progress = FALSE)
+  expect_equal(result, "Godkjent av dekan")
+  expect_equal(anonymize_text("usn", "Godkjent av Dekan", .progress = FALSE),
+               "Godkjent av Dekan")
+})

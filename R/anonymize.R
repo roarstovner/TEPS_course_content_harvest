@@ -149,6 +149,9 @@ anonymize_text <- function(institution, text,
     stringr::str_remove_all("(?m)^\\s*EMNE\\s+\\S+\\s+\\S+\\s+Versjon[^\n]*") |>
     # PDF pages: strip "Fagpersoner" section (heading + name lines with roles)
     stringr::str_remove("(?s)Fagpersoner\\s*\\n.*?(?=\\n\\n|$)") |>
+    # HTML pages head the staff list "Fagperson(er)"; the "Name (Role)" lines
+    # under it are removed in .anon_generic() (#237)
+    stringr::str_remove_all("(?m)^Fagperson\\(er\\)[ \\t]*\\n?") |>
     stringr::str_remove_all("Powered by TCPDF[^\n]*") |>
     stringr::str_remove_all("(?m)^\\s*side\\s+\\d+\\s*$")
 }
@@ -193,12 +196,36 @@ anonymize_text <- function(institution, text,
 
 # --- Generic anonymization (all institutions) ---
 
+# Staff roles that follow a person's name in parentheses in staff lists.
+.staff_roles <- c(
+  "emneansvarlig", "emneansvarleg", "faglærer", "faglærar",
+  "studiekoordinator", "praksiskoordinator", "emnekoordinator", "koordinator",
+  "studieprogramleder", "studieprogramleiar", "programansvarlig",
+  "instituttleder", "instituttleiar", "veileder", "rettleiar",
+  "timelærer", "timelærar", "kontaktperson", "sensor"
+)
+# A whole line that is only a capitalised name (particles like "van" allowed)
+# followed by "(Role)", optionally bulleted.
+.staff_line_regex <- paste0(
+  "(?m)^[ \\t]*[-•*]?[ \\t]*",
+  "\\p{Lu}[\\p{L}.'’-]*(?:[ \\t]+(?:\\p{Lu}[\\p{L}.'’-]*|van|von|de|der|den|da|di|af))+",
+  "[ \\t]*\\((?i:", paste(.staff_roles, collapse = "|"), ")\\)[ \\t]*(?:\\n|$)"
+)
+.approved_by_name_regex <- paste0(
+  "([Gg]odkjent av (?:[Dd]ekan(?:en)?|[Pp]rodekan|[Ii]nstitutt(?:nest)?leder|",
+  "[Ss]tudieprogramleder))[ \\t]+\\p{Lu}\\p{Ll}+(?:[ \\t]+\\p{Lu}[\\p{L}-]+)+"
+)
+
 .anon_generic <- function(txt) {
   txt |>
     # Remove "Sist hentet/henta fra/frå FS..." timestamp
     stringr::str_remove_all("Sist hent(?:et|a) fr(?:a|å) FS \\(Felles studentsystem\\)[^\n]*") |>
     # Remove email addresses
     stringr::str_remove_all("\\b[\\w.+-]+@[\\w.-]+\\.[a-zA-Z]{2,}\\b") |>
+    # Remove staff list lines "- Ingrid Nielsen (Emneansvarlig)" (#237)
+    stringr::str_remove_all(.staff_line_regex) |>
+    # Keep the role, drop the name: "Godkjent av dekan Ola Nordmann" (#237)
+    stringr::str_replace_all(.approved_by_name_regex, "\\1") |>
     # Remove phone numbers: +47 XX XX XX XX, Tlf: XXXXXXXX, telefon: XX XX XX XX
     stringr::str_remove_all("(?i)(?:tlf|telefon)\\s*:?\\s*(?:\\+47\\s*)?\\d[\\d ]{6,}") |>
     stringr::str_remove_all("\\+47\\s*\\d[\\d ]{6,}") |>
