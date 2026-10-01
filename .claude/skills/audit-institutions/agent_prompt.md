@@ -24,7 +24,9 @@ Read these files first, in this order:
 
 Your task:
 
-- Audit every course in the packet against the rubric in the recipe.
+- Audit every course in the packet against the rubric in the recipe. Read
+  each course in full; `n_courses_reviewed` counts only courses you read in
+  full, so a partial review is visible in the report.
 - Explain the pre-pass flags (are they real problems or false alarms?) **and
   actively look for problem types the flags cannot see**. The random controls
   are there so you can tell whether a problem is institution-wide.

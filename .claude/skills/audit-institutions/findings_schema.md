@@ -44,7 +44,7 @@ each finding is a *type* of problem with that step, backed by examples.
 | `check` | string | `sections`, `fulltext` or `anonymization`. |
 | `institution` | string | The institution reviewed. |
 | `model` | string | The model the dispatcher named in your prompt. |
-| `n_courses_reviewed` | integer | Courses actually inspected (should equal the packet size). |
+| `n_courses_reviewed` | integer | Courses read in full (should equal the packet size; do not count courses only skimmed by heading or length). |
 | `n_suspects_reviewed` | integer | Of those, how many were `[SUSPECT]`. |
 | `overall_assessment` | string | 1–3 sentence quality summary. |
 | `findings` | array | Zero or more finding objects. `[]` is a valid answer when nothing is wrong. |
