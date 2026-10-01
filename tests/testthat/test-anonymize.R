@@ -612,3 +612,51 @@ test_that("prose and references with a role after a comma are kept", {
     expect_equal(anonymize_text("usn", t, .progress = FALSE), t, label = t)
   }
 })
+
+test_that("steiner: bare PDF page numbers are removed, numbers in text kept (#248)", {
+  input <- "kan gi tilbakemelding\n10\nkan anvende kunnskaper\nOmfang: 10 studiepoeng"
+  expect_equal(anonymize_text("steiner", input, .progress = FALSE),
+               "kan gi tilbakemelding\nkan anvende kunnskaper\nOmfang: 10 studiepoeng")
+})
+
+# --- #224, #227-#230 ---
+
+test_that("inflected and run-together season + year are removed (#227)", {
+  expect_equal(anonymize_text("nih", "Pensumliste for høsten 2025 og våren2026.", .progress = FALSE),
+               "Pensumliste for  og .")
+})
+
+test_that("academic-year ranges go, content ranges stay (#230)", {
+  expect_equal(anonymize_text("nih", "Se Studiehåndbok 2023-2024 og 2023- 24.", .progress = FALSE),
+               "Se Studiehåndbok  og .")
+  expect_equal(anonymize_text("nih", "Perioden 1945-1970 og 1914-18.", .progress = FALSE),
+               "Perioden 1945-1970 og 1914-18.")
+})
+
+test_that("brackets emptied by year removal go, code brackets stay (#229)", {
+  expect_equal(anonymize_text("hiof", "Meld. St. 16 (2016-2017) og print() i Python.", .progress = FALSE),
+               "Meld. St. 16 og print() i Python.")
+})
+
+test_that("a bracketed e-mail leaves no empty brackets (#229)", {
+  expect_equal(anonymize_text("uio", "Ta kontakt med Per Hansen (per.hansen@uio.no) eller oss.", .progress = FALSE),
+               "Ta kontakt med eller oss.")
+})
+
+test_that("mf exam-dates block and library notice are removed (#228)", {
+  input <- paste("Skriftlig eksamen.", "", "Eksamensdatoer", "Eksamensdato:", "18. november 2026",
+                 "", "Læringsutbytte", "Kunnskap", "", "Litteraturliste", "Litteraturlisten for vår 2026", "",
+                 "Tilgang til litteratur", "Noe er digitalt.", "via ditt lokale folkebibliotek.", sep = "\n")
+  expect_equal(anonymize_text("mf", input, .progress = FALSE),
+               "Skriftlig eksamen.\n\nLæringsutbytte\nKunnskap\n\nLitteraturliste")
+})
+
+test_that("uio exam-links tail is cut (#224)", {
+  expect_equal(anonymize_text("uio", "Skriftlig eksamen.\nMer om eksamen ved UiO\nHvordan bruke KI som student", .progress = FALSE),
+               "Skriftlig eksamen.")
+})
+
+test_that("phone numbers after 'Tlf.' are removed", {
+  expect_equal(anonymize_text("uib", "Studieadministrasjonen. Tlf. 55 58 27 10", .progress = FALSE),
+               "Studieadministrasjonen.")
+})

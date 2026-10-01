@@ -129,7 +129,10 @@ anonymize_text <- function(institution, text,
     # Strip from Emneansvarlig to end (names + emails + marketing)
     stringr::str_remove("Emneansvarlig\\s*\\n[\\s\\S]*$") |>
     stringr::str_remove_all("Kontakt studieveileder\\s*") |>
-    stringr::str_remove_all("Vis flere\\s*")
+    stringr::str_remove_all("Vis flere\\s*") |>
+    # Exam dates block up to the learning outcomes, library notice (#228)
+    stringr::str_remove("(?s)\\nEksamensdatoer\\n.*?(?=\\nLæringsutbytte\\n)") |>
+    stringr::str_remove("(?s)(?:Litteraturlisten for[^\\n]*\\s*)?Tilgang til litteratur\\n.*?folkebibliotek\\.")
 }
 
 .anon_hivolda <- function(txt) {
@@ -158,7 +161,9 @@ anonymize_text <- function(institution, text,
 
 .anon_steiner <- function(txt) {
   txt |>
-    stringr::str_remove_all("(?m)^\\s*Side\\s+\\d+\\s+av\\s+\\d+\\s*$")
+    stringr::str_remove_all("(?m)^\\s*Side\\s+\\d+\\s+av\\s+\\d+\\s*$") |>
+    # bare PDF page numbers (#248, #225)
+    stringr::str_remove_all("(?m)^[ \\t]*\\d{1,3}[ \\t]*\\n")
 }
 
 .anon_usn <- function(txt) {
@@ -190,7 +195,9 @@ anonymize_text <- function(institution, text,
   txt |>
     # Strip person name before parenthesized email: "Per Hansen (per.hansen@math.uio.no)"
     # Keeps organizational names + emails (handled by generic email removal)
-    stringr::str_remove_all("\\p{Lu}\\p{Ll}+(?:\\s+\\p{Lu}\\p{Ll}+)+\\s*(?=\\([\\w.+-]+@)")
+    stringr::str_remove_all("\\p{Lu}\\p{Ll}+(?:\\s+\\p{Lu}\\p{Ll}+)+\\s*(?=\\([\\w.+-]+@)") |>
+    # Generic exam-links tail "Mer om eksamen ved UiO ... Andre veiledninger" (#224)
+    stringr::str_remove("(?s)\\n(?:Mer|Meir) om eksamen ved UiO\\b.*$|(?s)\\nMore about examinations at UiO\\b.*$")
 }
 
 
@@ -227,11 +234,21 @@ anonymize_text <- function(institution, text,
   "[Ss]tudieprogramleder))[ \\t]+\\p{Lu}\\p{Ll}+(?:[ \\t]+\\p{Lu}[\\p{L}-]+)+"
 )
 
+# "2023-2024" / "2023-24" (consecutive years) is an academic year and goes;
+# a content range such as "1945-1970" stays (#230).
+.drop_academic_year <- function(m) {
+  y <- stringr::str_match(m, "(\\d{4})\\s?[-–]\\s?(\\d{2,4})")
+  nxt <- as.integer(y[, 2]) + 1L
+  m[!is.na(nxt) & (y[, 3] == nxt | y[, 3] == sprintf("%02d", nxt %% 100L))] <- ""
+  m
+}
+
 .anon_generic <- function(txt) {
   txt |>
     # Remove "Sist hentet/henta fra/frå FS..." timestamp
     stringr::str_remove_all("Sist hent(?:et|a) fr(?:a|å) FS \\(Felles studentsystem\\)[^\n]*") |>
-    # Remove email addresses
+    # Remove email addresses, with their brackets: "Ta kontakt med (x@uio.no)" (#229)
+    stringr::str_remove_all("\\s*\\(\\s*[\\w.+-]+@[\\w.-]+\\.[a-zA-Z]{2,}\\s*\\)") |>
     stringr::str_remove_all("\\b[\\w.+-]+@[\\w.-]+\\.[a-zA-Z]{2,}\\b") |>
     # Remove staff list lines "- Ola Nordmann (Emneansvarlig)" (#237)
     stringr::str_remove_all(.staff_line_regex) |>
@@ -240,7 +257,7 @@ anonymize_text <- function(institution, text,
     # Keep the role, drop the name: "Godkjent av dekan Ola Nordmann" (#237)
     stringr::str_replace_all(.approved_by_name_regex, "\\1") |>
     # Remove phone numbers: +47 XX XX XX XX, Tlf: XXXXXXXX, telefon: XX XX XX XX
-    stringr::str_remove_all("(?i)(?:tlf|telefon)\\s*:?\\s*(?:\\+47\\s*)?\\d[\\d ]{6,}") |>
+    stringr::str_remove_all("(?i)(?:tlf|telefon)\\.?\\s*:?\\s*(?:\\+47\\s*)?\\d[\\d ]{6,}") |>
     stringr::str_remove_all("\\+47\\s*\\d[\\d ]{6,}") |>
     # Remove Norwegian date-time format: "12. feb. 2026 02:50:04"
     stringr::str_remove_all("\\d{1,2}\\.\\s*(?:jan|feb|mar|apr|mai|jun|jul|aug|sep|okt|nov|des)\\.?\\s*\\d{4}\\s*\\d{2}:\\d{2}(?::\\d{2})?") |>
@@ -250,7 +267,8 @@ anonymize_text <- function(institution, text,
     # e.g. "Høst 2024", "2024 Vår", "Undervisningssemester: Vår", "Semester: Autumn"
     # Must run BEFORE year removal so "Høst 2024" matches as a unit
     # Preserves "vår" meaning "our" in normal prose
-    stringr::str_remove_all("(?i)(høst|vår|haust|autumn|spring|sommer|summer)\\s+(\\d{4})") |>
+    # also inflected / run together: "høsten 2025", "våren2026" (#227)
+    stringr::str_remove_all("(?i)\\b(?:(?:høst|vår|haust|sommer)(?:en|a)?|autumn|spring|summer)\\s*\\d{4}\\b") |>
     stringr::str_remove_all("(?i)(\\d{4})\\s+(høst|vår|haust|autumn|spring|sommer|summer)") |>
     stringr::str_remove_all("(?i)(?<=(?:semester|undervisning|oppstart|startsemester|eksamen)[:\\s]{0,3})(høst|vår|haust|autumn|spring|sommer|summer)") |>
     # Remove dates: dd.mm.yyyy
@@ -264,6 +282,10 @@ anonymize_text <- function(institution, text,
     ) |>
     # Remove academic year ranges: "2023/2024", "2023/24"
     stringr::str_remove_all("\\b\\d{4}/\\d{2,4}\\b") |>
+    stringr::str_replace_all("\\b\\d{4}\\s?[-–]\\s?\\d{2,4}\\b", .drop_academic_year) |>
+    # Brackets emptied by the removals above: "Meld. St. 16 ()" (#229);
+    # code such as "print()" has no space before and stays
+    stringr::str_remove_all("[ \\t]+\\([ \\t]*\\)") |>
     # Remove times HH:MM(:SS)
     stringr::str_remove_all("\\b\\d{1,2}:\\d{2}(?::\\d{2})?\\b") |>
     # Remove JS artifacts
