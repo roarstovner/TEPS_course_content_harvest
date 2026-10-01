@@ -172,6 +172,30 @@ the headings it could not map. To map a new heading, add a pattern to
 `R/section_heading_map.R`; how each institution is split is set by the
 `section_*` fields in `R/institution_config.R`.
 
+## Data Files: Published and Internal
+
+Files that hold raw page text (`html`, `extracted_text`) contain staff names,
+e-mail addresses and phone numbers and are never published. Everything that is
+shared is built from the anonymized text (`anonymize_text()`). The repository
+is public; `data/*.RDS` is gitignored.
+
+| File | Contents | Personal data | Status |
+|---|---|---|---|
+| `data/courses.RDS` | DBH course metadata (pipeline input) | none | in git |
+| `data/html_{inst}.RDS`, `data/checkpoint/` | raw `html` + `extracted_text` | yes (raw) | internal |
+| `data/course_offerings_full.RDS` | offerings + `url`, `extracted_text`, `course_plan` | yes (`extracted_text`) | internal |
+| `data/course_offerings.RDS` | DBH metadata + `plan_content_id`, no text | none | published |
+| `data/course_plans.RDS` | anonymized `course_plan` (+ `course_plan_normalized`) | anonymized | published |
+| `data/sections_raw.RDS` | anonymized section `raw_text` | anonymized | publishable |
+| `data/browser_data.RDS` | course_browser payload: plans, offering metadata, sections | anonymized (no `extracted_text`) | internal (app) |
+| `app/course_browser_ojs/data/*.parquet` | anonymized `course_plan` + slim offering metadata | anonymized | published with the OJS page (build artifact) |
+| `data/audit/` | audit findings (quotes from anonymized text) | staff names redacted | in git |
+
+Check after any change to the anonymizer or the pipeline: scan the published
+files for e-mail addresses, phone numbers, "Name (Role)" lists and "Name,
+dekan" signatures (the anonymization audit, `/audit-institutions
+anonymization`, does this per institution).
+
 ## Data Structure
 
 ### Input Data (`data/courses.RDS`)

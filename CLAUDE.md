@@ -186,13 +186,13 @@ config:
 
 | Strategy | Institutions | How it splits |
 |---|---|---|
-| `html_headings` | oslomet, uia, ntnu, inn, hiof, hvl, nih, uio, uis, uit, nmbu | DOM walk; a heading (`section_heading_level`, or `section_heading_selector`) starts a section. Falls back to `text_split` when it finds < 3 sections |
+| `html_headings` | oslomet, uia, ntnu, inn, hiof, hvl, nih, uio, uis, uit, nmbu | DOM walk; a heading (`section_heading_level`, or `section_heading_selector`, e.g. ntnu `"h2, h3"` for its "Eksamen" block) starts a section. Falls back to `text_split` when it finds < 3 sections |
 | `html_fields` | hivolda | `div.field-<name>` containers mapped to sections by `section_fields` |
 | `details_mf` | mf | `<details><summary>` accordions + the untitled intro block (`section_intro_selector`) as course_content |
 | `details_uib` | uib | `<details><summary>` accordions + top-level `h2` |
 | `accordion_nord` | nord | `div.ac` accordion trigger/panel pairs |
 | `json_nla` | nla | Titles in the embedded EmneplanPage JSON |
-| `text_split` | usn, steiner (+ fallback) | Heading-shaped lines in `extracted_text` |
+| `text_split` | usn, steiner (+ fallback, e.g. uis PDF plans) | Heading-shaped lines in `extracted_text`; skips a table of contents ("Innholdsfortegnelse", usn); inside a reading list opened by a whole heading only a whole heading switches section (book titles) |
 | `noop` | samas | — |
 
 Other `section_*` config fields:
@@ -210,7 +210,12 @@ Other `section_*` config fields:
   the section already open ("Kunnskap") stays as content. A `<p>` in a list
   item is skipped unless that `<li>` holds a section heading (oslomet's
   accordion). An unmapped `h3` ("Karakterskala") hands its text back to the
-  parent section, keeping the heading as its first line.
+  parent section, keeping the heading as its first line. A colon-ended
+  lead-in naming a coursework gate ("… følgende obligatoriske aktiviteter:")
+  starts coursework_requirements.
+- `section_text_header`: regex for a title + metadata block at the top of
+  `extracted_text` (uis PDFs: "Emnekode:", "Tilbys av:"); `text_split` skips
+  it and files the untitled paragraph after it as course_content.
 - `section_inline_coursework`: move "Arbeidskrav (AK): …" / "Obligatorisk
   deltakelse …" lines from assessment to coursework_requirements (nord).
 
@@ -226,14 +231,23 @@ exam logistics ("Mer om eksamen ved UiO", "Hjelpemidler", "Sensorordning",
 resit headings such as "Ny/utsatt eksamen"). Exam language and grading scale
 stay in assessment.
 
+HTML is parsed by `.read_doc()`, which drops `script`, `style`, `select` and
+`label` (ntnu script text, uib semester picker).
+
 **Cleanup** (`.clean_sections()`): removes `.drop` rows, strips notices and
 page widgets from assessment/coursework (`.section_noise`: plagiarism and
-ChatGPT/COVID notices, uib banner and footer, …), removes admission sentences
-from prerequisites (`.strip_admission_lines()`), drops placeholder-only rows
-(`.placeholder_phrases`: "Ingen", "Se fagplanen.", "-", Leganto pointers).
+ChatGPT/COVID notices, uib banner and footer, flattened exam-table headers,
+…), removes admission sentences from prerequisites
+(`.strip_admission_lines()`), drops placeholder-only rows
+(`.placeholder_phrases`: "Ingen", "Se fagplanen.", "-", Leganto pointers,
+"Oppgis senere.", "… ikke publisert ennå"), and drops a first line that only
+repeats the section heading (but keeps learning-outcome group labels such as
+"Kunnskap").
 
 **Privacy:** sections are cut from raw `html`/`extracted_text`, so
 `run_extract_sections.R` must keep anonymizing `raw_text` before saving.
+Which data files are published and which are internal (raw text) is listed
+in README.qmd, "Data Files: Published and Internal".
 
 ## Auditing a Pipeline Step Across Institutions
 

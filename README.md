@@ -201,6 +201,95 @@ and the headings it could not map. To map a new heading, add a pattern
 to `R/section_heading_map.R`; how each institution is split is set by
 the `section_*` fields in `R/institution_config.R`.
 
+## Data Files: Published and Internal
+
+Files that hold raw page text (`html`, `extracted_text`) contain staff
+names, e-mail addresses and phone numbers and are never published.
+Everything that is shared is built from the anonymized text
+(`anonymize_text()`). The repository is public; `data/*.RDS` is
+gitignored.
+
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>File</th>
+<th>Contents</th>
+<th>Personal data</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data/courses.RDS</code></td>
+<td>DBH course metadata (pipeline input)</td>
+<td>none</td>
+<td>in git</td>
+</tr>
+<tr>
+<td><code>data/html_{inst}.RDS</code>,
+<code>data/checkpoint/</code></td>
+<td>raw <code>html</code> + <code>extracted_text</code></td>
+<td>yes (raw)</td>
+<td>internal</td>
+</tr>
+<tr>
+<td><code>data/course_offerings_full.RDS</code></td>
+<td>offerings + <code>url</code>, <code>extracted_text</code>,
+<code>course_plan</code></td>
+<td>yes (<code>extracted_text</code>)</td>
+<td>internal</td>
+</tr>
+<tr>
+<td><code>data/course_offerings.RDS</code></td>
+<td>DBH metadata + <code>plan_content_id</code>, no text</td>
+<td>none</td>
+<td>published</td>
+</tr>
+<tr>
+<td><code>data/course_plans.RDS</code></td>
+<td>anonymized <code>course_plan</code> (+
+<code>course_plan_normalized</code>)</td>
+<td>anonymized</td>
+<td>published</td>
+</tr>
+<tr>
+<td><code>data/sections_raw.RDS</code></td>
+<td>anonymized section <code>raw_text</code></td>
+<td>anonymized</td>
+<td>publishable</td>
+</tr>
+<tr>
+<td><code>data/browser_data.RDS</code></td>
+<td>course_browser payload: plans, offering metadata, sections</td>
+<td>anonymized (no <code>extracted_text</code>)</td>
+<td>internal (app)</td>
+</tr>
+<tr>
+<td><code>app/course_browser_ojs/data/*.parquet</code></td>
+<td>anonymized <code>course_plan</code> + slim offering metadata</td>
+<td>anonymized</td>
+<td>published with the OJS page (build artifact)</td>
+</tr>
+<tr>
+<td><code>data/audit/</code></td>
+<td>audit findings (quotes from anonymized text)</td>
+<td>staff names redacted</td>
+<td>in git</td>
+</tr>
+</tbody>
+</table>
+
+Check after any change to the anonymizer or the pipeline: scan the
+published files for e-mail addresses, phone numbers, “Name (Role)” lists
+and “Name, dekan” signatures (the anonymization audit,
+`/audit-institutions anonymization`, does this per institution).
+
 ## Data Structure
 
 ### Input Data (`data/courses.RDS`)
