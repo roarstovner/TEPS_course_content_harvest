@@ -1,7 +1,7 @@
 # sections audit — aggregated findings
 
 119 findings across 18 institutions (from 18 agent reports in `data/audit/sections/findings`; model: sonnet).
-Mechanical verification: 88 passed (✓), 1 failed (✗), 30 not checkable (?, stale report or no packet).
+Mechanical verification: 89 passed (✓), 0 failed (✗), 30 not checkable (?, stale report or no packet).
 Sorted by severity then prevalence. Source: `R/audit/aggregate.R`.
 
 ## Failed verification — check by hand before acting
@@ -9,9 +9,7 @@ Sorted by severity then prevalence. Source: `R/audit/aggregate.R`.
 Unknown course ids or evidence that does not occur verbatim in the packet.
 Usually a paraphrased quote; occasionally an invented finding.
 
-| institution | target | error_type | severity | problem | evidence |
-| --- | --- | --- | --- | --- | --- |
-| hvl | assessment | formatting_noise | medium | evidence not_found | Karakterskala A-F, der F er ikkje greidd. Alle Mer om hjelpemiddel |
+_(none)_
 
 ## Patterns in 3+ institutions
 
@@ -38,11 +36,7 @@ Usually a paraphrased quote; occasionally an invented finding.
 
 | institution | n_before | n_now | persisting | new | gone |
 | --- | --- | --- | --- | --- | --- |
-| hvl | 8 | 2 | all / empty_placeholder | assessment / formatting_noise | assessment / merged_sections; assessment / boilerplate_only; prerequisites / merged_sections; coursework_requirements / boilerplate_only; coursework_requirements / wrong_content; course_content / boilerplate_only; reading_list / missing_section |
-| nord | 5 | 7 | assessment / merged_sections; assessment / formatting_noise; prerequisites / boilerplate_only | assessment / boilerplate_only; teaching_methods / wrong_content; reading_list / missing_section; all / other | coursework_requirements / missing_section; prerequisites / empty_placeholder |
-| oslomet | 5 | 7 | all / empty_placeholder | assessment / duplicate; cross_section / missing_section; all / missing_section; reading_list / missing_section; prerequisites / boilerplate_only; assessment / formatting_noise | assessment / missing_section; cross_section / duplicate; prerequisites / empty_placeholder; learning_outcomes / formatting_noise |
-| uia | 2 | 4 |  | cross_section / merged_sections; all / missing_section; prerequisites / wrong_content; coursework_requirements / wrong_content | cross_section / formatting_noise; coursework_requirements / merged_sections |
-| uis | 12 | 12 | cross_section / merged_sections; reading_list / wrong_content; learning_outcomes / truncated | learning_outcomes / merged_sections; all / missing_section; cross_section / other; coursework_requirements / other; reading_list / split_section; reading_list / formatting_noise; learning_outcomes / split_section; assessment / wrong_content; cross_section / formatting_noise | assessment / merged_sections; assessment / formatting_noise; course_content / merged_sections; reading_list / empty_placeholder; prerequisites / merged_sections; coursework_requirements / wrong_content; teaching_methods / missing_section; learning_outcomes / wrong_content; course_content / formatting_noise |
+| hvl | 2 | 2 | assessment / formatting_noise; all / empty_placeholder |  |  |
 
 ## By error type
 
@@ -157,7 +151,7 @@ Usually a paraphrased quote; occasionally an invented finding.
 | ✓ | nord | assessment | boilerplate_only | high | rare | nord_RL211L-1_2020_autumn_3 | After stripping COVID notices (see other finding), drop assessment rows that become empty instead of emitting the notice. |
 | ✓ | uio | teaching_methods | other | high | rare | uio_MAT5930L-2_2025_spring_1; uio_PROF3025-1_2025_spring_1 | Run extract_sections on the anonymized course_plan (or apply anonymize_fulltext to each section) and add a check in R/audit/qa_sections.R... |
 | ✓ | uis | reading_list | split_section | high | rare | uis_MGL4300-1_2021_autumn_1 | Once a reading_list heading has been seen, do not allow switching to other sections except through exact whole-line headings; check which... |
-| ✗ | hvl | assessment | formatting_noise | medium | widespread | hvl_MGUSA102-1_2022_spring_1; hvl_MGBSA101-1_2024_spring_... | In R/extract_sections.R .clean_sections() (or an hvl-specific post step), drop lines matching ^(Mer\|Meir) om hjelpemiddel(er)?$. Either m... |
+| ✓ | hvl | assessment | formatting_noise | medium | widespread | hvl_MGUSA102-1_2022_spring_1; hvl_MGBSA101-1_2024_spring_... | In R/extract_sections.R .clean_sections() (or an hvl-specific post step), drop lines matching ^(Mer\|Meir) om hjelpemiddel(er)?$. Either m... |
 | ✓ | inn | assessment | field_or_language_junk | medium | widespread | inn_2ML351-1_2024_autumn_1; inn_2ENL51-7-1_2024_autumn_1;... | Add a pattern for 'Language of instruction( and examination)?' / 'Undervisnings- og eksamensspråk' mapped to a dropped/ignored section an... |
 | ✓ | inn | assessment | truncated | medium | widespread | inn_2MKRLE171-1-1_2023_spring_1; inn_2ENL51-8-1_2023_autu... | Map 'Form of assessment' (and 'Examination') to assessment in R/section_heading_map.R so the repeated heading continues the same section ... |
 | ✓ | mf | course_content | empty_placeholder | medium | widespread | mf_SAM1080L-1_2025_spring_1; mf_PRA1001-1_2025_autumn_1; ... | Remap the heading to coursework_requirements and drop heading-only rows in .clean_sections() in R/extract_sections.R (text remaining afte... |

@@ -11,8 +11,12 @@
       "error_type": "formatting_noise",
       "severity": "medium",
       "prevalence": "widespread",
-      "example_course_ids": ["hvl_MGUSA102-1_2022_spring_1", "hvl_MGBSA101-1_2024_spring_1", "hvl_MGBBNM501-1_2022_autumn_1"],
-      "evidence": "Karakterskala A-F, der F er ikkje greidd.\n\nAlle\nMer om hjelpemiddel",
+      "example_course_ids": [
+        "hvl_MGUSA102-1_2022_spring_1",
+        "hvl_MGBSA101-1_2024_spring_1",
+        "hvl_MGBBNM501-1_2022_autumn_1"
+      ],
+      "evidence": "Karakterskala A-F, der F er ikkje greidd.\n\nAlle\nMeir om hjelpemiddel",
       "description": "The 'Hjelpemidler ved eksamen' block is folded into assessment with its heading removed, so a bare value such as 'Alle' or 'Ingen' sits without context, followed by the UI link text 'Mer/Meir om hjelpemiddel(er)'. The link text is page navigation cruft, and the orphaned aids value is ambiguous. This occurs in nearly every course with a Vurderingsform section.",
       "root_cause_hypothesis": "The assessment strategy takes everything under the Vurderingsform h3 up to the next mapped heading. 'Hjelpemidler ved eksamen' maps to nothing, so its text is appended to assessment, and the 'Mer om hjelpemidler' link is never stripped in .clean_sections().",
       "suggested_fix": "In R/extract_sections.R .clean_sections() (or an hvl-specific post step), drop lines matching ^(Mer|Meir) om hjelpemiddel(er)?$. Either map 'Hjelpemid(d)el(er) ved eksamen' to an exam-aids field or re-attach the heading ('Hjelpemidler ved eksamen: Alle') so the value is not orphaned.",
@@ -23,7 +27,11 @@
       "error_type": "empty_placeholder",
       "severity": "medium",
       "prevalence": "common",
-      "example_course_ids": ["hvl_MGPRA10-1_2025_spring_1", "hvl_MGPRA5-1_2025_spring_1", "hvl_MGBSA141-1_2020_spring_1"],
+      "example_course_ids": [
+        "hvl_MGPRA10-1_2025_spring_1",
+        "hvl_MGPRA5-1_2025_spring_1",
+        "hvl_MGBSA141-1_2020_spring_1"
+      ],
       "evidence": "**course_content** (1 chars)  ⚑ flags: empty\n\n````\n-\n````",
       "description": "Where HVL's plan has a heading with the placeholder '-' (all five praksis MGPRA* courses), the extractor emits rows containing just '-' for course_content, learning_outcomes, prerequisites, teaching_methods and coursework_requirements. Prerequisites also comes out as 'Ingen\\n\\nIngen' (required and recommended both 'Ingen') in many courses. Yet a lone 'Ingen' prerequisite is dropped entirely for MGBPØ201 and MGUPP201, so the handling is inconsistent. These rows look like sections present but carry no content.",
       "root_cause_hypothesis": ".clean_sections() does not treat '-' or 'Ingen' (alone or repeated) as empty, so the rows survive; the missing prerequisites row for some courses suggests a separate filter for single-line 'Ingen'.",
