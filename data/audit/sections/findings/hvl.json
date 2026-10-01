@@ -2,41 +2,54 @@
   "check": "sections",
   "institution": "hvl",
   "model": "sonnet",
-  "n_courses_reviewed": 28,
-  "n_suspects_reviewed": 20,
-  "overall_assessment": "HVL section extraction is largely correct: all seven headings map to the right canonical sections, learning outcomes keep all sub-groups, and arbeidskrav land in coursework_requirements rather than assessment. The recurring defects are a UI link and an orphaned aids value ('Alle', 'Ingen') appended to assessment, and placeholder rows ('-', 'Ingen / Ingen') emitted as sections. Most pre-pass flags (boilerplate, short, prerequisites empty) are false alarms.",
+  "n_courses_reviewed": 20,
+  "n_suspects_reviewed": 14,
+  "overall_assessment": "HVL section extraction is accurate: all seven canonical sections map to the right headings, arbeidskrav land in coursework_requirements (not assessment), and the Hjelpemiddel / 'Meir om hjelpemiddel' cruft is already stripped. Every pre-pass flag (boilerplate, empty, short, leak->teaching_methods) is a false alarm. Only minor cosmetic noise remains.",
   "findings": [
+    {
+      "target": "learning_outcomes",
+      "error_type": "formatting_noise",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": [
+        "hvl_MGUSA101-1_2018_spring_1",
+        "hvl_MGUSA102-1_2020_spring_1",
+        "hvl_MGUSA202-1_2020_spring_1"
+      ],
+      "evidence": "Dugleikar Kandidaten",
+      "description": "In learning_outcomes the Kunnskap / Ferdigheter / Generell kompetanse sub-headings are dropped in most courses, leaving three anonymous 'Studenten'/'Kandidaten' blocks. In older plans where the sub-heading is run together with the subject line, the sub-heading survives inline ('Dugleikar Kandidaten', 'Generell kompetanse Kandidaten'), and in 2020 plans a lone 'Dugleikar' line remains. All outcomes are kept (nothing truncated), but the knowledge/skills/competence grouping is lost or inconsistently preserved.",
+      "root_cause_hypothesis": "The learning-outcomes sub-headings are not mapped to anything and are removed (or kept only when merged into the same text node) by the heading splitter / .clean_sections() in R/extract_sections.R.",
+      "suggested_fix": "Either keep Kunnskap/Kunnskapar/Ferdigheiter/Dugleikar/Generell kompetanse as explicit labels on their own line, or strip them uniformly, including the inline forms 'Dugleikar Kandidaten' and 'Generell kompetanse Kandidaten'.",
+      "confidence": "medium"
+    },
     {
       "target": "assessment",
       "error_type": "formatting_noise",
-      "severity": "medium",
-      "prevalence": "widespread",
+      "severity": "low",
+      "prevalence": "occasional",
       "example_course_ids": [
-        "hvl_MGUSA102-1_2022_spring_1",
-        "hvl_MGBSA101-1_2024_spring_1",
-        "hvl_MGBBNM501-1_2022_autumn_1"
+        "hvl_MGUSA202-1_2020_spring_1",
+        "hvl_MGUEN102-1_2022_spring_1"
       ],
-      "evidence": "Karakterskala A-F, der F er ikkje greidd.\n\nAlle\nMeir om hjelpemiddel",
-      "description": "The 'Hjelpemidler ved eksamen' block is folded into assessment with its heading removed, so a bare value such as 'Alle' or 'Ingen' sits without context, followed by the UI link text 'Mer/Meir om hjelpemiddel(er)'. The link text is page navigation cruft, and the orphaned aids value is ambiguous. This occurs in nearly every course with a Vurderingsform section.",
-      "root_cause_hypothesis": "The assessment strategy takes everything under the Vurderingsform h3 up to the next mapped heading. 'Hjelpemidler ved eksamen' maps to nothing, so its text is appended to assessment, and the 'Mer om hjelpemidler' link is never stripped in .clean_sections().",
-      "suggested_fix": "In R/extract_sections.R .clean_sections() (or an hvl-specific post step), drop lines matching ^(Mer|Meir) om hjelpemiddel(er)?$. Either map 'Hjelpemid(d)el(er) ved eksamen' to an exam-aids field or re-attach the heading ('Hjelpemidler ved eksamen: Alle') so the value is not orphaned.",
-      "confidence": "high"
+      "evidence": "Tid og stad for eksamen vert annonsert på Studentweb.",
+      "description": "Assessment occasionally keeps exam logistics sentences (where/when is announced on Studentweb; submission times). The recipe lists exam logistics as noise inside assessment. Impact is small and the surrounding text is correct.",
+      "root_cause_hypothesis": "No logistics-line filter in .clean_sections() for HVL; sentences under Vurderingsform are kept verbatim.",
+      "suggested_fix": "In .clean_sections(), drop sentences matching '(Tid og st(a|e)d|Innleveringstidspunkt).*Studentweb' from assessment.",
+      "confidence": "medium"
     },
     {
-      "target": "all",
+      "target": "coursework_requirements",
       "error_type": "empty_placeholder",
-      "severity": "medium",
-      "prevalence": "common",
+      "severity": "low",
+      "prevalence": "rare",
       "example_course_ids": [
-        "hvl_MGPRA10-1_2025_spring_1",
-        "hvl_MGPRA5-1_2025_spring_1",
-        "hvl_MGBSA141-1_2020_spring_1"
+        "hvl_MGUSA301-1_2018_autumn_2"
       ],
-      "evidence": "**course_content** (1 chars)  ⚑ flags: empty\n\n````\n-\n````",
-      "description": "Where HVL's plan has a heading with the placeholder '-' (all five praksis MGPRA* courses), the extractor emits rows containing just '-' for course_content, learning_outcomes, prerequisites, teaching_methods and coursework_requirements. Prerequisites also comes out as 'Ingen\\n\\nIngen' (required and recommended both 'Ingen') in many courses. Yet a lone 'Ingen' prerequisite is dropped entirely for MGBPØ201 and MGUPP201, so the handling is inconsistent. These rows look like sections present but carry no content.",
-      "root_cause_hypothesis": ".clean_sections() does not treat '-' or 'Ingen' (alone or repeated) as empty, so the rows survive; the missing prerequisites row for some courses suggests a separate filter for single-line 'Ingen'.",
-      "suggested_fix": "In .clean_sections(), after normalizing, treat text matching ^(-|Ingen)([\\s\\n]+(-|Ingen))*$ as empty and drop the row, consistently for all sections. Optionally keep a boolean 'stated_none' flag for prerequisites.",
-      "confidence": "high"
+      "evidence": "Ingen.\nEit av dei obligatoriske arbeidskrava i utdanninga skal knytast til fagovergripande tema",
+      "description": "coursework_requirements starts with the placeholder 'Ingen.' followed by a sentence saying that one of the arbeidskrav must be tied to cross-cutting themes, so the text contradicts itself. Prerequisites similarly carry the 'Ingen' line as a prefix before the recommended prerequisite.",
+      "root_cause_hypothesis": "Placeholder 'Ingen' lines are not removed when the section also has other text.",
+      "suggested_fix": "In .clean_sections(), strip leading lines that are exactly 'Ingen'/'Ingen.'/'-' when other text follows.",
+      "confidence": "low"
     }
   ]
 }

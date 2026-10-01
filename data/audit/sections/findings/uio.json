@@ -2,86 +2,69 @@
   "check": "sections",
   "institution": "uio",
   "model": "sonnet",
-  "n_courses_reviewed": 13,
-  "n_suspects_reviewed": 5,
-  "overall_assessment": "Core sections (course_content, learning_outcomes, prerequisites, teaching_methods, assessment) are split cleanly at UiO's fixed headings, but coursework_requirements and reading_list are never emitted, and several generic boilerplate blocks plus un-anonymized contact details contaminate the sections.",
+  "n_courses_reviewed": 12,
+  "n_suspects_reviewed": 6,
+  "overall_assessment": "UiO extraction is mostly clean for course_content, learning_outcomes and prerequisites (admission boilerplate is correctly dropped). The main weakness is that coursework_requirements is rarely emitted: obligatory activities under 'Undervisning' or 'Eksamen' stay in teaching_methods/assessment. A second problem is a reading_list that swallowed a practice-description block, and assessment padded with exam language/grading-scale logistics.",
   "findings": [
     {
       "target": "coursework_requirements",
       "error_type": "missing_section",
       "severity": "high",
-      "prevalence": "common",
-      "example_course_ids": [
-        "uio_HIS1200L-1_2025_spring_1",
-        "uio_HIS4015L-1_2025_spring_1",
-        "uio_PROF3025-1_2025_spring_1"
-      ],
-      "evidence": "Obligatoriske aktiviteter: For å kunne levere mappeeksamen i emnet må du få godkjent alle følgende obligatoriske aktiviteter:",
-      "description": "UiO plans put arbeidskrav / obligatoriske aktiviteter as sub-blocks inside the 'Undervisning' (or 'Eksamen') section. No coursework_requirements row is ever emitted in any of the 13 packet courses; the approve/pass gates stay inside teaching_methods (HIS1200L, HIS4015L, PROF3025, KJM5050) or assessment (KJM5050 'arbeidskrav i emnet', PROF3025 'Faglige krav for å kunne avlegge eksamen', KJM5930L 'Obligatoriske aktiviteter må være godkjent'). The codebook requires these in coursework_requirements.",
-      "root_cause_hypothesis": "The UiO splitter cuts only at top-level headings (Undervisning, Eksamen); sub-headings such as 'Obligatoriske aktiviteter', 'Obligatoriske komponenter', 'Obligatoriske forhold i undervisningen' and 'Faglige krav for å kunne avlegge eksamen' have no pattern in R/section_heading_map.R, so they are appended to the previous section.",
-      "suggested_fix": "Add heading patterns (Obligatoriske aktiviteter/komponenter/forhold i undervisningen, Faglige krav for å kunne avlegge eksamen, Arbeidskrav) mapped to coursework_requirements in R/section_heading_map.R, and let the UiO strategy split on these sub-headings inside Undervisning/Eksamen.",
+      "prevalence": "widespread",
+      "example_course_ids": ["uio_HIS4095L-1_2025_spring_1", "uio_FYS1120L-1_2025_spring_1", "uio_KJM5050-1_2025_spring_1"],
+      "evidence": "Obligatorisk aktivitet innleveringssemesteret: For å kunne levere oppgaven må kandidaten fylle inn et opplysningsskjema innen:",
+      "description": "Obligatory activities and arbeidskrav appear under UiO's 'Undervisning' heading or inside 'Eksamen'. They are approve/fail gates, so the codebook puts them in coursework_requirements. They stay in teaching_methods (HIS4095L, HIS4090L, FYS1120L, PROF3025, NAT5000, NOR4515) or in assessment (KJM5050: 'arbeidskrav i emnet', 75 % approval rule). No coursework_requirements row is emitted for these courses. This is the pre-pass 'leak->coursework_requirements' flag, and it is a real problem.",
+      "root_cause_hypothesis": "Section splitting is driven only by top-level UiO headings (Undervisning, Eksamen). Inline sub-headings such as 'Obligatoriske aktiviteter:' and 'Obligatoriske forhold i undervisningen:' are not split out. Paragraphs about obligatory activities are not recognised inside assessment either.",
+      "suggested_fix": "In R/extract_sections.R, add a second-level split inside teaching_methods and assessment at lines matching 'Obligatoriske? (aktivitet|aktiviteter|forhold|krav)', 'Faglige krav', 'Arbeidskrav' and 'obligatorisk(e) (øvelser|innleveringer)'. Map them to coursework_requirements in R/section_heading_map.R, and let the section run to the next heading.",
       "confidence": "high"
     },
     {
       "target": "reading_list",
-      "error_type": "missing_section",
+      "error_type": "merged_sections",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": ["uio_HIS4015L-1_2025_spring_1"],
+      "evidence": "Gjennomføring av praksis Praksis utgjør 15 dager (120 timer), fordelt på planlegging og gjennomføring - inkludert for- og etterarbeid.",
+      "description": "The 'Pensum' section (3 sentences) is followed by a free-standing 'Gjennomføring av praksis' block with a 1. FORARBEID / 2. GJENNOMFØRING / 3. ETTERARBEID schedule and teacher assessment criteria. All of it was appended to reading_list (1698 chars). It is teaching/practice description and belongs in teaching_methods and coursework_requirements, not the reading list.",
+      "root_cause_hypothesis": "'Gjennomføring av praksis' matches no heading pattern, so its text is appended to the previous section (reading_list, from 'Pensum').",
+      "suggested_fix": "Add a heading pattern '^Gjennomføring av praksis' and 'Praksis' mapped to teaching_methods in R/section_heading_map.R. Also stop the reading_list section at the next unmapped heading when the text is not a literature list.",
+      "confidence": "high"
+    },
+    {
+      "target": "coursework_requirements",
+      "error_type": "wrong_content",
       "severity": "medium",
       "prevalence": "rare",
-      "example_course_ids": [
-        "uio_HIS4015L-1_2025_spring_1"
-      ],
-      "evidence": "Pensum\n\nStudentene skal nyttiggjøre seg av den fagdidaktikken som ligger som teorier og praksis i bøkene som er oppsatt på pensum.",
-      "description": "A 'Pensum' heading is present in the plan but no reading_list row is emitted; the text is swallowed into teaching_methods together with the obligatoriske aktiviteter and the entire 'Gjennomføring av praksis' description (2619 chars, a merged blob of several logical sections).",
-      "root_cause_hypothesis": "'Pensum' is an embedded sub-heading inside 'Undervisning' with no heading-map entry, and 'Gjennomføring av praksis' maps to nothing.",
-      "suggested_fix": "Add 'Pensum' to reading_list patterns in R/section_heading_map.R and allow the UiO splitter to cut at it when it occurs within Undervisning. Consider mapping 'Gjennomføring av praksis' to teaching_methods explicitly as a new boundary so later sections are not merged.",
-      "confidence": "medium"
+      "example_course_ids": ["uio_PROF3025-1_2025_spring_1"],
+      "evidence": "Sensurordning: Det er to bedømmelsessensorer på hver eksamensdel. Sensurering: Begge deleksamenene må bestås for å bestå emnet. Det gis en samlet karakter for emnet. Eksamensdel 1 vektes med 60 %, og eksamensdel 2 vektes med 40 %.",
+      "description": "Under 'Faglige krav for å kunne avlegge eksamen:' the coursework section absorbs the following sub-headings 'Sensurordning:' and 'Sensurering:'. These are assessment content (grading, weights) and not an approval gate. The weighting of exam parts (60/40) is therefore lost from assessment.",
+      "root_cause_hypothesis": "Sub-headings with a trailing colon, like 'Sensurering:', map to nothing, so they are appended to the preceding coursework_requirements section.",
+      "suggested_fix": "Add patterns for '^Sensur(ordning|ering)' mapped to assessment in R/section_heading_map.R, so the coursework section ends there.",
+      "confidence": "high"
     },
     {
       "target": "assessment",
-      "error_type": "boilerplate_only",
+      "error_type": "field_or_language_junk",
       "severity": "medium",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "uio_PROMO8-1_2025_autumn_4",
-        "uio_PROMO4-1_2025_autumn_4",
-        "uio_NOR1000-1_2025_spring_1"
-      ],
-      "evidence": "Mer om eksamen ved UiO\nKildebruk og referanser\nHvordan bruke KI som student\nTilrettelegging på eksamen\nTrekk fra eksamen\nSyk på eksamen / utsatt eksamen\nBegrunnelse og klage\nTa eksamen på nytt\nFusk/forsøk på fusk\nAndre veiledninger og ressurser finner du på fellessiden om eksamen ved UiO.",
-      "description": "Every UiO assessment row ends with the same generic UiO-wide exam-link block (navigation/admin boilerplate), plus Eksamensspråk/Karakterskala lines and 'Adgang til ny eller utsatt eksamen'. For courses without an exam (PROMO) the assessment is almost entirely this boilerplate. This is noise, not assessment content, and will inflate identical text across all courses.",
-      "root_cause_hypothesis": "No .clean_sections() rule or anonymization handler strips the common UiO footer after 'Mer om eksamen ved UiO'.",
-      "suggested_fix": "In .clean_sections() (or .anon_uio()), cut everything from the line 'Mer om eksamen ved UiO' to the end, and optionally drop the standalone 'Eksamensspråk'/'Karakterskala' lines or split them off as metadata.",
+      "prevalence": "common",
+      "example_course_ids": ["uio_TYSK4091-1_2025_spring_1", "uio_NOR4515-1_2025_spring_1", "uio_HIS4095L-1_2025_spring_1"],
+      "evidence": "Tysk Emnet bruker karakterskala fra A til F, der A er beste karakter og F er er stryk. Les mer om karakterskalaen.",
+      "description": "Assessment is padded with the boilerplate fields 'Eksamensspråk' and 'Karakterskala'. In TYSK4091 the bare word 'Tysk' sits in assessment, and in NOR4515 the bare word 'Nynorsk.'. Almost every course also ends with 'Du kan besvare eksamen på norsk, svensk, dansk eller engelsk.' and the grading-scale sentence. HIS4095L adds 'Trykking' (printing copies), cover-page and Inspera logistics. These are exam logistics, not assessment content.",
+      "root_cause_hypothesis": "The 'Eksamensspråk' and 'Karakterskala' headings are mapped to assessment, or fall through to the previous section. Their values are kept and the heading lines are dropped.",
+      "suggested_fix": "In .clean_sections() or the heading map, drop the 'Eksamensspråk', 'Karakterskala', 'Adgang til ny eller utsatt eksamen' and 'Trykking' blocks for uio. Alternatively strip the standard sentences 'Du kan besvare eksamen på norsk, svensk, dansk eller engelsk.' and 'Emnet bruker karakterskala ...' with a regex. Do not let a one-word value like 'Tysk' or 'Nynorsk.' form a block.",
       "confidence": "high"
     },
     {
-      "target": "prerequisites",
-      "error_type": "boilerplate_only",
-      "severity": "medium",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "uio_TYSK4091-1_2025_spring_1",
-        "uio_NOR1000-1_2025_spring_1",
-        "uio_HIS1200L-1_2025_spring_1"
-      ],
-      "evidence": "Studenter må hvert semester søke og få plass på undervisningen og melde seg til eksamen i Studentweb.\n\nDersom du ikke allerede har studieplass ved UiO, kan du søke opptak til våre studieprogrammer.",
-      "description": "The prerequisites section is built from the whole 'Opptak til emnet' block, which includes generic Studentweb/admission boilerplate repeated across courses. In HIS1200L it additionally holds særemne-group sign-up logistics. These are not prerequisites per the codebook. Real prerequisites (Obligatoriske/Anbefalte forkunnskaper) are mixed in with them.",
-      "root_cause_hypothesis": "'Opptak til emnet' is mapped to prerequisites wholesale with no boilerplate stripping.",
-      "suggested_fix": "Strip the two standard Studentweb/studieprogrammer sentences in .clean_sections() for uio; consider splitting 'Opptak til emnet' from 'Obligatoriske/Anbefalte forkunnskaper' and keeping only the latter (plus genuine admission requirements) as prerequisites.",
-      "confidence": "high"
-    },
-    {
-      "target": "teaching_methods",
-      "error_type": "other",
-      "severity": "high",
-      "prevalence": "rare",
-      "example_course_ids": [
-        "uio_MAT5930L-2_2025_spring_1",
-        "uio_PROF3025-1_2025_spring_1"
-      ],
-      "evidence": "Ta kontakt med [navn] ([e-post]) eller studieadministrasjonen ved Matematisk institutt ([e-post]) for å få mer informasjon.",
-      "description": "Section text carries personal names and e-mail addresses (also '[e-post]' in PROF3025 prerequisites) that are blanked in the anonymized full plan ('Ta kontakt med () eller ... ()'). The sections were derived from text that had not been anonymized (or anonymization was bypassed), so PII leaks into the sections dataset.",
-      "root_cause_hypothesis": "extract_sections reads extracted_text / a pre-anonymization source rather than the anonymized course_plan.",
-      "suggested_fix": "Run extract_sections on the anonymized course_plan (or apply anonymize_fulltext to each section) and add a check in R/audit/qa_sections.R flagging '@' and known personal-name patterns.",
-      "confidence": "high"
+      "target": "assessment",
+      "error_type": "truncated",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": ["uio_FYS1120L-1_2025_spring_1", "uio_PROF3025-1_2025_spring_1", "uio_NAT5000-1_2025_spring_1"],
+      "evidence": "Eksamensdel 1 kan besvares på engelsk for studenter som har engelskdidaktikk som fagdidaktikk A.",
+      "description": "The 'Hjelpemidler til eksamen' blocks are dropped from the extraction: 'Godkjent kalkulator / Rottmann ...' in FYS1120L, 'Alle hjelpemidler er tillatt' in PROF3025 and 'Ingen hjelpemidler er tillatt.' in NAT5000. Inconsistently, the 'Eksamensspråk' text is kept. Exam aids are logistics, so dropping them is acceptable per the rubric, but the assessment content that was kept is mixed with logistics and the treatment is inconsistent.",
+      "root_cause_hypothesis": "'Hjelpemidler til eksamen' is probably mapped to an ignored section while 'Eksamensspråk' is not. They are treated differently although both are exam logistics.",
+      "suggested_fix": "Handle both headings the same way: drop them. See the assessment logistics finding.",
+      "confidence": "low"
     }
   ]
 }

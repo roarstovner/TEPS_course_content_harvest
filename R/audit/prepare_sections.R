@@ -23,9 +23,11 @@
 source("R/audit/utils.R")
 
 # ── Tunables ─────────────────────────────────────────────────────────────────
-SUSPECT_N   <- 20     # suspect courses per institution (distinct plans)
-RANDOM_N    <- 8      # random control courses per institution (distinct plans)
-ZERO_N      <- 5      # of the suspects: at most this many with no sections at all
+# 14/6 keeps packets near ~150 KB, the size Sonnet agents read in full
+# (they skimmed 185-325 KB packets in the 2026-10-01 run; see synthesis.md).
+SUSPECT_N   <- 14     # suspect courses per institution (distinct plans)
+RANDOM_N    <- 6      # random control courses per institution (distinct plans)
+ZERO_N      <- 4      # of the suspects: at most this many with no sections at all
 PLAN_TRUNC  <- 8000   # max chars of course_plan shown
 SECT_TRUNC  <- 5000   # max chars of each section raw_text shown. Must stay
                       # above the p99 of the audited prose sections (~4.4k) so

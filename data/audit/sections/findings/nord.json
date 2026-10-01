@@ -2,131 +2,158 @@
   "check": "sections",
   "institution": "nord",
   "model": "sonnet",
-  "n_courses_reviewed": 28,
-  "n_suspects_reviewed": 20,
-  "overall_assessment": "Learning outcomes, course_content and teaching_methods are generally extracted cleanly and completely. The main defect is that Nord's combined 'vurdering' block is filed wholesale as assessment, so coursework requirements (arbeidskrav, obligatorisk deltakelse) are never separated, and assessment is further polluted by COVID/AI/aid notices. Prerequisites is often admission boilerplate, and reading_list is never produced.",
+  "n_courses_reviewed": 20,
+  "n_suspects_reviewed": 14,
+  "overall_assessment": "The accordion_nord strategy gets the main section boundaries right (learning_outcomes, teaching_methods, coursework vs assessment split) for most courses, but silently loses text: intro paragraphs from course_content, some prerequisites, and in two controls the entire assessment through the covid-noise filter. The pre-pass flags 'boilerplate' and 'short' are false alarms (repeated programme text is genuine content; short learning outcomes match the plan); the 4 empty courses have no real plan text.",
   "findings": [
     {
       "target": "assessment",
-      "error_type": "merged_sections",
+      "error_type": "missing_section",
       "severity": "high",
-      "prevalence": "widespread",
+      "prevalence": "occasional",
       "example_course_ids": [
-        "nord_PEL1001-1_2022_autumn_1",
-        "nord_KHV1004-1_2021_autumn_1",
-        "nord_REL1005-1_2021_autumn_1"
+        "nord_PO111LS-1_2022_spring_1",
+        "nord_RL211L-1_2018_autumn_1"
       ],
-      "evidence": "Arbeidskrav: 3 arbeider, teller 0/100 av karakteren, muntlig/skriftlig, individuelt/gruppe, karakterregel: godkjent/ikke godkjent.",
-      "description": "Pass/approve gates (Arbeidskrav, Obligatorisk deltakelse/OD, Arbeidskrav (AK)) are emitted inside assessment together with the graded exam (Hjemmeeksamen, Mappe). The codebook says these belong in coursework_requirements. No coursework_requirements row is emitted for any of the 28 packet courses. The pre-pass 'leak->coursework_requirements' flag is a real problem on every flagged Nord course.",
-      "root_cause_hypothesis": "Nord pages have one undifferentiated 'Vurderingsordning' block (no sub-headings), so the heading-based splitter yields a single assessment section; nothing splits it by line prefix.",
-      "suggested_fix": "Add a Nord-specific post-split step in .clean_sections()/extract_sections.R that splits the assessment text by line/paragraph and moves lines starting with 'Arbeidskrav', 'Obligatorisk deltakelse', 'Obligatorisk deltaking', 'Obligatorisk arbeid', 'OD:', 'OA:', 'AK' (and their continuation lines) into coursework_requirements; keep Mappe/Hjemmeeksamen/Skriftlig eksamen in assessment.",
+      "evidence": "3 timers skoleeksamenen vil våren 2022 erstattes av 3 timers hjemmeeksamen. Dette er et ekstraordinært tiltak i forbindelse med koronapandemien. Karakter A-F.",
+      "description": "The plan contains exam/assessment text (3-hour exam, grade A-F, permitted aids 'Blyant, penn, linjal...') but no assessment row is emitted. In RL211L the only assessment text is the covid 'MERK: Våren 2021' note, also dropped. Course 15 shows only content, learning_outcomes and coursework_requirements.",
+      "root_cause_hypothesis": "The .section_noise 'all' patterns in R/extract_sections.R remove whole lines matching covid/korona and '^MERK: (Våren|Høsten)'. When the covid sentence is the same line that carries the actual exam form and grade scale, the whole assessment is deleted; the following aids line then has nothing left to attach to.",
+      "suggested_fix": "Make the covid/korona noise pattern remove only the covid sentence (sentence-level str_remove) rather than the whole line, or apply it only when the line contains no 'eksamen|karakter|vurdering' content. Keep the aids line ('Blyant, penn, linjal...') in assessment.",
       "confidence": "high"
     },
     {
-      "target": "assessment",
-      "error_type": "formatting_noise",
+      "target": "cross_section",
+      "error_type": "split_section",
+      "severity": "medium",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "nord_MAT5006-1_2022_autumn_1"
+      ],
+      "evidence": "Obligatorisk deltakelse (OD): Krav om tilstedeværelse på minst 80 % av undervisningen. Vurdering:",
+      "description": "One sentence is cut across two sections: coursework_requirements ends in 'Vurdering:' while assessment starts with the orphan fragment 'Godkjent/ikke godkjent.' (the HTML has a hard line break inside the OD sentence). The assessment also has the sentence 'Hovedregelen er individuell masteroppgave -' broken across lines.",
+      "root_cause_hypothesis": ".split_inline_coursework() works per line, so a gate sentence wrapped over several lines is only partly moved to coursework_requirements.",
+      "suggested_fix": "In .split_inline_coursework(), treat a gate line as continuing until the next blank line / next line starting with a known label (Oppgave(, Mappe (, Skoleeksamen etc.), or join lines that end in ':' or '-' with the next line before splitting.",
+      "confidence": "high"
+    },
+    {
+      "target": "course_content",
+      "error_type": "truncated",
       "severity": "medium",
       "prevalence": "common",
       "example_course_ids": [
-        "nord_NAT2004-1_2020_spring_2",
-        "nord_MUS2003-1_2019_autumn_1",
-        "nord_KHV1010-1_2022_spring_1"
+        "nord_MAT5006-1_2022_spring_2",
+        "nord_MAT5003-1_2024_autumn_1",
+        "nord_MAT5006-1_2023_autumn_1"
       ],
-      "evidence": "På bakgrunn av Covid-19 epidemien blir en rekke vurderinger og eksamener ved Nord universitet endret.",
-      "description": "Assessment contains temporary COVID-19 change notices (including superseded 'fra ... til ...' assessment forms) and AI-cheating notices. These are administrative text, not the course's assessment, and the superseded alternative forms conflict with the actual assessment description.",
-      "root_cause_hypothesis": "Whole 'vurdering' block, including appended MERK/notice paragraphs, is kept verbatim; .clean_sections() has no Nord boilerplate rules.",
-      "suggested_fix": "In .clean_sections() (or the Nord anonymization handler) drop paragraphs starting with 'MERK: Våren', 'På bakgrunn av Covid-19', 'Endringene gjøres', 'Endringer gjøres', 'Dette gjøres grunnet Covid-19' and paragraphs matching 'generere besvarelse ved hjelp av ... fusk'; also drop the 'MERK' follow-up lines up to the next blank-line block.",
-      "confidence": "high"
-    },
-    {
-      "target": "assessment",
-      "error_type": "boilerplate_only",
-      "severity": "high",
-      "prevalence": "rare",
-      "example_course_ids": [
-        "nord_RL211L-1_2020_autumn_3"
-      ],
-      "evidence": "MERK: Våren 2021: Skriftlig skoleeksamen endres til hjemmeeksamen.",
-      "description": "For RL211L the assessment row consists only of the COVID change notice; no actual assessment description exists, while the 'Fleire arbeidsoppgåver er definerte som arbeidskrav...' text sits in teaching_methods. The row looks like content but carries none.",
-      "root_cause_hypothesis": "The page has no real assessment text for this older course; the notice is the only content after the assessment heading.",
-      "suggested_fix": "After stripping COVID notices (see other finding), drop assessment rows that become empty instead of emitting the notice.",
-      "confidence": "medium"
-    },
-    {
-      "target": "assessment",
-      "error_type": "formatting_noise",
-      "severity": "low",
-      "prevalence": "common",
-      "example_course_ids": [
-        "nord_PO118LS-1_2025_autumn_3",
-        "nord_MAT1007-1_2024_autumn_3"
-      ],
-      "evidence": "Penn, linjal og inntil 2 stk tospråklige ordbøker.",
-      "description": "Exam-logistics fragments (permitted aids, 'Eksamenssted følger undervisningssted') and a stray trailing 'Ingen'/'Ingen.' (the admin 'Hjelpemidler'/other field) are appended to assessment.",
-      "root_cause_hypothesis": "Aid and remark fields following the assessment text are captured in the same section without being cut.",
-      "suggested_fix": "Strip trailing lines equal to 'Ingen'/'Ingen.' and lines matching aid/place logistics ('Eksamenssted følger', 'Hjelpemidler', calculator/dictionary lists) from assessment, or route to a discarded bucket.",
+      "evidence": "Masteroppgaven skal være et selvstendig vitenskapelig arbeid som studenten skal demonstrere innsikt i aktuell forskning og teorier, metoder og tilnærminger som er relevante for oppgavens tema og problemstilling.",
+      "description": "In every MAT/NAT/SAM master-thesis course reviewed (6 of 6) the first paragraph of the plan (the real subject description) is absent from course_content; only the second paragraph (identical generic thesis text, 252 chars) is kept. The same pattern occurs in KHV1007 and NAT5003, where the introductory marketing paragraph is dropped. The 'boilerplate' flag is a symptom: the identical 252-char text is all course_content holds.",
+      "root_cause_hypothesis": "extract_sections_nord() only reads div.ac accordion panels; the intro paragraph(s) sit outside any accordion (the extractor's 'p, .placeholder-text' selectors capture them in extracted_text) and are never assigned to a section.",
+      "suggested_fix": "In extract_sections_nord(), collect top-of-page paragraphs that precede the first div.ac block (or that are not inside any div.ac) and prepend them to course_content.",
       "confidence": "medium"
     },
     {
       "target": "prerequisites",
-      "error_type": "boilerplate_only",
+      "error_type": "truncated",
       "severity": "medium",
       "prevalence": "common",
       "example_course_ids": [
-        "nord_MAT1007-1_2024_autumn_3",
-        "nord_KHV1004-1_2021_autumn_1",
-        "nord_PEL1001-1_2022_autumn_1"
+        "nord_MAT5006-1_2022_spring_2",
+        "nord_MAT5006-1_2023_autumn_1",
+        "nord_ENG1004-1_2022_autumn_1"
       ],
-      "evidence": "Opptak skjer på bakgrunn av generell studiekompetanse eller realkompetanse etter gjeldende regler.",
-      "description": "Prerequisites often holds admission/study-right text or non-prerequisite statements ('Kan tas som frittstående fag i lærerutdanning.', 'Ingen utover opptakskravet.', '...', '.', 'Krever opptak til lærerutdanningen.'), contrary to the rubric that admission boilerplate is not a prerequisite. Several rows are placeholders (3-char '...').",
-      "root_cause_hypothesis": "The whole 'Forkunnskaper/Opptak' field is mapped to prerequisites without filtering generic content.",
-      "suggested_fix": "Add a Nord filter in .clean_sections(): drop prerequisites that match 'Opptak skjer på bakgrunn', 'Kan tas som frittstående', 'Ingen utover opptakskravet', 'Krever opptak', or are only punctuation/'Ingen' (<~5 alphanumeric chars); strip leading '.'/'..' lines.",
-      "confidence": "high"
+      "evidence": "Opptak til Grunnskolelærerutdanningen 5 - 10 og masterfaget matematikk. Bestått 90 stp. i masterfaget og bestått FoU-oppgave.",
+      "description": "Real prerequisite statements are lost. MAT5006 2022 spring: the 'Bestått 90 stp...' prerequisite is gone and the section is left as '.' plus 'Kurset bygger på Matematikk 1, 2 og 3'. MAT5006 2023 autumn: 'Matematikk 1, 2 og 3' is dropped, leaving only 'Forkunnskapskrav: Bestått 90 stp.'. ENG1004: 'Studenten må ha deltatt aktiv og fullført arbeidskrav i engelsk 1a for å starte i engelsk 1b.' is dropped.",
+      "root_cause_hypothesis": ".strip_admission_lines() in R/extract_sections.R removes lines starting 'Opptak til (lærer|master|grunnskole...)' and lines with 'frittstående fag'; its 'real prerequisite' guard does not rescue every case (course-code-less lines like 'Matematikk 1, 2 og 3', 'må ha ... fullført'). The stray '.' shows that a sentence was split at the full stop before filtering.",
+      "suggested_fix": "Filter admission sentences, not whole lines, and add the guards 'må ha (deltatt|fullført|bestått)', 'bygger på' and bare course names on a line of their own to .real_prerequisite_regex; do not emit rows whose text is only punctuation.",
+      "confidence": "medium"
+    },
+    {
+      "target": "assessment",
+      "error_type": "truncated",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": [
+        "nord_MAT5006-1_2022_spring_2",
+        "nord_MAT5003-1_2024_autumn_1",
+        "nord_ENG1004-1_2022_autumn_1"
+      ],
+      "evidence": "Alle hjelpemidler er tilgjengelige i forberedelsen til muntlig høring",
+      "description": "Lines stating permitted aids ('Alle hjelpemidler tillatt (i samsvar med Nord universitets retningslinjer ...)') and the ENG1004 note on what students may refer to in the home exam are dropped from assessment. These are exam-logistic details, so the loss is minor, but it is silent and inconsistent (the AI line is deliberately removed, the aids line apparently collaterally).",
+      "root_cause_hypothesis": ".section_noise patterns or the accordion split drop the trailing lines after the main vurdering block; the aids text probably sits in a separate element or is caught by the plagiat/ChatGPT pattern.",
+      "suggested_fix": "Check how the aids paragraph is located in the HTML and keep it in assessment; limit the 'plagiat' noise pattern to the AI notice sentence.",
+      "confidence": "low"
+    },
+    {
+      "target": "coursework_requirements",
+      "error_type": "truncated",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "nord_KHV1004-1_2022_autumn_1",
+        "nord_KHV1007-1_2022_autumn_1"
+      ],
+      "evidence": "Studenten skal gjennomføre undervisningsopplegg i kunst og håndverk.",
+      "description": "A required activity listed immediately before the 'Arbeidskrav (AK)' line is not included in coursework_requirements or any other section.",
+      "root_cause_hypothesis": "The line precedes the first 'Arbeidskrav/Obligatorisk' line, so .split_inline_coursework() leaves it in assessment, where it is apparently dropped/overlooked; or it sits outside the accordion panel.",
+      "suggested_fix": "Where an assessment block starts with a sentence before the first gate line, keep it in assessment; verify it is not removed by the cleaning step.",
+      "confidence": "low"
     },
     {
       "target": "teaching_methods",
       "error_type": "wrong_content",
       "severity": "medium",
-      "prevalence": "occasional",
+      "prevalence": "rare",
       "example_course_ids": [
-        "nord_REL1005-1_2021_autumn_1",
-        "nord_RL211L-1_2020_autumn_3"
+        "nord_PR114L-1_2020_autumn_3"
       ],
-      "evidence": "Arbeidskrava vert lagt opp for å stø og fremje arbeidet med å nå læringsutbyta i emnet og studentane skal arbeide med å gje tilbakemeldingar til kvarandre.",
-      "description": "Teaching-methods text includes descriptions of arbeidskrav (coursework requirements) and online-study technical requirements ('krav om samband på Internett...'), which per the codebook partly belong to coursework_requirements. Also the Nynorsk 'Obligatorisk deltaking' variants are used, so any Bokmål-only splitting rule would miss them.",
-      "root_cause_hypothesis": "The 'Arbeids- og undervisningsformer' field is taken whole; no sentence-level separation of arbeidskrav.",
-      "suggested_fix": "Optionally move paragraphs starting with 'Arbeidskrav' / 'Arbeidskrava' from teaching_methods to coursework_requirements; include Nynorsk spellings (deltaking, arbeidskrav, ikkje) in all patterns.",
-      "confidence": "low"
+      "evidence": "Praksislærer, praksisansvarlig (rektor/inspektør) og faglærer(e) ved Nord universitet, samarbeider om en skriftlig individuell vurdering av studentens måloppnåelse",
+      "description": "For the Praksis course the whole vurdering/krav block (individual assessment of the student, progression of demands) is filed as teaching_methods, no assessment row exists, and the paragraph 'All praksis er obligatorisk og fravær i praksisperioden må tas igjen før praksis kan godkjennes.' (a coursework requirement) plus 'Praksisomfanget skal være på 20 dager...' is lost.",
+      "root_cause_hypothesis": "The Nord page for praksis courses uses an accordion heading (probably 'Arbeids- og undervisningsformer' / 'Obligatorisk') mapped to teaching_methods, and the later praksis-scope accordion maps to nothing, so its text is not extracted.",
+      "suggested_fix": "Inspect heading texts of PR*L pages; add the missing heading patterns in R/section_heading_map.R (praksisomfang/obligatorisk -> coursework_requirements or teaching_methods) so the text is not dropped.",
+      "confidence": "medium"
     },
     {
-      "target": "reading_list",
-      "error_type": "missing_section",
+      "target": "prerequisites",
+      "error_type": "empty_placeholder",
       "severity": "low",
-      "prevalence": "widespread",
+      "prevalence": "rare",
       "example_course_ids": [
-        "nord_REL1005-1_2021_autumn_1",
-        "nord_PEL1001-1_2022_autumn_1"
+        "nord_PR114L-1_2020_autumn_3"
       ],
-      "evidence": "Læreplanen i KRLE for grunnskulen",
-      "description": "No course has a reading_list row. The only literature item in the packet ('Læreplanen i KRLE for grunnskulen') ends up as the last line of assessment, and the 'Semesteravgift og pensumlitteratur.' cost line is dropped. Nord pages in this harvest apparently carry no pensum section, so absence is mostly a source limitation, but the misfiled item is wrong content.",
-      "root_cause_hypothesis": "Reading list is not part of the harvested Nord selector, or sits as a stray line after the assessment block.",
-      "suggested_fix": "Check whether the Nord page has a pensum element and add it to the selector; otherwise document that reading_list is unavailable for nord. Move trailing short title-like lines after the assessment block (e.g. 'Læreplanen i KRLE for grunnskulen') to reading_list.",
+      "evidence": "PR113L Praksis 1-7; 3. studieår\n\nIngen",
+      "description": "The prerequisites row ends with a stray 'Ingen' placeholder appended after the list of earlier courses (a different accordion ('Anbefalte forkunnskaper'/'Overlapp') whose body is 'Ingen' was merged into prerequisites).",
+      "root_cause_hypothesis": "Several accordions mapping to prerequisites are concatenated; no placeholder filter on the individual bodies.",
+      "suggested_fix": "Drop accordion bodies that match ^(Ingen|-|Ingen krav)\\.?$ before concatenation in extract_sections_nord().",
       "confidence": "medium"
+    },
+    {
+      "target": "learning_outcomes",
+      "error_type": "formatting_noise",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "nord_RL211L-1_2018_autumn_1"
+      ],
+      "evidence": "¿kristendomen i ulike retningar, trusinnhald og oppfatningar",
+      "description": "Bullet characters appear as '¿' on every learning outcome line (encoding artefact) in this 2018 plan.",
+      "root_cause_hypothesis": "Source HTML has a mis-encoded bullet glyph that is passed through unchanged by html_text2().",
+      "suggested_fix": "In .clean_section_text(), replace leading '¿' at line start with '- ' (or strip it).",
+      "confidence": "high"
     },
     {
       "target": "all",
       "error_type": "other",
-      "severity": "medium",
+      "severity": "low",
       "prevalence": "occasional",
       "example_course_ids": [
         "nord_SP154L-1_2018_autumn_3",
         "nord_HI109LS-1_2016_autumn_2",
         "nord_PED140L-1_2016_spring_1"
       ],
-      "evidence": "Med overlapp menes en faglig likhet mellom emner med samme faginnhold. Du vil derfor få følgende reduksjon i studiepoeng om du har tatt emner som er angitt under:",
-      "description": "For these courses the extracted plan consists only of the course-overlap (studiepoengsreduksjon) boilerplate; no real plan content exists, so no sections are produced. The extractor is correct to emit nothing, but these rows contain no course plan and could be mistaken for plans downstream. In all courses the overlap table is also correctly not leaked into sections.",
-      "root_cause_hypothesis": "Page content for old/discontinued courses is empty apart from the overlap box, which the selector captures.",
-      "suggested_fix": "Exclude the overlap block ('Med overlapp menes ...') in the Nord selector or pre-processing so such courses get NA extracted_text rather than a pseudo-plan.",
+      "evidence": "Med overlapp menes en faglig likhet mellom emner med samme faginnhold.",
+      "description": "The four 'no sections extracted' suspects (SP154L, HI109LS, HI118LS, PED140L; 2016-2018 courses) have a full course plan consisting solely of the course-overlap table. The sections step correctly emits nothing, so this is not a sections error, but these offerings have no usable course plan; the real content was not harvested (these older plan versions presumably lack accordion content on the page).",
+      "root_cause_hypothesis": "Upstream harvest/extraction: the historical Nord page versions hold no real plan text, or the selector only matches the overlap panel.",
+      "suggested_fix": "Check the HTML for these courses; if no plan exists, flag them as no_plan in course_offerings rather than keeping a plan consisting only of overlap text; exclude 'overlapp' accordions from extracted_text.",
       "confidence": "medium"
     }
   ]
