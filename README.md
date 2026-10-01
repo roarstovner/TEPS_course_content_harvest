@@ -172,10 +172,34 @@ This runs a three-stage pipeline:
 
 **Output files:**
 
-- `data/course_offerings.RDS` — all course rows with DBH metadata +
-  `plan_content_id` FK
+- `data/course_offerings.RDS` — published slim dataset: course rows with
+  DBH metadata + `plan_content_id` FK (no url, no text)
+- `data/course_offerings_full.RDS` — internal working file: same rows
+  plus `url`, `extracted_text`, `course_plan`, `course_plan_normalized`;
+  used by the course_browser app
 - `data/course_plans.RDS` — one row per unique plan per course code per
   institution
+
+## Post-Harvest: Section Extraction
+
+To split each course plan into its parts, run:
+
+``` r
+source("R/run_extract_sections.R")
+```
+
+This writes `data/sections_raw.RDS` with one row per course and section
+(`course_id`, `institution`, `section`, `raw_text`). The seven sections
+are `course_content`, `learning_outcomes`, `teaching_methods`,
+`assessment`, `coursework_requirements`, `prerequisites` and
+`reading_list`. Section text is anonymized with the same
+`anonymize_text()` as `course_plan`. Admission text, exam logistics and
+placeholder rows such as “Se fagplanen.” are left out.
+
+The script prints the share of courses with each section per institution
+and the headings it could not map. To map a new heading, add a pattern
+to `R/section_heading_map.R`; how each institution is split is set by
+the `section_*` fields in `R/institution_config.R`.
 
 ## Data Structure
 
@@ -189,20 +213,20 @@ courses |> slice(1:2)
 ```
 
     # A tibble: 2 × 25
-      institution Institusjonskode Institusjonsnavn       Avdelingskode
-      <chr>             <chr>            <chr>                  <chr>        
-    1 uib               1120             Universitetet i Bergen 220440       
-    2 uib               1120             Universitetet i Bergen 220440       
-    # ℹ 21 more variables: Avdelingsnavn <chr>, Avdelingskode_SSB <chr>,
-    #   Årstall <int>, Semester <int>, Semesternavn <chr>, Studieprogramkode <chr>,
-    #   Studieprogramnavn <chr>, Emnekode_raw <chr>, Emnekode <chr>,
-    #   Emnenavn <chr>, Nivåkode <chr>, Nivånavn <chr>, Studiepoeng <dbl>,
-    #   `NUS-kode` <chr>, Status <int>, Statusnavn <chr>, Underv.språk <chr>,
-    #   Navn <chr>, Fagkode <chr>, Fagnavn <chr>, `Oppgave (ny fra h2012)` <int>
+      institution Institusjonskode Institusjonsnavn Avdelingskode Avdelingsnavn     
+      <chr>       <chr>            <chr>            <chr>         <chr>             
+    1 samas       0217             Samisk høgskole  480000        Avdeling for duod…
+    2 samas       0217             Samisk høgskole  480000        Avdeling for duod…
+    # ℹ 20 more variables: Avdelingskode_SSB <chr>, Årstall <int>, Semester <int>,
+    #   Semesternavn <chr>, Studieprogramkode <chr>, Studieprogramnavn <chr>,
+    #   Emnekode_raw <chr>, Emnekode <chr>, Emnenavn <chr>, Nivåkode <chr>,
+    #   Nivånavn <chr>, Studiepoeng <dbl>, `NUS-kode` <chr>, Status <int>,
+    #   Statusnavn <chr>, Underv.språk <chr>, Navn <chr>, Fagkode <chr>,
+    #   Fagnavn <chr>, `Oppgave (ny fra h2012)` <int>
 
-Key columns: - `institution`: Short code (e.g., “oslomet”,
-“uia”) - `Emnekode_raw`: Original course code from DBH - `Emnekode`:
-Normalized course code (trailing numbers removed) - `Årstall`: Year -
+Key columns: - `institution`: Short code (e.g., “oslomet”, “uia”) -
+`Emnekode_raw`: Original course code from DBH - `Emnekode`: Normalized
+course code (trailing numbers removed) - `Årstall`: Year -
 `Semesternavn`: Semester name (“Vår” or “Høst”) - `Status`: Course
 status (1=Active, 2=New, 3=Discontinued, 4=Discontinued but exam
 offered)
@@ -251,9 +275,9 @@ results.
 ### `validate_courses(df, stage)`
 
 Validates that required columns exist at each pipeline stage: -
-`"initial"`: institution, Emnekode, Årstall - `"with_url"`:
-institution, course_id, url - `"with_html"`: institution,
-course_id, url, html, html_success
+`"initial"`: institution, Emnekode, Årstall - `"with_url"`: institution,
+course_id, url - `"with_html"`: institution, course_id, url, html,
+html_success
 
 ## Troubleshooting
 
@@ -284,10 +308,13 @@ Checkpoint files are in `.gitignore` and won’t be committed
     │   ├── fetch_html_cols.R      # HTML downloading
     │   ├── extract_fulltext.R     # Config-driven text extraction
     │   ├── checkpoint.R           # Checkpoint management
-    │   ├── anonymize.R            # PII removal: extracted_text → course_plan
+    │   ├── anonymize.R            # PII removal: anonymize_text() for course_plan and sections
     │   ├── normalize_plan_text.R  # Lossy normalization for dedup hashing
     │   ├── deduplicate_plans.R    # Groups identical plans by content hash
-    │   └── run_dedup.R            # Entry point for anonymize + dedup pipeline
+    │   ├── run_dedup.R            # Entry point for anonymize + dedup pipeline
+    │   ├── section_heading_map.R  # Heading → section patterns
+    │   ├── extract_sections.R     # Section extraction strategies
+    │   └── run_extract_sections.R # Entry point for section extraction
     ├── data/
     │   ├── courses.RDS            # Input course data
     │   └── checkpoint/            # Checkpoint files (not in git)

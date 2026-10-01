@@ -148,6 +148,19 @@ source("R/run_dedup.R")  # Loads html_*.RDS, anonymizes extracted_text → cours
 
 Pipeline: `extracted_text` → `course_plan` (anonymized, readable) → `course_plan_normalized` (lossy, for hashing)
 
+### Extract sections:
+
+```bash
+Rscript R/run_extract_sections.R  # html_*.RDS → data/sections_raw.RDS + coverage/unmapped-heading diagnostics
+```
+
+Splits each course into the seven canonical sections, anonymizes each section's
+`raw_text` with `anonymize_text()`, and writes `data/sections_raw.RDS`
+(`course_id`, `institution`, `section`, `raw_text`). Re-run after a harvest or
+after changing `R/section_heading_map.R`, `R/extract_sections.R`,
+`R/anonymize.R` or a `section_*` field in `R/institution_config.R`, then
+rebuild the browser data. See "Section Extraction" below.
+
 ### Regenerate data quality notes:
 ```bash
 quarto render data/data_notes.qmd  # Reads course_offerings.RDS + course_plans.RDS
@@ -163,6 +176,52 @@ Rscript -e 'shiny::runApp("app/course_browser")'
 `build_browser_data.R` must be re-run whenever `course_plans.RDS`,
 `course_offerings_full.RDS`, or `sections_raw.RDS` change — the app reads only
 the prebuilt `data/browser_data.RDS`.
+
+## Section Extraction
+
+`extract_sections(institution, html, extracted_text, course_id)`
+(`R/extract_sections.R`) dispatches on `section_strategy` in the institution
+config:
+
+| Strategy | Institutions | How it splits |
+|---|---|---|
+| `html_headings` | oslomet, uia, ntnu, inn, hiof, hvl, nih, uio, uis, uit, nmbu | DOM walk; a heading (`section_heading_level`, or `section_heading_selector`) starts a section. Falls back to `text_split` when it finds < 3 sections |
+| `html_fields` | hivolda | `div.field-<name>` containers mapped to sections by `section_fields` |
+| `details_mf` | mf | `<details><summary>` accordions + the untitled intro block (`section_intro_selector`) as course_content |
+| `details_uib` | uib | `<details><summary>` accordions + top-level `h2` |
+| `accordion_nord` | nord | `div.ac` accordion trigger/panel pairs |
+| `json_nla` | nla | Titles in the embedded EmneplanPage JSON |
+| `text_split` | usn, steiner (+ fallback) | Heading-shaped lines in `extracted_text` |
+| `noop` | samas | — |
+
+Other `section_*` config fields:
+- `section_selector`: container for section extraction when the fulltext
+  `selector` is a multi-element selector (`html_element()` would only take its
+  first match; uis needs `#block-page-content`).
+- `section_subheading_selector`: elements inside a section that switch to
+  another section (uio `"h3, h4, p"`; `"p"` for uia, oslomet, hiof, hvl, nmbu,
+  mf). A `<p>` counts only if its whole text (minus a trailing colon) equals a
+  heading pattern; an unmapped `h3` hands its text back to the parent section.
+- `section_inline_coursework`: move "Arbeidskrav (AK): …" / "Obligatorisk
+  deltakelse …" lines from assessment to coursework_requirements (nord).
+
+**Heading map** (`R/section_heading_map.R`): `match_heading_to_section()`
+checks exact equality against every pattern first, then substring patterns in
+table order (first hit wins; rows with `exact = TRUE` only match whole
+headings). `text_split` passes `word_start = TRUE` so "elevkunnskap" does not
+match "kunnskap", and only accepts heading-shaped lines (capitalised, ≤ 8 words,
+no digits, no "Label: value", no closing full stop). Patterns mapped to
+`".drop"` end the current section and their text is discarded: admission
+headings ("Opptak til emnet", "Opptakskrav", "Hvem kan ta dette emnet?") and
+exam logistics ("Mer om eksamen ved UiO", "Hjelpemidler", "Sensorordning").
+
+**Cleanup** (`.clean_sections()`): removes `.drop` rows, strips notices and
+page widgets from assessment/coursework (`.section_noise`: plagiarism and
+ChatGPT/COVID notices, uib banner and footer, …), drops placeholder-only rows
+(`.placeholder_phrases`: "Ingen", "Se fagplanen.", "-", Leganto pointers).
+
+**Privacy:** sections are cut from raw `html`/`extracted_text`, so
+`run_extract_sections.R` must keep anonymizing `raw_text` before saving.
 
 ## Auditing a Pipeline Step Across Institutions
 
@@ -271,7 +330,7 @@ The function uses JavaScript to recursively traverse shadow roots and extract te
 - Uses `noop` strategy — extracted_text is set to NA (course plans are in Sami, not Norwegian)
 
 ### Institutions with Multiple CSS Selectors
-Some institutions (nord, uib, uis, uit) use `selector_mode = "multi"` to capture content from multiple elements because course info is spread across accordions or sections.
+Some institutions (nord, uib, uis, uit) use `selector_mode = "multi"` to capture content from multiple elements because course info is spread across accordions or sections. Section extraction cannot use such a selector as its container; give the institution a `section_selector` (see "Section Extraction").
 
 ## File Structure
 
@@ -286,10 +345,14 @@ R/
 ├── fetch_html_cols.R      # HTML downloading with httr2
 ├── extract_fulltext.R     # extract_fulltext_css() (config-driven), extract_nla_json(), helpers
 ├── checkpoint.R           # Checkpoint read/write/resume logic
-├── anonymize.R            # PII removal: extracted_text → course_plan (readable, anonymized)
+├── anonymize.R            # PII removal: anonymize_text() for course_plan and sections_raw
 ├── normalize_plan_text.R  # Lossy normalization for dedup hashing (tolower + synonyms + year removal + squish)
 ├── deduplicate_plans.R    # Groups identical plans by content hash
 ├── run_dedup.R            # Entry point: anonymize + normalize + dedup pipeline
+├── section_heading_map.R  # Heading → section patterns (incl. ".drop") + match_heading_to_section()
+├── extract_sections.R     # extract_sections(): section strategies + cleanup
+├── run_extract_sections.R # Entry point: extract + anonymize sections → sections_raw.RDS
+├── build_browser_data.R   # Builds data/browser_data.RDS for the course browser
 └── audit/                 # Audit harness for /audit-institutions
     ├── utils.R            # Shared helpers + allowed finding enums per check
     ├── qa_sections.R      # Deterministic pre-pass over sections_raw.RDS (feeds prepare_sections.R)
@@ -302,7 +365,7 @@ data/
 ├── course_offerings.RDS       # Published dataset (slim): DBH metadata + plan_content_id FK, no url/text/html
 ├── course_offerings_full.RDS  # Internal: same rows as offerings but with url + extracted_text + course_plan + course_plan_normalized (used by course_browser)
 ├── course_plans.RDS           # Published dataset: deduplicated course plan texts
-├── sections_raw.RDS           # Extracted sections, one row per (course_id, section)
+├── sections_raw.RDS           # Extracted, anonymized sections, one row per (course_id, section)
 ├── browser_data.RDS           # Slim payload for course_browser (build with R/build_browser_data.R)
 ├── data_notes.qmd         # Data quality notes (Quarto source; render to regenerate data_notes.md)
 ├── data_notes.md          # Data quality documentation (rendered from data_notes.qmd)

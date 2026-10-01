@@ -151,6 +151,27 @@ This runs a three-stage pipeline:
 - `data/course_offerings_full.RDS` — internal working file: same rows plus `url`, `extracted_text`, `course_plan`, `course_plan_normalized`; used by the course_browser app
 - `data/course_plans.RDS` — one row per unique plan per course code per institution
 
+## Post-Harvest: Section Extraction
+
+To split each course plan into its parts, run:
+
+```{r}
+#| eval: false
+source("R/run_extract_sections.R")
+```
+
+This writes `data/sections_raw.RDS` with one row per course and section
+(`course_id`, `institution`, `section`, `raw_text`). The seven sections are
+`course_content`, `learning_outcomes`, `teaching_methods`, `assessment`,
+`coursework_requirements`, `prerequisites` and `reading_list`. Section text is
+anonymized with the same `anonymize_text()` as `course_plan`. Admission text,
+exam logistics and placeholder rows such as "Se fagplanen." are left out.
+
+The script prints the share of courses with each section per institution and
+the headings it could not map. To map a new heading, add a pattern to
+`R/section_heading_map.R`; how each institution is split is set by the
+`section_*` fields in `R/institution_config.R`.
+
 ## Data Structure
 
 ### Input Data (`data/courses.RDS`)
@@ -242,10 +263,13 @@ Validates that required columns exist at each pipeline stage:
 │   ├── fetch_html_cols.R      # HTML downloading
 │   ├── extract_fulltext.R     # Config-driven text extraction
 │   ├── checkpoint.R           # Checkpoint management
-│   ├── anonymize.R            # PII removal: extracted_text → course_plan
+│   ├── anonymize.R            # PII removal: anonymize_text() for course_plan and sections
 │   ├── normalize_plan_text.R  # Lossy normalization for dedup hashing
 │   ├── deduplicate_plans.R    # Groups identical plans by content hash
-│   └── run_dedup.R            # Entry point for anonymize + dedup pipeline
+│   ├── run_dedup.R            # Entry point for anonymize + dedup pipeline
+│   ├── section_heading_map.R  # Heading → section patterns
+│   ├── extract_sections.R     # Section extraction strategies
+│   └── run_extract_sections.R # Entry point for section extraction
 ├── data/
 │   ├── courses.RDS            # Input course data
 │   └── checkpoint/            # Checkpoint files (not in git)
