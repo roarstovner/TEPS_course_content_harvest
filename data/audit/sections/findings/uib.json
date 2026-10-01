@@ -1,164 +1,82 @@
 {
-  "institution_short": "uib",
+  "check": "sections",
+  "institution": "uib",
+  "model": "sonnet",
   "n_courses_reviewed": 28,
   "n_suspects_reviewed": 20,
-  "overall_assessment": "UiB's details/summary accordion + h2 hybrid extraction correctly opens accordion sections and maps headings to canonical sections for the vast majority of courses. Core academic sections (course_content, learning_outcomes, teaching_methods, coursework_requirements, assessment) are extracted with correct content in almost all cases. However, three systematic problems degrade quality: (1) a semester-picker widget ('Vel emnebeskrivelse for semester … 2026 Haust … 2022 Haust …') is consistently captured inside course_content as a header and trailer; (2) the assessment section consistently ingests a structured exam-logistics table (Vurderingsordning / Dato / Varigheit / Trekkfrist / Eksamenssystem / Inspera) together with navigation footer text ('Dette bør du vite om eksamen', 'Til toppen', institute name); and (3) the 'Anbefalte forkunnskaper' field is concatenated with 'Krav til forkunnskaper' into prerequisites, causing genuine recommended-prereq content to appear there but also causing spurious 'Ingen'-plus-content merges, and 'Krav til studierett' content is silently dropped from every course.",
+  "overall_assessment": "Core splitting works well: learning_outcomes, teaching_methods, coursework_requirements and reading_list are correct and complete in nearly all courses, and the obligatory activity is correctly separated from assessment. The main defects are scraping cruft (semester-picker widget in course_content, exam-logistics/page footer in assessment) and admission text in prerequisites. Most pre-pass 'boilerplate' flags are false alarms (identical but genuine text across TYSDI offerings).",
   "findings": [
     {
-      "section": "course_content",
+      "target": "course_content",
       "error_type": "formatting_noise",
-      "severity": "high",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "uib_RELV302L-0_2025_autumn_1",
-        "uib_ENG339L-0_2025_autumn_1",
-        "uib_HIDID112-0_2025_autumn_1"
-      ],
-      "evidence": "Vel emnebeskrivelse for semester\n2026 Haust (Neste semester)2026 Vår (Noverande semester)2025 Haust (Forrige semester)2025 Vår 2024 Haust 2024 Vår …\n\n[actual course content]\n\nVel emnebeskrivelse for semester\n> 2026 Haust (Neste semester)…",
-      "description": "Every course_content section is wrapped by a semester-picker widget that produces a long run of concatenated year-semester tokens (e.g. '2026 Haust (Neste semester)2026 Vår (Noverande semester)2025 Haust …') before the actual content and a duplicate '> …' version of the same token string after it. This is UI navigation noise, not course-content text, violating the codebook requirement that generic administrative UI be stripped.",
-      "root_cause_hypothesis": "The CSS selector for 'Mål og innhold' captures the entire accordion panel including the semester-picker <select> or <ul> element rendered above and below the text node. The multi-selector strategy does not exclude the picker widget.",
-      "suggested_fix": "Strip nodes matching the semester-picker before text extraction: remove any element whose text matches the pattern /^Vel emnebeskrivelse for semester/ or whose children are a list of 'YYYY (Haust|Vår|Neste|Noverande|Forrige)' tokens. A regex post-fn that strips lines matching /^\\d{4} (Haust|Vår)/ and the 'Vel emnebeskrivelse' heading would also work as a post_fn.",
-      "confidence": "high"
-    },
-    {
-      "section": "assessment",
-      "error_type": "formatting_noise",
-      "severity": "high",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "uib_RELV302L-0_2025_autumn_1",
-        "uib_ENG339L-0_2025_autumn_1",
-        "uib_HIS301L-0_2025_autumn_1"
-      ],
-      "evidence": "Vurderingsordning\nSemesteroppgåve og justerande munnleg eksamen\nTrekkfrist\n25.03.2026\nEksamensdel: Semesteroppgåve\nInnleveringsfrist\n08.04.2026, 13:00\nEksamenssystem\nInspera\nDigital eksamen\n\nDette bør du vite om eksamen\nInstitutt for arkeologi, historie, kultur- og religionsvitenskap\nTil toppen",
-      "description": "The assessment section consistently ends with a structured exam-logistics table (Vurderingsordning, specific dates, Trekkfrist, Eksamenssystem, Inspera, Digital eksamen) followed by navigation footer text ('Dette bør du vite om eksamen', institute name, 'Til toppen'). Per the codebook, exam-logistics tables with specific dates/rooms should be excluded, and navigation/footer text is administrative boilerplate. Additionally, when 'Hjelpemiddel til eksamen' is 'Ingen' or '-', that token appears mid-assessment section as a spurious 'Ingen'.",
-      "root_cause_hypothesis": "The accordion panel for 'Vurderingsformer' is extracted in its entirety including a subordinate structured data block rendered after the prose content. The strategy does not cut at the Vurderingsordning table boundary. The 'Hjelpemiddel til eksamen' field value is also being captured within the same panel.",
-      "suggested_fix": "Add a post_fn that strips content from 'Vurderingsordning' onwards (inclusive) and strips the footer lines 'Dette bør du vite om eksamen', 'Til toppen', and trailing institute names. Also strip lines consisting solely of 'Ingen' or '-' that appear after the main assessment prose.",
-      "confidence": "high"
-    },
-    {
-      "section": "prerequisites",
-      "error_type": "merged_sections",
       "severity": "medium",
       "prevalence": "widespread",
-      "example_course_ids": [
-        "uib_HIS302L-0_2025_autumn_1",
-        "uib_HIS303L-0_2025_autumn_1",
-        "uib_RELV100-0_2025_autumn_1"
-      ],
-      "evidence": "prerequisites for uib_HIS302L-0_2025_autumn_1:\n'Ingen\n\nNormal studieprogresjon på lektorprogrammet'\n\nprerequisites for uib_RELV100-0_2025_autumn_1:\n'Ingen\n\nEin del av pensumlitteraturen er på engelsk. I tillegg til generell studiekompetanse bør derfor studenten ha gode engelskkunnskapar.'",
-      "description": "The 'prerequisites' section conflates 'Krav til forkunnskaper' (formal prerequisites) with 'Anbefalte forkunnskaper' (recommended prior knowledge). Per the codebook, both source fields describe subject-matter entry requirements and should be included, so this specific merge is defensible. However, when Krav til forkunnskaper is 'Ingen', the empty token is kept on its own line, producing 'Ingen\\n\\n[recommended prereqs]' — the 'Ingen' is noise that should be dropped when a sibling field has substantive content. Also, 'Krav til studierett' (study-right / admission requirement) is sometimes merged in (e.g. course 3: 'Opptak til integrert lektorutdanning…') — this is administrative boilerplate that the codebook explicitly requires to be stripped from prerequisites.",
-      "root_cause_hypothesis": "The extractor maps 'Krav til forkunnskaper' + 'Anbefalte forkunnskaper' (and sometimes 'Krav til studierett') to prerequisites by heading label. No filtering step removes the 'Ingen' null-value token when another field is non-empty, and 'Krav til studierett' is not excluded from the capture.",
-      "suggested_fix": "Map 'Krav til studierett' to no canonical section (drop it). Add a post_fn for prerequisites that removes lines consisting solely of 'Ingen' or '-' when other non-empty content is present in the same extracted value. Optionally keep the 'Anbefalte forkunnskaper' label prefix to distinguish from 'Krav til forkunnskaper'.",
+      "example_course_ids": ["uib_TYSDI201-0_2018_spring_1", "uib_SOS340-L-0_2024_autumn_2", "uib_NODI302-0_2012_spring_1"],
+      "evidence": "Vel emnebeskrivelse for semester",
+      "description": "Every course_content row is wrapped in the page's semester-picker widget: a 'Vel emnebeskrivelse for semester' header followed by a long list of '2026 Haust (Noverande semester) 2025 Vår ...' entries, repeated again at the end with a leading '>'. The real 'Mål og innhold' text is only a small part of the row, and the list length leaks the year range/time of scraping. The row is not clean per the rubric.",
+      "root_cause_hypothesis": "The uib CSS selector (multi-mode) for the course-content block captures the semester dropdown component along with the content; the pre-pass did not flag it because it is in all courses with varying text. The text is not removed in .clean_sections() or anonymization.",
+      "suggested_fix": "In .clean_sections() (R/extract_sections.R) or an uib-specific cleaner, drop the lines 'Vel emnebeskrivelse for semester', the following line of 'YYYY Vår|Haust (...)' entries, and the '> YYYY Vår ...' line (regex ^>?\\s*(20\\d\\d (Vår|Haust)( \\([^)]*\\))?\\s*)+$). Better: fix the selector to exclude the picker element.",
       "confidence": "high"
     },
     {
-      "section": "prerequisites",
-      "error_type": "empty_placeholder",
-      "severity": "low",
-      "prevalence": "common",
-      "example_course_ids": [
-        "uib_RELV302L-0_2025_autumn_1",
-        "uib_HIS301L-0_2025_autumn_1",
-        "uib_NOLI103-L-0_2025_autumn_1"
-      ],
-      "evidence": "prerequisites (12 chars)  ⚑ flags: empty\n'Ingen\n\nIngen'",
-      "description": "When both 'Krav til forkunnskaper' and 'Anbefalte forkunnskaper' are 'Ingen', the extractor emits 'Ingen\\n\\nIngen' as the prerequisites text. This is an empty/null placeholder that communicates no real content. The flag correctly identifies these, but the double 'Ingen' form is redundant. Codebook intent is that the section be absent or contain a single 'Ingen' at most.",
-      "root_cause_hypothesis": "Both sub-fields are concatenated regardless of their value; no deduplication or null-collapse step is applied.",
-      "suggested_fix": "Collapse multiple 'Ingen'/'\\-' values in prerequisites to a single token, or to NULL/empty if all constituent fields are null placeholders.",
-      "confidence": "high"
-    },
-    {
-      "section": "assessment",
-      "error_type": "wrong_content",
-      "severity": "medium",
-      "prevalence": "occasional",
-      "example_course_ids": [
-        "uib_SOS340-L-0_2025_spring_1"
-      ],
-      "evidence": "assessment text includes: 'Vi opplever problemer med å hente inn eksamensinformasjon for dette emnet. Det kan bety at viktig informasjon om eksamen kan mangle.\nLukk\nProsjektutvikling'",
-      "description": "In course 17 (SOS340-L, spring), a site-generated error banner ('Vi opplever problemer med å hente inn eksamensinformasjon…') and a UI control ('Lukk') leaked into the assessment section, along with what appears to be a course title fragment ('Prosjektutvikling'). This is not assessment content.",
-      "root_cause_hypothesis": "The error banner and close-button are rendered inside the Vurderingsformer accordion panel and are not excluded by the current extraction strategy. This is likely a rendering state where the exam-info service was unavailable at harvest time.",
-      "suggested_fix": "Add a post_fn strip for lines matching 'Vi opplever problemer med å hente inn eksamensinformasjon' and 'Lukk'. Alternatively, identify this as a fetch-quality issue and flag courses where assessment contains this pattern for re-harvest.",
-      "confidence": "high"
-    },
-    {
-      "section": "assessment",
-      "error_type": "wrong_content",
-      "severity": "low",
-      "prevalence": "common",
-      "example_course_ids": [
-        "uib_NOLI103-L-0_2025_autumn_1",
-        "uib_NORAN204-L-0_2025_autumn_1",
-        "uib_SPLA313L-0_2025_autumn_1"
-      ],
-      "evidence": "assessment includes 'Klokkeslett for oppstart av skriftlig eksamen kan endre seg fra kl 09.00 til 15.00 eller vice versa inntil 14 dager før eksamen.'",
-      "description": "A standardised administrative notice about possible exam start-time changes ('Klokkeslett for oppstart av skriftlig eksamen kan endre seg fra kl 09.00 til 15.00…') is captured inside the assessment section. This is logistical boilerplate, not assessment design, and should be stripped per the codebook instruction to exclude exam-logistics content.",
-      "root_cause_hypothesis": "This sentence is rendered as a static paragraph inside the Vurderingsformer panel after the substantive assessment text but before the Vurderingsordning table.",
-      "suggested_fix": "Add this exact boilerplate sentence to the list of patterns stripped in the assessment post_fn (e.g. regex: /Klokkeslett for oppstart av skriftlig eksamen kan endre seg/).",
-      "confidence": "high"
-    },
-    {
-      "section": "assessment",
-      "error_type": "wrong_content",
-      "severity": "low",
-      "prevalence": "common",
-      "example_course_ids": [
-        "uib_HIDID112-0_2025_autumn_1",
-        "uib_HIS302L-0_2025_autumn_1",
-        "uib_RELV105-0_2025_autumn_1"
-      ],
-      "evidence": "assessment section contains the token 'Ingen' appearing as a standalone line between the assessment prose and the Vurderingsordning table.",
-      "description": "The 'Hjelpemiddel til eksamen' field value ('Ingen', 'Ingen hjelpemiddel er tillatte', or '-') is captured inside the assessment section as an isolated token. When the value is 'Ingen' it creates a dangling placeholder mid-section. The codebook restricts assessment to graded assessment design; exam-aids information is logistics and should be excluded.",
-      "root_cause_hypothesis": "The 'Hjelpemiddel til eksamen' label/value pair is rendered inside the Vurderingsformer accordion panel and is captured in full along with the panel's main content.",
-      "suggested_fix": "Identify the 'Hjelpemiddel til eksamen' sub-section within the assessment panel and drop it, or add its null-value strings ('Ingen', '-') to the post_fn strip list along with the logistics table.",
-      "confidence": "medium"
-    },
-    {
-      "section": "course_content",
-      "error_type": "wrong_content",
-      "severity": "low",
-      "prevalence": "occasional",
-      "example_course_ids": [
-        "uib_SPLA106-0_2025_autumn_1",
-        "uib_NOLISP300-L-0_2025_autumn_1",
-        "uib_SOS340-L-0_2025_autumn_1"
-      ],
-      "evidence": "course_content for uib_NOLISP300-L-0_2025_autumn_1 begins: 'Mål:\n\nHovudmålet med emnet er at studenten skal planlegge arbeidet…\n\nInnhald:\n\nStudentane førebur seg…'",
-      "description": "Some UiB course plans use 'Mål og innhold' with internal 'Mål:' and 'Innhald:' sub-headings. The extractor correctly captures both sub-sections in course_content, which is correct by the codebook (the 'Mål'-part here describes learning aims as content framing, not standard læringsutbytte bullet lists). However, in the SPLA106 case the 'Mål og innhold' section is very short (1 sentence) and conflates aims-as-content with content, which is unavoidable without deeper semantic analysis. No action needed for this sub-finding — it is a source ambiguity, not an extractor error.",
-      "root_cause_hypothesis": "N/A — source document uses 'Mål og innhold' for short courses with no separate læringsutbytte section.",
-      "suggested_fix": "No change required; this is correctly handled. Document in data notes that SPLA106-type short courses may have thin course_content because the source blends aims and content.",
-      "confidence": "medium"
-    },
-    {
-      "section": "learning_outcomes",
+      "target": "assessment",
       "error_type": "formatting_noise",
-      "severity": "low",
-      "prevalence": "occasional",
-      "example_course_ids": [
-        "uib_RELV107-0_2025_autumn_2"
-      ],
-      "evidence": "learning_outcomes text for uib_RELV107-0_2025_autumn_2 has mid-sentence line breaks inserted into outcome statements: 'har gode kunnskapar om korleis religion fungerer i dagens samfunn\\n\\nutanfor tradisjonelle religiøse institusjonar.'",
-      "description": "For course 14 (RELV107), the learning outcomes contain mid-sentence paragraph breaks inserted where the source HTML had explicit line breaks or structural whitespace within continuous text. Each outcome spans multiple paragraphs in the extracted text, making it harder to split items correctly downstream.",
-      "root_cause_hypothesis": "The source HTML for this course plan has <br> or structural elements inserted mid-sentence within outcome bullet text. The extractor preserves this whitespace faithfully.",
-      "suggested_fix": "Add a learning_outcomes post_fn that collapses paragraph breaks that split a sentence (i.e., where a paragraph ends mid-word or without terminal punctuation and the next starts with a lowercase letter or continuation). Alternatively, a squish-after-split step in Phase 2 annotation can handle this.",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": ["uib_TYSDI201-0_2018_spring_1", "uib_NOLI216-0_2025_spring_1", "uib_RELVI250L-0_2025_spring_1"],
+      "evidence": "Vurderingsordning\nMappevurdering\nInnleveringsfrist\n15.06.2018, 13:00\nTrekkfrist\n01.06.2018\nEksamenssystem\nInspera\nDigital eksamen\n\nDette bør du vite om eksamen\nInstitutt for fremmedspråk\nTil toppen",
+      "description": "Assessment ends with an exam-logistics table (Vurderingsordning, Innleveringsfrist, Trekkfrist, Eksamenssystem Inspera, Dato, Varigheit) and page navigation/footer text ('Dette bør du vite om eksamen', institute name, 'Til toppen'). It also contains stray 'Vurderingssemester' fragments ('Vår og haust', 'Haust. Der er òg vurdering tidleg i vårsemesteret ...', 'Ingen', '-', 'Ikkje relevant.', 'Ikkje aktuelt.'). Exam logistics/navigation do not belong in assessment per the recipe.",
+      "root_cause_hypothesis": "The trailing exam block (and 'Vurderingssemester' / 'Hjelpemiddel' values) is appended to the 'Vurderingsformer' section because no heading in R/section_heading_map.R terminates it ('Vurderingsordning', 'Dette bør du vite om eksamen', 'Karakterskala', 'Vurderingssemester').",
+      "suggested_fix": "In .clean_sections() for uib, cut assessment at the first line matching ^Vurderingsordning$ and strip lines 'Dette bør du vite om eksamen', 'Til toppen', 'Lukk', the institute-name footer, and bare placeholders (-, Ingen, Ikkje relevant, Ikkje aktuelt). Optionally map 'Vurderingssemester' to a drop-section.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "boilerplate_only",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": ["uib_TYSDI111-0_2018_spring_1", "uib_TYSDI111-0_2016_spring_1", "uib_REALDI110-0_2025_spring_1"],
+      "evidence": "Vi opplever problemer med å hente inn eksamensinformasjon for dette emnet. Det kan bety at viktig informasjon om eksamen kan mangle.\nLukk\nFagdidaktikk i tysk i lektorutdanningen 3",
+      "description": "A site error banner ('Vi opplever problemer med å hente inn eksamensinformasjon...') plus 'Lukk' and a course title is appended to the assessment text in courses whose exam info could not be fetched. It is page-level boilerplate, and the course title shown is even for a different course name than the one in the metadata (TYSDI111 2016 shows 'lektorutdanningen 3').",
+      "root_cause_hypothesis": "The banner sits at the top of the plan text, is not recognised as a heading, and ends up attached to the last assessment block (or preamble is merged forward) in the extractor; also not stripped by anonymization.",
+      "suggested_fix": "Strip the banner paragraph, 'Lukk', and the following title line in .clean_sections() (or earlier in the uib text cleaning) with a regex on 'Vi opplever problemer med å hente inn eksamensinformasjon'.",
+      "confidence": "high"
+    },
+    {
+      "target": "prerequisites",
+      "error_type": "boilerplate_only",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": ["uib_TYSDI201-0_2018_spring_1", "uib_NOLI216-0_2025_spring_1", "uib_FRAN307L-0_2023_autumn_1"],
+      "evidence": "Opptak til lektorutdanning ved Det humanistiske fakultet.",
+      "description": "Prerequisites concatenates 'Krav til forkunnskaper', 'Anbefalte forkunnskaper' and 'Krav til studierett'. The studierett/admission lines ('Opptak til lektorutdanning...', 'Emnet er ope for alle med studierett ved Universitetet i Bergen') are admission text, not prerequisites per the codebook, and placeholder 'Ingen' lines are included as separate paragraphs.",
+      "root_cause_hypothesis": "The heading map sends 'Krav til studierett' (and 'Anbefalte forkunnskaper') to prerequisites in R/section_heading_map.R.",
+      "suggested_fix": "Map 'Krav til studierett' to a dropped/other section instead of prerequisites; keep 'Krav til forkunnskaper' and 'Anbefalte forkunnskaper'; drop lines that are just 'Ingen'/'-'.",
       "confidence": "medium"
     },
     {
-      "section": "cross_section",
+      "target": "assessment",
       "error_type": "duplicate",
+      "severity": "medium",
+      "prevalence": "rare",
+      "example_course_ids": ["uib_SOS340-L-0_2024_autumn_2"],
+      "evidence": "Det arrangeres kontinuasjonseksamen for studenter med gyldig fravær etter § 5-5 i Studieforskriften ved UiB.",
+      "description": "Assessment contains the generic continuation-exam/Studentweb boilerplate (kontinuasjonseksamen rules, 'melde deg opp sjølv i Studentweb'), the 'Rett til ny vurdering' label, and two Vurderingsordning tables (ny eksamen and ordinary) with different dates; the actual assessment is one sentence. This is admin boilerplate and exam logistics, not assessment content.",
+      "root_cause_hypothesis": "Master-level UiB pages put the 'Vurderingssemester' text with continuation-exam rules after Vurderingsformer; it is not cut off by a heading boundary.",
+      "suggested_fix": "Treat 'Vurderingssemester' as a section boundary (drop its content) and add a boilerplate-strip rule for the kontinuasjonseksamen paragraph block.",
+      "confidence": "medium"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "other",
       "severity": "low",
       "prevalence": "widespread",
-      "example_course_ids": [
-        "uib_RELV302L-0_2025_autumn_1",
-        "uib_ENG339L-0_2025_autumn_1",
-        "uib_HIDID112-0_2025_autumn_1"
-      ],
-      "evidence": "Full course plan text contains each section's content twice in full: once in a structured block with labels, and once in a condensed block without labels. The extractor output sections_raw match only the first occurrence (correct).",
-      "description": "The UiB course plan page renders each section's content twice in the extracted_text ground truth: once in the main body with accordion structure (which the extractor captures correctly) and once in a compact repeat block lower on the page. The extractor correctly takes only the first instance. This duplication is a known extraction artefact in the ground truth itself and does not indicate an extractor problem, but it confirms the accordion-open strategy is working as intended.",
-      "root_cause_hypothesis": "UiB's page structure appears to render content both inside expandable detail/summary elements and as a plain-text fallback or duplicate below. The multi-selector strategy captures only the accordion content, not the duplicate.",
-      "suggested_fix": "No change needed to the extractor. Note this duplication in data documentation so downstream consumers are not confused by the repeated content in extracted_text vs. sections_raw.",
-      "confidence": "high"
+      "example_course_ids": ["uib_TYSDI201-0_2018_spring_1", "uib_TYSDI111-0_2019_autumn_1"],
+      "evidence": "Studentane evaluerer undervisninga ved slutten av semesteret i tråd med fastsette prosedyrar for undervisningsevaluering.",
+      "description": "In older TYSDI plans, the Emneevaluering sentence is inside the 'Vurderingsformer' body on the page and ends up in assessment (course evaluation is not assessment). Also the pre-pass 'boilerplate' flags on teaching_methods, learning_outcomes, reading_list and course_content for TYSDI courses are false alarms: the text is identical across offerings of the same course but is genuine content.",
+      "root_cause_hypothesis": "Source page structure places the evaluation sentence in the Vurderingsformer block; no extractor fix possible by heading alone.",
+      "suggested_fix": "Low priority: strip sentences starting 'Studentane evaluerer undervisninga' from assessment; consider excluding exact duplicates across offerings of the same course from the pre-pass boilerplate flag.",
+      "confidence": "medium"
     }
   ]
 }

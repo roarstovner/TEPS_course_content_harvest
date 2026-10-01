@@ -1,7 +1,7 @@
 # sections audit — aggregated findings
 
-119 findings across 18 institutions (from 18 agent reports in `data/audit/sections/findings`; model: sonnet).
-Mechanical verification: 89 passed (✓), 0 failed (✗), 30 not checkable (?, stale report or no packet).
+115 findings across 18 institutions (from 18 agent reports in `data/audit/sections/findings`; model: sonnet).
+Mechanical verification: 95 passed (✓), 0 failed (✗), 20 not checkable (?, stale report or no packet).
 Sorted by severity then prevalence. Source: `R/audit/aggregate.R`.
 
 ## Failed verification — check by hand before acting
@@ -16,71 +16,72 @@ _(none)_
 | target | error_type | n_inst | institutions | worst |
 | --- | --- | --- | --- | --- |
 | assessment | formatting_noise | 10 | hvl, inn, mf, nla, nmbu, nord, ntnu, oslomet, steiner, uib | high |
-| assessment | wrong_content | 6 | hivolda, ntnu, uib, uis, uit, usn | high |
 | learning_outcomes | truncated | 6 | inn, mf, ntnu, steiner, uis, uit | high |
+| prerequisites | boilerplate_only | 6 | nmbu, nord, ntnu, oslomet, uib, uio | medium |
+| assessment | wrong_content | 5 | hivolda, ntnu, uis, uit, usn | high |
 | reading_list | boilerplate_only | 5 | hiof, mf, nih, nla, usn | high |
-| prerequisites | boilerplate_only | 5 | nmbu, nord, ntnu, oslomet, uio | medium |
-| prerequisites | empty_placeholder | 4 | hiof, nih, nla, uib | low |
-| learning_outcomes | formatting_noise | 4 | hiof, mf, steiner, uib | medium |
 | reading_list | missing_section | 4 | nord, ntnu, oslomet, uio | medium |
 | all | missing_section | 3 | oslomet, uia, uis | high |
-| course_content | formatting_noise | 3 | nih, uib, uit | high |
+| assessment | boilerplate_only | 3 | nord, uib, uio | high |
 | cross_section | merged_sections | 3 | hivolda, uia, uis | high |
 | learning_outcomes | merged_sections | 3 | uis, uit, usn | high |
 | reading_list | wrong_content | 3 | hivolda, mf, uis | high |
 | teaching_methods | missing_section | 3 | hivolda, mf, nla | high |
 | coursework_requirements | formatting_noise | 3 | steiner, uit, usn | low |
+| prerequisites | empty_placeholder | 3 | hiof, nih, nla | low |
+| course_content | formatting_noise | 3 | nih, uib, uit | medium |
+| learning_outcomes | formatting_noise | 3 | hiof, mf, steiner | medium |
 | teaching_methods | wrong_content | 3 | nord, steiner, uit | medium |
 
 ## Change since `HEAD` (keyed by target / error_type)
 
 | institution | n_before | n_now | persisting | new | gone |
 | --- | --- | --- | --- | --- | --- |
-| hvl | 2 | 2 | assessment / formatting_noise; all / empty_placeholder |  |  |
+| uib | 8 | 6 | course_content / formatting_noise; assessment / formatting_noise | assessment / boilerplate_only; prerequisites / boilerplate_only; assessment / duplicate; cross_section / other | prerequisites / merged_sections; prerequisites / empty_placeholder; assessment / wrong_content; course_content / wrong_content; learning_outcomes / formatting_noise; cross_section / duplicate |
 
 ## By error type
 
 | error_type | severity | n |
 | --- | --- | --- |
-| formatting_noise | low | 16 |
+| formatting_noise | low | 15 |
+| boilerplate_only | medium | 11 |
 | merged_sections | high | 11 |
-| boilerplate_only | medium | 9 |
 | missing_section | medium | 9 |
+| formatting_noise | medium | 8 |
 | missing_section | high | 8 |
 | wrong_content | high | 8 |
-| wrong_content | low | 8 |
-| wrong_content | medium | 7 |
-| formatting_noise | medium | 6 |
-| empty_placeholder | low | 5 |
-| formatting_noise | high | 5 |
+| wrong_content | medium | 6 |
 | truncated | medium | 5 |
+| wrong_content | low | 5 |
+| empty_placeholder | low | 4 |
 | boilerplate_only | high | 3 |
+| formatting_noise | high | 3 |
 | other | medium | 3 |
+| duplicate | medium | 2 |
 | empty_placeholder | medium | 2 |
-| merged_sections | medium | 2 |
 | split_section | high | 2 |
 | truncated | high | 2 |
 | boilerplate_only | low | 1 |
-| duplicate | low | 1 |
-| duplicate | medium | 1 |
 | empty_placeholder | high | 1 |
 | field_or_language_junk | medium | 1 |
+| merged_sections | medium | 1 |
 | missing_section | low | 1 |
 | other | high | 1 |
+| other | low | 1 |
 | truncated | low | 1 |
 
 ## By target
 
 | target | n |
 | --- | --- |
-| assessment | 29 |
-| learning_outcomes | 16 |
+| assessment | 28 |
 | reading_list | 16 |
-| prerequisites | 15 |
+| learning_outcomes | 15 |
+| prerequisites | 14 |
 | coursework_requirements | 10 |
 | teaching_methods | 10 |
 | cross_section | 9 |
-| course_content | 8 |
+| course_content | 7 |
 | all | 6 |
 
 ## Per institution
@@ -100,7 +101,7 @@ _(none)_
 | oslomet | sonnet | 28 | Regular emneplaner (all 8 random controls) are split well: learning outcomes complete across Kunnskap/Ferdigheter/Generell kompetanse, arbeidskrav correctly separated from assessment. The suspects are almost all Praksis/shell courses where the harvested plan is only a pointer or a long fagplan, y... |
 | steiner | sonnet | 14 | Section boundaries are mostly right (arbeidskrav correctly in coursework_requirements, exam text in assessment, no leakage of the flagged kind). Main defects: the course metadata table is prepended to learning_outcomes, some LO bullets and whole deleksamen lines are dropped, and Innhold sub-theme... |
 | uia | sonnet | 28 | Heading-based extraction works well for UiA: learning outcomes keep all three competence groups, 'Vilkår for å gå opp til eksamen' goes to coursework_requirements, and the boilerplate/empty pre-pass flags are false alarms (identical practice-course texts, legitimately short sections). Remaining i... |
-| uib |  | 28 | UiB's details/summary accordion + h2 hybrid extraction correctly opens accordion sections and maps headings to canonical sections for the vast majority of courses. Core academic sections (course_content, learning_outcomes, teaching_methods, coursework_requirements, assessment) are extracted with ... |
+| uib | sonnet | 28 | Core splitting works well: learning_outcomes, teaching_methods, coursework_requirements and reading_list are correct and complete in nearly all courses, and the obligatory activity is correctly separated from assessment. The main defects are scraping cruft (semester-picker widget in course_conten... |
 | uio | sonnet | 13 | Core sections (course_content, learning_outcomes, prerequisites, teaching_methods, assessment) are split cleanly at UiO's fixed headings, but coursework_requirements and reading_list are never emitted, and several generic boilerplate blocks plus un-anonymized contact details contaminate the secti... |
 | uis | sonnet | 28 | UiS section extraction is unreliable. Many headings that UiS uses (Forkunnskapskrav, Eksamen / vurdering, Åpent for, Emneevaluering, Praksis, Overlapping, Fagperson(er), Kontakt) are not cut as boundaries, so text is merged into the preceding section; metadata headers, staff names and PDF page-br... |
 | uit |  | 28 | UiT extraction quality is severely degraded by a single structural failure: the heading-splitter treats 'Hva lærer du' (the sub-heading that introduces the learning outcomes section) as a continuation of 'Innhold', then fails to cut at 'Undervisnings- og eksamensspråk' / 'Undervisning' / 'Kvalite... |
@@ -125,8 +126,6 @@ _(none)_
 | ? | ntnu | assessment | wrong_content | high | widespread | ntnu_PPU4621-1_2017_autumn_1; ntnu_PPU4623-1_2023_autumn_... | Strip lines matching the pattern 'Ordinær/Utsatt eksamen - (Høst\|Vår\|Sommer) \d{4}' and subsequent logistics rows (Karakter, Dato, Tid, S... |
 | ? | ntnu | assessment | formatting_noise | high | widespread | ntnu_PPU4621-1_2017_autumn_1; ntnu_PPU4621-1_2019_autumn_... | Add a post-processing step that drops any text block matching the regex 'function\s+\w+\s*\(' or 'const\s+\w+\s*=' from the assessment se... |
 | ? | ntnu | teaching_methods | merged_sections | high | widespread | ntnu_PPU4621-1_2018_autumn_1; ntnu_PPU4623-1_2020_autumn_... | Add a split rule: within the teaching_methods text block, identify the paragraph starting with 'NTNU er tillagt et sertifiseringsansvar' ... |
-| ? | uib | course_content | formatting_noise | high | widespread | uib_RELV302L-0_2025_autumn_1; uib_ENG339L-0_2025_autumn_1... | Strip nodes matching the semester-picker before text extraction: remove any element whose text matches the pattern /^Vel emnebeskrivelse ... |
-| ? | uib | assessment | formatting_noise | high | widespread | uib_RELV302L-0_2025_autumn_1; uib_ENG339L-0_2025_autumn_1... | Add a post_fn that strips content from 'Vurderingsordning' onwards (inclusive) and strips the footer lines 'Dette bør du vite om eksamen'... |
 | ✓ | uis | learning_outcomes | merged_sections | high | widespread | uis_LENG270-1_2015_autumn_1; uis_MGD3400-1_2022_autumn_3;... | Inspect the actual DOM level of these headings and set section_heading_selector/level for uis accordingly (or include h3/.paragraph--with... |
 | ✓ | uis | cross_section | merged_sections | high | widespread | uis_MENG350-1_2014_autumn_1; uis_MGD3400-1_2022_autumn_3;... | Add admin-heading patterns (åpent for\|åpen for\|ope for, emneevaluering, overlapping, kontakt, fagperson) mapped to a drop/ignore marker s... |
 | ? | uit | learning_outcomes | merged_sections | high | widespread | uit_LER-3901-1_2023_autumn_1; uit_LER-3903-1_2024_autumn_... | Add 'Undervisnings- og eksamensspråk', 'Undervisning', 'Kvalitetssikring', 'Kvalitetssikring av emnet', and 'Eksamen' as closing-boundary... |
@@ -162,7 +161,9 @@ _(none)_
 | ? | ntnu | reading_list | missing_section | medium | widespread | ntnu_PPU4729-1_2016_autumn_1; ntnu_HIST3485-1_2019_spring... | Add 'Kursmateriell' to the heading-to-section map, mapped to reading_list. Also consider 'Faglig innhold: Kursmateriell' if the heading a... |
 | ✓ | oslomet | reading_list | missing_section | medium | widespread | oslomet_M5GNA3100-1_2019_autumn_2; oslomet_MLEST2100-1_20... | Extend the oslomet fetch/selector to include the pensum block (or fetch the pensum endpoint) and map 'Pensum' in R/section_heading_map.R ... |
 | ✓ | uia | cross_section | merged_sections | medium | widespread | uia_PRA1-301-1_2025_autumn_1; uia_PRA2-302-1_2024_spring_... | Add a pattern for '^Faget i praksis$' in R/section_heading_map.R that starts a new (discarded or teaching_methods) block, placed before t... |
-| ? | uib | prerequisites | merged_sections | medium | widespread | uib_HIS302L-0_2025_autumn_1; uib_HIS303L-0_2025_autumn_1;... | Map 'Krav til studierett' to no canonical section (drop it). Add a post_fn for prerequisites that removes lines consisting solely of 'Ing... |
+| ✓ | uib | course_content | formatting_noise | medium | widespread | uib_TYSDI201-0_2018_spring_1; uib_SOS340-L-0_2024_autumn_... | In .clean_sections() (R/extract_sections.R) or an uib-specific cleaner, drop the lines 'Vel emnebeskrivelse for semester', the following ... |
+| ✓ | uib | assessment | formatting_noise | medium | widespread | uib_TYSDI201-0_2018_spring_1; uib_NOLI216-0_2025_spring_1... | In .clean_sections() for uib, cut assessment at the first line matching ^Vurderingsordning$ and strip lines 'Dette bør du vite om eksamen... |
+| ✓ | uib | prerequisites | boilerplate_only | medium | widespread | uib_TYSDI201-0_2018_spring_1; uib_NOLI216-0_2025_spring_1... | Map 'Krav til studierett' to a dropped/other section instead of prerequisites; keep 'Krav til forkunnskaper' and 'Anbefalte forkunnskaper... |
 | ✓ | uio | assessment | boilerplate_only | medium | widespread | uio_PROMO8-1_2025_autumn_4; uio_PROMO4-1_2025_autumn_4; u... | In .clean_sections() (or .anon_uio()), cut everything from the line 'Mer om eksamen ved UiO' to the end, and optionally drop the standalo... |
 | ✓ | uio | prerequisites | boilerplate_only | medium | widespread | uio_TYSK4091-1_2025_spring_1; uio_NOR1000-1_2025_spring_1... | Strip the two standard Studentweb/studieprogrammer sentences in .clean_sections() for uio; consider splitting 'Opptak til emnet' from 'Ob... |
 | ✓ | uis | coursework_requirements | other | medium | widespread | uis_MGL3066-1_2025_autumn_1; uis_MGL3120-1_2022_autumn_1;... | Map '^fagperson' to an ignore marker in R/section_heading_map.R so the staff list is discarded at the section stage. |
@@ -180,6 +181,7 @@ _(none)_
 | ✓ | steiner | learning_outcomes | formatting_noise | medium | common | steiner_M-PEL1_2_2025_spring_1; steiner_M-PEL1_3_2025_spr... | In .clean_sections()/steiner strategy, drop the preamble before the first heading (or strip lines beginning 'Emnekode og ', 'Emnenavn', '... |
 | ✓ | steiner | learning_outcomes | truncated | medium | common | steiner_M-PEL1_2_2025_spring_1; steiner_M-PEL1_1_2025_spr... | Restrict sub-heading stripping to lines that exactly equal 'Kunnskap', 'Ferdigheter', 'Generell kompetanse' (anchored ^...$), and do not ... |
 | ✓ | steiner | teaching_methods | wrong_content | medium | common | steiner_M-PEL1_3_2025_spring_1; steiner_M-MAT1_1_2025_spr... | In R/section_heading_map.R only match 'Arbeidsmåter' / 'Undervisnings- og arbeidsformer' as teaching_methods when the line is the whole h... |
+| ✓ | uib | assessment | boilerplate_only | medium | common | uib_TYSDI111-0_2018_spring_1; uib_TYSDI111-0_2016_spring_... | Strip the banner paragraph, 'Lukk', and the following title line in .clean_sections() (or earlier in the uib text cleaning) with a regex ... |
 | ✓ | uis | learning_outcomes | truncated | medium | common | uis_MGL4066-1_2025_autumn_3; uis_MGD3400-1_2022_autumn_3;... | Start learning_outcomes at the first node after the 'Læringsutbytte' heading node, and do not treat 'Kunnskap', 'Ferdigheter', 'Generell ... |
 | ✓ | uis | cross_section | other | medium | common | uis_MGL3066-1_2025_autumn_1; uis_MGL4400-1_2023_autumn_1;... | Drop all text before the first mapped heading, or assign the unheaded introduction to course_content. Strip the lines 'Emnekode:', 'Vekti... |
 | ✓ | uis | reading_list | formatting_noise | medium | common | uis_MGL3066-1_2025_autumn_1; uis_MGL3066-1_2023_autumn_1;... | In .clean_sections() (or the reading_list cleaner) remove tokens matching 'https://bibsys-ur\.userservices[^\s]*' and the following conti... |
@@ -191,10 +193,10 @@ _(none)_
 | ? | ntnu | assessment | missing_section | medium | occasional | ntnu_PPU4700-1_2012_autumn_1; ntnu_PPU4611-1_2018_autumn_1 | When no assessment row is extracted but the course metadata contains a non-empty 'Vurderingsordning' field, emit a diagnostic flag so the... |
 | ✓ | steiner | assessment | truncated | medium | occasional | steiner_M-NOR1_3_2025_spring_1; steiner_M-MAT1_2_2025_spr... | When removing the 'Eksamensform/Hjelpemidler/Sensorordning/Vurderingsuttrykk' labels, remove only exact label lines; keep any line carryi... |
 | ✓ | uia | all | missing_section | medium | occasional | uia_EN-156-1_2023_autumn_1; uia_NAT115-1_2023_autumn_1; u... | Re-fetch these 2023-autumn plans and inspect the HTML; fix selector or year-specific structure in R/institution_config.R (uia). Exclude c... |
-| ? | uib | assessment | wrong_content | medium | occasional | uib_SOS340-L-0_2025_spring_1 | Add a post_fn strip for lines matching 'Vi opplever problemer med å hente inn eksamensinformasjon' and 'Lukk'. Alternatively, identify th... |
 | ✓ | uis | assessment | wrong_content | medium | occasional | uis_LHIS145-1_2019_autumn_1 | Treat the 'Vilkår ...' heading as opening coursework_requirements until the next mapped heading; do not let 'Obligatorisk aktivitet' or '... |
 | ? | uit | learning_outcomes | truncated | medium | occasional | uit_LER-3903-1_2024_autumn_1; uit_LER-3913-1_2024_autumn_... | Investigate and raise (or remove) any field-length cap applied to sections_raw text. Once the merge is fixed the correct learning_outcome... |
 | ✓ | oslomet | all | missing_section | medium | rare | oslomet_M5GEN1200-1_2023_autumn_1; oslomet_M5GNT3200-1_20... | Check the fulltext step for these courses (selector missed content or page genuinely empty); flag courses with plans lacking any content ... |
+| ✓ | uib | assessment | duplicate | medium | rare | uib_SOS340-L-0_2024_autumn_2 | Treat 'Vurderingssemester' as a section boundary (drop its content) and add a boilerplate-strip rule for the kontinuasjonseksamen paragra... |
 | ✓ | uio | reading_list | missing_section | medium | rare | uio_HIS4015L-1_2025_spring_1 | Add 'Pensum' to reading_list patterns in R/section_heading_map.R and allow the UiO splitter to cut at it when it occurs within Undervisni... |
 | ✓ | inn | assessment | formatting_noise | low | widespread | inn_2MPRA171S-4-1_2022_spring_1; inn_2MPRA171-1-1_2022_sp... | In .clean_sections() strip the fixed header strings 'Vurderingsordning Karakterskala Gruppe/individuell Varighet Hjelpemidler Andel Komme... |
 | ✓ | inn | reading_list | empty_placeholder | low | widespread | inn_2ML351-1_2024_autumn_1; inn_2MPRA171-1-1_2022_spring_1 | In .clean_sections() drop reading_list rows matching '^(No reading list available\|Ingen pensumliste tilgjengelig)' and prerequisites matc... |
@@ -202,7 +204,7 @@ _(none)_
 | ✓ | nmbu | assessment | formatting_noise | low | widespread | nmbu_PPFD201-1_2025_autumn_2; nmbu_FYS100-1_2025_spring_1... | In .clean_sections() (or an nmbu-specific post_fn) remove lines matching 'Karakterregel:.*' from assessment and collapse runs of blank li... |
 | ✓ | nord | reading_list | missing_section | low | widespread | nord_REL1005-1_2021_autumn_1; nord_PEL1001-1_2022_autumn_1 | Check whether the Nord page has a pensum element and add it to the selector; otherwise document that reading_list is unavailable for nord... |
 | ✓ | steiner | assessment | formatting_noise | low | widespread | steiner_M-PEL1_1_2025_spring_1; steiner_M-NAT1_2_2025_spr... | Either strip all five exam sub-headings consistently (add 'Sensorordning'), or better keep all labels; optionally drop Sensorordning/Hjel... |
-| ? | uib | cross_section | duplicate | low | widespread | uib_RELV302L-0_2025_autumn_1; uib_ENG339L-0_2025_autumn_1... | No change needed to the extractor. Note this duplication in data documentation so downstream consumers are not confused by the repeated c... |
+| ✓ | uib | cross_section | other | low | widespread | uib_TYSDI201-0_2018_spring_1; uib_TYSDI111-0_2019_autumn_1 | Low priority: strip sentences starting 'Studentane evaluerer undervisninga' from assessment; consider excluding exact duplicates across o... |
 | ? | uit | course_content | formatting_noise | low | widespread | uit_LER-3901-1_2023_autumn_1; uit_LER-3903-1_2024_autumn_... | Strip the literal string 'Hva lærer du' (and its variants) from the tail of the course_content field during post-processing (post_fn), or... |
 | ? | uit | coursework_requirements | formatting_noise | low | widespread | uit_LER-3901-1_2023_autumn_1; uit_LER-3902-1_2024_autumn_... | Add a post_fn (or pre_fn cleaning step) that strips the literal strings 'UiTs samleside om eksamen', 'Mer info om arbeidskrav', and 'Mer ... |
 | ✓ | nih | prerequisites | empty_placeholder | low | common | nih_LKI110-1_2025_autumn_1; nih_LKI226-1_2025_autumn_1; n... | Map "Hvem kan ta dette emnet?" to an ignored/admin bucket in R/section_heading_map.R, and have .clean_sections() drop prerequisites rows ... |
@@ -211,16 +213,11 @@ _(none)_
 | ✓ | oslomet | assessment | formatting_noise | low | common | oslomet_M5GNA3100-1_2019_autumn_2; oslomet_M1GNO3100-1_20... | Remove standalone 'Se (under) Vurdering/eksamen.' lines and replace stray ';' separators with newlines in the oslomet pre/post-processing... |
 | ✓ | steiner | cross_section | formatting_noise | low | common | steiner_M-NOR1_1_2025_spring_1; steiner_M-NAT1_2_2025_spr... | In .clean_sections() remove lines matching ^\s*\d{1,3}\s*$ before splitting and for all sections. |
 | ✓ | uia | coursework_requirements | wrong_content | low | common | uia_MA-441-1_2024_autumn_3; uia_PRA1-301-1_2025_autumn_1;... | Optional sentence-level post-step for uia moving sentences matching 'krav om .*(tilstedeværelse\|deltagelse\|frammøte)' to coursework_requi... |
-| ? | uib | prerequisites | empty_placeholder | low | common | uib_RELV302L-0_2025_autumn_1; uib_HIS301L-0_2025_autumn_1... | Collapse multiple 'Ingen'/'\-' values in prerequisites to a single token, or to NULL/empty if all constituent fields are null placeholders. |
-| ? | uib | assessment | wrong_content | low | common | uib_NOLI103-L-0_2025_autumn_1; uib_NORAN204-L-0_2025_autu... | Add this exact boilerplate sentence to the list of patterns stripped in the assessment post_fn (e.g. regex: /Klokkeslett for oppstart av ... |
-| ? | uib | assessment | wrong_content | low | common | uib_HIDID112-0_2025_autumn_1; uib_HIS302L-0_2025_autumn_1... | Identify the 'Hjelpemiddel til eksamen' sub-section within the assessment panel and drop it, or add its null-value strings ('Ingen', '-')... |
 | ✓ | uis | cross_section | formatting_noise | low | common | uis_MGL1041-1_2018_autumn_2; uis_LMHIMAS-1_2018_spring_1;... | Add regex removal of '^\s*side \d+\s*$', '^\s*EMNE \S+ .*Versjon.*$', 'Powered by TCPDF.*' and trim leading whitespace per line in .clean... |
 | ✓ | usn | coursework_requirements | formatting_noise | low | common | usn_MG2PE2-1_2023_spring_1 | In .clean_sections() remove a leading line identical to the section heading and collapse consecutive duplicate lines. |
 | ? | ntnu | learning_outcomes | truncated | low | occasional | ntnu_PPU4623-1_2019_autumn_1; ntnu_PPU4625-1_2019_autumn_... | Increase or remove the character limit on the sections_raw text field. The truncation point is consistent across affected courses suggest... |
 | ✓ | steiner | coursework_requirements | formatting_noise | low | occasional | steiner_M-NOR1_3_2025_spring_1 | Only strip the exact section heading line 'Arbeidskrav' (anchored) and keep sub-titles. |
 | ✓ | uia | prerequisites | wrong_content | low | occasional | uia_MA-172-1_2022_autumn_4; uia_MA-219-1_2020_autumn_1; u... | Narrow the prerequisites pattern so 'Opptakskrav hvis/om tilbudt som enkeltemne' is not matched (map to a discarded block). |
-| ? | uib | course_content | wrong_content | low | occasional | uib_SPLA106-0_2025_autumn_1; uib_NOLISP300-L-0_2025_autum... | No change required; this is correctly handled. Document in data notes that SPLA106-type short courses may have thin course_content becaus... |
-| ? | uib | learning_outcomes | formatting_noise | low | occasional | uib_RELV107-0_2025_autumn_2 | Add a learning_outcomes post_fn that collapses paragraph breaks that split a sentence (i.e., where a paragraph ends mid-word or without t... |
 | ? | uit | prerequisites | wrong_content | low | occasional | uit_LER-2152-1_2025_spring_1 | Strip paragraphs matching 'Studiepoengreduksjon' (and the credit-reduction boilerplate that follows) in the prerequisites post_fn, or add... |
 | ? | uit | teaching_methods | wrong_content | low | occasional | uit_LRU-3300-1_2016_autumn_1; uit_LRU-2642-1_2014_spring_... | Add patterns for 'For nærmere informasjon om praksis, se egen praksisplan' and 'Emnet evalueres muntlig eller skriftlig minimum en gang h... |
 | ✓ | usn | teaching_methods | formatting_noise | low | occasional | usn_LR-PRA3000-1_2021_autumn_1; usn_LH-PRA4000-1_2021_aut... | Add a pattern for '^Obligatorisk aktivitet( og krav til tilstedeværelse)?$' mapped to coursework_requirements in R/section_heading_map.R ... |

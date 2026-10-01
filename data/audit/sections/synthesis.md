@@ -2,14 +2,14 @@
 
 Sonnet review agents, one per institution, 10–28 courses each (20 suspects +
 8 random controls; up to 5 of the suspects are courses with no sections at
-all). 15 institutions audited on tonight's harvest: hiof, hivolda, hvl, inn,
-mf, nih, nla, nmbu, nord, oslomet, steiner, uia, uio, uis, usn. All
+all). 16 institutions audited on tonight's harvest: hiof, hivolda, hvl, inn,
+mf, nih, nla, nmbu, nord, oslomet, steiner, uia, uib, uio, uis, usn. All 95
 current findings pass mechanical verification after two hand fixes (below).
 Report: `findings_report.md`. Opus comparison: `model_comparison.md`.
 
-**Not audited yet:** `uit` (fulltext extraction broken — see fix 1), `uib`
-(harvest still running at 05:00), `ntnu` (harvest finishes ~15:00 with the
-10 s Crawl-delay). Their findings in `findings/` are from the September run.
+**Not audited yet:** `uit` (fulltext extraction broken — see fix 1) and
+`ntnu` (harvest finishes ~15:00 with the 10 s Crawl-delay). Their findings in
+`findings/` are from the September run.
 
 ## Summary
 
@@ -27,7 +27,12 @@ Report: `findings_report.md`. Opus comparison: `model_comparison.md`.
   plan: 70 of 1,237 rows exceed 10k chars), oslomet praksis courses ("Se
   fagplanen." in 1,762 rows across 914 courses).
 - **Clean or nearly clean:** hiof, hvl, nih, nla, uia (apart from one
-  unmapped heading), inn Norwegian-heading plans.
+  unmapped heading), inn Norwegian-heading plans. uib splits correctly, but
+  every course_content row (1,473 of 1,473) is wrapped in the page's
+  semester-picker widget ("Vel emnebeskrivelse for semester …"), and 294
+  assessment rows carry the site banner "Vi opplever problemer med å hente
+  inn eksamensinformasjon" — exam information failed to load when the page
+  was fetched.
 - **Reading lists are mostly pointers** (Leganto/archive links) or absent
   (0 % coverage at hvl, nord, oslomet, steiner, uia, uio). Mostly a source
   limitation, not an extractor bug.
@@ -99,7 +104,10 @@ Report: `findings_report.md`. Opus comparison: `model_comparison.md`.
    whole-word match, not a "Label:" metadata line). Examples:
    `hivolda_MGL5-10NO2A-1_2024_spring_1`, `usn_MG1PE2-1_2020_spring_2`,
    `uis_LENG270-1_2015_autumn_1`.
-9. **Courses with plan text but no sections** (388: uis 191, uia 93, oslomet
+9. **uib: exclude the semester picker from the fulltext selector**, and
+   re-fetch the 294 pages whose exam information failed to load (the banner
+   text identifies them). Example: any uib course_content row.
+10. **Courses with plan text but no sections** (388: uis 191, uia 93, oslomet
    56, nord 48). Sampled ones are mostly *harvest* problems, not splitter
    bugs: page shell only (uia autumn 2023, oslomet), or only the
    "Med overlapp menes…" credit-reduction box (nord). Check the fulltext
@@ -120,7 +128,9 @@ coursework_requirements).
   packet has `uio_PROMO4-1_2025_autumn_4`, which shows the problem. Replaced.
 - `hvl`: evidence quoted "Mer om hjelpemiddel"; the packet says "Meir om
   hjelpemiddel". Replaced with the verbatim quote.
-- Partial reviews: the nla, nord, oslomet and first uia agents said they read
-  only part of their packet (packets of ~185–325 KB). Their findings verify,
-  but coverage is incomplete; the agent prompt now asks
-  `n_courses_reviewed` to count only courses read in full.
+- Partial reviews: the nla, nord, oslomet, first uia and uib agents said they
+  read only part of their packet (packets of ~185–325 KB). Their findings
+  verify, but coverage is incomplete. Asking `n_courses_reviewed` to count
+  only courses read in full did not work: the uib agent still reported 28 of
+  28 while saying it had read about two thirds. Next run: smaller packets
+  for Sonnet (e.g. 14 suspects + 6 random, ≤ 150 KB) or Opus for large ones.
