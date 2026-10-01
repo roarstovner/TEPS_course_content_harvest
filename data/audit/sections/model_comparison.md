@@ -71,3 +71,17 @@ where Sonnet said low.
   findings — it can read the code and see patterns across institutions.
 
 Small sample (3 institutions, one run each); treat as indicative.
+
+## Addendum: full Sonnet run (16 institutions, same night)
+
+- Mechanical failures across 19 Sonnet reports (incl. re-runs): one invented
+  course id (uio), one paraphrased quote (hvl, "Mer" for "Meir"), one false
+  "file written" (nih). All caught by `R/audit/aggregate.R`; fixed by hand.
+- **Coverage is the real weakness.** Five agents (nla, nord, oslomet, uia,
+  uib) said they read only part of a 185–325 KB packet and checked the rest
+  by headings or grep. Asking them to count only fully read courses in
+  `n_courses_reviewed` did not help (uib still reported 28 of 28). The
+  Opus agents in the comparison read everything and queried the full data.
+- Adjusted recommendation: Sonnet is fine for packets up to ~150 KB; for
+  larger packets either shrink them (fewer courses, lower `PLAN_TRUNC`) or
+  use Opus.

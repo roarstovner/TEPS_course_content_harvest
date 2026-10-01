@@ -136,6 +136,12 @@ Each agent reads its whole packet, typically tens of thousands of tokens; a
 full run over all institutions costs millions of input tokens. Use
 institution subsets when iterating on a fix.
 
+Packet size matters more than model choice for coverage: in the first full
+run, Sonnet agents skimmed packets above ~200 KB (and still reported every
+course as reviewed). Keep Sonnet packets to ~150 KB by lowering the
+`SUSPECT_N`/`RANDOM_N`/`PLAN_TRUNC` tunables, or use `--model opus` for large
+packets. See `data/audit/sections/model_comparison.md`.
+
 ## Files
 
 | Path | Role |
