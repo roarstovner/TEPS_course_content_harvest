@@ -60,7 +60,7 @@
       "severity": "high",
       "prevalence": "widespread",
       "example_course_ids": ["mf_RL1016-1_2025_autumn_1", "mf_RL1014-1_2025_autumn_1", "mf_PPU1020-1_2025_autumn_1"],
-      "evidence": "Emneansvarlig John Kaufman, John Førsteamanuensis John.Kaufman@mf.no Studentlivet på MF Vurderer du å studere på MF?",
+      "evidence": "Emneansvarlig [navn], [navn] Førsteamanuensis [e-post] Studentlivet på MF Vurderer du å studere på MF?",
       "description": "The page footer ('Emneansvarlig' block with personal name, title and e-mail, plus 'Studentlivet på MF' marketing and links) is appended to reading_list. It is page chrome, not course content, and leaks personal data. The same footer also ends up in learning_outcomes for PRA1005 and PRA1004.",
       "root_cause_hypothesis": "No end-of-content delimiter for the MF page: the last section runs to the end of the extracted text. Names/emails remain verbatim in the section text.",
       "suggested_fix": "In .clean_sections() (or an MF hook) truncate every section at the first line matching '^Emneansvarlig$' and drop everything after it.",

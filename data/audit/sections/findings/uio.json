@@ -77,8 +77,8 @@
         "uio_MAT5930L-2_2025_spring_1",
         "uio_PROF3025-1_2025_spring_1"
       ],
-      "evidence": "Ta kontakt med Tom Lindstrøm (lindstro@math.uio.no) eller studieadministrasjonen ved Matematisk institutt (studieinfo@math.uio.no) for å få mer informasjon.",
-      "description": "Section text carries personal names and e-mail addresses (also 'lektorprogrammet@ils.uio.no' in PROF3025 prerequisites) that are blanked in the anonymized full plan ('Ta kontakt med () eller ... ()'). The sections were derived from text that had not been anonymized (or anonymization was bypassed), so PII leaks into the sections dataset.",
+      "evidence": "Ta kontakt med [navn] ([e-post]) eller studieadministrasjonen ved Matematisk institutt ([e-post]) for å få mer informasjon.",
+      "description": "Section text carries personal names and e-mail addresses (also '[e-post]' in PROF3025 prerequisites) that are blanked in the anonymized full plan ('Ta kontakt med () eller ... ()'). The sections were derived from text that had not been anonymized (or anonymization was bypassed), so PII leaks into the sections dataset.",
       "root_cause_hypothesis": "extract_sections reads extracted_text / a pre-anonymization source rather than the anonymized course_plan.",
       "suggested_fix": "Run extract_sections on the anonymized course_plan (or apply anonymize_fulltext to each section) and add a check in R/audit/qa_sections.R flagging '@' and known personal-name patterns.",
       "confidence": "high"
