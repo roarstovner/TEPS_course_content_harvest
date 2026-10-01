@@ -34,6 +34,8 @@ SECT_TRUNC  <- 5000   # max chars of each section raw_text shown. Must stay
                       # the packet does not create spurious "truncated"
                       # findings. reading_list (p99 ~28k) is still capped — its
                       # length is expected, judge it as such.
+RL_TRUNC    <- 2000   # reading_list cap: long lists are expected, the head shows the format
+MAX_KB      <- 150    # packet budget (#233): see the fitting loop below
 SEED        <- 42
 
 CHECK   <- "sections"
@@ -105,47 +107,64 @@ for (inst in institutions) {
   selected <- audit_sample(pool, SUSPECT_N, RANDOM_N, SEED)
   if (nrow(selected) == 0) next
 
-  lines <- audit_packet_header(CHECK, inst, selected, paste(
-    "For each course, audit the **Extractor output** against the **Full course",
-    "plan** using the definitions in `section_codebook.yml`. Rows already",
-    "flagged by the deterministic pre-pass (R/audit/qa_sections.R) are marked `⚑ flags: …`."
-  ))
+  build <- function(plan_trunc) {
+    lines <- audit_packet_header(CHECK, inst, selected, paste(
+      "For each course, audit the **Extractor output** against the **Full course",
+      "plan** using the definitions in `section_codebook.yml`. Rows already",
+      "flagged by the deterministic pre-pass (R/audit/qa_sections.R) are marked `⚑ flags: …`."
+    ))
 
-  for (i in seq_len(nrow(selected))) {
-    cid  <- selected$course_id[i]
-    kind <- selected$kind[i]
-    meta <- inst_plans[match(cid, inst_plans$course_id), ]
-    plan_txt <- meta$course_plan
-    rows <- sec |> filter(course_id == cid) |>
-      left_join(susp_lbl, by = c("course_id", "section"))
+    for (i in seq_len(nrow(selected))) {
+      cid  <- selected$course_id[i]
+      kind <- selected$kind[i]
+      meta <- inst_plans[match(cid, inst_plans$course_id), ]
+      plan_txt <- meta$course_plan
+      rows <- sec |> filter(course_id == cid) |>
+        left_join(susp_lbl, by = c("course_id", "section"))
 
-    lines <- c(lines,
-      sprintf("---\n\n## COURSE %d — `%s`  [%s]", i, cid, kind),
-      "",
-      sprintf("- %s (%s) · %s %s", meta$Emnekode_raw, meta$Emnenavn,
-              meta$Semesternavn, meta$Årstall),
-      "",
-      "### Full course plan (anonymized — ground truth)",
-      "",
-      audit_fence(audit_trunc(plan_txt, PLAN_TRUNC)),
-      "",
-      "### Extractor output (sections_raw — audit these)",
-      ""
-    )
-    if (nrow(rows) == 0) {
-      lines <- c(lines, "_(no sections extracted for this course)_", "")
-    } else {
-      for (j in seq_len(nrow(rows))) {
-        fl <- rows$flags[j]
-        flhdr <- if (!is.na(fl) && nzchar(fl)) sprintf("  ⚑ flags: %s", fl) else ""
-        lines <- c(lines,
-          sprintf("**%s** (%d chars)%s", rows$section[j],
-                  nchar(rows$raw_text[j] %||% ""), flhdr),
-          "",
-          audit_fence(audit_trunc(rows$raw_text[j], SECT_TRUNC)),
-          "")
+      lines <- c(lines,
+        sprintf("---\n\n## COURSE %d — `%s`  [%s]", i, cid, kind),
+        "",
+        sprintf("- %s (%s) · %s %s", meta$Emnekode_raw, meta$Emnenavn,
+                meta$Semesternavn, meta$Årstall),
+        "",
+        "### Full course plan (anonymized — ground truth)",
+        "",
+        audit_fence(audit_trunc(plan_txt, plan_trunc)),
+        "",
+        "### Extractor output (sections_raw — audit these)",
+        ""
+      )
+      if (nrow(rows) == 0) {
+        lines <- c(lines, "_(no sections extracted for this course)_", "")
+      } else {
+        for (j in seq_len(nrow(rows))) {
+          fl <- rows$flags[j]
+          flhdr <- if (!is.na(fl) && nzchar(fl)) sprintf("  ⚑ flags: %s", fl) else ""
+          lines <- c(lines,
+            sprintf("**%s** (%d chars)%s", rows$section[j],
+                    nchar(rows$raw_text[j] %||% ""), flhdr),
+            "",
+            audit_fence(audit_trunc(rows$raw_text[j], if (rows$section[j] ==
+                                    "reading_list") RL_TRUNC else SECT_TRUNC)),
+            "")
+        }
       }
     }
+    lines
+  }
+
+  # Fit MAX_KB: shrink the plan text first, then drop random controls (keep
+  # at least 2); suspects always stay.
+  plan_trunc <- PLAN_TRUNC
+  repeat {
+    lines <- build(plan_trunc)
+    if (sum(nchar(lines, "bytes") + 1) <= MAX_KB * 1024) break
+    if (plan_trunc > 3000) {
+      plan_trunc <- max(3000, round(plan_trunc * 0.8))
+    } else if (sum(selected$kind == "RANDOM") > 2) {
+      selected <- selected[-max(which(selected$kind == "RANDOM")), ]
+    } else break
   }
 
   path <- file.path(out_dir, paste0(inst, ".md"))
@@ -157,8 +176,9 @@ for (inst in institutions) {
     packet    = path
   )
   sample[[inst]] <- mutate(selected, institution = inst, .before = 1)
-  cat(sprintf("  %-8s %2d suspects + %2d random -> %s\n", inst,
-              manifest[[inst]]$n_suspect, manifest[[inst]]$n_random, path))
+  cat(sprintf("  %-8s %2d suspects + %2d random, plan cut %d, %3.0f KB -> %s\n", inst,
+              manifest[[inst]]$n_suspect, manifest[[inst]]$n_random, plan_trunc,
+              sum(nchar(lines, "bytes") + 1) / 1024, path))
 }
 
 audit_write_index(CHECK, bind_rows(manifest), bind_rows(sample))
