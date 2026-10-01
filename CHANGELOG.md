@@ -99,6 +99,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Section extraction fixes from audit 2026-10-01 (#207)
+- Re-run sections audit after the extractor fixes (#216)
 - Strip exam logistics and admin notices from assessment (#215)
 - Stricter text_split heading detection (hivolda, usn, uis) (#214)
 - mf: details/summary section strategy instead of h2 (#213)
