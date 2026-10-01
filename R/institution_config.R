@@ -39,7 +39,10 @@ institution_configs <- list(
     post_fn = .post_ntnu,
     fetch_fn = fetch_html_cols_single_ntnu,
     section_strategy = "html_headings",
-    section_heading_level = "h3"
+    # h3 sections plus the h2 "Eksamen" block (Vurderingsordning, Karakter);
+    # its h4 exam sessions (dates, rooms) are dropped (#245).
+    section_heading_selector = "h2, h3",
+    section_subheading_selector = "h4"
   ),
 
   inn = list(
@@ -193,7 +196,10 @@ institution_configs <- list(
     # sections and every page fell back to text_split (#214).
     section_selector = "#block-page-content",
     section_strategy = "html_headings",
-    section_heading_level = "h2"
+    section_heading_level = "h2",
+    # PDF plans (text_split fallback) open with a title and a metadata block;
+    # the untitled paragraph after it is the course introduction (#243).
+    section_text_header = "^(?:Emnekode|Vekting|Semester|Antall semestre|Undervisningsspråk|Tilbys av)\\b[^:]*:"
   ),
 
   usn = list(

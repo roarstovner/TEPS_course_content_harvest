@@ -35,6 +35,8 @@ section_heading_patterns <- tibble::tribble(
   # Most rows are exact (whole heading only), and exact matches win over
   # substrings, so "Eksamen og hjelpemidler" still maps to assessment.
   "eksamensdato",                          ".drop",                  FALSE,
+  "ordinær eksamen - ",                    ".drop",                  FALSE,  # ntnu sessions
+  "utsatt eksamen - ",                     ".drop",                  FALSE,
   "mer om eksamen ved uio",                ".drop",                  TRUE,
   "meir om eksamen ved uio",               ".drop",                  TRUE,
   "more about examinations at uio",        ".drop",                  TRUE,
@@ -101,6 +103,21 @@ section_heading_patterns <- tibble::tribble(
   # Programme list in the page footer (usn, hivolda).
   "emnet inngår i følgende studier",       ".drop",                  FALSE,
   "emnet inngår i følgande studieprogram", ".drop",                  FALSE,
+  # Admin blocks (uis #243, usn #244): evaluation, staff, who may take the
+  # course, overlapping courses, approval stamp, change log.
+  "emneevaluering",                        ".drop",                  TRUE,
+  "fagperson(er)",                         ".drop",                  TRUE,
+  "fagpersoner",                           ".drop",                  TRUE,
+  "fagpersonar",                           ".drop",                  TRUE,
+  "åpent for",                             ".drop",                  TRUE,
+  "åpen for",                              ".drop",                  TRUE,
+  "ope for",                               ".drop",                  TRUE,
+  "overlapping",                           ".drop",                  TRUE,
+  "fakta",                                 ".drop",                  TRUE,
+  "kontakt",                               ".drop",                  TRUE,
+  # usn approval stamp and change log (#244)
+  "godkjent emneplan",                     ".drop",                  TRUE,
+  "endringsbeskrivelse",                   ".drop",                  TRUE,
 
   # --- learning_outcomes ---
   "læringsutbytte",                        "learning_outcomes",      FALSE,
@@ -176,6 +193,7 @@ section_heading_patterns <- tibble::tribble(
   "innhald",                               "course_content",         FALSE,
   "innledning",                            "course_content",         FALSE,
   "innleiing",                             "course_content",         FALSE,
+  "introduksjon",                          "course_content",         TRUE,
   "course content",                        "course_content",         FALSE,
   "content",                               "course_content",         FALSE
 )

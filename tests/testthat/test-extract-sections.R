@@ -149,8 +149,7 @@ test_that("an inline label for the open section stays as content (#240)", {
     <p><strong>Kunnskap</strong>Kandidaten har kunnskap om lesing.</p>
     <p><strong>Ferdigheter:</strong> Kandidaten kan planlegge.</p></main>"
   s <- sections_of(html, html_cfg("p"))
-  # (.clean_section_text still drops a leading "Kunnskap" line; #249)
-  expect_match(s[["learning_outcomes"]], "Kandidaten har kunnskap om lesing\\.")
+  expect_match(s[["learning_outcomes"]], "^Kunnskap\nKandidaten har kunnskap om lesing\\.")
   expect_match(s[["learning_outcomes"]], "\nFerdigheter:\nKandidaten kan planlegge\\.$")
 })
 
@@ -191,6 +190,102 @@ test_that("text_split ends a section at an admission heading and drops it", {
   expect_equal(s[["prerequisites"]], "MAT1")
   expect_equal(s[["assessment"]], "Skriftlig eksamen.")
   expect_false(any(grepl("studiekompetanse", s)))
+})
+
+test_that("uis PDF: header skipped, intro kept, admin blocks and book titles handled (#243)", {
+  txt <- paste(
+    "MGL2050_1 Bokmål Versjon 20.Februar.2023", "",
+    "Bevegelse og vurderinger i kroppsøvingsfaget",
+    "Emnekode: MGL2050_1", "Vekting (SP): 30",
+    "Tilbys av: Fakultet for utdanningsvitenskap og humaniora, Institutt for",
+    "spesialpedagogikk", "",
+    "Emnet gir innsikt i samfunnsfaget.", "",
+    "Fagpersoner", "- Ola Nordmann (Faglærer)", "",
+    "Arbeidsformer", "Seminarer.", "",
+    "Emneevaluering", "Tidligdialog og sluttevaluering.", "",
+    "Litteratur", "Nettside", "", "Kompetansemål og vurdering", "",
+    "Utdanningsdirektoratet.", sep = "\n")
+  cfg <- list(text_header = get_institution_config("uis")$section_text_header)
+  out <- .clean_sections(extract_sections_text(list(extracted_text = txt), cfg))
+  s <- stats::setNames(out$raw_text, out$section)
+  expect_equal(s[["course_content"]], "Emnet gir innsikt i samfunnsfaget.")
+  expect_equal(s[["teaching_methods"]], "Seminarer.")
+  expect_match(s[["reading_list"]], "Kompetansemål og vurdering\nUtdanningsdirektoratet\\.$")
+  expect_false("assessment" %in% names(s))
+  expect_false(any(grepl("Nordmann|Tidligdialog|Versjon", s)))
+})
+
+test_that("usn: table of contents skipped, stamp dropped, header 'litteratur' harmless (#244)", {
+  txt <- paste(
+    "Ansvarlig:", "", "Institutt for språk og litteratur", "",
+    "Innholdsfortegnelse", "", "Faglig innhold i emnet", "", "Vurderingsformer", "",
+    "Godkjent emneplan", "", "Litteratur", "",
+    "Faglig innhold i emnet", "", "Språklæring.", "",
+    "Vurderingsformer", "", "Muntlig eksamen.", "",
+    "Godkjent emneplan", "", "Godkjent av dekan 31.01.2018", "",
+    "Litteratur", "", "Kompetansemål og vurdering", sep = "\n")
+  out <- .clean_sections(extract_sections_text(list(extracted_text = txt), list()))
+  s <- stats::setNames(out$raw_text, out$section)
+  expect_equal(s[["course_content"]], "Språklæring.")
+  expect_equal(s[["assessment"]], "Muntlig eksamen.")
+  expect_equal(s[["reading_list"]], "Kompetansemål og vurdering")
+})
+
+test_that("ntnu: exam block gives assessment design, sessions and scripts dropped (#245)", {
+  html <- "<main><h2>Om emnet</h2><h3>Læringsformer og aktiviteter</h3><p>Seminarer.</p>
+    <script>function toggleRooms(id) { x(); }</script>
+    <h3>Kontaktinformasjon</h3><h4>Faglærere</h4><p>Ola Nordmann</p>
+    <h2>Eksamen</h2><p>Vurderingsordning: Skriftlig eksamen<br>Karakter: Bokstavkarakterer</p>
+    <h4>Ordinær eksamen - Høst 2025</h4><p>Dato 29.11.2025, rom SL120</p></main>"
+  cfg <- list(selector = "main", heading_selector = "h2, h3", subheading_selector = "h4")
+  s <- sections_of(html, cfg)
+  expect_equal(s[["teaching_methods"]], "Seminarer.")
+  expect_equal(s[["assessment"]], "Vurderingsordning: Skriftlig eksamen\nKarakter: Bokstavkarakterer")
+  expect_false(any(grepl("toggleRooms|Nordmann|SL120", s)))
+  # form widgets (uib semester picker; #219) are not content either
+  doc <- .read_doc("<div><label>Vel emnebeskrivelse for semester</label><select><option>2027 Vår</option></select><p>Mål.</p></div>")
+  expect_equal(rvest::html_text2(doc), "Mål.")
+})
+
+test_that("more placeholders, exam-table headers and list stamps are removed (#248)", {
+  for (t in c("Oppgis senere.", "Pensum-/litteraturliste er ikke publisert ennå.",
+              "Litteratur vil være klart ved semesterstart.", "Pensumliste for høsten 2024.",
+              "Pensumlista for høsten 2025-våren 2026.",
+              "Litteraturlisten for høst 2026\n\nTilgang til litteratur\nNoe av litteraturen er digital.")) {
+    expect_true(.is_placeholder_text(t), label = t)
+  }
+  out <- tibble::tibble(
+    section = c("assessment", "assessment", "reading_list"),
+    raw_text = c("Vurderingsform Gruppering Varighet Karakterskala Andel Kommentar Mappe Individuell A-F 100",
+                 "Skriftlig eksamen.\nVurderingsform Vekting Varighet Karakter Hjelpemiddel\nSkoleeksamen 100/100 4 timer A - F",
+                 "Litteraturlisten er sist oppdatert 16. august 2018.\nBotten, G. (2016). Matematikk med mening."))
+  res <- .clean_sections(out, "uis")$raw_text
+  expect_equal(res[1], "Mappe Individuell A-F 100")
+  expect_equal(res[2], "Skriftlig eksamen.\n\nSkoleeksamen 100/100 4 timer A - F")
+  expect_equal(res[3], "Botten, G. (2016). Matematikk med mening.")
+  # A sentence that starts with header words is kept.
+  expect_equal(.clean_sections(tibble::tibble(section = "assessment",
+    raw_text = "Varighet og omfang avtales med veileder."), "inn")$raw_text,
+    "Varighet og omfang avtales med veileder.")
+})
+
+test_that("first group label and one-line sections are kept, heading echo dropped (#249)", {
+  out <- tibble::tibble(section = c("learning_outcomes", "learning_outcomes", "teaching_methods"),
+                        raw_text = c("Kunnskap\nStudenten kan lese.", "Læringsutbytte\nStudenten kan lese.", "Praksis"))
+  expect_equal(.clean_sections(out)$raw_text,
+               c("Kunnskap\nStudenten kan lese.", "Studenten kan lese.", "Praksis"))
+})
+
+test_that("a colon-ended coursework lead-in starts coursework_requirements (#246)", {
+  html <- "<main><h2>Undervisning</h2><p>Seminarer hver uke.</p>
+    <p>Emnet inkluderer følgende obligatoriske aktiviteter, som må være godkjent før eksamen:</p>
+    <ul><li>To innleveringer</li></ul>
+    <h2>Eksamen</h2><p>Skriftlig eksamen.</p>
+    <p>Merk at følgende gjelder:</p><p>Ingen hjelpemidler.</p></main>"
+  s <- sections_of(html, html_cfg("p"))
+  expect_equal(s[["teaching_methods"]], "Seminarer hver uke.")
+  expect_match(s[["coursework_requirements"]], "^Emnet inkluderer følgende obligatoriske aktiviteter.*\nTo innleveringer$")
+  expect_match(s[["assessment"]], "Ingen hjelpemidler\\.$")
 })
 
 # --- details_mf (#213) ---

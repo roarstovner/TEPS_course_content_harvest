@@ -28,6 +28,7 @@
     heading_selector    = ic$section_heading_selector,
     subheading_selector = ic$section_subheading_selector,
     intro_selector      = ic$section_intro_selector,
+    text_header         = ic$section_text_header,
     fields              = ic$section_fields,
     inline_coursework   = isTRUE(ic$section_inline_coursework),
     # Container for section extraction; defaults to the fulltext selector.
@@ -135,7 +136,7 @@ extract_sections_html <- function(input, cfg) {
 
   if (!is.null(cfg$pre_fn)) html <- cfg$pre_fn(html)
 
-  doc <- rvest::read_html(html)
+  doc <- .read_doc(html)
 
   container <- if (!is.null(selector)) {
     node <- rvest::html_element(doc, selector)
@@ -173,6 +174,7 @@ extract_sections_html <- function(input, cfg) {
   sub_rest <- attr(subs, "rest") %||% character()
   sub_lead <- attr(subs, "lead") %||% character()
   sub_head <- attr(subs, "head") %||% character()
+  sub_keep <- attr(subs, "keep") %||% character()
   is_sub <- function(node) xml2::xml_path(node) %in% names(subs)
   has_nested_any <- function(node) {
     has_nested(node) ||
@@ -233,7 +235,7 @@ extract_sections_html <- function(input, cfg) {
       # An unmapped sub-heading (<h3>Karakterskala</h3>, a bold group label)
       # returns to the enclosing section and stays as the first line there.
       state$current_section <- if (is.na(sub)) state$parent_section else sub
-      if (is.na(sub)) state$chunks <- rvest::html_text2(node)
+      if (is.na(sub) || path %in% sub_keep) state$chunks <- rvest::html_text2(node)
       # An inline lead (<p><em>Faget i praksis</em>I løpet ...) starts its
       # section with the rest of the paragraph as its first text.
       if (inline && nzchar(sub_rest[[path]])) state$chunks <- sub_rest[[path]]
@@ -286,14 +288,39 @@ extract_sections_text <- function(input, cfg) {
   if (is.na(extracted_text) || !nzchar(extracted_text)) return(.empty_sections())
 
   lines <- stringr::str_split_1(extracted_text, "\\r?\\n")
+  is_blank <- !nzchar(trimws(lines))
+  current_section <- NA_character_
+
+  # Skip a title + metadata block (uis PDFs: "Emnekode: ...", "Tilbys av:
+  # ..."), through the paragraph holding its last line; the untitled text
+  # after it is the course introduction.
+  if (!is.null(cfg$text_header)) {
+    hdr <- which(grepl(cfg$text_header, utils::head(lines, 40), perl = TRUE))
+    if (length(hdr)) {
+      end <- which(is_blank & seq_along(lines) > max(hdr))[1]
+      if (is.na(end)) end <- length(lines)
+      lines <- lines[-seq_len(end)]
+      is_blank <- is_blank[-seq_len(end)]
+      current_section <- "course_content"
+    }
+  }
+  # Skip a table of contents (usn): from "Innholdsfortegnelse" to where its
+  # first entry repeats as the real heading (#244).
+  toc <- which(trimws(lines) == "Innholdsfortegnelse")[1]
+  if (!is.na(toc)) {
+    entries <- which(!is_blank & seq_along(lines) > toc)
+    body <- entries[-1][trimws(lines[entries[-1]]) == trimws(lines[entries[1]])][1]
+    if (!is.na(body)) {
+      lines <- lines[-(toc:(body - 1))]
+      is_blank <- is_blank[-(toc:(body - 1))]
+    }
+  }
   n <- length(lines)
   if (n == 0) return(.empty_sections())
 
-  is_blank <- !nzchar(trimws(lines))
-
   sections <- list()
-  current_section <- NA_character_
   chunks <- character()
+  strict <- FALSE  # reading list opened by a whole heading ("Litteratur")
 
   flush <- function() {
     if (!is.na(current_section) && length(chunks) > 0) {
@@ -317,17 +344,24 @@ extract_sections_text <- function(input, cfg) {
 
     trimmed <- trimws(line)
     heading_match <- NA_character_
+    exact <- FALSE
     if (prev_blank && .heading_shaped_line(trimmed)) {
       # Strip trailing punctuation like ":" that frequently follows
       # plain-text section labels.
       candidate <- stringr::str_remove(trimmed, "[:：]\\s*$")
       heading_match <- match_heading_to_section(candidate, word_start = TRUE)
+      # In a reading list under a whole heading only another whole heading
+      # switches section, so a book title such as "Kompetansemål og
+      # vurdering" does not (#243).
+      exact <- tolower(candidate) %in% section_heading_patterns$pattern
+      if (strict && !exact) heading_match <- NA_character_
     }
 
     if (!is.na(heading_match) && !identical(heading_match, current_section)) {
       flush()
       chunks <- character()
       current_section <- heading_match
+      strict <- heading_match == "reading_list" && exact
     } else if (!is.na(current_section)) {
       chunks <- c(chunks, line)
     }
@@ -371,7 +405,7 @@ extract_sections_nord <- function(input, cfg) {
   html <- input$html
   if (is.na(html) || !nzchar(html)) return(.empty_sections())
 
-  doc <- rvest::read_html(html)
+  doc <- .read_doc(html)
   items <- rvest::html_elements(doc, "div.ac")
   if (length(items) == 0) return(.empty_sections())
 
@@ -424,7 +458,7 @@ extract_sections_uib <- function(input, cfg) {
   html <- input$html
   if (is.na(html) || !nzchar(html)) return(.empty_sections())
 
-  doc <- rvest::read_html(html)
+  doc <- .read_doc(html)
   sections <- list()
   add <- function(section, text) {
     text <- trimws(text)
@@ -523,7 +557,7 @@ extract_sections_mf <- function(input, cfg) {
   html <- input$html
   if (is.na(html) || !nzchar(html)) return(.empty_sections())
 
-  details <- .details_sections(rvest::read_html(html))
+  details <- .details_sections(.read_doc(html))
   intro <- extract_sections_html(
     input,
     utils::modifyList(cfg, list(selector = cfg$intro_selector,
@@ -549,7 +583,7 @@ extract_sections_fields <- function(input, cfg) {
   if (is.na(html) || !nzchar(html)) return(.empty_sections())
   if (!is.null(cfg$pre_fn)) html <- cfg$pre_fn(html)
 
-  doc <- rvest::read_html(html)
+  doc <- .read_doc(html)
   root <- if (is.null(cfg$selector)) doc else rvest::html_element(doc, cfg$selector)
   if (is.na(root)) return(.empty_sections())
 
@@ -594,7 +628,7 @@ extract_sections_nla <- function(input, cfg) {
   academic_year <- .nla_academic_year_from_course_id(input$course_id)
   if (is.na(academic_year)) return(.empty_sections())
 
-  doc <- rvest::read_html(html)
+  doc <- .read_doc(html)
   scripts <- rvest::html_elements(doc, "script")
   script_texts <- rvest::html_text(scripts)
   idx <- grep("EmneplanPage", script_texts, fixed = TRUE)
@@ -668,7 +702,7 @@ extract_sections_nla <- function(input, cfg) {
 #' concept (text_split, json_nla, noop).
 .collect_heading_candidates <- function(html, strategy, institution_config) {
   if (is.na(html) || !nzchar(html)) return(character())
-  doc <- rvest::read_html(html)
+  doc <- .read_doc(html)
 
   if (strategy == "html_headings") {
     # Mirror extract_sections_html: prefer the class-based heading selector
@@ -717,7 +751,9 @@ extract_sections_nla <- function(input, cfg) {
 #'     praksis</p>): attribute "head" holds the lines before it;
 #'   - it is all bold and names no section (<p><strong>Vurdering for studentar
 #'     som tar faget 3. studieår</strong></p>): a group label (value NA),
-#'     which ends a sub-section and keeps its text.
+#'     which ends a sub-section and keeps its text;
+#'   - it is a colon-ended lead-in naming a coursework gate: coursework, its
+#'     text kept (attribute "keep").
 #' A <p> inside a list item is skipped unless that <li> holds a section heading
 #' (oslomet wraps each whole section in an accordion <li>; #240).
 .subheading_sections <- function(container, selector, is_heading, has_heading) {
@@ -775,9 +811,17 @@ extract_sections_nla <- function(input, cfg) {
     stringr::str_squish(lead_raw) == stringr::str_squish(raw) &
     nchar(stringr::str_squish(raw)) <= 80
 
+  # A colon-ended lead-in that names a coursework gate ("Emnet inkluderer
+  # følgende obligatoriske aktiviteter, som må være godkjent før eksamen:")
+  # starts coursework_requirements and stays as its first line (uio; #246).
+  sq <- stringr::str_squish(raw)
+  leadin <- open & !inline & !tail & !label & nchar(sq) <= 150 &
+    grepl("[:：]$", sq) & grepl(.coursework_leadin, sq, perl = TRUE)
+
   section[inline] <- lead_section[inline]
   section[tail] <- exact(last)[tail]
-  keep <- !in_list & (whole | inline | tail | label)
+  section[leadin] <- "coursework_requirements"
+  keep <- !in_list & (whole | inline | tail | label | leadin)
   paths <- vapply(nodes, xml2::xml_path, character(1))
   out <- stats::setNames(section[keep], paths[keep])
 
@@ -791,7 +835,20 @@ extract_sections_nla <- function(input, cfg) {
   head <- vapply(lines[keep & tail], function(l) paste(l[-length(l)], collapse = "\n"),
                  character(1))
   attr(out, "head") <- stats::setNames(head, paths[keep & tail])
+  attr(out, "keep") <- paths[keep & leadin]
   out
+}
+
+.coursework_leadin <- paste0("(?i)arbeidskrav|obligatorisk\\w* (?:læringsaktivitet|aktivitet|",
+                             "oppmøte|frammøte|fremmøte|deltak|deltag)")
+
+# Parse HTML without script/style text (ntnu's "function toggleRooms(...)"
+# ended up in assessment; #245) or form widgets (uib's semester picker
+# "Vel emnebeskrivelse for semester 2027 Vår ..."; #219).
+.read_doc <- function(html) {
+  doc <- rvest::read_html(html)
+  xml2::xml_remove(rvest::html_elements(doc, "script, style, noscript, select, label"))
+  doc
 }
 
 .empty_sections <- function() {
@@ -817,6 +874,9 @@ extract_sections_nla <- function(input, cfg) {
   if (nrow(out) == 0) return(out)
   exam <- out$section %in% c("assessment", "coursework_requirements")
   out$raw_text[exam] <- .strip_section_noise(out$raw_text[exam], institution)
+  rl <- out$section == "reading_list"
+  out$raw_text[rl] <- stringr::str_remove(   # hiof date stamp line (#248)
+    out$raw_text[rl], "^\\s*Litteratur(?:listen|lista) er sist oppdatert[^\\n]*\\s*")
   pre <- out$section == "prerequisites"
   out$raw_text[pre] <- vapply(out$raw_text[pre], .strip_admission_lines,
                               character(1), USE.NAMES = FALSE)
@@ -885,6 +945,10 @@ extract_sections_nla <- function(input, cfg) {
 # course that teaches about AI keeps "kunstig intelligens" in its content.
 # "all" applies to every institution; other entries per institution. Most
 # patterns remove whole lines (or, with (?s), a trailing block).
+.exam_table_header <- paste0(
+  "Vurderingsform|Vurderingsordning|Gruppering|Gruppe/individuell|Varighet|",
+  "Lengd|Karakterskala|Karakter|Vekting|Vekt|Andel|Kommentarer|Kommentar|",
+  "Hjelpemidler|Hjelpemiddel|Omfang")
 .section_noise <- list(
   all = c(
     "(?m)^.*(?:plagiatkontroll|for plagiat).*$",                 # nih
@@ -893,6 +957,11 @@ extract_sections_nla <- function(input, cfg) {
     # assessment itself (nord PO111LS; #241)
     paste0("(?m)(?:\\b(?i:pga|jf|ca|evt)\\.[ \t]*)?",
            "(?=[^.!?\n ])[^.!?\n]*(?i:covid|korona)[^.!?\n]*(?:[.!?]+[ \t]*|$)"),
+    # flattened exam-table header glued to its data row ("Vurderingsform
+    # Gruppering Varighet Karakterskala Andel ... Mappe Individuell A-F";
+    # uis, hivolda, inn): drop the header words, keep the values (#248)
+    paste0("(?m)^(?:(?:", .exam_table_header, ")[ \t]+){3,}(?:",
+           .exam_table_header, ")(?=[ \t]|$)[ \t]*"),
     # stock resit sentence in running text (oslomet; #241)
     paste0("(?i)(?:Deleksamen \\d:[ \t]*)?Ny(?:/| og | eller )ut(?:satt|sett) ",
            "eksamen (?:arrangeres|gjennomføres|foregår|blir arrangert|",
@@ -931,16 +1000,21 @@ extract_sections_nla <- function(input, cfg) {
   # match against the heading patterns (not the substring matcher) so we never
   # delete real one-line content that merely contains a section keyword
   # (e.g. "Ingen pensumliste tilgjengelig" or "Vurdering skjer ved eksamen").
+  # A learning-outcome group label ("Kunnskap") is content, not an echo
+  # (#249), and a line that is the whole section ("Praksis") stays.
   lines <- stringr::str_split_1(text, "\\r?\\n")
-  if (length(lines) >= 1) {
-    norm_first <- tolower(trimws(stringr::str_remove(lines[1], "[:：]\\s*$")))
-    eq <- section_heading_patterns$pattern == norm_first
-    if (any(eq) && identical(section_heading_patterns$section[which(eq)[1]], section)) {
-      text <- paste(lines[-1], collapse = "\n")
-    }
+  norm_first <- tolower(trimws(stringr::str_remove(lines[1], "[:：]\\s*$")))
+  eq <- section_heading_patterns$pattern == norm_first
+  if (length(lines) > 1 && any(eq) &&
+      identical(section_heading_patterns$section[which(eq)[1]], section) &&
+      !grepl(.lo_group_label, norm_first, perl = TRUE)) {
+    text <- paste(lines[-1], collapse = "\n")
   }
   trimws(text)
 }
+
+.lo_group_label <- paste0("^(?:kunnskap(?:er|ar)?|ferdighe(?:i)?t(?:er)?|",
+                          "generell kompetanse|knowledge|skills|general competence)$")
 
 .keep_section_row <- function(text, section) {
   if (is.na(text) || !nzchar(trimws(text))) return(FALSE)
@@ -964,7 +1038,14 @@ extract_sections_nla <- function(input, cfg) {
   "no reading list(?: available)?(?: for this course)?",
   "(?:gjeldende )?litteraturliste for [^.]{0,20} finner du i leganto",
   "litteratur og faglige ressurser finner du her",
-  "pensumlist[ea] for emnet finn(?:er)? du her"
+  "pensumlist[ea] for emnet finn(?:er)? du her",
+  "oppgis senere",                                                    # ntnu
+  "(?:pensum-/)?litteraturliste(?:n)? er ikke publisert ennå",        # usn
+  "litteratur(?:lista|listen)? vil være klart? [^.]{0,80}",           # hiof
+  "(?:pensumlist[ea]|anbefalt litteratur) for (?:høsten|våren) ?\\d{4}(?:(?: og |-)(?:høsten|våren) ?\\d{4})?",  # nih
+  "ettersom vi er i en overgangsfase mellom to systemer .{0,300}",    # nih
+  # mf: the library-access notice alone (~600 chars), no list (#248)
+  "litteraturlisten for .{0,30}tilgang til litteratur .{0,700}"
 )
 .placeholder_regex <- paste0(
   "^(?:(?:", paste(.placeholder_phrases, collapse = "|"), ")[\\s.:;,]*)+$"
