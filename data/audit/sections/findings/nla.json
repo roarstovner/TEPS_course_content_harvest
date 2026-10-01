@@ -1,152 +1,58 @@
 {
-  "institution_short": "nla",
+  "check": "sections",
+  "institution": "nla",
+  "model": "sonnet",
   "n_courses_reviewed": 28,
   "n_suspects_reviewed": 20,
-  "overall_assessment": "NLA's JSON-based extractor maps most structural sections correctly (course_content, learning_outcomes, teaching_methods, coursework_requirements), but has a systematic and near-universal failure in the assessment section: it captures the exam-language field (\"Eksamensspråk\") instead of the actual graded assessment description under \"Avsluttende vurdering\". The reading_list is universally replaced by a boilerplate hyperlink. Prerequisites are either empty cross-references or correct subject-matter requirements depending on the course, and the handful flagged as 'boilerplate' are genuinely borderline given NLA's programme-plan structure.",
+  "overall_assessment": "Section extraction works well for NLA: course_content, learning_outcomes, teaching_methods, coursework_requirements and assessment are cleanly and completely split, with arbeidskrav correctly kept out of assessment. Remaining problems are a dropped teaching_methods section on nynorsk plans, a boilerplate reading_list and placeholder prerequisites, plus a stray language label.",
   "findings": [
     {
-      "section": "assessment",
-      "error_type": "field_or_language_junk",
-      "severity": "high",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "nla_4MGL1PE101-1_2025_autumn_1",
-        "nla_4MGL1PE102-1_2025_autumn_1",
-        "nla_MGL1NO102-1_2025_spring_1"
-      ],
-      "evidence": "Extracted assessment = \"Norsk.\\n\\nAndre språk etter søknad.\" (course 1); \"Norsk. Andre språk etter søknad.\" (courses 2–20); \"Norsk.\" (courses 21–23).",
-      "description": "Across all 20 suspects and in every random control that has an assessment row, the assessment section contains only the exam-language (\"Eksamensspråk\") field text, not the graded assessment description from \"Avsluttende vurdering\". The actual assessment content — e.g. \"6-timers individuell skriftlig skoleeksamen. Eksamen teller 100 % av karakteren.\" and the grading-scale sentence — is entirely absent. This violates the codebook definition: assessment must capture the FINAL, GRADED assessment(s) that determine the course grade.",
-      "root_cause_hypothesis": "The JSON field mapping in extract_nla_json() (or equivalent) maps 'assessment' to the JSON key that holds exam-language rather than the key for \"Avsluttende vurdering\". The NLA JSON API likely returns separate keys for the exam description, allowed aids, exam language, and grading scale; the extractor is pointing at the wrong key.",
-      "suggested_fix": "In the NLA JSON extraction function, remap the 'assessment' field to the JSON key for \"Avsluttende vurdering\" (the main graded-assessment description). Also consider including the grading-scale text (\"Vurderingsuttrykk avsluttende vurdering\") as a second item, and exclude the \"Eksamensspråk\" field entirely from the assessment section.",
-      "confidence": "high"
-    },
-    {
-      "section": "reading_list",
-      "error_type": "boilerplate_only",
-      "severity": "high",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "nla_4MGL1PE101-1_2025_autumn_1",
-        "nla_MGL1PE101-1_2025_autumn_1",
-        "nla_4MGL5FOU201-1_2025_spring_1"
-      ],
-      "evidence": "reading_list = \"Litteratur og faglige ressurser finner du her.\" in 26 of 28 courses reviewed.",
-      "description": "All but two courses (courses 23 and 26, which have no reading_list row at all) emit a single boilerplate hyperlink text as the reading_list. This is a navigation link on the NLA webpage pointing to an external reading-list system; it contains no actual literature references. The codebook requires verbatim reading list items or at minimum a note that the list is externally hosted. As extracted, the row is content-free.",
-      "root_cause_hypothesis": "The NLA JSON API returns reading-list data as an external URL or a null/empty field; the extractor captures the anchor-link text of the webpage button rather than the actual reading-list content. The reading list may not be available in the JSON at all — it may only exist in an external system (e.g. Leganto/Oria).",
-      "suggested_fix": "If the NLA JSON does not include actual reading-list content, emit no reading_list row rather than emitting the link text. Optionally capture the URL as a single string (e.g. \"[Pensumliste tilgjengelig via NLA Leganto]\") to flag availability without polluting the field with boilerplate.",
-      "confidence": "high"
-    },
-    {
-      "section": "prerequisites",
-      "error_type": "boilerplate_only",
-      "severity": "medium",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "nla_4MGL1PE101-1_2025_autumn_1",
-        "nla_4MGL5PE101-1_2025_autumn_1",
-        "nla_MGL1PE201-1_2025_autumn_1"
-      ],
-      "evidence": "prerequisites = \"Se programplan\" (14 chars) or \"Se programplan.\" (15 chars) or \"Se studieplan.\" (14 chars) for 18 of 20 suspects.",
-      "description": "The majority of NLA courses use \"Se programplan\" or \"Se studieplan\" as their entire prerequisites field. Per the codebook, prerequisites must state subject-matter entry requirements; a bare cross-reference to a programme plan contains no subject-matter information and should be treated as boilerplate. The deterministic flag ('empty' / 'boilerplate') correctly identifies these. The two random controls with genuine prerequisites (courses 23, 24, 25, 26, 27, 28) show the extractor can handle real prerequisite text when present.",
-      "root_cause_hypothesis": "NLA publishes programme-level prerequisites centrally and links to them from individual course pages; the JSON field for \"Forkunnskapskrav\" simply contains this cross-reference string for most courses.",
-      "suggested_fix": "Post-process the prerequisites field: if the value matches patterns like /^Se (program|studie|emne)plan\\.?$/i, replace with an empty list rather than emitting the cross-reference. This is a content normalization step rather than a JSON mapping fix.",
-      "confidence": "high"
-    },
-    {
-      "section": "coursework_requirements",
-      "error_type": "boilerplate_only",
-      "severity": "low",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "nla_4MGL1PE101-1_2025_autumn_1",
-        "nla_MGL1PE102-1_2025_autumn_1",
-        "nla_MGL5PE101-1_2025_autumn_1"
-      ],
-      "evidence": "coursework_requirements ends with \"Godkjent / Ikke godkjent\" or \"Godkjent/ikke godkjent\" as the final item in 20 of 28 courses.",
-      "description": "The grading-scale label for arbeidskrav (\"Vurderingsuttrykk arbeidskrav: Godkjent / Ikke godkjent\") is consistently included as the last item in the coursework_requirements section. This is an administrative metadata label, not a description of the requirement itself. Per the codebook, coursework requirements should describe what the student must do, not the pass/fail grade scheme. The \"Godkjent / Ikke godkjent\" line adds noise but the actual requirement items are correctly captured, so severity is low.",
-      "root_cause_hypothesis": "The JSON extraction includes the \"Vurderingsuttrykk arbeidskrav\" key value as part of the arbeidskrav block rather than excluding it.",
-      "suggested_fix": "In the NLA JSON extraction function, exclude the value of the \"Vurderingsuttrykk arbeidskrav\" key from the coursework_requirements output, or at minimum drop lines matching /^Godkjent\\s*\\/\\s*(ikke|Ikke)\\s+godkjent\\.?$/i from the coursework_requirements field.",
-      "confidence": "high"
-    },
-    {
-      "section": "assessment",
+      "target": "teaching_methods",
       "error_type": "missing_section",
-      "severity": "high",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "nla_4MGL1PE201-1_2025_autumn_1",
-        "nla_MGLSPES101-1_2025_autumn_2",
-        "nla_MGL5KH201A-1_2025_autumn_1"
-      ],
-      "evidence": "Ground truth for course 4: \"Individuell muntlig eksamen. Eksamen teller 100 % av karakteren.\" and \"Eksamen vurderes med gradert karakter fra A - F, der F er ikke bestått.\" — both absent from extracted assessment.",
-      "description": "As a consequence of the wrong-field mapping described in the first finding, the actual assessment content (\"Avsluttende vurdering\" text, format, weighting, and grading scale) is entirely missing from the assessment section for all 20 suspects. This is the most critical extraction failure at NLA: downstream users of the assessment section will see only an exam-language label or nothing useful. This finding is separated from the field_or_language_junk finding to record the missing-content dimension.",
-      "root_cause_hypothesis": "Same root cause as the field_or_language_junk finding: wrong JSON key mapped to assessment.",
-      "suggested_fix": "Same fix as the field_or_language_junk finding: remap to the \"Avsluttende vurdering\" JSON key.",
-      "confidence": "high"
-    },
-    {
-      "section": "course_content",
-      "error_type": "truncated",
-      "severity": "low",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "nla_4MGL1PE101-1_2025_autumn_1",
-        "nla_4MGL5PE103-1_2025_autumn_1",
-        "nla_MGL1PE102-1_2025_autumn_1"
-      ],
-      "evidence": "course_content in course 1 is 2024 chars with \"[truncated 524 chars]\"; full plan has a longer 'Innhold' + 'Innledning' section. Course 8 also shows truncation at ~2107 chars.",
-      "description": "Several course_content extractions are shown as truncated in the packet (the \"…[truncated N chars]\" annotation). While the packet display truncates for readability, inspection of char counts relative to the ground-truth sections indicates that the extractor's output is itself capped (2024 chars appears repeatedly as a ceiling). The actual Innhold sections in NLA courses can be longer. This is a moderate issue: the most important content is preserved, but the tail of longer sections is lost.",
-      "root_cause_hypothesis": "The NLA JSON extraction likely applies a character limit or field-size cap when populating course_content. Alternatively, the NLA JSON API itself truncates the field.",
-      "suggested_fix": "Check whether the NLA JSON API returns the full text of the Innhold field. If so, remove any artificial character cap in the extractor. If the API itself truncates, document this limitation and consider fetching the HTML fallback for long sections.",
-      "confidence": "medium"
-    },
-    {
-      "section": "learning_outcomes",
-      "error_type": "truncated",
-      "severity": "low",
-      "prevalence": "occasional",
-      "example_course_ids": [
-        "nla_4MGL5PE103-1_2025_autumn_1",
-        "nla_MGL5PE103-1_2025_autumn_1",
-        "nla_MGL5KH201A-1_2025_autumn_1"
-      ],
-      "evidence": "learning_outcomes for course 3 shows \"[truncated 71 chars]\"; course 8 also truncated. The last GENERELL KOMPETANSE item is cut off mid-sentence: \"kan anvende kunnskap om barn og unge i vanskelig\".",
-      "description": "Some learning_outcomes sections are truncated mid-item, cutting off the last one or two outcome statements. The truncation is minor in character count (71–83 chars) but causes an incomplete outcome statement to be emitted. Per the codebook, each item must be complete.",
-      "root_cause_hypothesis": "Same character cap as course_content, or the JSON API truncates the Læringsutbytte field.",
-      "suggested_fix": "Same as course_content truncation fix. Also add validation to detect mid-sentence truncation (no final period/punctuation at end of last item).",
-      "confidence": "medium"
-    },
-    {
-      "section": "assessment",
-      "error_type": "empty_placeholder",
       "severity": "medium",
       "prevalence": "occasional",
-      "example_course_ids": [
-        "nla_MGL1NO102-1_2025_spring_1",
-        "nla_4MGL5FOU201-1_2025_spring_1",
-        "nla_MGLSPES101-1_2025_autumn_2"
-      ],
-      "evidence": "assessment for courses 21, 22, 23 = \"Norsk.\" (6 chars) or \"Norsk\" (5 chars) — flagged as 'empty' by deterministic checks.",
-      "description": "Three random-control courses (21, 22, 23) have assessment rows containing only the bare exam-language word \"Norsk.\" or \"Norsk\" — not even the fuller \"Norsk. Andre språk etter søknad.\" seen in suspect courses. This is an even more degenerate instance of the wrong-field mapping: some courses have only a single word in the Eksamensspråk field, which then becomes the entire assessment value.",
-      "root_cause_hypothesis": "Same root cause as the main assessment finding; these courses have a shorter or differently formatted Eksamensspråk value.",
-      "suggested_fix": "Same fix as the main assessment finding. Additionally, add a sanity check: if the assessment field value is ≤ 20 chars or matches a language name, flag it as an extraction error rather than emitting it.",
+      "example_course_ids": ["nla_MGL1NO201-1_2025_autumn_1", "nla_4MGL1NO201-1_2025_autumn_1"],
+      "evidence": "Forelesingar, seminar med aktiv studentdeltaking, gruppeseminar, barneskolepraksis og sjølvstudium.",
+      "description": "The nynorsk plans have a 'Arbeids- og undervisingsformer' section with real content, but no teaching_methods row is emitted; the text is lost entirely (it is not in course_content either).",
+      "root_cause_hypothesis": "The heading pattern in R/section_heading_map.R (or the NLA JSON field mapping) matches 'undervisningsformer' but not the nynorsk spelling 'undervisingsformer' (missing 'n').",
+      "suggested_fix": "Make the teaching-methods heading pattern tolerant: 'arbeids-? og undervis(n)?ingsformer' (optionally also 'undervisning'), mapped to teaching_methods in R/section_heading_map.R.",
       "confidence": "high"
     },
     {
-      "section": "cross_section",
-      "error_type": "other",
+      "target": "reading_list",
+      "error_type": "boilerplate_only",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": ["nla_4MGL5MA103-1_2025_spring_1", "nla_MGL1NO201-1_2025_autumn_1"],
+      "evidence": "Litteratur og faglige ressurser finner du her.",
+      "description": "reading_list contains only the generic link label ('Digital litteraturliste'), with no actual literature; the link target is not captured. This is identical text in nearly every course and carries no content. The pre-pass 'boilerplate' flag is a real problem, not a false alarm. Course nla_MGL1NO301... style duplicates also appear (the line repeated twice) in nla_4MGL1NO301-1_2025_autumn_1.",
+      "root_cause_hypothesis": "The NLA plan renders the literature list as an external hyperlink; extraction keeps only the anchor text.",
+      "suggested_fix": "Either capture the href of the 'her' link into reading_list, or drop the row in .clean_sections() when the text matches '^Litteratur og faglige ressurser finner du her\\.?$' so it is not emitted as content.",
+      "confidence": "high"
+    },
+    {
+      "target": "prerequisites",
+      "error_type": "empty_placeholder",
       "severity": "low",
-      "prevalence": "occasional",
-      "example_course_ids": [
-        "nla_MGL5KH201A-1_2025_autumn_1",
-        "nla_MGL5SA301-1_2025_spring_1",
-        "nla_MGL5MAT-M-1_2025_spring_1"
-      ],
-      "evidence": "Course 26 (KH201A) and courses 25/27 (master thesis courses) have no reading_list row at all in the extractor output, while all PE-series and most other courses emit the boilerplate link.",
-      "description": "Inconsistent handling of the reading_list across course types: PE-series courses emit the boilerplate hyperlink text, while arts and master thesis courses emit no reading_list row. Both are problematic per the codebook (one is boilerplate, the other is a missing section when a reading list may exist), but the inconsistency also suggests the JSON key structure differs by course type at NLA. This is a lower-priority secondary observation given both outcomes are effectively empty of content.",
-      "root_cause_hypothesis": "Different course types in the NLA JSON may use different key names or structures for reading lists; the extractor handles some variants but not others.",
-      "suggested_fix": "Investigate the NLA JSON key names across course types for reading-list fields. Standardize handling: either always emit null/empty when the key is absent/boilerplate, or always attempt to include actual reading-list content if available.",
-      "confidence": "low"
+      "prevalence": "widespread",
+      "example_course_ids": ["nla_4MGL5MA103-1_2025_spring_1", "nla_4MGL5KRLE101-1_2025_autumn_1"],
+      "evidence": "Se programplan",
+      "description": "prerequisites is a pure cross-reference placeholder ('Se programplan') in most suspects; the pre-pass 'empty' flag is correct in that there is no real prerequisite content, though extraction faithfully mirrors the source.",
+      "root_cause_hypothesis": "Source plans contain only a pointer to the program plan under 'Forkunnskapskrav'.",
+      "suggested_fix": "Treat prerequisites matching '^Se programplan\\.?$' as empty and do not emit a row in .clean_sections().",
+      "confidence": "medium"
+    },
+    {
+      "target": "assessment",
+      "error_type": "formatting_noise",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": ["nla_MGL1NO102-1_2025_autumn_1", "nla_4MGL5KRLE101-1_2025_autumn_1"],
+      "evidence": "Bokmål\n\nIndividuell muntlig eksamen med forberedelsestid.",
+      "description": "A stray language label ('Bokmål') from a bilingual text block is captured at the start of assessment (and of course_content in KRLE courses), polluting otherwise correct text.",
+      "root_cause_hypothesis": "Source HTML has language-version labels inside the sections; no cleanup of standalone 'Bokmål'/'Nynorsk' lines.",
+      "suggested_fix": "In .clean_sections() remove lines consisting solely of 'Bokmål' or 'Nynorsk'.",
+      "confidence": "medium"
     }
   ]
 }

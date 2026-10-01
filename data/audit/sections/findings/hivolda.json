@@ -1,168 +1,94 @@
 {
-  "institution_short": "hivolda",
-  "n_courses_reviewed": 28,
+  "check": "sections",
+  "institution": "hivolda",
+  "model": "sonnet",
+  "n_courses_reviewed": 23,
   "n_suspects_reviewed": 20,
-  "overall_assessment": "The hivolda text-splitting extractor has severe, institution-wide labeling errors. The assessment section is universally captured as mandatory attendance boilerplate rather than the graded exam; the actual graded exam ends up misrouted into reading_list. course_content is missing from most courses. Prerequisites regularly absorb the entire Om emnet paragraph. The reading_list position at end-of-document causes it to capture the flattened Vurderingsform table and administrative stamps in every single course.",
+  "overall_assessment": "Section extraction is poor for hivolda. The plan's fixed boilerplate blocks (metadata header, Sensorordning, Evaluering, Maksimumstal, Emneansvarleg, Vurderingsform table, Godkjent av) are swallowed by neighbouring sections, and the 'Generell kompetanse' learning-outcome group is regularly split off into the wrong section.",
   "findings": [
     {
-      "section": "assessment",
-      "error_type": "boilerplate_only",
-      "severity": "high",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "hivolda_MGL1-7MA1A-1_2017_autumn_2",
-        "hivolda_MGL1-7MA1A2-1_2019_autumn_2",
-        "hivolda_MGL1-7MA1B2-1_2021_autumn_1"
-      ],
-      "evidence": "Frammøtekrav: Det er krav til obligatorisk frammøte til dei timeplanfesta aktivitetane.",
-      "description": "The assessment section captures only the mandatory-attendance sentence from the 'Vilkår for å framstille seg til eksamen' block. Per the codebook, mandatory attendance is coursework_requirements, not assessment. The actual graded exam (Vurderingsform: Skriftleg eksamen / Munnleg eksamen / Heimeeksamen, with duration, grading scale, and weighting) is never captured here; it ends up misrouted into reading_list.",
-      "root_cause_hypothesis": "The text-splitter maps 'Vilkår for å framstille seg til eksamen' to assessment. The heading fires on the attendance sub-sentence, which is the very first item. The remainder of that block (actual arbeidskrav) then spills into coursework_requirements. The Vurderingsform table is at the very end of the page and is not covered by any heading rule, so it falls through to reading_list.",
-      "suggested_fix": "Do not map 'Vilkår for å framstille seg til eksamen' to assessment. Map 'Frammøtekrav' lines to coursework_requirements and 'Arbeidskrav' lines also to coursework_requirements. Add a rule to capture the trailing 'Vurderingsform ...' table as assessment.",
-      "confidence": "high"
-    },
-    {
-      "section": "reading_list",
+      "target": "reading_list",
       "error_type": "wrong_content",
       "severity": "high",
       "prevalence": "widespread",
-      "example_course_ids": [
-        "hivolda_MGL1-7SP1-1_2025_spring_1",
-        "hivolda_MGL1-7MA1A2-1_2020_autumn_1",
-        "hivolda_MGL1-7MA1B2-1_2022_autumn_1"
-      ],
-      "evidence": "Emnet inngår i følgande studieprogram\nGrunnskulelærarutdanning, trinn 1-7 - master (5 år)\nVurderingsform Gruppering Varighet Karakterskala Andel ... A-F, der A er best og E er siste ståkarakter ...\nGodkjent av: \nArne Myklebust",
-      "description": "The reading_list section is populated entirely with: (1) a programme-membership line ('Emnet inngår i følgande studieprogram'), (2) the flattened Vurderingsform table containing exam type, grouping, duration, grading scale, and weights — which is graded assessment per the codebook — and (3) an administrative approval stamp ('Godkjent av'). None of this is a reading list. The actual reading list ('Pensumliste for emnet finn du her') is either swallowed into coursework_requirements or nowhere. This means every single hivolda reading_list row contains wrong content.",
-      "root_cause_hypothesis": "The document ends with programme-membership, Vurderingsform table, and approval stamp. The splitter assigns everything after 'Pensum' or after the last known heading to reading_list. Since these tail elements appear after 'Pensum', they get labeled reading_list rather than being dropped as administrative boilerplate and assessment.",
-      "suggested_fix": "Add a post-processing rule to drop 'Emnet inngår i følgande studieprogram' and 'Godkjent av' lines from all sections. Map the Vurderingsform table block (starting with 'Vurderingsform Gruppering Varighet') to assessment rather than reading_list. The actual reading list is always a placeholder link ('Pensumliste for emnet finn du her') and should be returned as a single string or marked absent.",
+      "example_course_ids": ["hivolda_MGL5-10NO2A-1_2024_spring_1", "hivolda_MGL5-10NO2A-1_2025_spring_1", "hivolda_MGL5-10NO2A-1_2019_autumn_2"],
+      "evidence": "Pensum:\nPensumliste for emnet finn du her\nForkunnskapskrav, emneliste\nMGL5-10NO1A Norsk 1A: Norsk på mellomsteget",
+      "description": "The 'Pensum:' label in the metadata header is taken as a reading_list heading. The whole header (Emnekode, Varighet, Studiepoeng, language), the prerequisite course list and the 'Om emnet' course description are filed as reading_list. The reading list itself is only a link text. Prerequisites and course_content are not extracted as sections at all.",
+      "root_cause_hypothesis": "R/section_heading_map.R maps 'Pensum' to reading_list and matches the header block; 'Forkunnskapskrav, emneliste' and 'Om emnet' are not recognised or are appended to the previous section (no section boundary).",
+      "suggested_fix": "Add patterns mapping 'Om emnet' to course_content and 'Forkunnskapskrav...' to prerequisites in R/section_heading_map.R. Treat 'Pensum:' in the header as a metadata line (skip the header block up to 'Om emnet') with a hivolda-specific pre-clean in .clean_sections().",
       "confidence": "high"
     },
     {
-      "section": "coursework_requirements",
-      "error_type": "merged_sections",
-      "severity": "medium",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "hivolda_MGL1-7MA1A-1_2017_autumn_2",
-        "hivolda_MGL1-7NO3C-1_2025_spring_1",
-        "hivolda_MGL5-10SP2-1_2025_spring_1"
-      ],
-      "evidence": "Sensorordning\nSensur vert gjennomført i samsvar med Forskrift om opptak, studium og eksamen ved Høgskulen i Volda, § 5-11.\nEvaluering og kvalitetssikring\nEmnet vert evaluert i samsvar med HVO sitt kvalitetssystem.\nMaksimumstal: \n60\nEmneansvarleg: \nOdd Helge Mjellem Tonheim\nPensum",
-      "description": "The coursework_requirements section correctly captures the arbeidskrav items but then absorbs all trailing administrative boilerplate: 'Sensorordning' (grading procedure), 'Evaluering og kvalitetssikring' (quality assurance), 'Maksimumstal' (capacity), 'Emneansvarleg' (course responsible), and the 'Pensum' heading. None of these are coursework requirements per the codebook. The 'Pensum' word ending the section is the heading that triggered reading_list to start.",
-      "root_cause_hypothesis": "The section boundary between coursework_requirements and reading_list is placed at the 'Pensum' heading. Everything between the end of arbeidskrav and the 'Pensum' heading has no assigned section rule, so it leaks into coursework_requirements as the open container.",
-      "suggested_fix": "Add heading rules for 'Sensorordning', 'Evaluering og kvalitetssikring', 'Maksimumstal', and 'Emneansvarleg' to route them to a discard/boilerplate bucket. This will stop them from polluting coursework_requirements.",
-      "confidence": "high"
-    },
-    {
-      "section": "learning_outcomes",
+      "target": "cross_section",
       "error_type": "merged_sections",
       "severity": "high",
       "prevalence": "widespread",
-      "example_course_ids": [
-        "hivolda_MGL1-7MA1A2-1_2019_autumn_2",
-        "hivolda_MGL1-7MA2B-1_2020_spring_2",
-        "hivolda_MGL5-10MA1B2-1_2025_autumn_1"
-      ],
-      "evidence": "Generell kompetanse\nStudenten\nkan bruke matematikkdidaktiske kunnskapar på ein sjølvstendig måte\nPraktisk organisering og arbeidsmåtar\nEmnet krev engasjement og initiativ frå studentane for å fremje eiga og medstudentar si læring. Studiet legg opp til varierte arbeidsformer...",
-      "description": "The learning_outcomes section absorbs the teaching_methods content that follows under the heading 'Praktisk organisering og arbeidsmåtar'. This heading describes how the course is taught (lectures, seminars, group work, etc.) — clearly teaching_methods per the codebook — but the splitter either does not recognise this heading or begins the next section too late. As a result teaching_methods is never emitted as a separate section and its content is silently merged into learning_outcomes.",
-      "root_cause_hypothesis": "The heading 'Praktisk organisering og arbeidsmåtar' is either not in the heading map or is mapped to learning_outcomes. The section boundary for learning_outcomes should close at this heading and a new teaching_methods block should open.",
-      "suggested_fix": "Add 'Praktisk organisering og arbeidsmåtar' and 'Arbeids- og undervisningsformer' as heading triggers that close learning_outcomes and open teaching_methods. Verify the heading map covers Nynorsk variants of teaching-method headings.",
+      "example_course_ids": ["hivolda_MGL5-10NO2A-1_2024_spring_1", "hivolda_MGL1-7KRLE-1_2020_spring_1", "hivolda_MGL5-10EN3C-1_2022_spring_1"],
+      "evidence": "Generell kompetanse\nStudenten\n````",
+      "description": "Sub-headings of learning outcomes (Kunnskapar / Ferdigheiter / Generell kompetanse) act as boundaries in some courses: learning_outcomes ends at the 'Generell kompetanse' heading with the list empty. The Generell kompetanse bullets and the following 'Praktisk organisering og arbeidsmåtar' text then land in assessment (or course_content), and teaching_methods is merged into it. Learning outcomes are cut short, and the general-competence items are filed as assessment.",
+      "root_cause_hypothesis": "'Generell kompetanse' (or a similar heading) is matched to an unrelated section or the strategy splits on it. 'Praktisk organisering og arbeidsmåtar' is not mapped to teaching_methods, so it is appended to the previous section.",
+      "suggested_fix": "In R/section_heading_map.R, map 'Kunnskap(ar)', 'Ferdigheit(er)' and 'Generell kompetanse' to learning_outcomes (sub-headings, never boundaries), and map 'Praktisk organisering og arbeidsmåtar' to teaching_methods. Check first-match ordering.",
       "confidence": "high"
     },
     {
-      "section": "course_content",
+      "target": "teaching_methods",
+      "error_type": "missing_section",
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": ["hivolda_MGL5-10NO2A-1_2024_spring_1", "hivolda_MGL1-7SP1-1_2025_spring_1", "hivolda_MGL5-10SP1-1_2025_spring_1"],
+      "evidence": "Praktisk organisering og arbeidsmåtar\nUndervisingsformene vekslar mellom plenumsforelesing",
+      "description": "'Praktisk organisering og arbeidsmåtar' is present in the plan but no teaching_methods row is emitted in most courses. The text sits inside assessment (course 1) or course_content (courses 3, 4) instead. Random controls 21-23 have teaching_methods correctly, so it is a heading-pattern problem that depends on plan variant.",
+      "root_cause_hypothesis": "The heading text 'Praktisk organisering og arbeidsmåtar' does not match any teaching_methods pattern in R/section_heading_map.R, while 'Undervisingsformer'-style headings in other plans do.",
+      "suggested_fix": "Add 'Praktisk organisering( og arbeidsmåtar)?' to the teaching_methods patterns in R/section_heading_map.R.",
+      "confidence": "high"
+    },
+    {
+      "target": "coursework_requirements",
+      "error_type": "merged_sections",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": ["hivolda_MGL5-10NO2A-1_2024_spring_1", "hivolda_MGL1-7SP1-1_2025_spring_1", "hivolda_MGL5-10EN3C-1_2022_spring_1"],
+      "evidence": "Sensorordning\nSensur vert gjennomført i samsvar med Forskrift om opptak, studium og eksamen ved Høgskulen i Volda, § 5-11 \nEvaluering og kvalitetssikring",
+      "description": "coursework_requirements (from 'Vilkår for å framstille seg til eksamen') runs to the end of the page. It includes Sensorordning, Evaluering og kvalitetssikring, Minimumstal/Maksimumstal, Emneansvarleg (a person name, PII), the 'Emnet inngår i følgande studieprogram' line, the Vurderingsform exam table and 'Godkjent av' with a name. The real assessment (exam form) is therefore never an assessment section, and boilerplate and personal data pollute the section.",
+      "root_cause_hypothesis": "'Sensorordning', 'Evaluering og kvalitetssikring' and 'Vurderingsform' are not recognised as headings or as section-ending or ignorable blocks, so text after the last mapped heading is appended to it.",
+      "suggested_fix": "In R/extract_sections.R (.clean_sections) or the heading map, treat 'Sensorordning', 'Evaluering og kvalitetssikring', 'Minimumstal', 'Maksimumstal', 'Emneansvarleg', 'Emnet inngår i følgande studieprogram' and 'Godkjent av' as terminators or drop them. Map the 'Vurderingsform Gruppering Varighet ...' table to assessment.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
       "error_type": "missing_section",
       "severity": "high",
       "prevalence": "widespread",
-      "example_course_ids": [
-        "hivolda_MGL1-7MA1A2-1_2019_autumn_2",
-        "hivolda_MGL5-10PE4-1_2021_autumn_2",
-        "hivolda_MGL5-10MA1B2-1_2025_autumn_1"
-      ],
-      "evidence": "Om emnet\n\nDette emnet er fyrste del av Matematikk 1, den obligatoriske matematikkdelen av grunnskulelærarutdanninga for 1-7. [full paragraph present in ground truth, absent from extractor output]",
-      "description": "The 'Om emnet' section — the primary course content / subject matter description per the codebook — is not extracted as course_content in the majority of courses. In courses 4–20 and most random courses, no course_content row is present at all in the extractor output. The 'Om emnet' paragraph is either silently dropped or (in course 3) mislabeled as reading_list because a 'Pensum:' header appears before 'Om emnet' in that particular course layout.",
-      "root_cause_hypothesis": "The heading 'Om emnet' is either not in the heading map or is mapped to a section that does not produce a row in sections_raw. When 'Pensum:' metadata appears before 'Om emnet' (course 3 layout), the splitter opens reading_list early and swallows the Om emnet paragraph.",
-      "suggested_fix": "Add 'Om emnet' as a heading trigger mapped to course_content. Handle the early-appearing 'Pensum:' metadata header by treating it as a key-value field to discard rather than a section-opening heading.",
+      "example_course_ids": ["hivolda_MGL5-10NO2A-1_2024_spring_1", "hivolda_MGL1-7SP1-1_2025_spring_1", "hivolda_MGL1-7KRLE-1_2020_spring_1"],
+      "evidence": "Vurderingsform Gruppering Varighet Karakterskala Andel Kommentar Hjelpemidler Omfang Heimeeksamen Individuell 5 Dagar",
+      "description": "The exam description (Vurderingsform table: form, duration, grade scale, aids) is the actual assessment content, but it is emitted inside coursework_requirements (or reading_list) instead. Many courses have no assessment row at all. In other courses the assessment row holds non-assessment text (general competence outcomes, the metadata header).",
+      "root_cause_hypothesis": "The Vurderingsform table has no heading and follows the studieprogram line, so it inherits the previous section.",
+      "suggested_fix": "Add a hivolda rule starting a new assessment section at a line beginning with 'Vurderingsform Gruppering'. Also split out the arbeidskrav block as coursework_requirements only.",
       "confidence": "high"
     },
     {
-      "section": "prerequisites",
-      "error_type": "merged_sections",
-      "severity": "medium",
-      "prevalence": "common",
-      "example_course_ids": [
-        "hivolda_MGL1-7MA1B-1_2018_autumn_2",
-        "hivolda_MGL5-10EN1A-1_2018_autumn_1",
-        "hivolda_MGL1-7MA1A2-1_2019_autumn_2"
-      ],
-      "evidence": "Ingen\nOm emnet\nDette emnet er andre del av matematikk 1, den obligatoriske matematikkdelen av grunnskulelærarutdanninga for 1-7. Gjennom emnet får studentane eit didaktisk og fagleg grunnlag...",
-      "description": "When 'Krav til forkunnskapar' / 'Forkunnskapskrav, emneliste' is followed immediately by 'Om emnet', the prerequisites section absorbs the entire Om emnet course content paragraph (and in some cases the complete course content block). The only genuine prerequisites content is 'Ingen' (none) or a course code list. This is both wrong_content for prerequisites (it contains course content) and causes course_content to be missing.",
-      "root_cause_hypothesis": "The splitter opens prerequisites at the forkunnskapskrav heading and does not close it at the 'Om emnet' heading. Since 'Om emnet' is not yet in the heading map (see finding on missing course_content), the prerequisites section stays open until the next recognised heading.",
-      "suggested_fix": "Register 'Om emnet' as a heading that closes prerequisites and opens course_content. This single fix addresses both this finding and the missing course_content finding.",
-      "confidence": "high"
-    },
-    {
-      "section": "assessment",
+      "target": "assessment",
       "error_type": "wrong_content",
-      "severity": "high",
-      "prevalence": "common",
-      "example_course_ids": [
-        "hivolda_MGL1-7SP1-1_2025_spring_1",
-        "hivolda_MGL5-10EN1A-1_2018_autumn_1",
-        "hivolda_MGL1-7PE4-1_2021_autumn_2"
-      ],
-      "evidence": "Frammøtekrav: Obligatorisk oppmøte til all timeplanfesta aktivitet...\n1. Krav om 80 prosent frammøte/deltaking til obligatorisk undervisning\n2. Gjennomføre eit feltarbeid i skulen og presentere resultat frå feltarbeidet for medstudentar",
-      "description": "In courses where the 'Vilkår for å framstille seg til eksamen' section contains a numbered list of arbeidskrav (attendance, fieldwork, seminar participation), these are all filed under assessment rather than coursework_requirements. These are mandatory pass/approve gates to sit the exam — not graded components — and must go into coursework_requirements per the codebook. The pattern occurs consistently across the spesialpedagogikk and pedagogikk courses (1, 2, 21, 24) where the arbeidskrav list is longer and more varied than in the matematikk courses.",
-      "root_cause_hypothesis": "The splitter maps 'Vilkår for å framstille seg til eksamen' to assessment. When the arbeidskrav items are numbered list items (1, 2, 3) without a separate 'Arbeidskrav:' sub-heading, they all stay in the assessment bucket rather than being re-routed to coursework_requirements.",
-      "suggested_fix": "Map 'Vilkår for å framstille seg til eksamen' directly to coursework_requirements (not assessment). A sub-rule can optionally split on 'Frammøtekrav' vs. 'Arbeidskrav' sub-headings within that block. Never route this heading to assessment.",
-      "confidence": "high"
-    },
-    {
-      "section": "learning_outcomes",
-      "error_type": "truncated",
       "severity": "medium",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "hivolda_MGL1-7MA1A2-1_2021_autumn_1",
-        "hivolda_MGL1-7MA1B2-1_2021_autumn_1",
-        "hivolda_MGL5-10MA1B2-1_2025_autumn_1"
-      ],
-      "evidence": "har innsikt i matematikkfaget si rolle k\n…[truncated 642 chars]",
-      "description": "The learning_outcomes section is cut off mid-sentence in many courses (showing 'truncated N chars' in the packet). This means the Generell kompetanse bullet points, the teaching_methods paragraph, and whatever else was merged in are all silently dropped. The truncation appears at a fixed character limit applied at display/export time or in the extractor itself, but even the raw text that should be there (e.g. 'Praktisk organisering og arbeidsmåtar' content) is missing from the emitted row. This affects the correctness of the merged content and compounds the merged_sections issue.",
-      "root_cause_hypothesis": "A character cap is being applied to the stored sections_raw text for learning_outcomes. The cap appears to be around 2100–2200 characters for this institution's typical outcome block.",
-      "suggested_fix": "Remove or raise the character cap on sections_raw text storage. After fixing the merged_sections issue (teaching_methods split), the learning_outcomes section will be shorter and within any reasonable limit.",
+      "prevalence": "common",
+      "example_course_ids": ["hivolda_MGL5-10EN3C-1_2021_spring_2", "hivolda_MGL5-10EN1A-1_2025_autumn_1"],
+      "evidence": "e. eit refleksjonsnotat. Notatet skal knytast til studentens observasjonar av lærarrolla frå eigen praksis og innehalde refleksjonar over desse",
+      "description": "Arbeidskrav (items e, f) are filed under assessment while items a-c are in coursework_requirements, so one list is split. The assessment row also carries Sensorordning, Evaluering, Maksimumstal, Emneansvarleg and the Vurderingsform table. In EN3C (courses 6, 11-14) the assessment row is instead the metadata header plus 'Om emnet', holding no assessment content.",
+      "root_cause_hypothesis": "Numbered/lettered list items are split across headings, and the header/'Om emnet' block is mapped to assessment for EN3C.",
+      "suggested_fix": "Keep the whole 'Vilkår for å framstille seg til eksamen' block together as coursework_requirements up to 'Sensorordning'. Fix the EN3C header mapping as in the reading_list finding.",
       "confidence": "medium"
     },
     {
-      "section": "reading_list",
-      "error_type": "missing_section",
-      "severity": "low",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "hivolda_MGL1-7MA1A-1_2017_autumn_2",
-        "hivolda_MGL1-7MA1A2-1_2019_autumn_2",
-        "hivolda_MGL1-7KR1-1_2023_spring_1"
-      ],
-      "evidence": "Pensum\n\nPensumliste for emnet finn du her",
-      "description": "The actual reading list for every hivolda course is a placeholder: 'Pensumliste for emnet finn du her' (reading list available via link). This minimal content is never captured — instead, the reading_list section is always filled with the Vurderingsform assessment table (see the wrong_content finding). Even when fixed, the true reading list will only be a link/placeholder, which may be returned as a single string or treated as absent.",
-      "root_cause_hypothesis": "The 'Pensum' heading triggers reading_list, but the very next thing in the document is the placeholder link followed immediately by 'Emnet inngår i følgande studieprogram' and then the Vurderingsform table. These tail elements override the placeholder in the stored text.",
-      "suggested_fix": "After fixing the wrong_content issue, strip 'Pensumliste for emnet finn du her' as a known boilerplate placeholder (or return it as-is as a single-string reading list). The Vurderingsform table and programme line should not appear in reading_list at all.",
-      "confidence": "high"
-    },
-    {
-      "section": "teaching_methods",
-      "error_type": "missing_section",
+      "target": "course_content",
+      "error_type": "wrong_content",
       "severity": "medium",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "hivolda_MGL1-7MA1A2-1_2019_autumn_2",
-        "hivolda_MGL1-7NO3C-1_2025_spring_1",
-        "hivolda_MGL5-10SP2-1_2025_spring_1"
-      ],
-      "evidence": "Praktisk organisering og arbeidsmåtar\nStudiet legg opp til varierte arbeidsformer, mellom anna sjølvstudium, individuell rettleiing, didaktisk refleksjon, utforsking, problemløysing og forelesingar. [content present in ground truth, absent as own section in extractor output]",
-      "description": "The teaching_methods section is never emitted as a standalone row for hivolda. The 'Praktisk organisering og arbeidsmåtar' heading and content is always absorbed into learning_outcomes (via the merged_sections issue) or silently dropped. This content describes how the course is taught — clearly teaching_methods per the codebook.",
-      "root_cause_hypothesis": "The heading 'Praktisk organisering og arbeidsmåtar' is absent from the heading map. Until that heading is added, teaching_methods will always be missing.",
-      "suggested_fix": "Add 'Praktisk organisering og arbeidsmåtar' to the heading map mapped to teaching_methods. This will simultaneously fix the learning_outcomes merged_sections issue.",
-      "confidence": "high"
+      "prevalence": "occasional",
+      "example_course_ids": ["hivolda_MGL5-10SA2B-1_2023_autumn_1", "hivolda_MGL5-10SA2B-1_2022_autumn_1"],
+      "evidence": "Forelesing/formilding: plenum (campus og ekskursjon)",
+      "description": "Teaching-format text is filed as course_content instead of teaching_methods. In the SA2B courses, the reading_list row holds arbeidskrav text, Sensorordning and the exam table instead of a reading list. In SP1 courses, course_content is the remainder of learning outcomes (from the knowledge bullets on) plus teaching methods, while learning_outcomes holds only the intro sentence.",
+      "root_cause_hypothesis": "Missing heading patterns in R/section_heading_map.R cause sections to be assigned to a neighbouring section or a wrong canonical section. The 'Kunnskapar' heading followed by a 'Studentane skal ha kunnskap om:' line is treated as course content.",
+      "suggested_fix": "Map 'Studentane skal ha/kunne...' and the 'Kunnskapar' sub-heading to learning_outcomes. Review the SA2B heading variants and map them to teaching_methods and coursework_requirements.",
+      "confidence": "medium"
     }
   ]
 }

@@ -1,196 +1,58 @@
 {
-  "institution_short": "nmbu",
-  "n_courses_reviewed": 18,
-  "n_suspects_reviewed": 10,
-  "overall_assessment": "NMBU extraction quality is poor across almost all sections. The h3-heading splitter consistently fails to cut at 'Dette lærer du', causing course_content to swallow the entire learning outcomes block in virtually every course; as a result learning_outcomes is absent from extractor output for ~15 of 18 courses. A secondary structural failure cascades downstream: the section assigned after 'Pensum' or 'Læringsaktiviteter' runs past its true boundary, pulling prerequisite, assessment, coursework, and administrative content into the wrong buckets. The assessment section is also systematically polluted with 'Obligatorisk aktivitet' and admin fields (Undervisningstider, Fortrinnsrett) that should be stripped.",
+  "check": "sections",
+  "institution": "nmbu",
+  "model": "sonnet",
+  "n_courses_reviewed": 10,
+  "n_suspects_reviewed": 2,
+  "overall_assessment": "Core sections (course_content, learning_outcomes, teaching_methods, reading_list, assessment body) are extracted cleanly and completely on NMBU, including full Kunnskap/Ferdigheter/Generell kompetanse groups. Two systematic defects: the 'Obligatorisk aktivitet' block is never extracted (no coursework_requirements rows), and prerequisites swallows the trailing metadata block (CSS junk, admission code, responsible person name) in most courses. The two pre-pass flags are false alarms.",
   "findings": [
     {
-      "section": "course_content",
-      "error_type": "merged_sections",
+      "target": "prerequisites",
+      "error_type": "formatting_noise",
       "severity": "high",
       "prevalence": "widespread",
-      "example_course_ids": [
-        "nmbu_MATH100-1_2025_autumn_1",
-        "nmbu_FYS100-1_2025_autumn_1",
-        "nmbu_PPRA301-1_2025_autumn_1"
-      ],
-      "evidence": "Kunnskap\nNår emnet er gjennomført, skal studenten ha lært grunnleggende begreper, metoder og teknikker knyttet opp mot emnets innhold.\nFerdigheter\nStudenten skal sitte igjen med regneferdigheter...",
-      "description": "The extractor does not recognise 'Dette lærer du' as a section boundary, so the course_content row absorbs all content from 'Om dette emnet' straight through the Kunnskap/Ferdigheter/Generell kompetanse learning-outcomes blocks. The codebook defines course_content as subject-matter topics only; learning outcomes (what the student will know/can do) must be separated into learning_outcomes.",
-      "root_cause_hypothesis": "The h3-heading map does not include 'Dette lærer du' (or its variants) as a heading that triggers a section cut, so the parser treats it as body text of the preceding 'Om dette emnet' section.",
-      "suggested_fix": "Add 'Dette lærer du', 'Læringsutbytte', and 'Læringsmål' to the heading-to-section map, mapping them to learning_outcomes. Cut course_content at this heading.",
+      "example_course_ids": ["nmbu_PPRA301-1_2025_autumn_1", "nmbu_MATH100-1_2025_spring_1", "nmbu_FYS100-1_2025_spring_1"],
+      "evidence": "Emnet forutsetter solid kompetanse i fag 1 og 2. Realfag Studieår: .css-b62m3t-container{position:relative;box-sizing:border-box;}",
+      "description": "The prerequisites section runs past 'Forutsatte forkunnskaper' into the page metadata block: Opptakskrav/admission code, 'Studieår:', React-select CSS rules, Studiepoeng, faculty, teaching place, language, frequency, workload and period text, and the course coordinator's full name ('Emneansvarlig' followed by a person name). Real prerequisite text is 50-300 chars but the section is ~2000-2300 chars. Seen in 6 of 10 packet courses (PPRA301, FYS100, M60-LUN, MATH100, PPXP100 and the like). Personal names are left in the section text.",
+      "root_cause_hypothesis": "Lines after the last recognised heading ('Forutsatte forkunnskaper' / 'Opptakskrav') such as 'Studieår:', CSS, 'Studiepoeng', 'Emneansvarlig' are not headings in R/section_heading_map.R, so they are appended to prerequisites through to the end of the document. The CSS comes from inline <style> text in the selected page area that is not removed in fulltext extraction.",
+      "suggested_fix": "In R/extract_sections.R (.clean_sections or an nmbu pre-step) cut the plan at the first line matching '^Studieår:' and delete lines matching '^\\.css-[A-Za-z0-9_-]+\\{' plus stray 'til 20\\d\\d' lines. Better: strip <style> nodes in the nmbu fulltext extraction (pre_fn in R/institution_config.R) so the CSS never reaches extracted_text. Treat 'Opptakskrav' as a known heading mapped to an ignored bucket.",
       "confidence": "high"
     },
     {
-      "section": "learning_outcomes",
+      "target": "prerequisites",
+      "error_type": "boilerplate_only",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": ["nmbu_PPXP100-1_2025_autumn_1"],
+      "evidence": "Realfag Studieår: .css-b62m3t-container{position:relative;box-sizing:border-box;}",
+      "description": "For PPXP100 the plan has no 'Forutsatte forkunnskaper' section at all; the prerequisites row consists only of the 'Opptakskrav: Realfag' admission line followed by CSS and metadata. A prerequisites row is emitted although there is no prerequisite content. For other courses (MATH100, FYS100, M60-LUN) the admission requirement is appended to the real prerequisites.",
+      "root_cause_hypothesis": "'Opptakskrav' is mapped to prerequisites in R/section_heading_map.R (or its text is appended to the preceding prerequisites section), so admission text and everything after it becomes prerequisites.",
+      "suggested_fix": "Do not map 'Opptakskrav' to prerequisites, and suppress the prerequisites row when nothing remains after removing metadata/CSS.",
+      "confidence": "medium"
+    },
+    {
+      "target": "coursework_requirements",
       "error_type": "missing_section",
       "severity": "high",
       "prevalence": "widespread",
-      "example_course_ids": [
-        "nmbu_MATH100-1_2025_autumn_1",
-        "nmbu_PPFD301-1_2025_autumn_1",
-        "nmbu_PPPE301-1_2025_autumn_1"
-      ],
-      "evidence": "No learning_outcomes row appears in extractor output for the majority of courses, despite rich Kunnskap/Ferdigheter/Generell kompetanse blocks in ground truth.",
-      "description": "Because 'Dette lærer du' is not recognised as a heading, the learning outcomes are absorbed into course_content (see above finding). The canonical learning_outcomes section is consequently absent from the extractor output for ~15 of 18 reviewed courses. This is the most impactful missing-section failure in the dataset.",
-      "root_cause_hypothesis": "Downstream consequence of the missing 'Dette lærer du' heading mapping described above.",
-      "suggested_fix": "Same fix as course_content merger: map 'Dette lærer du' to learning_outcomes and cut there. Then emit a learning_outcomes row containing everything up to the next recognised heading (e.g. 'Læringsaktiviteter').",
+      "example_course_ids": ["nmbu_PPFD201-1_2025_autumn_2", "nmbu_PPPE301-1_2025_spring_1", "nmbu_PPXP100-1_2025_autumn_1"],
+      "evidence": "Obligatorisk aktivitet 15 dager praksisopplæring (gruppe) Plan for praksis med egne mål (individuell)",
+      "description": "Every plan in the packet has an 'Obligatorisk aktivitet' heading with concrete approve/fail gates (practice days, plans, reports, 80% attendance, lab tasks, supervisor contract), yet no course has a coursework_requirements row. The content is dropped entirely; it is not misfiled into assessment either.",
+      "root_cause_hypothesis": "R/section_heading_map.R likely has no pattern for 'Obligatorisk aktivitet' (singular), so the heading maps to nothing and its text is discarded.",
+      "suggested_fix": "Add a pattern '^obligatoriske? aktivitet(er)?$' mapped to coursework_requirements in R/section_heading_map.R, and verify it stops at the next heading ('Undervisningstider', 'Merknader', 'Fortrinnsrett').",
       "confidence": "high"
     },
     {
-      "section": "prerequisites",
-      "error_type": "merged_sections",
-      "severity": "high",
-      "prevalence": "common",
-      "example_course_ids": [
-        "nmbu_PPRA301-1_2025_autumn_1",
-        "nmbu_PPRA301-1_2025_spring_1"
-      ],
-      "evidence": "Emnet forutsetter solid kompetanse i fag 1 og 2.\nVurderingsordning, hjelpemiddel og eksamen\nPraksis. Karakteruttrykk: Bestått/ikke bestått\nPraksislærerne/praksisskolen har hovedansvaret...",
-      "description": "The prerequisites row starts correctly with the actual prerequisite text but then continues uncut through the entire 'Vurderingsordning, hjelpemiddel og eksamen' block, KI-policy, sensorordning, and 'Obligatorisk aktivitet'. All of that belongs in assessment and coursework_requirements, not prerequisites. The codebook requires prerequisites to contain subject-matter entry requirements only.",
-      "root_cause_hypothesis": "The heading 'Vurderingsordning, hjelpemiddel og eksamen' (or a variant) is not recognised as a cut point when it follows 'Forutsatte forkunnskaper', so the parser keeps appending content to the prerequisites bucket.",
-      "suggested_fix": "Ensure 'Vurderingsordning, hjelpemiddel og eksamen' and all its variants are always mapped as a hard section boundary that terminates prerequisites and starts assessment.",
-      "confidence": "high"
-    },
-    {
-      "section": "assessment",
-      "error_type": "merged_sections",
-      "severity": "high",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "nmbu_PPXP100-1_2025_autumn_1",
-        "nmbu_PPPE301-1_2025_autumn_1",
-        "nmbu_PPFD301-1_2025_autumn_1"
-      ],
-      "evidence": "Obligatorisk aktivitet\n15 dager praksisopplæring\nMinimum 80% deltakelse i undervisning på campus\nPlan for praksis i august\n...\nUndervisningstider\nEmnet består av tre uker teorisamlinger...",
-      "description": "The assessment row in most courses includes the 'Obligatorisk aktivitet' block (which belongs in coursework_requirements per the codebook) and then continues into 'Undervisningstider', 'Fortrinnsrett', and 'Opptakskrav' admin fields that are pure boilerplate. The codebook specifies assessment must contain only graded final assessment design; arbeidskrav/obligatoriske aktiviteter must be separated into coursework_requirements.",
-      "root_cause_hypothesis": "'Obligatorisk aktivitet', 'Undervisningstider', 'Fortrinnsrett', and 'Opptakskrav' are not treated as cut-points after the assessment heading, so the parser keeps appending them to the assessment bucket.",
-      "suggested_fix": "Map 'Obligatorisk aktivitet' as a boundary that terminates assessment and starts coursework_requirements. Map 'Undervisningstider', 'Fortrinnsrett', 'Opptakskrav', and 'Merknader' as boundaries that terminate all content extraction (or map to a drop/admin bucket).",
-      "confidence": "high"
-    },
-    {
-      "section": "assessment",
-      "error_type": "truncated",
-      "severity": "medium",
-      "prevalence": "common",
-      "example_course_ids": [
-        "nmbu_MATH100-1_2025_autumn_1",
-        "nmbu_PPXP100-1_2025_autumn_1",
-        "nmbu_PPXP100-1_2025_spring_1"
-      ],
-      "evidence": "Assessment row starts at 'Hjelpemiddelkode A2: ingen utdelt kalkulator...' (MATH100) or 'Karakteruttrykk: Bestått/ikke bestått' (PPXP100), missing the leading exam-type sentence.",
-      "description": "The actual exam description sentence that opens the 'Vurderingsordning' block (e.g. '3,5 timers skriftlig eksamen i Wiseflow' for MATH100; 'Emnet består av to deler som vurderes hver for seg: Praksisopplæringen...' for PPXP100) is not captured in the assessment row. The extractor begins after the first sentence. The codebook requires the full assessment design to be captured.",
-      "root_cause_hypothesis": "The splitter may be consuming the heading line itself plus one sentence into a heading node rather than body text, or the boundary-cut is placed one sentence late.",
-      "suggested_fix": "Verify that the full text of the section body (starting from the first content sentence immediately after the heading) is included in the emitted row, not just from the second sentence onward.",
-      "confidence": "high"
-    },
-    {
-      "section": "coursework_requirements",
-      "error_type": "merged_sections",
-      "severity": "medium",
-      "prevalence": "common",
-      "example_course_ids": [
-        "nmbu_MATH100-1_2025_autumn_1",
-        "nmbu_PPFD301-1_2025_autumn_1",
-        "nmbu_PPFD301-1_2025_spring_1"
-      ],
-      "evidence": "Undervisningstider\n4 timer forelesning og opptil 8 timer regneverksted.\nOverlapp\n5 studiepoeng overlapp med ECN102\nOpptakskrav\nMATRS - Generell studiekompetanse + R1 (eller S1)",
-      "description": "The coursework_requirements row includes administrative content from 'Undervisningstider', 'Overlapp', 'Opptakskrav', and 'Fortrinnsrett' that follows the actual obligatory-work text. Per the codebook, coursework_requirements contains only pass/approve gating requirements, not scheduling or admission metadata.",
-      "root_cause_hypothesis": "'Undervisningstider', 'Overlapp', 'Opptakskrav', and 'Fortrinnsrett' headings are not recognised as cut-points that terminate the coursework_requirements bucket.",
-      "suggested_fix": "Map 'Undervisningstider', 'Overlapp', 'Opptakskrav', 'Merknader', and 'Fortrinnsrett' as terminators for all content sections (or route them to a drop/admin bucket).",
-      "confidence": "high"
-    },
-    {
-      "section": "teaching_methods",
-      "error_type": "merged_sections",
-      "severity": "medium",
-      "prevalence": "common",
-      "example_course_ids": [
-        "nmbu_FYS100-1_2025_autumn_1",
-        "nmbu_PPRA201-1_2025_autumn_1",
-        "nmbu_FYS100-1_2025_spring_1"
-      ],
-      "evidence": "Læringsstøtte\nAktiv nettside med kursinformasjon...\nPensum\nBlir opplyst på Canvas ved oppstart.\nForutsatte forkunnskaper\nR1 eller S1+S2...\nVurderingsordning, hjelpemiddel og eksamen\nSkriftlig avsluttende prøve...",
-      "description": "The teaching_methods row (mapped from 'Læringsaktiviteter') runs past its natural boundary and absorbs 'Læringsstøtte', 'Pensum', 'Forutsatte forkunnskaper', and the entire 'Vurderingsordning' block. Per the codebook, teaching_methods covers only how the course is taught; prerequisites and assessment belong in their own sections.",
-      "root_cause_hypothesis": "'Læringsstøtte', 'Pensum', and 'Forutsatte forkunnskaper' may not be mapped as cut-points that terminate teaching_methods; the parser keeps accumulating text until a recognised heading appears.",
-      "suggested_fix": "Map 'Læringsstøtte', 'Pensum', 'Forutsatte forkunnskaper', and 'Anbefalte forkunnskaper' as section boundaries. Route 'Læringsstøtte' to a drop/admin bucket; 'Pensum' to reading_list; 'Forutsatte forkunnskaper'/'Anbefalte forkunnskaper' to prerequisites.",
-      "confidence": "high"
-    },
-    {
-      "section": "reading_list",
-      "error_type": "wrong_content",
-      "severity": "high",
-      "prevalence": "common",
-      "example_course_ids": [
-        "nmbu_M30-LUN-1_2025_autumn_1",
-        "nmbu_M60-LUN-1_2025_autumn_1",
-        "nmbu_M30-LUN-1_2025_spring_1"
-      ],
-      "evidence": "- Følge forskningsetiske retningslinjer.\nMer spesifikt skal studenten kunne:\nutvikle en problemstilling / et forskningsspørsmål...\nLæringsaktiviteter\nSelvstendig arbeid under veiledning...",
-      "description": "For the master's thesis courses (M30-LUN, M60-LUN), the reading_list row contains the tail end of the learning outcomes plus teaching methods, prerequisites, and the full assessment block — not any reading list content. The actual pensum text ('Undervisningsmateriell utvikles individuelt.') appears inside the reading_list row, but it is buried among ~4000 chars of misclassified material. Root cause: the extractor is triggered by 'Pensum' but cuts the section at the wrong upstream point, capturing a large block of learning outcomes text that appears before 'Pensum' in the flow.",
-      "root_cause_hypothesis": "The section labeled reading_list is not triggered at the 'Pensum' heading but rather at some earlier internal marker; the upstream split of learning_outcomes content is landing here instead.",
-      "suggested_fix": "Trigger reading_list extraction precisely at the 'Pensum' heading and cut it at the next heading. Do not include text from sections that precede 'Pensum' in the document.",
-      "confidence": "high"
-    },
-    {
-      "section": "reading_list",
-      "error_type": "wrong_content",
-      "severity": "medium",
-      "prevalence": "common",
-      "example_course_ids": [
-        "nmbu_PPPE301-1_2025_autumn_1",
-        "nmbu_PPPE301-1_2025_spring_1"
-      ],
-      "evidence": "Introduksjoner til faglige analyser, diskusjoner og refleksjon over praksis og teori.\nArbeid i ulike grupper...\nLæringsstøtte\nStudenten veiledes i de obligatoriske aktivitetene...\nPensum\nOversikt er tilgjengelig i Canvas ved emnets start.",
-      "description": "For PPPE301, the reading_list row contains teaching methods content ('Introduksjoner til faglige analyser...'), læringsstøtte, and then the actual pensum text ('Oversikt er tilgjengelig i Canvas') plus prerequisites. The codebook defines reading_list as required/recommended literature only. The actual pensum note is present but buried among wrongly-attributed teaching-methods and admin text.",
-      "root_cause_hypothesis": "The same boundary-cut failure as in teaching_methods: 'Introduksjoner...' is part of the Læringsaktiviteter section but no cut was made before the reading_list bucket was started.",
-      "suggested_fix": "Same as teaching_methods fix: cut at 'Pensum' heading and extract only the content under that heading into reading_list.",
-      "confidence": "high"
-    },
-    {
-      "section": "prerequisites",
-      "error_type": "boilerplate_only",
-      "severity": "low",
-      "prevalence": "occasional",
-      "example_course_ids": [
-        "nmbu_PPXP100-1_2025_autumn_1",
-        "nmbu_PPXP100-1_2025_spring_1"
-      ],
-      "evidence": "Realfag",
-      "description": "The prerequisites row contains only 'Realfag' — the programme-level admission requirement (from 'Opptakskrav'), not a subject-matter prerequisite. The codebook specifies that programme admission requirements must be excluded from prerequisites. The section is flagged 'empty' by deterministic checks, but the underlying issue is boilerplate_only: the one word present is administrative admission text, not academic knowledge prerequisite.",
-      "root_cause_hypothesis": "'Opptakskrav' text is being routed to prerequisites instead of being dropped as administrative content. Alternatively, 'Forutsatte forkunnskaper' is absent in this course and the nearest text (Opptakskrav) is misclassified.",
-      "suggested_fix": "Map 'Opptakskrav' to a drop/admin bucket, not to prerequisites. Only 'Forutsatte forkunnskaper' and 'Anbefalte forkunnskaper' should feed prerequisites.",
-      "confidence": "high"
-    },
-    {
-      "section": "prerequisites",
-      "error_type": "boilerplate_only",
-      "severity": "low",
-      "prevalence": "rare",
-      "example_course_ids": [
-        "nmbu_M60-LUN-1_2025_autumn_1",
-        "nmbu_M60-LUN-1_2025_spring_1"
-      ],
-      "evidence": "Masteroppgaven på 60 sp innvilges kun etter søknad til Undervisningsutvalget på RealTek.",
-      "description": "The prerequisites row contains only an administrative admission/approval requirement ('innvilges kun etter søknad til Undervisningsutvalget'). This is programme-admission boilerplate, not a subject-matter prerequisite. Per the codebook, such generic administrative content must be excluded even when it appears under a prerequisites heading.",
-      "root_cause_hypothesis": "The 'Opptakskrav' heading is being routed to prerequisites instead of being dropped.",
-      "suggested_fix": "Drop 'Opptakskrav' content from prerequisites output; only extract 'Forutsatte forkunnskaper' and 'Anbefalte forkunnskaper'.",
-      "confidence": "high"
-    },
-    {
-      "section": "cross_section",
+      "target": "assessment",
       "error_type": "formatting_noise",
       "severity": "low",
       "prevalence": "widespread",
-      "example_course_ids": [
-        "nmbu_MATH100-1_2025_autumn_1",
-        "nmbu_FYS100-1_2025_autumn_1",
-        "nmbu_PPPE301-1_2025_autumn_1"
-      ],
-      "evidence": "Om bruk av KI\nK1 - Ingen bruk av KI\nHer finner du KI-kategoriene beskrevet.\nSensorordning\nEkstern sensor vil bli brukt til å vurdere eksamensoppgaver.",
-      "description": "The 'Om bruk av KI' block (AI-use policy category + link text 'Her finner du KI-kategoriene beskrevet.') and the 'Sensorordning' block (examiner arrangement) appear inside the assessment row across virtually all courses. These are administrative exam-logistics fields, not assessment design. The codebook explicitly says to exclude exam-logistics and administrative content from assessment.",
-      "root_cause_hypothesis": "'Om bruk av KI' and 'Sensorordning' are not recognised as headings to cut on, so they are absorbed into the assessment bucket.",
-      "suggested_fix": "Map 'Om bruk av KI' and 'Sensorordning' to drop/admin bucket. They are institutional boilerplate, not canonical section content.",
-      "confidence": "high"
+      "example_course_ids": ["nmbu_PPFD201-1_2025_autumn_2", "nmbu_FYS100-1_2025_spring_1", "nmbu_MATH100-1_2025_spring_1"],
+      "evidence": "Muntlig eksamen Karakterregel: Bokstavkarakterer Hjelpemiddelkode: A1 Ingen kalkulator, ingen andre hjelpemidler",
+      "description": "Assessment ends with a flattened auto-generated exam-logistics line (Karakterregel / Hjelpemiddelkode, i.e. grading scale and aids code) preceded by blank-line gaps. This is exam logistics residue, repeated in every course. The substantive assessment text is correct and complete, and KI/Sensorordning text is correctly excluded.",
+      "root_cause_hypothesis": "The exam table rendered directly after the assessment paragraph is flattened into one line and stays inside the 'Vurderingsordning, hjelpemiddel og eksamen' section.",
+      "suggested_fix": "In .clean_sections() (or an nmbu-specific post_fn) remove lines matching 'Karakterregel:.*' from assessment and collapse runs of blank lines.",
+      "confidence": "medium"
     }
   ]
 }

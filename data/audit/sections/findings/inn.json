@@ -1,183 +1,70 @@
 {
-  "institution_short": "inn",
-  "n_courses_reviewed": 28,
+  "check": "sections",
+  "institution": "inn",
+  "model": "sonnet",
+  "n_courses_reviewed": 20,
   "n_suspects_reviewed": 20,
-  "overall_assessment": "Extraction quality for inn is critically poor across all 28 reviewed courses. The text-splitter fails to recognise almost every heading as a cut point, causing systematic cascade merges: course_content bleeds the literal heading word 'Læringsutbytte' into its last line; learning_outcomes then bleeds through teaching_methods and often practice/practicum text (Praksis); coursework_requirements bleeds the full assessment table and the heading 'Eksamen'/'Vurdering' into its last lines; assessment is therefore truncated to just the grading sentence; and teaching_methods is never emitted as an independent section. A secondary structural failure causes the entire page header block (Startsemestre, Emnekode, Studiepoeng, Forkunnskapskrav, then part of learning_outcomes) to be misassigned to reading_list whenever the page renders that block first. The result is that every canonical section except course_content contains wrong-section text, and reading_list and teaching_methods are never correctly captured in any course reviewed.",
+  "overall_assessment": "Section splitting for inn is mostly good: course_content, teaching_methods, coursework_requirements and prerequisites land in the right sections. Two systematic defects remain. On English-language plans, learning_outcomes is reduced to the one-line intro sentence (the Knowledge/Skills/General competence lists are lost), and assessment is polluted with the language-of-instruction line while the real 'Form of assessment' description is lost. Generic placeholders are also emitted as reading_list rows.",
   "findings": [
     {
-      "section": "course_content",
-      "error_type": "merged_sections",
-      "severity": "high",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "inn_2MEN5101-2-1_2022_autumn_1",
-        "inn_2MNK5101-3-1_2022_autumn_1",
-        "inn_2NOL51-5-1_2023_autumn_1"
-      ],
-      "evidence": "Læringsutbytte",
-      "description": "Every course_content section ends with the literal heading word 'Læringsutbytte' as its last token. The splitter treats this heading as belonging to the preceding section instead of cutting before it. According to the codebook, course_content is subject-matter only; the heading text 'Læringsutbytte' is neither content nor outcomes and must not appear in any section.",
-      "root_cause_hypothesis": "The heading-detection regex does not match 'Læringsutbytte' (or any INN heading) as a cut point; the splitter includes the heading line in the preceding chunk rather than discarding it and opening the next section.",
-      "suggested_fix": "Add 'Læringsutbytte' to the heading pattern list so the splitter cuts before it. Apply the same fix to all other INN section headings listed in findings below.",
-      "confidence": "high"
-    },
-    {
-      "section": "learning_outcomes",
-      "error_type": "merged_sections",
-      "severity": "high",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "inn_2MNK5101-7-1_2022_autumn_1",
-        "inn_2MPED-3-1_2023_spring_1",
-        "inn_2ML343-1_2023_spring_1"
-      ],
-      "evidence": "Arbeids- og undervisningsformer\nUndervisningen legges opp med en innføringsdel bestående av ukentlig undervisning i form av seminarer.",
-      "description": "In almost every course the learning_outcomes section runs past the 'Arbeids- og undervisningsformer' heading and captures all of teaching_methods text (and often the Praksis/practicum paragraph too). Codebook defines learning_outcomes as what the student knows/can do after the course; teaching arrangements belong in teaching_methods and must be separated.",
-      "root_cause_hypothesis": "The heading 'Arbeids- og undervisningsformer' (and its variants 'Undervisnings- og arbeidsformer', 'Læringsaktiviteter') are not in the splitter's heading pattern list. The splitter therefore does not cut at that boundary.",
-      "suggested_fix": "Add the heading patterns 'Arbeids- og undervisningsformer', 'Undervisnings- og arbeidsformer', 'Læringsaktiviteter', and 'Praksis' to the heading cut list for inn.",
-      "confidence": "high"
-    },
-    {
-      "section": "teaching_methods",
-      "error_type": "missing_section",
-      "severity": "high",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "inn_2MEN5101-2-1_2022_autumn_1",
-        "inn_2NOL51-5-1_2022_autumn_1",
-        "inn_MUS1003-1_2023_spring_1"
-      ],
-      "evidence": "Ground truth has 'Arbeids- og undervisningsformer\nUndervisningen legges opp i form av forelesninger, ulike seminar...' but no teaching_methods row is emitted by the extractor.",
-      "description": "No course in the sample produces a teaching_methods section row. The text exists in the source (under headings 'Arbeids- og undervisningsformer', 'Undervisnings- og arbeidsformer', etc.) but is always absorbed into the learning_outcomes row (see merged_sections finding above), so the section is completely absent as a correctly-labelled output.",
-      "root_cause_hypothesis": "The heading 'Arbeids- og undervisningsformer' is not mapped to the teaching_methods canonical section in the inn heading map.",
-      "suggested_fix": "Map the heading pattern 'Arbeids[-\\s]og\\s+undervisningsformer' (and variants) to teaching_methods in the inn section-heading map.",
-      "confidence": "high"
-    },
-    {
-      "section": "coursework_requirements",
-      "error_type": "merged_sections",
-      "severity": "high",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "inn_2MNK5101-3-1_2022_autumn_1",
-        "inn_2NOL51-5-1_2022_autumn_1",
-        "inn_2MEN5101-7-1_2022_autumn_1"
-      ],
-      "evidence": "Eksamen\nVurderingsordningKarakterskalaGruppe/individuellVarighetHjelpemidlerAndelKommentarer Muntlig eksamenECTS - A-FIndividuellIngen\nEksamen",
-      "description": "The coursework_requirements section consistently includes: (a) the heading word 'Eksamen' or 'Vurderinger', (b) the raw assessment summary table (a collapsed-column string containing 'VurderingsordningKarakterskalaGruppe/individuell...'), and (c) the heading repeat 'Eksamen'/'Vurdering'. These are assessment logistics, not arbeidskrav. Codebook: coursework_requirements are pass/fail gates only; the graded assessment table belongs in assessment.",
-      "root_cause_hypothesis": "The heading 'Eksamen', 'Vurderinger', and 'Vurdering' are not recognised as cut points, so the splitter does not end the coursework_requirements section before them.",
-      "suggested_fix": "Add 'Eksamen', 'Vurderinger', 'Vurdering', 'Obligatoriske aktiviteter', 'Arbeidskrav' to the heading cut list. Map 'Eksamen'/'Vurderinger'/'Vurdering' to assessment; map 'Obligatoriske aktiviteter'/'Arbeidskrav' to coursework_requirements.",
-      "confidence": "high"
-    },
-    {
-      "section": "assessment",
+      "target": "learning_outcomes",
       "error_type": "truncated",
       "severity": "high",
       "prevalence": "widespread",
-      "example_course_ids": [
-        "inn_2MNK5101-3-1_2022_autumn_1",
-        "inn_2NOL51-5-1_2022_autumn_1",
-        "inn_2MPED-3-1_2022_autumn_1"
-      ],
-      "evidence": "Prestasjonen vurderes med graderte bokstavkarakterer fra A-F, der E er laveste ståkarakter.",
-      "description": "Because the assessment table and the exam description sentence (e.g. 'Individuell muntlig eksamen', 'Individuell skriftlig hjemmeeksamen over 3 dager') are absorbed by the coursework_requirements row, the assessment row captures only the final grading-scale sentence — the minimal boilerplate. The codebook requires the full assessment design text including the exam type, duration, and any weight percentages. In courses with multi-part exams (e.g. inn_2MNK171-4-1_2022_autumn_1 with 60%/40% split), the assessment description is entirely absent from the assessment row.",
-      "root_cause_hypothesis": "Downstream effect of the missing 'Eksamen'/'Vurderinger' heading cut: all meaningful assessment text is absorbed into coursework_requirements, leaving assessment with only the trailing grading sentence.",
-      "suggested_fix": "Fix the heading cut for 'Eksamen'/'Vurderinger'/'Vurdering' as described above; also add a post-processing step to strip the raw assessment table string (matching 'VurderingsordningKarakterskala.*') from the coursework_requirements section.",
+      "example_course_ids": ["inn_2ML351-1_2024_autumn_1", "inn_2ENL512-1-1_2023_spring_1", "inn_2MKRLE171-1-1_2023_spring_1"],
+      "evidence": "Upon successful completion of the course, the student will have achieved the following learning outcomes:",
+      "description": "In the English-heading plans (Learning outcome / Knowledge / Skills / General competence; all of courses 1-11, including one Norwegian-content course with English headings) learning_outcomes contains only the introductory sentence. All actual outcome statements ('has comprehensive knowledge about...', 'can analyse literary texts...') are dropped and do not appear in any other section, so the section is effectively empty. The Norwegian-heading plans (Læringsutbytte) keep the full lists, so this is specific to the English sub-heading set.",
+      "root_cause_hypothesis": "English sub-headings 'Knowledge', 'Skills', 'General competence' (plus 'The student') are treated as section boundaries with no mapping, so everything after the intro line up to 'Working and teaching methods' is discarded. Norwegian 'Kunnskap/Ferdigheter/Generell kompetanse' are not treated as boundaries.",
+      "suggested_fix": "In R/section_heading_map.R / R/extract_sections.R, treat Knowledge, Skills, General competence (and Norwegian equivalents) as sub-headings that are absorbed into learning_outcomes rather than as boundaries or unmapped headings; or map them to learning_outcomes explicitly.",
       "confidence": "high"
     },
     {
-      "section": "reading_list",
-      "error_type": "wrong_content",
-      "severity": "high",
-      "prevalence": "common",
-      "example_course_ids": [
-        "inn_2MNK5101-3-1_2022_autumn_1",
-        "inn_2NOL51-5-1_2022_autumn_1",
-        "inn_2MNK172S-1-1_2022_autumn_1"
-      ],
-      "evidence": "Startsemestre\n2026 Høst\n2025 Høst\nEmnekode\n2MNK5101-3\nStudiepoeng\n15\nForkunnskapskrav\nAnbefalte forkunnskaper: 2MNK5101-1 Norsk 1, emne 1",
-      "description": "In courses where the page renders a header metadata block first (Startsemestre, Emnekode, Studiepoeng, Undervisningssemestre, Undervisnings- og eksamensspråk, Undervisningssted, Forkunnskapskrav), this entire block — plus the first part of learning_outcomes — is captured in the reading_list section. The content is entirely page-header metadata and has no relationship to reading_list (syllabus/pensum) according to the codebook.",
-      "root_cause_hypothesis": "The splitter assigns the first chunk of text (before any recognised heading) to reading_list as a default bucket. The INN page renders its header metadata before the 'Emnets innhold' heading, so this pre-heading text lands in reading_list.",
-      "suggested_fix": "Set the pre-heading default bucket to null (discard) rather than reading_list. Alternatively, detect and discard the metadata header block (lines matching 'Startsemestre|Emnekode|Studiepoeng|Undervisningssemestre|Undervisnings- og eksamensspråk|Undervisningssted') before section splitting.",
-      "confidence": "high"
-    },
-    {
-      "section": "reading_list",
-      "error_type": "boilerplate_only",
+      "target": "assessment",
+      "error_type": "field_or_language_junk",
       "severity": "medium",
       "prevalence": "widespread",
-      "example_course_ids": [
-        "inn_2MEN5101-7-1_2022_autumn_1",
-        "inn_2MPED-3-1_2022_autumn_1",
-        "inn_2MNK5101-7-1_2022_autumn_1"
-      ],
-      "evidence": "Ingen pensumliste tilgjengelig for dette emnet\nFakultet\nFakultet for lærerutdanning og pedagogikk\nFagområde\n5-årig masterprogram...",
-      "description": "In courses that do not have the header metadata problem, reading_list still captures only the boilerplate phrase 'Ingen pensumliste tilgjengelig for dette emnet' followed by the institutional footer (Fakultet, Fagområde, Studieprogram, Emnenivå). These are administrative metadata, not reading-list content. A reading_list section should either be empty or contain actual literature references according to the codebook.",
-      "root_cause_hypothesis": "The 'Pensum' heading is mapped to reading_list but the splitter does not cut after the last meaningful line before the footer fields. The footer fields (Fakultet, Fagområde, etc.) appear after the Pensum block and are absorbed.",
-      "suggested_fix": "After splitting, apply a post-processing strip that removes the footer block (lines matching '^Fakultet$', '^Fagområde$', '^Studieprogram$', '^Emnenivå$') from all sections. Optionally, if the reading_list contains only 'Ingen pensumliste tilgjengelig for dette emnet', convert it to an empty/null section rather than emitting a boilerplate-only row.",
+      "example_course_ids": ["inn_2ML351-1_2024_autumn_1", "inn_2ENL51-7-1_2024_autumn_1", "inn_2MKRLE171-1-1_2023_spring_1"],
+      "evidence": "English Form of assessment Grading scale Grouping Duration of assessment Support materials Proportion Comments Home examination ECTS - A-F Individual 3 Day(s) All 100",
+      "description": "On English-heading plans the assessment section starts with the language of instruction ('English' / 'Norwegian'), taken from the 'Language of instruction and examination' header field, which is not assessment content.",
+      "root_cause_hypothesis": "The heading 'Language of instruction and examination' matches an 'examination' pattern mapped to assessment, so its value is opened as an assessment section and then merged with the later exam table.",
+      "suggested_fix": "Add a pattern for 'Language of instruction( and examination)?' / 'Undervisnings- og eksamensspråk' mapped to a dropped/ignored section and place it before the generic exam/eksamen pattern so first match wins.",
       "confidence": "high"
     },
     {
-      "section": "learning_outcomes",
+      "target": "assessment",
       "error_type": "truncated",
-      "severity": "high",
-      "prevalence": "common",
-      "example_course_ids": [
-        "inn_2MEN5101-2-1_2022_autumn_1",
-        "inn_2MNK5101-3-1_2022_autumn_1",
-        "inn_2NOL51-5-1_2022_autumn_1"
-      ],
-      "evidence": "Kunnskap\nStudenten",
-      "description": "In courses where reading_list captures the page header block (courses 2–6, 12–13, 15–17), the learning_outcomes row is emitted with only 'Kunnskap\\nStudenten' (18 chars). The first 'Kunnskap' sub-heading was not cut by the splitter, and the actual outcome statements beginning with 'har kunnskap om...' are all absorbed into the reading_list row. This is the specific variant of the header-metadata misrouting problem. The codebook requires individual outcome statements; here, virtually all of them are lost.",
-      "root_cause_hypothesis": "When the page header block is present, the splitter encounters 'Kunnskap' inside the pre-heading dump that goes to reading_list, and the learning_outcomes bucket starts only after an indeterminate boundary, yielding just two words.",
-      "suggested_fix": "Same fix as the header-metadata reading_list fix: strip or discard the pre-heading metadata block. After that fix, the Kunnskap/Ferdigheter/Generell kompetanse sub-headings within learning_outcomes should also be added as non-cutting structural markers (not new sections) so outcomes are preserved.",
-      "confidence": "high"
-    },
-    {
-      "section": "prerequisites",
-      "error_type": "missing_section",
       "severity": "medium",
       "prevalence": "widespread",
-      "example_course_ids": [
-        "inn_2MEN5101-2-1_2022_autumn_1",
-        "inn_2MNK5101-3-1_2022_autumn_1",
-        "inn_2MPED-3-1_2022_autumn_1"
-      ],
-      "evidence": "Forkunnskapskrav\n\nAnbefalte forkunnskaper: 2MEN5101-1 English 1, emne 1",
-      "description": "No course in the sample produces a prerequisites section row, even though all courses have a 'Forkunnskapskrav' block in the source. The prerequisite text is either absorbed into the reading_list header block (in the metadata-header pattern) or silently dropped. The codebook defines prerequisites as subject-matter entry requirements, which INN consistently states under 'Forkunnskapskrav'. This section is completely missing from all outputs.",
-      "root_cause_hypothesis": "The heading 'Forkunnskapskrav' is not mapped to the prerequisites canonical section in the inn heading map.",
-      "suggested_fix": "Add 'Forkunnskapskrav' and 'Anbefalte forkunnskaper' as heading patterns mapped to prerequisites in the inn section-heading map.",
+      "example_course_ids": ["inn_2MKRLE171-1-1_2023_spring_1", "inn_2ENL51-8-1_2023_autumn_1", "inn_2ML351-1_2024_autumn_1"],
+      "evidence": "Three day individual take-home exam, 4000 words.",
+      "description": "On English-heading plans the descriptive text under the second 'Form of assessment' heading (exam format, word limit, grading statement, pass requirements) is missing from assessment, which holds only the table header row. The Norwegian-heading plans keep this narrative ('Praksis har individuell vurdering og vurderes til Bestått/Ikke bestått.'). The dropped text does not appear in any other section.",
+      "root_cause_hypothesis": "The 'Form of assessment' sub-heading is unmapped or treated as a boundary to a dropped section in English plans, so the narrative after it is discarded; Norwegian 'Eksamen'/'Vurdering' repeats are handled.",
+      "suggested_fix": "Map 'Form of assessment' (and 'Examination') to assessment in R/section_heading_map.R so the repeated heading continues the same section instead of discarding its body.",
       "confidence": "high"
     },
     {
-      "section": "assessment",
+      "target": "assessment",
       "error_type": "formatting_noise",
-      "severity": "medium",
+      "severity": "low",
       "prevalence": "widespread",
-      "example_course_ids": [
-        "inn_2MNK5101-3-1_2022_autumn_1",
-        "inn_2NOL51-5-1_2022_autumn_1",
-        "inn_2MPRA5101-2-1_2023_autumn_1"
-      ],
-      "evidence": "VurderingsordningKarakterskalaGruppe/individuellVarighetHjelpemidlerAndelKommentarer Muntlig eksamenECTS - A-FGruppe/Individuell (1 - 2)Ingen",
-      "description": "The raw assessment summary table (generated from an HTML table where column headers and cell values are concatenated without delimiters) appears in the coursework_requirements section (and sometimes in assessment) as a single unreadable string. This is formatting noise that provides no codebook-compliant content and pollutes whichever section absorbs it. The codebook explicitly excludes exam-logistics tables.",
-      "root_cause_hypothesis": "The HTML table under 'Eksamen'/'Vurderinger' is serialised by the CSS extractor into a run-on string. There is no post-processing to detect and remove or restructure this table artefact.",
-      "suggested_fix": "Add a pre-processing regex that detects and removes the concatenated table string (matching 'VurderingsordningKarakterskala[A-Za-zÆØÅæøå/0-9\\s\\-()%.]+') from the extracted text before section splitting.",
-      "confidence": "high"
+      "example_course_ids": ["inn_2MPRA171S-4-1_2022_spring_1", "inn_2MPRA171-1-1_2022_spring_1", "inn_2ENL512-1-1_2023_spring_1"],
+      "evidence": "Vurderingsordning Karakterskala Gruppe/individuell Varighet Hjelpemidler Andel Kommentarer Praksis Bestått - Ikke bestått Individuell 100%",
+      "description": "The flattened exam-logistics table header row (form, scale, duration, aids, proportion) is included in assessment in every course; it is template boilerplate and not graded-assessment content, and is flagged as boilerplate by the pre-pass (real, but benign: the same row is in the source).",
+      "root_cause_hypothesis": "Table is flattened to a single line in extracted text and .clean_sections() does not strip the fixed header prefix.",
+      "suggested_fix": "In .clean_sections() strip the fixed header strings 'Vurderingsordning Karakterskala Gruppe/individuell Varighet Hjelpemidler Andel Kommentarer' and 'Form of assessment Grading scale Grouping Duration of assessment Support materials Proportion Comments' from assessment.",
+      "confidence": "medium"
     },
     {
-      "section": "cross_section",
-      "error_type": "other",
+      "target": "reading_list",
+      "error_type": "empty_placeholder",
       "severity": "low",
-      "prevalence": "occasional",
-      "example_course_ids": [
-        "inn_2MNK172S-1-1_2022_autumn_1",
-        "inn_2MNK172S-1-1_2023_spring_1"
-      ],
-      "evidence": "Emnet overlapper med\nNavnStudiepoengDatoKommentar 2MNK171S-2 Norsk 1, emne 2: Barnelitteratur15",
-      "description": "The 'Emnet overlapper med' (course overlap) block — including the collapsed table row — appears inside the assessment section in several courses. This is an administrative note unrelated to assessment design, and the codebook instructs to strip generic administrative boilerplate. It occurs because this block appears between the exam description and the Pensum heading, and the splitter does not have a rule to cut or discard it.",
-      "root_cause_hypothesis": "The 'Emnet overlapper med' block is not recognised as administrative boilerplate to strip, and no heading cut exists before it.",
-      "suggested_fix": "Add 'Emnet overlapper med' as a heading that triggers a discard zone (content until the next recognised heading is dropped) in the post-processing step.",
-      "confidence": "medium"
+      "prevalence": "widespread",
+      "example_course_ids": ["inn_2ML351-1_2024_autumn_1", "inn_2MPRA171-1-1_2022_spring_1"],
+      "evidence": "Ingen pensumliste tilgjengelig for dette emnet",
+      "description": "reading_list rows hold only the site placeholder ('No reading list available for this course' / 'Ingen pensumliste tilgjengelig for dette emnet') in all courses. Pre-pass boilerplate flag is a true positive: no real content. Similarly, prerequisites 'Ingen krav' is emitted in one course while 'None'/'Ingen' is dropped in others (inconsistent).",
+      "root_cause_hypothesis": "No placeholder filter for reading_list (and prerequisites) in .clean_sections().",
+      "suggested_fix": "In .clean_sections() drop reading_list rows matching '^(No reading list available|Ingen pensumliste tilgjengelig)' and prerequisites matching '^(None|Ingen( krav)?)\\.?$'.",
+      "confidence": "high"
     }
   ]
 }

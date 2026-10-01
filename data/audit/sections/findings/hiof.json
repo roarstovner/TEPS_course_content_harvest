@@ -1,118 +1,46 @@
 {
-  "institution_short": "hiof",
+  "check": "sections",
+  "institution": "hiof",
+  "model": "sonnet",
   "n_courses_reviewed": 28,
   "n_suspects_reviewed": 20,
-  "overall_assessment": "The extractor performs well on course_content, learning_outcomes, teaching_methods, and reading_list sections across all 28 courses. The dominant failure mode — present in every single course in the sample — is that the assessment row starts with arbeidskrav items (gate-to-exam requirements) rather than with graded assessment, because the extractor treats the entire text block from 'Arbeidskrav - vilkår for å avlegge eksamen' through the 'Eksamen' sub-section as a single assessment section. A secondary problem is that the coursework_requirements section is never emitted as a separate row; all arbeidskrav content lands inside assessment. Prerequisites are correctly labelled and contain real subject-matter entry requirements, though the flag 'boilerplate' is a false alarm for hiof — these short prior-study lists are genuine academic prerequisites, not administrative boilerplate.",
+  "overall_assessment": "Section extraction for HiOF is very good: all seven canonical sections are split correctly at the headings, arbeidskrav are correctly filed under coursework_requirements, learning outcomes keep all three Kunnskap/Ferdigheter/Generell kompetanse groups, and admin blocks (Arbeidsomfang, Praksis, Sensorordning, Evaluering) are dropped. The pre-pass flags (boilerplate, leak->X, long) are false alarms; the only real issues are reading_list rows that just point to Leganto and minor placeholder/whitespace noise.",
   "findings": [
     {
-      "section": "assessment",
-      "error_type": "merged_sections",
-      "severity": "high",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "hiof_LMUMAT40117-1_2020_autumn_2",
-        "hiof_LMBENG10117-1_2018_autumn_2",
-        "hiof_LMBKHV10117-1_2018_autumn_2"
-      ],
-      "evidence": "Refleksjonstekst skrevet etter gjennomført intervju med skoleleder og lærer om læreres læring. [...] Arbeidskravene må være godkjente [...] Muntlig, individuell eksamen, ca. 40 minutter",
-      "description": "The assessment section opens with the full arbeidskrav block (mandatory gate-to-exam requirements: assignments, attendance, practice reports) and only then continues with the graded exam description. Per the codebook, arbeidskrav that only grant access to the exam belong exclusively in coursework_requirements; the graded examination design alone belongs in assessment. Every course in the sample shows this merge: the extractor starts the assessment section at the 'Arbeidskrav - vilkår for å avlegge eksamen' heading rather than at the 'Eksamen' heading.",
-      "root_cause_hypothesis": "The heading map in the extractor maps 'Arbeidskrav - vilkår for å avlegge eksamen' to 'assessment' (or treats it as preamble to the assessment block), so the arbeidskrav content is absorbed into assessment. The separate 'Eksamen' sub-heading under this block is not treated as the section boundary.",
-      "suggested_fix": "Add 'Arbeidskrav - vilkår for å avlegge eksamen' (and its common variants: 'Arbeidskrav', 'Obligatoriske aktiviteter', 'Obligatorisk læringsaktivitet') as a heading mapped to coursework_requirements. Add 'Eksamen' and 'Vurdering' / 'Sluttvurdering' as headings mapped to assessment. The cut point between the two sections is the 'Eksamen' / 'Sluttvurderingen' sub-heading that always follows the arbeidskrav list.",
-      "confidence": "high"
-    },
-    {
-      "section": "coursework_requirements",
-      "error_type": "missing_section",
-      "severity": "high",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "hiof_LMUMAT40117-1_2021_autumn_1",
-        "hiof_LMBENG10117-1_2019_autumn_1",
-        "hiof_LMUNOR40217-1_2022_spring_1"
-      ],
-      "evidence": "Full arbeidskrav blocks (e.g. '80 % obligatorisk oppmøte / To oppgavesett i fonetikk og grammatikk / Presentasjon [...] Arbeidskrav må være levert til fastsatt tid og godkjent') present in every source plan but no coursework_requirements row ever emitted.",
-      "description": "Every single course plan at hiof contains a clearly labelled 'Arbeidskrav - vilkår for å avlegge eksamen' section listing several mandatory work requirements (attendance, assignments, practice reports, etc.) that must be approved before the student may sit the exam. Per the codebook these are coursework_requirements. The extractor never emits a coursework_requirements row for hiof; all that content is absorbed into assessment.",
-      "root_cause_hypothesis": "The heading 'Arbeidskrav - vilkår for å avlegge eksamen' is not in the extractor's heading-to-section map for coursework_requirements; consequently the block is pulled into the assessment section that follows it.",
-      "suggested_fix": "Map the heading 'Arbeidskrav - vilkår for å avlegge eksamen' (and normalised variants) to coursework_requirements. The sentinel phrase 'Arbeidskravene/Arbeidskravene/Arbeidskrava må være godkjent/godkjente før studenten kan fremstille seg til eksamen' marks the end of the coursework block; text from that point onward (starting with 'Eksamen' or 'Sluttvurdering') belongs in assessment.",
-      "confidence": "high"
-    },
-    {
-      "section": "prerequisites",
-      "error_type": "other",
-      "severity": "low",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "hiof_LMUMAT40117-1_2020_autumn_2",
-        "hiof_LMBENG10117-1_2018_autumn_2",
-        "hiof_LMUNAT10319-1_2024_spring_1"
-      ],
-      "evidence": "Prerequisites rows flagged 'boilerplate': 'Bestått praksisperioder i 3. studieår / Bestått minimum 150 studiepoeng fra 1.-3. studieår / Bestått 60 studiepoeng fra masterfordypningsfaget / Bestått FoU-oppgaven i 3. studieår'",
-      "description": "The deterministic pre-pass flags hiof prerequisites as 'boilerplate', but these are genuine subject-matter entry requirements (passed placement periods, minimum credit thresholds, passed thesis in year 3, passed subject credits) listed under 'Absolutte forkunnskaper'. They satisfy the codebook definition of prerequisites: specific prior academic requirements, not generic Studentweb registration boilerplate. The extraction itself is correct; only the heuristic flag is a false positive.",
-      "root_cause_hypothesis": "The boilerplate detector may key on short text length or generic patterns such as 'Bestått praksisperioder' without distinguishing genuine prerequisite lists from administrative copy.",
-      "suggested_fix": "Adjust the boilerplate heuristic to treat 'Bestått [specific academic milestone]' patterns under 'Absolutte forkunnskaper' or 'Forkunnskapskrav' headings as valid prerequisites rather than boilerplate. Alternatively, accept these rows as correct and remove or lower-severity the flag for hiof.",
-      "confidence": "high"
-    },
-    {
-      "section": "assessment",
-      "error_type": "formatting_noise",
-      "severity": "low",
+      "target": "reading_list",
+      "error_type": "boilerplate_only",
+      "severity": "medium",
       "prevalence": "common",
-      "example_course_ids": [
-        "hiof_LMBKHV10117-1_2019_autumn_1",
-        "hiof_LMBKHV10117-1_2020_autumn_1",
-        "hiof_LMBKHV10217-1_2021_spring_1"
-      ],
-      "evidence": "Assessment section includes exam logistics/retake rules: 'Ved eventuell ny eksamen kan eksamensmappen forbedres én gang. Kandidaten må deretter fremstille seg for ny muntlig eksamen.' and 'Karakteren fastsettes på grunnlag av en helhetlig vurdering.'",
-      "description": "For courses using portfolio+oral examination (KHV courses), the assessment section correctly captures the exam format but also captures administrative exam-retake rules and assessment-philosophy sentences ('Karakteren fastsettes på grunnlag av en helhetlig vurdering'). The codebook says to exclude exam-logistics; these retake rules are marginal logistics content that reduces signal quality slightly.",
-      "root_cause_hypothesis": "The boundary for the assessment section ends at the next heading (e.g. 'Sensorordning' or 'Evaluering av emnet'), so retake rules that appear before that boundary are included.",
-      "suggested_fix": "Consider splitting on 'Sensorordning' or 'Vilkår for ny/utsatt eksamen' sub-headings to trim exam-logistics boilerplate from the end of the assessment section.",
-      "confidence": "medium"
+      "example_course_ids": ["hiof_LMBNOR10417-1_2025_autumn_1", "hiof_LMUMAT40117-1_2025_autumn_1", "hiof_LMUMUS11423-1_2025_spring_2"],
+      "evidence": "Gjeldende litteraturliste for 2025 Høst finner du i Leganto",
+      "description": "For recent years (2022-2025) the reading_list row contains only a one-line pointer to the Leganto reading-list system (or 'Litteraturliste vil bli publisert i Leganto før semesterstart.'), not an actual reading list. The section is emitted as a row although it carries no bibliographic content. This is the faithful content of the plan, but it is a placeholder, and older years of the same courses have full lists, so analyses over time will see reading_list vanish.",
+      "root_cause_hypothesis": "HiOF moved reading lists to Leganto; the source page only contains the pointer sentence, and .clean_sections() in R/extract_sections.R does not recognise it as a placeholder.",
+      "suggested_fix": "In .clean_sections() (R/extract_sections.R), drop reading_list rows that match /Leganto/ and are shorter than ~150 chars (or set them to empty_placeholder and filter downstream), so the absence of a real list is explicit.",
+      "confidence": "high"
     },
     {
-      "section": "teaching_methods",
-      "error_type": "wrong_content",
+      "target": "prerequisites",
+      "error_type": "empty_placeholder",
       "severity": "low",
       "prevalence": "rare",
-      "example_course_ids": [
-        "hiof_LMBPED40517-1_2024_spring_1"
-      ],
-      "evidence": "teaching_methods row flagged 'leak->reading_list': 'I samarbeid med biblioteket vil det bli undervist i avansert referanseteknikk og litteratursøk.' embedded in the teaching_methods section.",
-      "description": "Course 23 (PED405 masteroppgave) has a sentence about library-based instruction in reference technique and literature search in the teaching_methods section. This is borderline: the sentence describes a teaching activity (library instruction), not a reading list item, so assignment to teaching_methods is defensible. The deterministic flag 'leak->reading_list' appears to be a false positive — the sentence mentions 'litteratursøk' but is not itself a reading-list item.",
-      "root_cause_hypothesis": "Keyword-based leak detector triggers on 'litteratursøk' or 'biblioteket' without context.",
-      "suggested_fix": "No change to the extractor needed; consider tuning the leak detector to require a citation/bibliographic pattern before flagging teaching_methods content as reading_list leakage.",
+      "example_course_ids": ["hiof_LMUMUS11423-1_2025_spring_2"],
+      "evidence": "Bestått praksisperioder i 2. studieår.\n\nIngen",
+      "description": "The 'Absolutte forkunnskaper' and 'Anbefalte forkunnskaper' blocks are concatenated and the recommended-prerequisites placeholder 'Ingen' is kept as text inside an otherwise real prerequisites row.",
+      "root_cause_hypothesis": "Both 'Absolutte forkunnskaper' and 'Anbefalte forkunnskaper' headings map to prerequisites; placeholders are not stripped.",
+      "suggested_fix": "In .clean_sections(), remove lines that are exactly 'Ingen'/'Ingen.'/'-' from prerequisites text, and drop the row if nothing remains.",
       "confidence": "medium"
     },
     {
-      "section": "reading_list",
-      "error_type": "truncated",
-      "severity": "medium",
-      "prevalence": "common",
-      "example_course_ids": [
-        "hiof_LMUMAT40117-1_2020_autumn_2",
-        "hiof_LMBENG10117-1_2018_autumn_2",
-        "hiof_LMUNOR40217-1_2022_spring_1"
-      ],
-      "evidence": "Multiple reading_list rows end with '...truncated NNN chars' in the packet view, and inspection shows the source plans contain further references beyond the extracted text.",
-      "description": "Several reading lists are flagged as 'long' and the extracted text is cut off before the full list is captured (the packet shows the truncation). The extractor correctly identifies and starts the reading list but hits a character limit before reaching the end of the literature section. For shorter courses the reading list is fully captured. This is a data completeness issue rather than a labelling error.",
-      "root_cause_hypothesis": "A maximum character or row-length limit in the extractor truncates long reading-list blocks. The hiof literature sections are often split into sub-sections ('Bøker', 'Artikler og kapittel', 'Grunnlagsdokumenter', 'Faglitteratur') which may not all be captured if only the first block is selected.",
-      "suggested_fix": "Increase or remove the character cap for reading_list rows, or ensure all sub-sections under 'Litteratur' (including 'Artikler og kapittel', 'Grunnlagsdokumenter', 'Faglitteratur') are concatenated into the reading_list section rather than treating the first sub-block as the complete list.",
+      "target": "learning_outcomes",
+      "error_type": "formatting_noise",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": ["hiof_LMUMUS11423-1_2025_spring_2", "hiof_LMUMUS10323-1_2025_autumn_2"],
+      "evidence": "KunnskapStudenten har kunnskap om  ulike sjanger- og stilideal",
+      "description": "In the music (MUS) courses the sub-headings are glued to the following text ('KunnskapStudenten', 'FerdigheterStudenten', 'Generell kompetanseStudenten'), whereas the plan has a space or newline. Content is complete and correctly placed; only whitespace is lost. Similar glue appears in assessment of hiof_LMUSAM10417-1_2019_spring_2 ('Individuell muntlig eksamenVarighet ca. 30 minutter'), which is already present in the source.",
+      "root_cause_hypothesis": "Text extraction (R/extract_fulltext.R / .add_table_cell_breaks) joins inline elements without a separator for these pages.",
+      "suggested_fix": "Insert a newline or space between an adjacent heading-like word (Kunnskap/Ferdigheter/Generell kompetanse) and 'Studenten'/'Kandidaten' in the extraction pre-processing.",
       "confidence": "medium"
-    },
-    {
-      "section": "reading_list",
-      "error_type": "empty_placeholder",
-      "severity": "medium",
-      "prevalence": "occasional",
-      "example_course_ids": [
-        "hiof_LMUENG40317-1_2024_autumn_1",
-        "hiof_LMBPED40517-1_2024_spring_1",
-        "hiof_LMUNAT10319-1_2024_spring_1"
-      ],
-      "evidence": "reading_list for courses from 2024 contains only: 'litteraturliste for 2024 Høst\\nSist hentet fra FS (Felles studentsystem) 12. feb. 2026 03:03:03' (93 chars)",
-      "description": "For recent courses (2024 offerings), the reading list is effectively empty: the extracted text contains only a reference to an external Leganto/Canvas system ('Gjeldende litteraturliste for finner du i Leganto') plus a FS-system fetch timestamp. No actual bibliographic references are captured. This is a structural limitation — hiof migrated reading lists to Leganto for recent course offerings — rather than an extractor error, but the result is an empty placeholder row being emitted rather than a null.",
-      "root_cause_hypothesis": "hiof moved reading-list content to Leganto (an external reading-list management tool) for recent courses; the course page now contains only a link/pointer rather than the actual literature. The extractor faithfully captures what is on the page, which is just the placeholder text.",
-      "suggested_fix": "Consider suppressing reading_list rows whose entire content matches patterns like 'Gjeldende litteraturliste.*(Leganto|Canvas)' or whose char count is below a threshold (e.g. 150 chars). Flag these as missing rather than emitting a near-empty row. For data quality purposes, note that Leganto-linked courses cannot have reading lists harvested from the course description page.",
-      "confidence": "high"
     }
   ]
 }

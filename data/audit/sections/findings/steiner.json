@@ -1,100 +1,94 @@
 {
-  "institution_short": "steiner",
-  "n_courses_reviewed": 13,
-  "n_suspects_reviewed": 5,
-  "overall_assessment": "Steiner's text-splitting extraction is largely correct for the sections it does capture (learning_outcomes, course_content, coursework_requirements, assessment), but suffers from three consistent structural defects: (1) the heading word 'Vurdering' is invariably appended as a trailing artefact to every coursework_requirements row, (2) assessment rows absorb exam-logistics boilerplate (sensorordning, hjelpemidler, ny/utsatt eksamen) that the codebook excludes, and (3) PDF-origin page numbers bleed into extracted text throughout. The teaching_methods section is never extracted even when an 'Arbeidsmåter' heading is present; in one case that content leaks into course_content instead. Learning outcomes are silently truncated when they are long.",
+  "check": "sections",
+  "institution": "steiner",
+  "model": "sonnet",
+  "n_courses_reviewed": 14,
+  "n_suspects_reviewed": 6,
+  "overall_assessment": "Section boundaries are mostly right (arbeidskrav correctly in coursework_requirements, exam text in assessment, no leakage of the flagged kind). Main defects: the course metadata table is prepended to learning_outcomes, some LO bullets and whole deleksamen lines are dropped, and Innhold sub-themes that follow a page break or are named 'arbeidsmåter' are filed as teaching_methods. All six pre-pass 'leak->' flags are false alarms (words like vurderingsformer/pensum inside ordinary text).",
   "findings": [
     {
-      "section": "coursework_requirements",
+      "target": "learning_outcomes",
       "error_type": "formatting_noise",
-      "severity": "high",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "steiner_M-PEL1_2_2025_spring_1",
-        "steiner_M-MAT1_1_2025_spring_1",
-        "steiner_M-SAM1_2_2025_spring_1"
-      ],
-      "evidence": "...Biografi\nEn 15-20 minutters individuell, forberedt presentasjon...\nVurdering",
-      "description": "Every coursework_requirements row ends with the bare heading word 'Vurdering'. The text-splitter uses 'Vurdering' as the boundary token to end the coursework_requirements segment, but it includes the token itself in the output rather than stopping before it. This is not content; it is a dangling section heading from the following section.",
-      "root_cause_hypothesis": "The heading-boundary split in the text-splitting strategy is inclusive (regex keeps the matched heading). The split point for 'Vurdering' should be exclusive (cut before the heading, not after).",
-      "suggested_fix": "Change the coursework_requirements split to stop before the 'Vurdering' heading: use a negative lookahead or trim the trailing 'Vurdering' token from the coursework_requirements segment after splitting.",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": ["steiner_M-PEL1_2_2025_spring_1", "steiner_M-PEL1_3_2025_spring_1", "steiner_M-PEL1_1_2025_spring_1"],
+      "evidence": "Studieprogrammet emnet inngår i    Steinerpedagogisk lærerutdanning med bachelorgrad",
+      "description": "The metadata table at the top of the plan (Emnekode og emnenavn, Engelsk emnenavn, Studieprogrammet, Studiepoeng, Semester, Undervisningsspråk) is prepended to learning_outcomes in the PEL courses (PEL1.1-1.5), i.e. admin/metadata text in a section that should hold only outcomes. The MAT/NAT/NOR courses are clean, so it depends on the plan layout (no blank-line/title before the table).",
+      "root_cause_hypothesis": "Plans for PEL courses have no title line separating the metadata table from Læringsutbytte; the extractor starts learning_outcomes at the start of the document (preamble before the first recognised heading is assigned to the first section).",
+      "suggested_fix": "In .clean_sections()/steiner strategy, drop the preamble before the first heading (or strip lines beginning 'Emnekode og ', 'Emnenavn', 'Engelsk emnenavn', 'Studieprogrammet emnet inngår i', 'Studiepoeng', 'Semester', 'Undervisningsspråk' with their continuation lines).",
       "confidence": "high"
     },
     {
-      "section": "assessment",
-      "error_type": "merged_sections",
-      "severity": "high",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "steiner_M-PEL1_2_2025_spring_1",
-        "steiner_M-NOR1_1_2025_spring_1",
-        "steiner_M-SAM1_1_2025_spring_1"
-      ],
-      "evidence": "Individuell skriftlig hjemmeeksamen. Varighet: 3 dager.\nSensurordning\nEksamen vurderes av to interne sensorer.\nTillatte hjelpemidler\nAlle hjelpemidler tillatt.\nVurderingsuttrykk\nDet benyttes en gradert karakterskala fra A til E...",
-      "description": "The assessment section consistently absorbs exam-logistics boilerplate that the codebook explicitly excludes: 'Sensurordning'/'Sensorordning' (grading committee), 'Tillatte hjelpemidler'/'Hjelpemidler til eksamen' (permitted aids), 'Vurderingsuttrykk' (grade scale), and 'Ny/utsatt eksamen' (re-sit rules). The codebook states 'exclude exam-logistics tables (specific dates, rooms, registration deadlines) — keep only the assessment design.' Grade-scale text and sensor/re-sit boilerplate fall squarely in the logistics category.",
-      "root_cause_hypothesis": "The text-splitter captures everything between the 'Vurdering/Eksamensform' heading and the end of the document (or next major heading), making no attempt to exclude the standard administrative sub-headings that follow the exam-form description.",
-      "suggested_fix": "After extracting assessment text, strip content from these sub-headings through end of their paragraph: 'Sensurordning', 'Sensorordning', 'Tillatte hjelpemidler', 'Hjelpemidler til eksamen', 'Vurderingsuttrykk', 'Ny/utsatt eksamen'. Alternatively, capture only the text up to the first of these sub-headings.",
-      "confidence": "high"
-    },
-    {
-      "section": "learning_outcomes",
+      "target": "learning_outcomes",
       "error_type": "truncated",
       "severity": "medium",
       "prevalence": "common",
-      "example_course_ids": [
-        "steiner_M-MAT1_1_2025_spring_1",
-        "steiner_M-NOR1_3_2025_spring_1",
-        "steiner_M-SAM1_1_2025_spring_1"
-      ],
-      "evidence": "...kan observere og analysere elevenes læringsstrategier og læringsutbytte ved hjelp av for\n…[truncated 634 chars]",
-      "description": "Several learning_outcomes rows are silently truncated mid-sentence (marked '[truncated N chars]' in the packet). The full outcome lists in the ground-truth plans are complete; the extractor stops before capturing all items under Ferdigheter and/or Generell kompetanse. Affected courses tend to have longer outcome sections (2000+ chars). The codebook requires every individual outcome statement to be captured.",
-      "root_cause_hypothesis": "The text-splitting strategy likely applies a character or token cap per section row. When learning_outcomes exceeds this cap the remainder is silently dropped rather than split into continuation rows.",
-      "suggested_fix": "Remove or raise the per-section character cap for learning_outcomes. If a cap is needed for downstream processing, split into multiple rows (one per Kunnskap/Ferdigheter/Generell kompetanse group) rather than truncating.",
+      "example_course_ids": ["steiner_M-PEL1_2_2025_spring_1", "steiner_M-PEL1_1_2025_spring_1", "steiner_M-MAT1_1_2025_spring_1"],
+      "evidence": "•     har kunnskap om forholdet mellom identitet, livssyn og verdier hos elever",
+      "description": "Individual learning-outcome bullets present in the plan are missing from the extracted section: the first Kunnskap bullet in M-PEL1_2 ('forholdet mellom identitet...') and M-PEL1_1 ('skolens formål og demokratiske mandat'), and 'har kunnskap om geometriske grunnbegreper' in M-MAT1_1. The other bullets survive, so outcomes are silently incomplete.",
+      "root_cause_hypothesis": "Line-level cleanup in extract_sections.R (.clean_sections or the steiner splitter) removes some lines adjacent to the Kunnskap/Studenten sub-headings or blank lines (probably a heading-strip regex matching 'Kunnskap'-initial lines or eating the first line after the 'Studenten' label).",
+      "suggested_fix": "Restrict sub-heading stripping to lines that exactly equal 'Kunnskap', 'Ferdigheter', 'Generell kompetanse' (anchored ^...$), and do not drop content lines starting with bullets or 'har kunnskap'. Add a regression test comparing bullet counts with the source plan.",
+      "confidence": "medium"
+    },
+    {
+      "target": "teaching_methods",
+      "error_type": "wrong_content",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": ["steiner_M-PEL1_3_2025_spring_1", "steiner_M-MAT1_1_2025_spring_1", "steiner_M-MAT1_2_2025_spring_1"],
+      "evidence": "•   Læreplanen for matematikk i steinerskolenes grunnskoletrinn og tilsvarende plan for offentlig\nskole",
+      "description": "Content that belongs to Innhold (course_content) is emitted as teaching_methods: the last Innhold bullet after a page break in M-MAT1_1, 'Tema 4: Estetiske arbeidsmåter' (musikk, språkforming) in M-PEL1_3, and 'Tema 3: Praktisk-estetiske arbeidsmåter' (formtegning, eurytmi) in M-MAT1_2. These are topics, not the teaching-method description; course_content is left incomplete. In M-MAT1_1 it is just a page-break artefact.",
+      "root_cause_hypothesis": "The heading map matches 'arbeidsmåter' (Tema N: ...arbeidsmåter) inside Innhold as a teaching_methods heading; in M-MAT1_1 the page number '10' seems to break the Innhold block so the remainder is mis-assigned.",
+      "suggested_fix": "In R/section_heading_map.R only match 'Arbeidsmåter' / 'Undervisnings- og arbeidsformer' as teaching_methods when the line is the whole heading (^Arbeidsmåter$), not 'Tema N: ...'. Remove stand-alone page-number lines before heading detection so blocks aren't split.",
+      "confidence": "medium"
+    },
+    {
+      "target": "assessment",
+      "error_type": "truncated",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": ["steiner_M-NOR1_3_2025_spring_1", "steiner_M-MAT1_2_2025_spring_1"],
+      "evidence": "Deleksamen 2: Individuell skriftlig eksamen under tilsyn.",
+      "description": "Lines introducing the second part-exam are lost: in M-NOR1_3 the assessment keeps only 'Varighet: 6 timer.' without the 'Deleksamen 2: Individuell skriftlig eksamen under tilsyn.' line; in M-MAT1_2 'Deleksamen 2. Individuell muntlig eksamen. Varighet 20-30 minutter.' is absent entirely. The form of the second exam is therefore unrecoverable.",
+      "root_cause_hypothesis": "Sub-heading stripping in assessment removes lines starting with 'Deleksamen 2' (treated like the 'Eksamensform' label) or lines that look like sub-headings; drops the whole line, not only the label.",
+      "suggested_fix": "When removing the 'Eksamensform/Hjelpemidler/Sensorordning/Vurderingsuttrykk' labels, remove only exact label lines; keep any line carrying content after the label (e.g. starting 'Deleksamen').",
       "confidence": "high"
     },
     {
-      "section": "all",
+      "target": "assessment",
+      "error_type": "formatting_noise",
+      "severity": "low",
+      "prevalence": "widespread",
+      "example_course_ids": ["steiner_M-PEL1_1_2025_spring_1", "steiner_M-NAT1_2_2025_spring_1", "steiner_M-PEL1_2_2025_spring_1"],
+      "evidence": "Alle hjelpemidler er tillatt brukt.\nSensorordning\nTo interne sensorer.",
+      "description": "Assessment mixes exam form with logistics (aids, sensor arrangement, grading scale, ny/utsatt eksamen). The sub-heading labels are stripped inconsistently: 'Sensorordning' remains while 'Eksamensform', 'Hjelpemidler', 'Vurderingsuttrykk' and 'Ny/utsatt eksamen' are removed, leaving unlabelled orphan sentences such as 'Bestått / Ikke bestått.'.",
+      "root_cause_hypothesis": "Steiner sub-heading list in the cleaning step lacks 'Sensorordning' (and does not drop the logistics blocks).",
+      "suggested_fix": "Either strip all five exam sub-headings consistently (add 'Sensorordning'), or better keep all labels; optionally drop Sensorordning/Hjelpemidler/Ny-utsatt blocks from assessment as exam logistics.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
       "error_type": "formatting_noise",
       "severity": "low",
       "prevalence": "common",
-      "example_course_ids": [
-        "steiner_M-MAT1_1_2025_spring_1",
-        "steiner_M-NOR1_3_2025_spring_1",
-        "steiner_M-MAT1_3_2025_spring_1"
-      ],
-      "evidence": "...har kunnskap om geometriske grunnbegreper\n•     kunnskap om den matematiske oppdagelsesprosessen...\n9\nFerdigheter",
-      "description": "Bare page numbers ('9', '10', '11', '12', etc.) from the PDF source appear as standalone lines inside extracted sections — most visibly in learning_outcomes and course_content. These are PDF artefacts with no content value and pollute downstream text use.",
-      "root_cause_hypothesis": "The PDF-to-text conversion preserves page-break headers/footers as bare digit lines. The text-splitting strategy makes no attempt to filter them.",
-      "suggested_fix": "Add a pre-processing step that strips lines matching /^\\d{1,3}$/ (standalone 1-3 digit numbers) that appear at the start or end of a paragraph boundary, or use a regex to remove them globally from the raw extracted text before sectioning.",
+      "example_course_ids": ["steiner_M-NOR1_1_2025_spring_1", "steiner_M-NAT1_2_2025_spring_1", "steiner_M-MAT1_3_2025_spring_1"],
+      "evidence": "9\n   kan planlegge og gjennomføre norskundervisning i sentrale språklige emner og gjøre greie for",
+      "description": "PDF page numbers (bare integers such as 9, 10, 12, 13, 17, 18) remain as lines inside learning_outcomes, course_content, coursework_requirements and assessment, sometimes splitting a bullet list.",
+      "root_cause_hypothesis": "Source text comes from PDF; no rule removes lines consisting only of digits.",
+      "suggested_fix": "In .clean_sections() remove lines matching ^\\s*\\d{1,3}\\s*$ before splitting and for all sections.",
       "confidence": "high"
     },
     {
-      "section": "teaching_methods",
-      "error_type": "missing_section",
-      "severity": "medium",
+      "target": "coursework_requirements",
+      "error_type": "formatting_noise",
+      "severity": "low",
       "prevalence": "occasional",
-      "example_course_ids": [
-        "steiner_M-PEL2.2_2025_spring_1"
-      ],
-      "evidence": "Arbeidsmåter\nArbeidet med FoU-oppgaven starter med et skriveseminar, og den skal leveres til fastsatt tid i høstsemesteret. Det er avsatt tid til selvstendig arbeid med oppgaven. Kandidaten får tildelt en veileder...",
-      "description": "Course 9 (PEL1.5 / FoU-oppgave) has an explicit 'Arbeidsmåter' heading whose content (writing seminar, supervision, self-study, oral presentation) clearly belongs to teaching_methods per the codebook. The extractor assigned this text to course_content instead. No teaching_methods row was emitted. In other courses, teaching methods are embedded in the course description or absent, so the impact is limited to cases where an 'Arbeidsmåter' heading is present.",
-      "root_cause_hypothesis": "The heading map does not include 'Arbeidsmåter' as a trigger for teaching_methods; the heading is either unknown to the splitter or falls inside the Innhold block, causing it to be consumed by course_content.",
-      "suggested_fix": "Add 'Arbeidsmåter' to the heading-to-section map pointing to teaching_methods. If the splitter processes headings in order, ensure 'Arbeidsmåter' is checked before the Innhold/course_content boundary is closed.",
-      "confidence": "high"
-    },
-    {
-      "section": "course_content",
-      "error_type": "merged_sections",
-      "severity": "medium",
-      "prevalence": "rare",
-      "example_course_ids": [
-        "steiner_M-PEL2.2_2025_spring_1"
-      ],
-      "evidence": "•   Kunnskapsteori og forskningsmetode\n•   Pedagogisk fordypning av et bestemt tema\n•   Forskningsetikk\n•   Akademisk skriving\nArbeidsmåter\nArbeidet med FoU-oppgaven starter med et skriveseminar...",
-      "description": "In Course 9 the course_content row contains both the Innhold bullet list AND the full 'Arbeidsmåter' paragraph (teaching methods). The 'Arbeidsmåter' heading was not recognized as a section boundary, so the splitter ran both blocks together under course_content. Per the codebook, 'Arbeidsmåter' content belongs to teaching_methods.",
-      "root_cause_hypothesis": "Same root cause as the missing teaching_methods finding above: 'Arbeidsmåter' is not in the heading map so the boundary is missed.",
-      "suggested_fix": "Same fix as teaching_methods finding: add 'Arbeidsmåter' to the heading map. Once correctly split, course_content will end at that heading.",
-      "confidence": "high"
+      "example_course_ids": ["steiner_M-NOR1_3_2025_spring_1"],
+      "evidence": "Litterær samtale (muntlig arbeidskrav)",
+      "description": "In M-NOR1_3 two arbeidskrav titles ('Arbeidskrav om muntlige arbeidsformer og arbeid med drama' and 'Litterær samtale (muntlig arbeidskrav)') are dropped, leaving untitled paragraphs that cannot be attributed to a named requirement. Content is otherwise correctly placed in coursework_requirements, and generic admission/right-to-exam intro text is also included.",
+      "root_cause_hypothesis": "Lines containing 'arbeidskrav'/'muntlig' matched as a section heading and stripped.",
+      "suggested_fix": "Only strip the exact section heading line 'Arbeidskrav' (anchored) and keep sub-titles.",
+      "confidence": "medium"
     }
   ]
 }

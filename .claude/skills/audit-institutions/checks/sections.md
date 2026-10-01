@@ -24,7 +24,9 @@ Rscript R/audit/prepare_sections.R [inst ...]   # -> data/audit/sections/packets
 Pre-pass flags shown in packets (`⚑ flags: …`): `empty`, `short`/`long`
 (length outlier within institution × section), `blob` (one section ≥ 85% of
 the plan), `leak->X` (text contains a heading of section X at a line start),
-`dup_in_course`, `boilerplate` (identical text in ≥ 25 courses).
+`dup_in_course`, `boilerplate` (identical text in ≥ 25 courses). Up to five
+suspects per packet are courses with plan text but **no sections at all**
+(shown as "no sections extracted"); judge what the extractor missed.
 
 ## Rubric (review agent)
 

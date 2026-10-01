@@ -25,6 +25,7 @@ source("R/audit/utils.R")
 # ── Tunables ─────────────────────────────────────────────────────────────────
 SUSPECT_N   <- 20     # suspect courses per institution (distinct plans)
 RANDOM_N    <- 8      # random control courses per institution (distinct plans)
+ZERO_N      <- 5      # of the suspects: at most this many with no sections at all
 PLAN_TRUNC  <- 8000   # max chars of course_plan shown
 SECT_TRUNC  <- 5000   # max chars of each section raw_text shown. Must stay
                       # above the p99 of the audited prose sections (~4.4k) so
@@ -81,12 +82,22 @@ for (inst in institutions) {
   inst_plans <- plans |> filter(institution == inst)
   if (nrow(inst_plans) == 0) next
 
+  # Courses with plan text but no sections at all never reach the pre-pass,
+  # which flags section rows. Put up to ZERO_N of them first among the
+  # suspects so the agent sees what the extractor missed entirely.
+  have_sec_ids <- sec |> filter(institution == inst) |> pull(course_id)
+  set.seed(SEED)
+  zero_ids <- inst_plans |>
+    filter(!course_id %in% have_sec_ids, nchar(coalesce(course_plan, "")) > 50) |>
+    distinct(plan_content_id, .keep_all = TRUE) |>
+    slice_sample(n = ZERO_N) |>
+    pull(course_id)
+
   # Courses with extracted sections are eligible as random controls; suspects
   # are eligible regardless.
-  have_sec_ids <- sec |> filter(institution == inst) |> pull(course_id)
   pool <- inst_plans |>
     left_join(course_score, by = "course_id") |>
-    mutate(score = coalesce(score, 0)) |>
+    mutate(score = coalesce(score, 0) + if_else(course_id %in% zero_ids, 1000, 0)) |>
     filter(score > 0 | course_id %in% have_sec_ids) |>
     transmute(course_id, dedup_key = plan_content_id, score)
   selected <- audit_sample(pool, SUSPECT_N, RANDOM_N, SEED)

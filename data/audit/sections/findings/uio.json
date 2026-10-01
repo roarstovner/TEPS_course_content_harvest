@@ -11,7 +11,11 @@
       "error_type": "missing_section",
       "severity": "high",
       "prevalence": "common",
-      "example_course_ids": ["uio_HIS1200L-1_2025_spring_1", "uio_HIS4015L-1_2025_spring_1", "uio_PROF3025-1_2025_spring_1"],
+      "example_course_ids": [
+        "uio_HIS1200L-1_2025_spring_1",
+        "uio_HIS4015L-1_2025_spring_1",
+        "uio_PROF3025-1_2025_spring_1"
+      ],
       "evidence": "Obligatoriske aktiviteter: For å kunne levere mappeeksamen i emnet må du få godkjent alle følgende obligatoriske aktiviteter:",
       "description": "UiO plans put arbeidskrav / obligatoriske aktiviteter as sub-blocks inside the 'Undervisning' (or 'Eksamen') section. No coursework_requirements row is ever emitted in any of the 13 packet courses; the approve/pass gates stay inside teaching_methods (HIS1200L, HIS4015L, PROF3025, KJM5050) or assessment (KJM5050 'arbeidskrav i emnet', PROF3025 'Faglige krav for å kunne avlegge eksamen', KJM5930L 'Obligatoriske aktiviteter må være godkjent'). The codebook requires these in coursework_requirements.",
       "root_cause_hypothesis": "The UiO splitter cuts only at top-level headings (Undervisning, Eksamen); sub-headings such as 'Obligatoriske aktiviteter', 'Obligatoriske komponenter', 'Obligatoriske forhold i undervisningen' and 'Faglige krav for å kunne avlegge eksamen' have no pattern in R/section_heading_map.R, so they are appended to the previous section.",
@@ -23,7 +27,9 @@
       "error_type": "missing_section",
       "severity": "medium",
       "prevalence": "rare",
-      "example_course_ids": ["uio_HIS4015L-1_2025_spring_1"],
+      "example_course_ids": [
+        "uio_HIS4015L-1_2025_spring_1"
+      ],
       "evidence": "Pensum\n\nStudentene skal nyttiggjøre seg av den fagdidaktikken som ligger som teorier og praksis i bøkene som er oppsatt på pensum.",
       "description": "A 'Pensum' heading is present in the plan but no reading_list row is emitted; the text is swallowed into teaching_methods together with the obligatoriske aktiviteter and the entire 'Gjennomføring av praksis' description (2619 chars, a merged blob of several logical sections).",
       "root_cause_hypothesis": "'Pensum' is an embedded sub-heading inside 'Undervisning' with no heading-map entry, and 'Gjennomføring av praksis' maps to nothing.",
@@ -35,7 +41,11 @@
       "error_type": "boilerplate_only",
       "severity": "medium",
       "prevalence": "widespread",
-      "example_course_ids": ["uio_PROMO8-1_2025_autumn_4", "uio_PROMO4-1_2025_spring_1", "uio_NOR1000-1_2025_spring_1"],
+      "example_course_ids": [
+        "uio_PROMO8-1_2025_autumn_4",
+        "uio_PROMO4-1_2025_autumn_4",
+        "uio_NOR1000-1_2025_spring_1"
+      ],
       "evidence": "Mer om eksamen ved UiO\nKildebruk og referanser\nHvordan bruke KI som student\nTilrettelegging på eksamen\nTrekk fra eksamen\nSyk på eksamen / utsatt eksamen\nBegrunnelse og klage\nTa eksamen på nytt\nFusk/forsøk på fusk\nAndre veiledninger og ressurser finner du på fellessiden om eksamen ved UiO.",
       "description": "Every UiO assessment row ends with the same generic UiO-wide exam-link block (navigation/admin boilerplate), plus Eksamensspråk/Karakterskala lines and 'Adgang til ny eller utsatt eksamen'. For courses without an exam (PROMO) the assessment is almost entirely this boilerplate. This is noise, not assessment content, and will inflate identical text across all courses.",
       "root_cause_hypothesis": "No .clean_sections() rule or anonymization handler strips the common UiO footer after 'Mer om eksamen ved UiO'.",
@@ -47,7 +57,11 @@
       "error_type": "boilerplate_only",
       "severity": "medium",
       "prevalence": "widespread",
-      "example_course_ids": ["uio_TYSK4091-1_2025_spring_1", "uio_NOR1000-1_2025_spring_1", "uio_HIS1200L-1_2025_spring_1"],
+      "example_course_ids": [
+        "uio_TYSK4091-1_2025_spring_1",
+        "uio_NOR1000-1_2025_spring_1",
+        "uio_HIS1200L-1_2025_spring_1"
+      ],
       "evidence": "Studenter må hvert semester søke og få plass på undervisningen og melde seg til eksamen i Studentweb.\n\nDersom du ikke allerede har studieplass ved UiO, kan du søke opptak til våre studieprogrammer.",
       "description": "The prerequisites section is built from the whole 'Opptak til emnet' block, which includes generic Studentweb/admission boilerplate repeated across courses. In HIS1200L it additionally holds særemne-group sign-up logistics. These are not prerequisites per the codebook. Real prerequisites (Obligatoriske/Anbefalte forkunnskaper) are mixed in with them.",
       "root_cause_hypothesis": "'Opptak til emnet' is mapped to prerequisites wholesale with no boilerplate stripping.",
@@ -59,7 +73,10 @@
       "error_type": "other",
       "severity": "high",
       "prevalence": "rare",
-      "example_course_ids": ["uio_MAT5930L-2_2025_spring_1", "uio_PROF3025-1_2025_spring_1"],
+      "example_course_ids": [
+        "uio_MAT5930L-2_2025_spring_1",
+        "uio_PROF3025-1_2025_spring_1"
+      ],
       "evidence": "Ta kontakt med Tom Lindstrøm (lindstro@math.uio.no) eller studieadministrasjonen ved Matematisk institutt (studieinfo@math.uio.no) for å få mer informasjon.",
       "description": "Section text carries personal names and e-mail addresses (also 'lektorprogrammet@ils.uio.no' in PROF3025 prerequisites) that are blanked in the anonymized full plan ('Ta kontakt med () eller ... ()'). The sections were derived from text that had not been anonymized (or anonymization was bypassed), so PII leaks into the sections dataset.",
       "root_cause_hypothesis": "extract_sections reads extracted_text / a pre-anonymization source rather than the anonymized course_plan.",
