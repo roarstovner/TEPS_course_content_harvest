@@ -14,20 +14,20 @@ Generated: 2026-10-02
 | mf | 55 | 29 | 2025 | 51 | 92.7% | 4350 | 26 | 49.0% |
 | nih | 184 | 34 | 2021-2025 | 81 | 44.0% | 2332 | 81 | 0.0% |
 | nla | 365 | 189 | 2025 | 142 | 38.9% | 5502 | 139 | 2.1% |
-| nmbu | 29 | 15 | 2025 | 21 | 72.4% | 6204 | 11 | 47.6% |
+| nmbu | 29 | 15 | 2025 | 21 | 72.4% | 4653 | 11 | 47.6% |
 | nord | 3489 | 434 | 2016-2025 | 3479 | 99.7% | 4980 | 1398 | 59.8% |
-| ntnu | 5735 | 409 | 2004-2025 | 3791 | 66.1% | 4606 | 2009 | 47.0% |
-| oslomet | 1684 | 178 | 2018-2025 | 1684 | 100.0% | 12367 | 655 | 60.9% |
+| ntnu | 5735 | 409 | 2004-2025 | 3791 | 66.1% | 4066 | 2009 | 47.0% |
+| oslomet | 1684 | 178 | 2018-2025 | 1684 | 100.0% | 12259 | 655 | 60.9% |
 | samas | 130 | 68 | 2025 | 0 | 0.0% | NA | 0 | NaN% |
 | steiner | 36 | 18 | 2025 | 30 | 83.3% | 5027 | 15 | 50.0% |
 | uia | 2881 | 245 | 2013-2025 | 1123 | 39.0% | 4344 | 811 | 27.8% |
 | uib | 2619 | 177 | 2004-2025 | 1473 | 56.2% | 6826 | 772 | 47.6% |
 | uio | 100 | 54 | 2025 | 96 | 96.0% | 4342 | 52 | 45.8% |
 | uis | 2921 | 316 | 2007-2025 | 2728 | 93.4% | 5546 | 1299 | 52.4% |
-| uit | 6693 | 621 | 2004-2025 | 0 | 0.0% | NA | 0 | NaN% |
+| uit | 6693 | 621 | 2004-2025 | 3150 | 47.1% | 4105 | 2341 | 25.7% |
 | usn | 3036 | 401 | 2018-2025 | 1238 | 40.8% | 10800 | 1183 | 4.4% |
 
-**Total**: 38823 rows, 21996 with extracted text (56.7%), 12075 unique
+**Total**: 38823 rows, 25146 with extracted text (64.8%), 14499 unique
 plans.
 
 **Columns:**
@@ -93,7 +93,7 @@ year) that have a plan in at least one semester:
 | uib | 1328 | 85% | 3 | 681 | 441 | 56% | 56.2% |
 | uio | 54 | 85% | 0 | 44 | 2 | 96% | 96.0% |
 | uis | 1602 | 82% | 0 | 1235 | 84 | 93% | 93.4% |
-| uit | 3605 | 86% | 0 | 0 | 3088 | 0% | 0.0% |
+| uit | 3605 | 86% | 1078 | 877 | 1133 | 63% | 47.1% |
 | usn | 1657 | 83% | 1021 | 31 | 327 | 73% | 40.8% |
 
 ## Interpreting the dedup ratio
@@ -353,18 +353,17 @@ each row is truly distinct (NIH, Steiner, UiO).
 
 ### UiT (The Arctic University of Norway)
 
-- **Filtered to 2025 only** (no year in URL; see \#74, \#77)
-- **97.5% success rate** (545/559)
-- All UiT pages contain “Access denied to page component” HTML comments
-  and “Error rendering component” artifacts — this is a persistent issue
-  on UiT’s website, not a scraping problem (see \#64)
-- CSS selector changed from `.hovedfelt` (single) to
-  `.hovedfelt > main > div.col-md-12` (many) to work around the broken
-  component (see \#60)
-- `.pre_uit()` strips remaining “Error rendering component” text and
-  breadcrumb artifacts
-- 14 rows have extracted text that normalizes to NA (rendering errors
-  with no real content)
+- **Historical plans** via document ids from the course page’s semester
+  picker (see \#113)
+- The plan is read from `.mainContent` (since \#218; the old
+  `.hovedfelt > main > div.col-md-12` matched nothing after a site
+  change, so the 2026-10 harvest first had no text)
+- `.pre_uit()` removes the “OBS! Dette emnet tilhører et tidligere
+  semester / år” banner and cuts from “Andre år og semester” / “Kontakt
+  oss” (staff names and e-mails) to the end
+- Some pages say “Error rendering component” where the plan should be:
+  the plan failed to render on UiT’s site (see \#64), and these rows
+  have no text
 
 ------------------------------------------------------------------------
 

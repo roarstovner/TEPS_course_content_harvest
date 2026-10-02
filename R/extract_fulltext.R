@@ -115,9 +115,17 @@ read_harvest <- function(institutions = NULL, data_dir = "data") {
 }
 
 .pre_uit <- function(txt) {
-  # Strip "Error rendering component" artifact from broken UI widget
-  txt <- stringr::str_remove(txt, "(?s)Error rendering component.*$")
-  stringr::str_trim(txt)
+  txt |>
+    # Banner on plans from earlier semesters
+    stringr::str_remove(paste0("^\\s*(?:OBS! Dette emnet tilhører et tidligere semester / år|",
+                               "NOTE! This course belongs to a previous semester/year)\\s*")) |>
+    # From a plan component that failed to render, or the year picker and the
+    # contact block (staff names, titles, e-mails), to the end (#218)
+    stringr::str_remove(paste0("(?s)\\n?(?:Error rendering component|Andre år og semester|",
+                               "Previous years and semesters|Kontakt oss)\\b.*$")) |>
+    # A heading left alone means the plan itself did not render
+    stringr::str_remove("^(?:Om emnet|About the course)\\s*$") |>
+    stringr::str_trim()
 }
 
 extract_nla_json <- function(raw_html, academic_year) {

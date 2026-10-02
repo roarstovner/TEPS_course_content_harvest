@@ -212,12 +212,17 @@ institution_configs <- list(
   uit = list(
     code = "1130",
     strategy = "url_discovery",
-    selector = ".hovedfelt > main > div.col-md-12",
-    selector_mode = "multi",
+    # div.col-md-7.mainContent holds the plan's h2 sections (Om emnet, Hva
+    # lærer du, Undervisning og pensum, Eksamen) plus the year picker and the
+    # contact block with staff names, which .pre_uit() cuts (#218).
+    selector = ".mainContent",
+    selector_mode = "single",
     year_in_url = TRUE,
     post_fn = .pre_uit,
     section_strategy = "html_headings",
-    section_heading_level = "h2"
+    section_heading_level = "h2",
+    # h3 "Pensum" under "Undervisning og pensum", "Mer info om arbeidskrav"
+    section_subheading_selector = "h3"
   ),
 
   nmbu = list(

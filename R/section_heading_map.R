@@ -76,6 +76,7 @@ section_heading_patterns <- tibble::tribble(
   "assessment methods",                    "assessment",             FALSE,
   "form of assessment",                    "assessment",             FALSE,
   "examination",                           "assessment",             FALSE,
+  "assessment",                            "assessment",             TRUE,
 
   # --- prerequisites ---
   "krav til forkunnskaper",                "prerequisites",          FALSE,
@@ -135,6 +136,7 @@ section_heading_patterns <- tibble::tribble(
   "ferdigheiter",                          "learning_outcomes",      FALSE,
   "learning outcomes",                     "learning_outcomes",      FALSE,
   "learning outcome",                      "learning_outcomes",      FALSE,
+  "objectives of the course",              "learning_outcomes",      TRUE,
   # English sub-headings (inn English plans). Exact, so "Prerequisite
   # knowledge" and the like are not caught.
   "knowledge",                             "learning_outcomes",      TRUE,
@@ -169,6 +171,8 @@ section_heading_patterns <- tibble::tribble(
   "teaching and learning activities",      "teaching_methods",       FALSE,
   "teaching methods",                      "teaching_methods",       FALSE,
   "teaching and organization",             "teaching_methods",       FALSE,
+  # uit (#218): teaching and language, then an h3 "Pensum" (reading_list)
+  "undervisning og pensum",                "teaching_methods",       TRUE,
 
   # --- reading_list ---
   "pensumlitteratur",                      "reading_list",           FALSE,
@@ -194,6 +198,8 @@ section_heading_patterns <- tibble::tribble(
   "innledning",                            "course_content",         FALSE,
   "innleiing",                             "course_content",         FALSE,
   "introduksjon",                          "course_content",         TRUE,
+  "om emnet",                              "course_content",         TRUE,   # uit
+  "about the course",                      "course_content",         TRUE,
   "course content",                        "course_content",         FALSE,
   "content",                               "course_content",         FALSE
 )

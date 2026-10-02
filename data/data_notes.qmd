@@ -286,12 +286,10 @@ Low dedup (<10%) means most rows have genuinely different content, typically bec
 
 ### UiT (The Arctic University of Norway)
 
-- **Filtered to 2025 only** (no year in URL; see #74, #77)
-- **97.5% success rate** (545/559)
-- All UiT pages contain "Access denied to page component" HTML comments and "Error rendering component" artifacts — this is a persistent issue on UiT's website, not a scraping problem (see #64)
-- CSS selector changed from `.hovedfelt` (single) to `.hovedfelt > main > div.col-md-12` (many) to work around the broken component (see #60)
-- `.pre_uit()` strips remaining "Error rendering component" text and breadcrumb artifacts
-- 14 rows have extracted text that normalizes to NA (rendering errors with no real content)
+- **Historical plans** via document ids from the course page's semester picker (see #113)
+- The plan is read from `.mainContent` (since #218; the old `.hovedfelt > main > div.col-md-12` matched nothing after a site change, so the 2026-10 harvest first had no text)
+- `.pre_uit()` removes the "OBS! Dette emnet tilhører et tidligere semester / år" banner and cuts from "Andre år og semester" / "Kontakt oss" (staff names and e-mails) to the end
+- Some pages say "Error rendering component" where the plan should be: the plan failed to render on UiT's site (see #64), and these rows have no text
 
 ---
 
