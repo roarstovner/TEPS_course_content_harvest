@@ -257,13 +257,7 @@ extract_sections_html <- function(input, cfg) {
   for (child in rvest::html_children(container)) visit(child)
   flush()
 
-  if (length(sections) == 0) return(.empty_sections())
-
-  tibble::tibble(
-    section  = names(sections),
-    raw_text = vapply(sections, function(v) paste(v, collapse = "\n\n"),
-                      character(1))
-  )
+  .list_to_sections(sections)
 }
 
 #' text_split strategy — line-based heading splitter on extracted text
@@ -369,13 +363,7 @@ extract_sections_text <- function(input, cfg) {
   }
   flush()
 
-  if (length(sections) == 0) return(.empty_sections())
-
-  tibble::tibble(
-    section  = names(sections),
-    raw_text = vapply(sections, function(v) paste(v, collapse = "\n\n"),
-                      character(1))
-  )
+  .list_to_sections(sections)
 }
 
 # A plain-text line that could be a section heading: starts with a capital
@@ -430,13 +418,7 @@ extract_sections_nord <- function(input, cfg) {
     sections[[section]] <- c(sections[[section]], body)
   }
 
-  if (length(sections) == 0) return(.empty_sections())
-
-  tibble::tibble(
-    section  = names(sections),
-    raw_text = vapply(sections, function(v) paste(v, collapse = "\n\n"),
-                      character(1))
-  )
+  .list_to_sections(sections)
 }
 
 #' details_uib strategy — UiB hybrid details/summary + h2 sections
@@ -501,13 +483,7 @@ extract_sections_uib <- function(input, cfg) {
   for (k in rvest::html_children(body_root)) visit(k)
   flush()
 
-  if (length(sections) == 0) return(.empty_sections())
-
-  tibble::tibble(
-    section  = names(sections),
-    raw_text = vapply(sections, function(v) paste(v, collapse = "\n\n"),
-                      character(1))
-  )
+  .list_to_sections(sections)
 }
 
 # details/summary accordion sections under `root`: one row per <details>
@@ -526,6 +502,13 @@ extract_sections_uib <- function(input, cfg) {
                                                 raw_text = trimws(body)))
   }
   out
+}
+
+# A strategy's list of section -> text chunks as a (section, raw_text) tibble.
+.list_to_sections <- function(sections) {
+  if (length(sections) == 0) return(.empty_sections())
+  .merge_sections(tibble::tibble(section = rep(names(sections), lengths(sections)),
+                                 raw_text = unlist(sections, use.names = FALSE)))
 }
 
 # Concatenate rows of the same section in order of first appearance.
@@ -667,13 +650,7 @@ extract_sections_nla <- function(input, cfg) {
     add(section, body)
   }
 
-  if (length(sections) == 0) return(.empty_sections())
-
-  tibble::tibble(
-    section  = names(sections),
-    raw_text = vapply(sections, function(v) paste(v, collapse = "\n\n"),
-                      character(1))
-  )
+  .list_to_sections(sections)
 }
 
 # Parse course_id like "nla_CODE_2024_spring_1" into the academic-year
