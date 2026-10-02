@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   selector, strip FS timestamps / bare "Ingen" rows (#198)
 
 ### Added
+- Build the {targets} pipeline in parallel with crew (#268)
 - `/audit-institutions` skill: per-institution review agents for section
   extraction, fulltext extraction and anonymization, with packet builders
   (`R/audit/prepare_{check}.R`), mechanical verification of agent findings and
