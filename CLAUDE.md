@@ -34,9 +34,8 @@ documenting, write it there and, if agents need to find it, add a pointer here.
   what is in progress or blocked, decisions the user must make, unpushed
   commits and their branch, and the next step. A final chat message is not a
   handoff: it can be cut off and is not stored with the issues.
-- The issue database is shared by all worktrees. Run chainlink from the
-  worktree that owns the work: closing an issue writes `CHANGELOG.md` in the
-  current directory.
+- Run chainlink from the repository root: closing an issue writes
+  `CHANGELOG.md` in the current directory. Commit it.
 
 ## Rules
 
