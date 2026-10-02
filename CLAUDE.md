@@ -40,7 +40,12 @@ documenting, write it there and, if agents need to find it, add a pointer here.
 ## Rules
 
 - Run the tests after code changes:
-  `Rscript -e 'testthat::test_dir("tests/testthat")'`.
+  `Rscript -e 'testthat::test_dir("tests/testthat")'`, and check the failure
+  count, not just the exit status of a shell chain. CI runs them on push.
+- Packages come from `renv.lock`. A new package: `renv::install()`, then
+  `renv::snapshot()`, and commit `renv.lock` with the code that uses it.
+- `tar_make()` runs steps on crew workers. To debug a step interactively:
+  `tar_make(callr_function = NULL, use_crew = FALSE)`.
 - Source the R files in the order of README "Quick Start" (or of `_targets.R`):
   `R/institution_config.R` refers to functions in
   `R/fetch_html_cols.R` and `R/extract_fulltext.R`.

@@ -120,6 +120,12 @@ writes the data files in `data/` (see "Data Files: Published and Internal"),
 `data/browser_data.RDS`, the OJS Parquet files and `data/data_notes.md`. The
 harvest is not part of it.
 
+The steps run on 4 local worker processes ({crew}, set in `tar_option_set()`
+in `_targets.R`), several institutions at a time. A full build takes about 19
+minutes; the floor is the slowest single institution's sections (about 8
+minutes). To debug a step with `browser()`, run in the current session instead:
+`targets::tar_make(callr_function = NULL, use_crew = FALSE)`.
+
 The pipeline ends by comparing the built data with a snapshot of
 per-institution and per-section counts and median text lengths
 (`R/pipeline_metrics.R`, `tests/snapshots/pipeline_metrics.csv`). Changes
@@ -134,6 +140,20 @@ check_pipeline_metrics(update = TRUE)
 ```
 
 Per-institution prose notes are edited directly in `data/data_notes.qmd`.
+
+### Packages and Tests
+
+Package versions are pinned with renv: `renv.lock` records R 4.6.1 and every
+package the code uses, and R started in this folder loads them from the
+project library in `renv/` (activated by `.Rprofile`). On a new machine,
+`renv::restore()` installs them. After adding a package, record it with
+`renv::snapshot()` and commit `renv.lock`.
+
+The tests run with `testthat::test_dir("tests/testthat")`, and on GitHub
+Actions for every push and pull request to main
+(`.github/workflows/tests.yml`, packages from `renv.lock`). Tests that need
+the harvested data (`data/*.RDS` is not in git), a browser or external URLs
+skip themselves there.
 
 ## Adding a New Institution
 
@@ -495,6 +515,8 @@ pages.
 
 ```
 ├── _targets.R                 # Post-harvest pipeline: targets::tar_make()
+├── renv.lock                  # Pinned package versions (renv::restore())
+├── .github/workflows/tests.yml # Tests on GitHub Actions
 ├── R/
 │   ├── harvest.R              # Entry points: harvest_institution(), harvest_all()
 │   ├── harvest_strategies.R   # Strategy implementations
