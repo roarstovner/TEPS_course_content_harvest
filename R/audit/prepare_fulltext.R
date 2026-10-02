@@ -125,7 +125,7 @@ for (inst in institutions) {
     cat(sprintf("  %-8s skipped (noop strategy, no extracted text by design)\n", inst))
     next
   }
-  df <- read_harvest(inst)   # extracted_text from run_extract_fulltext.R
+  df <- read_harvest(inst)   # extracted_text from the {targets} pipeline
   df <- df |>
     mutate(
       html_error_msg = vapply(html_error, error_msg, character(1)),

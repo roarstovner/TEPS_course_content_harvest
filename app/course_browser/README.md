@@ -5,7 +5,7 @@ A plan-centric concordance browser for the harvested course plans.
 ## Build & run
 
 ```sh
-Rscript R/build_browser_data.R                      # after run_dedup.R or run_extract_sections.R
+Rscript -e 'targets::tar_make()'                    # rebuilds data/browser_data.RDS when needed
 Rscript -e 'shiny::runApp("app/course_browser")'
 ```
 

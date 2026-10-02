@@ -10,8 +10,8 @@
 #   (b) the extractor's sections_raw rows — what to audit.
 #
 # Inputs (regenerate in this order if stale):
-#   data/course_offerings_full.RDS   Rscript R/run_dedup.R
-#   data/sections_raw.RDS            Rscript R/run_extract_sections.R
+#   data/course_offerings_full.RDS   targets::tar_make()
+#   data/sections_raw.RDS            targets::tar_make()
 #   data/sections_qa_suspects.RDS    Rscript R/audit/qa_sections.R
 #
 # Outputs:
@@ -44,7 +44,7 @@ dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
 
 # ── Load ─────────────────────────────────────────────────────────────────────
 audit_require_fresh("data/sections_raw.RDS", "data/course_offerings_full.RDS",
-                    "Run Rscript R/run_extract_sections.R.")
+                    "Run targets::tar_make().")
 audit_require_fresh("data/sections_qa_suspects.RDS", "data/sections_raw.RDS",
                     "Run Rscript R/audit/qa_sections.R.")
 

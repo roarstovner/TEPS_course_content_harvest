@@ -36,7 +36,7 @@ writes `data/plans.parquet` (~19 MB, the searchable corpus) and `data/offerings.
 ## Notes
 
 - The Parquet files are a **regenerable build artifact** (gitignored). The source of truth is
-  the RDS in `data/`. Re-run `build_data.R` after re-running `R/run_dedup.R`.
+  the RDS in `data/`. `targets::tar_make()` rebuilds them when the RDS change.
 - Search/display use the anonymized `course_plan` column only — never the raw `extracted_text`.
 - A plan maps to many offerings (same plan reused across years/semesters), so a search hit
   is a *plan*; `offerings.parquet` lists the offerings that use it.

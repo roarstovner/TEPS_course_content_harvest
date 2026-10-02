@@ -48,7 +48,7 @@ extract_fulltext_css <- function(html, selector, mode = "single",
 #' Extract course plan text from the raw harvest
 #'
 #' One place for how `extracted_text` is made from what the harvest stored
-#' (#256), used by the harvest strategies and by R/run_extract_fulltext.R:
+#' (#256), used by the harvest strategies and by the {targets} pipeline:
 #' the CSS selector and pre/post functions on `html` (standard, url_discovery,
 #' uis web pages), the year's JSON in nla's page, cleanup of the text USN
 #' renders in Chrome. Rows the harvest filled from a PDF (uis archive plans,
@@ -78,7 +78,7 @@ extract_fulltext_from_raw <- function(df, config) {
 #' Harvested rows with the current extracted_text
 #'
 #' Reads the raw harvest (data/html_{inst}.RDS) and takes `extracted_text` from
-#' data/extracted_text.RDS, which R/run_extract_fulltext.R rebuilds with the
+#' data/extracted_text.RDS, which the {targets} pipeline rebuilds with the
 #' current config. The `extracted_text` stored in html_{inst}.RDS at harvest
 #' time is ignored.
 #'
@@ -86,7 +86,7 @@ extract_fulltext_from_raw <- function(df, config) {
 read_harvest <- function(institutions = NULL, data_dir = "data") {
   text_file <- file.path(data_dir, "extracted_text.RDS")
   if (!file.exists(text_file)) {
-    stop(text_file, " is missing: run Rscript R/run_extract_fulltext.R first")
+    stop(text_file, " is missing: run targets::tar_make() first")
   }
   files <- list.files(data_dir, "^html_.*\\.RDS$", full.names = TRUE)
   if (length(institutions)) {

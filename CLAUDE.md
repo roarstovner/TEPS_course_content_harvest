@@ -41,19 +41,19 @@ documenting, write it there and, if agents need to find it, add a pointer here.
 
 - Run the tests after code changes:
   `Rscript -e 'testthat::test_dir("tests/testthat")'`.
-- Source the R files in the order of README "Quick Start" (or of the `run_*.R`
-  scripts): `R/institution_config.R` refers to functions in
+- Source the R files in the order of README "Quick Start" (or of `_targets.R`):
+  `R/institution_config.R` refers to functions in
   `R/fetch_html_cols.R` and `R/extract_fulltext.R`.
 - Privacy: `html` and `extracted_text` are raw and hold staff names, e-mails and
   phone numbers. Anything published is built from `anonymize_text()`; sections
-  are cut from raw text, so `R/run_extract_sections.R` must keep anonymizing.
+  are cut from raw text, so `institution_sections()` must keep anonymizing.
   See README "Data Files: Published and Internal".
 - `data/html_{inst}.RDS` and `data/checkpoint/` are the raw harvest: only a
   harvest writes them. To change extracted text, change the config or
-  `R/extract_fulltext.R` and run `Rscript R/run_extract_fulltext.R <inst>`.
+  `R/extract_fulltext.R` and run `targets::tar_make()`.
 - After changing extraction, the heading map or the anonymizer, rebuild the
-  derived data (README "Rebuilding Derived Data") and read the metrics report
-  the run scripts print (`check_pipeline_metrics()`). Explain every flagged
+  derived data with `targets::tar_make()` and read `tar_read(metrics_check)`
+  (README "Rebuilding Derived Data"). Explain every flagged
   change; update the snapshot (`check_pipeline_metrics(update = TRUE)`) only
   for intended ones, in the same commit, and say so in the issue comment.
 - UiO: never switch to semester URLs (`/h24/`, `/v25/`). They hold logistics,

@@ -113,7 +113,7 @@ manifest <- list()
 sample   <- list()
 
 for (inst in institutions) {
-  df <- read_harvest(inst)   # extracted_text from run_extract_fulltext.R
+  df <- read_harvest(inst)   # extracted_text from the {targets} pipeline
   df <- df |>
     select(-any_of(c("html", "html_error"))) |>
     filter(!is.na(extracted_text), nzchar(extracted_text))

@@ -4,7 +4,7 @@
 # into ./data/ for the Quarto OJS page (index.qmd) to load via FileAttachment.
 #
 # The RDS files are the source of truth; the Parquet here is a regenerable build
-# artifact (gitignored). Re-run after re-running R/run_dedup.R.
+# artifact (gitignored), rebuilt by targets::tar_make() (target ojs_data_files).
 #
 # Run from this directory:  Rscript build_data.R
 

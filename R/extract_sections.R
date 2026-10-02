@@ -673,7 +673,7 @@ extract_sections_nla <- function(input, cfg) {
 #'
 #' Returns the set of heading strings that a given strategy *would*
 #' try to match against the pattern table — before any matching
-#' occurs. Used by run_extract_sections.R to surface unmapped
+#' occurs. Used by unmapped_headings() (R/pipeline.R) to surface unmapped
 #' heading texts that suggest pattern-table additions (#192).
 #'
 #' Returns character() for strategies that don't have a heading

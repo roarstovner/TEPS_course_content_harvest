@@ -64,18 +64,18 @@ URL must be discovered)</td>
 </tr>
 <tr>
 <td>6. Rebuild the text from the stored HTML</td>
-<td><code>R/run_extract_fulltext.R</code></td>
+<td><code>institution_fulltext()</code> (<code>R/pipeline.R</code>)</td>
 <td><code>extracted_text.RDS</code></td>
 </tr>
 <tr>
 <td>7. Anonymize and deduplicate</td>
-<td><code>R/run_dedup.R</code></td>
+<td><code>institution_plans()</code></td>
 <td><code>course_plans.RDS</code>,
 <code>course_offerings*.RDS</code></td>
 </tr>
 <tr>
 <td>8. Split into sections</td>
-<td><code>R/run_extract_sections.R</code></td>
+<td><code>institution_sections()</code></td>
 <td><code>sections_raw.RDS</code></td>
 </tr>
 </tbody>
@@ -87,15 +87,15 @@ dispatches to a strategy in `R/harvest_strategies.R` (`standard`,
 `json_extract`, `noop`). `R/institution_config.R` is the single source
 of truth for each institution: strategy, CSS selector, `selector_mode`,
 `year_in_url`, pre/post functions, fetch overrides and the `section_*`
-fields.
+fields. Stages 6-8 and everything after them are a {targets} pipeline
+(see “Rebuilding Derived Data”).
 
 `data/html_{inst}.RDS` is the raw harvest and only harvesting writes it.
 The steps after it rebuild everything from it with the current code, so
-a changed selector or post function needs
-`Rscript R/run_extract_fulltext.R <inst>`, not a new harvest. The
-`extracted_text` saved with the harvest is not used downstream, except
-for plans that came from a PDF (uis archive plans, steiner): the PDF is
-not kept, so that text is the raw data.
+a changed selector or post function needs `targets::tar_make()`, not a
+new harvest. The `extracted_text` saved with the harvest is not used
+downstream, except for plans that came from a PDF (uis archive plans,
+steiner): the PDF is not kept, so that text is the raw data.
 
 ## Quick Start: Running the Pipeline
 
@@ -154,79 +154,43 @@ script stops or crashes:
 
 ### Rebuilding Derived Data
 
-Everything after the harvest is rebuilt from `data/html_{inst}.RDS`.
-After a harvest, or after changing the code of a step, re-run that step
-and the ones below it:
+Everything after the harvest is a {targets} pipeline: `_targets.R` lists
+the steps, `R/pipeline.R` holds their functions. Run it after a harvest
+or after changing code or config:
 
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th>Step</th>
-<th>Command</th>
-<th>Re-run after changes to</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Fulltext</td>
-<td><code>Rscript R/run_extract_fulltext.R [inst ...]</code></td>
-<td>selectors and pre/post functions in
-<code>R/institution_config.R</code>,
-<code>R/extract_fulltext.R</code></td>
-</tr>
-<tr>
-<td>Anonymize + deduplicate</td>
-<td><code>Rscript R/run_dedup.R</code></td>
-<td><code>R/anonymize.R</code>, <code>R/normalize_plan_text.R</code>,
-<code>R/deduplicate_plans.R</code></td>
-</tr>
-<tr>
-<td>Sections</td>
-<td><code>Rscript R/run_extract_sections.R [inst ...]</code></td>
-<td><code>R/extract_sections.R</code>,
-<code>R/section_heading_map.R</code>, <code>R/anonymize.R</code>,
-<code>section_*</code> config fields</td>
-</tr>
-<tr>
-<td>Course browser data</td>
-<td><code>Rscript R/build_browser_data.R</code></td>
-<td>any of the above</td>
-</tr>
-<tr>
-<td>OJS browser data</td>
-<td>see <code>app/course_browser_ojs/README.md</code></td>
-<td><code>course_plans.RDS</code>,
-<code>course_offerings.RDS</code></td>
-</tr>
-<tr>
-<td>Data quality notes</td>
-<td><code>quarto render data/data_notes.qmd</code></td>
-<td>any harvest or <code>run_dedup.R</code> run</td>
-</tr>
-</tbody>
-</table>
+``` r
+targets::tar_make()               # rebuild whatever is outdated
+targets::tar_outdated()           # what would be rebuilt, without building
+targets::tar_read(metrics_check)  # changes against the metrics snapshot
+targets::tar_read(unmapped)       # headings the section extractor could not map
+```
 
-Per-institution prose notes are edited directly in
-`data/data_notes.qmd`.
+{targets} keeps each step’s result in `_targets/` (gitignored) together
+with a hash of its inputs and of the code it calls, and reruns a step
+only when one of those changed. The steps per institution (fulltext,
+plans, sections, unmapped headings) run once per institution: a new
+`data/html_uib.RDS`, or a change to uib’s entry in
+`R/institution_config.R`, rebuilds only uib, while a change to shared
+code (`R/anonymize.R`, `R/section_heading_map.R`,
+`R/extract_sections.R`) reruns that step for every institution. The
+pipeline writes the data files in `data/` (see “Data Files: Published
+and Internal”), `data/browser_data.RDS`, the OJS Parquet files and
+`data/data_notes.md`. The harvest is not part of it.
 
-`run_dedup.R` and `run_extract_sections.R` end by comparing the built
-data with a snapshot of per-institution and per-section counts and
-median text lengths (`check_pipeline_metrics()` in
-`R/pipeline_metrics.R`, snapshot in
-`tests/snapshots/pipeline_metrics.csv`). Every change beyond tolerance
-is printed, and the test `tests/testthat/test-pipeline-metrics.R` fails
-until the snapshot is updated. When a change is intended, update the
-snapshot and commit it together with the change:
+The pipeline ends by comparing the built data with a snapshot of
+per-institution and per-section counts and median text lengths
+(`R/pipeline_metrics.R`, `tests/snapshots/pipeline_metrics.csv`).
+Changes beyond tolerance show as a warning in `tar_make()` and make
+`tests/testthat/test-pipeline-metrics.R` fail. When a change is
+intended, update the snapshot and commit it together with the change:
 
 ``` r
 source("R/pipeline_metrics.R")
 check_pipeline_metrics(update = TRUE)
 ```
+
+Per-institution prose notes are edited directly in
+`data/data_notes.qmd`.
 
 ## Adding a New Institution
 
@@ -296,14 +260,8 @@ DOM), PDF splitting or URL discovery need a strategy function in
 
 ## Post-Harvest: Anonymization and Deduplication
 
-After harvesting, run `R/run_dedup.R` to anonymize and deduplicate
-course plans:
-
-``` r
-source("R/run_dedup.R")
-```
-
-This runs a three-stage pipeline:
+The pipeline anonymizes and deduplicates the course plans in three
+stages:
 
 1.  **Anonymize** (`anonymize_text()`): Removes PII (teacher names,
     emails, phone numbers, staff lists “Name (Role)”, signature lines
@@ -364,15 +322,8 @@ This runs a three-stage pipeline:
 
 ## Post-Harvest: Section Extraction
 
-To split each course plan into its parts, run:
-
-``` r
-source("R/run_extract_sections.R")
-# or, from the shell, only some institutions (their rows are replaced):
-# Rscript R/run_extract_sections.R uia oslomet
-```
-
-This writes `data/sections_raw.RDS` with one row per course and section
+The pipeline splits each course plan into its parts and writes
+`data/sections_raw.RDS` with one row per course and section
 (`course_id`, `institution`, `section`, `raw_text`). The seven sections
 are `course_content`, `learning_outcomes`, `teaching_methods`,
 `assessment`, `coursework_requirements`, `prerequisites` and
@@ -382,10 +333,11 @@ are `course_content`, `learning_outcomes`, `teaching_methods`,
 text, exam logistics and placeholder rows such as “Se fagplanen.” are
 left out.
 
-The script prints the share of courses with each section per institution
-and the headings it could not map. To map a new heading, add a pattern
-to `R/section_heading_map.R`; how each institution is split is set by
-the `section_*` fields in `R/institution_config.R`.
+`tar_read(metrics)` has the number of courses with each section per
+institution, and `tar_read(unmapped)` the headings the extractor could
+not map. To map a new heading, add a pattern to
+`R/section_heading_map.R`; how each institution is split is set by the
+`section_*` fields in `R/institution_config.R`.
 
 ### Strategies
 
@@ -847,9 +799,9 @@ page says no information is available
 **Extracted text is empty or wrong?** - Verify the CSS selector with
 browser dev tools on a real course page - Update the selector in
 `R/institution_config.R` if the website changed, then
-`Rscript R/run_extract_fulltext.R <inst>` (no new harvest needed) -
-Check whether the institution needs `selector_mode = "multi"` - Some
-pages have different structures for different years
+`targets::tar_make()` (no new harvest needed) - Check whether the
+institution needs `selector_mode = "multi"` - Some pages have different
+structures for different years
 
 **Content missing from JavaScript-rendered pages?** - Shadow DOM content
 is invisible to `html_text()`; see USN above -
@@ -862,6 +814,7 @@ fetch again
 
 ## File Organization
 
+    ├── _targets.R                 # Post-harvest pipeline: targets::tar_make()
     ├── R/
     │   ├── harvest.R              # Entry points: harvest_institution(), harvest_all()
     │   ├── harvest_strategies.R   # Strategy implementations
@@ -875,11 +828,9 @@ fetch again
     │   ├── anonymize.R            # PII removal: anonymize_text() for course_plan and sections
     │   ├── normalize_plan_text.R  # Lossy normalization for dedup hashing
     │   ├── deduplicate_plans.R    # Groups identical plans by content hash
-    │   ├── run_dedup.R            # Entry point for anonymize + dedup pipeline
     │   ├── section_heading_map.R  # Heading → section patterns (incl. ".drop")
     │   ├── extract_sections.R     # Section extraction strategies + cleanup
-    │   ├── run_extract_fulltext.R # Entry point: extracted_text from the raw harvest
-    │   ├── run_extract_sections.R # Entry point for section extraction
+    │   ├── pipeline.R             # Steps of the {targets} pipeline (_targets.R)
     │   ├── build_browser_data.R   # Builds data/browser_data.RDS for the course browser
     │   ├── pipeline_metrics.R     # Regression snapshot: check_pipeline_metrics()
     │   └── audit/                # Audit harness for /audit-institutions
