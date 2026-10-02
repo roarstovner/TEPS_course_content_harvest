@@ -576,6 +576,15 @@ test_that("Name (Role) lines are removed at any institution", {
   expect_equal(result, "Innhald\nTekst.")
 })
 
+test_that("a role label followed by a name is removed (#260)", {
+  expect_equal(anonymize_text("uit", "Pensum\nEmneleder Kari Nordmann kari.nordmann@uit.no\nFire fagbøker.",
+                              .progress = FALSE), "Pensum\nFire fagbøker.")
+  expect_equal(anonymize_text("uis", "Emneansvarlig Ola Nordmann\nInnhold", .progress = FALSE),
+               "Innhold")
+  expect_equal(anonymize_text("uib", "Emneansvarlig\nThe Programme Committee", .progress = FALSE),
+               "Emneansvarlig\nThe Programme Committee")
+})
+
 test_that("parenthesised non-roles and prose are kept", {
   for (t in c("Vekting (SP): 15", "Reduksjon (SP)",
               "Studentene leser Ibsen og Hamsun (various episodes)",

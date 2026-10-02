@@ -206,6 +206,7 @@ anonymize_text <- function(institution, text,
 # Staff roles that follow a person's name in parentheses in staff lists.
 .staff_roles <- c(
   "emneansvarlig", "emneansvarleg", "faglærer", "faglærar",
+  "emneleder", "emneleiar",
   "studiekoordinator", "praksiskoordinator", "emnekoordinator", "koordinator",
   "studieprogramleder", "studieprogramleiar", "programansvarlig",
   "instituttleder", "instituttleiar", "veileder", "rettleiar",
@@ -217,6 +218,13 @@ anonymize_text <- function(institution, text,
   "(?m)^[ \\t]*[-•*]?[ \\t]*",
   "\\p{Lu}[\\p{L}.'’-]*(?:[ \\t]+(?:\\p{Lu}[\\p{L}.'’-]*|van|von|de|der|den|da|di|af))+",
   "[ \\t]*\\((?i:", paste(.staff_roles, collapse = "|"), ")\\)[ \\t]*(?:\\n|$)"
+)
+# A line that is a role label followed by a capitalised name, and possibly an
+# e-mail: "Emneleder Kari Nordmann kari@uit.no" (uit), "Emneansvarlig Ola
+# Nordmann" (uis PDF plans) (#260). "Emneansvarlig informerer ..." is prose.
+.role_name_line_regex <- paste0(
+  "(?m)^[ \\t]*(?i:", paste(.staff_roles, collapse = "|"), ")[ \\t]*:?[ \\t]+",
+  "\\p{Lu}\\p{Ll}+(?:[ \\t]+\\p{Lu}[\\p{L}.'’-]*)+[^\\n]*(?:\\n|$)"
 )
 # A signature line "17.03.20 Ola Nordmann, dekan": optional date stamp, a
 # capitalised name, then ", role" ending the line (usn approval stamps; #238).
@@ -252,6 +260,8 @@ anonymize_text <- function(institution, text,
     stringr::str_remove_all("\\b[\\w.+-]+@[\\w.-]+\\.[a-zA-Z]{2,}\\b") |>
     # Remove staff list lines "- Ola Nordmann (Emneansvarlig)" (#237)
     stringr::str_remove_all(.staff_line_regex) |>
+    # Remove role + name lines "Emneleder Ola Nordmann" (#260)
+    stringr::str_remove_all(.role_name_line_regex) |>
     # Remove signature lines "17.03.20 Ola Nordmann, dekan" (#238)
     stringr::str_remove_all(.signature_line_regex) |>
     # Keep the role, drop the name: "Godkjent av dekan Ola Nordmann" (#237)
