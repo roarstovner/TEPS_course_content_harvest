@@ -5,7 +5,15 @@
 
 library(targets)
 
-tar_option_set(packages = "dplyr")
+tar_option_set(
+  packages = "dplyr",
+  # The institutions' branches are independent, so they run on 4 local worker
+  # processes (#268). Workers read and write the store themselves, so large
+  # results do not pass through the main process.
+  controller = crew::crew_controller_local(workers = 4, seconds_idle = 60),
+  storage = "worker",
+  retrieval = "worker"
+)
 
 tar_source(c(
   "R/utils.R", "R/fetch_html_cols.R", "R/extract_fulltext.R",
