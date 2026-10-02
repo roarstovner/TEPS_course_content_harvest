@@ -71,9 +71,47 @@ These institutions include the year (and sometimes semester) in their course pag
 **No year in URL** (current year only): HVL, Hivolda, MF, NLA, NMBU, Nord, Samas, Steiner, UiB, UiO, UiS, UiT.
 These institutions serve the same (latest) page regardless of year. Data is filtered to 2025 only to avoid duplicating current content across historical years. Hivolda is an exception: it has semester-specific pages discoverable via URL resolution, so it retains historical data.
 
+## Semester registration in DBH
+
+DBH lists most courses under both spring and autumn of a year, also when the
+course is taught, and its plan published, in one semester only. How this shows
+up depends on the website:
+
+- **Semester-specific pages** (HiOF, Hivolda, NIH, NLA, UiA, USN): the other
+  semester has no page (a 404, or no USN version), so about half of the rows
+  lack text by design.
+- **One page per course or year**: both rows get the same page, and
+  deduplication collapses them.
+
+The row-level **Rate** in the overview therefore understates coverage for the
+first group. To compare institutions, count course-years (code × year) that have
+a plan in at least one semester:
+
+```{r}
+#| label: semester-registration
+course_years <- df |>
+  group_by(institution, Emnekode_raw, Årstall) |>
+  summarise(both = n_distinct(Semesternavn) == 2,
+            n_plan = sum(!is.na(plan_content_id)), .groups = "drop")
+
+course_years |>
+  group_by(Institution = institution) |>
+  summarise(
+    `Course-years` = n(),
+    `Both semesters in DBH` = sprintf("%.0f%%", mean(both) * 100),
+    `Both reg., plan in one` = sum(both & n_plan == 1),
+    `Both reg., plan in both` = sum(both & n_plan == 2),
+    `Both reg., no plan` = sum(both & n_plan == 0),
+    `Course-years with plan` = sprintf("%.0f%%", mean(n_plan > 0) * 100),
+    .groups = "drop"
+  ) |>
+  left_join(select(summary_tbl, Institution, `Row rate` = Rate), by = "Institution") |>
+  knitr::kable()
+```
+
 ## Interpreting the dedup ratio
 
-High dedup (>40%) is expected for current-year-only institutions where DBH registers courses for both semesters but only one plan page exists.
+High dedup (>40%) is expected for current-year-only institutions where DBH registers courses for both semesters but only one plan page exists (see "Semester registration in DBH").
 
 Low dedup (<10%) means most rows have genuinely different content, typically because plans change between years/versions (HiOF, USN) or each row is truly distinct (NIH, Steiner, UiO).
 
@@ -209,7 +247,7 @@ Low dedup (<10%) means most rows have genuinely different content, typically bec
 ### UiA (University of Agder)
 
 - **47.6% success rate**: Website only has courses from **2020 onwards**; 2013-2019 courses return 404
-- **Whole-year courses**: DBH registers courses for both semesters, but UiA typically publishes only one page. Of 1150 courses in both semesters: 76.3% have autumn page only, 16.8% spring only, 0.3% both
+- **Whole-year courses**: DBH registers courses for both semesters, but UiA typically publishes only one page, so most 404s are the other semester (see "Semester registration in DBH"). Of 1150 courses in both semesters: 76.3% have autumn page only, 16.8% spring only, 0.3% both
 - **URL vs content semester mismatch**: 37% of autumn URLs contain spring-semester content
 - URL pattern: `https://www.uia.no/studier/emner/{year}/{semester}/{course_code}.html`
 
@@ -258,7 +296,8 @@ Low dedup (<10%) means most rows have genuinely different content, typically bec
 
 ### USN (University of South-Eastern Norway)
 
-- **39.2% success rate (expected)**: USN requires URL version discovery via JavaScript-rendered pages
+- **Low row-level success rate (expected)**: most rows without a plan are the other semester of a course registered in both (see "Semester registration in DBH"); count course-years instead
+- USN requires URL version discovery via JavaScript-rendered pages
 - Course plan URLs include a version number (1-5) that cannot be determined from metadata alone
 - URL pattern: `https://www.usn.no/studier/studie-og-emneplaner/#/emne/{CODE}_{VERSION}_{YEAR}_{SEMESTER}`
 - **Silent redirects**: Invalid version+year combos redirect to other pages without changing the URL. Validation checks that displayed year matches requested year

@@ -17,6 +17,25 @@ This project harvests course descriptions from Norwegian teacher education insti
 
 **Output:** The same tibble with added course URL, raw HTML, and extracted text
 
+### Pipeline Stages
+
+| Stage | Code | Output |
+|---|---|---|
+| 1. Course id `{institution}_{Emnekode_raw}_{year}_{semester}_{status}` | `add_course_id()` (`R/utils.R`) | `course_id` |
+| 2. URL from metadata (institution-specific builders; NA where the URL must be discovered) | `add_course_url()` (`R/add_course_url.R`) | `url` |
+| 3. URL discovery (USN, UiT, hivolda; optional) | `resolve_course_urls()` (`R/resolve_course_urls.R`) | `url`, checkpoint `data/checkpoint/urls_{inst}.RDS` |
+| 4. Fetch HTML with checkpointing | `fetch_html_with_checkpoint()` (`R/checkpoint.R`, `R/fetch_html_cols.R`) | `html`, `html_success`, `html_error` |
+| 5. Extract text with the institution's CSS selector | `extract_fulltext_css()` (`R/extract_fulltext.R`) | `extracted_text` → `data/html_{inst}.RDS` |
+| 6. Anonymize and deduplicate | `R/run_dedup.R` | `course_plans.RDS`, `course_offerings*.RDS` |
+| 7. Split into sections | `R/run_extract_sections.R` | `sections_raw.RDS` |
+
+Stages 1-5 are run per institution by `harvest_institution()`, which dispatches
+to a strategy in `R/harvest_strategies.R` (`standard`, `url_discovery`,
+`shadow_dom`, `html_pdf_discovery`, `pdf_split`, `json_extract`, `noop`).
+`R/institution_config.R` is the single source of truth for each institution:
+strategy, CSS selector, `selector_mode`, `year_in_url`, pre/post functions,
+fetch overrides and the `section_*` fields.
+
 ## Quick Start: Running the Pipeline
 
 The main entry points are in `R/harvest.R`:
@@ -40,9 +59,16 @@ courses <- readRDS("data/courses.RDS")
 result <- harvest_institution("hivolda", courses)
 saveRDS(result, "data/html_hivolda.RDS")
 
-# Or harvest all institutions at once
+# Only one year, or ignore the checkpoints and fetch again
+result <- harvest_institution("oslomet", courses, year = 2025)
+result <- harvest_institution("ntnu", courses, refetch = TRUE)
+
+# Or harvest all institutions at once (saves data/html_{inst}.RDS)
 harvest_all()
 ```
+
+The source order matters: `R/institution_config.R` refers to functions defined
+in `R/fetch_html_cols.R` and `R/extract_fulltext.R`.
 
 ### What Happens Under the Hood
 
@@ -57,13 +83,30 @@ harvest_all()
 
 The pipeline uses **checkpointing** to avoid re-downloading data. If the script stops or crashes:
 
-- Already-downloaded HTML is saved in checkpoint_path, which should be updated to `data/checkpoint/html_{institution}.RDS`
-- Re-running the script will skip courses already in the checkpoint
+- Already-downloaded HTML is saved in `data/checkpoint/html_{institution}.RDS` (`course_id`, `html`, `html_success`, `html_error`)
+- Re-running the script fetches only courses not in the checkpoint (anti-join by `course_id`)
 - This saves time and is polite to institutional servers
+
+### Rebuilding Derived Data
+
+Everything after the harvest is rebuilt from `data/html_{inst}.RDS`. After a
+harvest, or after changing the code of a step, re-run that step and the ones
+below it:
+
+| Step | Command | Re-run after changes to |
+|---|---|---|
+| Anonymize + deduplicate | `Rscript R/run_dedup.R` | `R/anonymize.R`, `R/normalize_plan_text.R`, `R/deduplicate_plans.R` |
+| Sections | `Rscript R/run_extract_sections.R [inst ...]` | `R/extract_sections.R`, `R/section_heading_map.R`, `R/anonymize.R`, `section_*` config fields |
+| Course browser data | `Rscript R/build_browser_data.R` | any of the above |
+| OJS browser data | see `app/course_browser_ojs/README.md` | `course_plans.RDS`, `course_offerings.RDS` |
+| Data quality notes | `quarto render data/data_notes.qmd` | any harvest or `run_dedup.R` run |
+
+Per-institution prose notes are edited directly in `data/data_notes.qmd`.
 
 ## Adding a New Institution
 
-To add support for a new institution, you need to modify **two files**:
+To add support for a new institution, you need to modify **two files**. In
+Claude Code, the `/add-institution` skill walks through the same steps.
 
 ### 1. Add config entry to `R/institution_config.R`
 
@@ -87,6 +130,9 @@ newuni = list(
 3. Look for a `class` or `id` attribute that wraps the content
 4. Use the SelectorGadget tool: https://rvest.tidyverse.org/articles/selectorgadget.html
 5. Test your selector to make sure it captures all course text
+
+Use `selector_mode = "multi"` when the plan is spread over several elements
+(nord, uib, uis, uit do this for accordions and sections).
 
 ### 2. Add URL builder to `R/add_course_url.R`
 
@@ -121,6 +167,11 @@ result$extracted_text[1]  # Inspect first result
 
 Expand a little bit at a time, for example by year. Add more years as the pipeline works.
 
+For standard institutions no changes to `R/extract_fulltext.R` or
+`R/harvest_strategies.R` are needed. Sites that need a browser (Shadow DOM),
+PDF splitting or URL discovery need a strategy function in
+`R/harvest_strategies.R`.
+
 ## Post-Harvest: Anonymization and Deduplication
 
 After harvesting, run `R/run_dedup.R` to anonymize and deduplicate course plans:
@@ -132,7 +183,7 @@ source("R/run_dedup.R")
 
 This runs a three-stage pipeline:
 
-1. **Anonymize** (`anonymize_text()`): Removes PII (teacher names, emails, phone numbers), dates, seasons, and administrative year references from `extracted_text`, producing a readable `course_plan` column. Content years (e.g., "etter 1945") are preserved.
+1. **Anonymize** (`anonymize_text()`): Removes PII (teacher names, emails, phone numbers, staff lists "Name (Role)", signature lines "Name, dekan"), dates, seasons, and administrative year references ("Opprettet 2020", "2023/2024") from `extracted_text`, producing a readable `course_plan` column. Content years (e.g., "etter 1945", "NOU 2015:2") are preserved. Institution-specific handlers (`.anon_*()`) run first, then the generic cleanup (`.anon_generic()`).
 2. **Normalize** (`normalize_plan_text()`): Applies lossy transforms (lowercasing, heading synonyms, blanket year removal, whitespace squishing) on `course_plan` for content hashing
 3. **Deduplicate** (`deduplicate_plans()`): Groups identical normalized texts under a shared `plan_content_id`
 
@@ -158,19 +209,100 @@ To split each course plan into its parts, run:
 ```{r}
 #| eval: false
 source("R/run_extract_sections.R")
+# or, from the shell, only some institutions (their rows are replaced):
+# Rscript R/run_extract_sections.R uia oslomet
 ```
 
 This writes `data/sections_raw.RDS` with one row per course and section
 (`course_id`, `institution`, `section`, `raw_text`). The seven sections are
 `course_content`, `learning_outcomes`, `teaching_methods`, `assessment`,
 `coursework_requirements`, `prerequisites` and `reading_list`. Section text is
-anonymized with the same `anonymize_text()` as `course_plan`. Admission text,
-exam logistics and placeholder rows such as "Se fagplanen." are left out.
+anonymized with the same `anonymize_text()` as `course_plan`: sections are cut
+from the raw `html`/`extracted_text`, so this step must keep anonymizing.
+Admission text, exam logistics and placeholder rows such as "Se fagplanen." are
+left out.
 
 The script prints the share of courses with each section per institution and
 the headings it could not map. To map a new heading, add a pattern to
 `R/section_heading_map.R`; how each institution is split is set by the
 `section_*` fields in `R/institution_config.R`.
+
+### Strategies
+
+`extract_sections()` (`R/extract_sections.R`) dispatches on `section_strategy`:
+
+| Strategy | Institutions | How it splits |
+|---|---|---|
+| `html_headings` | oslomet, uia, ntnu, inn, hiof, hvl, nih, uio, uis, uit, nmbu | DOM walk; a heading (`section_heading_level`, or `section_heading_selector`, e.g. ntnu `"h2, h3"` for its "Eksamen" block) starts a section. Falls back to `text_split` when it finds < 3 sections |
+| `html_fields` | hivolda | `div.field-<name>` containers mapped to sections by `section_fields` |
+| `details_mf` | mf | `<details><summary>` accordions + the untitled intro block (`section_intro_selector`) as course_content |
+| `details_uib` | uib | `<details><summary>` accordions + top-level `h2` |
+| `accordion_nord` | nord | `div.ac` accordion trigger/panel pairs |
+| `json_nla` | nla | Titles in the embedded EmneplanPage JSON |
+| `text_split` | usn, steiner (+ fallback, e.g. uis PDF plans) | Heading-shaped lines in `extracted_text`; skips a table of contents ("Innholdsfortegnelse", usn); inside a reading list opened by a whole heading only a whole heading switches section (book titles) |
+| `noop` | samas | — |
+
+Other `section_*` config fields:
+
+- `section_selector`: container for section extraction when the fulltext
+  `selector` is a multi-element selector (`html_element()` would only take its
+  first match; uis needs `#block-page-content`).
+- `section_subheading_selector`: elements inside a section that switch to
+  another section (uio `"h3, h4, p"`; `"p"` for uia, oslomet, hiof, hvl, nmbu,
+  mf). A `<p>` counts if its whole text (minus a trailing colon) equals a
+  heading pattern, or if its leading `<em>`/`<strong>` run or its first or
+  last `<br>`-separated line does (uia `<p><em>Faget i praksis</em>I løpet
+  …</p>`). A whole-bold `<p>` that names no section is a group label: it ends
+  a sub-section and returns to the parent. Sub-headings act only under a
+  mapped heading (oslomet's programme "Fagplan" block stays out); one naming
+  the section already open ("Kunnskap") stays as content. A `<p>` in a list
+  item is skipped unless that `<li>` holds a section heading (oslomet's
+  accordion). An unmapped `h3` ("Karakterskala") hands its text back to the
+  parent section, keeping the heading as its first line. A colon-ended
+  lead-in naming a coursework gate ("… følgende obligatoriske aktiviteter:")
+  starts coursework_requirements.
+- `section_text_header`: regex for a title + metadata block at the top of
+  `extracted_text` (uis PDFs: "Emnekode:", "Tilbys av:"); `text_split` skips
+  it and files the untitled paragraph after it as course_content.
+- `section_inline_coursework`: move "Arbeidskrav (AK): …" / "Obligatorisk
+  deltakelse …" lines from assessment to coursework_requirements (nord).
+
+### Heading Map and Cleanup
+
+`match_heading_to_section()` (`R/section_heading_map.R`) checks exact equality
+against every pattern first, then substring patterns in table order (first hit
+wins; rows with `exact = TRUE` only match whole headings). `text_split` passes
+`word_start = TRUE` so "elevkunnskap" does not match "kunnskap", and only
+accepts heading-shaped lines (capitalised, ≤ 8 words, no digits, no "Label:
+value", no closing full stop). Patterns mapped to `".drop"` end the current
+section and their text is discarded: admission headings ("Opptak til emnet",
+"Opptakskrav", "Hvem kan ta dette emnet?") and exam logistics ("Mer om eksamen
+ved UiO", "Hjelpemidler", "Sensorordning", resit headings such as "Ny/utsatt
+eksamen"). Exam language and grading scale stay in assessment.
+
+HTML is parsed by `.read_doc()`, which drops `script`, `style`, `select` and
+`label` (ntnu script text, uib semester picker); `json_nla` parses the page
+itself because its data is in a `<script>`.
+
+`.clean_sections()` removes `.drop` rows, strips notices and page widgets from
+assessment/coursework (`.section_noise`: plagiarism and ChatGPT/COVID notices,
+uib banner and footer, flattened exam-table headers, …), removes admission
+sentences from prerequisites (`.strip_admission_lines()`), drops
+placeholder-only rows (`.placeholder_phrases`: "Ingen", "Se fagplanen.", "-",
+Leganto pointers, "Oppgis senere.", "… ikke publisert ennå"), and drops a first
+line that only repeats the section heading (but keeps learning-outcome group
+labels such as "Kunnskap").
+
+## Auditing a Pipeline Step
+
+The `/audit-institutions <sections|fulltext|anonymization> [inst ...]` skill
+(Claude Code) checks a pipeline step for every institution with one review
+agent per institution. R scripts build a review packet per institution
+(`R/audit/prepare_{check}.R`; for sections after the deterministic pre-pass
+`R/audit/qa_sections.R`), the agents write findings to
+`data/audit/{check}/findings/{inst}.json`, and `R/audit/aggregate.R` verifies
+them (course ids and verbatim quotes must be in the packet) and writes a ranked
+cross-institution report. Details: `.claude/skills/audit-institutions/SKILL.md`.
 
 ## Data Files: Published and Internal
 
@@ -209,11 +341,16 @@ courses |> slice(1:2)
 
 Key columns:
 - `institution`: Short code (e.g., "oslomet", "uia")
-- `Emnekode_raw`: Original course code from DBH
-- `Emnekode`: Normalized course code (trailing numbers removed)
+- `Emnekode_raw`: Original course code from DBH (used in `course_id`)
+- `Emnekode`: Course code with the trailing version number removed (`canon_remove_trailing_num()`: "ABC123-1" → "ABC123")
 - `Årstall`: Year
-- `Semesternavn`: Semester name ("Vår" or "Høst")
+- `Semesternavn`: Semester name ("Vår" or "Høst"; `canon_semester_name()` maps Vår/Høst/Sommer to spring/autumn/summer)
 - `Status`: Course status (1=Active, 2=New, 3=Discontinued, 4=Discontinued but exam offered)
+
+DBH lists most courses under both semesters of a year, also when they are
+taught in one. Where pages are semester-specific, about half the rows therefore
+have no plan by design; see "Semester registration in DBH" in
+`data/data_notes.qmd` before reading row-level success rates.
 
 ### Output Data Structure
 
@@ -230,49 +367,110 @@ output
 ```
 
 - `course_plan` is the anonymized version of `extracted_text` (no names, emails, dates, or administrative years). Content years like historical references are preserved. Use this column for analysis.
+- Older `html_{inst}.RDS` files name the text column `fulltext`; `run_dedup.R` and `run_extract_sections.R` read it as `extracted_text`.
+
+## Institution-Specific Notes
+
+**NORD.** The URL needs Norwegian characters in the semester parameter
+(`HØST`/`VÅR`); ASCII `HOEST` falls back to a generic "Gjeldende
+emnebeskrivelse" page without year-specific content. The site maps each
+semester to its academic year (`VÅR&year=2023` gives the 2022/23 plan). Pattern:
+`https://www.nord.no/studier/emner/{code}?year={year}&semester={HØST|VÅR}`.
+
+**NTNU.** The URL has the year but not the semester. A page saying no
+information is available raises `ntnu_no_info_error`. robots.txt asks for a
+10-second crawl delay (`request_delay` in the config).
+
+**UiO.** UiO publishes only the latest version of each course plan: the base
+URL always returns the current plan and older versions cannot be reached.
+Semester URLs (`/h24/`, `/v25/`) hold logistics only (teachers, timetable, exam
+dates), not the plan, so they are not used. Data should be filtered to the
+current year. The URL needs faculty/department slugs derived from
+`Avdelingsnavn`, via a hard-coded mapping in `add_course_url_uio()`. Pattern:
+`https://www.uio.no/studier/emner/{faculty}/{inst}/{CODE}/`.
+
+**HiOF.** Courses before autumn 2021 use a different URL structure (switch in
+`add_course_url_hiof()`); the config selector lists fallbacks for the old and
+new page layouts.
+
+**USN.** The URL holds a version number that metadata cannot give:
+`https://www.usn.no/studier/studie-og-emneplaner/#/emne/{CODE}_{VERSION}_{YEAR}_{SEMESTER}`.
+Each version (1, 2, 3, …) is a revision valid for a range of years, and an
+invalid version/year combination silently shows another page without changing
+the URL. `resolve_urls_usn_batch()` therefore renders each candidate in Chrome
+(`rvest::read_html_live()`, hash routing) and checks that the displayed
+"Undervisningsstart" year matches. It tries versions 1-5 and stops early when
+the course code is missing from the page (no such version) or version 1 starts
+after the requested year (course did not exist yet); NA means no version exists
+for that semester. The content is rendered inside Shadow DOM, which
+`html_text()` cannot read; `read_usn_live_html(session)` walks the shadow roots
+with JavaScript:
+
+```{r}
+#| eval: false
+session <- rvest::read_html_live(url)
+Sys.sleep(5)  # wait for JS rendering
+content <- read_usn_live_html(session)
+session$session$close()
+```
+
+The batch resolver reuses one Chrome session and navigates by changing
+`window.location.hash`, which avoids a 2-3 s browser start per URL. HTML is
+captured during resolution, so USN has no separate fetch step.
+
+**UiT.** Historical plans need a document id:
+`https://uit.no/utdanning/emner/emne?p_document_id={ID}`. The active page
+(`/utdanning/aktivt/emne/{CODE}`) has a `<select>` listing every semester with
+its document id (option text `{CODE}: H 2020` / `{CODE}: V 2021`), also for
+discontinued courses. The same CSS selector works for active and historical
+pages.
+
+**Samas.** `noop` strategy: `extracted_text` is NA, since the plans are in Sámi.
 
 ## Key Functions Reference
 
-### `add_course_id(dbh_df)`
-Creates unique course identifiers combining institution, code, year, semester, and status.
-
-### `add_course_url(df)`
-Generates the correct URL for each course based on institution-specific patterns.
-
-### `fetch_html_with_checkpoint(courses, checkpoint_path, .progress = TRUE)`
-Downloads HTML from URLs with automatic checkpointing. Skips already-downloaded courses.
-
-### `harvest_institution(institution, courses, year, refetch)`
-Main entry point: harvests a single institution using its configured strategy.
-
-### `harvest_all(courses, year, refetch, institutions)`
-Loops through all (or specified) institutions, harvests each, saves results.
-
-### `validate_courses(df, stage)`
-Validates that required columns exist at each pipeline stage:
-- `"initial"`: institution, Emnekode, Årstall
-- `"with_url"`: institution, course_id, url
-- `"with_html"`: institution, course_id, url, html, html_success
+| Function | File | Purpose |
+|---|---|---|
+| `harvest_institution(institution, courses, year, refetch)` | `R/harvest.R` | Harvest one institution with its configured strategy |
+| `harvest_all(courses, year, refetch, institutions)` | `R/harvest.R` | Harvest all (or the given) institutions, save `data/html_{inst}.RDS` |
+| `get_institution_config(inst)` | `R/institution_config.R` | Config list for one institution |
+| `add_course_id(dbh_df)` | `R/utils.R` | Unique id from institution, raw code, year, semester, status |
+| `add_course_url(df)` | `R/add_course_url.R` | Institution-specific URL builders; NA where discovery is needed |
+| `resolve_course_urls(df, checkpoint_path)` | `R/resolve_course_urls.R` | URL discovery (USN, UiT, hivolda) with checkpointing |
+| `fetch_html_with_checkpoint(courses, checkpoint_path)` | `R/checkpoint.R` | Download HTML, skipping courses already in the checkpoint |
+| `extract_fulltext_css(html, selector, mode, pre_fn, post_fn)` | `R/extract_fulltext.R` | Config-driven CSS text extraction |
+| `validate_courses(df, stage)` | `R/utils.R` | Required columns at `"initial"`, `"with_url"`, `"with_html"` |
+| `anonymize_text(institution, text)` | `R/anonymize.R` | PII and admin-date removal for `course_plan` and sections |
+| `normalize_plan_text(course_plan)` | `R/normalize_plan_text.R` | Lossy normalization for dedup hashing |
+| `deduplicate_plans(df)` | `R/deduplicate_plans.R` | Content hashes → `plans` and `courses` with `plan_content_id` |
+| `extract_sections(institution, html, extracted_text, course_id)` | `R/extract_sections.R` | Split course pages into the seven sections |
 
 ## Troubleshooting
 
 **URLs look wrong?**
-- Check your `url_pattern`
-- Print a few URLs to verify: `courses |> select(url) |> head()`
+- Check the institution's builder in `R/add_course_url.R`
+- Print a few: `courses |> filter(institution == "inst") |> add_course_url() |> select(url) |> head()`
 
 **HTML download fails?**
-- Check if the website is accessible
-- Look at `courses$html_error` for error messages
-- Some institutions may block automated requests
+- Check if the website is accessible in a browser
+- Look at `html_error` for error messages
+- Some institutions rate-limit or block automated requests
+- For NTNU, check whether the page says no information is available
 
 **Extracted text is empty or wrong?**
-- Verify your CSS selector using browser dev tools
-- Update selector in `R/institution_config.R` if website structure changed
-- Some pages may have different structures for different years
+- Verify the CSS selector with browser dev tools on a real course page
+- Update the selector in `R/institution_config.R` if the website changed, then re-extract
+- Check whether the institution needs `selector_mode = "multi"`
+- Some pages have different structures for different years
+
+**Content missing from JavaScript-rendered pages?**
+- Shadow DOM content is invisible to `html_text()`; see USN above
+- `session$session$Runtime$evaluate("...")` runs JavaScript in a live session
+- `session$view()` opens the browser to see what is rendered
 
 **Checkpoint file is huge?**
 - This is normal - HTML is large
-- Checkpoint files are in `.gitignore` and won't be committed
+- Checkpoint files are in `.gitignore`; deleting one makes the next run fetch again
 
 ## File Organization
 
@@ -280,23 +478,32 @@ Validates that required columns exist at each pipeline stage:
 ├── R/
 │   ├── harvest.R              # Entry points: harvest_institution(), harvest_all()
 │   ├── harvest_strategies.R   # Strategy implementations
-│   ├── institution_config.R   # Institution registry (strategy, selectors, overrides)
-│   ├── utils.R                # Helper functions (add_course_id, validation)
+│   ├── institution_config.R   # Institution registry (strategy, selectors, overrides, section_*)
+│   ├── utils.R                # Helper functions (add_course_id, validation, normalization)
 │   ├── add_course_url.R       # URL generation logic
-│   ├── resolve_course_urls.R  # URL discovery for USN, UiT, etc.
-│   ├── fetch_html_cols.R      # HTML downloading
+│   ├── resolve_course_urls.R  # URL discovery for USN, UiT, hivolda
+│   ├── fetch_html_cols.R      # HTML downloading (httr2)
 │   ├── extract_fulltext.R     # Config-driven text extraction
 │   ├── checkpoint.R           # Checkpoint management
 │   ├── anonymize.R            # PII removal: anonymize_text() for course_plan and sections
 │   ├── normalize_plan_text.R  # Lossy normalization for dedup hashing
 │   ├── deduplicate_plans.R    # Groups identical plans by content hash
 │   ├── run_dedup.R            # Entry point for anonymize + dedup pipeline
-│   ├── section_heading_map.R  # Heading → section patterns
-│   ├── extract_sections.R     # Section extraction strategies
-│   └── run_extract_sections.R # Entry point for section extraction
+│   ├── section_heading_map.R  # Heading → section patterns (incl. ".drop")
+│   ├── extract_sections.R     # Section extraction strategies + cleanup
+│   ├── run_extract_sections.R # Entry point for section extraction
+│   ├── build_browser_data.R   # Builds data/browser_data.RDS for the course browser
+│   └── audit/                 # Audit harness for /audit-institutions
+├── app/
+│   ├── course_browser/        # Shiny concordance browser (see its README)
+│   └── course_browser_ojs/    # Static Observable JS browser (see its README)
 ├── data/
 │   ├── courses.RDS            # Input course data
+│   ├── html_{inst}.RDS        # Harvest output per institution
+│   ├── data_notes.qmd         # Data quality notes per institution
+│   ├── audit/{check}/         # Audit findings and reports
 │   └── checkpoint/            # Checkpoint files (not in git)
+├── tests/testthat/            # Rscript -e 'testthat::test_dir("tests/testthat")'
 └── data-raw/
     └── courses.R              # script that creates courses.RDS
 ```
