@@ -189,7 +189,12 @@ institution_configs <- list(
   uis = list(
     code = "1160",
     strategy = "html_pdf_discovery",
-    selector = "#block-page-content .link--, #block-page-content .paragraph--with-title",
+    # Every block of the plan is a direct child of .article__section; leave out
+    # the page navigation, the contact footer (staff names) and the facts box,
+    # but keep the exam boxes, which share its class (#251)
+    selector = paste("#block-page-content .article__section >",
+                     ":not(.content-navigation):not(.course-footer):not(.factbox--course),",
+                     "#block-page-content .factbox--exam"),
     selector_mode = "multi",
     year_in_url = TRUE,
     # The multi selector's first match is a link, so html_headings found no
