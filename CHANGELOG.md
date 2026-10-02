@@ -100,6 +100,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Pin package versions with renv (#269)
 - Build the pipeline with {targets} (#263)
 - UiB: semester picker in course_content; 294 pages without exam info (#219)
 - Replace the run_*.R scripts with tar_make() in code and docs (#266)
