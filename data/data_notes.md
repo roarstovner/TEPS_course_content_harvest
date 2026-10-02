@@ -21,13 +21,13 @@ Generated: 2026-10-02
 | samas | 130 | 68 | 2025 | 0 | 0.0% | NA | 0 | NaN% |
 | steiner | 36 | 18 | 2025 | 30 | 83.3% | 5027 | 15 | 50.0% |
 | uia | 2881 | 245 | 2013-2025 | 1123 | 39.0% | 4344 | 811 | 27.8% |
-| uib | 2619 | 177 | 2004-2025 | 1473 | 56.2% | 6826 | 772 | 47.6% |
+| uib | 2619 | 177 | 2004-2025 | 1471 | 56.2% | 6826 | 775 | 47.3% |
 | uio | 100 | 54 | 2025 | 96 | 96.0% | 4342 | 52 | 45.8% |
 | uis | 2921 | 316 | 2007-2025 | 2728 | 93.4% | 5600 | 1299 | 52.4% |
 | uit | 6693 | 621 | 2004-2025 | 3150 | 47.1% | 4105 | 2341 | 25.7% |
 | usn | 3036 | 401 | 2018-2025 | 1238 | 40.8% | 10800 | 1183 | 4.4% |
 
-**Total**: 38823 rows, 25146 with extracted text (64.8%), 14499 unique
+**Total**: 38823 rows, 25144 with extracted text (64.8%), 14502 unique
 plans.
 
 **Columns:**
@@ -105,7 +105,7 @@ year) that have a plan in at least one semester:
 | samas | 68 | 91% | 0 | 0 | 62 | 0% | 0.0% |
 | steiner | 18 | 100% | 0 | 15 | 3 | 83% | 83.3% |
 | uia | 1508 | 91% | 1063 | 3 | 307 | 74% | 39.0% |
-| uib | 1328 | 85% | 3 | 681 | 441 | 56% | 56.2% |
+| uib | 1328 | 85% | 4 | 680 | 441 | 56% | 56.2% |
 | uio | 54 | 85% | 0 | 44 | 2 | 96% | 96.0% |
 | uis | 1602 | 82% | 0 | 1235 | 84 | 93% | 93.4% |
 | uit | 3605 | 86% | 1078 | 877 | 1133 | 63% | 47.1% |
@@ -280,6 +280,12 @@ to chainlink.
 - Year in the URL; accordion pages read with a multi-element selector;
   robots.txt asks for a 10-second crawl delay
 - The page’s semester picker is dropped when the HTML is parsed (#219)
+- About 280 pages say “Vi opplever problemer med å hente inn
+  eksamensinformasjon”: UiB’s exam information service fails for these
+  courses, in every year. Fetching the 294 affected pages again on
+  2026-10-02 fixed 7, so it is not a harvest error. The banner is
+  removed from the sections, and these courses have no assessment text
+  (#219)
 
 ------------------------------------------------------------------------
 

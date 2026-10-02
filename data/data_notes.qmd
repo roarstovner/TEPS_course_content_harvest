@@ -239,6 +239,7 @@ chainlink.
 
 - Year in the URL; accordion pages read with a multi-element selector; robots.txt asks for a 10-second crawl delay
 - The page's semester picker is dropped when the HTML is parsed (#219)
+- About 280 pages say "Vi opplever problemer med å hente inn eksamensinformasjon": UiB's exam information service fails for these courses, in every year. Fetching the 294 affected pages again on 2026-10-02 fixed 7, so it is not a harvest error. The banner is removed from the sections, and these courses have no assessment text (#219)
 
 ---
 
