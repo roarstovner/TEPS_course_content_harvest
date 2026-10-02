@@ -255,6 +255,12 @@ each row is truly distinct (NIH, Steiner, UiO).
   “HØST” regardless of actual semester (see \#1)
 - URL pattern:
   `https://student.oslomet.no/studier/-/studieinfo/emne/{CODE}/{YEAR}/HØST`
+- **Practicum courses have no sections** (M1GP\*/M5GP\*, 135 offerings):
+  every section of the course plan only says “Se fagplanen.” The page’s
+  “Fagplan” block is the programme-wide practicum plan for all study
+  years, with no markup separating the years, so it is not read into the
+  course’s sections. Their `course_plan` keeps the full page text (see
+  \#242)
 
 ------------------------------------------------------------------------
 
