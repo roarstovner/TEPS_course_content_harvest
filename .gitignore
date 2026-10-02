@@ -48,3 +48,6 @@ app/course_browser_ojs/.quarto/
 
 /.quarto/
 **/*.quarto_ipynb
+
+# {targets} store (rebuilt by tar_make())
+_targets/
