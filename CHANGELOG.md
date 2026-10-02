@@ -99,6 +99,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- oslomet praksis courses: read the Fagplan block (#242)
+- Use .merge_sections() in all section strategies; drop legacy generate_data_notes.R (#258)
+- Build extracted_text from raw HTML in its own step instead of storing it in html_*.RDS (#256)
 - Add a regression snapshot of per-institution and per-section counts (#255)
 - Document that DBH registers courses in both semesters (#253)
 - Slim CLAUDE.md to agent-only guidance that points to README.qmd (#252)
