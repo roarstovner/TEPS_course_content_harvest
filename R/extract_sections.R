@@ -819,15 +819,6 @@ extract_sections_nla <- function(input, cfg) {
 .coursework_leadin <- paste0("(?i)arbeidskrav|obligatorisk\\w* (?:læringsaktivitet|aktivitet|",
                              "oppmøte|frammøte|fremmøte|deltak|deltag)")
 
-# Parse HTML without script/style text (ntnu's "function toggleRooms(...)"
-# ended up in assessment; #245) or form widgets (uib's semester picker
-# "Vel emnebeskrivelse for semester 2027 Vår ..."; #219).
-.read_doc <- function(html) {
-  doc <- rvest::read_html(html)
-  xml2::xml_remove(rvest::html_elements(doc, "script, style, noscript, select, label"))
-  doc
-}
-
 .empty_sections <- function() {
   tibble::tibble(section = character(), raw_text = character())
 }

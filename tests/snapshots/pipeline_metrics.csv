@@ -138,7 +138,7 @@
 "nla","prerequisites","n_courses",81
 "nla","teaching_methods","median_chars",272.5
 "nla","teaching_methods","n_courses",138
-"nmbu","(all)","median_chars",6131
+"nmbu","(all)","median_chars",4580
 "nmbu","(all)","n_course_years_with_plan",11
 "nmbu","(all)","n_rows",29
 "nmbu","(all)","n_unique_plans",11
@@ -199,7 +199,7 @@
 "ntnu","reading_list","n_courses",1069
 "ntnu","teaching_methods","median_chars",526
 "ntnu","teaching_methods","n_courses",3463
-"oslomet","(all)","median_chars",12528
+"oslomet","(all)","median_chars",12420
 "oslomet","(all)","n_course_years_with_plan",888
 "oslomet","(all)","n_rows",1684
 "oslomet","(all)","n_unique_plans",655

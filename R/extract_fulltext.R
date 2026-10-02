@@ -12,7 +12,7 @@ extract_fulltext_css <- function(html, selector, mode = "single",
                                  pre_fn = NULL, post_fn = NULL) {
   safe_extract <- purrr::possibly(function(h) {
     if (!is.null(pre_fn)) h <- pre_fn(h)
-    doc <- rvest::read_html(h)
+    doc <- .read_doc(h)
     text <- if (mode == "single") {
       node <- rvest::html_element(doc, selector)
       if (length(node) == 0) return(NA_character_)
@@ -33,6 +33,16 @@ extract_fulltext_css <- function(html, selector, mode = "single",
     if (is.na(h) || !nzchar(h)) return(NA_character_)
     safe_extract(h)
   })
+}
+
+# Parse HTML without script/style text (ntnu's "function toggleRooms(...)"
+# ended up in assessment, #245; uit's page scripts, #218) or form widgets
+# (uib's semester picker "Vel emnebeskrivelse for semester 2027 Vår ...",
+# #219). Used by both fulltext and section extraction (#259).
+.read_doc <- function(html) {
+  doc <- rvest::read_html(html)
+  xml2::xml_remove(rvest::html_elements(doc, "script, style, noscript, select, label"))
+  doc
 }
 
 #' Extract course plan text from the raw harvest
