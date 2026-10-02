@@ -99,6 +99,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Build the pipeline with {targets} (#263)
+- UiB: semester picker in course_content; 294 pages without exam info (#219)
+- Replace the run_*.R scripts with tar_make() in code and docs (#266)
+- Add a {targets} pipeline with one branch per institution (#265)
 - Compute the data notes figures in the document instead of hardcoding them (#262)
 - uis web plans: fulltext lacks the assessment text that sections capture (#251)
 - Remove 'Emneansvarlig Name' lines from course plans (#260)
