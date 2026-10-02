@@ -1,0 +1,37 @@
+# Run the testthat suite with the package versions in renv.lock (#270).
+# Tests that need the harvested data (data/*.RDS, gitignored), a browser or
+# external URLs skip themselves here.
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  testthat:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: renv
+          use-public-rspm: true
+
+      - name: Install system libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev \
+            libpoppler-cpp-dev libglpk-dev libharfbuzz-dev libfribidi-dev \
+            libfontconfig1-dev libfreetype-dev libpng-dev libtiff-dev \
+            libjpeg-dev libwebp-dev
+
+      - uses: r-lib/actions/setup-renv@v2
+
+      - name: Run tests
+        run: Rscript -e 'testthat::test_dir("tests/testthat", reporter = "summary", stop_on_failure = TRUE)'
