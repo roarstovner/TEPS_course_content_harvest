@@ -1,5 +1,6 @@
 # run_extract_sections.R
-# Section-extraction pipeline: reads html_*.RDS files, runs per-institution
+# Section-extraction pipeline: reads the harvest (html_*.RDS + the
+# extracted_text from run_extract_fulltext.R), runs per-institution
 # section extraction, anonymizes section text, writes data/sections_raw.RDS,
 # prints diagnostics (coverage per canonical section + list of unmapped
 # headings for #192).
@@ -20,21 +21,8 @@ source("R/anonymize.R")
 only <- commandArgs(trailingOnly = TRUE)
 
 cat("Loading harvested data...\n")
-html_files <- list.files("data", pattern = "^html_.*\\.RDS$", full.names = TRUE)
-if (length(only)) {
-  html_files <- html_files[sub("^html_(.*)\\.RDS$", "\\1", basename(html_files)) %in% only]
-}
-courses_raw <- html_files |> lapply(readRDS) |> bind_rows()
-
-# Saved RDS files still use the legacy `fulltext` column name; the pipeline's
-# current name is `extracted_text`. Alias on read.
-if (!"extracted_text" %in% colnames(courses_raw) &&
-    "fulltext" %in% colnames(courses_raw)) {
-  courses_raw$extracted_text <- courses_raw$fulltext
-}
-
-cat("Loaded", nrow(courses_raw), "course rows from",
-    length(html_files), "files\n\n")
+courses_raw <- read_harvest(only)
+cat("Loaded", nrow(courses_raw), "course rows\n\n")
 
 # ── Extraction ──────────────────────────────────────────────────────────────
 

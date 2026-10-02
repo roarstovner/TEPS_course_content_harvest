@@ -21,7 +21,7 @@
 #   year       semester/academic-year labels in the text all far from Årstall
 #   uncaptured much non-chrome page text missing from extracted_text
 #
-# Inputs:  data/html_{inst}.RDS (harvest output)
+# Inputs:  data/html_{inst}.RDS (harvest output) + data/extracted_text.RDS
 # Outputs: data/audit/fulltext/packets/{inst}.md, manifest.csv, sample.csv
 #
 # Run:  Rscript R/audit/prepare_fulltext.R [inst ...]
@@ -125,10 +125,7 @@ for (inst in institutions) {
     cat(sprintf("  %-8s skipped (noop strategy, no extracted text by design)\n", inst))
     next
   }
-  df <- readRDS(file.path("data", paste0("html_", inst, ".RDS")))
-  if (!"extracted_text" %in% names(df) && "fulltext" %in% names(df)) {
-    df$extracted_text <- df$fulltext
-  }
+  df <- read_harvest(inst)   # extracted_text from run_extract_fulltext.R
   df <- df |>
     mutate(
       html_error_msg = vapply(html_error, error_msg, character(1)),

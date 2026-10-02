@@ -44,13 +44,7 @@ harvest_standard <- function(df, config, refetch = FALSE) {
 
   df <- fetch_html_with_checkpoint(df, checkpoint_path = cp, config = config)
 
-  df$extracted_text <- extract_fulltext_css(
-    df$html,
-    config$selector,
-    config$selector_mode,
-    pre_fn = config$pre_fn,
-    post_fn = config$post_fn
-  )
+  df$extracted_text <- extract_fulltext_from_raw(df, config)
   df
 }
 
@@ -71,13 +65,7 @@ harvest_url_discovery <- function(df, config, refetch = FALSE) {
   df <- fetch_html_with_checkpoint(df, checkpoint_path = html_cp, config = config)
 
   # Extract fulltext
-  df$extracted_text <- extract_fulltext_css(
-    df$html,
-    config$selector,
-    config$selector_mode,
-    pre_fn = config$pre_fn,
-    post_fn = config$post_fn
-  )
+  df$extracted_text <- extract_fulltext_from_raw(df, config)
   df
 }
 
@@ -99,8 +87,8 @@ harvest_shadow_dom <- function(df, config, refetch = FALSE) {
       html_error = vector("list", dplyr::n())
     )
 
-  # USN returns pre-rendered text, not raw HTML — use cleanup, not CSS extraction
-  df$extracted_text <- .cleanup_usn_text(df$html)
+  # USN stores pre-rendered text, not raw HTML (cleanup, not CSS extraction)
+  df$extracted_text <- extract_fulltext_from_raw(df, config)
   df
 }
 
@@ -191,13 +179,7 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
   if (nrow(df_html) > 0) {
     df_html <- fetch_html_with_checkpoint(df_html, checkpoint_path = html_cp,
                                            config = config)
-    df_html$extracted_text <- extract_fulltext_css(
-      df_html$html,
-      config$selector,
-      config$selector_mode,
-      pre_fn = config$pre_fn,
-      post_fn = config$post_fn
-    )
+    df_html$extracted_text <- extract_fulltext_from_raw(df_html, config)
   } else {
     df_html <- df_html |>
       dplyr::mutate(html = NA_character_, html_error = list(NULL),
@@ -486,7 +468,7 @@ harvest_json_extract <- function(df, config, refetch = FALSE) {
   df <- dplyr::left_join(df, html_lookup, by = "Emnekode")
 
   # Extract year-specific fulltext from JSON
-  df$extracted_text <- extract_nla_json(df$html, df$academic_year)
+  df$extracted_text <- extract_fulltext_from_raw(df, config)
   df
 }
 

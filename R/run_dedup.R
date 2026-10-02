@@ -4,25 +4,15 @@
 library(dplyr)
 
 # Source required functions
+source("R/extract_fulltext.R")   # read_harvest()
 source("R/anonymize.R")
 source("R/normalize_plan_text.R")
 source("R/deduplicate_plans.R")
 
-# Load all harvested HTML files
+# Raw harvest + extracted_text from R/run_extract_fulltext.R
 cat("Loading harvested data...\n")
-html_files <- list.files("data", pattern = "^html_.*\\.RDS$", full.names = TRUE)
-
-courses_raw <- html_files |>
-  lapply(readRDS) |>
-  bind_rows()
-
-# Legacy html_*.RDS files use `fulltext`; current pipeline uses `extracted_text`.
-if (!"extracted_text" %in% colnames(courses_raw) &&
-    "fulltext" %in% colnames(courses_raw)) {
-  courses_raw$extracted_text <- courses_raw$fulltext
-}
-
-cat("Loaded", nrow(courses_raw), "course rows from", length(html_files), "files\n\n")
+courses_raw <- read_harvest()
+cat("Loaded", nrow(courses_raw), "course rows\n\n")
 
 # Anonymize extracted_text -> course_plan
 cat("Anonymizing extracted text...\n")

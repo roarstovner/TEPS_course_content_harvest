@@ -20,13 +20,14 @@
 #   removed     unusually large share of the text removed (over-removal)
 #   artifact    empty brackets left behind by removals
 #
-# Inputs:  data/html_{inst}.RDS (harvest output: extracted_text)
+# Inputs:  data/html_{inst}.RDS + data/extracted_text.RDS (read_harvest())
 # Outputs: data/audit/anonymization/packets/{inst}.md, manifest.csv, sample.csv
 #
 # Run:  Rscript R/audit/prepare_anonymization.R [inst ...]
 
 source("R/audit/utils.R")
 source("R/anonymize.R")
+source("R/extract_fulltext.R")      # read_harvest()
 
 # ── Tunables ─────────────────────────────────────────────────────────────────
 SUSPECT_N     <- 20
@@ -112,10 +113,7 @@ manifest <- list()
 sample   <- list()
 
 for (inst in institutions) {
-  df <- readRDS(file.path("data", paste0("html_", inst, ".RDS")))
-  if (!"extracted_text" %in% names(df) && "fulltext" %in% names(df)) {
-    df$extracted_text <- df$fulltext
-  }
+  df <- read_harvest(inst)   # extracted_text from run_extract_fulltext.R
   df <- df |>
     select(-any_of(c("html", "html_error"))) |>
     filter(!is.na(extracted_text), nzchar(extracted_text))

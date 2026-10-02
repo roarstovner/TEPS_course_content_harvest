@@ -35,78 +35,60 @@ extract_fulltext_css <- function(html, selector, mode = "single",
   })
 }
 
-# CSS selectors by extraction mode (legacy — used by extract_fulltext())
-.selectors <- list(
-  single = list(
-    oslomet  = "#main-content",
-    uia      = "#right-main",
-    ntnu     = "#content",
-    inn      = ".content-inner",
-    hvl      = ".l-2-col__main-content",
-    hivolda  = "article.content-emweb",
-    mf       = "main",
-
-    nih      = ".fs-body",
-    nmbu     = ".layout",
-    hiof     = "#vrtx-fs-emne-content, main .entry-content, .entry-content",
-    uio      = "#vrtx-course-content"
-  ),
-  many = list(
-    nord = "#ac-trigger-0, #ac-trigger-1, #ac-trigger-2, #ac-trigger-3, #ac-trigger-4,
-            #ac-trigger-5, #ac-trigger-6, #ac-trigger-7, #ac-trigger-8,
-            .ac-panel--inner, #ac-panel-2 .field__item, #ac-panel-0 li, p, .placeholder-text",
-    uib  = ".accordion, .accordion__main, .vertical-reset-children .vertical-reset-children div,
-            summary, #main-content li, p, .vertical-reset-children .vertical-reset-children .mt-12",
-    uis  = "#block-page-content .link--, #block-page-content .paragraph--with-title",
-    uit  = ".hovedfelt > main > div.col-md-12"
+#' Extract course plan text from the raw harvest
+#'
+#' One place for how `extracted_text` is made from what the harvest stored
+#' (#256), used by the harvest strategies and by R/run_extract_fulltext.R:
+#' the CSS selector and pre/post functions on `html` (standard, url_discovery,
+#' uis web pages), the year's JSON in nla's page, cleanup of the text USN
+#' renders in Chrome. Rows the harvest filled from a PDF (uis archive plans,
+#' steiner) have no `html`: the PDF itself is not kept, so their stored text is
+#' the raw data and is returned as is.
+#'
+#' @param df Harvested rows of one institution (`html`, and `academic_year`
+#'   for nla; `extracted_text` for PDF rows).
+#' @param config Institution config from get_institution_config().
+#' @return Character vector of extracted text, one per row.
+extract_fulltext_from_raw <- function(df, config) {
+  stored <- df$extracted_text %||% rep(NA_character_, nrow(df))
+  switch(config$strategy,
+    noop         = rep(NA_character_, nrow(df)),
+    pdf_split    = stored,
+    shadow_dom   = .cleanup_usn_text(df$html),
+    json_extract = extract_nla_json(df$html, df$academic_year),
+    dplyr::if_else(
+      is.na(df$html),
+      stored,
+      extract_fulltext_css(df$html, config$selector, config$selector_mode,
+                           pre_fn = config$pre_fn, post_fn = config$post_fn)
+    )
   )
-)
-
-extract_fulltext <- function(institution, raw_html) {
-  safe_extract_one  <- purrr::possibly(.extract_one,  otherwise = NA_character_)
-  safe_extract_many <- purrr::possibly(.extract_many, otherwise = NA_character_)
-
-  purrr::map2_chr(institution, raw_html, \(inst, html) {
-    if (is.na(html) || !nzchar(html)) return(NA_character_)
-
-    if (inst == "usn") return(.cleanup_usn_text(html))
-
-    if (inst %in% names(.selectors$single)) {
-      if (inst %in% c("hivolda", "inn")) html <- .add_table_cell_breaks(html)
-      txt <- safe_extract_one(html, .selectors$single[[inst]])
-      if (inst == "ntnu" && !is.na(txt)) txt <- .post_ntnu(txt)
-      txt
-    } else if (inst %in% names(.selectors$many)) {
-      txt <- safe_extract_many(html, .selectors$many[[inst]])
-      if (inst == "uit" && !is.na(txt)) txt <- .pre_uit(txt)
-      txt
-    } else {
-      NA_character_
-    }
-  }, .progress = "Extracting fulltext")
 }
 
-.extract_one <- function(raw_html, css) {
-  doc <- rvest::read_html(raw_html)
-  node <- rvest::html_element(doc, css)
-  if (length(node) == 0) return(NA_character_)
-
-  txt <- rvest::html_text2(node)
-  if (!nzchar(txt)) NA_character_ else txt
+#' Harvested rows with the current extracted_text
+#'
+#' Reads the raw harvest (data/html_{inst}.RDS) and takes `extracted_text` from
+#' data/extracted_text.RDS, which R/run_extract_fulltext.R rebuilds with the
+#' current config. The `extracted_text` stored in html_{inst}.RDS at harvest
+#' time is ignored.
+#'
+#' @param institutions Institutions to read; all when empty.
+read_harvest <- function(institutions = NULL, data_dir = "data") {
+  text_file <- file.path(data_dir, "extracted_text.RDS")
+  if (!file.exists(text_file)) {
+    stop(text_file, " is missing: run Rscript R/run_extract_fulltext.R first")
+  }
+  files <- list.files(data_dir, "^html_.*\\.RDS$", full.names = TRUE)
+  if (length(institutions)) {
+    files <- files[sub("^html_(.*)\\.RDS$", "\\1", basename(files)) %in% institutions]
+  }
+  text <- readRDS(text_file)[, c("course_id", "extracted_text")]
+  files |>
+    lapply(readRDS) |>
+    dplyr::bind_rows() |>
+    dplyr::select(-dplyr::any_of(c("extracted_text", "fulltext"))) |>
+    dplyr::left_join(text, by = "course_id")
 }
-
-.extract_many <- function(raw_html, css) {
-  doc <- rvest::read_html(raw_html)
-  nodes <- rvest::html_elements(doc, css)
-  if (length(nodes) == 0) return(NA_character_)
-
-  txt <- rvest::html_text2(nodes)
-  txt <- txt[nzchar(txt)]
-  if (length(txt) == 0) return(NA_character_)
-
-  paste(txt, collapse = "\n")
-}
-
 
 .add_table_cell_breaks <- function(html) {
   # Insert newlines before closing </td> and </th> so html_text2() treats

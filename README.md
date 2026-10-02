@@ -57,19 +57,24 @@ URL must be discovered)</td>
 <code>html_error</code></td>
 </tr>
 <tr>
-<td>5. Extract text with the institution’s CSS selector</td>
-<td><code>extract_fulltext_css()</code>
+<td>5. Extract text (CSS selector, nla JSON, USN cleanup)</td>
+<td><code>extract_fulltext_from_raw()</code>
 (<code>R/extract_fulltext.R</code>)</td>
-<td><code>extracted_text</code> → <code>data/html_{inst}.RDS</code></td>
+<td><code>data/html_{inst}.RDS</code> (raw harvest)</td>
 </tr>
 <tr>
-<td>6. Anonymize and deduplicate</td>
+<td>6. Rebuild the text from the stored HTML</td>
+<td><code>R/run_extract_fulltext.R</code></td>
+<td><code>extracted_text.RDS</code></td>
+</tr>
+<tr>
+<td>7. Anonymize and deduplicate</td>
 <td><code>R/run_dedup.R</code></td>
 <td><code>course_plans.RDS</code>,
 <code>course_offerings*.RDS</code></td>
 </tr>
 <tr>
-<td>7. Split into sections</td>
+<td>8. Split into sections</td>
 <td><code>R/run_extract_sections.R</code></td>
 <td><code>sections_raw.RDS</code></td>
 </tr>
@@ -83,6 +88,14 @@ dispatches to a strategy in `R/harvest_strategies.R` (`standard`,
 of truth for each institution: strategy, CSS selector, `selector_mode`,
 `year_in_url`, pre/post functions, fetch overrides and the `section_*`
 fields.
+
+`data/html_{inst}.RDS` is the raw harvest and only harvesting writes it.
+The steps after it rebuild everything from it with the current code, so
+a changed selector or post function needs
+`Rscript R/run_extract_fulltext.R <inst>`, not a new harvest. The
+`extracted_text` saved with the harvest is not used downstream, except
+for plans that came from a PDF (uis archive plans, steiner): the PDF is
+not kept, so that text is the raw data.
 
 ## Quick Start: Running the Pipeline
 
@@ -159,6 +172,13 @@ and the ones below it:
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>Fulltext</td>
+<td><code>Rscript R/run_extract_fulltext.R [inst ...]</code></td>
+<td>selectors and pre/post functions in
+<code>R/institution_config.R</code>,
+<code>R/extract_fulltext.R</code></td>
+</tr>
 <tr>
 <td>Anonymize + deduplicate</td>
 <td><code>Rscript R/run_dedup.R</code></td>
@@ -541,7 +561,14 @@ gitignored.
 <tr>
 <td><code>data/html_{inst}.RDS</code>,
 <code>data/checkpoint/</code></td>
-<td>raw <code>html</code> + <code>extracted_text</code></td>
+<td>raw harvest: <code>html</code> (+ <code>extracted_text</code> from
+harvest time)</td>
+<td>yes (raw)</td>
+<td>internal</td>
+</tr>
+<tr>
+<td><code>data/extracted_text.RDS</code></td>
+<td><code>extracted_text</code> rebuilt from the raw harvest</td>
 <td>yes (raw)</td>
 <td>internal</td>
 </tr>
@@ -647,9 +674,6 @@ After processing, you’ll have:
 - `course_plan` is the anonymized version of `extracted_text` (no names,
   emails, dates, or administrative years). Content years like historical
   references are preserved. Use this column for analysis.
-- Older `html_{inst}.RDS` files name the text column `fulltext`;
-  `run_dedup.R` and `run_extract_sections.R` read it as
-  `extracted_text`.
 
 ## Institution-Specific Notes
 
@@ -769,6 +793,16 @@ in Sámi.
 <td>Config-driven CSS text extraction</td>
 </tr>
 <tr>
+<td><code>extract_fulltext_from_raw(df, config)</code></td>
+<td><code>R/extract_fulltext.R</code></td>
+<td><code>extracted_text</code> from the raw harvest, per strategy</td>
+</tr>
+<tr>
+<td><code>read_harvest(institutions)</code></td>
+<td><code>R/extract_fulltext.R</code></td>
+<td>Raw harvest joined with <code>data/extracted_text.RDS</code></td>
+</tr>
+<tr>
 <td><code>validate_courses(df, stage)</code></td>
 <td><code>R/utils.R</code></td>
 <td>Required columns at <code>"initial"</code>, <code>"with_url"</code>,
@@ -812,9 +846,10 @@ page says no information is available
 
 **Extracted text is empty or wrong?** - Verify the CSS selector with
 browser dev tools on a real course page - Update the selector in
-`R/institution_config.R` if the website changed, then re-extract - Check
-whether the institution needs `selector_mode = "multi"` - Some pages
-have different structures for different years
+`R/institution_config.R` if the website changed, then
+`Rscript R/run_extract_fulltext.R <inst>` (no new harvest needed) -
+Check whether the institution needs `selector_mode = "multi"` - Some
+pages have different structures for different years
 
 **Content missing from JavaScript-rendered pages?** - Shadow DOM content
 is invisible to `html_text()`; see USN above -
@@ -843,6 +878,7 @@ fetch again
     │   ├── run_dedup.R            # Entry point for anonymize + dedup pipeline
     │   ├── section_heading_map.R  # Heading → section patterns (incl. ".drop")
     │   ├── extract_sections.R     # Section extraction strategies + cleanup
+    │   ├── run_extract_fulltext.R # Entry point: extracted_text from the raw harvest
     │   ├── run_extract_sections.R # Entry point for section extraction
     │   ├── build_browser_data.R   # Builds data/browser_data.RDS for the course browser
     │   ├── pipeline_metrics.R     # Regression snapshot: check_pipeline_metrics()

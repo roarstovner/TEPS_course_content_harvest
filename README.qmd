@@ -25,9 +25,10 @@ This project harvests course descriptions from Norwegian teacher education insti
 | 2. URL from metadata (institution-specific builders; NA where the URL must be discovered) | `add_course_url()` (`R/add_course_url.R`) | `url` |
 | 3. URL discovery (USN, UiT, hivolda; optional) | `resolve_course_urls()` (`R/resolve_course_urls.R`) | `url`, checkpoint `data/checkpoint/urls_{inst}.RDS` |
 | 4. Fetch HTML with checkpointing | `fetch_html_with_checkpoint()` (`R/checkpoint.R`, `R/fetch_html_cols.R`) | `html`, `html_success`, `html_error` |
-| 5. Extract text with the institution's CSS selector | `extract_fulltext_css()` (`R/extract_fulltext.R`) | `extracted_text` → `data/html_{inst}.RDS` |
-| 6. Anonymize and deduplicate | `R/run_dedup.R` | `course_plans.RDS`, `course_offerings*.RDS` |
-| 7. Split into sections | `R/run_extract_sections.R` | `sections_raw.RDS` |
+| 5. Extract text (CSS selector, nla JSON, USN cleanup) | `extract_fulltext_from_raw()` (`R/extract_fulltext.R`) | `data/html_{inst}.RDS` (raw harvest) |
+| 6. Rebuild the text from the stored HTML | `R/run_extract_fulltext.R` | `extracted_text.RDS` |
+| 7. Anonymize and deduplicate | `R/run_dedup.R` | `course_plans.RDS`, `course_offerings*.RDS` |
+| 8. Split into sections | `R/run_extract_sections.R` | `sections_raw.RDS` |
 
 Stages 1-5 are run per institution by `harvest_institution()`, which dispatches
 to a strategy in `R/harvest_strategies.R` (`standard`, `url_discovery`,
@@ -35,6 +36,13 @@ to a strategy in `R/harvest_strategies.R` (`standard`, `url_discovery`,
 `R/institution_config.R` is the single source of truth for each institution:
 strategy, CSS selector, `selector_mode`, `year_in_url`, pre/post functions,
 fetch overrides and the `section_*` fields.
+
+`data/html_{inst}.RDS` is the raw harvest and only harvesting writes it. The
+steps after it rebuild everything from it with the current code, so a changed
+selector or post function needs `Rscript R/run_extract_fulltext.R <inst>`, not
+a new harvest. The `extracted_text` saved with the harvest is not used
+downstream, except for plans that came from a PDF (uis archive plans,
+steiner): the PDF is not kept, so that text is the raw data.
 
 ## Quick Start: Running the Pipeline
 
@@ -95,6 +103,7 @@ below it:
 
 | Step | Command | Re-run after changes to |
 |---|---|---|
+| Fulltext | `Rscript R/run_extract_fulltext.R [inst ...]` | selectors and pre/post functions in `R/institution_config.R`, `R/extract_fulltext.R` |
 | Anonymize + deduplicate | `Rscript R/run_dedup.R` | `R/anonymize.R`, `R/normalize_plan_text.R`, `R/deduplicate_plans.R` |
 | Sections | `Rscript R/run_extract_sections.R [inst ...]` | `R/extract_sections.R`, `R/section_heading_map.R`, `R/anonymize.R`, `section_*` config fields |
 | Course browser data | `Rscript R/build_browser_data.R` | any of the above |
@@ -328,7 +337,8 @@ is public; `data/*.RDS` is gitignored.
 | File | Contents | Personal data | Status |
 |---|---|---|---|
 | `data/courses.RDS` | DBH course metadata (pipeline input) | none | in git |
-| `data/html_{inst}.RDS`, `data/checkpoint/` | raw `html` + `extracted_text` | yes (raw) | internal |
+| `data/html_{inst}.RDS`, `data/checkpoint/` | raw harvest: `html` (+ `extracted_text` from harvest time) | yes (raw) | internal |
+| `data/extracted_text.RDS` | `extracted_text` rebuilt from the raw harvest | yes (raw) | internal |
 | `data/course_offerings_full.RDS` | offerings + `url`, `extracted_text`, `course_plan` | yes (`extracted_text`) | internal |
 | `data/course_offerings.RDS` | DBH metadata + `plan_content_id`, no text | none | published |
 | `data/course_plans.RDS` | anonymized `course_plan` (+ `course_plan_normalized`) | anonymized | published |
@@ -381,7 +391,6 @@ output
 ```
 
 - `course_plan` is the anonymized version of `extracted_text` (no names, emails, dates, or administrative years). Content years like historical references are preserved. Use this column for analysis.
-- Older `html_{inst}.RDS` files name the text column `fulltext`; `run_dedup.R` and `run_extract_sections.R` read it as `extracted_text`.
 
 ## Institution-Specific Notes
 
@@ -453,6 +462,8 @@ pages.
 | `resolve_course_urls(df, checkpoint_path)` | `R/resolve_course_urls.R` | URL discovery (USN, UiT, hivolda) with checkpointing |
 | `fetch_html_with_checkpoint(courses, checkpoint_path)` | `R/checkpoint.R` | Download HTML, skipping courses already in the checkpoint |
 | `extract_fulltext_css(html, selector, mode, pre_fn, post_fn)` | `R/extract_fulltext.R` | Config-driven CSS text extraction |
+| `extract_fulltext_from_raw(df, config)` | `R/extract_fulltext.R` | `extracted_text` from the raw harvest, per strategy |
+| `read_harvest(institutions)` | `R/extract_fulltext.R` | Raw harvest joined with `data/extracted_text.RDS` |
 | `validate_courses(df, stage)` | `R/utils.R` | Required columns at `"initial"`, `"with_url"`, `"with_html"` |
 | `anonymize_text(institution, text)` | `R/anonymize.R` | PII and admin-date removal for `course_plan` and sections |
 | `normalize_plan_text(course_plan)` | `R/normalize_plan_text.R` | Lossy normalization for dedup hashing |
@@ -473,7 +484,7 @@ pages.
 
 **Extracted text is empty or wrong?**
 - Verify the CSS selector with browser dev tools on a real course page
-- Update the selector in `R/institution_config.R` if the website changed, then re-extract
+- Update the selector in `R/institution_config.R` if the website changed, then `Rscript R/run_extract_fulltext.R <inst>` (no new harvest needed)
 - Check whether the institution needs `selector_mode = "multi"`
 - Some pages have different structures for different years
 
@@ -505,6 +516,7 @@ pages.
 │   ├── run_dedup.R            # Entry point for anonymize + dedup pipeline
 │   ├── section_heading_map.R  # Heading → section patterns (incl. ".drop")
 │   ├── extract_sections.R     # Section extraction strategies + cleanup
+│   ├── run_extract_fulltext.R # Entry point: extracted_text from the raw harvest
 │   ├── run_extract_sections.R # Entry point for section extraction
 │   ├── build_browser_data.R   # Builds data/browser_data.RDS for the course browser
 │   ├── pipeline_metrics.R     # Regression snapshot: check_pipeline_metrics()

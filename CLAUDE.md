@@ -49,6 +49,9 @@ documenting, write it there and, if agents need to find it, add a pointer here.
   phone numbers. Anything published is built from `anonymize_text()`; sections
   are cut from raw text, so `R/run_extract_sections.R` must keep anonymizing.
   See README "Data Files: Published and Internal".
+- `data/html_{inst}.RDS` and `data/checkpoint/` are the raw harvest: only a
+  harvest writes them. To change extracted text, change the config or
+  `R/extract_fulltext.R` and run `Rscript R/run_extract_fulltext.R <inst>`.
 - After changing extraction, the heading map or the anonymizer, rebuild the
   derived data (README "Rebuilding Derived Data") and read the metrics report
   the run scripts print (`check_pipeline_metrics()`). Explain every flagged
