@@ -103,6 +103,20 @@ below it:
 
 Per-institution prose notes are edited directly in `data/data_notes.qmd`.
 
+`run_dedup.R` and `run_extract_sections.R` end by comparing the built data with
+a snapshot of per-institution and per-section counts and median text lengths
+(`check_pipeline_metrics()` in `R/pipeline_metrics.R`, snapshot in
+`tests/snapshots/pipeline_metrics.csv`). Every change beyond tolerance is
+printed, and the test `tests/testthat/test-pipeline-metrics.R` fails until the
+snapshot is updated. When a change is intended, update the snapshot and commit
+it together with the change:
+
+```{r}
+#| eval: false
+source("R/pipeline_metrics.R")
+check_pipeline_metrics(update = TRUE)
+```
+
 ## Adding a New Institution
 
 To add support for a new institution, you need to modify **two files**. In
@@ -493,7 +507,8 @@ pages.
 │   ├── extract_sections.R     # Section extraction strategies + cleanup
 │   ├── run_extract_sections.R # Entry point for section extraction
 │   ├── build_browser_data.R   # Builds data/browser_data.RDS for the course browser
-│   └── audit/                 # Audit harness for /audit-institutions
+│   ├── pipeline_metrics.R     # Regression snapshot: check_pipeline_metrics()
+│   └── audit/                # Audit harness for /audit-institutions
 ├── app/
 │   ├── course_browser/        # Shiny concordance browser (see its README)
 │   └── course_browser_ojs/    # Static Observable JS browser (see its README)
@@ -503,7 +518,9 @@ pages.
 │   ├── data_notes.qmd         # Data quality notes per institution
 │   ├── audit/{check}/         # Audit findings and reports
 │   └── checkpoint/            # Checkpoint files (not in git)
-├── tests/testthat/            # Rscript -e 'testthat::test_dir("tests/testthat")'
+├── tests/
+│   ├── testthat/              # Rscript -e 'testthat::test_dir("tests/testthat")'
+│   └── snapshots/             # pipeline_metrics.csv (regression snapshot)
 └── data-raw/
     └── courses.R              # script that creates courses.RDS
 ```

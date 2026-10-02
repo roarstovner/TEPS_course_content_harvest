@@ -149,4 +149,10 @@ for (inst in institutions) {
                                          length(unmapped) - 20))
 }
 
+if (file.exists("data/course_offerings_full.RDS")) {
+  cat("\n=== METRICS VS SNAPSHOT ===\n\n")
+  source("R/pipeline_metrics.R")
+  check_pipeline_metrics()
+}
+
 cat("\nDone.\n")

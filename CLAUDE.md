@@ -50,8 +50,9 @@ documenting, write it there and, if agents need to find it, add a pointer here.
   are cut from raw text, so `R/run_extract_sections.R` must keep anonymizing.
   See README "Data Files: Published and Internal".
 - After changing extraction, the heading map or the anonymizer, rebuild the
-  derived data (README "Rebuilding Derived Data") and compare per-institution
-  counts with the previous build. A whole institution can drop to zero (all
-  142 nla courses lost their sections in 06db3ac, fixed in 0d18592).
+  derived data (README "Rebuilding Derived Data") and read the metrics report
+  the run scripts print (`check_pipeline_metrics()`). Explain every flagged
+  change; update the snapshot (`check_pipeline_metrics(update = TRUE)`) only
+  for intended ones, in the same commit, and say so in the issue comment.
 - UiO: never switch to semester URLs (`/h24/`, `/v25/`). They hold logistics,
   not the course plan (README "Institution-Specific Notes").

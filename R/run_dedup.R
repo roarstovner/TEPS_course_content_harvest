@@ -96,4 +96,8 @@ for (i in seq_len(nrow(inst_summary))) {
   ))
 }
 
+cat("\n=== METRICS VS SNAPSHOT ===\n\n")
+source("R/pipeline_metrics.R")
+check_pipeline_metrics()
+
 cat("\nDeduplication complete.\n")
