@@ -38,6 +38,7 @@ total_rows     <- nrow(df)
 total_text <- sum(df$has_extracted_text)
 total_rate     <- sprintf("%.1f%%", total_text / total_rows * 100)
 total_plans    <- nrow(plans)
+single_year    <- sort(unique(df$institution[ave(df$Årstall, df$institution, FUN = function(y) length(unique(y))) == 1]))
 ```
 
 Generated: `r Sys.Date()`
@@ -63,13 +64,24 @@ knitr::kable(summary_tbl)
 
 ## Year coverage
 
-Institutions fall into two groups based on URL structure:
+Where the URL carries no year (`year_in_url = FALSE` in
+`R/institution_config.R`), every year gets the latest plan, so only the latest
+DBH year is harvested (`apply_year_filter()`). In this data that applies to
+`r paste(single_year, collapse = ", ")`.
+The others have historical plans as far back as the site still serves them.
+Share of offerings with a plan, by period:
 
-**Year-specific URLs** (historical data available): HiOF, INN, NIH, NTNU, OsloMet, UiA, USN.
-These institutions include the year (and sometimes semester) in their course page URLs, so we can harvest distinct content for each year.
-
-**No year in URL** (current year only): HVL, Hivolda, MF, NLA, NMBU, Nord, Samas, Steiner, UiB, UiO, UiS, UiT.
-These institutions serve the same (latest) page regardless of year. Data is filtered to 2025 only to avoid duplicating current content across historical years. Hivolda is an exception: it has semester-specific pages discoverable via URL resolution, so it retains historical data.
+```{r}
+#| label: coverage-by-period
+df |>
+  mutate(Period = cut(Årstall, c(-Inf, 2014, 2017, 2019, 2021, 2023, Inf),
+                      labels = c("–2014", "2015–17", "2018–19", "2020–21",
+                                 "2022–23", "2024–"))) |>
+  group_by(Institution = institution, Period) |>
+  summarise(pct = sprintf("%.0f%%", mean(has_extracted_text) * 100), .groups = "drop") |>
+  tidyr::pivot_wider(names_from = Period, values_from = pct, values_fill = "", names_sort = TRUE) |>
+  knitr::kable()
+```
 
 ## Semester registration in DBH
 
@@ -117,170 +129,131 @@ Low dedup (<10%) means most rows have genuinely different content, typically bec
 
 ## Per-Institution Notes
 
+Figures are in the tables above; the notes say why. Issue numbers refer to
+chainlink.
+
 ---
 
 ### HiOF (Ostfold University College)
 
-- **49.4% success rate**: Many older URLs (pre-2021) return 404
-- Historical courses (before autumn 2021) use a different URL structure; the URL builder has fallback logic
-- Two CSS selectors used: old structure (`#vrtx-fs-emne-content`) and new (`.entry-content`)
-- HiOF required a browser-like user agent to avoid 403 blocks (see #27)
-- `normalize_plan_text` strips "Sist hentet fra FS" timestamps and "Litteraturlista er sist oppdatert" lines
-- **Litteraturlister (reading lists)** are included in the extracted text — only the timestamp line is stripped, not the reading list content itself (book titles, authors, ISBNs, etc.). This differs from NLA, which truncates at "Digital litteraturliste" to remove reading lists entirely
+- Plans before autumn 2021 use another URL structure; `add_course_url_hiof()` switches by date, and the selector lists fallbacks for both page layouts
+- Needs a browser-like user agent (`user_agent = "browser"`) to avoid 403s (#27)
+- Most rows without a plan are the other semester of a course registered in both (see "Semester registration in DBH")
+- Reading lists are part of the plan text; `.anon_hiof()` removes only the "Litteraturlista er sist oppdatert" line
 
 ---
 
 ### Hivolda (Volda University College)
 
-- **Re-harvested 2026-02-16** with URL discovery (see #63, #79-#83)
-- The base URL `/emne/{CODE}` returns only the latest version. Semester-specific pages have numeric IDs (e.g., `/emne/MGL5-10NO2B/12177`) that cannot be derived from metadata
-- `resolve_urls_hivolda_batch()` scrapes the base page to discover semester links, mapping "Haust" to "Høst" for matching
-- Result: 594/1182 rows with extracted text (up from 1182 identical pages). 556 unique plans (up from 99)
-- 588 NA rows = course not offered in that semester (legitimate missing data)
+- Semester-specific pages have numeric ids (e.g. `/emne/MGL5-10NO2B/12177`) that metadata cannot give; `resolve_urls_hivolda_batch()` reads them from the course's base page, matching "Haust" to "Høst" (#63, #79-#83)
+- Rows without a plan are mostly semesters in which the course was not taught
 
 ---
 
 ### HVL (Western Norway University of Applied Sciences)
 
-- **Filtered to 2025 only** (no year in URL; see #74, #77)
-- **88.2% success rate**: 79 rows have no content
-- 716 rows in the original harvest were soft-404 "course not found" pages; these are now detected during fetch and marked as `html=NA` (see #66)
-- Uses `.extract_one()` with selector `.l-2-col__main-content`
+- Year in the URL. Soft-404 "course not found" pages are detected at fetch time (`fetch_html_cols_single_hvl()`) and stored as no HTML (#66)
 
 ---
 
 ### INN (Inland Norway University of Applied Sciences)
 
-- **54.1% success rate**: 1086 rows have no HTML (URLs return 404 or errors)
-- URL builder filters out pre-2022 courses (return NA), as INN's website only covers 2022+ (see #26)
-- 30 pages are placeholder/error pages ("Emnesøket gjelder kun fra...") filtered as NA by `normalize_plan_text` (see #53)
-- Year range 2018-2024 (no 2025 data in DBH extract)
-- INN publishes some courses in both Norwegian and English, causing lower dedup than expected. `normalize_plan_text` strips 35 NO/EN field labels and normalizes language metadata (see #52)
-- **Wrong-year content**: Some 2022 courses (e.g., 2ENL512-1, 2NOL51-5, 2SFL51-1, 2ENLBA) display "Undervisningssemestre" for a different year than requested. This is an upstream issue in INN's system — the URL includes the correct year, but INN's server may serve a different version. No client-side fix is possible (see #123)
-- **Missing plans**: A few 2022 courses (e.g., 2EXPHIL51, 2PEDL51-2-1, 2ENL512-3) return pages with no course plan content. These are not caught by the "Emnesøket" filter since the page structure differs; extracted text may contain navigation/header text instead of plan content (see #123)
+- No plans before 2022: INN's site starts in 2022, so the URL builder returns NA for earlier years (#26)
+- Some pages are the course search page ("Emnesøket gjelder kun fra ...") instead of a plan; the anonymizer turns them into NA (#53)
+- Some courses are published in both Norwegian and English (#52)
+- Some 2022 pages show "Undervisningssemestre" for another year, and a few carry no plan; this is upstream, with no client-side fix (#123)
 
 ---
 
 ### MF (MF Norwegian School of Theology)
 
-- **Filtered to 2025 only** (no year in URL; see #74, #77)
-- **92.7% success rate**: 4 pages return 404 (discontinued courses)
-- CSS selector was fixed from `#main` to `main` (see #25)
-- `normalize_plan_text` strips from "Emneansvarlig" to end (removes teacher names, contact info, marketing content)
+- Latest year only (no year in the URL). Selector `main` (#25)
+- `.anon_mf()` cuts from "Emneansvarlig" to the end (names, contact details, marketing)
 
 ---
 
 ### NIH (Norwegian School of Sport Sciences)
 
-- **44% success rate**: 103 of 184 pages return 404
-- Small institution (34 codes), short year range (2021-2025)
-- No deduplication (0%) — each fetched plan is distinct
-- Shortest median content (2341 chars)
+- Short year range. Most 404s are the other semester of a course registered in both (see "Semester registration in DBH"; #220)
 
 ---
 
 ### NLA (NLA University College)
 
-- **Filtered to 2025 only** (no year in URL; see #74, #77)
-- **100% extraction rate** (365/365)
-- Original harvest failed (0% extraction) because NLA's `/studietilbud/emner/` URLs are React-rendered. Fix: switched to `/for-studenter/Studie-%20og%20emneplaner/emneplan/{CODE}` with selector `.page-course-plan` (see #55)
-- `.pre_nla()` in `extract_fulltext.R` strips year dropdown, "Last ned PDF" link, and truncates at "Digital litteraturliste" to remove reading lists (reduced median from 34.9K to 5.3K chars; see #67)
+- Latest year only. Each course page embeds every academic year as JSON; `extract_nla_json()` takes the year of the row (spring 2025 → 2024-2025, autumn 2025 → 2025-2026). A row with a page but no plan is an academic year missing from that JSON
+- The `/studietilbud/emner/` URLs are rendered in the browser, so the harvest uses `/for-studenter/Studie-%20og%20emneplaner/emneplan/{CODE}` (#55)
 
 ---
 
 ### NMBU (Norwegian University of Life Sciences)
 
-- **Filtered to 2025 only** (no year in URL; see #74, #77)
-- Only 15 unique course codes in current year
-- **65.5% success rate**: 10 pages return 404 (discontinued courses)
+- Latest year only (no year in the URL); few course codes. Rows without a plan are 404s for discontinued courses
 
 ---
 
 ### Nord (Nord University)
 
-- **Filtered to 2025 only** (no year in URL; see #74, #77)
-- **100% success rate** (540/540)
-- Uses `.extract_many()` for accordion-structured content
+- Year and semester in the URL, with Norwegian characters (`HØST`/`VÅR`); ASCII `HOEST` falls back to a generic page without year-specific content (#126, #129)
+- Accordion pages, read with a multi-element selector
 
 ---
 
 ### NTNU (Norwegian University of Science and Technology)
 
-- **66.1% success rate**: 1944 rows with no HTML (older courses no longer online)
-- URL includes year but not semester; special error detection for "no information available" pages (`ntnu_no_info_error`)
-- `normalize_plan_text` strips from "Kontaktinformasjon" to end (teacher names, exam dates, JS artifacts, timetable)
-- Wide year range (2004-2025) with genuine content evolution across years
+- Year in the URL, no semester. Pages saying no information is available raise `ntnu_no_info_error`; robots.txt asks for a 10-second crawl delay
+- `.anon_ntnu()` cuts from "Kontaktinformasjon" to the end (teachers, exam dates, timetable)
 
 ---
 
 ### OsloMet (Oslo Metropolitan University)
 
-- **Re-harvested 2026-02-14** (see #57, #61)
-- Original harvest returned only error pages because OsloMet was using client-side rendering (React/Liferay). The site later switched to server-side rendering, fixing the issue
-- **100% extraction rate** (1705/1705), but 60 rows contain error pages ("Siden du leter etter finnes ikke") which are filtered as NA by `normalize_plan_text`, leaving 1645 rows with genuine content
-- **URL semester issue**: OsloMet's website only accepts "HØST" (autumn) in URLs. Spring semester URLs return 404. Workaround: always use "HØST" regardless of actual semester (see #1)
-- URL pattern: `https://student.oslomet.no/studier/-/studieinfo/emne/{CODE}/{YEAR}/HØST`
+- The URL always uses `HØST`: spring URLs return 404 and the plan is the same (#1). Pattern: `https://student.oslomet.no/studier/-/studieinfo/emne/{CODE}/{YEAR}/HØST`
+- Re-harvested 2026-02-14 after the site moved to server-side rendering (#57, #61). Error pages ("Siden du leter etter finnes ikke") become NA in the anonymizer
 - **Practicum courses have no sections** (M1GP\*/M5GP\*, 135 offerings): every section of the course plan only says "Se fagplanen." The page's "Fagplan" block is the programme-wide practicum plan for all study years, with no markup separating the years, so it is not read into the course's sections. Their `course_plan` keeps the full page text (see #242)
 
 ---
 
 ### Samas (Sámi University of Applied Sciences)
 
-- **New institution, added 2026-02-16** (see #69-#72)
-- **Filtered to 2025 only**
-- **0% extraction rate**: No reliable matching between DBH course codes and website course codes (see #85, #89, #90)
-- Samas publishes course plans as PDFs ("Oahppoplána") at `samas.no/se/oahput`, but the website uses its own codes (SÁM-1005, DUO-1014, SER 103) that do NOT correspond to DBH codes (V1SAM-1100-1, V1DUO-1140-1, etc.)
-- ~98% of DBH rows are V1/V5 teacher education courses. These only appear in program-level PDFs ("PROGRÁMMAPLÁNA") that list course names and credits but contain no per-course descriptions
-- Individual course plan PDFs exist on the website for standalone courses, but none match any DBH course codes in the data
+- `noop` strategy, no plans: the website's course codes (SÁM-1005, DUO-1014, ...) do not correspond to DBH codes (V1SAM-1100-1, ...), and the V1/V5 teacher education courses appear only in programme PDFs without per-course descriptions (#69-#72, #85, #89, #90)
 
 ---
 
 ### Steiner (Rudolf Steiner University College)
 
-- **New institution, added 2026-02-16** (see #68, #73)
-- **Filtered to 2025 only** (18 rows)
-- Course plans harvested from 5 subject-area PDFs at `steinerhoyskolen.no`, split by course heading pattern
-- 15/18 rows with extracted text (83.3%). 3 missing courses are Praksis modules (M-LP1/2/3) with no PDF content
-- No deduplication (0%) — each of the 15 plans is distinct
+- Latest year only. Plans come from five subject PDFs at `steinerhoyskolen.no`, split by course heading (#68, #73); the PDFs are not stored, so the split text is the raw data
+- The practicum modules (M-LP1/2/3) have no PDF content
+- M-PEL2.1/M-PEL2.2 get the PDF's PEL1.4/PEL1.5 plans (`.steiner_remap_pel_emne()`); to be confirmed against the programme description (#225)
 
 ---
 
 ### UiA (University of Agder)
 
-- **47.6% success rate**: Website only has courses from **2020 onwards**; 2013-2019 courses return 404
-- **Whole-year courses**: DBH registers courses for both semesters, but UiA typically publishes only one page, so most 404s are the other semester (see "Semester registration in DBH"). Of 1150 courses in both semesters: 76.3% have autumn page only, 16.8% spring only, 0.3% both
-- **URL vs content semester mismatch**: 37% of autumn URLs contain spring-semester content
+- The site has plans from 2020 on; earlier years return 404
+- DBH registers most courses in both semesters, but UiA publishes one page, so most 404s are the other semester (see "Semester registration in DBH"; #220)
 - URL pattern: `https://www.uia.no/studier/emner/{year}/{semester}/{course_code}.html`
 
 ---
 
 ### UiB (University of Bergen)
 
-- **Filtered to 2025 only** (no year in URL; see #74, #77)
-- **94.7% success rate**: 10 rows with no content
-- Uses `.extract_many()` for accordion-structured content
+- Year in the URL; accordion pages read with a multi-element selector; robots.txt asks for a 10-second crawl delay
+- The page's semester picker is dropped when the HTML is parsed (#219)
 
 ---
 
 ### UiO (University of Oslo)
 
-- **Filtered to 2025 only** (see #74, #76)
-- **52% success rate**: UiO only publishes the **latest version** of each course plan
-- Semester-specific URLs (`/h24/`, `/v25/`) contain **logistics only** (instructors, schedule, exam dates) — NOT course plan content. The base URL always returns the current plan (see #76)
-- Requires faculty/department slugs derived from `Avdelingsnavn` (hardcoded mapping in `add_course_url_uio()`)
-- URL pattern: `https://www.uio.no/studier/emner/{faculty}/{inst}/{CODE}/`
+- Latest year only: UiO publishes only the current version of each plan. Semester URLs (`/h24/`, `/v25/`) hold logistics (teachers, timetable, exam dates), not the plan (#76)
+- Needs faculty/department slugs derived from `Avdelingsnavn` (mapping in `add_course_url_uio()`). Pattern: `https://www.uio.no/studier/emner/{faculty}/{inst}/{CODE}/`
+- `.anon_uio()` cuts the generic "Mer om eksamen ved UiO" tail (#224)
 
 ---
 
 ### UiS (University of Stavanger)
 
-- **Multi-year harvest** (2007–2025), 2920 rows across 316 unique course codes
-- **31.4% overall success rate** (917/2920 with extracted text); 36% of unique URLs succeed (1053/2920 HTML fetched)
-- **No year in URL** — URL pattern `/nb/student/course/{CODE}_1` returns only the current course plan. Historical course plans are not available through the web interface (see #127 for PDF archive)
-- The same URL is shared across all year-rows for a given course, so many year-rows inherently have no content (2070 duplicate URLs)
-- Website completely redesigned (migrated to Drupal); old URL pattern `/nb/course/{CODE}` returned 100% 404s (see #19-#24)
-- Uses `.extract_many()` for content sections
-- Success rate increases with recency: 0% before 2014, rising to 58% in 2025
+- Current plans come from the course web page, older ones from the PDF archive linked in its semester dropdown (`html_pdf_discovery`, #127); the PDFs are not stored, so their text is the raw data
+- Web pages are read from the blocks of `.article__section`, without navigation, facts box and contact footer (#251)
 
 ---
 
@@ -295,12 +268,6 @@ Low dedup (<10%) means most rows have genuinely different content, typically bec
 
 ### USN (University of South-Eastern Norway)
 
-- **Low row-level success rate (expected)**: most rows without a plan are the other semester of a course registered in both (see "Semester registration in DBH"); count course-years instead
-- USN requires URL version discovery via JavaScript-rendered pages
-- Course plan URLs include a version number (1-5) that cannot be determined from metadata alone
-- URL pattern: `https://www.usn.no/studier/studie-og-emneplaner/#/emne/{CODE}_{VERSION}_{YEAR}_{SEMESTER}`
-- **Silent redirects**: Invalid version+year combos redirect to other pages without changing the URL. Validation checks that displayed year matches requested year
-- Uses Shadow DOM extraction via `rvest::read_html_live()` with session reuse for performance
-- Breakdown: ~39% autumn-start only, ~11% spring-start only, ~25% both semesters, ~25% no page at all
-- "New" courses (status=2) have ~5% success; "Active" (status=1) courses ~81%
-- Low dedup (3.4%): Plans change frequently between versions/years
+- Most rows without a plan are the other semester of a course registered in both (see "Semester registration in DBH"; #221)
+- The URL holds a plan version (1-5) that metadata cannot give: `https://www.usn.no/studier/studie-og-emneplaner/#/emne/{CODE}_{VERSION}_{YEAR}_{SEMESTER}`. Invalid version/year combinations silently show another page, so `resolve_urls_usn_batch()` renders each candidate in Chrome and checks the displayed year (README "Institution-Specific Notes")
+- Content is rendered in Shadow DOM and read with `read_usn_live_html()`
