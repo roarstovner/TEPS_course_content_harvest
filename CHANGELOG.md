@@ -99,6 +99,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Remove 'Emneansvarlig Name' lines from course plans (#260)
 - UiT: fulltext selector no longer matches; re-extract (#218)
 - Drop scripts, styles and form widgets from extracted text (#259)
 - oslomet praksis courses: read the Fagplan block (#242)
