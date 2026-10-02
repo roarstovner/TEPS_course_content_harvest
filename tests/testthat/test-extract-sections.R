@@ -306,7 +306,7 @@ test_that("mf: intro is course_content, accordions are sections, contact card ig
     </div>
     <div class="template-study-subject__contact"><h2>Emneansvarlig</h2>Ola Nordmann</div>
   </div></article></body></html>'
-  cfg <- .section_cfg("mf")
+  cfg <- .section_cfg(get_institution_config("mf"))
   out <- .clean_sections(extract_sections_mf(list(html = html), cfg))
   s <- stats::setNames(out$raw_text, out$section)
   expect_equal(s[["course_content"]], "Dette emnet gir en innføring i identitet.")
@@ -439,6 +439,6 @@ test_that("nla: sections are read from the EmneplanPage JSON in a <script>", {
   skip_if_not(file.exists(f), "harvested nla data not available")
   d <- readRDS(f)
   d <- d[!is.na(d$html), ][1:20, ]
-  out <- extract_sections("nla", d$html, d$extracted_text, d$course_id)
+  out <- extract_sections(get_institution_config("nla"), d$html, d$extracted_text, d$course_id)
   expect_gt(nrow(out), 0)
 })

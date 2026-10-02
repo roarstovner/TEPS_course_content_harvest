@@ -1,9 +1,8 @@
 # R/extract_sections.R
 # Structured section extraction from course HTML.
 #
-# Entry point: extract_sections(institution, html, extracted_text,
-# course_id) — returns a long tibble (course_id, institution,
-# section, raw_text).
+# Entry point: extract_sections(config, html, extracted_text, course_id)
+# — returns a long tibble (course_id, institution, section, raw_text).
 #
 # Strategies (config field `section_strategy`, see .section_strategy_fn()):
 #   - html_headings  — DOM walk by heading (+ optional sub-headings)
@@ -17,8 +16,10 @@
 # Section-extraction config lives on each institution in
 # R/institution_config.R (fields: section_strategy, section_heading_level).
 # Selector and pre_fn are reused from the institution's existing fields.
-.section_cfg <- function(institution) {
-  ic <- get_institution_config(institution)
+# `ic` is passed in rather than looked up, so that in the {targets} pipeline
+# only the changed institution's sections are rebuilt (#264).
+.section_cfg <- function(ic) {
+  institution <- ic$name
   if (is.null(ic$section_strategy)) {
     stop("No section_strategy for institution: ", institution)
   }
@@ -42,22 +43,22 @@
 
 #' Extract sections from course HTML for one institution
 #'
-#' Vectorised over the row inputs. All rows are assumed to share
-#' `institution`. Returns a long tibble:
+#' Vectorised over the row inputs, which all belong to the institution of
+#' `config`. Returns a long tibble:
 #'   course_id <chr>, institution <chr>, section <chr>, raw_text <chr>
 #'
-#' @param institution Character scalar.
+#' @param config Institution config from get_institution_config().
 #' @param html Character vector of raw HTML.
 #' @param extracted_text Character vector of pre-extracted plain text
 #'   (used by text_split and by html_headings' text-split fallback).
 #'   Same length as `html`.
 #' @param course_id Character vector of course ids (same length as `html`).
-extract_sections <- function(institution, html, extracted_text, course_id) {
-  stopifnot(length(institution) == 1)
+extract_sections <- function(config, html, extracted_text, course_id) {
   stopifnot(length(html) == length(course_id))
   stopifnot(length(extracted_text) == length(html))
 
-  cfg <- .section_cfg(institution)
+  cfg <- .section_cfg(config)
+  institution <- cfg$institution
 
   fn <- .section_strategy_fn(cfg$strategy)
   safe_fn <- purrr::possibly(fn, otherwise = .empty_sections())

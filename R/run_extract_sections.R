@@ -33,7 +33,7 @@ sections_list <- purrr::map(institutions, function(inst) {
   df <- courses_raw |> filter(institution == inst)
   cat(sprintf("  %-8s %d courses\n", inst, nrow(df)))
   extract_sections(
-    institution = inst,
+    config = get_institution_config(inst),
     html              = df$html %||% rep(NA_character_, nrow(df)),
     extracted_text    = df$extracted_text %||% rep(NA_character_, nrow(df)),
     course_id         = df$course_id
