@@ -17,7 +17,7 @@
 "hiof","learning_outcomes","n_plans",820
 "hiof","prerequisites","median_chars",82
 "hiof","prerequisites","n_plans",643
-"hiof","reading_list","median_chars",2136
+"hiof","reading_list","median_chars",2114
 "hiof","reading_list","n_plans",360
 "hiof","teaching_methods","median_chars",747
 "hiof","teaching_methods","n_plans",820
@@ -319,7 +319,7 @@
 "uio","reading_list","n_plans",1
 "uio","teaching_methods","median_chars",506
 "uio","teaching_methods","n_plans",52
-"uis","(all)","median_chars",5351.5
+"uis","(all)","median_chars",5283
 "uis","(all)","n_course_years_with_plan",1493
 "uis","(all)","n_plans_with_sections",1299
 "uis","(all)","n_rows",2921
@@ -336,8 +336,8 @@
 "uis","learning_outcomes","median_chars",1353.5
 "uis","learning_outcomes","n_plans",1268
 "uis","prerequisites","median_chars",140
-"uis","prerequisites","n_plans",671
-"uis","reading_list","median_chars",3045
+"uis","prerequisites","n_plans",668
+"uis","reading_list","median_chars",2718
 "uis","reading_list","n_plans",743
 "uis","teaching_methods","median_chars",179
 "uis","teaching_methods","n_plans",1171
@@ -363,7 +363,7 @@
 "uit","reading_list","n_plans",1445
 "uit","teaching_methods","median_chars",539
 "uit","teaching_methods","n_plans",2389
-"usn","(all)","median_chars",10714
+"usn","(all)","median_chars",10325.5
 "usn","(all)","n_course_years_with_plan",1207
 "usn","(all)","n_plans_with_sections",1183
 "usn","(all)","n_rows",3036
@@ -381,7 +381,7 @@
 "usn","learning_outcomes","n_plans",1182
 "usn","prerequisites","median_chars",52
 "usn","prerequisites","n_plans",647
-"usn","reading_list","median_chars",6971
+"usn","reading_list","median_chars",6622
 "usn","reading_list","n_plans",904
 "usn","teaching_methods","median_chars",473
 "usn","teaching_methods","n_plans",1177

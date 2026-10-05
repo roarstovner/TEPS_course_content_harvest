@@ -48,6 +48,18 @@ test_that("IP addresses in OpenURL links are removed, also when wrapped", {
   expect_match(result, "Kapittel 6.4.6.1 og doi=10.1.1.462.7279", fixed = TRUE)
 })
 
+test_that("page furniture: OpenURL links, uis PDF header, usn Leganto labels (#287)", {
+  uis <- anonymize_text("uis", paste0(
+    "Bracke, Sarah, 2008-11, 51-67,\nhttps://bibsys-ur.userservices.exlibrisgroup.com/view?ctx=1&rft.a=\n",
+    "b&req.skin=primoVi\new online\n\nBok\nNeste tittel\n",
+    "Emne LENG116_1, BOKMÅL, 2015 HØST, versjon 01.02.2015\nfortsatt"), .progress = FALSE)
+  expect_equal(uis, "Bracke, Sarah, 2008-11, 51-67,\n\nBok\nNeste tittel\nfortsatt")
+  usn <- anonymize_text("usn", paste(
+    "Click to view interactive reading list in LegantoObligatorisk litteratur",
+    "BookMøter med barnelitteratur", "View online", "Booking av rom", sep = "\n"), .progress = FALSE)
+  expect_equal(usn, "Obligatorisk litteratur\nMøter med barnelitteratur\nBooking av rom")
+})
+
 test_that("phone numbers with +47 are removed", {
   input <- "Ring oss: +47 22 85 50 00 for hjelp"
   result <- anonymize_text("hivolda", input, .progress = FALSE)

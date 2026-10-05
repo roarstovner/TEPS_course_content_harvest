@@ -159,8 +159,8 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   exam <- out$section %in% c("assessment", "coursework_requirements")
   out$raw_text[exam] <- .strip_section_noise(out$raw_text[exam], institution)
   rl <- out$section == "reading_list"
-  out$raw_text[rl] <- stringr::str_remove(   # hiof date stamp line (#248)
-    out$raw_text[rl], "^\\s*Litteratur(?:listen|lista) er sist oppdatert[^\\n]*\\s*")
+  out$raw_text[rl] <- stringr::str_remove(   # hiof date stamp line (#248, #287)
+    out$raw_text[rl], "^\\s*Litteratur\\w*(?: er)? sist oppdater[^\\n]*\\s*")
   pre <- out$section == "prerequisites"
   out$raw_text[pre] <- vapply(out$raw_text[pre], .strip_admission_lines,
                               character(1), USE.NAMES = FALSE)
@@ -319,7 +319,8 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   # flattened exam table ("Muntlig eksamen Karakterregel: ... Hjelpemiddelkode:
   # ..."); a line with a sentence before the table keeps its text
   nmbu = "(?m)^[^.\n]{0,60}Karakterregel:.*$",
-  uit  = "(?m)^Alt du trenger å vite om før, under og etter eksamen.*$"  # link line
+  uit  = c("(?m)^Alt du trenger å vite om før, under og etter eksamen.*$",  # link line
+           "(?m)^Eksamensdato er foreløpig.*$")                               # #287
 )
 
 .strip_section_noise <- function(text, institution = NULL) {

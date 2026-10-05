@@ -86,7 +86,8 @@ anonymize_text <- function(institution, text,
 .anon_hiof <- function(txt) {
   txt |>
     stringr::str_remove_all("Sist hentet fra FS[^\n]*") |>
-    stringr::str_remove_all("Litteraturlista er sist oppdatert[^\n]*") |>
+    # "Litteraturlista er sist oppdatert ...", "Litteraturliste sist oppdatert"
+    stringr::str_remove_all("(?m)^[ \\t]*Litteratur\\w*(?: er)? sist oppdater[^\n]*") |>
     # Strip "Emneansvarlig(e):" + name lines until next "Heading:" line
     stringr::str_remove("(?m)^Emneansvarlige?:\\s*\\n(?:(?![A-ZÆØÅ][\\w ]+:)[^\\n]*\\n?)*")
 }
@@ -142,6 +143,8 @@ anonymize_text <- function(institution, text,
     # under it are removed in .anon_generic() (#237)
     stringr::str_remove_all("(?m)^Fagperson\\(er\\)[ \\t]*\\n?") |>
     stringr::str_remove_all("Powered by TCPDF[^\n]*") |>
+    # PDF running header "Emne LENG116_1, BOKMÅL, 2015 HØST, versjon ..." (#287)
+    stringr::str_remove_all("(?m)^[ \\t]*Emne [A-ZÆØÅ0-9_-]+, (?:BOKMÅL|NYNORSK|ENGELSK),[^\n]*(?:\n|$)") |>
     stringr::str_remove_all("(?m)^\\s*side\\s+\\d+\\s*$")
 }
 
@@ -154,7 +157,14 @@ anonymize_text <- function(institution, text,
 .anon_usn <- function(txt) {
   txt |>
     stringr::str_remove_all("(?m)^Godkjent emneplan\\s*$") |>
-    stringr::str_remove_all("(?m)^Godkjent\\s+\\d{1,2}\\.\\d{1,2}\\.\\d{4}[^\n]*")
+    stringr::str_remove_all("(?m)^Godkjent\\s+\\d{1,2}\\.\\d{1,2}\\.\\d{4}[^\n]*") |>
+    # Leganto reading-list widget (#287): link label, "View online", and the
+    # item type glued to the title ("BookMøter med barnelitteratur")
+    stringr::str_remove_all("Click to view interactive reading list in Leganto") |>
+    stringr::str_remove_all("(?m)^[ \\t]*View online[ \\t]*(?:\\n|$)") |>
+    stringr::str_remove_all(paste0(
+      "(?m)^(?:Book Chapter|Electronic Book|Electronic Article|Audio-Visual Document|",
+      "Book|Article|Website|Document|Thesis|Report)(?=[\\p{Lu}\\d\"«(])"))
 }
 
 .anon_uib <- function(txt) {
@@ -224,11 +234,17 @@ anonymize_text <- function(institution, text,
   "([Gg]odkjent av (?:[Dd]ekan(?:en)?|[Pp]rodekan|[Ii]nstitutt(?:nest)?leder|",
   "[Ss]tudieprogramleder))[ \\t]+\\p{Lu}\\p{Ll}+(?:[ \\t]+\\p{Lu}[\\p{L}-]+)+"
 )
+# PDF text wraps long links anywhere: `s` with an optional line break
+# between any two characters.
+.wrapped <- function(s) paste(strsplit(s, "")[[1]], collapse = "\\n?")
 # The reader's IP address in library OpenURL links: "...&user_ip=10.16.56.125&"
-# (uis reading lists, #281). PDF text wraps these links anywhere, so a line
-# break may fall inside the key or the address.
-.user_ip_regex <- paste0(paste(strsplit("user_ip=", "")[[1]], collapse = "\\n?"),
-                         "[\\d.\\n]*\\d")
+# (uis reading lists, #281).
+.user_ip_regex <- paste0(.wrapped("user_ip="), "[\\d.\\n]*\\d")
+# The library's OpenURL link itself, up to its "View online" label: hundreds
+# of characters of rft.* parameters (uis; #287). It holds no space, so it never
+# runs into the next reference.
+.openurl_regex <- paste0("https?://\\S*exlibrisgroup[^ \\t]*?", .wrapped("View"),
+                         "\\s+", .wrapped("online"))
 
 # "2023-2024" / "2023-24" (consecutive years) is an academic year and goes;
 # a content range such as "1945-1970" stays (#230).
@@ -246,6 +262,7 @@ anonymize_text <- function(institution, text,
     # Remove email addresses, with their brackets: "Ta kontakt med (x@uio.no)" (#229)
     stringr::str_remove_all("\\s*\\(\\s*[\\w.+-]+@[\\w.-]+\\.[a-zA-Z]{2,}\\s*\\)") |>
     stringr::str_remove_all("\\b[\\w.+-]+@[\\w.-]+\\.[a-zA-Z]{2,}\\b") |>
+    stringr::str_remove_all(.openurl_regex) |>
     stringr::str_remove_all(.user_ip_regex) |>
     # Remove staff list lines "- Ola Nordmann (Emneansvarlig)" (#237)
     stringr::str_remove_all(.staff_line_regex) |>
