@@ -164,6 +164,10 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   pre <- out$section == "prerequisites"
   out$raw_text[pre] <- vapply(out$raw_text[pre], .strip_admission_lines,
                               character(1), USE.NAMES = FALSE)
+  tm <- out$section == "teaching_methods"
+  out$raw_text[tm] <- stringr::str_remove_all(out$raw_text[tm], .praksis_pointer_regex)
+  out$raw_text <- vapply(out$raw_text, .strip_leading_placeholder, character(1),
+                         USE.NAMES = FALSE)
   out$raw_text <- mapply(.clean_section_text, out$raw_text, out$section,
                          USE.NAMES = FALSE)
   keep <- mapply(.keep_section_row, out$raw_text, out$section,
@@ -361,12 +365,13 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # content that merely starts with "Ingen" or mentions Leganto is kept.
 .placeholder_phrases <- c(
   # bare negation / dummy values: "Ingen", "Ingen krav", "None", "x", "-", "..."
-  "ingen(?: spesielle)?(?: krav| forkunnskapskrav)?", "none", "n/a", "x",
+  "ingen(?: spesielle)?(?: krav| forkunnskapskrav| arbeidskrav)?", "none", "n/a", "x",
+  "det er ingen (?:vurdering|eksamen) i emnet",                      # hvl
   "[-–.…]+",
   # pointers to another document
-  "(?:se|sjå) (?:fag|program|studie)?plan(?:en)?",
+  "(?:se|sjå) (?:fag|program|studie)?plan(?:en)?(?: for [^.]{0,100})?",
   "se emnearkivet",
-  "ingen emner i programmet",
+  "ingen emner(?: i programmet)?",
   "emnebeskrivelsen finnes kun på engelsk[^.]*",
   # reading-list pointers and absence notes
   "ingen pensumliste(?: tilgjengelig)?(?: for dette emnet)?",
@@ -382,6 +387,25 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   # mf: the library-access notice alone (~600 chars), no list (#248)
   "litteraturlisten for .{0,30}tilgang til litteratur .{0,700}"
 )
+# Praksis pointers and the bare "Praksis" label, left in teaching_methods
+# since Praksis maps there (#247, #286). Lines that say something ("Det er tre
+# uker praksis i 6. semester. Se ...") stay.
+.praksis_pointer_regex <- paste0(
+  "(?im)^[ \\t]*(?:praksis:?|(?:praksis: )?for nærm(?:ere|are) informasjon om ",
+  "praksis, (?:se|sjå) ei?gen praksisplan\\.?|se (?:egen|eiga|egne) (?:praksisplan|",
+  "plan for praksis|emneplaner om praksis)[^.\\n]{0,80}\\.?|",
+  "det er ingen praksis knyt(?:tet|t) til emnet\\.?)[ \\t]*(?:\\n|$)")
+
+# Placeholder lines before real text go: "Ingen" (required) and then the
+# recommended prerequisites (hvl, uib), "." (nord), "Ingen" before usn's
+# attendance block (#286).
+.strip_leading_placeholder <- function(text) {
+  lines <- stringr::str_split_1(text, "\n")
+  real <- which(nzchar(trimws(lines)) & !.is_placeholder_text(lines))
+  if (length(real) == 0 || real[1] == 1) return(text)
+  paste(lines[real[1]:length(lines)], collapse = "\n")
+}
+
 .placeholder_regex <- paste0(
   "^(?:(?:", paste(.placeholder_phrases, collapse = "|"), ")[\\s.:;,]*)+$"
 )

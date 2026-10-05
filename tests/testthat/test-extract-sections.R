@@ -280,9 +280,9 @@ test_that("more placeholders, exam-table headers and list stamps are removed (#2
 
 test_that("first group label and one-line sections are kept, heading echo dropped (#249)", {
   out <- tibble::tibble(section = c("learning_outcomes", "learning_outcomes", "teaching_methods"),
-                        raw_text = c("Kunnskap\nStudenten kan lese.", "Læringsutbytte\nStudenten kan lese.", "Praksis"))
+                        raw_text = c("Kunnskap\nStudenten kan lese.", "Læringsutbytte\nStudenten kan lese.", "Seminarer"))
   expect_equal(.clean_sections(out)$raw_text,
-               c("Kunnskap\nStudenten kan lese.", "Studenten kan lese.", "Praksis"))
+               c("Kunnskap\nStudenten kan lese.", "Studenten kan lese.", "Seminarer"))
 })
 
 test_that("a colon-ended coursework lead-in starts coursework_requirements (#246)", {
@@ -464,6 +464,21 @@ test_that("a gate label takes the paragraph it names along (#283)", {
   expect_equal(s[["assessment"]], "EKSAMEN: Semesteroppgave.")
   s <- split("Arbeidskrav: 12 av 18 oppgaver. Emnet evalueres med skoleeksamen.")
   expect_equal(s[["assessment"]], "Emnet evalueres med skoleeksamen.")
+})
+
+test_that("leading placeholders and praksis pointers go, content stays (#286)", {
+  out <- tibble::tibble(
+    section = c("prerequisites", "teaching_methods", "coursework_requirements"),
+    raw_text = c("Ingen\n\nNOLI102 er tilrådd.",
+                 paste("Forelesninger og seminarer.", "Praksis",
+                       "For nærmere informasjon om praksis, se egen praksisplan.",
+                       "Det er tre uker praksis i 6. semester. Se programplanen.", sep = "\n"),
+                 "Ingen arbeidskrav."))
+  s <- stats::setNames(.clean_sections(out)$raw_text, .clean_sections(out)$section)
+  expect_equal(s[["prerequisites"]], "NOLI102 er tilrådd.")
+  expect_equal(s[["teaching_methods"]], paste("Forelesninger og seminarer.",
+    "Det er tre uker praksis i 6. semester. Se programplanen.", sep = "\n"))
+  expect_false("coursework_requirements" %in% names(s))
 })
 
 test_that("sentences that merely mention arbeidskrav stay in assessment", {
