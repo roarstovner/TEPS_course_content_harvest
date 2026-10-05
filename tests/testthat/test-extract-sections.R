@@ -449,6 +449,17 @@ test_that("a gate label takes the paragraph it names along (#283)", {
   s <- split("Arbeidskrav: Prosjektskissen skal godkjennes. Vurdering: Oppgaven vurderes A-F.")
   expect_equal(s[["coursework_requirements"]], "Arbeidskrav: Prosjektskissen skal godkjennes.")
   expect_equal(s[["assessment"]], "Vurdering: Oppgaven vurderes A-F.")
+  # ... but the gate's own pass/fail stays with it (nord)
+  s <- split("Obligatorisk deltakelse (OD): Krav om 80 %. Vurdering: Godkjent/ikke godkjent.",
+             "Obligatorisk arbeid (OA): Tre oppgaver. Vurdering:", "", "Godkjent/ikke godkjent.",
+             "", "Skriftlig eksamen (S).")
+  expect_equal(trimws(s[["assessment"]]), "Skriftlig eksamen (S).")
+  # ... and the paragraphs after it that still speak of a gate, no more
+  s <- split("Obligatorisk deltakelse (OD)", "", "Aktivt samarbeid er nødvendig.", "",
+             "Det er derfor obligatorisk oppmøte.", "", "Skriftlig skoleeksamen, 6 timer.")
+  expect_equal(s[["coursework_requirements"]], paste("Obligatorisk deltakelse (OD)",
+    "Aktivt samarbeid er nødvendig.", "Det er derfor obligatorisk oppmøte.", sep = "\n"))
+  expect_equal(trimws(s[["assessment"]]), "Skriftlig skoleeksamen, 6 timer.")
   s <- split("ARBEIDSKRAV: En presentasjon.EKSAMEN: Semesteroppgave.")
   expect_equal(s[["assessment"]], "EKSAMEN: Semesteroppgave.")
   s <- split("Arbeidskrav: 12 av 18 oppgaver. Emnet evalueres med skoleeksamen.")

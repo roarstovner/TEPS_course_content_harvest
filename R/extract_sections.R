@@ -209,12 +209,13 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 )
 
 # Move coursework-gate lines from assessment into coursework_requirements. A
-# gate line that is a label takes what it names along: the rest of its
-# paragraph, or the next paragraph when it ends its own. A colon-ended lead-in
-# ("Følgende arbeidskrav må være godkjent ...:", uit) always does; a label
-# without one ("Obligatorisk deltakelse (OD)", nord) only when what follows is
-# not a label too ("Eksamen"). Either stops at the next assessment component
-# ("Hjemmeeksamen (HJ): ...") (#283).
+# gate line that is a label takes what it names along. A colon-ended lead-in
+# ("Følgende arbeidskrav må være godkjent ...:", uit) takes the rest of its
+# paragraph, or the next paragraph when it ends its own. A label without one
+# ("Obligatorisk deltakelse (OD)", nord) takes the next paragraph unless that
+# is a label too ("Eksamen"), and the paragraphs after it that still speak of
+# a gate ("Det er derfor obligatorisk oppmøte ..."). Both stop at the next
+# assessment component ("Hjemmeeksamen (HJ): ...") (#283).
 .split_inline_coursework <- function(out) {
   i <- which(out$section == "assessment")
   if (length(i) != 1) return(out)
@@ -230,11 +231,17 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   colon <- grepl("[:：]\\s*$", lines)
   stop <- !gate & grepl(.component_label_regex, lines, perl = TRUE)
   n <- length(lines)
-  for (k in which(gate & label)) {
+  for (k in which(gate & (label | colon))) {
     from <- which(!blank & seq_len(n) > k)[1]
     if (is.na(from) || stop[from] || (!colon[k] && label[from])) next
-    to <- which((blank | stop) & seq_len(n) > from)[1]
-    gate[from:(if (is.na(to)) n else to - 1)] <- TRUE
+    repeat {
+      to <- which((blank | stop) & seq_len(n) > from)[1]
+      gate[from:(if (is.na(to)) n else to - 1)] <- TRUE
+      if (colon[k] || is.na(to)) break
+      from <- which(!blank & seq_len(n) > to)[1]
+      if (is.na(from) || stop[from] || label[from] ||
+          !grepl(.coursework_leadin, lines[from], perl = TRUE)) break
+    }
   }
   gate[blank] <- FALSE
   out$raw_text[i] <- paste(lines[!gate], collapse = "\n")
@@ -260,11 +267,12 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # An assessment component named by its abbreviation (nord): "Hjemmeeksamen
 # (HJ): 6 timer", "Mappe (MA) bestående av ...".
 .component_label_regex <- "^\\s*[^:\\n]{1,60}\\([A-ZÆØÅ]{1,4}\\d?\\)"
-# Where the assessment starts inside a gate line.
+# Where the assessment starts inside a gate line; not "Vurdering:
+# Godkjent/ikke godkjent", which is the gate's own.
 .assessment_midline_regex <- paste0(
   "(?<=[.!?]) ?(?=(?:Vurdering(?:sform)?|Eksamen(?:/vurderingsform)?|",
-  "Eksamensform):|EKSAMEN\\b|Emnet (?:evalueres|vurderes)\\b)|",
-  "(?<=\\S) (?=Eksamen består av)")
+  "Eksamensform):[ \t]*(?!(?:Godkjent|Bestått)\\b)\\S|EKSAMEN\\b|",
+  "Emnet (?:evalueres|vurderes)\\b)|(?<=\\S) (?=Eksamen består av)")
 
 # Notices and page widgets with no heading of their own, so .drop cannot catch
 # them (#215). Applied to assessment and coursework_requirements only, so a
