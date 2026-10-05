@@ -34,41 +34,49 @@ institution_plans <- function(html_file, fulltext) {
   deduplicate_plans(df)
 }
 
+# Every page read once into blocks (R/blocks.R; #272): course_id plus the
+# block columns. Pages without HTML are read from their text by the text
+# reader only.
+institution_blocks <- function(html_file, fulltext, config) {
+  df <- readRDS(html_file)
+  cfg <- .block_cfg(config)
+  text <- fulltext$extracted_text[match(df$course_id, fulltext$course_id)]
+  html <- df$html %||% rep(NA_character_, nrow(df))
+  read <- if (cfg$reader == "text") !is.na(text) else !is.na(html) & nzchar(html)
+  blocks <- lapply(which(read), function(i) page_blocks(html[i], text[i], cfg, df$course_id[i]))
+  dplyr::bind_rows(tibble::tibble(course_id = character()), .empty_blocks(),
+                   tibble::tibble(course_id = rep(df$course_id[read], vapply(blocks, nrow, 1L)),
+                                  dplyr::bind_rows(.empty_blocks(), blocks)))
+}
+
 # Sections per plan (#273), cut from the page of the offering whose text the
 # plan keeps (source_course_id), so a plan's sections and its course_plan come
 # from the same page. Sections are cut from raw text, so they are anonymized
 # here (#208).
-institution_sections <- function(html_file, fulltext, config, plans) {
+institution_sections <- function(blocks, fulltext, config, plans) {
   src <- plans$plans[, c("plan_content_id", "institution", "Emnekode", "source_course_id")]
-  df <- readRDS(html_file)
-  html <- df$html %||% rep(NA_character_, nrow(df))
-  extract_sections(config, html[match(src$source_course_id, df$course_id)],
-                   fulltext$extracted_text[match(src$source_course_id, fulltext$course_id)],
-                   src$source_course_id) |>
+  cfg <- .block_cfg(config)
+  pages <- split(blocks[blocks$course_id %in% src$source_course_id, names(.empty_blocks())],
+                 blocks$course_id[blocks$course_id %in% src$source_course_id])
+  text <- fulltext$extracted_text[match(src$source_course_id, fulltext$course_id)]
+  rows <- lapply(seq_len(nrow(src)), function(i) {
+    out <- page_sections(pages[[src$source_course_id[i]]] %||% .empty_blocks(), text[i], cfg)
+    dplyr::bind_cols(src[rep(i, nrow(out)), ], out)
+  })
+  dplyr::bind_rows(src[0, ], .empty_sections(), rows) |>
     dplyr::mutate(text = anonymize_text(institution, raw_text, .progress = FALSE)) |>
     dplyr::filter(!is.na(text)) |>
-    dplyr::inner_join(src, by = c(course_id = "source_course_id", "institution")) |>
-    dplyr::select(plan_content_id, institution, Emnekode, source_course_id = course_id,
-                  section, text)
+    dplyr::select(plan_content_id, institution, Emnekode, source_course_id, section, text)
 }
 
-# Heading texts the section extractor meets but cannot map, from a sample of
-# pages (headings repeat across courses): candidates for R/section_heading_map.R.
-unmapped_headings <- function(html_file, config, n = 50) {
-  none <- tibble::tibble(institution = character(), heading = character())
-  strategy <- config$section_strategy
-  if (is.null(strategy) || strategy %in% c("noop", "text_split", "json_nla")) return(none)
-  html <- readRDS(html_file)$html
-  html <- html[!is.na(html) & nzchar(html)]
-  if (length(html) > n) {
-    set.seed(42)
-    html <- sample(html, n)
-  }
-  found <- unlist(lapply(html, function(h) tryCatch(
-    .collect_heading_candidates(h, strategy, config), error = function(e) character())))
-  found <- trimws(found[nzchar(trimws(found))])
-  heading <- sort(unique(found[is.na(vapply(found, match_heading_to_section, character(1)))]))
-  tibble::tibble(institution = rep(config$name, length(heading)), heading = heading)
+# Headings the section extractor meets but cannot map, with the number of
+# pages they are on: candidates for R/section_heading_map.R.
+unmapped_headings <- function(blocks, config) {
+  blocks |>
+    dplyr::filter(role == "heading", is.na(section), nzchar(trimws(text))) |>
+    dplyr::transmute(institution = config$name, heading = stringr::str_squish(text), course_id) |>
+    dplyr::distinct() |>
+    dplyr::count(institution, heading, name = "n_pages", sort = TRUE)
 }
 
 # --- Combined data files -----------------------------------------------------

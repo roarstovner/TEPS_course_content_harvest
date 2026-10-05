@@ -3,8 +3,8 @@
 # NOT among the 7 canonical sections? Feeds a human decision on whether any
 # (e.g. praksis) should become its own canonical section.
 #
-# Approach: reuse the html_headings heading-candidate collector across a sample
-# of courses per institution, normalise the heading text, and count — per
+# Approach: read a sample of courses per institution into blocks
+# (R/blocks.R) and take their heading and sub-heading texts, normalise the heading text, and count — per
 # institution — how many sampled courses carry each candidate label. Reports
 # coverage (% of sampled courses) so rare-but-real sections are visible.
 #
@@ -21,7 +21,8 @@ source("R/fetch_html_cols.R")
 source("R/extract_fulltext.R")
 source("R/institution_config.R")
 source("R/section_heading_map.R")
-source("R/extract_sections.R")   # .collect_heading_candidates
+source("R/blocks.R")
+source("R/extract_sections.R")
 
 SAMPLE_N <- 120   # courses sampled per institution (headings repeat across courses)
 
@@ -45,9 +46,8 @@ rows <- list()
 praksis_examples <- character()
 
 for (inst in institutions) {
-  ic <- get_institution_config(inst)
-  strat <- ic$section_strategy
-  if (is.null(strat) || strat %in% c("noop", "text_split", "json_nla")) next
+  cfg <- .block_cfg(get_institution_config(inst))
+  if (cfg$reader != "html") next
   df <- courses_raw |> filter(institution == inst, !is.na(html), nzchar(html))
   if (nrow(df) == 0) next
   if (nrow(df) > SAMPLE_N) { set.seed(42); df <- df[sample(nrow(df), SAMPLE_N), ] }
@@ -55,8 +55,8 @@ for (inst in institutions) {
 
   hit_counts <- setNames(integer(nrow(candidates)), candidates$candidate)
   for (h in df$html) {
-    cands <- tryCatch(.collect_heading_candidates(h, strat, ic),
-                      error = function(e) character())
+    b <- tryCatch(page_blocks(h, NA, cfg), error = function(e) .empty_blocks())
+    cands <- b$text[b$role %in% c("heading", "sub")]
     if (length(cands) == 0) next
     low <- str_to_lower(trimws(cands))
     for (j in seq_len(nrow(candidates))) {

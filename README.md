@@ -361,14 +361,21 @@ such as “Se fagplanen.” are left out.
 
 `tar_read(metrics)` has the number of plans with each section per
 institution, and `tar_read(unmapped)` the headings the extractor could
-not map. To map a new heading, add a pattern to
-`R/section_heading_map.R`; how each institution is split is set by the
-`section_*` fields in `R/institution_config.R`.
+not map, with the number of pages each is on. To map a new heading, add
+a pattern to `R/section_heading_map.R`; how each institution is split is
+set by the `section_*` fields in `R/institution_config.R`.
 
-### Strategies
+### Blocks and Sections
 
-`extract_sections()` (`R/extract_sections.R`) dispatches on
-`section_strategy`:
+Each page is read once into a **block table** (`R/blocks.R`): one row
+per heading, sub-heading or piece of text, in document order, with the
+section a heading maps to. `sectionize()` (`R/extract_sections.R`) then
+walks the blocks with the same rules for every institution: a heading
+opens its section (an unmapped one closes it), a sub-heading switches
+section only inside a mapped one, and text goes to the open section.
+What differs between institutions is how their pages are read, set by
+`section_strategy` and the other `section_*` fields in
+`R/institution_config.R`:
 
 <table>
 <colgroup>
@@ -378,52 +385,33 @@ not map. To map a new heading, add a pattern to
 </colgroup>
 <thead>
 <tr>
-<th>Strategy</th>
+<th><code>section_strategy</code></th>
 <th>Institutions</th>
-<th>How it splits</th>
+<th>Reads</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>html_headings</code></td>
-<td>oslomet, uia, ntnu, inn, hiof, hvl, nih, uio, uis, uit, nmbu</td>
-<td>DOM walk; a heading (<code>section_heading_level</code>, or
-<code>section_heading_selector</code>, e.g. ntnu <code>"h2, h3"</code>
-for its “Eksamen” block) starts a section. Falls back to
-<code>text_split</code> when it finds &lt; 3 sections</td>
+<td><code>html</code></td>
+<td>oslomet, uia, ntnu, inn, hiof, hvl, mf, nord, nih, uib, uio, uis,
+uit, nmbu</td>
+<td>The DOM under <code>section_selector</code>. Falls back to
+<code>text</code> when it finds &lt; 3 sections</td>
 </tr>
 <tr>
-<td><code>html_fields</code></td>
+<td><code>fields</code></td>
 <td>hivolda</td>
 <td><code>div.field-&lt;name&gt;</code> containers mapped to sections by
 <code>section_fields</code></td>
 </tr>
 <tr>
-<td><code>details_mf</code></td>
-<td>mf</td>
-<td><code>&lt;details&gt;&lt;summary&gt;</code> accordions + the
-untitled intro block (<code>section_intro_selector</code>) as
-course_content</td>
-</tr>
-<tr>
-<td><code>details_uib</code></td>
-<td>uib</td>
-<td><code>&lt;details&gt;&lt;summary&gt;</code> accordions + top-level
-<code>h2</code></td>
-</tr>
-<tr>
-<td><code>accordion_nord</code></td>
-<td>nord</td>
-<td><code>div.ac</code> accordion trigger/panel pairs</td>
-</tr>
-<tr>
-<td><code>json_nla</code></td>
+<td><code>json</code></td>
 <td>nla</td>
-<td>Titles in the embedded EmneplanPage JSON</td>
+<td>Titles and contents in the embedded EmneplanPage JSON</td>
 </tr>
 <tr>
-<td><code>text_split</code></td>
-<td>usn, steiner (+ fallback, e.g. uis PDF plans)</td>
+<td><code>text</code></td>
+<td>usn, steiner (+ the fallback, e.g. uis PDF plans)</td>
 <td>Heading-shaped lines in <code>extracted_text</code>; skips a table
 of contents (“Innholdsfortegnelse”, usn); inside a reading list opened
 by a whole heading only a whole heading switches section (book
@@ -437,29 +425,42 @@ titles)</td>
 </tbody>
 </table>
 
-Other `section_*` config fields:
+Fields for the `html` reader:
 
-- `section_selector`: container for section extraction when the fulltext
-  `selector` is a multi-element selector (`html_element()` would only
-  take its first match; uis needs `#block-page-content`).
+- `section_selector`: the container (default: the fulltext `selector`;
+  needed when that is a multi-element selector, which `html_element()`
+  would cut to its first match: uis `#block-page-content`, nord, uib,
+  mf).
+- `section_exclude`: elements not read (mf’s facts box, contact card and
+  banner; nord’s “Kopier lenke” label).
+- `section_heading_selector`: section headings (default `h2`; ntnu
+  `"h2, h3"` for its “Eksamen” block, inn’s `div.label`, uib’s and mf’s
+  `summary`, nord’s `button.ac-trigger`).
+- `section_scope`: elements that hold a section of their own (`details`,
+  nord’s `div.ac`); the section open around them continues after them.
+- `section_initial`: section for text before the first heading (mf’s
+  untitled intro is course_content).
 - `section_subheading_selector`: elements inside a section that switch
   to another section (uio `"h3, h4, p"`; `"p"` for uia, oslomet, hiof,
-  hvl, nmbu, mf). A `<p>` counts if its whole text (minus a trailing
-  colon) equals a heading pattern, or if its leading `<em>`/`<strong>`
-  run or its first or last `<br>`-separated line does (uia
-  `<p><em>Faget i praksis</em>I løpet …</p>`). A whole-bold `<p>` that
-  names no section is a group label: it ends a sub-section and returns
-  to the parent. Sub-headings act only under a mapped heading (oslomet’s
-  programme “Fagplan” block stays out); one naming the section already
-  open (“Kunnskap”) stays as content. A `<p>` in a list item is skipped
-  unless that `<li>` holds a section heading (oslomet’s accordion). An
-  unmapped `h3` (“Karakterskala”) hands its text back to the parent
-  section, keeping the heading as its first line. A colon-ended lead-in
-  naming a coursework gate (“… følgende obligatoriske aktiviteter:”)
-  starts coursework_requirements.
+  hvl, nmbu; mf’s intro paragraphs). A `<p>` counts if its whole text
+  (minus a trailing colon) equals a heading pattern, or if its leading
+  `<em>`/`<strong>` run or its first or last `<br>`-separated line does
+  (uia `<p><em>Faget i praksis</em>I løpet …</p>`). A whole-bold `<p>`
+  that names no section is a group label: it ends a sub-section and
+  returns to the parent. Sub-headings act only under a mapped heading
+  (oslomet’s programme “Fagplan” block stays out); one naming the
+  section already open (“Kunnskap”) stays as content. A `<p>` in a list
+  item is skipped unless that `<li>` holds a section heading (oslomet’s
+  accordion). An unmapped `h3` (“Karakterskala”) hands its text back to
+  the parent section, keeping the heading as its first line. A
+  colon-ended lead-in naming a coursework gate (“… følgende
+  obligatoriske aktiviteter:”) starts coursework_requirements.
+
+Other fields:
+
 - `section_text_header`: regex for a title + metadata block at the top
-  of `extracted_text` (uis PDFs: “Emnekode:”, “Tilbys av:”);
-  `text_split` skips it and files the untitled paragraph after it as
+  of `extracted_text` (uis PDFs: “Emnekode:”, “Tilbys av:”); the `text`
+  reader skips it and files the untitled paragraph after it as
   course_content.
 - `section_inline_coursework`: move “Arbeidskrav (AK): …” /
   “Obligatorisk deltakelse …” lines from assessment to
@@ -470,19 +471,19 @@ Other `section_*` config fields:
 `match_heading_to_section()` (`R/section_heading_map.R`) checks exact
 equality against every pattern first, then substring patterns in table
 order (first hit wins; rows with `exact = TRUE` only match whole
-headings). `text_split` passes `word_start = TRUE` so “elevkunnskap”
-does not match “kunnskap”, and only accepts heading-shaped lines
-(capitalised, ≤ 8 words, no digits, no “Label: value”, no closing full
-stop). Patterns mapped to `".drop"` end the current section and their
-text is discarded: admission headings (“Opptak til emnet”,
-“Opptakskrav”, “Hvem kan ta dette emnet?”) and exam logistics (“Mer om
-eksamen ved UiO”, “Hjelpemidler”, “Sensorordning”, resit headings such
-as “Ny/utsatt eksamen”). Exam language and grading scale stay in
-assessment.
+headings). The `text` reader passes `word_start = TRUE` so
+“elevkunnskap” does not match “kunnskap”, and only accepts
+heading-shaped lines (capitalised, ≤ 8 words, no digits, no “Label:
+value”, no closing full stop). Patterns mapped to `".drop"` end the
+current section and their text is discarded: admission headings (“Opptak
+til emnet”, “Opptakskrav”, “Hvem kan ta dette emnet?”) and exam
+logistics (“Mer om eksamen ved UiO”, “Hjelpemidler”, “Sensorordning”,
+resit headings such as “Ny/utsatt eksamen”). Exam language and grading
+scale stay in assessment.
 
 HTML is parsed by `.read_doc()`, which drops `script`, `style`, `select`
-and `label` (ntnu script text, uib semester picker); `json_nla` parses
-the page itself because its data is in a `<script>`.
+and `label` (ntnu script text, uib semester picker); the `json` reader
+parses the page itself because its data is in a `<script>`.
 
 `.clean_sections()` removes `.drop` rows, strips notices and page
 widgets from assessment/coursework (`.section_noise`: plagiarism and

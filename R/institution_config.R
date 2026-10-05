@@ -11,8 +11,7 @@ institution_configs <- list(
     selector = "#main-content",
     selector_mode = "single",
     year_in_url = TRUE,
-    section_strategy = "html_headings",
-    section_heading_level = "h2",
+    section_strategy = "html",
     # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
     section_subheading_selector = "p"
   ),
@@ -23,8 +22,7 @@ institution_configs <- list(
     selector = "#right-main",
     selector_mode = "single",
     year_in_url = TRUE,
-    section_strategy = "html_headings",
-    section_heading_level = "h2",
+    section_strategy = "html",
     # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
     section_subheading_selector = "p"
   ),
@@ -38,7 +36,7 @@ institution_configs <- list(
     request_delay = 10,  # robots.txt: Crawl-delay: 10 for all user agents
     post_fn = .post_ntnu,
     fetch_fn = fetch_html_cols_single_ntnu,
-    section_strategy = "html_headings",
+    section_strategy = "html",
     # h3 sections plus the h2 "Eksamen" block (Vurderingsordning, Karakter);
     # its h4 exam sessions (dates, rooms) are dropped (#245).
     section_heading_selector = "h2, h3",
@@ -52,7 +50,7 @@ institution_configs <- list(
     selector_mode = "single",
     year_in_url = TRUE,
     pre_fn = .add_table_cell_breaks,
-    section_strategy = "html_headings",
+    section_strategy = "html",
     # inn marks most section headings with <div class="label"> (and the facts
     # box with <div class="facts-label">); only Læringsutbytte and Pensum are
     # real <h2>. Only 3 h2s existed, which under-segmented the page (#198).
@@ -69,7 +67,7 @@ institution_configs <- list(
     pre_fn = .add_table_cell_breaks,
     # Drupal fields (div.field-<name> + div.label) name each part of the plan;
     # the exam table is the unlabelled field-assessments-row (#214).
-    section_strategy = "html_fields",
+    section_strategy = "fields",
     section_fields = c(
       "field-course-content"             = "course_content",
       "field-learning-outcome"           = "learning_outcomes",
@@ -92,8 +90,7 @@ institution_configs <- list(
     selector_mode = "single",
     year_in_url = TRUE,
     user_agent = "browser",
-    section_strategy = "html_headings",
-    section_heading_level = "h2",
+    section_strategy = "html",
     # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
     section_subheading_selector = "p"
   ),
@@ -105,8 +102,8 @@ institution_configs <- list(
     selector_mode = "single",
     year_in_url = TRUE,
     fetch_fn = fetch_html_cols_single_hvl,
-    section_strategy = "html_headings",
-    section_heading_level = "h3",
+    section_strategy = "html",
+    section_heading_selector = "h3",
     # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
     section_subheading_selector = "p"
   ),
@@ -118,17 +115,25 @@ institution_configs <- list(
     selector_mode = "single",
     year_in_url = FALSE,
     # WordPress page: details/summary accordions plus an untitled intro block
-    # (only three h2s, none of them plan sections) (#213).
-    section_strategy = "details_mf",
-    section_intro_selector = "article .content-body > div.wp-block-group",
-    section_subheading_selector = "p"
+    # (only three h2s, none of them plan sections) (#213). The intro is
+    # course content, with paragraph sub-headings ("Arbeidsform og
+    # organisering:"); the accordion group's h2 "Om studiet" ends it. The facts
+    # box, contact card (staff names) and banner are not read.
+    section_strategy = "html",
+    section_selector = "article .content-body",
+    section_exclude = paste(".template-study-subject__details, .template-study-subject__contact,",
+                            ".wp-block-mf-banner, hgroup"),
+    section_heading_selector = "h2, summary",
+    section_subheading_selector = "div.wp-block-group p",
+    section_scope = "details",
+    section_initial = "course_content"
   ),
 
   nla = list(
     code = "8223",
     strategy = "json_extract",
     year_in_url = FALSE,
-    section_strategy = "json_nla"
+    section_strategy = "json"
   ),
 
   nord = list(
@@ -141,7 +146,13 @@ institution_configs <- list(
     ),
     selector_mode = "multi",
     year_in_url = TRUE,
-    section_strategy = "accordion_nord",
+    # Each section is an accordion item (div.ac): a trigger button, minus its
+    # "Kopier lenke" label, and a panel.
+    section_strategy = "html",
+    section_selector = "div.accordion-container",
+    section_exclude = ".copy-accordion-anchor",
+    section_heading_selector = "button.ac-trigger",
+    section_scope = "div.ac",
     # Arbeidskrav/obligatorisk deltakelse are lines inside the vurdering
     # accordion, not a heading of their own (#212).
     section_inline_coursework = TRUE
@@ -153,8 +164,7 @@ institution_configs <- list(
     selector = ".fs-body",
     selector_mode = "single",
     year_in_url = TRUE,
-    section_strategy = "html_headings",
-    section_heading_level = "h2"
+    section_strategy = "html"
   ),
 
   uib = list(
@@ -169,8 +179,13 @@ institution_configs <- list(
     selector_mode = "multi",
     year_in_url = TRUE,
     request_delay = 10,  # robots.txt: Crawl-delay: 10 for all user agents
-    section_strategy = "details_uib",
-    section_heading_level = "h2"
+    # h2 sections (Mål og innhald, Læringsutbytte) and details/summary
+    # accordions (Krav til forkunnskapar, Vurderingsformer, Litteraturliste)
+    # in the main column; the sidebar is not read.
+    section_strategy = "html",
+    section_selector = "div.grid-span-main",
+    section_heading_selector = "h2, summary",
+    section_scope = "details"
   ),
 
   uio = list(
@@ -179,8 +194,7 @@ institution_configs <- list(
     selector = "#vrtx-course-content",
     selector_mode = "single",
     year_in_url = FALSE,
-    section_strategy = "html_headings",
-    section_heading_level = "h2",
+    section_strategy = "html",
     # h3 carries Obligatoriske/Anbefalte forkunnskaper inside "Opptak til
     # emnet"; <p>Obligatoriske aktiviteter:</p> sits inside "Undervisning".
     section_subheading_selector = "h3, h4, p"
@@ -200,8 +214,7 @@ institution_configs <- list(
     # The multi selector's first match is a link, so html_headings found no
     # sections and every page fell back to text_split (#214).
     section_selector = "#block-page-content",
-    section_strategy = "html_headings",
-    section_heading_level = "h2",
+    section_strategy = "html",
     # PDF plans (text_split fallback) open with a title and a metadata block;
     # the untitled paragraph after it is the course introduction (#243).
     section_text_header = "^(?:Emnekode|Vekting|Semester|Antall semestre|Undervisningsspråk|Tilbys av)\\b[^:]*:"
@@ -211,7 +224,7 @@ institution_configs <- list(
     code = "1176",
     strategy = "shadow_dom",
     year_in_url = TRUE,
-    section_strategy = "text_split"
+    section_strategy = "text"
   ),
 
   uit = list(
@@ -224,8 +237,7 @@ institution_configs <- list(
     selector_mode = "single",
     year_in_url = TRUE,
     post_fn = .pre_uit,
-    section_strategy = "html_headings",
-    section_heading_level = "h2",
+    section_strategy = "html",
     # h3 "Pensum" under "Undervisning og pensum", "Mer info om arbeidskrav"
     section_subheading_selector = "h3"
   ),
@@ -236,8 +248,8 @@ institution_configs <- list(
     selector = ".layout",
     selector_mode = "single",
     year_in_url = FALSE,
-    section_strategy = "html_headings",
-    section_heading_level = "h3",
+    section_strategy = "html",
+    section_heading_selector = "h3",
     # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
     section_subheading_selector = "p"
   ),
@@ -253,7 +265,7 @@ institution_configs <- list(
     code = "8225",
     strategy = "pdf_split",
     year_in_url = FALSE,
-    section_strategy = "text_split"
+    section_strategy = "text"
   )
 )
 

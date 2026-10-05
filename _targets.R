@@ -17,7 +17,8 @@ tar_option_set(
 
 tar_source(c(
   "R/utils.R", "R/fetch_html_cols.R", "R/extract_fulltext.R",
-  "R/institution_config.R", "R/section_heading_map.R", "R/extract_sections.R",
+  "R/institution_config.R", "R/section_heading_map.R", "R/blocks.R",
+  "R/extract_sections.R",
   "R/anonymize.R", "R/normalize_plan_text.R", "R/deduplicate_plans.R",
   "R/pipeline_metrics.R", "R/pipeline.R"
 ))
@@ -38,10 +39,12 @@ list(
              pattern = map(html_file, config)),
   tar_target(plans, institution_plans(html_file, fulltext),
              pattern = map(html_file, fulltext), iteration = "list"),
-  tar_target(sections, institution_sections(html_file, fulltext, config, plans),
-             pattern = map(html_file, fulltext, config, plans)),
-  tar_target(unmapped, unmapped_headings(html_file, config),
-             pattern = map(html_file, config)),
+  tar_target(blocks, institution_blocks(html_file, fulltext, config),
+             pattern = map(html_file, fulltext, config)),
+  tar_target(sections, institution_sections(blocks, fulltext, config, plans),
+             pattern = map(blocks, fulltext, config, plans)),
+  tar_target(unmapped, unmapped_headings(blocks, config),
+             pattern = map(blocks, config)),
 
   # Data files (README "Data Files: Published and Internal")
   tar_target(extracted_text_file,

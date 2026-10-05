@@ -52,12 +52,16 @@ test_that("rows with real content are kept", {
 
 # --- Sub-headings and .drop (#209, #211, #212) ---
 
-html_cfg <- function(sub = NULL) {
-  list(selector = "main", heading_level = "h2", subheading_selector = sub)
+html_cfg <- function(sub = NULL, heading = "h2") {
+  list(reader = "html", container = "main", heading = heading, sub = sub)
 }
 sections_of <- function(html, cfg) {
-  out <- .clean_sections(extract_sections_html(list(html = html), cfg))
+  out <- page_sections(page_blocks(html, NA, cfg), NA, cfg)
   stats::setNames(out$raw_text, out$section)
+}
+text_sections <- function(txt, text_header = NULL) {
+  cfg <- list(reader = "text", text_header = text_header)
+  page_sections(page_blocks(NA, txt, cfg), txt, cfg)
 }
 
 test_that("an emphasised paragraph that equals a heading starts a section", {
@@ -185,7 +189,7 @@ test_that("admission text is dropped and h3 prerequisites are kept (uio)", {
 
 test_that("text_split ends a section at an admission heading and drops it", {
   txt <- "Forkunnskapskrav\nMAT1\n\nOpptakskrav\nGenerell studiekompetanse.\n\nVurdering\nSkriftlig eksamen."
-  out <- .clean_sections(extract_sections_text(list(extracted_text = txt), list()))
+  out <- text_sections(txt)
   s <- stats::setNames(out$raw_text, out$section)
   expect_equal(s[["prerequisites"]], "MAT1")
   expect_equal(s[["assessment"]], "Skriftlig eksamen.")
@@ -205,8 +209,7 @@ test_that("uis PDF: header skipped, intro kept, admin blocks and book titles han
     "Emneevaluering", "Tidligdialog og sluttevaluering.", "",
     "Litteratur", "Nettside", "", "Kompetansemål og vurdering", "",
     "Utdanningsdirektoratet.", sep = "\n")
-  cfg <- list(text_header = get_institution_config("uis")$section_text_header)
-  out <- .clean_sections(extract_sections_text(list(extracted_text = txt), cfg))
+  out <- text_sections(txt, get_institution_config("uis")$section_text_header)
   s <- stats::setNames(out$raw_text, out$section)
   expect_equal(s[["course_content"]], "Emnet gir innsikt i samfunnsfaget.")
   expect_equal(s[["teaching_methods"]], "Seminarer.")
@@ -224,7 +227,7 @@ test_that("usn: table of contents skipped, stamp dropped, header 'litteratur' ha
     "Vurderingsformer", "", "Muntlig eksamen.", "",
     "Godkjent emneplan", "", "Godkjent av dekan 31.01.2018", "",
     "Litteratur", "", "Kompetansemål og vurdering", sep = "\n")
-  out <- .clean_sections(extract_sections_text(list(extracted_text = txt), list()))
+  out <- text_sections(txt)
   s <- stats::setNames(out$raw_text, out$section)
   expect_equal(s[["course_content"]], "Språklæring.")
   expect_equal(s[["assessment"]], "Muntlig eksamen.")
@@ -237,7 +240,7 @@ test_that("ntnu: exam block gives assessment design, sessions and scripts droppe
     <h3>Kontaktinformasjon</h3><h4>Faglærere</h4><p>Ola Nordmann</p>
     <h2>Eksamen</h2><p>Vurderingsordning: Skriftlig eksamen<br>Karakter: Bokstavkarakterer</p>
     <h4>Ordinær eksamen - Høst 2025</h4><p>Dato 29.11.2025, rom SL120</p></main>"
-  cfg <- list(selector = "main", heading_selector = "h2, h3", subheading_selector = "h4")
+  cfg <- html_cfg("h4", heading = "h2, h3")
   s <- sections_of(html, cfg)
   expect_equal(s[["teaching_methods"]], "Seminarer.")
   expect_equal(s[["assessment"]], "Vurderingsordning: Skriftlig eksamen\nKarakter: Bokstavkarakterer")
@@ -306,8 +309,8 @@ test_that("mf: intro is course_content, accordions are sections, contact card ig
     </div>
     <div class="template-study-subject__contact"><h2>Emneansvarlig</h2>Ola Nordmann</div>
   </div></article></body></html>'
-  cfg <- .section_cfg(get_institution_config("mf"))
-  out <- .clean_sections(extract_sections_mf(list(html = html), cfg))
+  cfg <- .block_cfg(get_institution_config("mf"))
+  out <- page_sections(page_blocks(html, NA, cfg), NA, cfg)
   s <- stats::setNames(out$raw_text, out$section)
   expect_equal(s[["course_content"]], "Dette emnet gir en innføring i identitet.")
   expect_match(s[["teaching_methods"]], "^Forelesninger og seminarer\\.\nDelemne C")

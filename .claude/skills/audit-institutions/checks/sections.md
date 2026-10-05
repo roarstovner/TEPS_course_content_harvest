@@ -84,6 +84,6 @@ One of the seven canonical sections (`course_content`, `learning_outcomes`,
 ## Typical fix locations
 
 `R/section_heading_map.R` (patterns and their order — first match wins),
-`R/institution_config.R` (`section_strategy`, `section_heading_level`,
-`section_heading_selector`), `R/extract_sections.R` (strategies and
-`.clean_sections()`).
+`R/institution_config.R` (`section_*` fields: how the page is read into
+blocks), `R/blocks.R` (the readers), `R/extract_sections.R` (`sectionize()`
+and `.clean_sections()`).
