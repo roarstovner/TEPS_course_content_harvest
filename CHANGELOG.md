@@ -100,6 +100,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Block model (d): fulltext from the blocks; page noise out of anonymize.R (#276)
+- Move page boilerplate removal from anonymize.R to extraction post_fn (#257)
 - Block model (c): one sectionizer over the blocks (#275)
 - Block model (b): parse each page once into a block table (#274)
 - Block model (a): sections per plan, not per offering (#273)
