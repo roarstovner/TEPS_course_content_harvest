@@ -100,6 +100,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- uit legacy layout (2008-2011): read span.fsemneoverskrift headings (#282)
 - Privacy: strip IP addresses (OpenURL user_ip) from published text (#281)
 - Section extraction fixes from re-audit 2026-10-01 (afternoon) (#239)
 - Run sections audit for uit and ntnu (#223)

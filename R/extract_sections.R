@@ -197,21 +197,46 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 
 # Lines in an assessment block that state a coursework gate (#212). nord
 # writes them as "Arbeidskrav (AK): ..." or "Obligatorisk deltakelse (OD): ..."
-# inside one undifferentiated vurdering block, with no heading to split on.
+# inside one undifferentiated vurdering block, with no heading to split on;
+# uit as "Følgende arbeidskrav må være godkjent før ...:" and a list (#283).
 .inline_coursework_regex <- paste0(
-  "^\\s*(?:Arbeidskrav(?:ene|et)?|",
-  "Obligatoriske? (?:deltakelse|deltagelse|deltaking|arbeid|arbeidskrav|",
+  "(?i)^\\s*(?:(?:(?:inntil|minst|opptil) )?\\d+ (?:obligatoriske )?arbeidskrav|",
+  "følg(?:ende|jande) (?:obligatoriske )?arbeidskrav|arbeidskrav(?:ene|et)?|",
+  "(?:AK|OD|OA)\\d+\\b|",                       # nord: AK1, OD2 under their label
+  "obligatoriske? (?:deltakelse|deltagelse|deltaking|arbeid|arbeidskrav|",
   "aktivitet(?:er)?|oppmøte|frammøte|fremmøte)|",
-  "Deltakelse i undervisning(?:en)? er obligatorisk)\\b"
+  "deltakelse i undervisning(?:en)? er obligatorisk)\\b"
 )
 
-# Move coursework-gate lines from assessment into coursework_requirements.
+# Move coursework-gate lines from assessment into coursework_requirements. A
+# gate line that is a label takes what it names along: the rest of its
+# paragraph, or the next paragraph when it ends its own. A colon-ended lead-in
+# ("Følgende arbeidskrav må være godkjent ...:", uit) always does; a label
+# without one ("Obligatorisk deltakelse (OD)", nord) only when what follows is
+# not a label too ("Eksamen"). Either stops at the next assessment component
+# ("Hjemmeeksamen (HJ): ...") (#283).
 .split_inline_coursework <- function(out) {
   i <- which(out$section == "assessment")
   if (length(i) != 1) return(out)
   lines <- stringr::str_split_1(out$raw_text[i], "\n")
   gate <- grepl(.inline_coursework_regex, lines, perl = TRUE)
   if (!any(gate)) return(out)
+  # "Arbeidskrav: ... Vurdering: ..." on one line (uit master theses)
+  lines <- unlist(lapply(seq_along(lines), function(k) if (gate[k])
+    stringr::str_split_1(lines[k], .assessment_midline_regex) else lines[k]))
+  gate <- grepl(.inline_coursework_regex, lines, perl = TRUE)
+  blank <- !nzchar(trimws(lines))
+  label <- .is_label(lines)
+  colon <- grepl("[:：]\\s*$", lines)
+  stop <- !gate & grepl(.component_label_regex, lines, perl = TRUE)
+  n <- length(lines)
+  for (k in which(gate & label)) {
+    from <- which(!blank & seq_len(n) > k)[1]
+    if (is.na(from) || stop[from] || (!colon[k] && label[from])) next
+    to <- which((blank | stop) & seq_len(n) > from)[1]
+    gate[from:(if (is.na(to)) n else to - 1)] <- TRUE
+  }
+  gate[blank] <- FALSE
   out$raw_text[i] <- paste(lines[!gate], collapse = "\n")
   moved <- paste(lines[gate], collapse = "\n")
   j <- which(out$section == "coursework_requirements")
@@ -223,6 +248,23 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   }
   out
 }
+
+# A line that names what follows rather than saying it: ends with a colon, or
+# is short and does not end a sentence. "Arbeidskrav 3: credo" says it.
+.is_label <- function(lines) {
+  x <- trimws(lines)
+  nzchar(x) & !grepl("[:：].*[^:：\\s]", x) &
+    (grepl("[:：]$", x) | (nchar(x) <= 60 & !grepl("[.!?]$", x)))
+}
+
+# An assessment component named by its abbreviation (nord): "Hjemmeeksamen
+# (HJ): 6 timer", "Mappe (MA) bestående av ...".
+.component_label_regex <- "^\\s*[^:\\n]{1,60}\\([A-ZÆØÅ]{1,4}\\d?\\)"
+# Where the assessment starts inside a gate line.
+.assessment_midline_regex <- paste0(
+  "(?<=[.!?]) ?(?=(?:Vurdering(?:sform)?|Eksamen(?:/vurderingsform)?|",
+  "Eksamensform):|EKSAMEN\\b|Emnet (?:evalueres|vurderes)\\b)|",
+  "(?<=\\S) (?=Eksamen består av)")
 
 # Notices and page widgets with no heading of their own, so .drop cannot catch
 # them (#215). Applied to assessment and coursework_requirements only, so a
@@ -264,7 +306,8 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   hvl  = "(?m)^Me(?:i)?r om hjelpemidd?el(?:er)?[ \t]*$",          # link text
   # flattened exam table ("Muntlig eksamen Karakterregel: ... Hjelpemiddelkode:
   # ..."); a line with a sentence before the table keeps its text
-  nmbu = "(?m)^[^.\n]{0,60}Karakterregel:.*$"
+  nmbu = "(?m)^[^.\n]{0,60}Karakterregel:.*$",
+  uit  = "(?m)^Alt du trenger å vite om før, under og etter eksamen.*$"  # link line
 )
 
 .strip_section_noise <- function(text, institution = NULL) {

@@ -218,8 +218,12 @@ institution_configs <- list(
     # 2008-2011 plans (old FS layout) head each field with a
     # div/span.fsemneoverskrift instead of an h2 (#282)
     section_heading_selector = "h2, .fsemneoverskrift",
-    # h3 "Pensum" under "Undervisning og pensum", "Mer info om arbeidskrav"
-    section_subheading_selector = "h3"
+    # h3 "Pensum" under "Undervisning og pensum", "Mer info om arbeidskrav";
+    # the 2020s exam box labels its gate table <strong class="d-block">
+    # Obligatoriske arbeidskrav</strong>
+    section_subheading_selector = "h3, strong.d-block",
+    # 2012-2019 plans list arbeidskrav inside the Eksamen text (#283)
+    section_inline_coursework = TRUE
   ),
 
   nmbu = list(

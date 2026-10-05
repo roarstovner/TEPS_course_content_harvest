@@ -409,6 +409,49 @@ test_that("nord-style gate lines move from assessment to coursework_requirements
   expect_match(s[["coursework_requirements"]], "^Obligatorisk deltakelse \\(OD\\).*\nArbeidskrav \\(AK\\)")
 })
 
+test_that("a gate label takes the paragraph it names along (#283)", {
+  split <- function(...) {
+    res <- .split_inline_coursework(tibble::tibble(section = "assessment",
+                                                   raw_text = paste(..., sep = "\n")))
+    stats::setNames(res$raw_text, res$section)
+  }
+  # uit: colon-ended lead-in, then a list of short items
+  s <- split("Følgende arbeidskrav må være godkjent før man kan framstille seg for eksamen:", "",
+             "70 % deltakelse på all undervisning", "25 minutters framlegg", "",
+             "Eksamen består av:", "", "Individuell muntlig eksamen.")
+  expect_equal(s[["coursework_requirements"]], paste(
+    "Følgende arbeidskrav må være godkjent før man kan framstille seg for eksamen:",
+    "70 % deltakelse på all undervisning", "25 minutters framlegg", sep = "\n"))
+  expect_match(s[["assessment"]], "^\\s*Eksamen består av:\n\nIndividuell muntlig eksamen\\.$")
+  # nord: a label without a colon takes a body paragraph, not another label
+  s <- split("Sammensatt vurdering.", "", "Obligatorisk deltakelse (OD)", "",
+             "Det kreves 80 prosent deltakelse. Teller 0/100.", "", "Eksamen", "",
+             "Inntil 4 arbeidskrav (AK). Teller 0/100 av karakter.", "",
+             "Obligatorisk arbeid (OA)", "", "Mappe (MA)", "", "Skriftlig eksamen.")
+  expect_equal(s[["coursework_requirements"]], paste(
+    "Obligatorisk deltakelse (OD)", "Det kreves 80 prosent deltakelse. Teller 0/100.",
+    "Inntil 4 arbeidskrav (AK). Teller 0/100 av karakter.", "Obligatorisk arbeid (OA)",
+    sep = "\n"))
+  expect_match(s[["assessment"]], "Eksamen\n+Mappe \\(MA\\)\n+Skriftlig eksamen\\.$")
+  # a label stops at the next assessment component; "Arbeidskrav 3: x" is no label
+  s <- split("Arbeidskrav (AK):", "AK1 Skriftlig arbeid. Teller 0/100.",
+             "Praktisk eksamen (PE): Individuell. Teller 100/100.", "",
+             "Arbeidskrav 3: utvikle undervisningsdesign", "",
+             "Individuell presentasjon (MU), teller 100/100 av karakteren")
+  expect_equal(s[["coursework_requirements"]], paste(
+    "Arbeidskrav (AK):", "AK1 Skriftlig arbeid. Teller 0/100.",
+    "Arbeidskrav 3: utvikle undervisningsdesign", sep = "\n"))
+  expect_match(s[["assessment"]], "^Praktisk eksamen \\(PE\\).*\n+Individuell presentasjon")
+  # gate and assessment on one line (uit master theses)
+  s <- split("Arbeidskrav: Prosjektskissen skal godkjennes. Vurdering: Oppgaven vurderes A-F.")
+  expect_equal(s[["coursework_requirements"]], "Arbeidskrav: Prosjektskissen skal godkjennes.")
+  expect_equal(s[["assessment"]], "Vurdering: Oppgaven vurderes A-F.")
+  s <- split("ARBEIDSKRAV: En presentasjon.EKSAMEN: Semesteroppgave.")
+  expect_equal(s[["assessment"]], "EKSAMEN: Semesteroppgave.")
+  s <- split("Arbeidskrav: 12 av 18 oppgaver. Emnet evalueres med skoleeksamen.")
+  expect_equal(s[["assessment"]], "Emnet evalueres med skoleeksamen.")
+})
+
 test_that("sentences that merely mention arbeidskrav stay in assessment", {
   out <- tibble::tibble(section = "assessment",
                         raw_text = "Mappen består av tre arbeidskrav og vurderes samlet.")
