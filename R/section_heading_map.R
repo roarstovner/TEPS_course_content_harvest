@@ -134,6 +134,9 @@ section_heading_patterns <- tibble::tribble(
   "godkjent emneplan",                     ".drop",                  TRUE,
   "endringsbeskrivelse",                   ".drop",                  TRUE,
   "utgifter i emnet",                      ".drop",                  TRUE,   # usn (#284)
+  "undervisningssted",                     ".drop",                  TRUE,   # uio labels (#288)
+  "eventuelle utgifter i forbindelse med undervisning", ".drop",    TRUE,
+  "fravær fra obligatorisk aktivitet",     ".drop",                  TRUE,
   "arbeidsmengd",                          ".drop",                  TRUE,   # uis workload boilerplate
   "arbeidsmengde",                         ".drop",                  TRUE,
 

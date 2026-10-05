@@ -481,6 +481,16 @@ test_that("leading placeholders and praksis pointers go, content stays (#286)", 
   expect_false("coursework_requirements" %in% names(s))
 })
 
+test_that("uio: a lead-in naming obligatory parts opens coursework, admin labels close it (#288)", {
+  html <- "<main><h2>Undervisning</h2><p>Seminarer hver uke.</p>
+    <p>Obligatoriske forhold i undervisningen:</p><ul><li>Deltagelse i undervisning</li></ul>
+    <p>Undervisningssted:</p><p>Universitetet i Oslo.</p></main>"
+  s <- sections_of(html, html_cfg("h3, h4, p"))
+  expect_equal(s[["teaching_methods"]], "Seminarer hver uke.")
+  expect_equal(s[["coursework_requirements"]],
+               "Obligatoriske forhold i undervisningen:\nDeltagelse i undervisning")
+})
+
 test_that("sentences that merely mention arbeidskrav stay in assessment", {
   out <- tibble::tibble(section = "assessment",
                         raw_text = "Mappen består av tre arbeidskrav og vurderes samlet.")

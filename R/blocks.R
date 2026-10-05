@@ -212,7 +212,7 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
   section_heading_patterns$section[match(tolower(x), section_heading_patterns$pattern)]
 }
 
-.coursework_leadin <- paste0("(?i)arbeidskrav|obligatorisk\\w* (?:læringsaktivitet|aktivitet|",
+.coursework_leadin <- paste0("(?i)arbeidskrav|obligatorisk\\w* (?:forhold|komponent|læringsaktivitet|aktivitet|",
                              "oppmøte|frammøte|fremmøte|deltak|deltag)")
 
 # A sub-heading candidate (`section_subheading_selector`) as blocks. Heading

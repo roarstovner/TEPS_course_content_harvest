@@ -100,6 +100,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Page furniture in sections (uis PDF headers, OpenURL, usn Leganto, steiner page numbers) (#287)
 - Placeholder variants and Praksis pointers (#286)
 - Heading-map additions from the audit (Ferdighetsmål, Progresjonskrav, Vurderingssemester, ...) (#284)
 - Coursework gates in assessment: move gate paragraphs; enable for uit (#283)
