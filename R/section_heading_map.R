@@ -62,6 +62,9 @@ section_heading_patterns <- tibble::tribble(
   "tillatte hjelpemidler",                 ".drop",                  TRUE,
   "tillatte hjelpemiddel",                 ".drop",                  TRUE,
   "sensorordning",                         ".drop",                  TRUE,
+  # a table of contents ("innhold" would map it to course_content; hiof, uia)
+  "innholdsfortegnelse",                   ".drop",                  TRUE,
+  "table of contents",                     ".drop",                  TRUE,
 
   # --- assessment ---
   "vurdering og eksamen",                  "assessment",             FALSE,

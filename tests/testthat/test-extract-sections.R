@@ -19,6 +19,11 @@ test_that("short English sub-headings only match exactly", {
   expect_true(is.na(match_heading_to_section("Digital skills course")))
 })
 
+test_that("a table of contents is not course content", {
+  expect_equal(match_heading_to_section("Innholdsfortegnelse"), ".drop")
+  expect_equal(match_heading_to_section("Innhold"), "course_content")
+})
+
 test_that("language metadata headings are not filed as assessment", {
   expect_true(is.na(match_heading_to_section("Language of instruction and examination")))
   expect_true(is.na(match_heading_to_section("Eksamensspråk")))
