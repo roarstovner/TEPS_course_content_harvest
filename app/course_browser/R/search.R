@@ -29,12 +29,12 @@ SECTION_LABELS <- c(
 #' themselves, and buys a ~40x speedup on the common literal search.
 #'
 #' @param plans Plan table with a `course_plan` column
-#' @param sections Plan-level section table with `raw_text`, or NULL
+#' @param sections Plan-level section table with `text`, or NULL
 #' @return List with `plan_lc` and `section_lc` character vectors
 build_search_index <- function(plans, sections = NULL) {
   list(
     plan_lc = stri_trans_tolower(plans$course_plan),
-    section_lc = if (is.null(sections)) NULL else stri_trans_tolower(sections$raw_text)
+    section_lc = if (is.null(sections)) NULL else stri_trans_tolower(sections$text)
   )
 }
 
@@ -56,7 +56,7 @@ resolve_scope <- function(scope, plans, sections, index) {
   rows <- which(sections$section == scope)
   list(
     keys = sections[rows, PLAN_KEYS, drop = FALSE],
-    text = sections$raw_text[rows],
+    text = sections$text[rows],
     text_lc = index$section_lc[rows]
   )
 }

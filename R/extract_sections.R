@@ -89,7 +89,9 @@ extract_sections <- function(config, html, extracted_text, course_id) {
     )
   })
 
-  dplyr::bind_rows(rows)
+  # typed columns also when there are no rows (samas has no plans)
+  dplyr::bind_rows(tibble::tibble(course_id = character(), institution = character(),
+                                  section = character(), raw_text = character()), rows)
 }
 
 .section_strategy_fn <- function(strategy) {

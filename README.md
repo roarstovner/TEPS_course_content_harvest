@@ -74,9 +74,9 @@ URL must be discovered)</td>
 <code>course_offerings*.RDS</code></td>
 </tr>
 <tr>
-<td>8. Split into sections</td>
+<td>8. Split each plan into sections</td>
 <td><code>institution_sections()</code></td>
-<td><code>sections_raw.RDS</code></td>
+<td><code>plan_sections.RDS</code></td>
 </tr>
 </tbody>
 </table>
@@ -341,22 +341,25 @@ stages:
   rows plus `url`, `extracted_text`, `course_plan`,
   `course_plan_normalized`; used by the course_browser app
 - `data/processed/course_plans.RDS` — one row per unique plan per course
-  code per institution
+  code per institution, with the offering its text comes from
+  (`source_course_id`)
 
 ## Post-Harvest: Section Extraction
 
 The pipeline splits each course plan into its parts and writes
-`data/processed/sections_raw.RDS` with one row per course and section
-(`course_id`, `institution`, `section`, `raw_text`). The seven sections
-are `course_content`, `learning_outcomes`, `teaching_methods`,
-`assessment`, `coursework_requirements`, `prerequisites` and
-`reading_list`. Section text is anonymized with the same
-`anonymize_text()` as `course_plan`: sections are cut from the raw
-`html`/`extracted_text`, so this step must keep anonymizing. Admission
-text, exam logistics and placeholder rows such as “Se fagplanen.” are
-left out.
+`data/processed/plan_sections.RDS` with one row per plan and section
+(`plan_content_id`, `institution`, `Emnekode`, `source_course_id`,
+`section`, `text`), keyed like `course_plans.RDS`. A plan’s sections are
+cut from the page of `source_course_id`, the offering whose text the
+plan keeps, so they match its `course_plan`. The seven sections are
+`course_content`, `learning_outcomes`, `teaching_methods`, `assessment`,
+`coursework_requirements`, `prerequisites` and `reading_list`. Section
+text is anonymized with the same `anonymize_text()` as `course_plan`:
+sections are cut from the raw `html`/`extracted_text`, so this step must
+keep anonymizing. Admission text, exam logistics and placeholder rows
+such as “Se fagplanen.” are left out.
 
-`tar_read(metrics)` has the number of courses with each section per
+`tar_read(metrics)` has the number of plans with each section per
 institution, and `tar_read(unmapped)` the headings the extractor could
 not map. To map a new heading, add a pattern to
 `R/section_heading_map.R`; how each institution is split is set by the
@@ -618,8 +621,8 @@ harvest time)</td>
 <td>published</td>
 </tr>
 <tr>
-<td><code>data/processed/sections_raw.RDS</code></td>
-<td>anonymized section <code>raw_text</code></td>
+<td><code>data/processed/plan_sections.RDS</code></td>
+<td>anonymized section <code>text</code> per plan</td>
 <td>anonymized</td>
 <td>publishable</td>
 </tr>

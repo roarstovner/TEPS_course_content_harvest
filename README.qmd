@@ -28,7 +28,7 @@ This project harvests course descriptions from Norwegian teacher education insti
 | 5. Extract text (CSS selector, nla JSON, USN cleanup) | `extract_fulltext_from_raw()` (`R/extract_fulltext.R`) | `data/raw/html_{inst}.RDS` (raw harvest) |
 | 6. Rebuild the text from the stored HTML | `institution_fulltext()` (`R/pipeline.R`) | `extracted_text.RDS` |
 | 7. Anonymize and deduplicate | `institution_plans()` | `course_plans.RDS`, `course_offerings*.RDS` |
-| 8. Split into sections | `institution_sections()` | `sections_raw.RDS` |
+| 8. Split each plan into sections | `institution_sections()` | `plan_sections.RDS` |
 
 Stages 1-5 are run per institution by `harvest_institution()`, which dispatches
 to a strategy in `R/harvest_strategies.R` (`standard`, `url_discovery`,
@@ -246,13 +246,16 @@ The pipeline anonymizes and deduplicates the course plans in three stages:
 
 - `data/processed/course_offerings.RDS` — published slim dataset: course rows with DBH metadata + `plan_content_id` FK (no url, no text)
 - `data/interim/course_offerings_full.RDS` — internal working file: same rows plus `url`, `extracted_text`, `course_plan`, `course_plan_normalized`; used by the course_browser app
-- `data/processed/course_plans.RDS` — one row per unique plan per course code per institution
+- `data/processed/course_plans.RDS` — one row per unique plan per course code per institution, with the offering its text comes from (`source_course_id`)
 
 ## Post-Harvest: Section Extraction
 
 The pipeline splits each course plan into its parts and writes
-`data/processed/sections_raw.RDS` with one row per course and section
-(`course_id`, `institution`, `section`, `raw_text`). The seven sections are
+`data/processed/plan_sections.RDS` with one row per plan and section
+(`plan_content_id`, `institution`, `Emnekode`, `source_course_id`, `section`,
+`text`), keyed like `course_plans.RDS`. A plan's sections are cut from the page
+of `source_course_id`, the offering whose text the plan keeps, so they match
+its `course_plan`. The seven sections are
 `course_content`, `learning_outcomes`, `teaching_methods`, `assessment`,
 `coursework_requirements`, `prerequisites` and `reading_list`. Section text is
 anonymized with the same `anonymize_text()` as `course_plan`: sections are cut
@@ -260,7 +263,7 @@ from the raw `html`/`extracted_text`, so this step must keep anonymizing.
 Admission text, exam logistics and placeholder rows such as "Se fagplanen." are
 left out.
 
-`tar_read(metrics)` has the number of courses with each section per
+`tar_read(metrics)` has the number of plans with each section per
 institution, and `tar_read(unmapped)` the headings the extractor could not map. To map a new heading, add a pattern to
 `R/section_heading_map.R`; how each institution is split is set by the
 `section_*` fields in `R/institution_config.R`.
@@ -370,7 +373,7 @@ The repository is public.
 | `data/interim/course_offerings_full.RDS` | offerings + `url`, `extracted_text`, `course_plan` | yes (`extracted_text`) | internal |
 | `data/processed/course_offerings.RDS` | DBH metadata + `plan_content_id`, no text | none | published |
 | `data/processed/course_plans.RDS` | anonymized `course_plan` (+ `course_plan_normalized`) | anonymized | published |
-| `data/processed/sections_raw.RDS` | anonymized section `raw_text` | anonymized | publishable |
+| `data/processed/plan_sections.RDS` | anonymized section `text` per plan | anonymized | publishable |
 | `app/course_browser/data/browser_data.RDS` | course_browser payload: plans, offering metadata, sections | anonymized (no `extracted_text`) | internal (app) |
 | `app/course_browser_ojs/data/*.parquet` | anonymized `course_plan` + slim offering metadata | anonymized | published with the OJS page (build artifact) |
 | `data/audit/` | audit findings (quotes from anonymized text) | staff names redacted | in git |

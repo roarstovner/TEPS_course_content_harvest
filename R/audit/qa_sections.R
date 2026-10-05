@@ -1,5 +1,5 @@
 # R/audit/qa_sections.R
-# Deterministic QA pre-pass over data/processed/sections_raw.RDS (issue #197, feeds #192).
+# Deterministic QA pre-pass over data/processed/plan_sections.RDS (issue #197, feeds #192).
 #
 # Surfaces *suspect* section rows with cheap, rule-based heuristics so that
 # (a) obvious extraction bugs become chainlink issues directly and
@@ -10,10 +10,13 @@
 # human/LLM review.
 #
 # Inputs:
-#   data/processed/sections_raw.RDS          (course_id, institution, section, raw_text)
-#   data/interim/course_offerings_full.RDS (course_id, institution, course_plan, ...)
-#                                  — used as full-text ground truth for coverage
-#                                    and "one section swallowed the whole plan".
+#   data/processed/plan_sections.RDS  sections per plan; a plan is identified
+#                                     here by the offering its text and
+#                                     sections come from (course_id =
+#                                     source_course_id; #273)
+#   data/processed/course_plans.RDS   course_plan — full-text ground truth for
+#                                     coverage and "one section swallowed the
+#                                     whole plan".
 #
 # Outputs:
 #   data/audit/sections/sections_qa_suspects.RDS  per-row flags (for seeding review agents)
@@ -39,18 +42,19 @@ LEAK_MIN_PATTERN  <- 10     # only treat heading patterns this long as leak sign
 PLACEHOLDER_RX    <- "^(ingen|inged|none|n/?a|-|–|\\.|ikkje|ikke)\\.?$"
 
 # ── Load ─────────────────────────────────────────────────────────────────────
-cat("Loading sections_raw.RDS ...\n")
-sec <- readRDS("data/processed/sections_raw.RDS") |>
+cat("Loading plan_sections.RDS ...\n")
+sec <- readRDS("data/processed/plan_sections.RDS") |>
+  transmute(course_id = source_course_id, institution, section, raw_text = text) |>
   mutate(
     txt   = str_squish(raw_text),
     nchar = nchar(txt),
     norm  = tolower(txt)
   )
 
-cat("Loading course_offerings_full.RDS (ground-truth lengths) ...\n")
-plans <- readRDS("data/interim/course_offerings_full.RDS") |>
-  transmute(course_id,
-            plan_nchar = nchar(str_squish(course_plan %||% "")))
+cat("Loading course_plans.RDS (ground-truth lengths) ...\n")
+plans <- readRDS("data/processed/course_plans.RDS") |>
+  transmute(course_id = source_course_id, institution,
+            plan_nchar = nchar(str_squish(coalesce(course_plan, ""))))
 
 # ── Flag 1: empty / placeholder ──────────────────────────────────────────────
 sec <- sec |>
@@ -76,7 +80,7 @@ sec <- sec |>
 
 # ── Flag 3: one section swallowed (almost) the whole plan ─────────────────────
 sec <- sec |>
-  left_join(plans, by = "course_id") |>
+  left_join(plans, by = c("course_id", "institution")) |>
   mutate(
     plan_frac = if_else(!is.na(plan_nchar) & plan_nchar > 0,
                         nchar / plan_nchar, NA_real_),
@@ -133,12 +137,7 @@ sec <- sec |>
 # ── Course-level: has plan text but zero sections extracted ───────────────────
 have_sections <- sec |> distinct(course_id) |> pull(course_id)
 zero_section_courses <- plans |>
-  filter(plan_nchar > 50, !course_id %in% have_sections) |>
-  left_join(
-    readRDS("data/processed/sections_raw.RDS") |>
-      distinct(course_id, institution),  # (empty for these by definition)
-    by = "course_id"
-  )
+  filter(plan_nchar > 50, !course_id %in% have_sections)
 
 # ── Per-row suspect table ────────────────────────────────────────────────────
 flag_cols <- c("flag_empty", "flag_short", "flag_long", "flag_blob",

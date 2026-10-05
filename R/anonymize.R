@@ -4,7 +4,7 @@
 #'
 #' Removes PII (names, emails, phone numbers), dates, years, seasons,
 #' and institution-specific boilerplate. Preserves case and paragraph structure.
-#' Used on extracted_text (-> course_plan) and on section text (sections_raw).
+#' Used on extracted_text (-> course_plan) and on section text (plan_sections).
 #'
 #' @param institution Character vector of institution short names.
 #' @param text Character vector of raw text (extracted_text or a section).

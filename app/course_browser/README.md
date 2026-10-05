@@ -11,7 +11,7 @@ Rscript -e 'shiny::runApp("app/course_browser")'
 
 The app reads only the prebuilt `data/browser_data.RDS` in this folder, which
 `build_data.R` makes from `course_plans.RDS`, `course_offerings_full.RDS` and
-`sections_raw.RDS`; `targets::tar_make()` reruns it when they change.
+`plan_sections.RDS`; `targets::tar_make()` reruns it when they change.
 
 ## Design
 

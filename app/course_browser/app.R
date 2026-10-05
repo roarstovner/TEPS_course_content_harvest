@@ -424,13 +424,13 @@ server <- function(input, output, session) {
     rows <- rows[ord, ]
     tagList(lapply(seq_len(nrow(rows)), function(i) {
       loc <- if (query_ok()) {
-        locate_matches(rows$raw_text[i], trimws(query()),
+        locate_matches(rows$text[i], trimws(query()),
                        regex = isTRUE(input$regex),
                        match_case = isTRUE(input$mcase))
       } else NULL
       tags$div(class = "section-block",
         tags$h6(SECTION_LABELS[rows$section[i]] %||% rows$section[i]),
-        tags$div(class = "section-text", HTML(mark_matches(rows$raw_text[i], loc))))
+        tags$div(class = "section-text", HTML(mark_matches(rows$text[i], loc))))
     }))
   })
 

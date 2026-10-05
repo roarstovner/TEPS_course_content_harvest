@@ -10,7 +10,7 @@
 # this directory:  Rscript build_data.R
 #
 # Inputs:  data/processed/course_plans.RDS, data/interim/course_offerings_full.RDS,
-#          data/processed/sections_raw.RDS (optional)
+#          data/processed/plan_sections.RDS (optional)
 # Output:  app/course_browser/data/browser_data.RDS (gitignored)
 
 library(dplyr, warn.conflicts = FALSE)
@@ -19,8 +19,7 @@ message("Loading inputs...")
 plans <- readRDS("../../data/processed/course_plans.RDS")
 offerings <- readRDS("../../data/interim/course_offerings_full.RDS")
 
-sections_path <- "../../data/processed/sections_raw.RDS"
-sections_raw <- if (file.exists(sections_path)) readRDS(sections_path) else NULL
+sections_path <- "../../data/processed/plan_sections.RDS"
 
 # ── Offering coverage per plan ───────────────────────────────────────────────
 # A plan is shared by 1-16 offerings. The researcher needs to see which
@@ -64,28 +63,14 @@ message("  ", nrow(plans), " plans, ",
         sum(plans$n_offerings), " offerings covered")
 
 # ── Sections per plan ────────────────────────────────────────────────────────
-# sections_raw is keyed by course_id (offering level). The plan text is
-# identical across a plan's offerings, so one representative offering's
-# sections describe the plan. Take the longest extraction per (plan, section)
-# — extraction occasionally truncates, and the longest is the safest pick.
+# plan_sections is keyed by plan like `plans`, and cut from the same page as
+# the plan's course_plan (#273).
 
-sections <- NULL
-if (!is.null(sections_raw)) {
-  message("Rolling sections up to plan level...")
-  attr(sections_raw$raw_text, "names") <- NULL
-
-  course_to_plan <- offerings |>
-    filter(!is.na(plan_content_id)) |>
-    select(course_id, plan_content_id, institution, Emnekode)
-
-  sections <- sections_raw |>
-    select(course_id, section, raw_text) |>
-    inner_join(course_to_plan, by = "course_id") |>
-    filter(!is.na(raw_text), nchar(raw_text) > 0) |>
-    slice_max(nchar(raw_text), n = 1, with_ties = FALSE,
-              by = c(plan_content_id, institution, Emnekode, section)) |>
-    select(plan_content_id, institution, Emnekode, section, raw_text)
-
+sections <- if (file.exists(sections_path)) {
+  readRDS(sections_path) |>
+    select(plan_content_id, institution, Emnekode, section, text)
+}
+if (!is.null(sections)) {
   message("  ", nrow(sections), " plan-level sections across ",
           n_distinct(sections$section), " section types")
 }

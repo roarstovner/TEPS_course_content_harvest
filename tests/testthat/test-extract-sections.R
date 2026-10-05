@@ -442,3 +442,9 @@ test_that("nla: sections are read from the EmneplanPage JSON in a <script>", {
   out <- extract_sections(get_institution_config("nla"), d$html, d$extracted_text, d$course_id)
   expect_gt(nrow(out), 0)
 })
+
+test_that("extract_sections returns its columns when there are no pages", {
+  out <- extract_sections(get_institution_config("samas"), character(), character(), character())
+  expect_named(out, c("course_id", "institution", "section", "raw_text"))
+  expect_equal(nrow(out), 0)
+})

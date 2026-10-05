@@ -17,11 +17,12 @@ METRICS_SNAPSHOT <- "tests/snapshots/pipeline_metrics.csv"
 #'
 #' @param offerings course_offerings_full: one row per offering with
 #'   `extracted_text`, `course_plan` and `plan_content_id`.
-#' @param sections sections_raw (`course_id`, `institution`, `section`,
-#'   `raw_text`), or NULL to skip the section metrics.
+#' @param sections plan_sections (`plan_content_id`, `institution`,
+#'   `Emnekode`, `section`, `text`), or NULL to skip the section metrics.
 #' @return Long tibble `institution`, `section` ("(all)" for offering-level
-#'   metrics), `metric`, `value`. Metrics named n_* are counts; median_chars
-#'   is the median length of `course_plan` or of the section text.
+#'   metrics), `metric`, `value`. Metrics named n_* are counts (a plan is a
+#'   plan_content_id + Emnekode); median_chars is the median length of
+#'   `course_plan` or of the section text.
 pipeline_metrics <- function(offerings, sections = NULL) {
   has <- function(x) !is.na(x) & nzchar(x)
   course_years <- offerings |>
@@ -29,12 +30,13 @@ pipeline_metrics <- function(offerings, sections = NULL) {
     dplyr::summarise(plan = any(has(course_plan)), .groups = "drop") |>
     dplyr::count(institution, wt = plan, name = "n_course_years_with_plan")
   if (is.null(sections)) {
-    sections <- tibble::tibble(course_id = character(), institution = character(),
-                               section = character(), raw_text = character())
+    sections <- tibble::tibble(plan_content_id = character(), institution = character(),
+                               Emnekode = character(), section = character(),
+                               text = character())
   }
   with_sections <- sections |>
-    dplyr::distinct(institution, course_id) |>
-    dplyr::count(institution, name = "n_with_sections")
+    dplyr::distinct(institution, plan_content_id, Emnekode) |>
+    dplyr::count(institution, name = "n_plans_with_sections")
 
   per_institution <- offerings |>
     dplyr::group_by(institution) |>
@@ -53,10 +55,10 @@ pipeline_metrics <- function(offerings, sections = NULL) {
 
   per_section <- sections |>
     dplyr::group_by(institution, section) |>
-    dplyr::summarise(n_courses = dplyr::n_distinct(course_id),
-                     median_chars = stats::median(nchar(raw_text)),
+    dplyr::summarise(n_plans = dplyr::n_distinct(plan_content_id, Emnekode),
+                     median_chars = stats::median(nchar(text)),
                      .groups = "drop") |>
-    tidyr::pivot_longer(c(n_courses, median_chars),
+    tidyr::pivot_longer(c(n_plans, median_chars),
                         names_to = "metric", values_to = "value")
 
   dplyr::bind_rows(per_institution, per_section) |>
@@ -95,7 +97,7 @@ compare_metrics <- function(old, new, tol_n = 0.05, min_n = 10,
 #' @return The changes beyond tolerance (invisibly; empty after an update).
 check_pipeline_metrics <- function(update = FALSE, snapshot = METRICS_SNAPSHOT,
                                    offerings = "data/interim/course_offerings_full.RDS",
-                                   sections = "data/processed/sections_raw.RDS") {
+                                   sections = "data/processed/plan_sections.RDS") {
   current <- pipeline_metrics(
     readRDS(offerings),
     if (file.exists(sections)) readRDS(sections)

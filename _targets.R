@@ -38,8 +38,8 @@ list(
              pattern = map(html_file, config)),
   tar_target(plans, institution_plans(html_file, fulltext),
              pattern = map(html_file, fulltext), iteration = "list"),
-  tar_target(sections, institution_sections(html_file, fulltext, config),
-             pattern = map(html_file, fulltext, config)),
+  tar_target(sections, institution_sections(html_file, fulltext, config, plans),
+             pattern = map(html_file, fulltext, config, plans)),
   tar_target(unmapped, unmapped_headings(html_file, config),
              pattern = map(html_file, config)),
 
@@ -55,7 +55,7 @@ list(
   tar_target(course_plans_file,
              write_rds_file(combine_plans(plans), "data/processed/course_plans.RDS"), format = "file"),
   tar_target(sections_file,
-             write_rds_file(sections, "data/processed/sections_raw.RDS"), format = "file"),
+             write_rds_file(sections, "data/processed/plan_sections.RDS"), format = "file"),
 
   # Personal data left in the shareable files (#271)
   tar_target(privacy_check,

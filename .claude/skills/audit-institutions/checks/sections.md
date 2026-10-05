@@ -4,7 +4,7 @@ Audits **section extraction**: whether `R/extract_sections.R` splits each
 course plan into the seven canonical sections correctly.
 
 - **Default model:** `sonnet`
-- **Audited output:** `data/processed/sections_raw.RDS` (one row per course × section)
+- **Audited output:** `data/processed/plan_sections.RDS` (one row per plan × section, cut from the page of the plan's `source_course_id`)
 - **Ground truth:** the full anonymized `course_plan` (`data/interim/course_offerings_full.RDS`)
 - **Rubric:** `section_codebook.yml` (repo root) — the definitions of the seven
   sections. It is the authority, not the headings the institution uses.
@@ -15,7 +15,7 @@ Rebuild whatever is stale, in this order. `R/audit/prepare_sections.R` refuses
 to run on stale inputs.
 
 ```bash
-Rscript -e 'targets::tar_make()'   # html_*.RDS -> course_offerings_full.RDS, sections_raw.RDS
+Rscript -e 'targets::tar_make()'   # html_*.RDS -> course_offerings_full.RDS, plan_sections.RDS
 Rscript R/audit/qa_sections.R      # -> data/audit/sections/sections_qa_suspects.RDS (deterministic pre-pass)
 Rscript R/audit/prepare_sections.R [inst ...]   # -> data/audit/sections/packets/
 ```

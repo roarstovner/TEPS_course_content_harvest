@@ -4,14 +4,15 @@
 #
 # Each packet is a self-contained markdown file one review agent reads to audit
 # one institution's section extraction. It contains a stratified sample of
-# course offerings: deterministic SUSPECTS (from sections_qa_suspects.RDS) plus
-# a RANDOM control slice, each shown as
+# plans, each shown through the offering its text and sections come from
+# (source_course_id; #273): deterministic SUSPECTS (from
+# sections_qa_suspects.RDS) plus a RANDOM control slice, each shown as
 #   (a) the full anonymized course_plan  — ground truth, and
-#   (b) the extractor's sections_raw rows — what to audit.
+#   (b) the extractor's plan_sections rows — what to audit.
 #
 # Inputs (regenerate in this order if stale):
 #   data/interim/course_offerings_full.RDS   targets::tar_make()
-#   data/processed/sections_raw.RDS            targets::tar_make()
+#   data/processed/plan_sections.RDS           targets::tar_make()
 #   data/audit/sections/sections_qa_suspects.RDS    Rscript R/audit/qa_sections.R
 #
 # Outputs:
@@ -43,14 +44,17 @@ out_dir <- file.path(audit_dir(CHECK), "packets")
 dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
 
 # ── Load ─────────────────────────────────────────────────────────────────────
-audit_require_fresh("data/processed/sections_raw.RDS", "data/interim/course_offerings_full.RDS",
+audit_require_fresh("data/processed/plan_sections.RDS", "data/interim/course_offerings_full.RDS",
                     "Run targets::tar_make().")
-audit_require_fresh("data/audit/sections/sections_qa_suspects.RDS", "data/processed/sections_raw.RDS",
+audit_require_fresh("data/audit/sections/sections_qa_suspects.RDS", "data/processed/plan_sections.RDS",
                     "Run Rscript R/audit/qa_sections.R.")
 
-sec      <- readRDS("data/processed/sections_raw.RDS")
+sec      <- readRDS("data/processed/plan_sections.RDS") |>
+  transmute(course_id = source_course_id, institution, section, raw_text = text)
 suspects <- readRDS("data/audit/sections/sections_qa_suspects.RDS")
+sources  <- readRDS("data/processed/course_plans.RDS")$source_course_id
 plans    <- readRDS("data/interim/course_offerings_full.RDS") |>
+  filter(course_id %in% sources) |>
   select(course_id, institution, course_plan, plan_content_id,
          Emnekode_raw, Emnenavn, Årstall, Semesternavn)
 
@@ -132,7 +136,7 @@ for (inst in institutions) {
         "",
         audit_fence(audit_trunc(plan_txt, plan_trunc)),
         "",
-        "### Extractor output (sections_raw — audit these)",
+        "### Extractor output (plan_sections — audit these)",
         ""
       )
       if (nrow(rows) == 0) {

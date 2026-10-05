@@ -9,11 +9,14 @@
 #'   Must include a `course_plan` column (from anonymize_text).
 #' @return A list with two elements:
 #'   - `plans`: Tibble of unique plans (plan_content_id, institution, Emnekode,
-#'              course_plan, course_plan_normalized, year_from, year_to)
+#'              year_from, year_to, source_course_id, course_plan,
+#'              course_plan_normalized). The text is that of the plan's
+#'              earliest offering, `source_course_id`, whose page its
+#'              sections are cut from too (#273).
 #'   - `courses`: The original df with plan_content_id column added.
 deduplicate_plans <- function(df) {
   stopifnot(
-    all(c("institution", "Emnekode", "Årstall", "course_plan") %in% names(df))
+    all(c("course_id", "institution", "Emnekode", "Årstall", "course_plan") %in% names(df))
   )
 
   # Normalize anonymized text and build plan ID
@@ -31,6 +34,7 @@ deduplicate_plans <- function(df) {
     dplyr::summarise(
       year_from = min(Årstall),
       year_to = max(Årstall),
+      source_course_id = dplyr::first(course_id),
       course_plan = dplyr::first(course_plan),
       course_plan_normalized = dplyr::first(course_plan_normalized),
       .groups = "drop"

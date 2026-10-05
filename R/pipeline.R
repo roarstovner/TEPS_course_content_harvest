@@ -34,14 +34,22 @@ institution_plans <- function(html_file, fulltext) {
   deduplicate_plans(df)
 }
 
-# Sections are cut from raw text, so they are anonymized here (#208).
-institution_sections <- function(html_file, fulltext, config) {
+# Sections per plan (#273), cut from the page of the offering whose text the
+# plan keeps (source_course_id), so a plan's sections and its course_plan come
+# from the same page. Sections are cut from raw text, so they are anonymized
+# here (#208).
+institution_sections <- function(html_file, fulltext, config, plans) {
+  src <- plans$plans[, c("plan_content_id", "institution", "Emnekode", "source_course_id")]
   df <- readRDS(html_file)
-  text <- fulltext$extracted_text[match(df$course_id, fulltext$course_id)]
-  extract_sections(config, df$html %||% rep(NA_character_, nrow(df)), text,
-                   df$course_id) |>
-    dplyr::mutate(raw_text = anonymize_text(institution, raw_text, .progress = FALSE)) |>
-    dplyr::filter(!is.na(raw_text))
+  html <- df$html %||% rep(NA_character_, nrow(df))
+  extract_sections(config, html[match(src$source_course_id, df$course_id)],
+                   fulltext$extracted_text[match(src$source_course_id, fulltext$course_id)],
+                   src$source_course_id) |>
+    dplyr::mutate(text = anonymize_text(institution, raw_text, .progress = FALSE)) |>
+    dplyr::filter(!is.na(text)) |>
+    dplyr::inner_join(src, by = c(course_id = "source_course_id", "institution")) |>
+    dplyr::select(plan_content_id, institution, Emnekode, source_course_id = course_id,
+                  section, text)
 }
 
 # Heading texts the section extractor meets but cannot map, from a sample of

@@ -133,6 +133,7 @@ test_that("vectorized hashing works", {
 
 test_that("deduplicate_plans returns correct structure", {
   df <- tibble::tibble(
+    course_id = paste0("c", 1:4),
     institution = rep("hivolda", 4),
     Emnekode = rep("TEST101", 4),
     Årstall = c(2020, 2021, 2022, 2023),
@@ -149,6 +150,7 @@ test_that("deduplicate_plans returns correct structure", {
 
 test_that("deduplicate_plans reduces identical plans", {
   df <- tibble::tibble(
+    course_id = paste0("c", 1:4),
     institution = rep("hivolda", 4),
     Emnekode = rep("TEST101", 4),
     Årstall = c(2020, 2021, 2022, 2023),
@@ -166,6 +168,7 @@ test_that("deduplicate_plans reduces identical plans", {
 
 test_that("deduplicate_plans computes correct year ranges", {
   df <- tibble::tibble(
+    course_id = paste0("c", 1:4),
     institution = rep("hivolda", 4),
     Emnekode = rep("TEST101", 4),
     Årstall = c(2020, 2021, 2022, 2023),
@@ -177,10 +180,13 @@ test_that("deduplicate_plans computes correct year ranges", {
 
   expect_equal(plans$year_from, c(2020, 2022))
   expect_equal(plans$year_to, c(2021, 2023))
+  # text and sections come from the earliest offering
+  expect_equal(plans$source_course_id, c("c1", "c3"))
 })
 
 test_that("deduplicate_plans handles NA course_plan", {
   df <- tibble::tibble(
+    course_id = c("c1", "c2"),
     institution = c("hivolda", "hivolda"),
     Emnekode = c("TEST101", "TEST102"),
     Årstall = c(2020, 2020),
