@@ -202,3 +202,17 @@ flag).
   prerequisites": on most pages it holds admission text ("Opptak til
   programmet", "Generell studiekompetanse"), which the codebook keeps out of
   prerequisites; left unmapped.
+
+## Status of the fix list (2026-10-05, end of session)
+
+| item | issue | status |
+| --- | --- | --- |
+| 1 IP addresses | #281 | done, b3ad1db |
+| 2 uit legacy layout | #282 | done, a96eee2 |
+| 3 coursework gates in assessment | #283 | done, ba86038 + 698b8ef |
+| 4 heading-map rows | #284 | done, cf48c36 |
+| 5–6 inline Forkunnskapskrav, nord lead paragraph | #285 | investigated, open (needs a reader option; mostly admission text) |
+| 7–8 placeholders, Praksis pointers | #286 | done, ada8f69 |
+| 9 page furniture | #287 | done, a772f40 (not: uis code–title footer, steiner page numbers) |
+| 10 uio labels under Undervisning | #288 | done, 9c0844a (not: gates written as plain sentences) |
+| oslomet "Se fagplanen" courses | #289 | decision for the user |
