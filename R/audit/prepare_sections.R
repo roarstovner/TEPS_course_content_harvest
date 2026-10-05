@@ -62,10 +62,11 @@ plans    <- readRDS("data/interim/course_offerings_full.RDS") |>
 
 # Headings on each source page and where they map (target `blocks`): shows
 # why text went where it did.
+# Anonymized per institution, for the sampled courses only (#280: all
+# headings took ~10 minutes).
 heads <- targets::tar_read(blocks) |>
   filter(role %in% c("heading", "sub"), nzchar(trimws(text)), course_id %in% sources) |>
   mutate(text = str_trunc(str_squish(text), 60))
-heads$text <- anonymize_text(sub("_.*$", "", heads$course_id), heads$text, .progress = FALSE)
 
 flag_cols <- c("flag_empty", "flag_short", "flag_long", "flag_blob",
                "flag_leak", "flag_dup_in_course", "flag_boilerplate")
@@ -119,6 +120,9 @@ for (inst in institutions) {
     transmute(course_id, dedup_key = plan_content_id, score)
   selected <- audit_sample(pool, SUSPECT_N, RANDOM_N, SEED)
   if (nrow(selected) == 0) next
+  inst_heads <- heads[heads$course_id %in% selected$course_id, ]
+  inst_heads$text <- anonymize_text(rep(inst, nrow(inst_heads)), inst_heads$text,
+                                    .progress = FALSE)
 
   build <- function(plan_trunc) {
     lines <- audit_packet_header(CHECK, inst, selected, paste(
@@ -148,7 +152,7 @@ for (inst in institutions) {
         "### Extractor output (plan_sections — audit these)",
         "",
         {
-          h <- heads[heads$course_id == cid & !is.na(heads$text), ]
+          h <- inst_heads[inst_heads$course_id == cid & !is.na(inst_heads$text), ]
           if (nrow(h) == 0) "_(no headings read from the page: text fallback)_" else
             paste0("Headings on the page (→ section): ", paste(sprintf(
               "`%s`%s → %s", h$text, ifelse(h$role == "sub", " (sub)", ""),
