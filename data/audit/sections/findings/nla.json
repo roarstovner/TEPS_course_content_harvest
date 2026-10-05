@@ -4,43 +4,31 @@
   "model": "sonnet",
   "n_courses_reviewed": 10,
   "n_suspects_reviewed": 4,
-  "overall_assessment": "Section extraction works very well for NLA: all ten courses have correct, complete and clean course_content, learning_outcomes, teaching_methods, coursework_requirements and assessment, and arbeidskrav are correctly kept out of assessment. The pre-pass 'leak' flags on the four suspects are false alarms; only minor issues remain (progresjonskrav dropped, a lost first sub-heading, an orphaned grading-expression line). No reading_list rows are emitted, but the source only has a link label so nothing is lost.",
+  "overall_assessment": "Section extraction works well for NLA: the pages have clean, consistent headings and all seven-section content lands in the right place, with arbeidskrav correctly kept out of assessment and nested Kunnskap/Ferdigheter sub-headings kept inside learning_outcomes. The pre-pass flags on the four suspects are false alarms; the only real issues are minor (Praksis cross-references filed as teaching_methods, and Progresjonskrav text dropped).",
   "findings": [
+    {
+      "target": "teaching_methods",
+      "error_type": "wrong_content",
+      "severity": "low",
+      "prevalence": "widespread",
+      "example_course_ids": ["nla_MGL1PE201-1_2025_autumn_1", "nla_4MGL1MA101-1_2025_autumn_1", "nla_MGL1NO201-1_2025_autumn_1"],
+      "evidence": "Se praksisplan for MGLU1.",
+      "description": "The NLA 'Praksis' heading is mapped to teaching_methods, so a one-line cross-reference to a separate practice plan is appended to the real teaching-methods text. It is not a teaching method; it is a pointer (and for several courses an admin note about which student group it applies to).",
+      "root_cause_hypothesis": "R/section_heading_map.R maps the pattern for 'Praksis' to teaching_methods unconditionally.",
+      "suggested_fix": "Map 'Praksis' to .drop (or to unmapped) for NLA, or only keep it when it has more than a 'Se/Sjå ... praksisplan/studieplan' reference (strip lines starting with 'Se ' / 'Sjå ' + 'praksisplan|studieplan' in .clean_sections()).",
+      "confidence": "medium"
+    },
     {
       "target": "prerequisites",
       "error_type": "missing_section",
       "severity": "low",
-      "prevalence": "common",
-      "example_course_ids": ["nla_MGL5MU201A-1_2025_spring_2", "nla_4MGL5MAT-M-1_2025_autumn_1", "nla_4MGL1NO-M-1_2025_spring_1"],
-      "evidence": "Musikk 1 modul 1 må takast før Musikk 2 modul 3.",
-      "description": "The 'Progresjonskrav' section states a real prerequisite (module or courses that must be completed first), but it is not extracted into prerequisites nor any other section; the text is dropped. 'Forkunnskapskrav' and 'Anbefalte forkunnskaper' are correctly captured.",
-      "root_cause_hypothesis": "The heading 'Progresjonskrav' has no pattern in R/section_heading_map.R, so it maps to nothing and is dropped.",
-      "suggested_fix": "Add a 'progresjonskrav' pattern mapped to prerequisites in R/section_heading_map.R (placed so it merges with Forkunnskapskrav).",
-      "confidence": "medium"
-    },
-    {
-      "target": "learning_outcomes",
-      "error_type": "truncated",
-      "severity": "low",
       "prevalence": "rare",
-      "example_course_ids": ["nla_MGL5MU201A-1_2025_spring_2"],
-      "evidence": "Studenten har kunnskap om kjenneteikn på eit mangfaldig og inkluderande læringsmiljø og om fellesskap for musikalsk læring",
-      "description": "When 'Kunnskap' follows the 'Læringsutbytte' heading directly (no intro sentence), the first sub-heading 'Kunnskap' is lost and the section starts at 'Studenten', so the Kunnskap group is unlabelled while Ferdigheter and Generell kompetanse keep their headings. Content survives, only the label is lost.",
-      "root_cause_hypothesis": "The heading-line consumption in R/extract_sections.R treats the line directly after 'Læringsutbytte' (the sub-heading 'Kunnskap', itself mapped as a learning-outcomes heading) as the section heading and strips it.",
-      "suggested_fix": "In the splitter, only drop the matched heading line itself; do not collapse consecutive heading lines that map to the same section (keep 'Kunnskap' as body text).",
+      "example_course_ids": ["nla_4MGL1NO-M-1_2025_spring_1", "nla_4MGL5FOU201-1_2025_autumn_1"],
+      "evidence": "Masteroppgaven kan leveres til vurdering når alle obligatoriske og valgte emner fra grunnskolelærerutdanningen 1-7 er bestått.",
+      "description": "The 'Progresjonskrav' heading is unmapped and its text (progression requirement: what must be passed before the course/thesis can be taken or submitted) is silently discarded. It is a prerequisite-like condition and is not present in any extracted section.",
+      "root_cause_hypothesis": "No heading-map pattern for 'Progresjonskrav' in R/section_heading_map.R, so the block is unmapped and dropped.",
+      "suggested_fix": "Add a pattern '^progresjonskrav' mapped to prerequisites in R/section_heading_map.R.",
       "confidence": "medium"
-    },
-    {
-      "target": "coursework_requirements",
-      "error_type": "formatting_noise",
-      "severity": "low",
-      "prevalence": "widespread",
-      "example_course_ids": ["nla_MGL5NA201-1_2025_spring_1", "nla_MGL1NO201-1_2025_autumn_1"],
-      "evidence": "Godkjent / Ikke godkjent",
-      "description": "The 'Vurderingsuttrykk arbeidskrav' heading is dropped but its value line is appended to the end of coursework_requirements as an orphaned 'Godkjent / Ikke godkjent' line without a label. Harmless and arguably correct placement, but it reads as noise.",
-      "root_cause_hypothesis": "'Vurderingsuttrykk arbeidskrav' is mapped to coursework_requirements as a heading, whose heading text is stripped, leaving only the value.",
-      "suggested_fix": "Optionally keep the heading as a prefix ('Vurderingsuttrykk: Godkjent / Ikke godkjent') or drop the pass/fail line in .clean_sections().",
-      "confidence": "low"
     }
   ]
 }

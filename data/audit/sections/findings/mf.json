@@ -2,22 +2,10 @@
   "check": "sections",
   "institution": "mf",
   "model": "sonnet",
-  "n_courses_reviewed": 20,
-  "n_suspects_reviewed": 14,
-  "overall_assessment": "Extraction is mostly accurate for MF: course_content, coursework_requirements, assessment and learning_outcomes are cleanly cut and complete. The main defects are that reading_list is always generic library-access boilerplate (no actual literature), and that two inline sections (Arbeidsform, Forkunnskapskrav) are absorbed into neighbouring sections.",
+  "n_courses_reviewed": 10,
+  "n_suspects_reviewed": 4,
+  "overall_assessment": "Extraction is accurate for MF: course_content, coursework_requirements, assessment and learning_outcomes are cleanly cut and complete in all 6 random controls, and sub-headings in learning outcomes do not truncate anything. Two real defects: an inline 'Arbeidsform og organisering' block is absorbed into coursework_requirements, and inline 'Forkunnskapskrav' lines stay in course_content; reading_list is never populated because the plan text ends with an empty 'Litteraturliste' heading.",
   "findings": [
-    {
-      "target": "reading_list",
-      "error_type": "boilerplate_only",
-      "severity": "high",
-      "prevalence": "widespread",
-      "example_course_ids": ["mf_RL1014-1_2025_autumn_1", "mf_SAM1000L-1_2025_autumn_1", "mf_PPU1015-1_2025_autumn_1"],
-      "evidence": "Noe av litteraturen er digital, annet finnes kun i papirutgave. Kompendier kan være tilgjengelige i Canvas.",
-      "description": "In every course with a Litteraturliste heading, reading_list holds only the identical 597-char (609 for one variant) library-access boilerplate (\"Litteraturlisten for\" followed by 'Tilgang til litteratur'). The plans contain no actual literature entries (the real list is evidently not in the harvested text), so the section is boilerplate rather than a reading list. The 'boilerplate' flag is a true positive, and it is institution-wide (all 15 courses with the heading).",
-      "root_cause_hypothesis": "The MF Litteraturliste block is rendered dynamically/separately (title is truncated to 'Litteraturlisten for' and the list is missing), so the fulltext extraction only contains the static access note; the sections extractor then maps the heading to reading_list verbatim.",
-      "suggested_fix": "In .clean_sections() for mf, strip the 'Litteraturlisten for ...' line and the 'Tilgang til litteratur' paragraph and drop reading_list when nothing remains (or emit NA). Separately fix the MF fulltext selector/harvest to capture the actual literature list.",
-      "confidence": "high"
-    },
     {
       "target": "teaching_methods",
       "error_type": "merged_sections",
@@ -25,34 +13,46 @@
       "prevalence": "rare",
       "example_course_ids": ["mf_RL1014-1_2025_autumn_1"],
       "evidence": "Arbeidsform og organisering\n\nEmnet organiseres i 6 moduler som alle må gjennomføres for å ta eksamen. Hver modul består av:",
-      "description": "Under 'Obligatoriske aktiviteter' the plan has an embedded sub-heading 'Arbeidsform og organisering' (teaching methods: modules, lectures, seminars). The splitter did not cut at it, so it sits inside coursework_requirements and no teaching_methods row is emitted. This is the 'leak->teaching_methods' flag, which is real. Other MF courses where 'Arbeidsform og organisering:' is a separate block (PRA1005, PRA1004, SAM1000L) are extracted correctly, so the problem is the heading being nested inside the obligatoriske aktiviteter block.",
-      "root_cause_hypothesis": "Splitter cuts only at top-level headings (Om studiet / Obligatoriske aktiviteter / Avsluttende vurdering / Læringsutbytte); the sub-heading 'Arbeidsform og organisering' within the coursework block is not treated as a boundary.",
-      "suggested_fix": "Ensure 'Arbeidsform og organisering' (with or without trailing colon) is a boundary at any position in the mf plan, cutting it out of coursework_requirements into teaching_methods.",
+      "description": "Inside the 'Obligatoriske aktiviteter' block the plan has an 'Arbeidsform og organisering' sub-heading (modules, lectures, seminars: teaching methods). It is not recognised as a heading (not in the heading list), so it stays inside coursework_requirements and no teaching_methods row is emitted. The 'leak->teaching_methods' flag is a true positive. In MET5010 a similar heading ('Teaching and organization:') is correctly mapped, so the problem is that this one is a plain line inside the activities block.",
+      "root_cause_hypothesis": "The page reader only treats the top-level MF headings (Om studiet, Obligatoriske aktiviteter, Avsluttende vurdering/eksamen, Læringsutbytte, ...) as boundaries; 'Arbeidsform og organisering' appears as a non-heading line here and is not matched by the heading map as a line-start pattern.",
+      "suggested_fix": "Add a line-start pattern for '^Arbeidsform( og organisering)?:?$' mapped to teaching_methods in R/section_heading_map.R (and make sure the mf section_* config lets plain-line headings split), so it is cut out of coursework_requirements.",
       "confidence": "high"
     },
     {
       "target": "prerequisites",
-      "error_type": "merged_sections",
+      "error_type": "missing_section",
       "severity": "medium",
       "prevalence": "occasional",
       "example_course_ids": ["mf_PPU1015-1_2025_autumn_1", "mf_PPU1020-1_2025_autumn_1"],
       "evidence": "Forkunnskapskrav: 140 stp. emner inkl PED1010",
-      "description": "An inline 'Forkunnskapskrav: ...' line at the end of the introductory text is kept at the tail of course_content instead of being extracted as prerequisites. No prerequisites row is emitted for these courses, although the prerequisite is explicit. Contrast SAM2080L and SAM1050, where a 'Forkunnskaper' heading correctly yields prerequisites. The 'leak->prerequisites' flags are real.",
-      "root_cause_hypothesis": "The prerequisites pattern in R/section_heading_map.R only matches 'Forkunnskaper' as a standalone heading line, not the 'Forkunnskapskrav:' label with inline text.",
-      "suggested_fix": "Add a line-start pattern for '^Forkunnskapskrav\\b:?' in R/section_heading_map.R mapped to prerequisites, splitting the remainder of the line off as section text.",
+      "description": "An inline 'Forkunnskapskrav: ...' line at the end of the introductory text stays at the tail of course_content; no prerequisites row is emitted although the prerequisite is explicit (PPU1020: 'Godkjent opptak på Lektorprogrammet/PPU ... bestått 140 stp emner inkl. PED1010'). The 'leak->prerequisites' flags on both are true positives. Prerequisites is not a heading on the page, so the heading-based splitter cannot see it.",
+      "root_cause_hypothesis": "The prerequisites pattern in R/section_heading_map.R matches only standalone headings such as 'Forkunnskaper'; the 'Forkunnskapskrav:' label with inline text is not a line-start boundary.",
+      "suggested_fix": "Add a line-start pattern '^Forkunnskapskrav\\b:?' mapped to prerequisites in R/section_heading_map.R, with the rest of the line kept as section text.",
       "confidence": "high"
     },
     {
-      "target": "teaching_methods",
+      "target": "reading_list",
       "error_type": "missing_section",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": ["mf_RL1014-1_2025_autumn_1", "mf_RL2030-1_2025_autumn_1", "mf_RL5065-1_2025_autumn_1"],
+      "evidence": "Overlappende emner\nPPU1015 overlapper med 20 stp. mot PPU1010. Studenter som har PPU1010 fra før vil få 0 stp. uttelling for PPU1015 på karakterutskriften eller vitnemålet\nLitteraturliste",
+      "description": "In 9 of 10 packet courses the plan text ends with a bare 'Litteraturliste' heading and no entries, so no reading_list row is produced (PRA1002 has no such heading). The extractor behaves correctly on the text it receives; the literature itself is absent from the harvested page text. Reading lists for MF are therefore effectively missing.",
+      "root_cause_hypothesis": "The literature list is probably loaded dynamically or from a separate element not captured by the MF fulltext selectors (R/extract_fulltext.R / institution_config.R), upstream of section extraction.",
+      "suggested_fix": "Check the MF page source for where the literature list is rendered and extend the MF fulltext/section_* selector to include it; otherwise accept that MF reading_list is empty.",
+      "confidence": "medium"
+    },
+    {
+      "target": "coursework_requirements",
+      "error_type": "formatting_noise",
       "severity": "low",
-      "prevalence": "occasional",
-      "example_course_ids": ["mf_BAO2705-1_2025_autumn_1", "mf_PED1010-1_2025_autumn_1"],
-      "evidence": "Undervisningen er delt inn i forelesninger og veiledning. Begge deler er obligatorisk.",
-      "description": "Teaching-format statements embedded in the unheaded introduction stay in course_content with no teaching_methods row. Minor, since the plan has no heading for them.",
-      "root_cause_hypothesis": "No heading in the source, so heading-based splitting cannot separate them.",
-      "suggested_fix": "Accept as a limitation, or optionally add a paragraph-level rule for paragraphs starting 'Undervisningen er/består'.",
-      "confidence": "low"
+      "prevalence": "common",
+      "example_course_ids": ["mf_RL1010L-1_2025_autumn_2", "mf_RL1014-1_2025_autumn_1"],
+      "evidence": "Ved oppmelding til emnet i Studentweb må du krysse av hvilken seminargruppe du skal være med i.",
+      "description": "coursework_requirements includes admin boilerplate: the standard withdrawal-deadline paragraph ('For ikke å bruke et eksamensforsøk ... trekkfristen 1. november') in every course and a Studentweb registration note in RL1010L. These are enrolment logistics, not requirements; the real requirement list is intact, so impact is small.",
+      "root_cause_hypothesis": "Block text is kept verbatim between 'Obligatoriske aktiviteter' and the next heading; .clean_sections() has no MF-specific boilerplate stripping.",
+      "suggested_fix": "In .clean_sections() for mf, strip the paragraph starting 'Studenter som ikke oppfyller de obligatoriske aktivitetene' and the 'Ved oppmelding til emnet i Studentweb' paragraph.",
+      "confidence": "medium"
     }
   ]
 }

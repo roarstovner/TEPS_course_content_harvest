@@ -4,30 +4,18 @@
   "model": "sonnet",
   "n_courses_reviewed": 8,
   "n_suspects_reviewed": 2,
-  "overall_assessment": "Section extraction works very well for NMBU: all eight courses have correct, complete sections, CSS/metadata junk is excluded, and obligatory activities are correctly routed to coursework_requirements. Both pre-pass flags are false alarms (a short but real prerequisite 'PPXP100'; a 'leak->reading_list' hit on ordinary teaching text). Only minor issues remain.",
+  "overall_assessment": "Section extraction works well for NMBU: all 8 plans have correct, complete and clean sections, with sub-headings kept inside learning outcomes and Obligatorisk aktivitet correctly separated from assessment. Both pre-pass flags are false alarms; the only loss is text under unmapped headings (Laeringsstotte, Undervisningstider, Merknader, Overlapp).",
   "findings": [
     {
       "target": "teaching_methods",
       "error_type": "missing_section",
       "severity": "low",
-      "prevalence": "common",
-      "example_course_ids": ["nmbu_PPFD201-1_2025_autumn_2", "nmbu_PPPE301-1_2025_spring_1", "nmbu_M30-LUN-1_2025_spring_1"],
-      "evidence": "Læringsstøtte\nStudentene veiledes i praksisopplæring.",
-      "description": "The 'Læringsstøtte' block (supervision and learning support, e.g. 40 hours of guidance in the M30 course) is present in the plan but appears in no extracted section. It is arguably part of teaching_methods; the loss is silent.",
-      "root_cause_hypothesis": "No heading pattern for 'Læringsstøtte' in R/section_heading_map.R, so the block is dropped.",
-      "suggested_fix": "Map '^Læringsstøtte' to teaching_methods in R/section_heading_map.R, or confirm against section_codebook.yml that it is intentionally ignored.",
-      "confidence": "low"
-    },
-    {
-      "target": "learning_outcomes",
-      "error_type": "formatting_noise",
-      "severity": "low",
-      "prevalence": "occasional",
-      "example_course_ids": ["nmbu_PPUT301-1_2025_spring_1", "nmbu_PPFD301-1_2025_spring_1"],
-      "evidence": "Generelle ferdigheter\nStudenten\nskal kunne bruke forskningslitteratur til å utvikle faglig argumentasjon.",
-      "description": "Sub-headings (Kunnskap / Ferdigheter / Generell kompetanse) are stripped inconsistently: most are removed leaving bare 'Kandidaten'/'Studenten' lines, while 'Generelle ferdigheter' survives in PPUT301. All content is retained, so nothing is lost, but the group labels are mostly gone and the result is inconsistent.",
-      "root_cause_hypothesis": "Sub-heading handling in R/extract_sections.R (.clean_sections) matches only some label variants.",
-      "suggested_fix": "Either keep the Kunnskap/Ferdigheter/Generell kompetanse labels consistently, or extend the strip pattern to cover 'Generelle ferdigheter' and similar variants.",
+      "prevalence": "widespread",
+      "example_course_ids": ["nmbu_FYS100-1_2025_spring_1", "nmbu_PPFD201-1_2025_autumn_2"],
+      "evidence": "`Læringsstøtte` → unmapped · `Pensum` → reading_list",
+      "description": "Headings Læringsstøtte, Undervisningstider, Merknader and Overlapp are unmapped and their text is not in any section. Undervisningstider holds teaching-format information (e.g. FYS100 lists lecture, exercise and lab hours; PPRA301 says 60 days supervised practice) and Læringsstøtte describes supervision, which arguably belongs in teaching_methods per the codebook. Admission-like headings (Opptakskrav, Fortrinnsrett) are dropped appropriately.",
+      "root_cause_hypothesis": "R/section_heading_map.R has no pattern for Læringsstøtte / Undervisningstider, so the blocks are discarded as unmapped.",
+      "suggested_fix": "Map `Undervisningstider` and `Læringsstøtte` to teaching_methods in R/section_heading_map.R (optionally scoped to NMBU), after checking they do not add logistics noise on other institutions.",
       "confidence": "medium"
     }
   ]

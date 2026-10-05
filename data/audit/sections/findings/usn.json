@@ -1,104 +1,57 @@
 {
   "check": "sections",
   "institution": "usn",
-  "model": "opus",
-  "n_courses_reviewed": 20,
+  "model": "sonnet",
+  "n_courses_reviewed": 18,
   "n_suspects_reviewed": 14,
-  "overall_assessment": "USN section boundaries are correct: in all 20 courses each canonical section gets the right text, arbeidskrav and obligatorisk aktivitet go to coursework_requirements, graded exams go to assessment, and Hjelpemidler and the programme footer are dropped. All 14 suspects were flagged only as boilerplate, and those flags are false alarms: the master-thesis plans really do share template text, apart from the reading-list placeholder below. The real problems are noise rather than mislabelling. The text_split strategy parses the table of contents (Innholdsfortegnelse) as sections, keeps a second same-section heading or an unmapped heading as body text, removes the Kunnskap sub-label, and lets approval stamps and signatures that follow Vurderingsformer leak into assessment.",
+  "overall_assessment": "USN section extraction is largely correct: all seven sections land in the right place for the 18 plans, including learning outcomes with all three sub-groups and arbeidskrav separated from assessment. Remaining defects are cosmetic: Leganto UI text in reading_list, and sub-heading lines left in coursework_requirements and teaching_methods because every page goes through the text fallback.",
   "findings": [
     {
-      "target": "cross_section",
+      "target": "reading_list",
       "error_type": "formatting_noise",
       "severity": "medium",
       "prevalence": "widespread",
-      "example_course_ids": [
-        "usn_MG2NA4-1_2022_spring_1",
-        "usn_MG2SA8-1_2024_autumn_1",
-        "usn_MG1MA6-1_2025_autumn_1"
-      ],
-      "evidence": "Faglig innhold i emnet Naturvitenskap og teknologiske nyvinninger … Praksis forelesninger og veiledning praktiske oppgaver individuelt og i gruppe",
-      "description": "The table of contents at the top of every USN plan is parsed as a run of sections. When two adjacent TOC entries map to the same canonical section, the second entry ends up as body text, and that stray heading line is then prepended to the real section. The result: (a) course_content always starts with the line 'Faglig innhold i emnet' (20/20 in the packet; 1221/1231 USN rows); (b) coursework_requirements starts with 'Obligatorisk aktivitet og krav til tilstedeværelse' whenever the plan has both Arbeidskrav and Obligatorisk aktivitet headings (courses 7-10, 15, 18, 19; about 600 USN rows); (c) teaching_methods starts with 'Praksis' whenever Praksis follows Læringsaktiviteter (courses 15, 16, 19, 20). The text lands in the correct section, but every row carries heading noise that is not part of the plan's content.",
-      "root_cause_hypothesis": "In extract_sections_text() (R/extract_sections.R), the line 'Innholdsfortegnelse' matches the substring pattern 'innhold' (word_start), so it opens course_content. 'Faglig innhold i emnet', the TOC entry that follows, maps to the same open section and is kept as content. The same rule turns the TOC pairs Arbeidskrav/Obligatorisk aktivitet (coursework_requirements) and Læringsaktiviteter/Praksis (teaching_methods; Praksis is unmapped) into content lines. flush() stores these lines as a first chunk, and the real body is then joined to it with a blank line. .clean_section_text() removes only exact heading echoes, so 'Faglig innhold i emnet' and 'Obligatorisk aktivitet og krav til tilstedeværelse' survive.",
-      "suggested_fix": "Skip the table of contents in extract_sections_text(): when a trimmed line equals 'Innholdsfortegnelse', take the next non-blank line L (the first TOC entry) and skip ahead to the next line equal to L, where the real body starts. This could also be a USN pre-step that removes that block. Also add 'innholdsfortegnelse' as an exact '.drop' row in section_heading_patterns (R/section_heading_map.R) so it can never match course_content through 'innhold'.",
+      "example_course_ids": ["usn_MG1PE3-1_2021_spring_2", "usn_MG2RL3-1_2019_spring_2", "usn_LRPE320-1_2021_spring_2"],
+      "evidence": "Click to view interactive reading list in LegantoObligatorisk litteratur",
+      "description": "reading_list holds the raw Leganto widget text: a campus/course-variant header, the Leganto link label glued onto the first heading, and per-item UI labels (\"View online\", \"In compendium\", item type prefixes such as \"Book\"/\"Book Chapter\" fused to titles). This is navigation/formatting noise, not reference text. In MG1PE3/MG2PE3 the header lists 5-6 campus variants (Drammen, Notodden, Porsgrunn, Vestfold), so the section is ~28k chars and appears to combine lists for several course codes.",
+      "root_cause_hypothesis": "The reading list is read from the Leganto embed as flat text, and .clean_sections() has no USN-specific cleanup for the widget labels.",
+      "suggested_fix": "Add a USN reading-list cleanup that strips the lines '^Click to view interactive reading list in Leganto' (and splits the glued section heading), '^View online$', '^In compendium$' and the leading item-type token (Book|Book Chapter|Article|Electronic Article|Document|Audio Recording) before the title; drop the campus-variant header lines or keep only the one matching the plan's course code.",
       "confidence": "high"
     },
     {
-      "target": "cross_section",
+      "target": "coursework_requirements",
       "error_type": "formatting_noise",
-      "severity": "medium",
-      "prevalence": "common",
-      "example_course_ids": [
-        "usn_MG2RL3-1_2024_autumn_1",
-        "usn_MG2SA8-1_2024_autumn_1",
-        "usn_MG1NA3-1_2019_spring_2"
-      ],
-      "evidence": "Obligatorisk aktivitet og krav til tilstedeværelse Ingen Obligatorisk aktivitet og krav til tilstedeværelse Studentene følger retningslinjene … praksis i barneskole Praksis Framgår av studieprogramplan",
-      "description": "In the real body of a plan, a second heading is kept inline as a body line instead of acting as a section break. This happens in two cases: the heading maps to the section that is already open ('Obligatorisk aktivitet og krav til tilstedeværelse' after Arbeidskrav; the second 'Litteratur' in course 19), or the heading is unmapped ('Praksis'). The empty first block's placeholder then stays inside the merged row. In course 10, coursework_requirements reads 'Ingen' (the Arbeidskrav block) followed by the real attendance requirements, and in courses 7-9 it contains a bare '...'. This is misleading noise inside otherwise correct coursework_requirements, teaching_methods and reading_list text (CR: courses 7-10, 15, 18, 19; TM: 15, 16, 19, 20; about 45% of USN CR and TM rows).",
-      "root_cause_hypothesis": "extract_sections_text() deliberately keeps 'a line that maps to the open section' as content, which exists for Kunnskap/Ferdigheter inside learning outcomes. That rule also catches top-level headings that repeat a section. 'Praksis' has no pattern, so it falls through as content. flush() checks only for empty text, not for placeholder-only chunks such as 'Ingen' or '...'.",
-      "suggested_fix": "In extract_sections_text(), keep a same-section heading line as content only when it is a learning-outcome sub-heading (kunnskap/kunnskaper/ferdigheter/generell kompetanse/knowledge/skills). For any other same-section heading, call flush() and start a new chunk without the heading line. Add 'praksis' as an exact teaching_methods row in R/section_heading_map.R. In flush(), drop a chunk when .is_placeholder_text(txt) is TRUE, so 'Ingen' and '...' do not join the merged row.",
-      "confidence": "high"
-    },
-    {
-      "target": "learning_outcomes",
-      "error_type": "other",
       "severity": "low",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "usn_MG1KR7-1_2021_autumn_2",
-        "usn_MG2SA8-1_2021_autumn_2",
-        "usn_LR-FYS3010-1_2020_autumn_2"
-      ],
-      "evidence": "ER Kandidaten har avansert kunnskap innenfor kroppsøving og fagets didaktikk",
-      "description": "The first learning-outcome group loses its label 'KUNNSKAP'/'Kunnskap', while 'FERDIGHETER' and 'GENERELL KOMPETANSE' keep theirs. The knowledge outcomes are therefore unlabelled and the grouping is inconsistent (20/20 in the packet; about 880 USN rows keep the Ferdigheter label but have no Kunnskap label). In plans where the source splits 'KUNNSKAP' and 'ER' onto separate lines, a stray 'ER' line is left at the top of the section (59 USN rows). No outcome statements are lost.",
-      "root_cause_hypothesis": ".clean_section_text() (R/extract_sections.R) removes a first line that exactly matches a heading pattern of the same section. 'kunnskap' is a learning_outcomes pattern in section_heading_patterns, so the sub-heading that opens the body is treated as an echo of 'Læringsutbytte' and removed.",
-      "suggested_fix": "In .clean_section_text(), exclude learning-outcome sub-heading patterns (kunnskap, kunnskaper, kunnskapar, ferdigheter, ferdigheiter, generell kompetanse, knowledge, skills, general competence) from the leading-echo removal, so only true echoes such as 'Læringsutbytte' are removed.",
-      "confidence": "high"
+      "prevalence": "common",
+      "example_course_ids": ["usn_MG2PE3-1_2021_spring_2", "usn_MG2NA2-1_2022_autumn_1", "usn_MG1EN4-1_2023_spring_1"],
+      "evidence": "Obligatorisk aktivitet og krav til tilstedeværelse",
+      "description": "The page has two requirement headings (Arbeidskrav and Obligatorisk aktivitet og krav til tilstedeværelse). Both correctly end up in coursework_requirements, but the second heading line, and sometimes a nested label ('Obligatorisk aktivitet', 'Krav til tilstedeværelse'), is left inside the text as a stray line instead of being a boundary.",
+      "root_cause_hypothesis": "All USN pages are read via the text fallback ('no headings read from the page'), so the second heading of the same section is not recognised as a heading and is kept as body text.",
+      "suggested_fix": "Configure the USN section_* fields so headings are read from the page, or have the fallback drop a line that exactly matches a heading already mapped to the current section.",
+      "confidence": "medium"
     },
     {
-      "target": "assessment",
-      "error_type": "formatting_noise",
-      "severity": "medium",
+      "target": "coursework_requirements",
+      "error_type": "wrong_content",
+      "severity": "low",
       "prevalence": "occasional",
-      "example_course_ids": [
-        "usn_MG1KR7-1_2021_autumn_2",
-        "usn_MG2EN8-1_2023_spring_1"
-      ],
-      "evidence": "Intern og ekstern sensur Instituttleder IFIK … Intern og ekstern sensur Godkjent 22.11.22.",
-      "description": "Approval stamps and signatures that come after the Vurderingsformer body are appended to assessment when no 'Hjelpemidler til eksamen' (.drop) heading comes between them. The codebook says to strip 'Godkjent dd.mm.yyyy' stamps. Across USN, about 110 of 1235 assessment rows contain lines such as 'Godkjent av dekan', 'Emneplan godkjent 23.03.20.' or 'Godkjent 22.03.24'. Unmapped headings 'Annet' (26 rows) and 'Endringsbeskrivelse' (13 rows), with their text, also leak in the same way. In 14 rows the leaked line is a signature that names the dean ('… [navn], dekan'), so the anonymizer's miss reaches assessment as personal data. In the packet, the same lines are dropped only when Hjelpemidler happens to come first (courses 9, 17, 18, 19, 20).",
-      "root_cause_hypothesis": "text_split appends every non-heading line, and every unmapped heading-shaped line, to the open section. Stamp lines contain digits or are unmapped ('Instituttleder IFIK', 'Annet', 'Endringsbeskrivelse'), so they never close assessment. .section_noise has no usn entry.",
-      "suggested_fix": "Add a usn entry to .section_noise in R/extract_sections.R with whole-line patterns '(?m)^(?:Emneplan(?:en)? )?[Gg]odkjent(?: emneplan)?(?: av dekan(?:en)?)?[ .]*(?:\\d{1,2}\\.\\d{1,2}\\.\\d{2,4}|mars \\d{4})?\\.?\\s*$', '(?m)^(?:\\d{2}\\.\\d{2}\\.\\d{2,4} )?[^\\n]{0,60}, dekan\\s*$' and '(?m)^Instituttleder \\S+\\s*$'. Do not strip lines like 'Godkjent/ikke godkjent'. Add 'endringsbeskrivelse' and 'annet' as exact '.drop' rows in R/section_heading_map.R.",
+      "example_course_ids": ["usn_MG2RL3-1_2019_spring_2", "usn_MG1RL2-1_2019_autumn_2"],
+      "evidence": "Utgifter i forbindelse med ev. ekskursjoner betales av den enkelte student.",
+      "description": "The 'Utgifter i emnet' (course expenses) heading is unmapped, so its text is appended to coursework_requirements. Expenses are admin information, not an arbeidskrav.",
+      "root_cause_hypothesis": "No pattern for 'Utgifter i emnet' in R/section_heading_map.R, so text continues the previous section.",
+      "suggested_fix": "Map '^Utgifter i emnet' to .drop in R/section_heading_map.R.",
       "confidence": "high"
     },
     {
-      "target": "reading_list",
-      "error_type": "empty_placeholder",
+      "target": "teaching_methods",
+      "error_type": "merged_sections",
       "severity": "low",
       "prevalence": "common",
-      "example_course_ids": [
-        "usn_MG1NA7-1_2021_autumn_2",
-        "usn_MG2EN8-1_2022_spring_2",
-        "usn_MGNAM-1_2025_autumn_2"
-      ],
-      "evidence": "Pensum-/litteraturliste er ikke publisert ennå.",
-      "description": "When the reading list is only an absence note ('the reading list is not published yet'), it is still emitted as a reading_list row. The pipeline already drops similar absence notes ('Ingen pensumliste tilgjengelig', #210), so this one gets past the placeholder filter. It appears in all 14 master-thesis suspects (0/6 random controls) and in 296 of 1238 USN reading_list rows. This explains the reading_list boilerplate flag; the boilerplate flags on the other sections are false alarms caused by real template text in the thesis plans.",
-      "root_cause_hypothesis": ".placeholder_phrases in R/extract_sections.R has no pattern for 'litteraturliste er ikke publisert'.",
-      "suggested_fix": "Add '(?:pensum-?/?)?(?:litteratur|pensum)liste(?:n)? er ikke publisert(?: ennå)?' to .placeholder_phrases.",
-      "confidence": "high"
-    },
-    {
-      "target": "reading_list",
-      "error_type": "formatting_noise",
-      "severity": "low",
-      "prevalence": "common",
-      "example_course_ids": [
-        "usn_MG2RL3-1_2024_autumn_1",
-        "usn_MG2NA4-1_2022_spring_1",
-        "usn_LR-FYS3010-1_2020_autumn_2"
-      ],
-      "evidence": "Click to view interactive reading list in LegantoObligatorisk litteratur Book ChapterIslam og sekularisme",
-      "description": "USN reading lists come from an embedded Leganto widget and carry its interface text into reading_list. This includes the link text 'Click to view interactive reading list in Leganto' fused to the next list heading, item-type labels fused to titles ('BookMetode og oppgaveskriving', 'Book ChapterArven'), and the 'View online' / 'In compendium' lines. All 6 random controls are affected, and about 921 USN reading_list rows contain the Leganto link text. The references themselves are complete and correctly placed.",
-      "root_cause_hypothesis": "This comes from the fulltext step: the Shadow DOM text extraction for USN (read_usn_live_html) joins the Leganto widget's label spans with no separator. The sections step copies the text unchanged and has no noise filter for reading_list.",
-      "suggested_fix": "Preferred: fix this at the source, in the USN Shadow DOM text extraction or .anon_usn(), by inserting a separator between Leganto item-type labels and titles and removing the widget text. Alternatively, apply a reading_list noise filter in .clean_sections() that removes 'Click to view interactive reading list in Leganto' (keeping the fused list heading that follows) and whole lines matching '^(?:View online|In compendium)$'.",
+      "example_course_ids": ["usn_MG2RL3-1_2019_spring_2", "usn_MG2NA2-1_2022_autumn_1", "usn_LRPE320-1_2021_spring_2"],
+      "evidence": "Se egen emneplan for praksis for en nærmere beskrivelse.",
+      "description": "The 'Praksis' sub-section is merged into teaching_methods together with its heading line ('Praksis'). The content (practice placement description/reference) is arguably a learning activity, so the placement is acceptable, but the heading word remains as a stray line inside the text.",
+      "root_cause_hypothesis": "'Praksis' is not a recognised heading in the text fallback, so it is not cut and not removed.",
+      "suggested_fix": "Add 'Praksis' to the heading map as teaching_methods (strip the heading line), or treat it as a sub-heading of Læringsaktiviteter.",
       "confidence": "medium"
     }
   ]

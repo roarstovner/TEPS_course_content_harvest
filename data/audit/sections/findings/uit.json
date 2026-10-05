@@ -1,198 +1,130 @@
 {
-  "institution_short": "uit",
-  "n_courses_reviewed": 28,
-  "n_suspects_reviewed": 20,
-  "overall_assessment": "UiT extraction quality is severely degraded by a single structural failure: the heading-splitter treats 'Hva lærer du' (the sub-heading that introduces the learning outcomes section) as a continuation of 'Innhold', then fails to cut at 'Undervisnings- og eksamensspråk' / 'Undervisning' / 'Kvalitetssikring' / 'Eksamen', causing 'learning_outcomes' to absorb teaching-methods, quality-assurance boilerplate, and the assessment table. The 'assessment' section is consequently reduced to a single continuasjonseksamen sentence for virtually every modern-format course. The 'prerequisites' section consistently carries a sentence about exam sequencing that belongs in 'assessment'. Courses in the older, non-structured format (pre-~2020, heading 'Eksamen' rather than a tabular 'Vurderingsform') conflate 'coursework_requirements' and 'assessment' in a single block, which the extractor files entirely under 'assessment' without separating the two.",
+  "check": "sections",
+  "institution": "uit",
+  "model": "sonnet",
+  "n_courses_reviewed": 19,
+  "n_suspects_reviewed": 14,
+  "overall_assessment": "Modern-format UiT pages (Om emnet / Hva lærer du / Undervisning og pensum / Eksamen, ~2013 onwards) are split well, but arbeidskrav handling and prerequisites are weak. Legacy FS pages (2008-2012, headings Innhold / Læringsutbytte / Undervisningsform / Eksamensform / Pensum) go through the text fallback with only 'Andre år og semester' and 'Kontakt oss' read, so they are either not extracted at all or collapsed into badly merged sections (outcomes + teaching + assessment heading; assessment + reading list).",
   "findings": [
     {
-      "section": "learning_outcomes",
-      "error_type": "merged_sections",
+      "target": "all",
+      "error_type": "missing_section",
       "severity": "high",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "uit_LER-3901-1_2023_autumn_1",
-        "uit_LER-3903-1_2024_autumn_1",
-        "uit_LER-2152-1_2025_spring_1"
-      ],
-      "evidence": "Undervisnings- og eksamensspråk\nUndervisnings- og eksamensspråket er norsk.\nUndervisning\nSelvstendig arbeid med veiledning, i henhold til veiledningskontrakten.\nKvalitetssikring\nEmnet evalueres i henhold til instiuttets retningslinjer.\nEksamen\nVurderingsform:\tDato:\tKarakters",
-      "description": "The 'learning_outcomes' row swallows the entire tail of the document after the outcomes themselves: the language-of-instruction field ('Undervisnings- og eksamensspråket er…'), the teaching-methods paragraph under 'Undervisning', the quality-assurance note under 'Kvalitetssikring' / 'Kvalitetssikring av emnet', and the assessment table header under 'Eksamen'. This violates the codebook definition of learning_outcomes (knowledge/skills/competence statements only) and means that teaching_methods and the beginning of the assessment block are silently dropped from their own sections.",
-      "root_cause_hypothesis": "The heading splitter recognises 'Hva lærer du' as the start of learning_outcomes but has no closing boundary for it. It lacks patterns for 'Undervisnings- og eksamensspråk', 'Undervisning', 'Kvalitetssikring [av emnet]', and 'Eksamen' as section terminators for the learning_outcomes window. The content that follows the actual outcomes therefore cascades into the same row until the splitter hits 'Obligatoriske arbeidskrav' (the coursework_requirements trigger).",
-      "suggested_fix": "Add 'Undervisnings- og eksamensspråk', 'Undervisning', 'Kvalitetssikring', 'Kvalitetssikring av emnet', and 'Eksamen' as closing-boundary patterns that terminate the learning_outcomes extraction window. Equivalently, map these headings to their correct canonical sections: 'Undervisning' → teaching_methods, 'Eksamen' → assessment.",
+      "prevalence": "common",
+      "example_course_ids": ["uit_NOR-3930-1_2009_autumn_1", "uit_RUS-3950-1_2008_autumn_1", "uit_EXF-0723-1_2008_autumn_1"],
+      "evidence": "_(no sections extracted for this course)_",
+      "description": "Legacy-format plans with clear Innhold, Læringsutbytte/Mål, Undervisningsform, Eksamensform and Pensum blocks yield no sections at all (4 of 4 such suspects: also SAM-3940, a bare stub). Whole records are lost.",
+      "root_cause_hypothesis": "Legacy pages expose no h2 headings the reader recognises (only 'Andre år og semester' and 'Kontakt oss'), and the text fallback does not split on the plain-text label lines (Innhold, Mål, Læringsutbytte, Undervisningsform, Eksamensform, Pensum). Likely the section_* config for uit targets only the new layout.",
+      "suggested_fix": "Add a legacy line-label splitter for uit (text fallback keyed on line-start labels Innhold, Læringsutbytte, Mål, Undervisningsform, Eksamensform, Vurderingsordning, Arbeidskrav, Pensum) and add the missing labels to R/section_heading_map.R (Mål -> learning_outcomes, Undervisningsform -> teaching_methods, Eksamensform -> assessment, Emnetype/Dato for eksamen -> .drop).",
       "confidence": "high"
     },
     {
-      "section": "assessment",
-      "error_type": "wrong_content",
-      "severity": "high",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "uit_LER-3901-1_2023_autumn_1",
-        "uit_LER-3901-1_2024_autumn_1",
-        "uit_LER-3906-1_2024_autumn_1"
-      ],
-      "evidence": "Det tilbys ikke kontinuasjonseksamen i emnet.",
-      "description": "In almost all modern-format courses (courses 1–20), the extracted 'assessment' row contains only the continuasjonseksamen sentence (\"Det tilbys ikke / Det arrangeres ikke kontinuasjonseksamen\"), which is pure administrative logistics boilerplate. The actual assessment content — the vurderingsform table row (e.g. 'Oppgave A–E, stryk F') — is buried at the tail of the 'learning_outcomes' blob. The codebook requires assessment to describe the graded evaluation design, not the continuation-exam rule.",
-      "root_cause_hypothesis": "The splitter maps 'Kontinuasjonseksamen' to assessment and stops there, but it has not already extracted the vurderingsform row (which sits under the structural 'Eksamen' heading that the splitter never assigned to assessment). The true assessment content is consumed by the overlong learning_outcomes row.",
-      "suggested_fix": "Assign the 'Eksamen' heading to assessment as its opening boundary (extracting everything from 'Vurderingsform:…' through 'Kontinuasjonseksamen'). Strip the 'Kontinuasjonseksamen' sub-sentence (pure logistics) during post-processing, or map it to a separate administrative field rather than assessment.",
-      "confidence": "high"
-    },
-    {
-      "section": "coursework_requirements",
+      "target": "cross_section",
       "error_type": "merged_sections",
       "severity": "high",
       "prevalence": "common",
-      "example_course_ids": [
-        "uit_LER-3901-1_2023_autumn_1",
-        "uit_LER-3901-1_2024_autumn_1",
-        "uit_LER-3913-1_2024_autumn_1"
-      ],
-      "evidence": "Mer info om vurderingsform oppgave\nMastergradsoppgaven kan skrives individuelt eller i par. Individuelle oppgaver skal ha et omfang på 24 000-28 000 ord",
-      "description": "In modern-format courses the 'coursework_requirements' row absorbs the full assessment design description that appears after 'Mer info om vurderingsform oppgave' (e.g. the word-count specification, submission format options). This text belongs in 'assessment' (it describes the graded output), not in coursework_requirements. The codebook explicitly distinguishes: pass/fail gate activities go in coursework_requirements; the graded submission design goes in assessment.",
-      "root_cause_hypothesis": "The splitter opens a coursework_requirements block at 'Obligatoriske arbeidskrav' and does not close it before the 'Mer info om vurderingsform' sub-section, so the assessment design prose immediately following is pulled into the same row.",
-      "suggested_fix": "Add 'Mer info om vurderingsform' as a secondary split point that closes coursework_requirements and opens assessment. Alternatively, strip everything from 'Mer info om vurderingsform' onward out of the coursework_requirements row and re-assign it to assessment.",
+      "example_course_ids": ["uit_SOA-3905-1_2011_spring_1", "uit_SOA-3905-1_2011_autumn_1", "uit_LRU-1451-1_2011_spring_2"],
+      "evidence": "Mastergradsoppgaven er et selvstendig arbeid med veiledning. Veiledningen inkluderer både sosialantropologi og praktisk pedagogikk.",
+      "description": "On legacy pages the labels Undervisnings- og eksamensspråk, Undervisningsform and Vurderingsordning (plus arbeidskrav bullets in LRU-1451) are not split, so learning_outcomes swallows the teaching method, language and the heading 'Vurderingsordning'. Likewise course_content ends with the stray heading 'Læringsutbytte' plus its intro sentence. The same happens in EXF-0723 2010 where outcomes include Undervisningsform text.",
+      "root_cause_hypothesis": "Only Innhold and Læringsutbytte are recognised in the text fallback; subsequent labels are unmapped and appended to the previous section. Sub-heading Kunnskaper/Ferdigheter handled, but Undervisningsform/Vurderingsordning not.",
+      "suggested_fix": "Map Undervisningsform -> teaching_methods, Undervisnings- og eksamensspråk -> .drop (or language), Vurderingsordning/Eksamensform -> assessment, and cut course_content before 'Læringsutbytte' at a line start in the legacy splitter.",
       "confidence": "high"
     },
     {
-      "section": "prerequisites",
+      "target": "assessment",
+      "error_type": "merged_sections",
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": ["uit_LRU-1400-1_2010_autumn_2", "uit_LRU-1400-1_2011_spring_1", "uit_LRU-1451-1_2011_spring_2"],
+      "evidence": "Pensumlista er todelt med en oversikt over teori- og didaktikkpensumet og en oversikt over primærtekstene",
+      "description": "The Pensum block (10 800 chars in both LRU-1400 plans, 3 300 in LRU-1451) is inside assessment, so reading_list is empty or wrong. In LRU-1400 reading_list instead holds the Innhold text and outcomes heading (wrong content), and teaching_methods is missing. The pre-pass flags 'long' and 'leak->.drop' are real.",
+      "root_cause_hypothesis": "Pensum heading not recognised on legacy pages; exam text runs to the end of the page. In LRU-1400 the splitter misaligns Innhold (filed as reading_list) because the first heading it sees is wrongly mapped.",
+      "suggested_fix": "Same legacy splitter as above: cut at line-start 'Pensum' and map to reading_list; verify that 'Innhold' maps to course_content (not reading_list) on legacy pages.",
+      "confidence": "high"
+    },
+    {
+      "target": "course_content",
       "error_type": "wrong_content",
-      "severity": "medium",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "uit_LER-3901-1_2023_autumn_1",
-        "uit_LER-3901-1_2024_autumn_1",
-        "uit_LER-3902-1_2024_autumn_1"
-      ],
-      "evidence": "Når eksamen i det obligatoriske emnet og valgemner er bestått, kan studenten framstille seg til endelig eksamen, i form av innlevering av mastergradsoppgaven.",
-      "description": "The 'prerequisites' row consistently contains a second sentence describing the sequential exam rule (\"Når eksamen … er bestått, kan studenten framstille seg til endelig eksamen\"). This is an exam-sequencing rule, not a subject-matter entry requirement. The codebook definition of prerequisites explicitly limits the field to required or recommended prior knowledge and prior courses; administrative gating rules belong in assessment or coursework_requirements.",
-      "root_cause_hypothesis": "The splitter extracts everything between the 'Forkunnskapskrav' heading and the next heading ('Innhold'). In master-thesis courses, UiT places both the actual prerequisite (study-plan reference) and the sequential-exam rule under the same 'Forkunnskapskrav' heading, and the splitter does not distinguish between them.",
-      "suggested_fix": "Post-process the prerequisites field to strip sentences matching the pattern 'Når eksamen i … er bestått, kan studenten framstille seg til …' (these are exam-access conditions, not subject prerequisites). Or split on this sentence boundary and route it to coursework_requirements.",
-      "confidence": "high"
-    },
-    {
-      "section": "course_content",
-      "error_type": "formatting_noise",
-      "severity": "low",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "uit_LER-3901-1_2023_autumn_1",
-        "uit_LER-3903-1_2024_autumn_1",
-        "uit_LER-1304-1_2022_autumn_1"
-      ],
-      "evidence": "Mastergradsoppgaven i norskdidaktikk er et selvstendig arbeid der studenten arbeider utfra et didaktisk forskningsspørsmål i norskfaget som er relevant for grunnskolen og for programmet studenten er tatt opp på.\nHva lærer du",
-      "description": "Every course_content row ends with the dangling navigation heading 'Hva lærer du' (the UI button/heading that introduces the learning_outcomes section on UiT's course page). This heading text is not part of the course description; it is a structural label. According to the codebook, course_content should be prose about subject matter only.",
-      "root_cause_hypothesis": "The CSS selector captures the 'Hva lærer du' heading node as part of the 'Innhold' block because it is rendered as a sibling element without a clear DOM boundary before the outcomes list. The splitter includes it in course_content instead of treating it as the opening marker of learning_outcomes.",
-      "suggested_fix": "Strip the literal string 'Hva lærer du' (and its variants) from the tail of the course_content field during post-processing (post_fn), or use it as the closing boundary of course_content and the opening marker of learning_outcomes in the heading map.",
-      "confidence": "high"
-    },
-    {
-      "section": "learning_outcomes",
-      "error_type": "truncated",
-      "severity": "medium",
+      "severity": "high",
       "prevalence": "occasional",
-      "example_course_ids": [
-        "uit_LER-3903-1_2024_autumn_1",
-        "uit_LER-3913-1_2024_autumn_1",
-        "uit_LER-3903-1_2025_spring_1"
-      ],
-      "evidence": "Vurderingsform:\tDato:\tKara\n…[truncated 62 chars]",
-      "description": "In several courses the learning_outcomes row is hard-truncated mid-word (e.g. 'Kara…' instead of 'Karakterskala:'). This means the extraction hit a character or byte limit inside what is already an overlong, merged-section blob. Even if the merge problem is fixed, a separate truncation issue may exist.",
-      "root_cause_hypothesis": "A field-length cap (possibly in the database schema or the extractor's text-slicing logic) is applied after the heading-splitter runs. Because learning_outcomes incorrectly absorbs a large additional block, it hits the cap earlier than it would with correct boundaries.",
-      "suggested_fix": "Investigate and raise (or remove) any field-length cap applied to sections_raw text. Once the merge is fixed the correct learning_outcomes content is short enough that truncation will likely disappear on its own.",
+      "example_course_ids": ["uit_LRU-1400-1_2010_autumn_2", "uit_LRU-1400-1_2011_spring_1"],
+      "evidence": "I dette området arbeides det med litterær teori med lesing og tolking av skjønnlitteratur og sakprosa",
+      "description": "The course content (the three subject areas) is filed under reading_list, followed by the heading 'Læringsutbytte' and a fragment of outcomes, so reading_list is polluted and course_content is absent.",
+      "root_cause_hypothesis": "Text-fallback section boundary is off by one: content following 'Innhold' is attributed to a later heading.",
+      "suggested_fix": "Fix the legacy splitter so text between Innhold and Læringsutbytte goes to course_content; add test with LRU-1400.",
       "confidence": "medium"
     },
     {
-      "section": "cross_section",
-      "error_type": "missing_section",
-      "severity": "high",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "uit_LER-3901-1_2023_autumn_1",
-        "uit_LER-3903-1_2024_autumn_1",
-        "uit_LER-3906-1_2024_autumn_1"
-      ],
-      "evidence": "Undervisning\nSelvstendig arbeid med veiledning, i henhold til veiledningskontrakten. Emnet avsluttes med en åpen masterkonferanse hvor masterstudentene deltar med å presentere sitt masterprosjekt.",
-      "description": "The 'teaching_methods' section is entirely absent from the extracted output for all modern-format courses (courses 1–20). In the ground truth, every such course has an 'Undervisning' paragraph describing how the course is conducted (supervision-based independent work, masterkonferanse presentation). This text is consumed by the overlong learning_outcomes blob and never reassigned. Codebook requires teaching_methods to capture how the course is taught.",
-      "root_cause_hypothesis": "The splitter has no pattern mapping the heading 'Undervisning' to teaching_methods. When the learning_outcomes block is fixed, an explicit mapping of 'Undervisning' → teaching_methods must be added simultaneously.",
-      "suggested_fix": "Add 'Undervisning' as a heading pattern mapped to teaching_methods in the heading map. This is a prerequisite change alongside fixing the learning_outcomes boundary.",
+      "target": "assessment",
+      "error_type": "formatting_noise",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": ["uit_SOA-3905-1_2011_spring_1", "uit_LRU-1400-1_2010_autumn_2", "uit_LRU-1451-1_2011_spring_2"],
+      "evidence": "</div> <div class=\"fsemnetext\"> Avhandling</div> <div class=\"fsemnetext\">",
+      "description": "Legacy assessment text contains the 'Dato for eksamen' block (empty exam labels, the 'Eksamensdato er foreløpig...' notice), raw HTML div fragments and trailing 'Undervisning ... Første gang' logistics. This is exam logistics/markup, not assessment.",
+      "root_cause_hypothesis": "Unclosed HTML in the source pages leaks into extracted text; no clean-up of this FS boilerplate in .clean_sections().",
+      "suggested_fix": "In .clean_sections() (or as an anonymizer-independent text cleanup for uit) strip lines matching '^</?div' / 'fsemnetext', the 'Dato for eksamen' block through 'primo november for høstsemesteret.' and the trailing 'Undervisning\\s+...' line.",
       "confidence": "high"
     },
     {
-      "section": "coursework_requirements",
+      "target": "prerequisites",
+      "error_type": "missing_section",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": ["uit_LER-1510-1_2025_spring_1", "uit_LER-1152F-1_2018_autumn_2", "uit_LRU-3640-1_2018_autumn_1"],
+      "evidence": "Jf. opptakskrav og progresjonskrav i studieplanen for grunnskolelærerutdanning for 1.-7. trinn og 5.-10. trinn.",
+      "description": "A 'Forkunnskapskrav' / 'Forkunnskapskrav, anbefalte forkunnskaper' sub-block inside 'Om emnet' stays in course_content; prerequisites is not extracted (flag leak->prerequisites is real). In LER-1710 the 'Opptakskrav' heading is mapped to .drop, so the real requirement (samisk 2 på videregående) is lost. Note much of this text is admission cross-reference, but recommended prerequisites ('Det anbefales gode forkunnskaper i engelsk') are real.",
+      "root_cause_hypothesis": "'Forkunnskapskrav' appears as a plain paragraph line inside the Om emnet block (not an h2), so heading detection misses it; 'Opptakskrav' is deliberately mapped to .drop in R/section_heading_map.R.",
+      "suggested_fix": "Add line-start split for 'Forkunnskapskrav(, anbefalte forkunnskaper)?' inside course_content and map to prerequisites; map 'Opptakskrav' to prerequisites rather than .drop when it holds concrete requirements.",
+      "confidence": "medium"
+    },
+    {
+      "target": "coursework_requirements",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": ["uit_LRU-1502-1_2012_autumn_2", "uit_LRU-3640-1_2018_autumn_1", "uit_LER-1152F-1_2018_autumn_2"],
+      "evidence": "Følgende arbeidskrav må være godkjent før man kan framstille seg for eksamen:",
+      "description": "On the 2012-2019 layout the Arbeidskrav list sits under the 'Eksamen' heading and ends up in assessment; coursework_requirements is not emitted at all (LRU-1502 x2, LRU-3640, LER-1152F, LRU-3904). Codebook: arbeidskrav are pass/approve gates and belong in coursework_requirements.",
+      "root_cause_hypothesis": "No sub-heading separates arbeidskrav from Eksamen on these pages (only the 2020s layout has 'Mer info om arbeidskrav'); sectionize() has no line-start rule for 'Arbeidskrav'/'Følgende arbeidskrav ...'.",
+      "suggested_fix": "In the assessment block split off paragraphs starting 'Følgende arbeidskrav må være ...' (up to 'Eksamen består av'/'Eksamen og vurdering') into coursework_requirements; also treat a standalone line 'Arbeidskrav' as a heading.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "duplicate",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": ["uit_LER-1510-1_2025_spring_1", "uit_LER-1710-1_2022_autumn_1", "uit_RUS-2980-1_2023_spring_1"],
+      "evidence": "Alt du trenger å vite om før, under og etter eksamen, oppmelding, fravær klage og vitnemål: UiTs samleside om eksamen",
+      "description": "In the 2020s layout the 'Eksamener / Obligatoriske arbeidskrav' table (with Karakterregel and 'Godkjent – ikke godkjent' rows) is placed in assessment, then the details of the same arbeidskrav are repeated in coursework_requirements: coursework appears in both sections, and assessment carries tabular noise and the UiT admin link. Pre-pass flag 'leak->teaching_methods' on LER-1510 is a false alarm (the fremlegg text is correct assessment).",
+      "root_cause_hypothesis": "The 'Eksamen' block includes the 'Obligatoriske arbeidskrav' sub-table before 'Mer info om ...' sub-headings; no cut at the line 'Obligatoriske arbeidskrav'.",
+      "suggested_fix": "Cut the Eksamen block at the line 'Obligatoriske arbeidskrav' (route that table to coursework_requirements or drop it as duplicate of 'Mer info om arbeidskrav') and strip the 'Alt du trenger å vite ... samleside om eksamen' line.",
+      "confidence": "high"
+    },
+    {
+      "target": "reading_list",
+      "error_type": "boilerplate_only",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": ["uit_LER-1152F-1_2018_autumn_2", "uit_LER-1510-1_2025_spring_1", "uit_PFF-3024-1_2025_spring_1"],
+      "evidence": "For emner som starter om høsten, vil pensumliste foreligge 15. juni. For emner som starter om våren, vil pensumliste foreligge 15. desember.",
+      "description": "reading_list holds only generic boilerplate or a pointer ('Du kan se og få tilgang til deler av pensum via Leganto', 'Pensum er på omlag 1000 sider...') with no actual titles. The pre-pass 'boilerplate' flag is real but the content is genuinely absent from the source; the problem is that these rows look like reading lists.",
+      "root_cause_hypothesis": "Source pages contain no reading list; the extractor emits the pointer text as a row.",
+      "suggested_fix": "Add the 'pensumliste foreligge 15. juni/desember' and 'via Leganto' / 'Pensumliste for X' sentences to the boilerplate-strip list in .clean_sections() so such rows become empty and are not emitted.",
+      "confidence": "medium"
+    },
+    {
+      "target": "teaching_methods",
       "error_type": "formatting_noise",
       "severity": "low",
-      "prevalence": "widespread",
-      "example_course_ids": [
-        "uit_LER-3901-1_2023_autumn_1",
-        "uit_LER-3902-1_2024_autumn_1",
-        "uit_LER-1304-1_2022_autumn_1"
-      ],
-      "evidence": "UiTs samleside om eksamen\nMer info om arbeidskrav",
-      "description": "All modern-format coursework_requirements rows contain two UI navigation strings: 'UiTs samleside om eksamen' and 'Mer info om arbeidskrav'. These are clickable link labels from UiT's web page (not content from the course plan) and constitute formatting noise. The codebook specifies that generic administrative boilerplate should be stripped.",
-      "root_cause_hypothesis": "The CSS selector captures the rendered link text inside the arbeidskrav block. The extractor does not strip <a> link labels or known UiT navigation strings.",
-      "suggested_fix": "Add a post_fn (or pre_fn cleaning step) that strips the literal strings 'UiTs samleside om eksamen', 'Mer info om arbeidskrav', and 'Mer info om vurderingsform [type]' from the coursework_requirements and assessment fields.",
-      "confidence": "high"
-    },
-    {
-      "section": "assessment",
-      "error_type": "merged_sections",
-      "severity": "high",
-      "prevalence": "occasional",
-      "example_course_ids": [
-        "uit_LRU-2642-1_2014_spring_1",
-        "uit_PFF-3102-1_2014_autumn_2",
-        "uit_LRU-3000-1_2018_autumn_1"
-      ],
-      "evidence": "Følgende arbeidskrav må være godkjent før man kan framstille seg for eksamen:\n 70 % aktiv deltagelse på undervisning\n...\nEksamen består av:\n en individuell muntlig eksamen (30 minutter).",
-      "description": "In older-format courses (pre-~2020, where 'Eksamen' is a single prose block rather than a structured table), the extractor files the entire 'Eksamen' section under 'assessment' without separating the arbeidskrav (coursework_requirements) listed at the top of the block from the actual graded exam design. The codebook explicitly requires these to be split: the arbeidskrav go in coursework_requirements, the graded exam in assessment. In these older courses no separate 'coursework_requirements' row is emitted.",
-      "root_cause_hypothesis": "The older page structure does not use the 'Obligatoriske arbeidskrav:' sub-heading that triggers the modern coursework_requirements split. The splitter therefore sees the entire 'Eksamen' block as assessment. This is a format-variant not handled by the heading map.",
-      "suggested_fix": "Detect the pattern 'Følgende arbeidskrav må være godkjent før man kan fremstille seg for eksamen:' (the older phrasing) as a secondary trigger for coursework_requirements even when it appears within a block already mapped to assessment. Split at this phrase: content above it remains assessment (if any), content from this phrase to 'Eksamen består av:' goes to coursework_requirements, content from 'Eksamen består av:' onward goes back to assessment.",
-      "confidence": "high"
-    },
-    {
-      "section": "course_content",
-      "error_type": "merged_sections",
-      "severity": "high",
-      "prevalence": "occasional",
-      "example_course_ids": [
-        "uit_LER-1353-1_2023_spring_1",
-        "uit_LRU-2642-1_2014_spring_1",
-        "uit_LRU-3000-1_2018_autumn_1"
-      ],
-      "evidence": "kunnskap om fagdidaktikk i kroppsøving gjennom problembasert læring.\nFerdigheter\nStudenten kan:\nplanlegge, tilrettelegge…\nKompetanse\nStudenten skal:\n",
-      "description": "In older-format courses (before the modern tabular layout) the 'course_content' row absorbs all of the learning outcomes (Kunnskaper, Ferdigheter, Kompetanse blocks) because the splitter recognises 'Hva lærer du' as part of the content section rather than a section boundary, or fails to detect the absence of the 'Hva lærer du' marker when outcomes run directly after the content paragraph. This leaves the separate 'learning_outcomes' row with only a stub or nothing. Examples: courses 14 (LER-1353), 22 (LRU-2642), 27 (LRU-3000).",
-      "root_cause_hypothesis": "In the older format, learning outcomes appear directly under 'Hva lærer du' without a clear HTML boundary separating the content and outcomes containers. The 'Hva lærer du' heading is included in the content block extraction rather than triggering a new section. Additionally, the 'Etter bestått emne skal studentene ha følgende læringsresultat:' phrasing (older) may not be in the heading map, only 'Etter bestått emne har studentene følgende læringsutbytte:' (newer).",
-      "suggested_fix": "Map 'Hva lærer du' and 'Etter bestått emne skal studentene ha følgende læringsresultat' (older phrasing) as opening boundaries for learning_outcomes in addition to the newer 'læringsutbytte' phrasing. Use these as closing boundaries for course_content.",
-      "confidence": "high"
-    },
-    {
-      "section": "prerequisites",
-      "error_type": "wrong_content",
-      "severity": "low",
-      "prevalence": "occasional",
-      "example_course_ids": [
-        "uit_LER-2152-1_2025_spring_1"
-      ],
-      "evidence": "Studiepoengreduksjon\nDu vil få en reduksjon i antall studiepoeng (som oppgitt under), dersom du avlegger eksamen i dette emnet og har bestått følgende emne(r) fra før av:\nLER-2162 Engelsk 5-10 … 20 stp",
-      "description": "For LER-2152-1 the 'prerequisites' row captures the 'Studiepoengreduksjon' block (credit reduction notice when the student has passed an overlapping course). This is administrative information about credit transfer, not a subject-matter entry requirement. The codebook explicitly excludes administrative content from prerequisites.",
-      "root_cause_hypothesis": "The 'Studiepoengreduksjon' block appears between the 'Forkunnskapskrav' heading and the 'Innhold' heading on the page, so it falls inside the prerequisites extraction window.",
-      "suggested_fix": "Strip paragraphs matching 'Studiepoengreduksjon' (and the credit-reduction boilerplate that follows) in the prerequisites post_fn, or add 'Studiepoengreduksjon' as a closing boundary for the prerequisites window.",
-      "confidence": "high"
-    },
-    {
-      "section": "teaching_methods",
-      "error_type": "wrong_content",
-      "severity": "low",
-      "prevalence": "occasional",
-      "example_course_ids": [
-        "uit_LRU-3300-1_2016_autumn_1",
-        "uit_LRU-2642-1_2014_spring_1",
-        "uit_PFF-3102-1_2014_autumn_2"
-      ],
-      "evidence": "For nærmere informasjon om praksis, se egen praksisplan.\nEmnet evalueres muntlig eller skriftlig minimum en gang hvert tredje år.",
-      "description": "The teaching_methods row for older-format courses ends with two boilerplate sentences: a reference to the practice plan ('For nærmere informasjon om praksis, se egen praksisplan') and a quality-evaluation note ('Emnet evalueres muntlig eller skriftlig minimum en gang hvert tredje år'). These are administrative boilerplate that should be stripped per the codebook. The actual teaching-methods content (lectures, seminars, etc.) is correctly extracted.",
-      "root_cause_hypothesis": "These two sentences appear in the HTML after the teaching description under the same heading section, before the 'Eksamen' heading. The splitter captures them as part of teaching_methods without any post-processing filter for known boilerplate patterns.",
-      "suggested_fix": "Add patterns for 'For nærmere informasjon om praksis, se egen praksisplan' and 'Emnet evalueres muntlig eller skriftlig minimum en gang hvert tredje år' (and similar quality-assurance boilerplate) to the teaching_methods post_fn strip list.",
-      "confidence": "high"
+      "prevalence": "common",
+      "example_course_ids": ["uit_LRU-1502-1_2012_autumn_2", "uit_LER-1510-1_2025_spring_1"],
+      "evidence": "Emnet evalueres muntlig eller skriftlig minimum en gang hvert tredje år.",
+      "description": "teaching_methods includes course evaluation/quality assurance sentences, the practice cross-reference and the unmapped sub-section 'Undervisnings- og eksamensspråk' with its language statement. Minor admin noise (flag 'boilerplate' is real but low impact).",
+      "root_cause_hypothesis": "'Undervisnings- og eksamensspråk' (sub) and 'Kvalitetssikring' are unmapped and so appended to the previous section.",
+      "suggested_fix": "Map 'Undervisnings- og eksamensspråk' and 'Kvalitetssikring (av emnet)' to .drop and strip 'For nærmere informasjon om praksis, se egen praksisplan.' as boilerplate.",
+      "confidence": "medium"
     }
   ]
 }

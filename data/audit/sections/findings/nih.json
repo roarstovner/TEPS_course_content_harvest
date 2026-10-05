@@ -4,30 +4,18 @@
   "model": "sonnet",
   "n_courses_reviewed": 20,
   "n_suspects_reviewed": 14,
-  "overall_assessment": "Section splitting for NIH is accurate: all headings (Kort om emnet, Læringsutbytte, Læringsformer og aktiviteter, Arbeidskrav, Vurdering/eksamen) map cleanly, arbeidskrav land in coursework_requirements, and WISEflow/plagiarism notes are removed. The main weakness is the reading_list section, which is mostly a pointer or placeholder rather than an actual reading list, plus a Forkrav section that is sometimes not extracted.",
+  "overall_assessment": "Section extraction for NIH works very well: every heading (Kort om emnet, Læringsutbytte, Læringsformer og aktiviteter, Arbeidskrav, Vurdering/eksamen) maps to the right section, arbeidskrav stay out of assessment, plagiarism/WISEflow notices are removed and placeholder-only reading lists are correctly not emitted. All 'leak->' pre-pass flags are false alarms (words like 'arbeidskrav' or 'Emnets innhold' occurring inside the correct section). The only defect is a minor inconsistency in how 'Ingen ...' prerequisites are treated.",
   "findings": [
     {
-      "target": "reading_list",
-      "error_type": "boilerplate_only",
-      "severity": "medium",
-      "prevalence": "widespread",
-      "example_course_ids": ["nih_LKI236-1_2024_spring_2", "nih_LKI110-1_2025_autumn_1", "nih_LKI405-1_2025_spring_2"],
-      "evidence": "Ettersom vi er i en overgangsfase mellom to systemer viser vi til Studiehåndbok 2023-2024 for litteratur for emner studieåret 2023- 2024",
-      "description": "The reading_list row contains no literature: 2022-2023 plans carry a generic transition notice pointing to the study handbook archive, and 2024-2025 plans carry only 'Pensumlista for høsten 2025.' / 'Pensumliste for høsten 2024.'. These are pointers/placeholders emitted as real reading_list content (also the cause of the pre-pass 'long' flags, which are false alarms about length but correctly reflect repeated boilerplate). Downstream, reading_list is identical across many courses and carries no information.",
-      "root_cause_hypothesis": "The 'Kjernelitteratur' heading maps to reading_list and its whole body is kept without a content check in .clean_sections() in R/extract_sections.R.",
-      "suggested_fix": "In .clean_sections(), drop reading_list rows for nih matching '^Ettersom vi er i en overgangsfase', '^Pensumlist[ae] for (høsten|våren)' or '^Se emnearkivet' (or flag them as pointer-only) so the section is NA rather than boilerplate.",
-      "confidence": "high"
-    },
-    {
       "target": "prerequisites",
-      "error_type": "missing_section",
+      "error_type": "empty_placeholder",
       "severity": "low",
       "prevalence": "occasional",
-      "example_course_ids": ["nih_LKI110-1_2025_autumn_1", "nih_LKI111-1_2025_autumn_1"],
-      "evidence": "Forkrav\nIngen emner i programmet\nHvem kan ta dette emnet?\nProgramstudenter LUPE",
-      "description": "Newer plans have a 'Forkrav' heading, but for these courses no prerequisites row was extracted (only course_content, learning_outcomes, teaching_methods, coursework_requirements, assessment, reading_list), while for nih_LKI230-1_2025_autumn_1 the same heading is correctly captured. The 'Hvem kan ta dette emnet?' admission block is not captured anywhere (and appears dropped, which is fine).",
-      "root_cause_hypothesis": "Likely .clean_sections() removes a prerequisites section that is only 'Ingen emner i programmet' (treated as placeholder), while the version with an additional sentence survives; inconsistent handling.",
-      "suggested_fix": "Decide a consistent rule in .clean_sections(): either keep short 'Ingen ...' prerequisites rows for all, or drop all; verify the Forkrav heading pattern in R/section_heading_map.R is applied identically.",
+      "example_course_ids": ["nih_LKI130-1_2025_autumn_1", "nih_LKI110-1_2025_autumn_1", "nih_LKI120-1_2025_autumn_1"],
+      "evidence": "Forkrav\nIngen emner",
+      "description": "Inconsistent handling of 'no prerequisites' under the Forkrav heading. LKI130-1 emits a prerequisites row containing only the placeholder 'Ingen emner' (flagged empty), while LKI110-1 and LKI120-1 (2025), whose Forkrav text is 'Ingen emner i programmet', get no prerequisites row. The same non-content ends up as a row in one course and is dropped in the others.",
+      "root_cause_hypothesis": "The placeholder list used by .keep_section_row()/.placeholder_phrases in R/extract_sections.R matches 'Ingen' only in some exact forms, so 'Ingen emner i programmet' is dropped but 'Ingen emner' survives (or vice versa).",
+      "suggested_fix": "Make the placeholder rule in R/extract_sections.R (.placeholder_phrases) match '^Ingen( emner)?( i programmet)?\\.?$' so all variants are dropped as empty placeholders.",
       "confidence": "medium"
     }
   ]

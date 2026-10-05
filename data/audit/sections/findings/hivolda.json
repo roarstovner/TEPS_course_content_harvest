@@ -4,36 +4,22 @@
   "model": "sonnet",
   "n_courses_reviewed": 20,
   "n_suspects_reviewed": 14,
-  "overall_assessment": "Section extraction works well for hivolda: course_content, learning_outcomes (all three sub-groups kept), teaching_methods, coursework_requirements and prerequisites are correctly split and clean in all 20 courses, including the 6 random controls. The main defect is that assessment is only the raw Vurderingsform table dump (header row glued to content, trailing 'Ingen'). Most pre-pass flags are false alarms.",
+  "overall_assessment": "Section extraction works well for hivolda: course_content, learning_outcomes (all three sub-groups kept), teaching_methods, coursework_requirements and prerequisites are correctly cut and clean in all 20 courses, including the 6 random controls. The only recurring defect is that assessment is a flattened one-line table row (form, duration, grade scale glued together). All 'leak' flags and the 'boilerplate' flag are false alarms or symptoms of that.",
   "findings": [
     {
       "target": "assessment",
       "error_type": "formatting_noise",
-      "severity": "medium",
+      "severity": "low",
       "prevalence": "widespread",
       "example_course_ids": [
         "hivolda_MGL1-7MA2B-1_2022_spring_1",
         "hivolda_MGL5-10SA1B-1_2019_spring_1",
         "hivolda_MGL5-10SA2A-1_2023_autumn_3"
       ],
-      "evidence": "Vurderingsform Gruppering Varighet Karakterskala Andel Kommentar Hjelpemidler Omfang Munnleg eksamen Individuell 30 minutt A-F, der A er best og E er siste ståkarakter",
-      "description": "Assessment in every course is a flattened HTML table: the column-header row (Vurderingsform Gruppering Varighet Karakterskala Andel Kommentar Hjelpemidler Omfang) is concatenated with the data row on a single line with no cell separators, so fields like duration, grade scale, weight (e.g. '100') and aids ('Ingen') cannot be told apart. It is also exam-logistics content (duration, grade scale) rather than a description of the assessment. The pre-pass 'boilerplate' flag is a symptom: the identical header string plus identical exam row appear in >=25 courses. The content is correct and complete, but noisy.",
-      "root_cause_hypothesis": "The table is flattened by the text extraction step (R/extract_fulltext.R, hivolda config, no .add_table_cell_breaks pre_fn), so the section splitter receives the table as one line; the sections step maps it to assessment verbatim.",
-      "suggested_fix": "Enable cell/row breaks for hivolda tables (pre_fn = .add_table_cell_breaks in R/institution_config.R) and strip the fixed header string 'Vurderingsform Gruppering Varighet Karakterskala Andel Kommentar Hjelpemidler Omfang' in .clean_sections(); optionally drop the grade-scale phrase 'A-F, der A er best og E er siste ståkarakter'.",
-      "confidence": "high"
-    },
-    {
-      "target": "assessment",
-      "error_type": "wrong_content",
-      "severity": "low",
-      "prevalence": "rare",
-      "example_course_ids": [
-        "hivolda_MGL5-10EN2A-1_2020_autumn_1"
-      ],
-      "evidence": "ei portefølje med tre tekstar som til slutt skal leverast som eksamen:",
-      "description": "The EN2A plan lists portfolio composition and weighting (grammar 20 %, other two 40 % each) inside 'Vilkår for å framstille seg til eksamen', so the whole block, including the description of what is graded as the exam, is filed as coursework_requirements. Per the codebook, graded exam content belongs to assessment, while the approve/gate items belong to coursework_requirements. The assessment row then only holds the table.",
-      "root_cause_hypothesis": "The splitter cuts by heading only; the 'Vilkår for å framstille seg til eksamen' block is mapped wholesale to coursework_requirements, with no sentence-level separation.",
-      "suggested_fix": "Accept as a limitation, or add a post-rule that moves sentences about portfolio weighting/delivery as exam from coursework_requirements to assessment. Low priority.",
+      "evidence": "Munnleg eksamen Individuell 30 minutt A-F, der A er best og E er siste ståkarakter",
+      "description": "Assessment in every course is a flattened table row on one line with no cell separators: exam form, grouping, duration, grade scale, weight and aids run together (e.g. '... ståkarakter 100 Studenten skal ved registrering i Studentweb velje ...' in SA1B 2019, or a trailing 'Ingen' for aids in SA2A). Duration and grade scale are exam logistics. The content is complete and correctly placed; the identical 'Munnleg eksamen Individuell 30 minutt A-F ...' text repeated across the MA2B courses is what trips the pre-pass 'boilerplate' flag (a symptom, not boilerplate: it is the real exam form).",
+      "root_cause_hypothesis": "The Vurderingsform table is read as a single text line by the block reader for hivolda (R/blocks.R / section_* config in R/institution_config.R); the table header row is already dropped, but cells are not separated.",
+      "suggested_fix": "Emit table cells with a separator (e.g. ' | ') for hivolda's assessment table in R/blocks.R, and optionally strip the fixed grade-scale phrase 'A-F, der A er best og E er siste ståkarakter' and the 'Studentweb' registration sentence in .clean_sections().",
       "confidence": "medium"
     }
   ]

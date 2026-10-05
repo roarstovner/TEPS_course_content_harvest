@@ -4,19 +4,31 @@
   "model": "sonnet",
   "n_courses_reviewed": 13,
   "n_suspects_reviewed": 7,
-  "overall_assessment": "Section extraction works well for Steiner: all 13 plans have clean, correctly bounded learning_outcomes, course_content, coursework_requirements (Arbeidskrav kept out of assessment) and assessment, with sensor/aids/ny-utsatt-eksamen logistics correctly dropped. All pre-pass flags (leak->X, long) are false alarms caused by ordinary words like 'vurderingsmåter' or by genuinely long exam descriptions. The only recurring defect is PDF page numbers left as stray lines inside sections.",
+  "overall_assessment": "Section extraction works well for Steiner: learning outcomes (all three sub-groups), content, coursework requirements (Arbeidskrav) and assessment are cut correctly in all 13 courses, including the arbeidskrav-vs-assessment split. Only minor noise (page numbers, retained exam-logistics lines) and one course whose page text does not match its course id were found; all pre-pass flags are false alarms.",
   "findings": [
     {
-      "target": "cross_section",
+      "target": "assessment",
       "error_type": "formatting_noise",
       "severity": "low",
-      "prevalence": "common",
-      "example_course_ids": ["steiner_M-MAT1_1_2025_spring_1", "steiner_M-NOR1_1_2025_spring_1", "steiner_M-NAT1_1_2025_spring_1"],
+      "prevalence": "occasional",
+      "example_course_ids": ["steiner_M-MAT1_1_2025_spring_1", "steiner_M-MAT1_2_2025_spring_1"],
       "evidence": "Det benyttes karakteruttrykket Bestått – Ikke bestått.\n11",
-      "description": "Page numbers from the source PDFs (bare lines such as '9', '10', '11', '14') survive inside learning_outcomes, course_content, coursework_requirements and assessment, sometimes mid-list or mid-sentence, e.g. between two learning-outcome bullets. This is navigation/layout cruft polluting otherwise correct text.",
-      "root_cause_hypothesis": "Steiner course plans are PDF-derived; page footers are not stripped in .clean_sections() or in the anonymization/extraction step.",
-      "suggested_fix": "In .clean_sections() (R/extract_sections.R), or in a Steiner-specific cleanup, drop lines that consist only of 1-3 digits (regex ^\\s*\\d{1,3}\\s*$) before or after section splitting.",
+      "description": "The PDF page number (11, 15) at the end of the plan is left as the last line of assessment. Assessment also keeps some exam-logistics lines (aids, 'Ny/utsatt eksamen' re-sit text, Sensorordning) in some courses while dropping them in others, so cleanup is inconsistent.",
+      "root_cause_hypothesis": "Text-fallback sectionizer does not strip bare page-number lines and only partly strips exam-logistics sub-headings (Hjelpemidler, Sensorordning, Ny/utsatt eksamen) in .clean_sections().",
+      "suggested_fix": "In .clean_sections() (R/extract_sections.R) drop lines matching ^\\d{1,3}$ at the end of a section, and drop the Hjelpemidler/Sensorordning/Ny-utsatt eksamen sub-blocks consistently from assessment.",
       "confidence": "high"
+    },
+    {
+      "target": "all",
+      "error_type": "other",
+      "severity": "medium",
+      "prevalence": "rare",
+      "example_course_ids": ["steiner_M-PEL2.2_2025_spring_1"],
+      "evidence": "PEL1.5 Pedagogikk og elevkunnskap 1, emne 5. FoU-",
+      "description": "Course steiner_M-PEL2.2 (Pedagogikk og elevkunnskap 2, emne 2) carries a plan text that is headed Pedagogikk og elevkunnskap 1, emne 5 (PEL1.5, FoU-oppgave). The sections are extracted correctly from that text, but they probably belong to a different course than the id/title says (wrong source page or a wrong URL mapping).",
+      "root_cause_hypothesis": "URL builder/source_course_id for Steiner maps M-PEL2.2 to the PEL1.5 page, or the institution reuses one page for several codes.",
+      "suggested_fix": "Check the URL built for M-PEL2.2 in R/add_course_url.R and compare the emnekode in the page text with course_code; flag mismatches in the harvest checks.",
+      "confidence": "medium"
     }
   ]
 }
