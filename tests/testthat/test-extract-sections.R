@@ -26,7 +26,8 @@ test_that("a table of contents is not course content", {
 
 test_that("language metadata headings are not filed as assessment", {
   expect_true(is.na(match_heading_to_section("Language of instruction and examination")))
-  expect_true(is.na(match_heading_to_section("Eksamensspråk")))
+  expect_true(is.na(match_heading_to_section("Undervisnings- og eksamensspråk")))
+  expect_equal(match_heading_to_section("Eksamensspråk"), ".drop")  # logistics (#284)
 })
 
 # --- Placeholder rows (#210) ---
@@ -349,13 +350,15 @@ test_that("resit heading variants are dropped (#241)", {
   }
 })
 
-test_that("uio: exam language and grading scale stay in assessment, labelled", {
+test_that("uio: exam language is dropped, the grading scale stays in assessment", {
   html <- "<main><h2>Eksamen</h2><p>Skriftlig eksamen, 4 timer.</p>
     <h3>Eksamensspråk</h3><p>Nynorsk.</p>
-    <h3>Karakterskala</h3><p>Bestått/ikke bestått.</p></main>"
+    <h3>Karakterskala</h3><p>Bestått/ikke bestått.</p>
+    <p>Sensurordning:</p><p>To sensorer.</p><p>Sensurering:</p><p>Deleksamen 1 vektes 60 %.</p></main>"
   s <- sections_of(html, html_cfg("h3, h4, p"))
-  expect_equal(s[["assessment"]], paste0("Skriftlig eksamen, 4 timer.\n\nEksamensspråk\nNynorsk.",
-                                         "\n\nKarakterskala\nBestått/ikke bestått."))
+  expect_equal(s[["assessment"]], paste0("Skriftlig eksamen, 4 timer.",
+                                         "\n\nKarakterskala\nBestått/ikke bestått.",
+                                         "\n\nDeleksamen 1 vektes 60 %."))
 })
 
 test_that("notices are stripped from assessment but not from course content", {

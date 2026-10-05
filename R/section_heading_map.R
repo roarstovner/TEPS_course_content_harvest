@@ -66,8 +66,13 @@ section_heading_patterns <- tibble::tribble(
   "tillatte hjelpemidler",                 ".drop",                  TRUE,
   "tillatte hjelpemiddel",                 ".drop",                  TRUE,
   "sensorordning",                         ".drop",                  TRUE,
+  "sensurordning",                         ".drop",                  TRUE,   # uio (#284)
+  "eksamensspråk",                         ".drop",                  TRUE,   # uio, nla
+  "vurderingssemester",                    ".drop",                  TRUE,   # uib: exam timing
   # a table of contents ("innhold" would map it to course_content; hiof, uia)
   "innholdsfortegnelse",                   ".drop",                  TRUE,
+  "innhaldsliste",                         ".drop",                  TRUE,   # uia nynorsk
+  "innholdsliste",                         ".drop",                  TRUE,
   "table of contents",                     ".drop",                  TRUE,
 
   # --- assessment ---
@@ -84,6 +89,7 @@ section_heading_patterns <- tibble::tribble(
   "form of assessment",                    "assessment",             FALSE,
   "examination",                           "assessment",             FALSE,
   "assessment",                            "assessment",             TRUE,
+  "sensurering",                           "assessment",             TRUE,   # uio: weighting (#284)
 
   # --- prerequisites ---
   "krav til forkunnskaper",                "prerequisites",          FALSE,
@@ -92,6 +98,7 @@ section_heading_patterns <- tibble::tribble(
   "forkunnskaper",                         "prerequisites",          FALSE,
   "forkunnskap",                           "prerequisites",          FALSE,
   "forkrav",                               "prerequisites",          FALSE,
+  "progresjonskrav",                       "prerequisites",          FALSE,  # nla (#284)
   "required prerequisite knowledge",       "prerequisites",          FALSE,
   "recommended prerequisite knowledge",    "prerequisites",          FALSE,
   "formal prerequisite knowledge",         "prerequisites",          TRUE,
@@ -126,6 +133,9 @@ section_heading_patterns <- tibble::tribble(
   # usn approval stamp and change log (#244)
   "godkjent emneplan",                     ".drop",                  TRUE,
   "endringsbeskrivelse",                   ".drop",                  TRUE,
+  "utgifter i emnet",                      ".drop",                  TRUE,   # usn (#284)
+  "arbeidsmengd",                          ".drop",                  TRUE,   # uis workload boilerplate
+  "arbeidsmengde",                         ".drop",                  TRUE,
 
   # --- learning_outcomes ---
   "læringsutbytte",                        "learning_outcomes",      FALSE,
@@ -141,6 +151,8 @@ section_heading_patterns <- tibble::tribble(
   "kunnskap",                              "learning_outcomes",      FALSE,
   "ferdigheter",                           "learning_outcomes",      FALSE,
   "ferdigheiter",                          "learning_outcomes",      FALSE,
+  "ferdighetsmål",                         "learning_outcomes",      FALSE,  # inn (#284)
+  "ferdigheitsmål",                        "learning_outcomes",      FALSE,
   "learning outcomes",                     "learning_outcomes",      FALSE,
   "learning outcome",                      "learning_outcomes",      FALSE,
   "objectives of the course",              "learning_outcomes",      TRUE,
@@ -175,6 +187,8 @@ section_heading_patterns <- tibble::tribble(
   "faget i praksis",                       "teaching_methods",       FALSE,
   "praksis",                               "teaching_methods",       TRUE,
   "gjennomføring av praksis",              "teaching_methods",       TRUE,
+  "undervisningstider",                    "teaching_methods",       TRUE,   # nmbu (#284)
+  "læringsstøtte",                         "teaching_methods",       TRUE,
   "undervisning",                          "teaching_methods",       TRUE,
   "teaching",                              "teaching_methods",       TRUE,
   "teaching and working methods",          "teaching_methods",       FALSE,
@@ -242,17 +256,17 @@ heading_pattern <- function(heading, word_start = FALSE) {
   if (is.na(heading) || !nzchar(trimws(heading))) return(NA_integer_)
   heading_lower <- tolower(trimws(heading))
 
+  eq <- which(section_heading_patterns$pattern == heading_lower)
+  if (length(eq)) return(eq[1])
+
   # Denylist: language/expression metadata fields whose text collides with a
-  # real pattern (e.g. "eksamensspråk" contains "eksamen") but which are NOT
-  # the section (#198, nla json maps "Eksamensspråk" into assessment; inn's
-  # "Language of instruction and examination" would hit "examination"). As a
-  # sub-heading, NA keeps uio's "Eksamensspråk" block in assessment.
+  # real pattern (e.g. "Undervisnings- og eksamensspråk" contains "eksamen")
+  # but which are NOT the section (#198, nla json; inn's "Language of
+  # instruction and examination" would hit "examination"). A bare
+  # "Eksamensspråk" is the exact .drop row above (#284).
   if (grepl("eksamensspråk|vurderingsspråk|language of instruction", heading_lower)) {
     return(NA_integer_)
   }
-
-  eq <- which(section_heading_patterns$pattern == heading_lower)
-  if (length(eq)) return(eq[1])
 
   exact <- section_heading_patterns$exact %||% rep(FALSE, nrow(section_heading_patterns))
   for (i in seq_len(nrow(section_heading_patterns))) {
