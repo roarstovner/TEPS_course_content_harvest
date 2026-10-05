@@ -1,4 +1,4 @@
-# R/build_browser_data.R
+# app/course_browser/build_data.R
 # Builds the slim payload the course_browser app loads at startup.
 #
 # The app is plan-centric: one row per unique course plan, with offering
@@ -6,20 +6,20 @@
 # startup fast and keeps the payload small enough to ship to a browser later
 # (shinylive / GitHub Pages).
 #
-# Usage:
-#   Rscript R/build_browser_data.R
+# Rebuilt by targets::tar_make() (target browser_data_file). By hand, from
+# this directory:  Rscript build_data.R
 #
-# Inputs:  data/course_plans.RDS, data/course_offerings_full.RDS,
-#          data/sections_raw.RDS (optional)
-# Output:  data/browser_data.RDS
+# Inputs:  data/processed/course_plans.RDS, data/interim/course_offerings_full.RDS,
+#          data/processed/sections_raw.RDS (optional)
+# Output:  app/course_browser/data/browser_data.RDS (gitignored)
 
 library(dplyr, warn.conflicts = FALSE)
 
 message("Loading inputs...")
-plans <- readRDS("data/course_plans.RDS")
-offerings <- readRDS("data/course_offerings_full.RDS")
+plans <- readRDS("../../data/processed/course_plans.RDS")
+offerings <- readRDS("../../data/interim/course_offerings_full.RDS")
 
-sections_path <- "data/sections_raw.RDS"
+sections_path <- "../../data/processed/sections_raw.RDS"
 sections_raw <- if (file.exists(sections_path)) readRDS(sections_path) else NULL
 
 # ── Offering coverage per plan ───────────────────────────────────────────────
@@ -116,9 +116,10 @@ browser_data <- list(
   built_at = Sys.time()
 )
 
+dir.create("data", showWarnings = FALSE)
 saveRDS(browser_data, "data/browser_data.RDS", compress = "xz")
 
-message("\nSaved data/browser_data.RDS (",
+message("\nSaved app/course_browser/data/browser_data.RDS (",
         round(file.size("data/browser_data.RDS") / 1e6, 1), " MB)")
 message("  plans:     ", nrow(plans))
 message("  sections:  ", if (is.null(sections)) 0 else nrow(sections))

@@ -20,12 +20,13 @@
 #   removed     unusually large share of the text removed (over-removal)
 #   artifact    empty brackets left behind by removals
 #
-# Inputs:  data/html_{inst}.RDS + data/extracted_text.RDS (read_harvest())
+# Inputs:  data/raw/html_{inst}.RDS + data/interim/extracted_text.RDS (read_harvest())
 # Outputs: data/audit/anonymization/packets/{inst}.md, manifest.csv, sample.csv
 #
 # Run:  Rscript R/audit/prepare_anonymization.R [inst ...]
 
 source("R/audit/utils.R")
+source("R/utils.R")                 # harvested_institutions()
 source("R/anonymize.R")
 source("R/extract_fulltext.R")      # read_harvest()
 
@@ -102,12 +103,11 @@ removed_spans <- function(before, after) {
 }
 
 # ── Per institution ──────────────────────────────────────────────────────────
-files <- list.files("data", pattern = "^html_.*\\.RDS$", full.names = TRUE)
-institutions <- sort(str_match(basename(files), "^html_(.*)\\.RDS$")[, 2])
+institutions <- sort(harvested_institutions())
 institutions <- setdiff(institutions, "samas")   # no extracted text by design
 requested <- audit_args_institutions()
 if (length(requested) > 0) institutions <- intersect(institutions, requested)
-if (length(institutions) == 0) stop("No data/html_{inst}.RDS for: ",
+if (length(institutions) == 0) stop("No data/raw/html_{inst}.RDS for: ",
                                     paste(requested, collapse = ", "), call. = FALSE)
 manifest <- list()
 sample   <- list()

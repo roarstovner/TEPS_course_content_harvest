@@ -3,7 +3,7 @@ library(dplyr)
 library(tidyr)
 
 # Load courses
-courses <- readRDS('data/courses.RDS')
+courses <- readRDS('data/input/courses.RDS')
 
 # Filter for NIH
 nih_courses <- courses |>
@@ -38,7 +38,7 @@ cat('\nSemester distribution:\n')
 print(table(test_courses$semester))
 
 # Save test courses
-saveRDS(test_courses, 'data/test_courses.RDS')
+saveRDS(test_courses, 'data/input/test_courses.RDS')
 
 # Display test courses
 cat('\n\nSelected test courses:\n')

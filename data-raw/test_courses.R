@@ -1,5 +1,5 @@
 ## code to prepare `test_courses` dataset goes here
-courses <- readRDS("data/courses.RDS")
+courses <- readRDS("data/input/courses.RDS")
 
 source("R/institution_config.R", local = TRUE)
 institusjonskoder <- setNames(
@@ -16,5 +16,5 @@ test_courses <- courses |>
   dplyr::arrange(Institusjonsnavn, Årstall)
 
 
-saveRDS(test_courses, "data/test_courses.RDS")
+saveRDS(test_courses, "data/input/test_courses.RDS")
 

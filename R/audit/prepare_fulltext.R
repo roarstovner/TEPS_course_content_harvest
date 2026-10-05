@@ -21,12 +21,13 @@
 #   year       semester/academic-year labels in the text all far from Årstall
 #   uncaptured much non-chrome page text missing from extracted_text
 #
-# Inputs:  data/html_{inst}.RDS (harvest output) + data/extracted_text.RDS
+# Inputs:  data/raw/html_{inst}.RDS (harvest output) + data/interim/extracted_text.RDS
 # Outputs: data/audit/fulltext/packets/{inst}.md, manifest.csv, sample.csv
 #
 # Run:  Rscript R/audit/prepare_fulltext.R [inst ...]
 
 source("R/audit/utils.R")
+source("R/utils.R")                 # harvested_institutions()
 
 # ── Tunables ─────────────────────────────────────────────────────────────────
 SUSPECT_N     <- 20
@@ -110,11 +111,10 @@ year_far <- function(txt, year) {
 }
 
 # ── Per institution ──────────────────────────────────────────────────────────
-files <- list.files("data", pattern = "^html_.*\\.RDS$", full.names = TRUE)
-institutions <- sort(str_match(basename(files), "^html_(.*)\\.RDS$")[, 2])
+institutions <- sort(harvested_institutions())
 requested <- audit_args_institutions()
 if (length(requested) > 0) institutions <- intersect(institutions, requested)
-if (length(institutions) == 0) stop("No data/html_{inst}.RDS for: ",
+if (length(institutions) == 0) stop("No data/raw/html_{inst}.RDS for: ",
                                     paste(requested, collapse = ", "), call. = FALSE)
 manifest <- list()
 sample   <- list()

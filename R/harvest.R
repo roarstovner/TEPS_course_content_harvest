@@ -46,7 +46,7 @@ harvest_institution <- function(institution, courses, year = NULL,
 #' Harvest all institutions
 #'
 #' Loops through all configured institutions, harvests each, and saves
-#' the result to data/html_{inst}.RDS.
+#' the result to data/raw/html_{inst}.RDS.
 #'
 #' @param courses Data frame from courses.RDS. If NULL, reads from disk.
 #' @param year Optional integer — if given, only harvest this year
@@ -55,7 +55,7 @@ harvest_institution <- function(institution, courses, year = NULL,
 #'   If NULL, harvests all configured institutions.
 harvest_all <- function(courses = NULL, year = NULL, refetch = FALSE,
                         institutions = NULL) {
-  if (is.null(courses)) courses <- readRDS("data/courses.RDS")
+  if (is.null(courses)) courses <- readRDS("data/input/courses.RDS")
   if (!is.data.frame(courses)) {
     stop("`courses` must be a data frame, not ", class(courses)[1], ". ",
          "Did you mean harvest_all(institutions = ...)?", call. = FALSE)
@@ -68,7 +68,7 @@ harvest_all <- function(courses = NULL, year = NULL, refetch = FALSE,
     message("\n=== ", inst, " ===")
     tryCatch({
       result <- harvest_institution(inst, courses, year, refetch)
-      saveRDS(result, file.path("data", paste0("html_", inst, ".RDS")))
+      saveRDS(result, harvest_file(inst))
       log_summary(inst, result)
     }, error = function(e) {
       message("ERROR harvesting ", inst, ": ", conditionMessage(e))

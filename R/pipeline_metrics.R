@@ -94,8 +94,8 @@ compare_metrics <- function(old, new, tol_n = 0.05, min_n = 10,
 #' @param update If TRUE, write the current metrics as the new snapshot.
 #' @return The changes beyond tolerance (invisibly; empty after an update).
 check_pipeline_metrics <- function(update = FALSE, snapshot = METRICS_SNAPSHOT,
-                                   offerings = "data/course_offerings_full.RDS",
-                                   sections = "data/sections_raw.RDS") {
+                                   offerings = "data/interim/course_offerings_full.RDS",
+                                   sections = "data/processed/sections_raw.RDS") {
   current <- pipeline_metrics(
     readRDS(offerings),
     if (file.exists(sections)) readRDS(sections)

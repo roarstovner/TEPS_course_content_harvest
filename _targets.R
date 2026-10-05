@@ -1,6 +1,6 @@
 # _targets.R
 # The post-harvest pipeline (#263): targets::tar_make() rebuilds whatever is
-# outdated, from data/html_{inst}.RDS to the data files, the browsers' data and
+# outdated, from data/raw/html_{inst}.RDS to the data files, the browsers' data and
 # the data notes. See README "Rebuilding Derived Data".
 
 library(targets)
@@ -23,7 +23,7 @@ tar_source(c(
 ))
 
 # Read when the pipeline is loaded; {targets} tracks this global, so a new
-# data/html_{inst}.RDS adds a branch without invalidating the others.
+# data/raw/html_{inst}.RDS adds a branch without invalidating the others.
 institutions <- harvested_institutions()
 
 list(
@@ -45,17 +45,21 @@ list(
 
   # Data files (README "Data Files: Published and Internal")
   tar_target(extracted_text_file,
-             write_rds_file(fulltext, "data/extracted_text.RDS"), format = "file"),
+             write_rds_file(fulltext, "data/interim/extracted_text.RDS"), format = "file"),
   tar_target(offerings, combine_offerings(plans)),
   tar_target(offerings_full_file,
-             write_rds_file(offerings, "data/course_offerings_full.RDS"), format = "file"),
+             write_rds_file(offerings, "data/interim/course_offerings_full.RDS"), format = "file"),
   tar_target(offerings_file,
-             write_rds_file(slim_offerings(offerings), "data/course_offerings.RDS"),
+             write_rds_file(slim_offerings(offerings), "data/processed/course_offerings.RDS"),
              format = "file"),
   tar_target(course_plans_file,
-             write_rds_file(combine_plans(plans), "data/course_plans.RDS"), format = "file"),
+             write_rds_file(combine_plans(plans), "data/processed/course_plans.RDS"), format = "file"),
   tar_target(sections_file,
-             write_rds_file(sections, "data/sections_raw.RDS"), format = "file"),
+             write_rds_file(sections, "data/processed/sections_raw.RDS"), format = "file"),
+
+  # Personal data left in the shareable files (#271)
+  tar_target(privacy_check,
+             check_personal_data(c(offerings_file, course_plans_file, sections_file))),
 
   # Regression check against tests/snapshots/pipeline_metrics.csv (#255)
   tar_target(metrics, pipeline_metrics(offerings, sections)),
@@ -63,10 +67,11 @@ list(
   tar_target(metrics_check, metrics_vs_snapshot(snapshot_file, metrics)),
 
   # Browser data and data notes
-  tar_target(browser_script, "R/build_browser_data.R", format = "file"),
+  tar_target(browser_script, "app/course_browser/build_data.R", format = "file"),
   tar_target(browser_data_file,
-             run_r_script(browser_script, "data/browser_data.RDS",
-                          c(course_plans_file, offerings_full_file, sections_file)),
+             run_r_script(browser_script, "app/course_browser/data/browser_data.RDS",
+                          c(course_plans_file, offerings_full_file, sections_file),
+                          chdir = TRUE),
              format = "file"),
   tar_target(ojs_script, "app/course_browser_ojs/build_data.R", format = "file"),
   tar_target(ojs_data_files,

@@ -54,4 +54,4 @@ courses <- courses |>
   dplyr::relocate(institution) |> 
   dplyr::relocate(Emnekode_raw, .before = Emnekode)
 
-saveRDS(courses, "data/courses.RDS")
+saveRDS(courses, "data/input/courses.RDS")

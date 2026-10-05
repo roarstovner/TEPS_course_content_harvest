@@ -669,3 +669,27 @@ test_that("phone numbers after 'Tlf.' are removed", {
   expect_equal(anonymize_text("uib", "Studieadministrasjonen. Tlf. 55 58 27 10", .progress = FALSE),
                "Studieadministrasjonen.")
 })
+
+# --- The shareable files (README "Data Files: Published and Internal") ---
+
+test_that("the personal-data check finds what the anonymizer removes", {
+  f <- tempfile(fileext = ".RDS")
+  saveRDS(tibble::tibble(id = 1:3, text = c(
+    "Kontakt kari.nordmann@uit.no", "- Ola Nordmann (Emneansvarlig)\nInnhold", "Ingen")), f)
+  found <- personal_data_in(f)
+  expect_setequal(found$pattern, c("email", "staff"))
+  saveRDS(tibble::tibble(text = anonymize_text(c("uit", "uit"), c(
+    "Kontakt kari.nordmann@uit.no", "- Ola Nordmann (Emneansvarlig)\nInnhold"),
+    .progress = FALSE)), f)
+  expect_equal(nrow(personal_data_in(f)), 0)
+})
+
+test_that("data/processed holds no personal data", {
+  files <- Sys.glob(here::here("data/processed/*.RDS"))
+  skip_if(length(files) == 0, "built data not available")
+  found <- personal_data_in(files)
+  expect(nrow(found) == 0, paste0(
+    "Personal data in data/processed (every text there must come from ",
+    "anonymize_text()):\n",
+    paste(utils::capture.output(print(as.data.frame(found))), collapse = "\n")))
+})

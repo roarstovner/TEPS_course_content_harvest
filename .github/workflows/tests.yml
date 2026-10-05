@@ -1,6 +1,6 @@
 # Run the testthat suite with the package versions in renv.lock (#270).
-# Tests that need the harvested data (data/*.RDS, gitignored), a browser or
-# external URLs skip themselves here.
+# Tests that need the harvested or built data (data/raw, interim, processed;
+# gitignored), a browser or external URLs skip themselves here.
 name: tests
 
 on:

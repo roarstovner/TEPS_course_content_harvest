@@ -6,8 +6,8 @@ faithful, clean copy of the course plan on the fetched page (the output of
 `R/harvest_strategies.R`).
 
 - **Default model:** `sonnet`
-- **Audited output:** `extracted_text` in `data/html_{inst}.RDS`
-- **Ground truth:** the fetched page (`html` in the same file)
+- **Audited output:** `extracted_text` in `data/interim/extracted_text.RDS` (rebuilt by `targets::tar_make()`)
+- **Ground truth:** the fetched page (`html` in `data/raw/html_{inst}.RDS`)
 - **Rubric:** below
 
 ## Pipeline (orchestrator)

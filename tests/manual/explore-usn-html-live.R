@@ -33,7 +33,7 @@ cat("\nTime elapsed:", round(difftime(end_time, start_time, units = "secs"), 1),
 cat("Expected: LH-NOD1000 and LRFY240 should have URLs, FAKE999 should be NA\n")
 
 # Additional exploration with real course data
-courses <- readRDS(here::here("data/courses.RDS"))
+courses <- readRDS(here::here("data/input/courses.RDS"))
 
 hits <- courses |>
   filter(institution == "usn") |>

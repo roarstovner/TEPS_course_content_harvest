@@ -1,8 +1,9 @@
 # data.R — Data loading and labels for the course browser
 #
-# The app loads one prebuilt payload (data/browser_data.RDS) rather than the
-# raw pipeline outputs, so startup is fast and the payload stays small enough
-# to ship to a browser later. Rebuild it with: Rscript R/build_browser_data.R
+# The app loads one prebuilt payload (data/browser_data.RDS, built by
+# build_data.R) rather than the raw pipeline outputs, so startup is fast and the
+# payload stays small enough to ship to a browser later. targets::tar_make()
+# rebuilds it.
 
 institution_labels <- c(
   hiof     = "HiØ",
@@ -27,12 +28,11 @@ institution_labels <- c(
 )
 
 #' Load the prebuilt browser payload
-#' @param data_dir Path to the data/ directory
+#' @param path The payload, built by build_data.R
 #' @return List with `plans`, `sections`, `coverage`, `built_at`
-load_browser_data <- function(data_dir = "../../data") {
-  path <- file.path(data_dir, "browser_data.RDS")
+load_browser_data <- function(path = "data/browser_data.RDS") {
   if (!file.exists(path)) {
-    stop("Missing ", path, "\nBuild it first:  Rscript R/build_browser_data.R",
+    stop("Missing ", path, "\nBuild it first:  targets::tar_make()",
          call. = FALSE)
   }
   readRDS(path)
@@ -46,9 +46,9 @@ load_browser_data <- function(data_dir = "../../data") {
 #' @param course_id Offering to look up
 #' @param inst institution value
 #' @param cache reactiveValues with `inst` and `data` slots
-#' @param data_dir Path to the data/ directory
+#' @param data_dir Path to the raw harvest (data/raw)
 #' @return Character(1) of raw HTML, or NULL
-load_course_html <- function(course_id, inst, cache, data_dir = "../../data") {
+load_course_html <- function(course_id, inst, cache, data_dir = "../../data/raw") {
   if (is.null(cache$inst) || !identical(cache$inst, inst)) {
     path <- file.path(data_dir, paste0("html_", inst, ".RDS"))
     if (!file.exists(path)) return(NULL)
@@ -69,11 +69,11 @@ load_course_html <- function(course_id, inst, cache, data_dir = "../../data") {
 #' TEPS_BROWSER_TERMS environment variable, or drop a browser_terms.yaml in the
 #' repo root. Absent, the feature hides itself and ad-hoc search is unaffected.
 #'
-#' @param data_dir Path to the data/ directory, used to locate the repo root
+#' @param repo_root Path to the repo root
 #' @return Named character vector of regexes (names are labels), or NULL
-load_term_set <- function(data_dir = "../../data") {
+load_term_set <- function(repo_root = "../..") {
   path <- Sys.getenv("TEPS_BROWSER_TERMS", "")
-  if (!nzchar(path)) path <- file.path(dirname(data_dir), "browser_terms.yaml")
+  if (!nzchar(path)) path <- file.path(repo_root, "browser_terms.yaml")
   if (!file.exists(path) || !requireNamespace("yaml", quietly = TRUE)) return(NULL)
 
   parsed <- tryCatch(yaml::read_yaml(path), error = function(e) NULL)

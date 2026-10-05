@@ -40,7 +40,7 @@ checkpoint_append_row <- function(row, path) {
 #' @param .progress Show progress bar
 #' @return courses tibble with html, html_error, html_success columns added
 fetch_html_with_checkpoint <- function(courses,
-                                       checkpoint_path = "data/checkpoint/checkpoint_html.RDS",
+                                       checkpoint_path = file.path(RAW_DIR, "checkpoint", "checkpoint_html.RDS"),
                                        .progress = TRUE,
                                        config = NULL,
                                        save_every = 50) {

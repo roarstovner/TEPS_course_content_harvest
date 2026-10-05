@@ -9,7 +9,7 @@ test_that("USN URL resolution handles LH-NOD1000 across multiple years", {
   skip_if_not(interactive(), "Manual test - requires browser")
 
   # Load actual course data and filter for LH-NOD1000 test cases
-  courses <- readRDS(here::here("data/courses.RDS"))
+  courses <- readRDS(here::here("data/input/courses.RDS"))
 
   test_data <- courses |>
     filter(

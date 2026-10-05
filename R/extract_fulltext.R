@@ -77,23 +77,21 @@ extract_fulltext_from_raw <- function(df, config) {
 
 #' Harvested rows with the current extracted_text
 #'
-#' Reads the raw harvest (data/html_{inst}.RDS) and takes `extracted_text` from
-#' data/extracted_text.RDS, which the {targets} pipeline rebuilds with the
-#' current config. The `extracted_text` stored in html_{inst}.RDS at harvest
-#' time is ignored.
+#' Reads the raw harvest (data/raw/html_{inst}.RDS) and takes `extracted_text`
+#' from data/interim/extracted_text.RDS, which the {targets} pipeline rebuilds
+#' with the current config. The `extracted_text` stored in html_{inst}.RDS at
+#' harvest time is ignored.
 #'
 #' @param institutions Institutions to read; all when empty.
-read_harvest <- function(institutions = NULL, data_dir = "data") {
-  text_file <- file.path(data_dir, "extracted_text.RDS")
+read_harvest <- function(institutions = NULL,
+                         text_file = "data/interim/extracted_text.RDS") {
   if (!file.exists(text_file)) {
     stop(text_file, " is missing: run targets::tar_make() first")
   }
-  files <- list.files(data_dir, "^html_.*\\.RDS$", full.names = TRUE)
-  if (length(institutions)) {
-    files <- files[sub("^html_(.*)\\.RDS$", "\\1", basename(files)) %in% institutions]
-  }
+  found <- harvested_institutions()
+  if (length(institutions)) found <- intersect(found, institutions)
   text <- readRDS(text_file)[, c("course_id", "extracted_text")]
-  files |>
+  harvest_file(found) |>
     lapply(readRDS) |>
     dplyr::bind_rows() |>
     dplyr::select(-dplyr::any_of(c("extracted_text", "fulltext"))) |>

@@ -8,7 +8,7 @@
 # institution — how many sampled courses carry each candidate label. Reports
 # coverage (% of sampled courses) so rare-but-real sections are visible.
 #
-# Output: data/section_review/candidate_sections.md  (+ stdout)
+# Output: data/audit/section_review/candidate_sections.md  (+ stdout)
 # Run:    Rscript R/scan_candidate_sections.R
 
 suppressMessages({
@@ -16,6 +16,7 @@ suppressMessages({
   library(stringr)
 })
 
+source("R/utils.R")
 source("R/fetch_html_cols.R")
 source("R/extract_fulltext.R")
 source("R/institution_config.R")
@@ -35,8 +36,7 @@ candidates <- tibble::tribble(
   "undervisningssprak",      "undervisningsspråk|undervisnings- og eksamensspråk"
 )
 
-html_files <- list.files("data", pattern = "^html_.*\\.RDS$", full.names = TRUE)
-courses_raw <- html_files |> lapply(readRDS) |> bind_rows()
+courses_raw <- harvest_file(harvested_institutions()) |> lapply(readRDS) |> bind_rows()
 institutions <- sort(unique(courses_raw$institution))
 
 # Per institution, collect the set of heading texts each sampled course carries,
@@ -101,5 +101,5 @@ cat(paste(praksis_examples, collapse = "\n"), "\n")
 
 saveRDS(list(res = res, wide = wide, summary = summary_tbl,
              praksis_examples = praksis_examples),
-        "data/section_review/candidate_sections_scan.RDS")
-cat("\nSaved scan to data/section_review/candidate_sections_scan.RDS\n")
+        "data/audit/section_review/candidate_sections_scan.RDS")
+cat("\nSaved scan to data/audit/section_review/candidate_sections_scan.RDS\n")

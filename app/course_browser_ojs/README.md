@@ -19,7 +19,7 @@ Rscript -e 'source("app/course_browser_ojs/build_data.R", chdir=TRUE)'
 quarto preview app/course_browser_ojs/index.qmd
 ```
 
-`build_data.R` reads `../../data/course_offerings.RDS` + `../../data/course_plans.RDS` and
+`build_data.R` reads `../../data/processed/course_offerings.RDS` + `../../data/processed/course_plans.RDS` and
 writes `data/plans.parquet` (~19 MB, the searchable corpus) and `data/offerings.parquet`
 (~1 MB, the "used by" detail) into this folder.
 

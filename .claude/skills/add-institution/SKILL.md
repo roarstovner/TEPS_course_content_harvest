@@ -80,7 +80,7 @@ source("R/checkpoint.R")
 source("R/harvest_strategies.R")
 source("R/harvest.R")
 
-courses <- readRDS("data/courses.RDS")
+courses <- readRDS("data/input/courses.RDS")
 
 # Test with a specific year first
 result <- harvest_institution("newuni", courses, year = 2025)
@@ -95,7 +95,7 @@ result$extracted_text[1]  # Inspect extracted text
 ```r
 # Harvest all years
 result <- harvest_institution("newuni", courses)
-saveRDS(result, "data/html_newuni.RDS")
+saveRDS(result, "data/raw/html_newuni.RDS")
 ```
 
 Or include in `harvest_all()` — it will automatically pick up the new config entry.

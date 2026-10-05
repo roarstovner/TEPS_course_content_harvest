@@ -435,7 +435,7 @@ test_that("recommendations that mention admission are kept (#211)", {
 })
 
 test_that("nla: sections are read from the EmneplanPage JSON in a <script>", {
-  f <- test_path("../../data/html_nla.RDS")
+  f <- test_path("../../data/raw/html_nla.RDS")
   skip_if_not(file.exists(f), "harvested nla data not available")
   d <- readRDS(f)
   d <- d[!is.na(d$html), ][1:20, ]

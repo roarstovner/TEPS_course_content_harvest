@@ -23,9 +23,9 @@ This project harvests course descriptions from Norwegian teacher education insti
 |---|---|---|
 | 1. Course id `{institution}_{Emnekode_raw}_{year}_{semester}_{status}` | `add_course_id()` (`R/utils.R`) | `course_id` |
 | 2. URL from metadata (institution-specific builders; NA where the URL must be discovered) | `add_course_url()` (`R/add_course_url.R`) | `url` |
-| 3. URL discovery (USN, UiT, hivolda; optional) | `resolve_course_urls()` (`R/resolve_course_urls.R`) | `url`, checkpoint `data/checkpoint/urls_{inst}.RDS` |
+| 3. URL discovery (USN, UiT, hivolda; optional) | `resolve_course_urls()` (`R/resolve_course_urls.R`) | `url`, checkpoint `data/raw/checkpoint/urls_{inst}.RDS` |
 | 4. Fetch HTML with checkpointing | `fetch_html_with_checkpoint()` (`R/checkpoint.R`, `R/fetch_html_cols.R`) | `html`, `html_success`, `html_error` |
-| 5. Extract text (CSS selector, nla JSON, USN cleanup) | `extract_fulltext_from_raw()` (`R/extract_fulltext.R`) | `data/html_{inst}.RDS` (raw harvest) |
+| 5. Extract text (CSS selector, nla JSON, USN cleanup) | `extract_fulltext_from_raw()` (`R/extract_fulltext.R`) | `data/raw/html_{inst}.RDS` (raw harvest) |
 | 6. Rebuild the text from the stored HTML | `institution_fulltext()` (`R/pipeline.R`) | `extracted_text.RDS` |
 | 7. Anonymize and deduplicate | `institution_plans()` | `course_plans.RDS`, `course_offerings*.RDS` |
 | 8. Split into sections | `institution_sections()` | `sections_raw.RDS` |
@@ -38,7 +38,7 @@ strategy, CSS selector, `selector_mode`, `year_in_url`, pre/post functions,
 fetch overrides and the `section_*` fields. Stages 6-8 and everything after
 them are a {targets} pipeline (see "Rebuilding Derived Data").
 
-`data/html_{inst}.RDS` is the raw harvest and only harvesting writes it. The
+`data/raw/html_{inst}.RDS` is the raw harvest and only harvesting writes it. The
 steps after it rebuild everything from it with the current code, so a changed
 selector or post function needs `targets::tar_make()`, not a new harvest. The `extracted_text` saved with the harvest is not used
 downstream, except for plans that came from a PDF (uis archive plans,
@@ -63,15 +63,15 @@ source("R/harvest_strategies.R")
 source("R/harvest.R")
 
 # Harvest a single institution
-courses <- readRDS("data/courses.RDS")
+courses <- readRDS("data/input/courses.RDS")
 result <- harvest_institution("hivolda", courses)
-saveRDS(result, "data/html_hivolda.RDS")
+saveRDS(result, "data/raw/html_hivolda.RDS")
 
 # Only one year, or ignore the checkpoints and fetch again
 result <- harvest_institution("oslomet", courses, year = 2025)
 result <- harvest_institution("ntnu", courses, refetch = TRUE)
 
-# Or harvest all institutions at once (saves data/html_{inst}.RDS)
+# Or harvest all institutions at once (saves data/raw/html_{inst}.RDS)
 harvest_all()
 ```
 
@@ -91,7 +91,7 @@ in `R/fetch_html_cols.R` and `R/extract_fulltext.R`.
 
 The pipeline uses **checkpointing** to avoid re-downloading data. If the script stops or crashes:
 
-- Already-downloaded HTML is saved in `data/checkpoint/html_{institution}.RDS` (`course_id`, `html`, `html_success`, `html_error`)
+- Already-downloaded HTML is saved in `data/raw/checkpoint/html_{institution}.RDS` (`course_id`, `html`, `html_success`, `html_error`)
 - Re-running the script fetches only courses not in the checkpoint (anti-join by `course_id`)
 - This saves time and is polite to institutional servers
 
@@ -107,17 +107,18 @@ targets::tar_make()               # rebuild whatever is outdated
 targets::tar_outdated()           # what would be rebuilt, without building
 targets::tar_read(metrics_check)  # changes against the metrics snapshot
 targets::tar_read(unmapped)       # headings the section extractor could not map
+targets::tar_read(privacy_check)  # personal data found in data/processed/
 ```
 
 {targets} keeps each step's result in `_targets/` (gitignored) together with a
 hash of its inputs and of the code it calls, and reruns a step only when one of
 those changed. The steps per institution (fulltext, plans, sections, unmapped
-headings) run once per institution: a new `data/html_uib.RDS`, or a change to
+headings) run once per institution: a new `data/raw/html_uib.RDS`, or a change to
 uib's entry in `R/institution_config.R`, rebuilds only uib, while a change to
 shared code (`R/anonymize.R`, `R/section_heading_map.R`,
 `R/extract_sections.R`) reruns that step for every institution. The pipeline
-writes the data files in `data/` (see "Data Files: Published and Internal"),
-`data/browser_data.RDS`, the OJS Parquet files and `data/data_notes.md`. The
+writes the data files in `data/interim/` and `data/processed/` (see "Data Files: Published and Internal"),
+`app/course_browser/data/browser_data.RDS`, the OJS Parquet files and `data/data_notes.md`. The
 harvest is not part of it.
 
 The steps run on 4 local worker processes ({crew}, set in `tar_option_set()`
@@ -152,7 +153,7 @@ project library in `renv/` (activated by `.Rprofile`). On a new machine,
 The tests run with `testthat::test_dir("tests/testthat")`, and on GitHub
 Actions for every push and pull request to main
 (`.github/workflows/tests.yml`, packages from `renv.lock`). Tests that need
-the harvested data (`data/*.RDS` is not in git), a browser or external URLs
+the harvested or built data (only `data/input/` is in git), a browser or external URLs
 skip themselves there.
 
 ## Adding a New Institution
@@ -209,7 +210,7 @@ add_course_url_newuni <- function(course_code, year, semester) {
 #| eval: false
 
 # Load pipeline and test
-courses <- readRDS("data/courses.RDS")
+courses <- readRDS("data/input/courses.RDS")
 result <- harvest_institution("newuni", courses, year = 2025)
 
 # Inspect results
@@ -243,14 +244,14 @@ The pipeline anonymizes and deduplicates the course plans in three stages:
 
 **Output files:**
 
-- `data/course_offerings.RDS` — published slim dataset: course rows with DBH metadata + `plan_content_id` FK (no url, no text)
-- `data/course_offerings_full.RDS` — internal working file: same rows plus `url`, `extracted_text`, `course_plan`, `course_plan_normalized`; used by the course_browser app
-- `data/course_plans.RDS` — one row per unique plan per course code per institution
+- `data/processed/course_offerings.RDS` — published slim dataset: course rows with DBH metadata + `plan_content_id` FK (no url, no text)
+- `data/interim/course_offerings_full.RDS` — internal working file: same rows plus `url`, `extracted_text`, `course_plan`, `course_plan_normalized`; used by the course_browser app
+- `data/processed/course_plans.RDS` — one row per unique plan per course code per institution
 
 ## Post-Harvest: Section Extraction
 
 The pipeline splits each course plan into its parts and writes
-`data/sections_raw.RDS` with one row per course and section
+`data/processed/sections_raw.RDS` with one row per course and section
 (`course_id`, `institution`, `section`, `raw_text`). The seven sections are
 `course_content`, `learning_outcomes`, `teaching_methods`, `assessment`,
 `coursework_requirements`, `prerequisites` and `reading_list`. Section text is
@@ -345,35 +346,47 @@ cross-institution report. Details: `.claude/skills/audit-institutions/SKILL.md`.
 
 Files that hold raw page text (`html`, `extracted_text`) contain staff names,
 e-mail addresses and phone numbers and are never published. Everything that is
-shared is built from the anonymized text (`anonymize_text()`). The repository
-is public; `data/*.RDS` is gitignored.
+shared is built from the anonymized text (`anonymize_text()`). The data are
+kept in one folder per stage, so the folder says what may be shared:
+
+| Folder | Holds | Written by | In git |
+|---|---|---|---|
+| `data/input/` | the DBH course list, the pipeline input | `data-raw/courses.R` | yes |
+| `data/raw/` | the harvest, with personal data | harvesting only | no |
+| `data/interim/` | text rebuilt from the harvest, with personal data; never shared | `targets::tar_make()` | no |
+| `data/processed/` | anonymized data or data without text; can be shared | `targets::tar_make()` | no |
+
+`data/processed/` may only hold text that went through `anonymize_text()`. The
+pipeline checks this on every build: target `privacy_check` scans the files for
+e-mail addresses, phone numbers, "Name (Role)" lines and "Name, dekan"
+signatures and warns, and `tests/testthat/test-anonymize.R` fails, on any hit.
+The repository is public.
 
 | File | Contents | Personal data | Status |
 |---|---|---|---|
-| `data/courses.RDS` | DBH course metadata (pipeline input) | none | in git |
-| `data/html_{inst}.RDS`, `data/checkpoint/` | raw harvest: `html` (+ `extracted_text` from harvest time) | yes (raw) | internal |
-| `data/extracted_text.RDS` | `extracted_text` rebuilt from the raw harvest | yes (raw) | internal |
-| `data/course_offerings_full.RDS` | offerings + `url`, `extracted_text`, `course_plan` | yes (`extracted_text`) | internal |
-| `data/course_offerings.RDS` | DBH metadata + `plan_content_id`, no text | none | published |
-| `data/course_plans.RDS` | anonymized `course_plan` (+ `course_plan_normalized`) | anonymized | published |
-| `data/sections_raw.RDS` | anonymized section `raw_text` | anonymized | publishable |
-| `data/browser_data.RDS` | course_browser payload: plans, offering metadata, sections | anonymized (no `extracted_text`) | internal (app) |
+| `data/input/courses.RDS` | DBH course metadata (pipeline input) | none | in git |
+| `data/raw/html_{inst}.RDS`, `data/raw/checkpoint/` | raw harvest: `html` (+ `extracted_text` from harvest time) | yes (raw) | internal |
+| `data/interim/extracted_text.RDS` | `extracted_text` rebuilt from the raw harvest | yes (raw) | internal |
+| `data/interim/course_offerings_full.RDS` | offerings + `url`, `extracted_text`, `course_plan` | yes (`extracted_text`) | internal |
+| `data/processed/course_offerings.RDS` | DBH metadata + `plan_content_id`, no text | none | published |
+| `data/processed/course_plans.RDS` | anonymized `course_plan` (+ `course_plan_normalized`) | anonymized | published |
+| `data/processed/sections_raw.RDS` | anonymized section `raw_text` | anonymized | publishable |
+| `app/course_browser/data/browser_data.RDS` | course_browser payload: plans, offering metadata, sections | anonymized (no `extracted_text`) | internal (app) |
 | `app/course_browser_ojs/data/*.parquet` | anonymized `course_plan` + slim offering metadata | anonymized | published with the OJS page (build artifact) |
 | `data/audit/` | audit findings (quotes from anonymized text) | staff names redacted | in git |
 
-Check after any change to the anonymizer or the pipeline: scan the published
-files for e-mail addresses, phone numbers, "Name (Role)" lists and "Name,
-dekan" signatures (the anonymization audit, `/audit-institutions
-anonymization`, does this per institution).
+The scan catches text that skipped the anonymizer, not names the anonymizer
+misses; the anonymization audit (`/audit-institutions anonymization`) checks
+that per institution.
 
 ## Data Structure
 
-### Input Data (`data/courses.RDS`)
+### Input Data (`data/input/courses.RDS`)
 
 The courses dataset contains:
 
 ```{r}
-courses <- readRDS("data/courses.RDS")
+courses <- readRDS("data/input/courses.RDS")
 courses |> slice(1:2)
 ```
 
@@ -469,7 +482,7 @@ pages.
 | Function | File | Purpose |
 |---|---|---|
 | `harvest_institution(institution, courses, year, refetch)` | `R/harvest.R` | Harvest one institution with its configured strategy |
-| `harvest_all(courses, year, refetch, institutions)` | `R/harvest.R` | Harvest all (or the given) institutions, save `data/html_{inst}.RDS` |
+| `harvest_all(courses, year, refetch, institutions)` | `R/harvest.R` | Harvest all (or the given) institutions, save `data/raw/html_{inst}.RDS` |
 | `get_institution_config(inst)` | `R/institution_config.R` | Config list for one institution |
 | `add_course_id(dbh_df)` | `R/utils.R` | Unique id from institution, raw code, year, semester, status |
 | `add_course_url(df)` | `R/add_course_url.R` | Institution-specific URL builders; NA where discovery is needed |
@@ -477,7 +490,7 @@ pages.
 | `fetch_html_with_checkpoint(courses, checkpoint_path)` | `R/checkpoint.R` | Download HTML, skipping courses already in the checkpoint |
 | `extract_fulltext_css(html, selector, mode, pre_fn, post_fn)` | `R/extract_fulltext.R` | Config-driven CSS text extraction |
 | `extract_fulltext_from_raw(df, config)` | `R/extract_fulltext.R` | `extracted_text` from the raw harvest, per strategy |
-| `read_harvest(institutions)` | `R/extract_fulltext.R` | Raw harvest joined with `data/extracted_text.RDS` |
+| `read_harvest(institutions)` | `R/extract_fulltext.R` | Raw harvest joined with `data/interim/extracted_text.RDS` |
 | `validate_courses(df, stage)` | `R/utils.R` | Required columns at `"initial"`, `"with_url"`, `"with_html"` |
 | `anonymize_text(institution, text)` | `R/anonymize.R` | PII and admin-date removal for `course_plan` and sections |
 | `normalize_plan_text(course_plan)` | `R/normalize_plan_text.R` | Lossy normalization for dedup hashing |
@@ -521,7 +534,7 @@ pages.
 │   ├── harvest.R              # Entry points: harvest_institution(), harvest_all()
 │   ├── harvest_strategies.R   # Strategy implementations
 │   ├── institution_config.R   # Institution registry (strategy, selectors, overrides, section_*)
-│   ├── utils.R                # Helper functions (add_course_id, validation, normalization)
+│   ├── utils.R                # Helpers (data paths, add_course_id, validation, normalization)
 │   ├── add_course_url.R       # URL generation logic
 │   ├── resolve_course_urls.R  # URL discovery for USN, UiT, hivolda
 │   ├── fetch_html_cols.R      # HTML downloading (httr2)
@@ -533,23 +546,23 @@ pages.
 │   ├── section_heading_map.R  # Heading → section patterns (incl. ".drop")
 │   ├── extract_sections.R     # Section extraction strategies + cleanup
 │   ├── pipeline.R             # Steps of the {targets} pipeline (_targets.R)
-│   ├── build_browser_data.R   # Builds data/browser_data.RDS for the course browser
 │   ├── pipeline_metrics.R     # Regression snapshot: check_pipeline_metrics()
 │   └── audit/                # Audit harness for /audit-institutions
 ├── app/
-│   ├── course_browser/        # Shiny concordance browser (see its README)
-│   └── course_browser_ojs/    # Static Observable JS browser (see its README)
-├── data/
-│   ├── courses.RDS            # Input course data
-│   ├── html_{inst}.RDS        # Harvest output per institution
-│   ├── data_notes.qmd         # Data quality notes per institution
-│   ├── audit/{check}/         # Audit findings and reports
-│   └── checkpoint/            # Checkpoint files (not in git)
+│   ├── course_browser/        # Shiny concordance browser; build_data.R → data/ (see its README)
+│   └── course_browser_ojs/    # Static Observable JS browser; build_data.R → data/ (see its README)
+├── data/                      # README "Data Files: Published and Internal"
+│   ├── input/courses.RDS      # DBH course list, the pipeline input (in git)
+│   ├── raw/                   # Harvest: html_{inst}.RDS, checkpoint/ (not in git)
+│   ├── interim/               # Rebuilt text with personal data (not in git)
+│   ├── processed/             # Anonymized data files, can be shared (not in git)
+│   ├── audit/                 # Audit findings and reports
+│   └── data_notes.qmd         # Data quality notes per institution
 ├── tests/
 │   ├── testthat/              # Rscript -e 'testthat::test_dir("tests/testthat")'
 │   └── snapshots/             # pipeline_metrics.csv (regression snapshot)
 └── data-raw/
-    └── courses.R              # script that creates courses.RDS
+    └── courses.R              # script that creates data/input/courses.RDS
 ```
 
 ## Need Help?

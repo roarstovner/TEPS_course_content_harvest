@@ -52,8 +52,10 @@ documenting, write it there and, if agents need to find it, add a pointer here.
 - Privacy: `html` and `extracted_text` are raw and hold staff names, e-mails and
   phone numbers. Anything published is built from `anonymize_text()`; sections
   are cut from raw text, so `institution_sections()` must keep anonymizing.
-  See README "Data Files: Published and Internal".
-- `data/html_{inst}.RDS` and `data/checkpoint/` are the raw harvest: only a
+  Only anonymized text goes in `data/processed/` (checked by target
+  `privacy_check` and `test-anonymize.R`). See README "Data Files: Published
+  and Internal".
+- `data/raw/html_{inst}.RDS` and `data/raw/checkpoint/` are the raw harvest: only a
   harvest writes them. To change extracted text, change the config or
   `R/extract_fulltext.R` and run `targets::tar_make()`.
 - After changing extraction, the heading map or the anonymizer, rebuild the

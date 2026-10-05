@@ -7,7 +7,7 @@ source('R/fetch_html_cols.R')
 source('R/extract_fulltext.R')
 
 # Load test courses
-test_courses <- readRDS('data/test_courses.RDS')
+test_courses <- readRDS('data/input/test_courses.RDS')
 
 cat('=== NIH Validation Pipeline ===\n\n')
 cat('Starting with', nrow(test_courses), 'test courses\n\n')

@@ -35,7 +35,7 @@ test_that("USN resolution works for specific course from courses.RDS", {
   skip_on_ci()
   skip_if_not(interactive(), "Manual test - requires browser")
 
-  courses <- readRDS(here::here("data/courses.RDS"))
+  courses <- readRDS(here::here("data/input/courses.RDS"))
 
   hits <- courses |>
     filter(institution == "usn") |>

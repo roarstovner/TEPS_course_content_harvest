@@ -1,18 +1,10 @@
 # R/pipeline.R
 # Steps of the {targets} pipeline in _targets.R (#263): turn one institution's
-# raw harvest (data/html_{inst}.RDS) into its derived tables, then combine the
+# raw harvest (data/raw/html_{inst}.RDS) into its derived tables, then combine the
 # institutions into the data files. The harvest itself stays outside the
 # pipeline (network, checkpoints); see README "Rebuilding Derived Data".
 
 # --- Per institution ---------------------------------------------------------
-
-harvested_institutions <- function(data_dir = "data") {
-  sub("^html_(.*)\\.RDS$", "\\1", list.files(data_dir, "^html_.*\\.RDS$"))
-}
-
-harvest_file <- function(institution, data_dir = "data") {
-  file.path(data_dir, paste0("html_", institution, ".RDS"))
-}
 
 # The institution's config as a target value. Functions in it (pre_fn,
 # post_fn, fetch_fn) are rebuilt from their source: R byte-compiles a function
@@ -106,6 +98,17 @@ metrics_vs_snapshot <- function(snapshot, metrics) {
             " beyond tolerance: see tar_read(metrics_check)", call. = FALSE)
   }
   changes
+}
+
+# Personal data found in the shareable files (data/processed/). The warning
+# makes it show in tar_make(); test-anonymize.R fails on it too.
+check_personal_data <- function(files) {
+  found <- personal_data_in(files)
+  if (nrow(found) > 0) {
+    warning("personal data in ", paste(unique(found$file), collapse = ", "),
+            ": see tar_read(privacy_check)", call. = FALSE)
+  }
+  found
 }
 
 # Run a script for the files it writes. `inputs` is not used: naming the input

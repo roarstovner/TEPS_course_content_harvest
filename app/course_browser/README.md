@@ -5,13 +5,13 @@ A plan-centric concordance browser for the harvested course plans.
 ## Build & run
 
 ```sh
-Rscript -e 'targets::tar_make()'                    # rebuilds data/browser_data.RDS when needed
+Rscript -e 'targets::tar_make()'                    # rebuilds app/course_browser/data/browser_data.RDS when needed
 Rscript -e 'shiny::runApp("app/course_browser")'
 ```
 
-The app reads only the prebuilt `data/browser_data.RDS`. Re-run
-`R/build_browser_data.R` whenever `course_plans.RDS`,
-`course_offerings_full.RDS` or `sections_raw.RDS` change.
+The app reads only the prebuilt `data/browser_data.RDS` in this folder, which
+`build_data.R` makes from `course_plans.RDS`, `course_offerings_full.RDS` and
+`sections_raw.RDS`; `targets::tar_make()` reruns it when they change.
 
 ## Design
 

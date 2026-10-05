@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 
 # Load courses
-courses <- readRDS('data/courses.RDS')
+courses <- readRDS('data/input/courses.RDS')
 
 # Filter for NIH using which()
 idx <- which(courses$institution == 'nih')
@@ -61,7 +61,7 @@ cat('\nSemester distribution:\n')
 print(table(test_courses[, semester_col]))
 
 # Save test courses
-saveRDS(test_courses, 'data/test_courses.RDS')
+saveRDS(test_courses, 'data/input/test_courses.RDS')
 
 # Display test courses
 cat('\n\nSelected test courses:\n')
@@ -74,4 +74,4 @@ for (i in 1:nrow(test_courses)) {
               test_courses[i, status_col]))
 }
 
-cat('\nTest courses saved to data/test_courses.RDS\n')
+cat('\nTest courses saved to data/input/test_courses.RDS\n')

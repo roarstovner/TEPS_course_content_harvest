@@ -26,8 +26,14 @@ __pycache__/
 
 meetings/
 writing/
-data/checkpoint/
+# Data by stage (README "Data Files: Published and Internal"). Only
+# data/input/ is in git; raw, interim and processed are rebuilt (harvest,
+# tar_make()) and raw and interim hold personal data.
+data/raw/
+data/interim/
+data/processed/
 data/*.RDS
+data/audit/sections/sections_qa_suspects.RDS
 data/data_notes.html
 data/data_notes_files/
 archive/
@@ -40,7 +46,8 @@ _ul
 # they produce are kept (see .claude/skills/audit-institutions).
 data/audit/*/packets/
 
-# OJS course browser POC — generated Parquet + Quarto render output
+# Browser payloads (built by tar_make()) and Quarto render output
+app/course_browser/data/
 app/course_browser_ojs/data/
 app/course_browser_ojs/index.html
 app/course_browser_ojs/index_files/

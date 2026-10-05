@@ -306,3 +306,41 @@ anonymize_text <- function(institution, text,
     stringr::str_replace_all("\\n{3,}", "\n\n") |>
     stringr::str_trim()
 }
+
+
+# --- Check of the shareable files ---
+
+# What the anonymizer removes, as patterns to look for in its output. A hit in
+# data/processed/ means a text there did not pass through anonymize_text().
+.personal_data_patterns <- c(
+  email     = "[\\w.+-]+@[\\w-]+(?:\\.[\\w-]+)*\\.[a-zA-Z]{2,}",
+  phone     = "(?i)(?:\\+47[ \\t]*\\d[\\d \\t]{6,}|(?:tlf|telefon)\\.?[ \\t]*:?[ \\t]*\\d[\\d \\t]{6,})",
+  staff     = .staff_line_regex,
+  role_name = .role_name_line_regex,
+  signature = .signature_line_regex
+)
+
+#' Personal data left in data files
+#'
+#' @param files RDS files holding a data frame; every character column is
+#'   scanned.
+#' @return Tibble `file`, `column`, `pattern`, `n` (rows with a match) and
+#'   `example` (the first match); no rows when nothing is found.
+personal_data_in <- function(files) {
+  found <- list()
+  for (f in files) {
+    df <- readRDS(f)
+    for (col in names(df)[vapply(df, is.character, logical(1))]) {
+      for (p in names(.personal_data_patterns)) {
+        hit <- which(grepl(.personal_data_patterns[[p]], df[[col]], perl = TRUE))
+        if (length(hit) == 0) next
+        found[[length(found) + 1]] <- tibble::tibble(
+          file = f, column = col, pattern = p, n = length(hit),
+          example = stringr::str_extract(df[[col]][hit[1]], .personal_data_patterns[[p]]))
+      }
+    }
+  }
+  dplyr::bind_rows(tibble::tibble(file = character(), column = character(),
+                                  pattern = character(), n = integer(),
+                                  example = character()), found)
+}

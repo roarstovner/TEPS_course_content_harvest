@@ -1,5 +1,5 @@
 # R/audit/qa_sections.R
-# Deterministic QA pre-pass over data/sections_raw.RDS (issue #197, feeds #192).
+# Deterministic QA pre-pass over data/processed/sections_raw.RDS (issue #197, feeds #192).
 #
 # Surfaces *suspect* section rows with cheap, rule-based heuristics so that
 # (a) obvious extraction bugs become chainlink issues directly and
@@ -10,14 +10,14 @@
 # human/LLM review.
 #
 # Inputs:
-#   data/sections_raw.RDS          (course_id, institution, section, raw_text)
-#   data/course_offerings_full.RDS (course_id, institution, course_plan, ...)
+#   data/processed/sections_raw.RDS          (course_id, institution, section, raw_text)
+#   data/interim/course_offerings_full.RDS (course_id, institution, course_plan, ...)
 #                                  — used as full-text ground truth for coverage
 #                                    and "one section swallowed the whole plan".
 #
 # Outputs:
-#   data/sections_qa_suspects.RDS  per-row flags (for seeding review agents)
-#   data/sections_qa_report.md     human-readable summary (for a chainlink issue)
+#   data/audit/sections/sections_qa_suspects.RDS  per-row flags (for seeding review agents)
+#   data/audit/sections/sections_qa_report.md     human-readable summary (for a chainlink issue)
 #   + a summary printed to stdout
 #
 # Run:  Rscript R/audit/qa_sections.R
@@ -40,7 +40,7 @@ PLACEHOLDER_RX    <- "^(ingen|inged|none|n/?a|-|–|\\.|ikkje|ikke)\\.?$"
 
 # ── Load ─────────────────────────────────────────────────────────────────────
 cat("Loading sections_raw.RDS ...\n")
-sec <- readRDS("data/sections_raw.RDS") |>
+sec <- readRDS("data/processed/sections_raw.RDS") |>
   mutate(
     txt   = str_squish(raw_text),
     nchar = nchar(txt),
@@ -48,7 +48,7 @@ sec <- readRDS("data/sections_raw.RDS") |>
   )
 
 cat("Loading course_offerings_full.RDS (ground-truth lengths) ...\n")
-plans <- readRDS("data/course_offerings_full.RDS") |>
+plans <- readRDS("data/interim/course_offerings_full.RDS") |>
   transmute(course_id,
             plan_nchar = nchar(str_squish(course_plan %||% "")))
 
@@ -135,7 +135,7 @@ have_sections <- sec |> distinct(course_id) |> pull(course_id)
 zero_section_courses <- plans |>
   filter(plan_nchar > 50, !course_id %in% have_sections) |>
   left_join(
-    readRDS("data/sections_raw.RDS") |>
+    readRDS("data/processed/sections_raw.RDS") |>
       distinct(course_id, institution),  # (empty for these by definition)
     by = "course_id"
   )
@@ -150,7 +150,7 @@ suspects <- sec |>
   select(course_id, institution, section, nchar, plan_frac,
          dup_text_freq, leak_sections, all_of(flag_cols), n_flags, raw_text)
 
-saveRDS(suspects, "data/sections_qa_suspects.RDS")
+saveRDS(suspects, "data/audit/sections/sections_qa_suspects.RDS")
 
 # ── Summaries ────────────────────────────────────────────────────────────────
 total_rows <- nrow(sec)
@@ -223,11 +223,11 @@ report <- c(
   "",
   "## Next step",
   "",
-  "Seed per-institution LLM review agents with `data/sections_qa_suspects.RDS`",
+  "Seed per-institution LLM review agents with `data/audit/sections/sections_qa_suspects.RDS`",
   "(filter to the institution) plus the section-definition codebook, so they",
   "explain these anomalies and find additional issue types."
 )
-writeLines(report, "data/sections_qa_report.md")
+writeLines(report, "data/audit/sections/sections_qa_report.md")
 
-cat("\nWrote data/sections_qa_suspects.RDS (", nrow(suspects), "rows) and",
-    "data/sections_qa_report.md\n")
+cat("\nWrote data/audit/sections/sections_qa_suspects.RDS (", nrow(suspects), "rows) and",
+    "data/audit/sections/sections_qa_report.md\n")

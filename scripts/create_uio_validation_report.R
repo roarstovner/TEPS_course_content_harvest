@@ -5,7 +5,7 @@ library(dplyr)
 library(stringr)
 
 # Load the harvested data
-uio_data <- readRDS("data/html_uio.RDS")
+uio_data <- readRDS("data/raw/html_uio.RDS")
 
 cat("=== UiO Validation Report Data Collection ===\n\n")
 

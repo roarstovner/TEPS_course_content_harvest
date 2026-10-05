@@ -9,7 +9,7 @@
 #' @param .progress Show progress bar
 #' @return df with url column filled in where possible
 resolve_course_urls <- function(df,
-                                checkpoint_path = "data/checkpoint/url_resolution.RDS",
+                                checkpoint_path = file.path(RAW_DIR, "checkpoint", "url_resolution.RDS"),
                                 .progress = TRUE) {
   # Guardrails
   if (!all(c("course_id", "url", "institution") %in% names(df))) {

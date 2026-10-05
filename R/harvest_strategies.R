@@ -9,7 +9,7 @@
 #' @param config Institution config (must have $name)
 #' @param type Checkpoint type: "html", "urls", "discovery", "pdf"
 strategy_checkpoint_path <- function(config, type = "html") {
-  file.path("data", "checkpoint", paste0(type, "_", config$name, ".RDS"))
+  file.path(RAW_DIR, "checkpoint", paste0(type, "_", config$name, ".RDS"))
 }
 
 #' Clear checkpoint if refetch is requested

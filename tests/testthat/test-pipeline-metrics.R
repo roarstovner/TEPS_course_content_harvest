@@ -45,7 +45,7 @@ test_that("drops, vanished and new metrics are flagged; small changes are not", 
 })
 
 test_that("the built data match the metrics snapshot", {
-  files <- here::here(c("data/course_offerings_full.RDS", "data/sections_raw.RDS"))
+  files <- here::here(c("data/interim/course_offerings_full.RDS", "data/processed/sections_raw.RDS"))
   skip_if_not(all(file.exists(files)), "built data not available")
   changes <- suppressMessages(check_pipeline_metrics(
     snapshot = here::here(METRICS_SNAPSHOT),

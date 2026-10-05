@@ -1,3 +1,18 @@
+# Data folders (README "Data Files: Published and Internal"): data/input holds
+# the DBH course list (in git); data/raw the harvest, which only harvesting
+# writes; data/interim and data/processed are rebuilt by targets::tar_make(),
+# interim with raw page text (personal data, internal), processed anonymized
+# (can be shared).
+RAW_DIR <- "data/raw"
+
+harvest_file <- function(institution, raw_dir = RAW_DIR) {
+  file.path(raw_dir, paste0("html_", institution, ".RDS"))
+}
+
+harvested_institutions <- function(raw_dir = RAW_DIR) {
+  sub("^html_(.*)\\.RDS$", "\\1", list.files(raw_dir, "^html_.*\\.RDS$"))
+}
+
 canon_remove_trailing_num <- function(x) {
   sub("([\\-_.])[0-9]+$", "", x, perl = TRUE)
 }

@@ -10,8 +10,8 @@ execute:
 #| label: setup
 library(dplyr)
 
-df    <- readRDS("course_offerings.RDS")
-plans <- readRDS("course_plans.RDS")
+df    <- readRDS("processed/course_offerings.RDS")
+plans <- readRDS("processed/course_plans.RDS")
 
 summary_tbl <- df |>
   group_by(institution) |>
