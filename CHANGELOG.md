@@ -100,6 +100,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Heading-map additions from the audit (Ferdighetsmål, Progresjonskrav, Vurderingssemester, ...) (#284)
 - Coursework gates in assessment: move gate paragraphs; enable for uit (#283)
 - uit legacy layout (2008-2011): read span.fsemneoverskrift headings (#282)
 - Privacy: strip IP addresses (OpenURL user_ip) from published text (#281)
