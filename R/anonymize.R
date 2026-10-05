@@ -224,6 +224,11 @@ anonymize_text <- function(institution, text,
   "([Gg]odkjent av (?:[Dd]ekan(?:en)?|[Pp]rodekan|[Ii]nstitutt(?:nest)?leder|",
   "[Ss]tudieprogramleder))[ \\t]+\\p{Lu}\\p{Ll}+(?:[ \\t]+\\p{Lu}[\\p{L}-]+)+"
 )
+# The reader's IP address in library OpenURL links: "...&user_ip=10.16.56.125&"
+# (uis reading lists, #281). PDF text wraps these links anywhere, so a line
+# break may fall inside the key or the address.
+.user_ip_regex <- paste0(paste(strsplit("user_ip=", "")[[1]], collapse = "\\n?"),
+                         "[\\d.\\n]*\\d")
 
 # "2023-2024" / "2023-24" (consecutive years) is an academic year and goes;
 # a content range such as "1945-1970" stays (#230).
@@ -241,6 +246,7 @@ anonymize_text <- function(institution, text,
     # Remove email addresses, with their brackets: "Ta kontakt med (x@uio.no)" (#229)
     stringr::str_remove_all("\\s*\\(\\s*[\\w.+-]+@[\\w.-]+\\.[a-zA-Z]{2,}\\s*\\)") |>
     stringr::str_remove_all("\\b[\\w.+-]+@[\\w.-]+\\.[a-zA-Z]{2,}\\b") |>
+    stringr::str_remove_all(.user_ip_regex) |>
     # Remove staff list lines "- Ola Nordmann (Emneansvarlig)" (#237)
     stringr::str_remove_all(.staff_line_regex) |>
     # Remove role + name lines "Emneleder Ola Nordmann" (#260)
@@ -298,6 +304,7 @@ anonymize_text <- function(institution, text,
 .personal_data_patterns <- c(
   email     = "[\\w.+-]+@[\\w-]+(?:\\.[\\w-]+)*\\.[a-zA-Z]{2,}",
   phone     = "(?i)(?:\\+47[ \\t]*\\d[\\d \\t]{6,}|(?:tlf|telefon)\\.?[ \\t]*:?[ \\t]*\\d[\\d \\t]{6,})",
+  ip        = .user_ip_regex,
   staff     = .staff_line_regex,
   role_name = .role_name_line_regex,
   signature = .signature_line_regex

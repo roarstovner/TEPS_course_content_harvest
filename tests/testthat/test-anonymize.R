@@ -38,6 +38,16 @@ test_that("email addresses are removed", {
   expect_true(grepl("Kontakt oss", result))
 })
 
+test_that("IP addresses in OpenURL links are removed, also when wrapped", {
+  input <- paste0("rft.pub=Cappelen&svc_dat=viewit&user_ip=10.16.56.12\n5&req.skin=primo\n",
+                  "view=UBIS&us\ner_ip=109.189.203.220&req.skin=primo\n",
+                  "Kapittel 6.4.6.1 og doi=10.1.1.462.7279")
+  result <- anonymize_text("uis", input, .progress = FALSE)
+  expect_false(grepl("10\\.16\\.56|109\\.189|user_ip", result))
+  expect_match(result, "svc_dat=viewit&&req.skin=primo", fixed = TRUE)
+  expect_match(result, "Kapittel 6.4.6.1 og doi=10.1.1.462.7279", fixed = TRUE)
+})
+
 test_that("phone numbers with +47 are removed", {
   input <- "Ring oss: +47 22 85 50 00 for hjelp"
   result <- anonymize_text("hivolda", input, .progress = FALSE)
