@@ -100,6 +100,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Section extraction fixes from re-audit 2026-10-01 (afternoon) (#239)
+- Run sections audit for uit and ntnu (#223)
+- Re-run sections audit after the re-audit fixes (#250)
 - Refactor the pipeline before further extraction fixes (#254)
 - Block model: parse each page once into blocks; fulltext and sections are views of them (#272)
 - Block model (f): docs and skills (#278)
