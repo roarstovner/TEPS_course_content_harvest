@@ -185,19 +185,6 @@ test_that("NTNU: course-details-portlet removed", {
   expect_true(grepl("Masteroppgave", result))
 })
 
-test_that("NTNU: moment.locale removed", {
-  input <- 'moment.locale("nb_NO"); ENG3901'
-  result <- anonymize_text("ntnu", input, .progress = FALSE)
-  expect_false(grepl("moment", result))
-})
-
-test_that("NTNU: Velg studieår and Studieår lines removed", {
-  input <- "Velg studieår Studieår 2024/2025 Studiepoeng 30"
-  result <- anonymize_text("ntnu", input, .progress = FALSE)
-  expect_false(grepl("Velg studieår", result))
-  expect_true(grepl("Studiepoeng", result))
-})
-
 test_that("NTNU: Undervisningsstart line removed", {
   input <- "Nivå Master\nUndervisningsstart Høst 2024 / Vår 2025\nVarighet 2 semestre"
   result <- anonymize_text("ntnu", input, .progress = FALSE)
@@ -212,14 +199,6 @@ test_that("NTNU: Blackboard links removed", {
 })
 
 # --- UiT ---
-
-test_that("UiT: breadcrumbs removed", {
-  input <- "Startsida\nEmnekatalog\nKursnavn og innhold"
-  result <- anonymize_text("uit", input, .progress = FALSE)
-  expect_false(grepl("Startsida", result))
-  expect_false(grepl("Emnekatalog", result))
-  expect_true(grepl("Kursnavn", result))
-})
 
 test_that("UiT: Error rendering component removed", {
   input <- "Læringsutbytte Error rendering component Innhold"
@@ -281,12 +260,6 @@ test_that("HiOF: multiline Emneansvarlige block stripped", {
   result <- anonymize_text("hiof", input, .progress = FALSE)
   expect_false(grepl("Ragnhild|Næsje|Bjerke", result))
   expect_true(grepl("Undervisningsspråk", result))
-})
-
-test_that("HiOF: space inserted after heading before uppercase", {
-  input <- "KunnskapStudenten skal lære"
-  result <- anonymize_text("hiof", input, .progress = FALSE)
-  expect_true(grepl("Kunnskap Studenten", result))
 })
 
 # --- HIVOLDA ---
@@ -385,12 +358,6 @@ test_that("MF: Emneansvarlig section stripped to end", {
   expect_false(grepl("Studentlivet", result))
 })
 
-test_that("MF: Kontakt studieveileder removed", {
-  input <- "Emneinfo Kontakt studieveileder Innhold"
-  result <- anonymize_text("mf", input, .progress = FALSE)
-  expect_false(grepl("Kontakt studieveileder", result))
-})
-
 # --- UiS ---
 
 test_that("UiS: Kontakt section stripped to end (HTML)", {
@@ -426,13 +393,6 @@ test_that("UiS: Emnebeskrivelsen er hentet fra stripped", {
 })
 
 # --- Steiner ---
-
-test_that("Steiner: PDF page numbers stripped", {
-  input <- "Innhold\n  Side 12 av 28\nMer tekst"
-  result <- anonymize_text("steiner", input, .progress = FALSE)
-  expect_false(grepl("Side \\d+ av \\d+", result))
-  expect_true(grepl("Innhold", result))
-})
 
 # --- USN ---
 

@@ -54,9 +54,6 @@ anonymize_text <- function(institution, text,
     stringr::str_remove("Kontaktinformasjon[\\s\\S]*$") |>
     # Strip header boilerplate
     stringr::str_remove_all("course-details-portlet\\s*") |>
-    stringr::str_remove_all('moment\\.locale\\([^)]+\\);?\\s*') |>
-    stringr::str_remove_all("Velg studieår\\s*") |>
-    stringr::str_remove_all("Studieår \\d{4}/\\d{4}\\s*") |>
     stringr::str_remove_all("Undervisningsstart[^\n]+") |>
     # Strip LMS links and misc
     stringr::str_remove_all("Blackboard\\s*-\\s*\\S+") |>
@@ -66,7 +63,8 @@ anonymize_text <- function(institution, text,
 
 .anon_uit <- function(txt) {
   txt |>
-    stringr::str_remove_all("Startsida\\s*\\n\\s*Emnekatalog\\s*") |>
+    # a plan component that failed to render: post_fn cuts the fulltext there,
+    # but sections read past it (1,013 sections on 2026-10-05)
     stringr::str_remove_all("Error rendering component\\s*") |>
     stringr::str_remove_all("Se timeplan\\s*") |>
     # Strip "Kontaktperson:" + name line
@@ -90,12 +88,7 @@ anonymize_text <- function(institution, text,
     stringr::str_remove_all("Sist hentet fra FS[^\n]*") |>
     stringr::str_remove_all("Litteraturlista er sist oppdatert[^\n]*") |>
     # Strip "Emneansvarlig(e):" + name lines until next "Heading:" line
-    stringr::str_remove("(?m)^Emneansvarlige?:\\s*\\n(?:(?![A-ZÆØÅ][\\w ]+:)[^\\n]*\\n?)*") |>
-    # Insert missing space when heading runs into uppercase content
-    stringr::str_replace_all(
-      "(Kunnskap|Ferdigheter|Generell kompetanse|Kompetanse)(?=[A-ZÆØÅ])",
-      "\\1 "
-    )
+    stringr::str_remove("(?m)^Emneansvarlige?:\\s*\\n(?:(?![A-ZÆØÅ][\\w ]+:)[^\\n]*\\n?)*")
 }
 
 .anon_inn <- function(txt) {
@@ -103,11 +96,6 @@ anonymize_text <- function(institution, text,
   if (grepl("Emnesøket gjelder kun fra", txt, fixed = TRUE)) return(NA_character_)
 
   txt |>
-    stringr::str_remove_all("NameCreditsDateComment") |>
-    stringr::str_remove_all("(?m)^Name\\s*$") |>
-    stringr::str_remove_all("(?m)^Credits\\s*$") |>
-    stringr::str_remove_all("(?m)^Date\\s*$") |>
-    stringr::str_remove_all("(?m)^Comment\\s*$") |>
     stringr::str_remove_all("Statusmelding\\s*\\n?Emnebeskrivelsen for valgt semester er ikke publisert enda\\.[^\n]*") |>
     stringr::str_remove_all("(?m)^\\d{4}\\s+(?:Høst|Vår|Autumn|Spring)(?:,\\s*\\d{4}\\s+(?:Høst|Vår|Autumn|Spring))*\\s*$") |>
     stringr::str_replace_all("\\bEngelsk\\b", "English")
@@ -128,8 +116,6 @@ anonymize_text <- function(institution, text,
   txt |>
     # Strip from Emneansvarlig to end (names + emails + marketing)
     stringr::str_remove("Emneansvarlig\\s*\\n[\\s\\S]*$") |>
-    stringr::str_remove_all("Kontakt studieveileder\\s*") |>
-    stringr::str_remove_all("Vis flere\\s*") |>
     # Exam dates block up to the learning outcomes, library notice (#228)
     stringr::str_remove("(?s)\\nEksamensdatoer\\n.*?(?=\\nLæringsutbytte\\n)") |>
     stringr::str_remove("(?s)(?:Litteraturlisten for[^\\n]*\\s*)?Tilgang til litteratur\\n.*?folkebibliotek\\.")
@@ -161,7 +147,6 @@ anonymize_text <- function(institution, text,
 
 .anon_steiner <- function(txt) {
   txt |>
-    stringr::str_remove_all("(?m)^\\s*Side\\s+\\d+\\s+av\\s+\\d+\\s*$") |>
     # bare PDF page numbers (#248, #225)
     stringr::str_remove_all("(?m)^[ \\t]*\\d{1,3}[ \\t]*\\n")
 }
@@ -179,8 +164,6 @@ anonymize_text <- function(institution, text,
     stringr::str_remove_all("(?m)^Studieveileder:?\\s*[^\n]*") |>
     # Strip "Eksamensadministrasjon:" lines
     stringr::str_remove_all("(?m)^Eksamensadministrasjon:?\\s*[^\n]*") |>
-    # Strip "Studierettleiar kan kontaktast her:" boilerplate
-    stringr::str_remove_all("Studierettleiar kan kontaktast her:\\s*") |>
     # Strip "Kontakt:" section lines
     stringr::str_remove_all("(?m)^Kontakt:?\\s*[^\n]*")
 }
