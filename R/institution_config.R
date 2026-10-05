@@ -1,7 +1,9 @@
 # R/institution_config.R
 # Single source of truth for all institution configuration.
-# Each institution declares its harvesting strategy, CSS selectors,
-# pre/post processing functions, and fetch overrides.
+# Each institution declares its harvesting strategy, the page part that holds
+# the plan (`selector`, minus `exclude`), pre/post processing functions, fetch
+# overrides, and how the plan is read into sections (`section_*`; see
+# R/blocks.R).
 
 institution_configs <- list(
 
@@ -9,7 +11,6 @@ institution_configs <- list(
     code = "1175",
     strategy = "standard",
     selector = "#main-content",
-    selector_mode = "single",
     year_in_url = TRUE,
     section_strategy = "html",
     # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
@@ -20,7 +21,6 @@ institution_configs <- list(
     code = "1171",
     strategy = "standard",
     selector = "#right-main",
-    selector_mode = "single",
     year_in_url = TRUE,
     section_strategy = "html",
     # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
@@ -31,7 +31,6 @@ institution_configs <- list(
     code = "1150",
     strategy = "standard",
     selector = "#content",
-    selector_mode = "single",
     year_in_url = TRUE,
     request_delay = 10,  # robots.txt: Crawl-delay: 10 for all user agents
     post_fn = .post_ntnu,
@@ -47,7 +46,6 @@ institution_configs <- list(
     code = "0264",
     strategy = "standard",
     selector = ".content-inner",
-    selector_mode = "single",
     year_in_url = TRUE,
     pre_fn = .add_table_cell_breaks,
     section_strategy = "html",
@@ -62,12 +60,13 @@ institution_configs <- list(
     code = "0236",
     strategy = "url_discovery",
     selector = "article.content-emweb",
-    selector_mode = "single",
+    # course coordinator and approver (names)
+    exclude = "div.field-person-in-charge, div.field-approval-sign",
     year_in_url = TRUE,
     pre_fn = .add_table_cell_breaks,
     # Drupal fields (div.field-<name> + div.label) name each part of the plan;
     # the exam table is the unlabelled field-assessments-row (#214).
-    section_strategy = "fields",
+    section_strategy = "html",
     section_fields = c(
       "field-course-content"             = "course_content",
       "field-learning-outcome"           = "learning_outcomes",
@@ -87,7 +86,6 @@ institution_configs <- list(
     code = "0256",
     strategy = "standard",
     selector = "#vrtx-fs-emne-content, main .entry-content, .entry-content",
-    selector_mode = "single",
     year_in_url = TRUE,
     user_agent = "browser",
     section_strategy = "html",
@@ -99,7 +97,6 @@ institution_configs <- list(
     code = "0238",
     strategy = "standard",
     selector = ".l-2-col__main-content",
-    selector_mode = "single",
     year_in_url = TRUE,
     fetch_fn = fetch_html_cols_single_hvl,
     section_strategy = "html",
@@ -111,18 +108,16 @@ institution_configs <- list(
   mf = list(
     code = "8221",
     strategy = "standard",
-    selector = "main",
-    selector_mode = "single",
+    selector = "article .content-body",
+    # facts box, contact card (staff names) and banner
+    exclude = paste(".template-study-subject__details, .template-study-subject__contact,",
+                    ".wp-block-mf-banner, hgroup"),
     year_in_url = FALSE,
     # WordPress page: details/summary accordions plus an untitled intro block
     # (only three h2s, none of them plan sections) (#213). The intro is
     # course content, with paragraph sub-headings ("Arbeidsform og
-    # organisering:"); the accordion group's h2 "Om studiet" ends it. The facts
-    # box, contact card (staff names) and banner are not read.
+    # organisering:"); the accordion group's h2 "Om studiet" ends it.
     section_strategy = "html",
-    section_selector = "article .content-body",
-    section_exclude = paste(".template-study-subject__details, .template-study-subject__contact,",
-                            ".wp-block-mf-banner, hgroup"),
     section_heading_selector = "h2, summary",
     section_subheading_selector = "div.wp-block-group p",
     section_scope = "details",
@@ -139,18 +134,13 @@ institution_configs <- list(
   nord = list(
     code = "1174",
     strategy = "standard",
-    selector = paste0(
-      "#ac-trigger-0, #ac-trigger-1, #ac-trigger-2, #ac-trigger-3, #ac-trigger-4, ",
-      "#ac-trigger-5, #ac-trigger-6, #ac-trigger-7, #ac-trigger-8, ",
-      ".ac-panel--inner, #ac-panel-2 .field__item, #ac-panel-0 li, p, .placeholder-text"
-    ),
-    selector_mode = "multi",
+    # Title, course code, the short description and the accordions; each
+    # section is an accordion item (div.ac) with a trigger button, minus its
+    # "Kopier lenke" label, and a panel. Not the "sist oppdatert" line.
+    selector = "div.main-content",
+    exclude = ".copy-accordion-anchor, .pre-title",
     year_in_url = TRUE,
-    # Each section is an accordion item (div.ac): a trigger button, minus its
-    # "Kopier lenke" label, and a panel.
     section_strategy = "html",
-    section_selector = "div.accordion-container",
-    section_exclude = ".copy-accordion-anchor",
     section_heading_selector = "button.ac-trigger",
     section_scope = "div.ac",
     # Arbeidskrav/obligatorisk deltakelse are lines inside the vurdering
@@ -162,7 +152,6 @@ institution_configs <- list(
     code = "1260",
     strategy = "standard",
     selector = ".fs-body",
-    selector_mode = "single",
     year_in_url = TRUE,
     section_strategy = "html"
   ),
@@ -170,20 +159,14 @@ institution_configs <- list(
   uib = list(
     code = "1120",
     strategy = "standard",
-    selector = paste0(
-      ".accordion, .accordion__main, ",
-      ".vertical-reset-children .vertical-reset-children div, ",
-      "summary, #main-content li, p, ",
-      ".vertical-reset-children .vertical-reset-children .mt-12"
-    ),
-    selector_mode = "multi",
+    # The main column: h2 sections and the details accordions; not the sidebar
+    # (exam dates and rooms).
+    selector = "div.grid-span-main",
     year_in_url = TRUE,
     request_delay = 10,  # robots.txt: Crawl-delay: 10 for all user agents
     # h2 sections (Mål og innhald, Læringsutbytte) and details/summary
-    # accordions (Krav til forkunnskapar, Vurderingsformer, Litteraturliste)
-    # in the main column; the sidebar is not read.
+    # accordions (Krav til forkunnskapar, Vurderingsformer, Litteraturliste).
     section_strategy = "html",
-    section_selector = "div.grid-span-main",
     section_heading_selector = "h2, summary",
     section_scope = "details"
   ),
@@ -192,7 +175,6 @@ institution_configs <- list(
     code = "1110",
     strategy = "standard",
     selector = "#vrtx-course-content",
-    selector_mode = "single",
     year_in_url = FALSE,
     section_strategy = "html",
     # h3 carries Obligatoriske/Anbefalte forkunnskaper inside "Opptak til
@@ -203,17 +185,13 @@ institution_configs <- list(
   uis = list(
     code = "1160",
     strategy = "html_pdf_discovery",
-    # Every block of the plan is a direct child of .article__section; leave out
-    # the page navigation, the contact footer (staff names) and the facts box,
-    # but keep the exam boxes, which share its class (#251)
-    selector = paste("#block-page-content .article__section >",
-                     ":not(.content-navigation):not(.course-footer):not(.factbox--course),",
-                     "#block-page-content .factbox--exam"),
-    selector_mode = "multi",
+    # The plan, without the page navigation, the contact footer (staff names)
+    # and the facts box, but with the exam boxes, which share its class
+    # (#251). Pages of withdrawn course versions have no div.article, only a
+    # notice ("This course version is no longer available ...").
+    selector = "#block-page-content div.article",
+    exclude = ".content-navigation, .course-footer, .factbox--course:not(.factbox--exam)",
     year_in_url = TRUE,
-    # The multi selector's first match is a link, so html_headings found no
-    # sections and every page fell back to text_split (#214).
-    section_selector = "#block-page-content",
     section_strategy = "html",
     # PDF plans (text_split fallback) open with a title and a metadata block;
     # the untitled paragraph after it is the course introduction (#243).
@@ -234,7 +212,6 @@ institution_configs <- list(
     # lærer du, Undervisning og pensum, Eksamen) plus the year picker and the
     # contact block with staff names, which .pre_uit() cuts (#218).
     selector = ".mainContent",
-    selector_mode = "single",
     year_in_url = TRUE,
     post_fn = .pre_uit,
     section_strategy = "html",
@@ -246,7 +223,6 @@ institution_configs <- list(
     code = "1173",
     strategy = "standard",
     selector = ".layout",
-    selector_mode = "single",
     year_in_url = FALSE,
     section_strategy = "html",
     section_heading_selector = "h3",

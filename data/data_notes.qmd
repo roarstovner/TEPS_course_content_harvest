@@ -180,7 +180,7 @@ chainlink.
 
 ### NLA (NLA University College)
 
-- Latest year only. Each course page embeds every academic year as JSON; `extract_nla_json()` takes the year of the row (spring 2025 → 2024-2025, autumn 2025 → 2025-2026). A row with a page but no plan is an academic year missing from that JSON
+- Latest year only. Each course page embeds every academic year as JSON; the json block reader (`R/blocks.R`) takes the year of the row (spring 2025 → 2024-2025, autumn 2025 → 2025-2026). A row with a page but no plan is an academic year missing from that JSON
 - The `/studietilbud/emner/` URLs are rendered in the browser, so the harvest uses `/for-studenter/Studie-%20og%20emneplaner/emneplan/{CODE}` (#55)
 
 ---

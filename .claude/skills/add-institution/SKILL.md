@@ -20,7 +20,8 @@ Before starting, gather:
 1. The institution's short name (lowercase, e.g., "newuni")
 2. The institution code from DBH (e.g., "1234")
 3. A sample course URL from the institution's website
-4. The CSS selector for the main course content
+4. The CSS selector of the element that holds the course plan, and the parts
+   of it that are not the plan (navigation, contact box, widgets)
 
 ## Procedure
 
@@ -32,11 +33,21 @@ Add a new entry to the `institution_configs` list:
 newuni = list(
   code = "1234",
   strategy = "standard",          # or url_discovery, shadow_dom, etc.
-  selector = ".main-content",     # CSS selector for course plan content
-  selector_mode = "single",       # "single" (html_element) or "multi" (html_elements)
-  year_in_url = TRUE              # FALSE if institution doesn't use year in URLs
+  selector = ".main-content",     # the element that holds the course plan (first match)
+  exclude = ".contact-box",       # optional: parts of it that are not the plan
+  year_in_url = TRUE,             # FALSE if institution doesn't use year in URLs
+  section_strategy = "html",      # read the page as html; see README "Blocks and Sections"
+  section_heading_selector = "h2" # the section headings (default h2)
 )
 ```
+
+The page is read once into blocks (`R/blocks.R`); the `extracted_text` and the
+sections are both made from them, so `selector`/`exclude` decide what text the
+plan has and the `section_*` fields only how it is split. For pages built
+from accordions use `section_heading_selector = "summary"` (or the accordion's
+trigger) and `section_scope = "details"` (or the accordion item); for
+paragraph sub-headings use `section_subheading_selector = "p"`. README "Blocks
+and Sections" lists every field with the institution that uses it.
 
 Optional config fields:
 - `pre_fn`: Function applied to HTML before parsing (e.g., `.add_table_cell_breaks`)
@@ -75,6 +86,9 @@ source("R/add_course_url.R")
 source("R/resolve_course_urls.R")
 source("R/fetch_html_cols.R")
 source("R/extract_fulltext.R")
+source("R/section_heading_map.R")
+source("R/blocks.R")
+source("R/extract_sections.R")
 source("R/institution_config.R")
 source("R/checkpoint.R")
 source("R/harvest_strategies.R")
@@ -88,6 +102,13 @@ result <- harvest_institution("newuni", courses, year = 2025)
 # Inspect results
 result |> dplyr::select(Emnekode, url, html_success, extracted_text) |> head()
 result$extracted_text[1]  # Inspect extracted text
+
+# How a page is read and split: headings with the section they map to (NA =
+# unmapped; add a pattern to R/section_heading_map.R), then the sections
+cfg <- .block_cfg(get_institution_config("newuni"))
+b <- page_blocks(result$html[1], NA, cfg)
+b[b$role != "text", c("role", "text", "section")]
+page_sections(b, result$extracted_text[1], cfg)
 ```
 
 ### Step 4: Run full harvest
@@ -120,11 +141,9 @@ If content is loaded via JavaScript/Shadow DOM:
 
 Add a custom `fetch_fn` to the config that detects empty/error pages and raises an error.
 
-### Institution needs multiple CSS selectors
+### The plan is spread over several parts of the page
 
-Set `selector_mode = "multi"` in config and use a comma-separated CSS selector string:
-
-```r
-selector = ".section-1, .section-2, .accordion-body",
-selector_mode = "multi"
-```
+Use the narrowest element that holds all of them as `selector` and leave out
+what lies between them with `exclude` (uis: `"#block-page-content"` minus
+navigation, contact footer and facts box). A selector that matches several
+elements is not supported: only the first match is read.

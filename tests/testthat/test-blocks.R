@@ -65,19 +65,23 @@ test_that("the text reader marks heading-shaped lines that switch section", {
   expect_equal(b$text[-1], c("Intro.", "Læringsutbytte", "Kunnskap", "Kunnskap", "Kan ting."))
 })
 
-test_that("the fields reader opens a section per field and keeps later labels", {
-  html <- "<article><div class='field-course-content'><div class='label'>Innhald</div>Tekst</div>
+test_that("fields are headings in scopes of their own; later labels are kept", {
+  html <- "<article><h1>X1 Tittel</h1><div class='field-course-content'><div class='label'>Innhald</div>Tekst</div>
     <div class='field-learning-outcome-knowledge'><div class='label'>Kunnskapar</div>Kan</div>
     <div class='field-learning-outcome-skills'><div class='label'>Ferdigheiter</div>Gjer</div>
-    <div class='field-contact'><div class='label'>Kontakt</div>Ola</div></article>"
-  cfg <- list(reader = "fields", container = "article", fields = c(
+    <div class='programs'>Inngår i MGLU</div></article>"
+  cfg <- list(reader = "html", container = "article", fields = c(
     "field-course-content" = "course_content",
     "field-learning-outcome-knowledge" = "learning_outcomes",
     "field-learning-outcome-skills" = "learning_outcomes"))
   b <- page_blocks(html, NA, cfg)
-  expect_equal(roles(b), c("heading:course_content", "text:NA", "heading:learning_outcomes",
-                           "text:NA", "heading:learning_outcomes", "text:NA"))
-  expect_equal(b$text[c(2, 4, 6)], c("Tekst", "Kan", "Ferdigheiter\nGjer"))
+  h <- b[b$role == "heading", ]
+  expect_equal(h$section, c("course_content", "learning_outcomes", "learning_outcomes"))
+  expect_equal(b$text[b$role == "text"],
+               c("X1 Tittel", "Tekst", "Kan", "Ferdigheiter\nGjer", "Inngår i MGLU"))
+  s <- sectionize(b)
+  expect_equal(s$raw_text, c("Tekst", "Kan\n\nFerdigheiter\nGjer"))
+  expect_match(.blocks_text(b), "^X1 Tittel\nInnhald\nTekst")
 })
 
 test_that("the json reader reads nla's titles and contents", {

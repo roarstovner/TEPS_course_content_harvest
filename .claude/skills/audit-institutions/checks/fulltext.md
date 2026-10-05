@@ -1,9 +1,9 @@
 # Check: fulltext
 
 Audits **fulltext extraction**: whether the harvest's `extracted_text` is a
-faithful, clean copy of the course plan on the fetched page (the output of
-`extract_fulltext_css()` and the institution strategies in
-`R/harvest_strategies.R`).
+faithful, clean copy of the course plan on the fetched page: the page's
+blocks as text (`R/blocks.R`, `page_fulltext()` in `R/extract_fulltext.R`),
+set by `selector`, `exclude` and `post_fn` in `R/institution_config.R`.
 
 - **Default model:** `sonnet`
 - **Audited output:** `extracted_text` in `data/interim/extracted_text.RDS` (rebuilt by `targets::tar_make()`)
@@ -12,8 +12,8 @@ faithful, clean copy of the course plan on the fetched page (the output of
 
 ## Pipeline (orchestrator)
 
-Needs only the harvest output. Re-harvest an institution first if its
-extraction config changed (`harvest_institution()`, see CLAUDE.md).
+Needs the harvest and `data/interim/extracted_text.RDS`. After a change to
+the extraction config, rebuild with `targets::tar_make()` (no new harvest).
 
 ```bash
 Rscript R/audit/prepare_fulltext.R [inst ...]   # -> data/audit/fulltext/packets/

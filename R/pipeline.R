@@ -16,10 +16,17 @@ institution_config_target <- function(institution) {
   })
 }
 
-institution_fulltext <- function(html_file, config) {
+# extracted_text of every row: the page's blocks as text (#276); rows without
+# blocks (PDF plans, usn's rendered text) as extract_fulltext_from_raw() gives
+# them.
+institution_fulltext <- function(html_file, blocks, config) {
   df <- readRDS(html_file)
+  pages <- split(blocks[names(.empty_blocks())], blocks$course_id)
+  text <- vapply(pages, page_fulltext, character(1), config = config)[df$course_id]
+  rest <- !df$course_id %in% names(pages)
+  text[rest] <- extract_fulltext_from_raw(df[rest, ], config)
   tibble::tibble(course_id = df$course_id, institution = config$name,
-                 extracted_text = extract_fulltext_from_raw(df, config))
+                 extracted_text = unname(text))
 }
 
 # Offerings with the anonymized course_plan and plan ids: list(plans, courses)
@@ -34,16 +41,15 @@ institution_plans <- function(html_file, fulltext) {
   deduplicate_plans(df)
 }
 
-# Every page read once into blocks (R/blocks.R; #272): course_id plus the
-# block columns. Pages without HTML are read from their text by the text
-# reader only.
-institution_blocks <- function(html_file, fulltext, config) {
+# Every page with HTML read once into blocks (R/blocks.R; #272): course_id
+# plus the block columns. Institutions read from text (usn, steiner) have no
+# blocks here; their sections read the extracted_text.
+institution_blocks <- function(html_file, config) {
   df <- readRDS(html_file)
   cfg <- .block_cfg(config)
-  text <- fulltext$extracted_text[match(df$course_id, fulltext$course_id)]
   html <- df$html %||% rep(NA_character_, nrow(df))
-  read <- if (cfg$reader == "text") !is.na(text) else !is.na(html) & nzchar(html)
-  blocks <- lapply(which(read), function(i) page_blocks(html[i], text[i], cfg, df$course_id[i]))
+  read <- cfg$reader %in% c("html", "json") & !is.na(html) & nzchar(html)
+  blocks <- lapply(which(read), function(i) page_blocks(html[i], NA, cfg, df$course_id[i]))
   dplyr::bind_rows(tibble::tibble(course_id = character()), .empty_blocks(),
                    tibble::tibble(course_id = rep(df$course_id[read], vapply(blocks, nrow, 1L)),
                                   dplyr::bind_rows(.empty_blocks(), blocks)))

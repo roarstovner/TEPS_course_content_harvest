@@ -74,7 +74,8 @@ sectionize <- function(blocks) {
 
 #' Sections of one page
 #'
-#' sectionize() on the page's blocks. When the html reader finds fewer than 3
+#' sectionize() on the page's blocks (for the text reader, the lines of
+#' extracted_text). When the html reader finds fewer than 3
 #' sections, the lines of extracted_text are tried instead, and kept if they
 #' give more (#183). Then nord-style coursework lines move out of assessment
 #' (`section_inline_coursework`) and .clean_sections() tidies the rows.
@@ -84,6 +85,7 @@ sectionize <- function(blocks) {
 #' @param cfg Reader settings from .block_cfg().
 #' @return Tibble `section`, `raw_text`.
 page_sections <- function(blocks, text, cfg) {
+  if (identical(cfg$reader, "text")) blocks <- .text_blocks(text, cfg)
   out <- sectionize(blocks)
   if (identical(cfg$reader, "html") && nrow(out) < 3) {
     fallback <- sectionize(.text_blocks(text, cfg))

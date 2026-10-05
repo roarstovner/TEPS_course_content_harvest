@@ -1,39 +1,6 @@
 # R/extract_fulltext.R
-
-#' Config-driven CSS extraction (replaces institution-specific dispatching)
-#'
-#' @param html Character vector of raw HTML strings
-#' @param selector CSS selector string
-#' @param mode "single" (html_element) or "multi" (html_elements, collapsed)
-#' @param pre_fn Optional function applied to HTML string before parsing
-#' @param post_fn Optional function applied to extracted text after parsing
-#' @return Character vector of extracted text (NA where extraction fails)
-extract_fulltext_css <- function(html, selector, mode = "single",
-                                 pre_fn = NULL, post_fn = NULL) {
-  safe_extract <- purrr::possibly(function(h) {
-    if (!is.null(pre_fn)) h <- pre_fn(h)
-    doc <- .read_doc(h)
-    text <- if (mode == "single") {
-      node <- rvest::html_element(doc, selector)
-      if (length(node) == 0) return(NA_character_)
-      rvest::html_text2(node)
-    } else {
-      nodes <- rvest::html_elements(doc, selector)
-      if (length(nodes) == 0) return(NA_character_)
-      txt <- rvest::html_text2(nodes)
-      txt <- txt[nzchar(txt)]
-      if (length(txt) == 0) return(NA_character_)
-      paste(txt, collapse = "\n")
-    }
-    if (!is.null(post_fn)) text <- post_fn(text)
-    if (is.na(text) || !nzchar(text)) NA_character_ else text
-  }, otherwise = NA_character_)
-
-  purrr::map_chr(html, function(h) {
-    if (is.na(h) || !nzchar(h)) return(NA_character_)
-    safe_extract(h)
-  })
-}
+# The plan text (`extracted_text`) of each harvested page: the page's blocks
+# (R/blocks.R) as text, or for pages without HTML the text the harvest kept.
 
 # Parse HTML without script/style text (ntnu's "function toggleRooms(...)"
 # ended up in assessment, #245; uit's page scripts, #218) or form widgets
@@ -48,31 +15,44 @@ extract_fulltext_css <- function(html, selector, mode = "single",
 #' Extract course plan text from the raw harvest
 #'
 #' One place for how `extracted_text` is made from what the harvest stored
-#' (#256), used by the harvest strategies and by the {targets} pipeline:
-#' the CSS selector and pre/post functions on `html` (standard, url_discovery,
-#' uis web pages), the year's JSON in nla's page, cleanup of the text USN
-#' renders in Chrome. Rows the harvest filled from a PDF (uis archive plans,
-#' steiner) have no `html`: the PDF itself is not kept, so their stored text is
-#' the raw data and is returned as is.
+#' (#256), used by the harvest strategies and by the {targets} pipeline. A page
+#' with HTML is read into blocks (R/blocks.R) and the blocks are its text
+#' (#276), so the text and the sections come from one reading of the page. USN
+#' renders its pages in Chrome and keeps the text; rows the harvest filled from
+#' a PDF (uis archive plans, steiner) have no `html`: the PDF itself is not
+#' kept, so their stored text is the raw data and is returned as is.
 #'
-#' @param df Harvested rows of one institution (`html`, and `academic_year`
-#'   for nla; `extracted_text` for PDF rows).
+#' @param df Harvested rows of one institution (`html`, `course_id`;
+#'   `extracted_text` for PDF rows).
 #' @param config Institution config from get_institution_config().
 #' @return Character vector of extracted text, one per row.
 extract_fulltext_from_raw <- function(df, config) {
   stored <- df$extracted_text %||% rep(NA_character_, nrow(df))
+  html <- df$html %||% rep(NA_character_, nrow(df))
   switch(config$strategy,
-    noop         = rep(NA_character_, nrow(df)),
-    pdf_split    = stored,
-    shadow_dom   = .cleanup_usn_text(df$html),
-    json_extract = extract_nla_json(df$html, df$academic_year),
-    dplyr::if_else(
-      is.na(df$html),
-      stored,
-      extract_fulltext_css(df$html, config$selector, config$selector_mode,
-                           pre_fn = config$pre_fn, post_fn = config$post_fn)
-    )
+    noop       = rep(NA_character_, nrow(df)),
+    pdf_split  = stored,
+    shadow_dom = .cleanup_usn_text(html),
+    {
+      cfg <- .block_cfg(config)
+      vapply(seq_len(nrow(df)), function(i) {
+        if (is.na(html[i]) || !nzchar(html[i])) return(stored[i])
+        page_fulltext(page_blocks(html[i], NA, cfg, df$course_id[i]), config)
+      }, character(1))
+    }
   )
+}
+
+#' The extracted_text of a page from its blocks
+#'
+#' @param blocks Block table from page_blocks().
+#' @param config Institution config; its `post_fn` cuts what the blocks
+#'   cannot leave out (ntnu's timetable, uit's year picker and contact block).
+#' @return Character(1), NA when there is no text.
+page_fulltext <- function(blocks, config) {
+  text <- .blocks_text(blocks)
+  if (!is.na(text) && !is.null(config$post_fn)) text <- config$post_fn(text)
+  if (is.na(text) || !nzchar(trimws(text))) NA_character_ else text
 }
 
 #' Harvested rows with the current extracted_text
@@ -124,75 +104,6 @@ read_harvest <- function(institutions = NULL,
     # A heading left alone means the plan itself did not render
     stringr::str_remove("^(?:Om emnet|About the course)\\s*$") |>
     stringr::str_trim()
-}
-
-extract_nla_json <- function(raw_html, academic_year) {
-  safe <- purrr::possibly(.extract_nla_json_one, otherwise = NA_character_)
-  purrr::map2_chr(raw_html, academic_year, safe)
-}
-
-.extract_nla_json_one <- function(raw_html, academic_year) {
-  if (is.na(raw_html) || !nzchar(raw_html)) return(NA_character_)
-  if (is.na(academic_year)) return(NA_character_)
-
-  doc <- rvest::read_html(raw_html)
-  scripts <- rvest::html_elements(doc, "script")
-  script_texts <- rvest::html_text(scripts)
-
-  idx <- grep("EmneplanPage", script_texts, fixed = TRUE)
-  if (length(idx) == 0) return(NA_character_)
-
-  script_text <- script_texts[idx[1]]
-
-  # Extract the JSON object from the script tag
-  json_match <- regmatches(script_text, regexpr("\\{.*\\}", script_text))
-  if (length(json_match) == 0) return(NA_character_)
-
-  parsed <- jsonlite::fromJSON(json_match, simplifyVector = FALSE)
-  items <- parsed$props$items
-  if (is.null(items)) return(NA_character_)
-
-  year_data <- items[[academic_year]]
-  if (is.null(year_data)) return(NA_character_)
-
-  parts <- character()
-
-  # Extract title
-  if (!is.null(year_data$title) && nzchar(year_data$title)) {
-    parts <- c(parts, year_data$title)
-  }
-
-  # Extract table items: "title: content" lines
-  if (!is.null(year_data$table)) {
-    for (item in year_data$table) {
-      if (!is.null(item$title) && !is.null(item$content) && nzchar(item$content)) {
-        parts <- c(parts, paste0(item$title, ": ", item$content))
-      }
-    }
-  }
-
-  # Extract accordion items: title + html_text of content
-  if (!is.null(year_data$accordions)) {
-    for (item in year_data$accordions) {
-      section_parts <- character()
-      if (!is.null(item$title) && nzchar(item$title)) {
-        section_parts <- c(section_parts, item$title)
-      }
-      if (!is.null(item$content) && nzchar(item$content)) {
-        content_doc <- rvest::read_html(paste0("<div>", item$content, "</div>"))
-        content_text <- rvest::html_text2(rvest::html_element(content_doc, "div"))
-        if (!is.na(content_text) && nzchar(content_text)) {
-          section_parts <- c(section_parts, content_text)
-        }
-      }
-      if (length(section_parts) > 0) {
-        parts <- c(parts, paste(section_parts, collapse = "\n"))
-      }
-    }
-  }
-
-  if (length(parts) == 0) return(NA_character_)
-  paste(parts, collapse = "\n\n")
 }
 
 #' Parse UiS semester dropdown to discover available years and their URLs

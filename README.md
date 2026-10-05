@@ -57,14 +57,16 @@ URL must be discovered)</td>
 <code>html_error</code></td>
 </tr>
 <tr>
-<td>5. Extract text (CSS selector, nla JSON, USN cleanup)</td>
+<td>5. Extract text (the page’s blocks as text, USN cleanup, PDF
+text)</td>
 <td><code>extract_fulltext_from_raw()</code>
 (<code>R/extract_fulltext.R</code>)</td>
 <td><code>data/raw/html_{inst}.RDS</code> (raw harvest)</td>
 </tr>
 <tr>
-<td>6. Rebuild the text from the stored HTML</td>
-<td><code>institution_fulltext()</code> (<code>R/pipeline.R</code>)</td>
+<td>6. Read each stored page into blocks; the text is the blocks</td>
+<td><code>institution_blocks()</code>,
+<code>institution_fulltext()</code> (<code>R/pipeline.R</code>)</td>
 <td><code>extracted_text.RDS</code></td>
 </tr>
 <tr>
@@ -85,15 +87,18 @@ Stages 1-5 are run per institution by `harvest_institution()`, which
 dispatches to a strategy in `R/harvest_strategies.R` (`standard`,
 `url_discovery`, `shadow_dom`, `html_pdf_discovery`, `pdf_split`,
 `json_extract`, `noop`). `R/institution_config.R` is the single source
-of truth for each institution: strategy, CSS selector, `selector_mode`,
-`year_in_url`, pre/post functions, fetch overrides and the `section_*`
-fields. Stages 6-8 and everything after them are a {targets} pipeline
-(see “Rebuilding Derived Data”).
+of truth for each institution: strategy, the part of the page that holds
+the plan (`selector`, minus `exclude`), `year_in_url`, pre/post
+functions, fetch overrides and the `section_*` fields. Stages 6-8 and
+everything after them are a {targets} pipeline (see “Rebuilding Derived
+Data”).
 
 `data/raw/html_{inst}.RDS` is the raw harvest and only harvesting writes
 it. The steps after it rebuild everything from it with the current code,
 so a changed selector or post function needs `targets::tar_make()`, not
-a new harvest. The `extracted_text` saved with the harvest is not used
+a new harvest. A page is read once into blocks (see “Blocks and
+Sections”), and both the `extracted_text` and the sections are made from
+them. The `extracted_text` saved with the harvest is not used
 downstream, except for plans that came from a PDF (uis archive plans,
 steiner): the PDF is not kept, so that text is the raw data.
 
@@ -108,6 +113,8 @@ source("R/add_course_url.R")
 source("R/resolve_course_urls.R")
 source("R/fetch_html_cols.R")
 source("R/extract_fulltext.R")
+source("R/section_heading_map.R")
+source("R/blocks.R")
 source("R/institution_config.R")
 source("R/checkpoint.R")
 source("R/harvest_strategies.R")
@@ -228,9 +235,10 @@ steps.
 newuni = list(
   code = "1234",
   strategy = "standard",          # or url_discovery, shadow_dom, etc.
-  selector = ".main-content",     # CSS selector for course plan content
-  selector_mode = "single",       # "single" or "multi"
-  year_in_url = TRUE
+  selector = ".main-content",     # the element that holds the course plan
+  exclude = ".contact",           # optional: parts of it that are not the plan
+  year_in_url = TRUE,
+  section_strategy = "html"       # how the plan is split; see "Blocks and Sections"
 )
 ```
 
@@ -243,8 +251,10 @@ newuni = list(
     https://rvest.tidyverse.org/articles/selectorgadget.html
 5.  Test your selector to make sure it captures all course text
 
-Use `selector_mode = "multi"` when the plan is spread over several
-elements (nord, uib, uis, uit do this for accordions and sections).
+`selector` names one element (the first match is used); choose the
+narrowest element that holds the whole plan, and leave out navigation,
+contact boxes (staff names) and widgets inside it with `exclude` (uis,
+mf, hivolda do this).
 
 ### 2. Add URL builder to `R/add_course_url.R`
 
@@ -393,16 +403,10 @@ What differs between institutions is how their pages are read, set by
 <tbody>
 <tr>
 <td><code>html</code></td>
-<td>oslomet, uia, ntnu, inn, hiof, hvl, mf, nord, nih, uib, uio, uis,
-uit, nmbu</td>
-<td>The DOM under <code>section_selector</code>. Falls back to
-<code>text</code> when it finds &lt; 3 sections</td>
-</tr>
-<tr>
-<td><code>fields</code></td>
-<td>hivolda</td>
-<td><code>div.field-&lt;name&gt;</code> containers mapped to sections by
-<code>section_fields</code></td>
+<td>oslomet, uia, ntnu, inn, hiof, hivolda, hvl, mf, nord, nih, uib,
+uio, uis, uit, nmbu</td>
+<td>The DOM under <code>selector</code>. Falls back to <code>text</code>
+when it finds &lt; 3 sections</td>
 </tr>
 <tr>
 <td><code>json</code></td>
@@ -427,11 +431,8 @@ titles)</td>
 
 Fields for the `html` reader:
 
-- `section_selector`: the container (default: the fulltext `selector`;
-  needed when that is a multi-element selector, which `html_element()`
-  would cut to its first match: uis `#block-page-content`, nord, uib,
-  mf).
-- `section_exclude`: elements not read (mf’s facts box, contact card and
+- `selector` and `exclude` (shared with the fulltext): the container,
+  and elements in it that are not read (mf’s facts box, contact card and
   banner; nord’s “Kopier lenke” label).
 - `section_heading_selector`: section headings (default `h2`; ntnu
   `"h2, h3"` for its “Eksamen” block, inn’s `div.label`, uib’s and mf’s
@@ -440,6 +441,9 @@ Fields for the `html` reader:
   nord’s `div.ac`); the section open around them continues after them.
 - `section_initial`: section for text before the first heading (mf’s
   untitled intro is course_content).
+- `section_fields`: hivolda’s Drupal fields (`div.field-<name>`) are the
+  headings, each mapped to a section by its class name; text outside the
+  fields (title, programmes) is in the fulltext but in no section.
 - `section_subheading_selector`: elements inside a section that switch
   to another section (uio `"h3, h4, p"`; `"p"` for uia, oslomet, hiof,
   hvl, nmbu; mf’s intro paragraphs). A `<p>` counts if its whole text
@@ -816,14 +820,19 @@ in Sámi.
 <td>Download HTML, skipping courses already in the checkpoint</td>
 </tr>
 <tr>
-<td><code>extract_fulltext_css(html, selector, mode, pre_fn, post_fn)</code></td>
-<td><code>R/extract_fulltext.R</code></td>
-<td>Config-driven CSS text extraction</td>
-</tr>
-<tr>
 <td><code>extract_fulltext_from_raw(df, config)</code></td>
 <td><code>R/extract_fulltext.R</code></td>
 <td><code>extracted_text</code> from the raw harvest, per strategy</td>
+</tr>
+<tr>
+<td><code>page_blocks(html, text, cfg)</code></td>
+<td><code>R/blocks.R</code></td>
+<td>Read one page into a block table</td>
+</tr>
+<tr>
+<td><code>page_fulltext(blocks, config)</code></td>
+<td><code>R/extract_fulltext.R</code></td>
+<td>A page’s <code>extracted_text</code> from its blocks</td>
 </tr>
 <tr>
 <td><code>read_harvest(institutions)</code></td>
@@ -855,9 +864,14 @@ sections</td>
 <code>plan_content_id</code></td>
 </tr>
 <tr>
-<td><code>extract_sections(institution, html, extracted_text, course_id)</code></td>
+<td><code>page_sections(blocks, text, cfg)</code></td>
 <td><code>R/extract_sections.R</code></td>
-<td>Split course pages into the seven sections</td>
+<td>A page’s sections from its blocks</td>
+</tr>
+<tr>
+<td><code>extract_sections(config, html, extracted_text, course_id)</code></td>
+<td><code>R/extract_sections.R</code></td>
+<td><code>page_sections()</code> for many pages</td>
 </tr>
 </tbody>
 </table>
@@ -876,9 +890,10 @@ page says no information is available
 **Extracted text is empty or wrong?** - Verify the CSS selector with
 browser dev tools on a real course page - Update the selector in
 `R/institution_config.R` if the website changed, then
-`targets::tar_make()` (no new harvest needed) - Check whether the
-institution needs `selector_mode = "multi"` - Some pages have different
-structures for different years
+`targets::tar_make()` (no new harvest needed) - Read one page into
+blocks and look at them:
+`page_blocks(html, NA, .block_cfg(get_institution_config("inst")))` -
+Some pages have different structures for different years
 
 **Content missing from JavaScript-rendered pages?** - Shadow DOM content
 is invisible to `html_text()`; see USN above -

@@ -1,7 +1,7 @@
 # R/blocks.R
 # The block model (#272): a page is read once into a block table, one row per
-# heading or piece of text in document order. Sections (and the fulltext,
-# #276) are views of the blocks.
+# heading or piece of text in document order. The fulltext (.blocks_text())
+# and the sections (sectionize()) are views of the blocks.
 #
 # A block table has the columns
 #   role     "heading" opens a section (an unmapped heading closes it);
@@ -14,15 +14,18 @@
 #   section  where a heading or sub-heading maps (R/section_heading_map.R);
 #            NA when it maps nowhere, and on text
 #   keep     a sub-heading whose text stays as the first line of its section
+#   tag      the element the text came from; "p" is a paragraph (a blank line
+#            around it in the fulltext), "p+" the rest of a paragraph split at
+#            a sub-heading
 #
 # Readers, chosen by `section_strategy` in R/institution_config.R:
-#   html   — a DOM walk under `section_selector` (default: the fulltext
-#            `selector`) without `section_exclude`; headings by
+#   html   — a DOM walk under `selector` without `exclude`; headings by
 #            `section_heading_selector` (default h2), sub-headings by
 #            `section_subheading_selector`, sections of their own by
 #            `section_scope`; text before the first heading goes to
 #            `section_initial` (default: dropped)
-#   fields — hivolda's Drupal fields, named by `section_fields`
+#            When `section_fields` is set (hivolda), each top-level
+#            `div.field-<name>` is a heading of its own (see .field_block())
 #   json   — nla's EmneplanPage JSON
 #   text   — lines of extracted_text (usn, PDF plans; the html fallback),
 #            after a header matching `section_text_header`
@@ -30,7 +33,7 @@
 
 .empty_blocks <- function() {
   tibble::tibble(role = character(), text = character(), section = character(),
-                 keep = logical())
+                 keep = logical(), tag = character())
 }
 
 # Block reader settings from an institution config. `ic` is passed in rather
@@ -38,15 +41,13 @@
 # institution is rebuilt (#264).
 .block_cfg <- function(ic) {
   reader <- ic$section_strategy %||% stop("No section_strategy for institution: ", ic$name)
-  if (!reader %in% c("html", "fields", "json", "text", "noop")) {
+  if (!reader %in% c("html", "json", "text", "noop")) {
     stop("Unknown section_strategy for ", ic$name, ": ", reader)
   }
   list(
     reader            = reader,
-    # A multi-element fulltext selector (selector_mode = "multi") cannot be
-    # the container: html_element() takes only its first match.
-    container         = ic$section_selector %||% ic$selector,
-    exclude           = ic$section_exclude,
+    container         = ic$selector,
+    exclude           = ic$exclude,
     heading           = ic$section_heading_selector %||% "h2",
     sub               = ic$section_subheading_selector,
     scope             = ic$section_scope,
@@ -69,23 +70,39 @@
 page_blocks <- function(html, text, cfg, course_id = NA_character_) {
   switch(cfg$reader,
     html   = .html_blocks(html, cfg),
-    fields = .field_blocks(html, cfg),
     json   = .json_blocks(html, course_id),
     text   = .text_blocks(text, cfg),
     .empty_blocks()
   )
 }
 
-# Collects blocks in order; $add(role, text, section, keep), $table().
+# Collects blocks in order; $add(role, text, section, keep, tag), $table().
 .block_list <- function() {
-  role <- text <- section <- character()
+  role <- text <- section <- tag <- character()
   keep <- logical()
   list(
-    add = function(r, t, s = NA_character_, k = FALSE) {
-      role <<- c(role, r); text <<- c(text, t); section <<- c(section, s); keep <<- c(keep, k)
+    add = function(r, t, s = NA_character_, k = FALSE, g = "") {
+      role <<- c(role, r); text <<- c(text, t); section <<- c(section, s)
+      keep <<- c(keep, k); tag <<- c(tag, g)
     },
-    table = function() tibble::tibble(role = role, text = text, section = section, keep = keep)
+    table = function() tibble::tibble(role = role, text = text, section = section,
+                                      keep = keep, tag = tag)
   )
+}
+
+#' The fulltext of a page from its blocks
+#'
+#' Block texts in order, one per line, with a blank line around paragraphs
+#' (as rvest::html_text2() renders them).
+#'
+#' @param blocks Block table from page_blocks().
+#' @return Character(1), NA when the blocks hold no text.
+.blocks_text <- function(blocks) {
+  b <- blocks[!blocks$role %in% c("start", "end") & nzchar(trimws(blocks$text)), ]
+  if (nrow(b) == 0) return(NA_character_)
+  prev <- c("", b$tag[-nrow(b)])
+  gap <- b$tag == "p" | (prev %in% c("p", "p+") & b$tag != "p+")
+  paste0(c("", ifelse(gap, "\n\n", "\n")[-1]), trimws(b$text), collapse = "")
 }
 
 # --- html ---------------------------------------------------------------------
@@ -107,7 +124,10 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
 
   # Mark headings, sub-headings and scopes on the nodes, and their ancestors
   # as nodes to walk into; any other subtree is read whole.
-  xml2::xml_set_attr(rvest::html_elements(root, cfg$heading), "data-block", "heading")
+  # With section_fields the fields are the headings
+  if (is.null(cfg$fields)) {
+    xml2::xml_set_attr(rvest::html_elements(root, cfg$heading), "data-block", "heading")
+  }
   if (!is.null(cfg$sub)) {
     subs <- rvest::html_elements(root, cfg$sub)
     subs <- subs[is.na(xml2::xml_attr(subs, "data-block"))]
@@ -123,11 +143,19 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
   if (!is.null(cfg$scope)) {
     xml2::xml_set_attr(rvest::html_elements(root, cfg$scope), "data-scope", "1")
   }
+  if (!is.null(cfg$fields)) {
+    fields <- xml2::xml_find_all(root, paste0(
+      ".//div[contains(@class, 'field-') and ",
+      "not(ancestor::div[contains(@class, 'field-')])]"))
+    xml2::xml_set_attr(fields, "data-block", "field")
+    xml2::xml_set_attr(fields, "data-scope", "1")
+  }
   marked <- xml2::xml_find_all(root, ".//*[@data-block or @data-scope]")
   xml2::xml_set_attr(xml2::xml_find_all(marked, "ancestor::*"), "data-walk", "1")
 
   out <- .block_list()
   if (!is.null(cfg$initial)) out$add("heading", "", cfg$initial)
+  read_sections <- character()
   walk_contents <- function(node) {
     run <- list()
     flush_run <- function() {
@@ -155,14 +183,17 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
     mark <- xml2::xml_attr(node, "data-block")
     scope <- !is.na(xml2::xml_attr(node, "data-scope"))
     if (scope) out$add("start", "")
+    tag <- tolower(xml2::xml_name(node))
     if (identical(mark, "heading")) {
       txt <- rvest::html_text2(node)
-      out$add("heading", txt, match_heading_to_section(txt))
+      out$add("heading", txt, match_heading_to_section(txt), g = tag)
     } else if (identical(mark, "sub")) {
       .sub_blocks(node, out$add)
+    } else if (identical(mark, "field")) {
+      read_sections <<- .field_block(node, cfg$fields, read_sections, out$add)
     } else if (is.na(xml2::xml_attr(node, "data-walk"))) {
       txt <- rvest::html_text2(node)
-      if (nzchar(trimws(txt))) out$add("text", txt)
+      if (nzchar(trimws(txt))) out$add("text", txt, g = tag)
     } else {
       walk_contents(node)
     }
@@ -201,12 +232,17 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
 #     følgende obligatoriske aktiviteter, som må være godkjent før eksamen:"):
 #     coursework_requirements, its text kept (uio; #246).
 # Otherwise it is text.
-.sub_blocks <- function(node, add) {
+.sub_blocks <- function(node, add_block) {
   raw <- rvest::html_text2(node)
   sq <- stringr::str_squish(raw)
   if (!nzchar(sq)) return(invisible())
-  if (grepl("^h[1-6]$", tolower(xml2::xml_name(node)))) {
-    return(add("sub", raw, match_heading_to_section(sq)))
+  tag <- tolower(xml2::xml_name(node))
+  if (grepl("^h[1-6]$", tag)) return(add_block("sub", raw, match_heading_to_section(sq), g = tag))
+  # pieces of one paragraph: the first is tagged "p", the rest "p+"
+  first <- TRUE
+  add <- function(r, t, s = NA_character_, k = FALSE) {
+    add_block(r, t, s, k, g = if (first) "p" else "p+")
+    first <<- FALSE
   }
   sec <- .exact_section(raw)
   if (!is.na(sec)) return(add("sub", raw, sec))
@@ -249,34 +285,24 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
 
 # hivolda (Drupal) renders each part of the plan as `div.field-<name>` with a
 # `div.label` heading; the exam table is the unlabelled field-assessments-row
-# (#214). `section_fields` maps field class names to sections; other fields
-# (contact person, approval, evaluation) are not read. A field opens its
-# section without its label; a later field of a section already read keeps its
-# label as text, so learning-outcome groups keep their "Kunnskapar" /
-# "Ferdigheiter" prefix.
-.field_blocks <- function(html, cfg) {
-  if (is.na(html) || !nzchar(html)) return(.empty_blocks())
-  if (!is.null(cfg$pre_fn)) html <- cfg$pre_fn(html)
-  doc <- .read_doc(html)
-  root <- if (is.null(cfg$container)) doc else rvest::html_element(doc, cfg$container)
-  if (inherits(root, "xml_missing")) return(.empty_blocks())
-
-  nodes <- rvest::html_elements(root, "div[class*='field-']")
-  field <- stringr::str_extract(xml2::xml_attr(nodes, "class"), "(?<![\\w-])field-[a-z-]+")
-  section <- unname(cfg$fields[field])
-  nodes <- nodes[!is.na(section)]
-  section <- section[!is.na(section)]
-
-  out <- .block_list()
-  for (i in seq_along(nodes)) {
-    label <- rvest::html_element(nodes[[i]], "div.label")
-    seen <- section[i] %in% section[seq_len(i - 1)]
-    out$add("heading", if (seen || inherits(label, "xml_missing")) "" else
-      rvest::html_text2(label), section[i])
-    if (!seen) xml2::xml_remove(rvest::html_elements(nodes[[i]], "div.label"))
-    out$add("text", trimws(rvest::html_text2(nodes[[i]])))
-  }
-  out$table()
+# (#214). Each top-level field is a heading (`section_fields` maps field class
+# names to sections; a field not in it maps nowhere) and its text, in a scope
+# of its own, so text outside the fields (title, programmes) is in the
+# fulltext but in no section. A field opens its section without its label; a
+# later field of a section already read keeps its label as text, so
+# learning-outcome groups keep their "Kunnskapar" / "Ferdigheiter" prefix.
+# Returns `read` plus the field's section.
+.field_block <- function(node, fields, read, add) {
+  field <- stringr::str_extract(xml2::xml_attr(node, "class"), "(?<![\\w-])field-[a-z-]+")
+  section <- unname(fields[field])
+  label <- rvest::html_element(node, "div.label")
+  seen <- !is.na(section) && section %in% read
+  add("heading", if (seen || inherits(label, "xml_missing")) "" else
+    rvest::html_text2(label), section, g = "div")
+  if (!seen) xml2::xml_remove(rvest::html_elements(node, "div.label"))
+  txt <- trimws(rvest::html_text2(node))
+  if (nzchar(txt)) add("text", txt, g = "div")
+  c(read, section)
 }
 
 # --- json (nla) -------------------------------------------------------------------
@@ -299,24 +325,23 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
   if (is.null(year_data)) return(.empty_blocks())
 
   out <- .block_list()
+  if (nzchar(year_data$title %||% "")) out$add("text", year_data$title, g = "p")
+  # contents are HTML (accordions; links in the table)
   item <- function(title, content) {
     title <- title %||% ""
-    out$add("heading", title, match_heading_to_section(title))
-    content <- trimws(content %||% "")
-    if (nzchar(content)) out$add("text", content)
+    out$add("heading", title, match_heading_to_section(title), g = "p")
+    content <- content %||% ""
+    if (grepl("<", content, fixed = TRUE)) {
+      content <- rvest::html_text2(rvest::html_element(
+        rvest::read_html(paste0("<div>", content, "</div>")), "div"))
+    }
+    if (nzchar(trimws(content))) out$add("text", trimws(content), g = "p+")
   }
   # Newer pages wrap the table items: table = {list: [...], cta, ctaText}.
   table <- year_data$table
   if (!is.null(table$list)) table <- table$list
   for (it in table %||% list()) item(it$title, it$content)
-  for (it in year_data$accordions %||% list()) {
-    body <- it$content %||% ""
-    if (nzchar(body)) {
-      body <- rvest::html_text2(rvest::html_element(
-        rvest::read_html(paste0("<div>", body, "</div>")), "div"))
-    }
-    item(it$title, body)
-  }
+  for (it in year_data$accordions %||% list()) item(it$title, it$content)
   out$table()
 }
 
