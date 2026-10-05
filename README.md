@@ -170,6 +170,7 @@ targets::tar_make()               # rebuild whatever is outdated
 targets::tar_outdated()           # what would be rebuilt, without building
 targets::tar_read(metrics_check)  # changes against the metrics snapshot
 targets::tar_read(unmapped)       # headings the section extractor could not map
+targets::tar_read(heading_use)    # pages per heading-map pattern (0 = unused)
 targets::tar_read(privacy_check)  # personal data found in data/processed/
 ```
 
@@ -370,10 +371,16 @@ keep anonymizing. Admission text, exam logistics and placeholder rows
 such as “Se fagplanen.” are left out.
 
 `tar_read(metrics)` has the number of plans with each section per
-institution, and `tar_read(unmapped)` the headings the extractor could
-not map, with the number of pages each is on. To map a new heading, add
-a pattern to `R/section_heading_map.R`; how each institution is split is
-set by the `section_*` fields in `R/institution_config.R`.
+institution and `pct_text_in_sections`, the median share of a plan’s
+text that its sections hold (what is left is metadata, admission text,
+exam logistics and headings the map does not know). `tar_read(unmapped)`
+lists the headings the extractor could not map, with the number of pages
+each is on, and `tar_read(heading_use)` every pattern of the heading map
+with the pages it opens a section on: a pattern on no page is a
+candidate for removal (the html reader’s text fallback, used for uis PDF
+plans, is not counted). To map a new heading, add a pattern to
+`R/section_heading_map.R`; how each institution is split is set by the
+`section_*` fields in `R/institution_config.R`.
 
 ### Blocks and Sections
 

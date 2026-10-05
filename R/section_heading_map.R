@@ -212,11 +212,23 @@ section_heading_patterns <- tibble::tribble(
 #'
 #' @param heading Character string — the heading text to match.
 #' @param word_start If TRUE, a substring pattern must start at a word
-#'   boundary, so "elevkunnskap" does not match "kunnskap" (text_split uses
-#'   this on plain-text lines).
+#'   boundary, so "elevkunnskap" does not match "kunnskap" (the text reader
+#'   uses this on plain-text lines).
 #' @return Character string — canonical section name, or NA_character_.
 match_heading_to_section <- function(heading, word_start = FALSE) {
-  if (is.na(heading) || !nzchar(trimws(heading))) return(NA_character_)
+  section_heading_patterns$section[heading_pattern(heading, word_start)]
+}
+
+#' The row of section_heading_patterns a heading matches
+#'
+#' An exact match first, then the first substring pattern in table order;
+#' NA when none matches. Used by match_heading_to_section() and to count how
+#' often each pattern is used (target `heading_use`, #277).
+#'
+#' @inheritParams match_heading_to_section
+#' @return Integer row index, or NA_integer_.
+heading_pattern <- function(heading, word_start = FALSE) {
+  if (is.na(heading) || !nzchar(trimws(heading))) return(NA_integer_)
   heading_lower <- tolower(trimws(heading))
 
   # Denylist: language/expression metadata fields whose text collides with a
@@ -225,13 +237,13 @@ match_heading_to_section <- function(heading, word_start = FALSE) {
   # "Language of instruction and examination" would hit "examination"). As a
   # sub-heading, NA keeps uio's "Eksamensspråk" block in assessment.
   if (grepl("eksamensspråk|vurderingsspråk|language of instruction", heading_lower)) {
-    return(NA_character_)
+    return(NA_integer_)
   }
 
-  exact <- section_heading_patterns$exact %||% rep(FALSE, nrow(section_heading_patterns))
-  eq <- section_heading_patterns$pattern == heading_lower
-  if (any(eq)) return(section_heading_patterns$section[which(eq)[1]])
+  eq <- which(section_heading_patterns$pattern == heading_lower)
+  if (length(eq)) return(eq[1])
 
+  exact <- section_heading_patterns$exact %||% rep(FALSE, nrow(section_heading_patterns))
   for (i in seq_len(nrow(section_heading_patterns))) {
     if (isTRUE(exact[i])) next
     pattern <- section_heading_patterns$pattern[i]
@@ -240,7 +252,7 @@ match_heading_to_section <- function(heading, word_start = FALSE) {
     } else {
       grepl(pattern, heading_lower, fixed = TRUE)
     }
-    if (hit) return(section_heading_patterns$section[i])
+    if (hit) return(i)
   }
-  NA_character_
+  NA_integer_
 }

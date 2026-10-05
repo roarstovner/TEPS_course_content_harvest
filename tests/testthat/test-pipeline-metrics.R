@@ -2,12 +2,14 @@
 
 test_that("pipeline_metrics counts offerings, plans and sections per institution", {
   offerings <- tibble::tibble(
+    course_id = c("1", "2", "3"),
     institution = "a", Emnekode_raw = c("X", "X", "Y"), Årstall = 2025,
     extracted_text = c("t", NA, "u"), course_plan = c("abc", NA, "abcde"),
     plan_content_id = c("p1", NA, "p2")
   )
   sections <- tibble::tibble(
     plan_content_id = c("p1", "p1", "p2"), institution = "a", Emnekode = c("X", "X", "Y"),
+    source_course_id = c("1", "1", "3"),
     section = c("assessment", "reading_list", "assessment"),
     text = c("xx", "yyyy", "zz")
   )
@@ -19,6 +21,8 @@ test_that("pipeline_metrics counts offerings, plans and sections per institution
   expect_equal(value("(all)", "n_plans_with_sections"), 2)
   expect_equal(value("assessment", "n_plans"), 2)
   expect_equal(value("reading_list", "median_chars"), 4)
+  # plan 1: 6 of 3 chars (capped at 100 %), plan 3: 2 of 5 -> median 70
+  expect_equal(value("(all)", "pct_text_in_sections"), 70)
 })
 
 test_that("drops, vanished and new metrics are flagged; small changes are not", {

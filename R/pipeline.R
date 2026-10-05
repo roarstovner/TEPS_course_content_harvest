@@ -85,6 +85,41 @@ unmapped_headings <- function(blocks, config) {
     dplyr::count(institution, heading, name = "n_pages", sort = TRUE)
 }
 
+# Pages on which each heading-map pattern opens a section (#277): headings
+# and sub-headings read from the page, or for the text reader (usn, steiner)
+# the heading lines of extracted_text. The html reader's text fallback (uis
+# PDF plans) is not counted.
+institution_heading_hits <- function(blocks, fulltext, config) {
+  if (identical(.block_cfg(config)$reader, "text")) {
+    text <- fulltext$extracted_text[!is.na(fulltext$extracted_text)]
+    ids <- fulltext$course_id[!is.na(fulltext$extracted_text)]
+    pages <- lapply(text, .text_blocks, cfg = .block_cfg(config))
+    blocks <- dplyr::bind_rows(.empty_blocks(), tibble::tibble(
+      course_id = rep(ids, vapply(pages, nrow, 1L)), dplyr::bind_rows(.empty_blocks(), pages)))
+  }
+  b <- blocks[blocks$role %in% c("heading", "sub") & !is.na(blocks$section), ]
+  row <- vapply(stringr::str_squish(b$text), heading_pattern, integer(1),
+                word_start = identical(.block_cfg(config)$reader, "text"), USE.NAMES = FALSE)
+  # field headings (hivolda) take their section from the field, not the text
+  keep <- !is.na(row) & section_heading_patterns$section[row] == b$section
+  tibble::tibble(institution = config$name, pattern = section_heading_patterns$pattern[row[keep]],
+                 course_id = b$course_id[keep]) |>
+    dplyr::distinct() |>
+    dplyr::count(institution, pattern, name = "n_pages")
+}
+
+# Every heading-map pattern with the pages it opens a section on, over all
+# institutions: a pattern on no page is a candidate for removal.
+heading_pattern_use <- function(hits) {
+  used <- hits |>
+    dplyr::group_by(pattern) |>
+    dplyr::summarise(n_pages = sum(n_pages),
+                     institutions = paste(sort(institution), collapse = ", "), .groups = "drop")
+  section_heading_patterns[, c("pattern", "section")] |>
+    dplyr::left_join(used, by = "pattern") |>
+    dplyr::mutate(n_pages = dplyr::coalesce(n_pages, 0L))
+}
+
 # --- Combined data files -----------------------------------------------------
 
 # course_offerings_full: every offering with its text, course_plan and plan id.

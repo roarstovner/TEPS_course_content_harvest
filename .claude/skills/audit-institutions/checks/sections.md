@@ -27,6 +27,14 @@ the plan), `leak->X` (text contains a heading of section X at a line start),
 suspects per packet are courses with plan text but **no sections at all**
 (shown as "no sections extracted"); judge what the extractor missed.
 
+Each course also lists the headings read from its page and the section each
+maps to (`` `Vurdering` → assessment · `Kontakt` → unmapped ``; "(sub)" marks
+a sub-heading). A wrong section usually traces to one of them: a heading
+mapped to the wrong section or left unmapped is a heading-map fix
+(`R/section_heading_map.R`); a heading missing from the list is a reader
+fix (`section_*` fields). "No headings read" means the page went through the
+text fallback.
+
 ## Rubric (review agent)
 
 Read `section_codebook.yml` first. For each course compare the extractor rows

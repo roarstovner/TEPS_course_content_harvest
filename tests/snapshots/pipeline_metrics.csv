@@ -6,6 +6,7 @@
 "hiof","(all)","n_unique_plans",820
 "hiof","(all)","n_with_plan",846
 "hiof","(all)","n_with_text",846
+"hiof","(all)","pct_text_in_sections",82
 "hiof","assessment","median_chars",270.5
 "hiof","assessment","n_plans",820
 "hiof","course_content","median_chars",865
@@ -27,6 +28,7 @@
 "hivolda","(all)","n_unique_plans",547
 "hivolda","(all)","n_with_plan",594
 "hivolda","(all)","n_with_text",594
+"hivolda","(all)","pct_text_in_sections",83
 "hivolda","assessment","median_chars",174
 "hivolda","assessment","n_plans",547
 "hivolda","course_content","median_chars",764
@@ -48,6 +50,7 @@
 "hvl","(all)","n_unique_plans",1654
 "hvl","(all)","n_with_plan",3335
 "hvl","(all)","n_with_text",3335
+"hvl","(all)","pct_text_in_sections",93
 "hvl","assessment","median_chars",185
 "hvl","assessment","n_plans",1671
 "hvl","course_content","median_chars",877
@@ -67,6 +70,7 @@
 "inn","(all)","n_unique_plans",542
 "inn","(all)","n_with_plan",1254
 "inn","(all)","n_with_text",1284
+"inn","(all)","pct_text_in_sections",81
 "inn","assessment","median_chars",248.5
 "inn","assessment","n_plans",542
 "inn","course_content","median_chars",489
@@ -86,6 +90,7 @@
 "mf","(all)","n_unique_plans",26
 "mf","(all)","n_with_plan",51
 "mf","(all)","n_with_text",51
+"mf","(all)","pct_text_in_sections",95
 "mf","assessment","median_chars",251
 "mf","assessment","n_plans",26
 "mf","course_content","median_chars",819
@@ -105,6 +110,7 @@
 "nih","(all)","n_unique_plans",81
 "nih","(all)","n_with_plan",81
 "nih","(all)","n_with_text",81
+"nih","(all)","pct_text_in_sections",91
 "nih","assessment","median_chars",147
 "nih","assessment","n_plans",81
 "nih","course_content","median_chars",496
@@ -126,6 +132,7 @@
 "nla","(all)","n_unique_plans",153
 "nla","(all)","n_with_plan",153
 "nla","(all)","n_with_text",153
+"nla","(all)","pct_text_in_sections",83
 "nla","assessment","median_chars",179
 "nla","assessment","n_plans",153
 "nla","course_content","median_chars",1658
@@ -145,6 +152,7 @@
 "nmbu","(all)","n_unique_plans",11
 "nmbu","(all)","n_with_plan",21
 "nmbu","(all)","n_with_text",21
+"nmbu","(all)","pct_text_in_sections",62
 "nmbu","assessment","median_chars",132
 "nmbu","assessment","n_plans",11
 "nmbu","course_content","median_chars",617
@@ -166,6 +174,7 @@
 "nord","(all)","n_unique_plans",1377
 "nord","(all)","n_with_plan",3489
 "nord","(all)","n_with_text",3489
+"nord","(all)","pct_text_in_sections",75
 "nord","assessment","median_chars",275
 "nord","assessment","n_plans",1277
 "nord","course_content","median_chars",487
@@ -185,6 +194,7 @@
 "ntnu","(all)","n_unique_plans",2009
 "ntnu","(all)","n_with_plan",3791
 "ntnu","(all)","n_with_text",3791
+"ntnu","(all)","pct_text_in_sections",78
 "ntnu","assessment","median_chars",186
 "ntnu","assessment","n_plans",1684
 "ntnu","course_content","median_chars",716
@@ -206,6 +216,7 @@
 "oslomet","(all)","n_unique_plans",655
 "oslomet","(all)","n_with_plan",1675
 "oslomet","(all)","n_with_text",1684
+"oslomet","(all)","pct_text_in_sections",78
 "oslomet","assessment","median_chars",317.5
 "oslomet","assessment","n_plans",576
 "oslomet","course_content","median_chars",765
@@ -225,6 +236,7 @@
 "samas","(all)","n_unique_plans",0
 "samas","(all)","n_with_plan",0
 "samas","(all)","n_with_text",0
+"samas","(all)","pct_text_in_sections",0
 "steiner","(all)","median_chars",5027
 "steiner","(all)","n_course_years_with_plan",15
 "steiner","(all)","n_plans_with_sections",15
@@ -232,6 +244,7 @@
 "steiner","(all)","n_unique_plans",15
 "steiner","(all)","n_with_plan",30
 "steiner","(all)","n_with_text",30
+"steiner","(all)","pct_text_in_sections",85
 "steiner","assessment","median_chars",186
 "steiner","assessment","n_plans",15
 "steiner","course_content","median_chars",980
@@ -249,6 +262,7 @@
 "uia","(all)","n_unique_plans",811
 "uia","(all)","n_with_plan",1123
 "uia","(all)","n_with_text",1123
+"uia","(all)","pct_text_in_sections",77
 "uia","assessment","median_chars",144.5
 "uia","assessment","n_plans",716
 "uia","course_content","median_chars",552
@@ -268,6 +282,7 @@
 "uib","(all)","n_unique_plans",567
 "uib","(all)","n_with_plan",1473
 "uib","(all)","n_with_text",1473
+"uib","(all)","pct_text_in_sections",72
 "uib","assessment","median_chars",315
 "uib","assessment","n_plans",564
 "uib","course_content","median_chars",430
@@ -289,6 +304,7 @@
 "uio","(all)","n_unique_plans",52
 "uio","(all)","n_with_plan",96
 "uio","(all)","n_with_text",96
+"uio","(all)","pct_text_in_sections",84
 "uio","assessment","median_chars",510
 "uio","assessment","n_plans",52
 "uio","course_content","median_chars",571
@@ -310,6 +326,7 @@
 "uis","(all)","n_unique_plans",1299
 "uis","(all)","n_with_plan",2728
 "uis","(all)","n_with_text",2728
+"uis","(all)","pct_text_in_sections",83
 "uis","assessment","median_chars",425
 "uis","assessment","n_plans",1183
 "uis","course_content","median_chars",944
@@ -331,6 +348,7 @@
 "uit","(all)","n_unique_plans",2332
 "uit","(all)","n_with_plan",3150
 "uit","(all)","n_with_text",3150
+"uit","(all)","pct_text_in_sections",95
 "uit","assessment","median_chars",855.5
 "uit","assessment","n_plans",2272
 "uit","course_content","median_chars",746
@@ -352,6 +370,7 @@
 "usn","(all)","n_unique_plans",1183
 "usn","(all)","n_with_plan",1238
 "usn","(all)","n_with_text",1238
+"usn","(all)","pct_text_in_sections",92
 "usn","assessment","median_chars",167
 "usn","assessment","n_plans",1180
 "usn","course_content","median_chars",940

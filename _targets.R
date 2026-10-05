@@ -45,6 +45,9 @@ list(
              pattern = map(blocks, fulltext, config, plans)),
   tar_target(unmapped, unmapped_headings(blocks, config),
              pattern = map(blocks, config)),
+  tar_target(heading_hits, institution_heading_hits(blocks, fulltext, config),
+             pattern = map(blocks, fulltext, config)),
+  tar_target(heading_use, heading_pattern_use(heading_hits)),
 
   # Data files (README "Data Files: Published and Internal")
   tar_target(extracted_text_file,

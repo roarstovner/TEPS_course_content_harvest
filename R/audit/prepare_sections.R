@@ -8,7 +8,8 @@
 # (source_course_id; #273): deterministic SUSPECTS (from
 # sections_qa_suspects.RDS) plus a RANDOM control slice, each shown as
 #   (a) the full anonymized course_plan  — ground truth, and
-#   (b) the extractor's plan_sections rows — what to audit.
+#   (b) the extractor's plan_sections rows — what to audit,
+# with the headings read on the page and the section each maps to (#278).
 #
 # Inputs (regenerate in this order if stale):
 #   data/interim/course_offerings_full.RDS   targets::tar_make()
@@ -22,6 +23,7 @@
 # Run:  Rscript R/audit/prepare_sections.R [inst ...]
 
 source("R/audit/utils.R")
+source("R/anonymize.R")             # heading texts are raw page text
 
 # ── Tunables ─────────────────────────────────────────────────────────────────
 # 14/6 keeps packets near ~150 KB, the size Sonnet agents read in full
@@ -57,6 +59,13 @@ plans    <- readRDS("data/interim/course_offerings_full.RDS") |>
   filter(course_id %in% sources) |>
   select(course_id, institution, course_plan, plan_content_id,
          Emnekode_raw, Emnenavn, Årstall, Semesternavn)
+
+# Headings on each source page and where they map (target `blocks`): shows
+# why text went where it did.
+heads <- targets::tar_read(blocks) |>
+  filter(role %in% c("heading", "sub"), nzchar(trimws(text)), course_id %in% sources) |>
+  mutate(text = str_trunc(str_squish(text), 60))
+heads$text <- anonymize_text(sub("_.*$", "", heads$course_id), heads$text, .progress = FALSE)
 
 flag_cols <- c("flag_empty", "flag_short", "flag_long", "flag_blob",
                "flag_leak", "flag_dup_in_course", "flag_boilerplate")
@@ -137,6 +146,14 @@ for (inst in institutions) {
         audit_fence(audit_trunc(plan_txt, plan_trunc)),
         "",
         "### Extractor output (plan_sections — audit these)",
+        "",
+        {
+          h <- heads[heads$course_id == cid & !is.na(heads$text), ]
+          if (nrow(h) == 0) "_(no headings read from the page: text fallback)_" else
+            paste0("Headings on the page (→ section): ", paste(sprintf(
+              "`%s`%s → %s", h$text, ifelse(h$role == "sub", " (sub)", ""),
+              coalesce(h$section, "unmapped")), collapse = " · "))
+        },
         ""
       )
       if (nrow(rows) == 0) {
