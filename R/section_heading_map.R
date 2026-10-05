@@ -35,6 +35,9 @@ section_heading_patterns <- tibble::tribble(
   # Most rows are exact (whole heading only), and exact matches win over
   # substrings, so "Eksamen og hjelpemidler" still maps to assessment.
   "eksamensdato",                          ".drop",                  FALSE,
+  "dato for eksamen",                      ".drop",                  TRUE,   # uit 2008-2011 (#282)
+  "dato for skoleeksamen",                 ".drop",                  TRUE,
+  "date for examination",                  ".drop",                  TRUE,
   "ordinær eksamen - ",                    ".drop",                  FALSE,  # ntnu sessions
   "utsatt eksamen - ",                     ".drop",                  FALSE,
   "mer om eksamen ved uio",                ".drop",                  TRUE,
@@ -140,6 +143,8 @@ section_heading_patterns <- tibble::tribble(
   "learning outcomes",                     "learning_outcomes",      FALSE,
   "learning outcome",                      "learning_outcomes",      FALSE,
   "objectives of the course",              "learning_outcomes",      TRUE,
+  "objective of the course",               "learning_outcomes",      TRUE,   # uit 2008-2011 (#282)
+  "mål",                                   "learning_outcomes",      TRUE,
   # English sub-headings (inn English plans). Exact, so "Prerequisite
   # knowledge" and the like are not caught.
   "knowledge",                             "learning_outcomes",      TRUE,
@@ -153,6 +158,7 @@ section_heading_patterns <- tibble::tribble(
   "læringsformer og aktiviteter",          "teaching_methods",       FALSE,
   "læringsaktiviteter og undervisningsmetoder", "teaching_methods",  FALSE,
   "undervisningsformer",                   "teaching_methods",       FALSE,
+  "undervisningsform",                     "teaching_methods",       TRUE,   # uit 2008-2011 (#282)
   "undervisningsopplegg",                  "teaching_methods",       FALSE,
   "læringsaktiviteter",                    "teaching_methods",       FALSE,
   "læringsformer",                         "teaching_methods",       FALSE,
@@ -185,6 +191,7 @@ section_heading_patterns <- tibble::tribble(
   "læremidler",                            "reading_list",           FALSE,
   "litteratur",                            "reading_list",           FALSE,
   "reading list",                          "reading_list",           FALSE,
+  "recommended reading",                   "reading_list",           FALSE,  # uit 2008-2011 (#282)
 
   # --- course_content ---
   "mål og innhold",                        "course_content",         FALSE,

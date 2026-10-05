@@ -215,6 +215,9 @@ institution_configs <- list(
     year_in_url = TRUE,
     post_fn = .pre_uit,
     section_strategy = "html",
+    # 2008-2011 plans (old FS layout) head each field with a
+    # div/span.fsemneoverskrift instead of an h2 (#282)
+    section_heading_selector = "h2, .fsemneoverskrift",
     # h3 "Pensum" under "Undervisning og pensum", "Mer info om arbeidskrav"
     section_subheading_selector = "h3"
   ),
