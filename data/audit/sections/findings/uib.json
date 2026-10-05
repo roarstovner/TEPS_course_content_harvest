@@ -2,9 +2,9 @@
   "check": "sections",
   "institution": "uib",
   "model": "sonnet",
-  "n_courses_reviewed": 12,
-  "n_suspects_reviewed": 6,
-  "overall_assessment": "Section extraction works well for UiB: the fixed heading set is mapped correctly, all seven sections land where the codebook puts them, and learning-outcome sub-groups and arbeidskrav are kept intact in the 11 normal plans. Remaining issues are a heading-only plan emitted as content, exam-semester fragments appended to assessment, and small recommended/required prerequisite mixing.",
+  "n_courses_reviewed": 13,
+  "n_suspects_reviewed": 7,
+  "overall_assessment": "Section extraction for uib works well: heading map is accurate, sections are complete and clean in all random controls and most suspects, and admin headings are dropped correctly. Remaining problems are a heading-only page whose heading list was emitted as course_content, and corona-related sentences silently removed from assessment/coursework text.",
   "findings": [
     {
       "target": "course_content",
@@ -12,47 +12,35 @@
       "severity": "medium",
       "prevalence": "rare",
       "example_course_ids": ["uib_NOLI216-0_2018_autumn_2"],
-      "evidence": "Læringsutbytte\nFulltid/deltid\nStudiepoeng, omfang\nStudienivå (studiesyklus)\nUndervisningssemester\nUndervisningssted\nKrav til forkunnskaper",
-      "description": "The source page held only the list of field headings with no body text. The extractor emitted a course_content row consisting of the heading labels (flagged blob/leak, 434 chars). These are not course content; the correct result is no sections at all. The pre-pass flags are real, although the cause is an empty page rather than a splitter failure.",
-      "root_cause_hypothesis": "When the page has headings but no bodies, the reader/text fallback in R/blocks.R or sectionize() treats the label lines after the first 'Mål og innhold' heading as content, because no non-empty body exists to cut at.",
-      "suggested_fix": "In .clean_sections() (R/extract_sections.R) drop a section whose text consists solely of lines that match known UiB heading labels (the heading map patterns), so heading-only pages yield zero rows. Also consider flagging such plans as empty at the fulltext level.",
+      "evidence": "Læringsutbytte\nFulltid/deltid\nStudiepoeng, omfang\nStudienivå (studiesyklus)\nUndervisningssemester",
+      "description": "The plan page contains only the list of headings and no body text. The extractor emitted the heading names themselves (after the first heading) as a 434-char course_content row, instead of emitting no sections. The row is junk: it contains no course content, and the pre-pass flags (blob, leak->...) are real here.",
+      "root_cause_hypothesis": "When every heading is followed immediately by another heading, the reader/text fallback treats the first heading 'Emnebeskrivelse'/'Mål og innhold' as having body text equal to the rest of the page's heading lines; section cleaning does not detect that a block consists only of known heading strings.",
+      "suggested_fix": "In sectionize()/.clean_sections() drop any section whose lines are all (after trimming) recognised headings from the heading map (or the unmapped/.drop headings); emit no row so the course shows 'no sections', same as uib_KJEM399K-0_2011_autumn_1.",
       "confidence": "high"
     },
     {
       "target": "assessment",
-      "error_type": "formatting_noise",
-      "severity": "low",
-      "prevalence": "common",
-      "example_course_ids": ["uib_FRAN307L-0_2021_autumn_1", "uib_TYS307L-0_2018_autumn_1", "uib_FRAN313L-0_2022_autumn_1"],
-      "evidence": "Haust. Der er òg vurdering tidleg i vårsemesteret for studentar med gyldig godkjenning av obligatoriske arbeidskrav.",
-      "description": "The 'Vurderingssemester' heading is mapped to assessment, so exam-timing logistics (which semester, re-sit early in the next semester) are appended to the assessment text. The text is exam logistics, not assessment form. The leading 'Haust.'/'Vår.' also does not occur in the plan text shown (which reads '. Der er òg ...'), so it appears to be re-injected from structured page data, in some cases contradicting the course semester label (FRAN313L autumn 2022 gets 'Vår.').",
-      "root_cause_hypothesis": "R/section_heading_map.R maps 'Vurderingssemester' to assessment instead of .drop or an unmapped label; a semester word is added by a reader/cleanup step.",
-      "suggested_fix": "Map 'Vurderingssemester' to .drop in R/section_heading_map.R (like 'Hjelpemiddel til eksamen'), and check where the semester word is added to the text.",
-      "confidence": "medium"
-    },
-    {
-      "target": "cross_section",
       "error_type": "truncated",
       "severity": "low",
       "prevalence": "rare",
       "example_course_ids": ["uib_RELV105-0_2021_spring_1"],
-      "evidence": "NB. Studentane får 1 time teknisk tilleggstid, slik at dei har 7 timar på å utforma svaret.",
-      "description": "In the covid-addendum paragraphs, the extractor output drops sentences that exist in the plan (the replacement of the oral exam by a 6-hour written exam in assessment, and the 'ingen obligatorisk frammøte' sentence in coursework_requirements). The remaining NB sentence is left without context. Likely a cleanup step removed sentences containing 'korona' / the anonymizer.",
-      "root_cause_hypothesis": "A pattern in anonymize_text()/.clean_sections() deleting sentences mentioning the coronavirus or a date-like token; the plan shows the gap as 'NB.  er munnleg eksamen'.",
-      "suggested_fix": "Check which pattern removes the 'koronasituasjonen'/'koronavirus' sentences and restrict it to page-noise rather than course-plan text.",
-      "confidence": "low"
+      "evidence": "NB.  er munnleg eksamen erstatta av 6 timar skriftleg eksamen heimefrå som tiltak for å hindre spreiing av koronavirus.",
+      "description": "The sentence is in the plan but dropped from extracted assessment, leaving 'NB. Studentane får 1 time teknisk tilleggstid, slik at dei har 7 timar...' with a dangling NB (the form of exam is lost). In coursework_requirements the sentence 'På grunn av koronasituasjonen vil det ikkje vere obligatorisk frammøte .' was likewise removed, leaving an orphaned 'Det er likevel sterk oppmoding...'. Text is incomplete relative to the plan.",
+      "root_cause_hypothesis": "A cleanup step (likely in .clean_sections() or the anonymizer's sentence-level removal) deletes sentences matching corona/koronavirus/koronasituasjonen patterns (or the sentence with the anonymized gap), cutting content mid-paragraph.",
+      "suggested_fix": "Find the rule that removes these sentences (grep for 'korona' in R/extract_sections.R and R/anonymize*.R); either keep the text or remove the whole 'Gjelder vårsemesteret 2021:' block consistently, rather than single sentences.",
+      "confidence": "medium"
     },
     {
       "target": "prerequisites",
       "error_type": "empty_placeholder",
       "severity": "low",
       "prevalence": "common",
-      "example_course_ids": ["uib_NOLI103-L-0_2018_spring_1", "uib_NOLI250-L-0_2017_spring_1"],
+      "example_course_ids": ["uib_NOLI103-L-0_2017_spring_1", "uib_NOLI250-L-0_2017_spring_1"],
       "evidence": "Ingen\n\nNOLI102",
-      "description": "Required ('Krav til forkunnskaper') and recommended ('Anbefalte forkunnskaper') text are concatenated, and placeholders ('Ingen', '-') are kept in front of the real content. The pre-pass 'empty' flag is a false alarm (14 chars but real content), though the placeholder is noise and recommended vs required cannot be told apart.",
-      "root_cause_hypothesis": "Both headings map to prerequisites in R/section_heading_map.R; .clean_sections() does not strip lone placeholder lines when other text follows.",
-      "suggested_fix": "Strip block lines that are only 'Ingen'/'-'/'Ikkje relevant' when combining multiple blocks for the same section; optionally keep the heading label ('Anbefalte forkunnskaper:') as a prefix.",
-      "confidence": "medium"
+      "description": "The placeholder 'Ingen' / '-' from 'Krav til forkunnskaper' is concatenated with the real recommended prerequisite from 'Anbefalte forkunnskaper' without distinguishing required from recommended; the pre-pass 'empty' flag on a 14-char section is a false alarm for content but shows the placeholder is kept inside the text. In uib_KJEM399K-0_2011_autumn_1 a lone 'Ingen' prerequisite produced no section at all (fine).",
+      "root_cause_hypothesis": "Both 'Krav til forkunnskaper' and 'Anbefalte forkunnskaper' map to prerequisites and are joined; placeholder stripping is applied only to whole sections.",
+      "suggested_fix": "Strip placeholder-only blocks ('Ingen', 'Ingen.', '-') before joining blocks of the same section in .clean_sections().",
+      "confidence": "low"
     }
   ]
 }

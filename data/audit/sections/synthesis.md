@@ -167,3 +167,38 @@ root-cause guesses:
   HTML.
 - uio "Karakterskala" → .drop (agent): the grading scale is assessment design
   by the codebook; only "Eksamensspråk" is logistics.
+
+## Verification re-run after the fixes (2026-10-05, evening)
+
+Fix items 1–4 went in as #281 (b3ad1db, IP addresses), #282 (a96eee2, uit
+legacy layout), #283 (ba86038 + 698b8ef, coursework gates) and #284
+(cf48c36, heading-map rows). uit, nord, uio and uib were re-audited (Sonnet,
+same seed; the uit sample is mostly new because its old suspects no longer
+flag).
+
+| institution | high | medium | low |
+| --- | --- | --- | --- |
+| uit | 5 → 0 | 3 → 4 | 2 → 5 |
+| nord | 1 → 0 | 2 → 3 | 3 → 3 |
+| uio | 0 → 0 | 4 → 3 | 1 → 1 |
+| uib | 0 → 0 | 1 → 1 | 3 → 2 |
+
+- **Fixed:** uit legacy plans (no sections, Pensum in assessment, Innhold
+  under reading_list), uit and nord arbeidskrav in assessment, uib
+  Vurderingssemester, uio Eksamensspråk.
+- **Regression found and fixed:** the nord agent showed that ba86038's
+  mid-line split cut "Obligatorisk deltakelse (OD): ... Vurdering:
+  Godkjent/ikke godkjent." so the gate's own pass/fail stayed in assessment,
+  and that a second OD paragraph stayed behind (SAM1007). Fixed in 698b8ef;
+  the nord findings file describes the state before it.
+- **Still open:** uit inline "Forkunnskapskrav" in course_content and nord's
+  lead paragraph (#285, investigated, not implemented); uit 2020s coursework
+  repeats the gate list (exam-box table + "Mer info om arbeidskrav", same
+  section); uio gates under Undervisning/Eksamen (#288); uib heading-only
+  page and dropped corona sentences; placeholders and Praksis pointers (#286);
+  page furniture (#287).
+- **Rejected:** uio "Karakterskala → .drop" (again): the grading scale is
+  assessment design by the codebook. nord "Adgangsregulering →
+  prerequisites": on most pages it holds admission text ("Opptak til
+  programmet", "Generell studiekompetanse"), which the codebook keeps out of
+  prerequisites; left unmapped.
