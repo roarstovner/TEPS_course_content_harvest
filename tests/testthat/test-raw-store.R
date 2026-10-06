@@ -71,9 +71,12 @@ test_that("harvest_all never writes a raw file twice (#296)", {
   expect_message(harvest_all(rbind(dbh(2025L), dbh(2026L)), institutions = "samas"),
                  "nothing new")
 
-  # a current site takes a new snapshot, but not into a file that exists
+  # a current site takes a new snapshot of fresh pages, but not into a file that exists
   institution_configs$samas$plan_years <<- "current"
+  dir.create("data/raw/checkpoint")
+  saveRDS(tibble::tibble(), "data/raw/checkpoint/html_samas.RDS")
   expect_message(harvest_all(dbh(2026L), institutions = "samas"), "not written twice")
+  expect_false(file.exists("data/raw/checkpoint/html_samas.RDS"))
   expect_equal(nrow(readRDS(dated_harvest_file("samas"))), 2)
   expect_equal(tools::md5sum(base), md5)
 })
@@ -107,11 +110,22 @@ test_that("a finalized release is locked and checked (#296)", {
                                                 plan_content_id = "p2")),
           "data/processed/course_offerings.RDS")
   expect_equal(nrow(check()), 0)
-  saveRDS(dplyr::mutate(offs, plan_content_id = c("p1", "p2")), "data/processed/course_offerings.RDS")
+  saveRDS(offs[1, ], "data/processed/course_offerings.RDS")   # o2 (no plan) gone
   saveRDS(dplyr::mutate(plans, course_plan = "Annen tekst."), "data/processed/course_plans.RDS")
   saveRDS(dplyr::mutate(secs, text = "Annen tekst."), "data/processed/plan_sections.RDS")
   Sys.chmod(harvest_file("samas"), "0644")
   saveRDS(raw_rows(inst = "samas", html = "ny"), harvest_file("samas"))
   expect_setequal(check()$check, c("raw file changed or missing", "plan gone or text changed",
                                    "section changed", "offering gone or with another plan"))
+})
+
+test_that("a raw file has a harvest date only from its rows or its dated directory (#296)", {
+  raw <- withr::local_tempdir()
+  saveRDS(raw_rows(), harvest_file("x", raw))
+  expect_error(harvest_date(harvest_file("x", raw)), "No harvest date")
+  f <- dated_harvest_file("y", as.Date("2026-09-30"), raw)
+  dir.create(dirname(f), recursive = TRUE); saveRDS(raw_rows(inst = "y"), f)
+  expect_equal(harvest_date(f), as.Date("2026-09-30"))
+  expect_equal(harvested_institutions(raw), c("x", "y"))
+  expect_equal(harvest_files("y", raw), f)
 })

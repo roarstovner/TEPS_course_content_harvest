@@ -15,7 +15,7 @@
 harvest_institution <- function(institution, courses, year = NULL,
                                 refetch = FALSE, skip = character()) {
   config <- get_institution_config(institution)
-  if (identical(config$plan_years, "current")) prepare_current_harvest(institution)
+  if (!identical(config$plan_years, "url")) refetch <- prepare_fresh_harvest(config)
 
   df <- courses |>
     dplyr::filter(institution == !!institution) |>
@@ -76,7 +76,7 @@ harvest_all <- function(courses = NULL, year = NULL, refetch = FALSE,
   for (inst in inst_names) {
     message("\n=== ", inst, " ===")
     tryCatch({
-      first <- !file.exists(harvest_file(inst))
+      first <- length(harvest_files(inst)) == 0
       current <- identical(configs[[inst]]$plan_years, "current")
       skip <- if (first || current) character() else
         unlist(lapply(harvest_files(inst), function(f) readRDS(f)$course_id))
@@ -98,26 +98,26 @@ harvest_all <- function(courses = NULL, year = NULL, refetch = FALSE,
   }
 }
 
-#' Before harvesting a "current" site (plan_years; #293)
+#' Before harvesting a site whose pages change over time
 #'
-#' Such a site shows only the plan in force, so a harvest counts for its own
-#' academic year. Checkpoints from an earlier academic year would return last
-#' year's pages as if fetched now, so they are removed; in June-August the site
-#' may already show next year's plan, so a warning is given.
+#' A "page" site (one page, several years) adds new years to its pages and a
+#' "current" site replaces its plan, so a page fetched earlier must not stand
+#' in for one fetched now: their checkpoints are removed and every page is
+#' fetched again (#296). A "current" site harvested in June-August may already
+#' show next year's plan, so that gives a warning (#293).
 #'
-#' @param institution Character, institution short name
-prepare_current_harvest <- function(institution) {
-  if (as.integer(format(Sys.Date(), "%m")) %in% 6:8) {
-    warning(institution, " shows only the current plan: a harvest in June-August ",
+#' @param config Institution config
+#' @return TRUE, the `refetch` for the strategy
+prepare_fresh_harvest <- function(config) {
+  if (identical(config$plan_years, "current") &&
+      as.integer(format(Sys.Date(), "%m")) %in% 6:8) {
+    warning(config$name, " shows only the current plan: a harvest in June-August ",
             "may give next year's plan (#293)", call. = FALSE)
   }
-  now <- academic_year_of_date(Sys.Date())
-  for (cp in Sys.glob(file.path(RAW_DIR, "checkpoint", paste0("*_", institution, ".RDS")))) {
-    if (academic_year_of_date(as.Date(file.mtime(cp))) != now) {
-      message("Checkpoint from an earlier academic year, removed: ", cp)
-      file.remove(cp)
-    }
-  }
+  cps <- Sys.glob(file.path(RAW_DIR, "checkpoint", paste0("*_", config$name, ".RDS")))
+  if (length(cps)) message("Pages are fetched again; removed: ", paste(cps, collapse = ", "))
+  file.remove(cps)
+  TRUE
 }
 
 #' Apply year filter based on config

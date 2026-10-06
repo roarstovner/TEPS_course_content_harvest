@@ -55,29 +55,6 @@ page_fulltext <- function(blocks, config) {
   if (is.na(text) || !nzchar(trimws(text))) NA_character_ else text
 }
 
-#' Harvested rows with the current extracted_text
-#'
-#' Reads the raw harvest (data/raw/html_{inst}.RDS) and takes `extracted_text`
-#' from data/interim/extracted_text.RDS, which the {targets} pipeline rebuilds
-#' with the current config. The `extracted_text` stored in html_{inst}.RDS at
-#' harvest time is ignored.
-#'
-#' @param institutions Institutions to read; all when empty.
-read_harvest <- function(institutions = NULL,
-                         text_file = "data/interim/extracted_text.RDS") {
-  if (!file.exists(text_file)) {
-    stop(text_file, " is missing: run targets::tar_make() first")
-  }
-  found <- harvested_institutions()
-  if (length(institutions)) found <- intersect(found, institutions)
-  text <- readRDS(text_file)[, c("course_id", "extracted_text")]
-  harvest_file(found) |>
-    lapply(readRDS) |>
-    dplyr::bind_rows() |>
-    dplyr::select(-dplyr::any_of(c("extracted_text", "fulltext"))) |>
-    dplyr::left_join(text, by = "course_id")
-}
-
 .add_table_cell_breaks <- function(html) {
   # Insert newlines before closing </td> and </th> so html_text2() treats
   # cells as block-level content instead of squashing them together.

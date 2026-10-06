@@ -21,7 +21,7 @@
 #   year       semester/academic-year labels in the text all far from Årstall
 #   uncaptured much non-chrome page text missing from extracted_text
 #
-# Inputs:  data/raw/html_{inst}.RDS (harvest output) + data/interim/extracted_text.RDS
+# Inputs:  the raw harvest (harvested_rows()) + data/interim/extracted_text.RDS
 # Outputs: data/audit/fulltext/packets/{inst}.md, manifest.csv, sample.csv
 #
 # Run:  Rscript R/audit/prepare_fulltext.R [inst ...]
@@ -49,6 +49,7 @@ dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
 source("R/fetch_html_cols.R")       # institution_config depends on fetch_fn refs
 source("R/extract_fulltext.R")      # pre/post fns used by institution_config
 source("R/institution_config.R")
+source("R/pipeline.R")              # harvested_rows()
 
 JUNK_RX <- regex(paste(
   "informasjonskapsler", "\\bcookies?\\b", "hopp til (hoved)?innhold",
@@ -114,7 +115,7 @@ year_far <- function(txt, year) {
 institutions <- sort(harvested_institutions())
 requested <- audit_args_institutions()
 if (length(requested) > 0) institutions <- intersect(institutions, requested)
-if (length(institutions) == 0) stop("No data/raw/html_{inst}.RDS for: ",
+if (length(institutions) == 0) stop("No raw harvest for: ",
                                     paste(requested, collapse = ", "), call. = FALSE)
 manifest <- list()
 sample   <- list()
@@ -125,7 +126,7 @@ for (inst in institutions) {
     cat(sprintf("  %-8s skipped (noop strategy, no extracted text by design)\n", inst))
     next
   }
-  df <- read_harvest(inst)   # extracted_text from the {targets} pipeline
+  df <- harvested_rows(inst)   # extracted_text from the {targets} pipeline
   df <- df |>
     mutate(
       html_error_msg = vapply(html_error, error_msg, character(1)),

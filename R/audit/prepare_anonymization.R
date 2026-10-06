@@ -20,7 +20,7 @@
 #   removed     unusually large share of the text removed (over-removal)
 #   artifact    empty brackets left behind by removals
 #
-# Inputs:  data/raw/html_{inst}.RDS + data/interim/extracted_text.RDS (read_harvest())
+# Inputs:  the raw harvest + data/interim/extracted_text.RDS (harvested_rows())
 # Outputs: data/audit/anonymization/packets/{inst}.md, manifest.csv, sample.csv
 #
 # Run:  Rscript R/audit/prepare_anonymization.R [inst ...]
@@ -28,7 +28,10 @@
 source("R/audit/utils.R")
 source("R/utils.R")                 # harvested_institutions()
 source("R/anonymize.R")
-source("R/extract_fulltext.R")      # read_harvest()
+source("R/fetch_html_cols.R")       # institution_config depends on fetch_fn refs
+source("R/extract_fulltext.R")      # pre/post fns used by institution_config
+source("R/institution_config.R")
+source("R/pipeline.R")              # harvested_rows()
 
 # ── Tunables ─────────────────────────────────────────────────────────────────
 SUSPECT_N     <- 20
@@ -107,13 +110,13 @@ institutions <- sort(harvested_institutions())
 institutions <- setdiff(institutions, "samas")   # no extracted text by design
 requested <- audit_args_institutions()
 if (length(requested) > 0) institutions <- intersect(institutions, requested)
-if (length(institutions) == 0) stop("No data/raw/html_{inst}.RDS for: ",
+if (length(institutions) == 0) stop("No raw harvest for: ",
                                     paste(requested, collapse = ", "), call. = FALSE)
 manifest <- list()
 sample   <- list()
 
 for (inst in institutions) {
-  df <- read_harvest(inst)   # extracted_text from the {targets} pipeline
+  df <- harvested_rows(inst)   # extracted_text from the {targets} pipeline
   df <- df |>
     select(-any_of(c("html", "html_error"))) |>
     filter(!is.na(extracted_text), nzchar(extracted_text))

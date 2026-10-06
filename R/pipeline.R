@@ -58,6 +58,26 @@ read_harvest <- function(files, config) {
     dplyr::arrange(course_id)
 }
 
+#' Harvested rows with the current extracted_text
+#'
+#' read_harvest() for each institution, with `extracted_text` from
+#' data/interim/extracted_text.RDS, which the {targets} pipeline rebuilds with
+#' the current config (the text stored at harvest time is ignored). For the
+#' audit scripts.
+#'
+#' @param institutions Institutions to read; all when empty.
+harvested_rows <- function(institutions = NULL,
+                           text_file = "data/interim/extracted_text.RDS") {
+  if (!file.exists(text_file)) stop(text_file, " is missing: run targets::tar_make() first")
+  found <- harvested_institutions()
+  if (length(institutions)) found <- intersect(found, institutions)
+  text <- readRDS(text_file)[, c("course_id", "extracted_text")]
+  lapply(found, function(i) read_harvest(harvest_files(i), get_institution_config(i))) |>
+    dplyr::bind_rows() |>
+    dplyr::select(-dplyr::any_of(c("extracted_text", "fulltext"))) |>
+    dplyr::left_join(text, by = "course_id")
+}
+
 # extracted_text of every row: the page's blocks as text (#276); rows without
 # blocks (PDF plans, usn's rendered text) as extract_fulltext_from_raw() gives
 # them.

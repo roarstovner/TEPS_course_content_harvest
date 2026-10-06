@@ -9,8 +9,11 @@ harvest_file <- function(institution, raw_dir = RAW_DIR) {
   file.path(raw_dir, paste0("html_", institution, ".RDS"))
 }
 
+# Institutions with a raw file (a first harvest or a dated one).
 harvested_institutions <- function(raw_dir = RAW_DIR) {
-  sub("^html_(.*)\\.RDS$", "\\1", list.files(raw_dir, "^html_.*\\.RDS$"))
+  files <- c(list.files(raw_dir, "^html_.*\\.RDS$"),
+             basename(Sys.glob(file.path(raw_dir, "harvests", "*", "html_*.RDS"))))
+  sort(unique(sub("^html_(.*)\\.RDS$", "\\1", files)))
 }
 
 # The raw store is append-only (#296): an institution's first harvest is
@@ -23,19 +26,21 @@ dated_harvest_file <- function(institution, date = Sys.Date(), raw_dir = RAW_DIR
 
 # All raw files of an institution: the first harvest, then the dated ones.
 harvest_files <- function(institution, raw_dir = RAW_DIR) {
+  first <- harvest_file(institution, raw_dir)
   dated <- Sys.glob(file.path(raw_dir, "harvests", "*", paste0("html_", institution, ".RDS")))
-  c(harvest_file(institution, raw_dir), sort(dated))
+  c(first[file.exists(first)], sort(dated))
 }
 
-# Date of a raw harvest: its harvested_at column, else the dated directory
-# name, else the file's modification date (harvests before 2026-10-06 have no
-# harvested_at).
+# Date of a raw harvest: its harvested_at column (written since 2026-10-06),
+# else the name of its dated directory. Never the file's modification time,
+# which a copy changes.
 harvest_date <- function(file, df = readRDS(file)) {
   if ("harvested_at" %in% names(df) && any(!is.na(df$harvested_at))) {
     return(max(as.Date(df$harvested_at), na.rm = TRUE))
   }
   d <- as.Date(basename(dirname(file)), optional = TRUE)
-  if (!is.na(d)) d else as.Date(file.mtime(file))
+  if (is.na(d)) stop("No harvest date for ", file, ": no harvested_at, not in a dated directory")
+  d
 }
 
 # Academic year ("2025-2026", August to July) of a date.

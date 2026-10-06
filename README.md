@@ -382,10 +382,18 @@ harvest cannot recover them. Their raw files are snapshots (#293):
   September-November or February-April), whether or not DBH has a new
   year; a year without a harvest has no plans for them.
 
-`data/raw/harvests/2026-04-04/` holds the user’s earlier harvest of
-these sites (2025/26). The rest of that backup, for sites with the year
-in the URL, is in `data/backup/2026-04-04/` and is not read. Raw files
-exist only locally: back them up.
+Their harvests are all dated: `data/raw/harvests/2026-04-04/` (the
+user’s earlier harvest, 2025/26) and `2026-09-30/` (2026/27). A harvest
+date comes from the `harvested_at` column or the directory name, never
+from the file’s modification time, which a copy changes. The rest of the
+April backup, for sites with the year in the URL, is in
+`data/backup/2026-04-04/` and is not read. Raw files exist only locally:
+back them up.
+
+A “page” site (NLA) and a “current” site change their pages over time,
+so their checkpoints are removed before every harvest and all pages are
+fetched again; for “url” sites the checkpoint only resumes an
+interrupted harvest.
 
 ### Raw Store and Finalized Releases
 
@@ -920,10 +928,23 @@ in Sámi.
 <td>A page’s <code>extracted_text</code> from its blocks</td>
 </tr>
 <tr>
-<td><code>read_harvest(institutions)</code></td>
-<td><code>R/extract_fulltext.R</code></td>
-<td>Raw harvest joined with
-<code>data/interim/extracted_text.RDS</code></td>
+<td><code>read_harvest(files, config)</code></td>
+<td><code>R/pipeline.R</code></td>
+<td>One institution’s raw files combined (<code>harvest_files()</code>);
+current sites matched by course code and academic year</td>
+</tr>
+<tr>
+<td><code>harvested_rows(institutions)</code></td>
+<td><code>R/pipeline.R</code></td>
+<td><code>read_harvest()</code> joined with
+<code>data/interim/extracted_text.RDS</code> (audit scripts)</td>
+</tr>
+<tr>
+<td><code>finalize_release(tag)</code>,
+<code>frozen_changes()</code></td>
+<td><code>R/release.R</code></td>
+<td>Lock a release’s raw files; list changes to it (target
+<code>frozen_check</code>)</td>
 </tr>
 <tr>
 <td><code>validate_courses(df, stage)</code></td>

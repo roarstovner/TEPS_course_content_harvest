@@ -99,6 +99,9 @@ RAW_MANIFEST <- "tests/snapshots/raw_manifest.csv"
 #' @return The manifest, invisibly.
 finalize_release <- function(tag, raw_dir = RAW_DIR, processed = "data/processed",
                              releases = "data/releases", manifest = RAW_MANIFEST) {
+  if (file.exists("_targets.R") && length(targets::tar_outdated())) {
+    stop("Run targets::tar_make() first: the built data are not up to date")
+  }
   files <- unlist(lapply(harvested_institutions(raw_dir), harvest_files, raw_dir = raw_dir))
   m <- tibble::tibble(release = tag, file = files, md5 = unname(tools::md5sum(files)))
   dir <- file.path(releases, tag)
@@ -135,7 +138,8 @@ frozen_changes <- function(manifest, offerings, plans, sections, releases = "dat
   o <- dplyr::left_join(readRDS(file.path(dir, "course_offerings.RDS"))[c("course_id", "institution", "plan_content_id")],
                         readRDS(offerings)[c("course_id", "plan_content_id")],
                         by = "course_id", suffix = c("", "_now"))
-  moved <- !mapply(identical, o$plan_content_id, o$plan_content_id_now)
+  now_ids <- readRDS(offerings)$course_id
+  moved <- !o$course_id %in% now_ids | !mapply(identical, o$plan_content_id, o$plan_content_id_now)
   out <- dplyr::bind_rows(out, tibble::tibble(check = "offering gone or with another plan",
                                               institution = o$institution[moved],
                                               what = o$course_id[moved]))

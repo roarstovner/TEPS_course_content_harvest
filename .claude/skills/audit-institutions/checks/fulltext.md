@@ -7,7 +7,7 @@ set by `selector`, `exclude` and `post_fn` in `R/institution_config.R`.
 
 - **Default model:** `sonnet`
 - **Audited output:** `extracted_text` in `data/interim/extracted_text.RDS` (rebuilt by `targets::tar_make()`)
-- **Ground truth:** the fetched page (`html` in `data/raw/html_{inst}.RDS`)
+- **Ground truth:** the fetched page (`html` in the raw harvest, as `harvested_rows()` reads it)
 - **Rubric:** below
 
 ## Pipeline (orchestrator)

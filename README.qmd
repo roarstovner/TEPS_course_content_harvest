@@ -281,10 +281,16 @@ them. Their raw files are snapshots (#293):
   or February-April), whether or not DBH has a new year; a year without a
   harvest has no plans for them.
 
-`data/raw/harvests/2026-04-04/` holds the user's earlier harvest of these sites
-(2025/26). The rest of that backup, for sites with the year in the URL, is in
-`data/backup/2026-04-04/` and is not read. Raw files exist only locally: back
-them up.
+Their harvests are all dated: `data/raw/harvests/2026-04-04/` (the user's
+earlier harvest, 2025/26) and `2026-09-30/` (2026/27). A harvest date comes
+from the `harvested_at` column or the directory name, never from the file's
+modification time, which a copy changes. The rest of the April backup, for
+sites with the year in the URL, is in `data/backup/2026-04-04/` and is not read.
+Raw files exist only locally: back them up.
+
+A "page" site (NLA) and a "current" site change their pages over time, so
+their checkpoints are removed before every harvest and all pages are fetched
+again; for "url" sites the checkpoint only resumes an interrupted harvest.
 
 ### Raw Store and Finalized Releases
 
@@ -592,7 +598,9 @@ pages.
 | `extract_fulltext_from_raw(df, config)` | `R/extract_fulltext.R` | `extracted_text` from the raw harvest, per strategy |
 | `page_blocks(html, text, cfg)` | `R/blocks.R` | Read one page into a block table |
 | `page_fulltext(blocks, config)` | `R/extract_fulltext.R` | A page's `extracted_text` from its blocks |
-| `read_harvest(institutions)` | `R/extract_fulltext.R` | Raw harvest joined with `data/interim/extracted_text.RDS` |
+| `read_harvest(files, config)` | `R/pipeline.R` | One institution's raw files combined (`harvest_files()`); current sites matched by course code and academic year |
+| `harvested_rows(institutions)` | `R/pipeline.R` | `read_harvest()` joined with `data/interim/extracted_text.RDS` (audit scripts) |
+| `finalize_release(tag)`, `frozen_changes()` | `R/release.R` | Lock a release's raw files; list changes to it (target `frozen_check`) |
 | `validate_courses(df, stage)` | `R/utils.R` | Required columns at `"initial"`, `"with_url"`, `"with_html"` |
 | `anonymize_text(institution, text)` | `R/anonymize.R` | PII and admin-date removal for `course_plan` and sections |
 | `normalize_plan_text(course_plan)` | `R/normalize_plan_text.R` | Lossy normalization for dedup hashing |

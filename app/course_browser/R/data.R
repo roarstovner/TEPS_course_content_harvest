@@ -50,9 +50,11 @@ load_browser_data <- function(path = "data/browser_data.RDS") {
 #' @return Character(1) of raw HTML, or NULL
 load_course_html <- function(course_id, inst, cache, data_dir = "../../data/raw") {
   if (is.null(cache$inst) || !identical(cache$inst, inst)) {
-    path <- file.path(data_dir, paste0("html_", inst, ".RDS"))
-    if (!file.exists(path)) return(NULL)
-    raw <- readRDS(path)
+    # the page the pipeline reads for each offering: all raw files of the
+    # institution, current sites matched by course and year (read_harvest())
+    files <- harvest_files(inst, data_dir)
+    if (!length(files)) return(NULL)
+    raw <- read_harvest(files, get_institution_config(inst))
     cache$data <- raw[, c("course_id", "html"), drop = FALSE]
     cache$inst <- inst
   }

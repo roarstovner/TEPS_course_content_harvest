@@ -15,6 +15,12 @@ library(stringi)
 library(ggplot2)
 library(diffobj)
 
+# The pipeline's reader of the raw harvest, for the Source HTML view
+for (f in c("utils.R", "fetch_html_cols.R", "extract_fulltext.R", "institution_config.R",
+            "pipeline.R")) {
+  source(file.path("../../R", f))
+}
+
 # ── Global ──────────────────────────────────────────────────────────────────
 
 bd <- load_browser_data()
