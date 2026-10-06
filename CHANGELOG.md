@@ -103,6 +103,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Harvest and fulltext problems found by audit 2026-10-01 (#217)
+- Courses with plan text but no sections (388) (#222)
+- Decide: oslomet non-praksis courses whose emneplan says 'Se fagplanen' (#289)
+- Current-only sites (uio, mf, nmbu, steiner): use archived harvests for the year each plan was in force (#293)
+- NLA: plans for all DBH years from the embedded JSON (#292)
+- DBH: map Universitetet i Innlandet (code 1177) to inn and harvest INN 2025 (#291)
 - course_browser: Review tab listing the plans behind open decisions (#295)
 - uio: bold label lines under Undervisning not read as sub-headings (#288)
 - Page furniture in sections (uis PDF headers, OpenURL, usn Leganto, steiner page numbers) (#287)
