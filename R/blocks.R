@@ -55,6 +55,7 @@
     text_header       = ic$section_text_header,
     fields            = ic$section_fields,
     inline_coursework = isTRUE(ic$section_inline_coursework),
+    pointer           = ic$section_pointer,
     pre_fn            = ic$pre_fn,
     institution       = ic$name
   )

@@ -79,8 +79,9 @@ anonymize_text <- function(institution, text,
     stringr::str_remove("Forside\\s*>\\s*Studier\\s*>\\s*Emner\\s*>\\s*\\d{4}\\s*>\\s*(?:Høst|Vår|Haust)\\s+\\d{4}\\s*>\\s*") |>
     # Remove "(Høst/Vår/Haust YYYY)" from title
     stringr::str_remove_all("\\((Høst|Vår|Haust)\\s+\\d{4}\\)") |>
-    # Strip "Emneansvarlig:\nName\n" (name is on the next line, before "Undervisningssemester:")
-    stringr::str_remove_all("(?m)^Emneansvarlig:\\s*\\n[^\\n]+(?=\\n)")
+    # "Emneansvarlig(e):" and the name lines under it, up to the next
+    # "Label:" line (Undervisningssemester:); several names are common (#231)
+    stringr::str_remove_all("(?m)^Emneansvarlige?:[ \\t]*\\n(?:(?![\\p{Lu}][\\p{L} ()-]*:[ \\t]*$)[^\\n]*\\n)*")
 }
 
 .anon_hiof <- function(txt) {
@@ -158,6 +159,8 @@ anonymize_text <- function(institution, text,
   txt |>
     stringr::str_remove_all("(?m)^Godkjent emneplan\\s*$") |>
     stringr::str_remove_all("(?m)^Godkjent\\s+\\d{1,2}\\.\\d{1,2}\\.\\d{4}[^\n]*") |>
+    # "Godkjent av" with the approver's name and title on the next lines (#231)
+    stringr::str_remove_all("(?m)^Godkjent av[ \\t]*\\n[^\\n]*(?:\\n(?:Institutt|Fakultet|Studie|Prorektor|Dekan)[^\\n]*)?") |>
     # Leganto reading-list widget (#287): link label, "View online", and the
     # item type glued to the title ("BookMøter med barnelitteratur")
     stringr::str_remove_all("Click to view interactive reading list in Leganto") |>
@@ -212,11 +215,14 @@ anonymize_text <- function(institution, text,
   "\\p{Lu}[\\p{L}.'’-]*(?:[ \\t]+(?:\\p{Lu}[\\p{L}.'’-]*|van|von|de|der|den|da|di|af))+",
   "[ \\t]*\\((?i:", paste(.staff_roles, collapse = "|"), ")\\)[ \\t]*(?:\\n|$)"
 )
-# A line that is a role label followed by a capitalised name, and possibly an
-# e-mail: "Emneleder Kari Nordmann kari@uit.no" (uit), "Emneansvarlig Ola
-# Nordmann" (uis PDF plans) (#260). "Emneansvarlig informerer ..." is prose.
+# A role label followed by a capitalised name, on the same line or (after a
+# colon) the next, and possibly an e-mail: "Emneleder Kari Nordmann
+# kari@uit.no" (uit), "Emneansvarlig Ola Nordmann" (uis PDF plans) (#260),
+# "Emneansvarlige:\nKari Nordmann" (uia; #231). "Emneansvarlig informerer ..." is prose, and uib's
+# "Emneansvarlig\nThe Programme Committee" names no person.
 .role_name_line_regex <- paste0(
-  "(?m)^[ \\t]*(?i:", paste(.staff_roles, collapse = "|"), ")[ \\t]*:?[ \\t]+",
+  "(?m)^[ \\t]*(?i:", paste(.staff_roles, collapse = "|"), ")(?i:e|er|ar)?",
+  "[ \\t]*(?::[ \\t]*\\n[ \\t]*|:?[ \\t]+)",   # the next line only after a colon
   "\\p{Lu}\\p{Ll}+(?:[ \\t]+\\p{Lu}[\\p{L}.'’-]*)+[^\\n]*(?:\\n|$)"
 )
 # A signature line "17.03.20 Ola Nordmann, dekan": optional date stamp, a

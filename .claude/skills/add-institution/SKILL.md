@@ -35,7 +35,7 @@ newuni = list(
   strategy = "standard",          # or url_discovery, shadow_dom, etc.
   selector = ".main-content",     # the element that holds the course plan (first match)
   exclude = ".contact-box",       # optional: parts of it that are not the plan
-  year_in_url = TRUE,             # FALSE if institution doesn't use year in URLs
+  plan_years = "url",             # "current" if the site shows only the plan in force; "page" if one page holds all years
   section_strategy = "html",      # read the page as html; see README "Blocks and Sections"
   section_heading_selector = "h2" # the section headings (default h2)
 )

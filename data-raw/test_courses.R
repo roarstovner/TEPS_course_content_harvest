@@ -1,16 +1,14 @@
 ## code to prepare `test_courses` dataset goes here
 courses <- readRDS("data/input/courses.RDS")
 
+source("R/extract_fulltext.R", local = TRUE)
+source("R/fetch_html_cols.R", local = TRUE)
 source("R/institution_config.R", local = TRUE)
-institusjonskoder <- setNames(
-  names(institution_configs),
-  vapply(institution_configs, \(x) x$code, character(1))
-)
 
 test_courses <- courses |> 
   dplyr::filter(
     Årstall >= 2015,
-    Institusjonskode %in% names(institusjonskoder),
+    !is.na(institution_from_code(Institusjonskode)),
     ) |> 
   dplyr::distinct(Institusjonsnavn, Årstall, .keep_all = TRUE) |> 
   dplyr::arrange(Institusjonsnavn, Årstall)

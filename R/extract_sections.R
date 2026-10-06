@@ -77,8 +77,10 @@ sectionize <- function(blocks) {
 #' sectionize() on the page's blocks (for the text reader, the lines of
 #' extracted_text). When the html reader finds fewer than 3
 #' sections, the lines of extracted_text are tried instead, and kept if they
-#' give more (#183). Then nord-style coursework lines move out of assessment
-#' (`section_inline_coursework`) and .clean_sections() tidies the rows.
+#' give more (#183). A section that only points to another block on the page
+#' is filled from it (`section_pointer`), nord-style coursework lines move out
+#' of assessment (`section_inline_coursework`), and .clean_sections() tidies
+#' the rows.
 #'
 #' @param blocks Block table from page_blocks().
 #' @param text The page's extracted_text, for the fallback.
@@ -91,8 +93,37 @@ page_sections <- function(blocks, text, cfg) {
     fallback <- sectionize(.text_blocks(text, cfg))
     if (nrow(fallback) > nrow(out)) out <- fallback
   }
+  out <- .fill_pointer_sections(out, blocks, cfg$pointer)
   if (isTRUE(cfg$inline_coursework)) out <- .split_inline_coursework(out)
   .clean_sections(out, cfg$institution)
+}
+
+# A section whose whole text is a placeholder naming another block of the page
+# ("Se fagplanen.") gets that block's text under the matching sub-heading,
+# after a lead that names the source: "Se fagplanen. Fagplanen sier:\n...".
+# `pointer` (config `section_pointer`): `heading` of the block, `lead`, and
+# `sections`, a sub-heading per section (oslomet; #289). The block's text runs
+# to its next sub-heading.
+.fill_pointer_sections <- function(out, blocks, pointer) {
+  if (is.null(pointer) || nrow(out) == 0) return(out)
+  heads <- which(blocks$role == "heading")
+  start <- heads[stringr::str_squish(blocks$text[heads]) == pointer$heading][1]
+  if (is.na(start)) return(out)
+  end <- c(heads[heads > start], nrow(blocks) + 1)[1]
+  block <- blocks[seq.int(start + 1, length.out = end - start - 1), ]
+  subs <- which(block$role == "sub")
+  for (sec in names(pointer$sections)) {
+    i <- match(sec, out$section)
+    if (is.na(i) || !.is_placeholder_text(out$raw_text[i]) ||
+        !grepl(tolower(pointer$heading), tolower(out$raw_text[i]), fixed = TRUE)) next
+    from <- subs[stringr::str_squish(block$text[subs]) == pointer$sections[[sec]]][1]
+    if (is.na(from)) next
+    to <- c(subs[subs > from], nrow(block) + 1)[1]
+    part <- block[seq.int(from + 1, length.out = to - from - 1), ]
+    txt <- trimws(paste(part$text[part$role == "text"], collapse = "\n"))
+    if (nzchar(txt)) out$raw_text[i] <- paste0(trimws(out$raw_text[i]), " ", pointer$lead, "\n", txt)
+  }
+  out
 }
 
 #' Sections of many pages of one institution

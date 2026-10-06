@@ -88,7 +88,8 @@ test_that("the json reader reads nla's titles and contents", {
   f <- test_path("../../data/raw/html_nla.RDS")
   skip_if_not(file.exists(f), "harvested nla data not available")
   x <- readRDS(f)
-  i <- which(!is.na(x$html))[1]
+  # the latest autumn: earlier academic years are in the JSON for few courses (#292)
+  i <- which(!is.na(x$html) & x$Årstall == max(x$Årstall) & x$Semesternavn == "Høst")[1]
   b <- page_blocks(x$html[i], NA, list(reader = "json"), x$course_id[i])
   expect_gt(sum(b$role == "heading" & !is.na(b$section)), 3)
 })

@@ -1,7 +1,7 @@
 # Data Quality Notes
 
 
-Generated: 2026-10-05
+Generated: 2026-10-06
 
 ## Overview
 
@@ -9,25 +9,25 @@ Generated: 2026-10-05
 |:---|---:|---:|:---|---:|:---|---:|---:|:---|
 | hiof | 1712 | 240 | 2017-2025 | 846 | 49.4% | 7151 | 820 | 3.1% |
 | hivolda | 1182 | 113 | 2017-2025 | 594 | 50.3% | 4620 | 547 | 7.9% |
-| hvl | 3604 | 393 | 2017-2025 | 3335 | 92.5% | 4116 | 1654 | 50.4% |
-| inn | 2368 | 262 | 2018-2024 | 1284 | 54.2% | 4156 | 542 | 56.8% |
-| mf | 55 | 29 | 2025 | 51 | 92.7% | 3921 | 26 | 49.0% |
+| hvl | 3604 | 393 | 2017-2025 | 3335 | 92.5% | 4116 | 1653 | 49.1% |
+| inn | 2861 | 286 | 2018-2025 | 1777 | 62.1% | 4163 | 693 | 60.2% |
+| mf | 55 | 29 | 2025 | 26 | 47.3% | 4154 | 26 | 0.0% |
 | nih | 184 | 34 | 2021-2025 | 81 | 44.0% | 2330 | 81 | 0.0% |
-| nla | 365 | 189 | 2025 | 153 | 41.9% | 5875 | 153 | 0.0% |
-| nmbu | 29 | 15 | 2025 | 21 | 72.4% | 4653 | 11 | 47.6% |
-| nord | 3489 | 434 | 2016-2025 | 3489 | 100.0% | 4004 | 1377 | 60.5% |
-| ntnu | 5735 | 409 | 2004-2025 | 3791 | 66.1% | 4061 | 2009 | 47.0% |
-| oslomet | 1684 | 178 | 2018-2025 | 1684 | 100.0% | 12259 | 655 | 60.9% |
+| nla | 2074 | 209 | 2017-2025 | 249 | 12.0% | 5885 | 181 | 27.3% |
+| nmbu | 29 | 15 | 2025 | 12 | 41.4% | 5900 | 12 | 0.0% |
+| nord | 3489 | 434 | 2016-2025 | 3489 | 100.0% | 4004 | 1366 | 60.2% |
+| ntnu | 5735 | 409 | 2004-2025 | 3791 | 66.1% | 4061 | 2008 | 47.0% |
+| oslomet | 1684 | 178 | 2018-2025 | 1684 | 100.0% | 12259 | 629 | 60.9% |
 | samas | 130 | 68 | 2025 | 0 | 0.0% | NA | 0 | NaN% |
-| steiner | 36 | 18 | 2025 | 30 | 83.3% | 5027 | 15 | 50.0% |
-| uia | 2881 | 245 | 2013-2025 | 1123 | 39.0% | 4343 | 811 | 27.8% |
-| uib | 2619 | 177 | 2004-2025 | 1473 | 56.2% | 3135 | 567 | 61.5% |
-| uio | 100 | 54 | 2025 | 96 | 96.0% | 4342 | 52 | 45.8% |
+| steiner | 36 | 18 | 2025 | 15 | 41.7% | 5027 | 15 | 0.0% |
+| uia | 2881 | 245 | 2013-2025 | 1123 | 39.0% | 4343 | 682 | 33.7% |
+| uib | 2619 | 177 | 2004-2025 | 1473 | 56.2% | 3135 | 565 | 59.5% |
+| uio | 100 | 54 | 2025 | 47 | 47.0% | 4467 | 47 | 0.0% |
 | uis | 2921 | 316 | 2007-2025 | 2728 | 93.4% | 5600 | 1299 | 52.4% |
-| uit | 6693 | 621 | 2004-2025 | 3150 | 47.1% | 4101 | 2332 | 26.0% |
+| uit | 6693 | 621 | 2004-2025 | 3150 | 47.1% | 4101 | 2328 | 26.0% |
 | usn | 3036 | 401 | 2018-2025 | 1238 | 40.8% | 10800 | 1183 | 4.4% |
 
-**Total**: 38823 rows, 25167 with extracted text (64.8%), 14271 unique
+**Total**: 41025 rows, 25658 with extracted text (62.5%), 14238 unique
 plans.
 
 **Columns:**
@@ -44,10 +44,14 @@ plans.
 
 ## Year coverage
 
-Where the URL carries no year (`year_in_url = FALSE` in
-`R/institution_config.R`), every year gets the latest plan, so only the
-latest DBH year is harvested (`apply_year_filter()`). In this data that
-applies to mf, nla, nmbu, samas, steiner, uio. The others have
+Sites that show only the plan in force (`plan_years = "current"` in
+`R/institution_config.R`) give, at each harvest, the plan of that
+academic year only. Each harvest is kept, and an offering gets the plan
+from a harvest made in its own academic year, or none (README “Sites
+that show only the current plan”; \#293). In this data the harvests are
+of 2026-04-04 (2025/26: autumn 2025 offerings) and 2026-09-30 (2026/27:
+no DBH offerings yet), so spring 2025 offerings (2024/25) have no plan
+at these sites. They are mf, nmbu, samas, steiner, uio. The others have
 historical plans as far back as the site still serves them. Share of
 offerings with a plan, by period:
 
@@ -57,18 +61,18 @@ offerings with a plan, by period:
 | hivolda     |       | 100%    | 54%     | 50%     | 50%     | 48%   |
 | hvl         |       | 100%    | 100%    | 98%     | 92%     | 88%   |
 | inn         |       |         | 0%      | 0%      | 100%    | 100%  |
-| mf          |       |         |         |         |         | 93%   |
+| mf          |       |         |         |         |         | 47%   |
 | nih         |       |         |         | 62%     | 46%     | 41%   |
-| nla         |       |         |         |         |         | 42%   |
-| nmbu        |       |         |         |         |         | 72%   |
+| nla         |       | 30%     | 2%      | 3%      | 2%      | 30%   |
+| nmbu        |       |         |         |         |         | 41%   |
 | nord        |       | 100%    | 100%    | 100%    | 100%    | 100%  |
 | ntnu        | 91%   | 93%     | 61%     | 47%     | 48%     | 51%   |
 | oslomet     |       |         | 100%    | 100%    | 100%    | 100%  |
 | samas       |       |         |         |         |         | 0%    |
-| steiner     |       |         |         |         |         | 83%   |
+| steiner     |       |         |         |         |         | 42%   |
 | uia         | 0%    | 0%      | 0%      | 50%     | 47%     | 49%   |
 | uib         | 31%   | 44%     | 63%     | 81%     | 79%     | 86%   |
-| uio         |       |         |         |         |         | 96%   |
+| uio         |       |         |         |         |         | 47%   |
 | uis         | 92%   | 96%     | 95%     | 92%     | 92%     | 94%   |
 | uit         | 51%   | 43%     | 39%     | 46%     | 54%     | 52%   |
 | usn         |       |         | 39%     | 45%     | 38%     | 41%   |
@@ -93,22 +97,22 @@ year) that have a plan in at least one semester:
 |:---|---:|:---|---:|---:|---:|:---|:---|
 | hiof | 936 | 83% | 715 | 8 | 53 | 90% | 49.4% |
 | hivolda | 629 | 88% | 510 | 8 | 35 | 93% | 50.3% |
-| hvl | 1931 | 87% | 0 | 1556 | 117 | 92% | 92.5% |
-| inn | 1244 | 90% | 0 | 611 | 513 | 52% | 54.2% |
-| mf | 29 | 90% | 0 | 25 | 1 | 90% | 92.7% |
+| hvl | 1931 | 87% | 0 | 1516 | 157 | 90% | 92.5% |
+| inn | 1500 | 91% | 0 | 847 | 514 | 60% | 62.1% |
+| mf | 29 | 90% | 25 | 0 | 1 | 90% | 47.3% |
 | nih | 107 | 72% | 58 | 0 | 19 | 76% | 44.0% |
-| nla | 189 | 93% | 144 | 0 | 32 | 81% | 41.9% |
-| nmbu | 15 | 93% | 0 | 10 | 4 | 73% | 72.4% |
-| nord | 1886 | 85% | 0 | 1603 | 0 | 100% | 100.0% |
+| nla | 1103 | 88% | 232 | 0 | 739 | 23% | 12.0% |
+| nmbu | 15 | 93% | 11 | 0 | 3 | 80% | 41.4% |
+| nord | 1886 | 85% | 2 | 1575 | 26 | 98% | 100.0% |
 | ntnu | 2851 | 80% | 0 | 1427 | 867 | 63% | 66.1% |
-| oslomet | 895 | 88% | 0 | 787 | 2 | 99% | 100.0% |
+| oslomet | 895 | 88% | 2 | 757 | 30 | 95% | 100.0% |
 | samas | 68 | 91% | 0 | 0 | 62 | 0% | 0.0% |
-| steiner | 18 | 100% | 0 | 15 | 3 | 83% | 83.3% |
-| uia | 1508 | 91% | 1063 | 3 | 307 | 74% | 39.0% |
-| uib | 1328 | 85% | 3 | 681 | 441 | 56% | 56.2% |
-| uio | 54 | 85% | 0 | 44 | 2 | 96% | 96.0% |
+| steiner | 18 | 100% | 15 | 0 | 3 | 83% | 41.7% |
+| uia | 1508 | 91% | 968 | 3 | 402 | 68% | 39.0% |
+| uib | 1328 | 85% | 15 | 653 | 457 | 54% | 56.2% |
+| uio | 54 | 85% | 44 | 0 | 2 | 87% | 47.0% |
 | uis | 1602 | 82% | 0 | 1235 | 84 | 93% | 93.4% |
-| uit | 3605 | 86% | 1078 | 877 | 1133 | 63% | 47.1% |
+| uit | 3605 | 86% | 1079 | 875 | 1134 | 63% | 47.1% |
 | usn | 1657 | 83% | 1021 | 31 | 327 | 73% | 40.8% |
 
 ## Interpreting the dedup ratio
@@ -175,7 +179,8 @@ to chainlink.
 
 ### MF (MF Norwegian School of Theology)
 
-- Latest year only (no year in the URL). Selector `main` (#25)
+- Only the plan in force is published (`plan_years = "current"`; see
+  “Year coverage”). Selector `main` (#25)
 - `.anon_mf()` cuts from “Emneansvarlig” to the end (names, contact
   details, marketing)
 
@@ -190,10 +195,11 @@ to chainlink.
 
 ### NLA (NLA University College)
 
-- Latest year only. Each course page embeds every academic year as JSON;
-  the json block reader (`R/blocks.R`) takes the year of the row (spring
-  2025 → 2024-2025, autumn 2025 → 2025-2026). A row with a page but no
-  plan is an academic year missing from that JSON
+- All DBH years (`plan_years = "page"`, \#292): each course page embeds
+  the plans of several academic years as JSON, for most courses only
+  recent ones; the json block reader (`R/blocks.R`) takes the year of
+  the row (spring 2025 → 2024-2025, autumn 2025 → 2025-2026). A row with
+  a page but no plan is an academic year missing from that JSON
 - The `/studietilbud/emner/` URLs are rendered in the browser, so the
   harvest uses
   `/for-studenter/Studie-%20og%20emneplaner/emneplan/{CODE}` (#55)
@@ -202,8 +208,9 @@ to chainlink.
 
 ### NMBU (Norwegian University of Life Sciences)
 
-- Latest year only (no year in the URL); few course codes. Rows without
-  a plan are 404s for discontinued courses
+- Only the plan in force is published (`plan_years = "current"`; see
+  “Year coverage”); few course codes. Rows without a plan are 404s for
+  discontinued courses, or spring 2025 offerings
 
 ------------------------------------------------------------------------
 
@@ -254,7 +261,8 @@ to chainlink.
 
 ### Steiner (Rudolf Steiner University College)
 
-- Latest year only. Plans come from five subject PDFs at
+- Only the plan in force is published (`plan_years = "current"`; see
+  “Year coverage”). Plans come from five subject PDFs at
   `steinerhoyskolen.no`, split by course heading (#68, \#73); the PDFs
   are not stored, so the split text is the raw data
 - The practicum modules (M-LP1/2/3) have no PDF content
@@ -291,9 +299,9 @@ to chainlink.
 
 ### UiO (University of Oslo)
 
-- Latest year only: UiO publishes only the current version of each plan.
-  Semester URLs (`/h24/`, `/v25/`) hold logistics (teachers, timetable,
-  exam dates), not the plan (#76)
+- Only the plan in force is published (`plan_years = "current"`; see
+  “Year coverage”). Semester URLs (`/h24/`, `/v25/`) hold logistics
+  (teachers, timetable, exam dates), not the plan (#76)
 - Needs faculty/department slugs derived from `Avdelingsnavn` (mapping
   in `add_course_url_uio()`). Pattern:
   `https://www.uio.no/studier/emner/{faculty}/{inst}/{CODE}/`

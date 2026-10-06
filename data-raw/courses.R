@@ -1,16 +1,10 @@
 ## code to prepare `courses` dataset goes here
 
 source("R/utils.R", local = TRUE)
-
-institution_from_code <- function(institution_code) {
-  # institution_config.R references pre/post and fetch functions defined here
-  source("R/extract_fulltext.R", local = TRUE)
-  source("R/fetch_html_cols.R", local = TRUE)
-  source("R/institution_config.R", local = TRUE)
-  # Invert: code -> name
-  inv <- setNames(names(institution_configs), vapply(institution_configs, \(x) x$code, character(1)))
-  inv[institution_code]
-}
+# institution_config.R references pre/post and fetch functions defined here
+source("R/extract_fulltext.R", local = TRUE)
+source("R/fetch_html_cols.R", local = TRUE)
+source("R/institution_config.R", local = TRUE)
 
 studieprogram <- rdbhapi::dbh_data(
   347, # dbh-tabell: Studieprogram
@@ -47,7 +41,7 @@ courses <- courses |>
 
 courses <- courses |>
   dplyr::mutate(
-    institution = unname(institution_from_code(Institusjonskode)),
+    institution = institution_from_code(Institusjonskode),
     Emnekode_raw = Emnekode,
     Emnekode = canon_remove_trailing_num(Emnekode),
   ) |> 

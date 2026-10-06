@@ -1,9 +1,16 @@
 # R/institution_config.R
 # Single source of truth for all institution configuration.
 # Each institution declares its harvesting strategy, the page part that holds
-# the plan (`selector`, minus `exclude`), pre/post processing functions, fetch
-# overrides, and how the plan is read into sections (`section_*`; see
-# R/blocks.R).
+# the plan (`selector`, minus `exclude`), how a plan's year is known
+# (`plan_years`), pre/post processing functions, fetch overrides, and how the
+# plan is read into sections (`section_*`; see R/blocks.R).
+#
+# plan_years: "url"     the URL holds the year (and semester), so every DBH
+#                       year is harvested;
+#             "page"    one page holds the plans of several years (nla's JSON);
+#             "current" the site shows only the plan in force when the page is
+#                       fetched, so a harvest gives the plan of that academic
+#                       year only (#293).
 
 institution_configs <- list(
 
@@ -11,17 +18,23 @@ institution_configs <- list(
     code = "1175",
     strategy = "standard",
     selector = "#main-content",
-    year_in_url = TRUE,
+    plan_years = "url",
     section_strategy = "html",
     # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
-    section_subheading_selector = "p"
+    section_subheading_selector = "p",
+    # Teaching methods that only say "Se fagplanen." take the text of the
+    # subject's Fagplan block on the same page (#289).
+    section_pointer = list(
+      heading = "Fagplan", lead = "Fagplanen sier:",
+      sections = c(teaching_methods = "Fagets arbeids- og undervisningsformer")
+    )
   ),
 
   uia = list(
     code = "1171",
     strategy = "standard",
     selector = "#right-main",
-    year_in_url = TRUE,
+    plan_years = "url",
     section_strategy = "html",
     # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
     section_subheading_selector = "p"
@@ -31,7 +44,7 @@ institution_configs <- list(
     code = "1150",
     strategy = "standard",
     selector = "#content",
-    year_in_url = TRUE,
+    plan_years = "url",
     request_delay = 10,  # robots.txt: Crawl-delay: 10 for all user agents
     post_fn = .post_ntnu,
     fetch_fn = fetch_html_cols_single_ntnu,
@@ -43,10 +56,11 @@ institution_configs <- list(
   ),
 
   inn = list(
-    code = "0264",
+    # 1177 since INN became Universitetet i Innlandet (DBH from 2025, #291)
+    code = c("0264", "1177"),
     strategy = "standard",
     selector = ".content-inner",
-    year_in_url = TRUE,
+    plan_years = "url",
     pre_fn = .add_table_cell_breaks,
     section_strategy = "html",
     # inn marks most section headings with <div class="label"> (and the facts
@@ -62,7 +76,7 @@ institution_configs <- list(
     selector = "article.content-emweb",
     # course coordinator and approver (names)
     exclude = "div.field-person-in-charge, div.field-approval-sign",
-    year_in_url = TRUE,
+    plan_years = "url",
     pre_fn = .add_table_cell_breaks,
     # Drupal fields (div.field-<name> + div.label) name each part of the plan;
     # the exam table is the unlabelled field-assessments-row (#214).
@@ -86,7 +100,7 @@ institution_configs <- list(
     code = "0256",
     strategy = "standard",
     selector = "#vrtx-fs-emne-content, main .entry-content, .entry-content",
-    year_in_url = TRUE,
+    plan_years = "url",
     user_agent = "browser",
     section_strategy = "html",
     # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
@@ -97,7 +111,7 @@ institution_configs <- list(
     code = "0238",
     strategy = "standard",
     selector = ".l-2-col__main-content",
-    year_in_url = TRUE,
+    plan_years = "url",
     fetch_fn = fetch_html_cols_single_hvl,
     section_strategy = "html",
     section_heading_selector = "h3",
@@ -112,7 +126,7 @@ institution_configs <- list(
     # facts box, contact card (staff names) and banner
     exclude = paste(".template-study-subject__details, .template-study-subject__contact,",
                     ".wp-block-mf-banner, hgroup"),
-    year_in_url = FALSE,
+    plan_years = "current",
     # WordPress page: details/summary accordions plus an untitled intro block
     # (only three h2s, none of them plan sections) (#213). The intro is
     # course content, with paragraph sub-headings ("Arbeidsform og
@@ -127,7 +141,7 @@ institution_configs <- list(
   nla = list(
     code = "8223",
     strategy = "json_extract",
-    year_in_url = FALSE,
+    plan_years = "page",
     section_strategy = "json"
   ),
 
@@ -139,7 +153,7 @@ institution_configs <- list(
     # "Kopier lenke" label, and a panel. Not the "sist oppdatert" line.
     selector = "div.main-content",
     exclude = ".copy-accordion-anchor, .pre-title",
-    year_in_url = TRUE,
+    plan_years = "url",
     section_strategy = "html",
     section_heading_selector = "button.ac-trigger",
     section_scope = "div.ac",
@@ -152,7 +166,7 @@ institution_configs <- list(
     code = "1260",
     strategy = "standard",
     selector = ".fs-body",
-    year_in_url = TRUE,
+    plan_years = "url",
     section_strategy = "html"
   ),
 
@@ -162,7 +176,7 @@ institution_configs <- list(
     # The main column: h2 sections and the details accordions; not the sidebar
     # (exam dates and rooms).
     selector = "div.grid-span-main",
-    year_in_url = TRUE,
+    plan_years = "url",
     request_delay = 10,  # robots.txt: Crawl-delay: 10 for all user agents
     # h2 sections (Mål og innhald, Læringsutbytte) and details/summary
     # accordions (Krav til forkunnskapar, Vurderingsformer, Litteraturliste).
@@ -175,7 +189,7 @@ institution_configs <- list(
     code = "1110",
     strategy = "standard",
     selector = "#vrtx-course-content",
-    year_in_url = FALSE,
+    plan_years = "current",
     section_strategy = "html",
     # h3 carries Obligatoriske/Anbefalte forkunnskaper inside "Opptak til
     # emnet"; <p>Obligatoriske aktiviteter:</p> sits inside "Undervisning".
@@ -191,7 +205,7 @@ institution_configs <- list(
     # notice ("This course version is no longer available ...").
     selector = "#block-page-content div.article",
     exclude = ".content-navigation, .course-footer, .factbox--course:not(.factbox--exam)",
-    year_in_url = TRUE,
+    plan_years = "url",
     section_strategy = "html",
     # PDF plans (text_split fallback) open with a title and a metadata block;
     # the untitled paragraph after it is the course introduction (#243).
@@ -201,7 +215,7 @@ institution_configs <- list(
   usn = list(
     code = "1176",
     strategy = "shadow_dom",
-    year_in_url = TRUE,
+    plan_years = "url",
     section_strategy = "text"
   ),
 
@@ -212,7 +226,7 @@ institution_configs <- list(
     # lærer du, Undervisning og pensum, Eksamen) plus the year picker and the
     # contact block with staff names, which .pre_uit() cuts (#218).
     selector = ".mainContent",
-    year_in_url = TRUE,
+    plan_years = "url",
     post_fn = .pre_uit,
     section_strategy = "html",
     # 2008-2011 plans (old FS layout) head each field with a
@@ -230,9 +244,11 @@ institution_configs <- list(
     code = "1173",
     strategy = "standard",
     selector = ".layout",
-    year_in_url = FALSE,
+    plan_years = "current",
     section_strategy = "html",
-    section_heading_selector = "h3",
+    # sections are details accordions; the 2026-04 pages head them with
+    # <summary> only, later pages put an <h3> inside it (#293)
+    section_heading_selector = "h3, summary",
     # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
     section_subheading_selector = "p"
   ),
@@ -240,14 +256,14 @@ institution_configs <- list(
   samas = list(
     code = "0217",
     strategy = "noop",
-    year_in_url = FALSE,
+    plan_years = "current",
     section_strategy = "noop"
   ),
 
   steiner = list(
     code = "8225",
     strategy = "pdf_split",
-    year_in_url = FALSE,
+    plan_years = "current",
     section_strategy = "text"
   )
 )
@@ -261,6 +277,19 @@ get_institution_config <- function(inst) {
   if (is.null(config)) stop("Unknown institution: ", inst)
   config$name <- inst
   config
+}
+
+#' Institution short name for DBH institution codes
+#'
+#' A config's `code` can hold several DBH codes, e.g. when an institution got
+#' a new code after a change of status (inn: 0264, 1177).
+#'
+#' @param institution_code Character vector of DBH institution codes
+#' @return Character vector of short names, NA for codes no config has
+institution_from_code <- function(institution_code) {
+  codes <- lapply(institution_configs, `[[`, "code")
+  lookup <- setNames(rep(names(codes), lengths(codes)), unlist(codes))
+  unname(lookup[institution_code])
 }
 
 #' Get all institution configurations

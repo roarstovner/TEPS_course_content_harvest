@@ -43,7 +43,7 @@ A good `extracted_text` contains **the whole course plan and nothing else**:
   JavaScript, or content from other pages;
 - the plan for **this** course code and **this** year/semester (or the
   current plan for institutions without historical plans — UiO, and others
-  with `year_in_url FALSE`);
+  with `plan_years = "current"`);
 - readable structure: headings and paragraphs on separate lines, table cells
   separated.
 
@@ -95,6 +95,6 @@ and other non-plan page text), or `whole_text`.
 ## Typical fix locations
 
 `R/institution_config.R` (`selector`, `selector_mode`, `pre_fn`, `post_fn`,
-`year_in_url`), `R/extract_fulltext.R` (pre/post functions),
+`plan_years`), `R/extract_fulltext.R` (pre/post functions),
 `R/add_course_url.R` (URL builders), `R/harvest_strategies.R` (non-standard
 strategies).

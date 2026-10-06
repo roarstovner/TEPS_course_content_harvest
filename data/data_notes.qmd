@@ -64,9 +64,13 @@ knitr::kable(summary_tbl)
 
 ## Year coverage
 
-Where the URL carries no year (`year_in_url = FALSE` in
-`R/institution_config.R`), every year gets the latest plan, so only the latest
-DBH year is harvested (`apply_year_filter()`). In this data that applies to
+Sites that show only the plan in force (`plan_years = "current"` in
+`R/institution_config.R`) give, at each harvest, the plan of that academic
+year only. Each harvest is kept, and an offering gets the plan from a harvest
+made in its own academic year, or none (README "Sites that show only the
+current plan"; #293). In this data the harvests are of 2026-04-04 (2025/26:
+autumn 2025 offerings) and 2026-09-30 (2026/27: no DBH offerings yet), so
+spring 2025 offerings (2024/25) have no plan at these sites. They are
 `r paste(single_year, collapse = ", ")`.
 The others have historical plans as far back as the site still serves them.
 Share of offerings with a plan, by period:
@@ -167,7 +171,7 @@ chainlink.
 
 ### MF (MF Norwegian School of Theology)
 
-- Latest year only (no year in the URL). Selector `main` (#25)
+- Only the plan in force is published (`plan_years = "current"`; see "Year coverage"). Selector `main` (#25)
 - `.anon_mf()` cuts from "Emneansvarlig" to the end (names, contact details, marketing)
 
 ---
@@ -180,14 +184,14 @@ chainlink.
 
 ### NLA (NLA University College)
 
-- Latest year only. Each course page embeds every academic year as JSON; the json block reader (`R/blocks.R`) takes the year of the row (spring 2025 → 2024-2025, autumn 2025 → 2025-2026). A row with a page but no plan is an academic year missing from that JSON
+- All DBH years (`plan_years = "page"`, #292): each course page embeds the plans of several academic years as JSON, for most courses only recent ones; the json block reader (`R/blocks.R`) takes the year of the row (spring 2025 → 2024-2025, autumn 2025 → 2025-2026). A row with a page but no plan is an academic year missing from that JSON
 - The `/studietilbud/emner/` URLs are rendered in the browser, so the harvest uses `/for-studenter/Studie-%20og%20emneplaner/emneplan/{CODE}` (#55)
 
 ---
 
 ### NMBU (Norwegian University of Life Sciences)
 
-- Latest year only (no year in the URL); few course codes. Rows without a plan are 404s for discontinued courses
+- Only the plan in force is published (`plan_years = "current"`; see "Year coverage"); few course codes. Rows without a plan are 404s for discontinued courses, or spring 2025 offerings
 
 ---
 
@@ -221,7 +225,7 @@ chainlink.
 
 ### Steiner (Rudolf Steiner University College)
 
-- Latest year only. Plans come from five subject PDFs at `steinerhoyskolen.no`, split by course heading (#68, #73); the PDFs are not stored, so the split text is the raw data
+- Only the plan in force is published (`plan_years = "current"`; see "Year coverage"). Plans come from five subject PDFs at `steinerhoyskolen.no`, split by course heading (#68, #73); the PDFs are not stored, so the split text is the raw data
 - The practicum modules (M-LP1/2/3) have no PDF content
 - M-PEL2.1/M-PEL2.2 get the PDF's PEL1.4/PEL1.5 plans (`.steiner_remap_pel_emne()`); to be confirmed against the programme description (#225)
 
@@ -245,7 +249,7 @@ chainlink.
 
 ### UiO (University of Oslo)
 
-- Latest year only: UiO publishes only the current version of each plan. Semester URLs (`/h24/`, `/v25/`) hold logistics (teachers, timetable, exam dates), not the plan (#76)
+- Only the plan in force is published (`plan_years = "current"`; see "Year coverage"). Semester URLs (`/h24/`, `/v25/`) hold logistics (teachers, timetable, exam dates), not the plan (#76)
 - Needs faculty/department slugs derived from `Avdelingsnavn` (mapping in `add_course_url_uio()`). Pattern: `https://www.uio.no/studier/emner/{faculty}/{inst}/{CODE}/`
 - `.anon_uio()` cuts the generic "Mer om eksamen ved UiO" tail (#224)
 

@@ -175,6 +175,30 @@ test_that("sub-headings under an unmapped heading do not collect text (#240)", {
   expect_equal(s[["learning_outcomes"]], "Emnets mål.\nKunnskap\nStudenten kan lese.")
 })
 
+test_that("a section that points to the Fagplan takes its text from it (#289)", {
+  html <- "<main><ul>
+    <li><h2>Fagplan</h2><div><p><strong>Innledning</strong></p><p>Faget handler om kart.</p>
+      <p><strong>Fagets arbeids- og undervisningsformer</strong></p>
+      <p>Forelesninger og seminarer.</p><p>Ekskursjoner.</p>
+      <p><strong>Vurdering</strong></p><p>Vurderingsformene er varierte.</p></div></li>
+    <li><h2>Innhold</h2><div><p>Kart og klima.</p></div></li>
+    <li><h2>Arbeids- og undervisningsformer</h2><div><p>Se fagplanen.</p></div></li>
+    <li><h2>Arbeidskrav og obligatoriske aktiviteter</h2><div><p>Se fagplanen.</p></div></li>
+    </ul></main>"
+  cfg <- c(html_cfg("p"), list(pointer = list(
+    heading = "Fagplan", lead = "Fagplanen sier:",
+    sections = c(teaching_methods = "Fagets arbeids- og undervisningsformer"))))
+  s <- sections_of(html, cfg)
+  expect_equal(s[["teaching_methods"]],
+               "Se fagplanen. Fagplanen sier:\nForelesninger og seminarer.\nEkskursjoner.")
+  # sections without a sub-heading to read stay placeholders and are dropped
+  expect_false("coursework_requirements" %in% names(s))
+  expect_equal(s[["course_content"]], "Kart og klima.")
+  # real teaching methods are left alone
+  own <- sub("Se fagplanen.", "Gruppearbeid.", html, fixed = TRUE)  # the first is teaching methods
+  expect_equal(sections_of(own, cfg)[["teaching_methods"]], "Gruppearbeid.")
+})
+
 test_that("admission text is dropped and h3 prerequisites are kept (uio)", {
   html <- "<main>
     <h2>Opptak til emnet</h2>

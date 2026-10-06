@@ -12,6 +12,8 @@ documenting, write it there and, if agents need to find it, add a pointer here.
   published and which are internal, institution-specific notes (NORD, NTNU,
   UiO, HiOF, USN, UiT), function reference, troubleshooting.
 - `data/data_notes.qmd`: per-institution data quality notes.
+- `methods.qmd` (rendered by `tar_make()` to `methods.md`): the choices an
+  article's methods section must report, by topic, with numbers from the data.
 - `app/course_browser/README.md`, `app/course_browser_ojs/README.md`: the two
   browsers.
 - `R/institution_config.R`: per-institution configuration (single source of
@@ -63,5 +65,8 @@ documenting, write it there and, if agents need to find it, add a pointer here.
   (README "Rebuilding Derived Data"). Explain every flagged
   change; update the snapshot (`check_pipeline_metrics(update = TRUE)`) only
   for intended ones, in the same commit, and say so in the issue comment.
+- A decision that changes what the data mean (frame, years, exclusions,
+  anonymization, section rules) gets an entry in `methods.qmd` in the same
+  commit: choice, reason, rejected alternatives, consequence, date and issue.
 - UiO: never switch to semester URLs (`/h24/`, `/v25/`). They hold logistics,
   not the course plan (README "Institution-Specific Notes").

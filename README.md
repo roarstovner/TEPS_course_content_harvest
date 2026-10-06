@@ -88,10 +88,10 @@ dispatches to a strategy in `R/harvest_strategies.R` (`standard`,
 `url_discovery`, `shadow_dom`, `html_pdf_discovery`, `pdf_split`,
 `json_extract`, `noop`). `R/institution_config.R` is the single source
 of truth for each institution: strategy, the part of the page that holds
-the plan (`selector`, minus `exclude`), `year_in_url`, pre/post
-functions, fetch overrides and the `section_*` fields. Stages 6-8 and
-everything after them are a {targets} pipeline (see “Rebuilding Derived
-Data”).
+the plan (`selector`, minus `exclude`), how a plan’s year is known
+(`plan_years`: `"url"`, `"page"` or `"current"`), pre/post functions,
+fetch overrides and the `section_*` fields. Stages 6-8 and everything
+after them are a {targets} pipeline (see “Rebuilding Derived Data”).
 
 `data/raw/html_{inst}.RDS` is the raw harvest and only harvesting writes
 it. The steps after it rebuild everything from it with the current code,
@@ -238,7 +238,7 @@ newuni = list(
   strategy = "standard",          # or url_discovery, shadow_dom, etc.
   selector = ".main-content",     # the element that holds the course plan
   exclude = ".contact",           # optional: parts of it that are not the plan
-  year_in_url = TRUE,
+  plan_years = "url",             # year in the URL; "page" or "current": see R/institution_config.R
   section_strategy = "html"       # how the plan is split; see "Blocks and Sections"
 )
 ```
@@ -341,8 +341,45 @@ stages:
 <td><code>plan_content_id</code></td>
 <td>SHA-256 hash of <code>course_plan_normalized</code></td>
 </tr>
+<tr>
+<td><code>plan_year_basis</code></td>
+<td>How the plan’s year is known: <code>url</code>, <code>page</code> or
+<code>current</code> (<code>plan_years</code> in the config)</td>
+</tr>
+<tr>
+<td><code>harvested_at</code></td>
+<td>For <code>current</code> sites: the date of the harvest the page
+comes from</td>
+</tr>
 </tbody>
 </table>
+
+A page with no section to read and under 1,500 characters is a page
+shell, not a plan (`SHELL_MAX_NCHAR`, #222): its offerings keep their
+text but get no `plan_content_id`.
+
+### Sites that show only the current plan
+
+UiO, MF, NMBU and Steiner (`plan_years = "current"`) publish only the
+plan in force, without a year in the URL. A harvest therefore holds the
+plans of the academic year (August-July) it was made in, and a later
+harvest cannot recover them. Three rules keep years apart (#293):
+
+- `harvest_all()` moves the previous `data/raw/html_{inst}.RDS` to
+  `data/raw/archive/{harvest date}/` when it is from an earlier academic
+  year, and stamps new rows with `harvested_at`; checkpoints from an
+  earlier academic year are removed before fetching (they would return
+  last year’s pages), and a harvest in June-August warns (the site may
+  already show next year’s plan).
+- `read_harvest()` gives each DBH row the page of the latest harvest in
+  the row’s academic year (autumn Y: Y/Y+1, spring Y: Y-1/Y), or no
+  page.
+- So harvest these sites once in every academic year (best
+  September-November or February-April); a year without a harvest has no
+  plans for them.
+
+The archive (`data/raw/archive/2026-04-04/`, from the user’s backup) is
+raw data like `data/raw/html_*.RDS` and exists only locally: back it up.
 
 **Output files:**
 
@@ -476,6 +513,11 @@ Other fields:
 - `section_inline_coursework`: move “Arbeidskrav (AK): …” /
   “Obligatorisk deltakelse …” lines from assessment to
   coursework_requirements (nord).
+- `section_pointer`: a section whose text is only a pointer to another
+  block of the page (“Se fagplanen.”) takes the text under a sub-heading
+  of that block, after a lead naming the source. oslomet: teaching
+  methods from the subject’s “Fagplan” block (“Fagets arbeids- og
+  undervisningsformer”), as “Se fagplanen. Fagplanen sier: …” (#289).
 
 ### Heading Map and Cleanup
 
@@ -675,10 +717,10 @@ courses |> slice(1:2)
 ```
 
     # A tibble: 2 × 25
-      institution Institusjonskode Institusjonsnavn Avdelingskode Avdelingsnavn     
-      <chr>       <chr>            <chr>            <chr>         <chr>             
-    1 samas       0217             Samisk høgskole  480000        Avdeling for duod…
-    2 samas       0217             Samisk høgskole  480000        Avdeling for duod…
+      institution Institusjonskode Institusjonsnavn      Avdelingskode Avdelingsnavn
+      <chr>       <chr>            <chr>                 <chr>         <chr>        
+    1 <NA>        0257             Høgskolen i Oslo og … 520320        Institutt fo…
+    2 <NA>        0257             Høgskolen i Oslo og … 520320        Institutt fo…
     # ℹ 20 more variables: Avdelingskode_SSB <chr>, Årstall <int>, Semester <int>,
     #   Semesternavn <chr>, Studieprogramkode <chr>, Studieprogramnavn <chr>,
     #   Emnekode_raw <chr>, Emnekode <chr>, Emnenavn <chr>, Nivåkode <chr>,

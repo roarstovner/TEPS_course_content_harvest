@@ -13,6 +13,37 @@ harvested_institutions <- function(raw_dir = RAW_DIR) {
   sub("^html_(.*)\\.RDS$", "\\1", list.files(raw_dir, "^html_.*\\.RDS$"))
 }
 
+# Earlier harvests kept for "current" sites (plan_years; #293):
+# data/raw/archive/{YYYY-MM-DD}/html_{inst}.RDS, named by harvest date.
+archived_harvest_files <- function(institution, raw_dir = RAW_DIR) {
+  sort(Sys.glob(file.path(raw_dir, "archive", "*", paste0("html_", institution, ".RDS"))))
+}
+
+# The latest harvest of an institution, and for a "current" site its archived
+# ones (read_harvest() combines them).
+harvest_files <- function(institution, raw_dir = RAW_DIR) {
+  current <- identical(institution_configs[[institution]]$plan_years, "current")
+  c(harvest_file(institution, raw_dir),
+    if (current) archived_harvest_files(institution, raw_dir))
+}
+
+# Date of a raw harvest: its harvested_at column, else the archive directory
+# name, else the file's modification date (harvests before 2026-10-06 have no
+# harvested_at).
+harvest_date <- function(file, df = readRDS(file)) {
+  if ("harvested_at" %in% names(df) && any(!is.na(df$harvested_at))) {
+    return(max(as.Date(df$harvested_at), na.rm = TRUE))
+  }
+  d <- as.Date(basename(dirname(file)), optional = TRUE)
+  if (!is.na(d)) d else as.Date(file.mtime(file))
+}
+
+# Academic year ("2025-2026", August to July) of a date.
+academic_year_of_date <- function(date) {
+  y <- as.integer(format(date, "%Y"))
+  ifelse(as.integer(format(date, "%m")) >= 8, paste0(y, "-", y + 1), paste0(y - 1, "-", y))
+}
+
 canon_remove_trailing_num <- function(x) {
   sub("([\\-_.])[0-9]+$", "", x, perl = TRUE)
 }
@@ -29,8 +60,8 @@ canon_semester_name <- function(semester_name) {
 
 nla_academic_year <- function(year, semester) {
   dplyr::case_match(semester,
-    "Høst" ~ paste0(year, "-", year + 1),
-    "Vår"  ~ paste0(year - 1, "-", year)
+    "Høst"            ~ paste0(year, "-", year + 1),
+    c("Vår", "Sommer") ~ paste0(year - 1, "-", year)
   )
 }
 

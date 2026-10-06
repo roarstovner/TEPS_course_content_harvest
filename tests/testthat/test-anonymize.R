@@ -263,6 +263,24 @@ test_that("UiA: Emneansvarlig + name on next line stripped", {
   expect_false(grepl("Kari Nordmann", result))
 })
 
+test_that("UiA: Emneansvarlige + several name lines stripped (#231)", {
+  input <- paste0("Ansvarlig avdeling:\nFakultet for humaniora og pedagogikk\nEmneansvarlige:\n",
+                  "Kari Nordmann\nOla Smith-Hansen\nUndervisningssemester:\n\nUndervisningsspråk:\nNorsk")
+  result <- anonymize_text("uia", input, .progress = FALSE)
+  expect_false(grepl("Nordmann|Smith-Hansen|Emneansvarlige", result))
+  expect_match(result, "pedagogikk\nUndervisningssemester:")
+  # the role named in a sentence is not a label
+  s <- "Emneansvarlig fastsetter evalueringsform.\nTilbys som enkeltemne"
+  expect_equal(anonymize_text("uia", s, .progress = FALSE), s)
+})
+
+test_that("USN: 'Godkjent av' with the approver's name and title stripped (#231)", {
+  input <- "Alle hjelpemidler tillatt.\n\nGodkjent av\nKari Nordmann\nInstituttnestleder\n\nLitteratur"
+  result <- anonymize_text("usn", input, .progress = FALSE)
+  expect_false(grepl("Nordmann|Godkjent av|Instituttnestleder", result))
+  expect_match(result, "Litteratur")
+})
+
 # --- HiOF ---
 
 test_that("HiOF: Sist hentet fra FS removed", {
@@ -656,10 +674,11 @@ test_that("phone numbers after 'Tlf.' are removed", {
 
 test_that("the personal-data check finds what the anonymizer removes", {
   f <- tempfile(fileext = ".RDS")
-  saveRDS(tibble::tibble(id = 1:3, text = c(
-    "Kontakt kari.nordmann@uit.no", "- Ola Nordmann (Emneansvarlig)\nInnhold", "Ingen")), f)
+  saveRDS(tibble::tibble(id = 1:4, text = c(
+    "Kontakt kari.nordmann@uit.no", "- Ola Nordmann (Emneansvarlig)\nInnhold", "Ingen",
+    "Emneansvarlige:\nKari Nordmann\nUndervisningssemester:")), f)
   found <- personal_data_in(f)
-  expect_setequal(found$pattern, c("email", "staff"))
+  expect_setequal(found$pattern, c("email", "staff", "role_name"))
   saveRDS(tibble::tibble(text = anonymize_text(c("uit", "uit"), c(
     "Kontakt kari.nordmann@uit.no", "- Ola Nordmann (Emneansvarlig)\nInnhold"),
     .progress = FALSE)), f)

@@ -14,6 +14,7 @@
 harvest_institution <- function(institution, courses, year = NULL,
                                 refetch = FALSE) {
   config <- get_institution_config(institution)
+  if (identical(config$plan_years, "current")) prepare_current_harvest(institution)
 
   df <- courses |>
     dplyr::filter(institution == !!institution) |>
@@ -68,6 +69,8 @@ harvest_all <- function(courses = NULL, year = NULL, refetch = FALSE,
     message("\n=== ", inst, " ===")
     tryCatch({
       result <- harvest_institution(inst, courses, year, refetch)
+      result$harvested_at <- Sys.Date()
+      if (identical(configs[[inst]]$plan_years, "current")) archive_harvest(inst)
       saveRDS(result, harvest_file(inst))
       log_summary(inst, result)
     }, error = function(e) {
@@ -76,11 +79,52 @@ harvest_all <- function(courses = NULL, year = NULL, refetch = FALSE,
   }
 }
 
+#' Before harvesting a "current" site (plan_years; #293)
+#'
+#' Such a site shows only the plan in force, so a harvest counts for its own
+#' academic year. Checkpoints from an earlier academic year would return last
+#' year's pages as if fetched now, so they are removed; in June-August the site
+#' may already show next year's plan, so a warning is given.
+#'
+#' @param institution Character, institution short name
+prepare_current_harvest <- function(institution) {
+  if (as.integer(format(Sys.Date(), "%m")) %in% 6:8) {
+    warning(institution, " shows only the current plan: a harvest in June-August ",
+            "may give next year's plan (#293)", call. = FALSE)
+  }
+  now <- academic_year_of_date(Sys.Date())
+  for (cp in Sys.glob(file.path(RAW_DIR, "checkpoint", paste0("*_", institution, ".RDS")))) {
+    if (academic_year_of_date(as.Date(file.mtime(cp))) != now) {
+      message("Checkpoint from an earlier academic year, removed: ", cp)
+      file.remove(cp)
+    }
+  }
+}
+
+#' Keep the previous harvest of a "current" site
+#'
+#' Moves data/raw/html_{inst}.RDS to data/raw/archive/{harvest date}/ when it
+#' is from an earlier academic year, so a new harvest does not overwrite the
+#' only copy of last year's plans (#293).
+#'
+#' @param institution Character, institution short name
+archive_harvest <- function(institution) {
+  file <- harvest_file(institution)
+  if (!file.exists(file)) return(invisible())
+  date <- harvest_date(file)
+  if (academic_year_of_date(date) == academic_year_of_date(Sys.Date())) return(invisible())
+  dir <- file.path(RAW_DIR, "archive", format(date))
+  dir.create(dir, recursive = TRUE, showWarnings = FALSE)
+  message("Earlier harvest kept in ", dir)
+  file.rename(file, file.path(dir, basename(file)))
+  invisible()
+}
+
 #' Apply year filter based on config
 #'
-#' If year_in_url is FALSE and no explicit year is provided, filters to
-#' max(Årstall) — fetching the same timeless page for every year is waste.
-#' If an explicit year is given, always filters to that year.
+#' A "current" site (`plan_years`) shows only the plan in force, so without an
+#' explicit year only the latest DBH year is harvested. "url" and "page" sites
+#' give every year its own plan. An explicit year always filters to that year.
 #'
 #' @param df Data frame with Årstall column
 #' @param config Institution config list
@@ -91,9 +135,9 @@ apply_year_filter <- function(df, config, year = NULL) {
     message("Filtering to year ", year)
     return(dplyr::filter(df, Årstall == year))
   }
-  if (!isTRUE(config$year_in_url)) {
+  if (identical(config$plan_years, "current")) {
     max_year <- max(df$Årstall, na.rm = TRUE)
-    message("year_in_url=FALSE — filtering to max year: ", max_year)
+    message("plan_years = \"current\" — filtering to max year: ", max_year)
     return(dplyr::filter(df, Årstall == max_year))
   }
   df
