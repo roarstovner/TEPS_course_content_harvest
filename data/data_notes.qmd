@@ -125,6 +125,42 @@ course_years |>
   knitr::kable()
 ```
 
+## Course-years without a plan
+
+Why a course-year (code × year) has no plan in any semester, from
+`data/interim/plan_gaps.RDS` (target `gaps`, `plan_gaps()` in
+`R/pipeline.R`). **No URL**: the site has no page for that year, or URL
+discovery found none (hivolda, uit, usn). **404**: the page was not found.
+**Fetch error**: another error (ntnu's "no information" pages, uib).
+**Page, no plan**: a page shell, a page that is not the plan, or a year
+missing from NLA's JSON. **No page**: a current site without a harvest in
+that year. **Between plans**: the course has a plan the year before and the
+year after, so the gap is the likeliest to be a wrong URL or a missed page;
+these are the ones to check by hand (`url_tried`, and `url_next_door`, the
+page of an adjacent year that worked).
+
+```{r}
+#| label: plan-gaps
+gaps <- readRDS("interim/plan_gaps.RDS")
+gaps |>
+  filter(!has_plan) |>
+  group_by(Institution = institution) |>
+  summarise(
+    `Without plan` = n(),
+    `404` = sum(grepl("404", reason)),
+    `No URL` = sum(grepl("no URL", reason)),
+    `Fetch error` = sum(grepl("fetch error", reason)),
+    `Page, no plan` = sum(grepl("page, no plan", reason)),
+    `No page` = sum(reason == "no page"),
+    `Between plans` = sum(between_plans),
+    .groups = "drop"
+  ) |>
+  knitr::kable()
+```
+
+To list the gaps between plans:
+`readRDS("data/interim/plan_gaps.RDS") |> dplyr::filter(between_plans)`.
+
 ## Interpreting the dedup ratio
 
 High dedup (>40%) is expected for current-year-only institutions where DBH registers courses for both semesters but only one plan page exists (see "Semester registration in DBH").

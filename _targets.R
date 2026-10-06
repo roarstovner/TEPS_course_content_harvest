@@ -49,6 +49,8 @@ list(
   tar_target(heading_hits, institution_heading_hits(blocks, fulltext, config),
              pattern = map(blocks, fulltext, config)),
   tar_target(heading_use, heading_pattern_use(heading_hits)),
+  tar_target(fetch_status, institution_fetch_status(html_file, config),
+             pattern = map(html_file, config)),
 
   # Data files (README "Data Files: Published and Internal")
   tar_target(extracted_text_file,
@@ -59,6 +61,8 @@ list(
   tar_target(offerings_file,
              write_rds_file(slim_offerings(offerings), "data/processed/course_offerings.RDS"),
              format = "file"),
+  tar_target(gaps, plan_gaps(offerings, fetch_status)),
+  tar_target(gaps_file, write_rds_file(gaps, "data/interim/plan_gaps.RDS"), format = "file"),
   tar_target(course_plans_file,
              write_rds_file(combine_plans(plans, sections), "data/processed/course_plans.RDS"), format = "file"),
   tar_target(sections_file,
@@ -100,6 +104,6 @@ list(
   tar_target(data_notes_qmd, "data/data_notes.qmd", format = "file"),
   tar_target(data_notes_file,
              render_quarto(data_notes_qmd, "data/data_notes.md",
-                           c(offerings_file, course_plans_file)),
+                           c(offerings_file, course_plans_file, gaps_file)),
              format = "file")
 )

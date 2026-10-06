@@ -115,6 +115,45 @@ year) that have a plan in at least one semester:
 | uit | 3605 | 86% | 1079 | 875 | 1134 | 63% | 47.1% |
 | usn | 1657 | 83% | 1021 | 31 | 327 | 73% | 40.8% |
 
+## Course-years without a plan
+
+Why a course-year (code × year) has no plan in any semester, from
+`data/interim/plan_gaps.RDS` (target `gaps`, `plan_gaps()` in
+`R/pipeline.R`). **No URL**: the site has no page for that year, or URL
+discovery found none (hivolda, uit, usn). **404**: the page was not
+found. **Fetch error**: another error (ntnu’s “no information” pages,
+uib). **Page, no plan**: a page shell, a page that is not the plan, or a
+year missing from NLA’s JSON. **No page**: a current site without a
+harvest in that year. **Between plans**: the course has a plan the year
+before and the year after, so the gap is the likeliest to be a wrong URL
+or a missed page; these are the ones to check by hand (`url_tried`, and
+`url_next_door`, the page of an adjacent year that worked).
+
+| Institution | Without plan | 404 | No URL | Fetch error | Page, no plan | No page | Between plans |
+|:---|---:|---:|---:|---:|---:|---:|---:|
+| hiof | 98 | 98 | 0 | 0 | 0 | 0 | 6 |
+| hivolda | 40 | 0 | 40 | 0 | 0 | 0 | 10 |
+| hvl | 198 | 152 | 0 | 0 | 46 | 0 | 5 |
+| inn | 605 | 0 | 584 | 0 | 21 | 0 | 0 |
+| mf | 3 | 0 | 0 | 0 | 0 | 3 | 0 |
+| nih | 26 | 26 | 0 | 0 | 0 | 0 | 2 |
+| nla | 854 | 146 | 0 | 0 | 708 | 0 | 0 |
+| nmbu | 2 | 0 | 0 | 0 | 0 | 2 | 0 |
+| nord | 30 | 0 | 0 | 0 | 30 | 0 | 0 |
+| ntnu | 1043 | 0 | 0 | 1043 | 0 | 0 | 3 |
+| oslomet | 45 | 0 | 0 | 0 | 45 | 0 | 0 |
+| samas | 68 | 0 | 68 | 0 | 0 | 0 | 0 |
+| steiner | 3 | 0 | 3 | 0 | 0 | 0 | 0 |
+| uia | 483 | 483 | 0 | 0 | 95 | 0 | 92 |
+| uib | 612 | 447 | 0 | 137 | 34 | 0 | 0 |
+| uio | 7 | 0 | 0 | 0 | 0 | 7 | 0 |
+| uis | 109 | 14 | 0 | 0 | 95 | 0 | 0 |
+| uit | 1324 | 0 | 1320 | 0 | 10 | 0 | 53 |
+| usn | 431 | 0 | 431 | 0 | 0 | 0 | 30 |
+
+To list the gaps between plans:
+`readRDS("data/interim/plan_gaps.RDS") |> dplyr::filter(between_plans)`.
+
 ## Interpreting the dedup ratio
 
 High dedup (\>40%) is expected for current-year-only institutions where

@@ -39,7 +39,7 @@ read_harvest <- function(files, config) {
                           paste(utils::head(dup, 5), collapse = ", "))
     return(rows)
   }
-  page <- c("url", "html", "html_error", "html_success", "extracted_text", "harvested_at")
+  page <- c("html", "html_error", "html_success", "extracted_text", "harvested_at")
   snapshots <- rows |>
     dplyr::filter(!is.na(html) | !is.na(extracted_text)) |>
     dplyr::mutate(academic_year = academic_year_of_date(harvested_at)) |>
@@ -136,6 +136,63 @@ institution_sections <- function(blocks, fulltext, config, plans) {
     dplyr::mutate(text = anonymize_text(institution, raw_text, .progress = FALSE)) |>
     dplyr::filter(!is.na(text)) |>
     dplyr::select(plan_content_id, institution, Emnekode, source_course_id, section, text)
+}
+
+# How each offering's fetch went: its URL, whether a page (or PDF text) was
+# stored, and the fetch error (e.g. "HTTP 404 Not Found."), for plan_gaps().
+institution_fetch_status <- function(html_file, config) {
+  df <- read_harvest(html_file, config)
+  err <- df$html_error %||% vector("list", nrow(df))
+  tibble::tibble(
+    course_id = df$course_id,
+    url = as.character(df$url %||% NA_character_),
+    has_page = !is.na(df$html %||% NA) | !is.na(df$extracted_text %||% NA),
+    fetch_error = vapply(err, function(e) {
+      if (is.null(e)) NA_character_ else if (is.character(e)) e[1]
+      else as.character(e$message %||% NA_character_)[1]
+    }, character(1))
+  )
+}
+
+# Course-years (institution x Emnekode x year) and why those without a plan
+# have none: "no URL" (no page for that year, or not found by URL discovery),
+# "404", "fetch error", "page, no plan" (a shell, not the plan, or a year
+# missing from nla's JSON), "no page" (a current site without a harvest in
+# that year). DBH lists most courses in both semesters, so a 404 for one
+# semester is normal; a course-year is a gap only when no semester has a
+# plan. `between_plans`: the course has plans the year before and after, the
+# gaps most likely to be fixable (wrong URL, a missed page). `url_tried` and
+# `url_next_door` (the page of an adjacent year with a plan) are for checking
+# by hand.
+plan_gaps <- function(offerings, fetch_status) {
+  x <- offerings |>
+    dplyr::select(course_id, institution, Emnekode, Årstall, plan_content_id) |>
+    dplyr::left_join(fetch_status, by = "course_id") |>
+    dplyr::mutate(reason = dplyr::case_when(
+      !is.na(plan_content_id) ~ "plan",
+      is.na(url) ~ "no URL",
+      grepl("404", fetch_error) ~ "404",
+      !is.na(fetch_error) ~ "fetch error",
+      has_page ~ "page, no plan",
+      TRUE ~ "no page"))
+  cy <- x |>
+    dplyr::group_by(institution, Emnekode, Årstall) |>
+    dplyr::summarise(has_plan = any(reason == "plan"),
+                     reason = if (any(reason == "plan")) "plan" else
+                       paste(sort(unique(reason)), collapse = " + "),
+                     url_tried = dplyr::first(url), .groups = "drop")
+  with_plan <- x |> dplyr::filter(reason == "plan") |>
+    dplyr::distinct(institution, Emnekode, Årstall, .keep_all = TRUE)
+  key <- function(i, e, y) paste(i, e, y)
+  planned <- key(with_plan$institution, with_plan$Emnekode, with_plan$Årstall)
+  cy |>
+    dplyr::mutate(
+      between_plans = !has_plan & key(institution, Emnekode, Årstall - 1) %in% planned &
+        key(institution, Emnekode, Årstall + 1) %in% planned,
+      url_next_door = with_plan$url[match(key(institution, Emnekode, Årstall + 1), planned)],
+      url_next_door = dplyr::coalesce(url_next_door,
+        with_plan$url[match(key(institution, Emnekode, Årstall - 1), planned)])
+    )
 }
 
 # Headings the section extractor meets but cannot map, with the number of

@@ -78,3 +78,22 @@ test_that("short plans without sections are page shells: no plan (#222)", {
   expect_equal(off$plan_content_id, c(NA, "p2", "p3", NA))
   expect_true(all(off$has_extracted_text))
 })
+
+test_that("plan_gaps() gives each course-year without a plan its reason (#296 follow-up)", {
+  offerings <- tibble::tibble(
+    course_id = c("a24", "a25s", "a25h", "a26", "b25"), institution = "x",
+    Emnekode = c("A", "A", "A", "A", "B"), Årstall = c(2024, 2025, 2025, 2026, 2025),
+    plan_content_id = c("p1", NA, NA, "p2", NA))
+  status <- tibble::tibble(
+    course_id = offerings$course_id, url = c("u24", "u25", "u25", "u26", NA),
+    has_page = c(TRUE, FALSE, FALSE, TRUE, FALSE),
+    fetch_error = c(NA, "HTTP 404 Not Found.", "HTTP 500", NA, NA))
+  g <- plan_gaps(offerings, status)
+  a25 <- g[g$Emnekode == "A" & g$Årstall == 2025, ]
+  expect_false(a25$has_plan)
+  expect_equal(a25$reason, "404 + fetch error")
+  expect_true(a25$between_plans)
+  expect_equal(a25$url_next_door, "u26")
+  expect_equal(g$reason[g$Emnekode == "B"], "no URL")
+  expect_false(g$between_plans[g$Emnekode == "B"])
+})
