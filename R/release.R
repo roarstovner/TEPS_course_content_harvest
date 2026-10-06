@@ -71,8 +71,8 @@ release_data <- function(tag, dest = "../TEPS_course_content_coding/data") {
     methods = "methods.md (the choices behind the data, with numbers for this release)",
     files = lapply(stats::setNames(basename(files), basename(files)), function(f) {
       path <- file.path(dest, f)
-      list(md5 = unname(tools::md5sum(path)),
-           rows = if (grepl("\\.RDS$", f)) nrow(readRDS(path)) else NULL)
+      c(list(md5 = unname(tools::md5sum(path))),
+        if (grepl("\\.RDS$", f)) list(rows = nrow(readRDS(path))))
     }),
     institutions = lapply(split(by_inst[-1], by_inst$institution), as.list)
   )
