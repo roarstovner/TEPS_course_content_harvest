@@ -13,6 +13,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   selector, strip FS timestamps / bare "Ingen" rows (#198)
 
 ### Added
+- course_browser: regenerate missing data file and add live fulltext search with highlighted matches (#204)
+- Sections view in course_browser shiny app (#194)
+- Structured section extraction from course HTML (#183)
 - Build the {targets} pipeline in parallel with crew (#268)
 - `/audit-institutions` skill: per-institution review agents for section
   extraction, fulltext extraction and anonymization, with packet builders
@@ -100,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- course_browser: Review tab listing the plans behind open decisions (#295)
 - uio: bold label lines under Undervisning not read as sub-headings (#288)
 - Page furniture in sections (uis PDF headers, OpenURL, usn Leganto, steiner page numbers) (#287)
 - Placeholder variants and Praksis pointers (#286)
