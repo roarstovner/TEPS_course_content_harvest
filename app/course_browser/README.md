@@ -31,6 +31,9 @@ onto each plan instead.
   41% of offerings have no text, so denominators are not comparable across
   institutions without checking this first.
 - **Diff**: consecutive plan versions for one course code.
+- **Review**: open decisions that need plans read (from `review.yml`). Each
+  item's "Show plans" runs its search on the Concordance tab. The tab is
+  hidden when the list is empty; add or remove items with the chainlink issues.
 
 Code: `app.R` (UI + server), `R/search.R` (search engine, KWIC snippets, match
 highlighting), `R/data.R` (payload loading, labels, optional term set, diff

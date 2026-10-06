@@ -89,6 +89,20 @@ load_term_set <- function(repo_root = "../..") {
   setNames(regexes[keep], labels[keep])
 }
 
+#' Load the review list
+#'
+#' `review.yml` in the app folder lists open decisions whose plans the user
+#' has to read: each item has `issue`, `title`, `question` and a search
+#' (`q`, optionally `scope`, `inst`, `regex`) that selects the plans.
+#'
+#' @param path Path to the review YAML
+#' @return List of review items, or NULL when there is none
+load_review <- function(path = "review.yml") {
+  if (!file.exists(path) || !requireNamespace("yaml", quietly = TRUE)) return(NULL)
+  items <- tryCatch(yaml::read_yaml(path), error = function(e) NULL)
+  Filter(function(x) !is.null(x$q), items)
+}
+
 #' Render an HTML diff between two plan texts
 #'
 #' @param text_a Character(1), the older version

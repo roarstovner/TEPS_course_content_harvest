@@ -1,0 +1,17 @@
+# Open decisions whose plans have to be read (the course_browser Review tab).
+# Each item opens the Concordance tab with its search: q, and optionally scope,
+# inst (comma-separated) and regex, as in the deep links. Remove an item when
+# its chainlink issue is decided.
+
+- issue: 289
+  title: "oslomet: read the subject Fagplan where the emneplan says 'Se fagplanen'?"
+  question: >
+    264 non-practicum OsloMet plans have no teaching_methods section: the
+    emneplan says 'Se fagplanen.', and the subject-level Fagplan block below it
+    is not read (#240). The list shows the 186 plans that hold both (166
+    outside practicum). In 'Full plan', yellow is 'Se fagplanen' and the
+    second colour the Fagplan's 'Fagets arbeids- og undervisningsformer'. Decide whether that subject-level
+    text may stand as the course's teaching methods (module D). Ignore M1GP/M5GP
+    codes: the practicum courses were decided in #242.
+  q: '"Se fagplanen" "Fagets arbeids- og undervisningsformer"'
+  inst: oslomet

@@ -24,6 +24,7 @@ coverage <- bd$coverage
 
 index <- build_search_index(plans, sections)
 term_set <- load_term_set()
+review <- load_review()
 
 # Join key shared by plans and sections: a plan_content_id can recur across
 # course codes, so all three key columns are needed to identify a plan.
@@ -47,6 +48,7 @@ scope_choices <- c("Whole plan" = "plan", available_sections)
 # ── UI ──────────────────────────────────────────────────────────────────────
 
 ui <- page_navbar(
+  id = "nav",
   title = "Course Plan Concordance",
   theme = bs_theme(version = 5, bootswatch = "flatly"),
   header = tags$head(tags$link(rel = "stylesheet", href = "styles.css")),
@@ -155,7 +157,12 @@ ui <- page_navbar(
       ),
       uiOutput("diff_output")
     )
-  )
+  ),
+
+  # ── Review ──
+  if (length(review)) {
+    nav_panel("Review", tags$div(class = "p-3", uiOutput("review_ui")))
+  }
 )
 
 # ── Server ──────────────────────────────────────────────────────────────────
@@ -164,27 +171,20 @@ server <- function(input, output, session) {
 
   html_cache <- reactiveValues(inst = NULL, data = NULL)
 
-  observeEvent(input$clear, {
+  clear_search <- function() {
     updateTextInput(session, "q", value = "")
     updateSelectizeInput(session, "inst", selected = character(0))
     updateSelectizeInput(session, "fag", selected = character(0))
     updateSliderInput(session, "years", value = year_range)
     updateSelectInput(session, "scope", selected = "plan")
+    updateCheckboxInput(session, "regex", value = FALSE)
     if (!is.null(term_set)) updateSelectizeInput(session, "term", selected = "")
-  })
+  }
+  observeEvent(input$clear, clear_search())
 
-  # Picking a defined term fills the search box with its regex
-  observeEvent(input$term, {
-    req(input$term, nzchar(input$term))
-    updateTextInput(session, "q", value = unname(term_set[[input$term]]))
-    updateCheckboxInput(session, "regex", value = TRUE)
-  })
-
-  # Deep links: ?q=livsmestring&scope=learning_outcomes&regex=1&inst=ntnu,uit
-  # lets a search be bookmarked, shared, or cited.
-  observeEvent(session$clientData$url_search, once = TRUE, {
-    qs <- parseQueryString(session$clientData$url_search)
-    if (!length(qs)) return()
+  # Sets the search from a list with q, regex, mcase, scope and inst, as given
+  # by a deep link or a review item.
+  apply_search <- function(qs) {
     is_true <- function(x) tolower(x) %in% c("1", "true", "yes")
     if (!is.null(qs$q))     updateTextInput(session, "q", value = qs$q)
     if (!is.null(qs$regex)) updateCheckboxInput(session, "regex", value = is_true(qs$regex))
@@ -196,6 +196,44 @@ server <- function(input, output, session) {
       picked <- intersect(trimws(strsplit(qs$inst, ",")[[1]]), inst_choices)
       if (length(picked)) updateSelectizeInput(session, "inst", selected = picked)
     }
+  }
+
+  # Picking a defined term fills the search box with its regex
+  observeEvent(input$term, {
+    req(input$term, nzchar(input$term))
+    updateTextInput(session, "q", value = unname(term_set[[input$term]]))
+    updateCheckboxInput(session, "regex", value = TRUE)
+  })
+
+  # Deep links: ?q=livsmestring&scope=learning_outcomes&regex=1&inst=ntnu,uit
+  # lets a search be bookmarked, shared, or cited.
+  observeEvent(session$clientData$url_search, once = TRUE, {
+    apply_search(parseQueryString(session$clientData$url_search))
+  })
+
+  # ── Review: open the plans behind a decision in the Concordance tab ──
+  output$review_ui <- renderUI({
+    tagList(
+      tags$p(class = "text-muted",
+        "Open decisions that need the plans read. 'Show plans' runs the
+         item's search on the Concordance tab; the issue in chainlink has
+         the details."),
+      lapply(seq_along(review), function(i) {
+        r <- review[[i]]
+        tags$div(class = "section-block",
+          tags$h5(paste0("#", r$issue, " — ", r$title)),
+          tags$p(r$question),
+          actionButton(paste0("review_", i), "Show plans",
+                       class = "btn-sm btn-primary"))
+      })
+    )
+  })
+  lapply(seq_along(review), function(i) {
+    observeEvent(input[[paste0("review_", i)]], {
+      clear_search()
+      apply_search(review[[i]])
+      nav_select("nav", "Concordance")
+    })
   })
 
   # Land on the top hit so context is visible without an extra click. Fires only
