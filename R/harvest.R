@@ -9,10 +9,11 @@
 #' @param courses Data frame from courses.RDS (pre-filtered or not)
 #' @param year Optional integer — if given, only harvest this year
 #' @param refetch Logical — if TRUE, ignore checkpoints and re-download everything
+#' @param skip Course ids not to harvest (already in a raw file)
 #' @return Data frame with DBH columns plus course_id, url, html, html_error,
 #'   html_success, extracted_text
 harvest_institution <- function(institution, courses, year = NULL,
-                                refetch = FALSE) {
+                                refetch = FALSE, skip = character()) {
   config <- get_institution_config(institution)
   if (identical(config$plan_years, "current")) prepare_current_harvest(institution)
 
@@ -20,6 +21,9 @@ harvest_institution <- function(institution, courses, year = NULL,
     dplyr::filter(institution == !!institution) |>
     apply_year_filter(config, year) |>
     add_course_id() |>
+    dplyr::filter(!course_id %in% skip)
+  if (nrow(df) == 0) return(df)
+  df <- df |>
     validate_courses("initial") |>
     add_course_url() |>
     validate_courses("with_url")
@@ -46,8 +50,12 @@ harvest_institution <- function(institution, courses, year = NULL,
 
 #' Harvest all institutions
 #'
-#' Loops through all configured institutions, harvests each, and saves
-#' the result to data/raw/html_{inst}.RDS.
+#' Loops through all configured institutions and harvests each. The raw store
+#' is append-only (#296): the first harvest of an institution is saved to
+#' data/raw/html_{inst}.RDS; a later one fetches only offerings that no raw
+#' file holds yet (a "current" site: a new snapshot of its latest DBH year)
+#' and saves them to data/raw/harvests/{date}/html_{inst}.RDS. An existing raw
+#' file is never written again.
 #'
 #' @param courses Data frame from courses.RDS. If NULL, reads from disk.
 #' @param year Optional integer — if given, only harvest this year
@@ -68,11 +76,22 @@ harvest_all <- function(courses = NULL, year = NULL, refetch = FALSE,
   for (inst in inst_names) {
     message("\n=== ", inst, " ===")
     tryCatch({
-      result <- harvest_institution(inst, courses, year, refetch)
-      result$harvested_at <- Sys.Date()
-      if (identical(configs[[inst]]$plan_years, "current")) archive_harvest(inst)
-      saveRDS(result, harvest_file(inst))
-      log_summary(inst, result)
+      first <- !file.exists(harvest_file(inst))
+      current <- identical(configs[[inst]]$plan_years, "current")
+      skip <- if (first || current) character() else
+        unlist(lapply(harvest_files(inst), function(f) readRDS(f)$course_id))
+      result <- harvest_institution(inst, courses, year, refetch, skip)
+      file <- if (first) harvest_file(inst) else dated_harvest_file(inst)
+      if (nrow(result) == 0) {
+        message(inst, ": nothing new to harvest")
+      } else if (file.exists(file)) {
+        stop("raw files are not written twice (#296): ", file)
+      } else {
+        result$harvested_at <- Sys.Date()
+        dir.create(dirname(file), recursive = TRUE, showWarnings = FALSE)
+        saveRDS(result, file)
+        log_summary(inst, result)
+      }
     }, error = function(e) {
       message("ERROR harvesting ", inst, ": ", conditionMessage(e))
     })
@@ -99,25 +118,6 @@ prepare_current_harvest <- function(institution) {
       file.remove(cp)
     }
   }
-}
-
-#' Keep the previous harvest of a "current" site
-#'
-#' Moves data/raw/html_{inst}.RDS to data/raw/archive/{harvest date}/ when it
-#' is from an earlier academic year, so a new harvest does not overwrite the
-#' only copy of last year's plans (#293).
-#'
-#' @param institution Character, institution short name
-archive_harvest <- function(institution) {
-  file <- harvest_file(institution)
-  if (!file.exists(file)) return(invisible())
-  date <- harvest_date(file)
-  if (academic_year_of_date(date) == academic_year_of_date(Sys.Date())) return(invisible())
-  dir <- file.path(RAW_DIR, "archive", format(date))
-  dir.create(dir, recursive = TRUE, showWarnings = FALSE)
-  message("Earlier harvest kept in ", dir)
-  file.rename(file, file.path(dir, basename(file)))
-  invisible()
 }
 
 #' Apply year filter based on config

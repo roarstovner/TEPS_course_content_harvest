@@ -20,7 +20,7 @@ tar_source(c(
   "R/institution_config.R", "R/section_heading_map.R", "R/blocks.R",
   "R/extract_sections.R",
   "R/anonymize.R", "R/normalize_plan_text.R", "R/deduplicate_plans.R",
-  "R/pipeline_metrics.R", "R/pipeline.R"
+  "R/pipeline_metrics.R", "R/pipeline.R", "R/release.R"
 ))
 
 # Read when the pipeline is loaded; {targets} tracks this global, so a new
@@ -72,6 +72,11 @@ list(
   tar_target(metrics, pipeline_metrics(offerings, sections)),
   tar_target(snapshot_file, METRICS_SNAPSHOT, format = "file"),
   tar_target(metrics_check, metrics_vs_snapshot(snapshot_file, metrics)),
+
+  # The finalized release is unchanged: raw files and plans (#296)
+  tar_target(frozen_check,
+             frozen_changes(RAW_MANIFEST, offerings_file, course_plans_file, sections_file),
+             cue = tar_cue(mode = "always")),
 
   # Browser data and data notes
   tar_target(browser_script, "app/course_browser/build_data.R", format = "file"),

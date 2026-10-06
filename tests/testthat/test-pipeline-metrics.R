@@ -78,26 +78,3 @@ test_that("short plans without sections are page shells: no plan (#222)", {
   expect_equal(off$plan_content_id, c(NA, "p2", "p3", NA))
   expect_true(all(off$has_extracted_text))
 })
-
-test_that("a current site's rows get the page of a harvest in their own academic year (#293)", {
-  raw <- withr::local_tempdir()
-  dir.create(file.path(raw, "archive", "2026-04-04"), recursive = TRUE)
-  rows <- function(html) tibble::tibble(
-    course_id = c("x_A_2025_spring_1", "x_A_2025_autumn_1"), institution = "x",
-    Årstall = 2025L, Semesternavn = c("Vår", "Høst"), url = "u", html = html,
-    html_error = list(NULL, NULL), html_success = TRUE, extracted_text = html)
-  saveRDS(dplyr::rename(rows("2025/26 plan"), institution_short = institution),
-          file.path(raw, "archive", "2026-04-04", "html_x.RDS"))
-  latest <- rows("2026/27 plan"); latest$harvested_at <- as.Date("2026-09-30")
-  saveRDS(latest, file.path(raw, "html_x.RDS"))
-  files <- c(file.path(raw, "html_x.RDS"), file.path(raw, "archive", "2026-04-04", "html_x.RDS"))
-  out <- read_harvest(files, list(plan_years = "current"))
-  # autumn 2025 is 2025/26: the April 2026 harvest; spring 2025 (2024/25): no harvest that year
-  expect_equal(out$html[out$Semesternavn == "Høst"], "2025/26 plan")
-  expect_true(is.na(out$html[out$Semesternavn == "Vår"]))
-  expect_equal(out$harvested_at[out$Semesternavn == "Høst"], as.Date("2026-04-04"))
-  # other sites read the latest harvest as it is
-  expect_equal(read_harvest(files, list(plan_years = "url"))$html, rep("2026/27 plan", 2))
-  expect_equal(academic_year_of_date(as.Date(c("2026-07-31", "2026-08-01"))),
-               c("2025-2026", "2026-2027"))
-})

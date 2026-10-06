@@ -77,6 +77,14 @@ muntlig eksamen.” *Rejected:* the latest page for the latest DBH year
 sites must be harvested once in every academic year. *Since:* 2026-10-06
 (#293).
 
+**The raw harvest is append-only and a finalized release is frozen:** a
+later harvest (a new DBH year) only adds offerings no earlier harvest
+holds, as new files; the raw files of a finalized release are read-only,
+and every build checks that each of its plans keeps its id, text and
+sections. *Why:* coded plans must not change under the coders when the
+data are extended. *Rejected:* merging new rows into the finalized
+files, which rewrites frozen data. *Since:* 2026-10-06 (#296).
+
 **UiO semester pages are not used:** URLs such as `/h24/` hold logistics
 (teachers, timetable, exam dates), not the plan (#76).
 

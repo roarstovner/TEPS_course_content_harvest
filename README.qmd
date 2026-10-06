@@ -40,7 +40,10 @@ strategy, the part of the page that holds the plan (`selector`, minus
 `section_*` fields. Stages 6-8 and everything after
 them are a {targets} pipeline (see "Rebuilding Derived Data").
 
-`data/raw/html_{inst}.RDS` is the raw harvest and only harvesting writes it. The
+The raw harvest is append-only (#296): an institution's first harvest is
+`data/raw/html_{inst}.RDS`, every later one adds
+`data/raw/harvests/{date}/html_{inst}.RDS` with what it fetched, and no raw
+file is written twice (see "Raw Store and Finalized Releases"). The
 steps after it rebuild everything from it with the current code, so a changed
 selector or post function needs `targets::tar_make()`, not a new harvest. A
 page is read once into blocks (see "Blocks and Sections"), and both the
@@ -263,21 +266,52 @@ not a plan (`SHELL_MAX_NCHAR`, #222): its offerings keep their text but get no
 UiO, MF, NMBU and Steiner (`plan_years = "current"`) publish only the plan in
 force, without a year in the URL. A harvest therefore holds the plans of the
 academic year (August-July) it was made in, and a later harvest cannot recover
-them. Three rules keep years apart (#293):
+them. Their raw files are snapshots (#293):
 
-- `harvest_all()` moves the previous `data/raw/html_{inst}.RDS` to
-  `data/raw/archive/{harvest date}/` when it is from an earlier academic year,
-  and stamps new rows with `harvested_at`; checkpoints from an earlier
-  academic year are removed before fetching (they would return last year's
+- Each harvest of such a site fetches the pages of its latest DBH year again
+  and adds them as a dated raw file, stamped `harvested_at`. Checkpoints from
+  an earlier academic year are removed first (they would return last year's
   pages), and a harvest in June-August warns (the site may already show next
   year's plan).
-- `read_harvest()` gives each DBH row the page of the latest harvest in the
-  row's academic year (autumn Y: Y/Y+1, spring Y: Y-1/Y), or no page.
+- `read_harvest()` gives each offering the page of its course code from the
+  latest harvest in the offering's academic year (autumn Y: Y/Y+1, spring Y:
+  Y-1/Y), or no page. A page counts for its course and year whichever DBH row
+  it was fetched for, so DBH rows published years later still find it.
 - So harvest these sites once in every academic year (best September-November
-  or February-April); a year without a harvest has no plans for them.
+  or February-April), whether or not DBH has a new year; a year without a
+  harvest has no plans for them.
 
-The archive (`data/raw/archive/2026-04-04/`, from the user's backup) is raw
-data like `data/raw/html_*.RDS` and exists only locally: back it up.
+`data/raw/harvests/2026-04-04/` holds the user's earlier harvest of these sites
+(2025/26). The rest of that backup, for sites with the year in the URL, is in
+`data/backup/2026-04-04/` and is not read. Raw files exist only locally: back
+them up.
+
+### Raw Store and Finalized Releases
+
+No raw file is written twice (#296). `harvest_all()` saves an institution's
+first harvest to `data/raw/html_{inst}.RDS`; a later harvest fetches only the
+offerings no raw file holds yet (a current site: a new snapshot) and saves them
+to `data/raw/harvests/{date}/html_{inst}.RDS`. `harvest_all(year = 2026)` and
+`harvest_all()` therefore both just add what is new. `read_harvest()` combines
+the files; an offering in two files stops the build.
+
+To finalize a release, after `tar_make()` and tagging the commit:
+
+```r
+source("R/utils.R"); source("R/release.R")
+finalize_release("data-YYYY-MM-DD")   # then commit tests/snapshots/raw_manifest.csv
+release_data("data-YYYY-MM-DD")       # hand-over to the coding project
+```
+
+`finalize_release()` makes every raw file read-only (an overwrite then fails),
+lists them with md5 sums in `tests/snapshots/raw_manifest.csv`, and keeps the
+release's offerings, plans and sections in `data/releases/{tag}/`. On every
+build `tar_read(frozen_check)` lists any change to the release: a raw file
+changed or missing, an offering gone or linked to another plan, a plan gone or
+with other text, a section changed. Plans
+added later (a new DBH year) are not changes. A planned change to the release
+(a privacy fix) means a new release: finalize it, and `release_data()` writes
+the old -> new `plan_content_id` crosswalk.
 
 **Output files:**
 

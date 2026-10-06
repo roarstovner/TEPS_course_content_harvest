@@ -30,6 +30,7 @@ writing/
 # data/input/ is in git; raw, interim and processed are rebuilt (harvest,
 # tar_make()) and raw and interim hold personal data.
 data/raw/
+data/backup/
 data/interim/
 data/processed/
 data/*.RDS

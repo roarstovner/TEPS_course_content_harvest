@@ -13,21 +13,21 @@ harvested_institutions <- function(raw_dir = RAW_DIR) {
   sub("^html_(.*)\\.RDS$", "\\1", list.files(raw_dir, "^html_.*\\.RDS$"))
 }
 
-# Earlier harvests kept for "current" sites (plan_years; #293):
-# data/raw/archive/{YYYY-MM-DD}/html_{inst}.RDS, named by harvest date.
-archived_harvest_files <- function(institution, raw_dir = RAW_DIR) {
-  sort(Sys.glob(file.path(raw_dir, "archive", "*", paste0("html_", institution, ".RDS"))))
+# The raw store is append-only (#296): an institution's first harvest is
+# data/raw/html_{inst}.RDS, and every later harvest adds a file
+# data/raw/harvests/{YYYY-MM-DD}/html_{inst}.RDS with what it fetched. No raw
+# file is written twice; read_harvest() combines them.
+dated_harvest_file <- function(institution, date = Sys.Date(), raw_dir = RAW_DIR) {
+  file.path(raw_dir, "harvests", format(date), paste0("html_", institution, ".RDS"))
 }
 
-# The latest harvest of an institution, and for a "current" site its archived
-# ones (read_harvest() combines them).
+# All raw files of an institution: the first harvest, then the dated ones.
 harvest_files <- function(institution, raw_dir = RAW_DIR) {
-  current <- identical(institution_configs[[institution]]$plan_years, "current")
-  c(harvest_file(institution, raw_dir),
-    if (current) archived_harvest_files(institution, raw_dir))
+  dated <- Sys.glob(file.path(raw_dir, "harvests", "*", paste0("html_", institution, ".RDS")))
+  c(harvest_file(institution, raw_dir), sort(dated))
 }
 
-# Date of a raw harvest: its harvested_at column, else the archive directory
+# Date of a raw harvest: its harvested_at column, else the dated directory
 # name, else the file's modification date (harvests before 2026-10-06 have no
 # harvested_at).
 harvest_date <- function(file, df = readRDS(file)) {
@@ -40,8 +40,10 @@ harvest_date <- function(file, df = readRDS(file)) {
 
 # Academic year ("2025-2026", August to July) of a date.
 academic_year_of_date <- function(date) {
-  y <- as.integer(format(date, "%Y"))
-  ifelse(as.integer(format(date, "%m")) >= 8, paste0(y, "-", y + 1), paste0(y - 1, "-", y))
+  y <- as.integer(format(date, "%Y")) - (as.integer(format(date, "%m")) < 8)
+  out <- sprintf("%d-%d", y, y + 1)
+  out[is.na(y)] <- NA_character_
+  out
 }
 
 canon_remove_trailing_num <- function(x) {

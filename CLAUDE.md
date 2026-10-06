@@ -57,9 +57,12 @@ documenting, write it there and, if agents need to find it, add a pointer here.
   Only anonymized text goes in `data/processed/` (checked by target
   `privacy_check` and `test-anonymize.R`). See README "Data Files: Published
   and Internal".
-- `data/raw/html_{inst}.RDS` and `data/raw/checkpoint/` are the raw harvest: only a
-  harvest writes them. To change extracted text, change the config or
-  `R/extract_fulltext.R` and run `targets::tar_make()`.
+- `data/raw/` is the raw harvest and append-only (#296): only `harvest_all()`
+  writes it, and never the same file twice (README "Raw Store and Finalized
+  Releases"). Do not overwrite, merge into or `chmod` raw files by hand. To
+  change extracted text, change the config or `R/extract_fulltext.R` and run
+  `targets::tar_make()`. After a release is finalized, `tar_read(frozen_check)`
+  must stay empty.
 - After changing extraction, the heading map or the anonymizer, rebuild the
   derived data with `targets::tar_make()` and read `tar_read(metrics_check)`
   (README "Rebuilding Derived Data"). Explain every flagged

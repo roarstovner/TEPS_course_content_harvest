@@ -80,3 +80,85 @@ release_data <- function(tag, dest = "../TEPS_course_content_coding/data") {
   message("Release ", tag, " written to ", dest)
   invisible(dest)
 }
+
+# --- Finalizing (#296) -----------------------------------------------------------
+
+RAW_MANIFEST <- "tests/snapshots/raw_manifest.csv"
+
+#' Finalize a release: lock its raw files and keep its plans
+#'
+#' Makes every raw file (harvest_files() of all institutions) read-only, so a
+#' later write fails loudly; lists them with md5 sums in RAW_MANIFEST (commit
+#' it); and keeps the release's offerings, plans and sections in
+#' data/releases/{tag}/. frozen_changes() then checks on every build that
+#' nothing of the release has changed. A later harvest only adds raw files
+#' (harvest_all()), so a new DBH year leaves the release as it was.
+#'
+#' @param tag Release name, the git tag of the release.
+#' @param raw_dir,processed,releases,manifest Locations (defaults: the repo's).
+#' @return The manifest, invisibly.
+finalize_release <- function(tag, raw_dir = RAW_DIR, processed = "data/processed",
+                             releases = "data/releases", manifest = RAW_MANIFEST) {
+  files <- unlist(lapply(harvested_institutions(raw_dir), harvest_files, raw_dir = raw_dir))
+  m <- tibble::tibble(release = tag, file = files, md5 = unname(tools::md5sum(files)))
+  dir <- file.path(releases, tag)
+  dir.create(dir, recursive = TRUE, showWarnings = FALSE)
+  kept <- file.path(dir, c("course_offerings.RDS", "course_plans.RDS", "plan_sections.RDS"))
+  file.copy(file.path(processed, basename(kept)), kept)
+  Sys.chmod(c(files, kept), "0444")
+  utils::write.csv(m, manifest, row.names = FALSE)
+  message(length(files), " raw files locked for ", tag, "; commit ", manifest)
+  invisible(m)
+}
+
+#' Changes to the finalized release
+#'
+#' Compares with RAW_MANIFEST and the data kept by finalize_release(): a raw
+#' file changed or missing, an offering of the release gone or with another
+#' plan, a plan of the release gone or with other text, a section of it
+#' changed. No rows before anything is finalized.
+#'
+#' @param manifest The raw manifest file.
+#' @param offerings,plans,sections The built course_offerings, course_plans and
+#'   plan_sections files.
+#' @param releases Where finalize_release() keeps the plans.
+#' @return Tibble `check`, `institution`, `what`.
+frozen_changes <- function(manifest, offerings, plans, sections, releases = "data/releases") {
+  out <- tibble::tibble(check = character(), institution = character(), what = character())
+  if (!file.exists(manifest)) return(out)
+  m <- utils::read.csv(manifest)
+  md5 <- unname(tools::md5sum(m$file))
+  bad <- is.na(md5) | md5 != m$md5
+  out <- dplyr::bind_rows(out, tibble::tibble(check = "raw file changed or missing",
+                                              institution = NA_character_, what = m$file[bad]))
+  dir <- file.path(releases, m$release[1])
+  o <- dplyr::left_join(readRDS(file.path(dir, "course_offerings.RDS"))[c("course_id", "institution", "plan_content_id")],
+                        readRDS(offerings)[c("course_id", "plan_content_id")],
+                        by = "course_id", suffix = c("", "_now"))
+  moved <- !mapply(identical, o$plan_content_id, o$plan_content_id_now)
+  out <- dplyr::bind_rows(out, tibble::tibble(check = "offering gone or with another plan",
+                                              institution = o$institution[moved],
+                                              what = o$course_id[moved]))
+  key <- c("plan_content_id", "institution", "Emnekode")
+  was <- readRDS(file.path(dir, "course_plans.RDS"))[c(key, "course_plan")]
+  now <- readRDS(plans)[c(key, "course_plan")]
+  p <- dplyr::left_join(was, now, by = key, suffix = c("", "_now"))
+  diff <- is.na(p$course_plan_now) | p$course_plan_now != p$course_plan
+  out <- dplyr::bind_rows(out, tibble::tibble(check = "plan gone or text changed",
+                                              institution = p$institution[diff],
+                                              what = paste(p$Emnekode[diff], p$plan_content_id[diff])))
+  cols <- c(key, "section", "text")
+  was_s <- readRDS(file.path(dir, "plan_sections.RDS"))[cols]
+  now_s <- dplyr::semi_join(readRDS(sections)[cols], was, by = key)
+  s <- dplyr::bind_rows(dplyr::anti_join(was_s, now_s, by = cols),
+                        dplyr::anti_join(now_s, was_s, by = cols)) |>
+    dplyr::distinct(dplyr::across(dplyr::all_of(c(key, "section"))))
+  out <- dplyr::bind_rows(out, tibble::tibble(check = "section changed",
+                                              institution = s$institution,
+                                              what = paste(s$Emnekode, s$plan_content_id, s$section)))
+  if (nrow(out) > 0) {
+    warning(nrow(out), " change(s) to the finalized release ", m$release[1],
+            ": see tar_read(frozen_check)", call. = FALSE)
+  }
+  out
+}

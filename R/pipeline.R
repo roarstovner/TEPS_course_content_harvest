@@ -16,30 +16,46 @@ institution_config_target <- function(institution) {
   })
 }
 
-# One institution's raw harvest, from harvest_files(). A "current" site
-# (plan_years) shows only the plan in force, so each of its harvests counts for
-# the academic year it was made in: a DBH row gets the page of the latest
-# harvest in its own academic year, or no page (#293). Rows with a page keep
-# their harvested_at date.
+# One institution's raw harvest: the rows of all its raw files
+# (harvest_files(); #296). Each file adds offerings the earlier ones lack, so
+# an offering in two files is an error.
+#
+# A "current" site (plan_years) shows only the plan in force, so a page is the
+# plan of its course in the academic year it was fetched in, whichever DBH row
+# it was fetched for. Its files are snapshots: each offering gets the page of
+# its course code (Emnekode_raw) from the latest harvest in the offering's
+# academic year (autumn Y: Y/Y+1, spring Y: Y-1/Y), or no page (#293);
+# harvested_at says which harvest that was.
 read_harvest <- function(files, config) {
-  if (!identical(config$plan_years, "current")) return(readRDS(files[1]))
+  current <- identical(config$plan_years, "current")
   rows <- dplyr::bind_rows(lapply(files, function(f) {
-    df <- readRDS(f)
-    df <- dplyr::rename(df, dplyr::any_of(c(institution = "institution_short")))
-    df$harvested_at <- harvest_date(f, df)
+    df <- dplyr::rename(readRDS(f), dplyr::any_of(c(institution = "institution_short")))
+    if (current) df$harvested_at <- harvest_date(f, df)
     df
   }))
-  rows$in_year <- academic_year_of_date(rows$harvested_at) ==
-    nla_academic_year(rows$Årstall, rows$Semesternavn)
-  rows <- rows |>
-    dplyr::arrange(course_id, dplyr::desc(in_year), dplyr::desc(harvested_at)) |>
-    dplyr::distinct(course_id, .keep_all = TRUE)
-  miss <- !rows$in_year
-  rows$html[miss] <- NA_character_
-  rows$extracted_text[miss] <- NA_character_
-  rows$html_success[miss] <- FALSE
-  rows$harvested_at[miss] <- NA
-  dplyr::select(rows, -in_year)
+  if (!current) {
+    dup <- unique(rows$course_id[duplicated(rows$course_id)])
+    if (length(dup)) stop(config$name, ": offerings in more than one raw file: ",
+                          paste(utils::head(dup, 5), collapse = ", "))
+    return(rows)
+  }
+  page <- c("url", "html", "html_error", "html_success", "extracted_text", "harvested_at")
+  snapshots <- rows |>
+    dplyr::filter(!is.na(html) | !is.na(extracted_text)) |>
+    dplyr::mutate(academic_year = academic_year_of_date(harvested_at)) |>
+    dplyr::arrange(dplyr::desc(harvested_at)) |>
+    dplyr::distinct(Emnekode_raw, academic_year, .keep_all = TRUE) |>
+    dplyr::select(Emnekode_raw, academic_year, dplyr::any_of(page))
+  # an offering's DBH columns from the first file that has it: a later file
+  # never changes an earlier row
+  rows |>
+    dplyr::arrange(harvested_at) |>
+    dplyr::distinct(course_id, .keep_all = TRUE) |>
+    dplyr::select(-dplyr::any_of(page)) |>
+    dplyr::mutate(academic_year = nla_academic_year(Årstall, Semesternavn)) |>
+    dplyr::left_join(snapshots, by = c("Emnekode_raw", "academic_year")) |>
+    dplyr::select(-academic_year) |>
+    dplyr::arrange(course_id)
 }
 
 # extracted_text of every row: the page's blocks as text (#276); rows without
