@@ -9,9 +9,12 @@ documenting, write it there and, if agents need to find it, add a pointer here.
 - `README.qmd` (render with `quarto render README.qmd` → `README.md`): pipeline
   stages, how to run and rebuild each step, section extraction (strategies,
   `section_*` config fields, heading map, cleanup), which data files are
-  published and which are internal, institution-specific notes (NORD, NTNU,
-  UiO, HiOF, USN, UiT), function reference, troubleshooting.
-- `data/data_notes.qmd`: per-institution data quality notes.
+  published and which are internal, the append-only raw store and how to
+  finalize a release, sites that show only the current plan,
+  institution-specific notes (NORD, NTNU, UiO, HiOF, USN, UiT), function
+  reference, troubleshooting.
+- `data/data_notes.qmd`: per-institution data quality notes; course-years
+  without a plan and why (target `gaps`).
 - `methods.qmd` (rendered by `tar_make()` to `methods.md`): the choices an
   article's methods section must report, by topic, with numbers from the data.
 - `app/course_browser/README.md`, `app/course_browser_ojs/README.md`: the two

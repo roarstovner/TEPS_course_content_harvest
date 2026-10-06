@@ -162,6 +162,13 @@ script stops or crashes:
   (anti-join by `course_id`)
 - This saves time and is polite to institutional servers
 
+The checkpoint only resumes an interrupted harvest; it is a cache, not
+the record. Offerings already in a raw file are skipped by
+`harvest_all()` itself (see “Raw Store and Finalized Releases”). For
+“page” and “current” sites (`plan_years`) the checkpoint is removed
+before every harvest, because their pages change over time and an old
+copy must not stand in for a new one.
+
 ### Rebuilding Derived Data
 
 Everything after the harvest is a {targets} pipeline: `_targets.R` lists
@@ -175,25 +182,35 @@ targets::tar_read(metrics_check)  # changes against the metrics snapshot
 targets::tar_read(unmapped)       # headings the section extractor could not map
 targets::tar_read(heading_use)    # pages per heading-map pattern (0 = unused)
 targets::tar_read(privacy_check)  # personal data found in data/processed/
+targets::tar_read(frozen_check)   # changes to the finalized release (empty before one)
+targets::tar_read(gaps)           # course-years without a plan, and why
 ```
 
 {targets} keeps each step’s result in `_targets/` (gitignored) together
 with a hash of its inputs and of the code it calls, and reruns a step
 only when one of those changed. The steps per institution (fulltext,
-plans, sections, unmapped headings) run once per institution: a new
-`data/raw/html_uib.RDS`, or a change to uib’s entry in
+plans, sections, unmapped headings, fetch status) run once per
+institution: a new raw file of uib, or a change to uib’s entry in
 `R/institution_config.R`, rebuilds only uib, while a change to shared
 code (`R/anonymize.R`, `R/section_heading_map.R`,
 `R/extract_sections.R`) reruns that step for every institution. The
 pipeline writes the data files in `data/interim/` and `data/processed/`
 (see “Data Files: Published and Internal”),
-`app/course_browser/data/browser_data.RDS`, the OJS Parquet files and
-`data/data_notes.md`. The harvest is not part of it.
+`app/course_browser/data/browser_data.RDS`, the OJS Parquet files,
+`data/data_notes.md` and `methods.md`. The harvest is not part of it.
+
+`methods.md` (from `methods.qmd`) holds the choices behind the data that
+an article’s methods section must report, by topic, with numbers
+computed from the data; a decision that changes what the data mean gets
+an entry there. `data/interim/plan_gaps.RDS` (target `gaps`) lists every
+course-year without a plan with the reason (no URL, 404, fetch error,
+page but no plan) and flags the gaps between two years with plans, the
+ones worth checking by hand; the data notes summarize it (“Course-years
+without a plan”).
 
 The steps run on 4 local worker processes ({crew}, set in
 `tar_option_set()` in `_targets.R`), several institutions at a time. A
-full build takes about 19 minutes; the floor is the slowest single
-institution’s sections (about 8 minutes). To debug a step with
+full build takes about 11 minutes (2026-10-06). To debug a step with
 `browser()`, run in the current session instead:
 `targets::tar_make(callr_function = NULL, use_crew = FALSE)`.
 
@@ -237,7 +254,7 @@ steps.
 ``` r
 # Add to the institution_configs list:
 newuni = list(
-  code = "1234",
+  code = "1234",                  # DBH code; several if it changed: c("0264", "1177")
   strategy = "standard",          # or url_discovery, shadow_dom, etc.
   selector = ".main-content",     # the element that holds the course plan
   exclude = ".contact",           # optional: parts of it that are not the plan
@@ -636,8 +653,20 @@ folder says what may be shared:
 </tr>
 <tr>
 <td><code>data/raw/</code></td>
-<td>the harvest, with personal data</td>
+<td>the harvest, with personal data; append-only</td>
 <td>harvesting only</td>
+<td>no</td>
+</tr>
+<tr>
+<td><code>data/releases/{tag}/</code></td>
+<td>offerings, plans and sections of a finalized release</td>
+<td><code>finalize_release()</code></td>
+<td>no</td>
+</tr>
+<tr>
+<td><code>data/backup/</code></td>
+<td>earlier harvests kept but not read (personal data)</td>
+<td>by hand</td>
 <td>no</td>
 </tr>
 <tr>
@@ -686,10 +715,17 @@ public.
 </tr>
 <tr>
 <td><code>data/raw/html_{inst}.RDS</code>,
+<code>data/raw/harvests/{date}/</code>,
 <code>data/raw/checkpoint/</code></td>
 <td>raw harvest: <code>html</code> (+ <code>extracted_text</code> from
 harvest time)</td>
 <td>yes (raw)</td>
+<td>internal</td>
+</tr>
+<tr>
+<td><code>data/interim/plan_gaps.RDS</code></td>
+<td>course-years without a plan, reason, URLs tried</td>
+<td>none</td>
 <td>internal</td>
 </tr>
 <tr>
@@ -884,8 +920,14 @@ in Sámi.
 <tr>
 <td><code>harvest_all(courses, year, refetch, institutions)</code></td>
 <td><code>R/harvest.R</code></td>
-<td>Harvest all (or the given) institutions, save
-<code>data/raw/html_{inst}.RDS</code></td>
+<td>Harvest all (or the given) institutions: the first harvest to
+<code>data/raw/html_{inst}.RDS</code>, later ones add
+<code>data/raw/harvests/{date}/</code></td>
+</tr>
+<tr>
+<td><code>institution_from_code(code)</code></td>
+<td><code>R/institution_config.R</code></td>
+<td>Institution short name for DBH institution codes</td>
 </tr>
 <tr>
 <td><code>get_institution_config(inst)</code></td>
@@ -945,6 +987,18 @@ current sites matched by course code and academic year</td>
 <td><code>R/release.R</code></td>
 <td>Lock a release’s raw files; list changes to it (target
 <code>frozen_check</code>)</td>
+</tr>
+<tr>
+<td><code>release_data(tag, dest)</code></td>
+<td><code>R/release.R</code></td>
+<td>Copy the published files, <code>methods.md</code>, a manifest and
+section coverage to the coding project</td>
+</tr>
+<tr>
+<td><code>plan_gaps(offerings, fetch_status)</code></td>
+<td><code>R/pipeline.R</code></td>
+<td>Course-years without a plan, with the reason (target
+<code>gaps</code>)</td>
 </tr>
 <tr>
 <td><code>validate_courses(df, stage)</code></td>
@@ -1008,11 +1062,22 @@ session - `session$view()` opens the browser to see what is rendered
 
 **Checkpoint file is huge?** - This is normal - HTML is large -
 Checkpoint files are in `.gitignore`; deleting one makes the next run
-fetch again
+fetch again the offerings that are not yet in a raw file (never the ones
+that are)
+
+**“raw files are not written twice”?** - A harvest of the same
+institution already ran today; the raw store is append-only (#296). Run
+it another day, or, before the release is finalized, remove that day’s
+file deliberately
+
+**“offerings in more than one raw file”?** - Two raw files of an
+institution hold the same `course_id`; a file was copied into
+`data/raw/` by hand. Remove the copy
 
 ## File Organization
 
     ├── _targets.R                 # Post-harvest pipeline: targets::tar_make()
+    ├── methods.qmd                # Methods choices for articles (rendered to methods.md)
     ├── renv.lock                  # Pinned package versions (renv::restore())
     ├── .github/workflows/tests.yml # Tests on GitHub Actions
     ├── R/
@@ -1032,20 +1097,23 @@ fetch again
     │   ├── extract_sections.R     # Section extraction strategies + cleanup
     │   ├── pipeline.R             # Steps of the {targets} pipeline (_targets.R)
     │   ├── pipeline_metrics.R     # Regression snapshot: check_pipeline_metrics()
+    │   ├── release.R              # release_data(), finalize_release(), frozen_changes()
     │   └── audit/                # Audit harness for /audit-institutions
     ├── app/
     │   ├── course_browser/        # Shiny concordance browser; build_data.R → data/ (see its README)
     │   └── course_browser_ojs/    # Static Observable JS browser; build_data.R → data/ (see its README)
     ├── data/                      # README "Data Files: Published and Internal"
     │   ├── input/courses.RDS      # DBH course list, the pipeline input (in git)
-    │   ├── raw/                   # Harvest: html_{inst}.RDS, checkpoint/ (not in git)
+    │   ├── raw/                   # Harvest: html_{inst}.RDS, harvests/{date}/, checkpoint/ (not in git)
     │   ├── interim/               # Rebuilt text with personal data (not in git)
     │   ├── processed/             # Anonymized data files, can be shared (not in git)
+    │   ├── releases/              # Finalized releases' data (not in git)
+    │   ├── backup/                # Earlier harvests, not read (not in git)
     │   ├── audit/                 # Audit findings and reports
     │   └── data_notes.qmd         # Data quality notes per institution
     ├── tests/
     │   ├── testthat/              # Rscript -e 'testthat::test_dir("tests/testthat")'
-    │   └── snapshots/             # pipeline_metrics.csv (regression snapshot)
+    │   └── snapshots/             # pipeline_metrics.csv; raw_manifest.csv once a release is finalized
     └── data-raw/
         └── courses.R              # script that creates data/input/courses.RDS
 

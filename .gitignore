@@ -31,6 +31,7 @@ writing/
 # tar_make()) and raw and interim hold personal data.
 data/raw/
 data/backup/
+data/releases/
 data/interim/
 data/processed/
 data/*.RDS
