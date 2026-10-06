@@ -103,6 +103,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Data release for TEPS coding: research assistants start ~2026-10-14 (#290)
+- Hand-over: tag the release and copy it to TEPS_course_content_coding with manifest, section coverage and plan-id crosswalk (#294)
 - Harvest and fulltext problems found by audit 2026-10-01 (#217)
 - Courses with plan text but no sections (388) (#222)
 - Decide: oslomet non-praksis courses whose emneplan says 'Se fagplanen' (#289)
