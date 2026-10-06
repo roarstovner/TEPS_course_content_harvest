@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Append-only raw store: a later harvest adds files, never rewrites finalized ones (#296)
 - Data release for TEPS coding: research assistants start ~2026-10-14 (#290)
 - Hand-over: tag the release and copy it to TEPS_course_content_coding with manifest, section coverage and plan-id crosswalk (#294)
 - Harvest and fulltext problems found by audit 2026-10-01 (#217)
