@@ -1,0 +1,34 @@
+{
+  "check": "anonymization",
+  "institution": "nord",
+  "model": "opus",
+  "n_courses_reviewed": 17,
+  "n_suspects_reviewed": 9,
+  "overall_assessment": "Anonymization works well for nord: none of the 17 courses has a name, e-mail or phone number left, and a scan of all 3489 nord plans finds no e-mail, phone number or role-plus-name line (nord pages have no staff or contact block). All name_label and name_like flags are false alarms. They match 'naturfaglærer' followed by the headings 'Kostnader / Semester avgift', and the exam names 'Examen Philosophicum og Examen Facultatum'. Two minor date problems remain. Exam dates with two-digit years ('16.12.20') are left in 9 plans, and the dd.mm.yyyy rule removes the date from a regulation citation ('forskrift. 28.10.2020 nr. 2474') in about 183 plans. The removal of 'Våren 2021:' leaves 'MERK: :' in 179 plans; this is a harmless dangling label under the rubric.",
+  "findings": [
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": ["nord_PO118LS-1_2020_autumn_2", "nord_HI109LS-1_2021_spring_1", "nord_STA2002-1_2020_autumn_1"],
+      "evidence": "Oppsatt skoleeksamen 16.12.20 gjøres om grunnet smittevernhensyn. Skoleeksamen erstattes med en 6 timers hjemmeeksamen.",
+      "description": "Exam dates in dd.mm.yy form (two-digit year) are left in the COVID exam notices: '16.12.20', '03.12.20', '10.12.20', '02.12.20'. These are administrative dates that date the plan. The anonymizer removes the same kind of date when it has a four-digit year (e.g. '28.10.2020'), so the handling is inconsistent. No personal data is involved. In the packet these are 4 of the 9 suspects (courses 4, 7, 8 and 9: PO118LS, HI109LS, PO114LS, STA2002). Across all 3489 nord plans, the same pattern occurs in only 9.",
+      "root_cause_hypothesis": "In .anon_generic() (R/anonymize.R), the date rule str_remove_all(\"\\\\d{1,2}\\\\.\\\\d{1,2}\\\\.\\\\d{4}\") requires a four-digit year. Two-digit-year dates are handled only in the usn signature-line regex.",
+      "suggested_fix": "In .anon_generic(), after the dd.mm.yyyy rule, also remove two-digit-year dates with a strict day and month: str_remove_all(\"\\\\b(?:0[1-9]|[12]\\\\d|3[01])\\\\.(?:0[1-9]|1[0-2])\\\\.\\\\d{2}\\\\b\"). Requiring two-digit day and month spares section numbers such as '3.1.10'. Add a test to tests/testthat/test-anonymize.R: 'Oppsatt skoleeksamen 16.12.20 gjøres om' must become 'Oppsatt skoleeksamen gjøres om'.",
+      "confidence": "high"
+    },
+    {
+      "target": "content_text",
+      "error_type": "over_removal",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": ["nord_NAT1002-1_2022_spring_3", "nord_SAM1001-1_2021_autumn_1", "nord_NAT1002-1_2018_autumn_2"],
+      "evidence": "Midlertidig forskrift om tillegg til forskrift. [−28.10.2020−] nr. 2474 om studier og eksamener",
+      "description": "The dd.mm.yyyy rule removes the date from a regulation's legal citation ('forskrift 28.10.2020 nr. 2474'; elsewhere 'forskrift. 31.01.2019 nr 63'). The result, 'forskrift.  nr. 2474 om studier og eksamener', no longer identifies the regulation and has a double space. Under the rubric, law and regulation years are content to keep. In nord, every dd.mm.yyyy match in extracted_text is one of these two regulation citations (about 183 of 3489 texts), so the rule removes no administrative date there. The loss is small because the citations sit in COVID exam notices.",
+      "root_cause_hypothesis": "The blanket str_remove_all(\"\\\\d{1,2}\\\\.\\\\d{1,2}\\\\.\\\\d{4}\") in .anon_generic() (R/anonymize.R) does not exclude legal citations of the form 'dd.mm.yyyy nr. N'.",
+      "suggested_fix": "Add a negative lookahead to the date rule in .anon_generic(): \"\\\\d{1,2}\\\\.\\\\d{1,2}\\\\.\\\\d{4}(?!\\\\s*nr\\\\.?\\\\s*\\\\d)\". Dates that cite a law or regulation ('28.10.2020 nr. 2474', '31.01.2019 nr 63') are then kept. Add a test for 'forskrift 28.10.2020 nr. 2474'. If keeping these dates changes what the published data mean, record the decision in methods.qmd.",
+      "confidence": "medium"
+    }
+  ]
+}

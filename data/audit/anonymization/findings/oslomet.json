@@ -1,0 +1,46 @@
+{
+  "check": "anonymization",
+  "institution": "oslomet",
+  "model": "opus",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "No personal data leaks: there are no e-mails or phones, and the few 'Emneansvarlig' + name blocks in the raw text are all stripped by .anon_oslomet(). Nothing is over-removed; the removed spans are only Studieår/semester labels, '(2019 HØST )' cohort tags and bare semicolons. The main gap is administrative dating: the fagplan approval/revision stamps with long-form dates ('14. november 2016') and 'Gjeldende fra høstsemesteret 2019' stay in about half of all plans (853/1684), and in 2021-2022 plans the semicolon rendering artifact the handler targets is only half removed. Pre-pass flags: admin_date is real (it is these stamps); all 56 name_label hits are the prepass regex crossing lines ('naturfaglærer' + 'Innhold' + 'Emne'); name_like hits are subject matter or English titles ('Ole Bull', 'Sign Language'); removed hits are short stub pages where the header years dominate.",
+  "findings": [
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": ["oslomet_M5GNA2100-1_2019_spring_2", "oslomet_M1GNA2200-1_2020_autumn_1", "oslomet_M1GNA2100-1_2023_autumn_1"],
+      "evidence": "Fagplanen ble godkjent i studieutvalget 14. november 2016 … Revisjon godkjent på fullmakt av leder i utdanningsutvalget 23. mai 2019 … Redaksjonell endring foretatt 17. desember 2019",
+      "description": "The fagplan approval and revision stamps keep their full dates in the anonymized plan. The rubric (and methods.qmd) list approval/revision stamps as administrative dates that must go. All 16 fagplan suspects show the block. Across the institution, 853 of 1684 plans (2019-2025) keep at least one stamp with a full date. Variants include 'Revisjon godkjent av prodekan 14.januar 2020', 'Redaksjonelle endringar lagt inn 3. juli 2019 og 30. januar 2020', 'Emneplanen er godkjent av utdanningsutvalget ... 21. juni 2021', 'Pensum oppdatert 22. mai 2017', and 'programplan ... godkjent av studieutvalget 16. november 2016' in the introduction paragraph. The changing day-month part also survives normalize_plan_text(), which removes only years.",
+      "root_cause_hypothesis": "R/anonymize.R .anon_generic() handles only dd.mm.yyyy dates, 'dd. mon yyyy HH:MM' timestamps, and an admin keyword followed directly by a year ('godkjent\\s+\\d{4}'). Long-form Norwegian dates such as '14. november 2016' after 'godkjent i studieutvalget' or 'lagt inn' match none of these, and .anon_oslomet() has no stamp rule.",
+      "suggested_fix": "In .anon_oslomet(), or in .anon_generic() for reuse elsewhere, remove long-form dates that follow an approval keyword in the same sentence. Pattern: (?i)((?:godkjent|vedtatt|oppdatert|endring\\w*|fullmakt)[^\\n.]{0,90}?)\\s*\\d{1,2}\\.\\s?(?:januar|februar|mars|april|mai|juni|juli|august|september|oktober|november|desember)(?:\\s+\\d{4})?(?:\\s*(?:,|og)\\s*;?\\d{1,2}\\.\\s?(?:januar|...|desember)(?:\\s+\\d{4})?)* -> \\1. This keeps the regulation dates 'fastsatt av Kunnskapsdepartementet 7. juni 2016' and 'retningslinjer ... av 1. september 2016', since no approval keyword comes before them. The simpler option is to drop whole stamp lines (^(Fagplanen|Emneplanen) (ble|blei|er) godkjent|^Revisjon|^Redaksjonell\\w* endring|^Pensum oppdatert ...), but that misses the stamps glued onto 'FAGPLANMatematikk 1 ...' lines. Add cases to tests/testthat/test-anonymize.R and record the rule in methods.qmd.",
+      "confidence": "high"
+    },
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "low",
+      "prevalence": "widespread",
+      "example_course_ids": ["oslomet_M5GNA2100-1_2019_spring_2", "oslomet_M1GNA2100-1_2023_autumn_1", "oslomet_M5GNA2100-1_2025_autumn_1"],
+      "evidence": "Gjeldende fra høstsemesteret 2019 … Gjeldende fra høstsemesteret 2021",
+      "description": "The validity label 'Gjeldende fra høstsemesteret YYYY' keeps its semester-year. This is a semester label with a year, which the rubric says must be removed. It is in 722 of 1684 oslomet plans, including 2023 and 2025 offerings that still carry 'høstsemesteret 2021'. Separate from the long-form date stamps: here a different regex misses.",
+      "root_cause_hypothesis": "The season+year regex in .anon_generic() allows only (høst|vår|haust|sommer)(en|a)? before the year, so the compound 'høstsemesteret 2019' does not match. The admin-keyword regex 'gjeldende(?: fra)?\\s+\\d{4}' needs the year directly after 'fra'.",
+      "suggested_fix": "In .anon_generic(), widen the season suffix to (?:en|a|semesteret|semesteret|semester)? in the '(?:høst|vår|haust|sommer)(?:en|a)?\\s*\\d{4}' pattern, i.e. (?i)\\b(?:(?:høst|vår|haust|sommer)(?:en|a|semesteret|semester)?|autumn|spring|summer)\\s*\\d{4}\\b. This leaves the harmless dangling 'Gjeldende fra'. Add a test case.",
+      "confidence": "high"
+    },
+    {
+      "target": "boilerplate",
+      "error_type": "boilerplate_left",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": ["oslomet_M1GNA2100-1_2022_autumn_1", "oslomet_M5GNO1300-1_2022_autumn_1", "oslomet_M1GNA2200-1_2022_autumn_1"],
+      "evidence": "et grunnlag;for videre begrepsutvikling og miljøbevissthet … En;viktig del;av;vitenskapelig tenkning … samtale om litterære;tema. I tillegg ;ein individuell eksaminasjon",
+      "description": "The 2022 OsloMet site printed ';' where it should have printed spaces; it is in the raw HTML ('samt;hvorfor'). .anon_oslomet() is meant to strip these artifacts, but it removes only semicolons on a line of their own or between spaces. Semicolons glued between words stay, so words are joined ('grunnlag;for', 'litterære;tema', 'eksamen:;Individuell', '29. januar;2020'). That is 1162 occurrences in 166 of 1684 plans: 160 of the 250 offerings from 2022 and 6 from 2021. In the packet: 4 of 28 courses.",
+      "root_cause_hypothesis": ".anon_oslomet() runs only str_remove_all('(?m)^\\\\s*;\\\\s*$') and str_remove_all('(?<=\\\\s);(?=\\\\s)'). There is no rule for a ';' with no space after it.",
+      "suggested_fix": "In .anon_oslomet(), after the two existing rules: str_replace_all('(?<=[\\\\p{L}\\\\d.,:)]) ?;(?=[\\\\p{L}\\\\d«(])', ' '), then str_remove_all('(?m)(?<=[\\\\p{L}\\\\d.)]);+[ \\\\t]*$') for line-final ';'. Real semicolons have a space after them and are not touched. On the current data the first pattern matches only 2021-2022 plans (0 hits in 2018-2020 or 2023-2025). Add a test case.",
+      "confidence": "high"
+    }
+  ]
+}

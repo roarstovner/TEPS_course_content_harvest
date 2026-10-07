@@ -1,0 +1,34 @@
+{
+  "check": "anonymization",
+  "institution": "inn",
+  "model": "opus",
+  "n_courses_reviewed": 26,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "No personal data or administrative dates are left in any of the 26 courses: INN plans have no staff or contact blocks. Semester-year labels and overlap-table dates are removed, and content years ('Læreplan for KRLE 2015', '2500-3000 ord') are kept. The pre-pass flags are all false alarms. All 56 name_label hits across INN are 'teacher\\nFakultet\\nFakultet' (English course name followed by the faculty label) or 'faglærer\\n\\nPraksis\\n\\nPraksisstudiet'. The name_like hits are label/value lines ('Undervisningssted\\nHamar'), and the 35 'removed' hits are course-search pages correctly set to NA. Two real problems, neither a privacy leak: .anon_inn() rewrites every capitalised 'Engelsk' to 'English', and it strips the notice that marks a plan as a later 'latest available' version, which is the only record that 62% of INN plans are not the requested semester's plan.",
+  "findings": [
+    {
+      "target": "content_text",
+      "error_type": "text_corruption",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": ["inn_2MPEL171S-3-1_2022_spring_1", "inn_2MPEL171-3-1_2024_autumn_1", "inn_2MPEL171S-4-1_2025_spring_1"],
+      "evidence": "Undervisnings- og eksamensspråk [−Norsk/Engelsk−] Norsk/English Undervisningssted Hamar",
+      "description": "Anonymization rewrites course text instead of removing personal data. Every capitalised word 'Engelsk' becomes 'English'. In the packet, 12 of 26 courses show this in the language field. Across all INN plans, 320 of 1742 are affected, and in 140 of them it also changes course content that must be kept: English-subject course titles and prerequisites ('2MEN171-1 Engelsk 1, emne 1: English language' becomes 'English 1, emne 1'), and topic headings ('Engelsk som lingua franca', 'Engelsk som verdensspråk og flerspråklighet'). A keyword or subject analysis of Norwegian text would undercount 'engelsk' for INN alone, and the error gives no visible sign.",
+      "root_cause_hypothesis": "R/anonymize.R .anon_inn(), last step: stringr::str_replace_all(\"\\\\bEngelsk\\\\b\", \"English\"). It was added in normalize_plan_text() (commit cf1d2ec, 'Normalize language metadata value') to make dedup hashes match, and moved into the anonymizer in 5cff7f2. It is not tied to the language-field line, so it applies to the whole text.",
+      "suggested_fix": "Remove the replacement from .anon_inn(), since the published text should keep the page's 'Norsk/Engelsk'. If dedup still needs it, apply it only to the value line under the language label: str_replace(\"(?m)(^Undervisnings- og eksamensspråk\\\\n[^\\\\n]*?)\\\\bEngelsk\\\\b\", \"\\\\1English\"), or do it in the dedup key rather than in course_plan. Add a test to tests/testthat/test-anonymize.R that '2MEN171-1 Engelsk 1, emne 1' and 'Engelsk som lingua franca' come through unchanged.",
+      "confidence": "high"
+    },
+    {
+      "target": "boilerplate",
+      "error_type": "other",
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": ["inn_2MPEL171S-3-1_2022_spring_1", "inn_2MKRLE5101-1-1_2022_spring_1", "inn_2MASTER17E-1_2024_spring_1"],
+      "evidence": "[−Statusmelding Emnebeskrivelsen for valgt semester er ikke publisert enda. Her er den siste versjonen vi har tilgjengelig.−] 2MPEL171S-3 PEL 2, emne 3: Skolen",
+      "description": "Stripping this INN status notice is correct boilerplate removal, but nothing else in the pipeline records it, so the only sign that the plan is not the requested semester's version disappears. The year value of 'Undervisningssemestre' is also removed, and it is the other place that shows the mismatch. In the packet, 11 of 26 courses carried the notice. Example: the Vår 2022 offering 2MPEL171S-3-1, whose catalogue name is 'Den profesjonelle lærer', gets the plan 'Skolen som organisasjon' with 'Undervisningssemestre [−2026 Høst−]'. That plan is the 2026 version, while the 2023 offering has a different text. Across all INN plans, 1077 of 1742 (62%) carry the notice, including 384 of 391 from 2022. The published course_plan gives no way to tell these later fallback versions apart, so an analysis of change over time would silently date them to the wrong year.",
+      "root_cause_hypothesis": "The fallback comes from INN's site (when no plan is published for the selected semester, the page shows the latest version; data_notes #123 covers only part of this). .anon_inn() removes the notice with str_remove_all(\"Statusmelding...ikke publisert enda...\"). grep finds no other reference to the notice in R/, so it is never saved as a variable.",
+      "suggested_fix": "Before anonymizing, store a flag on the plan or offering row, e.g. plan_fallback = grepl('Emnebeskrivelsen for valgt semester er ikke publisert enda', extracted_text, fixed = TRUE), next to where course_plan is built in R/pipeline.R. Ideally also store the removed 'Undervisningssemestre' value as plan_semester. Keep stripping the notice from the text. Report the share in data/data_notes.qmd (extend the #123 note), and add a methods.qmd entry if fallback plans are excluded or re-dated.",
+      "confidence": "medium"
+    }
+  ]
+}

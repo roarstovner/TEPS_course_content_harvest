@@ -1,0 +1,94 @@
+{
+  "check": "anonymization",
+  "institution": "uit",
+  "model": "opus",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "In the modern UiT layout (2012 onwards) anonymization works: the 'Emneleder <name> <e-mail>' line and exam dates are removed, and none of the 8 random controls has personal data left in. The real problems are staff names and logistics dates left in the 'Undervisning' timetable block of the 2008-2011 layout (label glued to the name, or names in prose), and generic date regexes that cut reading-list URLs and remove some content (credit numbers, citation dates, Meld. St. sessions). Almost all pre-pass flags were false alarms (phone = ISSN/DOI/URL digits; name_like = reference authors; name_label = 'naturfaglærer', 'emneansvarlig' or 'Kontakt faglærer' before the next heading; removed = a near-empty 2011 plan; admin_date = the retrieval date 'hentet 19.6.18'); the one real hit is EXF-0723 2008.",
+  "findings": [
+    {
+      "target": "person_name",
+      "error_type": "pii_leak",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": ["uit_EXF-0723-1_2008_autumn_1"],
+      "evidence": "Foreleser[navn]ForeleserF.aman.[navn] … Gruppelærer[navn]Gruppelærer[navn]",
+      "description": "Staff names survive in the timetable block ('Undervisning' at the end of the page) of the 2008-2011 UiT layout. The flattened table glues the role label to the name with no space or newline ('Foreleser[navn]', 'Gruppelærer[navn]'), with academic titles in between ('F.aman.', 'u.lektor', 'Prof.'). Across all 3150 UiT offerings the same block leaks names in about 8 plans: EXF-0723 autumn 2008 and 2009, PFF-1002 autumn 2011 ('Kontaktpersoner er [navn] og [navn]', 'Kontaktperson er [navn]'), LRU-1125 spring and autumn 2011 ('… kl 0815-1000. [navn]', 'Kontaktpersoner er [navn] …'), LRU-1100 autumn 2011, and SOS-3905 autumn 2010 and spring 2011 ('Prof. [navn]'). privacy_check cannot see these leaks because they contain no e-mail or phone number and do not match the role-at-line-start layout.",
+      "root_cause_hypothesis": ".anon_uit() strips 'Foreleser'/'Kontaktperson' only when the label stands alone on its line and the name is on the next line ('(?m)^Foreleser:?\\s*\\n[^\\n]*'). The generic .role_name_line_regex needs the label at line start followed by whitespace or a colon and the name. Neither matches a label glued to the name, a name after 'Kontaktperson(er) er', or a bare name after a time.",
+      "suggested_fix": "In .anon_uit(), remove the old-layout timetable block from its heading to the end of the text: str_remove(\"(?s)\\\\n?Undervisning[ \\\\t]{2,}.*$\"). It occurs in 87 UiT plans (2008-2011) and holds only first-lecture times, rooms, staff and exam dates. Also add str_remove_all(\"Kontaktperson(?:er)? er [^.\\\\n]*\\\\.\") for prose contact sentences elsewhere. Add a test with the EXF-0723 2008 line and the PFF-1002 2011 'Kontaktpersoner er …' sentence.",
+      "confidence": "high"
+    },
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": ["uit_EXF-0723-1_2008_autumn_1"],
+      "evidence": "Undervisning 2008Informasjonsmøte torsdag 14. august kl 1115, rom E 0101 … Oppgave-utlevering: Mandag 03. november. Innlevering fredag 28. november.",
+      "description": "The same 2008-2011 timetable block keeps administrative dating: semester years glued to the next word ('2008Informasjonsmøte', where the season-year regex removed only 'Høst' and missed '2008' because there is no word boundary after it), weekday + day + month without a year, colon-less times ('kl 1115', 'kl 0815-1000'), dd.mm. without a year ('mandag 22.08.') and room numbers. The block appears in 87 UiT plans and most of them carry first-lecture or exam dates of this kind (for example LRU-1100/1125/1350/1400 spring 2011: 'Tirsdag 7. juni kl 0900-1300').",
+      "root_cause_hypothesis": "The generic date and time regexes in .anon_generic() expect dd.mm.yyyy, 'dd. mon yyyy hh:mm' and hh:mm. The old UiT layout writes dates without a year and times without a colon, and nothing UiT-specific handles that layout.",
+      "suggested_fix": "The same block removal as the pii_leak finding (strip '\\nUndervisning[ \\t]{2,}' to end of text in .anon_uit()) removes all of this. Do not widen the generic date regexes for it.",
+      "confidence": "high"
+    },
+    {
+      "target": "content_text",
+      "error_type": "text_corruption",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": ["uit_PFF-1020-1_2018_autumn_1", "uit_LRU-3300-1_2018_autumn_1", "uit_LRU-1350-1_2017_autumn_1"],
+      "evidence": "374-377, http://www.psykologtidsskriftet.no/pdf/-377.pdf (4 s.) … http://sp1.skoleveven.no/files//opplringshefte_i_geogebra_for_mellomtrinnet_og_ungdomstrinnet-bokml.pdf",
+      "description": "Reading-list URLs are cut by the date and academic-year regexes: '/pdf/2013/374-377.pdf' becomes '/pdf/-377.pdf', '/article/view/1138/1017' becomes '/article/view/', '/files/2013/04/' becomes '/files//', and 'jresematheduc.47.5.0440' becomes 'jresematheduc.'. The links no longer resolve. In the packet 5 of 28 courses are affected, including a random control. Across UiT, 64 of the 349 plans that contain URLs have at least one URL changed.",
+      "root_cause_hypothesis": "In .anon_generic(), '\\\\b\\\\d{4}/\\\\d{2,4}\\\\b' (academic year) matches any 4-digit/2-4-digit path segment such as 2013/374, 1138/1017 or 2014/02. The dd.mm.yyyy regex '\\\\d{1,2}\\\\.\\\\d{1,2}\\\\.\\\\d{4}' has no boundaries and matches inside DOI-like paths (47.5.0440). Both run on URLs as on prose.",
+      "suggested_fix": "(1) Send '\\\\b\\\\d{4}/\\\\d{2,4}\\\\b' through .drop_academic_year() (generalised to accept '/'), so that only consecutive years (2023/24, 2023/2024) are removed. 2013/374, 1138/1017 and 2014/02 then stay. (2) Add the boundaries (?<![\\\\d.]) and (?![\\\\d.]) to the dd.mm.yyyy regex. (3) Better still, mask URL tokens (https?://\\\\S+|www\\\\.\\\\S+) before the date, year and time steps and restore them afterwards. Add tests with the three URLs quoted here.",
+      "confidence": "high"
+    },
+    {
+      "target": "content_text",
+      "error_type": "over_removal",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": ["uit_LRU-3000-1_2015_autumn_1", "uit_PFF-1020-1_2018_autumn_1", "uit_LRU-2125F-1_2018_autumn_2"],
+      "evidence": "Scandinavian journal of public health. 2015. Epub /15. (9 sider) … fra R-94 og L97, fastsatt ), hentet 19.6.18 fra",
+      "description": "Dates inside literature references are removed. Two of them are content dates under the rubric: an article's e-publication date and a public document's enactment or amendment date ('fastsatt 1.9.2017', 'sist endret 1.1.2018'). Two removals also leave debris. 'Epub 2015/05/15.' becomes 'Epub /15.', and 'fastsatt 1.9.2017)' becomes 'fastsatt )'. Retrieval dates 'Fra 04.05.2017:' are removed too, but the same plan keeps 'hentet 19.6.18' because 2-digit years escape the regex, so the handling is inconsistent. Across UiT, 21 raw texts have such a reference-context dd.mm.yyyy date.",
+      "root_cause_hypothesis": "Context-free date removal in .anon_generic(). The dd.mm.yyyy regex removes every date, and the academic-year regex '\\\\b\\\\d{4}/\\\\d{2,4}\\\\b' takes the first two parts of an ISO-like 'yyyy/mm/dd'.",
+      "suggested_fix": "Fix (1) of the URL finding (routing yyyy/nn through .drop_academic_year()) already keeps 'Epub 2015/05/15'. For dd.mm.yyyy, skip dates directly preceded by reference cues: (?<!(?:fastsatt|endret|epub|publisert|hentet|lest|retrieved|accessed)\\\\s{1,3}). Alternatively, accept retrieval dates as removable and document the choice in methods.qmd.",
+      "confidence": "medium"
+    },
+    {
+      "target": "content_text",
+      "error_type": "over_removal",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": ["uit_LRU-3000-1_2016_spring_1", "uit_LRU-3000-1_2016_autumn_1", "uit_LRU-3000-1_2015_autumn_1"],
+      "evidence": "Utdrag av Stortingsmelding 6 [−(2012 - 2013)−] Melding til Stortinget",
+      "description": "The parliamentary session of a white paper is removed as if it were an academic year, so 'Stortingsmelding 6 (2012 - 2013)' becomes 'Stortingsmelding 6'. The session is part of the document's identifier: every session has a Meld. St. 6. The rubric lists document identifiers with years ('NOU 2015:2') as content to keep. This removal is deliberate, though: test-anonymize.R (#229) expects 'Meld. St. 16 (2016-2017)' to become 'Meld. St. 16'. It is therefore a decision for the user rather than a regression.",
+      "root_cause_hypothesis": ".drop_academic_year() in .anon_generic() removes any consecutive-year range, with no exception for Meld. St., St.meld., Prop. or Innst. references. The #229 bracket cleanup then removes the emptied brackets.",
+      "suggested_fix": "Before the academic-year step, mask ranges that follow a parliamentary-document cue: '(?i)(?:Meld\\\\.?\\\\s*St\\\\.?|St\\\\.?\\\\s*meld\\\\.?|Stortingsmelding|Prop\\\\.|Innst\\\\.)\\\\s*(?:nr\\\\.?\\\\s*)?\\\\d+\\\\s*\\\\(?\\\\d{4}\\\\s?[-–]\\\\s?\\\\d{2,4}\\\\)?'. Update the #229 test and record the decision in methods.qmd (Anonymization).",
+      "confidence": "medium"
+    },
+    {
+      "target": "content_text",
+      "error_type": "over_removal",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": ["uit_LER-2313-1_2023_autumn_2", "uit_LER-2304-1_2024_spring_2", "uit_LER-2303-1_2025_autumn_1"],
+      "evidence": "LER-2303 Naturfag 5-10 [−Høst 10−] stp … LER-2314 Naturfag 5-10 [−Vår 10−] stp",
+      "description": "In the 'Studiepoengreduksjon' list, the course titles 'Naturfag 5-10 Høst' and 'Naturfag 5-10 Vår' are followed by the credit reduction '10 stp'. The 2-digit season+year regex reads 'Høst 10' as a semester label and removes it. That deletes the season word that tells the two courses apart and the credit number, and leaves 'Naturfag 5-10  stp'. This hits 6 of 28 packet courses. Across UiT it affects exactly 7 plans (LER-2303/2304/2313/2314, 2023-2025); course titles without a season keep their numbers ('LER-1301 Naturfag 1-7 15 stp').",
+      "root_cause_hypothesis": "The 2-digit season+year regex '(?i)(høst|vår|haust|autumn|spring)\\\\s*\\\\d{2}\\\\b' in .anon_generic() has no leading word boundary and does not check what follows the number.",
+      "suggested_fix": "Change it to '(?i)\\\\b(høst|vår|haust|autumn|spring)\\\\s*\\\\d{2}\\\\b(?!\\\\s*(?:stp|sp|studiepoeng|ects|credits)\\\\b)'. Add a test: 'LER-2303 Naturfag 5-10 Høst 10 stp' stays unchanged and 'Høst23' is still removed.",
+      "confidence": "high"
+    },
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": ["uit_LER-3500-1_2023_autumn_1", "uit_NOR-3133-1_2023_autumn_1", "uit_LER-2313-1_2023_autumn_2"],
+      "evidence": "Pensumliste for LER-3500 Metode- H23 … Pensumliste for NOR-3133 Litteraturvitenskapelig teori og metode -H23",
+      "description": "Short semester codes in Leganto reading-list titles ('-H23', '- V24', 'H21') are left in, although the long forms ('HØST 2025', '(VÅR 2024)') are removed from the same line in other plans. They are semester labels with a year. They appear in 73 UiT plans (66 of them from 2023). They barely affect deduplication: removing them would merge only 1 plan, because normalize_plan_text() does not strip them either.",
+      "root_cause_hypothesis": "The season+year regexes in .anon_generic() need a season word ('høst', 'vår', …). Single-letter codes such as H23 or V24 are not covered, and .anon_uit() has no rule for the 'Pensumliste for …' line.",
+      "suggested_fix": "In .anon_uit(), add str_replace_all(\"(?m)^(Pensumliste for [^\\\\n]*?)[ \\\\t]*[-–]?[ \\\\t]*\\\\b[HV]\\\\d{2}[ \\\\t]*$\", \"\\\\1\"). Keep it anchored to the Pensumliste line so that codes such as 'V24' do not match elsewhere.",
+      "confidence": "high"
+    }
+  ]
+}

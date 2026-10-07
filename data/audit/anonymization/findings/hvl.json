@@ -1,0 +1,26 @@
+{
+  "check": "anonymization",
+  "institution": "hvl",
+  "model": "opus",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "Out-of-packet PII leak (cannot be a verified finding): hvl_MGBNA141-1_2022_spring_1 in data/processed/course_plans.RDS keeps two staff names as 'Bergen: <name>' / 'Stord: <name>' lines under 'Hjelpemidler ved eksamen'; no rule matches campus-label + name lines, and privacy_check patterns miss them. The 28 packet courses are otherwise clean: no e-mail, phone, staff label or admin date is left, and nothing was over-removed (only 4 academic-year spans were removed). All 20 name_like flags are false alarms on 'Ole Bull Akademiet', 'Grieg Research School', 'Community Music', 'One Ocean' and Erasmus programme names. A scan of all 1672 HVL plans found 12 distinct flagged pairs, and only the one above is a person. The one in-packet defect is that removing the year leaves a misleading offering notice: 'Emnet tilbys ikke studieåret .'",
+  "findings": [
+    {
+      "target": "boilerplate",
+      "error_type": "text_corruption",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "hvl_LUPEM102-1_2024_spring_1",
+        "hvl_MGBMU241-1_2025_spring_1",
+        "hvl_LUPEM302-1_2025_spring_1"
+      ],
+      "evidence": "Emnet tilbys ikke studieåret . … Emnet vert ikkje tilbydd .",
+      "description": "HVL plans open with an offering notice: 'Emnet tilbys ikke [studieåret] 2024/2025.' or, in Nynorsk, 'Emnet vert ikkje tilbydd [studieåret] 2025/2026.'. Removing the academic year is correct under the rubric, but only the year token goes. What is left, 'Emnet tilbys ikke studieåret .' (with a stray space before the period), now says the course is not offered at all. It says so even in plans for offerings that did run: LUPEM102-1 Vår 2024 carried a notice about 2024/2025. This is a dangling, meaning-changing leftover, not a harmless empty label. 4 of 28 packet courses have it. In extracted_text 72 HVL offerings carry the notice, and about 36 of 1672 distinct HVL plans in course_plans.RDS have the leftover ('studieåret .' in 21 plans, bare 'tilbydd .' or 'ikke .' in 15).",
+      "root_cause_hypothesis": "In R/anonymize.R, .anon_generic() runs `stringr::str_remove_all(\"\\\\b\\\\d{4}/\\\\d{2,4}\\\\b\")`, which removes the year range and nothing else. .anon_institution() has no hvl case, so nothing removes the notice sentence as a whole.",
+      "suggested_fix": "Add `hvl = .anon_hvl(txt)` to .anon_institution(). Have .anon_hvl() drop the whole notice line while the year is still there to anchor on: `stringr::str_remove_all(\"(?m)^[ \\\\t]*Emnet (?:tilbys ikke|vert ikkje tilbydd)(?: studieåret)?[ \\\\t]+\\\\d{4}/\\\\d{2,4}\\\\.?[ \\\\t]*(?:\\\\n|$)\")`. Add Bokmål and Nynorsk cases, with and without 'studieåret', to tests/testthat/test-anonymize.R. The same handler is the natural place to strip the per-campus contact lines described in overall_assessment, e.g. `(?m)^[ \\\\t]*(?:Bergen|Stord|Haugesund|Førde|Sogndal)[ \\\\t]*:[ \\\\t]*\\\\p{Lu}\\\\p{Ll}+(?:[ \\\\t]+\\\\p{Lu}[\\\\p{L}'-]*)+[ \\\\t]*(?:\\\\n|$)`.",
+      "confidence": "high"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "check": "anonymization",
+  "institution": "ntnu",
+  "model": "opus",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "No personal data or admin dates are left in any of the 28 sampled plans. The cut at 'Kontaktinformasjon' removes every 'Emneansvarlig/koordinator' and 'Faglærere' name. Across all 3,791 NTNU offerings, 3,790 texts have that heading, no staff label survives in course_plan (the 47 'faglærere' hits are prose), and the name-like pairs are scholars named as subject matter (Klas-Göran Karlsson, Ola Svein Stugu) or places. The 20 'removed' flags are false alarms: the pages are discontinued courses or thesis shells with almost no description, so the contact and exam tail is about half the text. The one real defect is that the same cut also removes the non-personal Eksamen tab (grading scale, weights, durations) and the responsible department from course_plan.",
+  "findings": [
+    {
+      "target": "content_text",
+      "error_type": "over_removal",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": ["ntnu_SPRÅK1001-2_2014_spring_1", "ntnu_PPU4721-1_2014_spring_1", "ntnu_PPU4759-1_2017_spring_1"],
+      "evidence": "Ansvarlig enhet Institutt for språk og litteratur Eksamen Eksamen Vurderingsordning: Muntlig eksamen Karakter: Bestått/Ikke bestått Ordinær eksamen - Høst 2014 Muntlig Vekting 100/100 Varighet 20 minutter",
+      "description": ".anon_ntnu() deletes everything from 'Kontaktinformasjon' to the end of the page. That block holds the staff names, which must go, but also course content and organisation names the rubric says to keep: the responsible unit ('Ansvarlig enhet Institutt for …'), the grading scale ('Karakter: Bestått/Ikke bestått' or 'Bokstavkarakterer'), the weights of the parts ('Vekting 1/3', 'Vekting 2/3') and exam durations ('Varighet 4 timer'). This happens in 27 of the 28 sampled courses; the 2025 layout (ntnu_MGLU5502-1_2025_autumn_3) has a timetable there instead. Across all NTNU offerings, the grading scale is stated only in this tail in 3,287 of 3,790 texts, and 'Vekting' (3,487) and 'Ansvarlig enhet' (3,482) never survive into course_plan. As a result, a full-text analysis of course_plan cannot tell pass/fail courses from graded ones. plan_sections keeps the h2 Eksamen block (Vurderingsordning, Karakter; #245; 1,485 NTNU section rows contain 'Karakter:'), so the loss affects only course_plan. data/data_notes.qmd describes the cut as removing 'teachers, exam dates, timetable', so losing the grading information looks like a side effect, not a decision.",
+      "root_cause_hypothesis": "R/anonymize.R .anon_ntnu(): stringr::str_remove(\"Kontaktinformasjon[\\\\s\\\\S]*$\") removes the Kontaktinformasjon block (names) and, with it, the Eksamen tab and the timetable that follow it on the page.",
+      "suggested_fix": "In .anon_ntnu(), replace the cut-to-end with targeted removals. (1) Remove only the name block: str_remove(\"Kontaktinformasjon[\\\\s\\\\S]*?(?=\\\\nAnsvarlig enhet\\\\b|\\\\nEksamen\\\\n|$)\"). Across all 3,790 texts the block holds only the labels 'Emneansvarlig/koordinator' and 'Faglærere' plus name lines, or 'Kontaktinformasjon for dette emnet mangler.'. (2) Remove the exam sessions and the timetable, as the section rule does (#245): str_remove(\"(?m)^(?:Ordinær|Utsatt|Kontinuasjons)?\\\\s*eksamen - [\\\\s\\\\S]*$\") and str_remove(\"(?m)^Timeplan[\\\\s\\\\S]*$\"). This keeps 'Ansvarlig enhet …', 'Vurderingsordning: …' and 'Karakter: …'. Session lines also hold rooms ('Sted og rom … Lysholmbygget') and 'Øvrige kommentarer' logistics, so drop them whole rather than line by line. In pre-2018 layouts 'Karakter' sits inside the sessions; to keep it there, extract the 'Karakter …' and 'Vekting n/n' tokens before cutting. Add cases to the NTNU test in tests/testthat/test-anonymize.R (names gone, 'Karakter: Bestått/Ikke bestått' kept). Because this changes what course_plan contains, also add a methods.qmd entry and update the metrics_check snapshot.",
+      "confidence": "high"
+    }
+  ]
+}

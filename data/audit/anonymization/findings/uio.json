@@ -2,33 +2,21 @@
   "check": "anonymization",
   "institution": "uio",
   "model": "opus",
-  "n_courses_reviewed": 12,
-  "n_suspects_reviewed": 4,
-  "overall_assessment": "Anonymization works well for UiO: the staff names and e-mails in GEO5930L/MAT5930L are removed, the 8 random controls have no PII, admin dates or over-removal, and the name_like flags (ENG4790, EDID4009) are false alarms caused by course titles and the name of the APA manual. The artifact flags are real but cosmetic (empty '()'), and every plan ends in the same generic exam-links block. Outside the packet, a scan of all 96 UiO offerings found no leaked names or e-mails, but PROF1015 keeps the admin date 'WISEflow høsten 2026', because the season regex does not match the inflected form 'høsten'.",
+  "n_courses_reviewed": 10,
+  "n_suspects_reviewed": 2,
+  "overall_assessment": "OUTSIDE THE SAMPLE: uio_FYS5930L-2_2025_autumn_1 leaks two staff names into published course_plans.RDS and plan_sections.RDS ('Ta kontakt med [navn] eller [navn]'), because .anon_uio() only strips names followed by '(e-mail)'. The 10 sampled courses are clean: the exam-links footer is cut exactly in all 47 offerings, both name_like flags are false alarms (APA manual title, 'British Studies'), and the only defect is a stray space left where an e-mail was removed.",
   "findings": [
     {
-      "target": "structure",
+      "target": "email",
       "error_type": "text_corruption",
       "severity": "low",
-      "prevalence": "occasional",
-      "example_course_ids": ["uio_GEO5930L-2_2025_spring_1", "uio_MAT5930L-2_2025_spring_1"],
-      "evidence": "Ta kontakt med () eller studieadministrasjonen ved Institutt for geofag () for å få mer informasjon.",
-      "description": "The removal itself is correct (the staff names '[navn]' and '[navn]' and all e-mails are gone), but each removed '(e-mail)' leaves an empty pair of brackets, so the sentence now reads 'Ta kontakt med () eller … ()'. This is the removal artifact the pre-pass flags. It affects 4 of 96 UiO offerings (GEO5930L and MAT5930L, both semesters). Other UiO pages with bare e-mails end up with similar empty slots ('Ta kontakt med  eller  for flere muligheter' in FYS5930L), but no brackets.",
-      "root_cause_hypothesis": ".anon_uio() removes only the name, because its regex ends in a lookahead `(?=\\([\\w.+-]+@)` that leaves the parenthesised e-mail in place. .anon_generic() then removes only the bare address and keeps the brackets. For organisational addresses ('Institutt for geofag ([e-post])') the UiO name regex correctly does not fire, so again only the address inside the brackets is removed.",
-      "suggested_fix": "In .anon_generic(), before the bare-email regex, remove a parenthesised e-mail as one unit: str_remove_all(\"\\\\s*\\\\(\\\\s*[\\\\w.+-]+@[\\\\w.-]+\\\\.[a-zA-Z]{2,}\\\\s*\\\\)\"). Then add a final cleanup str_remove_all(\"\\\\(\\\\s*\\\\)\") and collapse double spaces (str_replace_all(\"(?<=\\\\S) {2,}\", \" \")). In .anon_uio(), make the name regex consume the parenthesised e-mail too (drop the lookahead), and consider allowing initials, particles and hyphens ((?:\\\\p{Lu}\\\\.|\\\\p{Lu}\\\\p{Ll}+|van|von|de|der)(?:[\\\\s-]+…)+) so that names like '[navn]' or 'Anne-Lise Hansen (x@uio.no)' do not leak in the future. Add both cases to tests/testthat/test-anonymize.R.",
+      "prevalence": "rare",
+      "example_course_ids": ["uio_BIOS5000-1_2025_autumn_1"],
+      "evidence": "ikke er meldt til studieadministrasjonen , før forelesningen starter.",
+      "description": "The functional address studieinfo@ibv.uio.no is removed, which is correct under the rubric, but the space before it stays, so the sentence reads 'studieadministrasjonen , før'. In the sample this is cosmetic. Across all 47 UiO offerings, 8 have an e-mail removed. Outside the sample the same mechanism leaves phrases that read wrongly: 'Dette gjøres via e-post til .' (PROF3025), 'meldt til Naturfagsenteret på e-post  før' (NAT5000), and 'Ta kontakt med eller studieadministrasjonen ved Institutt for geofag' (GEO5930L, MAT5930L, where .anon_uio() removes the name and .anon_generic() removes the bracketed e-mail). A similar dangling slot, with a different cause (the season+year regex, which is working as intended), appears in SPA4192: 'fikk opptak fra og med . … masterspesialiseringen eller tidligere'.",
+      "root_cause_hypothesis": "In .anon_generic(), the bare-email regex '\\b[\\w.+-]+@[\\w.-]+\\.[a-zA-Z]{2,}\\b' removes only the address token. The whitespace before it is kept, and nothing marks the gap, so a contact phrase is left without its object.",
+      "suggested_fix": "In .anon_generic(), let the bare-email removal absorb the preceding horizontal space: str_remove_all(\"[ \\\\t]*\\\\b[\\\\w.+-]+@[\\\\w.-]+\\\\.[a-zA-Z]{2,}\\\\b\"), which gives 'studieadministrasjonen, før' and 'til.'. If the gaps should stay readable, replace the address with a fixed placeholder such as '[e-post]' instead of deleting it. That would be a methods.qmd decision. Add a test in tests/testthat/test-anonymize.R: 'meldt til adm x@uio.no, før' -> 'meldt til adm, før'.",
       "confidence": "high"
-    },
-    {
-      "target": "boilerplate",
-      "error_type": "boilerplate_left",
-      "severity": "medium",
-      "prevalence": "widespread",
-      "example_course_ids": ["uio_PROMO2-1_2025_autumn_4", "uio_HIS4095L-1_2025_spring_1", "uio_ENG4790-1_2025_spring_1"],
-      "evidence": "Mer om eksamen ved UiO Kildebruk og referanser Hvordan bruke KI som student Tilrettelegging på eksamen … Andre veiledninger og ressurser finner du på fellessiden om eksamen ved UiO.",
-      "description": "Every sampled UiO course_plan (12/12), and 92 of 96 UiO offerings overall, ends in the same generic exam-links navigation block ('Mer om eksamen ved UiO … Fusk/forsøk på fusk … fellessiden om eksamen ved UiO', or the English version 'More about examinations at UiO … How to use AI as a student'). It is page chrome, not course content, like the 'Alt om eksamen ved NTNU' text that .anon_ntnu() already strips. Beyond clutter, it skews analyses: the link title 'Hvordan bruke KI som student' / 'How to use AI as a student' puts the word KI/AI into 92 of 96 UiO plans, while only 24 mention it anywhere else. A keyword search for AI in the plans would therefore silently overcount UiO. The block is identical in every plan, so deduplication is not affected.",
-      "root_cause_hypothesis": "The UiO selector '#vrtx-course-content' (R/institution_config.R) includes the exam-links box at the bottom of the page, and .anon_uio() has no rule to strip it.",
-      "suggested_fix": "In .anon_uio(), strip the block as the tail of the text. It is always the last block (290 chars in Norwegian, 359 in English): str_remove(\"(?:Mer om eksamen ved UiO|More about examinations at UiO)\\\\s*\\\\n[\\\\s\\\\S]*$\"). Alternatively, exclude the link box at extraction time with a pre_fn that drops its container before html_text().",
-      "confidence": "medium"
     }
   ]
 }

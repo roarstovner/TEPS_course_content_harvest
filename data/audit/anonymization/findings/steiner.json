@@ -1,0 +1,9 @@
+{
+  "check": "anonymization",
+  "institution": "steiner",
+  "model": "opus",
+  "n_courses_reviewed": 8,
+  "n_suspects_reviewed": 0,
+  "overall_assessment": "Anonymization works correctly for Steiner: the plans (split from subject PDFs) contain no staff names, e-mails, phone numbers or administrative dates, and the only text .anon_steiner() removes is sequential bare PDF page numbers (e.g. 9/10/11, 12-15), with no course content lost and line structure intact. A scan of all 15 Steiner course_plans found no e-mail, phone, staff label, semester-year, academic-year or leftover page-number lines; the only 4-digit numbers are word counts (\"2000 ord\"). The M-PEL2.1 offering carrying the PEL1.4 plan is a known harvest mapping issue (#225, data_notes.qmd), not an anonymization defect.",
+  "findings": []
+}

@@ -1,0 +1,46 @@
+{
+  "check": "anonymization",
+  "institution": "uis",
+  "model": "opus",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "No personal data leaks in the 28 sampled courses: staff lists (HTML 'Fagperson(er)', old PDF 'Fagpersoner/Fagpersonar' with '-Name (Role)'), OpenURL resolver links and their user_ip are removed completely, and reference authors are kept. The main defect is the 2020-2025 PDF version stamp ('CODE_1 Bokmål Versjon 31.Mai.2026'), left in 1512 of 2728 plans; the academic-year slash regex and the season-year regex also strip some reading-list content. One leak outside the sample: in 3 MGL2042-1 plans (2020-2021) the course coordinator's name is left on an inline 'Studiepoeng 15 Emneansvarlig <name>' line, because .role_name_line_regex needs the role label at the start of the line.",
+  "findings": [
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": ["uis_MGL3066-1_2025_autumn_1", "uis_MGLT43-1_2024_autumn_1", "uis_MGL1321-1_2021_autumn_1"],
+      "evidence": "MGL3066_1 Bokmål Versjon 31.Mai.2026",
+      "description": "Every 2020-2025 PDF-layout plan keeps the document version stamp 'CODE_1 Bokmål|Nynorsk Versjon DD.Month.YYYY' as its second line. Only the trailing HH:MM was removed. This is an administrative revision date, which the rubric says must be removed. All 20 suspects have it; the 8 random controls (2014-2019 HTML and old-PDF layouts) do not. Institution-wide: 1512 of 2728 plans, every year 2020-2025. normalize_plan_text() strips only the year, so 'versjon 31.mai.' stays in the dedup text: 12 more distinct plans (1299 vs 1287) than with the stamp removed. The line above it, 'Dette er studietilbudet for studieår .', is a harmless dangling label.",
+      "root_cause_hypothesis": ".anon_uis() strips the version header only in its pre-2020 PDF form '^\\s*EMNE\\s+\\S+\\s+\\S+\\s+Versjon' (uppercase EMNE prefix, e.g. 'EMNE MGL2121_1 NYNORSK Versjon 19.Jun.2020 09:23') and the HTML form 'Emnebeskrivelsen er hentet fra ...'. The current PDF header has no 'EMNE' prefix. The generic dd.mm.yyyy pattern does not match a month name ('31.Mai.2026'), and the generic time pattern removes only '21:50'.",
+      "suggested_fix": "In .anon_uis(), make the EMNE prefix optional, or add str_remove_all(\"(?m)^[ \\\\t]*\\\\S+_\\\\d+[ \\\\t]+(?:Bokmål|Nynorsk|Engelsk|English)[ \\\\t]+Versjon[^\\\\n]*(?:\\\\n|$)\"). At the same time, drop the emptied '^Dette er studiet(?:ilbudet|ilbodet) for studieår\\\\s*\\\\.?\\\\s*$' line. Add a test in tests/testthat/test-anonymize.R ('MGL3066_1 Bokmål Versjon 31.Mai.2026 21:50\\nTittel' -> 'Tittel'), rerun tar_make() and explain the metrics_check change (about 1500 uis plans).",
+      "confidence": "high"
+    },
+    {
+      "target": "content_text",
+      "error_type": "over_removal",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": ["uis_MGL3800-1_2023_spring_1", "uis_MGL2050-1_2021_autumn_1", "uis_MGL4800-1_2023_spring_1"],
+      "evidence": "https://psykologisk.no//et-historisk-overblikk-pa-dysleksi/View online",
+      "description": "The academic-year pattern removes any 'dddd/dd(dd)'. In reading lists it cuts the date path out of URLs ('psykologisk.no/2014/11/...' -> 'psykologisk.no//...', 'idunn.no/npt/2012/03/...' -> 'idunn.no/npt//...'). It also damages DOIs ('10.1007/978-3-030-...' -> '10.-3-030-...') and deletes publication-year pairs such as '(1980/2005)' or '2004/2012', which the rubric says to keep. Institution-wide, outside the OpenURL links already stripped, it removes 392 URL path segments in 190 plans, 8 DOIs and 17 reprint-year pairs in 13 plans, but only 13 real academic years in 11 plans. At uis it does more harm than good.",
+      "root_cause_hypothesis": "R/anonymize.R .anon_generic(): str_remove_all(\"\\\\b\\\\d{4}/\\\\d{2,4}\\\\b\") runs unconditionally. Unlike the dash form, it has no consecutive-year check (.drop_academic_year) and no URL guard.",
+      "suggested_fix": "Replace the slash rule with str_replace_all(\"(?<![/.\\\\w])\\\\d{4}\\\\s?/\\\\s?\\\\d{2,4}\\\\b(?!/)\", .drop_academic_year), widening the pattern in .drop_academic_year() to [-–/]. Only consecutive years outside URL paths and DOIs are then removed. Add test cases for 'https://psykologisk.no/2014/11/x', 'doi:10.1007/978-3-030-1', '(1980/2005)' (kept) and 'studieåret 2023/2024' (removed).",
+      "confidence": "high"
+    },
+    {
+      "target": "content_text",
+      "error_type": "over_removal",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": ["uis_MGLT43-1_2025_autumn_1", "uis_MGLT43-1_2023_autumn_1", "uis_MGLT43-1_2021_autumn_2"],
+      "evidence": "Utdanningsdirektoratets spørreundersøkelse til lærere [−høsten 2020−] Karl Solbue Vika",
+      "description": "The generic season-year rule removes 'høsten 2020' from the title of the NIFU report 'Spørsmål til Skole-Norge høsten 2020: Analyser og resultater fra Utdanningsdirektoratets spørreundersøkelse til lærere'. That is a literature reference title, which must be kept. It affects all 4 sampled MGLT43-1 offerings; institution-wide about 27 reading lists contain a season-year, though some, like 'Retorikk-pensum NOR165 høsten 2021', are semester labels that may go. The same mechanism explains the pre-pass 'artifact' flag on MGL2050-1/MGL1050-1 2021, though that part of the plan is truncated in the packet. There, the time rule turns a video's duration 'juli-terroren [20:28]' into '[]', and the dd.mm.yyyy rule removes the video's publication date ('Martine Rauken, 19.10.2021,' -> 'Martine Rauken, ,').",
+      "root_cause_hypothesis": "R/anonymize.R .anon_generic(): the season-year, dd.mm.yyyy and HH:MM rules run over the whole plan, including the 'Litteratur' reading list, where dates and times belong to the references.",
+      "suggested_fix": "In .anon_generic() (or .anon_uis()), split the text at the first '(?m)^Litteratur\\\\s*$' heading. Apply only the personal-data rules (e-mail, staff lines, OpenURL, user_ip, phone) to the reading-list tail, not the season-year, date, academic-year and time rules. Add a test that 'Spørsmål til Skole-Norge høsten 2020' and '[20:28]' are kept under 'Litteratur'.",
+      "confidence": "medium"
+    }
+  ]
+}

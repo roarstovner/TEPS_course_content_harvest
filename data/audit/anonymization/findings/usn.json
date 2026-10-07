@@ -1,0 +1,58 @@
+{
+  "check": "anonymization",
+  "institution": "usn",
+  "model": "opus",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "No e-mails, phone numbers or staff names are left in the 28 sampled plans. The name_label flags are journal titles ('The Reading teacher The Reading teacher'), the phone flags (all offerings) are spaced ISBNs and YYYYMMDD dates, and 4-digit approval/signature lines ('Godkjent emneplan 23.01.2018 <Name>, dekan') are removed correctly. The main defect is that the end-of-plan approval stamp survives when its date has a 2-digit year or a month name: all 20 suspects, and 233 of 1238 USN offerings. A scan of all offerings also found three staff names outside the sample: usn_MG2SA3-1_2018_autumn_2 and usn_MG2SA3-1_2019_autumn_1 ('Godkjent emneplan av dekan <Name>') and usn_LRMF510-1_2024_spring_1 ('faglærer <Name>' in Endringsbeskrivelse). The academic-year rule removes content years (ISO publication dates, '1349-50', 'Meld. St. 21 (2016–2017)'), and Leganto type labels stay glued to titles in 45% of offerings.",
+  "findings": [
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": ["usn_MG1EN3-1_2024_autumn_1", "usn_MG1NO5-1_2020_autumn_2", "usn_MG1BO2-1_2022_autumn_1"],
+      "evidence": "[−Godkjent emneplan−] Godkjent 12.03.24 Litteratur Engelsk, emne 3 … Godkjent 6. mars 2020. … Godkjent av dekan 16.03.22.",
+      "description": "The approval stamp at the end of each USN plan is an administrative date that must go (rubric; methods.qmd says USN approval lines are stripped since #231). Only the 'Godkjent emneplan' heading is removed; the stamp survives whenever its year has 2 digits or its month is a name: 'Godkjent 12.03.24', 'Emneplan godkjent 23.03.20.', 'Godkjent emneplan 26.03.20.', 'Godkjent av dekan 16.03.22.', 'Godkjent 6. mars 2020.'. It survives in all 20 suspects, while the 4-digit stamps in the random controls ('Godkjent 17.03.2022', 'Godkjent 16.11.2021') are removed. Across all 1238 USN offerings, 233 (19%) keep a dated approval line. A side effect: normalize_plan_text() strips only 4-digit years, so 'dd.mm.yy' goes into the dedup hash, and identical plans approved again on different dates count as different plans. The same kind of line leaks the dean's name in two offerings outside the sample (usn_MG2SA3-1_2018_autumn_2, usn_MG2SA3-1_2019_autumn_1: 'Godkjent emneplan av dekan <Name>').",
+      "root_cause_hypothesis": "R/anonymize.R .anon_usn() removes only '(?m)^Godkjent\\s+\\d{1,2}\\.\\d{1,2}\\.\\d{4}', a line that starts with 'Godkjent' directly followed by a date with a 4-digit year. .anon_generic() removes only dd.mm.yyyy and 'godkjent YYYY'; it has no 2-digit-year or month-name date rule. Shapes found in the full USN data: 'Godkjent dd.mm.yy(.)' (105 lines), 'Emneplan godkjent dd.mm.yy(.)' (49), 'Godkjent d. mars yyyy.' (20), 'Godkjent emneplan dd.mm.yy(.)' (18), 'Godkjent d.m.yy.' (13), 'Godkjent av dekan|instituttleder|Instituttnestleder dd.mm.yy' (15), 'Godkjent januar|desember yyyy', 'Godkjent november yy.', 'Godkjent og akkreditert aug yy', 'Emneplan godkjent januar yyyy'. .approved_by_name_regex needs 'Godkjent av dekan <Name>' with nothing between, so 'Godkjent emneplan av dekan <Name>' slips through.",
+      "suggested_fix": "In .anon_usn(), replace the date-stamp rule with a whole-line rule for the approval stamp: a short line that starts with an optional 'Emneplan(en)' plus 'godkjent' and holds a digit or 'av'. str_remove_all(\"(?im)^[ \\\\t]*(?:emneplan(?:en)?[ \\\\t]+)?godkjent\\\\b(?![ \\\\t]*/)(?=[^\\\\n]{0,80}$)(?=[^\\\\n]*(?:\\\\d|\\\\bav\\\\b))[^\\\\n]*(?:\\\\n|$)\"). This keeps 'Godkjent/ikke godkjent', 'Godkjent prosjektskisse og arbeidslogg inkluderes …' and 'Godkjent problemstilling til fordypning'. Add each shape above, including the named-dean line, to tests/testthat/test-anonymize.R.",
+      "confidence": "high"
+    },
+    {
+      "target": "content_text",
+      "error_type": "over_removal",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": ["usn_MG1BO2-1_2020_autumn_2", "usn_MG1BO1-1_2022_autumn_1", "usn_MG1MA6-1_2020_autumn_2"],
+      "evidence": "Teaching Children Mathematics, 6, 7, [−2001-02-01,−] -01, Sidespenn 308-310 … Mathematics Education Research Journal, 4, 23, [−2011-12,−] , Sidespenn 437-454",
+      "description": "Content years and publication dates in references must be kept (rubric), but every consecutive-year pair is removed as an 'academic year'. In the packet (8 of 28 courses) the victims are Leganto publication dates whose year and month look consecutive: '2001-02-01' becomes '-01', '2011-12' becomes '', and '2005-06,2005-06,' becomes ',,'. In the full USN data there are 259 such removals in 136 offerings (11%); 102 of them, in 66 offerings, are ISO dates. The rest include subject-matter years in titles ('Mannedauden 1349-50 i Noreg', 'Lofthusreisinga i Agder og Telemark 1786-87', 'spanskesyken 1918-19', 'Stiklestad 1944-45') and Storting session years: 'Meld. St. 21 (2016–2017)' becomes 'Meld. St. 21', which is ambiguous. Where no space precedes the bracket, as in 'nr 28(2015–2016)', the result is 'nr 28()'. That is the course-1 artifact flag (in the truncated part of the packet).",
+      "root_cause_hypothesis": "R/anonymize.R .anon_generic(): str_replace_all(\"\\\\b\\\\d{4}\\\\s?[-–]\\\\s?\\\\d{2,4}\\\\b\", .drop_academic_year) (#230) keeps non-consecutive ranges such as 1945-1970. But it drops any Y-(Y+1) pair and does not check for an ISO-date continuation ('-DD'), a pre-modern year, or a citation context (Leganto 'Sidespenn'/'isbn' lines, 'Meld. St. N (…)'). The empty-bracket cleanup '[ \\t]+\\([ \\t]*\\)' then misses '28()'.",
+      "suggested_fix": "Tighten the academic-year rule in .anon_generic()/.drop_academic_year(). (1) Match with '(?<![\\\\d-])\\\\d{4}\\\\s?[-–]\\\\s?\\\\d{2,4}\\\\b(?![-–]\\\\d)' so ISO dates YYYY-MM-DD are skipped. (2) Drop only when the first year is >= 1990. (3) Skip matches inside '(…)' after 'Meld. St. \\\\d+' or 'St.meld. nr. \\\\d+', and matches on lines containing 'Sidespenn|isbn|Total Pages' (this covers year-month '2011-12,'). Add tests: 'Mannedauden 1349-50 i Noreg', 'Teaching Children Mathematics, 6, 7, 2001-02-01,', 'Meld. St. 21 (2016–2017)', while 'Studieåret 2023-2024' must still be removed.",
+      "confidence": "high"
+    },
+    {
+      "target": "boilerplate",
+      "error_type": "boilerplate_left",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": ["usn_MG1EN7-1_2023_autumn_1", "usn_MG1BO1-1_2024_autumn_1"],
+      "evidence": "[−View online−] Article“Translanguaging” and the implications for the … [−View online−] Article'Conceptual play' : foregrounding imagination and",
+      "description": "The Leganto item-type label that .anon_usn() is meant to strip (#287) stays glued to the title in three cases: the title starts with a quote mark, the title starts with a lowercase letter or URL, or the label is not in the handler's list. In the packet: 'Article“Translanguaging”…' and 'Article'Conceptual play'…'; most cases sit in the truncated reading lists. Full USN data: labels missing from the list leave 1432 lines in 472 offerings, e.g. 'Government DocumentMeld. St. 21 …', 'LegislationMeld. St. …', 'E-bookElevenes læring …', 'VideoWhale rider', 'OtherThe Willows', 'Research DatasetBarn og medier-undersøkelsen'. Listed labels before quotes or lowercase leave 434 lines in 221 offerings ('Book Chapter'Race', racism…', 'Websitehttps://…'). Together that is 561 of 1238 offerings (45%). The first word of each affected title is garbled, which affects tokens, word counts and title matching.",
+      "root_cause_hypothesis": "R/anonymize.R .anon_usn(): the label alternation lists only Book Chapter|Electronic Book|Electronic Article|Audio-Visual Document|Book|Article|Website|Document|Thesis|Report. Its lookahead '(?=[\\p{Lu}\\d\"«(])' excludes ' ‘ “, lowercase letters and URLs.",
+      "suggested_fix": "In .anon_usn(), add Government Document|Legislation|E-book|E-Book|Research Dataset|Dataset|Video|Other|Journal|Conference Proceeding|Newspaper Article|Audio to the alternation, with multi-word labels before single words. Widen the lookahead to '(?=[\\\\p{Lu}\\\\d\"«(‘’'“]|https?:)'. For multi-word labels (Book Chapter, Government Document, Electronic Article, Research Dataset) also allow '\\\\p{Ll}'. Add test lines for each label to test-anonymize.R.",
+      "confidence": "high"
+    },
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": ["usn_LR-FYS2500-1_2021_spring_1"],
+      "evidence": "November 2020: Endring i forkunnskapskrav (fra krav til anbefalinger).",
+      "description": "Entries under 'Endringsbeskrivelse' start with a month-and-year revision stamp ('November 2020:', 'November 2021 -', 'Januar 2024:'). That is an administrative date (rubric), and it survives in 19 USN offerings. The same free-text field names a teacher in one offering outside the sample (usn_LRMF510-1_2024_spring_1: 'Endringer ønsket av faglærer <Name> (UiA), meddelt via epost til instituttleder.'). That is a pii_leak no rule catches, because the role word is in the middle of the line.",
+      "root_cause_hypothesis": "R/anonymize.R .anon_generic() has no month-name + year rule. The admin-year rule needs a keyword (godkjent, revidert, …) directly before the year, and .role_name_line_regex only matches a role at the start of a line.",
+      "suggested_fix": "In .anon_usn(), remove a month-year prefix at the start of a line and keep the change text: str_remove_all(\"(?im)^(?:januar|februar|mars|april|mai|juni|juli|august|september|oktober|november|desember)\\\\s+\\\\d{4}\\\\s*[:–-]\\\\s*\"). In .anon_generic(), add a mid-line rule that keeps the role and drops the name: str_replace_all(\"((?i:faglærer|faglærar|emneansvarlig|emneansvarleg|emneleder|veileder|kontaktperson)[ \\\\t]+)\\\\p{Lu}\\\\p{Ll}+(?:[ \\\\t]+\\\\p{Lu}[\\\\p{L}-]+)+\", \"\\\\1\"). Add both cases to test-anonymize.R.",
+      "confidence": "high"
+    }
+  ]
+}

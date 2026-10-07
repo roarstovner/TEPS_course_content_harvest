@@ -1,0 +1,9 @@
+{
+  "check": "anonymization",
+  "institution": "hivolda",
+  "model": "opus",
+  "n_courses_reviewed": 20,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "Anonymization works well for HiVolda: none of the 20 plans keeps any personal data, the only text removed is the semester-year value after 'Undervisningssemester:'/'Eksamenssemester:', and content dates ('22. juli 2011', lovdata id '2014-12-04-1697', word counts, reference years) are kept; a scan of all 594 offerings outside the packet also found no e-mail, phone or staff name (roles appear only in prose such as 'godkjent av faglærar'). The pre-pass flags are false alarms: name_like (594/594) matches the flattened exam-table header ('Gruppering Varighet', 'Karakterskala Andel'), so every offering became a suspect and no random controls were left, and the single admin_date flag is the content date '22. juli 2011'. One minor issue lies outside the packet and could not be filed as a finding: in 4 MGL1-7MA1B2 offerings the season lookbehind regex in .anon_generic() cuts the season from a compound word in the exam table ('Nasjonal deleksamen haustsemesteret' becomes '… semesteret'), because it has no word boundary after the season word.",
+  "findings": []
+}

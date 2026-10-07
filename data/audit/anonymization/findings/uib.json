@@ -1,0 +1,58 @@
+{
+  "check": "anonymization",
+  "institution": "uib",
+  "model": "opus",
+  "n_courses_reviewed": 27,
+  "n_suspects_reviewed": 19,
+  "overall_assessment": "There is no personal data in any UiB plan. The packet has none, and a search of all 1473 anonymized UiB offerings found 0 e-mails, 0 phone numbers and no role label followed by a name, because UiB's Emneansvarlig fields name committees and departments, not people. The pre-pass name_label and name_like flags are false alarms: they hit 'Emneansvarlig\\nThe Programme Committee …' and people named as subject matter (Rachel Carson, Greta Thunberg, B. R. Ambedkar). The admin_date flag is real (HIS250L application periods). The main defect is cosmetic or semantic damage from the generic semester-context season regex, which removes only the first season word or the season prefix of a compound, and the orphaned punctuation that removals leave behind.",
+  "findings": [
+    {
+      "target": "content_text",
+      "error_type": "text_corruption",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": ["uib_RELMIN643-0_2025_autumn_1", "uib_HIS250L-0_2022_autumn_1", "uib_BIODID220-0_2020_spring_1"],
+      "evidence": "Undervisningssemester [−Autumn−] and spring, but not regularly Undervisningssted",
+      "description": "When the Undervisningssemester/Vurderingssemester value names two seasons, only the first season word is removed. 'Vår og haust' becomes ' og haust', 'Haust og vår' becomes ' og vår', 'Autumn and spring, but not regularly' becomes ' and spring, but not regularly', and 'Haust/Vår' becomes '/Vår'. This is a half-removed phrase. The remaining text now reads as if the course runs only in the second season, while single-season values ('Vår') disappear completely, so the teaching-semester line is wrong rather than merely absent. In the packet it affects 5 of 6 RELMIN courses, all 9 HIS250L courses and the BIODID220 control. Across all 1473 UiB offerings, 249 anonymized plans have a semester value that starts with a conjunction (og/and/eller/or).",
+      "root_cause_hypothesis": ".anon_generic() in R/anonymize.R uses str_remove_all(\"(?i)(?<=(?:semester|undervisning|oppstart|startsemester|eksamen)[:\\\\s]{0,3})(høst|vår|haust|autumn|spring|sommer|summer)\"). Because of the lookbehind, it removes only a season word that directly follows the label. The second season in a list follows 'og'/'and'/'/', not the label, so it stays. The test 'season words after semester keyword are removed' only covers single-season values.",
+      "suggested_fix": "In .anon_generic(), extend the pattern to consume a whole season list after the label, for example (?i)(?<=(?:semester|…)[:\\s]{0,3})SEASON(?:\\s*(?:og|and|eller|or|/|,|-)\\s*SEASON)*\\b[.,]?, with SEASON = (?:høst|vår|haust|autumn|spring|sommer|summer)(?:semester(?:et)?|en|a)?. Add tests for 'Undervisningssemester\\nVår og haust', 'Haust/Vår' and 'Autumn and spring, but not regularly'. Alternatively, keep year-less teaching-semester values for UiB: they are a stable course property, not administrative dating. That choice would need a methods.qmd entry.",
+      "confidence": "high"
+    },
+    {
+      "target": "content_text",
+      "error_type": "text_corruption",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": ["uib_FRANDI111-0_2017_autumn_1", "uib_NODI101-0_2017_spring_1", "uib_FRANDI201-0_2022_spring_1"],
+      "evidence": "Undervisningssemester [−Haustsemesteret,−] semesteret, 7. semester i lektorutdanningsprogrammet",
+      "description": "The same semester-context season regex has no trailing word boundary, so it strips only the season prefix of a compound word. 'Haustsemesteret.' becomes 'semesteret.' and 'Vårsemesteret,' becomes 'semesteret,'. The value then reads 'semesteret. Tredje semester i …' or 'semesteret, 6. semester i …', which is ungrammatical, and the season is lost. Three of the 8 random controls are affected. Across all 1473 UiB offerings, 417 anonymized plans have a semester value that starts with 'semester…'. The raw text has 247 'Vårsemesteret' and 170 'Haustsemesteret' hits on this regex, plus 'Våren'/'Hausten' and 'HaustEmnet'.",
+      "root_cause_hypothesis": "This is the same str_remove_all() lookbehind pattern in .anon_generic() (R/anonymize.R): the alternation (høst|vår|haust|…) is not followed by \\b or an optional compound suffix, so it matches the first letters of 'Haustsemesteret', 'Vårsemesteret', 'Våren' and 'Hausten'.",
+      "suggested_fix": "Match the whole word: (høst|vår|haust|autumn|spring|sommer|summer)(?:semester(?:et)?|en|a)?\\b, followed by an optional [.,]. This removes 'Haustsemesteret,' entirely and leaves '7. semester i lektorutdanningsprogrammet …'. It can be fixed in the same edit as the season-list finding. Add a test with 'Undervisningssemester\\nVårsemesteret, 6. semester i …'.",
+      "confidence": "high"
+    },
+    {
+      "target": "content_text",
+      "error_type": "text_corruption",
+      "severity": "low",
+      "prevalence": "widespread",
+      "example_course_ids": ["uib_ENG125-0_2018_spring_1", "uib_HIS250L-0_2020_spring_1", "uib_TYS311L-0_2020_autumn_1"],
+      "evidence": "Vurderingssemester [−Vår.−] . Det er òg eksamen tidleg",
+      "description": "Removals leave orphaned punctuation and dangling phrases. After 'Vår.' or 'Haust.' is removed from a Vurderingssemester value, the line starts with '. Det er òg eksamen tidleg …' or '. Der er òg vurdering …' (602 of 1473 UiB plans have a semester value that starts with '.'). Removing semester-year labels from prose, which is correct in itself, leaves 'Denne karakterskalaen gjeld også .', ' blir munnleg eksamen avvikla digitalt.', 'fell kravet … bort . Vi oppmodar', 'Tema som tilbys til  er:' and 'Alle som skal ta HIS250L , må'. The content is still readable, but the noise recurs throughout the text.",
+      "root_cause_hypothesis": "The final cleanup in .anon_generic() (R/anonymize.R) only trims trailing spaces and collapses blank lines. It does not remove a space before punctuation, a line-initial orphan punctuation mark, or the double spaces that a removed span leaves.",
+      "suggested_fix": "Before the whitespace cleanup at the end of .anon_generic(), add str_replace_all(\"(?m)^[ \\\\t]*[.,;:][ \\\\t]*\", \"\"), str_replace_all(\"[ \\\\t]+([.,;:])(?=\\\\s|$)\", \"\\\\1\") and str_replace_all(\"[ \\\\t]{2,}\", \" \"). Add a test that 'Denne karakterskalaen gjeld også våren 2020.' becomes 'Denne karakterskalaen gjeld også.' and that 'Vurderingssemester\\nVår. Der er òg …' becomes 'Vurderingssemester\\nDer er òg …'.",
+      "confidence": "high"
+    },
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": ["uib_HIS250L-0_2020_spring_1", "uib_HIS250L-0_2019_spring_1", "uib_HIS250L-0_2018_autumn_1"],
+      "evidence": "Søknad registreres på Studentweb i perioden 11.desember 2017 - 10. januar 2018.",
+      "description": "Application-period dates with a year stay in the plan. These are administrative dates, which the rubric says must be removed. In the packet, 5 HIS250L offerings have them ('11.desember 2017 - 10. januar 2018' four times, '10.desember 2018 - 9. januar 2019' once). That is also the full UiB count: 5 of 1473 offerings have a 'day month-name year' date left, all of them this sentence. The same offerings correctly lose 'våren 2018,'. Because the dated sentence is copied unchanged into the 2018 autumn, 2019 and 2020 plans, it also dates those texts wrongly.",
+      "root_cause_hypothesis": ".anon_generic() removes only numeric dates (\\d{1,2}\\.\\d{1,2}\\.\\d{4}) and the FS timestamp 'dd. mmm. yyyy hh:mm'. It has no pattern for a day plus a written month name plus a year ('10. januar 2018', '11.desember 2017').",
+      "suggested_fix": "Add to .anon_generic(): str_remove_all(\"(?i)\\\\b\\\\d{1,2}\\\\.\\\\s*(?:januar|februar|mars|april|mai|juni|juli|august|september|oktober|november|desember)\\\\s+(?:19|20)\\\\d{2}\\\\b\"), plus an optional range form '… - …' so the dash does not dangle. Keep year-less forms such as '1. februar/1. september' and '18. august', which are recurring deadlines. Add a test that uses the HIS250L sentence.",
+      "confidence": "high"
+    }
+  ]
+}

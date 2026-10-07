@@ -1,0 +1,22 @@
+{
+  "check": "anonymization",
+  "institution": "nmbu",
+  "model": "opus",
+  "n_courses_reviewed": 8,
+  "n_suspects_reviewed": 0,
+  "overall_assessment": "Anonymization works well for NMBU: in all 8 courses (and in the 4 other offerings with text, checked by rerunning anonymize_text() on extracted_text) the only personal data is the 'Emneansvarlig:Name' header line, which .anon_nmbu() removes, including lines with two names and four-part names. Nothing was over-removed (the regulation 'U- og H-loven' and all content stay), and no names, e-mails or phone numbers are left. The only issue in the packet is cosmetic: removing academic years from course start and phase-out notes leaves sentences that end in a preposition followed by ' .'. Outside the packet, nmbu_PPFO301-1_2025_autumn_1 keeps a month-year schedule date ('lagt fram i juni 2025') that no generic pattern removes. A robustness note with no failures seen: the generic role_name_line_regex does not match 'Emneansvarlig:Name' with no space after the colon, so the NMBU handler is the only safeguard, and privacy_check would not flag a name the handler misses, for example a name with an apostrophe or digit.",
+  "findings": [
+    {
+      "target": "content_text",
+      "error_type": "text_corruption",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": ["nmbu_PPRA201-1_2025_autumn_1", "nmbu_PPFD201-1_2025_autumn_2"],
+      "evidence": "Emnet går siste gang studieåret . Det vil imidlertid opprettes særskilt protokoll for vurdering også i .",
+      "description": "The academic-year removals are correct under the rubric, because these are admin course-lifecycle years (2025/26, 2026/27, 2025-2026). But they leave sentences that end in a dangling preposition or noun with a space before the period ('også i .', 'Gis siste gang våren i studieår .', 'Første gang emnet undervises er studieåret .'). That is a half-removed phrase, not a bare label. No content or personal data is affected.",
+      "root_cause_hypothesis": "In .anon_generic(), str_remove_all(\"\\\\b\\\\d{4}/\\\\d{2,4}\\\\b\") and the .drop_academic_year() replacement remove only the year token. The preceding space stays before the sentence-final period.",
+      "suggested_fix": "Make the academic-year patterns also take the preceding horizontal whitespace, e.g. \"[ \\\\t]*\\\\b\\\\d{4}/\\\\d{2,4}\\\\b\" (and the same for the \\\\d{4}[-–]\\\\d{2,4} replacement), so the result reads 'studieåret.'. Optionally, in .anon_nmbu(), drop whole NMBU lifecycle sentences ('Tilbys første gang i studieår …', 'Gis siste gang …', 'Emnet går siste gang studieåret …', 'Første gang emnet undervises er studieåret …'). Add a test case in tests/testthat/test-anonymize.R.",
+      "confidence": "high"
+    }
+  ]
+}
