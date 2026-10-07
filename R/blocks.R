@@ -23,7 +23,8 @@
 #            `section_heading_selector` (default h2), sub-headings by
 #            `section_subheading_selector`, sections of their own by
 #            `section_scope`; text before the first heading goes to
-#            `section_initial` (default: dropped)
+#            `section_initial` (default: dropped); an element in
+#            `section_untitled` is a section without a heading
 #            When `section_fields` is set (hivolda), each top-level
 #            `div.field-<name>` is a heading of its own (see .field_block())
 #   json   — nla's EmneplanPage JSON
@@ -52,6 +53,7 @@
     sub               = ic$section_subheading_selector,
     scope             = ic$section_scope,
     initial           = ic$section_initial,
+    untitled          = ic$section_untitled,
     text_header       = ic$section_text_header,
     fields            = ic$section_fields,
     inline_coursework = isTRUE(ic$section_inline_coursework),
@@ -144,6 +146,13 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
   if (!is.null(cfg$scope)) {
     xml2::xml_set_attr(rvest::html_elements(root, cfg$scope), "data-scope", "1")
   }
+  # an untitled element is a section of its own, opened by an empty heading
+  for (sel in names(cfg$untitled)) {
+    nodes <- rvest::html_elements(root, sel)
+    xml2::xml_set_attr(nodes, "data-block", "untitled")
+    xml2::xml_set_attr(nodes, "data-section", cfg$untitled[[sel]])
+    xml2::xml_set_attr(nodes, "data-scope", "1")
+  }
   if (!is.null(cfg$fields)) {
     fields <- xml2::xml_find_all(root, paste0(
       ".//div[contains(@class, 'field-') and ",
@@ -192,11 +201,14 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
       .sub_blocks(node, out$add)
     } else if (identical(mark, "field")) {
       read_sections <<- .field_block(node, cfg$fields, read_sections, out$add)
-    } else if (is.na(xml2::xml_attr(node, "data-walk"))) {
-      txt <- rvest::html_text2(node)
-      if (nzchar(trimws(txt))) out$add("text", txt, g = tag)
     } else {
-      walk_contents(node)
+      if (identical(mark, "untitled")) out$add("heading", "", xml2::xml_attr(node, "data-section"))
+      if (is.na(xml2::xml_attr(node, "data-walk"))) {
+        txt <- rvest::html_text2(node)
+        if (nzchar(trimws(txt))) out$add("text", txt, g = tag)
+      } else {
+        walk_contents(node)
+      }
     }
     if (scope) out$add("end", "")
   }

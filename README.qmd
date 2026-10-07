@@ -396,6 +396,9 @@ Fields for the `html` reader:
   nord's `div.ac`); the section open around them continues after them.
 - `section_initial`: section for text before the first heading (mf's untitled
   intro is course_content).
+- `section_untitled`: elements that hold a section without a heading, as
+  `c(selector = section)` (nord's short description `div.placeholder-text`
+  is course_content; the title and course code before it stay out).
 - `section_fields`: hivolda's Drupal fields (`div.field-<name>`) are the
   headings, each mapped to a section by its class name; text outside the
   fields (title, programmes) is in the fulltext but in no section.
@@ -443,6 +446,11 @@ eksamen"). Exam language and grading scale stay in assessment.
 HTML is parsed by `.read_doc()`, which drops `script`, `style`, `select` and
 `label` (ntnu script text, uib semester picker); the `json` reader parses the
 page itself because its data is in a `<script>`.
+
+A prerequisites label inside course_content ("Forkunnskapskrav", uit's "Om
+emnet") moves the paragraph it names to prerequisites
+(`.split_inline_prerequisites()`), and a paragraph of 40 or more characters
+that its section repeats is kept once.
 
 `.clean_sections()` removes `.drop` rows, strips notices and page widgets from
 assessment/coursework (`.section_noise`: plagiarism and ChatGPT/COVID notices,

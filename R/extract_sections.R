@@ -79,7 +79,8 @@ sectionize <- function(blocks) {
 #' sections, the lines of extracted_text are tried instead, and kept if they
 #' give more (#183). A section that only points to another block on the page
 #' is filled from it (`section_pointer`), nord-style coursework lines move out
-#' of assessment (`section_inline_coursework`), and .clean_sections() tidies
+#' of assessment (`section_inline_coursework`), a prerequisites label in course
+#' content takes what it names to prerequisites, and .clean_sections() tidies
 #' the rows.
 #'
 #' @param blocks Block table from page_blocks().
@@ -95,7 +96,55 @@ page_sections <- function(blocks, text, cfg) {
   }
   out <- .fill_pointer_sections(out, blocks, cfg$pointer)
   if (isTRUE(cfg$inline_coursework)) out <- .split_inline_coursework(out)
+  out <- .split_inline_prerequisites(out)
   .clean_sections(out, cfg$institution)
+}
+
+# A prerequisites label inside course_content moves what it names to
+# prerequisites (#285): a label line ("Forkunnskapskrav", "Forkunnskapskrav og
+# anbefalte forkunnskaper:"; uit "Om emnet") the next paragraph, a label with
+# text ("Forkunnskapskrav: 140 stp ...", mf) that text. The label goes, since
+# it only names the section. A label followed by another heading-like line
+# names nothing.
+.split_inline_prerequisites <- function(out) {
+  i <- which(out$section == "course_content")
+  if (length(i) != 1) return(out)
+  lines <- stringr::str_split_1(out$raw_text[i], "\n")
+  m <- stringr::str_match(lines, "^\\s*([^:：]{1,80}?)\\s*(?:[:：]\\s*(.*))?$")
+  # every part of the label names prerequisites
+  is_pre <- vapply(m[, 2], function(x) !is.na(x) && all(vapply(
+    stringr::str_split_1(x, "\\s*(?:,|\\bog\\b)\\s*"), .exact_section, character(1))
+    %in% "prerequisites"), logical(1), USE.NAMES = FALSE)
+  if (!any(is_pre)) return(out)
+  blank <- !nzchar(trimws(lines))
+  n <- length(lines)
+  move <- is_pre
+  for (k in which(is_pre)) {
+    if (!is.na(m[k, 3]) && nzchar(m[k, 3])) {
+      lines[k] <- m[k, 3]
+      next
+    }
+    # not when a heading follows (uib pages that list only headings)
+    from <- which(!blank & seq_len(n) > k)[1]
+    if (is.na(from) || .heading_shaped_line(trimws(lines[from]))) {
+      move[k] <- FALSE
+      next
+    }
+    lines[k] <- ""
+    to <- c(which(blank & seq_len(n) > from), n + 1)[1] - 1
+    move[from:to] <- TRUE
+  }
+  if (!any(move)) return(out)
+  out$raw_text[i] <- stringr::str_replace_all(paste(lines[!move], collapse = "\n"),
+                                              "\n[ \t]*(?:\n[ \t]*)+\n", "\n\n")
+  moved <- paste(lines[move & nzchar(lines)], collapse = "\n")
+  j <- which(out$section == "prerequisites")
+  if (length(j) == 1) {
+    out$raw_text[j] <- paste(out$raw_text[j], moved, sep = "\n\n")
+  } else {
+    out <- dplyr::bind_rows(out, tibble::tibble(section = "prerequisites", raw_text = moved))
+  }
+  out
 }
 
 # A section whose whole text is a placeholder naming another block of the page
@@ -147,8 +196,18 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 }
 
 # A strategy's list of section -> text chunks as a (section, raw_text) tibble.
+# A chunk of 40 or more characters that another chunk of its section repeats
+# is dropped (nord's short description is often the first lines of
+# "Beskrivelse av emnet", uis repeats a PDF plan's lead sentence; #285).
+# Shorter chunks are labels ("Geometri"), which may recur as words.
 .list_to_sections <- function(sections) {
   if (length(sections) == 0) return(.empty_sections())
+  sections <- lapply(sections, function(x) {
+    sq <- stringr::str_squish(x)
+    x[!vapply(seq_along(x), function(i) nchar(sq[i]) >= 40 && any(
+      stringr::str_detect(sq[-i], stringr::fixed(sq[i])) & (sq[-i] != sq[i] | seq_along(x)[-i] < i)),
+      logical(1))]
+  })
   .merge_sections(tibble::tibble(section = rep(names(sections), lengths(sections)),
                                  raw_text = unlist(sections, use.names = FALSE)))
 }
@@ -214,6 +273,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 .admission_line_regex <- paste0(
   "(?i)opptak skjer|frittstående (?:fag|emne)|studierett|",
   "tilgjengelig som valgfag|søke opptak|enkeltemnestudent|krever opptak til|",
+  "^\\s*(?:jf\\.?|jamfør) opptakskrav|",                   # uit pointer to the programme (#285)
   "^\\s*opptak til (?:studie|lektor|lærer|master|bachelor|grunnskole)|",
   "^\\s*generell studiekompetanse\\.?\\s*$"
 )
@@ -403,6 +463,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   # pointers to another document
   "(?:se|sjå) (?:fag|program|studie)?plan(?:en)?(?: for [^.]{0,100})?",
   "se emnearkivet",
+  "se (?:kursinnhold|emnebeskrivelse)(?:et|n)?",                     # nord intro (#285)
   "ingen emner(?: i programmet)?",
   "emnebeskrivelsen finnes kun på engelsk[^.]*",
   # reading-list pointers and absence notes

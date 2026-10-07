@@ -350,6 +350,57 @@ test_that("mf: intro is course_content, accordions are sections, contact card ig
   expect_false(any(grepl("Nordmann|desember|Emnekode", s)))
 })
 
+test_that("nord: the short description is course content, title and code are not (#285)", {
+  page <- function(intro) paste0('<html><body><div class="main-content">
+    <h1>Matematikk 4</h1><div class="field--name-field-subject-code">MAT5006</div>
+    <div class="placeholder-text">', intro, '</div>
+    <div class="accordion-container"><div class="ac"><button class="ac-trigger">Beskrivelse av emnet</button>
+    <div class="ac-panel"><p>Masteroppgaven er et selvstendig forskningsarbeid i matematikkdidaktikk.</p>
+    <p>Studenten mottar veiledning.</p></div></div></div></div></body></html>')
+  cfg <- .block_cfg(get_institution_config("nord"))
+  cc <- function(intro) {
+    b <- page_blocks(page(intro), NA, cfg)
+    out <- page_sections(b, .blocks_text(b), cfg)
+    out$raw_text[out$section == "course_content"]
+  }
+  expect_equal(cc("Emnet gir innsikt i aktuell forskning."), paste(
+    "Emnet gir innsikt i aktuell forskning.",
+    "Masteroppgaven er et selvstendig forskningsarbeid i matematikkdidaktikk.",
+    "Studenten mottar veiledning.", sep = "\n\n"))
+  # a pointer goes; a description that the section repeats is kept once
+  only_body <- cc("")
+  expect_equal(cc("Se kursinnhold."), only_body)
+  expect_equal(cc("Masteroppgaven er et selvstendig forskningsarbeid i matematikkdidaktikk."),
+               only_body)
+})
+
+test_that("a prerequisites label in course content moves what it names (#285)", {
+  uit <- paste("Emnet er et fagvalg i grunnskolelærerutdanning.", "",
+               "Forkunnskapskrav og anbefalte forkunnskaper:", "",
+               "Jf. opptakskrav og progresjonskrav i studieplanen.", "",
+               "Emnet består av naturfagdidaktikk.", sep = "\n")
+  res <- .split_inline_prerequisites(tibble::tibble(section = "course_content", raw_text = uit))
+  expect_equal(res$raw_text, c("Emnet er et fagvalg i grunnskolelærerutdanning.\n\nEmnet består av naturfagdidaktikk.",
+                               "Jf. opptakskrav og progresjonskrav i studieplanen."))
+  expect_equal(res$section, c("course_content", "prerequisites"))
+  # the admission pointer alone leaves no prerequisites row
+  expect_equal(.clean_sections(res)$section, "course_content")
+  mf <- tibble::tibble(section = c("course_content", "prerequisites"),
+                       raw_text = c("Praksis i skolen.\nForkunnskapskrav: 140 stp. emner inkl PED1010",
+                                    "Opptak til lektorprogrammet."))
+  res <- .split_inline_prerequisites(mf)
+  expect_equal(res$raw_text, c("Praksis i skolen.",
+                               "Opptak til lektorprogrammet.\n\n140 stp. emner inkl PED1010"))
+  # a sentence about prerequisites is not a label; a list of headings names nothing
+  txt <- tibble::tibble(section = "course_content",
+                        raw_text = "Emnet bygger på forkunnskaper fra Norsk 1.")
+  expect_equal(.split_inline_prerequisites(txt), txt)
+  toc <- tibble::tibble(section = "course_content", raw_text = paste(
+    "Undervisningssted", "Krav til forkunnskaper", "Anbefalte forkunnskaper",
+    "Studiepoengsreduksjon", "Arbeids- og undervisningsformer", sep = "\n"))
+  expect_equal(.split_inline_prerequisites(toc), toc)
+})
+
 # --- Exam logistics and notices (#215) ---
 
 test_that("exam-logistics headings end the assessment section", {

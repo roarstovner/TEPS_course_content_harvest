@@ -157,6 +157,9 @@ institution_configs <- list(
     section_strategy = "html",
     section_heading_selector = "button.ac-trigger",
     section_scope = "div.ac",
+    # the short description between the course code and the accordions
+    # (2019-), not the title and code before it (#285)
+    section_untitled = c("div.placeholder-text" = "course_content"),
     # Arbeidskrav/obligatorisk deltakelse are lines inside the vurdering
     # accordion, not a heading of their own (#212).
     section_inline_coursework = TRUE

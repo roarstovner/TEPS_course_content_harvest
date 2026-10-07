@@ -144,6 +144,26 @@ sentences; \#211), and credit-overlap boxes are dropped.
 **Placeholders are dropped** (“Ingen”, “-”, “Se fagplanen.”,
 reading-list pointers; \#210, \#286).
 
+**Prerequisites written inside the course description are
+prerequisites:** a “Forkunnskapskrav” label in course content (UiT’s “Om
+emnet”, two MF courses) takes the paragraph it names to prerequisites.
+At UiT that paragraph is almost always “Jf. opptakskrav og
+progresjonskrav i studieplanen …”, a pointer to the programme’s
+admission rules, which is dropped like other admission text, so most UiT
+plans lose it from course content without gaining a prerequisites
+section. *Rejected:* treating the label as a sub-heading (the course
+description continues after the pointer and would be filed as
+prerequisites). *Since:* 2026-10-07 (#285).
+
+**Nord’s short description is course content:** the lead paragraph above
+the accordions (pages from 2019 on) opens course content, without the
+title and course code above it; “Se kursinnhold.” there is a
+placeholder. A paragraph of 40 or more characters that a section repeats
+is kept once (Nord’s lead is often the start of “Beskrivelse av emnet”;
+UiS PDF plans repeat their lead sentence). *Rejected:* filing all text
+before the first heading as course content (would take in the title and
+code). *Since:* 2026-10-07 (#285).
+
 **OsloMet teaching methods that only say “Se fagplanen.”** take the text
 of the subject’s Fagplan on the same page (“Fagets arbeids- og
 undervisningsformer”), marked “Se fagplanen. Fagplanen sier: …”: 130

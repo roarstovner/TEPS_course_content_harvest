@@ -34,6 +34,19 @@ test_that("a scope element is marked with start and end blocks", {
   expect_equal(b$section[4], "reading_list")
 })
 
+test_that("an untitled element is a section of its own without a heading (#285)", {
+  b <- page_blocks("<main><h1>Tittel</h1><div class='lead'>Kort om emnet.</div>
+    <p>Mer</p><h2>Pensum</h2><p>Bok</p></main>", NA,
+    html_reader(untitled = c("div.lead" = "course_content")))
+  expect_equal(roles(b), c("text:NA", "start:NA", "heading:course_content", "text:NA",
+                           "end:NA", "text:NA", "heading:reading_list", "text:NA"))
+  expect_equal(sectionize(b)$raw_text, c("Kort om emnet.", "Bok"))
+  # the fulltext is the same as without the option
+  expect_equal(.blocks_text(b), .blocks_text(page_blocks(
+    "<main><h1>Tittel</h1><div class='lead'>Kort om emnet.</div><p>Mer</p><h2>Pensum</h2><p>Bok</p></main>",
+    NA, html_reader())))
+})
+
 test_that("a sub-heading paragraph splits into the sub-heading and its text", {
   sub <- function(html) page_blocks(paste0("<main><h2>Innhold</h2>", html, "</main>"),
                                     NA, html_reader(sub = "p"))[-1, ]
