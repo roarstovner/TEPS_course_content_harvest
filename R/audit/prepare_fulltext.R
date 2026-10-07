@@ -13,13 +13,15 @@
 # (navigation, footers, and recurring headings, which are captured anyway).
 #
 # Deterministic pre-pass flags (course-level):
-#   empty      page fetched but extracted_text empty
+#   empty      page fetched but extracted_text empty (not on a "page" site,
+#              where it means the year is not on the page: nla)
 #   short/long robust length outlier within institution (|z| > OUTLIER_Z)
 #   wall       long text with almost no line breaks
 #   junk       known junk phrases (cookie banners, page numbers, JS, ...)
 #   dup_code   identical extracted_text for >= DUP_CODES different course codes
 #   year       semester/academic-year labels in the text all far from Årstall
-#   uncaptured much non-chrome page text missing from extracted_text
+#   uncaptured prose on the page missing from extracted_text (lines of
+#              >= 80 chars, not year pickers or breadcrumbs; #234)
 #
 # Inputs:  the raw harvest (harvested_rows()) + data/interim/extracted_text.RDS
 # Outputs: data/audit/fulltext/packets/{inst}.md, manifest.csv, sample.csv
@@ -39,7 +41,7 @@ PAGE_SAMPLE   <- 250    # pages parsed per institution for chrome + coverage
 CHROME_FRAC   <- 0.4
 OUTLIER_Z     <- 3
 DUP_CODES     <- 3
-UNCAP_MIN     <- 1500   # uncaptured non-chrome chars that raise a flag
+UNCAP_MIN     <- 200    # uncaptured prose chars that raise a flag (#234)
 SEED          <- 42
 
 CHECK   <- "fulltext"
@@ -88,17 +90,24 @@ page_lines <- function(txt) {
 }
 
 # Lines of the page that are neither chrome nor present in extracted_text.
-# A line counts as captured when its first 60 chars occur in the text, which
-# tolerates different line wrapping of the same content.
+# A line counts as captured when its first 60 chars, whitespace removed, occur
+# in the text, which tolerates different wrapping of the same content and
+# table cells glued together in the page text. `prose` counts the missing
+# lines that read as text: >= 80 chars, under 20% digits (year pickers, exam
+# sessions) and not a breadcrumb; facts boxes, names and menus are short
+# lines (#234).
 uncaptured <- function(lines, chrome, ext) {
   lines <- setdiff(lines, chrome)
-  if (length(lines) == 0) return(list(text = "", n = 0L, share = NA_real_))
-  ext_n <- str_to_lower(str_squish(ext %|% ""))
-  hit <- vapply(str_to_lower(str_sub(lines, 1, 60)),
-                \(l) grepl(l, ext_n, fixed = TRUE), logical(1))
+  if (length(lines) == 0) return(list(text = "", n = 0L, prose = 0L, share = NA_real_))
+  ext_n <- str_remove_all(str_to_lower(ext %|% ""), "\\s+")
+  key <- str_sub(str_remove_all(str_to_lower(lines), "\\s+"), 1, 60)
+  hit <- vapply(key, \(l) grepl(l, ext_n, fixed = TRUE), logical(1))
   miss <- lines[!hit]
+  prose <- miss[nchar(miss) >= 80 & str_count(miss, "\\d") < 0.2 * nchar(miss) &
+                  str_count(miss, " > ") < 2]
   list(text = paste(miss, collapse = "\n"),
        n = sum(nchar(miss)),
+       prose = sum(nchar(prose)),
        share = sum(nchar(miss)) / sum(nchar(lines)))
 }
 `%|%` <- function(a, b) if (is.na(a)) b else a
@@ -152,7 +161,7 @@ for (inst in institutions) {
   df <- df |>
     left_join(codes_per_text, by = "dedup_key") |>
     mutate(
-      flag_empty    = has_html & txt_nchar == 0,
+      flag_empty    = has_html & txt_nchar == 0 & !identical(cfg$plan_years, "page"),
       flag_short    = !is.na(z) & z < -OUTLIER_Z,
       flag_long     = !is.na(z) & z >  OUTLIER_Z,
       flag_wall     = txt_nchar > 2000 & n_lines < txt_nchar / 1000,
@@ -180,15 +189,16 @@ for (inst in institutions) {
   parsed <- parsed |>
     mutate(uncap_text  = purrr::map_chr(unc, "text"),
            uncap_n     = purrr::map_int(unc, "n"),
+           uncap_prose = purrr::map_int(unc, "prose"),
            uncap_share = purrr::map_dbl(unc, "share")) |>
-    select(course_id, uncap_text, uncap_n, uncap_share)
+    select(course_id, uncap_text, uncap_n, uncap_prose, uncap_share)
 
   flag_cols <- c("flag_empty", "flag_short", "flag_long", "flag_wall",
                  "flag_junk", "flag_dup_code", "flag_year", "flag_uncaptured")
-  weights <- c(3, 1, 1, 1, 1, 3, 2, 2)
+  weights <- c(3, 1, 1, 1, 1, 3, 2, 3)   # uncaptured prose: missing content (#234)
   df <- df |>
     left_join(parsed, by = "course_id") |>
-    mutate(flag_uncaptured = coalesce(uncap_n >= UNCAP_MIN, FALSE))
+    mutate(flag_uncaptured = coalesce(uncap_prose >= UNCAP_MIN, FALSE))
   df$score <- as.vector(as.matrix(df[flag_cols]) %*% weights)
   df$score[!df$has_html & df$txt_nchar == 0] <- 0
 

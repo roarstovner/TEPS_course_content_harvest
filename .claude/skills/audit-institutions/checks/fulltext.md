@@ -25,12 +25,14 @@ page's lines that are not captured, after removing site chrome (lines that
 occur on ≥ 40% of the institution's pages — navigation, footers and recurring
 headings). A few `[FAILED]` courses show only the URL and the fetch error.
 
-Pre-pass flags: `empty` (page fetched, no text), `short`/`long` (length
+Pre-pass flags: `empty` (page fetched, no text; not for nla, whose page
+lacks some years), `short`/`long` (length
 outlier within the institution), `wall` (long text, almost no line breaks),
 `junk` (cookie banners, page numbers, JavaScript, …), `dup_code` (identical
 text for ≥ 3 different course codes), `year` (semester/academic-year labels
-all far from the offering's year), `uncaptured` (≥ 1500 chars of non-chrome
-page text missing).
+all far from the offering's year), `uncaptured` (≥ 200 chars of prose on the
+page missing from the text: lines of ≥ 80 chars, not year pickers or
+breadcrumbs). The page text shown lists every missing line, short ones too.
 
 ## Rubric (review agent)
 
