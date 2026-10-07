@@ -169,6 +169,18 @@ test_that("season words after semester keyword are removed", {
   expect_false(grepl("(?i)\\bhøst\\b", result, perl = TRUE))
 })
 
+test_that("a season list or compound after a semester label goes whole (#303)", {
+  an <- function(x) anonymize_text("uib", x, .progress = FALSE)
+  expect_equal(an("Undervisningssemester\nVår og haust\nInnhald"), "Undervisningssemester\n\nInnhald")
+  expect_equal(an("Vurderingssemester\nHaustsemesteret, 6. semester i lektorutdanninga"),
+               "Vurderingssemester\n6. semester i lektorutdanninga")
+  expect_equal(an("Undervisningssemester\nHaustEmnet går første gong"), "Undervisningssemester\nEmnet går første gong")
+  expect_equal(an("Gjeldende fra høstsemesteret 2021."), "Gjeldende fra .")
+  # the start of another word stays
+  expect_equal(an("Eksamen\nHøstpraksis: ny praksis. Semester\nVåre dokumenter"),
+               "Eksamen\nHøstpraksis: ny praksis. Semester\nVåre dokumenter")
+})
+
 test_that("vår meaning 'our' is preserved in prose", {
   result <- anonymize_text("hivolda", "Vår tilnærming til pedagogikk er viktig", .progress = FALSE)
   expect_true(grepl("tilnærming", result))

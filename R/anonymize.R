@@ -291,6 +291,9 @@ anonymize_text <- function(institution, text,
   m
 }
 
+# A season word, also inflected or in a compound: "høsten", "Vårsemesteret".
+.season_regex <- "(?:(?:høst|vår|haust|sommer)(?:semester(?:et)?|en|a)?|autumn|spring|summer)"
+
 .anon_generic <- function(txt) {
   txt |>
     # Remove "Sist hentet/henta fra/frå FS..." timestamp
@@ -321,10 +324,17 @@ anonymize_text <- function(institution, text,
     # e.g. "Høst 2024", "2024 Vår", "Undervisningssemester: Vår", "Semester: Autumn"
     # Must run BEFORE year removal so "Høst 2024" matches as a unit
     # Preserves "vår" meaning "our" in normal prose
-    # also inflected / run together: "høsten 2025", "våren2026" (#227)
-    stringr::str_remove_all("(?i)\\b(?:(?:høst|vår|haust|sommer)(?:en|a)?|autumn|spring|summer)\\s*\\d{4}\\b") |>
+    # also inflected / run together: "høsten 2025", "våren2026" (#227),
+    # "høstsemesteret 2019" (#303)
+    stringr::str_remove_all(paste0("(?i)\\b", .season_regex, "\\s*\\d{4}\\b")) |>
     stringr::str_remove_all("(?i)(\\d{4})\\s+(høst|vår|haust|autumn|spring|sommer|summer)") |>
-    stringr::str_remove_all("(?i)(?<=(?:semester|undervisning|oppstart|startsemester|eksamen)[:\\s]{0,3})(høst|vår|haust|autumn|spring|sommer|summer)") |>
+    # after a semester label: the whole word and a list ("Vår og haust",
+    # "Haustsemesteret"), not the start of another word ("Våre", "Høstpraksis")
+    # (#303); a glued next word ("HaustEmnet") starts with a capital
+    stringr::str_remove_all(paste0(
+      "(?<=(?i:semester|undervisning|oppstart|startsemester|eksamen)[:\\s]{0,3})(?i:",
+      .season_regex, "(?:[ \\t]*(?:,|og|and|eller|or|/|&)[ \\t]*", .season_regex,
+      ")*)(?!\\p{Ll})[.,]?[ \\t]*")) |>
     # Remove dates: dd.mm.yyyy
     stringr::str_remove_all("\\d{1,2}\\.\\d{1,2}\\.\\d{4}") |>
     # Remove years in administrative contexts only (content years like "etter 1945" preserved)
