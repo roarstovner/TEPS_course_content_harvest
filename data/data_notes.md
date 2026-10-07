@@ -10,7 +10,7 @@ Generated: 2026-10-07
 | hiof | 1712 | 240 | 2017-2025 | 846 | 49.4% | 7151 | 820 | 3.1% |
 | hivolda | 1182 | 113 | 2017-2025 | 594 | 50.3% | 4620 | 547 | 7.9% |
 | hvl | 3604 | 393 | 2017-2025 | 3335 | 92.5% | 4116 | 1653 | 49.1% |
-| inn | 2861 | 286 | 2018-2025 | 1777 | 62.1% | 4163 | 693 | 60.2% |
+| inn | 2861 | 286 | 2018-2025 | 1777 | 62.1% | 4163 | 553 | 16.8% |
 | mf | 55 | 29 | 2025 | 26 | 47.3% | 4154 | 26 | 0.0% |
 | nih | 184 | 34 | 2021-2025 | 81 | 44.0% | 2330 | 81 | 0.0% |
 | nla | 2074 | 209 | 2017-2025 | 249 | 12.0% | 5885 | 181 | 27.3% |
@@ -27,7 +27,7 @@ Generated: 2026-10-07
 | uit | 6693 | 621 | 2004-2025 | 3150 | 47.1% | 4101 | 2315 | 26.4% |
 | usn | 3036 | 401 | 2018-2025 | 1238 | 40.8% | 10800 | 1183 | 4.4% |
 
-**Total**: 41025 rows, 25658 with extracted text (62.5%), 14223 unique
+**Total**: 41025 rows, 25658 with extracted text (62.5%), 14083 unique
 plans.
 
 **Columns:**
@@ -98,7 +98,7 @@ year) that have a plan in at least one semester:
 | hiof | 936 | 83% | 715 | 8 | 53 | 90% | 49.4% |
 | hivolda | 629 | 88% | 510 | 8 | 35 | 93% | 50.3% |
 | hvl | 1931 | 87% | 0 | 1516 | 157 | 90% | 92.5% |
-| inn | 1500 | 91% | 0 | 847 | 514 | 60% | 62.1% |
+| inn | 1500 | 91% | 608 | 14 | 739 | 43% | 62.1% |
 | mf | 29 | 90% | 25 | 0 | 1 | 90% | 47.3% |
 | nih | 107 | 72% | 58 | 0 | 19 | 76% | 44.0% |
 | nla | 1103 | 88% | 232 | 0 | 739 | 23% | 12.0% |
@@ -134,7 +134,7 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 | hiof | 98 | 98 | 0 | 0 | 0 | 0 | 6 |
 | hivolda | 40 | 0 | 40 | 0 | 0 | 0 | 10 |
 | hvl | 198 | 152 | 0 | 0 | 46 | 0 | 5 |
-| inn | 605 | 0 | 584 | 0 | 21 | 0 | 0 |
+| inn | 849 | 0 | 584 | 0 | 265 | 0 | 7 |
 | mf | 3 | 0 | 0 | 0 | 0 | 3 | 0 |
 | nih | 26 | 26 | 0 | 0 | 0 | 0 | 2 |
 | nla | 854 | 146 | 0 | 0 | 708 | 0 | 0 |
@@ -216,8 +216,13 @@ to chainlink.
 - Some pages are the course search page (“Emnesøket gjelder kun fra …”)
   instead of a plan; the anonymizer turns them into NA (#53)
 - Some courses are published in both Norwegian and English (#52)
-- Some 2022 pages show “Undervisningssemestre” for another year, and a
-  few carry no plan; this is upstream, with no client-side fix (#123)
+- A page whose semester’s plan is not published yet says
+  “Emnebeskrivelsen for valgt semester er ikke publisert enda. Her er
+  den siste versjonen vi har tilgjengelig.” and shows a later version
+  (“Undervisningssemestre” 2026 or later). It is not that offering’s
+  plan, so the offering gets no plan (#302; \#123): 1,077 offerings, 384
+  of the 407 pages from 2022 and about half of 2023-2025. The April 2026
+  harvest shows the same notice on the same pages
 
 ------------------------------------------------------------------------
 

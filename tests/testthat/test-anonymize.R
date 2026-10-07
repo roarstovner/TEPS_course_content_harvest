@@ -333,6 +333,10 @@ test_that("INN: placeholder pages return NA", {
   input <- "Emnesøket gjelder kun fra 2022. Noe annet"
   result <- anonymize_text("inn", input, .progress = FALSE)
   expect_true(is.na(result))
+  # a later version shown in place of the requested semester's plan (#302)
+  later <- paste0("Statusmelding\nEmnebeskrivelsen for valgt semester er ikke publisert enda. ",
+                  "Her er den siste versjonen vi har tilgjengelig.\nEmnets innhold\nTekst")
+  expect_true(is.na(anonymize_text("inn", later, .progress = FALSE)))
 })
 
 test_that("INN: structural headings preserved for readability", {
@@ -351,13 +355,6 @@ test_that("INN: English structural headings preserved for readability", {
   expect_true(grepl("Number of credits", result))
   expect_true(grepl("Course content", result))
   expect_true(grepl("Important content", result))
-})
-
-test_that("INN: status banner removed", {
-  input <- "Statusmelding\nEmnebeskrivelsen for valgt semester er ikke publisert enda. Her er siste versjon\nKursinnhold"
-  result <- anonymize_text("inn", input, .progress = FALSE)
-  expect_false(grepl("Statusmelding", result))
-  expect_true(grepl("Kursinnhold", result))
 })
 
 test_that("INN: Engelsk normalized to English", {

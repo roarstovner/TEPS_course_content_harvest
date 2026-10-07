@@ -11,7 +11,7 @@ changes what the data mean, add or update its entry here; each release
 tag freezes this file with the data.
 
 Current data: 41 025 offerings (DBH course × year × semester) at 19
-institutions, 25 222 of them with a plan, and 14 223 unique plans from
+institutions, 24 145 of them with a plan, and 14 083 unique plans from
 18 institutions (none from Samas, below).
 
 ## Population and sampling frame
@@ -102,7 +102,7 @@ on 2026-10-07 again got UiA’s shells. *Since:* 2026-10-07 (#297).
 
 **A plan is a unique anonymized text per institution and course code**
 (`plan_content_id`, a hash of the normalized text). Offerings with the
-same text share a plan: 25 222 offerings have 14 223 plans. *Why:*
+same text share a plan: 24 145 offerings have 14 083 plans. *Why:*
 consecutive years and both semesters mostly repeat the same text.
 *Consequence:* the id changes whenever cleaning changes the text, so
 coding is tied to a frozen release and carried to later releases with a
@@ -112,14 +112,22 @@ crosswalk.
 under 1,500 characters (only the facts box, a credit-overlap box,
 “Emnebeskrivelse”, a pointer to the English page, every section “Se
 fagplanen.”, a list of headings with no text under them) gives its
-offering no plan. Longer pages without sections stay (OsloMet practicum
-courses, below). *Consequence:* 174 plans left the data on 2026-10-06
-(UiA 95, UiB 27, OsloMet 26, Nord 11, HVL 10, UiT 4, NTNU 1). With pages
-that are not the plan at all (INN’s course search page, OsloMet’s error
-page; \#53, \#57), 436 offerings have page text but no plan (hvl 86, inn
-35, nord 58, ntnu 1, oslomet 77, uia 95, uib 80, uit 4). *Since:*
-2026-10-06 (#222); heading lists (UiB NOLI216 and NOSP216, autumn 2018)
-from 2026-10-07 (#299).
+offering no plan. So does an INN page that says the requested semester’s
+plan is not published yet and shows the latest version instead (“Her er
+den siste versjonen vi har tilgjengelig”): that is a later plan (2026 or
+later), not the offering’s. Longer pages without sections stay (OsloMet
+practicum courses, below). *Consequence:* 174 plans left the data on
+2026-10-06 (UiA 95, UiB 27, OsloMet 26, Nord 11, HVL 10, UiT 4, NTNU 1).
+With pages that are not the plan at all (INN’s course search page,
+OsloMet’s error page; \#53, \#57), 1 513 offerings have page text but no
+plan (hvl 86, inn 1112, nord 58, ntnu 1, oslomet 77, uia 95, uib 80, uit
+4). *Since:* 2026-10-06 (#222); heading lists (UiB NOLI216 and NOSP216,
+autumn 2018) from 2026-10-07 (#299). INN later versions from 2026-10-07
+(#302): 1,077 INN offerings (384 of 407 pages from 2022, about half of
+2023-2025) lose their plan; the April 2026 harvest has the same notice
+on the same pages. *Rejected:* keeping the later plan with a flag
+(decided 2026-10-07: an offering is coded with its own year’s plan or
+none).
 
 ## Anonymization
 

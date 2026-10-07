@@ -206,7 +206,7 @@ chainlink.
 - No plans before 2022: INN's site starts in 2022, so the URL builder returns NA for earlier years (#26)
 - Some pages are the course search page ("Emnesøket gjelder kun fra ...") instead of a plan; the anonymizer turns them into NA (#53)
 - Some courses are published in both Norwegian and English (#52)
-- Some 2022 pages show "Undervisningssemestre" for another year, and a few carry no plan; this is upstream, with no client-side fix (#123)
+- A page whose semester's plan is not published yet says "Emnebeskrivelsen for valgt semester er ikke publisert enda. Her er den siste versjonen vi har tilgjengelig." and shows a later version ("Undervisningssemestre" 2026 or later). It is not that offering's plan, so the offering gets no plan (#302; #123): 1,077 offerings, 384 of the 407 pages from 2022 and about half of 2023-2025. The April 2026 harvest shows the same notice on the same pages
 
 ---
 
