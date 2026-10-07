@@ -282,12 +282,14 @@ anonymize_text <- function(institution, text,
 .openurl_regex <- paste0("https?://\\S*exlibrisgroup[^ \\t]*?", .wrapped("View"),
                          "\\s+", .wrapped("online"))
 
-# "2023-2024" / "2023-24" (consecutive years) is an academic year and goes;
-# a content range such as "1945-1970" stays (#230).
+# "2023-2024" / "2023/24" (consecutive years from 1990) is an academic year
+# and goes; a content range such as "1945-1970", "1349-50" or a reprint
+# "(1980/2005)" stays (#230, #304).
 .drop_academic_year <- function(m) {
-  y <- stringr::str_match(m, "(\\d{4})\\s?[-–]\\s?(\\d{2,4})")
-  nxt <- as.integer(y[, 2]) + 1L
-  m[!is.na(nxt) & (y[, 3] == nxt | y[, 3] == sprintf("%02d", nxt %% 100L))] <- ""
+  y <- stringr::str_match(m, "(\\d{4})\\s?[-–/]\\s?(\\d{2,4})")
+  from <- as.integer(y[, 2])
+  nxt <- from + 1L
+  m[!is.na(nxt) & from >= 1990L & (y[, 3] == nxt | y[, 3] == sprintf("%02d", nxt %% 100L))] <- ""
   m
 }
 
@@ -335,8 +337,9 @@ anonymize_text <- function(institution, text,
       "(?<=(?i:semester|undervisning|oppstart|startsemester|eksamen)[:\\s]{0,3})(?i:",
       .season_regex, "(?:[ \\t]*(?:,|og|and|eller|or|/|&)[ \\t]*", .season_regex,
       ")*)(?!\\p{Ll})[.,]?[ \\t]*")) |>
-    # Remove dates: dd.mm.yyyy
-    stringr::str_remove_all("\\d{1,2}\\.\\d{1,2}\\.\\d{4}") |>
+    # Remove dates: dd.mm.yyyy; not inside a path or number, and not a
+    # regulation's date ("forskrift 28.10.2020 nr. 2474") (#304)
+    stringr::str_remove_all("(?<![\\d./])\\d{1,2}\\.\\d{1,2}\\.\\d{4}(?![\\d/]|[ \\t]*nr\\.?[ \\t]*\\d)") |>
     # Remove years in administrative contexts only (content years like "etter 1945" preserved)
     # Blanket year removal for dedup lives in normalize_plan_text()
     # Admin keywords + year: "Opprettet 2020" → "Opprettet", "Gyldig fra 2023" → "Gyldig fra"
@@ -344,8 +347,9 @@ anonymize_text <- function(institution, text,
       "(?i)(opprettet|oppdatert|revidert|vedtatt|godkjent|gjeldende(?: fra)?|gyldig(?: fra)?|sist (?:endret|revidert|oppdatert))\\s+\\d{4}\\b",
       "\\1"
     ) |>
-    # Remove academic year ranges: "2023/2024", "2023/24"
-    stringr::str_remove_all("\\b\\d{4}/\\d{2,4}\\b") |>
+    # Remove academic year ranges: "2023/2024", "2023/24"; not year paths in
+    # links ("files/2019/06/27/") or DOIs (#304)
+    stringr::str_replace_all("(?<![/\\w.])\\d{4}[ \\t]?/[ \\t]?\\d{2,4}\\b(?!/)", .drop_academic_year) |>
     stringr::str_replace_all("\\b\\d{4}\\s?[-–]\\s?\\d{2,4}\\b", .drop_academic_year) |>
     # Brackets emptied by the removals above: "Meld. St. 16 ()" (#229);
     # code such as "print()" has no space before and stays

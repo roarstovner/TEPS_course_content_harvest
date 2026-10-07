@@ -133,6 +133,17 @@ test_that("dates dd.mm.yyyy are removed", {
   expect_false(grepl("15\\.12\\.2023", result))
 })
 
+test_that("links, DOIs, citations and content ranges keep their numbers (#304)", {
+  keep <- c("https://www.utdanningsnytt.no/files/2019/06/27/Bedre.pdf",
+            "https://www.journals.uio.no/index.php/adno/article/view/1126/1005",
+            "Piaget (1980/2005) og Vygotsky (1934/1986).",
+            "Svartedauden 1349-50 og krigen 1944-45.",
+            "Forskrift 28.10.2020 nr. 2474 om rammeplan.")
+  for (x in keep) expect_equal(anonymize_text("uit", x, .progress = FALSE), x, info = x)
+  expect_equal(anonymize_text("uit", "Studieåret 2023/24, gyldig 01.08.2023.", .progress = FALSE),
+               "Studieåret , gyldig .")
+})
+
 test_that("Norwegian date-time format is removed", {
   result <- anonymize_text("hivolda", "Hentet 12. feb. 2026 02:50:04", .progress = FALSE)
   expect_false(grepl("feb", result))
