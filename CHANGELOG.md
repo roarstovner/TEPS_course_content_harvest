@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- inn: pages showing a later plan version get no plan (#302)
 - Staff names left in published plans: role + name mid-line, hvl campus lines, uit 2008-2011 timetable (#301)
 - Run the anonymization audit on all institutions (#231)
 - Section leftovers from the #280 audit (low impact) (#299)
