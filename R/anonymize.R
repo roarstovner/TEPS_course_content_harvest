@@ -44,6 +44,7 @@ anonymize_text <- function(institution, text,
     uib     = .anon_uib(txt),
     nmbu    = .anon_nmbu(txt),
     uio     = .anon_uio(txt),
+    hvl     = .anon_hvl(txt),
     txt
   )
 }
@@ -70,7 +71,16 @@ anonymize_text <- function(institution, text,
     # Strip "Kontaktperson:" + name line
     stringr::str_remove_all("(?m)^Kontaktperson:?\\s*\\n[^\\n]*") |>
     # Strip "Foreleser:" + name line
-    stringr::str_remove_all("(?m)^Foreleser:?\\s*\\n[^\\n]*")
+    stringr::str_remove_all("(?m)^Foreleser:?\\s*\\n[^\\n]*") |>
+    # 2008-2011 layout: the closing timetable block ("Undervisning Høst 2010"
+    # + teachers glued to their roles, rooms, first lectures) (#301)
+    stringr::str_remove("(?s)(?:^|\\n)Undervisning (?:Høst|Vår|Haust) \\d{4}.*$")
+}
+
+.anon_hvl <- function(txt) {
+  # a campus label with a name: the contact for exam aids (#301)
+  stringr::str_remove_all(txt, paste0("(?m)^(?:Bergen|Stord|Haugesund|Sogndal|Førde)[ \\t]*:[ \\t]*",
+                                      .name_regex, "[ \\t]*(?:\\n|$)"))
 }
 
 .anon_uia <- function(txt) {
@@ -239,6 +249,20 @@ anonymize_text <- function(institution, text,
   "\\p{Lu}[\\p{L}.'’-]*(?:[\\h]+(?:\\p{Lu}[\\p{L}.'’-]*|van|von|de|der|den|da|di|af))+",
   "[\\h]*,[\\h]*(?i:", paste(.signature_roles, collapse = "|"), ")[\\h]*(?:\\n|$)"
 )
+# A capitalised name, with initials and hyphens ("Ola K. Nordmann",
+# "Anne-Kari Nordmann-Dahl").
+.name_part <- "\\p{Lu}[\\p{Ll}'’]+(?:-\\p{Lu}?[\\p{Ll}'’]+)*"
+.name_regex <- paste0(.name_part, "(?:[ \\t]+\\p{Lu}\\.)*(?:[ \\t]+", .name_part, ")+")
+# A role word followed by names anywhere in a line: "... avklares med
+# faglærer Ola Nordmann" (usn), "Godkjent emneplan av dekan Ola Nordmann"
+# (usn), "Studiepoeng 15 Emneansvarlig Ola Nordmann" (uis PDF), "Ta kontakt
+# med Ola K. Nordmann eller Kari Nordmann" (uio), "Kontaktpersoner er A, B og
+# C" (uit) (#301). The role stays, the names go.
+.role_name_inline_regex <- paste0(
+  "(?<!\\p{L})((?i:", paste(c(.staff_roles, .signature_roles), collapse = "|"),
+  ")(?i:e|er|ar|en)?:?|(?i:kontakt(?:e|er)? med|kontaktpersone?r? er))[ \\t]+",
+  .name_regex, "(?:[ \\t]*(?:,|og|eller)[ \\t]+", .name_regex, ")*"
+)
 .approved_by_name_regex <- paste0(
   "([Gg]odkjent av (?:[Dd]ekan(?:en)?|[Pp]rodekan|[Ii]nstitutt(?:nest)?leder|",
   "[Ss]tudieprogramleder))[ \\t]+\\p{Lu}\\p{Ll}+(?:[ \\t]+\\p{Lu}[\\p{L}-]+)+"
@@ -281,6 +305,8 @@ anonymize_text <- function(institution, text,
     stringr::str_remove_all(.signature_line_regex) |>
     # Keep the role, drop the name: "Godkjent av dekan Ola Nordmann" (#237)
     stringr::str_replace_all(.approved_by_name_regex, "\\1") |>
+    # "faglærer Ola Nordmann" anywhere in a line (#301)
+    stringr::str_replace_all(.role_name_inline_regex, "\\1") |>
     # Remove phone numbers: +47 XX XX XX XX, Tlf: XXXXXXXX, telefon: XX XX XX XX
     stringr::str_remove_all("(?i)(?:tlf|telefon)\\.?\\s*:?\\s*(?:\\+47\\s*)?\\d[\\d ]{6,}") |>
     stringr::str_remove_all("\\+47\\s*\\d[\\d ]{6,}") |>
@@ -333,6 +359,7 @@ anonymize_text <- function(institution, text,
   ip        = .user_ip_regex,
   staff     = .staff_line_regex,
   role_name = .role_name_line_regex,
+  role_name_inline = .role_name_inline_regex,
   signature = .signature_line_regex
 )
 

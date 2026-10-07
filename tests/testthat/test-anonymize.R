@@ -694,6 +694,29 @@ test_that("the personal-data check finds what the anonymizer removes", {
   expect_equal(nrow(personal_data_in(f)), 0)
 })
 
+test_that("a role and names inside a line: the names go, the role stays (#301)", {
+  an <- function(inst, x) anonymize_text(inst, x, .progress = FALSE)
+  expect_equal(an("usn", "Bøkene må avklares med faglærer Kari Nordmann."),
+               "Bøkene må avklares med faglærer.")
+  expect_equal(an("usn", "Godkjent emneplan av dekan Ola Nordmann"), "Godkjent emneplan av dekan")
+  expect_equal(an("uis", "Studiepoeng 15 Emneansvarlig Ola Nordmann\nInnhold"),
+               "Studiepoeng 15 Emneansvarlig\nInnhold")
+  expect_equal(an("uio", "Ta kontakt med Kari K. Nordmann eller Ola Berg Dahl for mer informasjon."),
+               "Ta kontakt med for mer informasjon.")
+  expect_equal(an("usn", "Spørsmål til emneansvarlig: Kari Nordmann-Dahl"), "Spørsmål til emneansvarlig:")
+  # a role before a lower-case word or one capitalised word is prose
+  expect_equal(an("usn", "Faglærer Kari gir veiledning. Veileder Universitetet i Oslo."),
+               "Faglærer Kari gir veiledning. Veileder Universitetet i Oslo.")
+  # uit 2008-2011 timetable block; hvl campus contact lines
+  expect_equal(an("uit", "Pensum\nBok.\nUndervisning Høst 2010\tForeleserKari Nordmann\nGruppe 1\tOla Dahl"),
+               "Pensum\nBok.")
+  expect_equal(an("hvl", "Hjelpemidler ved eksamen\nBergen: Kari Nordmann\nStord: Ola Dahl\nSogndal: Oppgåve i to delar."),
+               "Hjelpemidler ved eksamen\nSogndal: Oppgåve i to delar.")
+  f <- tempfile(fileext = ".RDS")
+  saveRDS(tibble::tibble(text = "Ta kontakt med Kari Nordmann for mer."), f)
+  expect_equal(personal_data_in(f)$pattern, "role_name_inline")
+})
+
 test_that("data/processed holds no personal data", {
   files <- Sys.glob(here::here("data/processed/*.RDS"))
   skip_if(length(files) == 0, "built data not available")
