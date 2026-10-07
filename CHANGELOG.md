@@ -103,6 +103,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Section extraction fixes from the block-model audit (2026-10-05) (#280)
+- nord preamble lost; inline 'Forkunnskapskrav:' left in course_content (#285)
 - Append-only raw store: a later harvest adds files, never rewrites finalized ones (#296)
 - Data release for TEPS coding: research assistants start ~2026-10-14 (#290)
 - Hand-over: tag the release and copy it to TEPS_course_content_coding with manifest, section coverage and plan-id crosswalk (#294)
