@@ -105,11 +105,15 @@ page_sections <- function(blocks, text, cfg) {
 # anbefalte forkunnskaper:"; uit "Om emnet") the next paragraph, a label with
 # text ("Forkunnskapskrav: 140 stp ...", mf) that text. The label goes, since
 # it only names the section. A label followed by another heading-like line
-# names nothing.
+# names nothing. A label after a sentence starts a line ("... enkeltemne.
+# ForkunnskapskravJf. opptakskrav ...", uit; #299).
 .split_inline_prerequisites <- function(out) {
   i <- which(out$section == "course_content")
   if (length(i) != 1) return(out)
-  lines <- stringr::str_split_1(out$raw_text[i], "\n")
+  txt <- stringr::str_replace_all(
+    out$raw_text[i], "(?<=[.!?])[ \t]*(?=Forkunnskapskrav[ \t]*(?:[:：]|\\p{Lu}))", "\n")
+  txt <- stringr::str_replace_all(txt, "(?m)^([ \t]*Forkunnskapskrav)[ \t]*(?=\\p{Lu})", "\\1: ")
+  lines <- stringr::str_split_1(txt, "\n")
   m <- stringr::str_match(lines, "^\\s*([^:：]{1,80}?)\\s*(?:[:：]\\s*(.*))?$")
   # every part of the label names prerequisites
   is_pre <- vapply(m[, 2], function(x) !is.na(x) && all(vapply(
@@ -251,6 +255,8 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   rl <- out$section == "reading_list"
   out$raw_text[rl] <- stringr::str_remove(   # hiof date stamp line (#248, #287)
     out$raw_text[rl], "^\\s*Litteratur\\w*(?: er)? sist oppdater[^\\n]*\\s*")
+  out$raw_text[rl] <- vapply(out$raw_text[rl], .strip_list_tabs, character(1),
+                             USE.NAMES = FALSE)
   pre <- out$section == "prerequisites"
   out$raw_text[pre] <- vapply(out$raw_text[pre], .strip_admission_lines,
                               character(1), USE.NAMES = FALSE)
@@ -263,6 +269,19 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   keep <- mapply(.keep_section_row, out$raw_text, out$section,
                  USE.NAMES = FALSE)
   out[keep, , drop = FALSE]
+}
+
+# The tab bar of a Leganto widget with several lists (usn): the reading list
+# opens with the lists' labels ("Norsk, emne 2 (MG1NO2) Drammen"), and each
+# list repeats its label (#299). Leading labels that recur later go.
+.strip_list_tabs <- function(text) {
+  lines <- stringr::str_split_1(text, "\n")
+  sq <- stringr::str_squish(lines)
+  k <- 0
+  while (k < length(lines) - 1 &&
+         grepl("\\(\\s*\\p{Lu}{2,}[\\p{Lu}0-9-]*\\d", sq[k + 1], perl = TRUE) &&
+         sq[k + 1] %in% sq[-seq_len(k + 1)]) k <- k + 1
+  if (k == 0) text else paste(lines[-seq_len(k)], collapse = "\n")
 }
 
 # Admission/study-right sentences inside a prerequisites block with no heading
@@ -411,7 +430,10 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   # ..."); a line with a sentence before the table keeps its text
   nmbu = "(?m)^[^.\n]{0,60}Karakterregel:.*$",
   uit  = c("(?m)^Alt du trenger å vite om før, under og etter eksamen.*$",  # link line
-           "(?m)^Eksamensdato er foreløpig.*$")                               # #287
+           "(?m)^Eksamensdato er foreløpig.*$",                               # #287
+           # the grading cell of each row of the 2020s gate table, the same
+           # for every gate; the gate's name stays (#299)
+           "\tKarakterregel:[ \t]*\nGodkjent – ikke godkjent[ \t]*")
 )
 
 .strip_section_noise <- function(text, institution = NULL) {
@@ -449,7 +471,17 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 
 .keep_section_row <- function(text, section) {
   if (is.na(text) || !nzchar(trimws(text))) return(FALSE)
-  !.is_placeholder_text(text)
+  !.is_placeholder_text(text) && !.is_heading_list(text)
+}
+
+# A row that only lists headings, half of them section names (uib 2018 shell
+# pages: "Læringsutbytte\nFulltid/deltid\nKrav til forkunnskaper\n..."; #299).
+.is_heading_list <- function(text) {
+  l <- trimws(stringr::str_split_1(text, "\n"))
+  l <- l[nzchar(l)]
+  length(l) >= 3 && all(nchar(l) <= 80) &&
+    all(vapply(l, .heading_shaped_line, logical(1))) &&
+    mean(!is.na(vapply(l, .exact_section, character(1)))) >= 0.5
 }
 
 # Phrases that say a section is absent or lives elsewhere (#210). A row is a

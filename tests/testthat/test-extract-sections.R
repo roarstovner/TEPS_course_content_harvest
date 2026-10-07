@@ -401,6 +401,38 @@ test_that("a prerequisites label in course content moves what it names (#285)", 
   expect_equal(.split_inline_prerequisites(toc), toc)
 })
 
+test_that("section leftovers of the #280 audit (#299)", {
+  # an inline prerequisites label after a sentence starts its own line (uit)
+  cc <- tibble::tibble(section = "course_content", raw_text = paste0(
+    "Emnet kan ikke tas som enkeltemne.ForkunnskapskravJf. opptakskrav i studieplanen.\n",
+    "Emnet tas som enkeltemne. Forkunnskapskrav: Avlagt bachelorgrad i sosiologi."))
+  res <- .clean_sections(.split_inline_prerequisites(cc))
+  expect_equal(res$raw_text, c("Emnet kan ikke tas som enkeltemne.\nEmnet tas som enkeltemne.",
+                               "Avlagt bachelorgrad i sosiologi."))
+  expect_equal(res$section, c("course_content", "prerequisites"))
+  # uit 2020s gate table: the grading cell goes, the gate names stay
+  cw <- tibble::tibble(section = "coursework_requirements", raw_text = paste0(
+    "Følgende arbeidskrav må være godkjent\nTilstedeværelse\tKarakterregel:\n",
+    "Godkjent – ikke godkjent\t\nProsjektskisse\tKarakterregel:\nGodkjent – ikke godkjent\t"))
+  expect_equal(.clean_sections(cw, "uit")$raw_text,
+               "Følgende arbeidskrav må være godkjent\nTilstedeværelse\nProsjektskisse")
+  # a Leganto tab bar goes; each list keeps its label
+  rl <- tibble::tibble(section = "reading_list", raw_text = paste(
+    "Norsk, emne 2 (MG1NO2) Drammen", "Norsk 1-7 (MG1NO2) Notodden",
+    "Norsk, emne 2 (MG1NO2) Drammen", "Obligatorisk litteratur", "Bok A",
+    "Norsk 1-7 (MG1NO2) Notodden", "Bok B", sep = "\n"))
+  expect_equal(.clean_sections(rl)$raw_text, paste(
+    "Norsk, emne 2 (MG1NO2) Drammen", "Obligatorisk litteratur", "Bok A",
+    "Norsk 1-7 (MG1NO2) Notodden", "Bok B", sep = "\n"))
+  # a row that only lists headings (uib shell page) is dropped
+  shell <- tibble::tibble(section = "course_content", raw_text = paste(
+    "Læringsutbytte", "Fulltid/deltid", "Krav til forkunnskaper", "Vurderingsformer",
+    "Karakterskala", "Studienivå (studiesyklus)", sep = "\n"))
+  expect_equal(nrow(.clean_sections(shell)), 0)
+  expect_equal(nrow(.clean_sections(dplyr::mutate(shell, raw_text = paste0(
+    raw_text, "\nEmnet gir en innføring i norsk språk.")))), 1)
+})
+
 # --- Exam logistics and notices (#215) ---
 
 test_that("exam-logistics headings end the assessment section", {

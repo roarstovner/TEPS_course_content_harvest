@@ -60,6 +60,15 @@ test_that("page furniture: OpenURL links, uis PDF header, usn Leganto labels (#2
   expect_equal(usn, "Obligatorisk litteratur\nMøter med barnelitteratur\nBooking av rom")
 })
 
+test_that("uis PDF footer and a last steiner page number are removed (#299)", {
+  expect_equal(anonymize_text("uis", paste(
+    "Kunnskap om litteratur", "   LENG116_1 - Innføring i britisk og irsk litteratur",
+    "og kultur.", "Se LENG115 - Introduksjon", sep = "\n"), .progress = FALSE),
+    "Kunnskap om litteratur\nog kultur.\nSe LENG115 - Introduksjon")
+  expect_equal(anonymize_text("steiner", "Eksamen tas opp igjen.\n15", .progress = FALSE),
+               "Eksamen tas opp igjen.")
+})
+
 test_that("phone numbers with +47 are removed", {
   input <- "Ring oss: +47 22 85 50 00 for hjelp"
   result <- anonymize_text("hivolda", input, .progress = FALSE)

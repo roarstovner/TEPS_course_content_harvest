@@ -11,7 +11,7 @@ changes what the data mean, add or update its entry here; each release
 tag freezes this file with the data.
 
 Current data: 41 025 offerings (DBH course × year × semester) at 19
-institutions, 25 224 of them with a plan, and 14 238 unique plans from
+institutions, 25 222 of them with a plan, and 14 236 unique plans from
 18 institutions (none from Samas, below).
 
 ## Population and sampling frame
@@ -102,7 +102,7 @@ on 2026-10-07 again got UiA’s shells. *Since:* 2026-10-07 (#297).
 
 **A plan is a unique anonymized text per institution and course code**
 (`plan_content_id`, a hash of the normalized text). Offerings with the
-same text share a plan: 25 224 offerings have 14 238 plans. *Why:*
+same text share a plan: 25 222 offerings have 14 236 plans. *Why:*
 consecutive years and both semesters mostly repeat the same text.
 *Consequence:* the id changes whenever cleaning changes the text, so
 coding is tied to a frozen release and carried to later releases with a
@@ -111,13 +111,15 @@ crosswalk.
 **Page shells are not plans:** a page with no plan section to read and
 under 1,500 characters (only the facts box, a credit-overlap box,
 “Emnebeskrivelse”, a pointer to the English page, every section “Se
-fagplanen.”) gives its offering no plan. Longer pages without sections
-stay (OsloMet practicum courses, below). *Consequence:* 174 plans left
-the data on 2026-10-06 (UiA 95, UiB 27, OsloMet 26, Nord 11, HVL 10, UiT
-4, NTNU 1). With pages that are not the plan at all (INN’s course search
-page, OsloMet’s error page; \#53, \#57), 434 offerings have page text
-but no plan (hvl 86, inn 35, nord 58, ntnu 1, oslomet 77, uia 95, uib
-78, uit 4). *Since:* 2026-10-06 (#222).
+fagplanen.”, a list of headings with no text under them) gives its
+offering no plan. Longer pages without sections stay (OsloMet practicum
+courses, below). *Consequence:* 174 plans left the data on 2026-10-06
+(UiA 95, UiB 27, OsloMet 26, Nord 11, HVL 10, UiT 4, NTNU 1). With pages
+that are not the plan at all (INN’s course search page, OsloMet’s error
+page; \#53, \#57), 436 offerings have page text but no plan (hvl 86, inn
+35, nord 58, ntnu 1, oslomet 77, uia 95, uib 80, uit 4). *Since:*
+2026-10-06 (#222); heading lists (UiB NOLI216 and NOSP216, autumn 2018)
+from 2026-10-07 (#299).
 
 ## Anonymization
 

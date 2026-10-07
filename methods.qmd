@@ -133,14 +133,15 @@ shell <- full |> filter(has_extracted_text, is.na(plan_content_id))
 
 **Page shells are not plans:** a page with no plan section to read and under
 1,500 characters (only the facts box, a credit-overlap box, "Emnebeskrivelse",
-a pointer to the English page, every section "Se fagplanen.") gives its
-offering no plan. Longer pages without sections stay (OsloMet practicum
+a pointer to the English page, every section "Se fagplanen.", a list of
+headings with no text under them) gives its offering no plan. Longer pages without sections stay (OsloMet practicum
 courses, below). *Consequence:* 174 plans left the data on 2026-10-06 (UiA 95,
 UiB 27, OsloMet 26, Nord 11, HVL 10, UiT 4, NTNU 1). With pages that are not
 the plan at all (INN's course search page, OsloMet's error page; #53, #57),
 `r n(nrow(shell))` offerings have page text but no plan
 (`r paste(names(table(shell$institution)), table(shell$institution), collapse = ", ")`).
-*Since:* 2026-10-06 (#222).
+*Since:* 2026-10-06 (#222); heading lists (UiB NOLI216 and NOSP216, autumn
+2018) from 2026-10-07 (#299).
 
 ## Anonymization
 

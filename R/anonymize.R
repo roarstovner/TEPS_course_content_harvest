@@ -146,13 +146,16 @@ anonymize_text <- function(institution, text,
     stringr::str_remove_all("Powered by TCPDF[^\n]*") |>
     # PDF running header "Emne LENG116_1, BOKMÅL, 2015 HØST, versjon ..." (#287)
     stringr::str_remove_all("(?m)^[ \\t]*Emne [A-ZÆØÅ0-9_-]+, (?:BOKMÅL|NYNORSK|ENGELSK),[^\n]*(?:\n|$)") |>
+    # PDF running footer "LENG116_1 - Innføring i britisk og irsk litteratur",
+    # the course's own code and title (#299)
+    stringr::str_remove_all("(?m)^[ \\t]*\\p{Lu}[\\p{Lu}0-9-]*\\d[\\p{Lu}0-9-]*_\\d+ - [^\n]*(?:\n|$)") |>
     stringr::str_remove_all("(?m)^\\s*side\\s+\\d+\\s*$")
 }
 
 .anon_steiner <- function(txt) {
   txt |>
-    # bare PDF page numbers (#248, #225)
-    stringr::str_remove_all("(?m)^[ \\t]*\\d{1,3}[ \\t]*\\n")
+    # bare PDF page numbers, also the last line (#248, #225, #299)
+    stringr::str_remove_all("(?m)^[ \\t]*\\d{1,3}[ \\t]*(?:\\n|$)")
 }
 
 .anon_usn <- function(txt) {
