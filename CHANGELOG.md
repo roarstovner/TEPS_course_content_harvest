@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Run the anonymization audit on all institutions (#231)
 - Section leftovers from the #280 audit (low impact) (#299)
 - fulltext pre-pass flags too strict (#234)
 - Section extraction fixes from the block-model audit (2026-10-05) (#280)
