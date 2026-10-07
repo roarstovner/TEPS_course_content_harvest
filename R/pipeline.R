@@ -18,7 +18,9 @@ institution_config_target <- function(institution) {
 
 # One institution's raw harvest: the rows of all its raw files
 # (harvest_files(); #296). Each file adds offerings the earlier ones lack, so
-# an offering in two files is an error.
+# an offering in two files is an error, unless the later one is a retry of an
+# offering that gave no plan (harvest_all(retry = TRUE); #297): it then has
+# the latest row with a page, else the latest row.
 #
 # A "current" site (plan_years) shows only the plan in force, so a page is the
 # plan of its course in the academic year it was fetched in, whichever DBH row
@@ -34,10 +36,14 @@ read_harvest <- function(files, config) {
     df
   }))
   if (!current) {
-    dup <- unique(rows$course_id[duplicated(rows$course_id)])
+    retried <- rows$course_id[rows[["retry"]] %in% TRUE]
+    dup <- setdiff(rows$course_id[duplicated(rows$course_id)], retried)
     if (length(dup)) stop(config$name, ": offerings in more than one raw file: ",
                           paste(utils::head(dup, 5), collapse = ", "))
-    return(rows)
+    page <- rep_len(!is.na(rows[["html"]] %||% NA) | !is.na(rows[["extracted_text"]] %||% NA), nrow(rows))
+    pick <- order(rows$course_id, !page, -seq_len(nrow(rows)))
+    pick <- pick[!duplicated(rows$course_id[pick])]
+    return(dplyr::select(rows[sort(pick), ], -dplyr::any_of("retry")))
   }
   page <- c("html", "html_error", "html_success", "extracted_text", "harvested_at")
   snapshots <- rows |>

@@ -57,13 +57,20 @@ harvest_institution <- function(institution, courses, year = NULL,
 #' and saves them to data/raw/harvests/{date}/html_{inst}.RDS. An existing raw
 #' file is never written again.
 #'
+#' With `retry`, a site with the year in the URL also fetches again the
+#' offerings whose page gave no plan in the current build
+#' (data/interim/course_offerings_full.RDS: a 404, a page shell); they are
+#' saved with `retry = TRUE`, and read_harvest() takes their new page (#297).
+#' Run targets::tar_make() first, and narrow it with `year`.
+#'
 #' @param courses Data frame from courses.RDS. If NULL, reads from disk.
 #' @param year Optional integer — if given, only harvest this year
 #' @param refetch Logical — if TRUE, ignore checkpoints and re-download everything
 #' @param institutions Optional character vector of institution names to harvest.
 #'   If NULL, harvests all configured institutions.
+#' @param retry Logical — also fetch offerings whose page gave no plan
 harvest_all <- function(courses = NULL, year = NULL, refetch = FALSE,
-                        institutions = NULL) {
+                        institutions = NULL, retry = FALSE) {
   if (is.null(courses)) courses <- readRDS("data/input/courses.RDS")
   if (!is.data.frame(courses)) {
     stop("`courses` must be a data frame, not ", class(courses)[1], ". ",
@@ -80,7 +87,11 @@ harvest_all <- function(courses = NULL, year = NULL, refetch = FALSE,
       current <- identical(configs[[inst]]$plan_years, "current")
       skip <- if (first || current) character() else
         unlist(lapply(harvest_files(inst), function(f) readRDS(f)$course_id))
-      result <- harvest_institution(inst, courses, year, refetch, skip)
+      again <- if (retry) intersect(skip, offerings_without_plan(inst)) else character()
+      if (length(again)) message(inst, ": ", length(again), " offerings without a plan to retry")
+      # a retry fetches again, so the checkpoint's old pages are not reused
+      result <- harvest_institution(inst, courses, year, refetch || length(again) > 0,
+                                    setdiff(skip, again))
       file <- if (first) harvest_file(inst) else dated_harvest_file(inst)
       if (nrow(result) == 0) {
         message(inst, ": nothing new to harvest")
@@ -88,6 +99,7 @@ harvest_all <- function(courses = NULL, year = NULL, refetch = FALSE,
         stop("raw files are not written twice (#296): ", file)
       } else {
         result$harvested_at <- Sys.Date()
+        if (length(again)) result$retry <- result$course_id %in% again
         dir.create(dirname(file), recursive = TRUE, showWarnings = FALSE)
         saveRDS(result, file)
         log_summary(inst, result)
@@ -96,6 +108,15 @@ harvest_all <- function(courses = NULL, year = NULL, refetch = FALSE,
       message("ERROR harvesting ", inst, ": ", conditionMessage(e))
     })
   }
+}
+
+# Offerings of an institution with no plan in the current build, for
+# harvest_all(retry = TRUE).
+offerings_without_plan <- function(institution,
+                                   file = "data/interim/course_offerings_full.RDS") {
+  if (!file.exists(file)) stop(file, " is missing: run targets::tar_make() first")
+  o <- readRDS(file)
+  o$course_id[o$institution == institution & is.na(o$plan_content_id)]
 }
 
 #' Before harvesting a site whose pages change over time

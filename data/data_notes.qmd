@@ -161,6 +161,11 @@ gaps |>
 To list the gaps between plans:
 `readRDS("data/interim/plan_gaps.RDS") |> dplyr::filter(between_plans)`.
 
+Checked 2026-10-07 (#297) by fetching a sample again: the 404s between plans
+at HiOF (11 of 12; the twelfth is now an empty page), HVL (5 of 5, soft 404)
+and NIH (4 of 4) are still 404. UiA's 91 are its autumn-2023 page shells (see
+UiA).
+
 ## Interpreting the dedup ratio
 
 High dedup (>40%) is expected for current-year-only institutions where DBH registers courses for both semesters but only one plan page exists (see "Semester registration in DBH").
@@ -271,6 +276,7 @@ chainlink.
 
 - The site has plans from 2020 on; earlier years return 404
 - DBH registers most courses in both semesters, but UiA publishes one page, so most 404s are the other semester (see "Semester registration in DBH"; #220)
+- Autumn 2023: 95 pages are shells (title and facts box, no plan), so 91 course-years have no plan between two that do. UiA's site renders a course page now and then without the plan it reads from FS: the pages were full when fetched at 13:40 on 2026-10-07 and shells again in a retry harvest (`harvest_all(retry = TRUE)`) at 16:30 the same day. A retry on another day may recover them (#297)
 - URL pattern: `https://www.uia.no/studier/emner/{year}/{semester}/{course_code}.html`
 
 ---

@@ -316,6 +316,14 @@ to `data/raw/harvests/{date}/html_{inst}.RDS`. `harvest_all(year = 2026)` and
 `harvest_all()` therefore both just add what is new. `read_harvest()` combines
 the files; an offering in two files stops the build.
 
+A page that gave no plan (a 404, a page shell) can be fetched again with
+`harvest_all(institutions = "uia", year = 2023, retry = TRUE)`: it takes the
+offerings without a plan in the current build
+(`data/interim/course_offerings_full.RDS`, so run `tar_make()` first), fetches
+them past the checkpoint and saves them to the dated file marked `retry`.
+`read_harvest()` gives a retried offering its latest row with a page (#297).
+Retry before finalizing a release; afterwards it changes the release.
+
 To finalize a release, after `tar_make()` and tagging the commit:
 
 ```r

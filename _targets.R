@@ -31,9 +31,10 @@ list(
   # One branch per harvested institution (pattern = map(...)): a change to one
   # institution's raw data or config rebuilds only that institution.
   tar_target(institution, institutions),
-  # the latest harvest, plus earlier ones of "current" sites (#293)
+  # the institution's raw files (#296); listed on every build, so a new dated
+  # harvest file is seen (#297)
   tar_target(html_file, harvest_files(institution), pattern = map(institution),
-             format = "file"),
+             format = "file", cue = tar_cue(mode = "always")),
   tar_target(config, institution_config_target(institution),
              pattern = map(institution), iteration = "list"),
   tar_target(blocks, institution_blocks(html_file, config),

@@ -50,6 +50,45 @@ test_that("other sites combine their raw files, and an offering in two files is 
                "more than one raw file")
 })
 
+test_that("a retry of offerings without a plan takes their new page (#297)", {
+  raw <- withr::local_tempdir()
+  saveRDS(raw_rows(html = c(NA, "shell")), harvest_file("x", raw))   # a 404, a page shell
+  f <- dated_harvest_file("x", as.Date("2026-10-07"), raw)
+  dir.create(dirname(f), recursive = TRUE)
+  again <- raw_rows(html = c(NA, "plan")); again$retry <- TRUE
+  saveRDS(dplyr::bind_rows(again, raw_rows(code = "B")), f)          # B is new
+  cfg <- list(name = "x", plan_years = "url")
+  html_a <- function(out) setNames(out$html, out$Semesternavn)[out$Emnekode_raw == "A"][c("Vår", "Høst")]
+  out <- read_harvest(harvest_files("x", raw), cfg)
+  expect_equal(nrow(out), 4)
+  expect_equal(unname(html_a(out)), c(NA, "plan"))
+  expect_false("retry" %in% names(out))
+  # a retry that fails keeps the earlier page
+  again$html <- again$extracted_text <- NA_character_
+  saveRDS(again, f)
+  expect_equal(unname(html_a(read_harvest(harvest_files("x", raw), cfg))), c(NA, "shell"))
+})
+
+test_that("harvest_all(retry = TRUE) fetches offerings without a plan again (#297)", {
+  withr::local_dir(withr::local_tempdir())
+  old <- institution_configs$samas$plan_years
+  institution_configs$samas$plan_years <<- "url"
+  withr::defer(institution_configs$samas$plan_years <<- old)
+  dbh <- tibble::tibble(institution = "samas", Emnekode_raw = c("S-1", "T-1"),
+                        Emnekode = c("S", "T"), Årstall = 2025L, Semesternavn = "Høst",
+                        Status = 1L, Avdelingsnavn = "-")
+  suppressMessages(harvest_all(dbh, institutions = "samas"))
+  ids <- readRDS(harvest_file("samas"))$course_id
+  dir.create("data/interim")
+  saveRDS(tibble::tibble(course_id = ids, institution = "samas", plan_content_id = c(NA, "p1")),
+          "data/interim/course_offerings_full.RDS")
+  expect_message(harvest_all(dbh, institutions = "samas"), "nothing new")
+  suppressMessages(harvest_all(dbh, institutions = "samas", retry = TRUE))
+  again <- readRDS(dated_harvest_file("samas"))
+  expect_equal(again$course_id, ids[1])
+  expect_true(again$retry)
+})
+
 test_that("harvest_all never writes a raw file twice (#296)", {
   withr::local_dir(withr::local_tempdir())
   dbh <- function(year) tibble::tibble(
