@@ -737,6 +737,21 @@ test_that("a role and names inside a line: the names go, the role stays (#301)",
   expect_equal(personal_data_in(f)$pattern, "role_name_inline")
 })
 
+test_that("usn approval block and name + leader-role lines lose the name (#309)", {
+  an <- function(inst, x) anonymize_text(inst, x, .progress = FALSE)
+  expect_equal(an("usn", "Hjelpemidler.\n\nGodkjent\nNotodden 06.03.20\nKari Nordmann\nInstituttnestleder\n\nLitteratur"),
+               "Hjelpemidler.\n\nGodkjent\nInstituttnestleder\n\nLitteratur")
+  expect_equal(an("usn", "Godkjent\nNotodden 08.11.19\nKari Berg Nordmann (instiuttleder)\nLitteratur"),
+               "Godkjent\nLitteratur")
+  expect_equal(an("hvl", "Tekst\nKari Nordmann\nDekan\nMer tekst"), "Tekst\nMer tekst")
+  # a committee or a title over a role heading stays (uib)
+  uib <- "The Programme Committee for The Study of Religion\nEmneansvarlig"
+  expect_equal(an("uib", uib), uib)
+  f <- tempfile(fileext = ".RDS")
+  saveRDS(tibble::tibble(text = "Godkjent\nKari Nordmann\nInstituttnestleder"), f)
+  expect_true("name_role_lines" %in% personal_data_in(f)$pattern)
+})
+
 test_that("data/processed holds no personal data", {
   files <- Sys.glob(here::here("data/processed/*.RDS"))
   skip_if(length(files) == 0, "built data not available")

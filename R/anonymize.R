@@ -177,6 +177,10 @@ anonymize_text <- function(institution, text,
     stringr::str_remove_all("(?m)^Godkjent\\s+\\d{1,2}\\.\\d{1,2}\\.\\d{4}[^\n]*") |>
     # "Godkjent av" with the approver's name and title on the next lines (#231)
     stringr::str_remove_all("(?m)^Godkjent av[ \\t]*\\n[^\\n]*(?:\\n(?:Institutt|Fakultet|Studie|Prorektor|Dekan)[^\\n]*)?") |>
+    # "Godkjent\nNotodden 06.03.20\nKari Nordmann (instituttleder)": the campus
+    # and date line and the approver's name line under it (#309)
+    stringr::str_replace_all(paste0("(?m)^(Godkjent)[ \\t]*\\n[^\\n]*\\d{1,2}\\.\\d{1,2}\\.\\d{2,4}[ \\t]*",
+                                    "(?:\\n[ \\t]*", .name_regex, "[^\\n]*)?(?=\\n|$)"), "\\1") |>
     # Leganto reading-list widget (#287): link label, "View online", and the
     # item type glued to the title ("BookMøter med barnelitteratur")
     stringr::str_remove_all("Click to view interactive reading list in Leganto") |>
@@ -246,7 +250,8 @@ anonymize_text <- function(institution, text,
 # \h, not [ \t]: some stamps have a no-break space after the date.
 .signature_roles <- c("dekan", "prodekan", "studiedekan", "instituttleder",
                       "instituttleiar", "rektor", "prorektor",
-                      "studieprogramleder", "studieprogramleiar")
+                      "studieprogramleder", "studieprogramleiar",
+                      "instituttnestleder", "instituttnestleiar")
 .signature_line_regex <- paste0(
   "(?m)^[\\h]*(?:\\d[\\d.\\h]*[\\h]+)?",
   "\\p{Lu}[\\p{L}.'’-]*(?:[\\h]+(?:\\p{Lu}[\\p{L}.'’-]*|van|von|de|der|den|da|di|af))+",
@@ -265,6 +270,13 @@ anonymize_text <- function(institution, text,
   "(?<!\\p{L})((?i:", paste(c(.staff_roles, .signature_roles), collapse = "|"),
   ")(?i:e|er|ar|en)?:?|(?i:kontakt(?:e|er)? med|kontaktpersone?r? er))[ \\t]+",
   .name_regex, "(?:[ \\t]*(?:,|og|eller)[ \\t]+", .name_regex, ")*"
+)
+# A name line followed by a line that is only a leader's role:
+# "Kari Nordmann\nInstituttnestleder" (usn approval blocks; #309). Other roles
+# head the next line ("The Programme Committee\nEmneansvarlig", uib).
+.name_role_lines_regex <- paste0(
+  "(?m)^[ \\t]*", .name_regex, "[ \\t]*\\n[ \\t]*(?i:", paste(.signature_roles, collapse = "|"),
+  ")[ \\t]*(?:\\n|$)"
 )
 .approved_by_name_regex <- paste0(
   "([Gg]odkjent av (?:[Dd]ekan(?:en)?|[Pp]rodekan|[Ii]nstitutt(?:nest)?leder|",
@@ -311,6 +323,8 @@ anonymize_text <- function(institution, text,
     stringr::str_remove_all(.role_name_line_regex) |>
     # Remove signature lines "17.03.20 Ola Nordmann, dekan" (#238)
     stringr::str_remove_all(.signature_line_regex) |>
+    # and "Ola Nordmann\nInstituttnestleder" (#309)
+    stringr::str_remove_all(.name_role_lines_regex) |>
     # Keep the role, drop the name: "Godkjent av dekan Ola Nordmann" (#237)
     stringr::str_replace_all(.approved_by_name_regex, "\\1") |>
     # "faglærer Ola Nordmann" anywhere in a line (#301)
@@ -377,6 +391,7 @@ anonymize_text <- function(institution, text,
   staff     = .staff_line_regex,
   role_name = .role_name_line_regex,
   role_name_inline = .role_name_inline_regex,
+  name_role_lines = .name_role_lines_regex,
   signature = .signature_line_regex
 )
 
