@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- fulltext pre-pass flags too strict (#234)
 - Section extraction fixes from the block-model audit (2026-10-05) (#280)
 - nord preamble lost; inline 'Forkunnskapskrav:' left in course_content (#285)
 - Append-only raw store: a later harvest adds files, never rewrites finalized ones (#296)
