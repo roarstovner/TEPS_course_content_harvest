@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- usn approval block keeps the approver's name: 'Godkjent / <campus> <dd.mm.yy> / <name> / Instituttnestleder' (#309)
 - Year and date rules damage URLs, DOIs and citations (#304)
 - Season rule half-removes season lists and cuts compound words (#303)
 - inn: pages showing a later plan version get no plan (#302)
