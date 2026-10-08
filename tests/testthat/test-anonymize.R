@@ -788,6 +788,17 @@ test_that("handlers follow the pages: mf notice, inn titles, hvl notice, usn typ
                "Læreplan i norsk\nAntz\nOpenStreetMap")
 })
 
+test_that("clock times go; durations, verses, ratios and credits stay (#308)", {
+  an <- function(x) anonymize_text("uis", x, .progress = FALSE)
+  keep <- c("A Monster Calls (2016). Lengde: 2:19", "22. juli-terroren [20:28]",
+            "Masterstudenter i historie, 10:27, 2020,", "Sure 2:177, Sure 3:30-32",
+            "ISBN-10:82-05-34802-8", "2018;24:40–45.", "Vektingen er 60:40.",
+            "LER-2303 Naturfag 5-10 Høst 10 stp", "Modern Learners, Total Pages 1:00:09,")
+  for (x in keep) expect_equal(an(x), x, info = x)
+  expect_equal(an("Tid Utlevering 09:00 Innlevering 23:59. Onsdager 14:30-15:30."),
+               "Tid Utlevering  Innlevering . Onsdager -.")
+})
+
 test_that("data/processed holds no personal data", {
   files <- Sys.glob(here::here("data/processed/*.RDS"))
   skip_if(length(files) == 0, "built data not available")

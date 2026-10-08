@@ -376,8 +376,10 @@ anonymize_text <- function(institution, text,
     # Remove Norwegian date-time format: "12. feb. 2026 02:50:04"
     stringr::str_remove_all("\\d{1,2}\\.\\s*(?:jan|feb|mar|apr|mai|jun|jul|aug|sep|okt|nov|des)\\.?\\s*\\d{4}\\s*\\d{2}:\\d{2}(?::\\d{2})?") |>
     # Date and year rules end in .not_gov: a government document's dates stay.
-    # Remove 2-digit season+year patterns (e.g. "Høst23", "Vår 22")
-    stringr::str_remove_all(paste0("(?i:høst|vår|haust|autumn|spring)\\s*\\d{2}\\b", .not_gov)) |>
+    # Remove 2-digit season+year patterns (e.g. "Høst23", "Vår 22"), not
+    # credits ("Høst 10 stp"; #308)
+    stringr::str_remove_all(paste0("(?i:høst|vår|haust|autumn|spring)\\s*\\d{2}\\b",
+                                   "(?![ \\t]*(?i:stp|sp|studiepoeng|ects|credits)\\b)", .not_gov)) |>
     # Remove season words in semester context (next to year or semester keywords)
     # e.g. "Høst 2024", "2024 Vår", "Undervisningssemester: Vår", "Semester: Autumn"
     # Must run BEFORE year removal so "Høst 2024" matches as a unit
@@ -432,8 +434,11 @@ anonymize_text <- function(institution, text,
     # Brackets emptied by the removals above: "Meld. St. 16 ()" (#229);
     # code such as "print()" has no space before and stays
     stringr::str_remove_all("[ \\t]+\\([ \\t]*\\)") |>
-    # Remove times HH:MM(:SS)
-    stringr::str_remove_all("\\b\\d{1,2}:\\d{2}(?::\\d{2})?\\b") |>
+    # Remove clock times "09:00", "23:59:59"; not running times ("Lengde:
+    # 2:19", "[20:28]", "Mer Film, 2:30, 2022,", "1:00:09"), verses ("Sure 3:30"),
+    # volume:pages, ISBN-10 or ratios ("60:40") (#308)
+    stringr::str_remove_all(paste0("(?<!\\[|Total Pages |[\\d:])(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d)?\\b",
+                                   "(?!\\]|,[ \\t]*(?:19|20)\\d{2}\\b)")) |>
     # Remove JS artifacts
     stringr::str_remove_all("function\\s*\\([^)]*\\)\\s*\\{[^}]*\\}") |>
     stringr::str_remove_all("\\$\\([^)]+\\)\\.[^;]+;") |>
