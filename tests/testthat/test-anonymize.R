@@ -380,13 +380,6 @@ test_that("INN: English structural headings preserved for readability", {
   expect_true(grepl("Important content", result))
 })
 
-test_that("INN: Engelsk normalized to English", {
-  input <- "Språk\nEngelsk\nInnhold her"
-  result <- anonymize_text("inn", input, .progress = FALSE)
-  expect_false(grepl("Engelsk", result))
-  expect_true(grepl("English", result))
-})
-
 # --- OsloMet ---
 
 test_that("OsloMet: error pages return NA", {
@@ -772,6 +765,21 @@ test_that("admin dates go, government documents keep theirs (#305)", {
   expect_equal(an("usn", "Naturfag (MG1NA1) H2018 Notodden\nPensumliste for H2025-V2026\ndidaktisk arbeid- H23"),
                "Naturfag (MG1NA1) Notodden\nPensumliste for\ndidaktisk arbeid")
   expect_equal(an("uis", "Tekst\nLENG145_1 Bokmål Versjon 20.Februar.2023\nMer"), "Tekst\nMer")
+})
+
+test_that("handlers follow the pages: mf notice, inn titles, hvl notice, usn types (#306)", {
+  an <- function(inst, x) anonymize_text(inst, x, .progress = FALSE)
+  mf <- paste("Litteraturliste", "Litteraturlisten for dette emnet", "",
+              "Litteraturlisten for emnet finner du via lenken under.", "",
+              "Tilgang til litteratur:", "", "Noe er digitalt.", "via ditt lokale folkebibliotek.", "",
+              "MERK: Sjekk at litteraturlisten viser riktig semester (oppdatering kan ta litt tid).",
+              "Vurdering", sep = "\n")
+  expect_equal(an("mf", mf), "Litteraturliste\n\nVurdering")
+  expect_equal(an("inn", "2MEN171-1 Engelsk 1, emne 1\nUndervisnings- og eksamensspråk\nEngelsk"),
+               "2MEN171-1 Engelsk 1, emne 1\nUndervisnings- og eksamensspråk\nEngelsk")
+  expect_equal(an("hvl", "Om emnet\nEmnet tilbys ikke studieåret 2025/2026.\nInnhald"), "Om emnet\nInnhald")
+  expect_equal(an("usn", "Government DocumentLæreplan i norsk\nVideoAntz\nOpenStreetMap"),
+               "Læreplan i norsk\nAntz\nOpenStreetMap")
 })
 
 test_that("data/processed holds no personal data", {

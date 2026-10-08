@@ -9,7 +9,7 @@ Generated: 2026-10-08
 |:---|---:|---:|:---|---:|:---|---:|---:|:---|
 | hiof | 1712 | 240 | 2017-2025 | 846 | 49.4% | 7151 | 820 | 3.1% |
 | hivolda | 1182 | 113 | 2017-2025 | 594 | 50.3% | 4620 | 547 | 7.9% |
-| hvl | 3604 | 393 | 2017-2025 | 3335 | 92.5% | 4116 | 1653 | 49.1% |
+| hvl | 3604 | 393 | 2017-2025 | 3335 | 92.5% | 4116 | 1651 | 49.2% |
 | inn | 2861 | 286 | 2018-2025 | 1777 | 62.1% | 4163 | 553 | 16.8% |
 | mf | 55 | 29 | 2025 | 26 | 47.3% | 4154 | 26 | 0.0% |
 | nih | 184 | 34 | 2021-2025 | 81 | 44.0% | 2330 | 81 | 0.0% |
@@ -27,7 +27,7 @@ Generated: 2026-10-08
 | uit | 6693 | 621 | 2004-2025 | 3150 | 47.1% | 4101 | 2312 | 26.5% |
 | usn | 3036 | 401 | 2018-2025 | 1238 | 40.8% | 10800 | 1182 | 4.5% |
 
-**Total**: 41025 rows, 25658 with extracted text (62.5%), 14061 unique
+**Total**: 41025 rows, 25658 with extracted text (62.5%), 14060 unique
 plans.
 
 **Columns:**
@@ -232,6 +232,9 @@ to chainlink.
   “Year coverage”). Selector `main` (#25)
 - `.anon_mf()` cuts from “Emneansvarlig” to the end (names, contact
   details, marketing)
+- The reading list is on a separate page; the plan holds only a link and
+  a library notice, which `.anon_mf()` removes, so MF plans have no
+  `reading_list` section (#306)
 
 ------------------------------------------------------------------------
 

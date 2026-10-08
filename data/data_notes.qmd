@@ -214,6 +214,7 @@ chainlink.
 
 - Only the plan in force is published (`plan_years = "current"`; see "Year coverage"). Selector `main` (#25)
 - `.anon_mf()` cuts from "Emneansvarlig" to the end (names, contact details, marketing)
+- The reading list is on a separate page; the plan holds only a link and a library notice, which `.anon_mf()` removes, so MF plans have no `reading_list` section (#306)
 
 ---
 

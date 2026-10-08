@@ -78,9 +78,13 @@ anonymize_text <- function(institution, text,
 }
 
 .anon_hvl <- function(txt) {
-  # a campus label with a name: the contact for exam aids (#301)
-  stringr::str_remove_all(txt, paste0("(?m)^(?:Bergen|Stord|Haugesund|Sogndal|Førde)[ \\t]*:[ \\t]*",
-                                      .name_regex, "[ \\t]*(?:\\n|$)"))
+  txt |>
+    # a campus label with a name: the contact for exam aids (#301)
+    stringr::str_remove_all(paste0("(?m)^(?:Bergen|Stord|Haugesund|Sogndal|Førde)[ \\t]*:[ \\t]*",
+                                   .name_regex, "[ \\t]*(?:\\n|$)")) |>
+    # "Emnet tilbys ikke studieåret 2025/2026.": without the year it would
+    # read "not offered" (#306)
+    stringr::str_remove_all("(?m)^Emnet tilbys ikke (?:studieåret )?\\d{4}/\\d{4}\\.?[ \\t]*(?:\\n|$)")
 }
 
 .anon_uia <- function(txt) {
@@ -112,8 +116,7 @@ anonymize_text <- function(institution, text,
     return(NA_character_)
 
   txt |>
-    stringr::str_remove_all("(?m)^\\d{4}\\s+(?:Høst|Vår|Autumn|Spring)(?:,\\s*\\d{4}\\s+(?:Høst|Vår|Autumn|Spring))*\\s*$") |>
-    stringr::str_replace_all("\\bEngelsk\\b", "English")
+    stringr::str_remove_all("(?m)^\\d{4}\\s+(?:Høst|Vår|Autumn|Spring)(?:,\\s*\\d{4}\\s+(?:Høst|Vår|Autumn|Spring))*\\s*$")
 }
 
 .anon_oslomet <- function(txt) {
@@ -133,7 +136,9 @@ anonymize_text <- function(institution, text,
     stringr::str_remove("Emneansvarlig\\s*\\n[\\s\\S]*$") |>
     # Exam dates block up to the learning outcomes, library notice (#228)
     stringr::str_remove("(?s)\\nEksamensdatoer\\n.*?(?=\\nLæringsutbytte\\n)") |>
-    stringr::str_remove("(?s)(?:Litteraturlisten for[^\\n]*\\s*)?Tilgang til litteratur\\n.*?folkebibliotek\\.")
+    # with the link labels before it; the list itself is on another page
+    # (colon and closing "MERK: Sjekk at litteraturlisten ..." since 2026; #306)
+    stringr::str_remove("(?s)(?:Litteraturlisten for[^\\n]*\\s*)*Tilgang til litteratur:?\\n.*?folkebibliotek\\.(?:\\s*MERK: Sjekk at litteraturlisten[^\\n]*)?")
 }
 
 .anon_hivolda <- function(txt) {
@@ -184,11 +189,16 @@ anonymize_text <- function(institution, text,
     stringr::str_replace_all(paste0("(?m)^(Godkjent)[ \\t]*\\n[^\\n]*\\d{1,2}\\.\\d{1,2}\\.\\d{2,4}[ \\t]*",
                                     "(?:\\n[ \\t]*", .name_regex, "[^\\n]*)?(?=\\n|$)"), "\\1") |>
     # Leganto reading-list widget (#287): link label, "View online", and the
-    # item type glued to the title ("BookMøter med barnelitteratur")
+    # item type glued to the title ("BookMøter med barnelitteratur"; more
+    # types #306)
     stringr::str_remove_all("Click to view interactive reading list in Leganto") |>
     stringr::str_remove_all("(?m)^[ \\t]*View online[ \\t]*(?:\\n|$)") |>
     stringr::str_remove_all(paste0(
-      "(?m)^(?:Book Chapter|Electronic Book|Electronic Article|Audio-Visual Document|",
+      "(?m)^(?:Book Chapter|Book Extract|Electronic Book|E-book|Electronic Article|",
+      "Newspaper Article|Audio-Visual Document|Government Document|Legal Document|Legislation|",
+      "Technical Report|Working Paper|Conference Paper|Conference|Presentation|Dissertation|",
+      "Streamed Video|Video|Audio Recording|Music|Text Resource|Research Dataset|Database|",
+      "Reference Entry|Computer Program|Anthology|Journal|Series|Review|Poem|Map|Note|Other|",
       "Book|Article|Website|Document|Thesis|Report)(?=[\\p{Lu}\\d\"«(])"))
 }
 
