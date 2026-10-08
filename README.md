@@ -234,8 +234,9 @@ Per-institution prose notes are edited directly in
 Package versions are pinned with renv: `renv.lock` records R 4.6.1 and
 every package the code uses, and R started in this folder loads them
 from the project library in `renv/` (activated by `.Rprofile`). On a new
-machine, `renv::restore()` installs them. After adding a package, record
-it with `renv::snapshot()` and commit `renv.lock`.
+machine, `renv::restore()` installs them. Harvesting USN also needs
+Chrome or Chromium on the machine, which chromote drives. After adding a
+package, record it with `renv::snapshot()` and commit `renv.lock`.
 
 The tests run with `testthat::test_dir("tests/testthat")`, and on GitHub
 Actions for every push and pull request to main
@@ -887,7 +888,7 @@ an invalid version/year combination silently shows another page without
 changing the URL. `resolve_urls_usn_batch()` therefore renders each
 candidate in Chrome (`rvest::read_html_live()`, hash routing) and checks
 that the displayed “Undervisningsstart” year matches. It tries versions
-1-5 and stops early when the course code is missing from the page (no
+1-3 and stops early when the course code is missing from the page (no
 such version) or version 1 starts after the requested year (course did
 not exist yet); NA means no version exists for that semester. The
 content is rendered inside Shadow DOM, which `html_text()` cannot read;

@@ -291,7 +291,8 @@ uit_page_is_english <- function(url) {
 #' much faster than creating a new session per URL.
 #'
 #' @param df A tibble with Emnekode, Årstall, Semesternavn columns
-#' @param max_version Maximum version number to try per course (default: 5)
+#' @param max_version Maximum version number to try per course (default: 3; every
+#'   URL found so far is version 1 or 2)
 #' @param .progress Show progress bar
 #' @return df with url and url_version columns added
 resolve_urls_usn_batch <- function(df, max_version = 3, checkpoint_path = NULL, .progress = TRUE) {
@@ -299,7 +300,9 @@ resolve_urls_usn_batch <- function(df, max_version = 3, checkpoint_path = NULL, 
     return(df |> dplyr::mutate(url = NA_character_, html = NA_character_))
   }
 
-  # Start a single browser session at the base URL
+  # Start a single browser session at the base URL. read_html_live() needs
+  # chromote, which rvest only suggests; naming it here puts it in renv.lock (#314)
+  rlang::check_installed("chromote")
   base_url <- "https://www.usn.no/studier/studie-og-emneplaner/"
   session <- rvest::read_html_live(base_url)
 

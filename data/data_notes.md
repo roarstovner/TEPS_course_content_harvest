@@ -416,7 +416,8 @@ to chainlink.
 
 - Most rows without a plan are the other semester of a course registered
   in both (see “Semester registration in DBH”; \#221)
-- The URL holds a plan version (1-5) that metadata cannot give:
+- The URL holds a plan version (1-3 are tried; all URLs found are 1
+  or 2) that metadata cannot give:
   `https://www.usn.no/studier/studie-og-emneplaner/#/emne/{CODE}_{VERSION}_{YEAR}_{SEMESTER}`.
   Invalid version/year combinations silently show another page, so
   `resolve_urls_usn_batch()` renders each candidate in Chrome and checks
