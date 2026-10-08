@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- USN harvest prerequisites: chromote missing from renv.lock; README says versions 1-5, code tries 1-3 (#314)
 - Check the 201 course-years without a plan between two years with plans (#297)
 - UiT: a semester listed twice in the picker can be an English twin; keep the Norwegian document (#313)
 - Retry the uia autumn-2023 page shells when uia renders its plans (#300)
