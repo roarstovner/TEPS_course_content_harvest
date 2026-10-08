@@ -34,6 +34,17 @@ test_that("a table is one line per row, cells separated by tabs (#312)", {
                                        "Hjemmeeksamen\t40\t\nOppgave\t60\tKarakterregel: A–E, stryk F"))
 })
 
+test_that("a <br> inside an inline element is a space, not glue (#315)", {
+  # a <br> straight under a block element stays a line break
+  cfg <- list(reader = "html", container = "main", heading = "h2")
+  b <- page_blocks("<main><h2>Vurdering</h2><p>Varighet: 45 minutter.<br>Neste</p>
+    <div><span>45 minutter.<br>Det tas</span></div>
+    <p><span>Kunnskapar<br></span>Studenten skal</p>
+    <div>løp <a href='x'>Læringssenteret<br>Birkeland</a> og</div></main>", NA, cfg)
+  expect_equal(.blocks_text(b), paste0("Vurdering\n\nVarighet: 45 minutter.\nNeste\n\n45 minutter. Det tas",
+                                       "\n\nKunnskapar Studenten skal\n\nløp Læringssenteret Birkeland og"))
+})
+
 test_that("noop gives NA, pdf_split keeps the harvested text, usn is cleaned", {
   df <- tibble::tibble(html = "  line keyboard_backspace\n\n\n\nnext  ",
                        extracted_text = "harvested")

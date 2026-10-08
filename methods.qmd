@@ -171,7 +171,12 @@ cell without a space (Volda "Fagartikkel2. Utvikling …", UiT
 own line breaks, which split one exam over several lines. *Consequence:* the
 text changes only in whitespace; 725 of 2,314 UiT plans and 77 of 547 Volda
 plans get new ids, because words a cell had joined are now apart; no plans
-merge or split. *Since:* 2026-10-08 (#312).
+merge or split. *Since:* 2026-10-08 (#312). A line break inside a `<span>`
+or link elsewhere on the page is now a space as well, not glue (HiOF
+"minutter.Det tas", UiB "KunnskaparStudenten"): 64 UiT, 37 HiOF, 8 UiB and 3
+UiA plans get new ids, and two pairs of UiT plans that differed only by such
+glue merge (SOA-3905 spring and autumn 2011; LER-1201 spring 2018). *Since:*
+2026-10-08 (#315).
 
 ## Anonymization
 

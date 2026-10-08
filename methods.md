@@ -11,7 +11,7 @@ changes what the data mean, add or update its entry here; each release
 tag freezes this file with the data.
 
 Current data: 41 025 offerings (DBH course × year × semester) at 19
-institutions, 24 150 of them with a plan, and 14 062 unique plans from
+institutions, 24 150 of them with a plan, and 14 060 unique plans from
 18 institutions (none from Samas, below).
 
 ## Population and sampling frame
@@ -115,7 +115,7 @@ before. *Since:* 2026-10-08 (#313).
 
 **A plan is a unique anonymized text per institution and course code**
 (`plan_content_id`, a hash of the normalized text). Offerings with the
-same text share a plan: 24 150 offerings have 14 062 plans. *Why:*
+same text share a plan: 24 150 offerings have 14 060 plans. *Why:*
 consecutive years and both semesters mostly repeat the same text.
 *Consequence:* the id changes whenever cleaning changes the text, so
 coding is tied to a frozen release and carried to later releases with a
@@ -153,7 +153,12 @@ Utvikling …”, UiT “Karakterregel:A–E”, “Spring 2009Veiledning”).
 several lines. *Consequence:* the text changes only in whitespace; 725
 of 2,314 UiT plans and 77 of 547 Volda plans get new ids, because words
 a cell had joined are now apart; no plans merge or split. *Since:*
-2026-10-08 (#312).
+2026-10-08 (#312). A line break inside a `<span>` or link elsewhere on
+the page is now a space as well, not glue (HiOF “minutter.Det tas”, UiB
+“KunnskaparStudenten”): 64 UiT, 37 HiOF, 8 UiB and 3 UiA plans get new
+ids, and two pairs of UiT plans that differed only by such glue merge
+(SOA-3905 spring and autumn 2011; LER-1201 spring 2018). *Since:*
+2026-10-08 (#315).
 
 ## Anonymization
 

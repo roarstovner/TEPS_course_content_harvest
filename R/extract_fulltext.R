@@ -6,22 +6,24 @@
 # ended up in assessment, #245; uit's page scripts, #218) or form widgets
 # (uib's semester picker "Vel emnebeskrivelse for semester 2027 Vår ...",
 # #219). Used by both fulltext and section extraction (#259).
+# html_text2() and the block walker drop a <br> inside an inline element and
+# glue the words around it (uit's "Karakterregel:A–E", uib's
+# "KunnskaparStudenten"), so such a <br> becomes a space (#315).
 # A table is one line per row, cells separated by tabs (an exam table: one
 # line per exam; #312). html_text2() reads a table whose rows sit in
 # thead/tbody/tfoot as inline text and runs it together
 # ("FormAndelHjemmeeksamen40%"), so the wrappers go; a cell's <div>s and
-# <br>s would break its row, so each cell becomes its text on one line, a
-# <br> a space (html_text2() drops one inside a <span>: uit's
-# "Karakterregel:A–E"). No section heading sits in a table cell.
+# <br>s would break its row, so each cell becomes its text on one line. No
+# section heading sits in a table cell.
 .read_doc <- function(html) {
   doc <- rvest::read_html(html)
   xml2::xml_remove(rvest::html_elements(doc, "script, style, noscript, select, label"))
+  inline_br <- xml2::xml_find_all(doc, paste0("//", .inline_tags, "/br", collapse = " | "))
+  xml2::xml_text(inline_br) <- " "
   for (w in rvest::html_elements(doc, "thead, tbody, tfoot")) {
     for (k in xml2::xml_contents(w)) xml2::xml_add_sibling(w, k, .where = "before")
     xml2::xml_remove(w)
   }
-  cell_br <- xml2::xml_find_all(doc, "//td//br | //th//br")
-  xml2::xml_text(cell_br) <- " "
   for (cell in rvest::html_elements(doc, "td, th")) {
     txt <- stringr::str_squish(rvest::html_text2(cell))
     xml2::xml_remove(xml2::xml_contents(cell))
