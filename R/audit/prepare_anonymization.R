@@ -14,7 +14,8 @@
 #   email       e-mail address left
 #   phone       8-digit phone-number-like sequence left
 #   name_label  staff label (emneansvarlig, faglærer, godkjent av, ...) followed
-#               by a capitalised two-word name
+#               by a capitalised two-word name, or a role and names anywhere in
+#               a line (.role_name_inline_regex, as privacy_check; #301)
 #   name_like   2+ capitalised word pairs outside literature references
 #   admin_date  dates / semester-year labels / admin year stamps left
 #   removed     unusually large share of the text removed (over-removal)
@@ -141,7 +142,7 @@ for (inst in institutions) {
       n_name_like     = vapply(course_plan, name_like_count, integer(1)),
       flag_email      = str_detect(plan, EMAIL_RX),
       flag_phone      = str_detect(plan, PHONE_RX),
-      flag_name_label = str_detect(plan, NAME_LABEL_RX),
+      flag_name_label = str_detect(plan, NAME_LABEL_RX) | str_detect(plan, .role_name_inline_regex),
       flag_name_like  = n_name_like >= 2,
       flag_admin_date = str_detect(plan, ADMIN_DATE_RX),
       flag_removed    = (z > OUTLIER_Z & removed_share > 0.05) | removed_share > 0.5,
