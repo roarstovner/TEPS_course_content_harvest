@@ -61,7 +61,6 @@ institution_configs <- list(
     strategy = "standard",
     selector = ".content-inner",
     plan_years = "url",
-    pre_fn = .add_table_cell_breaks,
     section_strategy = "html",
     # inn marks most section headings with <div class="label"> (and the facts
     # box with <div class="facts-label">); only Læringsutbytte and Pensum are
@@ -77,7 +76,6 @@ institution_configs <- list(
     # course coordinator and approver (names)
     exclude = "div.field-person-in-charge, div.field-approval-sign",
     plan_years = "url",
-    pre_fn = .add_table_cell_breaks,
     # Drupal fields (div.field-<name> + div.label) name each part of the plan;
     # the exam table is the unlabelled field-assessments-row (#214).
     section_strategy = "html",

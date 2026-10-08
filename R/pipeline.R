@@ -6,8 +6,8 @@
 
 # --- Per institution ---------------------------------------------------------
 
-# The institution's config as a target value. Functions in it (pre_fn,
-# post_fn, fetch_fn) are rebuilt from their source: R byte-compiles a function
+# The institution's config as a target value. Functions in it (post_fn,
+# fetch_fn) are rebuilt from their source: R byte-compiles a function
 # after a few calls, which changes its serialized form and with it the hash
 # {targets} uses to decide what is outdated.
 institution_config_target <- function(institution) {

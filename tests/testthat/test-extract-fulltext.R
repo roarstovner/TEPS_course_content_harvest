@@ -20,6 +20,20 @@ test_that("the blocks as text keep lines, paragraphs and split paragraphs", {
   expect_equal(.blocks_text(b), "Innhold\nLinje\nA\nB\n\nFaget i praksis\nStudentene\n\nSlutt")
 })
 
+test_that("a table is one line per row, cells separated by tabs (#312)", {
+  # hivolda's and inn's exam table: rows in thead/tbody, values in div.item;
+  # uit's cells break with <br>, which html_text2() drops inside a <span>
+  cfg <- list(reader = "html", container = "main", heading = "h2")
+  b <- page_blocks("<main><h2>Vurdering</h2><table>
+    <thead><tr><th>Vurderingsform</th><th>Andel</th><th>Kommentar</th></tr></thead>
+    <tbody><tr><td><div class='form'><div class='item'>Hjemmeeksamen</div></div></td>
+      <td><div class='item'>40</div></td><td></td></tr>
+    <tr><td>Oppgave</td><td>60</td><td><span>Karakterregel:<br>A–E, stryk F</span></td></tr></tbody>
+    </table></main>", NA, cfg)
+  expect_equal(.blocks_text(b), paste0("Vurdering\nVurderingsform\tAndel\tKommentar\n",
+                                       "Hjemmeeksamen\t40\t\nOppgave\t60\tKarakterregel: A–E, stryk F"))
+})
+
 test_that("noop gives NA, pdf_split keeps the harvested text, usn is cleaned", {
   df <- tibble::tibble(html = "  line keyboard_backspace\n\n\n\nnext  ",
                        extracted_text = "harvested")

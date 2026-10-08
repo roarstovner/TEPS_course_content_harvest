@@ -161,6 +161,18 @@ their plan; the April 2026 harvest has the same notice on the same pages.
 *Rejected:* keeping the later plan with a flag (decided 2026-10-07: an
 offering is coded with its own year's plan or none).
 
+**Tables are read one row per line:** each row of a table on the page is one
+line, its cells separated by tabs and each cell on one line, so an exam table
+(INN, Volda, UiT from 2022) has one line per exam. *Why:* splitting the
+assessment text by exam (#311) needs the rows. The reader had run a table
+with `<thead>`/`<tbody>` into one line (INN, Volda) and joined the lines of a
+cell without a space (Volda "Fagartikkel2. Utvikling …", UiT
+"Karakterregel:A–E", "Spring 2009Veiledning"). *Rejected:* keeping a cell's
+own line breaks, which split one exam over several lines. *Consequence:* the
+text changes only in whitespace; 725 of 2,314 UiT plans and 77 of 547 Volda
+plans get new ids, because words a cell had joined are now apart; no plans
+merge or split. *Since:* 2026-10-08 (#312).
+
 ## Anonymization
 
 **All published text is anonymized** (`anonymize_text()`): staff names

@@ -58,7 +58,6 @@
     fields            = ic$section_fields,
     inline_coursework = isTRUE(ic$section_inline_coursework),
     pointer           = ic$section_pointer,
-    pre_fn            = ic$pre_fn,
     institution       = ic$name
   )
 }
@@ -119,7 +118,6 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
 
 .html_blocks <- function(html, cfg) {
   if (is.na(html) || !nzchar(html)) return(.empty_blocks())
-  if (!is.null(cfg$pre_fn)) html <- cfg$pre_fn(html)
   doc <- .read_doc(html)
   if (!is.null(cfg$exclude)) xml2::xml_remove(rvest::html_elements(doc, cfg$exclude))
   root <- if (is.null(cfg$container)) doc else rvest::html_element(doc, cfg$container)

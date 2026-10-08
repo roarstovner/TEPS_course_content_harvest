@@ -393,6 +393,9 @@ fields in `R/institution_config.R`:
 | `text` | usn, steiner (+ the fallback, e.g. uis PDF plans) | Heading-shaped lines in `extracted_text`; skips a table of contents ("Innholdsfortegnelse", usn); inside a reading list opened by a whole heading only a whole heading switches section (book titles) |
 | `noop` | samas | — |
 
+The `html` reader writes a table as one line per row, its cells separated by
+tabs, so an exam table has one line per exam (#312).
+
 Fields for the `html` reader:
 
 - `selector` and `exclude` (shared with the fulltext): the container, and

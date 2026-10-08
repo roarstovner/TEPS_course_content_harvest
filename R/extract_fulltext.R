@@ -6,9 +6,27 @@
 # ended up in assessment, #245; uit's page scripts, #218) or form widgets
 # (uib's semester picker "Vel emnebeskrivelse for semester 2027 Vår ...",
 # #219). Used by both fulltext and section extraction (#259).
+# A table is one line per row, cells separated by tabs (an exam table: one
+# line per exam; #312). html_text2() reads a table whose rows sit in
+# thead/tbody/tfoot as inline text and runs it together
+# ("FormAndelHjemmeeksamen40%"), so the wrappers go; a cell's <div>s and
+# <br>s would break its row, so each cell becomes its text on one line, a
+# <br> a space (html_text2() drops one inside a <span>: uit's
+# "Karakterregel:A–E"). No section heading sits in a table cell.
 .read_doc <- function(html) {
   doc <- rvest::read_html(html)
   xml2::xml_remove(rvest::html_elements(doc, "script, style, noscript, select, label"))
+  for (w in rvest::html_elements(doc, "thead, tbody, tfoot")) {
+    for (k in xml2::xml_contents(w)) xml2::xml_add_sibling(w, k, .where = "before")
+    xml2::xml_remove(w)
+  }
+  cell_br <- xml2::xml_find_all(doc, "//td//br | //th//br")
+  xml2::xml_text(cell_br) <- " "
+  for (cell in rvest::html_elements(doc, "td, th")) {
+    txt <- stringr::str_squish(rvest::html_text2(cell))
+    xml2::xml_remove(xml2::xml_contents(cell))
+    xml2::xml_text(cell) <- txt
+  }
   doc
 }
 
@@ -53,14 +71,6 @@ page_fulltext <- function(blocks, config) {
   text <- .blocks_text(blocks)
   if (!is.na(text) && !is.null(config$post_fn)) text <- config$post_fn(text)
   if (is.na(text) || !nzchar(trimws(text))) NA_character_ else text
-}
-
-.add_table_cell_breaks <- function(html) {
-  # Insert newlines before closing </td> and </th> so html_text2() treats
-  # cells as block-level content instead of squashing them together.
-  html |>
-    stringr::str_replace_all("</td>", "\n</td>") |>
-    stringr::str_replace_all("</th>", "\n</th>")
 }
 
 .post_ntnu <- function(txt) {

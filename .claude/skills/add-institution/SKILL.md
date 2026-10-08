@@ -50,7 +50,6 @@ paragraph sub-headings use `section_subheading_selector = "p"`. README "Blocks
 and Sections" lists every field with the institution that uses it.
 
 Optional config fields:
-- `pre_fn`: Function applied to HTML before parsing (e.g., `.add_table_cell_breaks`)
 - `post_fn`: Function applied to extracted text after parsing (e.g., `.post_ntnu`)
 - `fetch_fn`: Custom fetch function (e.g., `fetch_html_cols_single_ntnu`)
 - `user_agent`: `"browser"` to use browser User-Agent (e.g., HiOF needs this to avoid 403)

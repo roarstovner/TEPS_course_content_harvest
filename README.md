@@ -544,6 +544,9 @@ titles)</td>
 </tbody>
 </table>
 
+The `html` reader writes a table as one line per row, its cells
+separated by tabs, so an exam table has one line per exam (#312).
+
 Fields for the `html` reader:
 
 - `selector` and `exclude` (shared with the fulltext): the container,

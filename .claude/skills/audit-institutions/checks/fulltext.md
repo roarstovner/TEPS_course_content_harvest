@@ -96,7 +96,7 @@ and other non-plan page text), or `whole_text`.
 
 ## Typical fix locations
 
-`R/institution_config.R` (`selector`, `selector_mode`, `pre_fn`, `post_fn`,
+`R/institution_config.R` (`selector`, `selector_mode`, `post_fn`,
 `plan_years`), `R/extract_fulltext.R` (pre/post functions),
 `R/add_course_url.R` (URL builders), `R/harvest_strategies.R` (non-standard
 strategies).
