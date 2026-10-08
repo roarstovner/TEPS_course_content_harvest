@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Anonymization fixes from audit pilot 2026-09-30 (#226)
 - Low: running times, bracket year ranges, Meld. St. session years (#308)
 - ntnu: course_plan loses the exam tab (grading scale, weights) (#307)
 - Anonymizer handler drift: mf library notice, inn Engelsk rewrite, hvl offering notice, usn Leganto types (#306)
