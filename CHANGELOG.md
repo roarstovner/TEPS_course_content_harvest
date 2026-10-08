@@ -103,6 +103,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Check the 201 course-years without a plan between two years with plans (#297)
+- UiT: a semester listed twice in the picker can be an English twin; keep the Norwegian document (#313)
 - Retry the uia autumn-2023 page shells when uia renders its plans (#300)
 - Anonymization fixes from audit pilot 2026-09-30 (#226)
 - Low: running times, bracket year ranges, Meld. St. session years (#308)
