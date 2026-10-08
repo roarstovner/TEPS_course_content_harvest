@@ -672,8 +672,8 @@ test_that("academic-year ranges go, content ranges stay (#230)", {
 })
 
 test_that("brackets emptied by year removal go, code brackets stay (#229)", {
-  expect_equal(anonymize_text("hiof", "Meld. St. 16 (2016-2017) og print() i Python.", .progress = FALSE),
-               "Meld. St. 16 og print() i Python.")
+  expect_equal(anonymize_text("hiof", "Studiehåndbok (2016-2017) og print() i Python.", .progress = FALSE),
+               "Studiehåndbok og print() i Python.")
 })
 
 test_that("a bracketed e-mail leaves no empty brackets (#229)", {
@@ -750,6 +750,28 @@ test_that("usn approval block and name + leader-role lines lose the name (#309)"
   f <- tempfile(fileext = ".RDS")
   saveRDS(tibble::tibble(text = "Godkjent\nKari Nordmann\nInstituttnestleder"), f)
   expect_true("name_role_lines" %in% personal_data_in(f)$pattern)
+})
+
+test_that("admin dates go, government documents keep theirs (#305)", {
+  an <- function(inst, x) anonymize_text(inst, x, .progress = FALSE)
+  keep <- c("Meld. St. 28 (2015-2016) og St.meld. nr. 35 (2007–2008).",
+            "Prop. 57 L (2022 – 2023)", "Kunnskapsdepartementet, 2015-2016,",
+            "NB: Ny opplæringslov fra 01.08.24",
+            "LOV-1998-07-17-61 (sist endret 1.1.2018)",
+            "forskrift om rammeplan, fastsatt av Kunnskapsdepartementet 7. juni 2016",
+            "Ny læreplan som trer i kraft høsten 2020.",
+            "https://www.stortinget.no/dokumentserien/2020-2021/dok3.pdf",
+            "rapporter/2016/ungkost-rapport-24.06.16.pdf")
+  for (x in keep) expect_equal(an("usn", x), x, info = x)
+  expect_equal(an("nla", "Studieår: 2019 — 2020"), "Studieår:")
+  expect_equal(an("usn", "Godkjent 9.3.21.\nEmneplan godkjent 25.03.25\nGodkjent av instituttleder 18.10.22"),
+               "Godkjent\nEmneplan godkjent\nGodkjent av instituttleder")
+  expect_equal(an("nord", "Oppsatt skoleeksamen 16.12.20 gjøres om."), "Oppsatt skoleeksamen  gjøres om.")
+  expect_equal(an("oslomet", "Fagplanen ble godkjent i studieutvalget 14. november 2016.\nRedaksjonelle endringar lagt inn 3. juli 2017, 19. april og 7. juni 2018"),
+               "Fagplanen ble godkjent i studieutvalget\nRedaksjonelle endringar lagt inn")
+  expect_equal(an("usn", "Naturfag (MG1NA1) H2018 Notodden\nPensumliste for H2025-V2026\ndidaktisk arbeid- H23"),
+               "Naturfag (MG1NA1) Notodden\nPensumliste for\ndidaktisk arbeid")
+  expect_equal(an("uis", "Tekst\nLENG145_1 Bokmål Versjon 20.Februar.2023\nMer"), "Tekst\nMer")
 })
 
 test_that("data/processed holds no personal data", {

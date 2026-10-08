@@ -11,7 +11,7 @@ changes what the data mean, add or update its entry here; each release
 tag freezes this file with the data.
 
 Current data: 41 025 offerings (DBH course × year × semester) at 19
-institutions, 24 145 of them with a plan, and 14 082 unique plans from
+institutions, 24 145 of them with a plan, and 14 061 unique plans from
 18 institutions (none from Samas, below).
 
 ## Population and sampling frame
@@ -102,7 +102,7 @@ on 2026-10-07 again got UiA’s shells. *Since:* 2026-10-07 (#297).
 
 **A plan is a unique anonymized text per institution and course code**
 (`plan_content_id`, a hash of the normalized text). Offerings with the
-same text share a plan: 24 145 offerings have 14 082 plans. *Why:*
+same text share a plan: 24 145 offerings have 14 061 plans. *Why:*
 consecutive years and both semesters mostly repeat the same text.
 *Consequence:* the id changes whenever cleaning changes the text, so
 coding is tied to a frozen release and carried to later releases with a
@@ -146,6 +146,26 @@ kontakt med <name> eller <name>”), HVL campus contact lines and UiT’s
 2008-2011 timetable block (teachers, rooms, first lectures) from
 2026-10-07, after the anonymization audit of all institutions found them
 in 16 plans (#301).
+
+**Dates of government documents are kept.** A date or year rule does not
+fire when a government document is named up to 80 characters before it
+on the same line: laws and regulations, white papers and propositions
+(“Meld. St. 21 (2016–2017)”, “Prop. 57 L (2022–2023)”), NOUs, curricula
+and framework plans, national guidelines, conventions, and what the
+Storting, ministries and directorates publish (“Ny opplæringslov fra
+01.08.24”, “fastsatt av Kunnskapsdepartementet 7. juni 2016”). *Why:*
+these dates say which document is cited; they are content, not
+administration (decided 2026-10-08). *Rejected:* removing session years
+with the other academic-year ranges, which turned “Meld. St. 21
+(2016–2017)” into “Meld. St. 21” (#229, 2026-09). *Consequence:* 185
+plans keep such dates; an access date next to a government link also
+stays (“\[Lesedato: …\]” after a udir.no address). At the same time
+administrative dates in more forms go: em-dash year ranges (“Studieår:
+2019 — 2020”, NLA), UiS version stamps, approval and update dates in
+words (“godkjent i studieutvalget 14. november 2016”) or with a
+two-digit year (“Godkjent 22.03.23”), and semester codes (“H23”,
+“H2025-V2026”): 1,683 plans lose one; 21 plans that differed only by
+such a date merge with another. *Since:* 2026-10-08 (#305).
 
 ## Sections
 
@@ -191,7 +211,7 @@ code). *Since:* 2026-10-07 (#285).
 
 **OsloMet teaching methods that only say “Se fagplanen.”** take the text
 of the subject’s Fagplan on the same page (“Fagets arbeids- og
-undervisningsformer”), marked “Se fagplanen. Fagplanen sier: …”: 130
+undervisningsformer”), marked “Se fagplanen. Fagplanen sier: …”: 128
 plans. *Why:* the emneplan delegates the teaching methods to the subject
 plan, which applies to the course. *Since:* 2026-10-06 (#289).
 
