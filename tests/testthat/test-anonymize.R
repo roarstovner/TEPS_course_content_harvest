@@ -224,12 +224,18 @@ test_that("3+ newlines collapsed to 2", {
 
 # --- NTNU ---
 
-test_that("NTNU: Kontaktinformasjon section stripped to end", {
-  input <- "Faglig innhold\nViktig tekst\nKontaktinformasjon\nNavn: Ola\nEksamen: dato"
-  result <- anonymize_text("ntnu", input, .progress = FALSE)
-  expect_true(grepl("Viktig tekst", result))
-  expect_false(grepl("Kontaktinformasjon", result))
-  expect_false(grepl("Ola", result))
+test_that("NTNU: contacts, exam sessions and timetable go; unit and grading stay (#307)", {
+  an <- function(x) anonymize_text("ntnu", x, .progress = FALSE)
+  input <- paste("Viktig tekst", "Kontaktinformasjon", "Emneansvarlig/koordinator", "Kari Nordmann",
+                 "Faglærere", "Ola Nordmann", "Ansvarlig enhet", "", "Institutt for lærerutdanning", "",
+                 "Eksamen", "Eksamen", "Vurderingsordning: Hjemmeeksamen", "Karakter: Bestått/Ikke bestått",
+                 "Ordinær eksamen - Høst 2024", "Hjemmeeksamen",
+                 "Vekting 100/100 Dato 18.11.2024 Sted og rom Lysholmbygget", "Alt om eksamen ved NTNU", sep = "\n")
+  expect_equal(an(input), paste("Viktig tekst", "Ansvarlig enhet", "", "Institutt for lærerutdanning", "",
+                                "Eksamen", "Eksamen", "Vurderingsordning: Hjemmeeksamen",
+                                "Karakter: Bestått/Ikke bestått", sep = "\n"))
+  expect_equal(an("Tekst\nKontaktinformasjon\nAnsvarlig enhet\n\nInstitutt for fysikk\n\nTimeplan\nTimeplan\nRom R1"),
+               "Tekst\nAnsvarlig enhet\n\nInstitutt for fysikk")
 })
 
 test_that("NTNU: course-details-portlet removed", {

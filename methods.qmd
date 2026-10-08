@@ -186,6 +186,21 @@ two-digit year ("Godkjent 22.03.23"), and semester codes ("H23",
 "H2025-V2026"): 1,683 plans lose one; 21 plans that differed only by such a
 date merge with another. *Since:* 2026-10-08 (#305).
 
+**NTNU plans keep their responsible unit and exam form.** Of the page's
+contact and exam tabs, `course_plan` keeps "Ansvarlig enhet" with the
+department, "Vurderingsordning: …" and "Karakter: …" (the grading scale);
+the contact names, the exam sessions (dates, rooms, weights, candidate
+counts) and the timetable go, as in the sections (#245). The dedup hash
+leaves these closing lines out. *Why:* the earlier cut from
+"Kontaktinformasjon" to the end also took the grading scale, so
+`course_plan` could not tell pass/fail courses from graded ones
+(anonymization audit, #231). *Rejected:* keeping the sessions, which change
+every year; hashing the new lines, which split 53 plans only because one
+year's page lacks the exam tab or a department was renamed. *Consequence:*
+of 2,008 NTNU plans, 1,901 now name their unit and 1,356 their grading
+scale; where the scale sits inside a session it is still lost. Plan ids do
+not change. *Since:* 2026-10-08 (#307).
+
 ## Sections
 
 ```{r}

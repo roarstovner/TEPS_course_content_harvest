@@ -280,8 +280,10 @@ to chainlink.
 - Year in the URL, no semester. Pages saying no information is available
   raise `ntnu_no_info_error`; robots.txt asks for a 10-second crawl
   delay
-- `.anon_ntnu()` cuts from “Kontaktinformasjon” to the end (teachers,
-  exam dates, timetable)
+- `.anon_ntnu()` removes the contact block (course coordinator,
+  teachers), the exam sessions (dates, rooms) and the timetable; the
+  responsible unit and the exam form and grading scale stay, and the
+  dedup hash ignores them (#307)
 
 ------------------------------------------------------------------------
 

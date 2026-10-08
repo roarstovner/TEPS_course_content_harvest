@@ -206,3 +206,10 @@ test_that("deduplicate_plans errors on missing columns", {
   df <- tibble::tibble(x = 1)
   expect_error(deduplicate_plans(df))
 })
+
+test_that("NTNU's unit and exam tab do not split a plan (#307)", {
+  a <- "Om emnet\nTekst\nAnsvarlig enhet\n\nInstitutt for lærerutdanning\n\nEksamen\nEksamen\nVurderingsordning: Oppgave"
+  b <- "Om emnet\nTekst\nAnsvarlig enhet\n\nProgram for lærerutdanning"
+  expect_equal(normalize_plan_text(a, .progress = FALSE), normalize_plan_text(b, .progress = FALSE))
+  expect_equal(normalize_plan_text(a, .progress = FALSE), "om emnet tekst")
+})
