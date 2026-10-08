@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- sjekke om det er mulig å dele inn seksjoner i analyseenheter (#311)
 - A <br> inside an inline element glues words (html_text2 and the block walker drop it) (#315)
 - Keep table rows as lines: html_text2 flattens <table> with <tbody>/<thead> (#312)
 - USN harvest prerequisites: chromote missing from renv.lock; README says versions 1-5, code tries 1-3 (#314)
