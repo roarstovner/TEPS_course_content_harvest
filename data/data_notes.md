@@ -24,10 +24,10 @@ Generated: 2026-10-08
 | uib | 2619 | 177 | 2004-2025 | 1473 | 56.2% | 3135 | 564 | 59.5% |
 | uio | 100 | 54 | 2025 | 47 | 47.0% | 4467 | 47 | 0.0% |
 | uis | 2921 | 316 | 2007-2025 | 2728 | 93.4% | 5600 | 1287 | 52.8% |
-| uit | 6693 | 621 | 2004-2025 | 3150 | 47.1% | 4101 | 2312 | 26.5% |
+| uit | 6693 | 621 | 2004-2025 | 3154 | 47.1% | 4108 | 2314 | 26.6% |
 | usn | 3036 | 401 | 2018-2025 | 1238 | 40.8% | 10800 | 1182 | 4.5% |
 
-**Total**: 41025 rows, 25658 with extracted text (62.5%), 14060 unique
+**Total**: 41025 rows, 25662 with extracted text (62.6%), 14062 unique
 plans.
 
 **Columns:**
@@ -74,7 +74,7 @@ offerings with a plan, by period:
 | uib         | 31%   | 44%     | 63%     | 81%     | 79%     | 86%   |
 | uio         |       |         |         |         |         | 47%   |
 | uis         | 92%   | 96%     | 95%     | 92%     | 92%     | 94%   |
-| uit         | 51%   | 43%     | 39%     | 46%     | 54%     | 52%   |
+| uit         | 51%   | 43%     | 40%     | 46%     | 54%     | 52%   |
 | usn         |       |         | 39%     | 45%     | 38%     | 41%   |
 
 ## Semester registration in DBH
@@ -112,7 +112,7 @@ year) that have a plan in at least one semester:
 | uib | 1328 | 85% | 14 | 653 | 458 | 54% | 56.2% |
 | uio | 54 | 85% | 44 | 0 | 2 | 87% | 47.0% |
 | uis | 1602 | 82% | 0 | 1235 | 84 | 93% | 93.4% |
-| uit | 3605 | 86% | 1079 | 875 | 1134 | 63% | 47.1% |
+| uit | 3605 | 86% | 1077 | 878 | 1133 | 63% | 47.1% |
 | usn | 1657 | 83% | 1021 | 31 | 327 | 73% | 40.8% |
 
 ## Course-years without a plan
@@ -148,24 +148,25 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 | uib | 614 | 447 | 0 | 137 | 36 | 0 | 0 |
 | uio | 7 | 0 | 0 | 0 | 0 | 7 | 0 |
 | uis | 109 | 14 | 0 | 0 | 95 | 0 | 0 |
-| uit | 1324 | 0 | 1320 | 0 | 10 | 0 | 53 |
+| uit | 1322 | 0 | 1319 | 0 | 8 | 0 | 52 |
 | usn | 431 | 0 | 431 | 0 | 0 | 0 | 30 |
 
 To list the gaps between plans:
 `readRDS("data/interim/plan_gaps.RDS") |> dplyr::filter(between_plans)`.
 
 Checked 2026-10-07 and 2026-10-08 (#297), all 208 gaps between plans:
-none is a wrong URL. The 404s at HiOF (11 of 12 URLs; the twelfth is now
-an empty page), HVL (5 of 5, soft 404) and NIH (4 of 4) are still 404.
-No URL means the site has no page for that year: UiT’s semester picker
-has no option for it (6 courses checked), USN shows another year’s plan
-for every version number (all 30, both semesters), and Hivolda’s course
-page lists no version for it (all 10, mostly 2024). NTNU’s 3 (2010)
-still say “Det finnes ingen informasjon for dette studieåret”; INN’s 7
-show a later plan version (#302). UiA’s 91 are its autumn-2023 page
-shells (see UiA), and REL410 2024 is registered in spring while UiA
-publishes it under autumn (the only such case among UiA’s 74
-course-years since 2020 that are 404).
+one was a wrong URL, UiT’s ENG-2980 spring 2017 (an English twin, see
+UiT; \#313), so 207 remain. The 404s at HiOF (11 of 12 URLs; the twelfth
+is now an empty page), HVL (5 of 5, soft 404) and NIH (4 of 4) are still
+404. No URL means the site has no page for that year: UiT’s semester
+picker has no option for it (all 49; UiT’s other 3 are pages without a
+plan), USN shows another year’s plan for every version number (all 30,
+both semesters), and Hivolda’s course page lists no version for it (all
+10, mostly 2024). NTNU’s 3 (2010) still say “Det finnes ingen
+informasjon for dette studieåret”; INN’s 7 show a later plan version
+(#302). UiA’s 91 are its autumn-2023 page shells (see UiA), and REL410
+2024 is registered in spring while UiA publishes it under autumn (the
+only such case among UiA’s 74 course-years since 2020 that are 404).
 
 ## Interpreting the dedup ratio
 
@@ -402,6 +403,12 @@ to chainlink.
 - Some pages say “Error rendering component” where the plan should be:
   the plan failed to render on UiT’s site (see \#64), and these rows
   have no text
+- The semester picker can list a semester twice: an English document
+  (“Course code:”, in all 5 cases an empty page) beside the Norwegian
+  one. The Norwegian one is used (#313); the first option was used
+  before 2026-10-08, and a retry harvest
+  (`harvest_all(institutions = "uit", retry = TRUE)`) gave these 5
+  offerings their plan
 
 ------------------------------------------------------------------------
 

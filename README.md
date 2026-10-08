@@ -908,8 +908,11 @@ is captured during resolution, so USN has no separate fetch step.
 `https://uit.no/utdanning/emner/emne?p_document_id={ID}`. The active
 page (`/utdanning/aktivt/emne/{CODE}`) has a `<select>` listing every
 semester with its document id (option text `{CODE}: H 2020` /
-`{CODE}: V 2021`), also for discontinued courses. The same CSS selector
-works for active and historical pages.
+`{CODE}: V 2021`), also for discontinued courses. A semester listed
+twice can be an English document (“Course code:”) beside the Norwegian
+one; `uit_one_per_semester()` fetches those and keeps the first
+Norwegian one (#313). The same CSS selector works for active and
+historical pages.
 
 **Samas.** `noop` strategy: `extracted_text` is NA, since the plans are
 in Sámi.

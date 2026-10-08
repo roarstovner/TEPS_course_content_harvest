@@ -161,11 +161,12 @@ gaps |>
 To list the gaps between plans:
 `readRDS("data/interim/plan_gaps.RDS") |> dplyr::filter(between_plans)`.
 
-Checked 2026-10-07 and 2026-10-08 (#297), all 208 gaps between plans: none
-is a wrong URL. The 404s at HiOF (11 of 12 URLs; the twelfth is now an empty
+Checked 2026-10-07 and 2026-10-08 (#297), all 208 gaps between plans: one
+was a wrong URL, UiT's ENG-2980 spring 2017 (an English twin, see UiT; #313),
+so 207 remain. The 404s at HiOF (11 of 12 URLs; the twelfth is now an empty
 page), HVL (5 of 5, soft 404) and NIH (4 of 4) are still 404. No URL means
 the site has no page for that year: UiT's semester picker has no option for it
-(6 courses checked), USN shows another year's plan for every version number
+(all 49; UiT's other 3 are pages without a plan), USN shows another year's plan for every version number
 (all 30, both semesters), and Hivolda's course page lists no version for it
 (all 10, mostly 2024). NTNU's 3 (2010) still say "Det finnes ingen informasjon
 for dette studieåret"; INN's 7 show a later plan version (#302). UiA's 91 are
@@ -318,6 +319,7 @@ chainlink.
 - The plan is read from `.mainContent` (since #218; the old `.hovedfelt > main > div.col-md-12` matched nothing after a site change, so the 2026-10 harvest first had no text)
 - `.pre_uit()` removes the "OBS! Dette emnet tilhører et tidligere semester / år" banner and cuts from "Andre år og semester" / "Kontakt oss" (staff names and e-mails) to the end
 - Some pages say "Error rendering component" where the plan should be: the plan failed to render on UiT's site (see #64), and these rows have no text
+- The semester picker can list a semester twice: an English document ("Course code:", in all 5 cases an empty page) beside the Norwegian one. The Norwegian one is used (#313); the first option was used before 2026-10-08, and a retry harvest (`harvest_all(institutions = "uit", retry = TRUE)`) gave these 5 offerings their plan
 
 ---
 

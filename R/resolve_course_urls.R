@@ -249,13 +249,39 @@ resolve_urls_uit_batch <- function(df, .progress = TRUE) {
   }
 
   lookup <- dplyr::bind_rows(lookup_rows) |>
-    dplyr::distinct(Emnekode, Årstall, Semesternavn, .keep_all = TRUE)
+    dplyr::semi_join(df, by = c("Emnekode", "Årstall", "Semesternavn")) |>
+    uit_one_per_semester()
   cli::cli_alert_success("Discovered {nrow(lookup)} semester URLs across {length(unique_codes)} course codes")
 
   # Join lookup to df, replacing the NA url column
   df |>
     dplyr::select(-url) |>
     dplyr::left_join(lookup, by = c("Emnekode", "Årstall", "Semesternavn"))
+}
+
+#' One UiT document per semester
+#'
+#' The semester picker can list a semester twice: an English document (heading
+#' "Course code:", for ENG-2980 V 2017 an empty page) beside the Norwegian one,
+#' or two Norwegian revisions. Only for such a semester are the documents
+#' fetched; the first Norwegian one is kept (#313).
+#'
+#' @param lookup Tibble with Emnekode, Årstall, Semesternavn, url, in picker order
+#' @param is_english Function of a URL: TRUE for an English document
+#' @return lookup with one row per semester
+uit_one_per_semester <- function(lookup, is_english = uit_page_is_english) {
+  lookup |>
+    dplyr::mutate(english = if (dplyr::n() > 1) purrr::map_lgl(url, is_english) else FALSE,
+                  .by = c(Emnekode, Årstall, Semesternavn)) |>
+    dplyr::arrange(english) |>
+    dplyr::distinct(Emnekode, Årstall, Semesternavn, .keep_all = TRUE) |>
+    dplyr::select(-english)
+}
+
+uit_page_is_english <- function(url) {
+  polite_pause()
+  tryCatch(grepl("Course code:", as.character(rvest::read_html(url)), fixed = TRUE),
+           error = function(e) FALSE)
 }
 
 #' Resolve URLs for a batch of USN courses using a single browser session

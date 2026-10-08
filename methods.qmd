@@ -117,6 +117,16 @@ no plan (2026-10-08, #300). *Since:* 2026-10-07 (#297).
 **UiO semester pages are not used:** URLs such as `/h24/` hold logistics
 (teachers, timetable, exam dates), not the plan (#76).
 
+**UiT: the Norwegian document of a semester listed twice:** UiT's semester
+picker can list a semester twice, an English document beside the Norwegian
+one; the Norwegian one is used. A course with only an English document keeps
+it (ENG-1040, ENG-3193, ENG-3194, ENG-3993). *Why:* the English twin was an
+empty page in all 5 cases, while the Norwegian one has the plan. *Rejected:*
+the first option (the rule before, which took the English twin).
+*Consequence:* 5 offerings get a plan (ENG-2980 spring 2017, ENG-3980 and
+ENG-3981 spring 2016, LRU-1300 autumn 2010, LER-1150 autumn 2018), 2 of them
+a plan not in the data before. *Since:* 2026-10-08 (#313).
+
 ## Unit of analysis: the unique plan
 
 **A plan is a unique anonymized text per institution and course code**
