@@ -88,12 +88,14 @@ files, which rewrites frozen data. *Since:* 2026-10-06 (#296).
 **Pages that gave no plan can be fetched again before a release:**
 `harvest_all(retry = TRUE)` fetches the offerings without a plan (a 404,
 a page shell) again and adds them as a new raw file; a retried offering
-takes its latest page. *Why:* some pages were shells when harvested:
-UiA’s 95 autumn-2023 pages show only the title and facts box when its
-site fails to read the plan from FS, which comes and goes within a day.
-*Rejected:* overwriting the raw file (the store is append-only).
-*Consequence:* retries are done before a release is finalized; a retry
-on 2026-10-07 again got UiA’s shells. *Since:* 2026-10-07 (#297).
+takes its latest page. *Why:* a page can fail for a while; UiA’s 95
+autumn-2023 pages were shells (title and facts box) when harvested but
+full plans once on 2026-10-07. *Rejected:* overwriting the raw file (the
+store is append-only). *Consequence:* retries are done before a release
+is finalized. UiA’s shells did not come back: the full pages were copies
+last fetched from FS in July 2024, and every copy rebuilt since
+2026-09-30 lacks the plan, so these offerings have no plan (2026-10-08,
+\#300). *Since:* 2026-10-07 (#297).
 
 **UiO semester pages are not used:** URLs such as `/h24/` hold logistics
 (teachers, timetable, exam dates), not the plan (#76).

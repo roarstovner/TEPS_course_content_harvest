@@ -154,10 +154,18 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 To list the gaps between plans:
 `readRDS("data/interim/plan_gaps.RDS") |> dplyr::filter(between_plans)`.
 
-Checked 2026-10-07 (#297) by fetching a sample again: the 404s between
-plans at HiOF (11 of 12; the twelfth is now an empty page), HVL (5 of 5,
-soft 404) and NIH (4 of 4) are still 404. UiA’s 91 are its autumn-2023
-page shells (see UiA).
+Checked 2026-10-07 and 2026-10-08 (#297), all 208 gaps between plans:
+none is a wrong URL. The 404s at HiOF (11 of 12 URLs; the twelfth is now
+an empty page), HVL (5 of 5, soft 404) and NIH (4 of 4) are still 404.
+No URL means the site has no page for that year: UiT’s semester picker
+has no option for it (6 courses checked), USN shows another year’s plan
+for every version number (all 30, both semesters), and Hivolda’s course
+page lists no version for it (all 10, mostly 2024). NTNU’s 3 (2010)
+still say “Det finnes ingen informasjon for dette studieåret”; INN’s 7
+show a later plan version (#302). UiA’s 91 are its autumn-2023 page
+shells (see UiA), and REL410 2024 is registered in spring while UiA
+publishes it under autumn (the only such case among UiA’s 74
+course-years since 2020 that are 404).
 
 ## Interpreting the dedup ratio
 
@@ -333,11 +341,13 @@ to chainlink.
   page, so most 404s are the other semester (see “Semester registration
   in DBH”; \#220)
 - Autumn 2023: 95 pages are shells (title and facts box, no plan), so 91
-  course-years have no plan between two that do. UiA’s site renders a
-  course page now and then without the plan it reads from FS: the pages
-  were full when fetched at 13:40 on 2026-10-07 and shells again in a
-  retry harvest (`harvest_all(retry = TRUE)`) at 16:30 the same day. A
-  retry on another day may recover them (#297)
+  course-years have no plan between two that do. They are courses UiA
+  now teaches in spring (94 pages say “Undervisningssemester: Vår”).
+  Every copy UiA has rebuilt from FS since (2026-09-30, 10-06 and 10-08,
+  by the page’s “Sist hentet fra FS”) is a shell, the English pages too;
+  the full pages seen at 13:40 on 2026-10-07 were old copies, last
+  fetched from FS in July 2024. The site no longer has these plans, so
+  the offerings stay without one (#300)
 - URL pattern:
   `https://www.uia.no/studier/emner/{year}/{semester}/{course_code}.html`
 
