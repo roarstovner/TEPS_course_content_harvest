@@ -4,31 +4,6 @@
   "model": "opus",
   "n_courses_reviewed": 12,
   "n_suspects_reviewed": 4,
-  "overall_assessment": "No personal data is left in any of the 12 courses, nor in a scan of all 249 NLA plans (no e-mails, phone numbers, staff names, approval stamps or semester-year labels). Every pre-pass flag is a false alarm caused by reference content in the truncated reading lists: a date inside a vatican.va URL (phone), publication dates such as 'Vårt Land 19. januar 1994' (admin_date), and Boal/Levinas named in a reference title (name_like). The one systematic defect is the em-dash academic year 'Studieår: 2019 — 2020', left in every NLA plan; the time regex also strips film running times from two KRLE reading lists.",
-  "findings": [
-    {
-      "target": "admin_date",
-      "error_type": "admin_date_left",
-      "severity": "medium",
-      "prevalence": "widespread",
-      "example_course_ids": ["nla_MGL1KRLE201A-1_2020_spring_2", "nla_MGL5PE101-1_2024_autumn_1", "nla_4MGL1KRLE213-1_2025_autumn_1"],
-      "evidence": "Steder: Bergen Studieår: 2019 — 2020",
-      "description": "Every NLA plan keeps the academic year in its header block, written with an em-dash ('Studieår: 2024 — 2025', '2025 — 2026', and so on). The rubric says academic years must be removed. The year is in all 12 packet courses and in all 249 NLA offerings (8 distinct values, 2017 — 2018 to 2025 — 2026). It is not personal data, but it is administrative dating in the published course_plan. Deduplication is not affected, because normalize_plan_text() strips all 4-digit years before hashing. The pre-pass ADMIN_DATE_RX has no academic-year pattern, so it does not flag these (admin_date count 4 instead of 249).",
-      "root_cause_hypothesis": "R/anonymize.R .anon_generic(): the academic-year rule `\\b\\d{4}\\s?[-–]\\s?\\d{2,4}\\b` (line 310) and .drop_academic_year() (line 261) only accept '-' and '–' (en dash). NLA's page writes U+2014 EM DASH ('2017 — 2018', codepoints 32 8212 32), so nothing matches. NLA has no institution handler.",
-      "suggested_fix": "Add the em dash to the dash class in both places: `\\b\\d{4}\\s?[-–—]\\s?\\d{2,4}\\b` in .anon_generic() and `(\\d{4})\\s?[-–—]\\s?(\\d{2,4})` in .drop_academic_year(). Consecutive-year ranges ('2019 — 2020') are then dropped, and content ranges ('1945 — 1970') stay. Add a test in tests/testthat/test-anonymize.R: anonymize_text('nla', 'Studieår:\\n2019 — 2020') leaves no year, and 'perioden 1945 — 1970' is unchanged. Optionally add `\\b\\d{4}\\s?[-–—/]\\s?\\d{2,4}\\b` (consecutive years) to ADMIN_DATE_RX in R/audit/prepare_anonymization.R so the pre-pass sees this. Then run tar_make() and read metrics_check: all 249 NLA plans shrink by about 11 characters.",
-      "confidence": "high"
-    },
-    {
-      "target": "content_text",
-      "error_type": "over_removal",
-      "severity": "low",
-      "prevalence": "rare",
-      "example_course_ids": ["nla_MGL1KRLE201A-1_2020_spring_2", "nla_MGL5KRLE201A-1_2020_spring_2"],
-      "evidence": "FILMER: A Monster Calls (2016). Lengde: [−2:19−] Om å være og ha (2002).",
-      "description": "The generic time rule removes film running times from the reading list (FILMER section): 'Lengde: 2:19', '1:45', '2:07' and '2:04' all go. These are course content (the films' length counts towards the syllabus workload, '= ca 1625 sider'), not timestamps. What is left is a dangling 'Lengde:' with no value ('The Passion of the Christ. Lengde: Klassen (2008).'). This is the known failure mode of an over-eager H:MM pattern. In the packet it affects 2 of 12 courses, both suspects; across all 249 NLA offerings, only these 2 KRLE201A offerings have H:MM strings.",
-      "root_cause_hypothesis": "R/anonymize.R .anon_generic() line 315: `\\b\\d{1,2}:\\d{2}(?::\\d{2})?\\b` removes every H:MM, whatever its context.",
-      "suggested_fix": "Skip durations: add a bounded negative lookbehind for duration labels, e.g. `(?<!(?i:lengde|varighet|spilletid|length|duration):?\\s)\\b\\d{1,2}:\\d{2}(?::\\d{2})?\\b`. Or, more generally, remove H:MM only in timetable contexts (after 'kl.', in a range 'HH:MM–HH:MM', or after a date). Add a test that 'Lengde: 2:19' is kept and 'kl. 10:15' is removed.",
-      "confidence": "high"
-    }
-  ]
+  "overall_assessment": "Anonymization works well for NLA. No personal data is left in the 12 courses (read in full, including the truncated reading lists, from plans recomputed with the current R/anonymize.R), nor in a scan of all 249 NLA plans: no e-mails, phone numbers, staff names, contact blocks, approval stamps, semester-year labels or academic years. The only removals are the header values 'Undervisningssemester: Vår/Høst' (or 'Oppstart høst,') and 'Studieår: 2019 — 2020', and the em-dash year is now dropped in all 249 plans. All 4 suspects are false alarms from reference content: a date in a vatican.va URL (phone), publication dates such as 'Vårt Land 19. januar 1994' and 'Nobelforedrag 11. september 1979' (admin_date), and Augusto Boal and Emmanuel Levinas named in an article title (name_like). Film running times ('Lengde: 2:19') are kept since #308. One cosmetic issue lies outside the packet: in 4 PE103 plans, 'Høst 2024:' and 'Vår 2025:' were exam-part labels under 'Avsluttende vurdering', and removing them leaves bare ':' lines.",
+  "findings": []
 }
