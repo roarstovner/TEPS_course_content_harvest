@@ -11,7 +11,7 @@ changes what the data mean, add or update its entry here; each release
 tag freezes this file with the data.
 
 Current data: 41 025 offerings (DBH course × year × semester) at 19
-institutions, 24 080 of them with a plan, and 14 040 unique plans from
+institutions, 24 080 of them with a plan, and 13 979 unique plans from
 18 institutions (none from Samas, below).
 
 ## Population and sampling frame
@@ -115,7 +115,7 @@ before. *Since:* 2026-10-08 (#313).
 
 **A plan is a unique anonymized text per institution and course code**
 (`plan_content_id`, a hash of the normalized text). Offerings with the
-same text share a plan: 24 080 offerings have 14 040 plans. *Why:*
+same text share a plan: 24 080 offerings have 13 979 plans. *Why:*
 consecutive years and both semesters mostly repeat the same text.
 *Consequence:* the id changes whenever cleaning changes the text, so
 coding is tied to a frozen release and carried to later releases with a
@@ -210,6 +210,19 @@ identifies the work cited (audit rubric, \#310). *Consequence:* 138
 plans change text (usn 54, oslomet 39, uis 31, uit 9, ntnu 5); none
 merge or split. *Since:* 2026-10-12 (#317).
 
+**OsloMet’s “;” glue is a space.** In 2021–2022 OsloMet’s pages put a
+“;” where a space or line break belongs (“En;viktig del;av”, “1;000
+ord”); a “;” not followed by a space becomes a space (7,254 on 231
+pages, none in other years), and a real semicolon, followed by a space,
+stays. *Why:* the glue is page rendering, not text; it made the 2022
+pages separate plans. *Consequence:* 57 OsloMet plans merge with the
+same plan of a neighbouring year (625 → 568). At the same time HVL’s
+Nynorsk “Emnet vert ikkje tilbydd 2025/2026.” goes like the Bokmål
+notice (#306; 4 plans merge), USN’s Leganto type labels go before quoted
+and lowercase titles too, and a second approval date on a stamp line
+goes (“… og på fullmakt av leder i utdanningsutvalget 4. mars 2019”).
+13,979 plans. *Since:* 2026-10-12 (#318).
+
 **NTNU: the exam tab is not part of the plan; the responsible unit is.**
 The page’s exam tab (“Vurderingsordning: …”, “Karakter: …” and the exam
 sessions with their parts, weights, dates and rooms) is read neither
@@ -278,7 +291,7 @@ code). *Since:* 2026-10-07 (#285).
 
 **OsloMet teaching methods that only say “Se fagplanen.”** take the text
 of the subject’s Fagplan on the same page (“Fagets arbeids- og
-undervisningsformer”), marked “Se fagplanen. Fagplanen sier: …”: 128
+undervisningsformer”), marked “Se fagplanen. Fagplanen sier: …”: 112
 plans. *Why:* the emneplan delegates the teaching methods to the subject
 plan, which applies to the course. *Since:* 2026-10-06 (#289).
 

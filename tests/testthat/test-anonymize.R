@@ -797,6 +797,21 @@ test_that("handlers follow the pages: mf notice, inn titles, hvl notice, usn typ
                "Læreplan i norsk\nAntz\nOpenStreetMap")
 })
 
+test_that("handler variants: hvl Nynorsk notice, usn labels, oslomet ';' glue and stamps (#318)", {
+  an <- function(inst, x) anonymize_text(inst, x, .progress = FALSE)
+  expect_equal(an("hvl", "Om emnet\nEmnet vert ikkje tilbydd studieåret 2025/2026.\nInnhald"), "Om emnet\nInnhald")
+  expect_equal(an("usn", "ArticleiPed: Pedagogy\nArticle“Translanguaging”\nWebsitehttps://www.unhcr.org/"),
+               "iPed: Pedagogy\n“Translanguaging”\nhttps://www.unhcr.org/")
+  keep <- "Mappeinnlevering med to deler:\nVideoen vil bli lagt ut.\nArticles: se Canvas."
+  expect_equal(an("usn", keep), keep)
+  expect_equal(an("oslomet", "En;viktig del;av frister.;Det\n;Tema 2: Læreplanteori;;;\nomfang 1;000 ord. Godt; men"),
+               "En viktig del av frister. Det\nTema 2: Læreplanteori\nomfang 1 000 ord. Godt; men")
+  expect_equal(an("oslomet", paste("Revisjon godkjent av utdanningsutvalget 3. mai 2018 og på fullmakt av",
+                                   "leder i utdanningsutvalget 4. mars 2019\nEmneplanen er godkjent 21. juni2021.")),
+               paste("Revisjon godkjent av utdanningsutvalget  og på fullmakt av leder i utdanningsutvalget",
+                     "Emneplanen er godkjent", sep = "\n"))
+})
+
 test_that("clock times go; durations, verses, ratios and credits stay (#308)", {
   an <- function(x) anonymize_text("uis", x, .progress = FALSE)
   keep <- c("A Monster Calls (2016). Lengde: 2:19", "22. juli-terroren [20:28]",

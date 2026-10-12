@@ -84,9 +84,10 @@ anonymize_text <- function(institution, text,
     # a campus label with a name: the contact for exam aids (#301)
     stringr::str_remove_all(paste0("(?m)^(?:Bergen|Stord|Haugesund|Sogndal|Førde)[ \\t]*:[ \\t]*",
                                    .name_regex, "[ \\t]*(?:\\n|$)")) |>
-    # "Emnet tilbys ikke studieåret 2025/2026.": without the year it would
-    # read "not offered" (#306)
-    stringr::str_remove_all("(?m)^Emnet tilbys ikke (?:studieåret )?\\d{4}/\\d{4}\\.?[ \\t]*(?:\\n|$)")
+    # "Emnet tilbys ikke studieåret 2025/2026.", "Emnet vert ikkje tilbydd
+    # 2025/2026.": without the year it would read "not offered" (#306, #318)
+    stringr::str_remove_all(paste0("(?m)^Emnet (?:tilbys ikke|vert ikkje tilbydd) (?:studieåret )?",
+                                   "\\d{4}/\\d{4}\\.?[ \\t]*(?:\\n|$)"))
 }
 
 .anon_uia <- function(txt) {
@@ -125,6 +126,11 @@ anonymize_text <- function(institution, text,
   if (grepl("Siden du leter etter finnes ikke", txt, fixed = TRUE)) return(NA_character_)
 
   txt |>
+    # A ";" not followed by a space is a 2021-2022 rendering artifact for a
+    # space or line break ("En;viktig del;av", "frister.;Det", "1;000 ord",
+    # "fordypning;;;"); a real semicolon has a space after it (#318)
+    stringr::str_remove_all("(?m)^[ \\t]*;++(?![ \\t])") |>
+    stringr::str_replace_all("[ \\t]*;++(?![ \\t])[ \\t]*", " ") |>
     # Remove bare semicolons (2022 website rendering artifacts); preserve real punctuation
     stringr::str_remove_all("(?m)^\\s*;\\s*$") |>
     stringr::str_remove_all("(?<=\\s);(?=\\s)") |>
@@ -201,7 +207,12 @@ anonymize_text <- function(institution, text,
       "Technical Report|Working Paper|Conference Paper|Conference|Presentation|Dissertation|",
       "Streamed Video|Video|Audio Recording|Music|Text Resource|Research Dataset|Database|",
       "Reference Entry|Computer Program|Anthology|Journal|Series|Review|Poem|Map|Note|Other|",
-      "Book|Article|Website|Document|Thesis|Report)(?=[\\p{Lu}\\d\"«(])"))
+      "Book|Article|Website|Document|Thesis|Report)",
+      # a title, quote, dash, bullet or link; lowercase too ("ArticleiPed",
+      # "Book Chapterkapittel 10"), but not a word going on ("Booking",
+      # "Mappeinnlevering", "Videoen", "Articles:", "Documentation") (#318)
+      "(?=[\\p{Lu}\\d\"«(“”‘’'–•-]|(?<!Book|Map|Video|Note|Music|Poem|Review|Report|Series|",
+      "Thesis|Conference|Presentation|Database|Anthology)(?!s(?!\\p{L})|ation|ist|wise|ing)\\p{Ll})"))
 }
 
 .anon_uib <- function(txt) {
@@ -346,10 +357,15 @@ anonymize_text <- function(institution, text,
 .month_regex <- paste0("(?i:januar|februar|mars|april|mai|juni|juli|august|september|",
                        "oktober|november|desember|january|february|march|may|june|july|october|december)")
 .long_date_regex <- paste0("\\d{1,2}\\.?[ \\t]*", .month_regex)
-.long_dates_regex <- paste0("(?:", .long_date_regex, "(?:[ \\t]+\\d{4})?[ \\t]*(?:,|og|and)[ \\t]*)*",
-                            .long_date_regex, "[ \\t]+\\d{4}")
+.long_dates_regex <- paste0("(?:", .long_date_regex, "(?:[ \\t]*\\d{4})?[ \\t]*(?:,|og|and)[ \\t]*)*",
+                            .long_date_regex, "[ \\t]*\\d{4}")
 # A full stop ending the line, removed with the date before it.
 .eol_stop <- "(?:\\.(?=[ \\t]*(?:\\n|$)))?"
+# Approval and update dates in words: "godkjent i studieutvalget 14.
+# november 2016", "endringer lagt inn 3. juli 2017 og 7. mai 2024" (#305)
+.approval_date_regex <- paste0(
+  "((?<!\\p{L})(?i:godkjent|vedtatt|revidert|revisjon|foretatt|lagt inn|oppdatert|",
+  "gjort tilgjengelig|sist endret)", .not_gov, "[^\\n.]{0,100}?)\\b", .long_dates_regex, .eol_stop)
 
 .anon_generic <- function(txt) {
   txt |>
@@ -401,12 +417,11 @@ anonymize_text <- function(institution, text,
     # "(MG1NA1) H2018 Notodden", "H23: Undervisningen ..." (#305)
     stringr::str_remove_all(.not_gov_rule(
       "[ \\t]*[-–]?[ \\t]*\\b[HV]", "(?:19|20)?\\d{2}(?:[-/][HV](?:19|20)?\\d{2})?\\b:?")) |>
-    # Approval and update dates in words: "godkjent i studieutvalget 14.
-    # november 2016", "endringer lagt inn 3. juli 2017 og 7. mai 2024" (#305)
-    stringr::str_replace_all(paste0(
-      "((?<!\\p{L})(?i:godkjent|vedtatt|revidert|revisjon|foretatt|lagt inn|oppdatert|",
-      "gjort tilgjengelig|sist endret)", .not_gov, "[^\\n.]{0,100}?)\\b", .long_dates_regex, .eol_stop),
-      "\\1") |>
+    # Approval and update dates in words (#305), twice for a second date on a
+    # stamp line ("godkjent av utdanningsutvalget 3. mai 2018 og på fullmakt
+    # av leder i utdanningsutvalget 4. mars 2019"; #318)
+    stringr::str_replace_all(.approval_date_regex, "\\1") |>
+    stringr::str_replace_all(.approval_date_regex, "\\1") |>
     # dd.mm.yy after an approval: "Godkjent 9.3.21.", "Emneplan godkjent
     # 25.03.25", "Godkjent av instituttleder 18.10.22" (usn), and any
     # zero-padded one ("Oppsatt skoleeksamen 16.12.20"), not in a file name

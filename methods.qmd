@@ -225,6 +225,18 @@ these pages is always a reading-list entry ("Razsviet, 4.11.1923", "SSB,
 (audit rubric, #310). *Consequence:* 138 plans change text (usn 54, oslomet
 39, uis 31, uit 9, ntnu 5); none merge or split. *Since:* 2026-10-12 (#317).
 
+**OsloMet's ";" glue is a space.** In 2021–2022 OsloMet's pages put a ";"
+where a space or line break belongs ("En;viktig del;av", "1;000 ord"); a
+";" not followed by a space becomes a space (7,254 on 231 pages, none in
+other years), and a real semicolon, followed by a space, stays. *Why:* the
+glue is page rendering, not text; it made the 2022 pages separate plans.
+*Consequence:* 57 OsloMet plans merge with the same plan of a neighbouring
+year (625 → 568). At the same time HVL's Nynorsk "Emnet vert ikkje tilbydd
+2025/2026." goes like the Bokmål notice (#306; 4 plans merge), USN's
+Leganto type labels go before quoted and lowercase titles too, and a second
+approval date on a stamp line goes ("… og på fullmakt av leder i
+utdanningsutvalget 4. mars 2019"). 13,979 plans. *Since:* 2026-10-12 (#318).
+
 **NTNU: the exam tab is not part of the plan; the responsible unit is.**
 The page's exam tab ("Vurderingsordning: …", "Karakter: …" and the exam
 sessions with their parts, weights, dates and rooms) is read neither into
