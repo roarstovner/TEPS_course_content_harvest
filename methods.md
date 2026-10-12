@@ -197,7 +197,18 @@ administrative dates in more forms go: em-dash year ranges (“Studieår:
 words (“godkjent i studieutvalget 14. november 2016”) or with a
 two-digit year (“Godkjent 22.03.23”), and semester codes (“H23”,
 “H2025-V2026”): 1,683 plans lose one; 21 plans that differed only by
-such a date merge with another. *Since:* 2026-10-08 (#305).
+such a date merge with another. *Since:* 2026-10-08 (#305). The 80
+characters are counted from the start of the date, not its end, so
+“nasjonale retningslinjer … av 1. september 2016, revidert 17. oktober
+2018” keeps its revision date and “høsten” over a line break stays;
+faculty regulations count as such documents (“utfyllende regler … av
+01.08.2015”). Dates in references stay too: a dd.mm.yyyy date after a
+comma, which in these pages is always a reading-list entry (“Razsviet,
+4.11.1923”, “SSB, 07.06.2023,”), and ISO dates (“2001-02-01”, read as
+the academic year “2001-02” before). *Why:* a reference’s date
+identifies the work cited (audit rubric, \#310). *Consequence:* 138
+plans change text (usn 54, oslomet 39, uis 31, uit 9, ntnu 5); none
+merge or split. *Since:* 2026-10-12 (#317).
 
 **NTNU: the exam tab is not part of the plan; the responsible unit is.**
 The page’s exam tab (“Vurderingsordning: …”, “Karakter: …” and the exam

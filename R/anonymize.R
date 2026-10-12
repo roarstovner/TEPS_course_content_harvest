@@ -317,10 +317,15 @@ anonymize_text <- function(institution, text,
   "(?:(?i:lov(?:en|a|er|ene|data|verk|verket)?s?(?!\\p{L})|forskrift|departement|",
   "direktorat|storting|regjering|meld\\.[ \\t]?st|st\\.[ \\t]?meld|[os]t\\.[ \\t]?prp|",
   "prop\\.[ \\t]?\\d|innst\\.[ \\t]?\\d|rundskriv|rammeplan|læreplan|kunnskapsløftet|",
-  "nasjonale retningslinjer|udir|konvensjon|forente nasjoner)|NOU)")
-# Ends a date rule: the date stays when such a document is named up to 80
-# characters before it on the same line.
+  "nasjonale retningslinjer|udir|konvensjon|forente nasjoner|regler|reglement)|NOU)")
+# The date stays when such a document is named up to 80 characters before it
+# on the same line. The guard goes after a date rule's first token: after the
+# whole date it looked back from the date's end and stopped at a line break
+# inside it; at the very start of a rule it ran at every character (#317).
 .not_gov <- paste0("(?<!", .gov_doc_regex, "[^\\n]{0,80})")
+# A date rule `first` + `rest` with the guard between them, run only where
+# the rest follows.
+.not_gov_rule <- function(first, rest) paste0(first, "(?=", rest, ")", .not_gov, rest)
 
 # "2023-2024" / "2023/24" (consecutive years from 1990) is an academic year
 # and goes; a content range such as "1945-1970", "1349-50" or a reprint
@@ -372,19 +377,19 @@ anonymize_text <- function(institution, text,
     stringr::str_remove_all("\\+47\\s*\\d[\\d ]{6,}") |>
     # Remove Norwegian date-time format: "12. feb. 2026 02:50:04"
     stringr::str_remove_all("\\d{1,2}\\.\\s*(?:jan|feb|mar|apr|mai|jun|jul|aug|sep|okt|nov|des)\\.?\\s*\\d{4}\\s*\\d{2}:\\d{2}(?::\\d{2})?") |>
-    # Date and year rules end in .not_gov: a government document's dates stay.
+    # Date and year rules keep a government document's dates (.not_gov).
     # Remove 2-digit season+year patterns (e.g. "Høst23", "Vår 22"), not
     # credits ("Høst 10 stp"; #308)
-    stringr::str_remove_all(paste0("(?i:høst|vår|haust|autumn|spring)\\s*\\d{2}\\b",
-                                   "(?![ \\t]*(?i:stp|sp|studiepoeng|ects|credits)\\b)", .not_gov)) |>
+    stringr::str_remove_all(.not_gov_rule("(?i:høst|vår|haust|autumn|spring)",
+      "\\s*\\d{2}\\b(?![ \\t]*(?i:stp|sp|studiepoeng|ects|credits)\\b)")) |>
     # Remove season words in semester context (next to year or semester keywords)
     # e.g. "Høst 2024", "2024 Vår", "Undervisningssemester: Vår", "Semester: Autumn"
     # Must run BEFORE year removal so "Høst 2024" matches as a unit
     # Preserves "vår" meaning "our" in normal prose
     # also inflected / run together: "høsten 2025", "våren2026" (#227),
     # "høstsemesteret 2019" (#303)
-    stringr::str_remove_all(paste0("\\b(?i:", .season_regex, ")\\s*\\d{4}\\b", .not_gov)) |>
-    stringr::str_remove_all(paste0("\\d{4}\\s+(?i:høst|vår|haust|autumn|spring|sommer|summer)", .not_gov)) |>
+    stringr::str_remove_all(.not_gov_rule(paste0("\\b(?i:", .season_regex, ")"), "\\s*\\d{4}\\b")) |>
+    stringr::str_remove_all(.not_gov_rule("\\d{4}", "\\s+(?i:høst|vår|haust|autumn|spring|sommer|summer)")) |>
     # after a semester label: the whole word and a list ("Vår og haust",
     # "Haustsemesteret"), not the start of another word ("Våre", "Høstpraksis")
     # (#303); a glued next word ("HaustEmnet") starts with a capital
@@ -394,39 +399,41 @@ anonymize_text <- function(institution, text,
       ")*)(?!\\p{Ll})[.,]?[ \\t]*")) |>
     # Semester codes: "Pensumliste for H2025-V2026", "Engelskdidaktikk - H23",
     # "(MG1NA1) H2018 Notodden", "H23: Undervisningen ..." (#305)
-    stringr::str_remove_all(paste0(
-      "[ \\t]*[-–]?[ \\t]*\\b[HV](?:19|20)?\\d{2}(?:[-/][HV](?:19|20)?\\d{2})?\\b", .not_gov, ":?")) |>
+    stringr::str_remove_all(.not_gov_rule(
+      "[ \\t]*[-–]?[ \\t]*\\b[HV]", "(?:19|20)?\\d{2}(?:[-/][HV](?:19|20)?\\d{2})?\\b:?")) |>
     # Approval and update dates in words: "godkjent i studieutvalget 14.
     # november 2016", "endringer lagt inn 3. juli 2017 og 7. mai 2024" (#305)
     stringr::str_replace_all(paste0(
       "((?<!\\p{L})(?i:godkjent|vedtatt|revidert|revisjon|foretatt|lagt inn|oppdatert|",
-      "gjort tilgjengelig|sist endret)[^\\n.]{0,100}?)\\b", .long_dates_regex, .not_gov, .eol_stop),
+      "gjort tilgjengelig|sist endret)", .not_gov, "[^\\n.]{0,100}?)\\b", .long_dates_regex, .eol_stop),
       "\\1") |>
     # dd.mm.yy after an approval: "Godkjent 9.3.21.", "Emneplan godkjent
     # 25.03.25", "Godkjent av instituttleder 18.10.22" (usn), and any
     # zero-padded one ("Oppsatt skoleeksamen 16.12.20"), not in a file name
     # ("rapport-24.06.16.pdf") (#305)
     stringr::str_replace_all(paste0(
-      "((?<!\\p{L})(?i:godkjent)(?:[ \\t]+(?i:emneplan|av [^\\n]{0,30}?))?:?[ \\t]+)",
-      "\\d{1,2}\\.\\d{1,2}\\.\\d{2}(?![\\d/]|\\.\\w)", .not_gov, .eol_stop), "\\1") |>
-    stringr::str_remove_all(paste0(
-      "(?<![\\d./])(?:0[1-9]|[12]\\d|3[01])\\.(?:0[1-9]|1[0-2])\\.\\d{2}(?![\\d/]|\\.\\w)", .not_gov, .eol_stop)) |>
-    # Remove dates: dd.mm.yyyy; not inside a path or number, and not a
-    # regulation's date ("forskrift 28.10.2020 nr. 2474") (#304)
-    stringr::str_remove_all(paste0(
-      "(?<![\\d./])\\d{1,2}\\.\\d{1,2}\\.\\d{4}(?![\\d/]|[ \\t]*nr\\.?[ \\t]*\\d)", .not_gov)) |>
+      "((?<!\\p{L})(?i:godkjent)", .not_gov, "(?:[ \\t]+(?i:emneplan|av [^\\n]{0,30}?))?:?[ \\t]+)",
+      "\\d{1,2}\\.\\d{1,2}\\.\\d{2}(?![\\d/]|\\.\\w)", .eol_stop), "\\1") |>
+    stringr::str_remove_all(.not_gov_rule(
+      "(?<![\\d./])(?:0[1-9]|[12]\\d|3[01])", paste0("\\.(?:0[1-9]|1[0-2])\\.\\d{2}(?![\\d/]|\\.\\w)", .eol_stop))) |>
+    # Remove dates: dd.mm.yyyy; not inside a path or number, not a
+    # regulation's date ("forskrift 28.10.2020 nr. 2474") (#304), and not a
+    # reference's publication date after a comma ("Razsviet, 4.11.1923";
+    # "SSB, 07.06.2023,") (#317)
+    stringr::str_remove_all(.not_gov_rule(
+      "(?<![\\d./]|,[ \\t])\\d{1,2}", "\\.\\d{1,2}\\.\\d{4}(?![\\d/]|[ \\t]*nr\\.?[ \\t]*\\d)")) |>
     # Remove years in administrative contexts only (content years like "etter 1945" preserved)
     # Blanket year removal for dedup lives in normalize_plan_text()
     # Admin keywords + year: "Opprettet 2020" → "Opprettet", "Gyldig fra 2023" → "Gyldig fra"
-    stringr::str_replace_all(paste0(
+    stringr::str_replace_all(.not_gov_rule(paste0(
       "((?i:opprettet|oppdatert|revidert|vedtatt|godkjent|gjeldende(?: fra)?|gyldig(?: fra)?|",
-      "sist (?:endret|revidert|oppdatert)))\\s+\\d{4}\\b", .not_gov), "\\1") |>
+      "sist (?:endret|revidert|oppdatert)))"), "\\s+\\d{4}\\b"), "\\1") |>
     # Remove academic year ranges: "2023/2024", "2023/24", "2019 — 2020" (nla);
     # not year paths in links ("files/2019/06/27/", "dokumentserien/2020-2021/")
-    # or DOIs (#304, #305)
-    stringr::str_replace_all(paste0("(?<![/\\w.])\\d{4}[ \\t]?/[ \\t]?\\d{2,4}\\b(?!/)", .not_gov),
+    # or DOIs (#304, #305), or ISO dates ("2001-02-01"; #317)
+    stringr::str_replace_all(.not_gov_rule("(?<![/\\w.])\\d{4}", "[ \\t]?/[ \\t]?\\d{2,4}\\b(?!/|[-–]\\d)"),
                              .drop_academic_year) |>
-    stringr::str_replace_all(paste0("(?<![/\\w.])\\d{4}\\s?[-–—]\\s?\\d{2,4}\\b(?!/)", .not_gov),
+    stringr::str_replace_all(.not_gov_rule("(?<![/\\w.])\\d{4}", "\\s?[-–—]\\s?\\d{2,4}\\b(?!/|[-–]\\d)"),
                              .drop_academic_year) |>
     # Brackets emptied by the removals above: "Meld. St. 16 ()" (#229);
     # code such as "print()" has no space before and stays

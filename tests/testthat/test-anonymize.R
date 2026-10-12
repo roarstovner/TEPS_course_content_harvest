@@ -769,6 +769,19 @@ test_that("admin dates go, government documents keep theirs (#305)", {
   expect_equal(an("uis", "Tekst\nLENG145_1 Bokmål Versjon 20.Februar.2023\nMer"), "Tekst\nMer")
 })
 
+test_that("the guard looks back from the date's start; ISO and reference dates stay (#317)", {
+  an <- function(inst, x) anonymize_text(inst, x, .progress = FALSE)
+  keep <- c("Utdanningsdirektoratets spørreundersøkelse til lærere høsten\n2020",
+            paste("nasjonale retningslinjer for grunnskolelærerutdanningen trinn 1-7 av",
+                  "1. september 2016, revidert 17. oktober 2018, og"),
+            "Teaching children mathematics, 6, 7, 2001-02-01, Sidespenn 346-349,",
+            "Oversettelse fra Russisk. Razsviet, 4.11.1923.", "Sabima, Sabima, 30.4.2018,",
+            "utfyllende regler for realfagsstudiene av 01.08.2015 for gjentak")
+  for (x in keep) expect_equal(an("usn", x), x, info = x)
+  expect_equal(an("uit", "Studieår 2023-2024\nGodkjent 15.03.2024\nEksamen 15.12.2023"),
+               "Studieår\nGodkjent\nEksamen")
+})
+
 test_that("handlers follow the pages: mf notice, inn titles, hvl notice, usn types (#306)", {
   an <- function(inst, x) anonymize_text(inst, x, .progress = FALSE)
   mf <- paste("Litteraturliste", "Litteraturlisten for dette emnet", "",
