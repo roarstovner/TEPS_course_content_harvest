@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Anonymization handler variants: hvl Nynorsk notice, usn Leganto label, oslomet ';' glue (#318)
 - Anonymization: government-document guard in front of the date; ISO and reference dates kept (#317)
 - NTNU: keep the ordinary session's exam parts (form, weight, grading) for the exam coding (#316)
 - NTNU: drop the exam tab (Vurderingsordning, Karakter, exam parts) from sections and course_plan (#321)
