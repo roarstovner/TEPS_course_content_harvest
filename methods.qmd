@@ -237,6 +237,16 @@ Leganto type labels go before quoted and lowercase titles too, and a second
 approval date on a stamp line goes ("… og på fullmakt av leder i
 utdanningsutvalget 4. mars 2019"). 13,979 plans. *Since:* 2026-10-12 (#318).
 
+**A removal takes the space and separators that joined it.** A removed
+date, season or e-mail takes the space before it, a season with year also
+the dash, comma or colon before it and a list after it ("15 stp, høst 2019
+og vår 2020" → "15 stp"), and a date or clock-time range goes as one unit
+("Dato: 27.05.2024 –31.05.2024"). *Why:* "Faget går .", "(Kull )" and
+"Dato:  –" are artifacts of the removal, not text. *Consequence:* no
+content changes, but the dedup hash keeps punctuation and spacing, so 2,480
+plans get a new id and 12 that differed only by such leftovers merge
+(13,967 plans). *Since:* 2026-10-12 (#319).
+
 **NTNU: the exam tab is not part of the plan; the responsible unit is.**
 The page's exam tab ("Vurderingsordning: …", "Karakter: …" and the exam
 sessions with their parts, weights, dates and rooms) is read neither into

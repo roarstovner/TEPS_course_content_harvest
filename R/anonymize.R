@@ -361,11 +361,15 @@ anonymize_text <- function(institution, text,
                             .long_date_regex, "[ \\t]*\\d{4}")
 # A full stop ending the line, removed with the date before it.
 .eol_stop <- "(?:\\.(?=[ \\t]*(?:\\n|$)))?"
+# The space before a removed date, season or e-mail goes with it, so no
+# "Faget går ." or "studieadministrasjonen , før" is left (#319).
+.gap <- "[ \\t]*"
+.clock_regex <- "(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d)?"
 # Approval and update dates in words: "godkjent i studieutvalget 14.
 # november 2016", "endringer lagt inn 3. juli 2017 og 7. mai 2024" (#305)
 .approval_date_regex <- paste0(
   "((?<!\\p{L})(?i:godkjent|vedtatt|revidert|revisjon|foretatt|lagt inn|oppdatert|",
-  "gjort tilgjengelig|sist endret)", .not_gov, "[^\\n.]{0,100}?)\\b", .long_dates_regex, .eol_stop)
+  "gjort tilgjengelig|sist endret)", .not_gov, "[^\\n.]{0,100}?)", .gap, "\\b", .long_dates_regex, .eol_stop)
 
 .anon_generic <- function(txt) {
   txt |>
@@ -373,7 +377,7 @@ anonymize_text <- function(institution, text,
     stringr::str_remove_all("Sist hent(?:et|a) fr(?:a|å) FS \\(Felles studentsystem\\)[^\n]*") |>
     # Remove email addresses, with their brackets: "Ta kontakt med (x@uio.no)" (#229)
     stringr::str_remove_all("\\s*\\(\\s*[\\w.+-]+@[\\w.-]+\\.[a-zA-Z]{2,}\\s*\\)") |>
-    stringr::str_remove_all("\\b[\\w.+-]+@[\\w.-]+\\.[a-zA-Z]{2,}\\b") |>
+    stringr::str_remove_all(paste0(.gap, "\\b[\\w.+-]+@[\\w.-]+\\.[a-zA-Z]{2,}\\b")) |>
     stringr::str_remove_all(.openurl_regex) |>
     stringr::str_remove_all(.user_ip_regex) |>
     # Remove staff list lines "- Ola Nordmann (Emneansvarlig)" (#237)
@@ -396,16 +400,22 @@ anonymize_text <- function(institution, text,
     # Date and year rules keep a government document's dates (.not_gov).
     # Remove 2-digit season+year patterns (e.g. "Høst23", "Vår 22"), not
     # credits ("Høst 10 stp"; #308)
-    stringr::str_remove_all(.not_gov_rule("(?i:høst|vår|haust|autumn|spring)",
+    stringr::str_remove_all(.not_gov_rule(paste0(.gap, "(?i:høst|vår|haust|autumn|spring)"),
       "\\s*\\d{2}\\b(?![ \\t]*(?i:stp|sp|studiepoeng|ects|credits)\\b)")) |>
     # Remove season words in semester context (next to year or semester keywords)
     # e.g. "Høst 2024", "2024 Vår", "Undervisningssemester: Vår", "Semester: Autumn"
     # Must run BEFORE year removal so "Høst 2024" matches as a unit
     # Preserves "vår" meaning "our" in normal prose
     # also inflected / run together: "høsten 2025", "våren2026" (#227),
-    # "høstsemesteret 2019" (#303)
-    stringr::str_remove_all(.not_gov_rule(paste0("\\b(?i:", .season_regex, ")"), "\\s*\\d{4}\\b")) |>
-    stringr::str_remove_all(.not_gov_rule("\\d{4}", "\\s+(?i:høst|vår|haust|autumn|spring|sommer|summer)")) |>
+    # "høstsemesteret 2019" (#303); with a dash, comma or colon before it and
+    # a list after it ("15 stp, høst 2019 og vår 2020", "Naturfag 5-10 -
+    # høst 2020", "MERK: Våren 2021: Skriftlig") and a colon closing the line
+    # ("Høst 2024:") (#319)
+    stringr::str_remove_all(.not_gov_rule(
+      paste0("(?:[ \\t]*[-–,:])?", .gap, "\\b(?i:", .season_regex, ")"),
+      paste0("\\s*\\d{4}\\b(?:[ \\t]*(?:,|og|and|[-–/])[ \\t]*(?i:", .season_regex, ")\\s*\\d{4}\\b)*",
+             "(?::(?=[ \\t]*(?:\\n|$)))?"))) |>
+    stringr::str_remove_all(.not_gov_rule(paste0(.gap, "\\d{4}"), "\\s+(?i:høst|vår|haust|autumn|spring|sommer|summer)")) |>
     # after a semester label: the whole word and a list ("Vår og haust",
     # "Haustsemesteret"), not the start of another word ("Våre", "Høstpraksis")
     # (#303); a glued next word ("HaustEmnet") starts with a capital
@@ -427,16 +437,18 @@ anonymize_text <- function(institution, text,
     # zero-padded one ("Oppsatt skoleeksamen 16.12.20"), not in a file name
     # ("rapport-24.06.16.pdf") (#305)
     stringr::str_replace_all(paste0(
-      "((?<!\\p{L})(?i:godkjent)", .not_gov, "(?:[ \\t]+(?i:emneplan|av [^\\n]{0,30}?))?:?[ \\t]+)",
+      "((?<!\\p{L})(?i:godkjent)", .not_gov, "(?:[ \\t]+(?i:emneplan|av [^\\n]{0,30}?))?:?)[ \\t]+",
       "\\d{1,2}\\.\\d{1,2}\\.\\d{2}(?![\\d/]|\\.\\w)", .eol_stop), "\\1") |>
     stringr::str_remove_all(.not_gov_rule(
-      "(?<![\\d./])(?:0[1-9]|[12]\\d|3[01])", paste0("\\.(?:0[1-9]|1[0-2])\\.\\d{2}(?![\\d/]|\\.\\w)", .eol_stop))) |>
+      paste0(.gap, "(?<![\\d./])(?:0[1-9]|[12]\\d|3[01])"), paste0("\\.(?:0[1-9]|1[0-2])\\.\\d{2}(?![\\d/]|\\.\\w)", .eol_stop))) |>
     # Remove dates: dd.mm.yyyy; not inside a path or number, not a
     # regulation's date ("forskrift 28.10.2020 nr. 2474") (#304), and not a
     # reference's publication date after a comma ("Razsviet, 4.11.1923";
-    # "SSB, 07.06.2023,") (#317)
-    stringr::str_remove_all(.not_gov_rule(
-      "(?<![\\d./]|,[ \\t])\\d{1,2}", "\\.\\d{1,2}\\.\\d{4}(?![\\d/]|[ \\t]*nr\\.?[ \\t]*\\d)")) |>
+    # "SSB, 07.06.2023,") (#317); a range is one date ("27.05.2024 –31.05.2024")
+    # (#319)
+    stringr::str_remove_all(.not_gov_rule(paste0(.gap, "(?<![\\d./]|,[ \\t])\\d{1,2}"), paste0(
+      "\\.\\d{1,2}\\.\\d{4}(?:[ \\t]*[-–][ \\t]*\\d{1,2}\\.\\d{1,2}\\.\\d{4})?",
+      "(?![\\d/]|[ \\t]*nr\\.?[ \\t]*\\d)"))) |>
     # Remove years in administrative contexts only (content years like "etter 1945" preserved)
     # Blanket year removal for dedup lives in normalize_plan_text()
     # Admin keywords + year: "Opprettet 2020" → "Opprettet", "Gyldig fra 2023" → "Gyldig fra"
@@ -446,17 +458,19 @@ anonymize_text <- function(institution, text,
     # Remove academic year ranges: "2023/2024", "2023/24", "2019 — 2020" (nla);
     # not year paths in links ("files/2019/06/27/", "dokumentserien/2020-2021/")
     # or DOIs (#304, #305), or ISO dates ("2001-02-01"; #317)
-    stringr::str_replace_all(.not_gov_rule("(?<![/\\w.])\\d{4}", "[ \\t]?/[ \\t]?\\d{2,4}\\b(?!/|[-–]\\d)"),
+    stringr::str_replace_all(.not_gov_rule(paste0(.gap, "(?<![/\\w.])\\d{4}"), "[ \\t]?/[ \\t]?\\d{2,4}\\b(?!/|[-–]\\d)"),
                              .drop_academic_year) |>
-    stringr::str_replace_all(.not_gov_rule("(?<![/\\w.])\\d{4}", "\\s?[-–—]\\s?\\d{2,4}\\b(?!/|[-–]\\d)"),
+    stringr::str_replace_all(.not_gov_rule(paste0(.gap, "(?<![/\\w.])\\d{4}"), "\\s?[-–—]\\s?\\d{2,4}\\b(?!/|[-–]\\d)"),
                              .drop_academic_year) |>
     # Brackets emptied by the removals above: "Meld. St. 16 ()" (#229);
     # code such as "print()" has no space before and stays
     stringr::str_remove_all("[ \\t]+\\([ \\t]*\\)") |>
     # Remove clock times "09:00", "23:59:59"; not running times ("Lengde:
     # 2:19", "[20:28]", "Mer Film, 2:30, 2022,", "1:00:09"), verses ("Sure 3:30"),
-    # volume:pages, ISBN-10 or ratios ("60:40") (#308)
-    stringr::str_remove_all(paste0("(?<!\\[|Total Pages |[\\d:])(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d)?\\b",
+    # volume:pages, ISBN-10 or ratios ("60:40") (#308); a range is one time
+    # ("14:30-15:30") (#319)
+    stringr::str_remove_all(paste0(.gap, "(?<!\\[|Total Pages |[\\d:])", .clock_regex,
+                                   "(?:[ \\t]*[-–][ \\t]*", .clock_regex, ")?\\b",
                                    "(?!\\]|,[ \\t]*(?:19|20)\\d{2}\\b)")) |>
     # Remove JS artifacts
     stringr::str_remove_all("function\\s*\\([^)]*\\)\\s*\\{[^}]*\\}") |>

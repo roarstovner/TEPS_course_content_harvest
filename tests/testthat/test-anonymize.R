@@ -141,7 +141,7 @@ test_that("links, DOIs, citations and content ranges keep their numbers (#304)",
             "Forskrift 28.10.2020 nr. 2474 om rammeplan.")
   for (x in keep) expect_equal(anonymize_text("uit", x, .progress = FALSE), x, info = x)
   expect_equal(anonymize_text("uit", "Studieåret 2023/24, gyldig 01.08.2023.", .progress = FALSE),
-               "Studieåret , gyldig .")
+               "Studieåret, gyldig.")
 })
 
 test_that("Norwegian date-time format is removed", {
@@ -186,7 +186,7 @@ test_that("a season list or compound after a semester label goes whole (#303)", 
   expect_equal(an("Vurderingssemester\nHaustsemesteret, 6. semester i lektorutdanninga"),
                "Vurderingssemester\n6. semester i lektorutdanninga")
   expect_equal(an("Undervisningssemester\nHaustEmnet går første gong"), "Undervisningssemester\nEmnet går første gong")
-  expect_equal(an("Gjeldende fra høstsemesteret 2021."), "Gjeldende fra .")
+  expect_equal(an("Gjeldende fra høstsemesteret 2021."), "Gjeldende fra.")
   # the start of another word stays
   expect_equal(an("Eksamen\nHøstpraksis: ny praksis. Semester\nVåre dokumenter"),
                "Eksamen\nHøstpraksis: ny praksis. Semester\nVåre dokumenter")
@@ -656,12 +656,12 @@ test_that("steiner: bare PDF page numbers are removed, numbers in text kept (#24
 
 test_that("inflected and run-together season + year are removed (#227)", {
   expect_equal(anonymize_text("nih", "Pensumliste for høsten 2025 og våren2026.", .progress = FALSE),
-               "Pensumliste for  og .")
+               "Pensumliste for.")
 })
 
 test_that("academic-year ranges go, content ranges stay (#230)", {
   expect_equal(anonymize_text("nih", "Se Studiehåndbok 2023-2024 og 2023- 24.", .progress = FALSE),
-               "Se Studiehåndbok  og .")
+               "Se Studiehåndbok og.")
   expect_equal(anonymize_text("nih", "Perioden 1945-1970 og 1914-18.", .progress = FALSE),
                "Perioden 1945-1970 og 1914-18.")
 })
@@ -761,7 +761,7 @@ test_that("admin dates go, government documents keep theirs (#305)", {
   expect_equal(an("nla", "Studieår: 2019 — 2020"), "Studieår:")
   expect_equal(an("usn", "Godkjent 9.3.21.\nEmneplan godkjent 25.03.25\nGodkjent av instituttleder 18.10.22"),
                "Godkjent\nEmneplan godkjent\nGodkjent av instituttleder")
-  expect_equal(an("nord", "Oppsatt skoleeksamen 16.12.20 gjøres om."), "Oppsatt skoleeksamen  gjøres om.")
+  expect_equal(an("nord", "Oppsatt skoleeksamen 16.12.20 gjøres om."), "Oppsatt skoleeksamen gjøres om.")
   expect_equal(an("oslomet", "Fagplanen ble godkjent i studieutvalget 14. november 2016.\nRedaksjonelle endringar lagt inn 3. juli 2017, 19. april og 7. juni 2018"),
                "Fagplanen ble godkjent i studieutvalget\nRedaksjonelle endringar lagt inn")
   expect_equal(an("usn", "Naturfag (MG1NA1) H2018 Notodden\nPensumliste for H2025-V2026\ndidaktisk arbeid- H23"),
@@ -808,8 +808,23 @@ test_that("handler variants: hvl Nynorsk notice, usn labels, oslomet ';' glue an
                "En viktig del av frister. Det\nTema 2: Læreplanteori\nomfang 1 000 ord. Godt; men")
   expect_equal(an("oslomet", paste("Revisjon godkjent av utdanningsutvalget 3. mai 2018 og på fullmakt av",
                                    "leder i utdanningsutvalget 4. mars 2019\nEmneplanen er godkjent 21. juni2021.")),
-               paste("Revisjon godkjent av utdanningsutvalget  og på fullmakt av leder i utdanningsutvalget",
+               paste("Revisjon godkjent av utdanningsutvalget og på fullmakt av leder i utdanningsutvalget",
                      "Emneplanen er godkjent", sep = "\n"))
+})
+
+test_that("a removal takes the space and separators that joined it (#319)", {
+  an <- function(inst, x) anonymize_text(inst, x, .progress = FALSE)
+  expect_equal(an("uio", "meldt til studieadministrasjonen studieinfo@ibv.uio.no, før forelesningen"),
+               "meldt til studieadministrasjonen, før forelesningen")
+  expect_equal(an("uit", "Emneplan godkjent 15.03.2024.\nFaget går høsten 2024."),
+               "Emneplan godkjent.\nFaget går.")
+  expect_equal(an("uit", "Pensumliste for LER-1402, 5-10, 15 stp, høst 2019 og vår 2020\nNaturfag 5-10 - høst 2020"),
+               "Pensumliste for LER-1402, 5-10, 15 stp\nNaturfag 5-10")
+  expect_equal(an("uit", "Muntlig eksamen\tDato: 27.05.2024 –31.05.2024 Varighet: 30 Minutter"),
+               "Muntlig eksamen\tDato: Varighet: 30 Minutter")
+  expect_equal(an("nla", "Avsluttende vurdering\nHøst 2024:\nMappe"), "Avsluttende vurdering\n\nMappe")
+  expect_equal(an("uit", "MERK: Våren 2021: Skriftlig eksamen\nmasteroppgave vår 2025: For"),
+               "MERK: Skriftlig eksamen\nmasteroppgave: For")
 })
 
 test_that("clock times go; durations, verses, ratios and credits stay (#308)", {
@@ -820,7 +835,7 @@ test_that("clock times go; durations, verses, ratios and credits stay (#308)", {
             "LER-2303 Naturfag 5-10 Høst 10 stp", "Modern Learners, Total Pages 1:00:09,")
   for (x in keep) expect_equal(an(x), x, info = x)
   expect_equal(an("Tid Utlevering 09:00 Innlevering 23:59. Onsdager 14:30-15:30."),
-               "Tid Utlevering  Innlevering . Onsdager -.")
+               "Tid Utlevering Innlevering. Onsdager.")
 })
 
 test_that("data/processed holds no personal data", {
