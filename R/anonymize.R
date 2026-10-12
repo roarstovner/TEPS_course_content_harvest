@@ -52,19 +52,16 @@ anonymize_text <- function(institution, text,
 .anon_ntnu <- function(txt) {
   txt |>
     # The contact block (course coordinator, teachers) up to "Ansvarlig
-    # enhet" or the exam tab; the exam sessions (dates, rooms, candidates)
-    # and the timetable to the end. The unit, "Vurderingsordning: ..." and
-    # "Karakter: ..." stay, as in the sections (#245, #307).
-    stringr::str_remove("(?ms)^Kontaktinformasjon\\n.*?(?=^(?:Ansvarlig enhet|Eksamen)$|\\z)") |>
-    stringr::str_remove("(?s)\\n(?:Ordinær|Utsatt|Ny|Kontinuasjons)\\s?eksamen - (?:Høst|Vår|Sommer).*$") |>
+    # enhet", and the timetable to the end; the unit stays (#307). The exam
+    # tab is not in the text (#321).
+    stringr::str_remove("(?ms)^Kontaktinformasjon\\n.*?(?=^Ansvarlig enhet$|\\z)") |>
     stringr::str_remove("(?s)\\nTimeplan\\n.*$") |>
     # Strip header boilerplate
     stringr::str_remove_all("course-details-portlet\\s*") |>
     stringr::str_remove_all("Undervisningsstart[^\n]+") |>
     # Strip LMS links and misc
     stringr::str_remove_all("Blackboard\\s*-\\s*\\S+") |>
-    stringr::str_remove_all("Andre sider om emnet\\s*") |>
-    stringr::str_remove_all("Alt om eksamen ved NTNU\\s*")
+    stringr::str_remove_all("Andre sider om emnet\\s*")
 }
 
 .anon_uit <- function(txt) {

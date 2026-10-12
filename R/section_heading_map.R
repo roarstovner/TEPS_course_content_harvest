@@ -39,8 +39,6 @@ section_heading_patterns <- tibble::tribble(
   "dato for eksamen",                      ".drop",                  TRUE,   # uit 2008-2011 (#282)
   "dato for skoleeksamen",                 ".drop",                  TRUE,
   "date for examination",                  ".drop",                  TRUE,
-  "ordinær eksamen - ",                    ".drop",                  FALSE,  # ntnu sessions
-  "utsatt eksamen - ",                     ".drop",                  FALSE,
   "mer om eksamen ved uio",                ".drop",                  TRUE,
   "meir om eksamen ved uio",               ".drop",                  TRUE,
   "more about examinations at uio",        ".drop",                  TRUE,

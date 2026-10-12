@@ -264,17 +264,17 @@ test_that("usn: table of contents skipped, stamp dropped, header 'litteratur' ha
   expect_equal(s[["reading_list"]], "Kompetansemål og vurdering")
 })
 
-test_that("ntnu: exam block gives assessment design, sessions and scripts dropped (#245)", {
-  html <- "<main><h2>Om emnet</h2><h3>Læringsformer og aktiviteter</h3><p>Seminarer.</p>
+test_that("ntnu: the exam tab, contacts and scripts are not sections (#245, #321)", {
+  html <- "<section id='content'><h2>Om emnet</h2><h3>Læringsformer og aktiviteter</h3><p>Seminarer.</p>
     <script>function toggleRooms(id) { x(); }</script>
+    <h3>Mer om vurdering</h3><p>Hjemmeeksamen.</p>
     <h3>Kontaktinformasjon</h3><h4>Faglærere</h4><p>Ola Nordmann</p>
-    <h2>Eksamen</h2><p>Vurderingsordning: Skriftlig eksamen<br>Karakter: Bokstavkarakterer</p>
-    <h4>Ordinær eksamen - Høst 2025</h4><p>Dato 29.11.2025, rom SL120</p></main>"
-  cfg <- html_cfg("h4", heading = "h2, h3")
-  s <- sections_of(html, cfg)
+    <div id='omEksamen'><h2>Eksamen</h2><p>Vurderingsordning: Skriftlig eksamen<br>Karakter: Bokstavkarakterer</p>
+    <h4>Ordinær eksamen - Høst 2025</h4><p>Dato 29.11.2025, rom SL120</p></div></section>"
+  s <- sections_of(html, .block_cfg(get_institution_config("ntnu")))
   expect_equal(s[["teaching_methods"]], "Seminarer.")
-  expect_equal(s[["assessment"]], "Vurderingsordning: Skriftlig eksamen\nKarakter: Bokstavkarakterer")
-  expect_false(any(grepl("toggleRooms|Nordmann|SL120", s)))
+  expect_equal(s[["assessment"]], "Hjemmeeksamen.")
+  expect_false(any(grepl("toggleRooms|Nordmann|SL120|Vurderingsordning|Karakter", s)))
   # form widgets (uib semester picker; #219) are not content either
   doc <- .read_doc("<div><label>Vel emnebeskrivelse for semester</label><select><option>2027 Vår</option></select><p>Mål.</p></div>")
   expect_equal(rvest::html_text2(doc), "Mål.")

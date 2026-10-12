@@ -11,7 +11,7 @@ changes what the data mean, add or update its entry here; each release
 tag freezes this file with the data.
 
 Current data: 41 025 offerings (DBH course × year × semester) at 19
-institutions, 24 150 of them with a plan, and 14 060 unique plans from
+institutions, 24 080 of them with a plan, and 14 040 unique plans from
 18 institutions (none from Samas, below).
 
 ## Population and sampling frame
@@ -115,7 +115,7 @@ before. *Since:* 2026-10-08 (#313).
 
 **A plan is a unique anonymized text per institution and course code**
 (`plan_content_id`, a hash of the normalized text). Offerings with the
-same text share a plan: 24 150 offerings have 14 060 plans. *Why:*
+same text share a plan: 24 080 offerings have 14 040 plans. *Why:*
 consecutive years and both semesters mostly repeat the same text.
 *Consequence:* the id changes whenever cleaning changes the text, so
 coding is tied to a frozen release and carried to later releases with a
@@ -132,15 +132,16 @@ later), not the offering’s. Longer pages without sections stay (OsloMet
 practicum courses, below). *Consequence:* 174 plans left the data on
 2026-10-06 (UiA 95, UiB 27, OsloMet 26, Nord 11, HVL 10, UiT 4, NTNU 1).
 With pages that are not the plan at all (INN’s course search page,
-OsloMet’s error page; \#53, \#57), 1 512 offerings have page text but no
-plan (hvl 86, inn 1112, nord 58, ntnu 1, oslomet 77, uia 95, uib 80, uit
-3). *Since:* 2026-10-06 (#222); heading lists (UiB NOLI216 and NOSP216,
-autumn 2018) from 2026-10-07 (#299). INN later versions from 2026-10-07
-(#302): 1,077 INN offerings (384 of 407 pages from 2022, about half of
-2023-2025) lose their plan; the April 2026 harvest has the same notice
-on the same pages. *Rejected:* keeping the later plan with a flag
-(decided 2026-10-07: an offering is coded with its own year’s plan or
-none).
+OsloMet’s error page; \#53, \#57), 1 582 offerings have page text but no
+plan (hvl 86, inn 1112, nord 58, ntnu 71, oslomet 77, uia 95, uib 80,
+uit 3). *Since:* 2026-10-06 (#222); heading lists (UiB NOLI216 and
+NOSP216, autumn 2018) from 2026-10-07 (#299); NTNU pages whose only
+section was the exam tab from 2026-10-12 (#321, 20 plans, 70 offerings).
+INN later versions from 2026-10-07 (#302): 1,077 INN offerings (384 of
+407 pages from 2022, about half of 2023-2025) lose their plan; the April
+2026 harvest has the same notice on the same pages. *Rejected:* keeping
+the later plan with a flag (decided 2026-10-07: an offering is coded
+with its own year’s plan or none).
 
 **Tables are read one row per line:** each row of a table on the page is
 one line, its cells separated by tabs and each cell on one line, so an
@@ -198,28 +199,37 @@ two-digit year (“Godkjent 22.03.23”), and semester codes (“H23”,
 “H2025-V2026”): 1,683 plans lose one; 21 plans that differed only by
 such a date merge with another. *Since:* 2026-10-08 (#305).
 
-**NTNU plans keep their responsible unit and exam form.** Of the page’s
-contact and exam tabs, `course_plan` keeps “Ansvarlig enhet” with the
-department, “Vurderingsordning: …” and “Karakter: …” (the grading
-scale); the contact names, the exam sessions (dates, rooms, weights,
-candidate counts) and the timetable go, as in the sections (#245). The
-dedup hash leaves these closing lines out. *Why:* the earlier cut from
-“Kontaktinformasjon” to the end also took the grading scale, so
-`course_plan` could not tell pass/fail courses from graded ones
-(anonymization audit, \#231). *Rejected:* keeping the sessions, which
-change every year; hashing the new lines, which split 53 plans only
-because one year’s page lacks the exam tab or a department was renamed.
-*Consequence:* of 2,008 NTNU plans, 1,901 now name their unit and 1,356
-their grading scale; where the scale sits inside a session it is still
-lost. Plan ids do not change. *Since:* 2026-10-08 (#307).
+**NTNU: the exam tab is not part of the plan; the responsible unit is.**
+The page’s exam tab (“Vurderingsordning: …”, “Karakter: …” and the exam
+sessions with their parts, weights, dates and rooms) is read neither
+into `course_plan` nor into the sections. `course_plan` keeps “Ansvarlig
+enhet” with the department; the contact names and the timetable go. The
+dedup hash leaves the unit out. *Why:* the exam tab is the semester’s
+exam registration, not the plan text; at the end of the assessment
+section it read as coded exam data, and the assessment form, grading
+scale and exam parts are coded in TEPS_course_content_coding, not here
+(user decision 2026-10-12). *Rejected:* keeping “Vurderingsordning” and
+“Karakter” in the assessment section (#245, 2026-10-01) and in
+`course_plan` (#307, 2026-10-08) so that pass/fail courses could be told
+from graded ones; keeping the ordinary session’s exam parts for the exam
+coding (#316); hashing the unit, which split plans only because a
+department was renamed. *Consequence:* 743 of 1,684 NTNU plans with an
+assessment section lose it (the exam tab was all of it); 941 keep their
+own “Mer om vurdering”. 20 pages whose only section was the exam tab
+(master’s thesis courses `*3950`, discontinued courses) are page shells:
+70 offerings lose their plan (14,060 → 14,040 plans). The facts box at
+the top of `course_plan` still names the assessment form
+(“Vurderingsordning Oppgave”). 1,889 of 1,988 NTNU plans name their
+unit. Other plan ids do not change. *Since:* 2026-10-08 (#307), exam tab
+dropped 2026-10-12 (#321).
 
 ## Sections
 
 **Seven canonical sections** are cut from each plan by its headings,
 mapped through one heading table (`R/section_heading_map.R`): course
-content (98 % of plans), learning outcomes (98 %), assessment (95 %),
+content (99 % of plans), learning outcomes (98 %), assessment (90 %),
 teaching methods (94 %), coursework requirements (91 %), prerequisites
-(55 %) and reading list (33 %). Where a section is missing, the coders
+(56 %) and reading list (33 %). Where a section is missing, the coders
 use the whole plan.
 
 **Coursework requirements are kept apart from assessment:** arbeidskrav

@@ -1,7 +1,7 @@
 # Data Quality Notes
 
 
-Generated: 2026-10-08
+Generated: 2026-10-12
 
 ## Overview
 
@@ -16,7 +16,7 @@ Generated: 2026-10-08
 | nla | 2074 | 209 | 2017-2025 | 249 | 12.0% | 5885 | 181 | 27.3% |
 | nmbu | 29 | 15 | 2025 | 12 | 41.4% | 5900 | 12 | 0.0% |
 | nord | 3489 | 434 | 2016-2025 | 3489 | 100.0% | 4004 | 1365 | 60.2% |
-| ntnu | 5735 | 409 | 2004-2025 | 3791 | 66.1% | 4061 | 2008 | 47.0% |
+| ntnu | 5735 | 409 | 2004-2025 | 3791 | 66.1% | 3770 | 1988 | 46.6% |
 | oslomet | 1684 | 178 | 2018-2025 | 1684 | 100.0% | 12259 | 625 | 61.1% |
 | samas | 130 | 68 | 2025 | 0 | 0.0% | NA | 0 | NaN% |
 | steiner | 36 | 18 | 2025 | 15 | 41.7% | 5027 | 15 | 0.0% |
@@ -27,7 +27,7 @@ Generated: 2026-10-08
 | uit | 6693 | 621 | 2004-2025 | 3154 | 47.1% | 4108 | 2312 | 26.6% |
 | usn | 3036 | 401 | 2018-2025 | 1238 | 40.8% | 10800 | 1182 | 4.5% |
 
-**Total**: 41025 rows, 25662 with extracted text (62.6%), 14060 unique
+**Total**: 41025 rows, 25662 with extracted text (62.6%), 14040 unique
 plans.
 
 **Columns:**
@@ -104,7 +104,7 @@ year) that have a plan in at least one semester:
 | nla | 1103 | 88% | 232 | 0 | 739 | 23% | 12.0% |
 | nmbu | 15 | 93% | 11 | 0 | 3 | 80% | 41.4% |
 | nord | 1886 | 85% | 2 | 1575 | 26 | 98% | 100.0% |
-| ntnu | 2851 | 80% | 0 | 1427 | 867 | 63% | 66.1% |
+| ntnu | 2851 | 80% | 0 | 1412 | 882 | 62% | 66.1% |
 | oslomet | 895 | 88% | 2 | 757 | 30 | 95% | 100.0% |
 | samas | 68 | 91% | 0 | 0 | 62 | 0% | 0.0% |
 | steiner | 18 | 100% | 15 | 0 | 3 | 83% | 41.7% |
@@ -140,7 +140,7 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 | nla | 854 | 146 | 0 | 0 | 708 | 0 | 0 |
 | nmbu | 2 | 0 | 0 | 0 | 0 | 2 | 0 |
 | nord | 30 | 0 | 0 | 0 | 30 | 0 | 0 |
-| ntnu | 1043 | 0 | 0 | 1043 | 0 | 0 | 3 |
+| ntnu | 1071 | 0 | 0 | 1043 | 28 | 0 | 2 |
 | oslomet | 45 | 0 | 0 | 0 | 45 | 0 | 0 |
 | samas | 68 | 0 | 68 | 0 | 0 | 0 | 0 |
 | steiner | 3 | 0 | 3 | 0 | 0 | 0 | 0 |
@@ -289,10 +289,11 @@ to chainlink.
 - Year in the URL, no semester. Pages saying no information is available
   raise `ntnu_no_info_error`; robots.txt asks for a 10-second crawl
   delay
-- `.anon_ntnu()` removes the contact block (course coordinator,
-  teachers), the exam sessions (dates, rooms) and the timetable; the
-  responsible unit and the exam form and grading scale stay, and the
-  dedup hash ignores them (#307)
+- The exam tab (assessment form, grading scale, exam sessions) is not
+  read: it is the semester’s exam registration, and exam data are coded
+  in TEPS_course_content_coding (#321). `.anon_ntnu()` removes the
+  contact block (course coordinator, teachers) and the timetable; the
+  responsible unit stays, and the dedup hash ignores it (#307)
 
 ------------------------------------------------------------------------
 

@@ -44,13 +44,17 @@ institution_configs <- list(
     code = "1150",
     strategy = "standard",
     selector = "#content",
+    # The exam tab is the semester's exam registration, not the plan: its
+    # assessment form, grading and exam parts are coded in
+    # TEPS_course_content_coding, not here (#321)
+    exclude = "#omEksamen",
     plan_years = "url",
     request_delay = 10,  # robots.txt: Crawl-delay: 10 for all user agents
     post_fn = .post_ntnu,
     fetch_fn = fetch_html_cols_single_ntnu,
     section_strategy = "html",
-    # h3 sections plus the h2 "Eksamen" block (Vurderingsordning, Karakter);
-    # its h4 exam sessions (dates, rooms) are dropped (#245).
+    # h3 sections; the h2 tab titles ("Timeplan") close them, and h4 marks
+    # the contact block's sub-headings
     section_heading_selector = "h2, h3",
     section_subheading_selector = "h4"
   ),

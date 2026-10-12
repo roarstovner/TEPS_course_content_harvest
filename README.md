@@ -551,10 +551,10 @@ Fields for the `html` reader:
 
 - `selector` and `exclude` (shared with the fulltext): the container,
   and elements in it that are not read (mf’s facts box, contact card and
-  banner; nord’s “Kopier lenke” label).
+  banner; nord’s “Kopier lenke” label; ntnu’s exam tab).
 - `section_heading_selector`: section headings (default `h2`; ntnu
-  `"h2, h3"` for its “Eksamen” block, inn’s `div.label`, uib’s and mf’s
-  `summary`, nord’s `button.ac-trigger`).
+  `"h2, h3"`, inn’s `div.label`, uib’s and mf’s `summary`, nord’s
+  `button.ac-trigger`).
 - `section_scope`: elements that hold a section of their own (`details`,
   nord’s `div.ac`); the section open around them continues after them.
 - `section_initial`: section for text before the first heading (mf’s
@@ -869,7 +869,10 @@ Pattern:
 
 **NTNU.** The URL has the year but not the semester. A page saying no
 information is available raises `ntnu_no_info_error`. robots.txt asks
-for a 10-second crawl delay (`request_delay` in the config).
+for a 10-second crawl delay (`request_delay` in the config). The page’s
+exam tab (`#omEksamen`: assessment form, grading scale, exam sessions
+and their parts) is the semester’s exam registration, not the plan, and
+is not read (#321).
 
 **UiO.** UiO publishes only the latest version of each course plan: the
 base URL always returns the current plan and older versions cannot be

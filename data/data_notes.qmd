@@ -255,7 +255,7 @@ chainlink.
 ### NTNU (Norwegian University of Science and Technology)
 
 - Year in the URL, no semester. Pages saying no information is available raise `ntnu_no_info_error`; robots.txt asks for a 10-second crawl delay
-- `.anon_ntnu()` removes the contact block (course coordinator, teachers), the exam sessions (dates, rooms) and the timetable; the responsible unit and the exam form and grading scale stay, and the dedup hash ignores them (#307)
+- The exam tab (assessment form, grading scale, exam sessions) is not read: it is the semester's exam registration, and exam data are coded in TEPS_course_content_coding (#321). `.anon_ntnu()` removes the contact block (course coordinator, teachers) and the timetable; the responsible unit stays, and the dedup hash ignores it (#307)
 
 ---
 
