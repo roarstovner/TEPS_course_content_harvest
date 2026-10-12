@@ -103,6 +103,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- NTNU: keep the ordinary session's exam parts (form, weight, grading) for the exam coding (#316)
+- NTNU: drop the exam tab (Vurderingsordning, Karakter, exam parts) from sections and course_plan (#321)
 - Re-audit anonymization at the institutions changed by #301-#309 (#310)
 - sjekke om det er mulig å dele inn seksjoner i analyseenheter (#311)
 - A <br> inside an inline element glues words (html_text2 and the block walker drop it) (#315)
