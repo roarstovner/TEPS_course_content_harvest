@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Assessment notices, exam aids and language into the assessment section (#324)
 - NTNU exam tab back into course_plan and the assessment section (#323)
 - Public docs and committed CLAUDE.md without chainlink issue numbers (#328)
 - Anonymization: remove the separators and spaces a removal leaves (#319)
