@@ -74,6 +74,25 @@ several academic years (NLA; for most courses only recent ones), or only from
 when the page was fetched (UiO, MF,
 NMBU, Steiner publish only the plan in force). *Since:* 2026-10-06.
 
+**An offering reads the plan of its own academic year at NTNU, HVL and
+OsloMet too.** Their URL's year is the academic year the page is for: NTNU's
+`/2025` is "Studieår 2025/2026", HVL's "Emneplan for studieåret 2025/2026",
+OsloMet's `/2025/HØST` study year 2025/2026. The URLs had DBH's year for
+every semester, so a spring or summer offering read the next academic year's
+plan: no NTNU spring page showed its own term as "Undervisningsstart" (534
+showed "Vår" of the next year), and all HVL and OsloMet spring pages named
+the next study year (fulltext audit, 2026-10-13). Now autumn Y reads `/Y` and
+spring and summer Y read `/Y-1`, as NLA, Nord and the current-only sites
+already did; an offering takes the page at that URL whichever offering it was
+fetched for, its own first. NTNU's "-A" codes (MGLU1101-A) are the site's code
+without the suffix. *Rejected:* keeping the calendar year, which codes a
+spring offering with the plan of the year after. *Consequence:* autumn
+offerings keep their plan. Of the spring and summer offerings, 2,851 get
+another plan (HVL 1,284, NTNU 1,173, OsloMet 394), 225 get one where they had
+none and 484 lose theirs until their page is fetched (HVL 167, NTNU 233,
+OsloMet 84: no offering had fetched `/Y-1`). The number of plans does not
+change (13,021). *Since:* 2026-10-14.
+
 ```{r}
 #| label: current-sites
 cur <- off |> filter(plan_year_basis == "current")

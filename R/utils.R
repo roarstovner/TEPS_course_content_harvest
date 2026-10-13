@@ -65,6 +65,12 @@ canon_semester_name <- function(semester_name) {
   )
 }
 
+# The year an offering's academic year (August-July) starts: autumn Y -> Y,
+# spring and summer Y -> Y - 1
+academic_start_year <- function(year, semester) {
+  year - (semester %in% c("Vår", "Sommer"))
+}
+
 nla_academic_year <- function(year, semester) {
   dplyr::case_match(semester,
     "Høst"            ~ paste0(year, "-", year + 1),

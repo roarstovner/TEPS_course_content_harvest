@@ -199,6 +199,7 @@ newuni = list(
   selector = ".main-content",     # the element that holds the course plan
   exclude = ".contact",           # optional: parts of it that are not the plan
   plan_years = "url",             # year in the URL; "page" or "current": see R/institution_config.R
+  # url_year = "academic",        # if the URL's year is the academic year (ntnu, hvl, oslomet)
   section_strategy = "html"       # how the plan is split; see "Blocks and Sections"
 )
 ```
@@ -628,7 +629,12 @@ emnebeskrivelse" page without year-specific content. The site maps each
 semester to its academic year (`VÅR&year=2023` gives the 2022/23 plan). Pattern:
 `https://www.nord.no/studier/emner/{code}?year={year}&semester={HØST|VÅR}`.
 
-**NTNU.** The URL has the year but not the semester. A page saying no
+**NTNU.** The URL has the year but not the semester. The year is the academic
+year the page is for (`/2025` is "Studieår 2025/2026"), so a spring or summer
+offering reads the year before (`url_year = "academic"`; HVL and OsloMet
+likewise), and `read_harvest()` gives an offering the page at its URL
+whichever offering it was fetched for. DBH's "-A" codes (MGLU1101-A) are the
+site's code without the suffix. A page saying no
 information is available raises `ntnu_no_info_error`. robots.txt asks for a
 10-second crawl delay (`request_delay` in the config). The page's exam tab
 (`#omEksamen`: assessment form, grading scale, exam sessions and their parts)

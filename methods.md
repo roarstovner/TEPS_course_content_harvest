@@ -12,7 +12,7 @@ changes what the data mean, add or update its entry here; each release
 tag freezes this file with the data.
 
 Current data: 41 025 offerings (DBH course × year × semester) at 19
-institutions, 24 146 of them with a plan, and 13 021 unique plans from
+institutions, 23 887 of them with a plan, and 13 021 unique plans from
 18 institutions (none from Samas, below).
 
 ## Population and sampling frame
@@ -60,6 +60,26 @@ the sites below).
 page, which holds the plans of several academic years (NLA; for most
 courses only recent ones), or only from when the page was fetched (UiO,
 MF, NMBU, Steiner publish only the plan in force). *Since:* 2026-10-06.
+
+**An offering reads the plan of its own academic year at NTNU, HVL and
+OsloMet too.** Their URL’s year is the academic year the page is for:
+NTNU’s `/2025` is “Studieår 2025/2026”, HVL’s “Emneplan for studieåret
+2025/2026”, OsloMet’s `/2025/HØST` study year 2025/2026. The URLs had
+DBH’s year for every semester, so a spring or summer offering read the
+next academic year’s plan: no NTNU spring page showed its own term as
+“Undervisningsstart” (534 showed “Vår” of the next year), and all HVL
+and OsloMet spring pages named the next study year (fulltext audit,
+2026-10-13). Now autumn Y reads `/Y` and spring and summer Y read
+`/Y-1`, as NLA, Nord and the current-only sites already did; an offering
+takes the page at that URL whichever offering it was fetched for, its
+own first. NTNU’s “-A” codes (MGLU1101-A) are the site’s code without
+the suffix. *Rejected:* keeping the calendar year, which codes a spring
+offering with the plan of the year after. *Consequence:* autumn
+offerings keep their plan. Of the spring and summer offerings, 2,851 get
+another plan (HVL 1,284, NTNU 1,173, OsloMet 394), 225 get one where
+they had none and 484 lose theirs until their page is fetched (HVL 167,
+NTNU 233, OsloMet 84: no offering had fetched `/Y-1`). The number of
+plans does not change (13,021). *Since:* 2026-10-14.
 
 **Sites that publish only the current plan:** a harvest counts only for
 the academic year (August-July) it was made in, and an offering gets the
@@ -115,7 +135,7 @@ before. *Since:* 2026-10-08.
 
 **A plan is a unique anonymized text per institution and course code**
 (`plan_content_id`, a hash of the normalized text). Offerings with the
-same text share a plan: 24 146 offerings have 13 021 plans. *Why:*
+same text share a plan: 23 887 offerings have 13 021 plans. *Why:*
 consecutive years and both semesters mostly repeat the same text.
 *Consequence:* the id changes whenever cleaning changes the text, so
 coding is tied to a frozen release and carried to later releases with a
@@ -133,11 +153,11 @@ later), not the offering’s. Longer pages without sections stay (OsloMet
 practicum courses, below). *Consequence:* 174 plans left the data on
 2026-10-06 (UiA 95, UiB 27, OsloMet 26, Nord 11, HVL 10, UiT 4, NTNU 1).
 With pages that are not the plan at all (INN’s course search page,
-OsloMet’s error page), 1 529 offerings have page text but no plan (hvl
-86, inn 1112, nord 58, ntnu 1, oslomet 77, uia 95, uib 80, uit 20).
-*Since:* 2026-10-06; heading lists (UiB NOLI216 and NOSP216, autumn
-2018) from 2026-10-07; NTNU pages whose only section was the exam tab
-from 2026-10-12 to 2026-10-13, when the tab came back (20 plans, 70
+OsloMet’s error page), 1 513 offerings have page text but no plan (hvl
+84, inn 1112, nord 58, oslomet 64, uia 95, uib 80, uit 20). *Since:*
+2026-10-06; heading lists (UiB NOLI216 and NOSP216, autumn 2018) from
+2026-10-07; NTNU pages whose only section was the exam tab from
+2026-10-12 to 2026-10-13, when the tab came back (20 plans, 70
 offerings). INN later versions from 2026-10-07: 1,077 INN offerings (384
 of 407 pages from 2022, about half of 2023-2025) lose their plan; the
 April 2026 harvest has the same notice on the same pages. *Rejected:*

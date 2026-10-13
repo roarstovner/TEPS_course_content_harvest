@@ -6,12 +6,12 @@ add_course_url <- function(df) {
 
         "oslomet" ~ add_course_url_oslomet(Emnekode, Årstall, Semesternavn),
         "uia"     ~ add_course_url_uia(Emnekode, Årstall, Semesternavn),
-        "ntnu"    ~ add_course_url_ntnu(Emnekode, Årstall),
+        "ntnu"    ~ add_course_url_ntnu(Emnekode, Årstall, Semesternavn),
         "inn"     ~ add_course_url_inn(Emnekode, Årstall, Semesternavn),
 
         "hivolda" ~ NA_character_,  # Hivolda requires URL discovery via resolve_course_urls()
         "hiof"    ~ add_course_url_hiof(Emnekode, Årstall, Semesternavn),
-        "hvl"     ~ add_course_url_hvl(Emnekode, Årstall),
+        "hvl"     ~ add_course_url_hvl(Emnekode, Årstall, Semesternavn),
 
         "mf"      ~ add_course_url_mf(Emnekode),
         "nla"     ~ add_course_url_nla(Emnekode, Årstall, Semesternavn),
@@ -31,8 +31,12 @@ add_course_url <- function(df) {
     )
 }
 
-add_course_url_ntnu <- function(course_code, year) {
-  glue::glue("https://www.ntnu.no/studier/emner/{toupper(course_code)}/{year}")
+# The year in the URL is the academic year it starts ("/2025": 2025/26), so a
+# spring offering reads the year before (url_year = "academic"). DBH's "-A"
+# codes (MGLU1101-A) are the site's code without the suffix.
+add_course_url_ntnu <- function(course_code, year, semester) {
+  glue::glue("https://www.ntnu.no/studier/emner/{sub('-A$', '', toupper(course_code))}/",
+             "{academic_start_year(year, semester)}")
 }
 
 add_course_url_uia <- function(course_code, year, semester) {
@@ -57,8 +61,10 @@ add_course_url_nord <- function(course_code, year, semester) {
   glue::glue("https://www.nord.no/studier/emner/{tolower(course_code)}?year={year}&semester={url_semester}")
 }
 
-add_course_url_hvl <- function(course_code, year) {
-  glue::glue("https://www.hvl.no/studier/studieprogram/emne/{year}/{course_code}")
+# "Emneplan for studieåret 2025/2026" is at /2025/: a spring offering reads
+# the year before (url_year = "academic")
+add_course_url_hvl <- function(course_code, year, semester) {
+  glue::glue("https://www.hvl.no/studier/studieprogram/emne/{academic_start_year(year, semester)}/{course_code}")
 }
 
 add_course_url_hiof <- function(course_code, year, semester) {
@@ -105,11 +111,12 @@ add_course_url_uio <- function(course_code, faculty_name) {
   glue::glue("https://www.uio.no/studier/emner/{fac_slug}/{inst_slug}/{toupper(course_code)}/")
 }
 
+# The site only accepts "HØST": "/2022/HØST" is the plan of study year
+# 2022/2023, so a spring offering reads the year before (url_year =
+# "academic"); VÅR URLs return 404
 add_course_url_oslomet <- function(course_code, year, semester) {
-  # WORKAROUND: OsloMet's website only accepts "HØST" in URLs
-  # VÅR URLs return 404 errors, but HØST URLs work for all courses
-  # Course content appears to be the same across semesters
-  glue::glue("https://student.oslomet.no/studier/-/studieinfo/emne/{toupper(course_code)}/{year}/HØST")
+  glue::glue("https://student.oslomet.no/studier/-/studieinfo/emne/{toupper(course_code)}/",
+             "{academic_start_year(year, semester)}/HØST")
 }
 
 add_course_url_inn <- function(course_code, year, semester) {

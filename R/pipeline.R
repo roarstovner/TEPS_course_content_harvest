@@ -43,7 +43,9 @@ read_harvest <- function(files, config) {
     page <- rep_len(!is.na(rows[["html"]] %||% NA) | !is.na(rows[["extracted_text"]] %||% NA), nrow(rows))
     pick <- order(rows$course_id, !page, -seq_len(nrow(rows)))
     pick <- pick[!duplicated(rows$course_id[pick])]
-    return(dplyr::select(rows[sort(pick), ], -dplyr::any_of("retry")))
+    rows <- dplyr::select(rows[sort(pick), ], -dplyr::any_of("retry"))
+    if (identical(config$url_year, "academic")) rows <- .academic_year_pages(rows)
+    return(rows)
   }
   page <- c("html", "html_error", "html_success", "extracted_text", "harvested_at")
   snapshots <- rows |>
@@ -62,6 +64,29 @@ read_harvest <- function(files, config) {
     dplyr::left_join(snapshots, by = c("Emnekode_raw", "academic_year")) |>
     dplyr::select(-academic_year) |>
     dplyr::arrange(course_id)
+}
+
+# A site whose URL holds the academic year (`url_year = "academic"`): an
+# offering takes the page at the URL add_course_url() gives it (spring 2025
+# and autumn 2024: "/2024"), fetched for whichever offering; a page fetched
+# for its own offering comes first. Harvests until 2026-10-13 put the
+# calendar year in the URL of spring offerings too. An offering whose URL
+# nobody fetched keeps that URL and no page ("no page" in plan_gaps()) until
+# harvest_all(retry = TRUE) fetches it.
+.academic_year_pages <- function(rows) {
+  cols <- intersect(c("url", "html", "html_error", "html_success", "extracted_text"), names(rows))
+  fetched <- as.character(rows$url)
+  needed <- as.character(add_course_url(rows)$url)
+  right <- !is.na(fetched) & fetched == needed
+  pages <- which(!is.na(rows$html))
+  pages <- pages[order(!right[pages], pages)]
+  src <- pages[match(needed, fetched[pages])]
+  own <- right & (!is.na(rows$html) | is.na(src))   # its page, or its 404
+  src[own] <- which(own)
+  out <- rows
+  out[, cols] <- rows[src, cols]
+  out$url <- needed
+  out
 }
 
 #' Harvested rows with the current extracted_text

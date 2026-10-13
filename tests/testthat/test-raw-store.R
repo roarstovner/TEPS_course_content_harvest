@@ -69,6 +69,31 @@ test_that("a retry of offerings without a plan takes their new page", {
   expect_equal(unname(html_a(read_harvest(harvest_files("x", raw), cfg))), c(NA, "shell"))
 })
 
+test_that("academic-year URLs: an offering takes the page of its academic year", {
+  u <- function(inst, code, year, sem) add_course_url(tibble::tibble(
+    institution = inst, Emnekode = code, Emnekode_raw = code, Årstall = year, Semesternavn = sem,
+    Avdelingsnavn = NA_character_))$url
+  expect_equal(u("ntnu", "MGLU1101-A", 2022L, "Vår"), "https://www.ntnu.no/studier/emner/MGLU1101/2021")
+  expect_equal(u("ntnu", "MGLU1101", 2022L, "Høst"), "https://www.ntnu.no/studier/emner/MGLU1101/2022")
+  expect_equal(u("oslomet", "M1GSF2110", 2022L, "Vår"),
+               "https://student.oslomet.no/studier/-/studieinfo/emne/M1GSF2110/2021/HØST")
+  expect_equal(u("hvl", "MGX1", 2025L, "Sommer"), "https://www.hvl.no/studier/studieprogram/emne/2024/MGX1")
+  # pages fetched before 2026-10-14: the calendar year for every semester
+  hvl <- function(y) paste0("https://www.hvl.no/studier/studieprogram/emne/", y, "/MGX1")
+  rows <- tibble::tibble(
+    course_id = c("a23", "a24", "s24", "s25", "a25"), institution = "hvl", Emnekode = "MGX1",
+    Emnekode_raw = "MGX1-1", Avdelingsnavn = NA_character_, Årstall = c(2023L, 2024L, 2024L, 2025L, 2025L),
+    Semesternavn = c("Høst", "Høst", "Vår", "Vår", "Høst"),
+    url = hvl(c(2023, 2024, 2024, 2025, 2025)),
+    html = c(NA, "2024/25", "2024/25 again", "2025/26", "2025/26 own"),
+    html_error = list("HTTP 404", NULL, NULL, NULL, NULL), html_success = c(FALSE, TRUE, TRUE, TRUE, TRUE))
+  out <- .academic_year_pages(rows)
+  expect_equal(out$html, c(NA, "2024/25", NA, "2024/25", "2025/26 own"))
+  expect_equal(out$url, hvl(c(2023, 2024, 2023, 2024, 2025)))
+  expect_equal(out$html_error[[1]], "HTTP 404")   # its own URL: the 404 stays
+  expect_null(out$html_error[[3]])                # /2023 for spring 2024: not fetched
+})
+
 test_that("harvest_all(retry = TRUE) fetches offerings without a plan again", {
   withr::local_dir(withr::local_tempdir())
   old <- institution_configs$samas$plan_years

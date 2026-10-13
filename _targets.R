@@ -16,7 +16,7 @@ tar_option_set(
 )
 
 tar_source(c(
-  "R/utils.R", "R/fetch_html_cols.R", "R/extract_fulltext.R",
+  "R/utils.R", "R/add_course_url.R", "R/fetch_html_cols.R", "R/extract_fulltext.R",
   "R/institution_config.R", "R/section_heading_map.R", "R/blocks.R",
   "R/extract_sections.R",
   "R/anonymize.R", "R/normalize_plan_text.R", "R/deduplicate_plans.R",

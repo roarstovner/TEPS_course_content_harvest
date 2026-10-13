@@ -22,6 +22,13 @@
 #             "current" the site shows only the plan in force when the page is
 #                       fetched, so a harvest gives the plan of that academic
 #                       year only.
+#
+# url_year: "academic"  the URL's year is the academic year the page is for
+#                       (ntnu, hvl, oslomet: "/2025" is 2025/26), so a
+#                       spring or summer offering reads the year before, and
+#                       read_harvest() gives an offering the page fetched for
+#                       its course and academic year, whichever offering it
+#                       was fetched for.
 
 institution_configs <- list(
 
@@ -35,6 +42,7 @@ institution_configs <- list(
     # timetable, programmes)
     facts = c("#main-content div.header", "#main-content section.section-top"),
     plan_years = "url",
+    url_year = "academic",
     section_strategy = "html",
     # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
     section_subheading_selector = "p",
@@ -96,6 +104,7 @@ institution_configs <- list(
               "#requirements-toggler", "#credit-reductions-toggler",
               "//div[contains(@class, 'course-card')][.//ul[contains(@class, 'subject-area-list')]]"),
     plan_years = "url",
+    url_year = "academic",
     request_delay = 10,  # robots.txt: Crawl-delay: 10 for all user agents
     fetch_fn = fetch_html_cols_single_ntnu,
     # The exam tab lists the exam parts once per exam session; the
@@ -186,6 +195,7 @@ institution_configs <- list(
                        ".//div[contains(@class, 'teaser-icon--person')]]")),
     facts = c("div.l-body > h1", ".l-2-col__aside"),
     plan_years = "url",
+    url_year = "academic",
     fetch_fn = fetch_html_cols_single_hvl,
     section_strategy = "html",
     section_heading_selector = "h3",

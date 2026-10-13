@@ -9,15 +9,15 @@ Generated: 2026-10-13
 |:---|---:|---:|:---|---:|:---|---:|---:|:---|
 | hiof | 1712 | 240 | 2017-2025 | 846 | 49.4% | 7151 | 820 | 3.1% |
 | hivolda | 1182 | 113 | 2017-2025 | 594 | 50.3% | 4622 | 511 | 14.0% |
-| hvl | 3604 | 393 | 2017-2025 | 3335 | 92.5% | 4464 | 1647 | 49.3% |
+| hvl | 3604 | 393 | 2017-2025 | 3253 | 90.3% | 4414 | 1647 | 48.0% |
 | inn | 2861 | 286 | 2018-2025 | 1777 | 62.1% | 4164 | 552 | 17.0% |
 | mf | 55 | 29 | 2025 | 26 | 47.3% | 4056 | 26 | 0.0% |
 | nih | 184 | 34 | 2021-2025 | 81 | 44.0% | 2534 | 81 | 0.0% |
 | nla | 2074 | 209 | 2017-2025 | 249 | 12.0% | 5885 | 177 | 28.9% |
 | nmbu | 29 | 15 | 2025 | 12 | 41.4% | 5900 | 12 | 0.0% |
 | nord | 3489 | 434 | 2016-2025 | 3489 | 100.0% | 4107 | 1310 | 61.8% |
-| ntnu | 5735 | 409 | 2004-2025 | 3791 | 66.1% | 3976 | 1127 | 70.3% |
-| oslomet | 1684 | 178 | 2018-2025 | 1684 | 100.0% | 12252 | 522 | 67.5% |
+| ntnu | 5735 | 409 | 2004-2025 | 3680 | 64.2% | 3969 | 1127 | 69.4% |
+| oslomet | 1684 | 178 | 2018-2025 | 1602 | 95.1% | 12543 | 522 | 66.1% |
 | samas | 130 | 68 | 2025 | 0 | 0.0% | NA | 0 | NaN% |
 | steiner | 36 | 18 | 2025 | 15 | 41.7% | 5027 | 15 | 0.0% |
 | uia | 2881 | 245 | 2013-2025 | 1123 | 39.0% | 4196 | 558 | 45.7% |
@@ -27,7 +27,7 @@ Generated: 2026-10-13
 | uit | 6693 | 621 | 2004-2025 | 3167 | 47.3% | 4313 | 2262 | 28.1% |
 | usn | 3036 | 401 | 2018-2025 | 1238 | 40.8% | 10800 | 1181 | 4.6% |
 
-**Total**: 41025 rows, 25675 with extracted text (62.6%), 13021 unique
+**Total**: 41025 rows, 25400 with extracted text (61.9%), 13021 unique
 plans.
 
 **Columns:**
@@ -59,15 +59,15 @@ offerings with a plan, by period:
 |:------------|:------|:--------|:--------|:--------|:--------|:------|
 | hiof        |       | 100%    | 53%     | 49%     | 48%     | 49%   |
 | hivolda     |       | 100%    | 54%     | 50%     | 50%     | 48%   |
-| hvl         |       | 100%    | 100%    | 98%     | 92%     | 88%   |
+| hvl         |       | 100%    | 91%     | 87%     | 93%     | 90%   |
 | inn         |       |         | 0%      | 0%      | 100%    | 100%  |
 | mf          |       |         |         |         |         | 47%   |
 | nih         |       |         |         | 62%     | 46%     | 41%   |
 | nla         |       | 30%     | 2%      | 3%      | 2%      | 30%   |
 | nmbu        |       |         |         |         |         | 41%   |
 | nord        |       | 100%    | 100%    | 100%    | 100%    | 100%  |
-| ntnu        | 91%   | 93%     | 61%     | 47%     | 48%     | 51%   |
-| oslomet     |       |         | 100%    | 100%    | 100%    | 100%  |
+| ntnu        | 83%   | 92%     | 64%     | 46%     | 47%     | 51%   |
+| oslomet     |       |         | 76%     | 95%     | 98%     | 98%   |
 | samas       |       |         |         |         |         | 0%    |
 | steiner     |       |         |         |         |         | 42%   |
 | uia         | 0%    | 0%      | 0%      | 50%     | 47%     | 49%   |
@@ -97,15 +97,15 @@ year) that have a plan in at least one semester:
 |:---|---:|:---|---:|---:|---:|:---|:---|
 | hiof | 936 | 83% | 715 | 8 | 53 | 90% | 49.4% |
 | hivolda | 629 | 88% | 510 | 8 | 35 | 93% | 50.3% |
-| hvl | 1931 | 87% | 0 | 1516 | 157 | 90% | 92.5% |
+| hvl | 1931 | 87% | 251 | 1349 | 73 | 94% | 90.3% |
 | inn | 1500 | 91% | 608 | 14 | 739 | 43% | 62.1% |
 | mf | 29 | 90% | 25 | 0 | 1 | 90% | 47.3% |
 | nih | 107 | 72% | 58 | 0 | 19 | 76% | 44.0% |
 | nla | 1103 | 88% | 232 | 0 | 739 | 23% | 12.0% |
 | nmbu | 15 | 93% | 11 | 0 | 3 | 80% | 41.4% |
 | nord | 1886 | 85% | 2 | 1575 | 26 | 98% | 100.0% |
-| ntnu | 2851 | 80% | 0 | 1427 | 867 | 63% | 66.1% |
-| oslomet | 895 | 88% | 2 | 757 | 30 | 95% | 100.0% |
+| ntnu | 2851 | 80% | 132 | 1348 | 814 | 67% | 64.2% |
+| oslomet | 895 | 88% | 97 | 673 | 19 | 97% | 95.1% |
 | samas | 68 | 91% | 0 | 0 | 62 | 0% | 0.0% |
 | steiner | 18 | 100% | 15 | 0 | 3 | 83% | 41.7% |
 | uia | 1508 | 91% | 968 | 3 | 402 | 68% | 39.0% |
@@ -133,15 +133,15 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 |:---|---:|---:|---:|---:|---:|---:|---:|
 | hiof | 98 | 98 | 0 | 0 | 0 | 0 | 6 |
 | hivolda | 40 | 0 | 40 | 0 | 0 | 0 | 10 |
-| hvl | 198 | 152 | 0 | 0 | 46 | 0 | 5 |
+| hvl | 111 | 44 | 0 | 0 | 48 | 21 | 1 |
 | inn | 849 | 0 | 584 | 0 | 265 | 0 | 7 |
 | mf | 3 | 0 | 0 | 0 | 0 | 3 | 0 |
 | nih | 26 | 26 | 0 | 0 | 0 | 0 | 2 |
 | nla | 854 | 146 | 0 | 0 | 708 | 0 | 0 |
 | nmbu | 2 | 0 | 0 | 0 | 0 | 2 | 0 |
 | nord | 30 | 0 | 0 | 0 | 30 | 0 | 0 |
-| ntnu | 1043 | 0 | 0 | 1043 | 0 | 0 | 3 |
-| oslomet | 45 | 0 | 0 | 0 | 45 | 0 | 0 |
+| ntnu | 935 | 0 | 0 | 51 | 0 | 884 | 0 |
+| oslomet | 30 | 0 | 0 | 0 | 30 | 0 | 0 |
 | samas | 68 | 0 | 68 | 0 | 0 | 0 | 0 |
 | steiner | 3 | 0 | 3 | 0 | 0 | 0 | 0 |
 | uia | 483 | 483 | 0 | 0 | 95 | 0 | 92 |
@@ -211,8 +211,11 @@ Figures are in the tables above; the notes say why.
 
 ### HVL (Western Norway University of Applied Sciences)
 
-- Year in the URL. Soft-404 “course not found” pages are detected at
-  fetch time (`fetch_html_cols_single_hvl()`) and stored as no HTML
+- Year in the URL: the academic year the page is for (`/2025/` is
+  “Emneplan for studieåret 2025/2026”), so a spring offering reads the
+  year before (since 2026-10-14; until then it read the next study
+  year’s plan). Soft-404 “course not found” pages are detected at fetch
+  time (`fetch_html_cols_single_hvl()`) and stored as no HTML
 - Read from `div.l-body`: the title, the facts aside (credits, campus,
   semesters, language, programmes) and the plan; not the year stamp and
   links, and from the aside not the course coordinators (names), the
@@ -296,9 +299,13 @@ Figures are in the tables above; the notes say why.
 
 ### NTNU (Norwegian University of Science and Technology)
 
-- Year in the URL, no semester. Pages saying no information is available
-  raise `ntnu_no_info_error`; robots.txt asks for a 10-second crawl
-  delay
+- Year in the URL, no semester: the academic year the page is for
+  (`/2025` is “Studieår 2025/2026”), so a spring or summer offering
+  reads the year before (since 2026-10-14; until then it read the next
+  study year’s plan). DBH’s “-A” codes (MGLU1101-A, the primary teacher
+  courses) are fetched without the suffix; with it the site has no page.
+  Pages saying no information is available raise `ntnu_no_info_error`;
+  robots.txt asks for a 10-second crawl delay
 - The exam tab (FS’s exam registration: assessment form, grading scale,
   and per exam session the exam parts with weight, duration and
   permitted aids) is in `course_plan` without dates, times, rooms and
@@ -318,8 +325,9 @@ Figures are in the tables above; the notes say why.
 
 ### OsloMet (Oslo Metropolitan University)
 
-- The URL always uses `HØST`: spring URLs return 404 and the plan is the
-  same. Pattern:
+- The URL always uses `HØST`: spring URLs return 404. `/{YEAR}/HØST` is
+  the plan of study year YEAR/YEAR+1, so a spring offering reads YEAR-1
+  (since 2026-10-14). Pattern:
   `https://student.oslomet.no/studier/-/studieinfo/emne/{CODE}/{YEAR}/HØST`
 - Re-harvested 2026-02-14 after the site moved to server-side rendering.
   Error pages (“Siden du leter etter finnes ikke”) become NA in the
