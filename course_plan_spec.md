@@ -37,10 +37,15 @@ Every part of a plan's page is one of these:
    That holds when the text is repeated in every plan of an institution (stock
    notices, admission rules) and when it belongs to none of the seven
    sections (title, facts box, admission, workload, course evaluation).
-4. **Not a plan:** a page with no plan text gives its offering no plan. Such
-   pages are error pages, search pages, a later version of the plan shown in
-   place of the requested one, and page shells (only a title, a facts box,
-   headings or placeholders).
+4. **Not a plan:** a page with no plan text about the course gives its
+   offering no plan. Such pages are error pages, search pages, a later
+   version of the plan shown in place of the requested one, and page shells:
+   pages with no text about any of the seven sections below, only a title, a
+   facts box, headings, placeholders, or plan text about no section (a
+   credit-overlap box, a programme list). A page is a shell when no section
+   can be cut from it and it is shorter than 1,500 characters; a longer page
+   without sections stays a plan, since its text may be plan text that no
+   heading marks (OsloMet's practicum courses).
 
 ## The sections
 
@@ -108,5 +113,3 @@ The data built on 2026-10-13 do not yet follow the spec here:
 - The title and code are outside the page's `selector`, so not in
   `course_plan`, at HVL, NIH, UiB, UiO, UiT and Volda; so are the facts
   sidebars of Nord, UiB, UiT and HVL (credits, campus, exam language).
-- Whether a page is a shell depends on whether sections could be cut from
-  it, not on its plan text.

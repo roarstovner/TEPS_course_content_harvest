@@ -141,7 +141,17 @@ offerings). INN later versions from 2026-10-07: 1,077 INN offerings (384
 of 407 pages from 2022, about half of 2023-2025) lose their plan; the
 April 2026 harvest has the same notice on the same pages. *Rejected:*
 keeping the later plan with a flag (decided 2026-10-07: an offering is
-coded with its own year’s plan or none).
+coded with its own year’s plan or none). A rule on `course_plan` alone
+(2026-10-13): the characters in lines that read as text (four or more
+words; not a heading, a placeholder or a short “Label: value” fact) do
+not separate shells from plans at any threshold. A credit-overlap box
+reads as text, and so the 391 shell offerings have a median of 88 such
+characters and up to 738 (UiA, Nord); some plans have little but the
+assessment design (NTNU master’s thesis pages, “Vurderingsordning:
+Avhandling”, UiS MGLINT’s exam box). Below 150 characters, 128 plan
+offerings would become shells and 127 shell offerings stay plans; below
+500, 326 and 4. Whether a section can be cut is what tells a page with
+text about the course from one without.
 
 **Tables are read one row per line:** each row of a table on the page is
 one line, its cells separated by tabs and each cell on one line, so an

@@ -250,7 +250,8 @@ heading_pattern_use <- function(hits) {
 
 # course_offerings_full: every offering with its text, course_plan and plan id.
 # A page with no section to read and under SHELL_MAX_NCHAR characters is a
-# page shell, not a plan: the facts box only (uia), a credit-overlap box
+# page shell, not a plan (no text about any of the seven sections,
+# course_plan_spec.md): the facts box only (uia), a credit-overlap box
 # (nord), "Emnebeskrivelse" (uib), a pointer to the English page (hvl), every
 # section "Se fagplanen." (oslomet 2018 practicum). Longer pages without
 # sections stay: oslomet practicum courses keep the programme's practicum plan
