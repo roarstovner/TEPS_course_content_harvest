@@ -7,6 +7,9 @@
 #'
 #' @param df Combined data frame from all html_*.RDS files.
 #'   Must include a `course_plan` column (from anonymize_text).
+#' @param exam_sessions The pages list the exam parts once per exam session
+#'   (ntnu's exam tab): the plan id keeps one session (.exam_tab_design()),
+#'   so plans do not split by the sessions a semester lists.
 #' @return A list with two elements:
 #'   - `plans`: Tibble of unique plans (plan_content_id, institution, Emnekode,
 #'              year_from, year_to, source_course_id, course_plan,
@@ -14,7 +17,7 @@
 #'              earliest offering, `source_course_id`, whose page its
 #'              sections are cut from too.
 #'   - `courses`: The original df with plan_content_id column added.
-deduplicate_plans <- function(df) {
+deduplicate_plans <- function(df, exam_sessions = FALSE) {
   stopifnot(
     all(c("course_id", "institution", "Emnekode", "Årstall", "course_plan") %in% names(df))
   )
@@ -22,7 +25,8 @@ deduplicate_plans <- function(df) {
   # Normalize anonymized text and build plan ID
   courses <- df |>
     dplyr::mutate(
-      course_plan_normalized = normalize_plan_text(course_plan),
+      course_plan_normalized = normalize_plan_text(if (exam_sessions)
+        vapply(course_plan, .exam_tab_design, character(1), USE.NAMES = FALSE) else course_plan),
       plan_content_id = build_plan_id(course_plan_normalized)
     )
 

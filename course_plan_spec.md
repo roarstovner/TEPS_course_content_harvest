@@ -103,8 +103,6 @@ semester fields of a facts box or an exam tab.
 
 The data built on 2026-10-13 do not yet follow the spec here:
 
-- The NTNU exam tab is out of `course_plan` and assessment. Its 20
-  pages without any other section are counted as shells.
 - AI, plagiarism and COVID notices are removed from assessment and coursework
   requirements, among them the Nord and UiB exam forms changed for COVID.
   Exam aids and exam language under a heading of their own are dropped, and

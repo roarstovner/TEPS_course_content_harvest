@@ -44,18 +44,29 @@ institution_configs <- list(
     code = "1150",
     strategy = "standard",
     selector = "#content",
-    # The exam tab is the semester's exam registration, not the plan: its
-    # assessment form, grading and exam parts are coded in
-    # TEPS_course_content_coding, not here
-    exclude = "#omEksamen",
+    # Not read: the timetable tab, the tab titles, and in the exam tab
+    # (#omEksamen) the link, the rooms, the comments ("Individuelt tidspunkt
+    # kommer senere") and each exam part's date and time with their labels:
+    # when and where, not the assessment (course_plan_spec.md)
+    exclude = c(
+      "#timeplan, h1.tabTitle, #omEksamen .exam-link, #omEksamen .exam-rooms, #omEksamen ul.portlet-msg-info",
+      local({
+        label <- paste0("//div[@id='omEksamen']//span[contains(@class, 'exam-fact-label')]",
+                        "[normalize-space() = 'Dato' or normalize-space() = 'Tid' or ",
+                        "normalize-space() = 'Sted og rom']")
+        paste0(label, " | ", label, "/following-sibling::span[1]")
+      })),
     plan_years = "url",
     request_delay = 10,  # robots.txt: Crawl-delay: 10 for all user agents
-    post_fn = .post_ntnu,
     fetch_fn = fetch_html_cols_single_ntnu,
+    # The exam tab lists the exam parts once per exam session; the
+    # assessment section and the plan id keep one session
+    exam_sessions = TRUE,
     section_strategy = "html",
-    # h3 sections; the h2 tab titles ("Timeplan") close them, and h4 marks
-    # the contact block's sub-headings
-    section_heading_selector = "h2, h3",
+    # h3 sections plus the exam tab's h2 "Eksamen" (assessment); h4 marks
+    # the contact block's sub-headings and the exam sessions. An old-layout
+    # "Vurderingsordning: ..." h3 is the tab's text, not a heading.
+    section_heading_selector = "h2, h3:not(.exam-assessment-form)",
     section_subheading_selector = "h4"
   ),
 

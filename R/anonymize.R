@@ -52,10 +52,8 @@ anonymize_text <- function(institution, text,
 .anon_ntnu <- function(txt) {
   txt |>
     # The contact block (course coordinator, teachers) up to "Ansvarlig
-    # enhet", and the timetable to the end; the unit stays. The exam
-    # tab is not in the text.
-    stringr::str_remove("(?ms)^Kontaktinformasjon\\n.*?(?=^Ansvarlig enhet$|\\z)") |>
-    stringr::str_remove("(?s)\\nTimeplan\\n.*$") |>
+    # enhet" or the exam tab; the unit stays. The timetable tab is not read.
+    stringr::str_remove("(?ms)^Kontaktinformasjon\\n.*?(?=^(?:Ansvarlig enhet|Eksamen)$|\\z)") |>
     # Strip header boilerplate
     stringr::str_remove_all("course-details-portlet\\s*") |>
     stringr::str_remove_all("Undervisningsstart[^\n]+") |>

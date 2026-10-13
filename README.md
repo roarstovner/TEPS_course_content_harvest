@@ -551,10 +551,14 @@ Fields for the `html` reader:
 
 - `selector` and `exclude` (shared with the fulltext): the container,
   and elements in it that are not read (mf’s facts box, contact card and
-  banner; nord’s “Kopier lenke” label; ntnu’s exam tab).
+  banner; nord’s “Kopier lenke” label; ntnu’s timetable tab and the exam
+  tab’s link, rooms and comments). `exclude` holds CSS selectors; an
+  entry that starts with “/” is XPath, for an element picked by its text
+  (ntnu’s “Dato”, “Tid” and “Sted og rom” labels with the value after
+  them).
 - `section_heading_selector`: section headings (default `h2`; ntnu
-  `"h2, h3"`, inn’s `div.label`, uib’s and mf’s `summary`, nord’s
-  `button.ac-trigger`).
+  `"h2, h3:not(.exam-assessment-form)"`, inn’s `div.label`, uib’s and
+  mf’s `summary`, nord’s `button.ac-trigger`).
 - `section_scope`: elements that hold a section of their own (`details`,
   nord’s `div.ac`); the section open around them continues after them.
 - `section_initial`: section for text before the first heading (mf’s
@@ -591,6 +595,11 @@ Other fields:
 - `section_inline_coursework`: move “Arbeidskrav (AK): …” /
   “Obligatorisk deltakelse …” lines from assessment to
   coursework_requirements (nord).
+- `exam_sessions`: the page lists the exam parts once per exam session
+  (ntnu’s exam tab: “Ordinær eksamen - Høst 2022”, “Utsatt eksamen -
+  …”). The assessment section and the plan id keep the parts of one
+  session, the first ordinary one, without the session headings and the
+  exam system (`.exam_tab_design()`); `course_plan` keeps them all.
 - `section_pointer`: a section whose text is only a pointer to another
   block of the page (“Se fagplanen.”) takes the text under a sub-heading
   of that block, after a lead naming the source. oslomet: teaching
@@ -665,8 +674,8 @@ so each may remove only some of these:
 <td>personal data, boilerplate</td>
 </tr>
 <tr>
-<td><code>post_fn</code> (ntnu timetable, uit banner, year picker and
-contact block); <code>.cleanup_usn_text()</code></td>
+<td><code>post_fn</code> (uit banner, year picker and contact block);
+<code>.cleanup_usn_text()</code></td>
 <td><code>R/extract_fulltext.R</code></td>
 <td><code>course_plan</code> (and usn’s sections, cut from the
 text)</td>
@@ -954,9 +963,9 @@ Pattern:
 information is available raises `ntnu_no_info_error`. robots.txt asks
 for a 10-second crawl delay (`request_delay` in the config). The page’s
 exam tab (`#omEksamen`: assessment form, grading scale, exam sessions
-and their parts) is not read for now; by `course_plan_spec.md` it
-belongs in `course_plan` and, without the sessions’ logistics, in
-assessment (see its “Known deviations”).
+and their parts) is read without its link, rooms, comments, dates and
+times; the assessment section gets one session of it (`exam_sessions`).
+The timetable tab (`#timeplan`, from 2025) is not read.
 
 **UiO.** UiO publishes only the latest version of each course plan: the
 base URL always returns the current plan and older versions cannot be

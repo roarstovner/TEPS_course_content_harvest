@@ -107,7 +107,7 @@ institution_plans <- function(html_file, fulltext, config) {
     dplyr::left_join(fulltext[, c("course_id", "extracted_text")], by = "course_id")
   df$course_plan <- anonymize_text(df$institution, df$extracted_text, .progress = FALSE)
   df$plan_year_basis <- config$plan_years   # how the plan's year is known
-  deduplicate_plans(df)
+  deduplicate_plans(df, exam_sessions = isTRUE(config$exam_sessions))
 }
 
 # Every page with HTML read once into blocks (R/blocks.R): course_id

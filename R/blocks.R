@@ -57,6 +57,7 @@
     text_header       = ic$section_text_header,
     fields            = ic$section_fields,
     inline_coursework = isTRUE(ic$section_inline_coursework),
+    exam_sessions     = isTRUE(ic$exam_sessions),
     pointer           = ic$section_pointer,
     institution       = ic$name
   )
@@ -119,7 +120,10 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
 .html_blocks <- function(html, cfg) {
   if (is.na(html) || !nzchar(html)) return(.empty_blocks())
   doc <- .read_doc(html)
-  if (!is.null(cfg$exclude)) xml2::xml_remove(rvest::html_elements(doc, cfg$exclude))
+  # `exclude`: CSS selectors; an entry that starts with "/" is XPath (an
+  # element picked by its text, such as a label and the value after it)
+  for (e in cfg$exclude) xml2::xml_remove(
+    if (startsWith(e, "/")) xml2::xml_find_all(doc, e) else rvest::html_elements(doc, e))
   root <- if (is.null(cfg$container)) doc else rvest::html_element(doc, cfg$container)
   if (inherits(root, "xml_missing")) return(.empty_blocks())
 

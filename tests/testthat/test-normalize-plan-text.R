@@ -212,4 +212,25 @@ test_that("NTNU's unit does not split a plan", {
   b <- "Om emnet\nTekst\nAnsvarlig enhet\n\nProgram for lærerutdanning"
   expect_equal(normalize_plan_text(a, .progress = FALSE), normalize_plan_text(b, .progress = FALSE))
   expect_equal(normalize_plan_text(a, .progress = FALSE), "om emnet tekst")
+  # the unit goes up to the exam tab, which stays
+  expect_equal(normalize_plan_text(paste0(a, "\nEksamen\nVurderingsordning: Oppgave"), .progress = FALSE),
+               "om emnet tekst : oppgave")
+})
+
+test_that("ntnu's exam sessions: the plan id keeps one session's design", {
+  tab <- function(...) paste("Tekst", "Eksamen", "Vurderingsordning: Oppgave", "Karakter: Bokstavkarakterer",
+                             ..., sep = "\n")
+  ord <- function(w) paste("Ordinær eksamen", "Oppgave", paste0("Vekting ", w, " Eksamenssystem Inspera"), sep = "\n")
+  df <- tibble::tibble(
+    course_id = paste0("c", 1:4), institution = "ntnu", Emnekode = "X1", Årstall = 2021:2024,
+    course_plan = c(tab(ord("1/1")),                                     # autumn: ordinary only
+                    tab("Utsatt eksamen\nOppgave\nVekting 1/1", ord("1/1")),  # spring: resit listed first
+                    tab(sub("Oppgave", "Oppgave (1)",                      # no exam system; a
+                            sub(" Eksamenssystem Inspera", "", ord("1/1")))),  # comment marker
+                    tab(ord("2/3"))))                                     # the design changed
+  ids <- deduplicate_plans(df, exam_sessions = TRUE)$courses$plan_content_id
+  expect_equal(length(unique(ids[1:3])), 1)
+  expect_false(ids[4] == ids[1])
+  # without the flag the session list splits plans
+  expect_equal(length(unique(deduplicate_plans(df)$courses$plan_content_id)), 4)
 })

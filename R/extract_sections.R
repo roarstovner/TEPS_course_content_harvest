@@ -94,6 +94,10 @@ page_sections <- function(blocks, text, cfg) {
     fallback <- sectionize(.text_blocks(text, cfg))
     if (nrow(fallback) > nrow(out)) out <- fallback
   }
+  if (isTRUE(cfg$exam_sessions)) {
+    a <- out$section == "assessment"
+    out$raw_text[a] <- vapply(out$raw_text[a], .exam_tab_design, character(1), USE.NAMES = FALSE)
+  }
   out <- .fill_pointer_sections(out, blocks, cfg$pointer)
   if (isTRUE(cfg$inline_coursework)) out <- .split_inline_coursework(out)
   out <- .split_inline_prerequisites(out)
@@ -387,6 +391,37 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "(?<=[.!?]) ?(?=(?:Vurdering(?:sform)?|Eksamen(?:/vurderingsform)?|",
   "Eksamensform):[ \t]*(?!(?:Godkjent|Bestått)\\b)\\S|EKSAMEN\\b|",
   "Emnet (?:evalueres|vurderes)\\b)|(?<=\\S) (?=Eksamen består av)")
+
+# The exam registration in ntnu's exam tab (`exam_sessions` in the config):
+# "Vurderingsordning: ..." and "Karakter: ...", then a block per exam session
+# ("Ordinær eksamen - Høst 2022", "Utsatt eksamen - Vår 2023"; without the
+# semester once anonymized) that lists the exam parts with their facts. The
+# sessions repeat the parts, so the assessment design is the parts of one
+# session: in each assessment form the first ordinary session, else the
+# first. Session headings and the exam system are logistics and go. Used for
+# the assessment section and for the plan id (deduplicate_plans()).
+.exam_session_regex <- "(?i)^\\s*(?:Ordinær|Utsatt|Ny|Kontinuasjons) ?eksamen(?: - .*)?$"
+
+.exam_tab_design <- function(text) {
+  if (is.na(text)) return(text)
+  lines <- stringr::str_split_1(text, "\n")
+  sess <- grepl(.exam_session_regex, lines, perl = TRUE)
+  if (!any(sess)) return(text)
+  form <- cumsum(grepl("(?i)^\\s*Vurderingsordning:", lines, perl = TRUE))
+  # the session heading a line is under; a new assessment form ends it
+  head <- cummax(ifelse(sess, seq_along(lines), 0L))
+  head[head > 0L & form[pmax(head, 1L)] != form] <- 0L
+  ordinary <- sess & grepl("(?i)^\\s*Ordinær", lines, perl = TRUE)
+  kept <- vapply(split(which(sess), form[sess]), function(h) {
+    o <- h[ordinary[h]]
+    if (length(o)) o[1] else h[1]
+  }, integer(1))
+  part <- head %in% kept & !sess
+  # an exam part's "(1)" points to a session comment, which is not read
+  lines[part] <- sub("[ \t]*\\(\\d{1,2}\\)[ \t]*$", "",
+                     sub("(?i)[ \t]*Eksamenssystem\\b.*$", "", lines[part], perl = TRUE))
+  paste(lines[head == 0L | part], collapse = "\n")
+}
 
 # Notices and page widgets with no heading of their own, so .drop cannot catch
 # them. Applied to assessment and coursework_requirements only, so a

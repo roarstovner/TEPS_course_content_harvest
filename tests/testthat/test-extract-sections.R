@@ -264,17 +264,44 @@ test_that("usn: table of contents skipped, stamp dropped, header 'litteratur' ha
   expect_equal(s[["reading_list"]], "Kompetansemål og vurdering")
 })
 
-test_that("ntnu: the exam tab, contacts and scripts are not sections", {
-  html <- "<section id='content'><h2>Om emnet</h2><h3>Læringsformer og aktiviteter</h3><p>Seminarer.</p>
+test_that("ntnu: one exam session in assessment; contacts, scripts, timetable, dates, rooms are out", {
+  html <- "<section id='content'><div id='omEmnet'><h1 class='tabTitle'>Om</h1><h2>Om emnet</h2>
+    <h3>Læringsformer og aktiviteter</h3><p>Seminarer.</p>
     <script>function toggleRooms(id) { x(); }</script>
     <h3>Mer om vurdering</h3><p>Hjemmeeksamen.</p>
     <h3>Kontaktinformasjon</h3><h4>Faglærere</h4><p>Ola Nordmann</p>
-    <div id='omEksamen'><h2>Eksamen</h2><p>Vurderingsordning: Skriftlig eksamen<br>Karakter: Bokstavkarakterer</p>
-    <h4>Ordinær eksamen - Høst 2025</h4><p>Dato 29.11.2025, rom SL120</p></div></section>"
-  s <- sections_of(html, .block_cfg(get_institution_config("ntnu")))
+    <h3>Ansvarlig enhet</h3><p>Institutt for lærerutdanning</p></div>
+    <div id='timeplan' class='tab'><h1 class='tabTitle'>Timeplan</h1><h2>Timeplan</h2><p>Vis detaljert timeplan</p></div>
+    <div id='omEksamen' class='tab'><h1 class='tabTitle'>Eksamen</h1><h2 class='course-exam-heading'>Eksamen</h2>
+    <div class='exam-assessment-form-general'>Vurderingsordning: Skriftlig eksamen</div>
+    <div class='grade-rule-heading'>Karakter: Bokstavkarakterer</div>
+    <div class='exam-element'><h4 class='course-exam-heading2'>Utsatt eksamen - Vår 2026</h4>
+      <h5 class='exam-form'>Muntlig eksamen</h5><div class='exam-container'>
+      <span class='exam-item exam-fact-label'>Vekting</span> <span class='exam-item'>100/100</span></div></div>
+    <div class='exam-element'><h4 class='course-exam-heading2'>Ordinær eksamen - Høst 2025</h4>
+      <h5 class='exam-form'>Skriftlig eksamen</h5><div class='exam-container'>
+      <span class='exam-item exam-fact-label'>Vekting</span> <span class='exam-item'>100/100</span>
+      <span class='exam-item exam-fact-label'> Dato </span> <span class='exam-item'>29.11.2025</span>
+      <span class='exam-item exam-fact-label'>Tid</span> <span class='exam-item'>09:00</span>
+      <span class='exam-item exam-fact-label'>Varighet</span> <span class='exam-item'>4 timer</span>
+      <span class='exam-item exam-fact-label'>Eksamenssystem</span> <span class='exam-item'>Inspera Assessment</span>
+      <div class='exam-rooms'>Sted og rom <div class='room-list'>Rom SL120</div></div></div>
+      <ul class='portlet-msg-info'><li>Øvrige kommentarer</li><li>Individuelt tidspunkt kommer senere</li></ul></div>
+    <div class='exam-link'><p><a>Alt om eksamen ved NTNU</a></p></div></div></section>"
+  ic <- get_institution_config("ntnu")
+  s <- sections_of(html, .block_cfg(ic))
   expect_equal(s[["teaching_methods"]], "Seminarer.")
-  expect_equal(s[["assessment"]], "Hjemmeeksamen.")
-  expect_false(any(grepl("toggleRooms|Nordmann|SL120|Vurderingsordning|Karakter", s)))
+  expect_equal(s[["assessment"]], paste0(
+    "Hjemmeeksamen.\n\nVurderingsordning: Skriftlig eksamen\nKarakter: Bokstavkarakterer\n",
+    "Skriftlig eksamen\nVekting 100/100 Varighet 4 timer"))
+  expect_false(any(grepl("toggleRooms|Nordmann|SL120|29.11|09:00|Inspera|Alt om|Muntlig|Timeplan|kommentarer", s)))
+  # course_plan keeps both sessions, the exam system and the unit; no
+  # contacts, timetable, tab titles, dates, rooms or comments
+  cp <- anonymize_text("ntnu", page_fulltext(page_blocks(html, NA, .block_cfg(ic)), ic), .progress = FALSE)
+  expect_match(cp, "Ansvarlig enhet\n+Institutt for lærerutdanning\n+Eksamen\nVurderingsordning: Skriftlig eksamen")
+  expect_match(cp, "Utsatt eksamen\nMuntlig eksamen\nVekting 100/100\nOrdinær eksamen\nSkriftlig eksamen\n")
+  expect_match(cp, "Vekting 100/100 Varighet 4 timer Eksamenssystem Inspera Assessment$")
+  expect_false(grepl("Nordmann|Timeplan|SL120|Dato|Tid|kommentarer|Alt om|^Om\n", cp))
   # form widgets (uib semester picker) are not content either
   doc <- .read_doc("<div><label>Vel emnebeskrivelse for semester</label><select><option>2027 Vår</option></select><p>Mål.</p></div>")
   expect_equal(rvest::html_text2(doc), "Mål.")

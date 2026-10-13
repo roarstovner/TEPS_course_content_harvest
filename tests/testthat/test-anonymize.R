@@ -224,14 +224,15 @@ test_that("3+ newlines collapsed to 2", {
 
 # --- NTNU ---
 
-test_that("NTNU: contacts and timetable go; the unit stays", {
+test_that("NTNU: contacts go; the unit and the exam tab stay", {
   an <- function(x) anonymize_text("ntnu", x, .progress = FALSE)
   input <- paste("Viktig tekst", "Kontaktinformasjon", "Emneansvarlig/koordinator", "Kari Nordmann",
                  "Faglærere", "Ola Nordmann", "Ansvarlig enhet", "", "Institutt for lærerutdanning", sep = "\n")
   expect_equal(an(input), "Viktig tekst\nAnsvarlig enhet\n\nInstitutt for lærerutdanning")
-  expect_equal(an("Tekst\nKontaktinformasjon\nAnsvarlig enhet\n\nInstitutt for fysikk\n\nTimeplan\nTimeplan\nRom R1"),
-               "Tekst\nAnsvarlig enhet\n\nInstitutt for fysikk")
-  expect_equal(an("Tekst\nKontaktinformasjon\nFaglærere\nOla Nordmann\n\nTimeplan\nRom R1"), "Tekst")
+  # without a unit the contact block ends at the exam tab
+  expect_equal(an("Tekst\nKontaktinformasjon\nFaglærere\nOla Nordmann\nEksamen\nVurderingsordning: Oppgave"),
+               "Tekst\nEksamen\nVurderingsordning: Oppgave")
+  expect_equal(an("Tekst\nKontaktinformasjon\nFaglærere\nOla Nordmann"), "Tekst")
 })
 
 test_that("NTNU: course-details-portlet removed", {

@@ -254,7 +254,7 @@ Figures are in the tables above; the notes say why.
 ### NTNU (Norwegian University of Science and Technology)
 
 - Year in the URL, no semester. Pages saying no information is available raise `ntnu_no_info_error`; robots.txt asks for a 10-second crawl delay
-- The exam tab (assessment form, grading scale, exam sessions) is not read for now; by `course_plan_spec.md` it belongs in `course_plan` and, without the sessions' logistics, in assessment. `.anon_ntnu()` removes the contact block (course coordinator, teachers) and the timetable; the responsible unit stays, and the dedup hash ignores it
+- The exam tab (FS's exam registration: assessment form, grading scale, and per exam session the exam parts with weight, duration and permitted aids) is in `course_plan` without dates, times, rooms and comments; the assessment section and the plan id keep one session of it (`exam_sessions`). The timetable tab (from 2025) is not read. `.anon_ntnu()` removes the contact block (course coordinator, teachers); the responsible unit stays, and the dedup hash ignores it
 
 ---
 

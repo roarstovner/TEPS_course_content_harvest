@@ -67,18 +67,12 @@ extract_fulltext_from_raw <- function(df, config) {
 #'
 #' @param blocks Block table from page_blocks().
 #' @param config Institution config; its `post_fn` cuts what the blocks
-#'   cannot leave out (ntnu's timetable, uit's year picker and contact block).
+#'   cannot leave out (uit's year picker and contact block).
 #' @return Character(1), NA when there is no text.
 page_fulltext <- function(blocks, config) {
   text <- .blocks_text(blocks)
   if (!is.na(text) && !is.null(config$post_fn)) text <- config$post_fn(text)
   if (is.na(text) || !nzchar(trimws(text))) NA_character_ else text
-}
-
-.post_ntnu <- function(txt) {
-  # Strip JS artifacts from timetable widget (toggleRooms, etc.)
-  txt <- stringr::str_remove(txt, "(?s)Vis detaljert timeplan.*$")
-  stringr::str_trim(txt)
 }
 
 .pre_uit <- function(txt) {
