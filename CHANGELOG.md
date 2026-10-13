@@ -103,6 +103,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Group near-identical plans, not only identical ones? (#333)
+- Specification: what goes into course_plan and the sections, and what goes out (#322)
 - Title and facts box out of the plan id at the other institutions (#330)
 - Title and facts sidebar outside the selector (#329)
 - Shell rule on plan text, not on section extraction (#327)
