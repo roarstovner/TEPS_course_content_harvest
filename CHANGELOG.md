@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Audit the remaining fulltext rules against the spec (#326)
 - mf and uis facts boxes back into course_plan (#325)
 - Assessment notices, exam aids and language into the assessment section (#324)
 - NTNU exam tab back into course_plan and the assessment section (#323)
