@@ -23,6 +23,11 @@
 #                       fetched, so a harvest gives the plan of that academic
 #                       year only.
 #
+# page_year: function(html) giving the academic year (its first calendar year)
+#            of the plan a page shows, where the page says so; an offering
+#            whose page shows a later year gets no plan (a later version,
+#            course_plan_spec.md). nord.
+#
 # url_year: "academic"  the URL's year is the academic year the page is for
 #                       (ntnu, hvl, oslomet: "/2025" is 2025/26), so a
 #                       spring or summer offering reads the year before, and
@@ -260,6 +265,10 @@ institution_configs <- list(
     section_untitled = c("div.placeholder-text" = "course_content"),
     facts = c("div.main-content > h1", "div.main-content > .field--name-field-subject-code",
               "section.sidebar", "div.ac.type_of_subject"),   # "Type emne": Valgbart, Obligatorisk
+    # For a year it has no plan for, Nord shows "Gjeldende emnebeskrivelse
+    # (sist oppdatert 2026/27)": the current plan, a later version
+    page_year = function(html) as.integer(stringr::str_match(
+      html, "(?:Gjeldende emnebeskrivelse \\(sist oppdatert|Emnebeskrivelse for) (\\d{4})/")[, 2]),
     # Arbeidskrav/obligatorisk deltakelse are lines inside the vurdering
     # accordion, not a heading of their own.
     section_inline_coursework = TRUE

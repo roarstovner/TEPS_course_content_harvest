@@ -1,7 +1,7 @@
 # Data Quality Notes
 
 
-Generated: 2026-10-13
+Generated: 2026-10-14
 
 ## Overview
 
@@ -9,15 +9,15 @@ Generated: 2026-10-13
 |:---|---:|---:|:---|---:|:---|---:|---:|:---|
 | hiof | 1712 | 240 | 2017-2025 | 846 | 49.4% | 7151 | 820 | 3.1% |
 | hivolda | 1182 | 113 | 2017-2025 | 594 | 50.3% | 4622 | 511 | 14.0% |
-| hvl | 3604 | 393 | 2017-2025 | 3253 | 90.3% | 4414 | 1647 | 48.0% |
+| hvl | 3604 | 393 | 2017-2025 | 3372 | 93.6% | 4408 | 1756 | 46.6% |
 | inn | 2861 | 286 | 2018-2025 | 1777 | 62.1% | 4164 | 552 | 17.0% |
 | mf | 55 | 29 | 2025 | 26 | 47.3% | 4056 | 26 | 0.0% |
 | nih | 184 | 34 | 2021-2025 | 81 | 44.0% | 2534 | 81 | 0.0% |
 | nla | 2074 | 209 | 2017-2025 | 249 | 12.0% | 5885 | 177 | 28.9% |
 | nmbu | 29 | 15 | 2025 | 12 | 41.4% | 5900 | 12 | 0.0% |
-| nord | 3489 | 434 | 2016-2025 | 3489 | 100.0% | 4107 | 1310 | 61.8% |
+| nord | 3489 | 434 | 2016-2025 | 3489 | 100.0% | 4107 | 1220 | 54.3% |
 | ntnu | 5735 | 409 | 2004-2025 | 3680 | 64.2% | 3969 | 1127 | 69.4% |
-| oslomet | 1684 | 178 | 2018-2025 | 1602 | 95.1% | 12543 | 522 | 66.1% |
+| oslomet | 1684 | 178 | 2018-2025 | 1684 | 100.0% | 12212 | 588 | 63.6% |
 | samas | 130 | 68 | 2025 | 0 | 0.0% | NA | 0 | NaN% |
 | steiner | 36 | 18 | 2025 | 15 | 41.7% | 5027 | 15 | 0.0% |
 | uia | 2881 | 245 | 2013-2025 | 1123 | 39.0% | 4196 | 558 | 45.7% |
@@ -27,7 +27,7 @@ Generated: 2026-10-13
 | uit | 6693 | 621 | 2004-2025 | 3167 | 47.3% | 4313 | 2262 | 28.1% |
 | usn | 3036 | 401 | 2018-2025 | 1238 | 40.8% | 10800 | 1181 | 4.6% |
 
-**Total**: 41025 rows, 25400 with extracted text (61.9%), 13021 unique
+**Total**: 41025 rows, 25601 with extracted text (62.4%), 13109 unique
 plans.
 
 **Columns:**
@@ -59,7 +59,7 @@ offerings with a plan, by period:
 |:------------|:------|:--------|:--------|:--------|:--------|:------|
 | hiof        |       | 100%    | 53%     | 49%     | 48%     | 49%   |
 | hivolda     |       | 100%    | 54%     | 50%     | 50%     | 48%   |
-| hvl         |       | 100%    | 91%     | 87%     | 93%     | 90%   |
+| hvl         |       | 100%    | 100%    | 94%     | 94%     | 92%   |
 | inn         |       |         | 0%      | 0%      | 100%    | 100%  |
 | mf          |       |         |         |         |         | 47%   |
 | nih         |       |         |         | 62%     | 46%     | 41%   |
@@ -67,7 +67,7 @@ offerings with a plan, by period:
 | nmbu        |       |         |         |         |         | 41%   |
 | nord        |       | 100%    | 100%    | 100%    | 100%    | 100%  |
 | ntnu        | 83%   | 92%     | 64%     | 46%     | 47%     | 51%   |
-| oslomet     |       |         | 76%     | 95%     | 98%     | 98%   |
+| oslomet     |       |         | 100%    | 100%    | 100%    | 100%  |
 | samas       |       |         |         |         |         | 0%    |
 | steiner     |       |         |         |         |         | 42%   |
 | uia         | 0%    | 0%      | 0%      | 50%     | 47%     | 49%   |
@@ -97,15 +97,15 @@ year) that have a plan in at least one semester:
 |:---|---:|:---|---:|---:|---:|:---|:---|
 | hiof | 936 | 83% | 715 | 8 | 53 | 90% | 49.4% |
 | hivolda | 629 | 88% | 510 | 8 | 35 | 93% | 50.3% |
-| hvl | 1931 | 87% | 251 | 1349 | 73 | 94% | 90.3% |
+| hvl | 1931 | 87% | 141 | 1461 | 71 | 95% | 93.6% |
 | inn | 1500 | 91% | 608 | 14 | 739 | 43% | 62.1% |
 | mf | 29 | 90% | 25 | 0 | 1 | 90% | 47.3% |
 | nih | 107 | 72% | 58 | 0 | 19 | 76% | 44.0% |
 | nla | 1103 | 88% | 232 | 0 | 739 | 23% | 12.0% |
 | nmbu | 15 | 93% | 11 | 0 | 3 | 80% | 41.4% |
-| nord | 1886 | 85% | 2 | 1575 | 26 | 98% | 100.0% |
+| nord | 1886 | 85% | 92 | 1186 | 325 | 79% | 100.0% |
 | ntnu | 2851 | 80% | 132 | 1348 | 814 | 67% | 64.2% |
-| oslomet | 895 | 88% | 97 | 673 | 19 | 97% | 95.1% |
+| oslomet | 895 | 88% | 24 | 749 | 16 | 97% | 100.0% |
 | samas | 68 | 91% | 0 | 0 | 62 | 0% | 0.0% |
 | steiner | 18 | 100% | 15 | 0 | 3 | 83% | 41.7% |
 | uia | 1508 | 91% | 968 | 3 | 402 | 68% | 39.0% |
@@ -133,15 +133,15 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 |:---|---:|---:|---:|---:|---:|---:|---:|
 | hiof | 98 | 98 | 0 | 0 | 0 | 0 | 6 |
 | hivolda | 40 | 0 | 40 | 0 | 0 | 0 | 10 |
-| hvl | 111 | 44 | 0 | 0 | 48 | 21 | 1 |
+| hvl | 106 | 43 | 0 | 0 | 47 | 18 | 1 |
 | inn | 849 | 0 | 584 | 0 | 265 | 0 | 7 |
 | mf | 3 | 0 | 0 | 0 | 0 | 3 | 0 |
 | nih | 26 | 26 | 0 | 0 | 0 | 0 | 2 |
 | nla | 854 | 146 | 0 | 0 | 708 | 0 | 0 |
 | nmbu | 2 | 0 | 0 | 0 | 0 | 2 | 0 |
-| nord | 30 | 0 | 0 | 0 | 30 | 0 | 0 |
+| nord | 395 | 0 | 0 | 0 | 395 | 0 | 0 |
 | ntnu | 935 | 0 | 0 | 51 | 0 | 884 | 0 |
-| oslomet | 30 | 0 | 0 | 0 | 30 | 0 | 0 |
+| oslomet | 27 | 0 | 0 | 0 | 27 | 0 | 0 |
 | samas | 68 | 0 | 68 | 0 | 0 | 0 | 0 |
 | steiner | 3 | 0 | 3 | 0 | 0 | 0 | 0 |
 | uia | 483 | 483 | 0 | 0 | 95 | 0 | 92 |
@@ -211,6 +211,11 @@ Figures are in the tables above; the notes say why.
 
 ### HVL (Western Norway University of Applied Sciences)
 
+- A page that says the plan is only in English (“Emnebeskrivelsen finnes
+  kun på engelsk”, a shell) is fetched from the English site instead
+  (`fetch_html_cols_single_hvl()`, since 2026-10-14; the 92 such pages
+  of the 2026-09 harvest wait for
+  `harvest_all(institutions = "hvl", retry = TRUE)`)
 - Year in the URL: the academic year the page is for (`/2025/` is
   “Emneplan for studieåret 2025/2026”), so a spring offering reads the
   year before (since 2026-10-14; until then it read the next study
@@ -290,6 +295,12 @@ Figures are in the tables above; the notes say why.
 - Year and semester in the URL, with Norwegian characters
   (`HØST`/`VÅR`); ASCII `HOEST` falls back to a generic page without
   year-specific content
+- For a year it has no plan for, the page shows the current plan, headed
+  “Gjeldende emnebeskrivelse (sist oppdatert 2026/27)” instead of
+  “Emnebeskrivelse for 2023/24”. Where the year it names is after the
+  offering’s academic year, the offering gets no plan (since
+  2026-10-14): all offerings of 2016-2018 and 205 later ones, 761 in
+  all. Where it is not, the page is the version in force that year
 - Accordion pages, read with a multi-element selector
 - Read from `div.node__content`: the plan and the sidebar’s facts
   (language, credits, faculty, campus) after it, in no section; not the

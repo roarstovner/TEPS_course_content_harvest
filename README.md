@@ -984,7 +984,10 @@ After processing, you’ll have:
 (`HØST`/`VÅR`); ASCII `HOEST` falls back to a generic “Gjeldende
 emnebeskrivelse” page without year-specific content. The site maps each
 semester to its academic year (`VÅR&year=2023` gives the 2022/23 plan).
-Pattern:
+For a year it has no plan for, it shows the current plan, headed
+“Gjeldende emnebeskrivelse (sist oppdatert 2026/27)”; `page_year` in the
+config reads that year, and an offering whose page shows a later year
+gets no plan. Pattern:
 `https://www.nord.no/studier/emner/{code}?year={year}&semester={HØST|VÅR}`.
 
 **NTNU.** The URL has the year but not the semester. The year is the

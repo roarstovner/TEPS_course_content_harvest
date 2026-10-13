@@ -12,7 +12,7 @@ changes what the data mean, add or update its entry here; each release
 tag freezes this file with the data.
 
 Current data: 41 025 offerings (DBH course × year × semester) at 19
-institutions, 23 887 of them with a plan, and 13 021 unique plans from
+institutions, 23 322 of them with a plan, and 13 109 unique plans from
 18 institutions (none from Samas, below).
 
 ## Population and sampling frame
@@ -79,7 +79,10 @@ offerings keep their plan. Of the spring and summer offerings, 2,851 get
 another plan (HVL 1,284, NTNU 1,173, OsloMet 394), 225 get one where
 they had none and 484 lose theirs until their page is fetched (HVL 167,
 NTNU 233, OsloMet 84: no offering had fetched `/Y-1`). The number of
-plans does not change (13,021). *Since:* 2026-10-14.
+plans does not change (13,021). A retry harvest on 2026-10-14 fetched
+those pages: HVL 117 and OsloMet 79 offerings get a plan (HVL 110 and
+OsloMet 68 more plans); the rest have no page for that year (“Course not
+found”, OsloMet’s error page). *Since:* 2026-10-14.
 
 **Sites that publish only the current plan:** a harvest counts only for
 the academic year (August-July) it was made in, and an offering gets the
@@ -135,7 +138,7 @@ before. *Since:* 2026-10-08.
 
 **A plan is a unique anonymized text per institution and course code**
 (`plan_content_id`, a hash of the normalized text). Offerings with the
-same text share a plan: 23 887 offerings have 13 021 plans. *Why:*
+same text share a plan: 23 322 offerings have 13 109 plans. *Why:*
 consecutive years and both semesters mostly repeat the same text.
 *Consequence:* the id changes whenever cleaning changes the text, so
 coding is tied to a frozen release and carried to later releases with a
@@ -149,30 +152,39 @@ fagplanen.”, a list of headings with no text under them) gives its
 offering no plan. So does an INN page that says the requested semester’s
 plan is not published yet and shows the latest version instead (“Her er
 den siste versjonen vi har tilgjengelig”): that is a later plan (2026 or
-later), not the offering’s. Longer pages without sections stay (OsloMet
-practicum courses, below). *Consequence:* 174 plans left the data on
-2026-10-06 (UiA 95, UiB 27, OsloMet 26, Nord 11, HVL 10, UiT 4, NTNU 1).
-With pages that are not the plan at all (INN’s course search page,
-OsloMet’s error page), 1 513 offerings have page text but no plan (hvl
-84, inn 1112, nord 58, oslomet 64, uia 95, uib 80, uit 20). *Since:*
-2026-10-06; heading lists (UiB NOLI216 and NOSP216, autumn 2018) from
-2026-10-07; NTNU pages whose only section was the exam tab from
-2026-10-12 to 2026-10-13, when the tab came back (20 plans, 70
+later), not the offering’s. Nord does the same without a notice: for a
+year it has no plan for, its page shows the current plan, headed
+“Gjeldende emnebeskrivelse (sist oppdatert 2026/27)” instead of
+“Emnebeskrivelse for 2023/24”. Where the year it names is after the
+offering’s academic year, the offering gets no plan; where it is not,
+the page is the version in force that year and stays (`page_year` in the
+configuration). Longer pages without sections stay (OsloMet practicum
+courses, below). *Consequence:* 174 plans left the data on 2026-10-06
+(UiA 95, UiB 27, OsloMet 26, Nord 11, HVL 10, UiT 4, NTNU 1). With pages
+that are not the plan at all (INN’s course search page, OsloMet’s error
+page) and later versions (INN, Nord), 2 279 offerings have page text but
+no plan (hvl 86, inn 1112, nord 819, oslomet 67, uia 95, uib 80, uit
+20). *Since:* 2026-10-06; heading lists (UiB NOLI216 and NOSP216, autumn
+2018) from 2026-10-07; NTNU pages whose only section was the exam tab
+from 2026-10-12 to 2026-10-13, when the tab came back (20 plans, 70
 offerings). INN later versions from 2026-10-07: 1,077 INN offerings (384
 of 407 pages from 2022, about half of 2023-2025) lose their plan; the
-April 2026 harvest has the same notice on the same pages. *Rejected:*
-keeping the later plan with a flag (decided 2026-10-07: an offering is
-coded with its own year’s plan or none). A rule on `course_plan` alone
-(2026-10-13): the characters in lines that read as text (four or more
-words; not a heading, a placeholder or a short “Label: value” fact) do
-not separate shells from plans at any threshold. A credit-overlap box
-reads as text, and so the 391 shell offerings have a median of 88 such
-characters and up to 738 (UiA, Nord); some plans have little but the
-assessment design (NTNU master’s thesis pages, “Vurderingsordning:
-Avhandling”, UiS MGLINT’s exam box). Below 150 characters, 128 plan
-offerings would become shells and 127 shell offerings stay plans; below
-500, 326 and 4. Whether a section can be cut is what tells a page with
-text about the course from one without.
+April 2026 harvest has the same notice on the same pages. Nord’s later
+versions from 2026-10-14 (fulltext audit, 2026-10-13): 761 offerings
+lose their plan (all of 2016-2018 and 205 later ones), 90 plans leave
+the data, and Nord’s course-years with a plan go from 1,843 to 1,478.
+*Rejected:* keeping the later plan with a flag (decided 2026-10-07: an
+offering is coded with its own year’s plan or none). A rule on
+`course_plan` alone (2026-10-13): the characters in lines that read as
+text (four or more words; not a heading, a placeholder or a short
+“Label: value” fact) do not separate shells from plans at any threshold.
+A credit-overlap box reads as text, and so the 391 shell offerings have
+a median of 88 such characters and up to 738 (UiA, Nord); some plans
+have little but the assessment design (NTNU master’s thesis pages,
+“Vurderingsordning: Avhandling”, UiS MGLINT’s exam box). Below 150
+characters, 128 plan offerings would become shells and 127 shell
+offerings stay plans; below 500, 326 and 4. Whether a section can be cut
+is what tells a page with text about the course from one without.
 
 **Tables are read one row per line:** each row of a table on the page is
 one line, its cells separated by tabs and each cell on one line, so an
@@ -217,7 +229,7 @@ and COVID line from assessment (the rule since 2026-10-01), which also
 removed rules for the use of AI and the exam forms that replaced written
 exams during COVID; keeping the NTNU exam tab out of the sections, which
 leaves 743 NTNU plans without an assessment section. *Consequence:* the
-sections hold a median 83 % of a plan’s text, and 43 plans have no
+sections hold a median 83 % of a plan’s text, and 45 plans have no
 section. The data do not yet follow the spec where its “Known
 deviations” says; each fix gets its own entry here, with numbers.
 *Since:* 2026-10-13.
@@ -477,7 +489,7 @@ plan id leaves out. MF’s course content sections lose the facts box
 
 **Seven canonical sections** are cut from each plan by its headings,
 mapped through one heading table (`R/section_heading_map.R`): course
-content (98 % of plans), learning outcomes (98 %), assessment (97 %),
+content (98 % of plans), learning outcomes (98 %), assessment (98 %),
 teaching methods (94 %), coursework requirements (91 %), prerequisites
 (54 %) and reading list (33 %). Where a section is missing, the coders
 use the whole plan.
@@ -558,7 +570,7 @@ code). *Since:* 2026-10-07.
 
 **OsloMet teaching methods that only say “Se fagplanen.”** take the text
 of the subject’s Fagplan on the same page (“Fagets arbeids- og
-undervisningsformer”), marked “Se fagplanen. Fagplanen sier: …”: 110
+undervisningsformer”), marked “Se fagplanen. Fagplanen sier: …”: 114
 plans. *Why:* the emneplan delegates the teaching methods to the subject
 plan, which applies to the course. *Since:* 2026-10-06.
 

@@ -94,6 +94,12 @@ test_that("academic-year URLs: an offering takes the page of its academic year",
   expect_null(out$html_error[[3]])                # /2023 for spring 2024: not fetched
 })
 
+test_that("nord: the academic year of the plan a page shows", {
+  py <- get_institution_config("nord")$page_year
+  expect_equal(py(c('<div class="h4 pre-title">Gjeldende emnebeskrivelse (sist oppdatert 2026/27)</div>',
+                    "<div>Emnebeskrivelse for 2023/24</div>", "<p>Ingen</p>")), c(2026L, 2023L, NA))
+})
+
 test_that("harvest_all(retry = TRUE) fetches offerings without a plan again", {
   withr::local_dir(withr::local_tempdir())
   old <- institution_configs$samas$plan_years

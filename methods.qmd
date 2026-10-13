@@ -91,7 +91,10 @@ offerings keep their plan. Of the spring and summer offerings, 2,851 get
 another plan (HVL 1,284, NTNU 1,173, OsloMet 394), 225 get one where they had
 none and 484 lose theirs until their page is fetched (HVL 167, NTNU 233,
 OsloMet 84: no offering had fetched `/Y-1`). The number of plans does not
-change (13,021). *Since:* 2026-10-14.
+change (13,021). A retry harvest on 2026-10-14 fetched those pages: HVL 117
+and OsloMet 79 offerings get a plan (HVL 110 and OsloMet 68 more plans); the
+rest have no page for that year ("Course not found", OsloMet's error page).
+*Since:* 2026-10-14.
 
 ```{r}
 #| label: current-sites
@@ -169,17 +172,26 @@ a pointer to the English page, every section "Se fagplanen.", a list of
 headings with no text under them) gives its offering no plan. So does an
 INN page that says the requested semester's plan is not published yet and
 shows the latest version instead ("Her er den siste versjonen vi har
-tilgjengelig"): that is a later plan (2026 or later), not the offering's. Longer pages without sections stay (OsloMet practicum
+tilgjengelig"): that is a later plan (2026 or later), not the offering's.
+Nord does the same without a notice: for a year it has no plan for, its page
+shows the current plan, headed "Gjeldende emnebeskrivelse (sist oppdatert
+2026/27)" instead of "Emnebeskrivelse for 2023/24". Where the year it names is
+after the offering's academic year, the offering gets no plan; where it is
+not, the page is the version in force that year and stays (`page_year` in
+the configuration). Longer pages without sections stay (OsloMet practicum
 courses, below). *Consequence:* 174 plans left the data on 2026-10-06 (UiA 95,
 UiB 27, OsloMet 26, Nord 11, HVL 10, UiT 4, NTNU 1). With pages that are not
-the plan at all (INN's course search page, OsloMet's error page),
-`r n(nrow(shell))` offerings have page text but no plan
+the plan at all (INN's course search page, OsloMet's error page) and later
+versions (INN, Nord), `r n(nrow(shell))` offerings have page text but no plan
 (`r paste(names(table(shell$institution)), table(shell$institution), collapse = ", ")`).
 *Since:* 2026-10-06; heading lists (UiB NOLI216 and NOSP216, autumn
 2018) from 2026-10-07; NTNU pages whose only section was the exam tab
 from 2026-10-12 to 2026-10-13, when the tab came back (20 plans, 70 offerings). INN later versions from 2026-10-07: 1,077
 INN offerings (384 of 407 pages from 2022, about half of 2023-2025) lose
 their plan; the April 2026 harvest has the same notice on the same pages.
+Nord's later versions from 2026-10-14 (fulltext audit, 2026-10-13): 761
+offerings lose their plan (all of 2016-2018 and 205 later ones), 90 plans
+leave the data, and Nord's course-years with a plan go from 1,843 to 1,478.
 *Rejected:* keeping the later plan with a flag (decided 2026-10-07: an
 offering is coded with its own year's plan or none). A rule on `course_plan`
 alone (2026-10-13): the characters in lines that read as text (four or more

@@ -129,7 +129,8 @@ fetch_html_cols_single_ntnu <- function(url) {
 #' Fetch HTML for a single HVL course URL
 #'
 #' Fetches the HTML and checks for the "course not found" error page
-#' that indicates the course doesn't exist.
+#' that indicates the course doesn't exist. A page that says the plan is
+#' only in English is replaced by the English page.
 #'
 #' @param url Character string containing the HVL course URL
 #'
@@ -147,8 +148,15 @@ fetch_html_cols_single_hvl <- function(url) {
 
   html_content <- httr2::resp_body_string(resp)
 
-  if (stringr::str_detect(html_content, "Vi kunne ikkje finne emnet du ser etter")) {
+  if (stringr::str_detect(html_content, paste0("Vi kunne ikkje finne emnet du ser etter|",
+                                               "Please try again at the search for study plans"))) {
     rlang::abort("Course not found (soft 404)", class = "hvl_not_found_error")
+  }
+  # "Emnebeskrivelsen finnes kun på engelsk": the plan is on the English page
+  # (same layout); the row keeps the Norwegian URL
+  if (stringr::str_detect(html_content, "Emnebeskrivelsen finnes kun på engelsk")) {
+    return(fetch_html_cols_single_hvl(sub("/studier/studieprogram/emne/",
+                                          "/en/studies-at-hvl/study-programmes/courses/", url, fixed = TRUE)))
   }
 
   resp

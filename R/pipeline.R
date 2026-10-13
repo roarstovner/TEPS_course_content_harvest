@@ -136,11 +136,18 @@ institution_fulltext <- function(html_file, blocks, config) {
 # (institution_fulltext()). Plans are
 # keyed by institution, so this can run per institution.
 institution_plans <- function(html_file, fulltext, config) {
-  df <- read_harvest(html_file, config) |>
+  df <- read_harvest(html_file, config)
+  html <- df$html %||% rep(NA_character_, nrow(df))
+  df <- df |>
     dplyr::select(-dplyr::any_of(c("extracted_text", "fulltext", "html", "html_error",
                                    "html_success", "url.x", "url.y"))) |>
     dplyr::left_join(fulltext[, c("course_id", "extracted_text", "plan_text")], by = "course_id")
   df$course_plan <- anonymize_text(df$institution, df$extracted_text, .progress = FALSE)
+  # a later version of the plan in place of the offering's (`page_year`)
+  if (!is.null(config$page_year)) {
+    later <- (config$page_year(html) > academic_start_year(df$Årstall, df$Semesternavn)) %in% TRUE
+    df$course_plan[later] <- NA_character_
+  }
   facts <- !is.na(df$plan_text) & !is.na(df$course_plan)
   if (any(facts)) {
     df$id_text <- df$course_plan
