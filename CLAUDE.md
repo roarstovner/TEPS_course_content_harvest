@@ -17,6 +17,9 @@ documenting, write it there and, if agents need to find it, add a pointer here.
   without a plan and why (target `gaps`).
 - `methods.qmd` (rendered by `tar_make()` to `methods.md`): the choices an
   article's methods section must report, by topic, with numbers from the data.
+- `course_plan_spec.md`: what `course_plan` and the sections hold and what
+  stays out (personal data, boilerplate, plan text, not a plan), with its
+  known deviations. README "What Each Mechanism May Remove" maps it to code.
 - `app/course_browser/README.md`, `app/course_browser_ojs/README.md`: the two
   browsers.
 - `R/institution_config.R`: per-institution configuration (single source of
@@ -74,5 +77,11 @@ documenting, write it there and, if agents need to find it, add a pointer here.
 - A decision that changes what the data mean (frame, years, exclusions,
   anonymization, section rules) gets an entry in `methods.qmd` in the same
   commit: choice, reason, rejected alternatives, consequence, date and issue.
+- Every rule that keeps or removes text must fit `course_plan_spec.md`.
+  `exclude`, `post_fn` and `anonymize_text()` also cut `course_plan`, so they
+  may remove only personal data and boilerplate; plan text that should stay
+  out of the sections goes on the section side (`.drop`, `.clean_sections()`).
+  A change to the spec gets a `methods.qmd` entry; a fix of one of its known
+  deviations removes it from the list.
 - UiO: never switch to semester URLs (`/h24/`, `/v25/`). They hold logistics,
   not the course plan (README "Institution-Specific Notes").

@@ -362,7 +362,8 @@ its `course_plan`. The seven sections are
 anonymized with the same `anonymize_text()` as `course_plan`: sections are cut
 from the raw `html`/`extracted_text`, so this step must keep anonymizing.
 Admission text, exam logistics and placeholder rows such as "Se fagplanen." are
-left out.
+left out. What a section holds and what it leaves out is set by
+`course_plan_spec.md`.
 
 `tar_read(metrics)` has the number of plans with each section per
 institution and `pct_text_in_sections`, the median share of a plan's text
@@ -472,6 +473,29 @@ placeholder-only rows (`.placeholder_phrases`: "Ingen", "Se fagplanen.", "-",
 Leganto pointers, "Oppgis senere.", "… ikke publisert ennå"), and drops a first
 line that only repeats the section heading (but keeps learning-outcome group
 labels such as "Kunnskap").
+
+## What Each Mechanism May Remove
+
+`course_plan_spec.md` says what the published text holds: personal data and
+boilerplate are out of `course_plan` and the sections, other plan text stays
+in `course_plan`, and a section holds only the plan text about its part. The
+mechanisms that remove text run on different texts, so each may remove only
+some of these:
+
+| Mechanism | Code | Runs on | May remove |
+|---|---|---|---|
+| `selector` minus `exclude`; `.read_doc()` drops `script`, `style`, `noscript`, `select`, `label` | `R/institution_config.R`, `R/blocks.R`, `R/extract_fulltext.R` | `course_plan` and sections | personal data, boilerplate |
+| `post_fn` (ntnu timetable, uit banner, year picker and contact block); `.cleanup_usn_text()` | `R/extract_fulltext.R` | `course_plan` (and usn's sections, cut from the text) | personal data, boilerplate |
+| `anonymize_text()`: `.anon_*` handlers, then `.anon_generic()` | `R/anonymize.R` | `course_plan` and sections | personal data, boilerplate; a page that is not a plan (NA) |
+| `normalize_plan_text()` | `R/normalize_plan_text.R` | the plan id only | plan text that changes with the year, not with the plan |
+| `.drop` headings, unmapped headings, text before the first heading | `R/section_heading_map.R`, `R/extract_sections.R` | sections only | plan text about no section |
+| `.clean_sections()`: `.section_noise`, placeholders, admission lines | `R/extract_sections.R` | sections only | plan text about no section, placeholders |
+| shell rule (`SHELL_MAX_NCHAR`) | `R/pipeline.R` | whether a page has a plan | pages that are not a plan |
+
+So a rule that keeps plan text out of the sections belongs on the section side,
+not in `exclude`, `post_fn` or `anonymize_text()`, which would take it out of
+`course_plan` too. The spec's "Known deviations" lists the rules that do not
+fit yet.
 
 ## Auditing a Pipeline Step
 
@@ -695,6 +719,7 @@ active and historical pages.
 ```
 ├── _targets.R                 # Post-harvest pipeline: targets::tar_make()
 ├── methods.qmd                # Methods choices for articles (rendered to methods.md)
+├── course_plan_spec.md        # What course_plan and the sections hold, and what stays out
 ├── renv.lock                  # Pinned package versions (renv::restore())
 ├── .github/workflows/tests.yml # Tests on GitHub Actions
 ├── R/

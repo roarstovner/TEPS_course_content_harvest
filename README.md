@@ -476,7 +476,8 @@ plan keeps, so they match its `course_plan`. The seven sections are
 text is anonymized with the same `anonymize_text()` as `course_plan`:
 sections are cut from the raw `html`/`extracted_text`, so this step must
 keep anonymizing. Admission text, exam logistics and placeholder rows
-such as “Se fagplanen.” are left out.
+such as “Se fagplanen.” are left out. What a section holds and what it
+leaves out is set by `course_plan_spec.md`.
 
 `tar_read(metrics)` has the number of plans with each section per
 institution and `pct_text_in_sections`, the median share of a plan’s
@@ -630,6 +631,89 @@ headers, …), removes admission sentences from prerequisites
 pointers, “Oppgis senere.”, “… ikke publisert ennå”), and drops a first
 line that only repeats the section heading (but keeps learning-outcome
 group labels such as “Kunnskap”).
+
+## What Each Mechanism May Remove
+
+`course_plan_spec.md` says what the published text holds: personal data
+and boilerplate are out of `course_plan` and the sections, other plan
+text stays in `course_plan`, and a section holds only the plan text
+about its part. The mechanisms that remove text run on different texts,
+so each may remove only some of these:
+
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Mechanism</th>
+<th>Code</th>
+<th>Runs on</th>
+<th>May remove</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>selector</code> minus <code>exclude</code>;
+<code>.read_doc()</code> drops <code>script</code>, <code>style</code>,
+<code>noscript</code>, <code>select</code>, <code>label</code></td>
+<td><code>R/institution_config.R</code>, <code>R/blocks.R</code>,
+<code>R/extract_fulltext.R</code></td>
+<td><code>course_plan</code> and sections</td>
+<td>personal data, boilerplate</td>
+</tr>
+<tr>
+<td><code>post_fn</code> (ntnu timetable, uit banner, year picker and
+contact block); <code>.cleanup_usn_text()</code></td>
+<td><code>R/extract_fulltext.R</code></td>
+<td><code>course_plan</code> (and usn’s sections, cut from the
+text)</td>
+<td>personal data, boilerplate</td>
+</tr>
+<tr>
+<td><code>anonymize_text()</code>: <code>.anon_*</code> handlers, then
+<code>.anon_generic()</code></td>
+<td><code>R/anonymize.R</code></td>
+<td><code>course_plan</code> and sections</td>
+<td>personal data, boilerplate; a page that is not a plan (NA)</td>
+</tr>
+<tr>
+<td><code>normalize_plan_text()</code></td>
+<td><code>R/normalize_plan_text.R</code></td>
+<td>the plan id only</td>
+<td>plan text that changes with the year, not with the plan</td>
+</tr>
+<tr>
+<td><code>.drop</code> headings, unmapped headings, text before the
+first heading</td>
+<td><code>R/section_heading_map.R</code>,
+<code>R/extract_sections.R</code></td>
+<td>sections only</td>
+<td>plan text about no section</td>
+</tr>
+<tr>
+<td><code>.clean_sections()</code>: <code>.section_noise</code>,
+placeholders, admission lines</td>
+<td><code>R/extract_sections.R</code></td>
+<td>sections only</td>
+<td>plan text about no section, placeholders</td>
+</tr>
+<tr>
+<td>shell rule (<code>SHELL_MAX_NCHAR</code>)</td>
+<td><code>R/pipeline.R</code></td>
+<td>whether a page has a plan</td>
+<td>pages that are not a plan</td>
+</tr>
+</tbody>
+</table>
+
+So a rule that keeps plan text out of the sections belongs on the
+section side, not in `exclude`, `post_fn` or `anonymize_text()`, which
+would take it out of `course_plan` too. The spec’s “Known deviations”
+lists the rules that do not fit yet.
 
 ## Auditing a Pipeline Step
 
@@ -1106,6 +1190,7 @@ institution hold the same `course_id`; a file was copied into
 
     ├── _targets.R                 # Post-harvest pipeline: targets::tar_make()
     ├── methods.qmd                # Methods choices for articles (rendered to methods.md)
+    ├── course_plan_spec.md        # What course_plan and the sections hold, and what stays out
     ├── renv.lock                  # Pinned package versions (renv::restore())
     ├── .github/workflows/tests.yml # Tests on GitHub Actions
     ├── R/

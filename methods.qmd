@@ -20,10 +20,12 @@ pct <- function(x) sprintf("%.0f %%", 100 * x)
 The choices behind the published data that a methods section has to report,
 by topic. Each entry gives the choice, the reason, alternatives that were
 rejected, the consequence in numbers (computed from the current data when this
-file is rendered) and since when it applies (date, chainlink issue). How to run
-the pipeline is in `README.md`; per-institution data quality in
-`data/data_notes.md`. When a decision changes what the data mean, add or
-update its entry here; each release tag freezes this file with the data.
+file is rendered) and since when it applies (date, chainlink issue). What the
+published text holds and what stays out, as rules, is in
+`course_plan_spec.md`; how to run the pipeline is in `README.md`;
+per-institution data quality in `data/data_notes.md`. When a decision changes
+what the data mean, add or update its entry here; each release tag freezes
+this file with the data.
 
 Current data: `r n(nrow(off))` offerings (DBH course × year × semester) at
 `r n_distinct(off$institution)` institutions, `r n(sum(!is.na(off$plan_content_id)))`
@@ -179,6 +181,45 @@ UiA plans get new ids, and two pairs of UiT plans that differed only by such
 glue merge (SOA-3905 spring and autumn 2011; LER-1201 spring 2018). *Since:*
 2026-10-08 (#315).
 
+## What the text holds
+
+```{r}
+#| label: spec
+k <- c("plan_content_id", "institution", "Emnekode")
+in_secs <- secs |>
+  group_by(across(all_of(k))) |>
+  summarise(n = sum(nchar(text)), .groups = "drop") |>
+  right_join(plans |> transmute(plan_content_id, institution, Emnekode,
+                                N = nchar(course_plan)), by = k)
+```
+
+**The published text follows a written spec, `course_plan_spec.md`.**
+Personal data are out of everything published. Boilerplate is out of
+`course_plan` and the sections: text that belongs to the website, not the
+plan (navigation, widgets, timetables, site-wide notices), or that describes
+the page, not the course (fetch and version stamps, approval stamps,
+administrative dates). All other plan text stays in `course_plan`, also stock
+text repeated in every plan and text that belongs to no section. A section
+holds the plan text about its part and nothing else. Assessment holds the
+assessment design with exam aids and exam language, but not logistics
+(dates, rooms, registration, resits). Notices that say something about the
+assessment (AI use, plagiarism, COVID changes of the exam form) are
+assessment text, stock or not. *Why:* `course_plan` is the source text for
+readers and coders and should lose only what is of no use to someone studying
+teacher education; the sections are a convenience for coding. Before the spec the
+rules were decided one at a time in seven places (README, "What Each
+Mechanism May Remove"), and some went against each other: the MF and UiS
+facts boxes were left out and NTNU's kept, and the NTNU exam tab left
+`course_plan` (#321). *Rejected:* removing every AI, plagiarism and COVID line
+from assessment (the rule since #215), which also removed rules for the use of
+AI and the exam forms that replaced written exams during COVID; keeping the
+NTNU exam tab out of the sections, which leaves 743 NTNU plans without an
+assessment section. *Consequence:* the sections hold a median
+`r pct(median(coalesce(in_secs$n, 0) / in_secs$N))` of a plan's text, and
+`r n(sum(is.na(in_secs$n)))` plans have no section. The data do not yet follow
+the spec where its "Known deviations" says (#323-#327); each fix gets its own
+entry here, with numbers. *Since:* 2026-10-13 (#322).
+
 ## Anonymization
 
 **All published text is anonymized** (`anonymize_text()`): staff names
@@ -268,7 +309,8 @@ discontinued courses) are page shells: 70 offerings lose their plan
 (14,060 → 14,040 plans). The facts box at the top of `course_plan` still names the assessment
 form ("Vurderingsordning Oppgave"). 1,889 of 1,988 NTNU plans name their
 unit. Other plan ids do not change. *Since:* 2026-10-08 (#307), exam tab
-dropped 2026-10-12 (#321).
+dropped 2026-10-12 (#321). The spec (#322) puts the exam tab back, in
+`course_plan` and, without the sessions' logistics, in assessment (#323).
 
 ## Sections
 

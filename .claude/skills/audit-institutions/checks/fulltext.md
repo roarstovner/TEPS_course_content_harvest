@@ -36,7 +36,9 @@ breadcrumbs). The page text shown lists every missing line, short ones too.
 
 ## Rubric (review agent)
 
-A good `extracted_text` contains **the whole course plan and nothing else**:
+A good `extracted_text` contains **the whole course plan and nothing else**
+(`course_plan_spec.md`: plan text in, boilerplate out; personal data are
+removed later by the anonymizer):
 
 - every part of the plan that is on the page (description, learning
   outcomes, teaching, assessment, requirements, prerequisites, literature,

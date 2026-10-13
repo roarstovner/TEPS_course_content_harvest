@@ -8,6 +8,8 @@ course plan into the seven canonical sections correctly.
 - **Ground truth:** the full anonymized `course_plan` (`data/interim/course_offerings_full.RDS`)
 - **Rubric:** `section_codebook.yml` (repo root) — the definitions of the seven
   sections. It is the authority, not the headings the institution uses.
+  Where a section's line runs (assessment design vs. logistics, notices
+  about the assessment) is set by `course_plan_spec.md`, "The sections".
 
 ## Pipeline (orchestrator)
 
