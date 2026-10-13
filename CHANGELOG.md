@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Title and facts sidebar outside the selector (#329)
 - Shell rule on plan text, not on section extraction (#327)
 - Audit the remaining fulltext rules against the spec (#326)
 - mf and uis facts boxes back into course_plan (#325)
