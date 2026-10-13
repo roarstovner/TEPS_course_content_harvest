@@ -8,26 +8,26 @@ Generated: 2026-10-13
 | Institution | Rows | Codes | Years | Extracted OK | Rate | Median chars | Unique plans | Dedup % |
 |:---|---:|---:|:---|---:|:---|---:|---:|:---|
 | hiof | 1712 | 240 | 2017-2025 | 846 | 49.4% | 7151 | 820 | 3.1% |
-| hivolda | 1182 | 113 | 2017-2025 | 594 | 50.3% | 4622 | 540 | 9.1% |
+| hivolda | 1182 | 113 | 2017-2025 | 594 | 50.3% | 4622 | 511 | 14.0% |
 | hvl | 3604 | 393 | 2017-2025 | 3335 | 92.5% | 4464 | 1647 | 49.3% |
 | inn | 2861 | 286 | 2018-2025 | 1777 | 62.1% | 4164 | 552 | 17.0% |
 | mf | 55 | 29 | 2025 | 26 | 47.3% | 4056 | 26 | 0.0% |
 | nih | 184 | 34 | 2021-2025 | 81 | 44.0% | 2534 | 81 | 0.0% |
 | nla | 2074 | 209 | 2017-2025 | 249 | 12.0% | 5885 | 177 | 28.9% |
 | nmbu | 29 | 15 | 2025 | 12 | 41.4% | 5900 | 12 | 0.0% |
-| nord | 3489 | 434 | 2016-2025 | 3489 | 100.0% | 4107 | 1365 | 60.2% |
-| ntnu | 5735 | 409 | 2004-2025 | 3791 | 66.1% | 3985 | 1973 | 47.9% |
-| oslomet | 1684 | 178 | 2018-2025 | 1684 | 100.0% | 12252 | 530 | 67.0% |
+| nord | 3489 | 434 | 2016-2025 | 3489 | 100.0% | 4107 | 1310 | 61.8% |
+| ntnu | 5735 | 409 | 2004-2025 | 3791 | 66.1% | 3976 | 1127 | 70.3% |
+| oslomet | 1684 | 178 | 2018-2025 | 1684 | 100.0% | 12252 | 522 | 67.5% |
 | samas | 130 | 68 | 2025 | 0 | 0.0% | NA | 0 | NaN% |
 | steiner | 36 | 18 | 2025 | 15 | 41.7% | 5027 | 15 | 0.0% |
-| uia | 2881 | 245 | 2013-2025 | 1123 | 39.0% | 4196 | 619 | 39.8% |
-| uib | 2619 | 177 | 2004-2025 | 1473 | 56.2% | 3297 | 564 | 59.5% |
+| uia | 2881 | 245 | 2013-2025 | 1123 | 39.0% | 4196 | 558 | 45.7% |
+| uib | 2619 | 177 | 2004-2025 | 1473 | 56.2% | 3297 | 554 | 60.2% |
 | uio | 100 | 54 | 2025 | 47 | 47.0% | 4623 | 47 | 0.0% |
 | uis | 2921 | 316 | 2007-2025 | 2728 | 93.4% | 5622 | 1276 | 53.2% |
-| uit | 6693 | 621 | 2004-2025 | 3167 | 47.3% | 4313 | 2297 | 27.0% |
+| uit | 6693 | 621 | 2004-2025 | 3167 | 47.3% | 4313 | 2262 | 28.1% |
 | usn | 3036 | 401 | 2018-2025 | 1238 | 40.8% | 10800 | 1181 | 4.6% |
 
-**Total**: 41025 rows, 25675 with extracted text (62.6%), 13861 unique
+**Total**: 41025 rows, 25675 with extracted text (62.6%), 13021 unique
 plans.
 
 **Columns:**
@@ -306,6 +306,13 @@ Figures are in the tables above; the notes say why.
   it (`exam_sessions`). The timetable tab (from 2025) is not read.
   `.anon_ntnu()` removes the contact block (course coordinator,
   teachers); the responsible unit stays, and the dedup hash ignores it
+- The spring and autumn offerings of a year read the same page, fetched
+  at different times. Between the fetches NTNU reworded the stock
+  credit-overlap note (“Dette emne har …” / “Dette emnet har …”) and
+  changed programme lists, so 555 pages gave two plans until 2026-10-13.
+  The admission programme list, the credit-reduction box and the subject
+  areas are now outside the plan id, and the banners (“Nytt fra
+  studieåret …”, “Undervises ikke studieåret …”) are not read
 
 ------------------------------------------------------------------------
 

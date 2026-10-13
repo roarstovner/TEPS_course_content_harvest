@@ -68,6 +68,11 @@ anonymize_text <- function(institution, text,
     # but sections read past it (1,013 sections on 2026-10-05)
     stringr::str_remove_all("Error rendering component\\s*") |>
     stringr::str_remove_all("Se timeplan\\s*") |>
+    # An exam part's date with its label ("Innlevering: 15.05.2023 14:00",
+    # "Dato: 02.12.2024 –06.12.2024", "Utlevering:"); some semesters have
+    # none, and the table cell is then empty
+    stringr::str_remove_all(paste0("(?:Innlevering|Utlevering|Dato):[ \\t]*\\d{1,2}\\.(?:\\d{1,2}\\.\\d{4}|[ \\t]*\\p{L}+)",
+                                   "(?:[ \\t]*[-–][ \\t]*\\d{1,2}\\.\\d{1,2}\\.\\d{4})?(?:[ \\t]+\\d{1,2}:\\d{2})? *")) |>
     # Strip "Kontaktperson:" + name line
     stringr::str_remove_all("(?m)^Kontaktperson:?\\s*\\n[^\\n]*") |>
     # Strip "Foreleser:" + name line
@@ -124,6 +129,9 @@ anonymize_text <- function(institution, text,
   if (grepl("Siden du leter etter finnes ikke", txt, fixed = TRUE)) return(NA_character_)
 
   txt |>
+    # and so is a run of them before a space ("Klasseledelse -;;;; Klasseledelse
+    # og fag", "1);;; Kropp og læring")
+    stringr::str_remove_all(";{2,}(?=[ \\t])") |>
     # A ";" not followed by a space is a 2021-2022 rendering artifact for a
     # space or line break ("En;viktig del;av", "frister.;Det", "1;000 ord",
     # "fordypning;;;"); a real semicolon has a space after it
@@ -220,7 +228,12 @@ anonymize_text <- function(institution, text,
     # Strip "Eksamensadministrasjon:" lines
     stringr::str_remove_all("(?m)^Eksamensadministrasjon:?\\s*[^\n]*") |>
     # Strip "Kontakt:" section lines
-    stringr::str_remove_all("(?m)^Kontakt:?\\s*[^\n]*")
+    stringr::str_remove_all("(?m)^Kontakt:?\\s*[^\n]*") |>
+    # When the reading list is published, a date that changes between years:
+    # "Litteraturlista vil vere klar innan 01.06. for haustsemesteret og
+    # 01.12. for vårsemesteret.", "Litteraturlistene vil vere klare innan 1. juni"
+    stringr::str_remove_all(paste0("Litteraturlist\\w*(?: for [\\p{L} ]{1,30}?)? vil ver[ae] klare? inn[ae]n ",
+                                   "(?:\\d\\.(?=\\d|[ \\t]+\\p{Ll})|[^.\n])*\\.[ \\t]*"))
 }
 
 .anon_nmbu <- function(txt) {

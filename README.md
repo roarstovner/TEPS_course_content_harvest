@@ -562,15 +562,19 @@ Fields for the `html` reader:
   and “Sted og rom” labels with the value after them).
 - `facts` (shared with the fulltext): the elements that hold the title,
   the course code and the facts box (every `html` institution; for nla’s
-  JSON the parts `"title"` and `"table"`). Their blocks are flagged
-  `facts`: in `course_plan`, but in no section (a heading inside them
-  opens none), and not in the plan text (`plan_text` in the fulltext
-  table) that the plan id, the shell rule and the sections’ text
-  fallback read, so a campus or programme list that changes from year to
-  year does not split a plan. In pages read as text (usn, steiner, uis
-  PDF plans) the title and facts box are the lines before the plan: a
-  metadata block matching `section_text_header`, or the lines before a
-  table of contents (usn).
+  JSON the parts `"title"` and `"table"`), and plan text in no section
+  that changes from year to year while the plan stays the same (ntnu’s
+  admission programme list, credit-reduction box and subject areas;
+  uia’s student evaluation and admission flags; hivolda’s evaluation and
+  examiner sentences and programme list; nord’s “Type emne”). Their
+  blocks are flagged `facts`: in `course_plan`, but in no section (a
+  heading inside them opens none), and not in the plan text (`plan_text`
+  in the fulltext table) that the plan id, the shell rule and the
+  sections’ text fallback read, so a campus or programme list that
+  changes from year to year does not split a plan. In pages read as text
+  (usn, steiner, uis PDF plans) the title and facts box are the lines
+  before the plan: a metadata block matching `section_text_header`, or
+  the lines before a table of contents (usn).
 - `section_heading_selector`: section headings (default `h2`; ntnu
   `"h2, h3:not(.exam-assessment-form)"`, inn’s `div.label`, uib’s and
   mf’s `summary`, nord’s `button.ac-trigger`).
@@ -710,8 +714,8 @@ text)</td>
 <td>personal data, boilerplate; a page that is not a plan (NA)</td>
 </tr>
 <tr>
-<td><code>facts</code> (title and facts box out of the id text);
-<code>normalize_plan_text()</code></td>
+<td><code>facts</code> (title and facts box, and lists and stock text in
+no section, out of the id text); <code>normalize_plan_text()</code></td>
 <td><code>R/institution_config.R</code>, <code>R/blocks.R</code>,
 <code>R/normalize_plan_text.R</code></td>
 <td>the plan id only</td>

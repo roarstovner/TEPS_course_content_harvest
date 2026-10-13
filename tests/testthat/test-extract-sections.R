@@ -310,6 +310,25 @@ test_that("ntnu: one exam session in assessment; contacts, scripts, timetable, d
   expect_equal(rvest::html_text2(doc), "Mål.")
 })
 
+test_that("ntnu: banners are out; admission, credit reductions and subject areas are facts", {
+  html <- "<section id='content'><div id='course-details'><span class='course-code'>MA2012</span>
+    <h1 class='course-name'>Geometri</h1><p class='portlet-msg-alert mt-3'>Nytt fra studieåret 2025/2026</p>
+    <div class='course-facts'><span>Studiepoeng</span> <span>7,5</span></div></div>
+    <div id='omEmnet'><h3>Faglig innhold</h3><p>Geometri.</p>
+    <div id='requirements-toggler'><h3>Spesielle vilkår</h3><div><p>Krever opptak til studieprogram:<br>
+      <a>Lektorutdanning i realfag (MLREAL)</a></p></div></div>
+    <div id='credit-reductions-toggler'><h3>Studiepoengreduksjon</h3><table><tr><td>MA0012</td><td>7,5 sp</td></tr></table>
+      <span>Dette emnet har faglig overlapp med emnet i tabellen over.</span></div>
+    <div class='course-card'><div class='course-card-header'><h3>Fagområder</h3></div>
+      <div class='course-card-body'><ul class='subject-area-list'><li>Matematikk</li></ul></div></div></div></section>"
+  ic <- get_institution_config("ntnu")
+  b <- page_blocks(html, NA, .block_cfg(ic))
+  txt <- page_fulltext(b, ic)
+  expect_match(txt, "Spesielle vilkår.*Lektorutdanning i realfag.*overlapp.*Fagområder\\s+Matematikk$")
+  expect_false(grepl("Nytt fra", txt))
+  expect_equal(page_fulltext(b, ic, facts = FALSE), "Faglig innhold\n\nGeometri.")
+})
+
 test_that("more placeholders and list stamps are removed, exam-table headers kept", {
   for (t in c("Oppgis senere.", "Pensum-/litteraturliste er ikke publisert ennå.",
               "Litteratur vil være klart ved semesterstart.", "Pensumliste for høsten 2024.",

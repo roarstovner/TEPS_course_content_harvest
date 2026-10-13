@@ -417,6 +417,41 @@ header (code, credits, language) had opened 10 learning outcomes sections,
 and at the three UiT pages, which become shells (4 offerings).
 *Since:* 2026-10-13.
 
+**Stock text, lists and leftover labels no longer split plans.** Comparing
+consecutive plans of one course (10,369 changes, 923 of them by three
+distinct words or fewer) showed text that changes with the year or the fetch
+while the plan stays the same. Some of it is boilerplate and leaves
+`course_plan` and the sections: NTNU's banners ("Nytt fra studieåret
+2025/2026", "Undervises ikke studieåret …", "Det tilbys ikke lenger
+undervisning i emnet."), UiT's exam-table labels "Innlevering:", "Utlevering:"
+and "Dato:" (their dates were already cut, and a semester without a date had
+no label), UiB's notice of when the reading list is published ("Litteraturlista
+vil vere klar innan 01.06. for haustsemesteret …", a publication date), and
+OsloMet's runs of semicolons before a space (the 2021-2022 rendering artifact,
+as single ones before). The rest is plan text in no section; it stays in
+`course_plan` and joins the facts box, out of the plan id and the shell rule:
+NTNU's admission programme list ("Spesielle vilkår"), credit-reduction box and
+subject areas ("Fagområder"); UiA's student evaluation text and its admission
+flags ("Tilbys som enkeltemne", "Tilgang for privatister"); Volda's
+evaluation and examiner-arrangement sentences and its programme list; Nord's
+"Type emne" (Valgbart, Obligatorisk), shown in some years. *Why:* the user's
+aim (2026-10-13) is that plans with the same text group together. NTNU's
+spring and autumn offerings of a year read the same page (`/{CODE}/{YEAR}`),
+fetched at different times, and between the fetches NTNU reworded the stock
+credit-overlap note ("Dette emne har faglig overlapp …" to "Dette emnet har
+…"), changed programme lists and added banners: 555 of its 1,801 pages gave
+two plans, now none. UiA's evaluation text has four wordings of one stock
+paragraph, and Volda's examiner sentence cites a renumbered regulation (§ 5-11,
+then § 9-4, then chapter 9). *Rejected:* grouping near-identical plans by a
+threshold, or hashing only the sections (the user chose exact plan ids with
+noise removed, 2026-10-13); removing only the credit-overlap sentence and
+keeping the table (it lists other courses, not this one's plan). *Consequence:*
+840 plans merge into others and none split (13,861 to 13,021): NTNU 643, UiA
+61, Nord 55, UiT 33, Volda 28, OsloMet 10, UiB 10. No offering gains or
+loses a plan. 48 UiB plans lose a reading list section that held only the
+publication notice; UiT's assessment sections lose the labels.
+*Since:* 2026-10-13.
+
 **MF and UiS: the title and the facts box are plan text.** `course_plan`
 keeps MF's title and course code and its facts box ("Emneinfo": code,
 credits, language, programmes) and UiS's facts box ("Fakta": code, credits,

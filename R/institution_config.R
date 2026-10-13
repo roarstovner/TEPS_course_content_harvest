@@ -7,10 +7,12 @@
 #
 # facts: the elements that hold the title, course code and facts box (CSS, or
 #        XPath when it starts with "/"; in nla's JSON the parts "title" and
-#        "table"). Their text is in course_plan but in no section, not in the
-#        plan id (a campus or programme list that changes from year to year
-#        does not make a new plan) and not counted by the shell rule
-#        (course_plan_spec.md). In pages read as text (usn, steiner, uis
+#        "table"), and parts in no section that change from year to year
+#        while the plan stays the same (programme and subject lists,
+#        admission flags, stock evaluation text). Their text is in
+#        course_plan but in no section, not in the plan id (a campus or
+#        programme list that changes from year to year does not make a new
+#        plan) and not counted by the shell rule (course_plan_spec.md). In pages read as text (usn, steiner, uis
 #        PDFs) they are the lines before the plan (.text_header() in
 #        R/blocks.R).
 #
@@ -51,7 +53,16 @@ institution_configs <- list(
     # the breadcrumbs (they end with the title) and the facts' links
     # ("Timeplan", "Pensumliste (Leganto)")
     exclude = "nav#breadcrumbs, #vrtx-fs-emne-content div.connected-links",
-    facts = c("#vrtx-fs-emne-content div.page-intro", "#vrtx-fs-emne-facts"),
+    # and the stock student evaluation text and the admission flags (single
+    # course, external candidates), each an h2 and the div after it
+    facts = c("#vrtx-fs-emne-content div.page-intro", "#vrtx-fs-emne-facts",
+              local({
+                h2 <- paste0("//h2[contains(@class, 'vrtx-fs-infotype-title')][",
+                             paste0("normalize-space() = '", c("Studentevaluering", "Tilbys som enkeltemne",
+                                    "Vert tilbydd som enkeltemne", "Tilgang for privatister",
+                                    "Tilgang for privatistar"), "'", collapse = " or "), "]")
+                paste0(h2, " | ", h2, "/following-sibling::div[1]")
+              })),
     plan_years = "url",
     section_strategy = "html",
     # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
@@ -67,7 +78,10 @@ institution_configs <- list(
     # kommer senere") and each exam part's date and time with their labels:
     # when and where, not the assessment (course_plan_spec.md)
     exclude = c(
-      "#timeplan, h1.tabTitle, #omEksamen .exam-link, #omEksamen .exam-rooms, #omEksamen ul.portlet-msg-info",
+      paste("#timeplan, h1.tabTitle, #omEksamen .exam-link, #omEksamen .exam-rooms, #omEksamen ul.portlet-msg-info,",
+            # banners: "Nytt fra studieåret 2025/2026", "Undervises ikke
+            # studieåret ...", "Det tilbys ikke lenger undervisning i emnet."
+            "p.portlet-msg-alert"),
       local({
         label <- paste0("//div[@id='omEksamen']//span[contains(@class, 'exam-fact-label')]",
                         "[normalize-space() = 'Dato' or normalize-space() = 'Tid' or ",
@@ -75,9 +89,12 @@ institution_configs <- list(
         paste0(label, " | ", label, "/following-sibling::span[1]")
       })),
     # the page title, course code, name and facts (credits, level, start,
-    # language, place, assessment form)
+    # language, place, assessment form); the admission programme list
+    # ("Spesielle vilkår"), the credit-reduction box and the subject areas
     facts = c("#content > h1", "#course-details > span.course-code",
-              "#course-details > h1.course-name", "#course-details > div.course-facts"),
+              "#course-details > h1.course-name", "#course-details > div.course-facts",
+              "#requirements-toggler", "#credit-reductions-toggler",
+              "//div[contains(@class, 'course-card')][.//ul[contains(@class, 'subject-area-list')]]"),
     plan_years = "url",
     request_delay = 10,  # robots.txt: Crawl-delay: 10 for all user agents
     fetch_fn = fetch_html_cols_single_ntnu,
@@ -120,7 +137,11 @@ institution_configs <- list(
     exclude = "div.field-person-in-charge, div.field-approval-sign",
     # the title and the one-line fields (code, duration, credits, level,
     # semesters, language, student numbers), not the reading-list pointer
-    facts = c("div.node-cd > h2", "div.node-cd div.label-inline:not(.field-curriculum)"),
+    facts = c("div.node-cd > h2", "div.node-cd div.label-inline:not(.field-curriculum)",
+              # the stock evaluation and examiner-arrangement sentences and
+              # the programme list
+              "div.node-cd div.field-evaluation", "div.node-cd div.field-sensor-system",
+              "div.node-cd div.used-in-programs"),
     plan_years = "url",
     # Drupal fields (div.field-<name> + div.label) name each part of the plan;
     # the exam table is the unlabelled field-assessments-row.
@@ -228,7 +249,7 @@ institution_configs <- list(
     # (2019-), not the title and code before it
     section_untitled = c("div.placeholder-text" = "course_content"),
     facts = c("div.main-content > h1", "div.main-content > .field--name-field-subject-code",
-              "section.sidebar"),
+              "section.sidebar", "div.ac.type_of_subject"),   # "Type emne": Valgbart, Obligatorisk
     # Arbeidskrav/obligatorisk deltakelse are lines inside the vurdering
     # accordion, not a heading of their own.
     section_inline_coursework = TRUE

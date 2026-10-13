@@ -82,9 +82,11 @@ normalization (`methods.md`, "Unit of analysis"). Plan text that changes with
 the year or semester while the plan itself stays the same is kept in
 `course_plan` but left out of that comparison, so it does not split plans.
 Examples are the responsible unit when a department is renamed, the
-semester fields of a facts box or an exam tab, and the title and facts box as
+semester fields of a facts box or an exam tab, the title and facts box as
 a whole (a campus, a programme list or a course-code variant that changes
-from year to year). For the same reason the shell rule counts the plan text
+from year to year), and plan text in no section that changes the same way:
+admission programme lists, subject areas and admission flags, and stock text
+an institution rewords (evaluation, examiner arrangement, credit overlap). For the same reason the shell rule counts the plan text
 without the title and facts box.
 
 ## Page parts

@@ -257,6 +257,18 @@ test_that("NTNU: Blackboard links removed", {
 
 # --- UiT ---
 
+test_that("UiT: an exam part's date goes with its label", {
+  an <- function(x) anonymize_text("uit", x, .progress = FALSE)
+  expect_equal(an("Oppgave\tInnlevering: 15.05.2023 14:00 Vekting: 0/1\tKarakterregel: A–E, stryk F"),
+               "Oppgave\tVekting: 0/1\tKarakterregel: A–E, stryk F")
+  expect_equal(an("Oppgave\tInnlevering: 15.05.2023 14:00\tKarakterregel: A–E, stryk F"),
+               "Oppgave\t\tKarakterregel: A–E, stryk F")
+  expect_equal(an("Hjemmeeksamen\tInnlevering: 01.12.2023 12:00 Utlevering: 24.11.2023 09:00 Varighet: 1 Uker"),
+               "Hjemmeeksamen\tVarighet: 1 Uker")
+  expect_equal(an("Skoleeksamen\tDato: 02.12.2024 –06.12.2024 Varighet: 4 Timer"),
+               "Skoleeksamen\tVarighet: 4 Timer")
+})
+
 test_that("UiT: Error rendering component removed", {
   input <- "Læringsutbytte Error rendering component Innhold"
   result <- anonymize_text("uit", input, .progress = FALSE)
@@ -391,6 +403,12 @@ test_that("OsloMet: error pages return NA", {
   expect_true(is.na(result))
 })
 
+test_that("OsloMet: runs of semicolons are rendering artifacts", {
+  expect_equal(anonymize_text("oslomet", "Klasseledelse -;;;; Klasseledelse og fag\n1);;; Kropp; og læring",
+                              .progress = FALSE),
+               "Klasseledelse - Klasseledelse og fag\n1) Kropp; og læring")
+})
+
 test_that("OsloMet: Emneansvarlig + name stripped", {
   input <- "Studiepoeng 15\nEmneansvarlig\n\nKari Nordmann\nInnhold"
   result <- anonymize_text("oslomet", input, .progress = FALSE)
@@ -480,6 +498,15 @@ test_that("UiB: Studierettleiar line stripped", {
   result <- anonymize_text("uib", input, .progress = FALSE)
   expect_false(grepl("Studierettleiar", result))
   expect_true(grepl("Pensum", result))
+})
+
+test_that("UiB: the date the reading list is published goes with its sentence", {
+  an <- function(x) anonymize_text("uib", x, .progress = FALSE)
+  expect_equal(an("Pensum er henta. Litteraturlista vil vere klar innan 01.06. for haustsemesteret og 01.12. for vårsemesteret."),
+               "Pensum er henta.")
+  expect_equal(an("Litteraturlista vil vere klar innan 01.12. Pensum utgjer om lag 750 sider."),
+               "Pensum utgjer om lag 750 sider.")
+  expect_true(is.na(an("Litteraturlistene vil vere klare innan 1. juni for haustsemesteret og 1. desember for vårsemesteret.")))
 })
 
 test_that("UiB: Kontakt line stripped", {
@@ -824,7 +851,7 @@ test_that("a removal takes the space and separators that joined it", {
                "Emneplan godkjent.\nFaget går.")
   expect_equal(an("uit", "Pensumliste for LER-1402, 5-10, 15 stp, høst 2019 og vår 2020\nNaturfag 5-10 - høst 2020"),
                "Pensumliste for LER-1402, 5-10, 15 stp\nNaturfag 5-10")
-  expect_equal(an("uit", "Muntlig eksamen\tDato: 27.05.2024 –31.05.2024 Varighet: 30 Minutter"),
+  expect_equal(an("nord", "Muntlig eksamen\tDato: 27.05.2024 –31.05.2024 Varighet: 30 Minutter"),
                "Muntlig eksamen\tDato: Varighet: 30 Minutter")
   expect_equal(an("nla", "Avsluttende vurdering\nHøst 2024:\nMappe"), "Avsluttende vurdering\n\nMappe")
   expect_equal(an("uit", "MERK: Våren 2021: Skriftlig eksamen\nmasteroppgave vår 2025: For"),

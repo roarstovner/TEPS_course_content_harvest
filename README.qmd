@@ -409,7 +409,11 @@ Fields for the `html` reader:
   "Dato", "Tid" and "Sted og rom" labels with the value after them).
 - `facts` (shared with the fulltext): the elements that hold the title, the
   course code and the facts box (every `html` institution; for nla's JSON
-  the parts `"title"` and `"table"`). Their blocks are flagged `facts`: in
+  the parts `"title"` and `"table"`), and plan text in no section that
+  changes from year to year while the plan stays the same (ntnu's admission
+  programme list, credit-reduction box and subject areas; uia's student
+  evaluation and admission flags; hivolda's evaluation and examiner
+  sentences and programme list; nord's "Type emne"). Their blocks are flagged `facts`: in
   `course_plan`, but in no section (a heading inside them opens none), and
   not in the plan text (`plan_text` in the fulltext table) that the plan id,
   the shell rule and the sections' text fallback read, so a campus or
@@ -515,7 +519,7 @@ some of these:
 | `selector` minus `exclude`; `.read_doc()` drops `script`, `style`, `noscript`, `select`, `label` | `R/institution_config.R`, `R/blocks.R`, `R/extract_fulltext.R` | `course_plan` and sections | personal data, boilerplate |
 | `post_fn` (uit banner, year picker and contact block, which keeps the unit); `.cleanup_usn_text()` | `R/extract_fulltext.R` | `course_plan` (and usn's sections, cut from the text) | personal data, boilerplate |
 | `anonymize_text()`: `.anon_*` handlers, then `.anon_generic()` | `R/anonymize.R` | `course_plan` and sections | personal data, boilerplate; a page that is not a plan (NA) |
-| `facts` (title and facts box out of the id text); `normalize_plan_text()` | `R/institution_config.R`, `R/blocks.R`, `R/normalize_plan_text.R` | the plan id only | plan text that changes with the year, not with the plan |
+| `facts` (title and facts box, and lists and stock text in no section, out of the id text); `normalize_plan_text()` | `R/institution_config.R`, `R/blocks.R`, `R/normalize_plan_text.R` | the plan id only | plan text that changes with the year, not with the plan |
 | `.drop` headings, unmapped headings, text before the first heading | `R/section_heading_map.R`, `R/extract_sections.R` | sections only | plan text about no section |
 | `.clean_sections()`: `.section_noise`, placeholders, admission lines | `R/extract_sections.R` | sections only | plan text about no section, placeholders |
 | shell rule (`SHELL_MAX_NCHAR`) | `R/pipeline.R` | whether a page has a plan | pages that are not a plan |

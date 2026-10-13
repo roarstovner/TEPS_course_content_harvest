@@ -12,7 +12,7 @@ changes what the data mean, add or update its entry here; each release
 tag freezes this file with the data.
 
 Current data: 41 025 offerings (DBH course × year × semester) at 19
-institutions, 24 146 of them with a plan, and 13 861 unique plans from
+institutions, 24 146 of them with a plan, and 13 021 unique plans from
 18 institutions (none from Samas, below).
 
 ## Population and sampling frame
@@ -115,7 +115,7 @@ before. *Since:* 2026-10-08.
 
 **A plan is a unique anonymized text per institution and course code**
 (`plan_content_id`, a hash of the normalized text). Offerings with the
-same text share a plan: 24 146 offerings have 13 861 plans. *Why:*
+same text share a plan: 24 146 offerings have 13 021 plans. *Why:*
 consecutive years and both semesters mostly repeat the same text.
 *Consequence:* the id changes whenever cleaning changes the text, so
 coding is tied to a frozen release and carried to later releases with a
@@ -197,7 +197,7 @@ and COVID line from assessment (the rule since 2026-10-01), which also
 removed rules for the use of AI and the exam forms that replaced written
 exams during COVID; keeping the NTNU exam tab out of the sections, which
 leaves 743 NTNU plans without an assessment section. *Consequence:* the
-sections hold a median 82 % of a plan’s text, and 51 plans have no
+sections hold a median 83 % of a plan’s text, and 43 plans have no
 section. The data do not yet follow the spec where its “Known
 deviations” says; each fix gets its own entry here, with numbers.
 *Since:* 2026-10-13.
@@ -398,6 +398,44 @@ change only at USN, where the header (code, credits, language) had
 opened 10 learning outcomes sections, and at the three UiT pages, which
 become shells (4 offerings). *Since:* 2026-10-13.
 
+**Stock text, lists and leftover labels no longer split plans.**
+Comparing consecutive plans of one course (10,369 changes, 923 of them
+by three distinct words or fewer) showed text that changes with the year
+or the fetch while the plan stays the same. Some of it is boilerplate
+and leaves `course_plan` and the sections: NTNU’s banners (“Nytt fra
+studieåret 2025/2026”, “Undervises ikke studieåret …”, “Det tilbys ikke
+lenger undervisning i emnet.”), UiT’s exam-table labels “Innlevering:”,
+“Utlevering:” and “Dato:” (their dates were already cut, and a semester
+without a date had no label), UiB’s notice of when the reading list is
+published (“Litteraturlista vil vere klar innan 01.06. for
+haustsemesteret …”, a publication date), and OsloMet’s runs of
+semicolons before a space (the 2021-2022 rendering artifact, as single
+ones before). The rest is plan text in no section; it stays in
+`course_plan` and joins the facts box, out of the plan id and the shell
+rule: NTNU’s admission programme list (“Spesielle vilkår”),
+credit-reduction box and subject areas (“Fagområder”); UiA’s student
+evaluation text and its admission flags (“Tilbys som enkeltemne”,
+“Tilgang for privatister”); Volda’s evaluation and examiner-arrangement
+sentences and its programme list; Nord’s “Type emne” (Valgbart,
+Obligatorisk), shown in some years. *Why:* the user’s aim (2026-10-13)
+is that plans with the same text group together. NTNU’s spring and
+autumn offerings of a year read the same page (`/{CODE}/{YEAR}`),
+fetched at different times, and between the fetches NTNU reworded the
+stock credit-overlap note (“Dette emne har faglig overlapp …” to “Dette
+emnet har …”), changed programme lists and added banners: 555 of its
+1,801 pages gave two plans, now none. UiA’s evaluation text has four
+wordings of one stock paragraph, and Volda’s examiner sentence cites a
+renumbered regulation (§ 5-11, then § 9-4, then chapter 9). *Rejected:*
+grouping near-identical plans by a threshold, or hashing only the
+sections (the user chose exact plan ids with noise removed, 2026-10-13);
+removing only the credit-overlap sentence and keeping the table (it
+lists other courses, not this one’s plan). *Consequence:* 840 plans
+merge into others and none split (13,861 to 13,021): NTNU 643, UiA 61,
+Nord 55, UiT 33, Volda 28, OsloMet 10, UiB 10. No offering gains or
+loses a plan. 48 UiB plans lose a reading list section that held only
+the publication notice; UiT’s assessment sections lose the labels.
+*Since:* 2026-10-13.
+
 **MF and UiS: the title and the facts box are plan text.** `course_plan`
 keeps MF’s title and course code and its facts box (“Emneinfo”: code,
 credits, language, programmes) and UiS’s facts box (“Fakta”: code,
@@ -421,7 +459,7 @@ plan id leaves out. MF’s course content sections lose the facts box
 mapped through one heading table (`R/section_heading_map.R`): course
 content (98 % of plans), learning outcomes (98 %), assessment (97 %),
 teaching methods (94 %), coursework requirements (91 %), prerequisites
-(56 %) and reading list (33 %). Where a section is missing, the coders
+(54 %) and reading list (33 %). Where a section is missing, the coders
 use the whole plan.
 
 **Coursework requirements are kept apart from assessment:** arbeidskrav
@@ -500,7 +538,7 @@ code). *Since:* 2026-10-07.
 
 **OsloMet teaching methods that only say “Se fagplanen.”** take the text
 of the subject’s Fagplan on the same page (“Fagets arbeids- og
-undervisningsformer”), marked “Se fagplanen. Fagplanen sier: …”: 111
+undervisningsformer”), marked “Se fagplanen. Fagplanen sier: …”: 110
 plans. *Why:* the emneplan delegates the teaching methods to the subject
 plan, which applies to the course. *Since:* 2026-10-06.
 

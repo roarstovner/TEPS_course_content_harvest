@@ -258,6 +258,7 @@ Figures are in the tables above; the notes say why.
 
 - Year in the URL, no semester. Pages saying no information is available raise `ntnu_no_info_error`; robots.txt asks for a 10-second crawl delay
 - The exam tab (FS's exam registration: assessment form, grading scale, and per exam session the exam parts with weight, duration and permitted aids) is in `course_plan` without dates, times, rooms and comments; the assessment section and the plan id keep one session of it (`exam_sessions`). The timetable tab (from 2025) is not read. `.anon_ntnu()` removes the contact block (course coordinator, teachers); the responsible unit stays, and the dedup hash ignores it
+- The spring and autumn offerings of a year read the same page, fetched at different times. Between the fetches NTNU reworded the stock credit-overlap note ("Dette emne har …" / "Dette emnet har …") and changed programme lists, so 555 pages gave two plans until 2026-10-13. The admission programme list, the credit-reduction box and the subject areas are now outside the plan id, and the banners ("Nytt fra studieåret …", "Undervises ikke studieåret …") are not read
 
 ---
 
