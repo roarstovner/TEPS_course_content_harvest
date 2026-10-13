@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Run the fulltext audit on all institutions (#235)
 - Leftover labels and list order split plans (#331)
 - USN pages that say the semester's plan is not ready (#332)
 - Group near-identical plans, not only identical ones? (#333)
