@@ -350,7 +350,10 @@ test_that("a colon-ended coursework lead-in starts coursework_requirements", {
 
 test_that("mf: intro is course_content, accordions are sections, contact card ignored", {
   html <- '<html><body><article class="template-study-subject"><div class="content-body">
-    <div class="template-study-subject__details">Emneinfo Emnekode: X</div>
+    <hgroup class="course_title"><p>RL5045</p><h1>Kirkehistorie</h1></hgroup>
+    <div class="template-study-subject__details"><h3>Emneinfo</h3><p>Emnekode: X</p>
+      <div class="wp-block-group"><p class="text-sm">Studieprogramtilhørighet:</p><a>Lektorprogram</a>
+      <button>Vis flere</button></div><div class="wp-block-button"><a>Timeplan</a></div></div>
     <div class="wp-block-group">
       <p>Dette emnet gir en innføring i identitet.</p>
       <p>Arbeidsform og organisering:</p><p>Forelesninger og seminarer.</p>
@@ -372,7 +375,34 @@ test_that("mf: intro is course_content, accordions are sections, contact card ig
   expect_equal(s[["coursework_requirements"]], "Godkjent fremmøte.")
   expect_equal(s[["assessment"]], "Skoleeksamen, 4 timer.")
   expect_match(s[["learning_outcomes"]], "^Studenten har\\s+kunnskap om makt$")
-  expect_false(any(grepl("Nordmann|desember|Emnekode", s)))
+  expect_false(any(grepl("Nordmann|desember|Emnekode|RL5045|Studieprogram", s)))
+  # the title and the facts box are in the text, their buttons are not
+  # also in the 2026-04 layout (template-study-program__*)
+  for (h in c(html, gsub("template-study-subject__", "template-study-program__", html))) {
+    txt <- page_fulltext(page_blocks(h, NA, cfg), list())
+    expect_match(txt, "^RL5045\\s+Kirkehistorie\\s+Emneinfo\\s+Emnekode: X\\s+Studieprogramtilhørighet:\\s+Lektorprogram")
+    expect_false(grepl("Vis flere|Timeplan|Nordmann", txt))
+    out <- page_sections(page_blocks(h, NA, cfg), NA, cfg)
+    expect_equal(out$raw_text[out$section == "course_content"], "Dette emnet gir en innføring i identitet.")
+  }
+})
+
+test_that("uis: the facts box is in the text without its links, and in no section", {
+  html <- '<html><body><div id="block-page-content"><div class="article course">
+    <div class="factbox factbox--course"><h2>Fakta</h2>
+      <p class="factbox__content-item"><strong>Emnekode</strong> MGL3038</p>
+      <p class="factbox__content-item"><strong>Timeplan</strong> <a>Vis timeplan</a></p></div>
+    <div><h2>Eksamen / vurdering</h2></div>
+    <div class="factbox factbox--course factbox--exam"><h3>Skriftlig eksamen</h3>
+      <p class="factbox__content-item"><strong>Vekt</strong> <a>1/1</a></p></div>
+    <div class="course-footer"><h2>Kontakt</h2><p>Ola Nordmann</p></div></div></div></body></html>'
+  cfg <- .block_cfg(get_institution_config("uis"))
+  txt <- page_fulltext(page_blocks(html, NA, cfg), list())
+  expect_match(txt, "Fakta\\s+Emnekode MGL3038")
+  expect_false(grepl("timeplan|Nordmann", txt, ignore.case = TRUE))
+  out <- page_sections(page_blocks(html, NA, cfg), NA, cfg)
+  expect_equal(out$section, "assessment")
+  expect_match(out$raw_text, "Vekt 1/1")
 })
 
 test_that("nord: the short description is course content, title and code are not", {

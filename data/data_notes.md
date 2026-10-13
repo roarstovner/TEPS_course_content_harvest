@@ -11,7 +11,7 @@ Generated: 2026-10-13
 | hivolda | 1182 | 113 | 2017-2025 | 594 | 50.3% | 4622 | 547 | 7.9% |
 | hvl | 3604 | 393 | 2017-2025 | 3335 | 92.5% | 4116 | 1647 | 49.3% |
 | inn | 2861 | 286 | 2018-2025 | 1777 | 62.1% | 4164 | 553 | 16.8% |
-| mf | 55 | 29 | 2025 | 26 | 47.3% | 4154 | 26 | 0.0% |
+| mf | 55 | 29 | 2025 | 26 | 47.3% | 4056 | 26 | 0.0% |
 | nih | 184 | 34 | 2021-2025 | 81 | 44.0% | 2330 | 81 | 0.0% |
 | nla | 2074 | 209 | 2017-2025 | 249 | 12.0% | 5885 | 181 | 27.3% |
 | nmbu | 29 | 15 | 2025 | 12 | 41.4% | 5900 | 12 | 0.0% |
@@ -23,7 +23,7 @@ Generated: 2026-10-13
 | uia | 2881 | 245 | 2013-2025 | 1123 | 39.0% | 4343 | 681 | 33.8% |
 | uib | 2619 | 177 | 2004-2025 | 1473 | 56.2% | 3135 | 564 | 59.5% |
 | uio | 100 | 54 | 2025 | 47 | 47.0% | 4467 | 47 | 0.0% |
-| uis | 2921 | 316 | 2007-2025 | 2728 | 93.4% | 5600 | 1287 | 52.8% |
+| uis | 2921 | 316 | 2007-2025 | 2728 | 93.4% | 5622 | 1287 | 52.8% |
 | uit | 6693 | 621 | 2004-2025 | 3154 | 47.1% | 4108 | 2300 | 27.0% |
 | usn | 3036 | 401 | 2018-2025 | 1238 | 40.8% | 10800 | 1182 | 4.5% |
 
@@ -236,7 +236,9 @@ Figures are in the tables above; the notes say why.
 ### MF (MF Norwegian School of Theology)
 
 - Only the plan in force is published (`plan_years = "current"`; see
-  “Year coverage”). Selector `main`
+  “Year coverage”). Selector `article .content-body`: the title and
+  code, the facts box (credits, semester, language, programmes; without
+  its buttons) and the plan; the title and facts box are in no section
 - `.anon_mf()` cuts from “Emneansvarlig” to the end (names, contact
   details, marketing)
 - The reading list is on a separate page; the plan holds only a link and
@@ -384,8 +386,10 @@ Figures are in the tables above; the notes say why.
 - Current plans come from the course web page, older ones from the PDF
   archive linked in its semester dropdown (`html_pdf_discovery`); the
   PDFs are not stored, so their text is the raw data
-- Web pages are read from the blocks of `.article__section`, without
-  navigation, facts box and contact footer
+- Web pages are read from the blocks of `div.article`, without
+  navigation and contact footer; the facts box (“Fakta”: code, credits,
+  semesters, language) is in `course_plan` without its timetable and
+  Leganto links, and in no section
 
 ------------------------------------------------------------------------
 

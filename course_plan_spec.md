@@ -105,7 +105,6 @@ semester fields of a facts box or an exam tab.
 
 The data built on 2026-10-13 do not yet follow the spec here:
 
-- The MF and UiS facts boxes are out of `course_plan`.
 - The other fulltext rules (`exclude`, `post_fn`, the `.anon_*` handlers, the
   text outside each page's `selector`) have not been checked against the spec.
 - Whether a page is a shell depends on whether sections could be cut from

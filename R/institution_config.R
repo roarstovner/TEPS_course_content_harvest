@@ -136,9 +136,14 @@ institution_configs <- list(
     code = "8221",
     strategy = "standard",
     selector = "article .content-body",
-    # facts box, contact card (staff names) and banner
-    exclude = paste(".template-study-subject__details, .template-study-subject__contact,",
-                    ".wp-block-mf-banner, hgroup"),
+    # contact card (staff names), banner, and the facts box's buttons ("Vis
+    # flere", "Timeplan", "Kontakt studieveileder"); the 2026-04 pages name
+    # the classes template-study-program__*, later ones template-study-subject__*
+    exclude = paste(".template-study-subject__contact, .template-study-program__contact,",
+                    ".wp-block-mf-banner, .template-study-subject__details button,",
+                    ".template-study-program__details button,",
+                    ".template-study-subject__details .wp-block-button,",
+                    ".template-study-program__details .wp-block-button"),
     plan_years = "current",
     # WordPress page: details/summary accordions plus an untitled intro block
     # (only three h2s, none of them plan sections). The intro is
@@ -148,7 +153,10 @@ institution_configs <- list(
     section_heading_selector = "h2, summary",
     section_subheading_selector = "div.wp-block-group p",
     section_scope = "details",
-    section_initial = "course_content"
+    section_initial = "course_content",
+    # the title and code (hgroup) and the facts box are plan text in no section
+    section_untitled = c("hgroup" = ".drop", ".template-study-subject__details" = ".drop",
+                         ".template-study-program__details" = ".drop")
   ),
 
   nla = list(
@@ -216,11 +224,13 @@ institution_configs <- list(
     code = "1160",
     strategy = "html_pdf_discovery",
     # The plan, without the page navigation, the contact footer (staff names)
-    # and the facts box, but with the exam boxes, which share its class
-    #. Pages of withdrawn course versions have no div.article, only a
-    # notice ("This course version is no longer available ...").
+    # and the facts box's links (timetable, Leganto search). Pages of
+    # withdrawn course versions have no div.article, only a notice ("This
+    # course version is no longer available ...").
     selector = "#block-page-content div.article",
-    exclude = ".content-navigation, .course-footer, .factbox--course:not(.factbox--exam)",
+    exclude = c(".content-navigation, .course-footer",
+                paste0("//div[contains(@class, 'factbox--course') and not(contains(@class, 'factbox--exam'))]",
+                       "//p[contains(@class, 'factbox__content-item')][.//a]")),
     plan_years = "url",
     section_strategy = "html",
     # PDF plans (text_split fallback) open with a title and a metadata block;

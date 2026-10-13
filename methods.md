@@ -296,6 +296,23 @@ where the design changed between years (duration, aids, an exam part):
 institutions’ plans and sections do not change. *Since:* 2026-10-08
 (unit); exam tab 2026-10-13, after it was left out from 2026-10-12.
 
+**MF and UiS: the title and the facts box are plan text.** `course_plan`
+keeps MF’s title and course code and its facts box (“Emneinfo”: code,
+credits, language, programmes) and UiS’s facts box (“Fakta”: code,
+credits, semesters, language), without their buttons and links (“Vis
+flere”, “Timeplan”, “Kontakt studieveileder”, “Søk etter
+pensumlitteratur i Leganto”); they are in no section. *Why:* by the spec
+the facts box is plan text; INN’s, NTNU’s and UiA’s facts were already
+in `course_plan`. MF’s pages of April 2026 name their parts differently
+(`template-study-program__*`, later `template-study-subject__*`), so the
+facts box and its buttons of those pages were already in `course_plan`
+and opened the course content section of every MF plan, while the later
+pages had no facts box. *Consequence:* all 26 MF plans and the 180 UiS
+plans read from a web page get a new id (644 UiS offerings); none merge
+or split, since the semester fields hold only season words, which the
+plan id leaves out. MF’s course content sections lose the facts box
+(median 967 → 819 characters). *Since:* 2026-10-13.
+
 ## Sections
 
 **Seven canonical sections** are cut from each plan by its headings,

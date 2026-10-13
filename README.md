@@ -551,12 +551,12 @@ separated by tabs, so an exam table has one line per exam.
 Fields for the `html` reader:
 
 - `selector` and `exclude` (shared with the fulltext): the container,
-  and elements in it that are not read (mf’s facts box, contact card and
-  banner; nord’s “Kopier lenke” label; ntnu’s timetable tab and the exam
-  tab’s link, rooms and comments). `exclude` holds CSS selectors; an
-  entry that starts with “/” is XPath, for an element picked by its text
-  (ntnu’s “Dato”, “Tid” and “Sted og rom” labels with the value after
-  them).
+  and elements in it that are not read (mf’s contact card, banner and
+  the facts box’s buttons; uis’s facts-box links; nord’s “Kopier lenke”
+  label; ntnu’s timetable tab and the exam tab’s link, rooms and
+  comments). `exclude` holds CSS selectors; an entry that starts with
+  “/” is XPath, for an element picked by its text (ntnu’s “Dato”, “Tid”
+  and “Sted og rom” labels with the value after them).
 - `section_heading_selector`: section headings (default `h2`; ntnu
   `"h2, h3:not(.exam-assessment-form)"`, inn’s `div.label`, uib’s and
   mf’s `summary`, nord’s `button.ac-trigger`).
