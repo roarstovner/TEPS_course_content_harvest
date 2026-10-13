@@ -532,9 +532,10 @@ when it finds &lt; 3 sections</td>
 <td><code>text</code></td>
 <td>usn, steiner (+ the fallback, e.g. uis PDF plans)</td>
 <td>Heading-shaped lines in <code>extracted_text</code>; skips a table
-of contents (“Innholdsfortegnelse”, usn); inside a reading list opened
-by a whole heading only a whole heading switches section (book
-titles)</td>
+of contents (“Innholdsfortegnelse”, usn), and a line repeating one of
+its entries is a heading, so an unmapped one (“Annet”) ends the section;
+inside a reading list opened by a whole heading only a whole heading
+switches section (book titles)</td>
 </tr>
 <tr>
 <td><code>noop</code></td>
@@ -617,9 +618,12 @@ heading-shaped lines (capitalised, ≤ 8 words, no digits, no “Label:
 value”, no closing full stop). Patterns mapped to `".drop"` end the
 current section and their text is discarded: admission headings (“Opptak
 til emnet”, “Opptakskrav”, “Hvem kan ta dette emnet?”) and exam
-logistics (“Mer om eksamen ved UiO”, “Hjelpemidler”, “Sensorordning”,
-resit headings such as “Ny/utsatt eksamen”). Exam language and grading
-scale stay in assessment.
+logistics (“Mer om eksamen ved UiO”, “Sensorordning”, resit headings
+such as “Ny/utsatt eksamen”). Exam aids, exam language and grading scale
+stay in assessment. A `label` heading (“Hjelpemidler til eksamen”,
+“Eksamensspråk”, “Fravær fra obligatorisk aktivitet”) stays as a line of
+its section, since the text under it (“Ingen”, “Norsk.”) says nothing
+alone; with nothing but a dash or pointer under it, it goes.
 
 HTML is parsed by `.read_doc()`, which drops `script`, `style`, `select`
 and `label` (ntnu script text, uib semester picker); the `json` reader
@@ -630,10 +634,12 @@ A prerequisites label inside course_content (“Forkunnskapskrav”, uit’s
 (`.split_inline_prerequisites()`), and a paragraph of 40 or more
 characters that its section repeats is kept once.
 
-`.clean_sections()` removes `.drop` rows, strips notices and page
-widgets from assessment/coursework (`.section_noise`: plagiarism and
-ChatGPT/COVID notices, uib banner and footer, flattened exam-table
-headers, …), removes admission sentences from prerequisites
+`.clean_sections()` removes `.drop` rows, strips page widgets, pointers
+and stock logistics sentences from assessment/coursework
+(`.section_noise`: uib banner and footer, hvl’s “Mer om hjelpemidler”
+link, oslomet’s resit sentence, …; notices about the assessment such as
+AI, plagiarism and COVID rules stay, and so do exam tables with their
+header row), removes admission sentences from prerequisites
 (`.strip_admission_lines()`), drops placeholder-only rows
 (`.placeholder_phrases`: “Ingen”, “Se fagplanen.”, “-”, Leganto
 pointers, “Oppgis senere.”, “… ikke publisert ennå”), and drops a first

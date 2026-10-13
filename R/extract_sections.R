@@ -21,6 +21,9 @@
 #' learning outcomes); one naming another section switches to it;
 #' an unmapped one returns to the section its heading opened and stays as a
 #' line there; a `keep` sub-heading stays as the first line of its section.
+#' A `label` heading or sub-heading ("Hjelpemidler til eksamen") stays as the
+#' first line of its text; with no text, or only a dash or pointer ("-", "Se
+#' fagplanen."), it goes. "Ingen" stays: no aids is a value.
 #' Blocks between "start" and "end" (a <details>, an accordion item) hold a
 #' section of their own; the section open around them continues after them.
 #' Text goes to the open section. Text under the same section is merged in
@@ -33,12 +36,14 @@ sectionize <- function(blocks) {
   chunks <- character()
   parent <- current <- NA_character_
   outer <- list()
+  labelled <- FALSE   # the chunks open with a label heading
   flush <- function() {
-    if (!is.na(current) && length(chunks) > 0) {
+    if (!is.na(current) && length(chunks) > 0 && !(labelled && .empty_label_text(chunks[-1]))) {
       txt <- trimws(paste(chunks[nzchar(chunks)], collapse = "\n"))
       if (nzchar(txt)) sections[[current]] <<- c(sections[[current]], txt)
     }
     chunks <<- character()
+    labelled <<- FALSE
   }
   for (i in seq_len(nrow(blocks))) {
     role <- blocks$role[i]
@@ -47,6 +52,8 @@ sectionize <- function(blocks) {
     if (role == "heading") {
       flush()
       parent <- current <- section
+      labelled <- .is_label_heading(text)
+      if (labelled) chunks <- text
     } else if (role == "start") {
       flush()
       outer <- c(list(c(parent, current)), outer)
@@ -63,13 +70,20 @@ sectionize <- function(blocks) {
       }
       flush()
       current <- if (is.na(section)) parent else section
-      if (is.na(section) || blocks$keep[i]) chunks <- text
+      labelled <- !is.na(section) && .is_label_heading(text)
+      if (is.na(section) || blocks$keep[i] || labelled) chunks <- text
     } else if (!is.na(current)) {
       chunks <- c(chunks, text)
     }
   }
   flush()
   .list_to_sections(sections)
+}
+
+# The text under a label heading says nothing: none, a dash or a pointer.
+.empty_label_text <- function(x) {
+  v <- stringr::str_squish(paste(x, collapse = " "))
+  !nzchar(v) || (.is_placeholder_text(v) && !grepl("^(?i:ingen|none)\\b", v, perl = TRUE))
 }
 
 #' Sections of one page
@@ -245,8 +259,8 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 #'   - drops a leading line that merely repeats the section's own heading,
 #'   - removes rows that are empty or only a placeholder ("Ingen",
 #'     "Se fagplanen.", "-", a Leganto pointer; see .placeholder_phrases).
-#'   - strips known notices and page widgets from assessment and coursework
-#'     (.section_noise).
+#'   - strips page widgets, pointers and stock logistics sentences from
+#'     assessment and coursework (.section_noise).
 #' Fuzzier cleanup (exam tables, arbeidskrav/eksamen boundaries inside one
 #' paragraph) is left to the later Phase-2 LLM lifting.
 .clean_sections <- function(out, institution = NULL) {
@@ -423,36 +437,20 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   paste(lines[head == 0L | part], collapse = "\n")
 }
 
-# Notices and page widgets with no heading of their own, so .drop cannot catch
-# them. Applied to assessment and coursework_requirements only, so a
-# course that teaches about AI keeps "kunstig intelligens" in its content.
-# "all" applies to every institution; other entries per institution. Most
-# patterns remove whole lines (or, with (?s), a trailing block).
-.exam_table_header <- paste0(
-  "Vurderingsform|Vurderingsordning|Gruppering|Gruppe/individuell|Varighet|",
-  "Lengd|Karakterskala|Karakter|Vekting|Vekt|Andel|Kommentarer|Kommentar|",
-  "Hjelpemidler|Hjelpemiddel|Omfang")
+# Page widgets, pointers and exam logistics with no heading of their own, so
+# .drop cannot catch them. Applied to assessment and coursework_requirements
+# only. Notices that say something about the assessment (AI use, plagiarism,
+# COVID changes of the exam form) and exam tables with their header row are
+# assessment text and stay (course_plan_spec.md). "all" applies to every
+# institution; other entries per institution. Most patterns remove whole
+# lines (or, with (?s), a trailing block).
 .section_noise <- list(
   all = c(
-    "(?m)^.*(?:plagiatkontroll|for plagiat).*$",                 # nih
-    "(?m)^.*(?:ChatGPT|kunstig intelligens|artificial intelligence).*$", # nord
-    # COVID notices: the sentence only, since the line may also hold the
-    # assessment itself (nord PO111LS)
-    paste0("(?m)(?:\\b(?i:pga|jf|ca|evt)\\.[ \t]*)?",
-           "(?=[^.!?\n ])[^.!?\n]*(?i:covid|korona)[^.!?\n]*(?:[.!?]+[ \t]*|$)"),
-    # flattened exam-table header glued to its data row ("Vurderingsform
-    # Gruppering Varighet Karakterskala Andel ... Mappe Individuell A-F";
-    # uis, hivolda, inn): drop the header words, keep the values
-    paste0("(?m)^(?:(?:", .exam_table_header, ")[ \t]+){3,}(?:",
-           .exam_table_header, ")(?=[ \t]|$)[ \t]*"),
     # stock resit sentence in running text (oslomet)
     paste0("(?i)(?:Deleksamen \\d:[ \t]*)?Ny(?:/| og | eller )ut(?:satt|sett) ",
            "eksamen (?:arrangeres|gjennomføres|foregår|blir arrangert|",
            "blir gjennomført|vert arrangert|vert gjennomført) ",
            "(?:som (?:ved )?)?ordinær(?:e)? eksamen\\.?[ \t]*"),
-    "(?m)^.*[Mm]idlertidig forskrift.*$",
-    "(?m)^.*endres vurderingsform.*$",
-    "(?m)^MERK: (?:Våren|Høsten) \\d{4}.*$",
     "(?m)^Se under [^.\n]{0,40}\\.?$"                            # oslomet pointer
   ),
   uib = c(
@@ -460,10 +458,12 @@ extract_sections <- function(config, html, extracted_text, course_id) {
     "(?m)^Vi opplever problemer med å hente inn eksamensinformasjon.*\n(?:Lukk\n.*)?",
     "(?m)^Til toppen$"
   ),
-  hvl  = "(?m)^Me(?:i)?r om hjelpemidd?el(?:er)?[ \t]*$",          # link text
-  # flattened exam table ("Muntlig eksamen Karakterregel: ... Hjelpemiddelkode:
-  # ..."); a line with a sentence before the table keeps its text
-  nmbu = "(?m)^[^.\n]{0,60}Karakterregel:.*$",
+  # the aids link text; a pointer to the AI page, after the aids rule or alone
+  hvl  = c("(?m)^Me(?:i)?r om hjelpemid(?:del|ler)[ \t]*$",
+           paste0("(?m)[ \t]*For (?:mer |meir )?informasjon om bruk av kunstig intelligens ",
+                  "\\(KI\\),? s(?:e|jå) [^\n]*$")),
+  # a pointer to the AI page, after the AI rule or alone
+  nord = "[ \t]*Informasjon om ChatGPT/kunstig intelligens[^\n]{0,20}? finner du her\\.?",
   uit  = c("(?m)^Alt du trenger å vite om før, under og etter eksamen.*$",  # link line
            "(?m)^Eksamensdato er foreløpig.*$",
            # the grading cell of each row of the 2020s gate table, the same
@@ -488,13 +488,15 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   # match against the heading patterns (not the substring matcher) so we never
   # delete real one-line content that merely contains a section keyword
   # (e.g. "Ingen pensumliste tilgjengelig" or "Vurdering skjer ved eksamen").
-  # A learning-outcome group label ("Kunnskap") is content, not an echo,
-  # and a line that is the whole section ("Praksis") stays.
+  # A learning-outcome group label ("Kunnskap") and a label heading
+  # ("Hjelpemidler") are content, not an echo, and a line that is the whole
+  # section ("Praksis") stays.
   lines <- stringr::str_split_1(text, "\\r?\\n")
   norm_first <- tolower(trimws(stringr::str_remove(lines[1], "[:：]\\s*$")))
   eq <- section_heading_patterns$pattern == norm_first
   if (length(lines) > 1 && any(eq) &&
       identical(section_heading_patterns$section[which(eq)[1]], section) &&
+      !section_heading_patterns$label[which(eq)[1]] &&
       !grepl(.lo_group_label, norm_first, perl = TRUE)) {
     text <- paste(lines[-1], collapse = "\n")
   }
@@ -527,6 +529,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "ingen(?: spesielle)?(?: krav| forkunnskapskrav| arbeidskrav)?", "none", "n/a", "x",
   "det er ingen (?:vurdering|eksamen) i emnet",                      # hvl
   "[-–.…]+",
+  "me(?:i)?r om hjelpemid(?:del|ler)",                               # hvl link
   # pointers to another document
   "(?:se|sjå) (?:fag|program|studie)?plan(?:en)?(?: for [^.]{0,100})?",
   "se emnearkivet",

@@ -342,6 +342,43 @@ Where a section is missing, the coders use the whole plan.
 obligatory-activity paragraphs inside an assessment block are moved to
 coursework requirements (since 2026-10-01).
 
+**Assessment holds the exam aids, the exam language and the notices about
+the assessment.** A heading for the permitted aids ("Hjelpemidler til
+eksamen", "Hjelpemiddel ved eksamen", "Tillatte hjelpemidler") or the exam
+language ("Eksamensspråk") opens assessment, and "Fravær fra obligatorisk
+aktivitet" coursework requirements; the heading stays as a line, since the
+text under it is often a bare value ("Ingen", "Alle", "Norsk."). With nothing
+under it, or only a dash or a pointer ("-", "Se fagplanen."), it goes. Rules
+for the use of AI ("Å generere besvarelse ved hjelp av ChatGPT … er å regne
+som fusk"), plagiarism checks and COVID changes of the exam form ("MERK:
+Skriftlig skoleeksamen endres til hjemmeeksamen.", Nord's and UiB's notices
+under the temporary regulations) stay, and so does an exam table's header row
+(Volda, INN, UiS) and NMBU's exam-table line. Still removed: pointers to an
+AI page with no rule of their own ("Informasjon om ChatGPT/kunstig intelligens
+mm. finner du her.", HVL's "For informasjon om bruk av kunstig intelligens
+(KI) se …"), link labels ("Mer om hjelpemidler"), OsloMet's stock resit
+sentence. In USN's text, a line that repeats an entry of the page's table of
+contents is a heading, so an unmapped one ("Annet": evaluation, organisation)
+ends the section instead of running into the one before. *Why:* by the spec
+(`course_plan_spec.md`) aids and language are assessment design, and a notice
+that says something about the assessment is assessment text, stock or not;
+an aids value without its heading, or an exam table's values without the
+header, does not say what it is. *Rejected:* removing every AI, plagiarism and
+COVID line from assessment and coursework (2026-10-01 to 2026-10-13), which
+also removed exam tasks that use ChatGPT ("Studentene skal lage et måltid ved
+hjelp av ChatGPT") and the exam forms that replaced written exams; dropping
+aids and language as exam logistics; dropping "Ingen" under an aids heading as
+a placeholder (it says that no aids are permitted); mapping "Annet" to a
+dropped heading everywhere (it is also a type label in Leganto reading lists).
+*Consequence:* the assessment or coursework text of 6,401 plans changes,
+`course_plan` and the plan ids do not. 4,386 assessment sections have an aids
+or language heading (4 before); 556 assessment or coursework sections hold AI
+text (19), 171 COVID text (none; Nord 124, UiB 47), 97 plagiarism text (none),
+1,824 an exam-table header (9). 18 plans get an assessment section, 14 of them
+at Nord, where a COVID change of the exam form was the only assessment text.
+The median assessment section grows from 261 to 325 characters. *Since:*
+2026-10-13.
+
 **Practicum stays in teaching methods** rather than a section of its own: only
 HiOF and Nord give practicum its own heading (since 2026-10-01).
 

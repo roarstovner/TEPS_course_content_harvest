@@ -52,12 +52,14 @@ text about no part stays only in `course_plan`. Where the line runs:
 
 - **Assessment** holds the assessment design: what is assessed and how. That
   is the form, parts and weights, duration, individual or group work, the
-  grading scale, the exam language and the permitted aids. It also holds rules
-  for the use of AI and for plagiarism, and temporary changes to any of these
-  (COVID). An exam tab or exam table on the page counts too. Logistics stay
-  out: when, where and how to register (dates, rooms, exam systems, exam
-  sessions, registration, resit and appeal rules, the examiner arrangement,
-  the assessment semester).
+  grading scale, the exam language and the permitted aids, with their heading
+  ("Hjelpemidler til eksamen" over "Ingen" says that no aids are permitted;
+  over only "-" it says nothing and goes). It also holds rules for the use of
+  AI and for plagiarism, and temporary changes to any of these (COVID). An
+  exam tab or exam table on the page counts too, with its header row.
+  Logistics stay out: when, where and how to register (dates, rooms, exam
+  systems, exam sessions, registration, resit and appeal rules, the examiner
+  arrangement, the assessment semester).
 - **Coursework requirements** hold what must be approved before the exam
   (arbeidskrav, compulsory attendance and activities, rules for absence from
   them), also when the page lists them under the assessment heading.
@@ -103,10 +105,6 @@ semester fields of a facts box or an exam tab.
 
 The data built on 2026-10-13 do not yet follow the spec here:
 
-- AI, plagiarism and COVID notices are removed from assessment and coursework
-  requirements, among them the Nord and UiB exam forms changed for COVID.
-  Exam aids and exam language under a heading of their own are dropped, and
-  so is absence from compulsory activities.
 - The MF and UiS facts boxes are out of `course_plan`.
 - The other fulltext rules (`exclude`, `post_fn`, the `.anon_*` handlers, the
   text outside each page's `selector`) have not been checked against the spec.

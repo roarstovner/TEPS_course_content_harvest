@@ -23,6 +23,7 @@ section_heading_patterns <- tibble::tribble(
   "obligatorisk læringsaktivitet",         "coursework_requirements", FALSE,
   "obligatorisk undervisningsaktivitet",   "coursework_requirements", FALSE,
   "obligatoriske aktiviteter",             "coursework_requirements", FALSE,
+  "fravær fra obligatorisk aktivitet",     "coursework_requirements", FALSE,  # uio label
   "obligatorisk aktivitet",                "coursework_requirements", FALSE,
   "obligatoriske arbeidskrav",             "coursework_requirements", TRUE,   # uit label
   "arbeidskrav",                           "coursework_requirements", FALSE,
@@ -34,7 +35,7 @@ section_heading_patterns <- tibble::tribble(
   # --- .drop: exam logistics (before assessment, which "eksamen" would hit) ---
   # The codebook keeps assessment design and excludes exam logistics.
   # Most rows are exact (whole heading only), and exact matches win over
-  # substrings, so "Eksamen og hjelpemidler" still maps to assessment.
+  # substrings, so "Eksamen og sensorordning" still maps to assessment.
   "eksamensdato",                          ".drop",                  FALSE,
   "dato for eksamen",                      ".drop",                  TRUE,   # uit 2008-2011
   "dato for skoleeksamen",                 ".drop",                  TRUE,
@@ -52,20 +53,9 @@ section_heading_patterns <- tibble::tribble(
   "vilkår for ny/utsatt eksamen",          ".drop",                  TRUE,
   "syk på eksamen / utsatt eksamen",       ".drop",                  TRUE,
   "kontinuasjonseksamen",                  ".drop",                  TRUE,
-  "hjelpemidler til eksamen",              ".drop",                  TRUE,
-  "hjelpemiddel til eksamen",              ".drop",                  TRUE,
-  "hjelpemidler ved eksamen",              ".drop",                  TRUE,
-  "hjelpemiddel ved eksamen",              ".drop",                  TRUE,
-  "examination support material",          ".drop",                  TRUE,
-  "language of examination",               ".drop",                  TRUE,
   "dette bør du vite om eksamen",          ".drop",                  TRUE,
-  "hjelpemidler",                          ".drop",                  TRUE,
-  "hjelpemiddel",                          ".drop",                  TRUE,
-  "tillatte hjelpemidler",                 ".drop",                  TRUE,
-  "tillatte hjelpemiddel",                 ".drop",                  TRUE,
   "sensorordning",                         ".drop",                  TRUE,
   "sensurordning",                         ".drop",                  TRUE,   # uio
-  "eksamensspråk",                         ".drop",                  TRUE,   # uio, nla
   "vurderingssemester",                    ".drop",                  TRUE,   # uib: exam timing
   # a table of contents ("innhold" would map it to course_content; hiof, uia)
   "innholdsfortegnelse",                   ".drop",                  TRUE,
@@ -74,6 +64,19 @@ section_heading_patterns <- tibble::tribble(
   "table of contents",                     ".drop",                  TRUE,
 
   # --- assessment ---
+  # Exam aids and exam language are assessment design. These headings stay
+  # as a line of the section (`label` below).
+  "hjelpemidler til eksamen",              "assessment",             FALSE,
+  "hjelpemiddel til eksamen",              "assessment",             FALSE,
+  "hjelpemidler ved eksamen",              "assessment",             FALSE,
+  "hjelpemiddel ved eksamen",              "assessment",             FALSE,
+  "tillatte hjelpemidler",                 "assessment",             FALSE,  # nla
+  "tillatte hjelpemiddel",                 "assessment",             FALSE,
+  "hjelpemidler",                          "assessment",             TRUE,
+  "hjelpemiddel",                          "assessment",             TRUE,
+  "examination support material",          "assessment",             TRUE,   # uio
+  "eksamensspråk",                         "assessment",             TRUE,   # uio, nla
+  "language of examination",               "assessment",             TRUE,
   "vurdering og eksamen",                  "assessment",             FALSE,
   "avsluttende vurdering",                 "assessment",             FALSE,
   "mer om vurdering",                      "assessment",             FALSE,
@@ -134,7 +137,6 @@ section_heading_patterns <- tibble::tribble(
   "utgifter i emnet",                      ".drop",                  TRUE,   # usn
   "undervisningssted",                     ".drop",                  TRUE,   # uio labels
   "eventuelle utgifter i forbindelse med undervisning", ".drop",    TRUE,
-  "fravær fra obligatorisk aktivitet",     ".drop",                  TRUE,
   "arbeidsmengd",                          ".drop",                  TRUE,   # uis workload boilerplate
   "arbeidsmengde",                         ".drop",                  TRUE,
 
@@ -230,6 +232,15 @@ section_heading_patterns <- tibble::tribble(
   "content",                               "course_content",         FALSE
 )
 
+# Headings that name one part of their section (exam aids, exam language, rules
+# for absence) stay as a line of it (sectionize()), since the text under them
+# ("Ingen", "Alle", "Norsk.") says nothing without them.
+section_heading_patterns$label <- section_heading_patterns$pattern %in% c(
+  "hjelpemidler til eksamen", "hjelpemiddel til eksamen", "hjelpemidler ved eksamen",
+  "hjelpemiddel ved eksamen", "tillatte hjelpemidler", "tillatte hjelpemiddel",
+  "hjelpemidler", "hjelpemiddel", "examination support material", "eksamensspråk",
+  "language of examination", "fravær fra obligatorisk aktivitet")
+
 
 #' Match a heading text to a canonical section name
 #'
@@ -243,6 +254,15 @@ section_heading_patterns <- tibble::tribble(
 #' @return Character string — canonical section name, or NA_character_.
 match_heading_to_section <- function(heading, word_start = FALSE) {
   section_heading_patterns$section[heading_pattern(heading, word_start)]
+}
+
+# Whether a heading (with or without a closing colon) is a `label` heading;
+# heading_pattern() only for a heading that holds a label pattern.
+.is_label_heading <- function(heading) {
+  h <- sub("[:：]\\s*$", "", tolower(trimws(heading)))
+  lab <- section_heading_patterns$pattern[section_heading_patterns$label]
+  any(stringr::str_detect(h, stringr::fixed(lab))) &&
+    isTRUE(section_heading_patterns$label[heading_pattern(h)])
 }
 
 #' The row of section_heading_patterns a heading matches

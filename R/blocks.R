@@ -381,6 +381,9 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
 #     match "kunnskap"),
 #   - and names a section other than the open one; a line naming the open
 #     section ("Kunnskap" inside learning outcomes) is text.
+# A line after a blank line that repeats an entry of the page's table of
+# contents (usn) is a heading whatever it names: an unmapped one ("Annet",
+# "Evaluering av emnet") ends the section, as in the html reader.
 # In a reading list opened by a whole heading ("Litteratur") only another
 # whole heading switches, so a book title such as "Kompetansemål og
 # vurdering" does not.
@@ -408,10 +411,12 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
   # Skip a table of contents (usn): from "Innholdsfortegnelse" to where its
   # first entry repeats as the real heading.
   toc <- which(trimws(lines) == "Innholdsfortegnelse")[1]
+  toc_heads <- character()
   if (!is.na(toc)) {
     entries <- which(!is_blank & seq_along(lines) > toc)
     body <- entries[-1][trimws(lines[entries[-1]]) == trimws(lines[entries[1]])][1]
     if (!is.na(body)) {
+      toc_heads <- trimws(lines[entries[entries < body]])
       lines <- lines[-(toc:(body - 1))]
       is_blank <- is_blank[-(toc:(body - 1))]
     }
@@ -426,6 +431,13 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
     }
     trimmed <- trimws(lines[i])
     section <- NA_character_
+    if (prev_blank && trimmed %in% toc_heads) {
+      current <- match_heading_to_section(trimmed)
+      out$add("heading", lines[i], current)
+      strict <- identical(current, "reading_list")
+      prev_blank <- FALSE
+      next
+    }
     if (prev_blank && .heading_shaped_line(trimmed)) {
       candidate <- stringr::str_remove(trimmed, "[:：]\\s*$")
       section <- match_heading_to_section(candidate, word_start = TRUE)
