@@ -217,6 +217,13 @@ test_that("NTNU's unit does not split a plan", {
                "om emnet tekst : oppgave")
 })
 
+test_that("UiT's unit does not split a plan", {
+  a <- "Om emnet\nTekst\n\nAnsvarlig enhet\nInstitutt for lærerutdanning og pedagogikk"
+  b <- "Om emnet\nTekst\n\nAnsvarlig enhet\nFakultet for humaniora"
+  expect_equal(normalize_plan_text(c(a, b), .progress = FALSE), rep("om emnet tekst", 2))
+  expect_equal(normalize_plan_text("Tekst\n\nResponsible unit\nFaculty of Humanities", .progress = FALSE), "tekst")
+})
+
 test_that("ntnu's exam sessions: the plan id keeps one session's design", {
   tab <- function(...) paste("Tekst", "Eksamen", "Vurderingsordning: Oppgave", "Karakter: Bokstavkarakterer",
                              ..., sep = "\n")

@@ -52,3 +52,17 @@ test_that("noop gives NA, pdf_split keeps the harvested text, usn is cleaned", {
   expect_equal(extract_fulltext_from_raw(df, list(strategy = "pdf_split")), "harvested")
   expect_equal(extract_fulltext_from_raw(df, list(strategy = "shadow_dom")), "line\n\nnext")
 })
+
+test_that("uit: the year picker and the contacts go, the responsible unit stays", {
+  txt <- paste("Om emnet", "Tekst om emnet.", "Error rendering component", "Andre år og semester",
+               "Kontakt oss",
+               "Ansvarlig enhet:Institutt for lærerutdanning og pedagogikkE-post: studie@hjelp.uit.no",
+               "Kari Nordmann", "Professor", sep = "\n")
+  expect_equal(.pre_uit(txt),
+               "Om emnet\nTekst om emnet.\n\nAnsvarlig enhet\nInstitutt for lærerutdanning og pedagogikk")
+  # in no section, also when the text is read for the sections
+  out <- page_sections(.empty_blocks(), .pre_uit(txt), list(reader = "text"))
+  expect_equal(out$raw_text, "Tekst om emnet.")
+  # a page whose plan did not render stays empty
+  expect_equal(.pre_uit("Om emnet\nError rendering component\nKontakt oss\nAnsvarlig enhet: Institutt"), "")
+})

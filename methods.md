@@ -186,7 +186,7 @@ and COVID line from assessment (the rule since 2026-10-01), which also
 removed rules for the use of AI and the exam forms that replaced written
 exams during COVID; keeping the NTNU exam tab out of the sections, which
 leaves 743 NTNU plans without an assessment section. *Consequence:* the
-sections hold a median 84 % of a plan’s text, and 53 plans have no
+sections hold a median 83 % of a plan’s text, and 53 plans have no
 section. The data do not yet follow the spec where its “Known
 deviations” says; each fix gets its own entry here, with numbers.
 *Since:* 2026-10-13.
@@ -295,6 +295,29 @@ where the design changed between years (duration, aids, an exam part):
 13,967 → 13,994 plans. 1,908 of 2,015 NTNU plans name their unit. Other
 institutions’ plans and sections do not change. *Since:* 2026-10-08
 (unit); exam tab 2026-10-13, after it was left out from 2026-10-12.
+
+**The rules that cut `course_plan` remove only personal data and
+boilerplate.** On 2026-10-13 each such rule was checked against the spec
+on the text it removes: `exclude`, `post_fn`, the `.anon_*` cuts to the
+end of the page or of a block, and what `.read_doc()` drops (`<label>`,
+`<select>`, scripts). They remove contact blocks, cards and staff lists
+(names, titles, e-mails), approval signatures, year and semester
+pickers, version stamps (“Gjeldende emnebeskrivelse (sist oppdatert
+…)”), link labels (“Kopier lenke”), UiO’s site-wide list of exam links,
+MF’s library notice, the semester timetable at the end of UiT’s
+2008-2011 plans (first lectures, rooms, weeks, teachers, now and then a
+line on the semester’s teaching such as “Det gis kun individuell
+veiledning”) and MF’s exam schedule (“Eksamensdatoer”: dates, deadlines
+and the exam forms the plan’s assessment text already gives). One rule
+took plan text: UiT’s cut from the contact block to the end of the page
+also took the responsible unit, which now stays (“Ansvarlig enhet” and
+the unit, at the end of the text and in no section); the plan id leaves
+it out, as for NTNU. Rules that no longer fire (UiS’s “Kontakt” cut,
+UiB’s “Kontakt” and “Studierettleiar” lines) stay as a guard.
+*Consequence:* 2,281 UiT plans gain their unit; no plan id or section
+changes. Text outside each page’s `selector` is a known deviation of the
+spec (title and facts sidebars at several institutions). *Since:*
+2026-10-13.
 
 **MF and UiS: the title and the facts box are plan text.** `course_plan`
 keeps MF’s title and course code and its facts box (“Emneinfo”: code,

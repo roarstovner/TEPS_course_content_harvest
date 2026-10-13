@@ -316,7 +316,7 @@ Figures are in the tables above; the notes say why.
 
 - **Historical plans** via document ids from the course page's semester picker
 - The plan is read from `.mainContent` (since 2026-10; the old `.hovedfelt > main > div.col-md-12` matched nothing after a site change, so the 2026-10 harvest first had no text)
-- `.pre_uit()` removes the "OBS! Dette emnet tilhører et tidligere semester / år" banner and cuts from "Andre år og semester" / "Kontakt oss" (staff names and e-mails) to the end
+- `.pre_uit()` removes the "OBS! Dette emnet tilhører et tidligere semester / år" banner and cuts from "Andre år og semester" / "Kontakt oss" (staff names and e-mails) to the end; the responsible unit from the contact block ("Ansvarlig enhet", without its e-mail) stays, at the end of the text and in no section, and the plan id leaves it out
 - Some pages say "Error rendering component" where the plan should be: the plan failed to render on UiT's site, and these rows have no text
 - The semester picker can list a semester twice: an English document ("Course code:", in all 5 cases an empty page) beside the Norwegian one. The Norwegian one is used; the first option was used before 2026-10-08, and a retry harvest (`harvest_all(institutions = "uit", retry = TRUE)`) gave these 5 offerings their plan
 

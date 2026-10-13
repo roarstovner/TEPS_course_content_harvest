@@ -131,6 +131,8 @@ section_heading_patterns <- tibble::tribble(
   "overlapping",                           ".drop",                  TRUE,
   "fakta",                                 ".drop",                  TRUE,
   "kontakt",                               ".drop",                  TRUE,
+  "ansvarlig enhet",                       ".drop",                  TRUE,   # ntnu, uit: the unit
+  "responsible unit",                      ".drop",                  TRUE,
   # usn approval stamp and change log
   "godkjent emneplan",                     ".drop",                  TRUE,
   "endringsbeskrivelse",                   ".drop",                  TRUE,

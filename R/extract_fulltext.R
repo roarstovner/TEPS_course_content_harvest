@@ -76,7 +76,11 @@ page_fulltext <- function(blocks, config) {
 }
 
 .pre_uit <- function(txt) {
-  txt |>
+  # the responsible unit in the contact block, without its e-mail, stays,
+  # on two lines as ntnu has it (a .drop heading, so in no section)
+  unit <- stringr::str_match(txt, paste0("\\n(Ansvarlig enhet|Responsible unit):[ \\t]*",
+                                         "([^\\n]*?)[ \\t]*(?:E-post:[^\\n]*)?(?:\\n|$)"))
+  txt <- txt |>
     # Banner on plans from earlier semesters
     stringr::str_remove(paste0("^\\s*(?:OBS! Dette emnet tilhører et tidligere semester / år|",
                                "NOTE! This course belongs to a previous semester/year)\\s*")) |>
@@ -87,6 +91,8 @@ page_fulltext <- function(blocks, config) {
     # A heading left alone means the plan itself did not render
     stringr::str_remove("^(?:Om emnet|About the course)\\s*$") |>
     stringr::str_trim()
+  if (is.na(unit[, 3]) || !nzchar(unit[, 3]) || !nzchar(txt)) return(txt)
+  paste0(txt, "\n\n", unit[, 2], "\n", unit[, 3])
 }
 
 #' Parse UiS semester dropdown to discover available years and their URLs

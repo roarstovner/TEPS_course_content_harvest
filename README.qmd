@@ -499,7 +499,7 @@ some of these:
 | Mechanism | Code | Runs on | May remove |
 |---|---|---|---|
 | `selector` minus `exclude`; `.read_doc()` drops `script`, `style`, `noscript`, `select`, `label` | `R/institution_config.R`, `R/blocks.R`, `R/extract_fulltext.R` | `course_plan` and sections | personal data, boilerplate |
-| `post_fn` (uit banner, year picker and contact block); `.cleanup_usn_text()` | `R/extract_fulltext.R` | `course_plan` (and usn's sections, cut from the text) | personal data, boilerplate |
+| `post_fn` (uit banner, year picker and contact block, which keeps the unit); `.cleanup_usn_text()` | `R/extract_fulltext.R` | `course_plan` (and usn's sections, cut from the text) | personal data, boilerplate |
 | `anonymize_text()`: `.anon_*` handlers, then `.anon_generic()` | `R/anonymize.R` | `course_plan` and sections | personal data, boilerplate; a page that is not a plan (NA) |
 | `normalize_plan_text()` | `R/normalize_plan_text.R` | the plan id only | plan text that changes with the year, not with the plan |
 | `.drop` headings, unmapped headings, text before the first heading | `R/section_heading_map.R`, `R/extract_sections.R` | sections only | plan text about no section |

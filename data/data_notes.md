@@ -24,7 +24,7 @@ Generated: 2026-10-13
 | uib | 2619 | 177 | 2004-2025 | 1473 | 56.2% | 3135 | 564 | 59.5% |
 | uio | 100 | 54 | 2025 | 47 | 47.0% | 4467 | 47 | 0.0% |
 | uis | 2921 | 316 | 2007-2025 | 2728 | 93.4% | 5622 | 1287 | 52.8% |
-| uit | 6693 | 621 | 2004-2025 | 3154 | 47.1% | 4108 | 2300 | 27.0% |
+| uit | 6693 | 621 | 2004-2025 | 3154 | 47.1% | 4162 | 2300 | 27.0% |
 | usn | 3036 | 401 | 2018-2025 | 1238 | 40.8% | 10800 | 1182 | 4.5% |
 
 **Total**: 41025 rows, 25662 with extracted text (62.6%), 13994 unique
@@ -402,7 +402,9 @@ Figures are in the tables above; the notes say why.
   change, so the 2026-10 harvest first had no text)
 - `.pre_uit()` removes the “OBS! Dette emnet tilhører et tidligere
   semester / år” banner and cuts from “Andre år og semester” / “Kontakt
-  oss” (staff names and e-mails) to the end
+  oss” (staff names and e-mails) to the end; the responsible unit from
+  the contact block (“Ansvarlig enhet”, without its e-mail) stays, at
+  the end of the text and in no section, and the plan id leaves it out
 - Some pages say “Error rendering component” where the plan should be:
   the plan failed to render on UiT’s site, and these rows have no text
 - The semester picker can list a semester twice: an English document

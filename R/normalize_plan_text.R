@@ -15,9 +15,9 @@ normalize_plan_text <- function(course_plan, .progress = "Normalize plan texts")
 
     txt |>
       tolower() |>
-      # NTNU's responsible unit, up to the exam tab; it differs between
+      # the responsible unit, up to ntnu's exam tab; it differs between
       # years by a renamed department, not by content
-      stringr::str_remove("(?s)\\nansvarlig enhet\\n.*?(?=\\neksamen\\n|$)") |>
+      stringr::str_remove("(?s)\\n(?:ansvarlig enhet|responsible unit)\\n.*?(?=\\neksamen\\n|$)") |>
       # Remove structural heading labels (lossy — these are section headers, not content)
       # Covers Norwegian and English headings found across institutions (esp. INN)
       stringr::str_remove_all(paste0("\\b(", paste(collapse = "|", c(

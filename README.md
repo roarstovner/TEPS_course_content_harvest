@@ -680,8 +680,8 @@ so each may remove only some of these:
 <td>personal data, boilerplate</td>
 </tr>
 <tr>
-<td><code>post_fn</code> (uit banner, year picker and contact block);
-<code>.cleanup_usn_text()</code></td>
+<td><code>post_fn</code> (uit banner, year picker and contact block,
+which keeps the unit); <code>.cleanup_usn_text()</code></td>
 <td><code>R/extract_fulltext.R</code></td>
 <td><code>course_plan</code> (and usn’s sections, cut from the
 text)</td>
