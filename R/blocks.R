@@ -77,7 +77,7 @@
 page_blocks <- function(html, text, cfg, course_id = NA_character_) {
   switch(cfg$reader,
     html   = .html_blocks(html, cfg),
-    json   = .json_blocks(html, course_id),
+    json   = .json_blocks(html, course_id, cfg$facts),
     text   = .text_blocks(text, cfg),
     .empty_blocks()
   )
@@ -339,8 +339,9 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
 
 # nla embeds the plan as JSON (EmneplanPage) in a script tag; the year's entry
 # is `props$items[[academic year]]`. Table items and accordions are a title
-# and a content (HTML in accordions).
-.json_blocks <- function(html, course_id) {
+# and a content (HTML in accordions). `facts` names the parts that are the
+# title and facts box ("title", "table").
+.json_blocks <- function(html, course_id, facts = character()) {
   if (is.na(html) || !nzchar(html)) return(.empty_blocks())
   academic_year <- .nla_academic_year_from_course_id(course_id)
   if (is.na(academic_year)) return(.empty_blocks())
@@ -355,7 +356,10 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
   if (is.null(year_data)) return(.empty_blocks())
 
   out <- .block_list()
+  part <- function(name, on) if (name %in% facts) out$facts(on)
+  part("title", TRUE)
   if (nzchar(year_data$title %||% "")) out$add("text", year_data$title, g = "p")
+  part("title", FALSE)
   # contents are HTML (accordions; links in the table)
   item <- function(title, content) {
     title <- title %||% ""
@@ -370,7 +374,9 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
   # Newer pages wrap the table items: table = {list: [...], cta, ctaText}.
   table <- year_data$table
   if (!is.null(table$list)) table <- table$list
+  part("table", TRUE)
   for (it in table %||% list()) item(it$title, it$content)
+  part("table", FALSE)
   for (it in year_data$accordions %||% list()) item(it$title, it$content)
   out$table()
 }
@@ -409,19 +415,16 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
   out <- .block_list()
   current <- NA_character_
 
-  # Skip a title + metadata block (uis PDFs: "Emnekode: ...", "Tilbys av:
-  # ..."), through the paragraph holding its last line; the untitled text
-  # after it is the course introduction.
-  if (!is.null(cfg$text_header)) {
-    hdr <- which(grepl(cfg$text_header, utils::head(lines, 40), perl = TRUE))
-    if (length(hdr)) {
-      end <- which(is_blank & seq_along(lines) > max(hdr))[1]
-      if (is.na(end)) end <- length(lines)
-      lines <- lines[-seq_len(end)]
-      is_blank <- is_blank[-seq_len(end)]
-      current <- "course_content"
-      out$add("heading", "", current)
-    }
+  # Skip the title and facts box (.text_header()); after a metadata block
+  # the untitled text is the course introduction.
+  hdr <- .text_header(lines, cfg)
+  if (hdr$n > 0) {
+    lines <- lines[-seq_len(hdr$n)]
+    is_blank <- is_blank[-seq_len(hdr$n)]
+  }
+  if (hdr$intro) {
+    current <- "course_content"
+    out$add("heading", "", current)
   }
   # Skip a table of contents (usn): from "Innholdsfortegnelse" to where its
   # first entry repeats as the real heading.
@@ -469,6 +472,41 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
     prev_blank <- FALSE
   }
   out$table()
+}
+
+# The title and facts box at the start of a page read as text: `n`, the
+# lines they take, and `intro`, whether the untitled text after them is the
+# course introduction. Either a title and metadata block (uis PDFs:
+# "Emnekode: ...", "Tilbys av: ..."; steiner) whose lines match
+# `section_text_header`, through the paragraph holding its last line, or the
+# lines before a table of contents (usn: title, code, credits, language,
+# unit).
+.text_header <- function(lines, cfg) {
+  head <- utils::head(lines, 40)
+  hdr <- if (is.null(cfg$text_header)) integer() else
+    which(grepl(cfg$text_header, head, perl = TRUE))
+  if (length(hdr)) {
+    end <- which(!nzchar(trimws(lines)) & seq_along(lines) > max(hdr))[1]
+    return(list(n = if (is.na(end)) length(lines) else end, intro = TRUE))
+  }
+  toc <- which(trimws(head) == "Innholdsfortegnelse")[1]
+  list(n = if (is.na(toc)) 0L else toc - 1L, intro = FALSE)
+}
+
+#' The plan text of pages read as text
+#'
+#' @param text Character vector of extracted_text.
+#' @param cfg Reader settings from .block_cfg().
+#' @return The text without the title and facts box at its start
+#'   (.text_header()); NA where it has none, or nothing after it.
+text_plan_text <- function(text, cfg) {
+  vapply(text, function(t) {
+    if (is.na(t)) return(NA_character_)
+    lines <- stringr::str_split_1(t, "\\r?\\n")
+    n <- .text_header(lines, cfg)$n
+    rest <- trimws(paste(lines[-seq_len(n)], collapse = "\n"))
+    if (n == 0 || !nzchar(rest)) NA_character_ else rest
+  }, character(1), USE.NAMES = FALSE)
 }
 
 # A plain-text line that could be a section heading: starts with a capital

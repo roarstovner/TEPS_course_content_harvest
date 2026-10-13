@@ -87,7 +87,8 @@ harvested_rows <- function(institutions = NULL,
 # extracted_text of every row: the page's blocks as text; rows without
 # blocks (PDF plans, usn's rendered text) as extract_fulltext_from_raw() gives
 # them. plan_text: the text without the title and facts box, where the
-# config names them (`facts`), else NA.
+# config names them (`facts`) or, in rows without blocks, the text opens with
+# them (text_plan_text()); else NA.
 institution_fulltext <- function(html_file, blocks, config) {
   df <- read_harvest(html_file, config)
   pages <- split(blocks[names(.empty_blocks())], blocks$course_id)
@@ -98,15 +99,16 @@ institution_fulltext <- function(html_file, blocks, config) {
   if (!is.null(config$facts)) {
     plan_text <- vapply(pages, page_fulltext, character(1), config = config,
                         facts = FALSE)[df$course_id]
-    plan_text[rest] <- text[rest]
   }
+  plan_text[rest] <- text_plan_text(text[rest], .block_cfg(config))
   tibble::tibble(course_id = df$course_id, institution = config$name,
                  extracted_text = unname(text), plan_text = unname(plan_text))
 }
 
 # Offerings with the anonymized course_plan and plan ids: list(plans, courses)
 # from deduplicate_plans(). The plan id is made from the plan text without
-# the title and facts box (`id_text`), where the config names them. Plans are
+# the title and facts box (`id_text`), where they are known
+# (institution_fulltext()). Plans are
 # keyed by institution, so this can run per institution.
 institution_plans <- function(html_file, fulltext, config) {
   df <- read_harvest(html_file, config) |>
@@ -147,9 +149,11 @@ institution_sections <- function(blocks, fulltext, config, plans) {
   cfg <- .block_cfg(config)
   pages <- split(blocks[blocks$course_id %in% src$source_course_id, names(.empty_blocks())],
                  blocks$course_id[blocks$course_id %in% src$source_course_id])
-  # the text fallback reads the plan text, without the title and facts box
-  text <- dplyr::coalesce(fulltext$plan_text, fulltext$extracted_text)[
-    match(src$source_course_id, fulltext$course_id)]
+  # the text fallback reads the plan text, without the title and facts box;
+  # pages read as text (no blocks) cut them in the reader (.text_header())
+  ft <- fulltext[match(src$source_course_id, fulltext$course_id), ]
+  text <- ifelse(src$source_course_id %in% names(pages),
+                 dplyr::coalesce(ft$plan_text, ft$extracted_text), ft$extracted_text)
   rows <- lapply(seq_len(nrow(src)), function(i) {
     out <- page_sections(pages[[src$source_course_id[i]]] %||% .empty_blocks(), text[i], cfg)
     dplyr::bind_cols(src[rep(i, nrow(out)), ], out)

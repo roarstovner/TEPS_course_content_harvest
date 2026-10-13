@@ -6,10 +6,13 @@
 # plan is read into sections (`section_*`; see R/blocks.R).
 #
 # facts: the elements that hold the title, course code and facts box (CSS, or
-#        XPath when it starts with "/"). Their text is in course_plan but in
-#        no section, not in the plan id (a campus or programme list that
-#        changes from year to year does not make a new plan) and not counted
-#        by the shell rule (course_plan_spec.md).
+#        XPath when it starts with "/"; in nla's JSON the parts "title" and
+#        "table"). Their text is in course_plan but in no section, not in the
+#        plan id (a campus or programme list that changes from year to year
+#        does not make a new plan) and not counted by the shell rule
+#        (course_plan_spec.md). In pages read as text (usn, steiner, uis
+#        PDFs) they are the lines before the plan (.text_header() in
+#        R/blocks.R).
 #
 # plan_years: "url"     the URL holds the year (and semester), so every DBH
 #                       year is harvested;
@@ -24,6 +27,11 @@ institution_configs <- list(
     code = "1175",
     strategy = "standard",
     selector = "#main-content",
+    # the portlet's name ("EPN-V2")
+    exclude = "#main-content h2.portlet-title-text",
+    # the title and the facts row (English name, credits, year, reading list,
+    # timetable, programmes)
+    facts = c("#main-content div.header", "#main-content section.section-top"),
     plan_years = "url",
     section_strategy = "html",
     # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
@@ -40,6 +48,10 @@ institution_configs <- list(
     code = "1171",
     strategy = "standard",
     selector = "#right-main",
+    # the breadcrumbs (they end with the title) and the facts' links
+    # ("Timeplan", "Pensumliste (Leganto)")
+    exclude = "nav#breadcrumbs, #vrtx-fs-emne-content div.connected-links",
+    facts = c("#vrtx-fs-emne-content div.page-intro", "#vrtx-fs-emne-facts"),
     plan_years = "url",
     section_strategy = "html",
     # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
@@ -62,6 +74,10 @@ institution_configs <- list(
                         "normalize-space() = 'Sted og rom']")
         paste0(label, " | ", label, "/following-sibling::span[1]")
       })),
+    # the page title, course code, name and facts (credits, level, start,
+    # language, place, assessment form)
+    facts = c("#content > h1", "#course-details > span.course-code",
+              "#course-details > h1.course-name", "#course-details > div.course-facts"),
     plan_years = "url",
     request_delay = 10,  # robots.txt: Crawl-delay: 10 for all user agents
     fetch_fn = fetch_html_cols_single_ntnu,
@@ -81,6 +97,12 @@ institution_configs <- list(
     code = c("0264", "1177"),
     strategy = "standard",
     selector = ".content-inner",
+    # the title, the semester picker ("Startsemestre") and the facts list
+    # (code, credits, semesters, language, place) but not its prerequisites
+    facts = c("section#main-content > header", "fieldset.semesters-top",
+              paste0("//ul[@id='facts']//li[div[contains(@class, 'facts-label')]]",
+                     "[not(div[contains(@class, 'facts-label')][normalize-space() = 'Forkunnskapskrav' or ",
+                     "normalize-space() = 'Required prerequisite knowledge'])]")),
     plan_years = "url",
     section_strategy = "html",
     # inn marks most section headings with <div class="label"> (and the facts
@@ -96,6 +118,9 @@ institution_configs <- list(
     selector = "article.content-emweb",
     # course coordinator and approver (names)
     exclude = "div.field-person-in-charge, div.field-approval-sign",
+    # the title and the one-line fields (code, duration, credits, level,
+    # semesters, language, student numbers), not the reading-list pointer
+    facts = c("div.node-cd > h2", "div.node-cd div.label-inline:not(.field-curriculum)"),
     plan_years = "url",
     # Drupal fields (div.field-<name> + div.label) name each part of the plan;
     # the exam table is the unlabelled field-assessments-row.
@@ -119,6 +144,7 @@ institution_configs <- list(
     code = "0256",
     strategy = "standard",
     selector = "#vrtx-fs-emne-content, main .entry-content, .entry-content",
+    facts = c("#vrtx-fs-emne-content > h1", "#vrtx-fs-emne-facts"),
     plan_years = "url",
     user_agent = "browser",
     section_strategy = "html",
@@ -175,7 +201,10 @@ institution_configs <- list(
     code = "8223",
     strategy = "json_extract",
     plan_years = "page",
-    section_strategy = "json"
+    section_strategy = "json",
+    # the title and the table (code, name, semester, place, year, language,
+    # credits)
+    facts = c("title", "table")
   ),
 
   nord = list(
@@ -311,6 +340,9 @@ institution_configs <- list(
     code = "1173",
     strategy = "standard",
     selector = ".layout",
+    # the title and the facts (credits, faculty, campus, language, frequency,
+    # workload, teaching period)
+    facts = c(".layout article header", ".layout section.grid-container"),
     plan_years = "current",
     section_strategy = "html",
     # sections are details accordions; the 2026-04 pages head them with
@@ -331,7 +363,12 @@ institution_configs <- list(
     code = "8225",
     strategy = "pdf_split",
     plan_years = "current",
-    section_strategy = "text"
+    section_strategy = "text",
+    # the PDF opens with the title and a metadata table (code and name,
+    # English name, programme, credits, semester, language)
+    section_text_header = paste0("^(?:Emnekode og (?:emne)?navn|Emnenavn|Engelsk emnenavn|",
+                                 "Studieprogrammet emnet inngår i|Studiepoeng|Semester|",
+                                 "Undervisningsspråk)\\s{2,}")
   )
 )
 

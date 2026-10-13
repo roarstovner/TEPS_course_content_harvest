@@ -115,7 +115,4 @@ without the title and facts box.
 The data built on 2026-10-13 do not yet follow the spec here:
 
 - UiB's responsible unit, an unlabelled link in the page's sidebar, is not in
-  `course_plan`.
-- The title and facts box are left out of the plan id and the shell rule only
-  where the configuration names them (HVL, MF, NIH, Nord, UiB, UiO, UiS,
-  UiT); at the other institutions they are part of both.
+  `course_plan`. DBH's `Avdelingsnavn` gives every UiB offering its unit.

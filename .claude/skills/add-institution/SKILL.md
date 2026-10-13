@@ -37,6 +37,8 @@ newuni = list(
   selector = ".main-content",     # the element that holds the course plan (first match)
   exclude = ".contact-box",       # optional: parts of it that are not the plan
   facts = c("h1", ".facts"),      # the title and facts box: in the text, not in a section or the plan id
+                                  # (a site read as text, section_strategy = "text": section_text_header
+                                  # matches the metadata lines instead; see README "Blocks and Sections")
   plan_years = "url",             # "current" if the site shows only the plan in force; "page" if one page holds all years
   section_strategy = "html",      # read the page as html; see README "Blocks and Sections"
   section_heading_selector = "h2" # the section headings (default h2)

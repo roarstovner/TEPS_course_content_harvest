@@ -749,3 +749,18 @@ test_that("facts: the title and facts box are in the text, not in a section or t
   # a heading inside the facts box opens no section
   expect_equal(sections_of(html, cfg), c(course_content = "Grupper og ringer."))
 })
+
+test_that("the text fallback stands only with a section that no heading on the page names", {
+  # ntnu's terse plans: the html reader saw "Om emnet" and "Eksamen"; under
+  # "Om emnet" there are only admission and subject areas
+  html <- "<main><h2>Om emnet</h2><h3>Spesielle vilkår</h3><div>Krever opptak.</div>
+    <h2>Eksamen</h2><div>Avhandling</div></main>"
+  cfg <- html_cfg(heading = "h2, h3")
+  text <- "Om emnet\nSpesielle vilkår\nKrever opptak.\n\nEksamen\nAvhandling"
+  out <- page_sections(page_blocks(html, NA, cfg), text, cfg)
+  expect_equal(out$section, "assessment")
+  # a heading the html reader missed: the fallback's sections
+  html <- "<main><p>Innhold</p><p>Tall.</p><p>Vurdering</p><p>Eksamen.</p></main>"
+  out <- page_sections(page_blocks(html, NA, cfg), "Innhold\nTall.\n\nVurdering\nEksamen.", cfg)
+  expect_equal(out$section, c("course_content", "assessment"))
+})

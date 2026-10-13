@@ -93,7 +93,10 @@ sectionize <- function(blocks) {
 #' sectionize() on the page's blocks (for the text reader, the lines of
 #' extracted_text). When the html reader finds fewer than 3
 #' sections, the lines of extracted_text are tried instead, and kept if they
-#' give more. A section that only points to another block on the page
+#' give more and one that no heading on the page names: the fallback is for
+#' headings the html reader missed, and where it saw them its sections stand
+#' (ntnu's terse plans, whose admission and unit lines the text would read as
+#' course content). A section that only points to another block on the page
 #' is filled from it (`section_pointer`), nord-style coursework lines move out
 #' of assessment (`section_inline_coursework`), a prerequisites label in course
 #' content takes what it names to prerequisites, and .clean_sections() tidies
@@ -108,7 +111,8 @@ page_sections <- function(blocks, text, cfg) {
   out <- sectionize(blocks)
   if (identical(cfg$reader, "html") && nrow(out) < 3) {
     fallback <- sectionize(.text_blocks(text, cfg))
-    if (nrow(fallback) > nrow(out)) out <- fallback
+    named <- blocks$section[blocks$role %in% c("heading", "sub")]
+    if (nrow(fallback) > nrow(out) && !all(fallback$section %in% c(named, ".drop"))) out <- fallback
   }
   if (isTRUE(cfg$exam_sessions)) {
     a <- out$section == "assessment"

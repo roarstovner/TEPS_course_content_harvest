@@ -144,8 +144,8 @@ shell <- full |> filter(has_extracted_text, is.na(plan_content_id))
 ```
 
 **Page shells are not plans:** a page with no plan section to read and under
-1,500 characters of plan text (without the title and facts box where the
-configuration names them, since 2026-10-13; only the facts box, a credit-overlap box, "Emnebeskrivelse",
+1,500 characters of plan text (without the title and facts box, since
+2026-10-13; only the facts box, a credit-overlap box, "Emnebeskrivelse",
 a pointer to the English page, every section "Se fagplanen.", a list of
 headings with no text under them) gives its offering no plan. So does an
 INN page that says the requested semester's plan is not published yet and
@@ -378,8 +378,44 @@ HVL, NIH, UiB, UiO and UiT gain their title and facts with the same id; Nord's
 id; MF's 26 and 180 UiS plans get a new id as their facts box leaves it, and
 HiOF's 820 and UiA's 681 as the unit does. No plans merge or split
 (13,994), and no section changes. UiB's unit, an unlabelled link in the
-sidebar, is not read. At the other institutions the title and facts box are
-still part of the plan id. *Since:* 2026-10-13.
+sidebar, is not read; DBH's `Avdelingsnavn` gives every UiB offering its
+unit. The other institutions followed the same day (next entry).
+*Since:* 2026-10-13.
+
+**The title and facts box leave the plan id at every institution.** The
+configuration names them at HiOF, INN, NMBU, NTNU, OsloMet, UiA and Volda
+(Volda's one-line fields, its student numbers at the foot of the page
+included) and in NLA's JSON (the title and the table of code, semester,
+place, year, language and credits). In pages read as text they are the lines
+before the plan: USN's lines before the table of contents, the metadata
+block of UiS's PDF plans (which the section reader already skipped) and
+that of Steiner's PDF plans. As before they stay in `course_plan` and are in no section. UiA's
+breadcrumbs, which repeated the title, and its facts box's links
+("Timeplan", "Pensumliste (Leganto)") and OsloMet's portlet name ("EPN-V2")
+leave `course_plan`, as page chrome. The sections' text fallback, tried
+when the html reader finds fewer than three sections, now stands only if it
+finds a section that no heading on the page names. Without the title in
+front, it read the "Om emnet" tab of five terse NTNU plans as course content
+(their admission, subject areas and unit), and it had read a credit-overlap
+note as course content at three UiT pages. *Why:* the user's aim
+(2026-10-13) is that plans with the same text group together across
+years, whatever their ids; a title, level, campus or credits line that
+changes alone should not make a new plan. *Rejected:* keeping the facts box
+in the id where a field such as credits or language changes; of the 158
+plans the facts box split at the first eight institutions, none changed
+credits. *Consequence:* 130 plans merge into others and none split
+(13,994 to 13,861 with the three UiT shells): UiA 62 (a "Varighet: ½ år"
+line shown from 2024), NTNU 41 (level, language, place), UiS 11 (PDF
+headers), Volda 7 (level, student numbers), OsloMet 7 (programme names,
+link labels), INN 1 (a renamed title) and USN 1. None changed credits; two
+changed the language of instruction (NTNU POL3006 from "Engelsk og norsk" to
+"Norsk", TEGN1001 adds English). 12,128 offerings get a new
+plan id. 25 more plan ids are now shared by two course codes with the same
+text (OsloMet 20, NLA 4, NTNU 1; HVL 20 and UiT 83 before); plans are keyed by
+id, institution and course code. Sections change only at USN, where the
+header (code, credits, language) had opened 10 learning outcomes sections,
+and at the three UiT pages, which become shells (4 offerings).
+*Since:* 2026-10-13.
 
 **MF and UiS: the title and the facts box are plan text.** `course_plan`
 keeps MF's title and course code and its facts box ("Emneinfo": code,

@@ -40,6 +40,7 @@ plans = Array.from(await db.query("SELECT * FROM plans"), r => ({
 offerings = Array.from(await db.query("SELECT * FROM offerings"), r => ({
   plan_content_id: r.plan_content_id,
   institution: r.institution,
+  Emnekode: r.Emnekode,
   Emnekode_raw: r.Emnekode_raw,
   Emnenavn: r.Emnenavn,
   year: Number(r.year),
@@ -98,7 +99,8 @@ viewof picked = Inputs.table(hits, {
 
 ::: {.g-col-12 .g-col-lg-6}
 ```{ojs}
-usedBy = picked ? offerings.filter(o => o.plan_content_id === picked.plan_content_id) : []
+usedBy = picked ? offerings.filter(o => o.plan_content_id === picked.plan_content_id &&
+  o.institution === picked.institution && o.Emnekode === picked.Emnekode) : []
 
 picked
   ? html`

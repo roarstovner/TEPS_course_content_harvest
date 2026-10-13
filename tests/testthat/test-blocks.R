@@ -78,6 +78,31 @@ test_that("the text reader marks heading-shaped lines that switch section", {
   expect_equal(b$text[-1], c("Intro.", "Læringsutbytte", "Kunnskap", "Kunnskap", "Kan ting."))
 })
 
+test_that("text pages: the title and facts box before the plan are in no section or plan text", {
+  usn <- "Emneplan for Norsk 1\n\nEmnekode:\n\nNO1\n\nInnholdsfortegnelse\n\nLæringsutbytte\n\nLæringsutbytte\n\nKan ting."
+  cfg <- list(reader = "text")
+  expect_equal(.text_header(stringr::str_split_1(usn, "\n"), cfg), list(n = 6L, intro = FALSE))
+  expect_equal(text_plan_text(c(usn, "Læringsutbytte\n\nKan ting.", NA), cfg),
+               c("Innholdsfortegnelse\n\nLæringsutbytte\n\nLæringsutbytte\n\nKan ting.", NA, NA))
+  expect_equal(sectionize(page_blocks(NA, usn, cfg))$raw_text, "Kan ting.")
+  # a metadata block: through its paragraph; the untitled text after it is the introduction
+  pdf <- "Norsk 1\nStudiepoeng   10\nSemester   Vår\n\nIntro.\n\nLæringsutbytte\nKan ting."
+  cfg <- list(reader = "text", text_header = "^(?:Studiepoeng|Semester)\\s{2,}")
+  expect_equal(text_plan_text(pdf, cfg), "Intro.\n\nLæringsutbytte\nKan ting.")
+  expect_equal(sectionize(page_blocks(NA, pdf, cfg))$section, c("course_content", "learning_outcomes"))
+})
+
+test_that("the json reader marks the parts named in `facts`", {
+  json <- paste0('{"page": "EmneplanPage", "props": {"items": {"2024-2025": {"title": "Norsk 1",',
+                 ' "table": [{"title": "Emnekode:", "content": "NO1"}],',
+                 ' "accordions": [{"title": "Innhold", "content": "<p>Tekst.</p>"}]}}}}')
+  html <- paste0("<html><body><script>", json, "</script></body></html>")
+  b <- page_blocks(html, NA, list(reader = "json", facts = c("title", "table")), "nla_NO1_2024_autumn_1")
+  expect_equal(b$facts, c(TRUE, TRUE, TRUE, FALSE, FALSE))
+  expect_equal(sectionize(b)$raw_text, "Tekst.")
+  expect_false(any(page_blocks(html, NA, list(reader = "json"), "nla_NO1_2024_autumn_1")$facts))
+})
+
 test_that("fields are headings in scopes of their own; later labels are kept", {
   html <- "<article><h1>X1 Tittel</h1><div class='field-course-content'><div class='label'>Innhald</div>Tekst</div>
     <div class='field-learning-outcome-knowledge'><div class='label'>Kunnskapar</div>Kan</div>

@@ -33,12 +33,14 @@ offerings <- readRDS(file.path(data_in, "course_offerings.RDS"))
 plans     <- readRDS(file.path(data_in, "course_plans.RDS"))
 
 # --- Per-plan enrichment from offerings --------------------------------------
-# A plan_content_id maps to many offerings (same plan reused across years and
+# A plan maps to many offerings (same plan reused across years and
 # semesters). Pull a representative course name and an offering count; the plans
-# table itself has no human-readable Emnenavn.
+# table itself has no human-readable Emnenavn. Plans are keyed by
+# (plan_content_id, institution, Emnekode): course codes with the same text
+# share a plan_content_id.
 plan_meta <- offerings |>
   filter(!is.na(plan_content_id)) |>
-  group_by(plan_content_id) |>
+  group_by(plan_content_id, institution, Emnekode) |>
   summarise(
     Emnenavn = {
       nm <- Emnenavn[!is.na(Emnenavn)]
@@ -52,7 +54,7 @@ plan_meta <- offerings |>
 # Integer year/count columns keep Parquet as INT32 -> JS number (avoids BigInt).
 # course_plan_normalized is dropped; only the anonymized course_plan is shipped.
 plans_out <- plans |>
-  left_join(plan_meta, by = "plan_content_id") |>
+  left_join(plan_meta, by = c("plan_content_id", "institution", "Emnekode")) |>
   transmute(
     plan_content_id   = as.character(plan_content_id),
     institution       = as.character(institution),
@@ -70,6 +72,7 @@ offerings_out <- offerings |>
   transmute(
     plan_content_id   = as.character(plan_content_id),
     institution       = as.character(institution),
+    Emnekode          = as.character(Emnekode),
     Emnekode_raw      = as.character(Emnekode_raw),
     Emnenavn          = as.character(Emnenavn),
     year              = as.integer(Årstall),
