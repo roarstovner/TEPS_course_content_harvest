@@ -375,6 +375,14 @@ resolve_urls_usn_batch <- function(df, max_version = 3, checkpoint_path = NULL, 
             displayed_sem <- tolower(match[2])
 
             if (displayed_year == year && displayed_sem == expected_sem_norm) {
+              # The notice that the semester's plan is not ready stays from the
+              # page shown before when that page showed this same plan (a
+              # semester without one); a reload clears it
+              if (grepl("ikke klar ennå", html_content, fixed = TRUE)) {
+                session$session$Page$reload()
+                Sys.sleep(5)
+                html_content <- read_usn_live_html(session) %||% html_content
+              }
               result_url <- full_url
               result_html <- html_content
               break

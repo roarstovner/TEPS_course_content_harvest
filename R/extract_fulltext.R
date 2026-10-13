@@ -186,6 +186,12 @@ extract_fulltext_pdf <- function(pdf_raw) {
 .cleanup_usn_text <- function(raw_html) {
   raw_html |>
     stringr::str_remove_all("keyboard_backspace") |>
+    # Banner left from the page shown before: the resolver keeps only pages
+    # whose "Undervisningsstart" is the requested semester, and these show
+    # that semester's plan without the banner when loaded again (6 pages)
+    stringr::str_remove(paste0("MERK:\\s*Emneplanen for dette semesteret er ikke klar ennå\\.\\s*",
+                               "For at du skal få et inntrykk av hva emnet inneholder, viser vi ",
+                               "derfor emneplanen fra et tidligere semester\\.\\s*")) |>
     stringr::str_replace_all("(?m)^[ \\t]+|[ \\t]+$", "") |>
     stringr::str_replace_all("\\n{3,}", "\n\n") |>
     stringr::str_trim()

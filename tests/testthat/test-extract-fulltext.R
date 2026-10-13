@@ -51,6 +51,12 @@ test_that("noop gives NA, pdf_split keeps the harvested text, usn is cleaned", {
   expect_equal(extract_fulltext_from_raw(df, list(strategy = "noop")), NA_character_)
   expect_equal(extract_fulltext_from_raw(df, list(strategy = "pdf_split")), "harvested")
   expect_equal(extract_fulltext_from_raw(df, list(strategy = "shadow_dom")), "line\n\nnext")
+  # usn: a banner left from the page shown before
+  df$html <- paste0("Emneplan for Norsk 1\n\n  MERK:\n  Emneplanen for dette semesteret er ikke klar ennå.\n\n",
+                    "For at du skal få et inntrykk av hva emnet inneholder, viser vi derfor ",
+                    "emneplanen fra et tidligere semester.\n\nEmnekode:")
+  expect_equal(extract_fulltext_from_raw(df, list(strategy = "shadow_dom")),
+               "Emneplan for Norsk 1\n\nEmnekode:")
 })
 
 test_that("uit: the year picker and the contacts go, the responsible unit stays", {

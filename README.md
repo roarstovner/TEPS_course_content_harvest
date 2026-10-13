@@ -1024,8 +1024,12 @@ session$session$close()
 ```
 
 The batch resolver reuses one Chrome session and navigates by changing
-`window.location.hash`, which avoids a 2-3 s browser start per URL. HTML
-is captured during resolution, so USN has no separate fetch step.
+`window.location.hash`, which avoids a 2-3 s browser start per URL. A
+semester without a plan of its own shows another semester’s plan under
+the banner “Emneplanen for dette semesteret er ikke klar ennå”. When the
+next candidate shows the same plan, the banner stays until the page is
+reloaded, so a page with the requested year and the banner is reloaded.
+HTML is captured during resolution, so USN has no separate fetch step.
 
 **UiT.** Historical plans need a document id:
 `https://uit.no/utdanning/emner/emne?p_document_id={ID}`. The active
