@@ -1,7 +1,7 @@
 # Data Quality Notes
 
 
-Generated: 2026-10-12
+Generated: 2026-10-13
 
 ## Overview
 
@@ -48,10 +48,10 @@ Sites that show only the plan in force (`plan_years = "current"` in
 `R/institution_config.R`) give, at each harvest, the plan of that
 academic year only. Each harvest is kept, and an offering gets the plan
 from a harvest made in its own academic year, or none (README “Sites
-that show only the current plan”; \#293). In this data the harvests are
-of 2026-04-04 (2025/26: autumn 2025 offerings) and 2026-09-30 (2026/27:
-no DBH offerings yet), so spring 2025 offerings (2024/25) have no plan
-at these sites. They are mf, nmbu, samas, steiner, uio. The others have
+that show only the current plan”). In this data the harvests are of
+2026-04-04 (2025/26: autumn 2025 offerings) and 2026-09-30 (2026/27: no
+DBH offerings yet), so spring 2025 offerings (2024/25) have no plan at
+these sites. They are mf, nmbu, samas, steiner, uio. The others have
 historical plans as far back as the site still serves them. Share of
 offerings with a plan, by period:
 
@@ -154,19 +154,19 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 To list the gaps between plans:
 `readRDS("data/interim/plan_gaps.RDS") |> dplyr::filter(between_plans)`.
 
-Checked 2026-10-07 and 2026-10-08 (#297), all 208 gaps between plans:
-one was a wrong URL, UiT’s ENG-2980 spring 2017 (an English twin, see
-UiT; \#313), so 207 remain. The 404s at HiOF (11 of 12 URLs; the twelfth
-is now an empty page), HVL (5 of 5, soft 404) and NIH (4 of 4) are still
-404. No URL means the site has no page for that year: UiT’s semester
-picker has no option for it (all 49; UiT’s other 3 are pages without a
-plan), USN shows another year’s plan for every version number (all 30,
-both semesters), and Hivolda’s course page lists no version for it (all
-10, mostly 2024). NTNU’s 3 (2010) still say “Det finnes ingen
-informasjon for dette studieåret”; INN’s 7 show a later plan version
-(#302). UiA’s 91 are its autumn-2023 page shells (see UiA), and REL410
-2024 is registered in spring while UiA publishes it under autumn (the
-only such case among UiA’s 74 course-years since 2020 that are 404).
+Checked 2026-10-07 and 2026-10-08, all 208 gaps between plans: one was a
+wrong URL, UiT’s ENG-2980 spring 2017 (an English twin, see UiT), so 207
+remain. The 404s at HiOF (11 of 12 URLs; the twelfth is now an empty
+page), HVL (5 of 5, soft 404) and NIH (4 of 4) are still 404. No URL
+means the site has no page for that year: UiT’s semester picker has no
+option for it (all 49; UiT’s other 3 are pages without a plan), USN
+shows another year’s plan for every version number (all 30, both
+semesters), and Hivolda’s course page lists no version for it (all 10,
+mostly 2024). NTNU’s 3 (2010) still say “Det finnes ingen informasjon
+for dette studieåret”; INN’s 7 show a later plan version. UiA’s 91 are
+its autumn-2023 page shells (see UiA), and REL410 2024 is registered in
+spring while UiA publishes it under autumn (the only such case among
+UiA’s 74 course-years since 2020 that are 404).
 
 ## Interpreting the dedup ratio
 
@@ -180,8 +180,7 @@ each row is truly distinct (NIH, Steiner, UiO).
 
 ## Per-Institution Notes
 
-Figures are in the tables above; the notes say why. Issue numbers refer
-to chainlink.
+Figures are in the tables above; the notes say why.
 
 ------------------------------------------------------------------------
 
@@ -191,7 +190,7 @@ to chainlink.
   `add_course_url_hiof()` switches by date, and the selector lists
   fallbacks for both page layouts
 - Needs a browser-like user agent (`user_agent = "browser"`) to avoid
-  403s (#27)
+  403s
 - Most rows without a plan are the other semester of a course registered
   in both (see “Semester registration in DBH”)
 - Reading lists are part of the plan text; `.anon_hiof()` removes only
@@ -204,7 +203,7 @@ to chainlink.
 - Semester-specific pages have numeric ids
   (e.g. `/emne/MGL5-10NO2B/12177`) that metadata cannot give;
   `resolve_urls_hivolda_batch()` reads them from the course’s base page,
-  matching “Haust” to “Høst” (#63, \#79-#83)
+  matching “Haust” to “Høst”
 - Rows without a plan are mostly semesters in which the course was not
   taught
 
@@ -214,56 +213,55 @@ to chainlink.
 
 - Year in the URL. Soft-404 “course not found” pages are detected at
   fetch time (`fetch_html_cols_single_hvl()`) and stored as no HTML
-  (#66)
 
 ------------------------------------------------------------------------
 
 ### INN (Inland Norway University of Applied Sciences)
 
 - No plans before 2022: INN’s site starts in 2022, so the URL builder
-  returns NA for earlier years (#26)
+  returns NA for earlier years
 - Some pages are the course search page (“Emnesøket gjelder kun fra …”)
-  instead of a plan; the anonymizer turns them into NA (#53)
-- Some courses are published in both Norwegian and English (#52)
+  instead of a plan; the anonymizer turns them into NA
+- Some courses are published in both Norwegian and English
 - A page whose semester’s plan is not published yet says
   “Emnebeskrivelsen for valgt semester er ikke publisert enda. Her er
   den siste versjonen vi har tilgjengelig.” and shows a later version
   (“Undervisningssemestre” 2026 or later). It is not that offering’s
-  plan, so the offering gets no plan (#302; \#123): 1,077 offerings, 384
-  of the 407 pages from 2022 and about half of 2023-2025. The April 2026
-  harvest shows the same notice on the same pages
+  plan, so the offering gets no plan: 1,077 offerings, 384 of the 407
+  pages from 2022 and about half of 2023-2025. The April 2026 harvest
+  shows the same notice on the same pages
 
 ------------------------------------------------------------------------
 
 ### MF (MF Norwegian School of Theology)
 
 - Only the plan in force is published (`plan_years = "current"`; see
-  “Year coverage”). Selector `main` (#25)
+  “Year coverage”). Selector `main`
 - `.anon_mf()` cuts from “Emneansvarlig” to the end (names, contact
   details, marketing)
 - The reading list is on a separate page; the plan holds only a link and
   a library notice, which `.anon_mf()` removes, so MF plans have no
-  `reading_list` section (#306)
+  `reading_list` section
 
 ------------------------------------------------------------------------
 
 ### NIH (Norwegian School of Sport Sciences)
 
 - Short year range. Most 404s are the other semester of a course
-  registered in both (see “Semester registration in DBH”; \#220)
+  registered in both (see “Semester registration in DBH”)
 
 ------------------------------------------------------------------------
 
 ### NLA (NLA University College)
 
-- All DBH years (`plan_years = "page"`, \#292): each course page embeds
-  the plans of several academic years as JSON, for most courses only
-  recent ones; the json block reader (`R/blocks.R`) takes the year of
-  the row (spring 2025 → 2024-2025, autumn 2025 → 2025-2026). A row with
-  a page but no plan is an academic year missing from that JSON
+- All DBH years (`plan_years = "page"`): each course page embeds the
+  plans of several academic years as JSON, for most courses only recent
+  ones; the json block reader (`R/blocks.R`) takes the year of the row
+  (spring 2025 → 2024-2025, autumn 2025 → 2025-2026). A row with a page
+  but no plan is an academic year missing from that JSON
 - The `/studietilbud/emner/` URLs are rendered in the browser, so the
   harvest uses
-  `/for-studenter/Studie-%20og%20emneplaner/emneplan/{CODE}` (#55)
+  `/for-studenter/Studie-%20og%20emneplaner/emneplan/{CODE}`
 
 ------------------------------------------------------------------------
 
@@ -279,7 +277,7 @@ to chainlink.
 
 - Year and semester in the URL, with Norwegian characters
   (`HØST`/`VÅR`); ASCII `HOEST` falls back to a generic page without
-  year-specific content (#126, \#129)
+  year-specific content
 - Accordion pages, read with a multi-element selector
 
 ------------------------------------------------------------------------
@@ -290,27 +288,26 @@ to chainlink.
   raise `ntnu_no_info_error`; robots.txt asks for a 10-second crawl
   delay
 - The exam tab (assessment form, grading scale, exam sessions) is not
-  read: it is the semester’s exam registration, and exam data are coded
-  in TEPS_course_content_coding (#321). `.anon_ntnu()` removes the
-  contact block (course coordinator, teachers) and the timetable; the
-  responsible unit stays, and the dedup hash ignores it (#307)
+  read for now; by `course_plan_spec.md` it belongs in `course_plan`
+  and, without the sessions’ logistics, in assessment. `.anon_ntnu()`
+  removes the contact block (course coordinator, teachers) and the
+  timetable; the responsible unit stays, and the dedup hash ignores it
 
 ------------------------------------------------------------------------
 
 ### OsloMet (Oslo Metropolitan University)
 
 - The URL always uses `HØST`: spring URLs return 404 and the plan is the
-  same (#1). Pattern:
+  same. Pattern:
   `https://student.oslomet.no/studier/-/studieinfo/emne/{CODE}/{YEAR}/HØST`
-- Re-harvested 2026-02-14 after the site moved to server-side rendering
-  (#57, \#61). Error pages (“Siden du leter etter finnes ikke”) become
-  NA in the anonymizer
+- Re-harvested 2026-02-14 after the site moved to server-side rendering.
+  Error pages (“Siden du leter etter finnes ikke”) become NA in the
+  anonymizer
 - **Practicum courses have no sections** (M1GP\*/M5GP\*, 135 offerings):
   every section of the course plan only says “Se fagplanen.” The page’s
   “Fagplan” block is the programme-wide practicum plan for all study
   years, with no markup separating the years, so it is not read into the
-  course’s sections. Their `course_plan` keeps the full page text (see
-  \#242)
+  course’s sections. Their `course_plan` keeps the full page text
 
 ------------------------------------------------------------------------
 
@@ -319,7 +316,7 @@ to chainlink.
 - `noop` strategy, no plans: the website’s course codes (SÁM-1005,
   DUO-1014, …) do not correspond to DBH codes (V1SAM-1100-1, …), and the
   V1/V5 teacher education courses appear only in programme PDFs without
-  per-course descriptions (#69-#72, \#85, \#89, \#90)
+  per-course descriptions
 
 ------------------------------------------------------------------------
 
@@ -327,12 +324,12 @@ to chainlink.
 
 - Only the plan in force is published (`plan_years = "current"`; see
   “Year coverage”). Plans come from five subject PDFs at
-  `steinerhoyskolen.no`, split by course heading (#68, \#73); the PDFs
-  are not stored, so the split text is the raw data
+  `steinerhoyskolen.no`, split by course heading; the PDFs are not
+  stored, so the split text is the raw data
 - The practicum modules (M-LP1/2/3) have no PDF content
 - M-PEL2.1/M-PEL2.2 get the PDF’s PEL1.4/PEL1.5 plans
   (`.steiner_remap_pel_emne()`); to be confirmed against the programme
-  description (#225)
+  description
 
 ------------------------------------------------------------------------
 
@@ -341,7 +338,7 @@ to chainlink.
 - The site has plans from 2020 on; earlier years return 404
 - DBH registers most courses in both semesters, but UiA publishes one
   page, so most 404s are the other semester (see “Semester registration
-  in DBH”; \#220)
+  in DBH”)
 - Autumn 2023: 95 pages are shells (title and facts box, no plan), so 91
   course-years have no plan between two that do. They are courses UiA
   now teaches in spring (94 pages say “Undervisningssemester: Vår”).
@@ -349,7 +346,7 @@ to chainlink.
   by the page’s “Sist hentet fra FS”) is a shell, the English pages too;
   the full pages seen at 13:40 on 2026-10-07 were old copies, last
   fetched from FS in July 2024. The site no longer has these plans, so
-  the offerings stay without one (#300)
+  the offerings stay without one
 - URL pattern:
   `https://www.uia.no/studier/emner/{year}/{semester}/{course_code}.html`
 
@@ -359,13 +356,12 @@ to chainlink.
 
 - Year in the URL; accordion pages read with a multi-element selector;
   robots.txt asks for a 10-second crawl delay
-- The page’s semester picker is dropped when the HTML is parsed (#219)
+- The page’s semester picker is dropped when the HTML is parsed
 - About 280 pages say “Vi opplever problemer med å hente inn
   eksamensinformasjon”: UiB’s exam information service fails for these
   courses, in every year. Fetching the 294 affected pages again on
   2026-10-02 fixed 7, so it is not a harvest error. The banner is
   removed from the sections, and these courses have no assessment text
-  (#219)
 
 ------------------------------------------------------------------------
 
@@ -373,41 +369,40 @@ to chainlink.
 
 - Only the plan in force is published (`plan_years = "current"`; see
   “Year coverage”). Semester URLs (`/h24/`, `/v25/`) hold logistics
-  (teachers, timetable, exam dates), not the plan (#76)
+  (teachers, timetable, exam dates), not the plan
 - Needs faculty/department slugs derived from `Avdelingsnavn` (mapping
   in `add_course_url_uio()`). Pattern:
   `https://www.uio.no/studier/emner/{faculty}/{inst}/{CODE}/`
-- `.anon_uio()` cuts the generic “Mer om eksamen ved UiO” tail (#224)
+- `.anon_uio()` cuts the generic “Mer om eksamen ved UiO” tail
 
 ------------------------------------------------------------------------
 
 ### UiS (University of Stavanger)
 
 - Current plans come from the course web page, older ones from the PDF
-  archive linked in its semester dropdown (`html_pdf_discovery`, \#127);
-  the PDFs are not stored, so their text is the raw data
+  archive linked in its semester dropdown (`html_pdf_discovery`); the
+  PDFs are not stored, so their text is the raw data
 - Web pages are read from the blocks of `.article__section`, without
-  navigation, facts box and contact footer (#251)
+  navigation, facts box and contact footer
 
 ------------------------------------------------------------------------
 
 ### UiT (The Arctic University of Norway)
 
 - **Historical plans** via document ids from the course page’s semester
-  picker (see \#113)
-- The plan is read from `.mainContent` (since \#218; the old
+  picker
+- The plan is read from `.mainContent` (since 2026-10; the old
   `.hovedfelt > main > div.col-md-12` matched nothing after a site
   change, so the 2026-10 harvest first had no text)
 - `.pre_uit()` removes the “OBS! Dette emnet tilhører et tidligere
   semester / år” banner and cuts from “Andre år og semester” / “Kontakt
   oss” (staff names and e-mails) to the end
 - Some pages say “Error rendering component” where the plan should be:
-  the plan failed to render on UiT’s site (see \#64), and these rows
-  have no text
+  the plan failed to render on UiT’s site, and these rows have no text
 - The semester picker can list a semester twice: an English document
   (“Course code:”, in all 5 cases an empty page) beside the Norwegian
-  one. The Norwegian one is used (#313); the first option was used
-  before 2026-10-08, and a retry harvest
+  one. The Norwegian one is used; the first option was used before
+  2026-10-08, and a retry harvest
   (`harvest_all(institutions = "uit", retry = TRUE)`) gave these 5
   offerings their plan
 
@@ -416,7 +411,7 @@ to chainlink.
 ### USN (University of South-Eastern Norway)
 
 - Most rows without a plan are the other semester of a course registered
-  in both (see “Semester registration in DBH”; \#221)
+  in both (see “Semester registration in DBH”)
 - The URL holds a plan version (1-3 are tried; all URLs found are 1
   or 2) that metadata cannot give:
   `https://www.usn.no/studier/studie-og-emneplaner/#/emne/{CODE}_{VERSION}_{YEAR}_{SEMESTER}`.

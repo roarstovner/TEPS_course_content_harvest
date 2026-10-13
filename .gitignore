@@ -23,6 +23,7 @@ __pycache__/
 
 # Claude Code local settings
 .claude/settings.local.json
+CLAUDE.local.md
 
 meetings/
 writing/

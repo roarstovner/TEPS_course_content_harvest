@@ -3,6 +3,8 @@
 Agent-only guidance for Claude Code in this repository. Documentation for
 people lives in the files below; do not copy it here. When something needs
 documenting, write it there and, if agents need to find it, add a pointer here.
+This file is public: guidance for one machine or one person's workflow goes in
+the gitignored `CLAUDE.local.md`.
 
 ## Where things are documented
 
@@ -25,25 +27,6 @@ documenting, write it there and, if agents need to find it, add a pointer here.
 - `R/institution_config.R`: per-institution configuration (single source of
   truth). Function contracts are in the roxygen comments in `R/*.R`.
 - Skills: `/add-institution`, `/audit-institutions`.
-- `CHANGELOG.md` is written by chainlink when an issue is closed.
-
-## Chainlink
-
-`cl` is an alias for `chainlink`. No SessionStart hook is installed
-(`.claude/hooks/` is empty), so the session steps below are manual.
-
-- At the start: `chainlink session start`, then
-  `chainlink session last-handoff` to see where the previous session stopped.
-- Per issue: `chainlink session work <id>`; when done, comment the commit hash
-  and before → after numbers, then close it.
-- Before ending a long session (an overnight or autonomous run, a long
-  conversation, or when the user signs off): run
-  `chainlink session end --notes "..."` with what was done (issues, commits),
-  what is in progress or blocked, decisions the user must make, unpushed
-  commits and their branch, and the next step. A final chat message is not a
-  handoff: it can be cut off and is not stored with the issues.
-- Run chainlink from the repository root: closing an issue writes
-  `CHANGELOG.md` in the current directory. Commit it.
 
 ## Rules
 
@@ -63,7 +46,7 @@ documenting, write it there and, if agents need to find it, add a pointer here.
   Only anonymized text goes in `data/processed/` (checked by target
   `privacy_check` and `test-anonymize.R`). See README "Data Files: Published
   and Internal".
-- `data/raw/` is the raw harvest and append-only (#296): only `harvest_all()`
+- `data/raw/` is the raw harvest and append-only: only `harvest_all()`
   writes it, and never the same file twice (README "Raw Store and Finalized
   Releases"). Do not overwrite, merge into or `chmod` raw files by hand. To
   change extracted text, change the config or `R/extract_fulltext.R` and run
@@ -73,15 +56,18 @@ documenting, write it there and, if agents need to find it, add a pointer here.
   derived data with `targets::tar_make()` and read `tar_read(metrics_check)`
   (README "Rebuilding Derived Data"). Explain every flagged
   change; update the snapshot (`check_pipeline_metrics(update = TRUE)`) only
-  for intended ones, in the same commit, and say so in the issue comment.
+  for intended ones, in the same commit, and say so in the commit message.
 - A decision that changes what the data mean (frame, years, exclusions,
   anonymization, section rules) gets an entry in `methods.qmd` in the same
-  commit: choice, reason, rejected alternatives, consequence, date and issue.
+  commit: choice, reason, rejected alternatives, consequence and date.
 - Every rule that keeps or removes text must fit `course_plan_spec.md`.
   `exclude`, `post_fn` and `anonymize_text()` also cut `course_plan`, so they
   may remove only personal data and boilerplate; plan text that should stay
   out of the sections goes on the section side (`.drop`, `.clean_sections()`).
   A change to the spec gets a `methods.qmd` entry; a fix of one of its known
   deviations removes it from the list.
+- Committed files carry no issue numbers (README, `methods.qmd`, data notes,
+  `course_plan_spec.md`, app READMEs, skills, this file): give the date and
+  the reason instead. `CHANGELOG.md` and commit messages may cite issues.
 - UiO: never switch to semester URLs (`/h24/`, `/v25/`). They hold logistics,
   not the course plan (README "Institution-Specific Notes").

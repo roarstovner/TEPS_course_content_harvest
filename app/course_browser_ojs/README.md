@@ -5,7 +5,7 @@ the deduplicated, anonymized course plans into the browser and does live full-te
 client-side. No R/Shiny server and no webR runtime to boot — just a static HTML page plus
 two Parquet files.
 
-This is a POC (issue #198) to feel the load + search behaviour before deciding whether to
+This is a POC to feel the load + search behaviour before deciding whether to
 port the full app. Scope: Browse + full-text search. The Diff tab is intentionally out of
 scope (it depends on R's `diffobj`).
 
@@ -46,4 +46,4 @@ writes `data/plans.parquet` (~19 MB, the searchable corpus) and `data/offerings.
 - If client-side search feels slow at ~12k plans → DuckDB-WASM (`DuckDBClient.of`) with SQL
   `ILIKE`/FTS, range-requesting only the row groups a query touches.
 - If this graduates into the maintained, multi-view published dashboard → migrate to
-  Observable Framework (issue #199): R-script-as-data-loader, code-split builds.
+  Observable Framework: R-script-as-data-loader, code-split builds.

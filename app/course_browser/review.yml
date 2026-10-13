@@ -1,4 +1,4 @@
 # Open decisions whose plans have to be read (the course_browser Review tab).
 # Each item opens the Concordance tab with its search: q, and optionally scope,
 # inst (comma-separated) and regex, as in the deep links. Remove an item when
-# its chainlink issue is decided.
+# its decision is made.

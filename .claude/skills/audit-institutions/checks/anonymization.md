@@ -51,13 +51,13 @@ removed), `artifact` (empty brackets left by a removal).
   Ibsen, a minister named in a policy document);
 - content years: "etter 1945", "NOU 2015:2", "Kunnskapsløftet 2020",
   "LK20", law years, publication years in references;
-- every date of a government document (decided 2026-10-08, #305): session
+- every date of a government document (decided 2026-10-08): session
   years ("Meld. St. 21 (2016–2017)"), law and regulation dates, dates of
   curricula, framework plans and what ministries, directorates and the
   Storting publish ("Ny opplæringslov fra 01.08.24"). The rule keeps a date
   when such a document is named up to 80 characters before it on the line;
 - running times, verses, volume:pages and ratios ("Lengde: 2:19",
-  "Sure 3:30", "60:40"); only clock times go (#308);
+  "Sure 3:30", "60:40"); only clock times go;
 - place names, organisation names, programme and course names;
 - the word "vår" meaning "our", and season words that are not semester labels.
 

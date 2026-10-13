@@ -93,7 +93,7 @@ the plan (`selector`, minus `exclude`), how a plan’s year is known
 fetch overrides and the `section_*` fields. Stages 6-8 and everything
 after them are a {targets} pipeline (see “Rebuilding Derived Data”).
 
-The raw harvest is append-only (#296): an institution’s first harvest is
+The raw harvest is append-only: an institution’s first harvest is
 `data/raw/html_{inst}.RDS`, every later one adds
 `data/raw/harvests/{date}/html_{inst}.RDS` with what it fetched, and no
 raw file is written twice (see “Raw Store and Finalized Releases”). The
@@ -376,15 +376,15 @@ comes from</td>
 </table>
 
 A page with no section to read and under 1,500 characters is a page
-shell, not a plan (`SHELL_MAX_NCHAR`, #222): its offerings keep their
-text but get no `plan_content_id`.
+shell, not a plan (`SHELL_MAX_NCHAR`): its offerings keep their text but
+get no `plan_content_id`.
 
 ### Sites that show only the current plan
 
 UiO, MF, NMBU and Steiner (`plan_years = "current"`) publish only the
 plan in force, without a year in the URL. A harvest therefore holds the
 plans of the academic year (August-July) it was made in, and a later
-harvest cannot recover them. Their raw files are snapshots (#293):
+harvest cannot recover them. Their raw files are snapshots:
 
 - Each harvest of such a site fetches the pages of its latest DBH year
   again and adds them as a dated raw file, stamped `harvested_at`.
@@ -415,14 +415,13 @@ interrupted harvest.
 
 ### Raw Store and Finalized Releases
 
-No raw file is written twice (#296). `harvest_all()` saves an
-institution’s first harvest to `data/raw/html_{inst}.RDS`; a later
-harvest fetches only the offerings no raw file holds yet (a current
-site: a new snapshot) and saves them to
-`data/raw/harvests/{date}/html_{inst}.RDS`. `harvest_all(year = 2026)`
-and `harvest_all()` therefore both just add what is new.
-`read_harvest()` combines the files; an offering in two files stops the
-build.
+No raw file is written twice. `harvest_all()` saves an institution’s
+first harvest to `data/raw/html_{inst}.RDS`; a later harvest fetches
+only the offerings no raw file holds yet (a current site: a new
+snapshot) and saves them to `data/raw/harvests/{date}/html_{inst}.RDS`.
+`harvest_all(year = 2026)` and `harvest_all()` therefore both just add
+what is new. `read_harvest()` combines the files; an offering in two
+files stops the build.
 
 A page that gave no plan (a 404, a page shell) can be fetched again with
 `harvest_all(institutions = "uia", year = 2023, retry = TRUE)`: it takes
@@ -430,8 +429,8 @@ the offerings without a plan in the current build
 (`data/interim/course_offerings_full.RDS`, so run `tar_make()` first),
 fetches them past the checkpoint and saves them to the dated file marked
 `retry`. `read_harvest()` gives a retried offering its latest row with a
-page (#297). Retry before finalizing a release; afterwards it changes
-the release.
+page. Retry before finalizing a release; afterwards it changes the
+release.
 
 To finalize a release, after `tar_make()` and tagging the commit:
 
@@ -546,7 +545,7 @@ titles)</td>
 </table>
 
 The `html` reader writes a table as one line per row, its cells
-separated by tabs, so an exam table has one line per exam (#312).
+separated by tabs, so an exam table has one line per exam.
 
 Fields for the `html` reader:
 
@@ -596,7 +595,7 @@ Other fields:
   block of the page (“Se fagplanen.”) takes the text under a sub-heading
   of that block, after a lead naming the source. oslomet: teaching
   methods from the subject’s “Fagplan” block (“Fagets arbeids- og
-  undervisningsformer”), as “Se fagplanen. Fagplanen sier: …” (#289).
+  undervisningsformer”), as “Se fagplanen. Fagplanen sier: …”.
 
 ### Heading Map and Cleanup
 
@@ -955,8 +954,9 @@ Pattern:
 information is available raises `ntnu_no_info_error`. robots.txt asks
 for a 10-second crawl delay (`request_delay` in the config). The page’s
 exam tab (`#omEksamen`: assessment form, grading scale, exam sessions
-and their parts) is the semester’s exam registration, not the plan, and
-is not read (#321).
+and their parts) is not read for now; by `course_plan_spec.md` it
+belongs in `course_plan` and, without the sessions’ logistics, in
+assessment (see its “Known deviations”).
 
 **UiO.** UiO publishes only the latest version of each course plan: the
 base URL always returns the current plan and older versions cannot be
@@ -1002,8 +1002,8 @@ semester with its document id (option text `{CODE}: H 2020` /
 `{CODE}: V 2021`), also for discontinued courses. A semester listed
 twice can be an English document (“Course code:”) beside the Norwegian
 one; `uit_one_per_semester()` fetches those and keeps the first
-Norwegian one (#313). The same CSS selector works for active and
-historical pages.
+Norwegian one. The same CSS selector works for active and historical
+pages.
 
 **Samas.** `noop` strategy: `extracted_text` is NA, since the plans are
 in Sámi.
@@ -1178,9 +1178,9 @@ fetch again the offerings that are not yet in a raw file (never the ones
 that are)
 
 **“raw files are not written twice”?** - A harvest of the same
-institution already ran today; the raw store is append-only (#296). Run
-it another day, or, before the release is finalized, remove that day’s
-file deliberately
+institution already ran today; the raw store is append-only. Run it
+another day, or, before the release is finalized, remove that day’s file
+deliberately
 
 **“offerings in more than one raw file”?** - Two raw files of an
 institution hold the same `course_id`; a file was copied into

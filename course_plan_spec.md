@@ -103,15 +103,14 @@ semester fields of a facts box or an exam tab.
 
 The data built on 2026-10-13 do not yet follow the spec here:
 
-- The NTNU exam tab is out of `course_plan` and assessment (#321). Its 20
-  pages without any other section are counted as shells (#323).
+- The NTNU exam tab is out of `course_plan` and assessment. Its 20
+  pages without any other section are counted as shells.
 - AI, plagiarism and COVID notices are removed from assessment and coursework
   requirements, among them the Nord and UiB exam forms changed for COVID.
   Exam aids and exam language under a heading of their own are dropped, and
-  so is absence from compulsory activities (#324).
-- The MF and UiS facts boxes are out of `course_plan` (#325).
+  so is absence from compulsory activities.
+- The MF and UiS facts boxes are out of `course_plan`.
 - The other fulltext rules (`exclude`, `post_fn`, the `.anon_*` handlers, the
-  text outside each page's `selector`) have not been checked against the spec
-  (#326).
+  text outside each page's `selector`) have not been checked against the spec.
 - Whether a page is a shell depends on whether sections could be cut from
-  it, not on its plan text (#222, #327).
+  it, not on its plan text.

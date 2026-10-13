@@ -20,7 +20,7 @@ pct <- function(x) sprintf("%.0f %%", 100 * x)
 The choices behind the published data that a methods section has to report,
 by topic. Each entry gives the choice, the reason, alternatives that were
 rejected, the consequence in numbers (computed from the current data when this
-file is rendered) and since when it applies (date, chainlink issue). What the
+file is rendered) and since when it applies (date). What the
 published text holds and what stays out, as rules, is in
 `course_plan_spec.md`; how to run the pipeline is in `README.md`;
 per-institution data quality in `data/data_notes.md`. When a decision changes
@@ -48,17 +48,17 @@ university code 1177 (Universitetet i Innlandet) instead of 0264; both map to
 INN, which adds `r n(sum(off$institution == "inn" & off$Årstall == 2025))` INN
 offerings for 2025. Codes of institutions that merged before 2018 (Høgskolen i
 Hedmark, HiOA, UiN, HBV/HSN, UMB, HiA) are not mapped: their sites do not serve
-plans for those years. *Since:* 2026-10-06 (#291).
+plans for those years. *Since:* 2026-10-06.
 
 **DBH registers most courses in both semesters**, also when a course is taught
 and has a plan in one only. Coverage is therefore counted in course-years
 (course × year with a plan in at least one semester), not offerings
-(`data/data_notes.md`, "Semester registration in DBH"; #253).
+(`data/data_notes.md`, "Semester registration in DBH").
 
 **Years:** DBH had no 2026 rows on 2026-10-06, so the frame ends with 2025.
 
 **Samas is excluded:** its website's course codes do not match DBH, and the
-teacher education courses are described only in programme PDFs (#69-#90).
+teacher education courses are described only in programme PDFs (decided 2026-02).
 
 ## Harvest
 
@@ -72,8 +72,7 @@ earlier harvest of all institutions, used for the sites below).
 from the URL (most institutions), from the page, which holds the plans of
 several academic years (NLA; for most courses only recent ones), or only from
 when the page was fetched (UiO, MF,
-NMBU, Steiner publish only the plan in force). *Since:* 2026-10-06 (#292,
-#293).
+NMBU, Steiner publish only the plan in force). *Since:* 2026-10-06.
 
 ```{r}
 #| label: current-sites
@@ -95,7 +94,7 @@ DBH year (used until 2026-10), which put 2026/27 text on 2025 offerings.
 April 2026 plan and `r n(cur_spr)` spring 2025 offerings have a plan (no
 harvest from 2024/25); the September 2026 plans wait for DBH 2026 offerings.
 These sites must be harvested once in every academic year. *Since:*
-2026-10-06 (#293).
+2026-10-06.
 
 **The raw harvest is append-only and a finalized release is frozen:** a later
 harvest (a new DBH year) only adds offerings no earlier harvest holds, as new
@@ -103,7 +102,7 @@ files; the raw files of a finalized release are read-only, and every build
 checks that each of its plans keeps its id, text and sections. *Why:* coded
 plans must not change under the coders when the data are extended. *Rejected:*
 merging new rows into the finalized files, which rewrites frozen data.
-*Since:* 2026-10-06 (#296).
+*Since:* 2026-10-06.
 
 **Pages that gave no plan can be fetched again before a release:**
 `harvest_all(retry = TRUE)` fetches the offerings without a plan (a 404, a page
@@ -114,10 +113,10 @@ were shells (title and facts box) when harvested but full plans once on
 *Consequence:* retries are done before a release is finalized. UiA's shells did
 not come back: the full pages were copies last fetched from FS in July 2024,
 and every copy rebuilt since 2026-09-30 lacks the plan, so these offerings have
-no plan (2026-10-08, #300). *Since:* 2026-10-07 (#297).
+no plan (2026-10-08). *Since:* 2026-10-07.
 
 **UiO semester pages are not used:** URLs such as `/h24/` hold logistics
-(teachers, timetable, exam dates), not the plan (#76).
+(teachers, timetable, exam dates), not the plan (decided 2026-02).
 
 **UiT: the Norwegian document of a semester listed twice:** UiT's semester
 picker can list a semester twice, an English document beside the Norwegian
@@ -127,7 +126,7 @@ empty page in all 5 cases, while the Norwegian one has the plan. *Rejected:*
 the first option (the rule before, which took the English twin).
 *Consequence:* 5 offerings get a plan (ENG-2980 spring 2017, ENG-3980 and
 ENG-3981 spring 2016, LRU-1300 autumn 2010, LER-1150 autumn 2018), 2 of them
-a plan not in the data before. *Since:* 2026-10-08 (#313).
+a plan not in the data before. *Since:* 2026-10-08.
 
 ## Unit of analysis: the unique plan
 
@@ -153,12 +152,12 @@ shows the latest version instead ("Her er den siste versjonen vi har
 tilgjengelig"): that is a later plan (2026 or later), not the offering's. Longer pages without sections stay (OsloMet practicum
 courses, below). *Consequence:* 174 plans left the data on 2026-10-06 (UiA 95,
 UiB 27, OsloMet 26, Nord 11, HVL 10, UiT 4, NTNU 1). With pages that are not
-the plan at all (INN's course search page, OsloMet's error page; #53, #57),
+the plan at all (INN's course search page, OsloMet's error page),
 `r n(nrow(shell))` offerings have page text but no plan
 (`r paste(names(table(shell$institution)), table(shell$institution), collapse = ", ")`).
-*Since:* 2026-10-06 (#222); heading lists (UiB NOLI216 and NOSP216, autumn
-2018) from 2026-10-07 (#299); NTNU pages whose only section was the exam tab
-from 2026-10-12 (#321, 20 plans, 70 offerings). INN later versions from 2026-10-07 (#302): 1,077
+*Since:* 2026-10-06; heading lists (UiB NOLI216 and NOSP216, autumn
+2018) from 2026-10-07; NTNU pages whose only section was the exam tab
+from 2026-10-12 (20 plans, 70 offerings). INN later versions from 2026-10-07: 1,077
 INN offerings (384 of 407 pages from 2022, about half of 2023-2025) lose
 their plan; the April 2026 harvest has the same notice on the same pages.
 *Rejected:* keeping the later plan with a flag (decided 2026-10-07: an
@@ -167,19 +166,19 @@ offering is coded with its own year's plan or none).
 **Tables are read one row per line:** each row of a table on the page is one
 line, its cells separated by tabs and each cell on one line, so an exam table
 (INN, Volda, UiT from 2022) has one line per exam. *Why:* splitting the
-assessment text by exam (#311) needs the rows. The reader had run a table
+assessment text by exam needs the rows. The reader had run a table
 with `<thead>`/`<tbody>` into one line (INN, Volda) and joined the lines of a
 cell without a space (Volda "Fagartikkel2. Utvikling …", UiT
 "Karakterregel:A–E", "Spring 2009Veiledning"). *Rejected:* keeping a cell's
 own line breaks, which split one exam over several lines. *Consequence:* the
 text changes only in whitespace; 725 of 2,314 UiT plans and 77 of 547 Volda
 plans get new ids, because words a cell had joined are now apart; no plans
-merge or split. *Since:* 2026-10-08 (#312). A line break inside a `<span>`
+merge or split. *Since:* 2026-10-08. A line break inside a `<span>`
 or link elsewhere on the page is now a space as well, not glue (HiOF
 "minutter.Det tas", UiB "KunnskaparStudenten"): 64 UiT, 37 HiOF, 8 UiB and 3
 UiA plans get new ids, and two pairs of UiT plans that differed only by such
 glue merge (SOA-3905 spring and autumn 2011; LER-1201 spring 2018). *Since:*
-2026-10-08 (#315).
+2026-10-08.
 
 ## What the text holds
 
@@ -210,15 +209,15 @@ teacher education; the sections are a convenience for coding. Before the spec th
 rules were decided one at a time in seven places (README, "What Each
 Mechanism May Remove"), and some went against each other: the MF and UiS
 facts boxes were left out and NTNU's kept, and the NTNU exam tab left
-`course_plan` (#321). *Rejected:* removing every AI, plagiarism and COVID line
-from assessment (the rule since #215), which also removed rules for the use of
+`course_plan` (2026-10-12). *Rejected:* removing every AI, plagiarism and COVID line
+from assessment (the rule since 2026-10-01), which also removed rules for the use of
 AI and the exam forms that replaced written exams during COVID; keeping the
 NTNU exam tab out of the sections, which leaves 743 NTNU plans without an
 assessment section. *Consequence:* the sections hold a median
 `r pct(median(coalesce(in_secs$n, 0) / in_secs$N))` of a plan's text, and
 `r n(sum(is.na(in_secs$n)))` plans have no section. The data do not yet follow
-the spec where its "Known deviations" says (#323-#327); each fix gets its own
-entry here, with numbers. *Since:* 2026-10-13 (#322).
+the spec where its "Known deviations" says; each fix gets its own
+entry here, with numbers. *Since:* 2026-10-13.
 
 ## Anonymization
 
@@ -229,13 +228,13 @@ administrative dates and years ("Opprettet 2020", "2023/2024"); content years
 ("etter 1945") are kept. A check on every build (`privacy_check`) looks for
 e-mails, phone numbers, IP addresses and staff-name layouts in the published
 files. *Why:* the plans are public, but the published data should not carry
-personal data. *Since:* 2026-09 to 2026-10 (#226-#238, #260, #281); UiA lists
-of several course coordinators and USN approval lines from 2026-10-06 (#231);
+personal data. *Since:* 2026-09 to 2026-10; UiA lists
+of several course coordinators and USN approval lines from 2026-10-06;
 names after a staff role anywhere in a line ("… avklares med faglærer
 <name>", "Ta kontakt med <name> eller <name>"), HVL campus contact lines and
 UiT's 2008-2011 timetable block (teachers, rooms, first lectures) from
 2026-10-07, after the anonymization audit of all institutions found them in
-16 plans (#301).
+16 plans.
 
 **Dates of government documents are kept.** A date or year rule does not
 fire when a government document is named up to 80 characters before it on
@@ -246,15 +245,14 @@ ministries and directorates publish ("Ny opplæringslov fra 01.08.24",
 "fastsatt av Kunnskapsdepartementet 7. juni 2016"). *Why:* these dates say
 which document is cited; they are content, not administration (decided
 2026-10-08). *Rejected:* removing session years with the other academic-year
-ranges, which turned "Meld. St. 21 (2016–2017)" into "Meld. St. 21" (#229,
-2026-09). *Consequence:* 185 plans keep such dates; an access date next to a
+ranges, which turned "Meld. St. 21 (2016–2017)" into "Meld. St. 21" (2026-09). *Consequence:* 185 plans keep such dates; an access date next to a
 government link also stays ("[Lesedato: …]" after a udir.no address). At the
 same time administrative dates in more forms go: em-dash year ranges
 ("Studieår: 2019 — 2020", NLA), UiS version stamps, approval and update
 dates in words ("godkjent i studieutvalget 14. november 2016") or with a
 two-digit year ("Godkjent 22.03.23"), and semester codes ("H23",
 "H2025-V2026"): 1,683 plans lose one; 21 plans that differed only by such a
-date merge with another. *Since:* 2026-10-08 (#305). The 80 characters are
+date merge with another. *Since:* 2026-10-08. The 80 characters are
 counted from the start of the date, not its end, so "nasjonale
 retningslinjer … av 1. september 2016, revidert 17. oktober 2018" keeps its
 revision date and "høsten\n2020" over a line break stays; faculty
@@ -263,8 +261,8 @@ Dates in references stay too: a dd.mm.yyyy date after a comma, which in
 these pages is always a reading-list entry ("Razsviet, 4.11.1923", "SSB,
 07.06.2023,"), and ISO dates ("2001-02-01", read as the academic year
 "2001-02" before). *Why:* a reference's date identifies the work cited
-(audit rubric, #310). *Consequence:* 138 plans change text (usn 54, oslomet
-39, uis 31, uit 9, ntnu 5); none merge or split. *Since:* 2026-10-12 (#317).
+(audit rubric, 2026-10-11). *Consequence:* 138 plans change text (usn 54, oslomet
+39, uis 31, uit 9, ntnu 5); none merge or split. *Since:* 2026-10-12.
 
 **OsloMet's ";" glue is a space.** In 2021–2022 OsloMet's pages put a ";"
 where a space or line break belongs ("En;viktig del;av", "1;000 ord"); a
@@ -273,10 +271,10 @@ other years), and a real semicolon, followed by a space, stays. *Why:* the
 glue is page rendering, not text; it made the 2022 pages separate plans.
 *Consequence:* 57 OsloMet plans merge with the same plan of a neighbouring
 year (625 → 568). At the same time HVL's Nynorsk "Emnet vert ikkje tilbydd
-2025/2026." goes like the Bokmål notice (#306; 4 plans merge), USN's
+2025/2026." goes like the Bokmål notice (4 plans merge), USN's
 Leganto type labels go before quoted and lowercase titles too, and a second
 approval date on a stamp line goes ("… og på fullmakt av leder i
-utdanningsutvalget 4. mars 2019"). 13,979 plans. *Since:* 2026-10-12 (#318).
+utdanningsutvalget 4. mars 2019"). 13,979 plans. *Since:* 2026-10-12.
 
 **A removal takes the space and separators that joined it.** A removed
 date, season or e-mail takes the space before it, a season with year also
@@ -286,7 +284,7 @@ og vår 2020" → "15 stp"), and a date or clock-time range goes as one unit
 "Dato:  –" are artifacts of the removal, not text. *Consequence:* no
 content changes, but the dedup hash keeps punctuation and spacing, so 2,480
 plans get a new id and 12 that differed only by such leftovers merge
-(13,967 plans). *Since:* 2026-10-12 (#319).
+(13,967 plans). *Since:* 2026-10-12.
 
 **NTNU: the exam tab is not part of the plan; the responsible unit is.**
 The page's exam tab ("Vurderingsordning: …", "Karakter: …" and the exam
@@ -298,9 +296,9 @@ registration, not the plan text; at the end of the assessment section it
 read as coded exam data, and the assessment form, grading scale and exam
 parts are coded in TEPS_course_content_coding, not here (user decision
 2026-10-12). *Rejected:* keeping "Vurderingsordning" and "Karakter" in the
-assessment section (#245, 2026-10-01) and in `course_plan` (#307,
-2026-10-08) so that pass/fail courses could be told from graded ones;
-keeping the ordinary session's exam parts for the exam coding (#316);
+assessment section (2026-10-01) and in `course_plan`
+(2026-10-08) so that pass/fail courses could be told from graded ones;
+keeping the ordinary session's exam parts for the exam coding (2026-10-12);
 hashing the unit, which split plans only because a department was renamed.
 *Consequence:* 743 of 1,684 NTNU plans with an assessment section lose it
 (the exam tab was all of it); 941 keep their own "Mer om vurdering". 20
@@ -308,9 +306,10 @@ pages whose only section was the exam tab (master's thesis courses `*3950`,
 discontinued courses) are page shells: 70 offerings lose their plan
 (14,060 → 14,040 plans). The facts box at the top of `course_plan` still names the assessment
 form ("Vurderingsordning Oppgave"). 1,889 of 1,988 NTNU plans name their
-unit. Other plan ids do not change. *Since:* 2026-10-08 (#307), exam tab
-dropped 2026-10-12 (#321). The spec (#322) puts the exam tab back, in
-`course_plan` and, without the sessions' logistics, in assessment (#323).
+unit. Other plan ids do not change. *Since:* 2026-10-08, exam tab
+dropped 2026-10-12. The spec of 2026-10-13 puts the exam tab back, in
+`course_plan` and, without the sessions' logistics, in assessment; the
+data do not follow it yet.
 
 ## Sections
 
@@ -333,16 +332,16 @@ Where a section is missing, the coders use the whole plan.
 
 **Coursework requirements are kept apart from assessment:** arbeidskrav and
 obligatory-activity paragraphs inside an assessment block are moved to
-coursework requirements (#212, #283).
+coursework requirements (since 2026-10-01).
 
 **Practicum stays in teaching methods** rather than a section of its own: only
-HiOF and Nord give practicum its own heading (#201, #247).
+HiOF and Nord give practicum its own heading (since 2026-10-01).
 
 **Admission text is not prerequisites** (opptakskrav, study-right sentences;
-#211), and credit-overlap boxes are dropped.
+since 2026-10-01), and credit-overlap boxes are dropped.
 
 **Placeholders are dropped** ("Ingen", "-", "Se fagplanen.", reading-list
-pointers; #210, #286).
+pointers; since 2026-10-01).
 
 **Prerequisites written inside the course description are prerequisites:** a
 "Forkunnskapskrav" label in course content (UiT's "Om emnet", two MF courses)
@@ -352,7 +351,7 @@ programme's admission rules, which is dropped like other admission text, so
 most UiT plans lose it from course content without gaining a prerequisites
 section. *Rejected:* treating the label as a sub-heading (the course
 description continues after the pointer and would be filed as prerequisites).
-*Since:* 2026-10-07 (#285).
+*Since:* 2026-10-07.
 
 **Nord's short description is course content:** the lead paragraph above the
 accordions (pages from 2019 on) opens course content, without the title and
@@ -360,16 +359,16 @@ course code above it; "Se kursinnhold." there is a placeholder. A paragraph of
 40 or more characters that a section repeats is kept once (Nord's lead is often
 the start of "Beskrivelse av emnet"; UiS PDF plans repeat their lead
 sentence). *Rejected:* filing all text before the first heading as course
-content (would take in the title and code). *Since:* 2026-10-07 (#285).
+content (would take in the title and code). *Since:* 2026-10-07.
 
 **OsloMet teaching methods that only say "Se fagplanen."** take the text of the
 subject's Fagplan on the same page ("Fagets arbeids- og undervisningsformer"),
 marked "Se fagplanen. Fagplanen sier: …": `r n(fagplan)` plans. *Why:* the
 emneplan delegates the teaching methods to the subject plan, which applies to
-the course. *Since:* 2026-10-06 (#289).
+the course. *Since:* 2026-10-06.
 
 **OsloMet practicum courses (M1GP/M5GP) have no sections:** every section of
 the emneplan says "Se fagplanen.", and the page's Fagplan is the programme's
 practicum plan for all study years, with no markup separating the years. Their
 plan text keeps the whole page. *Rejected:* reading the whole practicum plan
-into each course, or slicing it by year (fragile). *Since:* 2026-10-02 (#242).
+into each course, or slicing it by year (fragile). *Since:* 2026-10-02.
