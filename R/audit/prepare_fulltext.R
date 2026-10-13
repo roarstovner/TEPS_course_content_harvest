@@ -21,7 +21,7 @@
 #   dup_code   identical extracted_text for >= DUP_CODES different course codes
 #   year       semester/academic-year labels in the text all far from Årstall
 #   uncaptured prose on the page missing from extracted_text (lines of
-#              >= 80 chars, not year pickers or breadcrumbs; #234)
+#              >= 80 chars, not year pickers or breadcrumbs)
 #
 # Inputs:  the raw harvest (harvested_rows()) + data/interim/extracted_text.RDS
 # Outputs: data/audit/fulltext/packets/{inst}.md, manifest.csv, sample.csv
@@ -41,7 +41,7 @@ PAGE_SAMPLE   <- 250    # pages parsed per institution for chrome + coverage
 CHROME_FRAC   <- 0.4
 OUTLIER_Z     <- 3
 DUP_CODES     <- 3
-UNCAP_MIN     <- 200    # uncaptured prose chars that raise a flag (#234)
+UNCAP_MIN     <- 200    # uncaptured prose chars that raise a flag
 SEED          <- 42
 
 CHECK   <- "fulltext"
@@ -95,7 +95,7 @@ page_lines <- function(txt) {
 # table cells glued together in the page text. `prose` counts the missing
 # lines that read as text: >= 80 chars, under 20% digits (year pickers, exam
 # sessions) and not a breadcrumb; facts boxes, names and menus are short
-# lines (#234).
+# lines.
 uncaptured <- function(lines, chrome, ext) {
   lines <- setdiff(lines, chrome)
   if (length(lines) == 0) return(list(text = "", n = 0L, prose = 0L, share = NA_real_))
@@ -195,7 +195,7 @@ for (inst in institutions) {
 
   flag_cols <- c("flag_empty", "flag_short", "flag_long", "flag_wall",
                  "flag_junk", "flag_dup_code", "flag_year", "flag_uncaptured")
-  weights <- c(3, 1, 1, 1, 1, 3, 2, 3)   # uncaptured prose: missing content (#234)
+  weights <- c(3, 1, 1, 1, 1, 3, 2, 3)   # uncaptured prose: missing content
   df <- df |>
     left_join(parsed, by = "course_id") |>
     mutate(flag_uncaptured = coalesce(uncap_prose >= UNCAP_MIN, FALSE))

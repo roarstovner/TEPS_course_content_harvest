@@ -1,5 +1,5 @@
 # R/release.R
-# Hand a frozen release of the published data to another project (#294): the
+# Hand a frozen release of the published data to another project: the
 # coding project (../TEPS_course_content_coding) draws its samples from it.
 
 #' Copy the published data files to another project, with a manifest
@@ -81,7 +81,7 @@ release_data <- function(tag, dest = "../TEPS_course_content_coding/data") {
   invisible(dest)
 }
 
-# --- Finalizing (#296) -----------------------------------------------------------
+# --- Finalizing -----------------------------------------------------------
 
 RAW_MANIFEST <- "tests/snapshots/raw_manifest.csv"
 

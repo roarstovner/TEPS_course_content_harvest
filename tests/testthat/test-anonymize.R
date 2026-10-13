@@ -48,7 +48,7 @@ test_that("IP addresses in OpenURL links are removed, also when wrapped", {
   expect_match(result, "Kapittel 6.4.6.1 og doi=10.1.1.462.7279", fixed = TRUE)
 })
 
-test_that("page furniture: OpenURL links, uis PDF header, usn Leganto labels (#287)", {
+test_that("page furniture: OpenURL links, uis PDF header, usn Leganto labels", {
   uis <- anonymize_text("uis", paste0(
     "Bracke, Sarah, 2008-11, 51-67,\nhttps://bibsys-ur.userservices.exlibrisgroup.com/view?ctx=1&rft.a=\n",
     "b&req.skin=primoVi\new online\n\nBok\nNeste tittel\n",
@@ -60,7 +60,7 @@ test_that("page furniture: OpenURL links, uis PDF header, usn Leganto labels (#2
   expect_equal(usn, "Obligatorisk litteratur\nMøter med barnelitteratur\nBooking av rom")
 })
 
-test_that("uis PDF footer and a last steiner page number are removed (#299)", {
+test_that("uis PDF footer and a last steiner page number are removed", {
   expect_equal(anonymize_text("uis", paste(
     "Kunnskap om litteratur", "   LENG116_1 - Innføring i britisk og irsk litteratur",
     "og kultur.", "Se LENG115 - Introduksjon", sep = "\n"), .progress = FALSE),
@@ -133,7 +133,7 @@ test_that("dates dd.mm.yyyy are removed", {
   expect_false(grepl("15\\.12\\.2023", result))
 })
 
-test_that("links, DOIs, citations and content ranges keep their numbers (#304)", {
+test_that("links, DOIs, citations and content ranges keep their numbers", {
   keep <- c("https://www.utdanningsnytt.no/files/2019/06/27/Bedre.pdf",
             "https://www.journals.uio.no/index.php/adno/article/view/1126/1005",
             "Piaget (1980/2005) og Vygotsky (1934/1986).",
@@ -180,7 +180,7 @@ test_that("season words after semester keyword are removed", {
   expect_false(grepl("(?i)\\bhøst\\b", result, perl = TRUE))
 })
 
-test_that("a season list or compound after a semester label goes whole (#303)", {
+test_that("a season list or compound after a semester label goes whole", {
   an <- function(x) anonymize_text("uib", x, .progress = FALSE)
   expect_equal(an("Undervisningssemester\nVår og haust\nInnhald"), "Undervisningssemester\n\nInnhald")
   expect_equal(an("Vurderingssemester\nHaustsemesteret, 6. semester i lektorutdanninga"),
@@ -224,7 +224,7 @@ test_that("3+ newlines collapsed to 2", {
 
 # --- NTNU ---
 
-test_that("NTNU: contacts and timetable go; the unit stays (#307)", {
+test_that("NTNU: contacts and timetable go; the unit stays", {
   an <- function(x) anonymize_text("ntnu", x, .progress = FALSE)
   input <- paste("Viktig tekst", "Kontaktinformasjon", "Emneansvarlig/koordinator", "Kari Nordmann",
                  "Faglærere", "Ola Nordmann", "Ansvarlig enhet", "", "Institutt for lærerutdanning", sep = "\n")
@@ -297,7 +297,7 @@ test_that("UiA: Emneansvarlig + name on next line stripped", {
   expect_false(grepl("Kari Nordmann", result))
 })
 
-test_that("UiA: Emneansvarlige + several name lines stripped (#231)", {
+test_that("UiA: Emneansvarlige + several name lines stripped", {
   input <- paste0("Ansvarlig avdeling:\nFakultet for humaniora og pedagogikk\nEmneansvarlige:\n",
                   "Kari Nordmann\nOla Smith-Hansen\nUndervisningssemester:\n\nUndervisningsspråk:\nNorsk")
   result <- anonymize_text("uia", input, .progress = FALSE)
@@ -308,7 +308,7 @@ test_that("UiA: Emneansvarlige + several name lines stripped (#231)", {
   expect_equal(anonymize_text("uia", s, .progress = FALSE), s)
 })
 
-test_that("USN: 'Godkjent av' with the approver's name and title stripped (#231)", {
+test_that("USN: 'Godkjent av' with the approver's name and title stripped", {
   input <- "Alle hjelpemidler tillatt.\n\nGodkjent av\nKari Nordmann\nInstituttnestleder\n\nLitteratur"
   result <- anonymize_text("usn", input, .progress = FALSE)
   expect_false(grepl("Nordmann|Godkjent av|Instituttnestleder", result))
@@ -358,7 +358,7 @@ test_that("INN: placeholder pages return NA", {
   input <- "Emnesøket gjelder kun fra 2022. Noe annet"
   result <- anonymize_text("inn", input, .progress = FALSE)
   expect_true(is.na(result))
-  # a later version shown in place of the requested semester's plan (#302)
+  # a later version shown in place of the requested semester's plan
   later <- paste0("Statusmelding\nEmnebeskrivelsen for valgt semester er ikke publisert enda. ",
                   "Her er den siste versjonen vi har tilgjengelig.\nEmnets innhold\nTekst")
   expect_true(is.na(anonymize_text("inn", later, .progress = FALSE)))
@@ -577,7 +577,7 @@ test_that("smoke test: no dates in output", {
   expect_false(grepl("\\d{1,2}:\\d{2}", result))
 })
 
-# --- Staff name lists (#237) ---
+# --- Staff name lists ---
 
 test_that("uis Fagperson(er) staff list is removed, surrounding text kept", {
   input <- paste(
@@ -600,7 +600,7 @@ test_that("Name (Role) lines are removed at any institution", {
   expect_equal(result, "Innhald\nTekst.")
 })
 
-test_that("a role label followed by a name is removed (#260)", {
+test_that("a role label followed by a name is removed", {
   expect_equal(anonymize_text("uit", "Pensum\nEmneleder Kari Nordmann kari.nordmann@uit.no\nFire fagbøker.",
                               .progress = FALSE), "Pensum\nFire fagbøker.")
   expect_equal(anonymize_text("uis", "Emneansvarlig Ola Nordmann\nInnhold", .progress = FALSE),
@@ -624,7 +624,7 @@ test_that("approver name is removed but the role is kept", {
                "Godkjent av Dekan")
 })
 
-# --- Signature lines (#238) ---
+# --- Signature lines ---
 
 test_that("signature lines 'Name, dekan' are removed with their date stamp", {
   for (line in c("17.03.20 Ola Kristian Nordmann, dekan",
@@ -646,37 +646,37 @@ test_that("prose and references with a role after a comma are kept", {
   }
 })
 
-test_that("steiner: bare PDF page numbers are removed, numbers in text kept (#248)", {
+test_that("steiner: bare PDF page numbers are removed, numbers in text kept", {
   input <- "kan gi tilbakemelding\n10\nkan anvende kunnskaper\nOmfang: 10 studiepoeng"
   expect_equal(anonymize_text("steiner", input, .progress = FALSE),
                "kan gi tilbakemelding\nkan anvende kunnskaper\nOmfang: 10 studiepoeng")
 })
 
-# --- #224, #227-#230 ---
+# --- Seasons, academic years, brackets, mf and uio tails, phone numbers ---
 
-test_that("inflected and run-together season + year are removed (#227)", {
+test_that("inflected and run-together season + year are removed", {
   expect_equal(anonymize_text("nih", "Pensumliste for høsten 2025 og våren2026.", .progress = FALSE),
                "Pensumliste for.")
 })
 
-test_that("academic-year ranges go, content ranges stay (#230)", {
+test_that("academic-year ranges go, content ranges stay", {
   expect_equal(anonymize_text("nih", "Se Studiehåndbok 2023-2024 og 2023- 24.", .progress = FALSE),
                "Se Studiehåndbok og.")
   expect_equal(anonymize_text("nih", "Perioden 1945-1970 og 1914-18.", .progress = FALSE),
                "Perioden 1945-1970 og 1914-18.")
 })
 
-test_that("brackets emptied by year removal go, code brackets stay (#229)", {
+test_that("brackets emptied by year removal go, code brackets stay", {
   expect_equal(anonymize_text("hiof", "Studiehåndbok (2016-2017) og print() i Python.", .progress = FALSE),
                "Studiehåndbok og print() i Python.")
 })
 
-test_that("a bracketed e-mail leaves no empty brackets (#229)", {
+test_that("a bracketed e-mail leaves no empty brackets", {
   expect_equal(anonymize_text("uio", "Ta kontakt med Per Hansen (per.hansen@uio.no) eller oss.", .progress = FALSE),
                "Ta kontakt med eller oss.")
 })
 
-test_that("mf exam-dates block and library notice are removed (#228)", {
+test_that("mf exam-dates block and library notice are removed", {
   input <- paste("Skriftlig eksamen.", "", "Eksamensdatoer", "Eksamensdato:", "18. november 2026",
                  "", "Læringsutbytte", "Kunnskap", "", "Litteraturliste", "Litteraturlisten for vår 2026", "",
                  "Tilgang til litteratur", "Noe er digitalt.", "via ditt lokale folkebibliotek.", sep = "\n")
@@ -684,7 +684,7 @@ test_that("mf exam-dates block and library notice are removed (#228)", {
                "Skriftlig eksamen.\n\nLæringsutbytte\nKunnskap\n\nLitteraturliste")
 })
 
-test_that("uio exam-links tail is cut (#224)", {
+test_that("uio exam-links tail is cut", {
   expect_equal(anonymize_text("uio", "Skriftlig eksamen.\nMer om eksamen ved UiO\nHvordan bruke KI som student", .progress = FALSE),
                "Skriftlig eksamen.")
 })
@@ -709,7 +709,7 @@ test_that("the personal-data check finds what the anonymizer removes", {
   expect_equal(nrow(personal_data_in(f)), 0)
 })
 
-test_that("a role and names inside a line: the names go, the role stays (#301)", {
+test_that("a role and names inside a line: the names go, the role stays", {
   an <- function(inst, x) anonymize_text(inst, x, .progress = FALSE)
   expect_equal(an("usn", "Bøkene må avklares med faglærer Kari Nordmann."),
                "Bøkene må avklares med faglærer.")
@@ -732,7 +732,7 @@ test_that("a role and names inside a line: the names go, the role stays (#301)",
   expect_equal(personal_data_in(f)$pattern, "role_name_inline")
 })
 
-test_that("usn approval block and name + leader-role lines lose the name (#309)", {
+test_that("usn approval block and name + leader-role lines lose the name", {
   an <- function(inst, x) anonymize_text(inst, x, .progress = FALSE)
   expect_equal(an("usn", "Hjelpemidler.\n\nGodkjent\nNotodden 06.03.20\nKari Nordmann\nInstituttnestleder\n\nLitteratur"),
                "Hjelpemidler.\n\nGodkjent\nInstituttnestleder\n\nLitteratur")
@@ -747,7 +747,7 @@ test_that("usn approval block and name + leader-role lines lose the name (#309)"
   expect_true("name_role_lines" %in% personal_data_in(f)$pattern)
 })
 
-test_that("admin dates go, government documents keep theirs (#305)", {
+test_that("admin dates go, government documents keep theirs", {
   an <- function(inst, x) anonymize_text(inst, x, .progress = FALSE)
   keep <- c("Meld. St. 28 (2015-2016) og St.meld. nr. 35 (2007–2008).",
             "Prop. 57 L (2022 – 2023)", "Kunnskapsdepartementet, 2015-2016,",
@@ -769,7 +769,7 @@ test_that("admin dates go, government documents keep theirs (#305)", {
   expect_equal(an("uis", "Tekst\nLENG145_1 Bokmål Versjon 20.Februar.2023\nMer"), "Tekst\nMer")
 })
 
-test_that("the guard looks back from the date's start; ISO and reference dates stay (#317)", {
+test_that("the guard looks back from the date's start; ISO and reference dates stay", {
   an <- function(inst, x) anonymize_text(inst, x, .progress = FALSE)
   keep <- c("Utdanningsdirektoratets spørreundersøkelse til lærere høsten\n2020",
             paste("nasjonale retningslinjer for grunnskolelærerutdanningen trinn 1-7 av",
@@ -782,7 +782,7 @@ test_that("the guard looks back from the date's start; ISO and reference dates s
                "Studieår\nGodkjent\nEksamen")
 })
 
-test_that("handlers follow the pages: mf notice, inn titles, hvl notice, usn types (#306)", {
+test_that("handlers follow the pages: mf notice, inn titles, hvl notice, usn types", {
   an <- function(inst, x) anonymize_text(inst, x, .progress = FALSE)
   mf <- paste("Litteraturliste", "Litteraturlisten for dette emnet", "",
               "Litteraturlisten for emnet finner du via lenken under.", "",
@@ -797,7 +797,7 @@ test_that("handlers follow the pages: mf notice, inn titles, hvl notice, usn typ
                "Læreplan i norsk\nAntz\nOpenStreetMap")
 })
 
-test_that("handler variants: hvl Nynorsk notice, usn labels, oslomet ';' glue and stamps (#318)", {
+test_that("handler variants: hvl Nynorsk notice, usn labels, oslomet ';' glue and stamps", {
   an <- function(inst, x) anonymize_text(inst, x, .progress = FALSE)
   expect_equal(an("hvl", "Om emnet\nEmnet vert ikkje tilbydd studieåret 2025/2026.\nInnhald"), "Om emnet\nInnhald")
   expect_equal(an("usn", "ArticleiPed: Pedagogy\nArticle“Translanguaging”\nWebsitehttps://www.unhcr.org/"),
@@ -812,7 +812,7 @@ test_that("handler variants: hvl Nynorsk notice, usn labels, oslomet ';' glue an
                      "Emneplanen er godkjent", sep = "\n"))
 })
 
-test_that("a removal takes the space and separators that joined it (#319)", {
+test_that("a removal takes the space and separators that joined it", {
   an <- function(inst, x) anonymize_text(inst, x, .progress = FALSE)
   expect_equal(an("uio", "meldt til studieadministrasjonen studieinfo@ibv.uio.no, før forelesningen"),
                "meldt til studieadministrasjonen, før forelesningen")
@@ -827,7 +827,7 @@ test_that("a removal takes the space and separators that joined it (#319)", {
                "MERK: Skriftlig eksamen\nmasteroppgave: For")
 })
 
-test_that("clock times go; durations, verses, ratios and credits stay (#308)", {
+test_that("clock times go; durations, verses, ratios and credits stay", {
   an <- function(x) anonymize_text("uis", x, .progress = FALSE)
   keep <- c("A Monster Calls (2016). Lengde: 2:19", "22. juli-terroren [20:28]",
             "Masterstudenter i historie, 10:27, 2020,", "Sure 2:177, Sure 3:30-32",

@@ -66,8 +66,5 @@ the gitignored `CLAUDE.local.md`.
   out of the sections goes on the section side (`.drop`, `.clean_sections()`).
   A change to the spec gets a `methods.qmd` entry; a fix of one of its known
   deviations removes it from the list.
-- Committed files carry no issue numbers (README, `methods.qmd`, data notes,
-  `course_plan_spec.md`, app READMEs, skills, this file): give the date and
-  the reason instead. `CHANGELOG.md` and commit messages may cite issues.
 - UiO: never switch to semester URLs (`/h24/`, `/v25/`). They hold logistics,
   not the course plan (README "Institution-Specific Notes").

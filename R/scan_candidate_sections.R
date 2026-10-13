@@ -1,5 +1,5 @@
 # R/scan_candidate_sections.R
-# Reconnaissance (#201): how prevalent are course-plan section types that are
+# Reconnaissance: how prevalent are course-plan section types that are
 # NOT among the 7 canonical sections? Feeds a human decision on whether any
 # (e.g. praksis) should become its own canonical section.
 #

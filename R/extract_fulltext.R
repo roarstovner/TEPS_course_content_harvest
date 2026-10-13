@@ -3,14 +3,14 @@
 # (R/blocks.R) as text, or for pages without HTML the text the harvest kept.
 
 # Parse HTML without script/style text (ntnu's "function toggleRooms(...)"
-# ended up in assessment, #245; uit's page scripts, #218) or form widgets
-# (uib's semester picker "Vel emnebeskrivelse for semester 2027 Vår ...",
-# #219). Used by both fulltext and section extraction (#259).
+# ended up in assessment; uit's page scripts) or form widgets
+# (uib's semester picker "Vel emnebeskrivelse for semester 2027 Vår ...").
+# Used by both fulltext and section extraction.
 # html_text2() and the block walker drop a <br> inside an inline element and
 # glue the words around it (uit's "Karakterregel:A–E", uib's
-# "KunnskaparStudenten"), so such a <br> becomes a space (#315).
+# "KunnskaparStudenten"), so such a <br> becomes a space.
 # A table is one line per row, cells separated by tabs (an exam table: one
-# line per exam; #312). html_text2() reads a table whose rows sit in
+# line per exam). html_text2() reads a table whose rows sit in
 # thead/tbody/tfoot as inline text and runs it together
 # ("FormAndelHjemmeeksamen40%"), so the wrappers go; a cell's <div>s and
 # <br>s would break its row, so each cell becomes its text on one line. No
@@ -34,10 +34,10 @@
 
 #' Extract course plan text from the raw harvest
 #'
-#' One place for how `extracted_text` is made from what the harvest stored
-#' (#256), used by the harvest strategies and by the {targets} pipeline. A page
-#' with HTML is read into blocks (R/blocks.R) and the blocks are its text
-#' (#276), so the text and the sections come from one reading of the page. USN
+#' One place for how `extracted_text` is made from what the harvest stored,
+#' used by the harvest strategies and by the {targets} pipeline. A page
+#' with HTML is read into blocks (R/blocks.R) and the blocks are its text,
+#' so the text and the sections come from one reading of the page. USN
 #' renders its pages in Chrome and keeps the text; rows the harvest filled from
 #' a PDF (uis archive plans, steiner) have no `html`: the PDF itself is not
 #' kept, so their stored text is the raw data and is returned as is.
@@ -87,7 +87,7 @@ page_fulltext <- function(blocks, config) {
     stringr::str_remove(paste0("^\\s*(?:OBS! Dette emnet tilhører et tidligere semester / år|",
                                "NOTE! This course belongs to a previous semester/year)\\s*")) |>
     # From a plan component that failed to render, or the year picker and the
-    # contact block (staff names, titles, e-mails), to the end (#218)
+    # contact block (staff names, titles, e-mails), to the end
     stringr::str_remove(paste0("(?s)\\n?(?:Error rendering component|Andre år og semester|",
                                "Previous years and semesters|Kontakt oss)\\b.*$")) |>
     # A heading left alone means the plan itself did not render

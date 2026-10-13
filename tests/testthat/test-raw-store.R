@@ -1,4 +1,4 @@
-# Tests for the append-only raw store (#296) and current sites (#293):
+# Tests for the append-only raw store and current sites:
 # harvest_all(), read_harvest(), finalize_release(), frozen_changes()
 
 raw_rows <- function(code = "A", year = 2025L, semester = c("Vår", "Høst"), html = "plan",
@@ -10,7 +10,7 @@ raw_rows <- function(code = "A", year = 2025L, semester = c("Vår", "Høst"), ht
     extracted_text = html)
 }
 
-test_that("a current site's offering gets its course's page from a harvest in its academic year (#293)", {
+test_that("a current site's offering gets its course's page from a harvest in its academic year", {
   raw <- withr::local_tempdir()
   apr <- dated_harvest_file("x", as.Date("2026-04-04"), raw)
   dir.create(dirname(apr), recursive = TRUE)
@@ -37,7 +37,7 @@ test_that("a current site's offering gets its course's page from a harvest in it
   expect_identical(academic_year_of_date(as.Date(character())), character())
 })
 
-test_that("other sites combine their raw files, and an offering in two files is an error (#296)", {
+test_that("other sites combine their raw files, and an offering in two files is an error", {
   raw <- withr::local_tempdir()
   saveRDS(raw_rows(), harvest_file("x", raw))
   f <- dated_harvest_file("x", as.Date("2027-10-01"), raw)
@@ -50,7 +50,7 @@ test_that("other sites combine their raw files, and an offering in two files is 
                "more than one raw file")
 })
 
-test_that("a retry of offerings without a plan takes their new page (#297)", {
+test_that("a retry of offerings without a plan takes their new page", {
   raw <- withr::local_tempdir()
   saveRDS(raw_rows(html = c(NA, "shell")), harvest_file("x", raw))   # a 404, a page shell
   f <- dated_harvest_file("x", as.Date("2026-10-07"), raw)
@@ -69,7 +69,7 @@ test_that("a retry of offerings without a plan takes their new page (#297)", {
   expect_equal(unname(html_a(read_harvest(harvest_files("x", raw), cfg))), c(NA, "shell"))
 })
 
-test_that("harvest_all(retry = TRUE) fetches offerings without a plan again (#297)", {
+test_that("harvest_all(retry = TRUE) fetches offerings without a plan again", {
   withr::local_dir(withr::local_tempdir())
   old <- institution_configs$samas$plan_years
   institution_configs$samas$plan_years <<- "url"
@@ -89,7 +89,7 @@ test_that("harvest_all(retry = TRUE) fetches offerings without a plan again (#29
   expect_true(again$retry)
 })
 
-test_that("harvest_all never writes a raw file twice (#296)", {
+test_that("harvest_all never writes a raw file twice", {
   withr::local_dir(withr::local_tempdir())
   dbh <- function(year) tibble::tibble(
     institution = "samas", Emnekode_raw = "S-1", Emnekode = "S", Årstall = year,
@@ -120,7 +120,7 @@ test_that("harvest_all never writes a raw file twice (#296)", {
   expect_equal(tools::md5sum(base), md5)
 })
 
-test_that("a finalized release is locked and checked (#296)", {
+test_that("a finalized release is locked and checked", {
   withr::local_dir(withr::local_tempdir())
   for (d in c("data/raw", "data/processed", "tests/snapshots")) dir.create(d, recursive = TRUE)
   saveRDS(raw_rows(inst = "samas"), harvest_file("samas"))
@@ -158,7 +158,7 @@ test_that("a finalized release is locked and checked (#296)", {
                                    "section changed", "offering gone or with another plan"))
 })
 
-test_that("a raw file has a harvest date only from its rows or its dated directory (#296)", {
+test_that("a raw file has a harvest date only from its rows or its dated directory", {
   raw <- withr::local_tempdir()
   saveRDS(raw_rows(), harvest_file("x", raw))
   expect_error(harvest_date(harvest_file("x", raw)), "No harvest date")

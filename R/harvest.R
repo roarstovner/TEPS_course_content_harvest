@@ -51,7 +51,7 @@ harvest_institution <- function(institution, courses, year = NULL,
 #' Harvest all institutions
 #'
 #' Loops through all configured institutions and harvests each. The raw store
-#' is append-only (#296): the first harvest of an institution is saved to
+#' is append-only: the first harvest of an institution is saved to
 #' data/raw/html_{inst}.RDS; a later one fetches only offerings that no raw
 #' file holds yet (a "current" site: a new snapshot of its latest DBH year)
 #' and saves them to data/raw/harvests/{date}/html_{inst}.RDS. An existing raw
@@ -60,7 +60,7 @@ harvest_institution <- function(institution, courses, year = NULL,
 #' With `retry`, a site with the year in the URL also fetches again the
 #' offerings whose page gave no plan in the current build
 #' (data/interim/course_offerings_full.RDS: a 404, a page shell); they are
-#' saved with `retry = TRUE`, and read_harvest() takes their new page (#297).
+#' saved with `retry = TRUE`, and read_harvest() takes their new page.
 #' Run targets::tar_make() first, and narrow it with `year`.
 #'
 #' @param courses Data frame from courses.RDS. If NULL, reads from disk.
@@ -96,7 +96,7 @@ harvest_all <- function(courses = NULL, year = NULL, refetch = FALSE,
       if (nrow(result) == 0) {
         message(inst, ": nothing new to harvest")
       } else if (file.exists(file)) {
-        stop("raw files are not written twice (#296): ", file)
+        stop("raw files are not written twice: ", file)
       } else {
         result$harvested_at <- Sys.Date()
         if (length(again)) result$retry <- result$course_id %in% again
@@ -124,8 +124,8 @@ offerings_without_plan <- function(institution,
 #' A "page" site (one page, several years) adds new years to its pages and a
 #' "current" site replaces its plan, so a page fetched earlier must not stand
 #' in for one fetched now: their checkpoints are removed and every page is
-#' fetched again (#296). A "current" site harvested in June-August may already
-#' show next year's plan, so that gives a warning (#293).
+#' fetched again. A "current" site harvested in June-August may already
+#' show next year's plan, so that gives a warning.
 #'
 #' @param config Institution config
 #' @return TRUE, the `refetch` for the strategy
@@ -133,7 +133,7 @@ prepare_fresh_harvest <- function(config) {
   if (identical(config$plan_years, "current") &&
       as.integer(format(Sys.Date(), "%m")) %in% 6:8) {
     warning(config$name, " shows only the current plan: a harvest in June-August ",
-            "may give next year's plan (#293)", call. = FALSE)
+            "may give next year's plan", call. = FALSE)
   }
   cps <- Sys.glob(file.path(RAW_DIR, "checkpoint", paste0("*_", config$name, ".RDS")))
   if (length(cps)) message("Pages are fetched again; removed: ", paste(cps, collapse = ", "))

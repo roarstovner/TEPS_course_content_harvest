@@ -111,7 +111,7 @@ audit_write_index <- function(check, manifest, sample) {
   merge_csv <- function(new, path) {
     if (file.exists(path)) {
       old <- read.csv(path, stringsAsFactors = FALSE)
-      if ("institution_short" %in% names(old)) {   # files from before #182
+      if ("institution_short" %in% names(old)) {   # files from before the rename
         old <- rename(old, institution = institution_short)
       }
       new <- bind_rows(filter(old, !institution %in% new$institution), new)

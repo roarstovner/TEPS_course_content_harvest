@@ -1,15 +1,15 @@
 # R/audit/prepare_sections.R
 # Build per-institution review packets for the `sections` audit
-# (.claude/skills/audit-institutions/checks/sections.md; issue #200).
+# (.claude/skills/audit-institutions/checks/sections.md).
 #
 # Each packet is a self-contained markdown file one review agent reads to audit
 # one institution's section extraction. It contains a stratified sample of
 # plans, each shown through the offering its text and sections come from
-# (source_course_id; #273): deterministic SUSPECTS (from
+# (source_course_id): deterministic SUSPECTS (from
 # sections_qa_suspects.RDS) plus a RANDOM control slice, each shown as
 #   (a) the full anonymized course_plan  — ground truth, and
 #   (b) the extractor's plan_sections rows — what to audit,
-# with the headings read on the page and the section each maps to (#278).
+# with the headings read on the page and the section each maps to.
 #
 # Inputs (regenerate in this order if stale):
 #   data/interim/course_offerings_full.RDS   targets::tar_make()
@@ -38,7 +38,7 @@ SECT_TRUNC  <- 5000   # max chars of each section raw_text shown. Must stay
                       # findings. reading_list (p99 ~28k) is still capped — its
                       # length is expected, judge it as such.
 RL_TRUNC    <- 2000   # reading_list cap: long lists are expected, the head shows the format
-MAX_KB      <- 150    # packet budget (#233): see the fitting loop below
+MAX_KB      <- 150    # packet budget: see the fitting loop below
 SEED        <- 42
 
 CHECK   <- "sections"
@@ -62,8 +62,8 @@ plans    <- readRDS("data/interim/course_offerings_full.RDS") |>
 
 # Headings on each source page and where they map (target `blocks`): shows
 # why text went where it did.
-# Anonymized per institution, for the sampled courses only (#280: all
-# headings took ~10 minutes).
+# Anonymized per institution, for the sampled courses only (all headings
+# took ~10 minutes).
 heads <- targets::tar_read(blocks) |>
   filter(role %in% c("heading", "sub"), nzchar(trimws(text)), course_id %in% sources) |>
   mutate(text = str_trunc(str_squish(text), 60))

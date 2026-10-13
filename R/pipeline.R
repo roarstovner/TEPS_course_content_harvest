@@ -1,5 +1,5 @@
 # R/pipeline.R
-# Steps of the {targets} pipeline in _targets.R (#263): turn one institution's
+# Steps of the {targets} pipeline in _targets.R: turn one institution's
 # raw harvest (data/raw/html_{inst}.RDS) into its derived tables, then combine the
 # institutions into the data files. The harvest itself stays outside the
 # pipeline (network, checkpoints); see README "Rebuilding Derived Data".
@@ -17,16 +17,16 @@ institution_config_target <- function(institution) {
 }
 
 # One institution's raw harvest: the rows of all its raw files
-# (harvest_files(); #296). Each file adds offerings the earlier ones lack, so
+# (harvest_files()). Each file adds offerings the earlier ones lack, so
 # an offering in two files is an error, unless the later one is a retry of an
-# offering that gave no plan (harvest_all(retry = TRUE); #297): it then has
+# offering that gave no plan (harvest_all(retry = TRUE)): it then has
 # the latest row with a page, else the latest row.
 #
 # A "current" site (plan_years) shows only the plan in force, so a page is the
 # plan of its course in the academic year it was fetched in, whichever DBH row
 # it was fetched for. Its files are snapshots: each offering gets the page of
 # its course code (Emnekode_raw) from the latest harvest in the offering's
-# academic year (autumn Y: Y/Y+1, spring Y: Y-1/Y), or no page (#293);
+# academic year (autumn Y: Y/Y+1, spring Y: Y-1/Y), or no page;
 # harvested_at says which harvest that was.
 read_harvest <- function(files, config) {
   current <- identical(config$plan_years, "current")
@@ -84,7 +84,7 @@ harvested_rows <- function(institutions = NULL,
     dplyr::left_join(text, by = "course_id")
 }
 
-# extracted_text of every row: the page's blocks as text (#276); rows without
+# extracted_text of every row: the page's blocks as text; rows without
 # blocks (PDF plans, usn's rendered text) as extract_fulltext_from_raw() gives
 # them.
 institution_fulltext <- function(html_file, blocks, config) {
@@ -106,11 +106,11 @@ institution_plans <- function(html_file, fulltext, config) {
                                    "html_success", "url.x", "url.y"))) |>
     dplyr::left_join(fulltext[, c("course_id", "extracted_text")], by = "course_id")
   df$course_plan <- anonymize_text(df$institution, df$extracted_text, .progress = FALSE)
-  df$plan_year_basis <- config$plan_years   # how the plan's year is known (#293)
+  df$plan_year_basis <- config$plan_years   # how the plan's year is known
   deduplicate_plans(df)
 }
 
-# Every page with HTML read once into blocks (R/blocks.R; #272): course_id
+# Every page with HTML read once into blocks (R/blocks.R): course_id
 # plus the block columns. Institutions read from text (usn, steiner) have no
 # blocks here; their sections read the extracted_text.
 institution_blocks <- function(html_file, config) {
@@ -124,10 +124,10 @@ institution_blocks <- function(html_file, config) {
                                   dplyr::bind_rows(.empty_blocks(), blocks)))
 }
 
-# Sections per plan (#273), cut from the page of the offering whose text the
+# Sections per plan, cut from the page of the offering whose text the
 # plan keeps (source_course_id), so a plan's sections and its course_plan come
 # from the same page. Sections are cut from raw text, so they are anonymized
-# here (#208).
+# here.
 institution_sections <- function(blocks, fulltext, config, plans) {
   src <- plans$plans[, c("plan_content_id", "institution", "Emnekode", "source_course_id")]
   cfg <- .block_cfg(config)
@@ -211,7 +211,7 @@ unmapped_headings <- function(blocks, config) {
     dplyr::count(institution, heading, name = "n_pages", sort = TRUE)
 }
 
-# Pages on which each heading-map pattern opens a section (#277): headings
+# Pages on which each heading-map pattern opens a section: headings
 # and sub-headings read from the page, or for the text reader (usn, steiner)
 # the heading lines of extracted_text. The html reader's text fallback (uis
 # PDF plans) is not counted.
@@ -252,9 +252,9 @@ heading_pattern_use <- function(hits) {
 # A page with no section to read and under SHELL_MAX_NCHAR characters is a
 # page shell, not a plan: the facts box only (uia), a credit-overlap box
 # (nord), "Emnebeskrivelse" (uib), a pointer to the English page (hvl), every
-# section "Se fagplanen." (oslomet 2018 practicum) (#222). Longer pages without
+# section "Se fagplanen." (oslomet 2018 practicum). Longer pages without
 # sections stay: oslomet practicum courses keep the programme's practicum plan
-# (#242). The offerings keep their text but get no plan.
+#. The offerings keep their text but get no plan.
 SHELL_MAX_NCHAR <- 1500
 
 .shell_plans <- function(plans, sections) {
@@ -294,7 +294,7 @@ write_rds_file <- function(x, path, ...) {
   path
 }
 
-# Changes beyond tolerance against the metrics snapshot (#255). The warning
+# Changes beyond tolerance against the metrics snapshot. The warning
 # makes them show in tar_make(); the test in test-pipeline-metrics.R fails on
 # them too.
 metrics_vs_snapshot <- function(snapshot, metrics) {

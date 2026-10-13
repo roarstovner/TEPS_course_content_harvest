@@ -12,7 +12,7 @@
 #'              year_from, year_to, source_course_id, course_plan,
 #'              course_plan_normalized). The text is that of the plan's
 #'              earliest offering, `source_course_id`, whose page its
-#'              sections are cut from too (#273).
+#'              sections are cut from too.
 #'   - `courses`: The original df with plan_content_id column added.
 deduplicate_plans <- function(df) {
   stopifnot(

@@ -64,7 +64,7 @@ message("  ", nrow(plans), " plans, ",
 
 # ── Sections per plan ────────────────────────────────────────────────────────
 # plan_sections is keyed by plan like `plans`, and cut from the same page as
-# the plan's course_plan (#273).
+# the plan's course_plan.
 
 sections <- if (file.exists(sections_path)) {
   readRDS(sections_path) |>

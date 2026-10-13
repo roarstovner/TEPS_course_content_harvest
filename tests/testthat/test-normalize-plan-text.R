@@ -207,7 +207,7 @@ test_that("deduplicate_plans errors on missing columns", {
   expect_error(deduplicate_plans(df))
 })
 
-test_that("NTNU's unit does not split a plan (#307)", {
+test_that("NTNU's unit does not split a plan", {
   a <- "Om emnet\nTekst\nAnsvarlig enhet\n\nInstitutt for lærerutdanning"
   b <- "Om emnet\nTekst\nAnsvarlig enhet\n\nProgram for lærerutdanning"
   expect_equal(normalize_plan_text(a, .progress = FALSE), normalize_plan_text(b, .progress = FALSE))

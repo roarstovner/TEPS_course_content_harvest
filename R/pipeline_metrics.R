@@ -1,5 +1,5 @@
 # R/pipeline_metrics.R
-# Regression snapshot for the built data (#255).
+# Regression snapshot for the built data.
 #
 # pipeline_metrics() counts offerings, plans and sections per institution in
 # the built files; check_pipeline_metrics() compares them with the snapshot in
@@ -24,7 +24,7 @@ METRICS_SNAPSHOT <- "tests/snapshots/pipeline_metrics.csv"
 #'   metrics), `metric`, `value`. Metrics named n_* are counts (a plan is a
 #'   plan_content_id + Emnekode); median_chars is the median length of
 #'   `course_plan` or of the section text; pct_text_in_sections is the median
-#'   share (%) of a plan's text that its sections hold (#277).
+#'   share (%) of a plan's text that its sections hold.
 pipeline_metrics <- function(offerings, sections = NULL) {
   has <- function(x) !is.na(x) & nzchar(x)
   course_years <- offerings |>

@@ -1,4 +1,4 @@
-# Tests for R/pipeline_metrics.R (#255)
+# Tests for R/pipeline_metrics.R
 
 test_that("pipeline_metrics counts offerings, plans and sections per institution", {
   offerings <- tibble::tibble(
@@ -62,7 +62,7 @@ test_that("the built data match the metrics snapshot", {
   ))
 })
 
-test_that("short plans without sections are page shells: no plan (#222)", {
+test_that("short plans without sections are page shells: no plan", {
   plans <- list(list(
     plans = tibble::tibble(plan_content_id = c("p1", "p2", "p3"), institution = "a",
                            Emnekode = c("X", "Y", "Z"),
@@ -79,7 +79,7 @@ test_that("short plans without sections are page shells: no plan (#222)", {
   expect_true(all(off$has_extracted_text))
 })
 
-test_that("plan_gaps() gives each course-year without a plan its reason (#296 follow-up)", {
+test_that("plan_gaps() gives each course-year without a plan its reason", {
   offerings <- tibble::tibble(
     course_id = c("a24", "a25s", "a25h", "a26", "b25"), institution = "x",
     Emnekode = c("A", "A", "A", "A", "B"), Årstall = c(2024, 2025, 2025, 2026, 2025),

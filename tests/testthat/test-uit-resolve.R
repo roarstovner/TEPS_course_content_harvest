@@ -1,4 +1,4 @@
-test_that("UiT: a semester listed twice keeps the first Norwegian document (#313)", {
+test_that("UiT: a semester listed twice keeps the first Norwegian document", {
   lookup <- tibble::tibble(
     Emnekode = "ENG-2980",
     Årstall = c(2018L, 2017L, 2017L, 2016L, 2016L, 2015L),

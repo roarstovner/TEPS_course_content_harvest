@@ -1,6 +1,6 @@
 # Tests for section extraction — R/section_heading_map.R, R/extract_sections.R
 
-# --- Heading map (#209) ---
+# --- Heading map ---
 
 test_that("headings found unmapped in the 2026-10-01 audit are mapped", {
   expect_equal(match_heading_to_section("Obligatorisk aktivitet"), "coursework_requirements")
@@ -27,10 +27,10 @@ test_that("a table of contents is not course content", {
 test_that("language metadata headings are not filed as assessment", {
   expect_true(is.na(match_heading_to_section("Language of instruction and examination")))
   expect_true(is.na(match_heading_to_section("Undervisnings- og eksamensspråk")))
-  expect_equal(match_heading_to_section("Eksamensspråk"), ".drop")  # logistics (#284)
+  expect_equal(match_heading_to_section("Eksamensspråk"), ".drop")  # logistics
 })
 
-# --- Placeholder rows (#210) ---
+# --- Placeholder rows ---
 
 test_that("placeholder and pointer-only rows are dropped", {
   drop <- c("Ingen", "Ingen.", "Ingen Ingen", "Ingen krav", "Ingen spesielle krav.",
@@ -56,7 +56,7 @@ test_that("rows with real content are kept", {
   for (t in keep) expect_true(.keep_section_row(t, "reading_list"), label = t)
 })
 
-# --- Sub-headings and .drop (#209, #211, #212) ---
+# --- Sub-headings and .drop ---
 
 html_cfg <- function(sub = NULL, heading = "h2") {
   list(reader = "html", container = "main", heading = heading, sub = sub)
@@ -93,7 +93,7 @@ test_that("sentences and list items never act as sub-headings", {
   expect_match(s[["course_content"]], "Klasseledelse")
 })
 
-test_that("paragraphs in an accordion <li> that holds a section heading split (#240)", {
+test_that("paragraphs in an accordion <li> that holds a section heading split", {
   html <- "<main><ul>
     <li><h2>Arbeidskrav og obligatoriske aktiviteter</h2><div>
       <p>To innleveringer.</p><ul><li><p>Vurdering</p></li></ul></div></li>
@@ -108,7 +108,7 @@ test_that("paragraphs in an accordion <li> that holds a section heading split (#
   expect_match(s[["coursework_requirements"]], "To innleveringer\\.\\s+Vurdering$")
 })
 
-test_that("a bold label after a dropped sub-heading returns to the parent (#240)", {
+test_that("a bold label after a dropped sub-heading returns to the parent", {
   html <- "<main><ul><li><h2>Vurdering og eksamen</h2><div>
     <p><strong>Vurdering for studentar som tar faget 1. og 2. studieår</strong></p>
     <p>Individuell prøveforelesing.</p>
@@ -121,7 +121,7 @@ test_that("a bold label after a dropped sub-heading returns to the parent (#240)
   expect_match(s[["assessment"]], "faget 3\\. studieår\nIndividuell FoU-oppgåve\\.$")
 })
 
-test_that("an emphasised lead that equals a heading splits its paragraph (#240)", {
+test_that("an emphasised lead that equals a heading splits its paragraph", {
   html <- "<main>
     <h2>Innhold</h2><p>Motorisk utvikling.</p>
     <p><em>Faget i praksis</em>I løpet av emnet planlegger studentene en økt.</p>
@@ -136,7 +136,7 @@ test_that("an emphasised lead that equals a heading splits its paragraph (#240)"
   expect_equal(s[["coursework_requirements"]], "To innleveringer.")
 })
 
-test_that("a heading on its own line inside a <p> splits it (#240)", {
+test_that("a heading on its own line inside a <p> splits it", {
   html <- "<main><h2>Innhold</h2>
     <p>Bærekraftig utvikling. <br>Faget i praksis </p>
     <p>I praksisperioden vektlegges utforskende arbeidsmåter.</p>
@@ -148,13 +148,13 @@ test_that("a heading on its own line inside a <p> splits it (#240)", {
   expect_match(s[["teaching_methods"]], "Emnet har et fagdidaktisk perspektiv\\.$")
 })
 
-test_that("the stock resit sentence is removed from assessment (#241)", {
+test_that("the stock resit sentence is removed from assessment", {
   txt <- "Muntlig eksamen. Deleksamen 1: Ny/utsatt eksamen arrangeres som ved ordinær eksamen. Karakter A-F."
   out <- tibble::tibble(section = "assessment", raw_text = txt)
   expect_equal(.clean_sections(out, "oslomet")$raw_text, "Muntlig eksamen. Karakter A-F.")
 })
 
-test_that("an inline label for the open section stays as content (#240)", {
+test_that("an inline label for the open section stays as content", {
   html <- "<main><h2>Læringsutbytte</h2>
     <p><strong>Kunnskap</strong>Kandidaten har kunnskap om lesing.</p>
     <p><strong>Ferdigheter:</strong> Kandidaten kan planlegge.</p></main>"
@@ -163,7 +163,7 @@ test_that("an inline label for the open section stays as content (#240)", {
   expect_match(s[["learning_outcomes"]], "\nFerdigheter:\nKandidaten kan planlegge\\.$")
 })
 
-test_that("sub-headings under an unmapped heading do not collect text (#240)", {
+test_that("sub-headings under an unmapped heading do not collect text", {
   html <- "<main><ul>
     <li><h2>Fagplan</h2><div><p>Læringsutbytte</p><p>Programmets mål.</p>
       <p>Arbeidskrav</p><p>Programmets krav.</p></div></li>
@@ -175,7 +175,7 @@ test_that("sub-headings under an unmapped heading do not collect text (#240)", {
   expect_equal(s[["learning_outcomes"]], "Emnets mål.\nKunnskap\nStudenten kan lese.")
 })
 
-test_that("a section that points to the Fagplan takes its text from it (#289)", {
+test_that("a section that points to the Fagplan takes its text from it", {
   html <- "<main><ul>
     <li><h2>Fagplan</h2><div><p><strong>Innledning</strong></p><p>Faget handler om kart.</p>
       <p><strong>Fagets arbeids- og undervisningsformer</strong></p>
@@ -226,7 +226,7 @@ test_that("text_split ends a section at an admission heading and drops it", {
   expect_false(any(grepl("studiekompetanse", s)))
 })
 
-test_that("uis PDF: header skipped, intro kept, admin blocks and book titles handled (#243)", {
+test_that("uis PDF: header skipped, intro kept, admin blocks and book titles handled", {
   txt <- paste(
     "MGL2050_1 Bokmål Versjon 20.Februar.2023", "",
     "Bevegelse og vurderinger i kroppsøvingsfaget",
@@ -248,7 +248,7 @@ test_that("uis PDF: header skipped, intro kept, admin blocks and book titles han
   expect_false(any(grepl("Nordmann|Tidligdialog|Versjon", s)))
 })
 
-test_that("usn: table of contents skipped, stamp dropped, header 'litteratur' harmless (#244)", {
+test_that("usn: table of contents skipped, stamp dropped, header 'litteratur' harmless", {
   txt <- paste(
     "Ansvarlig:", "", "Institutt for språk og litteratur", "",
     "Innholdsfortegnelse", "", "Faglig innhold i emnet", "", "Vurderingsformer", "",
@@ -264,7 +264,7 @@ test_that("usn: table of contents skipped, stamp dropped, header 'litteratur' ha
   expect_equal(s[["reading_list"]], "Kompetansemål og vurdering")
 })
 
-test_that("ntnu: the exam tab, contacts and scripts are not sections (#245, #321)", {
+test_that("ntnu: the exam tab, contacts and scripts are not sections", {
   html <- "<section id='content'><h2>Om emnet</h2><h3>Læringsformer og aktiviteter</h3><p>Seminarer.</p>
     <script>function toggleRooms(id) { x(); }</script>
     <h3>Mer om vurdering</h3><p>Hjemmeeksamen.</p>
@@ -275,12 +275,12 @@ test_that("ntnu: the exam tab, contacts and scripts are not sections (#245, #321
   expect_equal(s[["teaching_methods"]], "Seminarer.")
   expect_equal(s[["assessment"]], "Hjemmeeksamen.")
   expect_false(any(grepl("toggleRooms|Nordmann|SL120|Vurderingsordning|Karakter", s)))
-  # form widgets (uib semester picker; #219) are not content either
+  # form widgets (uib semester picker) are not content either
   doc <- .read_doc("<div><label>Vel emnebeskrivelse for semester</label><select><option>2027 Vår</option></select><p>Mål.</p></div>")
   expect_equal(rvest::html_text2(doc), "Mål.")
 })
 
-test_that("more placeholders, exam-table headers and list stamps are removed (#248)", {
+test_that("more placeholders, exam-table headers and list stamps are removed", {
   for (t in c("Oppgis senere.", "Pensum-/litteraturliste er ikke publisert ennå.",
               "Litteratur vil være klart ved semesterstart.", "Pensumliste for høsten 2024.",
               "Pensumlista for høsten 2025-våren 2026.",
@@ -302,14 +302,14 @@ test_that("more placeholders, exam-table headers and list stamps are removed (#2
     "Varighet og omfang avtales med veileder.")
 })
 
-test_that("first group label and one-line sections are kept, heading echo dropped (#249)", {
+test_that("first group label and one-line sections are kept, heading echo dropped", {
   out <- tibble::tibble(section = c("learning_outcomes", "learning_outcomes", "teaching_methods"),
                         raw_text = c("Kunnskap\nStudenten kan lese.", "Læringsutbytte\nStudenten kan lese.", "Seminarer"))
   expect_equal(.clean_sections(out)$raw_text,
                c("Kunnskap\nStudenten kan lese.", "Studenten kan lese.", "Seminarer"))
 })
 
-test_that("a colon-ended coursework lead-in starts coursework_requirements (#246)", {
+test_that("a colon-ended coursework lead-in starts coursework_requirements", {
   html <- "<main><h2>Undervisning</h2><p>Seminarer hver uke.</p>
     <p>Emnet inkluderer følgende obligatoriske aktiviteter, som må være godkjent før eksamen:</p>
     <ul><li>To innleveringer</li></ul>
@@ -321,7 +321,7 @@ test_that("a colon-ended coursework lead-in starts coursework_requirements (#246
   expect_match(s[["assessment"]], "Ingen hjelpemidler\\.$")
 })
 
-# --- details_mf (#213) ---
+# --- details_mf ---
 
 test_that("mf: intro is course_content, accordions are sections, contact card ignored", {
   html <- '<html><body><article class="template-study-subject"><div class="content-body">
@@ -350,7 +350,7 @@ test_that("mf: intro is course_content, accordions are sections, contact card ig
   expect_false(any(grepl("Nordmann|desember|Emnekode", s)))
 })
 
-test_that("nord: the short description is course content, title and code are not (#285)", {
+test_that("nord: the short description is course content, title and code are not", {
   page <- function(intro) paste0('<html><body><div class="main-content">
     <h1>Matematikk 4</h1><div class="field--name-field-subject-code">MAT5006</div>
     <div class="placeholder-text">', intro, '</div>
@@ -374,7 +374,7 @@ test_that("nord: the short description is course content, title and code are not
                only_body)
 })
 
-test_that("a prerequisites label in course content moves what it names (#285)", {
+test_that("a prerequisites label in course content moves what it names", {
   uit <- paste("Emnet er et fagvalg i grunnskolelærerutdanning.", "",
                "Forkunnskapskrav og anbefalte forkunnskaper:", "",
                "Jf. opptakskrav og progresjonskrav i studieplanen.", "",
@@ -401,7 +401,7 @@ test_that("a prerequisites label in course content moves what it names (#285)", 
   expect_equal(.split_inline_prerequisites(toc), toc)
 })
 
-test_that("section leftovers of the #280 audit (#299)", {
+test_that("section leftovers of the 2026-10-05 audit", {
   # an inline prerequisites label after a sentence starts its own line (uit)
   cc <- tibble::tibble(section = "course_content", raw_text = paste0(
     "Emnet kan ikke tas som enkeltemne.ForkunnskapskravJf. opptakskrav i studieplanen.\n",
@@ -433,7 +433,7 @@ test_that("section leftovers of the #280 audit (#299)", {
     raw_text, "\nEmnet gir en innføring i norsk språk.")))), 1)
 })
 
-# --- Exam logistics and notices (#215) ---
+# --- Exam logistics and notices ---
 
 test_that("exam-logistics headings end the assessment section", {
   expect_equal(match_heading_to_section("Mer om eksamen ved UiO"), ".drop")
@@ -443,14 +443,14 @@ test_that("exam-logistics headings end the assessment section", {
   expect_equal(match_heading_to_section("Eksamen og hjelpemidler"), "assessment")
 })
 
-test_that("practicum headings are teaching methods (#247)", {
+test_that("practicum headings are teaching methods", {
   expect_equal(match_heading_to_section("Praksis"), "teaching_methods")
   expect_equal(match_heading_to_section("Gjennomføring av praksis"), "teaching_methods")
   # exact rows only: other headings that mention praksis are unchanged
   expect_true(is.na(match_heading_to_section("Praksisrapport")))
 })
 
-test_that("resit heading variants are dropped (#241)", {
+test_that("resit heading variants are dropped", {
   for (h in c("Vilkår for ny/utsatt eksamen", "Ny/utsett eksamen",
               "Ny eller utsatt eksamen", "Kontinuasjonseksamen")) {
     expect_equal(match_heading_to_section(h), ".drop", label = h)
@@ -480,7 +480,7 @@ test_that("notices are stripped from assessment but not from course content", {
   expect_equal(res$raw_text[2], "Bruk av ChatGPT i skolen.")
 })
 
-test_that("a COVID sentence is removed without the rest of its line (#241)", {
+test_that("a COVID sentence is removed without the rest of its line", {
   txt <- paste("3 timers skoleeksamen erstattes av 3 timers hjemmeeksamen.",
                "Dette er et ekstraordinært tiltak i forbindelse med koronapandemien.",
                "Karakter A-F.")
@@ -505,7 +505,7 @@ test_that("uib footer and error banner are removed", {
   expect_equal(res$raw_text, "Mappevurdering.")
 })
 
-# --- Inline coursework lines (#212) ---
+# --- Inline coursework lines ---
 
 test_that("nord-style gate lines move from assessment to coursework_requirements", {
   out <- tibble::tibble(section = "assessment", raw_text = paste(
@@ -519,7 +519,7 @@ test_that("nord-style gate lines move from assessment to coursework_requirements
   expect_match(s[["coursework_requirements"]], "^Obligatorisk deltakelse \\(OD\\).*\nArbeidskrav \\(AK\\)")
 })
 
-test_that("a gate label takes the paragraph it names along (#283)", {
+test_that("a gate label takes the paragraph it names along", {
   split <- function(...) {
     res <- .split_inline_coursework(tibble::tibble(section = "assessment",
                                                    raw_text = paste(..., sep = "\n")))
@@ -573,7 +573,7 @@ test_that("a gate label takes the paragraph it names along (#283)", {
   expect_equal(s[["assessment"]], "Emnet evalueres med skoleeksamen.")
 })
 
-test_that("leading placeholders and praksis pointers go, content stays (#286)", {
+test_that("leading placeholders and praksis pointers go, content stays", {
   out <- tibble::tibble(
     section = c("prerequisites", "teaching_methods", "coursework_requirements"),
     raw_text = c("Ingen\n\nNOLI102 er tilrådd.",
@@ -588,7 +588,7 @@ test_that("leading placeholders and praksis pointers go, content stays (#286)", 
   expect_false("coursework_requirements" %in% names(s))
 })
 
-test_that("uio: a lead-in naming obligatory parts opens coursework, admin labels close it (#288)", {
+test_that("uio: a lead-in naming obligatory parts opens coursework, admin labels close it", {
   html <- "<main><h2>Undervisning</h2><p>Seminarer hver uke.</p>
     <p>Obligatoriske forhold i undervisningen:</p><ul><li>Deltagelse i undervisning</li></ul>
     <p>Undervisningssted:</p><p>Universitetet i Oslo.</p></main>"
@@ -613,7 +613,7 @@ test_that("nmbu exam-table line is removed but a sentence before it is kept", {
   expect_equal(res$raw_text, one)
 })
 
-test_that("admission sentences are removed from prerequisites, real ones kept (#211)", {
+test_that("admission sentences are removed from prerequisites, real ones kept", {
   txt <- paste("Opptak skjer på bakgrunn av generell studiekompetanse eller realkompetanse.",
                "Kan tas som frittstående fag i lærerutdanning.",
                "Bestått MGL101 og opptak til lærerutdanningen.",
@@ -622,7 +622,7 @@ test_that("admission sentences are removed from prerequisites, real ones kept (#
   expect_equal(res$raw_text, "Bestått MGL101 og opptak til lærerutdanningen.\nEmnet bygger på Norsk 1.")
 })
 
-test_that("recommendations that mention admission are kept (#211)", {
+test_that("recommendations that mention admission are kept", {
   txt <- paste("I tillegg til generell studiekompetanse bør studenten ha engelsk.",
                "Generell studiekompetanse inklusive lulesamisk fra videregående skole.",
                "Kan tas som frittstående fag i lærerutdanning. Bygger på 1A 1-7",

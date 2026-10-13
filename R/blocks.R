@@ -1,5 +1,5 @@
 # R/blocks.R
-# The block model (#272): a page is read once into a block table, one row per
+# The block model: a page is read once into a block table, one row per
 # heading or piece of text in document order. The fulltext (.blocks_text())
 # and the sections (sectionize()) are views of the blocks.
 #
@@ -39,7 +39,7 @@
 
 # Block reader settings from an institution config. `ic` is passed in rather
 # than looked up, so that in the {targets} pipeline only the changed
-# institution is rebuilt (#264).
+# institution is rebuilt.
 .block_cfg <- function(ic) {
   reader <- ic$section_strategy %||% stop("No section_strategy for institution: ", ic$name)
   if (!reader %in% c("html", "json", "text", "noop")) {
@@ -133,7 +133,7 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
     subs <- rvest::html_elements(root, cfg$sub)
     subs <- subs[is.na(xml2::xml_attr(subs, "data-block"))]
     # A sub-heading in a list item is content, unless the item holds a
-    # heading (oslomet wraps each section in an accordion <li>; #240).
+    # heading (oslomet wraps each section in an accordion <li>).
     li <- xml2::xml_find_first(subs, "ancestor::li[1]")
     in_list <- vapply(li, function(l) {
       !inherits(l, "xml_missing") &&
@@ -241,7 +241,7 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
 #     sub-section and stays as text;
 #   - it is a colon-ended lead-in naming a coursework gate ("Emnet inkluderer
 #     følgende obligatoriske aktiviteter, som må være godkjent før eksamen:"):
-#     coursework_requirements, its text kept (uio; #246).
+#     coursework_requirements, its text kept (uio).
 # Otherwise it is text.
 .sub_blocks <- function(node, add_block) {
   raw <- rvest::html_text2(node)
@@ -296,7 +296,7 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
 
 # hivolda (Drupal) renders each part of the plan as `div.field-<name>` with a
 # `div.label` heading; the exam table is the unlabelled field-assessments-row
-# (#214). Each top-level field is a heading (`section_fields` maps field class
+#. Each top-level field is a heading (`section_fields` maps field class
 # names to sections; a field not in it maps nowhere) and its text, in a scope
 # of its own, so text outside the fields (title, programmes) is in the
 # fulltext but in no section. A field opens its section without its label; a
@@ -379,7 +379,7 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
 #     section ("Kunnskap" inside learning outcomes) is text.
 # In a reading list opened by a whole heading ("Litteratur") only another
 # whole heading switches, so a book title such as "Kompetansemål og
-# vurdering" does not (#243).
+# vurdering" does not.
 .text_blocks <- function(text, cfg) {
   if (is.na(text) || !nzchar(text)) return(.empty_blocks())
   lines <- stringr::str_split_1(text, "\\r?\\n")
@@ -389,7 +389,7 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
 
   # Skip a title + metadata block (uis PDFs: "Emnekode: ...", "Tilbys av:
   # ..."), through the paragraph holding its last line; the untitled text
-  # after it is the course introduction (#243).
+  # after it is the course introduction.
   if (!is.null(cfg$text_header)) {
     hdr <- which(grepl(cfg$text_header, utils::head(lines, 40), perl = TRUE))
     if (length(hdr)) {
@@ -402,7 +402,7 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
     }
   }
   # Skip a table of contents (usn): from "Innholdsfortegnelse" to where its
-  # first entry repeats as the real heading (#244).
+  # first entry repeats as the real heading.
   toc <- which(trimws(lines) == "Innholdsfortegnelse")[1]
   if (!is.na(toc)) {
     entries <- which(!is_blank & seq_along(lines) > toc)

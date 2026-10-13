@@ -15,7 +15,7 @@
 #   phone       8-digit phone-number-like sequence left
 #   name_label  staff label (emneansvarlig, faglærer, godkjent av, ...) followed
 #               by a capitalised two-word name, or a role and names anywhere in
-#               a line (.role_name_inline_regex, as privacy_check; #301)
+#               a line (.role_name_inline_regex, as privacy_check)
 #   name_like   2+ capitalised word pairs outside literature references
 #   admin_date  dates / semester-year labels / admin year stamps left
 #   removed     unusually large share of the text removed (over-removal)

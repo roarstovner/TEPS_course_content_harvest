@@ -264,7 +264,7 @@ resolve_urls_uit_batch <- function(df, .progress = TRUE) {
 #' The semester picker can list a semester twice: an English document (heading
 #' "Course code:", for ENG-2980 V 2017 an empty page) beside the Norwegian one,
 #' or two Norwegian revisions. Only for such a semester are the documents
-#' fetched; the first Norwegian one is kept (#313).
+#' fetched; the first Norwegian one is kept.
 #'
 #' @param lookup Tibble with Emnekode, Årstall, Semesternavn, url, in picker order
 #' @param is_english Function of a URL: TRUE for an English document
@@ -301,7 +301,7 @@ resolve_urls_usn_batch <- function(df, max_version = 3, checkpoint_path = NULL, 
   }
 
   # Start a single browser session at the base URL. read_html_live() needs
-  # chromote, which rvest only suggests; naming it here puts it in renv.lock (#314)
+  # chromote, which rvest only suggests; naming it here puts it in renv.lock
   rlang::check_installed("chromote")
   base_url <- "https://www.usn.no/studier/studie-og-emneplaner/"
   session <- rvest::read_html_live(base_url)

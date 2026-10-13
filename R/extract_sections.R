@@ -1,5 +1,5 @@
 # R/extract_sections.R
-# Sections of a course plan, from the page's blocks (R/blocks.R; #275).
+# Sections of a course plan, from the page's blocks (R/blocks.R).
 #
 # Entry points:
 #   page_sections(blocks, text, cfg) — sections of one page: sectionize(),
@@ -18,7 +18,7 @@
 #' unmapped one closes the open section, so the text under it is dropped. A
 #' sub-heading acts only inside a section a heading opened: one naming the
 #' open section is a group label and stays as content ("Kunnskap" inside
-#' learning outcomes; #240, #249); one naming another section switches to it;
+#' learning outcomes); one naming another section switches to it;
 #' an unmapped one returns to the section its heading opened and stays as a
 #' line there; a `keep` sub-heading stays as the first line of its section.
 #' Blocks between "start" and "end" (a <details>, an accordion item) hold a
@@ -77,7 +77,7 @@ sectionize <- function(blocks) {
 #' sectionize() on the page's blocks (for the text reader, the lines of
 #' extracted_text). When the html reader finds fewer than 3
 #' sections, the lines of extracted_text are tried instead, and kept if they
-#' give more (#183). A section that only points to another block on the page
+#' give more. A section that only points to another block on the page
 #' is filled from it (`section_pointer`), nord-style coursework lines move out
 #' of assessment (`section_inline_coursework`), a prerequisites label in course
 #' content takes what it names to prerequisites, and .clean_sections() tidies
@@ -101,12 +101,12 @@ page_sections <- function(blocks, text, cfg) {
 }
 
 # A prerequisites label inside course_content moves what it names to
-# prerequisites (#285): a label line ("Forkunnskapskrav", "Forkunnskapskrav og
+# prerequisites: a label line ("Forkunnskapskrav", "Forkunnskapskrav og
 # anbefalte forkunnskaper:"; uit "Om emnet") the next paragraph, a label with
 # text ("Forkunnskapskrav: 140 stp ...", mf) that text. The label goes, since
 # it only names the section. A label followed by another heading-like line
 # names nothing. A label after a sentence starts a line ("... enkeltemne.
-# ForkunnskapskravJf. opptakskrav ...", uit; #299).
+# ForkunnskapskravJf. opptakskrav ...", uit).
 .split_inline_prerequisites <- function(out) {
   i <- which(out$section == "course_content")
   if (length(i) != 1) return(out)
@@ -155,7 +155,7 @@ page_sections <- function(blocks, text, cfg) {
 # ("Se fagplanen.") gets that block's text under the matching sub-heading,
 # after a lead that names the source: "Se fagplanen. Fagplanen sier:\n...".
 # `pointer` (config `section_pointer`): `heading` of the block, `lead`, and
-# `sections`, a sub-heading per section (oslomet; #289). The block's text runs
+# `sections`, a sub-heading per section (oslomet). The block's text runs
 # to its next sub-heading.
 .fill_pointer_sections <- function(out, blocks, pointer) {
   if (is.null(pointer) || nrow(out) == 0) return(out)
@@ -202,7 +202,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # A strategy's list of section -> text chunks as a (section, raw_text) tibble.
 # A chunk of 40 or more characters that another chunk of its section repeats
 # is dropped (nord's short description is often the first lines of
-# "Beskrivelse av emnet", uis repeats a PDF plan's lead sentence; #285).
+# "Beskrivelse av emnet", uis repeats a PDF plan's lead sentence).
 # Shorter chunks are labels ("Geometri"), which may recur as words.
 .list_to_sections <- function(sections) {
   if (length(sections) == 0) return(.empty_sections())
@@ -235,14 +235,14 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 
 #' Post-process a strategy's (section, raw_text) output for one course.
 #'
-#' Applies cheap, high-precision cleanup shared across all strategies (#198):
+#' Applies cheap, high-precision cleanup shared across all strategies:
 #'   - removes ".drop" rows (admission and exam-logistics headings),
 #'   - strips trailing FS page-generation timestamps,
 #'   - drops a leading line that merely repeats the section's own heading,
 #'   - removes rows that are empty or only a placeholder ("Ingen",
 #'     "Se fagplanen.", "-", a Leganto pointer; see .placeholder_phrases).
 #'   - strips known notices and page widgets from assessment and coursework
-#'     (.section_noise; #215).
+#'     (.section_noise).
 #' Fuzzier cleanup (exam tables, arbeidskrav/eksamen boundaries inside one
 #' paragraph) is left to the later Phase-2 LLM lifting.
 .clean_sections <- function(out, institution = NULL) {
@@ -253,7 +253,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   exam <- out$section %in% c("assessment", "coursework_requirements")
   out$raw_text[exam] <- .strip_section_noise(out$raw_text[exam], institution)
   rl <- out$section == "reading_list"
-  out$raw_text[rl] <- stringr::str_remove(   # hiof date stamp line (#248, #287)
+  out$raw_text[rl] <- stringr::str_remove(   # hiof date stamp line
     out$raw_text[rl], "^\\s*Litteratur\\w*(?: er)? sist oppdater[^\\n]*\\s*")
   out$raw_text[rl] <- vapply(out$raw_text[rl], .strip_list_tabs, character(1),
                              USE.NAMES = FALSE)
@@ -273,7 +273,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 
 # The tab bar of a Leganto widget with several lists (usn): the reading list
 # opens with the lists' labels ("Norsk, emne 2 (MG1NO2) Drammen"), and each
-# list repeats its label (#299). Leading labels that recur later go.
+# list repeats its label. Leading labels that recur later go.
 .strip_list_tabs <- function(text) {
   lines <- stringr::str_split_1(text, "\n")
   sq <- stringr::str_squish(lines)
@@ -285,14 +285,14 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 }
 
 # Admission/study-right sentences inside a prerequisites block with no heading
-# of their own (nord, uib, oslomet; #211). A line is removed only if it has an
+# of their own (nord, uib, oslomet). A line is removed only if it has an
 # admission phrase and nothing that looks like a real or recommended
 # prerequisite (a course code, "bestått", "forkunnskap", credits, "bør",
 # "i tillegg til", ...).
 .admission_line_regex <- paste0(
   "(?i)opptak skjer|frittstående (?:fag|emne)|studierett|",
   "tilgjengelig som valgfag|søke opptak|enkeltemnestudent|krever opptak til|",
-  "^\\s*(?:jf\\.?|jamfør) opptakskrav|",                   # uit pointer to the programme (#285)
+  "^\\s*(?:jf\\.?|jamfør) opptakskrav|",                   # uit pointer to the programme
   "^\\s*opptak til (?:studie|lektor|lærer|master|bachelor|grunnskole)|",
   "^\\s*generell studiekompetanse\\.?\\s*$"
 )
@@ -309,10 +309,10 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   paste(lines[!admin], collapse = "\n")
 }
 
-# Lines in an assessment block that state a coursework gate (#212). nord
+# Lines in an assessment block that state a coursework gate. nord
 # writes them as "Arbeidskrav (AK): ..." or "Obligatorisk deltakelse (OD): ..."
 # inside one undifferentiated vurdering block, with no heading to split on;
-# uit as "Følgende arbeidskrav må være godkjent før ...:" and a list (#283).
+# uit as "Følgende arbeidskrav må være godkjent før ...:" and a list.
 .inline_coursework_regex <- paste0(
   "(?i)^\\s*(?:(?:(?:inntil|minst|opptil) )?\\d+ (?:obligatoriske )?arbeidskrav|",
   "følg(?:ende|jande) (?:obligatoriske )?arbeidskrav|arbeidskrav(?:ene|et)?|",
@@ -329,7 +329,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # ("Obligatorisk deltakelse (OD)", nord) takes the next paragraph unless that
 # is a label too ("Eksamen"), and the paragraphs after it that still speak of
 # a gate ("Det er derfor obligatorisk oppmøte ..."). Both stop at the next
-# assessment component ("Hjemmeeksamen (HJ): ...") (#283).
+# assessment component ("Hjemmeeksamen (HJ): ...").
 .split_inline_coursework <- function(out) {
   i <- which(out$section == "assessment")
   if (length(i) != 1) return(out)
@@ -389,7 +389,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "Emnet (?:evalueres|vurderes)\\b)|(?<=\\S) (?=Eksamen består av)")
 
 # Notices and page widgets with no heading of their own, so .drop cannot catch
-# them (#215). Applied to assessment and coursework_requirements only, so a
+# them. Applied to assessment and coursework_requirements only, so a
 # course that teaches about AI keeps "kunstig intelligens" in its content.
 # "all" applies to every institution; other entries per institution. Most
 # patterns remove whole lines (or, with (?s), a trailing block).
@@ -402,15 +402,15 @@ extract_sections <- function(config, html, extracted_text, course_id) {
     "(?m)^.*(?:plagiatkontroll|for plagiat).*$",                 # nih
     "(?m)^.*(?:ChatGPT|kunstig intelligens|artificial intelligence).*$", # nord
     # COVID notices: the sentence only, since the line may also hold the
-    # assessment itself (nord PO111LS; #241)
+    # assessment itself (nord PO111LS)
     paste0("(?m)(?:\\b(?i:pga|jf|ca|evt)\\.[ \t]*)?",
            "(?=[^.!?\n ])[^.!?\n]*(?i:covid|korona)[^.!?\n]*(?:[.!?]+[ \t]*|$)"),
     # flattened exam-table header glued to its data row ("Vurderingsform
     # Gruppering Varighet Karakterskala Andel ... Mappe Individuell A-F";
-    # uis, hivolda, inn): drop the header words, keep the values (#248)
+    # uis, hivolda, inn): drop the header words, keep the values
     paste0("(?m)^(?:(?:", .exam_table_header, ")[ \t]+){3,}(?:",
            .exam_table_header, ")(?=[ \t]|$)[ \t]*"),
-    # stock resit sentence in running text (oslomet; #241)
+    # stock resit sentence in running text (oslomet)
     paste0("(?i)(?:Deleksamen \\d:[ \t]*)?Ny(?:/| og | eller )ut(?:satt|sett) ",
            "eksamen (?:arrangeres|gjennomføres|foregår|blir arrangert|",
            "blir gjennomført|vert arrangert|vert gjennomført) ",
@@ -430,9 +430,9 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   # ..."); a line with a sentence before the table keeps its text
   nmbu = "(?m)^[^.\n]{0,60}Karakterregel:.*$",
   uit  = c("(?m)^Alt du trenger å vite om før, under og etter eksamen.*$",  # link line
-           "(?m)^Eksamensdato er foreløpig.*$",                               # #287
+           "(?m)^Eksamensdato er foreløpig.*$",
            # the grading cell of each row of the 2020s gate table, the same
-           # for every gate; the gate's name stays (#299)
+           # for every gate; the gate's name stays
            "\tKarakterregel:[ \t]*\nGodkjent – ikke godkjent[ \t]*")
 )
 
@@ -453,8 +453,8 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   # match against the heading patterns (not the substring matcher) so we never
   # delete real one-line content that merely contains a section keyword
   # (e.g. "Ingen pensumliste tilgjengelig" or "Vurdering skjer ved eksamen").
-  # A learning-outcome group label ("Kunnskap") is content, not an echo
-  # (#249), and a line that is the whole section ("Praksis") stays.
+  # A learning-outcome group label ("Kunnskap") is content, not an echo,
+  # and a line that is the whole section ("Praksis") stays.
   lines <- stringr::str_split_1(text, "\\r?\\n")
   norm_first <- tolower(trimws(stringr::str_remove(lines[1], "[:：]\\s*$")))
   eq <- section_heading_patterns$pattern == norm_first
@@ -475,7 +475,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 }
 
 # A row that only lists headings, half of them section names (uib 2018 shell
-# pages: "Læringsutbytte\nFulltid/deltid\nKrav til forkunnskaper\n..."; #299).
+# pages: "Læringsutbytte\nFulltid/deltid\nKrav til forkunnskaper\n...").
 .is_heading_list <- function(text) {
   l <- trimws(stringr::str_split_1(text, "\n"))
   l <- l[nzchar(l)]
@@ -484,7 +484,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
     mean(!is.na(vapply(l, .exact_section, character(1)))) >= 0.5
 }
 
-# Phrases that say a section is absent or lives elsewhere (#210). A row is a
+# Phrases that say a section is absent or lives elsewhere. A row is a
 # placeholder only when its WHOLE text is made of these phrases, so real
 # content that merely starts with "Ingen" or mentions Leganto is kept.
 .placeholder_phrases <- c(
@@ -495,7 +495,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   # pointers to another document
   "(?:se|sjå) (?:fag|program|studie)?plan(?:en)?(?: for [^.]{0,100})?",
   "se emnearkivet",
-  "se (?:kursinnhold|emnebeskrivelse)(?:et|n)?",                     # nord intro (#285)
+  "se (?:kursinnhold|emnebeskrivelse)(?:et|n)?",                     # nord intro
   "ingen emner(?: i programmet)?",
   "emnebeskrivelsen finnes kun på engelsk[^.]*",
   # reading-list pointers and absence notes
@@ -509,11 +509,11 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "litteratur(?:lista|listen)? vil være klart? [^.]{0,80}",           # hiof
   "(?:pensumlist[ea]|anbefalt litteratur) for (?:høsten|våren) ?\\d{4}(?:(?: og |-)(?:høsten|våren) ?\\d{4})?",  # nih
   "ettersom vi er i en overgangsfase mellom to systemer .{0,300}",    # nih
-  # mf: the library-access notice alone (~600 chars), no list (#248)
+  # mf: the library-access notice alone (~600 chars), no list
   "litteraturlisten for .{0,30}tilgang til litteratur .{0,700}"
 )
 # Praksis pointers and the bare "Praksis" label, left in teaching_methods
-# since Praksis maps there (#247, #286). Lines that say something ("Det er tre
+# since Praksis maps there. Lines that say something ("Det er tre
 # uker praksis i 6. semester. Se ...") stay.
 .praksis_pointer_regex <- paste0(
   "(?im)^[ \\t]*(?:praksis:?|(?:praksis: )?for nærm(?:ere|are) informasjon om ",
@@ -523,7 +523,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 
 # Placeholder lines before real text go: "Ingen" (required) and then the
 # recommended prerequisites (hvl, uib), "." (nord), "Ingen" before usn's
-# attendance block (#286).
+# attendance block.
 .strip_leading_placeholder <- function(text) {
   lines <- stringr::str_split_1(text, "\n")
   real <- which(nzchar(trimws(lines)) & !.is_placeholder_text(lines))

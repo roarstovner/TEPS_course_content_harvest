@@ -10,7 +10,7 @@
 #             "page"    one page holds the plans of several years (nla's JSON);
 #             "current" the site shows only the plan in force when the page is
 #                       fetched, so a harvest gives the plan of that academic
-#                       year only (#293).
+#                       year only.
 
 institution_configs <- list(
 
@@ -23,7 +23,7 @@ institution_configs <- list(
     # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
     section_subheading_selector = "p",
     # Teaching methods that only say "Se fagplanen." take the text of the
-    # subject's Fagplan block on the same page (#289).
+    # subject's Fagplan block on the same page.
     section_pointer = list(
       heading = "Fagplan", lead = "Fagplanen sier:",
       sections = c(teaching_methods = "Fagets arbeids- og undervisningsformer")
@@ -46,7 +46,7 @@ institution_configs <- list(
     selector = "#content",
     # The exam tab is the semester's exam registration, not the plan: its
     # assessment form, grading and exam parts are coded in
-    # TEPS_course_content_coding, not here (#321)
+    # TEPS_course_content_coding, not here
     exclude = "#omEksamen",
     plan_years = "url",
     request_delay = 10,  # robots.txt: Crawl-delay: 10 for all user agents
@@ -60,7 +60,7 @@ institution_configs <- list(
   ),
 
   inn = list(
-    # 1177 since INN became Universitetet i Innlandet (DBH from 2025, #291)
+    # 1177 since INN became Universitetet i Innlandet (DBH from 2025)
     code = c("0264", "1177"),
     strategy = "standard",
     selector = ".content-inner",
@@ -68,7 +68,7 @@ institution_configs <- list(
     section_strategy = "html",
     # inn marks most section headings with <div class="label"> (and the facts
     # box with <div class="facts-label">); only Læringsutbytte and Pensum are
-    # real <h2>. Only 3 h2s existed, which under-segmented the page (#198).
+    # real <h2>. Only 3 h2s existed, which under-segmented the page.
     # Walk h2 plus the class-marked divs so all heading levels are caught.
     section_heading_selector = "h2, div.label, div.facts-label"
   ),
@@ -81,7 +81,7 @@ institution_configs <- list(
     exclude = "div.field-person-in-charge, div.field-approval-sign",
     plan_years = "url",
     # Drupal fields (div.field-<name> + div.label) name each part of the plan;
-    # the exam table is the unlabelled field-assessments-row (#214).
+    # the exam table is the unlabelled field-assessments-row.
     section_strategy = "html",
     section_fields = c(
       "field-course-content"             = "course_content",
@@ -130,7 +130,7 @@ institution_configs <- list(
                     ".wp-block-mf-banner, hgroup"),
     plan_years = "current",
     # WordPress page: details/summary accordions plus an untitled intro block
-    # (only three h2s, none of them plan sections) (#213). The intro is
+    # (only three h2s, none of them plan sections). The intro is
     # course content, with paragraph sub-headings ("Arbeidsform og
     # organisering:"); the accordion group's h2 "Om studiet" ends it.
     section_strategy = "html",
@@ -160,10 +160,10 @@ institution_configs <- list(
     section_heading_selector = "button.ac-trigger",
     section_scope = "div.ac",
     # the short description between the course code and the accordions
-    # (2019-), not the title and code before it (#285)
+    # (2019-), not the title and code before it
     section_untitled = c("div.placeholder-text" = "course_content"),
     # Arbeidskrav/obligatorisk deltakelse are lines inside the vurdering
-    # accordion, not a heading of their own (#212).
+    # accordion, not a heading of their own.
     section_inline_coursework = TRUE
   ),
 
@@ -206,14 +206,14 @@ institution_configs <- list(
     strategy = "html_pdf_discovery",
     # The plan, without the page navigation, the contact footer (staff names)
     # and the facts box, but with the exam boxes, which share its class
-    # (#251). Pages of withdrawn course versions have no div.article, only a
+    #. Pages of withdrawn course versions have no div.article, only a
     # notice ("This course version is no longer available ...").
     selector = "#block-page-content div.article",
     exclude = ".content-navigation, .course-footer, .factbox--course:not(.factbox--exam)",
     plan_years = "url",
     section_strategy = "html",
     # PDF plans (text_split fallback) open with a title and a metadata block;
-    # the untitled paragraph after it is the course introduction (#243).
+    # the untitled paragraph after it is the course introduction.
     section_text_header = "^(?:Emnekode|Vekting|Semester|Antall semestre|Undervisningsspråk|Tilbys av)\\b[^:]*:"
   ),
 
@@ -229,19 +229,19 @@ institution_configs <- list(
     strategy = "url_discovery",
     # div.col-md-7.mainContent holds the plan's h2 sections (Om emnet, Hva
     # lærer du, Undervisning og pensum, Eksamen) plus the year picker and the
-    # contact block with staff names, which .pre_uit() cuts (#218).
+    # contact block with staff names, which .pre_uit() cuts.
     selector = ".mainContent",
     plan_years = "url",
     post_fn = .pre_uit,
     section_strategy = "html",
     # 2008-2011 plans (old FS layout) head each field with a
-    # div/span.fsemneoverskrift instead of an h2 (#282)
+    # div/span.fsemneoverskrift instead of an h2
     section_heading_selector = "h2, .fsemneoverskrift",
     # h3 "Pensum" under "Undervisning og pensum", "Mer info om arbeidskrav";
     # the 2020s exam box labels its gate table <strong class="d-block">
     # Obligatoriske arbeidskrav</strong>
     section_subheading_selector = "h3, strong.d-block",
-    # 2012-2019 plans list arbeidskrav inside the Eksamen text (#283)
+    # 2012-2019 plans list arbeidskrav inside the Eksamen text
     section_inline_coursework = TRUE
   ),
 
@@ -252,7 +252,7 @@ institution_configs <- list(
     plan_years = "current",
     section_strategy = "html",
     # sections are details accordions; the 2026-04 pages head them with
-    # <summary> only, later pages put an <h3> inside it (#293)
+    # <summary> only, later pages put an <h3> inside it
     section_heading_selector = "h3, summary",
     # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
     section_subheading_selector = "p"

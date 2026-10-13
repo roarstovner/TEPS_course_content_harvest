@@ -1,5 +1,5 @@
 # R/audit/qa_sections.R
-# Deterministic QA pre-pass over data/processed/plan_sections.RDS (issue #197, feeds #192).
+# Deterministic QA pre-pass over data/processed/plan_sections.RDS.
 #
 # Surfaces *suspect* section rows with cheap, rule-based heuristics so that
 # (a) obvious extraction bugs become chainlink issues directly and
@@ -13,7 +13,7 @@
 #   data/processed/plan_sections.RDS  sections per plan; a plan is identified
 #                                     here by the offering its text and
 #                                     sections come from (course_id =
-#                                     source_course_id; #273)
+#                                     source_course_id)
 #   data/processed/course_plans.RDS   course_plan — full-text ground truth for
 #                                     coverage and "one section swallowed the
 #                                     whole plan".

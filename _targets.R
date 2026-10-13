@@ -1,5 +1,5 @@
 # _targets.R
-# The post-harvest pipeline (#263): targets::tar_make() rebuilds whatever is
+# The post-harvest pipeline: targets::tar_make() rebuilds whatever is
 # outdated, from data/raw/html_{inst}.RDS to the data files, the browsers' data and
 # the data notes. See README "Rebuilding Derived Data".
 
@@ -8,7 +8,7 @@ library(targets)
 tar_option_set(
   packages = "dplyr",
   # The institutions' branches are independent, so they run on 4 local worker
-  # processes (#268). Workers read and write the store themselves, so large
+  # processes. Workers read and write the store themselves, so large
   # results do not pass through the main process.
   controller = crew::crew_controller_local(workers = 4, seconds_idle = 60),
   storage = "worker",
@@ -31,8 +31,8 @@ list(
   # One branch per harvested institution (pattern = map(...)): a change to one
   # institution's raw data or config rebuilds only that institution.
   tar_target(institution, institutions),
-  # the institution's raw files (#296); listed on every build, so a new dated
-  # harvest file is seen (#297)
+  # the institution's raw files; listed on every build, so a new dated
+  # harvest file is seen
   tar_target(html_file, harvest_files(institution), pattern = map(institution),
              format = "file", cue = tar_cue(mode = "always")),
   tar_target(config, institution_config_target(institution),
@@ -69,16 +69,16 @@ list(
   tar_target(sections_file,
              write_rds_file(sections, "data/processed/plan_sections.RDS"), format = "file"),
 
-  # Personal data left in the shareable files (#271)
+  # Personal data left in the shareable files
   tar_target(privacy_check,
              check_personal_data(c(offerings_file, course_plans_file, sections_file))),
 
-  # Regression check against tests/snapshots/pipeline_metrics.csv (#255)
+  # Regression check against tests/snapshots/pipeline_metrics.csv
   tar_target(metrics, pipeline_metrics(offerings, sections)),
   tar_target(snapshot_file, METRICS_SNAPSHOT, format = "file"),
   tar_target(metrics_check, metrics_vs_snapshot(snapshot_file, metrics)),
 
-  # The finalized release is unchanged: raw files and plans (#296)
+  # The finalized release is unchanged: raw files and plans
   tar_target(frozen_check,
              frozen_changes(RAW_MANIFEST, offerings_file, course_plans_file, sections_file),
              cue = tar_cue(mode = "always")),

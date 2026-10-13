@@ -16,7 +16,7 @@ harvested_institutions <- function(raw_dir = RAW_DIR) {
   sort(unique(sub("^html_(.*)\\.RDS$", "\\1", files)))
 }
 
-# The raw store is append-only (#296): an institution's first harvest is
+# The raw store is append-only: an institution's first harvest is
 # data/raw/html_{inst}.RDS, and every later harvest adds a file
 # data/raw/harvests/{YYYY-MM-DD}/html_{inst}.RDS with what it fetched. No raw
 # file is written twice; read_harvest() combines them.

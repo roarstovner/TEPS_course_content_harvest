@@ -1,4 +1,4 @@
-# Tests for extract_fulltext_from_raw() (#256)
+# Tests for extract_fulltext_from_raw()
 
 test_that("html rows are their blocks as text, with post_fn; PDF rows keep their text", {
   config <- list(strategy = "html_pdf_discovery", section_strategy = "html",
@@ -20,7 +20,7 @@ test_that("the blocks as text keep lines, paragraphs and split paragraphs", {
   expect_equal(.blocks_text(b), "Innhold\nLinje\nA\nB\n\nFaget i praksis\nStudentene\n\nSlutt")
 })
 
-test_that("a table is one line per row, cells separated by tabs (#312)", {
+test_that("a table is one line per row, cells separated by tabs", {
   # hivolda's and inn's exam table: rows in thead/tbody, values in div.item;
   # uit's cells break with <br>, which html_text2() drops inside a <span>
   cfg <- list(reader = "html", container = "main", heading = "h2")
@@ -34,7 +34,7 @@ test_that("a table is one line per row, cells separated by tabs (#312)", {
                                        "Hjemmeeksamen\t40\t\nOppgave\t60\tKarakterregel: A–E, stryk F"))
 })
 
-test_that("a <br> inside an inline element is a space, not glue (#315)", {
+test_that("a <br> inside an inline element is a space, not glue", {
   # a <br> straight under a block element stays a line break
   cfg <- list(reader = "html", container = "main", heading = "h2")
   b <- page_blocks("<main><h2>Vurdering</h2><p>Varighet: 45 minutter.<br>Neste</p>

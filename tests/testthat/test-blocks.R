@@ -1,4 +1,4 @@
-# Tests for the block readers — R/blocks.R (#274)
+# Tests for the block readers — R/blocks.R
 
 html_reader <- function(heading = "h2", sub = NULL, ...) {
   list(reader = "html", container = "main", heading = heading, sub = sub, ...)
@@ -34,7 +34,7 @@ test_that("a scope element is marked with start and end blocks", {
   expect_equal(b$section[4], "reading_list")
 })
 
-test_that("an untitled element is a section of its own without a heading (#285)", {
+test_that("an untitled element is a section of its own without a heading", {
   b <- page_blocks("<main><h1>Tittel</h1><div class='lead'>Kort om emnet.</div>
     <p>Mer</p><h2>Pensum</h2><p>Bok</p></main>", NA,
     html_reader(untitled = c("div.lead" = "course_content")))
@@ -101,7 +101,7 @@ test_that("the json reader reads nla's titles and contents", {
   f <- test_path("../../data/raw/html_nla.RDS")
   skip_if_not(file.exists(f), "harvested nla data not available")
   x <- readRDS(f)
-  # the latest autumn: earlier academic years are in the JSON for few courses (#292)
+  # the latest autumn: earlier academic years are in the JSON for few courses
   i <- which(!is.na(x$html) & x$Årstall == max(x$Årstall) & x$Semesternavn == "Høst")[1]
   b <- page_blocks(x$html[i], NA, list(reader = "json"), x$course_id[i])
   expect_gt(sum(b$role == "heading" & !is.na(b$section)), 3)

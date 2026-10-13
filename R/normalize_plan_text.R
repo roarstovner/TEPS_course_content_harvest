@@ -15,7 +15,7 @@ normalize_plan_text <- function(course_plan, .progress = "Normalize plan texts")
 
     txt |>
       tolower() |>
-      # NTNU's responsible unit closes the text (#307); it differs between
+      # NTNU's responsible unit closes the text; it differs between
       # years by a renamed department, not by content
       stringr::str_remove("(?s)\\nansvarlig enhet\\n.*$") |>
       # Remove structural heading labels (lossy — these are section headers, not content)
