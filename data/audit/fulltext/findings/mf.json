@@ -1,0 +1,58 @@
+{
+  "check": "fulltext",
+  "institution": "mf",
+  "model": "sonnet",
+  "n_courses_reviewed": 8,
+  "n_suspects_reviewed": 0,
+  "overall_assessment": "Extraction at MF is clean and complete for the plan body: facts box, description, study requirements, assessment, learning outcomes and overlap sections are all captured, and only staff contact boxes are left out. Remaining issues are that the page is the current (2026) plan labelled as 2025 offerings, the reading list is only a link stub, and some boilerplate/duplicated sentences are included.",
+  "findings": [
+    {
+      "target": "metadata",
+      "error_type": "wrong_year",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": ["mf_PED1010-1_2025_autumn_1", "mf_RL1013-1_2025_autumn_1", "mf_PED5610-1_2025_autumn_1"],
+      "evidence": "Litteraturlisten for vår 2026",
+      "description": "Offerings are labelled Høst 2025, but the extracted text is the current page (exam dates in May/June 2026, 'Litteraturlisten for vår 2026', 'Semester: Vår'). With plan_years = current, the text does not correspond to the offering's year/semester; analysts joining on offering year get 2026 exam dates and a different semester label.",
+      "root_cause_hypothesis": "MF pages only show the current plan; the URL https://mf.no/studier/emner/<code> has no year component, and the offering year is assigned from the harvest metadata rather than the page.",
+      "suggested_fix": "Document that MF is current-plan-only (plan_years = 'current') and do not treat offering year as the plan year; optionally parse the page's 'Semester:' and 'vår/høst YYYY' strings into a plan-year column, and drop the 'Eksamensdatoer' block (dated logistics) via exclude/post_fn.",
+      "confidence": "medium"
+    },
+    {
+      "target": "reading_list",
+      "error_type": "missing_content",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": ["mf_RL1016-1_2025_autumn_1", "mf_PED5610-1_2025_autumn_1", "mf_SAM2080L-1_2025_autumn_1"],
+      "evidence": "Litteraturlisten for emnet finner du via lenken under.",
+      "description": "The reading list section contains only a pointer to a link ('via lenken under') plus generic library-access boilerplate; the actual literature is not in the extracted text (it is probably behind a link or a dynamically loaded block). No reading list content exists for any of the 8 courses.",
+      "root_cause_hypothesis": "Literature is rendered by a separate widget/linked page outside article .content-body, or loaded dynamically; the selector only gets the stub.",
+      "suggested_fix": "Inspect the raw html for the literature link target; if it is a separate URL, harvest it and append to the text, otherwise record that MF reading lists are not available in the page.",
+      "confidence": "medium"
+    },
+    {
+      "target": "reading_list",
+      "error_type": "junk_included",
+      "severity": "low",
+      "prevalence": "widespread",
+      "example_course_ids": ["mf_RL1016-1_2025_autumn_1", "mf_RL2030-1_2025_autumn_1"],
+      "evidence": "MERK: Sjekk at litteraturlisten viser riktig semester (oppdatering kan ta litt tid).",
+      "description": "Every plan ends with identical library-access boilerplate ('Tilgang til litteratur: Noe av litteraturen er digital…', Oria, Nasjonalbiblioteket, MERK) that is not course-specific plan content.",
+      "root_cause_hypothesis": "The boilerplate is inside .content-body, so the selector includes it; no exclude rule for it.",
+      "suggested_fix": "Add an exclude/post_fn rule in the mf config removing the 'Tilgang til litteratur:' block through 'MERK: Sjekk at litteraturlisten…' (keep in line with course_plan_spec boilerplate rules).",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "duplicate_content",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": ["mf_PED5610-1_2025_autumn_1", "mf_PED1010-1_2025_autumn_1"],
+      "evidence": "Studenter som ikke oppfyller studiekravene, kan ikke gå opp til eksamen i emnet. For ikke å bruke opp et eksamensforsøk på emnet, må de aktivt trekke sin oppmelding/vurderingsmelding innen trekkfristen 1. mai.",
+      "description": "Near-identical sentences appear twice in a row (PED5610 study-requirement paragraph; PED1010 'For å få avsluttende vurdering må studenten innen fastsatte frister ha oppfylt studiekravene.' repeated). Probably duplicated on the source page, so low impact.",
+      "root_cause_hypothesis": "Source page repeats template text from two CMS fields; the extractor faithfully copies both.",
+      "suggested_fix": "Optional: de-duplicate identical consecutive paragraphs in post_fn for mf; otherwise accept as source duplication.",
+      "confidence": "low"
+    }
+  ]
+}

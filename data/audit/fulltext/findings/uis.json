@@ -1,0 +1,58 @@
+{
+  "check": "fulltext",
+  "institution": "uis",
+  "model": "sonnet",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "PDF-sourced plans (www6.uis.no/Stine) and the controls on current uis.no course pages are complete and mostly clean. All 20 suspects are empty: uis.no/nb/student/course pages with no extracted text and no stored page text, so nothing can be said about the page content. Minor noise: PDF page markers, repeated blocks and admission lists.",
+  "findings": [
+    {
+      "target": "whole_text",
+      "error_type": "empty_or_failed",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": ["uis_MLI355-1_2022_spring_1", "uis_MGL4037-1_2023_autumn_1", "uis_MGL4036-1_2022_autumn_1"],
+      "evidence": "### Extracted text (0 chars — audit this)\n\n````\n(empty)\n````",
+      "description": "All 20 suspects (MGL4038-1, MLI355-1 for 2018-2025, MGL4037-1, MGL4036-1, MGL1035-1) have empty extracted_text although a plan should exist. They all point at the one uis.no/nb/student/course/<CODE>_1 URL, which has no year, so every year of a course gets the same URL and the same (empty) result. The packet shows no uncaptured page text either, so no page content was stored or the page is client-side rendered. Other controls on the same URL pattern (PPU118_1, ENG112_1) extract fine, so the selector works in general. The pre-pass empty flag (169 offerings) is a real problem, not a false alarm. 2025 offerings that exist for MLI355-1 also come out empty.",
+      "root_cause_hypothesis": "These courses probably lack a current Felles studentsystem page (discontinued or changed code, 404-like or stub page) or the page body is outside '#block-page-content div.article'. The html_pdf_discovery strategy appears to fall back to the year-less web URL instead of the Stine PDF for the years that have PDFs, or the PDF for these years was not discovered.",
+      "suggested_fix": "Inspect the raw html for a few of these courses. If the page is a stub, make html_pdf_discovery try the Stine PDF for each year first. If the selector is the cause, widen it for these pages. Mark offerings that truly have no plan as such, and do not give identical URLs to several years.",
+      "confidence": "medium"
+    },
+    {
+      "target": "page_chrome",
+      "error_type": "junk_included",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": ["uis_ENG112-1_2025_autumn_2", "uis_PPU118-1_2025_autumn_3"],
+      "evidence": "Emnebeskrivelsen er hentet fra Felles studentsystem Versjon 1",
+      "description": "Web-page extractions include a standard footer line, and for ENG112 a very long 'Åpent for' list of every programme and an exchange-programme list (admission/navigation information, not plan content).",
+      "root_cause_hypothesis": "The selector '#block-page-content div.article' covers the whole article including the admission and footer blocks.",
+      "suggested_fix": "Add exclude patterns in R/institution_config.R for the footer line and the 'Opptak til enkeltemner'/'Utveksling til' blocks, or cut the 'Åpent for' list in post_fn.",
+      "confidence": "medium"
+    },
+    {
+      "target": "page_chrome",
+      "error_type": "junk_included",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": ["uis_MLH150-1_2013_spring_1", "uis_MTLMAS-1_2012_spring_1", "uis_MLHP40-1_2016_autumn_1"],
+      "evidence": "MLH150_1 - Religion fagdidaktikk i lektorprogram",
+      "description": "Old PDF plans keep the PDF running header after each page break (code - title) and page markers ('side 1', 'side 2'). These are PDF artefacts that should be stripped.",
+      "root_cause_hypothesis": "PDF text conversion has no post-processing for per-page headers and footers.",
+      "suggested_fix": "Remove lines matching ^\\s*side \\d+\\s*$ and the repeated '<CODE> - <title>' header in the PDF post_fn.",
+      "confidence": "high"
+    },
+    {
+      "target": "course_content",
+      "error_type": "duplicate_content",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": ["uis_MGL3126-1_2022_autumn_1", "uis_MGL2060-1_2021_autumn_1", "uis_MLHP40-1_2016_autumn_1"],
+      "evidence": "Sentralt i emnet står saktekstens uttrykksformer og funksjoner i ulike tekstkulturer, inkludert i skolen som institusjon og",
+      "description": "The introductory paragraph appears first and then again (all or partly) under 'Innhold'. In MLHP40 the Introduksjon text is repeated word for word under Innhold. The same block is in the text twice.",
+      "root_cause_hypothesis": "The source PDFs repeat the text, and the extraction does not remove duplicate blocks.",
+      "suggested_fix": "Optionally drop a paragraph in the PDF text that is identical to one already seen in the same text. Low priority.",
+      "confidence": "medium"
+    }
+  ]
+}

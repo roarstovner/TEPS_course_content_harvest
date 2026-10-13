@@ -1,0 +1,70 @@
+{
+  "check": "fulltext",
+  "institution": "oslomet",
+  "model": "sonnet",
+  "n_courses_reviewed": 9,
+  "n_suspects_reviewed": 1,
+  "overall_assessment": "Extraction from #main-content is largely complete and well structured for most courses. Main problems: some pages hold only a site error message (the pre-pass 'short'/'dup_code' flags are real), stray ';' characters corrupt words and add empty lines in some plans, and some older programme-level plans collapse into one wall of text.",
+  "findings": [
+    {
+      "target": "whole_text",
+      "error_type": "wrong_page",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": ["oslomet_M1KP3000-1_2024_autumn_2"],
+      "evidence": "Fjern Feil:Siden du leter etter finnes ikke, eller det har oppstått en feil. Prøv igjen senere.",
+      "description": "The extracted text is only the site's error message, not a course plan. The pre-pass flags short and dup_code are real (identical 95-char text across 9 course codes). The page was counted as fetched but holds no plan, probably because the course/year does not exist (a praksis course) or the page rendered an error.",
+      "root_cause_hypothesis": "The studieinfo site returns HTTP 200 with an error widget for non-existent course/year combinations, so the harvest records it as a successful fetch and extraction keeps the error text.",
+      "suggested_fix": "Treat text matching 'Siden du leter etter finnes ikke' as a failed fetch (empty extracted_text or a fetch-status flag) in the OsloMet config/post_fn or in the fetch validation, so these rows are excluded from the plan frame.",
+      "confidence": "high"
+    },
+    {
+      "target": "whole_text",
+      "error_type": "formatting",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": ["oslomet_M5GPE5100-1_2022_autumn_1", "oslomet_M1GSF2110-1_2022_spring_2"],
+      "evidence": "Eksamen bedømmes av en;interne og en ekstern sensor.",
+      "description": "Stray ';' characters appear in the text. Inside words or sentences they replace a lost space or element ('en;interne', 'sosial;og', '1;000 ord', 'kompetanse;i lys av'), and some sit alone on lines or at the end of lines as ';'. The text is slightly corrupted and structure is noisy.",
+      "root_cause_hypothesis": "Inline elements or nbsp/empty spans in the OsloMet fagplan HTML are joined with ';' by the block-to-text step in R/blocks.R, or the HTML carries literal ';' left over from HTML entities.",
+      "suggested_fix": "Find where ';' is introduced (compare html with extracted_text). Fix it in the block text collapsing in R/blocks.R, or add a post_fn for oslomet that removes lines consisting only of ';' and replaces inline ';' with a space when it sits between word characters and the original page had none.",
+      "confidence": "medium"
+    },
+    {
+      "target": "whole_text",
+      "error_type": "formatting",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": ["oslomet_M5GMT3100-1_2020_autumn_1"],
+      "evidence": "FAGPLAN Matematikk (60 studiepoeng)Mathematics (60 ECTS credits) Emnekoder: M5GMT1100, M5GMT1200, M5GMT1300 og M5GMT2100 (2. studieår)/M5GMT3100 (3. studieår) Fagplanen ble godkjent",
+      "description": "In this plan the whole programme-level fagplan is one very long line (thousands of characters). Headings are glued to the preceding and following paragraphs ('InnledningFagplanen bygger', 'OpptakskravFaget', 'LæringsutbytteLæringsutbyttet'), so headings and paragraphs are not on separate lines. Other years (2019 for M5GMT1200) keep line breaks for the same fagplan.",
+      "root_cause_hypothesis": "The fagplan block for some years has a different HTML structure (a single paragraph or div with inline br/span content), so block splitting finds one block and html_text drops the breaks.",
+      "suggested_fix": "Add a block-splitting rule for OsloMet fagplan content (break at br, headings and nested divs), or insert newlines before known heading words as a post_fn fallback. Count how many oslomet texts have a line over 5000 chars to size the problem.",
+      "confidence": "medium"
+    },
+    {
+      "target": "metadata",
+      "error_type": "junk_included",
+      "severity": "low",
+      "prevalence": "widespread",
+      "example_course_ids": ["oslomet_M5GMT3100-1_2025_autumn_1", "oslomet_M5GPE5100-1_2022_autumn_1"],
+      "evidence": "Emnehistorikk\nPensum\nHØST 2025\n\nTimeplan\nHØST 2025\nProgramplan",
+      "description": "Every text starts with a header of link and tab labels (Emnehistorikk, Pensum, Timeplan, Programplan) with a semester label, with no actual content behind them (the reading list and timetable are links, not text). This is page chrome inside the plan text. The Pensum and Timeplan semester labels (e.g. 'VÅR 2025' on a Høst 2024 offering) may also mislead a year check.",
+      "root_cause_hypothesis": "The selector #main-content includes the tab/link strip above the plan body.",
+      "suggested_fix": "Add an exclude or a post_fn that drops the lines Emnehistorikk, Pensum, Timeplan, Programplan and the semester label lines that follow them. Keep Omfang and Studieår, which are metadata.",
+      "confidence": "medium"
+    },
+    {
+      "target": "whole_text",
+      "error_type": "wrong_year",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": ["oslomet_M1GSF2110-1_2022_spring_2"],
+      "evidence": "Studieår\n2022/2023\nEmnehistorikk\nPensum\nVÅR 2023",
+      "description": "The offering is Vår 2022 but the URL requests /2022/HØST and the page shows study year 2022/2023 with VÅR 2023. The year label in the URL builder does not follow the offering's semester, so a spring offering gets the following autumn's plan version. Mostly same content, but the plan version can differ.",
+      "root_cause_hypothesis": "R/add_course_url.R builds OsloMet URLs from the year and a fixed HØST semester for every offering, whatever the offering's semester.",
+      "suggested_fix": "Check whether OsloMet plan pages are per academic year (start autumn) and map spring offerings to the academic year that starts the previous autumn, or document that the plan is per study year, not per semester.",
+      "confidence": "low"
+    }
+  ]
+}

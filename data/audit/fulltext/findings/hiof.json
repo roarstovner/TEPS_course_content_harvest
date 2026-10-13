@@ -1,0 +1,46 @@
+{
+  "check": "fulltext",
+  "institution": "hiof",
+  "model": "sonnet",
+  "n_courses_reviewed": 8,
+  "n_suspects_reviewed": 0,
+  "overall_assessment": "Extraction works well for HiOF: all 8 fetched pages contain the full plan (facts box, learning outcomes, teaching, assessment, requirements, literature) with clean structure and no navigation or junk; the only uncaptured text is the breadcrumb. Remaining issues are a high 404 rate (about half of offerings) and recent plans whose reading list is only a Leganto pointer.",
+  "findings": [
+    {
+      "target": "reading_list",
+      "error_type": "missing_content",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": ["hiof_LMBENG11321-1_2025_spring_1", "hiof_LMBENG10125-1_2025_autumn_2", "hiof_LMBENG10317-1_2023_spring_1"],
+      "evidence": "Gjeldende litteraturliste for 2025 Vår finner du i Leganto",
+      "description": "For newer plans (2023-2025) the reading list on the page is only a pointer to the external Leganto system, so the extracted text has no literature. Older plans (2020-2021) list the literature in full. This is a source limitation, not a selector error, but it makes reading_list systematically empty for recent years.",
+      "root_cause_hypothesis": "HiOF moved reading lists to Leganto; the FS page carries only the link sentence.",
+      "suggested_fix": "Treat the Leganto pointer sentence as a placeholder in section extraction (no reading_list content) and note in data_notes.qmd that reading lists are missing for recent HiOF plans; no change to extraction.",
+      "confidence": "high"
+    },
+    {
+      "target": "reading_list",
+      "error_type": "wrong_year",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": ["hiof_LMUSPA10124-1_2025_autumn_1"],
+      "evidence": "Gjeldende litteraturliste for 2024 Høst finner du i Leganto",
+      "description": "The 2025 Høst plan refers to the 2024 Høst reading list, so the page's own pointer names a different year than the offering. Probably an error in the source page, but the text is a faithful copy.",
+      "root_cause_hypothesis": "Source page content (FS), not the pipeline.",
+      "suggested_fix": "No pipeline change; do not use the year in the Leganto sentence for year validation.",
+      "confidence": "low"
+    },
+    {
+      "target": "whole_text",
+      "error_type": "empty_or_failed",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": ["hiof_LMUKHV10421-1_2024_spring_1"],
+      "evidence": "Fetch error: HTTP 404 Not Found.",
+      "description": "866 of 1712 offerings (about half) return 404. The packet shows one failed course, with a URL of the same form (lusp/lusp/2024/var) as the successful 2021-2025 pages, so some may be courses not offered that year, but the high rate warrants a check that the URL builder does not miss a path variant (older years use historiske-emner/lu).",
+      "root_cause_hypothesis": "R/add_course_url.R builds both lusp/lusp and historiske-emner/lu paths; some offerings may be in the wrong branch or not exist (generated offerings for years/semesters where the course was not given).",
+      "suggested_fix": "Cross-check the 404 offerings against the course list: for each 404 try the alternate path and confirm the course was offered that year; drop offerings that are confirmed absent from the frame.",
+      "confidence": "low"
+    }
+  ]
+}

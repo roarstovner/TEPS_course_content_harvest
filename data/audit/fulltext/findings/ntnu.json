@@ -1,0 +1,34 @@
+{
+  "check": "fulltext",
+  "institution": "ntnu",
+  "model": "opus",
+  "n_courses_reviewed": 29,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "The extraction itself is clean: every fetched plan is complete (facts box, all plan tabs, exam tab without dates or rooms), and all 20 'uncaptured' flags are false alarms. The lines they flag are the exam parts' dates, times and rooms, the banners, the year picker and the timetable, all excluded on purpose by the config. The serious defect is the URL year: spring (and summer) offerings read the next academic year's page (all 16 spring offerings in the packet; institution-wide, all 1,665 spring offerings with an exam tab), and in a course's last year the fetch fails instead. A second gap has no example in the packet: 1,681 offerings of 150 '-A' codes (mostly MGLU, 2017-2025) all fail with 'no information' because the URL keeps the '-A' suffix, although ntnu.no/studier/emner/MGLU1101/2022 has the plan.",
+  "findings": [
+    {
+      "target": "whole_text",
+      "error_type": "wrong_year",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": ["ntnu_MGLU4213-1_2023_spring_1", "ntnu_PPU4657-1_2021_spring_1", "ntnu_MGLU4502-1_2024_spring_2"],
+      "evidence": "MGLU4213-1 (Kunst og håndverkspedagogisk teori og praksis) · Vår 2023 … Emne - Kunst og håndverksfeltet i kontekst - MGLU4213 … Undervisningsstart Høst 2023",
+      "description": "Every spring offering gets the plan of the following academic year, which breaks the rubric's 'this year/semester' requirement. NTNU's /{CODE}/{Y} page is studieår Y/Y+1 (autumn Y and spring Y+1), so the spring Y offering reads the plan for spring Y+1. Examples: PPU4657 spring 2021 shows 'Undervisningsstart Vår 2022' and 'Ordinær eksamen - Vår 2022'. MGLU4502 spring 2024 (status Nytt) shows 'Undervisningsstart Vår 2025', although its year picker lists 'Studieår 2023/2024'. MGLU4213 spring 2023 gets the renamed 2023/24 plan ('Kunst og håndverksfeltet i kontekst'), not the DBH name of that year. All 16 spring offerings in the packet are affected (11 suspects, 5 random controls: MGLU4213 2025, PPU4771 2011, PPU4754 2013, PPU4700 2016, EXFAC0015 2015); all autumn offerings are correct. Checked across extracted_text: the exam-tab sessions of all 1,665 spring offerings that have one belong to the next academic year, and all 1,770 autumn offerings match. Summer Y offerings (286) also read Y/Y+1, although nla_academic_year() treats summer as Y-1/Y. As a result, autumn Y-1 and spring Y (one academic year) read different pages, while spring Y and autumn Y read the same page. The text is often similar from year to year, but changes such as course renames, new courses and the latest year (spring 2025 gets the 2025/26 plan) end up silently in the wrong offering. .anon_ntnu() then removes the 'Undervisningsstart' line, so the published course_plan hides the mismatch; only the exam-session labels still show it.",
+      "root_cause_hypothesis": "R/add_course_url.R add_course_url_ntnu(course_code, year) is called with Årstall only (add_course_url: \"ntnu\" ~ add_course_url_ntnu(Emnekode, Årstall)) and ignores Semesternavn. The project's own convention (pipeline.R comment 'spring Y: Y-1/Y', nla_academic_year() in R/utils.R) is not applied. The pre-pass 'year' flag looks only for labels far from the offering's year, so it misses a one-year offset.",
+      "suggested_fix": "Pass Semesternavn to add_course_url_ntnu() and use Årstall - 1 for 'Vår' and 'Sommer' (as nla_academic_year() does). For most codes the /{CODE}/{Y-1} page is already in the raw store from the autumn Y-1 offering, so the spring rows can take that page; decide how the corrected rows enter the append-only raw store (README 'Raw Store and Finalized Releases'). Update the NTNU bullet in data/data_notes.qmd ('spring and autumn offerings of a year read the same page'), add a methods.qmd entry, run targets::tar_make() and read metrics_check. In the fulltext pre-pass, flag NTNU texts whose 'Ordinær eksamen - Vår/Høst YYYY' sessions are not in the offering's academic year.",
+      "confidence": "high"
+    },
+    {
+      "target": "whole_text",
+      "error_type": "empty_or_failed",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": ["ntnu_PPU4759-1_2019_spring_3"],
+      "evidence": "PPU4759-1 (Fagdidaktikk i spansk - del II) · Vår 2019 · status Avviklet … Fetch error: No course information available for this academic year",
+      "description": "The packet's only failed course is a spring offering in the course's last academic year. The URL asks for studieår 2019/2020 (/PPU4759/2019), after the course was discontinued, so NTNU answers 'no information', although the offering's own year (2018/19, /2018) has a page. The related PPU47xx courses (PPU4725, PPU4775) still have studieår 2018/2019 pages. Across the institution, 108 of the 128 failed spring offerings have a successfully fetched page for the same code at /{Y-1}, so a plan exists but is not used. The cause is the same as the wrong_year finding; the symptom here is a lost plan rather than a wrong one.",
+      "root_cause_hypothesis": "Same as the wrong_year finding: add_course_url_ntnu() uses Årstall for spring offerings instead of Årstall - 1.",
+      "suggested_fix": "The same change to add_course_url_ntnu() (Årstall - 1 for Vår/Sommer) fixes these. Afterwards, check that the 108 offerings get the /{Y-1} page (already in the raw store), for example in tar_read(gaps).",
+      "confidence": "high"
+    }
+  ]
+}

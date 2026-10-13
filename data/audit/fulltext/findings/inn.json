@@ -1,0 +1,46 @@
+{
+  "check": "fulltext",
+  "institution": "inn",
+  "model": "sonnet",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "When the Edutorium page holds a real plan, extraction is clean and complete (random controls 22, 24-27 are good). Two systematic problems remain: the 'dup_code' suspects are the catalogue's course-search list, not a plan, and many offerings carry the 'not yet published, latest version' fallback, i.e. another year's plan under this offering's year.",
+  "findings": [
+    {
+      "target": "whole_text",
+      "error_type": "wrong_page",
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": ["inn_2PEDL51-3-1_2023_autumn_3", "inn_2LUOPP2-1_2024_spring_1", "inn_2ML301-1_2022_spring_3"],
+      "evidence": "Emnesøket gjelder kun fra 2022. Før dette må emnene finnes i studieplanen",
+      "description": "For courses 1-7 (mostly avviklet or status 3 offerings, and some active ones) the extracted text is the catalogue's course-search/index list (hundreds of 'code title' lines), not a course plan. Up to 35,000 chars of course lists, no learning outcomes, content or assessment. Same text shape for many different codes (dup_code). The page for the requested year does not exist and the site falls back to a search page; the list differs by year.",
+      "root_cause_hypothesis": "URL /emne/<code>/<year-semester> for years before 2022 or for discontinued courses returns the 'Emnesøket' index page. .content-inner selector captures it without any check that the page is a plan.",
+      "suggested_fix": "Treat pages whose text starts with 'Emnesøket gjelder kun fra 2022' (or lacking 'Emnets innhold'/'Læringsutbytte'/'Emnekode') as not-a-plan: set extracted_text to empty/NA in post_fn or drop in the INN config, and avoid fetching offerings earlier than 2022.",
+      "confidence": "high"
+    },
+    {
+      "target": "whole_text",
+      "error_type": "wrong_year",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": ["inn_2PRALU2-32-1_2022_spring_1", "inn_2ML355-1_2023_autumn_1", "inn_MUS1005-1_2022_autumn_2"],
+      "evidence": "Emnebeskrivelsen for valgt semester er ikke publisert enda. Her er den siste versjonen vi har tilgjengelig.",
+      "description": "The page tells that the plan for the selected semester is not published and shows the latest available version instead. Start/teaching semesters in the text are 2024-2027 while the offering is 2022 or 2023 (e.g. 'Undervisningssemestre 2027 Vår' for a Vår 2022 offering). The text is a plan for a different year, with its own content/credits, and may even differ in title (MUS1005 Musikkformidling 3 vs 'Musikkformidling 4'). Roughly 15 of 28 courses in the packet show the banner (courses 8-21, 23, 28).",
+      "root_cause_hypothesis": "Edutorium silently serves the nearest available version for years without a published plan; the banner 'Statusmelding' is captured as ordinary text and not used to mark the offering.",
+      "suggested_fix": "Detect the 'Statusmelding / ikke publisert enda' banner in post_fn (or a flag column) and either blank the text for that offering or mark it as a fallback-year plan so it is excluded or de-duplicated against the real year's offering; also strip the banner lines.",
+      "confidence": "high"
+    },
+    {
+      "target": "page_chrome",
+      "error_type": "junk_included",
+      "severity": "low",
+      "prevalence": "widespread",
+      "example_course_ids": ["inn_2MNK5101-3-1_2025_autumn_1", "inn_2MMU5101-4-1_2024_spring_1"],
+      "evidence": "Pensum\nIngen pensumliste tilgjengelig for dette emnet",
+      "description": "Placeholder text for empty reading list and the structural labels ('Startsemestre' year pickers list, 'Statusmelding') are kept in the text. The facts box is otherwise included and fine. Minor noise only; the real plan content is complete.",
+      "root_cause_hypothesis": "Selector .content-inner captures all page labels and empty-section placeholders.",
+      "suggested_fix": "Remove the line 'Ingen pensumliste tilgjengelig for dette emnet' and the Startsemestre year list in post_fn.",
+      "confidence": "medium"
+    }
+  ]
+}

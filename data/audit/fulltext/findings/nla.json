@@ -1,0 +1,22 @@
+{
+  "check": "fulltext",
+  "institution": "nla",
+  "model": "sonnet",
+  "n_courses_reviewed": 10,
+  "n_suspects_reviewed": 2,
+  "overall_assessment": "The two non-empty plans (KRLE 2) are complete and well structured; the 'long' flag is a false alarm (genuinely long 30 ECTS plans). But 8 of the 8 random controls have a fetched page and empty extracted text, so the large majority of NLA offerings with a page get no text; this is the institution-wide problem.",
+  "findings": [
+    {
+      "target": "whole_text",
+      "error_type": "empty_or_failed",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": ["nla_MGL1NO102-1_2024_autumn_1", "nla_MGL5PE101-1_2023_autumn_1", "nla_4MGL1DIP-1_2021_spring_1"],
+      "evidence": "### Extracted text (0 chars — audit this)",
+      "description": "All 8 random controls (2020-2024, both semesters, old 4MGL* and newer MGL* codes) have a fetched page (URL with a year suffix) but empty extracted text. Context: 1803 offerings with a fetched page but only 249 with text. The pre-pass 'empty' flag is switched off for nla, so none of these are flagged. data_notes says a row with a page but no plan is an academic year missing from the page's JSON, but a rate of about 86% empty is far higher than that explanation would suggest, so the year mapping or JSON lookup may be failing.",
+      "root_cause_hypothesis": "json block reader in R/blocks.R (.nla_academic_year_from_course_id and the EmneplanPage lookup) finds no entry for the requested academic year: key mismatch (e.g. format of year key, 'Nytt'/'Aktivt' status entries, Norwegian multi-year entries), or the JSON of the fetched page only holds a few recent years regardless of the URL year suffix.",
+      "suggested_fix": "Take 5 of the empty offerings, list the year keys actually present in the page's EmneplanPage JSON and compare them with .nla_academic_year_from_course_id(); fix the key mapping if they match in content, and otherwise document the gap per course-year (target gaps). Consider an nla-specific empty check so the pre-pass reports it.",
+      "confidence": "medium"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "check": "fulltext",
+  "institution": "nmbu",
+  "model": "sonnet",
+  "n_courses_reviewed": 8,
+  "n_suspects_reviewed": 0,
+  "overall_assessment": "Extraction with selector .layout is complete and clean for all 8 fetched courses: the packet shows no uncaptured page text, and the facts box, outcomes, teaching, assessment, literature and prerequisites are all present. Remaining issues are cosmetic: facts-box labels run into their values, one leftover link label, and offering year labels that do not match the current plan text.",
+  "findings": [
+    {
+      "target": "metadata",
+      "error_type": "formatting",
+      "severity": "low",
+      "prevalence": "widespread",
+      "example_course_ids": ["nmbu_PPFD201-1_2025_autumn_2", "nmbu_M30-LUN-1_2025_autumn_1"],
+      "evidence": "Frekvens:ÅrligTilbys første gang i studieår 2025-2026.",
+      "description": "In the facts box, label and value are joined without a space (Studiepoeng:10, Frekvens:Årlig) and multi-part values are glued to the next one (ÅrligTilbys; 'Hvert vårsemester.Profesjonsmaster PPU'). Table or block cells are run together, which violates the rubric's 'table cells separated'.",
+      "root_cause_hypothesis": "html_text() on facts-box elements concatenates child nodes (label span, value span, nested paragraphs) without a separator; R/blocks.R / page_fulltext() does not insert a space or newline between inline children.",
+      "suggested_fix": "In the block text conversion, join child text nodes of the facts box with a space (or newline), or add a post_fn that inserts a space after 'Label:' and between a lowercase/period and an uppercase letter with no whitespace.",
+      "confidence": "medium"
+    },
+    {
+      "target": "page_chrome",
+      "error_type": "junk_included",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": ["nmbu_FYS100-1_2025_autumn_1", "nmbu_PPPE301-1_2025_autumn_1"],
+      "evidence": "Her finner du KI-kategoriene beskrevet.",
+      "description": "The text of a link to the general AI-categories page is included in the 'Om bruk av KI' section. It is boilerplate that is the same in every plan and not part of this course's plan.",
+      "root_cause_hypothesis": "The link text sits inside .layout and no exclude or post_fn removes it.",
+      "suggested_fix": "Add a post_fn or exclude pattern in R/institution_config.R for the nmbu entry that drops the line 'Her finner du KI-kategoriene beskrevet.'.",
+      "confidence": "high"
+    },
+    {
+      "target": "metadata",
+      "error_type": "wrong_year",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": ["nmbu_FYS100-1_2025_autumn_1"],
+      "evidence": "Undervisnings- og vurderingsperiode:Emnet starter i vårparallellen. Emnet har undervisning/vurdering i vårparallellen, .",
+      "description": "The offering is labelled Høst 2025 (autumn), but the text, taken from the current plan page (plan_years = current), says the course runs in the spring parallel. The semester in the offering metadata and in the text disagree; the plan is a current-plan snapshot rather than the plan for that semester. The text also has a stray ', .' artefact. The spring 2025 offering of the same course (nmbu_FYS100-1_2025_spring_1) was not fetched and shares the same URL.",
+      "root_cause_hypothesis": "NMBU only exposes the current plan at /emne/<code>, so every offering of a course maps to one page and one text, regardless of semester.",
+      "suggested_fix": "Document in methods that NMBU text is the current plan; avoid joining the semester text to the offering semester, or dedupe offerings per course code. No extraction change needed.",
+      "confidence": "low"
+    }
+  ]
+}
