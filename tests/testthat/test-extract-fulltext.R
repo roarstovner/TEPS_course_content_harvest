@@ -63,6 +63,9 @@ test_that("uit: the year picker and the contacts go, the responsible unit stays"
   # in no section, also when the text is read for the sections
   out <- page_sections(.empty_blocks(), .pre_uit(txt), list(reader = "text"))
   expect_equal(out$raw_text, "Tekst om emnet.")
+  # the banner goes also after the title and facts
+  expect_equal(.pre_uit("Emnekode: LER-1\nTittel\nOBS! Dette emnet tilhører et tidligere semester / år\nOm emnet\nTekst."),
+               "Emnekode: LER-1\nTittel\nOm emnet\nTekst.")
   # a page whose plan did not render stays empty
   expect_equal(.pre_uit("Om emnet\nError rendering component\nKontakt oss\nAnsvarlig enhet: Institutt"), "")
 })

@@ -68,8 +68,12 @@ extract_fulltext_from_raw <- function(df, config) {
 #' @param blocks Block table from page_blocks().
 #' @param config Institution config; its `post_fn` cuts what the blocks
 #'   cannot leave out (uit's year picker and contact block).
+#' @param facts Whether the title and facts box (`facts` blocks) are in the
+#'   text. Without them it is the plan text for the plan id, the shell rule
+#'   and the sections' text fallback.
 #' @return Character(1), NA when there is no text.
-page_fulltext <- function(blocks, config) {
+page_fulltext <- function(blocks, config, facts = TRUE) {
+  if (!facts) blocks <- blocks[!blocks$facts %in% TRUE, ]
   text <- .blocks_text(blocks)
   if (!is.na(text) && !is.null(config$post_fn)) text <- config$post_fn(text)
   if (is.na(text) || !nzchar(trimws(text))) NA_character_ else text
@@ -82,7 +86,7 @@ page_fulltext <- function(blocks, config) {
                                          "([^\\n]*?)[ \\t]*(?:E-post:[^\\n]*)?(?:\\n|$)"))
   txt <- txt |>
     # Banner on plans from earlier semesters
-    stringr::str_remove(paste0("^\\s*(?:OBS! Dette emnet tilhører et tidligere semester / år|",
+    stringr::str_remove(paste0("(?m)^[ \\t]*(?:OBS! Dette emnet tilhører et tidligere semester / år|",
                                "NOTE! This course belongs to a previous semester/year)\\s*")) |>
     # From a plan component that failed to render, or the year picker and the
     # contact block (staff names, titles, e-mails), to the end

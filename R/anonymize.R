@@ -234,8 +234,10 @@ anonymize_text <- function(institution, text,
     # Strip person name before parenthesized email: "Per Hansen (per.hansen@math.uio.no)"
     # Keeps organizational names + emails (handled by generic email removal)
     stringr::str_remove_all("\\p{Lu}\\p{Ll}+(?:\\s+\\p{Lu}\\p{Ll}+)+\\s*(?=\\([\\w.+-]+@)") |>
-    # Generic exam-links tail "Mer om eksamen ved UiO ... Andre veiledninger"
-    stringr::str_remove("(?s)\\n(?:Mer|Meir) om eksamen ved UiO\\b.*$|(?s)\\nMore about examinations at UiO\\b.*$")
+    # Generic exam-links tail "Mer om eksamen ved UiO ... Andre veiledninger",
+    # up to the facts box
+    stringr::str_remove(paste0("(?s)\\n(?:(?:Mer|Meir) om eksamen ved UiO|More about examinations at UiO)\\b",
+                               ".*?(?=\\n+(?:Fakta om emnet|Facts about this course)\\n|$)"))
 }
 
 

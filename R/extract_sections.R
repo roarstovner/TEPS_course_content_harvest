@@ -27,11 +27,13 @@
 #' Blocks between "start" and "end" (a <details>, an accordion item) hold a
 #' section of their own; the section open around them continues after them.
 #' Text goes to the open section. Text under the same section is merged in
-#' document order.
+#' document order. The title and facts box (`facts` blocks) are in no
+#' section.
 #'
 #' @param blocks Block table from page_blocks().
 #' @return Tibble `section`, `raw_text`.
 sectionize <- function(blocks) {
+  blocks <- blocks[!blocks$facts %in% TRUE, ]   # the title and facts box
   sections <- list()
   chunks <- character()
   parent <- current <- NA_character_

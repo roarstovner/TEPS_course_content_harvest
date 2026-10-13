@@ -17,6 +17,9 @@
 #   tag      the element the text came from; "p" is a paragraph (a blank line
 #            around it in the fulltext), "p+" the rest of a paragraph split at
 #            a sub-heading
+#   facts    the block is part of the title or facts box (`facts`): in the
+#            fulltext, but in no section, not in the plan id and not counted
+#            by the shell rule
 #
 # Readers, chosen by `section_strategy` in R/institution_config.R:
 #   html   — a DOM walk under `selector` without `exclude`; headings by
@@ -34,7 +37,7 @@
 
 .empty_blocks <- function() {
   tibble::tibble(role = character(), text = character(), section = character(),
-                 keep = logical(), tag = character())
+                 keep = logical(), tag = character(), facts = logical())
 }
 
 # Block reader settings from an institution config. `ic` is passed in rather
@@ -49,6 +52,7 @@
     reader            = reader,
     container         = ic$selector,
     exclude           = ic$exclude,
+    facts             = ic$facts,
     heading           = ic$section_heading_selector %||% "h2",
     sub               = ic$section_subheading_selector,
     scope             = ic$section_scope,
@@ -80,16 +84,19 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
 }
 
 # Collects blocks in order; $add(role, text, section, keep, tag), $table().
+# Blocks added between $facts(TRUE) and $facts(FALSE) are facts.
 .block_list <- function() {
   role <- text <- section <- tag <- character()
-  keep <- logical()
+  keep <- facts <- logical()
+  depth <- 0L
   list(
     add = function(r, t, s = NA_character_, k = FALSE, g = "") {
       role <<- c(role, r); text <<- c(text, t); section <<- c(section, s)
-      keep <<- c(keep, k); tag <<- c(tag, g)
+      keep <<- c(keep, k); tag <<- c(tag, g); facts <<- c(facts, depth > 0L)
     },
+    facts = function(on) depth <<- depth + if (on) 1L else -1L,
     table = function() tibble::tibble(role = role, text = text, section = section,
-                                      keep = keep, tag = tag)
+                                      keep = keep, tag = tag, facts = facts)
   )
 }
 
@@ -126,6 +133,10 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
     if (startsWith(e, "/")) xml2::xml_find_all(doc, e) else rvest::html_elements(doc, e))
   root <- if (is.null(cfg$container)) doc else rvest::html_element(doc, cfg$container)
   if (inherits(root, "xml_missing")) return(.empty_blocks())
+  # `facts`: the title and facts box (CSS, or XPath when it starts with "/")
+  for (e in cfg$facts) xml2::xml_set_attr(
+    if (startsWith(e, "/")) xml2::xml_find_all(doc, e) else rvest::html_elements(doc, e),
+    "data-facts", "1")
 
   # Mark headings, sub-headings and scopes on the nodes, and their ancestors
   # as nodes to walk into; any other subtree is read whole.
@@ -162,7 +173,7 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
     xml2::xml_set_attr(fields, "data-block", "field")
     xml2::xml_set_attr(fields, "data-scope", "1")
   }
-  marked <- xml2::xml_find_all(root, ".//*[@data-block or @data-scope]")
+  marked <- xml2::xml_find_all(root, ".//*[@data-block or @data-scope or @data-facts]")
   xml2::xml_set_attr(xml2::xml_find_all(marked, "ancestor::*"), "data-walk", "1")
 
   out <- .block_list()
@@ -182,7 +193,8 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
       type <- xml2::xml_type(k)
       if (type == "text" || (type == "element" && xml2::xml_name(k) %in% .inline_tags &&
                              is.na(xml2::xml_attr(k, "data-walk")) &&
-                             is.na(xml2::xml_attr(k, "data-block")))) {
+                             is.na(xml2::xml_attr(k, "data-block")) &&
+                             is.na(xml2::xml_attr(k, "data-facts")))) {
         run[[length(run) + 1]] <- k
       } else if (type == "element") {
         flush_run()
@@ -194,6 +206,8 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
   visit <- function(node) {
     mark <- xml2::xml_attr(node, "data-block")
     scope <- !is.na(xml2::xml_attr(node, "data-scope"))
+    facts <- !is.na(xml2::xml_attr(node, "data-facts"))
+    if (facts) out$facts(TRUE)
     if (scope) out$add("start", "")
     tag <- tolower(xml2::xml_name(node))
     if (identical(mark, "heading")) {
@@ -213,6 +227,7 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
       }
     }
     if (scope) out$add("end", "")
+    if (facts) out$facts(FALSE)
   }
   walk_contents(root)
   out$table()

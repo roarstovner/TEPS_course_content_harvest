@@ -274,9 +274,11 @@ newuni = list(
 5.  Test your selector to make sure it captures all course text
 
 `selector` names one element (the first match is used); choose the
-narrowest element that holds the whole plan, and leave out navigation,
-contact boxes (staff names) and widgets inside it with `exclude` (uis,
-mf, hivolda do this).
+narrowest element that holds the whole plan with its title and facts box
+(`course_plan_spec.md`), and leave out navigation, contact boxes (staff
+names) and widgets inside it with `exclude` (hvl, nord, uib, uio, uis,
+mf, hivolda do this). Name the title and facts box in `facts`, so that
+they stay out of the sections and the plan id.
 
 ### 2. Add URL builder to `R/add_course_url.R`
 
@@ -557,6 +559,13 @@ Fields for the `html` reader:
   comments). `exclude` holds CSS selectors; an entry that starts with
   “/” is XPath, for an element picked by its text (ntnu’s “Dato”, “Tid”
   and “Sted og rom” labels with the value after them).
+- `facts` (shared with the fulltext): the elements that hold the title,
+  the course code and the facts box (hvl, mf, nih, nord, uib, uio, uis,
+  uit). Their blocks are flagged `facts`: in `course_plan`, but in no
+  section (a heading inside them opens none), and not in the plan text
+  (`plan_text` in the fulltext table) that the plan id, the shell rule
+  and the sections’ text fallback read, so a campus or programme list
+  that changes from year to year does not split a plan.
 - `section_heading_selector`: section headings (default `h2`; ntnu
   `"h2, h3:not(.exam-assessment-form)"`, inn’s `div.label`, uib’s and
   mf’s `summary`, nord’s `button.ac-trigger`).
@@ -695,8 +704,10 @@ text)</td>
 <td>personal data, boilerplate; a page that is not a plan (NA)</td>
 </tr>
 <tr>
-<td><code>normalize_plan_text()</code></td>
-<td><code>R/normalize_plan_text.R</code></td>
+<td><code>facts</code> (title and facts box out of the id text);
+<code>normalize_plan_text()</code></td>
+<td><code>R/institution_config.R</code>, <code>R/blocks.R</code>,
+<code>R/normalize_plan_text.R</code></td>
 <td>the plan id only</td>
 <td>plan text that changes with the year, not with the plan</td>
 </tr>

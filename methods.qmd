@@ -144,7 +144,8 @@ shell <- full |> filter(has_extracted_text, is.na(plan_content_id))
 ```
 
 **Page shells are not plans:** a page with no plan section to read and under
-1,500 characters (only the facts box, a credit-overlap box, "Emnebeskrivelse",
+1,500 characters of plan text (without the title and facts box where the
+configuration names them, since 2026-10-13; only the facts box, a credit-overlap box, "Emnebeskrivelse",
 a pointer to the English page, every section "Se fagplanen.", a list of
 headings with no text under them) gives its offering no plan. So does an
 INN page that says the requested semester's plan is not published yet and
@@ -348,6 +349,37 @@ the plan id leaves it out, as for NTNU. Rules that no longer fire (UiS's
 *Consequence:* 2,281 UiT plans gain their unit; no plan id or section
 changes. Text outside each page's `selector` is a known deviation of the spec
 (title and facts sidebars at several institutions). *Since:* 2026-10-13.
+
+**The title and facts box are in `course_plan`, but not in the plan id.**
+At HVL, NIH, UiB, UiO and UiT the page's title, course code and facts box
+(credits, campus, semesters, language, level, programmes, the responsible
+unit) sat outside the part of the page that was read; at Nord its facts
+sidebar did. They are read now, without the names, exam schedules, links and
+pickers next to them (HVL's course coordinators and exam dates, NIH's course
+coordinator, UiB's sidebar with contact e-mail and exam schedule, UiO's links
+to the semester pages, UiT's apply button with the application period,
+Nord's staff and semester picker). Where the configuration names the title
+and facts box (`facts`: HVL, MF, NIH, Nord, UiB, UiO, UiS, UiT) they are in
+no section, and the plan id, the shell rule and the sections' text fallback
+read the plan text without them. "Ansvarlig avdeling" (NIH, UiA, HiOF) and
+"Ansvarlig fakultet" (Nord) with the unit are left out of the plan id too.
+*Why:* by the spec the title and facts box are plan text. Hashed, they split
+plans whose text is the same from year to year: with them in the id, 158
+plans split (HVL 41, Nord 29, UiT 87, UiB 1; 126 more plans in all), on a
+campus that is added
+or dropped, a programme list, a course-code variant in the title (MGBKR101
+and MGUKR101, LER-1234 and LER-1234F) or a "Nivå" line shown in some years.
+In the text fallback a title read as a heading ("Tysk språk og
+litteraturvitskap …" as a reading list). *Rejected:* hashing the facts box;
+rules for each field that varies (campus, programmes, code), which would
+have to be found institution by institution. *Consequence:* 4,742 plans at
+HVL, NIH, UiB, UiO and UiT gain their title and facts with the same id; Nord's
+1,365 plans gain the sidebar's facts and, with the title out of the id, a new
+id; MF's 26 and 180 UiS plans get a new id as their facts box leaves it, and
+HiOF's 820 and UiA's 681 as the unit does. No plans merge or split
+(13,994), and no section changes. UiB's unit, an unlabelled link in the
+sidebar, is not read. At the other institutions the title and facts box are
+still part of the plan id. *Since:* 2026-10-13.
 
 **MF and UiS: the title and the facts box are plan text.** `course_plan`
 keeps MF's title and course code and its facts box ("Emneinfo": code,

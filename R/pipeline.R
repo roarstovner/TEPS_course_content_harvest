@@ -86,26 +86,40 @@ harvested_rows <- function(institutions = NULL,
 
 # extracted_text of every row: the page's blocks as text; rows without
 # blocks (PDF plans, usn's rendered text) as extract_fulltext_from_raw() gives
-# them.
+# them. plan_text: the text without the title and facts box, where the
+# config names them (`facts`), else NA.
 institution_fulltext <- function(html_file, blocks, config) {
   df <- read_harvest(html_file, config)
   pages <- split(blocks[names(.empty_blocks())], blocks$course_id)
   text <- vapply(pages, page_fulltext, character(1), config = config)[df$course_id]
   rest <- !df$course_id %in% names(pages)
   text[rest] <- extract_fulltext_from_raw(df[rest, ], config)
+  plan_text <- rep(NA_character_, nrow(df))
+  if (!is.null(config$facts)) {
+    plan_text <- vapply(pages, page_fulltext, character(1), config = config,
+                        facts = FALSE)[df$course_id]
+    plan_text[rest] <- text[rest]
+  }
   tibble::tibble(course_id = df$course_id, institution = config$name,
-                 extracted_text = unname(text))
+                 extracted_text = unname(text), plan_text = unname(plan_text))
 }
 
 # Offerings with the anonymized course_plan and plan ids: list(plans, courses)
-# from deduplicate_plans(). Plans are keyed by institution, so this can run
-# per institution.
+# from deduplicate_plans(). The plan id is made from the plan text without
+# the title and facts box (`id_text`), where the config names them. Plans are
+# keyed by institution, so this can run per institution.
 institution_plans <- function(html_file, fulltext, config) {
   df <- read_harvest(html_file, config) |>
     dplyr::select(-dplyr::any_of(c("extracted_text", "fulltext", "html", "html_error",
                                    "html_success", "url.x", "url.y"))) |>
-    dplyr::left_join(fulltext[, c("course_id", "extracted_text")], by = "course_id")
+    dplyr::left_join(fulltext[, c("course_id", "extracted_text", "plan_text")], by = "course_id")
   df$course_plan <- anonymize_text(df$institution, df$extracted_text, .progress = FALSE)
+  facts <- !is.na(df$plan_text) & !is.na(df$course_plan)
+  if (any(facts)) {
+    df$id_text <- df$course_plan
+    df$id_text[facts] <- anonymize_text(df$institution[facts], df$plan_text[facts], .progress = FALSE)
+  }
+  df$plan_text <- NULL
   df$plan_year_basis <- config$plan_years   # how the plan's year is known
   deduplicate_plans(df, exam_sessions = isTRUE(config$exam_sessions))
 }
@@ -133,7 +147,9 @@ institution_sections <- function(blocks, fulltext, config, plans) {
   cfg <- .block_cfg(config)
   pages <- split(blocks[blocks$course_id %in% src$source_course_id, names(.empty_blocks())],
                  blocks$course_id[blocks$course_id %in% src$source_course_id])
-  text <- fulltext$extracted_text[match(src$source_course_id, fulltext$course_id)]
+  # the text fallback reads the plan text, without the title and facts box
+  text <- dplyr::coalesce(fulltext$plan_text, fulltext$extracted_text)[
+    match(src$source_course_id, fulltext$course_id)]
   rows <- lapply(seq_len(nrow(src)), function(i) {
     out <- page_sections(pages[[src$source_course_id[i]]] %||% .empty_blocks(), text[i], cfg)
     dplyr::bind_cols(src[rep(i, nrow(out)), ], out)
@@ -249,7 +265,8 @@ heading_pattern_use <- function(hits) {
 # --- Combined data files -----------------------------------------------------
 
 # course_offerings_full: every offering with its text, course_plan and plan id.
-# A page with no section to read and under SHELL_MAX_NCHAR characters is a
+# A page with no section to read and under SHELL_MAX_NCHAR characters of plan
+# text (without the title and facts box, `plan_nchar`) is a
 # page shell, not a plan (no text about any of the seven sections,
 # course_plan_spec.md): the facts box only (uia), a credit-overlap box
 # (nord), "Emnebeskrivelse" (uib), a pointer to the English page (hvl), every
@@ -262,7 +279,7 @@ SHELL_MAX_NCHAR <- 1500
   key <- c("plan_content_id", "institution", "Emnekode")
   dplyr::bind_rows(lapply(plans, `[[`, "plans")) |>
     dplyr::anti_join(sections, by = key) |>
-    dplyr::filter(nchar(course_plan) < SHELL_MAX_NCHAR) |>
+    dplyr::filter(plan_nchar < SHELL_MAX_NCHAR) |>
     dplyr::select(dplyr::all_of(key))
 }
 
@@ -279,13 +296,15 @@ combine_offerings <- function(plans, sections) {
 
 # Published slim offerings: DBH metadata and the plan id, no url or text.
 slim_offerings <- function(offerings) {
-  dplyr::select(offerings, -url, -extracted_text, -course_plan, -course_plan_normalized)
+  dplyr::select(offerings, -url, -extracted_text, -course_plan, -course_plan_normalized,
+                -dplyr::any_of("plan_nchar"))
 }
 
 combine_plans <- function(plans, sections) {
   dplyr::bind_rows(lapply(plans, `[[`, "plans")) |>
     dplyr::anti_join(.shell_plans(plans, sections),
                      by = c("plan_content_id", "institution", "Emnekode")) |>
+    dplyr::select(-plan_nchar) |>
     dplyr::arrange(plan_content_id, institution, Emnekode)
 }
 

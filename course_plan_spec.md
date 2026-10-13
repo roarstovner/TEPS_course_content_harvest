@@ -43,7 +43,8 @@ Every part of a plan's page is one of these:
    pages with no text about any of the seven sections below, only a title, a
    facts box, headings, placeholders, or plan text about no section (a
    credit-overlap box, a programme list). A page is a shell when no section
-   can be cut from it and it is shorter than 1,500 characters; a longer page
+   can be cut from it and its plan text without the title and facts box is
+   shorter than 1,500 characters; a longer page
    without sections stays a plan, since its text may be plan text that no
    heading marks (OsloMet's practicum courses).
 
@@ -80,8 +81,11 @@ Two offerings share a plan when their `course_plan` texts are the same after
 normalization (`methods.md`, "Unit of analysis"). Plan text that changes with
 the year or semester while the plan itself stays the same is kept in
 `course_plan` but left out of that comparison, so it does not split plans.
-Examples are the responsible unit when a department is renamed, and the
-semester fields of a facts box or an exam tab.
+Examples are the responsible unit when a department is renamed, the
+semester fields of a facts box or an exam tab, and the title and facts box as
+a whole (a campus, a programme list or a course-code variant that changes
+from year to year). For the same reason the shell rule counts the plan text
+without the title and facts box.
 
 ## Page parts
 
@@ -110,6 +114,8 @@ semester fields of a facts box or an exam tab.
 
 The data built on 2026-10-13 do not yet follow the spec here:
 
-- The title and code are outside the page's `selector`, so not in
-  `course_plan`, at HVL, NIH, UiB, UiO, UiT and Volda; so are the facts
-  sidebars of Nord, UiB, UiT and HVL (credits, campus, exam language).
+- UiB's responsible unit, an unlabelled link in the page's sidebar, is not in
+  `course_plan`.
+- The title and facts box are left out of the plan id and the shell rule only
+  where the configuration names them (HVL, MF, NIH, Nord, UiB, UiO, UiS,
+  UiT); at the other institutions they are part of both.

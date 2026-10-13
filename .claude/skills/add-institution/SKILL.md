@@ -20,8 +20,9 @@ Before starting, gather:
 1. The institution's short name (lowercase, e.g., "newuni")
 2. The institution code from DBH (e.g., "1234")
 3. A sample course URL from the institution's website
-4. The CSS selector of the element that holds the course plan, and the parts
-   of it that are not the plan (navigation, contact box, widgets)
+4. The CSS selector of the element that holds the course plan with its title
+   and facts box, the parts of it that are not the plan (navigation, contact
+   box, widgets), and the elements that hold the title and facts box
 
 ## Procedure
 
@@ -35,6 +36,7 @@ newuni = list(
   strategy = "standard",          # or url_discovery, shadow_dom, etc.
   selector = ".main-content",     # the element that holds the course plan (first match)
   exclude = ".contact-box",       # optional: parts of it that are not the plan
+  facts = c("h1", ".facts"),      # the title and facts box: in the text, not in a section or the plan id
   plan_years = "url",             # "current" if the site shows only the plan in force; "page" if one page holds all years
   section_strategy = "html",      # read the page as html; see README "Blocks and Sections"
   section_heading_selector = "h2" # the section headings (default h2)
@@ -142,7 +144,9 @@ Add a custom `fetch_fn` to the config that detects empty/error pages and raises 
 
 ### The plan is spread over several parts of the page
 
-Use the narrowest element that holds all of them as `selector` and leave out
-what lies between them with `exclude` (uis: `"#block-page-content"` minus
-navigation, contact footer and facts box). A selector that matches several
-elements is not supported: only the first match is read.
+Use the narrowest element that holds all of them, the title and facts box
+included (`course_plan_spec.md`), as `selector` and leave out what lies
+between them with `exclude` (hvl: `"div.l-body"` minus the year stamp, the
+year links and, in the facts aside, the course coordinators and the exam
+schedule). A selector that matches several elements is not supported: only
+the first match is read.

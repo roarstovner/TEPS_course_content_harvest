@@ -5,6 +5,12 @@
 # (`plan_years`), pre/post processing functions, fetch overrides, and how the
 # plan is read into sections (`section_*`; see R/blocks.R).
 #
+# facts: the elements that hold the title, course code and facts box (CSS, or
+#        XPath when it starts with "/"). Their text is in course_plan but in
+#        no section, not in the plan id (a campus or programme list that
+#        changes from year to year does not make a new plan) and not counted
+#        by the shell rule (course_plan_spec.md).
+#
 # plan_years: "url"     the URL holds the year (and semester), so every DBH
 #                       year is harvested;
 #             "page"    one page holds the plans of several years (nla's JSON);
@@ -123,7 +129,15 @@ institution_configs <- list(
   hvl = list(
     code = "0238",
     strategy = "standard",
-    selector = ".l-2-col__main-content",
+    # The title, the facts aside (credits, campus, semesters, language,
+    # programmes) and the plan; not the year stamp and year links, the
+    # aside's course coordinators (names), exam schedule and reading-list
+    # button
+    selector = "div.l-body",
+    exclude = c("div.l-body > h2, div.l-body > .link-container, .l-2-col__aside .button",
+                paste0("//aside[contains(@class, 'l-2-col__aside')]//li[.//h3 or ",
+                       ".//div[contains(@class, 'teaser-icon--person')]]")),
+    facts = c("div.l-body > h1", ".l-2-col__aside"),
     plan_years = "url",
     fetch_fn = fetch_html_cols_single_hvl,
     section_strategy = "html",
@@ -154,9 +168,7 @@ institution_configs <- list(
     section_subheading_selector = "div.wp-block-group p",
     section_scope = "details",
     section_initial = "course_content",
-    # the title and code (hgroup) and the facts box are plan text in no section
-    section_untitled = c("hgroup" = ".drop", ".template-study-subject__details" = ".drop",
-                         ".template-study-program__details" = ".drop")
+    facts = c("hgroup", ".template-study-subject__details", ".template-study-program__details")
   ),
 
   nla = list(
@@ -171,9 +183,14 @@ institution_configs <- list(
     strategy = "standard",
     # Title, course code, the short description and the accordions; each
     # section is an accordion item (div.ac) with a trigger button, minus its
-    # "Kopier lenke" label, and a panel. Not the "sist oppdatert" line.
-    selector = "div.main-content",
-    exclude = ".copy-accordion-anchor, .pre-title",
+    # "Kopier lenke" label, and a panel. Then the sidebar's facts (language,
+    # credits, faculty, campus). Not the "sist oppdatert" line,
+    # the title's mobile copy, the sidebar's semester picker, staff (names)
+    # and Leganto link.
+    selector = "div.node__content",
+    exclude = paste(".copy-accordion-anchor, .pre-title, div.node__content > div.for-mobile,",
+                    "section.sidebar .semester-chooser, section.sidebar .field--name-field-p-employees,",
+                    "section.sidebar .field--name-field-subject-leganto-link"),
     plan_years = "url",
     section_strategy = "html",
     section_heading_selector = "button.ac-trigger",
@@ -181,6 +198,8 @@ institution_configs <- list(
     # the short description between the course code and the accordions
     # (2019-), not the title and code before it
     section_untitled = c("div.placeholder-text" = "course_content"),
+    facts = c("div.main-content > h1", "div.main-content > .field--name-field-subject-code",
+              "section.sidebar"),
     # Arbeidskrav/obligatorisk deltakelse are lines inside the vurdering
     # accordion, not a heading of their own.
     section_inline_coursework = TRUE
@@ -189,7 +208,13 @@ institution_configs <- list(
   nih = list(
     code = "1260",
     strategy = "standard",
-    selector = ".fs-body",
+    # The title, the facts list and the plan; not the course coordinator
+    # (names), the table of contents' heading and the FS fetch stamp
+    selector = "#vrtx-fs-emne-content",
+    exclude = c("#vrtx-fs-emne-content > h2.vrtx-toc-header, #vrtx-fs-emne-content > .vrtx-date-info",
+                paste0("//div[@id='vrtx-fs-emne-facts']//div[contains(@class, 'dg')]",
+                       "[starts-with(normalize-space(), 'Emneansvarlig')]")),
+    facts = c("#vrtx-fs-emne-content > h1", "#vrtx-fs-emne-facts"),
     plan_years = "url",
     section_strategy = "html"
   ),
@@ -197,9 +222,14 @@ institution_configs <- list(
   uib = list(
     code = "1120",
     strategy = "standard",
-    # The main column: h2 sections and the details accordions; not the sidebar
-    # (exam dates and rooms).
-    selector = "div.grid-span-main",
+    # The title, level and facts list above the main column, and the main
+    # column: h2 sections and the details accordions; not the facts' link to
+    # the reading list, and not the sidebar (contact e-mail, the semester's
+    # exam schedule, a link to the department)
+    selector = "div.region-inner.grid",
+    exclude = c("div.region-inner.grid div.sidebar",
+                "//dl[contains(@class, 'course-summary')]/div[starts-with(normalize-space(), 'Ressurs')]"),
+    facts = "div.region-inner.grid > div.theme-context__area",
     plan_years = "url",
     request_delay = 10,  # robots.txt: Crawl-delay: 10 for all user agents
     # h2 sections (Mål og innhald, Læringsutbytte) and details/summary
@@ -212,7 +242,13 @@ institution_configs <- list(
   uio = list(
     code = "1110",
     strategy = "standard",
-    selector = "#vrtx-course-content",
+    # The title, the plan and the facts box after it ("Fakta om emnet": level,
+    # credits, semesters, language, department); not the table of contents,
+    # the links to the semester pages and the FS fetch stamp
+    selector = "#vrtx-content",
+    exclude = paste("#vrtx-course-title-toc > :not(h1), #vrtx-course-semesters,",
+                    "#vrtx-main-content > .vrtx-date-info"),
+    facts = c("#vrtx-course-title-toc", "#vrtx-additional-content"),
     plan_years = "current",
     section_strategy = "html",
     # h3 carries Obligatoriske/Anbefalte forkunnskaper inside "Opptak til
@@ -231,6 +267,7 @@ institution_configs <- list(
     exclude = c(".content-navigation, .course-footer",
                 paste0("//div[contains(@class, 'factbox--course') and not(contains(@class, 'factbox--exam'))]",
                        "//p[contains(@class, 'factbox__content-item')][.//a]")),
+    facts = c("div.article__top", "div.factbox--course:not(.factbox--exam)"),
     plan_years = "url",
     section_strategy = "html",
     # PDF plans (text_split fallback) open with a title and a metadata block;
@@ -248,10 +285,14 @@ institution_configs <- list(
   uit = list(
     code = "1130",
     strategy = "url_discovery",
-    # div.col-md-7.mainContent holds the plan's h2 sections (Om emnet, Hva
-    # lærer du, Undervisning og pensum, Eksamen) plus the year picker and the
-    # contact block with staff names, which .pre_uit() cuts.
-    selector = ".mainContent",
+    # The course code and title, the facts (campus, semester, credits, level)
+    # and div.col-md-7.mainContent, which holds the plan's h2 sections (Om
+    # emnet, Hva lærer du, Undervisning og pensum, Eksamen) plus the year
+    # picker and the contact block with staff names, which .pre_uit() cuts;
+    # not the breadcrumbs and the apply button with the application period
+    selector = "#maincontents",
+    exclude = "#maincontents .hero-container1 .offset-md-1, #maincontents .breadcrumb",
+    facts = "#maincontents > section",
     plan_years = "url",
     post_fn = .pre_uit,
     section_strategy = "html",

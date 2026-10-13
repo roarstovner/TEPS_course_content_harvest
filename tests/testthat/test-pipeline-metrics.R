@@ -64,18 +64,22 @@ test_that("the built data match the metrics snapshot", {
 
 test_that("short plans without sections are page shells: no plan", {
   plans <- list(list(
-    plans = tibble::tibble(plan_content_id = c("p1", "p2", "p3"), institution = "a",
-                           Emnekode = c("X", "Y", "Z"),
-                           course_plan = c("Emnebeskrivelse", strrep("a", 2000), "Innhold")),
-    courses = tibble::tibble(course_id = c("1", "2", "3", "4"), institution = "a",
-                             Emnekode = c("X", "Y", "Z", "X"), extracted_text = "t",
-                             plan_content_id = c("p1", "p2", "p3", "p1"))))
+    plans = tibble::tibble(plan_content_id = c("p1", "p2", "p3", "p4"), institution = "a",
+                           Emnekode = c("X", "Y", "Z", "W"),
+                           course_plan = c("Emnebeskrivelse", strrep("a", 2000), "Innhold",
+                                           paste(strrep("Fakta ", 400), "Emnebeskrivelse")),
+                           plan_nchar = c(15, 2000, 7, 15)),
+    courses = tibble::tibble(course_id = c("1", "2", "3", "4", "5"), institution = "a",
+                             Emnekode = c("X", "Y", "Z", "X", "W"), extracted_text = "t",
+                             plan_content_id = c("p1", "p2", "p3", "p1", "p4"))))
   sections <- tibble::tibble(plan_content_id = "p3", institution = "a", Emnekode = "Z",
                              section = "course_content", text = "Innhold")
-  # p1: short, no sections -> shell; p2: long, no sections -> kept; p3: has sections
+  # p1: short, no sections -> shell; p2: long, no sections -> kept; p3: has
+  # sections; p4: long only by its facts box -> shell
   expect_equal(combine_plans(plans, sections)$plan_content_id, c("p2", "p3"))
+  expect_false("plan_nchar" %in% names(combine_plans(plans, sections)))
   off <- combine_offerings(plans, sections)
-  expect_equal(off$plan_content_id, c(NA, "p2", "p3", NA))
+  expect_equal(off$plan_content_id, c(NA, "p2", "p3", NA, NA))
   expect_true(all(off$has_extracted_text))
 })
 

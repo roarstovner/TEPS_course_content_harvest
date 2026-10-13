@@ -205,6 +205,7 @@ Figures are in the tables above; the notes say why.
 ### HVL (Western Norway University of Applied Sciences)
 
 - Year in the URL. Soft-404 "course not found" pages are detected at fetch time (`fetch_html_cols_single_hvl()`) and stored as no HTML
+- Read from `div.l-body`: the title, the facts aside (credits, campus, semesters, language, programmes) and the plan; not the year stamp and links, and from the aside not the course coordinators (names), the semester's exam schedule and the reading-list button
 
 ---
 
@@ -228,6 +229,7 @@ Figures are in the tables above; the notes say why.
 ### NIH (Norwegian School of Sport Sciences)
 
 - Short year range. Most 404s are the other semester of a course registered in both (see "Semester registration in DBH")
+- Read from `#vrtx-fs-emne-content`: the title, the facts list (credits, department, semester, duration, language) and the plan; not the course coordinator, the table of contents' heading and the FS fetch stamp
 
 ---
 
@@ -248,6 +250,7 @@ Figures are in the tables above; the notes say why.
 
 - Year and semester in the URL, with Norwegian characters (`HØST`/`VÅR`); ASCII `HOEST` falls back to a generic page without year-specific content
 - Accordion pages, read with a multi-element selector
+- Read from `div.node__content`: the plan and the sidebar's facts (language, credits, faculty, campus) after it, in no section; not the sidebar's semester picker, staff and Leganto link
 
 ---
 
@@ -293,6 +296,7 @@ Figures are in the tables above; the notes say why.
 
 - Year in the URL; accordion pages read with a multi-element selector; robots.txt asks for a 10-second crawl delay
 - The page's semester picker is dropped when the HTML is parsed
+- Read from `div.region-inner.grid`: the title, level and facts list (credits, semester, code, number of semesters, language) and the main column; not the sidebar (contact e-mail, the semester's exam schedule, a link to the department, so the responsible unit is not in `course_plan`)
 - About 280 pages say "Vi opplever problemer med å hente inn eksamensinformasjon": UiB's exam information service fails for these courses, in every year. Fetching the 294 affected pages again on 2026-10-02 fixed 7, so it is not a harvest error. The banner is removed from the sections, and these courses have no assessment text
 
 ---
@@ -301,7 +305,8 @@ Figures are in the tables above; the notes say why.
 
 - Only the plan in force is published (`plan_years = "current"`; see "Year coverage"). Semester URLs (`/h24/`, `/v25/`) hold logistics (teachers, timetable, exam dates), not the plan
 - Needs faculty/department slugs derived from `Avdelingsnavn` (mapping in `add_course_url_uio()`). Pattern: `https://www.uio.no/studier/emner/{faculty}/{inst}/{CODE}/`
-- `.anon_uio()` cuts the generic "Mer om eksamen ved UiO" tail
+- Read from `#vrtx-content`: the title, the plan and the facts box after it ("Fakta om emnet": level, credits, semesters, language, department), in no section
+- `.anon_uio()` cuts the generic "Mer om eksamen ved UiO" link list, up to the facts box
 
 ---
 
@@ -315,9 +320,9 @@ Figures are in the tables above; the notes say why.
 ### UiT (The Arctic University of Norway)
 
 - **Historical plans** via document ids from the course page's semester picker
-- The plan is read from `.mainContent` (since 2026-10; the old `.hovedfelt > main > div.col-md-12` matched nothing after a site change, so the 2026-10 harvest first had no text)
+- The plan is read from `#maincontents`: the course code and title, the facts (campus, semester, credits, level) and `.mainContent` (since 2026-10; the old `.hovedfelt > main > div.col-md-12` matched nothing after a site change, so the 2026-10 harvest first had no text); not the breadcrumbs and the apply button with the application period
 - `.pre_uit()` removes the "OBS! Dette emnet tilhører et tidligere semester / år" banner and cuts from "Andre år og semester" / "Kontakt oss" (staff names and e-mails) to the end; the responsible unit from the contact block ("Ansvarlig enhet", without its e-mail) stays, at the end of the text and in no section, and the plan id leaves it out
-- Some pages say "Error rendering component" where the plan should be: the plan failed to render on UiT's site, and these rows have no text
+- Some pages say "Error rendering component" where the plan should be: the plan failed to render on UiT's site, and these rows have only the title and facts, a page shell without a plan
 - The semester picker can list a semester twice: an English document ("Course code:", in all 5 cases an empty page) beside the Norwegian one. The Norwegian one is used; the first option was used before 2026-10-08, and a retry harvest (`harvest_all(institutions = "uit", retry = TRUE)`) gave these 5 offerings their plan
 
 ---

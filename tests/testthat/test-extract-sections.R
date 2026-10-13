@@ -406,12 +406,17 @@ test_that("uis: the facts box is in the text without its links, and in no sectio
 })
 
 test_that("nord: the short description is course content, title and code are not", {
-  page <- function(intro) paste0('<html><body><div class="main-content">
+  page <- function(intro) paste0('<html><body><div class="node__content">
+    <div class="for-mobile"><h1>Matematikk 4</h1></div><div class="main-content">
     <h1>Matematikk 4</h1><div class="field--name-field-subject-code">MAT5006</div>
     <div class="placeholder-text">', intro, '</div>
     <div class="accordion-container"><div class="ac"><button class="ac-trigger">Beskrivelse av emnet</button>
     <div class="ac-panel"><p>Masteroppgaven er et selvstendig forskningsarbeid i matematikkdidaktikk.</p>
-    <p>Studenten mottar veiledning.</p></div></div></div></div></body></html>')
+    <p>Studenten mottar veiledning.</p></div></div></div></div>
+    <section class="sidebar"><div class="semester-chooser">Velg semester</div>
+    <div class="field--name-field-credits"><div>Studiepoeng</div><div>30</div></div>
+    <div class="field--name-field-p-employees"><h2>Emneansvarlig</h2><div>Ola Nordmann</div></div>
+    </section></div></body></html>')
   cfg <- .block_cfg(get_institution_config("nord"))
   cc <- function(intro) {
     b <- page_blocks(page(intro), NA, cfg)
@@ -427,6 +432,12 @@ test_that("nord: the short description is course content, title and code are not
   expect_equal(cc("Se kursinnhold."), only_body)
   expect_equal(cc("Masteroppgaven er et selvstendig forskningsarbeid i matematikkdidaktikk."),
                only_body)
+  # the sidebar's facts are in the text, once, and in no section; staff and
+  # the semester picker are not
+  txt <- .blocks_text(page_blocks(page(""), NA, cfg))
+  expect_match(txt, "^Matematikk 4\nMAT5006.*Studiepoeng\n30$")
+  expect_false(grepl("Nordmann|Velg semester", txt))
+  expect_false(grepl("Studiepoeng", cc("")))
 })
 
 test_that("a prerequisites label in course content moves what it names", {
@@ -725,4 +736,16 @@ test_that("extract_sections returns its columns when there are no pages", {
   out <- extract_sections(get_institution_config("samas"), character(), character(), character())
   expect_named(out, c("course_id", "institution", "section", "raw_text"))
   expect_equal(nrow(out), 0)
+})
+
+test_that("facts: the title and facts box are in the text, not in a section or the plan text", {
+  html <- "<main><h1>MAT101 Algebra</h1><aside class='f'><p>Studiepoeng: 10</p><h2>Innhold</h2>
+    <span class='c'>Campus Bodø</span></aside><h2>Innhold</h2><p>Grupper og ringer.</p></main>"
+  cfg <- c(html_cfg(), list(facts = c("main > h1", "aside.f")))
+  b <- page_blocks(html, NA, cfg)
+  expect_equal(b$facts, c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE))
+  expect_match(page_fulltext(b, list()), "^MAT101 Algebra\\s+Studiepoeng: 10\\s+Innhold\\s+Campus Bodø\\s+Innhold")
+  expect_equal(page_fulltext(b, list(), facts = FALSE), "Innhold\n\nGrupper og ringer.")
+  # a heading inside the facts box opens no section
+  expect_equal(sections_of(html, cfg), c(course_content = "Grupper og ringer."))
 })

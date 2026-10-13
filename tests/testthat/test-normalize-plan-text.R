@@ -222,6 +222,22 @@ test_that("UiT's unit does not split a plan", {
   b <- "Om emnet\nTekst\n\nAnsvarlig enhet\nFakultet for humaniora"
   expect_equal(normalize_plan_text(c(a, b), .progress = FALSE), rep("om emnet tekst", 2))
   expect_equal(normalize_plan_text("Tekst\n\nResponsible unit\nFaculty of Humanities", .progress = FALSE), "tekst")
+  # nih, uia: "Ansvarlig avdeling:", nord "Ansvarlig fakultet", with the unit on the next line
+  expect_equal(normalize_plan_text(c("Tekst\nAnsvarlig avdeling:\nInstitutt X\nVarighet:\n1 år",
+                                     "Tekst\nAnsvarlig fakultet\nFakultet Y"), .progress = FALSE),
+               c("tekst varighet: 1 år", "tekst"))
+})
+
+test_that("the plan id is made from id_text where there is one", {
+  df <- tibble::tibble(course_id = c("a", "b"), institution = "x", Emnekode = "E",
+                       Årstall = c(2023, 2024),
+                       course_plan = c("Campus Bodø\nTekst", "Campus Nesna\nTekst"),
+                       id_text = c("Tekst", "Tekst"))
+  res <- deduplicate_plans(df)
+  expect_equal(nrow(res$plans), 1)
+  expect_equal(res$plans$course_plan, "Campus Bodø\nTekst")
+  expect_equal(res$plans$plan_nchar, 5)
+  expect_false("id_text" %in% names(res$courses))
 })
 
 test_that("ntnu's exam sessions: the plan id keeps one session's design", {

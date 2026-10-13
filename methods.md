@@ -122,36 +122,37 @@ coding is tied to a frozen release and carried to later releases with a
 crosswalk.
 
 **Page shells are not plans:** a page with no plan section to read and
-under 1,500 characters (only the facts box, a credit-overlap box,
-“Emnebeskrivelse”, a pointer to the English page, every section “Se
-fagplanen.”, a list of headings with no text under them) gives its
-offering no plan. So does an INN page that says the requested semester’s
-plan is not published yet and shows the latest version instead (“Her er
-den siste versjonen vi har tilgjengelig”): that is a later plan (2026 or
-later), not the offering’s. Longer pages without sections stay (OsloMet
-practicum courses, below). *Consequence:* 174 plans left the data on
-2026-10-06 (UiA 95, UiB 27, OsloMet 26, Nord 11, HVL 10, UiT 4, NTNU 1).
-With pages that are not the plan at all (INN’s course search page,
-OsloMet’s error page), 1 512 offerings have page text but no plan (hvl
-86, inn 1112, nord 58, ntnu 1, oslomet 77, uia 95, uib 80, uit 3).
-*Since:* 2026-10-06; heading lists (UiB NOLI216 and NOSP216, autumn
-2018) from 2026-10-07; NTNU pages whose only section was the exam tab
-from 2026-10-12 to 2026-10-13, when the tab came back (20 plans, 70
-offerings). INN later versions from 2026-10-07: 1,077 INN offerings (384
-of 407 pages from 2022, about half of 2023-2025) lose their plan; the
-April 2026 harvest has the same notice on the same pages. *Rejected:*
-keeping the later plan with a flag (decided 2026-10-07: an offering is
-coded with its own year’s plan or none). A rule on `course_plan` alone
-(2026-10-13): the characters in lines that read as text (four or more
-words; not a heading, a placeholder or a short “Label: value” fact) do
-not separate shells from plans at any threshold. A credit-overlap box
-reads as text, and so the 391 shell offerings have a median of 88 such
-characters and up to 738 (UiA, Nord); some plans have little but the
-assessment design (NTNU master’s thesis pages, “Vurderingsordning:
-Avhandling”, UiS MGLINT’s exam box). Below 150 characters, 128 plan
-offerings would become shells and 127 shell offerings stay plans; below
-500, 326 and 4. Whether a section can be cut is what tells a page with
-text about the course from one without.
+under 1,500 characters of plan text (without the title and facts box
+where the configuration names them, since 2026-10-13; only the facts
+box, a credit-overlap box, “Emnebeskrivelse”, a pointer to the English
+page, every section “Se fagplanen.”, a list of headings with no text
+under them) gives its offering no plan. So does an INN page that says
+the requested semester’s plan is not published yet and shows the latest
+version instead (“Her er den siste versjonen vi har tilgjengelig”): that
+is a later plan (2026 or later), not the offering’s. Longer pages
+without sections stay (OsloMet practicum courses, below). *Consequence:*
+174 plans left the data on 2026-10-06 (UiA 95, UiB 27, OsloMet 26, Nord
+11, HVL 10, UiT 4, NTNU 1). With pages that are not the plan at all
+(INN’s course search page, OsloMet’s error page), 1 525 offerings have
+page text but no plan (hvl 86, inn 1112, nord 58, ntnu 1, oslomet 77,
+uia 95, uib 80, uit 16). *Since:* 2026-10-06; heading lists (UiB NOLI216
+and NOSP216, autumn 2018) from 2026-10-07; NTNU pages whose only section
+was the exam tab from 2026-10-12 to 2026-10-13, when the tab came back
+(20 plans, 70 offerings). INN later versions from 2026-10-07: 1,077 INN
+offerings (384 of 407 pages from 2022, about half of 2023-2025) lose
+their plan; the April 2026 harvest has the same notice on the same
+pages. *Rejected:* keeping the later plan with a flag (decided
+2026-10-07: an offering is coded with its own year’s plan or none). A
+rule on `course_plan` alone (2026-10-13): the characters in lines that
+read as text (four or more words; not a heading, a placeholder or a
+short “Label: value” fact) do not separate shells from plans at any
+threshold. A credit-overlap box reads as text, and so the 391 shell
+offerings have a median of 88 such characters and up to 738 (UiA, Nord);
+some plans have little but the assessment design (NTNU master’s thesis
+pages, “Vurderingsordning: Avhandling”, UiS MGLINT’s exam box). Below
+150 characters, 128 plan offerings would become shells and 127 shell
+offerings stay plans; below 500, 326 and 4. Whether a section can be cut
+is what tells a page with text about the course from one without.
 
 **Tables are read one row per line:** each row of a table on the page is
 one line, its cells separated by tabs and each cell on one line, so an
@@ -196,7 +197,7 @@ and COVID line from assessment (the rule since 2026-10-01), which also
 removed rules for the use of AI and the exam forms that replaced written
 exams during COVID; keeping the NTNU exam tab out of the sections, which
 leaves 743 NTNU plans without an assessment section. *Consequence:* the
-sections hold a median 83 % of a plan’s text, and 53 plans have no
+sections hold a median 82 % of a plan’s text, and 53 plans have no
 section. The data do not yet follow the spec where its “Known
 deviations” says; each fix gets its own entry here, with numbers.
 *Since:* 2026-10-13.
@@ -328,6 +329,38 @@ UiB’s “Kontakt” and “Studierettleiar” lines) stay as a guard.
 changes. Text outside each page’s `selector` is a known deviation of the
 spec (title and facts sidebars at several institutions). *Since:*
 2026-10-13.
+
+**The title and facts box are in `course_plan`, but not in the plan
+id.** At HVL, NIH, UiB, UiO and UiT the page’s title, course code and
+facts box (credits, campus, semesters, language, level, programmes, the
+responsible unit) sat outside the part of the page that was read; at
+Nord its facts sidebar did. They are read now, without the names, exam
+schedules, links and pickers next to them (HVL’s course coordinators and
+exam dates, NIH’s course coordinator, UiB’s sidebar with contact e-mail
+and exam schedule, UiO’s links to the semester pages, UiT’s apply button
+with the application period, Nord’s staff and semester picker). Where
+the configuration names the title and facts box (`facts`: HVL, MF, NIH,
+Nord, UiB, UiO, UiS, UiT) they are in no section, and the plan id, the
+shell rule and the sections’ text fallback read the plan text without
+them. “Ansvarlig avdeling” (NIH, UiA, HiOF) and “Ansvarlig fakultet”
+(Nord) with the unit are left out of the plan id too. *Why:* by the spec
+the title and facts box are plan text. Hashed, they split plans whose
+text is the same from year to year: with them in the id, 158 plans split
+(HVL 41, Nord 29, UiT 87, UiB 1; 126 more plans in all), on a campus
+that is added or dropped, a programme list, a course-code variant in the
+title (MGBKR101 and MGUKR101, LER-1234 and LER-1234F) or a “Nivå” line
+shown in some years. In the text fallback a title read as a heading
+(“Tysk språk og litteraturvitskap …” as a reading list). *Rejected:*
+hashing the facts box; rules for each field that varies (campus,
+programmes, code), which would have to be found institution by
+institution. *Consequence:* 4,742 plans at HVL, NIH, UiB, UiO and UiT
+gain their title and facts with the same id; Nord’s 1,365 plans gain the
+sidebar’s facts and, with the title out of the id, a new id; MF’s 26 and
+180 UiS plans get a new id as their facts box leaves it, and HiOF’s 820
+and UiA’s 681 as the unit does. No plans merge or split (13,994), and no
+section changes. UiB’s unit, an unlabelled link in the sidebar, is not
+read. At the other institutions the title and facts box are still part
+of the plan id. *Since:* 2026-10-13.
 
 **MF and UiS: the title and the facts box are plan text.** `course_plan`
 keeps MF’s title and course code and its facts box (“Emneinfo”: code,

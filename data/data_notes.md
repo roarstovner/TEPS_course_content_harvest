@@ -9,25 +9,25 @@ Generated: 2026-10-13
 |:---|---:|---:|:---|---:|:---|---:|---:|:---|
 | hiof | 1712 | 240 | 2017-2025 | 846 | 49.4% | 7151 | 820 | 3.1% |
 | hivolda | 1182 | 113 | 2017-2025 | 594 | 50.3% | 4622 | 547 | 7.9% |
-| hvl | 3604 | 393 | 2017-2025 | 3335 | 92.5% | 4116 | 1647 | 49.3% |
+| hvl | 3604 | 393 | 2017-2025 | 3335 | 92.5% | 4464 | 1647 | 49.3% |
 | inn | 2861 | 286 | 2018-2025 | 1777 | 62.1% | 4164 | 553 | 16.8% |
 | mf | 55 | 29 | 2025 | 26 | 47.3% | 4056 | 26 | 0.0% |
-| nih | 184 | 34 | 2021-2025 | 81 | 44.0% | 2330 | 81 | 0.0% |
+| nih | 184 | 34 | 2021-2025 | 81 | 44.0% | 2534 | 81 | 0.0% |
 | nla | 2074 | 209 | 2017-2025 | 249 | 12.0% | 5885 | 181 | 27.3% |
 | nmbu | 29 | 15 | 2025 | 12 | 41.4% | 5900 | 12 | 0.0% |
-| nord | 3489 | 434 | 2016-2025 | 3489 | 100.0% | 4004 | 1365 | 60.2% |
+| nord | 3489 | 434 | 2016-2025 | 3489 | 100.0% | 4107 | 1365 | 60.2% |
 | ntnu | 5735 | 409 | 2004-2025 | 3791 | 66.1% | 3985 | 2015 | 46.8% |
 | oslomet | 1684 | 178 | 2018-2025 | 1684 | 100.0% | 12259 | 568 | 64.7% |
 | samas | 130 | 68 | 2025 | 0 | 0.0% | NA | 0 | NaN% |
 | steiner | 36 | 18 | 2025 | 15 | 41.7% | 5027 | 15 | 0.0% |
 | uia | 2881 | 245 | 2013-2025 | 1123 | 39.0% | 4343 | 681 | 33.8% |
-| uib | 2619 | 177 | 2004-2025 | 1473 | 56.2% | 3135 | 564 | 59.5% |
-| uio | 100 | 54 | 2025 | 47 | 47.0% | 4467 | 47 | 0.0% |
+| uib | 2619 | 177 | 2004-2025 | 1473 | 56.2% | 3297 | 564 | 59.5% |
+| uio | 100 | 54 | 2025 | 47 | 47.0% | 4623 | 47 | 0.0% |
 | uis | 2921 | 316 | 2007-2025 | 2728 | 93.4% | 5622 | 1287 | 52.8% |
-| uit | 6693 | 621 | 2004-2025 | 3154 | 47.1% | 4162 | 2300 | 27.0% |
+| uit | 6693 | 621 | 2004-2025 | 3167 | 47.3% | 4313 | 2300 | 27.0% |
 | usn | 3036 | 401 | 2018-2025 | 1238 | 40.8% | 10800 | 1182 | 4.5% |
 
-**Total**: 41025 rows, 25662 with extracted text (62.6%), 13994 unique
+**Total**: 41025 rows, 25675 with extracted text (62.6%), 13994 unique
 plans.
 
 **Columns:**
@@ -74,7 +74,7 @@ offerings with a plan, by period:
 | uib         | 31%   | 44%     | 63%     | 81%     | 79%     | 86%   |
 | uio         |       |         |         |         |         | 47%   |
 | uis         | 92%   | 96%     | 95%     | 92%     | 92%     | 94%   |
-| uit         | 51%   | 43%     | 40%     | 46%     | 54%     | 52%   |
+| uit         | 51%   | 44%     | 40%     | 46%     | 54%     | 52%   |
 | usn         |       |         | 39%     | 45%     | 38%     | 41%   |
 
 ## Semester registration in DBH
@@ -112,7 +112,7 @@ year) that have a plan in at least one semester:
 | uib | 1328 | 85% | 14 | 653 | 458 | 54% | 56.2% |
 | uio | 54 | 85% | 44 | 0 | 2 | 87% | 47.0% |
 | uis | 1602 | 82% | 0 | 1235 | 84 | 93% | 93.4% |
-| uit | 3605 | 86% | 1077 | 878 | 1133 | 63% | 47.1% |
+| uit | 3605 | 86% | 1077 | 878 | 1133 | 63% | 47.3% |
 | usn | 1657 | 83% | 1021 | 31 | 327 | 73% | 40.8% |
 
 ## Course-years without a plan
@@ -213,6 +213,10 @@ Figures are in the tables above; the notes say why.
 
 - Year in the URL. Soft-404 “course not found” pages are detected at
   fetch time (`fetch_html_cols_single_hvl()`) and stored as no HTML
+- Read from `div.l-body`: the title, the facts aside (credits, campus,
+  semesters, language, programmes) and the plan; not the year stamp and
+  links, and from the aside not the course coordinators (names), the
+  semester’s exam schedule and the reading-list button
 
 ------------------------------------------------------------------------
 
@@ -251,6 +255,9 @@ Figures are in the tables above; the notes say why.
 
 - Short year range. Most 404s are the other semester of a course
   registered in both (see “Semester registration in DBH”)
+- Read from `#vrtx-fs-emne-content`: the title, the facts list (credits,
+  department, semester, duration, language) and the plan; not the course
+  coordinator, the table of contents’ heading and the FS fetch stamp
 
 ------------------------------------------------------------------------
 
@@ -281,6 +288,9 @@ Figures are in the tables above; the notes say why.
   (`HØST`/`VÅR`); ASCII `HOEST` falls back to a generic page without
   year-specific content
 - Accordion pages, read with a multi-element selector
+- Read from `div.node__content`: the plan and the sidebar’s facts
+  (language, credits, faculty, campus) after it, in no section; not the
+  sidebar’s semester picker, staff and Leganto link
 
 ------------------------------------------------------------------------
 
@@ -361,6 +371,11 @@ Figures are in the tables above; the notes say why.
 - Year in the URL; accordion pages read with a multi-element selector;
   robots.txt asks for a 10-second crawl delay
 - The page’s semester picker is dropped when the HTML is parsed
+- Read from `div.region-inner.grid`: the title, level and facts list
+  (credits, semester, code, number of semesters, language) and the main
+  column; not the sidebar (contact e-mail, the semester’s exam schedule,
+  a link to the department, so the responsible unit is not in
+  `course_plan`)
 - About 280 pages say “Vi opplever problemer med å hente inn
   eksamensinformasjon”: UiB’s exam information service fails for these
   courses, in every year. Fetching the 294 affected pages again on
@@ -377,7 +392,11 @@ Figures are in the tables above; the notes say why.
 - Needs faculty/department slugs derived from `Avdelingsnavn` (mapping
   in `add_course_url_uio()`). Pattern:
   `https://www.uio.no/studier/emner/{faculty}/{inst}/{CODE}/`
-- `.anon_uio()` cuts the generic “Mer om eksamen ved UiO” tail
+- Read from `#vrtx-content`: the title, the plan and the facts box after
+  it (“Fakta om emnet”: level, credits, semesters, language,
+  department), in no section
+- `.anon_uio()` cuts the generic “Mer om eksamen ved UiO” link list, up
+  to the facts box
 
 ------------------------------------------------------------------------
 
@@ -397,16 +416,19 @@ Figures are in the tables above; the notes say why.
 
 - **Historical plans** via document ids from the course page’s semester
   picker
-- The plan is read from `.mainContent` (since 2026-10; the old
-  `.hovedfelt > main > div.col-md-12` matched nothing after a site
-  change, so the 2026-10 harvest first had no text)
+- The plan is read from `#maincontents`: the course code and title, the
+  facts (campus, semester, credits, level) and `.mainContent` (since
+  2026-10; the old `.hovedfelt > main > div.col-md-12` matched nothing
+  after a site change, so the 2026-10 harvest first had no text); not
+  the breadcrumbs and the apply button with the application period
 - `.pre_uit()` removes the “OBS! Dette emnet tilhører et tidligere
   semester / år” banner and cuts from “Andre år og semester” / “Kontakt
   oss” (staff names and e-mails) to the end; the responsible unit from
   the contact block (“Ansvarlig enhet”, without its e-mail) stays, at
   the end of the text and in no section, and the plan id leaves it out
 - Some pages say “Error rendering component” where the plan should be:
-  the plan failed to render on UiT’s site, and these rows have no text
+  the plan failed to render on UiT’s site, and these rows have only the
+  title and facts, a page shell without a plan
 - The semester picker can list a semester twice: an English document
   (“Course code:”, in all 5 cases an empty page) beside the Norwegian
   one. The Norwegian one is used; the first option was used before

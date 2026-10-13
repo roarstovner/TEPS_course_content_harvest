@@ -685,9 +685,12 @@ test_that("mf exam-dates block and library notice are removed", {
                "Skriftlig eksamen.\n\nLæringsutbytte\nKunnskap\n\nLitteraturliste")
 })
 
-test_that("uio exam-links tail is cut", {
+test_that("uio exam-links tail is cut, up to the facts box", {
   expect_equal(anonymize_text("uio", "Skriftlig eksamen.\nMer om eksamen ved UiO\nHvordan bruke KI som student", .progress = FALSE),
                "Skriftlig eksamen.")
+  expect_equal(anonymize_text("uio", paste0("Skriftlig eksamen.\nMer om eksamen ved UiO\nTrekk fra eksamen\n\n",
+                                            "Fakta om emnet\nNivå\nMaster"), .progress = FALSE),
+               "Skriftlig eksamen.\n\nFakta om emnet\nNivå\nMaster")
 })
 
 test_that("phone numbers after 'Tlf.' are removed", {
