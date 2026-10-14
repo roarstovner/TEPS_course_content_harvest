@@ -457,7 +457,10 @@ extract_sections <- function(config, html, extracted_text, course_id) {
            "eksamen (?:arrangeres|gjennomføres|foregår|blir arrangert|",
            "blir gjennomført|vert arrangert|vert gjennomført) ",
            "(?:som (?:ved )?)?ordinær(?:e)? eksamen\\.?[ \t]*"),
-    "(?m)^Se under [^.\n]{0,40}\\.?$"                            # oslomet pointer
+    "(?m)^Se under [^.\n]{0,40}\\.?$",                           # oslomet pointer
+    # a dated change-log entry: "13.03.2023: Eksamensform våren 2023 er
+    # endret etter vurdering av ...", "26.09.2018: Endret arbeidskrav" (hiof)
+    "(?m)^[ \t]*\\d{1,2}\\.\\d{1,2}\\.(?:\\d{4}|\\d{2})[ \t]*(?::|[-–][ \t])[^\n]*(?:\n|$)"
   ),
   uib = c(
     "(?s)\n?Dette bør du vite om eksamen.*$",                 # footer

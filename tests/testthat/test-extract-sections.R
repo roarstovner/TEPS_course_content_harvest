@@ -607,6 +607,15 @@ test_that("notices about the assessment stay in it", {
   expect_equal(.clean_sections(out, "hvl")$raw_text, paste0(
     "Er å regne som fusk. Informasjon om ChatGPT/kunstig intelligens mm. finner du her.\n",
     "Alle hjelpemidler er tillatt."))
+  # a dated change-log entry goes, the text under it stays (hiof)
+  for (s in c("assessment", "coursework_requirements")) {
+    out <- tibble::tibble(section = s, raw_text = paste(
+      "13.03.2023: Eksamensform våren 2023 er endret etter vurdering av programansvarlig.",
+      "Muntlig eksamen, 30 minutter.", "26.09.2018: Endret arbeidskrav knyttet til praksis.",
+      "Arbeidskrav må være godkjent.", sep = "\n"))
+    expect_equal(.clean_sections(out, "hiof")$raw_text,
+                 "Muntlig eksamen, 30 minutter.\nArbeidskrav må være godkjent.", info = s)
+  }
 })
 
 test_that("uib footer and error banner are removed", {

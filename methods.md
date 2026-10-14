@@ -329,8 +329,13 @@ would cut publication months from references (“June 2011”, “utkommer
 januar 2022”). A line-initial month and year goes only for years from
 2000, so a timeline entry (“April 1940: …”) stays. *Consequence:* 45
 plans change text (USN 37, HiØF 7, UiT 1), all in these lines; none
-merge or split (13,973 plans), and 7 HiØF section texts lose the “:”.
-*Since:* 2026-10-14.
+merge or split (13,973 plans). In the sections a dated change-log entry
+goes as a whole line, since by the spec the change log is plan text but
+not section text: 7 HiØF assessment and coursework sections lose a line
+such as “Eksamensform er endret etter vurdering av programansvarlig og
+studiedirektøren.”; an undated notice of a changed exam form stays
+(“MERK: Skriftlig skoleeksamen endres til hjemmeeksamen.”). *Since:*
+2026-10-14.
 
 **NTNU: the exam tab is plan text; the assessment section holds one exam
 session of it.** The page’s exam tab is FS’s exam registration:
