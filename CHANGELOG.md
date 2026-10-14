@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- UiB pages with 'Feil i visning av emnebeskrivelse': retry (#338)
 - NTNU -A course codes fetched with the suffix: 1,681 offerings without a page (#335)
 - Spring offerings read the next academic year's page (ntnu, hvl, oslomet) (#334)
 - Nord: 'Gjeldende emnebeskrivelse (sist oppdatert 2026/27)' is a later version for earlier offerings (#336)
