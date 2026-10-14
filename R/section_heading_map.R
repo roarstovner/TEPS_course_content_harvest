@@ -25,6 +25,7 @@ section_heading_patterns <- tibble::tribble(
   "obligatoriske aktiviteter",             "coursework_requirements", FALSE,
   "fravær fra obligatorisk aktivitet",     "coursework_requirements", FALSE,  # uio label
   "obligatorisk aktivitet",                "coursework_requirements", FALSE,
+  "compulsory learning activities",        "coursework_requirements", FALSE,  # hvl English pages
   "obligatoriske arbeidskrav",             "coursework_requirements", TRUE,   # uit label
   "arbeidskrav",                           "coursework_requirements", FALSE,
   "studiekrav",                            "coursework_requirements", FALSE,
@@ -104,6 +105,9 @@ section_heading_patterns <- tibble::tribble(
   "recommended prerequisite knowledge",    "prerequisites",          FALSE,
   "formal prerequisite knowledge",         "prerequisites",          TRUE,
   "recommended previous knowledge",        "prerequisites",          TRUE,
+  # hvl English pages: their "Krav til forkunnskapar". Exact, since elsewhere
+  # "entry requirements" can be admission text.
+  "entry requirements",                    "prerequisites",          TRUE,
   "prerequisites",                         "prerequisites",          FALSE,
 
   # --- .drop: headings that end a section but carry no course content ---

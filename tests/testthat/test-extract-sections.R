@@ -14,6 +14,12 @@ test_that("headings found unmapped in the 2026-10-01 audit are mapped", {
   expect_equal(match_heading_to_section("Innleiing"), "course_content")
 })
 
+test_that("headings of the English-only HVL pages are mapped", {
+  expect_equal(match_heading_to_section("Compulsory learning activities"), "coursework_requirements")
+  expect_equal(match_heading_to_section("Entry requirements"), "prerequisites")
+  expect_equal(match_heading_to_section("Recommended previous knowledge"), "prerequisites")
+})
+
 test_that("short English sub-headings only match exactly", {
   expect_equal(match_heading_to_section("Required prerequisite knowledge"), "prerequisites")
   expect_true(is.na(match_heading_to_section("Digital skills course")))
@@ -42,7 +48,9 @@ test_that("placeholder and pointer-only rows are dropped", {
             "No reading list available for this course",
             "Gjeldende litteraturliste for 2024 Høst finner du i Leganto",
             "Gjeldende litteraturliste for HØST 2022 finner du i Leganto.",
-            "Litteratur og faglige ressurser finner du her.")
+            "Litteratur og faglige ressurser finner du her.",
+            "Emnebeskrivelsen finnes kun på engelsk, gå til våre engelske nettsider ved å klikke \"English\" øverst i menyfeltet.",
+            "Emnebeskrivelsen finnes kun på engelsk. Gå til våre engelske nettsider ved å klikke på \"English\" øverst i menyfeltet.")
   for (t in drop) expect_false(.keep_section_row(t, "reading_list"), label = t)
 })
 

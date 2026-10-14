@@ -545,6 +545,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "se (?:kursinnhold|emnebeskrivelse)(?:et|n)?",                     # nord intro
   "ingen emner(?: i programmet)?",
   "emnebeskrivelsen finnes kun på engelsk[^.]*",
+  "gå til våre engelske nettsider[^.]*",                              # hvl, after a full stop
   # reading-list pointers and absence notes
   "ingen pensumliste(?: tilgjengelig)?(?: for dette emnet)?",
   "no reading list(?: available)?(?: for this course)?",

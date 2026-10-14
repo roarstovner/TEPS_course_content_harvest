@@ -1,7 +1,7 @@
 # Data Quality Notes
 
 
-Generated: 2026-10-14
+Generated: 2026-10-15
 
 ## Overview
 
@@ -9,7 +9,7 @@ Generated: 2026-10-14
 |:---|---:|---:|:---|---:|:---|---:|---:|:---|
 | hiof | 1712 | 240 | 2017-2025 | 846 | 49.4% | 7151 | 820 | 3.1% |
 | hivolda | 1182 | 113 | 2017-2025 | 594 | 50.3% | 4622 | 511 | 14.0% |
-| hvl | 3604 | 393 | 2017-2025 | 3372 | 93.6% | 4408 | 1756 | 46.6% |
+| hvl | 3604 | 393 | 2017-2025 | 3372 | 93.6% | 4413 | 1800 | 46.5% |
 | inn | 2861 | 286 | 2018-2025 | 1777 | 62.1% | 4164 | 552 | 17.0% |
 | mf | 55 | 29 | 2025 | 26 | 47.3% | 4056 | 26 | 0.0% |
 | nih | 184 | 34 | 2021-2025 | 81 | 44.0% | 2534 | 81 | 0.0% |
@@ -27,7 +27,7 @@ Generated: 2026-10-14
 | uit | 6693 | 621 | 2004-2025 | 3167 | 47.3% | 4313 | 2262 | 28.1% |
 | usn | 3036 | 401 | 2018-2025 | 1238 | 40.8% | 10800 | 1181 | 4.6% |
 
-**Total**: 41025 rows, 27318 with extracted text (66.6%), 14004 unique
+**Total**: 41025 rows, 27318 with extracted text (66.6%), 14049 unique
 plans.
 
 **Columns:**
@@ -97,7 +97,7 @@ year) that have a plan in at least one semester:
 |:---|---:|:---|---:|---:|---:|:---|:---|
 | hiof | 936 | 83% | 715 | 8 | 53 | 90% | 49.4% |
 | hivolda | 629 | 88% | 510 | 8 | 35 | 93% | 50.3% |
-| hvl | 1931 | 87% | 141 | 1461 | 71 | 95% | 93.6% |
+| hvl | 1931 | 87% | 142 | 1498 | 33 | 97% | 93.6% |
 | inn | 1500 | 91% | 608 | 14 | 739 | 43% | 62.1% |
 | mf | 29 | 90% | 25 | 0 | 1 | 90% | 47.3% |
 | nih | 107 | 72% | 58 | 0 | 19 | 76% | 44.0% |
@@ -133,7 +133,7 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 |:---|---:|---:|---:|---:|---:|---:|---:|
 | hiof | 98 | 98 | 0 | 0 | 0 | 0 | 6 |
 | hivolda | 40 | 0 | 40 | 0 | 0 | 0 | 10 |
-| hvl | 106 | 43 | 0 | 0 | 47 | 18 | 1 |
+| hvl | 62 | 59 | 0 | 0 | 3 | 0 | 1 |
 | inn | 849 | 0 | 584 | 0 | 265 | 0 | 7 |
 | mf | 3 | 0 | 0 | 0 | 0 | 3 | 0 |
 | nih | 26 | 26 | 0 | 0 | 0 | 0 | 2 |
@@ -213,9 +213,14 @@ Figures are in the tables above; the notes say why.
 
 - A page that says the plan is only in English (“Emnebeskrivelsen finnes
   kun på engelsk”, a shell) is fetched from the English site instead
-  (`fetch_html_cols_single_hvl()`, since 2026-10-14; the 92 such pages
-  of the 2026-09 harvest wait for
-  `harvest_all(institutions = "hvl", retry = TRUE)`)
+  (`fetch_html_cols_single_hvl()`, since 2026-10-14). The retry harvest
+  of 2026-10-15 gave all 86 offerings with such a page and no plan an
+  English plan (46 plans, mostly the English subject modules MGBEN and
+  MGUEN); their English headings map like the Norwegian ones. The 5
+  MGBPE201E offerings of 2023-2025 were not retried, since their pointer
+  had counted as a plan; they wait for
+  `harvest_all(institutions = "hvl", retry = TRUE)` on or after
+  2026-10-16
 - Year in the URL: the academic year the page is for (`/2025/` is
   “Emneplan for studieåret 2025/2026”), so a spring offering reads the
   year before (since 2026-10-14; until then it read the next study
