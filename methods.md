@@ -12,7 +12,7 @@ changes what the data mean, add or update its entry here; each release
 tag freezes this file with the data.
 
 Current data: 41 025 offerings (DBH course × year × semester) at 19
-institutions, 24 953 of them with a plan, and 13 946 unique plans from
+institutions, 25 039 of them with a plan, and 14 010 unique plans from
 18 institutions (none from Samas, below).
 
 ## Population and sampling frame
@@ -102,7 +102,13 @@ offerings keep their plan. Of the spring offerings, 978 get another
 plan, 1 gets one where it had none and 96 lose theirs until their page
 is fetched (no offering had fetched it). Plans 13,973 → 13,946 (UiS
 1,276 → 1,249: a spring offering now shares the plan of the autumn
-before it). *Since:* 2026-10-14.
+before it). A retry harvest on 2026-10-14 fetched those pages: 86 spring
+offerings get a plan (63 from the PDF of their academic year, 23 from
+the course page, where the menu has no entry for that year), and UiS has
+1,313 plans (14,010 in all). Compared with before the change, 1,063
+spring offerings have another plan, 2 have one where they had none and
+11 have none, their PDF being missing from UiS’s archive. *Since:*
+2026-10-14.
 
 **Sites that publish only the current plan:** a harvest counts only for
 the academic year (August-July) it was made in, and an offering gets the
@@ -158,7 +164,7 @@ before. *Since:* 2026-10-08.
 
 **A plan is a unique anonymized text per institution and course code**
 (`plan_content_id`, a hash of the normalized text). Offerings with the
-same text share a plan: 24 953 offerings have 13 946 plans. *Why:*
+same text share a plan: 25 039 offerings have 14 010 plans. *Why:*
 consecutive years and both semesters mostly repeat the same text.
 *Consequence:* the id changes whenever cleaning changes the text, so
 coding is tied to a frozen release and carried to later releases with a
@@ -539,7 +545,7 @@ plan id leaves out. MF’s course content sections lose the facts box
 mapped through one heading table (`R/section_heading_map.R`): course
 content (98 % of plans), learning outcomes (98 %), assessment (98 %),
 teaching methods (94 %), coursework requirements (91 %), prerequisites
-(56 %) and reading list (36 %). Where a section is missing, the coders
+(56 %) and reading list (37 %). Where a section is missing, the coders
 use the whole plan.
 
 **Coursework requirements are kept apart from assessment:** arbeidskrav

@@ -112,7 +112,12 @@ and academic year whichever offering it was fetched for, its own first.
 get another plan, 1 gets one where it had none and 96 lose theirs until their
 page is fetched (no offering had fetched it). Plans 13,973 → 13,946 (UiS
 1,276 → 1,249: a spring offering now shares the plan of the autumn before
-it). *Since:* 2026-10-14.
+it). A retry harvest on 2026-10-14 fetched those pages: 86 spring offerings
+get a plan (63 from the PDF of their academic year, 23 from the course page,
+where the menu has no entry for that year), and UiS has 1,313 plans (14,010
+in all). Compared with before the change, 1,063 spring offerings have
+another plan, 2 have one where they had none and 11 have none, their PDF
+being missing from UiS's archive. *Since:* 2026-10-14.
 
 ```{r}
 #| label: current-sites
