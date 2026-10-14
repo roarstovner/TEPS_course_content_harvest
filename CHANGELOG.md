@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- UiS course page shows a later plan version for years the menu lacks (#342)
 - UiS spring offerings read the next academic year's Stine PDF (#341)
 - Audit harness follow-ups (/audit-institutions) (#232)
 - HiØF dated change notes inside sections (#340)
