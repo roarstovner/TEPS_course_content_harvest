@@ -19,9 +19,17 @@
 #   wall       long text with almost no line breaks
 #   junk       known junk phrases (cookie banners, page numbers, JS, ...)
 #   dup_code   identical extracted_text for >= DUP_CODES different course codes
-#   year       semester/academic-year labels in the text all far from Årstall
+#   year       the page is not for the offering's academic year: its plan
+#              heading ("Emneplan for studieåret 2024/2025") names another
+#              year or, without one, no term or academic-year label in the
+#              text is the offering's (a spring offering reading Y/Y+1 too)
 #   uncaptured prose on the page missing from extracted_text (lines of
 #              >= 80 chars, not year pickers or breadcrumbs)
+#
+# Failed fetches are shown by cause (fetch error, largest first), each with
+# offerings of different course codes and, in the institution context, how
+# many codes have a page in another offering: a cause that hits a whole group
+# of codes (NTNU's "-A" codes, 2026-10) shows as such.
 #
 # Inputs:  the raw harvest (harvested_rows()) + data/interim/extracted_text.RDS
 # Outputs: data/audit/fulltext/packets/{inst}.md, manifest.csv, sample.csv
@@ -34,7 +42,8 @@ source("R/utils.R")                 # harvested_institutions()
 # ── Tunables ─────────────────────────────────────────────────────────────────
 SUSPECT_N     <- 20
 RANDOM_N      <- 8
-FAILED_N      <- 3      # failed fetches shown as extra examples (URL + error)
+FAILED_N      <- 3      # failed fetches shown per cause (URL + error)
+FAILED_CAUSES <- 3      # largest fetch-error causes shown
 TEXT_TRUNC    <- 7000   # max chars of extracted_text shown
 UNCAP_TRUNC   <- 2500   # max chars of uncaptured page text shown
 PAGE_SAMPLE   <- 250    # pages parsed per institution for chrome + coverage
@@ -52,6 +61,7 @@ source("R/fetch_html_cols.R")       # institution_config depends on fetch_fn ref
 source("R/extract_fulltext.R")      # pre/post fns used by institution_config
 source("R/institution_config.R")
 source("R/pipeline.R")              # harvested_rows()
+source("R/add_course_url.R")        # read_harvest() of url_year sites
 
 JUNK_RX <- regex(paste(
   "informasjonskapsler", "\\bcookies?\\b", "hopp til (hoved)?innhold",
@@ -60,15 +70,33 @@ JUNK_RX <- regex(paste(
   "velg studieår", "document\\.", "window\\.", "undefined",
   sep = "|"), ignore_case = TRUE)
 
-YEAR_RX <- regex(paste0(
-  "(?:høst|vår|haust|autumn|spring)\\s+(\\d{4})",
-  "|studieår\\s+(\\d{4})",
-  "|\\b(20\\d{2})\\s*/\\s*(?:20)?\\d{2}\\b"), ignore_case = TRUE)
+# Term and academic-year labels in the text: "Høst 2024", "2024 Haust",
+# "studieåret 2024", "2024/2025", "2024-25" (consecutive years; a pair in
+# parentheses is a citation: "Meld. St. 28 (2015-2016)").
+TERM_RX <- "(høst|haust|autumn|vår|spring|sommer|summer)"
+YEAR_LABEL_RX <- regex(paste0(
+  TERM_RX, "\\s+(20\\d{2})\\b",
+  "|\\b(20\\d{2})\\s+", TERM_RX,
+  "|studieår(?:et)?\\s+(20\\d{2})",
+  "|(?<!\\()\\b(20\\d{2})\\s*[/–-]\\s*(?:20)?(\\d{2})\\b"), ignore_case = TRUE)
+# The plan's heading on the page, at some sites outside extracted_text:
+# "Emneplan for studieåret 2024/2025" (hvl), "Emnebeskrivelse for 2024/25"
+# (nord; not its "sist oppdatert" pages, which show the version in force).
+PLAN_YEAR_RX <- regex(paste0(
+  "(?:emneplan|emnebeskrivelse|emnebeskriving|course description|course plan)\\s+for\\s+",
+  "(?:studieåret\\s+|the academic year\\s+)?(20\\d{2})\\s*[/–-]\\s*(?:20)?\\d{2}\\b"),
+  ignore_case = TRUE)
 
 error_msg <- function(e) {
   if (is.null(e)) return(NA_character_)
   if (inherits(e, "condition")) return(conditionMessage(e))
   as.character(e)[1]
+}
+
+# A fetch error without what varies per course (URLs, long numbers such as
+# timeouts in ms), so offerings that fail the same way share one cause.
+fetch_cause <- function(msg) {
+  coalesce(str_trunc(str_replace_all(msg, "https?://\\S+|\\d{4,}", "…"), 90), "not fetched")
 }
 
 # Visible text of a fetched page: HTML is parsed (scripts/styles dropped);
@@ -112,12 +140,16 @@ uncaptured <- function(lines, chrome, ext) {
 }
 `%|%` <- function(a, b) if (is.na(a)) b else a
 
-year_far <- function(txt, year) {
-  if (is.na(txt)) return(FALSE)
-  m <- str_match_all(txt, YEAR_RX)[[1]]
-  if (nrow(m) == 0) return(FALSE)
-  yrs <- as.integer(na.omit(c(m[, 2], m[, 3], m[, 4])))
-  length(yrs) > 0 && min(abs(yrs - year)) > 1
+# The academic years (first calendar year) a page is for: its plan heading
+# where there is one, else every label in the text; a spring or summer term
+# belongs to the year before (academic_start_year()).
+page_years <- function(heading_year, txt) {
+  if (!is.na(heading_year)) return(heading_year)
+  m <- str_match_all(coalesce(txt, ""), YEAR_LABEL_RX)[[1]]
+  spring <- str_detect(coalesce(m[, 2], m[, 5]), regex("vår|spring|sommer|summer", ignore_case = TRUE))
+  yrs <- as.integer(coalesce(m[, 3], m[, 4], m[, 6], m[, 7])) - (spring %in% TRUE)
+  pair <- !is.na(m[, 8])
+  unique(yrs[!pair | (as.integer(m[, 8]) - yrs) %% 100 == 1])
 }
 
 # ── Per institution ──────────────────────────────────────────────────────────
@@ -161,13 +193,16 @@ for (inst in institutions) {
   df <- df |>
     left_join(codes_per_text, by = "dedup_key") |>
     mutate(
+      acad_year     = academic_start_year(Årstall, Semesternavn),
+      page_yrs      = purrr::map2(as.integer(str_match(coalesce(html, ""), PLAN_YEAR_RX)[, 2]),
+                                  extracted_text, page_years),
       flag_empty    = has_html & txt_nchar == 0 & !identical(cfg$plan_years, "page"),
       flag_short    = !is.na(z) & z < -OUTLIER_Z,
       flag_long     = !is.na(z) & z >  OUTLIER_Z,
       flag_wall     = txt_nchar > 2000 & n_lines < txt_nchar / 1000,
       flag_junk     = str_detect(coalesce(extracted_text, ""), JUNK_RX),
       flag_dup_code = coalesce(n_codes, 1L) >= DUP_CODES,
-      flag_year     = purrr::map2_lgl(extracted_text, Årstall, year_far)
+      flag_year     = lengths(page_yrs) > 0 & !purrr::map2_lgl(acad_year, page_yrs, `%in%`)
     )
 
   # Page-level: chrome lines and uncaptured text, on a sample of pages plus
@@ -206,24 +241,34 @@ for (inst in institutions) {
   # without a stored page (PDF sources: steiner, part of uis).
   pool <- df |>
     filter(course_id %in% parse_ids | (!has_html & txt_nchar > 0)) |>
-    select(course_id, dedup_key, score)
-  selected <- audit_sample(pool, SUSPECT_N, RANDOM_N, SEED)
+    select(course_id, dedup_key, score, all_of(flag_cols))
+  selected <- audit_sample(pool, SUSPECT_N, RANDOM_N, SEED, flags = flag_cols)
+  df <- df |>
+    mutate(outcome = case_when(has_html ~ "page fetched",
+                               txt_nchar > 0 ~ "text without stored page (PDF source)",
+                               is.na(url) ~ "no URL",
+                               .default = fetch_cause(html_error_msg)),
+           fetch_failed = !has_html & txt_nchar == 0 & !is.na(url))
   failed <- df |>
-    filter(!has_html, txt_nchar == 0, !is.na(url)) |>
-    distinct(html_error_msg, .keep_all = TRUE) |>
-    head(FAILED_N)
+    filter(fetch_failed) |>
+    add_count(outcome) |>
+    filter(dense_rank(desc(n)) <= FAILED_CAUSES) |>
+    distinct(outcome, Emnekode_raw, .keep_all = TRUE) |>
+    slice_sample(n = FAILED_N, by = outcome) |>
+    arrange(desc(n))
   selected <- bind_rows(selected,
                         tibble(course_id = failed$course_id,
                                kind = rep("FAILED", nrow(failed))))
   if (nrow(selected) == 0) next
 
   # ── Packet ──
+  codes_with_text <- unique(df$Emnekode_raw[df$has_html | df$txt_nchar > 0])
   fetch_summary <- df |>
-    mutate(outcome = case_when(has_html ~ "page fetched",
-                               txt_nchar > 0 ~ "text without stored page (PDF source)",
-                               is.na(url) ~ "no URL",
-                               .default = coalesce(str_trunc(html_error_msg, 90), "not fetched"))) |>
-    count(outcome, sort = TRUE) |> head(6)
+    summarise(n = n(), failed = all(fetch_failed), codes = n_distinct(Emnekode_raw),
+              with_text = length(intersect(Emnekode_raw, codes_with_text)), .by = outcome) |>
+    arrange(desc(n)) |> head(6) |>
+    mutate(text = paste0(outcome, ": ", n, if_else(failed, sprintf(
+      " (%d course codes, %d of them with a page in another offering)", codes, with_text), "")))
   flag_counts <- colSums(df[flag_cols], na.rm = TRUE)
   lines <- c(
     audit_packet_header(CHECK, inst, filter(selected, kind != "FAILED"), paste(
@@ -247,7 +292,7 @@ for (inst in institutions) {
               length(chrome), 100 * CHROME_FRAC, length(parse_ids),
               paste0("\"", str_trunc(head(chrome, 8), 40), "\"", collapse = ", ")),
     "- Fetch outcomes:",
-    paste0("  - ", fetch_summary$outcome, ": ", fetch_summary$n),
+    paste0("  - ", fetch_summary$text),
     ""
   )
 
@@ -256,6 +301,9 @@ for (inst in institutions) {
     kind <- selected$kind[i]
     r <- df[match(cid, df$course_id), ]
     on <- str_remove(flag_cols[unlist(r[flag_cols]) %in% TRUE], "^flag_")
+    on[on == "year"] <- sprintf("year (page for %s, offering in %d/%d)",
+                                paste(sprintf("%d/%d", r$page_yrs[[1]], r$page_yrs[[1]] + 1),
+                                      collapse = ", "), r$acad_year, r$acad_year + 1)
     lines <- c(lines,
       sprintf("---\n\n## COURSE %d — `%s`  [%s]", i, cid, kind),
       "",
@@ -267,7 +315,7 @@ for (inst in institutions) {
       ""
     )
     if (kind == "FAILED") {
-      lines <- c(lines, sprintf("Fetch error: %s", r$html_error_msg %||% "(none recorded)"), "")
+      lines <- c(lines, sprintf("Fetch error: %s", r$outcome), "")
       next
     }
     lines <- c(lines,

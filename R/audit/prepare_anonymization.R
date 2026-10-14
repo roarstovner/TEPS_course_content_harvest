@@ -14,8 +14,8 @@
 #   email       e-mail address left
 #   phone       8-digit phone-number-like sequence left
 #   name_label  staff label (emneansvarlig, faglærer, godkjent av, ...) followed
-#               by a capitalised two-word name, or a role and names anywhere in
-#               a line (.role_name_inline_regex, as privacy_check)
+#               on its line by a capitalised two-word name, or a role and names
+#               anywhere in a line (.role_name_inline_regex, as privacy_check)
 #   name_like   2+ capitalised word pairs outside literature references
 #   admin_date  dates / semester-year labels / admin year stamps left
 #   removed     unusually large share of the text removed (over-removal)
@@ -33,6 +33,7 @@ source("R/fetch_html_cols.R")       # institution_config depends on fetch_fn ref
 source("R/extract_fulltext.R")      # pre/post fns used by institution_config
 source("R/institution_config.R")
 source("R/pipeline.R")              # harvested_rows()
+source("R/add_course_url.R")        # read_harvest() of url_year sites
 
 # ── Tunables ─────────────────────────────────────────────────────────────────
 SUSPECT_N     <- 20
@@ -49,11 +50,13 @@ dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
 
 EMAIL_RX <- "\\b[\\w.+-]+@[\\w.-]+\\.[a-zA-Z]{2,}\\b"
 PHONE_RX <- "(?<![\\d-])(?:\\+47\\s*)?\\d{2}\\s?\\d{2}\\s?\\d{2}\\s?\\d{2}(?![\\d-])"
+# Label and name on one line, the label a word of its own: "naturfaglærer" +
+# the next line's heading is no name. Not "teacher": in teacher-education
+# plans it is the subject ("The Reading Teacher"), not a staff label.
 NAME_LABEL_RX <- paste0(
-  "(?i:emneansvarle?i?g|faglærer|faglærar|foreleser|forelesar|kontaktperson|",
-  "koordinator|studieveileder|godkjent av|course coordinator|lecturer|",
-  "contact person|teacher)",
-  "\\s*[:\\-–]?\\s*\\p{Lu}\\p{Ll}+(?:\\s+\\p{Lu}\\.?)?\\s+\\p{Lu}\\p{Ll}+")
+  "(?<!\\p{L})(?i:emneansvarle?i?g|faglærer|faglærar|foreleser|forelesar|kontaktperson|",
+  "koordinator|studieveileder|godkjent av|course coordinator|lecturer|contact person)",
+  "[ \\t]*[:\\-–]?[ \\t]*\\p{Lu}\\p{Ll}+(?:[ \\t]+\\p{Lu}\\.?)?[ \\t]+\\p{Lu}\\p{Ll}+")
 # Mid-sentence capitalised word pair (after a lowercase word or comma), e.g.
 # "ved Kari Nordmann". Line-initial pairs are mostly headings.
 NAME_PAIR_RX <- "(?<=[\\p{Ll},;]\\s)\\p{Lu}\\p{Ll}{2,}\\s+\\p{Lu}\\p{Ll}{2,}\\b"
@@ -153,8 +156,8 @@ for (inst in institutions) {
   weights <- c(3, 2, 3, 1, 1, 2, 1)
   df$score <- as.vector(as.matrix(df[flag_cols]) %*% weights)
 
-  selected <- audit_sample(select(df, course_id, dedup_key, score),
-                           SUSPECT_N, RANDOM_N, SEED)
+  selected <- audit_sample(select(df, course_id, dedup_key, score, all_of(flag_cols)),
+                           SUSPECT_N, RANDOM_N, SEED, flags = flag_cols)
 
   flag_counts <- colSums(df[flag_cols])
   lines <- c(

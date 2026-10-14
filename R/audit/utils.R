@@ -67,15 +67,22 @@ audit_fence <- function(x) c("````", x, "````")
 # Stratified sample for one institution: up to `suspect_n` highest-scoring
 # suspects plus `random_n` random non-suspects, one course per `dedup_key`
 # (distinct plan text), so near-identical offerings do not crowd the packet.
+# `per_flag` random courses of each flag come first: a common heavier flag
+# does not crowd out a lighter one, and a flag shows its typical case.
 #
-# `pool` has columns course_id, dedup_key, score (0 = not suspect).
-audit_sample <- function(pool, suspect_n, random_n, seed = 42) {
+# `pool` has columns course_id, dedup_key, score (0 = not suspect) and the
+# logical flag columns named in `flags`.
+audit_sample <- function(pool, suspect_n, random_n, seed = 42, flags = NULL, per_flag = 2) {
   set.seed(seed)
   susp <- pool |>
     filter(score > 0) |>
     arrange(desc(score)) |>
-    distinct(dedup_key, .keep_all = TRUE) |>
-    head(suspect_n)
+    distinct(dedup_key, .keep_all = TRUE)
+  first <- unlist(lapply(flags, \(f) {
+    ids <- susp$course_id[susp[[f]] %in% TRUE]
+    ids[sample.int(length(ids), min(per_flag, length(ids)))]
+  }))
+  susp <- head(susp[order(!susp$course_id %in% first), ], suspect_n)
   rand_pool <- pool |>
     filter(score == 0, !dedup_key %in% susp$dedup_key) |>
     distinct(dedup_key, .keep_all = TRUE)

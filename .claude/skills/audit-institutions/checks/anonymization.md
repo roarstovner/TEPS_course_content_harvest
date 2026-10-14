@@ -25,7 +25,7 @@ Per course the packet shows the anonymized plan and every span that
 anonymization removed, as `… context [−removed−] context …`.
 
 Pre-pass flags: `email`, `phone` (8-digit sequence), `name_label` (staff label
-followed by a capitalised name), `name_like` (2+ mid-sentence capitalised
+followed on its line by a capitalised name), `name_like` (2+ mid-sentence capitalised
 word pairs outside literature references), `admin_date` (dates, semester-year
 labels, "Godkjent: 2021"), `removed` (unusually large share of the text
 removed), `artifact` (empty brackets left by a removal).
