@@ -156,13 +156,17 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
   }
 
   # --- Match discovered URLs with course rows ---
+  # A menu entry is an academic year ("2024 - 2025"): a spring or summer
+  # offering takes the year before (url_year = "academic").
   discovered <- updated_discovery |> dplyr::filter(!is.na(year))
 
   df_matched <- df |>
+    dplyr::mutate(.year = academic_start_year(Årstall, Semesternavn)) |>
     dplyr::left_join(
-      discovered |> dplyr::select(Emnekode_raw, year, discovered_url = url, url_type = type),
-      by = c("Emnekode_raw", "Årstall" = "year")
+      discovered |> dplyr::select(Emnekode_raw, .year = year, discovered_url = url, url_type = type),
+      by = c("Emnekode_raw", ".year")
     ) |>
+    dplyr::select(-.year) |>
     dplyr::mutate(
       url = dplyr::coalesce(discovered_url, url),
       url_type = dplyr::coalesce(url_type, "html")

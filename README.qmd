@@ -199,7 +199,7 @@ newuni = list(
   selector = ".main-content",     # the element that holds the course plan
   exclude = ".contact",           # optional: parts of it that are not the plan
   plan_years = "url",             # year in the URL; "page" or "current": see R/institution_config.R
-  # url_year = "academic",        # if the URL's year is the academic year (ntnu, hvl, oslomet)
+  # url_year = "academic",        # if the URL's year is the academic year (ntnu, hvl, oslomet, uis)
   section_strategy = "html"       # how the plan is split; see "Blocks and Sections"
 )
 ```

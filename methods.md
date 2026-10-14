@@ -12,7 +12,7 @@ changes what the data mean, add or update its entry here; each release
 tag freezes this file with the data.
 
 Current data: 41 025 offerings (DBH course × year × semester) at 19
-institutions, 25 048 of them with a plan, and 13 973 unique plans from
+institutions, 24 953 of them with a plan, and 13 946 unique plans from
 18 institutions (none from Samas, below).
 
 ## Population and sampling frame
@@ -88,6 +88,22 @@ form of it. More plans: HVL 110, OsloMet 68, NTNU 864. The rest have no
 page for that year (“Course not found”, OsloMet’s error page, NTNU’s “no
 information”). *Since:* 2026-10-14.
 
+**So does an offering at UiS.** UiS’s course page has a menu of plans by
+academic year (“2024 - 2025”: the course page for recent years, a PDF
+saying “studietilbudet for studieår 2024-2025” for older ones). The
+harvest matched the menu on DBH’s year for every semester, so a spring
+or summer offering read the next academic year’s plan: 831 spring
+offerings’ PDFs named the next study year (fulltext audit pre-pass,
+2026-10-14). Now spring and summer Y read the entry for Y-1 - Y, and an
+offering takes the page of its course and academic year whichever
+offering it was fetched for, its own first. *Rejected:* keeping the
+calendar year, as for NTNU, HVL and OsloMet. *Consequence:* autumn
+offerings keep their plan. Of the spring offerings, 978 get another
+plan, 1 gets one where it had none and 96 lose theirs until their page
+is fetched (no offering had fetched it). Plans 13,973 → 13,946 (UiS
+1,276 → 1,249: a spring offering now shares the plan of the autumn
+before it). *Since:* 2026-10-14.
+
 **Sites that publish only the current plan:** a harvest counts only for
 the academic year (August-July) it was made in, and an offering gets the
 plan of a harvest from its own academic year, or none. *Why:* these
@@ -142,7 +158,7 @@ before. *Since:* 2026-10-08.
 
 **A plan is a unique anonymized text per institution and course code**
 (`plan_content_id`, a hash of the normalized text). Offerings with the
-same text share a plan: 25 048 offerings have 13 973 plans. *Why:*
+same text share a plan: 24 953 offerings have 13 946 plans. *Why:*
 consecutive years and both semesters mostly repeat the same text.
 *Consequence:* the id changes whenever cleaning changes the text, so
 coding is tied to a frozen release and carried to later releases with a

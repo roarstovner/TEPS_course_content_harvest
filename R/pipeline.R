@@ -44,7 +44,10 @@ read_harvest <- function(files, config) {
     pick <- order(rows$course_id, !page, -seq_len(nrow(rows)))
     pick <- pick[!duplicated(rows$course_id[pick])]
     rows <- dplyr::select(rows[sort(pick), ], -dplyr::any_of("retry"))
-    if (identical(config$url_year, "academic")) rows <- .academic_year_pages(rows)
+    if (identical(config$url_year, "academic")) {
+      rows <- if (identical(config$strategy, "html_pdf_discovery")) .menu_year_pages(rows) else
+        .academic_year_pages(rows)
+    }
     return(rows)
   }
   page <- c("html", "html_error", "html_success", "extracted_text", "harvested_at")
@@ -86,6 +89,34 @@ read_harvest <- function(files, config) {
   out <- rows
   out[, cols] <- rows[src, cols]
   out$url <- needed
+  out
+}
+
+# A site whose URLs come from the course page's semester menu
+# (html_pdf_discovery: uis): an entry is an academic year, and its URL holds
+# it (".../Stine/EMNE/2024/VÅR/....pdf" and "?semester=2024H" are 2024/25).
+# An offering takes the page of its course whose URL holds its academic
+# year, whichever offering it was fetched for, its own first. Harvests until
+# 2026-10-14 matched the menu on the calendar year, so a spring offering got
+# the next academic year's page; one whose page nobody fetched has no page,
+# at the course page's URL, until harvest_all(retry = TRUE) fetches it. The
+# course page (no year in its URL: years the menu lacks) stays with its
+# offering, unless a page of the offering's academic year was fetched.
+.menu_year_pages <- function(rows) {
+  cols <- intersect(c("url", "html", "html_error", "html_success", "extracted_text"), names(rows))
+  m <- stringr::str_match(rows$url, "/Stine/EMNE/(\\d{4})/|[?&]semester=(\\d{4})")
+  year <- as.integer(dplyr::coalesce(m[, 2], m[, 3]))
+  key <- paste(rows$Emnekode_raw, year)
+  want <- paste(rows$Emnekode_raw, academic_start_year(rows$Årstall, rows$Semesternavn))
+  page <- !is.na(rows$html) | !is.na(rows$extracted_text)
+  pages <- which(!is.na(year) & page)
+  src <- pages[match(want, key[pages])]
+  own <- dplyr::if_else(is.na(year), is.na(src), key == want & (page | is.na(src)))   # its page, or its 404
+  src[own] <- which(own)
+  out <- rows
+  out[, cols] <- rows[src, cols]
+  none <- is.na(src)
+  if (any(none)) out$url[none] <- add_course_url(rows[none, ])$url
   out
 }
 

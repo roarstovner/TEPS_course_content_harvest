@@ -23,11 +23,11 @@ Generated: 2026-10-14
 | uia | 2881 | 245 | 2013-2025 | 1123 | 39.0% | 4196 | 558 | 45.7% |
 | uib | 2619 | 177 | 2004-2025 | 1473 | 56.2% | 3297 | 554 | 60.2% |
 | uio | 100 | 54 | 2025 | 47 | 47.0% | 4623 | 47 | 0.0% |
-| uis | 2921 | 316 | 2007-2025 | 2728 | 93.4% | 5622 | 1276 | 53.2% |
+| uis | 2921 | 316 | 2007-2025 | 2633 | 90.1% | 5760 | 1249 | 52.6% |
 | uit | 6693 | 621 | 2004-2025 | 3167 | 47.3% | 4313 | 2262 | 28.1% |
 | usn | 3036 | 401 | 2018-2025 | 1238 | 40.8% | 10800 | 1181 | 4.6% |
 
-**Total**: 41025 rows, 27327 with extracted text (66.6%), 13973 unique
+**Total**: 41025 rows, 27232 with extracted text (66.4%), 13946 unique
 plans.
 
 **Columns:**
@@ -73,7 +73,7 @@ offerings with a plan, by period:
 | uia         | 0%    | 0%      | 0%      | 50%     | 47%     | 49%   |
 | uib         | 31%   | 44%     | 63%     | 81%     | 79%     | 86%   |
 | uio         |       |         |         |         |         | 47%   |
-| uis         | 92%   | 96%     | 95%     | 92%     | 92%     | 94%   |
+| uis         | 89%   | 91%     | 88%     | 87%     | 91%     | 93%   |
 | uit         | 51%   | 44%     | 40%     | 46%     | 54%     | 52%   |
 | usn         |       |         | 39%     | 45%     | 38%     | 41%   |
 
@@ -111,7 +111,7 @@ year) that have a plan in at least one semester:
 | uia | 1508 | 91% | 968 | 3 | 402 | 68% | 39.0% |
 | uib | 1328 | 85% | 14 | 653 | 458 | 54% | 56.2% |
 | uio | 54 | 85% | 44 | 0 | 2 | 87% | 47.0% |
-| uis | 1602 | 82% | 0 | 1235 | 84 | 93% | 93.4% |
+| uis | 1602 | 82% | 97 | 1139 | 83 | 93% | 90.1% |
 | uit | 3605 | 86% | 1073 | 878 | 1137 | 63% | 47.3% |
 | usn | 1657 | 83% | 1021 | 31 | 327 | 73% | 40.8% |
 
@@ -147,7 +147,7 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 | uia | 483 | 483 | 0 | 0 | 95 | 0 | 92 |
 | uib | 614 | 447 | 0 | 137 | 36 | 0 | 0 |
 | uio | 7 | 0 | 0 | 0 | 0 | 7 | 0 |
-| uis | 109 | 14 | 0 | 0 | 95 | 0 | 0 |
+| uis | 108 | 13 | 0 | 0 | 95 | 0 | 0 |
 | uit | 1326 | 0 | 1323 | 0 | 12 | 0 | 50 |
 | usn | 431 | 0 | 431 | 0 | 0 | 0 | 30 |
 
@@ -435,6 +435,11 @@ Figures are in the tables above; the notes say why.
 - Current plans come from the course web page, older ones from the PDF
   archive linked in its semester dropdown (`html_pdf_discovery`); the
   PDFs are not stored, so their text is the raw data
+- A dropdown entry is an academic year (“2024 - 2025”; its PDF says
+  “studietilbudet for studieår 2024-2025”), so a spring or summer
+  offering reads the year before (since 2026-10-14; until then it read
+  the next academic year’s plan). For a year the dropdown lacks, the
+  course page itself is fetched
 - Web pages are read from the blocks of `div.article`, without
   navigation and contact footer; the facts box (“Fakta”: code, credits,
   semesters, language) is in `course_plan` without its timetable and

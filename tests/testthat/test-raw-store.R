@@ -94,6 +94,31 @@ test_that("academic-year URLs: an offering takes the page of its academic year",
   expect_null(out$html_error[[3]])                # /2023 for spring 2024: not fetched
 })
 
+test_that("menu URLs (uis): an offering takes the page of its academic year", {
+  pdf <- function(y) paste0("https://www6.uis.no/Stine/EMNE/", y, "/VÅR/Bokmål/MGL1_1.pdf")
+  page <- "https://www.uis.no/nb/student/course/MGL1_1"
+  # pages fetched before 2026-10-14: the menu entry of the calendar year
+  rows <- tibble::tibble(
+    course_id = c("a23", "s24", "s25", "a25", "s26", "s16"), institution = "uis", Emnekode = "MGL1",
+    Emnekode_raw = "MGL1-1", Avdelingsnavn = NA_character_,
+    Årstall = c(2023L, 2024L, 2025L, 2025L, 2026L, 2016L),
+    Semesternavn = c("Høst", "Vår", "Vår", "Høst", "Vår", "Vår"),
+    url = c(pdf(c(2023, 2024, 2025, 2025)), page, page),
+    html = NA_character_, html_error = list(NULL),
+    extracted_text = c("2023-2024", "2024-2025", "2025-2026", NA, "current", "current"))
+  out <- .menu_year_pages(rows)
+  # spring 2024 reads 2023/24 (fetched for autumn 2023), spring 2025 2024/25
+  # (fetched for spring 2024); autumn 2025's own fetch gave nothing, so it
+  # takes the same PDF fetched for spring 2025; spring 2026 takes 2025/26
+  # over the course page; spring 2016's year was never fetched: course page
+  expect_equal(out$extracted_text,
+               c("2023-2024", "2023-2024", "2024-2025", "2025-2026", "2025-2026", "current"))
+  expect_equal(out$url, c(pdf(c(2023, 2023, 2024, 2025, 2025)), page))
+  # spring 2023's 2022/23 PDF was never fetched: no page, at the course page
+  s23 <- .menu_year_pages(dplyr::filter(rows, course_id == "s24") |> dplyr::mutate(Årstall = 2023L))
+  expect_equal(c(s23$url, s23$extracted_text), c(page, NA))
+})
+
 test_that("nord: the academic year of the plan a page shows", {
   py <- get_institution_config("nord")$page_year
   expect_equal(py(c('<div class="h4 pre-title">Gjeldende emnebeskrivelse (sist oppdatert 2026/27)</div>',

@@ -29,8 +29,9 @@
 #            course_plan_spec.md). nord.
 #
 # url_year: "academic"  the URL's year is the academic year the page is for
-#                       (ntnu, hvl, oslomet: "/2025" is 2025/26), so a
-#                       spring or summer offering reads the year before, and
+#                       (ntnu, hvl, oslomet: "/2025" is 2025/26; uis: the
+#                       semester menu's "2025 - 2026"), so a spring or
+#                       summer offering reads the year before, and
 #                       read_harvest() gives an offering the page fetched for
 #                       its course and academic year, whichever offering it
 #                       was fetched for.
@@ -338,6 +339,7 @@ institution_configs <- list(
                        "//p[contains(@class, 'factbox__content-item')][.//a]")),
     facts = c("div.article__top", "div.factbox--course:not(.factbox--exam)"),
     plan_years = "url",
+    url_year = "academic",
     section_strategy = "html",
     # PDF plans (text_split fallback) open with a title and a metadata block;
     # the untitled paragraph after it is the course introduction.
