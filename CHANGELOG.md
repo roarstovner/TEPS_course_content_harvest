@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- HiØF dated change notes inside sections (#340)
 - Decide: cohort years and month-year approval stamps in course_plan (#320)
 - Fulltext cosmetics from the 2026-10-13 audit (#339)
 - UiB pages with 'Feil i visning av emnebeskrivelse': retry (#338)
