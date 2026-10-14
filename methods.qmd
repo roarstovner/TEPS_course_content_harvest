@@ -330,6 +330,28 @@ content changes, but the dedup hash keeps punctuation and spacing, so 2,480
 plans get a new id and 12 that differed only by such leftovers merge
 (13,967 plans). *Since:* 2026-10-12.
 
+**Approval and change-log dates with only month and year go; cohort years
+stay.** USN's approval stamps with a month and year lose the date like those
+with a full date ("Godkjent desember 2017." → "Godkjent", "Emneplan
+godkjent mars 2022."), and a change-log entry at the start of a line loses
+its date with the colon or dash after it ("November 2020: Endret
+karakterskala." → "Endret karakterskala."; "27.08.2020: Endring i …" lost
+its date before but kept the ": "). Cohort and plan-version years stay:
+"(kull 2010-2012)", "fra og med kull 2013", "studieplan som gjelder fra og
+med 2013" (210 plans, 339 offerings; UiT 140 plans, USN 28, HVL 20, HiØF 14,
+UiS 6, Nord 2).
+*Why:* the stamp and change-log dates say when the record was edited, not
+what the course is; a cohort year says which version of the programme the
+course belongs to, which is plan text, and the offering's own year is in the
+metadata (decided 2026-10-14 on the anonymization audit of 2026-10-11).
+*Rejected:* removing cohort years with the administrative years, which would
+lose which cohorts a course is for; removing every month and year, which
+would cut publication months from references ("June 2011", "utkommer
+januar 2022"). A line-initial month and year goes only for years from 2000,
+so a timeline entry ("April 1940: …") stays. *Consequence:* 45 plans change
+text (USN 37, HiØF 7, UiT 1), all in these lines; none merge or split
+(13,973 plans), and 7 HiØF section texts lose the ": ". *Since:* 2026-10-14.
+
 **NTNU: the exam tab is plan text; the assessment section holds one exam
 session of it.** The page's exam tab is FS's exam registration:
 "Vurderingsordning: …", "Karakter: …", then per exam session ("Ordinær

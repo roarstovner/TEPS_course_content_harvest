@@ -459,13 +459,19 @@ anonymize_text <- function(institution, text,
     # av leder i utdanningsutvalget 4. mars 2019")
     stringr::str_replace_all(.approval_date_regex, "\\1") |>
     stringr::str_replace_all(.approval_date_regex, "\\1") |>
-    # dd.mm.yy after an approval: "Godkjent 9.3.21.", "Emneplan godkjent
-    # 25.03.25", "Godkjent av instituttleder 18.10.22" (usn), and any
-    # zero-padded one ("Oppsatt skoleeksamen 16.12.20"), not in a file name
-    # ("rapport-24.06.16.pdf")
+    # dd.mm.yy or month and year after an approval: "Godkjent 9.3.21.",
+    # "Emneplan godkjent 25.03.25", "Godkjent av instituttleder 18.10.22",
+    # "Godkjent desember 2017." (usn), and any zero-padded one ("Oppsatt
+    # skoleeksamen 16.12.20"), not in a file name ("rapport-24.06.16.pdf")
     stringr::str_replace_all(paste0(
       "((?<!\\p{L})(?i:godkjent)", .not_gov, "(?:[ \\t]+(?i:emneplan|av [^\\n]{0,30}?))?:?)[ \\t]+",
-      "\\d{1,2}\\.\\d{1,2}\\.\\d{2}(?![\\d/]|\\.\\w)", .eol_stop), "\\1") |>
+      "(?:\\d{1,2}\\.\\d{1,2}\\.\\d{2}(?![\\d/]|\\.\\w)|", .month_regex, "[ \\t]+\\d{4}\\b)", .eol_stop), "\\1") |>
+    # A change-log entry's date with its colon or dash: "November 2020:
+    # Endring i forkunnskapskrav", "November 2021 - Endret på ...",
+    # "27.08.2020: Endring ..." (usn, hiof); not "April 1940:" in a timeline
+    stringr::str_remove_all(paste0(
+      "(?m)^[ \\t]*(?:", .month_regex, "[ \\t]+20\\d{2}|\\d{1,2}\\.\\d{1,2}\\.(?:\\d{4}|\\d{2}))",
+      "[ \\t]*(?::|[-–](?=[ \\t]))[ \\t]*")) |>
     stringr::str_remove_all(.not_gov_rule(
       paste0(.gap, "(?<![\\d./])(?:0[1-9]|[12]\\d|3[01])"), paste0("\\.(?:0[1-9]|1[0-2])\\.\\d{2}(?![\\d/]|\\.\\w)", .eol_stop))) |>
     # Remove dates: dd.mm.yyyy; not inside a path or number, not a

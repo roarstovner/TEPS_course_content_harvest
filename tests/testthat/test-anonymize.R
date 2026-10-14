@@ -807,6 +807,15 @@ test_that("admin dates go, government documents keep theirs", {
   expect_equal(an("usn", "Naturfag (MG1NA1) H2018 Notodden\nPensumliste for H2025-V2026\ndidaktisk arbeid- H23"),
                "Naturfag (MG1NA1) Notodden\nPensumliste for\ndidaktisk arbeid")
   expect_equal(an("uis", "Tekst\nLENG145_1 Bokmål Versjon 20.Februar.2023\nMer"), "Tekst\nMer")
+  expect_equal(an("usn", "Godkjent desember 2017.\nEmneplan godkjent mars 2022."),
+               "Godkjent\nEmneplan godkjent")
+  expect_equal(an("usn", paste("Endringsbeskrivelse", "November 2020: Endret karakterskala.",
+                               "November 2021 - Endret på vurderingsform", "27.08.2020: Endring i forkunnskapskrav.",
+                               sep = "\n")),
+               "Endringsbeskrivelse\nEndret karakterskala.\nEndret på vurderingsform\nEndring i forkunnskapskrav.")
+  # cohort and plan-version years are content
+  for (x in c("April 1940: Tyskland angriper Norge", "Studieplan som gjelder fra og med 2013 (kull 2010-2012)"))
+    expect_equal(an("uit", x), x, info = x)
 })
 
 test_that("the guard looks back from the date's start; ISO and reference dates stay", {
