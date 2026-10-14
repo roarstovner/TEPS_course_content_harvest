@@ -301,6 +301,7 @@ Figures are in the tables above; the notes say why.
 - The page's semester picker is dropped when the HTML is parsed
 - Read from `div.region-inner.grid`: the title, level and facts list (credits, semester, code, number of semesters, language) and the main column; not the sidebar (contact e-mail, the semester's exam schedule, a link to the department, so the responsible unit is not in `course_plan`)
 - About 280 pages say "Vi opplever problemer med å hente inn eksamensinformasjon": UiB's exam information service fails for these courses, in every year. Fetching the 294 affected pages again on 2026-10-02 fixed 7, so it is not a harvest error. The banner is removed from the sections, and these courses have no assessment text
+- 72 pages say "Inga emnebeskriving tilgjengeleg" (no plan for that semester) and give no plan; 30 of them also carry "Feil i visning av emnebeskrivelse". Fetched again on 2026-10-14, 29 still carry both and none gives a plan, so the plan is not on the site
 
 ---
 

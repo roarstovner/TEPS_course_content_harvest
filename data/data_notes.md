@@ -407,6 +407,10 @@ Figures are in the tables above; the notes say why.
   courses, in every year. Fetching the 294 affected pages again on
   2026-10-02 fixed 7, so it is not a harvest error. The banner is
   removed from the sections, and these courses have no assessment text
+- 72 pages say “Inga emnebeskriving tilgjengeleg” (no plan for that
+  semester) and give no plan; 30 of them also carry “Feil i visning av
+  emnebeskrivelse”. Fetched again on 2026-10-14, 29 still carry both and
+  none gives a plan, so the plan is not on the site
 
 ------------------------------------------------------------------------
 
