@@ -26,7 +26,7 @@
 # page_year: function(html) giving the academic year (its first calendar year)
 #            of the plan a page shows, where the page says so; an offering
 #            whose page shows a later year gets no plan (a later version,
-#            course_plan_spec.md). nord.
+#            course_plan_spec.md). nord, uis.
 #
 # url_year: "academic"  the URL's year is the academic year the page is for
 #                       (ntnu, hvl, oslomet: "/2025" is 2025/26; uis: the
@@ -340,6 +340,10 @@ institution_configs <- list(
     facts = c("div.article__top", "div.factbox--course:not(.factbox--exam)"),
     plan_years = "url",
     url_year = "academic",
+    # For a year its menu lacks, the course page is fetched: it shows the
+    # latest version, the one selected in the menu ("2026 - 2027")
+    page_year = function(html) as.integer(stringr::str_match(
+      html, '<option value="[^"]*"\\s+selected>\\s*(\\d{4})\\s*-')[, 2]),
     section_strategy = "html",
     # PDF plans (text_split fallback) open with a title and a metadata block;
     # the untitled paragraph after it is the course introduction.

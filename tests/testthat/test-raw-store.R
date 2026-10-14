@@ -125,6 +125,15 @@ test_that("nord: the academic year of the plan a page shows", {
                     "<div>Emnebeskrivelse for 2023/24</div>", "<p>Ingen</p>")), c(2026L, 2023L, NA))
 })
 
+test_that("uis: the academic year selected in the course page's menu", {
+  py <- get_institution_config("uis")$page_year
+  menu <- paste0('<option value="https://www6.uis.no/Stine/EMNE/2017/H&Oslash;ST/B/X_1.pdf" selected>\n',
+                 '          2017 - 2018\n        </option>\n',
+                 '<option value="https://www6.uis.no/Stine/EMNE/2016/H&Oslash;ST/B/X_1.pdf">\n',
+                 '          2016 - 2017\n        </option>')
+  expect_equal(py(c(menu, "<p>Fakta</p>", NA)), c(2017L, NA, NA))
+})
+
 test_that("harvest_all(retry = TRUE) fetches offerings without a plan again", {
   withr::local_dir(withr::local_tempdir())
   old <- institution_configs$samas$plan_years

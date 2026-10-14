@@ -317,7 +317,7 @@ Figures are in the tables above; the notes say why.
 ### UiS (University of Stavanger)
 
 - Current plans come from the course web page, older ones from the PDF archive linked in its semester dropdown (`html_pdf_discovery`); the PDFs are not stored, so their text is the raw data
-- A dropdown entry is an academic year ("2024 - 2025"; its PDF says "studietilbudet for studieår 2024-2025"), so a spring or summer offering reads the year before (since 2026-10-14; until then it read the next academic year's plan). For a year the dropdown lacks, the course page itself is fetched
+- A dropdown entry is an academic year ("2024 - 2025"; its PDF says "studietilbudet for studieår 2024-2025"), so a spring or summer offering reads the year before (since 2026-10-14; until then it read the next academic year's plan). For a year the dropdown lacks, the course page itself is fetched. It shows the latest version, the one selected in the dropdown; where that is after the offering's academic year, the offering gets no plan (since 2026-10-14): 97 offerings, most of 2007-2018. A course page without a dropdown names no year and stays (96 offerings)
 - Web pages are read from the blocks of `div.article`, without navigation and contact footer; the facts box ("Fakta": code, credits, semesters, language) is in `course_plan` without its timetable and Leganto links, and in no section
 
 ---
