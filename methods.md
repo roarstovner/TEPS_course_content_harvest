@@ -12,7 +12,7 @@ changes what the data mean, add or update its entry here; each release
 tag freezes this file with the data.
 
 Current data: 41 025 offerings (DBH course × year × semester) at 19
-institutions, 23 322 of them with a plan, and 13 109 unique plans from
+institutions, 25 048 of them with a plan, and 13 973 unique plans from
 18 institutions (none from Samas, below).
 
 ## Population and sampling frame
@@ -80,9 +80,13 @@ another plan (HVL 1,284, NTNU 1,173, OsloMet 394), 225 get one where
 they had none and 484 lose theirs until their page is fetched (HVL 167,
 NTNU 233, OsloMet 84: no offering had fetched `/Y-1`). The number of
 plans does not change (13,021). A retry harvest on 2026-10-14 fetched
-those pages: HVL 117 and OsloMet 79 offerings get a plan (HVL 110 and
-OsloMet 68 more plans); the rest have no page for that year (“Course not
-found”, OsloMet’s error page). *Since:* 2026-10-14.
+those pages and NTNU’s “-A” pages: HVL 117, OsloMet 79 and NTNU 77
+spring offerings get a plan, and so do 1,649 of NTNU’s 1,681 “-A”
+offerings (the MGLU primary teacher courses, 2017-2025, which had none).
+995 of the 999 NTNU pages fetched carry DBH’s course name, two a shorter
+form of it. More plans: HVL 110, OsloMet 68, NTNU 864. The rest have no
+page for that year (“Course not found”, OsloMet’s error page, NTNU’s “no
+information”). *Since:* 2026-10-14.
 
 **Sites that publish only the current plan:** a harvest counts only for
 the academic year (August-July) it was made in, and an offering gets the
@@ -138,7 +142,7 @@ before. *Since:* 2026-10-08.
 
 **A plan is a unique anonymized text per institution and course code**
 (`plan_content_id`, a hash of the normalized text). Offerings with the
-same text share a plan: 23 322 offerings have 13 109 plans. *Why:*
+same text share a plan: 25 048 offerings have 13 973 plans. *Why:*
 consecutive years and both semesters mostly repeat the same text.
 *Consequence:* the id changes whenever cleaning changes the text, so
 coding is tied to a frozen release and carried to later releases with a
@@ -491,7 +495,7 @@ plan id leaves out. MF’s course content sections lose the facts box
 mapped through one heading table (`R/section_heading_map.R`): course
 content (98 % of plans), learning outcomes (98 %), assessment (98 %),
 teaching methods (94 %), coursework requirements (91 %), prerequisites
-(54 %) and reading list (33 %). Where a section is missing, the coders
+(56 %) and reading list (36 %). Where a section is missing, the coders
 use the whole plan.
 
 **Coursework requirements are kept apart from assessment:** arbeidskrav

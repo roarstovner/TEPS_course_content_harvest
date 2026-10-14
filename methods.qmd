@@ -91,10 +91,13 @@ offerings keep their plan. Of the spring and summer offerings, 2,851 get
 another plan (HVL 1,284, NTNU 1,173, OsloMet 394), 225 get one where they had
 none and 484 lose theirs until their page is fetched (HVL 167, NTNU 233,
 OsloMet 84: no offering had fetched `/Y-1`). The number of plans does not
-change (13,021). A retry harvest on 2026-10-14 fetched those pages: HVL 117
-and OsloMet 79 offerings get a plan (HVL 110 and OsloMet 68 more plans); the
-rest have no page for that year ("Course not found", OsloMet's error page).
-*Since:* 2026-10-14.
+change (13,021). A retry harvest on 2026-10-14 fetched those pages and
+NTNU's "-A" pages: HVL 117, OsloMet 79 and NTNU 77 spring offerings get a
+plan, and so do 1,649 of NTNU's 1,681 "-A" offerings (the MGLU primary teacher
+courses, 2017-2025, which had none). 995 of the 999 NTNU pages fetched carry
+DBH's course name, two a shorter form of it. More plans: HVL 110, OsloMet 68,
+NTNU 864. The rest have no page for that year ("Course not found",
+OsloMet's error page, NTNU's "no information"). *Since:* 2026-10-14.
 
 ```{r}
 #| label: current-sites
