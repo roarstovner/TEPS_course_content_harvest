@@ -62,8 +62,21 @@ anonymize_text <- function(institution, text,
     stringr::str_remove_all("Andre sider om emnet\\s*")
 }
 
+# HTML written out as text in a plan's fields (uit, uis reading-list notes:
+# "<p>Kapittel 3</p>", "Kap. 6,7, 9 &amp; 10"): the tags go, a line break
+# stays one, and the entities are decoded. Not "<http://...>" links.
+.literal_markup <- function(txt) {
+  txt |>
+    stringr::str_replace_all("(?i)<br\\s*/?>|</(?:p|div)>", "\n") |>
+    stringr::str_remove_all("(?i)<(?:p|div|span|strong|em|b|i|u)\\b[^<>\n]*>|</(?:span|strong|em|b|i|u)>") |>
+    stringr::str_replace_all(c("&nbsp;" = " ", "&aring;" = "å", "&oslash;" = "ø", "&aelig;" = "æ",
+                               "&Aring;" = "Å", "&Oslash;" = "Ø", "&AElig;" = "Æ", "&lt;" = "<",
+                               "&gt;" = ">", "&quot;" = "\"", "&amp;" = "&"))
+}
+
 .anon_uit <- function(txt) {
   txt |>
+    .literal_markup() |>
     # a plan component that failed to render: post_fn cuts the fulltext there,
     # but sections read past it (1,013 sections on 2026-10-05)
     stringr::str_remove_all("Error rendering component\\s*") |>
@@ -165,6 +178,7 @@ anonymize_text <- function(institution, text,
 
 .anon_uis <- function(txt) {
   txt |>
+    .literal_markup() |>
     # HTML pages: strip from "Kontakt" heading to end (names + version line)
     stringr::str_remove("(?m)^Kontakt\\s*\\n[\\s\\S]*$") |>
     stringr::str_remove_all("Emnebeskrivelsen er hentet fra[^\n]*") |>
@@ -238,6 +252,8 @@ anonymize_text <- function(institution, text,
 
 .anon_nmbu <- function(txt) {
   txt |>
+    # the label of a link to the AI categories, under "Om bruk av KI"
+    stringr::str_remove_all("(?m)^[ \\t]*Her finner du KI-kategoriene beskrevet\\.?[ \\t]*(?:\n|$)") |>
     # Strip "Emneansvarlig:Name" (colon directly followed by name, same line)
     stringr::str_remove_all("Emneansvarlig:?\\s*\\p{Lu}[\\p{L} .,-]+(?=\\n|$)")
 }

@@ -257,6 +257,15 @@ test_that("NTNU: Blackboard links removed", {
 
 # --- UiT ---
 
+test_that("UiT, UiS: HTML written out as text loses its tags, not its links", {
+  expect_equal(anonymize_text("uit", paste0("<p>Kapittel 3</p>\n<div class=\"x\">Kap. 9 &amp; 10<br/>s. 1-25</div>\n",
+                                            "Se <http://www.sami.uit.no/girji/n02/no/111dunfl.html>"), .progress = FALSE),
+               "Kapittel 3\n\nKap. 9 & 10\ns. 1-25\n\nSe <http://www.sami.uit.no/girji/n02/no/111dunfl.html>")
+  expect_equal(anonymize_text("uis", "Bok&nbsp;A p&aring; norsk", .progress = FALSE), "Bok A på norsk")
+  expect_equal(anonymize_text("nmbu", "Kategori 2.\nHer finner du KI-kategoriene beskrevet.\nNeste", .progress = FALSE),
+               "Kategori 2.\nNeste")
+})
+
 test_that("UiT: an exam part's date goes with its label", {
   an <- function(x) anonymize_text("uit", x, .progress = FALSE)
   expect_equal(an("Oppgave\tInnlevering: 15.05.2023 14:00 Vekting: 0/1\tKarakterregel: A–E, stryk F"),
