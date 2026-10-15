@@ -114,7 +114,18 @@ without the title and facts box.
 
 ## Known deviations
 
-The data built on 2026-10-13 do not yet follow the spec here:
+The data built on 2026-10-15 (release `data-2026-10-15`) do not yet follow
+the spec here:
 
 - UiB's responsible unit, an unlabelled link in the page's sidebar, is not in
   `course_plan`. DBH's `Avdelingsnavn` gives every UiB offering its unit.
+- Prerequisites hold admission text when it stands under a prerequisites
+  heading: about 1,100 sections mention "opptak", most of them only admission
+  or study right ("Forutsetter opptak til femårig lektorutdanning ...", "Emnet
+  er forbeholdt studenter på følgende studieprogram") or a pointer to the
+  admission rules. Most are NTNU (695) and Nord (264). Admission headings
+  themselves are dropped.
+- UiT's link to the university's exam page ("Alt du trenger å vite om før,
+  under og etter eksamen, oppmelding, fravær klage og vitnemål: UiTs samleside
+  om eksamen") is in `course_plan` (683 plans), though link labels are
+  boilerplate. It is in no section.
