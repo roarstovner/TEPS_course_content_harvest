@@ -11,7 +11,10 @@
 #' coders use the whole plan); and, when `dest` already holds a release,
 #' `plan_id_crosswalk.csv`: plan_content_id is a hash of the cleaned text, so a
 #' cleaning change renames plans, and the crosswalk carries codes to the new
-#' ids through the offerings (course_id) both releases share.
+#' ids through the offerings (course_id) both releases share; and
+#' `sections_changed.csv`: a section fix keeps the plan's id, so the crosswalk
+#' does not show it, yet units coded on the old section text no longer match
+#' (see section_changes()).
 #'
 #' Tag the commit first (`git tag data-YYYY-MM-DD`) so the manifest names it.
 #'
@@ -47,6 +50,10 @@ release_data <- function(tag, dest = "../TEPS_course_content_coding/data") {
       dplyr::distinct(institution, Emnekode, old_plan_content_id, new_plan_content_id) |>
       dplyr::mutate(old_release = old_tag %||% NA_character_, new_release = tag)
     utils::write.csv(crosswalk, file.path(dest, "plan_id_crosswalk.csv"), row.names = FALSE)
+    changed <- section_changes(readRDS(file.path(dest, "plan_sections.RDS")), secs,
+                               readRDS(file.path(dest, "course_plans.RDS")), plans) |>
+      dplyr::mutate(old_release = old_tag %||% NA_character_, new_release = tag)
+    utils::write.csv(changed, file.path(dest, "sections_changed.csv"), row.names = FALSE)
   }
 
   file.copy(files, dest, overwrite = TRUE)
@@ -79,6 +86,26 @@ release_data <- function(tag, dest = "../TEPS_course_content_coding/data") {
   yaml::write_yaml(manifest, file.path(dest, "manifest.yml"))
   message("Release ", tag, " written to ", dest)
   invisible(dest)
+}
+
+#' Sections that differ between two releases, for the plans both hold
+#'
+#' @param was_secs,now_secs plan_sections of the old and the new release.
+#' @param was_plans,now_plans course_plans of the old and the new release.
+#' @return Tibble with the plan key, `section` and `change` ("changed",
+#'   "added", "removed"), for plans with the same id, institution and code in
+#'   both releases.
+section_changes <- function(was_secs, now_secs, was_plans, now_plans) {
+  key <- c("plan_content_id", "institution", "Emnekode")
+  both <- dplyr::semi_join(was_plans[key], now_plans, by = key)
+  dplyr::full_join(dplyr::semi_join(was_secs, both, by = key)[c(key, "section", "text")],
+                   dplyr::semi_join(now_secs, both, by = key)[c(key, "section", "text")],
+                   by = c(key, "section"), suffix = c("_was", "_now")) |>
+    dplyr::filter(!mapply(identical, text_was, text_now)) |>
+    dplyr::transmute(dplyr::across(dplyr::all_of(c(key, "section"))),
+                     change = dplyr::case_when(is.na(text_was) ~ "added",
+                                               is.na(text_now) ~ "removed",
+                                               .default = "changed"))
 }
 
 # --- Finalizing -----------------------------------------------------------

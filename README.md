@@ -457,7 +457,9 @@ writes the old -\> new `plan_content_id` crosswalk. Until then
 `frozen_check` lists the planned changes on every build, and a change
 nobody intended would be listed among them, so each commit explains the
 rows it adds, and the next release follows soon after the fixes. A
-section fix keeps the plan’s id, so the crosswalk does not show it.
+section fix keeps the plan’s id, so the crosswalk does not show it;
+`release_data()` lists such sections (plan, section, changed, added or
+removed) in `sections_changed.csv`.
 
 **Output files:**
 

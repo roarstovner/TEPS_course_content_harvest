@@ -233,6 +233,20 @@ test_that("a finalized release is locked and checked", {
                                    "section changed", "offering gone or with another plan"))
 })
 
+test_that("section_changes() lists section fixes under ids both releases hold", {
+  plan <- function(id) tibble::tibble(plan_content_id = id, institution = "samas", Emnekode = "S")
+  sec <- function(id, section, text) dplyr::mutate(plan(id), section = section, text = text)
+  was <- dplyr::bind_rows(sec("p1", "prerequisites", "Opptak til lektorutdanning."),
+                          sec("p1", "assessment", "Mappe."), sec("p2", "assessment", "Eksamen."),
+                          sec("p3", "assessment", "Gammel."))
+  now <- dplyr::bind_rows(sec("p1", "assessment", "Mappe."), sec("p2", "assessment", "Hjemmeeksamen."),
+                          sec("p2", "coursework_requirements", "Arbeidskrav."),
+                          sec("p4", "assessment", "Ny."))   # p3 renamed p4: in the crosswalk
+  res <- section_changes(was, now, plan(c("p1", "p2", "p3")), plan(c("p1", "p2", "p4")))
+  expect_equal(paste(res$plan_content_id, res$section, res$change),
+               c("p1 prerequisites removed", "p2 assessment changed", "p2 coursework_requirements added"))
+})
+
 test_that("a raw file has a harvest date only from its rows or its dated directory", {
   raw <- withr::local_tempdir()
   saveRDS(raw_rows(), harvest_file("x", raw))
