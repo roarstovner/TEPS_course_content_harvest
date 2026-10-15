@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- HVL MGBPE201E English page: retry harvest on/after 2026-10-16 (5 offerings) (#343)
 - Raw store: allow a second harvest of an institution the same day (#344)
 - HVL English-only plans not fetched (92 pages) (#337)
 - UiS course page shows a later plan version for years the menu lacks (#342)
