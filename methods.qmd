@@ -185,7 +185,8 @@ programmes (MGBEN, MGUEN); without the English page, HVL's English subject
 would have no plans. *Rejected:* leaving these offerings without a plan.
 *Consequence:* 86 offerings (10 course codes, 2020-2025) get a plan, 46 plans
 more, in English. 5 MGBPE201E offerings whose pointer had counted as a plan
-(one plan of 140 characters) have none until their English page is fetched.
+(one plan of 140 characters) were not retried with them; a second retry
+harvest the same day gave them their English plan (3 plans).
 *Since:* 2026-10-15.
 
 ## Unit of analysis: the unique plan
