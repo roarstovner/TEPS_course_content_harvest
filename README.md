@@ -451,9 +451,13 @@ and keeps the release’s offerings, plans and sections in
 any change to the release: a raw file changed or missing, an offering
 gone or linked to another plan, a plan gone or with other text, a
 section changed. Plans added later (a new DBH year) are not changes. A
-planned change to the release (a privacy fix) means a new release:
-finalize it, and `release_data()` writes the old -\> new
-`plan_content_id` crosswalk.
+planned change to the release (a privacy fix, a section fix after the
+coders’ check) means a new release: finalize it, and `release_data()`
+writes the old -\> new `plan_content_id` crosswalk. Until then
+`frozen_check` lists the planned changes on every build, and a change
+nobody intended would be listed among them, so each commit explains the
+rows it adds, and the next release follows soon after the fixes. A
+section fix keeps the plan’s id, so the crosswalk does not show it.
 
 **Output files:**
 

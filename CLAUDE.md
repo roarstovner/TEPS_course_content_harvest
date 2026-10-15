@@ -51,7 +51,9 @@ the gitignored `CLAUDE.local.md`.
   Releases"). Do not overwrite, merge into or `chmod` raw files by hand. To
   change extracted text, change the config or `R/extract_fulltext.R` and run
   `targets::tar_make()`. After a release is finalized, `tar_read(frozen_check)`
-  must stay empty.
+  may list only intended changes, headed for the next release: explain every
+  row in the commit that adds it, as for `metrics_check`. A raw file changed
+  or missing is never intended.
 - After changing extraction, the heading map or the anonymizer, rebuild the
   derived data with `targets::tar_make()` and read `tar_read(metrics_check)`
   (README "Rebuilding Derived Data"). Explain every flagged
