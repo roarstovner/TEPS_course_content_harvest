@@ -630,7 +630,12 @@ Other fields:
   block of the page (“Se fagplanen.”) takes the text under a sub-heading
   of that block, after a lead naming the source. oslomet: teaching
   methods from the subject’s “Fagplan” block (“Fagets arbeids- og
-  undervisningsformer”), as “Se fagplanen. Fagplanen sier: …”.
+  undervisningsformer”), as “Se fagplanen. Fagplanen sier: …”. The parts
+  under the `append` sub-headings join their section when the page has
+  it with text of its own (oslomet: the Fagplan’s “Arbeidskrav” and
+  attendance parts join the coursework requirements), and a line
+  starting with a `stop` label ends a part (labels the page did not mark
+  as sub-headings: “Skikkethetsvurdering”, “Vurderingsuttrykk”).
 
 ### Heading Map and Cleanup
 

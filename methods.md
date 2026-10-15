@@ -659,6 +659,23 @@ undervisningsformer”), marked “Se fagplanen. Fagplanen sier: …”: 114
 plans. *Why:* the emneplan delegates the teaching methods to the subject
 plan, which applies to the course. *Since:* 2026-10-06.
 
+**OsloMet coursework requirements take the Fagplan’s rules for
+coursework and attendance:** when the page holds the subject’s Fagplan,
+its parts on coursework and attendance (“Arbeidskrav”, “Obligatorisk
+deltakelse”, “Faglig aktivitet med krav om deltakelse” and the like)
+join the course’s own coursework section after “Fagplanen sier:”, up to
+the label of the next part (exam forms, suitability, grading): 248
+plans. *Why:* the Fagplan sets these rules for all its courses
+(deadlines, valid absence, resubmission, usually 80 % attendance with
+compensatory work), and the course’s section often points to it
+(“beskrevet i den innledende delen av fagplanen”). Before, they were
+only in `course_plan`: in 167 plans, the absence rules were in no
+section. *Rejected:* keeping them out of the sections as text not
+written for the course (the coders read the sections); giving a course
+without coursework of its own a section from the Fagplan alone
+(practicum courses keep no sections, below). *Since:* 2026-10-15 (user
+decision).
+
 **OsloMet practicum courses (M1GP/M5GP) have no sections:** every
 section of the emneplan says “Se fagplanen.”, and the page’s Fagplan is
 the programme’s practicum plan for all study years, with no markup

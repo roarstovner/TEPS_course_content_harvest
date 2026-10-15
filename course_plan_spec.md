@@ -68,7 +68,10 @@ text about no part stays only in `course_plan`. Where the line runs:
   arrangement, the assessment semester).
 - **Coursework requirements** hold what must be approved before the exam
   (arbeidskrav, compulsory attendance and activities, rules for absence from
-  them), also when the page lists them under the assessment heading.
+  them), also when the page lists them under the assessment heading. When the
+  page also holds the programme's or subject's plan (OsloMet's Fagplan), its
+  rules for coursework and attendance join the course's own coursework
+  requirements, after a lead that names the source.
 - **Prerequisites** hold required and recommended prior knowledge and
   courses, not admission (to the programme, study right, who may apply).
 - A part whose only text says that it is empty or elsewhere is not a section

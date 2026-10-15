@@ -53,10 +53,19 @@ institution_configs <- list(
     # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
     section_subheading_selector = "p",
     # Teaching methods that only say "Se fagplanen." take the text of the
-    # subject's Fagplan block on the same page.
+    # subject's Fagplan block on the same page. The block's coursework and
+    # attendance rules join the course's own coursework requirements, up to a
+    # label of another part (exam forms, suitability, grading).
     section_pointer = list(
       heading = "Fagplan", lead = "Fagplanen sier:",
-      sections = c(teaching_methods = "Fagets arbeids- og undervisningsformer")
+      sections = c(teaching_methods = "Fagets arbeids- og undervisningsformer"),
+      append = list(coursework_requirements = c(
+        "Arbeidskrav", "Arbeidskrav og faglig aktivitet med krav om deltakelse",
+        "Faglig aktivitet med krav om deltakelse", "Obligatorisk deltakelse",
+        "Deltaking i undervisning")),
+      stop = paste0("^(Rettigheter og plikter ved eksamen|Vurderings-/eksamensformer|",
+                    "Vurderingskriterier|Vurdering - vurderingskriterier|Skikkethetsvurdering|",
+                    "Vurderingsuttrykk|Samlet vurdering|Kvalitativ beskrivelse)")
     )
   ),
 

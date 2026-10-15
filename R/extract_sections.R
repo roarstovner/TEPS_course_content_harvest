@@ -179,8 +179,12 @@ page_sections <- function(blocks, text, cfg) {
 # ("Se fagplanen.") gets that block's text under the matching sub-heading,
 # after a lead that names the source: "Se fagplanen. Fagplanen sier:\n...".
 # `pointer` (config `section_pointer`): `heading` of the block, `lead`, and
-# `sections`, a sub-heading per section (oslomet). The block's text runs
-# to its next sub-heading.
+# `sections`, a sub-heading per section (oslomet). A part of the block runs
+# to its next sub-heading, or to a line that starts with a `stop` label (a
+# label the page did not mark as a sub-heading). The parts under the `append`
+# sub-headings join their section, after the lead, when the page has it with
+# text of its own (oslomet: the programme's coursework and attendance rules;
+# practicum courses, whose sections only say "Se fagplanen.", get none).
 .fill_pointer_sections <- function(out, blocks, pointer) {
   if (is.null(pointer) || nrow(out) == 0) return(out)
   heads <- which(blocks$role == "heading")
@@ -189,16 +193,28 @@ page_sections <- function(blocks, text, cfg) {
   end <- c(heads[heads > start], nrow(blocks) + 1)[1]
   block <- blocks[seq.int(start + 1, length.out = end - start - 1), ]
   subs <- which(block$role == "sub")
+  part <- function(names) {
+    txt <- vapply(subs[stringr::str_squish(block$text[subs]) %in% names], function(from) {
+      to <- c(subs[subs > from], nrow(block) + 1)[1]
+      p <- block[seq.int(from + 1, length.out = to - from - 1), ]
+      x <- p$text[p$role == "text"]
+      if (!is.null(pointer$stop)) x <- x[cumsum(grepl(pointer$stop, trimws(x))) == 0]
+      trimws(paste(x, collapse = "\n"))
+    }, character(1))
+    paste(txt[nzchar(txt)], collapse = "\n")
+  }
   for (sec in names(pointer$sections)) {
     i <- match(sec, out$section)
     if (is.na(i) || !.is_placeholder_text(out$raw_text[i]) ||
         !grepl(tolower(pointer$heading), tolower(out$raw_text[i]), fixed = TRUE)) next
-    from <- subs[stringr::str_squish(block$text[subs]) == pointer$sections[[sec]]][1]
-    if (is.na(from)) next
-    to <- c(subs[subs > from], nrow(block) + 1)[1]
-    part <- block[seq.int(from + 1, length.out = to - from - 1), ]
-    txt <- trimws(paste(part$text[part$role == "text"], collapse = "\n"))
+    txt <- part(pointer$sections[[sec]])
     if (nzchar(txt)) out$raw_text[i] <- paste0(trimws(out$raw_text[i]), " ", pointer$lead, "\n", txt)
+  }
+  for (sec in names(pointer$append)) {
+    i <- match(sec, out$section)
+    if (is.na(i) || .is_placeholder_text(out$raw_text[i])) next
+    txt <- part(pointer$append[[sec]])
+    if (nzchar(txt)) out$raw_text[i] <- paste0(trimws(out$raw_text[i]), "\n\n", pointer$lead, "\n", txt)
   }
   out
 }

@@ -207,6 +207,33 @@ test_that("a section that points to the Fagplan takes its text from it", {
   expect_equal(sections_of(own, cfg)[["teaching_methods"]], "Gruppearbeid.")
 })
 
+test_that("the Fagplan's coursework rules join a coursework section of its own", {
+  html <- "<main><ul>
+    <li><h2>Fagplan</h2><div><p><strong>Innledning</strong></p><p>Faget handler om kart.</p>
+      <p><strong>Arbeidskrav</strong></p><p>Gyldig fravær gir ikke fritak for arbeidskrav.</p>
+      <p>Obligatorisk deltakelse</p><p>Det stilles krav om 80 % tilstedeværelse.</p>
+      <p>Skikkethetsvurdering</p><p>Studenten vurderes gjennom hele studiet.</p></div></li>
+    <li><h2>Innhold</h2><div><p>Kart og klima.</p></div></li>
+    <li><h2>Arbeidskrav og obligatoriske aktiviteter</h2><div><p>To innleveringer.</p></div></li>
+    </ul></main>"
+  cfg <- c(html_cfg("p"), list(pointer = list(
+    heading = "Fagplan", lead = "Fagplanen sier:",
+    append = list(coursework_requirements = "Arbeidskrav"), stop = "^Skikkethetsvurdering")))
+  rules <- paste0("Fagplanen sier:\nGyldig fravær gir ikke fritak for arbeidskrav.\n",
+                  "Obligatorisk deltakelse\nDet stilles krav om 80 % tilstedeværelse.")
+  # up to the stop label, not the suitability text after it
+  expect_equal(sections_of(html, cfg)[["coursework_requirements"]],
+               paste0("To innleveringer.\n\n", rules))
+  # a course without coursework of its own, or with only a pointer, gets none
+  # (practicum courses)
+  for (own in c("", "<li><h2>Arbeidskrav og obligatoriske aktiviteter</h2><div><p>Se fagplanen.</p></div></li>")) {
+    other <- sub("<li><h2>Arbeidskrav og obligatoriske aktiviteter</h2><div><p>To innleveringer.</p></div></li>",
+                 own, html, fixed = TRUE)
+    expect_false("coursework_requirements" %in% names(sections_of(other, cfg)))
+    expect_equal(sections_of(other, cfg)[["course_content"]], "Kart og klima.")
+  }
+})
+
 test_that("admission text is dropped and h3 prerequisites are kept (uio)", {
   html <- "<main>
     <h2>Opptak til emnet</h2>
