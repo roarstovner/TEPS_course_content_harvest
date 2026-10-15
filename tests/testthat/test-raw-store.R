@@ -24,12 +24,17 @@ test_that("a current site's offering gets its course's page from a harvest in it
   f27 <- dated_harvest_file("x", as.Date("2027-10-01"), raw)
   dir.create(dirname(f27), recursive = TRUE); saveRDS(later, f27)
 
+  # a second harvest on 2026-09-30, fixing a page: the later file counts
+  again <- raw_rows(html = "2026/27 plan, fixed"); again$harvested_at <- as.Date("2026-09-30")
+  f30 <- dated_harvest_file("x", "2026-09-30_120000", raw)
+  dir.create(dirname(f30), recursive = TRUE); saveRDS(again, f30)
+
   out <- read_harvest(harvest_files("x", raw), list(name = "x", plan_years = "current"))
   plan <- function(y, s) out$html[out$Årstall == y & out$Semesternavn == s]
   expect_equal(plan(2025, "Høst"), "2025/26 plan")   # 2025/26: April 2026
   expect_true(is.na(plan(2025, "Vår")))             # 2024/25: no harvest
   expect_equal(plan(2026, "Vår"), "2025/26 plan")   # 2025/26, a row April never saw
-  expect_equal(plan(2026, "Høst"), "2026/27 plan")  # 2026/27: the September 2026 harvest
+  expect_equal(plan(2026, "Høst"), "2026/27 plan, fixed")  # 2026/27: the September 2026 harvests
   expect_equal(nrow(out), 4)
   expect_equal(out$harvested_at[out$Årstall == 2026 & out$Semesternavn == "Høst"], as.Date("2026-09-30"))
   expect_equal(academic_year_of_date(as.Date(c("2026-07-31", "2026-08-01", NA))),
@@ -175,14 +180,19 @@ test_that("harvest_all never writes a raw file twice", {
   expect_message(harvest_all(rbind(dbh(2025L), dbh(2026L)), institutions = "samas"),
                  "nothing new")
 
-  # a current site takes a new snapshot of fresh pages, but not into a file that exists
+  # a current site takes a new snapshot of fresh pages; harvested today
+  # already, so into a new file named by the time too
   institution_configs$samas$plan_years <<- "current"
   dir.create("data/raw/checkpoint")
   saveRDS(tibble::tibble(), "data/raw/checkpoint/html_samas.RDS")
-  expect_message(harvest_all(dbh(2026L), institutions = "samas"), "not written twice")
+  before <- tools::md5sum(c(base, dated_harvest_file("samas")))
+  suppressMessages(harvest_all(dbh(2026L), institutions = "samas"))
   expect_false(file.exists("data/raw/checkpoint/html_samas.RDS"))
-  expect_equal(nrow(readRDS(dated_harvest_file("samas"))), 2)
-  expect_equal(tools::md5sum(base), md5)
+  files <- harvest_files("samas")
+  expect_length(files, 3)
+  expect_match(files[3], "harvests/\\d{4}-\\d{2}-\\d{2}_\\d{6}/html_samas\\.RDS$")
+  expect_equal(nrow(readRDS(files[3])), 2)
+  expect_equal(tools::md5sum(files[1:2]), before)
 })
 
 test_that("a finalized release is locked and checked", {

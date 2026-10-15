@@ -54,8 +54,9 @@ harvest_institution <- function(institution, courses, year = NULL,
 #' is append-only: the first harvest of an institution is saved to
 #' data/raw/html_{inst}.RDS; a later one fetches only offerings that no raw
 #' file holds yet (a "current" site: a new snapshot of its latest DBH year)
-#' and saves them to data/raw/harvests/{date}/html_{inst}.RDS. An existing raw
-#' file is never written again.
+#' and saves them to data/raw/harvests/{date}/html_{inst}.RDS (a second harvest
+#' the same day: harvests/{date}_{HHMMSS}/). An existing raw file is never
+#' written again.
 #'
 #' With `retry`, a site with the year in the URL also fetches again the
 #' offerings whose page gave no plan in the current build
@@ -93,6 +94,9 @@ harvest_all <- function(courses = NULL, year = NULL, refetch = FALSE,
       result <- harvest_institution(inst, courses, year, refetch || length(again) > 0,
                                     setdiff(skip, again))
       file <- if (first) harvest_file(inst) else dated_harvest_file(inst)
+      if (!first && file.exists(file)) {   # harvested today already
+        file <- dated_harvest_file(inst, format(Sys.time(), "%Y-%m-%d_%H%M%S"))
+      }
       if (nrow(result) == 0) {
         message(inst, ": nothing new to harvest")
       } else if (file.exists(file)) {

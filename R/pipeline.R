@@ -54,7 +54,7 @@ read_harvest <- function(files, config) {
   snapshots <- rows |>
     dplyr::filter(!is.na(html) | !is.na(extracted_text)) |>
     dplyr::mutate(academic_year = academic_year_of_date(harvested_at)) |>
-    dplyr::arrange(dplyr::desc(harvested_at)) |>
+    dplyr::arrange(dplyr::desc(harvested_at), -seq_along(harvested_at)) |>   # same day: the later file
     dplyr::distinct(Emnekode_raw, academic_year, .keep_all = TRUE) |>
     dplyr::select(Emnekode_raw, academic_year, dplyr::any_of(page))
   # an offering's DBH columns from the first file that has it: a later file

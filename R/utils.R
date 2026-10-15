@@ -18,8 +18,9 @@ harvested_institutions <- function(raw_dir = RAW_DIR) {
 
 # The raw store is append-only: an institution's first harvest is
 # data/raw/html_{inst}.RDS, and every later harvest adds a file
-# data/raw/harvests/{YYYY-MM-DD}/html_{inst}.RDS with what it fetched. No raw
-# file is written twice; read_harvest() combines them.
+# data/raw/harvests/{YYYY-MM-DD}/html_{inst}.RDS with what it fetched (a
+# second harvest the same day: {YYYY-MM-DD}_{HHMMSS}/, which sorts after it).
+# No raw file is written twice; read_harvest() combines them.
 dated_harvest_file <- function(institution, date = Sys.Date(), raw_dir = RAW_DIR) {
   file.path(raw_dir, "harvests", format(date), paste0("html_", institution, ".RDS"))
 }
@@ -28,7 +29,8 @@ dated_harvest_file <- function(institution, date = Sys.Date(), raw_dir = RAW_DIR
 harvest_files <- function(institution, raw_dir = RAW_DIR) {
   first <- harvest_file(institution, raw_dir)
   dated <- Sys.glob(file.path(raw_dir, "harvests", "*", paste0("html_", institution, ".RDS")))
-  c(first[file.exists(first)], sort(dated))
+  # byte order: the locale's ignores punctuation and puts {date}_{time}/ first
+  c(first[file.exists(first)], sort(dated, method = "radix"))
 }
 
 # Date of a raw harvest: its harvested_at column (written since 2026-10-06),

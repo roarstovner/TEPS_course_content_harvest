@@ -421,10 +421,11 @@ interrupted harvest.
 No raw file is written twice. `harvest_all()` saves an institution’s
 first harvest to `data/raw/html_{inst}.RDS`; a later harvest fetches
 only the offerings no raw file holds yet (a current site: a new
-snapshot) and saves them to `data/raw/harvests/{date}/html_{inst}.RDS`.
-`harvest_all(year = 2026)` and `harvest_all()` therefore both just add
-what is new. `read_harvest()` combines the files; an offering in two
-files stops the build.
+snapshot) and saves them to `data/raw/harvests/{date}/html_{inst}.RDS`;
+a second harvest the same day goes to `harvests/{date}_{HHMMSS}/`, so a
+retry need not wait for the next day. `harvest_all(year = 2026)` and
+`harvest_all()` therefore both just add what is new. `read_harvest()`
+combines the files; an offering in two files stops the build.
 
 A page that gave no plan (a 404, a page shell) can be fetched again with
 `harvest_all(institutions = "uia", year = 2023, retry = TRUE)`: it takes
