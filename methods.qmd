@@ -246,7 +246,7 @@ offering is coded with its own year's plan or none). For UiS, the menu's
 latest entry before the offering's year (32 of the 97 have one, e.g.
 "2014 - 2015" for 2016): the site shows no plan for that year, and a year
 missing from the menu does not tell whether the earlier plan was still in
-force. A rule on `course_plan`
+force, and the data do not guess a plan (confirmed 2026-10-15). A rule on `course_plan`
 alone (2026-10-13): the characters in lines that read as text (four or more
 words; not a heading, a placeholder or a short "Label: value" fact) do not
 separate shells from plans at any threshold. A credit-overlap box reads as

@@ -230,17 +230,18 @@ as do 96 without a menu. *Rejected:* keeping the later plan with a flag
 none). For UiS, the menu’s latest entry before the offering’s year (32
 of the 97 have one, e.g. “2014 - 2015” for 2016): the site shows no plan
 for that year, and a year missing from the menu does not tell whether
-the earlier plan was still in force. A rule on `course_plan` alone
-(2026-10-13): the characters in lines that read as text (four or more
-words; not a heading, a placeholder or a short “Label: value” fact) do
-not separate shells from plans at any threshold. A credit-overlap box
-reads as text, and so the 391 shell offerings have a median of 88 such
-characters and up to 738 (UiA, Nord); some plans have little but the
-assessment design (NTNU master’s thesis pages, “Vurderingsordning:
-Avhandling”, UiS MGLINT’s exam box). Below 150 characters, 128 plan
-offerings would become shells and 127 shell offerings stay plans; below
-500, 326 and 4. Whether a section can be cut is what tells a page with
-text about the course from one without.
+the earlier plan was still in force, and the data do not guess a plan
+(confirmed 2026-10-15). A rule on `course_plan` alone (2026-10-13): the
+characters in lines that read as text (four or more words; not a
+heading, a placeholder or a short “Label: value” fact) do not separate
+shells from plans at any threshold. A credit-overlap box reads as text,
+and so the 391 shell offerings have a median of 88 such characters and
+up to 738 (UiA, Nord); some plans have little but the assessment design
+(NTNU master’s thesis pages, “Vurderingsordning: Avhandling”, UiS
+MGLINT’s exam box). Below 150 characters, 128 plan offerings would
+become shells and 127 shell offerings stay plans; below 500, 326 and 4.
+Whether a section can be cut is what tells a page with text about the
+course from one without.
 
 **Tables are read one row per line:** each row of a table on the page is
 one line, its cells separated by tabs and each cell on one line, so an
