@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- OsloMet: programme-wide coursework and absence rules are in course_plan, not in the coursework section (167 plans) (#348)
 - Finalize the release (after audits) (#298)
 - HVL MGBPE201E English page: retry harvest on/after 2026-10-16 (5 offerings) (#343)
 - Raw store: allow a second harvest of an institution the same day (#344)
