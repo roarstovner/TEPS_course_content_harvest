@@ -347,11 +347,13 @@ Figures are in the tables above; the notes say why.
 - Re-harvested 2026-02-14 after the site moved to server-side rendering.
   Error pages (“Siden du leter etter finnes ikke”) become NA in the
   anonymizer
-- **Practicum courses have no sections** (M1GP\*/M5GP\*, 135 offerings):
-  every section of the course plan only says “Se fagplanen.” The page’s
-  “Fagplan” block is the programme-wide practicum plan for all study
-  years, with no markup separating the years, so it is not read into the
-  course’s sections. Their `course_plan` keeps the full page text
+- **Practicum courses whose sections only say “Se fagplanen.” have no
+  sections** (M1GP\*/M5GP\*, 132 of 248 offerings with a plan on
+  2026-10-15; the others have text of their own and get its sections).
+  The page’s “Fagplan” block is the programme-wide practicum plan for
+  all study years, with no markup separating the years, so it is not
+  read into the course’s sections. Their `course_plan` keeps the full
+  page text
 
 ------------------------------------------------------------------------
 

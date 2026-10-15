@@ -588,6 +588,8 @@ cov <- secs |> distinct(plan_content_id, institution, Emnekode, section) |>
 share <- function(s) pct(cov$share[cov$section == s])
 fagplan <- sum(secs$section == "teaching_methods" & grepl("Fagplanen sier:", secs$text, fixed = TRUE))
 fagplan_cw <- sum(secs$section == "coursework_requirements" & grepl("Fagplanen sier:", secs$text, fixed = TRUE))
+prac <- plans |> filter(institution == "oslomet", grepl("^M[15]GP", Emnekode))
+prac_none <- sum(!prac$plan_content_id %in% secs$plan_content_id)
 ```
 
 **Seven canonical sections** are cut from each plan by its headings, mapped
@@ -686,11 +688,14 @@ fagplanen"). Before, they were only in `course_plan`: in 167 plans, the
 absence rules were in no section. *Rejected:* keeping them out of the
 sections as text not written for the course (the coders read the sections);
 giving a course without coursework of its own a section from the Fagplan
-alone (practicum courses keep no sections, below). *Since:* 2026-10-15
+alone (practicum courses whose sections only point to the Fagplan keep
+none, below). *Since:* 2026-10-15
 (user decision).
 
-**OsloMet practicum courses (M1GP/M5GP) have no sections:** every section of
-the emneplan says "Se fagplanen.", and the page's Fagplan is the programme's
-practicum plan for all study years, with no markup separating the years. Their
-plan text keeps the whole page. *Rejected:* reading the whole practicum plan
+**OsloMet practicum courses (M1GP/M5GP) whose sections only say "Se
+fagplanen." have no sections** (`r n(prac_none)` of `r n(nrow(prac))`
+practicum plans; the others have text of their own and get its sections): the
+page's Fagplan is the programme's practicum plan for all study years, with no
+markup separating the years. Their plan text keeps the whole page, which the
+coders read where a section is missing. *Rejected:* reading the whole practicum plan
 into each course, or slicing it by year (fragile). *Since:* 2026-10-02.

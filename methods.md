@@ -673,12 +673,14 @@ only in `course_plan`: in 167 plans, the absence rules were in no
 section. *Rejected:* keeping them out of the sections as text not
 written for the course (the coders read the sections); giving a course
 without coursework of its own a section from the Fagplan alone
-(practicum courses keep no sections, below). *Since:* 2026-10-15 (user
-decision).
+(practicum courses whose sections only point to the Fagplan keep none,
+below). *Since:* 2026-10-15 (user decision).
 
-**OsloMet practicum courses (M1GP/M5GP) have no sections:** every
-section of the emneplan says “Se fagplanen.”, and the page’s Fagplan is
-the programme’s practicum plan for all study years, with no markup
-separating the years. Their plan text keeps the whole page. *Rejected:*
-reading the whole practicum plan into each course, or slicing it by year
-(fragile). *Since:* 2026-10-02.
+**OsloMet practicum courses (M1GP/M5GP) whose sections only say “Se
+fagplanen.” have no sections** (45 of 85 practicum plans; the others
+have text of their own and get its sections): the page’s Fagplan is the
+programme’s practicum plan for all study years, with no markup
+separating the years. Their plan text keeps the whole page, which the
+coders read where a section is missing. *Rejected:* reading the whole
+practicum plan into each course, or slicing it by year (fragile).
+*Since:* 2026-10-02.
