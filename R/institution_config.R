@@ -373,9 +373,14 @@ institution_configs <- list(
     # and div.col-md-7.mainContent, which holds the plan's h2 sections (Om
     # emnet, Hva lærer du, Undervisning og pensum, Eksamen) plus the year
     # picker and the contact block with staff names, which .pre_uit() cuts;
-    # not the breadcrumbs and the apply button with the application period
+    # not the breadcrumbs and the apply button with the application period,
+    # nor the link labels to the university's exam page ("Alt du trenger å
+    # vite om ... : UiTs samleside om eksamen", "Her finner du mer informasjon
+    # om eksamen i nedlagte emner")
     selector = "#maincontents",
-    exclude = "#maincontents .hero-container1 .offset-md-1, #maincontents .breadcrumb",
+    exclude = c("#maincontents .hero-container1 .offset-md-1, #maincontents .breadcrumb",
+                paste0("//p[a[contains(@href, 'uit.no/eksamen')]][normalize-space() = normalize-space(a)",
+                       " or starts-with(normalize-space(), 'Alt du trenger å vite om')]")),
     facts = "#maincontents > section",
     plan_years = "url",
     post_fn = .pre_uit,

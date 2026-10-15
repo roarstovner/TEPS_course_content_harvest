@@ -669,7 +669,9 @@ and stock logistics sentences from assessment/coursework
 (`.section_noise`: uib banner and footer, hvl’s “Mer om hjelpemidler”
 link, oslomet’s resit sentence, …; notices about the assessment such as
 AI, plagiarism and COVID rules stay, and so do exam tables with their
-header row), removes admission sentences from prerequisites
+header row), removes admission and study-right sentences, pointers to
+the admission rules and “Ingen utover opptakskravet.” from
+prerequisites, keeping a sentence that also names a prerequisite
 (`.strip_admission_lines()`), drops placeholder-only rows
 (`.placeholder_phrases`: “Ingen”, “Se fagplanen.”, “-”, Leganto
 pointers, “Oppgis senere.”, “… ikke publisert ennå”), and drops a first

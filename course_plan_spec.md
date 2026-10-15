@@ -73,9 +73,13 @@ text about no part stays only in `course_plan`. Where the line runs:
   rules for coursework and attendance join the course's own coursework
   requirements, after a lead that names the source.
 - **Prerequisites** hold required and recommended prior knowledge and
-  courses, not admission (to the programme, study right, who may apply).
+  courses, not admission (to the programme, study right, who may apply) or
+  pointers to the admission rules. A sentence that names both stays whole
+  ("Opptak til femårig lektorutdanning og beståtte eksamener i henhold til
+  forskrift.").
 - A part whose only text says that it is empty or elsewhere is not a section
-  ("Ingen", "-", "Se fagplanen.", a pointer to Leganto). A pointer to another
+  ("Ingen", "Ingen utover opptakskravet.", "-", "Se fagplanen.", a pointer to
+  Leganto). A pointer to another
   part of the same page takes that part's text (OsloMet "Se fagplanen.").
 
 ## The plan id
@@ -122,13 +126,9 @@ the spec here:
 
 - UiB's responsible unit, an unlabelled link in the page's sidebar, is not in
   `course_plan`. DBH's `Avdelingsnavn` gives every UiB offering its unit.
-- Prerequisites hold admission text when it stands under a prerequisites
-  heading: about 1,100 sections mention "opptak", most of them only admission
-  or study right ("Forutsetter opptak til femårig lektorutdanning ...", "Emnet
-  er forbeholdt studenter på følgende studieprogram") or a pointer to the
-  admission rules. Most are NTNU (695) and Nord (264). Admission headings
-  themselves are dropped.
-- UiT's link to the university's exam page ("Alt du trenger å vite om før,
-  under og etter eksamen, oppmelding, fravær klage og vitnemål: UiTs samleside
-  om eksamen") is in `course_plan` (683 plans), though link labels are
-  boilerplate. It is in no section.
+- Prerequisites keep some admission rules written as requirements, in about
+  50 sections: the grade and school-point requirements for teacher
+  education ("Minimum 35 skolepoeng", Nord and NTNU), "Opptakskrav er
+  generell studiekompetanse, i tillegg til ..." (Nord) and OsloMet's
+  "Eksterne søkere må ha bestått lærerutdanning som kvalifiserer for arbeid i
+  skolen."

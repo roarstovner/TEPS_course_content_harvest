@@ -783,7 +783,46 @@ test_that("recommendations that mention admission are kept", {
                "Kan tas som frittstående fag i lærerutdanning. Bygger på 1A 1-7",
                "Generell studiekompetanse", sep = "\n")
   res <- .clean_sections(tibble::tibble(section = "prerequisites", raw_text = txt), "nord")
-  expect_equal(res$raw_text, paste(strsplit(txt, "\n")[[1]][1:3], collapse = "\n"))
+  expect_equal(res$raw_text, paste(c(strsplit(txt, "\n")[[1]][1:2], "Bygger på 1A 1-7"),
+                                   collapse = "\n"))
+})
+
+test_that("admission, study right and pointers to them leave prerequisites", {
+  clean <- function(txt) {
+    res <- .clean_sections(tibble::tibble(section = "prerequisites", raw_text = txt))
+    if (nrow(res) == 0) NA_character_ else res$raw_text
+  }
+  for (t in c("Forutsetter opptak til femårig lektorutdanning med master i språkfag, studieretning tysk.",
+              "Opptak på 5-årig lærerutdanning i samfunnsfag",
+              "Se fagplanen under Opptakskrav.",
+              "Jf. Opptakskrav og progresjonskrav i studieplanen.",
+              "Som opptakskrav til studieprogrammet, se studiets studieplan.",
+              "Det er ingen forkunnskaper utover opptakskrav i studieplanen for Master grunnskolelærerutdanning, 5-10.",
+              "Se forkunnskapskrav\n\nEmnet et forbeholdt studenter på femårig lektorutdanning i kroppsøving og idrettsfag",
+              paste("Emnet er forebeholdt studenter på følgende studieprogram:", "",
+                    "Lektorutdanning i kroppsøving og idrettsfag", "Grunnskolelærerutdanning 1-7", "",
+                    "Det kreves ingen forkunnskaper utover opptakskravet.", sep = "\n"))) {
+    expect_true(is.na(clean(t)), label = t)
+  }
+  # the prerequisite stays, with its spacing; a label over a removed pointer goes
+  expect_equal(clean("Fullført 52,5 sp. geografi. Emnet er forbeholdt studenter tatt opp til femårig lektorutdanning i geografi."),
+               "Fullført 52,5 sp. geografi.")
+  expect_equal(clean("Bestått PEL 1 eller tilsvarende.Gjennomført betyr eksamensklar. Emnet er forbeholdt studenter med studierett ved grunnskolelærerutdanningen"),
+               "Bestått PEL 1 eller tilsvarende.Gjennomført betyr eksamensklar.")
+  expect_equal(clean("Gode engelskkunnskaper\n\nForkunnskapskrav:\nSom opptakskrav til studieprogrammet, se studiets studieplan."),
+               "Gode engelskkunnskaper")
+  expect_equal(clean("Nei. Forutsetter opptak på grunnskolelærerutdanningen.\n\nMå ha bestått sikkerhetskurs."),
+               "Må ha bestått sikkerhetskurs.")
+  expect_equal(clean("Se forkunnskapskrav\n\nIDR3038 eller tilsvarende."), "IDR3038 eller tilsvarende.")
+  expect_equal(clean("Det anbefales Engelsk 1.\n\nKrever opptak til studieprogram: Grunnskolelærerutdanning 5.-10. trinn (MGLU5-10)"),
+               "Det anbefales Engelsk 1.")
+  # mixed sentences and recommendations stay
+  for (t in c("Opptak til femårig lektorutdanning og beståtte eksamener i henhold til forskrift.",
+              "For opptak til emnet kreves fullført minst del 1 av praktisk-pedagogisk utdanning.",
+              "Ingen utover opptakskravet, men det er en fordel å kunne lese noter.",
+              "Generell studiekompetanse Det blir venta at studentane meistrar begge målformer.")) {
+    expect_equal(clean(t), t, label = t)
+  }
 })
 
 test_that("nla: sections are read from the EmneplanPage JSON in a <script>", {

@@ -563,6 +563,20 @@ loses a plan. 48 UiB plans lose a reading list section that held only the
 publication notice; UiT's assessment sections lose the labels.
 *Since:* 2026-10-13.
 
+**UiT's link to the university's exam page leaves `course_plan`:** the
+paragraph "Alt du trenger å vite om før, under og etter eksamen, oppmelding,
+fravær klage og vitnemål: UiTs samleside om eksamen" and, on courses being
+discontinued, "Her finner du mer informasjon om eksamen i nedlagte emner",
+both a link to uit.no/eksamen. A paragraph with plan text and such a link
+keeps both. *Why:* by the spec link labels are boilerplate. The first stood
+in no section but put "fravær" into the `course_plan` of 683 plans; the
+second was in 16 assessment sections. *Rejected:* removing the line only
+from the sections, as before (it stayed in `course_plan`). *Consequence:*
+693 UiT plans get a new id (880 offerings), one for one: none merge or
+split. Their sections keep their text, except the label in the 16
+assessment sections and a blank line where the label stood in 652 others.
+*Since:* 2026-10-15.
+
 **MF and UiS: the title and the facts box are plan text.** `course_plan`
 keeps MF's title and course code and its facts box ("Emneinfo": code,
 credits, language, programmes) and UiS's facts box ("Fakta": code, credits,
@@ -646,7 +660,34 @@ The median assessment section grows from 261 to 325 characters. *Since:*
 HiOF and Nord give practicum its own heading (since 2026-10-01).
 
 **Admission text is not prerequisites** (opptakskrav, study-right sentences;
-since 2026-10-01), and credit-overlap boxes are dropped.
+since 2026-10-01), and credit-overlap boxes are dropped. Since 2026-10-15 the
+rule works by sentence, also under a prerequisites heading: a sentence goes
+if it only gives admission or study right ("Forutsetter opptak til femårig
+lektorutdanning …", "Emnet er forbeholdt studenter på …", "Kan tas som
+enkeltemne."), points to the admission rules ("Som opptakskrav til
+studieprogrammet, se studiets studieplan.", "Se fagplanen under
+Opptakskrav.") or says there is nothing beyond admission ("Ingen utover
+opptakskravet."). So does a programme list such a sentence introduces, and a
+label left with nothing under it ("Forkunnskapskrav:"). A sentence that also
+names a prerequisite (a course code, "bestått", credits, "bør", "anbefales")
+stays whole ("Opptak til femårig lektorutdanning og beståtte eksamener i
+henhold til forskrift."). *Why:* by the spec prerequisites hold prior
+knowledge, not admission. The rule of 2026-10-01 dropped admission headings
+and whole lines with an admission phrase from a short list, so most
+admission under a prerequisites heading stayed, and a line with both lost both
+("Opptak til studieprogrammet. Fullført Pedagogikk og elevkunnskap 1A."): in
+`data-2026-10-15`, 1,098 of 7,863 prerequisites sections mentioned "opptak"
+(NTNU 695, Nord 264), most of them only admission. *Rejected:* removing
+every sentence that mentions admission (the mixed ones carry a progression
+rule); the line as the unit. *Consequence:* against `data-2026-10-15`,
+442 prerequisites sections go (NTNU 201, Nord 200, OsloMet 13, USN 13,
+NLA 11, UiS 4) and 327 change; 11 regain text the old rule removed along
+with an admission sentence on the same line ("Studiets fire første år må
+være gjennomført").
+Plans with a prerequisites section: Nord 915 → 718, NTNU 1,815 → 1,622,
+NLA 122 → 111, OsloMet 83 → 70. 456 sections still mention "opptak",
+334 of them NTNU's mixed sentence. `course_plan` and the plan ids do not
+change. *Since:* 2026-10-15.
 
 **Placeholders are dropped** ("Ingen", "-", "Se fagplanen.", reading-list
 pointers; since 2026-10-01).

@@ -324,17 +324,28 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   if (k == 0) text else paste(lines[-seq_len(k)], collapse = "\n")
 }
 
-# Admission/study-right sentences inside a prerequisites block with no heading
-# of their own (nord, uib, oslomet). A line is removed only if it has an
-# admission phrase and nothing that looks like a real or recommended
-# prerequisite (a course code, "bestått", "forkunnskap", credits, "bør",
-# "i tillegg til", ...).
+# Admission and study right in a prerequisites block, under the block's own
+# heading (spec: prerequisites hold prior knowledge, not admission). A
+# sentence goes if it has an admission phrase and nothing that looks like a
+# real or recommended prerequisite (a course code, "bestått", "forkunnskap",
+# credits, "bør", "i tillegg til", ...), or if it says there is nothing
+# beyond admission ("Ingen utover opptakskravet."). Mixed sentences
+# stay ("Opptak til femårig lektorutdanning og beståtte eksamener i henhold
+# til forskrift.").
 .admission_line_regex <- paste0(
-  "(?i)opptak skjer|frittstående (?:fag|emne)|studierett|",
-  "tilgjengelig som valgfag|søke opptak|enkeltemnestudent|krever opptak til|",
-  "^\\s*(?:jf\\.?|jamfør) opptakskrav|",                   # uit pointer to the programme
-  "^\\s*opptak til (?:studie|lektor|lærer|master|bachelor|grunnskole)|",
-  "^\\s*generell studiekompetanse\\.?\\s*$"
+  "(?i)opptak skjer|frittstående|studierett|enkeltemne|tilgjengelig som valgfag|",
+  "søke[rs]? (?:særskilt )?opptak|krever generell studiekompetanse|",
+  "(?:forutsetter|forusetter|krever|krav om|godkjent) opptak|",
+  "(?:\\bfore?beholdt?|begrenset til) (?:for )?student|",   # "Emnet er forbeholdt studenter ..."
+  "^(?:(?:jf\\.?|jamfør|som|tilsvarende) )?opptakskrav|",   # pointers to the programme
+  "^(?:se|sjå)\\b.*opptak|",
+  "^(?:ved )?opptak (?:til|på) (?:\\S+ ){0,3}?\\S*(?:utdanning|program|studi|lektor|lærer|master)|",
+  "^opptaksgrunnlag\\w*\\.?$|^spesielle vilkår$|",       # ntnu's admission heading
+  "^generell studiekompetanse(?: eller (?:godkjent )?realkompetanse)?(?: etter [^.]*)?\\.?$"
+)
+.no_prerequisite_regex <- paste0(
+  "(?i)^(?!.*(?:\\bmen\\b|\\bbør\\b|anbefal))",
+  "(?:(?:det (?:kreves|er)|kurset har|emnet har) )?ingen\\b.*\\b(?:ut ?over|utenom)\\b.*opptak"
 )
 .real_prerequisite_regex <- paste0(
   "\\b[A-ZÆØÅ]{2,}[A-ZÆØÅ0-9-]*\\d{2,}|",
@@ -342,11 +353,48 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "\\bbør\\b|anbefal|fordel|rå til|i tillegg|inklusive|bygger på)"
 )
 
+.is_admission_sentence <- function(s) {
+  s <- sub("(?i)^forkunnskapskrav\\s*:\\s*", "", trimws(s), perl = TRUE)
+  code <- gsub("\\(\\p{Lu}{3,}[\\p{Lu}0-9-]*\\)", "", s, perl = TRUE)   # programme: "(MGLU5-10)"
+  grepl(.admission_line_regex, s, perl = TRUE) &
+    !grepl(.real_prerequisite_regex, code, perl = TRUE) |
+    grepl(.no_prerequisite_regex, s, perl = TRUE)
+}
+
+# Where a sentence ends: after . ! ? before a capital, not after an
+# abbreviation ("Jf. Opptakskrav ...").
+.sentence_end <- paste0("(?<=[.!?])(?<!\\b(?i:jf|jfr|jamfør|ca|nr|kap|bl\\.a|f\\.eks|evt|osv)\\.)",
+                        "(?=\\s+\\p{Lu}|\\p{Lu}\\p{Ll})")
+
+# Admission sentences go from their lines. A colon-ended admission line (or
+# "Spesielle vilkår") takes what it introduces (a programme list: the rest of
+# its paragraph, or the next one), and a label whose text all went goes too
+# ("Forkunnskapskrav:" over "Som opptakskrav til studieprogrammet, se ...").
 .strip_admission_lines <- function(text) {
   lines <- stringr::str_split_1(text, "\n")
-  admin <- grepl(.admission_line_regex, lines, perl = TRUE) &
-    !grepl(.real_prerequisite_regex, lines, perl = TRUE)
-  paste(lines[!admin], collapse = "\n")
+  n <- length(lines)
+  gone <- logical(n)
+  for (k in seq_len(n)) {
+    s <- stringr::str_split_1(lines[k], .sentence_end)
+    a <- .is_admission_sentence(s)
+    gone[k] <- all(a) && nzchar(trimws(lines[k]))
+    if (any(a) && !gone[k]) lines[k] <- trimws(paste(s[!a], collapse = ""))
+  }
+  if (!any(gone)) return(paste(lines, collapse = "\n"))
+  blank <- !nzchar(trimws(lines))
+  lead <- grepl("[:：]\\s*$|(?i)^\\s*spesielle vilkår\\s*$", lines, perl = TRUE)
+  after <- function(k) {
+    from <- which(!blank & seq_len(n) > k)[1]
+    if (is.na(from)) return(integer())
+    to <- which(blank & seq_len(n) > from)[1]
+    from:(if (is.na(to)) n else to - 1)
+  }
+  for (k in which(gone & lead)) gone[after(k)] <- TRUE
+  for (k in rev(which(!gone & lead))) {
+    i <- after(k)
+    if (length(i) > 0 && all(gone[i])) gone[k] <- TRUE
+  }
+  paste(lines[!gone], collapse = "\n")
 }
 
 # Lines in an assessment block that state a coursework gate. nord
@@ -489,8 +537,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
                   "\\(KI\\),? s(?:e|jå) [^\n]*$")),
   # a pointer to the AI page, after the AI rule or alone
   nord = "[ \t]*Informasjon om ChatGPT/kunstig intelligens[^\n]{0,20}? finner du her\\.?",
-  uit  = c("(?m)^Alt du trenger å vite om før, under og etter eksamen.*$",  # link line
-           "(?m)^Eksamensdato er foreløpig.*$",
+  uit  = c("(?m)^Eksamensdato er foreløpig.*$",
            # the grading cell of each row of the 2020s gate table, the same
            # for every gate; the gate's name stays
            "\tKarakterregel:[ \t]*\nGodkjent – ikke godkjent[ \t]*")
@@ -551,13 +598,14 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # content that merely starts with "Ingen" or mentions Leganto is kept.
 .placeholder_phrases <- c(
   # bare negation / dummy values: "Ingen", "Ingen krav", "None", "x", "-", "..."
-  "ingen(?: spesielle)?(?: krav| forkunnskapskrav| arbeidskrav)?", "none", "n/a", "x",
+  "ingen(?: spesielle)?(?: krav| forkunnskapskrav| arbeidskrav)?", "nei", "none", "n/a", "x",
   "det er ingen (?:vurdering|eksamen) i emnet",                      # hvl
   "[-–.…]+",
   "me(?:i)?r om hjelpemid(?:del|ler)",                               # hvl link
   # pointers to another document
   "(?:se|sjå) (?:fag|program|studie)?plan(?:en)?(?: for [^.]{0,100})?",
   "se emnearkivet",
+  "(?:se|sjå) forkunnskapskrav(?:et|a|ene)?",       # ntnu: the recommended field points to the required
   "se (?:kursinnhold|emnebeskrivelse)(?:et|n)?",                     # nord intro
   "ingen emner(?: i programmet)?",
   "emnebeskrivelsen finnes kun på engelsk[^.]*",

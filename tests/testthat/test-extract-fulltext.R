@@ -75,3 +75,13 @@ test_that("uit: the year picker and the contacts go, the responsible unit stays"
   # a page whose plan did not render stays empty
   expect_equal(.pre_uit("Om emnet\nError rendering component\nKontakt oss\nAnsvarlig enhet: Institutt"), "")
 })
+
+test_that("uit: link labels to the exam page go, plan text with such a link stays", {
+  html <- "<div id='maincontents'><h2>Eksamen</h2><p>Skoleeksamen, 4 timer.</p>
+    <p>Alt du trenger å vite om før, under og etter eksamen, oppmelding, fravær klage og vitnemål:
+      <a href='https://uit.no/eksamen'>UiTs samleside om eksamen </a></p>
+    <p><a href='https://uit.no/eksamen#modal_717927'>Her finner du mer informasjon om eksamen i nedlagte emner</a></p>
+    <p>Ved sykdom, se <a href='https://uit.no/eksamen'>regler for fravær</a>.</p></div>"
+  b <- page_blocks(html, NA, .block_cfg(get_institution_config("uit")))
+  expect_equal(.blocks_text(b), "Eksamen\n\nSkoleeksamen, 4 timer.\n\nVed sykdom, se regler for fravær.")
+})
