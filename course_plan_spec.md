@@ -121,7 +121,7 @@ without the title and facts box.
 
 ## Known deviations
 
-The data built on 2026-10-15 (release `data-2026-10-15`) do not yet follow
+The data built on 2026-10-16 (release `data-2026-10-16`) do not yet follow
 the spec here:
 
 - UiB's responsible unit, an unlabelled link in the page's sidebar, is not in
