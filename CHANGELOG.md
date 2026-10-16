@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- robots.txt and crawl delay of the new institutions (#359)
 - Pilot protocol and harvest gate for each institution (#354)
 - Yearly runbook and parallel harvesting in README (#367)
 - Remove one-off files from the teacher-ed harvest (#368)
