@@ -3,10 +3,12 @@
 
 ## Overview
 
-This project harvests course descriptions from Norwegian teacher
-education institutions. It takes course codes, years, and semesters as
-input and produces structured data containing URLs, HTML, and extracted
-text from course webpages.
+This project harvests the course descriptions of Norwegian higher
+education institutions: every course DBH lists at the institutions with
+a config, with teacher education as one frame of them (see “Frames”). It
+takes course codes, years, and semesters as input and produces
+structured data containing URLs, HTML, and extracted text from course
+webpages.
 
 **Input:** A dated snapshot of DBH’s course list (`dbh_courses()`, see
 “Input Data”) with course metadata (institution, course code, year,
@@ -290,6 +292,147 @@ Actions for every push and pull request to main
 (`.github/workflows/tests.yml`, packages from `renv.lock`). Tests that
 need the harvested or built data (only `data/input/` is in git), a
 browser or external URLs skip themselves there.
+
+## The Yearly Harvest
+
+A new year is harvested with the same code as the first harvest:
+`harvest_all()` fetches only the offerings no raw file holds, and
+`tar_make()` rebuilds everything from the raw store. Each year, in this
+order:
+
+1.  **September-November: the sites that show only the current plan.**
+    UiO, MF, NMBU and Steiner replace a plan when the next academic year
+    begins, so a year without a harvest has no plans for them (see
+    “Sites that show only the current plan”). Harvest them in every
+    academic year, whether or not DBH has a new year:
+
+    ``` r
+    harvest_all(institutions = c("uio", "mf", "nmbu", "steiner"))
+    ```
+
+    This fetches again the pages of every course of the latest DBH year
+    in the snapshot. Samas has `plan_years = "current"` too, but fetches
+    nothing (`noop`).
+
+2.  **When DBH has the new year: a new DBH snapshot.** DBH has the year
+    when this query returns rows (Semester 1 is spring, 3 autumn); until
+    then it fails with DBH’s empty answer:
+
+    ``` r
+    rdbhapi::dbh_data(208, filters = list("Årstall" = "2026"), variables = "Semester") |>
+      dplyr::count(Semester)
+    ```
+
+    Then, from the repository root, `Rscript data-raw/courses.R` writes
+    `data/input/dbh_courses_{date}.parquet` and
+    `dbh_programmes_{date}.parquet` (DBH’s whole tables 208 and 347; the
+    download of table 208 is about 700 MB). Commit both. From then on
+    `dbh_courses()` and the pipeline read the new snapshot: the
+    teacher-ed frame and target `coverage` follow it, and an offering
+    already harvested keeps its `course_id` (see “Input Data”).
+
+3.  **Harvest.** `harvest_all()` fetches every offering of the snapshot
+    that no raw file holds: the new year, and rows DBH added to earlier
+    years since the last snapshot. `harvest_all(year = 2026)` fetches
+    the new year only. A site that shows only the current plan gets
+    another snapshot, now with the new year’s courses. At the slowest
+    sites this takes days, so run institutions side by side (below). Raw
+    files exist only on this machine: back up `data/raw/` once the
+    harvest is done.
+
+4.  **Rebuild and check.** Run `targets::tar_make()` and read the
+    targets of “Rebuilding Derived Data”:
+
+    - `metrics_check`: the all-courses frame changes with every harvest,
+      the teacher-ed frame with a new year. Explain the rows in the
+      commit and update the snapshots of those frames
+      (`check_pipeline_metrics(update = TRUE, frames = ...)`).
+    - `frozen_check`: the plans of a new year are not listed. A row (an
+      offering that left the teacher-ed frame in the new snapshot, a
+      plan a site reworded) is a change to the last release; explain it
+      in the commit.
+    - `privacy_check`: must have no rows.
+    - `unmapped` and `heading_use`: headings of new or changed page
+      layouts.
+    - `coverage` of the new year by institution, and `changed_pages`.
+
+    Then fetch again the pages that gave no plan (a 404 is not tried
+    again; see “Fetch Ledger and Retries”) and rebuild:
+
+    ``` r
+    harvest_all(year = 2026, retry = TRUE)
+    targets::tar_make()
+    ```
+
+    Update `methods.qmd` where it names the snapshot, the years or the
+    harvest dates (“Population and sampling frame”, “Harvest”), and
+    `data/data_notes.qmd` where a site changed.
+
+5.  **Audit.** In Claude Code, `/audit-institutions fulltext`, then
+    `sections` and `anonymization` (see “Auditing a Pipeline Step”), for
+    all institutions or those whose site changed. The skill has no year
+    option: its packets sample each institution’s courses of all years.
+    A finding is fixed in the config or the heading map and rebuilt with
+    `tar_make()`, without a new harvest.
+
+6.  **Release.** Tag the commit and finalize the release (see “Raw Store
+    and Finalized Releases”):
+
+    ``` r
+    # after git tag data-YYYY-MM-DD
+    source("R/utils.R"); source("R/release.R")
+    finalize_release("data-YYYY-MM-DD")   # then commit tests/snapshots/raw_manifest.csv
+    ```
+
+    The hand-over to the coding project,
+    `release_data("data-YYYY-MM-DD")` (into
+    `../TEPS_course_content_coding/data`), is the project lead’s
+    decision and step, because the coders work from that repository.
+
+### Several Institutions at Once
+
+`harvest_all()` takes the institutions one after another. At the slowest
+sites a harvest of every course takes days (NTNU and UiB ask for 10
+seconds between requests in robots.txt), so run several institutions
+side by side, each in its own R process, with the institution or
+institutions it harvests in `institutions`. From the repository root,
+with a log per process:
+
+``` sh
+mkdir -p tmp/harvest_logs
+for inst in ntnu uib uio; do
+  nohup Rscript -e "for (f in c('R/utils.R', 'R/add_course_url.R', 'R/resolve_course_urls.R',
+    'R/fetch_html_cols.R', 'R/extract_fulltext.R', 'R/section_heading_map.R', 'R/blocks.R',
+    'R/institution_config.R', 'R/checkpoint.R', 'R/harvest_strategies.R', 'R/harvest.R')) source(f)
+    harvest_all(institutions = '$inst')" > tmp/harvest_logs/${inst}_$(date +%F).log 2>&1 &
+done
+pgrep -af harvest_all   # the harvests still running
+```
+
+- **One process per institution.** Each institution has its own
+  checkpoint (`data/raw/checkpoint/*_{inst}.RDS`), raw folder, run names
+  and ledger, so processes for different institutions do not collide.
+  Never harvest one institution in two processes at once: they would
+  share its checkpoint, and the build stops at an offering in two runs.
+- **One process per host.** A process pauses between its own requests
+  (3-5 seconds, or the institution’s `request_delay`), so two processes
+  on one host double the load on it. Institutions on a shared host (a
+  common course catalogue) go in one process, `institutions = c(...)`,
+  which harvests them one after another. Each configured institution has
+  a host of its own today. Read the robots.txt of a new site before its
+  first harvest: a `Crawl-delay` goes in `request_delay`.
+- **At night.** Start long harvests in the evening, so that most
+  requests come outside the sites’ busy hours. A site with the year in
+  the URL can be stopped (end the process) and started again: the
+  checkpoint, saved every 50 pages, resumes it. A “page” or “current”
+  site fetches all its pages again at every start, so let it run to the
+  end. A site that answers 403 or 429 stops its own harvest; start it
+  again later.
+- **Memory and the build.** A process keeps its institution’s pages in
+  memory until it writes the run, so check free memory before starting
+  more of them. `tar_make()` (4 workers) builds the runs written so far;
+  run it when the harvests are done, or audit only the institutions
+  whose harvest has ended.
 
 ## Adding a New Institution
 
