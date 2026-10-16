@@ -27,8 +27,9 @@ onto each plan instead.
   keyword-in-context snippets, with full plan / sections / source HTML for
   provenance.
 - **Trend**: occurrence of the current search by year, optionally by
-  institution or Fagnavn. Plans count in `year_from`, so this measures uptake in
-  new or revised plans, not the share of plans in force.
+  institution or subject (DBH's `subject_name`). Plans count in `year_from`,
+  so this measures uptake in new or revised plans, not the share of plans in
+  force.
 - **Coverage**: share of offerings with extracted text per institution-year.
   41% of offerings have no text, so denominators are not comparable across
   institutions without checking this first.

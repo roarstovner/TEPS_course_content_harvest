@@ -11,7 +11,7 @@
 #' @param refetch Logical — if TRUE, ignore checkpoints and re-download everything
 #' @param skip Course ids not to harvest (already in a raw file)
 #' @param known Course ids in the raw files: an offering among them keeps its
-#'   id, also when a later DBH snapshot gives it another Status
+#'   id, also when a later DBH snapshot gives it another status
 #' @return Data frame with DBH columns plus course_id, url, html, html_error,
 #'   html_success, extracted_text
 harvest_institution <- function(institution, courses, year = NULL,
@@ -60,7 +60,7 @@ harvest_institution <- function(institution, courses, year = NULL,
 #' day: {date}_{HHMMSS}.parquet; write_raw_run()), with its fetch ledger,
 #' data/raw/{inst}/ledger/{run}.parquet (fetch_ledger()). An existing raw file
 #' is never written again. An offering in a raw file keeps its course_id when
-#' a later DBH snapshot gives it another Status (first_course_id()).
+#' a later DBH snapshot gives it another status (first_course_id()).
 #'
 #' With `retry`, a site with the year in the URL also fetches again the
 #' offerings whose page gave no plan in the current build
@@ -164,19 +164,19 @@ prepare_fresh_harvest <- function(config) {
 #' explicit year only the latest DBH year is harvested. "url" and "page" sites
 #' give every year its own plan. An explicit year always filters to that year.
 #'
-#' @param df Data frame with Årstall column
+#' @param df Data frame with year column
 #' @param config Institution config list
 #' @param year Optional explicit year to filter to
 #' @return Filtered data frame
 apply_year_filter <- function(df, config, year = NULL) {
   if (!is.null(year)) {
     message("Filtering to year ", year)
-    return(dplyr::filter(df, Årstall == year))
+    return(dplyr::filter(df, .data$year == .env$year))
   }
   if (identical(config$plan_years, "current")) {
-    max_year <- max(df$Årstall, na.rm = TRUE)
+    max_year <- max(df$year, na.rm = TRUE)
     message("plan_years = \"current\" — filtering to max year: ", max_year)
-    return(dplyr::filter(df, Årstall == max_year))
+    return(dplyr::filter(df, year == max_year))
   }
   df
 }

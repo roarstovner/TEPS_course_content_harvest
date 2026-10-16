@@ -11,23 +11,23 @@ test_that("USN batch resolution finds valid courses and rejects fake ones", {
 
   # Create a small test dataframe with teacher education courses
   test_df <- tibble::tibble(
-    Emnekode = c("LH-NOD1000", "MG1FOU", "FAKE999"),
-    Årstall = c(2024L, 2024L, 2024L),
-    Semesternavn = c("Høst", "Høst", "Høst")
+    course_code = c("LH-NOD1000", "MG1FOU", "FAKE999"),
+    year = c(2024L, 2024L, 2024L),
+    semester_name = c("Høst", "Høst", "Høst")
   )
 
   result <- resolve_urls_usn_batch(test_df, .progress = TRUE)
 
   # LH-NOD1000 should have a URL
-  expect_false(is.na(result$url[result$Emnekode == "LH-NOD1000"]),
+  expect_false(is.na(result$url[result$course_code == "LH-NOD1000"]),
                info = "LH-NOD1000 should have a valid URL")
 
   # MG1FOU (FOU thesis) should have a URL
-  expect_false(is.na(result$url[result$Emnekode == "MG1FOU"]),
+  expect_false(is.na(result$url[result$course_code == "MG1FOU"]),
                info = "MG1FOU should have a valid URL")
 
   # FAKE999 should be NA (doesn't exist)
-  expect_true(is.na(result$url[result$Emnekode == "FAKE999"]),
+  expect_true(is.na(result$url[result$course_code == "FAKE999"]),
               info = "FAKE999 should return NA (non-existent course)")
 })
 

@@ -6,10 +6,26 @@ raw_rows <- function(code = "A", year = 2025L, semester = c("Vår", "Høst"), ht
                      inst = "x") {
   tibble::tibble(
     course_id = paste(inst, code, year, ifelse(semester == "Høst", "autumn", "spring"), 1, sep = "_"),
-    institution = inst, Emnekode_raw = code, Årstall = year, Semesternavn = semester,
+    institution = inst, course_code_raw = code, year = year, semester_name = semester,
     url = paste0("u/", code), html = html, html_error = list(NULL), html_success = TRUE,
     extracted_text = html)
 }
+
+test_that("read_raw() gives the raw files of the harvests until 2026-10-16 the pipeline's names", {
+  raw <- withr::local_tempdir()
+  old <- dplyr::rename(raw_rows(), institution_short = institution, Emnekode_raw = course_code_raw,
+                       "Årstall" = year, Semesternavn = semester_name)
+  old$html_error <- NA_character_
+  old$harvest_row <- seq_len(nrow(old))
+  .write_plain_parquet(old, raw_file("x", 2025L, "2026-04-04", raw))
+  write_raw_run(raw_rows(year = 2026L), "x", "2026-10-17", raw)
+  for (content in c(TRUE, FALSE)) {
+    rows <- read_raw(harvest_files("x", raw), content = content)
+    expect_named(rows, names(read_raw(harvest_files("x", raw)[2], content = content)))
+    expect_equal(rows$year, c(2025L, 2025L, 2026L, 2026L))
+    expect_equal(rows$institution, rep("x", 4))
+  }
+})
 
 test_that("a current site's offering gets its course's page from a harvest in its academic year", {
   raw <- withr::local_tempdir()
@@ -29,13 +45,13 @@ test_that("a current site's offering gets its course's page from a harvest in it
   write_raw_run(again, "x", "2026-09-30_120000", raw)
 
   out <- read_harvest(harvest_files("x", raw), list(name = "x", plan_years = "current"))
-  plan <- function(y, s) out$html[out$Årstall == y & out$Semesternavn == s]
+  plan <- function(y, s) out$html[out$year == y & out$semester_name == s]
   expect_equal(plan(2025, "Høst"), "2025/26 plan")   # 2025/26: April 2026
   expect_true(is.na(plan(2025, "Vår")))             # 2024/25: no harvest
   expect_equal(plan(2026, "Vår"), "2025/26 plan")   # 2025/26, a row April never saw
   expect_equal(plan(2026, "Høst"), "2026/27 plan, fixed")  # 2026/27: the September 2026 harvests
   expect_equal(nrow(out), 4)
-  expect_equal(out$harvested_at[out$Årstall == 2026 & out$Semesternavn == "Høst"], as.Date("2026-09-30"))
+  expect_equal(out$harvested_at[out$year == 2026 & out$semester_name == "Høst"], as.Date("2026-09-30"))
   expect_equal(academic_year_of_date(as.Date(c("2026-07-31", "2026-08-01", NA))),
                c("2025-2026", "2026-2027", NA))
   expect_identical(academic_year_of_date(as.Date(character())), character())
@@ -46,7 +62,7 @@ test_that("other sites combine their raw files, and an offering in two files is 
   write_raw_run(raw_rows(), "x", "2026-09-30", raw)
   write_raw_run(raw_rows(year = 2026L), "x", "2027-10-01", raw)
   out <- read_harvest(harvest_files("x", raw), list(name = "x", plan_years = "url"))
-  expect_equal(sort(out$Årstall), c(2025, 2025, 2026, 2026))
+  expect_equal(sort(out$year), c(2025, 2025, 2026, 2026))
   write_raw_run(raw_rows(), "x", "2027-10-02", raw)   # the 2025 rows again
   expect_error(read_harvest(harvest_files("x", raw), list(name = "x", plan_years = "url")),
                "more than one raw file")
@@ -58,7 +74,7 @@ test_that("a retry of offerings without a plan takes their new page", {
   again <- raw_rows(html = c(NA, "plan")); again$retry <- TRUE
   write_raw_run(dplyr::bind_rows(again, raw_rows(code = "B")), "x", "2026-10-07", raw)  # B is new
   cfg <- list(name = "x", plan_years = "url")
-  html_a <- function(out) setNames(out$html, out$Semesternavn)[out$Emnekode_raw == "A"][c("Vår", "Høst")]
+  html_a <- function(out) setNames(out$html, out$semester_name)[out$course_code_raw == "A"][c("Vår", "Høst")]
   out <- read_harvest(harvest_files("x", raw), cfg)
   expect_equal(nrow(out), 4)
   expect_equal(unname(html_a(out)), c(NA, "plan"))
@@ -101,8 +117,8 @@ test_that("a run is stored by year and read back in the order it was harvested",
 
 test_that("academic-year URLs: an offering takes the page of its academic year", {
   u <- function(inst, code, year, sem) add_course_url(tibble::tibble(
-    institution = inst, Emnekode = code, Emnekode_raw = code, Årstall = year, Semesternavn = sem,
-    Avdelingsnavn = NA_character_))$url
+    institution = inst, course_code = code, course_code_raw = code, year = year, semester_name = sem,
+    department_name = NA_character_))$url
   expect_equal(u("ntnu", "MGLU1101-A", 2022L, "Vår"), "https://www.ntnu.no/studier/emner/MGLU1101/2021")
   expect_equal(u("ntnu", "MGLU1101", 2022L, "Høst"), "https://www.ntnu.no/studier/emner/MGLU1101/2022")
   expect_equal(u("oslomet", "M1GSF2110", 2022L, "Vår"),
@@ -111,9 +127,9 @@ test_that("academic-year URLs: an offering takes the page of its academic year",
   # pages fetched before 2026-10-14: the calendar year for every semester
   hvl <- function(y) paste0("https://www.hvl.no/studier/studieprogram/emne/", y, "/MGX1")
   rows <- tibble::tibble(
-    course_id = c("a23", "a24", "s24", "s25", "a25"), institution = "hvl", Emnekode = "MGX1",
-    Emnekode_raw = "MGX1-1", Avdelingsnavn = NA_character_, Årstall = c(2023L, 2024L, 2024L, 2025L, 2025L),
-    Semesternavn = c("Høst", "Høst", "Vår", "Vår", "Høst"),
+    course_id = c("a23", "a24", "s24", "s25", "a25"), institution = "hvl", course_code = "MGX1",
+    course_code_raw = "MGX1-1", department_name = NA_character_, year = c(2023L, 2024L, 2024L, 2025L, 2025L),
+    semester_name = c("Høst", "Høst", "Vår", "Vår", "Høst"),
     url = hvl(c(2023, 2024, 2024, 2025, 2025)),
     html = c(NA, "2024/25", "2024/25 again", "2025/26", "2025/26 own"),
     html_error = list("HTTP 404", NULL, NULL, NULL, NULL), html_success = c(FALSE, TRUE, TRUE, TRUE, TRUE))
@@ -129,10 +145,10 @@ test_that("menu URLs (uis): an offering takes the page of its academic year", {
   page <- "https://www.uis.no/nb/student/course/MGL1_1"
   # pages fetched before 2026-10-14: the menu entry of the calendar year
   rows <- tibble::tibble(
-    course_id = c("a23", "s24", "s25", "a25", "s26", "s16"), institution = "uis", Emnekode = "MGL1",
-    Emnekode_raw = "MGL1-1", Avdelingsnavn = NA_character_,
-    Årstall = c(2023L, 2024L, 2025L, 2025L, 2026L, 2016L),
-    Semesternavn = c("Høst", "Vår", "Vår", "Høst", "Vår", "Vår"),
+    course_id = c("a23", "s24", "s25", "a25", "s26", "s16"), institution = "uis", course_code = "MGL1",
+    course_code_raw = "MGL1-1", department_name = NA_character_,
+    year = c(2023L, 2024L, 2025L, 2025L, 2026L, 2016L),
+    semester_name = c("Høst", "Vår", "Vår", "Høst", "Vår", "Vår"),
     url = c(pdf(c(2023, 2024, 2025, 2025)), page, page),
     html = NA_character_, html_error = list(NULL),
     extracted_text = c("2023-2024", "2024-2025", "2025-2026", NA, "current", "current"))
@@ -145,7 +161,7 @@ test_that("menu URLs (uis): an offering takes the page of its academic year", {
                c("2023-2024", "2023-2024", "2024-2025", "2025-2026", "2025-2026", "current"))
   expect_equal(out$url, c(pdf(c(2023, 2023, 2024, 2025, 2025)), page))
   # spring 2023's 2022/23 PDF was never fetched: no page, at the course page
-  s23 <- .menu_year_pages(dplyr::filter(rows, course_id == "s24") |> dplyr::mutate(Årstall = 2023L))
+  s23 <- .menu_year_pages(dplyr::filter(rows, course_id == "s24") |> dplyr::mutate(year = 2023L))
   expect_equal(c(s23$url, s23$extracted_text), c(page, NA))
 })
 
@@ -169,9 +185,9 @@ test_that("harvest_all(retry = TRUE) fetches offerings without a plan again", {
   old <- institution_configs$samas$plan_years
   institution_configs$samas$plan_years <<- "url"
   withr::defer(institution_configs$samas$plan_years <<- old)
-  dbh <- tibble::tibble(institution = "samas", Emnekode_raw = c("S-1", "T-1"),
-                        Emnekode = c("S", "T"), Årstall = 2025L, Semesternavn = "Høst",
-                        Status = 1L, Avdelingsnavn = "-")
+  dbh <- tibble::tibble(institution = "samas", course_code_raw = c("S-1", "T-1"),
+                        course_code = c("S", "T"), year = 2025L, semester_name = "Høst",
+                        status = 1L, department_name = "-")
   suppressMessages(harvest_all(dbh, institutions = "samas"))
   ids <- read_raw(harvest_files("samas"))$course_id
   dir.create("data/interim")
@@ -189,8 +205,8 @@ test_that("harvest_all(retry = TRUE) fetches offerings without a plan again", {
 test_that("harvest_all never writes a raw file twice", {
   withr::local_dir(withr::local_tempdir())
   dbh <- function(year) tibble::tibble(
-    institution = "samas", Emnekode_raw = "S-1", Emnekode = "S", Årstall = year,
-    Semesternavn = c("Vår", "Høst"), Status = 1L, Avdelingsnavn = "-")
+    institution = "samas", course_code_raw = "S-1", course_code = "S", year = year,
+    semester_name = c("Vår", "Høst"), status = 1L, department_name = "-")
   suppressMessages(harvest_all(dbh(2025L), institutions = "samas"))
   base <- harvest_files("samas")
   expect_equal(nrow(read_raw(base)), 2)
@@ -202,7 +218,7 @@ test_that("harvest_all never writes a raw file twice", {
   withr::defer(institution_configs$samas$plan_years <<- old)
   suppressMessages(harvest_all(rbind(dbh(2025L), dbh(2026L)), institutions = "samas"))
   added <- read_raw(setdiff(harvest_files("samas"), base))
-  expect_equal(added$Årstall, c(2026, 2026))
+  expect_equal(added$year, c(2026, 2026))
   expect_equal(tools::md5sum(base), md5)
   expect_message(harvest_all(rbind(dbh(2025L), dbh(2026L)), institutions = "samas"),
                  "nothing new")
@@ -230,9 +246,9 @@ test_that("a finalized release is locked and checked", {
   f <- write_raw_run(raw_rows(inst = "samas"), "samas", "2026-10-01")
   lf <- write_fetch_ledger(fetch_ledger(raw_rows(inst = "samas"), "samas", "2026-10-01"),
                            "samas", "2026-10-01")
-  plans <- tibble::tibble(plan_content_id = "p1", institution = "samas", Emnekode = "S",
+  plans <- tibble::tibble(plan_content_id = "p1", institution = "samas", course_code = "S",
                           course_plan = "Tekst.")
-  secs <- tibble::tibble(plan_content_id = "p1", institution = "samas", Emnekode = "S",
+  secs <- tibble::tibble(plan_content_id = "p1", institution = "samas", course_code = "S",
                          section = "course_content", text = "Tekst.")
   offs <- tibble::tibble(course_id = c("o1", "o2"), institution = "samas",
                          plan_content_id = c("p1", NA))
@@ -248,6 +264,11 @@ test_that("a finalized release is locked and checked", {
   expect_equal(file.access(f, 2), c("data/raw/samas/2025/2026-10-01.parquet" = -1L))
   expect_equal(unname(file.access(lf, 2)), -1L)   # the fetch ledger too
   expect_equal(utils::read.csv(RAW_MANIFEST)$file, c(f, lf))
+  expect_equal(nrow(check()), 0)
+  # a release with DBH's column names (up to data-2026-10-16) is compared by value
+  kept <- file.path("data/releases/data-test", c("course_plans.RDS", "plan_sections.RDS"))
+  Sys.chmod(kept, "0644")
+  for (k in kept) saveRDS(dplyr::rename(readRDS(k), Emnekode = course_code), k)
   expect_equal(nrow(check()), 0)
 
   # a new offering and plan (a later year) are fine; any change to the release is not
@@ -267,7 +288,7 @@ test_that("a finalized release is locked and checked", {
 })
 
 test_that("section_changes() lists section fixes under ids both releases hold", {
-  plan <- function(id) tibble::tibble(plan_content_id = id, institution = "samas", Emnekode = "S")
+  plan <- function(id) tibble::tibble(plan_content_id = id, institution = "samas", course_code = "S")
   sec <- function(id, section, text) dplyr::mutate(plan(id), section = section, text = text)
   was <- dplyr::bind_rows(sec("p1", "prerequisites", "Opptak til lektorutdanning."),
                           sec("p1", "assessment", "Mappe."), sec("p2", "assessment", "Eksamen."),

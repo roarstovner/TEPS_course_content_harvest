@@ -141,7 +141,7 @@ institution_config_target <- function(institution) {
 # A "current" site (plan_years) shows only the plan in force, so a page is the
 # plan of its course in the academic year it was fetched in, whichever DBH row
 # it was fetched for. Its files are snapshots: each offering gets the page of
-# its course code (Emnekode_raw) from the latest harvest in the offering's
+# its course code (course_code_raw) from the latest harvest in the offering's
 # academic year (autumn Y: Y/Y+1, spring Y: Y-1/Y), or no page;
 # harvested_at says which harvest that was.
 #
@@ -177,16 +177,16 @@ read_harvest <- function(files, config, content = TRUE) {
     dplyr::filter(!is.na(html) | !is.na(extracted_text)) |>
     dplyr::mutate(academic_year = academic_year_of_date(harvested_at)) |>
     dplyr::arrange(dplyr::desc(harvested_at), -seq_along(harvested_at)) |>   # same day: the later file
-    dplyr::distinct(Emnekode_raw, academic_year, .keep_all = TRUE) |>
-    dplyr::select(Emnekode_raw, academic_year, dplyr::any_of(page))
+    dplyr::distinct(course_code_raw, academic_year, .keep_all = TRUE) |>
+    dplyr::select(course_code_raw, academic_year, dplyr::any_of(page))
   # an offering's DBH columns from the first file that has it: a later file
   # never changes an earlier row
   rows |>
     dplyr::arrange(harvested_at) |>
     dplyr::distinct(course_id, .keep_all = TRUE) |>
     dplyr::select(-dplyr::any_of(page)) |>
-    dplyr::mutate(academic_year = nla_academic_year(Årstall, Semesternavn)) |>
-    dplyr::left_join(snapshots, by = c("Emnekode_raw", "academic_year")) |>
+    dplyr::mutate(academic_year = nla_academic_year(year, semester_name)) |>
+    dplyr::left_join(snapshots, by = c("course_code_raw", "academic_year")) |>
     dplyr::select(-academic_year) |>
     dplyr::arrange(course_id)
 }
@@ -228,8 +228,8 @@ read_harvest <- function(files, config, content = TRUE) {
   cols <- intersect(c("url", "html", "html_error", "html_success", "extracted_text"), names(rows))
   m <- stringr::str_match(rows$url, "/Stine/EMNE/(\\d{4})/|[?&]semester=(\\d{4})")
   year <- as.integer(dplyr::coalesce(m[, 2], m[, 3]))
-  key <- paste(rows$Emnekode_raw, year)
-  want <- paste(rows$Emnekode_raw, academic_start_year(rows$Årstall, rows$Semesternavn))
+  key <- paste(rows$course_code_raw, year)
+  want <- paste(rows$course_code_raw, academic_start_year(rows$year, rows$semester_name))
   page <- !is.na(rows$html) | !is.na(rows$extracted_text)
   pages <- which(!is.na(year) & page)
   src <- pages[match(want, key[pages])]
@@ -274,7 +274,7 @@ institution_fetch_status <- function(df) {
   )
 }
 
-# Course-years (institution x Emnekode x year) and why those without a plan
+# Course-years (institution x course_code x year) and why those without a plan
 # have none: "no URL" (no page for that year, or not found by URL discovery),
 # "404", "fetch error", "page, no plan" (a shell, not the plan, or a year
 # missing from nla's JSON), "no page" (a current site without a harvest in
@@ -286,7 +286,7 @@ institution_fetch_status <- function(df) {
 # by hand.
 plan_gaps <- function(offerings, fetch_status) {
   x <- offerings |>
-    dplyr::select(course_id, institution, Emnekode, Årstall, plan_content_id) |>
+    dplyr::select(course_id, institution, course_code, year, plan_content_id) |>
     dplyr::left_join(fetch_status, by = "course_id") |>
     dplyr::mutate(reason = dplyr::case_when(
       !is.na(plan_content_id) ~ "plan",
@@ -296,22 +296,22 @@ plan_gaps <- function(offerings, fetch_status) {
       has_page ~ "page, no plan",
       TRUE ~ "no page"))
   cy <- x |>
-    dplyr::group_by(institution, Emnekode, Årstall) |>
+    dplyr::group_by(institution, course_code, year) |>
     dplyr::summarise(has_plan = any(reason == "plan"),
                      reason = if (any(reason == "plan")) "plan" else
                        paste(sort(unique(reason)), collapse = " + "),
                      url_tried = dplyr::first(url), .groups = "drop")
   with_plan <- x |> dplyr::filter(reason == "plan") |>
-    dplyr::distinct(institution, Emnekode, Årstall, .keep_all = TRUE)
+    dplyr::distinct(institution, course_code, year, .keep_all = TRUE)
   key <- function(i, e, y) paste(i, e, y)
-  planned <- key(with_plan$institution, with_plan$Emnekode, with_plan$Årstall)
+  planned <- key(with_plan$institution, with_plan$course_code, with_plan$year)
   cy |>
     dplyr::mutate(
-      between_plans = !has_plan & key(institution, Emnekode, Årstall - 1) %in% planned &
-        key(institution, Emnekode, Årstall + 1) %in% planned,
-      url_next_door = with_plan$url[match(key(institution, Emnekode, Årstall + 1), planned)],
+      between_plans = !has_plan & key(institution, course_code, year - 1) %in% planned &
+        key(institution, course_code, year + 1) %in% planned,
+      url_next_door = with_plan$url[match(key(institution, course_code, year + 1), planned)],
       url_next_door = dplyr::coalesce(url_next_door,
-        with_plan$url[match(key(institution, Emnekode, Årstall - 1), planned)])
+        with_plan$url[match(key(institution, course_code, year - 1), planned)])
     )
 }
 
@@ -330,8 +330,8 @@ fetch_coverage <- function(frame, ledger, offerings) {
   current <- vapply(unique(frame$institution), function(x)
     identical(get_institution_config(x)$plan_years, "current"), logical(1))
   tibble::tibble(institution = frame$institution, course_id = frame$course_id,
-                 Emnekode = frame$Emnekode, Årstall = frame$Årstall,
-                 Semesternavn = frame$Semesternavn, outcome = outcome, has_plan = has_plan,
+                 course_code = frame$course_code, year = frame$year,
+                 semester_name = frame$semester_name, outcome = outcome, has_plan = has_plan,
                  retry = !has_plan & !unname(current[frame$institution]) & retry_wanted(outcome))
 }
 
@@ -426,7 +426,7 @@ plan_offerings <- function(pages, page_text, config) {
     df <- dplyr::select(pages[[i]], -dplyr::any_of(page_cols))
     df$extracted_text <- t$extracted_text
     plan <- t[c("course_plan", "course_plan_normalized", "plan_content_id", "plan_nchar")]
-    later <- (t$page_year > academic_start_year(df$Årstall, df$Semesternavn)) %in% TRUE
+    later <- (t$page_year > academic_start_year(df$year, df$semester_name)) %in% TRUE
     none <- page_plans(cfg$name, NA_character_, NA_character_, isTRUE(cfg$exam_sessions))
     for (col in names(plan)) plan[[col]][is.na(t$page_id) | later] <- none[[col]]
     df$course_plan <- plan$course_plan
@@ -444,7 +444,7 @@ plan_offerings <- function(pages, page_text, config) {
 #'
 #' "all": every offering in the raw store; "teacher_ed": those in the
 #' teacher-ed frame of the DBH snapshot (dbh_courses("teacher_ed")), matched
-#' on the offering (offering_key(): a later snapshot can change the Status).
+#' on the offering (offering_key(): a later snapshot can change the status).
 #'
 #' @param course_id The offerings (plan_offerings()).
 #' @param date,input_dir The DBH snapshot (dbh_courses()).
@@ -472,10 +472,10 @@ plan_source_pages <- function(plans, page_map) {
 # and its course_plan come from the same page. Institution by institution,
 # each in the order of its plans.
 frame_sections <- function(plans, source_sections, page_map, institutions) {
-  src <- plans[c("plan_content_id", "institution", "Emnekode", "source_course_id")]
+  src <- plans[c("plan_content_id", "institution", "course_code", "source_course_id")]
   src$page_id <- page_map$page_id[match(src$source_course_id, page_map$course_id)]
   sections <- dplyr::inner_join(src, source_sections, by = "page_id", relationship = "many-to-many") |>
-    dplyr::select(plan_content_id, institution, Emnekode, source_course_id, section, text)
+    dplyr::select(plan_content_id, institution, course_code, source_course_id, section, text)
   # combined as {targets} combines branches (vctrs), so the file keeps its bytes
   do.call(vctrs::vec_rbind, unname(split(sections, factor(sections$institution, institutions))))
 }
@@ -492,7 +492,7 @@ frame_sections <- function(plans, source_sections, page_map, institutions) {
 SHELL_MAX_NCHAR <- 1500
 
 .shell_plans <- function(plans, sections) {
-  key <- c("plan_content_id", "institution", "Emnekode")
+  key <- c("plan_content_id", "institution", "course_code")
   plans |>
     dplyr::anti_join(sections, by = key) |>
     dplyr::filter(plan_nchar < SHELL_MAX_NCHAR) |>
@@ -503,7 +503,7 @@ frame_offerings <- function(offerings, frames, plans, sections) {
   stats::setNames(lapply(names(frames), function(f) {
     shell <- do.call(paste, .shell_plans(plans[[f]], sections[[f]]))
     x <- offerings[frames[[f]], ]
-    x$plan_content_id <- dplyr::if_else(paste(x$plan_content_id, x$institution, x$Emnekode) %in% shell,
+    x$plan_content_id <- dplyr::if_else(paste(x$plan_content_id, x$institution, x$course_code) %in% shell,
                                         NA_character_, x$plan_content_id)
     x
   }), names(frames))
@@ -519,9 +519,9 @@ slim_offerings <- function(offerings) {
 combine_plans <- function(plans, sections) {
   plans |>
     dplyr::anti_join(.shell_plans(plans, sections),
-                     by = c("plan_content_id", "institution", "Emnekode")) |>
+                     by = c("plan_content_id", "institution", "course_code")) |>
     dplyr::select(-plan_nchar) |>
-    dplyr::arrange(plan_content_id, institution, Emnekode)
+    dplyr::arrange(plan_content_id, institution, course_code)
 }
 
 # fetch_coverage() of each frame's DBH offerings (`frame`: the frame).

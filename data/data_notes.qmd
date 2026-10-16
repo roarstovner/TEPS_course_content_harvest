@@ -17,9 +17,9 @@ summary_tbl <- df |>
   group_by(institution) |>
   summarise(
     Rows         = n(),
-    Codes        = n_distinct(Emnekode_raw),
-    year_min     = min(Årstall),
-    year_max     = max(Årstall),
+    Codes        = n_distinct(course_code_raw),
+    year_min     = min(year),
+    year_max     = max(year),
     `Extracted OK`= sum(has_extracted_text),
     has_plan_id  = sum(!is.na(plan_content_id)),
     `Median chars` = round(median(extracted_text_nchar[has_extracted_text], na.rm = TRUE)),
@@ -38,7 +38,7 @@ total_rows     <- nrow(df)
 total_text <- sum(df$has_extracted_text)
 total_rate     <- sprintf("%.1f%%", total_text / total_rows * 100)
 total_plans    <- nrow(plans)
-single_year    <- sort(unique(df$institution[ave(df$Årstall, df$institution, FUN = function(y) length(unique(y))) == 1]))
+single_year    <- sort(unique(df$institution[ave(df$year, df$institution, FUN = function(y) length(unique(y))) == 1]))
 ```
 
 Generated: `r Sys.Date()`
@@ -55,7 +55,7 @@ knitr::kable(summary_tbl)
 **Columns:**
 
 - **Rows**: Total course-semester rows in harvested data (from DBH)
-- **Codes**: Unique course codes (Emnekode_raw)
+- **Codes**: Unique course codes (course_code_raw)
 - **Extracted OK**: Rows with successfully extracted course plan text
 - **Rate**: Extraction success rate (Extracted OK / Rows)
 - **Median chars**: Median character count of extracted text
@@ -78,7 +78,7 @@ Share of offerings with a plan, by period:
 ```{r}
 #| label: coverage-by-period
 df |>
-  mutate(Period = cut(Årstall, c(-Inf, 2014, 2017, 2019, 2021, 2023, Inf),
+  mutate(Period = cut(year, c(-Inf, 2014, 2017, 2019, 2021, 2023, Inf),
                       labels = c("–2014", "2015–17", "2018–19", "2020–21",
                                  "2022–23", "2024–"))) |>
   group_by(Institution = institution, Period) |>
@@ -106,8 +106,8 @@ a plan in at least one semester:
 ```{r}
 #| label: semester-registration
 course_years <- df |>
-  group_by(institution, Emnekode_raw, Årstall) |>
-  summarise(both = n_distinct(Semesternavn) == 2,
+  group_by(institution, course_code_raw, year) |>
+  summarise(both = n_distinct(semester_name) == 2,
             n_plan = sum(!is.na(plan_content_id)), .groups = "drop")
 
 course_years |>

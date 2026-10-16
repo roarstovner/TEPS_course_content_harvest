@@ -5,8 +5,8 @@
 rows <- function(code, year, html, semester = "Høst", inst = "x") {
   tibble::tibble(
     course_id = paste(inst, code, year, ifelse(semester == "Høst", "autumn", "spring"), 1, sep = "_"),
-    institution = inst, Emnekode_raw = code, Emnekode = code, Årstall = year,
-    Semesternavn = semester, url = paste0("u/", code, "/", year), html = html,
+    institution = inst, course_code_raw = code, course_code = code, year = year,
+    semester_name = semester, url = paste0("u/", code, "/", year), html = html,
     html_error = list(NULL), html_success = !is.na(html), extracted_text = NA_character_)
 }
 
@@ -56,8 +56,8 @@ test_that("each frame has the plans of its own offerings, and their sections", {
   # course A has the same plan 2023-2025; only 2024 and 2025 are teacher-ed
   pages <- list(tibble::tibble(
     course_id = c("x_A_2023_autumn_1", "x_A_2024_autumn_1", "x_A_2025_autumn_1", "x_B_2025_autumn_1"),
-    institution = "x", Emnekode = c("A", "A", "A", "B"), Årstall = c(2023L, 2024L, 2025L, 2025L),
-    Semesternavn = "Høst", url = "u", html = c("x/2023/r/1", "x/2024/r/1", "x/2025/r/1", NA),
+    institution = "x", course_code = c("A", "A", "A", "B"), year = c(2023L, 2024L, 2025L, 2025L),
+    semester_name = "Høst", url = "u", html = c("x/2023/r/1", "x/2024/r/1", "x/2025/r/1", NA),
     html_error = NA_character_, html_success = TRUE))
   text <- c("Innhold\nOm emnet 2023.", "Innhold\nOm emnet 2024.", "Innhold\nOm emnet 2025.")
   page_text <- tibble::tibble(page_id = c("x/2023/r/1", "x/2024/r/1", "x/2025/r/1"),
@@ -110,7 +110,7 @@ test_that("the teacher-ed frame holds the offerings of the DBH snapshot's teache
   arrow::write_parquet(tibble::tibble(Institusjonskode = "1130", Studieprogramkode = c("P1", "P2"),
                                       Studiumkode = c("LUPE", "BACHELOR")),
                        file.path(dir, "dbh_programmes_2026-10-16.parquet"))
-  # harvested with Status 1: the offering is matched without it
+  # harvested with status 1: the offering is matched without it
   f <- frame_members(c("uit_MGL1-1_2025_autumn_1", "uit_ECON1_2025_autumn_2"), input_dir = dir)
   expect_equal(f, list(all = c(TRUE, TRUE), teacher_ed = c(TRUE, FALSE)))
 })

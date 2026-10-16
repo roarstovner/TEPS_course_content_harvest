@@ -14,9 +14,9 @@ test_that("USN URL resolution handles LH-NOD1000 across multiple years", {
   test_data <- courses |>
     filter(
       institution == "usn",
-      Emnekode == "LH-NOD1000",
-      Årstall %in% c(2024, 2022, 2018),
-      Semesternavn == "Høst"
+      course_code == "LH-NOD1000",
+      year %in% c(2024, 2022, 2018),
+      semester_name == "Høst"
     )
 
   expect_gt(nrow(test_data), 0)
@@ -36,9 +36,9 @@ test_that("USN URL resolution handles LH-NOD1000 across multiple years", {
   # - 2024 Høst: Should find valid URL (version 1)
   # - 2022 Høst: Should return NA (redirects to 2025)
   # - 2018 Høst: Should find valid URL (version 1)
-  df_2024 <- df |> filter(Årstall == 2024)
-  df_2022 <- df |> filter(Årstall == 2022)
-  df_2018 <- df |> filter(Årstall == 2018)
+  df_2024 <- df |> filter(year == 2024)
+  df_2022 <- df |> filter(year == 2022)
+  df_2018 <- df |> filter(year == 2018)
 
   if (nrow(df_2024) > 0) {
     expect_false(is.na(df_2024$url[1]),

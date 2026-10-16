@@ -29,8 +29,8 @@ db = DuckDBClient.of({
 plans = Array.from(await db.query("SELECT * FROM plans"), r => ({
   plan_content_id: r.plan_content_id,
   institution: r.institution,
-  Emnekode: r.Emnekode,
-  Emnenavn: r.Emnenavn,
+  course_code: r.course_code,
+  course_name: r.course_name,
   year_from: Number(r.year_from),
   year_to: Number(r.year_to),
   n_offerings: Number(r.n_offerings),
@@ -40,12 +40,12 @@ plans = Array.from(await db.query("SELECT * FROM plans"), r => ({
 offerings = Array.from(await db.query("SELECT * FROM offerings"), r => ({
   plan_content_id: r.plan_content_id,
   institution: r.institution,
-  Emnekode: r.Emnekode,
-  Emnekode_raw: r.Emnekode_raw,
-  Emnenavn: r.Emnenavn,
+  course_code: r.course_code,
+  course_code_raw: r.course_code_raw,
+  course_name: r.course_name,
   year: Number(r.year),
-  semester: r.semester,
-  status: r.status
+  semester_name: r.semester_name,
+  status_name: r.status_name
 }))
 ```
 
@@ -66,7 +66,7 @@ prefiltered = plans.filter(d =>
 
 viewof hits = Inputs.search(prefiltered, {
   placeholder: "Søk i emneplaner … (kode, navn eller innhold)",
-  columns: ["Emnekode", "Emnenavn", "course_plan"],
+  columns: ["course_code", "course_name", "course_plan"],
   label: "Full-text search"
 })
 ```
@@ -80,16 +80,16 @@ md`**${plans.length}** unique plans · **${prefiltered.length}** after filters �
 ::: {.g-col-12 .g-col-lg-6}
 ```{ojs}
 viewof picked = Inputs.table(hits, {
-  columns: ["institution", "Emnekode", "Emnenavn", "year_from", "year_to", "n_offerings"],
+  columns: ["institution", "course_code", "course_name", "year_from", "year_to", "n_offerings"],
   header: {
     institution: "Inst",
-    Emnekode: "Code",
-    Emnenavn: "Name",
+    course_code: "Code",
+    course_name: "Name",
     year_from: "From",
     year_to: "To",
     n_offerings: "#Off"
   },
-  width: {Emnenavn: 220},
+  width: {course_name: 220},
   rows: 16,
   multiple: false,
   required: false
@@ -100,11 +100,11 @@ viewof picked = Inputs.table(hits, {
 ::: {.g-col-12 .g-col-lg-6}
 ```{ojs}
 usedBy = picked ? offerings.filter(o => o.plan_content_id === picked.plan_content_id &&
-  o.institution === picked.institution && o.Emnekode === picked.Emnekode) : []
+  o.institution === picked.institution && o.course_code === picked.course_code) : []
 
 picked
   ? html`
-      <h3 style="margin-bottom:0.1rem">${picked.Emnekode} — ${picked.Emnenavn ?? ""}</h3>
+      <h3 style="margin-bottom:0.1rem">${picked.course_code} — ${picked.course_name ?? ""}</h3>
       <p style="color:#666; margin-top:0">
         ${picked.institution} · plan active
         ${picked.year_from}${picked.year_to !== picked.year_from ? "–" + picked.year_to : ""}

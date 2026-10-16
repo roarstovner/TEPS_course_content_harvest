@@ -21,7 +21,7 @@ This project harvests course descriptions from Norwegian teacher education insti
 
 | Stage | Code | Output |
 |---|---|---|
-| 1. Course id `{institution}_{Emnekode_raw}_{year}_{semester}_{status}` | `add_course_id()` (`R/utils.R`) | `course_id` |
+| 1. Course id `{institution}_{course_code_raw}_{year}_{semester}_{status}` | `add_course_id()` (`R/utils.R`) | `course_id` |
 | 2. URL from metadata (institution-specific builders; NA where the URL must be discovered) | `add_course_url()` (`R/add_course_url.R`) | `url` |
 | 3. URL discovery (USN, UiT, hivolda, UiO; optional) | `resolve_course_urls()` (`R/resolve_course_urls.R`) | `url`, checkpoint `data/raw/checkpoint/urls_{inst}.RDS` |
 | 4. Fetch HTML with checkpointing | `fetch_html_with_checkpoint()` (`R/checkpoint.R`, `R/fetch_html_cols.R`) | `html`, `html_success`, `html_error` |
@@ -194,7 +194,7 @@ The pipeline builds every offering in the raw store, and writes the data files
 of two frames (`FRAMES`): `all`, every harvested offering, in `data/interim/`
 and `data/processed/`; and `teacher_ed`, the offerings in the teacher-ed frame
 of the latest DBH snapshot (`dbh_courses("teacher_ed")`, matched on the
-offering without its Status, `frame_members()`), in the `teacher_ed/` folders
+offering without its status, `frame_members()`), in the `teacher_ed/` folders
 of both (`frame_dir()`). The text, plan id and sections of a page are the same
 in both; the plans are deduplicated within each frame (`frame_plans()`), so a
 teacher-ed plan has the years, text and sections of its own earliest
@@ -267,7 +267,7 @@ Add a case to `case_match()` and create a URL-building function:
 #| eval: false
 
 # In add_course_url(), add:
-"newuni" ~ add_course_url_newuni(Emnekode, Årstall, Semesternavn),
+"newuni" ~ add_course_url_newuni(course_code, year, semester_name),
 
 # Create a helper function for your institution
 add_course_url_newuni <- function(course_code, year, semester) {
@@ -286,7 +286,7 @@ courses <- dbh_courses()   # every DBH course; the institution's code must be in
 result <- harvest_institution("newuni", courses, year = 2025)
 
 # Inspect results
-result |> select(Emnekode, url, html_success, extracted_text) |> head()
+result |> select(course_code, url, html_success, extracted_text) |> head()
 result$extracted_text[1]  # Inspect first result
 ```
 
@@ -353,7 +353,7 @@ again; for "url" sites the checkpoint only resumes an interrupted harvest.
 
 ### Raw Store and Finalized Releases
 
-The raw store is Parquet (zstd), one file per institution, DBH year (`Årstall`)
+The raw store is Parquet (zstd), one file per institution, DBH year (`year`)
 and harvest run: `data/raw/{inst}/{year}/{run}.parquet`. A run is named by its
 date, a second run of an institution the same day by date and time
 (`{date}_{HHMMSS}`, which sorts after it), so a retry need not wait for the
@@ -363,15 +363,16 @@ them as a new run (`write_raw_run()`), with the run's fetch ledger (see "Fetch
 Ledger and Retries"). `harvest_all(year = 2026)` and
 `harvest_all()` therefore both just add what is new. An offering is matched on
 institution, code, year and semester: when a new DBH snapshot changes its
-Status, it keeps the `course_id` it was first harvested under.
+status, it keeps the `course_id` it was first harvested under.
 `read_harvest()` combines the runs; an offering in two runs stops the build.
 
 A raw file holds the rows as the harvest returned them: the offering's DBH
-columns as they were at the harvest, `url`, `html`, `html_success`,
-`html_error` (the error message), `harvested_at`, `retry` (a retry run) and
-`harvest_row`, the row's place in its run, so `read_raw()` gives the rows in
-the order they were harvested (which offering a plan's text comes from depends
-on it). `extracted_text` is kept only for a row without `html`, text read from
+columns as they were at the harvest (under DBH's names until 2026-10-16,
+which `read_raw()` renames: `dbh_rename()`, see "Variables"), `url`, `html`,
+`html_success`, `html_error` (the error message), `harvested_at`, `retry` (a
+retry run) and `harvest_row`, the row's place in its run, so `read_raw()`
+gives the rows in the order they were harvested (which offering a plan's text
+comes from depends on it). `extracted_text` is kept only for a row without `html`, text read from
 a PDF, the raw data there; uis keeps the PDF's bytes too (`pdf`, since
 2026-10-16). Elsewhere `tar_make()` rebuilds the text from `html`.
 
@@ -507,7 +508,7 @@ targets::tar_read(changed_pages)
 
 The pipeline splits each course plan into its parts and writes
 `data/processed/plan_sections.RDS` with one row per plan and section
-(`plan_content_id`, `institution`, `Emnekode`, `source_course_id`, `section`,
+(`plan_content_id`, `institution`, `course_code`, `source_course_id`, `section`,
 `text`), keyed like `course_plans.RDS`. A plan's sections are cut from the page
 of `source_course_id`, the offering whose text the plan keeps, so they match
 its `course_plan`. The seven sections are
@@ -726,6 +727,7 @@ The repository is public.
 | `data/input/dbh_courses_{date}.parquet`, `dbh_programmes_{date}.parquet` | DBH tables 208 (courses) and 347 (programmes), the harvest input | none | in git |
 | `data/raw/{inst}/{year}/{run}.parquet`, `data/raw/checkpoint/` | raw harvest: `html` (+ text and bytes of PDFs) | yes (raw) | internal |
 | `data/raw/{inst}/ledger/{run}.parquet` | fetch ledger: URL, HTTP status, outcome and page hash per offering and run | none | internal |
+| `data/variables.csv` | every variable of the published files, with its old name ("Variables") | none | in git; released with the data |
 | `data/interim/plan_gaps.RDS` | course-years without a plan, reason, URLs tried | none | internal |
 | `data/interim/extracted_text.RDS` | `extracted_text` rebuilt from the raw harvest | yes (raw) | internal |
 | `data/interim/course_offerings_full.RDS` | offerings + `url`, `extracted_text`, `course_plan` | yes (`extracted_text`) | internal |
@@ -751,8 +753,9 @@ table 208 (Emner), every course of every institution, year and semester, all
 levels and statuses, one row per course and semester;
 `dbh_programmes_{date}.parquet` is table 347 (Studieprogram), with the
 programmes' study type (`Studiumkode`). A new snapshot gets a new date and the
-old ones stay. `dbh_courses()` reads the latest (or the one of `date`) and adds
-`institution`, `Emnekode_raw` and `Emnekode`:
+old ones stay. The snapshots keep DBH's column names. `dbh_courses()` reads the
+latest (or the one of `date`), gives DBH's columns the pipeline's names
+(`DBH_COLUMNS`; see "Variables") and adds `institution` and `course_code`:
 
 ```{r}
 #| echo: false
@@ -776,33 +779,54 @@ everything in `data/raw/` and writes the teacher-ed frame's files apart (see
 
 Key columns:
 - `institution`: Short code (e.g., "oslomet", "uia"); NA for an institution code no config has
-- `Emnekode_raw`: Original course code from DBH (used in `course_id`)
-- `Emnekode`: Course code with the trailing version number removed (`canon_remove_trailing_num()`: "ABC123-1" → "ABC123")
-- `Årstall`: Year
-- `Semesternavn`: Semester name ("Vår" or "Høst"; `canon_semester_name()` maps Vår/Høst/Sommer to spring/autumn/summer)
-- `Studieprogramkode`, `Studieprogramnavn`: the programme DBH registers the course under (one per row)
-- `Status`: Course status (1=Active, 2=New, 3=Discontinued, 4=Discontinued but exam offered). It is the last part of `course_id`, and a later snapshot can change it: an offering already in a raw file keeps the id it was first harvested under (`first_course_id()`)
+- `course_code_raw`: DBH's course code (used in `course_id`)
+- `course_code`: the code with the trailing version number removed (`canon_remove_trailing_num()`: "ABC123-1" → "ABC123")
+- `year`, `semester_name` ("Vår", "Høst", "Sommer", "Vinter"; `canon_semester_name()` gives `course_id` spring, autumn, summer)
+- `programme_code`, `programme_name`: the programme DBH registers the course under (one per row)
+- `status`: course status (1 active, 2 new, 3 discontinued, 4 discontinued with active students). It is the last part of `course_id`, and a later snapshot can change it: an offering already in a raw file keeps the id it was first harvested under (`first_course_id()`)
 
 DBH lists most courses under both semesters of a year, also when they are
 taught in one. Where pages are semester-specific, about half the rows therefore
 have no plan by design; see "Semester registration in DBH" in
 `data/data_notes.qmd` before reading row-level success rates.
 
-### Output Data Structure
+`harvest_institution()` returns the offerings with `course_id`, `url`, `html`,
+`html_error`, `html_success` and `extracted_text` added, the rows of the raw
+store ("Raw Store and Finalized Releases").
 
-After processing, you'll have:
+### Variables (`data/variables.csv`)
+
+`data/variables.csv` documents every variable of the published files
+(`course_offerings.RDS`, `course_plans.RDS`, `plan_sections.RDS`, of both
+frames): the file, its name, type, source (the column of DBH table 208, or
+how the pipeline gives it), meaning and codes, and `old_name`, its name in the
+releases up to data-2026-10-16. `release_data()` hands it over with the data,
+and `tests/testthat/test-dbh-input.R` checks it against the built files and
+`DBH_COLUMNS`. `course_offerings_full.RDS` (internal) adds `url`,
+`extracted_text`, `course_plan`, `course_plan_normalized` and `plan_nchar`.
+
+Since 2026-10-16 the DBH columns have English snake_case names (methods.qmd,
+"Variable names"); their values are DBH's (Norwegian names, DBH's codes), and
+`year_from` and `year_to` are integers (double before). DBH's snapshots, the
+raw files of the harvests until 2026-10-16 and the releases up to
+data-2026-10-16 have DBH's names: the pipeline renames them where it reads such
+data (`dbh_rename()`, in `dbh_courses()`, `read_raw()`, `read_checkpoint()`,
+`frozen_changes()` and `release_data()`). Code that reads an old release can
+rename it by the same pairs:
+
+```{r}
+#| eval: false
+v <- read.csv("data/variables.csv")
+pairs <- unique(v[v$old_name != v$variable, c("variable", "old_name")])
+old <- readRDS("data/releases/data-2026-10-16/course_offerings.RDS") |>
+  dplyr::rename(dplyr::any_of(setNames(pairs$old_name, pairs$variable)))
+```
 
 ```{r}
 #| echo: false
-output <- tribble(
-  ~course_id, ~url, ~html, ~html_success, ~extracted_text, ~course_plan,
-  "oslomet_ABC123_2024_autumn_1", "https://student.oslomet.no/...", "<html>...</html>", TRUE, "ABC123 Course Description...", "ABC123 Course Description...",
-  "oslomet_XYZ456_2024_spring_1", "https://student.oslomet.no/...", "<html>...</html>", TRUE, "XYZ456 Another course...", "XYZ456 Another course..."
-)
-output
+v <- read.csv("data/variables.csv")
+knitr::kable(v)
 ```
-
-- `course_plan` is the anonymized version of `extracted_text` (no names, emails, dates, or administrative years). Content years like historical references are preserved. Use this column for analysis.
 
 ## Institution-Specific Notes
 
@@ -839,7 +863,7 @@ not give: `https://www.uio.no/studier/emner/{faculty}/{department}/{CODE}/`.
 courses as the listing `/studier/emner/alle/`). A course not taught now keeps
 its page but is not listed: it gets the folder that most listed courses with
 its code prefix (`ENG`) have, else the one of its DBH department
-(`Avdelingskode`); a wrong guess is a 404. A few folders are named in lower
+(`department_code`); a wrong guess is a 404. A few folders are named in lower
 case (`sv/iss/sos9009`), and the URL must be too; Ø is O (`MØNA2504` is in
 `hf/ikos/MONA2504/`).
 
@@ -904,6 +928,7 @@ active and historical pages.
 | `frame_members()`, `frame_plans()`, `frame_sections()`, `frame_offerings()`, `frame_dir()` | `R/pipeline.R`, `R/utils.R` | The frames: their offerings, plans (`plan_table()`), sections and data folders |
 | `harvest_files(institution)`, `harvested_institutions()` | `R/utils.R` | An institution's raw files, run by run; the institutions with raw files |
 | `dbh_courses(frame, date)` | `R/utils.R` | DBH offerings of a snapshot: all courses, or the teacher-ed frame (`"teacher_ed"`) |
+| `dbh_rename(df)` | `R/utils.R` | DBH's column names (snapshots, raw files and releases until 2026-10-16) as the pipeline's (`DBH_COLUMNS`) |
 | `institution_from_code(code)` | `R/institution_config.R` | Institution short name for DBH institution codes |
 | `get_institution_config(inst)` | `R/institution_config.R` | Config list for one institution |
 | `add_course_id(dbh_df)` | `R/utils.R` | Unique id from institution, raw code, year, semester, status |
@@ -916,7 +941,7 @@ active and historical pages.
 | `read_harvest(files, config, content)` | `R/pipeline.R` | One institution's raw files combined (`harvest_files()`): the page each offering takes; current sites matched by course code and academic year |
 | `harvested_rows(institutions)` | `R/pipeline.R` | `read_harvest()` joined with `data/interim/extracted_text.RDS` (audit scripts) |
 | `finalize_release(tag)`, `frozen_changes()` | `R/release.R` | Lock a release's raw files; list changes to it (target `frozen_check`) |
-| `release_data(tag, dest, frame)` | `R/release.R` | Copy the published files of a frame (the teacher-ed one), `methods.md`, a manifest and section coverage to the coding project |
+| `release_data(tag, dest, frame)` | `R/release.R` | Copy the published files of a frame (the teacher-ed one), `methods.md`, `data/variables.csv`, a manifest and section coverage to the coding project |
 | `plan_gaps(offerings, fetch_status)` | `R/pipeline.R` | Course-years without a plan, with the reason (target `gaps`) |
 | `validate_courses(df, stage)` | `R/utils.R` | Required columns at `"initial"`, `"with_url"`, `"with_html"` |
 | `anonymize_text(institution, text)` | `R/anonymize.R` | PII and admin-date removal for `course_plan` and sections |
@@ -1006,6 +1031,7 @@ active and historical pages.
 │   ├── releases/              # Finalized releases' data (not in git)
 │   ├── backup/                # Earlier harvests, not read (not in git)
 │   ├── audit/                 # Audit findings and reports
+│   ├── variables.csv          # Every variable of the data files, old and new names
 │   └── data_notes.qmd         # Data quality notes per institution
 ├── tests/
 │   ├── testthat/              # Rscript -e 'testthat::test_dir("tests/testthat")'

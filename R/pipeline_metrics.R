@@ -22,22 +22,22 @@ METRICS_SNAPSHOT <- c(all = "tests/snapshots/pipeline_metrics_all.csv",
 #' @param offerings course_offerings_full: one row per offering with
 #'   `extracted_text`, `course_plan` and `plan_content_id`.
 #' @param sections plan_sections (`plan_content_id`, `institution`,
-#'   `Emnekode`, `source_course_id`, `section`, `text`), or NULL to skip the
+#'   `course_code`, `source_course_id`, `section`, `text`), or NULL to skip the
 #'   section metrics.
 #' @return Long tibble `institution`, `section` ("(all)" for offering-level
 #'   metrics), `metric`, `value`. Metrics named n_* are counts (a plan is a
-#'   plan_content_id + Emnekode); median_chars is the median length of
+#'   plan_content_id + course_code); median_chars is the median length of
 #'   `course_plan` or of the section text; pct_text_in_sections is the median
 #'   share (%) of a plan's text that its sections hold.
 pipeline_metrics <- function(offerings, sections = NULL) {
   has <- function(x) !is.na(x) & nzchar(x)
   course_years <- offerings |>
-    dplyr::group_by(institution, Emnekode_raw, Årstall) |>
+    dplyr::group_by(institution, course_code_raw, year) |>
     dplyr::summarise(plan = any(has(course_plan)), .groups = "drop") |>
     dplyr::count(institution, wt = plan, name = "n_course_years_with_plan")
   if (is.null(sections)) {
     sections <- tibble::tibble(plan_content_id = character(), institution = character(),
-                               Emnekode = character(), source_course_id = character(),
+                               course_code = character(), source_course_id = character(),
                                section = character(), text = character())
   }
   in_sections <- sections |>
@@ -49,7 +49,7 @@ pipeline_metrics <- function(offerings, sections = NULL) {
     dplyr::summarise(pct_text_in_sections = round(100 * stats::median(
       pmin(chars / nchar(course_plan), 1))), .groups = "drop")
   with_sections <- sections |>
-    dplyr::distinct(institution, plan_content_id, Emnekode) |>
+    dplyr::distinct(institution, plan_content_id, course_code) |>
     dplyr::count(institution, name = "n_plans_with_sections")
 
   per_institution <- offerings |>
@@ -70,7 +70,7 @@ pipeline_metrics <- function(offerings, sections = NULL) {
 
   per_section <- sections |>
     dplyr::group_by(institution, section) |>
-    dplyr::summarise(n_plans = dplyr::n_distinct(plan_content_id, Emnekode),
+    dplyr::summarise(n_plans = dplyr::n_distinct(plan_content_id, course_code),
                      median_chars = stats::median(nchar(text)),
                      .groups = "drop") |>
     tidyr::pivot_longer(c(n_plans, median_chars),

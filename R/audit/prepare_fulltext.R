@@ -188,12 +188,12 @@ for (inst in institutions) {
   codes_per_text <- df |>
     filter(txt_nchar > 0) |>
     group_by(dedup_key) |>
-    summarise(n_codes = n_distinct(Emnekode), .groups = "drop")
+    summarise(n_codes = n_distinct(course_code), .groups = "drop")
 
   df <- df |>
     left_join(codes_per_text, by = "dedup_key") |>
     mutate(
-      acad_year     = academic_start_year(Årstall, Semesternavn),
+      acad_year     = academic_start_year(year, semester_name),
       page_yrs      = purrr::map2(as.integer(str_match(coalesce(html, ""), PLAN_YEAR_RX)[, 2]),
                                   extracted_text, page_years),
       flag_empty    = has_html & txt_nchar == 0 & !identical(cfg$plan_years, "page"),
@@ -253,7 +253,7 @@ for (inst in institutions) {
     filter(fetch_failed) |>
     add_count(outcome) |>
     filter(dense_rank(desc(n)) <= FAILED_CAUSES) |>
-    distinct(outcome, Emnekode_raw, .keep_all = TRUE) |>
+    distinct(outcome, course_code_raw, .keep_all = TRUE) |>
     slice_sample(n = FAILED_N, by = outcome) |>
     arrange(desc(n))
   selected <- bind_rows(selected,
@@ -262,10 +262,10 @@ for (inst in institutions) {
   if (nrow(selected) == 0) next
 
   # ── Packet ──
-  codes_with_text <- unique(df$Emnekode_raw[df$has_html | df$txt_nchar > 0])
+  codes_with_text <- unique(df$course_code_raw[df$has_html | df$txt_nchar > 0])
   fetch_summary <- df |>
-    summarise(n = n(), failed = all(fetch_failed), codes = n_distinct(Emnekode_raw),
-              with_text = length(intersect(Emnekode_raw, codes_with_text)), .by = outcome) |>
+    summarise(n = n(), failed = all(fetch_failed), codes = n_distinct(course_code_raw),
+              with_text = length(intersect(course_code_raw, codes_with_text)), .by = outcome) |>
     arrange(desc(n)) |> head(6) |>
     mutate(text = paste0(outcome, ": ", n, if_else(failed, sprintf(
       " (%d course codes, %d of them with a page in another offering)", codes, with_text), "")))
@@ -308,8 +308,8 @@ for (inst in institutions) {
       sprintf("---\n\n## COURSE %d — `%s`  [%s]", i, cid, kind),
       "",
       sprintf("- %s (%s) · %s %s · status %s · language %s",
-              r$Emnekode_raw, r$Emnenavn, r$Semesternavn, r$Årstall,
-              r$Statusnavn %||% r$Status, r$`Underv.språk` %||% "?"),
+              r$course_code_raw, r$course_name, r$semester_name, r$year,
+              r$status_name %||% r$status, r$language_code %||% "?"),
       sprintf("- URL: %s", r$url %||% "NA"),
       if (length(on) > 0) sprintf("- ⚑ flags: %s", paste(on, collapse = ", ")) else character(),
       ""

@@ -1,8 +1,8 @@
 test_that("UiT: a semester listed twice keeps the first Norwegian document", {
   lookup <- tibble::tibble(
-    Emnekode = "ENG-2980",
-    Årstall = c(2018L, 2017L, 2017L, 2016L, 2016L, 2015L),
-    Semesternavn = "Vår",
+    course_code = "ENG-2980",
+    year = c(2018L, 2017L, 2017L, 2016L, 2016L, 2015L),
+    semester_name = "Vår",
     url = c("nb-531619", "en-509770", "nb-455351", "nb-413600", "nb-413564", "en-400000")
   )
   fetched <- character()
@@ -12,7 +12,7 @@ test_that("UiT: a semester listed twice keeps the first Norwegian document", {
   }
   out <- uit_one_per_semester(lookup, is_english)
 
-  expect_equal(out$url[order(-out$Årstall)],
+  expect_equal(out$url[order(-out$year)],
                c("nb-531619", "nb-455351", "nb-413600", "en-400000"))
   # only a semester listed twice is fetched; an English-only one stays
   expect_setequal(fetched, c("en-509770", "nb-455351", "nb-413600", "nb-413564"))

@@ -19,8 +19,8 @@ local_hiof <- function(env = parent.frame()) {
 }
 
 hiof_dbh <- function(codes) {
-  dbh <- tibble::tibble(institution = "hiof", Emnekode_raw = codes, Emnekode = codes,
-                        Årstall = 2023L, Semesternavn = "Høst", Status = 1L)
+  dbh <- tibble::tibble(institution = "hiof", course_code_raw = codes, course_code = codes,
+                        year = 2023L, semester_name = "Høst", status = 1L)
   attr(dbh, "dbh_snapshot") <- "2026-10-16"
   dbh
 }
@@ -87,7 +87,7 @@ test_that("fetch_html_cols() records each request's status and time", {
   out <- fetch_html_cols("https://www.ntnu.no/studier/emner/X/2003", "ntnu",
                          get_institution_config("ntnu"), .progress = FALSE)
   expect_equal(out$http_status, 200L)
-  rows <- dplyr::bind_cols(tibble::tibble(course_id = "c", Årstall = 2003L, url = "u"), out)
+  rows <- dplyr::bind_cols(tibble::tibble(course_id = "c", year = 2003L, url = "u"), out)
   expect_equal(fetch_ledger(rows, "ntnu", "r")$outcome, "shell")
 })
 
@@ -147,7 +147,7 @@ test_that("a run without a ledger has one reconstructed; outcomes are by URL", {
   raw <- withr::local_tempdir()
   rows <- tibble::tibble(
     course_id = c("x_A_2024_autumn_1", "x_A_2025_spring_1", "x_B_2024_autumn_1", "x_C_2024_autumn_1"),
-    institution = "x", Årstall = c(2024L, 2025L, 2024L, 2024L),
+    institution = "x", year = c(2024L, 2025L, 2024L, 2024L),
     url = c("u/A24", "u/A25", "u/B24", NA), html = c("plan", NA, NA, NA),
     html_error = list(NULL, "HTTP 404 Not Found.", "HTTP 502 Bad Gateway.", NULL),
     html_success = c(TRUE, FALSE, FALSE, NA))
@@ -183,9 +183,9 @@ test_that("a run without a ledger has one reconstructed; outcomes are by URL", {
 
 test_that("the coverage of a frame: outcome, plan and whether a retry would fetch it", {
   frame <- tibble::tibble(institution = c("hiof", "hiof", "hiof", "hiof", "uio", NA),
-                          Emnekode_raw = c("A", "B", "C", "D", "E", "F"),
-                          Emnekode = c("A", "B", "C", "D", "E", "F"), Årstall = 2023L,
-                          Semesternavn = "Høst", Status = c(1L, 1L, 2L, 1L, 1L, 1L))
+                          course_code_raw = c("A", "B", "C", "D", "E", "F"),
+                          course_code = c("A", "B", "C", "D", "E", "F"), year = 2023L,
+                          semester_name = "Høst", status = c(1L, 1L, 2L, 1L, 1L, 1L))
   ledger <- tibble::tibble(course_id = c("hiof_A_2023_autumn_1", "hiof_B_2023_autumn_1",
                                          "hiof_C_2023_autumn_1", "uio_E_2023_autumn_1"),
                            url = c("a", "b", "c", "e"), outcome = c("ok", "not_found", "timeout", "ok"))
@@ -195,7 +195,7 @@ test_that("the coverage of a frame: outcome, plan and whether a retry would fetc
   expect_equal(cov$course_id, c(ledger$course_id[1:3], "hiof_D_2023_autumn_1", ledger$course_id[4]))
   expect_equal(cov$outcome, c("ok", "not_found", "timeout", "not harvested", "ok"))
   expect_equal(cov$has_plan, c(TRUE, FALSE, FALSE, FALSE, FALSE))
-  # C (DBH's Status 2 now) keeps the id it was harvested under; uio takes a new snapshot instead
+  # C (DBH's status 2 now) keeps the id it was harvested under; uio takes a new snapshot instead
   expect_equal(cov$retry, c(FALSE, FALSE, TRUE, FALSE, FALSE))
 })
 
@@ -203,7 +203,7 @@ test_that("page_changes() lists pages whose text changed between runs", {
   raw <- withr::local_tempdir()
   page <- function(text, token) rawToChar(html_page(text, paste0("<script>t='", token, "'</script>"))$body)
   rows <- function(html, ids = c("hiof_A_2023_autumn_1", "hiof_B_2023_autumn_1")) tibble::tibble(
-    course_id = ids, institution = "hiof", Årstall = 2023L, url = c("u/A", "u/B"),
+    course_id = ids, institution = "hiof", year = 2023L, url = c("u/A", "u/B"),
     html = html, html_error = list(NULL), html_success = TRUE)
   for (r in list(list("2026-10-01", c(page("Plan A", "t1"), page("Plan B", "t1"))),
                  list("2026-10-14", c(page("Plan A", "t2"), page("Plan B reworded", "t2"))),

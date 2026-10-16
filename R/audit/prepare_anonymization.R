@@ -190,7 +190,7 @@ for (inst in institutions) {
       sprintf("---\n\n## COURSE %d — `%s`  [%s]", i, cid, kind),
       "",
       sprintf("- %s (%s) · %s %s · %.1f%% of text removed",
-              r$Emnekode_raw, r$Emnenavn, r$Semesternavn, r$Årstall,
+              r$course_code_raw, r$course_name, r$semester_name, r$year,
               100 * r$removed_share),
       if (length(on) > 0) sprintf("- ⚑ flags: %s", paste(on, collapse = ", ")) else character(),
       "",

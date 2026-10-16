@@ -46,7 +46,7 @@ the plans of all higher education are to be collected, and teacher education
 One snapshot for both frames gives a teacher-ed offering the same `course_id`
 in both. *Rejected:* a separate teacher-ed query (the earlier
 `data/input/courses.RDS`, table 208 queried by programme code): two queries on
-different days can disagree on an offering's Status, which is part of its id;
+different days can disagree on an offering's status, which is part of its id;
 querying each institution through the API, where the bulk files give the whole
 table at once. *Consequence:* the snapshot of 2026-10-16 has 2 164 079 rows
 (168 institution codes, 1986-2025), 1 257 158 of them at the 19 institutions
@@ -91,12 +91,12 @@ frame; the data notes all courses. *Since:* 2026-10-16.
 
 **An offering keeps its first `course_id`.** The id is
 `{institution}_{code}_{year}_{semester}_{status}`, and a later DBH snapshot can
-change the Status. A harvest matches offerings on the rest of the id
+change the status. A harvest matches offerings on the rest of the id
 (institution, code, year, semester: one row in table 208), and an offering
 already in a raw file keeps the id it was first harvested under
 (`first_course_id()`); a frame filter of the raw store matches the same way.
-*Why:* with the whole id, a changed Status would make the same course and
-semester a second offering, fetched again. *Rejected:* dropping Status from the
+*Why:* with the whole id, a changed status would make the same course and
+semester a second offering, fetched again. *Rejected:* dropping the status from the
 id, which would change every published id. *Consequence:* none so far: the
 2026-10-16 snapshot gives all 45 280 teacher-ed offerings of 2026-10-06 their
 old id, and holds every one of the 41 025 ids in the raw store. *Since:*
@@ -104,7 +104,7 @@ old id, and holds every one of the 41 025 ids in the raw store. *Since:*
 
 **An institution can have several DBH codes.** INN reports 2025 under its
 university code 1177 (Universitetet i Innlandet) instead of 0264; both map to
-INN, which adds `r n(sum(off$institution == "inn" & off$Årstall == 2025))` INN
+INN, which adds `r n(sum(off$institution == "inn" & off$year == 2025))` INN
 offerings for 2025. Codes of institutions that merged before 2018 (Høgskolen i
 Hedmark, HiOA, UiN, HBV/HSN, UMB, HiA) are not mapped: their sites do not serve
 plans for those years. *Since:* 2026-10-06.
@@ -119,6 +119,28 @@ so the frame ends with 2025.
 
 **Samas is excluded:** its website's course codes do not match DBH, and the
 teacher education courses are described only in programme PDFs (decided 2026-02).
+
+**Variable names: DBH's columns have English snake_case names, and every
+variable is documented in `data/variables.csv`.** `Årstall` is `year`,
+`Emnekode` `course_code`, `Underv.språk` and `Navn` `language_code` and
+`language_name`, `Oppgave (ny fra h2012)` `thesis`, and so on; the values stay
+DBH's (Norwegian names, DBH's codes). `data/variables.csv` gives each variable
+of the published files its type, source (the column of DBH table 208, or how
+the pipeline gives it), meaning and codes, and its name in the releases up to
+data-2026-10-16; it is released with the data. *Why:* DBH's names mix
+Norwegian words, abbreviations and punctuation (`NUS-kode`, `Underv.språk`),
+and two do not say what they hold (`Navn` is the language of instruction,
+`Oppgave (ny fra h2012)` whether the course is a thesis); the release of all
+higher education is to be documented once, before users outside the project
+read it. *Rejected:* keeping DBH's names with a codebook (the names would
+still need backticks in code and explaining in every analysis); translating the
+values too (they are DBH's codes and names, which users look up in DBH).
+*Consequence:* the release schema changes once: the same files, rows and values
+under the new names, with `year_from` and `year_to` integer (double before).
+DBH's snapshots and the raw files of the harvests until 2026-10-16 keep DBH's
+names, which the pipeline renames when it reads them; data of release
+data-2026-10-16 or earlier are renamed by the pairs in `data/variables.csv`
+(README "Variables"). *Since:* 2026-10-16.
 
 ## Harvest
 
@@ -183,8 +205,8 @@ being missing from UiS's archive. *Since:* 2026-10-14.
 ```{r}
 #| label: current-sites
 cur <- off |> filter(plan_year_basis == "current")
-cur_aut <- sum(!is.na(cur$plan_content_id) & cur$Semesternavn == "Høst")
-cur_spr <- sum(!is.na(cur$plan_content_id) & cur$Semesternavn == "Vår")
+cur_aut <- sum(!is.na(cur$plan_content_id) & cur$semester_name == "Høst")
+cur_spr <- sum(!is.na(cur$plan_content_id) & cur$semester_name == "Vår")
 ```
 
 **Sites that publish only the current plan:** a harvest counts only for the
@@ -399,11 +421,11 @@ glue merge (SOA-3905 spring and autumn 2011; LER-1201 spring 2018). *Since:*
 
 ```{r}
 #| label: spec
-k <- c("plan_content_id", "institution", "Emnekode")
+k <- c("plan_content_id", "institution", "course_code")
 in_secs <- secs |>
   group_by(across(all_of(k))) |>
   summarise(n = sum(nchar(text)), .groups = "drop") |>
-  right_join(plans |> transmute(plan_content_id, institution, Emnekode,
+  right_join(plans |> transmute(plan_content_id, institution, course_code,
                                 N = nchar(course_plan)), by = k)
 ```
 
@@ -610,8 +632,8 @@ HVL, NIH, UiB, UiO and UiT gain their title and facts with the same id; Nord's
 id; MF's 26 and 180 UiS plans get a new id as their facts box leaves it, and
 HiOF's 820 and UiA's 681 as the unit does. No plans merge or split
 (13,994), and no section changes. UiB's unit, an unlabelled link in the
-sidebar, is not read; DBH's `Avdelingsnavn` gives every UiB offering its
-unit. The other institutions followed the same day (next entry).
+sidebar, is not read; every UiB offering has its unit from DBH
+(`department_name`). The other institutions followed the same day (next entry).
 *Since:* 2026-10-13.
 
 **The title and facts box leave the plan id at every institution.** The
@@ -718,12 +740,12 @@ facts box (median 967 → 819 characters). *Since:* 2026-10-13.
 
 ```{r}
 #| label: sections
-cov <- secs |> distinct(plan_content_id, institution, Emnekode, section) |>
+cov <- secs |> distinct(plan_content_id, institution, course_code, section) |>
   count(section) |> mutate(share = n / nrow(plans))
 share <- function(s) pct(cov$share[cov$section == s])
 fagplan <- sum(secs$section == "teaching_methods" & grepl("Fagplanen sier:", secs$text, fixed = TRUE))
 fagplan_cw <- sum(secs$section == "coursework_requirements" & grepl("Fagplanen sier:", secs$text, fixed = TRUE))
-prac <- plans |> filter(institution == "oslomet", grepl("^M[15]GP", Emnekode))
+prac <- plans |> filter(institution == "oslomet", grepl("^M[15]GP", course_code))
 prac_none <- sum(!prac$plan_content_id %in% secs$plan_content_id)
 ```
 

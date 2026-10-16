@@ -35,7 +35,7 @@ review <- load_review()
 # Join key shared by plans and sections: a plan_content_id can recur across
 # course codes, so all three key columns are needed to identify a plan.
 make_key <- function(df) {
-  paste(df$plan_content_id, df$institution, df$Emnekode, sep = "\r")
+  paste(df$plan_content_id, df$institution, df$course_code, sep = "\r")
 }
 plan_key <- make_key(plans)
 section_key <- if (is.null(sections)) NULL else make_key(sections)
@@ -43,7 +43,7 @@ section_key <- if (is.null(sections)) NULL else make_key(sections)
 inst_choices <- sort(unique(plans$institution))
 names(inst_choices) <- institution_labels[inst_choices]
 year_range <- range(c(plans$year_from, plans$year_to), na.rm = TRUE)
-fag_choices <- sort(unique(na.omit(plans$Fagnavn)))
+fag_choices <- sort(unique(na.omit(plans$subject_name)))
 
 available_sections <- if (is.null(sections)) character(0) else {
   present <- intersect(names(SECTION_LABELS), unique(sections$section))
@@ -85,7 +85,7 @@ ui <- page_navbar(
                        multiple = TRUE, options = list(placeholder = "All")),
         sliderInput("years", "Active in years", min = year_range[1],
                     max = year_range[2], value = year_range, step = 1, sep = ""),
-        selectizeInput("fag", "Subject (Fagnavn)", choices = fag_choices,
+        selectizeInput("fag", "Subject", choices = fag_choices,
                        multiple = TRUE, options = list(placeholder = "All")),
         actionButton("clear", "Clear", class = "btn-sm btn-outline-secondary")
       ),
@@ -109,7 +109,7 @@ ui <- page_navbar(
            on the Concordance tab."),
         selectInput("trend_facet", "Break down by",
           choices = c("Nothing" = "none", "Institution" = "institution",
-                      "Subject" = "Fagnavn")),
+                      "Subject" = "subject_name")),
         selectInput("trend_y", "Show",
           choices = c("Share of plans" = "proportion", "Number of plans" = "n_with")),
         tags$hr(),
@@ -261,7 +261,7 @@ server <- function(input, output, session) {
   plan_subset <- reactive({
     keep <- plans$year_to >= input$years[1] & plans$year_from <= input$years[2]
     if (length(input$inst) > 0) keep <- keep & plans$institution %in% input$inst
-    if (length(input$fag) > 0) keep <- keep & plans$Fagnavn %in% input$fag
+    if (length(input$fag) > 0) keep <- keep & plans$subject_name %in% input$fag
     which(keep)
   })
 
@@ -340,8 +340,8 @@ server <- function(input, output, session) {
     p <- plans[res$plan_row, ]
     display <- data.frame(
       Inst = institution_labels[p$institution],
-      Code = p$Emnekode,
-      Name = p$Emnenavn,
+      Code = p$course_code,
+      Name = p$course_name,
       Years = ifelse(p$year_from == p$year_to, as.character(p$year_from),
                      paste0(p$year_from, "–", p$year_to)),
       Off = p$n_offerings,
@@ -381,14 +381,14 @@ server <- function(input, output, session) {
       nav_panel("Source HTML", uiOutput("html_frame")),
       header = tags$div(
         class = "detail-head",
-        tags$h5(paste0(p$Emnekode, " — ", p$Emnenavn %||% "")),
+        tags$h5(paste0(p$course_code, " — ", p$course_name %||% "")),
         tags$div(class = "text-muted small",
           paste0(institution_labels[p$institution], " · ",
                  if (p$year_from == p$year_to) p$year_from
                  else paste0(p$year_from, "–", p$year_to),
                  " · ", p$n_offerings, " offering",
                  if (p$n_offerings == 1) "" else "s",
-                 if (!is.na(p$Fagnavn)) paste0(" · ", p$Fagnavn) else "")
+                 if (!is.na(p$subject_name)) paste0(" · ", p$subject_name) else "")
         ),
         if (!is.na(p$url)) tags$a(href = p$url, target = "_blank",
                                   class = "small", "Open source page →")
@@ -460,7 +460,7 @@ server <- function(input, output, session) {
     rows <- sections[
       sections$plan_content_id == p$plan_content_id &
         sections$institution == p$institution &
-        sections$Emnekode == p$Emnekode, , drop = FALSE]
+        sections$course_code == p$course_code, , drop = FALSE]
     if (nrow(rows) == 0) {
       return(tags$p(class = "text-muted", "No sections extracted for this plan."))
     }
@@ -485,8 +485,8 @@ server <- function(input, output, session) {
     datatable(
       data.frame(
         Years = p$years, Semesters = p$semesters,
-        Offerings = p$n_offerings, Credits = p$Studiepoeng %||% NA,
-        Level = p$Nivanavn %||% NA, stringsAsFactors = FALSE
+        Offerings = p$n_offerings, Credits = p$credits %||% NA,
+        Level = p$level_name %||% NA, stringsAsFactors = FALSE
       ),
       selection = "none", rownames = FALSE,
       options = list(dom = "t", paging = FALSE, ordering = FALSE)
@@ -578,7 +578,7 @@ server <- function(input, output, session) {
   })
 
   output$coverage_plot <- renderPlot({
-    ggplot(coverage, aes(x = Årstall, y = institution, fill = pct_harvested)) +
+    ggplot(coverage, aes(x = year, y = institution, fill = pct_harvested)) +
       geom_tile(colour = "white", linewidth = 0.4) +
       scale_fill_viridis_c(labels = scales::label_percent(), limits = c(0, 1),
                            option = "D", name = "Harvested") +
@@ -594,7 +594,7 @@ server <- function(input, output, session) {
     d <- coverage |>
       mutate(Institution = institution_labels[institution],
              pct_harvested = round(100 * pct_harvested)) |>
-      select(Institution, Year = Årstall, Offerings = n_offerings,
+      select(Institution, Year = year, Offerings = n_offerings,
              Harvested = n_harvested, `%` = pct_harvested, Plans = n_plans)
     datatable(d, rownames = FALSE, selection = "none",
               options = list(pageLength = 20, dom = "tip"))
@@ -609,9 +609,9 @@ server <- function(input, output, session) {
     }
     codes <- plans |>
       filter(institution == inst) |>
-      count(Emnekode) |>
+      count(course_code) |>
       filter(n >= 2) |>
-      pull(Emnekode) |>
+      pull(course_code) |>
       sort()
     updateSelectizeInput(session, "diff_code", choices = codes, server = TRUE)
   })
@@ -619,7 +619,7 @@ server <- function(input, output, session) {
   diff_versions <- reactive({
     req(input$diff_inst, input$diff_code, nzchar(input$diff_code))
     plans |>
-      filter(institution == input$diff_inst, Emnekode == input$diff_code) |>
+      filter(institution == input$diff_inst, course_code == input$diff_code) |>
       arrange(year_from, year_to) |>
       mutate(
         version = paste0("V", row_number()),

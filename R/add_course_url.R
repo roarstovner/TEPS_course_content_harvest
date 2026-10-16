@@ -4,27 +4,27 @@ add_course_url <- function(df) {
       url = dplyr::case_match(
         institution,
 
-        "oslomet" ~ add_course_url_oslomet(Emnekode, Årstall, Semesternavn),
-        "uia"     ~ add_course_url_uia(Emnekode, Årstall, Semesternavn),
-        "ntnu"    ~ add_course_url_ntnu(Emnekode, Årstall, Semesternavn),
-        "inn"     ~ add_course_url_inn(Emnekode, Årstall, Semesternavn),
+        "oslomet" ~ add_course_url_oslomet(course_code, year, semester_name),
+        "uia"     ~ add_course_url_uia(course_code, year, semester_name),
+        "ntnu"    ~ add_course_url_ntnu(course_code, year, semester_name),
+        "inn"     ~ add_course_url_inn(course_code, year, semester_name),
 
         "hivolda" ~ NA_character_,  # Hivolda requires URL discovery via resolve_course_urls()
-        "hiof"    ~ add_course_url_hiof(Emnekode, Årstall, Semesternavn),
-        "hvl"     ~ add_course_url_hvl(Emnekode, Årstall, Semesternavn),
+        "hiof"    ~ add_course_url_hiof(course_code, year, semester_name),
+        "hvl"     ~ add_course_url_hvl(course_code, year, semester_name),
 
-        "mf"      ~ add_course_url_mf(Emnekode),
-        "nla"     ~ add_course_url_nla(Emnekode, Årstall, Semesternavn),
+        "mf"      ~ add_course_url_mf(course_code),
+        "nla"     ~ add_course_url_nla(course_code, year, semester_name),
 
-        "nord"    ~ add_course_url_nord(Emnekode, Årstall, Semesternavn),
-        "nih"     ~ add_course_url_nih(Emnekode, Årstall, Semesternavn),
+        "nord"    ~ add_course_url_nord(course_code, year, semester_name),
+        "nih"     ~ add_course_url_nih(course_code, year, semester_name),
 
-        "uib"     ~ add_course_url_uib(Emnekode, Årstall, Semesternavn),
+        "uib"     ~ add_course_url_uib(course_code, year, semester_name),
         "uio"     ~ NA_character_,  # UiO's department folders come from its sitemap via resolve_course_urls()
-        "uis"     ~ add_course_url_uis(Emnekode_raw),
+        "uis"     ~ add_course_url_uis(course_code_raw),
         "usn"     ~ NA_character_,  # USN requires version discovery via resolve_course_urls()
         "uit"     ~ NA_character_,  # UiT requires document ID discovery via resolve_course_urls()
-        "nmbu"    ~ add_course_url_nmbu(Emnekode),
+        "nmbu"    ~ add_course_url_nmbu(course_code),
 
         .default  = NA_character_
       )

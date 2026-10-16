@@ -33,7 +33,7 @@ extracted text
 <tbody>
 <tr>
 <td>1. Course id
-<code>{institution}_{Emnekode_raw}_{year}_{semester}_{status}</code></td>
+<code>{institution}_{course_code_raw}_{year}_{semester}_{status}</code></td>
 <td><code>add_course_id()</code> (<code>R/utils.R</code>)</td>
 <td><code>course_id</code></td>
 </tr>
@@ -261,7 +261,7 @@ files of two frames (`FRAMES`): `all`, every harvested offering, in
 `data/interim/` and `data/processed/`; and `teacher_ed`, the offerings
 in the teacher-ed frame of the latest DBH snapshot
 (`dbh_courses("teacher_ed")`, matched on the offering without its
-Status, `frame_members()`), in the `teacher_ed/` folders of both
+status, `frame_members()`), in the `teacher_ed/` folders of both
 (`frame_dir()`). The text, plan id and sections of a page are the same
 in both; the plans are deduplicated within each frame (`frame_plans()`),
 so a teacher-ed plan has the years, text and sections of its own
@@ -334,7 +334,7 @@ Add a case to `case_match()` and create a URL-building function:
 
 ``` r
 # In add_course_url(), add:
-"newuni" ~ add_course_url_newuni(Emnekode, Årstall, Semesternavn),
+"newuni" ~ add_course_url_newuni(course_code, year, semester_name),
 
 # Create a helper function for your institution
 add_course_url_newuni <- function(course_code, year, semester) {
@@ -351,7 +351,7 @@ courses <- dbh_courses()   # every DBH course; the institution's code must be in
 result <- harvest_institution("newuni", courses, year = 2025)
 
 # Inspect results
-result |> select(Emnekode, url, html_success, extracted_text) |> head()
+result |> select(course_code, url, html_success, extracted_text) |> head()
 result$extracted_text[1]  # Inspect first result
 ```
 
@@ -467,8 +467,8 @@ interrupted harvest.
 ### Raw Store and Finalized Releases
 
 The raw store is Parquet (zstd), one file per institution, DBH year
-(`Årstall`) and harvest run: `data/raw/{inst}/{year}/{run}.parquet`. A
-run is named by its date, a second run of an institution the same day by
+(`year`) and harvest run: `data/raw/{inst}/{year}/{run}.parquet`. A run
+is named by its date, a second run of an institution the same day by
 date and time (`{date}_{HHMMSS}`, which sorts after it), so a retry need
 not wait for the next day. No raw file is written twice. A harvest
 fetches only the offerings no raw file holds yet (a current site: a new
@@ -476,19 +476,20 @@ snapshot) and `harvest_all()` saves them as a new run
 (`write_raw_run()`), with the run’s fetch ledger (see “Fetch Ledger and
 Retries”). `harvest_all(year = 2026)` and `harvest_all()` therefore both
 just add what is new. An offering is matched on institution, code, year
-and semester: when a new DBH snapshot changes its Status, it keeps the
+and semester: when a new DBH snapshot changes its status, it keeps the
 `course_id` it was first harvested under. `read_harvest()` combines the
 runs; an offering in two runs stops the build.
 
 A raw file holds the rows as the harvest returned them: the offering’s
-DBH columns as they were at the harvest, `url`, `html`, `html_success`,
-`html_error` (the error message), `harvested_at`, `retry` (a retry run)
-and `harvest_row`, the row’s place in its run, so `read_raw()` gives the
-rows in the order they were harvested (which offering a plan’s text
-comes from depends on it). `extracted_text` is kept only for a row
-without `html`, text read from a PDF, the raw data there; uis keeps the
-PDF’s bytes too (`pdf`, since 2026-10-16). Elsewhere `tar_make()`
-rebuilds the text from `html`.
+DBH columns as they were at the harvest (under DBH’s names until
+2026-10-16, which `read_raw()` renames: `dbh_rename()`, see
+“Variables”), `url`, `html`, `html_success`, `html_error` (the error
+message), `harvested_at`, `retry` (a retry run) and `harvest_row`, the
+row’s place in its run, so `read_raw()` gives the rows in the order they
+were harvested (which offering a plan’s text comes from depends on it).
+`extracted_text` is kept only for a row without `html`, text read from a
+PDF, the raw data there; uis keeps the PDF’s bytes too (`pdf`, since
+2026-10-16). Elsewhere `tar_make()` rebuilds the text from `html`.
 
 The format changed once, on 2026-10-16; the content did not. The RDS raw
 files of the harvests before (`data/raw/html_{inst}.RDS`, the first
@@ -668,7 +669,7 @@ targets::tar_read(changed_pages)
 
 The pipeline splits each course plan into its parts and writes
 `data/processed/plan_sections.RDS` with one row per plan and section
-(`plan_content_id`, `institution`, `Emnekode`, `source_course_id`,
+(`plan_content_id`, `institution`, `course_code`, `source_course_id`,
 `section`, `text`), keyed like `course_plans.RDS`. A plan’s sections are
 cut from the page of `source_course_id`, the offering whose text the
 plan keeps, so they match its `course_plan`. The seven sections are
@@ -1078,6 +1079,13 @@ and run</td>
 <td>internal</td>
 </tr>
 <tr>
+<td><code>data/variables.csv</code></td>
+<td>every variable of the published files, with its old name
+(“Variables”)</td>
+<td>none</td>
+<td>in git; released with the data</td>
+</tr>
+<tr>
 <td><code>data/interim/plan_gaps.RDS</code></td>
 <td>course-years without a plan, reason, URLs tried</td>
 <td>none</td>
@@ -1157,8 +1165,10 @@ is table 208 (Emner), every course of every institution, year and
 semester, all levels and statuses, one row per course and semester;
 `dbh_programmes_{date}.parquet` is table 347 (Studieprogram), with the
 programmes’ study type (`Studiumkode`). A new snapshot gets a new date
-and the old ones stay. `dbh_courses()` reads the latest (or the one of
-`date`) and adds `institution`, `Emnekode_raw` and `Emnekode`:
+and the old ones stay. The snapshots keep DBH’s column names.
+`dbh_courses()` reads the latest (or the one of `date`), gives DBH’s
+columns the pipeline’s names (`DBH_COLUMNS`; see “Variables”) and adds
+`institution` and `course_code`:
 
 ``` r
 courses <- dbh_courses("teacher_ed")
@@ -1166,16 +1176,16 @@ courses |> slice(1:2)
 ```
 
     # A tibble: 2 × 25
-      institution Institusjonskode Institusjonsnavn Avdelingskode Avdelingsnavn     
-      <chr>       <chr>            <chr>            <chr>         <chr>             
-    1 samas       0217             Samisk høgskole  480000        Avdeling for duod…
-    2 samas       0217             Samisk høgskole  480000        Avdeling for duod…
-    # ℹ 20 more variables: Avdelingskode_SSB <chr>, Årstall <int>, Semester <int>,
-    #   Semesternavn <chr>, Studieprogramkode <chr>, Studieprogramnavn <chr>,
-    #   Emnekode_raw <chr>, Emnekode <chr>, Emnenavn <chr>, Nivåkode <chr>,
-    #   Nivånavn <chr>, Studiepoeng <dbl>, `NUS-kode` <chr>, Status <int>,
-    #   Statusnavn <chr>, Underv.språk <chr>, Navn <chr>, Fagkode <chr>,
-    #   Fagnavn <chr>, `Oppgave (ny fra h2012)` <int>
+      institution institution_code institution_name department_code department_name 
+      <chr>       <chr>            <chr>            <chr>           <chr>           
+    1 samas       0217             Samisk høgskole  480000          Avdeling for du…
+    2 samas       0217             Samisk høgskole  480000          Avdeling for du…
+    # ℹ 20 more variables: department_code_ssb <chr>, year <int>, semester <int>,
+    #   semester_name <chr>, programme_code <chr>, programme_name <chr>,
+    #   course_code_raw <chr>, course_code <chr>, course_name <chr>,
+    #   level_code <chr>, level_name <chr>, credits <dbl>, nus_code <chr>,
+    #   status <int>, status_name <chr>, language_code <chr>, language_name <chr>,
+    #   subject_code <chr>, subject_name <chr>, thesis <int>
 
 `dbh_courses()` is every course; `dbh_courses("teacher_ed")` keeps the
 courses of the teacher education programmes (study types in
@@ -1187,36 +1197,500 @@ course; `tar_make()` builds everything in `data/raw/` and writes the
 teacher-ed frame’s files apart (see “Frames”).
 
 Key columns: - `institution`: Short code (e.g., “oslomet”, “uia”); NA
-for an institution code no config has - `Emnekode_raw`: Original course
-code from DBH (used in `course_id`) - `Emnekode`: Course code with the
-trailing version number removed (`canon_remove_trailing_num()`:
-“ABC123-1” → “ABC123”) - `Årstall`: Year - `Semesternavn`: Semester name
-(“Vår” or “Høst”; `canon_semester_name()` maps Vår/Høst/Sommer to
-spring/autumn/summer) - `Studieprogramkode`, `Studieprogramnavn`: the
-programme DBH registers the course under (one per row) - `Status`:
-Course status (1=Active, 2=New, 3=Discontinued, 4=Discontinued but exam
-offered). It is the last part of `course_id`, and a later snapshot can
-change it: an offering already in a raw file keeps the id it was first
-harvested under (`first_course_id()`)
+for an institution code no config has - `course_code_raw`: DBH’s course
+code (used in `course_id`) - `course_code`: the code with the trailing
+version number removed (`canon_remove_trailing_num()`: “ABC123-1” →
+“ABC123”) - `year`, `semester_name` (“Vår”, “Høst”, “Sommer”, “Vinter”;
+`canon_semester_name()` gives `course_id` spring, autumn, summer) -
+`programme_code`, `programme_name`: the programme DBH registers the
+course under (one per row) - `status`: course status (1 active, 2 new, 3
+discontinued, 4 discontinued with active students). It is the last part
+of `course_id`, and a later snapshot can change it: an offering already
+in a raw file keeps the id it was first harvested under
+(`first_course_id()`)
 
 DBH lists most courses under both semesters of a year, also when they
 are taught in one. Where pages are semester-specific, about half the
 rows therefore have no plan by design; see “Semester registration in
 DBH” in `data/data_notes.qmd` before reading row-level success rates.
 
-### Output Data Structure
+`harvest_institution()` returns the offerings with `course_id`, `url`,
+`html`, `html_error`, `html_success` and `extracted_text` added, the
+rows of the raw store (“Raw Store and Finalized Releases”).
 
-After processing, you’ll have:
+### Variables (`data/variables.csv`)
 
-    # A tibble: 2 × 6
-      course_id                  url   html  html_success extracted_text course_plan
-      <chr>                      <chr> <chr> <lgl>        <chr>          <chr>      
-    1 oslomet_ABC123_2024_autum… http… <htm… TRUE         ABC123 Course… ABC123 Cou…
-    2 oslomet_XYZ456_2024_sprin… http… <htm… TRUE         XYZ456 Anothe… XYZ456 Ano…
+`data/variables.csv` documents every variable of the published files
+(`course_offerings.RDS`, `course_plans.RDS`, `plan_sections.RDS`, of
+both frames): the file, its name, type, source (the column of DBH table
+208, or how the pipeline gives it), meaning and codes, and `old_name`,
+its name in the releases up to data-2026-10-16. `release_data()` hands
+it over with the data, and `tests/testthat/test-dbh-input.R` checks it
+against the built files and `DBH_COLUMNS`. `course_offerings_full.RDS`
+(internal) adds `url`, `extracted_text`, `course_plan`,
+`course_plan_normalized` and `plan_nchar`.
 
-- `course_plan` is the anonymized version of `extracted_text` (no names,
-  emails, dates, or administrative years). Content years like historical
-  references are preserved. Use this column for analysis.
+Since 2026-10-16 the DBH columns have English snake_case names
+(methods.qmd, “Variable names”); their values are DBH’s (Norwegian
+names, DBH’s codes), and `year_from` and `year_to` are integers (double
+before). DBH’s snapshots, the raw files of the harvests until 2026-10-16
+and the releases up to data-2026-10-16 have DBH’s names: the pipeline
+renames them where it reads such data (`dbh_rename()`, in
+`dbh_courses()`, `read_raw()`, `read_checkpoint()`, `frozen_changes()`
+and `release_data()`). Code that reads an old release can rename it by
+the same pairs:
+
+``` r
+v <- read.csv("data/variables.csv")
+pairs <- unique(v[v$old_name != v$variable, c("variable", "old_name")])
+old <- readRDS("data/releases/data-2026-10-16/course_offerings.RDS") |>
+  dplyr::rename(dplyr::any_of(setNames(pairs$old_name, pairs$variable)))
+```
+
+<table>
+<colgroup>
+<col style="width: 4%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 2%" />
+<col style="width: 10%" />
+<col style="width: 69%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">file</th>
+<th style="text-align: left;">variable</th>
+<th style="text-align: left;">old_name</th>
+<th style="text-align: left;">type</th>
+<th style="text-align: left;">source</th>
+<th style="text-align: left;">description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">course_id</td>
+<td style="text-align: left;">course_id</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">derived</td>
+<td style="text-align: left;">Offering id:
+{institution}<em>{course_code_raw}</em>{year}<em>{semester}</em>{status},
+with the semester in English (spring, autumn, summer). An offering keeps
+the id it was first harvested under when a later DBH snapshot changes
+its status.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">institution</td>
+<td style="text-align: left;">institution</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">derived from institution_code</td>
+<td style="text-align: left;">Short name of the institution in the
+harvest (“oslomet”, “uia”); several DBH codes can map to one (INN: 0264
+and 1177).</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">institution_code</td>
+<td style="text-align: left;">Institusjonskode</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">DBH table 208 Institusjonskode</td>
+<td style="text-align: left;">DBH’s institution code (“0256”).</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">institution_name</td>
+<td style="text-align: left;">Institusjonsnavn</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">DBH table 208 Institusjonsnavn</td>
+<td style="text-align: left;">DBH’s institution name.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">department_code</td>
+<td style="text-align: left;">Avdelingskode</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">DBH table 208 Avdelingskode</td>
+<td style="text-align: left;">DBH’s code of the unit (faculty or
+department) that offers the course.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">department_name</td>
+<td style="text-align: left;">Avdelingsnavn</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">DBH table 208 Avdelingsnavn</td>
+<td style="text-align: left;">Name of the unit.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">department_code_ssb</td>
+<td style="text-align: left;">Avdelingskode_SSB</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">DBH table 208 Avdelingskode_SSB</td>
+<td style="text-align: left;">Statistics Norway’s code of the unit; NA
+in some years.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">year</td>
+<td style="text-align: left;">Årstall</td>
+<td style="text-align: left;">integer</td>
+<td style="text-align: left;">DBH table 208 Årstall</td>
+<td style="text-align: left;">Calendar year of the semester.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">semester</td>
+<td style="text-align: left;">Semester</td>
+<td style="text-align: left;">integer</td>
+<td style="text-align: left;">DBH table 208 Semester</td>
+<td style="text-align: left;">Semester code: 0 winter, 1 spring, 2
+summer, 3 autumn.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">semester_name</td>
+<td style="text-align: left;">Semesternavn</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">DBH table 208 Semesternavn</td>
+<td style="text-align: left;">Semester in Norwegian: “Vinter”, “Vår”,
+“Sommer”, “Høst”.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">programme_code</td>
+<td style="text-align: left;">Studieprogramkode</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">DBH table 208 Studieprogramkode</td>
+<td style="text-align: left;">The study programme DBH registers the
+course under in this semester (one per row); unique only within an
+institution.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">programme_name</td>
+<td style="text-align: left;">Studieprogramnavn</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">DBH table 208 Studieprogramnavn</td>
+<td style="text-align: left;">Name of the programme.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">course_code_raw</td>
+<td style="text-align: left;">Emnekode_raw</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">DBH table 208 Emnekode</td>
+<td style="text-align: left;">DBH’s course code, with its version number
+(“LMUKHV10421-1”).</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">course_code</td>
+<td style="text-align: left;">Emnekode</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">derived from course_code_raw</td>
+<td style="text-align: left;">Course code without a trailing version
+number (“LMUKHV10421”): the code plans are kept by.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">course_name</td>
+<td style="text-align: left;">Emnenavn</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">DBH table 208 Emnenavn</td>
+<td style="text-align: left;">Course name as DBH registers it.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">level_code</td>
+<td style="text-align: left;">Nivåkode</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">DBH table 208 Nivåkode</td>
+<td style="text-align: left;">Level of the course: LN lower degree
+level, HN higher degree level, AR one-year programme, VS upper secondary
+level, 50 an older code without a name, and others in DBH (FU, B3, M2,
+…).</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">level_name</td>
+<td style="text-align: left;">Nivånavn</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">DBH table 208 Nivånavn</td>
+<td style="text-align: left;">Name of the level; NA for code 50.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">credits</td>
+<td style="text-align: left;">Studiepoeng</td>
+<td style="text-align: left;">double</td>
+<td style="text-align: left;">DBH table 208 Studiepoeng</td>
+<td style="text-align: left;">ECTS credits.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">nus_code</td>
+<td style="text-align: left;">NUS-kode</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">DBH table 208 NUS-kode</td>
+<td style="text-align: left;">Statistics Norway’s standard
+classification of education (NUS), six digits; “999999” unknown.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">status</td>
+<td style="text-align: left;">Status</td>
+<td style="text-align: left;">integer</td>
+<td style="text-align: left;">DBH table 208 Status</td>
+<td style="text-align: left;">Course status: 0 no data, 1 active, 2 new,
+3 discontinued, 4 discontinued with active students (exams still
+held).</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">status_name</td>
+<td style="text-align: left;">Statusnavn</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">DBH table 208 Statusnavn</td>
+<td style="text-align: left;">Status in Norwegian (“Aktivt”, “Nytt”,
+“Avviklet”, “Avviklet med aktive studenter”, “Ikke data”).</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">language_code</td>
+<td style="text-align: left;">Underv.språk</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">DBH table 208 Underv.språk</td>
+<td style="text-align: left;">Language of instruction as DBH registers
+it: “NOR”, “ENG”, “SME”, …; “999” unknown; a few in lower case
+(“nob”).</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">language_name</td>
+<td style="text-align: left;">Navn</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">DBH table 208 Navn</td>
+<td style="text-align: left;">Name of the language of instruction
+(“Norsk”, “Engelsk”, “Ukjent”).</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">subject_code</td>
+<td style="text-align: left;">Fagkode</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">DBH table 208 Fagkode</td>
+<td style="text-align: left;">Subject (fag) code of the course
+(“KUNST”); NA for some courses.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">subject_name</td>
+<td style="text-align: left;">Fagnavn</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">DBH table 208 Fagnavn</td>
+<td style="text-align: left;">Name of the subject (“Kunst og
+Håndverk”).</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">thesis</td>
+<td style="text-align: left;">Oppgave (ny fra h2012)</td>
+<td style="text-align: left;">integer</td>
+<td style="text-align: left;">DBH table 208 Oppgave (ny fra h2012)</td>
+<td style="text-align: left;">Whether the course is a thesis: 0 no, 1 a
+bachelor’s thesis or project, 2 a master’s (or hovedfag) thesis.
+Registered from autumn 2012, and for some earlier courses.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">plan_year_basis</td>
+<td style="text-align: left;">plan_year_basis</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">harvest</td>
+<td style="text-align: left;">How the year of the offering’s plan is
+known: “url” the page’s URL holds the year; “page” one page holds the
+plans of several years (NLA); “current” the site shows only the plan in
+force, so a page is the plan of the academic year it was fetched
+in.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">plan_content_id</td>
+<td style="text-align: left;">plan_content_id</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">derived</td>
+<td style="text-align: left;">The offering’s plan in course_plans (with
+institution and course_code); NA when the offering has no plan. A
+SHA-256 hash of course_plan_normalized, so offerings with the same plan
+text share it.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">harvested_at</td>
+<td style="text-align: left;">harvested_at</td>
+<td style="text-align: left;">Date</td>
+<td style="text-align: left;">harvest</td>
+<td style="text-align: left;">Date of the harvest of the offering’s row
+(recorded since 2026-10-06, else NA); at a site that shows only the
+current plan, the date of the harvest whose page the offering
+takes.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">academic_year</td>
+<td style="text-align: left;">academic_year</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">harvest</td>
+<td style="text-align: left;">NLA only: the academic year (“2023-2024”)
+whose part of the course page holds the offering’s plan; NA
+elsewhere.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">has_extracted_text</td>
+<td style="text-align: left;">has_extracted_text</td>
+<td style="text-align: left;">logical</td>
+<td style="text-align: left;">derived</td>
+<td style="text-align: left;">Whether text was read from the offering’s
+page.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">extracted_text_nchar</td>
+<td style="text-align: left;">extracted_text_nchar</td>
+<td style="text-align: left;">integer</td>
+<td style="text-align: left;">derived</td>
+<td style="text-align: left;">Characters of the text read from the page,
+before anonymization; NA without text.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_plans</td>
+<td style="text-align: left;">plan_content_id</td>
+<td style="text-align: left;">plan_content_id</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">derived</td>
+<td style="text-align: left;">Plan id: a SHA-256 hash of
+course_plan_normalized. A plan is a plan_content_id, institution and
+course_code.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_plans</td>
+<td style="text-align: left;">institution</td>
+<td style="text-align: left;">institution</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">derived</td>
+<td style="text-align: left;">As in course_offerings.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_plans</td>
+<td style="text-align: left;">course_code</td>
+<td style="text-align: left;">Emnekode</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">derived</td>
+<td style="text-align: left;">As in course_offerings.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_plans</td>
+<td style="text-align: left;">year_from</td>
+<td style="text-align: left;">year_from</td>
+<td style="text-align: left;">integer</td>
+<td style="text-align: left;">derived</td>
+<td style="text-align: left;">First year of the offerings with this plan
+(double up to data-2026-10-16).</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_plans</td>
+<td style="text-align: left;">year_to</td>
+<td style="text-align: left;">year_to</td>
+<td style="text-align: left;">integer</td>
+<td style="text-align: left;">derived</td>
+<td style="text-align: left;">Last year of the offerings with this plan
+(double up to data-2026-10-16).</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_plans</td>
+<td style="text-align: left;">source_course_id</td>
+<td style="text-align: left;">source_course_id</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">derived</td>
+<td style="text-align: left;">The plan’s earliest offering: course_plan
+and the sections are read from its page.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_plans</td>
+<td style="text-align: left;">course_plan</td>
+<td style="text-align: left;">course_plan</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">harvest, anonymized</td>
+<td style="text-align: left;">The plan’s text, anonymized
+(course_plan_spec.md).</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_plans</td>
+<td style="text-align: left;">course_plan_normalized</td>
+<td style="text-align: left;">course_plan_normalized</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">derived</td>
+<td style="text-align: left;">course_plan lower-cased, without
+structural headings and labels, whitespace squished
+(normalize_plan_text()): the text the id is made from. Not for
+reading.</td>
+</tr>
+<tr>
+<td style="text-align: left;">plan_sections</td>
+<td style="text-align: left;">plan_content_id</td>
+<td style="text-align: left;">plan_content_id</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">derived</td>
+<td style="text-align: left;">As in course_plans.</td>
+</tr>
+<tr>
+<td style="text-align: left;">plan_sections</td>
+<td style="text-align: left;">institution</td>
+<td style="text-align: left;">institution</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">derived</td>
+<td style="text-align: left;">As in course_offerings.</td>
+</tr>
+<tr>
+<td style="text-align: left;">plan_sections</td>
+<td style="text-align: left;">course_code</td>
+<td style="text-align: left;">Emnekode</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">derived</td>
+<td style="text-align: left;">As in course_offerings.</td>
+</tr>
+<tr>
+<td style="text-align: left;">plan_sections</td>
+<td style="text-align: left;">source_course_id</td>
+<td style="text-align: left;">source_course_id</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">derived</td>
+<td style="text-align: left;">As in course_plans.</td>
+</tr>
+<tr>
+<td style="text-align: left;">plan_sections</td>
+<td style="text-align: left;">section</td>
+<td style="text-align: left;">section</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">derived</td>
+<td style="text-align: left;">One of seven sections
+(section_codebook.yml): course_content, learning_outcomes,
+prerequisites, teaching_methods, coursework_requirements, assessment,
+reading_list.</td>
+</tr>
+<tr>
+<td style="text-align: left;">plan_sections</td>
+<td style="text-align: left;">text</td>
+<td style="text-align: left;">text</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">harvest, anonymized</td>
+<td style="text-align: left;">The section’s text, anonymized.</td>
+</tr>
+</tbody>
+</table>
 
 ## Institution-Specific Notes
 
@@ -1256,9 +1730,9 @@ folder that DBH does not give:
 courses as the listing `/studier/emner/alle/`). A course not taught now
 keeps its page but is not listed: it gets the folder that most listed
 courses with its code prefix (`ENG`) have, else the one of its DBH
-department (`Avdelingskode`); a wrong guess is a 404. A few folders are
-named in lower case (`sv/iss/sos9009`), and the URL must be too; Ø is O
-(`MØNA2504` is in `hf/ikos/MONA2504/`).
+department (`department_code`); a wrong guess is a 404. A few folders
+are named in lower case (`sv/iss/sos9009`), and the URL must be too; Ø
+is O (`MØNA2504` is in `hf/ikos/MONA2504/`).
 
 **HiOF.** Courses before autumn 2021 use a different URL structure
 (switch in `add_course_url_hiof()`); the config selector lists fallbacks
@@ -1411,6 +1885,12 @@ files</td>
 (<code>"teacher_ed"</code>)</td>
 </tr>
 <tr>
+<td><code>dbh_rename(df)</code></td>
+<td><code>R/utils.R</code></td>
+<td>DBH’s column names (snapshots, raw files and releases until
+2026-10-16) as the pipeline’s (<code>DBH_COLUMNS</code>)</td>
+</tr>
+<tr>
 <td><code>institution_from_code(code)</code></td>
 <td><code>R/institution_config.R</code></td>
 <td>Institution short name for DBH institution codes</td>
@@ -1479,8 +1959,8 @@ academic year</td>
 <td><code>release_data(tag, dest, frame)</code></td>
 <td><code>R/release.R</code></td>
 <td>Copy the published files of a frame (the teacher-ed one),
-<code>methods.md</code>, a manifest and section coverage to the coding
-project</td>
+<code>methods.md</code>, <code>data/variables.csv</code>, a manifest and
+section coverage to the coding project</td>
 </tr>
 <tr>
 <td><code>plan_gaps(offerings, fetch_status)</code></td>
@@ -1606,6 +2086,7 @@ hold the same `course_id` (not a retry); a file was copied into
     │   ├── releases/              # Finalized releases' data (not in git)
     │   ├── backup/                # Earlier harvests, not read (not in git)
     │   ├── audit/                 # Audit findings and reports
+    │   ├── variables.csv          # Every variable of the data files, old and new names
     │   └── data_notes.qmd         # Data quality notes per institution
     ├── tests/
     │   ├── testthat/              # Rscript -e 'testthat::test_dir("tests/testthat")'

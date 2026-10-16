@@ -58,7 +58,7 @@ sources  <- readRDS("data/processed/course_plans.RDS")$source_course_id
 plans    <- readRDS("data/interim/course_offerings_full.RDS") |>
   filter(course_id %in% sources) |>
   select(course_id, institution, course_plan, plan_content_id,
-         Emnekode_raw, Emnenavn, Årstall, Semesternavn)
+         course_code_raw, course_name, year, semester_name)
 
 # Headings on each source page and where they map (target `blocks`, keyed by
 # page; `page_map`: each offering's page): shows why text went where it did.
@@ -144,8 +144,8 @@ for (inst in institutions) {
       lines <- c(lines,
         sprintf("---\n\n## COURSE %d — `%s`  [%s]", i, cid, kind),
         "",
-        sprintf("- %s (%s) · %s %s", meta$Emnekode_raw, meta$Emnenavn,
-                meta$Semesternavn, meta$Årstall),
+        sprintf("- %s (%s) · %s %s", meta$course_code_raw, meta$course_name,
+                meta$semester_name, meta$year),
         "",
         "### Full course plan (anonymized — ground truth)",
         "",

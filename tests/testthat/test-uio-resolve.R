@@ -5,8 +5,8 @@ test_that("UiO: a listed course gets its folder, an unlisted one its prefix's or
     name = c("ENG2165", "ENG4165", "sos9009", "SOS1001", "LIT1000", "MONA2504")
   )
   df <- tibble::tibble(
-    Emnekode = c("ENG2165", "sos9009", "ENG4429", "LITX300", "MØNA2504", "XYZ100"),
-    Avdelingskode = c("1", "2", "2", "1", "3", "9")   # ENG4429: the prefix wins
+    course_code = c("ENG2165", "sos9009", "ENG4429", "LITX300", "MØNA2504", "XYZ100"),
+    department_code = c("1", "2", "2", "1", "3", "9")   # ENG4429: the prefix wins
   )
   url <- resolve_urls_uio_batch(df, folders)$url
   base <- "https://www.uio.no/studier/emner/"

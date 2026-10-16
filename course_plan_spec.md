@@ -125,7 +125,7 @@ The data built on 2026-10-16 (release `data-2026-10-16`) do not yet follow
 the spec here:
 
 - UiB's responsible unit, an unlabelled link in the page's sidebar, is not in
-  `course_plan`. DBH's `Avdelingsnavn` gives every UiB offering its unit.
+  `course_plan`. Every UiB offering has its unit from DBH (`department_name`).
 - Prerequisites keep some admission rules written as requirements, in about
   50 sections: the grade and school-point requirements for teacher
   education ("Minimum 35 skolepoeng", Nord and NTNU), "Opptakskrav er

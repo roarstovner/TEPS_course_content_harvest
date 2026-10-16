@@ -25,21 +25,21 @@ plan_ids <- function(id_text, exam_sessions = FALSE) {
 #' Plans are keyed by institution, so the table of several institutions is
 #' that of each.
 #'
-#' @param courses Offerings with `course_id`, `institution`, `Emnekode`,
-#'   `Årstall`, `course_plan` and the columns of plan_ids().
-#' @return Tibble plan_content_id, institution, Emnekode, year_from, year_to,
+#' @param courses Offerings with `course_id`, `institution`, `course_code`,
+#'   `year`, `course_plan` and the columns of plan_ids().
+#' @return Tibble plan_content_id, institution, course_code, year_from, year_to,
 #'   source_course_id, course_plan, course_plan_normalized, plan_nchar.
 plan_table <- function(courses) {
   courses |>
     dplyr::filter(!is.na(plan_content_id)) |>
-    dplyr::arrange(institution, Emnekode, Årstall) |>
-    dplyr::group_by(plan_content_id, institution, Emnekode) |>
+    dplyr::arrange(institution, course_code, year) |>
+    dplyr::group_by(plan_content_id, institution, course_code) |>
     dplyr::summarise(
-      # double, as in the releases so far (the type of a table without
-      # plans), so the release schema changes only when its variables are
-      # renamed and documented
-      year_from = as.double(min(Årstall)),
-      year_to = as.double(max(Årstall)),
+      # the offerings are in year order: integer also for a table without
+      # plans, where min() gives a double (as in the releases up to
+      # data-2026-10-16)
+      year_from = dplyr::first(year),
+      year_to = dplyr::last(year),
       source_course_id = dplyr::first(course_id),
       course_plan = dplyr::first(course_plan),
       course_plan_normalized = dplyr::first(course_plan_normalized),
@@ -57,7 +57,7 @@ plan_table <- function(courses) {
 #'   plan_ids() added.
 deduplicate_plans <- function(df, exam_sessions = FALSE) {
   stopifnot(
-    all(c("course_id", "institution", "Emnekode", "Årstall", "course_plan") %in% names(df))
+    all(c("course_id", "institution", "course_code", "year", "course_plan") %in% names(df))
   )
   ids <- plan_ids(df[["id_text"]] %||% df$course_plan, exam_sessions)
   courses <- dplyr::select(df, -dplyr::any_of("id_text"))

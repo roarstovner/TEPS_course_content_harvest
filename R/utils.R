@@ -32,6 +32,30 @@ dbh_snapshot_file <- function(table = c("courses", "programmes"), date = NULL,
   files[length(files)]
 }
 
+# The pipeline's names of DBH's columns (table 208), name = DBH's name. DBH's
+# snapshots keep DBH's names; the raw files of the harvests until 2026-10-16
+# and the releases up to data-2026-10-16 have them too, with `Emnekode_raw`
+# for DBH's code and `Emnekode` for the code without its version number.
+# dbh_rename() renames them where such data are read. data/variables.csv
+# documents every variable of the data files (README "Data Structure").
+DBH_COLUMNS <- c(
+  institution_code = "Institusjonskode", institution_name = "Institusjonsnavn",
+  department_code = "Avdelingskode", department_name = "Avdelingsnavn",
+  department_code_ssb = "Avdelingskode_SSB", year = "Årstall", semester = "Semester",
+  semester_name = "Semesternavn", programme_code = "Studieprogramkode",
+  programme_name = "Studieprogramnavn", course_code_raw = "Emnekode_raw",
+  course_code = "Emnekode", course_name = "Emnenavn", level_code = "Nivåkode",
+  level_name = "Nivånavn", credits = "Studiepoeng", nus_code = "NUS-kode",
+  status = "Status", status_name = "Statusnavn", language_code = "Underv.språk",
+  language_name = "Navn", subject_code = "Fagkode", subject_name = "Fagnavn",
+  thesis = "Oppgave (ny fra h2012)")
+
+# Data with DBH's column names (or the old `institution_short`) under the
+# pipeline's names; other columns as they are.
+dbh_rename <- function(df) {
+  dplyr::rename(df, dplyr::any_of(c(institution = "institution_short", DBH_COLUMNS)))
+}
+
 #' DBH course offerings from a snapshot
 #'
 #' DBH table 208 holds every course of every institution, year and semester
@@ -45,32 +69,32 @@ dbh_snapshot_file <- function(table = c("courses", "programmes"), date = NULL,
 #' @param frame "all" or "teacher_ed"
 #' @param date Snapshot date; NULL for the latest
 #' @param input_dir Folder of the snapshots
-#' @return One row per course, year and semester, with DBH's columns plus
-#'   `institution` (NA for a code no config has), `Emnekode_raw` (DBH's code)
-#'   and `Emnekode` (without a trailing version number); the input of
-#'   `harvest_all(courses = ...)`. Attribute `dbh_snapshot`: the snapshot's
-#'   date, which harvest_all() records in the fetch ledger.
+#' @return One row per course, year and semester, with DBH's columns under
+#'   the pipeline's names (DBH_COLUMNS), DBH's code as `course_code_raw` and
+#'   without a trailing version number as `course_code`, and `institution`
+#'   (NA for a code no config has); the input of `harvest_all(courses =
+#'   ...)`. Attribute `dbh_snapshot`: the snapshot's date, which harvest_all()
+#'   records in the fetch ledger.
 dbh_courses <- function(frame = c("all", "teacher_ed"), date = NULL, input_dir = INPUT_DIR) {
   frame <- match.arg(frame)
   file <- dbh_snapshot_file("courses", date, input_dir)
-  courses <- arrow::read_parquet(file)
+  courses <- dbh_rename(dplyr::rename(arrow::read_parquet(file), course_code_raw = "Emnekode"))
   if (frame == "teacher_ed") {
     programmes <- arrow::read_parquet(dbh_snapshot_file("programmes", date, input_dir),
                                       col_select = c("Institusjonskode", "Studieprogramkode", "Studiumkode"))
-    keys <- programmes |>
+    keys <- dbh_rename(programmes) |>
       dplyr::filter(Studiumkode %in% TEACHER_ED_STUDIUM) |>
-      dplyr::distinct(Institusjonskode, Studieprogramkode)
-    courses <- dplyr::semi_join(courses, keys, by = c("Institusjonskode", "Studieprogramkode"))
+      dplyr::distinct(institution_code, programme_code)
+    courses <- dplyr::semi_join(courses, keys, by = c("institution_code", "programme_code"))
   }
   courses <- courses |>
     # one row per offering: 2 of the 2.16 million rows of 2026-10-16 (2007)
     # repeat a course and semester
-    dplyr::distinct(Institusjonskode, Emnekode, Årstall, Semester, .keep_all = TRUE) |>
-    dplyr::mutate(institution = institution_from_code(Institusjonskode),
-                  Emnekode_raw = Emnekode,
-                  Emnekode = canon_remove_trailing_num(Emnekode)) |>
+    dplyr::distinct(institution_code, course_code_raw, year, semester, .keep_all = TRUE) |>
+    dplyr::mutate(institution = institution_from_code(institution_code),
+                  course_code = canon_remove_trailing_num(course_code_raw)) |>
     dplyr::relocate(institution) |>
-    dplyr::relocate(Emnekode_raw, .before = Emnekode)
+    dplyr::relocate(course_code, .after = course_code_raw)
   attr(courses, "dbh_snapshot") <- dbh_snapshot_date(file)
   courses
 }
@@ -80,7 +104,7 @@ dbh_snapshot_date <- function(file) sub("^dbh_[a-z]+_(.*)\\.parquet$", "\\1", ba
 
 # --- The raw store -----------------------------------------------------------
 # Append-only Parquet (README "Raw Store and Finalized Releases"): one file per
-# institution, DBH year (Årstall) and harvest run,
+# institution, DBH year and harvest run,
 # data/raw/{inst}/{year}/{run}.parquet. A run is named by its date, a second
 # run of the institution the same day by date and time ({YYYY-MM-DD}_{HHMMSS},
 # which sorts after it). No raw file is written twice; read_harvest()
@@ -150,7 +174,7 @@ write_raw_run <- function(rows, institution, run, raw_dir = RAW_DIR) {
     rows$pdf <- structure(lapply(rows$pdf, function(x) x), class = c("arrow_binary", "vctrs_vctr", "list"))
   }
   rows$harvest_row <- seq_len(nrow(rows))
-  files <- raw_file(institution, rows$Årstall, run, raw_dir)
+  files <- raw_file(institution, rows$year, run, raw_dir)
   if (any(file.exists(files)) || run %in% raw_run(harvest_files(institution, raw_dir))) {
     stop("raw files are not written twice: run ", run, " of ", institution, " exists")
   }
@@ -167,8 +191,9 @@ write_raw_run <- function(rows, institution, run, raw_dir = RAW_DIR) {
 
 #' Rows of raw files in the order they were harvested
 #'
-#' Run by run, each run's rows in the order its harvest returned them. The
-#' harvests of 2026-04-04 named the institution column `institution_short`.
+#' Run by run, each run's rows in the order its harvest returned them, with
+#' the pipeline's column names (dbh_rename()): the harvests until 2026-10-16
+#' have DBH's, those of 2026-04-04 `institution_short` for `institution`.
 #'
 #' @param files Raw files of one institution (harvest_files()).
 #' @param run Keep `.run`, the run of each row.
@@ -181,7 +206,7 @@ read_raw <- function(files, run = FALSE, content = TRUE, page_id = FALSE) {
   if (!length(files)) return(tibble::tibble())
   rows <- dplyr::bind_rows(lapply(files, function(f) {
     df <- if (content) arrow::read_parquet(f) else .raw_without_pages(f)
-    df <- dplyr::rename(df, dplyr::any_of(c(institution = "institution_short")))
+    df <- dbh_rename(df)
     if (page_id) df$page_id <- raw_page_id(f, df$harvest_row)
     df$.run <- raw_run(f)
     df
@@ -320,7 +345,7 @@ fetch_ledger <- function(rows, institution, run, dbh_snapshot = NA_character_, r
     outcome = fetch_outcome(url, !is.na(page), status, error),
     bytes = ifelse(is.na(page), NA_integer_, nchar(page, "bytes")),
     sha256 = cli::hash_sha256(page),
-    raw_file = raw_file(institution, rows$Årstall, run, raw_dir),
+    raw_file = raw_file(institution, rows$year, run, raw_dir),
     dbh_snapshot = rep(as.character(dbh_snapshot), n))
 }
 
@@ -351,7 +376,7 @@ write_fetch_ledger <- function(ledger, institution, run, raw_dir = RAW_DIR) {
 #' @param files Raw files of one institution (harvest_files()).
 raw_ledger <- function(files) {
   if (!length(files)) {
-    none <- fetch_ledger(tibble::tibble(course_id = character(), Årstall = integer()), "", "")
+    none <- fetch_ledger(tibble::tibble(course_id = character(), year = integer()), "", "")
     return(dplyr::mutate(none, recorded = logical()))
   }
   dir <- dirname(dirname(files))
@@ -443,24 +468,24 @@ semester_to_url <- function(semester) {
 #' year, semester, and status information.
 #'
 #' @param dbh_df A data frame containing course information with columns:
-#'   `institution`, `Emnekode_raw`, `Årstall`, `Semesternavn`, and `Status`.
+#'   `institution`, `course_code_raw`, `year`, `semester_name`, and `status`.
 #'
 #' @return A data frame with an additional `course_id` column placed first.
 #'   The course_id format is: `{institution}_{code}_{year}_{semester}_{status}`.
 #'
 #' @details
-#' Status codes: 1 = Aktivt, 2 = Nytt, 3 = Avviklet, 4 = Avviklet, men tas eksamen.
-#' Uses `Emnekode_raw` instead of `Emnekode` which may result in fewer duplicates
+#' status codes: 1 = Aktivt, 2 = Nytt, 3 = Avviklet, 4 = Avviklet, men tas eksamen.
+#' Uses `course_code_raw` instead of `course_code` which may result in fewer duplicates
 #' if the raw code is more granular, but could miss normalization benefits.
 add_course_id <- function(dbh_df) {
   dbh_df |>
     dplyr::mutate(
       course_id = paste(
         institution,
-        Emnekode_raw, # Using `Emnekode_raw` instead of `Emnekode` may result in fewer duplicates if the raw code is more granular, but could miss normalization or grouping benefits provided by `Emnekode`.
-        Årstall,
-        canon_semester_name(Semesternavn),
-        Status, # 1: Aktivt, 2: Nytt, 3: Avviklet, 4: Avviklet, men tas eksamen
+        course_code_raw, # Using `course_code_raw` instead of `course_code` may result in fewer duplicates if the raw code is more granular, but could miss normalization or grouping benefits provided by `course_code`.
+        year,
+        canon_semester_name(semester_name),
+        status, # 1: Aktivt, 2: Nytt, 3: Avviklet, 4: Avviklet, men tas eksamen
         sep = "_"
       )
     ) |> 
@@ -468,7 +493,7 @@ add_course_id <- function(dbh_df) {
 }
 
 # An offering keeps the course_id it was first harvested under. The id ends
-# with DBH's Status, which a later DBH snapshot can change; the rest
+# with DBH's status, which a later DBH snapshot can change; the rest
 # (institution, code, year, semester) is the offering, one row in DBH.
 offering_key <- function(course_id) sub("_[^_]*$", "", course_id)
 
@@ -479,19 +504,11 @@ first_course_id <- function(course_id, known) {
 }
 
 
-# Removes duplicate courses from the dataframe by arranging rows by course_id and Status,
-# then keeping only the first occurrence of each course_id. Status helps prioritize which duplicate to keep.
-remove_dupes <- function(dbh_df) {
-  dbh_df |> 
-    dplyr::arrange(course_id, Status) |> #Status: 1 Aktivt; 2 Nytt; 3 Avviklet; 4 Avviklet, men tas eksamen
-    distinct(course_id, .keep_all = TRUE)
-}
-
 validate_courses <- function(df, stage = c("initial", "with_url", "with_html")) {
   stage <- match.arg(stage)
 
   required <- switch(stage,
-    initial = c("institution", "Emnekode", "Årstall"),
+    initial = c("institution", "course_code", "year"),
     with_url = c("institution", "course_id", "url"),
     with_html = c("institution", "course_id", "url", "html", "html_success"),
     c() # default case: returns empty character vector if stage does not match

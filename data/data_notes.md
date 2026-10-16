@@ -33,7 +33,7 @@ plans.
 **Columns:**
 
 - **Rows**: Total course-semester rows in harvested data (from DBH)
-- **Codes**: Unique course codes (Emnekode_raw)
+- **Codes**: Unique course codes (course_code_raw)
 - **Extracted OK**: Rows with successfully extracted course plan text
 - **Rate**: Extraction success rate (Extracted OK / Rows)
 - **Median chars**: Median character count of extracted text

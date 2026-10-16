@@ -118,22 +118,22 @@ resolve_course_urls <- function(df,
 
 #' Resolve URLs for a batch of Hivolda courses
 #'
-#' For each unique Emnekode, fetches the base page /emne/{CODE} and parses
+#' For each unique course_code, fetches the base page /emne/{CODE} and parses
 #' the "Semestre" section to find semester-specific version URLs.
 #' Link text uses Nynorsk ("Haust") which is mapped to Bokmål ("Høst").
 #'
-#' @param df A tibble with Emnekode, Årstall, Semesternavn columns
+#' @param df A tibble with course_code, year, semester_name columns
 #' @param .progress Show progress bar
 #' @return df with url column filled in where possible
 resolve_urls_hivolda_batch <- function(df, .progress = TRUE) {
   if (nrow(df) == 0) return(df |> dplyr::mutate(url = NA_character_))
 
-  unique_codes <- unique(df$Emnekode)
+  unique_codes <- unique(df$course_code)
   cli::cli_alert_info("Discovering URLs for {length(unique_codes)} unique Hivolda course codes")
 
   if (.progress) pb <- cli::cli_progress_bar(total = length(unique_codes))
 
-  # Build lookup: Emnekode + year + semester -> URL
+  # Build lookup: course_code + year + semester -> URL
   lookup_rows <- list()
 
   for (code in unique_codes) {
@@ -166,7 +166,7 @@ resolve_urls_hivolda_batch <- function(df, .progress = TRUE) {
 
           full_url <- paste0("https://www.hivolda.no", href)
           lookup_rows <- c(lookup_rows, list(tibble::tibble(
-            Emnekode = code, Årstall = year, Semesternavn = sem, url = full_url
+            course_code = code, year = year, semester_name = sem, url = full_url
           )))
         }
       }
@@ -183,13 +183,13 @@ resolve_urls_hivolda_batch <- function(df, .progress = TRUE) {
   }
 
   lookup <- dplyr::bind_rows(lookup_rows) |>
-    dplyr::distinct(Emnekode, Årstall, Semesternavn, .keep_all = TRUE)
+    dplyr::distinct(course_code, year, semester_name, .keep_all = TRUE)
   cli::cli_alert_success("Discovered {nrow(lookup)} semester URLs across {length(unique_codes)} course codes")
 
   # Join lookup to df, replacing the NA url column
   df |>
     dplyr::select(-url) |>
-    dplyr::left_join(lookup, by = c("Emnekode", "Årstall", "Semesternavn"))
+    dplyr::left_join(lookup, by = c("course_code", "year", "semester_name"))
 }
 
 #' Resolve URLs for a batch of UiO courses from the sitemap
@@ -200,26 +200,26 @@ resolve_urls_hivolda_batch <- function(df, .progress = TRUE) {
 #' /studier/emner/alle/). A course not taught now keeps its page but is not
 #' listed: it gets the folder most listed courses with its code prefix
 #' ("ENG") have, else the one most listed courses of its DBH department
-#' (Avdelingskode) have, and a wrong guess is a 404. The URL is always the
+#' (department_code) have, and a wrong guess is a 404. The URL is always the
 #' base URL, never a semester page (/h24/: logistics, not the plan).
 #'
-#' @param df A tibble with Emnekode and Avdelingskode columns
+#' @param df A tibble with course_code and department_code columns
 #' @param folders Tibble of code, folder and name, from uio_course_folders()
 #' @return df with url filled in
 resolve_urls_uio_batch <- function(df, folders = uio_course_folders()) {
-  code <- chartr("Ø", "O", toupper(df$Emnekode))   # MØNA2504's folder is MONA2504
+  code <- chartr("Ø", "O", toupper(df$course_code))   # MØNA2504's folder is MONA2504
   prefix <- function(code) sub("[0-9].*", "", code)
   common <- function(key, folder) {   # the folder most courses with the key have
     dplyr::count(tibble::tibble(key, folder), key, folder) |>
       dplyr::slice_max(n, n = 1, with_ties = FALSE, by = key)
   }
-  listed <- dplyr::distinct(tibble::tibble(code, dept = df$Avdelingskode)) |>
+  listed <- dplyr::distinct(tibble::tibble(code, dept = df$department_code)) |>
     dplyr::inner_join(folders, by = "code")
   by_prefix <- common(prefix(folders$code), folders$folder)
   by_dept <- common(listed$dept, listed$folder)
   i <- match(code, folders$code)
   guess <- dplyr::coalesce(by_prefix$folder[match(prefix(code), by_prefix$key)],
-                           by_dept$folder[match(df$Avdelingskode, by_dept$key)])
+                           by_dept$folder[match(df$department_code, by_dept$key)])
   path <- dplyr::coalesce(paste(folders$folder, folders$name, sep = "/")[i],
                           dplyr::if_else(is.na(guess), NA, paste(guess, code, sep = "/")))
   cli::cli_alert_info(paste("UiO: {sum(!is.na(i))} of {nrow(df)} offerings in the sitemap,",
@@ -250,22 +250,22 @@ uio_course_folders <- function(index = "https://www.uio.no/sitemapindex.xml") {
 
 #' Resolve URLs for a batch of UiT courses via document ID discovery
 #'
-#' For each unique Emnekode, fetches the active page /utdanning/aktivt/emne/{CODE}
+#' For each unique course_code, fetches the active page /utdanning/aktivt/emne/{CODE}
 #' and parses the <select> dropdown to find historical document IDs.
 #' Option text format: "{CODE}: {H|V} {YEAR}" where H=Høst, V=Vår.
 #'
-#' @param df A tibble with Emnekode, Årstall, Semesternavn columns
+#' @param df A tibble with course_code, year, semester_name columns
 #' @param .progress Show progress bar
 #' @return df with url column filled in where possible
 resolve_urls_uit_batch <- function(df, .progress = TRUE) {
   if (nrow(df) == 0) return(df |> dplyr::mutate(url = NA_character_))
 
-  unique_codes <- unique(df$Emnekode)
+  unique_codes <- unique(df$course_code)
   cli::cli_alert_info("Discovering URLs for {length(unique_codes)} unique UiT course codes")
 
   if (.progress) pb <- cli::cli_progress_bar(total = length(unique_codes))
 
-  # Build lookup: Emnekode + year + semester -> URL
+  # Build lookup: course_code + year + semester -> URL
   lookup_rows <- list()
 
   for (code in unique_codes) {
@@ -290,7 +290,7 @@ resolve_urls_uit_batch <- function(df, .progress = TRUE) {
 
           full_url <- paste0("https://uit.no", href)
           lookup_rows <- c(lookup_rows, list(tibble::tibble(
-            Emnekode = code, Årstall = year, Semesternavn = sem, url = full_url
+            course_code = code, year = year, semester_name = sem, url = full_url
           )))
         }
       }
@@ -307,14 +307,14 @@ resolve_urls_uit_batch <- function(df, .progress = TRUE) {
   }
 
   lookup <- dplyr::bind_rows(lookup_rows) |>
-    dplyr::semi_join(df, by = c("Emnekode", "Årstall", "Semesternavn")) |>
+    dplyr::semi_join(df, by = c("course_code", "year", "semester_name")) |>
     uit_one_per_semester()
   cli::cli_alert_success("Discovered {nrow(lookup)} semester URLs across {length(unique_codes)} course codes")
 
   # Join lookup to df, replacing the NA url column
   df |>
     dplyr::select(-url) |>
-    dplyr::left_join(lookup, by = c("Emnekode", "Årstall", "Semesternavn"))
+    dplyr::left_join(lookup, by = c("course_code", "year", "semester_name"))
 }
 
 #' One UiT document per semester
@@ -324,15 +324,15 @@ resolve_urls_uit_batch <- function(df, .progress = TRUE) {
 #' or two Norwegian revisions. Only for such a semester are the documents
 #' fetched; the first Norwegian one is kept.
 #'
-#' @param lookup Tibble with Emnekode, Årstall, Semesternavn, url, in picker order
+#' @param lookup Tibble with course_code, year, semester_name, url, in picker order
 #' @param is_english Function of a URL: TRUE for an English document
 #' @return lookup with one row per semester
 uit_one_per_semester <- function(lookup, is_english = uit_page_is_english) {
   lookup |>
     dplyr::mutate(english = if (dplyr::n() > 1) purrr::map_lgl(url, is_english) else FALSE,
-                  .by = c(Emnekode, Årstall, Semesternavn)) |>
+                  .by = c(course_code, year, semester_name)) |>
     dplyr::arrange(english) |>
-    dplyr::distinct(Emnekode, Årstall, Semesternavn, .keep_all = TRUE) |>
+    dplyr::distinct(course_code, year, semester_name, .keep_all = TRUE) |>
     dplyr::select(-english)
 }
 
@@ -348,7 +348,7 @@ uit_page_is_english <- function(url) {
 #' navigating via hash changes instead of creating new sessions. This is
 #' much faster than creating a new session per URL.
 #'
-#' @param df A tibble with Emnekode, Årstall, Semesternavn columns
+#' @param df A tibble with course_code, year, semester_name columns
 #' @param max_version Maximum version number to try per course (default: 3; every
 #'   URL found so far is version 1 or 2)
 #' @param .progress Show progress bar
@@ -373,9 +373,9 @@ resolve_urls_usn_batch <- function(df, max_version = 3, checkpoint_path = NULL, 
 
   for (i in seq_len(nrow(df))) {
     course_id <- df$course_id[i]
-    course_code <- df$Emnekode[i]
-    year <- df$Årstall[i]
-    semester <- df$Semesternavn[i]
+    course_code <- df$course_code[i]
+    year <- df$year[i]
+    semester <- df$semester_name[i]
 
     # Convert semester to USN format
     sem <- dplyr::case_match(

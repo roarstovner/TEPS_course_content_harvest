@@ -63,7 +63,7 @@ Optional config fields:
 1. Add a case to the `case_match()` in `add_course_url()`:
 
 ```r
-"newuni" ~ add_course_url_newuni(Emnekode, Årstall, Semesternavn),
+"newuni" ~ add_course_url_newuni(course_code, year, semester_name),
 ```
 
 2. Create the URL builder function at the bottom of the file:
@@ -103,7 +103,7 @@ courses <- dbh_courses()   # every DBH course (R/utils.R); the institution's cod
 result <- harvest_institution("newuni", courses, year = 2025)
 
 # Inspect results
-result |> dplyr::select(Emnekode, url, html_success, extracted_text) |> head()
+result |> dplyr::select(course_code, url, html_success, extracted_text) |> head()
 result$extracted_text[1]  # Inspect extracted text
 
 # How a page is read and split: headings with the section they map to (NA =

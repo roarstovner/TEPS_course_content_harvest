@@ -3,10 +3,12 @@
 #' Read checkpoint data
 #'
 #' @param checkpoint_path Path to checkpoint RDS file
-#' @return A tibble with course_id, html, html_error, html_success columns, or NULL if no checkpoint exists
+#' @return A tibble with course_id, html, html_error, html_success columns, or
+#'   NULL if no checkpoint exists. DBH's column names in a checkpoint written
+#'   until 2026-10-16 (uis's discovery: `Emnekode_raw`) are renamed (dbh_rename()).
 read_checkpoint <- function(checkpoint_path) {
   if (!file.exists(checkpoint_path)) return(NULL)
-  readRDS(checkpoint_path)
+  dbh_rename(readRDS(checkpoint_path))
 }
 
 #' Write checkpoint data

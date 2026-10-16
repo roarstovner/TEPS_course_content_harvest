@@ -30,7 +30,7 @@ plans of all higher education are to be collected, and teacher education
 the same `course_id` in both. *Rejected:* a separate teacher-ed query
 (the earlier `data/input/courses.RDS`, table 208 queried by programme
 code): two queries on different days can disagree on an offering’s
-Status, which is part of its id; querying each institution through the
+status, which is part of its id; querying each institution through the
 API, where the bulk files give the whole table at once. *Consequence:*
 the snapshot of 2026-10-16 has 2 164 079 rows (168 institution codes,
 1986-2025), 1 257 158 of them at the 19 institutions with a config. Its
@@ -78,13 +78,13 @@ these notes use the teacher-ed frame; the data notes all courses.
 
 **An offering keeps its first `course_id`.** The id is
 `{institution}_{code}_{year}_{semester}_{status}`, and a later DBH
-snapshot can change the Status. A harvest matches offerings on the rest
+snapshot can change the status. A harvest matches offerings on the rest
 of the id (institution, code, year, semester: one row in table 208), and
 an offering already in a raw file keeps the id it was first harvested
 under (`first_course_id()`); a frame filter of the raw store matches the
-same way. *Why:* with the whole id, a changed Status would make the same
+same way. *Why:* with the whole id, a changed status would make the same
 course and semester a second offering, fetched again. *Rejected:*
-dropping Status from the id, which would change every published id.
+dropping the status from the id, which would change every published id.
 *Consequence:* none so far: the 2026-10-16 snapshot gives all 45 280
 teacher-ed offerings of 2026-10-06 their old id, and holds every one of
 the 41 025 ids in the raw store. *Since:* 2026-10-16.
@@ -107,6 +107,30 @@ offerings (`data/data_notes.md`, “Semester registration in DBH”).
 **Samas is excluded:** its website’s course codes do not match DBH, and
 the teacher education courses are described only in programme PDFs
 (decided 2026-02).
+
+**Variable names: DBH’s columns have English snake_case names, and every
+variable is documented in `data/variables.csv`.** `Årstall` is `year`,
+`Emnekode` `course_code`, `Underv.språk` and `Navn` `language_code` and
+`language_name`, `Oppgave (ny fra h2012)` `thesis`, and so on; the
+values stay DBH’s (Norwegian names, DBH’s codes). `data/variables.csv`
+gives each variable of the published files its type, source (the column
+of DBH table 208, or how the pipeline gives it), meaning and codes, and
+its name in the releases up to data-2026-10-16; it is released with the
+data. *Why:* DBH’s names mix Norwegian words, abbreviations and
+punctuation (`NUS-kode`, `Underv.språk`), and two do not say what they
+hold (`Navn` is the language of instruction, `Oppgave (ny fra h2012)`
+whether the course is a thesis); the release of all higher education is
+to be documented once, before users outside the project read it.
+*Rejected:* keeping DBH’s names with a codebook (the names would still
+need backticks in code and explaining in every analysis); translating
+the values too (they are DBH’s codes and names, which users look up in
+DBH). *Consequence:* the release schema changes once: the same files,
+rows and values under the new names, with `year_from` and `year_to`
+integer (double before). DBH’s snapshots and the raw files of the
+harvests until 2026-10-16 keep DBH’s names, which the pipeline renames
+when it reads them; data of release data-2026-10-16 or earlier are
+renamed by the pairs in `data/variables.csv` (README “Variables”).
+*Since:* 2026-10-16.
 
 ## Harvest
 
@@ -604,8 +628,9 @@ sidebar’s facts and, with the title out of the id, a new id; MF’s 26 and
 180 UiS plans get a new id as their facts box leaves it, and HiOF’s 820
 and UiA’s 681 as the unit does. No plans merge or split (13,994), and no
 section changes. UiB’s unit, an unlabelled link in the sidebar, is not
-read; DBH’s `Avdelingsnavn` gives every UiB offering its unit. The other
-institutions followed the same day (next entry). *Since:* 2026-10-13.
+read; every UiB offering has its unit from DBH (`department_name`). The
+other institutions followed the same day (next entry). *Since:*
+2026-10-13.
 
 **The title and facts box leave the plan id at every institution.** The
 configuration names them at HiOF, INN, NMBU, NTNU, OsloMet, UiA and

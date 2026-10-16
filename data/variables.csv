@@ -1,0 +1,47 @@
+file,variable,old_name,type,source,description
+course_offerings,course_id,course_id,character,derived,"Offering id: {institution}_{course_code_raw}_{year}_{semester}_{status}, with the semester in English (spring, autumn, summer). An offering keeps the id it was first harvested under when a later DBH snapshot changes its status."
+course_offerings,institution,institution,character,derived from institution_code,"Short name of the institution in the harvest (""oslomet"", ""uia""); several DBH codes can map to one (INN: 0264 and 1177)."
+course_offerings,institution_code,Institusjonskode,character,DBH table 208 Institusjonskode,"DBH's institution code (""0256"")."
+course_offerings,institution_name,Institusjonsnavn,character,DBH table 208 Institusjonsnavn,DBH's institution name.
+course_offerings,department_code,Avdelingskode,character,DBH table 208 Avdelingskode,DBH's code of the unit (faculty or department) that offers the course.
+course_offerings,department_name,Avdelingsnavn,character,DBH table 208 Avdelingsnavn,Name of the unit.
+course_offerings,department_code_ssb,Avdelingskode_SSB,character,DBH table 208 Avdelingskode_SSB,Statistics Norway's code of the unit; NA in some years.
+course_offerings,year,Årstall,integer,DBH table 208 Årstall,Calendar year of the semester.
+course_offerings,semester,Semester,integer,DBH table 208 Semester,"Semester code: 0 winter, 1 spring, 2 summer, 3 autumn."
+course_offerings,semester_name,Semesternavn,character,DBH table 208 Semesternavn,"Semester in Norwegian: ""Vinter"", ""Vår"", ""Sommer"", ""Høst""."
+course_offerings,programme_code,Studieprogramkode,character,DBH table 208 Studieprogramkode,The study programme DBH registers the course under in this semester (one per row); unique only within an institution.
+course_offerings,programme_name,Studieprogramnavn,character,DBH table 208 Studieprogramnavn,Name of the programme.
+course_offerings,course_code_raw,Emnekode_raw,character,DBH table 208 Emnekode,"DBH's course code, with its version number (""LMUKHV10421-1"")."
+course_offerings,course_code,Emnekode,character,derived from course_code_raw,"Course code without a trailing version number (""LMUKHV10421""): the code plans are kept by."
+course_offerings,course_name,Emnenavn,character,DBH table 208 Emnenavn,Course name as DBH registers it.
+course_offerings,level_code,Nivåkode,character,DBH table 208 Nivåkode,"Level of the course: LN lower degree level, HN higher degree level, AR one-year programme, VS upper secondary level, 50 an older code without a name, and others in DBH (FU, B3, M2, ...)."
+course_offerings,level_name,Nivånavn,character,DBH table 208 Nivånavn,Name of the level; NA for code 50.
+course_offerings,credits,Studiepoeng,double,DBH table 208 Studiepoeng,ECTS credits.
+course_offerings,nus_code,NUS-kode,character,DBH table 208 NUS-kode,"Statistics Norway's standard classification of education (NUS), six digits; ""999999"" unknown."
+course_offerings,status,Status,integer,DBH table 208 Status,"Course status: 0 no data, 1 active, 2 new, 3 discontinued, 4 discontinued with active students (exams still held)."
+course_offerings,status_name,Statusnavn,character,DBH table 208 Statusnavn,"Status in Norwegian (""Aktivt"", ""Nytt"", ""Avviklet"", ""Avviklet med aktive studenter"", ""Ikke data"")."
+course_offerings,language_code,Underv.språk,character,DBH table 208 Underv.språk,"Language of instruction as DBH registers it: ""NOR"", ""ENG"", ""SME"", ...; ""999"" unknown; a few in lower case (""nob"")."
+course_offerings,language_name,Navn,character,DBH table 208 Navn,"Name of the language of instruction (""Norsk"", ""Engelsk"", ""Ukjent"")."
+course_offerings,subject_code,Fagkode,character,DBH table 208 Fagkode,"Subject (fag) code of the course (""KUNST""); NA for some courses."
+course_offerings,subject_name,Fagnavn,character,DBH table 208 Fagnavn,"Name of the subject (""Kunst og Håndverk"")."
+course_offerings,thesis,Oppgave (ny fra h2012),integer,DBH table 208 Oppgave (ny fra h2012),"Whether the course is a thesis: 0 no, 1 a bachelor's thesis or project, 2 a master's (or hovedfag) thesis. Registered from autumn 2012, and for some earlier courses."
+course_offerings,plan_year_basis,plan_year_basis,character,harvest,"How the year of the offering's plan is known: ""url"" the page's URL holds the year; ""page"" one page holds the plans of several years (NLA); ""current"" the site shows only the plan in force, so a page is the plan of the academic year it was fetched in."
+course_offerings,plan_content_id,plan_content_id,character,derived,"The offering's plan in course_plans (with institution and course_code); NA when the offering has no plan. A SHA-256 hash of course_plan_normalized, so offerings with the same plan text share it."
+course_offerings,harvested_at,harvested_at,Date,harvest,"Date of the harvest of the offering's row (recorded since 2026-10-06, else NA); at a site that shows only the current plan, the date of the harvest whose page the offering takes."
+course_offerings,academic_year,academic_year,character,harvest,"NLA only: the academic year (""2023-2024"") whose part of the course page holds the offering's plan; NA elsewhere."
+course_offerings,has_extracted_text,has_extracted_text,logical,derived,Whether text was read from the offering's page.
+course_offerings,extracted_text_nchar,extracted_text_nchar,integer,derived,"Characters of the text read from the page, before anonymization; NA without text."
+course_plans,plan_content_id,plan_content_id,character,derived,"Plan id: a SHA-256 hash of course_plan_normalized. A plan is a plan_content_id, institution and course_code."
+course_plans,institution,institution,character,derived,As in course_offerings.
+course_plans,course_code,Emnekode,character,derived,As in course_offerings.
+course_plans,year_from,year_from,integer,derived,First year of the offerings with this plan (double up to data-2026-10-16).
+course_plans,year_to,year_to,integer,derived,Last year of the offerings with this plan (double up to data-2026-10-16).
+course_plans,source_course_id,source_course_id,character,derived,The plan's earliest offering: course_plan and the sections are read from its page.
+course_plans,course_plan,course_plan,character,"harvest, anonymized","The plan's text, anonymized (course_plan_spec.md)."
+course_plans,course_plan_normalized,course_plan_normalized,character,derived,"course_plan lower-cased, without structural headings and labels, whitespace squished (normalize_plan_text()): the text the id is made from. Not for reading."
+plan_sections,plan_content_id,plan_content_id,character,derived,As in course_plans.
+plan_sections,institution,institution,character,derived,As in course_offerings.
+plan_sections,course_code,Emnekode,character,derived,As in course_offerings.
+plan_sections,source_course_id,source_course_id,character,derived,As in course_plans.
+plan_sections,section,section,character,derived,"One of seven sections (section_codebook.yml): course_content, learning_outcomes, prerequisites, teaching_methods, coursework_requirements, assessment, reading_list."
+plan_sections,text,text,character,"harvest, anonymized","The section's text, anonymized."

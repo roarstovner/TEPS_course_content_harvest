@@ -29,32 +29,32 @@ sections_path <- "../../data/processed/teacher_ed/plan_sections.RDS"
 
 message("Rolling offerings up to plan level...")
 
-# `plans` is keyed by (plan_content_id, institution, Emnekode); a handful
+# `plans` is keyed by (plan_content_id, institution, course_code); a handful
 # of plan_content_ids are shared across course codes, so join on all three.
-plan_keys <- plans |> select(plan_content_id, institution, Emnekode)
+plan_keys <- plans |> select(plan_content_id, institution, course_code)
 
 offering_rollup <- offerings |>
   filter(!is.na(plan_content_id)) |>
-  semi_join(plan_keys, by = c("plan_content_id", "institution", "Emnekode")) |>
+  semi_join(plan_keys, by = c("plan_content_id", "institution", "course_code")) |>
   summarise(
-    Emnenavn = first(na.omit(Emnenavn)),
-    Fagnavn = {
-      f <- na.omit(Fagnavn)
+    course_name = first(na.omit(course_name)),
+    subject_name = {
+      f <- na.omit(subject_name)
       if (length(f) == 0) NA_character_ else names(sort(table(f), decreasing = TRUE))[1]
     },
-    Studiepoeng = first(na.omit(Studiepoeng)),
-    Nivanavn = first(na.omit(Nivånavn)),
+    credits = first(na.omit(credits)),
+    level_name = first(na.omit(level_name)),
     n_offerings = n(),
-    years = paste(sort(unique(Årstall)), collapse = ", "),
-    semesters = paste(sort(unique(Semesternavn)), collapse = ", "),
+    years = paste(sort(unique(year)), collapse = ", "),
+    semesters = paste(sort(unique(semester_name)), collapse = ", "),
     url = first(na.omit(url)),
     course_ids = list(course_id),
-    .by = c(plan_content_id, institution, Emnekode)
+    .by = c(plan_content_id, institution, course_code)
   )
 
 plans <- plans |>
   left_join(offering_rollup,
-            by = c("plan_content_id", "institution", "Emnekode")) |>
+            by = c("plan_content_id", "institution", "course_code")) |>
   mutate(
     n_offerings = coalesce(n_offerings, 0L),
     plan_nchar = nchar(course_plan)
@@ -69,7 +69,7 @@ message("  ", nrow(plans), " plans, ",
 
 sections <- if (file.exists(sections_path)) {
   readRDS(sections_path) |>
-    select(plan_content_id, institution, Emnekode, section, text)
+    select(plan_content_id, institution, course_code, section, text)
 }
 if (!is.null(sections)) {
   message("  ", nrow(sections), " plan-level sections across ",
@@ -88,10 +88,10 @@ coverage <- offerings |>
     n_offerings = n(),
     n_harvested = sum(has_extracted_text, na.rm = TRUE),
     n_plans = n_distinct(plan_content_id[!is.na(plan_content_id)]),
-    .by = c(institution, Årstall)
+    .by = c(institution, year)
   ) |>
   mutate(pct_harvested = n_harvested / n_offerings) |>
-  arrange(institution, Årstall)
+  arrange(institution, year)
 
 # ── Write ────────────────────────────────────────────────────────────────────
 

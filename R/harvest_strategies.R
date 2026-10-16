@@ -106,7 +106,7 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
 
   # --- Discovery phase: fetch base pages and parse dropdowns ---
   unique_codes <- df |>
-    dplyr::distinct(Emnekode_raw, url) |>
+    dplyr::distinct(course_code_raw, url) |>
     dplyr::filter(!is.na(url))
 
   existing_discovery <- read_checkpoint(discovery_cp)
@@ -115,14 +115,14 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
     codes_to_discover <- unique_codes
   } else {
     codes_to_discover <- dplyr::anti_join(unique_codes, existing_discovery,
-                                           by = "Emnekode_raw")
+                                           by = "course_code_raw")
   }
 
   if (nrow(codes_to_discover) > 0) {
     message("Discovering dropdowns for ", nrow(codes_to_discover), " course codes...")
 
     discovery_results <- purrr::map2(
-      codes_to_discover$Emnekode_raw,
+      codes_to_discover$course_code_raw,
       codes_to_discover$url,
       \(code, base_url) {
         polite_pause(config$request_delay)
@@ -130,13 +130,13 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
           resp <- site_request(base_url) |> httr2::req_perform()
           html <- httr2::resp_body_string(resp)
           parsed <- .parse_uis_semester_dropdown(html)
-          parsed$Emnekode_raw <- code
+          parsed$course_code_raw <- code
           parsed
         }, error = \(e) {
           stop_if_blocked(http_status_of(e), base_url)
           tibble::tibble(label = character(), url = character(),
                          type = character(), year = integer(),
-                         Emnekode_raw = character())
+                         course_code_raw = character())
         })
       },
       .progress = TRUE
@@ -157,10 +157,10 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
   discovered <- updated_discovery |> dplyr::filter(!is.na(year))
 
   df_matched <- df |>
-    dplyr::mutate(.year = academic_start_year(Årstall, Semesternavn)) |>
+    dplyr::mutate(.year = academic_start_year(year, semester_name)) |>
     dplyr::left_join(
-      discovered |> dplyr::select(Emnekode_raw, .year = year, discovered_url = url, url_type = type),
-      by = c("Emnekode_raw", ".year")
+      discovered |> dplyr::select(course_code_raw, .year = year, discovered_url = url, url_type = type),
+      by = c("course_code_raw", ".year")
     ) |>
     dplyr::select(-.year) |>
     dplyr::mutate(
@@ -312,7 +312,7 @@ harvest_pdf_split <- function(df, config, refetch = FALSE) {
     )
 
   df <- df |>
-    dplyr::mutate(join_key = .steiner_normalize_emne_name(Emnenavn))
+    dplyr::mutate(join_key = .steiner_normalize_emne_name(course_name))
 
   # Diagnostics
   pdf_keys <- unique(pdf_emner$join_key)
@@ -452,24 +452,24 @@ harvest_json_extract <- function(df, config, refetch = FALSE) {
   html_cp <- strategy_checkpoint_path(config, "html")
   clear_if_refetch(html_cp, refetch)
 
-  # NLA embeds all years in one page per course code — fetch once per unique Emnekode
+  # NLA embeds all years in one page per course code — fetch once per unique course_code
   df <- df |>
-    dplyr::mutate(academic_year = nla_academic_year(Årstall, Semesternavn))
+    dplyr::mutate(academic_year = nla_academic_year(year, semester_name))
 
   unique_codes <- df |>
-    dplyr::distinct(Emnekode, .keep_all = TRUE) |>
-    dplyr::select(Emnekode, url, institution) |>
+    dplyr::distinct(course_code, .keep_all = TRUE) |>
+    dplyr::select(course_code, url, institution) |>
     dplyr::filter(!is.na(url)) |>
-    dplyr::mutate(course_id = paste0("nla_", Emnekode))
+    dplyr::mutate(course_id = paste0("nla_", course_code))
 
   unique_fetched <- fetch_html_with_checkpoint(unique_codes, checkpoint_path = html_cp,
                                                  config = config)
 
-  # Join HTML back to all rows by Emnekode
+  # Join HTML back to all rows by course_code
   html_lookup <- unique_fetched |>
-    dplyr::select(Emnekode, html, html_error, html_success, dplyr::any_of(REQUEST_COLUMNS))
+    dplyr::select(course_code, html, html_error, html_success, dplyr::any_of(REQUEST_COLUMNS))
 
-  df <- dplyr::left_join(df, html_lookup, by = "Emnekode")
+  df <- dplyr::left_join(df, html_lookup, by = "course_code")
 
   # Extract year-specific fulltext from JSON
   df$extracted_text <- extract_fulltext_from_raw(df, config)

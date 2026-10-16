@@ -8,11 +8,11 @@ courses <- dbh_courses("teacher_ed")
 
 test_courses <- courses |> 
   dplyr::filter(
-    Årstall >= 2015,
-    !is.na(institution_from_code(Institusjonskode)),
+    year >= 2015,
+    !is.na(institution_from_code(institution_code)),
     ) |> 
-  dplyr::distinct(Institusjonsnavn, Årstall, .keep_all = TRUE) |> 
-  dplyr::arrange(Institusjonsnavn, Årstall)
+  dplyr::distinct(institution_name, year, .keep_all = TRUE) |> 
+  dplyr::arrange(institution_name, year)
 
 
 saveRDS(test_courses, "data/input/test_courses.RDS")

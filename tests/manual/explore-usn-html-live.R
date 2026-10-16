@@ -12,9 +12,9 @@ for (f in c("R/fetch_html_cols.R", "R/extract_fulltext.R", "R/institution_config
 
 # Create a small test dataframe with teacher education courses
 test_df <- tibble::tibble(
-  Emnekode = c("LH-NOD1000", "LRFY240", "FAKE999"),
-  Årstall = c(2024L, 2024L, 2024L),
-  Semesternavn = c("Høst", "Høst", "Høst")
+  course_code = c("LH-NOD1000", "LRFY240", "FAKE999"),
+  year = c(2024L, 2024L, 2024L),
+  semester_name = c("Høst", "Høst", "Høst")
 )
 
 cat("Testing batch URL resolution with session reuse\n")
@@ -28,7 +28,7 @@ result <- resolve_urls_usn_batch(test_df, .progress = TRUE)
 end_time <- Sys.time()
 
 cat("\nResults:\n")
-print(result |> dplyr::select(Emnekode, Årstall, Semesternavn, url, url_version))
+print(result |> dplyr::select(course_code, year, semester_name, url, url_version))
 
 cat("\nTime elapsed:", round(difftime(end_time, start_time, units = "secs"), 1), "seconds\n")
 cat("Expected: LH-NOD1000 and LRFY240 should have URLs, FAKE999 should be NA\n")
@@ -44,7 +44,7 @@ hits <- courses |>
   ) |>
   add_course_url() |>
   resolve_course_urls(checkpoint_path = NULL) |>
-  select(course_id, institution, Årstall, Semesternavn, contains("url"))
+  select(course_id, institution, year, semester_name, contains("url"))
 
 cat("\nResults for MG1NO1-2:\n")
 print(hits)

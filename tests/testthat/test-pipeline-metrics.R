@@ -3,12 +3,12 @@
 test_that("pipeline_metrics counts offerings, plans and sections per institution", {
   offerings <- tibble::tibble(
     course_id = c("1", "2", "3"),
-    institution = "a", Emnekode_raw = c("X", "X", "Y"), Årstall = 2025,
+    institution = "a", course_code_raw = c("X", "X", "Y"), year = 2025,
     extracted_text = c("t", NA, "u"), course_plan = c("abc", NA, "abcde"),
     plan_content_id = c("p1", NA, "p2")
   )
   sections <- tibble::tibble(
-    plan_content_id = c("p1", "p1", "p2"), institution = "a", Emnekode = c("X", "X", "Y"),
+    plan_content_id = c("p1", "p1", "p2"), institution = "a", course_code = c("X", "X", "Y"),
     source_course_id = c("1", "1", "3"),
     section = c("assessment", "reading_list", "assessment"),
     text = c("xx", "yyyy", "zz")
@@ -62,14 +62,14 @@ test_that("the built data match the metrics snapshot of each frame", {
 
 test_that("short plans without sections are page shells: no plan", {
   plans <- tibble::tibble(plan_content_id = c("p1", "p2", "p3", "p4"), institution = "a",
-                          Emnekode = c("X", "Y", "Z", "W"),
+                          course_code = c("X", "Y", "Z", "W"),
                           course_plan = c("Emnebeskrivelse", strrep("a", 2000), "Innhold",
                                           paste(strrep("Fakta ", 400), "Emnebeskrivelse")),
                           plan_nchar = c(15, 2000, 7, 15))
   courses <- tibble::tibble(course_id = c("1", "2", "3", "4", "5"), institution = "a",
-                            Emnekode = c("X", "Y", "Z", "X", "W"), extracted_text = "t",
+                            course_code = c("X", "Y", "Z", "X", "W"), extracted_text = "t",
                             plan_content_id = c("p1", "p2", "p3", "p1", "p4"))
-  sections <- tibble::tibble(plan_content_id = "p3", institution = "a", Emnekode = "Z",
+  sections <- tibble::tibble(plan_content_id = "p3", institution = "a", course_code = "Z",
                              section = "course_content", text = "Innhold")
   # p1: short, no sections -> shell; p2: long, no sections -> kept; p3: has
   # sections; p4: long only by its facts box -> shell
@@ -85,18 +85,18 @@ test_that("short plans without sections are page shells: no plan", {
 test_that("plan_gaps() gives each course-year without a plan its reason", {
   offerings <- tibble::tibble(
     course_id = c("a24", "a25s", "a25h", "a26", "b25"), institution = "x",
-    Emnekode = c("A", "A", "A", "A", "B"), Årstall = c(2024, 2025, 2025, 2026, 2025),
+    course_code = c("A", "A", "A", "A", "B"), year = c(2024, 2025, 2025, 2026, 2025),
     plan_content_id = c("p1", NA, NA, "p2", NA))
   status <- tibble::tibble(
     course_id = offerings$course_id, url = c("u24", "u25", "u25", "u26", NA),
     has_page = c(TRUE, FALSE, FALSE, TRUE, FALSE),
     fetch_error = c(NA, "HTTP 404 Not Found.", "HTTP 500", NA, NA))
   g <- plan_gaps(offerings, status)
-  a25 <- g[g$Emnekode == "A" & g$Årstall == 2025, ]
+  a25 <- g[g$course_code == "A" & g$year == 2025, ]
   expect_false(a25$has_plan)
   expect_equal(a25$reason, "404 + fetch error")
   expect_true(a25$between_plans)
   expect_equal(a25$url_next_door, "u26")
-  expect_equal(g$reason[g$Emnekode == "B"], "no URL")
-  expect_false(g$between_plans[g$Emnekode == "B"])
+  expect_equal(g$reason[g$course_code == "B"], "no URL")
+  expect_false(g$between_plans[g$course_code == "B"])
 })

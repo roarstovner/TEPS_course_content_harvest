@@ -132,8 +132,8 @@ test_that("deduplicate_plans returns correct structure", {
   df <- tibble::tibble(
     course_id = paste0("c", 1:4),
     institution = rep("hivolda", 4),
-    Emnekode = rep("TEST101", 4),
-    Årstall = c(2020, 2021, 2022, 2023),
+    course_code = rep("TEST101", 4),
+    year = c(2020, 2021, 2022, 2023),
     course_plan = c("Same plan text", "Same plan text", "Updated plan", "Updated plan")
   )
 
@@ -149,8 +149,8 @@ test_that("deduplicate_plans reduces identical plans", {
   df <- tibble::tibble(
     course_id = paste0("c", 1:4),
     institution = rep("hivolda", 4),
-    Emnekode = rep("TEST101", 4),
-    Årstall = c(2020, 2021, 2022, 2023),
+    course_code = rep("TEST101", 4),
+    year = c(2020, 2021, 2022, 2023),
     course_plan = c("Same plan text", "Same plan text", "Updated plan", "Updated plan")
   )
 
@@ -167,8 +167,8 @@ test_that("deduplicate_plans computes correct year ranges", {
   df <- tibble::tibble(
     course_id = paste0("c", 1:4),
     institution = rep("hivolda", 4),
-    Emnekode = rep("TEST101", 4),
-    Årstall = c(2020, 2021, 2022, 2023),
+    course_code = rep("TEST101", 4),
+    year = c(2020, 2021, 2022, 2023),
     course_plan = c("Plan A", "Plan A", "Plan B", "Plan B")
   )
 
@@ -185,8 +185,8 @@ test_that("deduplicate_plans handles NA course_plan", {
   df <- tibble::tibble(
     course_id = c("c1", "c2"),
     institution = c("hivolda", "hivolda"),
-    Emnekode = c("TEST101", "TEST102"),
-    Årstall = c(2020, 2020),
+    course_code = c("TEST101", "TEST102"),
+    year = c(2020, 2020),
     course_plan = c("Real plan", NA_character_)
   )
 
@@ -226,8 +226,8 @@ test_that("UiT's unit does not split a plan", {
 })
 
 test_that("the plan id is made from id_text where there is one", {
-  df <- tibble::tibble(course_id = c("a", "b"), institution = "x", Emnekode = "E",
-                       Årstall = c(2023, 2024),
+  df <- tibble::tibble(course_id = c("a", "b"), institution = "x", course_code = "E",
+                       year = c(2023, 2024),
                        course_plan = c("Campus Bodø\nTekst", "Campus Nesna\nTekst"),
                        id_text = c("Tekst", "Tekst"))
   res <- deduplicate_plans(df)
@@ -242,7 +242,7 @@ test_that("ntnu's exam sessions: the plan id keeps one session's design", {
                              ..., sep = "\n")
   ord <- function(w) paste("Ordinær eksamen", "Oppgave", paste0("Vekting ", w, " Eksamenssystem Inspera"), sep = "\n")
   df <- tibble::tibble(
-    course_id = paste0("c", 1:4), institution = "ntnu", Emnekode = "X1", Årstall = 2021:2024,
+    course_id = paste0("c", 1:4), institution = "ntnu", course_code = "X1", year = 2021:2024,
     course_plan = c(tab(ord("1/1")),                                     # autumn: ordinary only
                     tab("Utsatt eksamen\nOppgave\nVekting 1/1", ord("1/1")),  # spring: resit listed first
                     tab(sub("Oppgave", "Oppgave (1)",                      # no exam system; a
