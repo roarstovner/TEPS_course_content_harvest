@@ -392,11 +392,11 @@ order:
 ### Several Institutions at Once
 
 `harvest_all()` takes the institutions one after another. At the slowest
-sites a harvest of every course takes days (NTNU and UiB ask for 10
-seconds between requests in robots.txt), so run several institutions
-side by side, each in its own R process, with the institution or
-institutions it harvests in `institutions`. From the repository root,
-with a log per process:
+sites a harvest of every course takes days (NTNU and UiB at 10 seconds
+between requests, the Crawl-delay of NTNU’s robots.txt), so run several
+institutions side by side, each in its own R process, with the
+institution or institutions it harvests in `institutions`. From the
+repository root, with a log per process:
 
 ``` sh
 mkdir -p tmp/harvest_logs
@@ -420,7 +420,9 @@ pgrep -af harvest_all   # the harvests still running
   common course catalogue) go in one process, `institutions = c(...)`,
   which harvests them one after another. Each configured institution has
   a host of its own today. Read the robots.txt of a new site before its
-  first harvest: a `Crawl-delay` goes in `request_delay`.
+  first harvest: a `Crawl-delay` goes in `request_delay`, and the date,
+  delay and disallowed paths in `data/robots_txt.csv` (see “Piloting an
+  Institution”, step 1).
 - **At night.** Start long harvests in the evening, so that most
   requests come outside the sites’ busy hours. A site with the year in
   the URL can be stopped (end the process) and started again: the
@@ -443,10 +445,14 @@ on it: about 200 pages instead of tens of thousands. The full harvest
 starts when the pilot passes the gate (step 5). Load the functions as in
 “Quick Start”, then:
 
-1.  **Draw the sample.** First read the site’s robots.txt (a
-    `Crawl-delay` goes in `request_delay`; a path it disallows is not
-    harvested and is noted in `data/data_notes.qmd`) and find the oldest
-    year the site has plans for.
+1.  **Draw the sample.** First read the robots.txt of each host the
+    harvest requests and update its row in `data/robots_txt.csv`: the
+    date, the `Crawl-delay` asked of all user agents (`User-agent: *`)
+    and the `Disallow` rules that touch course plans. A `Crawl-delay`
+    goes in `request_delay` (`tests/testthat/test-robots.R` checks it);
+    a path it disallows is not harvested and is noted in
+    `data/data_notes.qmd`. Then find the oldest year the site has plans
+    for.
 
     ``` r
     s <- pilot_sample("ntnu", oldest_year = 2004)
@@ -1392,6 +1398,13 @@ and run</td>
 <td>in git; released with the data</td>
 </tr>
 <tr>
+<td><code>data/robots_txt.csv</code></td>
+<td>each host’s robots.txt: date read, Crawl-delay, disallowed
+course-plan paths (“Piloting an Institution”)</td>
+<td>none</td>
+<td>in git</td>
+</tr>
+<tr>
 <td><code>data/interim/plan_gaps.RDS</code></td>
 <td>course-years without a plan, reason, URLs tried</td>
 <td>none</td>
@@ -2065,12 +2078,15 @@ session$session$close()
 ```
 
 The batch resolver reuses one Chrome session and navigates by changing
-`window.location.hash`, which avoids a 2-3 s browser start per URL. A
-semester without a plan of its own shows another semester’s plan under
-the banner “Emneplanen for dette semesteret er ikke klar ennå”. When the
-next candidate shows the same plan, the banner stays until the page is
-reloaded, so a page with the requested year and the banner is reloaded.
-HTML is captured during resolution, so USN has no separate fetch step.
+`window.location.hash`, which avoids a 2-3 s browser start per URL. It
+waits the config’s `request_delay` after each page (5 seconds, the
+Crawl-delay of USN’s robots.txt) before it reads it and asks for the
+next. A semester without a plan of its own shows another semester’s plan
+under the banner “Emneplanen for dette semesteret er ikke klar ennå”.
+When the next candidate shows the same plan, the banner stays until the
+page is reloaded, so a page with the requested year and the banner is
+reloaded. HTML is captured during resolution, so USN has no separate
+fetch step.
 
 **UiT.** Historical plans need a document id:
 `https://uit.no/utdanning/emner/emne?p_document_id={ID}`. The active
@@ -2402,6 +2418,7 @@ hold the same `course_id` (not a retry); a file was copied into
     │   ├── backup/                # Earlier harvests, not read (not in git)
     │   ├── audit/                 # Audit findings and reports
     │   ├── variables.csv          # Every variable of the data files, old and new names
+    │   ├── robots_txt.csv         # Each host's robots.txt: date read, crawl delay, disallowed paths
     │   └── data_notes.qmd         # Data quality notes per institution
     ├── tests/
     │   ├── testthat/              # Rscript -e 'testthat::test_dir("tests/testthat")'

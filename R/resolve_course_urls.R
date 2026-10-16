@@ -351,9 +351,14 @@ uit_page_is_english <- function(url) {
 #' @param df A tibble with course_code, year, semester_name columns
 #' @param max_version Maximum version number to try per course (default: 3; every
 #'   URL found so far is version 1 or 2)
+#' @param delay Seconds to wait after each page is shown, before it is read and
+#'   the next one asked for: the config's `request_delay` (the Crawl-delay of
+#'   USN's robots.txt), at least 2 for the page to render
 #' @param .progress Show progress bar
 #' @return df with url and url_version columns added
-resolve_urls_usn_batch <- function(df, max_version = 3, checkpoint_path = NULL, .progress = TRUE) {
+resolve_urls_usn_batch <- function(df, max_version = 3, checkpoint_path = NULL,
+                                   delay = get_institution_config("usn")$request_delay,
+                                   .progress = TRUE) {
   if (nrow(df) == 0) {
     return(df |> dplyr::mutate(url = NA_character_, html = NA_character_))
   }
@@ -408,8 +413,8 @@ resolve_urls_usn_batch <- function(df, max_version = 3, checkpoint_path = NULL, 
           sprintf("window.location.hash = '%s';", hash)
         )
 
-        # Wait for content to render (shorter wait since page is already loaded)
-        Sys.sleep(2)
+        # Wait for content to render and for the site's crawl delay
+        polite_pause(pmax(delay %||% 2, 2))
 
         # Extract Shadow DOM content
         html_content <- read_usn_live_html(session)
@@ -438,7 +443,7 @@ resolve_urls_usn_batch <- function(df, max_version = 3, checkpoint_path = NULL, 
               # semester without one); a reload clears it
               if (grepl("ikke klar ennå", html_content, fixed = TRUE)) {
                 session$session$Page$reload()
-                Sys.sleep(5)
+                polite_pause(pmax(delay %||% 5, 5))
                 html_content <- read_usn_live_html(session) %||% html_content
               }
               result_url <- full_url

@@ -35,6 +35,13 @@
 #                       read_harvest() gives an offering the page fetched for
 #                       its course and academic year, whichever offering it
 #                       was fetched for.
+#
+# request_delay: seconds between requests to the site (default 3-5,
+#                DEFAULT_REQUEST_DELAY), at least the Crawl-delay its
+#                robots.txt asks of all user agents. The robots.txt of every
+#                host is in data/robots_txt.csv (date read, crawl delay,
+#                disallowed paths); tests/testthat/test-robots.R checks the
+#                two against each other.
 
 institution_configs <- list(
 
@@ -120,7 +127,7 @@ institution_configs <- list(
               "//div[contains(@class, 'course-card')][.//ul[contains(@class, 'subject-area-list')]]"),
     plan_years = "url",
     url_year = "academic",
-    request_delay = 10,  # robots.txt: Crawl-delay: 10 for all user agents
+    request_delay = 10,  # robots.txt (data/robots_txt.csv): Crawl-delay: 10 for all user agents
     fetch_fn = fetch_html_cols_single_ntnu,
     # The exam tab lists the exam parts once per exam session; the
     # assessment section and the plan id keep one session
@@ -310,7 +317,9 @@ institution_configs <- list(
                 "//dl[contains(@class, 'course-summary')]/div[starts-with(normalize-space(), 'Ressurs')]"),
     facts = "div.region-inner.grid > div.theme-context__area",
     plan_years = "url",
-    request_delay = 10,  # robots.txt: Crawl-delay: 10 for all user agents
+    # 10 s since 2026-09-30; robots.txt (data/robots_txt.csv) asks it only of
+    # Scrapy on 2026-10-16, and the pace is kept
+    request_delay = 10,
     # h2 sections (Mål og innhald, Læringsutbytte) and details/summary
     # accordions (Krav til forkunnskapar, Vurderingsformer, Litteraturliste).
     section_strategy = "html",
@@ -363,6 +372,9 @@ institution_configs <- list(
     code = "1176",
     strategy = "shadow_dom",
     plan_years = "url",
+    # robots.txt (data/robots_txt.csv): Crawl-delay: 5 for all user agents;
+    # the wait after each page shown in Chrome (resolve_urls_usn_batch())
+    request_delay = 5,
     section_strategy = "text"
   ),
 

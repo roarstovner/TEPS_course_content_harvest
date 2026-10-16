@@ -150,6 +150,24 @@ JSON embedded in the course page). Harvests: 2026-09-30 to 2026-10-02 (all
 institutions), 2026-10-06 (INN 2025, NLA's earlier years), and 2026-04-04 (an
 earlier harvest of all institutions, used for the sites below).
 
+**Each site's robots.txt sets the pace of the harvest:** the harvest names
+itself and the project ("TEPS research project", with the project's web page
+and e-mail; HiØ answers that user agent with HTTP 403, so its pages are
+fetched with a browser's) and waits 3-5 seconds between requests to a site,
+or longer where its robots.txt asks all user agents for a `Crawl-delay`:
+NTNU 10 seconds, USN 5 (since 2026-10-16; 2 seconds before). UiB is
+harvested at 10 seconds since 2026-09-30, although its robots.txt asks this
+only of one crawler (Scrapy) on 2026-10-16. A path robots.txt disallows is not
+harvested from a new site. *Why:* the harvest asks a site for no more than it
+allows crawlers. *Rejected:* one pace for every site, which is faster than
+NTNU and USN ask. *Consequence:* the robots.txt of every host, read on
+2026-10-16 (`data/robots_txt.csv`), disallows two sources that the harvests
+up to 2026-10 used: UiS's PDF archive (`www6.uis.no` allows only `/ansatt/`;
+2,201 of UiS's 2,719 offerings with a plan text, 2009-2025) and Steiner's
+five subject PDFs (`/dokumenter/`; all 15 Steiner offerings with a plan).
+Whether they are fetched again and kept is not yet decided. *Since:*
+2026-10-16.
+
 **How a plan's year is known** (`plan_years` in `R/institution_config.R`):
 from the URL (most institutions), from the page, which holds the plans of
 several academic years (NLA; for most courses only recent ones), or only from

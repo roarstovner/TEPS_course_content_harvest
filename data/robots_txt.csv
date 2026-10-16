@@ -1,0 +1,33 @@
+institution,host,read_on,status,crawl_delay,disallow,note
+oslomet,student.oslomet.no,2026-10-16,200,,,"Disallows search, login and student-life pages; blocks GPTBot and Bytespider"
+uia,www.uia.no,2026-10-16,200,,,Disallows /vrtx (the CMS)
+ntnu,www.ntnu.no,2026-10-16,200,10,,"Disallows /en/, /nb/, search and Liferay query parameters; /studier/emner/ is allowed"
+inn,studiekatalog.edutorium.no,2026-10-16,404,,,No robots.txt: nothing disallowed
+hivolda,www.hivolda.no,2026-10-16,200,,,Drupal defaults; disallows search and facet URLs
+hiof,www.hiof.no,2026-10-16,200,,,Disallows /vrtx and the staff news archive; its rules for all user agents cover the browser user agent the harvest uses
+hvl,www.hvl.no,2026-10-16,200,,,"Disallows /tel, /vestibylen, /episerver/cms"
+mf,mf.no,2026-10-16,200,,,Drupal defaults; disallows search
+nla,www.nla.no,2026-10-16,200,,,Allows everything
+nord,www.nord.no,2026-10-16,200,,,Drupal defaults; Crawl-delay 10 only for Scrapy
+nih,www.nih.no,2026-10-16,200,,,Disallows /vrtx
+uib,www4.uib.no,2026-10-16,200,,,Drupal defaults; Crawl-delay 10 only for Scrapy. request_delay stays 10 (set 2026-09-30)
+uio,www.uio.no,2026-10-16,200,,,"Disallows /vrtx, /bilder, /intranett and single pages; none under /studier/emner/"
+uis,www.uis.no,2026-10-16,200,,,Drupal defaults; Crawl-delay 10 only for Scrapy
+uis,www6.uis.no,2026-10-16,200,,/ (allows only /ansatt/),"The PDF archive of course plans (/Stine/EMNE/{year}/...), which the harvests up to 2026-10 fetched"
+usn,www.usn.no,2026-10-16,200,5,,"Disallows search, tag URLs and about 2,860 single files under /getfile.php/; blocks SemrushBot"
+uit,uit.no,2026-10-16,200,,,"Disallows /Content/, staff pages and print views; none under /utdanning/"
+nmbu,www.nmbu.no,2026-10-16,200,,,Allows everything
+samas,samas.no,2026-10-16,200,,,Drupal defaults; Crawl-delay 10 only for Scrapy. Not harvested (strategy noop)
+steiner,www.steinerhoyskolen.no,2026-10-16,200,,/dokumenter/,"The five subject PDFs (/dokumenter/laerer-bachelor-*), which the harvests up to 2026-10 fetched; also disallows /publikasjoner/"
+kristiania,www.kristiania.no,2026-10-16,200,,,Disallows /episerver
+bi,www.bi.no,2026-10-16,200,,"/*.pdf$, /*.doc$, /*.docx$","Disallows /episerver/, */is-pages/, images and documents: a plan published as PDF or Word file is not harvested"
+bi,programmeinfo.bi.no,2026-10-16,200,10,,"Drupal defaults. BI's programme and course information, to be confirmed as the source of the course plans"
+nmh,nmh.no,2026-10-16,200,,,"Craft CMS defaults (/cpresources/, /vendor/, /cache/)"
+nhh,nhh.no,2026-10-16,200,,,Disallows /paraplyen (intranet)
+vid,www.vid.no,2026-10-16,200,,,"Allows everything for all user agents; blocks AI crawlers by name (GPTBot, ClaudeBot, anthropic-ai, CCBot, Google-Extended, Applebot-Extended, Meta-ExternalAgent and others)"
+himolde,www.himolde.no,2026-10-16,200,,,Disallows /vrtx
+khio,khio.no,2026-10-16,200,,,Comments only: nothing disallowed
+fjellhaug,fih.fjellhaug.no,2026-10-16,200,,,"Craft CMS defaults (/cpresources/, /vendor/, /cache/)"
+fjellhaug,www.fjellhaug.no,2026-10-16,404,,,"Redirects to fjellhaug.no, which has no robots.txt"
+fhs,www.forsvaret.no,2026-10-16,404,,,No robots.txt: nothing disallowed. FHS's pages are on Forsvaret's site
+phs,www.politihogskolen.no,2026-10-16,200,,,www.phs.no redirects here; disallows /vrtx

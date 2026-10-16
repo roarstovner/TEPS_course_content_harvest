@@ -316,10 +316,10 @@ A new year is harvested with the same code as the first harvest:
 ### Several Institutions at Once
 
 `harvest_all()` takes the institutions one after another. At the slowest sites
-a harvest of every course takes days (NTNU and UiB ask for 10 seconds between
-requests in robots.txt), so run several institutions side by side, each in
-its own R process, with the institution or institutions it harvests in
-`institutions`. From the repository root, with a log per process:
+a harvest of every course takes days (NTNU and UiB at 10 seconds between
+requests, the Crawl-delay of NTNU's robots.txt), so run several institutions
+side by side, each in its own R process, with the institution or institutions
+it harvests in `institutions`. From the repository root, with a log per process:
 
 ```sh
 mkdir -p tmp/harvest_logs
@@ -343,7 +343,8 @@ pgrep -af harvest_all   # the harvests still running
   catalogue) go in one process, `institutions = c(...)`, which harvests them
   one after another. Each configured institution has a host of its own
   today. Read the robots.txt of a new site before its first harvest: a
-  `Crawl-delay` goes in `request_delay`.
+  `Crawl-delay` goes in `request_delay`, and the date, delay and disallowed
+  paths in `data/robots_txt.csv` (see "Piloting an Institution", step 1).
 - **At night.** Start long harvests in the evening, so that most requests
   come outside the sites' busy hours. A site with the year in the URL can be
   stopped (end the process) and started again: the checkpoint, saved every
@@ -363,10 +364,13 @@ courses and checks the config, the URLs and the headings on it: about 200
 pages instead of tens of thousands. The full harvest starts when the pilot
 passes the gate (step 5). Load the functions as in "Quick Start", then:
 
-1. **Draw the sample.** First read the site's robots.txt (a `Crawl-delay`
-   goes in `request_delay`; a path it disallows is not harvested and is noted
-   in `data/data_notes.qmd`) and find the oldest year the site has plans
-   for.
+1. **Draw the sample.** First read the robots.txt of each host the harvest
+   requests and update its row in `data/robots_txt.csv`: the date, the
+   `Crawl-delay` asked of all user agents (`User-agent: *`) and the
+   `Disallow` rules that touch course plans. A `Crawl-delay` goes in
+   `request_delay` (`tests/testthat/test-robots.R` checks it); a path it
+   disallows is not harvested and is noted in `data/data_notes.qmd`. Then
+   find the oldest year the site has plans for.
 
    ```r
    s <- pilot_sample("ntnu", oldest_year = 2004)
@@ -961,6 +965,7 @@ The repository is public.
 | `data/raw/{inst}/ledger/{run}.parquet` | fetch ledger: URL, HTTP status, outcome and page hash per offering and run | none | internal |
 | `data/pilot/{inst}.csv` | an institution's pilot sample ("Piloting an Institution") | none | in git |
 | `data/variables.csv` | every variable of the published files, with its old name ("Variables") | none | in git; released with the data |
+| `data/robots_txt.csv` | each host's robots.txt: date read, Crawl-delay, disallowed course-plan paths ("Piloting an Institution") | none | in git |
 | `data/interim/plan_gaps.RDS` | course-years without a plan, reason, URLs tried | none | internal |
 | `data/interim/extracted_text.RDS` | `extracted_text` rebuilt from the raw harvest | yes (raw) | internal |
 | `data/interim/course_offerings_full.RDS` | offerings + `url`, `extracted_text`, `course_plan` | yes (`extracted_text`) | internal |
@@ -1126,7 +1131,9 @@ session$session$close()
 ```
 
 The batch resolver reuses one Chrome session and navigates by changing
-`window.location.hash`, which avoids a 2-3 s browser start per URL. A
+`window.location.hash`, which avoids a 2-3 s browser start per URL. It waits
+the config's `request_delay` after each page (5 seconds, the Crawl-delay of
+USN's robots.txt) before it reads it and asks for the next. A
 semester without a plan of its own shows another semester's plan under the
 banner "Emneplanen for dette semesteret er ikke klar ennå". When the next
 candidate shows the same plan, the banner stays until the page is reloaded, so
@@ -1267,6 +1274,7 @@ active and historical pages.
 │   ├── backup/                # Earlier harvests, not read (not in git)
 │   ├── audit/                 # Audit findings and reports
 │   ├── variables.csv          # Every variable of the data files, old and new names
+│   ├── robots_txt.csv         # Each host's robots.txt: date read, crawl delay, disallowed paths
 │   └── data_notes.qmd         # Data quality notes per institution
 ├── tests/
 │   ├── testthat/              # Rscript -e 'testthat::test_dir("tests/testthat")'

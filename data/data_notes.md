@@ -178,6 +178,29 @@ Low dedup (\<10%) means most rows have genuinely different content,
 typically because plans change between years/versions (HiOF, USN) or
 each row is truly distinct (NIH, Steiner, UiO).
 
+## robots.txt
+
+The robots.txt of every host the harvests request, and of the new
+institutions’ sites, was read on 2026-10-16; `data/robots_txt.csv` has
+the date, the crawl delay and the disallowed paths that touch course
+plans per host. The rules for all user agents apply: no robots.txt names
+the harvest’s user agent.
+
+- **Crawl delay.** NTNU asks for 10 seconds between requests and USN for
+  5, which the harvest waits (`request_delay`; USN’s resolver waited 2
+  seconds before 2026-10-16). UiB is harvested at 10 seconds since
+  2026-09-30, although its robots.txt asks this only of one crawler
+  (Scrapy) on 2026-10-16. BI’s course information site
+  (programmeinfo.bi.no) asks for 10 seconds
+- **Disallowed paths the harvests used.** Two sources of plans in the
+  harvests up to 2026-10 are paths robots.txt disallows for all user
+  agents: UiS’s PDF archive on `www6.uis.no` (see UiS) and Steiner’s
+  subject PDFs under `/dokumenter/` (see Steiner). No other path the
+  harvests request is disallowed. At the new institutions’ sites
+  robots.txt disallows only the CMS’s own paths, search and staff pages,
+  except that BI’s main site disallows PDF and Word files: a BI plan
+  published as such a file would not be harvested
+
 ## Per-Institution Notes
 
 Figures are in the tables above; the notes say why.
@@ -378,6 +401,10 @@ Figures are in the tables above; the notes say why.
   “Year coverage”). Plans come from five subject PDFs at
   `steinerhoyskolen.no`, split by course heading; the PDFs are not
   stored, so the split text is the raw data
+- The site’s robots.txt (read 2026-10-16) disallows `/dokumenter/`,
+  where the five PDFs are, for all user agents. The harvests up to
+  2026-10 fetched them: every Steiner plan (15 offerings) comes from
+  that path
 - The practicum modules (M-LP1/2/3) have no PDF content
 - M-PEL2.1/M-PEL2.2 get the PDF’s PEL1.4/PEL1.5 plans
   (`.steiner_remap_pel_emne()`); to be confirmed against the programme
@@ -407,7 +434,9 @@ Figures are in the tables above; the notes say why.
 ### UiB (University of Bergen)
 
 - Year in the URL; accordion pages read with a multi-element selector;
-  robots.txt asks for a 10-second crawl delay
+  harvested at 10 seconds a page (`request_delay`, set 2026-09-30 for
+  the crawl delay robots.txt was read to ask; on 2026-10-16 it asks it
+  only of Scrapy, and the pace is kept)
 - The page’s semester picker is dropped when the HTML is parsed
 - Read from `div.region-inner.grid`: the title, level and facts list
   (credits, semester, code, number of semesters, language) and the main
@@ -454,6 +483,11 @@ Figures are in the tables above; the notes say why.
 - Current plans come from the course web page, older ones from the PDF
   archive linked in its semester dropdown (`html_pdf_discovery`); the
   PDFs are not stored, so their text is the raw data
+- The PDF archive is on `www6.uis.no`, whose robots.txt (read
+  2026-10-16) disallows every path but `/ansatt/` for all user agents.
+  The harvests up to 2026-10 fetched it: 2,201 of the 2,719 UiS
+  offerings with a plan text (2009-2025) have it from a PDF, the other
+  518 from the course page on `www.uis.no`, which robots.txt allows
 - A dropdown entry is an academic year (“2024 - 2025”; its PDF says
   “studietilbudet for studieår 2024-2025”), so a spring or summer
   offering reads the year before (since 2026-10-14; until then it read

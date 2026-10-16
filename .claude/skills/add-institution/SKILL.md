@@ -1,6 +1,6 @@
 ---
 name: add-institution
-description: Step-by-step procedure for adding harvesting support for a new Norwegian higher education institution — config entry in R/institution_config.R, URL builder in R/add_course_url.R, and a test harvest. Use when asked to add, onboard or support a new institution.
+description: Step-by-step procedure for adding harvesting support for a new Norwegian higher education institution — its robots.txt first (data/robots_txt.csv), then the config entry in R/institution_config.R, URL builder in R/add_course_url.R, and a test harvest. Use when asked to add, onboard or support a new institution.
 argument-hint: <institution>
 ---
 
@@ -17,7 +17,8 @@ Add support for harvesting course descriptions from a new Norwegian higher educa
 ## Prerequisites
 
 Before starting, gather:
-1. The institution's short name (lowercase, e.g., "newuni")
+1. The institution's short name (lowercase, e.g., "newuni"; the new ones have
+   one in `data/robots_txt.csv`)
 2. The institution code from DBH (e.g., "1234")
 3. A sample course URL from the institution's website
 4. The CSS selector of the element that holds the course plan with its title
@@ -25,6 +26,37 @@ Before starting, gather:
    box, widgets), and the elements that hold the title and facts box
 
 ## Procedure
+
+### Step 0: Read robots.txt before the first request to the site
+
+`data/robots_txt.csv` holds the robots.txt of every host harvested or planned
+(read 2026-10-16 for the configured institutions and the ten new ones:
+kristiania, bi, nmh, nhh, vid, himolde, khio, fjellhaug, fhs, phs). Find the
+hosts the harvest will request (course pages, PDFs, discovery pages); for a
+host with no row, or a row more than a month old, read its robots.txt once
+with the harvest's user agent, before any other request to the host (the
+pilot, Step 4, reads it again):
+
+```r
+source("R/fetch_html_cols.R")
+site_request("https://www.newuni.no/robots.txt") |>
+  httr2::req_error(is_error = \(resp) FALSE) |> httr2::req_perform() |>
+  httr2::resp_body_string() |> cat()
+```
+
+and add or update its row (`read_on`, HTTP `status`, `note`):
+
+- The rules for `User-agent: *` apply: no robots.txt names the harvest's
+  user agent, and a group for a named bot (Scrapy, GPTBot) does not. A 404
+  means nothing is disallowed.
+- `crawl_delay`: the `Crawl-delay` asked of all user agents. It goes in the
+  config as `request_delay` (Step 1); `tests/testthat/test-robots.R` fails if
+  `request_delay` is shorter, or if a configured institution has no row (use
+  the table's short name, or rename the row).
+- `disallow`: the `Disallow` rules that touch course-plan paths (the course
+  pages, plan PDFs or the discovery pages). A path robots.txt disallows is not
+  harvested: say so in the institution's notes in `data/data_notes.qmd`, and
+  if the plans are only there, stop and ask the user.
 
 ### Step 1: Add config entry to R/institution_config.R
 
@@ -41,7 +73,8 @@ newuni = list(
                                   # matches the metadata lines instead; see README "Blocks and Sections")
   plan_years = "url",             # "current" if the site shows only the plan in force; "page" if one page holds all years
   section_strategy = "html",      # read the page as html; see README "Blocks and Sections"
-  section_heading_selector = "h2" # the section headings (default h2)
+  section_heading_selector = "h2", # the section headings (default h2)
+  request_delay = 10              # only if robots.txt asks a Crawl-delay above 3 s (Step 0)
 )
 ```
 
