@@ -15,6 +15,7 @@ suppressMessages({
   library(dplyr)
   library(stringr)
 })
+source("R/utils.R")                 # offering_key(), pilot_file()
 
 # Allowed `target` / `error_type` values per check. The recipes in
 # .claude/skills/audit-institutions/checks/ explain what each value means —
@@ -54,6 +55,20 @@ audit_args_institutions <- function() {
   args[!startsWith(args, "--")]
 }
 
+# With --pilot on the command line, an institution's packet is drawn from its
+# pilot sample only (pilot_file(), README "Piloting an Institution"):
+# audit_pilot_rows() keeps the rows of `df` whose offering (`course_id`) is
+# in it (without --pilot, `df`), and audit_sample() gives the places the
+# suspects leave unused to random controls.
+audit_pilot <- function() "--pilot" %in% commandArgs(trailingOnly = TRUE)
+
+audit_pilot_rows <- function(df, inst) {
+  if (!audit_pilot()) return(df)
+  f <- pilot_file(inst)
+  if (!file.exists(f)) stop("No pilot sample for ", inst, ": ", f, call. = FALSE)
+  df[offering_key(df$course_id) %in% offering_key(read.csv(f, colClasses = "character")$course_id), ]
+}
+
 audit_trunc <- function(x, n) {
   if (length(x) == 0 || is.na(x)) x <- ""
   if (nchar(x) > n) {
@@ -71,7 +86,8 @@ audit_fence <- function(x) c("````", x, "````")
 # does not crowd out a lighter one, and a flag shows its typical case.
 #
 # `pool` has columns course_id, dedup_key, score (0 = not suspect) and the
-# logical flag columns named in `flags`.
+# logical flag columns named in `flags`. With --pilot, the suspects' unused
+# places go to random controls (audit_pilot()).
 audit_sample <- function(pool, suspect_n, random_n, seed = 42, flags = NULL, per_flag = 2) {
   set.seed(seed)
   susp <- pool |>
@@ -83,6 +99,7 @@ audit_sample <- function(pool, suspect_n, random_n, seed = 42, flags = NULL, per
     ids[sample.int(length(ids), min(per_flag, length(ids)))]
   }))
   susp <- head(susp[order(!susp$course_id %in% first), ], suspect_n)
+  if (audit_pilot()) random_n <- random_n + suspect_n - nrow(susp)
   rand_pool <- pool |>
     filter(score == 0, !dedup_key %in% susp$dedup_key) |>
     distinct(dedup_key, .keep_all = TRUE)

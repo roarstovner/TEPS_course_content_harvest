@@ -434,6 +434,155 @@ pgrep -af harvest_all   # the harvests still running
   run it when the harvests are done, or audit only the institutions
   whose harvest has ended.
 
+## Piloting an Institution
+
+Before the full harvest of an institution, a new one or a configured one
+going from teacher education to all its courses, a pilot harvests a
+sample of its courses and checks the config, the URLs and the headings
+on it: about 200 pages instead of tens of thousands. The full harvest
+starts when the pilot passes the gate (step 5). Load the functions as in
+“Quick Start”, then:
+
+1.  **Draw the sample.** First read the site’s robots.txt (a
+    `Crawl-delay` goes in `request_delay`; a path it disallows is not
+    harvested and is noted in `data/data_notes.qmd`) and find the oldest
+    year the site has plans for.
+
+    ``` r
+    s <- pilot_sample("ntnu", oldest_year = 2004)
+    ```
+
+    `pilot_sample()` (`R/harvest.R`) draws 100 course-years (a course in
+    a year, with every semester DBH lists it in: about 180-200
+    offerings) from the latest DBH snapshot:
+
+    - in 2019, 2022 and 2025 (`PILOT_YEARS`) and `oldest_year`, leaving
+      out the pilot years before it; at a site that shows only the
+      current plan, in the latest DBH year;
+    - at least one course-year of each department (DBH’s
+      `department_name`: a faculty at a college, an institute at a
+      university), five of each level group (`pilot_level()`: lower
+      degree, higher degree, PhD, continuing education, other) and ten
+      English-taught ones (`PILOT_COVER`), and the rest at random, in
+      equal numbers per year.
+
+    The same snapshot, arguments and seed (`PILOT_SEED`) give the same
+    sample. It is written to `data/pilot/{inst}.csv` (course id,
+    course-year, strata, snapshot and seed), which the audits and the
+    gate read: commit it.
+
+2.  **Harvest the sample** into the raw store:
+    `harvest_all(courses = s, institutions = "ntnu")`. At an institution
+    already harvested, only the sample’s offerings that no raw file
+    holds are fetched. At 10 seconds a page, 200 pages take about 35
+    minutes.
+
+3.  **Build and audit.** Run `targets::tar_make()`, then in Claude Code
+    `/audit-institutions fulltext ntnu --pilot`, then `sections` and
+    `anonymization` (see “Auditing a Pipeline Step”): with `--pilot`,
+    the packets show the sample’s courses only.
+
+4.  **Fix and rebuild.** Fix what the audits and the gate show in the
+    config, the URL builder or the heading map, and rebuild with
+    `tar_make()`. Only new URLs need a new harvest:
+    `harvest_all(courses = s, institutions = "ntnu", retry = TRUE)`
+    fetches the sample’s offerings without a plan whose URL nobody has
+    requested (see “Fetch Ledger and Retries”).
+
+5.  **Gate.** With the pipeline’s functions loaded:
+
+    ``` r
+    targets::tar_load_globals()
+    g <- pilot_gate("ntnu")
+    g[c("metric", "value", "n", "threshold", "pass")]
+    g$examples   # per metric: a course id of each course-year that counts against it
+    ```
+
+    `pilot_gate()` (`gate_numbers()` in `R/pipeline_metrics.R`) reads
+    the sample’s course-years in the current build:
+
+    <table>
+    <colgroup>
+    <col style="width: 33%" />
+    <col style="width: 33%" />
+    <col style="width: 33%" />
+    </colgroup>
+    <thead>
+    <tr>
+    <th>Metric</th>
+    <th>Share or count of the sample’s course-years</th>
+    <th>Gate</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    <td><code>fetched</code></td>
+    <td>with a page in some semester</td>
+    <td>≥ 0.80</td>
+    </tr>
+    <tr>
+    <td><code>plan</code></td>
+    <td>with a plan</td>
+    <td>≥ 0.80</td>
+    </tr>
+    <tr>
+    <td><code>assessment</code></td>
+    <td>of those with a plan: an assessment section</td>
+    <td>≥ 0.90</td>
+    </tr>
+    <tr>
+    <td><code>coursework</code></td>
+    <td>of those with a plan: a coursework-requirements section</td>
+    <td>≥ 0.70</td>
+    </tr>
+    <tr>
+    <td><code>no_sections</code></td>
+    <td>count: a plan with no section (a layout the extractor does not
+    read)</td>
+    <td>counted</td>
+    </tr>
+    <tr>
+    <td><code>unmapped_headings</code></td>
+    <td>the share of the headings on the sample’s pages that map to no
+    section</td>
+    <td>≤ 0.65</td>
+    </tr>
+    <tr>
+    <td><code>privacy_hits</code></td>
+    <td>count: personal data left in the plan or its sections
+    (<code>privacy_check</code>’s patterns)</td>
+    <td>0</td>
+    </tr>
+    </tbody>
+    </table>
+
+    The gates are `PILOT_GATE`; methods.qmd (“Pilot protocol and gate”)
+    gives their reasons. Record the table in the institution’s issue,
+    with the course ids of `no_sections` and the ten most frequent
+    unmapped headings, each either mapped or not plan text (facts box,
+    contact, overlap). A number short of its gate is fixed (step 4) or
+    explained there with its cause on the site (courses DBH lists that
+    have no page). With 100 course-years a share is uncertain by about
+    ±0.07. A plan that the section extractor cannot cut because of an
+    unusual layout is accepted, but counted in `no_sections`; a layout
+    left so is noted in the institution’s notes in
+    `data/data_notes.qmd`.
+
+6.  **Full harvest** once the gate passes:
+    `harvest_all(institutions = "ntnu")` fetches every other offering;
+    the sample is in the raw store already. Start the slowest first
+    (NTNU and UiB, 10 seconds a page, five to six days each), in the
+    background, several institutions at once (see “Several Institutions
+    at Once”).
+
+A site that shows only the current plan gives the plans of the academic
+year its pages were fetched in (see “Sites that show only the current
+plan”), so its pilot’s pages join DBH’s offerings once the DBH snapshot
+has that year. Until then only `fetched` can be read; the rest of the
+gate and the audits wait for the new snapshot (“The Yearly Harvest”,
+step 2). Samas fetches nothing (`noop`), so the gate does not apply
+there.
+
 ## Adding a New Institution
 
 To add support for a new institution, you need to modify **two files**.
@@ -498,8 +647,8 @@ result |> select(course_code, url, html_success, extracted_text) |> head()
 result$extracted_text[1]  # Inspect first result
 ```
 
-Expand a little bit at a time, for example by year. Add more years as
-the pipeline works.
+Then pilot it on a sample of its courses before the full harvest (see
+“Piloting an Institution”).
 
 For standard institutions no changes to `R/extract_fulltext.R` or
 `R/harvest_strategies.R` are needed. Sites that need a browser (Shadow
@@ -1110,7 +1259,9 @@ institution (`R/audit/prepare_{check}.R`; for sections after the
 deterministic pre-pass `R/audit/qa_sections.R`), the agents write
 findings to `data/audit/{check}/findings/{inst}.json`, and
 `R/audit/aggregate.R` verifies them (course ids and verbatim quotes must
-be in the packet) and writes a ranked cross-institution report. Details:
+be in the packet) and writes a ranked cross-institution report. With
+`--pilot`, each institution’s packet is drawn from its pilot sample only
+(`data/pilot/{inst}.csv`, see “Piloting an Institution”). Details:
 `.claude/skills/audit-institutions/SKILL.md`.
 
 ## Data Files: Published and Internal
@@ -1141,6 +1292,12 @@ folder says what may be shared:
 <td><code>data/input/</code></td>
 <td>the DBH snapshots, the pipeline input</td>
 <td><code>data-raw/courses.R</code></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>data/pilot/</code></td>
+<td>the pilot samples: offerings and their strata</td>
+<td><code>pilot_sample()</code></td>
 <td>yes</td>
 </tr>
 <tr>
@@ -1220,6 +1377,12 @@ input</td>
 and run</td>
 <td>none</td>
 <td>internal</td>
+</tr>
+<tr>
+<td><code>data/pilot/{inst}.csv</code></td>
+<td>an institution’s pilot sample (“Piloting an Institution”)</td>
+<td>none</td>
+<td>in git</td>
 </tr>
 <tr>
 <td><code>data/variables.csv</code></td>
@@ -1977,6 +2140,14 @@ reconstructed (target <code>ledger</code>)</td>
 and server errors</td>
 </tr>
 <tr>
+<td><code>pilot_sample(institution, oldest_year)</code>,
+<code>pilot_gate(institution)</code></td>
+<td><code>R/harvest.R</code>, <code>R/pipeline_metrics.R</code></td>
+<td>The pilot of an institution: its stratified sample of DBH
+course-years; the gate numbers of the sample in the build
+(<code>gate_numbers()</code>)</td>
+</tr>
+<tr>
 <td><code>fetch_coverage(frame, ledger, offerings)</code>,
 <code>page_changes(ledger, files, config)</code></td>
 <td><code>R/pipeline.R</code></td>
@@ -2200,7 +2371,7 @@ hold the same `course_id` (not a retry); a file was copied into
     ├── renv.lock                  # Pinned package versions (renv::restore())
     ├── .github/workflows/tests.yml # Tests on GitHub Actions
     ├── R/
-    │   ├── harvest.R              # Entry points: harvest_institution(), harvest_all()
+    │   ├── harvest.R              # Entry points: harvest_institution(), harvest_all(); pilot_sample()
     │   ├── harvest_strategies.R   # Strategy implementations
     │   ├── institution_config.R   # Institution registry (strategy, selectors, overrides, section_*)
     │   ├── utils.R                # Helpers (data paths, add_course_id, validation, normalization)
@@ -2215,7 +2386,7 @@ hold the same `course_id` (not a retry); a file was copied into
     │   ├── section_heading_map.R  # Heading → section patterns (incl. ".drop")
     │   ├── extract_sections.R     # Section extraction strategies + cleanup
     │   ├── pipeline.R             # Steps of the {targets} pipeline (_targets.R)
-    │   ├── pipeline_metrics.R     # Regression snapshot: check_pipeline_metrics()
+    │   ├── pipeline_metrics.R     # Regression snapshot: check_pipeline_metrics(); the pilot gate
     │   ├── release.R              # release_data(), finalize_release(), frozen_changes()
     │   └── audit/                # Audit harness for /audit-institutions
     ├── app/
@@ -2223,6 +2394,7 @@ hold the same `course_id` (not a retry); a file was copied into
     │   └── course_browser_ojs/    # Static Observable JS browser; build_data.R → data/ (see its README)
     ├── data/                      # README "Data Files: Published and Internal"
     │   ├── input/                 # DBH snapshots dbh_{courses,programmes}_{date}.parquet (in git)
+    │   ├── pilot/                 # Pilot samples {inst}.csv (in git)
     │   ├── raw/                   # Harvest: {inst}/{year}/{run}.parquet, {inst}/ledger/, checkpoint/ (not in git)
     │   ├── interim/               # Rebuilt text with personal data (not in git); teacher_ed/: that frame's
     │   ├── processed/             # Anonymized data files, can be shared (not in git); teacher_ed/: that frame's

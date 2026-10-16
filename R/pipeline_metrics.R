@@ -137,3 +137,97 @@ check_pipeline_metrics <- function(update = FALSE, frames = names(METRICS_SNAPSH
   }))
   invisible(changes)
 }
+
+# --- Pilot gate ---------------------------------------------------------------
+# The numbers an institution's pilot must reach before its full harvest
+# (README "Piloting an Institution"; methods.qmd "Pilot protocol and gate"):
+# minimum shares of the pilot sample's course-years, and maxima for
+# `unmapped_headings` and `privacy_hits`. Proposed 2026-10-16 from what the
+# configured institutions reach in the teacher-ed frame (methods.qmd); for
+# the project lead to confirm.
+PILOT_GATE <- c(fetched = 0.80, plan = 0.80, assessment = 0.90, coursework = 0.70,
+                unmapped_headings = 0.65, privacy_hits = 0)
+PILOT_GATE_MAX <- c("unmapped_headings", "privacy_hits")
+
+#' Gate numbers of a pilot sample
+#'
+#' The sample's course-years (course_code_raw x year, pilot_sample()) in the
+#' built data of all courses: `fetched`, the share with a page in some
+#' semester (its URL answered "ok", fetch_coverage(), or it has a plan: a
+#' current site's plan comes from an earlier snapshot); `plan`, the share
+#' with a plan; `assessment` and `coursework`, the share of those with a plan
+#' whose plan has an `assessment` or a `coursework_requirements` section;
+#' `no_sections`, the course-years whose plan has no section at all (a page
+#' layout the section extractor does not read: accepted, but counted; no
+#' threshold); `unmapped_headings`, the share of the headings on the
+#' sample's pages that map to no section (target page_headings);
+#' `privacy_hits`, the course-years whose plan or sections hold personal
+#' data by the patterns of target privacy_check.
+#'
+#' @param sample The pilot sample (its file, pilot_file()): `institution`,
+#'   `course_id`, `course_code_raw`, `year`.
+#' @param coverage Target coverage, frame "all".
+#' @param offerings,sections course_offerings_full and plan_sections of all
+#'   courses.
+#' @param headings,page_map Targets page_headings and page_map.
+#' @param thresholds PILOT_GATE.
+#' @return Tibble `metric`, `value`, `n` (its denominator), `threshold`,
+#'   `pass` (NA without a threshold), `examples` (list: a course id of each
+#'   course-year that counts against the metric, or the most frequent
+#'   unmapped headings).
+gate_numbers <- function(sample, coverage, offerings, sections, headings, page_map,
+                         thresholds = PILOT_GATE) {
+  key <- offering_key(sample$course_id)
+  cov <- coverage[match(key, offering_key(coverage$course_id)), ]
+  off <- offerings[match(key, offering_key(offerings$course_id)), ]
+  planned <- cov$has_plan %in% TRUE & !is.na(off$plan_content_id)
+  plan_key <- paste(off$plan_content_id, off$course_code)
+  sec <- sections[sections$institution %in% sample$institution, ]
+  sec <- sec[paste(sec$plan_content_id, sec$course_code) %in% plan_key[planned], ]
+  sec_key <- paste(sec$plan_content_id, sec$course_code)
+  has <- function(s) planned & plan_key %in% sec_key[sec$section %in% s]
+  personal <- function(x) Reduce(`|`, lapply(.personal_data_patterns, grepl, x = x, perl = TRUE))
+  unit <- paste(sample$course_code_raw, sample$year)
+  by_unit <- function(x) unname(tapply(x, unit, any)[unique(unit)])
+  u <- tibble::tibble(
+    id = sample$course_id[!duplicated(unit)], fetched = by_unit(cov$outcome %in% "ok" | planned),
+    plan = by_unit(planned), assessment = by_unit(has("assessment")),
+    coursework = by_unit(has("coursework_requirements")), sectioned = by_unit(has(sec$section)),
+    personal = by_unit(planned & (personal(off$course_plan) | plan_key %in% sec_key[personal(sec$text)])))
+
+  pages <- unique(stats::na.omit(page_map$page_id[match(off$course_id, page_map$course_id)]))
+  h <- headings[headings$page_id %in% pages, ]
+  unmapped <- h$value[h$what == "unmapped"]
+  out <- tibble::tibble(
+    metric = c("fetched", "plan", "assessment", "coursework", "no_sections",
+               "unmapped_headings", "privacy_hits"),
+    value = c(mean(u$fetched), mean(u$plan), mean(u$assessment[u$plan]), mean(u$coursework[u$plan]),
+              sum(u$plan & !u$sectioned), if (nrow(h)) length(unmapped) / nrow(h) else NA,
+              sum(u$personal)),
+    n = c(nrow(u), nrow(u), rep(sum(u$plan), 3), nrow(h), sum(u$plan)),
+    examples = c(lapply(list(!u$fetched, !u$plan, u$plan & !u$assessment, u$plan & !u$coursework,
+                             u$plan & !u$sectioned), function(x) u$id[x]),
+                 list(names(utils::head(sort(table(unmapped), decreasing = TRUE), 10)), u$id[u$personal])))
+  out$threshold <- unname(thresholds[out$metric])
+  out$pass <- ifelse(out$metric %in% PILOT_GATE_MAX, out$value <= out$threshold,
+                     out$value >= out$threshold)
+  out[c("metric", "value", "n", "threshold", "pass", "examples")]
+}
+
+#' The gate numbers of an institution's pilot
+#'
+#' gate_numbers() of its pilot sample in the current build: run
+#' targets::tar_make() first, and read this with the pipeline's functions
+#' loaded (targets::tar_load_globals()).
+#'
+#' @param institution The institution.
+#' @param thresholds PILOT_GATE.
+#' @param sample Its pilot sample; by default its file (pilot_file()).
+pilot_gate <- function(institution, thresholds = PILOT_GATE,
+                       sample = utils::read.csv(pilot_file(institution), colClasses = "character")) {
+  coverage <- targets::tar_read(coverage)
+  gate_numbers(sample, coverage[coverage$frame == "all", ],
+               readRDS(file.path(frame_dir("all", "interim"), "course_offerings_full.RDS")),
+               readRDS(file.path(frame_dir("all"), "plan_sections.RDS")),
+               targets::tar_read(page_headings), targets::tar_read(page_map), thresholds)
+}

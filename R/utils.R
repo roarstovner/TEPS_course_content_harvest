@@ -2,9 +2,15 @@
 # the DBH snapshots (in git); data/raw the harvest, which only harvesting
 # writes; data/interim and data/processed are rebuilt by targets::tar_make(),
 # interim with raw page text (personal data, internal), processed anonymized
-# (can be shared).
+# (can be shared). data/pilot holds the pilot samples (pilot_sample(), in git).
 INPUT_DIR <- "data/input"
 RAW_DIR <- "data/raw"
+PILOT_DIR <- "data/pilot"
+
+# The pilot sample of an institution (pilot_sample()).
+pilot_file <- function(institution, pilot_dir = PILOT_DIR) {
+  file.path(pilot_dir, paste0(institution, ".csv"))
+}
 
 # DBH study types (Studiumkode, table 347) of the five-year teacher education
 # programmes: the teacher-ed frame (methods.qmd, "Population and sampling frame").

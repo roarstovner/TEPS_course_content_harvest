@@ -20,7 +20,7 @@
 #   data/audit/sections/packets/{inst}.md
 #   data/audit/sections/manifest.csv, sample.csv
 #
-# Run:  Rscript R/audit/prepare_sections.R [inst ...]
+# Run:  Rscript R/audit/prepare_sections.R [inst ...] [--pilot]
 
 source("R/audit/utils.R")
 source("R/anonymize.R")             # heading texts are raw page text
@@ -46,8 +46,8 @@ out_dir <- file.path(audit_dir(CHECK), "packets")
 dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
 
 # ── Load ─────────────────────────────────────────────────────────────────────
-audit_require_fresh("data/processed/plan_sections.RDS", "data/interim/course_offerings_full.RDS",
-                    "Run targets::tar_make().")
+# both are written by targets::tar_make(), in either order
+audit_require_fresh("data/processed/plan_sections.RDS", character(), "Run targets::tar_make().")
 audit_require_fresh("data/audit/sections/sections_qa_suspects.RDS", "data/processed/plan_sections.RDS",
                     "Run Rscript R/audit/qa_sections.R.")
 
@@ -55,10 +55,10 @@ sec      <- readRDS("data/processed/plan_sections.RDS") |>
   transmute(course_id = source_course_id, institution, section, raw_text = text)
 suspects <- readRDS("data/audit/sections/sections_qa_suspects.RDS")
 sources  <- readRDS("data/processed/course_plans.RDS")$source_course_id
-plans    <- readRDS("data/interim/course_offerings_full.RDS") |>
-  filter(course_id %in% sources) |>
+offerings <- readRDS("data/interim/course_offerings_full.RDS") |>
   select(course_id, institution, course_plan, plan_content_id,
          course_code_raw, course_name, year, semester_name)
+plans    <- filter(offerings, course_id %in% sources)
 
 # Headings on each source page and where they map (target `blocks`, keyed by
 # page; `page_map`: each offering's page): shows why text went where it did.
@@ -99,7 +99,9 @@ manifest <- list()
 sample   <- list()
 
 for (inst in institutions) {
-  inst_plans <- plans |> filter(institution == inst)
+  # with --pilot, the plans of the pilot sample's offerings
+  sampled <- audit_pilot_rows(filter(offerings, institution == inst), inst)
+  inst_plans <- plans |> filter(institution == inst, plan_content_id %in% sampled$plan_content_id)
   if (nrow(inst_plans) == 0) next
 
   # Courses with plan text but no sections at all never reach the pre-pass,

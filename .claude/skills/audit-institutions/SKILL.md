@@ -1,7 +1,7 @@
 ---
 name: audit-institutions
 description: Audit one pipeline step across institutions with one review agent per institution — section extraction (`sections`), fulltext extraction (`fulltext`) or anonymization (`anonymization`). Builds review packets in R, dispatches parallel review agents, verifies their findings mechanically and writes a ranked cross-institution report plus a synthesis. Use when asked to check, verify, audit or QA a pipeline step "across all institutions" or "with one agent per institution", or to re-check institutions after a fix.
-argument-hint: <sections|fulltext|anonymization> [inst ...] [--model sonnet|opus|haiku] [--tag label]
+argument-hint: <sections|fulltext|anonymization> [inst ...] [--pilot] [--model sonnet|opus|haiku] [--tag label]
 ---
 
 # Audit institutions
@@ -20,6 +20,10 @@ context per institution is the point.
 - `<check>` (required): the name of a recipe in `checks/` — `sections`,
   `fulltext` or `anonymization`. Ask if missing.
 - `[inst ...]`: institutions to audit (default: all that get a packet).
+- `--pilot`: draw each institution's packet from its pilot sample only
+  (`data/pilot/{inst}.csv`, README "Piloting an Institution"); the places
+  the suspects leave unused go to random controls. Pass it on to the
+  prepare script.
 - `--model`: model for the review agents (default: the recipe's default).
 - `--tag <label>`: write findings to `data/audit/{check}/findings-{label}/`
   instead of `findings/`. Use for model comparisons and experiments that must
@@ -39,7 +43,7 @@ rebuild them, the packet builder, and the rubric the agents apply.
   its source.
 - If a harvest is running (an R session writing `data/raw/{inst}/`), audit only
   institutions that already have a raw harvest, and say so.
-- Build packets: `Rscript R/audit/prepare_{check}.R [inst ...]`.
+- Build packets: `Rscript R/audit/prepare_{check}.R [inst ...] [--pilot]`.
 - Sanity-check the printed summary and skim the head of one packet (not
   empty, not garbled, course ids present). Note institutions with very few
   courses; their findings carry less weight.

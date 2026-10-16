@@ -281,6 +281,64 @@ carries a new token on every fetch, and at UiB and UiS 70 pages had
 another body with the same text, so the plan text of two bodies that
 differ is compared. *Since:* 2026-10-16.
 
+**Pilot protocol and gate: an institution’s full harvest waits for a
+pilot that passes fixed gates.** Before the full harvest of an
+institution (a new one, or a configured one going from teacher education
+to all its courses), a sample of its DBH courses is harvested, built and
+audited, and its numbers are checked against gates (README “Piloting an
+Institution”). *The sample:* 100 course-years (a course in a year, with
+every semester DBH lists it in; about 180-200 offerings) in 2019, 2022,
+2025 and the oldest year the site has plans for, leaving out the pilot
+years before it (at a site that shows only the current plan, the latest
+DBH year), with at least one course-year of each DBH department, five of
+each level group (lower degree, higher degree, PhD, continuing
+education: a programme so named or DBH’s experience-based master, other)
+and ten English-taught ones, the rest at random in equal numbers per
+year. It is drawn with a fixed seed from the dated DBH snapshot and kept
+in `data/pilot/`. The course-year is the unit because DBH lists most
+courses in both semesters, and a course taught in one has no page in the
+other. *The gates*, as shares of the sample’s course-years: a page in
+some semester at least 80 %, a plan at least 80 %, and of those with a
+plan an assessment section at least 90 % and a coursework-requirements
+section at least 70 %; at most 65 % of the headings on the sample’s
+pages unmapped; no personal data left. Plans that an unusual layout
+leaves without sections are accepted (decided 2026-10-16) but counted. A
+number short of its gate is fixed, or its cause on the site explained in
+the institution’s issue, before the full harvest. *Why:* a full harvest
+takes days at the slowest sites (10 seconds a page at NTNU and UiB),
+while a config, URL builder or heading map that fails on part of a site
+(a faculty, an old layout, the English pages) shows on a sample that
+crosses them, at a hundredth of the requests. *Thresholds:* from what
+the configured institutions reach in the teacher-ed frame (build of
+2026-10-16; years 2019, 2022, 2025 and the oldest year in which at least
+half the course-years have a plan; 18 institutions, Samas having no
+plans by design). A page and a plan: 15 of 18 reach 80 % (median plan 90
+%); below are UiT (64 %), UiB (72 %) and USN (72 %), where URL discovery
+or the site has no page for a quarter to a third of the course-years DBH
+lists. Assessment: all reach 92 % (OsloMet, practicum plans without
+sections). Coursework: 17 reach 74 % (Nord); UiO has 32 %. Unmapped
+headings: from 0 % (UiS, USN, read as text) to 64 % (Volda, whose facts
+box has field labels for headings, “Emnekode:”); the unmapped headings
+today are facts boxes, contact and course-overlap headings, so this gate
+only catches a page read wrongly or a site whose headings the map does
+not know, and the most frequent unmapped headings are checked by hand as
+well. Personal data: none anywhere. A pilot sample drawn the same way
+among the teacher-ed offerings gives the same numbers within its error
+(about ±0.07 at 100 course-years), except where an old layout weighs
+more in a sample with equal numbers per year: at UiT, 8 of the frame’s
+10 course-years without an assessment section and 18 of 42 without
+coursework are 2008 pages, so the sample has assessment 86 % and
+coursework 60 % (98 % and 93 % in the frame); at UiS, 7 of the sample’s
+17 without coursework are 2009 plans (81 %, 90 % in the frame).
+*Rejected:* a simple random sample of offerings (it misses small
+departments, PhD and continuing education); every department crossed
+with every level and year (over a thousand cells at NTNU for 100
+course-years); thresholds per institution (they would accept today’s
+gaps as the standard); a full harvest without a pilot (a fault found
+afterwards costs another harvest of the pages it affects). *Status:*
+thresholds proposed 2026-10-16, for the project lead to confirm.
+*Since:* 2026-10-16.
+
 **UiO semester pages are not used:** URLs such as `/h24/` hold logistics
 (teachers, timetable, exam dates), not the plan (decided 2026-02).
 

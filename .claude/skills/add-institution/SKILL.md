@@ -114,16 +114,25 @@ b[b$role != "text", c("role", "text", "section")]
 page_sections(b, result$extracted_text[1], cfg)
 ```
 
-### Step 4: Run full harvest
+### Step 4: Pilot, then the full harvest
+
+Follow README "Piloting an Institution": a stratified sample of the
+institution's DBH course-years, harvested into the raw store, built, audited
+and fixed until it passes the gate; only then the full harvest.
 
 ```r
-# Harvest all years into the raw store (data/raw/newuni/{year}/{date}.parquet)
-harvest_all(courses, institutions = "newuni")
+s <- pilot_sample("newuni", oldest_year = 2015)    # writes data/pilot/newuni.csv: commit it
+harvest_all(courses = s, institutions = "newuni")  # into data/raw/newuni/{year}/{date}.parquet
+targets::tar_make()
+# /audit-institutions fulltext newuni --pilot, then sections and anonymization
+targets::tar_load_globals(); pilot_gate("newuni")  # record the numbers in the institution's issue
+
+# once the gate passes: every other offering, all years
+harvest_all(institutions = "newuni")
 ```
 
-`harvest_all()` without `institutions` picks up the new config entry too. Only
-`harvest_all()` writes `data/raw/`: test with `harvest_institution()` (Step 3),
-which only returns the rows.
+Only `harvest_all()` writes `data/raw/`: test with `harvest_institution()`
+(Step 3), which only returns the rows.
 
 ## Special Cases
 

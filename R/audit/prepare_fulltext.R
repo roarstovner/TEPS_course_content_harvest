@@ -34,10 +34,9 @@
 # Inputs:  the raw harvest (harvested_rows()) + data/interim/extracted_text.RDS
 # Outputs: data/audit/fulltext/packets/{inst}.md, manifest.csv, sample.csv
 #
-# Run:  Rscript R/audit/prepare_fulltext.R [inst ...]
+# Run:  Rscript R/audit/prepare_fulltext.R [inst ...] [--pilot]
 
 source("R/audit/utils.R")
-source("R/utils.R")                 # harvested_institutions()
 
 # ── Tunables ─────────────────────────────────────────────────────────────────
 SUSPECT_N     <- 20
@@ -167,7 +166,7 @@ for (inst in institutions) {
     cat(sprintf("  %-8s skipped (noop strategy, no extracted text by design)\n", inst))
     next
   }
-  df <- harvested_rows(inst)   # extracted_text from the {targets} pipeline
+  df <- audit_pilot_rows(harvested_rows(inst), inst)   # extracted_text from the {targets} pipeline
   df <- df |>
     mutate(
       html_error_msg = vapply(html_error, error_msg, character(1)),

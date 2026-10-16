@@ -24,10 +24,9 @@
 # Inputs:  the raw harvest + data/interim/extracted_text.RDS (harvested_rows())
 # Outputs: data/audit/anonymization/packets/{inst}.md, manifest.csv, sample.csv
 #
-# Run:  Rscript R/audit/prepare_anonymization.R [inst ...]
+# Run:  Rscript R/audit/prepare_anonymization.R [inst ...] [--pilot]
 
 source("R/audit/utils.R")
-source("R/utils.R")                 # harvested_institutions()
 source("R/anonymize.R")
 source("R/fetch_html_cols.R")       # institution_config depends on fetch_fn refs
 source("R/extract_fulltext.R")      # pre/post fns used by institution_config
@@ -120,7 +119,7 @@ manifest <- list()
 sample   <- list()
 
 for (inst in institutions) {
-  df <- harvested_rows(inst)   # extracted_text from the {targets} pipeline
+  df <- audit_pilot_rows(harvested_rows(inst), inst)   # extracted_text from the {targets} pipeline
   df <- df |>
     select(-any_of(c("html", "html_error"))) |>
     filter(!is.na(extracted_text), nzchar(extracted_text))

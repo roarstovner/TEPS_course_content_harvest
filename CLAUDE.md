@@ -12,7 +12,8 @@ the gitignored `CLAUDE.local.md`.
   stages, how to run and rebuild each step (branches per raw partition), the
   frames (all courses; the teacher-ed files in `teacher_ed/` folders, which
   the releases use), the yearly harvest and harvesting several institutions
-  at once (separate R processes), section extraction (strategies,
+  at once (separate R processes), piloting an institution before its full
+  harvest (sample, `--pilot` audits, gate thresholds), section extraction (strategies,
   `section_*` config fields, heading map, cleanup), which data files are
   published and which are internal, the append-only raw store and how to
   finalize a release, the fetch ledger and retries by outcome class (coverage,
