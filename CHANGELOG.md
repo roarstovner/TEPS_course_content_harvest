@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Yearly runbook and parallel harvesting in README (#367)
 - Remove one-off files from the teacher-ed harvest (#368)
 - Variable names: rename DBH columns and document them (#366)
 - targets: all-HE pipeline as default, teacher-ed outputs as a frame filter, branches per institution x year (#365)
