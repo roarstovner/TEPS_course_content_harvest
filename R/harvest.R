@@ -6,14 +6,16 @@
 #' Harvest one institution
 #'
 #' @param institution Character, e.g. "oslomet"
-#' @param courses Data frame from courses.RDS (pre-filtered or not)
+#' @param courses Data frame from dbh_courses() (pre-filtered or not)
 #' @param year Optional integer — if given, only harvest this year
 #' @param refetch Logical — if TRUE, ignore checkpoints and re-download everything
 #' @param skip Course ids not to harvest (already in a raw file)
+#' @param known Course ids in the raw files: an offering among them keeps its
+#'   id, also when a later DBH snapshot gives it another Status
 #' @return Data frame with DBH columns plus course_id, url, html, html_error,
 #'   html_success, extracted_text
 harvest_institution <- function(institution, courses, year = NULL,
-                                refetch = FALSE, skip = character()) {
+                                refetch = FALSE, skip = character(), known = skip) {
   config <- get_institution_config(institution)
   if (!identical(config$plan_years, "url")) refetch <- prepare_fresh_harvest(config)
 
@@ -21,6 +23,7 @@ harvest_institution <- function(institution, courses, year = NULL,
     dplyr::filter(institution == !!institution) |>
     apply_year_filter(config, year) |>
     add_course_id() |>
+    dplyr::mutate(course_id = first_course_id(course_id, known)) |>
     dplyr::filter(!course_id %in% skip)
   if (nrow(df) == 0) return(df)
   df <- df |>
@@ -56,7 +59,8 @@ harvest_institution <- function(institution, courses, year = NULL,
 #' file holds yet (a "current" site: a new snapshot of its latest DBH year)
 #' and saves them to data/raw/harvests/{date}/html_{inst}.RDS (a second harvest
 #' the same day: harvests/{date}_{HHMMSS}/). An existing raw file is never
-#' written again.
+#' written again. An offering in a raw file keeps its course_id when a later
+#' DBH snapshot gives it another Status (first_course_id()).
 #'
 #' With `retry`, a site with the year in the URL also fetches again the
 #' offerings whose page gave no plan in the current build
@@ -64,7 +68,9 @@ harvest_institution <- function(institution, courses, year = NULL,
 #' saved with `retry = TRUE`, and read_harvest() takes their new page.
 #' Run targets::tar_make() first, and narrow it with `year`.
 #'
-#' @param courses Data frame from courses.RDS. If NULL, reads from disk.
+#' @param courses Data frame from dbh_courses(). If NULL, the teacher-ed frame
+#'   of the latest DBH snapshot: until tar_make() filters a frame, everything
+#'   in data/raw enters the teacher-ed outputs.
 #' @param year Optional integer — if given, only harvest this year
 #' @param refetch Logical — if TRUE, ignore checkpoints and re-download everything
 #' @param institutions Optional character vector of institution names to harvest.
@@ -72,7 +78,7 @@ harvest_institution <- function(institution, courses, year = NULL,
 #' @param retry Logical — also fetch offerings whose page gave no plan
 harvest_all <- function(courses = NULL, year = NULL, refetch = FALSE,
                         institutions = NULL, retry = FALSE) {
-  if (is.null(courses)) courses <- readRDS("data/input/courses.RDS")
+  if (is.null(courses)) courses <- dbh_courses("teacher_ed")
   if (!is.data.frame(courses)) {
     stop("`courses` must be a data frame, not ", class(courses)[1], ". ",
          "Did you mean harvest_all(institutions = ...)?", call. = FALSE)
@@ -86,13 +92,13 @@ harvest_all <- function(courses = NULL, year = NULL, refetch = FALSE,
     tryCatch({
       first <- length(harvest_files(inst)) == 0
       current <- identical(configs[[inst]]$plan_years, "current")
-      skip <- if (first || current) character() else
-        unlist(lapply(harvest_files(inst), function(f) readRDS(f)$course_id))
+      known <- as.character(unlist(lapply(harvest_files(inst), function(f) readRDS(f)$course_id)))
+      skip <- if (current) character() else known
       again <- if (retry) intersect(skip, offerings_without_plan(inst)) else character()
       if (length(again)) message(inst, ": ", length(again), " offerings without a plan to retry")
       # a retry fetches again, so the checkpoint's old pages are not reused
       result <- harvest_institution(inst, courses, year, refetch || length(again) > 0,
-                                    setdiff(skip, again))
+                                    setdiff(skip, again), known)
       file <- if (first) harvest_file(inst) else dated_harvest_file(inst)
       if (!first && file.exists(file)) {   # harvested today already
         file <- dated_harvest_file(inst, format(Sys.time(), "%Y-%m-%d_%H%M%S"))

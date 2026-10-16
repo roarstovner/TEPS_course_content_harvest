@@ -433,7 +433,7 @@ harvest_pdf_split <- function(df, config, refetch = FALSE) {
 
 # Steiner helper: remap Pedagogikk emne numbers
 # PDF has "pedagogikk og elevkunnskap1, emne 4" and "emne 5"
-# but courses.RDS has M-PEL2 "pedagogikk og elevkunnskap2, emne 1" and "emne 2"
+# but DBH has M-PEL2 "pedagogikk og elevkunnskap2, emne 1" and "emne 2"
 .steiner_remap_pel_emne <- function(name) {
   if (stringr::str_detect(name, "^pedagogikk og elevkunnskap1, emne 4$")) {
     return("pedagogikk og elevkunnskap2, emne 1")

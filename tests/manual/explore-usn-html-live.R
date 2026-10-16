@@ -8,6 +8,7 @@ library(dplyr)
 source(here::here("R/resolve_course_urls.R"))
 source(here::here("R/add_course_url.R"))
 source(here::here("R/utils.R"))
+for (f in c("R/fetch_html_cols.R", "R/extract_fulltext.R", "R/institution_config.R")) source(here::here(f))
 
 # Create a small test dataframe with teacher education courses
 test_df <- tibble::tibble(
@@ -33,7 +34,7 @@ cat("\nTime elapsed:", round(difftime(end_time, start_time, units = "secs"), 1),
 cat("Expected: LH-NOD1000 and LRFY240 should have URLs, FAKE999 should be NA\n")
 
 # Additional exploration with real course data
-courses <- readRDS(here::here("data/input/courses.RDS"))
+courses <- dbh_courses("teacher_ed", input_dir = here::here(INPUT_DIR))
 
 hits <- courses |>
   filter(institution == "usn") |>

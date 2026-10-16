@@ -31,11 +31,11 @@ test_that("USN batch resolution finds valid courses and rejects fake ones", {
               info = "FAKE999 should return NA (non-existent course)")
 })
 
-test_that("USN resolution works for specific course from courses.RDS", {
+test_that("USN resolution works for specific course from the DBH snapshot", {
   skip_on_ci()
   skip_if_not(interactive(), "Manual test - requires browser")
 
-  courses <- readRDS(here::here("data/input/courses.RDS"))
+  courses <- dbh_courses("teacher_ed", input_dir = here::here(INPUT_DIR))
 
   hits <- courses |>
     filter(institution == "usn") |>

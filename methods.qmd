@@ -34,14 +34,52 @@ of them with a plan, and `r n(nrow(plans))` unique plans from
 
 ## Population and sampling frame
 
-**Courses in the five-year teacher education programmes, as registered in
-DBH.** Programmes are DBH table 347 rows with study type INTMASTER, IMALU1-7,
-IMALU5-10 or LUPE; courses are the table 208 rows of those programmes, matched
-on institution and programme code (a programme code is unique only within an
-institution). *Why:* DBH is the official register and gives course metadata
-(credits, level, language, subject) that need not be coded from the plans.
-*Rejected:* the four-year GLU programmes (not in TEPS). *Since:* 2026-09-30
-(institution + code match, c04fbc3).
+**The frame is every course in DBH; teacher education is a filter of it.** The
+input is a dated snapshot of DBH's bulk files, written by `data-raw/courses.R`:
+`data/input/dbh_courses_{date}.parquet` is table 208 (every course of every
+institution, year and semester, all levels and statuses) and
+`dbh_programmes_{date}.parquet` table 347 (programmes). `dbh_courses()` reads
+the latest; `dbh_courses("teacher_ed")` is the teacher-ed frame below. *Why:*
+the plans of all higher education are to be collected, and teacher education
+(or the AI question) is one use of them, not the frame (decided 2026-10-16).
+One snapshot for both frames gives a teacher-ed offering the same `course_id`
+in both. *Rejected:* a separate teacher-ed query (the earlier
+`data/input/courses.RDS`, table 208 queried by programme code): two queries on
+different days can disagree on an offering's Status, which is part of its id;
+querying each institution through the API, where the bulk files give the whole
+table at once. *Consequence:* the snapshot of 2026-10-16 has 2 164 079 rows
+(168 institution codes, 1986-2025), 1 257 158 of them at the 19 institutions
+with a config. Its teacher-ed filter is the list of 2026-10-06 unchanged: the
+same 45 280 offerings, ids and values (DBH's bulk file ends two course names
+with a newline, which is trimmed). Nothing harvested or published changes: a
+raw file holds the DBH columns of its harvest. *Since:* 2026-10-16.
+
+**Teacher education: courses in the five-year teacher education programmes, as
+registered in DBH.** Programmes are DBH table 347 rows with study type
+INTMASTER, IMALU1-7, IMALU5-10 or LUPE (in any year); courses are the table 208
+rows of those programmes, matched on institution and programme code (a
+programme code is unique only within an institution). Table 208 has one row per
+course and semester, under one programme (two exceptions among the 2 164 079
+rows of 2026-10-16, both in 2007; `dbh_courses()` keeps the first), so the frame
+holds the courses DBH registers under a teacher-ed programme, not courses of
+other programmes that its students also take. *Why:* DBH is the official
+register and gives course metadata (credits, level, language, subject) that
+need not be coded from the plans. *Rejected:* the four-year GLU programmes (not
+in TEPS). *Since:* 2026-09-30 (institution + code match, c04fbc3); a filter of
+the all-course snapshot since 2026-10-16.
+
+**An offering keeps its first `course_id`.** The id is
+`{institution}_{code}_{year}_{semester}_{status}`, and a later DBH snapshot can
+change the Status. A harvest matches offerings on the rest of the id
+(institution, code, year, semester: one row in table 208), and an offering
+already in a raw file keeps the id it was first harvested under
+(`first_course_id()`); a frame filter of the raw store matches the same way.
+*Why:* with the whole id, a changed Status would make the same course and
+semester a second offering, fetched again. *Rejected:* dropping Status from the
+id, which would change every published id. *Consequence:* none so far: the
+2026-10-16 snapshot gives all 45 280 teacher-ed offerings of 2026-10-06 their
+old id, and holds every one of the 41 025 ids in the raw store. *Since:*
+2026-10-16.
 
 **An institution can have several DBH codes.** INN reports 2025 under its
 university code 1177 (Universitetet i Innlandet) instead of 0264; both map to
@@ -55,7 +93,8 @@ and has a plan in one only. Coverage is therefore counted in course-years
 (course × year with a plan in at least one semester), not offerings
 (`data/data_notes.md`, "Semester registration in DBH").
 
-**Years:** DBH had no 2026 rows on 2026-10-06, so the frame ends with 2025.
+**Years:** DBH had no 2026 rows on 2026-10-06 or in the snapshot of 2026-10-16,
+so the frame ends with 2025.
 
 **Samas is excluded:** its website's course codes do not match DBH, and the
 teacher education courses are described only in programme PDFs (decided 2026-02).

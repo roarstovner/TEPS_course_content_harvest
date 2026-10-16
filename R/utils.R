@@ -1,9 +1,65 @@
 # Data folders (README "Data Files: Published and Internal"): data/input holds
-# the DBH course list (in git); data/raw the harvest, which only harvesting
+# the DBH snapshots (in git); data/raw the harvest, which only harvesting
 # writes; data/interim and data/processed are rebuilt by targets::tar_make(),
 # interim with raw page text (personal data, internal), processed anonymized
 # (can be shared).
+INPUT_DIR <- "data/input"
 RAW_DIR <- "data/raw"
+
+# DBH study types (Studiumkode, table 347) of the five-year teacher education
+# programmes: the teacher-ed frame (methods.qmd, "Population and sampling frame").
+TEACHER_ED_STUDIUM <- c("INTMASTER", "IMALU5-10", "IMALU1-7", "LUPE")
+
+# A DBH snapshot written by data-raw/courses.R, of `date` or the latest:
+# data/input/dbh_{table}_{YYYY-MM-DD}.parquet.
+dbh_snapshot_file <- function(table = c("courses", "programmes"), date = NULL,
+                              input_dir = INPUT_DIR) {
+  table <- match.arg(table)
+  files <- if (is.null(date)) sort(Sys.glob(file.path(input_dir, paste0("dbh_", table, "_*.parquet")))) else
+    file.path(input_dir, sprintf("dbh_%s_%s.parquet", table, format(as.Date(date))))
+  files <- files[file.exists(files)]
+  if (!length(files)) stop("No DBH ", table, " snapshot in ", input_dir, ": run data-raw/courses.R")
+  files[length(files)]
+}
+
+#' DBH course offerings from a snapshot
+#'
+#' DBH table 208 holds every course of every institution, year and semester
+#' (all levels and statuses): the all-courses frame. `frame = "teacher_ed"`
+#' keeps the courses of the teacher education programmes, those whose
+#' programme has a study type in `TEACHER_ED_STUDIUM` in table 347 in some year,
+#' matched on institution and programme code (a programme code is unique only
+#' within an institution). Both come from the same snapshot, so the
+#' teacher-ed offerings have the same course ids in both frames.
+#'
+#' @param frame "all" or "teacher_ed"
+#' @param date Snapshot date; NULL for the latest
+#' @param input_dir Folder of the snapshots
+#' @return One row per course, year and semester, with DBH's columns plus
+#'   `institution` (NA for a code no config has), `Emnekode_raw` (DBH's code)
+#'   and `Emnekode` (without a trailing version number); the input of
+#'   `harvest_all(courses = ...)`
+dbh_courses <- function(frame = c("all", "teacher_ed"), date = NULL, input_dir = INPUT_DIR) {
+  frame <- match.arg(frame)
+  courses <- arrow::read_parquet(dbh_snapshot_file("courses", date, input_dir))
+  if (frame == "teacher_ed") {
+    programmes <- arrow::read_parquet(dbh_snapshot_file("programmes", date, input_dir),
+                                      col_select = c("Institusjonskode", "Studieprogramkode", "Studiumkode"))
+    keys <- programmes |>
+      dplyr::filter(Studiumkode %in% TEACHER_ED_STUDIUM) |>
+      dplyr::distinct(Institusjonskode, Studieprogramkode)
+    courses <- dplyr::semi_join(courses, keys, by = c("Institusjonskode", "Studieprogramkode"))
+  }
+  courses |>
+    # one row per offering: 2 of the 2.16 million rows of 2026-10-16 (2007)
+    # repeat a course and semester
+    dplyr::distinct(Institusjonskode, Emnekode, Årstall, Semester, .keep_all = TRUE) |>
+    dplyr::mutate(institution = institution_from_code(Institusjonskode),
+                  Emnekode_raw = Emnekode,
+                  Emnekode = canon_remove_trailing_num(Emnekode)) |>
+    dplyr::relocate(institution) |>
+    dplyr::relocate(Emnekode_raw, .before = Emnekode)
+}
 
 harvest_file <- function(institution, raw_dir = RAW_DIR) {
   file.path(raw_dir, paste0("html_", institution, ".RDS"))
@@ -117,6 +173,17 @@ add_course_id <- function(dbh_df) {
       )
     ) |> 
     dplyr::relocate(course_id, .before = 1)
+}
+
+# An offering keeps the course_id it was first harvested under. The id ends
+# with DBH's Status, which a later DBH snapshot can change; the rest
+# (institution, code, year, semester) is the offering, one row in DBH.
+offering_key <- function(course_id) sub("_[^_]*$", "", course_id)
+
+first_course_id <- function(course_id, known) {
+  i <- match(offering_key(course_id), offering_key(known))
+  course_id[!is.na(i)] <- known[i[!is.na(i)]]
+  course_id
 }
 
 

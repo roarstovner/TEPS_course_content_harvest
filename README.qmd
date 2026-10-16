@@ -13,7 +13,7 @@ library(tidyverse)
 
 This project harvests course descriptions from Norwegian teacher education institutions. It takes course codes, years, and semesters as input and produces structured data containing URLs, HTML, and extracted text from course webpages.
 
-**Input:** A tibble as output by `rdbhapi` with course metadata (institution, course code, year, semester)
+**Input:** A dated snapshot of DBH's course list (`dbh_courses()`, see "Input Data") with course metadata (institution, course code, year, semester)
 
 **Output:** The same tibble with added course URL, raw HTML, and extracted text
 
@@ -72,7 +72,7 @@ source("R/harvest_strategies.R")
 source("R/harvest.R")
 
 # Harvest a single institution
-courses <- readRDS("data/input/courses.RDS")
+courses <- dbh_courses("teacher_ed")   # the teacher-ed frame; dbh_courses(): all courses
 result <- harvest_institution("hivolda", courses)
 saveRDS(result, "data/raw/html_hivolda.RDS")
 
@@ -80,7 +80,8 @@ saveRDS(result, "data/raw/html_hivolda.RDS")
 result <- harvest_institution("oslomet", courses, year = 2025)
 result <- harvest_institution("ntnu", courses, refetch = TRUE)
 
-# Or harvest all institutions at once (saves data/raw/html_{inst}.RDS)
+# Or harvest all institutions at once (saves data/raw/html_{inst}.RDS);
+# without `courses`, the teacher-ed frame of the latest DBH snapshot
 harvest_all()
 ```
 
@@ -242,7 +243,7 @@ add_course_url_newuni <- function(course_code, year, semester) {
 #| eval: false
 
 # Load pipeline and test
-courses <- readRDS("data/input/courses.RDS")
+courses <- dbh_courses()   # every DBH course; the institution's code must be in its config
 result <- harvest_institution("newuni", courses, year = 2025)
 
 # Inspect results
@@ -319,8 +320,10 @@ offerings no raw file holds yet (a current site: a new snapshot) and saves them
 to `data/raw/harvests/{date}/html_{inst}.RDS`; a second harvest the same day
 goes to `harvests/{date}_{HHMMSS}/`, so a retry need not wait for the next day.
 `harvest_all(year = 2026)` and `harvest_all()` therefore both just add what is
-new. `read_harvest()` combines the files; an offering in two files stops the
-build.
+new. An offering is matched on institution, code, year and semester: when a new
+DBH snapshot changes its Status, it keeps the `course_id` it was first
+harvested under. `read_harvest()` combines the files; an offering in two files
+stops the build.
 
 A page that gave no plan (a 404, a page shell) can be fetched again with
 `harvest_all(institutions = "uia", year = 2023, retry = TRUE)`: it takes the
@@ -565,7 +568,7 @@ kept in one folder per stage, so the folder says what may be shared:
 
 | Folder | Holds | Written by | In git |
 |---|---|---|---|
-| `data/input/` | the DBH course list, the pipeline input | `data-raw/courses.R` | yes |
+| `data/input/` | the DBH snapshots, the pipeline input | `data-raw/courses.R` | yes |
 | `data/raw/` | the harvest, with personal data; append-only | harvesting only | no |
 | `data/releases/{tag}/` | offerings, plans and sections of a finalized release | `finalize_release()` | no |
 | `data/backup/` | earlier harvests kept but not read (personal data) | by hand | no |
@@ -580,7 +583,7 @@ The repository is public.
 
 | File | Contents | Personal data | Status |
 |---|---|---|---|
-| `data/input/courses.RDS` | DBH course metadata (pipeline input) | none | in git |
+| `data/input/dbh_courses_{date}.parquet`, `dbh_programmes_{date}.parquet` | DBH tables 208 (courses) and 347 (programmes), the harvest input | none | in git |
 | `data/raw/html_{inst}.RDS`, `data/raw/harvests/{date}/`, `data/raw/checkpoint/` | raw harvest: `html` (+ `extracted_text` from harvest time) | yes (raw) | internal |
 | `data/interim/plan_gaps.RDS` | course-years without a plan, reason, URLs tried | none | internal |
 | `data/interim/extracted_text.RDS` | `extracted_text` rebuilt from the raw harvest | yes (raw) | internal |
@@ -598,22 +601,45 @@ that per institution.
 
 ## Data Structure
 
-### Input Data (`data/input/courses.RDS`)
+### Input Data (`data/input/dbh_*_{date}.parquet`)
 
-The courses dataset contains:
+The harvest's input is a dated snapshot of DBH, written by
+`data-raw/courses.R` from DBH's bulk files: `dbh_courses_{date}.parquet` is
+table 208 (Emner), every course of every institution, year and semester, all
+levels and statuses, one row per course and semester;
+`dbh_programmes_{date}.parquet` is table 347 (Studieprogram), with the
+programmes' study type (`Studiumkode`). A new snapshot gets a new date and the
+old ones stay. `dbh_courses()` reads the latest (or the one of `date`) and adds
+`institution`, `Emnekode_raw` and `Emnekode`:
 
 ```{r}
-courses <- readRDS("data/input/courses.RDS")
+#| echo: false
+#| output: false
+for (f in c("R/utils.R", "R/fetch_html_cols.R", "R/extract_fulltext.R", "R/institution_config.R")) source(f)
+```
+
+```{r}
+courses <- dbh_courses("teacher_ed")
 courses |> slice(1:2)
 ```
 
+`dbh_courses()` is every course; `dbh_courses("teacher_ed")` keeps the
+courses of the teacher education programmes (study types in
+`TEACHER_ED_STUDIUM`, matched on institution and programme code: a programme
+code is unique only within an institution). The teacher-ed frame is a filter of
+the same snapshot, so its offerings have the same `course_id` in both.
+`harvest_all()` without `courses` harvests the teacher-ed frame: `tar_make()`
+reads everything in `data/raw/`, so an all-course harvest would enter the
+teacher-ed outputs.
+
 Key columns:
-- `institution`: Short code (e.g., "oslomet", "uia")
+- `institution`: Short code (e.g., "oslomet", "uia"); NA for an institution code no config has
 - `Emnekode_raw`: Original course code from DBH (used in `course_id`)
 - `Emnekode`: Course code with the trailing version number removed (`canon_remove_trailing_num()`: "ABC123-1" → "ABC123")
 - `Årstall`: Year
 - `Semesternavn`: Semester name ("Vår" or "Høst"; `canon_semester_name()` maps Vår/Høst/Sommer to spring/autumn/summer)
-- `Status`: Course status (1=Active, 2=New, 3=Discontinued, 4=Discontinued but exam offered)
+- `Studieprogramkode`, `Studieprogramnavn`: the programme DBH registers the course under (one per row)
+- `Status`: Course status (1=Active, 2=New, 3=Discontinued, 4=Discontinued but exam offered). It is the last part of `course_id`, and a later snapshot can change it: an offering already in a raw file keeps the id it was first harvested under (`first_course_id()`)
 
 DBH lists most courses under both semesters of a year, also when they are
 taught in one. Where pages are semester-specific, about half the rows therefore
@@ -725,6 +751,7 @@ active and historical pages.
 |---|---|---|
 | `harvest_institution(institution, courses, year, refetch)` | `R/harvest.R` | Harvest one institution with its configured strategy |
 | `harvest_all(courses, year, refetch, institutions)` | `R/harvest.R` | Harvest all (or the given) institutions: the first harvest to `data/raw/html_{inst}.RDS`, later ones add `data/raw/harvests/{date}/` |
+| `dbh_courses(frame, date)` | `R/utils.R` | DBH offerings of a snapshot: all courses, or the teacher-ed frame (`"teacher_ed"`) |
 | `institution_from_code(code)` | `R/institution_config.R` | Institution short name for DBH institution codes |
 | `get_institution_config(inst)` | `R/institution_config.R` | Config list for one institution |
 | `add_course_id(dbh_df)` | `R/utils.R` | Unique id from institution, raw code, year, semester, status |
@@ -814,7 +841,7 @@ active and historical pages.
 │   ├── course_browser/        # Shiny concordance browser; build_data.R → data/ (see its README)
 │   └── course_browser_ojs/    # Static Observable JS browser; build_data.R → data/ (see its README)
 ├── data/                      # README "Data Files: Published and Internal"
-│   ├── input/courses.RDS      # DBH course list, the pipeline input (in git)
+│   ├── input/                 # DBH snapshots dbh_{courses,programmes}_{date}.parquet (in git)
 │   ├── raw/                   # Harvest: html_{inst}.RDS, harvests/{date}/, checkpoint/ (not in git)
 │   ├── interim/               # Rebuilt text with personal data (not in git)
 │   ├── processed/             # Anonymized data files, can be shared (not in git)
@@ -826,7 +853,7 @@ active and historical pages.
 │   ├── testthat/              # Rscript -e 'testthat::test_dir("tests/testthat")'
 │   └── snapshots/             # pipeline_metrics.csv; raw_manifest.csv once a release is finalized
 └── data-raw/
-    └── courses.R              # script that creates data/input/courses.RDS
+    └── courses.R              # script that writes a DBH snapshot to data/input/
 ```
 
 ## Need Help?

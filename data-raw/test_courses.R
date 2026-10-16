@@ -1,9 +1,10 @@
 ## code to prepare `test_courses` dataset goes here
-courses <- readRDS("data/input/courses.RDS")
-
+source("R/utils.R", local = TRUE)
 source("R/extract_fulltext.R", local = TRUE)
 source("R/fetch_html_cols.R", local = TRUE)
 source("R/institution_config.R", local = TRUE)
+
+courses <- dbh_courses("teacher_ed")
 
 test_courses <- courses |> 
   dplyr::filter(

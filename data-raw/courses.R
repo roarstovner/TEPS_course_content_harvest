@@ -1,51 +1,33 @@
-## code to prepare `courses` dataset goes here
+## The DBH input: a dated snapshot of every course of every institution
+##
+## Writes data/input/dbh_courses_{date}.parquet (DBH table 208, Emner: every
+## course x year x semester, all levels and statuses) and
+## data/input/dbh_programmes_{date}.parquet (table 347, Studieprogram: the
+## programmes, with Studiumkode). Both are DBH's bulk files, read in full, so
+## the two tables come from the same day. dbh_courses() (R/utils.R) reads the
+## latest snapshot; dbh_courses("teacher_ed") is the teacher education frame,
+## a filter of it. Run it from the repository root; a new snapshot gets a new
+## date and the old ones stay (methods.qmd, "Population and sampling frame").
 
-source("R/utils.R", local = TRUE)
-# institution_config.R references pre/post and fetch functions defined here
-source("R/extract_fulltext.R", local = TRUE)
-source("R/fetch_html_cols.R", local = TRUE)
-source("R/institution_config.R", local = TRUE)
+date <- format(Sys.Date())
+options(timeout = 3600)   # table 208's bulk file is ~700 MB
 
-studieprogram <- rdbhapi::dbh_data(
-  347, # dbh-tabell: Studieprogram
-  filters = list(
-    "Studiumkode" = c("INTMASTER", "IMALU5-10", "IMALU1-7", "LUPE")#, "GLU1-7", "GLU5-10") # de to siste er fireårig
-  )
-)
+snapshot <- function(table) {
+  df <- rdbhapi::dbh_data(table)   # no filters: the bulk file
+  # DBH pads codes with spaces (trimmed when read) and a few names end in a
+  # newline
+  df <- dplyr::mutate(df, dplyr::across(dplyr::where(is.character), trimws))
+  tibble::as_tibble(as.data.frame(df))   # without readr's attributes
+}
 
-studieprogramkode <- unique(studieprogram$Studieprogramkode)
+write_snapshot <- function(df, name) {
+  file <- file.path("data/input", sprintf("dbh_%s_%s.parquet", name, date))
+  if (file.exists(file)) stop(file, " exists: a snapshot is not written twice")
+  arrow::write_parquet(df, file, compression = "zstd", compression_level = 9)
+  message(file, ": ", nrow(df), " rows")
+}
 
-# rdbhapi doesn't handle larger chunks than 80
-studieprogramkode_chunks <- split(
-  studieprogramkode, 
-  ceiling(seq_along(studieprogramkode) / 80)
-)
-
-courses_list <- lapply(studieprogramkode_chunks, function(chunk) {
-  rdbhapi::dbh_data(
-    208,
-    filters = list("Studieprogramkode" = chunk)
-  )
-})
-
-courses <- do.call(rbind, courses_list)
-
-# Studieprogramkode is only unique within an institution: the same code (e.g.
-# "LUPE", "LREAL") can exist at several institutions. Keep only courses whose
-# (Institusjonskode, Studieprogramkode) pair matches a teacher education
-# programme from table 347.
-studieprogram_keys <- dplyr::distinct(studieprogram, Institusjonskode, Studieprogramkode)
-
-courses <- courses |>
-  dplyr::semi_join(studieprogram_keys, by = c("Institusjonskode", "Studieprogramkode"))
-
-courses <- courses |>
-  dplyr::mutate(
-    institution = institution_from_code(Institusjonskode),
-    Emnekode_raw = Emnekode,
-    Emnekode = canon_remove_trailing_num(Emnekode),
-  ) |> 
-  dplyr::relocate(institution) |> 
-  dplyr::relocate(Emnekode_raw, .before = Emnekode)
-
-saveRDS(courses, "data/input/courses.RDS")
+courses <- snapshot(208)
+programmes <- snapshot(347)
+write_snapshot(courses, "courses")
+write_snapshot(programmes, "programmes")

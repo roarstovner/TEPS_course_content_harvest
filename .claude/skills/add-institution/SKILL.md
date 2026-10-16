@@ -97,7 +97,7 @@ source("R/checkpoint.R")
 source("R/harvest_strategies.R")
 source("R/harvest.R")
 
-courses <- readRDS("data/input/courses.RDS")
+courses <- dbh_courses()   # every DBH course (R/utils.R); the institution's code must be in its config
 
 # Test with a specific year first
 result <- harvest_institution("newuni", courses, year = 2025)
