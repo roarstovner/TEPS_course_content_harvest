@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Fetch ledger and retry policy by outcome class (#364)
 - Raw store to Parquet, partitioned by institution, year and harvest run (#363)
 - DBH input: dated all-courses snapshot; teacher education as a filter of it (#362)
 - Finalize a teacher-ed release of the current state before the restructure (#361)
