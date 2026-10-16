@@ -282,6 +282,55 @@ plan_gaps <- function(offerings, fetch_status) {
     )
 }
 
+# Every offering of a DBH frame and how far the harvest got with it:
+# `outcome`, how its URL answered last (offering_outcome(): an outcome class,
+# "not requested", or "not harvested": in no raw run); `has_plan` in the
+# build; `retry`: no plan, and harvest_all(retry = TRUE) would fetch it again
+# (never at a site that shows only the current plan, which takes a new
+# snapshot in each academic year instead).
+fetch_coverage <- function(frame, ledger, offerings) {
+  frame <- add_course_id(frame[!is.na(frame$institution), ])
+  frame$course_id <- first_course_id(frame$course_id, unique(ledger$course_id))
+  i <- match(frame$course_id, offerings$course_id)
+  has_plan <- !is.na(offerings$plan_content_id[i])
+  outcome <- offering_outcome(frame$course_id, as.character(offerings$url[i]), ledger)
+  current <- vapply(unique(frame$institution), function(x)
+    identical(get_institution_config(x)$plan_years, "current"), logical(1))
+  tibble::tibble(institution = frame$institution, course_id = frame$course_id,
+                 Emnekode = frame$Emnekode, Årstall = frame$Årstall,
+                 Semesternavn = frame$Semesternavn, outcome = outcome, has_plan = has_plan,
+                 retry = !has_plan & !unname(current[frame$institution]) & retry_wanted(outcome))
+}
+
+# Pages whose plan text changed between two harvest runs that fetched the
+# same URL: a site that reworded an old page, a current site's plan of a new
+# year. The last fetch of the URL in a run is compared with its last fetch in
+# the run before that fetched it. A page whose stored body is the same
+# (`sha256` in the ledger) has not changed; otherwise the text the pipeline
+# reads from it (extract_fulltext_from_raw()) is compared, since a body
+# changes on every fetch at some sites (Liferay's authToken at NTNU and
+# OsloMet). One row per change: institution, url, and the run and offering
+# of the fetch before and of the changed one.
+page_changes <- function(ledger, files, config) {
+  ok <- ledger[ledger$outcome == "ok" & !is.na(ledger$url), ]
+  ok <- ok[!duplicated(ok[c("url", "run")], fromLast = TRUE), ]
+  ok <- ok[order(ok$url, ok$run, method = "radix"), ]
+  n <- nrow(ok)
+  before <- seq_len(n) - 1L   # the URL's fetch in the run before
+  before[before == 0L | c(TRUE, ok$url[-1] != ok$url[-n])] <- NA
+  pairs <- tibble::tibble(institution = ok$institution, url = ok$url,
+                          previous_run = ok$run[before], previous_course_id = ok$course_id[before],
+                          run = ok$run, course_id = ok$course_id)
+  pairs <- pairs[!is.na(before) & ok$sha256 != ok$sha256[before], ]
+  if (!nrow(pairs)) return(pairs)
+  rows <- read_raw(files, run = TRUE)
+  key <- paste(rows$.run, rows$course_id)
+  rows <- rows[key %in% c(paste(pairs$run, pairs$course_id), paste(pairs$previous_run, pairs$previous_course_id)), ]
+  text <- stats::setNames(extract_fulltext_from_raw(rows, config), paste(rows$.run, rows$course_id))
+  pairs[!mapply(identical, text[paste(pairs$run, pairs$course_id)],
+                text[paste(pairs$previous_run, pairs$previous_course_id)]), ]
+}
+
 # Headings the section extractor meets but cannot map, with the number of
 # pages they are on: candidates for R/section_heading_map.R.
 unmapped_headings <- function(blocks, config) {

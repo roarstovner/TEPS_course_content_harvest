@@ -175,7 +175,8 @@ test_that("harvest_all(retry = TRUE) fetches offerings without a plan again", {
   suppressMessages(harvest_all(dbh, institutions = "samas"))
   ids <- read_raw(harvest_files("samas"))$course_id
   dir.create("data/interim")
-  saveRDS(tibble::tibble(course_id = ids, institution = "samas", plan_content_id = c(NA, "p1")),
+  saveRDS(tibble::tibble(course_id = ids, institution = "samas", url = NA_character_,
+                         plan_content_id = c(NA, "p1")),
           "data/interim/course_offerings_full.RDS")
   expect_message(harvest_all(dbh, institutions = "samas"), "nothing new")
   suppressMessages(harvest_all(dbh, institutions = "samas", retry = TRUE))
@@ -226,6 +227,8 @@ test_that("a finalized release is locked and checked", {
   withr::local_dir(withr::local_tempdir())
   for (d in c("data/raw", "data/processed", "tests/snapshots")) dir.create(d, recursive = TRUE)
   f <- write_raw_run(raw_rows(inst = "samas"), "samas", "2026-10-01")
+  lf <- write_fetch_ledger(fetch_ledger(raw_rows(inst = "samas"), "samas", "2026-10-01"),
+                           "samas", "2026-10-01")
   plans <- tibble::tibble(plan_content_id = "p1", institution = "samas", Emnekode = "S",
                           course_plan = "Tekst.")
   secs <- tibble::tibble(plan_content_id = "p1", institution = "samas", Emnekode = "S",
@@ -242,6 +245,8 @@ test_that("a finalized release is locked and checked", {
 
   suppressMessages(finalize_release("data-test"))
   expect_equal(file.access(f, 2), c("data/raw/samas/2025/2026-10-01.parquet" = -1L))
+  expect_equal(unname(file.access(lf, 2)), -1L)   # the fetch ledger too
+  expect_equal(utils::read.csv(RAW_MANIFEST)$file, c(f, lf))
   expect_equal(nrow(check()), 0)
 
   # a new offering and plan (a later year) are fine; any change to the release is not

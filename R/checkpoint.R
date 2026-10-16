@@ -38,7 +38,10 @@ checkpoint_append_row <- function(row, path) {
 #' @param courses A tibble with course_id and url columns
 #' @param checkpoint_path Path to checkpoint RDS file
 #' @param .progress Show progress bar
-#' @return courses tibble with html, html_error, html_success columns added
+#' @return courses tibble with html, html_error, html_success columns added,
+#'   and the request's http_status and requested_at (fetch_html_cols()). A
+#'   site that refuses the harvest (HTTP 403, 429) stops it, with the pages
+#'   fetched so far in the checkpoint.
 fetch_html_with_checkpoint <- function(courses,
                                        checkpoint_path = file.path(RAW_DIR, "checkpoint", "checkpoint_html.RDS"),
                                        .progress = TRUE,
@@ -71,7 +74,8 @@ fetch_html_with_checkpoint <- function(courses,
       message("All courses in checkpoint, skipping fetch")
       return(dplyr::left_join(
         courses,
-        dplyr::select(checkpoint, course_id, html, html_error, html_success),
+        dplyr::select(checkpoint, course_id, html, html_error, html_success,
+                      dplyr::any_of(REQUEST_COLUMNS)),
         by = "course_id"
       ))
     } else {
@@ -99,11 +103,16 @@ fetch_html_with_checkpoint <- function(courses,
       config      = config,
       .progress   = FALSE
     )
+    # a site that refuses the harvest: keep what was fetched, and stop
+    if (isTRUE(html_cols$http_status %in% BLOCKED_STATUS)) {
+      if (!is.null(checkpoint)) write_checkpoint(checkpoint, checkpoint_path)
+      stop_if_blocked(html_cols$http_status, row$url)
+    }
     fetched_row <- dplyr::bind_cols(
       dplyr::select(row, course_id),
       html_cols
     ) |>
-      dplyr::select(course_id, html, html_error, html_success)
+      dplyr::select(course_id, html, html_error, html_success, dplyr::all_of(REQUEST_COLUMNS))
 
     checkpoint <- dplyr::bind_rows(checkpoint, fetched_row)
     # Rewriting the whole checkpoint after every page grows quadratically with
@@ -118,7 +127,8 @@ fetch_html_with_checkpoint <- function(courses,
   # 6) Returner full courses med html-kolonner joinet inn
   dplyr::left_join(
     courses,
-    dplyr::select(checkpoint, course_id, html, html_error, html_success),
+    dplyr::select(checkpoint, course_id, html, html_error, html_success,
+                  dplyr::any_of(REQUEST_COLUMNS)),
     by = "course_id"
   )
 }

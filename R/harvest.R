@@ -57,15 +57,19 @@ harvest_institution <- function(institution, courses, year = NULL,
 #' is append-only: a harvest fetches only offerings that no raw file holds yet
 #' (a "current" site: a new snapshot of its latest DBH year) and saves them as
 #' a new run, data/raw/{inst}/{year}/{date}.parquet (a second harvest the same
-#' day: {date}_{HHMMSS}.parquet; write_raw_run()). An existing raw file is
-#' never written again. An offering in a raw file keeps its course_id when a
-#' later DBH snapshot gives it another Status (first_course_id()).
+#' day: {date}_{HHMMSS}.parquet; write_raw_run()), with its fetch ledger,
+#' data/raw/{inst}/ledger/{run}.parquet (fetch_ledger()). An existing raw file
+#' is never written again. An offering in a raw file keeps its course_id when
+#' a later DBH snapshot gives it another Status (first_course_id()).
 #'
 #' With `retry`, a site with the year in the URL also fetches again the
 #' offerings whose page gave no plan in the current build
-#' (data/interim/course_offerings_full.RDS: a 404, a page shell); they are
-#' saved with `retry = TRUE`, and read_harvest() takes their new page.
-#' Run targets::tar_make() first, and narrow it with `year`.
+#' (data/interim/course_offerings_full.RDS), by how their URL answered last
+#' (offering_outcome()): `retry = TRUE` all but those whose URL was not found
+#' (a 404 is final), or only the outcome classes named, e.g. `retry =
+#' c("timeout", "server_error")`, or `retry = "not_found"` for pages
+#' published late. They are saved with `retry = TRUE`, and read_harvest()
+#' takes their new page. Run targets::tar_make() first, and narrow it with `year`.
 #'
 #' @param courses Data frame from dbh_courses(). If NULL, the teacher-ed frame
 #'   of the latest DBH snapshot: until tar_make() filters a frame, everything
@@ -74,7 +78,8 @@ harvest_institution <- function(institution, courses, year = NULL,
 #' @param refetch Logical — if TRUE, ignore checkpoints and re-download everything
 #' @param institutions Optional character vector of institution names to harvest.
 #'   If NULL, harvests all configured institutions.
-#' @param retry Logical — also fetch offerings whose page gave no plan
+#' @param retry FALSE, TRUE or outcome classes (FETCH_OUTCOMES): also fetch
+#'   offerings whose page gave no plan
 harvest_all <- function(courses = NULL, year = NULL, refetch = FALSE,
                         institutions = NULL, retry = FALSE) {
   if (is.null(courses)) courses <- dbh_courses("teacher_ed")
@@ -82,6 +87,11 @@ harvest_all <- function(courses = NULL, year = NULL, refetch = FALSE,
     stop("`courses` must be a data frame, not ", class(courses)[1], ". ",
          "Did you mean harvest_all(institutions = ...)?", call. = FALSE)
   }
+  if (!isFALSE(retry) && !isTRUE(retry) && !all(retry %in% FETCH_OUTCOMES)) {
+    stop("`retry` must be TRUE, FALSE or outcome classes: ", paste(FETCH_OUTCOMES, collapse = ", "),
+         call. = FALSE)
+  }
+  snapshot <- attr(courses, "dbh_snapshot") %||% NA_character_
 
   configs <- load_all_configs()
   inst_names <- if (!is.null(institutions)) institutions else names(configs)
@@ -92,7 +102,7 @@ harvest_all <- function(courses = NULL, year = NULL, refetch = FALSE,
       current <- identical(configs[[inst]]$plan_years, "current")
       known <- raw_course_ids(inst)
       skip <- if (current) character() else known
-      again <- if (retry) intersect(skip, offerings_without_plan(inst)) else character()
+      again <- if (!isFALSE(retry) && length(skip)) intersect(skip, offerings_to_retry(inst, retry)) else character()
       if (length(again)) message(inst, ": ", length(again), " offerings without a plan to retry")
       # a retry fetches again, so the checkpoint's old pages are not reused
       result <- harvest_institution(inst, courses, year, refetch || length(again) > 0,
@@ -102,8 +112,12 @@ harvest_all <- function(courses = NULL, year = NULL, refetch = FALSE,
       } else {
         result$harvested_at <- Sys.Date()
         if (length(again)) result$retry <- result$course_id %in% again
-        write_raw_run(result, inst, new_harvest_run(inst))
+        run <- new_harvest_run(inst)
+        write_raw_run(dplyr::select(result, -dplyr::any_of(REQUEST_COLUMNS)), inst, run)
+        ledger <- fetch_ledger(result, inst, run, snapshot)
+        write_fetch_ledger(ledger, inst, run)
         log_summary(inst, result)
+        message("  outcomes: ", paste(names(table(ledger$outcome)), table(ledger$outcome), collapse = ", "))
       }
     }, error = function(e) {
       message("ERROR harvesting ", inst, ": ", conditionMessage(e))
@@ -111,13 +125,15 @@ harvest_all <- function(courses = NULL, year = NULL, refetch = FALSE,
   }
 }
 
-# Offerings of an institution with no plan in the current build, for
-# harvest_all(retry = TRUE).
-offerings_without_plan <- function(institution,
-                                   file = "data/interim/course_offerings_full.RDS") {
+# Offerings of an institution that harvest_all(retry = ) fetches again: no
+# plan in the current build, and an outcome retry_wanted() takes.
+offerings_to_retry <- function(institution, retry = TRUE,
+                               file = "data/interim/course_offerings_full.RDS") {
   if (!file.exists(file)) stop(file, " is missing: run targets::tar_make() first")
   o <- readRDS(file)
-  o$course_id[o$institution == institution & is.na(o$plan_content_id)]
+  o <- o[o$institution == institution & is.na(o$plan_content_id), ]
+  outcome <- offering_outcome(o$course_id, as.character(o$url), raw_ledger(harvest_files(institution)))
+  o$course_id[retry_wanted(outcome, retry)]
 }
 
 #' Before harvesting a site whose pages change over time

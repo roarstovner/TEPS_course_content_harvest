@@ -84,6 +84,10 @@ result <- harvest_institution("ntnu", courses, refetch = TRUE)
 # the latest DBH snapshot
 harvest_all(institutions = "hivolda")
 harvest_all()
+
+# Fetch again the offerings without a plan, except pages not found (README
+# "Fetch Ledger and Retries"); run targets::tar_make() first
+harvest_all(institutions = "uia", year = 2023, retry = TRUE)
 ```
 
 The source order matters: `R/institution_config.R` refers to functions defined
@@ -100,7 +104,8 @@ in `R/fetch_html_cols.R` and `R/extract_fulltext.R`.
 
 ### About Checkpointing
 
-The pipeline uses **checkpointing** to avoid re-downloading data. If the script stops or crashes:
+The pipeline uses **checkpointing** to avoid re-downloading data. If the script stops or crashes,
+or a site refuses the harvest (HTTP 403 or 429; see "Fetch Ledger and Retries"):
 
 - Already-downloaded HTML is saved in `data/raw/checkpoint/html_{institution}.RDS` (`course_id`, `html`, `html_success`, `html_error`)
 - Re-running the script fetches only courses not in the checkpoint (anti-join by `course_id`)
@@ -128,6 +133,8 @@ targets::tar_read(heading_use)    # pages per heading-map pattern (0 = unused)
 targets::tar_read(privacy_check)  # personal data found in data/processed/
 targets::tar_read(frozen_check)   # changes to the finalized release (empty before one)
 targets::tar_read(gaps)           # course-years without a plan, and why
+targets::tar_read(coverage)       # every offering of the frame: fetch outcome, plan, retry
+targets::tar_read(changed_pages)  # pages whose text changed between harvest runs
 ```
 
 {targets} keeps each step's result in `_targets/` (gitignored) together with a
@@ -321,7 +328,8 @@ date, a second run of an institution the same day by date and time
 (`{date}_{HHMMSS}`, which sorts after it), so a retry need not wait for the
 next day. No raw file is written twice. A harvest fetches only the offerings no
 raw file holds yet (a current site: a new snapshot) and `harvest_all()` saves
-them as a new run (`write_raw_run()`). `harvest_all(year = 2026)` and
+them as a new run (`write_raw_run()`), with the run's fetch ledger (see "Fetch
+Ledger and Retries"). `harvest_all(year = 2026)` and
 `harvest_all()` therefore both just add what is new. An offering is matched on
 institution, code, year and semester: when a new DBH snapshot changes its
 Status, it keeps the `course_id` it was first harvested under.
@@ -347,13 +355,9 @@ were not dated: their run is named by the day their RDS file was written
 are no longer read; they stay in `data/raw/` until they are removed by hand,
 after a backup.
 
-A page that gave no plan (a 404, a page shell) can be fetched again with
-`harvest_all(institutions = "uia", year = 2023, retry = TRUE)`: it takes the
-offerings without a plan in the current build
-(`data/interim/course_offerings_full.RDS`, so run `tar_make()` first), fetches
-them past the checkpoint and saves them as a new run, marked `retry`.
-`read_harvest()` gives a retried offering its latest row with a page.
-Retry before finalizing a release; afterwards it changes the release.
+A page that gave no plan can be fetched again with `harvest_all(retry = TRUE)`
+(see "Fetch Ledger and Retries"). Retry before finalizing a release;
+afterwards it changes the release.
 
 To finalize a release, after `tar_make()` and tagging the commit:
 
@@ -363,7 +367,7 @@ finalize_release("data-YYYY-MM-DD")   # then commit tests/snapshots/raw_manifest
 release_data("data-YYYY-MM-DD")       # hand-over to the coding project
 ```
 
-`finalize_release()` makes every raw file read-only (an overwrite then fails),
+`finalize_release()` makes every raw file and fetch ledger read-only (an overwrite then fails),
 lists them with md5 sums in `tests/snapshots/raw_manifest.csv`, and keeps the
 release's offerings, plans and sections in `data/releases/{tag}/`. On every
 build `tar_read(frozen_check)` lists any change to the release: a raw file
@@ -384,6 +388,85 @@ removed) in `sections_changed.csv`.
 - `data/processed/course_offerings.RDS` — published slim dataset: course rows with DBH metadata + `plan_content_id` FK (no url, no text)
 - `data/interim/course_offerings_full.RDS` — internal working file: same rows plus `url`, `extracted_text`, `course_plan`, `course_plan_normalized`; used by the course_browser app
 - `data/processed/course_plans.RDS` — one row per unique plan per course code per institution, with the offering its text comes from (`source_course_id`)
+
+### Fetch Ledger and Retries
+
+Every harvest run also writes its fetch ledger,
+`data/raw/{inst}/ledger/{run}.parquet`: one row per offering of the run, in
+the run's order, with how its page was fetched (`fetch_ledger()`):
+
+| Column | Holds |
+|---|---|
+| `run`, `institution`, `course_id`, `url` | the run, the offering and the URL requested |
+| `requested_at` | when the request was sent |
+| `http_status` | the answer's HTTP status, also of a site's own not-found page |
+| `outcome` | the outcome class, below |
+| `bytes`, `sha256` | size and SHA-256 of the page as stored (`html`, else the text read from a PDF) |
+| `raw_file` | the raw file that holds the row |
+| `dbh_snapshot` | the date of the DBH snapshot the harvest's offerings came from (`dbh_courses()`) |
+
+The outcome classes (`fetch_outcome()`): `ok` (a page or a PDF's text was
+stored); `not_found` (HTTP 404 or 410; HTTP 400, UiB's answer for a semester
+before its first; or the site's own not-found page, HVL's "Course not
+found"); `shell` (the site answers that it has nothing for that year, NTNU's
+"No course information available for this academic year"); `server_error`
+(HTTP 5xx); `timeout` (no answer: a timeout or a failed connection);
+`blocked` (HTTP 403 or 429); `error` (anything else); `no_url` (no URL to
+request: the URL builder or the URL discovery found none).
+
+The ledger is raw data like its run: append-only, written only by
+`harvest_all()`, locked by `finalize_release()`. It holds URLs and hashes, no
+page text. It records the page requests (`fetch_html_cols()`, UiS's PDFs);
+USN's pages rendered in Chrome, Steiner's subject PDFs and the requests of URL
+discovery have no status or time in it. The runs before 2026-10-16 have no
+ledger: `raw_ledger()` reconstructs theirs from the raw rows, without
+`requested_at` and `dbh_snapshot`, and with `http_status` only where the
+error message gives it ("HTTP 404 Not Found."); their `recorded` is `FALSE`.
+Target `ledger` is the ledger of all runs, recorded or reconstructed.
+
+**Retries within a harvest** (`site_request()`): a request without an answer
+(a timeout, a failed connection) or with HTTP 500, 502, 503 or 504 is tried
+again, 3 times in all, after 30 and then 60 seconds; any other answer is
+final. A site that answers 403 or 429 refuses the harvest: its harvest stops,
+the pages fetched so far stay in the checkpoint (the next harvest resumes
+there), and `harvest_all()` goes on with the next institution.
+
+**Retries between harvests:** `harvest_all(retry = TRUE)` fetches again the
+offerings that have no plan in the current build
+(`data/interim/course_offerings_full.RDS`, so run `tar_make()` first), past
+the checkpoint, by how the URL the build gives them answered last, for
+whichever offering it was requested (`offering_outcome()`): every outcome but
+`not_found`, so a page not found is not asked for again, and always a URL
+nobody has requested (a spring offering's academic-year page). `retry` can
+name the classes instead: `retry = c("timeout", "server_error")` only failed
+fetches, `retry = "not_found"` pages that may have been published since. The
+retried offerings are saved as a new run, marked `retry`, and `read_harvest()`
+gives a retried offering its latest row with a page. A site that shows only
+the current plan is not retried; it takes a new snapshot in each academic
+year.
+
+```{r}
+#| eval: false
+harvest_all(institutions = "uia", year = 2023, retry = TRUE)
+harvest_all(institutions = "uib", retry = "server_error")
+```
+
+**Coverage and changed pages.** Target `coverage` lists every offering of the
+teacher-ed frame of the latest DBH snapshot with `outcome` (how its URL
+answered last; `not requested`, or `not harvested`: in no raw run),
+`has_plan`, and `retry` (no plan, and `harvest_all(retry = TRUE)` would fetch
+it again): the coverage report of a release. Target `changed_pages` lists the
+pages whose plan text changed between two runs that fetched the same URL (a
+site that reworded an old page; a current site's plan of a new year). The
+body's `sha256` alone cannot tell, since some sites change the body on every
+fetch (Liferay's `authToken` at NTNU and OsloMet), so where the bodies differ
+the text the pipeline reads from them is compared.
+
+```{r}
+#| eval: false
+targets::tar_read(coverage) |> dplyr::count(institution, outcome, has_plan, retry)
+targets::tar_read(changed_pages)
+```
 
 ## Post-Harvest: Section Extraction
 
@@ -607,6 +690,7 @@ The repository is public.
 |---|---|---|---|
 | `data/input/dbh_courses_{date}.parquet`, `dbh_programmes_{date}.parquet` | DBH tables 208 (courses) and 347 (programmes), the harvest input | none | in git |
 | `data/raw/{inst}/{year}/{run}.parquet`, `data/raw/checkpoint/` | raw harvest: `html` (+ text and bytes of PDFs) | yes (raw) | internal |
+| `data/raw/{inst}/ledger/{run}.parquet` | fetch ledger: URL, HTTP status, outcome and page hash per offering and run | none | internal |
 | `data/interim/plan_gaps.RDS` | course-years without a plan, reason, URLs tried | none | internal |
 | `data/interim/extracted_text.RDS` | `extracted_text` rebuilt from the raw harvest | yes (raw) | internal |
 | `data/interim/course_offerings_full.RDS` | offerings + `url`, `extracted_text`, `course_plan` | yes (`extracted_text`) | internal |
@@ -774,6 +858,10 @@ active and historical pages.
 | `harvest_institution(institution, courses, year, refetch)` | `R/harvest.R` | Harvest one institution with its configured strategy |
 | `harvest_all(courses, year, refetch, institutions, retry)` | `R/harvest.R` | Harvest all (or the given) institutions; each harvest adds a run, `data/raw/{inst}/{year}/{date}.parquet` |
 | `write_raw_run(rows, institution, run)`, `read_raw(files)` | `R/utils.R` | Write a harvest run to the raw store; read raw files in harvest order |
+| `fetch_ledger(rows, institution, run)`, `raw_ledger(files)` | `R/utils.R` | A run's fetch ledger; the ledger of raw files, recorded or reconstructed (target `ledger`) |
+| `fetch_outcome(url, page, status, error)`, `offering_outcome(course_id, url, ledger)` | `R/utils.R` | Outcome class of a fetch; how an offering's URL answered last (retries) |
+| `site_request(url)` | `R/fetch_html_cols.R` | A request to a course site: user agent, timeout, retries of timeouts and server errors |
+| `fetch_coverage(frame, ledger, offerings)`, `page_changes(ledger, files, config)` | `R/pipeline.R` | Fetch outcome, plan and retry of every offering of a frame; pages changed between runs (targets `coverage`, `changed_pages`) |
 | `harvest_files(institution)`, `harvested_institutions()` | `R/utils.R` | An institution's raw files, run by run; the institutions with raw files |
 | `dbh_courses(frame, date)` | `R/utils.R` | DBH offerings of a snapshot: all courses, or the teacher-ed frame (`"teacher_ed"`) |
 | `institution_from_code(code)` | `R/institution_config.R` | Institution short name for DBH institution codes |
@@ -805,6 +893,7 @@ active and historical pages.
 
 **HTML download fails?**
 - Check if the website is accessible in a browser
+- Count the outcomes: `raw_ledger(harvest_files("inst")) |> dplyr::count(outcome, http_status)`
 - Look at `html_error` for error messages
 - Some institutions rate-limit or block automated requests
 - For NTNU, check whether the page says no information is available
@@ -819,6 +908,11 @@ active and historical pages.
 - Shadow DOM content is invisible to `html_text()`; see USN above
 - `session$session$Runtime$evaluate("...")` runs JavaScript in a live session
 - `session$view()` opens the browser to see what is rendered
+
+**"the site refuses the harvest (HTTP 429 ...)"?**
+- The site answered 403 or 429, so its harvest stopped; the pages fetched so
+  far are in the checkpoint. Harvest it again later (the checkpoint resumes),
+  at night, or with a longer `request_delay` in `R/institution_config.R`
 
 **Checkpoint file is huge?**
 - This is normal - HTML is large
@@ -866,7 +960,7 @@ active and historical pages.
 │   └── course_browser_ojs/    # Static Observable JS browser; build_data.R → data/ (see its README)
 ├── data/                      # README "Data Files: Published and Internal"
 │   ├── input/                 # DBH snapshots dbh_{courses,programmes}_{date}.parquet (in git)
-│   ├── raw/                   # Harvest: {inst}/{year}/{run}.parquet, checkpoint/ (not in git)
+│   ├── raw/                   # Harvest: {inst}/{year}/{run}.parquet, {inst}/ledger/, checkpoint/ (not in git)
 │   ├── interim/               # Rebuilt text with personal data (not in git)
 │   ├── processed/             # Anonymized data files, can be shared (not in git)
 │   ├── releases/              # Finalized releases' data (not in git)

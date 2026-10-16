@@ -127,17 +127,13 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
       \(code, base_url) {
         polite_pause(config$request_delay)
         tryCatch({
-          resp <- base_url |>
-            httr2::request() |>
-            httr2::req_user_agent(
-              "TEPS research project - https://uni.oslomet.no/teps/ - robast@oslomet.no"
-            ) |>
-            httr2::req_perform()
+          resp <- site_request(base_url) |> httr2::req_perform()
           html <- httr2::resp_body_string(resp)
           parsed <- .parse_uis_semester_dropdown(html)
           parsed$Emnekode_raw <- code
           parsed
         }, error = \(e) {
+          stop_if_blocked(http_status_of(e), base_url)
           tibble::tibble(label = character(), url = character(),
                          type = character(), year = integer(),
                          Emnekode_raw = character())
@@ -208,16 +204,15 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
         to_fetch_pdf$url,
         \(pdf_url) {
           polite_pause(config$request_delay)
+          requested_at <- Sys.time()
           tryCatch({
-            resp <- pdf_url |>
-              httr2::request() |>
-              httr2::req_user_agent(
-                "TEPS research project - https://uni.oslomet.no/teps/ - robast@oslomet.no"
-              ) |>
-              httr2::req_perform()
-            list(raw = httr2::resp_body_raw(resp), error = NULL, success = TRUE)
+            resp <- site_request(pdf_url) |> httr2::req_perform()
+            list(raw = httr2::resp_body_raw(resp), error = NULL, success = TRUE,
+                 status = httr2::resp_status(resp), requested_at = requested_at)
           }, error = \(e) {
-            list(raw = NULL, error = conditionMessage(e), success = FALSE)
+            stop_if_blocked(http_status_of(e), pdf_url)
+            list(raw = NULL, error = conditionMessage(e), success = FALSE,
+                 status = http_status_of(e), requested_at = requested_at)
           })
         },
         .progress = TRUE
@@ -232,7 +227,9 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
         html_error = purrr::map(pdf_results, \(r) r$error),
         html_success = purrr::map_lgl(pdf_results, \(r) r$success),
         extracted_text = extracted_text,
-        pdf = purrr::map(pdf_results, "raw")
+        pdf = purrr::map(pdf_results, "raw"),
+        http_status = purrr::map_int(pdf_results, "status"),
+        requested_at = .POSIXct(purrr::map_dbl(pdf_results, "requested_at"))
       )
 
       updated_pdf <- dplyr::bind_rows(existing_pdf, fetched_pdf)
@@ -244,7 +241,7 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
     df_pdf <- df_pdf |>
       dplyr::left_join(
         updated_pdf |> dplyr::select(course_id, html, html_error, html_success, extracted_text,
-                                     dplyr::any_of("pdf")),
+                                     dplyr::any_of(c("pdf", REQUEST_COLUMNS))),
         by = "course_id"
       )
   } else {
@@ -470,7 +467,7 @@ harvest_json_extract <- function(df, config, refetch = FALSE) {
 
   # Join HTML back to all rows by Emnekode
   html_lookup <- unique_fetched |>
-    dplyr::select(Emnekode, html, html_error, html_success)
+    dplyr::select(Emnekode, html, html_error, html_success, dplyr::any_of(REQUEST_COLUMNS))
 
   df <- dplyr::left_join(df, html_lookup, by = "Emnekode")
 

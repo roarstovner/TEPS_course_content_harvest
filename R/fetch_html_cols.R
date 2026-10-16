@@ -9,6 +9,9 @@
 #'   \item{html}{Character vector with HTML content, or NA if failed}
 #'   \item{html_success}{Logical indicating if the fetch was successful}
 #'   \item{html_error}{Error object if fetch failed (or NULL if successful)}
+#'   \item{http_status}{The response's HTTP status, also of an error page;
+#'     NA without a response}
+#'   \item{requested_at}{When the request was sent}
 #'
 #' @examples
 #' \dontrun{
@@ -29,7 +32,10 @@ fetch_html_cols <- function(urls, institution = NULL, config = NULL,
   http_resps <- purrr::map2(
     urls[is_valid],
     institution[is_valid],
-    purrr::safely(function(url, inst) fetch_html_cols_single(url, inst, config)),
+    function(url, inst) {
+      requested_at <- Sys.time()
+      c(purrr::safely(fetch_html_cols_single)(url, inst, config), list(requested_at = requested_at))
+    },
     .progress = .progress
   )
   
@@ -50,8 +56,35 @@ fetch_html_cols <- function(urls, institution = NULL, config = NULL,
   html_success <- logical(length(urls))
   html_success[!is_valid] <- NA
   html_success[is_valid] <- vapply(html_error[is_valid], is.null, logical(1))
-  
-  tibble::tibble(html = html, html_error = html_error, html_success = html_success)
+
+  # the request, for the fetch ledger (fetch_ledger())
+  http_status <- rep(NA_integer_, length(urls))
+  http_status[is_valid] <- vapply(http_resps, function(x) http_status_of(x$result %||% x$error), integer(1))
+  requested_at <- .POSIXct(rep(NA_real_, length(urls)))
+  requested_at[is_valid] <- .POSIXct(vapply(http_resps, function(x) as.numeric(x$requested_at), numeric(1)))
+
+  tibble::tibble(html = html, html_error = html_error, html_success = html_success,
+                 http_status = http_status, requested_at = requested_at)
+}
+
+# The HTTP status of a response, or of the response a fetch error holds
+# (httr2's HTTP errors; `http_status` of the fetchers' own not-found errors);
+# NA when there was no answer.
+http_status_of <- function(x) {
+  if (inherits(x, "httr2_response")) return(httr2::resp_status(x))
+  if (is.list(x) && !is.null(x$http_status)) return(as.integer(x$http_status))
+  if (is.list(x) && inherits(x$resp, "httr2_response")) return(httr2::resp_status(x$resp))
+  NA_integer_
+}
+
+# A site that answers 403 or 429 refuses the harvest: its harvest stops, so
+# it is not asked again and again (harvest_all() goes on with the next site;
+# the pages fetched stay in the checkpoint).
+stop_if_blocked <- function(status, url) {
+  if (isTRUE(status %in% BLOCKED_STATUS)) {
+    stop("the site refuses the harvest (HTTP ", status, " at ", url, "): stopped, ",
+         "harvest it again later", call. = FALSE)
+  }
 }
 
 # Pause between requests to the same site. An institution can override the
@@ -62,6 +95,30 @@ DEFAULT_REQUEST_DELAY <- c(3, 5)
 polite_pause <- function(delay = NULL) {
   delay <- delay %||% DEFAULT_REQUEST_DELAY
   Sys.sleep(runif(1, min(delay), max(delay)))
+}
+
+TEPS_USER_AGENT <- "TEPS research project - https://uni.oslomet.no/teps/ - robast@oslomet.no"
+BROWSER_USER_AGENT <- paste("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+                            "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+
+# Retries by outcome (fetch_outcome(); README "Fetch Ledger and Retries"): a
+# request without an answer in FETCH_TIMEOUT seconds or a failed connection
+# ("timeout") and HTTP 500, 502, 503 or 504 ("server_error") are tried again,
+# FETCH_TRIES times in all, after FETCH_BACKOFF seconds and then twice as
+# long. Any other answer is final: a 404 is not tried again, and a block
+# (HTTP 403, 429) stops the site's harvest (fetch_html_with_checkpoint()).
+FETCH_TIMEOUT <- 60
+FETCH_TRIES <- 3
+FETCH_BACKOFF <- 30
+
+# A request to a course site, with the user agent and the retry policy.
+site_request <- function(url, user_agent = TEPS_USER_AGENT) {
+  httr2::request(url) |>
+    httr2::req_user_agent(user_agent) |>
+    httr2::req_timeout(FETCH_TIMEOUT) |>
+    httr2::req_retry(max_tries = FETCH_TRIES, retry_on_failure = TRUE,
+                     is_transient = function(resp) httr2::resp_status(resp) %in% c(500L, 502L, 503L, 504L),
+                     backoff = function(i) FETCH_BACKOFF * 2^(i - 1))
 }
 
 fetch_html_cols_single <- function(url, institution = NULL, config = NULL) {
@@ -83,17 +140,8 @@ fetch_html_cols_single <- function(url, institution = NULL, config = NULL) {
   }
 
   # User agent: config-driven or legacy fallback
-  ua <- if (!is.null(config) && !is.null(config$user_agent) && config$user_agent == "browser") {
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-  } else if (is.null(config) && !is.null(institution) && institution == "hiof") {
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-  } else {
-    "TEPS research project - https://uni.oslomet.no/teps/ - robast@oslomet.no"
-  }
-
-  url |>
-    httr2::request() |>
-    httr2::req_user_agent(ua) |>
+  browser <- if (!is.null(config)) identical(config$user_agent, "browser") else identical(institution, "hiof")
+  site_request(url, if (browser) BROWSER_USER_AGENT else TEPS_USER_AGENT) |>
     httr2::req_perform()
 }
 
@@ -109,18 +157,14 @@ fetch_html_cols_single <- function(url, institution = NULL, config = NULL) {
 #'
 #' @noRd
 fetch_html_cols_single_ntnu <- function(url) {
-  resp <- url |>
-    httr2::request() |>
-    httr2::req_user_agent(
-      "TEPS research project - https://uni.oslomet.no/teps/ - robast@oslomet.no"
-    ) |>
-    httr2::req_perform()
+  resp <- site_request(url) |> httr2::req_perform()
   
   html_content <- httr2::resp_body_string(resp)
   
   no_info_pattern <- "Det finnes ingen informasjon for dette studieåret|There is no information available for the given academic year"
   if (stringr::str_detect(html_content, no_info_pattern)) {
-    rlang::abort("No course information available for this academic year", class = "ntnu_no_info_error")
+    rlang::abort("No course information available for this academic year", class = "ntnu_no_info_error",
+                 http_status = httr2::resp_status(resp))
   }
   
   resp
@@ -139,18 +183,14 @@ fetch_html_cols_single_ntnu <- function(url) {
 #'
 #' @noRd
 fetch_html_cols_single_hvl <- function(url) {
-  resp <- url |>
-    httr2::request() |>
-    httr2::req_user_agent(
-      "TEPS research project - https://uni.oslomet.no/teps/ - robast@oslomet.no"
-    ) |>
-    httr2::req_perform()
+  resp <- site_request(url) |> httr2::req_perform()
 
   html_content <- httr2::resp_body_string(resp)
 
   if (stringr::str_detect(html_content, paste0("Vi kunne ikkje finne emnet du ser etter|",
                                                "Please try again at the search for study plans"))) {
-    rlang::abort("Course not found (soft 404)", class = "hvl_not_found_error")
+    rlang::abort("Course not found (soft 404)", class = "hvl_not_found_error",
+                 http_status = httr2::resp_status(resp))
   }
   # "Emnebeskrivelsen finnes kun på engelsk": the plan is on the English page
   # (same layout); the row keeps the Norwegian URL

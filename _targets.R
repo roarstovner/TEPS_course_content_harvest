@@ -52,6 +52,8 @@ list(
   tar_target(heading_use, heading_pattern_use(heading_hits)),
   tar_target(fetch_status, institution_fetch_status(html_file, config),
              pattern = map(html_file, config)),
+  # how each offering of each run was fetched (README "Fetch Ledger and Retries")
+  tar_target(ledger, raw_ledger(html_file), pattern = map(html_file)),
 
   # Data files (README "Data Files: Published and Internal")
   tar_target(extracted_text_file,
@@ -63,6 +65,14 @@ list(
              write_rds_file(slim_offerings(offerings), "data/processed/course_offerings.RDS"),
              format = "file"),
   tar_target(gaps, plan_gaps(offerings, fetch_status)),
+  # how far the harvest got with each offering of the teacher-ed frame of
+  # the latest DBH snapshot; pages that changed between fetches
+  tar_target(dbh_file, dbh_snapshot_file("courses"), format = "file",
+             cue = tar_cue(mode = "always")),
+  tar_target(coverage, fetch_coverage(dbh_courses("teacher_ed", date = dbh_snapshot_date(dbh_file)),
+                                      ledger, offerings)),
+  tar_target(changed_pages, page_changes(ledger, html_file, config),
+             pattern = map(ledger, html_file, config)),
   tar_target(gaps_file, write_rds_file(gaps, "data/interim/plan_gaps.RDS"), format = "file"),
   tar_target(course_plans_file,
              write_rds_file(combine_plans(plans, sections), "data/processed/course_plans.RDS"), format = "file"),

@@ -115,7 +115,8 @@ RAW_MANIFEST <- "tests/snapshots/raw_manifest.csv"
 #' Finalize a release: lock its raw files and keep its plans
 #'
 #' Runs targets::tar_make() first (a no-op when the build is current). Makes
-#' every raw file (harvest_files() of all institutions) read-only, so a
+#' every raw file (harvest_files() and the fetch ledgers, ledger_files(), of
+#' all institutions) read-only, so a
 #' later write fails loudly; lists them with md5 sums in RAW_MANIFEST (commit
 #' it); and keeps the release's offerings, plans and sections in
 #' data/releases/{tag}/. frozen_changes() then checks on every build that
@@ -130,7 +131,8 @@ finalize_release <- function(tag, raw_dir = RAW_DIR, processed = "data/processed
   # build first, so the release is what the code makes; tar_outdated() cannot
   # tell: html_file runs on every build, so all after it always count as outdated
   if (file.exists("_targets.R")) targets::tar_make()
-  files <- unlist(lapply(harvested_institutions(raw_dir), harvest_files, raw_dir = raw_dir))
+  files <- unlist(lapply(harvested_institutions(raw_dir), function(i)
+    c(harvest_files(i, raw_dir), ledger_files(i, raw_dir))))
   m <- tibble::tibble(release = tag, file = files, md5 = unname(tools::md5sum(files)))
   dir <- file.path(releases, tag)
   dir.create(dir, recursive = TRUE, showWarnings = FALSE)

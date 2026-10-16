@@ -38,10 +38,12 @@ dbh_snapshot_file <- function(table = c("courses", "programmes"), date = NULL,
 #' @return One row per course, year and semester, with DBH's columns plus
 #'   `institution` (NA for a code no config has), `Emnekode_raw` (DBH's code)
 #'   and `Emnekode` (without a trailing version number); the input of
-#'   `harvest_all(courses = ...)`
+#'   `harvest_all(courses = ...)`. Attribute `dbh_snapshot`: the snapshot's
+#'   date, which harvest_all() records in the fetch ledger.
 dbh_courses <- function(frame = c("all", "teacher_ed"), date = NULL, input_dir = INPUT_DIR) {
   frame <- match.arg(frame)
-  courses <- arrow::read_parquet(dbh_snapshot_file("courses", date, input_dir))
+  file <- dbh_snapshot_file("courses", date, input_dir)
+  courses <- arrow::read_parquet(file)
   if (frame == "teacher_ed") {
     programmes <- arrow::read_parquet(dbh_snapshot_file("programmes", date, input_dir),
                                       col_select = c("Institusjonskode", "Studieprogramkode", "Studiumkode"))
@@ -50,7 +52,7 @@ dbh_courses <- function(frame = c("all", "teacher_ed"), date = NULL, input_dir =
       dplyr::distinct(Institusjonskode, Studieprogramkode)
     courses <- dplyr::semi_join(courses, keys, by = c("Institusjonskode", "Studieprogramkode"))
   }
-  courses |>
+  courses <- courses |>
     # one row per offering: 2 of the 2.16 million rows of 2026-10-16 (2007)
     # repeat a course and semester
     dplyr::distinct(Institusjonskode, Emnekode, Årstall, Semester, .keep_all = TRUE) |>
@@ -59,7 +61,12 @@ dbh_courses <- function(frame = c("all", "teacher_ed"), date = NULL, input_dir =
                   Emnekode = canon_remove_trailing_num(Emnekode)) |>
     dplyr::relocate(institution) |>
     dplyr::relocate(Emnekode_raw, .before = Emnekode)
+  attr(courses, "dbh_snapshot") <- dbh_snapshot_date(file)
+  courses
 }
+
+# The date of a DBH snapshot file, "YYYY-MM-DD".
+dbh_snapshot_date <- function(file) sub("^dbh_[a-z]+_(.*)\\.parquet$", "\\1", basename(file))
 
 # --- The raw store -----------------------------------------------------------
 # Append-only Parquet (README "Raw Store and Finalized Releases"): one file per
@@ -128,13 +135,15 @@ write_raw_run <- function(rows, institution, run, raw_dir = RAW_DIR) {
   if (any(file.exists(files)) || run %in% raw_run(harvest_files(institution, raw_dir))) {
     stop("raw files are not written twice: run ", run, " of ", institution, " exists")
   }
-  for (f in unique(files)) {
-    tab <- arrow::Table$create(rows[files == f, ])
-    tab$metadata$r <- NULL   # plain Parquet, without R's attributes
-    dir.create(dirname(f), recursive = TRUE, showWarnings = FALSE)
-    arrow::write_parquet(tab, f, compression = "zstd", compression_level = 9)
-  }
+  for (f in unique(files)) .write_plain_parquet(rows[files == f, ], f)
   invisible(unique(files))
+}
+
+.write_plain_parquet <- function(df, file) {
+  tab <- arrow::Table$create(df)
+  tab$metadata$r <- NULL   # plain Parquet, without R's attributes
+  dir.create(dirname(file), recursive = TRUE, showWarnings = FALSE)
+  arrow::write_parquet(tab, file, compression = "zstd", compression_level = 9)
 }
 
 #' Rows of raw files in the order they were harvested
@@ -163,13 +172,15 @@ raw_course_ids <- function(institution, raw_dir = RAW_DIR) {
     arrow::read_parquet(f, col_select = "course_id")$course_id)))
 }
 
-# A fetch error as text: NA for none, else the message (the raw store keeps
-# text; a harvest gives conditions or messages, NULL for none).
+# A fetch error as text: NA for none, else the message, with its cause
+# (httr2's "Failed to perform HTTP request." of a timeout) since 2026-10-16
+# (the raw store keeps text; a harvest gives conditions or messages, NULL for none).
 fetch_error_text <- function(err) {
   if (is.character(err)) return(err)
   vapply(err, function(e) {
     if (is.null(e)) NA_character_ else if (is.character(e)) e[1]
-    else as.character(e$message %||% NA_character_)[1]
+    else if (is.null(e$message)) NA_character_
+    else paste(c(e$message, e$parent$message), collapse = " ")
   }, character(1))
 }
 
@@ -187,6 +198,150 @@ harvest_date <- function(run, harvested_at = NULL) {
     out[i] <- d
   }
   out
+}
+
+# --- The fetch ledger --------------------------------------------------------
+# How each offering of a harvest run was fetched (README "Fetch Ledger and
+# Retries"). harvest_all() writes it with the run, as
+# data/raw/{inst}/ledger/{run}.parquet (write_fetch_ledger()), append-only
+# like the raw files; raw_ledger() reads it and reconstructs it for a run
+# without one (the harvests before 2026-10-16).
+
+# The outcome classes of a fetch (fetch_outcome()), and those that
+# harvest_all(retry = TRUE) fetches again: all but not_found.
+FETCH_OUTCOMES <- c("ok", "not_found", "shell", "server_error", "timeout", "blocked", "error", "no_url")
+RETRY_OUTCOMES <- setdiff(FETCH_OUTCOMES, "not_found")
+# A site that answers 403 or 429 refuses the harvest: its harvest stops.
+BLOCKED_STATUS <- c(403L, 429L)
+# Columns of a harvest's rows that only the ledger keeps.
+REQUEST_COLUMNS <- c("http_status", "requested_at")
+
+#' The outcome class of a fetch
+#'
+#' "ok": a page (or a PDF's text) was stored; "not_found": HTTP 404 or 410,
+#' HTTP 400 (UiB's answer for a semester before its first), or the site's
+#' own not-found page (HVL's "Course not found (soft 404)"); "shell": the
+#' site answers that it has nothing for that year (NTNU's "No course
+#' information available for this academic year"); "server_error": HTTP 5xx;
+#' "timeout": no answer (a timeout or a failed connection); "blocked": HTTP
+#' 403 or 429; "error": anything else; "no_url": no URL to request.
+#'
+#' @param url,status,error The URL, HTTP status (NA if unknown) and fetch
+#'   error text (fetch_error_text()) of each fetch.
+#' @param page Whether a page was stored.
+fetch_outcome <- function(url, page, status, error) {
+  dplyr::case_when(
+    page ~ "ok",
+    is.na(url) ~ "no_url",
+    status %in% c(400L, 404L, 410L) | grepl("soft 404", error, fixed = TRUE) ~ "not_found",
+    grepl("No course information available", error, fixed = TRUE) ~ "shell",
+    status %in% BLOCKED_STATUS ~ "blocked",
+    status >= 500L ~ "server_error",
+    status %in% 408L | grepl("Failed to perform HTTP request|[Tt]imeout|timed out", error) ~ "timeout",
+    .default = "error")
+}
+
+#' The fetch ledger of a harvest run
+#'
+#' One row per offering of the run, in the run's order: `run`,
+#' `institution`, `course_id`, `url`, `requested_at` (when the request was
+#' sent), `http_status`, `outcome` (fetch_outcome()), `bytes` and `sha256` of
+#' the page as stored (`html`, else the text read from a PDF), `raw_file` (the
+#' raw file of the row) and `dbh_snapshot` (the date of the DBH snapshot the
+#' offerings came from). `requested_at` and `http_status` come from the fetch
+#' (fetch_html_cols()); where the rows lack them they are NA, and
+#' `http_status` is then read from the error message ("HTTP 404 Not Found.").
+#'
+#' @param rows The run's rows (harvest_institution(), or read_raw()).
+#' @param institution,run The institution and the run's name.
+#' @param dbh_snapshot The DBH snapshot's date, if known.
+fetch_ledger <- function(rows, institution, run, dbh_snapshot = NA_character_, raw_dir = RAW_DIR) {
+  n <- nrow(rows)
+  col <- function(x, na) rows[[x]] %||% rep(na, n)
+  html <- col("html", NA_character_)
+  page <- dplyr::if_else(!is.na(html) & nzchar(html), html, as.character(col("extracted_text", NA_character_)))
+  error <- fetch_error_text(rows[["html_error"]] %||% vector("list", n))
+  status <- dplyr::coalesce(as.integer(col("http_status", NA_integer_)),
+                            as.integer(stringr::str_match(error, "^HTTP (\\d{3})")[, 2]))
+  url <- as.character(col("url", NA_character_))
+  tibble::tibble(
+    run = rep(run, n), institution = rep(institution, n), course_id = rows$course_id, url = url,
+    requested_at = rows[["requested_at"]] %||% .POSIXct(rep(NA_real_, n)),
+    http_status = status,
+    outcome = fetch_outcome(url, !is.na(page), status, error),
+    bytes = ifelse(is.na(page), NA_integer_, nchar(page, "bytes")),
+    sha256 = cli::hash_sha256(page),
+    raw_file = raw_file(institution, rows$Årstall, run, raw_dir),
+    dbh_snapshot = rep(as.character(dbh_snapshot), n))
+}
+
+ledger_file <- function(institution, run, raw_dir = RAW_DIR) {
+  file.path(raw_dir, institution, "ledger", paste0(run, ".parquet"))
+}
+
+ledger_files <- function(institution, raw_dir = RAW_DIR) {
+  sort(Sys.glob(file.path(raw_dir, institution, "ledger", "*.parquet")), method = "radix")
+}
+
+# Write a run's fetch ledger (fetch_ledger()); like a raw file, never twice.
+write_fetch_ledger <- function(ledger, institution, run, raw_dir = RAW_DIR) {
+  f <- ledger_file(institution, run, raw_dir)
+  if (file.exists(f)) stop("raw files are not written twice: ", f, " exists")
+  .write_plain_parquet(ledger, f)
+  invisible(f)
+}
+
+#' The fetch ledger of raw files
+#'
+#' Run by run: the ledger harvest_all() wrote with the run (`recorded`), or,
+#' for a run without one (harvests before 2026-10-16), the ledger
+#' reconstructed from its raw rows (fetch_ledger(): no `requested_at` or
+#' `dbh_snapshot`, `http_status` only from an error message). Derived data:
+#' the {targets} pipeline rebuilds it (target `ledger`).
+#'
+#' @param files Raw files of one institution (harvest_files()).
+raw_ledger <- function(files) {
+  if (!length(files)) {
+    none <- fetch_ledger(tibble::tibble(course_id = character(), Årstall = integer()), "", "")
+    return(dplyr::mutate(none, recorded = logical()))
+  }
+  dir <- dirname(dirname(files))
+  runs <- unique(data.frame(dir = dir, run = raw_run(files)))
+  dplyr::bind_rows(lapply(seq_len(nrow(runs)), function(i) {
+    inst <- basename(runs$dir[i])
+    lf <- ledger_file(inst, runs$run[i], dirname(runs$dir[i]))
+    if (file.exists(lf)) return(dplyr::mutate(arrow::read_parquet(lf), recorded = TRUE))
+    rows <- read_raw(files[dir == runs$dir[i] & raw_run(files) == runs$run[i]])
+    dplyr::mutate(fetch_ledger(rows, inst, runs$run[i], raw_dir = dirname(runs$dir[i])), recorded = FALSE)
+  }))
+}
+
+#' How the URL of each offering answered, last
+#'
+#' The outcome of the latest request of the offering's URL, whichever
+#' offering it was made for (an academic-year site shares a page between
+#' offerings); for an offering without a URL, its own latest outcome. "not
+#' requested": nobody requested the URL; "not harvested": the offering is in
+#' no raw run.
+#'
+#' @param course_id,url Offerings and the URL the build gives them
+#'   (course_offerings_full).
+#' @param ledger The ledger of the institutions' raw files (raw_ledger()).
+offering_outcome <- function(course_id, url, ledger) {
+  own <- ledger[!duplicated(ledger$course_id, fromLast = TRUE), ]
+  hit <- ledger[!is.na(ledger$url), ]
+  hit <- hit[!duplicated(hit$url, fromLast = TRUE), ]
+  out <- dplyr::if_else(is.na(url), own$outcome[match(course_id, own$course_id)],
+                        dplyr::coalesce(hit$outcome[match(url, hit$url)], "not requested"))
+  out[!course_id %in% ledger$course_id] <- "not harvested"
+  out
+}
+
+# Whether harvest_all(retry = ) fetches an offering without a plan again,
+# by its offering_outcome(): `retry` TRUE takes every outcome but not_found,
+# a character vector the outcomes it names; a URL nobody requested always.
+retry_wanted <- function(outcome, retry = TRUE) {
+  outcome %in% c(if (isTRUE(retry)) RETRY_OUTCOMES else retry, "not requested")
 }
 
 # Academic year ("2025-2026", August to July) of a date.

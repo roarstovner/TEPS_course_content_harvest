@@ -12,7 +12,8 @@ the gitignored `CLAUDE.local.md`.
   stages, how to run and rebuild each step, section extraction (strategies,
   `section_*` config fields, heading map, cleanup), which data files are
   published and which are internal, the append-only raw store and how to
-  finalize a release, sites that show only the current plan,
+  finalize a release, the fetch ledger and retries by outcome class (coverage,
+  changed pages), sites that show only the current plan,
   institution-specific notes (NORD, NTNU, UiO, HiOF, USN, UiT), function
   reference, troubleshooting.
 - `data/data_notes.qmd`: per-institution data quality notes; course-years

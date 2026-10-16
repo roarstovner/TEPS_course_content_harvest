@@ -48,8 +48,8 @@
 #' @param config Institution config from get_institution_config().
 #' @return Character vector of extracted text, one per row.
 extract_fulltext_from_raw <- function(df, config) {
-  stored <- df$extracted_text %||% rep(NA_character_, nrow(df))
-  html <- df$html %||% rep(NA_character_, nrow(df))
+  stored <- df[["extracted_text"]] %||% rep(NA_character_, nrow(df))
+  html <- df[["html"]] %||% rep(NA_character_, nrow(df))
   switch(config$strategy,
     noop       = rep(NA_character_, nrow(df)),
     pdf_split  = stored,
