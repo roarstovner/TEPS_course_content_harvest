@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Variable names: rename DBH columns and document them (#366)
 - targets: all-HE pipeline as default, teacher-ed outputs as a frame filter, branches per institution x year (#365)
 - Fetch ledger and retry policy by outcome class (#364)
 - Raw store to Parquet, partitioned by institution, year and harvest run (#363)
