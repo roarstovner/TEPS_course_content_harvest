@@ -36,7 +36,7 @@ ensure_output_columns <- function(df) {
 
 # --- Strategy: standard ---
 # URL -> HTTP fetch -> CSS extract
-# Used by: oslomet, uia, ntnu, inn, hiof, hvl, mf, nih, nmbu, uib, uio, nord
+# Used by: oslomet, uia, ntnu, inn, hiof, hvl, mf, nih, nmbu, uib, nord
 
 harvest_standard <- function(df, config, refetch = FALSE) {
   cp <- strategy_checkpoint_path(config, "html")
@@ -50,7 +50,7 @@ harvest_standard <- function(df, config, refetch = FALSE) {
 
 # --- Strategy: url_discovery ---
 # URL -> discover real URL -> HTTP fetch -> CSS extract
-# Used by: hivolda, uit
+# Used by: hivolda, uit, uio
 
 harvest_url_discovery <- function(df, config, refetch = FALSE) {
   url_cp <- strategy_checkpoint_path(config, "urls")
@@ -58,7 +58,7 @@ harvest_url_discovery <- function(df, config, refetch = FALSE) {
   clear_if_refetch(url_cp, refetch)
   clear_if_refetch(html_cp, refetch)
 
-  # Resolve URLs (hivolda, uit have institution-specific batch resolvers)
+  # Resolve URLs (hivolda, uit, uio have institution-specific batch resolvers)
   df <- resolve_course_urls(df, checkpoint_path = url_cp)
 
   # Fetch HTML

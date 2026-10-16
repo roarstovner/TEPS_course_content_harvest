@@ -320,7 +320,7 @@ institution_configs <- list(
 
   uio = list(
     code = "1110",
-    strategy = "standard",
+    strategy = "url_discovery",
     # The title, the plan and the facts box after it ("Fakta om emnet": level,
     # credits, semesters, language, department); not the table of contents,
     # the links to the semester pages and the FS fetch stamp

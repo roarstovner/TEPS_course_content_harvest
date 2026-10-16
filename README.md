@@ -43,7 +43,7 @@ URL must be discovered)</td>
 <td><code>url</code></td>
 </tr>
 <tr>
-<td>3. URL discovery (USN, UiT, hivolda; optional)</td>
+<td>3. URL discovery (USN, UiT, hivolda, UiO; optional)</td>
 <td><code>resolve_course_urls()</code>
 (<code>R/resolve_course_urls.R</code>)</td>
 <td><code>url</code>, checkpoint
@@ -1022,10 +1022,17 @@ timetable tab (`#timeplan`, from 2025) is not read.
 base URL always returns the current plan and older versions cannot be
 reached. Semester URLs (`/h24/`, `/v25/`) hold logistics only (teachers,
 timetable, exam dates), not the plan, so they are not used. Data should
-be filtered to the current year. The URL needs faculty/department slugs
-derived from `Avdelingsnavn`, via a hard-coded mapping in
-`add_course_url_uio()`. Pattern:
-`https://www.uio.no/studier/emner/{faculty}/{inst}/{CODE}/`.
+be filtered to the current year. The URL holds a faculty and department
+folder that DBH does not give:
+`https://www.uio.no/studier/emner/{faculty}/{department}/{CODE}/`.
+`resolve_urls_uio_batch()` reads the folders from UiO’s sitemap
+(`uio_course_folders()`), which lists every course taught now (the same
+courses as the listing `/studier/emner/alle/`). A course not taught now
+keeps its page but is not listed: it gets the folder that most listed
+courses with its code prefix (`ENG`) have, else the one of its DBH
+department (`Avdelingskode`); a wrong guess is a 404. A few folders are
+named in lower case (`sv/iss/sos9009`), and the URL must be too; Ø is O
+(`MØNA2504` is in `hf/ikos/MONA2504/`).
 
 **HiOF.** Courses before autumn 2021 use a different URL structure
 (switch in `add_course_url_hiof()`); the config selector lists fallbacks
@@ -1123,7 +1130,7 @@ in Sámi.
 <tr>
 <td><code>resolve_course_urls(df, checkpoint_path)</code></td>
 <td><code>R/resolve_course_urls.R</code></td>
-<td>URL discovery (USN, UiT, hivolda) with checkpointing</td>
+<td>URL discovery (USN, UiT, hivolda, UiO) with checkpointing</td>
 </tr>
 <tr>
 <td><code>fetch_html_with_checkpoint(courses, checkpoint_path)</code></td>
@@ -1263,7 +1270,7 @@ institution hold the same `course_id`; a file was copied into
     │   ├── institution_config.R   # Institution registry (strategy, selectors, overrides, section_*)
     │   ├── utils.R                # Helpers (data paths, add_course_id, validation, normalization)
     │   ├── add_course_url.R       # URL generation logic
-    │   ├── resolve_course_urls.R  # URL discovery for USN, UiT, hivolda
+    │   ├── resolve_course_urls.R  # URL discovery for USN, UiT, hivolda, UiO
     │   ├── fetch_html_cols.R      # HTML downloading (httr2)
     │   ├── extract_fulltext.R     # Config-driven text extraction
     │   ├── checkpoint.R           # Checkpoint management

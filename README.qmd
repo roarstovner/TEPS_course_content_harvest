@@ -23,7 +23,7 @@ This project harvests course descriptions from Norwegian teacher education insti
 |---|---|---|
 | 1. Course id `{institution}_{Emnekode_raw}_{year}_{semester}_{status}` | `add_course_id()` (`R/utils.R`) | `course_id` |
 | 2. URL from metadata (institution-specific builders; NA where the URL must be discovered) | `add_course_url()` (`R/add_course_url.R`) | `url` |
-| 3. URL discovery (USN, UiT, hivolda; optional) | `resolve_course_urls()` (`R/resolve_course_urls.R`) | `url`, checkpoint `data/raw/checkpoint/urls_{inst}.RDS` |
+| 3. URL discovery (USN, UiT, hivolda, UiO; optional) | `resolve_course_urls()` (`R/resolve_course_urls.R`) | `url`, checkpoint `data/raw/checkpoint/urls_{inst}.RDS` |
 | 4. Fetch HTML with checkpointing | `fetch_html_with_checkpoint()` (`R/checkpoint.R`, `R/fetch_html_cols.R`) | `html`, `html_success`, `html_error` |
 | 5. Extract text (the page's blocks as text, USN cleanup, PDF text) | `extract_fulltext_from_raw()` (`R/extract_fulltext.R`) | `data/raw/html_{inst}.RDS` (raw harvest) |
 | 6. Read each stored page into blocks; the text is the blocks | `institution_blocks()`, `institution_fulltext()` (`R/pipeline.R`) | `extracted_text.RDS` |
@@ -664,9 +664,16 @@ section gets one session of it (`exam_sessions`). The timetable tab
 URL always returns the current plan and older versions cannot be reached.
 Semester URLs (`/h24/`, `/v25/`) hold logistics only (teachers, timetable, exam
 dates), not the plan, so they are not used. Data should be filtered to the
-current year. The URL needs faculty/department slugs derived from
-`Avdelingsnavn`, via a hard-coded mapping in `add_course_url_uio()`. Pattern:
-`https://www.uio.no/studier/emner/{faculty}/{inst}/{CODE}/`.
+current year. The URL holds a faculty and department folder that DBH does
+not give: `https://www.uio.no/studier/emner/{faculty}/{department}/{CODE}/`.
+`resolve_urls_uio_batch()` reads the folders from UiO's sitemap
+(`uio_course_folders()`), which lists every course taught now (the same
+courses as the listing `/studier/emner/alle/`). A course not taught now keeps
+its page but is not listed: it gets the folder that most listed courses with
+its code prefix (`ENG`) have, else the one of its DBH department
+(`Avdelingskode`); a wrong guess is a 404. A few folders are named in lower
+case (`sv/iss/sos9009`), and the URL must be too; Ø is O (`MØNA2504` is in
+`hf/ikos/MONA2504/`).
 
 **HiOF.** Courses before autumn 2021 use a different URL structure (switch in
 `add_course_url_hiof()`); the config selector lists fallbacks for the old and
@@ -722,7 +729,7 @@ active and historical pages.
 | `get_institution_config(inst)` | `R/institution_config.R` | Config list for one institution |
 | `add_course_id(dbh_df)` | `R/utils.R` | Unique id from institution, raw code, year, semester, status |
 | `add_course_url(df)` | `R/add_course_url.R` | Institution-specific URL builders; NA where discovery is needed |
-| `resolve_course_urls(df, checkpoint_path)` | `R/resolve_course_urls.R` | URL discovery (USN, UiT, hivolda) with checkpointing |
+| `resolve_course_urls(df, checkpoint_path)` | `R/resolve_course_urls.R` | URL discovery (USN, UiT, hivolda, UiO) with checkpointing |
 | `fetch_html_with_checkpoint(courses, checkpoint_path)` | `R/checkpoint.R` | Download HTML, skipping courses already in the checkpoint |
 | `extract_fulltext_from_raw(df, config)` | `R/extract_fulltext.R` | `extracted_text` from the raw harvest, per strategy |
 | `page_blocks(html, text, cfg)` | `R/blocks.R` | Read one page into a block table |
@@ -790,7 +797,7 @@ active and historical pages.
 │   ├── institution_config.R   # Institution registry (strategy, selectors, overrides, section_*)
 │   ├── utils.R                # Helpers (data paths, add_course_id, validation, normalization)
 │   ├── add_course_url.R       # URL generation logic
-│   ├── resolve_course_urls.R  # URL discovery for USN, UiT, hivolda
+│   ├── resolve_course_urls.R  # URL discovery for USN, UiT, hivolda, UiO
 │   ├── fetch_html_cols.R      # HTML downloading (httr2)
 │   ├── extract_fulltext.R     # Config-driven text extraction
 │   ├── checkpoint.R           # Checkpoint management

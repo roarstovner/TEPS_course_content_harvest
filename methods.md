@@ -150,6 +150,24 @@ last fetched from FS in July 2024, and every copy rebuilt since
 **UiO semester pages are not used:** URLs such as `/h24/` hold logistics
 (teachers, timetable, exam dates), not the plan (decided 2026-02).
 
+**UiO course URLs come from its sitemap:** the URL of a UiO course page
+holds a faculty and department folder that DBH does not give. The
+folders are read from UiO’s sitemap at each harvest; it lists the
+courses taught now. A course not listed gets the folder of the listed
+courses with its code prefix, else of its DBH department. *Why:* the
+hand-kept map of 18 departments covered teacher education only, and
+pages of courses not taught now remain (ENG4429, last taught spring
+2023, has its plan). Tested on the listed courses, the prefix gives the
+right folder for 97.8%, the department for 95.7%. *Rejected:* the
+hand-kept map for all departments (a course that moves breaks it:
+NAT5000 is now in `matnat/natfag`); only listed courses (they miss pages
+that exist); the listing `/studier/emner/alle/` (the same courses as the
+sitemap). *Consequence:* the teacher-education URLs are unchanged except
+NAT5000 (its old URL redirects). Of the 5,163 course codes active in DBH
+2025, 3,689 are listed; of 40 guessed URLs sampled, 11 gave a page, and
+the rest are courses without a UiO page (UNIS courses, PhD reading
+lists, odontology specialist codes). *Since:* 2026-10-16.
+
 **UiT: the Norwegian document of a semester listed twice:** UiT’s
 semester picker can list a semester twice, an English document beside
 the Norwegian one; the Norwegian one is used. A course with only an

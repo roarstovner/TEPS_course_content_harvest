@@ -65,6 +65,8 @@ resolve_course_urls <- function(df,
       resolve_urls_hivolda_batch(df, .progress = .progress)
     } else if (inst == "uit") {
       resolve_urls_uit_batch(df, .progress = .progress)
+    } else if (inst == "uio") {
+      resolve_urls_uio_batch(df)
     } else {
       df |> dplyr::mutate(url = NA_character_)
     }
@@ -188,6 +190,62 @@ resolve_urls_hivolda_batch <- function(df, .progress = TRUE) {
   df |>
     dplyr::select(-url) |>
     dplyr::left_join(lookup, by = c("Emnekode", "Årstall", "Semesternavn"))
+}
+
+#' Resolve URLs for a batch of UiO courses from the sitemap
+#'
+#' A UiO course page sits in a faculty and department folder
+#' (/studier/emner/hf/ilos/ENG2165/) that DBH does not give. The sitemap lists
+#' the folder of every course taught now (the same courses as the listing
+#' /studier/emner/alle/). A course not taught now keeps its page but is not
+#' listed: it gets the folder most listed courses with its code prefix
+#' ("ENG") have, else the one most listed courses of its DBH department
+#' (Avdelingskode) have, and a wrong guess is a 404. The URL is always the
+#' base URL, never a semester page (/h24/: logistics, not the plan).
+#'
+#' @param df A tibble with Emnekode and Avdelingskode columns
+#' @param folders Tibble of code, folder and name, from uio_course_folders()
+#' @return df with url filled in
+resolve_urls_uio_batch <- function(df, folders = uio_course_folders()) {
+  code <- chartr("Ø", "O", toupper(df$Emnekode))   # MØNA2504's folder is MONA2504
+  prefix <- function(code) sub("[0-9].*", "", code)
+  common <- function(key, folder) {   # the folder most courses with the key have
+    dplyr::count(tibble::tibble(key, folder), key, folder) |>
+      dplyr::slice_max(n, n = 1, with_ties = FALSE, by = key)
+  }
+  listed <- dplyr::distinct(tibble::tibble(code, dept = df$Avdelingskode)) |>
+    dplyr::inner_join(folders, by = "code")
+  by_prefix <- common(prefix(folders$code), folders$folder)
+  by_dept <- common(listed$dept, listed$folder)
+  i <- match(code, folders$code)
+  guess <- dplyr::coalesce(by_prefix$folder[match(prefix(code), by_prefix$key)],
+                           by_dept$folder[match(df$Avdelingskode, by_dept$key)])
+  path <- dplyr::coalesce(paste(folders$folder, folders$name, sep = "/")[i],
+                          dplyr::if_else(is.na(guess), NA, paste(guess, code, sep = "/")))
+  cli::cli_alert_info(paste("UiO: {sum(!is.na(i))} of {nrow(df)} offerings in the sitemap,",
+                            "{sum(!is.na(path))} with a URL"))
+  df$url <- dplyr::if_else(is.na(path), NA, paste0("https://www.uio.no/studier/emner/", path, "/"))
+  df
+}
+
+#' UiO's course folders, from its sitemap
+#'
+#' A few folders are named in lower case (sv/iss/sos9009), and the URL must
+#' be too.
+#'
+#' @param index URL of the sitemap index
+#' @return Tibble of code (upper case), folder ("hf/ilos") and name (the
+#'   course folder's own name), one row per code
+uio_course_folders <- function(index = "https://www.uio.no/sitemapindex.xml") {
+  get <- function(url) httr2::resp_body_string(fetch_html_cols_single(url))
+  maps <- stringr::str_match_all(get(index), "<loc>(/sitemap-www\\.uio\\.no-\\d+\\.xml)</loc>")[[1]][, 2]
+  if (!length(maps)) stop("no www.uio.no sitemap in ", index)
+  m <- do.call(rbind, lapply(paste0("https://www.uio.no", maps), function(url) {
+    polite_pause()
+    stringr::str_match_all(get(url), "<loc>https://www\\.uio\\.no/studier/emner/([a-z]+/[^/<]+)/([A-Za-z0-9-]+)/")[[1]]
+  }))
+  tibble::tibble(code = toupper(m[, 3]), folder = m[, 2], name = m[, 3]) |>
+    dplyr::distinct(code, .keep_all = TRUE)
 }
 
 #' Resolve URLs for a batch of UiT courses via document ID discovery

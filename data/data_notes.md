@@ -1,7 +1,7 @@
 # Data Quality Notes
 
 
-Generated: 2026-10-15
+Generated: 2026-10-16
 
 ## Overview
 
@@ -425,9 +425,16 @@ Figures are in the tables above; the notes say why.
 - Only the plan in force is published (`plan_years = "current"`; see
   “Year coverage”). Semester URLs (`/h24/`, `/v25/`) hold logistics
   (teachers, timetable, exam dates), not the plan
-- Needs faculty/department slugs derived from `Avdelingsnavn` (mapping
-  in `add_course_url_uio()`). Pattern:
-  `https://www.uio.no/studier/emner/{faculty}/{inst}/{CODE}/`
+- The URL holds a faculty and department folder
+  (`https://www.uio.no/studier/emner/{faculty}/{department}/{CODE}/`),
+  read from UiO’s sitemap, which lists only the courses taught now; a
+  course not listed gets the folder of the listed courses with its code
+  prefix, else of its DBH department (README “Institution-Specific
+  Notes”). On 2026-10-16, 3,689 of the 5,163 course codes active in DBH
+  2025 were listed. Of the 1,474 not listed (822 PhD level, 107 UNIS
+  courses), a sample of 40 guessed URLs gave 11 pages; the rest were
+  404s: UNIS courses (on unis.no), PhD reading-list codes (`SP`) and
+  odontology specialist codes have no page at UiO
 - Read from `#vrtx-content`: the title, the plan and the facts box after
   it (“Fakta om emnet”: level, credits, semesters, language,
   department), in no section

@@ -20,7 +20,7 @@ add_course_url <- function(df) {
         "nih"     ~ add_course_url_nih(Emnekode, Årstall, Semesternavn),
 
         "uib"     ~ add_course_url_uib(Emnekode, Årstall, Semesternavn),
-        "uio"     ~ add_course_url_uio(Emnekode, Avdelingsnavn),
+        "uio"     ~ NA_character_,  # UiO's department folders come from its sitemap via resolve_course_urls()
         "uis"     ~ add_course_url_uis(Emnekode_raw),
         "usn"     ~ NA_character_,  # USN requires version discovery via resolve_course_urls()
         "uit"     ~ NA_character_,  # UiT requires document ID discovery via resolve_course_urls()
@@ -79,37 +79,6 @@ add_course_url_hiof <- function(course_code, year, semester) {
 
 # Hivolda URL generation removed - requires URL discovery via resolve_course_urls()
 # Base page /emne/{CODE} lists semester-specific version URLs with numeric IDs
-
-# UiO only publishes the LATEST course plan at the base URL.
-# Semester-specific URLs (/h24/, /v25/) contain logistics only (schedule, exams),
-# NOT course plan content. Always use the base URL without year/semester.
-add_course_url_uio <- function(course_code, faculty_name) {
-  uio_map <- list(
-    "Biologisk institutt" = c("matnat", "ibv"),
-    "Det utdanningsvitenskapelige fakultet" = c("uv", "uv"),
-    "Fysisk institutt" = c("matnat", "fys"),
-    "Institutt for arkeologi, konservering og historiske studier" = c("hf", "iakh"),
-    "Institutt for biovitenskap" = c("matnat", "ibv"),
-    "Institutt for geofag" = c("matnat", "geofag"),
-    "Institutt for informatikk" = c("matnat", "ifi"),
-    "Institutt for lingvistiske og nordiske studier" = c("hf", "iln"),
-    "Institutt for litteratur, områdestudier og europeiske språk" = c("hf", "ilos"),
-    "Institutt for lærerutdanning og skoleforskning" = c("uv", "ils"),
-    "Institutt for medier og kommunikasjon" = c("hf", "imk"),
-    "Institutt for molekylær biovitenskap" = c("matnat", "ibv"),
-    "Institutt for nordistikk og litteraturvitenskap" = c("hf", "iln"),
-    "Institutt for sosiologi og samfunnsgeografi" = c("sv", "sv"),
-    "Kjemisk institutt" = c("matnat", "kjemi"),
-    "Klassisk og romansk institutt" = c("hf", "ifikk"),
-    "Matematisk institutt" = c("matnat", "math"),
-    "Naturfagsenteret" = c("matnat", "naturfagsenteret")
-  )
-  
-  fac_slug  <- faculty_name |> purrr::map_chr(\(x) uio_map[[x]][1] %||% NA_character_)
-  inst_slug <- faculty_name |> purrr::map_chr(\(x) uio_map[[x]][2] %||% NA_character_)
-  
-  glue::glue("https://www.uio.no/studier/emner/{fac_slug}/{inst_slug}/{toupper(course_code)}/")
-}
 
 # The site only accepts "HØST": "/2022/HØST" is the plan of study year
 # 2022/2023, so a spring offering reads the year before (url_year =
