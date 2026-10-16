@@ -888,7 +888,7 @@ test_that("clock times go; durations, verses, ratios and credits stay", {
 })
 
 test_that("data/processed holds no personal data", {
-  files <- Sys.glob(here::here("data/processed/*.RDS"))
+  files <- list.files(here::here("data/processed"), "\\.RDS$", recursive = TRUE, full.names = TRUE)
   skip_if(length(files) == 0, "built data not available")
   found <- personal_data_in(files)
   expect(nrow(found) == 0, paste0(

@@ -71,9 +71,9 @@ harvest_institution <- function(institution, courses, year = NULL,
 #' published late. They are saved with `retry = TRUE`, and read_harvest()
 #' takes their new page. Run targets::tar_make() first, and narrow it with `year`.
 #'
-#' @param courses Data frame from dbh_courses(). If NULL, the teacher-ed frame
-#'   of the latest DBH snapshot: until tar_make() filters a frame, everything
-#'   in data/raw enters the teacher-ed outputs.
+#' @param courses Data frame from dbh_courses(). If NULL, every course of the
+#'   latest DBH snapshot (all years: weeks at some sites; the teacher-ed
+#'   outputs of tar_make() keep only the teacher-ed frame).
 #' @param year Optional integer — if given, only harvest this year
 #' @param refetch Logical — if TRUE, ignore checkpoints and re-download everything
 #' @param institutions Optional character vector of institution names to harvest.
@@ -82,7 +82,7 @@ harvest_institution <- function(institution, courses, year = NULL,
 #'   offerings whose page gave no plan
 harvest_all <- function(courses = NULL, year = NULL, refetch = FALSE,
                         institutions = NULL, retry = FALSE) {
-  if (is.null(courses)) courses <- dbh_courses("teacher_ed")
+  if (is.null(courses)) courses <- dbh_courses()
   if (!is.data.frame(courses)) {
     stop("`courses` must be a data frame, not ", class(courses)[1], ". ",
          "Did you mean harvest_all(institutions = ...)?", call. = FALSE)

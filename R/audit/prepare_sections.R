@@ -60,12 +60,14 @@ plans    <- readRDS("data/interim/course_offerings_full.RDS") |>
   select(course_id, institution, course_plan, plan_content_id,
          Emnekode_raw, Emnenavn, Årstall, Semesternavn)
 
-# Headings on each source page and where they map (target `blocks`): shows
-# why text went where it did.
+# Headings on each source page and where they map (target `blocks`, keyed by
+# page; `page_map`: each offering's page): shows why text went where it did.
 # Anonymized per institution, for the sampled courses only (all headings
 # took ~10 minutes).
 heads <- targets::tar_read(blocks) |>
-  filter(role %in% c("heading", "sub"), nzchar(trimws(text)), course_id %in% sources) |>
+  filter(role %in% c("heading", "sub"), nzchar(trimws(text))) |>
+  inner_join(filter(targets::tar_read(page_map), course_id %in% sources) |> select(course_id, page_id),
+             by = "page_id", relationship = "many-to-many") |>
   mutate(text = str_trunc(str_squish(text), 60))
 
 flag_cols <- c("flag_empty", "flag_short", "flag_long", "flag_blob",

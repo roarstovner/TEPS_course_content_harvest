@@ -25,7 +25,7 @@ write_parquet_compressed <- function(df, path) {
 }
 
 # --- Paths -------------------------------------------------------------------
-data_in  <- "../../data/processed"
+data_in  <- "../../data/processed/teacher_ed"   # the teacher-ed frame
 data_out <- "data"
 dir.create(data_out, showWarnings = FALSE)
 

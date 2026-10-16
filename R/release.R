@@ -5,7 +5,8 @@
 #' Copy the published data files to another project, with a manifest
 #'
 #' Writes to `dest`: course_offerings.RDS, course_plans.RDS, plan_sections.RDS
-#' and methods.md as built; `manifest.yml` (release tag, harvest repo commit,
+#' of the frame (the teacher-ed frame by default: the coding project's) and
+#' methods.md as built; `manifest.yml` (release tag, harvest repo commit,
 #' date, files with row counts and md5 sums); `section_coverage.csv` (share of
 #' plans per institution with each section; where a section is missing the
 #' coders use the whole plan); and, when `dest` already holds a release,
@@ -20,10 +21,11 @@
 #'
 #' @param tag Release name, e.g. "data-2026-10-09"; should be a git tag.
 #' @param dest Directory to write to.
+#' @param frame The frame whose files are released (FRAMES).
 #' @return `dest`, invisibly.
-release_data <- function(tag, dest = "../TEPS_course_content_coding/data") {
-  files <- c("data/processed/course_offerings.RDS", "data/processed/course_plans.RDS",
-             "data/processed/plan_sections.RDS", "methods.md")
+release_data <- function(tag, dest = "../TEPS_course_content_coding/data", frame = "teacher_ed") {
+  files <- c(file.path(frame_dir(frame), c("course_offerings.RDS", "course_plans.RDS",
+                                           "plan_sections.RDS")), "methods.md")
   stopifnot(all(file.exists(files)), dir.exists(dest))
   commit <- system2("git", c("rev-parse", "HEAD"), stdout = TRUE)
   if (length(system2("git", c("status", "--porcelain", "--", "R", "_targets.R"), stdout = TRUE))) {
@@ -118,15 +120,15 @@ RAW_MANIFEST <- "tests/snapshots/raw_manifest.csv"
 #' every raw file (harvest_files() and the fetch ledgers, ledger_files(), of
 #' all institutions) read-only, so a
 #' later write fails loudly; lists them with md5 sums in RAW_MANIFEST (commit
-#' it); and keeps the release's offerings, plans and sections in
-#' data/releases/{tag}/. frozen_changes() then checks on every build that
+#' it); and keeps the release's offerings, plans and sections (those of the
+#' teacher-ed frame) in data/releases/{tag}/. frozen_changes() then checks on every build that
 #' nothing of the release has changed. A later harvest only adds raw files
 #' (harvest_all()), so a new DBH year leaves the release as it was.
 #'
 #' @param tag Release name, the git tag of the release.
 #' @param raw_dir,processed,releases,manifest Locations (defaults: the repo's).
 #' @return The manifest, invisibly.
-finalize_release <- function(tag, raw_dir = RAW_DIR, processed = "data/processed",
+finalize_release <- function(tag, raw_dir = RAW_DIR, processed = frame_dir("teacher_ed"),
                              releases = "data/releases", manifest = RAW_MANIFEST) {
   # build first, so the release is what the code makes; tar_outdated() cannot
   # tell: html_file runs on every build, so all after it always count as outdated
@@ -153,7 +155,7 @@ finalize_release <- function(tag, raw_dir = RAW_DIR, processed = "data/processed
 #'
 #' @param manifest The raw manifest file.
 #' @param offerings,plans,sections The built course_offerings, course_plans and
-#'   plan_sections files.
+#'   plan_sections files of the release's frame.
 #' @param releases Where finalize_release() keeps the plans.
 #' @return Tibble `check`, `institution`, `what`.
 frozen_changes <- function(manifest, offerings, plans, sections, releases = "data/releases") {

@@ -9,10 +9,11 @@ execute:
 ```{r}
 #| label: setup
 library(dplyr, warn.conflicts = FALSE)
-off   <- readRDS("data/processed/course_offerings.RDS")
-plans <- readRDS("data/processed/course_plans.RDS")
-secs  <- readRDS("data/processed/plan_sections.RDS")
-full  <- readRDS("data/interim/course_offerings_full.RDS")
+# the teacher-ed frame, the frame of the releases (README "Frames")
+off   <- readRDS("data/processed/teacher_ed/course_offerings.RDS")
+plans <- readRDS("data/processed/teacher_ed/course_plans.RDS")
+secs  <- readRDS("data/processed/teacher_ed/plan_sections.RDS")
+full  <- readRDS("data/interim/teacher_ed/course_offerings_full.RDS")
 n <- function(x) format(x, big.mark = " ")
 pct <- function(x) sprintf("%.0f %%", 100 * x)
 ```
@@ -27,7 +28,7 @@ per-institution data quality in `data/data_notes.md`. When a decision changes
 what the data mean, add or update its entry here; each release tag freezes
 this file with the data.
 
-Current data: `r n(nrow(off))` offerings (DBH course × year × semester) at
+Current data, the teacher-ed frame (below): `r n(nrow(off))` offerings (DBH course × year × semester) at
 `r n_distinct(off$institution)` institutions, `r n(sum(!is.na(off$plan_content_id)))`
 of them with a plan, and `r n(nrow(plans))` unique plans from
 `r n_distinct(plans$institution)` institutions (none from Samas, below).
@@ -67,6 +68,26 @@ register and gives course metadata (credits, level, language, subject) that
 need not be coded from the plans. *Rejected:* the four-year GLU programmes (not
 in TEPS). *Since:* 2026-09-30 (institution + code match, c04fbc3); a filter of
 the all-course snapshot since 2026-10-16.
+
+**One build of every harvested course; teacher education is a filter of its
+outputs.** The pipeline builds every offering in the raw store and writes the
+data files of two frames: all courses (`data/processed/`) and teacher education
+(`data/processed/teacher_ed/`), the offerings whose institution, code, year
+and semester are in the teacher-ed frame of the latest DBH snapshot. A page's
+text, plan id and sections are the same in both. Plans are deduplicated within
+each frame, so a teacher-ed plan has the years (`year_from`, `year_to`), text
+and sections of its own earliest teacher-ed offering. *Why:* a course can be
+registered under a teacher-ed programme in some years and under another in
+others, and a teacher-ed release must stay as it is when courses of other
+programmes are harvested; one build keeps every fix in one place. *Rejected:*
+a second build for all courses on the same raw store (every step and fix
+twice); keeping the plans of all courses that have a teacher-ed offering (their
+text, years and sections would come from offerings outside the frame and change
+with every harvest of other courses). *Consequence:* on 2026-10-16 the raw
+store held only teacher-ed offerings (41 025), so both frames held the same
+data, and the teacher-ed files were byte for byte those of release
+data-2026-10-16. The releases, the browsers and these notes use the teacher-ed
+frame; the data notes all courses. *Since:* 2026-10-16.
 
 **An offering keeps its first `course_id`.** The id is
 `{institution}_{code}_{year}_{semester}_{status}`, and a later DBH snapshot can

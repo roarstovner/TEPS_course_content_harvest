@@ -10,6 +10,16 @@ RAW_DIR <- "data/raw"
 # programmes: the teacher-ed frame (methods.qmd, "Population and sampling frame").
 TEACHER_ED_STUDIUM <- c("INTMASTER", "IMALU5-10", "IMALU1-7", "LUPE")
 
+# The frames the pipeline writes data files for: every harvested offering
+# ("all", the default) and the teacher-ed filter of it (README "Frames").
+FRAMES <- c("all", "teacher_ed")
+
+# The folder of a frame's data files: data/{stage}/ for all courses,
+# data/{stage}/{frame}/ for a filter.
+frame_dir <- function(frame, stage = "processed") {
+  ifelse(frame == "all", file.path("data", stage), file.path("data", stage, frame))
+}
+
 # A DBH snapshot written by data-raw/courses.R, of `date` or the latest:
 # data/input/dbh_{table}_{YYYY-MM-DD}.parquet.
 dbh_snapshot_file <- function(table = c("courses", "programmes"), date = NULL,
@@ -83,8 +93,8 @@ raw_file <- function(institution, year, run, raw_dir = RAW_DIR) {
 # The harvest run of a raw file: its name.
 raw_run <- function(file) sub("\\.parquet$", "", basename(file))
 
-.raw_files <- function(raw_dir, institution = "*") {
-  f <- Sys.glob(file.path(raw_dir, institution, "*", "*.parquet"))
+.raw_files <- function(raw_dir, institution = "*", year = "*") {
+  f <- Sys.glob(file.path(raw_dir, institution, year, "*.parquet"))
   f[grepl("^\\d{4}$", basename(dirname(f)))]
 }
 
@@ -93,9 +103,18 @@ harvested_institutions <- function(raw_dir = RAW_DIR) {
   sort(unique(basename(dirname(dirname(.raw_files(raw_dir))))))
 }
 
-# All raw files of an institution, run by run, each run's years in order.
-harvest_files <- function(institution, raw_dir = RAW_DIR) {
-  f <- .raw_files(raw_dir, institution)
+# The partitions of the raw store: one row per institution and DBH year
+# (`year`, as in the folder name) with a raw file.
+raw_partitions <- function(raw_dir = RAW_DIR) {
+  f <- .raw_files(raw_dir)
+  p <- unique(tibble::tibble(institution = basename(dirname(dirname(f))), year = basename(dirname(f))))
+  p[order(p$institution, p$year, method = "radix"), ]
+}
+
+# All raw files of an institution (or of one of its years), run by run, each
+# run's years in order.
+harvest_files <- function(institution, raw_dir = RAW_DIR, year = "*") {
+  f <- .raw_files(raw_dir, institution, year)
   # byte order: the locale's ignores punctuation and puts {date}_{time} first
   f[order(raw_run(f), basename(dirname(f)), method = "radix")]
 }
@@ -153,10 +172,17 @@ write_raw_run <- function(rows, institution, run, raw_dir = RAW_DIR) {
 #'
 #' @param files Raw files of one institution (harvest_files()).
 #' @param run Keep `.run`, the run of each row.
-read_raw <- function(files, run = FALSE) {
+#' @param content FALSE reads the rows without their pages, for choosing
+#'   between them: `html` and `extracted_text` hold the row's page id
+#'   (raw_page_id()) where they hold a page, and `pdf` is left out. The pages
+#'   are not read into R.
+#' @param page_id Add `page_id`, the row's page id.
+read_raw <- function(files, run = FALSE, content = TRUE, page_id = FALSE) {
   if (!length(files)) return(tibble::tibble())
   rows <- dplyr::bind_rows(lapply(files, function(f) {
-    df <- dplyr::rename(arrow::read_parquet(f), dplyr::any_of(c(institution = "institution_short")))
+    df <- if (content) arrow::read_parquet(f) else .raw_without_pages(f)
+    df <- dplyr::rename(df, dplyr::any_of(c(institution = "institution_short")))
+    if (page_id) df$page_id <- raw_page_id(f, df$harvest_row)
     df$.run <- raw_run(f)
     df
   }))
@@ -164,6 +190,29 @@ read_raw <- function(files, run = FALSE) {
   rows$harvest_row <- NULL
   if (!run) rows$.run <- NULL
   rows
+}
+
+# The id of a raw row's page: its raw file and its place in the run,
+# "{institution}/{year}/{run}/{harvest_row}".
+raw_page_id <- function(file, harvest_row) {
+  if (!length(harvest_row)) return(character())
+  paste(basename(dirname(dirname(file))), basename(dirname(file)), raw_run(file), harvest_row, sep = "/")
+}
+
+# A raw file's rows with the page id in place of each page (read_raw()).
+.raw_without_pages <- function(f) {
+  cols <- arrow::ParquetFileReader$create(f)$GetSchema()$names
+  page <- intersect(c("html", "extracted_text"), cols)
+  df <- arrow::read_parquet(f, col_select = dplyr::all_of(setdiff(cols, c(page, "pdf"))))
+  if (length(page)) {
+    stored <- arrow::read_parquet(f, col_select = dplyr::all_of(page), as_data_frame = FALSE)
+    for (p in page) {
+      id <- raw_page_id(f, df$harvest_row)
+      id[as.vector(is.na(stored[[p]]))] <- NA_character_
+      df[[p]] <- id
+    }
+  }
+  df[setdiff(cols, "pdf")]
 }
 
 # The course ids in an institution's raw files.

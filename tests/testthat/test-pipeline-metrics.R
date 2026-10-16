@@ -48,39 +48,38 @@ test_that("drops, vanished and new metrics are flagged; small changes are not", 
                     "uis n_with_sections", "uit n_with_text"))
 })
 
-test_that("the built data match the metrics snapshot", {
-  files <- here::here(c("data/interim/course_offerings_full.RDS", "data/processed/plan_sections.RDS"))
+test_that("the built data match the metrics snapshot of each frame", {
+  files <- here::here(c(file.path(frame_dir(FRAMES, "interim"), "course_offerings_full.RDS"),
+                        file.path(frame_dir(FRAMES), "plan_sections.RDS")))
   skip_if_not(all(file.exists(files)), "built data not available")
-  changes <- suppressMessages(check_pipeline_metrics(
-    snapshot = here::here(METRICS_SNAPSHOT),
-    offerings = files[1], sections = files[2]
-  ))
+  changes <- suppressMessages(check_pipeline_metrics(root = here::here()))
   expect(nrow(changes) == 0, paste0(
     "Built data differ from the metrics snapshot. If intended, run ",
-    "check_pipeline_metrics(update = TRUE) and commit the snapshot:\n",
+    "check_pipeline_metrics(update = TRUE, frames = ...) and commit the snapshot:\n",
     paste(utils::capture.output(print(as.data.frame(changes))), collapse = "\n")
   ))
 })
 
 test_that("short plans without sections are page shells: no plan", {
-  plans <- list(list(
-    plans = tibble::tibble(plan_content_id = c("p1", "p2", "p3", "p4"), institution = "a",
-                           Emnekode = c("X", "Y", "Z", "W"),
-                           course_plan = c("Emnebeskrivelse", strrep("a", 2000), "Innhold",
-                                           paste(strrep("Fakta ", 400), "Emnebeskrivelse")),
-                           plan_nchar = c(15, 2000, 7, 15)),
-    courses = tibble::tibble(course_id = c("1", "2", "3", "4", "5"), institution = "a",
-                             Emnekode = c("X", "Y", "Z", "X", "W"), extracted_text = "t",
-                             plan_content_id = c("p1", "p2", "p3", "p1", "p4"))))
+  plans <- tibble::tibble(plan_content_id = c("p1", "p2", "p3", "p4"), institution = "a",
+                          Emnekode = c("X", "Y", "Z", "W"),
+                          course_plan = c("Emnebeskrivelse", strrep("a", 2000), "Innhold",
+                                          paste(strrep("Fakta ", 400), "Emnebeskrivelse")),
+                          plan_nchar = c(15, 2000, 7, 15))
+  courses <- tibble::tibble(course_id = c("1", "2", "3", "4", "5"), institution = "a",
+                            Emnekode = c("X", "Y", "Z", "X", "W"), extracted_text = "t",
+                            plan_content_id = c("p1", "p2", "p3", "p1", "p4"))
   sections <- tibble::tibble(plan_content_id = "p3", institution = "a", Emnekode = "Z",
                              section = "course_content", text = "Innhold")
   # p1: short, no sections -> shell; p2: long, no sections -> kept; p3: has
   # sections; p4: long only by its facts box -> shell
   expect_equal(combine_plans(plans, sections)$plan_content_id, c("p2", "p3"))
   expect_false("plan_nchar" %in% names(combine_plans(plans, sections)))
-  off <- combine_offerings(plans, sections)
-  expect_equal(off$plan_content_id, c(NA, "p2", "p3", NA, NA))
-  expect_true(all(off$has_extracted_text))
+  off <- frame_offerings(courses, list(all = rep(TRUE, 5), some = c(TRUE, FALSE, TRUE, FALSE, FALSE)),
+                         list(all = plans, some = plans), list(all = sections, some = sections))
+  expect_equal(off$all$plan_content_id, c(NA, "p2", "p3", NA, NA))
+  expect_equal(off$some$course_id, c("1", "3"))
+  expect_identical(off$all$extracted_text, courses$extracted_text)
 })
 
 test_that("plan_gaps() gives each course-year without a plan its reason", {

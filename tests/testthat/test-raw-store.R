@@ -225,7 +225,8 @@ test_that("harvest_all never writes a raw file twice", {
 
 test_that("a finalized release is locked and checked", {
   withr::local_dir(withr::local_tempdir())
-  for (d in c("data/raw", "data/processed", "tests/snapshots")) dir.create(d, recursive = TRUE)
+  processed <- frame_dir("teacher_ed")   # a release is of the teacher-ed frame
+  for (d in c("data/raw", processed, "tests/snapshots")) dir.create(d, recursive = TRUE)
   f <- write_raw_run(raw_rows(inst = "samas"), "samas", "2026-10-01")
   lf <- write_fetch_ledger(fetch_ledger(raw_rows(inst = "samas"), "samas", "2026-10-01"),
                            "samas", "2026-10-01")
@@ -235,12 +236,12 @@ test_that("a finalized release is locked and checked", {
                          section = "course_content", text = "Tekst.")
   offs <- tibble::tibble(course_id = c("o1", "o2"), institution = "samas",
                          plan_content_id = c("p1", NA))
-  saveRDS(offs, "data/processed/course_offerings.RDS")
-  saveRDS(plans, "data/processed/course_plans.RDS")
-  saveRDS(secs, "data/processed/plan_sections.RDS")
+  saveRDS(offs, file.path(processed, "course_offerings.RDS"))
+  saveRDS(plans, file.path(processed, "course_plans.RDS"))
+  saveRDS(secs, file.path(processed, "plan_sections.RDS"))
   check <- function() suppressWarnings(frozen_changes(
-    RAW_MANIFEST, "data/processed/course_offerings.RDS", "data/processed/course_plans.RDS",
-    "data/processed/plan_sections.RDS"))
+    RAW_MANIFEST, file.path(processed, "course_offerings.RDS"), file.path(processed, "course_plans.RDS"),
+    file.path(processed, "plan_sections.RDS")))
   expect_equal(nrow(check()), 0)   # nothing finalized yet
 
   suppressMessages(finalize_release("data-test"))
@@ -251,14 +252,14 @@ test_that("a finalized release is locked and checked", {
 
   # a new offering and plan (a later year) are fine; any change to the release is not
   saveRDS(dplyr::bind_rows(plans, dplyr::mutate(plans, plan_content_id = "p2")),
-          "data/processed/course_plans.RDS")
+          file.path(processed, "course_plans.RDS"))
   saveRDS(dplyr::bind_rows(offs, tibble::tibble(course_id = "o3", institution = "samas",
                                                 plan_content_id = "p2")),
-          "data/processed/course_offerings.RDS")
+          file.path(processed, "course_offerings.RDS"))
   expect_equal(nrow(check()), 0)
-  saveRDS(offs[1, ], "data/processed/course_offerings.RDS")   # o2 (no plan) gone
-  saveRDS(dplyr::mutate(plans, course_plan = "Annen tekst."), "data/processed/course_plans.RDS")
-  saveRDS(dplyr::mutate(secs, text = "Annen tekst."), "data/processed/plan_sections.RDS")
+  saveRDS(offs[1, ], file.path(processed, "course_offerings.RDS"))   # o2 (no plan) gone
+  saveRDS(dplyr::mutate(plans, course_plan = "Annen tekst."), file.path(processed, "course_plans.RDS"))
+  saveRDS(dplyr::mutate(secs, text = "Annen tekst."), file.path(processed, "plan_sections.RDS"))
   Sys.chmod(f, "0644")
   arrow::write_parquet(raw_rows(inst = "samas", html = "ny")[, c("course_id", "html")], f)
   expect_setequal(check()$check, c("raw file changed or missing", "plan gone or text changed",

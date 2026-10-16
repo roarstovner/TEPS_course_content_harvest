@@ -9,7 +9,9 @@ the gitignored `CLAUDE.local.md`.
 ## Where things are documented
 
 - `README.qmd` (render with `quarto render README.qmd` → `README.md`): pipeline
-  stages, how to run and rebuild each step, section extraction (strategies,
+  stages, how to run and rebuild each step (branches per raw partition), the
+  frames (all courses; the teacher-ed files in `teacher_ed/` folders, which
+  the releases use), section extraction (strategies,
   `section_*` config fields, heading map, cleanup), which data files are
   published and which are internal, the append-only raw store and how to
   finalize a release, the fetch ledger and retries by outcome class (coverage,
@@ -43,7 +45,7 @@ the gitignored `CLAUDE.local.md`.
   `R/fetch_html_cols.R` and `R/extract_fulltext.R`.
 - Privacy: `html` and `extracted_text` are raw and hold staff names, e-mails and
   phone numbers. Anything published is built from `anonymize_text()`; sections
-  are cut from raw text, so `institution_sections()` must keep anonymizing.
+  are cut from raw text, so `partition_sections()` must keep anonymizing.
   Only anonymized text goes in `data/processed/` (checked by target
   `privacy_check` and `test-anonymize.R`). See README "Data Files: Published
   and Internal".
@@ -62,8 +64,9 @@ the gitignored `CLAUDE.local.md`.
 - After changing extraction, the heading map or the anonymizer, rebuild the
   derived data with `targets::tar_make()` and read `tar_read(metrics_check)`
   (README "Rebuilding Derived Data"). Explain every flagged
-  change; update the snapshot (`check_pipeline_metrics(update = TRUE)`) only
-  for intended ones, in the same commit, and say so in the commit message.
+  change; update the snapshot of the frame
+  (`check_pipeline_metrics(update = TRUE, frames = ...)`) only for intended
+  ones, in the same commit, and say so in the commit message.
 - A decision that changes what the data mean (frame, years, exclusions,
   anonymization, section rules) gets an entry in `methods.qmd` in the same
   commit: choice, reason, rejected alternatives, consequence and date.

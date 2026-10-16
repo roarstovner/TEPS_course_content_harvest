@@ -2,16 +2,20 @@
 # Regression snapshot for the built data.
 #
 # pipeline_metrics() counts offerings, plans and sections per institution in
-# the built files; check_pipeline_metrics() compares them with the snapshot in
-# tests/snapshots/pipeline_metrics.csv and prints every change beyond
-# tolerance. A rebuild that silently empties an institution (all 142 nla
-# courses lost their sections in 06db3ac) then shows up at once, and the test
-# in tests/testthat/test-pipeline-metrics.R fails. After an intended change,
-# update the snapshot and commit it with the change that explains it:
+# the built files; check_pipeline_metrics() compares them with the snapshot of
+# each frame in tests/snapshots/pipeline_metrics_{frame}.csv and prints every
+# change beyond tolerance. A rebuild that silently empties an institution (all
+# 142 nla courses lost their sections in 06db3ac) then shows up at once, and
+# the test in tests/testthat/test-pipeline-metrics.R fails. The teacher-ed
+# snapshot is stable; the all-courses one changes with each harvest. After an
+# intended change, update the snapshot of the frames it changed and commit it
+# with the change that explains it:
 #
-#   Rscript -e 'source("R/pipeline_metrics.R"); check_pipeline_metrics(update = TRUE)'
+#   Rscript -e 'source("R/utils.R"); source("R/pipeline_metrics.R");
+#               check_pipeline_metrics(update = TRUE, frames = "all")'
 
-METRICS_SNAPSHOT <- "tests/snapshots/pipeline_metrics.csv"
+METRICS_SNAPSHOT <- c(all = "tests/snapshots/pipeline_metrics_all.csv",
+                      teacher_ed = "tests/snapshots/pipeline_metrics_teacher_ed.csv")
 
 #' Per-institution metrics of the built data
 #'
@@ -105,28 +109,31 @@ compare_metrics <- function(old, new, tol_n = 0.05, min_n = 10,
 #' Compare the built data with the snapshot, or update the snapshot
 #'
 #' @param update If TRUE, write the current metrics as the new snapshot.
-#' @return The changes beyond tolerance (invisibly; empty after an update).
-check_pipeline_metrics <- function(update = FALSE, snapshot = METRICS_SNAPSHOT,
-                                   offerings = "data/interim/course_offerings_full.RDS",
-                                   sections = "data/processed/plan_sections.RDS") {
-  current <- pipeline_metrics(
-    readRDS(offerings),
-    if (file.exists(sections)) readRDS(sections)
-  )
-  if (update || !file.exists(snapshot)) {
-    utils::write.csv(current, snapshot, row.names = FALSE)
-    message("Wrote ", nrow(current), " metrics to ", snapshot)
-    return(invisible(compare_metrics(current, current)))
-  }
-  changes <- compare_metrics(utils::read.csv(snapshot), current)
-  if (nrow(changes) == 0) {
-    message("Pipeline metrics match ", snapshot)
-  } else {
-    message(nrow(changes), " metric(s) differ from ", snapshot,
-            " beyond tolerance:")
-    print(as.data.frame(changes), row.names = FALSE)
-    message("If intended: check_pipeline_metrics(update = TRUE), and commit ",
-            "the snapshot with the change.")
-  }
+#' @param frames The frames (FRAMES) to compare or update.
+#' @param root The repository's folder.
+#' @return The changes beyond tolerance, with their `frame` (invisibly; empty
+#'   after an update).
+check_pipeline_metrics <- function(update = FALSE, frames = names(METRICS_SNAPSHOT), root = ".") {
+  changes <- dplyr::bind_rows(lapply(frames, function(f) {
+    snapshot <- file.path(root, METRICS_SNAPSHOT[[f]])
+    current <- pipeline_metrics(
+      readRDS(file.path(root, frame_dir(f, "interim"), "course_offerings_full.RDS")),
+      readRDS(file.path(root, frame_dir(f), "plan_sections.RDS")))
+    if (update || !file.exists(snapshot)) {
+      utils::write.csv(current, snapshot, row.names = FALSE)
+      message("Wrote ", nrow(current), " metrics to ", snapshot)
+      return(NULL)
+    }
+    changes <- compare_metrics(utils::read.csv(snapshot), current)
+    if (nrow(changes) == 0) {
+      message("Pipeline metrics match ", snapshot)
+    } else {
+      message(nrow(changes), " metric(s) differ from ", snapshot, " beyond tolerance:")
+      print(as.data.frame(changes), row.names = FALSE)
+      message("If intended: check_pipeline_metrics(update = TRUE, frames = \"", f,
+              "\"), and commit the snapshot with the change.")
+    }
+    tibble::tibble(frame = rep(f, nrow(changes)), changes)
+  }))
   invisible(changes)
 }

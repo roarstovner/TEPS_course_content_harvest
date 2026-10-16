@@ -9,17 +9,18 @@
 # Rebuilt by targets::tar_make() (target browser_data_file). By hand, from
 # this directory:  Rscript build_data.R
 #
-# Inputs:  data/processed/course_plans.RDS, data/interim/course_offerings_full.RDS,
-#          data/processed/plan_sections.RDS (optional)
+# Inputs (the teacher-ed frame): data/processed/teacher_ed/course_plans.RDS,
+#          data/interim/teacher_ed/course_offerings_full.RDS,
+#          data/processed/teacher_ed/plan_sections.RDS (optional)
 # Output:  app/course_browser/data/browser_data.RDS (gitignored)
 
 library(dplyr, warn.conflicts = FALSE)
 
 message("Loading inputs...")
-plans <- readRDS("../../data/processed/course_plans.RDS")
-offerings <- readRDS("../../data/interim/course_offerings_full.RDS")
+plans <- readRDS("../../data/processed/teacher_ed/course_plans.RDS")
+offerings <- readRDS("../../data/interim/teacher_ed/course_offerings_full.RDS")
 
-sections_path <- "../../data/processed/plan_sections.RDS"
+sections_path <- "../../data/processed/teacher_ed/plan_sections.RDS"
 
 # ── Offering coverage per plan ───────────────────────────────────────────────
 # A plan is shared by 1-16 offerings. The researcher needs to see which

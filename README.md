@@ -65,20 +65,24 @@ text)</td>
 <td><code>data/raw/{inst}/{year}/{run}.parquet</code> (raw harvest)</td>
 </tr>
 <tr>
-<td>6. Read each stored page into blocks; the text is the blocks</td>
-<td><code>institution_blocks()</code>,
-<code>institution_fulltext()</code> (<code>R/pipeline.R</code>)</td>
+<td>6. Read each stored page into blocks, per raw partition; the text is
+the blocks</td>
+<td><code>partition_blocks()</code>, <code>partition_text()</code>
+(<code>R/pipeline.R</code>)</td>
 <td><code>extracted_text.RDS</code></td>
 </tr>
 <tr>
-<td>7. Anonymize and deduplicate</td>
-<td><code>institution_plans()</code></td>
+<td>7. Give each offering its page; anonymize, and deduplicate within
+each frame</td>
+<td><code>read_harvest()</code>, <code>plan_offerings()</code>,
+<code>frame_plans()</code></td>
 <td><code>course_plans.RDS</code>,
 <code>course_offerings*.RDS</code></td>
 </tr>
 <tr>
 <td>8. Split each plan into sections</td>
-<td><code>institution_sections()</code></td>
+<td><code>partition_sections()</code>,
+<code>frame_sections()</code></td>
 <td><code>plan_sections.RDS</code></td>
 </tr>
 </tbody>
@@ -132,9 +136,9 @@ result <- harvest_institution("oslomet", courses, year = 2025)
 result <- harvest_institution("ntnu", courses, refetch = TRUE)
 
 # Harvest into the raw store (data/raw/{inst}/{year}/{date}.parquet): all
-# institutions, or the given ones; without `courses`, the teacher-ed frame of
-# the latest DBH snapshot
-harvest_all(institutions = "hivolda")
+# institutions, or the given ones; without `courses`, every course of the
+# latest DBH snapshot (weeks at the slowest sites)
+harvest_all(courses, institutions = "hivolda")
 harvest_all()
 
 # Fetch again the offerings without a plan, except pages not found (README
@@ -191,20 +195,31 @@ targets::tar_read(heading_use)    # pages per heading-map pattern (0 = unused)
 targets::tar_read(privacy_check)  # personal data found in data/processed/
 targets::tar_read(frozen_check)   # changes to the finalized release (empty before one)
 targets::tar_read(gaps)           # course-years without a plan, and why
-targets::tar_read(coverage)       # every offering of the frame: fetch outcome, plan, retry
+targets::tar_read(coverage)       # every offering of each frame: fetch outcome, plan, retry
 targets::tar_read(changed_pages)  # pages whose text changed between harvest runs
 ```
 
 {targets} keeps each step’s result in `_targets/` (gitignored) together
 with a hash of its inputs and of the code it calls, and reruns a step
-only when one of those changed. The steps per institution (fulltext,
-plans, sections, unmapped headings, fetch status) run once per
-institution: a new raw file of uib, or a change to uib’s entry in
-`R/institution_config.R`, rebuilds only uib, while a change to shared
-code (`R/anonymize.R`, `R/section_heading_map.R`,
-`R/extract_sections.R`) reruns that step for every institution. The
-pipeline writes the data files in `data/interim/` and `data/processed/`
-(see “Data Files: Published and Internal”),
+only when one of those changed. The steps that read pages run once per
+raw partition, an institution’s DBH year (`data/raw/{inst}/{year}/`,
+`raw_partitions()`), so no step holds more than one partition’s HTML:
+`blocks` (every stored page read once), `page_text` (its text,
+anonymized plan and plan id), `page_headings` (for `unmapped` and
+`heading_use`) and `source_sections` (the sections of the pages plans
+are cut from). A new raw file of uib 2025, or a change to uib’s entry in
+`R/institution_config.R`, rebuilds only uib’s partitions, while a change
+to shared code (`R/anonymize.R`, `R/section_heading_map.R`,
+`R/extract_sections.R`) reruns that step for every partition. Which page
+each offering takes can cross years (a spring offering reads the
+academic year’s page, a current site’s snapshot serves every year), so
+that is decided per institution without reading the pages (`pages`:
+`read_harvest(content = FALSE)`, which puts the page id,
+`{inst}/{year}/{run}/{row}`, in place of the page), and the steps over
+all offerings (`courses`, `plans`, `sections`, `offerings`) join the
+partitions’ results by page id. The pipeline writes the data files of
+each frame (see “Frames”) in `data/interim/` and `data/processed/` (see
+“Data Files: Published and Internal”),
 `app/course_browser/data/browser_data.RDS`, the OJS Parquet files,
 `data/data_notes.md` and `methods.md`. The harvest is not part of it.
 
@@ -218,22 +233,45 @@ ones worth checking by hand; the data notes summarize it (“Course-years
 without a plan”).
 
 The steps run on 4 local worker processes ({crew}, set in
-`tar_option_set()` in `_targets.R`), several institutions at a time. A
-full build takes about 11 minutes (2026-10-06). To debug a step with
-`browser()`, run in the current session instead:
+`tar_option_set()` in `_targets.R`), several partitions at a time. A
+full build takes about 21 minutes, a build with nothing to do about 10
+seconds (2026-10-16). To debug a step with `browser()`, run in the
+current session instead:
 `targets::tar_make(callr_function = NULL, use_crew = FALSE)`.
 
-The pipeline ends by comparing the built data with a snapshot of
-per-institution and per-section counts and median text lengths
-(`R/pipeline_metrics.R`, `tests/snapshots/pipeline_metrics.csv`).
-Changes beyond tolerance show as a warning in `tar_make()` and make
-`tests/testthat/test-pipeline-metrics.R` fail. When a change is
-intended, update the snapshot and commit it together with the change:
+The pipeline ends by comparing the built data of each frame with a
+snapshot of per-institution and per-section counts and median text
+lengths (`R/pipeline_metrics.R`,
+`tests/snapshots/pipeline_metrics_{frame}.csv`). Changes beyond
+tolerance show as a warning in `tar_make()` (target `metrics_check`,
+with the frame) and make `tests/testthat/test-pipeline-metrics.R` fail.
+The teacher-ed snapshot stays put; the all-courses one changes with each
+harvest. When a change is intended, update the snapshot of the frames it
+changed and commit it together with the change:
 
 ``` r
-source("R/pipeline_metrics.R")
-check_pipeline_metrics(update = TRUE)
+source("R/utils.R"); source("R/pipeline_metrics.R")
+check_pipeline_metrics(update = TRUE, frames = "all")
 ```
+
+### Frames
+
+The pipeline builds every offering in the raw store, and writes the data
+files of two frames (`FRAMES`): `all`, every harvested offering, in
+`data/interim/` and `data/processed/`; and `teacher_ed`, the offerings
+in the teacher-ed frame of the latest DBH snapshot
+(`dbh_courses("teacher_ed")`, matched on the offering without its
+Status, `frame_members()`), in the `teacher_ed/` folders of both
+(`frame_dir()`). The text, plan id and sections of a page are the same
+in both; the plans are deduplicated within each frame (`frame_plans()`),
+so a teacher-ed plan has the years, text and sections of its own
+earliest teacher-ed offering, whatever else the raw store holds, and a
+harvest of other courses leaves the teacher-ed files as they were. The
+teacher-ed files are the releases’ (`finalize_release()`,
+`release_data()`, target `frozen_check`), the browsers’ and
+`methods.md`’s; the data notes, the gaps and the audits read those of
+all courses. Each frame has its metrics snapshot, and target `coverage`
+its DBH offerings.
 
 Per-institution prose notes are edited directly in
 `data/data_notes.qmd`.
@@ -341,8 +379,9 @@ stages:
 2.  **Normalize** (`normalize_plan_text()`): Applies lossy transforms
     (lowercasing, heading synonyms, blanket year removal, whitespace
     squishing) on `course_plan` for content hashing
-3.  **Deduplicate** (`deduplicate_plans()`): Groups identical normalized
-    texts under a shared `plan_content_id`
+3.  **Deduplicate** (`plan_ids()`, `plan_table()`): Groups identical
+    normalized texts under a shared `plan_content_id`, within each frame
+    (see “Frames”)
 
 **Output columns:**
 
@@ -477,27 +516,30 @@ release_data("data-YYYY-MM-DD")       # hand-over to the coding project
 `finalize_release()` makes every raw file and fetch ledger read-only (an
 overwrite then fails), lists them with md5 sums in
 `tests/snapshots/raw_manifest.csv`, and keeps the release’s offerings,
-plans and sections in `data/releases/{tag}/`. On every build
-`tar_read(frozen_check)` lists any change to the release: a raw file
-changed or missing, an offering gone or linked to another plan, a plan
-gone or with other text, a section changed. Plans added later (a new DBH
-year) are not changes. A planned change to the release (a privacy fix, a
-section fix after the coders’ check) means a new release: finalize it,
-and `release_data()` writes the old -\> new `plan_content_id` crosswalk.
-Until then `frozen_check` lists the planned changes on every build, and
-a change nobody intended would be listed among them, so each commit
-explains the rows it adds, and the next release follows soon after the
-fixes. A section fix keeps the plan’s id, so the crosswalk does not show
-it; `release_data()` lists such sections (plan, section, changed, added
-or removed) in `sections_changed.csv`.
+plans and sections (the teacher-ed frame’s, see “Frames”) in
+`data/releases/{tag}/`. On every build `tar_read(frozen_check)` lists
+any change to the release: a raw file changed or missing, an offering
+gone or linked to another plan, a plan gone or with other text, a
+section changed. Plans added later (a new DBH year) are not changes. A
+planned change to the release (a privacy fix, a section fix after the
+coders’ check) means a new release: finalize it, and `release_data()`
+writes the old -\> new `plan_content_id` crosswalk. Until then
+`frozen_check` lists the planned changes on every build, and a change
+nobody intended would be listed among them, so each commit explains the
+rows it adds, and the next release follows soon after the fixes. A
+section fix keeps the plan’s id, so the crosswalk does not show it;
+`release_data()` lists such sections (plan, section, changed, added or
+removed) in `sections_changed.csv`.
 
-**Output files:**
+**Output files** (of all courses; the teacher-ed frame’s in the
+`teacher_ed/` folders, see “Frames”):
 
 - `data/processed/course_offerings.RDS` — published slim dataset: course
   rows with DBH metadata + `plan_content_id` FK (no url, no text)
 - `data/interim/course_offerings_full.RDS` — internal working file: same
   rows plus `url`, `extracted_text`, `course_plan`,
-  `course_plan_normalized`; used by the course_browser app
+  `course_plan_normalized`; the teacher-ed one is used by the
+  course_browser app
 - `data/processed/course_plans.RDS` — one row per unique plan per course
   code per institution, with the offering its text comes from
   (`source_course_id`)
@@ -604,19 +646,21 @@ harvest_all(institutions = "uib", retry = "server_error")
 ```
 
 **Coverage and changed pages.** Target `coverage` lists every offering
-of the teacher-ed frame of the latest DBH snapshot with `outcome` (how
+of each frame of the latest DBH snapshot (`frame`: `all`, every course
+at the institutions with a config, or `teacher_ed`) with `outcome` (how
 its URL answered last; `not requested`, or `not harvested`: in no raw
-run), `has_plan`, and `retry` (no plan, and `harvest_all(retry = TRUE)`
-would fetch it again): the coverage report of a release. Target
-`changed_pages` lists the pages whose plan text changed between two runs
-that fetched the same URL (a site that reworded an old page; a current
-site’s plan of a new year). The body’s `sha256` alone cannot tell, since
-some sites change the body on every fetch (Liferay’s `authToken` at NTNU
-and OsloMet), so where the bodies differ the text the pipeline reads
-from them is compared.
+run), `has_plan` (in that frame’s files), and `retry` (no plan, and
+`harvest_all(retry = TRUE)` would fetch it again): the coverage report
+of a release. Target `changed_pages` lists the pages whose plan text
+changed between two runs that fetched the same URL (a site that reworded
+an old page; a current site’s plan of a new year). The body’s `sha256`
+alone cannot tell, since some sites change the body on every fetch
+(Liferay’s `authToken` at NTNU and OsloMet), so where the bodies differ
+the text the pipeline reads from them is compared.
 
 ``` r
-targets::tar_read(coverage) |> dplyr::count(institution, outcome, has_plan, retry)
+targets::tar_read(coverage) |> dplyr::filter(frame == "teacher_ed") |>
+  dplyr::count(institution, outcome, has_plan, retry)
 targets::tar_read(changed_pages)
 ```
 
@@ -1072,6 +1116,13 @@ and run</td>
 <td>publishable</td>
 </tr>
 <tr>
+<td><code>data/interim/teacher_ed/</code>,
+<code>data/processed/teacher_ed/</code></td>
+<td>the same files for the teacher-ed frame (“Frames”)</td>
+<td>as above</td>
+<td>as above</td>
+</tr>
+<tr>
 <td><code>app/course_browser/data/browser_data.RDS</code></td>
 <td>course_browser payload: plans, offering metadata, sections</td>
 <td>anonymized (no <code>extracted_text</code>)</td>
@@ -1131,9 +1182,9 @@ courses of the teacher education programmes (study types in
 `TEACHER_ED_STUDIUM`, matched on institution and programme code: a
 programme code is unique only within an institution). The teacher-ed
 frame is a filter of the same snapshot, so its offerings have the same
-`course_id` in both. `harvest_all()` without `courses` harvests the
-teacher-ed frame: `tar_make()` reads everything in `data/raw/`, so an
-all-course harvest would enter the teacher-ed outputs.
+`course_id` in both. `harvest_all()` without `courses` harvests every
+course; `tar_make()` builds everything in `data/raw/` and writes the
+teacher-ed frame’s files apart (see “Frames”).
 
 Key columns: - `institution`: Short code (e.g., “oslomet”, “uia”); NA
 for an institution code no config has - `Emnekode_raw`: Original course
@@ -1317,6 +1368,36 @@ changed between runs (targets <code>coverage</code>,
 <code>changed_pages</code>)</td>
 </tr>
 <tr>
+<td><code>raw_partitions()</code>,
+<code>read_raw(files, content = FALSE)</code>,
+<code>raw_page_id(file, row)</code></td>
+<td><code>R/utils.R</code></td>
+<td>The raw store’s institution x year partitions; raw rows with the
+page id in place of the page</td>
+</tr>
+<tr>
+<td><code>partition_blocks()</code>, <code>partition_text()</code>,
+<code>partition_sections()</code></td>
+<td><code>R/pipeline.R</code></td>
+<td>Per raw partition: every page’s blocks, text and plan
+(<code>page_plans()</code>), and the sections of the pages plans are cut
+from</td>
+</tr>
+<tr>
+<td><code>plan_offerings(pages, page_text, config)</code></td>
+<td><code>R/pipeline.R</code></td>
+<td>Every offering with the text, <code>course_plan</code> and plan id
+of its page (target <code>courses</code>)</td>
+</tr>
+<tr>
+<td><code>frame_members()</code>, <code>frame_plans()</code>,
+<code>frame_sections()</code>, <code>frame_offerings()</code>,
+<code>frame_dir()</code></td>
+<td><code>R/pipeline.R</code>, <code>R/utils.R</code></td>
+<td>The frames: their offerings, plans (<code>plan_table()</code>),
+sections and data folders</td>
+</tr>
+<tr>
 <td><code>harvest_files(institution)</code>,
 <code>harvested_institutions()</code></td>
 <td><code>R/utils.R</code></td>
@@ -1375,10 +1456,11 @@ files</td>
 <td>A page’s <code>extracted_text</code> from its blocks</td>
 </tr>
 <tr>
-<td><code>read_harvest(files, config)</code></td>
+<td><code>read_harvest(files, config, content)</code></td>
 <td><code>R/pipeline.R</code></td>
-<td>One institution’s raw files combined (<code>harvest_files()</code>);
-current sites matched by course code and academic year</td>
+<td>One institution’s raw files combined (<code>harvest_files()</code>):
+the page each offering takes; current sites matched by course code and
+academic year</td>
 </tr>
 <tr>
 <td><code>harvested_rows(institutions)</code></td>
@@ -1394,10 +1476,11 @@ current sites matched by course code and academic year</td>
 <code>frozen_check</code>)</td>
 </tr>
 <tr>
-<td><code>release_data(tag, dest)</code></td>
+<td><code>release_data(tag, dest, frame)</code></td>
 <td><code>R/release.R</code></td>
-<td>Copy the published files, <code>methods.md</code>, a manifest and
-section coverage to the coding project</td>
+<td>Copy the published files of a frame (the teacher-ed one),
+<code>methods.md</code>, a manifest and section coverage to the coding
+project</td>
 </tr>
 <tr>
 <td><code>plan_gaps(offerings, fetch_status)</code></td>
@@ -1423,10 +1506,11 @@ sections</td>
 <td>Lossy normalization for dedup hashing</td>
 </tr>
 <tr>
-<td><code>deduplicate_plans(df)</code></td>
+<td><code>plan_ids(id_text)</code>, <code>plan_table(courses)</code>,
+<code>deduplicate_plans(df)</code></td>
 <td><code>R/deduplicate_plans.R</code></td>
-<td>Content hashes → <code>plans</code> and <code>courses</code> with
-<code>plan_content_id</code></td>
+<td>Content hashes (<code>plan_content_id</code>); the unique plans of a
+set of offerings</td>
 </tr>
 <tr>
 <td><code>page_sections(blocks, text, cfg)</code></td>
@@ -1517,15 +1601,15 @@ hold the same `course_id` (not a retry); a file was copied into
     ├── data/                      # README "Data Files: Published and Internal"
     │   ├── input/                 # DBH snapshots dbh_{courses,programmes}_{date}.parquet (in git)
     │   ├── raw/                   # Harvest: {inst}/{year}/{run}.parquet, {inst}/ledger/, checkpoint/ (not in git)
-    │   ├── interim/               # Rebuilt text with personal data (not in git)
-    │   ├── processed/             # Anonymized data files, can be shared (not in git)
+    │   ├── interim/               # Rebuilt text with personal data (not in git); teacher_ed/: that frame's
+    │   ├── processed/             # Anonymized data files, can be shared (not in git); teacher_ed/: that frame's
     │   ├── releases/              # Finalized releases' data (not in git)
     │   ├── backup/                # Earlier harvests, not read (not in git)
     │   ├── audit/                 # Audit findings and reports
     │   └── data_notes.qmd         # Data quality notes per institution
     ├── tests/
     │   ├── testthat/              # Rscript -e 'testthat::test_dir("tests/testthat")'
-    │   └── snapshots/             # pipeline_metrics.csv; raw_manifest.csv once a release is finalized
+    │   └── snapshots/             # pipeline_metrics_{frame}.csv; raw_manifest.csv once a release is finalized
     └── data-raw/
         ├── courses.R              # script that writes a DBH snapshot to data/input/
         └── raw_to_parquet.R       # the one-time conversion of the RDS raw files (2026-10-16)

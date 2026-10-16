@@ -1,8 +1,5 @@
 # Tests for normalize_plan_text.R and deduplicate_plans.R
 
-source(here::here("R/normalize_plan_text.R"))
-source(here::here("R/deduplicate_plans.R"))
-
 # --- normalize_plan_text ---
 
 test_that("NA and empty input returns NA", {
