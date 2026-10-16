@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Finalize a teacher-ed release of the current state before the restructure (#361)
 - Plans in data-2026-10-06 with no plan in data-2026-10-15: check each is a decided rule (#346)
 - Sikt notification: does it cover the all-HE raw harvest? (#358)
 - UiO: URL discovery for all departments (#369)
