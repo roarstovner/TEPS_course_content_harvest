@@ -39,8 +39,9 @@
 #' with HTML is read into blocks (R/blocks.R) and the blocks are its text,
 #' so the text and the sections come from one reading of the page. USN
 #' renders its pages in Chrome and keeps the text; rows the harvest filled from
-#' a PDF (uis archive plans, steiner) have no `html`: the PDF itself is not
-#' kept, so their stored text is the raw data and is returned as is.
+#' a PDF (uis archive plans, steiner) have no `html`: their stored text is the
+#' raw data and is returned as is (the PDF itself was not kept until
+#' 2026-10-16; uis keeps it since, in the raw store's `pdf` column).
 #'
 #' @param df Harvested rows of one institution (`html`, `course_id`;
 #'   `extracted_text` for PDF rows).

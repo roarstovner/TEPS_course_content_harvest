@@ -1,6 +1,6 @@
 # R/pipeline.R
 # Steps of the {targets} pipeline in _targets.R: turn one institution's
-# raw harvest (data/raw/html_{inst}.RDS) into its derived tables, then combine the
+# raw harvest (data/raw/{inst}/) into its derived tables, then combine the
 # institutions into the data files. The harvest itself stays outside the
 # pipeline (network, checkpoints); see README "Rebuilding Derived Data".
 
@@ -17,8 +17,8 @@ institution_config_target <- function(institution) {
 }
 
 # One institution's raw harvest: the rows of all its raw files
-# (harvest_files()). Each file adds offerings the earlier ones lack, so
-# an offering in two files is an error, unless the later one is a retry of an
+# (harvest_files(), read_raw()). Each run adds offerings the earlier ones lack, so
+# an offering in two runs is an error, unless the later one is a retry of an
 # offering that gave no plan (harvest_all(retry = TRUE)): it then has
 # the latest row with a page, else the latest row.
 #
@@ -28,13 +28,15 @@ institution_config_target <- function(institution) {
 # its course code (Emnekode_raw) from the latest harvest in the offering's
 # academic year (autumn Y: Y/Y+1, spring Y: Y-1/Y), or no page;
 # harvested_at says which harvest that was.
+#
+# The bytes of a PDF (`pdf`) are left out: the pipeline reads the text the
+# harvest read from it (extracted_text).
 read_harvest <- function(files, config) {
   current <- identical(config$plan_years, "current")
-  rows <- dplyr::bind_rows(lapply(files, function(f) {
-    df <- dplyr::rename(readRDS(f), dplyr::any_of(c(institution = "institution_short")))
-    if (current) df$harvested_at <- harvest_date(f, df)
-    df
-  }))
+  rows <- read_raw(files, run = TRUE)
+  if (current) rows$harvested_at <- harvest_date(rows$.run, rows[["harvested_at"]])
+  rows$.run <- NULL
+  rows$pdf <- NULL
   if (!current) {
     retried <- rows$course_id[rows[["retry"]] %in% TRUE]
     dup <- setdiff(rows$course_id[duplicated(rows$course_id)], retried)
@@ -231,15 +233,11 @@ institution_sections <- function(blocks, fulltext, config, plans) {
 # stored, and the fetch error (e.g. "HTTP 404 Not Found."), for plan_gaps().
 institution_fetch_status <- function(html_file, config) {
   df <- read_harvest(html_file, config)
-  err <- df$html_error %||% vector("list", nrow(df))
   tibble::tibble(
     course_id = df$course_id,
     url = as.character(df$url %||% NA_character_),
     has_page = !is.na(df$html %||% NA) | !is.na(df$extracted_text %||% NA),
-    fetch_error = vapply(err, function(e) {
-      if (is.null(e)) NA_character_ else if (is.character(e)) e[1]
-      else as.character(e$message %||% NA_character_)[1]
-    }, character(1))
+    fetch_error = fetch_error_text(df$html_error %||% vector("list", nrow(df)))
   )
 }
 

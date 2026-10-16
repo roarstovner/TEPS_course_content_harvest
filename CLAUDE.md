@@ -46,9 +46,13 @@ the gitignored `CLAUDE.local.md`.
   Only anonymized text goes in `data/processed/` (checked by target
   `privacy_check` and `test-anonymize.R`). See README "Data Files: Published
   and Internal".
-- `data/raw/` is the raw harvest and append-only: only `harvest_all()`
-  writes it, and never the same file twice (README "Raw Store and Finalized
-  Releases"). Do not overwrite, merge into or `chmod` raw files by hand. To
+- `data/raw/` is the raw harvest and append-only Parquet,
+  `{inst}/{year}/{run}.parquet`: only `harvest_all()` writes it (a new run,
+  `write_raw_run()`), and never the same file twice (README "Raw Store and
+  Finalized Releases"). The format changed once, from RDS (2026-10-16,
+  `data-raw/raw_to_parquet.R`); the RDS files left in `data/raw/` are no
+  longer read and are raw files too. Do not overwrite, merge into or `chmod`
+  raw files by hand. To
   change extracted text, change the config or `R/extract_fulltext.R` and run
   `targets::tar_make()`. After a release is finalized, `tar_read(frozen_check)`
   may list only intended changes, headed for the next release: explain every

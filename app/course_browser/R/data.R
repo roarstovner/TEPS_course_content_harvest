@@ -40,8 +40,8 @@ load_browser_data <- function(path = "data/browser_data.RDS") {
 
 #' Load raw HTML for one offering on demand
 #'
-#' The html_*.RDS files are far too large to hold in the payload, so they are
-#' read per institution and cached for as long as the user stays on it.
+#' The raw files (data/raw/{inst}/) are far too large to hold in the payload, so
+#' they are read per institution and cached for as long as the user stays on it.
 #'
 #' @param course_id Offering to look up
 #' @param inst institution value

@@ -117,12 +117,13 @@ page_sections(b, result$extracted_text[1], cfg)
 ### Step 4: Run full harvest
 
 ```r
-# Harvest all years
-result <- harvest_institution("newuni", courses)
-saveRDS(result, "data/raw/html_newuni.RDS")
+# Harvest all years into the raw store (data/raw/newuni/{year}/{date}.parquet)
+harvest_all(courses, institutions = "newuni")
 ```
 
-Or include in `harvest_all()` — it will automatically pick up the new config entry.
+`harvest_all()` without `institutions` picks up the new config entry too. Only
+`harvest_all()` writes `data/raw/`: test with `harvest_institution()` (Step 3),
+which only returns the rows.
 
 ## Special Cases
 

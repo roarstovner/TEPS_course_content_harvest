@@ -123,9 +123,9 @@ test_that("fields are headings in scopes of their own; later labels are kept", {
 })
 
 test_that("the json reader reads nla's titles and contents", {
-  f <- test_path("../../data/raw/html_nla.RDS")
-  skip_if_not(file.exists(f), "harvested nla data not available")
-  x <- readRDS(f)
+  f <- harvest_files("nla", test_path("../../data/raw"))
+  skip_if_not(length(f) > 0, "harvested nla data not available")
+  x <- read_raw(f)
   # the latest autumn: earlier academic years are in the JSON for few courses
   i <- which(!is.na(x$html) & x$Årstall == max(x$Årstall) & x$Semesternavn == "Høst")[1]
   b <- page_blocks(x$html[i], NA, list(reader = "json"), x$course_id[i])

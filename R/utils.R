@@ -61,44 +61,132 @@ dbh_courses <- function(frame = c("all", "teacher_ed"), date = NULL, input_dir =
     dplyr::relocate(Emnekode_raw, .before = Emnekode)
 }
 
-harvest_file <- function(institution, raw_dir = RAW_DIR) {
-  file.path(raw_dir, paste0("html_", institution, ".RDS"))
+# --- The raw store -----------------------------------------------------------
+# Append-only Parquet (README "Raw Store and Finalized Releases"): one file per
+# institution, DBH year (Årstall) and harvest run,
+# data/raw/{inst}/{year}/{run}.parquet. A run is named by its date, a second
+# run of the institution the same day by date and time ({YYYY-MM-DD}_{HHMMSS},
+# which sorts after it). No raw file is written twice; read_harvest()
+# combines them.
+
+raw_file <- function(institution, year, run, raw_dir = RAW_DIR) {
+  file.path(raw_dir, institution, year, paste0(run, ".parquet"))
 }
 
-# Institutions with a raw file (a first harvest or a dated one).
+# The harvest run of a raw file: its name.
+raw_run <- function(file) sub("\\.parquet$", "", basename(file))
+
+.raw_files <- function(raw_dir, institution = "*") {
+  f <- Sys.glob(file.path(raw_dir, institution, "*", "*.parquet"))
+  f[grepl("^\\d{4}$", basename(dirname(f)))]
+}
+
+# Institutions with a raw file.
 harvested_institutions <- function(raw_dir = RAW_DIR) {
-  files <- c(list.files(raw_dir, "^html_.*\\.RDS$"),
-             basename(Sys.glob(file.path(raw_dir, "harvests", "*", "html_*.RDS"))))
-  sort(unique(sub("^html_(.*)\\.RDS$", "\\1", files)))
+  sort(unique(basename(dirname(dirname(.raw_files(raw_dir))))))
 }
 
-# The raw store is append-only: an institution's first harvest is
-# data/raw/html_{inst}.RDS, and every later harvest adds a file
-# data/raw/harvests/{YYYY-MM-DD}/html_{inst}.RDS with what it fetched (a
-# second harvest the same day: {YYYY-MM-DD}_{HHMMSS}/, which sorts after it).
-# No raw file is written twice; read_harvest() combines them.
-dated_harvest_file <- function(institution, date = Sys.Date(), raw_dir = RAW_DIR) {
-  file.path(raw_dir, "harvests", format(date), paste0("html_", institution, ".RDS"))
-}
-
-# All raw files of an institution: the first harvest, then the dated ones.
+# All raw files of an institution, run by run, each run's years in order.
 harvest_files <- function(institution, raw_dir = RAW_DIR) {
-  first <- harvest_file(institution, raw_dir)
-  dated <- Sys.glob(file.path(raw_dir, "harvests", "*", paste0("html_", institution, ".RDS")))
-  # byte order: the locale's ignores punctuation and puts {date}_{time}/ first
-  c(first[file.exists(first)], sort(dated, method = "radix"))
+  f <- .raw_files(raw_dir, institution)
+  # byte order: the locale's ignores punctuation and puts {date}_{time} first
+  f[order(raw_run(f), basename(dirname(f)), method = "radix")]
 }
 
-# Date of a raw harvest: its harvested_at column (written since 2026-10-06),
-# else the name of its dated directory. Never the file's modification time,
-# which a copy changes.
-harvest_date <- function(file, df = readRDS(file)) {
-  if ("harvested_at" %in% names(df) && any(!is.na(df$harvested_at))) {
-    return(max(as.Date(df$harvested_at), na.rm = TRUE))
+# The name of a new harvest run: today's date, with the time when the
+# institution has a run of that name already.
+new_harvest_run <- function(institution, raw_dir = RAW_DIR, time = Sys.time()) {
+  run <- format(time, "%Y-%m-%d")
+  if (run %in% raw_run(harvest_files(institution, raw_dir))) run <- format(time, "%Y-%m-%d_%H%M%S")
+  run
+}
+
+#' Write a harvest run to the raw store
+#'
+#' One Parquet file (zstd) per DBH year of the rows. The rows keep every column
+#' the harvest gave them, except that `html_error` is kept as text
+#' (fetch_error_text()), `url` as text, and `extracted_text` only where there
+#' is no `html` (text read from a PDF, which is the raw data there; elsewhere
+#' it is rebuilt from the html). A `pdf` column (the PDF's bytes, uis since
+#' 2026-10-16) is stored as binary. `harvest_row` is each row's position in
+#' the run, so read_raw() gives the rows in the order the harvest returned them.
+#'
+#' @param rows Harvested rows of one institution (harvest_institution()).
+#' @param institution,run The institution and the name of the run
+#'   (new_harvest_run()).
+#' @return The files written, invisibly.
+write_raw_run <- function(rows, institution, run, raw_dir = RAW_DIR) {
+  html <- rows$html %||% rep(NA_character_, nrow(rows))
+  rows <- dplyr::mutate(rows, dplyr::across(dplyr::where(~ inherits(.x, "glue")), as.character))
+  rows$html_error <- fetch_error_text(rows$html_error %||% vector("list", nrow(rows)))
+  if ("extracted_text" %in% names(rows)) rows$extracted_text[!is.na(html) & nzchar(html)] <- NA
+  if ("pdf" %in% names(rows)) {
+    rows$pdf <- structure(lapply(rows$pdf, function(x) x), class = c("arrow_binary", "vctrs_vctr", "list"))
   }
-  d <- as.Date(basename(dirname(file)), optional = TRUE)
-  if (is.na(d)) stop("No harvest date for ", file, ": no harvested_at, not in a dated directory")
-  d
+  rows$harvest_row <- seq_len(nrow(rows))
+  files <- raw_file(institution, rows$Årstall, run, raw_dir)
+  if (any(file.exists(files)) || run %in% raw_run(harvest_files(institution, raw_dir))) {
+    stop("raw files are not written twice: run ", run, " of ", institution, " exists")
+  }
+  for (f in unique(files)) {
+    tab <- arrow::Table$create(rows[files == f, ])
+    tab$metadata$r <- NULL   # plain Parquet, without R's attributes
+    dir.create(dirname(f), recursive = TRUE, showWarnings = FALSE)
+    arrow::write_parquet(tab, f, compression = "zstd", compression_level = 9)
+  }
+  invisible(unique(files))
+}
+
+#' Rows of raw files in the order they were harvested
+#'
+#' Run by run, each run's rows in the order its harvest returned them. The
+#' harvests of 2026-04-04 named the institution column `institution_short`.
+#'
+#' @param files Raw files of one institution (harvest_files()).
+#' @param run Keep `.run`, the run of each row.
+read_raw <- function(files, run = FALSE) {
+  if (!length(files)) return(tibble::tibble())
+  rows <- dplyr::bind_rows(lapply(files, function(f) {
+    df <- dplyr::rename(arrow::read_parquet(f), dplyr::any_of(c(institution = "institution_short")))
+    df$.run <- raw_run(f)
+    df
+  }))
+  rows <- rows[order(rows$.run, rows$harvest_row, method = "radix"), ]
+  rows$harvest_row <- NULL
+  if (!run) rows$.run <- NULL
+  rows
+}
+
+# The course ids in an institution's raw files.
+raw_course_ids <- function(institution, raw_dir = RAW_DIR) {
+  as.character(unlist(lapply(harvest_files(institution, raw_dir), function(f)
+    arrow::read_parquet(f, col_select = "course_id")$course_id)))
+}
+
+# A fetch error as text: NA for none, else the message (the raw store keeps
+# text; a harvest gives conditions or messages, NULL for none).
+fetch_error_text <- function(err) {
+  if (is.character(err)) return(err)
+  vapply(err, function(e) {
+    if (is.null(e)) NA_character_ else if (is.character(e)) e[1]
+    else as.character(e$message %||% NA_character_)[1]
+  }, character(1))
+}
+
+# Date of each row's harvest run: the run's harvested_at (stamped since
+# 2026-10-06), else the date its name holds. Never a file's modification
+# time, which a copy changes.
+harvest_date <- function(run, harvested_at = NULL) {
+  stamped <- as.Date(harvested_at %||% rep(NA_real_, length(run)))
+  out <- as.Date(rep(NA_real_, length(run)))
+  for (r in unique(run)) {
+    i <- run == r
+    d <- if (any(!is.na(stamped[i]))) max(stamped[i], na.rm = TRUE) else
+      as.Date(substr(r, 1, 10), optional = TRUE)
+    if (is.na(d)) stop("No harvest date for run ", r, ": no harvested_at, no date in its name")
+    out[i] <- d
+  }
+  out
 }
 
 # Academic year ("2025-2026", August to July) of a date.

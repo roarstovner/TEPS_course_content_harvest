@@ -173,7 +173,11 @@ holds, as new files; the raw files of a finalized release are read-only,
 and every build checks that each of its plans keeps its id, text and
 sections. *Why:* coded plans must not change under the coders when the
 data are extended. *Rejected:* merging new rows into the finalized
-files, which rewrites frozen data. *Since:* 2026-10-06.
+files, which rewrites frozen data. *Since:* 2026-10-06. The store is
+Parquet since 2026-10-16 (one file per institution, DBH year and harvest
+run), converted one to one from the RDS files: a format change only,
+which leaves every offering, plan and section of release data-2026-10-16
+as it was.
 
 **Pages that gave no plan can be fetched again before a release:**
 `harvest_all(retry = TRUE)` fetches the offerings without a plan (a 404,

@@ -225,12 +225,14 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
 
       extracted_text <- extract_fulltext_pdf(purrr::map(pdf_results, "raw"))
 
+      # the PDF is kept beside its text (`pdf`), so it can be read again
       fetched_pdf <- tibble::tibble(
         course_id = to_fetch_pdf$course_id,
         html = NA_character_,
         html_error = purrr::map(pdf_results, \(r) r$error),
         html_success = purrr::map_lgl(pdf_results, \(r) r$success),
-        extracted_text = extracted_text
+        extracted_text = extracted_text,
+        pdf = purrr::map(pdf_results, "raw")
       )
 
       updated_pdf <- dplyr::bind_rows(existing_pdf, fetched_pdf)
@@ -241,7 +243,8 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
 
     df_pdf <- df_pdf |>
       dplyr::left_join(
-        updated_pdf |> dplyr::select(course_id, html, html_error, html_success, extracted_text),
+        updated_pdf |> dplyr::select(course_id, html, html_error, html_success, extracted_text,
+                                     dplyr::any_of("pdf")),
         by = "course_id"
       )
   } else {

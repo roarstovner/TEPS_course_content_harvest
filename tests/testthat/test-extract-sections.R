@@ -826,9 +826,9 @@ test_that("admission, study right and pointers to them leave prerequisites", {
 })
 
 test_that("nla: sections are read from the EmneplanPage JSON in a <script>", {
-  f <- test_path("../../data/raw/html_nla.RDS")
-  skip_if_not(file.exists(f), "harvested nla data not available")
-  d <- readRDS(f)
+  f <- harvest_files("nla", test_path("../../data/raw"))
+  skip_if_not(length(f) > 0, "harvested nla data not available")
+  d <- read_raw(f)
   d <- d[!is.na(d$html), ][1:20, ]
   out <- extract_sections(get_institution_config("nla"), d$html, d$extracted_text, d$course_id)
   expect_gt(nrow(out), 0)

@@ -62,7 +62,7 @@ URL must be discovered)</td>
 text)</td>
 <td><code>extract_fulltext_from_raw()</code>
 (<code>R/extract_fulltext.R</code>)</td>
-<td><code>data/raw/html_{inst}.RDS</code> (raw harvest)</td>
+<td><code>data/raw/{inst}/{year}/{run}.parquet</code> (raw harvest)</td>
 </tr>
 <tr>
 <td>6. Read each stored page into blocks; the text is the blocks</td>
@@ -94,17 +94,16 @@ the plan (`selector`, minus `exclude`), how a plan’s year is known
 fetch overrides and the `section_*` fields. Stages 6-8 and everything
 after them are a {targets} pipeline (see “Rebuilding Derived Data”).
 
-The raw harvest is append-only: an institution’s first harvest is
-`data/raw/html_{inst}.RDS`, every later one adds
-`data/raw/harvests/{date}/html_{inst}.RDS` with what it fetched, and no
-raw file is written twice (see “Raw Store and Finalized Releases”). The
-steps after it rebuild everything from it with the current code, so a
-changed selector or post function needs `targets::tar_make()`, not a new
-harvest. A page is read once into blocks (see “Blocks and Sections”),
-and both the `extracted_text` and the sections are made from them. The
-`extracted_text` saved with the harvest is not used downstream, except
-for plans that came from a PDF (uis archive plans, steiner): the PDF is
-not kept, so that text is the raw data.
+The raw harvest is append-only Parquet: every harvest adds one file per
+institution and DBH year, `data/raw/{inst}/{year}/{run}.parquet`, with
+what it fetched, and no raw file is written twice (see “Raw Store and
+Finalized Releases”). The steps after it rebuild everything from it with
+the current code, so a changed selector or post function needs
+`targets::tar_make()`, not a new harvest. A page is read once into
+blocks (see “Blocks and Sections”), and both the `extracted_text` and
+the sections are made from them. The raw store keeps `extracted_text`
+only for plans that came from a PDF (uis archive plans, steiner): that
+text is the raw data there (uis keeps the PDF too since 2026-10-16).
 
 ## Quick Start: Running the Pipeline
 
@@ -124,17 +123,18 @@ source("R/checkpoint.R")
 source("R/harvest_strategies.R")
 source("R/harvest.R")
 
-# Harvest a single institution
+# Harvest a single institution: the rows, not saved (a test)
 courses <- dbh_courses("teacher_ed")   # the teacher-ed frame; dbh_courses(): all courses
 result <- harvest_institution("hivolda", courses)
-saveRDS(result, "data/raw/html_hivolda.RDS")
 
 # Only one year, or ignore the checkpoints and fetch again
 result <- harvest_institution("oslomet", courses, year = 2025)
 result <- harvest_institution("ntnu", courses, refetch = TRUE)
 
-# Or harvest all institutions at once (saves data/raw/html_{inst}.RDS);
-# without `courses`, the teacher-ed frame of the latest DBH snapshot
+# Harvest into the raw store (data/raw/{inst}/{year}/{date}.parquet): all
+# institutions, or the given ones; without `courses`, the teacher-ed frame of
+# the latest DBH snapshot
+harvest_all(institutions = "hivolda")
 harvest_all()
 ```
 
@@ -405,11 +405,11 @@ harvest cannot recover them. Their raw files are snapshots:
   September-November or February-April), whether or not DBH has a new
   year; a year without a harvest has no plans for them.
 
-Their harvests are all dated: `data/raw/harvests/2026-04-04/` (the
-user’s earlier harvest, 2025/26) and `2026-09-30/` (2026/27). A harvest
-date comes from the `harvested_at` column or the directory name, never
-from the file’s modification time, which a copy changes. The rest of the
-April backup, for sites with the year in the URL, is in
+Their runs are `2026-04-04` (the user’s earlier harvest, 2025/26) and
+`2026-09-30` (2026/27), both of DBH 2025 rows (`data/raw/{inst}/2025/`).
+A harvest date comes from the `harvested_at` column or the run’s name,
+never from a file’s modification time, which a copy changes. The rest of
+the April backup, for sites with the year in the URL, is in
 `data/backup/2026-04-04/` and is not read. Raw files exist only locally:
 back them up.
 
@@ -420,23 +420,46 @@ interrupted harvest.
 
 ### Raw Store and Finalized Releases
 
-No raw file is written twice. `harvest_all()` saves an institution’s
-first harvest to `data/raw/html_{inst}.RDS`; a later harvest fetches
-only the offerings no raw file holds yet (a current site: a new
-snapshot) and saves them to `data/raw/harvests/{date}/html_{inst}.RDS`;
-a second harvest the same day goes to `harvests/{date}_{HHMMSS}/`, so a
-retry need not wait for the next day. `harvest_all(year = 2026)` and
-`harvest_all()` therefore both just add what is new. An offering is
-matched on institution, code, year and semester: when a new DBH snapshot
-changes its Status, it keeps the `course_id` it was first harvested
-under. `read_harvest()` combines the files; an offering in two files
-stops the build.
+The raw store is Parquet (zstd), one file per institution, DBH year
+(`Årstall`) and harvest run: `data/raw/{inst}/{year}/{run}.parquet`. A
+run is named by its date, a second run of an institution the same day by
+date and time (`{date}_{HHMMSS}`, which sorts after it), so a retry need
+not wait for the next day. No raw file is written twice. A harvest
+fetches only the offerings no raw file holds yet (a current site: a new
+snapshot) and `harvest_all()` saves them as a new run
+(`write_raw_run()`). `harvest_all(year = 2026)` and `harvest_all()`
+therefore both just add what is new. An offering is matched on
+institution, code, year and semester: when a new DBH snapshot changes
+its Status, it keeps the `course_id` it was first harvested under.
+`read_harvest()` combines the runs; an offering in two runs stops the
+build.
+
+A raw file holds the rows as the harvest returned them: the offering’s
+DBH columns as they were at the harvest, `url`, `html`, `html_success`,
+`html_error` (the error message), `harvested_at`, `retry` (a retry run)
+and `harvest_row`, the row’s place in its run, so `read_raw()` gives the
+rows in the order they were harvested (which offering a plan’s text
+comes from depends on it). `extracted_text` is kept only for a row
+without `html`, text read from a PDF, the raw data there; uis keeps the
+PDF’s bytes too (`pdf`, since 2026-10-16). Elsewhere `tar_make()`
+rebuilds the text from `html`.
+
+The format changed once, on 2026-10-16; the content did not. The RDS raw
+files of the harvests before (`data/raw/html_{inst}.RDS`, the first
+harvests, and `data/raw/harvests/{date}/html_{inst}.RDS`) were written
+one to one to the Parquet store by `data-raw/raw_to_parquet.R`, which
+compares every run with its RDS file column by column and row by row,
+and `tar_make()` then rebuilt release data-2026-10-16 exactly. The first
+harvests did not stamp `harvested_at` and were not dated: their run is
+named by the day their RDS file was written (2026-09-30 to 2026-10-06),
+and their `harvested_at` stays empty. The RDS files are no longer read;
+they stay in `data/raw/` until they are removed by hand, after a backup.
 
 A page that gave no plan (a 404, a page shell) can be fetched again with
 `harvest_all(institutions = "uia", year = 2023, retry = TRUE)`: it takes
 the offerings without a plan in the current build
 (`data/interim/course_offerings_full.RDS`, so run `tar_make()` first),
-fetches them past the checkpoint and saves them to the dated file marked
+fetches them past the checkpoint and saves them as a new run, marked
 `retry`. `read_harvest()` gives a retried offering its latest row with a
 page. Retry before finalizing a release; afterwards it changes the
 release.
@@ -877,11 +900,9 @@ input</td>
 <td>in git</td>
 </tr>
 <tr>
-<td><code>data/raw/html_{inst}.RDS</code>,
-<code>data/raw/harvests/{date}/</code>,
+<td><code>data/raw/{inst}/{year}/{run}.parquet</code>,
 <code>data/raw/checkpoint/</code></td>
-<td>raw harvest: <code>html</code> (+ <code>extracted_text</code> from
-harvest time)</td>
+<td>raw harvest: <code>html</code> (+ text and bytes of PDFs)</td>
 <td>yes (raw)</td>
 <td>internal</td>
 </tr>
@@ -1128,11 +1149,24 @@ in Sámi.
 <td>Harvest one institution with its configured strategy</td>
 </tr>
 <tr>
-<td><code>harvest_all(courses, year, refetch, institutions)</code></td>
+<td><code>harvest_all(courses, year, refetch, institutions, retry)</code></td>
 <td><code>R/harvest.R</code></td>
-<td>Harvest all (or the given) institutions: the first harvest to
-<code>data/raw/html_{inst}.RDS</code>, later ones add
-<code>data/raw/harvests/{date}/</code></td>
+<td>Harvest all (or the given) institutions; each harvest adds a run,
+<code>data/raw/{inst}/{year}/{date}.parquet</code></td>
+</tr>
+<tr>
+<td><code>write_raw_run(rows, institution, run)</code>,
+<code>read_raw(files)</code></td>
+<td><code>R/utils.R</code></td>
+<td>Write a harvest run to the raw store; read raw files in harvest
+order</td>
+</tr>
+<tr>
+<td><code>harvest_files(institution)</code>,
+<code>harvested_institutions()</code></td>
+<td><code>R/utils.R</code></td>
+<td>An institution’s raw files, run by run; the institutions with raw
+files</td>
 </tr>
 <tr>
 <td><code>dbh_courses(frame, date)</code></td>
@@ -1281,13 +1315,12 @@ Checkpoint files are in `.gitignore`; deleting one makes the next run
 fetch again the offerings that are not yet in a raw file (never the ones
 that are)
 
-**“raw files are not written twice”?** - A harvest of the same
-institution already ran today; the raw store is append-only. Run it
-another day, or, before the release is finalized, remove that day’s file
-deliberately
+**“raw files are not written twice”?** - A run of that name exists: two
+harvests of the same institution in the same second, or a run written by
+hand. The raw store is append-only; run the harvest again
 
-**“offerings in more than one raw file”?** - Two raw files of an
-institution hold the same `course_id`; a file was copied into
+**“offerings in more than one raw file”?** - Two runs of an institution
+hold the same `course_id` (not a retry); a file was copied into
 `data/raw/` by hand. Remove the copy
 
 ## File Organization
@@ -1321,7 +1354,7 @@ institution hold the same `course_id`; a file was copied into
     │   └── course_browser_ojs/    # Static Observable JS browser; build_data.R → data/ (see its README)
     ├── data/                      # README "Data Files: Published and Internal"
     │   ├── input/                 # DBH snapshots dbh_{courses,programmes}_{date}.parquet (in git)
-    │   ├── raw/                   # Harvest: html_{inst}.RDS, harvests/{date}/, checkpoint/ (not in git)
+    │   ├── raw/                   # Harvest: {inst}/{year}/{run}.parquet, checkpoint/ (not in git)
     │   ├── interim/               # Rebuilt text with personal data (not in git)
     │   ├── processed/             # Anonymized data files, can be shared (not in git)
     │   ├── releases/              # Finalized releases' data (not in git)
@@ -1332,7 +1365,8 @@ institution hold the same `course_id`; a file was copied into
     │   ├── testthat/              # Rscript -e 'testthat::test_dir("tests/testthat")'
     │   └── snapshots/             # pipeline_metrics.csv; raw_manifest.csv once a release is finalized
     └── data-raw/
-        └── courses.R              # script that writes a DBH snapshot to data/input/
+        ├── courses.R              # script that writes a DBH snapshot to data/input/
+        └── raw_to_parquet.R       # the one-time conversion of the RDS raw files (2026-10-16)
 
 ## Need Help?
 

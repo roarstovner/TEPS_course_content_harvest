@@ -1,6 +1,6 @@
 # _targets.R
 # The post-harvest pipeline: targets::tar_make() rebuilds whatever is
-# outdated, from data/raw/html_{inst}.RDS to the data files, the browsers' data and
+# outdated, from the raw store data/raw/{inst}/ to the data files, the browsers' data and
 # the data notes. See README "Rebuilding Derived Data".
 
 library(targets)
@@ -24,15 +24,15 @@ tar_source(c(
 ))
 
 # Read when the pipeline is loaded; {targets} tracks this global, so a new
-# data/raw/html_{inst}.RDS adds a branch without invalidating the others.
+# institution in data/raw adds a branch without invalidating the others.
 institutions <- harvested_institutions()
 
 list(
   # One branch per harvested institution (pattern = map(...)): a change to one
   # institution's raw data or config rebuilds only that institution.
   tar_target(institution, institutions),
-  # the institution's raw files; listed on every build, so a new dated
-  # harvest file is seen
+  # the institution's raw files; listed on every build, so a new harvest
+  # run is seen
   tar_target(html_file, harvest_files(institution), pattern = map(institution),
              format = "file", cue = tar_cue(mode = "always")),
   tar_target(config, institution_config_target(institution),

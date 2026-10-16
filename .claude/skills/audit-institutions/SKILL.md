@@ -37,7 +37,7 @@ rebuild them, the packet builder, and the rubric the agents apply.
 - Follow the recipe's **Pipeline** section. Rebuild stale inputs in the order
   given; the prepare scripts stop with a message when an input is older than
   its source.
-- If a harvest is running (an R session writing `data/raw/html_*.RDS`), audit only
+- If a harvest is running (an R session writing `data/raw/{inst}/`), audit only
   institutions that already have a raw harvest, and say so.
 - Build packets: `Rscript R/audit/prepare_{check}.R [inst ...]`.
 - Sanity-check the printed summary and skim the head of one packet (not

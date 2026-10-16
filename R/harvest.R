@@ -54,13 +54,12 @@ harvest_institution <- function(institution, courses, year = NULL,
 #' Harvest all institutions
 #'
 #' Loops through all configured institutions and harvests each. The raw store
-#' is append-only: the first harvest of an institution is saved to
-#' data/raw/html_{inst}.RDS; a later one fetches only offerings that no raw
-#' file holds yet (a "current" site: a new snapshot of its latest DBH year)
-#' and saves them to data/raw/harvests/{date}/html_{inst}.RDS (a second harvest
-#' the same day: harvests/{date}_{HHMMSS}/). An existing raw file is never
-#' written again. An offering in a raw file keeps its course_id when a later
-#' DBH snapshot gives it another Status (first_course_id()).
+#' is append-only: a harvest fetches only offerings that no raw file holds yet
+#' (a "current" site: a new snapshot of its latest DBH year) and saves them as
+#' a new run, data/raw/{inst}/{year}/{date}.parquet (a second harvest the same
+#' day: {date}_{HHMMSS}.parquet; write_raw_run()). An existing raw file is
+#' never written again. An offering in a raw file keeps its course_id when a
+#' later DBH snapshot gives it another Status (first_course_id()).
 #'
 #' With `retry`, a site with the year in the URL also fetches again the
 #' offerings whose page gave no plan in the current build
@@ -90,28 +89,20 @@ harvest_all <- function(courses = NULL, year = NULL, refetch = FALSE,
   for (inst in inst_names) {
     message("\n=== ", inst, " ===")
     tryCatch({
-      first <- length(harvest_files(inst)) == 0
       current <- identical(configs[[inst]]$plan_years, "current")
-      known <- as.character(unlist(lapply(harvest_files(inst), function(f) readRDS(f)$course_id)))
+      known <- raw_course_ids(inst)
       skip <- if (current) character() else known
       again <- if (retry) intersect(skip, offerings_without_plan(inst)) else character()
       if (length(again)) message(inst, ": ", length(again), " offerings without a plan to retry")
       # a retry fetches again, so the checkpoint's old pages are not reused
       result <- harvest_institution(inst, courses, year, refetch || length(again) > 0,
                                     setdiff(skip, again), known)
-      file <- if (first) harvest_file(inst) else dated_harvest_file(inst)
-      if (!first && file.exists(file)) {   # harvested today already
-        file <- dated_harvest_file(inst, format(Sys.time(), "%Y-%m-%d_%H%M%S"))
-      }
       if (nrow(result) == 0) {
         message(inst, ": nothing new to harvest")
-      } else if (file.exists(file)) {
-        stop("raw files are not written twice: ", file)
       } else {
         result$harvested_at <- Sys.Date()
         if (length(again)) result$retry <- result$course_id %in% again
-        dir.create(dirname(file), recursive = TRUE, showWarnings = FALSE)
-        saveRDS(result, file)
+        write_raw_run(result, inst, new_harvest_run(inst))
         log_summary(inst, result)
       }
     }, error = function(e) {

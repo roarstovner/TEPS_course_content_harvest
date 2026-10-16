@@ -17,7 +17,7 @@ Rebuild whatever is stale, in this order. `R/audit/prepare_sections.R` refuses
 to run on stale inputs.
 
 ```bash
-Rscript -e 'targets::tar_make()'   # html_*.RDS -> course_offerings_full.RDS, plan_sections.RDS
+Rscript -e 'targets::tar_make()'   # data/raw -> course_offerings_full.RDS, plan_sections.RDS
 Rscript R/audit/qa_sections.R      # -> data/audit/sections/sections_qa_suspects.RDS (deterministic pre-pass)
 Rscript R/audit/prepare_sections.R [inst ...]   # -> data/audit/sections/packets/
 ```

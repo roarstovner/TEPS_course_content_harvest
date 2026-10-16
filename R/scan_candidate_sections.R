@@ -37,7 +37,7 @@ candidates <- tibble::tribble(
   "undervisningssprak",      "undervisningsspråk|undervisnings- og eksamensspråk"
 )
 
-courses_raw <- harvest_file(harvested_institutions()) |> lapply(readRDS) |> bind_rows()
+courses_raw <- read_raw(unlist(lapply(harvested_institutions(), harvest_files)))
 institutions <- sort(unique(courses_raw$institution))
 
 # Per institution, collect the set of heading texts each sampled course carries,

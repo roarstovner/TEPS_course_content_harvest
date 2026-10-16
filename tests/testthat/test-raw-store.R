@@ -1,5 +1,6 @@
 # Tests for the append-only raw store and current sites:
-# harvest_all(), read_harvest(), finalize_release(), frozen_changes()
+# write_raw_run(), read_raw(), harvest_all(), read_harvest(), finalize_release(),
+# frozen_changes()
 
 raw_rows <- function(code = "A", year = 2025L, semester = c("Vår", "Høst"), html = "plan",
                      inst = "x") {
@@ -12,22 +13,20 @@ raw_rows <- function(code = "A", year = 2025L, semester = c("Vår", "Høst"), ht
 
 test_that("a current site's offering gets its course's page from a harvest in its academic year", {
   raw <- withr::local_tempdir()
-  apr <- dated_harvest_file("x", as.Date("2026-04-04"), raw)
-  dir.create(dirname(apr), recursive = TRUE)
-  # the April 2026 snapshot was fetched for DBH 2025 rows, the old way (institution_short)
-  saveRDS(dplyr::rename(raw_rows(html = "2025/26 plan"), institution_short = institution), apr)
-  # the first harvest, 2026-09-30, fetched DBH 2025 rows and saw the 2026/27 plan
+  # the April 2026 snapshot was fetched for DBH 2025 rows, the old way
+  # (institution_short, no harvested_at: the run's name gives the date)
+  write_raw_run(dplyr::rename(raw_rows(html = "2025/26 plan"), institution_short = institution),
+                "x", "2026-04-04", raw)
+  # the harvest of 2026-09-30 fetched DBH 2025 rows and saw the 2026/27 plan
   base <- raw_rows(html = "2026/27 plan"); base$harvested_at <- as.Date("2026-09-30")
-  saveRDS(base, harvest_file("x", raw))
+  write_raw_run(base, "x", "2026-09-30", raw)
   # a later harvest added DBH 2026 rows (fetched in autumn 2027: the 2027/28 plan)
   later <- raw_rows(year = 2026L, html = "2027/28 plan"); later$harvested_at <- as.Date("2027-10-01")
-  f27 <- dated_harvest_file("x", as.Date("2027-10-01"), raw)
-  dir.create(dirname(f27), recursive = TRUE); saveRDS(later, f27)
+  write_raw_run(later, "x", "2027-10-01", raw)
 
-  # a second harvest on 2026-09-30, fixing a page: the later file counts
+  # a second harvest on 2026-09-30, fixing a page: the later run counts
   again <- raw_rows(html = "2026/27 plan, fixed"); again$harvested_at <- as.Date("2026-09-30")
-  f30 <- dated_harvest_file("x", "2026-09-30_120000", raw)
-  dir.create(dirname(f30), recursive = TRUE); saveRDS(again, f30)
+  write_raw_run(again, "x", "2026-09-30_120000", raw)
 
   out <- read_harvest(harvest_files("x", raw), list(name = "x", plan_years = "current"))
   plan <- function(y, s) out$html[out$Årstall == y & out$Semesternavn == s]
@@ -44,24 +43,20 @@ test_that("a current site's offering gets its course's page from a harvest in it
 
 test_that("other sites combine their raw files, and an offering in two files is an error", {
   raw <- withr::local_tempdir()
-  saveRDS(raw_rows(), harvest_file("x", raw))
-  f <- dated_harvest_file("x", as.Date("2027-10-01"), raw)
-  dir.create(dirname(f), recursive = TRUE)
-  saveRDS(raw_rows(year = 2026L), f)
+  write_raw_run(raw_rows(), "x", "2026-09-30", raw)
+  write_raw_run(raw_rows(year = 2026L), "x", "2027-10-01", raw)
   out <- read_harvest(harvest_files("x", raw), list(name = "x", plan_years = "url"))
   expect_equal(sort(out$Årstall), c(2025, 2025, 2026, 2026))
-  saveRDS(raw_rows(), f)   # the 2025 rows again
+  write_raw_run(raw_rows(), "x", "2027-10-02", raw)   # the 2025 rows again
   expect_error(read_harvest(harvest_files("x", raw), list(name = "x", plan_years = "url")),
                "more than one raw file")
 })
 
 test_that("a retry of offerings without a plan takes their new page", {
   raw <- withr::local_tempdir()
-  saveRDS(raw_rows(html = c(NA, "shell")), harvest_file("x", raw))   # a 404, a page shell
-  f <- dated_harvest_file("x", as.Date("2026-10-07"), raw)
-  dir.create(dirname(f), recursive = TRUE)
+  write_raw_run(raw_rows(html = c(NA, "shell")), "x", "2026-09-30", raw)   # a 404, a page shell
   again <- raw_rows(html = c(NA, "plan")); again$retry <- TRUE
-  saveRDS(dplyr::bind_rows(again, raw_rows(code = "B")), f)          # B is new
+  write_raw_run(dplyr::bind_rows(again, raw_rows(code = "B")), "x", "2026-10-07", raw)  # B is new
   cfg <- list(name = "x", plan_years = "url")
   html_a <- function(out) setNames(out$html, out$Semesternavn)[out$Emnekode_raw == "A"][c("Vår", "Høst")]
   out <- read_harvest(harvest_files("x", raw), cfg)
@@ -69,9 +64,39 @@ test_that("a retry of offerings without a plan takes their new page", {
   expect_equal(unname(html_a(out)), c(NA, "plan"))
   expect_false("retry" %in% names(out))
   # a retry that fails keeps the earlier page
+  raw2 <- withr::local_tempdir()
+  write_raw_run(raw_rows(html = c(NA, "shell")), "x", "2026-09-30", raw2)
   again$html <- again$extracted_text <- NA_character_
-  saveRDS(again, f)
-  expect_equal(unname(html_a(read_harvest(harvest_files("x", raw), cfg))), c(NA, "shell"))
+  write_raw_run(again, "x", "2026-10-07", raw2)
+  expect_equal(unname(html_a(read_harvest(harvest_files("x", raw2), cfg))), c(NA, "shell"))
+})
+
+test_that("a run is stored by year and read back in the order it was harvested", {
+  raw <- withr::local_tempdir()
+  rows <- dplyr::bind_rows(raw_rows(code = "B", year = 2024L), raw_rows(code = "A"),
+                           raw_rows(code = "C", year = 2024L))
+  rows$url <- glue::as_glue(rows$url)
+  rows$html[2] <- NA                          # a PDF: its text is the raw data
+  rows$extracted_text[2] <- "PDF text"
+  rows$pdf <- list(NULL, charToRaw("%PDF-1.4"), NULL, NULL, NULL, NULL)
+  rows$html_error[[3]] <- simpleError("HTTP 404 Not Found.")
+  rows$html_error[4] <- list("Timeout")
+  files <- write_raw_run(rows, "x", "2026-10-16", raw)
+  expect_setequal(files, file.path(raw, "x", c("2024", "2025"), "2026-10-16.parquet"))
+  out <- read_raw(harvest_files("x", raw))
+  expect_equal(out$course_id, rows$course_id)
+  expect_named(out, names(rows))
+  expect_type(out$url, "character")
+  expect_equal(out$html_error, c(NA, NA, "HTTP 404 Not Found.", "Timeout", NA, NA))
+  # text from html is rebuilt from it; text without html is kept
+  expect_equal(out$extracted_text, c(NA, "PDF text", NA, NA, NA, NA))
+  expect_equal(out$pdf[[2]], charToRaw("%PDF-1.4"))
+  expect_null(out$pdf[[1]])
+  expect_false("pdf" %in% names(read_harvest(harvest_files("x", raw), list(name = "x", plan_years = "url"))))
+  expect_error(write_raw_run(rows[1, ], "x", "2026-10-16", raw), "not written twice")
+  expect_equal(new_harvest_run("x", raw, as.POSIXct("2026-10-16 09:10:24")), "2026-10-16_091024")
+  expect_equal(new_harvest_run("x", raw, as.POSIXct("2026-10-17 09:10:24")), "2026-10-17")
+  expect_setequal(raw_course_ids("x", raw), rows$course_id)
 })
 
 test_that("academic-year URLs: an offering takes the page of its academic year", {
@@ -148,13 +173,14 @@ test_that("harvest_all(retry = TRUE) fetches offerings without a plan again", {
                         Emnekode = c("S", "T"), Årstall = 2025L, Semesternavn = "Høst",
                         Status = 1L, Avdelingsnavn = "-")
   suppressMessages(harvest_all(dbh, institutions = "samas"))
-  ids <- readRDS(harvest_file("samas"))$course_id
+  ids <- read_raw(harvest_files("samas"))$course_id
   dir.create("data/interim")
   saveRDS(tibble::tibble(course_id = ids, institution = "samas", plan_content_id = c(NA, "p1")),
           "data/interim/course_offerings_full.RDS")
   expect_message(harvest_all(dbh, institutions = "samas"), "nothing new")
   suppressMessages(harvest_all(dbh, institutions = "samas", retry = TRUE))
-  again <- readRDS(dated_harvest_file("samas"))
+  again <- read_raw(harvest_files("samas")[2])   # a second run the same day
+  expect_match(harvest_files("samas")[2], "/samas/2025/\\d{4}-\\d{2}-\\d{2}_\\d{6}\\.parquet$")
   expect_equal(again$course_id, ids[1])
   expect_true(again$retry)
 })
@@ -164,9 +190,9 @@ test_that("harvest_all never writes a raw file twice", {
   dbh <- function(year) tibble::tibble(
     institution = "samas", Emnekode_raw = "S-1", Emnekode = "S", Årstall = year,
     Semesternavn = c("Vår", "Høst"), Status = 1L, Avdelingsnavn = "-")
-  base <- harvest_file("samas")
   suppressMessages(harvest_all(dbh(2025L), institutions = "samas"))
-  expect_equal(nrow(readRDS(base)), 2)
+  base <- harvest_files("samas")
+  expect_equal(nrow(read_raw(base)), 2)
   md5 <- tools::md5sum(base)
 
   # a site with the year in the URL: a later harvest adds only new offerings
@@ -174,7 +200,7 @@ test_that("harvest_all never writes a raw file twice", {
   institution_configs$samas$plan_years <<- "url"
   withr::defer(institution_configs$samas$plan_years <<- old)
   suppressMessages(harvest_all(rbind(dbh(2025L), dbh(2026L)), institutions = "samas"))
-  added <- readRDS(dated_harvest_file("samas"))
+  added <- read_raw(setdiff(harvest_files("samas"), base))
   expect_equal(added$Årstall, c(2026, 2026))
   expect_equal(tools::md5sum(base), md5)
   expect_message(harvest_all(rbind(dbh(2025L), dbh(2026L)), institutions = "samas"),
@@ -185,20 +211,21 @@ test_that("harvest_all never writes a raw file twice", {
   institution_configs$samas$plan_years <<- "current"
   dir.create("data/raw/checkpoint")
   saveRDS(tibble::tibble(), "data/raw/checkpoint/html_samas.RDS")
-  before <- tools::md5sum(c(base, dated_harvest_file("samas")))
+  before <- tools::md5sum(harvest_files("samas"))
+  Sys.sleep(1)   # runs named by the second
   suppressMessages(harvest_all(dbh(2026L), institutions = "samas"))
   expect_false(file.exists("data/raw/checkpoint/html_samas.RDS"))
   files <- harvest_files("samas")
   expect_length(files, 3)
-  expect_match(files[3], "harvests/\\d{4}-\\d{2}-\\d{2}_\\d{6}/html_samas\\.RDS$")
-  expect_equal(nrow(readRDS(files[3])), 2)
+  expect_match(files[3], "/samas/2026/\\d{4}-\\d{2}-\\d{2}_\\d{6}\\.parquet$")
+  expect_equal(nrow(read_raw(files[3])), 2)
   expect_equal(tools::md5sum(files[1:2]), before)
 })
 
 test_that("a finalized release is locked and checked", {
   withr::local_dir(withr::local_tempdir())
   for (d in c("data/raw", "data/processed", "tests/snapshots")) dir.create(d, recursive = TRUE)
-  saveRDS(raw_rows(inst = "samas"), harvest_file("samas"))
+  f <- write_raw_run(raw_rows(inst = "samas"), "samas", "2026-10-01")
   plans <- tibble::tibble(plan_content_id = "p1", institution = "samas", Emnekode = "S",
                           course_plan = "Tekst.")
   secs <- tibble::tibble(plan_content_id = "p1", institution = "samas", Emnekode = "S",
@@ -214,7 +241,7 @@ test_that("a finalized release is locked and checked", {
   expect_equal(nrow(check()), 0)   # nothing finalized yet
 
   suppressMessages(finalize_release("data-test"))
-  expect_equal(file.access(harvest_file("samas"), 2), c("data/raw/html_samas.RDS" = -1L))
+  expect_equal(file.access(f, 2), c("data/raw/samas/2025/2026-10-01.parquet" = -1L))
   expect_equal(nrow(check()), 0)
 
   # a new offering and plan (a later year) are fine; any change to the release is not
@@ -227,8 +254,8 @@ test_that("a finalized release is locked and checked", {
   saveRDS(offs[1, ], "data/processed/course_offerings.RDS")   # o2 (no plan) gone
   saveRDS(dplyr::mutate(plans, course_plan = "Annen tekst."), "data/processed/course_plans.RDS")
   saveRDS(dplyr::mutate(secs, text = "Annen tekst."), "data/processed/plan_sections.RDS")
-  Sys.chmod(harvest_file("samas"), "0644")
-  saveRDS(raw_rows(inst = "samas", html = "ny"), harvest_file("samas"))
+  Sys.chmod(f, "0644")
+  arrow::write_parquet(raw_rows(inst = "samas", html = "ny")[, c("course_id", "html")], f)
   expect_setequal(check()$check, c("raw file changed or missing", "plan gone or text changed",
                                    "section changed", "offering gone or with another plan"))
 })
@@ -247,13 +274,17 @@ test_that("section_changes() lists section fixes under ids both releases hold", 
                c("p1 prerequisites removed", "p2 assessment changed", "p2 coursework_requirements added"))
 })
 
-test_that("a raw file has a harvest date only from its rows or its dated directory", {
+test_that("a harvest run has a date only from its rows or its name", {
   raw <- withr::local_tempdir()
-  saveRDS(raw_rows(), harvest_file("x", raw))
-  expect_error(harvest_date(harvest_file("x", raw)), "No harvest date")
-  f <- dated_harvest_file("y", as.Date("2026-09-30"), raw)
-  dir.create(dirname(f), recursive = TRUE); saveRDS(raw_rows(inst = "y"), f)
-  expect_equal(harvest_date(f), as.Date("2026-09-30"))
+  expect_error(harvest_date("first"), "No harvest date")
+  run <- c("2026-09-30", "2026-10-15_091024", "2026-10-15_091024")
+  expect_equal(harvest_date(run), as.Date(c("2026-09-30", "2026-10-15", "2026-10-15")))
+  expect_equal(harvest_date(run, as.Date(c(NA, "2026-10-16", NA))),
+               as.Date(c("2026-09-30", "2026-10-16", "2026-10-16")))
+  write_raw_run(raw_rows(), "x", "2026-09-30", raw)
+  f <- write_raw_run(raw_rows(inst = "y"), "y", "2026-09-30", raw)
+  dir.create(file.path(raw, "checkpoint"))   # not an institution
+  saveRDS(tibble::tibble(), file.path(raw, "checkpoint", "html_x.RDS"))
   expect_equal(harvested_institutions(raw), c("x", "y"))
   expect_equal(harvest_files("y", raw), f)
 })
