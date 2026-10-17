@@ -169,6 +169,9 @@ test_that("nord: the academic year of the plan a page shows", {
   py <- get_institution_config("nord")$page_year
   expect_equal(py(c('<div class="h4 pre-title">Gjeldende emnebeskrivelse (sist oppdatert 2026/27)</div>',
                     "<div>Emnebeskrivelse for 2023/24</div>", "<p>Ingen</p>")), c(2026L, 2023L, NA))
+  # the English page (a course taught in English, `english_page`)
+  expect_equal(py(c("<div>Current active course description (last updated 2026/27)</div>",
+                    "<div>Course description for 2025/26</div>")), c(2026L, 2025L))
 })
 
 test_that("uis: the academic year selected in the course page's menu", {

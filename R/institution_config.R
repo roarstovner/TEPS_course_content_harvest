@@ -43,6 +43,13 @@
 #                disallowed paths); tests/testthat/test-robots.R checks the
 #                two against each other.
 #
+# english_page: list(notice, from, to) for a course whose plan is only on the
+#                English page, while the Norwegian page says so instead
+#                (`notice`, a regular expression on the page's HTML). The
+#                harvest then fetches the English URL, the Norwegian one with
+#                its part `from` replaced by `to` (fetch_html_cols_single());
+#                the row keeps the Norwegian URL. hvl, nord.
+#
 # robots_permission: the institution's permission to harvest paths its
 #                robots.txt disallows for all user agents, recorded as
 #                "granted YYYY-MM-DD by <who> (<what>)". Without one, the
@@ -226,6 +233,14 @@ institution_configs <- list(
     plan_years = "url",
     url_year = "academic",
     fetch_fn = fetch_html_cols_single_hvl,
+    # "Emnebeskrivelsen finnes kun på engelsk", "Dette emnet er kun beskrevet
+    # på engelsk", "Dette emnet er berre skildra på engelsk", "Se engelske
+    # nettsider for mer informasjon" (2025): the English page has the same
+    # layout
+    english_page = list(
+      notice = paste0("Emnebeskrivelsen finnes kun på engelsk|emne[tr]? er (?:kun beskrevet|berre skildra) ",
+                      "på engelsk|Se engelske nettsider"),
+      from = "/studier/studieprogram/emne/", to = "/en/studies-at-hvl/study-programmes/courses/"),
     section_strategy = "html",
     section_heading_selector = "h3",
     # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
@@ -281,6 +296,11 @@ institution_configs <- list(
                     "section.sidebar .semester-chooser, section.sidebar .field--name-field-p-employees,",
                     "section.sidebar .field--name-field-subject-leganto-link"),
     plan_years = "url",
+    # A course taught in English: "Emnet foregår på engelsk. Se engelske
+    # nettsider ved å velge engelsk språk." (2025), and the plan is on the
+    # English page of the same year and semester
+    english_page = list(notice = "Emnet foregår på engelsk\\. Se engelske nettsider",
+                        from = "/studier/emner/", to = "/en/studies/courses/"),
     section_strategy = "html",
     section_heading_selector = "button.ac-trigger",
     section_scope = "div.ac",
@@ -290,9 +310,12 @@ institution_configs <- list(
     facts = c("div.main-content > h1", "div.main-content > .field--name-field-subject-code",
               "section.sidebar", "div.ac.type_of_subject"),   # "Type emne": Valgbart, Obligatorisk
     # For a year it has no plan for, Nord shows "Gjeldende emnebeskrivelse
-    # (sist oppdatert 2026/27)": the current plan, a later version
+    # (sist oppdatert 2026/27)": the current plan, a later version (the
+    # English page: "Current active course description (last updated
+    # 2026/27)", "Course description for 2025/26")
     page_year = function(html) as.integer(stringr::str_match(
-      html, "(?:Gjeldende emnebeskrivelse \\(sist oppdatert|Emnebeskrivelse for) (\\d{4})/")[, 2]),
+      html, paste0("(?:Gjeldende emnebeskrivelse \\(sist oppdatert|Emnebeskrivelse for|",
+                   "Current active course description \\(last updated|Course description for) (\\d{4})/"))[, 2]),
     # Arbeidskrav/obligatorisk deltakelse are lines inside the vurdering
     # accordion, not a heading of their own.
     section_inline_coursework = TRUE

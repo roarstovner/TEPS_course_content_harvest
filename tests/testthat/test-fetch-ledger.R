@@ -97,6 +97,36 @@ test_that("fetch_html_cols() records each request's status and time", {
   expect_equal(fetch_ledger(rows, "ntnu", "r")$outcome, "shell")
 })
 
+test_that("a page that says the plan is on the English page gives the English page (hvl, nord)", {
+  local_robots(c("www.hvl.no", "www.nord.no"))
+  sent <- character()
+  stub <- c(hvl = "Dette emnet er berre skildra på engelsk. Klikk på knappen \"English\".",
+            nord = "Emnet foregår på engelsk. Se engelske nettsider ved å velge engelsk språk.")
+  httr2::local_mocked_responses(function(req) {
+    sent <<- c(sent, req$url)
+    if (grepl("/en/", req$url)) html_page("Learning outcomes")
+    else if (grepl("FULL", req$url)) html_page("All undervisning i emnet foregår på engelsk. Læringsutbytte")
+    else html_page(stub[[if (grepl("hvl", req$url)) "hvl" else "nord"]])
+  })
+  fetch <- function(url, inst) {
+    fetch_html_cols(url, inst, utils::modifyList(get_institution_config(inst), list(request_delay = 0)),
+                    .progress = FALSE)
+  }
+  out <- fetch("https://www.hvl.no/studier/studieprogram/emne/2025/BI4-301", "hvl")
+  expect_match(out$html, "Learning outcomes")
+  expect_equal(sent, paste0("https://www.hvl.no/", c("studier/studieprogram/emne/2025/BI4-301",
+                                                     "en/studies-at-hvl/study-programmes/courses/2025/BI4-301")))
+  sent <- character()
+  out <- fetch("https://www.nord.no/studier/emner/bio5031?year=2025&semester=H%C3%98ST", "nord")
+  expect_match(out$html, "Learning outcomes")
+  expect_equal(sent[2], "https://www.nord.no/en/studies/courses/bio5031?year=2025&semester=H%C3%98ST")
+  # a plan that says it is taught in English stays
+  sent <- character()
+  out <- fetch("https://www.hvl.no/studier/studieprogram/emne/2025/FULL", "hvl")
+  expect_match(out$html, "Læringsutbytte")
+  expect_length(sent, 1)
+})
+
 test_that("harvest_all() writes the fetch ledger with the run, and a retry skips pages not found", {
   local_hiof()
   httr2::local_mocked_responses(function(req) {

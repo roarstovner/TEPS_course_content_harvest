@@ -608,8 +608,12 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "(?:se|sjå) forkunnskapskrav(?:et|a|ene)?",       # ntnu: the recommended field points to the required
   "se (?:kursinnhold|emnebeskrivelse)(?:et|n)?",                     # nord intro
   "ingen emner(?: i programmet)?",
+  # the plan is on the English page (hvl, nord; `english_page` in the config)
   "emnebeskrivelsen finnes kun på engelsk[^.]*",
   "gå til våre engelske nettsider[^.]*",                              # hvl, after a full stop
+  "(?:dette )?emne[tr]? er (?:kun beskrevet|berre skildra) på engelsk",
+  "klikk på (?:knappen )?[\"“”]?english[\"“”]?[^.]*",
+  "(?:emnet foregår på engelsk\\. )?se engelske nettsider[^.]*",
   # reading-list pointers and absence notes
   "ingen pensumliste(?: tilgjengelig)?(?: for dette emnet)?",
   "no reading list(?: available)?(?: for this course)?",

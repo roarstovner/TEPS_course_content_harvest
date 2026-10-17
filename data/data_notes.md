@@ -9,13 +9,13 @@ Generated: 2026-10-17
 |:---|---:|---:|:---|---:|:---|---:|---:|:---|
 | hiof | 1887 | 333 | 2007-2025 | 852 | 45.2% | 7151 | 826 | 3.1% |
 | hivolda | 1363 | 200 | 2016-2025 | 667 | 48.9% | 4593 | 584 | 12.4% |
-| hvl | 3777 | 486 | 2017-2025 | 3488 | 92.3% | 4398 | 1908 | 45.3% |
+| hvl | 3777 | 486 | 2017-2025 | 3488 | 92.3% | 4398 | 1910 | 45.2% |
 | inn | 3040 | 377 | 2018-2025 | 1956 | 64.3% | 4150 | 609 | 16.5% |
 | mf | 237 | 122 | 2025 | 26 | 11.0% | 4056 | 26 | 0.0% |
 | nih | 363 | 122 | 2021-2025 | 95 | 26.2% | 2534 | 95 | 0.0% |
-| nla | 2243 | 292 | 2017-2025 | 372 | 16.6% | 5509 | 295 | 20.7% |
+| nla | 2243 | 292 | 2017-2025 | 1831 | 81.6% | 6050 | 929 | 49.3% |
 | nmbu | 218 | 114 | 2025 | 12 | 5.5% | 5900 | 12 | 0.0% |
-| nord | 3645 | 520 | 2016-2025 | 3644 | 100.0% | 4066 | 1318 | 52.6% |
+| nord | 3645 | 520 | 2016-2025 | 3644 | 100.0% | 4066 | 1319 | 52.6% |
 | ntnu | 5946 | 508 | 2004-2025 | 5538 | 93.1% | 4366 | 2098 | 62.1% |
 | oslomet | 1869 | 276 | 2018-2025 | 1869 | 100.0% | 10359 | 719 | 59.4% |
 | samas | 130 | 68 | 2025 | 0 | 0.0% | NA | 0 | NaN% |
@@ -27,7 +27,7 @@ Generated: 2026-10-17
 | uit | 6868 | 714 | 2004-2025 | 3232 | 47.1% | 4259 | 2324 | 27.6% |
 | usn | 3219 | 493 | 2018-2025 | 1282 | 39.8% | 10538 | 1224 | 4.4% |
 
-**Total**: 43942 rows, 28509 with extracted text (64.9%), 14964 unique
+**Total**: 43942 rows, 29968 with extracted text (68.2%), 15645 unique
 plans.
 
 **Columns:**
@@ -63,7 +63,7 @@ offerings with a plan, by period:
 | inn         |       |         | 0%      | 0%      | 100%    | 100%  |
 | mf          |       |         |         |         |         | 11%   |
 | nih         |       |         |         | 7%      | 25%     | 35%   |
-| nla         |       | 31%     | 15%     | 3%      | 8%      | 33%   |
+| nla         |       | 36%     | 81%     | 84%     | 85%     | 81%   |
 | nmbu        |       |         |         |         |         | 6%    |
 | nord        |       | 100%    | 100%    | 100%    | 100%    | 100%  |
 | ntnu        | 81%   | 97%     | 98%     | 98%     | 98%     | 98%   |
@@ -101,7 +101,7 @@ year) that have a plan in at least one semester:
 | inn | 1593 | 91% | 647 | 25 | 775 | 44% | 64.3% |
 | mf | 122 | 94% | 25 | 0 | 90 | 21% | 11.0% |
 | nih | 200 | 82% | 72 | 0 | 91 | 48% | 26.2% |
-| nla | 1191 | 88% | 245 | 52 | 755 | 27% | 16.6% |
+| nla | 1191 | 88% | 68 | 826 | 158 | 84% | 81.6% |
 | nmbu | 114 | 91% | 11 | 0 | 93 | 11% | 5.5% |
 | nord | 1973 | 85% | 105 | 1228 | 339 | 79% | 100.0% |
 | ntnu | 2950 | 80% | 100 | 2242 | 18 | 97% | 93.1% |
@@ -137,7 +137,7 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 | inn | 889 | 0 | 584 | 0 | 305 | 0 | 7 |
 | mf | 96 | 0 | 0 | 0 | 0 | 96 | 0 |
 | nih | 104 | 103 | 0 | 1 | 0 | 0 | 2 |
-| nla | 871 | 165 | 0 | 0 | 706 | 0 | 2 |
+| nla | 186 | 165 | 0 | 0 | 21 | 0 | 2 |
 | nmbu | 98 | 0 | 0 | 0 | 0 | 98 | 0 |
 | nord | 413 | 1 | 0 | 0 | 412 | 0 | 0 |
 | ntnu | 81 | 1 | 0 | 74 | 0 | 6 | 0 |
@@ -237,15 +237,20 @@ Figures are in the tables above; the notes say why.
 
 ### HVL (Western Norway University of Applied Sciences)
 
-- A page that says the plan is only in English (“Emnebeskrivelsen finnes
-  kun på engelsk”, a shell) is fetched from the English site instead
-  (`fetch_html_cols_single_hvl()`, since 2026-10-14). The retry harvest
-  of 2026-10-15 gave all 86 offerings with such a page and no plan an
-  English plan (46 plans, mostly the English subject modules MGBEN and
-  MGUEN); their English headings map like the Norwegian ones. The 5
-  MGBPE201E offerings of 2023-2025 were not retried, since their pointer
-  had counted as a plan; a second retry harvest the same day gave them
-  their English plan (3 plans)
+- A page that says the plan is only in English (a shell) is fetched from
+  the English site instead (`english_page` in the config):
+  “Emnebeskrivelsen finnes kun på engelsk” since 2026-10-14; “Dette
+  emnet er kun beskrevet på engelsk”, “Dette emnet er berre skildra på
+  engelsk” and “Se engelske nettsider for mer informasjon” since
+  2026-10-17 (English-taught master’s courses of 2025 in the pilot
+  sample: ADA512, BI4-301, MAS538, MMO5010; their 7 offerings, whose
+  pointer had counted as a plan, were fetched again that day and got the
+  English plan). The retry harvest of 2026-10-15 gave all 86 offerings
+  with such a page and no plan an English plan (46 plans, mostly the
+  English subject modules MGBEN and MGUEN); their English headings map
+  like the Norwegian ones. The 5 MGBPE201E offerings of 2023-2025 were
+  not retried, since their pointer had counted as a plan; a second retry
+  harvest the same day gave them their English plan (3 plans)
 - Year in the URL: the academic year the page is for (`/2025/` is
   “Emneplan for studieåret 2025/2026”), so a spring offering reads the
   year before (since 2026-10-14; until then it read the next study
@@ -320,7 +325,10 @@ Figures are in the tables above; the notes say why.
   requested for their course. Their own pages are fetched by a retry
   (`harvest_all(retry = c(RETRY_OUTCOMES, "not_found"))`: the 404 was
   recorded at URLs never requested); the pilot sample’s 125 were fetched
-  on 2026-10-17 (61 plans, 42 not found, 22 pages of another year)
+  on 2026-10-17 (61 plans, 42 not found, 22 pages of another year), and
+  the other 1,811 teacher-ed offerings the same day (998 URLs: 1,459
+  plans, 271 not found, 81 pages of another year; teacher-ed offerings
+  with a plan 263 → 1,722)
 - For a year it has no plan for, the site answers the year’s URL with
   another year’s plan (the JSON names the year), which gives the
   offering no plan: 22 of the 125 pages fetched on 2026-10-17, 14 of
@@ -352,6 +360,17 @@ Figures are in the tables above; the notes say why.
   offering’s academic year, the offering gets no plan (since
   2026-10-14): all offerings of 2016-2018 and 205 later ones, 761 in
   all. Where it is not, the page is the version in force that year
+- A course taught in English (2025 in the pilot sample: BIO5023,
+  BIO5031, BIO5036) has a Norwegian page with only the title, facts and
+  “Emnet foregår på engelsk. Se engelske nettsider ved å velge engelsk
+  språk.” (a shell); since 2026-10-17 the English page of the same year
+  and semester is fetched instead
+  (`/en/studies/courses/{code}?year=…&semester=…`, `english_page` in the
+  config). It has the same accordions with English headings, and its
+  year stamp (“Course description for 2025/26”, “Current active course
+  description (last updated 2026/27)”) is read like the Norwegian one.
+  The 3 pilot offerings were fetched again that day and got the English
+  plan
 - Accordion pages, read with a multi-element selector
 - Read from `div.node__content`: the plan and the sidebar’s facts
   (language, credits, faculty, campus) after it, in no section; not the

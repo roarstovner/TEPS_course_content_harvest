@@ -12,8 +12,8 @@ changes what the data mean, add or update its entry here; each release
 tag freezes this file with the data.
 
 Current data, the teacher-ed frame (below): 41 025 offerings (DBH course
-× year × semester) at 19 institutions, 25 042 of them with a plan, and
-14 065 unique plans from 18 institutions (none from Samas, below).
+× year × semester) at 19 institutions, 26 501 of them with a plan, and
+14 744 unique plans from 18 institutions (none from Samas, below).
 
 ## Population and sampling frame
 
@@ -254,7 +254,10 @@ another year’s plan from the site and 42 a 404. Offerings with a plan 67
 → 128 of the sample’s 192, course-years 67 → 76 of 100; 14 of them are
 teacher-ed offerings (NLA 249 → 263). A full harvest skips offerings in
 the raw store, so the other 1,811 teacher-ed offerings without a plan
-(998 URLs) get their own page only from such a retry. *Since:*
+(998 URLs) get their own page only from such a retry. That retry, on
+2026-10-17, gave 1,459 of them a plan; 81 got another year’s plan from
+the site and 271 a 404. Teacher-ed NLA offerings with a plan 263 →
+1,722, plans 190 → 824, course-years with a plan 254 → 939. *Since:*
 2026-10-17.
 
 **Sites that publish only the current plan:** a harvest counts only for
@@ -481,26 +484,44 @@ plan (ENG-2980 spring 2017, ENG-3980 and ENG-3981 spring 2016, LRU-1300
 autumn 2010, LER-1150 autumn 2018), 2 of them a plan not in the data
 before. *Since:* 2026-10-08.
 
-**HVL: a plan published only in English is read from the English page:**
-an HVL page that says “Emnebeskrivelsen finnes kun på engelsk” holds no
-plan, only a pointer to the English site, so the plan is fetched from
-the English page of the same course and year. Its headings map like the
+**HVL and Nord: a plan published only in English is read from the
+English page:** an HVL page that says “Emnebeskrivelsen finnes kun på
+engelsk” (or, since 2026-10-17, “Dette emnet er kun beskrevet på
+engelsk”, “Dette emnet er berre skildra på engelsk”, “Se engelske
+nettsider for mer informasjon”), and a Nord page that says “Emnet
+foregår på engelsk. Se engelske nettsider ved å velge engelsk språk.”
+(since 2026-10-17), holds no plan, only a pointer to the English site,
+so the plan is fetched from the English page of the same course and year
+(`english_page` in the configuration). Its headings map like the
 Norwegian ones (“Entry requirements” is prerequisites, “Compulsory
-learning activities” coursework requirements), and a page with only the
-pointer is a shell. *Why:* these are mostly the English subject modules
-of the teacher education programmes (MGBEN, MGUEN); without the English
-page, HVL’s English subject would have no plans. *Rejected:* leaving
-these offerings without a plan. *Consequence:* 86 offerings (10 course
-codes, 2020-2025) get a plan, 46 plans more, in English. 5 MGBPE201E
-offerings whose pointer had counted as a plan (one plan of 140
-characters) were not retried with them; a second retry harvest the same
-day gave them their English plan (3 plans). *Since:* 2026-10-15.
+learning activities” coursework requirements; Nord’s “Course
+description”, “Learning activities”, “Exam description”), Nord’s English
+year stamp (“Current active course description (last updated 2026/27)”)
+is read like the Norwegian one, and a page with only the pointer is a
+shell. *Why:* these are mostly the English subject modules of the
+teacher education programmes (MGBEN, MGUEN); without the English page,
+HVL’s English subject would have no plans. The pilot samples of
+2026-10-17 found the other wordings in English-taught master’s courses
+(HVL ADA512, BI4-301, MAS538, MMO5010; Nord BIO5023, BIO5031, BIO5036,
+all 2025), whose pointer had counted as a plan. *Rejected:* leaving
+these offerings without a plan; at Nord, the page’s `hreflang="en"` link
+(the page has two, one of them to the current plan without year and
+semester). *Consequence:* 86 offerings (10 course codes, 2020-2025) get
+a plan, 46 plans more, in English. 5 MGBPE201E offerings whose pointer
+had counted as a plan (one plan of 140 characters) were not retried with
+them; a second retry harvest the same day gave them their English plan
+(3 plans). On 2026-10-17 the pointers of the pilot samples’ 10 such
+offerings (HVL 7, Nord 3) stopped counting as plans, and their English
+pages, fetched again, gave them 10 English plans (HVL 7, Nord 3) in
+place of 8 pointer plans. No teacher-education offering has one of the
+new wordings. *Since:* 2026-10-15; the other wordings and Nord from
+2026-10-17.
 
 ## Unit of analysis: the unique plan
 
 **A plan is a unique anonymized text per institution and course code**
 (`plan_content_id`, a hash of the normalized text). Offerings with the
-same text share a plan: 25 042 offerings have 14 065 plans. *Why:*
+same text share a plan: 26 501 offerings have 14 744 plans. *Why:*
 consecutive years and both semesters mostly repeat the same text.
 *Consequence:* the id changes whenever cleaning changes the text, so
 coding is tied to a frozen release and carried to later releases with a
@@ -936,9 +957,9 @@ plan id leaves out. MF’s course content sections lose the facts box
 
 **Seven canonical sections** are cut from each plan by its headings,
 mapped through one heading table (`R/section_heading_map.R`): course
-content (98 % of plans), learning outcomes (98 %), assessment (98 %),
-teaching methods (94 %), coursework requirements (91 %), prerequisites
-(53 %) and reading list (37 %). Where a section is missing, the coders
+content (99 % of plans), learning outcomes (98 %), assessment (98 %),
+teaching methods (94 %), coursework requirements (92 %), prerequisites
+(53 %) and reading list (36 %). Where a section is missing, the coders
 use the whole plan.
 
 **Coursework requirements are kept apart from assessment:** arbeidskrav

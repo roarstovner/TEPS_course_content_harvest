@@ -20,6 +20,13 @@ test_that("headings of the English-only HVL pages are mapped", {
   expect_equal(match_heading_to_section("Recommended previous knowledge"), "prerequisites")
 })
 
+test_that("headings of Nord's English pages are mapped", {
+  expect_equal(match_heading_to_section("Course description"), "course_content")
+  expect_equal(match_heading_to_section("Learning activities"), "teaching_methods")
+  expect_equal(match_heading_to_section("Exam description"), "assessment")
+  expect_true(is.na(match_heading_to_section("Course evaluation")))
+})
+
 test_that("short English sub-headings only match exactly", {
   expect_equal(match_heading_to_section("Required prerequisite knowledge"), "prerequisites")
   expect_true(is.na(match_heading_to_section("Digital skills course")))
@@ -50,8 +57,17 @@ test_that("placeholder and pointer-only rows are dropped", {
             "Gjeldende litteraturliste for HØST 2022 finner du i Leganto.",
             "Litteratur og faglige ressurser finner du her.",
             "Emnebeskrivelsen finnes kun på engelsk, gå til våre engelske nettsider ved å klikke \"English\" øverst i menyfeltet.",
-            "Emnebeskrivelsen finnes kun på engelsk. Gå til våre engelske nettsider ved å klikke på \"English\" øverst i menyfeltet.")
+            "Emnebeskrivelsen finnes kun på engelsk. Gå til våre engelske nettsider ved å klikke på \"English\" øverst i menyfeltet.",
+            "Dette emnet er kun beskrevet på engelsk. Klikk på \"English\" for å få fram emneplanen",
+            "Dette emner er kun beskrevet på engelsk. Klikk på \"English\" øverst til høgre for å få fram beskrivelsen.",
+            "Dette emnet er berre skildra på engelsk. Klikk på knappen \"English\" oppe til høgre på sida, for å få fram den engelske visninga.",
+            "Se engelske nettsider for mer informasjon",
+            "Emnet foregår på engelsk. Se engelske nettsider ved å velge engelsk språk.")
   for (t in drop) expect_false(.keep_section_row(t, "reading_list"), label = t)
+  # the teaching language is not a pointer (hvl MGUEN201)
+  expect_true(.keep_section_row("Emnet foregår på engelsk.", "course_content"))
+  expect_true(.keep_section_row(paste("All undervisning i emnet foregår på engelsk, og språkøvingsaspektet",
+                                      "står sentralt i studentenes arbeid."), "course_content"))
 })
 
 test_that("rows with real content are kept", {

@@ -91,6 +91,7 @@ section_heading_patterns <- tibble::tribble(
   "form of assessment",                    "assessment",             FALSE,
   "examination",                           "assessment",             FALSE,
   "assessment",                            "assessment",             TRUE,
+  "exam description",                      "assessment",             TRUE,   # nord English pages
   "sensurering",                           "assessment",             TRUE,   # uio: weighting
 
   # --- prerequisites ---
@@ -204,6 +205,7 @@ section_heading_patterns <- tibble::tribble(
   "teaching and learning activities",      "teaching_methods",       FALSE,
   "teaching methods",                      "teaching_methods",       FALSE,
   "teaching and organization",             "teaching_methods",       FALSE,
+  "learning activities",                   "teaching_methods",       TRUE,   # nord English pages
   # uit: teaching and language, then an h3 "Pensum" (reading_list)
   "undervisning og pensum",                "teaching_methods",       TRUE,
 
@@ -235,6 +237,7 @@ section_heading_patterns <- tibble::tribble(
   "om emnet",                              "course_content",         TRUE,   # uit
   "about the course",                      "course_content",         TRUE,
   "course content",                        "course_content",         FALSE,
+  "course description",                    "course_content",         TRUE,   # nord English pages
   "content",                               "course_content",         FALSE
 )
 

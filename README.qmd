@@ -1171,6 +1171,11 @@ year it has no plan for, it shows the current plan, headed "Gjeldende
 emnebeskrivelse (sist oppdatert 2026/27)"; `page_year` in the config reads that
 year, and an offering whose page shows a later year gets no plan. Pattern:
 `https://www.nord.no/studier/emner/{code}?year={year}&semester={HØST|VÅR}`.
+A course taught in English has a Norwegian page that only says so ("Emnet
+foregår på engelsk. Se engelske nettsider ..."); the harvest then fetches the
+English page, `/en/studies/courses/{code}` with the same query, and the row
+keeps the Norwegian URL (`english_page` in the config; HVL likewise, from
+`/en/studies-at-hvl/study-programmes/courses/`).
 
 **NTNU.** The URL has the year but not the semester. The year is the academic
 year the page is for (`/2025` is "Studieår 2025/2026"), so a spring or summer

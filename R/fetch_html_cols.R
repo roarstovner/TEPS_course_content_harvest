@@ -274,9 +274,25 @@ robots_refusal <- function(url) {
   paste0("robots.txt disallows ", url, " (", ROBOTS_FILE, "): not requested")
 }
 
+# A course page: the response to its URL, or, for a course whose Norwegian
+# page only says that the plan is on the English page (`english_page` in
+# R/institution_config.R), the English page's, requested after the
+# institution's pause (robots.txt applies as to any request; an error there
+# is the row's error).
 fetch_html_cols_single <- function(url, institution = NULL, config = NULL) {
-  # Config-driven fetch: use fetch_fn if provided
+  resp <- fetch_page(url, institution, config)
+  ep <- config$english_page
+  english <- if (is.null(ep)) url else sub(ep$from, ep$to, url, fixed = TRUE)
+  if (english != url && grepl(ep$notice, httr2::resp_body_string(resp), perl = TRUE)) {
+    polite_pause(config$request_delay)
+    resp <- fetch_page(english, institution, config)
+  }
+  resp
+}
 
+# The response to one request of a course page.
+fetch_page <- function(url, institution = NULL, config = NULL) {
+  # Config-driven fetch: use fetch_fn if provided
   if (!is.null(config) && !is.null(config$fetch_fn)) {
     return(config$fetch_fn(url))
   }
@@ -326,8 +342,9 @@ fetch_html_cols_single_ntnu <- function(url) {
 #' Fetch HTML for a single HVL course URL
 #'
 #' Fetches the HTML and checks for the "course not found" error page
-#' that indicates the course doesn't exist. A page that says the plan is
-#' only in English is replaced by the English page.
+#' that indicates the course doesn't exist, also on the English site. (A
+#' page that says the plan is only in English: `english_page` in the
+#' config.)
 #'
 #' @param url Character string containing the HVL course URL
 #'
@@ -344,12 +361,6 @@ fetch_html_cols_single_hvl <- function(url) {
                                                "Please try again at the search for study plans"))) {
     rlang::abort("Course not found (soft 404)", class = "hvl_not_found_error",
                  http_status = httr2::resp_status(resp))
-  }
-  # "Emnebeskrivelsen finnes kun på engelsk": the plan is on the English page
-  # (same layout); the row keeps the Norwegian URL
-  if (stringr::str_detect(html_content, "Emnebeskrivelsen finnes kun på engelsk")) {
-    return(fetch_html_cols_single_hvl(sub("/studier/studieprogram/emne/",
-                                          "/en/studies-at-hvl/study-programmes/courses/", url, fixed = TRUE)))
   }
 
   resp
