@@ -749,6 +749,13 @@ harvest cannot recover them. Their raw files are snapshots:
   September-November or February-April), whether or not DBH has a new
   year; a year without a harvest has no plans for them.
 
+Their earlier plans survive only where the Internet Archive’s Wayback
+Machine captured the page. `R/wayback.R` lists the captures of a URL or
+of every URL under a prefix (`wayback_cdx()`, the CDX API) and gives the
+address of a capture as archived (`wayback_capture_url()`). It is not
+part of the harvest: no capture is in the raw store or the data (tested
+2026-10-16; whether to use captures as a plan source is undecided).
+
 Their runs are `2026-04-04` (the user’s earlier harvest, 2025/26) and
 `2026-09-30` (2026/27), both of DBH 2025 rows (`data/raw/{inst}/2025/`).
 A harvest date comes from the `harvested_at` column or the run’s name,
@@ -2332,6 +2339,13 @@ set of offerings</td>
 <td><code>R/extract_sections.R</code></td>
 <td><code>page_sections()</code> for many pages</td>
 </tr>
+<tr>
+<td><code>wayback_cdx(url, match_type, from, to, filter, collapse)</code>,
+<code>wayback_capture_url(timestamp, original)</code></td>
+<td><code>R/wayback.R</code></td>
+<td>Captures of a URL or URL prefix in the Wayback Machine; a capture’s
+address as archived. Not used by the harvest</td>
+</tr>
 </tbody>
 </table>
 
@@ -2404,6 +2418,7 @@ hold the same `course_id` (not a retry); a file was copied into
     │   ├── pipeline.R             # Steps of the {targets} pipeline (_targets.R)
     │   ├── pipeline_metrics.R     # Regression snapshot: check_pipeline_metrics(); the pilot gate
     │   ├── release.R              # release_data(), finalize_release(), frozen_changes()
+    │   ├── wayback.R              # Wayback Machine captures (CDX API); not used by the harvest
     │   └── audit/                # Audit harness for /audit-institutions
     ├── app/
     │   ├── course_browser/        # Shiny concordance browser; build_data.R → data/ (see its README)
