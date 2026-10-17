@@ -244,8 +244,10 @@ Figures are in the tables above; the notes say why.
 
 ### NLA (NLA University College)
 
-- All DBH years (`plan_years = "page"`): each course page embeds the plans of several academic years as JSON, for most courses only recent ones; the json block reader (`R/blocks.R`) takes the year of the row (spring 2025 → 2024-2025, autumn 2025 → 2025-2026). A row with a page but no plan is an academic year missing from that JSON
-- The `/studietilbud/emner/` URLs are rendered in the browser, so the harvest uses `/for-studenter/Studie-%20og%20emneplaner/emneplan/{CODE}`
+- All DBH years (`plan_years = "url"`): a page per course and academic year, `/emneplan/{CODE}/{YYYY-YYYY}` (autumn 2024 and spring 2025 → 2024-2025), whose embedded JSON holds the plan of that year only; the json block reader (`R/blocks.R`) takes the year of the row
+- Harvests until 2026-10-17 fetched one page per course code, the URL of its first offering, and gave it to every year of the course. In release data-2026-10-16, 1,554 of NLA's 2,074 teacher-ed offerings have another year's page and so no plan (a plan for 2-8 % of the course-years 2018-2023), and 271 carry the HTTP 404 of the one URL requested for their course. Their own pages are fetched by a retry (`harvest_all(retry = c(RETRY_OUTCOMES, "not_found"))`: the 404 was recorded at URLs never requested); the pilot sample's 125 were fetched on 2026-10-17 (61 plans, 42 not found, 22 pages of another year)
+- For a year it has no plan for, the site answers the year's URL with another year's plan (the JSON names the year), which gives the offering no plan: 22 of the 125 pages fetched on 2026-10-17, 14 of them spring 2017 (2016-2017: no NLA page in the raw store holds that year). So a row with a page but no plan has another year's page: the site's answer, or a harvest until 2026-10-17 not yet fetched again
+- The `/studietilbud/emner/` URLs are rendered in the browser, so the harvest uses `/for-studenter/Studie-%20og%20emneplaner/emneplan/{CODE}/{YYYY-YYYY}`
 
 ---
 

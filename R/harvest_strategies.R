@@ -469,26 +469,23 @@ harvest_json_extract <- function(df, config, refetch = FALSE) {
   html_cp <- strategy_checkpoint_path(config, "html")
   clear_if_refetch(html_cp, refetch)
 
-  # NLA embeds all years in one page per course code — fetch once per unique course_code
+  # NLA has a page per course and academic year (/emneplan/{CODE}/2024-2025),
+  # whose JSON holds the plan of that year only: each URL is fetched once
+  # (keyed by the URL in the checkpoint) and its page joined to the offerings
+  # whose URL it is (autumn 2024 and spring 2025). Harvests until 2026-10-17
+  # fetched one page per course code and gave it to every year.
   df <- df |>
     dplyr::mutate(academic_year = nla_academic_year(year, semester_name))
 
-  unique_codes <- df |>
-    dplyr::distinct(course_code, .keep_all = TRUE) |>
-    dplyr::select(course_code, url, institution) |>
+  pages <- df |>
     dplyr::filter(!is.na(url)) |>
-    dplyr::mutate(course_id = paste0("nla_", course_code))
+    dplyr::distinct(url, institution) |>
+    dplyr::mutate(course_id = as.character(url)) |>
+    fetch_html_with_checkpoint(checkpoint_path = html_cp, config = config) |>
+    dplyr::select(url, html, html_error, html_success, dplyr::any_of(REQUEST_COLUMNS))
+  df <- dplyr::left_join(df, pages, by = "url")
 
-  unique_fetched <- fetch_html_with_checkpoint(unique_codes, checkpoint_path = html_cp,
-                                                 config = config)
-
-  # Join HTML back to all rows by course_code
-  html_lookup <- unique_fetched |>
-    dplyr::select(course_code, html, html_error, html_success, dplyr::any_of(REQUEST_COLUMNS))
-
-  df <- dplyr::left_join(df, html_lookup, by = "course_code")
-
-  # Extract year-specific fulltext from JSON
+  # the year's plan from the JSON (the offering's academic year, from its course_id)
   df$extracted_text <- extract_fulltext_from_raw(df, config)
   df
 }

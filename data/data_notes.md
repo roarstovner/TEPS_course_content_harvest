@@ -13,7 +13,7 @@ Generated: 2026-10-17
 | inn | 3040 | 377 | 2018-2025 | 1956 | 64.3% | 4150 | 609 | 16.5% |
 | mf | 237 | 122 | 2025 | 26 | 11.0% | 4056 | 26 | 0.0% |
 | nih | 363 | 122 | 2021-2025 | 95 | 26.2% | 2534 | 95 | 0.0% |
-| nla | 2243 | 292 | 2017-2025 | 311 | 13.9% | 5570 | 239 | 23.2% |
+| nla | 2243 | 292 | 2017-2025 | 372 | 16.6% | 5509 | 295 | 20.7% |
 | nmbu | 218 | 114 | 2025 | 12 | 5.5% | 5900 | 12 | 0.0% |
 | nord | 3645 | 520 | 2016-2025 | 3644 | 100.0% | 4066 | 1318 | 52.6% |
 | ntnu | 5946 | 508 | 2004-2025 | 5538 | 93.1% | 4366 | 2098 | 62.1% |
@@ -27,7 +27,7 @@ Generated: 2026-10-17
 | uit | 6868 | 714 | 2004-2025 | 3232 | 47.1% | 4259 | 2324 | 27.6% |
 | usn | 3219 | 493 | 2018-2025 | 1282 | 39.8% | 10538 | 1224 | 4.4% |
 
-**Total**: 43942 rows, 28448 with extracted text (64.7%), 14908 unique
+**Total**: 43942 rows, 28509 with extracted text (64.9%), 14964 unique
 plans.
 
 **Columns:**
@@ -63,7 +63,7 @@ offerings with a plan, by period:
 | inn         |       |         | 0%      | 0%      | 100%    | 100%  |
 | mf          |       |         |         |         |         | 11%   |
 | nih         |       |         |         | 7%      | 25%     | 35%   |
-| nla         |       | 31%     | 8%      | 3%      | 4%      | 31%   |
+| nla         |       | 31%     | 15%     | 3%      | 8%      | 33%   |
 | nmbu        |       |         |         |         |         | 6%    |
 | nord        |       | 100%    | 100%    | 100%    | 100%    | 100%  |
 | ntnu        | 81%   | 97%     | 98%     | 98%     | 98%     | 98%   |
@@ -101,7 +101,7 @@ year) that have a plan in at least one semester:
 | inn | 1593 | 91% | 647 | 25 | 775 | 44% | 64.3% |
 | mf | 122 | 94% | 25 | 0 | 90 | 21% | 11.0% |
 | nih | 200 | 82% | 72 | 0 | 91 | 48% | 26.2% |
-| nla | 1191 | 88% | 288 | 0 | 764 | 26% | 13.9% |
+| nla | 1191 | 88% | 245 | 52 | 755 | 27% | 16.6% |
 | nmbu | 114 | 91% | 11 | 0 | 93 | 11% | 5.5% |
 | nord | 1973 | 85% | 105 | 1228 | 339 | 79% | 100.0% |
 | ntnu | 2950 | 80% | 100 | 2242 | 18 | 97% | 93.1% |
@@ -137,7 +137,7 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 | inn | 889 | 0 | 584 | 0 | 305 | 0 | 7 |
 | mf | 96 | 0 | 0 | 0 | 0 | 96 | 0 |
 | nih | 104 | 103 | 0 | 1 | 0 | 0 | 2 |
-| nla | 880 | 165 | 0 | 0 | 715 | 0 | 0 |
+| nla | 871 | 165 | 0 | 0 | 706 | 0 | 2 |
 | nmbu | 98 | 0 | 0 | 0 | 0 | 98 | 0 |
 | nord | 413 | 1 | 0 | 0 | 412 | 0 | 0 |
 | ntnu | 81 | 1 | 0 | 74 | 0 | 6 | 0 |
@@ -308,14 +308,28 @@ Figures are in the tables above; the notes say why.
 
 ### NLA (NLA University College)
 
-- All DBH years (`plan_years = "page"`): each course page embeds the
-  plans of several academic years as JSON, for most courses only recent
-  ones; the json block reader (`R/blocks.R`) takes the year of the row
-  (spring 2025 → 2024-2025, autumn 2025 → 2025-2026). A row with a page
-  but no plan is an academic year missing from that JSON
+- All DBH years (`plan_years = "url"`): a page per course and academic
+  year, `/emneplan/{CODE}/{YYYY-YYYY}` (autumn 2024 and spring 2025 →
+  2024-2025), whose embedded JSON holds the plan of that year only; the
+  json block reader (`R/blocks.R`) takes the year of the row
+- Harvests until 2026-10-17 fetched one page per course code, the URL of
+  its first offering, and gave it to every year of the course. In
+  release data-2026-10-16, 1,554 of NLA’s 2,074 teacher-ed offerings
+  have another year’s page and so no plan (a plan for 2-8 % of the
+  course-years 2018-2023), and 271 carry the HTTP 404 of the one URL
+  requested for their course. Their own pages are fetched by a retry
+  (`harvest_all(retry = c(RETRY_OUTCOMES, "not_found"))`: the 404 was
+  recorded at URLs never requested); the pilot sample’s 125 were fetched
+  on 2026-10-17 (61 plans, 42 not found, 22 pages of another year)
+- For a year it has no plan for, the site answers the year’s URL with
+  another year’s plan (the JSON names the year), which gives the
+  offering no plan: 22 of the 125 pages fetched on 2026-10-17, 14 of
+  them spring 2017 (2016-2017: no NLA page in the raw store holds that
+  year). So a row with a page but no plan has another year’s page: the
+  site’s answer, or a harvest until 2026-10-17 not yet fetched again
 - The `/studietilbud/emner/` URLs are rendered in the browser, so the
   harvest uses
-  `/for-studenter/Studie-%20og%20emneplaner/emneplan/{CODE}`
+  `/for-studenter/Studie-%20og%20emneplaner/emneplan/{CODE}/{YYYY-YYYY}`
 
 ------------------------------------------------------------------------
 

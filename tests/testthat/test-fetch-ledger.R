@@ -383,3 +383,32 @@ test_that("page_changes() lists pages whose text changed between runs", {
   expect_equal(c(out$previous_run, out$run), c("2026-10-01", "2026-10-14"))
   expect_equal(nrow(page_changes(led[0, ], files, get_institution_config("hiof"))), 0)
 })
+
+test_that("nla: each academic year's page is fetched once and read by its own offerings", {
+  withr::local_dir(withr::local_tempdir())
+  local_robots("www.nla.no")
+  old <- institution_configs$nla$request_delay
+  institution_configs$nla$request_delay <<- 0
+  withr::defer(institution_configs$nla$request_delay <<- old)
+  sent <- character()
+  httr2::local_mocked_responses(function(req) {
+    sent <<- c(sent, basename(req$url))
+    if (!grepl("2023-2024$", req$url)) return(httr2::response(404))
+    json <- paste0('{"page": "EmneplanPage", "props": {"items": {"2023-2024": {"title": "Norsk 1",',
+                   ' "accordions": [{"title": "Innhold", "content": "<p>Tekst.</p>"}]}}}}')
+    httr2::response(200, headers = list(`Content-Type` = "text/html; charset=utf-8"),
+                    body = charToRaw(paste0("<html><body><script>", json, "</script></body></html>")))
+  })
+  # autumn 2023 and spring 2024 share /NO1/2023-2024; autumn 2024 reads /NO1/2024-2025
+  dbh <- tibble::tibble(institution = "nla", course_code_raw = "NO1", course_code = "NO1",
+                        year = c(2023L, 2024L, 2024L), semester_name = c("Høst", "Vår", "Høst"),
+                        status = 1L)
+  suppressMessages(harvest_all(dbh, institutions = "nla"))
+  expect_equal(sent, c("2023-2024", "2024-2025"))
+  x <- read_raw(harvest_files("nla"))
+  expect_equal(basename(x$url), c("2023-2024", "2023-2024", "2024-2025"))
+  expect_equal(!is.na(x$html), c(TRUE, TRUE, FALSE))
+  # the spring offering reads the 2023-2024 entry of the JSON too
+  expect_match(extract_fulltext_from_raw(x, get_institution_config("nla"))[1:2], "Tekst.", fixed = TRUE)
+  expect_equal(raw_ledger(harvest_files("nla"))$outcome, c("ok", "ok", "not_found"))
+})

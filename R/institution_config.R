@@ -17,8 +17,8 @@
 #        R/blocks.R).
 #
 # plan_years: "url"     the URL holds the year (and semester), so every DBH
-#                       year is harvested;
-#             "page"    one page holds the plans of several years (nla's JSON);
+#                       year is harvested (nla: the academic year, and the
+#                       page's JSON holds that year's plan only);
 #             "current" the site shows only the plan in force when the page is
 #                       fetched, so a harvest gives the plan of that academic
 #                       year only.
@@ -260,7 +260,7 @@ institution_configs <- list(
   nla = list(
     code = "8223",
     strategy = "json_extract",
-    plan_years = "page",
+    plan_years = "url",
     section_strategy = "json",
     # the title and the table (code, name, semester, place, year, language,
     # credits)

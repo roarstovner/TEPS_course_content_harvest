@@ -20,7 +20,7 @@
 harvest_institution <- function(institution, courses, year = NULL,
                                 refetch = FALSE, skip = character(), known = skip) {
   config <- get_institution_config(institution)
-  if (!identical(config$plan_years, "url")) refetch <- prepare_fresh_harvest(config)
+  if (identical(config$plan_years, "current")) refetch <- prepare_fresh_harvest(config)
 
   df <- courses |>
     dplyr::filter(institution == !!institution) |>
@@ -252,19 +252,17 @@ pilot_sample <- function(institution, oldest_year = NULL, n = PILOT_N, years = P
   out
 }
 
-#' Before harvesting a site whose pages change over time
+#' Before harvesting a site that shows only the current plan
 #'
-#' A "page" site (one page, several years) adds new years to its pages and a
-#' "current" site replaces its plan, so a page fetched earlier must not stand
-#' in for one fetched now: their checkpoints are removed and every page is
-#' fetched again. A "current" site harvested in June-August may already
-#' show next year's plan, so that gives a warning.
+#' A "current" site replaces its plan, so a page fetched earlier must not
+#' stand in for one fetched now: its checkpoints are removed and every page is
+#' fetched again. A harvest in June-August may already show next year's
+#' plan, so that gives a warning.
 #'
 #' @param config Institution config
 #' @return TRUE, the `refetch` for the strategy
 prepare_fresh_harvest <- function(config) {
-  if (identical(config$plan_years, "current") &&
-      as.integer(format(Sys.Date(), "%m")) %in% 6:8) {
+  if (as.integer(format(Sys.Date(), "%m")) %in% 6:8) {
     warning(config$name, " shows only the current plan: a harvest in June-August ",
             "may give next year's plan", call. = FALSE)
   }
@@ -277,8 +275,8 @@ prepare_fresh_harvest <- function(config) {
 #' Apply year filter based on config
 #'
 #' A "current" site (`plan_years`) shows only the plan in force, so without an
-#' explicit year only the latest DBH year is harvested. "url" and "page" sites
-#' give every year its own plan. An explicit year always filters to that year.
+#' explicit year only the latest DBH year is harvested. A "url" site gives
+#' every year its own plan. An explicit year always filters to that year.
 #'
 #' @param df Data frame with year column
 #' @param config Institution config list

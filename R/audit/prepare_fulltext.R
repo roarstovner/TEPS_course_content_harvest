@@ -13,8 +13,7 @@
 # (navigation, footers, and recurring headings, which are captured anyway).
 #
 # Deterministic pre-pass flags (course-level):
-#   empty      page fetched but extracted_text empty (not on a "page" site,
-#              where it means the year is not on the page: nla)
+#   empty      page fetched but extracted_text empty
 #   short/long robust length outlier within institution (|z| > OUTLIER_Z)
 #   wall       long text with almost no line breaks
 #   junk       known junk phrases (cookie banners, page numbers, JS, ...)
@@ -195,7 +194,7 @@ for (inst in institutions) {
       acad_year     = academic_start_year(year, semester_name),
       page_yrs      = purrr::map2(as.integer(str_match(coalesce(html, ""), PLAN_YEAR_RX)[, 2]),
                                   extracted_text, page_years),
-      flag_empty    = has_html & txt_nchar == 0 & !identical(cfg$plan_years, "page"),
+      flag_empty    = has_html & txt_nchar == 0,
       flag_short    = !is.na(z) & z < -OUTLIER_Z,
       flag_long     = !is.na(z) & z >  OUTLIER_Z,
       flag_wall     = txt_nchar > 2000 & n_lines < txt_nchar / 1000,

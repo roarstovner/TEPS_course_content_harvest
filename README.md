@@ -96,9 +96,9 @@ dispatches to a strategy in `R/harvest_strategies.R` (`standard`,
 `json_extract`, `noop`). `R/institution_config.R` is the single source
 of truth for each institution: strategy, the part of the page that holds
 the plan (`selector`, minus `exclude`), how a plan’s year is known
-(`plan_years`: `"url"`, `"page"` or `"current"`), pre/post functions,
-fetch overrides and the `section_*` fields. Stages 6-8 and everything
-after them are a {targets} pipeline (see “Rebuilding Derived Data”).
+(`plan_years`: `"url"` or `"current"`), pre/post functions, fetch
+overrides and the `section_*` fields. Stages 6-8 and everything after
+them are a {targets} pipeline (see “Rebuilding Derived Data”).
 
 The raw harvest is append-only Parquet: every harvest adds one file per
 institution and DBH year, `data/raw/{inst}/{year}/{run}.parquet`, with
@@ -179,9 +179,9 @@ Ledger and Retries”):
 The checkpoint only resumes an interrupted harvest; it is a cache, not
 the record. Offerings already in a raw file are skipped by
 `harvest_all()` itself (see “Raw Store and Finalized Releases”). For
-“page” and “current” sites (`plan_years`) the checkpoint is removed
-before every harvest, because their pages change over time and an old
-copy must not stand in for a new one.
+“current” sites (`plan_years`) the checkpoint is removed before every
+harvest, because their pages change over time and an old copy must not
+stand in for a new one.
 
 ### Rebuilding Derived Data
 
@@ -429,11 +429,11 @@ pgrep -af harvest_all   # the harvests still running
 - **At night.** Start long harvests in the evening, so that most
   requests come outside the sites’ busy hours. A site with the year in
   the URL can be stopped (end the process) and started again: the
-  checkpoint, saved every 50 pages, resumes it. A “page” or “current”
-  site fetches all its pages again at every start, so let it run to the
-  end. A site that refuses the harvest (HTTP 429, or 403 to 5 requests
-  in a row and to a page known to be public) stops its own harvest;
-  start it again later.
+  checkpoint, saved every 50 pages, resumes it. A “current” site fetches
+  all its pages again at every start, so let it run to the end. A site
+  that refuses the harvest (HTTP 429, or 403 to 5 requests in a row and
+  to a page known to be public) stops its own harvest; start it again
+  later.
 - **Memory and the build.** A process keeps its institution’s pages in
   memory until it writes the run, so check free memory before starting
   more of them. `tar_make()` (4 workers) builds the runs written so far;
@@ -618,7 +618,7 @@ newuni = list(
   strategy = "standard",          # or url_discovery, shadow_dom, etc.
   selector = ".main-content",     # the element that holds the course plan
   exclude = ".contact",           # optional: parts of it that are not the plan
-  plan_years = "url",             # year in the URL; "page" or "current": see R/institution_config.R
+  plan_years = "url",             # year in the URL; or "current": see R/institution_config.R
   # url_year = "academic",        # if the URL's year is the academic year (ntnu, hvl, oslomet, uis)
   section_strategy = "html"       # how the plan is split; see "Blocks and Sections"
 )
@@ -727,8 +727,9 @@ stages:
 </tr>
 <tr>
 <td><code>plan_year_basis</code></td>
-<td>How the plan’s year is known: <code>url</code>, <code>page</code> or
-<code>current</code> (<code>plan_years</code> in the config)</td>
+<td>How the plan’s year is known: <code>url</code> or
+<code>current</code> (<code>plan_years</code> in the config;
+<code>page</code> for NLA in release data-2026-10-16)</td>
 </tr>
 <tr>
 <td><code>harvested_at</code></td>
@@ -781,10 +782,9 @@ the April backup, for sites with the year in the URL, is in
 `data/backup/2026-04-04/` and is not read. Raw files exist only locally:
 back them up.
 
-A “page” site (NLA) and a “current” site change their pages over time,
-so their checkpoints are removed before every harvest and all pages are
-fetched again; for “url” sites the checkpoint only resumes an
-interrupted harvest.
+A “current” site changes its pages over time, so its checkpoints are
+removed before every harvest and all pages are fetched again; for “url”
+sites the checkpoint only resumes an interrupted harvest.
 
 ### Raw Store and Finalized Releases
 
@@ -1695,11 +1695,11 @@ old <- readRDS("data/releases/data-2026-10-16/course_offerings.RDS") |>
 <table>
 <colgroup>
 <col style="width: 4%" />
-<col style="width: 6%" />
-<col style="width: 6%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
 <col style="width: 2%" />
-<col style="width: 10%" />
-<col style="width: 69%" />
+<col style="width: 9%" />
+<col style="width: 71%" />
 </colgroup>
 <thead>
 <tr>
@@ -1955,10 +1955,10 @@ Registered from autumn 2012, and for some earlier courses.</td>
 <td style="text-align: left;">character</td>
 <td style="text-align: left;">harvest</td>
 <td style="text-align: left;">How the year of the offering’s plan is
-known: “url” the page’s URL holds the year; “page” one page holds the
-plans of several years (NLA); “current” the site shows only the plan in
-force, so a page is the plan of the academic year it was fetched
-in.</td>
+known: “url” the page’s URL holds the year; “current” the site shows
+only the plan in force, so a page is the plan of the academic year it
+was fetched in. Release data-2026-10-16 has “page” for NLA, whose URL
+holds the academic year too.</td>
 </tr>
 <tr>
 <td style="text-align: left;">course_offerings</td>

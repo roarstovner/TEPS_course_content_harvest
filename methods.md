@@ -12,8 +12,8 @@ changes what the data mean, add or update its entry here; each release
 tag freezes this file with the data.
 
 Current data, the teacher-ed frame (below): 41 025 offerings (DBH course
-× year × semester) at 19 institutions, 25 028 of them with a plan, and
-14 052 unique plans from 18 institutions (none from Samas, below).
+× year × semester) at 19 institutions, 25 042 of them with a plan, and
+14 065 unique plans from 18 institutions (none from Samas, below).
 
 ## Population and sampling frame
 
@@ -172,10 +172,12 @@ plans harvested from these sources up to 2026-10 stay in the data.
 *Since:* 2026-10-16; enforced since 2026-10-17.
 
 **How a plan’s year is known** (`plan_years` in
-`R/institution_config.R`): from the URL (most institutions), from the
-page, which holds the plans of several academic years (NLA; for most
-courses only recent ones), or only from when the page was fetched (UiO,
-MF, NMBU, Steiner publish only the plan in force). *Since:* 2026-10-06.
+`R/institution_config.R`): from the URL (most institutions; at NLA the
+URL holds the academic year and the page’s JSON the plan of that year
+only), or only from when the page was fetched (UiO, MF, NMBU, Steiner
+publish only the plan in force). Until 2026-10-17 NLA’s page was taken
+to hold the plans of several academic years (`plan_year_basis` “page” in
+release data-2026-10-16; see below). *Since:* 2026-10-06.
 
 **An offering reads the plan of its own academic year at NTNU, HVL and
 OsloMet too.** Their URL’s year is the academic year the page is for:
@@ -226,6 +228,34 @@ plans”), and UiS has 1,313 plans (14,010 in all). Compared with before
 the change, 1,063 spring offerings have another plan, 2 have one where
 they had none and 11 have none, their PDF being missing from UiS’s
 archive. *Since:* 2026-10-14.
+
+**And at NLA, each offering reads the page of its own academic year.**
+NLA has a page per course and academic year
+(`/emneplan/{CODE}/2024-2025`), and the JSON in it holds the plan of
+that year only: so did every one of the 250 NLA pages in the raw store
+on 2026-10-17. The harvest took a page to hold all years: it fetched one
+page per course code, at the URL of the course’s first offering, gave it
+to every offering of the course, and recorded that URL’s answer (a page
+or a 404) for all of them. An offering of another year got no plan,
+since the json reader takes only the offering’s own year. Now each URL
+is fetched once and read by the offerings of its academic year (autumn Y
+and spring Y+1), and NLA’s `plan_year_basis` is “url”. Where the site
+has no plan for the year asked for, it answers with another year’s plan
+(the JSON names that year), which gives no plan. *Rejected:* one page
+per course code, which leaves most offerings without a plan.
+*Consequence:* no plan changes. In release data-2026-10-16 (teacher-ed),
+249 of NLA’s 2,074 offerings have a plan, all from their own year’s
+page; 1,554 had another year’s page and 271 a 404 recorded at a URL that
+was mostly never requested, hence a plan for only 2-8 % of the
+course-years 2018-2023. The pilot sample’s 125 offerings without a plan
+were fetched again on 2026-10-17
+(`retry = c(RETRY_OUTCOMES, "not_found")`): 61 get a plan, 22 got
+another year’s plan from the site and 42 a 404. Offerings with a plan 67
+→ 128 of the sample’s 192, course-years 67 → 76 of 100; 14 of them are
+teacher-ed offerings (NLA 249 → 263). A full harvest skips offerings in
+the raw store, so the other 1,811 teacher-ed offerings without a plan
+(998 URLs) get their own page only from such a retry. *Since:*
+2026-10-17.
 
 **Sites that publish only the current plan:** a harvest counts only for
 the academic year (August-July) it was made in, and an offering gets the
@@ -470,7 +500,7 @@ day gave them their English plan (3 plans). *Since:* 2026-10-15.
 
 **A plan is a unique anonymized text per institution and course code**
 (`plan_content_id`, a hash of the normalized text). Offerings with the
-same text share a plan: 25 028 offerings have 14 052 plans. *Why:*
+same text share a plan: 25 042 offerings have 14 065 plans. *Why:*
 consecutive years and both semesters mostly repeat the same text.
 *Consequence:* the id changes whenever cleaning changes the text, so
 coding is tied to a frozen release and carried to later releases with a

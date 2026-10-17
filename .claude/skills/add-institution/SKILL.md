@@ -81,7 +81,7 @@ newuni = list(
   facts = c("h1", ".facts"),      # the title and facts box: in the text, not in a section or the plan id
                                   # (a site read as text, section_strategy = "text": section_text_header
                                   # matches the metadata lines instead; see README "Blocks and Sections")
-  plan_years = "url",             # "current" if the site shows only the plan in force; "page" if one page holds all years
+  plan_years = "url",             # "current" if the site shows only the plan in force
   section_strategy = "html",      # read the page as html; see README "Blocks and Sections"
   section_heading_selector = "h2", # the section headings (default h2)
   request_delay = 10              # only if robots.txt asks a Crawl-delay above 3 s (Step 0)
