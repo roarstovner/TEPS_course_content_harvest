@@ -77,13 +77,29 @@ http_status_of <- function(x) {
   NA_integer_
 }
 
-# A site that answers 403 or 429 refuses the harvest: its harvest stops, so
-# it is not asked again and again (harvest_all() goes on with the next site;
-# the pages fetched stay in the checkpoint).
-stop_if_blocked <- function(status, url) {
-  if (isTRUE(status %in% BLOCKED_STATUS)) {
-    stop("the site refuses the harvest (HTTP ", status, " at ", url, "): stopped, ",
-         "harvest it again later", call. = FALSE)
+# A site refuses the harvest when it answers 429 (too many requests), or 403
+# (forbidden) to FORBIDDEN_RUN requests in a row: its harvest stops, so it is
+# not asked again and again (harvest_all() goes on with the next site; the
+# pages fetched before stay in the checkpoint). A 403 among other answers is
+# the page's own (a course page closed to the public, as at MF on
+# 2026-10-17): outcome "forbidden" (fetch_outcome()), and the harvest goes on.
+FORBIDDEN_RUN <- 5L
+
+# The check for one loop of requests to a site: called with each answer's
+# status (NA: no answer) and URL, it stops the loop when the site refuses the
+# harvest, after `before_stop(run)`; else it returns `run`, the number of 403s
+# in a row so far (0 after any other answer).
+refusal_watch <- function() {
+  run <- 0L
+  function(status, url, before_stop = NULL) {
+    run <<- if (isTRUE(status == 403L)) run + 1L else 0L
+    if (isTRUE(status == 429L) || run >= FORBIDDEN_RUN) {
+      if (!is.null(before_stop)) before_stop(run)
+      stop("the site refuses the harvest (HTTP ", status, " at ", url,
+           if (run > 0L) paste0(", ", run, " in a row"), "): stopped, harvest it again later",
+           call. = FALSE)
+    }
+    invisible(run)
   }
 }
 
@@ -105,8 +121,8 @@ BROWSER_USER_AGENT <- paste("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebK
 # request without an answer in FETCH_TIMEOUT seconds or a failed connection
 # ("timeout") and HTTP 500, 502, 503 or 504 ("server_error") are tried again,
 # FETCH_TRIES times in all, after FETCH_BACKOFF seconds and then twice as
-# long. Any other answer is final: a 404 is not tried again, and a block
-# (HTTP 403, 429) stops the site's harvest (fetch_html_with_checkpoint()).
+# long. Any other answer is final: a 404 or a 403 is not tried again, and a
+# site that refuses the harvest stops it (refusal_watch()).
 FETCH_TIMEOUT <- 60
 FETCH_TRIES <- 3
 FETCH_BACKOFF <- 30

@@ -165,8 +165,8 @@ defined in `R/fetch_html_cols.R` and `R/extract_fulltext.R`.
 ### About Checkpointing
 
 The pipeline uses **checkpointing** to avoid re-downloading data. If the
-script stops or crashes, or a site refuses the harvest (HTTP 403 or 429;
-see “Fetch Ledger and Retries”):
+script stops or crashes, or a site refuses the harvest (HTTP 429, or 403
+to 5 requests in a row; see “Fetch Ledger and Retries”):
 
 - Already-downloaded HTML is saved in
   `data/raw/checkpoint/html_{institution}.RDS` (`course_id`, `html`,
@@ -430,8 +430,8 @@ pgrep -af harvest_all   # the harvests still running
   the URL can be stopped (end the process) and started again: the
   checkpoint, saved every 50 pages, resumes it. A “page” or “current”
   site fetches all its pages again at every start, so let it run to the
-  end. A site that answers 403 or 429 stops its own harvest; start it
-  again later.
+  end. A site that refuses the harvest (HTTP 429, or 403 to 5 requests
+  in a row) stops its own harvest; start it again later.
 - **Memory and the build.** A process keeps its institution’s pages in
   memory until it writes the run, so check free memory before starting
   more of them. `tar_make()` (4 workers) builds the runs written so far;
@@ -920,13 +920,14 @@ text read from a PDF)</td>
 The outcome classes (`fetch_outcome()`): `ok` (a page or a PDF’s text
 was stored); `not_found` (HTTP 404 or 410; HTTP 400, UiB’s answer for a
 semester before its first; or the site’s own not-found page, HVL’s
-“Course not found”); `shell` (the site answers that it has nothing for
-that year, NTNU’s “No course information available for this academic
-year”); `server_error` (HTTP 5xx); `timeout` (no answer: a timeout or a
-failed connection); `blocked` (HTTP 403 or 429); `robots` (not
-requested: robots.txt disallows it, see “robots.txt”); `error` (anything
-else); `no_url` (no URL to request: the URL builder or the URL discovery
-found none).
+“Course not found”); `forbidden` (HTTP 403 to this page among other
+answers: a page closed to the public, such as some of MF’s course
+pages); `shell` (the site answers that it has nothing for that year,
+NTNU’s “No course information available for this academic year”);
+`server_error` (HTTP 5xx); `timeout` (no answer: a timeout or a failed
+connection); `blocked` (HTTP 429); `robots` (not requested: robots.txt
+disallows it, see “robots.txt”); `error` (anything else); `no_url` (no
+URL to request: the URL builder or the URL discovery found none).
 
 The ledger is raw data like its run: append-only, written only by
 `harvest_all()`, locked by `finalize_release()`. It holds URLs and
@@ -942,21 +943,27 @@ all runs, recorded or reconstructed.
 **Retries within a harvest** (`site_request()`): a request without an
 answer (a timeout, a failed connection) or with HTTP 500, 502, 503 or
 504 is tried again, 3 times in all, after 30 and then 60 seconds; any
-other answer is final. A site that answers 403 or 429 refuses the
-harvest: its harvest stops, the pages fetched so far stay in the
-checkpoint (the next harvest resumes there), and `harvest_all()` goes on
-with the next institution.
+other answer is final. A site refuses the harvest when it answers 429
+(too many requests), or 403 to 5 requests in a row (`FORBIDDEN_RUN`; a
+site that blocks the harvest answers every request so): its harvest
+stops, the pages fetched before stay in the checkpoint (the next harvest
+resumes there and asks again for the pages that answered 403 in the
+refusal), and `harvest_all()` goes on with the next institution
+(`refusal_watch()`). A 403 among other answers is the page’s own: it
+gets outcome `forbidden` and the harvest goes on.
 
 **Retries between harvests:** `harvest_all(retry = TRUE)` fetches again
 the offerings that have no plan in the current build
 (`data/interim/course_offerings_full.RDS`, so run `tar_make()` first),
 past the checkpoint, by how the URL the build gives them answered last,
 for whichever offering it was requested (`offering_outcome()`): every
-outcome but `not_found` and `robots`, so a page not found or one
-robots.txt disallows is not asked for again, and always a URL nobody has
-requested (a spring offering’s academic-year page). `retry` can name the
-classes instead: `retry = c("timeout", "server_error")` only failed
-fetches, `retry = "not_found"` pages that may have been published since,
+outcome but `not_found`, `forbidden` and `robots`, so a page not found,
+closed to the public or disallowed by robots.txt is not asked for again,
+and always a URL nobody has requested (a spring offering’s academic-year
+page). `retry` can name the classes instead:
+`retry = c("timeout", "server_error")` only failed fetches,
+`retry = "not_found"` pages that may have been published since,
+`retry = "forbidden"` pages that may have been opened since,
 `retry = "robots"` the URLs an institution has since given permission
 for. The retried offerings are saved as a new run, marked `retry`, and
 `read_harvest()` gives a retried offering its latest row with a page. A
@@ -2262,6 +2269,13 @@ reconstructed (target <code>ledger</code>)</td>
 and server errors; refuses a URL robots.txt disallows</td>
 </tr>
 <tr>
+<td><code>refusal_watch()</code></td>
+<td><code>R/fetch_html_cols.R</code></td>
+<td>The check of a loop of requests to a site: stops it when the site
+refuses the harvest (HTTP 429, or 403 to <code>FORBIDDEN_RUN</code>
+requests in a row)</td>
+</tr>
+<tr>
 <td><code>robots_allows(url)</code></td>
 <td><code>R/fetch_html_cols.R</code></td>
 <td>Whether robots.txt (<code>data/robots_txt.csv</code>) lets the
@@ -2480,10 +2494,11 @@ is invisible to `html_text()`; see USN above -
 `session$session$Runtime$evaluate("...")` runs JavaScript in a live
 session - `session$view()` opens the browser to see what is rendered
 
-**“the site refuses the harvest (HTTP 429 …)”?** - The site answered 403
-or 429, so its harvest stopped; the pages fetched so far are in the
-checkpoint. Harvest it again later (the checkpoint resumes), at night,
-or with a longer `request_delay` in `R/institution_config.R`
+**“the site refuses the harvest (HTTP 429 …)” or “(HTTP 403 …, 5 in a
+row)”?** - The site answered 429, or 403 to 5 requests in a row, so its
+harvest stopped; the pages fetched so far are in the checkpoint. Harvest
+it again later (the checkpoint resumes), at night, or with a longer
+`request_delay` in `R/institution_config.R`
 
 **Checkpoint file is huge?** - This is normal - HTML is large -
 Checkpoint files are in `.gitignore`; deleting one makes the next run

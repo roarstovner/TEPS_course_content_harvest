@@ -288,12 +288,11 @@ harvest_date <- function(run, harvested_at = NULL) {
 # without one (the harvests before 2026-10-16).
 
 # The outcome classes of a fetch (fetch_outcome()), and those that
-# harvest_all(retry = TRUE) fetches again: all but not_found and robots.
-FETCH_OUTCOMES <- c("ok", "not_found", "shell", "server_error", "timeout", "blocked", "robots", "error",
-                    "no_url")
-RETRY_OUTCOMES <- setdiff(FETCH_OUTCOMES, c("not_found", "robots"))
-# A site that answers 403 or 429 refuses the harvest: its harvest stops.
-BLOCKED_STATUS <- c(403L, 429L)
+# harvest_all(retry = TRUE) fetches again: all but not_found, forbidden and
+# robots.
+FETCH_OUTCOMES <- c("ok", "not_found", "forbidden", "shell", "server_error", "timeout", "blocked", "robots",
+                    "error", "no_url")
+RETRY_OUTCOMES <- setdiff(FETCH_OUTCOMES, c("not_found", "forbidden", "robots"))
 # Columns of a harvest's rows that only the ledger keeps.
 REQUEST_COLUMNS <- c("http_status", "requested_at")
 
@@ -301,12 +300,15 @@ REQUEST_COLUMNS <- c("http_status", "requested_at")
 #'
 #' "ok": a page (or a PDF's text) was stored; "not_found": HTTP 404 or 410,
 #' HTTP 400 (UiB's answer for a semester before its first), or the site's
-#' own not-found page (HVL's "Course not found (soft 404)"); "shell": the
-#' site answers that it has nothing for that year (NTNU's "No course
-#' information available for this academic year"); "server_error": HTTP 5xx;
-#' "timeout": no answer (a timeout or a failed connection); "blocked": HTTP
-#' 403 or 429; "robots": not requested, since robots.txt disallows it
-#' (robots_refusal()); "error": anything else; "no_url": no URL to request.
+#' own not-found page (HVL's "Course not found (soft 404)"); "forbidden":
+#' HTTP 403 to this page, among other answers (a page closed to the public; a
+#' site that answers 403 to every request refuses the harvest, which stops,
+#' refusal_watch()); "shell": the site answers that it has nothing for that
+#' year (NTNU's "No course information available for this academic year");
+#' "server_error": HTTP 5xx; "timeout": no answer (a timeout or a failed
+#' connection); "blocked": HTTP 429; "robots": not requested, since
+#' robots.txt disallows it (robots_refusal()); "error": anything else;
+#' "no_url": no URL to request.
 #'
 #' @param url,status,error The URL, HTTP status (NA if unknown) and fetch
 #'   error text (fetch_error_text()) of each fetch.
@@ -318,7 +320,8 @@ fetch_outcome <- function(url, page, status, error) {
     is.na(url) ~ "no_url",
     status %in% c(400L, 404L, 410L) | grepl("soft 404", error, fixed = TRUE) ~ "not_found",
     grepl("No course information available", error, fixed = TRUE) ~ "shell",
-    status %in% BLOCKED_STATUS ~ "blocked",
+    status %in% 403L ~ "forbidden",
+    status %in% 429L ~ "blocked",
     status >= 500L ~ "server_error",
     status %in% 408L | grepl("Failed to perform HTTP request|[Tt]imeout|timed out", error) ~ "timeout",
     .default = "error")
@@ -425,8 +428,8 @@ offering_outcome <- function(course_id, url, ledger) {
 }
 
 # Whether harvest_all(retry = ) fetches an offering without a plan again,
-# by its offering_outcome(): `retry` TRUE takes every outcome but not_found
-# and robots, a character vector the outcomes it names; a URL nobody
+# by its offering_outcome(): `retry` TRUE takes every outcome but not_found,
+# forbidden and robots, a character vector the outcomes it names; a URL nobody
 # requested always.
 retry_wanted <- function(outcome, retry = TRUE) {
   outcome %in% c(if (isTRUE(retry)) RETRY_OUTCOMES else retry, "not requested")

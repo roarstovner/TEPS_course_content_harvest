@@ -231,6 +231,7 @@ Figures are in the tables above; the notes say why.
 - Only the plan in force is published (`plan_years = "current"`; see "Year coverage"). Selector `article .content-body`: the title and code, the facts box (credits, semester, language, programmes; without its buttons) and the plan; the title and facts box are in no section
 - `.anon_mf()` cuts from "Emneansvarlig" to the end (names, contact details, marketing)
 - The reading list is on a separate page; the plan holds only a link and a library notice, which `.anon_mf()` removes, so MF plans have no `reading_list` section
+- Some course pages are closed to the public and answer HTTP 403 (an access-restricted Drupal node, such as PHI2030 on 2026-10-17): outcome `forbidden`, no plan, not fetched again by `retry = TRUE`
 
 ---
 

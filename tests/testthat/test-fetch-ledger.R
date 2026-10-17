@@ -37,7 +37,7 @@ test_that("a fetch's outcome class comes from its page, status and error", {
     "u", FALSE, 200L, "Course not found (soft 404)", "not_found",
     "u", FALSE, 200L, "No course information available for this academic year", "shell",
     "u", FALSE, 429L, "HTTP 429 Too Many Requests.", "blocked",
-    "u", FALSE, 403L, "HTTP 403 Forbidden.", "blocked",
+    "u", FALSE, 403L, "HTTP 403 Forbidden.", "forbidden",
     "u", FALSE, NA, "robots.txt disallows u (data/robots_txt.csv): not requested", "robots",
     NA, FALSE, NA, "robots.txt disallows d/ (data/robots_txt.csv): not requested", "robots",
     "u", FALSE, 502L, "HTTP 502 Bad Gateway.", "server_error",
@@ -47,13 +47,14 @@ test_that("a fetch's outcome class comes from its page, status and error", {
   expect_true(all(x$outcome %in% FETCH_OUTCOMES))
 })
 
-test_that("a timeout or server error is tried again after a pause, a 404 or a block is not", {
+test_that("a timeout or server error is tried again after a pause, a 404, 403 or 429 is not", {
   local_robots(c("example.org", "127.0.0.1"))
   req <- site_request("https://example.org/x")
   transient <- req$policies$retry_is_transient
   expect_true(transient(httr2::response(502)))
   expect_true(transient(httr2::response(503)))
   expect_false(transient(httr2::response(429)))
+  expect_false(transient(httr2::response(403)))
   expect_false(transient(httr2::response(404)))
   expect_false(transient(httr2::response(200)))
   expect_true(req$policies$retry_on_failure)
@@ -146,6 +147,56 @@ test_that("a site that refuses the harvest stops it, and the pages fetched stay 
   expect_match(paste(msg, collapse = ""), "refuses the harvest \\(HTTP 429")
   expect_length(harvest_files("hiof"), 0)
   expect_equal(readRDS("data/raw/checkpoint/html_hiof.RDS")$course_id, "hiof_A1_2023_autumn_1")
+})
+
+test_that("a site refuses the harvest with a 429, or with 403 to FORBIDDEN_RUN requests in a row", {
+  refused <- refusal_watch()
+  expect_equal(refused(403L, "u"), 1L)
+  expect_equal(refused(403L, "u"), 2L)
+  expect_equal(refused(200L, "u"), 0L)   # a 403 among other answers is the page's own
+  expect_equal(refused(NA, "u"), 0L)
+  for (k in seq_len(FORBIDDEN_RUN - 1)) refused(403L, "u")
+  saved <- NULL
+  expect_error(refused(403L, "u/x", before_stop = function(run) saved <<- run),
+               paste0("refuses the harvest \\(HTTP 403 at u/x, ", FORBIDDEN_RUN, " in a row\\)"))
+  expect_equal(saved, FORBIDDEN_RUN)
+  expect_error(refusal_watch()(429L, "u"), "refuses the harvest \\(HTTP 429 at u\\)")
+
+  # a harvest: the refusal's 403s stay out of the checkpoint, to be asked for again
+  local_hiof()
+  sent <- character()
+  httr2::local_mocked_responses(function(req) {
+    sent <<- c(sent, basename(req$url))
+    if (grepl("/forb", req$url)) httr2::response(403) else html_page("Plan")
+  })
+  codes <- c("A1", paste0("FORB", seq_len(FORBIDDEN_RUN)), "Z1")
+  msg <- capture_messages(harvest_all(hiof_dbh(codes), institutions = "hiof"))
+  expect_match(paste(msg, collapse = ""), paste0("refuses the harvest \\(HTTP 403 .*forb", FORBIDDEN_RUN,
+                                                  ".html, ", FORBIDDEN_RUN, " in a row"))
+  expect_equal(sent, paste0(tolower(codes[-length(codes)]), ".html"))
+  expect_length(harvest_files("hiof"), 0)
+  expect_equal(readRDS("data/raw/checkpoint/html_hiof.RDS")$course_id, "hiof_A1_2023_autumn_1")
+})
+
+test_that("a page that answers 403 among other answers is forbidden: the harvest goes on, no retry", {
+  local_hiof()
+  sent <- character()
+  httr2::local_mocked_responses(function(req) {
+    sent <<- c(sent, basename(req$url))
+    if (grepl("/forb", req$url)) httr2::response(403) else html_page("Plan")
+  })
+  dbh <- hiof_dbh(c("OK1", "FORB1", "FORB2", "OK2"))
+  suppressMessages(harvest_all(dbh, institutions = "hiof"))
+  led <- raw_ledger(harvest_files("hiof"))
+  expect_equal(led$outcome, c("ok", "forbidden", "forbidden", "ok"))
+  expect_equal(led$http_status, c(200L, 403L, 403L, 200L))
+
+  dir.create("data/interim")
+  saveRDS(dplyr::transmute(led, course_id, institution, url, plan_content_id = c("p1", NA, NA, "p2")),
+          "data/interim/course_offerings_full.RDS")
+  expect_message(harvest_all(dbh, institutions = "hiof", retry = TRUE), "nothing new")
+  suppressMessages(harvest_all(dbh, institutions = "hiof", retry = "forbidden"))
+  expect_equal(utils::tail(sent, 2), c("forb1.html", "forb2.html"))
 })
 
 test_that("a URL robots.txt disallows is not requested, and is not retried without a permission", {

@@ -73,9 +73,9 @@ harvest_institution <- function(institution, courses, year = NULL,
 #' offerings whose page gave no plan in the current build
 #' (data/interim/course_offerings_full.RDS), by how their URL answered last
 #' (offering_outcome()): `retry = TRUE` all but those whose URL was not found
-#' (a 404 is final) or robots.txt disallows, or only the outcome classes
-#' named, e.g. `retry = c("timeout", "server_error")`, or `retry =
-#' "not_found"` for pages published late, `retry = "robots"` after a
+#' (a 404 is final), answered 403 (forbidden) or robots.txt disallows, or only
+#' the outcome classes named, e.g. `retry = c("timeout", "server_error")`, or
+#' `retry = "not_found"` for pages published late, `retry = "robots"` after a
 #' permission (`robots_permission`). They are saved with `retry = TRUE`, and read_harvest()
 #' takes their new page. Run targets::tar_make() first, and narrow it with `year`.
 #'

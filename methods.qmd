@@ -277,12 +277,14 @@ pages not found:** `harvest_all(retry = TRUE)` fetches the offerings without a
 plan again and adds them as a new raw file; a retried offering takes its
 latest page. Since 2026-10-16 it goes by how the URL the offering reads
 answered last (the fetch ledger, below): a page not found (HTTP 404, 410 or
-400, or the site's own not-found page) is final and not fetched again; any
+400, or the site's own not-found page) is final and not fetched again, and
+so is a page that answered HTTP 403 (forbidden) among other answers; any
 other outcome is (a server error, no answer, a block, a page without the
 plan, NTNU's "no information for this academic year", no URL), and so is a
 URL nobody has requested. Within a harvest, a request without an answer or
 with HTTP 500, 502, 503 or 504 is tried 3 times in all, after 30 and 60
-seconds, and a site that answers 403 or 429 stops its harvest. *Why:* a page
+seconds, and a site that refuses the harvest stops it: an answer 429 (too
+many requests), or 403 to 5 requests in a row. *Why:* a page
 can fail for a while; UiA's 95 autumn-2023 pages were shells (title and facts
 box) when harvested but full plans once on 2026-10-07. A 404 is the site
 saying it has no such page, and asking again costs requests (10 seconds each
@@ -296,12 +298,22 @@ copy rebuilt since 2026-09-30 lacks the plan, so these offerings have no plan
 data-2026-10-16, 4,401 read a URL that was not found (UiA 1,758, UiB 1,134,
 HiØ 866, NLA 271, HVL 232, NIH 103, other 37) and are no longer fetched again;
 `harvest_all(retry = "not_found")` fetches them on request (a plan published
-late). *Since:* 2026-10-07; by outcome since 2026-10-16.
+late). A single 403 is the page's answer, not the site's (2026-10-17): MF
+answered the first page of its pilot, an access-restricted course node, with
+403, while another of its course pages answered 404 to the same user agent,
+and the rule until then (any 403 stops the site) ended MF's harvest after one
+page. A site that blocks the harvest answers every request with 403, so 5 in
+a row stop it; those 5 pages are asked for again at the next harvest.
+*Rejected:* stopping at the first 403 (one closed page ends a site's
+harvest); retrying a 403 with `retry = TRUE` (a closed page stays closed;
+`retry = "forbidden"` asks again on request). No harvest before 2026-10-17
+stored a 403, so no outcome changed. *Since:* 2026-10-07; by outcome since
+2026-10-16; a single 403 a page outcome since 2026-10-17.
 
 **Each harvest records how every page was fetched (fetch ledger):** one row
 per offering and harvest run with the URL, the time of the request, the HTTP
-status, the outcome class (ok, not found, shell, server error, timeout,
-blocked, error, no URL), the size and SHA-256 hash of the page as stored, the
+status, the outcome class (ok, not found, forbidden, shell, server error,
+timeout, blocked, robots, error, no URL), the size and SHA-256 hash of the page as stored, the
 raw file and the DBH snapshot the offerings came from. *Why:* the coverage of
 a release (for each offering of the frame: plan, not found, retry pending,
 never harvested) and the retry rule need the outcome of each fetch, and the

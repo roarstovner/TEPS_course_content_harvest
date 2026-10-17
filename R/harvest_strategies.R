@@ -121,6 +121,7 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
   if (nrow(codes_to_discover) > 0) {
     message("Discovering dropdowns for ", nrow(codes_to_discover), " course codes...")
 
+    refused <- refusal_watch()
     discovery_results <- purrr::map2(
       codes_to_discover$course_code_raw,
       codes_to_discover$url,
@@ -128,12 +129,13 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
         if (robots_allows(base_url)) polite_pause(config$request_delay)
         tryCatch({
           resp <- site_request(base_url) |> httr2::req_perform()
+          refused(httr2::resp_status(resp), base_url)
           html <- httr2::resp_body_string(resp)
           parsed <- .parse_uis_semester_dropdown(html)
           parsed$course_code_raw <- code
           parsed
         }, error = \(e) {
-          stop_if_blocked(http_status_of(e), base_url)
+          refused(http_status_of(e), base_url)
           tibble::tibble(label = character(), url = character(),
                          type = character(), year = integer(),
                          course_code_raw = character())
@@ -203,6 +205,7 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
       skip <- sum(!robots_allows(to_fetch_pdf$url))
       if (skip) message("robots.txt disallows ", skip, " of them: not requested")
 
+      refused <- refusal_watch()
       pdf_results <- purrr::map(
         to_fetch_pdf$url,
         \(pdf_url) {
@@ -210,10 +213,11 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
           requested_at <- Sys.time()
           tryCatch({
             resp <- site_request(pdf_url) |> httr2::req_perform()
+            refused(httr2::resp_status(resp), pdf_url)
             list(raw = httr2::resp_body_raw(resp), error = NULL, success = TRUE,
                  status = httr2::resp_status(resp), requested_at = requested_at)
           }, error = \(e) {
-            stop_if_blocked(http_status_of(e), pdf_url)
+            refused(http_status_of(e), pdf_url)
             list(raw = NULL, error = conditionMessage(e), success = FALSE,
                  status = http_status_of(e), requested_at = requested_at)
           })
