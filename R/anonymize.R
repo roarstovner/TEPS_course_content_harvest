@@ -153,8 +153,12 @@ anonymize_text <- function(institution, text,
     # Remove bare semicolons (2022 website rendering artifacts); preserve real punctuation
     stringr::str_remove_all("(?m)^\\s*;\\s*$") |>
     stringr::str_remove_all("(?<=\\s);(?=\\s)") |>
-    # Strip "Emneansvarlig\n\nName" (label line + following name line)
-    stringr::str_remove("(?m)^Emneansvarlig[ \\t]*\\n+\\p{Lu}[\\p{L} .,-]+(?=\\n|$)")
+    # The coordinator block: "Emneansvarlig" and every line under it, up to
+    # the credit-overlap box or the end of the page, its last parts. It holds
+    # only names: one or several, with a title, a part or a role ("Delemne
+    # <part>: <name>", "Writing workshop coordinator: professor <name>"), or
+    # a placeholder ("x").
+    stringr::str_remove("(?ms)^Emneansvarlige?[ \\t]*\\n.*?(?=^Emneoverlapp[ \\t]*$|\\z)")
 }
 
 .anon_mf <- function(txt) {
@@ -279,7 +283,7 @@ anonymize_text <- function(institution, text,
   "studiekoordinator", "praksiskoordinator", "emnekoordinator", "koordinator",
   "studieprogramleder", "studieprogramleiar", "programansvarlig",
   "instituttleder", "instituttleiar", "veileder", "rettleiar",
-  "timelærer", "timelærar", "kontaktperson", "sensor"
+  "timelærer", "timelærar", "kontaktperson", "sensor", "coordinator"
 )
 # A whole line that is only a capitalised name (particles like "van" allowed)
 # followed by "(Role)", optionally bulleted.
@@ -318,11 +322,31 @@ anonymize_text <- function(institution, text,
 # faglærer Ola Nordmann" (usn), "Godkjent emneplan av dekan Ola Nordmann"
 # (usn), "Studiepoeng 15 Emneansvarlig Ola Nordmann" (uis PDF), "Ta kontakt
 # med Ola K. Nordmann eller Kari Nordmann" (uio), "Kontaktpersoner er A, B og
-# C" (uit). The role stays, the names go.
+# C" (uit), "Emneansvarlige er: A (sosionom) og B (pedagog)." (oslomet),
+# "coordinator: assistant professor A" (oslomet). The role stays, the names
+# go, with a title before them and a role in brackets after each; an
+# affiliation in brackets stays ("faglærer <name> (UiA)", usn).
+.title_regex <- "(?i:(?:(?:assistant|associate)[ \\t]+)?professor|førsteamanuensis|(?:universitets|høgskole)lektor|dosent)"
+.paren_role <- "(?:[ \\t]*\\(\\p{Ll}[^()\\n]{0,29}\\))?"
+.names_regex <- paste0("(?:", .title_regex, "[ \\t]+)?", .name_regex, .paren_role,
+                       "(?:[ \\t]*(?:,|og|eller|and)[ \\t]+", .name_regex, .paren_role, ")*")
 .role_name_inline_regex <- paste0(
   "(?<!\\p{L})((?i:", paste(c(.staff_roles, .signature_roles), collapse = "|"),
-  ")(?i:e|er|ar|en)?:?|(?i:kontakt(?:e|er)? med|kontaktpersone?r? er))[ \\t]+",
-  .name_regex, "(?:[ \\t]*(?:,|og|eller)[ \\t]+", .name_regex, ")*"
+  ")(?i:e|er|ar|en)?(?:[ \\t]+(?i:er|var))?:?|(?i:kontakt(?:e|er)? med|kontaktpersone?r? er))[ \\t]+",
+  .names_regex
+)
+# A role heading over a line that names someone, also after blank lines and
+# without a colon: "Emneansvarlig\n\nKari Nordmann" (oslomet), "Emneansvarlig\nOla
+# Nordmann, <unit>" (uib), "Contact persons:\nKari Nordmann and Ola Dahl"
+# (uia), the name after a part or role label or a title ("Delemne <part>:
+# Kari Nordmann", "Master thesis coordinator: assistant professor Ola Dahl",
+# oslomet). The name must end the line or come before a comma, a full stop or
+# a bracket, so a committee, a unit or a sentence under the heading stays
+# ("The Programme Committee for ...", "Institutt for ...", uib).
+.role_heading_name_regex <- paste0(
+  "(?m)^[ \\t]*(?i:", paste(c(.staff_roles, "contact person", "course leader"), collapse = "|"),
+  ")(?i:e|er|ar|s)?[ \\t]*:?[ \\t]*\\n(?:[ \\t]*\\n)*[ \\t]*(?:[^\\n:]{1,60}:[ \\t]*)?",
+  "(?!(?:The|Det|Den|De|Dei)[ \\t])", .names_regex, "[ \\t]*(?:[,.(][^\\n]*)?(?:\\n|$)"
 )
 # A name line followed by a line that is only a leader's role:
 # "Kari Nordmann\nInstituttnestleder" (usn approval blocks). Other roles
@@ -411,6 +435,8 @@ anonymize_text <- function(institution, text,
     stringr::str_remove_all(.staff_line_regex) |>
     # Remove role + name lines "Emneleder Ola Nordmann"
     stringr::str_remove_all(.role_name_line_regex) |>
+    # and "Emneansvarlig\n\nOla Nordmann", a role heading over a name line
+    stringr::str_remove_all(.role_heading_name_regex) |>
     # Remove signature lines "17.03.20 Ola Nordmann, dekan"
     stringr::str_remove_all(.signature_line_regex) |>
     # and "Ola Nordmann\nInstituttnestleder"
@@ -524,6 +550,7 @@ anonymize_text <- function(institution, text,
   ip        = .user_ip_regex,
   staff     = .staff_line_regex,
   role_name = .role_name_line_regex,
+  role_heading_name = .role_heading_name_regex,
   role_name_inline = .role_name_inline_regex,
   name_role_lines = .name_role_lines_regex,
   signature = .signature_line_regex

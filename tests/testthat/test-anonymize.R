@@ -418,11 +418,22 @@ test_that("OsloMet: runs of semicolons are rendering artifacts", {
                "Klasseledelse - Klasseledelse og fag\n1) Kropp; og læring")
 })
 
-test_that("OsloMet: Emneansvarlig + name stripped", {
-  input <- "Studiepoeng 15\nEmneansvarlig\n\nKari Nordmann\nInnhold"
-  result <- anonymize_text("oslomet", input, .progress = FALSE)
-  expect_false(grepl("Kari Nordmann", result))
-  expect_true(grepl("Innhold", result))
+test_that("OsloMet: the Emneansvarlig block goes whole, up to Emneoverlapp", {
+  an <- function(x) anonymize_text("oslomet", x, .progress = FALSE)
+  overlap <- "\n\nEmneoverlapp\n\nIngen kjente emner gir full overlapp."
+  for (block in c("Kari Nordmann", "Professor Kari Nordmann", "x",
+                  "Kari Nordmann og Ola Dahl-Nordli.",
+                  "Delemne Praksisstudium: Kari Nordmann\n\nDelemne Sosialt arbeid og helse: Ola Dahl",
+                  paste0("Master thesis coordinator: assistant professor Kari Nordmann\n\n",
+                         "Writing workshop coordinator: professor Ola Dahl"))) {
+    input <- paste0("Sensorordning\n\nTo interne sensorer.\n\nEmneansvarlig\n\n", block)
+    expect_equal(an(input), "Sensorordning\n\nTo interne sensorer.", label = block)
+    expect_equal(an(paste0(input, overlap)),
+                 paste0("Sensorordning\n\nTo interne sensorer.", overlap), label = block)
+  }
+  # the coordinators named in a sentence: the names and their roles go
+  expect_equal(an("Emnet er for sosionomer.\n\nEmneansvarlige er: Kari Nordmann (sosionom) og Ola Dahl (pedagog).\n\nForkunnskapskrav"),
+               "Emnet er for sosionomer.\n\nEmneansvarlige er:.\n\nForkunnskapskrav")
 })
 
 test_that("OsloMet: bare semicolons (2022 artifacts) are removed", {
@@ -742,7 +753,7 @@ test_that("the personal-data check finds what the anonymizer removes", {
     "Kontakt kari.nordmann@uit.no", "- Ola Nordmann (Emneansvarlig)\nInnhold", "Ingen",
     "Emneansvarlige:\nKari Nordmann\nUndervisningssemester:")), f)
   found <- personal_data_in(f)
-  expect_setequal(found$pattern, c("email", "staff", "role_name"))
+  expect_setequal(found$pattern, c("email", "staff", "role_name", "role_heading_name"))
   saveRDS(tibble::tibble(text = anonymize_text(c("uit", "uit"), c(
     "Kontakt kari.nordmann@uit.no", "- Ola Nordmann (Emneansvarlig)\nInnhold"),
     .progress = FALSE)), f)
@@ -759,6 +770,9 @@ test_that("a role and names inside a line: the names go, the role stays", {
   expect_equal(an("uio", "Ta kontakt med Kari K. Nordmann eller Ola Berg Dahl for mer informasjon."),
                "Ta kontakt med for mer informasjon.")
   expect_equal(an("usn", "Spørsmål til emneansvarlig: Kari Nordmann-Dahl"), "Spørsmål til emneansvarlig:")
+  # a role in brackets after a name goes with it, an affiliation stays
+  expect_equal(an("usn", "Endringer ønsket av faglærer Kari Nordmann (UiA), meddelt via epost."),
+               "Endringer ønsket av faglærer (UiA), meddelt via epost.")
   # a role before a lower-case word or one capitalised word is prose
   expect_equal(an("usn", "Faglærer Kari gir veiledning. Veileder Universitetet i Oslo."),
                "Faglærer Kari gir veiledning. Veileder Universitetet i Oslo.")
@@ -782,9 +796,36 @@ test_that("usn approval block and name + leader-role lines lose the name", {
   # a committee or a title over a role heading stays (uib)
   uib <- "The Programme Committee for The Study of Religion\nEmneansvarlig"
   expect_equal(an("uib", uib), uib)
+  # a role heading over a name line, also without a colon: both lines go;
+  # a committee, a unit or a sentence under the heading stays
+  expect_equal(an("uib", "Emneansvarlig\nOla Nordmann, Forskarskolen i klinisk medisin\nAdministrativt ansvarlig\nFakultetet"),
+               "Administrativt ansvarlig\nFakultetet")
+  expect_equal(an("uia", "Tekst.\nContact persons:\nKari Nordmann and Ola Dahl"), "Tekst.")
+  for (t in c("Emneansvarlig\nThe Programme Committee", "Emneansvarlig\nInstitutt for pedagogikk",
+              "Emneansvarlig\nProgramstyret for nordisk", "Programansvarlig\nEmneansvarlig\nFagmiljøet i nordisk",
+              "Sensor\n\nEkstern Sensor brukes jevnlig.")) {
+    expect_equal(an("uib", t), t, label = t)
+  }
   f <- tempfile(fileext = ".RDS")
   saveRDS(tibble::tibble(text = "Godkjent\nKari Nordmann\nInstituttnestleder"), f)
   expect_true("name_role_lines" %in% personal_data_in(f)$pattern)
+})
+
+test_that("the personal-data check finds coordinator blocks and sentences", {
+  forms <- c(heading = "Emneansvarlig\n\nKari Nordmann",
+             part = "Emneansvarlig\n\nDelemne Sosialt arbeid og helse: Kari Nordmann",
+             title = "Emneansvarlig\n\nMaster thesis coordinator: assistant professor Kari Nordmann",
+             unit = "Emneansvarlig\nOla Nordmann, Forskarskolen i klinisk medisin",
+             english = "Contact persons:\nKari Nordmann and Ola Dahl",
+             sentence = "Emneansvarlige er: Kari Nordmann (sosionom) og Ola Dahl (pedagog).")
+  f <- tempfile(fileext = ".RDS")
+  for (k in names(forms)) {
+    saveRDS(tibble::tibble(text = forms[[k]]), f)
+    expect_gt(nrow(personal_data_in(f)), 0, label = k)
+  }
+  saveRDS(tibble::tibble(text = anonymize_text(rep("oslomet", length(forms)), unname(forms),
+                                               .progress = FALSE)), f)
+  expect_equal(nrow(personal_data_in(f)), 0)
 })
 
 test_that("admin dates go, government documents keep theirs", {

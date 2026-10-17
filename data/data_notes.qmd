@@ -276,6 +276,7 @@ Figures are in the tables above; the notes say why.
 
 - The URL always uses `HØST`: spring URLs return 404. `/{YEAR}/HØST` is the plan of study year YEAR/YEAR+1, so a spring offering reads YEAR-1 (since 2026-10-14). Pattern: `https://student.oslomet.no/studier/-/studieinfo/emne/{CODE}/{YEAR}/HØST`
 - Re-harvested 2026-02-14 after the site moved to server-side rendering. Error pages ("Siden du leter etter finnes ikke") become NA in the anonymizer
+- `.anon_oslomet()` removes the "Emneansvarlig" block whole, up to "Emneoverlapp" or the end of the page: it holds one or more names, with a title, a part ("Delemne …: <name>") or a role ("… coordinator: professor <name>") (since 2026-10-17)
 - **Practicum courses whose sections only say "Se fagplanen." have no sections** (M1GP\*/M5GP\*, 132 of 248 offerings with a plan on 2026-10-15; the others have text of their own and get its sections). The page's "Fagplan" block is the programme-wide practicum plan for all study years, with no markup separating the years, so it is not read into the course's sections. Their `course_plan` keeps the full page text
 
 ---

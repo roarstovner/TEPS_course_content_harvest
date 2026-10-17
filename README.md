@@ -681,13 +681,13 @@ The pipeline anonymizes and deduplicates the course plans in three
 stages:
 
 1.  **Anonymize** (`anonymize_text()`): Removes PII (teacher names,
-    emails, phone numbers, staff lists “Name (Role)”, signature lines
-    “Name, dekan”), dates, seasons, and administrative year references
-    (“Opprettet 2020”, “2023/2024”) from `extracted_text`, producing a
-    readable `course_plan` column. Content years (e.g., “etter 1945”,
-    “NOU 2015:2”) are preserved. Institution-specific handlers
-    (`.anon_*()`) run first, then the generic cleanup
-    (`.anon_generic()`).
+    emails, phone numbers, staff lists “Name (Role)”, role labels with
+    names, signature lines “Name, dekan”), dates, seasons, and
+    administrative year references (“Opprettet 2020”, “2023/2024”) from
+    `extracted_text`, producing a readable `course_plan` column. Content
+    years (e.g., “etter 1945”, “NOU 2015:2”) are preserved.
+    Institution-specific handlers (`.anon_*()`) run first, then the
+    generic cleanup (`.anon_generic()`).
 2.  **Normalize** (`normalize_plan_text()`): Applies lossy transforms
     (lowercasing, heading synonyms, blanket year removal, whitespace
     squishing) on `course_plan` for content hashing
@@ -1466,7 +1466,9 @@ folder says what may be shared:
 `data/processed/` may only hold text that went through
 `anonymize_text()`. The pipeline checks this on every build: target
 `privacy_check` scans the files for e-mail addresses, phone numbers,
-“Name (Role)” lines and “Name, dekan” signatures and warns, and
+“Name (Role)” lines, “Name, dekan” signatures, and role labels followed
+by a name (“faglærer Name”, “Emneansvarlige er: Name (sosionom)”, a role
+heading over a name line) and warns, and
 `tests/testthat/test-anonymize.R` fails, on any hit. The repository is
 public.
 

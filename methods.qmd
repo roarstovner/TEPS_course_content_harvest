@@ -601,6 +601,32 @@ UiT's 2008-2011 timetable block (teachers, rooms, first lectures) from
 2026-10-07, after the anonymization audit of all institutions found them in
 16 plans.
 
+**Coordinator blocks and role headings go with their names.** OsloMet's
+"Emneansvarlig" block, the last part of the page before the credit-overlap
+box ("Emneoverlapp"), goes whole: the heading and every line under it,
+which hold only names, with a title ("Professor <name>"), a part ("Delemne
+<part>: <name>") or a role ("Writing workshop coordinator: professor
+<name>"), or a placeholder ("x"). At every institution a role heading over
+a line that names someone goes with that line, also across blank lines and
+without a colon (UiB's "Emneansvarlig" over "<name>, <research school>",
+UiA's "Contact persons:" over "<name> and <name>"); a role in a sentence
+loses the names also after "er:" and with a lowercase role in brackets
+after each name ("Emneansvarlige er: <name> (sosionom) og <name>
+(pedagog)." → "Emneansvarlige er:."); and "coordinator" counts as a role.
+`privacy_check` looks for the same layouts, so it now finds a role label
+followed by a name in these forms. *Why:* the pilot anonymization audit of
+2026-10-17 found staff names in 4 OsloMet offerings of the all-courses data,
+in forms both the anonymizer and `privacy_check` missed: the old rule took
+only one plain name line under "Emneansvarlig". The widened check found 3
+more offerings (UiB 2, UiA 1). *Rejected:* one rule per line form in the
+block, which missed each new form; taking any bracket after a name, which
+also took an affiliation ("faglærer <name> (UiA)" in a USN
+teacher-education plan, which stays). *Consequence:* 8 offerings of the
+all-courses data change text and plan id, each its own plan (OsloMet 5,
+NATA6110 2018 only losing the placeholder; UiB 2; UiA 1); 2 OsloMet
+`course_content` sections lose the names; 14,908 plans before and after.
+The teacher-education frame does not change. *Since:* 2026-10-17.
+
 **Dates of government documents are kept.** A date or year rule does not
 fire when a government document is named up to 80 characters before it on
 the same line: laws and regulations, white papers and propositions
