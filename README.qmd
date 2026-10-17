@@ -577,8 +577,10 @@ Their earlier plans survive only where the Internet Archive's Wayback Machine
 captured the page. `R/wayback.R` lists the captures of a URL or of every URL
 under a prefix (`wayback_cdx()`, the CDX API) and gives the address of a
 capture as archived (`wayback_capture_url()`). It is not part of the harvest:
-no capture is in the raw store or the data (tested 2026-10-16; whether to use
-captures as a plan source is undecided).
+no capture is in the raw store or the data. Tested 2026-10-16 and rejected as
+a plan source 2026-10-17: the captures cover far fewer courses than the live
+harvest (methods.qmd, "Sites that publish only the current plan"). It remains
+for spot checks of single pages.
 
 Their runs are `2026-04-04` (the user's earlier harvest, 2025/26) and
 `2026-09-30` (2026/27), both of DBH 2025 rows (`data/raw/{inst}/2025/`). A

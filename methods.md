@@ -225,12 +225,21 @@ er obligatorisk for deg som fikk opptak fra og med høsten 2021. Muntlig
 eksamen er valgfritt for deg som fikk opptak … høsten 2020 eller
 tidligere”; in September 2026: “Før endelig karakter settes, skal du ha
 muntlig eksamen.” *Rejected:* the latest page for the latest DBH year
-(used until 2026-10), which put 2026/27 text on 2025 offerings.
-*Consequence:* at these sites 100 autumn 2025 offerings have the April
-2026 plan and 0 spring 2025 offerings have a plan (no harvest from
-2024/25); the September 2026 plans wait for DBH 2026 offerings. These
-sites must be harvested once in every academic year. *Since:*
-2026-10-06.
+(used until 2026-10), which put 2026/27 text on 2025 offerings. Also
+rejected (2026-10-17): earlier plans from the Internet Archive’s Wayback
+Machine, which would be used only if its captures covered nearly as many
+courses as the live harvest. They do not: the share of DBH courses with
+any capture of their page is 50-75% at UiO in 2015-17 and 2019-21 but
+10% in 2018 and 21% in 2022, 59-76% at NMBU in 2014-22, under 10% at MF
+before 2021, and none at INN, Samas and Steiner; NLA’s old site has
+362-504 course pages a year in 2017-22 for 576-695 DBH courses. A
+capture is also not always the plan of the right year (UiO and MF pages
+carry no year). The live harvest finds a plan for 80-90% of these sites’
+teacher-ed course-years. *Consequence:* at these sites 100 autumn 2025
+offerings have the April 2026 plan and 0 spring 2025 offerings have a
+plan (no harvest from 2024/25); the September 2026 plans wait for DBH
+2026 offerings. These sites must be harvested once in every academic
+year. *Since:* 2026-10-06.
 
 **The raw harvest is append-only and a finalized release is frozen:** a
 later harvest (a new DBH year) only adds offerings no earlier harvest
