@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Harvest skips paths robots.txt disallows unless permission is recorded (#408)
 - Confirm the pilot gate thresholds (PILOT_GATE) (#406)
 - Wayback Machine for plans before 2023 at sites without history (#371)
 - robots.txt and crawl delay of the new institutions (#359)
