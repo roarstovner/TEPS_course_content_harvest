@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- nla: fetch one page per course code and academic year (json_extract) (#413)
 - oslomet: staff names left in course_plan (coordinator block forms) (#420)
 - course_offerings column order depends on which institution first has harvested_at (#411)
 - 403 run: check a known public page before stopping the site (#410)
