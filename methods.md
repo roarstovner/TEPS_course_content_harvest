@@ -270,55 +270,78 @@ without a plan again and adds them as a new raw file; a retried offering
 takes its latest page. Since 2026-10-16 it goes by how the URL the
 offering reads answered last (the fetch ledger, below): a page not found
 (HTTP 404, 410 or 400, or the site’s own not-found page) is final and
-not fetched again; any other outcome is (a server error, no answer, a
+not fetched again, and so is a page that answered HTTP 403 (forbidden)
+among other answers; any other outcome is (a server error, no answer, a
 block, a page without the plan, NTNU’s “no information for this academic
 year”, no URL), and so is a URL nobody has requested. Within a harvest,
 a request without an answer or with HTTP 500, 502, 503 or 504 is tried 3
-times in all, after 30 and 60 seconds, and a site that answers 403 or
-429 stops its harvest. *Why:* a page can fail for a while; UiA’s 95
-autumn-2023 pages were shells (title and facts box) when harvested but
-full plans once on 2026-10-07. A 404 is the site saying it has no such
-page, and asking again costs requests (10 seconds each at NTNU and UiB)
-for nothing. *Rejected:* overwriting the raw file (the store is
-append-only); fetching every offering without a plan again (the rule
-until 2026-10-16), which asks again for the pages not found.
-*Consequence:* retries are done before a release is finalized. UiA’s
-shells did not come back: the full pages were copies last fetched from
-FS in July 2024, and every copy rebuilt since 2026-09-30 lacks the plan,
-so these offerings have no plan (2026-10-08). Of the 15,997 offerings
-without a plan in release data-2026-10-16, 4,401 read a URL that was not
-found (UiA 1,758, UiB 1,134, HiØ 866, NLA 271, HVL 232, NIH 103, other
-37) and are no longer fetched again; `harvest_all(retry = "not_found")`
-fetches them on request (a plan published late). *Since:* 2026-10-07; by
-outcome since 2026-10-16.
+times in all, after 30 and 60 seconds, and a site that refuses the
+harvest stops it: an answer 429 (too many requests), or 403 to 5
+requests in a row and then to a page known to be public. *Why:* a page
+can fail for a while; UiA’s 95 autumn-2023 pages were shells (title and
+facts box) when harvested but full plans once on 2026-10-07. A 404 is
+the site saying it has no such page, and asking again costs requests (10
+seconds each at NTNU and UiB) for nothing. *Rejected:* overwriting the
+raw file (the store is append-only); fetching every offering without a
+plan again (the rule until 2026-10-16), which asks again for the pages
+not found. *Consequence:* retries are done before a release is
+finalized. UiA’s shells did not come back: the full pages were copies
+last fetched from FS in July 2024, and every copy rebuilt since
+2026-09-30 lacks the plan, so these offerings have no plan (2026-10-08).
+Of the 15,997 offerings without a plan in release data-2026-10-16, 4,401
+read a URL that was not found (UiA 1,758, UiB 1,134, HiØ 866, NLA 271,
+HVL 232, NIH 103, other 37) and are no longer fetched again;
+`harvest_all(retry = "not_found")` fetches them on request (a plan
+published late). A single 403 is the page’s answer, not the site’s
+(2026-10-17): MF answered the first page of its pilot, an
+access-restricted course node, with 403, while another of its course
+pages answered 404 to the same user agent, and the rule until then (any
+403 stops the site) ended MF’s harvest after one page. A site that
+blocks the harvest answers every request with 403, so after 5 in a row
+the harvest asks for a page known to be public (one of the same host
+that answered 200 earlier in the harvest, else the latest in the raw
+store; the request is in the fetch ledger): a 200 means the 403s were
+the pages’ own, and the harvest goes on; any other answer, or no such
+page, stops it, and the 5 pages are asked for again at the next harvest.
+MF’s PHI course pages answer 403 to every user agent, a browser’s too,
+and lie next to each other in a sample ordered by course code, so 5 in a
+row alone stopped MF’s pilot again (2026-10-17). *Rejected:* stopping at
+the first 403 (one closed page ends a site’s harvest); stopping at 5 in
+a row without the check (a run of closed pages ends it); retrying a 403
+with `retry = TRUE` (a closed page stays closed; `retry = "forbidden"`
+asks again on request). No harvest before 2026-10-17 stored a 403, so no
+outcome changed. *Since:* 2026-10-07; by outcome since 2026-10-16; a
+single 403 a page outcome since 2026-10-17.
 
 **Each harvest records how every page was fetched (fetch ledger):** one
 row per offering and harvest run with the URL, the time of the request,
-the HTTP status, the outcome class (ok, not found, shell, server error,
-timeout, blocked, error, no URL), the size and SHA-256 hash of the page
-as stored, the raw file and the DBH snapshot the offerings came from.
-*Why:* the coverage of a release (for each offering of the frame: plan,
-not found, retry pending, never harvested) and the retry rule need the
-outcome of each fetch, and the hash shows when a site changed a page
-between harvests. *Rejected:* deriving the outcome from the raw rows at
-each build only (as before), which has no time or status of a fetch that
-succeeded and no record of the DBH snapshot used. *Consequence:* the
-harvests before 2026-10-16 have no ledger; theirs is reconstructed from
-the raw rows (no time and no DBH snapshot, the status only from an error
-message). Of their 47,449 rows: 29,388 ok, 5,219 not found, 2,036 NTNU
-“no information” shells, 12 server errors (UiB, HTTP 502) and 10,794
-without a URL. Of the 44,492 offerings of the teacher-ed frame (DBH
-snapshot 2026-10-16) at institutions with a config, 25,028 have a plan,
-3,467 were never harvested (the years before the latest at UiO, Samas,
-MF, NMBU and Steiner, which show only the current plan) and a retry
-would fetch 11,361 again (6,996 of them without a URL). 235 pages read
-another plan text in a later harvest of the same URL: 95 UiA shells that
-were full plans a week later, 51 HVL pages fetched again from the
-English site, and 89 plans of a new academic year at UiO, MF and NMBU.
-The page body alone does not show a change: at NTNU and OsloMet it
-carries a new token on every fetch, and at UiB and UiS 70 pages had
-another body with the same text, so the plan text of two bodies that
-differ is compared. *Since:* 2026-10-16.
+the HTTP status, the outcome class (ok, not found, forbidden, shell,
+server error, timeout, blocked, robots, error, no URL), the size and
+SHA-256 hash of the page as stored, the raw file and the DBH snapshot
+the offerings came from, and a row for each request of a page known to
+be public that tells a site’s refusal from closed pages (outcome probe,
+since 2026-10-17). *Why:* the coverage of a release (for each offering
+of the frame: plan, not found, retry pending, never harvested) and the
+retry rule need the outcome of each fetch, and the hash shows when a
+site changed a page between harvests. *Rejected:* deriving the outcome
+from the raw rows at each build only (as before), which has no time or
+status of a fetch that succeeded and no record of the DBH snapshot used.
+*Consequence:* the harvests before 2026-10-16 have no ledger; theirs is
+reconstructed from the raw rows (no time and no DBH snapshot, the status
+only from an error message). Of their 47,449 rows: 29,388 ok, 5,219 not
+found, 2,036 NTNU “no information” shells, 12 server errors (UiB, HTTP
+502) and 10,794 without a URL. Of the 44,492 offerings of the teacher-ed
+frame (DBH snapshot 2026-10-16) at institutions with a config, 25,028
+have a plan, 3,467 were never harvested (the years before the latest at
+UiO, Samas, MF, NMBU and Steiner, which show only the current plan) and
+a retry would fetch 11,361 again (6,996 of them without a URL). 235
+pages read another plan text in a later harvest of the same URL: 95 UiA
+shells that were full plans a week later, 51 HVL pages fetched again
+from the English site, and 89 plans of a new academic year at UiO, MF
+and NMBU. The page body alone does not show a change: at NTNU and
+OsloMet it carries a new token on every fetch, and at UiB and UiS 70
+pages had another body with the same text, so the plan text of two
+bodies that differ is compared. *Since:* 2026-10-16.
 
 **Pilot protocol and gate: an institution’s full harvest waits for a
 pilot whose audits find it ready.** Before the full harvest of an
