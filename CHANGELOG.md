@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- course_offerings column order depends on which institution first has harvested_at (#411)
 - 403 run: check a known public page before stopping the site (#410)
 - A single 403 page stops a site's harvest: tell a refused page from a refused harvest (#409)
 - Harvest skips paths robots.txt disallows unless permission is recorded (#408)
