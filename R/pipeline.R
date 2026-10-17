@@ -436,6 +436,9 @@ plan_offerings <- function(pages, page_text, config) {
     df$plan_nchar <- plan$plan_nchar
     df
   })) |>
+    # columns only some institutions' raw rows have: in the order of
+    # data/variables.csv, whichever institution has them first
+    dplyr::relocate(dplyr::any_of(c("harvested_at", "academic_year")), .after = plan_nchar) |>
     dplyr::mutate(has_extracted_text = !is.na(extracted_text) & nchar(extracted_text) > 0,
                   extracted_text_nchar = nchar(extracted_text))
 }
