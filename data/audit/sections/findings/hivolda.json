@@ -2,24 +2,56 @@
   "check": "sections",
   "institution": "hivolda",
   "model": "sonnet",
-  "n_courses_reviewed": 20,
-  "n_suspects_reviewed": 14,
-  "overall_assessment": "Section extraction works well for hivolda: course_content, learning_outcomes (all three sub-groups kept), teaching_methods, coursework_requirements and prerequisites are correctly cut and clean in all 20 courses, including the 6 random controls. The only recurring defect is that assessment is a flattened one-line table row (form, duration, grade scale glued together). All 'leak' flags and the 'boilerplate' flag are false alarms or symptoms of that.",
+  "n_courses_reviewed": 19,
+  "n_suspects_reviewed": 6,
+  "overall_assessment": "Section extraction works well for HVO: the fixed heading structure (Om emnet, Læringsutbytte, Praktisk organisering, Vilkår for å framstille seg til eksamen, exam table) maps cleanly, learning outcomes keep all three sub-groups, and arbeidskrav land in coursework_requirements. Only low-severity noise was found; all six pre-pass flags are false alarms.",
   "findings": [
+    {
+      "target": "learning_outcomes",
+      "error_type": "formatting_noise",
+      "severity": "low",
+      "prevalence": "widespread",
+      "example_course_ids": ["hivolda_MGL5-10SA1B-1_2025_spring_1", "hivolda_MID112-1_2019_spring_1"],
+      "evidence": "I samsvar med det nasjonale kvalifikasjonsrammeverket har studenten følgjande læringsutbytte etter fullført emne:",
+      "description": "Every learning_outcomes row starts with the standard NQF boilerplate sentence, which is not an outcome. The outcomes themselves are complete.",
+      "root_cause_hypothesis": "The boilerplate is the first line under the Læringsutbytte heading and .clean_sections() has no rule for it.",
+      "suggested_fix": "Add a leading-line strip in .clean_sections() (or an hivolda-specific rule) for lines matching '^I samsvar med det nasjonale kvalifikasjonsrammeverket'.",
+      "confidence": "medium"
+    },
     {
       "target": "assessment",
       "error_type": "formatting_noise",
       "severity": "low",
       "prevalence": "widespread",
-      "example_course_ids": [
-        "hivolda_MGL1-7MA2B-1_2022_spring_1",
-        "hivolda_MGL5-10SA1B-1_2019_spring_1",
-        "hivolda_MGL5-10SA2A-1_2023_autumn_3"
-      ],
-      "evidence": "Munnleg eksamen Individuell 30 minutt A-F, der A er best og E er siste ståkarakter",
-      "description": "Assessment in every course is a flattened table row on one line with no cell separators: exam form, grouping, duration, grade scale, weight and aids run together (e.g. '... ståkarakter 100 Studenten skal ved registrering i Studentweb velje ...' in SA1B 2019, or a trailing 'Ingen' for aids in SA2A). Duration and grade scale are exam logistics. The content is complete and correctly placed; the identical 'Munnleg eksamen Individuell 30 minutt A-F ...' text repeated across the MA2B courses is what trips the pre-pass 'boilerplate' flag (a symptom, not boilerplate: it is the real exam form).",
-      "root_cause_hypothesis": "The Vurderingsform table is read as a single text line by the block reader for hivolda (R/blocks.R / section_* config in R/institution_config.R); the table header row is already dropped, but cells are not separated.",
-      "suggested_fix": "Emit table cells with a separator (e.g. ' | ') for hivolda's assessment table in R/blocks.R, and optionally strip the fixed grade-scale phrase 'A-F, der A er best og E er siste ståkarakter' and the 'Studentweb' registration sentence in .clean_sections().",
+      "example_course_ids": ["hivolda_ENG144-1_2022_spring_1", "hivolda_JOP100-1_2025_autumn_2"],
+      "evidence": "Vurderingsform\tGruppering\tVarighet\tKarakterskala\tAndel\tKommentar\tHjelpemidler\tOmfang",
+      "description": "Assessment is the exam table as tab-separated rows with a repeated column-header line and many empty cells. The content is correct (form, duration, scale) but the header row is noise in every course. The pre-pass 'boilerplate' flag on ENG144 is this identical header line, not a real problem.",
+      "root_cause_hypothesis": "Table flattening keeps the header row; identical header text in many courses triggers the boilerplate flag.",
+      "suggested_fix": "Drop the fixed header row when flattening the HVO exam table (or reformat rows as labelled fields), so only data rows remain.",
+      "confidence": "medium"
+    },
+    {
+      "target": "reading_list",
+      "error_type": "empty_placeholder",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": ["hivolda_PPY121-1_2016_autumn_1"],
+      "evidence": "Sjå pensumliste for emnet her",
+      "description": "A reading_list row was emitted containing only a link caption. In the other courses the 'Pensumliste for emnet finn du her' placeholder is correctly dropped, so handling is inconsistent. The reading list text itself is never on the page (only a link), so reading_list is absent for nearly all HVO plans.",
+      "root_cause_hypothesis": "The placeholder filter matches only the 'Pensumliste for emnet finn du her' wording, not the older 'Sjå pensumliste for emnet her'.",
+      "suggested_fix": "Extend the reading_list placeholder pattern to cover '^Sjå pensumliste for emnet her$'.",
+      "confidence": "high"
+    },
+    {
+      "target": "prerequisites",
+      "error_type": "empty_placeholder",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": ["hivolda_DRHS902-1_2019_spring_1"],
+      "evidence": "Ingen. Sjå opptakskrav i studieplanen.",
+      "description": "Prerequisites row holds 'none, see admission requirements', a placeholder pointing to admission rules, while the Bokmål variant in DRHS900-2 ('Ingen. Se opptakskrav i studieplanen.') was dropped. Inconsistent; the row carries no prerequisite.",
+      "root_cause_hypothesis": "Placeholder filter for 'Ingen' variants matches only the bare word or the Bokmål spelling.",
+      "suggested_fix": "Treat '^Ingen\\.? (Sjå|Se) opptakskrav' as a placeholder in prerequisites cleaning.",
       "confidence": "medium"
     }
   ]

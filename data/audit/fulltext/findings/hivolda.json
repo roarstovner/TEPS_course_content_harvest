@@ -2,20 +2,20 @@
   "check": "fulltext",
   "institution": "hivolda",
   "model": "sonnet",
-  "n_courses_reviewed": 8,
+  "n_courses_reviewed": 28,
   "n_suspects_reviewed": 0,
-  "overall_assessment": "Extraction works well for hivolda: all 8 random controls contain the whole plan (facts box, description, learning outcomes, organisation, requirements, assessment table) with clean structure, correct course and year, and no chrome or junk. The only uncaptured page text is year pickers, the page heading repeated, and staff names. The one limitation is that the reading list is only a link on the page, so no literature is captured.",
+  "overall_assessment": "Extraction works well for hivolda: all 28 random controls contain the whole plan (facts box, description, learning outcomes, organisation, requirements, assessment table) with clean line structure, correct course and year, and no chrome or junk. Uncaptured page text is only year pickers, the repeated page heading and staff names. The one limitation is that the reading list is only a link on the page, so no literature is captured.",
   "findings": [
     {
       "target": "reading_list",
       "error_type": "missing_content",
       "severity": "low",
-      "prevalence": "widespread",
-      "example_course_ids": ["hivolda_MGL5-10SA1B-1_2019_spring_1", "hivolda_MGL5-10EN3C-1_2023_spring_1"],
-      "evidence": "Pensum:\nPensumliste for emnet finn du her",
-      "description": "The plan page only links to the reading list (link text 'Pensumliste for emnet finn du her'); the literature itself is not in extracted_text, so the reading_list section will have no real content for these courses. The link target is not followed.",
-      "root_cause_hypothesis": "The reading list lives on a separate page or PDF linked from the course page; the selector article.content-emweb only captures the link text.",
-      "suggested_fix": "If reading lists are wanted, resolve the 'Pensumliste' link in the url_discovery strategy and append the linked page text; otherwise document that hivolda reading lists are not available and drop the link label in post_fn.",
+      "prevalence": "common",
+      "example_course_ids": ["hivolda_HI100N-1_2025_autumn_1", "hivolda_MEI301-1_2025_autumn_1", "hivolda_KUM311-1_2025_autumn_1"],
+      "evidence": "Pensumliste for emnet finn du her",
+      "description": "The plan page only links to the reading list (link text 'Pensumliste for emnet finn du her', in 18 places in the packet); the literature itself is not in extracted_text, so the reading_list section has no real content for these courses.",
+      "root_cause_hypothesis": "The reading list lives on a separate page or PDF linked from the course page; the selector article.content-emweb captures only the link text.",
+      "suggested_fix": "If reading lists are wanted, follow the 'Pensumliste' link in the url_discovery strategy and append the linked page text; otherwise document that hivolda reading lists are unavailable and drop the link label in post_fn.",
       "confidence": "medium"
     }
   ]

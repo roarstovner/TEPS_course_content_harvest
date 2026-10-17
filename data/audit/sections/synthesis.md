@@ -1,218 +1,179 @@
-# Sections audit — synthesis (block model, 2026-10-05)
+# Sections audit — synthesis (pilot: 7 institutions)
 
-18 institutions, one review agent each, on `plan_sections.RDS` built by the
-block model (#272–#278: `R/blocks.R` readers + `sectionize()`, one row per
-plan × section cut from the page of `source_course_id`). Packets: 14 suspects +
-up to 6 random controls, fitted to ~150 KB (`prepare_sections.R`); hiof
-(170 KB) went to Opus, the other 17 to Sonnet. uit is audited for the first
-time since its fulltext was restored (#218); everything else is a re-run of
-the 2026-10-01 audit (#216), so the change table in `findings_report.md` is a
-before/after of #239's fixes plus the block-model rewrite. All 68 findings
-pass mechanical verification (0 ✗). Report: `findings_report.md`. The previous
-synthesis is in git history (commit ee65ed9).
+Run 2026-10-17 with `--pilot` on the build of commit 7510144 (the 16 pilot
+harvests): ntnu, oslomet, inn, nord, hvl, hivolda, nla. Each packet holds
+plans of the institution's pilot sample (`data/pilot/{inst}.csv`, all
+courses), each labelled by its source offering: 16–20 plans, packets
+111–153 KB. One Sonnet review agent per institution; every agent read all
+its plans. 34 findings for these 7; all pass mechanical verification after
+one quote was lengthened (oslomet "Ingen info", too short to check). The
+other 11 institutions' findings in `findings_report.md` are from the run of
+2026-10-05 (synthesis in git history, 2147fa9).
 
 ## Summary
 
-- **The block model holds up.** 15 of 18 agents call extraction good or
-  mostly clean; 12 institutions have no high- or medium-severity finding that
-  is a pipeline fault. Every high-severity item from the previous run that was
-  fixed in #239 stays fixed (oslomet resit text, nord COVID line, hiof resit
-  headings, uis PDF titles, usn table of contents, ntnu script text, uib
-  semester picker). Learning-outcome sub-groups and arbeidskrav-vs-assessment
-  are now correct almost everywhere.
-- **uit is the one institution with structural problems** (5 of the 8 high
-  findings). Two causes: (1) 148 plans from 2008–2011 use the old FS layout,
-  whose headings are `span.fsemneoverskrift`, which the uit config does not
-  read — 51 of them get no sections, the rest are badly merged; (2) on the
-  2012–2025 layouts arbeidskrav sit inside the "Eksamen" block, so up to
-  ~1,400 uit plans have gates in assessment and no coursework row.
-- **Arbeidskrav inside assessment** is the remaining cross-institution
-  weakness where the gate has no heading of its own: uit (above), nord (label
-  line moved, its paragraph left behind; ~176 plans with gate text in
-  assessment and no coursework row), and single cases in hvl, uia.
-- **Privacy (not a sections fault):** uis reading lists carry library OpenURL
-  strings with `user_ip=` — 233 published `plan_sections` rows and 234
-  published `course_plans` contain IP addresses, some public (e.g. a
-  residential address). The anonymizer does not strip them. Filed for #231.
-- The rest is low-impact noise: unmapped minor headings, placeholder phrases,
-  flattened exam tables, Leganto / PDF page furniture.
+- Heading mapping is sound at all seven: the random controls land in the
+  right sections, learning outcomes keep their groups (except INN's labels,
+  below), and placeholders like "Ingen" are mostly dropped.
+- **English-only plans at NTNU are pointers.** The Norwegian page fills
+  each part with "See English version." (IMT4127 2022, IMT4312 2025,
+  MACS490 2025, SMF1081 2022), so course content, outcomes and teaching
+  hold only the pointer. The English page on www.ntnu.edu holds the plan
+  (IMT4127 2022, checked 2026-10-17). Same cause as HVL and Nord in the
+  fulltext audit: a fetch fix, before the full harvest.
+- **Arbeidskrav stay in assessment at NTNU and Nord.** The spec puts them in
+  coursework requirements also when the page lists them under assessment.
+  NTNU has no inline split: 876 of its 2,297 assessment sections mention
+  arbeidskrav, about 144 with a whole "OBLIGATORISKE ARBEIDSKRAV" block
+  (`ntnu_LGU14008-A_2019_autumn_1`). Nord has the split
+  (`section_inline_coursework`), but its pattern misses "AK:", "OD:",
+  "Coursework requirements:", "To arbeidskrav." and an "Arbeidskrav:" block
+  under Læringsaktiviteter; 14 of the 37 Nord plans without a coursework
+  section hold such lines. Rebuild only.
+- **NLA's English plans lose their teaching methods.** "Teaching and
+  learning methods", "Introduction", "Final assessment" and "Syllabus" map
+  to no section (`match_heading_to_section()` gives NA); 6 NLA plans.
+  Rebuild only.
+- The rest is low: admission pointers as prerequisites, placeholder and
+  pointer parts kept as sections, resit rules and exam-place notices in
+  assessment.
 
-## Cross-institution patterns (by root cause)
+## Cross-institution patterns
 
-1. **Coursework gates without a heading** (uit, nord, hvl, uia; uio bold
-   labels). `.split_inline_coursework()` (`R/extract_sections.R`) is on only
-   for nord (`section_inline_coursework`) and moves single *lines* matching
-   `.inline_coursework_regex`. nord writes a label line ("Obligatorisk
-   deltakelse (OD)") followed by its paragraph, so only the label moves; and
-   "Inntil 4 arbeidskrav (AK)" does not start with "Arbeidskrav". uit writes
-   "Følgende arbeidskrav må være godkjent før …" + a list (2012–2019, ~700
-   plans) or an "Obligatoriske arbeidskrav" table row (2020s, ~700 plans, then
-   repeated under "Mer info om arbeidskrav").
-2. **Minor headings with no pattern** (`R/section_heading_map.R`): inn
-   "Ferdighetsmål" (13 pages — a whole outcome group lost: "ferdigheter" does
-   not match "ferdighetsmål"), nla "Progresjonskrav" (43), nmbu
-   "Undervisningstider"/"Læringsstøtte" (20/21), usn "Utgifter i emnet", uis
-   "Arbeidsmengd", uio "Sensurordning"/"Sensurering" as bold labels. And two
-   that match the wrong row by substring: uib "Vurderingssemester" →
-   assessment via "vurdering" (218 rows get exam-timing text), uia nynorsk
-   "Innhaldsliste" → course_content via "innhald".
-3. **Praksis pointers in teaching_methods** (nla, nord, inn, usn — low). A
-   side effect of #247 (Praksis → teaching_methods): where the block is only
-   "Se egen praksisplan", the pointer and the word "Praksis" are appended.
-   Content-bearing Praksis blocks (uia, hiof) are fine.
-4. **Placeholders and pointers still emitted** (nih "Ingen emner", nord ".",
-   oslomet "Ingen arbeidskrav." / "Se programplanen …", uis/uib "Ingen" in
-   front of real text, hvl "Det er ingen vurdering i emnet.").
-   `.placeholder_phrases` misses these variants; a leading placeholder line
-   before real text is never stripped.
-5. **Page furniture** — flattened exam tables (hivolda, inn), uis PDF running
-   headers ("Emne X, BOKMÅL, , versjon"), usn/uis Leganto widget text and
-   OpenURL strings, steiner PDF page numbers, uit legacy `</div>` fragments.
+1. **English-only plans saved as Norwegian pointers** (NTNU here; HVL and
+   Nord in the fulltext audit): follow the English page at fetch time.
+2. **Coursework inside assessment** (NTNU, Nord): `.split_inline_coursework()`
+   (`R/extract_sections.R`): turn it on for NTNU and widen
+   `.inline_coursework_regex` (abbreviations "AK"/"OD", English
+   "Coursework requirements", a block headed "OBLIGATORISKE ARBEIDSKRAV"),
+   and keep a line that names both a requirement and the graded exam in
+   assessment too (Nord SOS5003 "Arbeidskrav og hjemmeeksamen (3 dager)"
+   left assessment empty).
+3. **Admission pointers as prerequisites** (Nord "Studenter må oppfylle
+   gjeldene opptakskrav ved tilhørende studieprogram.", HVL "Studiets
+   opptakskrav.", NLA "View the admission requirements for the MA programme
+   in Global Journalism.", OsloMet PVUB7000): one drop pattern in
+   `.clean_sections()`. Near the spec's known deviation on admission rules.
+4. **Placeholder and pointer parts kept** (HVL "_", "Ja, vert spesifisert i
+   semesterplan …"; hivolda Nynorsk "Sjå pensumliste for emnet her", "Ingen.
+   Sjå opptakskrav i studieplanen."; NLA "Ingen." and "Se plan for
+   praksisstudiet …" appended to teaching methods; OsloMet "Ingen info"):
+   the spec says such a part is not a section; extend the placeholder and
+   pointer patterns (Nynorsk variants included).
 
 ## Prioritised fix list
 
-1. **Privacy — IP addresses in uis reading lists** (`R/anonymize.R`): strip
-   `user_ip=<addr>` (or the whole OpenURL query) for every institution. 233
-   section rows, 234 course_plans. Then item 9 removes the URL noise itself.
-2. **uit legacy layout** (`R/institution_config.R`, uit): add
-   `span.fsemneoverskrift` to `section_heading_selector` (default `h2`), and
-   exact rows for the labels it uses that map to nothing or to the wrong
-   section: "undervisningsform" → teaching_methods, "mål" and "objective of
-   the course" → learning_outcomes, "recommended reading/syllabus" →
-   reading_list; "dato for eksamen", "dato for skoleeksamen", "date for
-   examination" → .drop (now assessment via "eksamen"). Emnetype, Emnet
-   administreres av and the overlap list are unmapped and drop as they should.
-   148 plans; examples `uit_NOR-3930-1_2009_autumn_1`,
-   `uit_LRU-1400-1_2010_autumn_2`, `uit_SOA-3905-1_2011_spring_1`.
-3. **Coursework gates in assessment** (`.split_inline_coursework()`): move a
-   gate *paragraph* (a gate line and the lines up to the next blank line /
-   next exam-form label), not only the line; accept a leading quantifier
-   ("Inntil 4 arbeidskrav"); enable it for uit with "Følgende arbeidskrav må"
-   and "Obligatoriske arbeidskrav" as gate starts; drop the duplicated uit
-   2020s table row when "Mer info om arbeidskrav" holds the same gates.
-   nord ~176 + uit ~1,400 plans. Examples `nord_MUS2015-1_2024_autumn_1`,
-   `nord_KRO5001-1_2020_autumn_2`, `uit_LRU-3640-1_2018_autumn_1`,
-   `uit_LER-1510-1_2025_spring_1`.
-4. **Heading-map additions** (pattern 2): "ferdighetsmål"/"ferdigheitsmål" →
-   learning_outcomes; "progresjonskrav" → prerequisites; exact
-   "vurderingssemester", "innhaldsliste", "utgifter i emnet", "arbeidsmengd"
-   → .drop; "undervisningstider" → teaching_methods; uio "sensurordning:" as
-   a sub-heading → .drop like the heading. Check each with `heading_use` and
-   `metrics_check`.
-5. **Inline "Forkunnskapskrav:" in course_content** (mf PPU1015/1020, uit
-   "Om emnet" ~1,000 rows flagged `leak->prerequisites`): a line that starts
-   with "Forkunnskapskrav" inside course_content opens prerequisites. For uit
-   most of that text is "Jf. opptakskrav …" (admission, .drop by the
-   codebook), so the gain is mainly cleaner course_content.
-6. **nord preamble** (`section_initial = "course_content"` for nord, as mf
-   has): the lead paragraph before "Beskrivelse av emnet" is lost. Check that
-   the title/code lines are not swept in. Example
-   `nord_MAT5006-1_2022_spring_2`.
-7. **Placeholder variants** (pattern 4) in `.placeholder_phrases`, plus
-   stripping a leading placeholder line before real text.
-8. **Praksis pointers** (pattern 3): drop a teaching_methods line that is only
-   a pointer ("Se (egen )?(plan for )?praksis…", "Se praksisplan…") and the
-   bare "Praksis" label line.
-9. **Page furniture** (pattern 5): uis running headers and OpenURL strings,
-   usn Leganto labels ("View online", "In compendium", item-type prefixes),
-   steiner trailing page numbers, uit `</div>` fragments and the "Dato for
-   eksamen" notice, hiof "Litteratur… sist oppdatert" variants (26 rows).
-10. **uio bold labels under Undervisning** ("Obligatoriske forhold …",
-    "Seminarundervisning", "Fravær fra obligatorisk aktivitet"): needs a
-    `section_subheading_selector` for uio that catches `<p><strong>` labels;
-    small n (52 uio plans).
+Before the full harvest (new fetches):
 
-Not pipeline faults (record in `data/data_notes.qmd` where not already):
-oslomet praksis courses without sections (decided in #242, option b);
-mf/hivolda/hiof/nih reading lists that are only a Leganto link on the page;
-uia 2023 stub pages (PED428, IDR418, NAT115, SV-158: harvest got only the page
-header — see #222); steiner `M-PEL2.2` carrying the PEL1.5 plan (#225);
-oslomet stray ";" (`avansert;kunnskap`) and "¿", which are in the raw HTML
-of some years; ntnu PPU attendance rules written inside "Læringsformer".
+1. **NTNU English-only plans**: on "See English version." fetch
+   `https://www.ntnu.edu/studies/courses/{CODE}/{YEAR}` (add www.ntnu.edu to
+   `data/robots_txt.csv`). `ntnu_IMT4127-1_2022_autumn_1`,
+   `ntnu_MACS490-1_2025_autumn_1`.
 
-## Changes since the previous run (2026-10-01, #216)
+Rebuild only:
 
-- **Fixed:** oslomet resit text and accordion sub-headings (#240), nord
-  COVID-line loss (#241), hiof "Vilkår for ny/utsatt eksamen" (#241), uis PDF
-  title lines and admin headings (#243), usn table of contents (#244), ntnu
-  script text and PPU47xx (#245), learning-outcome group labels (#249), uib
-  semester picker (block model). Findings fell for nord 10 → 6, ntnu 8 → 3,
-  uis 7 → 5, hiof → 2 low.
-- **Persisting:** oslomet praksis (by decision), flattened exam tables
-  (hivolda, inn), uio coursework/teaching mix, nla Progresjonskrav, nmbu
-  unmapped minor headings, usn Leganto text.
-- **New:** uit (first audit on its restored fulltext), uis IP addresses,
-  nord gate paragraphs left in assessment (the #212 line rule only moves the
-  label), Praksis pointers (side effect of #247), uib Vurderingssemester,
-  inn Ferdighetsmål.
+2. **NTNU coursework split** (high): pattern 2.
+   `ntnu_LGU14008-A_2019_autumn_1`, `ntnu_NORX2001-1_2025_autumn_2`.
+3. **NLA English headings** (high): map "Teaching and learning methods" →
+   teaching_methods, "Introduction" → course_content, "Final assessment" →
+   assessment, "Syllabus" → reading_list in `R/section_heading_map.R`.
+   `nla_3GJ322-1_2019_autumn_1`, `nla_3GJ302-1_2025_autumn_1`.
+4. **Nord coursework regex** (medium): pattern 2. `nord_PRO9011-1_2025_autumn_1`,
+   `nord_MET2000-1_2022_spring_1`, `nord_SOS5003-1_2022_autumn_3`.
+5. **Admission pointers** (low): pattern 3.
+6. **Placeholders and pointers** (low): pattern 4, per institution
+   (hvl, hivolda, nla, oslomet).
+7. **Logistics in assessment** (low): OsloMet resit rights ("Studentens
+   retter og plikter ved ny/utsatt eksamen …") and the Skikkethetsvurdering
+   pointer; HVL "Tid og sted for eksamen blir opplyst på Studentweb."; Nord
+   "Korrekte vurderingsform vises i StudentWeb ved oppmelding …". HVL
+   teaching methods also take exam dates and material fees (NHB2, FK215).
+8. **INN** (low): the learning-outcome group labels (Kunnskap,
+   Ferdigheter, Generell kompetanse) are dropped from the text, leaving a
+   repeated "Studenten"; the course-evaluation paragraph and the shared
+   Praksisstudiet paragraph join teaching methods (LAN2300, 2MKRLE171-6).
+9. **OsloMet** (low): "Vedtatt i avdelingsstyret. Godkjent av rektor." at
+   the start of course content is an approval stamp (TOLKDIAPBT); BIOB3210's
+   prerequisites end in a dangling "eller" after the admission alternative
+   is cut.
 
-## Rejected findings and corrections
+## Changes since the previous run
 
-No finding failed verification, none was deleted. Corrections to agents'
-root-cause guesses:
+Not a before/after: the previous run (2026-10-05) audited teacher-education
+plans; these packets are all-courses pilot samples. Its NLA
+`teaching_methods/wrong_content` (practice pointers) persists.
 
-- oslomet M5GP* "no sections" (agent: a filter after `sectionize()`): the
-  emneplan sections are "Se fagplanen." (dropped as placeholders) and the
-  "Fagplan" block is skipped on purpose — `sectionize()` ignores
-  sub-headings under an unmapped heading (#240). Decided in #242.
-- oslomet "Fagets arbeids- og undervisningsformer" unmapped (agent: add a
-  pattern): the pattern exists; the line is a sub-heading inside the skipped
-  "Fagplan" block and sub-headings match exact rows only. Reading the
-  subject-level fagplan for non-praksis courses whose emneplan says "Se
-  fagplanen" (~450 plans without teaching_methods) is a separate decision,
-  not covered by #242.
-- mf reading lists (agent: fulltext selector): the page has only a Leganto
-  link ("Litteraturlisten for høst 2026"); the list is not on the page.
-- oslomet stray ";" (agent: block-reader join): the characters are in the raw
-  HTML.
-- uio "Karakterskala" → .drop (agent): the grading scale is assessment design
-  by the codebook; only "Eksamensspråk" is logistics.
+## Rejected findings
 
-## Verification re-run after the fixes (2026-10-05, evening)
+- Permitted aids, calculator rules and the exam table with its header row
+  in assessment (oslomet medium, inn, hivolda, ntnu low): the spec puts them
+  in assessment.
+- hivolda: the qualifications-framework lead sentence of learning outcomes
+  is the section's lead, as at other institutions.
+- nord PRO9011 prerequisites "duplicate": the page holds the passage under
+  both Forkunnskapskrav and Anbefalte forkunnskaper, in different wording.
+- hvl LSU301: the practice period under "OBLIGATORISK LÆRINGSAKTIVITET" is
+  a compulsory activity; coursework by the spec.
+- ntnu MET420 repeated paragraphs and nla glued words ("developmentThis"):
+  in the source.
+- ntnu PPU4725 "Opptak til femårig lærerutdanning og beståtte eksamener i
+  henhold til forskrift": the spec keeps that sentence whole.
 
-Fix items 1–4 went in as #281 (b3ad1db, IP addresses), #282 (a96eee2, uit
-legacy layout), #283 (ba86038 + 698b8ef, coursework gates) and #284
-(cf48c36, heading-map rows). uit, nord, uio and uib were re-audited (Sonnet,
-same seed; the uit sample is mostly new because its old suspects no longer
-flag).
+## Verdict (`--pilot`, sections: `assessment`, `coursework`, `no_sections`, `unmapped_headings`)
 
-| institution | high | medium | low |
-| --- | --- | --- | --- |
-| uit | 5 → 0 | 3 → 4 | 2 → 5 |
-| nord | 1 → 0 | 2 → 3 | 3 → 3 |
-| uio | 0 → 0 | 4 → 3 | 1 → 1 |
-| uib | 0 → 0 | 1 → 1 | 3 → 2 |
+| inst | assessment | coursework | no_sections | unmapped | verdict |
+|---|---|---|---|---|---|
+| ntnu | .96 (n 79) | .78 | 0 | .31 (n 1723) | not ready |
+| oslomet | 1.00 (n 93) | .96 | 0 | .03 (n 2126) | ready |
+| inn | .98 (n 59) | .98 | 0 | .51 (n 3528) | ready |
+| nord | .89 (n 82) ⚑ | .55 ⚑ | 0 | .28 (n 1475) | not ready |
+| hvl | .94 (n 79) | .89 | 0 | .02 (n 1137) | ready |
+| hivolda | 1.00 (n 77) | 1.00 | 0 | .65 (n 1303) | ready |
+| nla | 1.00 (n 67) | .93 | 0 | .52 (n 1421) | not ready |
 
-- **Fixed:** uit legacy plans (no sections, Pensum in assessment, Innhold
-  under reading_list), uit and nord arbeidskrav in assessment, uib
-  Vurderingssemester, uio Eksamensspråk.
-- **Regression found and fixed:** the nord agent showed that ba86038's
-  mid-line split cut "Obligatorisk deltakelse (OD): ... Vurdering:
-  Godkjent/ikke godkjent." so the gate's own pass/fail stayed in assessment,
-  and that a second OD paragraph stayed behind (SAM1007). Fixed in 698b8ef;
-  the nord findings file describes the state before it.
-- **Still open:** uit inline "Forkunnskapskrav" in course_content and nord's
-  lead paragraph (#285, investigated, not implemented); uit 2020s coursework
-  repeats the gate list (exam-box table + "Mer info om arbeidskrav", same
-  section); uio gates under Undervisning/Eksamen (#288); uib heading-only
-  page and dropped corona sentences; placeholders and Praksis pointers (#286);
-  page furniture (#287).
-- **Rejected:** uio "Karakterskala → .drop" (again): the grading scale is
-  assessment design by the codebook. nord "Adgangsregulering →
-  prerequisites": on most pages it holds admission text ("Opptak til
-  programmet", "Generell studiekompetanse"), which the codebook keeps out of
-  prerequisites; left unmapped.
+`no_sections` is 0 at all seven.
 
-## Status of the fix list (2026-10-05, end of session)
+- **ntnu — not ready.** English-only plans are pointers (fix 1, a fetch
+  fix); arbeidskrav blocks in assessment (fix 2, rebuild).
+- **oslomet — ready.** Low findings only.
+- **inn — ready.** Low findings only; `unmapped_headings` .51 is the facts
+  box.
+- **nord — not ready.** `assessment` .89 < .90: 7 of the 9 plans come from
+  2019/2022 pages with no assessment part on the page (a known limit), 2
+  are English stubs (fulltext fix). `coursework` .55 < .70: 23 of the 37
+  plans without a coursework section have no coursework text (a known
+  limit), 14 have lines the inline split misses (fix 4). Not ready because
+  of the English stubs (fulltext); the section fixes are rebuild only.
+- **hvl — ready.** Low and medium findings only (the English stubs are the
+  fulltext check's).
+- **hivolda — ready.** Low findings only; `unmapped_headings` .649 is just
+  under .65: facts labels with colons, "Evaluering og kvalitetssikring" and
+  "Sensorordning" (examiner arrangement, logistics by the spec).
+- **nla — not ready.** English headings unmapped (fix 3, rebuild only); the
+  fetch fix is the fulltext check's.
 
-| item | issue | status |
-| --- | --- | --- |
-| 1 IP addresses | #281 | done, b3ad1db |
-| 2 uit legacy layout | #282 | done, a96eee2 |
-| 3 coursework gates in assessment | #283 | done, ba86038 + 698b8ef |
-| 4 heading-map rows | #284 | done, cf48c36 |
-| 5–6 inline Forkunnskapskrav, nord lead paragraph | #285 | investigated, open (needs a reader option; mostly admission text) |
-| 7–8 placeholders, Praksis pointers | #286 | done, ada8f69 |
-| 9 page furniture | #287 | done, a772f40 (not: uis code–title footer, steiner page numbers) |
-| 10 uio labels under Undervisning | #288 | done, 9c0844a (not: gates written as plain sentences) |
-| oslomet "Se fagplanen" courses | #289 | decision for the user |
+### Most frequent unmapped headings
+
+All are facts-box labels or plan text about no part; none should map:
+
+- ntnu: course-details-portlet (template label), Fagområder (facts),
+  Kontaktinformasjon (contact), Spesielle vilkår (admission conditions),
+  Studiepoengreduksjon (credit overlap), Andre sider om emnet (links).
+- oslomet: Emneoverlapp (credit overlap), Emneansvarlig (staff), Fagplan
+  (programme plan; its coursework rules join coursework by the spec).
+- inn: Emnekode, Fagområde, Fakultet, Studieprogram, Undervisningssemestre,
+  Emnenivå, Studiepoeng, Undervisnings- og eksamensspråk, Emnenavn på
+  engelsk: (facts), Statusmelding (banner).
+- nord: Kostnader (costs), Type emne (facts), Adgangsregulering
+  (admission), Overlappende emner (credit overlap).
+- hvl: Faglig overlapping, Fagleg overlapping, Course reductions (credit
+  overlap).
+- hivolda: Eksamenssemester:, Emnekode:, Maksimumstal:, Studienivå:,
+  Studiepoeng:, Undervisningssemester:, Varighet:, Undervisningsspråk:
+  (facts), Evaluering og kvalitetssikring (course evaluation),
+  Sensorordning (examiner arrangement).
+- nla: Emnekode:, Emnenavn:, Studiepoeng:, Studieår:, Undervisningsspråk:,
+  Steder:, Undervisningssemester: (facts), Arbeidsomfang (workload),
+  Evaluering av emnet (course evaluation), Relevans i studieprogrammet (the
+  course's place in the programme, not its subject matter). Outside the ten:
+  the English headings of fix 3, which should map.

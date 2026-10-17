@@ -3,8 +3,8 @@
   "institution": "hvl",
   "model": "opus",
   "n_courses_reviewed": 28,
-  "n_suspects_reviewed": 20,
-  "overall_assessment": "Anonymization works well for HVL. None of the 28 packet courses keeps a person's name, e-mail, phone number or administrative date stamp, and none lost course content: reference editors ('Eilifsen, Margareth (red.)'), 'Kunnskapsløftet 2020', 'fagfornyinga (2020)', 'One Ocean 2021' and LK20 all stay. All 20 name_like flags are false alarms on organisation or programme names (Ole Bull Akademiet, Community Music, Grieg Research School, One Ocean, Erasmus BIP/COIL), and a scan of all 1,671 published HVL plans finds only such pairs, no campus-contact name lines and no role label followed by a name, so the leaks from the previous audit are fixed (#301, #306). The one remaining defect is the Nynorsk 'not offered' notice, which .anon_hvl() does not match. 'gjelder fra og med kull 2025' (20 plans) was judged a cohort transition rule, i.e. content, not an admin stamp.",
+  "n_suspects_reviewed": 11,
+  "overall_assessment": "Anonymization works well for HVL. None of the 28 plans keeps a name, e-mail, phone number or administrative date, and no course content was removed. All 11 name_like flags are false alarms: programme and course names, tool names, Ole Bull Akademiet, and in PHD911 scholars named as subject matter (Nussbaum, Amartya Sen, Freire). A scan of all 1,930 HVL plans in data/processed/course_plans.RDS finds 0 e-mails, 0 phone numbers, no role label followed by a name, no line holding only a name, and no season-year or academic-year leftovers. The Nynorsk 'Emnet vert ikkje tilbydd' notice from the previous audit is now removed (no leftovers). Two small defects remain: two notice variants that lose only their year and now say the course is not taught, and English semester fields that keep their season while Norwegian ones are emptied. Out of scope here: hvl_MAS538-1_2025_spring_1 is a Norwegian stub page ('Dette emner er kun beskrevet på engelsk'), which is a fulltext issue.",
   "findings": [
     {
       "target": "boilerplate",
@@ -12,13 +12,30 @@
       "severity": "low",
       "prevalence": "occasional",
       "example_course_ids": [
-        "hvl_MGBMU241-1_2025_spring_1"
+        "hvl_PHD911-1_2025_spring_1",
+        "hvl_BØA3100-1_2025_spring_1"
       ],
-      "evidence": "Emnet vert ikkje tilbydd [−2025/2026.−] . MGBMU241 Musikk 1, emne 2",
-      "description": ".anon_hvl() removes the whole Bokmål offering notice 'Emnet tilbys ikke studieåret 2025/2026.', because without the year it would read 'not offered' (#306). All three Bokmål notices in the packet are removed correctly (hvl_LUPEM102-1_2024_spring_1, hvl_LUPEM102-1_2025_spring_1, hvl_LUPEM302-1_2025_spring_1). The Nynorsk form 'Emnet vert ikkje tilbydd [studieåret] 2025/2026.' is not matched, so the generic academic-year rule removes only the year. What is left, 'Emnet vert ikkje tilbydd .' with a stray space before the full stop, now says that the course is not offered at all, which #306 meant to prevent. In data/processed/course_plans.RDS, 24 of 1,671 HVL plans keep the leftover ('Emnet vert ikkje tilbydd studieåret .' in 14, 'Emnet vert ikkje tilbydd .' in 10). No Bokmål leftover remains, and no other variant ('tilbode', 'tilbudt') occurs.",
-      "root_cause_hypothesis": "In R/anonymize.R, the .anon_hvl() pattern `(?m)^Emnet tilbys ikke (?:studieåret )?\\d{4}/\\d{4}\\.?[ \\t]*(?:\\n|$)` covers Bokmål only. The Nynorsk line passes through to .anon_generic(), whose academic-year rule (.drop_academic_year) blanks just '2025/2026'.",
-      "suggested_fix": "In .anon_hvl(), widen the alternation to `(?m)^Emnet (?:tilbys ikke|vert ikkje tilbydd|blir ikkje tilbydd) (?:studieåret )?\\d{4}/\\d{4}\\.?[ \\t]*(?:\\n|$)`. Add Nynorsk cases, with and without 'studieåret', next to the Bokmål ones in tests/testthat/test-anonymize.R. Then run tar_make() and explain the 24 changed HVL plans in metrics_check; some may merge with neighbouring years that had no notice.",
+      "evidence": "The module is not offered in the academic year.",
+      "description": "By the spec, a notice that a course is not offered ('Emnet tilbys ikke 2025/2026') is out of course_plan. .anon_hvl() removes the whole Bokmål and Nynorsk notice, because without its year it would say the course is not offered at all. Two other forms are not matched, so only the year is removed. As a result the text now says the course is never taught. (1) The English notice 'The module is not offered in the academic year 2024/2025.' becomes 'The module is not offered in the academic year.' (PHD911). (2) The facts-box value 'Undervisningssemester: Vår. Emnet har ikke undervisning våren 2025.' becomes 'Undervisningssemester: Emnet har ikke undervisning.' (BØA3100). Each form occurs in exactly 1 of the 3,488 HVL extracted texts and 1 of the 1,930 published plans, so the problem is rare across the institution. The notice also differs between years, so it can keep two copies of the same plan apart.",
+      "root_cause_hypothesis": "R/anonymize.R, .anon_hvl(). The pattern `(?m)^Emnet (?:tilbys ikke|vert ikkje tilbydd) (?:studieåret )?\\d{4}/\\d{4}\\.?[ \\t]*(?:\\n|$)` covers only the Norwegian forms at the start of a line. The English line goes on to .anon_generic(), where .drop_academic_year removes only ' 2024/2025'. 'Emnet har ikke undervisning våren 2025.' sits in the middle of the Undervisningssemester line, and the generic season+year rule removes only ' våren 2025'.",
+      "suggested_fix": "In .anon_hvl(), also remove (a) `(?m)^The (?:module|course) is not offered in the academic year \\d{4}/\\d{4}\\.?[ \\t]*(?:\\n|$)` and (b) `[ \\t]*Emnet har (?:ikke|ikkje) undervisning (?:våren|høsten|hausten) \\d{4}\\.?`. Pattern (b) must not be anchored to the start of the line. The generic semester-label rule then also drops the leading 'Vår.', leaving 'Undervisningssemester:' empty. Add both cases to tests/testthat/test-anonymize.R next to the existing HVL notice tests. Then run tar_make() and explain the 2 changed HVL plans in metrics_check.",
       "confidence": "high"
+    },
+    {
+      "target": "admin_date",
+      "error_type": "other",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": [
+        "hvl_MAS538-1_2025_autumn_1",
+        "hvl_PHD911-1_2025_autumn_1",
+        "hvl_LSU301-1_2022_autumn_1"
+      ],
+      "evidence": "Semester of instruction: Autumn",
+      "description": "HVL's semester fields are handled differently depending on the page language. The generic rule removes a bare season word that follows a Norwegian semester label: 'Undervisningssemester: Høst' becomes 'Undervisningssemester:'. Of the 1,930 HVL plans, 1,658 have this field empty. The English labels keep the value ('Semester of instruction: Autumn', 'Semester of assessment: Spring'; 55 plans, 7 of 28 in the packet). Values where the season is not the first word keep it too: 'Bergen (høst eller vår), Sogndal (høst), Stord (høst)', 'Fag 1: Vår', '6. semester, vår' (180 plans). One plan, outside the packet, keeps a season with a year: 'Undervisningssemester: Vår. Høst f.o.m 2020.' becomes 'Undervisningssemester: Høst f.o.m 2020.'. No personal data is involved, and a bare season is not an administrative date under the rubric. But the same facts-box field is emptied or kept depending on whether the page is Norwegian or English, so an analysis of teaching semester would silently see only English pages.",
+      "root_cause_hypothesis": "R/anonymize.R, .anon_generic(), the rule 'after a semester label'. Its lookbehind `(?<=(?i:semester|undervisning|oppstart|startsemester|eksamen)[:\\s]{0,3})` needs the season within 3 characters of one of these words. In 'Semester of instruction: Autumn' the word before the season is 'instruction', and in list values the season comes after other text. In 'Høst f.o.m 2020' the season+year rule does not match, because it needs the year straight after the season.",
+      "suggested_fix": "Make the rule consistent with its own intent. Add the English labels to the lookbehind: `(?<=(?i:semester of (?:instruction|assessment)|semester|undervisning|oppstart|startsemester|eksamen)[:\\s]{0,3})`. Add a test with 'Semester of instruction: Autumn\\nLanguage of instruction: English' expecting 'Semester of instruction:\\nLanguage of instruction: English'. The alternative is a methods.qmd decision: the spec's facts-box row counts semester as plan text, and the plan id already leaves out season words. Under that reading the right fix is to stop removing bare semester values in every language.",
+      "confidence": "medium"
     }
   ]
 }

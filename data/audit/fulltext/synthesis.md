@@ -1,115 +1,167 @@
-# Fulltext audit — synthesis (all institutions)
+# Fulltext audit — synthesis (pilot: 7 institutions)
 
-Run 2026-10-13 on the build of that day (after the plan-id noise fixes).
-18 institutions (Samas has no text by design), one review agent each: Sonnet,
-except NTNU (Opus; its packet is 166 KB). 56 findings, all pass mechanical
-verification. Report: `findings_report.md`. Pilot (uio, nih, steiner,
-2026-09-30): the earlier version of this file in git history.
+Run 2026-10-17 with `--pilot` on the build of commit 7510144 (the 16 pilot
+harvests): ntnu, oslomet, inn, nord, hvl, hivolda, nla. Each packet holds
+only offerings from the institution's pilot sample (`data/pilot/{inst}.csv`,
+all courses, not only teacher education): 28 pages plus up to 5 failed
+fetches. One Sonnet review agent per institution; packets 77–137 KB; every
+agent read all its courses. 29 findings for these 7, all pass mechanical
+verification (0 ✗). The other 11 institutions' findings in
+`findings_report.md` are from the full run of 2026-10-13 (its synthesis is
+in git history, 07bec1c).
 
 ## Summary
 
-- Where a page holds the plan, extraction is faithful at every institution:
-  the whole plan, the facts box, readable structure, and no site chrome. The
-  uncaptured page text is what the configuration leaves out on purpose (year
-  pickers, staff boxes, exam dates and rooms, banners).
-- **Spring offerings get the next academic year's plan at NTNU, HVL and
-  OsloMet** (verified on the whole data, not only the packets). Their URL
-  holds the start year of an academic year (`/{CODE}/2025` is 2025/26), and
-  the URL builders put DBH's `Årstall` in it for every semester. So spring
-  2025 (academic year 2024/25) reads the 2025/26 plan. NTNU: no spring page
-  shows its own term as "Undervisningsstart"; 534 show "Vår Y+1". HVL: all
-  1,556 spring pages say "Emneplan for studieåret Y/Y+1". OsloMet: all 796
-  spring pages show study year Y/Y+1. NLA, Nord and the current-only sites
-  already give an offering its own academic year's plan.
-- **1,681 NTNU offerings (150 codes, the MGLU primary teacher courses with a
-  "-A" code, 2017-2025) have no page:** the URL keeps the "-A" suffix, which
-  the site does not know ("No course ..."). Without the suffix the page
-  exists (agent's check of `MGLU1101/2022`). That is 29 % of NTNU offerings.
-- **Nord shows the current plan for years it has no plan for:** 2,041 pages
-  say "Gjeldende emnebeskrivelse (sist oppdatert YYYY/YY)" instead of
-  "Emnebeskrivelse for YYYY/YY". Where that year is not after the offering's
-  academic year, it is the version in force then. In 814 pages it is 2026/27
-  for an earlier offering (all of 2015-2018, some of 2019-2024): a later
-  version, which the spec says is not the offering's plan (as INN's).
-- The rest is source limits already documented (NLA's JSON holds one academic
-  year, UiS course versions that are no longer online, reading lists only as
-  links) and cosmetic noise.
+- Where a page holds the plan, extraction is faithful at all seven: whole
+  plan, facts box, readable structure, right year. The pages' own faults
+  (a `¿` in the source HTML at NLA, OsloMet and HVL, words run together in
+  NTNU's markup, a lead paragraph Nord's page shows twice) are not
+  extraction faults.
+- **NLA reads one page per course code for every year.**
+  `harvest_json_extract()` fetches the URL of a code's first offering
+  (`distinct(course_code)`) and joins that page to all its offerings, but a
+  page's JSON holds only its own academic year (`/VUNA1AG17/2017-2018` holds
+  `2017-2018` only; on the site `/4POPM101/2025-2026` holds `2025-2026`,
+  while the raw store gives the 2025 offerings the `2019-2020` page). In the
+  sample, 83 of 192 offerings read another year's page, and each of the 20
+  codes without a page was requested for only one of the academic years
+  it is offered in. This explains NLA's `plan` (.67) and part of `fetched` (.79), and
+  the low plan coverage of NLA's 2018–2023 teacher-education build.
+- **English-only courses at HVL and Nord are saved as Norwegian stubs.**
+  The Norwegian page holds a title, credits, programmes and a pointer to
+  the English page ("Dette emnet er kun beskrevet på engelsk. Klikk på
+  "English" …", "Se engelske nettsider for mer informasjon"; Nord: "Emnet
+  foregår på engelsk. Se engelske nettsider ved å velge engelsk språk.").
+  `fetch_html_cols_single_hvl()` follows only the wording "Emnebeskrivelsen
+  finnes kun på engelsk"; Nord has no such rule. The pointer becomes a
+  `course_content` section, so the shell rule keeps the stub as a plan
+  (HVL ADA512, BI4-301, MMO5010, MAS538 spring 2025; Nord BIO5023, BIO5031,
+  BIO5036 2025). The English pages hold the full plan (checked on the site
+  2026-10-17: HVL ADA512 2025, Nord BIO5031 2025).
+- The other high findings are pages the pipeline already gives no plan:
+  facts-box-only pages (shell rule: OsloMet, Nord), INN's "not published
+  yet" pages and catalogue-search pages, OsloMet's error page (anonymizer
+  returns NA) and Nord's current-plan fallback (`page_year`).
 
 ## Cross-institution patterns
 
-1. **URL year is an academic year, not a calendar year** (NTNU, HVL,
-   OsloMet). One fix: the URL year is the offering's academic year
-   (`Årstall - 1` for spring and summer). Most corrected URLs were already
-   fetched for another offering of the same course (autumn Y-1 or spring Y-1
-   fetched `/Y-1`), so `read_harvest()` can give each offering the page of
-   its academic year; the rest need a retry harvest.
-2. **A fallback page stands in for the requested one** (Nord "Gjeldende …
-   2026/27", INN "ikke publisert enda", UiS "no longer available", UiB "Inga
-   emnebeskriving tilgjengeleg"). INN, UiS and UiB already give no plan (INN
-   by its notice; UiS and UiB pages are empty or shells). Nord's needs the
-   same rule, with the offering's year.
-3. **Plan text on another page** (HVL English-only plans, reading lists
-   behind links at HiOF, Volda, MF, NIH, UiT). Only HVL's is plan text the
-   harvest could reach: 92 pages say "Emnebeskrivelsen finnes kun på engelsk"
-   and link `/en/studies-at-hvl/study-programmes/courses/{year}/{CODE}`.
-4. **Site boilerplate in `extracted_text` that the anonymizer already
-   removes** (UiO exam links, MF library notice, USN Leganto labels, OsloMet
-   ";" artifacts, INN's search page): not in `course_plan`; no action.
+1. **A pointer to the English page instead of the plan** (HVL, Nord): one
+   fix per site in the fetch function — on the notice, fetch the English
+   URL (HVL: `/en/studies-at-hvl/study-programmes/courses/`, as the
+   existing rule does; Nord: the page's `hreflang="en"` link,
+   `/en/studies/courses/{code}?semester=…&year=…`). Both need new fetches,
+   so the full harvest would save a stub for every English-only course
+   without it.
+2. **Reading lists only as a link** (hivolda, HVL, NLA from 2022, OsloMet):
+   the list is on another page (Leganto or the site's own Pensum page). By
+   the spec the pointer is not a section; a source limit, as at MF.
+3. **Link labels and banners left in `course_plan`** (OsloMet "Pensum" /
+   "Timeplan", Nord "… finner du her.", INN "Statusmelding"): page chrome
+   by the spec; each one `exclude` or `post_fn` rule.
 
 ## Prioritised fix list
 
-1. **Academic-year URLs (NTNU, HVL, OsloMet)** — `add_course_url_ntnu()`,
-   `add_course_url_hvl()`, `add_course_url_oslomet()` in
-   `R/add_course_url.R`; `read_harvest()` in `R/pipeline.R` matches pages to
-   offerings by course and academic year (the year in the fetched URL). About
-   4,000 spring and summer offerings change plan; spring Y and autumn Y-1
-   share one page. Examples: `ntnu_MGLU4213-1_2023_spring_1`,
-   `hvl_MGBKØ401-1_2025_spring_1`, `oslomet_M1GSF2110-1_2022_spring_2`.
-   Needs a `methods.qmd` entry.
-2. **NTNU "-A" codes** — `add_course_url_ntnu()` drops the suffix; then
-   `harvest_all(institutions = "ntnu", retry = TRUE)` (robots.txt: 10 s per
-   request, about 1,200 pages). Example: `ntnu_MGLU4106-A_2022_spring_1`.
-3. **Nord later versions** — an offering whose page says "Gjeldende
-   emnebeskrivelse (sist oppdatert YYYY/YY)" with YYYY after its academic
-   year gets no plan (814 pages; `nord_SP154L-1_2018_autumn_3`). Needs a
-   `methods.qmd` entry like INN's.
-4. **HVL English-only plans** — fetch the English URL for pages with the
-   "finnes kun på engelsk" notice (92 pages, about 86 offerings without a
-   plan; `hvl_MGBPE201E-1_2024_spring_1`).
-5. **UiB "Feil i visning av emnebeskrivelse"** — 30 pages with the site's
-   error banner and no plan; a retry harvest may recover them
-   (`uib_TYS307L-0_2017_spring_2`).
-6. Low: NMBU facts labels glued to values ("Studiepoeng:10") and the KI link
-   label "Her finner du KI-kategoriene beskrevet."; UiT literal tags and
-   entities in two old pages (`uit_LRU-1270-1_2011_spring_1`); OsloMet
-   M5GMT3100 2020 wall of text; Steiner page-number lines (known, 2026-09).
+Must be fixed before the full harvest (new fetches):
 
-## Changes since the previous run (pilot: uio, nih, steiner)
+1. **NLA, `harvest_json_extract()` (`R/harvest_strategies.R`)**: fetch one
+   page per distinct URL (course code × academic year), not per course
+   code, and join each offering to the page of its own year. Examples:
+   `nla_VUNA1AG17-1_2022_autumn_3`, `nla_4POPM101-1_2025_autumn_1`,
+   `nla_IKF305-1_2022_spring_1`. Expected: `plan` and `fetched` up by the
+   12 course-years that read another year's page, and the 404 codes
+   requested for their other year.
+2. **HVL, `fetch_html_cols_single_hvl()` (`R/fetch_html_cols.R`)**: follow
+   the English page on every wording of the notice ("kun beskrevet på
+   engelsk", "Dette emner er kun beskrevet", "berre skildra på engelsk",
+   "Se engelske nettsider"). Examples: `hvl_ADA512-1_2025_autumn_1`,
+   `hvl_MMO5010-1_2025_autumn_1`. 8 short plans with the notice in the
+   current build.
+3. **Nord, fetch**: the same for "Emnet foregår på engelsk. Se engelske
+   nettsider", via the page's English link. Examples:
+   `nord_BIO5031-1_2025_autumn_2`, `nord_BIO5023-1_2025_autumn_1`.
 
-- Fixed: UiO's exam-link block no longer reaches `course_plan`
-  (`.anon_uio()`); it is still in `extracted_text`, which is not published.
-- Persisting: NIH's 404s (data notes: semester pages), Steiner's
-  PEL2 → PEL1.4/1.5 mapping (deliberate) and page numbers.
-- New: everything above for the 15 institutions not piloted.
+Rebuild only (low):
+
+4. **OsloMet `exclude`**: the "Pensum" / "Timeplan" link labels with their
+   semester (1,575 of 1,841 plans in the build). `oslomet_VESK6300-1_2025_spring_1`.
+5. **Nord `exclude`**: the site-wide link labels "Praktisk informasjon og
+   retningslinjer for eksamen.", "Generell informasjon om hjelpemidler til
+   eksamen finner du her.", "Informasjon om ChatGPT/kunstig intelligens mm.
+   finner du her." (101 plans). `nord_IDR1037-1_2025_spring_1`.
+6. **INN `exclude` or `.anon_inn()`**: the status banner ("Statusmelding",
+   "Kun tilgjengelig på engelsk"; 26 plans). `inn_SYD2009-1_2023_autumn_2`.
 
 ## Rejected findings
 
-- **NLA "86 % empty, year lookup may fail"**: each page's JSON holds one
-  academic year (880 pages 2025-2026, 656 2024-2025, …); the requested year is
-  present for exactly the 249 offerings that have text. Documented in the data
-  notes.
-- **INN wrong page and wrong year**: the course-search page and the
-  "ikke publisert enda" later version already give no plan (`.anon_inn()`).
-- **UiS empty texts**: the pages say "This course version is no longer
-  available as a current course description"; empty is right.
-- **MF, NMBU wrong year**: current-only sites; the offering gets the harvest
-  of its academic year by design.
-- **UiA 2023 autumn and UiB "Inga emnebeskriving" stubs, Nord's "Dette faget
-  har ikke hatt undervisning" pages, HVL's English stubs**: the shell rule
-  already gives them no plan (UiB 72 pages, 0 plans; HVL 6 of 92 keep a plan).
-- **HiOF and NIH 404s**: semester-specific pages; the other semester has no
-  page (data notes, "Semester registration in DBH").
-- **Steiner M-PEL2.1 wrong page**: deliberate mapping
-  (`.steiner_remap_pel_emne()`).
-- **Reading lists behind links, UiB exam logistics**: source limits or out of
-  scope by the spec.
+- oslomet `whole_text/empty_or_failed` (high): the facts-box-only pages
+  already get no plan (shell rule; FK2200, ARKROM6100, IFHH3400 have no
+  `plan_content_id`). Its "spring 2025 → /2024/HØST" is right: `/2024/HØST`
+  is study year 2024/25.
+- oslomet `whole_text/wrong_page` (high): FADUFA's error page gets no plan
+  (`.anon_oslomet()` returns NA).
+- inn `whole_text/wrong_page` and `whole_text/wrong_year` (high): both get
+  no plan (`.anon_inn()` returns NA). The catalogue redirects codes it does
+  not know to its search (`title_search=HELS3001`, `1AKT01`; checked on the
+  site): a site limit.
+- nord `whole_text/empty_or_failed` (high): facts-box-only pages get no plan
+  (shell rule), except the English stubs, which are fix 3.
+- nord `whole_text/wrong_year` (medium): `page_year` gives RET1002, RE214E
+  and MFL240 2019 no plan.
+- nord `course_content/duplicate_content`: the page itself holds the
+  paragraph twice (short introduction and description field).
+- nord `page_chrome/junk_included`, the overlap sentence: the spec counts
+  the credit-overlap stock text as plan text (kept, left out of the plan
+  id). The link labels in the same finding are fix 5.
+- nord ØKO110FU 404: one discontinued 2019 offering, the only non-ASCII code
+  in the build.
+- ntnu `course_content/other` (medium): "Det tilbys ikke lenger
+  undervisning" is out by the spec ("Emnet tilbys ikke 2025/2026"); SMF1081
+  gets no plan, RAD6020 and SYT6020 keep full plans.
+- ntnu `assessment/missing_content`: exam dates, times and rooms are out by
+  the spec.
+- ntnu `whole_text/junk_included`: "course-details-portlet" is in no
+  `course_plan` (0 of 5,538).
+- ntnu `learning_outcomes/formatting`, `metadata/formatting`: the page's own
+  markup ("KunnskaperStudenten har-" is in the HTML); the overlap table is
+  not plan text.
+- ntnu `PHMT/AVHANDL`: a PhD thesis code; both URL forms 404. NTNU's 543
+  DBH codes with a slash are pre-2007 codes and thesis registrations.
+- hvl `course_content/duplicate_content`, `whole_text/formatting`; nla
+  `whole_text/formatting`, `course_content/formatting`; oslomet
+  `course_content/formatting`: the `¿` and repeated headings are in the
+  source HTML (139 NLA, 174 OsloMet, 23 HVL pages).
+- Reading-list findings (hivolda, hvl, nla, oslomet): a source limit
+  (pattern 2), no fix.
+
+## Verdict (`--pilot`, fulltext: `fetched`, `plan`)
+
+| inst | fetched | plan | verdict |
+|---|---|---|---|
+| ntnu | .79 (n 100) ⚑ | .79 ⚑ | ready with known limits |
+| oslomet | 1.00 | .93 | ready |
+| inn | 1.00 | .59 ⚑ | ready with known limits |
+| nord | .99 | .82 | not ready |
+| hvl | .79 ⚑ | .79 ⚑ | not ready |
+| hivolda | .77 ⚑ | .77 ⚑ | ready with known limits |
+| nla | .79 ⚑ | .67 ⚑ | not ready |
+
+- **ntnu — ready with known limits.** `fetched`/`plan` .79 < .80 (21
+  course-years): 15 spring/summer 2007 offerings read 2006/07, which the
+  site does not have; 5 shells of courses not taught that year; 1 PhD
+  thesis code without a page. No confirmed high finding.
+- **oslomet — ready.** No flag; no confirmed high finding.
+- **inn — ready with known limits.** `plan` .59 < .80 (41 course-years):
+  25 show only a later version ("Emnebeskrivelsen for valgt semester er
+  ikke publisert enda"), 16 are codes the catalogue does not know (search
+  page). Both already get no plan.
+- **nord — not ready.** English-only courses are saved as Norwegian stubs
+  and kept as plans (fix 3, a fetch fix).
+- **hvl — not ready.** The English-page rule misses most wordings of the
+  notice (fix 2, a fetch fix). `fetched`/`plan` .79: 20 soft 404s ("Vi
+  kunne ikkje finne emnet") for PhD, test, practicum and continuing
+  education codes the site has no page for — a known limit once fix 2 is in.
+- **hivolda — ready with known limits.** `fetched`/`plan` .77 < .80 (23
+  course-years without a URL): 12 in 2016 (the course pages list no 2016
+  version), 5 codes without a page, 6 with no version for that semester.
+- **nla — not ready.** One page per course code for all years (fix 1, a
+  fetch fix); it causes most of `plan` .67 and part of `fetched` .79.
