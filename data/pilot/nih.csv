@@ -1,0 +1,191 @@
+"institution","course_id","course_code_raw","year","semester_name","department_name","level","language","dbh_snapshot","seed"
+"nih","nih_EXFLL2-1_2021_autumn_1","EXFLL2-1",2021,"Høst","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_EXFLL2-1_2021_spring_1","EXFLL2-1",2021,"Vår","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_EXFLL3-1_2021_autumn_1","EXFLL3-1",2021,"Høst","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_EXFLL3-1_2021_spring_1","EXFLL3-1",2021,"Vår","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_FAF314-1_2021_autumn_1","FAF314-1",2021,"Høst","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_FAF314-1_2021_spring_1","FAF314-1",2021,"Vår","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_FAH333-1_2021_autumn_1","FAH333-1",2021,"Høst","Institutt for idrettsmedisinske fag","lower","other","2026-10-16",42
+"nih","nih_FAH333-1_2021_spring_1","FAH333-1",2021,"Vår","Institutt for idrettsmedisinske fag","lower","other","2026-10-16",42
+"nih","nih_FAH380-1_2021_autumn_1","FAH380-1",2021,"Høst","Institutt for idrettsmedisinske fag","lower","other","2026-10-16",42
+"nih","nih_FAH380-1_2021_spring_1","FAH380-1",2021,"Vår","Institutt for idrettsmedisinske fag","lower","other","2026-10-16",42
+"nih","nih_FIT909-1_2021_autumn_1","FIT909-1",2021,"Høst","Institutt for idrettsmedisinske fag","lower","other","2026-10-16",42
+"nih","nih_FIT909-1_2021_spring_1","FIT909-1",2021,"Vår","Institutt for idrettsmedisinske fag","lower","other","2026-10-16",42
+"nih","nih_FIT999-1_2021_autumn_1","FIT999-1",2021,"Høst","Institutt for idrettsmedisinske fag","lower","other","2026-10-16",42
+"nih","nih_FIT999-1_2021_spring_1","FIT999-1",2021,"Vår","Institutt for idrettsmedisinske fag","lower","other","2026-10-16",42
+"nih","nih_FKI216-2_2021_autumn_1","FKI216-2",2021,"Høst","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_FKI216-2_2021_spring_1","FKI216-2",2021,"Vår","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_FKI226-1_2021_autumn_1","FKI226-1",2021,"Høst","Institutt for fysisk prestasjonsevne","lower","other","2026-10-16",42
+"nih","nih_FKI226-1_2021_spring_1","FKI226-1",2021,"Vår","Institutt for fysisk prestasjonsevne","lower","other","2026-10-16",42
+"nih","nih_FKI261-1_2021_autumn_1","FKI261-1",2021,"Høst","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_FKI261-1_2021_spring_1","FKI261-1",2021,"Vår","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_FKI316-1_2021_autumn_1","FKI316-1",2021,"Høst","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_FKI316-1_2021_spring_1","FKI316-1",2021,"Vår","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_FKI370-1_2021_autumn_1","FKI370-1",2021,"Høst","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_FKI370-1_2021_spring_1","FKI370-1",2021,"Vår","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_FLD222-1_2021_autumn_1","FLD222-1",2021,"Høst","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_FLD222-1_2021_spring_1","FLD222-1",2021,"Vår","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_FRI300-1_2021_autumn_1","FRI300-1",2021,"Høst","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_FRI300-1_2021_spring_1","FRI300-1",2021,"Vår","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_IDR105-1_2021_autumn_1","IDR105-1",2021,"Høst","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_IDR105-1_2021_spring_1","IDR105-1",2021,"Vår","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_IDR110-1_2021_autumn_1","IDR110-1",2021,"Høst","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_IDR110-1_2021_spring_1","IDR110-1",2021,"Vår","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_INTFL1-1_2021_autumn_1","INTFL1-1",2021,"Høst","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_INTFL1-1_2021_spring_1","INTFL1-1",2021,"Vår","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_LKI105-1_2021_autumn_2","LKI105-1",2021,"Høst","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_MA410-1_2021_autumn_3","MA410-1",2021,"Høst","Institutt for fysisk prestasjonsevne","higher","other","2026-10-16",42
+"nih","nih_MA410-1_2021_spring_3","MA410-1",2021,"Vår","Institutt for fysisk prestasjonsevne","higher","other","2026-10-16",42
+"nih","nih_MA412-1_2021_autumn_1","MA412-1",2021,"Høst","Institutt for fysisk prestasjonsevne","higher","other","2026-10-16",42
+"nih","nih_MA412-1_2021_spring_1","MA412-1",2021,"Vår","Institutt for fysisk prestasjonsevne","higher","other","2026-10-16",42
+"nih","nih_MAS600-1_2021_autumn_1","MAS600-1",2021,"Høst","Institutt for idrett og samfunnsvitenskap","higher","other","2026-10-16",42
+"nih","nih_MAS600-1_2021_spring_1","MAS600-1",2021,"Vår","Institutt for idrett og samfunnsvitenskap","higher","other","2026-10-16",42
+"nih","nih_MET200-1_2021_autumn_1","MET200-1",2021,"Høst","Institutt for idrettsmedisinske fag","lower","other","2026-10-16",42
+"nih","nih_MET200-1_2021_spring_1","MET200-1",2021,"Vår","Institutt for idrettsmedisinske fag","lower","other","2026-10-16",42
+"nih","nih_PHD610-1_2021_autumn_1","PHD610-1",2021,"Høst","NIH (uspesifisert underenhet)","phd","other","2026-10-16",42
+"nih","nih_PHD610-1_2021_spring_1","PHD610-1",2021,"Vår","NIH (uspesifisert underenhet)","phd","other","2026-10-16",42
+"nih","nih_PHD641-1_2021_autumn_1","PHD641-1",2021,"Høst","NIH (uspesifisert underenhet)","phd","other","2026-10-16",42
+"nih","nih_PHD641-1_2021_spring_1","PHD641-1",2021,"Vår","NIH (uspesifisert underenhet)","phd","other","2026-10-16",42
+"nih","nih_PHD646-1_2021_autumn_1","PHD646-1",2021,"Høst","NIH (uspesifisert underenhet)","phd","other","2026-10-16",42
+"nih","nih_PHD646-1_2021_spring_1","PHD646-1",2021,"Vår","NIH (uspesifisert underenhet)","phd","other","2026-10-16",42
+"nih","nih_SPM216-1_2021_autumn_1","SPM216-1",2021,"Høst","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_SPM216-1_2021_spring_1","SPM216-1",2021,"Vår","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_TCI331-1_2021_autumn_1","TCI331-1",2021,"Høst","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_TCI331-1_2021_spring_1","TCI331-1",2021,"Vår","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_TCI355-1_2021_autumn_1","TCI355-1",2021,"Høst","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_TCI355-1_2021_spring_1","TCI355-1",2021,"Vår","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_THP100-1_2021_autumn_1","THP100-1",2021,"Høst","Institutt for fysisk prestasjonsevne","lower","other","2026-10-16",42
+"nih","nih_THP100-1_2021_spring_1","THP100-1",2021,"Vår","Institutt for fysisk prestasjonsevne","lower","other","2026-10-16",42
+"nih","nih_THP201-1_2021_autumn_1","THP201-1",2021,"Høst","Institutt for idrettsmedisinske fag","lower","other","2026-10-16",42
+"nih","nih_THP201-1_2021_spring_1","THP201-1",2021,"Vår","Institutt for idrettsmedisinske fag","lower","other","2026-10-16",42
+"nih","nih_THP309-1_2021_autumn_1","THP309-1",2021,"Høst","Institutt for idrettsmedisinske fag","lower","other","2026-10-16",42
+"nih","nih_THP309-1_2021_spring_2","THP309-1",2021,"Vår","Institutt for idrettsmedisinske fag","lower","other","2026-10-16",42
+"nih","nih_TI201-1_2021_autumn_1","TI201-1",2021,"Høst","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_TI201-1_2021_spring_1","TI201-1",2021,"Vår","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_TI205-1_2021_autumn_1","TI205-1",2021,"Høst","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_TI205-1_2021_spring_1","TI205-1",2021,"Vår","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_FKI216-1_2022_autumn_1","FKI216-1",2022,"Høst","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_FKI216-1_2022_spring_1","FKI216-1",2022,"Vår","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_FRI200-1_2022_autumn_1","FRI200-1",2022,"Høst","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_FRI200-1_2022_spring_1","FRI200-1",2022,"Vår","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_FRI202-1_2022_autumn_1","FRI202-1",2022,"Høst","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_FRI202-1_2022_spring_1","FRI202-1",2022,"Vår","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_FRI301-1_2022_autumn_1","FRI301-1",2022,"Høst","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_FRI301-1_2022_spring_1","FRI301-1",2022,"Vår","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_KRØ100-1_2022_autumn_1","KRØ100-1",2022,"Høst","Institutt for lærerutdanning og friluftslivsstudier","continuing","other","2026-10-16",42
+"nih","nih_KRØ100-1_2022_spring_2","KRØ100-1",2022,"Vår","Institutt for lærerutdanning og friluftslivsstudier","continuing","other","2026-10-16",42
+"nih","nih_KRØ101-1_2022_autumn_2","KRØ101-1",2022,"Høst","Institutt for lærerutdanning og friluftslivsstudier","continuing","other","2026-10-16",42
+"nih","nih_LKI105-1_2022_autumn_1","LKI105-1",2022,"Høst","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_LKI105-1_2022_spring_1","LKI105-1",2022,"Vår","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_LKI225-1_2022_autumn_2","LKI225-1",2022,"Høst","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_LKI226-1_2022_autumn_2","LKI226-1",2022,"Høst","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_MA430-1_2022_autumn_1","MA430-1",2022,"Høst","Institutt for lærerutdanning og friluftslivsstudier","higher","other","2026-10-16",42
+"nih","nih_MA430-1_2022_spring_1","MA430-1",2022,"Vår","Institutt for lærerutdanning og friluftslivsstudier","higher","other","2026-10-16",42
+"nih","nih_MA450-1_2022_autumn_2","MA450-1",2022,"Høst","Institutt for idrettsmedisinske fag","higher","other","2026-10-16",42
+"nih","nih_MA460-1_2022_autumn_2","MA460-1",2022,"Høst","Institutt for fysisk prestasjonsevne","higher","other","2026-10-16",42
+"nih","nih_MAS- ESSAY-1_2022_autumn_1","MAS- ESSAY-1",2022,"Høst","NIH (uspesifisert underenhet)","higher","other","2026-10-16",42
+"nih","nih_MAS- ESSAY-1_2022_spring_1","MAS- ESSAY-1",2022,"Vår","NIH (uspesifisert underenhet)","higher","other","2026-10-16",42
+"nih","nih_MAS412-1_2022_autumn_2","MAS412-1",2022,"Høst","NIH (uspesifisert underenhet)","lower","other","2026-10-16",42
+"nih","nih_MAS448-1_2022_autumn_1","MAS448-1",2022,"Høst","Institutt for lærerutdanning og friluftslivsstudier","higher","other","2026-10-16",42
+"nih","nih_MAS448-1_2022_spring_1","MAS448-1",2022,"Vår","Institutt for lærerutdanning og friluftslivsstudier","higher","other","2026-10-16",42
+"nih","nih_MAS510-2_2022_autumn_1","MAS510-2",2022,"Høst","Institutt for idrettsmedisinske fag","higher","other","2026-10-16",42
+"nih","nih_MAS510-2_2022_spring_1","MAS510-2",2022,"Vår","Institutt for idrettsmedisinske fag","higher","other","2026-10-16",42
+"nih","nih_MET410-1_2022_autumn_1","MET410-1",2022,"Høst","Institutt for idrett og samfunnsvitenskap","higher","other","2026-10-16",42
+"nih","nih_MET410-1_2022_spring_1","MET410-1",2022,"Vår","Institutt for idrett og samfunnsvitenskap","higher","other","2026-10-16",42
+"nih","nih_MET420-1_2022_autumn_1","MET420-1",2022,"Høst","Institutt for idrettsmedisinske fag","higher","other","2026-10-16",42
+"nih","nih_MET420-1_2022_spring_1","MET420-1",2022,"Vår","Institutt for idrettsmedisinske fag","higher","other","2026-10-16",42
+"nih","nih_PHD610-1_2022_autumn_1","PHD610-1",2022,"Høst","NIH (uspesifisert underenhet)","phd","other","2026-10-16",42
+"nih","nih_PHD610-1_2022_spring_1","PHD610-1",2022,"Vår","NIH (uspesifisert underenhet)","phd","other","2026-10-16",42
+"nih","nih_PHD620-1_2022_autumn_1","PHD620-1",2022,"Høst","NIH (uspesifisert underenhet)","phd","other","2026-10-16",42
+"nih","nih_PHD620-1_2022_spring_1","PHD620-1",2022,"Vår","NIH (uspesifisert underenhet)","phd","other","2026-10-16",42
+"nih","nih_PPU401-1_2022_autumn_1","PPU401-1",2022,"Høst","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_PPU401-1_2022_spring_1","PPU401-1",2022,"Vår","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_PPU404-1_2022_autumn_1","PPU404-1",2022,"Høst","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_PPU404-1_2022_spring_2","PPU404-1",2022,"Vår","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_SPM226-1_2022_spring_3","SPM226-1",2022,"Vår","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_SPM228-1_2022_autumn_1","SPM228-1",2022,"Høst","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_SPM228-1_2022_spring_1","SPM228-1",2022,"Vår","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_SPM231-1_2022_autumn_1","SPM231-1",2022,"Høst","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_SPM231-1_2022_spring_1","SPM231-1",2022,"Vår","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_THP100-1_2022_autumn_1","THP100-1",2022,"Høst","Institutt for fysisk prestasjonsevne","lower","other","2026-10-16",42
+"nih","nih_THP100-1_2022_spring_1","THP100-1",2022,"Vår","Institutt for fysisk prestasjonsevne","lower","other","2026-10-16",42
+"nih","nih_THP205-1_2022_autumn_1","THP205-1",2022,"Høst","Institutt for idrettsmedisinske fag","lower","other","2026-10-16",42
+"nih","nih_THP205-1_2022_spring_1","THP205-1",2022,"Vår","Institutt for idrettsmedisinske fag","lower","other","2026-10-16",42
+"nih","nih_THP300-1_2022_autumn_1","THP300-1",2022,"Høst","Institutt for fysisk prestasjonsevne","lower","other","2026-10-16",42
+"nih","nih_THP300-1_2022_spring_1","THP300-1",2022,"Vår","Institutt for fysisk prestasjonsevne","lower","other","2026-10-16",42
+"nih","nih_TI200-1_2022_autumn_1","TI200-1",2022,"Høst","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_TI200-1_2022_spring_1","TI200-1",2022,"Vår","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_TI202-1_2022_autumn_1","TI202-1",2022,"Høst","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_TI202-1_2022_spring_1","TI202-1",2022,"Vår","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_TI303-1_2022_autumn_1","TI303-1",2022,"Høst","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_TI303-1_2022_spring_1","TI303-1",2022,"Vår","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_TREN201-1_2022_autumn_1","TREN201-1",2022,"Høst","Institutt for fysisk prestasjonsevne","lower","other","2026-10-16",42
+"nih","nih_TREN201-1_2022_spring_1","TREN201-1",2022,"Vår","Institutt for fysisk prestasjonsevne","lower","other","2026-10-16",42
+"nih","nih_UTV-ESSAY-1_2022_autumn_1","UTV-ESSAY-1",2022,"Høst","NIH (uspesifisert underenhet)","lower","other","2026-10-16",42
+"nih","nih_UTV-ESSAY-1_2022_spring_1","UTV-ESSAY-1",2022,"Vår","NIH (uspesifisert underenhet)","lower","other","2026-10-16",42
+"nih","nih_FAF312-1_2025_autumn_1","FAF312-1",2025,"Høst","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_FAF312-1_2025_spring_1","FAF312-1",2025,"Vår","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_FRI304-1_2025_autumn_1","FRI304-1",2025,"Høst","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_FRI304-1_2025_spring_1","FRI304-1",2025,"Vår","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_IDR109-1_2025_autumn_1","IDR109-1",2025,"Høst","Institutt for fysisk prestasjonsevne","lower","other","2026-10-16",42
+"nih","nih_IDR109-1_2025_spring_1","IDR109-1",2025,"Vår","Institutt for fysisk prestasjonsevne","lower","other","2026-10-16",42
+"nih","nih_IDR113-1_2025_autumn_1","IDR113-1",2025,"Høst","Institutt for fysisk prestasjonsevne","lower","other","2026-10-16",42
+"nih","nih_IDR113-1_2025_spring_1","IDR113-1",2025,"Vår","Institutt for fysisk prestasjonsevne","lower","other","2026-10-16",42
+"nih","nih_IIS360-1_2025_autumn_1","IIS360-1",2025,"Høst","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_IIS360-1_2025_spring_1","IIS360-1",2025,"Vår","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_IIS365-1_2025_autumn_1","IIS365-1",2025,"Høst","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_IIS365-1_2025_spring_1","IIS365-1",2025,"Vår","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_IKU201-1_2025_autumn_1","IKU201-1",2025,"Høst","Institutt for idrett og samfunnsvitenskap","lower","english","2026-10-16",42
+"nih","nih_IKU201-1_2025_spring_1","IKU201-1",2025,"Vår","Institutt for idrett og samfunnsvitenskap","lower","english","2026-10-16",42
+"nih","nih_IKU220-2_2025_autumn_1","IKU220-2",2025,"Høst","Institutt for idrett og samfunnsvitenskap","lower","english","2026-10-16",42
+"nih","nih_KRØ100-1_2025_autumn_3","KRØ100-1",2025,"Høst","Institutt for lærerutdanning og friluftslivsstudier","continuing","other","2026-10-16",42
+"nih","nih_KRØ100-1_2025_spring_1","KRØ100-1",2025,"Vår","Institutt for lærerutdanning og friluftslivsstudier","continuing","other","2026-10-16",42
+"nih","nih_KRØ100-2_2025_autumn_1","KRØ100-2",2025,"Høst","Institutt for lærerutdanning og friluftslivsstudier","continuing","other","2026-10-16",42
+"nih","nih_KRØ100-2_2025_spring_2","KRØ100-2",2025,"Vår","Institutt for lærerutdanning og friluftslivsstudier","continuing","other","2026-10-16",42
+"nih","nih_KRØ104-1_2025_autumn_1","KRØ104-1",2025,"Høst","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_KRØ104-1_2025_spring_1","KRØ104-1",2025,"Vår","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_LKI205-1_2025_autumn_1","LKI205-1",2025,"Høst","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_LKI205-1_2025_spring_1","LKI205-1",2025,"Vår","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_LKI400-1_2025_autumn_1","LKI400-1",2025,"Høst","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_LKI400-1_2025_spring_1","LKI400-1",2025,"Vår","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_LKI405-1_2025_autumn_1","LKI405-1",2025,"Høst","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_LKI405-1_2025_spring_2","LKI405-1",2025,"Vår","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_MA460-1_2025_autumn_1","MA460-1",2025,"Høst","Institutt for fysisk prestasjonsevne","higher","english","2026-10-16",42
+"nih","nih_MA460-1_2025_spring_1","MA460-1",2025,"Vår","Institutt for fysisk prestasjonsevne","higher","english","2026-10-16",42
+"nih","nih_MA490-1_2025_autumn_1","MA490-1",2025,"Høst","Institutt for idrett og samfunnsvitenskap","continuing","other","2026-10-16",42
+"nih","nih_MA490-1_2025_spring_2","MA490-1",2025,"Vår","Institutt for idrett og samfunnsvitenskap","continuing","other","2026-10-16",42
+"nih","nih_MA500-1_2025_autumn_1","MA500-1",2025,"Høst","Master i idrettsvitenskap","higher","other","2026-10-16",42
+"nih","nih_MA500-1_2025_spring_1","MA500-1",2025,"Vår","Master i idrettsvitenskap","higher","other","2026-10-16",42
+"nih","nih_MA531-1_2025_autumn_1","MA531-1",2025,"Høst","Institutt for idrettsmedisinske fag","higher","english","2026-10-16",42
+"nih","nih_MA531-1_2025_spring_1","MA531-1",2025,"Vår","Institutt for idrettsmedisinske fag","higher","english","2026-10-16",42
+"nih","nih_MAS412-1_2025_autumn_1","MAS412-1",2025,"Høst","NIH (uspesifisert underenhet)","lower","english","2026-10-16",42
+"nih","nih_MAS412-1_2025_spring_1","MAS412-1",2025,"Vår","NIH (uspesifisert underenhet)","lower","english","2026-10-16",42
+"nih","nih_MAS449-1_2025_autumn_1","MAS449-1",2025,"Høst","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_MAS449-1_2025_spring_1","MAS449-1",2025,"Vår","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_MAS455-2_2025_autumn_1","MAS455-2",2025,"Høst","Institutt for fysisk prestasjonsevne","higher","english","2026-10-16",42
+"nih","nih_MAS455-2_2025_spring_1","MAS455-2",2025,"Vår","Institutt for fysisk prestasjonsevne","higher","english","2026-10-16",42
+"nih","nih_MET402-1_2025_autumn_1","MET402-1",2025,"Høst","Institutt for idrett og samfunnsvitenskap","higher","other","2026-10-16",42
+"nih","nih_MET402-1_2025_spring_1","MET402-1",2025,"Vår","Institutt for idrett og samfunnsvitenskap","higher","other","2026-10-16",42
+"nih","nih_MET415-1_2025_autumn_1","MET415-1",2025,"Høst","Institutt for fysisk prestasjonsevne","higher","other","2026-10-16",42
+"nih","nih_MET415-1_2025_spring_1","MET415-1",2025,"Vår","Institutt for fysisk prestasjonsevne","higher","other","2026-10-16",42
+"nih","nih_NOFRI104-1_2025_spring_1","NOFRI104-1",2025,"Vår","NIH (uspesifisert underenhet)","higher","other","2026-10-16",42
+"nih","nih_PPU405-1_2025_autumn_1","PPU405-1",2025,"Høst","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_PPU405-1_2025_spring_1","PPU405-1",2025,"Vår","Institutt for lærerutdanning og friluftslivsstudier","lower","other","2026-10-16",42
+"nih","nih_SPM104-2_2025_autumn_1","SPM104-2",2025,"Høst","Institutt for idrett og samfunnsvitenskap","lower","english","2026-10-16",42
+"nih","nih_SPM104-2_2025_spring_2","SPM104-2",2025,"Vår","Institutt for idrett og samfunnsvitenskap","lower","english","2026-10-16",42
+"nih","nih_SPM325-2_2025_autumn_1","SPM325-2",2025,"Høst","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_SPM325-2_2025_spring_1","SPM325-2",2025,"Vår","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_SPM375-1_2025_autumn_1","SPM375-1",2025,"Høst","Institutt for idrett og samfunnsvitenskap","lower","english","2026-10-16",42
+"nih","nih_SPM375-1_2025_spring_1","SPM375-1",2025,"Vår","Institutt for idrett og samfunnsvitenskap","lower","english","2026-10-16",42
+"nih","nih_THP204-1_2025_autumn_1","THP204-1",2025,"Høst","Institutt for fysisk prestasjonsevne","lower","other","2026-10-16",42
+"nih","nih_THP204-1_2025_spring_1","THP204-1",2025,"Vår","Institutt for fysisk prestasjonsevne","lower","other","2026-10-16",42
+"nih","nih_THP307-1_2025_autumn_1","THP307-1",2025,"Høst","Institutt for fysisk prestasjonsevne","lower","other","2026-10-16",42
+"nih","nih_THP307-1_2025_spring_1","THP307-1",2025,"Vår","Institutt for fysisk prestasjonsevne","lower","other","2026-10-16",42
+"nih","nih_THP311-1_2025_autumn_1","THP311-1",2025,"Høst","Institutt for idrettsmedisinske fag","lower","other","2026-10-16",42
+"nih","nih_THP311-1_2025_spring_1","THP311-1",2025,"Vår","Institutt for idrettsmedisinske fag","lower","other","2026-10-16",42
+"nih","nih_THP320-1_2025_autumn_1","THP320-1",2025,"Høst","Institutt for fysisk prestasjonsevne","lower","english","2026-10-16",42
+"nih","nih_THP320-1_2025_spring_1","THP320-1",2025,"Vår","Institutt for fysisk prestasjonsevne","lower","english","2026-10-16",42
+"nih","nih_TI300-1_2025_autumn_1","TI300-1",2025,"Høst","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_TI300-1_2025_spring_1","TI300-1",2025,"Vår","Institutt for idrett og samfunnsvitenskap","lower","other","2026-10-16",42
+"nih","nih_TI308-1_2025_autumn_1","TI308-1",2025,"Høst","Institutt for idrett og samfunnsvitenskap","lower","english","2026-10-16",42
+"nih","nih_TI308-1_2025_spring_1","TI308-1",2025,"Vår","Institutt for idrett og samfunnsvitenskap","lower","english","2026-10-16",42

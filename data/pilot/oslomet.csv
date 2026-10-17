@@ -1,0 +1,190 @@
+"institution","course_id","course_code_raw","year","semester_name","department_name","level","language","dbh_snapshot","seed"
+"oslomet","oslomet_BAPD2310-1_2018_autumn_1","BAPD2310-1",2018,"Høst","Institutt for produktdesign","lower","other","2026-10-16",42
+"oslomet","oslomet_BAPD2310-1_2018_spring_1","BAPD2310-1",2018,"Vår","Institutt for produktdesign","lower","other","2026-10-16",42
+"oslomet","oslomet_CORO7100-2_2018_autumn_1","CORO7100-2",2018,"Høst","Institutt for yrkesfaglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_CORO7100-2_2018_spring_1","CORO7100-2",2018,"Vår","Institutt for yrkesfaglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_DAVE3700-1_2018_autumn_1","DAVE3700-1",2018,"Høst","Institutt for informasjonsteknologi","lower","english","2026-10-16",42
+"oslomet","oslomet_DAVE3700-1_2018_spring_1","DAVE3700-1",2018,"Vår","Institutt for informasjonsteknologi","lower","english","2026-10-16",42
+"oslomet","oslomet_FADUFA-1_2018_spring_1","FADUFA-1",2018,"Vår","Institutt for barnehagelærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_GLU-ENG-E3-1_2018_autumn_3","GLU-ENG-E3-1",2018,"Høst","Institutt for grunnskole- og faglærerutdanning","lower","english","2026-10-16",42
+"oslomet","oslomet_GLU-ENG-E3-1_2018_spring_3","GLU-ENG-E3-1",2018,"Vår","Institutt for grunnskole- og faglærerutdanning","lower","english","2026-10-16",42
+"oslomet","oslomet_IFHH3400-1_2018_autumn_3","IFHH3400-1",2018,"Høst","Institutt for grunnskole- og faglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_IFHH3400-1_2018_spring_4","IFHH3400-1",2018,"Vår","Institutt for grunnskole- og faglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_ITPE3200-1_2018_autumn_1","ITPE3200-1",2018,"Høst","Institutt for informasjonsteknologi","lower","other","2026-10-16",42
+"oslomet","oslomet_ITPE3200-1_2018_spring_1","ITPE3200-1",2018,"Vår","Institutt for informasjonsteknologi","lower","other","2026-10-16",42
+"oslomet","oslomet_KL6000-1_2018_autumn_1","KL6000-1",2018,"Høst","Handelshøyskolen","lower","other","2026-10-16",42
+"oslomet","oslomet_KL6000-1_2018_spring_1","KL6000-1",2018,"Vår","School of Management","lower","other","2026-10-16",42
+"oslomet","oslomet_KREFT6100-1_2018_autumn_1","KREFT6100-1",2018,"Høst","Institutt for sykepleie og helsefremmende arbeid","continuing","other","2026-10-16",42
+"oslomet","oslomet_KREFT6100-1_2018_spring_1","KREFT6100-1",2018,"Vår","Institutt for sykepleie og helsefremmende arbeid","continuing","other","2026-10-16",42
+"oslomet","oslomet_MASYD4400-1_2018_autumn_1","MASYD4400-1",2018,"Høst","Institutt for sykepleie og helsefremmende arbeid","higher","other","2026-10-16",42
+"oslomet","oslomet_MASYD4400-1_2018_spring_1","MASYD4400-1",2018,"Vår","Institutt for sykepleie og helsefremmende arbeid","higher","other","2026-10-16",42
+"oslomet","oslomet_MASYK4700-1_2018_autumn_1","MASYK4700-1",2018,"Høst","Institutt for sykepleie og helsefremmende arbeid","higher","other","2026-10-16",42
+"oslomet","oslomet_MASYK4700-1_2018_spring_1","MASYK4700-1",2018,"Vår","Institutt for sykepleie og helsefremmende arbeid","higher","other","2026-10-16",42
+"oslomet","oslomet_MFB300-1_2018_autumn_3","MFB300-1",2018,"Høst","Institutt for sosialfag","higher","other","2026-10-16",42
+"oslomet","oslomet_MFB300-1_2018_spring_3","MFB300-1",2018,"Vår","Institutt for sosialfag","higher","other","2026-10-16",42
+"oslomet","oslomet_MSLV4500-1_2018_autumn_1","MSLV4500-1",2018,"Høst","Handelshøyskolen","higher","other","2026-10-16",42
+"oslomet","oslomet_MSLV4500-1_2018_spring_1","MSLV4500-1",2018,"Vår","Institutt for offentlig administrasjon og ledelse","higher","other","2026-10-16",42
+"oslomet","oslomet_NATA6110-1_2018_autumn_1","NATA6110-1",2018,"Høst","Institutt for grunnskole- og faglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_NATA6110-1_2018_spring_1","NATA6110-1",2018,"Vår","Institutt for grunnskole- og faglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_ORTO3100-1_2018_autumn_1","ORTO3100-1",2018,"Høst","Institutt for ergoterapi og ortopediingeniørfag","lower","english","2026-10-16",42
+"oslomet","oslomet_ORTO3100-1_2018_spring_1","ORTO3100-1",2018,"Vår","Institutt for ergoterapi og ortopediingeniørfag","lower","english","2026-10-16",42
+"oslomet","oslomet_PHVIT9510-1_2018_autumn_1","PHVIT9510-1",2018,"Høst","Fakultet for helsevitenskap (HV)","phd","english","2026-10-16",42
+"oslomet","oslomet_PHVIT9510-1_2018_spring_1","PHVIT9510-1",2018,"Vår","Fakultet for helsevitenskap (HV)","phd","english","2026-10-16",42
+"oslomet","oslomet_SERNB3200-1_2018_autumn_1","SERNB3200-1",2018,"Høst","Institutt for sykepleie og helsefremmende arbeid","lower","other","2026-10-16",42
+"oslomet","oslomet_SERNB3200-1_2018_spring_1","SERNB3200-1",2018,"Vår","Institutt for sykepleie og helsefremmende arbeid","lower","other","2026-10-16",42
+"oslomet","oslomet_SKUT4330-1_2018_autumn_3","SKUT4330-1",2018,"Høst","Institutt for grunnskole- og faglærerutdanning","higher","other","2026-10-16",42
+"oslomet","oslomet_SKUT4330-1_2018_spring_1","SKUT4330-1",2018,"Vår","Institutt for grunnskole- og faglærerutdanning","higher","other","2026-10-16",42
+"oslomet","oslomet_SPOPT-1_2018_autumn_1","SPOPT-1",2018,"Høst","Senter for profesjonsforskning","phd","other","2026-10-16",42
+"oslomet","oslomet_SPOPT-1_2018_spring_1","SPOPT-1",2018,"Vår","Senter for profesjonsforskning","phd","other","2026-10-16",42
+"oslomet","oslomet_STKD6500-1_2018_autumn_1","STKD6500-1",2018,"Høst","Institutt for informasjonsteknologi","lower","english","2026-10-16",42
+"oslomet","oslomet_STKD6500-1_2018_spring_1","STKD6500-1",2018,"Vår","Institutt for informasjonsteknologi","lower","english","2026-10-16",42
+"oslomet","oslomet_TOLKDIAPBT-1_2018_autumn_1","TOLKDIAPBT-1",2018,"Høst","Institutt for internasjonale studier og tolkeutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_TOLKDIAPBT-1_2018_spring_1","TOLKDIAPBT-1",2018,"Vår","Institutt for internasjonale studier og tolkeutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_TOLKDIATIR-1_2018_autumn_1","TOLKDIATIR-1",2018,"Høst","Institutt for internasjonale studier og tolkeutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_TOLKDIATIR-1_2018_spring_1","TOLKDIATIR-1",2018,"Vår","Institutt for internasjonale studier og tolkeutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_VPSYD6010-1_2018_autumn_2","VPSYD6010-1",2018,"Høst","Institutt for sykepleie og helsefremmende arbeid","continuing","other","2026-10-16",42
+"oslomet","oslomet_YPDFO6200-1_2018_autumn_1","YPDFO6200-1",2018,"Høst","Institutt for yrkesfaglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_YPDFO6200-1_2018_spring_1","YPDFO6200-1",2018,"Vår","Institutt for yrkesfaglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_ØAADM6000-1_2018_autumn_1","ØAADM6000-1",2018,"Høst","Handelshøyskolen","lower","other","2026-10-16",42
+"oslomet","oslomet_ØAADM6000-1_2018_spring_1","ØAADM6000-1",2018,"Vår","Handelshøyskolen","lower","other","2026-10-16",42
+"oslomet","oslomet_ABY3900-1_2019_autumn_1","ABY3900-1",2019,"Høst","Institutt for yrkesfaglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_ABY3900-1_2019_spring_1","ABY3900-1",2019,"Vår","Institutt for yrkesfaglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_BALS3000-1_2019_autumn_1","BALS3000-1",2019,"Høst","Handelshøyskolen","lower","other","2026-10-16",42
+"oslomet","oslomet_BALS3000-1_2019_spring_1","BALS3000-1",2019,"Vår","Handelshøyskolen","lower","other","2026-10-16",42
+"oslomet","oslomet_BLD1300-1_2019_autumn_1","BLD1300-1",2019,"Høst","Institutt for barnehagelærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_BLD1300-1_2019_spring_4","BLD1300-1",2019,"Vår","Institutt for barnehagelærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_BLH3140-1_2019_autumn_3","BLH3140-1",2019,"Høst","Institutt for barnehagelærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_BLH3140-1_2019_spring_3","BLH3140-1",2019,"Vår","Institutt for barnehagelærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_BLH3320-1_2019_autumn_1","BLH3320-1",2019,"Høst","Institutt for barnehagelærerutdanning","lower","english","2026-10-16",42
+"oslomet","oslomet_BLH3320-1_2019_spring_1","BLH3320-1",2019,"Vår","Institutt for barnehagelærerutdanning","lower","english","2026-10-16",42
+"oslomet","oslomet_DKLH6000-1_2019_autumn_1","DKLH6000-1",2019,"Høst","Institutt for grunnskole- og faglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_DKLH6000-1_2019_spring_1","DKLH6000-1",2019,"Vår","Institutt for grunnskole- og faglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_FO911A-2_2019_autumn_1","FO911A-2",2019,"Høst","Institutt for informasjonsteknologi","other","other","2026-10-16",42
+"oslomet","oslomet_FO911A-2_2019_spring_1","FO911A-2",2019,"Vår","Institutt for informasjonsteknologi","other","other","2026-10-16",42
+"oslomet","oslomet_FORK1300-1_2019_autumn_1","FORK1300-1",2019,"Høst","Institutt for informasjonsteknologi","other","other","2026-10-16",42
+"oslomet","oslomet_FORK1300-1_2019_spring_1","FORK1300-1",2019,"Vår","Institutt for informasjonsteknologi","other","other","2026-10-16",42
+"oslomet","oslomet_FYSIO3000-1_2019_autumn_1","FYSIO3000-1",2019,"Høst","Institutt for fysioterapi","lower","english","2026-10-16",42
+"oslomet","oslomet_FYSIO3000-1_2019_spring_1","FYSIO3000-1",2019,"Vår","Institutt for fysioterapi","lower","english","2026-10-16",42
+"oslomet","oslomet_ITPE3100-1_2019_autumn_1","ITPE3100-1",2019,"Høst","Institutt for informasjonsteknologi","lower","other","2026-10-16",42
+"oslomet","oslomet_ITPE3100-1_2019_spring_1","ITPE3100-1",2019,"Vår","Institutt for informasjonsteknologi","lower","other","2026-10-16",42
+"oslomet","oslomet_JUB6000-1_2019_autumn_1","JUB6000-1",2019,"Høst","Institutt for sosialfag","higher","other","2026-10-16",42
+"oslomet","oslomet_JUB6000-1_2019_spring_1","JUB6000-1",2019,"Vår","Institutt for sosialfag","higher","other","2026-10-16",42
+"oslomet","oslomet_MAJO4300-1_2019_autumn_1","MAJO4300-1",2019,"Høst","Institutt for sykepleie og helsefremmende arbeid","higher","other","2026-10-16",42
+"oslomet","oslomet_MAJO4300-1_2019_spring_1","MAJO4300-1",2019,"Vår","Institutt for sykepleie og helsefremmende arbeid","higher","other","2026-10-16",42
+"oslomet","oslomet_MATS2200-1_2019_spring_3","MATS2200-1",2019,"Vår","Institutt for maskin, elektronikk og kjemi","lower","other","2026-10-16",42
+"oslomet","oslomet_MBH4270-1_2019_autumn_1","MBH4270-1",2019,"Høst","Institutt for barnehagelærerutdanning","higher","other","2026-10-16",42
+"oslomet","oslomet_MBH4270-1_2019_spring_2","MBH4270-1",2019,"Vår","Institutt for barnehagelærerutdanning","higher","other","2026-10-16",42
+"oslomet","oslomet_MOKV3100-1_2019_autumn_1","MOKV3100-1",2019,"Høst","Institutt for journalistikk og mediefag","lower","other","2026-10-16",42
+"oslomet","oslomet_MOKV3100-1_2019_spring_1","MOKV3100-1",2019,"Vår","Institutt for journalistikk og mediefag","lower","other","2026-10-16",42
+"oslomet","oslomet_OAS4200-1_2019_autumn_1","OAS4200-1",2019,"Høst","Handelshøyskolen","higher","other","2026-10-16",42
+"oslomet","oslomet_OAS4200-1_2019_spring_1","OAS4200-1",2019,"Vår","Handelshøyskolen","higher","other","2026-10-16",42
+"oslomet","oslomet_PDTKD1300-1_2019_autumn_1","PDTKD1300-1",2019,"Høst","Institutt for estetiske fag","lower","other","2026-10-16",42
+"oslomet","oslomet_PDTKD1300-1_2019_spring_1","PDTKD1300-1",2019,"Vår","Institutt for estetiske fag","lower","other","2026-10-16",42
+"oslomet","oslomet_PENG9560-1_2019_autumn_2","PENG9560-1",2019,"Høst","Fakultet for teknologi, kunst og design (TKD)","phd","english","2026-10-16",42
+"oslomet","oslomet_PFKH1110-1_2019_autumn_1","PFKH1110-1",2019,"Høst","Institutt for estetiske fag","lower","other","2026-10-16",42
+"oslomet","oslomet_PFKH1110-1_2019_spring_1","PFKH1110-1",2019,"Vår","Institutt for estetiske fag","lower","other","2026-10-16",42
+"oslomet","oslomet_PSYDPRA-1_2019_autumn_1","PSYDPRA-1",2019,"Høst","Institutt for sykepleie og helsefremmende arbeid","continuing","other","2026-10-16",42
+"oslomet","oslomet_PSYDPRA-1_2019_spring_1","PSYDPRA-1",2019,"Vår","Institutt for sykepleie og helsefremmende arbeid","continuing","other","2026-10-16",42
+"oslomet","oslomet_PSYK2200-1_2019_autumn_1","PSYK2200-1",2019,"Høst","Institutt for atferdsvitenskap","lower","english","2026-10-16",42
+"oslomet","oslomet_PSYK2200-1_2019_spring_1","PSYK2200-1",2019,"Vår","Institutt for atferdsvitenskap","lower","english","2026-10-16",42
+"oslomet","oslomet_PVUB7000-1_2019_autumn_1","PVUB7000-1",2019,"Høst","Institutt for grunnskole- og faglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_PVUB7000-1_2019_spring_1","PVUB7000-1",2019,"Vår","Institutt for grunnskole- og faglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_TOLKDIAENG-1_2019_autumn_1","TOLKDIAENG-1",2019,"Høst","Institutt for internasjonale studier og tolkeutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_TOLKDIAENG-1_2019_spring_1","TOLKDIAENG-1",2019,"Vår","Institutt for internasjonale studier og tolkeutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_VAK6000-1_2019_autumn_4","VAK6000-1",2019,"Høst","Institutt for sosialfag","lower","other","2026-10-16",42
+"oslomet","oslomet_VAK6000-1_2019_spring_1","VAK6000-1",2019,"Vår","Institutt for sosialfag","lower","other","2026-10-16",42
+"oslomet","oslomet_ØABED1100-1_2019_autumn_1","ØABED1100-1",2019,"Høst","Handelshøyskolen","lower","other","2026-10-16",42
+"oslomet","oslomet_ØABED1100-1_2019_spring_1","ØABED1100-1",2019,"Vår","Handelshøyskolen","lower","other","2026-10-16",42
+"oslomet","oslomet_ARKV3100-1_2022_autumn_2","ARKV3100-1",2022,"Høst","Institutt for arkiv-, bibliotek- og informasjonsfag","lower","other","2026-10-16",42
+"oslomet","oslomet_BAL2200-1_2022_autumn_1","BAL2200-1",2022,"Høst","Handelshøyskolen","lower","other","2026-10-16",42
+"oslomet","oslomet_BAL2200-1_2022_spring_1","BAL2200-1",2022,"Vår","Handelshøyskolen","lower","other","2026-10-16",42
+"oslomet","oslomet_BIOB1000-1_2022_autumn_1","BIOB1000-1",2022,"Høst","Institutt for naturvitenskapelige helsefag","lower","other","2026-10-16",42
+"oslomet","oslomet_BIOB1000-1_2022_spring_1","BIOB1000-1",2022,"Vår","Institutt for naturvitenskapelige helsefag","lower","other","2026-10-16",42
+"oslomet","oslomet_DATA3730-1_2022_autumn_1","DATA3730-1",2022,"Høst","Institutt for informasjonsteknologi","lower","english","2026-10-16",42
+"oslomet","oslomet_DATA3730-1_2022_spring_1","DATA3730-1",2022,"Vår","Institutt for informasjonsteknologi","lower","english","2026-10-16",42
+"oslomet","oslomet_DTV3301-1_2022_autumn_1","DTV3301-1",2022,"Høst","Institutt for estetiske fag","lower","other","2026-10-16",42
+"oslomet","oslomet_DTV3301-1_2022_spring_1","DTV3301-1",2022,"Vår","Institutt for estetiske fag","lower","other","2026-10-16",42
+"oslomet","oslomet_FKH1101-1_2022_autumn_1","FKH1101-1",2022,"Høst","Institutt for estetiske fag","lower","other","2026-10-16",42
+"oslomet","oslomet_FKH1101-1_2022_spring_1","FKH1101-1",2022,"Vår","Institutt for estetiske fag","lower","other","2026-10-16",42
+"oslomet","oslomet_FKH2001-1_2022_autumn_1","FKH2001-1",2022,"Høst","Institutt for estetiske fag","lower","other","2026-10-16",42
+"oslomet","oslomet_FKH2001-1_2022_spring_1","FKH2001-1",2022,"Vår","Institutt for estetiske fag","lower","other","2026-10-16",42
+"oslomet","oslomet_FORK1220-1_2022_autumn_2","FORK1220-1",2022,"Høst","Institutt for informasjonsteknologi","other","other","2026-10-16",42
+"oslomet","oslomet_FORK1320-1_2022_autumn_2","FORK1320-1",2022,"Høst","Institutt for informasjonsteknologi","other","other","2026-10-16",42
+"oslomet","oslomet_KROP6100-1_2022_autumn_1","KROP6100-1",2022,"Høst","Institutt for grunnskole- og faglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_KROP6100-1_2022_spring_1","KROP6100-1",2022,"Vår","Institutt for grunnskole- og faglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_M5GEN1100-1_2022_autumn_1","M5GEN1100-1",2022,"Høst","Institutt for grunnskole- og faglærerutdanning","higher","english","2026-10-16",42
+"oslomet","oslomet_M5GEN1100-1_2022_spring_1","M5GEN1100-1",2022,"Vår","Institutt for grunnskole- og faglærerutdanning","higher","english","2026-10-16",42
+"oslomet","oslomet_MABIO4300-1_2022_autumn_1","MABIO4300-1",2022,"Høst","Institutt for naturvitenskapelige helsefag","higher","english","2026-10-16",42
+"oslomet","oslomet_MABIO4300-1_2022_spring_1","MABIO4300-1",2022,"Vår","Institutt for naturvitenskapelige helsefag","higher","english","2026-10-16",42
+"oslomet","oslomet_MABIOD4300-1_2022_autumn_1","MABIOD4300-1",2022,"Høst","Institutt for naturvitenskapelige helsefag","higher","english","2026-10-16",42
+"oslomet","oslomet_MABIOD4300-1_2022_spring_1","MABIOD4300-1",2022,"Vår","Institutt for naturvitenskapelige helsefag","higher","english","2026-10-16",42
+"oslomet","oslomet_MAKER1200-1_2022_autumn_1","MAKER1200-1",2022,"Høst","Makerspace","lower","english","2026-10-16",42
+"oslomet","oslomet_MAKER1200-1_2022_spring_1","MAKER1200-1",2022,"Vår","Makerspace","lower","english","2026-10-16",42
+"oslomet","oslomet_MAPD5300-1_2022_autumn_1","MAPD5300-1",2022,"Høst","Institutt for produktdesign","higher","english","2026-10-16",42
+"oslomet","oslomet_MAPD5300-1_2022_spring_1","MAPD5300-1",2022,"Vår","Institutt for produktdesign","higher","english","2026-10-16",42
+"oslomet","oslomet_MAPDPRA-1_2022_autumn_1","MAPDPRA-1",2022,"Høst","Institutt for produktdesign","higher","english","2026-10-16",42
+"oslomet","oslomet_MAPDPRA-1_2022_spring_1","MAPDPRA-1",2022,"Vår","Institutt for produktdesign","higher","english","2026-10-16",42
+"oslomet","oslomet_PENG9530-1_2022_autumn_1","PENG9530-1",2022,"Høst","Fakultet for teknologi, kunst og design (TKD)","phd","english","2026-10-16",42
+"oslomet","oslomet_PENG9530-1_2022_spring_1","PENG9530-1",2022,"Vår","Fakultet for teknologi, kunst og design (TKD)","phd","english","2026-10-16",42
+"oslomet","oslomet_PHUV9330-1_2022_autumn_1","PHUV9330-1",2022,"Høst","Fakultet for lærerutdanning og internasjonale studier (LUI)","phd","other","2026-10-16",42
+"oslomet","oslomet_PHUV9330-1_2022_spring_1","PHUV9330-1",2022,"Vår","Fakultet for lærerutdanning og internasjonale studier (LUI)","phd","other","2026-10-16",42
+"oslomet","oslomet_PRG6200-1_2022_autumn_1","PRG6200-1",2022,"Høst","Institutt for grunnskole- og faglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_PRG6200-1_2022_spring_1","PRG6200-1",2022,"Vår","Institutt for grunnskole- og faglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_SOS3000-1_2022_autumn_3","SOS3000-1",2022,"Høst","Institutt for sosialfag","lower","other","2026-10-16",42
+"oslomet","oslomet_SOS3000-1_2022_spring_4","SOS3000-1",2022,"Vår","Institutt for sosialfag","lower","other","2026-10-16",42
+"oslomet","oslomet_SOSV3101-1_2022_autumn_1","SOSV3101-1",2022,"Høst","Institutt for sosialfag","lower","other","2026-10-16",42
+"oslomet","oslomet_SOSV3101-1_2022_spring_1","SOSV3101-1",2022,"Vår","Institutt for sosialfag","lower","other","2026-10-16",42
+"oslomet","oslomet_SYKKPRA20KB-1_2022_autumn_2","SYKKPRA20KB-1",2022,"Høst","Institutt for sykepleie og helsefremmende arbeid","lower","other","2026-10-16",42
+"oslomet","oslomet_YLHOD3000-1_2022_autumn_3","YLHOD3000-1",2022,"Høst","Institutt for yrkesfaglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_YLHOD3000-1_2022_spring_3","YLHOD3000-1",2022,"Vår","Institutt for yrkesfaglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_ZKDM-2_2022_autumn_1","ZKDM-2",2022,"Høst","Institutt for estetiske fag","lower","other","2026-10-16",42
+"oslomet","oslomet_ZKDM-2_2022_spring_1","ZKDM-2",2022,"Vår","Institutt for estetiske fag","lower","other","2026-10-16",42
+"oslomet","oslomet_ØAMET1000-1_2022_autumn_1","ØAMET1000-1",2022,"Høst","Handelshøyskolen","lower","other","2026-10-16",42
+"oslomet","oslomet_ØAMET1000-1_2022_spring_1","ØAMET1000-1",2022,"Vår","Handelshøyskolen","lower","other","2026-10-16",42
+"oslomet","oslomet_ACIT4075-1_2025_autumn_1","ACIT4075-1",2025,"Høst","Institutt for informasjonsteknologi","higher","english","2026-10-16",42
+"oslomet","oslomet_ACIT4075-1_2025_spring_1","ACIT4075-1",2025,"Vår","Institutt for informasjonsteknologi","higher","english","2026-10-16",42
+"oslomet","oslomet_ACIT4080-1_2025_autumn_1","ACIT4080-1",2025,"Høst","Institutt for informasjonsteknologi","higher","english","2026-10-16",42
+"oslomet","oslomet_ACIT4080-1_2025_spring_1","ACIT4080-1",2025,"Vår","Institutt for informasjonsteknologi","higher","english","2026-10-16",42
+"oslomet","oslomet_ACIT5900-1_2025_autumn_1","ACIT5900-1",2025,"Høst","Institutt for informasjonsteknologi","higher","english","2026-10-16",42
+"oslomet","oslomet_ACIT5900-1_2025_spring_1","ACIT5900-1",2025,"Vår","Institutt for informasjonsteknologi","higher","english","2026-10-16",42
+"oslomet","oslomet_ARKROM6100-1_2025_autumn_1","ARKROM6100-1",2025,"Høst","Institutt for estetiske fag","continuing","other","2026-10-16",42
+"oslomet","oslomet_ARKROM6100-1_2025_spring_1","ARKROM6100-1",2025,"Vår","Institutt for estetiske fag","continuing","other","2026-10-16",42
+"oslomet","oslomet_BIOB3210-1_2025_autumn_2","BIOB3210-1",2025,"Høst","Institutt for naturvitenskapelige helsefag","lower","other","2026-10-16",42
+"oslomet","oslomet_BYGG2200-1_2025_autumn_1","BYGG2200-1",2025,"Høst","Institutt for bygg- og energiteknikk","lower","english","2026-10-16",42
+"oslomet","oslomet_BYGG2200-1_2025_spring_1","BYGG2200-1",2025,"Vår","Institutt for bygg- og energiteknikk","lower","english","2026-10-16",42
+"oslomet","oslomet_BYGG2700-1_2025_autumn_1","BYGG2700-1",2025,"Høst","Institutt for bygg- og energiteknikk","lower","other","2026-10-16",42
+"oslomet","oslomet_BYGG2700-1_2025_spring_1","BYGG2700-1",2025,"Vår","Institutt for bygg- og energiteknikk","lower","other","2026-10-16",42
+"oslomet","oslomet_FK2200-1_2025_autumn_3","FK2200-1",2025,"Høst","Institutt for grunnskole- og faglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_FK2200-1_2025_spring_3","FK2200-1",2025,"Vår","Institutt for grunnskole- og faglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_FK3300-1_2025_autumn_3","FK3300-1",2025,"Høst","Institutt for grunnskole- og faglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_FK3300-1_2025_spring_3","FK3300-1",2025,"Vår","Institutt for grunnskole- og faglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_FLKM4310-1_2025_autumn_1","FLKM4310-1",2025,"Høst","Institutt for internasjonale studier og tolkeutdanning","higher","english","2026-10-16",42
+"oslomet","oslomet_FLKM4310-1_2025_spring_1","FLKM4310-1",2025,"Vår","Institutt for internasjonale studier og tolkeutdanning","higher","english","2026-10-16",42
+"oslomet","oslomet_FORK1500-1_2025_autumn_1","FORK1500-1",2025,"Høst","Institutt for informasjonsteknologi","other","english","2026-10-16",42
+"oslomet","oslomet_FORK1500-1_2025_spring_1","FORK1500-1",2025,"Vår","Institutt for informasjonsteknologi","other","english","2026-10-16",42
+"oslomet","oslomet_KULT6200-1_2025_autumn_1","KULT6200-1",2025,"Høst","Handelshøyskolen","higher","other","2026-10-16",42
+"oslomet","oslomet_KULT6200-1_2025_spring_1","KULT6200-1",2025,"Vår","Handelshøyskolen","higher","other","2026-10-16",42
+"oslomet","oslomet_M1GNO1100-1_2025_autumn_1","M1GNO1100-1",2025,"Høst","Institutt for grunnskole- og faglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_M1GNO1100-1_2025_spring_1","M1GNO1100-1",2025,"Vår","Institutt for grunnskole- og faglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_MAKS4400-1_2025_spring_3","MAKS4400-1",2025,"Vår","Institutt for sykepleie og helsefremmende arbeid","higher","other","2026-10-16",42
+"oslomet","oslomet_MERG5900-1_2025_autumn_1","MERG5900-1",2025,"Høst","Institutt for rehabiliteringsvitenskap og helseteknologi","higher","english","2026-10-16",42
+"oslomet","oslomet_MERG5900-1_2025_spring_1","MERG5900-1",2025,"Vår","Institutt for rehabiliteringsvitenskap og helseteknologi","higher","english","2026-10-16",42
+"oslomet","oslomet_PHBA8110-1_2025_spring_3","PHBA8110-1",2025,"Vår","Institutt for atferdsvitenskap","phd","english","2026-10-16",42
+"oslomet","oslomet_PHUV9450-1_2025_autumn_1","PHUV9450-1",2025,"Høst","Fakultet for lærerutdanning og internasjonale studier (LUI)","phd","english","2026-10-16",42
+"oslomet","oslomet_PHUV9450-1_2025_spring_1","PHUV9450-1",2025,"Vår","Fakultet for lærerutdanning og internasjonale studier (LUI)","phd","english","2026-10-16",42
+"oslomet","oslomet_PMED3000-1_2025_autumn_3","PMED3000-1",2025,"Høst","Institutt for sykepleie og helsefremmende arbeid","lower","other","2026-10-16",42
+"oslomet","oslomet_PMED3000-1_2025_spring_1","PMED3000-1",2025,"Vår","Institutt for sykepleie og helsefremmende arbeid","lower","other","2026-10-16",42
+"oslomet","oslomet_PS9001-1_2025_autumn_1","PS9001-1",2025,"Høst","Fakultet for samfunnsvitenskap (SAM)","phd","english","2026-10-16",42
+"oslomet","oslomet_PS9001-1_2025_spring_1","PS9001-1",2025,"Vår","Fakultet for samfunnsvitenskap (SAM)","phd","english","2026-10-16",42
+"oslomet","oslomet_SYKKPRA70-1_2025_autumn_1","SYKKPRA70-1",2025,"Høst","Institutt for sykepleie og helsefremmende arbeid","lower","other","2026-10-16",42
+"oslomet","oslomet_SYKKPRA70-1_2025_spring_1","SYKKPRA70-1",2025,"Vår","Institutt for sykepleie og helsefremmende arbeid","lower","other","2026-10-16",42
+"oslomet","oslomet_SYKPPRA10B-1_2025_autumn_1","SYKPPRA10B-1",2025,"Høst","Institutt for sykepleie og helsefremmende arbeid","lower","other","2026-10-16",42
+"oslomet","oslomet_SYKPPRA10B-1_2025_spring_1","SYKPPRA10B-1",2025,"Vår","Institutt for sykepleie og helsefremmende arbeid","lower","other","2026-10-16",42
+"oslomet","oslomet_VESK6300-1_2025_autumn_1","VESK6300-1",2025,"Høst","Institutt for yrkesfaglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_VESK6300-1_2025_spring_1","VESK6300-1",2025,"Vår","Institutt for yrkesfaglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_VMNT6000-1_2025_autumn_1","VMNT6000-1",2025,"Høst","Institutt for sykepleie og helsefremmende arbeid","continuing","other","2026-10-16",42
+"oslomet","oslomet_VMNT6000-1_2025_spring_1","VMNT6000-1",2025,"Vår","Institutt for sykepleie og helsefremmende arbeid","continuing","other","2026-10-16",42
+"oslomet","oslomet_YFBA2100-1_2025_autumn_1","YFBA2100-1",2025,"Høst","Institutt for yrkesfaglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_YFBA2100-1_2025_spring_1","YFBA2100-1",2025,"Vår","Institutt for yrkesfaglærerutdanning","lower","other","2026-10-16",42
+"oslomet","oslomet_ØAADM4200-1_2025_autumn_1","ØAADM4200-1",2025,"Høst","Handelshøyskolen","higher","english","2026-10-16",42
+"oslomet","oslomet_ØAADM4200-1_2025_spring_1","ØAADM4200-1",2025,"Vår","Handelshøyskolen","higher","english","2026-10-16",42

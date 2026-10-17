@@ -1,0 +1,193 @@
+"institution","course_id","course_code_raw","year","semester_name","department_name","level","language","dbh_snapshot","seed"
+"usn","usn_050-E11-1_2018_autumn_1","050-E11-1",2018,"Høst","Institutt for sykepleie- og helsevitenskap","lower","other","2026-10-16",42
+"usn","usn_050-E11-1_2018_spring_1","050-E11-1",2018,"Vår","Institutt for sykepleie- og helsevitenskap","lower","other","2026-10-16",42
+"usn","usn_1401-2_2018_autumn_2","1401-2",2018,"Høst","Institutt for friluftsliv, idretts og kroppsøving","lower","other","2026-10-16",42
+"usn","usn_1401-2_2018_spring_1","1401-2",2018,"Vår","Institutt for friluftsliv, idretts og kroppsøving","lower","other","2026-10-16",42
+"usn","usn_3489-1_2018_autumn_1","3489-1",2018,"Høst","Institutt for kultur, religion og samfunnsfag","lower","other","2026-10-16",42
+"usn","usn_3489-1_2018_spring_1","3489-1",2018,"Vår","Institutt for kultur, religion og samfunnsfag","lower","other","2026-10-16",42
+"usn","usn_9210-1_2018_autumn_1","9210-1",2018,"Høst","Institutt for kultur, religion og samfunnsfag","phd","other","2026-10-16",42
+"usn","usn_9210-1_2018_spring_1","9210-1",2018,"Vår","Institutt for kultur, religion og samfunnsfag","phd","other","2026-10-16",42
+"usn","usn_ABL-NHB2000-1_2018_autumn_3","ABL-NHB2000-1",2018,"Høst","Institutt for friluftsliv, idretts og kroppsøving","lower","other","2026-10-16",42
+"usn","usn_ABL-NHB2000-1_2018_spring_2","ABL-NHB2000-1",2018,"Vår","Institutt for friluftsliv, idretts og kroppsøving","lower","other","2026-10-16",42
+"usn","usn_BABLU-6_2018_autumn_1","BABLU-6",2018,"Høst","Institutt for pedagogikk","lower","other","2026-10-16",42
+"usn","usn_BABLU-6_2018_spring_1","BABLU-6",2018,"Vår","Institutt for pedagogikk","lower","other","2026-10-16",42
+"usn","usn_BI-IDR1301-1_2018_autumn_4","BI-IDR1301-1",2018,"Høst","Institutt for friluftsliv, idretts og kroppsøving","lower","other","2026-10-16",42
+"usn","usn_BI-IDR1301-1_2018_spring_1","BI-IDR1301-1",2018,"Vår","Institutt for friluftsliv, idretts og kroppsøving","lower","other","2026-10-16",42
+"usn","usn_BL-PRB3101-1_2018_autumn_1","BL-PRB3101-1",2018,"Høst","Institutt for pedagogikk","lower","other","2026-10-16",42
+"usn","usn_BL-PRB3101-1_2018_spring_1","BL-PRB3101-1",2018,"Vår","Institutt for pedagogikk","lower","other","2026-10-16",42
+"usn","usn_BS-PLVI30-V-1_2018_autumn_3","BS-PLVI30-V-1",2018,"Høst","Institutt for sykepleie- og helsevitenskap","lower","other","2026-10-16",42
+"usn","usn_BS-PLVI30-V-1_2018_spring_1","BS-PLVI30-V-1",2018,"Vår","Institutt for sykepleie- og helsevitenskap","lower","other","2026-10-16",42
+"usn","usn_FB4110-1_2018_autumn_3","FB4110-1",2018,"Høst","Institutt for prosess-, energi- og miljøteknologi","lower","other","2026-10-16",42
+"usn","usn_FB4110-1_2018_spring_4","FB4110-1",2018,"Vår","Institutt for prosess-, energi- og miljøteknologi","lower","other","2026-10-16",42
+"usn","usn_FEMLI20-1_2018_autumn_2","FEMLI20-1",2018,"Høst","Institutt for maritime operasjoner","lower","other","2026-10-16",42
+"usn","usn_FEMLI20-1_2018_spring_1","FEMLI20-1",2018,"Vår","Institutt for maritime operasjoner","lower","other","2026-10-16",42
+"usn","usn_G1S-NOR1300-1_2018_autumn_3","G1S-NOR1300-1",2018,"Høst","Institutt for språk og litteratur","lower","other","2026-10-16",42
+"usn","usn_G1S-NOR1300-1_2018_spring_4","G1S-NOR1300-1",2018,"Vår","Institutt for språk og litteratur","lower","other","2026-10-16",42
+"usn","usn_HRM100-1_2018_autumn_1","HRM100-1",2018,"Høst","EVU - Handelshøyskolen","lower","other","2026-10-16",42
+"usn","usn_HRM100-1_2018_spring_1","HRM100-1",2018,"Vår","EVU - Handelshøyskolen","lower","other","2026-10-16",42
+"usn","usn_INT100B-1_2018_autumn_2","INT100B-1",2018,"Høst","Institutt for økonomi og IT","lower","english","2026-10-16",42
+"usn","usn_INT100B-1_2018_spring_1","INT100B-1",2018,"Vår","Institutt for økonomi og IT","lower","english","2026-10-16",42
+"usn","usn_LR-FYS1200-1_2018_autumn_2","LR-FYS1200-1",2018,"Høst","Institutt for realfag og industrisystemer","lower","other","2026-10-16",42
+"usn","usn_LR-FYS1200-1_2018_spring_1","LR-FYS1200-1",2018,"Vår","Institutt for realfag og industrisystemer","lower","other","2026-10-16",42
+"usn","usn_MD-F3M2000-1_2018_autumn_1","MD-F3M2000-1",2018,"Høst","Institutt for maritime operasjoner","lower","other","2026-10-16",42
+"usn","usn_MD-F3M2000-1_2018_spring_1","MD-F3M2000-1",2018,"Vår","Institutt for maritime operasjoner","lower","other","2026-10-16",42
+"usn","usn_MM-INN5001-1_2018_autumn_1","MM-INN5001-1",2018,"Høst","Institutt for maritime operasjoner","higher","english","2026-10-16",42
+"usn","usn_MM-INN5001-1_2018_spring_1","MM-INN5001-1",2018,"Vår","Institutt for maritime operasjoner","higher","english","2026-10-16",42
+"usn","usn_MM-MAC5080-1_2018_autumn_1","MM-MAC5080-1",2018,"Høst","Institutt for maritime operasjoner","higher","other","2026-10-16",42
+"usn","usn_MM-MAC5080-1_2018_spring_1","MM-MAC5080-1",2018,"Vår","Institutt for maritime operasjoner","higher","other","2026-10-16",42
+"usn","usn_NORVU103-1_2018_autumn_1","NORVU103-1",2018,"Høst","EVU - Fakultet for humaniora, idretts- og utdanningsvitenskap","lower","other","2026-10-16",42
+"usn","usn_NORVU103-1_2018_spring_1","NORVU103-1",2018,"Vår","EVU - Fakultet for humaniora, idretts- og utdanningsvitenskap","lower","other","2026-10-16",42
+"usn","usn_OKLI3014-1_2018_autumn_1","OKLI3014-1",2018,"Høst","Institutt for optometri, radiografi og lysdesign","lower","other","2026-10-16",42
+"usn","usn_OKLI3014-1_2018_spring_1","OKLI3014-1",2018,"Vår","Institutt for optometri, radiografi og lysdesign","lower","other","2026-10-16",42
+"usn","usn_PH-AEC9120-1_2018_autumn_1","PH-AEC9120-1",2018,"Høst","Institutt for estetiske fag","phd","english","2026-10-16",42
+"usn","usn_PH-AEC9120-1_2018_spring_1","PH-AEC9120-1",2018,"Vår","Institutt for estetiske fag","phd","english","2026-10-16",42
+"usn","usn_PN-DM9000-1_2018_autumn_1","PN-DM9000-1",2018,"Høst","Institutt for maritime operasjoner","phd","other","2026-10-16",42
+"usn","usn_PN-DM9000-1_2018_spring_2","PN-DM9000-1",2018,"Vår","Institutt for maritime operasjoner","phd","other","2026-10-16",42
+"usn","usn_RET2000D-1_2018_autumn_1","RET2000D-1",2018,"Høst","Institutt for industriell økonomi, strategi og statsvitenskap","lower","other","2026-10-16",42
+"usn","usn_RET2000D-1_2018_spring_1","RET2000D-1",2018,"Vår","Institutt for industriell økonomi, strategi og statsvitenskap","lower","other","2026-10-16",42
+"usn","usn_RK-FYS0001-1_2018_autumn_1","RK-FYS0001-1",2018,"Høst","Institutt for realfag og industrisystemer","other","other","2026-10-16",42
+"usn","usn_RK-FYS0001-1_2018_spring_1","RK-FYS0001-1",2018,"Vår","Institutt for realfag og industrisystemer","other","other","2026-10-16",42
+"usn","usn_SAMH-1_2018_autumn_1","SAMH-1",2018,"Høst","EVU - Institutt for helse-, sosial- og velferdsfag","lower","other","2026-10-16",42
+"usn","usn_SAMH-1_2018_spring_2","SAMH-1",2018,"Vår","EVU - Institutt for helse-, sosial- og velferdsfag","lower","other","2026-10-16",42
+"usn","usn_15DIGRAF-1_2019_autumn_1","15DIGRAF-1",2019,"Høst","Institutt for estetiske fag","lower","other","2026-10-16",42
+"usn","usn_15DIGRAF-1_2019_spring_1","15DIGRAF-1",2019,"Vår","Institutt for estetiske fag","lower","other","2026-10-16",42
+"usn","usn_BLUPRA-2_2019_autumn_1","BLUPRA-2",2019,"Høst","Institutt for pedagogikk","lower","other","2026-10-16",42
+"usn","usn_BLUPRA-2_2019_spring_1","BLUPRA-2",2019,"Vår","Institutt for pedagogikk","lower","other","2026-10-16",42
+"usn","usn_C0915-1_2019_autumn_1","C0915-1",2019,"Høst","EVU - Fakultet for teknologi, naturvitenskap og maritime fag","continuing","english","2026-10-16",42
+"usn","usn_C0915-1_2019_spring_1","C0915-1",2019,"Vår","EVU - Fakultet for teknologi, naturvitenskap og maritime fag","continuing","english","2026-10-16",42
+"usn","usn_EE4312-1_2019_autumn_1","EE4312-1",2019,"Høst","Institutt for elektro, IT og kybernetikk","lower","other","2026-10-16",42
+"usn","usn_EE4312-1_2019_spring_1","EE4312-1",2019,"Vår","Institutt for elektro, IT og kybernetikk","lower","other","2026-10-16",42
+"usn","usn_FK-FYS0001-1_2019_autumn_1","FK-FYS0001-1",2019,"Høst","Institutt for realfag og industrisystemer","other","other","2026-10-16",42
+"usn","usn_FK-FYS0001-1_2019_spring_1","FK-FYS0001-1",2019,"Vår","Institutt for realfag og industrisystemer","other","other","2026-10-16",42
+"usn","usn_G1-NAT1100-1_2019_autumn_1","G1-NAT1100-1",2019,"Høst","Institutt for matematikk og naturfag","lower","other","2026-10-16",42
+"usn","usn_G1-NAT1100-1_2019_spring_1","G1-NAT1100-1",2019,"Vår","Institutt for matematikk og naturfag","lower","other","2026-10-16",42
+"usn","usn_HELKAR2-1_2019_autumn_3","HELKAR2-1",2019,"Høst","EVU - Fakultet for humaniora, idretts- og utdanningsvitenskap","lower","other","2026-10-16",42
+"usn","usn_HELKAR2-1_2019_spring_1","HELKAR2-1",2019,"Vår","EVU - Fakultet for humaniora, idretts- og utdanningsvitenskap","lower","other","2026-10-16",42
+"usn","usn_IA4212-1_2019_autumn_1","IA4212-1",2019,"Høst","Institutt for elektro, IT og kybernetikk","lower","other","2026-10-16",42
+"usn","usn_IA4212-1_2019_spring_1","IA4212-1",2019,"Vår","Institutt for elektro, IT og kybernetikk","lower","other","2026-10-16",42
+"usn","usn_KFK-R-NO M2-1_2019_autumn_3","KFK-R-NO M2-1",2019,"Høst","EVU - Fakultet for humaniora, idretts- og utdanningsvitenskap","lower","other","2026-10-16",42
+"usn","usn_KFK-R-NO M2-1_2019_spring_1","KFK-R-NO M2-1",2019,"Vår","EVU - Fakultet for humaniora, idretts- og utdanningsvitenskap","lower","other","2026-10-16",42
+"usn","usn_MAKM219-1_2019_autumn_2","MAKM219-1",2019,"Høst","Institutt for optometri, radiografi og lysdesign","higher","other","2026-10-16",42
+"usn","usn_MM-MAC5080-1_2019_autumn_1","MM-MAC5080-1",2019,"Høst","Institutt for maritime operasjoner","higher","english","2026-10-16",42
+"usn","usn_MM-MAC5080-1_2019_spring_1","MM-MAC5080-1",2019,"Vår","Institutt for maritime operasjoner","higher","english","2026-10-16",42
+"usn","usn_MN-ACU5901-1_2019_autumn_1","MN-ACU5901-1",2019,"Høst","Institutt for mikrosystemer","higher","english","2026-10-16",42
+"usn","usn_MN-ACU5901-1_2019_spring_1","MN-ACU5901-1",2019,"Vår","Institutt for mikrosystemer","higher","english","2026-10-16",42
+"usn","usn_MPTF2201-1_2019_autumn_1","MPTF2201-1",2019,"Høst","Institutt for realfag og industrisystemer","lower","other","2026-10-16",42
+"usn","usn_MPTF2201-1_2019_spring_1","MPTF2201-1",2019,"Vår","Institutt for realfag og industrisystemer","lower","other","2026-10-16",42
+"usn","usn_PHDMOD500-1_2019_autumn_1","PHDMOD500-1",2019,"Høst","Fakultet for helse- og sosialvitenskap","phd","english","2026-10-16",42
+"usn","usn_PHDMOD500-1_2019_spring_1","PHDMOD500-1",2019,"Vår","Fakultet for helse- og sosialvitenskap","phd","english","2026-10-16",42
+"usn","usn_REG3000D-1_2019_autumn_1","REG3000D-1",2019,"Høst","Institutt for industriell økonomi, strategi og statsvitenskap","lower","other","2026-10-16",42
+"usn","usn_REG3000D-1_2019_spring_1","REG3000D-1",2019,"Vår","Institutt for industriell økonomi, strategi og statsvitenskap","lower","other","2026-10-16",42
+"usn","usn_RK-MAT0001-1_2019_autumn_1","RK-MAT0001-1",2019,"Høst","Institutt for realfag og industrisystemer","other","other","2026-10-16",42
+"usn","usn_RK-MAT0001-1_2019_spring_1","RK-MAT0001-1",2019,"Vår","Institutt for realfag og industrisystemer","other","other","2026-10-16",42
+"usn","usn_SAM 501-2_2019_autumn_1","SAM 501-2",2019,"Høst","Institutt for kultur, religion og samfunnsfag","lower","other","2026-10-16",42
+"usn","usn_SAM 501-2_2019_spring_1","SAM 501-2",2019,"Vår","Institutt for kultur, religion og samfunnsfag","lower","other","2026-10-16",42
+"usn","usn_SPESPED102-2_2019_autumn_1","SPESPED102-2",2019,"Høst","Institutt for pedagogikk","lower","other","2026-10-16",42
+"usn","usn_SPESPED102-2_2019_spring_1","SPESPED102-2",2019,"Vår","Institutt for pedagogikk","lower","other","2026-10-16",42
+"usn","usn_TK-SOM0002-1_2019_autumn_2","TK-SOM0002-1",2019,"Høst","Institutt for realfag og industrisystemer","other","other","2026-10-16",42
+"usn","usn_TPFYS01-2_2019_autumn_2","TPFYS01-2",2019,"Høst","Institutt for prosess-, energi- og miljøteknologi","other","other","2026-10-16",42
+"usn","usn_UG1PEL15310-1_2019_autumn_1","UG1PEL15310-1",2019,"Høst","Institutt for pedagogikk","lower","other","2026-10-16",42
+"usn","usn_UG1PEL15310-1_2019_spring_1","UG1PEL15310-1",2019,"Vår","Institutt for pedagogikk","lower","other","2026-10-16",42
+"usn","usn_V-RETT8200-1_2019_autumn_1","V-RETT8200-1",2019,"Høst","EVU - Institutt for sykepleie- og helsevitenskap","continuing","other","2026-10-16",42
+"usn","usn_V-RETT8200-1_2019_spring_1","V-RETT8200-1",2019,"Vår","EVU - Institutt for sykepleie- og helsevitenskap","continuing","other","2026-10-16",42
+"usn","usn_VIS3000V-1_2019_autumn_1","VIS3000V-1",2019,"Høst","Institutt for økonomi, historie og samfunnsvitenskap","lower","other","2026-10-16",42
+"usn","usn_VIS3000V-1_2019_spring_2","VIS3000V-1",2019,"Vår","Institutt for økonomi, historie og samfunnsvitenskap","lower","other","2026-10-16",42
+"usn","usn_VUGK4014-1_2019_autumn_1","VUGK4014-1",2019,"Høst","EVU - Institutt for optometri, radiografi og lysdesign","higher","other","2026-10-16",42
+"usn","usn_VUGK4014-1_2019_spring_1","VUGK4014-1",2019,"Vår","EVU - Institutt for optometri, radiografi og lysdesign","higher","other","2026-10-16",42
+"usn","usn_VVL1-1_2019_autumn_1","VVL1-1",2019,"Høst","EVU - Institutt for helse-, sosial- og velferdsfag","continuing","other","2026-10-16",42
+"usn","usn_VVL1-1_2019_spring_1","VVL1-1",2019,"Vår","EVU - Institutt for helse-, sosial- og velferdsfag","continuing","other","2026-10-16",42
+"usn","usn_060-E10-1_2022_autumn_1","060-E10-1",2022,"Høst","Institutt for helse-, sosial- og velferdsfag","lower","other","2026-10-16",42
+"usn","usn_060-E10-1_2022_spring_1","060-E10-1",2022,"Vår","Institutt for helse-, sosial- og velferdsfag","lower","other","2026-10-16",42
+"usn","usn_15DIGRAF-1_2022_autumn_1","15DIGRAF-1",2022,"Høst","Institutt for estetiske fag","lower","other","2026-10-16",42
+"usn","usn_15DIGRAF-1_2022_spring_1","15DIGRAF-1",2022,"Vår","Institutt for estetiske fag","lower","other","2026-10-16",42
+"usn","usn_EE3515-1_2022_autumn_3","EE3515-1",2022,"Høst","Institutt for prosess-, energi- og miljøteknologi","lower","other","2026-10-16",42
+"usn","usn_EE3515-1_2022_spring_3","EE3515-1",2022,"Vår","Institutt for prosess-, energi- og miljøteknologi","lower","other","2026-10-16",42
+"usn","usn_EK5420-1_2022_autumn_3","EK5420-1",2022,"Høst","Institutt for elektro, IT og kybernetikk","lower","english","2026-10-16",42
+"usn","usn_EK5420-1_2022_spring_3","EK5420-1",2022,"Vår","Institutt for elektro, IT og kybernetikk","lower","english","2026-10-16",42
+"usn","usn_ENG102C-1_2022_autumn_1","ENG102C-1",2022,"Høst","Institutt for språk og litteratur","lower","english","2026-10-16",42
+"usn","usn_ENG102C-1_2022_spring_1","ENG102C-1",2022,"Vår","Institutt for språk og litteratur","lower","english","2026-10-16",42
+"usn","usn_FAGLROL-1_2022_autumn_1","FAGLROL-1",2022,"Høst","Institutt for pedagogikk","lower","other","2026-10-16",42
+"usn","usn_FAGLROL-1_2022_spring_1","FAGLROL-1",2022,"Vår","Institutt for pedagogikk","lower","other","2026-10-16",42
+"usn","usn_FM1DANS-1_2022_autumn_1","FM1DANS-1",2022,"Høst","Institutt for tradisjonskunst og folkemusikk","lower","other","2026-10-16",42
+"usn","usn_FM1DANS-1_2022_spring_1","FM1DANS-1",2022,"Vår","Institutt for tradisjonskunst og folkemusikk","lower","other","2026-10-16",42
+"usn","usn_GMSAFMA-1_2022_autumn_1","GMSAFMA-1",2022,"Høst","Institutt for kultur, religion og samfunnsfag","higher","other","2026-10-16",42
+"usn","usn_GMSAFMA-1_2022_spring_1","GMSAFMA-1",2022,"Vår","Institutt for kultur, religion og samfunnsfag","higher","other","2026-10-16",42
+"usn","usn_HMT5900-1_2022_autumn_2","HMT5900-1",2022,"Høst","Institutt for mikrosystemer","higher","english","2026-10-16",42
+"usn","usn_KH-EMNE2-1_2022_autumn_3","KH-EMNE2-1",2022,"Høst","EVU - Fakultet for humaniora, idretts- og utdanningsvitenskap","higher","other","2026-10-16",42
+"usn","usn_KH-EMNE2-1_2022_spring_1","KH-EMNE2-1",2022,"Vår","EVU - Fakultet for humaniora, idretts- og utdanningsvitenskap","higher","other","2026-10-16",42
+"usn","usn_MA-ANE4200-1_2022_autumn_1","MA-ANE4200-1",2022,"Høst","Institutt for sykepleie- og helsevitenskap","higher","other","2026-10-16",42
+"usn","usn_MA-ANE4200-1_2022_spring_1","MA-ANE4200-1",2022,"Vår","Institutt for sykepleie- og helsevitenskap","higher","other","2026-10-16",42
+"usn","usn_MAR4020-1_2022_autumn_1","MAR4020-1",2022,"Høst","Institutt for økonomi, markedsføring og jus","higher","english","2026-10-16",42
+"usn","usn_MAR4020-1_2022_spring_1","MAR4020-1",2022,"Vår","Institutt for økonomi, markedsføring og jus","higher","english","2026-10-16",42
+"usn","usn_MG1NA3-1_2022_autumn_1","MG1NA3-1",2022,"Høst","Institutt for matematikk og naturfag","lower","other","2026-10-16",42
+"usn","usn_MG1NA3-1_2022_spring_1","MG1NA3-1",2022,"Vår","Institutt for matematikk og naturfag","higher","other","2026-10-16",42
+"usn","usn_MI-IME4200-1_2022_autumn_1","MI-IME4200-1",2022,"Høst","Institutt for sykepleie- og helsevitenskap","higher","other","2026-10-16",42
+"usn","usn_MI-IME4200-1_2022_spring_1","MI-IME4200-1",2022,"Vår","Institutt for sykepleie- og helsevitenskap","higher","other","2026-10-16",42
+"usn","usn_MORT319-1_2022_autumn_1","MORT319-1",2022,"Høst","Institutt for optometri, radiografi og lysdesign","higher","other","2026-10-16",42
+"usn","usn_MORT319-1_2022_spring_1","MORT319-1",2022,"Vår","Institutt for optometri, radiografi og lysdesign","higher","other","2026-10-16",42
+"usn","usn_MP-PFV4100-1_2022_autumn_1","MP-PFV4100-1",2022,"Høst","Institutt for pedagogikk","higher","other","2026-10-16",42
+"usn","usn_MP-PFV4100-1_2022_spring_1","MP-PFV4100-1",2022,"Vår","Institutt for pedagogikk","higher","other","2026-10-16",42
+"usn","usn_NETPRL-1_2022_autumn_1","NETPRL-1",2022,"Høst","EVU - Handelshøyskolen","lower","other","2026-10-16",42
+"usn","usn_NETPRL-1_2022_spring_1","NETPRL-1",2022,"Vår","EVU - Institutt for økonomi, historie og samfunnsvitenskap","lower","other","2026-10-16",42
+"usn","usn_PB1280-1_2022_autumn_1","PB1280-1",2022,"Høst","Fakultet for teknologi, naturvitenskap og maritime fag","lower","other","2026-10-16",42
+"usn","usn_PB1280-1_2022_spring_1","PB1280-1",2022,"Vår","Fakultet for teknologi, naturvitenskap og maritime fag","lower","other","2026-10-16",42
+"usn","usn_PPUKR1-1_2022_autumn_1","PPUKR1-1",2022,"Høst","Institutt for friluftsliv, idretts og kroppsøving","lower","other","2026-10-16",42
+"usn","usn_PPUKR1-1_2022_spring_1","PPUKR1-1",2022,"Vår","Institutt for friluftsliv, idretts og kroppsøving","lower","other","2026-10-16",42
+"usn","usn_SMERTE100-1_2022_autumn_1","SMERTE100-1",2022,"Høst","EVU - Institutt for sykepleie- og helsevitenskap","continuing","other","2026-10-16",42
+"usn","usn_SMERTE100-1_2022_spring_1","SMERTE100-1",2022,"Vår","EVU - Institutt for sykepleie- og helsevitenskap","continuing","other","2026-10-16",42
+"usn","usn_STR4030-1_2022_autumn_1","STR4030-1",2022,"Høst","Institutt for økonomi, markedsføring og jus","higher","other","2026-10-16",42
+"usn","usn_STR4030-1_2022_spring_1","STR4030-1",2022,"Vår","Institutt for økonomi, markedsføring og jus","higher","other","2026-10-16",42
+"usn","usn_STREKON1-1_2022_autumn_1","STREKON1-1",2022,"Høst","EVU - Fakultet for humaniora, idretts- og utdanningsvitenskap","continuing","other","2026-10-16",42
+"usn","usn_STREKON1-1_2022_spring_1","STREKON1-1",2022,"Vår","EVU - Fakultet for humaniora, idretts- og utdanningsvitenskap","continuing","other","2026-10-16",42
+"usn","usn_ØKARB1001-1_2022_autumn_1","ØKARB1001-1",2022,"Høst","EVU - Handelshøyskolen","lower","other","2026-10-16",42
+"usn","usn_ØKARB1001-1_2022_spring_1","ØKARB1001-1",2022,"Vår","EVU - Institutt for økonomi, markedsføring og jus","lower","other","2026-10-16",42
+"usn","usn_ØKINF10-1_2022_autumn_1","ØKINF10-1",2022,"Høst","EVU - Institutt for økonomi og IT","continuing","other","2026-10-16",42
+"usn","usn_ØKINF10-1_2022_spring_1","ØKINF10-1",2022,"Vår","EVU - Institutt for økonomi og IT","continuing","other","2026-10-16",42
+"usn","usn_ØKPRO1001-1_2022_autumn_1","ØKPRO1001-1",2022,"Høst","EVU - Handelshøyskolen","lower","other","2026-10-16",42
+"usn","usn_ØKPRO1001-1_2022_spring_1","ØKPRO1001-1",2022,"Vår","EVU - Institutt for industriell økonomi, strategi og statsvitenskap","lower","other","2026-10-16",42
+"usn","usn_4013-1_2025_autumn_3","4013-1",2025,"Høst","Institutt for natur-, helse - og miljø","lower","other","2026-10-16",42
+"usn","usn_4013-1_2025_spring_3","4013-1",2025,"Vår","Institutt for natur-, helse - og miljø","lower","other","2026-10-16",42
+"usn","usn_4505-1_2025_autumn_3","4505-1",2025,"Høst","Institutt for natur-, helse - og miljø","lower","english","2026-10-16",42
+"usn","usn_4505-1_2025_spring_4","4505-1",2025,"Vår","Institutt for natur-, helse - og miljø","lower","english","2026-10-16",42
+"usn","usn_9228-1_2025_spring_3","9228-1",2025,"Vår","Institutt for kultur, religion og samfunnsfag","phd","other","2026-10-16",42
+"usn","usn_ALDSU122-1_2025_autumn_1","ALDSU122-1",2025,"Høst","EVU - Fakultet for helse- og sosialvitenskap","continuing","english","2026-10-16",42
+"usn","usn_ALDSU122-1_2025_spring_1","ALDSU122-1",2025,"Vår","EVU - Fakultet for helse- og sosialvitenskap","continuing","english","2026-10-16",42
+"usn","usn_BØK1000-1_2025_autumn_1","BØK1000-1",2025,"Høst","Handelshøyskolen","lower","other","2026-10-16",42
+"usn","usn_BØK1000-1_2025_spring_2","BØK1000-1",2025,"Vår","Handelshøyskolen","lower","other","2026-10-16",42
+"usn","usn_EDUC900-1_2025_autumn_1","EDUC900-1",2025,"Høst","Avdeling for forskning, innovasjon og bibliotek","phd","english","2026-10-16",42
+"usn","usn_EDUC900-1_2025_spring_2","EDUC900-1",2025,"Vår","Avdeling for forskning, innovasjon og bibliotek","phd","english","2026-10-16",42
+"usn","usn_EE505-1_2025_autumn_1","EE505-1",2025,"Høst","Institutt for natur-, helse - og miljø","higher","english","2026-10-16",42
+"usn","usn_EE505-1_2025_spring_1","EE505-1",2025,"Vår","Institutt for natur-, helse - og miljø","higher","english","2026-10-16",42
+"usn","usn_FM2SATS-1_2025_autumn_3","FM2SATS-1",2025,"Høst","Institutt for tradisjonskunst og folkemusikk","lower","other","2026-10-16",42
+"usn","usn_FM2SATS-1_2025_spring_3","FM2SATS-1",2025,"Vår","Institutt for tradisjonskunst og folkemusikk","lower","other","2026-10-16",42
+"usn","usn_HI-EIN4000-1_2025_spring_3","HI-EIN4000-1",2025,"Vår","Institutt for økonomi, historie og samfunnsvitenskap","higher","other","2026-10-16",42
+"usn","usn_HIS2010-1_2025_autumn_2","HIS2010-1",2025,"Høst","Institutt for økonomi, historie og samfunnsvitenskap","lower","english","2026-10-16",42
+"usn","usn_LÆRMILJØ-1_2025_autumn_3","LÆRMILJØ-1",2025,"Høst","Institutt for pedagogikk","lower","other","2026-10-16",42
+"usn","usn_LÆRMILJØ-1_2025_spring_3","LÆRMILJØ-1",2025,"Vår","Institutt for pedagogikk","lower","other","2026-10-16",42
+"usn","usn_MET1020-1_2025_autumn_1","MET1020-1",2025,"Høst","Handelshøyskolen","lower","other","2026-10-16",42
+"usn","usn_MET1020-1_2025_spring_2","MET1020-1",2025,"Vår","Handelshøyskolen","lower","other","2026-10-16",42
+"usn","usn_MET9000-1_2025_autumn_1","MET9000-1",2025,"Høst","Handelshøyskolen","phd","english","2026-10-16",42
+"usn","usn_MET9000-1_2025_spring_1","MET9000-1",2025,"Vår","Handelshøyskolen","phd","english","2026-10-16",42
+"usn","usn_MG1MU2-1_2025_autumn_1","MG1MU2-1",2025,"Høst","Institutt for estetiske fag","lower","other","2026-10-16",42
+"usn","usn_MG1MU2-1_2025_spring_1","MG1MU2-1",2025,"Vår","Institutt for estetiske fag","lower","other","2026-10-16",42
+"usn","usn_MG1SA1-1_2025_autumn_1","MG1SA1-1",2025,"Høst","Institutt for kultur, religion og samfunnsfag","lower","other","2026-10-16",42
+"usn","usn_MG1SA1-1_2025_spring_1","MG1SA1-1",2025,"Vår","Institutt for kultur, religion og samfunnsfag","lower","other","2026-10-16",42
+"usn","usn_MSM4102-1_2025_autumn_1","MSM4102-1",2025,"Høst","Institutt for økonomi og IT","higher","english","2026-10-16",42
+"usn","usn_MSM4102-1_2025_spring_1","MSM4102-1",2025,"Vår","Institutt for økonomi og IT","higher","english","2026-10-16",42
+"usn","usn_NMARB30-1_2025_autumn_1","NMARB30-1",2025,"Høst","Institutt for natur-, helse - og miljø","lower","other","2026-10-16",42
+"usn","usn_NMARB30-1_2025_spring_1","NMARB30-1",2025,"Vår","Institutt for natur-, helse - og miljø","lower","other","2026-10-16",42
+"usn","usn_NOFRI104-1_2025_spring_3","NOFRI104-1",2025,"Vår","Institutt for friluftsliv, idretts og kroppsøving","higher","other","2026-10-16",42
+"usn","usn_PB1090-1_2025_autumn_1","PB1090-1",2025,"Høst","Fakultet for teknologi, naturvitenskap og maritime fag","lower","other","2026-10-16",42
+"usn","usn_PB1090-1_2025_spring_1","PB1090-1",2025,"Vår","Fakultet for teknologi, naturvitenskap og maritime fag","lower","other","2026-10-16",42
+"usn","usn_PN-DM9000-1_2025_autumn_1","PN-DM9000-1",2025,"Høst","Institutt for maritime operasjoner","phd","other","2026-10-16",42
+"usn","usn_PN-DM9000-1_2025_spring_1","PN-DM9000-1",2025,"Vår","Institutt for maritime operasjoner","phd","other","2026-10-16",42
+"usn","usn_PPUDPRA1-1_2025_autumn_1","PPUDPRA1-1",2025,"Høst","Institutt for pedagogikk","lower","other","2026-10-16",42
+"usn","usn_PPUDPRA1-1_2025_spring_1","PPUDPRA1-1",2025,"Vår","Institutt for pedagogikk","lower","other","2026-10-16",42
+"usn","usn_PPURET1-1_2025_autumn_3","PPURET1-1",2025,"Høst","Fakultet for humaniora, idretts- og utdanningsvitenskap","lower","other","2026-10-16",42
+"usn","usn_PPURET1-1_2025_spring_3","PPURET1-1",2025,"Vår","Fakultet for humaniora, idretts- og utdanningsvitenskap","lower","other","2026-10-16",42
+"usn","usn_TE9200-1_2025_autumn_1","TE9200-1",2025,"Høst","Institutt for prosess-, energi- og miljøteknologi","phd","english","2026-10-16",42
+"usn","usn_TE9200-1_2025_spring_1","TE9200-1",2025,"Vår","Institutt for prosess-, energi- og miljøteknologi","phd","english","2026-10-16",42
+"usn","usn_UHULV-1_2025_autumn_1","UHULV-1",2025,"Høst","Enhet for digitalisering og utdanningskvalitet","lower","other","2026-10-16",42
+"usn","usn_UHULV-1_2025_spring_1","UHULV-1",2025,"Vår","Enhet for digitalisering og utdanningskvalitet","lower","other","2026-10-16",42
+"usn","usn_VE3030-1_2025_autumn_1","VE3030-1",2025,"Høst","Fakultet for teknologi, naturvitenskap og maritime fag","lower","english","2026-10-16",42
+"usn","usn_VE3030-1_2025_spring_1","VE3030-1",2025,"Vår","Fakultet for teknologi, naturvitenskap og maritime fag","lower","english","2026-10-16",42

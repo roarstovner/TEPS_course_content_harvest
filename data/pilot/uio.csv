@@ -1,0 +1,192 @@
+"institution","course_id","course_code_raw","year","semester_name","department_name","level","language","dbh_snapshot","seed"
+"uio","uio_AB-206-1_2025_autumn_1","AB-206-1",2025,"Høst","Det matematisk-naturvitenskapelige fakultet","lower","other","2026-10-16",42
+"uio","uio_AB-206-1_2025_spring_1","AB-206-1",2025,"Vår","Det matematisk-naturvitenskapelige fakultet","lower","other","2026-10-16",42
+"uio","uio_AGF-345-1_2025_autumn_1","AGF-345-1",2025,"Høst","Det matematisk-naturvitenskapelige fakultet","higher","other","2026-10-16",42
+"uio","uio_AGF-345-1_2025_spring_1","AGF-345-1",2025,"Vår","Det matematisk-naturvitenskapelige fakultet","higher","other","2026-10-16",42
+"uio","uio_ANTH4125-1_2025_autumn_2","ANTH4125-1",2025,"Høst","Sosialantropologisk institutt","higher","english","2026-10-16",42
+"uio","uio_ARK4020-1_2025_autumn_1","ARK4020-1",2025,"Høst","Institutt for arkeologi, konservering og historiske studier","higher","english","2026-10-16",42
+"uio","uio_ARK4020-1_2025_spring_1","ARK4020-1",2025,"Vår","Institutt for arkeologi, konservering og historiske studier","higher","english","2026-10-16",42
+"uio","uio_ARK4090-1_2025_autumn_1","ARK4090-1",2025,"Høst","Institutt for arkeologi, konservering og historiske studier","higher","other","2026-10-16",42
+"uio","uio_ARK4090-1_2025_spring_1","ARK4090-1",2025,"Vår","Institutt for arkeologi, konservering og historiske studier","higher","other","2026-10-16",42
+"uio","uio_ARK4301-1_2025_autumn_1","ARK4301-1",2025,"Høst","Institutt for arkeologi, konservering og historiske studier","higher","other","2026-10-16",42
+"uio","uio_ARK4301-1_2025_spring_1","ARK4301-1",2025,"Vår","Institutt for arkeologi, konservering og historiske studier","higher","other","2026-10-16",42
+"uio","uio_AS-301-1_2025_autumn_1","AS-301-1",2025,"Høst","Det matematisk-naturvitenskapelige fakultet","higher","english","2026-10-16",42
+"uio","uio_AS-301-1_2025_spring_1","AS-301-1",2025,"Vår","Det matematisk-naturvitenskapelige fakultet","higher","english","2026-10-16",42
+"uio","uio_AST9011SP-1_2025_autumn_1","AST9011SP-1",2025,"Høst","Institutt for teoretisk astrofysikk","phd","other","2026-10-16",42
+"uio","uio_AST9011SP-1_2025_spring_1","AST9011SP-1",2025,"Vår","Institutt for teoretisk astrofysikk","phd","other","2026-10-16",42
+"uio","uio_AT-833-1_2025_autumn_1","AT-833-1",2025,"Høst","Det matematisk-naturvitenskapelige fakultet","phd","english","2026-10-16",42
+"uio","uio_AT-833-1_2025_spring_1","AT-833-1",2025,"Vår","Det matematisk-naturvitenskapelige fakultet","phd","english","2026-10-16",42
+"uio","uio_BIOS2910-1_2025_autumn_1","BIOS2910-1",2025,"Høst","Institutt for biovitenskap","lower","english","2026-10-16",42
+"uio","uio_BIOS2910-1_2025_spring_1","BIOS2910-1",2025,"Vår","Institutt for biovitenskap","lower","english","2026-10-16",42
+"uio","uio_BIOS5812-1_2025_autumn_1","BIOS5812-1",2025,"Høst","Institutt for biovitenskap","higher","other","2026-10-16",42
+"uio","uio_BIOS5812-1_2025_spring_1","BIOS5812-1",2025,"Vår","Institutt for biovitenskap","higher","other","2026-10-16",42
+"uio","uio_ECON4150-1_2025_autumn_1","ECON4150-1",2025,"Høst","Økonomisk institutt","higher","english","2026-10-16",42
+"uio","uio_ECON4150-1_2025_spring_1","ECON4150-1",2025,"Vår","Økonomisk institutt","higher","english","2026-10-16",42
+"uio","uio_ECON5200-1_2025_autumn_1","ECON5200-1",2025,"Høst","Økonomisk institutt","higher","english","2026-10-16",42
+"uio","uio_ECON5200-1_2025_spring_1","ECON5200-1",2025,"Vår","Økonomisk institutt","higher","english","2026-10-16",42
+"uio","uio_ECON9912C-1_2025_autumn_1","ECON9912C-1",2025,"Høst","Økonomisk institutt","phd","english","2026-10-16",42
+"uio","uio_ECON9912C-1_2025_spring_1","ECON9912C-1",2025,"Vår","Økonomisk institutt","phd","english","2026-10-16",42
+"uio","uio_EHS4010-1_2025_autumn_1","EHS4010-1",2025,"Høst","Institutt for kulturstudier og orientalske språk","higher","english","2026-10-16",42
+"uio","uio_EHS4010-1_2025_spring_1","EHS4010-1",2025,"Vår","Institutt for kulturstudier og orientalske språk","higher","english","2026-10-16",42
+"uio","uio_ENG4416-1_2025_autumn_1","ENG4416-1",2025,"Høst","Institutt for litteratur, områdestudier og europeiske språk","higher","english","2026-10-16",42
+"uio","uio_ENG4416-1_2025_spring_1","ENG4416-1",2025,"Vår","Institutt for litteratur, områdestudier og europeiske språk","higher","english","2026-10-16",42
+"uio","uio_EXFAC03-KUN-1_2025_autumn_1","EXFAC03-KUN-1",2025,"Høst","Institutt for filosofi, ide- og kunsthistoriske og klassiske språk","lower","other","2026-10-16",42
+"uio","uio_EXFAC03-KUN-1_2025_spring_1","EXFAC03-KUN-1",2025,"Vår","Institutt for filosofi, ide- og kunsthistoriske og klassiske språk","lower","other","2026-10-16",42
+"uio","uio_EXPHIL03-1_2025_autumn_1","EXPHIL03-1",2025,"Høst","Examen philosophicum","lower","english","2026-10-16",42
+"uio","uio_EXPHIL03-1_2025_spring_1","EXPHIL03-1",2025,"Vår","Examen philosophicum","lower","english","2026-10-16",42
+"uio","uio_FIL2390-1_2025_autumn_1","FIL2390-1",2025,"Høst","Institutt for filosofi, ide- og kunsthistoriske og klassiske språk","lower","english","2026-10-16",42
+"uio","uio_FIL2390-1_2025_spring_1","FIL2390-1",2025,"Vår","Institutt for filosofi, ide- og kunsthistoriske og klassiske språk","lower","english","2026-10-16",42
+"uio","uio_FRA4313-1_2025_autumn_1","FRA4313-1",2025,"Høst","Institutt for litteratur, områdestudier og europeiske språk","higher","other","2026-10-16",42
+"uio","uio_FRA4313-1_2025_spring_1","FRA4313-1",2025,"Vår","Institutt for litteratur, områdestudier og europeiske språk","higher","other","2026-10-16",42
+"uio","uio_FRM5943V-1_2025_autumn_1","FRM5943V-1",2025,"Høst","Farmasøytisk institutt","continuing","other","2026-10-16",42
+"uio","uio_FRM5943V-1_2025_spring_1","FRM5943V-1",2025,"Vår","Farmasøytisk institutt","continuing","other","2026-10-16",42
+"uio","uio_FYS3220-1_2025_autumn_1","FYS3220-1",2025,"Høst","Fysisk institutt","lower","other","2026-10-16",42
+"uio","uio_FYS3220-1_2025_spring_1","FYS3220-1",2025,"Vår","Fysisk institutt","lower","other","2026-10-16",42
+"uio","uio_FYS3600-1_2025_autumn_1","FYS3600-1",2025,"Høst","Fysisk institutt","lower","english","2026-10-16",42
+"uio","uio_FYS3600-1_2025_spring_1","FYS3600-1",2025,"Vår","Fysisk institutt","lower","english","2026-10-16",42
+"uio","uio_FYS4505-1_2025_autumn_1","FYS4505-1",2025,"Høst","Fysisk institutt","higher","other","2026-10-16",42
+"uio","uio_FYS4505-1_2025_spring_1","FYS4505-1",2025,"Vår","Fysisk institutt","higher","other","2026-10-16",42
+"uio","uio_FYS9545-1_2025_autumn_1","FYS9545-1",2025,"Høst","Fysisk institutt","phd","english","2026-10-16",42
+"uio","uio_FYS9545-1_2025_spring_1","FYS9545-1",2025,"Vår","Fysisk institutt","phd","english","2026-10-16",42
+"uio","uio_FYS9565-1_2025_autumn_1","FYS9565-1",2025,"Høst","Fysisk institutt","phd","other","2026-10-16",42
+"uio","uio_FYS9565-1_2025_spring_1","FYS9565-1",2025,"Vår","Fysisk institutt","phd","other","2026-10-16",42
+"uio","uio_FYS9585-1_2025_autumn_1","FYS9585-1",2025,"Høst","Fysisk institutt","phd","other","2026-10-16",42
+"uio","uio_FYS9585-1_2025_spring_2","FYS9585-1",2025,"Vår","Fysisk institutt","phd","other","2026-10-16",42
+"uio","uio_GEO4410-1_2025_autumn_1","GEO4410-1",2025,"Høst","Institutt for geofag","higher","english","2026-10-16",42
+"uio","uio_GEO4410-1_2025_spring_1","GEO4410-1",2025,"Vår","Institutt for geofag","higher","english","2026-10-16",42
+"uio","uio_GEO9630-1_2025_autumn_1","GEO9630-1",2025,"Høst","Institutt for geofag","phd","english","2026-10-16",42
+"uio","uio_GEO9630-1_2025_spring_1","GEO9630-1",2025,"Vår","Institutt for geofag","phd","english","2026-10-16",42
+"uio","uio_GRE4318-1_2025_autumn_1","GRE4318-1",2025,"Høst","Institutt for filosofi, ide- og kunsthistoriske og klassiske språk","higher","other","2026-10-16",42
+"uio","uio_GRE4318-1_2025_spring_1","GRE4318-1",2025,"Vår","Institutt for filosofi, ide- og kunsthistoriske og klassiske språk","higher","other","2026-10-16",42
+"uio","uio_HELSEF4510-1_2025_autumn_1","HELSEF4510-1",2025,"Høst","Institutt for helse og samfunn","higher","english","2026-10-16",42
+"uio","uio_HELSEF4510-1_2025_spring_1","HELSEF4510-1",2025,"Vår","Institutt for helse og samfunn","higher","english","2026-10-16",42
+"uio","uio_HF9006-1_2025_autumn_1","HF9006-1",2025,"Høst","Det humanistiske fakultet","phd","english","2026-10-16",42
+"uio","uio_HF9006-1_2025_spring_1","HF9006-1",2025,"Vår","Det humanistiske fakultet","phd","english","2026-10-16",42
+"uio","uio_HFAVHDR-1_2025_autumn_1","HFAVHDR-1",2025,"Høst","Det humanistiske fakultet","phd","other","2026-10-16",42
+"uio","uio_HFAVHDR-1_2025_spring_1","HFAVHDR-1",2025,"Vår","Det humanistiske fakultet","phd","other","2026-10-16",42
+"uio","uio_HIS2011MV-1_2025_autumn_2","HIS2011MV-1",2025,"Høst","Institutt for arkeologi, konservering og historiske studier","continuing","other","2026-10-16",42
+"uio","uio_HIS2411-1_2025_autumn_1","HIS2411-1",2025,"Høst","Institutt for arkeologi, konservering og historiske studier","lower","other","2026-10-16",42
+"uio","uio_HIS2411-1_2025_spring_1","HIS2411-1",2025,"Vår","Institutt for arkeologi, konservering og historiske studier","lower","other","2026-10-16",42
+"uio","uio_HIS2930-1_2025_autumn_1","HIS2930-1",2025,"Høst","Institutt for arkeologi, konservering og historiske studier","lower","english","2026-10-16",42
+"uio","uio_HIS2930-1_2025_spring_1","HIS2930-1",2025,"Vår","Institutt for arkeologi, konservering og historiske studier","lower","english","2026-10-16",42
+"uio","uio_HMS0302-1_2025_autumn_1","HMS0302-1",2025,"Høst","Det medisinske fakultet","lower","other","2026-10-16",42
+"uio","uio_HMS0302-1_2025_spring_2","HMS0302-1",2025,"Vår","Det medisinske fakultet","lower","other","2026-10-16",42
+"uio","uio_IBS4390-1_2025_autumn_1","IBS4390-1",2025,"Høst","Institutt for lingvistiske og nordiske studier","higher","english","2026-10-16",42
+"uio","uio_IBS4390-1_2025_spring_1","IBS4390-1",2025,"Vår","Institutt for lingvistiske og nordiske studier","higher","english","2026-10-16",42
+"uio","uio_IMB9335-1_2025_autumn_1","IMB9335-1",2025,"Høst","Institutt for medisinske basalfag","phd","english","2026-10-16",42
+"uio","uio_IMB9335-1_2025_spring_1","IMB9335-1",2025,"Vår","Institutt for medisinske basalfag","phd","english","2026-10-16",42
+"uio","uio_IN3170-1_2025_autumn_1","IN3170-1",2025,"Høst","Institutt for informatikk","lower","english","2026-10-16",42
+"uio","uio_IN3170-1_2025_spring_1","IN3170-1",2025,"Vår","Institutt for informatikk","lower","english","2026-10-16",42
+"uio","uio_IN5160-1_2025_autumn_1","IN5160-1",2025,"Høst","Institutt for informatikk","higher","english","2026-10-16",42
+"uio","uio_IN5160-1_2025_spring_1","IN5160-1",2025,"Vår","Institutt for informatikk","higher","english","2026-10-16",42
+"uio","uio_IN9580-1_2025_autumn_1","IN9580-1",2025,"Høst","Institutt for informatikk","phd","english","2026-10-16",42
+"uio","uio_IN9580-1_2025_spring_1","IN9580-1",2025,"Vår","Institutt for informatikk","phd","english","2026-10-16",42
+"uio","uio_INF0010-1_2025_autumn_1","INF0010-1",2025,"Høst","Institutt for informatikk","other","other","2026-10-16",42
+"uio","uio_INF0010-1_2025_spring_1","INF0010-1",2025,"Vår","Institutt for informatikk","other","other","2026-10-16",42
+"uio","uio_INF9110-1_2025_autumn_1","INF9110-1",2025,"Høst","Institutt for informatikk","phd","other","2026-10-16",42
+"uio","uio_INF9110-1_2025_spring_1","INF9110-1",2025,"Vår","Institutt for informatikk","phd","other","2026-10-16",42
+"uio","uio_ISSN0500-1_2025_autumn_1","ISSN0500-1",2025,"Høst","Den internasjonale sommerskole","lower","english","2026-10-16",42
+"uio","uio_ISSN0500-1_2025_spring_1","ISSN0500-1",2025,"Vår","Den internasjonale sommerskole","lower","english","2026-10-16",42
+"uio","uio_JFSPR5211-1_2025_autumn_1","JFSPR5211-1",2025,"Høst","Det juridiske fakultet","higher","other","2026-10-16",42
+"uio","uio_JFSPR5211-1_2025_spring_1","JFSPR5211-1",2025,"Vår","Det juridiske fakultet","higher","other","2026-10-16",42
+"uio","uio_JUS5134-1_2025_autumn_1","JUS5134-1",2025,"Høst","Norsk senter for menneskerettigheter","higher","english","2026-10-16",42
+"uio","uio_JUS5134-1_2025_spring_1","JUS5134-1",2025,"Vår","Norsk senter for menneskerettigheter","higher","english","2026-10-16",42
+"uio","uio_JUS5220-1_2025_autumn_1","JUS5220-1",2025,"Høst","Institutt for privatrett","higher","other","2026-10-16",42
+"uio","uio_JUS5220-1_2025_spring_1","JUS5220-1",2025,"Vår","Institutt for privatrett","higher","other","2026-10-16",42
+"uio","uio_JUS5420-1_2025_autumn_1","JUS5420-1",2025,"Høst","Nordisk institutt for sjørett","higher","other","2026-10-16",42
+"uio","uio_JUS5420-1_2025_spring_1","JUS5420-1",2025,"Vår","Nordisk institutt for sjørett","higher","other","2026-10-16",42
+"uio","uio_JUS5912-1_2025_autumn_1","JUS5912-1",2025,"Høst","Institutt for offentlig rett","higher","english","2026-10-16",42
+"uio","uio_JUS5912-1_2025_spring_1","JUS5912-1",2025,"Vår","Institutt for offentlig rett","higher","english","2026-10-16",42
+"uio","uio_KJM5210-1_2025_autumn_1","KJM5210-1",2025,"Høst","Kjemisk institutt","higher","other","2026-10-16",42
+"uio","uio_KJM5210-1_2025_spring_1","KJM5210-1",2025,"Vår","Kjemisk institutt","higher","other","2026-10-16",42
+"uio","uio_KJM9021SP-1_2025_autumn_1","KJM9021SP-1",2025,"Høst","Kjemisk institutt","phd","other","2026-10-16",42
+"uio","uio_KJM9021SP-1_2025_spring_1","KJM9021SP-1",2025,"Vår","Kjemisk institutt","phd","other","2026-10-16",42
+"uio","uio_KJM9061SP-1_2025_autumn_1","KJM9061SP-1",2025,"Høst","Kjemisk institutt","phd","other","2026-10-16",42
+"uio","uio_KJM9061SP-1_2025_spring_1","KJM9061SP-1",2025,"Vår","Kjemisk institutt","phd","other","2026-10-16",42
+"uio","uio_KUN2500-1_2025_autumn_1","KUN2500-1",2025,"Høst","Institutt for filosofi, ide- og kunsthistoriske og klassiske språk","lower","other","2026-10-16",42
+"uio","uio_KUN2500-1_2025_spring_1","KUN2500-1",2025,"Vår","Institutt for filosofi, ide- og kunsthistoriske og klassiske språk","lower","other","2026-10-16",42
+"uio","uio_KUN4012-1_2025_autumn_1","KUN4012-1",2025,"Høst","Institutt for filosofi, ide- og kunsthistoriske og klassiske språk","higher","other","2026-10-16",42
+"uio","uio_KUN4012-1_2025_spring_1","KUN4012-1",2025,"Vår","Institutt for filosofi, ide- og kunsthistoriske og klassiske språk","higher","other","2026-10-16",42
+"uio","uio_MAT4410-1_2025_autumn_1","MAT4410-1",2025,"Høst","Matematisk institutt","higher","english","2026-10-16",42
+"uio","uio_MAT4410-1_2025_spring_1","MAT4410-1",2025,"Vår","Matematisk institutt","higher","english","2026-10-16",42
+"uio","uio_MAT9580-1_2025_autumn_1","MAT9580-1",2025,"Høst","Matematisk institutt","phd","english","2026-10-16",42
+"uio","uio_MAT9580-1_2025_spring_1","MAT9580-1",2025,"Vår","Matematisk institutt","phd","english","2026-10-16",42
+"uio","uio_MATSP120-1_2025_autumn_1","MATSP120-1",2025,"Høst","Matematisk institutt","higher","other","2026-10-16",42
+"uio","uio_MATSP120-1_2025_spring_1","MATSP120-1",2025,"Vår","Matematisk institutt","higher","other","2026-10-16",42
+"uio","uio_MEK4490-1_2025_autumn_1","MEK4490-1",2025,"Høst","Matematisk institutt","higher","other","2026-10-16",42
+"uio","uio_MEK4490-1_2025_spring_1","MEK4490-1",2025,"Vår","Matematisk institutt","higher","other","2026-10-16",42
+"uio","uio_MEVIT1011-1_2025_autumn_1","MEVIT1011-1",2025,"Høst","Institutt for medier og kommunikasjon","lower","english","2026-10-16",42
+"uio","uio_MEVIT1011-1_2025_spring_1","MEVIT1011-1",2025,"Vår","Institutt for medier og kommunikasjon","lower","english","2026-10-16",42
+"uio","uio_MEVIT2114-1_2025_autumn_1","MEVIT2114-1",2025,"Høst","Institutt for medier og kommunikasjon","lower","other","2026-10-16",42
+"uio","uio_MEVIT2114-1_2025_spring_1","MEVIT2114-1",2025,"Vår","Institutt for medier og kommunikasjon","lower","other","2026-10-16",42
+"uio","uio_MF9135-1_2025_autumn_1","MF9135-1",2025,"Høst","Det medisinske fakultet","phd","english","2026-10-16",42
+"uio","uio_MF9135-1_2025_spring_1","MF9135-1",2025,"Vår","Det medisinske fakultet","phd","english","2026-10-16",42
+"uio","uio_MULTI4195-1_2025_autumn_1","MULTI4195-1",2025,"Høst","Institutt for lingvistiske og nordiske studier","higher","english","2026-10-16",42
+"uio","uio_MULTI4195-1_2025_spring_1","MULTI4195-1",2025,"Vår","Institutt for lingvistiske og nordiske studier","higher","english","2026-10-16",42
+"uio","uio_MUS4093-1_2025_autumn_2","MUS4093-1",2025,"Høst","Institutt for musikkvitenskap","higher","other","2026-10-16",42
+"uio","uio_NAT5000-1_2025_autumn_1","NAT5000-1",2025,"Høst","Naturfagsenteret","higher","other","2026-10-16",42
+"uio","uio_NAT5000-1_2025_spring_1","NAT5000-1",2025,"Vår","Naturfagsenteret","higher","other","2026-10-16",42
+"uio","uio_NOAS2102V-1_2025_autumn_2","NOAS2102V-1",2025,"Høst","Institutt for lingvistiske og nordiske studier","continuing","other","2026-10-16",42
+"uio","uio_NOR4100-1_2025_autumn_1","NOR4100-1",2025,"Høst","Institutt for lingvistiske og nordiske studier","higher","other","2026-10-16",42
+"uio","uio_NOR4100-1_2025_spring_1","NOR4100-1",2025,"Vår","Institutt for lingvistiske og nordiske studier","higher","other","2026-10-16",42
+"uio","uio_NOR4520-1_2025_autumn_1","NOR4520-1",2025,"Høst","Institutt for lingvistiske og nordiske studier","higher","other","2026-10-16",42
+"uio","uio_NOR4520-1_2025_spring_1","NOR4520-1",2025,"Vår","Institutt for lingvistiske og nordiske studier","higher","other","2026-10-16",42
+"uio","uio_NRSH9001-1_2025_autumn_1","NRSH9001-1",2025,"Høst","Institutt for arkeologi, konservering og historiske studier","phd","english","2026-10-16",42
+"uio","uio_NRSH9001-1_2025_spring_1","NRSH9001-1",2025,"Vår","Institutt for arkeologi, konservering og historiske studier","phd","english","2026-10-16",42
+"uio","uio_OD8620-1_2025_autumn_1","OD8620-1",2025,"Høst","Det odontologiske fakultet","higher","other","2026-10-16",42
+"uio","uio_OD8620-1_2025_spring_1","OD8620-1",2025,"Vår","Det odontologiske fakultet","higher","other","2026-10-16",42
+"uio","uio_PECOS4025-1_2025_autumn_1","PECOS4025-1",2025,"Høst","Institutt for statsvitenskap","higher","english","2026-10-16",42
+"uio","uio_PECOS4025-1_2025_spring_1","PECOS4025-1",2025,"Vår","Institutt for statsvitenskap","higher","english","2026-10-16",42
+"uio","uio_PED3505V-1_2025_autumn_2","PED3505V-1",2025,"Høst","Institutt for pedagogikk","continuing","other","2026-10-16",42
+"uio","uio_PED4105-1_2025_autumn_1","PED4105-1",2025,"Høst","Institutt for pedagogikk","higher","other","2026-10-16",42
+"uio","uio_PED4105-1_2025_spring_1","PED4105-1",2025,"Vår","Institutt for pedagogikk","higher","other","2026-10-16",42
+"uio","uio_PROMO3-1_2025_spring_3","PROMO3-1",2025,"Vår","Institutt for lærerutdanning og skoleforskning","lower","other","2026-10-16",42
+"uio","uio_PSY9170-1_2025_autumn_1","PSY9170-1",2025,"Høst","Psykologisk institutt","phd","english","2026-10-16",42
+"uio","uio_PSY9170-1_2025_spring_1","PSY9170-1",2025,"Vår","Psykologisk institutt","phd","english","2026-10-16",42
+"uio","uio_PSY9302B-1_2025_autumn_1","PSY9302B-1",2025,"Høst","Psykologisk institutt","phd","english","2026-10-16",42
+"uio","uio_PSY9302B-1_2025_spring_1","PSY9302B-1",2025,"Vår","Psykologisk institutt","phd","english","2026-10-16",42
+"uio","uio_PSYM4020-1_2025_autumn_1","PSYM4020-1",2025,"Høst","Psykologisk institutt","higher","english","2026-10-16",42
+"uio","uio_PSYM4020-1_2025_spring_1","PSYM4020-1",2025,"Vår","Psykologisk institutt","higher","english","2026-10-16",42
+"uio","uio_REL2240-1_2025_autumn_1","REL2240-1",2025,"Høst","Institutt for kulturstudier og orientalske språk","lower","other","2026-10-16",42
+"uio","uio_REL2240-1_2025_spring_1","REL2240-1",2025,"Vår","Institutt for kulturstudier og orientalske språk","lower","other","2026-10-16",42
+"uio","uio_RRE4302-1_2025_autumn_1","RRE4302-1",2025,"Høst","Det teologiske fakultet","higher","english","2026-10-16",42
+"uio","uio_RRE4302-1_2025_spring_1","RRE4302-1",2025,"Vår","Det teologiske fakultet","higher","english","2026-10-16",42
+"uio","uio_RSOS2952-1_2025_autumn_1","RSOS2952-1",2025,"Høst","Institutt for kriminologi og rettssosiologi","lower","english","2026-10-16",42
+"uio","uio_RSOS2952-1_2025_spring_1","RSOS2952-1",2025,"Vår","Institutt for kriminologi og rettssosiologi","lower","english","2026-10-16",42
+"uio","uio_SEU2502-1_2025_autumn_1","SEU2502-1",2025,"Høst","Institutt for litteratur, områdestudier og europeiske språk","lower","other","2026-10-16",42
+"uio","uio_SEU2502-1_2025_spring_1","SEU2502-1",2025,"Vår","Institutt for litteratur, områdestudier og europeiske språk","lower","other","2026-10-16",42
+"uio","uio_SOSGEO2302-1_2025_autumn_1","SOSGEO2302-1",2025,"Høst","Institutt for sosiologi og samfunnsgeografi","lower","english","2026-10-16",42
+"uio","uio_SOSGEO2302-1_2025_spring_2","SOSGEO2302-1",2025,"Vår","Institutt for sosiologi og samfunnsgeografi","lower","english","2026-10-16",42
+"uio","uio_SPA4000-1_2025_autumn_1","SPA4000-1",2025,"Høst","Institutt for litteratur, områdestudier og europeiske språk","higher","other","2026-10-16",42
+"uio","uio_SPA4000-1_2025_spring_1","SPA4000-1",2025,"Vår","Institutt for litteratur, områdestudier og europeiske språk","higher","other","2026-10-16",42
+"uio","uio_SPA4121-1_2025_autumn_1","SPA4121-1",2025,"Høst","Institutt for litteratur, områdestudier og europeiske språk","higher","other","2026-10-16",42
+"uio","uio_SPA4121-1_2025_spring_1","SPA4121-1",2025,"Vår","Institutt for litteratur, områdestudier og europeiske språk","higher","other","2026-10-16",42
+"uio","uio_SPED4092-1_2025_autumn_4","SPED4092-1",2025,"Høst","Institutt for spesialpedagogikk","higher","other","2026-10-16",42
+"uio","uio_SPED4092-1_2025_spring_1","SPED4092-1",2025,"Vår","Institutt for spesialpedagogikk","higher","other","2026-10-16",42
+"uio","uio_STKSP150-1_2025_autumn_1","STKSP150-1",2025,"Høst","Matematisk institutt","higher","other","2026-10-16",42
+"uio","uio_STKSP150-1_2025_spring_1","STKSP150-1",2025,"Vår","Matematisk institutt","higher","other","2026-10-16",42
+"uio","uio_SUM4501-1_2025_autumn_1","SUM4501-1",2025,"Høst","Senter for global bærekraft","higher","english","2026-10-16",42
+"uio","uio_SUM4501-1_2025_spring_1","SUM4501-1",2025,"Vår","Senter for utvikling og miljø (SUM)","higher","english","2026-10-16",42
+"uio","uio_SUM9025A-1_2025_autumn_2","SUM9025A-1",2025,"Høst","Senter for global bærekraft","phd","english","2026-10-16",42
+"uio","uio_SVTEODR-1_2025_autumn_1","SVTEODR-1",2025,"Høst","Det samfunnsvitenskapelige fakultet","phd","other","2026-10-16",42
+"uio","uio_SVTEODR-1_2025_spring_1","SVTEODR-1",2025,"Vår","Det samfunnsvitenskapelige fakultet","phd","other","2026-10-16",42
+"uio","uio_TEK3450-1_2025_autumn_2","TEK3450-1",2025,"Høst","Institutt for teknologisystemer","lower","english","2026-10-16",42
+"uio","uio_TEOL4551-1_2025_autumn_1","TEOL4551-1",2025,"Høst","Det teologiske fakultet","continuing","other","2026-10-16",42
+"uio","uio_TEOL4551-1_2025_spring_1","TEOL4551-1",2025,"Vår","Det teologiske fakultet","continuing","other","2026-10-16",42
+"uio","uio_TF9412-1_2025_autumn_1","TF9412-1",2025,"Høst","Det teologiske fakultet","phd","other","2026-10-16",42
+"uio","uio_TF9412-1_2025_spring_1","TF9412-1",2025,"Vår","Det teologiske fakultet","phd","other","2026-10-16",42
+"uio","uio_TIK2101-1_2025_autumn_1","TIK2101-1",2025,"Høst","Senter for teknologi, innovasjon og kultur","lower","english","2026-10-16",42
+"uio","uio_TIK2101-1_2025_spring_1","TIK2101-1",2025,"Vår","Senter for teknologi, innovasjon og kultur","lower","english","2026-10-16",42
+"uio","uio_TIK4011-1_2025_autumn_1","TIK4011-1",2025,"Høst","Senter for teknologi, innovasjon og kultur","higher","english","2026-10-16",42
+"uio","uio_TIK4011-1_2025_spring_1","TIK4011-1",2025,"Vår","Senter for teknologi, innovasjon og kultur","higher","english","2026-10-16",42
+"uio","uio_TYR2010-1_2025_autumn_1","TYR2010-1",2025,"Høst","Institutt for kulturstudier og orientalske språk","lower","other","2026-10-16",42
+"uio","uio_TYR2010-1_2025_spring_1","TYR2010-1",2025,"Vår","Institutt for kulturstudier og orientalske språk","lower","other","2026-10-16",42
+"uio","uio_TYSK1506-1_2025_spring_3","TYSK1506-1",2025,"Vår","Institutt for litteratur, områdestudier og europeiske språk","lower","other","2026-10-16",42
+"uio","uio_UV9040A-1_2025_autumn_1","UV9040A-1",2025,"Høst","Center for Educational Measurement (CEMO)","phd","english","2026-10-16",42
+"uio","uio_UV9040A-1_2025_spring_1","UV9040A-1",2025,"Vår","Center for Educational Measurement (CEMO)","phd","english","2026-10-16",42
+"uio","uio_UV9040B-1_2025_autumn_1","UV9040B-1",2025,"Høst","Institutt for pedagogikk","phd","other","2026-10-16",42
+"uio","uio_UV9040B-1_2025_spring_1","UV9040B-1",2025,"Vår","Institutt for pedagogikk","phd","other","2026-10-16",42
+"uio","uio_UV9534SP-1_2025_autumn_1","UV9534SP-1",2025,"Høst","Det utdanningsvitenskapelige fakultet","phd","other","2026-10-16",42
+"uio","uio_UV9534SP-1_2025_spring_1","UV9534SP-1",2025,"Vår","Det utdanningsvitenskapelige fakultet","phd","other","2026-10-16",42
+"uio","uio_VMSIAKH4195-1_2025_autumn_1","VMSIAKH4195-1",2025,"Høst","Institutt for arkeologi, konservering og historiske studier","higher","english","2026-10-16",42
+"uio","uio_VMSIAKH4195-1_2025_spring_1","VMSIAKH4195-1",2025,"Vår","Institutt for arkeologi, konservering og historiske studier","higher","english","2026-10-16",42

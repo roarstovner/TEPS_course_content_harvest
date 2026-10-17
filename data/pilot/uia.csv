@@ -1,0 +1,195 @@
+"institution","course_id","course_code_raw","year","semester_name","department_name","level","language","dbh_snapshot","seed"
+"uia","uia_BE-313-1_2020_autumn_4","BE-313-1",2020,"Høst","Institutt for økonomi","lower","english","2026-10-16",42
+"uia","uia_BE-313-1_2020_spring_4","BE-313-1",2020,"Vår","Institutt for økonomi","lower","english","2026-10-16",42
+"uia","uia_BE-409-1_2020_autumn_1","BE-409-1",2020,"Høst","Institutt for økonomi","higher","english","2026-10-16",42
+"uia","uia_BE-409-1_2020_spring_1","BE-409-1",2020,"Vår","Institutt for økonomi","higher","english","2026-10-16",42
+"uia","uia_ELE115-G_2020_autumn_1","ELE115-G",2020,"Høst","Institutt for informasjons- og kommunikasjonsteknologi","lower","other","2026-10-16",42
+"uia","uia_ELE115-G_2020_spring_2","ELE115-G",2020,"Vår","Institutt for informasjons- og kommunikasjonsteknologi","lower","other","2026-10-16",42
+"uia","uia_EN-917-1_2020_autumn_1","EN-917-1",2020,"Høst","Institutt for fremmedspråk og oversetting","continuing","other","2026-10-16",42
+"uia","uia_EN-917-1_2020_spring_1","EN-917-1",2020,"Vår","Institutt for fremmedspråk og oversetting","continuing","other","2026-10-16",42
+"uia","uia_ERN117-1_2020_autumn_3","ERN117-1",2020,"Høst","Institutt for ernæring og folkehelse","lower","other","2026-10-16",42
+"uia","uia_ERN117-1_2020_spring_1","ERN117-1",2020,"Vår","Institutt for ernæring og folkehelse","lower","other","2026-10-16",42
+"uia","uia_EX-109-G_2020_autumn_1","EX-109-G",2020,"Høst","Institutt for informasjons- og kommunikasjonsteknologi","lower","other","2026-10-16",42
+"uia","uia_EX-109-G_2020_spring_1","EX-109-G",2020,"Vår","Institutt for informasjons- og kommunikasjonsteknologi","lower","other","2026-10-16",42
+"uia","uia_FRI101-1_2020_autumn_1","FRI101-1",2020,"Høst","Institutt for idrettsvitenskap og kroppsøving","lower","other","2026-10-16",42
+"uia","uia_FRI101-1_2020_spring_1","FRI101-1",2020,"Vår","Institutt for idrettsvitenskap og kroppsøving","lower","other","2026-10-16",42
+"uia","uia_FYS008-G_2020_autumn_1","FYS008-G",2020,"Høst","Institutt for ingeniørvitenskap","other","other","2026-10-16",42
+"uia","uia_FYS008-G_2020_spring_1","FYS008-G",2020,"Vår","Institutt for ingeniørvitenskap","other","other","2026-10-16",42
+"uia","uia_HEL607-1_2020_autumn_1","HEL607-1",2020,"Høst","Institutt for ernæring og folkehelse","phd","other","2026-10-16",42
+"uia","uia_HEL607-1_2020_spring_1","HEL607-1",2020,"Vår","Institutt for ernæring og folkehelse","phd","other","2026-10-16",42
+"uia","uia_HSI411-G_2020_autumn_3","HSI411-G",2020,"Høst","Institutt for helse- og sykepleievitenskap","continuing","other","2026-10-16",42
+"uia","uia_HSI411-G_2020_spring_3","HSI411-G",2020,"Vår","Institutt for helse- og sykepleievitenskap","continuing","other","2026-10-16",42
+"uia","uia_IDR127-1_2020_autumn_3","IDR127-1",2020,"Høst","Institutt for folkehelse, idrett og ernæring","lower","other","2026-10-16",42
+"uia","uia_IDR127-1_2020_spring_3","IDR127-1",2020,"Vår","Institutt for folkehelse, idrett og ernæring","lower","other","2026-10-16",42
+"uia","uia_IDR203-1_2020_autumn_3","IDR203-1",2020,"Høst","Institutt for idrettsvitenskap og kroppsøving","lower","other","2026-10-16",42
+"uia","uia_IDR203-1_2020_spring_3","IDR203-1",2020,"Vår","Institutt for idrettsvitenskap og kroppsøving","lower","other","2026-10-16",42
+"uia","uia_JUR100-1_2020_autumn_1","JUR100-1",2020,"Høst","Institutt for rettsvitenskap","lower","other","2026-10-16",42
+"uia","uia_JUR100-1_2020_spring_1","JUR100-1",2020,"Vår","Institutt for rettsvitenskap","lower","other","2026-10-16",42
+"uia","uia_KF-612-1_2020_autumn_1","KF-612-1",2020,"Høst","Fakultet for kunstfag","phd","other","2026-10-16",42
+"uia","uia_KF-612-1_2020_spring_1","KF-612-1",2020,"Vår","Fakultet for kunstfag","phd","other","2026-10-16",42
+"uia","uia_MA-007-G_2020_autumn_1","MA-007-G",2020,"Høst","Institutt for ingeniørvitenskap","other","other","2026-10-16",42
+"uia","uia_MA-007-G_2020_spring_1","MA-007-G",2020,"Vår","Institutt for ingeniørvitenskap","other","other","2026-10-16",42
+"uia","uia_ME-625-1_2020_autumn_1","ME-625-1",2020,"Høst","Fakultet for samfunnsvitenskap","phd","other","2026-10-16",42
+"uia","uia_ME-625-1_2020_spring_1","ME-625-1",2020,"Vår","Fakultet for samfunnsvitenskap","phd","other","2026-10-16",42
+"uia","uia_MF-903-1_2020_autumn_1","MF-903-1",2020,"Høst","Institutt for strategi og ledelse","higher","other","2026-10-16",42
+"uia","uia_MF-903-1_2020_spring_1","MF-903-1",2020,"Vår","Institutt for strategi og ledelse","higher","other","2026-10-16",42
+"uia","uia_MUK403-1_2020_autumn_1","MUK403-1",2020,"Høst","Institutt for klassisk musikk og musikkpedagogikk","higher","english","2026-10-16",42
+"uia","uia_MUK403-1_2020_spring_1","MUK403-1",2020,"Vår","Institutt for klassisk musikk og musikkpedagogikk","higher","english","2026-10-16",42
+"uia","uia_MUR503-1_2020_autumn_1","MUR503-1",2020,"Høst","Institutt for rytmisk musikk","higher","other","2026-10-16",42
+"uia","uia_MUR503-1_2020_spring_1","MUR503-1",2020,"Vår","Institutt for rytmisk musikk","higher","other","2026-10-16",42
+"uia","uia_NHB100-G_2020_autumn_1","NHB100-G",2020,"Høst","Institutt for idrettsvitenskap og kroppsøving","lower","other","2026-10-16",42
+"uia","uia_NHB100-G_2020_spring_1","NHB100-G",2020,"Vår","Institutt for idrettsvitenskap og kroppsøving","lower","other","2026-10-16",42
+"uia","uia_ORG465-1_2020_autumn_2","ORG465-1",2020,"Høst","Institutt for strategi og ledelse","higher","other","2026-10-16",42
+"uia","uia_ORG935-1_2020_autumn_1","ORG935-1",2020,"Høst","Institutt for statsvitenskap og ledelsesfag","higher","other","2026-10-16",42
+"uia","uia_ORG935-1_2020_spring_1","ORG935-1",2020,"Vår","Institutt for statsvitenskap og ledelsesfag","higher","other","2026-10-16",42
+"uia","uia_PED523-1_2020_autumn_1","PED523-1",2020,"Høst","Institutt for pedagogikk","higher","other","2026-10-16",42
+"uia","uia_PED523-1_2020_spring_1","PED523-1",2020,"Vår","Institutt for pedagogikk","higher","other","2026-10-16",42
+"uia","uia_PED981-2_2020_autumn_1","PED981-2",2020,"Høst","Institutt for pedagogikk","lower","other","2026-10-16",42
+"uia","uia_PED981-2_2020_spring_1","PED981-2",2020,"Vår","Institutt for pedagogikk","lower","other","2026-10-16",42
+"uia","uia_REL111-1_2020_autumn_3","REL111-1",2020,"Høst","Institutt for religion, filosofi og historie","lower","other","2026-10-16",42
+"uia","uia_REL111-1_2020_spring_3","REL111-1",2020,"Vår","Institutt for religion, filosofi og historie","lower","other","2026-10-16",42
+"uia","uia_SE-204-G_2020_autumn_4","SE-204-G",2020,"Høst","Institutt for arbeidsliv og innovasjon","lower","other","2026-10-16",42
+"uia","uia_SE-204-G_2020_spring_1","SE-204-G",2020,"Vår","Institutt for arbeidsliv og innovasjon","lower","other","2026-10-16",42
+"uia","uia_ST-601-1_2020_autumn_2","ST-601-1",2020,"Høst","Institutt for statsvitenskap og ledelsesfag","phd","other","2026-10-16",42
+"uia","uia_SV-143-1_2020_autumn_1","SV-143-1",2020,"Høst","Institutt for sosiologi og sosialt arbeid","lower","other","2026-10-16",42
+"uia","uia_SV-143-1_2020_spring_1","SV-143-1",2020,"Vår","Institutt for sosiologi og sosialt arbeid","lower","other","2026-10-16",42
+"uia","uia_SV-422-1_2020_autumn_1","SV-422-1",2020,"Høst","Institutt for global utvikling og samfunnsplanlegging","higher","other","2026-10-16",42
+"uia","uia_SV-422-1_2020_spring_1","SV-422-1",2020,"Vår","Institutt for global utvikling og samfunnsplanlegging","higher","other","2026-10-16",42
+"uia","uia_SYP212-1_2020_autumn_1","SYP212-1",2020,"Høst","Institutt for helse- og sykepleievitenskap","lower","other","2026-10-16",42
+"uia","uia_SYP212-1_2020_spring_1","SYP212-1",2020,"Vår","Institutt for helse- og sykepleievitenskap","lower","other","2026-10-16",42
+"uia","uia_TFL929-G_2020_autumn_1","TFL929-G",2020,"Høst","Fakultet for teknologi og realfag","lower","other","2026-10-16",42
+"uia","uia_TFL929-G_2020_spring_1","TFL929-G",2020,"Vår","Fakultet for teknologi og realfag","lower","other","2026-10-16",42
+"uia","uia_TY-121-1_2020_autumn_1","TY-121-1",2020,"Høst","Institutt for fremmedspråk og oversetting","lower","other","2026-10-16",42
+"uia","uia_TY-121-1_2020_spring_1","TY-121-1",2020,"Vår","Institutt for fremmedspråk og oversetting","lower","other","2026-10-16",42
+"uia","uia_UT-200-1_2020_autumn_1","UT-200-1",2020,"Høst","Institutt for global utvikling og samfunnsplanlegging","lower","other","2026-10-16",42
+"uia","uia_UT-200-1_2020_spring_1","UT-200-1",2020,"Vår","Institutt for global utvikling og samfunnsplanlegging","lower","other","2026-10-16",42
+"uia","uia_ERN206-1_2022_autumn_1","ERN206-1",2022,"Høst","Institutt for ernæring og folkehelse","lower","other","2026-10-16",42
+"uia","uia_ERN206-1_2022_spring_1","ERN206-1",2022,"Vår","Institutt for ernæring og folkehelse","lower","other","2026-10-16",42
+"uia","uia_ERN208-1_2022_autumn_1","ERN208-1",2022,"Høst","Institutt for ernæring og folkehelse","lower","other","2026-10-16",42
+"uia","uia_ERN208-1_2022_spring_1","ERN208-1",2022,"Vår","Institutt for ernæring og folkehelse","lower","other","2026-10-16",42
+"uia","uia_HEL203-1_2022_autumn_1","HEL203-1",2022,"Høst","Institutt for ernæring og folkehelse","lower","other","2026-10-16",42
+"uia","uia_HEL203-1_2022_spring_1","HEL203-1",2022,"Vår","Institutt for ernæring og folkehelse","lower","other","2026-10-16",42
+"uia","uia_HEL905-1_2022_autumn_1","HEL905-1",2022,"Høst","Institutt for helse- og sykepleievitenskap","continuing","other","2026-10-16",42
+"uia","uia_HEL905-1_2022_spring_1","HEL905-1",2022,"Vår","Institutt for helse- og sykepleievitenskap","continuing","other","2026-10-16",42
+"uia","uia_IDR210-1_2022_autumn_1","IDR210-1",2022,"Høst","Institutt for idrettsvitenskap og kroppsøving","lower","other","2026-10-16",42
+"uia","uia_IDR210-1_2022_spring_1","IDR210-1",2022,"Vår","Institutt for idrettsvitenskap og kroppsøving","lower","other","2026-10-16",42
+"uia","uia_IKT623-G_2022_autumn_1","IKT623-G",2022,"Høst","Institutt for informasjons- og kommunikasjonsteknologi","phd","english","2026-10-16",42
+"uia","uia_IKT623-G_2022_spring_1","IKT623-G",2022,"Vår","Institutt for informasjons- og kommunikasjonsteknologi","phd","english","2026-10-16",42
+"uia","uia_LIT606-1_2022_autumn_1","LIT606-1",2022,"Høst","Fakultet for humaniora og pedagogikk","phd","other","2026-10-16",42
+"uia","uia_LIT606-1_2022_spring_1","LIT606-1",2022,"Vår","Fakultet for humaniora og pedagogikk","phd","other","2026-10-16",42
+"uia","uia_MA-015-G_2022_autumn_4","MA-015-G",2022,"Høst","Institutt for ingeniørvitenskap","other","other","2026-10-16",42
+"uia","uia_MA-015-G_2022_spring_1","MA-015-G",2022,"Vår","Institutt for ingeniørvitenskap","other","other","2026-10-16",42
+"uia","uia_MA-168-1_2022_autumn_1","MA-168-1",2022,"Høst","Institutt for matematiske fag","lower","other","2026-10-16",42
+"uia","uia_MA-168-1_2022_spring_1","MA-168-1",2022,"Vår","Institutt for matematiske fag","lower","other","2026-10-16",42
+"uia","uia_MA-435-1_2022_autumn_1","MA-435-1",2022,"Høst","Institutt for matematiske fag","higher","other","2026-10-16",42
+"uia","uia_MA-435-1_2022_spring_1","MA-435-1",2022,"Vår","Institutt for matematiske fag","higher","other","2026-10-16",42
+"uia","uia_MA-504-1_2022_autumn_1","MA-504-1",2022,"Høst","Institutt for matematiske fag","higher","other","2026-10-16",42
+"uia","uia_MA-504-1_2022_spring_2","MA-504-1",2022,"Vår","Institutt for matematiske fag","higher","other","2026-10-16",42
+"uia","uia_MAS417-G_2022_autumn_1","MAS417-G",2022,"Høst","Institutt for ingeniørvitenskap","higher","other","2026-10-16",42
+"uia","uia_MAS417-G_2022_spring_1","MAS417-G",2022,"Vår","Institutt for ingeniørvitenskap","higher","other","2026-10-16",42
+"uia","uia_MAS701-G_2022_autumn_1","MAS701-G",2022,"Høst","Institutt for ingeniørvitenskap","phd","english","2026-10-16",42
+"uia","uia_MAS701-G_2022_spring_1","MAS701-G",2022,"Vår","Institutt for ingeniørvitenskap","phd","english","2026-10-16",42
+"uia","uia_ME-416-1_2022_autumn_1","ME-416-1",2022,"Høst","Institutt for sosiologi og sosialt arbeid","higher","other","2026-10-16",42
+"uia","uia_ME-416-1_2022_spring_1","ME-416-1",2022,"Vår","Institutt for sosiologi og sosialt arbeid","higher","other","2026-10-16",42
+"uia","uia_ME-425-G_2022_autumn_1","ME-425-G",2022,"Høst","Institutt for arbeidsliv og innovasjon","higher","other","2026-10-16",42
+"uia","uia_ME-425-G_2022_spring_1","ME-425-G",2022,"Vår","Institutt for arbeidsliv og innovasjon","higher","other","2026-10-16",42
+"uia","uia_MF-205-1_2022_autumn_1","MF-205-1",2022,"Høst","Institutt for strategi og ledelse","lower","english","2026-10-16",42
+"uia","uia_MF-205-1_2022_spring_1","MF-205-1",2022,"Vår","Institutt for strategi og ledelse","lower","english","2026-10-16",42
+"uia","uia_ML-114-1_2022_autumn_1","ML-114-1",2022,"Høst","Institutt for naturvitenskapelige fag","lower","other","2026-10-16",42
+"uia","uia_ML-114-1_2022_spring_1","ML-114-1",2022,"Vår","Institutt for naturvitenskapelige fag","lower","other","2026-10-16",42
+"uia","uia_MU-147-1_2022_autumn_1","MU-147-1",2022,"Høst","Institutt for klassisk musikk og musikkpedagogikk","lower","other","2026-10-16",42
+"uia","uia_MU-147-1_2022_spring_1","MU-147-1",2022,"Vår","Institutt for klassisk musikk og musikkpedagogikk","lower","other","2026-10-16",42
+"uia","uia_MU-218-1_2022_autumn_1","MU-218-1",2022,"Høst","Institutt for rytmisk musikk","lower","other","2026-10-16",42
+"uia","uia_MU-218-1_2022_spring_1","MU-218-1",2022,"Vår","Institutt for rytmisk musikk","lower","other","2026-10-16",42
+"uia","uia_NHB101-1_2022_autumn_3","NHB101-1",2022,"Høst","Institutt for idrettsvitenskap og kroppsøving","lower","other","2026-10-16",42
+"uia","uia_NHB101-1_2022_spring_3","NHB101-1",2022,"Vår","Institutt for idrettsvitenskap og kroppsøving","lower","other","2026-10-16",42
+"uia","uia_NO-418-1_2022_autumn_1","NO-418-1",2022,"Høst","Institutt for nordisk og mediefag","higher","other","2026-10-16",42
+"uia","uia_NO-418-1_2022_spring_1","NO-418-1",2022,"Vår","Institutt for nordisk og mediefag","higher","other","2026-10-16",42
+"uia","uia_ORG993-1_2022_autumn_1","ORG993-1",2022,"Høst","Institutt for strategi og ledelse","lower","other","2026-10-16",42
+"uia","uia_ORG993-1_2022_spring_1","ORG993-1",2022,"Vår","Institutt for strategi og ledelse","lower","other","2026-10-16",42
+"uia","uia_PED529-1_2022_autumn_1","PED529-1",2022,"Høst","Institutt for pedagogikk","higher","other","2026-10-16",42
+"uia","uia_PED529-1_2022_spring_1","PED529-1",2022,"Vår","Institutt for pedagogikk","higher","other","2026-10-16",42
+"uia","uia_PRA039-1_2022_autumn_1","PRA039-1",2022,"Høst","Lærerutdanningen","lower","other","2026-10-16",42
+"uia","uia_PRA039-1_2022_spring_1","PRA039-1",2022,"Vår","Lærerutdanningen","lower","other","2026-10-16",42
+"uia","uia_PRA042-1_2022_autumn_1","PRA042-1",2022,"Høst","Lærerutdanningen","lower","other","2026-10-16",42
+"uia","uia_PRA042-1_2022_spring_1","PRA042-1",2022,"Vår","Lærerutdanningen","lower","other","2026-10-16",42
+"uia","uia_PRA047-1_2022_autumn_1","PRA047-1",2022,"Høst","Lærerutdanningen","lower","other","2026-10-16",42
+"uia","uia_PRA047-1_2022_spring_1","PRA047-1",2022,"Vår","Lærerutdanningen","lower","other","2026-10-16",42
+"uia","uia_PRA1-302-1_2022_autumn_1","PRA1-302-1",2022,"Høst","Lærerutdanningen","lower","other","2026-10-16",42
+"uia","uia_PRA1-302-1_2022_spring_1","PRA1-302-1",2022,"Vår","Lærerutdanningen","lower","other","2026-10-16",42
+"uia","uia_PSY914-G_2022_autumn_1","PSY914-G",2022,"Høst","Institutt for psykososial helse","continuing","other","2026-10-16",42
+"uia","uia_PSY914-G_2022_spring_1","PSY914-G",2022,"Vår","Institutt for psykososial helse","continuing","other","2026-10-16",42
+"uia","uia_SV-213-1_2022_autumn_1","SV-213-1",2022,"Høst","Institutt for global utvikling og samfunnsplanlegging","lower","other","2026-10-16",42
+"uia","uia_SV-213-1_2022_spring_1","SV-213-1",2022,"Vår","Institutt for global utvikling og samfunnsplanlegging","lower","other","2026-10-16",42
+"uia","uia_SYP423-1_2022_autumn_1","SYP423-1",2022,"Høst","Institutt for helse- og sykepleievitenskap","higher","other","2026-10-16",42
+"uia","uia_SYP423-1_2022_spring_1","SYP423-1",2022,"Vår","Institutt for helse- og sykepleievitenskap","higher","other","2026-10-16",42
+"uia","uia_TFL011-G2_2022_autumn_1","TFL011-G2",2022,"Høst","Institutt for ingeniørvitenskap","other","other","2026-10-16",42
+"uia","uia_TFL011-G2_2022_spring_2","TFL011-G2",2022,"Vår","Institutt for ingeniørvitenskap","other","other","2026-10-16",42
+"uia","uia_TFL401-1_2022_autumn_1","TFL401-1",2022,"Høst","Institutt for strategi og ledelse","higher","other","2026-10-16",42
+"uia","uia_TFL401-1_2022_spring_1","TFL401-1",2022,"Vår","Institutt for strategi og ledelse","higher","other","2026-10-16",42
+"uia","uia_TFL939-1_2022_autumn_1","TFL939-1",2022,"Høst","Handelshøyskolen ved UiA","lower","other","2026-10-16",42
+"uia","uia_TFL939-1_2022_spring_2","TFL939-1",2022,"Vår","Handelshøyskolen ved UiA","lower","other","2026-10-16",42
+"uia","uia_BIO414-1_2025_autumn_1","BIO414-1",2025,"Høst","Institutt for naturvitenskapelige fag","higher","english","2026-10-16",42
+"uia","uia_BIO414-1_2025_spring_1","BIO414-1",2025,"Vår","Institutt for naturvitenskapelige fag","higher","english","2026-10-16",42
+"uia","uia_ENE905-1_2025_autumn_1","ENE905-1",2025,"Høst","Institutt for ingeniørvitenskap","lower","other","2026-10-16",42
+"uia","uia_ENE905-1_2025_spring_1","ENE905-1",2025,"Vår","Institutt for ingeniørvitenskap","lower","other","2026-10-16",42
+"uia","uia_HEL617-1_2025_autumn_1","HEL617-1",2025,"Høst","Fakultet for helse- og idrettsvitenskap","phd","other","2026-10-16",42
+"uia","uia_HEL617-1_2025_spring_1","HEL617-1",2025,"Vår","Fakultet for helse- og idrettsvitenskap","phd","other","2026-10-16",42
+"uia","uia_IDR937-1_2025_spring_3","IDR937-1",2025,"Vår","Institutt for idrettsvitenskap og kroppsøving","lower","other","2026-10-16",42
+"uia","uia_IKT454-G_2025_autumn_1","IKT454-G",2025,"Høst","Institutt for informasjons- og kommunikasjonsteknologi","higher","english","2026-10-16",42
+"uia","uia_IKT454-G_2025_spring_1","IKT454-G",2025,"Vår","Institutt for informasjons- og kommunikasjonsteknologi","higher","english","2026-10-16",42
+"uia","uia_ING501-G_2025_spring_3","ING501-G",2025,"Vår","Institutt for strategi og ledelse","higher","other","2026-10-16",42
+"uia","uia_IS-112-1_2025_autumn_3","IS-112-1",2025,"Høst","Institutt for informasjonssystemer","lower","other","2026-10-16",42
+"uia","uia_IS-112-1_2025_spring_1","IS-112-1",2025,"Vår","Institutt for informasjonssystemer","lower","other","2026-10-16",42
+"uia","uia_KF-202-1_2025_autumn_1","KF-202-1",2025,"Høst","Institutt for visuelle og sceniske fag","lower","other","2026-10-16",42
+"uia","uia_KF-202-1_2025_spring_2","KF-202-1",2025,"Vår","Institutt for visuelle og sceniske fag","lower","other","2026-10-16",42
+"uia","uia_KJ-213-1_2025_autumn_1","KJ-213-1",2025,"Høst","Institutt for naturvitenskapelige fag","lower","other","2026-10-16",42
+"uia","uia_KJ-213-1_2025_spring_1","KJ-213-1",2025,"Vår","Institutt for naturvitenskapelige fag","lower","other","2026-10-16",42
+"uia","uia_KOM208-1_2025_autumn_1","KOM208-1",2025,"Høst","Institutt for nordisk og mediefag","lower","other","2026-10-16",42
+"uia","uia_KOM208-1_2025_spring_1","KOM208-1",2025,"Vår","Institutt for nordisk og mediefag","lower","other","2026-10-16",42
+"uia","uia_KOM405-1_2025_autumn_1","KOM405-1",2025,"Høst","Institutt for nordisk og mediefag","higher","other","2026-10-16",42
+"uia","uia_KOM405-1_2025_spring_1","KOM405-1",2025,"Vår","Institutt for nordisk og mediefag","higher","other","2026-10-16",42
+"uia","uia_LFT204-1_2025_spring_3","LFT204-1",2025,"Vår","Institutt for nordisk og mediefag","lower","other","2026-10-16",42
+"uia","uia_MA-185-1_2025_autumn_1","MA-185-1",2025,"Høst","Institutt for matematiske fag","lower","other","2026-10-16",42
+"uia","uia_MA-185-1_2025_spring_1","MA-185-1",2025,"Vår","Institutt for matematiske fag","lower","other","2026-10-16",42
+"uia","uia_MA-311-1_2025_autumn_2","MA-311-1",2025,"Høst","Institutt for matematiske fag","lower","other","2026-10-16",42
+"uia","uia_MA-932-1_2025_autumn_1","MA-932-1",2025,"Høst","Institutt for matematiske fag","higher","other","2026-10-16",42
+"uia","uia_MA-932-1_2025_spring_1","MA-932-1",2025,"Vår","Institutt for matematiske fag","higher","other","2026-10-16",42
+"uia","uia_MAS416-G_2025_autumn_1","MAS416-G",2025,"Høst","Institutt for ingeniørvitenskap","higher","english","2026-10-16",42
+"uia","uia_MAS416-G_2025_spring_1","MAS416-G",2025,"Vår","Institutt for ingeniørvitenskap","higher","english","2026-10-16",42
+"uia","uia_ME-504-G_2025_autumn_1","ME-504-G",2025,"Høst","Institutt for psykososial helse","higher","other","2026-10-16",42
+"uia","uia_ME-504-G_2025_spring_1","ME-504-G",2025,"Vår","Institutt for psykososial helse","higher","other","2026-10-16",42
+"uia","uia_ME-527-1_2025_autumn_1","ME-527-1",2025,"Høst","Institutt for sosiologi og sosialt arbeid","higher","other","2026-10-16",42
+"uia","uia_ME-527-1_2025_spring_1","ME-527-1",2025,"Vår","Institutt for sosiologi og sosialt arbeid","higher","other","2026-10-16",42
+"uia","uia_MF-203-1_2025_autumn_1","MF-203-1",2025,"Høst","Institutt for ledelse og innovasjon","lower","english","2026-10-16",42
+"uia","uia_MF-203-1_2025_spring_1","MF-203-1",2025,"Vår","Institutt for ledelse og innovasjon","lower","english","2026-10-16",42
+"uia","uia_MUK402-2_2025_autumn_1","MUK402-2",2025,"Høst","Institutt for klassisk musikk og musikkpedagogikk","higher","english","2026-10-16",42
+"uia","uia_MUK402-2_2025_spring_1","MUK402-2",2025,"Vår","Institutt for klassisk musikk og musikkpedagogikk","higher","english","2026-10-16",42
+"uia","uia_NO-010-G_2025_autumn_1","NO-010-G",2025,"Høst","Institutt for ingeniørvitenskap","other","other","2026-10-16",42
+"uia","uia_NO-010-G_2025_spring_1","NO-010-G",2025,"Vår","Institutt for ingeniørvitenskap","other","other","2026-10-16",42
+"uia","uia_NOU166-1_2025_autumn_1","NOU166-1",2025,"Høst","Institutt for nordisk og mediefag","lower","other","2026-10-16",42
+"uia","uia_NOU166-1_2025_spring_1","NOU166-1",2025,"Vår","Institutt for nordisk og mediefag","lower","other","2026-10-16",42
+"uia","uia_ORG126-1_2025_autumn_1","ORG126-1",2025,"Høst","Institutt for ledelse og innovasjon","lower","english","2026-10-16",42
+"uia","uia_ORG126-1_2025_spring_1","ORG126-1",2025,"Vår","Institutt for ledelse og innovasjon","lower","english","2026-10-16",42
+"uia","uia_ORG463-1_2025_autumn_1","ORG463-1",2025,"Høst","Institutt for ledelse og innovasjon","higher","other","2026-10-16",42
+"uia","uia_ORG463-1_2025_spring_1","ORG463-1",2025,"Vår","Institutt for ledelse og innovasjon","higher","other","2026-10-16",42
+"uia","uia_ORG937-1_2025_autumn_1","ORG937-1",2025,"Høst","Institutt for statsvitenskap og ledelsesfag","higher","other","2026-10-16",42
+"uia","uia_ORG937-1_2025_spring_1","ORG937-1",2025,"Vår","Institutt for statsvitenskap og ledelsesfag","higher","other","2026-10-16",42
+"uia","uia_ORG966-1_2025_autumn_1","ORG966-1",2025,"Høst","Institutt for statsvitenskap og ledelsesfag","higher","other","2026-10-16",42
+"uia","uia_ORG966-1_2025_spring_1","ORG966-1",2025,"Vår","Institutt for statsvitenskap og ledelsesfag","higher","other","2026-10-16",42
+"uia","uia_PED961-1_2025_autumn_1","PED961-1",2025,"Høst","Institutt for pedagogikk","lower","other","2026-10-16",42
+"uia","uia_PED961-1_2025_spring_1","PED961-1",2025,"Vår","Institutt for pedagogikk","lower","other","2026-10-16",42
+"uia","uia_PRA036K-1_2025_autumn_1","PRA036K-1",2025,"Høst","Lærerutdanningen","lower","other","2026-10-16",42
+"uia","uia_PRA036K-1_2025_spring_1","PRA036K-1",2025,"Vår","Lærerutdanningen","lower","other","2026-10-16",42
+"uia","uia_REL412-1_2025_autumn_1","REL412-1",2025,"Høst","Institutt for religion, filosofi og historie","higher","english","2026-10-16",42
+"uia","uia_REL412-1_2025_spring_1","REL412-1",2025,"Vår","Institutt for religion, filosofi og historie","higher","english","2026-10-16",42
+"uia","uia_SPA115-1_2025_autumn_1","SPA115-1",2025,"Høst","Institutt for fremmedspråk og oversetting","lower","other","2026-10-16",42
+"uia","uia_SPA115-1_2025_spring_1","SPA115-1",2025,"Vår","Institutt for fremmedspråk og oversetting","lower","other","2026-10-16",42
+"uia","uia_SV-917-1_2025_autumn_1","SV-917-1",2025,"Høst","Institutt for sosiologi og sosialt arbeid","continuing","other","2026-10-16",42
+"uia","uia_SV-917-1_2025_spring_1","SV-917-1",2025,"Vår","Institutt for sosiologi og sosialt arbeid","continuing","other","2026-10-16",42
+"uia","uia_SY-433-1_2025_autumn_3","SY-433-1",2025,"Høst","Institutt for helse- og sykepleievitenskap","higher","other","2026-10-16",42
+"uia","uia_SY-433-1_2025_spring_1","SY-433-1",2025,"Vår","Institutt for helse- og sykepleievitenskap","higher","other","2026-10-16",42
+"uia","uia_SYP120D-1_2025_autumn_1","SYP120D-1",2025,"Høst","Institutt for helse- og sykepleievitenskap","lower","other","2026-10-16",42
+"uia","uia_SYP120D-1_2025_spring_1","SYP120D-1",2025,"Vår","Institutt for helse- og sykepleievitenskap","lower","other","2026-10-16",42
+"uia","uia_TY-401-1_2025_autumn_1","TY-401-1",2025,"Høst","Institutt for fremmedspråk og oversetting","lower","other","2026-10-16",42
+"uia","uia_TY-401-1_2025_spring_1","TY-401-1",2025,"Vår","Institutt for fremmedspråk og oversetting","lower","other","2026-10-16",42

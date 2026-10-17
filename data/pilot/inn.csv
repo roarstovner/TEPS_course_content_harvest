@@ -1,0 +1,194 @@
+"institution","course_id","course_code_raw","year","semester_name","department_name","level","language","dbh_snapshot","seed"
+"inn","inn_1AKT01-1_2023_autumn_1","1AKT01-1",2023,"Høst","Institutt for folkehelse og idrettsvitenskap","lower","other","2026-10-16",42
+"inn","inn_1AKT01-1_2023_spring_1","1AKT01-1",2023,"Vår","Institutt for folkehelse og idrettsvitenskap","lower","other","2026-10-16",42
+"inn","inn_1FOM02-1_2023_autumn_1","1FOM02-1",2023,"Høst","Institutt for folkehelse og idrettsvitenskap","lower","other","2026-10-16",42
+"inn","inn_1FOM02-1_2023_spring_1","1FOM02-1",2023,"Vår","Institutt for folkehelse og idrettsvitenskap","lower","other","2026-10-16",42
+"inn","inn_1MH201-1-1_2023_autumn_1","1MH201-1-1",2023,"Høst","Institutt for folkehelse og idrettsvitenskap","lower","other","2026-10-16",42
+"inn","inn_1MH201-1-1_2023_spring_1","1MH201-1-1",2023,"Vår","Institutt for folkehelse og idrettsvitenskap","lower","other","2026-10-16",42
+"inn","inn_2BIO064-1_2023_autumn_3","2BIO064-1",2023,"Høst","Institutt for bioteknologi","higher","english","2026-10-16",42
+"inn","inn_2BIO064-1_2023_spring_1","2BIO064-1",2023,"Vår","Institutt for bioteknologi","higher","english","2026-10-16",42
+"inn","inn_2BPRAC-1-1-1_2023_autumn_1","2BPRAC-1-1-1",2023,"Høst","Fakultet for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"inn","inn_2BPRAC-1-1-1_2023_spring_1","2BPRAC-1-1-1",2023,"Vår","Fakultet for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"inn","inn_2FAINT1-1_2023_autumn_1","2FAINT1-1",2023,"Høst","Fakultet for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"inn","inn_2FAINT1-1_2023_spring_1","2FAINT1-1",2023,"Vår","Fakultet for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"inn","inn_2M352-1_2023_autumn_1","2M352-1",2023,"Høst","Fakultet for lærerutdanning og pedagogikk","higher","other","2026-10-16",42
+"inn","inn_2M352-1_2023_spring_1","2M352-1",2023,"Vår","Fakultet for lærerutdanning og pedagogikk","higher","other","2026-10-16",42
+"inn","inn_2MEN5101-5-1_2023_autumn_1","2MEN5101-5-1",2023,"Høst","Fakultet for lærerutdanning og pedagogikk","higher","other","2026-10-16",42
+"inn","inn_2MEN5101-5-1_2023_spring_1","2MEN5101-5-1",2023,"Vår","Fakultet for lærerutdanning og pedagogikk","higher","other","2026-10-16",42
+"inn","inn_2MITDINK-1_2023_autumn_3","2MITDINK-1",2023,"Høst","Fakultet for lærerutdanning og pedagogikk","higher","other","2026-10-16",42
+"inn","inn_2MITDINK-1_2023_spring_3","2MITDINK-1",2023,"Vår","Fakultet for lærerutdanning og pedagogikk","higher","other","2026-10-16",42
+"inn","inn_2MKRLE171-6-1_2023_autumn_1","2MKRLE171-6-1",2023,"Høst","Fakultet for lærerutdanning og pedagogikk","higher","other","2026-10-16",42
+"inn","inn_2MKRLE171-6-1_2023_spring_1","2MKRLE171-6-1",2023,"Vår","Fakultet for lærerutdanning og pedagogikk","higher","other","2026-10-16",42
+"inn","inn_2MPEL171S-2-1_2023_autumn_1","2MPEL171S-2-1",2023,"Høst","Fakultet for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"inn","inn_2MPEL171S-2-1_2023_spring_1","2MPEL171S-2-1",2023,"Vår","Fakultet for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"inn","inn_2MU6201-2-1_2023_autumn_3","2MU6201-2-1",2023,"Høst","Fakultet for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"inn","inn_2MU6201-2-1_2023_spring_1","2MU6201-2-1",2023,"Vår","Fakultet for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"inn","inn_2PEDPPU2-1_2023_autumn_1","2PEDPPU2-1",2023,"Høst","Fakultet for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"inn","inn_2PEDPPU2-1_2023_spring_1","2PEDPPU2-1",2023,"Vår","Fakultet for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"inn","inn_2PRLU50-1_2023_autumn_1","2PRLU50-1",2023,"Høst","Fakultet for lærerutdanning og pedagogikk","phd","other","2026-10-16",42
+"inn","inn_2PRLU50-1_2023_spring_1","2PRLU50-1",2023,"Vår","Fakultet for lærerutdanning og pedagogikk","phd","other","2026-10-16",42
+"inn","inn_3EDM210-1_2023_autumn_1","3EDM210-1",2023,"Høst","Institutt for økonomifag","lower","other","2026-10-16",42
+"inn","inn_3EDM210-1_2023_spring_1","3EDM210-1",2023,"Vår","Institutt for økonomifag","lower","other","2026-10-16",42
+"inn","inn_3JUS330-1_2023_autumn_1","3JUS330-1",2023,"Høst","Institutt for økonomifag","lower","other","2026-10-16",42
+"inn","inn_3JUS330-1_2023_spring_1","3JUS330-1",2023,"Vår","Institutt for økonomifag","lower","other","2026-10-16",42
+"inn","inn_3LED100-1_2023_autumn_1","3LED100-1",2023,"Høst","Institutt for organisasjon, ledelse og styring","lower","other","2026-10-16",42
+"inn","inn_3LED100-1_2023_spring_1","3LED100-1",2023,"Vår","Institutt for organisasjon, ledelse og styring","lower","other","2026-10-16",42
+"inn","inn_3MMF350-1_2023_autumn_1","3MMF350-1",2023,"Høst","Institutt for økonomifag","higher","other","2026-10-16",42
+"inn","inn_3MMF350-1_2023_spring_1","3MMF350-1",2023,"Vår","Institutt for økonomifag","higher","other","2026-10-16",42
+"inn","inn_3MMØ300-1_2023_autumn_1","3MMØ300-1",2023,"Høst","Institutt for økonomifag","higher","other","2026-10-16",42
+"inn","inn_3MMØ300-1_2023_spring_1","3MMØ300-1",2023,"Vår","Institutt for økonomifag","higher","other","2026-10-16",42
+"inn","inn_3MØS120-1_2023_autumn_1","3MØS120-1",2023,"Høst","Institutt for økonomifag","higher","other","2026-10-16",42
+"inn","inn_3MØS120-1_2023_spring_1","3MØS120-1",2023,"Vår","Institutt for økonomifag","higher","other","2026-10-16",42
+"inn","inn_4PH7721D-1_2023_autumn_1","4PH7721D-1",2023,"Høst","Institutt for helse- og sykepleievitenskap","continuing","other","2026-10-16",42
+"inn","inn_4PH7721D-1_2023_spring_1","4PH7721D-1",2023,"Vår","Institutt for helse- og sykepleievitenskap","continuing","other","2026-10-16",42
+"inn","inn_4PHD41-1_2023_autumn_3","4PHD41-1",2023,"Høst","Institutt for helse- og sykepleievitenskap","continuing","other","2026-10-16",42
+"inn","inn_4PHD41-1_2023_spring_1","4PHD41-1",2023,"Vår","Institutt for helse- og sykepleievitenskap","continuing","other","2026-10-16",42
+"inn","inn_4PSAPTE12-1_2023_autumn_1","4PSAPTE12-1",2023,"Høst","Fakultet for helse- og sosialvitenskap","continuing","other","2026-10-16",42
+"inn","inn_4PSAPTE12-1_2023_spring_1","4PSAPTE12-1",2023,"Vår","Fakultet for helse- og sosialvitenskap","continuing","other","2026-10-16",42
+"inn","inn_AUD3004-1_2023_autumn_1","AUD3004-1",2023,"Høst","Den norske filmskolen","higher","other","2026-10-16",42
+"inn","inn_AUD3004-1_2023_spring_1","AUD3004-1",2023,"Vår","Den norske filmskolen","higher","other","2026-10-16",42
+"inn","inn_BIOING1100-1_2023_autumn_1","BIOING1100-1",2023,"Høst","Institutt for bioteknologi","lower","other","2026-10-16",42
+"inn","inn_BIOING1100-1_2023_spring_1","BIOING1100-1",2023,"Vår","Institutt for bioteknologi","lower","other","2026-10-16",42
+"inn","inn_HELS3001-1_2023_autumn_1","HELS3001-1",2023,"Høst","Fakultet for helse- og sosialvitenskap","continuing","other","2026-10-16",42
+"inn","inn_HELS3001-1_2023_spring_1","HELS3001-1",2023,"Vår","Fakultet for helse- og sosialvitenskap","continuing","other","2026-10-16",42
+"inn","inn_IDT1101-1_2023_autumn_1","IDT1101-1",2023,"Høst","Institutt for folkehelse og idrettsvitenskap","lower","other","2026-10-16",42
+"inn","inn_IDT1101-1_2023_spring_1","IDT1101-1",2023,"Vår","Institutt for folkehelse og idrettsvitenskap","lower","other","2026-10-16",42
+"inn","inn_INN3024-1_2023_autumn_1","INN3024-1",2023,"Høst","Institutt for organisasjon, ledelse og styring","higher","english","2026-10-16",42
+"inn","inn_INN3024-1_2023_spring_1","INN3024-1",2023,"Vår","Institutt for organisasjon, ledelse og styring","higher","english","2026-10-16",42
+"inn","inn_INT1001-1_2023_autumn_3","INT1001-1",2023,"Høst","Institutt for rettsvitenskap, filosofi og internasjonale studier","lower","other","2026-10-16",42
+"inn","inn_INT1001-1_2023_spring_1","INT1001-1",2023,"Vår","Institutt for rettsvitenskap, filosofi og internasjonale studier","lower","other","2026-10-16",42
+"inn","inn_INTFIL1000-1_2023_autumn_1","INTFIL1000-1",2023,"Høst","Faggruppe film-og fjernsynsvitenskap","lower","other","2026-10-16",42
+"inn","inn_INTFIL1000-1_2023_spring_1","INTFIL1000-1",2023,"Vår","Faggruppe film-og fjernsynsvitenskap","lower","other","2026-10-16",42
+"inn","inn_KDBA950-1_2023_autumn_1","KDBA950-1",2023,"Høst","Institutt for økonomifag","higher","other","2026-10-16",42
+"inn","inn_KDBA950-1_2023_spring_1","KDBA950-1",2023,"Vår","Institutt for økonomifag","higher","other","2026-10-16",42
+"inn","inn_KMMF100-1_2023_autumn_1","KMMF100-1",2023,"Høst","Institutt for økonomifag","higher","other","2026-10-16",42
+"inn","inn_KMMF100-1_2023_spring_1","KMMF100-1",2023,"Vår","Institutt for økonomifag","higher","other","2026-10-16",42
+"inn","inn_KOM1002-1_2023_autumn_1","KOM1002-1",2023,"Høst","Institutt for organisasjon, ledelse og styring","lower","other","2026-10-16",42
+"inn","inn_KOM1002-1_2023_spring_1","KOM1002-1",2023,"Vår","Institutt for organisasjon, ledelse og styring","lower","other","2026-10-16",42
+"inn","inn_KORG100-1_2023_autumn_1","KORG100-1",2023,"Høst","Institutt for organisasjon, ledelse og styring","lower","other","2026-10-16",42
+"inn","inn_KORG100-1_2023_spring_1","KORG100-1",2023,"Vår","Institutt for organisasjon, ledelse og styring","lower","other","2026-10-16",42
+"inn","inn_KS4102-1_2023_autumn_1","KS4102-1",2023,"Høst","Institutt for helse- og sykepleievitenskap","higher","other","2026-10-16",42
+"inn","inn_KS4102-1_2023_spring_1","KS4102-1",2023,"Vår","Institutt for helse- og sykepleievitenskap","higher","other","2026-10-16",42
+"inn","inn_KS4108-1_2023_autumn_1","KS4108-1",2023,"Høst","Institutt for helse- og sykepleievitenskap","higher","other","2026-10-16",42
+"inn","inn_KS4108-1_2023_spring_1","KS4108-1",2023,"Vår","Institutt for helse- og sykepleievitenskap","higher","other","2026-10-16",42
+"inn","inn_KSAM120-1_2023_autumn_1","KSAM120-1",2023,"Høst","Institutt for økonomifag","lower","other","2026-10-16",42
+"inn","inn_KSAM120-1_2023_spring_1","KSAM120-1",2023,"Vår","Institutt for økonomifag","lower","other","2026-10-16",42
+"inn","inn_MATTE1-1_2023_autumn_1","MATTE1-1",2023,"Høst","Fakultet for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"inn","inn_MATTE1-1_2023_spring_1","MATTE1-1",2023,"Vår","Fakultet for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"inn","inn_MPAL4010-1_2023_autumn_1","MPAL4010-1",2023,"Høst","Institutt for organisasjon, ledelse og styring","higher","other","2026-10-16",42
+"inn","inn_MPAL4010-1_2023_spring_1","MPAL4010-1",2023,"Vår","Institutt for organisasjon, ledelse og styring","higher","other","2026-10-16",42
+"inn","inn_MPAR4010-1_2023_autumn_1","MPAR4010-1",2023,"Høst","Institutt for organisasjon, ledelse og styring","higher","other","2026-10-16",42
+"inn","inn_MPAR4010-1_2023_spring_1","MPAR4010-1",2023,"Vår","Institutt for organisasjon, ledelse og styring","higher","other","2026-10-16",42
+"inn","inn_MPSY3004-1_2023_autumn_1","MPSY3004-1",2023,"Høst","Institutt for psykologi","higher","other","2026-10-16",42
+"inn","inn_MPSY3004-1_2023_spring_1","MPSY3004-1",2023,"Vår","Institutt for psykologi","higher","other","2026-10-16",42
+"inn","inn_OLA1055-1_2023_autumn_1","OLA1055-1",2023,"Høst","Institutt for organisasjon, ledelse og styring","lower","other","2026-10-16",42
+"inn","inn_OLA1055-1_2023_spring_1","OLA1055-1",2023,"Vår","Institutt for organisasjon, ledelse og styring","lower","other","2026-10-16",42
+"inn","inn_PEDD1001-1_2023_autumn_1","PEDD1001-1",2023,"Høst","Fakultet for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"inn","inn_PEDD1001-1_2023_spring_1","PEDD1001-1",2023,"Vår","Fakultet for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"inn","inn_PEDD2003-1_2023_autumn_1","PEDD2003-1",2023,"Høst","Fakultet for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"inn","inn_PEDD2003-1_2023_spring_1","PEDD2003-1",2023,"Vår","Fakultet for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"inn","inn_RLED320-1_2023_autumn_1","RLED320-1",2023,"Høst","Institutt for organisasjon, ledelse og styring","lower","other","2026-10-16",42
+"inn","inn_RLED320-1_2023_spring_1","RLED320-1",2023,"Vår","Institutt for organisasjon, ledelse og styring","lower","other","2026-10-16",42
+"inn","inn_RLT1004-1_2023_autumn_1","RLT1004-1",2023,"Høst","Institutt for organisasjon, ledelse og styring","lower","other","2026-10-16",42
+"inn","inn_RLT1004-1_2023_spring_1","RLT1004-1",2023,"Vår","Institutt for organisasjon, ledelse og styring","lower","other","2026-10-16",42
+"inn","inn_SYD2009-1_2023_autumn_2","SYD2009-1",2023,"Høst","Institutt for helse- og sykepleievitenskap","lower","other","2026-10-16",42
+"inn","inn_TVLED1004-1_2023_autumn_1","TVLED1004-1",2023,"Høst","Institutt for TV-utdanninger - TV-skolen","lower","other","2026-10-16",42
+"inn","inn_TVLED1004-1_2023_spring_1","TVLED1004-1",2023,"Vår","Institutt for TV-utdanninger - TV-skolen","lower","other","2026-10-16",42
+"inn","inn_UTM1151-1_2023_autumn_1","UTM1151-1",2023,"Høst","Institutt for skog- og utmarksfag","lower","other","2026-10-16",42
+"inn","inn_UTM1151-1_2023_spring_1","UTM1151-1",2023,"Vår","Institutt for skog- og utmarksfag","lower","other","2026-10-16",42
+"inn","inn_VPLD2007-1_2023_autumn_1","VPLD2007-1",2023,"Høst","Institutt for sosialvitenskap og veiledning","lower","other","2026-10-16",42
+"inn","inn_VPLD2007-1_2023_spring_1","VPLD2007-1",2023,"Vår","Institutt for sosialvitenskap og veiledning","lower","other","2026-10-16",42
+"inn","inn_1MFV202-1_2025_autumn_1","1MFV202-1",2025,"Høst","Institutt for folkehelse og idrettsvitenskap","higher","english","2026-10-16",42
+"inn","inn_1MFV202-1_2025_spring_1","1MFV202-1",2025,"Vår","Institutt for folkehelse og idrettsvitenskap","higher","english","2026-10-16",42
+"inn","inn_23DPRO101-1_2025_autumn_1","23DPRO101-1",2025,"Høst","Institutt for spillutdanninger - Spillskolen","lower","other","2026-10-16",42
+"inn","inn_23DPRO101-1_2025_spring_1","23DPRO101-1",2025,"Vår","Institutt for spillutdanninger - Spillskolen","lower","other","2026-10-16",42
+"inn","inn_2EN35-1-1_2025_autumn_1","2EN35-1-1",2025,"Høst","Fakultet for lærerutdanning og pedagogikk","lower","english","2026-10-16",42
+"inn","inn_2EN35-1-1_2025_spring_1","2EN35-1-1",2025,"Vår","Fakultet for lærerutdanning og pedagogikk","lower","english","2026-10-16",42
+"inn","inn_2ENL51-9-1_2025_autumn_1","2ENL51-9-1",2025,"Høst","Fakultet for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"inn","inn_2ENL51-9-1_2025_spring_1","2ENL51-9-1",2025,"Vår","Fakultet for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"inn","inn_2MAD16H1-1_2025_spring_3","2MAD16H1-1",2025,"Vår","Fakultet for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"inn","inn_2MASTER17-1_2025_autumn_1","2MASTER17-1",2025,"Høst","Fakultet for lærerutdanning og pedagogikk","higher","other","2026-10-16",42
+"inn","inn_2MASTER17-1_2025_spring_1","2MASTER17-1",2025,"Vår","Fakultet for lærerutdanning og pedagogikk","higher","other","2026-10-16",42
+"inn","inn_2MEN171-4-1_2025_autumn_1","2MEN171-4-1",2025,"Høst","Fakultet for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"inn","inn_2MEN171-4-1_2025_spring_1","2MEN171-4-1",2025,"Vår","Fakultet for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"inn","inn_2MRNF171-6-1_2025_autumn_3","2MRNF171-6-1",2025,"Høst","Fakultet for lærerutdanning og pedagogikk","higher","other","2026-10-16",42
+"inn","inn_2MRNF171-6-1_2025_spring_1","2MRNF171-6-1",2025,"Vår","Fakultet for lærerutdanning og pedagogikk","higher","other","2026-10-16",42
+"inn","inn_2MULFORB-1_2025_autumn_1","2MULFORB-1",2025,"Høst","Fakultet for lærerutdanning og pedagogikk","higher","other","2026-10-16",42
+"inn","inn_2MULFORB-1_2025_spring_1","2MULFORB-1",2025,"Vår","Fakultet for lærerutdanning og pedagogikk","higher","other","2026-10-16",42
+"inn","inn_2PRLU20-29-1_2025_autumn_1","2PRLU20-29-1",2025,"Høst","Fakultet for lærerutdanning og pedagogikk","phd","other","2026-10-16",42
+"inn","inn_2PRLU20-29-1_2025_spring_1","2PRLU20-29-1",2025,"Vår","Fakultet for lærerutdanning og pedagogikk","phd","other","2026-10-16",42
+"inn","inn_2PRLU30-10-1_2025_autumn_1","2PRLU30-10-1",2025,"Høst","Fakultet for lærerutdanning og pedagogikk","phd","other","2026-10-16",42
+"inn","inn_2PRLU30-10-1_2025_spring_1","2PRLU30-10-1",2025,"Vår","Fakultet for lærerutdanning og pedagogikk","phd","other","2026-10-16",42
+"inn","inn_3BA305-1_2025_autumn_1","3BA305-1",2025,"Høst","Institutt for organisasjon, ledelse og styring","lower","other","2026-10-16",42
+"inn","inn_3BA305-1_2025_spring_1","3BA305-1",2025,"Vår","Institutt for organisasjon, ledelse og styring","lower","other","2026-10-16",42
+"inn","inn_3MUS120-1_2025_spring_3","3MUS120-1",2025,"Vår","Institutt for organisasjon, ledelse og styring","lower","other","2026-10-16",42
+"inn","inn_3PRA350-1_2025_autumn_1","3PRA350-1",2025,"Høst","Institutt for økonomifag","lower","other","2026-10-16",42
+"inn","inn_3PRA350-1_2025_spring_1","3PRA350-1",2025,"Vår","Institutt for økonomifag","lower","other","2026-10-16",42
+"inn","inn_3RIS100-1_2025_autumn_1","3RIS100-1",2025,"Høst","Institutt for organisasjon, ledelse og styring","lower","other","2026-10-16",42
+"inn","inn_3RIS100-1_2025_spring_1","3RIS100-1",2025,"Vår","Institutt for organisasjon, ledelse og styring","lower","other","2026-10-16",42
+"inn","inn_4PM791-1_2025_autumn_1","4PM791-1",2025,"Høst","Institutt for helse- og sykepleievitenskap","higher","other","2026-10-16",42
+"inn","inn_4PM791-1_2025_spring_1","4PM791-1",2025,"Vår","Institutt for helse- og sykepleievitenskap","higher","other","2026-10-16",42
+"inn","inn_6EV323-1_2025_spring_3","6EV323-1",2025,"Vår","Institutt for skog- og utmarksfag","higher","english","2026-10-16",42
+"inn","inn_6SU190-1_2025_autumn_1","6SU190-1",2025,"Høst","Institutt for skog- og utmarksfag","lower","english","2026-10-16",42
+"inn","inn_6SU190-1_2025_spring_1","6SU190-1",2025,"Vår","Institutt for skog- og utmarksfag","lower","english","2026-10-16",42
+"inn","inn_8SHL10151-1_2025_autumn_1","8SHL10151-1",2025,"Høst","Institutt for organisasjon, ledelse og styring","lower","other","2026-10-16",42
+"inn","inn_8SHL10151-1_2025_spring_1","8SHL10151-1",2025,"Vår","Institutt for organisasjon, ledelse og styring","lower","other","2026-10-16",42
+"inn","inn_8SHL175-1_2025_autumn_1","8SHL175-1",2025,"Høst","Institutt for organisasjon, ledelse og styring","lower","other","2026-10-16",42
+"inn","inn_8SHL175-1_2025_spring_1","8SHL175-1",2025,"Vår","Institutt for organisasjon, ledelse og styring","lower","other","2026-10-16",42
+"inn","inn_AUD3004-1_2025_autumn_1","AUD3004-1",2025,"Høst","Den norske filmskolen","higher","other","2026-10-16",42
+"inn","inn_AUD3004-1_2025_spring_1","AUD3004-1",2025,"Vår","Den norske filmskolen","higher","other","2026-10-16",42
+"inn","inn_BERKRIS1001S-1_2025_autumn_1","BERKRIS1001S-1",2025,"Høst","Institutt for organisasjon, ledelse og styring","lower","other","2026-10-16",42
+"inn","inn_BERKRIS1001S-1_2025_spring_1","BERKRIS1001S-1",2025,"Vår","Institutt for organisasjon, ledelse og styring","lower","other","2026-10-16",42
+"inn","inn_BIOING1100-1_2025_autumn_1","BIOING1100-1",2025,"Høst","Institutt for bioteknologi","lower","other","2026-10-16",42
+"inn","inn_BIOING1100-1_2025_spring_1","BIOING1100-1",2025,"Vår","Institutt for bioteknologi","lower","other","2026-10-16",42
+"inn","inn_HEL4005-1_2025_autumn_1","HEL4005-1",2025,"Høst","Institutt for helse- og sykepleievitenskap","higher","other","2026-10-16",42
+"inn","inn_HEL4005-1_2025_spring_1","HEL4005-1",2025,"Vår","Institutt for helse- og sykepleievitenskap","higher","other","2026-10-16",42
+"inn","inn_IDTD2002-1_2025_autumn_1","IDTD2002-1",2025,"Høst","Institutt for folkehelse og idrettsvitenskap","lower","other","2026-10-16",42
+"inn","inn_IDTD2002-1_2025_spring_1","IDTD2002-1",2025,"Vår","Institutt for folkehelse og idrettsvitenskap","lower","other","2026-10-16",42
+"inn","inn_INN3026-1_2025_autumn_1","INN3026-1",2025,"Høst","Institutt for organisasjon, ledelse og styring","higher","english","2026-10-16",42
+"inn","inn_INN3026-1_2025_spring_1","INN3026-1",2025,"Vår","Institutt for organisasjon, ledelse og styring","higher","english","2026-10-16",42
+"inn","inn_INN3045-1_2025_autumn_3","INN3045-1",2025,"Høst","Institutt for organisasjon, ledelse og styring","higher","english","2026-10-16",42
+"inn","inn_INN3045-1_2025_spring_3","INN3045-1",2025,"Vår","Institutt for organisasjon, ledelse og styring","higher","english","2026-10-16",42
+"inn","inn_INSY3006-1_2025_autumn_3","INSY3006-1",2025,"Høst","Institutt for helse- og sykepleievitenskap","continuing","other","2026-10-16",42
+"inn","inn_INSY3006-1_2025_spring_1","INSY3006-1",2025,"Vår","Institutt for helse- og sykepleievitenskap","continuing","other","2026-10-16",42
+"inn","inn_INTOP4001-1_2025_autumn_1","INTOP4001-1",2025,"Høst","Institutt for organisasjon, ledelse og styring","phd","other","2026-10-16",42
+"inn","inn_INTOP4001-1_2025_spring_1","INTOP4001-1",2025,"Vår","Institutt for organisasjon, ledelse og styring","phd","other","2026-10-16",42
+"inn","inn_INTOP4015-1_2025_autumn_1","INTOP4015-1",2025,"Høst","Institutt for økonomifag","phd","other","2026-10-16",42
+"inn","inn_INTOP4015-1_2025_spring_1","INTOP4015-1",2025,"Vår","Institutt for økonomifag","phd","other","2026-10-16",42
+"inn","inn_KIUA1009-1_2025_spring_3","KIUA1009-1",2025,"Vår","Institutt for spillutdanninger - Spillskolen","other","other","2026-10-16",42
+"inn","inn_KIUA1010-1_2025_autumn_1","KIUA1010-1",2025,"Høst","Institutt for spillutdanninger - Spillskolen","lower","other","2026-10-16",42
+"inn","inn_KIUA1010-1_2025_spring_1","KIUA1010-1",2025,"Vår","Institutt for spillutdanninger - Spillskolen","lower","other","2026-10-16",42
+"inn","inn_KUF9001-1_2025_autumn_1","KUF9001-1",2025,"Høst","Fakultet for film, TV og spill","phd","english","2026-10-16",42
+"inn","inn_KUF9001-1_2025_spring_1","KUF9001-1",2025,"Vår","Fakultet for film, TV og spill","phd","english","2026-10-16",42
+"inn","inn_LAN2300-1_2025_autumn_1","LAN2300-1",2025,"Høst","Institutt for jordbruksfag","lower","other","2026-10-16",42
+"inn","inn_LAN2300-1_2025_spring_1","LAN2300-1",2025,"Vår","Institutt for jordbruksfag","lower","other","2026-10-16",42
+"inn","inn_MBP1000-1_2025_autumn_4","MBP1000-1",2025,"Høst","Institutt for organisasjon, ledelse og styring","lower","other","2026-10-16",42
+"inn","inn_MBP1000-1_2025_spring_4","MBP1000-1",2025,"Vår","Institutt for organisasjon, ledelse og styring","lower","other","2026-10-16",42
+"inn","inn_MUS2000-1_2025_autumn_1","MUS2000-1",2025,"Høst","Fakultet for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"inn","inn_MUS2000-1_2025_spring_1","MUS2000-1",2025,"Vår","Fakultet for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"inn","inn_MYE1001-1_2025_autumn_1","MYE1001-1",2025,"Høst","Institutt for folkehelse og idrettsvitenskap","lower","other","2026-10-16",42
+"inn","inn_MYE1001-1_2025_spring_1","MYE1001-1",2025,"Vår","Institutt for folkehelse og idrettsvitenskap","lower","other","2026-10-16",42
+"inn","inn_PSY1009-1_2025_autumn_1","PSY1009-1",2025,"Høst","Institutt for psykologi","lower","other","2026-10-16",42
+"inn","inn_PSY1009-1_2025_spring_1","PSY1009-1",2025,"Vår","Institutt for psykologi","lower","other","2026-10-16",42
+"inn","inn_REGF2009-1_2025_autumn_1","REGF2009-1",2025,"Høst","Institutt for TV-utdanninger - TV-skolen","lower","other","2026-10-16",42
+"inn","inn_REGF2009-1_2025_spring_1","REGF2009-1",2025,"Vår","Institutt for TV-utdanninger - TV-skolen","lower","other","2026-10-16",42
+"inn","inn_SJUS120-1_2025_autumn_1","SJUS120-1",2025,"Høst","Institutt for rettsvitenskap, filosofi og internasjonale studier","lower","other","2026-10-16",42
+"inn","inn_SJUS120-1_2025_spring_1","SJUS120-1",2025,"Vår","Institutt for rettsvitenskap, filosofi og internasjonale studier","lower","other","2026-10-16",42
+"inn","inn_SOA1001-1_2025_autumn_1","SOA1001-1",2025,"Høst","Institutt for sosialvitenskap og veiledning","lower","english","2026-10-16",42
+"inn","inn_SOA1001-1_2025_spring_1","SOA1001-1",2025,"Vår","Institutt for sosialvitenskap og veiledning","lower","english","2026-10-16",42
+"inn","inn_SORG120-1_2025_autumn_1","SORG120-1",2025,"Høst","Institutt for psykologi","lower","other","2026-10-16",42
+"inn","inn_SORG120-1_2025_spring_1","SORG120-1",2025,"Vår","Institutt for psykologi","lower","other","2026-10-16",42
+"inn","inn_SPE2110-1_2025_autumn_1","SPE2110-1",2025,"Høst","Fakultet for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"inn","inn_SPE2110-1_2025_spring_1","SPE2110-1",2025,"Vår","Fakultet for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"inn","inn_SPE3010-1_2025_autumn_1","SPE3010-1",2025,"Høst","Fakultet for lærerutdanning og pedagogikk","higher","other","2026-10-16",42
+"inn","inn_SPE3010-1_2025_spring_1","SPE3010-1",2025,"Vår","Fakultet for lærerutdanning og pedagogikk","higher","other","2026-10-16",42
+"inn","inn_SPED4003-1_2025_autumn_2","SPED4003-1",2025,"Høst","Fakultet for lærerutdanning og pedagogikk","higher","other","2026-10-16",42
+"inn","inn_SPP1000-1_2025_autumn_1","SPP1000-1",2025,"Høst","Fakultet for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"inn","inn_SPP1000-1_2025_spring_2","SPP1000-1",2025,"Vår","Fakultet for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"inn","inn_TAN2004-1_2025_autumn_1","TAN2004-1",2025,"Høst","Institutt for folkehelse og idrettsvitenskap","lower","other","2026-10-16",42
+"inn","inn_TAN2004-1_2025_spring_1","TAN2004-1",2025,"Vår","Institutt for folkehelse og idrettsvitenskap","lower","other","2026-10-16",42
+"inn","inn_VPL2102-1_2025_autumn_1","VPL2102-1",2025,"Høst","Institutt for sosialvitenskap og veiledning","lower","other","2026-10-16",42
+"inn","inn_VPL2102-1_2025_spring_1","VPL2102-1",2025,"Vår","Institutt for sosialvitenskap og veiledning","lower","other","2026-10-16",42
+"inn","inn_ØKA1026-1_2025_autumn_1","ØKA1026-1",2025,"Høst","Institutt for økonomifag","lower","other","2026-10-16",42
+"inn","inn_ØKA1026-1_2025_spring_1","ØKA1026-1",2025,"Vår","Institutt for økonomifag","lower","other","2026-10-16",42
+"inn","inn_ØKA2005-1_2025_spring_3","ØKA2005-1",2025,"Vår","Institutt for økonomifag","lower","english","2026-10-16",42

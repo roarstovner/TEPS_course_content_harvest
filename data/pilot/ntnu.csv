@@ -1,0 +1,215 @@
+"institution","course_id","course_code_raw","year","semester_name","department_name","level","language","dbh_snapshot","seed"
+"ntnu","ntnu_AAR5300-1_2007_autumn_1","AAR5300-1",2007,"Høst","Fakultet for arkitektur og design","other","english","2026-10-16",42
+"ntnu","ntnu_AAR5300-1_2007_spring_1","AAR5300-1",2007,"Vår","Fakultet for arkitektur og design","other","english","2026-10-16",42
+"ntnu","ntnu_AAR5300-1_2007_summer_1","AAR5300-1",2007,"Sommer","Fakultet for arkitektur og design","other","english","2026-10-16",42
+"ntnu","ntnu_AAR8300-1_2007_spring_3","AAR8300-1",2007,"Vår","Institutt for byforming og planlegging","other","other","2026-10-16",42
+"ntnu","ntnu_ALIT8812-1_2007_autumn_3","ALIT8812-1",2007,"Høst","Institutt for nordistikk og litteraturvitenskap","other","other","2026-10-16",42
+"ntnu","ntnu_ALIT8812-1_2007_spring_3","ALIT8812-1",2007,"Vår","Institutt for nordistikk og litteraturvitenskap","other","other","2026-10-16",42
+"ntnu","ntnu_ALIT8812-1_2007_summer_3","ALIT8812-1",2007,"Sommer","Institutt for nordistikk og litteraturvitenskap","other","other","2026-10-16",42
+"ntnu","ntnu_BA8506-1_2007_autumn_1","BA8506-1",2007,"Høst","Institutt for bygg, anlegg og transport","other","english","2026-10-16",42
+"ntnu","ntnu_BA8506-1_2007_spring_1","BA8506-1",2007,"Vår","Institutt for bygg, anlegg og transport","other","english","2026-10-16",42
+"ntnu","ntnu_BA8506-1_2007_summer_1","BA8506-1",2007,"Sommer","Institutt for bygg, anlegg og transport","other","english","2026-10-16",42
+"ntnu","ntnu_BARN3400-1_2007_autumn_1","BARN3400-1",2007,"Høst","Norsk senter for barneforskning","other","english","2026-10-16",42
+"ntnu","ntnu_BARN3400-1_2007_spring_2","BARN3400-1",2007,"Vår","Norsk senter for barneforskning","other","english","2026-10-16",42
+"ntnu","ntnu_BARN3400-1_2007_summer_1","BARN3400-1",2007,"Sommer","Norsk senter for barneforskning","other","english","2026-10-16",42
+"ntnu","ntnu_BUP6003-1_2007_autumn_1","BUP6003-1",2007,"Høst","Regionsenter for barn og unges psykiske helse","continuing","other","2026-10-16",42
+"ntnu","ntnu_BUP6003-1_2007_spring_1","BUP6003-1",2007,"Vår","Regionsenter for barn og unges psykiske helse","continuing","other","2026-10-16",42
+"ntnu","ntnu_BUP6003-1_2007_summer_1","BUP6003-1",2007,"Sommer","Regionsenter for barn og unges psykiske helse","continuing","other","2026-10-16",42
+"ntnu","ntnu_DIXILB-10-1_2007_autumn_3","DIXILB-10-1",2007,"Høst","NTNU (uspesifisert underenhet)","other","other","2026-10-16",42
+"ntnu","ntnu_DIXILB-10-1_2007_spring_3","DIXILB-10-1",2007,"Vår","Studieavdelingen","other","other","2026-10-16",42
+"ntnu","ntnu_DIXILB-10-1_2007_summer_3","DIXILB-10-1",2007,"Sommer","NTNU (uspesifisert underenhet)","other","other","2026-10-16",42
+"ntnu","ntnu_FI8800-1_2007_autumn_3","FI8800-1",2007,"Høst","Filosofisk institutt","other","other","2026-10-16",42
+"ntnu","ntnu_FI8800-1_2007_spring_3","FI8800-1",2007,"Vår","Filosofisk institutt","other","other","2026-10-16",42
+"ntnu","ntnu_FI8800-1_2007_summer_3","FI8800-1",2007,"Sommer","Filosofisk institutt","other","other","2026-10-16",42
+"ntnu","ntnu_FRA3202-1_2007_autumn_3","FRA3202-1",2007,"Høst","Institutt for moderne fremmedspråk","other","other","2026-10-16",42
+"ntnu","ntnu_FRA3202-1_2007_spring_1","FRA3202-1",2007,"Vår","Institutt for moderne fremmedspråk","other","other","2026-10-16",42
+"ntnu","ntnu_FRA3202-1_2007_summer_3","FRA3202-1",2007,"Sommer","Institutt for moderne fremmedspråk","other","other","2026-10-16",42
+"ntnu","ntnu_HIST2770-1_2007_spring_1","HIST2770-1",2007,"Vår","Institutt for historie og klassiske fag","other","other","2026-10-16",42
+"ntnu","ntnu_MOL3002-1_2007_autumn_1","MOL3002-1",2007,"Høst","Institutt for laboratoriemedisin, barne- og kvinnesykdommer","other","other","2026-10-16",42
+"ntnu","ntnu_MOL3002-1_2007_spring_1","MOL3002-1",2007,"Vår","Institutt for laboratoriemedisin, barne- og kvinnesykdommer","other","other","2026-10-16",42
+"ntnu","ntnu_MOL3002-1_2007_summer_1","MOL3002-1",2007,"Sommer","Institutt for laboratoriemedisin, barne- og kvinnesykdommer","other","other","2026-10-16",42
+"ntnu","ntnu_MT8301-1_2007_autumn_1","MT8301-1",2007,"Høst","Institutt for materialteknologi","other","english","2026-10-16",42
+"ntnu","ntnu_MT8301-1_2007_spring_1","MT8301-1",2007,"Vår","Institutt for materialteknologi","other","english","2026-10-16",42
+"ntnu","ntnu_MT8301-1_2007_summer_1","MT8301-1",2007,"Sommer","Institutt for materialteknologi","other","english","2026-10-16",42
+"ntnu","ntnu_MV3012-1_2007_autumn_3","MV3012-1",2007,"Høst","Institutt for sosiologi og statsvitenskap","other","other","2026-10-16",42
+"ntnu","ntnu_MV3012-1_2007_spring_3","MV3012-1",2007,"Vår","Institutt for sosiologi og statsvitenskap","other","other","2026-10-16",42
+"ntnu","ntnu_MV3012-1_2007_summer_3","MV3012-1",2007,"Sommer","Institutt for sosiologi og statsvitenskap","other","other","2026-10-16",42
+"ntnu","ntnu_NFU0401-1_2007_autumn_1","NFU0401-1",2007,"Høst","Institutt for språk- og kommunikasjonsstudier","other","other","2026-10-16",42
+"ntnu","ntnu_NFU0401-1_2007_spring_1","NFU0401-1",2007,"Vår","Institutt for språk- og kommunikasjonsstudier","other","other","2026-10-16",42
+"ntnu","ntnu_NFU0401-1_2007_summer_1","NFU0401-1",2007,"Sommer","Institutt for språk- og kommunikasjonsstudier","other","other","2026-10-16",42
+"ntnu","ntnu_PED1010-1_2007_autumn_1","PED1010-1",2007,"Høst","Pedagogisk institutt","other","other","2026-10-16",42
+"ntnu","ntnu_PED1010-1_2007_spring_1","PED1010-1",2007,"Vår","Pedagogisk institutt","other","other","2026-10-16",42
+"ntnu","ntnu_PED1010-1_2007_summer_1","PED1010-1",2007,"Sommer","Pedagogisk institutt","other","other","2026-10-16",42
+"ntnu","ntnu_PG8301-1_2007_autumn_1","PG8301-1",2007,"Høst","Institutt for petroleumsteknologi og anv. geofysikk","other","english","2026-10-16",42
+"ntnu","ntnu_PG8301-1_2007_spring_1","PG8301-1",2007,"Vår","Institutt for petroleumsteknologi og anv. geofysikk","other","english","2026-10-16",42
+"ntnu","ntnu_PG8301-1_2007_summer_1","PG8301-1",2007,"Sommer","Institutt for petroleumsteknologi og anv. geofysikk","other","english","2026-10-16",42
+"ntnu","ntnu_PK6020-1_2007_autumn_2","PK6020-1",2007,"Høst","Institutt for produksjons- og kvalitetsteknikk","continuing","other","2026-10-16",42
+"ntnu","ntnu_PK6020-1_2007_summer_2","PK6020-1",2007,"Sommer","Institutt for produksjons- og kvalitetsteknikk","continuing","other","2026-10-16",42
+"ntnu","ntnu_PPU4725-1_2007_autumn_1","PPU4725-1",2007,"Høst","Program for lærerutdanning","other","other","2026-10-16",42
+"ntnu","ntnu_PPU4725-1_2007_spring_1","PPU4725-1",2007,"Vår","Program for lærerutdanning","other","other","2026-10-16",42
+"ntnu","ntnu_PPU4725-1_2007_summer_1","PPU4725-1",2007,"Sommer","Program for lærerutdanning","other","other","2026-10-16",42
+"ntnu","ntnu_RVI2130-1_2007_autumn_4","RVI2130-1",2007,"Høst","Institutt for arkeologi og religionsvitenskap","other","other","2026-10-16",42
+"ntnu","ntnu_RVI2130-1_2007_spring_1","RVI2130-1",2007,"Vår","Institutt for arkeologi og religionsvitenskap","other","other","2026-10-16",42
+"ntnu","ntnu_RVI2130-1_2007_summer_4","RVI2130-1",2007,"Sommer","Institutt for arkeologi og religionsvitenskap","other","other","2026-10-16",42
+"ntnu","ntnu_SAA0550-1_2007_spring_0","SAA0550-1",2007,"Vår","Institutt for byggekunst, form og farge","other","other","2026-10-16",42
+"ntnu","ntnu_SAA1045-1_2007_spring_0","SAA1045-1",2007,"Vår","Institutt for byggekunst, historie og teknologi","other","other","2026-10-16",42
+"ntnu","ntnu_SAA5028-1_2007_spring_0","SAA5028-1",2007,"Vår","Institutt for byggekunst, prosjektering og forvaltning","other","other","2026-10-16",42
+"ntnu","ntnu_SARB8002-1_2007_autumn_1","SARB8002-1",2007,"Høst","Institutt for sosialt arbeid og helsevitenskap (ISH)","other","other","2026-10-16",42
+"ntnu","ntnu_SARB8002-1_2007_spring_1","SARB8002-1",2007,"Vår","Institutt for sosialt arbeid og helsevitenskap (ISH)","other","other","2026-10-16",42
+"ntnu","ntnu_SARB8002-1_2007_summer_1","SARB8002-1",2007,"Sommer","Institutt for sosialt arbeid og helsevitenskap (ISH)","other","other","2026-10-16",42
+"ntnu","ntnu_SVIDR395-1_2007_autumn_3","SVIDR395-1",2007,"Høst","Institutt for bevegelsesvitenskap","other","other","2026-10-16",42
+"ntnu","ntnu_SVIDR395-1_2007_spring_3","SVIDR395-1",2007,"Vår","Institutt for bevegelsesvitenskap","other","other","2026-10-16",42
+"ntnu","ntnu_SVIDR395-1_2007_summer_3","SVIDR395-1",2007,"Sommer","Institutt for bevegelsesvitenskap","other","other","2026-10-16",42
+"ntnu","ntnu_SØK8508-1_2007_autumn_3","SØK8508-1",2007,"Høst","Institutt for samfunnsøkonomi (ISØ)","other","english","2026-10-16",42
+"ntnu","ntnu_SØK8508-1_2007_spring_1","SØK8508-1",2007,"Vår","Institutt for samfunnsøkonomi (ISØ)","other","english","2026-10-16",42
+"ntnu","ntnu_SØK8508-1_2007_summer_3","SØK8508-1",2007,"Sommer","Institutt for samfunnsøkonomi (ISØ)","other","english","2026-10-16",42
+"ntnu","ntnu_TGB4170-1_2007_autumn_1","TGB4170-1",2007,"Høst","Institutt for geologi og bergteknikk","other","other","2026-10-16",42
+"ntnu","ntnu_TGB4170-1_2007_spring_1","TGB4170-1",2007,"Vår","Institutt for geologi og bergteknikk","other","other","2026-10-16",42
+"ntnu","ntnu_TGB4170-1_2007_summer_1","TGB4170-1",2007,"Sommer","Institutt for geologi og bergteknikk","other","other","2026-10-16",42
+"ntnu","ntnu_TIØ4550-1_2007_autumn_2","TIØ4550-1",2007,"Høst","Institutt for industriell økonomi og teknologiledelse","other","english","2026-10-16",42
+"ntnu","ntnu_TIØ4550-1_2007_summer_2","TIØ4550-1",2007,"Sommer","Institutt for industriell økonomi og teknologiledelse","other","english","2026-10-16",42
+"ntnu","ntnu_TKP4165-1_2007_autumn_1","TKP4165-1",2007,"Høst","Institutt for kjemisk prosessteknologi","other","other","2026-10-16",42
+"ntnu","ntnu_TKP4165-1_2007_spring_1","TKP4165-1",2007,"Vår","Institutt for kjemisk prosessteknologi","other","other","2026-10-16",42
+"ntnu","ntnu_TKP4165-1_2007_summer_1","TKP4165-1",2007,"Sommer","Institutt for kjemisk prosessteknologi","other","other","2026-10-16",42
+"ntnu","ntnu_TMM4140-1_2007_autumn_1","TMM4140-1",2007,"Høst","Institutt for produktutvikling og materialer","other","other","2026-10-16",42
+"ntnu","ntnu_TMM4140-1_2007_spring_1","TMM4140-1",2007,"Vår","Institutt for produktutvikling og materialer","other","other","2026-10-16",42
+"ntnu","ntnu_TMM4140-1_2007_summer_1","TMM4140-1",2007,"Sommer","Institutt for produktutvikling og materialer","other","other","2026-10-16",42
+"ntnu","ntnu_TMR4515-1_2007_autumn_2","TMR4515-1",2007,"Høst","Institutt for marin teknikk","other","english","2026-10-16",42
+"ntnu","ntnu_TMR4515-1_2007_summer_2","TMR4515-1",2007,"Sommer","Institutt for marin teknikk","other","english","2026-10-16",42
+"ntnu","ntnu_TPD4195-1_2007_autumn_1","TPD4195-1",2007,"Høst","Institutt for produktdesign","other","other","2026-10-16",42
+"ntnu","ntnu_TPD4195-1_2007_spring_1","TPD4195-1",2007,"Vår","Institutt for produktdesign","other","other","2026-10-16",42
+"ntnu","ntnu_TPD4195-1_2007_summer_1","TPD4195-1",2007,"Sommer","Institutt for produktdesign","other","other","2026-10-16",42
+"ntnu","ntnu_TVM5150-1_2007_autumn_3","TVM5150-1",2007,"Høst","Institutt for vann- og miljøteknikk","other","english","2026-10-16",42
+"ntnu","ntnu_TVM5150-1_2007_spring_1","TVM5150-1",2007,"Vår","Institutt for vann- og miljøteknikk","other","english","2026-10-16",42
+"ntnu","ntnu_TVM5150-1_2007_summer_3","TVM5150-1",2007,"Sommer","Institutt for vann- og miljøteknikk","other","english","2026-10-16",42
+"ntnu","ntnu_AAR6042-1_2019_autumn_1","AAR6042-1",2019,"Høst","Institutt for arkitektur og teknologi","continuing","other","2026-10-16",42
+"ntnu","ntnu_AAR6042-1_2019_spring_2","AAR6042-1",2019,"Vår","Institutt for arkitektur og teknologi","continuing","other","2026-10-16",42
+"ntnu","ntnu_BEV2101-1_2019_autumn_1","BEV2101-1",2019,"Høst","Institutt for nevromedisin og bevegelsesvitenskap","lower","other","2026-10-16",42
+"ntnu","ntnu_BEV2101-1_2019_spring_1","BEV2101-1",2019,"Vår","Institutt for nevromedisin og bevegelsesvitenskap","lower","other","2026-10-16",42
+"ntnu","ntnu_BK3380-1_2019_autumn_1","BK3380-1",2019,"Høst","Kunstakademiet i Trondheim","higher","english","2026-10-16",42
+"ntnu","ntnu_BK3380-1_2019_spring_2","BK3380-1",2019,"Vår","Kunstakademiet i Trondheim","higher","english","2026-10-16",42
+"ntnu","ntnu_FY8918-1_2019_autumn_1","FY8918-1",2019,"Høst","Institutt for fysikk","phd","english","2026-10-16",42
+"ntnu","ntnu_FY8918-1_2019_spring_1","FY8918-1",2019,"Vår","Institutt for fysikk","phd","english","2026-10-16",42
+"ntnu","ntnu_HIST2135-1_2019_spring_3","HIST2135-1",2019,"Vår","Institutt for historiske studier","lower","other","2026-10-16",42
+"ntnu","ntnu_HMS0001-1_2019_autumn_1","HMS0001-1",2019,"Høst","Fakultet for naturvitenskap","lower","other","2026-10-16",42
+"ntnu","ntnu_HMS0001-1_2019_spring_1","HMS0001-1",2019,"Vår","Fakultet for naturvitenskap","lower","other","2026-10-16",42
+"ntnu","ntnu_IHB100-1_2019_autumn_1","IHB100-1",2019,"Høst","Institutt for havromsoperasjoner og byggteknikk","lower","other","2026-10-16",42
+"ntnu","ntnu_IHB100-1_2019_spring_1","IHB100-1",2019,"Vår","Institutt for havromsoperasjoner og byggteknikk","lower","other","2026-10-16",42
+"ntnu","ntnu_KLMED8004-1_2019_autumn_1","KLMED8004-1",2019,"Høst","Institutt for samfunnsmedisin og sykepleie","phd","english","2026-10-16",42
+"ntnu","ntnu_KLMED8004-1_2019_spring_1","KLMED8004-1",2019,"Vår","Institutt for samfunnsmedisin og sykepleie","phd","english","2026-10-16",42
+"ntnu","ntnu_LGU14008-A_2019_autumn_1","LGU14008-A",2019,"Høst","Institutt for lærerutdanning","lower","other","2026-10-16",42
+"ntnu","ntnu_LGU14008-A_2019_spring_1","LGU14008-A",2019,"Vår","Institutt for lærerutdanning","lower","other","2026-10-16",42
+"ntnu","ntnu_MA3001-1_2019_autumn_1","MA3001-1",2019,"Høst","Institutt for matematiske fag","higher","english","2026-10-16",42
+"ntnu","ntnu_MA3001-1_2019_spring_1","MA3001-1",2019,"Vår","Institutt for matematiske fag","higher","english","2026-10-16",42
+"ntnu","ntnu_MOL3022-1_2019_autumn_1","MOL3022-1",2019,"Høst","Institutt for klinisk og molekylær medisin","higher","english","2026-10-16",42
+"ntnu","ntnu_MOL3022-1_2019_spring_1","MOL3022-1",2019,"Vår","Institutt for klinisk og molekylær medisin","higher","english","2026-10-16",42
+"ntnu","ntnu_MUSV2020-1_2019_autumn_3","MUSV2020-1",2019,"Høst","Institutt for musikk","lower","other","2026-10-16",42
+"ntnu","ntnu_MUSV2020-1_2019_spring_1","MUSV2020-1",2019,"Vår","Institutt for musikk","lower","other","2026-10-16",42
+"ntnu","ntnu_MV2013-1_2019_autumn_1","MV2013-1",2019,"Høst","Institutt for kunst- og medievitenskap","lower","other","2026-10-16",42
+"ntnu","ntnu_MV2013-1_2019_spring_1","MV2013-1",2019,"Vår","Institutt for kunst- og medievitenskap","lower","other","2026-10-16",42
+"ntnu","ntnu_NEVR3002-3_2019_autumn_1","NEVR3002-3",2019,"Høst","Kavliinstitutt for nevrovitenskap","higher","english","2026-10-16",42
+"ntnu","ntnu_NEVR3002-3_2019_spring_1","NEVR3002-3",2019,"Vår","Kavliinstitutt for nevrovitenskap","higher","english","2026-10-16",42
+"ntnu","ntnu_PHMT/AVHANDL-1_2019_autumn_4","PHMT/AVHANDL-1",2019,"Høst","Institutt for materialteknologi","phd","english","2026-10-16",42
+"ntnu","ntnu_PHMT/AVHANDL-1_2019_spring_4","PHMT/AVHANDL-1",2019,"Vår","Institutt for materialteknologi","phd","english","2026-10-16",42
+"ntnu","ntnu_PSY3133-1_2019_autumn_1","PSY3133-1",2019,"Høst","Institutt for psykologi","higher","other","2026-10-16",42
+"ntnu","ntnu_PSY3133-1_2019_spring_1","PSY3133-1",2019,"Vår","Institutt for psykologi","higher","other","2026-10-16",42
+"ntnu","ntnu_SM200115-1_2019_autumn_1","SM200115-1",2019,"Høst","Institutt for helsevitenskap i Ålesund","lower","other","2026-10-16",42
+"ntnu","ntnu_SM200115-1_2019_spring_1","SM200115-1",2019,"Vår","Institutt for helsevitenskap i Ålesund","lower","other","2026-10-16",42
+"ntnu","ntnu_SPRÅK8863-1_2019_autumn_1","SPRÅK8863-1",2019,"Høst","Det humanistiske fakultet","phd","english","2026-10-16",42
+"ntnu","ntnu_SPRÅK8863-1_2019_spring_1","SPRÅK8863-1",2019,"Vår","Det humanistiske fakultet","phd","english","2026-10-16",42
+"ntnu","ntnu_TKT4215-1_2019_autumn_1","TKT4215-1",2019,"Høst","Institutt for konstruksjonsteknikk","higher","english","2026-10-16",42
+"ntnu","ntnu_TKT4215-1_2019_spring_1","TKT4215-1",2019,"Vår","Institutt for konstruksjonsteknikk","higher","english","2026-10-16",42
+"ntnu","ntnu_TMAS2002-A_2019_autumn_1","TMAS2002-A",2019,"Høst","Institutt for maskinteknikk og produksjon","lower","other","2026-10-16",42
+"ntnu","ntnu_TMAS2002-A_2019_spring_1","TMAS2002-A",2019,"Vår","Institutt for maskinteknikk og produksjon","lower","other","2026-10-16",42
+"ntnu","ntnu_TVUT8012-A_2019_autumn_3","TVUT8012-A",2019,"Høst","Institutt for allmennfag","continuing","other","2026-10-16",42
+"ntnu","ntnu_TVUT8012-A_2019_spring_3","TVUT8012-A",2019,"Vår","Institutt for allmennfag","continuing","other","2026-10-16",42
+"ntnu","ntnu_AAR6038-1_2022_autumn_1","AAR6038-1",2022,"Høst","Institutt for arkitektur og planlegging","continuing","other","2026-10-16",42
+"ntnu","ntnu_AAR6038-1_2022_spring_1","AAR6038-1",2022,"Vår","Institutt for arkitektur og planlegging","continuing","other","2026-10-16",42
+"ntnu","ntnu_AB833-1_2022_autumn_1","AB833-1",2022,"Høst","NTNU (uspesifisert underenhet)","phd","other","2026-10-16",42
+"ntnu","ntnu_AB833-1_2022_spring_1","AB833-1",2022,"Vår","NTNU (uspesifisert underenhet)","phd","other","2026-10-16",42
+"ntnu","ntnu_BI2014-1_2022_autumn_1","BI2014-1",2022,"Høst","Institutt for biologi","lower","english","2026-10-16",42
+"ntnu","ntnu_BI2014-1_2022_spring_1","BI2014-1",2022,"Vår","Institutt for biologi","lower","english","2026-10-16",42
+"ntnu","ntnu_FIX1101-1_2022_autumn_3","FIX1101-1",2022,"Høst","Institutt for filosofi og religionsvitenskap","lower","other","2026-10-16",42
+"ntnu","ntnu_FIX1101-1_2022_spring_3","FIX1101-1",2022,"Vår","Institutt for filosofi og religionsvitenskap","lower","other","2026-10-16",42
+"ntnu","ntnu_GEOG3517-2_2022_autumn_1","GEOG3517-2",2022,"Høst","Institutt for geografi","higher","english","2026-10-16",42
+"ntnu","ntnu_GEOG3517-2_2022_spring_1","GEOG3517-2",2022,"Vår","Institutt for geografi","higher","english","2026-10-16",42
+"ntnu","ntnu_HRAD2005-A_2022_autumn_3","HRAD2005-A",2022,"Høst","Institutt for sirkulasjon og bildediagnostikk","lower","other","2026-10-16",42
+"ntnu","ntnu_HRAD2005-A_2022_spring_3","HRAD2005-A",2022,"Vår","Institutt for sirkulasjon og bildediagnostikk","lower","other","2026-10-16",42
+"ntnu","ntnu_IDT8002-1_2022_autumn_1","IDT8002-1",2022,"Høst","Fakultet for informasjonsteknologi og elektroteknikk","phd","english","2026-10-16",42
+"ntnu","ntnu_IDT8002-1_2022_spring_1","IDT8002-1",2022,"Vår","Fakultet for informasjonsteknologi og elektroteknikk","phd","english","2026-10-16",42
+"ntnu","ntnu_IMT4127-1_2022_autumn_1","IMT4127-1",2022,"Høst","Institutt for informasjonssikkerhet og kommunikasjonsteknologi","higher","english","2026-10-16",42
+"ntnu","ntnu_IMT4127-1_2022_spring_1","IMT4127-1",2022,"Vår","Institutt for informasjonssikkerhet og kommunikasjonsteknologi","higher","english","2026-10-16",42
+"ntnu","ntnu_KULT8124-1_2022_autumn_1","KULT8124-1",2022,"Høst","Institutt for tverrfaglige kulturstudier","phd","english","2026-10-16",42
+"ntnu","ntnu_KULT8124-1_2022_spring_1","KULT8124-1",2022,"Vår","Institutt for tverrfaglige kulturstudier","phd","english","2026-10-16",42
+"ntnu","ntnu_MD4031-1_2022_autumn_1","MD4031-1",2022,"Høst","Fakultet for medisin og helsevitenskap","lower","other","2026-10-16",42
+"ntnu","ntnu_MD4031-1_2022_spring_1","MD4031-1",2022,"Vår","Fakultet for medisin og helsevitenskap","lower","other","2026-10-16",42
+"ntnu","ntnu_PHSV-AVHAN-1_2022_autumn_4","PHSV-AVHAN-1",2022,"Høst","Fakultet for samfunns- og utdanningsvitenskap","phd","other","2026-10-16",42
+"ntnu","ntnu_PHSV-AVHAN-1_2022_spring_4","PHSV-AVHAN-1",2022,"Vår","Fakultet for samfunns- og utdanningsvitenskap","phd","other","2026-10-16",42
+"ntnu","ntnu_RAD6020-1_2022_autumn_1","RAD6020-1",2022,"Høst","Institutt for pedagogikk og livslang læring (IPL)","continuing","other","2026-10-16",42
+"ntnu","ntnu_RAD6020-1_2022_spring_1","RAD6020-1",2022,"Vår","Institutt for pedagogikk og livslang læring (IPL)","continuing","other","2026-10-16",42
+"ntnu","ntnu_REA0012-1_2022_autumn_1","REA0012-1",2022,"Høst","Institutt for matematiske fag","other","other","2026-10-16",42
+"ntnu","ntnu_REA0012-1_2022_spring_1","REA0012-1",2022,"Vår","Institutt for matematiske fag","other","other","2026-10-16",42
+"ntnu","ntnu_SANT2024-1_2022_autumn_1","SANT2024-1",2022,"Høst","Institutt for sosialantropologi","lower","other","2026-10-16",42
+"ntnu","ntnu_SANT2024-1_2022_spring_1","SANT2024-1",2022,"Vår","Institutt for sosialantropologi","lower","other","2026-10-16",42
+"ntnu","ntnu_SKOLE6249-1_2022_autumn_1","SKOLE6249-1",2022,"Høst","Institutt for lærerutdanning","higher","other","2026-10-16",42
+"ntnu","ntnu_SKOLE6249-1_2022_spring_1","SKOLE6249-1",2022,"Vår","Institutt for lærerutdanning","higher","other","2026-10-16",42
+"ntnu","ntnu_SMF1081-1_2022_autumn_3","SMF1081-1",2022,"Høst","Avdeling for studieadministrasjon","lower","english","2026-10-16",42
+"ntnu","ntnu_SMF1081-1_2022_spring_1","SMF1081-1",2022,"Vår","Avdeling for studieadministrasjon","lower","english","2026-10-16",42
+"ntnu","ntnu_TS200114-1_2022_autumn_1","TS200114-1",2022,"Høst","Institutt for havromsoperasjoner og byggteknikk","lower","other","2026-10-16",42
+"ntnu","ntnu_TS200114-1_2022_spring_1","TS200114-1",2022,"Vår","Institutt for havromsoperasjoner og byggteknikk","lower","other","2026-10-16",42
+"ntnu","ntnu_TVM4510-1_2022_autumn_3","TVM4510-1",2022,"Høst","Institutt for bygg- og miljøteknikk","higher","other","2026-10-16",42
+"ntnu","ntnu_TVM4510-1_2022_spring_4","TVM4510-1",2022,"Vår","Institutt for bygg- og miljøteknikk","higher","other","2026-10-16",42
+"ntnu","ntnu_AGF852-1_2025_autumn_1","AGF852-1",2025,"Høst","Rektors stab","phd","english","2026-10-16",42
+"ntnu","ntnu_AGF852-1_2025_spring_1","AGF852-1",2025,"Vår","Rektors stab","phd","english","2026-10-16",42
+"ntnu","ntnu_AV600320-1_2025_autumn_1","AV600320-1",2025,"Høst","Institutt for internasjonal forretningsdrift","continuing","other","2026-10-16",42
+"ntnu","ntnu_AV600320-1_2025_spring_1","AV600320-1",2025,"Vår","Institutt for internasjonal forretningsdrift","continuing","other","2026-10-16",42
+"ntnu","ntnu_BBV1003-1_2025_autumn_1","BBV1003-1",2025,"Høst","Institutt for sosialt arbeid","lower","other","2026-10-16",42
+"ntnu","ntnu_BBV1003-1_2025_spring_1","BBV1003-1",2025,"Vår","Institutt for sosialt arbeid","lower","other","2026-10-16",42
+"ntnu","ntnu_BIA3900-1_2025_autumn_1","BIA3900-1",2025,"Høst","Institutt for biologiske fag Ålesund","higher","english","2026-10-16",42
+"ntnu","ntnu_BIA3900-1_2025_spring_1","BIA3900-1",2025,"Vår","Institutt for biologiske fag Ålesund","higher","english","2026-10-16",42
+"ntnu","ntnu_ET6204-1_2025_autumn_1","ET6204-1",2025,"Høst","Institutt for elkraftteknikk","continuing","other","2026-10-16",42
+"ntnu","ntnu_ET6204-1_2025_spring_1","ET6204-1",2025,"Vår","Institutt for elkraftteknikk","continuing","other","2026-10-16",42
+"ntnu","ntnu_HBIOT2035-1_2025_autumn_1","HBIOT2035-1",2025,"Høst","Institutt for kjemi og bioingeniørfag","lower","other","2026-10-16",42
+"ntnu","ntnu_HBIOT2035-1_2025_spring_1","HBIOT2035-1",2025,"Vår","Institutt for bioingeniørfag","lower","other","2026-10-16",42
+"ntnu","ntnu_HBIOT2039-1_2025_autumn_2","HBIOT2039-1",2025,"Høst","Institutt for kjemi og bioingeniørfag","lower","other","2026-10-16",42
+"ntnu","ntnu_HIST3405-1_2025_autumn_1","HIST3405-1",2025,"Høst","Institutt for historiske fag","higher","english","2026-10-16",42
+"ntnu","ntnu_HIST3405-1_2025_spring_1","HIST3405-1",2025,"Vår","Institutt for historiske og klassiske studier","higher","english","2026-10-16",42
+"ntnu","ntnu_IDATA2002-1_2025_autumn_1","IDATA2002-1",2025,"Høst","Institutt for IKT og realfag","lower","english","2026-10-16",42
+"ntnu","ntnu_IDATA2002-1_2025_spring_1","IDATA2002-1",2025,"Vår","Institutt for IKT og realfag","lower","english","2026-10-16",42
+"ntnu","ntnu_IFEL8000-1_2025_autumn_4","IFEL8000-1",2025,"Høst","Fakultet for ingeniørvitenskap","phd","english","2026-10-16",42
+"ntnu","ntnu_IFEL8000-1_2025_spring_1","IFEL8000-1",2025,"Vår","Fakultet for ingeniørvitenskap","phd","english","2026-10-16",42
+"ntnu","ntnu_IMT4312-1_2025_autumn_1","IMT4312-1",2025,"Høst","Institutt for design","higher","english","2026-10-16",42
+"ntnu","ntnu_IMT4312-1_2025_spring_1","IMT4312-1",2025,"Vår","Institutt for design","higher","english","2026-10-16",42
+"ntnu","ntnu_KRIG3030-1_2025_autumn_1","KRIG3030-1",2025,"Høst","Institutt for historiske fag","higher","english","2026-10-16",42
+"ntnu","ntnu_KRIG3030-1_2025_spring_1","KRIG3030-1",2025,"Vår","Institutt for moderne samfunnshistorie","higher","english","2026-10-16",42
+"ntnu","ntnu_KRIG3071-1_2025_autumn_2","KRIG3071-1",2025,"Høst","Institutt for historiske fag","higher","english","2026-10-16",42
+"ntnu","ntnu_MACS490-1_2025_autumn_1","MACS490-1",2025,"Høst","Institutt for datateknologi og informatikk","higher","english","2026-10-16",42
+"ntnu","ntnu_MACS490-1_2025_spring_1","MACS490-1",2025,"Vår","Institutt for datateknologi og informatikk","higher","english","2026-10-16",42
+"ntnu","ntnu_MDV6224-1_2025_autumn_1","MDV6224-1",2025,"Høst","Institutt for psykisk helse","higher","other","2026-10-16",42
+"ntnu","ntnu_MDV6224-1_2025_spring_1","MDV6224-1",2025,"Vår","Institutt for psykisk helse","higher","other","2026-10-16",42
+"ntnu","ntnu_MET420-A_2025_autumn_1","MET420-A",2025,"Høst","NTNU Handelshøyskolen","higher","other","2026-10-16",42
+"ntnu","ntnu_MET420-A_2025_spring_1","MET420-A",2025,"Vår","NTNU Handelshøyskolen","higher","other","2026-10-16",42
+"ntnu","ntnu_NORX2001-1_2025_autumn_2","NORX2001-1",2025,"Høst","Institutt for språk og litteratur","lower","other","2026-10-16",42
+"ntnu","ntnu_PARA1008-1_2025_autumn_1","PARA1008-1",2025,"Høst","Institutt for helsevitenskap i Gjøvik","continuing","other","2026-10-16",42
+"ntnu","ntnu_PARA1008-1_2025_spring_1","PARA1008-1",2025,"Vår","Institutt for helsevitenskap i Gjøvik","lower","other","2026-10-16",42
+"ntnu","ntnu_SANT3025-1_2025_autumn_2","SANT3025-1",2025,"Høst","Institutt for geografi og sosialantropologi","higher","other","2026-10-16",42
+"ntnu","ntnu_SYT6020-1_2025_autumn_1","SYT6020-1",2025,"Høst","Institutt for samfunnsmedisin og sykepleie","continuing","other","2026-10-16",42
+"ntnu","ntnu_SYT6020-1_2025_spring_1","SYT6020-1",2025,"Vår","Institutt for samfunnsmedisin og sykepleie","continuing","other","2026-10-16",42
+"ntnu","ntnu_SØK2006-1_2025_autumn_1","SØK2006-1",2025,"Høst","Institutt for samfunnsøkonomi","lower","english","2026-10-16",42
+"ntnu","ntnu_SØK2006-1_2025_spring_1","SØK2006-1",2025,"Vår","Institutt for samfunnsøkonomi","lower","english","2026-10-16",42
+"ntnu","ntnu_TEK1315-1_2025_autumn_1","TEK1315-1",2025,"Høst","Institutt for vareproduksjon og byggteknikk","lower","other","2026-10-16",42
+"ntnu","ntnu_TEK1315-1_2025_spring_1","TEK1315-1",2025,"Vår","Institutt for vareproduksjon og byggteknikk","lower","other","2026-10-16",42
+"ntnu","ntnu_TEP4200-1_2025_autumn_1","TEP4200-1",2025,"Høst","Institutt for energi- og prosessteknikk","higher","english","2026-10-16",42
+"ntnu","ntnu_TEP4200-1_2025_spring_1","TEP4200-1",2025,"Vår","Institutt for energi- og prosessteknikk","higher","english","2026-10-16",42
+"ntnu","ntnu_TFE4853-1_2025_autumn_3","TFE4853-1",2025,"Høst","Institutt for elektroniske systemer","higher","english","2026-10-16",42
+"ntnu","ntnu_TFE4853-1_2025_spring_1","TFE4853-1",2025,"Vår","Institutt for elektroniske systemer","higher","english","2026-10-16",42
+"ntnu","ntnu_TKJ4215-1_2025_autumn_1","TKJ4215-1",2025,"Høst","Institutt for kjemi og bioingeniørfag","lower","english","2026-10-16",42
+"ntnu","ntnu_TKJ4215-1_2025_spring_1","TKJ4215-1",2025,"Vår","Institutt for kjemi","lower","english","2026-10-16",42
+"ntnu","ntnu_TMMT5003-A_2025_autumn_1","TMMT5003-A",2025,"Høst","Institutt for bioteknologi og matvitenskap","higher","english","2026-10-16",42
+"ntnu","ntnu_TMMT5003-A_2025_spring_1","TMMT5003-A",2025,"Vår","Institutt for bioteknologi og matvitenskap","higher","english","2026-10-16",42
+"ntnu","ntnu_TPG4162-1_2025_autumn_4","TPG4162-1",2025,"Høst","Institutt for geovitenskap og petroleum","higher","english","2026-10-16",42
+"ntnu","ntnu_TPG4162-1_2025_spring_3","TPG4162-1",2025,"Vår","Institutt for geovitenskap og petroleum","higher","english","2026-10-16",42
+"ntnu","ntnu_TTK4853-1_2025_autumn_1","TTK4853-1",2025,"Høst","Institutt for teknisk kybernetikk","higher","english","2026-10-16",42
+"ntnu","ntnu_TTK4853-1_2025_spring_1","TTK4853-1",2025,"Vår","Institutt for teknisk kybernetikk","higher","english","2026-10-16",42
+"ntnu","ntnu_ØK8000-1_2025_autumn_1","ØK8000-1",2025,"Høst","Fakultet for økonomi","phd","english","2026-10-16",42
+"ntnu","ntnu_ØK8000-1_2025_spring_1","ØK8000-1",2025,"Vår","Fakultet for økonomi","phd","english","2026-10-16",42

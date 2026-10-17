@@ -1,0 +1,192 @@
+"institution","course_id","course_code_raw","year","semester_name","department_name","level","language","dbh_snapshot","seed"
+"nmbu","nmbu_AB-320-1_2025_autumn_1","AB-320-1",2025,"Høst","NMBU (uspesifisert underenhet)","higher","english","2026-10-16",42
+"nmbu","nmbu_AB-320-1_2025_spring_1","AB-320-1",2025,"Vår","NMBU (uspesifisert underenhet)","higher","english","2026-10-16",42
+"nmbu","nmbu_AB-829-1_2025_autumn_1","AB-829-1",2025,"Høst","NMBU (uspesifisert underenhet)","phd","other","2026-10-16",42
+"nmbu","nmbu_AB-829-1_2025_spring_1","AB-829-1",2025,"Vår","NMBU (uspesifisert underenhet)","phd","other","2026-10-16",42
+"nmbu","nmbu_AB-840-1_2025_autumn_1","AB-840-1",2025,"Høst","NMBU (uspesifisert underenhet)","phd","english","2026-10-16",42
+"nmbu","nmbu_AB-840-1_2025_spring_1","AB-840-1",2025,"Vår","NMBU (uspesifisert underenhet)","phd","english","2026-10-16",42
+"nmbu","nmbu_AG-211-1_2025_autumn_1","AG-211-1",2025,"Høst","NMBU (uspesifisert underenhet)","lower","english","2026-10-16",42
+"nmbu","nmbu_AG-211-1_2025_spring_1","AG-211-1",2025,"Vår","NMBU (uspesifisert underenhet)","lower","english","2026-10-16",42
+"nmbu","nmbu_AG-346-1_2025_autumn_1","AG-346-1",2025,"Høst","NMBU (uspesifisert underenhet)","higher","english","2026-10-16",42
+"nmbu","nmbu_AG-346-1_2025_spring_1","AG-346-1",2025,"Vår","NMBU (uspesifisert underenhet)","higher","english","2026-10-16",42
+"nmbu","nmbu_AG-350-1_2025_autumn_1","AG-350-1",2025,"Høst","NMBU (uspesifisert underenhet)","higher","english","2026-10-16",42
+"nmbu","nmbu_AG-350-1_2025_spring_1","AG-350-1",2025,"Vår","NMBU (uspesifisert underenhet)","higher","english","2026-10-16",42
+"nmbu","nmbu_AGF-210-1_2025_autumn_1","AGF-210-1",2025,"Høst","NMBU (uspesifisert underenhet)","lower","english","2026-10-16",42
+"nmbu","nmbu_AGF-210-1_2025_spring_1","AGF-210-1",2025,"Vår","NMBU (uspesifisert underenhet)","lower","english","2026-10-16",42
+"nmbu","nmbu_AGF-215-1_2025_autumn_1","AGF-215-1",2025,"Høst","NMBU (uspesifisert underenhet)","lower","english","2026-10-16",42
+"nmbu","nmbu_AGF-215-1_2025_spring_1","AGF-215-1",2025,"Vår","NMBU (uspesifisert underenhet)","lower","english","2026-10-16",42
+"nmbu","nmbu_AQX100-1_2025_autumn_1","AQX100-1",2025,"Høst","Fakultet for biovitenskap","lower","other","2026-10-16",42
+"nmbu","nmbu_AQX100-1_2025_spring_1","AQX100-1",2025,"Vår","Fakultet for biovitenskap","lower","other","2026-10-16",42
+"nmbu","nmbu_ARK300-1_2025_autumn_1","ARK300-1",2025,"Høst","Fakultet for realfag og teknologi","higher","other","2026-10-16",42
+"nmbu","nmbu_ARK300-1_2025_spring_1","ARK300-1",2025,"Vår","Fakultet for realfag og teknologi","higher","other","2026-10-16",42
+"nmbu","nmbu_B15-SF-1_2025_autumn_1","B15-SF-1",2025,"Høst","Fakultet for miljøvitenskap og naturforvaltning","lower","other","2026-10-16",42
+"nmbu","nmbu_B15-SF-1_2025_spring_1","B15-SF-1",2025,"Vår","Fakultet for miljøvitenskap og naturforvaltning","lower","other","2026-10-16",42
+"nmbu","nmbu_BIN250-1_2025_autumn_2","BIN250-1",2025,"Høst","Fakultet for biovitenskap","lower","english","2026-10-16",42
+"nmbu","nmbu_BIO101-1_2025_autumn_1","BIO101-1",2025,"Høst","Fakultet for kjemi, bioteknologi og matvitenskap","lower","other","2026-10-16",42
+"nmbu","nmbu_BIO101-1_2025_spring_1","BIO101-1",2025,"Vår","Fakultet for kjemi, bioteknologi og matvitenskap","lower","other","2026-10-16",42
+"nmbu","nmbu_BIO321-1_2025_autumn_1","BIO321-1",2025,"Høst","Fakultet for biovitenskap","higher","english","2026-10-16",42
+"nmbu","nmbu_BIO321-1_2025_spring_1","BIO321-1",2025,"Vår","Fakultet for biovitenskap","higher","english","2026-10-16",42
+"nmbu","nmbu_BIO324-1_2025_autumn_1","BIO324-1",2025,"Høst","Fakultet for biovitenskap","higher","english","2026-10-16",42
+"nmbu","nmbu_BIO324-1_2025_spring_1","BIO324-1",2025,"Vår","Fakultet for biovitenskap","higher","english","2026-10-16",42
+"nmbu","nmbu_BIOEC300-1_2025_autumn_1","BIOEC300-1",2025,"Høst","Handelshøyskolen","higher","other","2026-10-16",42
+"nmbu","nmbu_BIOEC300-1_2025_spring_1","BIOEC300-1",2025,"Vår","Handelshøyskolen","higher","other","2026-10-16",42
+"nmbu","nmbu_BIOVIT412-1_2025_autumn_1","BIOVIT412-1",2025,"Høst","Fakultet for biovitenskap","phd","english","2026-10-16",42
+"nmbu","nmbu_BIOVIT412-1_2025_spring_1","BIOVIT412-1",2025,"Vår","Fakultet for biovitenskap","phd","english","2026-10-16",42
+"nmbu","nmbu_BOT200-1_2025_autumn_1","BOT200-1",2025,"Høst","Fakultet for biovitenskap","lower","english","2026-10-16",42
+"nmbu","nmbu_BOT200-1_2025_spring_1","BOT200-1",2025,"Vår","Fakultet for biovitenskap","lower","english","2026-10-16",42
+"nmbu","nmbu_BUS260-1_2025_autumn_1","BUS260-1",2025,"Høst","Handelshøyskolen","continuing","other","2026-10-16",42
+"nmbu","nmbu_BUS260-1_2025_spring_1","BUS260-1",2025,"Vår","Handelshøyskolen","continuing","other","2026-10-16",42
+"nmbu","nmbu_BUS313-1_2025_autumn_1","BUS313-1",2025,"Høst","Handelshøyskolen","higher","other","2026-10-16",42
+"nmbu","nmbu_BUS313-1_2025_spring_1","BUS313-1",2025,"Vår","Handelshøyskolen","higher","other","2026-10-16",42
+"nmbu","nmbu_BUS400-1_2025_autumn_1","BUS400-1",2025,"Høst","Handelshøyskolen","phd","english","2026-10-16",42
+"nmbu","nmbu_BUS400-1_2025_spring_1","BUS400-1",2025,"Vår","Handelshøyskolen","phd","english","2026-10-16",42
+"nmbu","nmbu_DYR202-2_2025_autumn_1","DYR202-2",2025,"Høst","Veterinærhøgskolen","lower","other","2026-10-16",42
+"nmbu","nmbu_DYR202-2_2025_spring_1","DYR202-2",2025,"Vår","Veterinærhøgskolen","lower","other","2026-10-16",42
+"nmbu","nmbu_DYR205-1_2025_autumn_1","DYR205-1",2025,"Høst","Veterinærhøgskolen","lower","other","2026-10-16",42
+"nmbu","nmbu_DYR205-1_2025_spring_1","DYR205-1",2025,"Vår","Veterinærhøgskolen","lower","other","2026-10-16",42
+"nmbu","nmbu_ECN001-1_2025_autumn_1","ECN001-1",2025,"Høst","Handelshøyskolen","other","other","2026-10-16",42
+"nmbu","nmbu_ECN001-1_2025_spring_1","ECN001-1",2025,"Vår","Handelshøyskolen","other","other","2026-10-16",42
+"nmbu","nmbu_ECN120-1_2025_autumn_1","ECN120-1",2025,"Høst","Handelshøyskolen","lower","other","2026-10-16",42
+"nmbu","nmbu_ECN120-1_2025_spring_1","ECN120-1",2025,"Vår","Handelshøyskolen","lower","other","2026-10-16",42
+"nmbu","nmbu_ECN140-2_2025_autumn_2","ECN140-2",2025,"Høst","Handelshøyskolen","lower","other","2026-10-16",42
+"nmbu","nmbu_ECN215-1_2025_autumn_1","ECN215-1",2025,"Høst","Handelshøyskolen","lower","english","2026-10-16",42
+"nmbu","nmbu_ECN215-1_2025_spring_1","ECN215-1",2025,"Vår","Handelshøyskolen","lower","english","2026-10-16",42
+"nmbu","nmbu_ECN230-1_2025_autumn_1","ECN230-1",2025,"Høst","Handelshøyskolen","lower","english","2026-10-16",42
+"nmbu","nmbu_ECN230-1_2025_spring_1","ECN230-1",2025,"Vår","Handelshøyskolen","lower","english","2026-10-16",42
+"nmbu","nmbu_ECN320-1_2025_autumn_1","ECN320-1",2025,"Høst","Handelshøyskolen","higher","english","2026-10-16",42
+"nmbu","nmbu_ECN320-1_2025_spring_1","ECN320-1",2025,"Vår","Handelshøyskolen","higher","english","2026-10-16",42
+"nmbu","nmbu_ECN372F-1_2025_autumn_1","ECN372F-1",2025,"Høst","Handelshøyskolen","continuing","english","2026-10-16",42
+"nmbu","nmbu_ECN372F-1_2025_spring_1","ECN372F-1",2025,"Vår","Handelshøyskolen","continuing","english","2026-10-16",42
+"nmbu","nmbu_ECOL380-1_2025_autumn_1","ECOL380-1",2025,"Høst","Fakultet for miljøvitenskap og naturforvaltning","higher","english","2026-10-16",42
+"nmbu","nmbu_ECOL380-1_2025_spring_1","ECOL380-1",2025,"Vår","Fakultet for miljøvitenskap og naturforvaltning","higher","english","2026-10-16",42
+"nmbu","nmbu_EDS115-1_2025_autumn_1","EDS115-1",2025,"Høst","Fakultet for landskap og samfunn","lower","english","2026-10-16",42
+"nmbu","nmbu_EDS115-1_2025_spring_1","EDS115-1",2025,"Vår","Fakultet for landskap og samfunn","lower","english","2026-10-16",42
+"nmbu","nmbu_FRIE-VETFOR7-1_2025_autumn_1","FRIE-VETFOR7-1",2025,"Høst","Veterinærhøgskolen","higher","other","2026-10-16",42
+"nmbu","nmbu_FRIE-VETFOR7-1_2025_spring_1","FRIE-VETFOR7-1",2025,"Vår","Veterinærhøgskolen","higher","other","2026-10-16",42
+"nmbu","nmbu_FYS236-1_2025_autumn_1","FYS236-1",2025,"Høst","Fakultet for realfag og teknologi","lower","english","2026-10-16",42
+"nmbu","nmbu_FYS236-1_2025_spring_1","FYS236-1",2025,"Vår","Fakultet for realfag og teknologi","lower","english","2026-10-16",42
+"nmbu","nmbu_FYS388-1_2025_autumn_1","FYS388-1",2025,"Høst","Fakultet for realfag og teknologi","higher","english","2026-10-16",42
+"nmbu","nmbu_FYS388-1_2025_spring_1","FYS388-1",2025,"Vår","Fakultet for realfag og teknologi","higher","english","2026-10-16",42
+"nmbu","nmbu_GMLM102-1_2025_autumn_1","GMLM102-1",2025,"Høst","Fakultet for realfag og teknologi","lower","other","2026-10-16",42
+"nmbu","nmbu_GMLM102-1_2025_spring_1","GMLM102-1",2025,"Vår","Fakultet for realfag og teknologi","lower","other","2026-10-16",42
+"nmbu","nmbu_HFX201-1_2025_autumn_1","HFX201-1",2025,"Høst","Fakultet for biovitenskap","lower","other","2026-10-16",42
+"nmbu","nmbu_HFX201-1_2025_spring_1","HFX201-1",2025,"Vår","Fakultet for biovitenskap","lower","other","2026-10-16",42
+"nmbu","nmbu_IND220-1_2025_autumn_1","IND220-1",2025,"Høst","Fakultet for realfag og teknologi","lower","other","2026-10-16",42
+"nmbu","nmbu_IND220-1_2025_spring_1","IND220-1",2025,"Vår","Fakultet for realfag og teknologi","lower","other","2026-10-16",42
+"nmbu","nmbu_IND400-1_2025_autumn_1","IND400-1",2025,"Høst","Fakultet for realfag og teknologi","phd","english","2026-10-16",42
+"nmbu","nmbu_IND400-1_2025_spring_1","IND400-1",2025,"Vår","Fakultet for realfag og teknologi","phd","english","2026-10-16",42
+"nmbu","nmbu_INN200-1_2025_autumn_1","INN200-1",2025,"Høst","Handelshøyskolen","continuing","other","2026-10-16",42
+"nmbu","nmbu_INN200-1_2025_spring_1","INN200-1",2025,"Vår","Handelshøyskolen","continuing","other","2026-10-16",42
+"nmbu","nmbu_INN360-1_2025_autumn_1","INN360-1",2025,"Høst","Handelshøyskolen","higher","other","2026-10-16",42
+"nmbu","nmbu_INN360-1_2025_spring_1","INN360-1",2025,"Vår","Handelshøyskolen","higher","other","2026-10-16",42
+"nmbu","nmbu_KJB200-1_2025_autumn_1","KJB200-1",2025,"Høst","Fakultet for kjemi, bioteknologi og matvitenskap","lower","other","2026-10-16",42
+"nmbu","nmbu_KJB200-1_2025_spring_1","KJB200-1",2025,"Vår","Fakultet for kjemi, bioteknologi og matvitenskap","lower","other","2026-10-16",42
+"nmbu","nmbu_KJB310-1_2025_autumn_1","KJB310-1",2025,"Høst","Fakultet for kjemi, bioteknologi og matvitenskap","higher","english","2026-10-16",42
+"nmbu","nmbu_KJB310-1_2025_spring_1","KJB310-1",2025,"Vår","Fakultet for kjemi, bioteknologi og matvitenskap","higher","english","2026-10-16",42
+"nmbu","nmbu_KJM007-1_2025_autumn_1","KJM007-1",2025,"Høst","Fakultet for kjemi, bioteknologi og matvitenskap","other","other","2026-10-16",42
+"nmbu","nmbu_KJM007-1_2025_spring_1","KJM007-1",2025,"Vår","Fakultet for kjemi, bioteknologi og matvitenskap","other","other","2026-10-16",42
+"nmbu","nmbu_KJM311-1_2025_autumn_1","KJM311-1",2025,"Høst","Fakultet for kjemi, bioteknologi og matvitenskap","higher","english","2026-10-16",42
+"nmbu","nmbu_KJM311-1_2025_spring_1","KJM311-1",2025,"Vår","Fakultet for kjemi, bioteknologi og matvitenskap","higher","english","2026-10-16",42
+"nmbu","nmbu_LAA211-1_2025_autumn_1","LAA211-1",2025,"Høst","Fakultet for landskap og samfunn","lower","other","2026-10-16",42
+"nmbu","nmbu_LAA211-1_2025_spring_1","LAA211-1",2025,"Vår","Fakultet for landskap og samfunn","lower","other","2026-10-16",42
+"nmbu","nmbu_LAFT210-1_2025_autumn_1","LAFT210-1",2025,"Høst","Fakultet for landskap og samfunn","lower","other","2026-10-16",42
+"nmbu","nmbu_LAFT210-1_2025_spring_1","LAFT210-1",2025,"Vår","Fakultet for landskap og samfunn","lower","other","2026-10-16",42
+"nmbu","nmbu_M30-FOL-1_2025_autumn_1","M30-FOL-1",2025,"Høst","Fakultet for landskap og samfunn","higher","english","2026-10-16",42
+"nmbu","nmbu_M30-FOL-1_2025_spring_1","M30-FOL-1",2025,"Vår","Fakultet for landskap og samfunn","higher","english","2026-10-16",42
+"nmbu","nmbu_M60-ECOL-1_2025_autumn_1","M60-ECOL-1",2025,"Høst","Fakultet for miljøvitenskap og naturforvaltning","higher","english","2026-10-16",42
+"nmbu","nmbu_M60-ECOL-1_2025_spring_1","M60-ECOL-1",2025,"Vår","Fakultet for miljøvitenskap og naturforvaltning","higher","english","2026-10-16",42
+"nmbu","nmbu_M60-GS-1_2025_autumn_1","M60-GS-1",2025,"Høst","Fakultet for biovitenskap","higher","english","2026-10-16",42
+"nmbu","nmbu_M60-GS-1_2025_spring_1","M60-GS-1",2025,"Vår","Fakultet for biovitenskap","higher","english","2026-10-16",42
+"nmbu","nmbu_M60-IES-1_2025_autumn_1","M60-IES-1",2025,"Høst","Fakultet for landskap og samfunn","higher","other","2026-10-16",42
+"nmbu","nmbu_M60-IES-1_2025_spring_1","M60-IES-1",2025,"Vår","Fakultet for landskap og samfunn","higher","other","2026-10-16",42
+"nmbu","nmbu_MATH007-1_2025_autumn_1","MATH007-1",2025,"Høst","Fakultet for realfag og teknologi","other","other","2026-10-16",42
+"nmbu","nmbu_MATH007-1_2025_spring_1","MATH007-1",2025,"Vår","Fakultet for realfag og teknologi","other","other","2026-10-16",42
+"nmbu","nmbu_MILJØ300-1_2025_autumn_1","MILJØ300-1",2025,"Høst","Fakultet for miljøvitenskap og naturforvaltning","higher","english","2026-10-16",42
+"nmbu","nmbu_MILJØ300-1_2025_spring_1","MILJØ300-1",2025,"Vår","Fakultet for miljøvitenskap og naturforvaltning","higher","english","2026-10-16",42
+"nmbu","nmbu_MINA320-1_2025_autumn_1","MINA320-1",2025,"Høst","Fakultet for miljøvitenskap og naturforvaltning","higher","other","2026-10-16",42
+"nmbu","nmbu_MINA320-1_2025_spring_1","MINA320-1",2025,"Vår","Fakultet for miljøvitenskap og naturforvaltning","higher","other","2026-10-16",42
+"nmbu","nmbu_MINA360-1_2025_autumn_2","MINA360-1",2025,"Høst","Fakultet for miljøvitenskap og naturforvaltning","higher","other","2026-10-16",42
+"nmbu","nmbu_MVI393-1_2025_autumn_1","MVI393-1",2025,"Høst","Fakultet for kjemi, bioteknologi og matvitenskap","higher","english","2026-10-16",42
+"nmbu","nmbu_MVI393-1_2025_spring_1","MVI393-1",2025,"Vår","Fakultet for kjemi, bioteknologi og matvitenskap","higher","english","2026-10-16",42
+"nmbu","nmbu_NATF230-1_2025_autumn_1","NATF230-1",2025,"Høst","Fakultet for miljøvitenskap og naturforvaltning","lower","other","2026-10-16",42
+"nmbu","nmbu_NATF230-1_2025_spring_1","NATF230-1",2025,"Vår","Fakultet for miljøvitenskap og naturforvaltning","lower","other","2026-10-16",42
+"nmbu","nmbu_NATF370-1_2025_autumn_1","NATF370-1",2025,"Høst","Fakultet for miljøvitenskap og naturforvaltning","higher","english","2026-10-16",42
+"nmbu","nmbu_NATF370-1_2025_spring_1","NATF370-1",2025,"Vår","Fakultet for miljøvitenskap og naturforvaltning","higher","english","2026-10-16",42
+"nmbu","nmbu_NOVA-400-1_2025_autumn_1","NOVA-400-1",2025,"Høst","Fakultet for biovitenskap","phd","other","2026-10-16",42
+"nmbu","nmbu_NOVA-400-1_2025_spring_1","NOVA-400-1",2025,"Vår","Fakultet for biovitenskap","phd","other","2026-10-16",42
+"nmbu","nmbu_NOVA-416-1_2025_autumn_1","NOVA-416-1",2025,"Høst","Fakultet for biovitenskap","phd","english","2026-10-16",42
+"nmbu","nmbu_NOVA-416-1_2025_spring_1","NOVA-416-1",2025,"Vår","Fakultet for biovitenskap","phd","english","2026-10-16",42
+"nmbu","nmbu_PHD:-1_2025_autumn_1","PHD:-1",2025,"Høst","Veterinærhøgskolen","phd","other","2026-10-16",42
+"nmbu","nmbu_PHI201-1_2025_autumn_1","PHI201-1",2025,"Høst","Handelshøyskolen","continuing","other","2026-10-16",42
+"nmbu","nmbu_PHI201-1_2025_spring_1","PHI201-1",2025,"Vår","Handelshøyskolen","continuing","other","2026-10-16",42
+"nmbu","nmbu_PJH212-2_2025_autumn_1","PJH212-2",2025,"Høst","Fakultet for biovitenskap","lower","english","2026-10-16",42
+"nmbu","nmbu_PJH212-2_2025_spring_1","PJH212-2",2025,"Vår","Fakultet for biovitenskap","lower","english","2026-10-16",42
+"nmbu","nmbu_PLV321-1_2025_autumn_1","PLV321-1",2025,"Høst","Fakultet for biovitenskap","higher","english","2026-10-16",42
+"nmbu","nmbu_PLV321-1_2025_spring_1","PLV321-1",2025,"Vår","Fakultet for biovitenskap","higher","english","2026-10-16",42
+"nmbu","nmbu_PPFO100-1_2025_autumn_1","PPFO100-1",2025,"Høst","Fakultet for realfag og teknologi","lower","other","2026-10-16",42
+"nmbu","nmbu_PPFO100-1_2025_spring_1","PPFO100-1",2025,"Vår","Fakultet for realfag og teknologi","lower","other","2026-10-16",42
+"nmbu","nmbu_PPRA301-1_2025_autumn_1","PPRA301-1",2025,"Høst","Fakultet for realfag og teknologi","higher","other","2026-10-16",42
+"nmbu","nmbu_PPRA301-1_2025_spring_1","PPRA301-1",2025,"Vår","Fakultet for realfag og teknologi","higher","other","2026-10-16",42
+"nmbu","nmbu_RAD310-1_2025_autumn_1","RAD310-1",2025,"Høst","Fakultet for miljøvitenskap og naturforvaltning","higher","english","2026-10-16",42
+"nmbu","nmbu_RAD310-1_2025_spring_2","RAD310-1",2025,"Vår","Fakultet for miljøvitenskap og naturforvaltning","higher","english","2026-10-16",42
+"nmbu","nmbu_SH-201-1_2025_autumn_1","SH-201-1",2025,"Høst","NMBU (uspesifisert underenhet)","lower","english","2026-10-16",42
+"nmbu","nmbu_SH-201-1_2025_spring_1","SH-201-1",2025,"Vår","NMBU (uspesifisert underenhet)","lower","english","2026-10-16",42
+"nmbu","nmbu_SPE-B-HV-2_2025_autumn_1","SPE-B-HV-2",2025,"Høst","Fakultet for biovitenskap","lower","other","2026-10-16",42
+"nmbu","nmbu_SPE-B-HV-2_2025_spring_1","SPE-B-HV-2",2025,"Vår","Fakultet for biovitenskap","lower","other","2026-10-16",42
+"nmbu","nmbu_SPE-B-MAT-1_2025_autumn_1","SPE-B-MAT-1",2025,"Høst","Fakultet for kjemi, bioteknologi og matvitenskap","lower","other","2026-10-16",42
+"nmbu","nmbu_SPE-B-MAT-1_2025_spring_1","SPE-B-MAT-1",2025,"Vår","Fakultet for kjemi, bioteknologi og matvitenskap","lower","other","2026-10-16",42
+"nmbu","nmbu_SPE-B-ØN-1_2025_autumn_1","SPE-B-ØN-1",2025,"Høst","Fakultet for miljøvitenskap og naturforvaltning","lower","other","2026-10-16",42
+"nmbu","nmbu_SPE-B-ØN-1_2025_spring_1","SPE-B-ØN-1",2025,"Vår","Fakultet for miljøvitenskap og naturforvaltning","lower","other","2026-10-16",42
+"nmbu","nmbu_SPE-M-GS-1_2025_autumn_1","SPE-M-GS-1",2025,"Høst","Fakultet for biovitenskap","higher","other","2026-10-16",42
+"nmbu","nmbu_SPE-M-GS-1_2025_spring_1","SPE-M-GS-1",2025,"Vår","Fakultet for biovitenskap","higher","other","2026-10-16",42
+"nmbu","nmbu_SPE-M-HV-1_2025_autumn_1","SPE-M-HV-1",2025,"Høst","Fakultet for biovitenskap","higher","other","2026-10-16",42
+"nmbu","nmbu_SPE-M-HV-1_2025_spring_1","SPE-M-HV-1",2025,"Vår","Fakultet for biovitenskap","higher","other","2026-10-16",42
+"nmbu","nmbu_SPE-PPU-HEL-1_2025_autumn_1","SPE-PPU-HEL-1",2025,"Høst","Fakultet for realfag og teknologi","lower","other","2026-10-16",42
+"nmbu","nmbu_SPE-PPU-HEL-1_2025_spring_1","SPE-PPU-HEL-1",2025,"Vår","Fakultet for realfag og teknologi","lower","other","2026-10-16",42
+"nmbu","nmbu_TBA100-1_2025_autumn_1","TBA100-1",2025,"Høst","Fakultet for realfag og teknologi","lower","other","2026-10-16",42
+"nmbu","nmbu_TBA100-1_2025_spring_1","TBA100-1",2025,"Vår","Fakultet for realfag og teknologi","lower","other","2026-10-16",42
+"nmbu","nmbu_TBA215-1_2025_autumn_1","TBA215-1",2025,"Høst","Fakultet for realfag og teknologi","lower","english","2026-10-16",42
+"nmbu","nmbu_TBA215-1_2025_spring_1","TBA215-1",2025,"Vår","Fakultet for realfag og teknologi","lower","english","2026-10-16",42
+"nmbu","nmbu_TEL211-1_2025_autumn_1","TEL211-1",2025,"Høst","Fakultet for realfag og teknologi","lower","english","2026-10-16",42
+"nmbu","nmbu_TEL211-1_2025_spring_1","TEL211-1",2025,"Vår","Fakultet for realfag og teknologi","lower","english","2026-10-16",42
+"nmbu","nmbu_TEST102-1_2025_autumn_1","TEST102-1",2025,"Høst","Rektor","lower","other","2026-10-16",42
+"nmbu","nmbu_TEST102-1_2025_spring_1","TEST102-1",2025,"Vår","Rektor","lower","other","2026-10-16",42
+"nmbu","nmbu_TEST102-2_2025_autumn_1","TEST102-2",2025,"Høst","NMBU (uspesifisert underenhet)","lower","other","2026-10-16",42
+"nmbu","nmbu_TEST102-2_2025_spring_1","TEST102-2",2025,"Vår","NMBU (uspesifisert underenhet)","lower","other","2026-10-16",42
+"nmbu","nmbu_TEST102-4_2025_autumn_1","TEST102-4",2025,"Høst","NMBU (uspesifisert underenhet)","lower","other","2026-10-16",42
+"nmbu","nmbu_TEST102-4_2025_spring_1","TEST102-4",2025,"Vår","NMBU (uspesifisert underenhet)","lower","other","2026-10-16",42
+"nmbu","nmbu_THT291-1_2025_autumn_1","THT291-1",2025,"Høst","Fakultet for realfag og teknologi","lower","english","2026-10-16",42
+"nmbu","nmbu_THT291-1_2025_spring_1","THT291-1",2025,"Vår","Fakultet for realfag og teknologi","lower","english","2026-10-16",42
+"nmbu","nmbu_TMPP350-1_2025_spring_3","TMPP350-1",2025,"Vår","Fakultet for realfag og teknologi","higher","other","2026-10-16",42
+"nmbu","nmbu_TMPP350-2_2025_autumn_2","TMPP350-2",2025,"Høst","Fakultet for realfag og teknologi","higher","other","2026-10-16",42
+"nmbu","nmbu_VANN310-1_2025_autumn_1","VANN310-1",2025,"Høst","Fakultet for miljøvitenskap og naturforvaltning","higher","english","2026-10-16",42
+"nmbu","nmbu_VANN310-1_2025_spring_1","VANN310-1",2025,"Vår","Fakultet for miljøvitenskap og naturforvaltning","higher","english","2026-10-16",42
+"nmbu","nmbu_VET326-1_2025_autumn_1","VET326-1",2025,"Høst","Veterinærhøgskolen","higher","other","2026-10-16",42
+"nmbu","nmbu_VET326-1_2025_spring_1","VET326-1",2025,"Vår","Veterinærhøgskolen","higher","other","2026-10-16",42
+"nmbu","nmbu_VET340-1_2025_autumn_1","VET340-1",2025,"Høst","Veterinærhøgskolen","higher","english","2026-10-16",42
+"nmbu","nmbu_VET340-1_2025_spring_1","VET340-1",2025,"Vår","Veterinærhøgskolen","higher","english","2026-10-16",42
+"nmbu","nmbu_VET341-1_2025_spring_3","VET341-1",2025,"Vår","Veterinærhøgskolen","higher","other","2026-10-16",42
+"nmbu","nmbu_VET352-1_2025_autumn_1","VET352-1",2025,"Høst","Veterinærhøgskolen","higher","other","2026-10-16",42
+"nmbu","nmbu_VET352-1_2025_spring_1","VET352-1",2025,"Vår","Veterinærhøgskolen","higher","other","2026-10-16",42
+"nmbu","nmbu_VET352-4-1_2025_autumn_1","VET352-4-1",2025,"Høst","Veterinærhøgskolen","higher","other","2026-10-16",42
+"nmbu","nmbu_VET352-4-1_2025_spring_1","VET352-4-1",2025,"Vår","Veterinærhøgskolen","higher","other","2026-10-16",42
+"nmbu","nmbu_VET354A-1_2025_autumn_1","VET354A-1",2025,"Høst","Veterinærhøgskolen","higher","other","2026-10-16",42
+"nmbu","nmbu_VET354A-1_2025_spring_1","VET354A-1",2025,"Vår","Veterinærhøgskolen","higher","other","2026-10-16",42
+"nmbu","nmbu_VET366A-1_2025_autumn_2","VET366A-1",2025,"Høst","Veterinærhøgskolen","higher","other","2026-10-16",42
+"nmbu","nmbu_VET431-3_2025_autumn_1","VET431-3",2025,"Høst","Veterinærhøgskolen","phd","other","2026-10-16",42
+"nmbu","nmbu_VET431-3_2025_spring_1","VET431-3",2025,"Vår","Veterinærhøgskolen","phd","other","2026-10-16",42
+"nmbu","nmbu_VETFORSK400-1_2025_autumn_1","VETFORSK400-1",2025,"Høst","Veterinærhøgskolen","higher","english","2026-10-16",42
+"nmbu","nmbu_VETFORSK400-1_2025_spring_1","VETFORSK400-1",2025,"Vår","Veterinærhøgskolen","higher","english","2026-10-16",42
+"nmbu","nmbu_VU-HET233-1_2025_autumn_1","VU-HET233-1",2025,"Høst","Fakultet for biovitenskap","continuing","english","2026-10-16",42
+"nmbu","nmbu_VU-HET233-1_2025_spring_1","VU-HET233-1",2025,"Vår","Fakultet for biovitenskap","continuing","english","2026-10-16",42
+"nmbu","nmbu_VU-LAA322-1_2025_autumn_1","VU-LAA322-1",2025,"Høst","Fakultet for landskap og samfunn","continuing","other","2026-10-16",42
+"nmbu","nmbu_VU-LAA322-1_2025_spring_1","VU-LAA322-1",2025,"Vår","Fakultet for landskap og samfunn","continuing","other","2026-10-16",42
+"nmbu","nmbu_VU-VET001-2_2025_autumn_1","VU-VET001-2",2025,"Høst","Veterinærhøgskolen","continuing","other","2026-10-16",42
+"nmbu","nmbu_VU-VET001-2_2025_spring_1","VU-VET001-2",2025,"Vår","Veterinærhøgskolen","continuing","other","2026-10-16",42
+"nmbu","nmbu_VU-VET312-1_2025_autumn_1","VU-VET312-1",2025,"Høst","Veterinærhøgskolen","continuing","other","2026-10-16",42
+"nmbu","nmbu_VU-VET312-1_2025_spring_1","VU-VET312-1",2025,"Vår","Veterinærhøgskolen","continuing","other","2026-10-16",42
+"nmbu","nmbu_VU-VET340-1_2025_autumn_1","VU-VET340-1",2025,"Høst","Senter for etter- og videreutdanning","continuing","other","2026-10-16",42
+"nmbu","nmbu_VU-VET340-1_2025_spring_1","VU-VET340-1",2025,"Vår","Senter for etter- og videreutdanning","continuing","other","2026-10-16",42
+"nmbu","nmbu_VU-VET361-1_2025_autumn_2","VU-VET361-1",2025,"Høst","Veterinærhøgskolen","continuing","english","2026-10-16",42
+"nmbu","nmbu_ZOOL220-1_2025_autumn_1","ZOOL220-1",2025,"Høst","Fakultet for miljøvitenskap og naturforvaltning","lower","other","2026-10-16",42
+"nmbu","nmbu_ZOOL220-1_2025_spring_1","ZOOL220-1",2025,"Vår","Fakultet for miljøvitenskap og naturforvaltning","lower","other","2026-10-16",42

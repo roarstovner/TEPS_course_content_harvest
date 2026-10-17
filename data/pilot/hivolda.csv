@@ -1,0 +1,196 @@
+"institution","course_id","course_code_raw","year","semester_name","department_name","level","language","dbh_snapshot","seed"
+"hivolda","hivolda_ANI210-1_2016_autumn_1","ANI210-1",2016,"Høst","Avdeling for mediefag","lower","english","2026-10-16",42
+"hivolda","hivolda_ANI210-1_2016_spring_1","ANI210-1",2016,"Vår","Avdeling for mediefag","lower","english","2026-10-16",42
+"hivolda","hivolda_BLUBULL1-A16-1_2016_autumn_2","BLUBULL1-A16-1",2016,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_BLUFMM-1_2016_autumn_1","BLUFMM-1",2016,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_BLUFMM-1_2016_spring_2","BLUFMM-1",2016,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_BLUPRA2-1_2016_autumn_1","BLUPRA2-1",2016,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_BLUPRA2-1_2016_spring_1","BLUPRA2-1",2016,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_DJM311-1_2016_autumn_1","DJM311-1",2016,"Høst","Avdeling for mediefag","higher","english","2026-10-16",42
+"hivolda","hivolda_DJM311-1_2016_spring_1","DJM311-1",2016,"Vår","Avdeling for mediefag","higher","english","2026-10-16",42
+"hivolda","hivolda_DKL115N-2_2016_spring_3","DKL115N-2",2016,"Vår","Avdeling for kulturfag","lower","other","2026-10-16",42
+"hivolda","hivolda_DR117-1_2016_autumn_1","DR117-1",2016,"Høst","Avdeling for kulturfag","lower","other","2026-10-16",42
+"hivolda","hivolda_DR117-1_2016_spring_1","DR117-1",2016,"Vår","Avdeling for kulturfag","lower","other","2026-10-16",42
+"hivolda","hivolda_DRHS900-1_2016_autumn_1","DRHS900-1",2016,"Høst","Avdeling for samfunnsfag og historie","phd","other","2026-10-16",42
+"hivolda","hivolda_DRHS900-1_2016_spring_1","DRHS900-1",2016,"Vår","Avdeling for samfunnsfag og historie","phd","other","2026-10-16",42
+"hivolda","hivolda_ENG144-1_2016_autumn_1","ENG144-1",2016,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","english","2026-10-16",42
+"hivolda","hivolda_ENG144-1_2016_spring_1","ENG144-1",2016,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","english","2026-10-16",42
+"hivolda","hivolda_FAKHPRA1-1_2016_autumn_1","FAKHPRA1-1",2016,"Høst","Avdeling for kulturfag","lower","other","2026-10-16",42
+"hivolda","hivolda_FAKHPRA1-1_2016_spring_1","FAKHPRA1-1",2016,"Vår","Avdeling for kulturfag","lower","other","2026-10-16",42
+"hivolda","hivolda_FORGLU-1_2016_autumn_1","FORGLU-1",2016,"Høst","Avdeling for humanistiske fag og lærarutdanning","other","other","2026-10-16",42
+"hivolda","hivolda_FORGLU-1_2016_spring_2","FORGLU-1",2016,"Vår","Avdeling for humanistiske fag og lærarutdanning","other","other","2026-10-16",42
+"hivolda","hivolda_GL5-10ENG2-1_2016_autumn_1","GL5-10ENG2-1",2016,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_GL5-10ENG2-1_2016_spring_1","GL5-10ENG2-1",2016,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_HI204-1_2016_autumn_1","HI204-1",2016,"Høst","Avdeling for samfunnsfag og historie","lower","other","2026-10-16",42
+"hivolda","hivolda_HI204-1_2016_spring_1","HI204-1",2016,"Vår","Avdeling for samfunnsfag og historie","lower","other","2026-10-16",42
+"hivolda","hivolda_HI207-1_2016_spring_3","HI207-1",2016,"Vår","Avdeling for samfunnsfag og historie","lower","other","2026-10-16",42
+"hivolda","hivolda_IFL104-1_2016_autumn_1","IFL104-1",2016,"Høst","Avdeling for kulturfag","lower","other","2026-10-16",42
+"hivolda","hivolda_IFL104-1_2016_spring_1","IFL104-1",2016,"Vår","Avdeling for kulturfag","lower","other","2026-10-16",42
+"hivolda","hivolda_MD201-1_2016_autumn_1","MD201-1",2016,"Høst","Avdeling for mediefag","lower","english","2026-10-16",42
+"hivolda","hivolda_MD201-1_2016_spring_1","MD201-1",2016,"Vår","Avdeling for mediefag","lower","english","2026-10-16",42
+"hivolda","hivolda_MID211-1_2016_autumn_1","MID211-1",2016,"Høst","Avdeling for kulturfag","lower","other","2026-10-16",42
+"hivolda","hivolda_MID211-1_2016_spring_1","MID211-1",2016,"Vår","Avdeling for kulturfag","lower","other","2026-10-16",42
+"hivolda","hivolda_MILD102-1_2016_autumn_1","MILD102-1",2016,"Høst","Avdeling for samfunnsfag og historie","lower","other","2026-10-16",42
+"hivolda","hivolda_MILD102-1_2016_spring_1","MILD102-1",2016,"Vår","Avdeling for samfunnsfag og historie","lower","other","2026-10-16",42
+"hivolda","hivolda_MKH102US-1_2016_autumn_1","MKH102US-1",2016,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_MKH102US-1_2016_spring_1","MKH102US-1",2016,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_MKP101-1_2016_autumn_3","MKP101-1",2016,"Høst","Avdeling for kulturfag","lower","other","2026-10-16",42
+"hivolda","hivolda_MKP101-1_2016_spring_1","MKP101-1",2016,"Vår","Avdeling for kulturfag","lower","other","2026-10-16",42
+"hivolda","hivolda_NF102B-1_2016_autumn_1","NF102B-1",2016,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_NF102B-1_2016_spring_1","NF102B-1",2016,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_PPU128-30-1_2016_autumn_1","PPU128-30-1",2016,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_PPU128-30-1_2016_spring_1","PPU128-30-1",2016,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_PPY121-1_2016_autumn_1","PPY121-1",2016,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_PPY121-1_2016_spring_1","PPY121-1",2016,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_SASOS121-1_2016_autumn_1","SASOS121-1",2016,"Høst","Avdeling for samfunnsfag og historie","lower","other","2026-10-16",42
+"hivolda","hivolda_SASOS121-1_2016_spring_1","SASOS121-1",2016,"Vår","Avdeling for samfunnsfag og historie","lower","other","2026-10-16",42
+"hivolda","hivolda_SASOS235-1_2016_autumn_1","SASOS235-1",2016,"Høst","Avdeling for samfunnsfag og historie","lower","other","2026-10-16",42
+"hivolda","hivolda_SASOS235-1_2016_spring_1","SASOS235-1",2016,"Vår","Avdeling for samfunnsfag og historie","lower","other","2026-10-16",42
+"hivolda","hivolda_DJM302-1_2019_autumn_3","DJM302-1",2019,"Høst","Avdeling for mediefag","higher","other","2026-10-16",42
+"hivolda","hivolda_DJM302-1_2019_spring_3","DJM302-1",2019,"Vår","Avdeling for mediefag","higher","other","2026-10-16",42
+"hivolda","hivolda_DKL02K-1_2019_autumn_1","DKL02K-1",2019,"Høst","Avdeling for mediefag","continuing","other","2026-10-16",42
+"hivolda","hivolda_DKL02K-1_2019_spring_1","DKL02K-1",2019,"Vår","Avdeling for mediefag","continuing","other","2026-10-16",42
+"hivolda","hivolda_DRHS900-2_2019_autumn_1","DRHS900-2",2019,"Høst","Avdeling for samfunnsfag og historie","phd","other","2026-10-16",42
+"hivolda","hivolda_DRHS900-2_2019_spring_1","DRHS900-2",2019,"Vår","Avdeling for samfunnsfag og historie","phd","other","2026-10-16",42
+"hivolda","hivolda_DRHS902-1_2019_autumn_1","DRHS902-1",2019,"Høst","Avdeling for samfunnsfag og historie","phd","other","2026-10-16",42
+"hivolda","hivolda_DRHS902-1_2019_spring_1","DRHS902-1",2019,"Vår","Avdeling for samfunnsfag og historie","phd","other","2026-10-16",42
+"hivolda","hivolda_ENG1B-17KFK-1_2019_autumn_1","ENG1B-17KFK-1",2019,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_ENG1B-17KFK-1_2019_spring_1","ENG1B-17KFK-1",2019,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_ENG200-1_2019_autumn_1","ENG200-1",2019,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","english","2026-10-16",42
+"hivolda","hivolda_ENG200-1_2019_spring_1","ENG200-1",2019,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","english","2026-10-16",42
+"hivolda","hivolda_ENG203-1_2019_autumn_1","ENG203-1",2019,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","english","2026-10-16",42
+"hivolda","hivolda_ENG203-1_2019_spring_1","ENG203-1",2019,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","english","2026-10-16",42
+"hivolda","hivolda_FORGLU-1_2019_autumn_1","FORGLU-1",2019,"Høst","Avdeling for humanistiske fag og lærarutdanning","other","other","2026-10-16",42
+"hivolda","hivolda_FORGLU-1_2019_spring_1","FORGLU-1",2019,"Vår","Avdeling for humanistiske fag og lærarutdanning","other","other","2026-10-16",42
+"hivolda","hivolda_GL1-7PEL3-1_2019_autumn_3","GL1-7PEL3-1",2019,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_GL1-7PEL3-1_2019_spring_4","GL1-7PEL3-1",2019,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_GL5-10KR1-1_2019_autumn_1","GL5-10KR1-1",2019,"Høst","Avdeling for kulturfag","lower","other","2026-10-16",42
+"hivolda","hivolda_GL5-10KR1-1_2019_spring_1","GL5-10KR1-1",2019,"Vår","Avdeling for kulturfag","lower","other","2026-10-16",42
+"hivolda","hivolda_HI150-1_2019_autumn_1","HI150-1",2019,"Høst","Avdeling for samfunnsfag og historie","lower","other","2026-10-16",42
+"hivolda","hivolda_HI150-1_2019_spring_1","HI150-1",2019,"Vår","Avdeling for samfunnsfag og historie","lower","other","2026-10-16",42
+"hivolda","hivolda_JOR203-1_2019_autumn_1","JOR203-1",2019,"Høst","Avdeling for mediefag","lower","other","2026-10-16",42
+"hivolda","hivolda_JOR203-1_2019_spring_1","JOR203-1",2019,"Vår","Avdeling for mediefag","lower","other","2026-10-16",42
+"hivolda","hivolda_KOH132-2_2019_autumn_1","KOH132-2",2019,"Høst","Avdeling for kulturfag","lower","other","2026-10-16",42
+"hivolda","hivolda_KOH132-2_2019_spring_1","KOH132-2",2019,"Vår","Avdeling for kulturfag","lower","other","2026-10-16",42
+"hivolda","hivolda_KUM305-2_2019_autumn_1","KUM305-2",2019,"Høst","Avdeling for samfunnsfag og historie","higher","other","2026-10-16",42
+"hivolda","hivolda_KUM305-2_2019_spring_1","KUM305-2",2019,"Vår","Avdeling for samfunnsfag og historie","higher","other","2026-10-16",42
+"hivolda","hivolda_KUM309-1_2019_autumn_1","KUM309-1",2019,"Høst","Avdeling for samfunnsfag og historie","higher","other","2026-10-16",42
+"hivolda","hivolda_KUM309-1_2019_spring_1","KUM309-1",2019,"Vår","Avdeling for samfunnsfag og historie","higher","other","2026-10-16",42
+"hivolda","hivolda_LLY101-1_2019_autumn_1","LLY101-1",2019,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_LLY101-1_2019_spring_1","LLY101-1",2019,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_MAT117-AVG-1_2019_autumn_1","MAT117-AVG-1",2019,"Høst","Avdeling for humanistiske fag og lærarutdanning","continuing","other","2026-10-16",42
+"hivolda","hivolda_MAT117-AVG-1_2019_spring_1","MAT117-AVG-1",2019,"Vår","Avdeling for humanistiske fag og lærarutdanning","continuing","other","2026-10-16",42
+"hivolda","hivolda_MEI304-1_2019_autumn_1","MEI304-1",2019,"Høst","Avdeling for samfunnsfag og historie","higher","other","2026-10-16",42
+"hivolda","hivolda_MEI304-1_2019_spring_1","MEI304-1",2019,"Vår","Avdeling for samfunnsfag og historie","higher","other","2026-10-16",42
+"hivolda","hivolda_MGL5-10EN2A-1_2019_autumn_1","MGL5-10EN2A-1",2019,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_MGL5-10EN2A-1_2019_spring_1","MGL5-10EN2A-1",2019,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_MID112-1_2019_autumn_1","MID112-1",2019,"Høst","Avdeling for mediefag","lower","other","2026-10-16",42
+"hivolda","hivolda_MID112-1_2019_spring_1","MID112-1",2019,"Vår","Avdeling for mediefag","lower","other","2026-10-16",42
+"hivolda","hivolda_NF101B-1_2019_autumn_1","NF101B-1",2019,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_NF101B-1_2019_spring_1","NF101B-1",2019,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_NYN302-2_2019_autumn_1","NYN302-2",2019,"Høst","Avdeling for humanistiske fag og lærarutdanning","higher","other","2026-10-16",42
+"hivolda","hivolda_NYN302-2_2019_spring_2","NYN302-2",2019,"Vår","Avdeling for humanistiske fag og lærarutdanning","higher","other","2026-10-16",42
+"hivolda","hivolda_REL112-1_2019_autumn_1","REL112-1",2019,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_REL112-1_2019_spring_1","REL112-1",2019,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_SASOS235-1_2019_autumn_1","SASOS235-1",2019,"Høst","Avdeling for samfunnsfag og historie","lower","other","2026-10-16",42
+"hivolda","hivolda_SASOS235-1_2019_spring_1","SASOS235-1",2019,"Vår","Avdeling for samfunnsfag og historie","lower","other","2026-10-16",42
+"hivolda","hivolda_UL306D-1_2019_autumn_1","UL306D-1",2019,"Høst","Avdeling for humanistiske fag og lærarutdanning","higher","other","2026-10-16",42
+"hivolda","hivolda_UL306D-1_2019_spring_1","UL306D-1",2019,"Vår","Avdeling for humanistiske fag og lærarutdanning","higher","other","2026-10-16",42
+"hivolda","hivolda_AMV122-2_2022_autumn_1","AMV122-2",2022,"Høst","Avdeling for mediefag","lower","other","2026-10-16",42
+"hivolda","hivolda_AMV122-2_2022_spring_2","AMV122-2",2022,"Vår","Avdeling for mediefag","lower","other","2026-10-16",42
+"hivolda","hivolda_ANT161-1_2022_autumn_1","ANT161-1",2022,"Høst","Avdeling for mediefag","lower","other","2026-10-16",42
+"hivolda","hivolda_ANT161-1_2022_spring_1","ANT161-1",2022,"Vår","Avdeling for mediefag","lower","other","2026-10-16",42
+"hivolda","hivolda_BLUSRLE-1_2022_autumn_1","BLUSRLE-1",2022,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_BLUSRLE-1_2022_spring_1","BLUSRLE-1",2022,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_BVP158-1_2022_autumn_1","BVP158-1",2022,"Høst","Avdeling for samfunnsfag og historie","lower","other","2026-10-16",42
+"hivolda","hivolda_BVP158-1_2022_spring_2","BVP158-1",2022,"Vår","Avdeling for samfunnsfag og historie","lower","other","2026-10-16",42
+"hivolda","hivolda_DRHS904-1_2022_autumn_1","DRHS904-1",2022,"Høst","Avdeling for samfunnsfag og historie","phd","other","2026-10-16",42
+"hivolda","hivolda_DRHS904-1_2022_spring_1","DRHS904-1",2022,"Vår","Avdeling for samfunnsfag og historie","phd","other","2026-10-16",42
+"hivolda","hivolda_ENG144-1_2022_autumn_1","ENG144-1",2022,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","english","2026-10-16",42
+"hivolda","hivolda_ENG144-1_2022_spring_1","ENG144-1",2022,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","english","2026-10-16",42
+"hivolda","hivolda_IKF101-1_2022_autumn_1","IKF101-1",2022,"Høst","Avdeling for kulturfag","lower","other","2026-10-16",42
+"hivolda","hivolda_IKF101-1_2022_spring_1","IKF101-1",2022,"Vår","Avdeling for kulturfag","lower","other","2026-10-16",42
+"hivolda","hivolda_IPA111-1_2022_autumn_1","IPA111-1",2022,"Høst","Avdeling for samfunnsfag og historie","lower","other","2026-10-16",42
+"hivolda","hivolda_IPA111-1_2022_spring_1","IPA111-1",2022,"Vår","Avdeling for samfunnsfag og historie","lower","other","2026-10-16",42
+"hivolda","hivolda_KOH115-2_2022_autumn_1","KOH115-2",2022,"Høst","Avdeling for kulturfag","lower","other","2026-10-16",42
+"hivolda","hivolda_KOH115-2_2022_spring_1","KOH115-2",2022,"Vår","Avdeling for kulturfag","lower","other","2026-10-16",42
+"hivolda","hivolda_KUM305-2_2022_autumn_1","KUM305-2",2022,"Høst","Avdeling for samfunnsfag og historie","higher","other","2026-10-16",42
+"hivolda","hivolda_KUM305-2_2022_spring_1","KUM305-2",2022,"Vår","Avdeling for samfunnsfag og historie","higher","other","2026-10-16",42
+"hivolda","hivolda_MEI304-1_2022_autumn_1","MEI304-1",2022,"Høst","Avdeling for samfunnsfag og historie","higher","other","2026-10-16",42
+"hivolda","hivolda_MEI304-1_2022_spring_1","MEI304-1",2022,"Vår","Avdeling for samfunnsfag og historie","higher","other","2026-10-16",42
+"hivolda","hivolda_MGL1-7MA1B2-1_2022_autumn_1","MGL1-7MA1B2-1",2022,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_MGL1-7MA1B2-1_2022_spring_1","MGL1-7MA1B2-1",2022,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_MKH102BS-1_2022_autumn_3","MKH102BS-1",2022,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_MKH102BS-1_2022_spring_1","MKH102BS-1",2022,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_MNT211SKUL-2_2022_autumn_1","MNT211SKUL-2",2022,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_MNT211SKUL-2_2022_spring_1","MNT211SKUL-2",2022,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_NO121-1_2022_autumn_1","NO121-1",2022,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_NO121-1_2022_spring_1","NO121-1",2022,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_NO321-1_2022_autumn_1","NO321-1",2022,"Høst","Avdeling for humanistiske fag og lærarutdanning","higher","other","2026-10-16",42
+"hivolda","hivolda_NO321-1_2022_spring_1","NO321-1",2022,"Vår","Avdeling for humanistiske fag og lærarutdanning","higher","other","2026-10-16",42
+"hivolda","hivolda_PPU-DID1FR-1_2022_autumn_1","PPU-DID1FR-1",2022,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","english","2026-10-16",42
+"hivolda","hivolda_PPU-DID1FR-1_2022_spring_1","PPU-DID1FR-1",2022,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","english","2026-10-16",42
+"hivolda","hivolda_PPUD-DID2FR-1_2022_autumn_1","PPUD-DID2FR-1",2022,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","english","2026-10-16",42
+"hivolda","hivolda_PPUD-DID2FR-1_2022_spring_1","PPUD-DID2FR-1",2022,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","english","2026-10-16",42
+"hivolda","hivolda_PPUY-PRA1-1_2022_autumn_1","PPUY-PRA1-1",2022,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_PPUY-PRA1-1_2022_spring_1","PPUY-PRA1-1",2022,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_PPY122-1_2022_autumn_1","PPY122-1",2022,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_PPY122-1_2022_spring_1","PPY122-1",2022,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_SABVP235-1_2022_autumn_3","SABVP235-1",2022,"Høst","Avdeling for samfunnsfag og historie","lower","other","2026-10-16",42
+"hivolda","hivolda_SABVP235-1_2022_spring_1","SABVP235-1",2022,"Vår","Avdeling for samfunnsfag og historie","lower","other","2026-10-16",42
+"hivolda","hivolda_SAK101-K-1_2022_autumn_1","SAK101-K-1",2022,"Høst","Avdeling for samfunnsfag og historie","lower","other","2026-10-16",42
+"hivolda","hivolda_SAK101-K-1_2022_spring_1","SAK101-K-1",2022,"Vår","Avdeling for samfunnsfag og historie","lower","other","2026-10-16",42
+"hivolda","hivolda_TOD201-1_2022_autumn_1","TOD201-1",2022,"Høst","Avdeling for kulturfag","lower","other","2026-10-16",42
+"hivolda","hivolda_TOD201-1_2022_spring_1","TOD201-1",2022,"Vår","Avdeling for kulturfag","lower","other","2026-10-16",42
+"hivolda","hivolda_UL301-1_2022_autumn_1","UL301-1",2022,"Høst","Avdeling for humanistiske fag og lærarutdanning","higher","other","2026-10-16",42
+"hivolda","hivolda_UL301-1_2022_spring_1","UL301-1",2022,"Vår","Avdeling for humanistiske fag og lærarutdanning","higher","other","2026-10-16",42
+"hivolda","hivolda_ULEENG3B-1_2022_autumn_1","ULEENG3B-1",2022,"Høst","Avdeling for humanistiske fag og lærarutdanning","continuing","other","2026-10-16",42
+"hivolda","hivolda_ULEENG3B-1_2022_spring_1","ULEENG3B-1",2022,"Vår","Avdeling for humanistiske fag og lærarutdanning","continuing","other","2026-10-16",42
+"hivolda","hivolda_ANI263-1_2025_autumn_1","ANI263-1",2025,"Høst","Avdeling for mediefag","lower","other","2026-10-16",42
+"hivolda","hivolda_ANI263-1_2025_spring_1","ANI263-1",2025,"Vår","Avdeling for mediefag","lower","other","2026-10-16",42
+"hivolda","hivolda_BLUFMM-2_2025_autumn_1","BLUFMM-2",2025,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_BLUFMM-2_2025_spring_1","BLUFMM-2",2025,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_DRHS900-2_2025_autumn_1","DRHS900-2",2025,"Høst","Avdeling for samfunnsfag og historie","phd","other","2026-10-16",42
+"hivolda","hivolda_DRHS900-2_2025_spring_1","DRHS900-2",2025,"Vår","Avdeling for samfunnsfag og historie","phd","other","2026-10-16",42
+"hivolda","hivolda_ENG207-1_2025_autumn_1","ENG207-1",2025,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_ENG207-1_2025_spring_1","ENG207-1",2025,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_FLM102-1_2025_autumn_1","FLM102-1",2025,"Høst","Avdeling for mediefag","lower","other","2026-10-16",42
+"hivolda","hivolda_FLM102-1_2025_spring_1","FLM102-1",2025,"Vår","Avdeling for mediefag","lower","other","2026-10-16",42
+"hivolda","hivolda_HI100N-1_2025_autumn_1","HI100N-1",2025,"Høst","Avdeling for samfunnsfag og historie","lower","other","2026-10-16",42
+"hivolda","hivolda_HI100N-1_2025_spring_1","HI100N-1",2025,"Vår","Avdeling for samfunnsfag og historie","lower","other","2026-10-16",42
+"hivolda","hivolda_HI210-1_2025_autumn_1","HI210-1",2025,"Høst","Avdeling for samfunnsfag og historie","lower","other","2026-10-16",42
+"hivolda","hivolda_HI210-1_2025_spring_1","HI210-1",2025,"Vår","Avdeling for samfunnsfag og historie","lower","other","2026-10-16",42
+"hivolda","hivolda_IKF208-1_2025_autumn_1","IKF208-1",2025,"Høst","Avdeling for kulturfag","lower","other","2026-10-16",42
+"hivolda","hivolda_IKF208-1_2025_spring_1","IKF208-1",2025,"Vår","Avdeling for kulturfag","lower","other","2026-10-16",42
+"hivolda","hivolda_IPA206-1_2025_autumn_1","IPA206-1",2025,"Høst","Avdeling for samfunnsfag og historie","lower","english","2026-10-16",42
+"hivolda","hivolda_IPA206-1_2025_spring_1","IPA206-1",2025,"Vår","Avdeling for samfunnsfag og historie","lower","english","2026-10-16",42
+"hivolda","hivolda_JOP100-1_2025_autumn_2","JOP100-1",2025,"Høst","Avdeling for mediefag","lower","other","2026-10-16",42
+"hivolda","hivolda_KOH135-1_2025_autumn_2","KOH135-1",2025,"Høst","Avdeling for kulturfag","lower","other","2026-10-16",42
+"hivolda","hivolda_KUM311-1_2025_autumn_1","KUM311-1",2025,"Høst","Avdeling for humanistiske fag og lærarutdanning","higher","other","2026-10-16",42
+"hivolda","hivolda_KUM311-1_2025_spring_1","KUM311-1",2025,"Vår","Avdeling for humanistiske fag og lærarutdanning","higher","other","2026-10-16",42
+"hivolda","hivolda_MEI301-1_2025_autumn_1","MEI301-1",2025,"Høst","Avdeling for samfunnsfag og historie","higher","other","2026-10-16",42
+"hivolda","hivolda_MEI301-1_2025_spring_1","MEI301-1",2025,"Vår","Avdeling for samfunnsfag og historie","higher","other","2026-10-16",42
+"hivolda","hivolda_MGL1-7EN1B-1_2025_autumn_1","MGL1-7EN1B-1",2025,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_MGL1-7EN1B-1_2025_spring_1","MGL1-7EN1B-1",2025,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_MGL1-7MA3B-1_2025_autumn_1","MGL1-7MA3B-1",2025,"Høst","Avdeling for humanistiske fag og lærarutdanning","higher","other","2026-10-16",42
+"hivolda","hivolda_MGL1-7MA3B-1_2025_spring_1","MGL1-7MA3B-1",2025,"Vår","Avdeling for humanistiske fag og lærarutdanning","higher","other","2026-10-16",42
+"hivolda","hivolda_MGL5-10MA3C-1_2025_autumn_1","MGL5-10MA3C-1",2025,"Høst","Avdeling for humanistiske fag og lærarutdanning","higher","other","2026-10-16",42
+"hivolda","hivolda_MGL5-10MA3C-1_2025_spring_1","MGL5-10MA3C-1",2025,"Vår","Avdeling for humanistiske fag og lærarutdanning","higher","other","2026-10-16",42
+"hivolda","hivolda_MGL5-10SA1B-1_2025_autumn_1","MGL5-10SA1B-1",2025,"Høst","Avdeling for samfunnsfag og historie","lower","other","2026-10-16",42
+"hivolda","hivolda_MGL5-10SA1B-1_2025_spring_1","MGL5-10SA1B-1",2025,"Vår","Avdeling for samfunnsfag og historie","lower","other","2026-10-16",42
+"hivolda","hivolda_MGL5-10SA3B-1_2025_autumn_1","MGL5-10SA3B-1",2025,"Høst","Avdeling for samfunnsfag og historie","higher","other","2026-10-16",42
+"hivolda","hivolda_MGL5-10SA3B-1_2025_spring_1","MGL5-10SA3B-1",2025,"Vår","Avdeling for samfunnsfag og historie","higher","other","2026-10-16",42
+"hivolda","hivolda_MUS208-1_2025_autumn_3","MUS208-1",2025,"Høst","Avdeling for kulturfag","lower","other","2026-10-16",42
+"hivolda","hivolda_MUS208-1_2025_spring_4","MUS208-1",2025,"Vår","Avdeling for kulturfag","lower","other","2026-10-16",42
+"hivolda","hivolda_NO1B-17AVG-1_2025_autumn_1","NO1B-17AVG-1",2025,"Høst","Avdeling for humanistiske fag og lærarutdanning","continuing","other","2026-10-16",42
+"hivolda","hivolda_NO1B-17AVG-1_2025_spring_1","NO1B-17AVG-1",2025,"Vår","Avdeling for humanistiske fag og lærarutdanning","continuing","other","2026-10-16",42
+"hivolda","hivolda_REL206N-1_2025_autumn_1","REL206N-1",2025,"Høst","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_REL206N-1_2025_spring_1","REL206N-1",2025,"Vår","Avdeling for humanistiske fag og lærarutdanning","lower","other","2026-10-16",42
+"hivolda","hivolda_RUS301-1_2025_autumn_1","RUS301-1",2025,"Høst","Avdeling for samfunnsfag og historie","higher","other","2026-10-16",42
+"hivolda","hivolda_RUS301-1_2025_spring_1","RUS301-1",2025,"Vår","Avdeling for samfunnsfag og historie","higher","other","2026-10-16",42
+"hivolda","hivolda_SKR302-1_2025_autumn_1","SKR302-1",2025,"Høst","Avdeling for humanistiske fag og lærarutdanning","higher","other","2026-10-16",42
+"hivolda","hivolda_SKR302-1_2025_spring_1","SKR302-1",2025,"Vår","Avdeling for humanistiske fag og lærarutdanning","higher","other","2026-10-16",42
+"hivolda","hivolda_SSA102-1_2025_autumn_1","SSA102-1",2025,"Høst","Avdeling for samfunnsfag og historie","lower","other","2026-10-16",42
+"hivolda","hivolda_SSA102-1_2025_spring_1","SSA102-1",2025,"Vår","Avdeling for samfunnsfag og historie","lower","other","2026-10-16",42
+"hivolda","hivolda_ULEMGVF-1_2025_autumn_1","ULEMGVF-1",2025,"Høst","Avdeling for humanistiske fag og lærarutdanning","continuing","other","2026-10-16",42
+"hivolda","hivolda_ULEMGVF-1_2025_spring_1","ULEMGVF-1",2025,"Vår","Avdeling for humanistiske fag og lærarutdanning","continuing","other","2026-10-16",42

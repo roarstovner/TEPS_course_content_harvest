@@ -1,0 +1,214 @@
+"institution","course_id","course_code_raw","year","semester_name","department_name","level","language","dbh_snapshot","seed"
+"uib","uib_CMS901-0_2010_autumn_1","CMS901-0",2010,"Høst","Senter for middelalderstudier (CMS)","phd","other","2026-10-16",42
+"uib","uib_CMS901-0_2010_spring_1","CMS901-0",2010,"Vår","Senter for middelalderstudier (CMS)","phd","other","2026-10-16",42
+"uib","uib_CMS901-0_2010_summer_1","CMS901-0",2010,"Sommer","Senter for middelalderstudier (CMS)","phd","other","2026-10-16",42
+"uib","uib_DIDASAK1-0_2010_autumn_1","DIDASAK1-0",2010,"Høst","Det samfunnsvitenskapelige fakultet","lower","other","2026-10-16",42
+"uib","uib_DIDASAK1-0_2010_spring_1","DIDASAK1-0",2010,"Vår","Det samfunnsvitenskapelige fakultet","lower","other","2026-10-16",42
+"uib","uib_DIDASAK1-0_2010_summer_1","DIDASAK1-0",2010,"Sommer","Det samfunnsvitenskapelige fakultet","lower","other","2026-10-16",42
+"uib","uib_ECON310-0_2010_autumn_1","ECON310-0",2010,"Høst","Institutt for økonomi","higher","other","2026-10-16",42
+"uib","uib_ECON310-0_2010_spring_1","ECON310-0",2010,"Vår","Institutt for økonomi","higher","other","2026-10-16",42
+"uib","uib_ECON310-0_2010_summer_1","ECON310-0",2010,"Sommer","Institutt for økonomi","higher","other","2026-10-16",42
+"uib","uib_ECON329-0_2010_autumn_1","ECON329-0",2010,"Høst","Institutt for økonomi","higher","other","2026-10-16",42
+"uib","uib_ECON329-0_2010_spring_1","ECON329-0",2010,"Vår","Institutt for økonomi","higher","other","2026-10-16",42
+"uib","uib_ECON329-0_2010_summer_1","ECON329-0",2010,"Sommer","Institutt for økonomi","higher","other","2026-10-16",42
+"uib","uib_FARM204-0_2010_autumn_1","FARM204-0",2010,"Høst","Institutt for samfunnsmedisinske fag","lower","other","2026-10-16",42
+"uib","uib_FARM204-0_2010_spring_1","FARM204-0",2010,"Vår","Institutt for samfunnsmedisinske fag","lower","other","2026-10-16",42
+"uib","uib_FARM204-0_2010_summer_1","FARM204-0",2010,"Sommer","Institutt for samfunnsmedisinske fag","lower","other","2026-10-16",42
+"uib","uib_FARM399-0_2010_autumn_1","FARM399-0",2010,"Høst","UiB (uspesifisert underenhet)","higher","other","2026-10-16",42
+"uib","uib_FARM399-0_2010_spring_1","FARM399-0",2010,"Vår","UiB (uspesifisert underenhet)","higher","other","2026-10-16",42
+"uib","uib_FARM399-0_2010_summer_1","FARM399-0",2010,"Sommer","UiB (uspesifisert underenhet)","higher","other","2026-10-16",42
+"uib","uib_FIL622-0_2010_autumn_1","FIL622-0",2010,"Høst","Institutt for filosofi og førstesemesterstudier","continuing","other","2026-10-16",42
+"uib","uib_FIL622-0_2010_spring_1","FIL622-0",2010,"Vår","Institutt for filosofi og førstesemesterstudier","continuing","other","2026-10-16",42
+"uib","uib_FIL622-0_2010_summer_1","FIL622-0",2010,"Sommer","Institutt for filosofi og førstesemesterstudier","continuing","other","2026-10-16",42
+"uib","uib_GEO310-0_2010_autumn_1","GEO310-0",2010,"Høst","Institutt for geografi","higher","other","2026-10-16",42
+"uib","uib_GEO310-0_2010_spring_1","GEO310-0",2010,"Vår","Institutt for geografi","higher","other","2026-10-16",42
+"uib","uib_GEO310-0_2010_summer_1","GEO310-0",2010,"Sommer","Institutt for geografi","higher","other","2026-10-16",42
+"uib","uib_GEOV106-0_2010_autumn_1","GEOV106-0",2010,"Høst","Institutt for geovitenskap","lower","other","2026-10-16",42
+"uib","uib_GEOV106-0_2010_spring_2","GEOV106-0",2010,"Vår","Institutt for geovitenskap","lower","other","2026-10-16",42
+"uib","uib_GEOV106-0_2010_summer_1","GEOV106-0",2010,"Sommer","Institutt for geovitenskap","lower","other","2026-10-16",42
+"uib","uib_INTH335-0_2010_autumn_1","INTH335-0",2010,"Høst","Senter for internasjonal helse","higher","english","2026-10-16",42
+"uib","uib_INTH335-0_2010_spring_1","INTH335-0",2010,"Vår","Senter for internasjonal helse","higher","english","2026-10-16",42
+"uib","uib_INTH335-0_2010_summer_1","INTH335-0",2010,"Sommer","Senter for internasjonal helse","higher","english","2026-10-16",42
+"uib","uib_JUS399-0_2010_autumn_1","JUS399-0",2010,"Høst","Det juridiske fakultet","higher","other","2026-10-16",42
+"uib","uib_JUS399-0_2010_spring_1","JUS399-0",2010,"Vår","Det juridiske fakultet","higher","other","2026-10-16",42
+"uib","uib_JUS399-0_2010_summer_1","JUS399-0",2010,"Sommer","Det juridiske fakultet","higher","other","2026-10-16",42
+"uib","uib_KJEM907-0_2010_autumn_1","KJEM907-0",2010,"Høst","Kjemisk institutt","phd","english","2026-10-16",42
+"uib","uib_KJEM907-0_2010_spring_2","KJEM907-0",2010,"Vår","Kjemisk institutt","phd","english","2026-10-16",42
+"uib","uib_KJEM907-0_2010_summer_1","KJEM907-0",2010,"Sommer","Kjemisk institutt","phd","english","2026-10-16",42
+"uib","uib_MAT903-0_2010_autumn_1","MAT903-0",2010,"Høst","Matematisk institutt","phd","english","2026-10-16",42
+"uib","uib_MAT903-0_2010_spring_2","MAT903-0",2010,"Vår","Matematisk institutt","phd","english","2026-10-16",42
+"uib","uib_MAT903-0_2010_summer_1","MAT903-0",2010,"Sommer","Matematisk institutt","phd","english","2026-10-16",42
+"uib","uib_MAUMAT642-0_2010_autumn_2","MAUMAT642-0",2010,"Høst","Matematisk institutt","continuing","other","2026-10-16",42
+"uib","uib_MAUMAT642-0_2010_summer_2","MAUMAT642-0",2010,"Sommer","Matematisk institutt","continuing","other","2026-10-16",42
+"uib","uib_MED2KIR3-0_2010_autumn_1","MED2KIR3-0",2010,"Høst","Institutt for kirurgiske fag","higher","other","2026-10-16",42
+"uib","uib_MED2KIR3-0_2010_spring_1","MED2KIR3-0",2010,"Vår","Institutt for kirurgiske fag","higher","other","2026-10-16",42
+"uib","uib_MED2KIR3-0_2010_summer_1","MED2KIR3-0",2010,"Sommer","Institutt for kirurgiske fag","higher","other","2026-10-16",42
+"uib","uib_MEDIND4-B-0_2010_autumn_2","MEDIND4-B-0",2010,"Høst","Institutt for indremedisin","higher","other","2026-10-16",42
+"uib","uib_MEDIND4-B-0_2010_summer_2","MEDIND4-B-0",2010,"Sommer","Institutt for indremedisin","higher","other","2026-10-16",42
+"uib","uib_MEDPED-0_2010_autumn_1","MEDPED-0",2010,"Høst","Institutt for klinisk medisin","higher","other","2026-10-16",42
+"uib","uib_MEDPED-0_2010_spring_1","MEDPED-0",2010,"Vår","Institutt for klinisk medisin","higher","other","2026-10-16",42
+"uib","uib_MEDPED-0_2010_summer_1","MEDPED-0",2010,"Sommer","Institutt for klinisk medisin","higher","other","2026-10-16",42
+"uib","uib_MOL270-0_2010_autumn_1","MOL270-0",2010,"Høst","Molekylærbiologisk institutt","lower","other","2026-10-16",42
+"uib","uib_MOL270-0_2010_spring_1","MOL270-0",2010,"Vår","Molekylærbiologisk institutt","lower","other","2026-10-16",42
+"uib","uib_MOL270-0_2010_summer_1","MOL270-0",2010,"Sommer","Molekylærbiologisk institutt","lower","other","2026-10-16",42
+"uib","uib_MUEM301-0_2010_autumn_1","MUEM301-0",2010,"Høst","Griegakademiet - Institutt for musikk","higher","other","2026-10-16",42
+"uib","uib_MUEM301-0_2010_spring_1","MUEM301-0",2010,"Vår","Griegakademiet - Institutt for musikk","higher","other","2026-10-16",42
+"uib","uib_MUEM301-0_2010_summer_1","MUEM301-0",2010,"Sommer","Griegakademiet - Institutt for musikk","higher","other","2026-10-16",42
+"uib","uib_PHYS906A-0_2010_autumn_1","PHYS906A-0",2010,"Høst","Institutt for fysikk og teknologi","phd","english","2026-10-16",42
+"uib","uib_PHYS906A-0_2010_spring_2","PHYS906A-0",2010,"Vår","Institutt for fysikk og teknologi","phd","english","2026-10-16",42
+"uib","uib_PHYS906A-0_2010_summer_1","PHYS906A-0",2010,"Sommer","Institutt for fysikk og teknologi","phd","english","2026-10-16",42
+"uib","uib_REG350BIO60-0_2010_autumn_1","REG350BIO60-0",2010,"Høst","Institutt for arkeologi, historie, kultur- og religionsvitenskap","higher","other","2026-10-16",42
+"uib","uib_REG350BIO60-0_2010_spring_1","REG350BIO60-0",2010,"Vår","Institutt for arkeologi, historie, kultur- og religionsvitenskap","higher","other","2026-10-16",42
+"uib","uib_REG350BIO60-0_2010_summer_1","REG350BIO60-0",2010,"Sommer","Institutt for arkeologi, historie, kultur- og religionsvitenskap","higher","other","2026-10-16",42
+"uib","uib_SAMPOL305-0_2010_autumn_1","SAMPOL305-0",2010,"Høst","Institutt for sammenliknende politikk","higher","other","2026-10-16",42
+"uib","uib_SAMPOL305-0_2010_spring_1","SAMPOL305-0",2010,"Vår","Institutt for sammenliknende politikk","higher","other","2026-10-16",42
+"uib","uib_SAMPOL305-0_2010_summer_1","SAMPOL305-0",2010,"Sommer","Institutt for sammenliknende politikk","higher","other","2026-10-16",42
+"uib","uib_TPBAPAT-0_2010_autumn_1","TPBAPAT-0",2010,"Høst","Gades institutt","lower","other","2026-10-16",42
+"uib","uib_TPBAPAT-0_2010_spring_1","TPBAPAT-0",2010,"Vår","Gades institutt","lower","other","2026-10-16",42
+"uib","uib_TPBAPAT-0_2010_summer_1","TPBAPAT-0",2010,"Sommer","Gades institutt","lower","other","2026-10-16",42
+"uib","uib_TYS111-F-0_2010_autumn_1","TYS111-F-0",2010,"Høst","Institutt for fremmedspråk","continuing","other","2026-10-16",42
+"uib","uib_TYS111-F-0_2010_spring_1","TYS111-F-0",2010,"Vår","Institutt for fremmedspråk","continuing","other","2026-10-16",42
+"uib","uib_TYS111-F-0_2010_summer_1","TYS111-F-0",2010,"Sommer","Institutt for fremmedspråk","continuing","other","2026-10-16",42
+"uib","uib_TYS643-0_2010_autumn_1","TYS643-0",2010,"Høst","Institutt for fremmedspråk","continuing","other","2026-10-16",42
+"uib","uib_TYS643-0_2010_spring_1","TYS643-0",2010,"Vår","Institutt for fremmedspråk","continuing","other","2026-10-16",42
+"uib","uib_TYS643-0_2010_summer_1","TYS643-0",2010,"Sommer","Institutt for fremmedspråk","continuing","other","2026-10-16",42
+"uib","uib_AB206-0_2019_autumn_1","AB206-0",2019,"Høst","Fakultet for naturvitenskap og teknologi","lower","other","2026-10-16",42
+"uib","uib_AB206-0_2019_spring_1","AB206-0",2019,"Vår","Fakultet for naturvitenskap og teknologi","lower","other","2026-10-16",42
+"uib","uib_AG335-0_2019_autumn_1","AG335-0",2019,"Høst","Fakultet for naturvitenskap og teknologi","higher","other","2026-10-16",42
+"uib","uib_AG335-0_2019_spring_1","AG335-0",2019,"Vår","Fakultet for naturvitenskap og teknologi","higher","other","2026-10-16",42
+"uib","uib_AHKR391-0_2019_autumn_1","AHKR391-0",2019,"Høst","Institutt for arkeologi, historie, kultur- og religionsvitenskap","higher","other","2026-10-16",42
+"uib","uib_AHKR391-0_2019_spring_1","AHKR391-0",2019,"Vår","Institutt for arkeologi, historie, kultur- og religionsvitenskap","higher","other","2026-10-16",42
+"uib","uib_BMED350-0_2019_autumn_3","BMED350-0",2019,"Høst","Institutt for biomedisin","higher","other","2026-10-16",42
+"uib","uib_BMED350-0_2019_spring_1","BMED350-0",2019,"Vår","Institutt for biomedisin","higher","other","2026-10-16",42
+"uib","uib_ECON370-0_2019_autumn_1","ECON370-0",2019,"Høst","Institutt for økonomi","higher","other","2026-10-16",42
+"uib","uib_ECON370-0_2019_spring_1","ECON370-0",2019,"Vår","Institutt for økonomi","higher","other","2026-10-16",42
+"uib","uib_ELMED323-0_2019_autumn_1","ELMED323-0",2019,"Høst","Klinisk institutt 2","higher","other","2026-10-16",42
+"uib","uib_ELMED323-0_2019_spring_2","ELMED323-0",2019,"Vår","Klinisk institutt 2","higher","other","2026-10-16",42
+"uib","uib_EXPHIL-HFSEM-0_2019_autumn_1","EXPHIL-HFSEM-0",2019,"Høst","Examen philosophicum","lower","other","2026-10-16",42
+"uib","uib_EXPHIL-HFSEM-0_2019_spring_1","EXPHIL-HFSEM-0",2019,"Vår","Examen philosophicum","lower","other","2026-10-16",42
+"uib","uib_GEOF328-0_2019_autumn_1","GEOF328-0",2019,"Høst","Geofysisk institutt","higher","english","2026-10-16",42
+"uib","uib_GEOF328-0_2019_spring_1","GEOF328-0",2019,"Vår","Geofysisk institutt","higher","english","2026-10-16",42
+"uib","uib_GEOV228-0_2019_autumn_1","GEOV228-0",2019,"Høst","Institutt for geovitenskap","higher","english","2026-10-16",42
+"uib","uib_GEOV228-0_2019_spring_1","GEOV228-0",2019,"Vår","Institutt for geovitenskap","higher","english","2026-10-16",42
+"uib","uib_INF283-0_2019_autumn_3","INF283-0",2019,"Høst","Institutt for informatikk","lower","english","2026-10-16",42
+"uib","uib_INF283-0_2019_spring_1","INF283-0",2019,"Vår","Institutt for informatikk","lower","english","2026-10-16",42
+"uib","uib_INF907-0_2019_autumn_1","INF907-0",2019,"Høst","Institutt for informatikk","phd","english","2026-10-16",42
+"uib","uib_INF907-0_2019_spring_1","INF907-0",2019,"Vår","Institutt for informatikk","phd","english","2026-10-16",42
+"uib","uib_INFO345-0_2019_autumn_1","INFO345-0",2019,"Høst","Institutt for informasjons- og medievitenskap","higher","english","2026-10-16",42
+"uib","uib_INFO345-0_2019_spring_1","INFO345-0",2019,"Vår","Institutt for informasjons- og medievitenskap","higher","english","2026-10-16",42
+"uib","uib_KJEM915-0_2019_autumn_1","KJEM915-0",2019,"Høst","Kjemisk institutt","phd","english","2026-10-16",42
+"uib","uib_KJEM915-0_2019_spring_1","KJEM915-0",2019,"Vår","Kjemisk institutt","phd","english","2026-10-16",42
+"uib","uib_MAT253-0_2019_autumn_1","MAT253-0",2019,"Høst","Matematisk institutt","higher","english","2026-10-16",42
+"uib","uib_MAT253-0_2019_spring_1","MAT253-0",2019,"Vår","Matematisk institutt","higher","english","2026-10-16",42
+"uib","uib_MAT343-0_2019_autumn_1","MAT343-0",2019,"Høst","Matematisk institutt","higher","other","2026-10-16",42
+"uib","uib_MAT343-0_2019_spring_1","MAT343-0",2019,"Vår","Matematisk institutt","higher","other","2026-10-16",42
+"uib","uib_MEDFLMIDT-0_2019_autumn_1","MEDFLMIDT-0",2019,"Høst","Det medisinske fakultet","higher","other","2026-10-16",42
+"uib","uib_MEDFLMIDT-0_2019_spring_1","MEDFLMIDT-0",2019,"Vår","Det medisinske fakultet","higher","other","2026-10-16",42
+"uib","uib_MEDREV-B-0_2019_autumn_3","MEDREV-B-0",2019,"Høst","Klinisk institutt 2","higher","other","2026-10-16",42
+"uib","uib_MEDREV-B-0_2019_spring_4","MEDREV-B-0",2019,"Vår","Klinisk institutt 2","higher","other","2026-10-16",42
+"uib","uib_NOR-U3NN-0_2019_autumn_2","NOR-U3NN-0",2019,"Høst","Institutt for lingvistiske, litterære og estetiske studier","lower","other","2026-10-16",42
+"uib","uib_ODO-KP-SEM7D-0_2019_autumn_1","ODO-KP-SEM7D-0",2019,"Høst","Institutt for klinisk odontologi","higher","other","2026-10-16",42
+"uib","uib_ODO-KP-SEM7D-0_2019_spring_1","ODO-KP-SEM7D-0",2019,"Vår","Institutt for klinisk odontologi","higher","other","2026-10-16",42
+"uib","uib_PED667-0_2019_autumn_2","PED667-0",2019,"Høst","Institutt for pedagogikk","higher","other","2026-10-16",42
+"uib","uib_PHD-KU1-0_2019_autumn_1","PHD-KU1-0",2019,"Høst","Fakultet for kunst, musikk og design","phd","english","2026-10-16",42
+"uib","uib_PHD-KU1-0_2019_spring_1","PHD-KU1-0",2019,"Vår","Fakultet for kunst, musikk og design","phd","english","2026-10-16",42
+"uib","uib_QAL399B-0_2019_autumn_1","QAL399B-0",2019,"Høst","Kjemisk institutt","higher","english","2026-10-16",42
+"uib","uib_QAL399B-0_2019_spring_1","QAL399B-0",2019,"Vår","Kjemisk institutt","higher","english","2026-10-16",42
+"uib","uib_RELV328-0_2019_autumn_1","RELV328-0",2019,"Høst","Institutt for arkeologi, historie, kultur- og religionsvitenskap","lower","english","2026-10-16",42
+"uib","uib_RELV328-0_2019_spring_1","RELV328-0",2019,"Vår","Institutt for arkeologi, historie, kultur- og religionsvitenskap","lower","english","2026-10-16",42
+"uib","uib_SOS322-0_2019_autumn_1","SOS322-0",2019,"Høst","Sosiologisk institutt","higher","other","2026-10-16",42
+"uib","uib_SOS322-0_2019_spring_1","SOS322-0",2019,"Vår","Sosiologisk institutt","higher","other","2026-10-16",42
+"uib","uib_STAT330-0_2019_autumn_1","STAT330-0",2019,"Høst","Matematisk institutt","higher","english","2026-10-16",42
+"uib","uib_STAT330-0_2019_spring_1","STAT330-0",2019,"Vår","Matematisk institutt","higher","english","2026-10-16",42
+"uib","uib_BAR 3-1_2022_autumn_3","BAR 3-1",2022,"Høst","Institutt for design","lower","other","2026-10-16",42
+"uib","uib_BAR 3-1_2022_spring_1","BAR 3-1",2022,"Vår","Institutt for design","lower","other","2026-10-16",42
+"uib","uib_BAV 5-1_2022_autumn_3","BAV 5-1",2022,"Høst","Institutt for design","lower","other","2026-10-16",42
+"uib","uib_BAV 5-1_2022_spring_1","BAV 5-1",2022,"Vår","Institutt for design","lower","other","2026-10-16",42
+"uib","uib_DIDANOR2-0_2022_autumn_1","DIDANOR2-0",2022,"Høst","Institutt for lingvistiske, litterære og estetiske studier","lower","other","2026-10-16",42
+"uib","uib_DIDANOR2-0_2022_spring_1","DIDANOR2-0",2022,"Vår","Institutt for lingvistiske, litterære og estetiske studier","lower","other","2026-10-16",42
+"uib","uib_DIGI101-0_2022_autumn_2","DIGI101-0",2022,"Høst","Det humanistiske fakultet","lower","other","2026-10-16",42
+"uib","uib_EXPHIL-SVSEM-0_2022_autumn_1","EXPHIL-SVSEM-0",2022,"Høst","Institutt for filosofi og førstesemesterstudier","lower","other","2026-10-16",42
+"uib","uib_EXPHIL-SVSEM-0_2022_spring_1","EXPHIL-SVSEM-0",2022,"Vår","Institutt for filosofi og førstesemesterstudier","lower","other","2026-10-16",42
+"uib","uib_GEOV113-0_2022_autumn_1","GEOV113-0",2022,"Høst","Institutt for geovitenskap","lower","english","2026-10-16",42
+"uib","uib_GEOV113-0_2022_spring_1","GEOV113-0",2022,"Vår","Institutt for geovitenskap","lower","english","2026-10-16",42
+"uib","uib_GEOV223-0_2022_autumn_3","GEOV223-0",2022,"Høst","Institutt for geovitenskap","lower","english","2026-10-16",42
+"uib","uib_GEOV223-0_2022_spring_4","GEOV223-0",2022,"Vår","Institutt for geovitenskap","lower","english","2026-10-16",42
+"uib","uib_HIS301L-0_2022_autumn_2","HIS301L-0",2022,"Høst","Institutt for arkeologi, historie, kultur- og religionsvitenskap","higher","other","2026-10-16",42
+"uib","uib_HTEK101-0_2022_autumn_1","HTEK101-0",2022,"Høst","Institutt for fysikk og teknologi","lower","other","2026-10-16",42
+"uib","uib_HTEK101-0_2022_spring_1","HTEK101-0",2022,"Vår","Institutt for fysikk og teknologi","lower","other","2026-10-16",42
+"uib","uib_INF914-0_2022_autumn_1","INF914-0",2022,"Høst","Institutt for informatikk","phd","english","2026-10-16",42
+"uib","uib_INF914-0_2022_spring_1","INF914-0",2022,"Vår","Institutt for informatikk","phd","english","2026-10-16",42
+"uib","uib_KORPS601-0_2022_autumn_1","KORPS601-0",2022,"Høst","Griegakademiet - Institutt for musikk","lower","other","2026-10-16",42
+"uib","uib_KORPS601-0_2022_spring_1","KORPS601-0",2022,"Vår","Griegakademiet - Institutt for musikk","lower","other","2026-10-16",42
+"uib","uib_KUN201-0_2022_autumn_1","KUN201-0",2022,"Høst","Institutt for lingvistiske, litterære og estetiske studier","lower","other","2026-10-16",42
+"uib","uib_KUN201-0_2022_spring_1","KUN201-0",2022,"Vår","Institutt for lingvistiske, litterære og estetiske studier","lower","other","2026-10-16",42
+"uib","uib_MATSIRK-0_2022_autumn_1","MATSIRK-0",2022,"Høst","Matematisk institutt","lower","other","2026-10-16",42
+"uib","uib_MATSIRK-0_2022_spring_1","MATSIRK-0",2022,"Vår","Matematisk institutt","lower","other","2026-10-16",42
+"uib","uib_MUTP104-0_2022_autumn_1","MUTP104-0",2022,"Høst","Griegakademiet - Institutt for musikk","lower","other","2026-10-16",42
+"uib","uib_MUTP104-0_2022_spring_1","MUTP104-0",2022,"Vår","Griegakademiet - Institutt for musikk","lower","other","2026-10-16",42
+"uib","uib_PED322-0_2022_autumn_1","PED322-0",2022,"Høst","Institutt for pedagogikk","higher","other","2026-10-16",42
+"uib","uib_PED322-0_2022_spring_1","PED322-0",2022,"Vår","Institutt for pedagogikk","higher","other","2026-10-16",42
+"uib","uib_PHDJUR-V-F-0_2022_autumn_1","PHDJUR-V-F-0",2022,"Høst","Det juridiske fakultet","phd","other","2026-10-16",42
+"uib","uib_PHDJUR-V-F-0_2022_spring_1","PHDJUR-V-F-0",2022,"Vår","Det juridiske fakultet","phd","other","2026-10-16",42
+"uib","uib_PROPSY303-0_2022_autumn_4","PROPSY303-0",2022,"Høst","Institutt for biologisk og medisinsk psykologi","lower","other","2026-10-16",42
+"uib","uib_PROPSY303-0_2022_spring_1","PROPSY303-0",2022,"Vår","Institutt for biologisk og medisinsk psykologi","lower","other","2026-10-16",42
+"uib","uib_PRPSYK301C-0_2022_autumn_2","PRPSYK301C-0",2022,"Høst","Institutt for klinisk psykologi","lower","other","2026-10-16",42
+"uib","uib_RELV335-0_2022_spring_3","RELV335-0",2022,"Vår","Institutt for arkeologi, historie, kultur- og religionsvitenskap","higher","other","2026-10-16",42
+"uib","uib_SAMPOL307-2-0_2022_autumn_1","SAMPOL307-2-0",2022,"Høst","Institutt for sammenliknende politikk","higher","other","2026-10-16",42
+"uib","uib_SAMPOL307-2-0_2022_spring_1","SAMPOL307-2-0",2022,"Vår","Institutt for sammenliknende politikk","higher","other","2026-10-16",42
+"uib","uib_SANT320-0_2022_autumn_1","SANT320-0",2022,"Høst","Institutt for sosialantropologi","higher","other","2026-10-16",42
+"uib","uib_SANT320-0_2022_spring_1","SANT320-0",2022,"Vår","Institutt for sosialantropologi","higher","other","2026-10-16",42
+"uib","uib_UTV VISK 5H-1_2022_autumn_1","UTV VISK 5H-1",2022,"Høst","Institutt for design","lower","other","2026-10-16",42
+"uib","uib_UTV VISK 5H-1_2022_spring_1","UTV VISK 5H-1",2022,"Vår","Institutt for design","lower","other","2026-10-16",42
+"uib","uib_WNGERII900-0_2022_autumn_1","WNGERII900-0",2022,"Høst","Det psykologiske fakultet","phd","english","2026-10-16",42
+"uib","uib_WNGERII900-0_2022_spring_1","WNGERII900-0",2022,"Vår","Det psykologiske fakultet","phd","english","2026-10-16",42
+"uib","uib_WNGERII903-0_2022_autumn_1","WNGERII903-0",2022,"Høst","Det psykologiske fakultet","phd","english","2026-10-16",42
+"uib","uib_WNGERII903-0_2022_spring_1","WNGERII903-0",2022,"Vår","Det psykologiske fakultet","phd","english","2026-10-16",42
+"uib","uib_Z-NEU201-0_2022_spring_4","Z-NEU201-0",2022,"Vår","Institutt for lingvistiske, litterære og estetiske studier","lower","english","2026-10-16",42
+"uib","uib_ARK210-0_2025_autumn_1","ARK210-0",2025,"Høst","Institutt for arkeologi, historie, kultur- og religionsvitenskap","lower","other","2026-10-16",42
+"uib","uib_ARK210-0_2025_spring_1","ARK210-0",2025,"Vår","Institutt for arkeologi, historie, kultur- og religionsvitenskap","lower","other","2026-10-16",42
+"uib","uib_ART110-0_2025_spring_3","ART110-0",2025,"Vår","Kunstakademiet - Institutt for samtidskunst","lower","other","2026-10-16",42
+"uib","uib_BSRS925A-0_2025_autumn_1","BSRS925A-0",2025,"Høst","Senter for kvinne- og kjønnsforskning","phd","english","2026-10-16",42
+"uib","uib_BSRS925A-0_2025_spring_1","BSRS925A-0",2025,"Vår","Senter for kvinne- og kjønnsforskning","phd","english","2026-10-16",42
+"uib","uib_BSRS941-0_2025_autumn_1","BSRS941-0",2025,"Høst","Forsknings- og innovasjonsavdelingen","phd","english","2026-10-16",42
+"uib","uib_BSRS941-0_2025_spring_2","BSRS941-0",2025,"Vår","Forsknings- og innovasjonsavdelingen","phd","english","2026-10-16",42
+"uib","uib_DIGI615-0_2025_autumn_2","DIGI615-0",2025,"Høst","Institutt for informasjons- og medievitenskap","lower","other","2026-10-16",42
+"uib","uib_ENG120-0_2025_autumn_1","ENG120-0",2025,"Høst","Institutt for fremmedspråk","lower","english","2026-10-16",42
+"uib","uib_ENG120-0_2025_spring_1","ENG120-0",2025,"Vår","Institutt for fremmedspråk","lower","english","2026-10-16",42
+"uib","uib_ENGMAU655-0_2025_autumn_1","ENGMAU655-0",2025,"Høst","Institutt for fremmedspråk","continuing","english","2026-10-16",42
+"uib","uib_ENGMAU655-0_2025_spring_1","ENGMAU655-0",2025,"Vår","Institutt for fremmedspråk","continuing","english","2026-10-16",42
+"uib","uib_EXFAC00SK-0_2025_autumn_1","EXFAC00SK-0",2025,"Høst","Det humanistiske fakultet","lower","other","2026-10-16",42
+"uib","uib_EXFAC00SK-0_2025_spring_1","EXFAC00SK-0",2025,"Vår","Det humanistiske fakultet","lower","other","2026-10-16",42
+"uib","uib_FSKLI901-0_2025_autumn_1","FSKLI901-0",2025,"Høst","Klinisk institutt 1","phd","english","2026-10-16",42
+"uib","uib_FSKLI901-0_2025_spring_1","FSKLI901-0",2025,"Vår","Klinisk institutt 1","phd","english","2026-10-16",42
+"uib","uib_GEOF210-0_2025_autumn_1","GEOF210-0",2025,"Høst","Geofysisk institutt","lower","english","2026-10-16",42
+"uib","uib_GEOF210-0_2025_spring_1","GEOF210-0",2025,"Vår","Geofysisk institutt","lower","english","2026-10-16",42
+"uib","uib_GOV213-0_2025_autumn_1","GOV213-0",2025,"Høst","Institutt for politikk og forvaltning","lower","other","2026-10-16",42
+"uib","uib_GOV213-0_2025_spring_1","GOV213-0",2025,"Vår","Institutt for politikk og forvaltning","lower","other","2026-10-16",42
+"uib","uib_HAVB399-0_2025_autumn_1","HAVB399-0",2025,"Høst","Institutt for biovitenskap","higher","other","2026-10-16",42
+"uib","uib_HAVB399-0_2025_spring_1","HAVB399-0",2025,"Vår","Institutt for biovitenskap","higher","other","2026-10-16",42
+"uib","uib_HIS101-0_2025_autumn_1","HIS101-0",2025,"Høst","Institutt for arkeologi, historie, kultur- og religionsvitenskap","lower","other","2026-10-16",42
+"uib","uib_HIS101-0_2025_spring_1","HIS101-0",2025,"Vår","Institutt for arkeologi, historie, kultur- og religionsvitenskap","lower","other","2026-10-16",42
+"uib","uib_HOSP-IBM-0_2025_autumn_1","HOSP-IBM-0",2025,"Høst","Institutt for biomedisin","higher","english","2026-10-16",42
+"uib","uib_HOSP-IBM-0_2025_spring_1","HOSP-IBM-0",2025,"Vår","Institutt for biomedisin","higher","english","2026-10-16",42
+"uib","uib_INF901B-0_2025_autumn_1","INF901B-0",2025,"Høst","Institutt for informatikk","phd","english","2026-10-16",42
+"uib","uib_INF901B-0_2025_spring_1","INF901B-0",2025,"Vår","Institutt for informatikk","phd","english","2026-10-16",42
+"uib","uib_MABARN351-0_2025_autumn_3","MABARN351-0",2025,"Høst","Institutt for helse, miljø og likeverd (HEMIL)","higher","other","2026-10-16",42
+"uib","uib_MABARN351-0_2025_spring_4","MABARN351-0",2025,"Vår","Institutt for helse, miljø og likeverd (HEMIL)","higher","other","2026-10-16",42
+"uib","uib_MAPSYK321-0_2025_autumn_1","MAPSYK321-0",2025,"Høst","Institutt for samfunnspsykologi","higher","other","2026-10-16",42
+"uib","uib_MAPSYK321-0_2025_spring_1","MAPSYK321-0",2025,"Vår","Institutt for samfunnspsykologi","higher","other","2026-10-16",42
+"uib","uib_MATDID350-0_2025_autumn_1","MATDID350-0",2025,"Høst","Matematisk institutt","higher","other","2026-10-16",42
+"uib","uib_MATDID350-0_2025_spring_1","MATDID350-0",2025,"Vår","Matematisk institutt","higher","other","2026-10-16",42
+"uib","uib_MEDEPI-0_2025_autumn_1","MEDEPI-0",2025,"Høst","Institutt for global helse og samfunnsmedisin","higher","other","2026-10-16",42
+"uib","uib_MEDEPI-0_2025_spring_1","MEDEPI-0",2025,"Vår","Institutt for global helse og samfunnsmedisin","higher","other","2026-10-16",42
+"uib","uib_MUV295-0_2025_autumn_1","MUV295-0",2025,"Høst","Griegakademiet - Institutt for musikk","lower","other","2026-10-16",42
+"uib","uib_MUV295-0_2025_spring_1","MUV295-0",2025,"Vår","Griegakademiet - Institutt for musikk","lower","other","2026-10-16",42
+"uib","uib_NOFI107-0_2025_autumn_1","NOFI107-0",2025,"Høst","Institutt for lingvistiske, litterære og estetiske studier","lower","other","2026-10-16",42
+"uib","uib_NOFI107-0_2025_spring_1","NOFI107-0",2025,"Vår","Institutt for lingvistiske, litterære og estetiske studier","lower","other","2026-10-16",42
+"uib","uib_PEDA130-0_2025_autumn_1","PEDA130-0",2025,"Høst","Institutt for pedagogikk","lower","other","2026-10-16",42
+"uib","uib_PEDA130-0_2025_spring_1","PEDA130-0",2025,"Vår","Institutt for pedagogikk","lower","other","2026-10-16",42
+"uib","uib_STAT260-0_2025_autumn_1","STAT260-0",2025,"Høst","Matematisk institutt","higher","other","2026-10-16",42
+"uib","uib_STAT260-0_2025_spring_1","STAT260-0",2025,"Vår","Matematisk institutt","higher","other","2026-10-16",42
+"uib","uib_VIT217-0_2025_autumn_1","VIT217-0",2025,"Høst","Senter for vitenskapsteori","lower","other","2026-10-16",42
+"uib","uib_VIT217-0_2025_spring_1","VIT217-0",2025,"Vår","Senter for vitenskapsteori","lower","other","2026-10-16",42
+"uib","uib_WNGERII914B-0_2025_spring_3","WNGERII914B-0",2025,"Vår","Det psykologiske fakultet","phd","other","2026-10-16",42

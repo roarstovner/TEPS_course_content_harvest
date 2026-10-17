@@ -1,0 +1,187 @@
+"institution","course_id","course_code_raw","year","semester_name","department_name","level","language","dbh_snapshot","seed"
+"uit","uit_ARK-3021-1_2008_autumn_1","ARK-3021-1",2008,"Høst","Institutt for arkeologi","higher","other","2026-10-16",42
+"uit","uit_ARK-3021-1_2008_spring_1","ARK-3021-1",2008,"Vår","Institutt for arkeologi","higher","other","2026-10-16",42
+"uit","uit_BED-2017-1_2008_autumn_2","BED-2017-1",2008,"Høst","Institutt for samfunns- og markedsfag","lower","other","2026-10-16",42
+"uit","uit_BED-6001-1_2008_autumn_1","BED-6001-1",2008,"Høst","Universitetets senter for etter- og videreutdanning (U-VETT)","lower","other","2026-10-16",42
+"uit","uit_BED-6001-1_2008_spring_1","BED-6001-1",2008,"Vår","Universitetets senter for etter- og videreutdanning (U-VETT)","lower","other","2026-10-16",42
+"uit","uit_BIO-2203-1_2008_spring_3","BIO-2203-1",2008,"Vår","Institutt for biologi","lower","english","2026-10-16",42
+"uit","uit_BIO-3515-1_2008_autumn_1","BIO-3515-1",2008,"Høst","Institutt for akvatisk biologi","higher","english","2026-10-16",42
+"uit","uit_BIO-3515-1_2008_spring_1","BIO-3515-1",2008,"Vår","Institutt for akvatisk biologi","higher","english","2026-10-16",42
+"uit","uit_BIO-3607-1_2008_autumn_1","BIO-3607-1",2008,"Høst","Institutt for marin biokjemi","higher","other","2026-10-16",42
+"uit","uit_BIO-3607-1_2008_spring_1","BIO-3607-1",2008,"Vår","Institutt for marin biokjemi","higher","other","2026-10-16",42
+"uit","uit_BIO-8806-1_2008_autumn_1","BIO-8806-1",2008,"Høst","Institutt for biologi","phd","english","2026-10-16",42
+"uit","uit_BIO-8806-1_2008_spring_1","BIO-8806-1",2008,"Vår","Institutt for biologi","phd","english","2026-10-16",42
+"uit","uit_BIO-8854-1_2008_autumn_1","BIO-8854-1",2008,"Høst","Norges fiskerihøgskole","phd","other","2026-10-16",42
+"uit","uit_BIO-8854-1_2008_spring_1","BIO-8854-1",2008,"Vår","Norges fiskerihøgskole","phd","other","2026-10-16",42
+"uit","uit_FARMDG-1_2008_autumn_3","FARMDG-1",2008,"Høst","Institutt for farmasi","phd","other","2026-10-16",42
+"uit","uit_FARMDG-1_2008_spring_1","FARMDG-1",2008,"Vår","Institutt for farmasi","phd","other","2026-10-16",42
+"uit","uit_FILDG-1_2008_autumn_3","FILDG-1",2008,"Høst","Institutt for filosofi","phd","other","2026-10-16",42
+"uit","uit_FILDG-1_2008_spring_1","FILDG-1",2008,"Vår","Institutt for filosofi","phd","other","2026-10-16",42
+"uit","uit_FYS-3730-1_2008_autumn_1","FYS-3730-1",2008,"Høst","Institutt for fysikk","higher","english","2026-10-16",42
+"uit","uit_FYS-3730-1_2008_spring_1","FYS-3730-1",2008,"Vår","Institutt for fysikk","higher","english","2026-10-16",42
+"uit","uit_GEO-2007-1_2008_autumn_1","GEO-2007-1",2008,"Høst","Institutt for geologi","lower","other","2026-10-16",42
+"uit","uit_GEO-2007-1_2008_spring_1","GEO-2007-1",2008,"Vår","Institutt for geologi","lower","other","2026-10-16",42
+"uit","uit_HEL-3050-1_2008_autumn_1","HEL-3050-1",2008,"Høst","Institutt for samfunnsmedisin","higher","english","2026-10-16",42
+"uit","uit_HEL-3050-1_2008_spring_1","HEL-3050-1",2008,"Vår","Institutt for samfunnsmedisin","higher","english","2026-10-16",42
+"uit","uit_HIF-3022-1_2008_autumn_1","HIF-3022-1",2008,"Høst","Institutt for språkvitenskap","higher","english","2026-10-16",42
+"uit","uit_HIF-3022-1_2008_spring_1","HIF-3022-1",2008,"Vår","Institutt for språkvitenskap","higher","english","2026-10-16",42
+"uit","uit_HIS-1007-1_2008_autumn_1","HIS-1007-1",2008,"Høst","Institutt for historie","lower","other","2026-10-16",42
+"uit","uit_HIS-1007-1_2008_spring_1","HIS-1007-1",2008,"Vår","Institutt for historie","lower","other","2026-10-16",42
+"uit","uit_INF-8803-1_2008_autumn_1","INF-8803-1",2008,"Høst","Institutt for informatikk","phd","english","2026-10-16",42
+"uit","uit_INF-8803-1_2008_spring_1","INF-8803-1",2008,"Vår","Institutt for informatikk","phd","english","2026-10-16",42
+"uit","uit_KJE-8897-1_2008_autumn_2","KJE-8897-1",2008,"Høst","Det matematisk-naturvitenskapelige fakultet","phd","other","2026-10-16",42
+"uit","uit_MED-3881-1_2008_autumn_2","MED-3881-1",2008,"Høst","Det medisinske fakultet","higher","other","2026-10-16",42
+"uit","uit_PED-3025-2_2008_autumn_1","PED-3025-2",2008,"Høst","Institutt for pedagogikk og lærerutdanning","higher","other","2026-10-16",42
+"uit","uit_PED-3025-2_2008_spring_1","PED-3025-2",2008,"Vår","Institutt for pedagogikk og lærerutdanning","higher","other","2026-10-16",42
+"uit","uit_REL-1012-1_2008_spring_3","REL-1012-1",2008,"Vår","Institutt for religionsvitenskap","lower","other","2026-10-16",42
+"uit","uit_RUS-3950-1_2008_autumn_1","RUS-3950-1",2008,"Høst","Det humanistiske fakultet","higher","other","2026-10-16",42
+"uit","uit_RUS-3950-1_2008_spring_1","RUS-3950-1",2008,"Vår","Det humanistiske fakultet","higher","other","2026-10-16",42
+"uit","uit_SAM-0100-1_2008_autumn_4","SAM-0100-1",2008,"Høst","Institutt for språkvitenskap","other","other","2026-10-16",42
+"uit","uit_SAM-0100-1_2008_spring_1","SAM-0100-1",2008,"Vår","Institutt for språkvitenskap","other","other","2026-10-16",42
+"uit","uit_SOK-3061-1_2008_autumn_1","SOK-3061-1",2008,"Høst","Institutt for økonomi","higher","other","2026-10-16",42
+"uit","uit_SOK-3061-1_2008_spring_1","SOK-3061-1",2008,"Vår","Institutt for økonomi","higher","other","2026-10-16",42
+"uit","uit_SOSANTDRSP2-2_2008_autumn_3","SOSANTDRSP2-2",2008,"Høst","Institutt for sosialantropologi","phd","other","2026-10-16",42
+"uit","uit_SOSANTDRSP2-2_2008_spring_1","SOSANTDRSP2-2",2008,"Vår","Institutt for sosialantropologi","phd","other","2026-10-16",42
+"uit","uit_SOSIODRSP1-2_2008_autumn_3","SOSIODRSP1-2",2008,"Høst","Institutt for sosiologi","phd","other","2026-10-16",42
+"uit","uit_SOSIODRSP1-2_2008_spring_1","SOSIODRSP1-2",2008,"Vår","Institutt for sosiologi","phd","other","2026-10-16",42
+"uit","uit_SPL-6900-1_2008_autumn_1","SPL-6900-1",2008,"Høst","Institutt for planlegging og lokalsamfunnsforskning","continuing","other","2026-10-16",42
+"uit","uit_SPL-6900-1_2008_spring_1","SPL-6900-1",2008,"Vår","Institutt for planlegging og lokalsamfunnsforskning","continuing","other","2026-10-16",42
+"uit","uit_STA-3003-1_2008_autumn_1","STA-3003-1",2008,"Høst","Institutt for matematikk/Statistikk","higher","english","2026-10-16",42
+"uit","uit_STA-3003-1_2008_spring_1","STA-3003-1",2008,"Vår","Institutt for matematikk/Statistikk","higher","english","2026-10-16",42
+"uit","uit_STV-2010-1_2008_autumn_2","STV-2010-1",2008,"Høst","Institutt for statsvitenskap","lower","other","2026-10-16",42
+"uit","uit_SVF-3904-1_2008_autumn_1","SVF-3904-1",2008,"Høst","Det samfunnsvitenskapelige fakultet","higher","english","2026-10-16",42
+"uit","uit_SVF-3904-1_2008_spring_1","SVF-3904-1",2008,"Vår","Det samfunnsvitenskapelige fakultet","higher","english","2026-10-16",42
+"uit","uit_SVF-6311-1_2008_autumn_2","SVF-6311-1",2008,"Høst","Institutt for fiskeriteknologi","higher","english","2026-10-16",42
+"uit","uit_TYS-3119-1_2008_autumn_1","TYS-3119-1",2008,"Høst","Institutt for kultur og litteratur","higher","other","2026-10-16",42
+"uit","uit_TYS-3119-1_2008_spring_1","TYS-3119-1",2008,"Vår","Institutt for kultur og litteratur","higher","other","2026-10-16",42
+"uit","uit_AGF-213-1_2019_autumn_1","AGF-213-1",2019,"Høst","UiT (uspesifisert underenhet)","lower","english","2026-10-16",42
+"uit","uit_AGF-213-1_2019_spring_1","AGF-213-1",2019,"Vår","UiT (uspesifisert underenhet)","lower","english","2026-10-16",42
+"uit","uit_FHO9043-1_2019_autumn_1","FHO9043-1",2019,"Høst","Institutt for industriell teknologi","other","other","2026-10-16",42
+"uit","uit_FHO9043-1_2019_spring_1","FHO9043-1",2019,"Vår","Institutt for industriell teknologi","other","other","2026-10-16",42
+"uit","uit_FRI-2580-1_2019_autumn_1","FRI-2580-1",2019,"Høst","Idrettshøgskolen","lower","english","2026-10-16",42
+"uit","uit_FRI-2580-1_2019_spring_1","FRI-2580-1",2019,"Vår","Idrettshøgskolen","lower","english","2026-10-16",42
+"uit","uit_GEO-3117-1_2019_autumn_1","GEO-3117-1",2019,"Høst","Institutt for geovitenskap","higher","english","2026-10-16",42
+"uit","uit_GEO-3117-1_2019_spring_1","GEO-3117-1",2019,"Vår","Institutt for geovitenskap","higher","english","2026-10-16",42
+"uit","uit_HEL-6308-1_2019_autumn_1","HEL-6308-1",2019,"Høst","Regionalt kunnskapssenter for barn og unge - Nord","higher","other","2026-10-16",42
+"uit","uit_HEL-6308-1_2019_spring_1","HEL-6308-1",2019,"Vår","Regionalt kunnskapssenter for barn og unge - Nord","higher","other","2026-10-16",42
+"uit","uit_IGR1611-1_2019_autumn_1","IGR1611-1",2019,"Høst","Institutt for bygg, energi og materialteknologi","lower","other","2026-10-16",42
+"uit","uit_IGR1611-1_2019_spring_1","IGR1611-1",2019,"Vår","Institutt for bygg, energi og materialteknologi","lower","other","2026-10-16",42
+"uit","uit_ITE1820-1_2019_autumn_1","ITE1820-1",2019,"Høst","Institutt for datateknologi og beregningsorienterte ingeniørfag","lower","other","2026-10-16",42
+"uit","uit_ITE1820-1_2019_spring_1","ITE1820-1",2019,"Vår","Institutt for datateknologi og beregningsorienterte ingeniørfag","lower","other","2026-10-16",42
+"uit","uit_KJE-8900-1_2019_autumn_1","KJE-8900-1",2019,"Høst","Fakultet for naturvitenskap og teknologi","phd","english","2026-10-16",42
+"uit","uit_KJE-8900-1_2019_spring_1","KJE-8900-1",2019,"Vår","Fakultet for naturvitenskap og teknologi","phd","english","2026-10-16",42
+"uit","uit_LRU-3909-1_2019_autumn_1","LRU-3909-1",2019,"Høst","Institutt for lærerutdanning og pedagogikk","higher","other","2026-10-16",42
+"uit","uit_LRU-3909-1_2019_spring_1","LRU-3909-1",2019,"Vår","Institutt for lærerutdanning og pedagogikk","higher","other","2026-10-16",42
+"uit","uit_MED-1703-1_2019_autumn_1","MED-1703-1",2019,"Høst","Institutt for medisinsk biologi","lower","other","2026-10-16",42
+"uit","uit_MED-1703-1_2019_spring_2","MED-1703-1",2019,"Vår","Institutt for medisinsk biologi","lower","other","2026-10-16",42
+"uit","uit_MUS-1510-1_2019_autumn_1","MUS-1510-1",2019,"Høst","Musikkonservatoriet","lower","other","2026-10-16",42
+"uit","uit_MUS-1510-1_2019_spring_1","MUS-1510-1",2019,"Vår","Musikkonservatoriet","lower","other","2026-10-16",42
+"uit","uit_MUS-2302-1_2019_autumn_1","MUS-2302-1",2019,"Høst","Musikkonservatoriet","lower","other","2026-10-16",42
+"uit","uit_MUS-2302-1_2019_spring_1","MUS-2302-1",2019,"Vår","Musikkonservatoriet","lower","other","2026-10-16",42
+"uit","uit_ODO-6302-1_2019_autumn_1","ODO-6302-1",2019,"Høst","Institutt for klinisk odontologi","higher","other","2026-10-16",42
+"uit","uit_ODO-6302-1_2019_spring_1","ODO-6302-1",2019,"Vår","Institutt for klinisk odontologi","higher","other","2026-10-16",42
+"uit","uit_PSY-1503-2_2019_spring_3","PSY-1503-2",2019,"Vår","Institutt for psykologi","lower","other","2026-10-16",42
+"uit","uit_SAK-1004-1_2019_autumn_1","SAK-1004-1",2019,"Høst","Kunstakademiet","lower","other","2026-10-16",42
+"uit","uit_SAK-1004-1_2019_spring_1","SAK-1004-1",2019,"Vår","Kunstakademiet","lower","other","2026-10-16",42
+"uit","uit_SSO-3011-1_2019_autumn_1","SSO-3011-1",2019,"Høst","Institutt for barnevern og sosialt arbeid","higher","other","2026-10-16",42
+"uit","uit_SSO-3011-1_2019_spring_1","SSO-3011-1",2019,"Vår","Institutt for barnevern og sosialt arbeid","higher","other","2026-10-16",42
+"uit","uit_STE6286-1_2019_autumn_3","STE6286-1",2019,"Høst","Institutt for elektroteknologi","higher","english","2026-10-16",42
+"uit","uit_STE6286-1_2019_spring_3","STE6286-1",2019,"Vår","Institutt for elektroteknologi","higher","english","2026-10-16",42
+"uit","uit_SYP-6063-1_2019_autumn_1","SYP-6063-1",2019,"Høst","Institutt for helse- og omsorgsfag","continuing","other","2026-10-16",42
+"uit","uit_SYP-6063-1_2019_spring_1","SYP-6063-1",2019,"Vår","Institutt for helse- og omsorgsfag","continuing","other","2026-10-16",42
+"uit","uit_TEK-0010-1_2019_autumn_1","TEK-0010-1",2019,"Høst","Institutt for automasjon og prosessteknologi","other","other","2026-10-16",42
+"uit","uit_TEK-0010-1_2019_spring_1","TEK-0010-1",2019,"Vår","Institutt for automasjon og prosessteknologi","other","other","2026-10-16",42
+"uit","uit_TEK-3009-1_2019_autumn_1","TEK-3009-1",2019,"Høst","Institutt for teknologi og sikkerhet","higher","english","2026-10-16",42
+"uit","uit_TEK-3009-1_2019_spring_1","TEK-3009-1",2019,"Vår","Institutt for teknologi og sikkerhet","higher","english","2026-10-16",42
+"uit","uit_VID-6098-1_2019_autumn_3","VID-6098-1",2019,"Høst","Institutt for lærerutdanning og pedagogikk","continuing","other","2026-10-16",42
+"uit","uit_VID-6098-1_2019_spring_1","VID-6098-1",2019,"Vår","Institutt for lærerutdanning og pedagogikk","continuing","other","2026-10-16",42
+"uit","uit_VPDPRA3-1_2019_autumn_1","VPDPRA3-1",2019,"Høst","Institutt for vernepleie","lower","other","2026-10-16",42
+"uit","uit_VPDPRA3-1_2019_spring_1","VPDPRA3-1",2019,"Vår","Institutt for vernepleie","lower","other","2026-10-16",42
+"uit","uit_VPR4120-1_2019_autumn_1","VPR4120-1",2019,"Høst","Institutt for helse- og omsorgsfag","lower","other","2026-10-16",42
+"uit","uit_VPR4120-1_2019_spring_1","VPR4120-1",2019,"Vår","Institutt for helse- og omsorgsfag","lower","other","2026-10-16",42
+"uit","uit_AG-323-1_2022_autumn_1","AG-323-1",2022,"Høst","UiT (uspesifisert underenhet)","higher","english","2026-10-16",42
+"uit","uit_AG-323-1_2022_spring_1","AG-323-1",2022,"Vår","UiT (uspesifisert underenhet)","higher","english","2026-10-16",42
+"uit","uit_AG-346-1_2022_autumn_1","AG-346-1",2022,"Høst","UiT (uspesifisert underenhet)","higher","other","2026-10-16",42
+"uit","uit_AG-346-1_2022_spring_1","AG-346-1",2022,"Vår","UiT (uspesifisert underenhet)","higher","other","2026-10-16",42
+"uit","uit_AG-835-1_2022_autumn_1","AG-835-1",2022,"Høst","UiT (uspesifisert underenhet)","phd","other","2026-10-16",42
+"uit","uit_AG-835-1_2022_spring_1","AG-835-1",2022,"Vår","UiT (uspesifisert underenhet)","phd","other","2026-10-16",42
+"uit","uit_BB351-1_2022_autumn_3","BB351-1",2022,"Høst","Norges arktiske universitetsmuseum og akademi for kunstfag","lower","other","2026-10-16",42
+"uit","uit_BB351-1_2022_spring_1","BB351-1",2022,"Vår","Norges arktiske universitetsmuseum og akademi for kunstfag","lower","other","2026-10-16",42
+"uit","uit_BBI-1002-1_2022_autumn_2","BBI-1002-1",2022,"Høst","Nordland kunst- og filmhøgskole","lower","other","2026-10-16",42
+"uit","uit_BIO-2606-1_2022_autumn_1","BIO-2606-1",2022,"Høst","Norges fiskerihøgskole","lower","other","2026-10-16",42
+"uit","uit_BIO-2606-1_2022_spring_1","BIO-2606-1",2022,"Vår","Norges fiskerihøgskole","lower","other","2026-10-16",42
+"uit","uit_BIO-8899-1_2022_autumn_1","BIO-8899-1",2022,"Høst","Fakultet for biovitenskap, fiskeri og økonomi","phd","other","2026-10-16",42
+"uit","uit_BIO-8899-1_2022_spring_1","BIO-8899-1",2022,"Vår","Fakultet for biovitenskap, fiskeri og økonomi","phd","other","2026-10-16",42
+"uit","uit_BNS-1006-1_2022_autumn_1","BNS-1006-1",2022,"Høst","Institutt for reiseliv og nordlige studier","lower","english","2026-10-16",42
+"uit","uit_BNS-1006-1_2022_spring_1","BNS-1006-1",2022,"Vår","Institutt for reiseliv og nordlige studier","lower","english","2026-10-16",42
+"uit","uit_ERN-2010-1_2022_autumn_2","ERN-2010-1",2022,"Høst","Institutt for klinisk medisin","lower","other","2026-10-16",42
+"uit","uit_HIF-2160-1_2022_autumn_1","HIF-2160-1",2022,"Høst","Senter for kvinne- og kjønnsforskning","lower","other","2026-10-16",42
+"uit","uit_HIF-2160-1_2022_spring_1","HIF-2160-1",2022,"Vår","Senter for kvinne- og kjønnsforskning","lower","other","2026-10-16",42
+"uit","uit_JUR-3902-1_2022_autumn_1","JUR-3902-1",2022,"Høst","Det juridiske fakultet","higher","other","2026-10-16",42
+"uit","uit_JUR-3902-1_2022_spring_1","JUR-3902-1",2022,"Vår","Det juridiske fakultet","higher","other","2026-10-16",42
+"uit","uit_KJE-8308-1_2022_autumn_1","KJE-8308-1",2022,"Høst","Institutt for kjemi","phd","english","2026-10-16",42
+"uit","uit_KJE-8308-1_2022_spring_1","KJE-8308-1",2022,"Vår","Institutt for kjemi","phd","english","2026-10-16",42
+"uit","uit_LRU-3400-1_2022_spring_3","LRU-3400-1",2022,"Vår","Institutt for lærerutdanning og pedagogikk","higher","other","2026-10-16",42
+"uit","uit_PFF-3000-1_2022_autumn_3","PFF-3000-1",2022,"Høst","Institutt for lærerutdanning og pedagogikk","higher","other","2026-10-16",42
+"uit","uit_PFF-3000-1_2022_spring_4","PFF-3000-1",2022,"Vår","Institutt for lærerutdanning og pedagogikk","higher","other","2026-10-16",42
+"uit","uit_PFF-5062-1_2022_autumn_1","PFF-5062-1",2022,"Høst","Institutt for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"uit","uit_PFF-5062-1_2022_spring_1","PFF-5062-1",2022,"Vår","Institutt for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"uit","uit_PSY-2802-1_2022_autumn_1","PSY-2802-1",2022,"Høst","Institutt for psykologi","lower","other","2026-10-16",42
+"uit","uit_PSY-2802-1_2022_spring_1","PSY-2802-1",2022,"Vår","Institutt for psykologi","lower","other","2026-10-16",42
+"uit","uit_SOA-3020-1_2022_autumn_1","SOA-3020-1",2022,"Høst","Institutt for samfunnsvitenskap","higher","other","2026-10-16",42
+"uit","uit_SOA-3020-1_2022_spring_1","SOA-3020-1",2022,"Vår","Institutt for samfunnsvitenskap","higher","other","2026-10-16",42
+"uit","uit_SOS-3003-2_2022_autumn_1","SOS-3003-2",2022,"Høst","Institutt for samfunnsvitenskap","higher","other","2026-10-16",42
+"uit","uit_SOS-3003-2_2022_spring_1","SOS-3003-2",2022,"Vår","Institutt for samfunnsvitenskap","higher","other","2026-10-16",42
+"uit","uit_STV-3074-1_2022_autumn_1","STV-3074-1",2022,"Høst","Institutt for samfunnsvitenskap","continuing","other","2026-10-16",42
+"uit","uit_STV-3074-1_2022_spring_1","STV-3074-1",2022,"Vår","Institutt for samfunnsvitenskap","continuing","other","2026-10-16",42
+"uit","uit_SVF-2006-1_2022_autumn_1","SVF-2006-1",2022,"Høst","Institutt for arkeologi, historie og religionsvitenskap","lower","other","2026-10-16",42
+"uit","uit_SVF-2006-1_2022_spring_1","SVF-2006-1",2022,"Vår","Institutt for arkeologi, historie og religionsvitenskap","lower","other","2026-10-16",42
+"uit","uit_SVF-2106-1_2022_autumn_1","SVF-2106-1",2022,"Høst","Institutt for teknologi og sikkerhet","lower","other","2026-10-16",42
+"uit","uit_SVF-2106-1_2022_spring_1","SVF-2106-1",2022,"Vår","Institutt for teknologi og sikkerhet","lower","other","2026-10-16",42
+"uit","uit_TEK-0014-1_2022_autumn_1","TEK-0014-1",2022,"Høst","Institutt for matematikk og statistikk","other","other","2026-10-16",42
+"uit","uit_TEK-0014-1_2022_spring_1","TEK-0014-1",2022,"Vår","Institutt for matematikk og statistikk","other","other","2026-10-16",42
+"uit","uit_XXX-1000-1_2022_autumn_1","XXX-1000-1",2022,"Høst","Avdeling for forskning, utdanning og formidling","lower","other","2026-10-16",42
+"uit","uit_XXX-1000-1_2022_spring_1","XXX-1000-1",2022,"Vår","Avdeling for forskning, utdanning og formidling","lower","other","2026-10-16",42
+"uit","uit_BED-2109-1_2025_autumn_1","BED-2109-1",2025,"Høst","Handelshøgskolen ved UiT","lower","other","2026-10-16",42
+"uit","uit_BED-2109-1_2025_spring_1","BED-2109-1",2025,"Vår","Handelshøgskolen ved UiT","lower","other","2026-10-16",42
+"uit","uit_BIO-3529-2_2025_autumn_2","BIO-3529-2",2025,"Høst","Institutt for arktisk og marin biologi","higher","english","2026-10-16",42
+"uit","uit_END-3602-1_2025_autumn_1","END-3602-1",2025,"Høst","Institutt for datateknologi og beregningsorienterte ingeniørfag","higher","english","2026-10-16",42
+"uit","uit_END-3602-1_2025_spring_1","END-3602-1",2025,"Vår","Institutt for datateknologi og beregningsorienterte ingeniørfag","higher","english","2026-10-16",42
+"uit","uit_ERN-2015-1_2025_autumn_1","ERN-2015-1",2025,"Høst","Institutt for klinisk medisin","lower","other","2026-10-16",42
+"uit","uit_ERN-2015-1_2025_spring_1","ERN-2015-1",2025,"Vår","Institutt for klinisk medisin","lower","other","2026-10-16",42
+"uit","uit_FYS-2009-1_2025_autumn_1","FYS-2009-1",2025,"Høst","Institutt for fysikk og teknologi","lower","english","2026-10-16",42
+"uit","uit_FYS-2009-1_2025_spring_1","FYS-2009-1",2025,"Vår","Institutt for fysikk og teknologi","lower","english","2026-10-16",42
+"uit","uit_HIF-2160-1_2025_autumn_1","HIF-2160-1",2025,"Høst","Institutt for filosofi og førstesemesterstudier","lower","other","2026-10-16",42
+"uit","uit_HIF-2160-1_2025_spring_1","HIF-2160-1",2025,"Vår","Institutt for filosofi og førstesemesterstudier","lower","other","2026-10-16",42
+"uit","uit_HIF-3113-1_2025_autumn_1","HIF-3113-1",2025,"Høst","Institutt for språk og kultur","higher","english","2026-10-16",42
+"uit","uit_HIF-3113-1_2025_spring_1","HIF-3113-1",2025,"Vår","Institutt for språk og kultur","higher","english","2026-10-16",42
+"uit","uit_IND-3040-1_2025_autumn_2","IND-3040-1",2025,"Høst","Senter for samiske studier","higher","english","2026-10-16",42
+"uit","uit_KJE-8810-1_2025_autumn_1","KJE-8810-1",2025,"Høst","Institutt for kjemi","phd","other","2026-10-16",42
+"uit","uit_KJE-8810-1_2025_spring_1","KJE-8810-1",2025,"Vår","Institutt for kjemi","phd","other","2026-10-16",42
+"uit","uit_LER-1210-2_2025_autumn_1","LER-1210-2",2025,"Høst","Institutt for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"uit","uit_LER-1210-2_2025_spring_2","LER-1210-2",2025,"Vår","Institutt for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"uit","uit_LER-3101-1_2025_autumn_1","LER-3101-1",2025,"Høst","Institutt for lærerutdanning og pedagogikk","higher","other","2026-10-16",42
+"uit","uit_LER-3101-1_2025_spring_1","LER-3101-1",2025,"Vår","Institutt for lærerutdanning og pedagogikk","higher","other","2026-10-16",42
+"uit","uit_LER-6001-1_2025_autumn_1","LER-6001-1",2025,"Høst","Institutt for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"uit","uit_LER-6001-1_2025_spring_1","LER-6001-1",2025,"Vår","Institutt for lærerutdanning og pedagogikk","lower","other","2026-10-16",42
+"uit","uit_MED-8815-1_2025_autumn_1","MED-8815-1",2025,"Høst","Det helsevitenskapelige fakultet","phd","other","2026-10-16",42
+"uit","uit_MED-8815-1_2025_spring_1","MED-8815-1",2025,"Vår","Det helsevitenskapelige fakultet","phd","other","2026-10-16",42
+"uit","uit_PAR-2120-1_2025_autumn_1","PAR-2120-1",2025,"Høst","Institutt for helse- og omsorgsfag","lower","other","2026-10-16",42
+"uit","uit_PAR-2120-1_2025_spring_1","PAR-2120-1",2025,"Vår","Institutt for helse- og omsorgsfag","lower","other","2026-10-16",42
+"uit","uit_PSY-3027-1_2025_autumn_1","PSY-3027-1",2025,"Høst","Institutt for psykologi","higher","english","2026-10-16",42
+"uit","uit_PSY-3027-1_2025_spring_1","PSY-3027-1",2025,"Vår","Institutt for psykologi","higher","english","2026-10-16",42
+"uit","uit_REI-3901-1_2025_autumn_1","REI-3901-1",2025,"Høst","Handelshøgskolen ved UiT","continuing","other","2026-10-16",42
+"uit","uit_REI-3901-1_2025_spring_1","REI-3901-1",2025,"Vår","Handelshøgskolen ved UiT","continuing","other","2026-10-16",42
+"uit","uit_SAM-1013-1_2025_autumn_1","SAM-1013-1",2025,"Høst","Institutt for språk og kultur","lower","other","2026-10-16",42
+"uit","uit_SAM-1013-1_2025_spring_1","SAM-1013-1",2025,"Vår","Institutt for språk og kultur","lower","other","2026-10-16",42
+"uit","uit_SPL-3004-1_2025_autumn_1","SPL-3004-1",2025,"Høst","Institutt for samfunnsvitenskap","higher","other","2026-10-16",42
+"uit","uit_SPL-3004-1_2025_spring_1","SPL-3004-1",2025,"Vår","Institutt for samfunnsvitenskap","higher","other","2026-10-16",42
+"uit","uit_SVF-2058-1_2025_autumn_1","SVF-2058-1",2025,"Høst","Senter for fredsstudier (CPS)","lower","english","2026-10-16",42
+"uit","uit_SVF-2058-1_2025_spring_1","SVF-2058-1",2025,"Vår","Senter for fredsstudier (CPS)","lower","english","2026-10-16",42
+"uit","uit_SVF-8044-1_2025_autumn_1","SVF-8044-1",2025,"Høst","Fakultet for humaniora, samfunnsvitenskap og lærerutdanning","phd","other","2026-10-16",42
+"uit","uit_SVF-8044-1_2025_spring_1","SVF-8044-1",2025,"Vår","Fakultet for humaniora, samfunnsvitenskap og lærerutdanning","phd","other","2026-10-16",42
+"uit","uit_TEK-0513-1_2025_autumn_1","TEK-0513-1",2025,"Høst","Institutt for industriell teknologi","other","other","2026-10-16",42
+"uit","uit_TEK-0513-1_2025_spring_1","TEK-0513-1",2025,"Vår","Institutt for industriell teknologi","other","other","2026-10-16",42
+"uit","uit_TEK-8835-2_2025_autumn_1","TEK-8835-2",2025,"Høst","Fakultet for ingeniørvitenskap og teknologi","phd","english","2026-10-16",42
+"uit","uit_TEK-8835-2_2025_spring_1","TEK-8835-2",2025,"Vår","Fakultet for ingeniørvitenskap og teknologi","phd","english","2026-10-16",42
+"uit","uit_UNIPED-300-1_2025_autumn_2","UNIPED-300-1",2025,"Høst","Ressurssenter for undervisning, læring og teknologi","higher","english","2026-10-16",42
