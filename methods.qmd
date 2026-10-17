@@ -284,7 +284,8 @@ plan, NTNU's "no information for this academic year", no URL), and so is a
 URL nobody has requested. Within a harvest, a request without an answer or
 with HTTP 500, 502, 503 or 504 is tried 3 times in all, after 30 and 60
 seconds, and a site that refuses the harvest stops it: an answer 429 (too
-many requests), or 403 to 5 requests in a row. *Why:* a page
+many requests), or 403 to 5 requests in a row and then to a page known to
+be public. *Why:* a page
 can fail for a while; UiA's 95 autumn-2023 pages were shells (title and facts
 box) when harvested but full plans once on 2026-10-07. A 404 is the site
 saying it has no such page, and asking again costs requests (10 seconds each
@@ -302,19 +303,28 @@ late). A single 403 is the page's answer, not the site's (2026-10-17): MF
 answered the first page of its pilot, an access-restricted course node, with
 403, while another of its course pages answered 404 to the same user agent,
 and the rule until then (any 403 stops the site) ended MF's harvest after one
-page. A site that blocks the harvest answers every request with 403, so 5 in
-a row stop it; those 5 pages are asked for again at the next harvest.
-*Rejected:* stopping at the first 403 (one closed page ends a site's
-harvest); retrying a 403 with `retry = TRUE` (a closed page stays closed;
-`retry = "forbidden"` asks again on request). No harvest before 2026-10-17
-stored a 403, so no outcome changed. *Since:* 2026-10-07; by outcome since
-2026-10-16; a single 403 a page outcome since 2026-10-17.
+page. A site that blocks the harvest answers every request with 403, so after
+5 in a row the harvest asks for a page known to be public (one of the same
+host that answered 200 earlier in the harvest, else the latest in the raw
+store; the request is in the fetch ledger): a 200 means the 403s were the
+pages' own, and the harvest goes on; any other answer, or no such page, stops
+it, and the 5 pages are asked for again at the next harvest. MF's PHI course
+pages answer 403 to every user agent, a browser's too, and lie next to each
+other in a sample ordered by course code, so 5 in a row alone stopped MF's
+pilot again (2026-10-17). *Rejected:* stopping at the first 403 (one closed
+page ends a site's harvest); stopping at 5 in a row without the check (a run
+of closed pages ends it); retrying a 403 with `retry = TRUE` (a closed page
+stays closed; `retry = "forbidden"` asks again on request). No harvest before
+2026-10-17 stored a 403, so no outcome changed. *Since:* 2026-10-07; by
+outcome since 2026-10-16; a single 403 a page outcome since 2026-10-17.
 
 **Each harvest records how every page was fetched (fetch ledger):** one row
 per offering and harvest run with the URL, the time of the request, the HTTP
 status, the outcome class (ok, not found, forbidden, shell, server error,
 timeout, blocked, robots, error, no URL), the size and SHA-256 hash of the page as stored, the
-raw file and the DBH snapshot the offerings came from. *Why:* the coverage of
+raw file and the DBH snapshot the offerings came from, and a row for each
+request of a page known to be public that tells a site's refusal from closed
+pages (outcome probe, since 2026-10-17). *Why:* the coverage of
 a release (for each offering of the frame: plan, not found, retry pending,
 never harvested) and the retry rule need the outcome of each fetch, and the
 hash shows when a site changed a page between harvests. *Rejected:* deriving

@@ -329,7 +329,8 @@ fetch_outcome <- function(url, page, status, error) {
 
 #' The fetch ledger of a harvest run
 #'
-#' One row per offering of the run, in the run's order: `run`,
+#' One row per offering of the run, in the run's order, and then one per
+#' probe request (refusal_watch(): `outcome` "probe", no `course_id`): `run`,
 #' `institution`, `course_id`, `url`, `requested_at` (when the request was
 #' sent), `http_status`, `outcome` (fetch_outcome()), `bytes` and `sha256` of
 #' the page as stored (`html`, else the text read from a PDF), `raw_file` (the
@@ -342,7 +343,10 @@ fetch_outcome <- function(url, page, status, error) {
 #' @param rows The run's rows (harvest_institution(), or read_raw()).
 #' @param institution,run The institution and the run's name.
 #' @param dbh_snapshot The DBH snapshot's date, if known.
-fetch_ledger <- function(rows, institution, run, dbh_snapshot = NA_character_, raw_dir = RAW_DIR) {
+#' @param probes The run's probe requests (take_probes()): url,
+#'   requested_at, http_status.
+fetch_ledger <- function(rows, institution, run, dbh_snapshot = NA_character_, raw_dir = RAW_DIR,
+                         probes = NULL) {
   n <- nrow(rows)
   col <- function(x, na) rows[[x]] %||% rep(na, n)
   html <- col("html", NA_character_)
@@ -354,7 +358,7 @@ fetch_ledger <- function(rows, institution, run, dbh_snapshot = NA_character_, r
   outcome <- fetch_outcome(url, !is.na(page), status, error)
   requested_at <- rows[["requested_at"]] %||% .POSIXct(rep(NA_real_, n))
   requested_at[outcome == "robots"] <- NA   # not requested
-  tibble::tibble(
+  ledger <- tibble::tibble(
     run = rep(run, n), institution = rep(institution, n), course_id = rows$course_id, url = url,
     requested_at = requested_at,
     http_status = status,
@@ -363,6 +367,10 @@ fetch_ledger <- function(rows, institution, run, dbh_snapshot = NA_character_, r
     sha256 = cli::hash_sha256(page),
     raw_file = raw_file(institution, rows$year, run, raw_dir),
     dbh_snapshot = rep(as.character(dbh_snapshot), n))
+  if (!NROW(probes)) return(ledger)
+  dplyr::bind_rows(ledger, tibble::tibble(
+    run = run, institution = institution, url = probes$url, requested_at = probes$requested_at,
+    http_status = as.integer(probes$http_status), outcome = "probe", dbh_snapshot = as.character(dbh_snapshot)))
 }
 
 ledger_file <- function(institution, run, raw_dir = RAW_DIR) {
@@ -410,14 +418,15 @@ raw_ledger <- function(files) {
 #'
 #' The outcome of the latest request of the offering's URL, whichever
 #' offering it was made for (an academic-year site shares a page between
-#' offerings); for an offering without a URL, its own latest outcome. "not
-#' requested": nobody requested the URL; "not harvested": the offering is in
-#' no raw run.
+#' offerings), but for a probe (refusal_watch()); for an offering without a
+#' URL, its own latest outcome. "not requested": nobody requested the URL;
+#' "not harvested": the offering is in no raw run.
 #'
 #' @param course_id,url Offerings and the URL the build gives them
 #'   (course_offerings_full).
 #' @param ledger The ledger of the institutions' raw files (raw_ledger()).
 offering_outcome <- function(course_id, url, ledger) {
+  ledger <- ledger[ledger$outcome != "probe", ]
   own <- ledger[!duplicated(ledger$course_id, fromLast = TRUE), ]
   hit <- ledger[!is.na(ledger$url), ]
   hit <- hit[!duplicated(hit$url, fromLast = TRUE), ]

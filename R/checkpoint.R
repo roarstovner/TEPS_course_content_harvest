@@ -43,9 +43,10 @@ checkpoint_append_row <- function(row, path) {
 #' @return courses tibble with html, html_error, html_success columns added,
 #'   and the request's http_status and requested_at (fetch_html_cols()). A
 #'   site that refuses the harvest (HTTP 429, or 403 to FORBIDDEN_RUN
-#'   requests in a row; refusal_watch()) stops it, with the pages fetched
-#'   before in the checkpoint; the refusal's 403s are not kept, so the next
-#'   harvest asks for those pages again. A URL robots.txt disallows is not
+#'   requests in a row and to a page known to be public; refusal_watch())
+#'   stops it, with the pages fetched before in the checkpoint; the
+#'   refusal's 403s are not kept, so the next harvest asks for those pages
+#'   again. A URL robots.txt disallows is not
 #'   requested (robots_allows()); a host whose robots.txt has not been read
 #'   stops the harvest before its first request.
 fetch_html_with_checkpoint <- function(courses,
@@ -100,7 +101,7 @@ fetch_html_with_checkpoint <- function(courses,
     total = n, clear = FALSE
   )
 
-  refused <- refusal_watch()
+  refused <- refusal_watch(config)
   for (i in seq_len(n)) {
     row <- to_fetch[i, ]
     # robots.txt: a host not read stops here; a URL it disallows is not

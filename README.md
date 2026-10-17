@@ -166,7 +166,8 @@ defined in `R/fetch_html_cols.R` and `R/extract_fulltext.R`.
 
 The pipeline uses **checkpointing** to avoid re-downloading data. If the
 script stops or crashes, or a site refuses the harvest (HTTP 429, or 403
-to 5 requests in a row; see “Fetch Ledger and Retries”):
+to 5 requests in a row and to a page known to be public; see “Fetch
+Ledger and Retries”):
 
 - Already-downloaded HTML is saved in
   `data/raw/checkpoint/html_{institution}.RDS` (`course_id`, `html`,
@@ -431,7 +432,8 @@ pgrep -af harvest_all   # the harvests still running
   checkpoint, saved every 50 pages, resumes it. A “page” or “current”
   site fetches all its pages again at every start, so let it run to the
   end. A site that refuses the harvest (HTTP 429, or 403 to 5 requests
-  in a row) stops its own harvest; start it again later.
+  in a row and to a page known to be public) stops its own harvest;
+  start it again later.
 - **Memory and the build.** A process keeps its institution’s pages in
   memory until it writes the run, so check free memory before starting
   more of them. `tar_make()` (4 workers) builds the runs written so far;
@@ -927,7 +929,10 @@ NTNU’s “No course information available for this academic year”);
 `server_error` (HTTP 5xx); `timeout` (no answer: a timeout or a failed
 connection); `blocked` (HTTP 429); `robots` (not requested: robots.txt
 disallows it, see “robots.txt”); `error` (anything else); `no_url` (no
-URL to request: the URL builder or the URL discovery found none).
+URL to request: the URL builder or the URL discovery found none). A row
+with outcome `probe` and no `course_id` is a request of a page known to
+be public, made to tell a site that refuses the harvest from pages
+closed to the public (below); its `http_status` is the answer.
 
 The ledger is raw data like its run: append-only, written only by
 `harvest_all()`, locked by `finalize_release()`. It holds URLs and
@@ -944,13 +949,19 @@ all runs, recorded or reconstructed.
 answer (a timeout, a failed connection) or with HTTP 500, 502, 503 or
 504 is tried again, 3 times in all, after 30 and then 60 seconds; any
 other answer is final. A site refuses the harvest when it answers 429
-(too many requests), or 403 to 5 requests in a row (`FORBIDDEN_RUN`; a
-site that blocks the harvest answers every request so): its harvest
-stops, the pages fetched before stay in the checkpoint (the next harvest
-resumes there and asks again for the pages that answered 403 in the
-refusal), and `harvest_all()` goes on with the next institution
-(`refusal_watch()`). A 403 among other answers is the page’s own: it
-gets outcome `forbidden` and the harvest goes on.
+(too many requests), or 403 to 5 requests in a row (`FORBIDDEN_RUN`) and
+then also to a page known to be public: its harvest stops, the pages
+fetched before stay in the checkpoint (the next harvest resumes there
+and asks again for the pages that answered 403 in the refusal), and
+`harvest_all()` goes on with the next institution (`refusal_watch()`).
+The page known to be public is one of the same host that answered 200
+earlier in the harvest, else the host’s latest page in the raw store;
+with none, 5 answers 403 in a row stop the harvest. The request waits
+its pause and goes in the fetch ledger (outcome `probe`). A 403 among
+other answers is the page’s own: it gets outcome `forbidden` and the
+harvest goes on; so do 403s in a row when the public page answers 200
+(MF’s PHI course pages, next to each other in a sample ordered by course
+code).
 
 **Retries between harvests:** `harvest_all(retry = TRUE)` fetches again
 the offerings that have no plan in the current build
@@ -2269,11 +2280,11 @@ reconstructed (target <code>ledger</code>)</td>
 and server errors; refuses a URL robots.txt disallows</td>
 </tr>
 <tr>
-<td><code>refusal_watch()</code></td>
+<td><code>refusal_watch(config)</code></td>
 <td><code>R/fetch_html_cols.R</code></td>
 <td>The check of a loop of requests to a site: stops it when the site
 refuses the harvest (HTTP 429, or 403 to <code>FORBIDDEN_RUN</code>
-requests in a row)</td>
+requests in a row and to a page known to be public)</td>
 </tr>
 <tr>
 <td><code>robots_allows(url)</code></td>
@@ -2495,7 +2506,8 @@ is invisible to `html_text()`; see USN above -
 session - `session$view()` opens the browser to see what is rendered
 
 **“the site refuses the harvest (HTTP 429 …)” or “(HTTP 403 …, 5 in a
-row)”?** - The site answered 429, or 403 to 5 requests in a row, so its
+row; …)”?** - The site answered 429, or 403 to 5 requests in a row and
+then to a page known to be public (or no such page was known), so its
 harvest stopped; the pages fetched so far are in the checkpoint. Harvest
 it again later (the checkpoint resumes), at night, or with a longer
 `request_delay` in `R/institution_config.R`

@@ -149,33 +149,65 @@ test_that("a site that refuses the harvest stops it, and the pages fetched stay 
   expect_equal(readRDS("data/raw/checkpoint/html_hiof.RDS")$course_id, "hiof_A1_2023_autumn_1")
 })
 
-test_that("a site refuses the harvest with a 429, or with 403 to FORBIDDEN_RUN requests in a row", {
+test_that("a site refuses the harvest with a 429, or with 403 to FORBIDDEN_RUN requests in a row and to a public page", {
   refused <- refusal_watch()
   expect_equal(refused(403L, "u"), 1L)
   expect_equal(refused(403L, "u"), 2L)
-  expect_equal(refused(200L, "u"), 0L)   # a 403 among other answers is the page's own
-  expect_equal(refused(NA, "u"), 0L)
+  expect_equal(refused(NA, "u"), 0L)   # a 403 among other answers is the page's own
   for (k in seq_len(FORBIDDEN_RUN - 1)) refused(403L, "u")
   saved <- NULL
   expect_error(refused(403L, "u/x", before_stop = function(run) saved <<- run),
-               paste0("refuses the harvest \\(HTTP 403 at u/x, ", FORBIDDEN_RUN, " in a row\\)"))
+               paste0("refuses the harvest \\(HTTP 403 at u/x, ", FORBIDDEN_RUN,
+                      " in a row; no page known to be public to check\\)"))
   expect_equal(saved, FORBIDDEN_RUN)
   expect_error(refusal_watch()(429L, "u"), "refuses the harvest \\(HTTP 429 at u\\)")
 
-  # a harvest: the refusal's 403s stay out of the checkpoint, to be asked for again
+  # a harvest: the site answers A1, then refuses every request, also A1 again
+  # (the probe); the refusal's 403s stay out of the checkpoint, to be asked for again
+  local_hiof()
+  sent <- character()
+  httr2::local_mocked_responses(function(req) {
+    sent <<- c(sent, basename(req$url))
+    if (length(sent) > 1) httr2::response(403) else html_page("Plan")
+  })
+  codes <- c("A1", paste0("FORB", seq_len(FORBIDDEN_RUN)), "Z1")
+  msg <- capture_messages(harvest_all(hiof_dbh(codes), institutions = "hiof"))
+  expect_match(paste(msg, collapse = ""),
+               paste0("refuses the harvest \\(HTTP 403 .*forb", FORBIDDEN_RUN, ".html, ", FORBIDDEN_RUN,
+                      " in a row; https://www.hiof.no/.*/a1.html, known to be public, answered HTTP 403\\)"))
+  expect_equal(sent, paste0(c(tolower(codes[-length(codes)]), "a1"), ".html"))
+  expect_length(harvest_files("hiof"), 0)
+  expect_equal(readRDS("data/raw/checkpoint/html_hiof.RDS")$course_id, "hiof_A1_2023_autumn_1")
+})
+
+test_that("403s in a row while a public page answers 200 are the pages' own; the probe is in the ledger", {
   local_hiof()
   sent <- character()
   httr2::local_mocked_responses(function(req) {
     sent <<- c(sent, basename(req$url))
     if (grepl("/forb", req$url)) httr2::response(403) else html_page("Plan")
   })
-  codes <- c("A1", paste0("FORB", seq_len(FORBIDDEN_RUN)), "Z1")
-  msg <- capture_messages(harvest_all(hiof_dbh(codes), institutions = "hiof"))
-  expect_match(paste(msg, collapse = ""), paste0("refuses the harvest \\(HTTP 403 .*forb", FORBIDDEN_RUN,
-                                                  ".html, ", FORBIDDEN_RUN, " in a row"))
-  expect_equal(sent, paste0(tolower(codes[-length(codes)]), ".html"))
-  expect_length(harvest_files("hiof"), 0)
-  expect_equal(readRDS("data/raw/checkpoint/html_hiof.RDS")$course_id, "hiof_A1_2023_autumn_1")
+  forb <- paste0("FORB", seq_len(FORBIDDEN_RUN))
+  # no page known to be public: stop
+  msg <- capture_messages(harvest_all(hiof_dbh(forb), institutions = "hiof"))
+  expect_match(paste(msg, collapse = ""), "in a row; no page known to be public to check")
+  expect_equal(sent, paste0(tolower(forb), ".html"))
+
+  # a page in the raw store is known to be public: it is asked for, and the harvest goes on
+  suppressMessages(harvest_all(hiof_dbh("OLD1"), institutions = "hiof"))
+  Sys.sleep(1)   # runs named by the second
+  sent <- character()
+  suppressMessages(harvest_all(hiof_dbh(c(forb, "FORB9", "Z1")), institutions = "hiof"))
+  expect_equal(sent, paste0(c(tolower(forb), "old1", "forb9", "z1"), ".html"))
+  led <- raw_ledger(harvest_files("hiof"))
+  expect_equal(led$outcome, c("ok", rep("forbidden", FORBIDDEN_RUN + 1), "ok", "probe"))
+  probe <- led[led$outcome == "probe", ]
+  expect_equal(basename(probe$url), "old1.html")
+  expect_equal(probe$http_status, 200L)
+  expect_true(is.na(probe$course_id) && !is.na(probe$requested_at))
+  # the probe is not an offering's fetch
+  expect_equal(offering_outcome("hiof_OLD1_2023_autumn_1", probe$url, led), "ok")
+  expect_null(take_probes("hiof"))
 })
 
 test_that("a page that answers 403 among other answers is forbidden: the harvest goes on, no retry", {

@@ -121,7 +121,7 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
   if (nrow(codes_to_discover) > 0) {
     message("Discovering dropdowns for ", nrow(codes_to_discover), " course codes...")
 
-    refused <- refusal_watch()
+    refused <- refusal_watch(config)
     discovery_results <- purrr::map2(
       codes_to_discover$course_code_raw,
       codes_to_discover$url,
@@ -205,7 +205,7 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
       skip <- sum(!robots_allows(to_fetch_pdf$url))
       if (skip) message("robots.txt disallows ", skip, " of them: not requested")
 
-      refused <- refusal_watch()
+      refused <- refusal_watch(config)
       pdf_results <- purrr::map(
         to_fetch_pdf$url,
         \(pdf_url) {

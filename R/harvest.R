@@ -112,6 +112,7 @@ harvest_all <- function(courses = NULL, year = NULL, refetch = FALSE,
       skip <- if (current) character() else known
       again <- if (!isFALSE(retry) && length(skip)) intersect(skip, offerings_to_retry(inst, retry)) else character()
       if (length(again)) message(inst, ": ", length(again), " offerings without a plan to retry")
+      take_probes(inst)   # none from an earlier harvest that stopped
       # a retry fetches again, so the checkpoint's old pages are not reused
       result <- harvest_institution(inst, courses, year, refetch || length(again) > 0,
                                     setdiff(skip, again), known)
@@ -122,7 +123,7 @@ harvest_all <- function(courses = NULL, year = NULL, refetch = FALSE,
         if (length(again)) result$retry <- result$course_id %in% again
         run <- new_harvest_run(inst)
         write_raw_run(dplyr::select(result, -dplyr::any_of(REQUEST_COLUMNS)), inst, run)
-        ledger <- fetch_ledger(result, inst, run, snapshot)
+        ledger <- fetch_ledger(result, inst, run, snapshot, probes = take_probes(inst))
         write_fetch_ledger(ledger, inst, run)
         log_summary(inst, result)
         message("  outcomes: ", paste(names(table(ledger$outcome)), table(ledger$outcome), collapse = ", "))

@@ -78,29 +78,90 @@ http_status_of <- function(x) {
 }
 
 # A site refuses the harvest when it answers 429 (too many requests), or 403
-# (forbidden) to FORBIDDEN_RUN requests in a row: its harvest stops, so it is
-# not asked again and again (harvest_all() goes on with the next site; the
-# pages fetched before stay in the checkpoint). A 403 among other answers is
-# the page's own (a course page closed to the public, as at MF on
-# 2026-10-17): outcome "forbidden" (fetch_outcome()), and the harvest goes on.
+# (forbidden) to FORBIDDEN_RUN requests in a row and then also to a page
+# known to be public: its harvest stops, so it is not asked again and again
+# (harvest_all() goes on with the next site; the pages fetched before stay in
+# the checkpoint). A 403 among other answers is the page's own (a course page
+# closed to the public, as at MF on 2026-10-17): outcome "forbidden"
+# (fetch_outcome()), and the harvest goes on; so are 403s in a row while the
+# public page still answers 200 (MF's PHI courses, next to each other in a
+# sample ordered by course code).
 FORBIDDEN_RUN <- 5L
 
-# The check for one loop of requests to a site: called with each answer's
-# status (NA: no answer) and URL, it stops the loop when the site refuses the
-# harvest, after `before_stop(run)`; else it returns `run`, the number of 403s
-# in a row so far (0 after any other answer).
-refusal_watch <- function() {
+# The check for one loop of requests to a site of the institution `config`
+# names: called with each answer's status (NA: no answer) and URL, it stops
+# the loop when the site refuses the harvest, after `before_stop(run)`; else
+# it returns `run`, the number of 403s in a row so far (0 after any other
+# answer). After FORBIDDEN_RUN 403s in a row it requests a page of the same
+# host known to be public (probe_request()): the last one that answered 200
+# in this loop, else the host's latest page in the institution's raw store
+# (known_public_url()). A 200 resets the run; any other answer, or no such
+# page, stops the loop.
+refusal_watch <- function(config = NULL) {
   run <- 0L
+  public <- character()   # by host: the last URL that answered 200
   function(status, url, before_stop = NULL) {
+    host <- url_host(url)
+    if (isTRUE(status == 200L)) public[host] <<- url
     run <<- if (isTRUE(status == 403L)) run + 1L else 0L
-    if (isTRUE(status == 429L) || run >= FORBIDDEN_RUN) {
+    refused <- isTRUE(status == 429L)
+    probe <- ""
+    if (run >= FORBIDDEN_RUN) {
+      known <- if (is.na(public[host])) known_public_url(config$name, host) else unname(public[host])
+      answer <- if (is.na(known)) NA_integer_ else probe_request(known, config)
+      refused <- !isTRUE(answer == 200L)
+      if (!refused) run <<- 0L   # the site answers: the 403s are the pages' own
+      probe <- if (is.na(known)) "; no page known to be public to check" else
+        paste0("; ", known, ", known to be public, answered ", if (is.na(answer)) "nothing" else paste("HTTP", answer))
+    }
+    if (refused) {
       if (!is.null(before_stop)) before_stop(run)
       stop("the site refuses the harvest (HTTP ", status, " at ", url,
-           if (run > 0L) paste0(", ", run, " in a row"), "): stopped, harvest it again later",
+           if (run > 0L) paste0(", ", run, " in a row"), probe, "): stopped, harvest it again later",
            call. = FALSE)
     }
     invisible(run)
   }
+}
+
+# The host of URLs, in lower case.
+url_host <- function(url) tolower(sub("^[A-Za-z][A-Za-z0-9+.-]*://([^/?#:]*).*$", "\\1", url))
+
+# The latest URL of `host` that gave a page in the institution's raw store
+# (read_raw(content = FALSE)); NA if none.
+known_public_url <- function(institution, host) {
+  files <- if (length(institution)) harvest_files(institution) else character()
+  if (!length(files)) return(NA_character_)
+  rows <- read_raw(files, content = FALSE)
+  url <- rows$url[!is.na(rows$html) & !is.na(rows$url) & url_host(rows$url) %in% host]
+  if (length(url)) url[length(url)] else NA_character_
+}
+
+# The request of a page known to be public (refusal_watch()), after the
+# institution's pause and with its user agent; its HTTP status (NA: no
+# answer). harvest_all() adds it to the run's fetch ledger (take_probes()).
+probe_request <- function(url, config = NULL) {
+  polite_pause(config$request_delay)
+  requested_at <- Sys.time()
+  agent <- if (identical(config$user_agent, "browser")) BROWSER_USER_AGENT else TEPS_USER_AGENT
+  status <- http_status_of(tryCatch(httr2::req_perform(site_request(url, agent)), error = identity))
+  if (length(config$name)) {
+    assign(config$name, rbind(take_probes(config$name),
+                              data.frame(url = url, requested_at = requested_at, http_status = status)),
+           envir = .probes)
+  }
+  status
+}
+
+# The probe requests not yet in a fetch ledger, by institution.
+.probes <- new.env()
+
+# An institution's probe requests (url, requested_at, http_status) since the
+# last call, or NULL.
+take_probes <- function(institution) {
+  out <- get0(institution, envir = .probes, inherits = FALSE)
+  assign(institution, NULL, envir = .probes)
+  out
 }
 
 # Pause between requests to the same site. An institution can override the
@@ -170,7 +231,7 @@ ROBOTS_FILE <- "data/robots_txt.csv"
 #'   first request to it.
 robots_allows <- function(url, file = ROBOTS_FILE) {
   url <- as.character(url)
-  host <- tolower(sub("^[A-Za-z][A-Za-z0-9+.-]*://([^/?#:]*).*$", "\\1", url))
+  host <- url_host(url)
   path <- sub("#.*", "", sub("^[A-Za-z][A-Za-z0-9+.-]*://[^/?#]*", "", url))
   path <- ifelse(startsWith(path, "/"), path, paste0("/", path))
   ask <- !is.na(url) & path != "/robots.txt"
