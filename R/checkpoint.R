@@ -43,7 +43,9 @@ checkpoint_append_row <- function(row, path) {
 #' @return courses tibble with html, html_error, html_success columns added,
 #'   and the request's http_status and requested_at (fetch_html_cols()). A
 #'   site that refuses the harvest (HTTP 403, 429) stops it, with the pages
-#'   fetched so far in the checkpoint.
+#'   fetched so far in the checkpoint. A URL robots.txt disallows is not
+#'   requested (robots_allows()); a host whose robots.txt has not been read
+#'   stops the harvest before its first request.
 fetch_html_with_checkpoint <- function(courses,
                                        checkpoint_path = file.path(RAW_DIR, "checkpoint", "checkpoint_html.RDS"),
                                        .progress = TRUE,
@@ -98,7 +100,9 @@ fetch_html_with_checkpoint <- function(courses,
 
   for (i in seq_len(n)) {
     row <- to_fetch[i, ]
-    polite_pause(config$request_delay)
+    # robots.txt: a host not read stops here; a URL it disallows is not
+    # requested (site_request()), so nothing to wait for
+    if (robots_allows(row$url)) polite_pause(config$request_delay)
     html_cols <- fetch_html_cols(
       urls        = row$url,
       institution = row$institution,

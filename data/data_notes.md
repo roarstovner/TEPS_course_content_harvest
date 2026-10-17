@@ -1,7 +1,7 @@
 # Data Quality Notes
 
 
-Generated: 2026-10-16
+Generated: 2026-10-17
 
 ## Overview
 
@@ -196,10 +196,13 @@ the harvest’s user agent.
   harvests up to 2026-10 are paths robots.txt disallows for all user
   agents: UiS’s PDF archive on `www6.uis.no` (see UiS) and Steiner’s
   subject PDFs under `/dokumenter/` (see Steiner). No other path the
-  harvests request is disallowed. At the new institutions’ sites
-  robots.txt disallows only the CMS’s own paths, search and staff pages,
-  except that BI’s main site disallows PDF and Word files: a BI plan
-  published as such a file would not be harvested
+  harvests request is disallowed. Since 2026-10-17 the harvest does not
+  request a disallowed path unless the institution has given permission
+  (none so far; the project asks UiS and Steiner), and a host whose
+  robots.txt has not been read stops the harvest. At the new
+  institutions’ sites robots.txt disallows only the CMS’s own paths,
+  search and staff pages, except that BI’s main site disallows PDF and
+  Word files: a BI plan published as such a file would not be harvested
 
 ## Per-Institution Notes
 
@@ -404,7 +407,8 @@ Figures are in the tables above; the notes say why.
 - The site’s robots.txt (read 2026-10-16) disallows `/dokumenter/`,
   where the five PDFs are, for all user agents. The harvests up to
   2026-10 fetched them: every Steiner plan (15 offerings) comes from
-  that path
+  that path. Since 2026-10-17 a Steiner harvest requests nothing
+  (outcome `robots`) until Steiner gives permission
 - The practicum modules (M-LP1/2/3) have no PDF content
 - M-PEL2.1/M-PEL2.2 get the PDF’s PEL1.4/PEL1.5 plans
   (`.steiner_remap_pel_emne()`); to be confirmed against the programme
@@ -487,7 +491,9 @@ Figures are in the tables above; the notes say why.
   2026-10-16) disallows every path but `/ansatt/` for all user agents.
   The harvests up to 2026-10 fetched it: 2,201 of the 2,719 UiS
   offerings with a plan text (2009-2025) have it from a PDF, the other
-  518 from the course page on `www.uis.no`, which robots.txt allows
+  518 from the course page on `www.uis.no`, which robots.txt allows.
+  Since 2026-10-17 a UiS harvest does not request the PDFs (outcome
+  `robots`) until UiS gives permission
 - A dropdown entry is an academic year (“2024 - 2025”; its PDF says
   “studietilbudet for studieår 2024-2025”), so a spring or summer
   offering reads the year before (since 2026-10-14; until then it read

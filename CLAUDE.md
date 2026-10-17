@@ -78,5 +78,10 @@ the gitignored `CLAUDE.local.md`.
   out of the sections goes on the section side (`.drop`, `.clean_sections()`).
   A change to the spec gets a `methods.qmd` entry; a fix of one of its known
   deviations removes it from the list.
+- Every request to a site goes through `site_request()` or `site_html()`,
+  which apply the user agent, the retries and robots.txt (README
+  "robots.txt"). A path robots.txt disallows is not requested without the
+  institution's recorded `robots_permission`; never add one the user has not
+  reported.
 - UiO: never switch to semester URLs (`/h24/`, `/v25/`). They hold logistics,
   not the course plan (README "Institution-Specific Notes").

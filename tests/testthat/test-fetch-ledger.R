@@ -1,7 +1,8 @@
 # Tests for the fetch ledger and the retry policy by outcome class:
 # fetch_outcome(), site_request(), fetch_html_cols(), fetch_ledger(),
 # raw_ledger(), harvest_all(retry = ), offering_outcome(), fetch_coverage(),
-# page_changes(). Sites are mocked (httr2::local_mocked_responses()).
+# page_changes(); the URLs robots.txt disallows in a harvest. Sites are
+# mocked (httr2::local_mocked_responses()), robots.txt by local_robots().
 
 html_page <- function(text, head = "") {
   httr2::response(200, headers = list(`Content-Type` = "text/html; charset=utf-8"),
@@ -37,6 +38,8 @@ test_that("a fetch's outcome class comes from its page, status and error", {
     "u", FALSE, 200L, "No course information available for this academic year", "shell",
     "u", FALSE, 429L, "HTTP 429 Too Many Requests.", "blocked",
     "u", FALSE, 403L, "HTTP 403 Forbidden.", "blocked",
+    "u", FALSE, NA, "robots.txt disallows u (data/robots_txt.csv): not requested", "robots",
+    NA, FALSE, NA, "robots.txt disallows d/ (data/robots_txt.csv): not requested", "robots",
     "u", FALSE, 502L, "HTTP 502 Bad Gateway.", "server_error",
     "u", FALSE, NA, "Failed to perform HTTP request. Timeout was reached", "timeout",
     "u", FALSE, NA, "subscript out of bounds", "error")
@@ -45,6 +48,7 @@ test_that("a fetch's outcome class comes from its page, status and error", {
 })
 
 test_that("a timeout or server error is tried again after a pause, a 404 or a block is not", {
+  local_robots(c("example.org", "127.0.0.1"))
   req <- site_request("https://example.org/x")
   transient <- req$policies$retry_is_transient
   expect_true(transient(httr2::response(502)))
@@ -69,6 +73,7 @@ test_that("a timeout or server error is tried again after a pause, a 404 or a bl
 })
 
 test_that("fetch_html_cols() records each request's status and time", {
+  local_robots(c("x.no", "www.ntnu.no"))
   httr2::local_mocked_responses(function(req) {
     if (grepl("gone", req$url)) httr2::response(404) else html_page("Plan")
   })
@@ -143,6 +148,81 @@ test_that("a site that refuses the harvest stops it, and the pages fetched stay 
   expect_equal(readRDS("data/raw/checkpoint/html_hiof.RDS")$course_id, "hiof_A1_2023_autumn_1")
 })
 
+test_that("a URL robots.txt disallows is not requested, and is not retried without a permission", {
+  local_hiof()
+  local_robots("www.hiof.no", disallow = "/*/no1.html", institution = "hiof")
+  sent <- character()
+  httr2::local_mocked_responses(function(req) {
+    sent <<- c(sent, req$url)
+    html_page("Plan")
+  })
+  dbh <- hiof_dbh(c("OK1", "NO1"))
+  msg <- capture_messages(harvest_all(dbh, institutions = "hiof"))
+  expect_match(paste(msg, collapse = ""), "robots.txt disallows 1 of them: not requested")
+  expect_equal(basename(sent), "ok1.html")
+  led <- raw_ledger(harvest_files("hiof"))
+  expect_equal(led$outcome, c("ok", "robots"))
+  expect_equal(is.na(led$requested_at), c(FALSE, TRUE))
+  expect_true(is.na(led$http_status[2]))
+  expect_match(read_raw(harvest_files("hiof"))$html_error[2], "^robots.txt disallows https://www.hiof.no/")
+
+  dir.create("data/interim")
+  saveRDS(dplyr::transmute(led, course_id, institution, url, plan_content_id = c("p1", NA)),
+          "data/interim/course_offerings_full.RDS")
+  expect_message(harvest_all(dbh, institutions = "hiof", retry = TRUE), "nothing new")
+  # with a permission, a retry by name fetches it
+  old <- institution_configs$hiof$robots_permission
+  institution_configs$hiof$robots_permission <<- "granted 2026-10-17 by a test"
+  withr::defer(institution_configs$hiof$robots_permission <<- old)
+  suppressMessages(harvest_all(dbh, institutions = "hiof", retry = "robots"))
+  expect_equal(basename(sent), c("ok1.html", "no1.html"))
+  expect_equal(utils::tail(raw_ledger(harvest_files("hiof"))$outcome, 1), "ok")
+})
+
+test_that("a host whose robots.txt has not been read stops its harvest before any request", {
+  local_hiof()
+  local_robots("www.other.no")
+  sent <- 0
+  httr2::local_mocked_responses(function(req) {
+    sent <<- sent + 1
+    html_page("Plan")
+  })
+  msg <- capture_messages(harvest_all(hiof_dbh("A1"), institutions = "hiof"))
+  expect_match(paste(msg, collapse = ""),
+               "ERROR harvesting hiof: the robots.txt of www.hiof.no has not been read.*Step 0")
+  expect_equal(sent, 0)
+  expect_length(harvest_files("hiof"), 0)
+})
+
+test_that("UiS's PDF archive and Steiner's subject PDFs are not requested", {
+  withr::local_dir(withr::local_tempdir())
+  old <- institution_configs$uis$request_delay
+  institution_configs$uis$request_delay <<- 0
+  withr::defer(institution_configs$uis$request_delay <<- old)
+  sent <- character()
+  menu <- paste0("<select id='fs-semester-select'><option ",
+                 "value='https://www6.uis.no/Stine/EMNE/2019/H/MGL101.pdf'>2019 - 2020</option></select>")
+  httr2::local_mocked_responses(function(req) {
+    sent <<- c(sent, req$url)
+    html_page(menu)
+  })
+  dbh <- function(inst, code, year, semester) {
+    tibble::tibble(institution = inst, course_code_raw = code, course_code = code, year = year,
+                   semester_name = semester, status = 1L)
+  }
+  uis <- suppressMessages(harvest_institution("uis", dbh("uis", "MGL101", 2019L, "Høst")))
+  expect_equal(uis$url, "https://www6.uis.no/Stine/EMNE/2019/H/MGL101.pdf")
+  expect_equal(fetch_ledger(uis, "uis", "r")$outcome, "robots")
+  expect_equal(sent, "https://www.uis.no/nb/student/course/MGL101")   # the course page's menu only
+
+  steiner <- suppressWarnings(suppressMessages(
+    harvest_institution("steiner", dbh("steiner", c("M-LP1", "M-LP2"), 2025L, "Vår"))))
+  expect_equal(fetch_ledger(steiner, "steiner", "r")$outcome, c("robots", "robots"))
+  expect_match(fetch_error_text(steiner$html_error),
+               "robots.txt disallows https://www.steinerhoyskolen.no/dokumenter/ ")
+  expect_length(sent, 1)
+})
+
 test_that("a run without a ledger has one reconstructed; outcomes are by URL", {
   raw <- withr::local_tempdir()
   rows <- tibble::tibble(
@@ -178,6 +258,8 @@ test_that("a run without a ledger has one reconstructed; outcomes are by URL", {
   expect_equal(out, c("ok", "ok", "no_url", "not harvested", "not requested", "not_found"))
   expect_equal(retry_wanted(out, TRUE), c(TRUE, TRUE, TRUE, FALSE, TRUE, FALSE))
   expect_equal(retry_wanted(out, "no_url"), c(FALSE, FALSE, TRUE, FALSE, TRUE, FALSE))
+  expect_equal(retry_wanted(c("robots", "not_found"), TRUE), c(FALSE, FALSE))
+  expect_equal(retry_wanted("robots", "robots"), TRUE)
   expect_equal(nrow(raw_ledger(character())), 0)
 })
 

@@ -13,7 +13,10 @@
 #' @param known Course ids in the raw files: an offering among them keeps its
 #'   id, also when a later DBH snapshot gives it another status
 #' @return Data frame with DBH columns plus course_id, url, html, html_error,
-#'   html_success, extracted_text
+#'   html_success, extracted_text. A URL robots.txt disallows is not
+#'   requested (robots_allows(); its html_error says so), and a host whose
+#'   robots.txt has not been read (no row in data/robots_txt.csv) is an
+#'   error, before any request to it.
 harvest_institution <- function(institution, courses, year = NULL,
                                 refetch = FALSE, skip = character(), known = skip) {
   config <- get_institution_config(institution)
@@ -32,6 +35,10 @@ harvest_institution <- function(institution, courses, year = NULL,
     validate_courses("with_url")
 
   message(institution, ": ", sum(!is.na(df$url)), "/", nrow(df), " URLs")
+  # robots.txt (robots_allows()): a host not read stops the harvest here,
+  # before any request; a URL it disallows is not requested
+  robots <- sum(!robots_allows(df$url), na.rm = TRUE)
+  if (robots) message(institution, ": robots.txt disallows ", robots, " of them: not requested")
 
   result <- switch(config$strategy,
     standard           = harvest_standard(df, config, refetch),
@@ -66,9 +73,10 @@ harvest_institution <- function(institution, courses, year = NULL,
 #' offerings whose page gave no plan in the current build
 #' (data/interim/course_offerings_full.RDS), by how their URL answered last
 #' (offering_outcome()): `retry = TRUE` all but those whose URL was not found
-#' (a 404 is final), or only the outcome classes named, e.g. `retry =
-#' c("timeout", "server_error")`, or `retry = "not_found"` for pages
-#' published late. They are saved with `retry = TRUE`, and read_harvest()
+#' (a 404 is final) or robots.txt disallows, or only the outcome classes
+#' named, e.g. `retry = c("timeout", "server_error")`, or `retry =
+#' "not_found"` for pages published late, `retry = "robots"` after a
+#' permission (`robots_permission`). They are saved with `retry = TRUE`, and read_harvest()
 #' takes their new page. Run targets::tar_make() first, and narrow it with `year`.
 #'
 #' @param courses Data frame from dbh_courses(). If NULL, every course of the

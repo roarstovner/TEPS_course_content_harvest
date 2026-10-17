@@ -28,3 +28,16 @@ source(here::here("R/harvest_strategies.R"))
 source(here::here("R/harvest.R"))
 source(here::here("R/release.R"))
 source(here::here("R/wayback.R"))
+
+# The robots.txt table (data/robots_txt.csv), also from the tests' folder and
+# the temporary folders the harvest tests run in
+assign("ROBOTS_FILE", here::here(ROBOTS_FILE), envir = globalenv())
+
+# A robots.txt table of the given hosts and rules (ROBOTS_FILE) for one test
+local_robots <- function(host, disallow = NA, allow = NA, institution = NA, env = parent.frame()) {
+  f <- withr::local_tempfile(fileext = ".csv", .local_envir = env)
+  utils::write.csv(data.frame(institution, host, disallow, allow), f, row.names = FALSE, na = "")
+  old <- ROBOTS_FILE
+  assign("ROBOTS_FILE", f, envir = globalenv())
+  withr::defer(assign("ROBOTS_FILE", old, envir = globalenv()), envir = env)
+}

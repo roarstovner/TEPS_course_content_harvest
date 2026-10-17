@@ -149,16 +149,27 @@ between requests to a site, or longer where its robots.txt asks all user
 agents for a `Crawl-delay`: NTNU 10 seconds, USN 5 (since 2026-10-16; 2
 seconds before). UiB is harvested at 10 seconds since 2026-09-30,
 although its robots.txt asks this only of one crawler (Scrapy) on
-2026-10-16. A path robots.txt disallows is not harvested from a new
-site. *Why:* the harvest asks a site for no more than it allows
+2026-10-16. A URL whose path robots.txt disallows for all user agents is
+not requested, unless the institution has given the project permission
+(`robots_permission` in the config). Since 2026-10-17 the harvest
+enforces this before every request (`robots_allows()`, README
+“robots.txt”): such a URL gets the outcome `robots` in the fetch ledger
+and is not retried, and a host whose robots.txt has not been read stops
+the harvest. *Why:* the harvest asks a site for no more than it allows
 crawlers. *Rejected:* one pace for every site, which is faster than NTNU
-and USN ask. *Consequence:* the robots.txt of every host, read on
-2026-10-16 (`data/robots_txt.csv`), disallows two sources that the
-harvests up to 2026-10 used: UiS’s PDF archive (`www6.uis.no` allows
-only `/ansatt/`; 2,201 of UiS’s 2,719 offerings with a plan text,
-2009-2025) and Steiner’s five subject PDFs (`/dokumenter/`; all 15
-Steiner offerings with a plan). Whether they are fetched again and kept
-is not yet decided. *Since:* 2026-10-16.
+and USN ask; fetching the disallowed document URLs anyway, since
+robots.txt is aimed at crawlers and the harvest asks for known URLs one
+at a time (2026-10-17: the project asks for permission instead).
+*Consequence:* the robots.txt of every host, read on 2026-10-16
+(`data/robots_txt.csv`), disallows two sources that the harvests up to
+2026-10 used: UiS’s PDF archive (`www6.uis.no` allows only `/ansatt/`;
+2,201 of UiS’s 2,719 offerings with a plan text, 2009-2025) and
+Steiner’s five subject PDFs (`/dokumenter/`; all 15 Steiner offerings
+with a plan). Later harvests do not request them: a UiS harvest reads
+only its course pages, a Steiner harvest nothing. The project asks UiS
+and Steiner for permission (decided 2026-10-17); until they answer, the
+plans harvested from these sources up to 2026-10 stay in the data.
+*Since:* 2026-10-16; enforced since 2026-10-17.
 
 **How a plan’s year is known** (`plan_years` in
 `R/institution_config.R`): from the URL (most institutions), from the

@@ -53,10 +53,20 @@ and add or update its row (`read_on`, HTTP `status`, `note`):
   config as `request_delay` (Step 1); `tests/testthat/test-robots.R` fails if
   `request_delay` is shorter, or if a configured institution has no row (use
   the table's short name, or rename the row).
-- `disallow`: the `Disallow` rules that touch course-plan paths (the course
-  pages, plan PDFs or the discovery pages). A path robots.txt disallows is not
-  harvested: say so in the institution's notes in `data/data_notes.qmd`, and
-  if the plans are only there, stop and ask the user.
+- `disallow`, `allow`: the `Disallow` rules that touch course-plan paths (the
+  course pages, plan PDFs or the discovery pages), and the `Allow` rules that
+  override them, as robots.txt path patterns separated by spaces
+  (`/dokumenter/`, `/*.pdf$ /*.doc$`). The harvest applies them
+  (`robots_allows()`, README "robots.txt"): a URL they disallow is not
+  requested (outcome `robots`), and a host with no row stops the harvest
+  before its first request, so the row must exist before Step 3. Say so in
+  the institution's notes in `data/data_notes.qmd`, and if the plans are only
+  there, stop and ask the user (a permission the institution gives goes in
+  its config as `robots_permission`).
+- New request code (a URL resolver, a PDF step) sends every request with
+  `site_request()` or `site_html()` (`R/fetch_html_cols.R`), which apply the
+  user agent, the retries and robots.txt, and waits `polite_pause()` between
+  requests.
 
 ### Step 1: Add config entry to R/institution_config.R
 
@@ -90,6 +100,7 @@ Optional config fields:
 - `post_fn`: Function applied to extracted text after parsing (e.g., `.post_ntnu`)
 - `fetch_fn`: Custom fetch function (e.g., `fetch_html_cols_single_ntnu`)
 - `user_agent`: `"browser"` to use browser User-Agent (e.g., HiOF needs this to avoid 403)
+- `robots_permission`: `"granted YYYY-MM-DD by <who> (<what>)"`, only when the institution has let the project harvest paths its robots.txt disallows (Step 0)
 
 ### Step 2: Add URL builder to R/add_course_url.R
 

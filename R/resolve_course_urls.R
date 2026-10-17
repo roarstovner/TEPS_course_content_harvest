@@ -140,7 +140,7 @@ resolve_urls_hivolda_batch <- function(df, .progress = TRUE) {
     tryCatch({
       base_url <- paste0("https://www.hivolda.no/emne/", code)
       polite_pause()
-      page <- rvest::read_html(base_url)
+      page <- site_html(base_url)
 
       # Find all links under the course page that match /emne/{CODE}/{ID}
       links <- page |>
@@ -272,7 +272,7 @@ resolve_urls_uit_batch <- function(df, .progress = TRUE) {
     tryCatch({
       base_url <- paste0("https://uit.no/utdanning/aktivt/emne/", toupper(code))
       polite_pause()
-      page <- rvest::read_html(base_url)
+      page <- site_html(base_url)
 
       # Find <option> elements with p_document_id in value
       options <- page |>
@@ -338,7 +338,7 @@ uit_one_per_semester <- function(lookup, is_english = uit_page_is_english) {
 
 uit_page_is_english <- function(url) {
   polite_pause()
-  tryCatch(grepl("Course code:", as.character(rvest::read_html(url)), fixed = TRUE),
+  tryCatch(grepl("Course code:", as.character(site_html(url)), fixed = TRUE),
            error = function(e) FALSE)
 }
 
@@ -367,6 +367,7 @@ resolve_urls_usn_batch <- function(df, max_version = 3, checkpoint_path = NULL,
   # chromote, which rvest only suggests; naming it here puts it in renv.lock
   rlang::check_installed("chromote")
   base_url <- "https://www.usn.no/studier/studie-og-emneplaner/"
+  if (!robots_allows(base_url)) stop(robots_refusal(base_url), call. = FALSE)
   session <- rvest::read_html_live(base_url)
 
   # Initial wait for page to fully load

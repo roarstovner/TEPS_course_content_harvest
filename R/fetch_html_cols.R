@@ -111,14 +111,90 @@ FETCH_TIMEOUT <- 60
 FETCH_TRIES <- 3
 FETCH_BACKOFF <- 30
 
-# A request to a course site, with the user agent and the retry policy.
+# A request to a course site, with the user agent and the retry policy. A URL
+# robots.txt disallows is refused before any request (robots_allows()), with
+# an error of class "robots_disallowed" (outcome "robots" in the ledger).
 site_request <- function(url, user_agent = TEPS_USER_AGENT) {
+  if (isFALSE(robots_allows(url))) rlang::abort(robots_refusal(url), class = "robots_disallowed")
   httr2::request(url) |>
     httr2::req_user_agent(user_agent) |>
     httr2::req_timeout(FETCH_TIMEOUT) |>
     httr2::req_retry(max_tries = FETCH_TRIES, retry_on_failure = TRUE,
                      is_transient = function(resp) httr2::resp_status(resp) %in% c(500L, 502L, 503L, 504L),
                      backoff = function(i) FETCH_BACKOFF * 2^(i - 1))
+}
+
+# A course site's page as an HTML document (site_request()).
+site_html <- function(url) {
+  rvest::read_html(httr2::resp_body_string(httr2::req_perform(site_request(url))))
+}
+
+# --- robots.txt ---------------------------------------------------------------
+# The harvest requests no URL whose path a host's robots.txt disallows for all
+# user agents (README "robots.txt"). ROBOTS_FILE holds the robots.txt of every
+# host the harvest requests, read before the first request to it: `disallow`
+# and `allow` are its rules for `User-agent: *` that touch course plans, as
+# robots.txt path patterns separated by spaces.
+ROBOTS_FILE <- "data/robots_txt.csv"
+
+#' Whether robots.txt lets the harvest request URLs
+#'
+#' By the rules of each URL's host in `file` (RFC 9309): a URL is disallowed
+#' when a `disallow` pattern matches its path and query from the start (`*`
+#' any characters, a final `$` the end) and no `allow` pattern as long or
+#' longer does. A disallowed URL is allowed after all when the host's
+#' institution has recorded a permission (`robots_permission` in
+#' R/institution_config.R). A host's /robots.txt is always allowed.
+#'
+#' @param url URLs.
+#' @param file The robots.txt table (`ROBOTS_FILE`).
+#' @return TRUE (allowed), FALSE (disallowed: not to be requested) or NA (no
+#'   URL). A host with no row in `file`, whose robots.txt has not been read,
+#'   is an error of class "robots_unread", so the harvest stops before its
+#'   first request to it.
+robots_allows <- function(url, file = ROBOTS_FILE) {
+  url <- as.character(url)
+  host <- tolower(sub("^[A-Za-z][A-Za-z0-9+.-]*://([^/?#:]*).*$", "\\1", url))
+  path <- sub("#.*", "", sub("^[A-Za-z][A-Za-z0-9+.-]*://[^/?#]*", "", url))
+  path <- ifelse(startsWith(path, "/"), path, paste0("/", path))
+  ask <- !is.na(url) & path != "/robots.txt"
+  out <- ifelse(is.na(url), NA, TRUE)
+  if (!any(ask)) return(out)
+  rules <- utils::read.csv(file, colClasses = "character", na.strings = "", encoding = "UTF-8")
+  row <- match(host, tolower(rules$host))
+  unread <- unique(host[ask & is.na(row)])
+  if (length(unread)) {
+    rlang::abort(paste0("the robots.txt of ", paste(unread, collapse = ", "), " has not been read: ",
+                        "read it and add its row to ", file, " before the first request to the host ",
+                        "(add-institution skill, Step 0)"), class = "robots_unread")
+  }
+  # the length of the longest pattern that matches the path, 0 for none
+  longest <- function(patterns, path) {
+    p <- strsplit(patterns, " +")[[1]]
+    p <- p[!is.na(p) & nzchar(p)]
+    max(0, nchar(p)[vapply(robots_rx(p), grepl, logical(1), x = path, perl = TRUE)])
+  }
+  for (k in which(ask & !is.na(rules$disallow[row]))) {
+    out[k] <- longest(rules$disallow[row[k]], path[k]) <= longest(rules$allow[row[k]], path[k])
+  }
+  configs <- get0("institution_configs", ifnotfound = list())
+  permitted <- vapply(rules$institution, function(i) !is.na(i) && nzchar(configs[[i]]$robots_permission %||% ""),
+                      logical(1), USE.NAMES = FALSE)
+  out | (ask & permitted[row])
+}
+
+# robots.txt path patterns as regular expressions: from the start of the
+# path, `*` any characters, a final `$` the end of the URL.
+robots_rx <- function(pattern) {
+  end <- endsWith(pattern, "$")
+  rx <- gsub("([.\\\\+?^${}()|\\[\\]])", "\\\\\\1", sub("\\$$", "", pattern), perl = TRUE)
+  paste0("^", gsub("*", ".*", rx, fixed = TRUE), ifelse(end, "$", ""), recycle0 = TRUE)
+}
+
+# Why a URL was not requested, as the fetch error that fetch_outcome() reads
+# as "robots".
+robots_refusal <- function(url) {
+  paste0("robots.txt disallows ", url, " (", ROBOTS_FILE, "): not requested")
 }
 
 fetch_html_cols_single <- function(url, institution = NULL, config = NULL) {

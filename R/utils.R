@@ -288,9 +288,10 @@ harvest_date <- function(run, harvested_at = NULL) {
 # without one (the harvests before 2026-10-16).
 
 # The outcome classes of a fetch (fetch_outcome()), and those that
-# harvest_all(retry = TRUE) fetches again: all but not_found.
-FETCH_OUTCOMES <- c("ok", "not_found", "shell", "server_error", "timeout", "blocked", "error", "no_url")
-RETRY_OUTCOMES <- setdiff(FETCH_OUTCOMES, "not_found")
+# harvest_all(retry = TRUE) fetches again: all but not_found and robots.
+FETCH_OUTCOMES <- c("ok", "not_found", "shell", "server_error", "timeout", "blocked", "robots", "error",
+                    "no_url")
+RETRY_OUTCOMES <- setdiff(FETCH_OUTCOMES, c("not_found", "robots"))
 # A site that answers 403 or 429 refuses the harvest: its harvest stops.
 BLOCKED_STATUS <- c(403L, 429L)
 # Columns of a harvest's rows that only the ledger keeps.
@@ -304,7 +305,8 @@ REQUEST_COLUMNS <- c("http_status", "requested_at")
 #' site answers that it has nothing for that year (NTNU's "No course
 #' information available for this academic year"); "server_error": HTTP 5xx;
 #' "timeout": no answer (a timeout or a failed connection); "blocked": HTTP
-#' 403 or 429; "error": anything else; "no_url": no URL to request.
+#' 403 or 429; "robots": not requested, since robots.txt disallows it
+#' (robots_refusal()); "error": anything else; "no_url": no URL to request.
 #'
 #' @param url,status,error The URL, HTTP status (NA if unknown) and fetch
 #'   error text (fetch_error_text()) of each fetch.
@@ -312,6 +314,7 @@ REQUEST_COLUMNS <- c("http_status", "requested_at")
 fetch_outcome <- function(url, page, status, error) {
   dplyr::case_when(
     page ~ "ok",
+    grepl("robots.txt disallows", error, fixed = TRUE) ~ "robots",
     is.na(url) ~ "no_url",
     status %in% c(400L, 404L, 410L) | grepl("soft 404", error, fixed = TRUE) ~ "not_found",
     grepl("No course information available", error, fixed = TRUE) ~ "shell",
@@ -331,6 +334,7 @@ fetch_outcome <- function(url, page, status, error) {
 #' offerings came from). `requested_at` and `http_status` come from the fetch
 #' (fetch_html_cols()); where the rows lack them they are NA, and
 #' `http_status` is then read from the error message ("HTTP 404 Not Found.").
+#' A URL robots.txt disallows was not requested: no `requested_at`.
 #'
 #' @param rows The run's rows (harvest_institution(), or read_raw()).
 #' @param institution,run The institution and the run's name.
@@ -344,11 +348,14 @@ fetch_ledger <- function(rows, institution, run, dbh_snapshot = NA_character_, r
   status <- dplyr::coalesce(as.integer(col("http_status", NA_integer_)),
                             as.integer(stringr::str_match(error, "^HTTP (\\d{3})")[, 2]))
   url <- as.character(col("url", NA_character_))
+  outcome <- fetch_outcome(url, !is.na(page), status, error)
+  requested_at <- rows[["requested_at"]] %||% .POSIXct(rep(NA_real_, n))
+  requested_at[outcome == "robots"] <- NA   # not requested
   tibble::tibble(
     run = rep(run, n), institution = rep(institution, n), course_id = rows$course_id, url = url,
-    requested_at = rows[["requested_at"]] %||% .POSIXct(rep(NA_real_, n)),
+    requested_at = requested_at,
     http_status = status,
-    outcome = fetch_outcome(url, !is.na(page), status, error),
+    outcome = outcome,
     bytes = ifelse(is.na(page), NA_integer_, nchar(page, "bytes")),
     sha256 = cli::hash_sha256(page),
     raw_file = raw_file(institution, rows$year, run, raw_dir),
@@ -418,8 +425,9 @@ offering_outcome <- function(course_id, url, ledger) {
 }
 
 # Whether harvest_all(retry = ) fetches an offering without a plan again,
-# by its offering_outcome(): `retry` TRUE takes every outcome but not_found,
-# a character vector the outcomes it names; a URL nobody requested always.
+# by its offering_outcome(): `retry` TRUE takes every outcome but not_found
+# and robots, a character vector the outcomes it names; a URL nobody
+# requested always.
 retry_wanted <- function(outcome, retry = TRUE) {
   outcome %in% c(if (isTRUE(retry)) RETRY_OUTCOMES else retry, "not requested")
 }

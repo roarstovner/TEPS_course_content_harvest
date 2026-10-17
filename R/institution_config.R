@@ -42,6 +42,13 @@
 #                host is in data/robots_txt.csv (date read, crawl delay,
 #                disallowed paths); tests/testthat/test-robots.R checks the
 #                two against each other.
+#
+# robots_permission: the institution's permission to harvest paths its
+#                robots.txt disallows for all user agents, recorded as
+#                "granted YYYY-MM-DD by <who> (<what>)". Without one, the
+#                harvest does not request a URL that a disallow rule in
+#                data/robots_txt.csv matches (robots_allows(), README
+#                "robots.txt"). None recorded (2026-10-17).
 
 institution_configs <- list(
 

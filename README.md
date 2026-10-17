@@ -312,7 +312,9 @@ order:
 
     This fetches again the pages of every course of the latest DBH year
     in the snapshot. Samas has `plan_years = "current"` too, but fetches
-    nothing (`noop`).
+    nothing (`noop`), and so does Steiner as long as its robots.txt
+    disallows its PDFs and it has given no permission (see
+    “robots.txt”).
 
 2.  **When DBH has the new year: a new DBH snapshot.** DBH has the year
     when this query returns rows (Semester 1 is spring, 3 autumn); until
@@ -421,8 +423,8 @@ pgrep -af harvest_all   # the harvests still running
   which harvests them one after another. Each configured institution has
   a host of its own today. Read the robots.txt of a new site before its
   first harvest: a `Crawl-delay` goes in `request_delay`, and the date,
-  delay and disallowed paths in `data/robots_txt.csv` (see “Piloting an
-  Institution”, step 1).
+  delay and disallowed paths in `data/robots_txt.csv`; the harvest of a
+  host not in it stops (see “robots.txt”).
 - **At night.** Start long harvests in the evening, so that most
   requests come outside the sites’ busy hours. A site with the year in
   the URL can be stopped (end the process) and started again: the
@@ -448,11 +450,12 @@ the functions as in “Quick Start”, then:
 1.  **Draw the sample.** First read the robots.txt of each host the
     harvest requests and update its row in `data/robots_txt.csv`: the
     date, the `Crawl-delay` asked of all user agents (`User-agent: *`)
-    and the `Disallow` rules that touch course plans. A `Crawl-delay`
-    goes in `request_delay` (`tests/testthat/test-robots.R` checks it);
-    a path it disallows is not harvested and is noted in
-    `data/data_notes.qmd`. Then find the oldest year the site has plans
-    for.
+    and the `Disallow` and `Allow` rules that touch course plans (see
+    “robots.txt”; the harvest stops at a host not in the table). A
+    `Crawl-delay` goes in `request_delay`
+    (`tests/testthat/test-robots.R` checks it); a path it disallows is
+    not requested and is noted in `data/data_notes.qmd`. Then find the
+    oldest year the site has plans for.
 
     ``` r
     s <- pilot_sample("ntnu", oldest_year = 2004)
@@ -920,7 +923,8 @@ semester before its first; or the site’s own not-found page, HVL’s
 “Course not found”); `shell` (the site answers that it has nothing for
 that year, NTNU’s “No course information available for this academic
 year”); `server_error` (HTTP 5xx); `timeout` (no answer: a timeout or a
-failed connection); `blocked` (HTTP 403 or 429); `error` (anything
+failed connection); `blocked` (HTTP 403 or 429); `robots` (not
+requested: robots.txt disallows it, see “robots.txt”); `error` (anything
 else); `no_url` (no URL to request: the URL builder or the URL discovery
 found none).
 
@@ -948,12 +952,13 @@ the offerings that have no plan in the current build
 (`data/interim/course_offerings_full.RDS`, so run `tar_make()` first),
 past the checkpoint, by how the URL the build gives them answered last,
 for whichever offering it was requested (`offering_outcome()`): every
-outcome but `not_found`, so a page not found is not asked for again, and
-always a URL nobody has requested (a spring offering’s academic-year
-page). `retry` can name the classes instead:
-`retry = c("timeout", "server_error")` only failed fetches,
-`retry = "not_found"` pages that may have been published since. The
-retried offerings are saved as a new run, marked `retry`, and
+outcome but `not_found` and `robots`, so a page not found or one
+robots.txt disallows is not asked for again, and always a URL nobody has
+requested (a spring offering’s academic-year page). `retry` can name the
+classes instead: `retry = c("timeout", "server_error")` only failed
+fetches, `retry = "not_found"` pages that may have been published since,
+`retry = "robots"` the URLs an institution has since given permission
+for. The retried offerings are saved as a new run, marked `retry`, and
 `read_harvest()` gives a retried offering its latest row with a page. A
 site that shows only the current plan is not retried; it takes a new
 snapshot in each academic year.
@@ -981,6 +986,87 @@ targets::tar_read(coverage) |> dplyr::filter(frame == "teacher_ed") |>
   dplyr::count(institution, outcome, has_plan, retry)
 targets::tar_read(changed_pages)
 ```
+
+### robots.txt
+
+The harvest requests nothing a site’s robots.txt disallows for all user
+agents (`User-agent: *`; no robots.txt names the harvest’s user agent),
+and waits at least the `Crawl-delay` it asks (`request_delay`).
+`data/robots_txt.csv` holds the robots.txt of every host the harvest
+requests, read once before the first request to the host
+(add-institution skill, Step 0; “Piloting an Institution”, step 1):
+
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Column</th>
+<th>Holds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>institution</code>, <code>host</code></td>
+<td>the host and the institution whose pages are on it</td>
+</tr>
+<tr>
+<td><code>read_on</code>, <code>status</code></td>
+<td>the date robots.txt was read, and its HTTP status (404: no
+robots.txt, nothing disallowed)</td>
+</tr>
+<tr>
+<td><code>crawl_delay</code></td>
+<td>the <code>Crawl-delay</code> asked of all user agents
+(<code>tests/testthat/test-robots.R</code> checks
+<code>request_delay</code> against it)</td>
+</tr>
+<tr>
+<td><code>disallow</code>, <code>allow</code></td>
+<td>the <code>Disallow</code> and <code>Allow</code> rules for all user
+agents that touch course plans (course pages, plan PDFs, discovery
+pages), as robots.txt path patterns separated by spaces:
+<code>/dokumenter/</code>, <code>/*.pdf$ /*.doc$</code></td>
+</tr>
+<tr>
+<td><code>note</code></td>
+<td>the rest of the robots.txt, in words</td>
+</tr>
+</tbody>
+</table>
+
+`robots_allows()` (`R/fetch_html_cols.R`) matches a URL against its
+host’s rules as RFC 9309 does: a pattern matches the path and query from
+the start, `*` stands for any characters and a final `$` for the end;
+the longest matching rule wins, `allow` on a tie. Since 2026-10-17:
+
+- **A URL robots.txt disallows is not requested.** `site_request()`,
+  which every request of the harvest goes through (course pages, URL
+  discovery, UiS’s semester menu and PDF archive, Steiner’s subject
+  PDFs), refuses it, and no pause is waited for it. The row gets the
+  error “robots.txt disallows {url} (data/robots_txt.csv): not
+  requested” and the outcome `robots` in the fetch ledger, with no
+  `requested_at` or `http_status`. `harvest_institution()` says how many
+  of the URLs it built robots.txt disallows, and UiS’s PDF step how many
+  of its PDFs. USN’s pages, rendered in Chrome, are checked by their
+  start page. This leaves out of new harvests UiS’s PDF archive
+  (`www6.uis.no`, which allows only `/ansatt/`), so a UiS harvest gets
+  plans only from the course pages on `www.uis.no`, and Steiner’s five
+  subject PDFs (`/dokumenter/`), so a Steiner harvest requests nothing.
+  The plans harvested from them up to 2026-10 stay in the raw store.
+- **A permission.** When an institution lets the project harvest paths
+  its robots.txt disallows, record it in its config:
+  `robots_permission = "granted YYYY-MM-DD by <who> (<what>)"`
+  (`R/institution_config.R`). Its URLs are then requested; those refused
+  before are fetched with
+  `harvest_all(institutions = ..., retry = "robots")`. None is recorded
+  yet.
+- **A host not in the table stops the harvest** of its institution
+  before any request to it (`harvest_all()` goes on with the next
+  institution): read its robots.txt and add its row first. Only
+  `/robots.txt` itself may be requested from a host not in the table.
 
 ## Post-Harvest: Section Extraction
 
@@ -1419,8 +1505,8 @@ and run</td>
 </tr>
 <tr>
 <td><code>data/robots_txt.csv</code></td>
-<td>each host’s robots.txt: date read, Crawl-delay, disallowed
-course-plan paths (“Piloting an Institution”)</td>
+<td>each host’s robots.txt: date read, Crawl-delay, the disallow and
+allow rules the harvest applies (“robots.txt”)</td>
 <td>none</td>
 <td>in git</td>
 </tr>
@@ -2173,7 +2259,13 @@ reconstructed (target <code>ledger</code>)</td>
 <td><code>site_request(url)</code></td>
 <td><code>R/fetch_html_cols.R</code></td>
 <td>A request to a course site: user agent, timeout, retries of timeouts
-and server errors</td>
+and server errors; refuses a URL robots.txt disallows</td>
+</tr>
+<tr>
+<td><code>robots_allows(url)</code></td>
+<td><code>R/fetch_html_cols.R</code></td>
+<td>Whether robots.txt (<code>data/robots_txt.csv</code>) lets the
+harvest request a URL; an error for a host not read (“robots.txt”)</td>
 </tr>
 <tr>
 <td><code>pilot_sample(institution, oldest_year)</code>,
@@ -2446,7 +2538,7 @@ hold the same `course_id` (not a retry); a file was copied into
     │   ├── backup/                # Earlier harvests, not read (not in git)
     │   ├── audit/                 # Audit findings and reports
     │   ├── variables.csv          # Every variable of the data files, old and new names
-    │   ├── robots_txt.csv         # Each host's robots.txt: date read, crawl delay, disallowed paths
+    │   ├── robots_txt.csv         # Each host's robots.txt: date read, crawl delay, disallow/allow rules
     │   └── data_notes.qmd         # Data quality notes per institution
     ├── tests/
     │   ├── testthat/              # Rscript -e 'testthat::test_dir("tests/testthat")'

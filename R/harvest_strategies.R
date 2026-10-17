@@ -125,7 +125,7 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
       codes_to_discover$course_code_raw,
       codes_to_discover$url,
       \(code, base_url) {
-        polite_pause(config$request_delay)
+        if (robots_allows(base_url)) polite_pause(config$request_delay)
         tryCatch({
           resp <- site_request(base_url) |> httr2::req_perform()
           html <- httr2::resp_body_string(resp)
@@ -199,11 +199,14 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
 
     if (nrow(to_fetch_pdf) > 0) {
       message("Downloading ", nrow(to_fetch_pdf), " PDFs...")
+      # robots.txt disallows the PDF archive, www6.uis.no (data/robots_txt.csv)
+      skip <- sum(!robots_allows(to_fetch_pdf$url))
+      if (skip) message("robots.txt disallows ", skip, " of them: not requested")
 
       pdf_results <- purrr::map(
         to_fetch_pdf$url,
         \(pdf_url) {
-          polite_pause(config$request_delay)
+          if (robots_allows(pdf_url)) polite_pause(config$request_delay)
           requested_at <- Sys.time()
           tryCatch({
             resp <- site_request(pdf_url) |> httr2::req_perform()
@@ -268,8 +271,6 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
 # Used by: steiner
 
 harvest_pdf_split <- function(df, config, refetch = FALSE) {
-  dir.create("temp/steiner", showWarnings = FALSE, recursive = TRUE)
-
   # --- Define wrapper pages for each subject PDF ---
   wrapper_pages <- tibble::tibble(
     wrapper_url = c(
@@ -282,6 +283,16 @@ harvest_pdf_split <- function(df, config, refetch = FALSE) {
     subject = c("Norsk", "Matematikk", "Naturfag",
                 "Pedagogikk og elevkunnskap", "Samfunnsfag")
   )
+
+  # robots.txt disallows the pages' folder, /dokumenter/ (data/robots_txt.csv):
+  # without a permission nothing is requested, and each offering says why
+  if (!all(robots_allows(wrapper_pages$wrapper_url))) {
+    why <- robots_refusal(sub("[^/]*$", "", wrapper_pages$wrapper_url[1]))
+    message(why)
+    df$html_error <- rep(list(why), nrow(df))
+    return(df)
+  }
+  dir.create("temp/steiner", showWarnings = FALSE, recursive = TRUE)
 
   # --- Extract PDF URLs from wrapper pages ---
   wrapper_pages <- wrapper_pages |>
@@ -342,7 +353,8 @@ harvest_pdf_split <- function(df, config, refetch = FALSE) {
 # Steiner helper: extract PDF URL from wrapper page
 .steiner_get_pdf_url <- function(wrapper_url) {
   message("  Fetching wrapper: ", basename(wrapper_url))
-  html <- tryCatch(rvest::read_html(wrapper_url), error = function(e) NULL)
+  polite_pause()
+  html <- tryCatch(site_html(wrapper_url), error = function(e) NULL)
   if (is.null(html)) return(NA_character_)
 
   page_text <- html |> rvest::html_text()
@@ -370,7 +382,8 @@ harvest_pdf_split <- function(df, config, refetch = FALSE) {
 
   if (!file.exists(local_path)) {
     message("  Downloading: ", subject)
-    download.file(pdf_url, local_path, mode = "wb", quiet = TRUE)
+    polite_pause()
+    httr2::req_perform(site_request(pdf_url), path = local_path)
   }
   local_path
 }
