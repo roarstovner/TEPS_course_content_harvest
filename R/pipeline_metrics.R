@@ -139,12 +139,13 @@ check_pipeline_metrics <- function(update = FALSE, frames = names(METRICS_SNAPSH
 }
 
 # --- Pilot gate ---------------------------------------------------------------
-# The numbers an institution's pilot must reach before its full harvest
-# (README "Piloting an Institution"; methods.qmd "Pilot protocol and gate"):
-# minimum shares of the pilot sample's course-years, and maxima for
-# `unmapped_headings` and `privacy_hits`. Proposed 2026-10-16 from what the
-# configured institutions reach in the teacher-ed frame (methods.qmd); for
-# the project lead to confirm.
+# Review flags of an institution's pilot (README "Piloting an Institution";
+# methods.qmd "Pilot protocol and gate"): a share of the pilot sample's
+# course-years below its value, or `unmapped_headings` or `privacy_hits`
+# above it, is reviewed in the pilot audits. A flag does not block the full
+# harvest on its own; the audits' verdict does, and a flagged number needs a
+# fix or a reason there (decided 2026-10-17). Values from what the configured
+# institutions reach in the teacher-ed frame (2026-10-16, methods.qmd).
 PILOT_GATE <- c(fetched = 0.80, plan = 0.80, assessment = 0.90, coursework = 0.70,
                 unmapped_headings = 0.65, privacy_hits = 0)
 PILOT_GATE_MAX <- c("unmapped_headings", "privacy_hits")
@@ -172,9 +173,10 @@ PILOT_GATE_MAX <- c("unmapped_headings", "privacy_hits")
 #' @param headings,page_map Targets page_headings and page_map.
 #' @param thresholds PILOT_GATE.
 #' @return Tibble `metric`, `value`, `n` (its denominator), `threshold`,
-#'   `pass` (NA without a threshold), `examples` (list: a course id of each
-#'   course-year that counts against the metric, or the most frequent
-#'   unmapped headings).
+#'   `review` (TRUE when the value is beyond its threshold: the pilot audit
+#'   finds its reason or a fix; NA without a threshold), `examples` (list: a
+#'   course id of each course-year that counts against the metric, or the most
+#'   frequent unmapped headings).
 gate_numbers <- function(sample, coverage, offerings, sections, headings, page_map,
                          thresholds = PILOT_GATE) {
   key <- offering_key(sample$course_id)
@@ -209,16 +211,17 @@ gate_numbers <- function(sample, coverage, offerings, sections, headings, page_m
                              u$plan & !u$sectioned), function(x) u$id[x]),
                  list(names(utils::head(sort(table(unmapped), decreasing = TRUE), 10)), u$id[u$personal])))
   out$threshold <- unname(thresholds[out$metric])
-  out$pass <- ifelse(out$metric %in% PILOT_GATE_MAX, out$value <= out$threshold,
-                     out$value >= out$threshold)
-  out[c("metric", "value", "n", "threshold", "pass", "examples")]
+  out$review <- ifelse(out$metric %in% PILOT_GATE_MAX, out$value > out$threshold,
+                       out$value < out$threshold)
+  out[c("metric", "value", "n", "threshold", "review", "examples")]
 }
 
 #' The gate numbers of an institution's pilot
 #'
-#' gate_numbers() of its pilot sample in the current build: run
-#' targets::tar_make() first, and read this with the pipeline's functions
-#' loaded (targets::tar_load_globals()).
+#' gate_numbers() of its pilot sample in the current build, an input to the
+#' pilot audits (/audit-institutions --pilot): run targets::tar_make() first,
+#' and read this with the pipeline's functions loaded
+#' (targets::tar_load_globals()).
 #'
 #' @param institution The institution.
 #' @param thresholds PILOT_GATE.

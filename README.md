@@ -442,8 +442,8 @@ Before the full harvest of an institution, a new one or a configured one
 going from teacher education to all its courses, a pilot harvests a
 sample of its courses and checks the config, the URLs and the headings
 on it: about 200 pages instead of tens of thousands. The full harvest
-starts when the pilot passes the gate (step 5). Load the functions as in
-“Quick Start”, then:
+starts when the pilot audits find the institution ready (step 4). Load
+the functions as in “Quick Start”, then:
 
 1.  **Draw the sample.** First read the robots.txt of each host the
     harvest requests and update its row in `data/robots_txt.csv`: the
@@ -474,8 +474,8 @@ starts when the pilot passes the gate (step 5). Load the functions as in
 
     The same snapshot, arguments and seed (`PILOT_SEED`) give the same
     sample. It is written to `data/pilot/{inst}.csv` (course id,
-    course-year, strata, snapshot and seed), which the audits and the
-    gate read: commit it.
+    course-year, strata, snapshot and seed), which the audits and
+    `pilot_gate()` read: commit it.
 
 2.  **Harvest the sample** into the raw store:
     `harvest_all(courses = s, institutions = "ntnu")`. At an institution
@@ -483,24 +483,13 @@ starts when the pilot passes the gate (step 5). Load the functions as in
     holds are fetched. At 10 seconds a page, 200 pages take about 35
     minutes.
 
-3.  **Build and audit.** Run `targets::tar_make()`, then in Claude Code
-    `/audit-institutions fulltext ntnu --pilot`, then `sections` and
-    `anonymization` (see “Auditing a Pipeline Step”): with `--pilot`,
-    the packets show the sample’s courses only.
-
-4.  **Fix and rebuild.** Fix what the audits and the gate show in the
-    config, the URL builder or the heading map, and rebuild with
-    `tar_make()`. Only new URLs need a new harvest:
-    `harvest_all(courses = s, institutions = "ntnu", retry = TRUE)`
-    fetches the sample’s offerings without a plan whose URL nobody has
-    requested (see “Fetch Ledger and Retries”).
-
-5.  **Gate.** With the pipeline’s functions loaded:
+3.  **Build and read the gate numbers.** Run `targets::tar_make()`,
+    then, with the pipeline’s functions loaded:
 
     ``` r
     targets::tar_load_globals()
     g <- pilot_gate("ntnu")
-    g[c("metric", "value", "n", "threshold", "pass")]
+    g[c("metric", "value", "n", "threshold", "review")]
     g$examples   # per metric: a course id of each course-year that counts against it
     ```
 
@@ -517,29 +506,29 @@ starts when the pilot passes the gate (step 5). Load the functions as in
     <tr>
     <th>Metric</th>
     <th>Share or count of the sample’s course-years</th>
-    <th>Gate</th>
+    <th>Review if</th>
     </tr>
     </thead>
     <tbody>
     <tr>
     <td><code>fetched</code></td>
     <td>with a page in some semester</td>
-    <td>≥ 0.80</td>
+    <td>&lt; 0.80</td>
     </tr>
     <tr>
     <td><code>plan</code></td>
     <td>with a plan</td>
-    <td>≥ 0.80</td>
+    <td>&lt; 0.80</td>
     </tr>
     <tr>
     <td><code>assessment</code></td>
     <td>of those with a plan: an assessment section</td>
-    <td>≥ 0.90</td>
+    <td>&lt; 0.90</td>
     </tr>
     <tr>
     <td><code>coursework</code></td>
     <td>of those with a plan: a coursework-requirements section</td>
-    <td>≥ 0.70</td>
+    <td>&lt; 0.70</td>
     </tr>
     <tr>
     <td><code>no_sections</code></td>
@@ -551,43 +540,63 @@ starts when the pilot passes the gate (step 5). Load the functions as in
     <td><code>unmapped_headings</code></td>
     <td>the share of the headings on the sample’s pages that map to no
     section</td>
-    <td>≤ 0.65</td>
+    <td>&gt; 0.65</td>
     </tr>
     <tr>
     <td><code>privacy_hits</code></td>
     <td>count: personal data left in the plan or its sections
     (<code>privacy_check</code>’s patterns)</td>
-    <td>0</td>
+    <td>&gt; 0</td>
     </tr>
     </tbody>
     </table>
 
-    The gates are `PILOT_GATE`; methods.qmd (“Pilot protocol and gate”)
-    gives their reasons. Record the table in the institution’s issue,
-    with the course ids of `no_sections` and the ten most frequent
-    unmapped headings, each either mapped or not plan text (facts box,
-    contact, overlap). A number short of its gate is fixed (step 4) or
-    explained there with its cause on the site (courses DBH lists that
-    have no page). With 100 course-years a share is uncertain by about
-    ±0.07. A plan that the section extractor cannot cut because of an
+    The values are `PILOT_GATE`; methods.qmd (“Pilot protocol and gate”)
+    gives their reasons. They are flags, not a pass mark: `review` is
+    TRUE for a number beyond its value, and the audits (step 4) find out
+    why. Some institutions are lower for reasons on the site, such as
+    course-years DBH lists that have no page. With 100 course-years a
+    share is uncertain by about ±0.07.
+
+4.  **Audit and verdict.** In Claude Code, run
+    `/audit-institutions fulltext ntnu --pilot`, then `sections` and
+    `anonymization` (see “Auditing a Pipeline Step”): with `--pilot`,
+    the packets show the sample’s courses only, and each synthesis reads
+    the gate numbers and ends with a verdict on the institution: **ready
+    for full harvest**, **ready with known limits** (each flagged number
+    named with its reason) or **not ready** (what must be fixed first: a
+    confirmed serious error in the text, the sections or the
+    anonymization of the sample, personal data left, or a flagged number
+    with no reason found). The skill gives the criteria
+    (`.claude/skills/audit-institutions/SKILL.md`, “Verdict”). Record
+    the verdicts in the institution’s issue with the gate table, the
+    course ids of `no_sections` and the ten most frequent unmapped
+    headings, each either mapped or not plan text (facts box, contact,
+    overlap). A plan that the section extractor cannot cut because of an
     unusual layout is accepted, but counted in `no_sections`; a layout
     left so is noted in the institution’s notes in
     `data/data_notes.qmd`.
 
-6.  **Full harvest** once the gate passes:
-    `harvest_all(institutions = "ntnu")` fetches every other offering;
-    the sample is in the raw store already. Start the slowest first
-    (NTNU and UiB, 10 seconds a page, five to six days each), in the
-    background, several institutions at once (see “Several Institutions
-    at Once”).
+5.  **Fix and rebuild.** Fix what the audits show in the config, the URL
+    builder or the heading map, rebuild with `tar_make()`, and audit the
+    institution again. Only new URLs need a new harvest:
+    `harvest_all(courses = s, institutions = "ntnu", retry = TRUE)`
+    fetches the sample’s offerings without a plan whose URL nobody has
+    requested (see “Fetch Ledger and Retries”).
+
+6.  **Full harvest** once all three audits find the institution ready,
+    with or without known limits: `harvest_all(institutions = "ntnu")`
+    fetches every other offering; the sample is in the raw store
+    already. Start the slowest first (NTNU and UiB, 10 seconds a page,
+    five to six days each), in the background, several institutions at
+    once (see “Several Institutions at Once”).
 
 A site that shows only the current plan gives the plans of the academic
 year its pages were fetched in (see “Sites that show only the current
 plan”), so its pilot’s pages join DBH’s offerings once the DBH snapshot
-has that year. Until then only `fetched` can be read; the rest of the
-gate and the audits wait for the new snapshot (“The Yearly Harvest”,
-step 2). Samas fetches nothing (`noop`), so the gate does not apply
-there.
+has that year. Until then only `fetched` can be read; the other gate
+numbers and the audits wait for the new snapshot (“The Yearly Harvest”,
+step 2). Samas fetches nothing (`noop`), so it has no pilot.
 
 ## Adding a New Institution
 
@@ -1277,8 +1286,9 @@ findings to `data/audit/{check}/findings/{inst}.json`, and
 `R/audit/aggregate.R` verifies them (course ids and verbatim quotes must
 be in the packet) and writes a ranked cross-institution report. With
 `--pilot`, each institution’s packet is drawn from its pilot sample only
-(`data/pilot/{inst}.csv`, see “Piloting an Institution”). Details:
-`.claude/skills/audit-institutions/SKILL.md`.
+(`data/pilot/{inst}.csv`), and the synthesis ends with a verdict on
+whether the institution is ready for its full harvest (see “Piloting an
+Institution”). Details: `.claude/skills/audit-institutions/SKILL.md`.
 
 ## Data Files: Published and Internal
 
@@ -2419,7 +2429,7 @@ hold the same `course_id` (not a retry); a file was copied into
     │   ├── section_heading_map.R  # Heading → section patterns (incl. ".drop")
     │   ├── extract_sections.R     # Section extraction strategies + cleanup
     │   ├── pipeline.R             # Steps of the {targets} pipeline (_targets.R)
-    │   ├── pipeline_metrics.R     # Regression snapshot: check_pipeline_metrics(); the pilot gate
+    │   ├── pipeline_metrics.R     # Regression snapshot: check_pipeline_metrics(); the pilot gate numbers
     │   ├── release.R              # release_data(), finalize_release(), frozen_changes()
     │   ├── wayback.R              # Wayback Machine captures (CDX API); not used by the harvest
     │   └── audit/                # Audit harness for /audit-institutions

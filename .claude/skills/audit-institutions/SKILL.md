@@ -1,6 +1,6 @@
 ---
 name: audit-institutions
-description: Audit one pipeline step across institutions with one review agent per institution — section extraction (`sections`), fulltext extraction (`fulltext`) or anonymization (`anonymization`). Builds review packets in R, dispatches parallel review agents, verifies their findings mechanically and writes a ranked cross-institution report plus a synthesis. Use when asked to check, verify, audit or QA a pipeline step "across all institutions" or "with one agent per institution", or to re-check institutions after a fix.
+description: Audit one pipeline step across institutions with one review agent per institution — section extraction (`sections`), fulltext extraction (`fulltext`) or anonymization (`anonymization`). Builds review packets in R, dispatches parallel review agents, verifies their findings mechanically and writes a ranked cross-institution report plus a synthesis; with --pilot, a verdict on whether each institution is ready for its full harvest. Use when asked to check, verify, audit or QA a pipeline step "across all institutions" or "with one agent per institution", or to re-check institutions after a fix.
 argument-hint: <sections|fulltext|anonymization> [inst ...] [--pilot] [--model sonnet|opus|haiku] [--tag label]
 ---
 
@@ -23,7 +23,8 @@ context per institution is the point.
 - `--pilot`: draw each institution's packet from its pilot sample only
   (`data/pilot/{inst}.csv`, README "Piloting an Institution"); the places
   the suspects leave unused go to random controls. Pass it on to the
-  prepare script.
+  prepare script. The synthesis then ends with a verdict per institution
+  (step 5).
 - `--model`: model for the review agents (default: the recipe's default).
 - `--tag <label>`: write findings to `data/audit/{check}/findings-{label}/`
   instead of `findings/`. Use for model comparisons and experiments that must
@@ -105,6 +106,49 @@ this step can. Cover:
 4. **Changes since the previous run**, when the report has that table:
    fixed, persisting, new.
 5. **Rejected findings** and why.
+6. **Verdict** (`--pilot` only), see below.
+
+#### Verdict (`--pilot`)
+
+A pilot audit decides whether an institution is ready for its full harvest.
+Its gate numbers are an input to that review, not a pass mark: read them in
+the current build before the synthesis,
+
+```bash
+Rscript -e 'targets::tar_load_globals(); g <- pilot_gate("{inst}"); print(g[1:5]); print(setNames(g$examples, g$metric))'
+```
+
+`review` is TRUE for a number beyond its `PILOT_GATE` value
+(`R/pipeline_metrics.R`); the audit finds why. Each check judges its own
+numbers: `fulltext` judges `fetched` and `plan`; `sections` judges
+`assessment`, `coursework`, `no_sections` and `unmapped_headings`;
+`anonymization` judges `privacy_hits`. Look up a flagged number's `examples`
+(the course ids against it) in the packet, the raw store or on the site.
+
+End the synthesis with one verdict per institution:
+
+- **ready for full harvest**: no number of this check flagged and no
+  confirmed high-severity finding (verified, kept in step 4). Medium and low
+  findings go to fix issues: text, sections and anonymization are rebuilt
+  from the raw store and need no new harvest.
+- **ready with known limits**: as above, except flagged numbers whose cause
+  is on the site and that no fix removes: name each with its value,
+  threshold and reason, e.g. DBH lists course-years the site has no page
+  for, or an old layout the section extractor does not read (counted in
+  `no_sections`, noted in `data/data_notes.qmd`).
+- **not ready**: what must be fixed first. Any of these makes an
+  institution not ready: a confirmed high-severity finding on the sample
+  (plan text lost, cut or in the wrong section; the wrong page or year read;
+  personal data left in); `privacy_hits` above 0; a flagged number with no
+  reason found. Weigh most what only a new harvest fixes (URL builder, URL
+  discovery, a page whose saved HTML lacks the plan): the full harvest would
+  repeat it on every page.
+
+Record the verdict in the institution's chainlink issue with the gate table
+(`metric`, `value`, `n`, `threshold`, `review`), the reasons, the course ids
+of `no_sections` and the ten most frequent unmapped headings (each mapped,
+or not plan text). The institution is ready for its full harvest when all
+three checks are; its verdict is the weakest of the three.
 
 Do not change pipeline code during the audit — it reports; fixing is a
 separate task.
@@ -112,7 +156,7 @@ separate task.
 ### 6. Report
 
 Tell the user in 5–10 lines what matters most, with paths to `synthesis.md`
-and the report. Offer to (a) create chainlink issues for the high-severity fix
+and the report, and with `--pilot` the verdicts. Offer to (a) create chainlink issues for the high-severity fix
 items and (b) re-run the affected institutions once fixes are in.
 
 ## Re-running after a fix

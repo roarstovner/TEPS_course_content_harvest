@@ -105,7 +105,7 @@ test_that("gate numbers count course-years of the sample in the built data", {
   expect_equal(value[["unmapped_headings"]], 1 / 4)
   expect_equal(value[["privacy_hits"]], 1)
   expect_equal(g$n, c(4, 4, 3, 3, 3, 4, 3))
-  expect_equal(g$pass, c(FALSE, FALSE, TRUE, TRUE, NA, TRUE, FALSE))
+  expect_equal(g$review, c(TRUE, TRUE, FALSE, FALSE, NA, FALSE, TRUE))
   expect_equal(g$examples[g$metric == "plan"][[1]], "x_C_2025_autumn_1")
   expect_equal(g$examples[g$metric == "no_sections"][[1]], "x_B_2025_spring_1")
   expect_equal(g$examples[g$metric == "privacy_hits"][[1]], "x_D_2025_autumn_1")

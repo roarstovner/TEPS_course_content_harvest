@@ -151,16 +151,19 @@ page_sections(b, result$extracted_text[1], cfg)
 
 Follow README "Piloting an Institution": a stratified sample of the
 institution's DBH course-years, harvested into the raw store, built, audited
-and fixed until it passes the gate; only then the full harvest.
+and fixed until the pilot audits find it ready; only then the full harvest.
+The gate numbers (`pilot_gate()`) flag what the audits review; they do not
+block on their own.
 
 ```r
 s <- pilot_sample("newuni", oldest_year = 2015)    # writes data/pilot/newuni.csv: commit it
 harvest_all(courses = s, institutions = "newuni")  # into data/raw/newuni/{year}/{date}.parquet
 targets::tar_make()
-# /audit-institutions fulltext newuni --pilot, then sections and anonymization
-targets::tar_load_globals(); pilot_gate("newuni")  # record the numbers in the institution's issue
+targets::tar_load_globals(); pilot_gate("newuni")  # review = TRUE: a number the audits explain or fix
+# /audit-institutions fulltext newuni --pilot, then sections and anonymization:
+# each ends with a verdict; record it with the gate table in the institution's issue
 
-# once the gate passes: every other offering, all years
+# once all three verdicts are "ready for full harvest" or "ready with known limits"
 harvest_all(institutions = "newuni")
 ```
 
