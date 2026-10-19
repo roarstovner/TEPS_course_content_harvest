@@ -827,8 +827,9 @@ compares every run with its RDS file column by column and row by row,
 and `tar_make()` then rebuilt release data-2026-10-16 exactly. The first
 harvests did not stamp `harvested_at` and were not dated: their run is
 named by the day their RDS file was written (2026-09-30 to 2026-10-06),
-and their `harvested_at` stays empty. The RDS files are no longer read;
-they stay in `data/raw/` until they are removed by hand, after a backup.
+and their `harvested_at` stays empty. The RDS files were removed from
+`data/raw/` on 2026-10-19; they are kept in the restic snapshot tagged
+`pre-parquet` (2026-10-16).
 
 A page that gave no plan can be fetched again with
 `harvest_all(retry = TRUE)` (see “Fetch Ledger and Retries”). Retry

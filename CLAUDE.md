@@ -55,9 +55,8 @@ the gitignored `CLAUDE.local.md`.
   `{inst}/{year}/{run}.parquet`: only `harvest_all()` writes it (a new run,
   `write_raw_run()`), and never the same file twice (README "Raw Store and
   Finalized Releases"). The format changed once, from RDS (2026-10-16,
-  `data-raw/raw_to_parquet.R`); the RDS files left in `data/raw/` are no
-  longer read and are raw files too. Do not overwrite, merge into or `chmod`
-  raw files by hand. To
+  `data-raw/raw_to_parquet.R`; the RDS files were removed 2026-10-19 and are
+  in the backup). Do not overwrite, merge into or `chmod` raw files by hand. To
   change extracted text, change the config or `R/extract_fulltext.R` and run
   `targets::tar_make()`. After a release is finalized, `tar_read(frozen_check)`
   may list only intended changes, headed for the next release: explain every

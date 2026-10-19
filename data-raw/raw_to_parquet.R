@@ -8,7 +8,8 @@
 ## directory. The first harvests (2026-09-30 to 2026-10-06) did not stamp
 ## harvested_at and were not dated: their run is the day their RDS file was
 ## written, a name only (harvested_at stays empty). The RDS files are only
-## read: they stay in data/raw until they are removed by hand, after a backup.
+## read. They were removed from data/raw on 2026-10-19 and are in the restic
+## snapshot tagged pre-parquet; restore them there to rerun this script.
 ##
 ## Run once from the repository root: Rscript data-raw/raw_to_parquet.R [dest]
 ## (dest: data/raw; another folder for a trial run).
