@@ -710,6 +710,32 @@ test_that("notices about the assessment stay in it", {
   }
 })
 
+test_that("hvl: exam logistics and costs leave every section, the rest of the line stays", {
+  out <- tibble::tibble(
+    section = c("assessment", "teaching_methods", "coursework_requirements", "course_content"),
+    raw_text = c(
+      paste("Skriftlig skoleeksamen, 5 timer. Tid og sted for eksamen blir opplyst på Studentweb.",
+            "Tid og stad for eksamen blir gitt på Canvas.", "Karakterskala A-F.", sep = "\n"),
+      paste("Forelesningar og reknetimar.",
+            "Emnet undervisast i haustsemesteret. Eksamen blir avholdt i starten av Januar.",
+            "Kr 400 i materialpenger betales inn ved studiestart (150 for naturfag).",
+            "En ekskursjon om vinteren med to overnattinger. Pris ca. kr 1600.",
+            "I forbindelse med ekskursjoner må studenter ved HVL være forberedt på å betale en egenandel. Det blir lagt til rette for kompensatorisk arbeidskrav.",
+            sep = "\n"),
+      # a sentence that also names a coursework requirement stays
+      "Fag 3: Eit arbeidskrav om digital kompetanse I samband med ekskursjonar må studentar betale ein eigenandel.",
+      "Studenten betalar materialpengar (sum framgår i semesterplanen)"))
+  res <- .clean_sections(out, "hvl")
+  expect_equal(res$raw_text, c(
+    "Skriftlig skoleeksamen, 5 timer.\nKarakterskala A-F.",
+    paste("Forelesningar og reknetimar.", "Emnet undervisast i haustsemesteret.",
+          "En ekskursjon om vinteren med to overnattinger.",
+          "Det blir lagt til rette for kompensatorisk arbeidskrav.", sep = "\n"),
+    out$raw_text[3]))
+  # other institutions keep them
+  expect_equal(.clean_sections(out[1, ], "nla")$raw_text, out$raw_text[1])
+})
+
 test_that("uib footer and error banner are removed", {
   txt <- paste("Mappevurdering.",
                "Vi opplever problemer med å hente inn eksamensinformasjon for dette emnet.",

@@ -174,14 +174,17 @@ test_that("season words with year are removed", {
   expect_false(grepl("(?i)\\bvår\\b", result, perl = TRUE))
 })
 
-test_that("season words after semester keyword are removed", {
-  result <- anonymize_text("hivolda", "Undervisningssemester: Vår\nEksamen: Høst", .progress = FALSE)
-  expect_false(grepl("(?i)\\bvår\\b", result, perl = TRUE))
-  expect_false(grepl("(?i)\\bhøst\\b", result, perl = TRUE))
+test_that("a season after a semester label stays in course_plan", {
+  # a fact of the course, in every language (course_plan_spec.md)
+  keep <- c("Undervisningssemester: Vår\nEksamen: Høst", "Semester of instruction: Autumn",
+            "Undervisningssemester:\nOppstart høst, undervisning over to semestere",
+            "Teaching semester:\nStart in the autumn, teaching over to semesters")
+  for (x in keep) expect_equal(anonymize_text("hivolda", x, .progress = FALSE), x)
 })
 
-test_that("a season list or compound after a semester label goes whole", {
-  an <- function(x) anonymize_text("uib", x, .progress = FALSE)
+test_that("the plan id and the sections leave a season after a semester label out", {
+  an <- function(x) .drop_semester_values(anonymize_text("uib", x, .progress = FALSE))
+  expect_equal(an("Undervisningssemester: Vår\nEksamen: Høst"), "Undervisningssemester:\nEksamen:")
   expect_equal(an("Undervisningssemester\nVår og haust\nInnhald"), "Undervisningssemester\n\nInnhald")
   expect_equal(an("Vurderingssemester\nHaustsemesteret, 6. semester i lektorutdanninga"),
                "Vurderingssemester\n6. semester i lektorutdanninga")
@@ -190,6 +193,20 @@ test_that("a season list or compound after a semester label goes whole", {
   # the start of another word stays
   expect_equal(an("Eksamen\nHøstpraksis: ny praksis. Semester\nVåre dokumenter"),
                "Eksamen\nHøstpraksis: ny praksis. Semester\nVåre dokumenter")
+  expect_equal(.drop_semester_values(c("Undervisningssemester: Haust", NA, "Vår")),
+               c("Undervisningssemester:", NA, "Vår"))
+})
+
+test_that("an academic year that sets a condition stays", {
+  an <- function(inst, x) anonymize_text(inst, x, .progress = FALSE)
+  keep <- c("Semester of education: Autumn. Exception for academic year 2020-2021: Spring.",
+            "IKF132 Innføring i kvalitative forskningsmetoder, gjennomført studieåret 2019-2020.",
+            "15 studiepoeng mot P301, når eksamen i P301 er avlagt studieåret 2013-2014 eller senere.",
+            "studenter som ikke fullførte emnet i løpet av studieåret 2013/2014.")
+  for (x in keep) expect_equal(an("nla", x), x)
+  # an administrative academic year still goes
+  expect_equal(an("nla", "Studieår: 2019 — 2020\nEmneplan for studieåret 2024/2025."),
+               "Studieår:\nEmneplan for studieåret.")
 })
 
 test_that("vår meaning 'our' is preserved in prose", {
@@ -898,6 +915,12 @@ test_that("handlers follow the pages: mf notice, inn titles, hvl notice, usn typ
 test_that("handler variants: hvl Nynorsk notice, usn labels, oslomet ';' glue and stamps", {
   an <- function(inst, x) anonymize_text(inst, x, .progress = FALSE)
   expect_equal(an("hvl", "Om emnet\nEmnet vert ikkje tilbydd studieåret 2025/2026.\nInnhald"), "Om emnet\nInnhald")
+  # the English notice, and the notice in the semester field, go whole: without
+  # the year they would say the course is never taught
+  expect_equal(an("hvl", "Om emnet\nThe module is not offered in the academic year 2024/2025.\nInnhald"),
+               "Om emnet\nInnhald")
+  expect_equal(an("hvl", "Undervisningssemester: Vår. Emnet har ikke undervisning våren 2025.\nSpråk: Norsk"),
+               "Undervisningssemester: Vår.\nSpråk: Norsk")
   expect_equal(an("usn", "ArticleiPed: Pedagogy\nArticle“Translanguaging”\nWebsitehttps://www.unhcr.org/"),
                "iPed: Pedagogy\n“Translanguaging”\nhttps://www.unhcr.org/")
   keep <- "Mappeinnlevering med to deler:\nVideoen vil bli lagt ut.\nArticles: se Canvas."

@@ -73,9 +73,10 @@ page_plans <- function(institution, text, plan_text, exam_sessions = FALSE) {
 }
 
 # The sections of the pages a plan is cut from (`ids`, plan_source_pages()),
-# anonymized: sections are cut from raw text. The text fallback reads the
-# plan text, without the title and facts box; pages read as text (no blocks)
-# cut them in the reader (.text_header()).
+# anonymized: sections are cut from raw text. A season after a semester label
+# is timing, not section text, and goes (.drop_semester_values()). The text
+# fallback reads the plan text, without the title and facts box; pages read
+# as text (no blocks) cut them in the reader (.text_header()).
 partition_sections <- function(blocks, page_text, config, ids) {
   cfg <- .block_cfg(config)
   read <- blocks$page_id %in% ids
@@ -88,7 +89,8 @@ partition_sections <- function(blocks, page_text, config, ids) {
     tibble::tibble(page_id = rep(ids[i], nrow(out)), out)
   })
   dplyr::bind_rows(tibble::tibble(page_id = character()), .empty_sections(), rows) |>
-    dplyr::mutate(text = anonymize_text(rep(config$name, dplyr::n()), raw_text, .progress = FALSE)) |>
+    dplyr::mutate(text = .drop_semester_values(
+      anonymize_text(rep(config$name, dplyr::n()), raw_text, .progress = FALSE))) |>
     dplyr::filter(!is.na(text)) |>
     dplyr::select(page_id, section, text)
 }

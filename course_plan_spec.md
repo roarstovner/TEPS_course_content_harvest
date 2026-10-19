@@ -28,8 +28,13 @@ Every part of a plan's page is one of these:
    - it is about the page or the record, not the course: fetch, version and
      "last updated" stamps, PDF headers, footers and page numbers, approval
      stamps, and administrative dates and years (approval and publication
-     dates, semester labels, exam dates, clock times; not years in the
-     content or dates of cited documents).
+     dates, semester labels such as "Høst 2024" or "H23", exam dates, clock
+     times; not years in the content or dates of cited documents). A season
+     or year that is a fact of the course is plan text: the semester it is
+     taught or assessed in ("Undervisningssemester: Høst", "Semester of
+     instruction: Autumn", "Oppstart høst") and a year that sets a condition
+     ("avlagt studieåret 2013-2014 eller senere", "Exception for academic
+     year 2020-2021: Spring.").
 
    The test: would someone studying teacher education lose anything if it
    went? If in doubt, it is plan text.
@@ -109,7 +114,8 @@ without the title and facts box.
 | Reading-list widget text (Leganto labels, "View online", item-type labels, tab bar); the list itself is plan text | out | out |
 | Fetch, version and "last updated" stamps; PDF headers, footers, page numbers | out | out |
 | Approval stamps ("Godkjent emneplan", "Godkjent av …" with date and approver) | out | out |
-| Administrative dates and years, semester labels, clock times; "Emnet tilbys ikke 2025/2026" | out | out |
+| Administrative dates and years, semester labels ("Høst 2024"), clock times; "Emnet tilbys ikke 2025/2026" | out | out |
+| A season or year that is a fact of the course: the facts box's semester, "Oppstart høst", a year that sets a condition | in | out (a semester), in (a condition) |
 | Title, course code | in | out |
 | Facts box: credits, level, language, semester, campus, programmes | in | out |
 | Responsible unit (department) | in, not in the plan id | out |
@@ -128,6 +134,14 @@ the spec here:
 
 - UiB's responsible unit, an unlabelled link in the page's sidebar, is not in
   `course_plan`. Every UiB offering has its unit from DBH (`department_name`).
+- A condition written with a season and a year loses both, with the
+  semester labels: "studenter tatt opp på studieplanen som gjelder fra og med
+  høsten 2013" (UiT), "fikk opptak fra og med høsten 2021" (UiO), "tatt opp
+  til femårig lektorutdanning høsten 2012 eller tidligere" (NTNU); 24 plans,
+  all in the teacher-education frame (UiT 22). A guard for each wording would
+  be needed to tell them from administrative dates of the same form
+  ("Gjeldende fra høstsemesteret 2013", "Fra høst 2019: Endring i
+  hjelpemidler"). Conditions written with an academic year stay.
 - Prerequisites keep some admission rules written as requirements, in about
   50 sections: the grade and school-point requirements for teacher
   education ("Minimum 35 skolepoeng", Nord and NTNU), "Opptakskrav er

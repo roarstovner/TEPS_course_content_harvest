@@ -2,8 +2,10 @@
 
 #' Anonymize course text
 #'
-#' Removes PII (names, emails, phone numbers), dates, years, seasons,
-#' and institution-specific boilerplate. Preserves case and paragraph structure.
+#' Removes PII (names, emails, phone numbers), administrative dates and years,
+#' semester labels (a season with its year) and institution-specific
+#' boilerplate. A season alone ("Undervisningssemester: Høst") is plan text
+#' and stays (.drop_semester_values()). Preserves case and paragraph structure.
 #' Used on extracted_text (-> course_plan) and on section text (plan_sections).
 #'
 #' @param institution Character vector of institution short names.
@@ -105,9 +107,15 @@ anonymize_text <- function(institution, text,
     stringr::str_remove_all(paste0("(?m)^(?:Bergen|Stord|Haugesund|Sogndal|Førde)[ \\t]*:[ \\t]*",
                                    .name_regex, "[ \\t]*(?:\\n|$)")) |>
     # "Emnet tilbys ikke studieåret 2025/2026.", "Emnet vert ikkje tilbydd
-    # 2025/2026.": without the year it would read "not offered"
-    stringr::str_remove_all(paste0("(?m)^Emnet (?:tilbys ikke|vert ikkje tilbydd) (?:studieåret )?",
-                                   "\\d{4}/\\d{4}\\.?[ \\t]*(?:\\n|$)"))
+    # 2025/2026.", "The module is not offered in the academic year
+    # 2024/2025.": without the year it would read "not offered"
+    stringr::str_remove_all(paste0("(?m)^(?:Emnet (?:tilbys ikke|vert ikkje tilbydd) (?:studieåret )?|",
+                                   "The (?:module|course) is not offered in the academic year )",
+                                   "\\d{4}/\\d{4}\\.?[ \\t]*(?:\\n|$)")) |>
+    # the same in the semester field: "Undervisningssemester: Vår. Emnet har
+    # ikke undervisning våren 2025."
+    stringr::str_remove_all(paste0("[ \\t]*Emnet har (?:ikke|ikkje) undervisning (?i:", .season_regex,
+                                   ")[ \\t]*\\d{4}\\.?"))
 }
 
 .anon_uia <- function(txt) {
@@ -404,8 +412,51 @@ anonymize_text <- function(institution, text,
   m
 }
 
+# An academic year that sets a condition is plan text and stays (decided
+# 2026-10-19): the year a course was taken in ("gjennomført studieåret
+# 2019-2020", "ikke fullførte emnet i løpet av studieåret 2013/2014"), a year
+# and the ones after it ("avlagt studieåret 2013-2014 eller senere"), and an
+# exception for one year ("Exception for academic year 2020-2021: Spring.").
+# Guards after the range's first year.
+.condition_year <- paste0(
+  "(?<!(?i:(?:gjennomført|gjennomførte|avlagt|bestått|fullført|fullførte|tatt)[^\\n.]{0,60}",
+  "studieåret|exception for academic year)[ \\t]{0,3}\\d{4})")
+.or_later <- "(?![ \\t]*(?i:eller|or) (?i:senere|seinare|later|tidligere|tidlegare|earlier)\\b)"
+
 # A season word, also inflected or in a compound: "høsten", "Vårsemesteret".
 .season_regex <- "(?:(?:høst|vår|haust|sommer)(?:semester(?:et)?|en|a)?|autumn|spring|summer)"
+
+# A season after a semester label ("Undervisningssemester: Høst",
+# "Vurderingssemester\nHaust og vår", "Oppstart høst,"): the whole word and a
+# list, not the start of another word ("Våre", "Høstpraksis"); a glued next
+# word ("HaustEmnet") starts with a capital. It is plan text, a fact of the
+# course, and stays in course_plan (course_plan_spec.md, decided 2026-10-19);
+# the plan id and the sections leave it out (.drop_semester_values()).
+.semester_value_regex <- paste0(
+  "(?<=(?i:semester|undervisning|oppstart|startsemester|eksamen)[:\\s]{0,3})(?i:",
+  .season_regex, "(?:[ \\t]*(?:,|og|and|eller|or|/|&)[ \\t]*", .season_regex,
+  ")*)(?!\\p{Ll})[.,]?[ \\t]*")
+
+#' Semester values out of a text
+#'
+#' The season after a semester label goes (.semester_value_regex): the
+#' semester fields of a facts box or an exam tab change with the year while
+#' the plan stays the same, so the plan id leaves them out
+#' (normalize_plan_text()), and in a section they are timing, not the
+#' section's text (partition_sections()). course_plan keeps them.
+#'
+#' @param text Character vector of anonymized text.
+#' @return The text without semester values, NA where nothing is left.
+.drop_semester_values <- function(text) {
+  out <- stringr::str_remove_all(text, .semester_value_regex)
+  changed <- !is.na(text) & out != text
+  out[changed] <- out[changed] |>
+    stringr::str_replace_all("(?m)[ \\t]+$", "") |>
+    stringr::str_replace_all("\\n{3,}", "\n\n") |>
+    stringr::str_trim()
+  out[!is.na(out) & !nzchar(out)] <- NA_character_
+  out
+}
 
 # A long-form date "7. juni 2016"; in a list the earlier ones may lack the
 # year ("3. juli 2017, 19. april og 7. juni 2018").
@@ -473,13 +524,6 @@ anonymize_text <- function(institution, text,
       paste0("\\s*\\d{4}\\b(?:[ \\t]*(?:,|og|and|[-–/])[ \\t]*(?i:", .season_regex, ")\\s*\\d{4}\\b)*",
              "(?::(?=[ \\t]*(?:\\n|$)))?"))) |>
     stringr::str_remove_all(.not_gov_rule(paste0(.gap, "\\d{4}"), "\\s+(?i:høst|vår|haust|autumn|spring|sommer|summer)")) |>
-    # after a semester label: the whole word and a list ("Vår og haust",
-    # "Haustsemesteret"), not the start of another word ("Våre", "Høstpraksis")
-    #; a glued next word ("HaustEmnet") starts with a capital
-    stringr::str_remove_all(paste0(
-      "(?<=(?i:semester|undervisning|oppstart|startsemester|eksamen)[:\\s]{0,3})(?i:",
-      .season_regex, "(?:[ \\t]*(?:,|og|and|eller|or|/|&)[ \\t]*", .season_regex,
-      ")*)(?!\\p{Ll})[.,]?[ \\t]*")) |>
     # Semester codes: "Pensumliste for H2025-V2026", "Engelskdidaktikk - H23",
     # "(MG1NA1) H2018 Notodden", "H23: Undervisningen ..."
     stringr::str_remove_all(.not_gov_rule(
@@ -519,10 +563,12 @@ anonymize_text <- function(institution, text,
       "sist (?:endret|revidert|oppdatert)))"), "\\s+\\d{4}\\b"), "\\1") |>
     # Remove academic year ranges: "2023/2024", "2023/24", "2019 — 2020" (nla);
     # not year paths in links ("files/2019/06/27/", "dokumentserien/2020-2021/")
-    # or DOIs, or ISO dates ("2001-02-01")
-    stringr::str_replace_all(.not_gov_rule(paste0(.gap, "(?<![/\\w.])\\d{4}"), "[ \\t]?/[ \\t]?\\d{2,4}\\b(?!/|[-–]\\d)"),
+    # or DOIs, or ISO dates ("2001-02-01"), or a condition (.condition_year)
+    stringr::str_replace_all(.not_gov_rule(paste0(.gap, "(?<![/\\w.])\\d{4}", .condition_year),
+                                           paste0("[ \\t]?/[ \\t]?\\d{2,4}\\b(?!/|[-–]\\d)", .or_later)),
                              .drop_academic_year) |>
-    stringr::str_replace_all(.not_gov_rule(paste0(.gap, "(?<![/\\w.])\\d{4}"), "\\s?[-–—]\\s?\\d{2,4}\\b(?!/|[-–]\\d)"),
+    stringr::str_replace_all(.not_gov_rule(paste0(.gap, "(?<![/\\w.])\\d{4}", .condition_year),
+                                           paste0("\\s?[-–—]\\s?\\d{2,4}\\b(?!/|[-–]\\d)", .or_later)),
                              .drop_academic_year) |>
     # Brackets emptied by the removals above: "Meld. St. 16 ()";
     # code such as "print()" has no space before and stays

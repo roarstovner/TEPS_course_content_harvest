@@ -282,7 +282,8 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 #'   - removes rows that are empty or only a placeholder ("Ingen",
 #'     "Se fagplanen.", "-", a Leganto pointer; see .placeholder_phrases).
 #'   - strips page widgets, pointers and stock logistics sentences from
-#'     assessment and coursework (.section_noise).
+#'     assessment and coursework (.section_noise), and logistics and cost
+#'     sentences from every section (.logistics_sentences).
 #' Fuzzier cleanup (exam tables, arbeidskrav/eksamen boundaries inside one
 #' paragraph) is left to the later Phase-2 LLM lifting.
 .clean_sections <- function(out, institution = NULL) {
@@ -292,6 +293,9 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   if (nrow(out) == 0) return(out)
   exam <- out$section %in% c("assessment", "coursework_requirements")
   out$raw_text[exam] <- .strip_section_noise(out$raw_text[exam], institution)
+  rx <- if (!is.null(institution)) .logistics_sentences[[institution]]
+  if (!is.null(rx)) out$raw_text <- vapply(out$raw_text, .strip_sentences, character(1),
+                                           rx = rx, USE.NAMES = FALSE)
   rl <- out$section == "reading_list"
   out$raw_text[rl] <- stringr::str_remove(   # hiof date stamp line
     out$raw_text[rl], "^\\s*Litteratur\\w*(?: er)? sist oppdater[^\\n]*\\s*")
@@ -543,6 +547,44 @@ extract_sections <- function(config, html, extracted_text, course_id) {
            # for every gate; the gate's name stays
            "\tKarakterregel:[ \t]*\nGodkjent – ikke godkjent[ \t]*")
 )
+
+# Sentences of exam logistics and costs, in any section (course_plan_spec.md:
+# plan text, but in no section), per institution. hvl: what Studentweb or the
+# learning platform announces ("Tid og sted for eksamen blir opplyst på
+# Studentweb.", "Innleveringsfrist blir oppgitt på Studentweb og digitalt
+# eksamenssystem.", "Tid og stad for eksamen blir gitt på Canvas."), when the
+# exam is held ("Eksamen blir avholdt i starten av januar.") and what the
+# student pays ("Kr 400 i materialpenger betales inn ved studiestart",
+# "Materialkostnader (kr 500) må dekkes av studentene.", an excursion's
+# "egenandel" or price); a sentence that also names a coursework requirement
+# stays.
+.logistics_sentences <- list(
+  hvl = paste0(
+    "(?i)studentweb|",
+    "^\\s*(?:tid|dato|frist|innleveringstidspunkt|innleveringsfrist)\\b[^\\n]*?",
+    "(?:opplys|oppgi|oppgje|annonser|kunngj|publiser|blir gitt|vert gitt)|",
+    "^\\s*eksamen\\w* (?:blir|vert) (?:avholdt|avhalde|halde|haldt)\\b[^\\n]*?",
+    "\\b(?:januar|februar|mars|april|mai|juni|juli|august|september|oktober|november|desember)\\b|",
+    "^(?![^\\n]*arbeidskrav)[^\\n]*(?:materialpeng|materialkostnad|kostpeng|e(?:i)?genandel|",
+    "\\bkr\\.?[ \\t]?\\d|\\d[ \\t]?kr\\b)"
+  )
+)
+
+# The sentences of a text that match `rx` go (.sentence_end), and a line
+# left empty with them.
+.strip_sentences <- function(text, rx) {
+  if (is.na(text)) return(text)
+  lines <- stringr::str_split_1(text, "\n")
+  gone <- logical(length(lines))
+  for (k in seq_along(lines)) {
+    s <- stringr::str_split_1(lines[k], .sentence_end)
+    drop <- stringr::str_detect(s, rx)
+    if (!any(drop)) next
+    lines[k] <- trimws(paste(s[!drop], collapse = ""))
+    gone[k] <- !nzchar(lines[k])
+  }
+  paste(lines[!gone], collapse = "\n")
+}
 
 .strip_section_noise <- function(text, institution = NULL) {
   rx <- c(.section_noise$all, if (!is.null(institution)) .section_noise[[institution]])

@@ -551,7 +551,7 @@ PDF splitting or URL discovery need a strategy function in
 
 The pipeline anonymizes and deduplicates the course plans in three stages:
 
-1. **Anonymize** (`anonymize_text()`): Removes PII (teacher names, emails, phone numbers, staff lists "Name (Role)", role labels with names, signature lines "Name, dekan"), dates, seasons, and administrative year references ("Opprettet 2020", "2023/2024") from `extracted_text`, producing a readable `course_plan` column. Content years (e.g., "etter 1945", "NOU 2015:2") are preserved. Institution-specific handlers (`.anon_*()`) run first, then the generic cleanup (`.anon_generic()`).
+1. **Anonymize** (`anonymize_text()`): Removes PII (teacher names, emails, phone numbers, staff lists "Name (Role)", role labels with names, signature lines "Name, dekan"), dates, semester labels (a season with its year, "Høst 2024", "H23"), and administrative year references ("Opprettet 2020", "2023/2024") from `extracted_text`, producing a readable `course_plan` column. Content years (e.g., "etter 1945", "NOU 2015:2"), a year that sets a condition ("avlagt studieåret 2013-2014 eller senere") and a season alone after a semester label ("Undervisningssemester: Høst") are preserved; the plan id and the sections leave the season out (`.drop_semester_values()`). Institution-specific handlers (`.anon_*()`) run first, then the generic cleanup (`.anon_generic()`).
 2. **Normalize** (`normalize_plan_text()`): Applies lossy transforms (lowercasing, heading synonyms, blanket year removal, whitespace squishing) on `course_plan` for content hashing
 3. **Deduplicate** (`plan_ids()`, `plan_table()`): Groups identical normalized texts under a shared `plan_content_id`, within each frame (see "Frames")
 
@@ -981,7 +981,10 @@ that its section repeats is kept once.
 stock logistics sentences from assessment/coursework (`.section_noise`: uib
 banner and footer, hvl's "Mer om hjelpemidler" link, oslomet's resit
 sentence, …; notices about the assessment such as AI, plagiarism and COVID
-rules stay, and so do exam tables with their header row), removes admission
+rules stay, and so do exam tables with their header row), removes logistics
+and cost sentences from every section (`.logistics_sentences`: hvl's "Tid og
+sted for eksamen blir opplyst på Studentweb.", exam dates, material fees and
+excursion prices), removes admission
 and study-right sentences, pointers to the admission rules and "Ingen utover
 opptakskravet." from prerequisites, keeping a sentence that also names a
 prerequisite (`.strip_admission_lines()`), drops
@@ -1003,9 +1006,9 @@ some of these:
 | `selector` minus `exclude`; `.read_doc()` drops `script`, `style`, `noscript`, `select`, `label` | `R/institution_config.R`, `R/blocks.R`, `R/extract_fulltext.R` | `course_plan` and sections | personal data, boilerplate |
 | `post_fn` (uit banner, year picker and contact block, which keeps the unit); `.cleanup_usn_text()` | `R/extract_fulltext.R` | `course_plan` (and usn's sections, cut from the text) | personal data, boilerplate |
 | `anonymize_text()`: `.anon_*` handlers, then `.anon_generic()` | `R/anonymize.R` | `course_plan` and sections | personal data, boilerplate; a page that is not a plan (NA) |
-| `facts` (title and facts box, and lists and stock text in no section, out of the id text); `normalize_plan_text()` | `R/institution_config.R`, `R/blocks.R`, `R/normalize_plan_text.R` | the plan id only | plan text that changes with the year, not with the plan |
+| `facts` (title and facts box, and lists and stock text in no section, out of the id text); `normalize_plan_text()` with `.drop_semester_values()` | `R/institution_config.R`, `R/blocks.R`, `R/normalize_plan_text.R`, `R/anonymize.R` | the plan id only | plan text that changes with the year, not with the plan |
 | `.drop` headings, unmapped headings, text before the first heading | `R/section_heading_map.R`, `R/extract_sections.R` | sections only | plan text about no section |
-| `.clean_sections()`: `.section_noise`, placeholders, admission lines | `R/extract_sections.R` | sections only | plan text about no section, placeholders |
+| `.clean_sections()`: `.section_noise`, `.logistics_sentences`, placeholders, admission lines; `.drop_semester_values()` | `R/extract_sections.R`, `R/anonymize.R` | sections only | plan text about no section, placeholders |
 | shell rule (`SHELL_MAX_NCHAR`) | `R/pipeline.R` | whether a page has a plan | pages that are not a plan |
 
 So a rule that keeps plan text out of the sections belongs on the section side,

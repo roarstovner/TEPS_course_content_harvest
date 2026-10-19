@@ -958,6 +958,64 @@ offerings); none merge or split, since the semester fields hold only season
 words, which the plan id leaves out. MF's course content sections lose the
 facts box (median 967 → 819 characters). *Since:* 2026-10-13.
 
+**A season that is a fact of the course stays in `course_plan`.** The
+semester a course is taught or assessed in is plan text: the facts box's
+"Undervisningssemester: Høst", "Vurderingssemester: Vår", "Semester: Høst og
+vår" (MF), UiO's "Undervisning" and "Eksamen" fields, NLA's "Oppstart høst,
+undervisning over to semestere", UiB's "Haustsemesteret, 7. semester i
+lektorutdanningsprogrammet", and the season of an exam part (Volda's
+"Nasjonal deleksamen haustsemesteret", NTNU's exam tab). Until now a season
+right after a semester label left `course_plan` and the sections as if it
+were a semester label ("Høst 2024"); a season with its year, a semester code
+("H23") and an administrative academic year still go. The plan id and the
+sections still leave the season out (`.drop_semester_values()`): by the spec
+the semester fields of a facts box or an exam tab change with the year while
+the plan stays the same, and in a section the season says when, which is
+logistics. HVL's notice that a course is not offered goes whole also in
+English ("The module is not offered in the academic year 2024/2025.") and in
+the semester field ("Emnet har ikke undervisning våren 2025."), as the
+Norwegian notice did: with only its year removed it said that the course is
+never taught. *Why:* the anonymization audit of 2026-10-17 found that HVL's
+semester field was emptied in Norwegian ("Undervisningssemester: Høst" →
+"Undervisningssemester:", 1,658 plans) but kept in English ("Semester of
+instruction: Autumn", 55), and the same at NLA ("Oppstart høst," against
+"Start in the autumn,"), since the rule knew only Norwegian labels; the user
+decided (2026-10-19) that a season or year that is a fact of the course is
+plan text, as the spec says, and that only administrative labels go.
+*Rejected:* adding the English labels to the rule, which would have emptied
+the field in every language and hidden the teaching semester from the text;
+keeping the season in the sections too (the assessment semester is
+logistics by the spec). *Consequence:* 4,248 of 15,647 plans keep their
+seasons (HVL 1,688, NLA 956, UiA 712, UiB 609, NIH 95, UiS 67, NTNU 45, UiO
+45, MF 25, Volda 2, Nord 2, OsloMet 1, UiT 1); in the teacher-education
+frame 3,963 of 14,744. No plan id changes, none merge or split, and no
+section changes. The two HVL notices are in one plan each (PHD911 and
+BØA3100, 2025, outside the teacher-education frame); PHD911 gets a new id
+and its course content loses the notice. *Since:* 2026-10-19.
+
+**An academic year that sets a condition stays.** An academic year goes as
+an administrative date ("Studieår: 2019 — 2020", "Emneplan for studieåret
+2024/2025"), but not when it is a condition of the course: the year a
+course was taken in ("IKF132 …, gjennomført studieåret 2019-2020", NLA's
+credit overlap; "ikke fullførte emnet i løpet av studieåret 2013/2014",
+NTNU), a year and the ones after it ("når eksamen i P301 er avlagt
+studieåret 2013-2014 eller senere") and an exception for one year
+("Exception for academic year 2020-2021: Spring."). *Why:* without the year
+the sentence said something else ("gjennomført studieåret.", "Exception for
+academic year: Spring.", a permanent exception); found by the
+anonymization audit of 2026-10-17, and the user decided (2026-10-19) that a
+year that sets a condition is plan text. *Rejected:* removing the clause
+or sentence whole, which would lose the credit-overlap rule; guarding
+conditions written with a season and a year too ("studenter tatt opp på
+studieplanen som gjelder fra og med høsten 2013", UiT): they have the form
+of administrative dates ("Gjeldende fra høstsemesteret 2013", "Fra høst
+2019: Endring i hjelpemidler") and would need a guard per wording, so they
+are a known deviation of the spec (24 plans, UiT 22). *Consequence:* 5
+plans keep a year (NLA TAM301 twice, IKS104 and P320; NTNU PPU4000), and
+their 6 offerings get a new plan id, one for one: none merge or split. In
+the teacher-education frame only PPU4000 (2014 and 2015), whose teaching
+methods section keeps the year too. *Since:* 2026-10-19.
+
 ## Sections
 
 ```{r}
@@ -1020,6 +1078,32 @@ text (19), 171 COVID text (none; Nord 124, UiB 47), 97 plagiarism text (none),
 at Nord, where a COVID change of the exam form was the only assessment text.
 The median assessment section grows from 261 to 325 characters. *Since:*
 2026-10-13.
+
+**HVL: exam logistics and costs leave the sections.** A sentence goes from
+any HVL section when it points to Studentweb or says where the exam's
+time, place or deadline will be announced ("Tid og sted for eksamen blir
+opplyst på Studentweb.", "Innleveringstidspunkt blir oppgitt på Studentweb
+og digitalt eksamenssystem.", "Tid og stad for eksamen blir gitt på
+Canvas."), when the
+exam is held ("Eksamen blir avholdt i starten av januar.") or what the
+student pays ("Kr 400 i materialpenger betales inn ved studiestart",
+"Materialkostnader (kr 500) og ekskursjoner må dekkes av studentene.", an
+excursion's "egenandel" or price); the rest of its line stays, and so does a
+sentence that also names a coursework requirement. `course_plan` keeps them
+all. *Why:* by the spec exam logistics and costs are plan text in no
+section; the sections audit of 2026-10-17 found them in HVL's assessment
+and teaching methods, under the section's own heading, where the `.drop`
+headings cannot catch them. *Rejected:* removing every sentence on costs
+("forventet kostnad, se semesterplan", "Ekskursjoner (studentene må dekke
+egne kostnader)"), which would take coursework requirements and teaching
+methods with them, and economics content ("kostnadsanalyse"); removing the
+sentences in `course_plan` too. *Consequence:* 557 sections of 541 HVL plans
+lose 700 sentences: 249 on Studentweb or announcements (247 in assessment,
+2 in course content on closed registration), 448 cost
+sentences (course content 90, coursework requirements 99, teaching methods
+259) and 3 exam dates; no section is left empty and `course_plan` and the
+plan ids do not change. In the teacher-education frame 527 sections of 515
+plans. *Since:* 2026-10-19.
 
 **Practicum stays in teaching methods** rather than a section of its own: only
 HiOF and Nord give practicum its own heading (since 2026-10-01).

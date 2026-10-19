@@ -682,12 +682,17 @@ stages:
 
 1.  **Anonymize** (`anonymize_text()`): Removes PII (teacher names,
     emails, phone numbers, staff lists “Name (Role)”, role labels with
-    names, signature lines “Name, dekan”), dates, seasons, and
-    administrative year references (“Opprettet 2020”, “2023/2024”) from
-    `extracted_text`, producing a readable `course_plan` column. Content
-    years (e.g., “etter 1945”, “NOU 2015:2”) are preserved.
-    Institution-specific handlers (`.anon_*()`) run first, then the
-    generic cleanup (`.anon_generic()`).
+    names, signature lines “Name, dekan”), dates, semester labels (a
+    season with its year, “Høst 2024”, “H23”), and administrative year
+    references (“Opprettet 2020”, “2023/2024”) from `extracted_text`,
+    producing a readable `course_plan` column. Content years (e.g.,
+    “etter 1945”, “NOU 2015:2”), a year that sets a condition (“avlagt
+    studieåret 2013-2014 eller senere”) and a season alone after a
+    semester label (“Undervisningssemester: Høst”) are preserved; the
+    plan id and the sections leave the season out
+    (`.drop_semester_values()`). Institution-specific handlers
+    (`.anon_*()`) run first, then the generic cleanup
+    (`.anon_generic()`).
 2.  **Normalize** (`normalize_plan_text()`): Applies lossy transforms
     (lowercasing, heading synonyms, blanket year removal, whitespace
     squishing) on `course_plan` for content hashing
@@ -1285,14 +1290,16 @@ and stock logistics sentences from assessment/coursework
 (`.section_noise`: uib banner and footer, hvl’s “Mer om hjelpemidler”
 link, oslomet’s resit sentence, …; notices about the assessment such as
 AI, plagiarism and COVID rules stay, and so do exam tables with their
-header row), removes admission and study-right sentences, pointers to
-the admission rules and “Ingen utover opptakskravet.” from
-prerequisites, keeping a sentence that also names a prerequisite
-(`.strip_admission_lines()`), drops placeholder-only rows
-(`.placeholder_phrases`: “Ingen”, “Se fagplanen.”, “-”, Leganto
-pointers, “Oppgis senere.”, “… ikke publisert ennå”), and drops a first
-line that only repeats the section heading (but keeps learning-outcome
-group labels such as “Kunnskap”).
+header row), removes logistics and cost sentences from every section
+(`.logistics_sentences`: hvl’s “Tid og sted for eksamen blir opplyst på
+Studentweb.”, exam dates, material fees and excursion prices), removes
+admission and study-right sentences, pointers to the admission rules and
+“Ingen utover opptakskravet.” from prerequisites, keeping a sentence
+that also names a prerequisite (`.strip_admission_lines()`), drops
+placeholder-only rows (`.placeholder_phrases`: “Ingen”, “Se fagplanen.”,
+“-”, Leganto pointers, “Oppgis senere.”, “… ikke publisert ennå”), and
+drops a first line that only repeats the section heading (but keeps
+learning-outcome group labels such as “Kunnskap”).
 
 ## What Each Mechanism May Remove
 
@@ -1344,9 +1351,10 @@ text)</td>
 </tr>
 <tr>
 <td><code>facts</code> (title and facts box, and lists and stock text in
-no section, out of the id text); <code>normalize_plan_text()</code></td>
+no section, out of the id text); <code>normalize_plan_text()</code> with
+<code>.drop_semester_values()</code></td>
 <td><code>R/institution_config.R</code>, <code>R/blocks.R</code>,
-<code>R/normalize_plan_text.R</code></td>
+<code>R/normalize_plan_text.R</code>, <code>R/anonymize.R</code></td>
 <td>the plan id only</td>
 <td>plan text that changes with the year, not with the plan</td>
 </tr>
@@ -1360,8 +1368,9 @@ first heading</td>
 </tr>
 <tr>
 <td><code>.clean_sections()</code>: <code>.section_noise</code>,
-placeholders, admission lines</td>
-<td><code>R/extract_sections.R</code></td>
+<code>.logistics_sentences</code>, placeholders, admission lines;
+<code>.drop_semester_values()</code></td>
+<td><code>R/extract_sections.R</code>, <code>R/anonymize.R</code></td>
 <td>sections only</td>
 <td>plan text about no section, placeholders</td>
 </tr>
