@@ -1,7 +1,7 @@
 # Data Quality Notes
 
 
-Generated: 2026-10-17
+Generated: 2026-10-19
 
 ## Overview
 
@@ -16,7 +16,7 @@ Generated: 2026-10-17
 | nla | 2243 | 292 | 2017-2025 | 1831 | 81.6% | 6050 | 929 | 49.3% |
 | nmbu | 218 | 114 | 2025 | 12 | 5.5% | 5900 | 12 | 0.0% |
 | nord | 3645 | 520 | 2016-2025 | 3644 | 100.0% | 4066 | 1319 | 52.6% |
-| ntnu | 5946 | 508 | 2004-2025 | 5538 | 93.1% | 4366 | 2098 | 62.1% |
+| ntnu | 5946 | 508 | 2004-2025 | 5538 | 93.1% | 4368 | 2100 | 62.1% |
 | oslomet | 1869 | 276 | 2018-2025 | 1869 | 100.0% | 10359 | 719 | 59.4% |
 | samas | 130 | 68 | 2025 | 0 | 0.0% | NA | 0 | NaN% |
 | steiner | 36 | 18 | 2025 | 15 | 41.7% | 5027 | 15 | 0.0% |
@@ -27,7 +27,7 @@ Generated: 2026-10-17
 | uit | 6868 | 714 | 2004-2025 | 3232 | 47.1% | 4259 | 2324 | 27.6% |
 | usn | 3219 | 493 | 2018-2025 | 1282 | 39.8% | 10538 | 1224 | 4.4% |
 
-**Total**: 43942 rows, 29968 with extracted text (68.2%), 15645 unique
+**Total**: 43942 rows, 29968 with extracted text (68.2%), 15647 unique
 plans.
 
 **Columns:**
@@ -397,6 +397,17 @@ Figures are in the tables above; the notes say why.
   it (`exam_sessions`). The timetable tab (from 2025) is not read.
   `.anon_ntnu()` removes the contact block (course coordinator,
   teachers); the responsible unit stays, and the dedup hash ignores it
+- A course whose plan is only in English (master’s courses at Gjøvik in
+  the pilot sample: IMT4127 2022, IMT4312 2025, MACS490 2025, SMF1081
+  spring 2022) has a Norwegian page whose course content, and mostly
+  every other part, says only “See English version.” or “Se engelsk
+  beskrivelse.”; since 2026-10-19 the English page on www.ntnu.edu is
+  fetched instead (`english_page` in the config), with the same layout
+  and English headings. Such a page fetched before gives no plan, though
+  its exam tab would make it one. The 7 pilot offerings were fetched
+  again on 2026-10-19 and got the English plan. GEOG2500 2022 (3
+  teacher-education offerings) says “Se engelsk tekst.” in its course
+  content only and keeps that pointer plan for now
 - The spring and autumn offerings of a year read the same page, fetched
   at different times. Between the fetches NTNU reworded the stock
   credit-overlap note (“Dette emne har …” / “Dette emnet har …”) and

@@ -475,19 +475,28 @@ the first option (the rule before, which took the English twin).
 ENG-3981 spring 2016, LRU-1300 autumn 2010, LER-1150 autumn 2018), 2 of them
 a plan not in the data before. *Since:* 2026-10-08.
 
-**HVL and Nord: a plan published only in English is read from the English
-page:** an HVL page that says "Emnebeskrivelsen finnes kun på engelsk" (or,
-since 2026-10-17, "Dette emnet er kun beskrevet på engelsk", "Dette emnet er
-berre skildra på engelsk", "Se engelske nettsider for mer informasjon"), and
-a Nord page that says "Emnet foregår på engelsk. Se engelske nettsider ved å
-velge engelsk språk." (since 2026-10-17), holds no plan, only a pointer to the
+**HVL, Nord and NTNU: a plan published only in English is read from the
+English page:** an HVL page that says "Emnebeskrivelsen finnes kun på engelsk"
+(or, since 2026-10-17, "Dette emnet er kun beskrevet på engelsk", "Dette
+emnet er berre skildra på engelsk", "Se engelske nettsider for mer
+informasjon"), a Nord page that says "Emnet foregår på engelsk. Se engelske
+nettsider ved å velge engelsk språk." (since 2026-10-17), and an NTNU page
+whose course content says only "See English version." or "Se engelsk
+beskrivelse." (since 2026-10-19), holds no plan, only a pointer to the
 English site, so the plan is fetched from the English page of the same course
-and year (`english_page` in the configuration). Its headings map like the
+and year (`english_page` in the configuration; NTNU's is on www.ntnu.edu).
+Its headings map like the
 Norwegian ones ("Entry requirements" is prerequisites, "Compulsory learning
 activities" coursework requirements; Nord's "Course description", "Learning
-activities", "Exam description"), Nord's English year stamp ("Current active
+activities", "Exam description"; NTNU's "Learning methods and activities",
+"Further on evaluation", "Required previous knowledge", "Course materials"),
+Nord's English year stamp ("Current active
 course description (last updated 2026/27)") is read like the Norwegian one,
-and a page with only the pointer is a shell.
+NTNU's exam tab and contact block are read like the Norwegian ones, and a page
+with only the pointer is a shell. Since 2026-10-19 a page with the pointer
+gives no plan also when it is not a shell (`plan_offerings()`): NTNU's
+pointer pages keep the exam tab, which is an assessment section, so the shell
+rule would keep them as plans with the pointer in place of the content.
 *Why:* these are mostly the English subject modules of the teacher education
 programmes (MGBEN, MGUEN); without the English page, HVL's English subject
 would have no plans. The pilot samples of 2026-10-17 found the other wordings
@@ -495,7 +504,9 @@ in English-taught master's courses (HVL ADA512, BI4-301, MAS538, MMO5010;
 Nord BIO5023, BIO5031, BIO5036, all 2025), whose pointer had counted as a plan.
 *Rejected:* leaving these offerings without a plan; at Nord, the page's
 `hreflang="en"` link (the page has two, one of them to the current plan
-without year and semester).
+without year and semester); at NTNU, keeping the pointer page as a plan of
+its exam tab, and taking every page with the template's "English version"
+link (all pages have it).
 *Consequence:* 86 offerings (10 course codes, 2020-2025) get a plan, 46 plans
 more, in English. 5 MGBPE201E offerings whose pointer had counted as a plan
 (one plan of 140 characters) were not retried with them; a second retry
@@ -503,8 +514,15 @@ harvest the same day gave them their English plan (3 plans).
 On 2026-10-17 the pointers of the pilot samples' 10 such offerings (HVL 7,
 Nord 3) stopped counting as plans, and their English pages, fetched again,
 gave them 10 English plans (HVL 7, Nord 3) in place of 8 pointer plans. No
-teacher-education offering has one of the new wordings. *Since:* 2026-10-15;
-the other wordings and Nord from 2026-10-17.
+teacher-education offering has one of the new wordings. At NTNU the pilot
+sample's 7 such offerings (IMT4127 2022, IMT4312 2025, MACS490 2025, SMF1081
+spring 2022) were fetched again on 2026-10-19 and got 7 English plans in
+place of 5 pointer plans (NTNU plans 2,098 → 2,100). Three teacher-education
+offerings (GEOG2500, 2022) say "Se engelsk tekst." in the course content
+only; they keep their pointer plan until a retry of their own
+(`course_plan_spec.md`, known deviations). *Since:* 2026-10-15; the other
+wordings and Nord from 2026-10-17; NTNU, and no plan for a pointer page that
+is not a shell, from 2026-10-19.
 
 ## Unit of analysis: the unique plan
 

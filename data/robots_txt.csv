@@ -2,6 +2,7 @@ institution,host,read_on,status,crawl_delay,disallow,allow,note
 oslomet,student.oslomet.no,2026-10-16,200,,,,"Disallows search, login and student-life pages; blocks GPTBot and Bytespider"
 uia,www.uia.no,2026-10-16,200,,,,Disallows /vrtx (the CMS)
 ntnu,www.ntnu.no,2026-10-16,200,10,,,"Disallows /en/, /nb/, search and Liferay query parameters; /studier/emner/ is allowed"
+ntnu,www.ntnu.edu,2026-10-17,200,,,,"Disallows /en/, /nb/, search and Liferay query parameters (as www.ntnu.no) and asks no Crawl-delay; /studies/courses/ is allowed. The English course pages (english_page), requested after NTNU's request_delay (10 s)"
 inn,studiekatalog.edutorium.no,2026-10-16,404,,,,No robots.txt: nothing disallowed
 hivolda,www.hivolda.no,2026-10-16,200,,,,Drupal defaults; disallows search and facet URLs
 hiof,www.hiof.no,2026-10-16,200,,,,Disallows /vrtx and the staff news archive; its rules for all user agents cover the browser user agent the harvest uses

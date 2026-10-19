@@ -127,6 +127,33 @@ test_that("a page that says the plan is on the English page gives the English pa
   expect_length(sent, 1)
 })
 
+test_that("ntnu: a course content that only points to the English text gives the English page", {
+  local_robots(c("www.ntnu.no", "www.ntnu.edu"))
+  sent <- character()
+  page <- function(content) {
+    html_page(paste0('</p><a title="English version: https://www.ntnu.edu/studies/courses/X/2025">EN</a>',
+                     '<h3>Faglig innhold</h3><p class="content-course-content">', content, "</p><p>"))
+  }
+  httr2::local_mocked_responses(function(req) {
+    sent <<- c(sent, req$url)
+    if (grepl("ntnu.edu", req$url)) page("Course content") else
+      page(c(IMT4312 = "See English Version", MACS490 = "Se engelsk beskrivelse.",
+             PED3001 = "Pedagogikk. See English version for the reading list.")[[basename(dirname(req$url))]])
+  })
+  cfg <- utils::modifyList(get_institution_config("ntnu"), list(request_delay = 0))
+  out <- fetch_html_cols("https://www.ntnu.no/studier/emner/IMT4312/2025", "ntnu", cfg, .progress = FALSE)
+  expect_match(out$html, "Course content")
+  expect_equal(sent, c("https://www.ntnu.no/studier/emner/IMT4312/2025",
+                       "https://www.ntnu.edu/studies/courses/IMT4312/2025"))
+  out <- fetch_html_cols("https://www.ntnu.no/studier/emner/MACS490/2024", "ntnu", cfg, .progress = FALSE)
+  expect_equal(sent[4], "https://www.ntnu.edu/studies/courses/MACS490/2024")
+  # the template's "English version" link and a pointer inside a plan are not the notice
+  sent <- character()
+  out <- fetch_html_cols("https://www.ntnu.no/studier/emner/PED3001/2025", "ntnu", cfg, .progress = FALSE)
+  expect_match(out$html, "Pedagogikk")
+  expect_length(sent, 1)
+})
+
 test_that("harvest_all() writes the fetch ledger with the run, and a retry skips pages not found", {
   local_hiof()
   httr2::local_mocked_responses(function(req) {

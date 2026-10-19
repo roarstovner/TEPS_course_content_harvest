@@ -34,7 +34,9 @@ partition_blocks <- function(files, config) {
 # extract_fulltext_from_raw() gives it; plan_text, the text without the title
 # and facts box where the config names them (`facts`) or, without blocks, the
 # text opens with them (text_plan_text()), else NA; the page's plan
-# (page_plans()); page_year, the academic year the page names (`page_year`).
+# (page_plans()); page_year, the academic year the page names (`page_year`);
+# english_pointer, whether the page says that the plan is on the English page
+# (`english_page`: a page fetched before its notice was known).
 partition_text <- function(files, blocks, config) {
   rows <- read_raw(files, page_id = TRUE)
   rows <- rows[!is.na(.chr(rows, "html")) | !is.na(.chr(rows, "extracted_text")), ]
@@ -50,10 +52,12 @@ partition_text <- function(files, blocks, config) {
   plan_text[rest] <- text_plan_text(text[rest], .block_cfg(config))
   page_year <- if (is.null(config$page_year)) rep(NA_integer_, nrow(rows)) else
     as.integer(config$page_year(.chr(rows, "html")))
+  notice <- config$english_page$notice
   tibble::tibble(page_id = rows$page_id, extracted_text = unname(text), plan_text = unname(plan_text),
                  page_plans(rows$institution, unname(text), unname(plan_text),
                             isTRUE(config$exam_sessions)),
-                 page_year = page_year)
+                 page_year = page_year,
+                 english_pointer = !is.null(notice) & grepl(notice %||% "", .chr(rows, "html"), perl = TRUE))
 }
 
 # A page's plan: course_plan, its text anonymized, and the plan id
@@ -416,8 +420,9 @@ offering_fulltext <- function(pages, page_text, config) {
 
 # Every offering with its text, course_plan and plan id (the plan of its page,
 # page_plans()), before the shell rule: one row per offering of the raw store.
-# An offering whose page shows a later version of the plan (`page_year`) gets
-# no plan.
+# An offering whose page shows a later version of the plan (`page_year`), or
+# only says that the plan is on the English page (`english_page`), gets no
+# plan.
 plan_offerings <- function(pages, page_text, config) {
   page_cols <- c("extracted_text", "fulltext", "html", "html_error", "html_success", "url.x", "url.y")
   dplyr::bind_rows(lapply(seq_along(pages), function(i) {
@@ -428,7 +433,7 @@ plan_offerings <- function(pages, page_text, config) {
     plan <- t[c("course_plan", "course_plan_normalized", "plan_content_id", "plan_nchar")]
     later <- (t$page_year > academic_start_year(df$year, df$semester_name)) %in% TRUE
     none <- page_plans(cfg$name, NA_character_, NA_character_, isTRUE(cfg$exam_sessions))
-    for (col in names(plan)) plan[[col]][is.na(t$page_id) | later] <- none[[col]]
+    for (col in names(plan)) plan[[col]][is.na(t$page_id) | later | t$english_pointer %in% TRUE] <- none[[col]]
     df$course_plan <- plan$course_plan
     df$plan_year_basis <- cfg$plan_years   # how the plan's year is known
     df$course_plan_normalized <- plan$course_plan_normalized

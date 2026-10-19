@@ -92,6 +92,7 @@ section_heading_patterns <- tibble::tribble(
   "examination",                           "assessment",             FALSE,
   "assessment",                            "assessment",             TRUE,
   "exam description",                      "assessment",             TRUE,   # nord English pages
+  "further on evaluation",                 "assessment",             TRUE,   # ntnu English pages
   "sensurering",                           "assessment",             TRUE,   # uio: weighting
 
   # --- prerequisites ---
@@ -106,6 +107,7 @@ section_heading_patterns <- tibble::tribble(
   "recommended prerequisite knowledge",    "prerequisites",          FALSE,
   "formal prerequisite knowledge",         "prerequisites",          TRUE,
   "recommended previous knowledge",        "prerequisites",          TRUE,
+  "required previous knowledge",           "prerequisites",          TRUE,   # ntnu English pages
   # hvl English pages: their "Krav til forkunnskapar". Exact, since elsewhere
   # "entry requirements" can be admission text.
   "entry requirements",                    "prerequisites",          TRUE,
@@ -138,6 +140,7 @@ section_heading_patterns <- tibble::tribble(
   "kontakt",                               ".drop",                  TRUE,
   "ansvarlig enhet",                       ".drop",                  TRUE,   # ntnu, uit: the unit
   "responsible unit",                      ".drop",                  TRUE,
+  "department with academic responsibility", ".drop",                TRUE,   # ntnu English pages
   # usn approval stamp and change log
   "godkjent emneplan",                     ".drop",                  TRUE,
   "endringsbeskrivelse",                   ".drop",                  TRUE,
@@ -206,6 +209,7 @@ section_heading_patterns <- tibble::tribble(
   "teaching methods",                      "teaching_methods",       FALSE,
   "teaching and organization",             "teaching_methods",       FALSE,
   "learning activities",                   "teaching_methods",       TRUE,   # nord English pages
+  "learning methods and activities",       "teaching_methods",       TRUE,   # ntnu English pages
   # uit: teaching and language, then an h3 "Pensum" (reading_list)
   "undervisning og pensum",                "teaching_methods",       TRUE,
 
@@ -218,6 +222,7 @@ section_heading_patterns <- tibble::tribble(
   "litteratur",                            "reading_list",           FALSE,
   "reading list",                          "reading_list",           FALSE,
   "recommended reading",                   "reading_list",           FALSE,  # uit 2008-2011
+  "course materials",                      "reading_list",           TRUE,   # ntnu English pages
 
   # --- course_content ---
   "mål og innhold",                        "course_content",         FALSE,

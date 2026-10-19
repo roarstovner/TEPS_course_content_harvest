@@ -233,6 +233,14 @@ test_that("NTNU: contacts go; the unit and the exam tab stay", {
   expect_equal(an("Tekst\nKontaktinformasjon\nFaglærere\nOla Nordmann\nEksamen\nVurderingsordning: Oppgave"),
                "Tekst\nEksamen\nVurderingsordning: Oppgave")
   expect_equal(an("Tekst\nKontaktinformasjon\nFaglærere\nOla Nordmann"), "Tekst")
+  # the English page (`english_page`)
+  expect_equal(an(paste("Duration 1 semester", "Course start Spring 2023", "Text", "Contact information",
+                        "Course coordinator", "Kari Nordmann", "Department with academic responsibility",
+                        "", "Department of Computer Science", "Examination", sep = "\n")),
+               paste("Duration 1 semester", "", "Text", "Department with academic responsibility", "",
+                     "Department of Computer Science", "Examination", sep = "\n"))
+  # not a line that only starts so
+  expect_equal(an("The course starts in week 2."), "The course starts in week 2.")
 })
 
 test_that("NTNU: course-details-portlet removed", {

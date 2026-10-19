@@ -27,6 +27,15 @@ test_that("headings of Nord's English pages are mapped", {
   expect_true(is.na(match_heading_to_section("Course evaluation")))
 })
 
+test_that("headings of NTNU's English pages are mapped", {
+  expect_equal(match_heading_to_section("Learning methods and activities"), "teaching_methods")
+  expect_equal(match_heading_to_section("Further on evaluation"), "assessment")
+  expect_equal(match_heading_to_section("Required previous knowledge"), "prerequisites")
+  expect_equal(match_heading_to_section("Course materials"), "reading_list")
+  expect_equal(match_heading_to_section("Department with academic responsibility"), ".drop")
+  expect_true(is.na(match_heading_to_section("Contact information")))
+})
+
 test_that("short English sub-headings only match exactly", {
   expect_equal(match_heading_to_section("Required prerequisite knowledge"), "prerequisites")
   expect_true(is.na(match_heading_to_section("Digital skills course")))
@@ -62,8 +71,12 @@ test_that("placeholder and pointer-only rows are dropped", {
             "Dette emner er kun beskrevet på engelsk. Klikk på \"English\" øverst til høgre for å få fram beskrivelsen.",
             "Dette emnet er berre skildra på engelsk. Klikk på knappen \"English\" oppe til høgre på sida, for å få fram den engelske visninga.",
             "Se engelske nettsider for mer informasjon",
-            "Emnet foregår på engelsk. Se engelske nettsider ved å velge engelsk språk.")
+            "Emnet foregår på engelsk. Se engelske nettsider ved å velge engelsk språk.",
+            "See English version.", "See English Version", "se engelsk beskrivelse", "Se engelsk beskrivelse.")
   for (t in drop) expect_false(.keep_section_row(t, "reading_list"), label = t)
+  # a pointer after plan text stays (ntnu MACS490)
+  expect_true(.keep_section_row("Bestått MACS4900\n\nSe engelsk beskrivelse for mer utfyllende informasjon.",
+                                "prerequisites"))
   # the teaching language is not a pointer (hvl MGUEN201)
   expect_true(.keep_section_row("Emnet foregår på engelsk.", "course_content"))
   expect_true(.keep_section_row(paste("All undervisning i emnet foregår på engelsk, og språkøvingsaspektet",
@@ -359,6 +372,32 @@ test_that("ntnu: one exam session in assessment; contacts, scripts, timetable, d
   # form widgets (uib semester picker) are not content either
   doc <- .read_doc("<div><label>Vel emnebeskrivelse for semester</label><select><option>2027 Vår</option></select><p>Mål.</p></div>")
   expect_equal(rvest::html_text2(doc), "Mål.")
+})
+
+test_that("ntnu: the English page's exam tab is read like the Norwegian one", {
+  html <- "<section id='content'><div id='omEmnet'><h3>Further on evaluation</h3><p>Portfolio.</p>
+    <h3>Contact information</h3><h4>Course coordinator</h4><p>Kari Nordmann</p>
+    <h4>Department with academic responsibility</h4><p>Department of Computer Science</p></div>
+    <div id='omEksamen' class='tab'><h2 class='course-exam-heading'>Examination</h2>
+    <div class='exam-assessment-form-general'>Examination arrangement: Written examination</div>
+    <div class='grade-rule-heading'>Grade: Letter grades</div>
+    <div class='exam-element'><h4 class='course-exam-heading2'>Ordinary examination - Autumn 2021</h4>
+      <h5 class='exam-form'>Written examination</h5><div class='exam-container'>
+      <span class='exam-item exam-fact-label'>Weighting</span> <span class='exam-item'>100/100</span>
+      <span class='exam-item exam-fact-label'> Date </span> <span class='exam-item'>2021-12-01</span>
+      <span class='exam-item exam-fact-label'>Time</span> <span class='exam-item'>09:00</span>
+      <span class='exam-item exam-fact-label'>Exam system</span> <span class='exam-item'>Inspera Assessment</span></div></div>
+    <div class='exam-element'><h4 class='course-exam-heading2'>Re-sit examination - Autumn 2021</h4>
+      <h5 class='exam-form'>Oral examination</h5><div class='exam-container'>
+      <span class='exam-item exam-fact-label'>Weighting</span> <span class='exam-item'>100/100</span></div></div>
+    </div></section>"
+  ic <- get_institution_config("ntnu")
+  s <- sections_of(html, .block_cfg(ic))
+  expect_equal(s[["assessment"]], paste0("Portfolio.\n\nExamination arrangement: Written examination\n",
+                                         "Grade: Letter grades\nWritten examination\nWeighting 100/100"))
+  cp <- anonymize_text("ntnu", page_fulltext(page_blocks(html, NA, .block_cfg(ic)), ic), .progress = FALSE)
+  expect_false(grepl("Nordmann|2021-12-01|09:00|Date|Time", cp))
+  expect_match(cp, "Re-sit examination\nOral examination")
 })
 
 test_that("ntnu: banners are out; admission, credit reductions and subject areas are facts", {

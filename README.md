@@ -2167,7 +2167,16 @@ crawl delay (`request_delay` in the config). The page’s exam tab
 (`#omEksamen`: assessment form, grading scale, exam sessions and their
 parts) is read without its link, rooms, comments, dates and times; the
 assessment section gets one session of it (`exam_sessions`). The
-timetable tab (`#timeplan`, from 2025) is not read.
+timetable tab (`#timeplan`, from 2025) is not read. A course whose plan
+is only in English has a Norwegian page whose course content says only
+“See English version.” or “Se engelsk beskrivelse.”; the harvest then
+fetches the English page,
+`https://www.ntnu.edu/studies/courses/{code}/{year}` (`english_page` in
+the config, as at HVL and Nord), and the row keeps the Norwegian URL.
+Every page has a link titled “English version” in its template, so the
+notice is the course content paragraph, not the link. A pointer page in
+the raw store gives no plan, so `harvest_all(retry = "ok")` fetches it
+again.
 
 **UiO.** UiO publishes only the latest version of each course plan: the
 base URL always returns the current plan and older versions cannot be

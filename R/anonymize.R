@@ -53,13 +53,17 @@ anonymize_text <- function(institution, text,
   txt |>
     # The contact block (course coordinator, teachers) up to "Ansvarlig
     # enhet" or the exam tab; the unit stays. The timetable tab is not read.
-    stringr::str_remove("(?ms)^Kontaktinformasjon\\n.*?(?=^(?:Ansvarlig enhet|Eksamen)$|\\z)") |>
+    # The English page (`english_page`): "Contact information", "Department
+    # with academic responsibility", "Examination".
+    stringr::str_remove(paste0("(?ms)^(?:Kontaktinformasjon|Contact information)\\n.*?(?=^(?:Ansvarlig enhet|",
+                               "Department with academic responsibility|Eksamen|Examination)$|\\z)")) |>
     # Strip header boilerplate
     stringr::str_remove_all("course-details-portlet\\s*") |>
     stringr::str_remove_all("Undervisningsstart[^\n]+") |>
+    stringr::str_remove_all("(?m)^Course start\\b[^\n]*") |>
     # Strip LMS links and misc
     stringr::str_remove_all("Blackboard\\s*-\\s*\\S+") |>
-    stringr::str_remove_all("Andre sider om emnet\\s*")
+    stringr::str_remove_all("(?:Andre sider om emnet|Other pages about the course)\\s*")
 }
 
 # HTML written out as text in a plan's fields (uit, uis reading-list notes:

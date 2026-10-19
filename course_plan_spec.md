@@ -39,7 +39,9 @@ Every part of a plan's page is one of these:
    sections (title, facts box, admission, workload, course evaluation).
 4. **Not a plan:** a page with no plan text about the course gives its
    offering no plan. Such pages are error pages, search pages, a later
-   version of the plan shown in place of the requested one, and page shells:
+   version of the plan shown in place of the requested one, a page that says
+   the plan is on the English page (which is read instead, also when the page
+   has an exam tab), and page shells:
    pages with no text about any of the seven sections below, only a title, a
    facts box, headings, placeholders, or plan text about no section (a
    credit-overlap box, a programme list). A page is a shell when no section
@@ -117,13 +119,16 @@ without the title and facts box.
 | Notices that say something about the assessment, stock text or not: AI use, plagiarism, COVID changes of the exam form | in | assessment or coursework requirements |
 | Exam logistics: sessions, rooms, exam system, registration, resit and appeal rules, examiner arrangement | in (minus dates) | out |
 | Placeholders and pointers with nothing more ("Ingen", "Se fagplanen.", "Informasjon om ChatGPT … finner du her") | in | out |
-| Error page, search page, later version, page shell | no plan | no plan |
+| Error page, search page, later version, pointer to the English page, page shell | no plan | no plan |
 
 ## Known deviations
 
 The data built on 2026-10-16 (release `data-2026-10-16`) do not yet follow
 the spec here:
 
+- NTNU's GEOG2500 of 2022 (3 teacher-education offerings, read 2026-10-01
+  and 2026-10-14): its course content says only "Se engelsk tekst.", which
+  is a course_content section, and the English page has not been fetched.
 - UiB's responsible unit, an unlabelled link in the page's sidebar, is not in
   `course_plan`. Every UiB offering has its unit from DBH (`department_name`).
 - Prerequisites keep some admission rules written as requirements, in about

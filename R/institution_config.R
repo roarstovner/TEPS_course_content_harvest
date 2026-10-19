@@ -48,7 +48,9 @@
 #                (`notice`, a regular expression on the page's HTML). The
 #                harvest then fetches the English URL, the Norwegian one with
 #                its part `from` replaced by `to` (fetch_html_cols_single());
-#                the row keeps the Norwegian URL. hvl, nord.
+#                the row keeps the Norwegian URL. A page with the notice in
+#                the raw store (fetched before the notice was known) gives
+#                no plan (plan_offerings()). hvl, nord, ntnu.
 #
 # robots_permission: the institution's permission to harvest paths its
 #                robots.txt disallows for all user agents, recorded as
@@ -119,8 +121,9 @@ institution_configs <- list(
     selector = "#content",
     # Not read: the timetable tab, the tab titles, and in the exam tab
     # (#omEksamen) the link, the rooms, the comments ("Individuelt tidspunkt
-    # kommer senere") and each exam part's date and time with their labels:
-    # when and where, not the assessment (course_plan_spec.md)
+    # kommer senere") and each exam part's date and time with their labels
+    # (on the English page "Date", "Time"): when and where, not the
+    # assessment (course_plan_spec.md)
     exclude = c(
       paste("#timeplan, h1.tabTitle, #omEksamen .exam-link, #omEksamen .exam-rooms, #omEksamen ul.portlet-msg-info,",
             # banners: "Nytt fra studieåret 2025/2026", "Undervises ikke
@@ -129,7 +132,8 @@ institution_configs <- list(
       local({
         label <- paste0("//div[@id='omEksamen']//span[contains(@class, 'exam-fact-label')]",
                         "[normalize-space() = 'Dato' or normalize-space() = 'Tid' or ",
-                        "normalize-space() = 'Sted og rom']")
+                        "normalize-space() = 'Sted og rom' or normalize-space() = 'Date' or ",
+                        "normalize-space() = 'Time']")
         paste0(label, " | ", label, "/following-sibling::span[1]")
       })),
     # the page title, course code, name and facts (credits, level, start,
@@ -143,6 +147,14 @@ institution_configs <- list(
     url_year = "academic",
     request_delay = 10,  # robots.txt (data/robots_txt.csv): Crawl-delay: 10 for all user agents
     fetch_fn = fetch_html_cols_single_ntnu,
+    # A course whose plan is only in English: the Norwegian page's course
+    # content, and mostly every other part, says "See English version." or
+    # "Se engelsk beskrivelse." (2021-2025); www.ntnu.edu has the plan, the
+    # same layout with English headings
+    english_page = list(
+      notice = paste0('<p class="content-course-content">\\s*(?i:see english version|',
+                      'se engelsk beskrivelse)\\.?\\s*</p>'),
+      from = "https://www.ntnu.no/studier/emner/", to = "https://www.ntnu.edu/studies/courses/"),
     # The exam tab lists the exam parts once per exam session; the
     # assessment section and the plan id keep one session
     exam_sessions = TRUE,
