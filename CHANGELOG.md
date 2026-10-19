@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Remove the RDS raw files from data/raw (user 2026-10-19) (#433)
 - nla: removing a conditional academic year changes the sentence (#430)
 - hvl: logistics in sections, 'not offered' variants, English semester values (#427)
 - ntnu: fetch the English page for the teacher-ed GEOG2500 offerings ('Se engelsk tekst.') (#432)
