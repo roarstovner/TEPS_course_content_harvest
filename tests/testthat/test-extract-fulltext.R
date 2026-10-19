@@ -85,3 +85,12 @@ test_that("uit: link labels to the exam page go, plan text with such a link stay
   b <- page_blocks(html, NA, .block_cfg(get_institution_config("uit")))
   expect_equal(.blocks_text(b), "Eksamen\n\nSkoleeksamen, 4 timer.\n\nVed sykdom, se regler for fravær.")
 })
+
+test_that("steiner: a PDF emne joins the bachelor's DBH name, PEL1.4/1.5 also the 1-7 programme's M-PEL2", {
+  key <- function(x) lapply(.steiner_normalize_emne_name(x), .steiner_remap_pel_emne)
+  expect_equal(key("Pedagogikk og elevkunnskap1, emne 5. FoU-oppgave, kunnskapsteori og forskningsmetode."),
+               list(c("pedagogikk og elevkunnskap1, emne 5", "pedagogikk og elevkunnskap2, emne 2")))
+  expect_equal(key(c("Pedagogikk og elevkunnskap 2, emne 1", "Norsk 1, emne 3")),
+               list("pedagogikk og elevkunnskap2, emne 1", "norsk1, emne 3"))
+  expect_equal(key("Pedagogikk og elevkunnskap 1, emne 4")[[1]][2], "pedagogikk og elevkunnskap2, emne 1")
+})

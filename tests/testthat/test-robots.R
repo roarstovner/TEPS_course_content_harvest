@@ -42,12 +42,13 @@ test_that("robots_allows() applies the rules for all user agents, the longest ma
                "robots.txt of c.no has not been read.*Step 0", class = "robots_unread")
 })
 
-test_that("the paths robots.txt disallows are the UiS PDF archive and Steiner's subject PDFs", {
+test_that("robots.txt disallows the UiS PDF archive; Steiner's subject PDFs are fetched by decision", {
   u <- c("https://www6.uis.no/Stine/EMNE/2019/H/MGL101.pdf", "https://www6.uis.no/ansatt/x",
          "https://www.uis.no/nb/student/course/MGL101",
          "https://www.steinerhoyskolen.no/dokumenter/laerer-bachelor-norsk-1",
          "https://www.ntnu.no/studier/emner/PED3001/2025", "https://www.bi.no/emne/plan.pdf")
-  expect_equal(robots_allows(u), c(FALSE, TRUE, TRUE, FALSE, TRUE, FALSE))
+  expect_equal(robots_allows(u), c(FALSE, TRUE, TRUE, TRUE, TRUE, FALSE))
+  expect_match(institution_configs$steiner$robots_permission, "^decided .*not granted by Steiner")
 })
 
 test_that("a permission in the institution's config lets the harvest request a disallowed path", {

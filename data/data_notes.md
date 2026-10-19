@@ -19,7 +19,7 @@ Generated: 2026-10-19
 | ntnu | 5946 | 508 | 2004-2025 | 5538 | 93.1% | 4368 | 2100 | 62.1% |
 | oslomet | 1869 | 276 | 2018-2025 | 1869 | 100.0% | 10359 | 719 | 59.4% |
 | samas | 130 | 68 | 2025 | 0 | 0.0% | NA | 0 | NaN% |
-| steiner | 36 | 18 | 2025 | 15 | 41.7% | 5027 | 15 | 0.0% |
+| steiner | 244 | 125 | 2025 | 15 | 6.1% | 5027 | 15 | 0.0% |
 | uia | 3067 | 341 | 2013-2025 | 1182 | 38.5% | 4160 | 616 | 43.3% |
 | uib | 2827 | 274 | 2004-2025 | 1513 | 53.5% | 3324 | 582 | 59.4% |
 | uio | 286 | 151 | 2025 | 47 | 16.4% | 4623 | 47 | 0.0% |
@@ -27,7 +27,7 @@ Generated: 2026-10-19
 | uit | 6868 | 714 | 2004-2025 | 3232 | 47.1% | 4259 | 2324 | 27.6% |
 | usn | 3219 | 493 | 2018-2025 | 1282 | 39.8% | 10538 | 1224 | 4.4% |
 
-**Total**: 43942 rows, 29968 with extracted text (68.2%), 15647 unique
+**Total**: 44150 rows, 29968 with extracted text (67.9%), 15647 unique
 plans.
 
 **Columns:**
@@ -69,7 +69,7 @@ offerings with a plan, by period:
 | ntnu        | 81%   | 97%     | 98%     | 98%     | 98%     | 98%   |
 | oslomet     |       |         | 100%    | 100%    | 100%    | 100%  |
 | samas       |       |         |         |         |         | 0%    |
-| steiner     |       |         |         |         |         | 42%   |
+| steiner     |       |         |         |         |         | 6%    |
 | uia         | 0%    | 0%      | 0%      | 48%     | 46%     | 48%   |
 | uib         | 30%   | 44%     | 58%     | 81%     | 71%     | 81%   |
 | uio         |       |         |         |         |         | 16%   |
@@ -107,7 +107,7 @@ year) that have a plan in at least one semester:
 | ntnu | 2950 | 80% | 100 | 2242 | 18 | 97% | 93.1% |
 | oslomet | 993 | 88% | 44 | 812 | 20 | 97% | 100.0% |
 | samas | 68 | 91% | 0 | 0 | 62 | 0% | 0.0% |
-| steiner | 18 | 100% | 15 | 0 | 3 | 83% | 41.7% |
+| steiner | 125 | 95% | 15 | 0 | 104 | 12% | 6.1% |
 | uia | 1604 | 91% | 1024 | 3 | 436 | 68% | 38.5% |
 | uib | 1425 | 84% | 14 | 669 | 507 | 52% | 53.5% |
 | uio | 151 | 89% | 44 | 0 | 91 | 31% | 16.4% |
@@ -143,7 +143,7 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 | ntnu | 81 | 1 | 0 | 74 | 0 | 6 | 0 |
 | oslomet | 34 | 0 | 0 | 0 | 34 | 0 | 0 |
 | samas | 68 | 0 | 68 | 0 | 0 | 0 | 0 |
-| steiner | 3 | 0 | 3 | 0 | 0 | 0 | 0 |
+| steiner | 100 | 0 | 100 | 0 | 0 | 0 | 0 |
 | uia | 521 | 521 | 0 | 0 | 96 | 0 | 92 |
 | uib | 691 | 521 | 0 | 140 | 36 | 0 | 0 |
 | uio | 104 | 0 | 7 | 0 | 0 | 97 | 0 |
@@ -197,9 +197,11 @@ the harvest’s user agent.
   agents: UiS’s PDF archive on `www6.uis.no` (see UiS) and Steiner’s
   subject PDFs under `/dokumenter/` (see Steiner). No other path the
   harvests request is disallowed. Since 2026-10-17 the harvest does not
-  request a disallowed path unless the institution has given permission
-  (none so far; the project asks UiS and Steiner), and a host whose
-  robots.txt has not been read stops the harvest. At the new
+  request a disallowed path unless a permission is recorded in the
+  config: no institution has granted one (the project asks UiS);
+  Steiner’s PDFs are fetched by the project lead’s decision of
+  2026-10-19 (open data, five files), not by Steiner’s permission, and a
+  host whose robots.txt has not been read stops the harvest. At the new
   institutions’ sites robots.txt disallows only the CMS’s own paths,
   search and staff pages, except that BI’s main site disallows PDF and
   Word files: a BI plan published as such a file would not be harvested
@@ -458,14 +460,26 @@ Figures are in the tables above; the notes say why.
   `steinerhoyskolen.no`, split by course heading; the PDFs are not
   stored, so the split text is the raw data
 - The site’s robots.txt (read 2026-10-16) disallows `/dokumenter/`,
-  where the five PDFs are, for all user agents. The harvests up to
-  2026-10 fetched them: every Steiner plan (15 offerings) comes from
-  that path. Since 2026-10-17 a Steiner harvest requests nothing
-  (outcome `robots`) until Steiner gives permission
-- The practicum modules (M-LP1/2/3) have no PDF content
+  where the five PDFs are, for all user agents. Every Steiner plan comes
+  from that path. Since 2026-10-19 they are fetched by the project
+  lead’s decision (open data, five files, negligible traffic), not by a
+  permission from Steiner, which was not asked (`robots_permission` in
+  the config)
+- The five PDFs are those of the bachelor Steinerpedagogisk
+  lærerutdanning: they cover 15 emner of five subjects, which the course
+  names of that programme and of the 1-7 teacher programme (M- codes)
+  match. Of DBH 2025’s 125 Steiner course codes (106 without the emne
+  suffix, 244 offerings), the all-courses harvest of 2026-10-19
+  (2026/27, which joins DBH 2026) found a plan for 30 (60 offerings).
+  The others have no source: the kindergarten teacher programmes, the
+  master in Waldorf education, social pedagogy, further education, the
+  practicum modules (M-LP1/2/3, BDP, BLP, DLP) and the bachelor theses.
+  Until DBH has 2026, Steiner’s plans are the 15 offerings of the
+  2026-04-04 harvest (2025/26)
 - M-PEL2.1/M-PEL2.2 get the PDF’s PEL1.4/PEL1.5 plans
-  (`.steiner_remap_pel_emne()`); to be confirmed against the programme
-  description
+  (`.steiner_remap_pel_emne()`), and since 2026-10-19 the bachelor’s
+  PEL1.4/PEL1.5 too; the M-PEL2 match is to be confirmed against the
+  programme description
 
 ------------------------------------------------------------------------
 

@@ -321,10 +321,9 @@ harvest_pdf_split <- function(df, config, refetch = FALSE) {
 
   # --- Build join key and match to courses ---
   pdf_emner <- pdf_emner |>
-    dplyr::mutate(
-      join_key = .steiner_normalize_emne_name(pdf_emne_name) |>
-        purrr::map_chr(.steiner_remap_pel_emne)
-    )
+    dplyr::mutate(join_key = purrr::map(.steiner_normalize_emne_name(pdf_emne_name),
+                                        .steiner_remap_pel_emne)) |>
+    tidyr::unnest_longer(join_key)
 
   df <- df |>
     dplyr::mutate(join_key = .steiner_normalize_emne_name(course_name))
@@ -445,20 +444,20 @@ harvest_pdf_split <- function(df, config, refetch = FALSE) {
   x |>
     stringr::str_squish() |>
     stringr::str_to_lower() |>
-    stringr::str_replace("^(.+?)\\s+(\\d+)\\s*,", "\\1\\2,")
+    stringr::str_replace("^(.+?)\\s+(\\d+)\\s*,", "\\1\\2,") |>
+    # DBH may add the title after the number ("emne 5. FoU-oppgave, ...")
+    stringr::str_replace("(, emne \\d+)\\b.*$", "\\1")
 }
 
-# Steiner helper: remap Pedagogikk emne numbers
-# PDF has "pedagogikk og elevkunnskap1, emne 4" and "emne 5"
-# but DBH has M-PEL2 "pedagogikk og elevkunnskap2, emne 1" and "emne 2"
+# Steiner helper: the join keys of a PDF emne. The PDFs are those of the
+# bachelor (Steinerpedagogisk lærerutdanning), whose DBH names match theirs;
+# the 1-7 programme (M- codes) has "pedagogikk og elevkunnskap1, emne 4" and
+# "emne 5" as M-PEL2 "pedagogikk og elevkunnskap2, emne 1" and "emne 2", so
+# these two get both keys.
 .steiner_remap_pel_emne <- function(name) {
-  if (stringr::str_detect(name, "^pedagogikk og elevkunnskap1, emne 4$")) {
-    return("pedagogikk og elevkunnskap2, emne 1")
-  }
-  if (stringr::str_detect(name, "^pedagogikk og elevkunnskap1, emne 5$")) {
-    return("pedagogikk og elevkunnskap2, emne 2")
-  }
-  name
+  m <- stringr::str_match(name, "^pedagogikk og elevkunnskap1, emne ([45])$")[, 2]
+  if (is.na(m)) return(name)
+  c(name, paste0("pedagogikk og elevkunnskap2, emne ", as.integer(m) - 3L))
 }
 
 # --- Strategy: json_extract ---

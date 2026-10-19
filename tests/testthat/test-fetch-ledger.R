@@ -336,11 +336,14 @@ test_that("a host whose robots.txt has not been read stops its harvest before an
   expect_length(harvest_files("hiof"), 0)
 })
 
-test_that("UiS's PDF archive and Steiner's subject PDFs are not requested", {
+test_that("UiS's PDF archive and, without a permission, Steiner's subject PDFs are not requested", {
   withr::local_dir(withr::local_tempdir())
   old <- institution_configs$uis$request_delay
   institution_configs$uis$request_delay <<- 0
   withr::defer(institution_configs$uis$request_delay <<- old)
+  old_steiner <- institution_configs$steiner$robots_permission   # as without the decision
+  institution_configs$steiner$robots_permission <<- NULL
+  withr::defer(institution_configs$steiner$robots_permission <<- old_steiner)
   sent <- character()
   menu <- paste0("<select id='fs-semester-select'><option ",
                  "value='https://www6.uis.no/Stine/EMNE/2019/H/MGL101.pdf'>2019 - 2020</option></select>")

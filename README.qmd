@@ -600,7 +600,9 @@ harvest (methods.qmd, "Sites that publish only the current plan"). It remains
 for spot checks of single pages.
 
 Their runs are `2026-04-04` (the user's earlier harvest, 2025/26) and
-`2026-09-30` (2026/27), both of DBH 2025 rows (`data/raw/{inst}/2025/`). A
+`2026-09-30` (2026/27), both of DBH 2025 rows (`data/raw/{inst}/2025/`);
+Steiner's all-courses runs are `2026-10-19` and `2026-10-19_121636`
+(2026/27). A
 harvest date comes from the `harvested_at` column or the run's name, never
 from a file's modification time, which a copy changes. The rest of the April
 backup, for sites with the year in the URL, is in `data/backup/2026-04-04/` and
@@ -814,15 +816,19 @@ matching rule wins, `allow` on a tie. Since 2026-10-17:
   rendered in Chrome, are checked by their start page. This leaves out
   of new harvests UiS's PDF archive (`www6.uis.no`, which allows only
   `/ansatt/`), so a UiS harvest gets plans only from the course pages on
-  `www.uis.no`, and Steiner's five subject PDFs (`/dokumenter/`), so a
-  Steiner harvest requests nothing. The plans harvested from them up to
-  2026-10 stay in the raw store.
+  `www.uis.no`. Steiner's five subject PDFs (`/dokumenter/`) are
+  disallowed too, but fetched by the project lead's decision (below).
+  The plans harvested from both up to 2026-10 stay in the raw store.
 - **A permission.** When an institution lets the project harvest paths
   its robots.txt disallows, record it in its config:
   `robots_permission = "granted YYYY-MM-DD by <who> (<what>)"`
   (`R/institution_config.R`). Its URLs are then requested; those refused
   before are fetched with `harvest_all(institutions = ..., retry =
-  "robots")`. None is recorded yet.
+  "robots")`. A decision of the project's own, without asking the
+  institution, is recorded the same way but says so: Steiner's reads
+  "decided 2026-10-19 by the project lead, not granted by Steiner (not
+  asked)" (the PDFs are open data and five files make negligible
+  traffic). No institution has granted one yet.
 - **A host not in the table stops the harvest** of its institution
   before any request to it (`harvest_all()` goes on with the next
   institution): read its robots.txt and add its row first. Only

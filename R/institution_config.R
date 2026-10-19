@@ -57,7 +57,9 @@
 #                "granted YYYY-MM-DD by <who> (<what>)". Without one, the
 #                harvest does not request a URL that a disallow rule in
 #                data/robots_txt.csv matches (robots_allows(), README
-#                "robots.txt"). None recorded (2026-10-17).
+#                "robots.txt"). A decision of the project's own, taken
+#                without asking the institution, is recorded as such
+#                ("decided YYYY-MM-DD by ..., not granted by ..."): steiner.
 
 institution_configs <- list(
 
@@ -478,6 +480,10 @@ institution_configs <- list(
     strategy = "pdf_split",
     plan_years = "current",
     section_strategy = "text",
+    robots_permission = paste(
+      "decided 2026-10-19 by the project lead, not granted by Steiner (not asked):",
+      "the five subject PDFs under /dokumenter/ are open data, and fetching them",
+      "makes negligible traffic"),
     # the PDF opens with the title and a metadata table (code and name,
     # English name, programme, credits, semester, language)
     section_text_header = paste0("^(?:Emnekode og (?:emne)?navn|Emnenavn|Engelsk emnenavn|",
