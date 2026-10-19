@@ -32,6 +32,7 @@ test_that("headings of NTNU's English pages are mapped", {
   expect_equal(match_heading_to_section("Further on evaluation"), "assessment")
   expect_equal(match_heading_to_section("Required previous knowledge"), "prerequisites")
   expect_equal(match_heading_to_section("Course materials"), "reading_list")
+  expect_equal(match_heading_to_section("Compulsory assignments"), "coursework_requirements")
   expect_equal(match_heading_to_section("Department with academic responsibility"), ".drop")
   expect_true(is.na(match_heading_to_section("Contact information")))
 })
@@ -72,7 +73,8 @@ test_that("placeholder and pointer-only rows are dropped", {
             "Dette emnet er berre skildra på engelsk. Klikk på knappen \"English\" oppe til høgre på sida, for å få fram den engelske visninga.",
             "Se engelske nettsider for mer informasjon",
             "Emnet foregår på engelsk. Se engelske nettsider ved å velge engelsk språk.",
-            "See English version.", "See English Version", "se engelsk beskrivelse", "Se engelsk beskrivelse.")
+            "See English version.", "See English Version", "se engelsk beskrivelse", "Se engelsk beskrivelse.",
+            "Se engelsk tekst.")
   for (t in drop) expect_false(.keep_section_row(t, "reading_list"), label = t)
   # a pointer after plan text stays (ntnu MACS490)
   expect_true(.keep_section_row("Bestått MACS4900\n\nSe engelsk beskrivelse for mer utfyllende informasjon.",

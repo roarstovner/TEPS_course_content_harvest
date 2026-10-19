@@ -126,9 +126,6 @@ without the title and facts box.
 The data built on 2026-10-16 (release `data-2026-10-16`) do not yet follow
 the spec here:
 
-- NTNU's GEOG2500 of 2022 (3 teacher-education offerings, read 2026-10-01
-  and 2026-10-14): its course content says only "Se engelsk tekst.", which
-  is a course_content section, and the English page has not been fetched.
 - UiB's responsible unit, an unlabelled link in the page's sidebar, is not in
   `course_plan`. Every UiB offering has its unit from DBH (`department_name`).
 - Prerequisites keep some admission rules written as requirements, in about

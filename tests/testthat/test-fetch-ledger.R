@@ -137,7 +137,7 @@ test_that("ntnu: a course content that only points to the English text gives the
   httr2::local_mocked_responses(function(req) {
     sent <<- c(sent, req$url)
     if (grepl("ntnu.edu", req$url)) page("Course content") else
-      page(c(IMT4312 = "See English Version", MACS490 = "Se engelsk beskrivelse.",
+      page(c(IMT4312 = "See English Version", MACS490 = "Se engelsk beskrivelse.", GEOG2500 = "Se engelsk tekst.",
              PED3001 = "Pedagogikk. See English version for the reading list.")[[basename(dirname(req$url))]])
   })
   cfg <- utils::modifyList(get_institution_config("ntnu"), list(request_delay = 0))
@@ -147,6 +147,8 @@ test_that("ntnu: a course content that only points to the English text gives the
                        "https://www.ntnu.edu/studies/courses/IMT4312/2025"))
   out <- fetch_html_cols("https://www.ntnu.no/studier/emner/MACS490/2024", "ntnu", cfg, .progress = FALSE)
   expect_equal(sent[4], "https://www.ntnu.edu/studies/courses/MACS490/2024")
+  out <- fetch_html_cols("https://www.ntnu.no/studier/emner/GEOG2500/2022", "ntnu", cfg, .progress = FALSE)
+  expect_equal(sent[6], "https://www.ntnu.edu/studies/courses/GEOG2500/2022")
   # the template's "English version" link and a pointer inside a plan are not the notice
   sent <- character()
   out <- fetch_html_cols("https://www.ntnu.no/studier/emner/PED3001/2025", "ntnu", cfg, .progress = FALSE)

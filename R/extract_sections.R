@@ -610,7 +610,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "se (?:kursinnhold|emnebeskrivelse)(?:et|n)?",                     # nord intro
   "ingen emner(?: i programmet)?",
   # the plan is on the English page (hvl, nord, ntnu; `english_page` in the config)
-  "see english version", "se engelsk beskrivelse",                    # ntnu
+  "see english version", "se engelsk (?:beskrivelse|tekst)",          # ntnu
   "emnebeskrivelsen finnes kun på engelsk[^.]*",
   "gå til våre engelske nettsider[^.]*",                              # hvl, after a full stop
   "(?:dette )?emne[tr]? er (?:kun beskrevet|berre skildra) på engelsk",

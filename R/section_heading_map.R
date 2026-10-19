@@ -26,6 +26,7 @@ section_heading_patterns <- tibble::tribble(
   "fravær fra obligatorisk aktivitet",     "coursework_requirements", FALSE,  # uio label
   "obligatorisk aktivitet",                "coursework_requirements", FALSE,
   "compulsory learning activities",        "coursework_requirements", FALSE,  # hvl English pages
+  "compulsory assignments",                "coursework_requirements", TRUE,   # ntnu English pages
   "obligatoriske arbeidskrav",             "coursework_requirements", TRUE,   # uit label
   "arbeidskrav",                           "coursework_requirements", FALSE,
   "studiekrav",                            "coursework_requirements", FALSE,

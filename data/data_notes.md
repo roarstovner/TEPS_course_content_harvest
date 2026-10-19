@@ -400,14 +400,15 @@ Figures are in the tables above; the notes say why.
 - A course whose plan is only in English (master’s courses at Gjøvik in
   the pilot sample: IMT4127 2022, IMT4312 2025, MACS490 2025, SMF1081
   spring 2022) has a Norwegian page whose course content, and mostly
-  every other part, says only “See English version.” or “Se engelsk
-  beskrivelse.”; since 2026-10-19 the English page on www.ntnu.edu is
-  fetched instead (`english_page` in the config), with the same layout
-  and English headings. Such a page fetched before gives no plan, though
-  its exam tab would make it one. The 7 pilot offerings were fetched
-  again on 2026-10-19 and got the English plan. GEOG2500 2022 (3
-  teacher-education offerings) says “Se engelsk tekst.” in its course
-  content only and keeps that pointer plan for now
+  every other part, says only “See English version.”, “Se engelsk
+  beskrivelse.” or “Se engelsk tekst.”; since 2026-10-19 the English
+  page on www.ntnu.edu is fetched instead (`english_page` in the
+  config), with the same layout and English headings. Such a page
+  fetched before gives no plan, though its exam tab would make it one.
+  The 7 pilot offerings were fetched again on 2026-10-19 and got the
+  English plan, as did GEOG2500 spring 2022, autumn 2022 and spring 2023
+  (3 teacher-education offerings), whose course content says only “Se
+  engelsk tekst.”
 - The spring and autumn offerings of a year read the same page, fetched
   at different times. Between the fetches NTNU reworded the stock
   credit-overlap note (“Dette emne har …” / “Dette emnet har …”) and

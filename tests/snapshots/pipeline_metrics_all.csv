@@ -189,7 +189,7 @@
 "nord","prerequisites","n_plans",787
 "nord","teaching_methods","median_chars",499
 "nord","teaching_methods","n_plans",1268
-"ntnu","(all)","median_chars",4209.5
+"ntnu","(all)","median_chars",4211.5
 "ntnu","(all)","n_course_years_with_plan",2869
 "ntnu","(all)","n_plans_with_sections",2312
 "ntnu","(all)","n_rows",5946
@@ -204,13 +204,13 @@
 "ntnu","coursework_requirements","median_chars",53
 "ntnu","coursework_requirements","n_plans",2014
 "ntnu","learning_outcomes","median_chars",1271
-"ntnu","learning_outcomes","n_plans",2164
+"ntnu","learning_outcomes","n_plans",2165
 "ntnu","prerequisites","median_chars",108
-"ntnu","prerequisites","n_plans",1707
+"ntnu","prerequisites","n_plans",1708
 "ntnu","reading_list","median_chars",60
-"ntnu","reading_list","n_plans",1264
+"ntnu","reading_list","n_plans",1265
 "ntnu","teaching_methods","median_chars",525
-"ntnu","teaching_methods","n_plans",2179
+"ntnu","teaching_methods","n_plans",2180
 "oslomet","(all)","median_chars",10871
 "oslomet","(all)","n_course_years_with_plan",981
 "oslomet","(all)","n_plans_with_sections",708

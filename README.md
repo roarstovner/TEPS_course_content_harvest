@@ -2169,8 +2169,8 @@ parts) is read without its link, rooms, comments, dates and times; the
 assessment section gets one session of it (`exam_sessions`). The
 timetable tab (`#timeplan`, from 2025) is not read. A course whose plan
 is only in English has a Norwegian page whose course content says only
-“See English version.” or “Se engelsk beskrivelse.”; the harvest then
-fetches the English page,
+“See English version.”, “Se engelsk beskrivelse.” or “Se engelsk
+tekst.”; the harvest then fetches the English page,
 `https://www.ntnu.edu/studies/courses/{code}/{year}` (`english_page` in
 the config, as at HVL and Nord), and the row keeps the Norwegian URL.
 Every page has a link titled “English version” in its template, so the
