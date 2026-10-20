@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- ntnu: arbeidskrav blocks stay in assessment (split inline coursework) (#417)
 - inn: later versions by semester, not academic year; cut the English-only banner (#434)
 - inn: later plan versions under the language banner keep a plan (add page_year) (#419)
 - hivolda: all courses (#385)
