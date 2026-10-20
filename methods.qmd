@@ -557,14 +557,17 @@ INN page that shows a later version: where the requested semester has no
 version, INN shows the latest one, mostly with the notice "Emnebeskrivelsen
 for valgt semester er ikke publisert enda. Her er den siste versjonen vi har
 tilgjengelig", sometimes without it (under "Kun tilgjengelig på engelsk", or
-none). The version's start semester, selected under "Startsemestre", gives
-its academic year (`page_year`); where that is after the offering's, the
-offering gets no plan. Nord does the same without a notice: for a year it has no plan for, its page
+none). Where the version's start semester, selected under "Startsemestre"
+(`page_term`), is after the offering's semester, the offering gets no plan.
+The banner "Statusmelding / Kun tilgjengelig på engelsk" (sometimes with the
+language left out) stands over pages that hold the whole plan in English; it
+is site boilerplate and is cut (since 2026-10-20). Nord does the same without a notice: for a year it has no plan for, its page
 shows the current plan, headed "Gjeldende emnebeskrivelse (sist oppdatert
 2026/27)" instead of "Emnebeskrivelse for 2023/24". Where the year it names is
 after the offering's academic year, the offering gets no plan; where it is
-not, the page is the version in force that year and stays (`page_year` in
-the configuration). UiS does the same: for an academic year its menu of plans
+not, the page is the version in force that year and stays (`page_term` in
+the configuration; a page that names only an academic year counts as a
+version starting in its autumn, so the comparison is the academic year's). UiS does the same: for an academic year its menu of plans
 lacks, the harvest fetches the course page, which shows the latest version,
 the one selected in the menu ("2026 - 2027"); a course page without a menu
 names no year and stays. Longer pages without sections stay (OsloMet practicum
@@ -586,13 +589,20 @@ spring 2022 to spring 2025, which showed the version taught from autumn 2025
 (those two plans leave the data), and INN3024-1 in 2023, which showed
 "Teaching semester 2027 Spring". 40 offerings with the notice get a plan
 back: 27 show a version that started before their semester, 13 one that
-starts the spring after their autumn semester, which the academic year does
-not tell from the offering's (a known deviation, `course_plan_spec.md`). INN
-offerings with a plan go from 729 to 754, plans from 609 to 613; 1,136
-offerings show a later version (388 of 407 from 2022).
+starts the spring after their autumn semester. INN offerings with a plan go
+from 729 to 754, plans from 609 to 613; 1,136 offerings show a later
+version (388 of 407 from 2022). The same day the rule moved from academic
+years to semesters: an autumn offering whose page shows the version from the
+following spring had kept it, since both are in one academic year. 15 autumn
+offerings lose their plan (2023 2, 2024 10, 2025 3; among them the 2024
+master's modules 2MEN5101, 2MKRLE5101, 2MKRO5101 and 2MNF5101, which showed
+the version from spring 2025), and 1,151 offerings now show a later version.
+Cutting the English-only banner changes the plan id of 9 offerings (6 plans)
+and joins 23DPRO101's spring and autumn 2025 into one plan. INN offerings
+with a plan go from 754 to 739, plans from 613 to 608.
 *Rejected:* keeping the notice as a second rule (it removes the 27 versions
-in force); comparing semesters for INN alone (`page_year` and the rule for
-the other sites compare academic years).
+in force); comparing academic years for INN too (it keeps a version that
+starts after the offering's semester).
 Nord's later versions from 2026-10-14 (fulltext audit, 2026-10-13): 761
 offerings lose their plan (all of 2016-2018 and 205 later ones), 90 plans
 leave the data, and Nord's course-years with a plan go from 1,843 to 1,478.

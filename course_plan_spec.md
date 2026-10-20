@@ -142,9 +142,6 @@ the spec here:
   be needed to tell them from administrative dates of the same form
   ("Gjeldende fra høstsemesteret 2013", "Fra høst 2019: Endring i
   hjelpemidler"). Conditions written with an academic year stay.
-- An INN offering in autumn whose page shows a version that starts the
-  following spring keeps that later version: the rule compares academic
-  years (`page_year`), and both are in the same one. 13 offerings (2023-2025).
 - Prerequisites keep some admission rules written as requirements, in about
   50 sections: the grade and school-point requirements for teacher
   education ("Minimum 35 skolepoeng", Nord and NTNU), "Opptakskrav er

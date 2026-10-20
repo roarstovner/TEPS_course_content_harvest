@@ -62,7 +62,7 @@ test_that("each frame has the plans of its own offerings, and their sections", {
   text <- c("Innhold\nOm emnet 2023.", "Innhold\nOm emnet 2024.", "Innhold\nOm emnet 2025.")
   page_text <- tibble::tibble(page_id = c("x/2023/r/1", "x/2024/r/1", "x/2025/r/1"),
                               extracted_text = text, plan_text = NA_character_,
-                              page_plans("x", text, rep(NA_character_, 3)), page_year = NA_integer_,
+                              page_plans("x", text, rep(NA_character_, 3)), page_term = NA_integer_,
                               english_pointer = FALSE)
   config <- list(list(name = "x", plan_years = "url"))
   courses <- plan_offerings(pages, page_text, config)
@@ -94,14 +94,16 @@ test_that("each frame has the plans of its own offerings, and their sections", {
   expect_equal(offerings$teacher_ed$course_id, courses$course_id[2:3])
   expect_identical(offerings$all, courses)
 
-  # a page that shows a later version of the plan (`page_year`): no plan
-  page_text$page_year <- c(2023L, 2026L, 2025L)
+  # a page that shows a version starting after the offering's semester
+  # (`page_term`): no plan; autumn 2023 keeps the version from autumn 2023,
+  # autumn 2024 loses the one from spring 2025, autumn 2025 keeps spring 2025's
+  page_text$page_term <- semester_term(c(2023L, 2025L, 2025L), c("Høst", "Vår", "Vår"))
   later <- plan_offerings(pages, page_text, config)
   expect_true(is.na(later$plan_content_id[2]) && is.na(later$course_plan[2]))
   expect_equal(later$extracted_text[2], text[2])
   expect_equal(later$plan_content_id[c(1, 3)], courses$plan_content_id[c(1, 3)])
   # a page that only says that the plan is on the English page (`english_page`): no plan
-  page_text$page_year <- NA_integer_
+  page_text$page_term <- NA_integer_
   page_text$english_pointer <- c(FALSE, FALSE, TRUE)
   pointer <- plan_offerings(pages, page_text, config)
   expect_true(is.na(pointer$plan_content_id[3]) && is.na(pointer$course_plan[3]))

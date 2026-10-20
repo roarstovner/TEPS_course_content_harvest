@@ -472,6 +472,12 @@ academic_start_year <- function(year, semester) {
   year - (semester %in% c("Vår", "Sommer"))
 }
 
+# A semester as a sortable term: spring Y -> 2Y, autumn Y -> 2Y + 1; summer
+# counts as spring (it ends the same academic year)
+semester_term <- function(year, semester) {
+  2L * as.integer(year) + (semester %in% c("Høst", "Autumn"))
+}
+
 nla_academic_year <- function(year, semester) {
   dplyr::case_match(semester,
     "Høst"            ~ paste0(year, "-", year + 1),

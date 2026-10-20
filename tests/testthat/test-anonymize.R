@@ -406,10 +406,14 @@ test_that("INN: placeholder pages return NA", {
   result <- anonymize_text("inn", input, .progress = FALSE)
   expect_true(is.na(result))
   # the notice that the page shows the latest version goes; the version's
-  # year is `page_year`
+  # start semester is `page_term`
   latest <- paste0("Statusmelding\nEmnebeskrivelsen for valgt semester er ikke publisert enda. ",
                    "Her er den siste versjonen vi har tilgjengelig.\nEmnets innhold\nTekst")
   expect_equal(anonymize_text("inn", latest, .progress = FALSE), "Emnets innhold\nTekst")
+  # and so does the banner over a plan in English only, with or without the language
+  english <- c("Statusmelding\nKun tilgjengelig på engelsk\nCourse content\nText",
+               "Statusmelding\nKun tilgjengelig på\nCourse content\nText")
+  for (x in english) expect_equal(anonymize_text("inn", x, .progress = FALSE), "Course content\nText")
 })
 
 test_that("INN: structural headings preserved for readability", {

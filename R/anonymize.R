@@ -144,9 +144,12 @@ anonymize_text <- function(institution, text,
 
   txt |>
     # the notice that the page shows the latest version; whether that version
-    # is later than the offering's is read from the page (`page_year`)
+    # is later than the offering's is read from the page (`page_term`)
     stringr::str_remove(paste0("(?m)^Statusmelding\\nEmnebeskrivelsen for valgt semester er ikke publisert enda\\.",
                                "[^\\n]*\\n")) |>
+    # the banner over a plan published in English only ("Kun tilgjengelig på
+    # engelsk", or with the language left out); the page holds the whole plan
+    stringr::str_remove("(?m)^Statusmelding\\nKun tilgjengelig på[^\\n]*\\n") |>
     stringr::str_remove_all("(?m)^\\d{4}\\s+(?:Høst|Vår|Autumn|Spring)(?:,\\s*\\d{4}\\s+(?:Høst|Vår|Autumn|Spring))*\\s*$")
 }
 

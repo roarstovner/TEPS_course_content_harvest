@@ -23,10 +23,12 @@
 #                       fetched, so a harvest gives the plan of that academic
 #                       year only.
 #
-# page_year: function(html) giving the academic year (its first calendar year)
-#            of the plan a page shows, where the page says so; an offering
-#            whose page shows a later year gets no plan (a later version,
-#            course_plan_spec.md). inn, nord, uis.
+# page_term: function(html) giving the start semester of the plan version a
+#            page shows, where the page says so, as semester_term() (inn: the
+#            selected start semester; nord, uis: only an academic year, which
+#            counts as its autumn); an offering whose page shows a version
+#            that starts after the offering's semester gets no plan (a later
+#            version, course_plan_spec.md). inn, nord, uis.
 #
 # url_year: "academic"  the URL's year is the academic year the page is for
 #                       (ntnu, hvl, oslomet: "/2025" is 2025/26; uis: the
@@ -184,9 +186,9 @@ institution_configs <- list(
     # "Startsemestre"), in Norwegian also on the English page: the latest
     # version where the requested semester has none, with or without the
     # notice "Emnebeskrivelsen for valgt semester er ikke publisert enda"
-    page_year = function(html) {
+    page_term = function(html) {
       m <- stringr::str_match(html, 'data-readinglist-start-semester="(\\d{4}) (Vår|Spring)?')
-      as.integer(m[, 2]) - !is.na(m[, 3])
+      semester_term(m[, 2], ifelse(is.na(m[, 3]), "Høst", "Vår"))
     },
     section_strategy = "html",
     # inn marks most section headings with <div class="label"> (and the facts
@@ -335,9 +337,9 @@ institution_configs <- list(
     # (sist oppdatert 2026/27)": the current plan, a later version (the
     # English page: "Current active course description (last updated
     # 2026/27)", "Course description for 2025/26")
-    page_year = function(html) as.integer(stringr::str_match(
+    page_term = function(html) semester_term(stringr::str_match(
       html, paste0("(?:Gjeldende emnebeskrivelse \\(sist oppdatert|Emnebeskrivelse for|",
-                   "Current active course description \\(last updated|Course description for) (\\d{4})/"))[, 2]),
+                   "Current active course description \\(last updated|Course description for) (\\d{4})/"))[, 2], "Høst"),
     # Arbeidskrav/obligatorisk deltakelse are lines inside the vurdering
     # accordion, not a heading of their own.
     section_inline_coursework = TRUE
@@ -412,8 +414,8 @@ institution_configs <- list(
     url_year = "academic",
     # For a year its menu lacks, the course page is fetched: it shows the
     # latest version, the one selected in the menu ("2026 - 2027")
-    page_year = function(html) as.integer(stringr::str_match(
-      html, '<option value="[^"]*"\\s+selected>\\s*(\\d{4})\\s*-')[, 2]),
+    page_term = function(html) semester_term(stringr::str_match(
+      html, '<option value="[^"]*"\\s+selected>\\s*(\\d{4})\\s*-')[, 2], "Høst"),
     section_strategy = "html",
     # PDF plans (text_split fallback) open with a title and a metadata block;
     # the untitled paragraph after it is the course introduction.

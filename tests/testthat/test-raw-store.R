@@ -165,30 +165,34 @@ test_that("menu URLs (uis): an offering takes the page of its academic year", {
   expect_equal(c(s23$url, s23$extracted_text), c(page, NA))
 })
 
-test_that("nord: the academic year of the plan a page shows", {
-  py <- get_institution_config("nord")$page_year
+test_that("nord: the academic year of the plan a page shows, as its autumn", {
+  py <- get_institution_config("nord")$page_term
   expect_equal(py(c('<div class="h4 pre-title">Gjeldende emnebeskrivelse (sist oppdatert 2026/27)</div>',
-                    "<div>Emnebeskrivelse for 2023/24</div>", "<p>Ingen</p>")), c(2026L, 2023L, NA))
+                    "<div>Emnebeskrivelse for 2023/24</div>", "<p>Ingen</p>")),
+               semester_term(c(2026L, 2023L, NA), "Høst"))
   # the English page (a course taught in English, `english_page`)
   expect_equal(py(c("<div>Current active course description (last updated 2026/27)</div>",
-                    "<div>Course description for 2025/26</div>")), c(2026L, 2025L))
+                    "<div>Course description for 2025/26</div>")), semester_term(c(2026L, 2025L), "Høst"))
 })
 
-test_that("inn: the academic year of the start semester the page shows", {
-  py <- get_institution_config("inn")$page_year
+test_that("inn: the start semester the page shows", {
+  py <- get_institution_config("inn")$page_term
   rl <- function(s) sprintf('<span class="readinglist-start-semester" data-readinglist-start-semester="%s"></span>', s)
-  # spring belongs to the academic year before; Norwegian also on the English page
+  # Norwegian also on the English page
   expect_equal(py(c(rl("2025 Haust"), rl("2027 Vår"), rl("2024 Høst"), "<p>Emnesøket</p>", NA)),
-               c(2025L, 2026L, 2024L, NA, NA))
+               c(4051L, 4054L, 4049L, NA, NA))
+  # spring after autumn, summer with spring
+  expect_equal(semester_term(c(2024L, 2025L, 2025L, 2025L), c("Høst", "Vår", "Sommer", "Høst")),
+               c(4049L, 4050L, 4050L, 4051L))
 })
 
-test_that("uis: the academic year selected in the course page's menu", {
-  py <- get_institution_config("uis")$page_year
+test_that("uis: the academic year selected in the course page's menu, as its autumn", {
+  py <- get_institution_config("uis")$page_term
   menu <- paste0('<option value="https://www6.uis.no/Stine/EMNE/2017/H&Oslash;ST/B/X_1.pdf" selected>\n',
                  '          2017 - 2018\n        </option>\n',
                  '<option value="https://www6.uis.no/Stine/EMNE/2016/H&Oslash;ST/B/X_1.pdf">\n',
                  '          2016 - 2017\n        </option>')
-  expect_equal(py(c(menu, "<p>Fakta</p>", NA)), c(2017L, NA, NA))
+  expect_equal(py(c(menu, "<p>Fakta</p>", NA)), c(4035L, NA, NA))
 })
 
 test_that("harvest_all(retry = TRUE) fetches offerings without a plan again", {
