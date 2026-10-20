@@ -814,6 +814,45 @@ test_that("a gate label takes the paragraph it names along", {
   expect_equal(s[["assessment"]], "Emnet evalueres med skoleeksamen.")
 })
 
+test_that("a gate heading takes its block, up to a heading or the exam (ntnu)", {
+  split <- function(...) {
+    res <- .split_inline_coursework(tibble::tibble(section = "assessment",
+                                                   raw_text = paste(..., sep = "\n")))
+    stats::setNames(res$raw_text, res$section)
+  }
+  # numbered requirements across blank lines, up to the next heading
+  s <- split("OBLIGATORISKE ARBEIDSKRAV:", "1. Delta på innføring i kartlegging.", "",
+             "2. Prøve ut materiell i gruppe. Arbeidskravet skal utføres i gruppe.", "",
+             "Obligatoriske arbeidskrav vurderes som godkjent/ikke godkjent.", "",
+             "Individuell fordypningsoppgave",
+             "Oppgaven skal være et individuelt faglig arbeid.", "",
+             "Vurderingsordning: Oppgave", "Karakter: Bokstavkarakterer")
+  expect_equal(s[["coursework_requirements"]], paste(
+    "OBLIGATORISKE ARBEIDSKRAV:", "1. Delta på innføring i kartlegging.",
+    "2. Prøve ut materiell i gruppe. Arbeidskravet skal utføres i gruppe.",
+    "Obligatoriske arbeidskrav vurderes som godkjent/ikke godkjent.", sep = "\n"))
+  expect_match(s[["assessment"]], "^\\s*Individuell fordypningsoppgave\nOppgaven skal.*Karakter: Bokstavkarakterer$")
+  # short items without blank lines, then the exam with no blank line before it
+  s <- split("Obligatoriske aktiviteter", "Muntlig gruppepresentasjon", "Inntil 8 skriftlige oppgaver",
+             "Alle må være godkjent før eksamen.", "Inntil 2 obligatoriske arbeidskrav",
+             "Muntlig eksamen.", "Evaluering", "Skriftlig hjemmeeksamen (5 dager).")
+  expect_equal(s[["coursework_requirements"]], paste(
+    "Obligatoriske aktiviteter", "Muntlig gruppepresentasjon", "Inntil 8 skriftlige oppgaver",
+    "Alle må være godkjent før eksamen.", "Inntil 2 obligatoriske arbeidskrav", sep = "\n"))
+  expect_equal(s[["assessment"]], "Muntlig eksamen.\nEvaluering\nSkriftlig hjemmeeksamen (5 dager).")
+  # over a colon lead-in the heading is a label: the lead-in takes its list (uit)
+  s <- split("Arbeidskrav:", "", "Følgende arbeidskrav må være godkjent før eksamen:", "",
+             "Et muntlig framlegg", "En kortere skriftlig oppgave", "",
+             "Alle skriftlige arbeider skal ha 1,5 linjeavstand.", "", "Eksamen består av:")
+  expect_equal(s[["coursework_requirements"]], paste("Arbeidskrav:",
+    "Følgende arbeidskrav må være godkjent før eksamen:", "Et muntlig framlegg",
+    "En kortere skriftlig oppgave", sep = "\n"))
+  # a colon lead-in stops at the assessment proper
+  s <- split("Følgende arbeidskrav må være godkjent før eksamen:", "To innleveringer",
+             "Eksamen: Mappe", "Vurdering gis med bokstavkarakter.")
+  expect_equal(s[["assessment"]], "Eksamen: Mappe\nVurdering gis med bokstavkarakter.")
+})
+
 test_that("leading placeholders and praksis pointers go, content stays", {
   out <- tibble::tibble(
     section = c("prerequisites", "teaching_methods", "coursework_requirements"),

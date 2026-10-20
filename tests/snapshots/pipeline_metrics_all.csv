@@ -178,7 +178,7 @@
 "nord","(all)","n_with_text",3644
 "nord","(all)","pct_text_in_sections",77
 "nord","assessment","median_chars",407
-"nord","assessment","n_plans",1298
+"nord","assessment","n_plans",1297
 "nord","course_content","median_chars",519
 "nord","course_content","n_plans",1318
 "nord","coursework_requirements","median_chars",236
@@ -197,12 +197,12 @@
 "ntnu","(all)","n_with_plan",5538
 "ntnu","(all)","n_with_text",5538
 "ntnu","(all)","pct_text_in_sections",75
-"ntnu","assessment","median_chars",403
-"ntnu","assessment","n_plans",2299
+"ntnu","assessment","median_chars",267
+"ntnu","assessment","n_plans",2292
 "ntnu","course_content","median_chars",693
 "ntnu","course_content","n_plans",2184
-"ntnu","coursework_requirements","median_chars",53
-"ntnu","coursework_requirements","n_plans",2014
+"ntnu","coursework_requirements","median_chars",103
+"ntnu","coursework_requirements","n_plans",2015
 "ntnu","learning_outcomes","median_chars",1271
 "ntnu","learning_outcomes","n_plans",2165
 "ntnu","prerequisites","median_chars",108
@@ -351,7 +351,7 @@
 "uit","(all)","n_with_plan",3232
 "uit","(all)","n_with_text",3232
 "uit","(all)","pct_text_in_sections",88
-"uit","assessment","median_chars",480
+"uit","assessment","median_chars",479
 "uit","assessment","n_plans",2324
 "uit","course_content","median_chars",665
 "uit","course_content","n_plans",2400

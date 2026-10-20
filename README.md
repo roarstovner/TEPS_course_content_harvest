@@ -1248,7 +1248,9 @@ Other fields:
   plan id leaves it out.
 - `section_inline_coursework`: move “Arbeidskrav (AK): …” /
   “Obligatorisk deltakelse …” lines from assessment to
-  coursework_requirements (nord).
+  coursework_requirements (nord, uit, ntnu); a gate heading
+  (“OBLIGATORISKE ARBEIDSKRAV”, ntnu) takes the lines under it up to the
+  next heading or the first line about the exam.
 - `exam_sessions`: the page lists the exam parts once per exam session
   (ntnu’s exam tab: “Ordinær eksamen - Høst 2022”, “Utsatt eksamen -
   …”). The assessment section and the plan id keep the parts of one

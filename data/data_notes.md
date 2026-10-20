@@ -413,6 +413,13 @@ Figures are in the tables above; the notes say why.
   it (`exam_sessions`). The timetable tab (from 2025) is not read.
   `.anon_ntnu()` removes the contact block (course coordinator,
   teachers); the responsible unit stays, and the dedup hash ignores it
+- The arbeidskrav are listed under “Mer om vurdering” (“OBLIGATORISKE
+  ARBEIDSKRAV”, “Obligatoriske aktiviteter:”), often with only
+  “Obligatoriske arbeidskrav iht. emnebeskrivelsen” under the coursework
+  heading; since 2026-10-20 the block moves from the assessment section
+  to coursework requirements (`section_inline_coursework`). Arbeidskrav
+  and “Vurderingsform:” lines under Læringsformer stay in teaching
+  methods (52 and 19 sections)
 - A course whose plan is only in English (master’s courses at Gjøvik in
   the pilot sample: IMT4127 2022, IMT4312 2025, MACS490 2025, SMF1081
   spring 2022) has a Norwegian page whose course content, and mostly

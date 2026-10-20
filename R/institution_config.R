@@ -167,7 +167,10 @@ institution_configs <- list(
     # the contact block's sub-headings and the exam sessions. An old-layout
     # "Vurderingsordning: ..." h3 is the tab's text, not a heading.
     section_heading_selector = "h2, h3:not(.exam-assessment-form)",
-    section_subheading_selector = "h4"
+    section_subheading_selector = "h4",
+    # "Mer om vurdering" lists the arbeidskrav under "Obligatoriske
+    # arbeidskrav" or "OBLIGATORISKE AKTIVITETER", not a heading of their own
+    section_inline_coursework = TRUE
   ),
 
   inn = list(

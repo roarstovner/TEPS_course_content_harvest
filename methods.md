@@ -1083,6 +1083,40 @@ use the whole plan.
 and obligatory-activity paragraphs inside an assessment block are moved
 to coursework requirements (since 2026-10-01).
 
+**NTNU’s coursework block under the assessment goes to coursework
+requirements.** NTNU lists the arbeidskrav in “Mer om vurdering”, under
+a line of their own (“OBLIGATORISKE ARBEIDSKRAV”, “Obligatoriske
+aktiviteter:”), while its coursework section often says only
+“Obligatoriske arbeidskrav iht. emnebeskrivelsen”. The split that Nord
+and UiT use is on for NTNU, and a gate heading now takes the lines under
+it, and the paragraphs after it that are list items or still speak of a
+gate, up to the next heading or the first line about the exam
+(“Eksamen:”, “Vurderingsordning …:”, “Muntlig eksamen.”, “Evaluering”).
+Any lead-in or label in the split also stops at such an exam label.
+*Why:* by the spec arbeidskrav are coursework requirements also when the
+page lists them under assessment; the sections audit of 2026-10-17 found
+them in 876 of 2,299 NTNU assessment sections. *Rejected:* an NTNU-only
+rule; taking the block to the end of the section or to the next blank
+line (NTNU’s paragraphs often have none, and the exam description
+followed); moving every sentence that mentions arbeidskrav (“Arbeidskrav
+må være godkjent før eksamen” follows the rule as at Nord: a line that
+starts with the gate moves). *Consequence:* 891 NTNU plans change (875
+in the teacher-education frame): their requirements move from assessment
+to coursework requirements, 7 assessment sections that held only
+requirements go, and one plan gets a coursework section. NTNU assessment
+sections that mention arbeidskrav fall from 876 to 146, those with a
+bare “Obligatoriske arbeidskrav” line from 555 to 0; the median NTNU
+assessment section falls from 403 to 267 characters and the coursework
+section grows from 53 to 103. At Nord (10 plans) and UiT (16) a gate
+heading now also takes the lines under it that the old rule left in
+assessment (the pass/fail rule of an attendance requirement, “Studenten
+er forpliktet til å … levere … vurderingsskjema”, a requirement after a
+lead-in). A few NTNU plans with no paragraph breaks move one assessment
+sentence along (4 found: “Masteroppgaven skrives normalt i monografiform
+…”). Arbeidskrav and “Vurderingsform:” lines under NTNU’s teaching
+methods stay (52 and 19 sections); the split reads only assessment.
+`course_plan` and the plan ids do not change. *Since:* 2026-10-20.
+
 **Assessment holds the exam aids, the exam language and the notices
 about the assessment.** A heading for the permitted aids (“Hjelpemidler
 til eksamen”, “Hjelpemiddel ved eksamen”, “Tillatte hjelpemidler”) or

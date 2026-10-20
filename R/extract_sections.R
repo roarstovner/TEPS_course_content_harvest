@@ -414,8 +414,24 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "deltakelse i undervisning(?:en)? er obligatorisk)\\b"
 )
 
+# A gate line that heads a block of its own: "OBLIGATORISKE ARBEIDSKRAV",
+# "Obligatoriske aktiviteter/arbeidskrav:", "Arbeidskrav" (ntnu's "Mer om
+# vurdering"); a gate line by itself, so not nord's "Arbeidskrav (AK):".
+.coursework_heading_regex <- paste0(
+  "(?i)^\\s*(?:obligatoriske? \\w+(?:/\\w+)?|arbeidskrav(?:ene)?)\\s*[:：]?\\s*$")
+# A line that starts the assessment proper: "Eksamen:", "Vurderingsordning
+# for emnet:", "Karakter: Bokstavkarakterer", "EKSAMEN"; not "Vurdering:
+# Godkjent/ikke godkjent", which is the gate's own.
+.assessment_label_regex <- paste0(
+  "(?i)^\\s*(?:eksamen|vurdering|vurderingsordning|vurderingsform|eksamensform|karakter(?:er)?)\\b",
+  "(?:[^:：.\\n]{0,40}[:：](?!\\s*(?:godkjent|bestått)\\b)|\\s*$)")
+
 # Move coursework-gate lines from assessment into coursework_requirements. A
-# gate line that is a label takes what it names along. A colon-ended lead-in
+# gate heading (ntnu) takes the lines under it, and the paragraphs after it
+# that are list items or still speak of a gate, up to a line about the exam;
+# over a colon-ended lead-in ("Arbeidskrav:", "Følgende arbeidskrav ...:",
+# uit) it is a label like any other.
+# Any other gate line that is a label takes what it names along. A colon-ended lead-in
 # ("Følgende arbeidskrav må være godkjent ...:", uit) takes the rest of its
 # paragraph, or the next paragraph when it ends its own. A label without one
 # ("Obligatorisk deltakelse (OD)", nord) takes the next paragraph unless that
@@ -435,11 +451,31 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   blank <- !nzchar(trimws(lines))
   label <- .is_label(lines)
   colon <- grepl("[:：]\\s*$", lines)
-  stop <- !gate & grepl(.component_label_regex, lines, perl = TRUE)
+  stop <- !gate & (grepl(.component_label_regex, lines, perl = TRUE) |
+                     grepl(.assessment_label_regex, lines, perl = TRUE))
   n <- length(lines)
+  heading <- gate & grepl(.coursework_heading_regex, lines, perl = TRUE)
+  # where a gate heading's block ends: a paragraph (not a list item) that
+  # does not speak of the gate, a heading naming other information, or a line
+  # about the exam (in its first words) that does not speak of the gate
+  item <- grepl("^\\s*(?:[-•*o]\\s|\\d+[.)])", lines)
+  talk <- grepl(paste0("(?i)arbeidskrav|obligatori|godkjen|kompensatorisk|øving(?!s)|",
+                       "fravær|oppmøte|tilstedeværelse"), lines, perl = TRUE)
+  ends <- !gate & !talk & !blank & ((!item & (c(TRUE, blank[-n]) | (label & grepl("(?i)informasjon", lines)))) |
+    (!grepl("^\\s*[-•*o]\\s", lines) & grepl(
+      "(*UCP)(?i)^\\W*(?:\\w+\\W+){0,5}(?:\\w*eksam|(?<!\\w)(?:(?:del)?vurdering|evaluering|karakter)(?:en|er|ene)?\\b)",
+      lines, perl = TRUE)))
+  block <- logical(n)
   for (k in which(gate & (label | colon))) {
     from <- which(!blank & seq_len(n) > k)[1]
-    if (is.na(from) || stop[from] || (!colon[k] && label[from])) next
+    if (block[k] || is.na(from) || stop[from]) next
+    if (heading[k] && !(gate[from] && colon[from])) {
+      to <- which((stop | ends) & seq_len(n) > from)[1]
+      block[from:(if (is.na(to)) n else to - 1)] <- TRUE
+      gate <- gate | block
+      next
+    }
+    if (!colon[k] && label[from]) next
     repeat {
       to <- which((blank | stop) & seq_len(n) > from)[1]
       gate[from:(if (is.na(to)) n else to - 1)] <- TRUE
