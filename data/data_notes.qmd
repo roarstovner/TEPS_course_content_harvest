@@ -223,7 +223,7 @@ Figures are in the tables above; the notes say why.
 - No plans before 2022: INN's site starts in 2022, so the URL builder returns NA for earlier years
 - Some pages are the course search page ("Emnesøket gjelder kun fra ...") instead of a plan; the anonymizer turns them into NA
 - Some courses are published in both Norwegian and English
-- A page whose semester's plan is not published yet says "Emnebeskrivelsen for valgt semester er ikke publisert enda. Her er den siste versjonen vi har tilgjengelig." and shows a later version ("Undervisningssemestre" 2026 or later). It is not that offering's plan, so the offering gets no plan: 1,077 offerings, 384 of the 407 pages from 2022 and about half of 2023-2025. The April 2026 harvest shows the same notice on the same pages
+- Where the requested semester has no version, the page shows the latest one, mostly with the notice "Emnebeskrivelsen for valgt semester er ikke publisert enda. Her er den siste versjonen vi har tilgjengelig.", sometimes without it (2MNK172-2 and 2MNK172S-2 spring 2022 to spring 2025 show the version from autumn 2025; INN3024-1 in 2023 "Teaching semester 2027 Spring"). The version's start semester (the selected "Startsemestre", `page_year`) gives its academic year; where that is after the offering's, the offering gets no plan: 1,136 offerings, 388 of the 407 from 2022 (since 2026-10-20; before, the notice alone decided). The April 2026 harvest shows the same notice on the same pages
 
 ---
 

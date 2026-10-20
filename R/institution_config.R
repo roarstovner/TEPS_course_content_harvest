@@ -26,7 +26,7 @@
 # page_year: function(html) giving the academic year (its first calendar year)
 #            of the plan a page shows, where the page says so; an offering
 #            whose page shows a later year gets no plan (a later version,
-#            course_plan_spec.md). nord, uis.
+#            course_plan_spec.md). inn, nord, uis.
 #
 # url_year: "academic"  the URL's year is the academic year the page is for
 #                       (ntnu, hvl, oslomet: "/2025" is 2025/26; uis: the
@@ -180,6 +180,14 @@ institution_configs <- list(
                      "[not(div[contains(@class, 'facts-label')][normalize-space() = 'Forkunnskapskrav' or ",
                      "normalize-space() = 'Required prerequisite knowledge'])]")),
     plan_years = "url",
+    # The start semester of the version the page shows (the selected
+    # "Startsemestre"), in Norwegian also on the English page: the latest
+    # version where the requested semester has none, with or without the
+    # notice "Emnebeskrivelsen for valgt semester er ikke publisert enda"
+    page_year = function(html) {
+      m <- stringr::str_match(html, 'data-readinglist-start-semester="(\\d{4}) (Vår|Spring)?')
+      as.integer(m[, 2]) - !is.na(m[, 3])
+    },
     section_strategy = "html",
     # inn marks most section headings with <div class="label"> (and the facts
     # box with <div class="facts-label">); only Læringsutbytte and Pensum are

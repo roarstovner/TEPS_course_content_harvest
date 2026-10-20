@@ -141,12 +141,12 @@ anonymize_text <- function(institution, text,
 .anon_inn <- function(txt) {
   # Filter placeholder/error pages as NA
   if (grepl("Emnesøket gjelder kun fra", txt, fixed = TRUE)) return(NA_character_)
-  # "... ikke publisert enda. Her er den siste versjonen vi har tilgjengelig.":
-  # the page shows a later plan, not the requested semester's
-  if (grepl("Emnebeskrivelsen for valgt semester er ikke publisert enda", txt, fixed = TRUE))
-    return(NA_character_)
 
   txt |>
+    # the notice that the page shows the latest version; whether that version
+    # is later than the offering's is read from the page (`page_year`)
+    stringr::str_remove(paste0("(?m)^Statusmelding\\nEmnebeskrivelsen for valgt semester er ikke publisert enda\\.",
+                               "[^\\n]*\\n")) |>
     stringr::str_remove_all("(?m)^\\d{4}\\s+(?:Høst|Vår|Autumn|Spring)(?:,\\s*\\d{4}\\s+(?:Høst|Vår|Autumn|Spring))*\\s*$")
 }
 

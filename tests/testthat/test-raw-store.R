@@ -174,6 +174,14 @@ test_that("nord: the academic year of the plan a page shows", {
                     "<div>Course description for 2025/26</div>")), c(2026L, 2025L))
 })
 
+test_that("inn: the academic year of the start semester the page shows", {
+  py <- get_institution_config("inn")$page_year
+  rl <- function(s) sprintf('<span class="readinglist-start-semester" data-readinglist-start-semester="%s"></span>', s)
+  # spring belongs to the academic year before; Norwegian also on the English page
+  expect_equal(py(c(rl("2025 Haust"), rl("2027 Vår"), rl("2024 Høst"), "<p>Emnesøket</p>", NA)),
+               c(2025L, 2026L, 2024L, NA, NA))
+})
+
 test_that("uis: the academic year selected in the course page's menu", {
   py <- get_institution_config("uis")$page_year
   menu <- paste0('<option value="https://www6.uis.no/Stine/EMNE/2017/H&Oslash;ST/B/X_1.pdf" selected>\n',

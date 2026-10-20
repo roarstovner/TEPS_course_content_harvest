@@ -405,10 +405,11 @@ test_that("INN: placeholder pages return NA", {
   input <- "Emnesøket gjelder kun fra 2022. Noe annet"
   result <- anonymize_text("inn", input, .progress = FALSE)
   expect_true(is.na(result))
-  # a later version shown in place of the requested semester's plan
-  later <- paste0("Statusmelding\nEmnebeskrivelsen for valgt semester er ikke publisert enda. ",
-                  "Her er den siste versjonen vi har tilgjengelig.\nEmnets innhold\nTekst")
-  expect_true(is.na(anonymize_text("inn", later, .progress = FALSE)))
+  # the notice that the page shows the latest version goes; the version's
+  # year is `page_year`
+  latest <- paste0("Statusmelding\nEmnebeskrivelsen for valgt semester er ikke publisert enda. ",
+                   "Her er den siste versjonen vi har tilgjengelig.\nEmnets innhold\nTekst")
+  expect_equal(anonymize_text("inn", latest, .progress = FALSE), "Emnets innhold\nTekst")
 })
 
 test_that("INN: structural headings preserved for readability", {
