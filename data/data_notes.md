@@ -1,14 +1,14 @@
 # Data Quality Notes
 
 
-Generated: 2026-10-19
+Generated: 2026-10-20
 
 ## Overview
 
 | Institution | Rows | Codes | Years | Extracted OK | Rate | Median chars | Unique plans | Dedup % |
 |:---|---:|---:|:---|---:|:---|---:|---:|:---|
 | hiof | 1887 | 333 | 2007-2025 | 852 | 45.2% | 7151 | 826 | 3.1% |
-| hivolda | 1363 | 200 | 2016-2025 | 667 | 48.9% | 4593 | 584 | 12.4% |
+| hivolda | 22740 | 2843 | 2000-2025 | 5181 | 22.8% | 4220 | 4331 | 16.4% |
 | hvl | 3777 | 486 | 2017-2025 | 3488 | 92.3% | 4398 | 1910 | 45.2% |
 | inn | 3040 | 377 | 2018-2025 | 1956 | 64.3% | 4150 | 609 | 16.5% |
 | mf | 237 | 122 | 2025 | 26 | 11.0% | 4056 | 26 | 0.0% |
@@ -27,7 +27,7 @@ Generated: 2026-10-19
 | uit | 6868 | 714 | 2004-2025 | 3232 | 47.1% | 4259 | 2324 | 27.6% |
 | usn | 3219 | 493 | 2018-2025 | 1282 | 39.8% | 10538 | 1224 | 4.4% |
 
-**Total**: 44150 rows, 29968 with extracted text (67.9%), 15647 unique
+**Total**: 65527 rows, 34482 with extracted text (52.6%), 19406 unique
 plans.
 
 **Columns:**
@@ -58,7 +58,7 @@ offerings with a plan, by period:
 | Institution | –2014 | 2015–17 | 2018–19 | 2020–21 | 2022–23 | 2024– |
 |:------------|:------|:--------|:--------|:--------|:--------|:------|
 | hiof        | 4%    | 100%    | 43%     | 49%     | 45%     | 46%   |
-| hivolda     |       | 42%     | 51%     | 50%     | 49%     | 48%   |
+| hivolda     | 0%    | 30%     | 45%     | 45%     | 48%     | 48%   |
 | hvl         |       | 61%     | 97%     | 94%     | 93%     | 91%   |
 | inn         |       |         | 0%      | 0%      | 100%    | 100%  |
 | mf          |       |         |         |         |         | 11%   |
@@ -96,7 +96,7 @@ year) that have a plan in at least one semester:
 | Institution | Course-years | Both semesters in DBH | Both reg., plan in one | Both reg., plan in both | Both reg., no plan | Course-years with plan | Row rate |
 |:---|---:|:---|---:|---:|---:|:---|:---|
 | hiof | 1029 | 83% | 720 | 8 | 130 | 82% | 45.2% |
-| hivolda | 722 | 89% | 574 | 11 | 56 | 91% | 48.9% |
+| hivolda | 12913 | 76% | 4412 | 193 | 5222 | 39% | 22.8% |
 | hvl | 2025 | 87% | 165 | 1542 | 45 | 96% | 92.3% |
 | inn | 1593 | 91% | 647 | 25 | 775 | 44% | 64.3% |
 | mf | 122 | 94% | 25 | 0 | 90 | 21% | 11.0% |
@@ -132,7 +132,7 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 | Institution | Without plan | 404 | No URL | Fetch error | Page, no plan | No page | Between plans |
 |:---|---:|---:|---:|---:|---:|---:|---:|
 | hiof | 185 | 185 | 0 | 0 | 0 | 0 | 6 |
-| hivolda | 63 | 0 | 63 | 0 | 0 | 0 | 10 |
+| hivolda | 7804 | 0 | 7804 | 0 | 0 | 0 | 133 |
 | hvl | 79 | 79 | 0 | 0 | 0 | 0 | 1 |
 | inn | 889 | 0 | 584 | 0 | 305 | 0 | 7 |
 | mf | 96 | 0 | 0 | 0 | 0 | 96 | 0 |
@@ -234,6 +234,12 @@ Figures are in the tables above; the notes say why.
   matching “Haust” to “Høst”
 - Rows without a plan are mostly semesters in which the course was not
   taught
+- All DBH courses since 2000 were harvested 2026-10-20. The course pages
+  list versions from autumn 2015 on, so none of the 6,326 course-years
+  before 2015 has a plan (3,981 of them are codes with no page on the
+  site), nor has spring 2015. In 2016–2025, 4,769 of 5,830 course-years
+  have a plan (82%); of the rest, 162 are codes with no page and 899 are
+  pages that list no version for that year
 
 ------------------------------------------------------------------------
 

@@ -206,6 +206,7 @@ Figures are in the tables above; the notes say why.
 
 - Semester-specific pages have numeric ids (e.g. `/emne/MGL5-10NO2B/12177`) that metadata cannot give; `resolve_urls_hivolda_batch()` reads them from the course's base page, matching "Haust" to "Høst"
 - Rows without a plan are mostly semesters in which the course was not taught
+- All DBH courses since 2000 were harvested 2026-10-20. The course pages list versions from autumn 2015 on, so none of the 6,326 course-years before 2015 has a plan (3,981 of them are codes with no page on the site), nor has spring 2015. In 2016–2025, 4,769 of 5,830 course-years have a plan (82%); of the rest, 162 are codes with no page and 899 are pages that list no version for that year
 
 ---
 
