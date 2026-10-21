@@ -99,21 +99,26 @@ resolve_course_urls <- function(df,
     cli::cli_alert_success("Checkpoint saved with {nrow(updated_checkpoint)} courses")
   }
 
-  # Merge back into original df
-  # Select columns that exist in resolved (USN includes html, others may not)
-  update_cols <- intersect(c("course_id", "url", "html"), names(resolved))
+  # Merge back into original df: the rows resolved now and the checkpoint's
+  # rows of the offerings resolved before (USN includes html, others may not)
+  cols <- c("course_id", "url", "html")
+  merged <- dplyr::bind_rows(
+    if (!is.null(checkpoint)) {
+      checkpoint |>
+        dplyr::filter(course_id %in% df$course_id) |>
+        dplyr::select(dplyr::any_of(cols))
+    },
+    resolved |> dplyr::select(dplyr::any_of(cols))
+  )
+  merged <- merged[!duplicated(merged$course_id, fromLast = TRUE), ]
 
-  # Ensure df has html column if resolved has it
-  if ("html" %in% names(resolved) && !"html" %in% names(df)) {
+  # Ensure df has html column if the merged rows have it
+  if ("html" %in% names(merged) && !"html" %in% names(df)) {
     df <- df |> dplyr::mutate(html = NA_character_)
   }
 
   df |>
-    dplyr::rows_update(
-      resolved |> dplyr::select(dplyr::all_of(update_cols)),
-      by = "course_id",
-      unmatched = "ignore"
-    )
+    dplyr::rows_update(merged, by = "course_id", unmatched = "ignore")
 }
 
 #' Resolve URLs for a batch of Hivolda courses
