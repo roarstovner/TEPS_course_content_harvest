@@ -1,7 +1,7 @@
 # Data Quality Notes
 
 
-Generated: 2026-10-20
+Generated: 2026-10-21
 
 ## Overview
 
@@ -354,6 +354,17 @@ Figures are in the tables above; the notes say why.
 - The `/studietilbud/emner/` URLs are rendered in the browser, so the
   harvest uses
   `/for-studenter/Studie-%20og%20emneplaner/emneplan/{CODE}/{YYYY-YYYY}`
+- Courses taught in English (the Global Journalism master’s, GJ and IKF
+  codes) have a plan with English headings, the same JSON fields as the
+  Norwegian ones. Since 2026-10-21 they map like the Norwegian ones
+  (“Introduction” course content, “Teaching and learning methods” and
+  “Practice” teaching methods, “Final assessment” assessment, “Syllabus”
+  the reading list, as “Pensum”); before, their 14 plans (none in the
+  teacher-education frame) had no teaching methods and lost the
+  introduction, the final assessment and the syllabus. “Scope”, “Course
+  evaluation”, “Relevance within study programme”, “Credit reductions”,
+  “Incompatible courses” and “Other rules” map to nothing, as their
+  Norwegian headings do
 
 ------------------------------------------------------------------------
 
