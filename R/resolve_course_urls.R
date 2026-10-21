@@ -357,8 +357,7 @@ uio_course_folders <- function(index = "https://www.uio.no/sitemapindex.xml") {
 #' Resolve URLs for a batch of UiT courses via document ID discovery
 #'
 #' For each unique course_code, fetches the active page /utdanning/aktivt/emne/{CODE}
-#' and parses the <select> dropdown to find historical document IDs.
-#' Option text format: "{CODE}: {H|V} {YEAR}" where H=Høst, V=Vår.
+#' and reads its documents with uit_semester_documents().
 #'
 #' @param df A tibble with course_code, year, semester_name columns
 #' @param .progress Show progress bar
@@ -378,28 +377,7 @@ resolve_urls_uit_batch <- function(df, .progress = TRUE) {
     tryCatch({
       base_url <- paste0("https://uit.no/utdanning/aktivt/emne/", toupper(code))
       polite_pause()
-      page <- site_html(base_url)
-
-      # Find <option> elements with p_document_id in value
-      options <- page |>
-        rvest::html_elements("option[value*='p_document_id']")
-
-      for (opt in options) {
-        href <- rvest::html_attr(opt, "value")
-        text <- trimws(rvest::html_text2(opt))
-
-        # Parse "{CODE}: {H|V} {YEAR}" from option text
-        m <- stringr::str_match(text, ":\\s+([HV])\\s+(\\d{4})")
-        if (!is.na(m[1])) {
-          year <- as.integer(m[3])
-          sem <- dplyr::case_match(m[2], "H" ~ "Høst", "V" ~ "Vår", .default = NA_character_)
-
-          full_url <- paste0("https://uit.no", href)
-          lookup_rows <- c(lookup_rows, list(tibble::tibble(
-            course_code = code, year = year, semester_name = sem, url = full_url
-          )))
-        }
-      }
+      lookup_rows <- c(lookup_rows, list(uit_semester_documents(site_html(base_url), code)))
     }, error = function(e) {
       cli::cli_alert_warning("Failed to fetch listing for {code}: {e$message}")
     })
@@ -421,6 +399,43 @@ resolve_urls_uit_batch <- function(df, .progress = TRUE) {
   df |>
     dplyr::select(-url) |>
     dplyr::left_join(lookup, by = c("course_code", "year", "semester_name"))
+}
+
+#' The plan documents of a UiT course page, by semester
+#'
+#' The active page /utdanning/aktivt/emne/{CODE} shows the course's latest
+#' document (its semester under "Semester / år", e.g. "Høst 2025", "Autumn
+#' 2025"; its id only in the login link, `securerefresh?p_url=...?p_document_id=`)
+#' and lists the others in a <select> ("Andre år og semester"; option text
+#' "{CODE}: H 2020" / "{CODE}: V 2021"), not the one shown. The shown one is
+#' added for a semester the list does not have. A page "Error rendering
+#' component" (no course with this code) has neither.
+#'
+#' @param page The active page (an xml_document)
+#' @param code The course code
+#' @return Tibble of course_code, year, semester_name, url, in picker order,
+#'   the shown document last
+uit_semester_documents <- function(page, code) {
+  opts <- rvest::html_elements(page, "option[value*='p_document_id']")
+  m <- stringr::str_match(rvest::html_text2(opts), ":\\s+([HV])\\s+(\\d{4})")
+  docs <- tibble::tibble(course_code = code, year = as.integer(m[, 3]),
+                         semester_name = unname(c(H = "Høst", V = "Vår")[m[, 2]]),
+                         url = paste0("https://uit.no", rvest::html_attr(opts, "value")))
+  docs <- docs[!is.na(m[, 1]), ]
+
+  shown <- stringr::str_match(rvest::html_text2(rvest::html_element(page, "#semester .sub_hero_text_innhold")),
+                              "(Høst|Vår|Autumn|Spring)\\s+(\\d{4})")
+  id <- stringr::str_match(rvest::html_attr(rvest::html_element(page, "a[href*='securerefresh']"), "href"),
+                           "p_document_id=([1-9]\\d*)")[, 2]
+  if (!is.na(shown[1]) && !is.na(id)) {
+    sem <- c(Høst = "Høst", Autumn = "Høst", Vår = "Vår", Spring = "Vår")[[shown[2]]]
+    year <- as.integer(shown[3])
+    if (!any(docs$year == year & docs$semester_name == sem)) {
+      docs <- tibble::add_row(docs, course_code = code, year = year, semester_name = sem,
+                              url = paste0("https://uit.no/utdanning/emner/emne?p_document_id=", id))
+    }
+  }
+  docs
 }
 
 #' One UiT document per semester
