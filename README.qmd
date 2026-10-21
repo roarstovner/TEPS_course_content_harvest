@@ -1231,6 +1231,16 @@ its code prefix (`ENG`) have, else the one of its DBH department
 case (`sv/iss/sos9009`), and the URL must be too; Ø is O (`MØNA2504` is in
 `hf/ikos/MONA2504/`).
 
+**UiB.** A page is
+`https://www4.uib.no/studier/emner/{code}?start_semester={year}{V|H}` (the
+code in lower case, a space as `%20`; summer is H). A course has one page
+with a semester picker back to 2004; a course UiB no longer offers, a
+master's thesis, a UNIS course and most PhD courses have no page in any
+semester (404). UiB's site also answers 404 now and then for pages it has: in the
+pilot of 2026-10-17, 29 of the 74 course-years that answered 404 gave a page
+on 2026-10-21. After a harvest and `tar_make()`, run `harvest_all(institutions
+= "uib", retry = "not_found")` once.
+
 **HiOF.** A page is `/studier/emner/{folder}/{year}/{var|host}/{code}.html`
 (one page per semester, the code in lower case), in a faculty or department
 folder DBH does not give: `lusp/{lusp,pil,res,slik}/`, `hvo/{shb,vlo}/`,
