@@ -402,6 +402,15 @@ Figures are in the tables above; the notes say why.
 - Read from `div.node__content`: the plan and the sidebar’s facts
   (language, credits, faculty, campus) after it, in no section; not the
   sidebar’s semester picker, staff and Leganto link
+- The arbeidskrav and compulsory attendance are mostly lines inside the
+  assessment text (“Arbeidskrav (AK): …”, “OD: Obligatorisk deltakelse
+  …”, “To arbeidskrav.”, “Coursework requirements:”); they move to
+  coursework requirements (`section_inline_coursework`; abbreviations,
+  number words and English since 2026-10-21). “Arbeidskrav og
+  hjemmeeksamen (3 dager)” stays in assessment and is copied. Gate lines
+  under Læringsaktiviteter stay in teaching methods (MET2000 spring
+  2022’s “Arbeidskrav:” block, SYK5026 autumn 2025’s OD and AK
+  paragraphs)
 
 ------------------------------------------------------------------------
 

@@ -403,28 +403,48 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 
 # Lines in an assessment block that state a coursework gate. nord
 # writes them as "Arbeidskrav (AK): ..." or "Obligatorisk deltakelse (OD): ..."
-# inside one undifferentiated vurdering block, with no heading to split on;
-# uit as "Følgende arbeidskrav må være godkjent før ...:" and a list.
+# inside one undifferentiated vurdering block, with no heading to split on,
+# or by the abbreviation alone ("AK: Inntil tre arbeidskrav", "• OD
+# Obligatorisk deltakelse", "To arbeidskrav.", English "Coursework
+# requirements:"); uit as "Følgende arbeidskrav må være godkjent før ...:"
+# and a list.
 .inline_coursework_regex <- paste0(
-  "(?i)^\\s*(?:(?:(?:inntil|minst|opptil) )?\\d+ (?:obligatoriske )?arbeidskrav|",
+  "(?i)^\\s*(?:[-•*]\\s*)?(?:(?:(?:inntil|minst|opptil) )?",
+  "(?:\\d+|en|ett?|ei|to|tre|fire|fem|seks|sju|syv|åtte|ni|ti) (?:\\w+ )?arbeidskrav(?:ene|et)?|",
   "følg(?:ende|jande) (?:obligatoriske )?arbeidskrav|arbeidskrav(?:ene|et)?|",
-  "(?:AK|OD|OA)\\d+\\b|",                       # nord: AK1, OD2 under their label
+  "(?-i:AK|OD|OA)\\d*|",                         # nord: AK, OD2 as their label
   "obligatoriske? (?:deltakelse|deltagelse|deltaking|arbeid|arbeidskrav|",
   "aktivitet(?:er)?|oppmøte|frammøte|fremmøte)|",
-  "deltakelse i undervisning(?:en)? er obligatorisk)\\b"
+  "deltakelse i undervisning(?:en)? er obligatorisk|coursework(?: requirements?)?|",
+  "(?:compulsory|mandatory) (?:participation|attendance|work|assignments?|",
+  "(?:learning )?activit(?:y|ies)))\\b"
 )
+# A gate line that names an exam component too ("Arbeidskrav og
+# hjemmeeksamen (3 dager)", nord), or counts towards the grade
+# (.graded_component_regex): it stays in assessment and is copied.
+.coursework_and_exam_regex <- "(?i)arbeidskrav\\w* (?:og|\\+|samt) (?:\\w+ ){0,2}\\w*eksamen\\b"
+# A component that counts towards the grade ("teller 100/100 av
+# karakteren", "represents 100/100 of the grade", "Vektes 40 %"); a gate
+# counts 0/100.
+.graded_component_regex <- paste0(
+  "(?i)(?<![\\d/])[1-9]\\d* ?/ ?100\\b|",
+  "\\b(?:vekt(?:es|as)|tel(?:ler)?|counts)\\b[^.]{0,20}\\b[1-9]\\d* ?%")
 
 # A gate line that heads a block of its own: "OBLIGATORISKE ARBEIDSKRAV",
 # "Obligatoriske aktiviteter/arbeidskrav:", "Arbeidskrav" (ntnu's "Mer om
-# vurdering"); a gate line by itself, so not nord's "Arbeidskrav (AK):".
+# vurdering"), "Compulsory assignments", "Coursework requirements:"; a gate
+# line by itself, so not nord's "Arbeidskrav (AK):".
 .coursework_heading_regex <- paste0(
-  "(?i)^\\s*(?:obligatoriske? \\w+(?:/\\w+)?|arbeidskrav(?:ene)?)\\s*[:：]?\\s*$")
+  "(?i)^\\s*(?:obligatoriske? \\w+(?:/\\w+)?|arbeidskrav(?:ene)?|coursework(?: requirements?)?|",
+  "(?:compulsory|mandatory) \\w+(?: \\w+)?)\\s*[:：]?\\s*$")
 # A line that starts the assessment proper: "Eksamen:", "Vurderingsordning
-# for emnet:", "Karakter: Bokstavkarakterer", "EKSAMEN"; not "Vurdering:
-# Godkjent/ikke godkjent", which is the gate's own.
+# for emnet:", "Karakter: Bokstavkarakterer", "EKSAMEN", "Exam:", "Further
+# on evaluation"; not "Vurdering: Godkjent/ikke godkjent", which is the gate's
+# own.
 .assessment_label_regex <- paste0(
-  "(?i)^\\s*(?:eksamen|vurdering|vurderingsordning|vurderingsform|eksamensform|karakter(?:er)?)\\b",
-  "(?:[^:：.\\n]{0,40}[:：](?!\\s*(?:godkjent|bestått)\\b)|\\s*$)")
+  "(?i)^\\s*(?:eksamen|vurdering|vurderingsordning|vurderingsform|eksamensform|karakter(?:er)?|",
+  "exam(?:ination)?|assessment|(?:further on )?evaluation|grad(?:e|ing))\\b",
+  "(?:[^:：.\\n]{0,40}[:：](?!\\s*(?:godkjent|bestått|approved|pass)\\b)|\\s*$)")
 
 # Move coursework-gate lines from assessment into coursework_requirements. A
 # gate heading (ntnu) takes the lines under it, and the paragraphs after it
@@ -437,7 +457,8 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # ("Obligatorisk deltakelse (OD)", nord) takes the next paragraph unless that
 # is a label too ("Eksamen"), and the paragraphs after it that still speak of
 # a gate ("Det er derfor obligatorisk oppmøte ..."). Both stop at the next
-# assessment component ("Hjemmeeksamen (HJ): ...").
+# assessment component ("Hjemmeeksamen (HJ): ...", "teller 100/100"). A gate
+# line that also names an exam component stays in assessment as well.
 .split_inline_coursework <- function(out) {
   i <- which(out$section == "assessment")
   if (length(i) != 1) return(out)
@@ -451,8 +472,10 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   blank <- !nzchar(trimws(lines))
   label <- .is_label(lines)
   colon <- grepl("[:：]\\s*$", lines)
+  graded <- grepl(.graded_component_regex, lines, perl = TRUE)
   stop <- !gate & (grepl(.component_label_regex, lines, perl = TRUE) |
-                     grepl(.assessment_label_regex, lines, perl = TRUE))
+                     grepl(.assessment_label_regex, lines, perl = TRUE) | graded)
+  both <- gate & (graded | grepl(.coursework_and_exam_regex, lines, perl = TRUE))
   n <- length(lines)
   heading <- gate & grepl(.coursework_heading_regex, lines, perl = TRUE)
   # where a gate heading's block ends: a paragraph (not a list item) that
@@ -460,13 +483,15 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   # about the exam (in its first words) that does not speak of the gate
   item <- grepl("^\\s*(?:[-•*o]\\s|\\d+[.)])", lines)
   talk <- grepl(paste0("(?i)arbeidskrav|obligatori|godkjen|kompensatorisk|øving(?!s)|",
-                       "fravær|oppmøte|tilstedeværelse"), lines, perl = TRUE)
+                       "fravær|oppmøte|tilstedeværelse|coursework|compulsory|mandatory|",
+                       "approved|attendance|absence"), lines, perl = TRUE)
   ends <- !gate & !talk & !blank & ((!item & (c(TRUE, blank[-n]) | (label & grepl("(?i)informasjon", lines)))) |
-    (!grepl("^\\s*[-•*o]\\s", lines) & grepl(
-      "(*UCP)(?i)^\\W*(?:\\w+\\W+){0,5}(?:\\w*eksam|(?<!\\w)(?:(?:del)?vurdering|evaluering|karakter)(?:en|er|ene)?\\b)",
+    (!grepl("^\\s*[-•*o]\\s", lines) & grepl(paste0(
+      "(*UCP)(?i)^\\W*(?:\\w+\\W+){0,5}(?:\\w*e(?:ks|x)am|(?<!\\w)(?:(?:del)?vurdering|evaluering|karakter|",
+      "assessment|evaluation|grad(?:e|ing))(?:en|er|ene)?\\b)"),
       lines, perl = TRUE)))
   block <- logical(n)
-  for (k in which(gate & (label | colon))) {
+  for (k in which(gate & (label | colon) & !both)) {
     from <- which(!blank & seq_len(n) > k)[1]
     if (block[k] || is.na(from) || stop[from]) next
     if (heading[k] && !(gate[from] && colon[from])) {
@@ -486,7 +511,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
     }
   }
   gate[blank] <- FALSE
-  out$raw_text[i] <- paste(lines[!gate], collapse = "\n")
+  out$raw_text[i] <- paste(lines[!gate | both], collapse = "\n")
   moved <- paste(lines[gate], collapse = "\n")
   j <- which(out$section == "coursework_requirements")
   if (length(j) == 1) {
@@ -513,8 +538,9 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # Godkjent/ikke godkjent", which is the gate's own.
 .assessment_midline_regex <- paste0(
   "(?<=[.!?]) ?(?=(?:Vurdering(?:sform)?|Eksamen(?:/vurderingsform)?|",
-  "Eksamensform):[ \t]*(?!(?:Godkjent|Bestått)\\b)\\S|EKSAMEN\\b|",
-  "Emnet (?:evalueres|vurderes)\\b)|(?<=\\S) (?=Eksamen består av)")
+  "Eksamensform):[ \t]*(?!(?i:godkjent|bestått)\\b)\\S|EKSAMEN\\b|",
+  "Emnet (?:evalueres|vurderes)\\b|Assessment(?: method)?:(?![ \t]*(?i:approved|pass)\\b))|",
+  "(?<=\\S) (?=Eksamen består av)")
 
 # The exam registration in ntnu's exam tab (`exam_sessions` in the config):
 # "Vurderingsordning: ..." and "Karakter: ...", then a block per exam session

@@ -1075,7 +1075,7 @@ methods section keeps the year too. *Since:* 2026-10-19.
 **Seven canonical sections** are cut from each plan by its headings,
 mapped through one heading table (`R/section_heading_map.R`): course
 content (99 % of plans), learning outcomes (98 %), assessment (98 %),
-teaching methods (94 %), coursework requirements (92 %), prerequisites
+teaching methods (94 %), coursework requirements (93 %), prerequisites
 (53 %) and reading list (36 %). Where a section is missing, the coders
 use the whole plan.
 
@@ -1116,6 +1116,35 @@ sentence along (4 found: “Masteroppgaven skrives normalt i monografiform
 …”). Arbeidskrav and “Vurderingsform:” lines under NTNU’s teaching
 methods stay (52 and 19 sections); the split reads only assessment.
 `course_plan` and the plan ids do not change. *Since:* 2026-10-20.
+
+**Nord’s abbreviated, counted and English gate lines go to coursework
+requirements; a line naming a gate and an exam part stays in assessment
+as well.** Nord also writes the gates by their abbreviation alone (“AK:
+Inntil tre arbeidskrav”, “OD: Obligatorisk deltakelse, min. 80%
+oppmøte”, “• AK Arbeidskrav, godkjent / ikke godkjent”), with a number
+word (“To arbeidskrav. Godkjent/Ikke godkjent.”) and in English
+(“Coursework requirements:”); the split now takes these, and English
+gate headings and exam labels (“Compulsory assignments”, “Exam:”,
+“Further on evaluation”) at NTNU and UiT. A lead-in also stops at a part
+that counts towards the grade (“represents 100/100 of the grade”,
+“Vektes 40 %”). A gate line that also names an exam part (“Arbeidskrav
+og hjemmeeksamen (3 dager)”) or counts towards the grade stays in
+assessment and is copied to coursework requirements. *Why:* by the spec
+arbeidskrav are coursework requirements; the pilot sections audit of
+2026-10-17 found such lines left in 14 of the 37 Nord sample plans
+without a coursework section, and one plan whose only assessment line
+had gone to coursework. *Rejected:* moving the line that names both
+wholly (the plan loses its assessment) or leaving it wholly (coursework
+loses the requirement); reading teaching methods for gate lines (2 Nord
+sections: MET2000 spring 2022’s “Arbeidskrav:” block and SYK5026 autumn
+2025’s OD and AK paragraphs; as at NTNU, the split reads only
+assessment). *Consequence:* 248 Nord plans change (233 in the
+teacher-education frame), 150 get a coursework section (138), and one
+regains its assessment section. Nord assessment sections that mention
+arbeidskrav or obligatory participation fall from 298 to 130, the median
+Nord assessment section from 407 to 382 characters. 21 NTNU plans and 17
+UiT plans change (15 UiT plans get a coursework section). `course_plan`
+and the plan ids do not change. *Since:* 2026-10-21.
 
 **Assessment holds the exam aids, the exam language and the notices
 about the assessment.** A heading for the permitted aids (“Hjelpemidler

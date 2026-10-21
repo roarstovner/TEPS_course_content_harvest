@@ -266,6 +266,7 @@ Figures are in the tables above; the notes say why.
 - A course taught in English (2025 in the pilot sample: BIO5023, BIO5031, BIO5036) has a Norwegian page with only the title, facts and "Emnet foregår på engelsk. Se engelske nettsider ved å velge engelsk språk." (a shell); since 2026-10-17 the English page of the same year and semester is fetched instead (`/en/studies/courses/{code}?year=…&semester=…`, `english_page` in the config). It has the same accordions with English headings, and its year stamp ("Course description for 2025/26", "Current active course description (last updated 2026/27)") is read like the Norwegian one. The 3 pilot offerings were fetched again that day and got the English plan
 - Accordion pages, read with a multi-element selector
 - Read from `div.node__content`: the plan and the sidebar's facts (language, credits, faculty, campus) after it, in no section; not the sidebar's semester picker, staff and Leganto link
+- The arbeidskrav and compulsory attendance are mostly lines inside the assessment text ("Arbeidskrav (AK): …", "OD: Obligatorisk deltakelse …", "To arbeidskrav.", "Coursework requirements:"); they move to coursework requirements (`section_inline_coursework`; abbreviations, number words and English since 2026-10-21). "Arbeidskrav og hjemmeeksamen (3 dager)" stays in assessment and is copied. Gate lines under Læringsaktiviteter stay in teaching methods (MET2000 spring 2022's "Arbeidskrav:" block, SYK5026 autumn 2025's OD and AK paragraphs)
 
 ---
 

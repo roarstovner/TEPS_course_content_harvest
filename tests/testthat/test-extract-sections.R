@@ -866,6 +866,52 @@ test_that("a gate heading takes its block, up to a heading or the exam (ntnu)", 
   expect_equal(s[["assessment"]], "Eksamen: Mappe\nVurdering gis med bokstavkarakter.")
 })
 
+test_that("nord abbreviations, number words and English labels are gates", {
+  split <- function(...) {
+    res <- .split_inline_coursework(tibble::tibble(section = "assessment",
+                                                   raw_text = paste(..., sep = "\n")))
+    stats::setNames(res$raw_text, res$section)
+  }
+  # "OD:"/"AK:" and "• OD"/"• AK" without a number (NOR5005, AKV6000)
+  s <- split("OD: Obligatorisk deltakelse, min. 80% oppmøte. Godkjent/ikke godkjent.", "",
+             "AK: Studenten skal ha godkjent inntil tre faglige arbeidskrav.", "",
+             "• AK Arbeidskrav, godkjent / ikke godkjent.", "",
+             "Oppgave med justerende muntlig (OMU). A-F. Vektes 100 % av karakteren.")
+  expect_equal(s[["coursework_requirements"]], paste(
+    "OD: Obligatorisk deltakelse, min. 80% oppmøte. Godkjent/ikke godkjent.",
+    "AK: Studenten skal ha godkjent inntil tre faglige arbeidskrav.",
+    "• AK Arbeidskrav, godkjent / ikke godkjent.", sep = "\n"))
+  expect_match(s[["assessment"]], "^\\s*Oppgave med justerende muntlig")
+  # a number word (ORG2007)
+  s <- split("To arbeidskrav. Godkjent/Ikke godkjent.", "", "Oppgave, individuelt. Karakter A-F.")
+  expect_equal(s[["coursework_requirements"]], "To arbeidskrav. Godkjent/Ikke godkjent.")
+  expect_equal(trimws(s[["assessment"]]), "Oppgave, individuelt. Karakter A-F.")
+  # English: the label takes its requirement, not the graded part (PRO9011)
+  s <- split("Coursework requirements:", "",
+             "Individual presentation; represents 0/100 of the grade. Approved/not approved.",
+             "Individual written assignment, represents 100/100 of the grade. Pass/fail")
+  expect_equal(s[["coursework_requirements"]], paste("Coursework requirements:",
+    "Individual presentation; represents 0/100 of the grade. Approved/not approved.", sep = "\n"))
+  expect_equal(trimws(s[["assessment"]]), "Individual written assignment, represents 100/100 of the grade. Pass/fail")
+  # an English heading stops at the evaluation (ntnu)
+  s <- split("Compulsory assignments", "A one-week field course.", "Further on evaluation",
+             "Oral exam (30%): Presentation.")
+  expect_equal(s[["coursework_requirements"]], "Compulsory assignments\nA one-week field course.")
+  expect_equal(s[["assessment"]], "Further on evaluation\nOral exam (30%): Presentation.")
+  # a line naming a gate and an exam part stays in assessment too (SOS5003)
+  s <- split("Arbeidskrav og hjemmeeksamen (3 dager)")
+  expect_equal(s[["assessment"]], "Arbeidskrav og hjemmeeksamen (3 dager)")
+  expect_equal(s[["coursework_requirements"]], "Arbeidskrav og hjemmeeksamen (3 dager)")
+  # ... as does a gate line that counts towards the grade
+  s <- split("AK og refleksjonsnotat. Bestått/ikke bestått. Vektes 50 %.")
+  expect_equal(s[["assessment"]], "AK og refleksjonsnotat. Bestått/ikke bestått. Vektes 50 %.")
+  # not a gate: lowercase "od", a word that starts with AK, a gate merely before the exam
+  out <- tibble::tibble(section = "assessment", raw_text = paste(
+    "AKV6000 vurderes med mappe.", "od: ikke en etikett", "Eksamen etter arbeidskrav og seminar.",
+    sep = "\n"))
+  expect_equal(.split_inline_coursework(out), out)
+})
+
 test_that("leading placeholders and praksis pointers go, content stays", {
   out <- tibble::tibble(
     section = c("prerequisites", "teaching_methods", "coursework_requirements"),
