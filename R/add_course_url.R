@@ -108,7 +108,11 @@ add_course_url_nla <- function(course_code, year, semester) {
 }
 
 add_course_url_nih <- function(course_code, year, semester) {
-  glue::glue("https://www.nih.no/studier/emner/{year}/{semester_to_url(semester)}/{tolower(course_code)}.html")
+  # Vortex names the page without the Norwegian letters: KRØ100 → kro100
+  # (verified for ø on 2026-10-21; å → a and æ → ae follow Vortex's rule)
+  slug <- tolower(course_code) |>
+    stringr::str_replace_all(c("ø" = "o", "å" = "a", "æ" = "ae"))
+  glue::glue("https://www.nih.no/studier/emner/{year}/{semester_to_url(semester)}/{slug}.html")
 }
 
 add_course_url_uis <- function(course_code_raw) {

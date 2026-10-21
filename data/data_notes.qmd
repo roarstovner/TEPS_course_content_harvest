@@ -239,6 +239,8 @@ Figures are in the tables above; the notes say why.
 ### NIH (Norwegian School of Sport Sciences)
 
 - Short year range. Most 404s are the other semester of a course registered in both (see "Semester registration in DBH")
+- Pages exist by year folder, `/studier/emner/{year}/{host|var}/{code}.html`, and the site publishes them for few courses before 2025. The year indexes (`/studier/emner/{year}/{host|var}/`, read 2026-10-21) list 5 pages for 2021 (teacher education, LKI), 22 for 2022 (LKI, and FRI100, FRI101, IDR107, IDR111, IDR113, SPM100, TI100) and 163 for 2025 (both semesters). Every 404 of the pilot sample's 2021 and 2022 course-years is a course the index of that year does not list (2021: 33 of 33 course-years, 2022: 31 of 33), so NIH has no page for them; the code form is not the cause (`/studier/emner/faf314.html` is 404 too). The pilot sample's 2025 404s are the other semester of a course registered in both, and the codes with Norwegian letters: the page of KRØ100 is `kro100.html`, which the harvest requested as `krø100.html` until 2026-10-21 (`add_course_url_nih()` now writes ø as o)
+- Codes with a space or hyphen that are not course codes (MAS- ESSAY, UTV-ESSAY, essays on the master's programmes) have no page in any year
 - Read from `#vrtx-fs-emne-content`: the title, the facts list (credits, department, semester, duration, language) and the plan; not the course coordinator, the table of contents' heading and the FS fetch stamp
 
 ---
