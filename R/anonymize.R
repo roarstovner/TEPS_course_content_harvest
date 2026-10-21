@@ -96,9 +96,12 @@ anonymize_text <- function(institution, text,
     stringr::str_remove_all("(?m)^Kontaktperson:?\\s*\\n[^\\n]*") |>
     # Strip "Foreleser:" + name line
     stringr::str_remove_all("(?m)^Foreleser:?\\s*\\n[^\\n]*") |>
-    # 2008-2011 layout: the closing timetable block ("Undervisning Høst 2010"
-    # + teachers glued to their roles, rooms, first lectures)
-    stringr::str_remove("(?s)(?:^|\\n)Undervisning (?:Høst|Vår|Haust) \\d{4}.*$")
+    # 2008-2011 layout: the closing timetable block ("Undervisning Høst 2010",
+    # English "Lectures Autumn 2008" + teachers glued to their roles, rooms,
+    # first lectures), up to the closing unit line, which stays
+    stringr::str_remove(paste0("(?s)(?:^|\\n)(?:Undervisning|Lectures|Teaching) ",
+                               "(?:Høst|Vår|Haust|Autumn|Spring|Fall) \\d{4}.*?",
+                               "(?=\\n+(?:Ansvarlig enhet|Responsible unit)\\b|$)"))
 }
 
 .anon_hvl <- function(txt) {
@@ -135,7 +138,10 @@ anonymize_text <- function(institution, text,
     # "Litteraturlista er sist oppdatert ...", "Litteraturliste sist oppdatert"
     stringr::str_remove_all("(?m)^[ \\t]*Litteratur\\w*(?: er)? sist oppdater[^\n]*") |>
     # Strip "Emneansvarlig(e):" + name lines until next "Heading:" line
-    stringr::str_remove("(?m)^Emneansvarlige?:\\s*\\n(?:(?![A-ZÆØÅ][\\w ]+:)[^\\n]*\\n?)*")
+    stringr::str_remove("(?m)^Emneansvarlige?:\\s*\\n(?:(?![A-ZÆØÅ][\\w ]+:)[^\\n]*\\n?)*") |>
+    # "Foreleser studieåret 2018-2019: <name> (<e-mail>)", the name also on
+    # the next line
+    stringr::str_remove_all("(?m)^Foreleser(?:e)? studieåret[^\\n:]*:[ \\t]*(?:\\n[ \\t]*)?\\p{Lu}[^\\n]*")
 }
 
 .anon_inn <- function(txt) {
@@ -235,6 +241,14 @@ anonymize_text <- function(institution, text,
     # and date line and the approver's name line under it
     stringr::str_replace_all(paste0("(?m)^(Godkjent)[ \\t]*\\n[^\\n]*\\d{1,2}\\.\\d{1,2}\\.\\d{2,4}[ \\t]*",
                                     "(?:\\n[ \\t]*", .name_regex, "[^\\n]*)?(?=\\n|$)"), "\\1") |>
+    # approval stamps with a name: "Godkjent 11. januar 2018 av <name>",
+    # "Første gang godkjent høst 2018 ved professor <name>, <unit>",
+    # "Approved by <name>, Dean, <date>" (the role stays)
+    stringr::str_replace_all(paste0("(?m)^(Godkjent[ \\t]+\\d{1,2}\\.[ \\t]*\\p{L}+[ \\t]+\\d{4}[ \\t]+av)[ \\t]+",
+                                    .name_regex), "\\1") |>
+    stringr::str_replace_all(paste0("(?m)^(Første gang godkjent[^\\n]{0,40}? ved (?:professor|dekan|instituttleder))[ \\t]+",
+                                    .name_regex), "\\1") |>
+    stringr::str_replace_all(paste0("(?m)^(Approved by(?:[ \\t]+the[ \\t]+Dean)?)[ \\t]+", .name_regex), "\\1") |>
     # Leganto reading-list widget: link label, "View online", and the
     # item type glued to the title ("BookMøter med barnelitteratur")
     stringr::str_remove_all("Click to view interactive reading list in Leganto") |>
@@ -298,7 +312,8 @@ anonymize_text <- function(institution, text,
   "studiekoordinator", "praksiskoordinator", "emnekoordinator", "koordinator",
   "studieprogramleder", "studieprogramleiar", "programansvarlig",
   "instituttleder", "instituttleiar", "veileder", "rettleiar",
-  "timelærer", "timelærar", "kontaktperson", "sensor", "coordinator"
+  "timelærer", "timelærar", "kontaktperson", "sensor", "coordinator",
+  "programkoordinator", "fagansvarlig"
 )
 # A whole line that is only a capitalised name (particles like "van" allowed)
 # followed by "(Role)", optionally bulleted.
@@ -359,7 +374,7 @@ anonymize_text <- function(institution, text,
 # a bracket, so a committee, a unit or a sentence under the heading stays
 # ("The Programme Committee for ...", "Institutt for ...", uib).
 .role_heading_name_regex <- paste0(
-  "(?m)^[ \\t]*(?i:", paste(c(.staff_roles, "contact person", "course leader"), collapse = "|"),
+  "(?m)^[ \\t]*(?i:", paste(c(.staff_roles, "contact person", "course leader", "administrativt ansvarlig"), collapse = "|"),
   ")(?i:e|er|ar|s)?[ \\t]*:?[ \\t]*\\n(?:[ \\t]*\\n)*[ \\t]*(?:[^\\n:]{1,60}:[ \\t]*)?",
   "(?!(?:The|Det|Den|De|Dei)[ \\t])", .names_regex, "[ \\t]*(?:[,.(][^\\n]*)?(?:\\n|$)"
 )

@@ -973,3 +973,64 @@ test_that("data/processed holds no personal data", {
     "anonymize_text()):\n",
     paste(utils::capture.output(print(as.data.frame(found))), collapse = "\n")))
 })
+
+# --- Staff names left at hiof, uib, uit, usn (pilot audit 2026-10-21) ---
+
+test_that("hiof: 'Foreleser studieåret' with the name on the line or under it", {
+  a <- anonymize_text(rep("hiof", 2), c(
+    "Vurdering\n\nForeleser studieåret 2019-2020: Kari Nordmann (kari@hiof.no)\n\nSist hentet fra FS (Felles studentsystem) 21. okt. 2026 06:36:46",
+    "Vurdering\n\nForeleser studieåret 2018-2019:\nKari Nordmann (kari@hiof.no)\n\nLitteratur\nBok"),
+    .progress = FALSE)
+  expect_false(any(grepl("Nordmann|Foreleser", a)))
+  expect_match(a[2], "Litteratur\nBok")
+})
+
+test_that("uib: a name under 'Administrativt ansvarlig' goes, a unit stays", {
+  a <- anonymize_text(rep("uib", 3), c(
+    "Emneansvarlig\nInstitutt for global helse\nAdministrativt ansvarlig\nKari Nordmann \nStudiepoeng",
+    "Emneansvarlig\nProgramstyret.\nAdministrativt ansvarlig\nDet psykologiske fakultet har det administrative ansvaret.\nStudiepoeng",
+    "Administrativt ansvarlig\nInstitutt for framandspråk\nStudiepoeng"),
+    .progress = FALSE)
+  expect_false(grepl("Nordmann", a[1]))
+  expect_match(a[1], "Institutt for global helse")
+  expect_match(a[2], "Det psykologiske fakultet har det administrative ansvaret")
+  expect_match(a[3], "Institutt for framandspråk")
+})
+
+test_that("uit: the English 2008-2011 timetable block goes, the unit line stays", {
+  txt <- paste0("Recommended reading/syllabus\nAvailable on request\n",
+                "Lectures Autumn 2008 First meeting: Sept. 2, room C-1005\t\n",
+                "Seminar\tKursansvarligKariNordmann\t\nForelesning\tForeleserF.aman.Ola Dahl\n\n",
+                "Responsible unit\nInstitutt for språkvitenskap \n")
+  a <- anonymize_text(rep("uit", 2), c(txt, sub("Lectures Autumn", "Undervisning Høst", sub("Responsible unit", "Ansvarlig enhet", txt))),
+                      .progress = FALSE)
+  expect_false(any(grepl("Nordmann|Dahl|Lectures|Undervisning|Foreleser", a)))
+  expect_match(a[1], "Responsible unit\nInstitutt for språkvitenskap")
+  expect_match(a[2], "Ansvarlig enhet\nInstitutt for språkvitenskap")
+  expect_match(a[1], "Available on request")
+})
+
+test_that("usn: approval stamps with a name keep the role, not the name", {
+  a <- anonymize_text(rep("usn", 5), c(
+    "Godkjent emneplan\n\nGodkjent av programkoordinator Kari Nordmann, mars 2019.\n\nLitteratur",
+    "Godkjent emneplan\n\nFørste gang godkjent høst 2018 ved professor Kari Nordmann, USN Handelshøyskolen.\n\nLitteratur",
+    "Godkjent emneplan\n\nGodkjent 11. januar 2018 av Kari Nordmann\n\nLitteratur",
+    "Approved course plan\n\nApproved by Kari Ola Nordmann, Dean, 30.01.2017\n\nChange description",
+    "Approved course plan\n\nApproved by the Dean Kari Nordmann 11.03.2019\n\nChange description"),
+    .progress = FALSE)
+  expect_false(any(grepl("Nordmann|Kari", a)))
+  expect_match(a[2], "USN Handelshøyskolen")
+  expect_match(a[4], "Approved by, Dean")
+  expect_true(all(grepl("Litteratur|Change description", a)))
+})
+
+test_that("usn: change-log signatures go, a reference author with the same surname stays", {
+  a <- anonymize_text("usn", paste0(
+    "Endringsbeskrivelse\n\n23.03.18 Endret til nytt kull/ programkoordinator Kari Nordmann/ fagansvarlig Ola Dahl\n\n",
+    "Litteratur\n\nStubhaug, Audun & Nordmann, T. M. (2010). Smerte."), .progress = FALSE)
+  expect_false(grepl("Kari|Ola Dahl|Dahl", a))
+  expect_match(a, "Endret til nytt kull")
+  expect_match(a, "Stubhaug, Audun & Nordmann, T. M.")
+  b <- anonymize_text("usn", "Dette avklares av fagansvarlig for emnet og programkoordinator.", .progress = FALSE)
+  expect_match(b, "fagansvarlig for emnet og programkoordinator")
+})

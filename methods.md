@@ -13,7 +13,7 @@ tag freezes this file with the data.
 
 Current data, the teacher-ed frame (below): 41 025 offerings (DBH course
 × year × semester) at 19 institutions, 26 505 of them with a plan, and
-14 742 unique plans from 18 institutions (none from Samas, below).
+14 740 unique plans from 18 institutions (none from Samas, below).
 
 ## Population and sampling frame
 
@@ -546,7 +546,7 @@ page that is not a shell, from 2026-10-19.
 
 **A plan is a unique anonymized text per institution and course code**
 (`plan_content_id`, a hash of the normalized text). Offerings with the
-same text share a plan: 26 505 offerings have 14 742 plans. *Why:*
+same text share a plan: 26 505 offerings have 14 740 plans. *Why:*
 consecutive years and both semesters mostly repeat the same text.
 *Consequence:* the id changes whenever cleaning changes the text, so
 coding is tied to a frozen release and carried to later releases with a
