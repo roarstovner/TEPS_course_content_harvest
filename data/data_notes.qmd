@@ -195,7 +195,8 @@ Figures are in the tables above; the notes say why.
 
 ### HiOF (Ostfold University College)
 
-- A plan sits in a faculty or department folder that DBH does not give, and a course no longer taught moves to `historiske-emner/` (README "Institution-Specific Notes"); since 2026-10-21 `resolve_urls_hiof_batch()` reads the folder listings of the harvested years, where before only the teacher-education folders were built (11 of the 2026-10-17 pilot's 100 course-years had a page). The selector lists fallbacks for the old and new page layouts
+- A plan sits in a faculty or department folder that DBH does not give, and a course no longer taught moves to `historiske-emner/` (README "Institution-Specific Notes"); since 2026-10-21 `resolve_urls_hiof_batch()` reads the folder listings of the harvested years, where before only the teacher-education folders were built (11 of the 2026-10-17 pilot's 100 course-years had a page; 50 after the re-harvest of 2026-10-21). The selector lists fallbacks for the old and new page layouts
+- Course-years without a page in the pilot sample (2026-10-21): the site lists no page of that code in that year's folders. Most are DBH codes the site never used: 18 of the 25 in 2007 (the site's 2007 codes are others, e.g. `hsaku10107` where DBH has AKU200), the PhD courses (no PhD folder under `/studier/emner/`), the administration's courses (FEDV316, FEHP1509; `fellesemner/` starts in 2022) and the Academy of Performing Arts (`nta/` lists 6 pages in 2019 and none after 2021, so 0 of its 10 course-years). A few have their page in the year before only: LMUKRLE11323 and LMUSPA11219, registered in 2025, are in `lusp/lusp/2024/`
 - Needs a browser-like user agent (`user_agent = "browser"`) to avoid 403s
 - Most rows without a plan are the other semester of a course registered in both (see "Semester registration in DBH")
 - Reading lists are part of the plan text; `.anon_hiof()` removes only the "Litteraturlista er sist oppdatert" line
