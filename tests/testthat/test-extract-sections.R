@@ -37,6 +37,19 @@ test_that("headings of NTNU's English pages are mapped", {
   expect_true(is.na(match_heading_to_section("Contact information")))
 })
 
+test_that("headings of NLA's English pages are mapped like their Norwegian ones", {
+  expect_equal(match_heading_to_section("Introduction"), "course_content")
+  expect_equal(match_heading_to_section("Teaching and learning methods"), "teaching_methods")
+  expect_equal(match_heading_to_section("Practice"), "teaching_methods")
+  expect_equal(match_heading_to_section("Final assessment"), "assessment")
+  expect_equal(match_heading_to_section("Assessment language"), "assessment")
+  expect_equal(match_heading_to_section("Permitted aids under examination"), "assessment")
+  expect_equal(match_heading_to_section("Syllabus"), "reading_list")
+  expect_equal(match_heading_to_section("Progression requirements"), "prerequisites")
+  expect_true(.is_label_heading("Assessment language"))
+  expect_true(is.na(match_heading_to_section("Scope")))
+})
+
 test_that("short English sub-headings only match exactly", {
   expect_equal(match_heading_to_section("Required prerequisite knowledge"), "prerequisites")
   expect_true(is.na(match_heading_to_section("Digital skills course")))

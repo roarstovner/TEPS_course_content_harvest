@@ -74,13 +74,16 @@ section_heading_patterns <- tibble::tribble(
   "hjelpemiddel ved eksamen",              "assessment",             FALSE,
   "tillatte hjelpemidler",                 "assessment",             FALSE,  # nla
   "tillatte hjelpemiddel",                 "assessment",             FALSE,
+  "permitted aids under examination",      "assessment",             TRUE,   # nla English pages
   "hjelpemidler",                          "assessment",             TRUE,
   "hjelpemiddel",                          "assessment",             TRUE,
   "examination support material",          "assessment",             TRUE,   # uio
   "eksamensspråk",                         "assessment",             TRUE,   # uio, nla
   "language of examination",               "assessment",             TRUE,
+  "assessment language",                   "assessment",             TRUE,   # nla English pages
   "vurdering og eksamen",                  "assessment",             FALSE,
   "avsluttende vurdering",                 "assessment",             FALSE,
+  "final assessment",                      "assessment",             TRUE,   # nla English pages
   "mer om vurdering",                      "assessment",             FALSE,
   "vurderingsordning",                     "assessment",             FALSE,
   "vurderingsformer",                      "assessment",             FALSE,
@@ -104,6 +107,7 @@ section_heading_patterns <- tibble::tribble(
   "forkunnskap",                           "prerequisites",          FALSE,
   "forkrav",                               "prerequisites",          FALSE,
   "progresjonskrav",                       "prerequisites",          FALSE,  # nla
+  "progression requirements",              "prerequisites",          TRUE,   # nla English pages
   "required prerequisite knowledge",       "prerequisites",          FALSE,
   "recommended prerequisite knowledge",    "prerequisites",          FALSE,
   "formal prerequisite knowledge",         "prerequisites",          TRUE,
@@ -200,6 +204,7 @@ section_heading_patterns <- tibble::tribble(
   # teaching method in the codebook, so praksis stays there by default.
   "faget i praksis",                       "teaching_methods",       FALSE,
   "praksis",                               "teaching_methods",       TRUE,
+  "practice",                              "teaching_methods",       TRUE,   # nla English pages
   "gjennomføring av praksis",              "teaching_methods",       TRUE,
   "undervisningstider",                    "teaching_methods",       TRUE,   # nmbu
   "læringsstøtte",                         "teaching_methods",       TRUE,
@@ -207,6 +212,7 @@ section_heading_patterns <- tibble::tribble(
   "teaching",                              "teaching_methods",       TRUE,
   "teaching and working methods",          "teaching_methods",       FALSE,
   "teaching and learning activities",      "teaching_methods",       FALSE,
+  "teaching and learning methods",         "teaching_methods",       TRUE,   # nla English pages
   "teaching methods",                      "teaching_methods",       FALSE,
   "teaching and organization",             "teaching_methods",       FALSE,
   "learning activities",                   "teaching_methods",       TRUE,   # nord English pages
@@ -217,6 +223,8 @@ section_heading_patterns <- tibble::tribble(
   # --- reading_list ---
   "pensumlitteratur",                      "reading_list",           FALSE,
   "pensum",                                "reading_list",           FALSE,
+  # nla English pages: their "Pensum" (a reading list, not course content)
+  "syllabus",                              "reading_list",           TRUE,
   "kursmateriell",                         "reading_list",           FALSE,
   "lesestoff",                             "reading_list",           FALSE,
   "læremidler",                            "reading_list",           FALSE,
@@ -240,6 +248,7 @@ section_heading_patterns <- tibble::tribble(
   "innledning",                            "course_content",         FALSE,
   "innleiing",                             "course_content",         FALSE,
   "introduksjon",                          "course_content",         TRUE,
+  "introduction",                          "course_content",         TRUE,   # nla English pages
   "om emnet",                              "course_content",         TRUE,   # uit
   "about the course",                      "course_content",         TRUE,
   "course content",                        "course_content",         FALSE,
@@ -254,7 +263,8 @@ section_heading_patterns$label <- section_heading_patterns$pattern %in% c(
   "hjelpemidler til eksamen", "hjelpemiddel til eksamen", "hjelpemidler ved eksamen",
   "hjelpemiddel ved eksamen", "tillatte hjelpemidler", "tillatte hjelpemiddel",
   "hjelpemidler", "hjelpemiddel", "examination support material", "eksamensspråk",
-  "language of examination", "fravær fra obligatorisk aktivitet")
+  "language of examination", "permitted aids under examination", "assessment language",
+  "fravær fra obligatorisk aktivitet")
 
 
 #' Match a heading text to a canonical section name
