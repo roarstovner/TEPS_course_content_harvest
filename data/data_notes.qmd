@@ -311,7 +311,8 @@ Figures are in the tables above; the notes say why.
 - The site has plans from 2020 on; earlier years return 404
 - DBH registers most courses in both semesters, but UiA publishes one page, so most 404s are the other semester (see "Semester registration in DBH")
 - Autumn 2023: 95 pages are shells (title and facts box, no plan), so 91 course-years have no plan between two that do. They are courses UiA now teaches in spring (94 pages say "Undervisningssemester: Vår"). Every copy UiA has rebuilt from FS since (2026-09-30, 10-06 and 10-08, by the page's "Sist hentet fra FS") is a shell, the English pages too; the full pages seen at 13:40 on 2026-10-07 were old copies, last fetched from FS in July 2024. The site no longer has these plans, so the offerings stay without one
-- URL pattern: `https://www.uia.no/studier/emner/{year}/{semester}/{course_code}.html`
+- URL pattern: `https://www.uia.no/studier/emner/{year}/{semester}/{course_code}.html`; the semester folders are `host` and `var`
+- DBH's variant suffixes `-G`, `-G2` and `-D` (MA-015-G, TFL011-G2, PRA090-D) are not in the site's code: ma-015, tfl011, pra090 answer, the codes with the suffix never do (checked 2026-10-21). Until then the builder kept the suffix and the 41 such offerings in the raw store, and 37 of the pilot's, were 404. The builder now drops the suffix. A few such courses have no page under either form (IKT623, IKT454, MA-015 and others in the 2022 and 2025 pilot years, 404 in both semesters): the site does not publish them, so they stay without a plan
 
 ---
 

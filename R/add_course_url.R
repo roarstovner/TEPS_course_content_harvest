@@ -39,8 +39,13 @@ add_course_url_ntnu <- function(course_code, year, semester) {
              "{academic_start_year(year, semester)}")
 }
 
+# DBH's variant suffixes "-G", "-G2" and "-D" (MA-015-G, TFL011-G2, PRA090-D)
+# are not in the site's code: the page is at the code without it (checked
+# 2026-10-21: ma-015, tfl011, pra090; never the code with the suffix). The
+# trailing version number ("-1") is already off in `course_code`.
 add_course_url_uia <- function(course_code, year, semester) {
-  glue::glue("https://www.uia.no/studier/emner/{year}/{semester_to_url(semester)}/{tolower(course_code)}.html")
+  code <- tolower(sub("-(G[0-9]?|D)$", "", course_code, ignore.case = TRUE))
+  glue::glue("https://www.uia.no/studier/emner/{year}/{semester_to_url(semester)}/{code}.html")
 }
 
 # UiT URL generation removed - requires document ID discovery via resolve_course_urls()
