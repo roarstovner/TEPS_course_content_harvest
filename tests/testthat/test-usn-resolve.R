@@ -4,6 +4,21 @@
 # Key test: Ensure that when a URL redirects to a different year, it's detected
 # and the URL is rejected (returns NA instead of wrong year's content)
 
+test_that("usn_page_term reads the semester of a Norwegian or English page", {
+  expect_equal(usn_page_term("Planen gjelder for:\n\n     Undervisningsstart høst 2025\n"),
+               list(year = 2025L, sem = "høst"))
+  # a course taught in English (MAR4020 autumn 2022, MET9000 spring 2025)
+  expect_equal(usn_page_term("Applies to:\n\n     Course start autumn 2022\n"),
+               list(year = 2022L, sem = "høst"))
+  expect_equal(usn_page_term("Applies to:\n     Course start spring 2025"),
+               list(year = 2025L, sem = "vår"))
+  # an old cohort plan ("Kull 2017 HØST") or an empty page: no semester
+  expect_equal(usn_page_term("Planen gjelder for:\n     Kull 2017 HØST"),
+               list(year = NA_integer_, sem = NA_character_))
+  expect_true(grepl(USN_NOT_READY, "Note: The course plan for this semester is not available yet."))
+  expect_true(grepl(USN_NOT_READY, "MERK: Emneplanen for dette semesteret er ikke klar ennå."))
+})
+
 test_that("USN URL resolution handles LH-NOD1000 across multiple years", {
   skip_on_ci()
   skip_if_not(interactive(), "Manual test - requires browser")

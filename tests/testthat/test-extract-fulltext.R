@@ -57,6 +57,12 @@ test_that("noop gives NA, pdf_split keeps the harvested text, usn is cleaned", {
                     "emneplanen fra et tidligere semester.\n\nEmnekode:")
   expect_equal(extract_fulltext_from_raw(df, list(strategy = "shadow_dom")),
                "Emneplan for Norsk 1\n\nEmnekode:")
+  # the same banner on a page in English
+  df$html <- paste0("Course plan for Research Methods\n  Note: The course plan for this semester is not ",
+                    "available yet.\n  To give you an idea about the course content, here's the course ",
+                    "plan from a previous semester.\n\nCourse code")
+  expect_equal(extract_fulltext_from_raw(df, list(strategy = "shadow_dom")),
+               "Course plan for Research Methods\nCourse code")
 })
 
 test_that("uit: the year picker and the contacts go, the responsible unit stays", {

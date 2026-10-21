@@ -448,6 +448,25 @@ uit_page_is_english <- function(url) {
            error = function(e) FALSE)
 }
 
+#' The semester a USN plan page is for
+#'
+#' "Planen gjelder for: Undervisningsstart høst 2025", on an English page
+#' (a course taught in English) "Applies to: Course start autumn 2025".
+#'
+#' @param html Text of the page (read_usn_live_html())
+#' @return List of `year` (integer) and `sem` ("høst" or "vår"), NA when the
+#'   page has no such line
+usn_page_term <- function(html) {
+  m <- stringr::str_match(html, stringr::regex(
+    "(?:Undervisningsstart|Course start)\\s+(høst|vår|autumn|spring)\\s+(\\d{4})", ignore_case = TRUE))
+  sem <- c(høst = "høst", vår = "vår", autumn = "høst", spring = "vår")[tolower(m[, 2])]
+  list(year = as.integer(m[, 3]), sem = unname(sem))
+}
+
+# The banner of a semester without a plan of its own, which shows another
+# semester's plan, in Norwegian and English
+USN_NOT_READY <- "ikke klar ennå|plan for this semester is not available yet"
+
 #' Resolve URLs for a batch of USN courses using a single browser session
 #'
 #' This function reuses a single Chrome session for all URL validations,
@@ -533,22 +552,18 @@ resolve_urls_usn_batch <- function(df, max_version = 3, checkpoint_path = NULL,
             break
           }
 
-          # Check for the expected year/semester pattern
-          pattern <- "Undervisningsstart\\s+(høst|vår)\\s+(\\d{4})"
-          match <- stringr::str_match(
-            html_content,
-            stringr::regex(pattern, ignore_case = TRUE)
-          )
+          # Check for the expected year/semester
+          shown <- usn_page_term(html_content)
 
-          if (!is.na(match[1])) {
-            displayed_year <- as.integer(match[3])
-            displayed_sem <- tolower(match[2])
+          if (!is.na(shown$year)) {
+            displayed_year <- shown$year
+            displayed_sem <- shown$sem
 
             if (displayed_year == year && displayed_sem == expected_sem_norm) {
               # The notice that the semester's plan is not ready stays from the
               # page shown before when that page showed this same plan (a
               # semester without one); a reload clears it
-              if (grepl("ikke klar ennå", html_content, fixed = TRUE)) {
+              if (grepl(USN_NOT_READY, html_content)) {
                 session$session$Page$reload()
                 polite_pause(pmax(delay %||% 5, 5))
                 html_content <- read_usn_live_html(session) %||% html_content

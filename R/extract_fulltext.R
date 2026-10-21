@@ -193,6 +193,10 @@ extract_fulltext_pdf <- function(pdf_raw) {
     stringr::str_remove(paste0("MERK:\\s*Emneplanen for dette semesteret er ikke klar ennå\\.\\s*",
                                "For at du skal få et inntrykk av hva emnet inneholder, viser vi ",
                                "derfor emneplanen fra et tidligere semester\\.\\s*")) |>
+    # the same banner on a page in English
+    stringr::str_remove(paste0("Note:\\s*The course plan for this semester is not available yet\\.\\s*",
+                               "To give you an idea about the course content, here.s the course ",
+                               "plan from a previous semester\\.\\s*")) |>
     stringr::str_replace_all("(?m)^[ \\t]+|[ \\t]+$", "") |>
     stringr::str_replace_all("\\n{3,}", "\n\n") |>
     stringr::str_trim()
