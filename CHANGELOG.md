@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- nord: inline coursework pattern misses AK/OD and English labels (#421)
 - nla: map the English plan headings (#418)
 - ntnu: arbeidskrav blocks stay in assessment (split inline coursework) (#417)
 - inn: later versions by semester, not academic year; cut the English-only banner (#434)
