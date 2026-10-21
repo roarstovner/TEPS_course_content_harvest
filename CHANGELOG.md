@@ -103,6 +103,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- uit: semester picker lists no document for 38 of 100 course-years (#442)
+- usn: version discovery finds no URL for 53 of 100 course-years (#441)
+- uia: URL form for DBH codes with a '-G' suffix (#440)
+- uib: course-years that 404 at www4.uib.no/studier/emner (#439)
+- nih: where are the plans of courses outside teacher education? (#438)
+- hiof: URLs for the faculties outside teacher education (#437)
 - nord: inline coursework pattern misses AK/OD and English labels (#421)
 - nla: map the English plan headings (#418)
 - ntnu: arbeidskrav blocks stay in assessment (split inline coursework) (#417)
