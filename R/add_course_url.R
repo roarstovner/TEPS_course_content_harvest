@@ -51,9 +51,12 @@ add_course_url_uia <- function(course_code, year, semester) {
 # UiT URL generation removed - requires document ID discovery via resolve_course_urls()
 # Active page /utdanning/aktivt/emne/{CODE} has a <select> dropdown with historical document IDs
 
+# A code with a space (the design semester blocks, "BAR 3") is percent-encoded:
+# a raw space made the request fail as a timeout; www4 has no page for them.
 add_course_url_uib <- function(course_code, year, semester) {
   sem_code <- dplyr::case_match(semester, "Vår" ~ "V", "Høst" ~ "H", .default = "H")
-  glue::glue("https://www4.uib.no/studier/emner/{tolower(course_code)}?start_semester={year}{sem_code}")
+  code <- gsub(" ", "%20", tolower(course_code), fixed = TRUE)
+  glue::glue("https://www4.uib.no/studier/emner/{code}?start_semester={year}{sem_code}")
 }
 
 add_course_url_nord <- function(course_code, year, semester) {
