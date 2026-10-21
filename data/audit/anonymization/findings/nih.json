@@ -2,8 +2,21 @@
   "check": "anonymization",
   "institution": "nih",
   "model": "opus",
-  "n_courses_reviewed": 8,
+  "n_courses_reviewed": 21,
   "n_suspects_reviewed": 0,
-  "overall_assessment": "Anonymization works well for NIH: none of the 8 packet courses (all random controls, since the pre-pass flagged nothing among the 81 offerings) contains names, e-mails, phone numbers or admin dates, and the only removals are semester-year stamps on the reading-list line ('Pensumliste for våren 2025.', 'Anbefalt litteratur for høsten2025.'). These are correctly removed and leave a harmless dangling 'for .'; no course content (week numbers, '8-18 år', '4000 ord', unyeared 'vårsemesteret') was lost. A scan of all 81 NIH plans outside the packet confirms no PII and finds one leftover the regexes miss: nih_LKI200-1_2025_autumn_1 keeps the abbreviated semester code 'Pensumliste for H2025-V2026.' (fix: add str_remove_all(\"\\\\b[HV](?:19|20)\\\\d{2}\\\\b\") to .anon_generic() with a test), plus a cosmetic broken archive URL '…/program-og-emneplan-arkiv//.' after the academic-year removal.",
-  "findings": []
+  "overall_assessment": "Anonymization works well for NIH: none of the 21 packet courses (all random controls; the pre-pass flagged nothing) contains staff names, e-mails, phone numbers or administrative dates, and no course content was removed (unyeared 'vårsemesteret', '80 %', '6000-8000 ord', 'APA-manual (7. utg.)' all kept). The only removals are the '(Høst 2025)' title stamp and the semester-year on the reading-list link line, which leaves a cosmetic dangling 'Pensumlista for.' in most plans.",
+  "findings": [
+    {
+      "target": "content_text",
+      "error_type": "text_corruption",
+      "severity": "low",
+      "prevalence": "widespread",
+      "example_course_ids": ["nih_THP311-1_2025_autumn_1", "nih_LKI205-1_2025_autumn_1", "nih_IDR109-1_2025_spring_1"],
+      "evidence": "Kjernelitteratur Pensumlista for.",
+      "description": "The reading-list link text 'Pensumlista for høsten 2025.' / 'Pensumliste for høsten 2025 og våren 2026.' correctly loses its semester-year, but the preposition stays, so the line reads 'Pensumlista for.' — a half-removed phrase. Cosmetic: no personal data and no plan content involved (the actual reading list is not in the extracted text at all).",
+      "root_cause_hypothesis": "The generic season+year rule in .anon_generic() (R/anonymize.R, the 'høsten 2025' / 'våren2026' inflected-season pattern) removes the season-year and any 'og <season> <year>' list but not the preceding 'for'.",
+      "suggested_fix": "In .anon_generic(), before the generic season-year removal, drop a leading 'for ' when the season-year ends the sentence: str_remove_all(\"(?i)\\\\s+for\\\\s+(?:høsten|våren|haust(?:en)?)\\\\s*\\\\d{4}(?:\\\\s+og\\\\s+(?:høsten|våren|haust(?:en)?)\\\\s*\\\\d{4})?(?=\\\\.)\") so the line becomes 'Pensumlista.'; add a test in tests/testthat/test-anonymize.R with 'Pensumlista for høsten 2025.' and 'Pensumliste for høsten 2025 og våren 2026.'.",
+      "confidence": "high"
+    }
+  ]
 }

@@ -1,112 +1,103 @@
-# Anonymization audit — synthesis (pilot: 7 institutions)
+# Anonymization audit — synthesis (pilot: 6 institutions, after the URL fixes)
 
-Run 2026-10-17 with `--pilot` on the build of commit 7510144 (the 16 pilot
-harvests): ntnu, oslomet, inn, nord, hvl, hivolda, nla. Packets hold the
-pilot sample's offerings (`data/pilot/{inst}.csv`, all courses), with
-`course_plan` recomputed by the current `R/anonymize.R`: 20–28 courses,
-86–150 KB. HiVolda and INN have no random controls: the `name_like` flag
-hits every page (exam-table headers read as name pairs), so the suspects
-fill the packet. One Opus review agent per institution; every agent read
-all its courses and scanned all the institution's offerings with the
-current code. 14 findings for these 7, all pass mechanical verification
-(0 ✗). Two names an agent quoted in its summary are redacted as `[navn]`.
-The other 11 institutions' findings in `findings_report.md` are older (the
-2026-10-11 synthesis is in git history, 891bc8a).
+Run 2026-10-21 with `--pilot` (packets built with the current
+`R/anonymize.R` at commit a8ba3a5): hiof, nih, uib, uia, usn, uit. Each
+packet holds 21–28 plans from the institution's pilot sample. One Opus
+review agent per institution (medium effort); packets 65–225 KB; every
+agent read all its courses. 15 findings for these 6, all pass mechanical
+verification (0 ✗). The synthesis of the 2026-10-17 pilot run (ntnu,
+oslomet, inn, nord, hvl, hivolda, nla) is in git history (a8ba3a5).
 
 ## Summary
 
-- **No personal data in any of the seven samples**; `privacy_hits` is 0 at
-  all seven.
-- **OsloMet: staff names left in 4 offerings outside the sample**, in the
-  all-courses `data/processed/course_plans.RDS` (gitignored; not in either
-  finalized release, which hold teacher education): SOS3000 spring 2022
-  ("Delemneansvarlig …: <name>" lines under "Emneansvarlig"), ACIT5900
-  autumn 2025 ("… coordinator: professor <name>"), SOSV3101 spring and
-  autumn 2022 ("Emneansvarlige er: <name> (sosionom) og <name> (pedagog).").
-  `.anon_oslomet()` removes one plain name line under "Emneansvarlig";
-  `.role_name_inline_regex` allows no " er:" between role and name. The
-  pre-pass and `privacy_check` miss these forms. Checked in the build.
-- **INN keeps later plan versions under the language banner.** `.anon_inn()`
-  gives no plan only to pages with "Emnebeskrivelsen for valgt semester er
-  ikke publisert enda"; pages that say "Kun tilgjengelig på engelsk" show
-  the latest version too (2MNK172-2 from spring 2022 to spring 2025 all
-  show the version taught from autumn 2025; INN3024 autumn 2023 shows 2027
-  spring). 26 INN plans carry the banner. INN has no `page_year`.
-- The rest is low: one handler variant missed per institution, and date
-  rules that cut a season or year that was content.
+- **Staff names are left in at four of the six** (hiof, uib, uit, usn), each
+  in a wording or layout the rules do not know. `privacy_check` does not
+  catch them (0).
+- **One of them is in the published teacher-education data and both
+  finalized releases** (data-2026-10-15, data-2026-10-16): "Approved by
+  [navn], Dean" in one USN plan (English approval
+  stamp). The other leaks are only in the all-courses build, which is not
+  published (checked 2026-10-21 on `data/processed/teacher_ed/` and
+  `data/releases/*/`).
+- nih and uia are clean: every staff label and layout in the sample is
+  handled; no course content lost.
+- Low: admin dates in unusual forms, sentence fragments left after a
+  removal, and one content word cut by a USN Leganto rule.
 
 ## Cross-institution patterns
 
-1. **A rule that keys on one notice misses its variants** (INN's later
-   version, HVL's "not offered" notice, NTNU's "Andre sider om emnet" box,
-   OsloMet's coordinator block): a structural rule (`page_year` for INN, a
-   whole-block rule for OsloMet) instead of the notice's wording.
-2. **Removing a year changes a sentence** (NLA "Exception for academic
-   year: Spring.", "gjennomført studieåret."; NTNU "neste gang."; Nord
-   "Skoleeksamen høst" / "Skoleeksamen vår" made identical): remove the
-   clause, or keep the year where it is a condition.
-3. **Bare season values in facts boxes are removed by language**:
-   "Undervisningssemester: Høst" loses its value (1,658 HVL plans) while
-   "Semester of instruction: Autumn" keeps it (55); NLA "Oppstart høst," vs
-   "Start in the autumn". The spec counts the semester of the facts box as
-   plan text; whether a bare season goes is a decision for the user.
+- **Staff names under labels or in stamps the rules do not list**: hiof
+  "Foreleser studieåret:", uib "Administrativt ansvarlig" (a name where
+  the field usually holds a unit), usn "Godkjent av programkoordinator
+  <name>", "Første gang godkjent ved professor <name>", "Approved by
+  <name>, Dean", change-log signatures "programkoordinator <name>/
+  fagansvarlig <name>", uit 2008–2011 English timetable ("Lectures Autumn
+  2008" block, names glued to roles: "Kursansvarlig[navn]"). The role
+  list (`.staff_roles`) and the approval regex
+  (`.approved_by_name_regex`) are shared, so one change helps all.
+- **The `(?<!\p{L})` guard** keeps "koordinator" from matching inside
+  "programkoordinator" (usn); compound role words need their own entries.
 
 ## Prioritised fix list
 
-1. **OsloMet names** (`R/anonymize.R`): remove the whole Emneansvarlig
-   block in `.anon_oslomet()`; let `.role_name_inline_regex` take " er:"
-   and a parenthesised role after a name, so `privacy_check` catches the
-   form too; tests with invented names. The agent's local test changed only
-   the 4 leaking plans (and one placeholder "x" line). Rebuild only; must be
-   in before any all-courses build is shared.
-2. **INN `page_year`** (`R/institution_config.R`): the version on the page
-   (its start semester), so `plan_offerings()` gives a later version no plan
-   whatever the banner says, as at Nord and UiS. Rebuild only.
-3. Low, per institution: HVL "The module is not offered in the academic
-   year …" and "Emnet har ikke undervisning våren 2025." (1 plan each);
-   NTNU "Faglærers emneside" after the removed box (153 offerings) and
-   "neste gang høsten 2007" (26); INN "Statusmelding / Kun tilgjengelig på
-   engelsk" lines (26 plans) and "1.8.25"; Nord season words cut from
-   course names in the overlap list, "Week 13, Friday 27.3" and "Sprign
-   2026"; HiVolda "veke 3 (2023)" (4 offerings); OsloMet "Etablert av
-   dekanen 3. juli 2013" (2 plans) and fagplan URLs that lose their year
-   (70 links: "…-fagplan-engelsk-2018-2019" → "…-engelsk-"); NLA pattern 2.
+1. **Staff names** (medium by the agents, but personal data; rare to
+   occasional). Where: `R/anonymize.R`.
+   - `.staff_roles`: add Foreleser (with "studieåret"), Administrativt
+     ansvarlig (a name, not "Det/Den …" units), programkoordinator,
+     fagansvarlig.
+   - `.approved_by_name_regex`: "Godkjent av/ved" + any role word or none,
+     "Første gang godkjent ved", English "Approved by <name>, <role>"
+     (usn: `usn_REG3000D-…`, `usn_NETPRL-…`, `usn_OKLI3014-…`).
+   - `.anon_uit()`: the timetable-block rule also for "Lectures|Teaching"
+     + "Autumn|Spring|Fall" (`uit_SVF-3904-1_2008_autumn_1`), stopping
+     before "Ansvarlig enhet"/"Responsible unit" (the Norwegian 2008 pages
+     now lose that line), and a backstop for glued role+name lines.
+   - usn change log ("Endringsbeskrivelse") signatures
+     (`usn_SMERTE100-…`); "[navn]" is also a reference author there and
+     must stay.
+   Count every pattern in the whole build before and after; add each to
+   `test-anonymize.R`.
+2. **Admin dates** (low): uia "17 - 21 March, 2025"; usn "Høst-18",
+   "27.01.2014/dekan", "06.12..2018"; uit "Spring semester 2009",
+   "Søknadsfrist 15. mai 2019"; uib meeting schedule with dates; uib
+   reading-list date sentence variants and fragments.
+3. **Fragments** (low): nih "Pensumlista for." (drop the dangling "for");
+   hiof "vil i koste"; usn "Journalføring" cut to "føring" by the Leganto
+   item-type rule.
 
 ## Changes since the previous run
 
-Not a before/after (the previous runs audited teacher-education samples),
-but the earlier findings were checked on the whole data: fixed are NTNU's
-cut of a second "Vurderingsordning:" scheme, Nord's regulation date
-"28.10.2020 nr. 2474" and stray "MERK: :", INN's "Engelsk"→"English"
-rewrite and stripped status notice, HVL's Nynorsk "not offered" notice,
-OsloMet's ";" artefact.
+The six were not in the 2026-10-17 pilot anonymization run. Earlier
+findings for these institutions (full run of 2026-10-13) came from other
+courses; the new packets cannot confirm or rule them out (git history).
 
 ## Rejected findings
 
-None. Pre-pass flags judged false alarms by the agents: `name_like` on
-exam-table terms, programme, product and organisation names, reference
-authors and historical persons; `admin_date` on government-document dates
-the rule keeps; `phone` on digit runs in URLs and article identifiers (NLA);
-`removed` on page shells (OsloMet) and short NTNU pages where the staff
-list is a large share. A compendium author named under NTNU's Kursmateriell
-is a reference author and stays.
+None. All `name_like` and `phone` pre-pass flags at the six were false
+alarms (reference authors, philosophers, ISBNs, publication dates, place
+names), as the agents found.
 
 ## Verdict (`--pilot`, anonymization: `privacy_hits`)
 
-| inst | privacy_hits (n) | verdict |
+| inst | privacy_hits | verdict |
 |---|---|---|
-| ntnu | 0 (79) | ready |
-| oslomet | 0 (93) | not ready |
-| inn | 0 (59) | not ready |
-| nord | 0 (82) | ready |
-| hvl | 0 (79) | ready |
-| hivolda | 0 (77) | ready |
-| nla | 0 (67) | ready |
+| hiof | 0 (n 49) | not ready |
+| nih | 0 (n 22) | ready |
+| uib | 0 (n 46) | not ready |
+| uia | 0 (n 76) | ready |
+| usn | 0 (n 57) | not ready |
+| uit | 0 (n 66) | not ready |
 
-- **ntnu, nord, hvl, hivolda, nla — ready.** No personal data; low
-  findings only.
-- **oslomet — not ready.** Personal data left in 4 offerings outside the
-  sample (fix 1). No new fetch needed: the harvest itself does not have to
-  wait, but no all-courses build may be shared before the fix.
-- **inn — not ready.** Later plan versions kept as the offering's plan
-  (fix 2, a high finding). Rebuild only.
+`privacy_hits` is 0 everywhere, but personal data is left in the sample at
+four: not ready until fix 1 (rebuild only, no new harvest).
+
+- **hiof — not ready.** "Foreleser studieåret: <name>"
+  (`hiof_SFB24011-1_2019_spring_1`).
+- **nih — ready.** Low finding only.
+- **uib — not ready.** A name under "Administrativt
+  ansvarlig" (`uib_MEDEPI-0_2025_autumn_1`).
+- **uia — ready.** Low finding only.
+- **usn — not ready.** Approver names (4 of 28 sampled plans) and
+  change-log signatures; one of them is in the published releases.
+- **uit — not ready.** Names in the 2008–2011 English timetable block (3
+  plans in the build).

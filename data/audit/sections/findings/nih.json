@@ -3,20 +3,20 @@
   "institution": "nih",
   "model": "sonnet",
   "n_courses_reviewed": 20,
-  "n_suspects_reviewed": 14,
-  "overall_assessment": "Section extraction for NIH works very well: every heading (Kort om emnet, Læringsutbytte, Læringsformer og aktiviteter, Arbeidskrav, Vurdering/eksamen) maps to the right section, arbeidskrav stay out of assessment, plagiarism/WISEflow notices are removed and placeholder-only reading lists are correctly not emitted. All 'leak->' pre-pass flags are false alarms (words like 'arbeidskrav' or 'Emnets innhold' occurring inside the correct section). The only defect is a minor inconsistency in how 'Ingen ...' prerequisites are treated.",
+  "n_suspects_reviewed": 0,
+  "overall_assessment": "Section extraction for NIH works very well on all 20 random controls: the fixed heading set (Kort om emnet, Forkrav, Læringsutbytte, Læringsformer og aktiviteter, Arbeidskrav, Vurdering/eksamen, Kjernelitteratur) maps correctly, Arbeidskrav stay in coursework_requirements, admission text (Hvem kan ta dette emnet?) and 'Reduksjon i studiepoeng' tables are dropped, and placeholder reading lists are not emitted. The only defect is a small amount of attendance-requirement text left in assessment in two courses.",
   "findings": [
     {
-      "target": "prerequisites",
-      "error_type": "empty_placeholder",
+      "target": "assessment",
+      "error_type": "wrong_content",
       "severity": "low",
-      "prevalence": "occasional",
-      "example_course_ids": ["nih_LKI130-1_2025_autumn_1", "nih_LKI110-1_2025_autumn_1", "nih_LKI120-1_2025_autumn_1"],
-      "evidence": "Forkrav\nIngen emner",
-      "description": "Inconsistent handling of 'no prerequisites' under the Forkrav heading. LKI130-1 emits a prerequisites row containing only the placeholder 'Ingen emner' (flagged empty), while LKI110-1 and LKI120-1 (2025), whose Forkrav text is 'Ingen emner i programmet', get no prerequisites row. The same non-content ends up as a row in one course and is dropped in the others.",
-      "root_cause_hypothesis": "The placeholder list used by .keep_section_row()/.placeholder_phrases in R/extract_sections.R matches 'Ingen' only in some exact forms, so 'Ingen emner i programmet' is dropped but 'Ingen emner' survives (or vice versa).",
-      "suggested_fix": "Make the placeholder rule in R/extract_sections.R (.placeholder_phrases) match '^Ingen( emner)?( i programmet)?\\.?$' so all variants are dropped as empty placeholders.",
-      "confidence": "medium"
+      "prevalence": "rare",
+      "example_course_ids": ["nih_FRI304-1_2025_spring_1", "nih_PPU405-1_2025_autumn_1"],
+      "evidence": "Oppmøtekrav. Bestått/ ikke bestått.\n100% deltakelse på døgnkontinuerlig undervisning, og 80% deltakelse på all annen timeplansfestet undervisning.",
+      "description": "Attendance requirements (oppmøtekrav / 100 % frammøte) are pass/approve gates and belong in coursework_requirements by the codebook, but in courses where they sit under the Vurdering/eksamen heading (or where there is no Arbeidskrav heading) they stay in assessment. FRI304 has an Arbeidskrav section, yet its oppmøtekrav ends up in assessment; PPU405 has no Arbeidskrav heading and its '100 % frammøte i praksisperiode.' is in assessment.",
+      "root_cause_hypothesis": "Sections are cut strictly by heading; NIH authors sometimes write attendance requirements as the last lines under Vurdering/eksamen, and no content-based rule moves them.",
+      "suggested_fix": "Optional: in .clean_sections() move lines starting with 'Oppmøtekrav' or matching '^\\d+ ?% (frammøte|oppmøte|deltakelse)' from assessment to coursework_requirements for nih. Low priority given rarity.",
+      "confidence": "low"
     }
   ]
 }

@@ -3,32 +3,20 @@
   "institution": "uia",
   "model": "opus",
   "n_courses_reviewed": 28,
-  "n_suspects_reviewed": 20,
-  "overall_assessment": "Anonymization works well for UiA: in all 28 courses the course-coordinator names (single and multi-name 'Emneansvarlige:' blocks, hyphenated and three-part names), breadcrumb, '(Høst YYYY)' title stamps and the FS timestamp (Bokmål and Nynorsk) are removed, no e-mail, phone or admin date is left, and no course content is lost. The pre-pass flags are all false alarms ('name_like' = the font 'Times New Roman'; 'removed' = short header-only stub pages). The only defects are two cosmetic leftovers on two-semester courses: an empty '(–)' in the title and a half-removed teaching semester ' og Vår'.",
+  "n_suspects_reviewed": 10,
+  "overall_assessment": "Anonymization works well for UiA. In all 28 courses the course-coordinator names are removed, both the 'Emneansvarlig: Name' form on one line and the label with the name on the next line, and multi-name 'Emneansvarlige:' blocks. The '(Høst YYYY)' and '(Høst 2022–Vår 2023)' title stamps, the FS timestamp, the faculty e-mail and an English 'Contact persons:' block with personal e-mails are also removed. No literature, subject-matter names or content years are lost. The pre-pass flags are false alarms: 'name_like' matches philosophers (Kierkegaard, Sartre, Buber, McLuhan), course and programme titles, and 'removed' matches short pages that are mostly header. The only leftover is one course-run date in an 'Annen informasjon' note.",
   "findings": [
     {
       "target": "admin_date",
-      "error_type": "text_corruption",
+      "error_type": "admin_date_left",
       "severity": "low",
-      "prevalence": "occasional",
-      "example_course_ids": ["uia_NO-505-1_2024_autumn_1", "uia_NO-505-1_2022_autumn_1", "uia_NO-505-1_2025_autumn_1"],
-      "evidence": "NO-505 Masteroppgåve [−(Haust 2024–Vår−] (–) NO-505 Masteroppgåve (–) Studiepoeng: 45",
-      "description": "For courses that run over two semesters the UiA title carries a semester range '(Haust 2024–Vår 2025)'. The years and season words are removed (correct), but the brackets and en dash survive, so every such title reads 'NO-505 Masteroppgåve (–)'. Removal residue, harmless for meaning. Across all UiA offerings, 57 of 1123 plans have it (master theses and year-long practicum courses such as PRA1-401, IDR507, HI-501).",
-      "root_cause_hypothesis": ".anon_uia() strips the title stamp only in the single-semester form '\\((Høst|Vår|Haust)\\s+\\d{4}\\)'. The range form falls through to .anon_generic(), whose season+year regex removes 'Haust 2024' and 'Vår 2025' one at a time. The emptied-bracket cleanup '[ \\t]+\\([ \\t]*\\)' does not match because the en dash is still inside.",
-      "suggested_fix": "In .anon_uia(), extend the title pattern to an optional range: str_remove_all(\"\\\\((?:Høst|Vår|Haust)\\\\s+\\\\d{4}(?:\\\\s*[–-]\\\\s*(?:Høst|Vår|Haust)\\\\s+\\\\d{4})?\\\\)\"). As a general safety net, also let the emptied-bracket cleanup in .anon_generic() accept a lone dash: \"[ \\\\t]+\\\\([ \\\\t]*[–-]?[ \\\\t]*\\\\)\". Add a test case '(Haust 2024–Vår 2025)' to test-anonymize.R.",
-      "confidence": "high"
-    },
-    {
-      "target": "admin_date",
-      "error_type": "text_corruption",
-      "severity": "low",
-      "prevalence": "occasional",
-      "example_course_ids": ["uia_NO-505-1_2024_autumn_1", "uia_NO-505-1_2020_autumn_1", "uia_NO-505-1_2025_autumn_1"],
-      "evidence": "Undervisningssemester: [−Haust−] og Vår Undervisningsspråk: Norsk. Varigheit: 1",
-      "description": "The teaching-semester value 'Haust og Vår' / 'Høst og Vår' is only half removed: the first season word goes, the second stays, so the plan reads 'Undervisningssemester:\\n og Vår'. That is a half-removed phrase, and it now wrongly suggests the course is taught only in spring. The anonymizer otherwise drops bare teaching-semester words on purpose (all other UiA plans have an empty 'Undervisningssemester:'), so the remaining 'Vår' is also inconsistent with that rule. 20 of 1123 UiA plans are affected (6 'Haust og Vår', 14 'Høst og Vår').",
-      "root_cause_hypothesis": "In .anon_generic(), the season-in-semester-context rule '(?<=(?:semester|undervisning|...)[:\\s]{0,3})(høst|vår|haust|...)' is anchored by a lookbehind on the label. It matches only the first season word after 'Undervisningssemester:'. The word after 'og' is not next to a semester keyword.",
-      "suggested_fix": "In .anon_generic(), let the lookbehind rule consume a coordinated second season: '(?i)(?<=(?:semester|undervisning|oppstart|startsemester|eksamen)[:\\s]{0,3})(?:høst|vår|haust|autumn|spring|sommer|summer)(?:[ \\t]*(?:og|and|/|,)[ \\t]*(?:høst|vår|haust|autumn|spring|sommer|summer))*'. Or, in .anon_uia(), blank the whole value line after 'Undervisningssemester:'. Add a test 'Undervisningssemester:\\nHaust og Vår' -> 'Undervisningssemester:'.",
-      "confidence": "high"
+      "prevalence": "rare",
+      "example_course_ids": ["uia_HEL617-1_2025_autumn_1"],
+      "evidence": "The PhD-course is offered 17 - 21 March, 2025.",
+      "description": "A date when the course runs is left in the plan. It is scheduling for one offering, like the exam dates the generic rules already remove, not course content. The format is a day range followed by an English month, a comma and the year, which no date rule matches. Only 1 of 28 courses in the sample has it, so the impact is cosmetic.",
+      "root_cause_hypothesis": "In R/anonymize.R, .long_date_regex expects 'dd[.] month' followed by a year without a comma, and it allows no day range ('17 - 21'). .approval_date_regex also needs an approval verb before the date, so a run date in prose survives.",
+      "suggested_fix": "Low priority. Either add to .anon_uia() a removal for '(?i)\\b(?:is|will be) offered\\s+\\d{1,2}(?:\\s*[-–]\\s*\\d{1,2})?\\.?\\s+<month>,?\\s+\\d{4}' that keeps the sentence stem, or make .long_dates_regex accept an optional day range and a comma before the year (keep the .not_gov_rule guard). Add a test case 'offered 17 - 21 March, 2025' in tests/testthat/test-anonymize.R.",
+      "confidence": "medium"
     }
   ]
 }

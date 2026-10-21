@@ -3,32 +3,44 @@
   "institution": "uit",
   "model": "opus",
   "n_courses_reviewed": 28,
-  "n_suspects_reviewed": 20,
-  "overall_assessment": "Anonymization works well for UiT. None of the 28 sampled plans has personal data left in, and a scan of all 3154 UiT plans found no role-plus-name lines and no e-mail addresses. The one course leader in the sample ('Emneleder … @uit.no', PFF-1020 2018) was removed, as were exam dates and times, the Leganto semester labels (-H23, HØST 2025, (VÅR 2024)) and 'Publisert høst 2015'. Reference authors, content years and government-document dates were kept. Every pre-pass flag was a false alarm: name_label matched 'naturfaglærer\\nStudiepoengreduksjon' and 'emneansvarlig\\nEksamen' across a line break, phone matched digits in DOIs, ISSNs and URLs, and admin_date matched 'Høst 10 stp' credit lines and retrieval dates next to Udir documents. What remains is cosmetic leftovers from date removal, plus a policy question about cohort years.",
+  "n_suspects_reviewed": 15,
+  "overall_assessment": "Anonymization works well for UiT's current layouts (2019-2025): the semester label and exam hand-in/hand-out dates go, nothing else is touched, and no personal data appears in any of the 13 random controls. The one real gap is the 2008-2011 English-language layout, where the closing timetable block begins 'Lectures Autumn 2008' rather than 'Undervisning Høst 2008' and survives with lecturer names glued to their roles (3 published plans in data/processed/course_plans.RDS: SVF-3904, HIF-3022, STA-3003). The 'name_like' flags are false alarms (reference authors, 'Thorvald Stoltenberg Seminar', place names).",
   "findings": [
     {
-      "target": "admin_date",
-      "error_type": "text_corruption",
+      "target": "person_name",
+      "error_type": "pii_leak",
+      "severity": "medium",
+      "prevalence": "rare",
+      "example_course_ids": ["uit_SVF-3904-1_2008_autumn_1"],
+      "evidence": "Kursansvarlig[navn]",
+      "description": "Staff name (course coordinator) is left in course_plan. In the 2008-2011 English page layout, the closing timetable block keeps teachers glued to their role and title ('Kursansvarlig[navn]'). A search of data/processed/course_plans.RDS finds the same leak in two more published UiT plans: HIF-3022 2008 ('ForeleserF.aman.John OveLorentz ForeleserF.aman.MartinKrämer') and STA-3003 2008 ('ForeleserF.aman.[navn]', 'Ansvarlig lederF.aman.[navn]').",
+      "root_cause_hypothesis": "In .anon_uit() (R/anonymize.R), the last rule removes the timetable block only when it starts with 'Undervisning (?:Høst|Vår|Haust) \\d{4}'. English pages head it 'Lectures Autumn 2008' (the generic semester rule later removes 'Autumn 2008' and leaves 'Lectures First meeting: ...'), so the block survives. The glued 'RoleTitleName' form also escapes the generic role+name regexes, which need whitespace between role and name.",
+      "suggested_fix": "In .anon_uit(), widen the block rule to '(?s)(?:^|\\n)(?:Undervisning|Lectures|Teaching) (?:Høst|Vår|Haust|Autumn|Spring|Fall) \\d{4}.*$' and keep the 'Responsible unit' line (see the other finding). As a backstop, drop lines matching '(?m)^[^\\n]*\\t(?:Foreleser|Kursansvarlig|Ansvarlig leder|Lærer|Lecturer|Teacher)(?:F\\.aman\\.|Prof\\.|Dr\\.)?\\p{Lu}[^\\n]*$'. Add test cases from SVF-3904/STA-3003 2008 to tests/testthat/test-anonymize.R.",
+      "confidence": "high"
+    },
+    {
+      "target": "content_text",
+      "error_type": "over_removal",
       "severity": "low",
       "prevalence": "common",
-      "example_course_ids": ["uit_LER-1402-1_2020_spring_1", "uit_LER-2304-1_2024_spring_2", "uit_LER-2303-1_2025_autumn_1"],
-      "evidence": "Pensumliste for LER-1402, 5-10, 15 stp,  og … Muntlig eksamen\tDato:  – Varighet: 45 Minutter … Pensumliste for LER-2303 Naturfag 5-10 -",
-      "description": "When a date or a semester label is removed, the separators that joined it to the rest of the line stay behind, so the line ends in a dangling connector. Raw 'Pensumliste for LER-1402, 5-10, 15 stp, høst 2019 og vår 2020' becomes '… 15 stp,  og'. 'Naturfag 5-10 - HØST 2025' becomes 'Naturfag 5-10 -'. The exam date range 'Dato: 29.04.2024 –30.04.2024' becomes 'Dato:  –'. 'LRU-3300, autumn 2018: Readings' becomes 'LRU-3300, : Readings' (uit_LRU-3300-1_2018_autumn_1). The packet has 5 of 28 courses like this. Across all UiT plans: 108 of 773 'Pensumliste' lines end in '-', ',' or ', og', and 54 plans have 'Dato:  –'. Outside the packet, removed access dates leave '[]' (LRU-2150, 9 offerings), '[Lesedato ]' (29) and '(Hentet )' (11). No content is lost and no personal data is exposed. These are cosmetic text_corruption, slightly worse than the harmless dangling labels the rubric allows, because '-', ', og' and '[]' read as broken text.",
-      "root_cause_hypothesis": "In .anon_generic() (R/anonymize.R), the season+year rule `\\b(?i:season)\\s*\\d{4}\\b` removes only the label. The semester-code rule just below it already consumes an optional leading `[ \\t]*[-–]?[ \\t]*`, but the season+year rule does not. The dd.mm.yyyy rule removes each end of a date range separately and leaves the dash between them. The empty-bracket cleanup `[ \\t]+\\([ \\t]*\\)` handles only round brackets.",
-      "suggested_fix": "In .anon_generic(): (1) let the season+year rule consume a preceding `[ \\t]*[-–,][ \\t]*` when the label is the last thing on the line, and remove a dangling `[ \\t]*,[ \\t]*(?:og|and)?[ \\t]*$` or `[ \\t]+[-–]$` left on the same line ('15 stp,  og', '5-10 -'). (2) Remove a date range as one unit: `\\d{1,2}\\.\\d{1,2}\\.\\d{4}[ \\t]*[-–][ \\t]*\\d{1,2}\\.\\d{1,2}\\.\\d{4}`. (3) Extend the emptied-bracket cleanup to `[ \\t]+\\[[ \\t]*\\]`. Add cases for all three to tests/testthat/test-anonymize.R.",
-      "confidence": "high"
+      "example_course_ids": ["uit_BED-6001-1_2008_autumn_1", "uit_BED-2017-1_2008_autumn_2", "uit_PED-3025-2_2008_autumn_1"],
+      "evidence": "Samling 4: Spesialisering 17-19. September 2008 Ansvarlig enhet Ressurssenter for undervisning, læring og teknologi (Result)",
+      "description": "In the 2008-2011 Norwegian layout, the timetable-block rule removes everything to the end of the text, including the closing 'Ansvarlig enhet <unit>' line. Organisation names are metadata that must be kept, and the current layouts and the English 2008 pages (e.g. SVF-3904) keep them. All four Norwegian 2008 pages in the packet lose the line (BED-6001, BED-2017, STV-2010, PED-3025).",
+      "root_cause_hypothesis": "In .anon_uit(), stringr::str_remove('(?s)(?:^|\\n)Undervisning (?:Høst|Vår|Haust) \\d{4}.*$') runs to the end of the text with '.*$' and does not stop before 'Ansvarlig enhet'.",
+      "suggested_fix": "End the block rule at a lookahead: '(?s)(?:^|\\n)Undervisning (?:Høst|Vår|Haust) \\d{4}.*?(?=\\n?Ansvarlig enhet|\\n?Responsible unit|\\z)'. If the unit sits on the same line, also insert the line break it needs.",
+      "confidence": "medium"
     },
     {
       "target": "admin_date",
       "error_type": "admin_date_left",
       "severity": "low",
       "prevalence": "occasional",
-      "example_course_ids": ["uit_SAM-3981-1_2017_autumn_1"],
-      "evidence": "Emnet er obligatorisk for studenter på lektorutdanning i språk og samfunnsfag (kull 2010-2012)",
-      "description": "Years that say which admission cohorts or which study-plan version a course applies to stay in the course_plan. Examples: '(kull 2010-2012)', '(fra og med kull 2013)' and 'studenter opptatt på studieplan som gjelder fra og med 2013'. In the packet only one course has them; across UiT, 239 of 3154 offerings (about 8%) do, mostly lektorutdanning plans from 2012–2018. They are administrative validity stamps rather than course content, and they date the plan. The generic rule already strips the near-identical 'gjeldende fra 2023' and 'gyldig fra 2023'. The academic-year rule keeps '2010-2012' only because the two years are not consecutive. This is a judgment call: the cohort range also tells which programme version the course belongs to. That is why confidence is low.",
-      "root_cause_hypothesis": "In .anon_generic(), the admin-keyword year rule `(?i:opprettet|…|gjeldende(?: fra)?|gyldig(?: fra)?|…)\\s+\\d{4}` has neither 'gjelder fra (og med)' nor 'kull'. `.drop_academic_year()` removes only consecutive year pairs.",
-      "suggested_fix": "Decide the policy and record it in methods.qmd. If cohort and plan-validity years count as administrative, add `gjelder fra(?: og med)?|(?:fra og med )?kull(?:et)?` to the admin-keyword year rule in .anon_generic() and let it also take a following `[ \\t]?[-–][ \\t]?\\d{4}` range ('kull 2010-2012' → 'kull'). If they count as content, write that down so later audits stop flagging them.",
-      "confidence": "low"
+      "example_course_ids": ["uit_SVF-6311-1_2008_autumn_2", "uit_HEL-6308-1_2019_autumn_1", "uit_BED-6001-1_2008_autumn_1"],
+      "evidence": "re-sit examination for students who fail early in the Spring semester 2009",
+      "description": "Some semester labels with a year and some dated deadlines in free-text fields stay: 'Spring semester 2009' (a semester label with a year; the generic season rule seems to miss the 'Spring semester YYYY' word order), 'Søknadsfrist 15. mai 2019' and 'Kull 2019 har studiested Bodø' (HEL-6308), and the session dates '28-30. nov. 2007 ... 17-19.september 2008' inside BED-6001's Undervisningsform. These are administrative dating, not personal data. Impact is low.",
+      "root_cause_hypothesis": "In the generic semester/date handling (.season_regex usage in R/anonymize.R), the English 'Spring semester 2009' form with the year after 'semester' is apparently not covered, and the generic rules do not target day-month-year deadlines after 'Søknadsfrist'.",
+      "suggested_fix": "Extend the semester-label rule to '(?i:spring|autumn|fall)[ \\t]+semester[ \\t]+\\d{4}', and in .anon_uit() remove the year from the 'Søknadsfrist' value ('(?m)^(Søknadsfrist\\n[^\\n]*?\\d{1,2}\\.[ \\t]*\\p{L}+)[ \\t]+\\d{4}' -> '\\1'). Leave session schedules as they are unless the spec counts them as administrative.",
+      "confidence": "medium"
     }
   ]
 }

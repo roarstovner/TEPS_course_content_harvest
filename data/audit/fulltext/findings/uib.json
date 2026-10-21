@@ -3,31 +3,53 @@
   "institution": "uib",
   "model": "sonnet",
   "n_courses_reviewed": 28,
-  "n_suspects_reviewed": 20,
-  "overall_assessment": "When UiB has a plan, extraction is complete and clean: all eight random controls hold the full plan with every section and no navigation, and the year picker and contact lines are correctly left out. The weakness is offerings whose page has no plan: all 20 suspects are stubs that hold only the facts box plus a dangling 'Emnebeskrivelse' heading, so they look like real records but contain no plan text. Three of the four fetch failures (400, 404, 502) look transient or plausible, and I could not judge the fourth.",
+  "n_suspects_reviewed": 9,
+  "overall_assessment": "Where UiB has a plan page, extraction is complete and clean: the 19 random controls hold all plan sections, with the year picker, error banners and contact lines correctly left out. The main weakness is pages with no plan, where the text is only the facts box and bare headings. Exam logistics (dates, duration, exam form) sit outside the selector.",
   "findings": [
-    {
-      "target": "whole_text",
-      "error_type": "empty_or_failed",
-      "severity": "high",
-      "prevalence": "common",
-      "example_course_ids": ["uib_TYS307L-0_2017_spring_2", "uib_HIDID111-0_2010_spring_1", "uib_SPANDI101-0_2010_spring_1"],
-      "evidence": "Inga emnebeskriving tilgjengeleg\nDet finst inga emnebeskriving. Grunnen kan vere at emnebeskrivinga ikkje er omsett eller at semesteret du har valt framleis ikkje har emnebeskriving.",
-      "description": "The page was fetched (HTTP 200) but the site says no course description exists for the chosen semester. The extracted text is only the facts box (title, level, credits, teaching semester, code) ending in the bare heading 'Emnebeskrivelse', 80 offerings by the short flag and all 20 suspects here. These rows are counted as 'fetched with extracted text' but hold no plan content. The page also shows 'Feil i visning av emnebeskrivelse' error banners on some, so some may be a transient site failure rather than a missing plan.",
-      "root_cause_hypothesis": "The selector div.region-inner.grid captures the facts box even when the description block is absent. The 'no description' notice and the error banners lie outside the selector, so nothing marks these pages as empty. The pre-pass 'empty' flag is 0 because the text is not blank.",
-      "suggested_fix": "In the UiB config or the extract_fulltext post step, treat a text with no 'Mål og innhold' or 'Læringsutbytte' section (text ends at 'Emnebeskrivelse') as empty, or detect the page notice 'Inga emnebeskriving tilgjengeleg' in the html, so the offering counts as having no plan (target gaps). Re-fetch the pages that show 'Feil i visning av emnebeskrivelse' to rule out a transient error.",
-      "confidence": "high"
-    },
     {
       "target": "assessment",
       "error_type": "missing_content",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "uib_ENG120-0_2025_spring_1",
+        "uib_GEOV113-0_2022_autumn_1",
+        "uib_AHKR391-0_2019_autumn_1"
+      ],
+      "evidence": "Skriftleg skuleeksamen (Ny eksamen)",
+      "description": "The exam block (exam form, date, duration, venue, submission deadline) is on the page but not in extracted_text. The plan's 'Vurderingsformer' text is captured, so only the logistics are lost. Exam form and duration is arguably assessment information (for example 'Varigheit 5 timar' and 'Innleveringsfrist' for a portfolio or paper). Dates and rooms are logistics and may be out of scope under the spec.",
+      "root_cause_hypothesis": "The exam-information widget is rendered outside div.region-inner.grid, or loads in a separate block.",
+      "suggested_fix": "If exam form and duration are wanted, add the exam-info container as a second selector and drop dates, rooms and the 'Klokkeslett for oppstart ...' notice with exclude. Otherwise document it as intended in the spec.",
+      "confidence": "medium"
+    },
+    {
+      "target": "course_content",
+      "error_type": "duplicate_content",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "uib_FSKLI901-0_2025_autumn_1",
+        "uib_FSKLI901-0_2025_spring_1"
+      ],
+      "evidence": "Utfyllende kursomtale",
+      "description": "The 'Utfyllende kursomtale' section repeats four paragraphs word for word from 'Mål og innhold' ('Emnet går over to påfølgande semester ...'). This is duplication in the source page itself, and the extraction faithfully copies it. Section-level counts or text analysis would see the text twice.",
+      "root_cause_hypothesis": "Duplication on the source page; no de-duplication of repeated blocks in page_fulltext().",
+      "suggested_fix": "Optional: drop exact-duplicate paragraphs of 80 or more characters within one text in a UiB post_fn. Low priority.",
+      "confidence": "medium"
+    },
+    {
+      "target": "metadata",
+      "error_type": "formatting",
       "severity": "low",
       "prevalence": "common",
-      "example_course_ids": ["uib_FRAN313L-0_2025_autumn_1", "uib_NODI302-0_2024_spring_1"],
-      "evidence": "Innleveringsfrist\n22.10.2025, 13:00\n01.10.2025",
-      "description": "The exam block (assessment type, submission deadline, duration, exam dates) is on the page but outside the extracted text. The plan's own 'Vurderingsformer' text is captured, so only logistics are lost. This is probably out of scope under the plan spec (exam logistics, not plan text), and it is reported for completeness.",
-      "root_cause_hypothesis": "The exam-information widget sits outside div.region-inner.grid or loads separately.",
-      "suggested_fix": "No change needed if exam dates count as logistics. If the assessment form (for example 'Skriftleg skoleeksamen', 'Mappevurdering', 'Varigheit 3 timar') is wanted as metadata, add the exam-info container as a second selector.",
+      "example_course_ids": [
+        "uib_EXFAC00SK-0_2025_spring_1",
+        "uib_MATDID350-0_2025_autumn_1"
+      ],
+      "evidence": "Anbefalte forkunnskaper\nStudiepoengsreduksjon\n-",
+      "description": "Label and value are separate lines with no separator, so a heading with an empty value is indistinguishable from the next label. Trailing empty headings (for example 'Administrativt ansvarlig' at the end of MATDID350, or '-' placeholders) can be mistaken for values by downstream section splitting.",
+      "root_cause_hypothesis": "html_text of the facts and description blocks puts each dt/dd on its own line, and empty values are not marked.",
+      "suggested_fix": "Drop trailing empty headings and '-' placeholder values in a post_fn, or render 'Label: value' for the facts box.",
       "confidence": "low"
     }
   ]

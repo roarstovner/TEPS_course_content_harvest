@@ -2,33 +2,45 @@
   "check": "fulltext",
   "institution": "nih",
   "model": "sonnet",
-  "n_courses_reviewed": 10,
-  "n_suspects_reviewed": 2,
-  "overall_assessment": "Fulltext extraction works well for NIH: all 10 fetched pages are clean, complete copies of the plan with the facts box, correct year and readable structure, and the uncaptured page text is only breadcrumb, responsible-person name and FS timestamp. The only weakness is that the reading list is empty or a stub because the pensum is not on the fetched page; 56% of offerings are 404 (plausibly not offered).",
+  "n_courses_reviewed": 25,
+  "n_suspects_reviewed": 0,
+  "overall_assessment": "Extraction works well for the 21 fetched pages: complete plan text with facts box, correct year, readable structure, and the uncaptured text is only breadcrumb, responsible person and FS timestamp. The weaknesses are coverage (166 of 190 offerings return 404, one URL is malformed) and reading lists that are only a stub because the pensum is not on the page.",
   "findings": [
     {
-      "target": "reading_list",
-      "error_type": "missing_content",
-      "severity": "low",
-      "prevalence": "common",
-      "example_course_ids": ["nih_LKI221-1_2024_autumn_1", "nih_LKI106-1_2025_spring_1", "nih_LKI105-1_2023_spring_1"],
-      "evidence": "Pensumliste for våren 2025.",
-      "description": "The Kjernelitteratur section holds no actual literature: a one-line placeholder ('Pensumliste for våren 2025.', 'Se emnearkivet'), or an empty heading at the end of LKI221. The page text not captured shows no literature lines, so the actual reading list is not on the fetched page (likely a link or a separate resource). The extraction is faithful, but reading_list will be empty/stub for these courses.",
-      "root_cause_hypothesis": "NIH course pages link to the pensum list externally (or via JS) rather than inline; selector #vrtx-fs-emne-content captures only the heading and stub.",
-      "suggested_fix": "Accept as a source limitation and let section extraction treat stub-only reading_list as empty; optionally check whether the pensum link target is harvestable.",
+      "target": "whole_text",
+      "error_type": "empty_or_failed",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": ["nih_PHD610-1_2021_autumn_1", "nih_TI201-1_2021_autumn_1", "nih_LKI400-1_2025_spring_1"],
+      "evidence": "Fetch error: HTTP 404 Not Found.",
+      "description": "Only 22 of 190 offerings have a fetched page; 166 return 404 (92 course codes, 21 of which have a page in another offering). Courses plausibly offered in 2021 (PHD610, TI201) have no page, so the older years are largely missing. Whether the 404s are genuinely absent pages or a URL pattern problem cannot be told from the packet.",
+      "root_cause_hypothesis": "NIH's site publishes emne pages only for recent semesters (and only where the course exists); the url-based plan_years builds /studier/emner/YYYY/var|host/code.html for every offering.",
+      "suggested_fix": "Spot check some 404 URLs in a browser (e.g. thp311 2021, ti201 2021); if pages exist under another path or the archive (emnearkivet), adjust the URL builder in R/add_course_url.R; otherwise document the coverage limit in data notes.",
       "confidence": "medium"
     },
     {
       "target": "whole_text",
       "error_type": "empty_or_failed",
       "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": ["nih_MAS- ESSAY-1_2022_autumn_1"],
+      "evidence": "Fetch error: Failed to perform HTTP request. URL using bad/illegal format or missing URL [www.nih.no...",
+      "description": "The course code 'MAS- ESSAY' contains a space and a hyphen, producing the illegal URL 'mas- essay.html'; the fetch fails for a malformed URL rather than because no page exists.",
+      "root_cause_hypothesis": "URL builder in R/add_course_url.R lowercases the raw code without cleaning whitespace.",
+      "suggested_fix": "Normalise the code in the NIH URL builder (remove spaces, check the real page slug, e.g. mas-essay) or skip codes that cannot form a valid URL.",
+      "confidence": "medium"
+    },
+    {
+      "target": "reading_list",
+      "error_type": "missing_content",
+      "severity": "low",
       "prevalence": "widespread",
-      "example_course_ids": ["nih_LKI152-1_2024_spring_2"],
-      "evidence": "Fetch error: HTTP 404 Not Found.",
-      "description": "103 of 184 offerings return 404 (only 81 fetched). Many are plausibly not-offered or new courses (status Nytt), but the share is large and cannot be verified from the packet whether the URL pattern (/studier/emner/YYYY/var|host/code.html) is wrong for some years.",
-      "root_cause_hypothesis": "plan_years = url builds a URL per offering; NIH only publishes pages for semesters in which the course exists, so non-offered semesters 404.",
-      "suggested_fix": "Spot check a few 404 URLs for courses known to be offered (e.g. LKI152 spring 2024) in a browser; if they exist elsewhere, adjust the URL builder in R/add_course_url.R.",
-      "confidence": "low"
+      "example_course_ids": ["nih_THP311-1_2025_autumn_1", "nih_LKI105-1_2022_spring_1", "nih_IDR109-1_2025_spring_1"],
+      "evidence": "Kjernelitteratur\nPensumlista for høsten 2025.",
+      "description": "The Kjernelitteratur section holds only a one-line placeholder ('Pensumlista for høsten 2025.', 'Se emnearkivet'). The page text not captured lists no literature, so the actual reading list is not on the fetched page; the extraction is faithful but the reading_list section will be a stub for essentially every NIH course.",
+      "root_cause_hypothesis": "The pensum is linked or loaded from elsewhere, not inline in #vrtx-fs-emne-content.",
+      "suggested_fix": "Treat stub-only reading_list sections as empty in section extraction; optionally check whether the pensum link target is harvestable.",
+      "confidence": "medium"
     }
   ]
 }
