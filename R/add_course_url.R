@@ -10,7 +10,7 @@ add_course_url <- function(df) {
         "inn"     ~ add_course_url_inn(course_code, year, semester_name),
 
         "hivolda" ~ NA_character_,  # Hivolda requires URL discovery via resolve_course_urls()
-        "hiof"    ~ add_course_url_hiof(course_code, year, semester_name),
+        "hiof"    ~ NA_character_,  # HiOF's faculty folders come from its listings via resolve_course_urls()
         "hvl"     ~ add_course_url_hvl(course_code, year, semester_name),
 
         "mf"      ~ add_course_url_mf(course_code),
@@ -75,6 +75,8 @@ add_course_url_hvl <- function(course_code, year, semester) {
   glue::glue("https://www.hvl.no/studier/studieprogram/emne/{academic_start_year(year, semester)}/{course_code}")
 }
 
+# The teacher-education folders only: resolve_urls_hiof_batch() finds every
+# faculty's page and prefers this URL when the course is in several folders
 add_course_url_hiof <- function(course_code, year, semester) {
   is_historical <- year < 2021 | (year == 2021 & semester == "Vår")
 

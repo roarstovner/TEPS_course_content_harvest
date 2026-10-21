@@ -11,12 +11,19 @@ html_page <- function(text, head = "") {
                                           text, "</p></div></body></html>")))
 }
 
-# hiof without its pause between requests, in a temporary working directory
+# hiof without its pause between requests, in a temporary working directory,
+# and without its folder listings: every offering gets add_course_url_hiof()'s
+# URL (hiof_match_urls())
 local_hiof <- function(env = parent.frame()) {
   withr::local_dir(withr::local_tempdir(.local_envir = env), .local_envir = env)
   old <- institution_configs$hiof$request_delay
   institution_configs$hiof$request_delay <<- 0
   withr::defer(institution_configs$hiof$request_delay <<- old, envir = env)
+  old_index <- hiof_course_index
+  hiof_course_index <<- function(...) list(pages = tibble::tibble(url = character(), code = character(),
+                                                                  year = integer(), semester = character()),
+                                           read = character())
+  withr::defer(hiof_course_index <<- old_index, envir = env)
 }
 
 hiof_dbh <- function(codes) {
@@ -299,8 +306,9 @@ test_that("a URL robots.txt disallows is not requested, and is not retried witho
     html_page("Plan")
   })
   dbh <- hiof_dbh(c("OK1", "NO1"))
-  msg <- capture_messages(harvest_all(dbh, institutions = "hiof"))
-  expect_match(paste(msg, collapse = ""), "robots.txt disallows 1 of them: not requested")
+  # hiof's URLs come from URL discovery, after harvest_institution() counts
+  # the URLs robots.txt disallows (its message): the ledger has them
+  suppressMessages(harvest_all(dbh, institutions = "hiof"))
   expect_equal(basename(sent), "ok1.html")
   led <- raw_ledger(harvest_files("hiof"))
   expect_equal(led$outcome, c("ok", "robots"))

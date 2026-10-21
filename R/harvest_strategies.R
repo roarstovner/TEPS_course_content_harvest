@@ -36,7 +36,7 @@ ensure_output_columns <- function(df) {
 
 # --- Strategy: standard ---
 # URL -> HTTP fetch -> CSS extract
-# Used by: oslomet, uia, ntnu, inn, hiof, hvl, mf, nih, nmbu, uib, nord
+# Used by: oslomet, uia, ntnu, inn, hvl, mf, nih, nmbu, uib, nord
 
 harvest_standard <- function(df, config, refetch = FALSE) {
   cp <- strategy_checkpoint_path(config, "html")
@@ -50,7 +50,7 @@ harvest_standard <- function(df, config, refetch = FALSE) {
 
 # --- Strategy: url_discovery ---
 # URL -> discover real URL -> HTTP fetch -> CSS extract
-# Used by: hivolda, uit, uio
+# Used by: hivolda, uit, uio, hiof
 
 harvest_url_discovery <- function(df, config, refetch = FALSE) {
   url_cp <- strategy_checkpoint_path(config, "urls")

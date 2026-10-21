@@ -235,7 +235,8 @@ institution_configs <- list(
 
   hiof = list(
     code = "0256",
-    strategy = "standard",
+    # faculty folders from the site's listings (resolve_urls_hiof_batch())
+    strategy = "url_discovery",
     selector = "#vrtx-fs-emne-content, main .entry-content, .entry-content",
     facts = c("#vrtx-fs-emne-content > h1", "#vrtx-fs-emne-facts"),
     plan_years = "url",

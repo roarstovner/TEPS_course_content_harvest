@@ -67,6 +67,8 @@ resolve_course_urls <- function(df,
       resolve_urls_uit_batch(df, .progress = .progress)
     } else if (inst == "uio") {
       resolve_urls_uio_batch(df)
+    } else if (inst == "hiof") {
+      resolve_urls_hiof_batch(df)
     } else {
       df |> dplyr::mutate(url = NA_character_)
     }
@@ -195,6 +197,105 @@ resolve_urls_hivolda_batch <- function(df, .progress = TRUE) {
   df |>
     dplyr::select(-url) |>
     dplyr::left_join(lookup, by = c("course_code", "year", "semester_name"))
+}
+
+#' Resolve URLs for a batch of HiOF courses from the site's folder listings
+#'
+#' A HiOF page is /studier/emner/{folder}/{year}/{var|host}/{code}.html, in a
+#' faculty or department folder that DBH does not give and that changed with
+#' the reorganisations (lusp/slik/, iio/ing/, nta/, videre/); a course no
+#' longer taught moves to /studier/emner/historiske-emner/{hv|ir|it|lu|oss}/
+#' with its years (up to 2024 there), and some sit in another faculty's folder
+#' (hsb1209 in ir/). hiof_course_index() lists the pages of the offerings'
+#' years; hiof_match_urls() picks the offering's.
+#'
+#' @param df A tibble with course_code, year, semester_name columns
+#' @param index Pages and year folders read, from hiof_course_index()
+#' @return df with url filled in where possible
+resolve_urls_hiof_batch <- function(df, index = hiof_course_index(unique(df$year))) {
+  cli::cli_alert_info("HiOF: {nrow(index$pages)} pages in {length(index$read)} year folders")
+  hiof_match_urls(df, index)
+}
+
+#' The HiOF page of each offering
+#'
+#' The page of the offering's code (the file name, lower case), year and
+#' semester; of several, the one at the URL add_course_url_hiof() gives (the
+#' teacher-education folders), then one outside historiske-emner. An offering
+#' without a page whose year folder at add_course_url_hiof()'s URL was not
+#' read (its listing failed) keeps that URL; else its URL is NA.
+#'
+#' @param df A tibble with course_code, year, semester_name
+#' @param index List of `pages` (tibble of url, code, year, semester) and
+#'   `read` (the year folders read in full)
+#' @return df with url
+hiof_match_urls <- function(df, index) {
+  built <- as.character(add_course_url_hiof(df$course_code, df$year, df$semester_name))
+  p <- index$pages
+  p <- p[order(!p$url %in% built, grepl("/historiske-emner/", p$url)), ]
+  url <- p$url[match(paste(tolower(df$course_code), df$year, semester_to_url(df$semester_name)),
+                     paste(p$code, p$year, p$semester))]
+  unread <- is.na(url) & !sub("[^/]+/[^/]+$", "", built) %in% index$read
+  url[unread] <- built[unread]
+  df$url <- url
+  df
+}
+
+#' HiOF's course pages of some years, from the site's folder listings
+#'
+#' Walks /studier/emner/ three levels down (faculty, department, the
+#' historiske-emner folders) to the year folders, and reads each year folder
+#' of `years` page by page (?page=2, ...) until a page lists no new course
+#' page. About 20 pages a listing page: some 1000 requests for all years. A
+#' year folder whose listing fails is not in `read`.
+#'
+#' @param years Calendar years of the offerings
+#' @param root The course folder
+#' @param delay Seconds between requests (polite_pause())
+#' @return List of `pages`, a tibble of url, code (lower case), year and
+#'   semester ("var", "host"), and `read`, the year folders read in full
+hiof_course_index <- function(years, root = "https://www.hiof.no/studier/emner/",
+                              delay = get_institution_config("hiof")$request_delay) {
+  links <- function(url) {
+    polite_pause(delay)
+    page <- tryCatch(rvest::read_html(httr2::resp_body_string(httr2::req_perform(
+      site_request(url, BROWSER_USER_AGENT)))), error = function(e) NULL)
+    if (is.null(page)) return(NULL)
+    href <- rvest::html_attr(rvest::html_elements(page, "a[href]"), "href")
+    unique(sub("[?#].*$", "", xml2::url_absolute(href, url)))
+  }
+  below <- function(l, folder, rx) l[startsWith(l, folder) & grepl(rx, substring(l, nchar(folder) + 1))]
+
+  folders <- root
+  year_folders <- character()
+  for (depth in 1:3) {
+    kids <- unlist(lapply(folders, function(f) below(links(f), f, "^[^/]+/$")))
+    year <- grepl("/\\d{4}/$", kids)
+    year_folders <- c(year_folders, kids[year & as.integer(stringr::str_match(kids, "/(\\d{4})/$")[, 2]) %in% years])
+    folders <- unique(kids[!year])
+  }
+
+  read <- character()
+  found <- list()
+  for (yf in unique(year_folders)) {
+    pages <- character()
+    for (p in 1:100) {
+      l <- links(if (p == 1) yf else paste0(yf, "?page=", p))
+      if (is.null(l)) break
+      new <- setdiff(below(l, yf, "^(var|host)/[^/]+\\.html$"), pages)
+      if (!length(new)) {
+        read <- c(read, yf)
+        break
+      }
+      pages <- c(pages, new)
+    }
+    found[[yf]] <- pages
+  }
+  url <- unlist(found, use.names = FALSE) %||% character()
+  m <- stringr::str_match(url, "/(\\d{4})/(var|host)/([^/]+)\\.html$")
+  list(pages = tibble::tibble(url = url, code = tolower(vapply(m[, 4], utils::URLdecode, "", USE.NAMES = FALSE)),
+                              year = as.integer(m[, 2]), semester = m[, 3]),
+       read = read)
 }
 
 #' Resolve URLs for a batch of UiO courses from the sitemap

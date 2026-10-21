@@ -23,7 +23,7 @@ This project harvests the course descriptions of Norwegian higher education inst
 |---|---|---|
 | 1. Course id `{institution}_{course_code_raw}_{year}_{semester}_{status}` | `add_course_id()` (`R/utils.R`) | `course_id` |
 | 2. URL from metadata (institution-specific builders; NA where the URL must be discovered) | `add_course_url()` (`R/add_course_url.R`) | `url` |
-| 3. URL discovery (USN, UiT, hivolda, UiO; optional) | `resolve_course_urls()` (`R/resolve_course_urls.R`) | `url`, checkpoint `data/raw/checkpoint/urls_{inst}.RDS` |
+| 3. URL discovery (USN, UiT, hivolda, UiO, HiOF; optional) | `resolve_course_urls()` (`R/resolve_course_urls.R`) | `url`, checkpoint `data/raw/checkpoint/urls_{inst}.RDS` |
 | 4. Fetch HTML with checkpointing | `fetch_html_with_checkpoint()` (`R/checkpoint.R`, `R/fetch_html_cols.R`) | `html`, `html_success`, `html_error` |
 | 5. Extract text (the page's blocks as text, USN cleanup, PDF text) | `extract_fulltext_from_raw()` (`R/extract_fulltext.R`) | `data/raw/{inst}/{year}/{run}.parquet` (raw harvest) |
 | 6. Read each stored page into blocks, per raw partition; the text is the blocks | `partition_blocks()`, `partition_text()` (`R/pipeline.R`) | `extracted_text.RDS` |
@@ -1231,9 +1231,22 @@ its code prefix (`ENG`) have, else the one of its DBH department
 case (`sv/iss/sos9009`), and the URL must be too; Ø is O (`MØNA2504` is in
 `hf/ikos/MONA2504/`).
 
-**HiOF.** Courses before autumn 2021 use a different URL structure (switch in
-`add_course_url_hiof()`); the config selector lists fallbacks for the old and
-new page layouts.
+**HiOF.** A page is `/studier/emner/{folder}/{year}/{var|host}/{code}.html`
+(one page per semester, the code in lower case), in a faculty or department
+folder DBH does not give: `lusp/{lusp,pil,res,slik}/`, `hvo/{shb,vlo}/`,
+`iio/{itk,ing,ois}/` (from 2021), `nta/` (2009–2021), `videre/` (from 2008),
+`fellesemner/` (from 2022), and `historiske-emner/{hv,ir,it,lu,oss}/` for
+courses no longer taught (2005–2024, the faculties before 2021). The folder
+follows the site, not DBH's department (hsb1209, a health code, is in `ir/`),
+so `resolve_urls_hiof_batch()` (url_discovery) lists the year folders of
+the harvest's years (`hiof_course_index()`: about 20 pages a listing page,
+some 1000 requests for all years) and gives an offering the page of its
+code, year and semester; of several, the teacher-education URL that
+`add_course_url_hiof()` builds (`historiske-emner/lu/` before autumn 2021,
+`lusp/lusp/` after), then one outside `historiske-emner`. An offering with no
+page gets no URL, unless the listing of its teacher-education year folder
+failed: then it gets that URL. The config selector lists fallbacks for the
+old and new page layouts.
 
 **USN.** The URL holds a version number that metadata cannot give:
 `https://www.usn.no/studier/studie-og-emneplaner/#/emne/{CODE}_{VERSION}_{YEAR}_{SEMESTER}`.
@@ -1302,7 +1315,7 @@ active and historical pages.
 | `get_institution_config(inst)` | `R/institution_config.R` | Config list for one institution |
 | `add_course_id(dbh_df)` | `R/utils.R` | Unique id from institution, raw code, year, semester, status |
 | `add_course_url(df)` | `R/add_course_url.R` | Institution-specific URL builders; NA where discovery is needed |
-| `resolve_course_urls(df, checkpoint_path)` | `R/resolve_course_urls.R` | URL discovery (USN, UiT, hivolda, UiO) with checkpointing |
+| `resolve_course_urls(df, checkpoint_path)` | `R/resolve_course_urls.R` | URL discovery (USN, UiT, hivolda, UiO, HiOF) with checkpointing |
 | `fetch_html_with_checkpoint(courses, checkpoint_path)` | `R/checkpoint.R` | Download HTML, skipping courses already in the checkpoint |
 | `extract_fulltext_from_raw(df, config)` | `R/extract_fulltext.R` | `extracted_text` from the raw harvest, per strategy |
 | `page_blocks(html, text, cfg)` | `R/blocks.R` | Read one page into a block table |
@@ -1378,7 +1391,7 @@ active and historical pages.
 │   ├── institution_config.R   # Institution registry (strategy, selectors, overrides, section_*)
 │   ├── utils.R                # Helpers (data paths, add_course_id, validation, normalization)
 │   ├── add_course_url.R       # URL generation logic
-│   ├── resolve_course_urls.R  # URL discovery for USN, UiT, hivolda, UiO
+│   ├── resolve_course_urls.R  # URL discovery for USN, UiT, hivolda, UiO, HiOF
 │   ├── fetch_html_cols.R      # HTML downloading (httr2)
 │   ├── extract_fulltext.R     # Config-driven text extraction
 │   ├── checkpoint.R           # Checkpoint management

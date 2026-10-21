@@ -195,7 +195,7 @@ Figures are in the tables above; the notes say why.
 
 ### HiOF (Ostfold University College)
 
-- Plans before autumn 2021 use another URL structure; `add_course_url_hiof()` switches by date, and the selector lists fallbacks for both page layouts
+- A plan sits in a faculty or department folder that DBH does not give, and a course no longer taught moves to `historiske-emner/` (README "Institution-Specific Notes"); since 2026-10-21 `resolve_urls_hiof_batch()` reads the folder listings of the harvested years, where before only the teacher-education folders were built (11 of the 2026-10-17 pilot's 100 course-years had a page). The selector lists fallbacks for the old and new page layouts
 - Needs a browser-like user agent (`user_agent = "browser"`) to avoid 403s
 - Most rows without a plan are the other semester of a course registered in both (see "Semester registration in DBH")
 - Reading lists are part of the plan text; `.anon_hiof()` removes only the "Litteraturlista er sist oppdatert" line
