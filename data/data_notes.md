@@ -7,12 +7,12 @@ Generated: 2026-10-21
 
 | Institution | Rows | Codes | Years | Extracted OK | Rate | Median chars | Unique plans | Dedup % |
 |:---|---:|---:|:---|---:|:---|---:|---:|:---|
-| hiof | 1887 | 333 | 2007-2025 | 852 | 45.2% | 7151 | 826 | 3.1% |
+| hiof | 1887 | 333 | 2007-2025 | 892 | 47.3% | 7006 | 865 | 2.9% |
 | hivolda | 22740 | 2843 | 2000-2025 | 5181 | 22.8% | 4220 | 4331 | 16.4% |
 | hvl | 3777 | 486 | 2017-2025 | 3488 | 92.3% | 4398 | 1910 | 45.2% |
 | inn | 3040 | 377 | 2018-2025 | 1956 | 64.3% | 4150 | 608 | 17.7% |
 | mf | 237 | 122 | 2025 | 26 | 11.0% | 4056 | 26 | 0.0% |
-| nih | 363 | 122 | 2021-2025 | 95 | 26.2% | 2534 | 95 | 0.0% |
+| nih | 363 | 122 | 2021-2025 | 98 | 27.0% | 2546 | 97 | 1.0% |
 | nla | 2243 | 292 | 2017-2025 | 1831 | 81.6% | 6050 | 929 | 49.3% |
 | nmbu | 218 | 114 | 2025 | 12 | 5.5% | 5900 | 12 | 0.0% |
 | nord | 3645 | 520 | 2016-2025 | 3644 | 100.0% | 4066 | 1319 | 52.6% |
@@ -20,14 +20,14 @@ Generated: 2026-10-21
 | oslomet | 1869 | 276 | 2018-2025 | 1869 | 100.0% | 10359 | 719 | 59.4% |
 | samas | 130 | 68 | 2025 | 0 | 0.0% | NA | 0 | NaN% |
 | steiner | 244 | 125 | 2025 | 15 | 6.1% | 5027 | 15 | 0.0% |
-| uia | 3067 | 341 | 2013-2025 | 1182 | 38.5% | 4160 | 616 | 43.3% |
-| uib | 2827 | 274 | 2004-2025 | 1513 | 53.5% | 3324 | 582 | 59.4% |
+| uia | 3067 | 341 | 2013-2025 | 1196 | 39.0% | 4136 | 630 | 42.7% |
+| uib | 2827 | 274 | 2004-2025 | 1571 | 55.6% | 3297 | 613 | 58.6% |
 | uio | 286 | 151 | 2025 | 47 | 16.4% | 4623 | 47 | 0.0% |
 | uis | 2921 | 316 | 2007-2025 | 2719 | 93.1% | 5760 | 1307 | 50.2% |
-| uit | 6868 | 714 | 2004-2025 | 3232 | 47.1% | 4259 | 2324 | 27.6% |
-| usn | 3219 | 493 | 2018-2025 | 1282 | 39.8% | 10538 | 1224 | 4.4% |
+| uit | 6868 | 714 | 2004-2025 | 3239 | 47.2% | 4258 | 2331 | 27.6% |
+| usn | 3219 | 493 | 2018-2025 | 1294 | 40.2% | 10382 | 1236 | 4.4% |
 
-**Total**: 65527 rows, 34482 with extracted text (52.6%), 19405 unique
+**Total**: 65527 rows, 34616 with extracted text (52.8%), 19510 unique
 plans.
 
 **Columns:**
@@ -57,12 +57,12 @@ offerings with a plan, by period:
 
 | Institution | –2014 | 2015–17 | 2018–19 | 2020–21 | 2022–23 | 2024– |
 |:------------|:------|:--------|:--------|:--------|:--------|:------|
-| hiof        | 4%    | 100%    | 43%     | 49%     | 45%     | 46%   |
+| hiof        | 16%   | 100%    | 48%     | 49%     | 48%     | 47%   |
 | hivolda     | 0%    | 30%     | 45%     | 45%     | 48%     | 48%   |
 | hvl         |       | 61%     | 97%     | 94%     | 93%     | 91%   |
 | inn         |       |         | 0%      | 0%      | 100%    | 100%  |
 | mf          |       |         |         |         |         | 11%   |
-| nih         |       |         |         | 7%      | 25%     | 35%   |
+| nih         |       |         |         | 7%      | 25%     | 37%   |
 | nla         |       | 36%     | 81%     | 84%     | 85%     | 81%   |
 | nmbu        |       |         |         |         |         | 6%    |
 | nord        |       | 100%    | 100%    | 100%    | 100%    | 100%  |
@@ -70,12 +70,12 @@ offerings with a plan, by period:
 | oslomet     |       |         | 100%    | 100%    | 100%    | 100%  |
 | samas       |       |         |         |         |         | 0%    |
 | steiner     |       |         |         |         |         | 6%    |
-| uia         | 0%    | 0%      | 0%      | 48%     | 46%     | 48%   |
-| uib         | 30%   | 44%     | 58%     | 81%     | 71%     | 81%   |
+| uia         | 0%    | 0%      | 0%      | 48%     | 47%     | 48%   |
+| uib         | 30%   | 44%     | 62%     | 81%     | 76%     | 85%   |
 | uio         |       |         |         |         |         | 16%   |
 | uis         | 92%   | 96%     | 95%     | 91%     | 92%     | 94%   |
 | uit         | 50%   | 44%     | 40%     | 46%     | 53%     | 51%   |
-| usn         |       |         | 35%     | 45%     | 37%     | 41%   |
+| usn         |       |         | 37%     | 45%     | 38%     | 41%   |
 
 ## Semester registration in DBH
 
@@ -95,12 +95,12 @@ year) that have a plan in at least one semester:
 
 | Institution | Course-years | Both semesters in DBH | Both reg., plan in one | Both reg., plan in both | Both reg., no plan | Course-years with plan | Row rate |
 |:---|---:|:---|---:|---:|---:|:---|:---|
-| hiof | 1029 | 83% | 720 | 8 | 130 | 82% | 45.2% |
+| hiof | 1029 | 83% | 753 | 9 | 96 | 86% | 47.3% |
 | hivolda | 12913 | 76% | 4412 | 193 | 5222 | 39% | 22.8% |
 | hvl | 2025 | 87% | 165 | 1542 | 45 | 96% | 92.3% |
 | inn | 1593 | 91% | 646 | 29 | 772 | 45% | 64.3% |
 | mf | 122 | 94% | 25 | 0 | 90 | 21% | 11.0% |
-| nih | 200 | 82% | 72 | 0 | 91 | 48% | 26.2% |
+| nih | 200 | 82% | 75 | 0 | 88 | 49% | 27.0% |
 | nla | 1191 | 88% | 68 | 826 | 158 | 84% | 81.6% |
 | nmbu | 114 | 91% | 11 | 0 | 93 | 11% | 5.5% |
 | nord | 1973 | 85% | 105 | 1228 | 339 | 79% | 100.0% |
@@ -108,12 +108,12 @@ year) that have a plan in at least one semester:
 | oslomet | 993 | 88% | 44 | 812 | 20 | 97% | 100.0% |
 | samas | 68 | 91% | 0 | 0 | 62 | 0% | 0.0% |
 | steiner | 125 | 95% | 15 | 0 | 104 | 12% | 6.1% |
-| uia | 1604 | 91% | 1024 | 3 | 436 | 68% | 38.5% |
-| uib | 1425 | 84% | 14 | 669 | 507 | 52% | 53.5% |
+| uia | 1604 | 91% | 1038 | 3 | 422 | 68% | 39.0% |
+| uib | 1425 | 84% | 14 | 688 | 488 | 53% | 55.6% |
 | uio | 151 | 89% | 44 | 0 | 91 | 31% | 16.4% |
 | uis | 1602 | 82% | 41 | 1165 | 113 | 91% | 93.1% |
-| uit | 3699 | 86% | 1113 | 887 | 1169 | 63% | 47.1% |
-| usn | 1752 | 84% | 1058 | 33 | 376 | 71% | 39.8% |
+| uit | 3699 | 86% | 1118 | 887 | 1164 | 63% | 47.2% |
+| usn | 1752 | 84% | 1069 | 33 | 365 | 72% | 40.2% |
 
 ## Course-years without a plan
 
@@ -131,12 +131,12 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 
 | Institution | Without plan | 404 | No URL | Fetch error | Page, no plan | No page | Between plans |
 |:---|---:|---:|---:|---:|---:|---:|---:|
-| hiof | 185 | 185 | 0 | 0 | 0 | 0 | 6 |
+| hiof | 147 | 96 | 51 | 0 | 1 | 0 | 6 |
 | hivolda | 7804 | 0 | 7804 | 0 | 0 | 0 | 133 |
 | hvl | 79 | 79 | 0 | 0 | 0 | 0 | 1 |
 | inn | 883 | 0 | 584 | 0 | 299 | 0 | 7 |
 | mf | 96 | 0 | 0 | 0 | 0 | 96 | 0 |
-| nih | 104 | 103 | 0 | 1 | 0 | 0 | 2 |
+| nih | 102 | 101 | 0 | 1 | 0 | 0 | 2 |
 | nla | 186 | 165 | 0 | 0 | 21 | 0 | 2 |
 | nmbu | 98 | 0 | 0 | 0 | 0 | 98 | 0 |
 | nord | 413 | 1 | 0 | 0 | 412 | 0 | 0 |
@@ -144,12 +144,12 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 | oslomet | 34 | 0 | 0 | 0 | 34 | 0 | 0 |
 | samas | 68 | 0 | 68 | 0 | 0 | 0 | 0 |
 | steiner | 100 | 0 | 100 | 0 | 0 | 0 | 0 |
-| uia | 521 | 521 | 0 | 0 | 96 | 0 | 92 |
-| uib | 691 | 521 | 0 | 140 | 36 | 0 | 0 |
+| uia | 507 | 507 | 0 | 0 | 96 | 0 | 92 |
+| uib | 668 | 495 | 0 | 137 | 42 | 0 | 0 |
 | uio | 104 | 0 | 7 | 0 | 0 | 97 | 0 |
 | uis | 145 | 12 | 0 | 0 | 133 | 0 | 0 |
-| uit | 1365 | 0 | 1362 | 0 | 13 | 0 | 50 |
-| usn | 485 | 0 | 485 | 0 | 1 | 0 | 30 |
+| uit | 1358 | 0 | 1355 | 0 | 13 | 0 | 50 |
+| usn | 473 | 0 | 473 | 0 | 1 | 0 | 30 |
 
 To list the gaps between plans:
 `readRDS("data/interim/plan_gaps.RDS") |> dplyr::filter(between_plans)`.
@@ -214,9 +214,24 @@ Figures are in the tables above; the notes say why.
 
 ### HiOF (Ostfold University College)
 
-- Plans before autumn 2021 use another URL structure;
-  `add_course_url_hiof()` switches by date, and the selector lists
-  fallbacks for both page layouts
+- A plan sits in a faculty or department folder that DBH does not give,
+  and a course no longer taught moves to `historiske-emner/` (README
+  “Institution-Specific Notes”); since 2026-10-21
+  `resolve_urls_hiof_batch()` reads the folder listings of the harvested
+  years, where before only the teacher-education folders were built (11
+  of the 2026-10-17 pilot’s 100 course-years had a page; 50 after the
+  re-harvest of 2026-10-21). The selector lists fallbacks for the old
+  and new page layouts
+- Course-years without a page in the pilot sample (2026-10-21): the site
+  lists no page of that code in that year’s folders. Most are DBH codes
+  the site never used: 18 of the 25 in 2007 (the site’s 2007 codes are
+  others, e.g. `hsaku10107` where DBH has AKU200), the PhD courses (no
+  PhD folder under `/studier/emner/`), the administration’s courses
+  (FEDV316, FEHP1509; `fellesemner/` starts in 2022) and the Academy of
+  Performing Arts (`nta/` lists 6 pages in 2019 and none after 2021, so
+  0 of its 10 course-years). A few have their page in the year before
+  only: LMUKRLE11323 and LMUSPA11219, registered in 2025, are in
+  `lusp/lusp/2024/`
 - Needs a browser-like user agent (`user_agent = "browser"`) to avoid
   403s
 - Most rows without a plan are the other semester of a course registered
@@ -321,6 +336,22 @@ Figures are in the tables above; the notes say why.
 
 - Short year range. Most 404s are the other semester of a course
   registered in both (see “Semester registration in DBH”)
+- Pages exist by year folder,
+  `/studier/emner/{year}/{host|var}/{code}.html`, and the site publishes
+  them for few courses before 2025. The year indexes
+  (`/studier/emner/{year}/{host|var}/`, read 2026-10-21) list 5 pages
+  for 2021 (teacher education, LKI), 22 for 2022 (LKI, and FRI100,
+  FRI101, IDR107, IDR111, IDR113, SPM100, TI100) and 163 for 2025 (both
+  semesters). Every 404 of the pilot sample’s 2021 and 2022 course-years
+  is a course the index of that year does not list (2021: 33 of 33
+  course-years, 2022: 31 of 33), so NIH has no page for them; the code
+  form is not the cause (`/studier/emner/faf314.html` is 404 too). The
+  pilot sample’s 2025 404s are the other semester of a course registered
+  in both, and the codes with Norwegian letters: the page of KRØ100 is
+  `kro100.html`, which the harvest requested as `krø100.html` until
+  2026-10-21 (`add_course_url_nih()` now writes ø as o)
+- Codes with a space or hyphen that are not course codes (MAS- ESSAY,
+  UTV-ESSAY, essays on the master’s programmes) have no page in any year
 - Read from `#vrtx-fs-emne-content`: the title, the facts list (credits,
   department, semester, duration, language) and the plan; not the course
   coordinator, the table of contents’ heading and the FS fetch stamp
@@ -539,7 +570,17 @@ Figures are in the tables above; the notes say why.
   fetched from FS in July 2024. The site no longer has these plans, so
   the offerings stay without one
 - URL pattern:
-  `https://www.uia.no/studier/emner/{year}/{semester}/{course_code}.html`
+  `https://www.uia.no/studier/emner/{year}/{semester}/{course_code}.html`;
+  the semester folders are `host` and `var`
+- DBH’s variant suffixes `-G`, `-G2` and `-D` (MA-015-G, TFL011-G2,
+  PRA090-D) are not in the site’s code: ma-015, tfl011, pra090 answer,
+  the codes with the suffix never do (checked 2026-10-21). Until then
+  the builder kept the suffix and the 41 such offerings in the raw
+  store, and 37 of the pilot’s, were 404. The builder now drops the
+  suffix. A few such courses have no page under either form (IKT623,
+  IKT454, MA-015 and others in the 2022 and 2025 pilot years, 404 in
+  both semesters): the site does not publish them, so they stay without
+  a plan
 
 ------------------------------------------------------------------------
 
@@ -564,6 +605,19 @@ Figures are in the tables above; the notes say why.
   semester) and give no plan; 30 of them also carry “Feil i visning av
   emnebeskrivelse”. Fetched again on 2026-10-14, 29 still carry both and
   none gives a plan, so the plan is not on the site
+- All courses (pilot sample of 100 course-years, 2010/2019/2022/2025):
+  on 2026-10-17, 74 course-years answered 404 and 3 failed. Fetched
+  again on 2026-10-21, 29 gave a page (HIS101, STAT260, PED322 among
+  them): UiB’s site sometimes answers 404 for a page it has. The other
+  48 have no page on UiB’s site, in any semester and without
+  `start_semester` (12 of them checked so): 25 courses DBH last lists
+  before 2025 or as discontinued (UiB keeps no page for a course it no
+  longer offers, even for the semesters it ran), 14 PhD courses, 4
+  master’s theses and other milestones (JUS399, MABARN351, MEDFLMIDT,
+  GEO310), 2 UNIS courses (AB206, AG335, on unis.no), and 3 design
+  semester blocks whose DBH code has a space (`BAR 3`, `UTV VISK 5H`;
+  also not as `bar3` or `bar-3`). Every course-year of the sample with a
+  page is of a course DBH still lists in 2025
 
 ------------------------------------------------------------------------
 
@@ -621,7 +675,33 @@ Figures are in the tables above; the notes say why.
 ### UiT (The Arctic University of Norway)
 
 - **Historical plans** via document ids from the course page’s semester
-  picker
+  picker, plus the document the page itself shows (the latest; the
+  picker leaves it out, so before 2026-10-21 the latest document of
+  every course was missed, e.g. autumn 2025 for courses whose plan for
+  spring 2026 was not yet published)
+- Course-years without a document (pilot sample of all courses,
+  2026-10-21, checked on the course pages: 33 of 100 course-years, after
+  the shown document gave 7 more their URL). UiT’s documents follow the
+  semesters a course is taught (LER-3101: every spring 2021-2026), while
+  DBH also lists courses in years without a document:
+  - The page exists but has no document for the DBH year (21): the
+    documents stop years before (the PhD special-curriculum courses
+    KJE-8810, MED-8815, SVF-8044: last document spring 2012, DBH 2025;
+    PSY-3027 last spring 2021; HIF-3113 last spring 2023), start after
+    it (2008: the earliest documents are autumn 2008, so spring 2008 has
+    none; KJE-8897 and MED-3881 start in 2009), or skip it (SAM-1013:
+    autumn 2024, then autumn 2026)
+  - No course page at all (12): the page says “Error rendering
+    component” for the code, also with DBH’s version suffix and in lower
+    case. These are old doctoral programme codes of 2008 (FARMDG, FILDG,
+    SOSANTDRSP2, SOSIODRSP1), codes such as XXX-1000 and BB351, and,
+    likely, courses discontinued before the documents begin (REL-1012,
+    SAM-0100 in 2008)
+  - AG- and AGF- codes (DBH unit “UiT (uspesifisert underenhet)”,
+    e.g. AG-323 “Sequence stratigraphy”) are by their codes and titles
+    courses of UNIS on Svalbard, which publishes its plans on its own
+    site; UiT’s pages have at most a 2012 document or none. They are not
+    harvested
 - The plan is read from `#maincontents`: the course code and title, the
   facts (campus, semester, credits, level) and `.mainContent` (since
   2026-10; the old `.hovedfelt > main > div.col-md-12` matched nothing
@@ -667,3 +747,27 @@ Figures are in the tables above; the notes say why.
   2026-10-13, they show the same plan text without the banner.
   `.cleanup_usn_text()` removes the banner, and the resolver now reloads
   a page that has the requested year and the banner
+- A course taught in English has an English page (“Applies to: Course
+  start autumn 2022”, banner “Note: The course plan for this semester is
+  not available yet.”). Until 2026-10-21 the resolver read only
+  “Undervisningsstart”, so such a course got no URL in any semester; it
+  now reads both. In the pilot sample (all courses, 100 course-years)
+  this gave 12 course-years a page (46 → 58), all of them English
+  (MAR4020 autumn 2022, MET9000 spring 2025, FEMLI20 autumn 2018, …)
+- The pilot’s other 42 course-years without a page (2026-10-21, version
+  1 rendered in Chrome, versions 2-3 by the resolver): 21 show another
+  semester’s plan under the banner (e.g. EK5420 autumn 2022 shows autumn
+  2021, 4013 autumn 2025 shows spring 2024), 10 show a cohort plan from
+  before USN (“Planen gjelder for: Kull 2017 HØST”, “Class of 2014
+  Autumn”: 3489, 9210, RET2000D and four more in 2018, SAM 501, VVL1,
+  PHDMOD500 in 2019; no plan of USN’s own), and 11 show an empty page
+  with only the banner (no plan in any version: e.g. ALDSU122 and 9228
+  in 2025, STREKON1 in 2022, HRM100 and SAMH in 2018). The old numeric
+  codes (3489, 4013, 4505, 9210, 9228) are USN’s codes too; they have no
+  plan of their own for the year
+- English pages are read with the Norwegian page’s rules: the facts box
+  is cut only after “Innholdsfortegnelse”, and several English headings
+  are not in the heading map (2026-10-21: “Course is part of these
+  studies”, “Participation/Compulsory work”, “Approved course plan”,
+  “Change description”, “Miscellaneous”, “Forms of assessment”,
+  “Compulsory Activity”)
