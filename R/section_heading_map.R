@@ -23,11 +23,14 @@ section_heading_patterns <- tibble::tribble(
   "obligatorisk læringsaktivitet",         "coursework_requirements", FALSE,
   "obligatorisk undervisningsaktivitet",   "coursework_requirements", FALSE,
   "obligatoriske aktiviteter",             "coursework_requirements", FALSE,
+  "compulsory activity",                   "coursework_requirements", TRUE,   # usn English pages
   "fravær fra obligatorisk aktivitet",     "coursework_requirements", FALSE,  # uio label
   "obligatorisk aktivitet",                "coursework_requirements", FALSE,
+  "compulsory activity and compulsory attendance", "coursework_requirements", TRUE, # usn English pages
   "compulsory learning activities",        "coursework_requirements", FALSE,  # hvl English pages
   "compulsory assignments",                "coursework_requirements", TRUE,   # ntnu English pages
   "obligatoriske arbeidskrav",             "coursework_requirements", TRUE,   # uit label
+  "participation/compulsory work",         "coursework_requirements", TRUE,   # usn English pages
   "arbeidskrav",                           "coursework_requirements", FALSE,
   "studiekrav",                            "coursework_requirements", FALSE,
   "compulsory activities",                 "coursework_requirements", FALSE,
@@ -87,6 +90,7 @@ section_heading_patterns <- tibble::tribble(
   "mer om vurdering",                      "assessment",             FALSE,
   "vurderingsordning",                     "assessment",             FALSE,
   "vurderingsformer",                      "assessment",             FALSE,
+  "forms of assessment",                   "assessment",             TRUE,   # usn English pages
   "vurderingsform",                        "assessment",             FALSE,
   "eksamensformer",                        "assessment",             FALSE,
   "vurdering",                             "assessment",             FALSE,
@@ -130,6 +134,7 @@ section_heading_patterns <- tibble::tribble(
   "krav til studierett",                   ".drop",                  FALSE,
   # Programme list in the page footer (usn, hivolda).
   "emnet inngår i følgende studier",       ".drop",                  FALSE,
+  "course is part of these studies",       ".drop",                  TRUE,   # usn English pages
   "emnet inngår i følgande studieprogram", ".drop",                  FALSE,
   # Admin blocks (uis, usn): evaluation, staff, who may take the
   # course, overlapping courses, approval stamp, change log.
@@ -148,7 +153,9 @@ section_heading_patterns <- tibble::tribble(
   "department with academic responsibility", ".drop",                TRUE,   # ntnu English pages
   # usn approval stamp and change log
   "godkjent emneplan",                     ".drop",                  TRUE,
+  "approved course plan",                  ".drop",                  TRUE,   # usn English pages
   "endringsbeskrivelse",                   ".drop",                  TRUE,
+  "change description",                    ".drop",                  TRUE,   # usn English pages
   "utgifter i emnet",                      ".drop",                  TRUE,   # usn
   "undervisningssted",                     ".drop",                  TRUE,   # uio labels
   "eventuelle utgifter i forbindelse med undervisning", ".drop",    TRUE,
@@ -204,6 +211,7 @@ section_heading_patterns <- tibble::tribble(
   # teaching method in the codebook, so praksis stays there by default.
   "faget i praksis",                       "teaching_methods",       FALSE,
   "praksis",                               "teaching_methods",       TRUE,
+  "supervised professional training",      "teaching_methods",       TRUE,   # usn English pages
   "practice",                              "teaching_methods",       TRUE,   # nla English pages
   "gjennomføring av praksis",              "teaching_methods",       TRUE,
   "undervisningstider",                    "teaching_methods",       TRUE,   # nmbu

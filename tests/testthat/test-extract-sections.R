@@ -50,6 +50,20 @@ test_that("headings of NLA's English pages are mapped like their Norwegian ones"
   expect_true(is.na(match_heading_to_section("Scope")))
 })
 
+test_that("headings of USN's English pages are mapped like their Norwegian ones", {
+  expect_equal(match_heading_to_section("Course is part of these studies"), ".drop")
+  expect_equal(match_heading_to_section("Approved course plan"), ".drop")
+  expect_equal(match_heading_to_section("Change description"), ".drop")
+  expect_equal(match_heading_to_section("Participation/Compulsory work"), "coursework_requirements")
+  expect_equal(match_heading_to_section("Compulsory Activity"), "coursework_requirements")
+  expect_equal(match_heading_to_section("Compulsory activity and compulsory attendance"),
+               "coursework_requirements")
+  expect_equal(match_heading_to_section("Forms of assessment"), "assessment")
+  expect_equal(match_heading_to_section("Supervised professional training"), "teaching_methods")
+  # like "Annet"
+  expect_true(is.na(match_heading_to_section("Miscellaneous")))
+})
+
 test_that("short English sub-headings only match exactly", {
   expect_equal(match_heading_to_section("Required prerequisite knowledge"), "prerequisites")
   expect_true(is.na(match_heading_to_section("Digital skills course")))

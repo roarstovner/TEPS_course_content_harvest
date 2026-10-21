@@ -426,9 +426,9 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
     current <- "course_content"
     out$add("heading", "", current)
   }
-  # Skip a table of contents (usn): from "Innholdsfortegnelse" to where its
-  # first entry repeats as the real heading.
-  toc <- which(trimws(lines) == "Innholdsfortegnelse")[1]
+  # Skip a table of contents (usn): from its title (.toc_titles) to where
+  # its first entry repeats as the real heading.
+  toc <- which(trimws(lines) %in% .toc_titles)[1]
   toc_heads <- character()
   if (!is.na(toc)) {
     entries <- which(!is_blank & seq_along(lines) > toc)
@@ -481,6 +481,8 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
 # `section_text_header`, through the paragraph holding its last line, or the
 # lines before a table of contents (usn: title, code, credits, language,
 # unit).
+.toc_titles <- c("Innholdsfortegnelse", "Table of contents")  # usn English pages
+
 .text_header <- function(lines, cfg) {
   head <- utils::head(lines, 40)
   hdr <- if (is.null(cfg$text_header)) integer() else
@@ -489,7 +491,7 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
     end <- which(!nzchar(trimws(lines)) & seq_along(lines) > max(hdr))[1]
     return(list(n = if (is.na(end)) length(lines) else end, intro = TRUE))
   }
-  toc <- which(trimws(head) == "Innholdsfortegnelse")[1]
+  toc <- which(trimws(head) %in% .toc_titles)[1]
   list(n = if (is.na(toc)) 0L else toc - 1L, intro = FALSE)
 }
 

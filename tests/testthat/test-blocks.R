@@ -85,6 +85,12 @@ test_that("text pages: the title and facts box before the plan are in no section
   expect_equal(text_plan_text(c(usn, "Læringsutbytte\n\nKan ting.", NA), cfg),
                c("Innholdsfortegnelse\n\nLæringsutbytte\n\nLæringsutbytte\n\nKan ting.", NA, NA))
   expect_equal(sectionize(page_blocks(NA, usn, cfg))$raw_text, "Kan ting.")
+  # English pages: "Table of contents"
+  en <- "Course plan for Law 1\n\nCourse code\n\nFE1\n\nTable of contents\n\nLearning outcome\n\nLearning outcome\n\nKnows things."
+  expect_equal(.text_header(stringr::str_split_1(en, "\n"), cfg), list(n = 6L, intro = FALSE))
+  expect_equal(text_plan_text(en, cfg),
+               "Table of contents\n\nLearning outcome\n\nLearning outcome\n\nKnows things.")
+  expect_equal(sectionize(page_blocks(NA, en, cfg))$raw_text, "Knows things.")
   # a metadata block: through its paragraph; the untitled text after it is the introduction
   pdf <- "Norsk 1\nStudiepoeng   10\nSemester   Vår\n\nIntro.\n\nLæringsutbytte\nKan ting."
   cfg <- list(reader = "text", text_header = "^(?:Studiepoeng|Semester)\\s{2,}")

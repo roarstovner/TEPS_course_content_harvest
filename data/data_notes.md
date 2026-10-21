@@ -765,9 +765,16 @@ Figures are in the tables above; the notes say why.
   in 2025, STREKON1 in 2022, HRM100 and SAMH in 2018). The old numeric
   codes (3489, 4013, 4505, 9210, 9228) are USN’s codes too; they have no
   plan of their own for the year
-- English pages are read with the Norwegian page’s rules: the facts box
-  is cut only after “Innholdsfortegnelse”, and several English headings
-  are not in the heading map (2026-10-21: “Course is part of these
-  studies”, “Participation/Compulsory work”, “Approved course plan”,
-  “Change description”, “Miscellaneous”, “Forms of assessment”,
-  “Compulsory Activity”)
+- English pages are read like the Norwegian ones (since 2026-10-21): the
+  facts box ends at “Table of contents” as at “Innholdsfortegnelse”, and
+  the English headings map like their Norwegian relatives
+  (“Participation/Compulsory work”, “Compulsory Activity” coursework
+  requirements, “Forms of assessment” assessment, “Supervised
+  professional training” teaching methods, as “Praksis”; “Course is part
+  of these studies”, “Approved course plan” and “Change description” are
+  dropped, as their Norwegian headings are). “Miscellaneous” maps to
+  nothing, as “Annet” does. Before, the 12 English pilot plans had no
+  plan text (so their plan id held the facts box), the programme list
+  went into their reading list (all 12), the approval stamp and change
+  log into their assessment (7), and only 1 of them had a coursework
+  section (now 11; assessment 11 → 12)
