@@ -333,9 +333,10 @@ anonymize_text <- function(institution, text,
   "\\p{Lu}\\p{Ll}+(?:[ \\t]+\\p{Lu}[\\p{L}.'’-]*)+[^\\n]*(?:\\n|$)"
 )
 # A signature line "17.03.20 Ola Nordmann, dekan": optional date stamp, a
-# capitalised name, then ", role" ending the line (usn approval stamps).
+# capitalised name, then ", role" ending the line (usn approval stamps,
+# also in English: "10.03.2021 Ola Nordmann, Dean").
 # \h, not [ \t]: some stamps have a no-break space after the date.
-.signature_roles <- c("dekan", "prodekan", "studiedekan", "instituttleder",
+.signature_roles <- c("dekan", "prodekan", "studiedekan", "dean", "instituttleder",
                       "instituttleiar", "rektor", "prorektor",
                       "studieprogramleder", "studieprogramleiar",
                       "instituttnestleder", "instituttnestleiar")

@@ -709,6 +709,7 @@ test_that("signature lines 'Name, dekan' are removed with their date stamp", {
                  "19.11 2020 Ola Nordmann, dekan",
                  "21.03.2021\u00a0Ola Nordmann, dekan",
                  "Kari Nordmann Lie, prodekan",
+                 "10.03.2021 Ola Kristian Nordmann, Dean",
                  "Per Hansen, instituttleder ")) {
     input <- paste("Vurdering skjer i samråd med student.", line, "", "Endringer", sep = "\n")
     result <- anonymize_text("usn", input, .progress = FALSE)
