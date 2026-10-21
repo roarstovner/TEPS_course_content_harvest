@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- anonymizer: staff names left at hiof, uib, uit, usn (one in the published releases) (#446)
 - usn: English pages: table of contents and headings (#443)
 - uit: semester picker lists no document for 38 of 100 course-years (#442)
 - usn: version discovery finds no URL for 53 of 100 course-years (#441)
