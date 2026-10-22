@@ -103,6 +103,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- unmapped headings not counted for text-reader institutions (usn, steiner) (#445)
+- uit: arbeidskrav in the 2008 Eksamensform block; 'Undervisnings- og eksamensspråk' in teaching_methods (#449)
 - hiof: 'Litteratur:' sub-heading in the learning outcomes goes to reading_list (#448)
 - hiof: videre/ pages show a later year's plan (page_term for the later-version rule) (#447)
 - anonymizer: staff names left at hiof, uib, uit, usn (one in the published releases) (#446)
