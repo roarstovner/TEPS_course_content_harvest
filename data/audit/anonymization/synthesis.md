@@ -1,4 +1,4 @@
-# Anonymization audit — synthesis (pilot re-run: hiof, uib, uit, usn, after the fixes)
+# Anonymization audit — synthesis (pilot re-runs of 2026-10-22: hiof, uib, uit, usn; oslomet, inn)
 
 Run 2026-10-22 with `--pilot` (packets built with the current
 `R/anonymize.R` at commit c8c0b29): the four institutions whose verdict was
@@ -8,6 +8,10 @@ agent per institution in the Codex CLI (gpt-6.1-sol, reasoning effort
 high); every agent read all 28 courses. 8 findings, all pass mechanical
 verification (0 ✗). The 2026-10-21 run (Opus agents) is in git history
 (098445b); its verdicts for nih and uia stand.
+
+A second run the same day (packets of commit 784e658): oslomet and inn,
+whose anonymization verdict of 2026-10-17 was "not ready" (INN's fix was
+rebuild only). 28 and 21 plans (92 and 95 KB); same model and effort.
 
 ## Summary
 
@@ -19,6 +23,9 @@ verification (0 ✗). The 2026-10-21 run (Opus agents) is in git history
   signatures. `privacy_hits` is 0 at all four.
 - All `name_like` and `phone` flags were false alarms (reference authors,
   historical figures, a named seminar, publication dates).
+- **oslomet and inn are clean**: no personal data, no over-removal; one
+  low finding (inn: "1.8.25" in a credit-overlap table's date cell,
+  `inn_IDTD2002-1_2025_autumn_1`).
 - Left: administrative dates in unusual forms and sentence fragments after
   a removal (low, one medium), and one content word cut at usn.
 
@@ -70,6 +77,8 @@ None.
 | uia | 0 (n 76) | ready (2026-10-21) |
 | usn | 0 (n 57) | ready |
 | uit | 0 (n 66) | ready |
+| oslomet | 0 (n 93) | ready |
+| inn | 0 (n 64) | ready |
 
 No personal data is left in the four samples and `privacy_hits` is 0;
 the findings left are dates and fragments (fix issues, rebuild only).

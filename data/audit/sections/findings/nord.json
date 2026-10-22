@@ -1,70 +1,118 @@
 {
   "check": "sections",
   "institution": "nord",
-  "model": "sonnet",
+  "model": "gpt-6.1-sol",
   "n_courses_reviewed": 20,
-  "n_suspects_reviewed": 9,
-  "overall_assessment": "Nord's uniform page structure gives mostly correct sections; most pre-pass flags (short, empty, leak->reading_list) are false alarms. Real problems are coursework requirements (Arbeidskrav) landing in teaching_methods or assessment when they sit outside the standard Eksamensbeskrivelse lines, duplicated/boilerplate prerequisites, and one course whose whole exam text is filed as coursework.",
+  "n_suspects_reviewed": 8,
+  "overall_assessment": "Accordion boundaries and all learning-outcome groups are generally retained, but semantic separation is unreliable: coursework and other assessment/teaching text cross section boundaries, admission and exam logistics remain, and a random control loses its reading-list section. SOS5003's duplicate/leak and MET2000's coursework leak are real; FOU1001's reading-list leak is a false alarm triggered by '-Litteratursøk', LED5018's 'empty' Veiledning is a valid teaching method, and all four short flags reproduce the brief source text without truncation. The random controls confirm recurring problems beyond the flagged sample; packet-builder truncation markers were not treated as extraction defects.",
   "findings": [
     {
-      "target": "coursework_requirements",
-      "error_type": "wrong_content",
-      "severity": "medium",
+      "target": "teaching_methods",
+      "error_type": "merged_sections",
+      "severity": "high",
       "prevalence": "common",
-      "example_course_ids": ["nord_MET2000-1_2022_spring_1", "nord_PRO9011-1_2025_autumn_1", "nord_PRO9011-1_2025_spring_1"],
-      "evidence": "1) Innlevering av et antall obligatoriske multiple choice tester. Hver enkelt test MÅ leveres inn innen gitt tidsfrist.",
-      "description": "Arbeidskrav (pass/approve gates) are filed under another section. In MET2000 the whole 'Arbeidskrav:' block written inside Læringsaktiviteter ends up in teaching_methods (the flagged leak->coursework_requirements is real). In PRO9011 (both semesters) the English 'Coursework requirements:' block (presentation 0/100 of the grade, approved/not approved) stays in assessment and no coursework_requirements row is produced. In VIT5012 an 'AK/ Arbeidskrav' line also sits in assessment.",
-      "root_cause_hypothesis": "Section split is by page heading only. Arbeidskrav lines are separated out of Eksamensbeskrivelse by Norwegian line-prefix patterns (Arbeidskrav -, Obligatorisk deltakelse), which miss the 'Coursework requirements:' header, the 'AK/' prefix and a labelled block inside the teaching-methods section. Nothing separates arbeidskrav from teaching text.",
-      "suggested_fix": "In .clean_sections()/sectionize() add a block-level rule: a paragraph starting 'Arbeidskrav:', 'Coursework requirements:' or 'AK/' (and the following paragraphs up to the next blank-separated non-arbeidskrav paragraph) moves to coursework_requirements, whatever section it was read in, including teaching_methods.",
+      "example_course_ids": [
+        "nord_MET2000-1_2022_spring_1",
+        "nord_SP204L-1_2022_autumn_3",
+        "nord_FAR2024-1_2025_spring_3"
+      ],
+      "evidence": "Arbeidskrav:\n\n1) Innlevering av et antall obligatoriske multiple choice tester. Hver enkelt test MÅ leveres inn innen gitt tidsfrist.",
+      "description": "Coursework gates are concatenated with teaching methods in six courses. MET2000 retains its detailed mandatory-test and written-work block in teaching_methods, while coursework_requirements contains only the assessment-heading summary; its leak flag is genuine. Business English II retains weekly submissions and a presentation explicitly required to sit the exam, with no coursework_requirements row. FAR2024 likewise has no coursework row despite mandatory participation; FAR1000, GLU351 and NOM1000 also retain mandatory-attendance or submission wording in teaching_methods. These requirements belong in coursework_requirements, while the actual teaching activities should remain in teaching_methods.",
+      "root_cause_hypothesis": "R/extract_sections.R::.split_inline_coursework() processes only assessment. Nord config reads accordion triggers but has no section_subheading_selector, so the internal Arbeidskrav label in MET2000 is not read as a sub-heading either; requirements expressed as prose inside teaching blocks are never rerouted.",
+      "suggested_fix": "Read exact internal Arbeidskrav labels as sub-headings for Nord and extend bounded coursework extraction to teaching_methods, including English sentences explicitly conditioning exam access on assignments and Norwegian mandatory-participation sentences. Move the requirement and its explanatory continuation into coursework_requirements, retaining lectures, optional activities and non-compulsory participation in teaching_methods.",
       "confidence": "high"
     },
     {
-      "target": "assessment",
-      "error_type": "missing_section",
-      "severity": "medium",
-      "prevalence": "rare",
-      "example_course_ids": ["nord_SOS5003-1_2022_autumn_3"],
-      "evidence": "Arbeidskrav og hjemmeeksamen (3 dager)",
-      "description": "The whole one-line Eksamensbeskrivelse names both the arbeidskrav and the graded home exam, but the extractor emitted it only as coursework_requirements. There is no assessment row, so the graded exam (hjemmeeksamen, 3 days) is lost from assessment.",
-      "root_cause_hypothesis": "The line-level arbeidskrav classifier moves any line starting with 'Arbeidskrav' to coursework_requirements, without checking that the line also describes a graded exam.",
-      "suggested_fix": "When the entire assessment text would be moved to coursework_requirements, or the line contains exam words (eksamen, hjemmeeksamen, oppgave), keep it in assessment too (or only move lines with no exam keyword).",
-      "confidence": "medium"
+      "target": "coursework_requirements",
+      "error_type": "split_section",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "nord_SPD1001-1_2025_spring_1",
+        "nord_SPD1001-1_2025_autumn_1",
+        "nord_FAR1000-1_2022_autumn_1"
+      ],
+      "evidence": "Modul 1: Redegjørelse for forståelse av sentrale begreper og egen praksis knyttet til modulens innhold.",
+      "description": "In both SPD1001 controls, the summary of three zero-weight, approved/not-approved module assignments is moved to coursework_requirements, but the three following module-specific task descriptions stay in assessment. Coursework is therefore incomplete in its own section and appears to be graded assessment elsewhere. FAR1000 has the same continuation problem: the laboratory-attendance gate moves, while the dependent sentence Må være bestått før fremstilling til Skriftlig skoleeksamen. remains orphaned in assessment.",
+      "root_cause_hypothesis": "R/extract_sections.R::.split_inline_coursework() generally moves a self-contained labelled gate line alone unless it is recognized as a block-opening label. Module descriptions have no gate keyword, and .gate_sentence_regex deliberately excludes subjectless sentences beginning Må, so these continuations are not associated with the preceding gate.",
+      "suggested_fix": "Preserve the context of a moved coursework component: for a line introducing one assignment per module, also move consecutive Modul N task descriptions until the next graded component or assessment label. Attach a subjectless approval-condition sentence immediately following a moved gate to that gate. Stop before the final exam and its grading/design text.",
+      "confidence": "high"
     },
     {
-      "target": "prerequisites",
+      "target": "cross_section",
       "error_type": "duplicate",
-      "severity": "medium",
+      "severity": "high",
       "prevalence": "rare",
-      "example_course_ids": ["nord_PRO9011-1_2025_autumn_1", "nord_PRO9011-1_2025_spring_1"],
-      "evidence": "Candidates who intend to sit for exams must have completed the master's degree in a relevant field.",
-      "description": "Prerequisites repeat the same passage twice (once from Forkunnskapskrav and again from Anbefalte forkunnskaper, with slightly different wording) and include the 'Before the first meeting the candidates shall write an abstract (300 words)' preparatory task, which is a course requirement rather than a prerequisite. The abstract paragraph also appears twice.",
-      "root_cause_hypothesis": "The page repeats the same text under two prerequisite headings (Forkunnskapskrav and Anbefalte forkunnskaper), both mapped to prerequisites and concatenated without de-duplication.",
-      "suggested_fix": "De-duplicate near-identical paragraphs within a section in .clean_sections() (normalised-text or high-similarity match). Optionally route the 'Abstract' paragraph to coursework_requirements.",
+      "example_course_ids": [
+        "nord_SOS5003-1_2022_autumn_3"
+      ],
+      "evidence": "Arbeidskrav og hjemmeeksamen (3 dager)",
+      "description": "The entire mixed one-line exam description is emitted identically as assessment and coursework_requirements. Both pre-pass flags are genuine: the three-day graded home exam contaminates coursework_requirements, and the generic coursework label remains in assessment. Assessment is present; this is duplication and conflation, not a missing assessment section.",
+      "root_cause_hypothesis": "R/extract_sections.R::.coursework_and_exam_regex marks mixed coursework-and-exam lines as both; .split_inline_coursework() retains these lines in assessment and copies the complete line into coursework_requirements.",
+      "suggested_fix": "For a short coordinated description matching Arbeidskrav og hjemmeeksamen, split at the conjunction and assign the verbatim exam phrase including duration to assessment. Retain only the coursework phrase in coursework_requirements if it supplies a substantive requirement; otherwise omit the bare label. Do not copy the graded exam into the coursework section.",
+      "confidence": "high"
+    },
+    {
+      "target": "reading_list",
+      "error_type": "missing_section",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "nord_SP204L-1_2022_autumn_3"
+      ],
+      "evidence": "The English for Business Students textbook (McKenzie, Ian) and Niall Fergusen's Ascent of Money are required.",
+      "description": "Business English II explicitly names two required books and lists four further author/title references, but no reading_list section is emitted. All literature remains inside teaching_methods. This unflagged control contains a real reading list, unlike FOU1001, where Litteratursøk is a topic/skill rather than syllabus literature.",
+      "root_cause_hypothesis": "The references occur inside the Læringsaktiviteter og undervisningsmetoder accordion, without a reading-list heading. R/extract_sections.R::sectionize() assigns that whole block to teaching_methods and has no inline reading-list extraction.",
+      "suggested_fix": "Add a conservative inline literature rule for Nord: identify an explicit required-textbook/course-material lead followed by author/title references, move that bounded passage to reading_list, and stop at the next teaching or coursework paragraph. Preserve the weekly-class sentence in teaching_methods.",
       "confidence": "high"
     },
     {
       "target": "prerequisites",
       "error_type": "boilerplate_only",
-      "severity": "low",
-      "prevalence": "common",
-      "example_course_ids": ["nord_IKT1013-1_2019_autumn_2", "nord_ORG5011-1_2022_spring_1", "nord_SOS5003-1_2022_autumn_3"],
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "nord_IKT1013-1_2019_autumn_2",
+        "nord_SOS5003-1_2022_autumn_3",
+        "nord_ORG5011-1_2022_spring_1"
+      ],
       "evidence": "Studenter må oppfylle gjeldene opptakskrav ved tilhørende studieprogram.",
-      "description": "Forkunnskapskrav sometimes holds only admission wording (opptakskrav, tatt opp som student, bachelorgrad for opptak), not a knowledge prerequisite, so prerequisites carries admission text. Other courses' 'Det kreves ingen forkunnskaper' / 'Se informasjon om opptakskrav' show the same pattern.",
-      "root_cause_hypothesis": "Forkunnskapskrav is mapped to prerequisites unconditionally; no boilerplate filter for admission phrasing.",
-      "suggested_fix": "Add admission/opptakskrav phrases ('oppfylle gjeldende opptakskrav', 'tatt opp som student', 'Se informasjon om opptakskrav', 'ingen forkunnskap utover opptakskravet') to the boilerplate/.drop list for prerequisites, and treat the row as empty when nothing else remains. Must fit course_plan_spec.md.",
-      "confidence": "medium"
+      "description": "IKT1013 emits a prerequisites row consisting solely of a generic programme-admission requirement; SOS5003 similarly retains the degree/grade rule explicitly stated for admission to the master programme. ORG5011 spring retains an admission-only sentence alongside genuine recommended prior semesters. Admission rules are excluded from prerequisites by the rubric. Other controls correctly remove admission-only or no-prerequisite text, so the failure is phrase-dependent rather than universal.",
+      "root_cause_hypothesis": "R/extract_sections.R::.strip_admission_lines() already exists, but .admission_line_regex does not recognize these formulations: oppfylle ... opptakskrav, være tatt opp som studenter, and a qualification stated for opptak på master. They consequently survive cleanup.",
+      "suggested_fix": "Extend sentence-level admission filtering for these exact formulations, including the source typo gjeldene and the standard gjeldende variant. Remove the admission-only sentences and drop emptied rows, while preserving recommended prior semesters, named prior courses, and sentences that also impose a genuine subject-matter prerequisite.",
+      "confidence": "high"
     },
     {
       "target": "assessment",
       "error_type": "formatting_noise",
-      "severity": "low",
+      "severity": "medium",
       "prevalence": "common",
-      "example_course_ids": ["nord_LED5018-1_2022_autumn_2", "nord_ENT5011-1_2022_autumn_1", "nord_PRO9011-1_2025_autumn_1"],
+      "example_course_ids": [
+        "nord_LED5018-1_2022_autumn_2",
+        "nord_ENT5011-1_2022_autumn_1",
+        "nord_GLU351-1_2019_autumn_1"
+      ],
       "evidence": "Det tas forbehold om endringer i vurderingsform. Korrekte vurderingsform vises i StudentWeb ved oppmelding til aktuelt emne.",
-      "description": "Assessment contains admin boilerplate (StudentWeb notice), a stray merged sub-heading line 'Hjelpemidler til eksamen' with the aid text and the AI-cheating notice, and in PRO9011 autumn a term-specific logistics line ('submission deadline Thursday in Wiseflow'). These are exam logistics/boilerplate, not assessment design.",
-      "root_cause_hypothesis": "Hjelpemidler til eksamen is mapped to assessment and appended with its heading line kept in the text; no boilerplate pattern for the StudentWeb notice.",
-      "suggested_fix": "Strip the heading line 'Hjelpemidler til eksamen' (and optionally drop the aids paragraph per spec), and add the 'Det tas forbehold om endringer i vurderingsform ... StudentWeb' sentence and 'submission deadline ... Wiseflow' lines to the assessment boilerplate list.",
-      "confidence": "medium"
+      "description": "Assessment retains the generic StudentWeb registration/pointer notice in LED5018 and ENT5011. GLU351 retains examiner arrangements and the sentence about the exam being held at the end of the semester. Additional controls retain a bare practical-exam-information pointer (IKT1013) and a resit rule (CDE911). These are excluded logistics or pointers within otherwise useful assessment text. Exam duration, permitted aids with their headings, AI rules and substantive COVID assessment changes are valid assessment design and should remain.",
+      "root_cause_hypothesis": "R/extract_sections.R::.section_noise$nord removes only a ChatGPT-information pointer, and .logistics_sentences has no Nord entry. Inline registration notices, examiner arrangements and resit/logistics sentences therefore survive despite correctly mapped assessment headings.",
+      "suggested_fix": "Add narrow Nord cleanup patterns for the quoted StudentWeb notice, the bare Praktisk informasjon og retningslinjer for eksamen pointer, examiner-arrangement sentences, assessment-semester scheduling and explicit resit rules. Remove those spans only, retaining grading scales, durations, assessment components, permitted-aids labels and substantive AI/COVID rules.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": [
+        "nord_FOU1001-1_2024_autumn_2",
+        "nord_LED5018-1_2022_autumn_2",
+        "nord_BIO5036-1_2025_autumn_2"
+      ],
+      "evidence": "A final oral presentation (exam) is given individually by each student on a given topic.",
+      "description": "Non-coursework content also follows institutional headings rather than meaning. FOU1001 leaves method-course/seminar and supervision arrangements in course_content; LED5018 leaves thesis group-size/design requirements and the assignment of a supervisor there. BIO5036 retains an explicit individual final-exam sentence in teaching_methods, and GLU351 likewise retains Studiet avsluttes med en praktisk eksamen. in teaching_methods. CDE911 retains a paragraph prescribing supervised practical participation in course_content. These passages belong in teaching_methods or assessment under the codebook, even though the page embeds them elsewhere.",
+      "root_cause_hypothesis": "R/extract_sections.R::sectionize() takes complete accordion blocks under their mapped headings. Post-processing provides limited coursework/prerequisite routing, but no corresponding routing of explicit teaching arrangements from course_content or final-exam descriptions from teaching_methods.",
+      "suggested_fix": "Add conservative Nord sentence/paragraph routing before cleanup: move explicit method-course and supervision arrangements from course_content to teaching_methods, and explicit final-exam sentences from teaching_methods to assessment. Preserve substantive topic descriptions and deduplicate exact repeated design/method passages when merging with existing sections.",
+      "confidence": "high"
     }
   ]
 }

@@ -1,22 +1,9 @@
 {
   "check": "anonymization",
   "institution": "oslomet",
-  "model": "opus",
+  "model": "gpt-6.1-sol",
   "n_courses_reviewed": 28,
   "n_suspects_reviewed": 20,
-  "overall_assessment": "In the 28 packet courses no personal data is left and nothing is over-removed. The one staff name (an 'Emneansvarlig' block, course 6) is stripped. Every removed span is an academic year, a semester or cohort label, or an approval date. All pre-pass flags are false alarms: name_like hits English title-case course and programme names; admin_date hits government-document dates that the rule keeps ('fastsatt av Kunnskapsdepartementet 7. juni 2016', 'rammeplan ... av 4. november 1991'); removed hits page shells holding only a title and facts box (the shell rule in R/pipeline.R drops them later) and one error page set to NA by design. A scan of all 1869 OsloMet offerings with the current code finds names left in 4 plans (see the finding). It also finds 2 plans that keep 'Etablert av dekanen 3. juli 2013' (DKLH6000-1, 2019), because 'etablert' is not a keyword of .approval_date_regex; adding it changes only those 2 plans. And 70 fagplan links from 2018-2019 lose their year ('https://student.oslomet.no/m5glu-fagplan-engelsk-2018-2019' becomes '...-engelsk-'), because the academic-year rule's lookbehind (?<![/\\w.]) does not cover a year after '-' in a URL. The ';' rendering artifact reported in the previous run is gone: no plan has a glued ';'.",
-  "findings": [
-    {
-      "target": "person_name",
-      "error_type": "pii_leak",
-      "severity": "medium",
-      "prevalence": "rare",
-      "example_course_ids": ["oslomet_ACIT4080-1_2025_autumn_1"],
-      "evidence": "External examiners are used periodically. [−Emneansvarlig Professor",
-      "description": "The rubric says names of course coordinators must be removed. The packet example shows the OsloMet 'Emneansvarlig' block in the form the handler expects, one name on the line under the label, and there it is removed. No packet course leaks a name, but the pilot packet holds none of the forms the handler misses. A scan of all 1869 OsloMet offerings with the current code finds staff names left in 4 plans, 7 names in all. (a) oslomet_SOS3000-1_2022_spring_4: three lines of the form 'Delemne <part>: <name>' under 'Emneansvarlig'. (b) oslomet_ACIT5900-1_2025_autumn_1: two lines of the form '<role> coordinator: [assistant] professor <name>' under 'Emneansvarlig'. (c) oslomet_SOSV3101-1_2022_spring_1 and oslomet_SOSV3101-1_2022_autumn_1: the intro sentence 'Emneansvarlige er: <name> (sosionom) og <name> (pedagog).' The pre-pass misses all three forms because of the lowercase 'professor', the colon label before the name and the 'er:' between role and name, so name_label is 0 for the whole institution.",
-      "root_cause_hypothesis": "Cases (a) and (b) come from .anon_oslomet() in R/anonymize.R, which removes only '^Emneansvarlig\\n+' plus ONE line that matches \\p{Lu}[\\p{L} .,-]+ to the end of the line. A line with ':' fails that character class, so the whole block stays; a second or third name line would stay even when the first matches. Case (c) comes from .role_name_inline_regex, which allows only ':?' between the role and the name, not ' er:'. It also joins further names only by ', | og | eller', so it cannot pass '(sosionom)'.",
-      "suggested_fix": "(1) In .anon_oslomet(), replace the one-line rule with a rule for the whole block: str_remove('(?ms)^Emneansvarlige?[ \\t]*\\n.*?(?=^Emneoverlapp[ \\t]*$|\\z)'). In all 33 raw OsloMet texts with an 'Emneansvarlig' line of its own, the block is last on the page or followed by 'Emneoverlapp'. (2) In .role_name_inline_regex, allow '(?:[ \\t]+(?i:er|var))?' after the role suffix, and an optional '(?:[ \\t]*\\([^()\\n]{1,30}\\))?' after each name. privacy_check reuses this regex, so it would then catch the form too. Tested with local overrides on all 1869 OsloMet offerings: only the 4 leaking plans change, plus oslomet_NATA6110-1_2018_autumn_1, which loses a placeholder 'x' line, and no names are left. Change (2) is generic, so check it against the other institutions with metrics_check. Add the three forms, with invented names, to tests/testthat/test-anonymize.R. Then run tar_make() and read metrics_check and privacy_check.",
-      "confidence": "high"
-    }
-  ]
+  "overall_assessment": "All 28 packet courses (20 suspects and eight random controls) were reviewed in full as presented, including every removed span; no personal-data leaks, retained administrative dates, harmful over-removal or anonymization-induced text or structure damage were confirmed. All pre-pass flags are false alarms: name_like matches English course and programme titles, admin_date matches protected government-document dates, and removed reflects legitimate academic-year/cohort removal from short page shells or the deliberate rejection of an error page. The coordinator block is removed, government-document dates and subject-matter years remain, and the random controls show no additional failure types; dangling administrative labels and the undated semester placeholder are harmless under the rubric.",
+  "findings": []
 }

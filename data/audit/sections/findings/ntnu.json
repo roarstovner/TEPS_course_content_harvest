@@ -1,82 +1,135 @@
 {
   "check": "sections",
   "institution": "ntnu",
-  "model": "sonnet",
+  "model": "gpt-6.1-sol",
   "n_courses_reviewed": 20,
   "n_suspects_reviewed": 14,
-  "overall_assessment": "Section splitting works well for NTNU: headings are mapped correctly, sub-headings in learning outcomes survive, and ordinary plans come out clean. The main weaknesses are plans whose text is only a pointer to an English page (sections hold 'See English version.'), and arbeidskrav text filed under assessment or teaching_methods when it sits under 'Mer om vurdering' or 'Læringsformer og aktiviteter'.",
+  "overall_assessment": "All 20 offerings (14 suspects and 6 controls) were read in full: heading boundaries and learning-outcome groups generally survive, but recurring semantic routing errors leave compulsory work and graded assessment in the wrong sections, including in random controls. Most short/empty flags on substantive outcomes, Øvinger, Kompendium and individually selected materials are false alarms, as are repeated legitimate assessment designs, the Kunnskaper prerequisite leak flag, and long reading lists; the NORX duplicate pointer flags, teaching leak flags and IMT prerequisite length flags reveal real defects. Resit/administrative material and unrecognised future-reading-list placeholders also survive, whereas permitted aids, weights, durations and the mixed PPU admission/prior-exams sentence are valid under the spec.",
   "findings": [
-    {
-      "target": "cross_section",
-      "error_type": "empty_placeholder",
-      "severity": "medium",
-      "prevalence": "common",
-      "example_course_ids": ["ntnu_IMT4127-1_2022_autumn_1", "ntnu_SMF1081-1_2022_spring_1", "ntnu_MACS490-1_2025_autumn_1"],
-      "evidence": "See English version.",
-      "description": "Where the Norwegian page only points to the English version, course_content, learning_outcomes, teaching_methods (and in IMT4127 also prerequisites and reading_list) are emitted as rows whose whole text is a pointer, identical across sections. The real content is not captured. These are empty placeholders, not content, and the same text is repeated in 3 to 5 sections. In IMT4127 the prerequisites row holds the pointer twice. Pre-pass flags short and dup_in_course are real here.",
-      "root_cause_hypothesis": "Pointer text ('See English version', 'se engelsk beskrivelse', 'Samme som NORD2001') is not recognised as a placeholder in .clean_sections() or sectionize(). The English-language page of the same course is not used as a source.",
-      "suggested_fix": "In .clean_sections() drop section text matching a pointer regex (^(see|se|samme som)\\b.{0,40}(english|engelsk|NORD\\d+)...$) so no row is emitted. Longer term, take the section text from the other-language page (the source_course_id for the English version) when the Norwegian one is only a pointer.",
-      "confidence": "high"
-    },
     {
       "target": "assessment",
       "error_type": "wrong_content",
       "severity": "high",
-      "prevalence": "rare",
-      "example_course_ids": ["ntnu_LGU14008-A_2019_autumn_1"],
-      "evidence": "Obligatoriske arbeidskrav vurderes som godkjent/ikke godkjent.",
-      "description": "Under 'Mer om vurdering' the plan lists the three obligatory arbeidskrav (approve/fail gates) in full. The codebook puts these in coursework_requirements, but they are all in assessment, while coursework_requirements holds only the stub 'Obligatoriske arbeidskrav iht. emnebeskrivelsen'. The real requirements are in the wrong section and the right section is nearly empty.",
-      "root_cause_hypothesis": "The 'Mer om vurdering' heading maps to assessment as a whole and the block is not split by content. Arbeidskrav paragraphs inside it are not routed to coursework_requirements.",
-      "suggested_fix": "In .clean_sections() or sectionize(), move paragraphs of the assessment block that start with 'Obligatoriske arbeidskrav' / 'Arbeidskrav' to coursework_requirements. Alternatively add a sub-block rule for paragraphs beginning with these words.",
+      "prevalence": "common",
+      "example_course_ids": [
+        "ntnu_HRAD2005-A_2022_spring_3",
+        "ntnu_HBIOT2039-1_2025_autumn_2",
+        "ntnu_SYT6020-1_2025_spring_1"
+      ],
+      "evidence": "Kriterier for godkjent av obligatoriske arbeidskrav er at 2 av 3 arbeidskrav skal være vurdert godkjent.",
+      "description": "Four offerings retain compulsory-work details in assessment after moving only the explicit exam-access sentence into coursework_requirements. HRAD leaves the 2-of-3 approval criterion and written/oral work descriptions behind; HBIOT leaves the actual PBL/TBL/written-work list; SYT leaves the two-year validity rule; the IDATA2002 random control leaves the possible group-work condition. These describe approval gates and their conditions, not graded assessment, so coursework_requirements is incomplete and assessment is mislabelled. Three of the four affected offerings are random controls and this defect is not flagged by the pre-pass.",
+      "root_cause_hypothesis": "R/extract_sections.R::.split_inline_coursework() recognises gate sentences but moves only the matching sentence from a mixed line. The anchored .inline_coursework_regex does not recognise openings such as Kriterier for godkjent av or Gjennomførte obligatoriske aktiviteter, and sentence context is lost around a moved gate.",
+      "suggested_fix": "Extend the NTNU inline-coursework routing to recognise approval criteria, lists introduced by Obligatoriske arbeidskrav består av, validity statements and contextual conditions on the named compulsory work. Segment mixed lines into sentences and move related coursework sentences together, stopping before graded assessment, resit or other administration.",
       "confidence": "high"
     },
     {
       "target": "teaching_methods",
       "error_type": "merged_sections",
-      "severity": "medium",
-      "prevalence": "rare",
-      "example_course_ids": ["ntnu_NORX2001-1_2025_autumn_2", "ntnu_SARB8002-1_2007_autumn_1"],
-      "evidence": "Obligatoriske arbeidskrav: Inntil 3 skriftlige og/eller muntlige arbeidskrav",
-      "description": "Free text under 'Læringsformer og aktiviteter' contains arbeidskrav rules (NORX2001, duplicating the coursework_requirements row) and a 'Vurderingsform: Deltakelse, paper.' line (SARB8002). These belong to coursework_requirements and assessment. The pre-pass leak flags are real, though the effect is small.",
-      "root_cause_hypothesis": "The plan puts these sentences inside the teaching block without their own heading. The splitter cuts only at headings.",
-      "suggested_fix": "Add paragraph-level routing in .clean_sections(): move lines in teaching_methods that start with 'Obligatoriske arbeidskrav' to coursework_requirements, and lines starting with 'Vurderingsform' to assessment. Or accept as low-priority noise and document it.",
-      "confidence": "medium"
-    },
-    {
-      "target": "prerequisites",
-      "error_type": "boilerplate_only",
-      "severity": "low",
-      "prevalence": "occasional",
-      "example_course_ids": ["ntnu_LGU14008-A_2019_autumn_1", "ntnu_PPU4725-1_2007_autumn_1"],
-      "evidence": "15 plasser er forbeholdt søkere til master i spesialpedagogikk.",
-      "description": "'Forkunnskapskrav' text that is admission and seat allocation (LGU14008: reserved places, PPU4725: 'Opptak til femårig lærerutdanning og beståtte eksamener i henhold til forskrift') is filed as prerequisites. The knowledge prerequisite and the admission rule are mixed. The rule is that admission text is not a prerequisite. The pre-pass 'boilerplate' flag on PPU4725 is partly right.",
-      "root_cause_hypothesis": "'Forkunnskapskrav' is mapped wholesale to prerequisites in R/section_heading_map.R. NTNU uses it for both admission and knowledge requirements.",
-      "suggested_fix": "In .clean_sections(), drop sentences in prerequisites matching admission patterns ('plasser er forbeholdt', '^Opptak til', 'Krever opptak'). Document it in course_plan_spec.md if the rule is accepted.",
-      "confidence": "medium"
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": [
+        "ntnu_IMT4127-1_2022_autumn_1",
+        "ntnu_REA0012-1_2022_autumn_1",
+        "ntnu_KLMED8004-1_2019_spring_1"
+      ],
+      "evidence": "Krav for å kunne gå opp til den avsluttende eksamen i sommerkurset:\nMinst 80% frammøte\nDelta på minst 80% av ukeprøver\nObligatorisk midtveisprøve",
+      "description": "Teaching blocks retain compulsory attendance, assignments and approval/validity conditions in TMM4140, NORX2001, PPU4725, TGB4170, both IMT4127 offerings, REA0012 and KLMED8004. IMT has an explicit Compulsory requirements lead-in and active project participation but no coursework_requirements row at all; elsewhere short activity lists do not capture all the retained gate details. NORX teaching leak->coursework_requirements is real, and REA/KLMED random controls demonstrate the same unflagged problem. These passages belong to coursework_requirements regardless of the enclosing teaching heading.",
+      "root_cause_hypothesis": "NTNU uses prose or inline labels inside Læringsformer og aktiviteter / Learning methods and activities, rather than h2/h3/h4 headings. R/extract_sections.R::.split_inline_coursework() only processes the assessment row; its early return leaves all teaching-side gates untouched, and its label patterns also omit Compulsory requirements.",
+      "suggested_fix": "Apply gate routing to teaching_methods as well as assessment. Recognise Compulsory requirements and Krav for å kunne gå opp til ... as inline gate lead-ins, including same-line labels; move their lists and related attendance/approval sentences to coursework_requirements while stopping at unrelated admission or assessment text. Deduplicate identical requirements already present in the explicit activity list.",
+      "confidence": "high"
     },
     {
       "target": "assessment",
-      "error_type": "formatting_noise",
-      "severity": "low",
+      "error_type": "truncated",
+      "severity": "high",
       "prevalence": "common",
-      "example_course_ids": ["ntnu_MET420-A_2025_spring_1", "ntnu_TS200114-1_2022_autumn_1"],
-      "evidence": "Disse studentene må ta kontakt med instituttet før oppmeldingsfristen 9.juli.",
-      "description": "Assessment holds exam logistics and administrative notices next to the assessment design: aids ('Hjelpemidler til eksamen: Godkjent kalkulator...'), registration deadlines, admission remarks and postponed-exam arrangements. The structured exam table is appended on every course ('Vurderingsordning:', 'Karakter:', 'Vekting ... Hjelpemiddel Kode ... Varighet'). Weights and form are legitimate assessment design, but aid codes and deadlines are logistics. This is consistent across NTNU, not a one-off.",
-      "root_cause_hypothesis": "'Mer om vurdering' and 'Eksamen' both map to assessment and are concatenated without filtering. Calculator and deadline paragraphs are not removed.",
-      "suggested_fix": "In .clean_sections(), drop assessment lines matching 'Hjelpemidler til eksamen', 'oppmeldingsfrist', 'Eksamenssystem' and calculator model lists, per course_plan_spec.md. Keep Vekting, Varighet and form.",
-      "confidence": "medium"
+      "example_course_ids": [
+        "ntnu_TMM4140-1_2007_autumn_1",
+        "ntnu_SARB8002-1_2007_autumn_1",
+        "ntnu_MOL3022-1_2019_spring_1"
+      ],
+      "evidence": "50 % av sluttkarakteren i emnet settes på grunnlag av gruppearbeidene i tilknytning til Case.",
+      "description": "Assessment omits substantive design stated elsewhere in four offerings. TMM keeps the explicitly graded Case group-work statement in teaching_methods, SARB keeps Vurderingsform: Deltakelse, paper. there, and both MOL3022 offerings keep the individually written report and self-selected method specification in course_content. The generic exam-tab rows do not recover these details. The SARB leak->assessment flag is real; this is semantic incompleteness relative to the full plan, not a packet truncation marker. TMM also contains conflicting source weights (50% in prose versus 40/100 in the exam tab), which the extractor must preserve without inventing a reconciliation.",
+      "root_cause_hypothesis": "R/extract_sections.R::sectionize() assigns whole source-heading blocks, and page_sections() has no corresponding inline assessment router for grading statements embedded in teaching_methods or course_content.",
+      "suggested_fix": "Add bounded sentence routing for explicit Vurderingsform: labels and statements linking a named component to sluttkarakteren, karaktersetting or a grade weight. Move the complete assessment-design sentence from teaching/content into assessment, preserving source wording and any contradictory source values; keep ordinary ungraded learning activities in their original canonical section.",
+      "confidence": "high"
     },
     {
-      "target": "course_content",
-      "error_type": "duplicate",
-      "severity": "low",
-      "prevalence": "rare",
-      "example_course_ids": ["ntnu_MET420-A_2025_spring_1"],
-      "evidence": "Tar forbehold om endringer i faglig innhold.",
-      "description": "The closing paragraphs 'Anvendelser av statistiske metoder ...', 'Valg av statistisk programvare kunngjøres ved semesterstart.' and 'Tar forbehold om endringer i faglig innhold.' occur twice in course_content. The duplication is already in the source plan, but the extractor passes it on, and the last paragraph is a disclaimer, not content.",
-      "root_cause_hypothesis": "The page repeats the block and no line-level de-duplication is done within a section.",
-      "suggested_fix": "Add exact-duplicate paragraph removal within a section in .clean_sections(). Optionally add the 'Tar forbehold om endringer' disclaimer to the boilerplate list.",
-      "confidence": "medium"
+      "target": "coursework_requirements",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "ntnu_PG8301-1_2007_autumn_1",
+        "ntnu_BA8506-1_2007_autumn_1"
+      ],
+      "evidence": "Øvinger\nVekting 30/100",
+      "description": "PG8301 emits Øvinger as coursework_requirements even though the exam design explicitly grades Øvinger at 30/100. BA8506, a random control, likewise emits Øvinger in the compulsory list while the same named component counts 25/100. Under the rubric a graded component belongs to assessment, not to the ungraded approval-gate section. PG8301's empty flag therefore catches a misclassification, not an empty string; the one-word label itself is meaningful.",
+      "root_cause_hypothesis": "The Obligatoriske aktiviteter heading maps all listed activities directly to coursework_requirements in R/section_heading_map.R. No reconciliation in R/extract_sections.R checks those activities against explicitly weighted exam components.",
+      "suggested_fix": "Before finalising NTNU coursework rows, reconcile standalone activity labels with the exam tab using exact normalised names and explicit nonzero weights. Treat a matched graded component as assessment; retain separately stated approval/attendance gates and distinguish any explicitly separate ungraded exercises rather than deleting every occurrence of Øvinger.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "ntnu_IMT4127-1_2022_autumn_1",
+        "ntnu_IMT4127-1_2022_spring_1"
+      ],
+      "evidence": "Security Management Metrics encompass requirements of IT and Security Governance, its measuring and assessment as well supportive Standards and Best Practices.",
+      "description": "Both IMT4127 prerequisite rows contain a long subject overview, a definition of IT governance and a list of governance objectives, followed by None. This text states no required or recommended prior knowledge and belongs to course_content; the long prerequisite flag is real. The learning_outcomes rows also open with subject-description prose before After attending the course, candidates should possess ... introduces the actual outcomes. The similarly long reading lists are legitimate and complete.",
+      "root_cause_hypothesis": "The source misuses Recommended previous knowledge for a subject overview and mixes an introduction with genuine Learning outcome statements. R/extract_sections.R::sectionize() follows headings without semantic separation; .strip_leading_placeholder() cannot remove the trailing None from a row containing other text.",
+      "suggested_fix": "Add a narrowly scoped NTNU IMT4127 block correction: route the recommended-knowledge block beginning Security Management Metrics encompass requirements to course_content, remove the separate None placeholder, and split the learning-outcome introduction at the first After attending the course, candidates should possess clause. Preserve the knowledge, skills and general-competence outcomes after that boundary.",
+      "confidence": "high"
+    },
+    {
+      "target": "prerequisites",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "ntnu_HBIOT2039-1_2025_autumn_2",
+        "ntnu_NORX2001-1_2025_autumn_2"
+      ],
+      "evidence": "Individuell avtale med partneruniversitet i utlandet.",
+      "description": "The HBIOT2039 random control has a prerequisite row consisting entirely of an exchange agreement and exchange-student eligibility, with no subject-matter prerequisite. NORX2001 appends Emnet er kun for utvekslingsstudenter. to genuine Norwegian-language/prior-study recommendations. These admission-only statements should not be prerequisites. In contrast, PPU4725's flagged sentence combines admission with passed exams and is explicitly allowed to remain whole by course_plan_spec.md; HRAD's admission sentence has already been removed correctly.",
+      "root_cause_hypothesis": "R/extract_sections.R::.strip_admission_lines() is active but .admission_line_regex does not cover kun for utvekslingsstudenter, kun er tilgjengelig for utvekslingstudenter, or Individuell avtale med partneruniversitet. The source puts those eligibility statements under prerequisite headings.",
+      "suggested_fix": "Extend the admission-only sentence patterns with these bounded exchange-student and partner-university agreement formulations. Drop HBIOT2039's resulting empty prerequisite row, retain NORX's actual knowledge recommendations, and preserve the existing guard for sentences that also state real prior-course or passed-exam requirements.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "empty_placeholder",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "ntnu_NORX2001-1_2025_autumn_2",
+        "ntnu_MOL3022-1_2019_autumn_1",
+        "ntnu_IDATA2002-1_2025_autumn_1"
+      ],
+      "evidence": "Oppgis ved semesterstart.",
+      "description": "Eight offerings emit sections saying only that content is elsewhere or will be announced: NORX2001 learning_outcomes and reading_list contain Samme som NORD2001.; TIØ4550, both MOL3022 offerings and HRAD2005 have Oppgis ved semesterstart.; SYT6020 has a future syllabus announcement; IDATA2002 has Stated at the start of studies.; BA8506 has Oppgis ved kursstart. These are placeholders under the spec, not substantive section text. NORX short/dup flags and the future-list boilerplate flags identify real issues, but the duplicated pointer is one placeholder defect rather than independent duplicated substantive content. Kompendium., Artikler og kompendier. and Individuelt. describe actual material types or selection and are not treated as empty.",
+      "root_cause_hypothesis": "R/extract_sections.R::.placeholder_phrases recognises Oppgis senere and English-page pointers, but not Samme som plus another course code or these Norwegian/English future reading-list variants. .keep_section_row() therefore retains them.",
+      "suggested_fix": "Extend whole-row placeholder matching with bounded patterns for Samme som followed only by a course code, Oppgis ved semesterstart/kursstart, Pensumoversikt vil foreligge innen oppstart, and Stated at the start of studies. Apply the future-list patterns to reading_list and remove only rows consisting entirely of these announcements; retain concrete reading materials and mixed rows with real content.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "other",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "ntnu_IMT4127-1_2022_autumn_1",
+        "ntnu_IDATA2002-1_2025_autumn_1",
+        "ntnu_HBIOT2039-1_2025_autumn_2"
+      ],
+      "evidence": "Re-sit: The next time the course is running.",
+      "description": "Noncanonical plan administration remains inside otherwise useful sections. Resit eligibility, scheduling, repeat-report rules and resit-specific form changes survive in ten offerings, including IMT, IDATA, HBIOT and the SYT random control; TMM and TGB also retain resit notices in teaching_methods. Further examples are HBIOT's credit-recognition notice in assessment and total-workload sentence in teaching_methods, MOL3022's credit-overlap notice in course_content, and NORX's degree/admission restrictions in course_content. These passages belong in the full plan but in none of the seven sections; this is substantive scope contamination rather than table-format noise. The exam-tab design, grading scale, weights, duration, permitted aids and exam language should remain.",
+      "root_cause_hypothesis": "R/extract_sections.R::.exam_tab_design() already removes repeated exam sessions and exam-system fields correctly. Remaining prose is outside that tab: .section_noise has no NTNU-specific rules and .logistics_sentences only covers HVL, while sectionize() retains administrative sentences embedded in mapped blocks.",
+      "suggested_fix": "Add NTNU sentence-level section cleanup for explicit resit lead-ins (Re-sit:, Utsatt eksamen, Ved utsatt eksamen, Ny/utsatt eksamen, and For eventuell ny vurdering), applying it across sections. Add narrowly bounded exclusions for standalone total workload, credit overlap/recognition and degree/admission-use notices inside content, teaching and assessment; retain the full plan text, actual activity descriptions, compulsory-work conditions and ordinary assessment design.",
+      "confidence": "high"
     }
   ]
 }

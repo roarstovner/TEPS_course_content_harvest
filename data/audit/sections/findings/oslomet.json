@@ -1,100 +1,118 @@
 {
   "check": "sections",
   "institution": "oslomet",
-  "model": "sonnet",
+  "model": "gpt-6.1-sol",
   "n_courses_reviewed": 16,
   "n_suspects_reviewed": 10,
-  "overall_assessment": "Section extraction works well for OsloMet: headings map correctly, learning outcomes keep all three sub-groups, and arbeidskrav land in coursework_requirements. Remaining problems are exam-logistics and regulation boilerplate inside assessment, admission text in prerequisites, placeholders, and one truncated prerequisites list. Most pre-pass leak flags (leak->learning_outcomes/teaching_methods) are false alarms from words like 'Kunnskaper'.",
+  "overall_assessment": "All 16 courses were reviewed: major section boundaries generally work, all learning-outcome groups survive, and exam aids and grading scales correctly remain in assessment. The four empty flags identify real placeholders; the four learning-outcome/teaching-method leak flags are false alarms from topic, prerequisite, attendance, or practicum wording, while the two admission leak flags identify administrative sentences mixed with genuine prior-education requirements. Unflagged problems include assessment logistics in both suspects and random controls, unmapped administrative subheadings, substantive text assigned solely by its source heading, and removal of one branch of a prerequisite condition; packet truncation markers are not extraction defects.",
   "findings": [
     {
-      "target": "assessment",
-      "error_type": "formatting_noise",
-      "severity": "medium",
-      "prevalence": "widespread",
+      "target": "cross_section",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "occasional",
       "example_course_ids": [
-        "oslomet_ØAADM6000-1_2018_autumn_1",
-        "oslomet_BYGG2200-1_2025_autumn_1",
-        "oslomet_OAS4200-1_2019_spring_1"
+        "oslomet_MSLV4500-1_2018_spring_1",
+        "oslomet_DATA3730-1_2022_autumn_1",
+        "oslomet_NATA6110-1_2018_autumn_1"
       ],
-      "evidence": "Kalkulatoren skal utgjøre en enkelt gjenstand og ha lommeformat.",
-      "description": "The 'Hjelpemidler ved eksamen' heading is mapped to assessment, so the permitted-aids text (calculator rules, 'Ingen', 'Se egen hjelpemiddelliste') is appended to assessment as exam logistics rather than assessment design. It also leaves bare fragments like 'Ingen' and 'A til F'.",
-      "root_cause_hypothesis": "R/section_heading_map.R maps 'Hjelpemidler ved eksamen' (and 'Vurderingsuttrykk') to assessment instead of .drop.",
-      "suggested_fix": "Map 'Hjelpemidler ved eksamen' to .drop (or strip it in .clean_sections()) for OsloMet, keeping Vurderingsuttrykk if the grading scale is wanted.",
-      "confidence": "medium"
-    },
-    {
-      "target": "assessment",
-      "error_type": "boilerplate_only",
-      "severity": "low",
-      "prevalence": "common",
-      "example_course_ids": [
-        "oslomet_PVUB7000-1_2019_autumn_1",
-        "oslomet_BLH3140-1_2019_spring_3"
-      ],
-      "evidence": "Studentens retter og plikter ved ny/utsatt eksamen fremgår av forskrift om studier og eksamen ved OsloMet.",
-      "description": "Generic regulation boilerplate (rights and duties at resit exams, Skikkethetsvurdering pointer to external URL) sits inside assessment. Not assessment design.",
-      "root_cause_hypothesis": "Text under 'Vurdering og eksamen' is kept whole; the 'Ny/utsatt eksamen' sub-heading is only dropped when it is a separate heading, and 'Skikkethetsvurdering' is unmapped so it joins assessment.",
-      "suggested_fix": "Map 'Skikkethetsvurdering' to .drop and add a .clean_sections() line filter for 'ny/utsatt eksamen' regulation sentences.",
-      "confidence": "medium"
+      "evidence": "Emnet forutsetter ledererfaring.…Gjennomføringen av emnet forutsetter arbeid på prosjektet tilsvarende to dager i uken over en 12-ukers periode.",
+      "description": "Innledning is copied wholesale to course_content despite containing other canonical sections. MSLV4500 retains its explicit prior-experience requirement and a substantial description of group work and external supervision there, while its prerequisites row contains only Ingen info. The random DATA3730 control files project delivery, workload, approval and supervision arrangements as course_content, rather than extracting the teaching arrangements to teaching_methods and excluding capacity administration. NATA6110 also leaves the explicit final-exam sentence in course_content. These are semantic misassignments, not the learning-outcome leaks suggested by the pre-pass.",
+      "root_cause_hypothesis": "R/section_heading_map.R maps Innledning to course_content, and sectionize() in R/extract_sections.R assigns whole blocks by heading. The subsequent inline-prerequisite helper requires a prerequisite label and does not recognize the explicit prior-experience sentence.",
+      "suggested_fix": "Add a scoped OsloMet sentence/block reassignment pass after sectionize(): move explicit prior-experience requirements such as Emnet forutsetter ledererfaring to prerequisites, project/group-work/supervision arrangements to teaching_methods, and explicit final-exam statements to assessment with deduplication. Remove capacity-only sentences and retain subject-matter prose in course_content.",
+      "confidence": "high"
     },
     {
       "target": "prerequisites",
+      "error_type": "truncated",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "oslomet_BIOB3210-1_2025_autumn_2"
+      ],
+      "evidence": "Bestått første og andre studieår eller tilsvarende i bachelorstudium i bioingeniørfag, eller\nOpptak til kompletterende utdanning for bioingeniører",
+      "description": "The random BIOB3210 control states a two-line alternative entry condition, but extraction removes its second branch and ends with a dangling eller. This changes the condition to an apparently unconditional completed-study requirement. The spec preserves a sentence combining admission and completed-course requirements; the admission branch here is part of that connected condition, rather than an independent administrative sentence.",
+      "root_cause_hypothesis": "In R/extract_sections.R, .strip_admission_lines() evaluates each newline independently. The second line matches .admission_line_regex for Opptak til ... utdanning and lacks a .real_prerequisite_regex token, so it is removed without considering the preceding line ending in eller.",
+      "suggested_fix": "Join continuation lines connected by eller/og before applying sentence-level admission filtering, preserving the whole mixed condition when a branch states completed-course requirements. Keep filtering independent admission sentences and verify that retained requirements do not end in a dangling conjunction.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "wrong_content",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "oslomet_NATA6110-1_2018_autumn_1",
+        "oslomet_BYGG2200-1_2025_autumn_1",
+        "oslomet_DATA3730-1_2022_autumn_1"
+      ],
+      "evidence": "Eksamen vurderes av to interne sensorer.…Eksamensresultat kan påklages.",
+      "description": "Assessment retains out-of-scope resit eligibility, registration, resubmission and appeal rules, examiner arrangements, and assessment-semester text. This occurs in suspects MSLV4500, NATA6110, TOLKDIAPBT and both PVUB7000 offerings, and random controls BYGG2200, DATA3730, VPSYD6010 and KROP6100. These rows also contain valid assessment design, so they are not boilerplate-only sections. Durations, permitted aids, calculator restrictions, grading scales and plagiarism rules are valid and should stay.",
+      "root_cause_hypothesis": "The heading map drops separate resit and Sensorordning blocks, but prose inside Vurdering og eksamen stays in assessment. R/extract_sections.R has only a narrow stock-resit pattern in .section_noise$all, and .logistics_sentences has no OsloMet entry.",
+      "suggested_fix": "Add OsloMet sentence filters for resit/registration/appeal rules, examiner arrangements and standalone assessment-semester statements, including the observed variants with på samme måte and Ved ikke bestått. Apply them within assessment while preserving exam form, duration, grading, permitted aids and plagiarism/AI notices.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "merged_sections",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "oslomet_PVUB7000-1_2019_autumn_1",
+        "oslomet_PVUB7000-1_2019_spring_1",
+        "oslomet_BLH3140-1_2019_spring_3"
+      ],
+      "evidence": "Målgruppe\nMålgruppen for studiet er lærere i barnehage og/ eller skole som har veiledningsoppgaver overfor studenter, nyutdannede og andre kolleger.…Skikkethetsvurdering",
+      "description": "Unmapped administrative subheadings inherit their enclosing canonical section. In both PVUB7000 offerings, Målgruppe and its target-audience/admission text are merged into course_content. In BLH3140, Skikkethetsvurdering and its programme/external-page pointer are merged into assessment. These page parts belong outside the seven sections.",
+      "root_cause_hypothesis": "The packet explicitly marks Målgruppe and Skikkethetsvurdering as unmapped subheadings. In sectionize(), an unmapped subheading returns to its parent section and its text is kept; R/section_heading_map.R lacks exact .drop entries for these labels.",
+      "suggested_fix": "Add exact .drop mappings for Målgruppe and Skikkethetsvurdering in R/section_heading_map.R so their bodies end before the next mapped subsection and stay outside canonical sections. Preserve the existing attendance-related unmapped subheadings that correctly belong to coursework_requirements.",
+      "confidence": "high"
+    },
+    {
+      "target": "prerequisites",
+      "error_type": "wrong_content",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "oslomet_PVUB7000-1_2019_autumn_1",
+        "oslomet_PVUB7000-1_2019_spring_1"
+      ],
+      "evidence": "blir prioritert ved opptak. Søkere som er aktive praksislærere for studenter ved LUI kan tas opp ved studiet, selv om praksiskravet ikke er oppfylt.",
+      "description": "Both leak->.drop flags reflect real admission contamination: prerequisites include priority at admission, applicant eligibility and general-study-competence administration. The preceding completed teacher-education and module-1 requirements are substantive prerequisites and must be retained, so neither row is boilerplate-only and the entire Opptakskrav paragraph should not be dropped.",
+      "root_cause_hypothesis": "R/extract_sections.R .admission_line_regex misses wording such as blir prioritert ved opptak, kan tas opp ved studiet, kan også søke and oppfylle kravet til generell studiekompetanse. The prerequisite heading therefore retains these independent administrative sentences.",
+      "suggested_fix": "Extend .is_admission_sentence() with sentence-level patterns for these observed admission-priority and eligibility formulations. Preserve completed-course/degree requirements and mixed substantive sentences rather than discarding every sentence beginning Opptakskrav.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
       "error_type": "empty_placeholder",
       "severity": "low",
       "prevalence": "common",
       "example_course_ids": [
         "oslomet_CORO7100-2_2018_autumn_1",
         "oslomet_MSLV4500-1_2018_spring_1",
-        "oslomet_ØAADM6000-1_2018_autumn_1"
+        "oslomet_ØAMET1000-1_2022_autumn_1"
       ],
       "evidence": "Forkunnskapskrav\n\nIngen info\n\nLæringsutbytte",
-      "description": "Prerequisites section emitted with the placeholder 'Ingen info' (the pre-pass 'empty' flag is real). Same placeholder ends assessment in MSLV4500-1. Also 'Ingen arbeidskrav/obligatoriske aktiviteter.' as coursework_requirements.",
-      "root_cause_hypothesis": "No placeholder filter for 'Ingen info' / 'Ingen.' in .clean_sections().",
-      "suggested_fix": "Add 'Ingen info' to the placeholder patterns so the row is not emitted (also trailing 'Ingen info' in assessment).",
+      "description": "All four empty flags are genuine Ingen info prerequisite rows (CORO7100, MSLV4500 and both ØAADM6000 offerings). Additional unflagged cases include the pointer-only CORO7100 teaching_methods row, Ingen info appended to MSLV4500 assessment, and ØAMET1000 coursework_requirements consisting solely of Ingen arbeidskrav/obligatoriske aktiviteter. ØAMET1000 also retains a trailing Ingen forkunnskapskrav after real recommended knowledge and a pointer-only aids subsection. No-aids values under an explicit aids heading are meaningful and are not placeholders.",
+      "root_cause_hypothesis": "R/extract_sections.R .placeholder_phrases lacks Ingen info, the combined arbeidskrav/obligatoriske aktiviteter absence wording and the observed pointer variants. .strip_leading_placeholder() only removes leading placeholder lines, leaving trailing absence statements after real content.",
+      "suggested_fix": "Add exact placeholder patterns for these absence and pointer variants; remove standalone placeholder lines at section ends as well as beginnings and suppress rows left empty. Preserve Ingen/Ingen hjelpemidler under an explicit Hjelpemidler heading, and resolve pointers to substantive text on the same page when available.",
       "confidence": "high"
     },
     {
-      "target": "prerequisites",
-      "error_type": "truncated",
-      "severity": "medium",
-      "prevalence": "rare",
-      "example_course_ids": [
-        "oslomet_BIOB3210-1_2025_autumn_2"
-      ],
-      "evidence": "Bestått første og andre studieår eller tilsvarende i bachelorstudium i bioingeniørfag, eller",
-      "description": "The plan lists two alternatives; the second ('Opptak til kompletterende utdanning for bioingeniører') is lost, so the extracted requirement ends in a dangling 'eller'.",
-      "root_cause_hypothesis": "Page has no blank line between the list items and the next heading; the last line is probably swallowed as a heading or dropped as admission text.",
-      "suggested_fix": "Inspect the blocks for this page and check that the last list line before 'Læringsutbytte' is not treated as a heading or admission .drop.",
-      "confidence": "medium"
-    },
-    {
-      "target": "prerequisites",
-      "error_type": "boilerplate_only",
+      "target": "course_content",
+      "error_type": "formatting_noise",
       "severity": "low",
       "prevalence": "occasional",
       "example_course_ids": [
-        "oslomet_PVUB7000-1_2019_autumn_1",
-        "oslomet_PVUB7000-1_2019_spring_1"
+        "oslomet_TOLKDIAPBT-1_2018_autumn_1",
+        "oslomet_ØAMET1000-1_2022_autumn_1"
       ],
-      "evidence": "Søkere som Utdanningsdirektoratet har vurdert til å ha lærerutdanning",
-      "description": "Forkunnskapskrav here is pure admission text (opptakskrav, priority at admission, general study competence), not prerequisites per the codebook. Flag leak->.drop is real in the sense that it mirrors the dropped 'Målgruppe og opptakskrav' content.",
-      "root_cause_hypothesis": "Heading 'Forkunnskapskrav' is mapped to prerequisites regardless of content.",
-      "suggested_fix": "Optionally drop paragraphs starting with 'Opptakskrav' / mentioning 'prioritert ved opptak' / 'generell studiekompetanse' in prerequisites.",
-      "confidence": "low"
-    },
-    {
-      "target": "course_content",
-      "error_type": "boilerplate_only",
-      "severity": "low",
-      "prevalence": "rare",
-      "example_course_ids": [
-        "oslomet_TOLKDIAPBT-1_2018_autumn_1"
-      ],
-      "evidence": "Vedtatt i avdelingsstyret. Godkjent av rektor.",
-      "description": "Governance boilerplate ('Vedtatt i avdelingsstyret. Godkjent av rektor...') at the start of course_content. Also table-of-subjects noise ('Genetikk og molekylær diagnostikk 15 stp') at the end of BIOB3210 course_content.",
-      "root_cause_hypothesis": "Text under Innledning is kept in full.",
-      "suggested_fix": "Add a line filter for 'Vedtatt i ... Godkjent av rektor' in .clean_sections().",
-      "confidence": "medium"
+      "evidence": "Vedtatt i avdelingsstyret. Godkjent av rektor.…OPPDATERT PENSUMLISTE FINNER DU I \"OM EMNET\" (IKKE NEDERST I EMNEBESKRIVELSEN).",
+      "description": "Otherwise substantive course_content retains page/record notices at the start of Innledning: TOLKDIAPBT contains approval/revision boilerplate, and ØAMET1000 contains a navigation instruction about where to find the updated reading list. These notices describe the record or page rather than course subject matter; the sections are not boilerplate-only. BIOB3210 substantive subject-area wording is not treated as table noise merely because it includes credits.",
+      "root_cause_hypothesis": "Innledning content is copied intact, while .strip_section_noise() is restricted to assessment/coursework_requirements and .clean_section_text() does not remove these OsloMet introduction notices.",
+      "suggested_fix": "Add narrowly anchored OsloMet cleanup rules for the observed approval/revision line and the updated-reading-list navigation notice before retaining course_content. Keep the adjacent substantive prose, cited-document dates and actual subject-area descriptions.",
+      "confidence": "high"
     }
   ]
 }

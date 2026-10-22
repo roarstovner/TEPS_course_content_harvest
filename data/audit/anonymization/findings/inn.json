@@ -1,46 +1,24 @@
 {
   "check": "anonymization",
   "institution": "inn",
-  "model": "opus",
-  "n_courses_reviewed": 20,
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 21,
   "n_suspects_reviewed": 20,
-  "overall_assessment": "No personal data in any of the 20 courses, and none in a scan of all 729 INN plans (0 e-mails, 0 phone numbers, staff labels only as generic roles: INN pages have no contact block). Semester-year lists are removed, and content years ('1896-1945', 'Cohen, 1996') are kept. The 'removed' flag (course 1; 123 of 193 offerings) is the intended later-version rule, and the name_like flags are label/value lines, English headings and one in-text reference, all false alarms. The two problems from the previous audit (the 'Engelsk'->'English' rewrite, the stripped notice) are fixed. Remaining: the later-version rule misses pages whose status notice is a language notice (17 offerings keep a later plan); that notice stays in 26 plans; and one overlap-table date '1.8.25' is left.",
+  "overall_assessment": "Reviewed all 21 courses (20 suspects and one random control): no personal-data leaks, course-content over-removal, text corruption or structure loss were found. All 19 name_like flags are false alarms involving headings, course/programme/organisation names or the legitimate Jeffrey Jerome Cohen reference; the removed flag correctly identifies a search-results placeholder rather than an actual course plan, and the random control has no defect. Semester-year lists and status notices are removed appropriately, but the admin_date flag is valid: one credit-overlap table retains the administrative date 1.8.25.",
   "findings": [
-    {
-      "target": "all",
-      "error_type": "other",
-      "severity": "high",
-      "prevalence": "occasional",
-      "example_course_ids": ["inn_INN3024-1_2023_autumn_1", "inn_2M352-1_2023_spring_1"],
-      "evidence": "Statusmelding Kun tilgjengelig på engelsk INN3024 Sustainable Business Model Innovation … Teaching semester [−2027 Spring−] Language of instruction and examination English",
-      "description": "A later version of the plan should give the offering no plan (course_plan_spec.md: 'later version | no plan'; methods.qmd 'Page shells are not plans', INN from 2026-10-07). .anon_inn() recognises a later version only by the notice 'Emnebeskrivelsen for valgt semester er ikke publisert enda'. On courses taught in one language only, INN's status slot shows 'Kun tilgjengelig på engelsk' (or 'Kun tilgjengelig på' with the language word missing, for Nynorsk) and the page still shows the latest version. None of the 26 such pages in the full INN data has the not-published notice. 17 of them show a version whose earliest teaching semester is after the offering, so a later plan is dated to an earlier offering. English (7): INN3024 Høst and Vår 2023 show the 2027 Spring version, INN3026 Høst 2025 shows 2027 Spring, SOA1001 Høst 2025 shows 2026 Spring, KSAM120 Høst and Vår 2023 show 2024 Spring, and 2M352 Vår 2023 shows 2024 Autumn. Nynorsk (10): 2MNK172-2 and 2MNK172S-2 from Vår 2022 to Vår 2025 show '2025 Haust'. In the packet this is 2 of 20 courses: the Høst 2023 offering of INN3024 has Startsemestre only from 2024 Spring, and the 2M352 Vår 2023 offering has teaching semester 2024 Autumn. The other 9 language-notice pages show an earlier version, the one in force, and rightly stay.",
-      "root_cause_hypothesis": "R/anonymize.R .anon_inn() keys the later-version rule on one notice string. The inn entry in R/institution_config.R has no page_year, so plan_offerings() (R/pipeline.R) cannot apply its version-year check, which works whatever the notice says (as for nord and uis).",
-      "suggested_fix": "Add page_year to the inn entry of R/institution_config.R, read from the shown version: its earliest 'Undervisningssemestre'/'Teaching semester' value (or the selected 'Startsemestre' entry if the HTML marks it), mapped to an academic year (autumn Y -> Y, spring Y -> Y-1). plan_offerings() then drops later versions whatever the notice. Keep the notice rule in .anon_inn() for pages without a semester list. At academic-year granularity, KSAM120 Høst 2023 (version 2024 Spring) stays. Then rebuild, explain the metrics_check rows, and add the count to the INN later-version entry in methods.qmd and data/data_notes.qmd.",
-      "confidence": "high"
-    },
-    {
-      "target": "boilerplate",
-      "error_type": "boilerplate_left",
-      "severity": "low",
-      "prevalence": "occasional",
-      "example_course_ids": ["inn_6EV323-1_2025_spring_3", "inn_2M352-1_2023_spring_1", "inn_INN3024-1_2023_autumn_1"],
-      "evidence": "Statusmelding Kun tilgjengelig på engelsk 6EV323 Multivariate statistics in community ecology",
-      "description": "INN's site status notice is left as the first two lines of course_plan. It is a site notice, not plan text (course_plan_spec.md: site notices out), and the language is already in the facts box ('Language of instruction and examination English'). There are 3 of 20 in the packet and 26 of 729 INN plans in the full data: 16 'Kun tilgjengelig på engelsk' and 10 'Kun tilgjengelig på'. The notice also makes these plans differ from the same plan text on pages without the notice.",
-      "root_cause_hypothesis": ".anon_inn() returns NA for the not-published variant of the notice but has no rule for the language variant, and .anon_generic() does not target it.",
-      "suggested_fix": "In .anon_inn(), before the semester-line rule: stringr::str_remove(\"^\\\\s*Statusmelding\\\\n(?:Kun tilgjengelig på[^\\\\n]*)\\\\n\"). Add a test to tests/testthat/test-anonymize.R with 'Statusmelding\\nKun tilgjengelig på engelsk\\n6EV323 ...' that keeps the title line.",
-      "confidence": "high"
-    },
     {
       "target": "admin_date",
       "error_type": "admin_date_left",
       "severity": "low",
       "prevalence": "rare",
-      "example_course_ids": ["inn_IDTD2002-1_2025_autumn_1"],
+      "example_course_ids": [
+        "inn_IDTD2002-1_2025_autumn_1"
+      ],
       "evidence": "Navn\tStudiepoeng\tDato\tKommentar\nIDT1101 Idrett og samfunn\t10\t1.8.25",
-      "description": "The 'Dato' cell of the credit-overlap table, the date from which the overlap applies, survives as '1.8.25'. Credit overlap belongs in course_plan, but its administrative date does not (course_plan_spec.md: administrative dates out). This is the only d.m.yy date in all 729 INN plans, so it is the pre-pass's single admin_date hit at INN.",
-      "root_cause_hypothesis": "The generic numeric-date rules in .anon_generic() need a zero-padded day and month for two-digit years ('(?:0[1-9]|[12]\\d|3[01])\\.(?:0[1-9]|1[0-2])\\.\\d{2}') or a four-digit year, so '1.8.25' matches neither.",
-      "suggested_fix": "In .anon_inn(), remove a date that fills a tab-separated table cell: stringr::str_remove_all(\"(?m)(?<=\\\\t)\\\\d{1,2}\\\\.\\\\d{1,2}\\\\.(?:\\\\d{4}|\\\\d{2})(?=\\\\t|$)\"). Test that the overlap row 'IDT1101 Idrett og samfunn\\t10\\t1.8.25' becomes 'IDT1101 Idrett og samfunn\\t10\\t'.",
-      "confidence": "medium"
+      "description": "The Dato cell in the credit-overlap table retains 1.8.25, an administrative effective date for the overlap rather than a content or government-document date. This violates the requirement to remove administrative dates and is the only confirmed defect among the 21 reviewed courses.",
+      "root_cause_hypothesis": "R/anonymize.R: .anon_inn() removes semester lists and status notices but does not handle overlap-table dates. The general two-digit-year numeric-date rule in .anon_generic() requires leading zeros for single-digit days and months; the more permissive unpadded-date rule requires a four-digit year, so neither matches 1.8.25.",
+      "suggested_fix": "In .anon_inn(), identify the credit-overlap table under Emnet overlapper med or Professional overlap, locate its Dato/Date column from the tab-separated header, and clear cells containing valid d.m.yy or d.m.yyyy dates, including unpadded day/month values. Preserve course names, credits and row boundaries; add regression coverage for 1.8.25 and for government-document and reference dates outside this administrative column.",
+      "confidence": "high"
     }
   ]
 }

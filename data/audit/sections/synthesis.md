@@ -1,6 +1,6 @@
-# Sections audit — synthesis (pilot re-runs of 2026-10-22: hiof, uit, usn)
+# Sections audit — synthesis (pilot re-runs of 2026-10-22: hiof, uit, usn; ntnu, nord, oslomet)
 
-Two rounds on 2026-10-22, both with `--pilot` and review agents in the Codex
+Three rounds on 2026-10-22, all with `--pilot` and review agents in the Codex
 CLI (gpt-6.1-sol, reasoning effort high); every agent read all its courses;
 all findings pass mechanical verification (0 ✗). The 2026-10-21 run
 (Sonnet agents) is in git history (098445b); its verdicts for nih, uib and
@@ -14,6 +14,12 @@ uia stand.
   contents only whole headings open sections (4b0b546). Same seed: UiT's
   packet holds the same 20 courses; USN's suspects changed with the fixes
   (19 courses, 7 suspects, 12 random).
+
+- **Round 3** (build of 784e658, after the gate rule's second step for
+  "… til vurdering" and handing in, 784e658): ntnu, nord, oslomet, whose
+  sections verdict of 2026-10-17 was "not ready" (ntnu, nord) or whose
+  sections the gate rule changed most (nord 67 plans, oslomet 9). 16–20
+  plans each (119–148 KB).
 
 ## Summary
 
@@ -35,6 +41,18 @@ uia stand.
   prosjektoppgaven til vurdering må deltakerne ha fått godkjent på
   mellomperiodearbeidet."), so the plan has no coursework section. Fix in
   progress (count first, rebuild only).
+- **Round 3: requirements under the teaching or content heading are now
+  the main gap.** The gate rule reads `assessment` only, so "Det blir gitt
+  2 øvinger … Begge disse kreves godkjent for adgang til eksamen." (nord,
+  under teaching), "Obligatorisk deltakelse (OD) på laboratorieøvelser"
+  and ntnu IMT4127's "Krav for å kunne gå opp til den avsluttende eksamen
+  …" stay where they are; about 9 of nord's 29 sample plans without a
+  coursework section and 3–4 of uit's 20 are such cases. Fix in progress
+  (rebuild only).
+- **oslomet: an entry condition cut in half** (`oslomet_BIOB3210-1_2025_autumn_2`:
+  "… bioingeniørfag, eller" keeps, the next line "Opptak til kompletterende
+  utdanning for bioingeniører" goes with the admission cleanup). Fix in
+  progress (rebuild only).
 - Everything else is a sentence under another part's heading (attendance in
   a teaching or Praksis block, prior knowledge in an admission field,
   content phrased as abilities), exam logistics in `assessment`,
@@ -123,17 +141,44 @@ None.
 | uib | 1.00 (n 46) | .83 | 0 | .37 (n 1774) | ready (2026-10-21) |
 | uia | 1.00 (n 76) | .88 | 0 | .32 (n 877) | ready (2026-10-21) |
 | usn | .96 (n 57) | .93 | 0 | .03 (n 578) | ready |
-| uit | .98 (n 66) | .68 ⚑ | 0 | .33 (n 760) | not ready (fix 1 in progress) |
+| uit | .98 (n 66) | .70 ⚑ (.697) | 0 | .33 (n 760) | not ready (requirements under teaching, in progress) |
+| ntnu | .96 (n 79) | .79 | 0 | .31 (n 1725) | ready |
+| nord | .92 (n 82) | .65 ⚑ | 0 | .28 (n 1502) | not ready (requirements under teaching, in progress) |
+| oslomet | 1.00 (n 93) | .96 | 0 | .03 (n 2126) | not ready (BIOB3210, in progress) |
 
 - **hiof — ready.** No number flagged; medium and low findings only after
   re-rating.
 - **usn — ready.** No number flagged; the high findings of round 1 are
   fixed and the rest are medium and low after re-rating. `unmapped_headings`
   .03: Annet, Evaluering av emnet, Miscellaneous (none plan text).
-- **uit — not ready, until fix 1.** `coursework` .68 < .70 (.62 before
-  4a6ee84): the sample plans still without a coursework section have no
-  coursework text on the page (mostly 2008, a known limit), except
-  BED-6001 (fix 1). Rebuild only.
+- **uit — not ready.** `coursework` .697 < .70 (.62 before 4a6ee84;
+  BED-6001 fixed in 784e658): of the 20 sample plans without a coursework
+  section, 16 have no coursework text on the page (mostly 2008, a known
+  limit) and 4 state it under another part's heading (STA-3003, SVF-3904,
+  BIO-3515, the ODO-6302 layout). Rebuild only.
+- **ntnu — ready.** No number flagged. The English pointer pages of
+  2026-10-17 are fetched (2026-10-19) and the arbeidskrav blocks in
+  `assessment` left with the gate rule. Left, medium after re-rating:
+  approval criteria and work lists left in `assessment` beside the moved
+  gate sentence (HRAD2005, HBIOT2039; the open NTNU arbeidskrav issue),
+  requirements and graded case work under the teaching heading (TMM4140,
+  IMT4127), "Oppgis ved semesterstart." placeholders, resit rules,
+  exchange-agreement text as prerequisites. IMT4127's prerequisites hold a
+  course overview because the page writes it under "Recommended previous
+  knowledge" (the page's own error). Graded "Øvinger" (30/100) also listed
+  as coursework is the copy the rule makes on purpose.
+- **nord — not ready.** `coursework` .646 < .70: of the 29 sample plans
+  without a coursework section, about 9 state requirements under teaching
+  or content or a bare attendance line in `assessment` (fix in progress);
+  the rest have none on the page. `assessment` .915 is no longer flagged.
+  Also medium after re-rating: SPD1001's module tasks left in
+  `assessment` beside the moved summary, SP204L's literature under
+  teaching (no reading list), MET2000's known coursework block in
+  teaching, StudentWeb notices.
+- **oslomet — not ready.** The cut entry condition (BIOB3210, high, rare).
+  Medium: "Innledning" blocks holding prerequisites and teaching
+  (MSLV4500), exam logistics in `assessment`, "Målgruppe" text in
+  `course_content`, admission text in `prerequisites`.
 
 All fixes are rebuilt from the raw store and need no new harvest.
 
