@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- usn: practice-course plans: arbeidskrav in assessment, Praksis block in teaching_methods (#450)
 - unmapped headings not counted for text-reader institutions (usn, steiner) (#445)
 - uit: arbeidskrav in the 2008 Eksamensform block; 'Undervisnings- og eksamensspråk' in teaching_methods (#449)
 - hiof: 'Litteratur:' sub-heading in the learning outcomes goes to reading_list (#448)
