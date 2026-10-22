@@ -1,58 +1,9 @@
 {
   "check": "fulltext",
   "institution": "nla",
-  "model": "sonnet",
-  "n_courses_reviewed": 28,
-  "n_suspects_reviewed": 3,
-  "overall_assessment": "Where text is extracted (15 of 28 reviewed courses) it is complete, well structured and for the right year; the three 'year' flags are false alarms (older years mentioned inside the plan text). The main weakness is that 13 of the 25 random controls have a fetched page but empty text, and the pre-pass 'empty' flag is off for nla so none are flagged. Smaller defects: corrupted characters and glued words.",
-  "findings": [
-    {
-      "target": "whole_text",
-      "error_type": "empty_or_failed",
-      "severity": "high",
-      "prevalence": "widespread",
-      "example_course_ids": ["nla_4POPM101-1_2025_autumn_1", "nla_IKF305-1_2022_spring_1", "nla_VUNA1AG17-1_2022_autumn_3"],
-      "evidence": "### Extracted text (0 chars — audit this)",
-      "description": "13 of 25 random controls (2017-2025, both semesters, active and discontinued) have a fetched page URL with a year suffix but empty extracted text, and the 'page text not in extracted text' is also empty, so the page itself carries no plan for that year. Context: 150 fetched pages but only 67 with text. The same course code (VUNA1AG17) has text for 2017 but none for 2022. This may be correct (the page's JSON lacks that academic year; data notes say nla pages lack some years), but the share is about half and the 'empty' flag is disabled for nla, so it cannot be told apart from a lookup failure here. Course-years without a plan should be accounted for in the gaps target.",
-      "root_cause_hypothesis": "json_extract with plan_years = 'page' in R/institution_config.R / R/blocks.R: the requested academic year is absent from the page JSON, or the year key lookup misses entries (status Nytt/Aktivt/Avviklet, neighbouring years).",
-      "suggested_fix": "For 5 of the empty offerings list the year keys present in the page JSON and compare them with the offering's academic year; fix the key mapping if the year is present, otherwise record these course-years in the gaps target and give nla an empty check in the pre-pass that is not suppressed.",
-      "confidence": "medium"
-    },
-    {
-      "target": "whole_text",
-      "error_type": "formatting",
-      "severity": "low",
-      "prevalence": "occasional",
-      "example_course_ids": ["nla_TAM301-1_2022_autumn_1", "nla_REL208-1_2019_autumn_2", "nla_3GJ322-1_2019_autumn_1"],
-      "evidence": "can analyze academic problems on the basis of the practical theology and qualitative empirical research¿s distinctive character and place in society",
-      "description": "Apostrophes and dashes appear as the replacement character '¿' (research¿s, kap. 1¿4, A¿F, 4¿6 weeks, Dødehavsrullene ¿ Esseere), a character-encoding corruption. Numeric ranges and grading scales are affected, and 'A¿F' reads as a different string than 'A-F'.",
-      "root_cause_hypothesis": "Source text in the page JSON is already mis-encoded (cp1252 characters stored as '¿') or a conversion step in the json reader replaces unmappable characters.",
-      "suggested_fix": "Check the raw JSON for the character; if it is in the source, add a post_fn for nla that maps ¿ between digits/letters to an en dash or hyphen and ¿s to an apostrophe-s, otherwise fix the encoding in the JSON reader.",
-      "confidence": "high"
-    },
-    {
-      "target": "course_content",
-      "error_type": "formatting",
-      "severity": "low",
-      "prevalence": "rare",
-      "example_course_ids": ["nla_3GJ302-1_2025_autumn_1", "nla_EX101-1_2017_autumn_1"],
-      "evidence": "GJ 302-2: Digital media and democratic developmentThis part of the course explores",
-      "description": "A heading is glued to the following paragraph without a line break; also 'har kunnskap omhovedlinjer' (words joined) in EX101. Headings merged into paragraphs violate the structure requirement.",
-      "root_cause_hypothesis": "Source HTML in the JSON field has an inline element or missing space/line break that the block-to-text conversion does not turn into a break.",
-      "suggested_fix": "Treat inline headings (strong/b followed directly by text) as block breaks in the json block reader; low priority.",
-      "confidence": "medium"
-    },
-    {
-      "target": "reading_list",
-      "error_type": "missing_content",
-      "severity": "low",
-      "prevalence": "common",
-      "example_course_ids": ["nla_P320-1_2025_autumn_1", "nla_3GJ302-1_2025_autumn_1", "nla_4REL112-1_2022_autumn_1"],
-      "evidence": "Digital reading list\nFollow this link for reading list and academic resources.",
-      "description": "Newer plans (2022-) hold only the link text of a digital reading list (Leganto); the link and the literature itself are not in the text, so the reading list is empty in practice. Older plans have the full Pensum text. The page text shows nothing missing, so the link is lost at extraction, or the literature is not on the page.",
-      "root_cause_hypothesis": "The json reader keeps link text but not the href, and the list lives on an external service.",
-      "suggested_fix": "Append the href of the link in the digital reading list block to the text, or mark the reading list as external in the section step. Check whether this is already known as an intended limit.",
-      "confidence": "low"
-    }
-  ]
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 31,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "Reviewed all 28 fetched offerings (20 suspects and eight random controls) plus the three failed-fetch examples: the ten nonempty plans preserve the correct academic-year JSON entry, metadata and all accordion sections with readable structure and no demonstrated extraction omissions, junk, truncation or duplication. All 18 empty flags correspond to requested academic years absent from the stored page JSON, both TAM301 year flags are false alarms caused by a reference to the 2020-2021 exception inside correctly labelled 2021-2022 and 2022-2023 plans, and the three 404 URLs follow the expected pattern without evidence of a URL-building defect. Corrupted punctuation, the joined VUHPED801 learning-outcome line and the Covid-19 notice in the 2017-2018 TEOL120 plan already occur in the source JSON, while external reading-list link labels do not establish missing on-page literature, so no fulltext-pipeline findings are supported.",
+  "findings": []
 }

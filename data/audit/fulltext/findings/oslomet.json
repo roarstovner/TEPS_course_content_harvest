@@ -1,70 +1,26 @@
 {
   "check": "fulltext",
   "institution": "oslomet",
-  "model": "sonnet",
+  "model": "gpt-6.1-sol",
   "n_courses_reviewed": 28,
   "n_suspects_reviewed": 16,
-  "overall_assessment": "Where the page has a plan, extraction is complete and clean (learning outcomes, teaching, assessment, exam sections all present; random controls are good). But a large share of offerings (15 of 16 suspects, 30 short texts of 189) contain only the facts box and programme list because the fetched page has no plan body, and one offering is an error page.",
+  "overall_assessment": "All 28 courses were reviewed: the 12 random controls preserve structured plan content, with no demonstrated omitted on-page prose or wrong academic-year selection. Of the 16 suspects, 15 are facts-only source pages whose uncaptured text contains only year-picker options, so their short flags do not establish extraction loss; the remaining short/dup_code suspect is a generic error page accepted as plan text. Minor history/timetable navigation survives widely; linked external reading lists, packet truncation markers, and apparent source punctuation or stale prose do not establish additional extraction defects.",
   "findings": [
-    {
-      "target": "whole_text",
-      "error_type": "empty_or_failed",
-      "severity": "high",
-      "prevalence": "common",
-      "example_course_ids": ["oslomet_FK2200-1_2025_spring_3", "oslomet_ARKROM6100-1_2025_spring_1", "oslomet_IFHH3400-1_2018_autumn_3"],
-      "evidence": "FK2200 Helse i kroppsøving Emneplan\nEngelsk emnenavn\nHealth in Physical Education\nOmfang\n15.0 stp.\nStudieår\n2024/2025\nEmnehistorikk\nProgramplan",
-      "description": "The extracted text is only the facts box (title, English name, credits, year, programme list) with no description, learning outcomes, teaching, assessment or requirements. The packet's uncaptured page text is only year-picker labels, so the fetched page itself has no plan body (mostly status Avviklet, or early/old offerings, and URLs whose year differs from the offering such as spring 2025 -> /2024/HØST). These rows look like fetched, extracted plans but carry no plan content; a downstream analysis would count them as empty plans. The same course often has a full plan in another year (ARKROM6100 autumn 2025 is complete).",
-      "root_cause_hypothesis": "OsloMet's studieinfo returns a stub page for course-years with no published plan (or for the year mapped by the URL builder, e.g. /2024/HØST for spring 2025); the selector #main-content correctly captures only what is there. Not an extraction bug, but nothing flags these as plan-less.",
-      "suggested_fix": "Add a content test in the OsloMet post-step or fetch validation: if the text has no 'Læringsutbytte'/'Innledning' heading (or is < ~400 chars), mark the offering as no-plan (empty text / flag) so it is excluded from section analysis and listed in the gaps target. Check whether the spring-Y URL mapping to Y-1/HØST misses a plan that exists under another year path.",
-      "confidence": "high"
-    },
-    {
-      "target": "whole_text",
-      "error_type": "wrong_page",
-      "severity": "high",
-      "prevalence": "rare",
-      "example_course_ids": ["oslomet_FADUFA-1_2018_spring_1"],
-      "evidence": "Fjern Feil:Siden du leter etter finnes ikke, eller det har oppstått en feil. Prøv igjen senere.",
-      "description": "The page fetched is the site's error page (URL /FADUFA/2017/HØST); the text is a generic error message, not a course plan. Pre-pass flags short and dup_code are real (this error text is shared across codes).",
-      "root_cause_hypothesis": "OsloMet returns HTTP 200 with an error body for non-existent course-years, so fetch does not register failure.",
-      "suggested_fix": "Treat text matching 'Siden du leter etter finnes ikke' as a failed fetch (empty extracted_text) via a post_fn or fetch check for oslomet.",
-      "confidence": "high"
-    },
     {
       "target": "page_chrome",
       "error_type": "junk_included",
       "severity": "low",
-      "prevalence": "occasional",
-      "example_course_ids": ["oslomet_VESK6300-1_2025_spring_1", "oslomet_DKLH6000-1_2019_autumn_1", "oslomet_ACIT4075-1_2025_autumn_1"],
-      "evidence": "Pensum\nVÅR 2025\n\nTimeplan\nVÅR 2025",
-      "description": "Link labels for the reading-list and timetable pages ('Pensum', 'Timeplan' plus semester) are captured as text, but the reading list itself is not in the text; these are navigation labels, not plan content. Also the fixed header labels 'Emnehistorikk' and 'Programplan' appear as empty headings.",
-      "root_cause_hypothesis": "Selector #main-content includes the sidebar/link block with Pensum and Timeplan links.",
-      "suggested_fix": "Drop the Pensum/Timeplan link block in the oslomet exclude selector or post_fn; consider following the Pensum link for reading_list.",
-      "confidence": "medium"
-    },
-    {
-      "target": "reading_list",
-      "error_type": "missing_content",
-      "severity": "medium",
-      "prevalence": "common",
-      "example_course_ids": ["oslomet_DTV3301-1_2022_autumn_1", "oslomet_PHUV9330-1_2022_spring_1"],
-      "evidence": "Pensum\nHØST 2022\n\nTimeplan\nHØST 2022",
-      "description": "The reading list (Pensum) is a separate page behind a link and is never part of extracted_text, even though the rubric lists literature as part of the plan. No offering in the packet has literature content.",
-      "root_cause_hypothesis": "Pensum lives on a separate sub-page not harvested by the standard strategy.",
-      "suggested_fix": "If reading lists are wanted, add a second fetch of the Pensum URL for oslomet; otherwise document that reading_list is empty by design.",
-      "confidence": "medium"
-    },
-    {
-      "target": "course_content",
-      "error_type": "formatting",
-      "severity": "low",
-      "prevalence": "rare",
-      "example_course_ids": ["oslomet_DTV3301-1_2022_autumn_1", "oslomet_MABIOD4300-1_2022_spring_1"],
-      "evidence": "1.;;;;;; Et muntlig framlegg",
-      "description": "Stray semicolons (and a '¿' character) appear in text, apparently from list markup or encoding glitches in the source.",
-      "root_cause_hypothesis": "Source HTML artefacts (inline separators, wrong encoding) passed through html_text.",
-      "suggested_fix": "Optionally collapse runs of ';' and strip '¿' in the oslomet post_fn.",
-      "confidence": "low"
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "oslomet_VESK6300-1_2025_spring_1",
+        "oslomet_DKLH6000-1_2019_autumn_1",
+        "oslomet_PHUV9330-1_2022_spring_1"
+      ],
+      "evidence": "Emnehistorikk\nPensum\nVÅR 2025\n\nTimeplan\nVÅR 2025",
+      "description": "All 27 course-specific extracts retain the standalone history-navigation label Emnehistorikk, and five random controls also retain Timeplan with semester link labels. These interface labels are not plan prose, despite the absence of a pre-pass junk flag. The facts box and substantive sections remain readable; a Pensum link alone does not demonstrate missing on-page literature.",
+      "root_cause_hypothesis": "R/institution_config.R selects all of #main-content and excludes only h2.portlet-title-text. The header and section.section-top are marked as facts, but page_fulltext() includes facts by default, so this marking does not remove history and timetable navigation.",
+      "suggested_fix": "In an OsloMet-only post_fn, restrict cleanup to the header before the first substantive plan heading: remove lines exactly equal to Emnehistorikk, and remove a line exactly equal to Timeplan together with its immediately following lines matching ^(?:HØST|VÅR) [0-9]{4}$. Preserve the course title, English title, credits, Studieår value, programme associations, and substantive reading-list or plan text.",
+      "confidence": "high"
     }
   ]
 }

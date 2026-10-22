@@ -1,58 +1,26 @@
 {
   "check": "fulltext",
   "institution": "hvl",
-  "model": "sonnet",
-  "n_courses_reviewed": 28,
-  "n_suspects_reviewed": 6,
-  "overall_assessment": "Extraction works well for ordinary pages: the 22 random controls are complete, include facts box, outcomes, teaching, assessment and requirements, and are free of chrome; years are correct (spring offerings use the previous academic-year URL). The one real problem is English-only courses, whose Norwegian page is a stub; the 'short' flags are all true positives.",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 31,
+  "n_suspects_reviewed": 1,
+  "overall_assessment": "Reviewed all 28 fetched plans and three failed-fetch entries: substantive plan sections and facts boxes are preserved, academic-year headings match the requested years, and DAT300's sole short flag reflects the source page referring readers to UiB rather than extraction loss. The three soft-404 URLs follow the established course/academic-year pattern and do not establish a URL defect; omitted year stamps, staff details, exam schedules and reading-list widget labels are consistent with the content specification, and no missing bibliography is demonstrated. The only clear extraction defect is a generic exam-help link label retained in 23 of 28 fetched plans.",
   "findings": [
     {
-      "target": "whole_text",
-      "error_type": "missing_content",
-      "severity": "high",
-      "prevalence": "common",
-      "example_course_ids": ["hvl_MAS538-1_2025_spring_1", "hvl_ADA512-1_2025_autumn_1", "hvl_BI4-301-1_2025_autumn_1"],
-      "evidence": "Dette emnet er berre skildra på engelsk. Klikk på knappen \"English\" oppe til høgre på sida, for å få fram den engelske visninga.",
-      "description": "Five of six suspects (MAS538 spring, ADA512, BI4-301 x2, MMO5010 with 'Se engelske nettsider for mer informasjon') are Norwegian-site stubs: title, credits, programme list and a pointer to the English version. No content, learning outcomes, teaching, assessment etc. are extracted although a plan exists in English. The control hvl_MAS538-1_2025_autumn_1 shows the full plan when the English page is what is fetched, so the content is available. DAT300 (2017) is a related case where the text only says to see an external UiB URL. These offerings have a plan record but no plan text.",
-      "root_cause_hypothesis": "The harvest URL is the Norwegian page (/studier/studieprogram/emne/YYYY/CODE); English-only courses have their plan only on the English site, which is not fetched. Some offerings (autumn 2025 MAS538) happen to yield English text, so the behaviour depends on the page language served.",
-      "suggested_fix": "In the hvl harvest or post_fn, detect the notice ('kun på engelsk' / 'berre skildra på engelsk' / 'engelske nettsider') and re-fetch the English URL (/en/studies/...) for those courses; otherwise flag them as no-plan so downstream analyses exclude them rather than count them as empty plans.",
-      "confidence": "high"
-    },
-    {
-      "target": "reading_list",
-      "error_type": "missing_content",
-      "severity": "medium",
+      "target": "page_chrome",
+      "error_type": "junk_included",
+      "severity": "low",
       "prevalence": "widespread",
-      "example_course_ids": ["hvl_MAS538-1_2025_autumn_1"],
-      "evidence": "Reading lists\nContact information +47 55 58 58 00",
-      "description": "No course in the packet has a reading list in extracted_text. The only trace is the label 'Reading lists' in the uncaptured page text of the English page (elsewhere it is probably removed as recurring chrome); the literature itself is apparently loaded outside div.l-body or dynamically. The rubric requires literature to be part of the plan.",
-      "root_cause_hypothesis": "Selector div.l-body does not include the reading-list block or link (pensumliste is likely served from a separate/dynamic source).",
-      "suggested_fix": "Inspect the raw html of one HVL page for the 'Pensumliste/Reading lists' element; if it is in the html, widen the selector or add it as a second selector; if it is a link to an external list, note this in data_notes.",
-      "confidence": "low"
-    },
-    {
-      "target": "course_content",
-      "error_type": "duplicate_content",
-      "severity": "low",
-      "prevalence": "occasional",
-      "example_course_ids": ["hvl_ØMF190-1_2022_autumn_1", "hvl_EVL-MA115-1_2019_autumn_1"],
-      "evidence": "Læringsutbytte\n\nLæringsutbytte\n\nKunnskap",
-      "description": "Where the plan itself contains a sub-heading identical to the section heading, the heading is repeated (Innhold og oppbygning twice in ØMF190; Læringsutbytte, Vurderingsform and Hjelpemidler ved eksamen twice in EVL-MA115). Cosmetic, but it can confuse heading-based sectioning.",
-      "root_cause_hypothesis": "The page's own heading is followed by an identical heading inside the plan text; extraction keeps both.",
-      "suggested_fix": "Collapse consecutive identical heading lines in the hvl post_fn.",
-      "confidence": "medium"
-    },
-    {
-      "target": "whole_text",
-      "error_type": "formatting",
-      "severity": "low",
-      "prevalence": "occasional",
-      "example_course_ids": ["hvl_LU1-PRA3-1_2017_autumn_1", "hvl_YV204-1_2017_autumn_1", "hvl_SÅR1101-1_2017_autumn_1"],
-      "evidence": "Overgang barnehage ¿ skule",
-      "description": "Older (2017) plans contain a replacement character '¿' where an arrow or apostrophe was (also 'Millman¿s teorem'), and list items are sometimes glued onto the preceding line ('...som grunnlag for utvikling av sår har inngåande kunnskap om immunolgiske...'). Cosmetic and rare.",
-      "root_cause_hypothesis": "Character encoding loss in the HVL source for legacy imported plans; list items without line breaks in the source html.",
-      "suggested_fix": "Check whether the raw html already contains '¿' (then it is a source defect, document it in data notes); otherwise verify the decoding. Optionally split text on list-item boundaries in the extractor.",
-      "confidence": "low"
+      "example_course_ids": [
+        "hvl_MAS538-1_2025_autumn_1",
+        "hvl_FHA912-1_2022_autumn_1",
+        "hvl_SÅR1101-1_2017_autumn_1"
+      ],
+      "evidence": "More about examination support material",
+      "description": "23 of 28 fetched plans retain a standalone generic link label after the permitted examination aids: 'Mer om hjelpemidler', 'Meir om hjelpemiddel', or the quoted English equivalent. These website link labels are boilerplate rather than course-specific assessment rules and violate the requirement to include only the plan. The surrounding aid rules remain readable; this is minor recurring noise that the pre-pass junk patterns did not flag.",
+      "root_cause_hypothesis": "The HVL configuration in R/institution_config.R selects div.l-body and excludes sidebar buttons, year links and coordinator/exam widgets, but does not exclude the generic examination-aids link inside the main plan. R/blocks.R therefore retains its anchor text in extracted_text.",
+      "suggested_fix": "Add an HVL exclude XPath in R/institution_config.R that removes only anchor elements whose normalize-space(.) equals 'Mer om hjelpemidler', 'Meir om hjelpemiddel', or 'More about examination support material'. Preserve the adjacent course-specific permitted-aids text and subsequent credit-overlap rows, then rebuild extracted_text from the stored harvest.",
+      "confidence": "high"
     }
   ]
 }

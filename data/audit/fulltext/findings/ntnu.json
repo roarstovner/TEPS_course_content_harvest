@@ -1,82 +1,72 @@
 {
   "check": "fulltext",
   "institution": "ntnu",
-  "model": "sonnet",
+  "model": "gpt-6.1-sol",
   "n_courses_reviewed": 33,
   "n_suspects_reviewed": 20,
-  "overall_assessment": "Extraction is good: all 28 fetched pages hold the facts box, description, learning outcomes, teaching, assessment, requirements, prerequisites, reading list and exam overview, with the right academic year (spring offerings correctly read the previous year's page). The 20 'uncaptured' flags are false alarms: the missing lines are the year picker, exam dates, times and rooms. Remaining issues are small: a nearly empty text when a course is not taught, glued words in some pages, a run-together credit-reduction table, and a thesis code with a slash that gives a 404.",
+  "overall_assessment": "Reviewed all 28 fetched courses (20 suspects and 8 random controls) and all 5 failed-fetch entries: core plan sections, facts and academic-year selection are generally faithful, with no demonstrated wrong-page or wrong-year extraction. The 18 uncaptured suspects mostly reflect intentionally omitted year pickers and exam logistics, but six also lose substantive assessment-change comments; the two short suspects reflect sparse source pages, and the failed-fetch URLs do not establish that an available plan was missed. A template label contaminates all 28 extracts, while random controls expose source-inherited glued learning-outcome headings and malformed punctuation; credit-reduction tables retain readable tab-separated cells.",
   "findings": [
     {
       "target": "assessment",
       "error_type": "missing_content",
-      "severity": "low",
-      "prevalence": "widespread",
-      "example_course_ids": ["ntnu_BEV2101-1_2019_spring_1", "ntnu_TS200114-1_2022_spring_1", "ntnu_PARA1008-1_2025_autumn_1"],
-      "evidence": "Vekting 100/100 Hjelpemiddel Kode A Dato Utlevering 06.12.2018 Innlevering 12.12.2018 Varighet 5 dager Eksamenssystem Inspera Assessment",
-      "description": "Exam dates, times, rooms and the 'Øvrige kommentarer' notes (e.g. exam form changed because of corona) are in a second, collapsed exam block that is not captured; the text keeps only the exam form and weighting. Dates and rooms are mostly not plan content, so the loss is minor, but the corona remarks about changed assessment form are plan-relevant for 2020-2022 offerings. All 20 'uncaptured' flags come from this.",
-      "root_cause_hypothesis": "The exam detail block (dates, rooms, comments) sits outside the part of #content that the selector and block extraction keep, or is rendered by script.",
-      "suggested_fix": "Leave as is for dates and rooms; optionally keep the 'Øvrige kommentarer' paragraph. Add an NTNU exception to the 'uncaptured' pre-pass so that year pickers and exam date/room lines are not flagged.",
-      "confidence": "medium"
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "ntnu_MV2013-1_2019_autumn_1",
+        "ntnu_NEVR3002-3_2019_autumn_1",
+        "ntnu_TS200114-1_2022_spring_1"
+      ],
+      "evidence": "1) Merk at eksamensform er endret til hjemmeeksamen som et smittevernstiltak i den pågående koronasituasjonen.",
+      "description": "Six of the 28 fetched plans omit the exam-tab comments explaining temporary changes to assessment form: TS200114, the 2019-autumn FY8918, KLMED8004, MV2013 and NEVR3002 offerings, and 2022-spring BI2014. The changed exam forms and their numbered footnote references remain, but the explanations are absent; MV2013 therefore retains an oral-assessment description alongside a home-exam listing without the comment reconciling them. These are real uncaptured-content flags under the rubric and course_plan_spec.md, which explicitly retain COVID changes to assessment design; omitted dates, times, rooms and year pickers are not part of this finding.",
+      "root_cause_hypothesis": "R/institution_config.R unconditionally excludes #omEksamen ul.portlet-msg-info in the NTNU configuration. The stored MV2013 HTML puts the substantive change notice in li.exam-comments inside precisely that excluded list.",
+      "suggested_fix": "Replace the blanket #omEksamen ul.portlet-msg-info exclusion with filtering of individual logistics-only messages. Retain li.exam-comments messages containing assessment changes, including \"eksamensform er endret\" and \"exam form has changed\", with their numbered references; continue excluding exam dates and rooms.",
+      "confidence": "high"
     },
     {
-      "target": "course_content",
-      "error_type": "other",
-      "severity": "medium",
-      "prevalence": "occasional",
-      "example_course_ids": ["ntnu_SMF1081-1_2022_autumn_3", "ntnu_RAD6020-1_2022_spring_1", "ntnu_SYT6020-1_2025_spring_1"],
-      "evidence": "Det tilbys ikke lenger undervisning i emnet.",
-      "description": "When the page says the course is not taught (or gives no exam information), the text is a thin shell (SMF1081 has only the facts box, a subject list and an empty 'Eksamen' heading). The notice itself ('Det tilbys ikke lenger undervisning i emnet.', 'Undervises ikke studieåret 2021/2022') is dropped, so these offerings look like plans with missing content. SYT6020 and RAD6020 also end with an empty 'Eksamen' heading.",
-      "root_cause_hypothesis": "The notice sits outside the captured blocks, or is filtered as page chrome.",
-      "suggested_fix": "Keep the not-taught notice in extracted_text, or mark offerings whose page carries it, so the frame can drop them; drop a trailing empty 'Eksamen' heading.",
-      "confidence": "medium"
+      "target": "page_chrome",
+      "error_type": "junk_included",
+      "severity": "low",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "ntnu_BEV2101-1_2019_spring_1",
+        "ntnu_TMMT5003-A_2025_spring_1",
+        "ntnu_BK3380-1_2019_autumn_1"
+      ],
+      "evidence": "course-details-portlet",
+      "description": "All 28 fetched extracts include the literal implementation label \"course-details-portlet\" between the page title and course code. This is recurring non-plan template text, including in every random control, and is missed by the junk pre-pass. The course title, code, facts box and staff information are not defects in this check.",
+      "root_cause_hypothesis": "The #content selector includes h2.portlet-title-text, whose literal text in the stored NTNU HTML is \"course-details-portlet\"; the NTNU exclude list does not remove that element.",
+      "suggested_fix": "Add #content h2.portlet-title-text to the NTNU exclude configuration, leaving the actual course title, course code and facts box intact.",
+      "confidence": "high"
     },
     {
       "target": "learning_outcomes",
       "error_type": "formatting",
       "severity": "low",
-      "prevalence": "occasional",
-      "example_course_ids": ["ntnu_SKOLE6249-1_2022_autumn_1", "ntnu_RAD6020-1_2022_spring_1"],
-      "evidence": "KunnskaperStudenten har- inngående kunnskap om pedagogiske, faglige og etiske styrker og svakheter",
-      "description": "On some pages the learning outcomes are one run-on line: headings glued to text ('KunnskaperStudenten har', 'FerdigheterStudenten kan') and bullets run together. RAD6020 has double spaces and no line breaks in its outcomes and content. This is the page's own markup (no block separators), which hurts later section splitting.",
-      "root_cause_hypothesis": "The source HTML uses inline <br> or <p> without whitespace, and html_text() joins the text.",
-      "suggested_fix": "Insert a newline for <br> and a space between adjacent inline text nodes in the block-to-text step (R/blocks.R); add known glued headings (Kunnskaper, Ferdigheter, Generell kompetanse) to a post_fn split.",
-      "confidence": "medium"
-    },
-    {
-      "target": "metadata",
-      "error_type": "formatting",
-      "severity": "low",
-      "prevalence": "common",
-      "example_course_ids": ["ntnu_KLMED8004-1_2019_autumn_1", "ntnu_TKT4215-1_2019_spring_1"],
-      "evidence": "MH3003 5 sp\nMH3006 5 sp\nDette emnet har faglig overlapp med emnene i tabellen over.",
-      "description": "The 'Studiepoengreduksjon' table is tab-separated and its last row runs straight into the following prose, with no blank line; the empty 'Fra' cells leave trailing tabs. The overlap rows are course codes and credits, not plan text.",
-      "root_cause_hypothesis": "Table cells are joined by tabs and the last row has no row separator.",
-      "suggested_fix": "Join table rows with newlines and cells with ' | ' in the block step, or exclude the Studiepoengreduksjon block and its explanation text.",
-      "confidence": "low"
-    },
-    {
-      "target": "whole_text",
-      "error_type": "junk_included",
-      "severity": "low",
-      "prevalence": "widespread",
-      "example_course_ids": ["ntnu_BEV2101-1_2019_spring_1", "ntnu_BK3380-1_2019_autumn_1"],
-      "evidence": "Emne - Måling av fysisk aktivitet - BEV2101\ncourse-details-portlet\nBEV2101",
-      "description": "Every text starts with a page title line and the template word 'course-details-portlet', and repeats the course code and name. This is non-plan page text on every page.",
-      "root_cause_hypothesis": "The #content block includes the portlet's title and class name as text.",
-      "suggested_fix": "Add the literal line 'course-details-portlet' and the 'Emne - ... - CODE' title line to the NTNU exclude/post_fn.",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "ntnu_SKOLE6249-1_2022_autumn_1"
+      ],
+      "evidence": "KunnskaperStudenten har- inngående kunnskap om pedagogiske, faglige og etiske styrker og svakheter ved ulike former for vurdering og kartlegging - inn",
+      "description": "One random control has its entire learning-outcome section in a single paragraph with glued headings and words: \"KunnskaperStudenten har\", \"undervisningenFerdigheterStudenten kan\" and \"skoleGenerell kompetanseStudenten kan\". The text remains present, but the knowledge, skills and competence structure is unreadable and fails the rubric's separation of headings and paragraphs. This local defect escapes the wall flag because the rest of the extract has normal line breaks.",
+      "root_cause_hypothesis": "The stored source HTML already contains these exact glued strings in a single p.content-learning-goal with no intervening markup or whitespace. This is inherited source formatting, not evidence that the DOM walker discarded existing paragraph breaks.",
+      "suggested_fix": "Add a narrowly scoped NTNU text normalization for the observed glued heading sequences: insert paragraph breaks before Kunnskaper, Ferdigheter and Generell kompetanse when directly joined to Studenten, and insert a line break before the following Studenten har/kan phrase. Apply this only to these exact recognizable sequences rather than splitting arbitrary capitalized words.",
       "confidence": "high"
     },
     {
       "target": "whole_text",
-      "error_type": "empty_or_failed",
+      "error_type": "formatting",
       "severity": "low",
-      "prevalence": "rare",
-      "example_course_ids": ["ntnu_PHMT/AVHANDL-1_2019_autumn_4"],
-      "evidence": "URL: https://www.ntnu.no/studier/emner/PHMT/AVHANDL/2019",
-      "description": "The course code contains a slash and ends up as two path segments in the URL, which gives HTTP 404. NTNU's own URL for such a code may differ, so a page might exist. It is a thesis code, so impact is small.",
-      "root_cause_hypothesis": "add_course_url builder inserts the code unchanged.",
-      "suggested_fix": "Check how ntnu.no links codes containing '/' (encoded slash or a different path) and encode it in the NTNU URL builder in R/add_course_url.R, or exclude thesis codes (AVHANDL) from the frame.",
-      "confidence": "low"
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "ntnu_KLMED8004-1_2019_autumn_1",
+        "ntnu_NEVR3002-3_2019_autumn_1",
+        "ntnu_BK3380-1_2019_autumn_1"
+      ],
+      "evidence": "To be announced by each Lecturer, but typically it is Principles of Neural Science, Kandel, Schwartz and Jessel.",
+      "description": "Three fetched plans, including random control BK3380, retain C1 control characters in place of punctuation: U+0095 as learning-outcome bullets, U+0092 as an apostrophe, U+0093/U+0094 around a reading-list title, and U+0091 before common space. These produce malformed visible punctuation despite otherwise readable text; substantive prose is not missing.",
+      "root_cause_hypothesis": "The stored HTML already contains these C1 characters, consistent with Windows-1252 punctuation previously interpreted as Latin-1. R/extract_fulltext.R and the NTNU configuration pass the source characters through without normalization.",
+      "suggested_fix": "Normalize the observed C1 punctuation in an NTNU post_fn: map U+0091/U+0092 to opening/closing single quotation marks, U+0093/U+0094 to opening/closing double quotation marks, and U+0095 to a bullet. Use explicit character substitution rather than recoding the entire UTF-8 document.",
+      "confidence": "high"
     }
   ]
 }

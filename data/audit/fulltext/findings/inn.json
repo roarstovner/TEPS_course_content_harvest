@@ -1,58 +1,26 @@
 {
   "check": "fulltext",
   "institution": "inn",
-  "model": "sonnet",
+  "model": "gpt-6.1-sol",
   "n_courses_reviewed": 28,
   "n_suspects_reviewed": 20,
-  "overall_assessment": "Where the page holds a real plan, extraction is complete and clean (all sections, facts box, no navigation). Two institution-wide problems remain: many offerings get the latest published plan under a 'not published yet' notice (wrong year), and some course codes return the course-search listing instead of a plan (wrong page).",
+  "overall_assessment": "All 28 packet courses were reviewed: four contain course-search listings and 21 contain a later-year or later-semester plan, including five of eight random controls. The sampled long/dup_code flags identify real fallback listings and all 16 sampled year flags identify real mismatches; the year pre-pass misses mismatches when an unselected semester-menu entry matches the offering academic year, or when only the semester differs. Actual plan sections and facts appear complete and readable, with no demonstrated missing content or extraction truncation, but status notices and semester-selection menus remain in the text.",
   "findings": [
-    {
-      "target": "whole_text",
-      "error_type": "wrong_page",
-      "severity": "high",
-      "prevalence": "occasional",
-      "example_course_ids": ["inn_1AKT01-1_2023_autumn_1", "inn_2PRLU20-29-1_2025_spring_1", "inn_1AKT01-1_2023_spring_1"],
-      "evidence": "Emnesøket gjelder kun fra 2022. Før dette må emnene finnes i studieplanen\n1FA11-1 Helsefremmende fysisk aktivitet 1",
-      "description": "For these course codes the extracted text is the catalogue's course-search listing (hundreds of 'code title' lines of other courses, some duplicated), not the plan for this course. The 30k-character texts contain no plan sections at all; the only page text not captured is the 'Studiearkiv' year picker. 31 offerings share this dup_code pattern (three codes shown in the sample: 1AKT01, 2PRLU20-29, and the 2PRLU20-29 autumn offering).",
-      "root_cause_hypothesis": "The studiekatalog URL for these codes/years (e.g. /emne/1AKT01/2023-host) returns the search/listing page, not a course page; selector .content-inner matches the listing container. No check rejects a page lacking the plan headings.",
-      "suggested_fix": "In R/institution_config.R inn post/validation step: treat a page whose text starts with 'Emnesøket gjelder kun fra 2022' (or lacks 'Emnets innhold'/'Course content' and 'Læringsutbytte'/'Learning outcome') as a failed fetch (empty text, flagged), and check whether the code needs a different URL form (e.g. with the '-1' version suffix or different code case).",
-      "confidence": "high"
-    },
-    {
-      "target": "whole_text",
-      "error_type": "wrong_year",
-      "severity": "high",
-      "prevalence": "widespread",
-      "example_course_ids": ["inn_3JUS330-1_2023_spring_1", "inn_2MEN5101-5-1_2023_spring_1", "inn_KDBA950-1_2023_autumn_1"],
-      "evidence": "Emnebeskrivelsen for valgt semester er ikke publisert enda. Her er den siste versjonen vi har tilgjengelig.",
-      "description": "The site silently serves the latest available plan when none is published for the requested semester. The text then describes a different year (e.g. 2023 spring offering shows 'Startsemestre 2026 Høst ... Undervisningssemestre 2026 Høst'; KDBA950 autumn 2023 shows 2027 Vår), so downstream analysis would attribute a 2025/2026 plan to 2023. Almost all suspects and several random controls (3RIS100 2025 spring, UTM1151, KDBA950) are affected.",
-      "root_cause_hypothesis": "plan_years = url builds /emne/CODE/YYYY-semester URLs; the site falls back to the newest version with a 'Statusmelding' banner instead of returning 404.",
-      "suggested_fix": "Detect the 'Statusmelding' fallback text ('ikke publisert enda' / 'Kun tilgjengelig på engelsk' is a separate language notice) and mark the offering plan_year_mismatch/NA, or drop it from the year-specific frame; at minimum record the fallback flag and the 'Undervisningssemestre' year in a column so analysts can filter.",
-      "confidence": "high"
-    },
     {
       "target": "page_chrome",
       "error_type": "junk_included",
       "severity": "low",
       "prevalence": "widespread",
-      "example_course_ids": ["inn_SYD2009-1_2023_autumn_2", "inn_2M352-1_2023_spring_1"],
-      "evidence": "Statusmelding\nEmnebeskrivelsen for valgt semester er ikke publisert enda. Her er den siste versjonen vi har tilgjengelig.",
-      "description": "Every text begins with the page's status banner ('Statusmelding' plus a sentence, or 'Kun tilgjengelig på engelsk'), and the 'Startsemestre' year list and the repeated course code/title header precede the plan. These are page chrome, not plan text.",
-      "root_cause_hypothesis": "Selector .content-inner includes the banner and header block; no exclude for it in the inn config.",
-      "suggested_fix": "Add exclude for the Statusmelding block (and its heading) in the inn entry of R/institution_config.R, after recording the fallback flag for the wrong_year finding.",
-      "confidence": "medium"
-    },
-    {
-      "target": "metadata",
-      "error_type": "formatting",
-      "severity": "low",
-      "prevalence": "common",
-      "example_course_ids": ["inn_3JUS330-1_2023_spring_1", "inn_2ENL51-9-1_2025_spring_1"],
-      "evidence": "Vurderingsordning\tKarakterskala\tGruppe/individuell\tVarighet\tHjelpemidler\tAndel\tKommentarer",
-      "description": "Table cells are tab-separated, but the metadata facts box and fields come as alternating label/value lines ('Studiepoeng' / '7,5'), and the exam table rows have missing cells without placeholder (e.g. 'Ingen' with no proportion). Minor structure loss; some words are glued ('ofdifference').",
-      "root_cause_hypothesis": "html_text on label/value blocks without a table-aware serializer.",
-      "suggested_fix": "Low priority; optionally emit 'label: value' for the facts box in the inn post_fn.",
-      "confidence": "low"
+      "example_course_ids": [
+        "inn_INN3024-1_2023_autumn_1",
+        "inn_4PM791-1_2025_spring_1",
+        "inn_SOA1001-1_2025_spring_1"
+      ],
+      "evidence": "Statusmelding\nKun tilgjengelig på engelsk\nINN3024 Sustainable Business Model Innovation\nStartsemestre\n2027 Spring\n2026 Spring\n2025 Spring\n2024 Spring",
+      "description": "All 24 actual-plan pages include the Startsemestre version-selection list, and 21 also include a Statusmelding banner with an unpublished-semester or language notice. These are recurring interface text. Even otherwise-correct controls such as 4PM791 and SOA1001 include unselected years alongside the applicable teaching semester. The junk pre-pass does not recognize these phrases. Course titles, course codes and the actual teaching-semester facts are legitimate metadata and should remain.",
+      "root_cause_hypothesis": "The INN .content-inner selector has no exclude or post_fn for status notices or the semester-selection widget. R/institution_config.R marks fieldset.semesters-top as facts, and page_fulltext() includes facts by default, so the whole picker is serialized.",
+      "suggested_fix": "Add INN exclusions for fieldset.semesters-top and the status-message block, retaining the course header and facts list including Undervisningssemestre/Teaching semester. Read selected-version and fallback information from the raw HTML before excluding interface elements, so year validation remains available.",
+      "confidence": "high"
     }
   ]
 }

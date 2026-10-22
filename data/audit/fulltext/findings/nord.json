@@ -1,70 +1,25 @@
 {
   "check": "fulltext",
   "institution": "nord",
-  "model": "sonnet",
+  "model": "gpt-6.1-sol",
   "n_courses_reviewed": 28,
-  "n_suspects_reviewed": 10,
-  "overall_assessment": "For offerings that have a plan, div.node__content captures the whole plan cleanly with good structure, and the random controls show no loss of content. Problems are (a) many pages, especially pre-2023 and discontinued courses, have no plan text so only the facts box is extracted, (b) older years often show the current (2026/27) plan instead of the offering's year, and (c) a lead paragraph is duplicated as 'Beskrivelse av emnet' in some courses.",
+  "n_suspects_reviewed": 7,
+  "overall_assessment": "All 28 fetched courses were read in full (7 suspects and 21 controls), and the additional failed-fetch entry was reviewed: visible substantive sections are captured with readable structure and no demonstrated navigation contamination. All seven short flags reflect source-page shells with no omitted plan prose; the discontinued-course 404 does not demonstrate a malformed URL. Five 2019 random controls return a current 2026/27-labelled plan, although existing downstream version checks withhold these later plans, and two controls duplicate their introductory paragraph.",
   "findings": [
-    {
-      "target": "whole_text",
-      "error_type": "empty_or_failed",
-      "severity": "high",
-      "prevalence": "common",
-      "example_course_ids": ["nord_FORGLU-1_2019_autumn_1", "nord_SOS9001-1_2022_autumn_1", "nord_BIO5023-1_2025_autumn_1"],
-      "evidence": "Masteroppgave i biovitenskap\nBIO5023\nEmnet foregår på engelsk. Se engelske nettsider ved å velge engelsk språk.\nStudiepoeng\n60\nAnsvarlig fakultet\nFakultet for biovitenskap og akvakultur",
-      "description": "All 10 suspects (short flag; 17 of 177 offerings) contain only title, code and the facts box (credits, faculty, language). No description, learning outcomes, assessment etc. The page-text section shows no plan content missing, so the page itself has no plan for these offerings (pages carry notes such as 'Dette faget har ikke hatt undervisning de siste 5 år'), but the record looks like a fetched plan and is in effect empty of plan content.",
-      "root_cause_hypothesis": "Nord shows a plan only for courses/years with a published description; the standard fetch returns the page shell for others and div.node__content yields only the facts box. No emptiness check counts this as empty.",
-      "suggested_fix": "Flag offerings whose extracted text lacks any plan heading (Beskrivelse av emnet, Læringsutbytte, Eksamensbeskrivelse) as 'no plan' (e.g. in the gaps/empty logic) so they are excluded from plan analyses rather than counted as plans with empty sections.",
-      "confidence": "high"
-    },
-    {
-      "target": "whole_text",
-      "error_type": "wrong_year",
-      "severity": "medium",
-      "prevalence": "common",
-      "example_course_ids": ["nord_RET1002-1_2019_spring_2", "nord_RE214E-1_2019_spring_1", "nord_MFL240-1_2019_spring_1"],
-      "evidence": "Gjeldende emnebeskrivelse (sist oppdatert 2026/27)",
-      "description": "For older offerings (2019, some 2022) the page does not show a plan for the requested year but the 'current' plan, labelled 'Gjeldende emnebeskrivelse (sist oppdatert 2026/27)', while the semester picker lists only Høst 2020 or later. The extracted text is thus a recent plan assigned to a 2019 offering. Offerings with a real year-specific plan show 'Emnebeskrivelse for 2022/23' etc.",
-      "root_cause_hypothesis": "The ?year=&semester= query silently falls back to the current plan when no plan exists for that year (plan_years = url). The extractor drops the 'Gjeldende emnebeskrivelse ... / Emnebeskrivelse for YYYY/YY' heading, so the mismatch is invisible in extracted_text.",
-      "suggested_fix": "Keep the plan-year heading (outside div.node__content) in the harvest metadata and flag/exclude offerings where the heading says 'Gjeldende' (current) and the offering year is before the earliest year in the semester picker; or compare the 'Emnebeskrivelse for YYYY/YY' year with the offering year.",
-      "confidence": "medium"
-    },
     {
       "target": "course_content",
       "error_type": "duplicate_content",
       "severity": "low",
       "prevalence": "occasional",
-      "example_course_ids": ["nord_ORG2007-1_2025_autumn_1", "nord_PRO9019-1_2025_autumn_1", "nord_IN200S-1_2025_autumn_1"],
-      "evidence": "Bacheloroppgaven skal utgjøre et selvstendig utviklingsarbeid, utredningsarbeid eller mindre forskningsarbeid. Det skal brukes relevante faglige teorier og perspektiver på et selvvalgt tema innenfor økonomi, digitalisering og forretningsutvikling.\nBeskrivelse av emnet",
-      "description": "The page's lead/summary paragraph before the 'Beskrivelse av emnet' heading is repeated (identical or near-identical) as the first paragraph of 'Beskrivelse av emnet' (also SAM5024-1_2025_autumn_1 near-duplicate). This inflates course_content with the same text twice.",
-      "root_cause_hypothesis": "The Nord page template renders an ingress above the description and the selector div.node__content takes both; no deduplication of repeated blocks.",
-      "suggested_fix": "In the Nord post_fn, drop the unlabelled block between the code line and 'Beskrivelse av emnet' when it equals (or is a prefix of) the first paragraph under that heading.",
+      "example_course_ids": [
+        "nord_ORG2007-1_2025_autumn_1",
+        "nord_PRO9019-1_2025_autumn_1"
+      ],
+      "evidence": "Bacheloroppgaven skal utgjøre et selvstendig utviklingsarbeid, utredningsarbeid eller mindre forskningsarbeid.",
+      "description": "In two random controls, the complete introductory paragraph between the course code and Beskrivelse av emnet is repeated verbatim as the first paragraph under that heading. Both copies enter extracted_text, unnecessarily weighting the same course-content prose twice. This is duplication within a course, which the cross-code dup_code flag cannot detect. Other introductions, such as SPD1001 and CDE911, contain distinct information and should be retained.",
+      "root_cause_hypothesis": "The Nord div.node__content selector includes both div.placeholder-text and the description accordion. The template repeats the same prose in both locations, and no Nord fulltext post_fn removes an identical introduction.",
+      "suggested_fix": "Add a Nord fulltext post_fn that compares the complete introduction after the course code with the initial paragraph under Beskrivelse av emnet, normalizing whitespace only, and removes the introduction when they are exactly equal. Preserve distinct and merely similar introductions.",
       "confidence": "high"
-    },
-    {
-      "target": "page_chrome",
-      "error_type": "junk_included",
-      "severity": "low",
-      "prevalence": "common",
-      "example_course_ids": ["nord_RE214E-1_2019_spring_1", "nord_IDR1037-1_2025_spring_1", "nord_SOS9001-1_2022_autumn_1"],
-      "evidence": "Med overlapp menes en faglig likhet mellom emner med samme faginnhold. Du vil derfor få følgende reduksjon i studiepoeng om du har tatt emner som er angitt under:",
-      "description": "Boilerplate explanation of 'Overlappende emner' appears in many plans, plus orphaned link labels whose targets are lost ('Praktisk informasjon og retningslinjer for eksamen.', 'Generell informasjon om hjelpemidler til eksamen finner du her.', 'Informasjon om ChatGPT/kunstig intelligens mm. finner du her.') and a stray '.' in SAM5024. The overlapping-course list itself is plan information; the sentence is institution-wide boilerplate.",
-      "root_cause_hypothesis": "Template boilerplate and link-only lines inside div.node__content are not excluded in the Nord config.",
-      "suggested_fix": "Add the overlap boilerplate sentence and the link-label lines to the Nord `exclude`/post_fn patterns (boilerplate only, as per course_plan_spec).",
-      "confidence": "medium"
-    },
-    {
-      "target": "whole_text",
-      "error_type": "empty_or_failed",
-      "severity": "low",
-      "prevalence": "rare",
-      "example_course_ids": ["nord_ØKO110FU-1_2019_spring_3"],
-      "evidence": "URL: https://www.nord.no/studier/emner/øko110fu?year=2019&semester=V%C3%85R",
-      "description": "The only failed fetch (HTTP 404) has a non-ASCII letter (Ø) in the course code, unencoded in the URL, whereas the semester parameter is percent-encoded. The course is Avviklet and may not have a page, but the URL may be malformed.",
-      "root_cause_hypothesis": "R/add_course_url.R lowercases the code and does not percent-encode or transliterate non-ASCII characters in the path.",
-      "suggested_fix": "Check whether https://www.nord.no/studier/emner/%C3%B8ko110fu loads; if so, URL-encode the code in the Nord URL builder.",
-      "confidence": "low"
     }
   ]
 }
