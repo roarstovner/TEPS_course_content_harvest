@@ -103,6 +103,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- uit: gate sentence 'For å kunne fremstille X til vurdering må ... godkjent' left in assessment (#460)
+- nmbu: Norwegian pages that point to the English plan need english_page (#459)
 - audit: fulltext --pilot packets for current-only sites read the pilot run's pages (#458)
 - usn: course content at the start of assessment on text-fallback pages (SMERTE100) (#454)
 - usn: turn on section_inline_coursework after fixing two split errors (#452)
