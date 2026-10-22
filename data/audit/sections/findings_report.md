@@ -1,7 +1,7 @@
 # sections audit — aggregated findings
 
-80 findings across 18 institutions (from 18 agent reports in `data/audit/sections/findings`; model: gpt-6.1-sol, sonnet).
-Mechanical verification: 80 passed (✓), 0 failed (✗), 0 not checkable (?, stale report or no packet).
+79 findings across 18 institutions (from 18 agent reports in `data/audit/sections/findings`; model: gpt-6.1-sol, sonnet).
+Mechanical verification: 79 passed (✓), 0 failed (✗), 0 not checkable (?, stale report or no packet).
 Sorted by severity then prevalence. Source: `R/audit/aggregate.R`.
 
 ## Failed verification — check by hand before acting
@@ -16,8 +16,8 @@ _(none)_
 | target | error_type | n_inst | institutions | worst |
 | --- | --- | --- | --- | --- |
 | assessment | formatting_noise | 9 | hivolda, hvl, inn, nord, ntnu, oslomet, steiner, uib, uio | medium |
-| prerequisites | boilerplate_only | 7 | hvl, nla, nord, ntnu, oslomet, uia, usn | medium |
-| assessment | wrong_content | 6 | hiof, nih, ntnu, uio, uit, usn | high |
+| prerequisites | boilerplate_only | 6 | hvl, nla, nord, ntnu, oslomet, uia | medium |
+| assessment | wrong_content | 5 | hiof, nih, ntnu, uio, uit | high |
 | prerequisites | empty_placeholder | 4 | hivolda, oslomet, uib, uis | low |
 | coursework_requirements | wrong_content | 4 | hvl, nord, uia, uio | medium |
 
@@ -25,19 +25,18 @@ _(none)_
 
 | institution | n_before | n_now | persisting | new | gone |
 | --- | --- | --- | --- | --- | --- |
-| hiof | 3 | 5 | assessment / wrong_content | teaching_methods / wrong_content; cross_section / other; cross_section / empty_placeholder; assessment / truncated | learning_outcomes / wrong_content; assessment / formatting_noise |
-| uit | 7 | 10 | cross_section / merged_sections; prerequisites / missing_section; reading_list / empty_placeholder; assessment / wrong_content | cross_section / wrong_content; prerequisites / truncated; assessment / missing_section; assessment / truncated; teaching_methods / field_or_language_junk; cross_section / formatting_noise | teaching_methods / formatting_noise; assessment / formatting_noise; learning_outcomes / wrong_content |
-| usn | 6 | 6 | cross_section / wrong_content; reading_list / formatting_noise | cross_section / split_section; assessment / wrong_content; assessment / other; prerequisites / boilerplate_only | reading_list / empty_placeholder; coursework_requirements / boilerplate_only; teaching_methods / merged_sections; teaching_methods / duplicate |
+| uit | 10 | 11 | cross_section / merged_sections; cross_section / wrong_content; prerequisites / missing_section; prerequisites / truncated; assessment / missing_section; assessment / truncated; reading_list / empty_placeholder; teaching_methods / field_or_language_junk; cross_section / formatting_noise; assessment / wrong_content | prerequisites / wrong_content |  |
+| usn | 6 | 5 | cross_section / wrong_content; cross_section / split_section; reading_list / formatting_noise | prerequisites / wrong_content; cross_section / other | assessment / wrong_content; assessment / other; prerequisites / boilerplate_only |
 
 ## By error type
 
 | error_type | severity | n |
 | --- | --- | --- |
 | formatting_noise | low | 14 |
+| empty_placeholder | low | 9 |
 | boilerplate_only | low | 8 |
-| empty_placeholder | low | 8 |
-| wrong_content | high | 7 |
-| wrong_content | medium | 6 |
+| wrong_content | medium | 7 |
+| wrong_content | high | 6 |
 | formatting_noise | medium | 4 |
 | duplicate | low | 3 |
 | merged_sections | medium | 3 |
@@ -46,10 +45,10 @@ _(none)_
 | other | medium | 3 |
 | truncated | medium | 3 |
 | wrong_content | low | 3 |
-| boilerplate_only | medium | 2 |
-| empty_placeholder | medium | 2 |
 | other | low | 2 |
+| boilerplate_only | medium | 1 |
 | duplicate | medium | 1 |
+| empty_placeholder | medium | 1 |
 | field_or_language_junk | medium | 1 |
 | merged_sections | high | 1 |
 | missing_section | low | 1 |
@@ -60,8 +59,8 @@ _(none)_
 
 | target | n |
 | --- | --- |
-| assessment | 21 |
-| prerequisites | 16 |
+| assessment | 19 |
+| prerequisites | 17 |
 | cross_section | 12 |
 | teaching_methods | 10 |
 | course_content | 6 |
@@ -90,44 +89,43 @@ _(none)_
 | uib | sonnet | 20 | UiB section extraction works well: the page has a fixed, regular heading set, all mapped correctly, and coursework vs. assessment, prerequisites and learning outcomes (with Kunnskap/Ferdigheter sub-groups) are intact. Remaining defects are small: a stray 'Hjelpemiddel til eksamen' label in assess... |
 | uio | sonnet | 10 | UiO extraction is mostly sound: course_content, learning_outcomes (sub-groups kept), prerequisites and reading_list are correct, and admission text is dropped. The recurring defects are the unmapped Karakterskala sub-heading appended to assessment, and coursework gates (arbeidskrav, reflection no... |
 | uis | sonnet | 16 | Section splitting is largely correct for UiS: learning outcomes keep all Kunnskap/Ferdigheter/Generell kompetanse groups, prerequisites are clean, and the 'Vilkår for å gå opp til eksamen' block is separated from assessment. Most pre-pass flags (empty/boilerplate teaching_methods, blob on the MGL... |
-| uit | gpt-6.1-sol | 20 | All 20 packet entries were reviewed (14 suspects and 6 controls); most top-level boundaries and all visible knowledge/skills/competence groups survive. Short teaching-method flags are faithful source text and LER-3101's leak->teaching_methods flag is a false alarm, whereas reading-list empty/boil... |
-| usn | gpt-6.1-sol | 14 | All 14 packet entries were reviewed (9 suspects and 5 controls): most top-level sections and all displayed learning-outcome groups are preserved, but practice plans have substantive allocation errors, including two affected random controls. The assessment leak flags for BS-PLVI30 and OKLI3014 are... |
+| uit | gpt-6.1-sol | 20 | All 20 packet courses were read in full (14 suspects and 6 random controls); most top-level boundaries and all visible knowledge/skills/competence groups survive. Real defects include mixed canonical content, three courses with misplaced coursework, lost or misplaced subject prerequisites and exa... |
+| usn | gpt-6.1-sol | 19 | Reviewed all 19 packet entries (7 suspects and 12 random controls): top-level splitting and the displayed learning-outcome groups are generally intact, but substantive allocation errors remain in mixed blocks, including controls. The MG1NA3/UHULV bibliography leaks, 050-E11 internal coursework-la... |
 
 ## All findings (ranked)
 
 | ok | institution | target | error_type | severity | prevalence | example | suggested_fix |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | ✓ | nla | cross_section | missing_section | high | common | nla_3GJ322-1_2019_autumn_1; nla_3GJ302-1_2025_autumn_1 | Add patterns in R/section_heading_map.R: ^introduction$ -> course_content, ^teaching (and\|&) learning methods$ -> teaching_methods, ^fina... |
-| ✓ | uit | cross_section | wrong_content | high | common | uit_GEO-2007-1_2008_autumn_1; uit_BNS-1006-1_2022_spring_... | Extend the UiT coursework pass to sentence boundaries and teaching_methods. Recognize approval-before-final-exam clauses, Tilgang til slu... |
-| ✓ | usn | cross_section | wrong_content | high | common | usn_050-E11-1_2018_autumn_1; usn_SMERTE100-1_2022_autumn_... | Add USN routing within mixed practice blocks: move complete attendance/absence and required-documentation paragraphs to coursework_requir... |
-| ✓ | usn | assessment | wrong_content | high | common | usn_OKLI3014-1_2018_autumn_1; usn_050-E11-1_2018_autumn_1... | Enable and extend USN inline routing for complete gate sentences beginning Arbeidskrav inngår ikke i karakteren, Alle arbeidskrav må være... |
 | ✓ | hiof | assessment | wrong_content | high | occasional | hiof_LU15SAMG07-1_2007_autumn_2; hiof_LA201BKHV06-1_2007_... | Enable a HiØf sentence-level coursework pass and recognize approval-gate sentences beginning Arbeidskravene or Godkjente arbeidskrav, mov... |
 | ✓ | hiof | teaching_methods | wrong_content | high | occasional | hiof_LMBPED40517-1_2025_spring_1; hiof_SFF35021-1_2025_sp... | Add a HiØf rule that moves explicit mandatory seminar/supervision sentences, including Det gis to obligatoriske veiledningstimer per oppg... |
-| ✓ | uit | cross_section | merged_sections | high | occasional | uit_ODO-6302-1_2019_autumn_1; uit_BIO-3515-1_2008_autumn_... | Add a UiT pass that recognizes bounded in-text labels such as Arbeidskrav, Kunnskap i <fag>, Kliniske ferdigheter i <fag>, and explicit s... |
-| ✓ | uit | cross_section | wrong_content | high | occasional | uit_RUS-3950-1_2008_autumn_1; uit_BIO-3607-1_2008_autumn_1 | Normalize forkunn-skaper in label matching and move the bounded Anbefalte forkunn-skaper passage out of teaching_methods, stopping at Arb... |
-| ✓ | usn | cross_section | split_section | high | occasional | usn_BS-PLVI30-V-1_2018_autumn_3; usn_SMERTE100-1_2022_aut... | For USN text plans with a table of contents, retain the enclosing TOC section until another repeated TOC heading opens a section. Treat l... |
+| ✓ | uit | cross_section | merged_sections | high | occasional | uit_ODO-6302-1_2019_autumn_1; uit_END-3602-1_2025_autumn_... | Add bounded UiT inline rules for Kunnskap i <discipline>, Kliniske ferdigheter i <discipline> and In detail, the students will, routing t... |
+| ✓ | uit | cross_section | wrong_content | high | occasional | uit_ODO-6302-1_2019_autumn_1; uit_BED-6001-1_2008_autumn_... | Extend the UiT gate pass to bounded Arbeidskrav blocks under learning_outcomes and explicit compulsory-attendance sentences under teachin... |
+| ✓ | uit | prerequisites | wrong_content | high | occasional | uit_RUS-3950-1_2008_autumn_1; uit_BIO-3607-1_2008_autumn_1 | Normalize forkunn-skaper for label matching and scan teaching_methods for the bounded Anbefalte forkunn-skaper passage, stopping before A... |
+| ✓ | usn | cross_section | wrong_content | high | occasional | usn_050-E11-1_2018_autumn_1; usn_NETPRL-1_2022_spring_1; ... | Add narrowly scoped USN routing inside mixed blocks: move complete mandatory-attendance, absence and required-documentation statements fr... |
 | ✓ | ntnu | assessment | wrong_content | high | rare | ntnu_LGU14008-A_2019_autumn_1 | In .clean_sections() or sectionize(), move paragraphs of the assessment block that start with 'Obligatoriske arbeidskrav' / 'Arbeidskrav'... |
-| ✓ | uit | prerequisites | missing_section | high | rare | uit_LER-3101-1_2025_spring_1 | Before dropping a UiT Opptakskrav block, extract sentences explicitly stating forkunnskapskravet with completed subject qualifications or... |
-| ✓ | uit | prerequisites | truncated | high | rare | uit_END-3602-1_2025_autumn_1 | For UiT English Admission requirements blocks, retain explicit prior subject-credit requirements in prerequisites before discarding admis... |
-| ✓ | uit | assessment | missing_section | high | rare | uit_BIO-8806-1_2008_autumn_1 | Inspect combined UiT instruction/exam-language blocks before dropping them. Move explicit clauses about exam questions and permitted answ... |
+| ✓ | uit | prerequisites | missing_section | high | rare | uit_LER-3101-1_2025_spring_1 | Before discarding UiT Opptakskrav blocks, retain sentences explicitly stating forkunnskapskravet with completed subject qualifications or... |
+| ✓ | uit | prerequisites | truncated | high | rare | uit_END-3602-1_2025_autumn_1 | Read UiT English Admission requirements blocks for explicit academic qualifications and subject-credit requirements and append those sent... |
+| ✓ | uit | assessment | missing_section | high | rare | uit_BIO-8806-1_2008_autumn_1 | Before dropping combined instruction/exam-language blocks, retain explicit sentences about exam-question and answer languages in assessme... |
+| ✓ | usn | cross_section | split_section | high | rare | usn_NORVU103-1_2018_autumn_1 | Extend USN inline-coursework routing to carry dependent follow-up sentences about the same assignment, including language and approval sc... |
 | ✓ | mf | reading_list | missing_section | medium | widespread | mf_RL1014-1_2025_autumn_1; mf_RL2030-1_2025_autumn_1; mf_... | Check the MF page source for where the literature list is rendered and extend the MF fulltext/section_* selector to include it; otherwise... |
 | ✓ | oslomet | assessment | formatting_noise | medium | widespread | oslomet_ØAADM6000-1_2018_autumn_1; oslomet_BYGG2200-1_202... | Map 'Hjelpemidler ved eksamen' to .drop (or strip it in .clean_sections()) for OsloMet, keeping Vurderingsuttrykk if the grading scale is... |
 | ✓ | uio | assessment | formatting_noise | medium | widespread | uio_TYSK4091-1_2025_spring_1; uio_RELDID4009-1_2025_sprin... | Map `Karakterskala` to .drop in R/section_heading_map.R like the sibling Eksamensspråk, Hjelpemidler and Adgang til ny eller utsatt eksam... |
-| ✓ | uit | reading_list | empty_placeholder | medium | widespread | uit_BED-2017-1_2008_autumn_2; uit_ARK-3021-1_2008_autumn_... | Add reading-list-specific whole-row patterns for these exact contact/homepage/on-request notes and the complete Leganto access-note plus ... |
-| ✓ | uit | assessment | wrong_content | medium | widespread | uit_FYS-3730-1_2008_autumn_1; uit_BIO-3529-2_2025_autumn_... | Add an exact Re-sit examination -> .drop mapping and normalize soft hyphens before matching Norwegian resit labels. Strip bounded inline ... |
-| ✓ | uit | cross_section | wrong_content | medium | widespread | uit_ARK-3021-1_2008_autumn_1; uit_LER-3101-1_2025_spring_... | Apply narrowly bounded UiT administrative-sentence filters to the affected sections: programme reservation/enkeltemne and support-subject... |
+| ✓ | uit | assessment | wrong_content | medium | widespread | uit_FYS-3730-1_2008_autumn_1; uit_BIO-3529-2_2025_autumn_... | Map the exact Re-sit examination heading to .drop and normalize soft hyphens in labels. Add bounded UiT cleanup for inline resit/appeal, ... |
+| ✓ | uit | cross_section | wrong_content | medium | widespread | uit_ARK-3021-1_2008_autumn_1; uit_LER-3101-1_2025_spring_... | Add narrowly bounded UiT cleanup for programme reservation/enkeltemne/support-subject declarations, explicit course-evaluation notices, t... |
 | ✓ | hiof | cross_section | other | medium | common | hiof_IRD21607-1_2007_autumn_2; hiof_SFT11608-1_2022_autum... | Add narrowly scoped HiØf sentence filters for Ved kontinuasjon, Ved ikke bestått ... taes på nytt, Klageadgang, Intern/ekstern sensur or ... |
 | ✓ | nord | coursework_requirements | wrong_content | medium | common | nord_MET2000-1_2022_spring_1; nord_PRO9011-1_2025_autumn_... | In .clean_sections()/sectionize() add a block-level rule: a paragraph starting 'Arbeidskrav:', 'Coursework requirements:' or 'AK/' (and t... |
 | ✓ | ntnu | cross_section | empty_placeholder | medium | common | ntnu_IMT4127-1_2022_autumn_1; ntnu_SMF1081-1_2022_spring_... | In .clean_sections() drop section text matching a pointer regex (^(see\|se\|samme som)\b.{0,40}(english\|engelsk\|NORD\d+)...$) so no row is ... |
 | ✓ | uio | coursework_requirements | wrong_content | medium | common | uio_PROF3025-1_2025_spring_1; uio_KJM5050-1_2025_spring_1 | Add 'Obligatoriske (forhold\|komponenter)' patterns mapped to coursework_requirements in R/section_heading_map.R, and let the uio section_... |
 | ✓ | uis | cross_section | formatting_noise | medium | common | uis_LENG116-1_2015_autumn_1; uis_LFYMAS-1_2017_spring_1; ... | For uis, strip lines matching '(?m)^\s*Emne [A-ZÆØÅ0-9_]+, (?:BOKMÅL\|NYNORSK\|ENGELSK).*versjon.*$' and lines equal to '<emnekode> - <titl... |
 | ✓ | uis | reading_list | formatting_noise | medium | common | uis_MGL3066-1_2025_autumn_1; uis_MGL3066-1_2023_autumn_1;... | In the uis cleanup, remove tokens matching 'https?://bibsys-ur\.userservices\.exlibrisgroup\.com/\S*(?:\s*\n?\S*rft[._]\S*)*' up to 'View... |
+| ✓ | usn | prerequisites | wrong_content | medium | common | usn_IA4212-1_2019_spring_1; usn_NETPRL-1_2022_spring_1; u... | Extend sentence-level prerequisite cleanup with anchored Norwegian and English admission-pointer patterns, placement-application/contract... |
 | ✓ | hiof | assessment | truncated | medium | occasional | hiof_SFT11717-1_2025_spring_1; hiof_SFB51216-1_2022_autumn_1 | Add HiØf sentence rules transferring the English-exam translation alternative from course_content and the portfolio-new-text restriction ... |
 | ✓ | mf | prerequisites | missing_section | medium | occasional | mf_PPU1015-1_2025_autumn_1; mf_PPU1020-1_2025_autumn_1 | Add a line-start pattern '^Forkunnskapskrav\b:?' mapped to prerequisites in R/section_heading_map.R, with the rest of the line kept as se... |
 | ✓ | uia | prerequisites | boilerplate_only | medium | occasional | uia_ORG966-1_2025_autumn_1; uia_ORG937-1_2025_autumn_1 | In .clean_sections() (or a UiA post_fn for sections) drop prerequisites paragraphs matching 'opptak\|rangeres\|studieplass\|udir\.no\|betinge... |
 | ✓ | uio | assessment | wrong_content | medium | occasional | uio_KJM5050-1_2025_spring_1; uio_KJM5930L-2_2025_spring_1 | Extend the existing whole-item coursework-gate move (#283) to UiO assessment, with patterns such as 'arbeidskrav', 'obligatoriske aktivit... |
-| ✓ | uit | teaching_methods | field_or_language_junk | medium | occasional | uit_BIO-3529-2_2025_autumn_2; uit_END-3602-1_2025_autumn_... | Give the exact English combined language metadata heading an explicit handling rule before the denylist, consistent with the Norwegian fi... |
-| ✓ | usn | assessment | other | medium | occasional | usn_PPUDPRA1-1_2025_autumn_1; usn_BS-PLVI30-V-1_2018_autu... | Add narrowly anchored USN assessment cleanup for practice repeat-attempt limits, study-right loss, retaking failed/aborted practice and t... |
+| ✓ | uit | teaching_methods | field_or_language_junk | medium | occasional | uit_BIO-3529-2_2025_autumn_2; uit_END-3602-1_2025_autumn_... | Add explicit handling for the exact English combined language subheading before the denylist and remove its metadata-only label/value fro... |
+| ✓ | usn | cross_section | other | medium | occasional | usn_15DIGRAF-1_2019_autumn_1; usn_NORVU103-1_2018_autumn_... | Add narrowly anchored USN section-cleanup rules for generic plan-change reservations, bare regulation cross-references with no assessment... |
 | ✓ | hvl | coursework_requirements | wrong_content | medium | rare | hvl_LSU301-1_2022_autumn_1 | Add a pattern for 'PRAKSIS ... STUDIEÅR' headings in R/section_heading_map.R (map to course_content or teaching_methods), so it ends the ... |
 | ✓ | mf | teaching_methods | merged_sections | medium | rare | mf_RL1014-1_2025_autumn_1 | Add a line-start pattern for '^Arbeidsform( og organisering)?:?$' mapped to teaching_methods in R/section_heading_map.R (and make sure th... |
 | ✓ | nord | assessment | missing_section | medium | rare | nord_SOS5003-1_2022_autumn_3 | When the entire assessment text would be moved to coursework_requirements, or the line contains exam words (eksamen, hjemmeeksamen, oppga... |
@@ -136,14 +134,14 @@ _(none)_
 | ✓ | oslomet | prerequisites | truncated | medium | rare | oslomet_BIOB3210-1_2025_autumn_2 | Inspect the blocks for this page and check that the last list line before 'Læringsutbytte' is not treated as a heading or admission .drop. |
 | ✓ | steiner | all | other | medium | rare | steiner_M-PEL2.2_2025_spring_1 | Check the URL built for M-PEL2.2 in R/add_course_url.R and compare the emnekode in the page text with course_code; flag mismatches in the... |
 | ✓ | uib | learning_outcomes | merged_sections | medium | rare | uib_VIT217-0_2025_autumn_1 | Make the UiB block reader split on 'Arbeids- og undervisningsformer' wherever it occurs (also inside the Emnebeskrivelse container), and ... |
-| ✓ | uit | assessment | truncated | medium | rare | uit_FYS-3730-1_2008_autumn_1 | Retain the exact Oppgaven kan skrives ... sentence from combined language fields in assessment before removing the metadata block. Handle... |
-| ✓ | usn | prerequisites | boilerplate_only | medium | rare | usn_IA4212-1_2019_spring_1 | Extend .admission_line_regex with an anchored, case-insensitive match for generelle opptakskrav with optional terminal punctuation, then ... |
+| ✓ | uit | assessment | truncated | medium | rare | uit_FYS-3730-1_2008_autumn_1 | Retain the exact Oppgaven kan skrives ... sentence from the combined language field and append it to assessment before dropping metadata-... |
 | ✓ | hivolda | learning_outcomes | formatting_noise | low | widespread | hivolda_MGL5-10SA1B-1_2025_spring_1; hivolda_MID112-1_201... | Add a leading-line strip in .clean_sections() (or an hivolda-specific rule) for lines matching '^I samsvar med det nasjonale kvalifikasjo... |
 | ✓ | hivolda | assessment | formatting_noise | low | widespread | hivolda_ENG144-1_2022_spring_1; hivolda_JOP100-1_2025_aut... | Drop the fixed header row when flattening the HVO exam table (or reformat rows as labelled fields), so only data rows remain. |
 | ✓ | inn | assessment | formatting_noise | low | widespread | inn_3JUS330-1_2023_autumn_1; inn_ØKA1026-1_2025_spring_1;... | Drop the table header line and the table data row (or keep only the exam form and grade scale) in .clean_sections() for INN assessment, a... |
 | ✓ | inn | learning_outcomes | formatting_noise | low | widespread | inn_REGF2009-1_2025_autumn_1; inn_KS4102-1_2023_autumn_1;... | Keep the sub-heading lines as text inside learning_outcomes (Kunnskap / Ferdigheter / Generell kompetanse and the English equivalents). |
 | ✓ | nmbu | teaching_methods | missing_section | low | widespread | nmbu_FYS100-1_2025_spring_1; nmbu_PPFD201-1_2025_autumn_2 | Map `Undervisningstider` and `Læringsstøtte` to teaching_methods in R/section_heading_map.R (optionally scoped to NMBU), after checking t... |
-| ✓ | usn | reading_list | formatting_noise | low | widespread | usn_LR-FYS1200-1_2018_autumn_2; usn_UHULV-1_2025_autumn_1... | Extend USN reading-list cleanup to remove standalone library identity lines verified against the current course title/code and optional c... |
+| ✓ | uit | reading_list | empty_placeholder | low | widespread | uit_BED-2017-1_2008_autumn_2; uit_ARK-3021-1_2008_autumn_... | Add reading-list-specific whole-row patterns for these pointer/contact variants, including the complete Leganto access-note plus Pensumli... |
+| ✓ | usn | reading_list | formatting_noise | low | widespread | usn_LR-FYS1200-1_2018_autumn_2; usn_PB1090-1_2025_spring_... | Extend USN reading-list cleanup to remove redundant course-title/code identity text and standalone cohort/semester metadata, matching aga... |
 | ✓ | hvl | teaching_methods | formatting_noise | low | common | hvl_NHB2-1_2019_spring_1; hvl_FK215-1_2022_autumn_1 | Add HVL-specific drop rules in .clean_sections()/.drop for lines on 'Kr \d+', 'materialpenger', 'egenandel', 'Eksamen blir avholdt' and '... |
 | ✓ | mf | coursework_requirements | formatting_noise | low | common | mf_RL1010L-1_2025_autumn_2; mf_RL1014-1_2025_autumn_1 | In .clean_sections() for mf, strip the paragraph starting 'Studenter som ikke oppfyller de obligatoriske aktivitetene' and the 'Ved oppme... |
 | ✓ | nla | teaching_methods | empty_placeholder | low | common | nla_4HSM211-1_2019_autumn_1; nla_GL17KRØ1-1_2017_autumn_1... | In .clean_sections() in R/extract_sections.R, drop lines that match ^(ingen\|ingen\.\|-\|nei)$ (case-insensitive) when they are the whole te... |
@@ -167,7 +165,7 @@ _(none)_
 | ✓ | uib | prerequisites | empty_placeholder | low | occasional | uib_AHKR391-0_2019_autumn_1; uib_ENGMAU655-0_2025_spring_1 | In .clean_sections(), drop lines that are only a placeholder ('Ingen', 'Ingen.', '-') in prerequisites; optionally prefix the 'Anbefalte ... |
 | ✓ | uis | course_content | boilerplate_only | low | occasional | uis_MGL2120-1_2025_autumn_1; uis_MGL2120-1_2024_autumn_1 | Add exact '.drop' rows for 'arbeidsmengd' and 'arbeidsmengde' in R/section_heading_map.R (or move the hours line to teaching_methods). |
 | ✓ | uis | prerequisites | empty_placeholder | low | occasional | uis_LENG115-1_2017_autumn_1; uis_LENG115-1_2018_autumn_1 | Strip standalone 'Ingen'/'Ingen.' lines when other text is present in the section, and drop the sub-heading label line. |
-| ✓ | uit | cross_section | formatting_noise | low | occasional | uit_BIO-3529-2_2025_autumn_2; uit_END-3602-1_2025_autumn_1 | Extend UiT section cleanup to remove the exact English Everything you need to know ... UiT Exams homepage line from assessment and course... |
+| ✓ | uit | cross_section | formatting_noise | low | occasional | uit_BIO-3529-2_2025_autumn_2; uit_END-3602-1_2025_autumn_1 | Extend UiT’s exam-link exclusion or section cleanup to remove the complete English portal sentence from assessment and coursework_require... |
 | ✓ | hivolda | reading_list | empty_placeholder | low | rare | hivolda_PPY121-1_2016_autumn_1 | Extend the reading_list placeholder pattern to cover '^Sjå pensumliste for emnet her$'. |
 | ✓ | hivolda | prerequisites | empty_placeholder | low | rare | hivolda_DRHS902-1_2019_spring_1 | Treat '^Ingen\.? (Sjå\|Se) opptakskrav' as a placeholder in prerequisites cleaning. |
 | ✓ | hvl | prerequisites | boilerplate_only | low | rare | hvl_ØAM112-1_2019_autumn_1 | Drop prerequisites lines equal to 'Studiets opptakskrav' / 'Opptakskrav' (also 'Studierett på Master ...' type lines if the spec treats t... |

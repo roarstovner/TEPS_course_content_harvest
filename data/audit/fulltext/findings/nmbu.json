@@ -1,46 +1,56 @@
 {
   "check": "fulltext",
   "institution": "nmbu",
-  "model": "sonnet",
-  "n_courses_reviewed": 8,
-  "n_suspects_reviewed": 0,
-  "overall_assessment": "Extraction with selector .layout is complete and clean for all 8 fetched courses: the packet shows no uncaptured page text, and the facts box, outcomes, teaching, assessment, literature and prerequisites are all present. Remaining issues are cosmetic: facts-box labels run into their values, one leftover link label, and offering year labels that do not match the current plan text.",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 31,
+  "n_suspects_reviewed": 2,
+  "overall_assessment": "Reviewed all 31 packet records: 28 fetched pages (2 suspects and 26 controls) plus 3 failed-fetch examples. Both short suspects are Norwegian pointers to English descriptions rather than complete plans; the controls show no omitted non-chrome page text, with only minor formatting defects and a recurring generic link label. The 2026/27 plans are expected under the current-plan policy, the VET366A truncation is a packet display cap, and the three correctly patterned 404 URLs do not establish a fetch defect.",
   "findings": [
     {
-      "target": "metadata",
+      "target": "whole_text",
+      "error_type": "wrong_page",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "nmbu_M60-IES-1_2025_autumn_1",
+        "nmbu_NOVA-416-1_2025_autumn_1"
+      ],
+      "evidence": "Om dette emnet\nSe engelsk emnebeskrivelse\nDette lærer du\nSe engelsk emnebeskrivelse",
+      "description": "Both short flags identify real failures to obtain a substantive plan: M60-IES repeats \"Se engelsk emnebeskrivelse\" and NOVA-416 repeats \"See English text\" under content, outcomes, teaching and reading-list headings. The extractor faithfully captures these Norwegian pointer pages, including exam facts, but the course-plan specification explicitly requires reading the English plan instead. No missing-text flag can detect this because nothing on the fetched Norwegian page was omitted; none of the 26 random controls shows this pointer-page problem.",
+      "root_cause_hypothesis": "R/add_course_url.R::add_course_url_nmbu() always builds the Norwegian /emne/<code> URL. NMBU uses harvest_standard() in R/harvest_strategies.R, which fetches that page and extracts .layout without a pointer-to-English fallback.",
+      "suggested_fix": "Add an NMBU fallback that detects when the substantive section bodies consist of the exact pointer phrases \"Se engelsk emnebeskrivelse\" or \"See English text\", resolves the same-course English language-switch link from the fetched HTML, and fetches and extracts that plan. Validate the course code and substantive sections, retain the resolved URL as provenance, and mark unresolved pointers as unavailable rather than accepting them as full plans.",
+      "confidence": "high"
+    },
+    {
+      "target": "whole_text",
       "error_type": "formatting",
       "severity": "low",
-      "prevalence": "widespread",
-      "example_course_ids": ["nmbu_PPFD201-1_2025_autumn_2", "nmbu_M30-LUN-1_2025_autumn_1"],
-      "evidence": "Frekvens:ÅrligTilbys første gang i studieår 2025-2026.",
-      "description": "In the facts box, label and value are joined without a space (Studiepoeng:10, Frekvens:Årlig) and multi-part values are glued to the next one (ÅrligTilbys; 'Hvert vårsemester.Profesjonsmaster PPU'). Table or block cells are run together, which violates the rubric's 'table cells separated'.",
-      "root_cause_hypothesis": "html_text() on facts-box elements concatenates child nodes (label span, value span, nested paragraphs) without a separator; R/blocks.R / page_fulltext() does not insert a space or newline between inline children.",
-      "suggested_fix": "In the block text conversion, join child text nodes of the facts box with a space (or newline), or add a post_fn that inserts a space after 'Label:' and between a lowercase/period and an uppercase letter with no whitespace.",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "nmbu_VU-VET340-1_2025_autumn_1",
+        "nmbu_LAFT210-1_2025_autumn_1"
+      ],
+      "evidence": "Modul 1: Sped- og smågrishelseForberedelse til kurssamling og tidsbruk på kurssamlingen;",
+      "description": "VU-VET340 joins each module label directly to the following preparation text (\"smågrishelseForberedelse\", \"PurkemanagementForberedelse\", \"SlaktegrishelseForberedelse\"). LAFT210 likewise joins learning-outcome sentences at \"farge.Studenten\" and \"tegning.Studenten\". These local word/sentence boundaries are lost despite otherwise readable paragraphs and headings, so the wall flag misses them; there is no evidence of substantive text loss.",
+      "root_cause_hypothesis": "Possible boundary loss when R/blocks.R::.html_blocks() concatenates inline runs or reads unmarked rich-text subtrees with html_text2(), which does not reproduce CSS layout boundaries. The packet establishes the joined text but cannot distinguish missing HTML separators in the source from extraction-induced joins.",
+      "suggested_fix": "Inspect the stored NMBU rich-text nodes at these joins and preserve actual nested block and line-break boundaries as whitespace before text conversion. If the source itself lacks separators, use a narrowly scoped NMBU post_fn for the demonstrated module-label joins and missing space in \".Studenten\", rather than a general rule that splits arbitrary capitalized words.",
       "confidence": "medium"
     },
     {
       "target": "page_chrome",
       "error_type": "junk_included",
       "severity": "low",
-      "prevalence": "common",
-      "example_course_ids": ["nmbu_FYS100-1_2025_autumn_1", "nmbu_PPPE301-1_2025_autumn_1"],
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "nmbu_AQX100-1_2025_autumn_1",
+        "nmbu_BOT200-1_2025_autumn_1",
+        "nmbu_KJM007-1_2025_autumn_1"
+      ],
       "evidence": "Her finner du KI-kategoriene beskrevet.",
-      "description": "The text of a link to the general AI-categories page is included in the 'Om bruk av KI' section. It is boilerplate that is the same in every plan and not part of this course's plan.",
-      "root_cause_hypothesis": "The link text sits inside .layout and no exclude or post_fn removes it.",
-      "suggested_fix": "Add a post_fn or exclude pattern in R/institution_config.R for the nmbu entry that drops the line 'Her finner du KI-kategoriene beskrevet.'.",
+      "description": "All 28 fetched records retain the same generic link label after their AI-use instructions. This label supplies no course-specific rule and is boilerplate under the specification's exclusion of generic website link labels. The actual AI categories and permitted-use instructions are plan text and should remain; the pre-pass junk detector does not flag this residual label.",
+      "root_cause_hypothesis": "The generic link is inside NMBU's .layout selector, and the NMBU configuration in R/institution_config.R has neither an exclude entry nor a post_fn removing it.",
+      "suggested_fix": "Add an NMBU exclude selector for the anchor whose normalized text is exactly \"Her finner du KI-kategoriene beskrevet.\", or remove only that exact standalone line in a post_fn, preserving the surrounding AI-use rules.",
       "confidence": "high"
-    },
-    {
-      "target": "metadata",
-      "error_type": "wrong_year",
-      "severity": "low",
-      "prevalence": "rare",
-      "example_course_ids": ["nmbu_FYS100-1_2025_autumn_1"],
-      "evidence": "Undervisnings- og vurderingsperiode:Emnet starter i vårparallellen. Emnet har undervisning/vurdering i vårparallellen, .",
-      "description": "The offering is labelled Høst 2025 (autumn), but the text, taken from the current plan page (plan_years = current), says the course runs in the spring parallel. The semester in the offering metadata and in the text disagree; the plan is a current-plan snapshot rather than the plan for that semester. The text also has a stray ', .' artefact. The spring 2025 offering of the same course (nmbu_FYS100-1_2025_spring_1) was not fetched and shares the same URL.",
-      "root_cause_hypothesis": "NMBU only exposes the current plan at /emne/<code>, so every offering of a course maps to one page and one text, regardless of semester.",
-      "suggested_fix": "Document in methods that NMBU text is the current plan; avoid joining the semester text to the offering semester, or dedupe offerings per course code. No extraction change needed.",
-      "confidence": "low"
     }
   ]
 }

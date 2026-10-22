@@ -1,46 +1,73 @@
 {
   "check": "fulltext",
   "institution": "uio",
-  "model": "sonnet",
-  "n_courses_reviewed": 8,
-  "n_suspects_reviewed": 0,
-  "overall_assessment": "UiO fulltext extraction is good: all 8 fetched plans contain the full plan (intro, learning outcomes, admission, teaching, exam, facts box) and the uncaptured page text is only breadcrumbs, fetch timestamps and year pickers. The main defect is a recurring block of generic exam-information link labels appended in every plan.",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 31,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "Reviewed all 31 packet records (20 suspects, eight controls and three failed fetches): substantive plans are generally complete and readable, but GEO9630 resolves to login pages, shared exam-help navigation remains, eight discontinuation/replacement notices are dropped, and four teaching-semester fields contain unresolved source tokens. The short psychology pages are sparse discontinued-course pages rather than demonstrated loss of descriptive sections; the year flags reflect historical references or the latest retained plan, which is allowed by UiO's current-plan policy. The three 404 URLs have plausible faculty/department paths and no successful alternate offerings in the institution context, so they are not established URL errors.",
   "findings": [
     {
-      "target": "assessment",
+      "target": "whole_text",
+      "error_type": "wrong_page",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "uio_GEO9630-1_2025_autumn_1",
+        "uio_GEO9630-1_2025_spring_1"
+      ],
+      "evidence": "Logg inn med din UiO-konto\nUiO brukernavn\nPassord",
+      "description": "Both empty flags are real failures to obtain a course plan: the fetched page is UiO Weblogin, containing credentials and external-login options rather than GEO9630 content. The selector correctly extracts nothing from this page; widening it would capture the login form, not recover the plan. These are two offerings of the same affected course code.",
+      "root_cause_hypothesis": "harvest_url_discovery() accepts the response from fetch_html_cols() without checking that it is a course page. R/fetch_html_cols.R derives html_success from the absence of a request error, so a successful HTTP response containing an authentication page can be counted as page fetched; #vrtx-content is then absent.",
+      "suggested_fix": "Validate UiO responses before classifying them as fetched plans: detect Weblogin/login-form markers and require a course-plan heading matching the requested course code. Classify these responses as authentication_required, preserve that cause in the fetch ledger, and only use an alternative public course URL when its course heading has been verified.",
+      "confidence": "high"
+    },
+    {
+      "target": "page_chrome",
       "error_type": "junk_included",
-      "severity": "low",
+      "severity": "medium",
       "prevalence": "widespread",
-      "example_course_ids": ["uio_PROMO1003-1_2025_autumn_2", "uio_BIOS5000-1_2025_autumn_1", "uio_FYS5810-1_2025_autumn_1"],
-      "evidence": "Mer om eksamen ved UiO Kildebruk og referanser Hvordan bruke KI som student Tilrettelegging på eksamen Trekk fra eksamen Syk på eksamen / utsatt eksamen Begrunnelse og klage Ta eksamen på nytt Fusk/forsøk på fusk",
-      "description": "Every plan ends its exam section with the same list of link labels to UiO-wide exam guidance plus the sentence 'Andre veiledninger og ressurser finner du på fellessiden om eksamen ved UiO.' This is site-wide boilerplate, not course plan text, and sits at the end of the assessment part. Where the page has 'Adgang til ny eller utsatt eksamen', link labels such as 'Syk på eksamen / utsatt eksamen' also appear twice in a row.",
-      "root_cause_hypothesis": "Selector #vrtx-content includes the shared exam-info link box; no exclude rule for it in the UiO config in R/institution_config.R.",
-      "suggested_fix": "Add an exclude (or post_fn line filter) for the shared exam link list and the 'Andre veiledninger og ressurser...' sentence, and for the repeated 'Syk på eksamen / utsatt eksamen' / 'Trekk under eksamen / ta eksamen på nytt' link labels. Keep it to boilerplate per course_plan_spec.md.",
+      "example_course_ids": [
+        "uio_PSY9170-1_2025_autumn_1",
+        "uio_HIS2011MV-1_2025_autumn_2",
+        "uio_OD8620-1_2025_autumn_1"
+      ],
+      "evidence": "Mer om eksamen ved UiO\nKildebruk og referanser\nHvordan bruke KI som student\nTilrettelegging på eksamen\nTrekk fra eksamen",
+      "description": "A shared navigation block linking to university-wide exam guidance is retained in 22 of the 26 nonempty texts, including seven of eight random controls. Norwegian, English and Nynorsk variants list source use, AI guidance, withdrawal, illness, appeals and cheating, followed by a generic resources sentence. This is recurring non-plan navigation and can dominate the two short psychology records, despite the junk pre-pass finding no cases.",
+      "root_cause_hypothesis": "UiO's #vrtx-content selector in R/institution_config.R includes the shared exam-help module, and its exclude rules do not remove that module. Mapping its heading to .drop for section extraction does not remove blocks from page_fulltext() in R/extract_fulltext.R.",
+      "suggested_fix": "Exclude the shared exam-help module in the UiO DOM configuration, identified by the exact heading Mer om eksamen ved UiO / Meir om eksamen ved UiO / More about examinations at UiO, including its link list and closing resources paragraph. Bound the removal to that module and retain course-specific examination, resit, grading and facts-box content.",
       "confidence": "high"
     },
     {
       "target": "metadata",
-      "error_type": "formatting",
-      "severity": "low",
-      "prevalence": "rare",
-      "example_course_ids": ["uio_GEO5930L-2_2025_autumn_1"],
-      "evidence": "Studiepoeng 30 Undervisning Eksamen Vår og høst Kontakt",
-      "description": "The facts box is flattened to alternating label/value lines. When a label has no value (Undervisning is empty here), the next label follows directly and a reader or parser cannot tell which label 'Vår og høst' belongs to.",
-      "root_cause_hypothesis": "Facts box serialised as plain text lines by page_fulltext(), without label: value pairing.",
-      "suggested_fix": "Render the facts box as 'Label: value' pairs, with an explicit empty value, in the UiO post_fn or in a block formatter.",
-      "confidence": "low"
+      "error_type": "missing_content",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "uio_PSY9170-1_2025_autumn_1",
+        "uio_HELSEF4510-1_2025_autumn_1",
+        "uio_UV9040A-1_2025_autumn_1"
+      ],
+      "evidence": "Dette emnet er erstattet av UV9040 – Research seminar.",
+      "description": "Eight pages have course-status information in the uncaptured page text: seven discontinuation notices and one replacement notice. These are course-specific metadata, not navigation. Last-teaching dates sometimes survive in the facts box, but the explicit status and, for UV9040A, the statement identifying its replacement are absent. The short PSY9170 and PSY9302B pages particularly need the discarded discontinuation context; their missing descriptive sections are not otherwise present on the fetched page.",
+      "root_cause_hypothesis": "The UiO exclude rule #vrtx-course-title-toc > :not(h1) in R/institution_config.R likely removes semantic status notices together with title-area navigation. The same rule is applied before the HTML block walk in R/blocks.R.",
+      "suggested_fix": "Refine the title-area exclusion to preserve elements containing notices beginning Dette emnet er nedlagt, This course is discontinued, or Dette emnet er erstattet av, including linked replacement-course text. Retain those notices as metadata while continuing to exclude the table of contents and semester navigation.",
+      "confidence": "high"
     },
     {
-      "target": "whole_text",
-      "error_type": "empty_or_failed",
-      "severity": "low",
+      "target": "metadata",
+      "error_type": "other",
+      "severity": "medium",
       "prevalence": "common",
-      "example_course_ids": ["uio_BIOS5000-1_2025_spring_1"],
-      "evidence": "Fetch error: NA",
-      "description": "A spring 2025 offering of BIOS5000 has no fetched page although its URL (same as the fetched autumn offering) looks right. The institution context says 53 of 100 offerings are not fetched. Because UiO has only the current plan, this may be by design (one fetch per course code), but the packet cannot confirm that.",
-      "root_cause_hypothesis": "Probably the harvest fetches each course URL once or skips offerings sharing a URL; the error is NA rather than an HTTP error.",
-      "suggested_fix": "Check in harvest_strategies.R whether non-fetched UiO offerings are URL duplicates; if so, document it and have downstream steps reuse the one current plan; if not, re-fetch.",
-      "confidence": "low"
+      "example_course_ids": [
+        "uio_PSY9302B-1_2025_autumn_1",
+        "uio_ECON4150-1_2025_autumn_1",
+        "uio_OD8620-1_2025_autumn_1"
+      ],
+      "evidence": "Undervisning\nBinaryValueReference{ref = 9354642955}",
+      "description": "The teaching-semester facts field contains an unresolved BinaryValueReference object in four records: PSY9170, PSY9302B, ECON4150 and random control OD8620. These machine references are not usable semester metadata. Other course facts and substantive sections remain readable; this is a localized rendering defect rather than a wrong course or lost paragraph structure.",
+      "root_cause_hypothesis": "The UiO page/template appears to expose an unresolved FS/CMS value, which the generic HTML block reader faithfully carries into the facts text. No UiO-specific validation or postprocessing detects this source-rendering failure; the packet does not establish an extraction-created token.",
+      "suggested_fix": "Validate UiO facts values for the exact token pattern BinaryValueReference{ref = digits}. Record the affected teaching-semester field as unresolved and exclude the machine token from analytical text; populate a readable value only from verified public course metadata when available, otherwise leave it explicitly missing. Do not infer the semester from the DBH offering year.",
+      "confidence": "high"
     }
   ]
 }
