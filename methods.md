@@ -1190,6 +1190,20 @@ where a COVID change of the exam form was the only assessment text. The
 median assessment section grows from 261 to 325 characters. *Since:*
 2026-10-13.
 
+**UiT: the language label and 2008 coursework gates.** The sub-heading
+“Undervisnings- og eksamensspråk” and its value (“Norsk”) on UiT’s 2018+
+pages go (`.drop`); they were appended to teaching_methods on every such
+page. It states a language fact, not how the course is taught (the bare
+“Eksamensspråk” still maps to assessment, as above). In 2008 plans,
+“Beskriving av arbeidskrav: … Beskriving av eksamen: …” and a numbered
+point on “godkjente oppgaver” now move from assessment to
+coursework_requirements like other inline gates. *Rejected:* mapping the
+heading to teaching_methods or assessment (it is neither).
+*Consequence:* 2,190 UiT teaching_methods sections change (median 532 to
+460 characters, all frames), 4 plans get a coursework section from the
+“Beskriving” rule and 1 from the numbered point; Nord and NTNU do not
+change. *Since:* 2026-10-22.
+
 **HVL: exam logistics and costs leave the sections.** A sentence goes
 from any HVL section when it points to Studentweb or says where the
 exam’s time, place or deadline will be announced (“Tid og sted for

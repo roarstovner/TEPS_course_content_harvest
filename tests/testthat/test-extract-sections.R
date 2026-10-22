@@ -1077,3 +1077,16 @@ test_that("the text fallback stands only with a section that no heading on the p
   out <- page_sections(page_blocks(html, NA, cfg), "Innhold\nTall.\n\nVurdering\nEksamen.", cfg)
   expect_equal(out$section, c("course_content", "assessment"))
 })
+
+test_that("usn: reading-list placeholder and the generic fitness notice are dropped", {
+  out <- tibble::tibble(
+    section = c("reading_list", "coursework_requirements", "assessment"),
+    raw_text = c("The reading list is not published yet.",
+                 paste0("Arbeidskrav 1: Praksis.\nSkikkethetsvurdering\nKunnskapsdepartementet fastsatte 30. juni 2006 Forskrift.\n",
+                        "Kriterier ved vurdering av om en student ikke er skikket i utdanningen er at studenten:\n",
+                        "a) viser manglende vilje\nh) viser manglende vilje til å endre adferd\n"),
+                 "Mappevurdering."))
+  res <- .clean_sections(out, "usn")
+  expect_equal(res$section, c("coursework_requirements", "assessment"))
+  expect_equal(trimws(res$raw_text[1]), "Arbeidskrav 1: Praksis.")
+})

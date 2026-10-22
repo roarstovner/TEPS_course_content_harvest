@@ -612,6 +612,10 @@ extract_sections <- function(config, html, extracted_text, course_id) {
                   "\\(KI\\),? s(?:e|jå) [^\n]*$")),
   # a pointer to the AI page, after the AI rule or alone
   nord = "[ \t]*Informasjon om ChatGPT/kunstig intelligens[^\n]{0,20}? finner du her\\.?",
+  # the national fitness-to-practise notice (criteria a-h), the same in the
+  # plans of the practice programmes
+  usn  = paste0("(?s)Skikkethetsvurdering\\nKunnskapsdepartementet fastsatte .{0,1500}?",
+                "\\nh\\) [^\\n]*(?:\\n|$)"),
   uit  = c("(?m)^Eksamensdato er foreløpig.*$",
            # the grading cell of each row of the 2020s gate table, the same
            # for every gate; the gate's name stays
@@ -736,6 +740,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "pensumlist[ea] for emnet finn(?:er)? du her",
   "oppgis senere",                                                    # ntnu
   "(?:pensum-/)?litteraturliste(?:n)? er ikke publisert ennå",        # usn
+  "the reading list is not published yet",                            # usn
   "litteratur(?:lista|listen)? vil være klart? [^.]{0,80}",           # hiof
   "(?:pensumlist[ea]|anbefalt litteratur) for (?:høsten|våren) ?\\d{4}(?:(?: og |-)(?:høsten|våren) ?\\d{4})?",  # nih
   "ettersom vi er i en overgangsfase mellom to systemer .{0,300}",    # nih
