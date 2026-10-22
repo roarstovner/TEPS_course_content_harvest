@@ -76,7 +76,8 @@ test_that("a table of contents is not course content", {
 
 test_that("language metadata headings are not filed as assessment", {
   expect_true(is.na(match_heading_to_section("Language of instruction and examination")))
-  expect_true(is.na(match_heading_to_section("Undervisnings- og eksamensspråk")))
+  # uit's language label is facts, not plan text
+  expect_equal(match_heading_to_section("Undervisnings- og eksamensspråk"), ".drop")
   expect_equal(match_heading_to_section("Eksamensspråk"), "assessment")
 })
 
@@ -785,6 +786,21 @@ test_that("nord-style gate lines move from assessment to coursework_requirements
   s <- stats::setNames(res$raw_text, res$section)
   expect_equal(s[["assessment"]], "Eksamen\nSkriftlig individuell skoleeksamen, 4 timer.")
   expect_match(s[["coursework_requirements"]], "^Obligatorisk deltakelse \\(OD\\).*\nArbeidskrav \\(AK\\)")
+})
+
+test_that("uit 2008: 'Beskriving av arbeidskrav' and a numbered gate point move out", {
+  split <- function(x) {
+    res <- .split_inline_coursework(tibble::tibble(section = "assessment", raw_text = x))
+    stats::setNames(res$raw_text, res$section)
+  }
+  s <- split(paste("Beskriving av arbeidskrav: Eit munnleg innlegg. Vurderast som godkjent/ikke godkjent.",
+                   "Beskriving av eksamen: 1 essay på 10-12 sider. Vurderes etter karakterskalaen A-F."))
+  expect_match(s[["coursework_requirements"]], "^Beskriving av arbeidskrav: Eit munnleg innlegg")
+  expect_equal(s[["assessment"]], "Beskriving av eksamen: 1 essay på 10-12 sider. Vurderes etter karakterskalaen A-F.")
+  s <- split(paste("1) Ved semesterstart får studenter beskjed om krav til antall godkjente oppgaver",
+                   "for å gå opp til eksamen. 2) Skriftlig eksamen utgjør 100 % av sluttkarakter."))
+  expect_match(s[["coursework_requirements"]], "godkjente oppgaver for å gå opp til eksamen\\.$")
+  expect_equal(s[["assessment"]], "2) Skriftlig eksamen utgjør 100 % av sluttkarakter.")
 })
 
 test_that("a gate label takes the paragraph it names along", {

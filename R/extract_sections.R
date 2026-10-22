@@ -417,7 +417,8 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 .inline_coursework_regex <- paste0(
   "(?i)^\\s*(?:[-•*]\\s*)?(?:(?:(?:inntil|minst|opptil) )?",
   "(?:\\d+|en|ett?|ei|to|tre|fire|fem|seks|sju|syv|åtte|ni|ti) (?:\\w+ )?arbeidskrav(?:ene|et)?|",
-  "følg(?:ende|jande) (?:obligatoriske )?arbeidskrav|arbeidskrav(?:ene|et)?|",
+  "følg(?:ende|jande) (?:obligatoriske )?arbeidskrav|(?:beskriv\\w+ av )?arbeidskrav(?:ene|et)?|",
+  "\\d\\) [^.\\n]{0,200}\\bgodkjente oppgaver|",   # uit 2008: "1) ... krav til antall godkjente oppgaver"
   "(?-i:AK|OD|OA)\\d*|",                         # nord: AK, OD2 as their label
   "obligatoriske? (?:deltakelse|deltagelse|deltaking|arbeid|arbeidskrav|",
   "aktivitet(?:er)?|oppmøte|frammøte|fremmøte)|",
@@ -544,7 +545,8 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # Godkjent/ikke godkjent", which is the gate's own.
 .assessment_midline_regex <- paste0(
   "(?<=[.!?]) ?(?=(?:Vurdering(?:sform)?|Eksamen(?:/vurderingsform)?|",
-  "Eksamensform):[ \t]*(?!(?i:godkjent|bestått)\\b)\\S|EKSAMEN\\b|",
+  "Eksamensform):[ \t]*(?!(?i:godkjent|bestått)\\b)\\S|EKSAMEN\\b|Beskriv\\w+ av eksamen:|",
+  "\\d\\) (?:Skriftlig |Muntlig )?eksamen\\b|",
   "Emnet (?:evalueres|vurderes)\\b|Assessment(?: method)?:(?![ \t]*(?i:approved|pass)\\b))|",
   "(?<=\\S) (?=Eksamen består av)")
 

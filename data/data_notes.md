@@ -1,7 +1,7 @@
 # Data Quality Notes
 
 
-Generated: 2026-10-21
+Generated: 2026-10-22
 
 ## Overview
 
@@ -238,6 +238,13 @@ Figures are in the tables above; the notes say why.
   in both (see “Semester registration in DBH”)
 - Reading lists are part of the plan text; `.anon_hiof()` removes only
   the “Litteraturlista er sist oppdatert” line
+- Two `videre/` pages show a later semester’s plan than their URL
+  (`videre/2019/var/lskno22215` is titled “Vår 2020”,
+  `videre/2022/host/lskas10116` “Høst 2023”): `page_term` reads the
+  semester in the page title, so the two offerings get no plan
+  (2026-10-22). No offering of the teacher-education frame and no page
+  in another folder is affected (their title semester equals the URL’s,
+  or the title has none).
 
 ------------------------------------------------------------------------
 

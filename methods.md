@@ -581,9 +581,9 @@ page without a menu names no year and stays. Longer pages without
 sections stay (OsloMet practicum courses, below). *Consequence:* 174
 plans left the data on 2026-10-06 (UiA 95, UiB 27, OsloMet 26, Nord 11,
 HVL 10, UiT 4, NTNU 1). With pages that are not the plan at all (INN’s
-course search page, OsloMet’s error page) and later versions (INN, Nord,
-UiS), 2 286 offerings have page text but no plan (inn 1108, nord 819,
-oslomet 67, uia 95, uib 80, uis 97, uit 20). *Since:* 2026-10-06;
+course search page, OsloMet’s error page) and later versions (HiOF, INN,
+Nord, UiS), 2 286 offerings have page text but no plan (inn 1108, nord
+819, oslomet 67, uia 95, uib 80, uis 97, uit 20). *Since:* 2026-10-06;
 heading lists (UiB NOLI216 and NOSP216, autumn 2018) from 2026-10-07;
 NTNU pages whose only section was the exam tab from 2026-10-12 to
 2026-10-13, when the tab came back (20 plans, 70 offerings). INN later
@@ -619,26 +619,30 @@ plan go from 1,843 to 1,478. UiS’s later versions from 2026-10-14 (found
 while matching its menu on the academic year, above): 97 offerings lose
 their plan (56 spring, 41 autumn, most of 2007-2018; the version shown
 is 1 to 10 years later, median 4), among them the 23 that the retry
-harvest of that day gave a course page. 6 plans leave the data (UiS
-1,313 → 1,307, 14,004 in all), and UiS’s course-years with a plan go
-from 1,495 to 1,457. 306 course pages show an earlier version and stay,
-as do 96 without a menu. *Rejected:* keeping the later plan with a flag
-(decided 2026-10-07: an offering is coded with its own year’s plan or
-none). For UiS, the menu’s latest entry before the offering’s year (32
-of the 97 have one, e.g. “2014 - 2015” for 2016): the site shows no plan
-for that year, and a year missing from the menu does not tell whether
-the earlier plan was still in force, and the data do not guess a plan
-(confirmed 2026-10-15). A rule on `course_plan` alone (2026-10-13): the
-characters in lines that read as text (four or more words; not a
-heading, a placeholder or a short “Label: value” fact) do not separate
-shells from plans at any threshold. A credit-overlap box reads as text,
-and so the 391 shell offerings have a median of 88 such characters and
-up to 738 (UiA, Nord); some plans have little but the assessment design
-(NTNU master’s thesis pages, “Vurderingsordning: Avhandling”, UiS
-MGLINT’s exam box). Below 150 characters, 128 plan offerings would
-become shells and 127 shell offerings stay plans; below 500, 326 and 4.
-Whether a section can be cut is what tells a page with text about the
-course from one without.
+harvest of that day gave a course page. HiOF’s later versions from
+2026-10-22 (pilot fulltext audit, 2026-10-21): the title of a page names
+its semester, and two `videre/` pages name a later one than their URL
+(spring 2020, autumn 2023); 2 offerings lose their plan, none in the
+teacher-education frame. 6 plans leave the data (UiS 1,313 → 1,307,
+14,004 in all), and UiS’s course-years with a plan go from 1,495 to
+1,457. 306 course pages show an earlier version and stay, as do 96
+without a menu. *Rejected:* keeping the later plan with a flag (decided
+2026-10-07: an offering is coded with its own year’s plan or none). For
+UiS, the menu’s latest entry before the offering’s year (32 of the 97
+have one, e.g. “2014 - 2015” for 2016): the site shows no plan for that
+year, and a year missing from the menu does not tell whether the earlier
+plan was still in force, and the data do not guess a plan (confirmed
+2026-10-15). A rule on `course_plan` alone (2026-10-13): the characters
+in lines that read as text (four or more words; not a heading, a
+placeholder or a short “Label: value” fact) do not separate shells from
+plans at any threshold. A credit-overlap box reads as text, and so the
+391 shell offerings have a median of 88 such characters and up to 738
+(UiA, Nord); some plans have little but the assessment design (NTNU
+master’s thesis pages, “Vurderingsordning: Avhandling”, UiS MGLINT’s
+exam box). Below 150 characters, 128 plan offerings would become shells
+and 127 shell offerings stay plans; below 500, 326 and 4. Whether a
+section can be cut is what tells a page with text about the course from
+one without.
 
 **Tables are read one row per line:** each row of a table on the page is
 one line, its cells separated by tabs and each cell on one line, so an
