@@ -111,3 +111,12 @@ test_that("gate numbers count course-years of the sample in the built data", {
   expect_equal(g$examples[g$metric == "privacy_hits"][[1]], "x_D_2025_autumn_1")
   expect_equal(g$examples[g$metric == "unmapped_headings"][[1]], "Kontakt")
 })
+
+test_that("partition_headings counts the unmapped headings the text reader reads", {
+  cfg <- get_institution_config("usn")
+  txt <- paste("Innholdsfortegnelse", "", "Faglig innhold i emnet", "", "Annet", "",
+               "Litteratur", "", "Faglig innhold i emnet", "", "Språklæring.", "",
+               "Annet", "", "Emnet evalueres jevnlig.", sep = "\n")
+  h <- partition_headings(.empty_blocks(), tibble::tibble(page_id = "usn/1", extracted_text = txt), cfg)
+  expect_true("Annet" %in% h$value[h$what == "unmapped"])
+})

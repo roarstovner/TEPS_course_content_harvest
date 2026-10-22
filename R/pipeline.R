@@ -104,13 +104,13 @@ partition_sections <- function(blocks, page_text, config, ids) {
 # (uis PDF plans) is not counted.
 partition_headings <- function(blocks, page_text, config) {
   cfg <- .block_cfg(config)
-  unmapped <- dplyr::filter(blocks, role == "heading", is.na(section), nzchar(trimws(text)))
   if (identical(cfg$reader, "text")) {
     pt <- page_text[!is.na(page_text$extracted_text), ]
     pages <- lapply(pt$extracted_text, .text_blocks, cfg = cfg)
     blocks <- dplyr::bind_rows(tibble::tibble(page_id = character()), .empty_blocks(), tibble::tibble(
       page_id = rep(pt$page_id, vapply(pages, nrow, 1L)), dplyr::bind_rows(.empty_blocks(), pages)))
   }
+  unmapped <- dplyr::filter(blocks, role == "heading", is.na(section), nzchar(trimws(text)))
   b <- blocks[blocks$role %in% c("heading", "sub") & !is.na(blocks$section), ]
   row <- vapply(stringr::str_squish(b$text), heading_pattern, integer(1),
                 word_start = identical(cfg$reader, "text"), USE.NAMES = FALSE)
