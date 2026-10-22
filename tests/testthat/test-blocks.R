@@ -138,3 +138,16 @@ test_that("the json reader reads nla's titles and contents", {
   b <- page_blocks(x$html[i], NA, list(reader = "json"), x$course_id[i])
   expect_gt(sum(b$role == "heading" & !is.na(b$section)), 3)
 })
+
+test_that("'Litteratur:' inside learning outcomes stays there; the heading after it is the reading list", {
+  b <- page_blocks("<main><h2>Studentens læringsutbytte ved bestått emne</h2><p>Kunnskap</p>
+    <p>Litteratur:</p><p>Kan om forfattere.</p><h2>Litteratur</h2><p>Boka</p></main>", NA,
+    html_reader(sub = "p"))
+  s <- sectionize(b)
+  expect_equal(s$section, c("learning_outcomes", "reading_list"))
+  expect_equal(s$raw_text, c("Kunnskap\nLitteratur:\nKan om forfattere.", "Boka"))
+  # outside learning outcomes it still switches to the reading list
+  b <- page_blocks("<main><h2>Innhold</h2><p>Tekst.</p><p>Litteratur:</p><p>Boka</p></main>", NA,
+                   html_reader(sub = "p"))
+  expect_equal(sectionize(b)$section, c("course_content", "reading_list"))
+})

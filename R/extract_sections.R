@@ -18,7 +18,9 @@
 #' unmapped one closes the open section, so the text under it is dropped. A
 #' sub-heading acts only inside a section a heading opened: one naming the
 #' open section is a group label and stays as content ("Kunnskap" inside
-#' learning outcomes); one naming another section switches to it;
+#' learning outcomes), as does "Litteratur:" inside learning outcomes (a
+#' group of outcomes, not a reading list); one naming another section
+#' switches to it;
 #' an unmapped one returns to the section its heading opened and stays as a
 #' line there; a `keep` sub-heading stays as the first line of its section.
 #' A `label` heading or sub-heading ("Hjelpemidler til eksamen") stays as the
@@ -66,7 +68,11 @@ sectionize <- function(blocks) {
       outer <- outer[-1]
     } else if (role == "sub") {
       if (is.na(parent)) next
-      if (identical(section, current)) {
+      # a group label of the open section, or "Litteratur:" inside learning
+      # outcomes (hiof: literature, culture, language), which is not a
+      # reading list
+      if (identical(section, current) ||
+          (identical(current, "learning_outcomes") && identical(section, "reading_list"))) {
         chunks <- c(chunks, text)
         next
       }
