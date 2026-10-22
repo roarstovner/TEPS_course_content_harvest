@@ -151,3 +151,22 @@ test_that("'Litteratur:' inside learning outcomes stays there; the heading after
                    html_reader(sub = "p"))
   expect_equal(sectionize(b)$section, c("course_content", "reading_list"))
 })
+
+test_that("on a page with a table of contents only whole headings switch outside it (usn)", {
+  lines <- c("Innholdsfortegnelse", "Faglig innhold i emnet", "Vurderingsformer", "Annet",
+             "Faglig innhold i emnet", "Hovedtema 1", "Kartlegging av smerte",
+             "Vurdering av pasientens kartlagte smerte", "Etikk og smerte",
+             "Vurderingsformer", "Hjemmeeksamen.", "Ny og utsatt eksamen", "Neste semester.",
+             "Annet", "Evalueres jevnlig.", "Detaljert emnebeskrivelse", "Algebra.")
+  s <- sectionize(.text_blocks(paste(lines, collapse = "\n\n"), list(reader = "text")))
+  # a bullet that only contains "vurdering" stays in the course content; a
+  # whole heading still switches: the resit heading drops its text, and the
+  # detailed description under the unmapped "Annet" is course content
+  expect_equal(s$section, c("course_content", "assessment", ".drop"))
+  expect_equal(s$raw_text, c(
+    "Hovedtema 1\nKartlegging av smerte\nVurdering av pasientens kartlagte smerte\nEtikk og smerte\n\nAlgebra.",
+    "Hjemmeeksamen.", "Neste semester."))
+  # without a table of contents a heading-shaped line still switches (uis PDFs)
+  s <- sectionize(.text_blocks(paste(lines[-(1:4)], collapse = "\n\n"), list(reader = "text")))
+  expect_match(s$raw_text[s$section == "assessment"], "^Etikk og smerte")
+})

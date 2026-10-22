@@ -404,7 +404,11 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
 #     section ("Kunnskap" inside learning outcomes) is text.
 # A line after a blank line that repeats an entry of the page's table of
 # contents (usn) is a heading whatever it names: an unmapped one ("Annet",
-# "Evaluering av emnet") ends the section, as in the html reader.
+# "Evaluering av emnet") ends the section, as in the html reader. On such a
+# page another line switches only when it is a whole heading ("Ny og utsatt
+# eksamen"), not when a pattern is only part of it: a bullet such as
+# "Vurdering av pasientens kartlagte smerte" or "Veiledning og vurdering
+# individuelt og i gruppe" stays in its section.
 # In a reading list opened by a whole heading ("Litteratur") only another
 # whole heading switches, so a book title such as "Kompetansemål og
 # vurdering" does not.
@@ -460,7 +464,7 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
       candidate <- stringr::str_remove(trimmed, "[:：]\\s*$")
       section <- match_heading_to_section(candidate, word_start = TRUE)
       exact <- tolower(candidate) %in% section_heading_patterns$pattern
-      if (strict && !exact) section <- NA_character_
+      if ((strict || length(toc_heads) > 0) && !exact) section <- NA_character_
     }
     if (!is.na(section) && !identical(section, current)) {
       out$add("heading", lines[i], section)

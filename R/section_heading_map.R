@@ -247,6 +247,7 @@ section_heading_patterns <- tibble::tribble(
   "emnets innhold",                        "course_content",         FALSE,
   "innhald og oppbygging",                 "course_content",         FALSE,
   "beskrivelse av emnet",                  "course_content",         FALSE,
+  "detaljert emnebeskrivelse",             "course_content",         FALSE,  # usn, under "Annet"
   "emnebeskrivelse",                       "course_content",         FALSE,
   "kort om emnet",                         "course_content",         FALSE,
   "om dette emnet",                        "course_content",         FALSE,

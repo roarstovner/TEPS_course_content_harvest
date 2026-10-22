@@ -1171,7 +1171,9 @@ that no heading on the page names</td>
 <td>Heading-shaped lines in <code>extracted_text</code>; skips the title
 and facts box and a table of contents (“Innholdsfortegnelse”, usn), and
 a line repeating one of its entries is a heading, so an unmapped one
-(“Annet”) ends the section; inside a reading list opened by a whole
+(“Annet”) ends the section, and any other line switches only as a whole
+heading (“Ny og utsatt eksamen”, not a bullet such as “Vurdering av
+pasientens kartlagte smerte”); inside a reading list opened by a whole
 heading only a whole heading switches section (book titles)</td>
 </tr>
 <tr>
