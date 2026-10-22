@@ -103,6 +103,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- usn: course content at the start of assessment on text-fallback pages (SMERTE100) (#454)
+- usn: turn on section_inline_coursework after fixing two split errors (#452)
+- sections: coursework gate sentences left in assessment (uit, usn) (#453)
 - usn: practice-course plans: arbeidskrav in assessment, Praksis block in teaching_methods (#450)
 - unmapped headings not counted for text-reader institutions (usn, steiner) (#445)
 - uit: arbeidskrav in the 2008 Eksamensform block; 'Undervisnings- og eksamensspråk' in teaching_methods (#449)
