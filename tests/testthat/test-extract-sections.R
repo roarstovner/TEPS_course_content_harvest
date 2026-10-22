@@ -942,6 +942,105 @@ test_that("nord abbreviations, number words and English labels are gates", {
   expect_equal(.split_inline_coursework(out), out)
 })
 
+test_that("a gate sentence moves to coursework_requirements, at every institution", {
+  split <- function(..., labels = TRUE) {
+    res <- .split_inline_coursework(tibble::tibble(section = "assessment",
+                                                   raw_text = paste(..., sep = "\n")), labels)
+    stats::setNames(res$raw_text, res$section)
+  }
+  # one sentence among others moves alone (uit 2008)
+  s <- split("Kurset avsluttes med 4 t skriftlig eksamen. Tilgang til slutteksamen forutsetter godkjente øvelser. Bokstavkarakterer (A-F).")
+  expect_equal(s[["assessment"]], "Kurset avsluttes med 4 t skriftlig eksamen. Bokstavkarakterer (A-F).")
+  expect_equal(s[["coursework_requirements"]], "Tilgang til slutteksamen forutsetter godkjente øvelser.")
+  # without the label split (uib), only the sentence moves
+  s <- split("Skriftleg skuleeksamen, 4 timar.", "Godkjend obligatorisk arbeid er ein føresetnad for å gå opp til eksamen.",
+             labels = FALSE)
+  expect_equal(s[["assessment"]], "Skriftleg skuleeksamen, 4 timar.")
+  expect_equal(s[["coursework_requirements"]], "Godkjend obligatorisk arbeid er ein føresetnad for å gå opp til eksamen.")
+  for (x in c("Arbeidskravene må være utført innen fastsatt frist og godkjent av faglærer før studenten kan fremstille seg til eksamen.",
+              "Alle definerte arbeidskrav i emnet, må være forevist og godkjent av faglærer før avsluttende vurdering.",
+              "Arbeidskrav inngår ikke i karakteren, men må utføres eller være godkjent innen satte frister for at emnet skal være bestått.",
+              "For å kunne gå opp til eksamen må alle obligatoriske arbeidskrav være bestått.",
+              "Obligatoriske innleveringer og terminprøve (juleprøve) må være bestått for å få adgang til avsluttende eksamen.",
+              "Approval of this assignment is required in order to take the final exam.",
+              "1 individual assignment must be approved in order to be allowed to take the written examination.")) {
+    expect_equal(split("Skriftlig eksamen.", x, labels = FALSE)[["coursework_requirements"]], x)
+  }
+  # usn's hard-wrapped sentence moves whole, line break and all
+  s <- split("For at studenten skal kunne gå opp til eksamen, må obligatoriske skriftlige og muntlige",
+             "arbeidskrav være godkjent. Omfang og form på arbeidskravene oppgis ved semesterstart.",
+             "Skriftlig eksamen, 4 timer.")
+  expect_equal(s[["coursework_requirements"]], paste(
+    "For at studenten skal kunne gå opp til eksamen, må obligatoriske skriftlige og muntlige",
+    "arbeidskrav være godkjent.", sep = "\n"))
+  expect_equal(s[["assessment"]], "Omfang og form på arbeidskravene oppgis ved semesterstart.\nSkriftlig eksamen, 4 timer.")
+  # uit English: "Assignments:" heads the paragraphs that speak of the gate
+  s <- split("Assignments:", "", "Online students: Assignments to teacher-supplied questions. The assignments have to be approved by the teacher(s) before students are allowed to sit the final exam.",
+             "", "Bachelor students: 3 written assignments. The assignments have to be approved before students are allowed to sit the final exam.",
+             "", "Exam:", "", "A final written, home exam (3 days).")
+  expect_match(s[["coursework_requirements"]], "^Assignments:\nOnline students: .*\nBachelor students: ")
+  expect_match(s[["assessment"]], "^\\s*Exam:\n+A final written, home exam \\(3 days\\)\\.$")
+  # a gate sentence ending in a colon takes its list across blank lines, and
+  # "Requirements" goes with it
+  s <- split("Requirements", "", "The following coursework requirements must be approved in order to take the exam:", "",
+             "- A presentation.", "", "- An analysis of a text.", "", "Assessment method:", "A 4-hour school exam.")
+  expect_equal(s[["coursework_requirements"]], paste("Requirements",
+    "The following coursework requirements must be approved in order to take the exam:",
+    "- A presentation.", "- An analysis of a text.", sep = "\n"))
+  # ... and stops at a label naming other information (ntnu)
+  s <- split("Obligatoriske aktiviteter:",
+             "De følgende obligatoriske aktivitetene må være godkjent for å kunne levere eksamensoppgaven:",
+             "En skriftlig refleksjon", "Annen relevant informasjon", "Samarbeid med en institusjon.")
+  expect_equal(s[["assessment"]], "Annen relevant informasjon\nSamarbeid med en institusjon.")
+  # ... but no line about the exam
+  s <- split("Følgende arbeidskerav må være godkjent før man kan fremstille seg til eksamen:", "",
+             "Eksamen og vurdering", "Muntlig eksamen.")
+  expect_equal(s[["assessment"]], "\nEksamen og vurdering\nMuntlig eksamen.")
+})
+
+test_that("exam parts, exam tables and graded components stay in assessment", {
+  keep <- function(x, labels = FALSE) {
+    out <- tibble::tibble(section = "assessment", raw_text = x)
+    expect_equal(.split_inline_coursework(out, labels), out)
+  }
+  # the exam's own parts or a pass of the exam, not a gate
+  keep("Begge deleksamener må være bestått for å få samlet karakter i emnet (A-F).")
+  keep("Mappen må som helhet være vurdert til bestått før studenten kan fremstille seg til muntlig eksamen.")
+  keep("Studenten leverer ein tekst. Begge må vere bestått for å få godkjent eksamen.")
+  keep("Alle delene må være godkjent/bestått for å få endelig karakter i emnet.")
+  keep("Praksis må være bestått før eksamen kan avlegges.")
+  # a sentence without a subject names its gate in the sentence before (uis)
+  keep("Mappe bestående av 6 mindre arbeider. Må være godkjent for å kunne gå opp til eksamen.")
+  # a row of an exam table (hivolda)
+  keep(paste("Praktisk eksamen\tIndividuell\t4-6 Veker\tA-F\t40\tFramsyning. Framsyninga og",
+             "forskingsoppgåva må begge vere godkjend for å få gjennomføre den munnlege eksamenen."))
+  # timing, not a condition
+  keep("48 timer før eksamen trekker kandidaten en undervisningsøkt, utarbeidet i arbeidskrav.")
+  # usn: "Obligatorisk arbeid (40%)" counts towards the grade: it stays (and is copied)
+  s <- .split_inline_coursework(tibble::tibble(section = "assessment", raw_text = paste(
+    "Skriftlig eksamen 3 timer (60%)",
+    "Obligatorisk arbeid (40%) bestående av fire like store deler gjennom semesteret.", sep = "\n")))
+  expect_equal(s$raw_text[s$section == "assessment"], paste("Skriftlig eksamen 3 timer (60%)",
+    "Obligatorisk arbeid (40%) bestående av fire like store deler gjennom semesteret.", sep = "\n"))
+  expect_true(grepl(.graded_component_regex, "Obligatorisk arbeid (40%)", perl = TRUE))
+  expect_false(grepl(.graded_component_regex, "Obligatorisk frammøte (80%)", perl = TRUE))
+  expect_false(grepl(.graded_component_regex, "Obligatorisk deltakelse i laboratoriearbeid (100%).", perl = TRUE))
+  # a gate sentence that counts towards the grade stays as well
+  s <- .split_inline_coursework(tibble::tibble(section = "assessment", raw_text =
+    "Hjemmeeksamen. Arbeidskravet må være godkjent før eksamen og teller 40 % av karakteren."), FALSE)
+  expect_equal(s$raw_text[1], "Hjemmeeksamen. Arbeidskravet må være godkjent før eksamen og teller 40 % av karakteren.")
+  expect_equal(s$raw_text[2], "Arbeidskravet må være godkjent før eksamen og teller 40 % av karakteren.")
+})
+
+test_that("usn's reading list loses the stock line after a list or a note", {
+  out <- tibble::tibble(section = c("reading_list", "teaching_methods"),
+                        raw_text = c("Egenvalgt litteratur\n\nPensum-/litteraturliste er ikke publisert ennå. ",
+                                     "Forelesninger."))
+  expect_equal(.clean_sections(out, "usn")$raw_text[1], "Egenvalgt litteratur")
+  out$raw_text[1] <- "Ikke bestemt.\n\nPensum-/litteraturliste er ikke publisert ennå."
+  expect_equal(.clean_sections(out, "usn")$section, "teaching_methods")
+})
+
 test_that("leading placeholders and praksis pointers go, content stays", {
   out <- tibble::tibble(
     section = c("prerequisites", "teaching_methods", "coursework_requirements"),

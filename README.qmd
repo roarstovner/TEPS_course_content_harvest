@@ -941,8 +941,13 @@ Other fields:
   it out.
 - `section_inline_coursework`: move "Arbeidskrav (AK): …" / "Obligatorisk
   deltakelse …" lines from assessment to coursework_requirements (nord, uit,
-  ntnu); a gate heading ("OBLIGATORISKE ARBEIDSKRAV", ntnu) takes the lines
-  under it up to the next heading or the first line about the exam.
+  ntnu, usn); a gate heading ("OBLIGATORISKE ARBEIDSKRAV", ntnu) takes the lines
+  under it up to the next heading or the first line about the exam. At every
+  institution, with or without this field, a sentence in assessment that makes
+  approval, attendance or a passed test a condition for the exam ("Arbeidskrav
+  må være godkjent før studenten kan framstille seg til eksamen") moves alone
+  (`.gate_sentence_regex`); one about the exam's own parts, a row of an exam
+  table or one that counts towards the grade stays.
 - `exam_sessions`: the page lists the exam parts once per exam session
   (ntnu's exam tab: "Ordinær eksamen - Høst 2022", "Utsatt eksamen - …").
   The assessment section and the plan id keep the parts of one session, the

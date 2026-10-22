@@ -439,7 +439,9 @@ institution_configs <- list(
     # robots.txt (data/robots_txt.csv): Crawl-delay: 5 for all user agents;
     # the wait after each page shown in Chrome (resolve_urls_usn_batch())
     request_delay = 5,
-    section_strategy = "text"
+    section_strategy = "text",
+    # assessment holds "Arbeidskrav 2: ..." descriptions and gate lines
+    section_inline_coursework = TRUE
   ),
 
   uit = list(

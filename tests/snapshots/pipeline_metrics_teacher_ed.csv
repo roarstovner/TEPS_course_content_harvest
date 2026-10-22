@@ -307,12 +307,12 @@
 "uio","(all)","n_with_plan",47
 "uio","(all)","n_with_text",47
 "uio","(all)","pct_text_in_sections",79
-"uio","assessment","median_chars",582
+"uio","assessment","median_chars",561
 "uio","assessment","n_plans",47
 "uio","course_content","median_chars",641
 "uio","course_content","n_plans",47
-"uio","coursework_requirements","median_chars",677
-"uio","coursework_requirements","n_plans",15
+"uio","coursework_requirements","median_chars",506
+"uio","coursework_requirements","n_plans",21
 "uio","learning_outcomes","median_chars",657
 "uio","learning_outcomes","n_plans",47
 "uio","prerequisites","median_chars",268
