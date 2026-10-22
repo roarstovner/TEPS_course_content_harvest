@@ -103,6 +103,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- hiof: 'Litteratur:' sub-heading in the learning outcomes goes to reading_list (#448)
+- hiof: videre/ pages show a later year's plan (page_term for the later-version rule) (#447)
 - anonymizer: staff names left at hiof, uib, uit, usn (one in the published releases) (#446)
 - usn: English pages: table of contents and headings (#443)
 - uit: semester picker lists no document for 38 of 100 course-years (#442)
