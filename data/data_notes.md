@@ -7,7 +7,7 @@ Generated: 2026-10-21
 
 | Institution | Rows | Codes | Years | Extracted OK | Rate | Median chars | Unique plans | Dedup % |
 |:---|---:|---:|:---|---:|:---|---:|---:|:---|
-| hiof | 1887 | 333 | 2007-2025 | 892 | 47.3% | 7006 | 865 | 2.9% |
+| hiof | 1887 | 333 | 2007-2025 | 892 | 47.3% | 7006 | 863 | 2.9% |
 | hivolda | 22740 | 2843 | 2000-2025 | 5181 | 22.8% | 4220 | 4331 | 16.4% |
 | hvl | 3777 | 486 | 2017-2025 | 3488 | 92.3% | 4398 | 1910 | 45.2% |
 | inn | 3040 | 377 | 2018-2025 | 1956 | 64.3% | 4150 | 608 | 17.7% |
@@ -27,7 +27,7 @@ Generated: 2026-10-21
 | uit | 6868 | 714 | 2004-2025 | 3239 | 47.2% | 4258 | 2329 | 27.6% |
 | usn | 3219 | 493 | 2018-2025 | 1294 | 40.2% | 10382 | 1236 | 4.4% |
 
-**Total**: 65527 rows, 34616 with extracted text (52.8%), 19508 unique
+**Total**: 65527 rows, 34616 with extracted text (52.8%), 19506 unique
 plans.
 
 **Columns:**
@@ -95,7 +95,7 @@ year) that have a plan in at least one semester:
 
 | Institution | Course-years | Both semesters in DBH | Both reg., plan in one | Both reg., plan in both | Both reg., no plan | Course-years with plan | Row rate |
 |:---|---:|:---|---:|---:|---:|:---|:---|
-| hiof | 1029 | 83% | 753 | 9 | 96 | 86% | 47.3% |
+| hiof | 1029 | 83% | 751 | 9 | 98 | 86% | 47.3% |
 | hivolda | 12913 | 76% | 4412 | 193 | 5222 | 39% | 22.8% |
 | hvl | 2025 | 87% | 165 | 1542 | 45 | 96% | 92.3% |
 | inn | 1593 | 91% | 646 | 29 | 772 | 45% | 64.3% |
@@ -131,7 +131,7 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 
 | Institution | Without plan | 404 | No URL | Fetch error | Page, no plan | No page | Between plans |
 |:---|---:|---:|---:|---:|---:|---:|---:|
-| hiof | 147 | 96 | 51 | 0 | 1 | 0 | 6 |
+| hiof | 149 | 96 | 53 | 0 | 3 | 0 | 6 |
 | hivolda | 7804 | 0 | 7804 | 0 | 0 | 0 | 133 |
 | hvl | 79 | 79 | 0 | 0 | 0 | 0 | 1 |
 | inn | 883 | 0 | 584 | 0 | 299 | 0 | 7 |

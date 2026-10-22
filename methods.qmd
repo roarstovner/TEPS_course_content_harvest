@@ -574,7 +574,7 @@ names no year and stays. Longer pages without sections stay (OsloMet practicum
 courses, below). *Consequence:* 174 plans left the data on 2026-10-06 (UiA 95,
 UiB 27, OsloMet 26, Nord 11, HVL 10, UiT 4, NTNU 1). With pages that are not
 the plan at all (INN's course search page, OsloMet's error page) and later
-versions (INN, Nord, UiS), `r n(nrow(shell))` offerings have page text but no plan
+versions (HiOF, INN, Nord, UiS), `r n(nrow(shell))` offerings have page text but no plan
 (`r paste(names(table(shell$institution)), table(shell$institution), collapse = ", ")`).
 *Since:* 2026-10-06; heading lists (UiB NOLI216 and NOSP216, autumn
 2018) from 2026-10-07; NTNU pages whose only section was the exam tab
@@ -610,6 +610,9 @@ UiS's later versions from 2026-10-14 (found while matching its menu on the
 academic year, above): 97 offerings lose their plan (56 spring, 41 autumn,
 most of 2007-2018; the version shown is 1 to 10 years later, median 4),
 among them the 23 that the retry harvest of that day gave a course page.
+HiOF's later versions from 2026-10-22 (pilot fulltext audit, 2026-10-21): the title
+of a page names its semester, and two `videre/` pages name a later one than their URL
+(spring 2020, autumn 2023); 2 offerings lose their plan, none in the teacher-education frame.
 6 plans leave the data (UiS 1,313 → 1,307, 14,004 in all), and UiS's
 course-years with a plan go from 1,495 to 1,457. 306 course pages show an
 earlier version and stay, as do 96 without a menu.

@@ -241,6 +241,12 @@ institution_configs <- list(
     facts = c("#vrtx-fs-emne-content > h1", "#vrtx-fs-emne-facts"),
     plan_years = "url",
     user_agent = "browser",
+    # The semester in the title, "LSKNO22215 ... (Vår 2020)": the folder
+    # videre/ has pages whose title names a later semester than the URL's
+    page_term = function(html) {
+      m <- stringr::str_match(html, "<h1>[^<]*\\((Vår|Høst) (\\d{4})\\)\\s*</h1>")
+      semester_term(m[, 3], m[, 2])
+    },
     section_strategy = "html",
     # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
     section_subheading_selector = "p"
