@@ -1,94 +1,192 @@
 {
   "check": "sections",
   "institution": "uit",
-  "model": "sonnet",
+  "model": "gpt-6.1-sol",
   "n_courses_reviewed": 20,
   "n_suspects_reviewed": 14,
-  "overall_assessment": "Modern (2018+) pages and the old 2008 format split cleanly at their headings; most flags are false alarms from thin 2008 source pages. Real problems are one long specialist-education plan swallowed into course_content with its arbeidskrav filed as learning_outcomes, arbeidskrav text left in assessment, and recurring placeholders and noise (language line, UiT Exams link) inside sections.",
+  "overall_assessment": "All 20 packet entries were reviewed (14 suspects and 6 controls); most top-level boundaries and all visible knowledge/skills/competence groups survive. Short teaching-method flags are faithful source text and LER-3101's leak->teaching_methods flag is a false alarm, whereas reading-list empty/boilerplate flags and ODO-6302's coursework leak identify real problems; ODO's reading-list leak cannot be independently located in the capped excerpt and is not reported as a missing reading list. Controls confirm recurring coursework misclassification and administrative/language/exam noise, while individual plans also lose substantive prerequisites or explicit exam-language rules.",
   "findings": [
     {
       "target": "cross_section",
       "error_type": "merged_sections",
       "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "uit_ODO-6302-1_2019_autumn_1",
+        "uit_BIO-3515-1_2008_autumn_1",
+        "uit_END-3602-1_2025_autumn_1"
+      ],
+      "evidence": "Kandidatene skal etter endt utdanning ha spesielle kunnskaper og ferdigheter i endodonti som skiller dem fra allmenntannlegens kunnskaper",
+      "description": "Heading-based extraction retains mixed canonical content. ODO-6302 puts detailed knowledge and clinical-skill outcomes in course_content, while its learning_outcomes row consists entirely of exam-gating arbeidskrav and no coursework_requirements row exists. BIO-3515 retains lecture/seminar hours and practical teaching arrangements in course_content. END-3602 retains explicit student capabilities such as designing sandwich constructions and using Ansys in course_content. These assignments violate the meaning-based codebook despite matching the source headings. No loss is inferred from packet truncation markers, and the ODO reading-list leak flag is not independently confirmed by the visible excerpt.",
+      "root_cause_hypothesis": "sectionize() assigns whole HTML blocks by their parent heading. UiT selects h2/.fsemneoverskrift and h3/strong.d-block, so ordinary paragraph labels and mixed prose are not boundaries. The inline coursework pass only examines assessment, leaving the ODO learning_outcomes block untouched.",
+      "suggested_fix": "Add a UiT pass that recognizes bounded in-text labels such as Arbeidskrav, Kunnskap i <fag>, Kliniske ferdigheter i <fag>, and explicit student-capability lead-ins. Route their text by canonical meaning across the relevant parent sections, keeping discipline context and stopping at the next label; separate explicit teaching-arrangement sentences from subject-matter prose.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": [
+        "uit_GEO-2007-1_2008_autumn_1",
+        "uit_BNS-1006-1_2022_spring_1",
+        "uit_HEL-3050-1_2008_autumn_1"
+      ],
+      "evidence": "Tilgang til slutteksamen forutsetter godkjente øvelser.",
+      "description": "Exam-gating work remains outside coursework_requirements in at least five plans. GEO-2007 and BED-6001 leave approved exercises/intermediate work in assessment; BNS-1006 leaves all compulsory assignments and 75% attendance in assessment and emits no coursework_requirements row. FHO9043 moves the requirement lists but leaves their approval/access rules in assessment. HEL-3050 moves the written arbeidskrav correctly but leaves compulsory attendance in teaching_methods. BED-2017, HIS-1007, LRU-3909 and the modern Norwegian exam tables demonstrate successful splits, so this is incomplete coverage rather than universal failure.",
+      "root_cause_hypothesis": ".split_inline_coursework() only scans assessment and uses line-start gate patterns. It misses a gate inside a mixed sentence/paragraph, English Assignments labels, and a continuation paragraph beginning Den enkelte emnelærer. Attendance under teaching_methods is outside its scope.",
+      "suggested_fix": "Extend the UiT coursework pass to sentence boundaries and teaching_methods. Recognize approval-before-final-exam clauses, Tilgang til slutteksamen forutsetter, compulsory attendance, and English Assignments blocks that explicitly gate the exam. Keep approval/access-rule continuation paragraphs with the requirements until the actual assessment label; preserve all graded components in assessment.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "uit_RUS-3950-1_2008_autumn_1",
+        "uit_BIO-3607-1_2008_autumn_1"
+      ],
+      "evidence": "Dersom emnet er språkvitenskaplig, er det en fordel om studenten har studert språkvitenskap som en del av EXF720.",
+      "description": "RUS-3950 files recommended EXF720 subject knowledge under teaching_methods and emits no prerequisites row. BIO-3607 extracts its named prerequisite courses but leaves the additional assumed chemistry, biochemistry and microbiology knowledge in course_content. Prior subject knowledge belongs in prerequisites regardless of its source field.",
+      "root_cause_hypothesis": ".split_inline_prerequisites() only searches course_content for a recognized label; it does not examine teaching_methods, normalize the source spelling forkunn-skaper, or recognize an unlabelled Det forutsettes sentence.",
+      "suggested_fix": "Normalize forkunn-skaper in label matching and move the bounded Anbefalte forkunn-skaper passage out of teaching_methods, stopping at Arbeidet med masteroppgaven. Also move explicit Det forutsettes ... kunnskaper sentences into prerequisites, appending to any existing required-course text.",
+      "confidence": "high"
+    },
+    {
+      "target": "prerequisites",
+      "error_type": "missing_section",
+      "severity": "high",
       "prevalence": "rare",
-      "example_course_ids": ["uit_ODO-6302-1_2019_autumn_1"],
-      "evidence": "Ingen delområder kan tas som enkeltemne, men inngår som en del av 3 års heltidsstudier i spesialistutdanning i klinisk odontologi. BESKRIVELSE AV SPESIFIKKE EMNER",
-      "description": "The whole 'Om emnet' block (about 11,800 chars: per-subject knowledge goals, clinical skills, etc.) is one course_content row because the page has only one heading. The arbeidskrav text ('Arbeidskrav ... Følgende arbeidskrav må være oppfylt for at spesialistkandidaten skal få ta slutteksamen:') is filed as learning_outcomes and no coursework_requirements row exists. The learning goals inside course_content are not separated from content.",
-      "root_cause_hypothesis": "UiT's new-format pages put sub-structure in plain-text paragraphs (e.g. 'Arbeidskrav', 'Kunnskap i Endodonti:') with no heading elements, so sectionize() cannot cut there. The 'Hva lærer du' block holds the arbeidskrav text, so it lands in learning_outcomes by heading.",
-      "suggested_fix": "Add line-start heading patterns for 'Arbeidskrav' (-> coursework_requirements) in R/section_heading_map.R and allow these in-text heading lines for UiT, and check the 'Hva lærer du' mapping on this page type. Accept the oversized course_content as a source-structure limit otherwise.",
-      "confidence": "medium"
+      "example_course_ids": [
+        "uit_LER-3101-1_2025_spring_1"
+      ],
+      "evidence": "For studenter som tar emnet som videreutdanning er forkunnskapskravet fullført lærerutdanning med minimum 60 studiepoeng i norsk.",
+      "description": "A substantive prior-qualification requirement, including at least 60 credits in Norwegian, is present under Opptakskrav but no prerequisites section is emitted. Conversely, removing the separate Jf. opptakskrav og progresjonskrav pointer is correct: that pointer supplies no subject-matter requirement.",
+      "root_cause_hypothesis": "R/section_heading_map.R maps Opptakskrav wholesale to .drop. .clean_sections() removes that row before it can salvage real prerequisite content from an admission-labelled block.",
+      "suggested_fix": "Before dropping a UiT Opptakskrav block, extract sentences explicitly stating forkunnskapskravet with completed subject qualifications or subject credits into prerequisites. Continue excluding admission procedures, programme eligibility and bare pointers.",
+      "confidence": "high"
+    },
+    {
+      "target": "prerequisites",
+      "error_type": "truncated",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "uit_END-3602-1_2025_autumn_1"
+      ],
+      "evidence": "A relevant undergraduate Bachelor Engineering program with minimum 25 credits mathematics, 5 credits statistics, 7,5 credits physics",
+      "description": "The prerequisites row contains the two recommended END courses but omits the explicit minimum prior mathematics, statistics and physics credits stated in the full plan. This is subject-matter entry information, even though the institution places it under Admission requirements.",
+      "root_cause_hypothesis": "Admission requirements is an unmapped top-level heading. sectionize() closes the previous section and drops its text, including the academic credit requirements; the later Prerequisites heading only recovers recommended courses.",
+      "suggested_fix": "For UiT English Admission requirements blocks, retain explicit prior subject-credit requirements in prerequisites before discarding admission-only material and application codes. Do not map the entire admission block indiscriminately to prerequisites.",
+      "confidence": "high"
     },
     {
       "target": "assessment",
-      "error_type": "wrong_content",
+      "error_type": "missing_section",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "uit_BIO-8806-1_2008_autumn_1"
+      ],
+      "evidence": "Eksamensoppgavene gis på engelsk, mens besvarelsene må være på engelsk eller norsk/skandinavisk.",
+      "description": "The full plan explicitly specifies the exam-question and permitted answer languages, which course_plan_spec.md defines as assessment design. No assessment row is emitted. The missing assessment form itself is not an extraction defect because the source does not supply one.",
+      "root_cause_hypothesis": "The exact Undervisnings- og eksamensspråk heading maps to .drop, discarding both language metadata and substantive exam-language instructions.",
+      "suggested_fix": "Inspect combined UiT instruction/exam-language blocks before dropping them. Move explicit clauses about exam questions and permitted answer languages into assessment with an appropriate source label; omit a bare instruction-language value.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "truncated",
       "severity": "medium",
-      "prevalence": "common",
-      "example_course_ids": ["uit_HIS-1007-1_2008_autumn_1", "uit_FHO9043-1_2019_autumn_1", "uit_BED-2017-1_2008_autumn_2"],
-      "evidence": "Beskriving av arbeidskrav: Alle studentane skal ha halde eit forebudd munnleg innlegg i seminaret",
-      "description": "Arbeidskrav (approve/not-approve gates) remain in assessment instead of coursework_requirements. In 2008 plans they sit inside the single 'Eksamensform' paragraph (HIS-1007, BED-2017: 'obligatoriske skal løses og leveres inn ... krav til antall godkjente oppgaver'). In FHO9043 the explanatory paragraph 'Den enkelte emnelærer på studiestedet avgjør på selvstendig grunnlag hvordan et arbeidskrav utformes' is kept in assessment while only the lists reach coursework_requirements. HEL-3050 shows the split can work ('Arbeidskrav:' was cut out), so it is inconsistent.",
-      "root_cause_hypothesis": "Splitting of 'Arbeidskrav:' inline labels happens only in some cases (labels at paragraph start); a trailing paragraph after the lists and mid-paragraph 'Beskriving av arbeidskrav' are not recognised.",
-      "suggested_fix": "Extend the inline-label splitter in .clean_sections()/sectionize() to recognise 'Beskriving av arbeidskrav' and 'obligatoriske ... godkjente oppgaver' markers, and to keep the paragraph following an 'Arbeidskrav:' list with coursework_requirements.",
-      "confidence": "medium"
+      "prevalence": "rare",
+      "example_course_ids": [
+        "uit_FYS-3730-1_2008_autumn_1"
+      ],
+      "evidence": "Prosjektbeskrivelse gis på engelsk. Oppgaven kan skrives enten på engelsk eller norsk/skandinavisk.",
+      "description": "The extracted project-assessment description loses the explicit rule permitting English or Norwegian/Scandinavian submissions. This rule appears in the full plan under the combined instruction/exam-language heading and is assessment design under the specification.",
+      "root_cause_hypothesis": "The .drop mapping for Undervisnings- og eksamensspråk also drops explicit submission-language rules when an assessment section otherwise exists.",
+      "suggested_fix": "Retain the exact Oppgaven kan skrives ... sentence from combined language fields in assessment before removing the metadata block. Handle this partial-loss case alongside BIO-8806, where dropping the same field removes the only assessment-design text.",
+      "confidence": "high"
     },
     {
       "target": "reading_list",
       "error_type": "empty_placeholder",
       "severity": "medium",
       "prevalence": "widespread",
-      "example_course_ids": ["uit_BED-2017-1_2008_autumn_2", "uit_ARK-3021-1_2008_autumn_1", "uit_FYS-3730-1_2008_autumn_1"],
+      "example_course_ids": [
+        "uit_BED-2017-1_2008_autumn_2",
+        "uit_ARK-3021-1_2008_autumn_1",
+        "uit_LER-3101-1_2025_spring_1"
+      ],
       "evidence": "Ta kontakt med instituttet/fakultetet",
-      "description": "Many 2008 plans give a reading_list row that holds only a placeholder ('Ta kontakt med instituttet/fakultetet', 'Se hjemmeside.', 'Available on request', 'Kontakt studiekonsulenten for informasjon om tilgjengelige prosjektoppgaver.'). These are not reading lists. The same kind of placeholder fills teaching_methods ('Emnet har varierte undervisningsformer.'). The pre-pass flags (boilerplate, empty, short) are real here but the content is faithful to the source.",
-      "root_cause_hypothesis": "The extractor keeps all text under a mapped heading; there is no placeholder filter for UiT's default text.",
-      "suggested_fix": "Drop rows matching these exact UiT placeholder strings in .clean_sections() (reading_list: 'Ta kontakt med instituttet/fakultetet', 'Se hjemmeside', 'Available on request'; teaching_methods: 'Emnet har varierte undervisningsfomer/-formene'), so the section is absent rather than a fake row. Check against course_plan_spec.md first.",
+      "description": "Fifteen of twenty courses emit reading_list rows containing only pointers or contact notes, rather than literature or substantive reading guidance. All twelve 2008 plans have Se hjemmeside, Ta kontakt med instituttet/fakultetet, Available on request, or a project-contact note; LER-3101, FHO9043 and BED-2109 contain only the Leganto access notice and a Pensumliste for course link label. The empty/boilerplate flags identify real placeholder rows under course_plan_spec.md. LRU-3909 is different: its self-selected-literature policy is substantive and should remain. Short statements about varied teaching are faithful source descriptions, not empty rows.",
+      "root_cause_hypothesis": ".placeholder_phrases in R/extract_sections.R lacks these UiT pointer variants. The whole-row matcher also does not recognize the two-line Leganto notice plus course-specific link label.",
+      "suggested_fix": "Add reading-list-specific whole-row patterns for these exact contact/homepage/on-request notes and the complete Leganto access-note plus Pensumliste for <course> combination. Drop a row only when all its text is pointer/contact material; keep actual references and substantive literature policies.",
       "confidence": "high"
     },
     {
       "target": "teaching_methods",
+      "error_type": "field_or_language_junk",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "uit_BIO-3529-2_2025_autumn_2",
+        "uit_END-3602-1_2025_autumn_1",
+        "uit_BNS-1006-1_2022_spring_1"
+      ],
+      "evidence": "Language of instruction and examination\nEnglish",
+      "description": "All three modern English control pages append the language metadata field to teaching_methods. END-3602 additionally retains an inline Teaching and Examination Language sentence. The modern Norwegian controls correctly drop their combined language subheading, so this is an English mapping gap rather than an institution-wide failure of every language field.",
+      "root_cause_hypothesis": "The English heading has no exact mapping and the language denylist returns unmapped. For an unmapped subheading, sectionize() restores the parent teaching_methods section and appends the label/value.",
+      "suggested_fix": "Give the exact English combined language metadata heading an explicit handling rule before the denylist, consistent with the Norwegian field, and remove the corresponding inline metadata sentence from teaching_methods. Preserve explicit exam-answer-language clauses in assessment as described in the assessment findings.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
       "error_type": "formatting_noise",
       "severity": "low",
-      "prevalence": "widespread",
-      "example_course_ids": ["uit_LER-3101-1_2025_spring_1", "uit_LRU-3909-1_2018_spring_2", "uit_BED-2109-1_2025_autumn_1"],
-      "evidence": "Undervisnings- og eksamensspråk Norsk",
-      "description": "On every 2018+ page, the sub-heading 'Undervisnings- og eksamensspråk' (mapped as unmapped sub) and its value ('Norsk', 'English') are appended to teaching_methods (also 'Kvalitetssikring' text in LER-3101). It is the language field, not a teaching method.",
-      "root_cause_hypothesis": "The sub-heading is unmapped, so its block is appended to the previous section (teaching_methods) instead of being dropped.",
-      "suggested_fix": "Map 'Undervisnings- og eksamensspråk' and 'Language of instruction and examination' to .drop in R/section_heading_map.R (and 'Kvalitetssikring' likewise), so those blocks are removed rather than appended.",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "uit_BIO-3529-2_2025_autumn_2",
+        "uit_END-3602-1_2025_autumn_1"
+      ],
+      "evidence": "Everything you need to know about before, during, and after the exam; registration, absence, appeals, and diplomas: UiT Exams homepage",
+      "description": "The generic UiT exam-portal link sentence contaminates coursework_requirements in BIO-3529 and assessment in END-3602. It is navigation/administrative guidance, not either canonical section. The exam-table form, duration and grading values themselves are valid assessment design and are not reported as noise.",
+      "root_cause_hypothesis": "The UiT XPath exclusion recognizes the Norwegian Alt du trenger å vite om prefix and Norwegian exam URL. .section_noise also lacks the English exam-portal sentence.",
+      "suggested_fix": "Extend UiT section cleanup to remove the exact English Everything you need to know ... UiT Exams homepage line from assessment and coursework_requirements, or add its English counterpart to the page exclusion. Retain exam form, duration, grading and other assessment-design table cells.",
       "confidence": "high"
     },
     {
       "target": "assessment",
-      "error_type": "formatting_noise",
-      "severity": "low",
-      "prevalence": "common",
-      "example_course_ids": ["uit_END-3602-1_2025_autumn_1", "uit_BIO-3529-2_2025_autumn_2"],
-      "evidence": "Everything you need to know about before, during, and after the exam; registration, absence, appeals, and diplomas: UiT Exams homepage",
-      "description": "The UiT Exams link boilerplate and the exam-logistics table lines ('Oral exam Duration: 45 Minutes Grade: Passed / Not Passed', 'Exams', 'Date: Duration: 15 Minutes') are part of assessment (and of coursework_requirements in BIO-3529). Re-sit paragraphs are kept in English pages ('Re-sit examination') but 'Kontinuasjonseksamen' is dropped in Norwegian pages, an inconsistency.",
-      "root_cause_hypothesis": "No cleanup of the standard UiT exam-block boilerplate; the .drop mapping covers only Norwegian 'Kontinuasjonseksamen'.",
-      "suggested_fix": "Strip the 'Everything you need to know about before, during, and after the exam ...' line in .clean_sections(); map 'Re-sit examination' to .drop like 'Kontinuasjonseksamen'.",
-      "confidence": "medium"
-    },
-    {
-      "target": "prerequisites",
-      "error_type": "missing_section",
-      "severity": "low",
-      "prevalence": "rare",
-      "example_course_ids": ["uit_LER-3101-1_2025_spring_1", "uit_RUS-3950-1_2008_autumn_1"],
-      "evidence": "Anbefalte forkunn-skaper: Hvilke forkunnskaper som anbefales, avhenger av masteroppgavens emne.",
-      "description": "Prerequisite information that is present is not extracted. In LER-3101 'Forkunnskapskrav ... Jf. opptakskrav og progresjonskrav ...' is plain text under 'Om emnet' and is silently lost from course_content with no prerequisites row. In RUS-3950 the recommended prerequisites are filed under teaching_methods because the source puts them in 'Undervisningsform'.",
-      "root_cause_hypothesis": "'Forkunnskapskrav' appears as a paragraph label, not a heading element, so it is neither split nor mapped; RUS-3950 is a source quirk.",
-      "suggested_fix": "Treat a standalone 'Forkunnskapskrav' line as a heading for prerequisites in the text-label splitter; optionally move 'Anbefalte forkunnskaper:' sentences out of teaching_methods.",
-      "confidence": "low"
-    },
-    {
-      "target": "learning_outcomes",
       "error_type": "wrong_content",
-      "severity": "low",
-      "prevalence": "rare",
-      "example_course_ids": ["uit_ARK-3021-1_2008_autumn_1"],
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "uit_FYS-3730-1_2008_autumn_1",
+        "uit_BIO-3529-2_2025_autumn_2",
+        "uit_FHO9043-1_2019_autumn_1"
+      ],
+      "evidence": "Re-sit examination\nThere will be a re-sit examination for students that did not pass the previous ordinary examination.",
+      "description": "Ten courses retain resit, appeal, examiner or exam-system logistics in assessment. Examples include inline retake rules in the 2008 plans, English Re-sit examination blocks in both 2025 English controls, retake guidance in BNS-1006, and examiner/platform/appeal rules in FHO9043. These are expressly excluded from sections by course_plan_spec.md. Norwegian standalone Kontinuasjonseksamen subheadings are dropped correctly, but inline and variant headings survive.",
+      "root_cause_hypothesis": "The generic examination heading pattern maps Re-sit examination to assessment. The exact Norwegian .drop pattern misses inline text and the soft-hyphen variant in FHO9043; UiT .section_noise has no corresponding sentence/block cleanup.",
+      "suggested_fix": "Add an exact Re-sit examination -> .drop mapping and normalize soft hyphens before matching Norwegian resit labels. Strip bounded inline resit/appeal, examiner-arrangement and exam-system sentences from assessment, preserving adjacent assessment form, weights, duration, language and grading text.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "wrong_content",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "uit_ARK-3021-1_2008_autumn_1",
+        "uit_LER-3101-1_2025_spring_1",
+        "uit_BNS-1006-1_2022_spring_1"
+      ],
       "evidence": "Valgfritt masteremne. Kan blant annet brukes som støtteemne i historie og religionsvitenskap",
-      "description": "The old 'Mål' field in ARK-3021 holds the course's role in the programme, not learning outcomes. This is a source quirk affecting a single course; the 'Mål' mapping is otherwise correct for other 2008 plans.",
-      "root_cause_hypothesis": "Heading 'Mål' is mapped to learning_outcomes regardless of content.",
-      "suggested_fix": "No pipeline change recommended; accept as source noise.",
-      "confidence": "low"
+      "description": "Administrative course-role and evaluation text survives under canonical headings across suspects and controls. ARK-3021 emits a learning_outcomes row consisting entirely of the quoted programme-role statement; its short flag is a genuine wrong-content case. Modern course_content rows retain programme reservation/enkeltemne preambles. LER-3101, LRU-3909 and BNS-1006 retain course-evaluation notices in teaching_methods; BIO-3529 retains total workload, and BED-6001 retains dated session scheduling. These details belong outside the seven canonical sections. All visible knowledge, skills and competence groups in genuine outcome sections are otherwise preserved.",
+      "root_cause_hypothesis": "sectionize() trusts mapped parent blocks. .clean_sections() only applies admission-sentence filtering to prerequisites and has no UiT filter for programme-role preambles, evaluation notices, workload or dated session schedules. Kvalitetssikring in LER-3101 is plain text rather than a heading in the supplied heading list.",
+      "suggested_fix": "Apply narrowly bounded UiT administrative-sentence filters to the affected sections: programme reservation/enkeltemne and support-subject declarations, explicit course-evaluation notices, total-workload statements and dated session listings. Keep subject content, learning outcomes, teaching activities and session format/duration; suppress a row if only excluded metadata remains. Detect plain-text Kvalitetssikring blocks as well as HTML headings.",
+      "confidence": "high"
     }
   ]
 }

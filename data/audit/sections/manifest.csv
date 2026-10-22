@@ -1,5 +1,5 @@
 "institution","n_suspect","n_random","packet"
-"hiof",11,7,"data/audit/sections/packets/hiof.md"
+"hiof",10,9,"data/audit/sections/packets/hiof.md"
 "hivolda",6,13,"data/audit/sections/packets/hivolda.md"
 "hvl",14,6,"data/audit/sections/packets/hvl.md"
 "inn",3,17,"data/audit/sections/packets/inn.md"
@@ -16,4 +16,4 @@
 "uio",4,6,"data/audit/sections/packets/uio.md"
 "uis",14,2,"data/audit/sections/packets/uis.md"
 "uit",14,6,"data/audit/sections/packets/uit.md"
-"usn",14,2,"data/audit/sections/packets/usn.md"
+"usn",9,5,"data/audit/sections/packets/usn.md"

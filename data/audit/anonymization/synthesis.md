@@ -1,103 +1,81 @@
-# Anonymization audit — synthesis (pilot: 6 institutions, after the URL fixes)
+# Anonymization audit — synthesis (pilot re-run: hiof, uib, uit, usn, after the fixes)
 
-Run 2026-10-21 with `--pilot` (packets built with the current
-`R/anonymize.R` at commit a8ba3a5): hiof, nih, uib, uia, usn, uit. Each
-packet holds 21–28 plans from the institution's pilot sample. One Opus
-review agent per institution (medium effort); packets 65–225 KB; every
-agent read all its courses. 15 findings for these 6, all pass mechanical
-verification (0 ✗). The synthesis of the 2026-10-17 pilot run (ntnu,
-oslomet, inn, nord, hvl, hivolda, nla) is in git history (a8ba3a5).
+Run 2026-10-22 with `--pilot` (packets built with the current
+`R/anonymize.R` at commit c8c0b29): the four institutions whose verdict was
+"not ready" on 2026-10-21 because staff names were left in. Each packet
+holds 28 plans from the institution's pilot sample (111–226 KB). One review
+agent per institution in the Codex CLI (gpt-6.1-sol, reasoning effort
+high); every agent read all 28 courses. 8 findings, all pass mechanical
+verification (0 ✗). The 2026-10-21 run (Opus agents) is in git history
+(098445b); its verdicts for nih and uia stand.
 
 ## Summary
 
-- **Staff names are left in at four of the six** (hiof, uib, uit, usn), each
-  in a wording or layout the rules do not know. `privacy_check` does not
-  catch them (0).
-- **One of them is in the published teacher-education data and both
-  finalized releases** (data-2026-10-15, data-2026-10-16): "Approved by
-  [navn], Dean" in one USN plan (English approval
-  stamp). The other leaks are only in the all-courses build, which is not
-  published (checked 2026-10-21 on `data/processed/teacher_ed/` and
-  `data/releases/*/`).
-- nih and uia are clean: every staff label and layout in the sample is
-  handled; no course content lost.
-- Low: admin dates in unusual forms, sentence fragments left after a
-  removal, and one content word cut by a USN Leganto rule.
+- **No staff name or e-mail is left in at any of the four.** Every
+  personal-data finding of 2026-10-21 is gone: hiof "Foreleser
+  studieåret:", uib "Administrativt ansvarlig", uit's 2008 English timetable
+  block, usn's approval stamps ("Godkjent av programkoordinator", "Første
+  gang godkjent ved professor", "Approved by …, Dean") and change-log
+  signatures. `privacy_hits` is 0 at all four.
+- All `name_like` and `phone` flags were false alarms (reference authors,
+  historical figures, a named seminar, publication dates).
+- Left: administrative dates in unusual forms and sentence fragments after
+  a removal (low, one medium), and one content word cut at usn.
 
 ## Cross-institution patterns
 
-- **Staff names under labels or in stamps the rules do not list**: hiof
-  "Foreleser studieåret:", uib "Administrativt ansvarlig" (a name where
-  the field usually holds a unit), usn "Godkjent av programkoordinator
-  <name>", "Første gang godkjent ved professor <name>", "Approved by
-  <name>, Dean", change-log signatures "programkoordinator <name>/
-  fagansvarlig <name>", uit 2008–2011 English timetable ("Lectures Autumn
-  2008" block, names glued to roles: "Kursansvarlig[navn]"). The role
-  list (`.staff_roles`) and the approval regex
-  (`.approved_by_name_regex`) are shared, so one change helps all.
-- **The `(?<!\p{L})` guard** keeps "koordinator" from matching inside
-  "programkoordinator" (usn); compound role words need their own entries.
+- **Dates the date rules do not know**: usn "20.10. 2017" (space inside),
+  "27.01.2014/dekan", "Høst-18", a change-log note "2021 erstatter lista fra
+  2020"; uib dated seminar schedules ("tirsdag 18.feb 2025 - rom 8.1 og
+  8.2", `uib_FSKLI901-…`); uit three plans. Same class as the open
+  anonymizer-dates issue.
+- **Fragments after a removal**: hiof date removals that break a sentence
+  (15 courses, low), uib "kan søke om utsatt innleveringsfrist til."
+  (e-mail removed), "Emnet byrjar å gå frå." (semester removed), and the
+  reading-list date sentence cut to "Juni for haustsemesteret og 1. januar
+  for vårsemesteret." or left whole in variants ("vil vere tilgjengeleg på
+  uib.no", "vil normalt vere klar innan").
 
 ## Prioritised fix list
 
-1. **Staff names** (medium by the agents, but personal data; rare to
-   occasional). Where: `R/anonymize.R`.
-   - `.staff_roles`: add Foreleser (with "studieåret"), Administrativt
-     ansvarlig (a name, not "Det/Den …" units), programkoordinator,
-     fagansvarlig.
-   - `.approved_by_name_regex`: "Godkjent av/ved" + any role word or none,
-     "Første gang godkjent ved", English "Approved by <name>, <role>"
-     (usn: `usn_REG3000D-…`, `usn_NETPRL-…`, `usn_OKLI3014-…`).
-   - `.anon_uit()`: the timetable-block rule also for "Lectures|Teaching"
-     + "Autumn|Spring|Fall" (`uit_SVF-3904-1_2008_autumn_1`), stopping
-     before "Ansvarlig enhet"/"Responsible unit" (the Norwegian 2008 pages
-     now lose that line), and a backstop for glued role+name lines.
-   - usn change log ("Endringsbeskrivelse") signatures
-     (`usn_SMERTE100-…`); "[navn]" is also a reference author there and
-     must stay.
-   Count every pattern in the whole build before and after; add each to
-   `test-anonymize.R`.
-2. **Admin dates** (low): uia "17 - 21 March, 2025"; usn "Høst-18",
-   "27.01.2014/dekan", "06.12..2018"; uit "Spring semester 2009",
-   "Søknadsfrist 15. mai 2019"; uib meeting schedule with dates; uib
-   reading-list date sentence variants and fragments.
-3. **Fragments** (low): nih "Pensumlista for." (drop the dangling "for");
-   hiof "vil i koste"; usn "Journalføring" cut to "føring" by the Leganto
-   item-type rule.
+1. **Admin dates** (medium for uib's schedules, otherwise low). Where:
+   `R/anonymize.R`, the date rules and `.anon_uib()`. Count each form in
+   the whole build first.
+2. **Fragments** (low): uib's reading-list date sentence variants, the
+   clause left after an e-mail ("… til."), hiof date fragments.
+3. **usn "Journalføring" cut to "føring"** (low, persisting): the Leganto
+   item-type rule matches inside a word (`usn_OKLI3014-1_2018_autumn_1`, heading "Journalføring
+   og dokumentasjon"); a word-boundary guard.
 
 ## Changes since the previous run
 
-The six were not in the 2026-10-17 pilot anonymization run. Earlier
-findings for these institutions (full run of 2026-10-13) came from other
-courses; the new packets cannot confirm or rule them out (git history).
+| inst | fixed | persisting | new |
+|---|---|---|---|
+| hiof | staff name | date fragments | — |
+| uib | staff name | admin dates, reading-list boilerplate and fragments | fragment after an e-mail |
+| uit | staff names, over-removal | admin dates | — |
+| usn | staff names | admin dates, "Journalføring" | — |
 
 ## Rejected findings
 
-None. All `name_like` and `phone` pre-pass flags at the six were false
-alarms (reference authors, philosophers, ISBNs, publication dates, place
-names), as the agents found.
+None.
 
 ## Verdict (`--pilot`, anonymization: `privacy_hits`)
 
 | inst | privacy_hits | verdict |
 |---|---|---|
-| hiof | 0 (n 49) | not ready |
-| nih | 0 (n 22) | ready |
-| uib | 0 (n 46) | not ready |
-| uia | 0 (n 76) | ready |
-| usn | 0 (n 57) | not ready |
-| uit | 0 (n 66) | not ready |
+| hiof | 0 (n 47) | ready |
+| nih | 0 (n 22) | ready (2026-10-21) |
+| uib | 0 (n 46) | ready |
+| uia | 0 (n 76) | ready (2026-10-21) |
+| usn | 0 (n 57) | ready |
+| uit | 0 (n 66) | ready |
 
-`privacy_hits` is 0 everywhere, but personal data is left in the sample at
-four: not ready until fix 1 (rebuild only, no new harvest).
+No personal data is left in the four samples and `privacy_hits` is 0;
+the findings left are dates and fragments (fix issues, rebuild only).
 
-- **hiof — not ready.** "Foreleser studieåret: <name>"
-  (`hiof_SFB24011-1_2019_spring_1`).
-- **nih — ready.** Low finding only.
-- **uib — not ready.** A name under "Administrativt
-  ansvarlig" (`uib_MEDEPI-0_2025_autumn_1`).
-- **uia — ready.** Low finding only.
-- **usn — not ready.** Approver names (4 of 28 sampled plans) and
-  change-log signatures; one of them is in the published releases.
-- **uit — not ready.** Names in the 2008–2011 English timetable block (3
-  plans in the build).
+## Note on the model
+
+This run used gpt-6.1-sol in the Codex CLI instead of Opus. It read every
+course (81–131 thousand tokens per agent) and confirmed the earlier
+findings as fixed, with no false personal-data finding.

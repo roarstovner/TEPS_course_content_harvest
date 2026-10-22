@@ -1,46 +1,86 @@
 {
   "check": "sections",
   "institution": "hiof",
-  "model": "sonnet",
-  "n_courses_reviewed": 18,
-  "n_suspects_reviewed": 11,
-  "overall_assessment": "HiOF extraction is good: 17 of 18 courses split correctly, arbeidskrav land in coursework_requirements, Praksis in teaching_methods, and logistics headings are dropped. One real, high-impact defect: a learning-outcome sub-heading 'Litteratur:' is mapped to reading_list and moves most of the learning outcomes there. Most pre-pass flags are false alarms; one leak flag (assessment vs coursework) is a mild real overlap.",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 19,
+  "n_suspects_reviewed": 10,
+  "overall_assessment": "Section boundaries and the displayed learning-outcome groups are generally preserved across the 19 courses, with localized problems in semantic assignment and cleanup. The boilerplate flag on completed practice, leak flags on litteraturstudium, didactics topics, prior-knowledge wording and the Litteratur: outcome label, and short flags on the genuine 80% attendance requirement and lecture/exercise description are false alarms. The geography coursework leak and the two placeholder-related short flags are real, and random controls reveal additional misplaced requirements, assessment details and inline exam logistics.",
   "findings": [
     {
-      "target": "learning_outcomes",
+      "target": "assessment",
       "error_type": "wrong_content",
       "severity": "high",
-      "prevalence": "rare",
-      "example_course_ids": ["hiof_SFT11608-1_2022_autumn_1"],
-      "evidence": "Studenten har kunnskap om sentrale litterære tendenser, sjangere og forfattere fra de tysktalende land i tida fra 1945 til i dag. Kultur: Studenten har",
-      "description": "The sub-heading 'Litteratur:' inside 'Studentens læringsutbytte' (a sub-heading of Kunnskap, used as a topic label for outcomes about literature) is mapped to reading_list. The learning-outcome text from there to 'Generell kompetanse' (Kunnskap, Kultur, all of Ferdigheter, 767 chars) is filed as reading_list, while learning_outcomes keeps only 98 chars. Learning outcomes are cut short and the reading list is polluted with outcome statements (flags: short on learning_outcomes, leak->learning_outcomes on reading_list are real here).",
-      "root_cause_hypothesis": "R/section_heading_map.R maps the pattern 'litteratur' to reading_list for any heading, including sub-headings (sub) that appear inside a learning_outcomes block. The block reader treats 'Litteratur:' (with a colon) as a section boundary.",
-      "suggested_fix": "For hiof, make sub-headings (sub) found while inside learning_outcomes not switch section (stay in learning_outcomes) unless they are Kunnskap/Ferdigheter/Generell kompetanse; or exempt headings ending in ':' from the 'litteratur' pattern (anchor the pattern to the whole heading and do not match when it carries a trailing colon in a sub position).",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "hiof_LU15SAMG07-1_2007_autumn_2",
+        "hiof_LA201BKHV06-1_2007_autumn_1"
+      ],
+      "evidence": "Godkjente arbeidskrav er et vilkår for framstilling til eksamen.",
+      "description": "Both 2007 plans retain exam-access requirements and formative supervision/feedback under assessment, although the coursework gates already occur in coursework_requirements. Underveisvurdering and Sluttvurdering remain inside the Eksamen block; approval of coursework is not graded assessment, and formative feedback is not final assessment design. The geography leak->coursework_requirements flag is therefore real, and the animation random control shows the same defect.",
+      "root_cause_hypothesis": "In R/extract_sections.R, sectionize() returns unmapped subheadings to their parent assessment section. HiØf does not enable section_inline_coursework in R/institution_config.R, so .split_inline_coursework() never moves these gate sentences; its current patterns also miss the leading wording Godkjente arbeidskrav.",
+      "suggested_fix": "Enable a HiØf sentence-level coursework pass and recognize approval-gate sentences beginning Arbeidskravene or Godkjente arbeidskrav, moving them to coursework_requirements and avoiding duplicate requirements already there. Handle Underveisvurdering contextually: mandatory tasks belong in coursework_requirements and pure formative feedback in teaching_methods; retain the actual final assessment under Sluttvurdering, including weighted deleksamen components.",
+      "confidence": "high"
+    },
+    {
+      "target": "teaching_methods",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "hiof_LMBPED40517-1_2025_spring_1",
+        "hiof_SFF35021-1_2025_spring_1"
+      ],
+      "evidence": "Det gis to obligatoriske veiledningstimer per oppgave.",
+      "description": "Explicit mandatory seminar/supervision requirements remain in teaching_methods. The French bachelor-thesis control states that two supervision sessions are mandatory, but its coursework_requirements contains only seminar attendance and topic approval, omitting that obligation. The pedagogy master plan also repeats its four mandatory seminars in teaching_methods, although those seminars are correctly listed as coursework too; its reading-list leak flag itself is a false alarm caused by litteraturstudium.",
+      "root_cause_hypothesis": "HiØf teaching paragraphs are assigned wholesale from Undervisnings- og læringsformer. R/extract_sections.R has no transfer of mandatory-work sentences from teaching_methods; the optional inline-coursework handler only inspects assessment.",
+      "suggested_fix": "Add a HiØf rule that moves explicit mandatory seminar/supervision sentences, including Det gis to obligatoriske veiledningstimer per oppgave and Det er fire obligatoriske oppgaveseminarer, into coursework_requirements. Keep descriptions of delivery, supervision medium and learning activities in teaching_methods, and deduplicate obligations already represented in coursework_requirements.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "other",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "hiof_IRD21607-1_2007_autumn_2",
+        "hiof_SFT11608-1_2022_autumn_1",
+        "hiof_SFT11717-1_2025_spring_1"
+      ],
+      "evidence": "Ved kontinuasjon må ikke bestått deleksamen taes på nytt. Det vil ikke være adgang til ny prøving før neste regulære innlevering i faget.",
+      "description": "Inline administrative material survives even though equivalent standalone logistics headings are dropped. Assessment retains resit rules in DesignIntro/DesignCase and geography, appeal rules in German literature, location/application rules in the German-language random control, and examiner arrangements in geography and the animation control. Geography coursework also includes excursion charges and payment arrangements; costs belong only in the full plan. These exclusions affect five of the 19 courses and occur in both suspects and controls; durations, permitted aids and plagiarism rules are valid assessment content.",
+      "root_cause_hypothesis": "R/section_heading_map.R excludes standalone Sensorordning and Vilkår for ny/utsatt eksamen headings, but inline sentences remain within their parent blocks. R/extract_sections.R has no HiØf-specific .section_noise or .logistics_sentences entry, and its shared resit pattern does not cover these formulations.",
+      "suggested_fix": "Add narrowly scoped HiØf sentence filters for Ved kontinuasjon, Ved ikke bestått ... taes på nytt, Klageadgang, Intern/ekstern sensur or sensor, and the campus/application notice. Remove the DesignCase paragraph about new attempts and submission terms and the geography excursion-cost sentences from sections while retaining them in course_plan; preserve exam form, weights, grading scale, duration, aids and substantive plagiarism rules.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "empty_placeholder",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "hiof_LDIGBHG10122-1_2022_autumn_2",
+        "hiof_IRD21607-1_2007_autumn_2"
+      ],
+      "evidence": "Ingen arbeidskrav i emnet.",
+      "description": "Digital practices emits coursework_requirements whose entire text says there are no requirements. DesignIntro/DesignCase emits reading_list containing only Ny pensumbok vurderes., with no actual literature or course materials. These two short flags identify placeholder rows, not extraction truncation; both should be absent under course_plan_spec.md. The short attendance requirement in the violence course and short teaching description in calculus are substantive and should remain.",
+      "root_cause_hypothesis": "R/extract_sections.R .placeholder_phrases recognizes ingen arbeidskrav but not its i emnet suffix, and recognizes several future reading-list notices but not Ny pensumbok vurderes. Consequently .keep_section_row() retains both rows.",
+      "suggested_fix": "Extend whole-row placeholder matching to ingen arbeidskrav i emnet and ny pensumbok vurderes. Apply the reading-list phrase only to reading_list, preserve the text in course_plan, and retain substantive short rows such as attendance percentages and Forelesninger og øvinger.",
       "confidence": "high"
     },
     {
       "target": "assessment",
-      "error_type": "wrong_content",
-      "severity": "low",
-      "prevalence": "rare",
-      "example_course_ids": ["hiof_LU15SAMG07-1_2007_autumn_2"],
-      "evidence": "Underveisvurdering Student og faglærer skal gjennomføre minst én veiledningstime. Sluttvurdering Arbeidskravene må være utført innen fastsatt frist og godkjent av faglærer før studenten kan fremstille seg til eksamen.",
-      "description": "Under 2007-era plans the Eksamen block contains 'Underveisvurdering' and 'Sluttvurdering' sub-sections (both unmapped) that restate the arbeidskrav (one supervision hour, arbeidskrav approved before exam). This text is a pass/approve gate, which the codebook places in coursework_requirements, yet it stays in assessment (duplicating the coursework row). The pre-pass flag leak->coursework_requirements is correct but the impact is small; the real exam design (deleksamen, hovedeksamen, karaktersystem) is intact.",
-      "root_cause_hypothesis": "The sub-headings 'Underveisvurdering' and 'Sluttvurdering' have no entry in R/section_heading_map.R, so their text is appended to the preceding assessment block.",
-      "suggested_fix": "Add 'underveisvurdering' mapped to coursework_requirements (or .drop) in R/section_heading_map.R, keeping 'sluttvurdering' in assessment; accept the arbeidskrav sentence duplication or strip the sentence beginning 'Arbeidskravene må være utført innen' in .clean_sections().",
-      "confidence": "medium"
-    },
-    {
-      "target": "assessment",
-      "error_type": "formatting_noise",
-      "severity": "low",
-      "prevalence": "rare",
-      "example_course_ids": ["hiof_LSKNO22215-1_2019_spring_1"],
-      "evidence": "PlagiatkontrollAlle skriftlige arbeidskrav og eksamensoppgaver kan plagiatkontolleres.",
-      "description": "A generic plagiarism-control notice (administrative boilerplate, with heading and text glued together without whitespace) is kept at the end of assessment. It is not assessment design.",
-      "root_cause_hypothesis": "The 'Plagiatkontroll' paragraph is a bold label inside the Eksamen block, not an h2/h3 heading, so it is not mapped to .drop and is not caught by .strip_section_noise().",
-      "suggested_fix": "Add a line pattern to the section noise in R/extract_sections.R removing '(?m)^Plagiatkontroll.*$' (and 'Plagiering og avskrift av faglitteratur[^\\n]*') from assessment for hiof.",
-      "confidence": "medium"
+      "error_type": "truncated",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "hiof_SFT11717-1_2025_spring_1",
+        "hiof_SFB51216-1_2022_autumn_1"
+      ],
+      "evidence": "Studenter som ikke behersker norsk tilbys oversettelsestekster fra/til engelsk under eksamen.",
+      "description": "Two random controls have incomplete assessment text because design rules are retained under other sections. German language II leaves the English translation alternative for students without Norwegian in course_content, while assessment describes only Norwegian/German translation. Text and rhetoric leaves the rule that assessed portfolio texts must be new and cannot reuse coursework texts in coursework_requirements. Exam language and what may be submitted for graded assessment belong in assessment regardless of their source heading.",
+      "root_cause_hypothesis": "sectionize() in R/extract_sections.R assigns ordinary paragraphs solely to their enclosing headings; the subsequent passes move inline prerequisites and optionally coursework out of assessment but do not recover assessment-design statements embedded in course_content or coursework_requirements.",
+      "suggested_fix": "Add HiØf sentence rules transferring the English-exam translation alternative from course_content and the portfolio-new-text restriction from coursework_requirements into assessment. Preserve the surrounding subject-matter text and true approval gates in their existing sections, and check completeness against statements outside the Eksamen heading.",
+      "confidence": "high"
     }
   ]
 }

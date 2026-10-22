@@ -1,45 +1,52 @@
 {
   "check": "anonymization",
   "institution": "usn",
-  "model": "opus",
+  "model": "gpt-6.1-sol",
   "n_courses_reviewed": 28,
   "n_suspects_reviewed": 20,
-  "overall_assessment": "The USN handler does most of its job. Semester labels, the usual 'Godkjent emneplan dd.mm.yyyy Name, role' stamps, 'Name\\nInstituttnestleder' blocks, cohort labels and Leganto widget text are removed in every sampled plan, and no reference authors or content years are lost. The phone, name_like and admin_date flags are false alarms (ISBNs, YYYYMMDD publication dates, reference authors). The real defect is personal data in approval and change-log lines whose wording the rules do not expect. Approver names stay in 4 of the 28 sampled plans ('Godkjent av programkoordinator [navn]', 'godkjent ved professor [navn]', 'Godkjent … av [navn]'). A change log keeps a programme coordinator's and a course leader's names. A few admin dates also stay ('Høst-18', '27.01.2014/dekan', 'mars 2019').",
+  "overall_assessment": "No personal-data leak is visible in the 28 fully read packet entries (20 suspects and eight random controls), and standard staff-name, approval, semester and cohort removals generally work. Visible phone-like numbers are publication dates, and name_like flags are explained by reference authors, organisations or subject terms; some phone triggers and both admin_date triggers are outside the truncated plan excerpts and cannot be classified conclusively from this packet. Confirmed defects affect three entries with residual administrative dating, including one random control, and one entry with a damaged content heading; they are occasional rather than institution-wide, subject to the supplied truncation limits.",
   "findings": [
     {
-      "target": "person_name",
-      "error_type": "pii_leak",
-      "severity": "medium",
-      "prevalence": "common",
-      "example_course_ids": ["usn_REG3000D-1_2019_autumn_1", "usn_NETPRL-1_2022_spring_1", "usn_OKLI3014-1_2018_autumn_1"],
-      "evidence": "Godkjent av programkoordinator [navn], mars 2019.",
-      "description": "Approvers' names stay in course_plan when the approval stamp has a wording the USN rules do not match. Three forms occur in the packet. (1) 'Godkjent av programkoordinator [navn], mars 2019.' (REG3000D): 'programkoordinator' is not an approver role. (2) 'Første gang godkjent ved professor [navn], USN Handelshøyskolen.' (NETPRL, spring and autumn 2022): 'ved' plus a title. (3) 'Godkjent [−emneplan Godkjent 11. januar 2018−] av [navn]' (OKLI3014): once the date is removed, 'Godkjent av <Name>' remains with no role word between them. All three are staff in their approving role, so they must be removed under the rubric. In the packet this is 4 of 28 plans (3 suspects, 2 random controls, counting both NETPRL offerings). A scan of all USN plans run through the current anonymize_text() finds the same names once or twice each. It also finds the English form 'Approved by [navn], Dean, 18.01.2017' twice, so the problem appears in several layouts but in a small share of all offerings.",
-      "root_cause_hypothesis": "R/anonymize.R: .approved_by_name_regex accepts only '[Gg]odkjent av (dekan|prodekan|instituttleder|instituttnestleder|studieprogramleder) Name'. It does not handle 'godkjent ved', a title ('professor'), other roles ('programkoordinator'), or 'Godkjent av' directly followed by a name. .role_name_inline_regex has 'koordinator' in .staff_roles, but its '(?<!\\p{L})' guard blocks the compound 'programkoordinator'. .signature_line_regex needs ', role' at the end of the line, so it misses '…[navn], mars 2019.' and '[navn], USN Handelshøyskolen.'. Nothing handles an English 'Approved by'.",
-      "suggested_fix": "Widen .approved_by_name_regex to '((?i:godkjent|approved)(?:[ \\t]+\\p{Ll}+)?[ \\t]+(?:av|ved|by)(?:[ \\t]+(?:dekan(?:en)?|prodekan|institutt(?:nest)?leder|studieprogramleder|programkoordinator|programansvarlig|dean))?)[ \\t]+(?:' + .title_regex + '[ \\t]+)?' + .name_regex, replaced with '\\1'. This keeps 'Godkjent av dekan' and drops the name. In .staff_roles, allow a compound prefix for koordinator ('\\p{L}*koordinator'), or add 'programkoordinator'. Add tests to test-anonymize.R for 'Godkjent av programkoordinator [navn], mars 2019.', 'Første gang godkjent ved professor [navn], USN Handelshøyskolen.', 'Godkjent av [navn]' and 'Approved by Ola Nordmann, Dean, 18.01.2017'. Add negative cases 'godkjent av faglærer før' and 'godkjent av dekan.'.",
-      "confidence": "high"
-    },
-    {
-      "target": "person_name",
-      "error_type": "pii_leak",
-      "severity": "medium",
-      "prevalence": "rare",
-      "example_course_ids": ["usn_SMERTE100-1_2022_autumn_1"],
-      "evidence": "[navn]/ fagansvarlig [navn] [−01.02.22−] Endret til nytt kull",
-      "description": "The change log ('Endringsbeskrivelse') signs each entry with the staff who made it: '… vurderingsform/ programkoordinator [navn]/ fagansvarlig [navn]'. The dates around the entries are removed, but both names stay in course_plan. These are a programme coordinator and a course leader in their roles, so they must be removed. The packet shows only the tail of this line, because the plan is truncated; the full anonymized plan confirms both names stay. The same names occur once more in the plan's literature note ('Programkoordinator [navn] / fagansvarlig [navn]…'). [navn] is also a reference author in the same plan ('Stubhaug, Audun & [navn], T. M.'), and that occurrence must stay.",
-      "root_cause_hypothesis": "R/anonymize.R .role_name_inline_regex: 'fagansvarlig' is not in .staff_roles, and the '(?<!\\p{L})' guard stops 'koordinator' matching inside 'programkoordinator'/'Programkoordinator'. The '/' separators also keep the line from matching any whole-line rule.",
-      "suggested_fix": "Add 'fagansvarlig', 'fagansvarleg' and 'programkoordinator' (or a '\\p{L}*koordinator' compound) to .staff_roles. Keep the inline rule's behaviour of removing only the name after the role. Test: 'vurderingsform/ programkoordinator [navn]/ fagansvarlig [navn]' should become 'vurderingsform/ programkoordinator/ fagansvarlig'.",
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "usn_FM1DANS-1_2022_autumn_1",
+        "usn_SMERTE100-1_2022_autumn_1"
+      ],
+      "evidence": "Godkjent av instituttleiar Godkjent av dekan 20.10. 2017 … 27.01.2014/dekan- godkjent i ledermøte",
+      "description": "Two approval-date formats survive: an internal space in 20.10. 2017 in the FM1DANS random control, and a date directly followed by /dekan in SMERTE100. The latter is visible as surviving context after a removed approval/name span, although its full plan tail is truncated. Both are institutional approval stamps that must be removed, not dates of government documents or publications. The random control shows that the pre-pass can miss this defect.",
+      "root_cause_hypothesis": "R/anonymize.R .anon_generic() expects contiguous dd.mm.yyyy and rejects a following slash through (?![\\d/]|...). The approval-specific short-date rule also does not accept these formats. Read-only calls to the current anonymize_text() reproduced both surviving stamps.",
+      "suggested_fix": "Add approval-context date matching for dd.mm. followed by horizontal whitespace and a four-digit year, and for dd.mm.yyyy immediately followed by /dekan or another recognised staff role. Preserve the government-document and bibliographic guards. Add regression cases for these two exact stamp formats and retained publication/regulation dates.",
       "confidence": "high"
     },
     {
       "target": "admin_date",
       "error_type": "admin_date_left",
       "severity": "low",
-      "prevalence": "occasional",
-      "example_course_ids": ["usn_NORVU103-1_2018_autumn_1", "usn_SMERTE100-1_2022_autumn_1", "usn_REG3000D-1_2019_autumn_1"],
+      "prevalence": "rare",
+      "example_course_ids": [
+        "usn_NORVU103-1_2018_autumn_1"
+      ],
       "evidence": "(NORVU103) Høst-18, Porsgrunn",
-      "description": "Some administrative dates take forms that the date rules miss. (1) In the reading-list header, a semester label with a hyphen and a 2-digit year: 'Høst-18' (NORVU103). The usual 'Høst18'/'Høst 25' forms are removed. (2) A date glued to a role with a slash: '[−Godkjent emneplan−] 27.01.2014/dekan- godkjent i ledermøte' (SMERTE100). The name after it is removed, but the date stays. (3) A month-year stamp after the approver: '[navn], mars 2019.' (REG3000D). A scan of all USN plans also finds malformed approval dates that stay in: 'Godkjent av Dekan 06.12..2018' and 'Godkjent av dekan 20.10. 2017'. All are rare.",
-      "root_cause_hypothesis": "R/anonymize.R .anon_generic(): the season+year rule expects a space or nothing between the season and the year, not '-'. The dd.mm.yyyy rule's guard '(?<![\\d./])…' or the lookahead after the date rejects a date followed by '/'. A month name without a day is not matched outside the keyword rule. Doubled dots or a space inside the date ('06.12..2018', '20.10. 2017') break the dd.mm.yyyy pattern.",
-      "suggested_fix": "In .anon_generic(), make the season+year rule accept '[ \\t-]?' between the season and a 2- or 4-digit year. Let the dd.mm.yyyy rule match '\\d{1,2}\\.\\d{1,2}\\.{1,2}[ \\t]?\\d{4}' and allow a following '/'. In .anon_usn(), after the approval-name fix, drop a ', <month> YYYY' tail on 'Godkjent av …' lines. Add tests for 'Høst-18, Porsgrunn', '27.01.2014/dekan', 'Godkjent av Dekan 06.12..2018' and 'Godkjent av dekan 20.10. 2017'.",
+      "description": "The reading-list header retains the administrative semester label Høst-18. Other sampled labels such as Høst22 and Høst 25 are removed. This is a semester and year identifying the offering, not a season used as course content; it also escapes the pre-pass semester-date pattern.",
+      "root_cause_hypothesis": "R/anonymize.R .anon_generic() permits only whitespace between a season word and a two- or four-digit year. The separate H/V code rule does not match the full word Høst. The current anonymize_text() leaves this header unchanged.",
+      "suggested_fix": "Allow an optional hyphen or dash, with horizontal whitespace, between a complete season word and its two- or four-digit semester year. Retain the credits and government-document guards. Add cases for Høst-18 and Vår-2022 alongside ordinary season words and vår meaning our.",
+      "confidence": "high"
+    },
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "usn_SMERTE100-1_2022_autumn_1"
+      ],
+      "evidence": "2021 erstatter lista fra 2020. Programkoordinator",
+      "description": "Surviving context in the Endringsbeskrivelse removal spans retains 2021 and 2020 in a note that one reading-list version replaces the other. These years date an administrative revision, followed by the programme coordinator/course leader signatures, rather than identifying publications in a reading list. Removing the signatures and entry dates leaves this separate administrative dating intact.",
+      "root_cause_hypothesis": "R/anonymize.R .anon_generic() removes isolated administrative years only after a limited set of keywords, and .anon_usn() has no rule for revision-note years in Endringsbeskrivelse. The phrase erstatter lista fra does not match those year rules.",
+      "suggested_fix": "In USN Endringsbeskrivelse blocks, remove year values in explicitly identified list-replacement notes matching a year followed by erstatter lista fra and another year. Keep the note text and stop the block at the next section heading; preserve publication years in the actual Litteratur section.",
       "confidence": "high"
     },
     {
@@ -47,11 +54,13 @@
       "error_type": "over_removal",
       "severity": "low",
       "prevalence": "rare",
-      "example_course_ids": ["usn_OKLI3014-1_2018_autumn_1"],
-      "evidence": "tilpassing av presbyope [−Journalføring−] føring og dokumentasjon",
-      "description": "The Leganto item-type rule removes 'Journal' from the start of the content line 'Journalføring og dokumentasjon (journalføring i kontaktlinsepraksis, …)', so the topic now reads 'føring og dokumentasjon'. 'Journalføring' (record keeping) is a Norwegian word, not a Leganto 'Journal' label glued to a title. Across all USN plans this is the only such line found: the other 'Journal…'/'Document…'/'Other…' lines that start with a lowercase letter are real glued labels ('Journalkjernen i god naturfagundervisning', 'Otherforebygging.no').",
-      "root_cause_hypothesis": "R/anonymize.R .anon_usn(): the item-type rule accepts a lowercase letter after the label unless the label is in the lookbehind list (Book|Map|Video|…) or the next letters are 's', 'ation', 'ist', 'wise' or 'ing'. 'Journal' is not in that lookbehind list, and 'føring' is not excluded, so 'Journalføring' at the start of a line loses 'Journal'.",
-      "suggested_fix": "In the .anon_usn() Leganto rule, add 'føring' to the negative lookahead '(?!s(?!\\p{L})|ation|ist|wise|ing|føring)'. Add a test that 'Journalføring og dokumentasjon' is unchanged and that 'Journalkjernen i god naturfagundervisning' still becomes 'kjernen i god naturfagundervisning'.",
+      "example_course_ids": [
+        "usn_OKLI3014-1_2018_autumn_1"
+      ],
+      "evidence": "tilpassing av presbyope [−Journalføring−] føring og dokumentasjon (journalføring i kontaktlinsepraksis,",
+      "description": "The subject heading Journalføring og dokumentasjon is changed to føring og dokumentasjon. Journalføring means clinical record keeping and is course content, not a Leganto item-type label. The token-level diff displays the deleted original word and the replacement fragment; it does not indicate that a complete duplicate heading remains. No analogous content damage is visible in the other entries or random controls.",
+      "root_cause_hypothesis": "R/anonymize.R .anon_usn() strips the line-initial Leganto type Journal before a lowercase continuation. Journal is absent from the alternatives that disallow lowercase continuations, and the suffix exclusions do not include føring. A read-only call to anonymize_text() reproduced Journalføring becoming føring.",
+      "suggested_fix": "Protect Journalføring and its inflections/compounds from the Journal item-type alternative, for example with Journal(?!føring), before applying the generic Leganto-prefix cleanup. Add a regression case preserving Journalføring og dokumentasjon and a positive case still stripping Journal from a genuine glued item-type label.",
       "confidence": "high"
     }
   ]

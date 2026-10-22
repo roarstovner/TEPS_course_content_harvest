@@ -1,7 +1,7 @@
 # fulltext audit — aggregated findings
 
-70 findings across 18 institutions (from 18 agent reports in `data/audit/fulltext/findings`; model: sonnet).
-Mechanical verification: 70 passed (✓), 0 failed (✗), 0 not checkable (?, stale report or no packet).
+69 findings across 18 institutions (from 18 agent reports in `data/audit/fulltext/findings`; model: gpt-6.1-sol, sonnet).
+Mechanical verification: 69 passed (✓), 0 failed (✗), 0 not checkable (?, stale report or no packet).
 Sorted by severity then prevalence. Source: `R/audit/aggregate.R`.
 
 ## Failed verification — check by hand before acting
@@ -21,7 +21,6 @@ _(none)_
 | course_content | duplicate_content | 5 | hvl, nord, uib, uis, uit | low |
 | metadata | formatting | 5 | inn, nmbu, ntnu, uib, uio | low |
 | whole_text | wrong_page | 4 | inn, oslomet, steiner, usn | high |
-| whole_text | wrong_year | 3 | hiof, inn, nord | high |
 | whole_text | formatting | 3 | hvl, nla, uit | low |
 | metadata | wrong_year | 3 | mf, nmbu, uia | medium |
 
@@ -29,12 +28,7 @@ _(none)_
 
 | institution | n_before | n_now | persisting | new | gone |
 | --- | --- | --- | --- | --- | --- |
-| hiof | 3 | 2 |  | whole_text / wrong_year; page_chrome / junk_included | reading_list / missing_content; reading_list / wrong_year; whole_text / empty_or_failed |
-| nih | 2 | 2 | whole_text / empty_or_failed; reading_list / missing_content |  |  |
-| uia | 5 | 4 | whole_text / other; metadata / wrong_year | page_chrome / junk_included; metadata / duplicate_content | metadata / wrong_page; course_content / formatting; course_content / duplicate_content |
-| uib | 2 | 3 | assessment / missing_content | course_content / duplicate_content; metadata / formatting | whole_text / empty_or_failed |
-| uit | 4 | 5 |  | reading_list / missing_content; reading_list / junk_included; course_content / duplicate_content; teaching_methods / junk_included; whole_text / formatting | page_chrome / junk_included; metadata / duplicate_content; learning_outcomes / formatting; assessment / duplicate_content |
-| usn | 4 | 6 | page_chrome / junk_included; reading_list / formatting; reading_list / duplicate_content | whole_text / other; whole_text / wrong_page; metadata / other | learning_outcomes / duplicate_content |
+| hiof | 2 | 1 | page_chrome / junk_included |  | whole_text / wrong_year |
 
 ## By error type
 
@@ -50,19 +44,19 @@ _(none)_
 | wrong_page | high | 3 |
 | other | low | 2 |
 | other | medium | 2 |
-| wrong_year | high | 2 |
 | wrong_year | low | 2 |
 | wrong_year | medium | 2 |
 | duplicate_content | medium | 1 |
 | empty_or_failed | medium | 1 |
 | missing_content | high | 1 |
 | wrong_page | medium | 1 |
+| wrong_year | high | 1 |
 
 ## By target
 
 | target | n |
 | --- | --- |
-| whole_text | 23 |
+| whole_text | 22 |
 | metadata | 11 |
 | reading_list | 11 |
 | page_chrome | 10 |
@@ -75,7 +69,7 @@ _(none)_
 
 | institution | model | n_courses_reviewed | overall_assessment |
 | --- | --- | --- | --- |
-| hiof | sonnet | 28 | Extraction works well for HiOF: the plan (facts box, content, learning outcomes, teaching, requirements, assessment, evaluation, literature) is captured completely and cleanly structured on all 28 pages; the only uncaptured text is the breadcrumb. The one real problem is that for some offerings t... |
+| hiof | gpt-6.1-sol | 28 | All 28 courses were reviewed in full as presented in the packet: both year flags are genuine, whereas the short HOVVEIL120 page is faithfully captured and refers readers to the general study plan, so its short flag is not an extraction defect. Across the suspects and 25 controls, the only uncaptu... |
 | hivolda | sonnet | 28 | Extraction works well for hivolda: all 28 random controls contain the whole plan (facts box, description, learning outcomes, organisation, requirements, assessment table) with clean line structure, correct course and year, and no chrome or junk. Uncaptured page text is only year pickers, the repe... |
 | hvl | sonnet | 28 | Extraction works well for ordinary pages: the 22 random controls are complete, include facts box, outcomes, teaching, assessment and requirements, and are free of chrome; years are correct (spring offerings use the previous academic-year URL). The one real problem is English-only courses, whose N... |
 | inn | sonnet | 28 | Where the page holds a real plan, extraction is complete and clean (all sections, facts box, no navigation). Two institution-wide problems remain: many offerings get the latest published plan under a 'not published yet' notice (wrong year), and some course codes return the course-search listing i... |
@@ -104,7 +98,6 @@ _(none)_
 | ✓ | hvl | whole_text | missing_content | high | common | hvl_MAS538-1_2025_spring_1; hvl_ADA512-1_2025_autumn_1; h... | In the hvl harvest or post_fn, detect the notice ('kun på engelsk' / 'berre skildra på engelsk' / 'engelske nettsider') and re-fetch the ... |
 | ✓ | nord | whole_text | empty_or_failed | high | common | nord_FORGLU-1_2019_autumn_1; nord_SOS9001-1_2022_autumn_1... | Flag offerings whose extracted text lacks any plan heading (Beskrivelse av emnet, Læringsutbytte, Eksamensbeskrivelse) as 'no plan' (e.g.... |
 | ✓ | oslomet | whole_text | empty_or_failed | high | common | oslomet_FK2200-1_2025_spring_3; oslomet_ARKROM6100-1_2025... | Add a content test in the OsloMet post-step or fetch validation: if the text has no 'Læringsutbytte'/'Innledning' heading (or is < ~400 c... |
-| ✓ | hiof | whole_text | wrong_year | high | occasional | hiof_LSKNO22215-1_2019_spring_1; hiof_LSKAS10116-1_2022_a... | Add a year check in the HiOF fetch/post step: compare the year in the page title '(Vår/Høst YYYY)' with the offering's term and mark or d... |
 | ✓ | inn | whole_text | wrong_page | high | occasional | inn_1AKT01-1_2023_autumn_1; inn_2PRLU20-29-1_2025_spring_... | In R/institution_config.R inn post/validation step: treat a page whose text starts with 'Emnesøket gjelder kun fra 2022' (or lacks 'Emnet... |
 | ✓ | oslomet | whole_text | wrong_page | high | rare | oslomet_FADUFA-1_2018_spring_1 | Treat text matching 'Siden du leter etter finnes ikke' as a failed fetch (empty extracted_text) via a post_fn or fetch check for oslomet. |
 | ✓ | steiner | whole_text | wrong_page | high | rare | steiner_M-PEL2.1_2025_autumn_1 | Check the code-to-section matching in the pdf_split strategy (R/harvest_strategies.R / institution_config.R steiner entry); verify the ex... |
@@ -120,7 +113,7 @@ _(none)_
 | ✓ | usn | reading_list | duplicate_content | medium | occasional | usn_MET1020-1_2025_spring_2; usn_MG1SA1-1_2025_spring_1 | Drop the campus list-name lines that precede 'Click to view', and deduplicate repeated reference blocks within the reading_list section (... |
 | ✓ | uia | whole_text | other | medium | rare | uia_HEL905-1_2022_autumn_1 | Treat offerings whose extracted text lacks any plan heading (Læringsutbytte, Innhold, Eksamen) as 'no plan' (e.g. report in the gaps targ... |
 | ✓ | usn | whole_text | wrong_page | medium | rare | usn_BABLU-6_2018_autumn_1 | Check how R/add_course_url.R builds the code for ids ending in -N with N other than 1, and verify that BABLU_3 and BABLU_6 are not both m... |
-| ✓ | hiof | page_chrome | junk_included | low | widespread | hiof_LPKR116-1_2019_autumn_1; hiof_LMBNOR40117-1_2025_aut... | Add an exclude or post_fn regex for '^Sist hentet fra FS.*$' (and optionally the lone 'Innholdsfortegnelse' heading) in the hiof entry of... |
+| ✓ | hiof | page_chrome | junk_included | low | widespread | hiof_HOVVEIL120-1_2022_autumn_1; hiof_LPKR116-1_2019_autu... | Add a hiof-specific post_fn that removes only complete lines matching ^[ \t]*Innholdsfortegnelse[ \t]*$ and ^[ \t]*Sist hentet fra FS \(F... |
 | ✓ | inn | page_chrome | junk_included | low | widespread | inn_SYD2009-1_2023_autumn_2; inn_2M352-1_2023_spring_1 | Add exclude for the Statusmelding block (and its heading) in the inn entry of R/institution_config.R, after recording the fallback flag f... |
 | ✓ | mf | reading_list | junk_included | low | widespread | mf_RL1016-1_2025_autumn_1; mf_RL2030-1_2025_autumn_1 | Add an exclude/post_fn rule in the mf config removing the 'Tilgang til litteratur:' block through 'MERK: Sjekk at litteraturlisten…' (kee... |
 | ✓ | nih | reading_list | missing_content | low | widespread | nih_THP311-1_2025_autumn_1; nih_LKI105-1_2022_spring_1; n... | Treat stub-only reading_list sections as empty in section extraction; optionally check whether the pensum link target is harvestable. |

@@ -1,137 +1,164 @@
-# Sections audit — synthesis (pilot: 6 institutions, after the URL fixes)
+# Sections audit — synthesis (pilot re-run: hiof, uit, usn, after the fixes)
 
-Run 2026-10-21 with `--pilot` on the build of commit a8ba3a5 (after the URL
-fixes of 2026-10-21, the pilot retry harvests and the USN English-page
-headings): hiof, nih, uib, uia, usn, uit. Each packet holds 16–20 plans
-from the institution's pilot sample. One Sonnet review agent per
-institution (medium effort); packets 110–150 KB; every agent read all its
-courses. 23 findings for these 6, all pass mechanical verification (0 ✗).
-The synthesis of the 2026-10-17 pilot run (ntnu, oslomet, inn, nord, hvl,
-hivolda, nla) is in git history (a8ba3a5).
+Run 2026-10-22 with `--pilot` on the build of commit c8c0b29, after the
+fixes from the pilot audit of 2026-10-21 (HiOF "Litteratur:" sub-heading,
+UiT 2008 arbeidskrav and language label, USN placeholders and notice,
+unmapped headings counted for the text reader): the three institutions
+whose sections verdict was "not ready". Packets of 14–20 plans from the
+pilot sample (122–150 KB). One review agent per institution in the Codex
+CLI (gpt-6.1-sol, reasoning effort high); every agent read all its courses.
+21 findings, all pass mechanical verification (0 ✗). The 2026-10-21 run
+(Sonnet agents) is in git history (098445b); its verdicts for nih, uib and
+uia stand.
 
 ## Summary
 
-- Sectioning is good at nih, uia and uib (low and medium findings only)
-  and mostly good at hiof, usn and uit.
-- **hiof**: a "Litteratur:" sub-heading inside the learning outcomes is
-  mapped to `reading_list`, so the outcomes about literature leave
-  `learning_outcomes` (one plan).
-- **usn**: practice-course plans (2018) mix requirements and assessment:
-  the descriptions of Arbeidskrav 2 and 3 stay in `assessment`, and the
-  Praksis block in `teaching_methods` holds attendance rules, mid/final
-  assessment and the "Varsel om ikke bestått" procedure.
-- **uit**: arbeidskrav in the single "Eksamensform" block of 2008 plans
-  stay in `assessment` (6 of the 27 plans without a coursework section);
-  the other 21 have no coursework text at all.
-- `no_sections` is 0 at all six. USN's `unmapped_headings` 0 is not
-  measured: unmapped headings are not counted for the text-reader
-  institutions (separate issue, found 2026-10-21).
+- The fixes hold: HiOF's "Litteratur:" outcome label stays in
+  `learning_outcomes` (its flag is now a false alarm), UiT's language
+  label is gone from the Norwegian pages, and USN's placeholder and generic
+  notice are gone.
+- **gpt-6.1-sol reads the spec more strictly than the Sonnet agents did**:
+  it rates as high any sentence the spec puts in another section, whatever
+  the heading it stands under ("A section holds the plan text about its
+  part, whatever heading the page puts it under", `course_plan_spec.md`).
+  That gives 9 high findings against 4 before, most of them single
+  sentences. The ratings below are re-judged against the severity scale of
+  `findings_schema.md` (see "Re-rated findings").
+- **Two real problems remain**:
+  - **Coursework gate sentences left in `assessment`** (uit, usn). The
+    inline split moves labelled blocks ("Arbeidskrav:"), not a sentence
+    such as "… må være godkjente før studenten kan framstille seg til
+    eksamen", "Tilgang til slutteksamen forutsetter godkjente øvelser.",
+    "The assignments have to be approved … before students are allowed to
+    sit the final exam". In the whole build, 44 of the 197 UiT plans
+    without a coursework section have such a sentence in `assessment`,
+    and 19 plans with one leave a gate sentence behind.
+  - **usn: course content at the start of `assessment`**
+    (`usn_SMERTE100-1_2022_autumn_1`, text fallback, no headings read): the
+    last topic of the content ("Hovedtema 16: Etikk og smerte …") opens the
+    assessment section, and two semester lines close the coursework
+    section. Cause not found yet.
+- The USN practice-course findings of 2026-10-21 persist (arbeidskrav 2/3
+  in `assessment`, attendance and pass/fail rules in the Praksis block);
+  turning on USN's inline split is the open follow-up.
 
 ## Cross-institution patterns
 
-- **Requirements outside `assessment`**: the inline coursework split reads
-  only the assessment section, so gate text under another heading stays
-  where it is: under "Hva lærer du" (`uit_ODO-6302-1_2019_autumn_1`), under
-  Praksis (usn), under learning activities (NTNU, Nord MET2000, known
-  small error). Same class as before; not worth a general rule.
-- **Placeholder reading lists** kept as sections: "The reading list is not
-  published yet." (usn, 5 of 16), "Ta kontakt med instituttet/fakultetet",
-  "Se hjemmeside." (uit 2008). Same class as the open placeholder issue
-  for hvl, hivolda, nla and oslomet.
-- **Admission text in `prerequisites`** (uia "Forkunnskapskrav": study
-  places, Udir): same class as the open admission-pointer issue for nord,
-  hvl, nla and oslomet.
+- **Gate sentences outside the coursework section** (uit, usn, hiof 2007;
+  NTNU and Nord before): the same class as "requirements outside
+  `assessment`" of 2026-10-21. A sentence-level rule in
+  `.split_inline_coursework()` (a sentence that makes approval, attendance
+  or a passed test a condition for the exam moves to
+  `coursework_requirements`) would serve several institutions. Count it in
+  the whole build first; a section rule gets a `methods.qmd` entry.
+- **Exam logistics inside `assessment`** (hiof 5 of 19, uit 10 of 20):
+  resit and appeal rules, examiner arrangements, UiT's English "Re-sit
+  examination" block and its exam-portal link sentence. The spec keeps
+  them out; the standalone Norwegian headings are dropped already.
+- **Admission field holding prior knowledge** (uit "Opptakskrav" /
+  "Admission requirements": "minimum 60 studiepoeng i norsk", "minimum 25
+  credits mathematics"): the field is unmapped as admission, so the
+  prior-knowledge sentence is not in `prerequisites`. The reverse of the
+  known deviation (admission rules kept in prerequisites).
+- **Placeholder reading lists** (uit: "Se hjemmeside", "Ta kontakt med
+  instituttet/fakultetet", the Leganto notice; hiof "Ny pensumbok
+  vurderes."; hiof "Ingen arbeidskrav i emnet."): the open placeholder
+  issue.
 
 ## Prioritised fix list
 
-1. **hiof: "Litteratur:" as a sub-heading of the learning outcomes** (high,
-   rare; `hiof_SFT11608-1_2022_autumn_1`). Where: `R/section_heading_map.R`
-   (the `litteratur` pattern) or the reader: a sub-heading under
-   "Læringsutbytte" stays in its parent. Rebuild only.
-2. **uit: arbeidskrav in the 2008 "Eksamensform" block** (medium,
-   occasional; `uit_HIS-1007-1_2008_autumn_1`, `uit_BED-2017-1_2008_autumn_2`;
-   the split works in `uit_HEL-3050-1_2008_autumn_1`). Where:
-   `.split_inline_coursework()` / `.inline_coursework_regex` (uit has
-   `section_inline_coursework`). 6 of the sample's 27 plans without
-   coursework. Also map "Undervisnings- og eksamensspråk" to `.drop` (every
-   2018+ page appends it to `teaching_methods`).
-3. **usn: practice-course plans** (high by the agent, occasional, 2018
-   practice courses; `usn_BS-PLVI30-V-1_2018_autumn_3`,
-   `usn_050-E11-1_2018_autumn_1`). The Arbeidskrav 2/3 descriptions in
-   `assessment`: USN has no `section_inline_coursework`; check whether
-   turning it on helps without side effects. The Praksis block: by the
-   codebook practice is `teaching_methods`; its attendance and assessment
-   lines are the class above. Relate to the open question whether praksis
-   should be a section of its own.
-4. **Placeholders and boilerplate** (medium): usn "The reading list is not
-   published yet.", usn's generic skikkethetsvurdering notice in
-   `coursework_requirements`, uit 2008 placeholder reading lists; add to
-   the open placeholder issue. uia admission text: add to the open
-   admission-pointer issue.
-5. **Low**: uib "Hjelpemiddel til eksamen" label and "Ingen" in
-   `assessment`, uib placeholder "Anbefalte forkunnskaper", hiof 2007
-   Underveis-/Sluttvurdering and a plagiarism notice in `assessment`, nih
-   attendance lines under Vurdering, uia workload line in
-   `coursework_requirements`.
+1. **Gate sentences in `assessment`** (high, occasional; uit, usn). Where:
+   `R/extract_sections.R`, `.split_inline_coursework()`, a sentence pattern
+   beside the label patterns. Examples `uit_GEO-2007-1_2008_autumn_1`,
+   `uit_BNS-1006-1_2022_spring_1`, `usn_OKLI3014-1_2018_autumn_1`. Expected:
+   up to 44 more UiT plans with a coursework section; at USN with the
+   inline split turned on.
+2. **usn: content in `assessment` on a text-fallback page** (high, one
+   sample plan; `usn_SMERTE100-1_2022_autumn_1`). Where: the USN text
+   reader or the text fallback. Find the cause and count how many USN plans
+   it affects.
+3. **usn practice courses** (high, persisting; `usn_BS-PLVI30-V-1_2018_autumn_3`,
+   `usn_050-E11-1_2018_autumn_1`): the open USN inline-split follow-up, and
+   the open question whether praksis is a section of its own.
+4. **uit English language field** (medium): "Language of instruction and
+   examination" is appended to `teaching_methods` on English pages
+   (`uit_BIO-3529-2_2025_autumn_2`); map it to `.drop` as the Norwegian
+   label is.
+5. **Exam logistics in `assessment`** (medium): uit "Re-sit examination"
+   and the exam-portal sentence, hiof inline resit and appeal rules.
+6. **Low and medium, no rule planned**: admission field holding prior
+   knowledge (uit), placeholders (uit, hiof), library-list metadata in USN
+   reading lists ("Fysikk 0 (LR-FYS1200) Kongsberg"), course-evaluation
+   notices in `teaching_methods` (uit).
 
 ## Changes since the previous run
 
-The six were not in the 2026-10-17 pilot sections run. Against the full run
-of 2026-10-13 (teacher education), the UiT arbeidskrav-in-assessment
-pattern persists for the 2008 layout (the later layouts are split since the
-NTNU commit of 2026-10-20).
+| inst | fixed | persisting | new |
+|---|---|---|---|
+| hiof | "Litteratur:" sub-heading, assessment noise | 2007 gate sentence and formative assessment in `assessment` | mandatory supervision in `teaching_methods`, inline logistics, placeholders, exam-design rules under other headings |
+| uit | 2008 arbeidskrav blocks (split), Norwegian language label | ODO-6302 layout, admission field, placeholders, gate sentences | English language field, exam logistics, prerequisites in other fields, exam language without an assessment row |
+| usn | placeholder reading list, generic notice | practice courses, library metadata | SMERTE100 boundary, resit rules, "Generelle opptakskrav." as prerequisites |
+
+## Re-rated findings
+
+Severity follows `findings_schema.md`: high is "wrong data a downstream
+analysis would silently use"; medium is "partial loss, recurring noise
+inside otherwise-correct text". The 2026-10-21 run rated the same classes
+low or medium at nih, uib and uia; to judge alike:
+
+- **hiof, 2007 gate sentence and Underveisvurdering in `assessment`
+  (high → medium)**: the coursework section of both plans holds the
+  requirements; `assessment` repeats "Godkjente arbeidskrav er et vilkår
+  for framstilling til eksamen." Formative assessment is assessment
+  design. Noise in otherwise-correct text.
+- **hiof, mandatory supervision in `teaching_methods` (high → medium)**:
+  one sentence ("Det gis to obligatoriske veiledningstimer per oppgave.")
+  missing from a coursework section that exists; partial loss.
+- **uit, mixed content under one heading (high → medium)**: ODO-6302's one
+  long "Om emnet" block was accepted as an unusual layout on 2026-10-21;
+  lecture hours (BIO-3515) and abilities (END-3602) in the page's own
+  content text would need a sentence classifier, at every institution.
+- **uit, prior knowledge outside `prerequisites` (high → medium)**:
+  LER-3101 and END-3602 under the admission field, RUS-3950 and BIO-3607
+  under teaching and content; rare, one sentence each.
+- **uit, exam language without an assessment row (high → low)**:
+  BIO-8806's page has no assessment form; the exam-language line alone.
+
+Kept high: the gate sentences at uit and usn (a plan without a coursework
+section while the page states its requirements), SMERTE100 (course content
+in `assessment`), USN's practice courses.
 
 ## Rejected findings
 
-None rejected. `uit_ODO-6302-1_2019_autumn_1` (high by the agent: the
-whole "Om emnet" block in `course_content`, the arbeidskrav in
-`learning_outcomes`) is kept but rated an unusual layout: the page has one
-long "Om emnet" block and puts the arbeidskrav under "Hva lærer du"
-itself; one specialist programme, accepted as a known limit (README,
-"Piloting an Institution", step 4).
+None.
 
 ## Verdict (`--pilot`, sections: `assessment`, `coursework`, `no_sections`, `unmapped_headings`)
 
 | inst | assessment | coursework | no_sections | unmapped | verdict |
 |---|---|---|---|---|---|
-| hiof | 1.00 (n 49) | .92 | 0 | .24 (n 774) | not ready |
-| nih | 1.00 (n 22) | .91 | 0 | .01 (n 156) | ready |
-| uib | 1.00 (n 46) | .83 | 0 | .37 (n 1774) | ready |
-| uia | 1.00 (n 76) | .88 | 0 | .32 (n 877) | ready |
-| usn | .97 (n 57) | .93 | 0 | 0 (n 566, not measured) | not ready |
-| uit | .98 (n 66) | .59 ⚑ | 0 | .37 (n 718) | not ready |
+| hiof | 1.00 (n 47) | .91 | 0 | .24 (n 774) | ready |
+| nih | 1.00 (n 22) | .91 | 0 | .01 (n 156) | ready (2026-10-21) |
+| uib | 1.00 (n 46) | .83 | 0 | .37 (n 1774) | ready (2026-10-21) |
+| uia | 1.00 (n 76) | .88 | 0 | .32 (n 877) | ready (2026-10-21) |
+| usn | .96 (n 57) | .93 | 0 | .03 (n 584) | not ready |
+| uit | .98 (n 66) | .62 ⚑ | 0 | .33 (n 760) | not ready |
 
-- **hiof — not ready.** Fix 1 (rebuild only).
-- **nih — ready.** Low finding only.
-- **uib — ready.** Medium and low findings only.
-- **uia — ready.** Medium and low findings only.
-- **usn — not ready.** Fix 3 (practice courses), and `unmapped_headings`
-  must be counted before it can be judged.
-- **uit — not ready.** `coursework` .59 < .70: 21 of the 27 plans without
-  a coursework section have no coursework text on the page (mostly 2008,
-  a known limit); 6 have arbeidskrav the split misses (fix 2). With fix 2
-  the share would be about .68, the rest on the site.
+- **hiof — ready.** No number flagged; medium and low findings only after
+  re-rating.
+- **usn — not ready.** Fix 2 (SMERTE100, cause unknown) and fix 3
+  (practice courses), with fix 1. `unmapped_headings` is now counted: .03,
+  "Annet", "Evaluering av emnet", "Miscellaneous" (none plan text).
+- **uit — not ready.** Fix 1. `coursework` .62 < .70: of the 25 sample
+  plans without a coursework section, 2 have a gate sentence in
+  `assessment` (`uit_GEO-2007-1_2008_autumn_1`,
+  `uit_FRI-2580-1_2019_autumn_1`) and 23 have no coursework text on the
+  page (mostly 2008, a known limit). With fix 1 the share would be about
+  .65; the rest is on the site.
+
+All three fixes are rebuilt from the raw store and need no new harvest.
 
 ### Most frequent unmapped headings
 
-All are facts-box labels or text about no part; none should map:
-
-- hiof: Emnet er tilknyttet følgende studieprogram (programmes),
-  Undervisningssemester (facts), Evaluering av emnet (course evaluation),
-  Arbeidsomfang (workload, facts).
-- nih: Reduksjon i studiepoeng (credit overlap).
-- uib: Undervisningssemester, Karakterskala, Studienivå (studiesyklus),
-  Studiepoeng, omfang, Masteremne, Lågaregradsemne (facts),
-  Administrativt ansvarlig, Programansvarlig, Emneansvarlig (staff and
-  units), Studiepoengsreduksjon (credit overlap).
-- uia: Emnet er tilknyttet/knytt til følgende studieprogram (programmes),
-  Studentevaluering (course evaluation), Undervisningsspråk, Tilbys som
-  enkeltemne, Tilgang for privatister/privatistar (facts), Reduksjon i
-  studiepoeng (credit overlap), Annen informasjon (mixed logistics).
-- usn: none counted (see above).
-- uit: Kontakt oss (contact), Andre år og semester / Previous years and
-  semesters (year picker), Emnet administreres av, Emnetype (facts),
-  Undervisnings- og eksamensspråk (facts; fix 2 drops it from
-  `teaching_methods`), Studiepoengreduksjon (credit overlap),
-  Søknadsfrist, Admission requirements, Information to incoming exchange
-  students (admission).
+Unchanged from 2026-10-21 for hiof and uit (facts box, programme lists,
+course evaluation, contact, year picker, admission; none should map). usn:
+Annet, Evaluering av emnet, Miscellaneous.

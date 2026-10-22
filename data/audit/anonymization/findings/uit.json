@@ -1,46 +1,26 @@
 {
   "check": "anonymization",
   "institution": "uit",
-  "model": "opus",
+  "model": "gpt-6.1-sol",
   "n_courses_reviewed": 28,
-  "n_suspects_reviewed": 15,
-  "overall_assessment": "Anonymization works well for UiT's current layouts (2019-2025): the semester label and exam hand-in/hand-out dates go, nothing else is touched, and no personal data appears in any of the 13 random controls. The one real gap is the 2008-2011 English-language layout, where the closing timetable block begins 'Lectures Autumn 2008' rather than 'Undervisning Høst 2008' and survives with lecturer names glued to their roles (3 published plans in data/processed/course_plans.RDS: SVF-3904, HIF-3022, STA-3003). The 'name_like' flags are false alarms (reference authors, 'Thorvald Stoltenberg Seminar', place names).",
+  "n_suspects_reviewed": 17,
+  "overall_assessment": "Reviewed all 28 packet entries (17 suspects and 11 random controls); no surviving personal data, substantive content loss or anonymization-induced structure damage was found in the supplied text, although two plans have explicit packet truncation markers. All ten name_like flags are false alarms from course/programme titles, organisations, places, formatting terminology or the named Thorvald Stoltenberg Seminar, and all six removed flags reflect appropriate timetable/contact removal with responsible units and reference authors retained. Both admin_date flags are genuine, and an additional unflagged English semester-year remains in SVF-6311; none of the random controls shows offering-specific administrative dating.",
   "findings": [
-    {
-      "target": "person_name",
-      "error_type": "pii_leak",
-      "severity": "medium",
-      "prevalence": "rare",
-      "example_course_ids": ["uit_SVF-3904-1_2008_autumn_1"],
-      "evidence": "Kursansvarlig[navn]",
-      "description": "Staff name (course coordinator) is left in course_plan. In the 2008-2011 English page layout, the closing timetable block keeps teachers glued to their role and title ('Kursansvarlig[navn]'). A search of data/processed/course_plans.RDS finds the same leak in two more published UiT plans: HIF-3022 2008 ('ForeleserF.aman.John OveLorentz ForeleserF.aman.MartinKrämer') and STA-3003 2008 ('ForeleserF.aman.[navn]', 'Ansvarlig lederF.aman.[navn]').",
-      "root_cause_hypothesis": "In .anon_uit() (R/anonymize.R), the last rule removes the timetable block only when it starts with 'Undervisning (?:Høst|Vår|Haust) \\d{4}'. English pages head it 'Lectures Autumn 2008' (the generic semester rule later removes 'Autumn 2008' and leaves 'Lectures First meeting: ...'), so the block survives. The glued 'RoleTitleName' form also escapes the generic role+name regexes, which need whitespace between role and name.",
-      "suggested_fix": "In .anon_uit(), widen the block rule to '(?s)(?:^|\\n)(?:Undervisning|Lectures|Teaching) (?:Høst|Vår|Haust|Autumn|Spring|Fall) \\d{4}.*$' and keep the 'Responsible unit' line (see the other finding). As a backstop, drop lines matching '(?m)^[^\\n]*\\t(?:Foreleser|Kursansvarlig|Ansvarlig leder|Lærer|Lecturer|Teacher)(?:F\\.aman\\.|Prof\\.|Dr\\.)?\\p{Lu}[^\\n]*$'. Add test cases from SVF-3904/STA-3003 2008 to tests/testthat/test-anonymize.R.",
-      "confidence": "high"
-    },
-    {
-      "target": "content_text",
-      "error_type": "over_removal",
-      "severity": "low",
-      "prevalence": "common",
-      "example_course_ids": ["uit_BED-6001-1_2008_autumn_1", "uit_BED-2017-1_2008_autumn_2", "uit_PED-3025-2_2008_autumn_1"],
-      "evidence": "Samling 4: Spesialisering 17-19. September 2008 Ansvarlig enhet Ressurssenter for undervisning, læring og teknologi (Result)",
-      "description": "In the 2008-2011 Norwegian layout, the timetable-block rule removes everything to the end of the text, including the closing 'Ansvarlig enhet <unit>' line. Organisation names are metadata that must be kept, and the current layouts and the English 2008 pages (e.g. SVF-3904) keep them. All four Norwegian 2008 pages in the packet lose the line (BED-6001, BED-2017, STV-2010, PED-3025).",
-      "root_cause_hypothesis": "In .anon_uit(), stringr::str_remove('(?s)(?:^|\\n)Undervisning (?:Høst|Vår|Haust) \\d{4}.*$') runs to the end of the text with '.*$' and does not stop before 'Ansvarlig enhet'.",
-      "suggested_fix": "End the block rule at a lookahead: '(?s)(?:^|\\n)Undervisning (?:Høst|Vår|Haust) \\d{4}.*?(?=\\n?Ansvarlig enhet|\\n?Responsible unit|\\z)'. If the unit sits on the same line, also insert the line break it needs.",
-      "confidence": "medium"
-    },
     {
       "target": "admin_date",
       "error_type": "admin_date_left",
       "severity": "low",
       "prevalence": "occasional",
-      "example_course_ids": ["uit_SVF-6311-1_2008_autumn_2", "uit_HEL-6308-1_2019_autumn_1", "uit_BED-6001-1_2008_autumn_1"],
-      "evidence": "re-sit examination for students who fail early in the Spring semester 2009",
-      "description": "Some semester labels with a year and some dated deadlines in free-text fields stay: 'Spring semester 2009' (a semester label with a year; the generic season rule seems to miss the 'Spring semester YYYY' word order), 'Søknadsfrist 15. mai 2019' and 'Kull 2019 har studiested Bodø' (HEL-6308), and the session dates '28-30. nov. 2007 ... 17-19.september 2008' inside BED-6001's Undervisningsform. These are administrative dating, not personal data. Impact is low.",
-      "root_cause_hypothesis": "In the generic semester/date handling (.season_regex usage in R/anonymize.R), the English 'Spring semester 2009' form with the year after 'semester' is apparently not covered, and the generic rules do not target day-month-year deadlines after 'Søknadsfrist'.",
-      "suggested_fix": "Extend the semester-label rule to '(?i:spring|autumn|fall)[ \\t]+semester[ \\t]+\\d{4}', and in .anon_uit() remove the year from the 'Søknadsfrist' value ('(?m)^(Søknadsfrist\\n[^\\n]*?\\d{1,2}\\.[ \\t]*\\p{L}+)[ \\t]+\\d{4}' -> '\\1'). Leave session schedules as they are unless the spec counts them as administrative.",
-      "confidence": "medium"
+      "example_course_ids": [
+        "uit_BED-6001-1_2008_autumn_1",
+        "uit_HEL-6308-1_2019_autumn_1",
+        "uit_SVF-6311-1_2008_autumn_2"
+      ],
+      "evidence": "Samling 1: Markedsstrategi - 28-30. nov. 2007 … Kull 2019 har studiested Bodø. … 15. mai 2019 … re-sit examination for students who fail early in the Spring semester 2009.",
+      "description": "Three of 28 plans retain offering-specific administrative dating. BED-6001 retains four dated teaching sessions in Undervisningsform, ranging from November 2007 to September 2008, even though its separate timetable block is removed. HEL-6308 retains the application deadline 15. mai 2019 and the cohort stamp Kull 2019. SVF-6311 retains Spring semester 2009 in its re-sit arrangements, a real date leak missed by the pre-pass because it was flagged only name_like. These dates identify particular offerings rather than literature, historical subject matter or government documents; the defect is occasional rather than institution-wide in this packet.",
+      "root_cause_hypothesis": "R/anonymize.R: .anon_uit() removes the closing timetable block and numeric exam dates, but does not cover dated sessions embedded in teaching prose, year-bearing application deadlines or cohort stamps. In .anon_generic(), long-form dates are removed only in approval/update or timestamp contexts, administrative-year keywords omit Kull, and .season_regex requires the year immediately after an English season rather than allowing the intervening word semester.",
+      "suggested_fix": "Extend the generic season-year pattern to accept English spring/autumn/fall semester YYYY. Add contextual UiT rules that remove full day/range-month-year dates after Samling N: topic and under Søknadsfrist, including abbreviated month names and cross-month ranges; retain the session topics and teaching methods. Normalize Kull YYYY to Kullet in cohort prose while retaining its location. Keep existing government-document and reference protections, and verify all three packet examples alongside unchanged reading-list years and yearless recurring course schedules.",
+      "confidence": "high"
     }
   ]
 }
