@@ -30,7 +30,9 @@
 # many codes have a page in another offering: a cause that hits a whole group
 # of codes (NTNU's "-A" codes, 2026-10) shows as such.
 #
-# Inputs:  the raw harvest (harvested_rows()) + data/interim/extracted_text.RDS
+# Inputs:  the raw harvest (harvested_rows()) + data/interim/extracted_text.RDS;
+#          with --pilot, for plan_years "current" sites, the pilot run itself
+#          (pilot_run_rows())
 # Outputs: data/audit/fulltext/packets/{inst}.md, manifest.csv, sample.csv
 #
 # Run:  Rscript R/audit/prepare_fulltext.R [inst ...] [--pilot]
@@ -60,6 +62,8 @@ source("R/extract_fulltext.R")      # pre/post fns used by institution_config
 source("R/institution_config.R")
 source("R/pipeline.R")              # harvested_rows()
 source("R/add_course_url.R")        # read_harvest() of url_year sites
+source("R/section_heading_map.R")   # blocks.R: page_blocks() for pilot_run_rows()
+source("R/blocks.R")
 
 JUNK_RX <- regex(paste(
   "informasjonskapsler", "\\bcookies?\\b", "hopp til (hoved)?innhold",
@@ -150,6 +154,29 @@ page_years <- function(heading_year, txt) {
   unique(yrs[!pair | (as.integer(m[, 8]) - yrs) %% 100 == 1])
 }
 
+# With --pilot, a site that shows only the current plan (plan_years
+# "current"; README "Sites that show only the current plan"): the pilot
+# sample's offerings with the page fetched for each in its latest run (the
+# pilot run), which read_harvest() gives only to offerings of the page's
+# academic year (2026/27 pages, a DBH snapshot without 2026, 2026-10-22).
+# extracted_text comes from the pipeline's extraction
+# (extract_fulltext_from_raw()), the fetch error is prefixed by its outcome
+# class in the run's ledger, and `page_year` (the page's academic year) is
+# what the year flag checks.
+pilot_run_rows <- function(inst, cfg) {
+  files <- harvest_files(inst)
+  rows <- audit_pilot_rows(read_raw(files, run = TRUE), inst)
+  rows <- rows[!duplicated(offering_key(rows$course_id), fromLast = TRUE), ]
+  rows$extracted_text <- extract_fulltext_from_raw(rows, cfg)
+  rows$page_year <- as.integer(substr(academic_year_of_date(
+    harvest_date(rows$.run, rows[["harvested_at"]])), 1, 4))
+  led <- raw_ledger(files[raw_run(files) %in% rows$.run])
+  out <- led$outcome[match(paste(rows$.run, rows$course_id), paste(led$run, led$course_id))]
+  rows$html_error <- if_else(is.na(rows$html_error), NA_character_,
+                             paste0(coalesce(out, "?"), ": ", rows$html_error))
+  rows
+}
+
 # ── Per institution ──────────────────────────────────────────────────────────
 institutions <- sort(harvested_institutions())
 requested <- audit_args_institutions()
@@ -165,7 +192,9 @@ for (inst in institutions) {
     cat(sprintf("  %-8s skipped (noop strategy, no extracted text by design)\n", inst))
     next
   }
-  df <- audit_pilot_rows(harvested_rows(inst), inst)   # extracted_text from the {targets} pipeline
+  current_pilot <- audit_pilot() && identical(cfg$plan_years, "current")
+  df <- if (current_pilot) pilot_run_rows(inst, cfg) else
+    audit_pilot_rows(harvested_rows(inst), inst)   # extracted_text from the {targets} pipeline
   df <- df |>
     mutate(
       html_error_msg = vapply(html_error, error_msg, character(1)),
@@ -191,7 +220,7 @@ for (inst in institutions) {
   df <- df |>
     left_join(codes_per_text, by = "dedup_key") |>
     mutate(
-      acad_year     = academic_start_year(year, semester_name),
+      acad_year     = coalesce(df[["page_year"]], academic_start_year(year, semester_name)),
       page_yrs      = purrr::map2(as.integer(str_match(coalesce(html, ""), PLAN_YEAR_RX)[, 2]),
                                   extracted_text, page_years),
       flag_empty    = has_html & txt_nchar == 0,
@@ -280,6 +309,12 @@ for (inst in institutions) {
     sprintf("- Harvest config: strategy `%s`, selector `%s` (%s), plan_years %s",
             cfg$strategy, cfg$selector %||% "-", cfg$selector_mode %||% "-",
             cfg$plan_years %||% NA),
+    if (current_pilot) sprintf(paste(
+      "- Pages of the pilot run (%s): the %s plans the site showed then, each matched to the DBH",
+      "offering (pilot sample) it was fetched for; the offering's year is not the page's, and the",
+      "`year` flag checks the page's. Fetch errors carry their outcome class from the run's fetch ledger."),
+      paste(unique(df$.run), collapse = ", "),
+      paste(sprintf("%d/%d", unique(df$page_year), unique(df$page_year) + 1), collapse = ", ")),
     sprintf("- %d course offerings; %d with a fetched page; %d with extracted text; median length %d chars",
             nrow(df), sum(df$has_html), sum(df$txt_nchar > 0),
             as.integer(median(df$txt_nchar[df$txt_nchar > 0]))),
@@ -299,9 +334,11 @@ for (inst in institutions) {
     kind <- selected$kind[i]
     r <- df[match(cid, df$course_id), ]
     on <- str_remove(flag_cols[unlist(r[flag_cols]) %in% TRUE], "^flag_")
-    on[on == "year"] <- sprintf("year (page for %s, offering in %d/%d)",
+    on[on == "year"] <- sprintf("year (page for %s, %s %d/%d)",
                                 paste(sprintf("%d/%d", r$page_yrs[[1]], r$page_yrs[[1]] + 1),
-                                      collapse = ", "), r$acad_year, r$acad_year + 1)
+                                      collapse = ", "),
+                                if (current_pilot) "pilot run in" else "offering in",
+                                r$acad_year, r$acad_year + 1)
     lines <- c(lines,
       sprintf("---\n\n## COURSE %d — `%s`  [%s]", i, cid, kind),
       "",
