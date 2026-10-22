@@ -163,6 +163,32 @@ test_that("ntnu: a course content that only points to the English text gives the
   expect_length(sent, 1)
 })
 
+test_that("nmbu: an 'Om dette emnet' that only points to the English text gives the English page", {
+  local_robots("www.nmbu.no")
+  sent <- character()
+  page <- function(about) {
+    html_page(paste0('<h3>Om dette emnet</h3><div class="cke">', about, '</div></div><h3>Dette lærer du</h3>',
+                     '<div class="cke">Se engelsk emnebeskrivelse</div>'))
+  }
+  httr2::local_mocked_responses(function(req) {
+    sent <<- c(sent, req$url)
+    if (grepl("/en/course/", req$url)) page("About this course") else
+      page(c(`M60-IES` = "Se engelsk emnebeskrivelse ", `NOVA-416` = "<em>See English text</em>",
+             VET354A = "Anatomi. Se engelsk emnebeskrivelse for pensum.")[[basename(req$url)]])
+  })
+  cfg <- utils::modifyList(get_institution_config("nmbu"), list(request_delay = 0))
+  out <- fetch_html_cols("https://www.nmbu.no/emne/M60-IES", "nmbu", cfg, .progress = FALSE)
+  expect_match(out$html, "About this course")
+  expect_equal(sent, c("https://www.nmbu.no/emne/M60-IES", "https://www.nmbu.no/en/course/M60-IES"))
+  out <- fetch_html_cols("https://www.nmbu.no/emne/NOVA-416", "nmbu", cfg, .progress = FALSE)
+  expect_equal(sent[4], "https://www.nmbu.no/en/course/NOVA-416")
+  # a plan that mentions the English description, and the pointer in a later accordion, stay
+  sent <- character()
+  out <- fetch_html_cols("https://www.nmbu.no/emne/VET354A", "nmbu", cfg, .progress = FALSE)
+  expect_match(out$html, "Anatomi")
+  expect_length(sent, 1)
+})
+
 test_that("harvest_all() writes the fetch ledger with the run, and a retry skips pages not found", {
   local_hiof()
   httr2::local_mocked_responses(function(req) {

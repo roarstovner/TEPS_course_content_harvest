@@ -52,7 +52,7 @@
 #                its part `from` replaced by `to` (fetch_html_cols_single());
 #                the row keeps the Norwegian URL. A page with the notice in
 #                the raw store (fetched before the notice was known) gives
-#                no plan (plan_offerings()). hvl, nord, ntnu.
+#                no plan (plan_offerings()). hvl, nmbu, nord, ntnu.
 #
 # robots_permission: the institution's permission to harvest paths its
 #                robots.txt disallows for all user agents, recorded as
@@ -482,6 +482,15 @@ institution_configs <- list(
     # workload, teaching period)
     facts = c(".layout article header", ".layout section.grid-container"),
     plan_years = "current",
+    # A course whose plan is only in English: the Norwegian page's "Om dette
+    # emnet" (and every accordion) says "Se engelsk emnebeskrivelse" or "See
+    # English text" (2025); /en/course/{code} has the plan, the same layout
+    # with English headings
+    english_page = list(
+      notice = paste0('<h3>Om dette emnet</h3><div class="cke">\\s*(?:<em>\\s*)?',
+                      '(?i:se engelsk (?:emnebeskrivelse|tekst|beskrivelse)|see english (?:text|version|description))',
+                      '\\.?\\s*(?:</em>\\s*)?</div>'),
+      from = "/emne/", to = "/en/course/"),
     section_strategy = "html",
     # sections are details accordions; the 2026-04 pages head them with
     # <summary> only, later pages put an <h3> inside it

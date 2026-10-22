@@ -1187,6 +1187,19 @@ only the courses that have a page: 5 for 2021, 22 for 2022, 163 for 2025. A
 404 for a course the index of its year does not list is final: NIH has no
 page for it (`data/data_notes.qmd`, NIH).
 
+**NMBU.** The page is `https://www.nmbu.no/emne/{CODE}`, with the code
+without Norwegian letters (MILJØ300 is `MILJO300`; with Ø, raw or
+percent-encoded, the site answers 404; since 2026-10-22). Only the plan in
+force is published (`plan_years = "current"`). A course whose plan is only in
+English has a Norwegian page whose "Om dette emnet", and every accordion, says
+only "Se engelsk emnebeskrivelse" or "See English text"; the harvest then
+fetches the English page, `https://www.nmbu.no/en/course/{CODE}`
+(`english_page` in the config, as at HVL, Nord and NTNU), which has the same
+layout with English headings, and the row keeps the Norwegian URL. A pointer
+page in the raw store gives no plan, and NMBU's snapshot is once a year, so
+fetch it again with `harvest_all(courses, institutions = "nmbu")` for those
+offerings alone.
+
 **NORD.** The URL needs Norwegian characters in the semester parameter
 (`HØST`/`VÅR`); ASCII `HOEST` falls back to a generic "Gjeldende
 emnebeskrivelse" page without year-specific content. The site maps each

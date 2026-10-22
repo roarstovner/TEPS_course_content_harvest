@@ -135,5 +135,10 @@ add_course_url_uis <- function(course_code_raw) {
 # USN URL generation removed - requires version discovery via resolve_course_urls()
 
 add_course_url_nmbu <- function(course_code) {
-  glue::glue("https://www.nmbu.no/emne/{toupper(course_code)}")
+  # The site names the page without the Norwegian letters, as Vortex does
+  # (MILJØ300 → MILJO300; with Ø, raw or percent-encoded, it answers 404;
+  # verified 2026-10-22)
+  slug <- toupper(course_code) |>
+    stringr::str_replace_all(c("Ø" = "O", "Å" = "A", "Æ" = "AE"))
+  glue::glue("https://www.nmbu.no/emne/{slug}")
 }

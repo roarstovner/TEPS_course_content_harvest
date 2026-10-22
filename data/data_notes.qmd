@@ -260,6 +260,8 @@ Figures are in the tables above; the notes say why.
 ### NMBU (Norwegian University of Life Sciences)
 
 - Only the plan in force is published (`plan_years = "current"`; see "Year coverage"); few course codes. Rows without a plan are 404s for discontinued courses, or spring 2025 offerings
+- A course whose plan is only in English (M60-IES and NOVA-416 in the pilot sample, 4 offerings) has a Norwegian page with "Se engelsk emnebeskrivelse" or "See English text" under every heading; since 2026-10-22 the English page (`/en/course/{code}`) is fetched instead (`english_page` in the config). A page fetched before gives no plan
+- A course code with a Norwegian letter is in the site's URL without it (MILJØ300 is `MILJO300`); until 2026-10-22 the harvest requested the letter and got 404
 
 ---
 
