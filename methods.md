@@ -1208,49 +1208,59 @@ change. *Since:* 2026-10-22.
 coursework requirements, at every institution; USN’s inline split is
 on.** A sentence in assessment that names a gate (approval, arbeidskrav,
 obligatory work, attendance, exercises) and makes it a condition for the
-exam or for passing the course moves to coursework requirements by
-itself; the rest of its line stays (“Kurset avsluttes med 4 t skriftlig
-eksamen. Tilgang til slutteksamen forutsetter godkjente øvelser.”,
-“Godkjend obligatorisk arbeid er ein føresetnad for å gå opp til
-eksamen.”, “Arbeidskrav inngår ikke i karakteren, men må … være godkjent
-… for at emnet skal være bestått.”, “The assignments have to be approved
-… before students are allowed to sit the final exam.”). One that ends in
-a colon takes the list under it, up to a paragraph that no longer speaks
+exam, for handing in or presenting the work that is assessed, for being
+assessed or graded, or for passing the course moves to coursework
+requirements by itself; the rest of its line stays (“Kurset avsluttes
+med 4 t skriftlig eksamen. Tilgang til slutteksamen forutsetter
+godkjente øvelser.”, “Godkjend obligatorisk arbeid er ein føresetnad for
+å gå opp til eksamen.”, “Arbeidskrav inngår ikke i karakteren, men må …
+være godkjent … for at emnet skal være bestått.”, “For å kunne
+fremstille prosjektoppgaven til vurdering må deltakerne ha fått godkjent
+på mellomperiodearbeidet.”, “Arbeidskrav må være godkjent for å få
+endelig karakter i emnet.”, “The assignments have to be approved …
+before students are allowed to sit the final exam.”). One that ends in a
+colon takes the list under it, up to a paragraph that no longer speaks
 of a gate, a label naming other information or a line about the exam.
 UiT’s English labels “Requirements” and “Assignments:” are gate labels.
 Sentences stay when they are about the exam’s own parts (“Begge
 deleksamener må være bestått …”, “Mappen må … være vurdert til bestått
-før … muntlig eksamen”), are a row of an exam table, have no subject of
-their own (“Må være godkjent for å …”), or count towards the grade (then
-they are copied, as for gate lines). The label split
-(`section_inline_coursework`) is now on for USN: a hard-wrapped sentence
-in USN’s text is read as one line, so it is no longer cut in two, and a
-percentage in parentheses (“Obligatorisk arbeid (40%)”) marks a graded
-part unless it is a share of attendance (“Obligatorisk frammøte (80%)”).
-USN’s stock line “Pensum-/litteraturliste er ikke publisert ennå.” also
-goes from the end of a reading list, and “Ikke bestemt.” and “Ingen så
-langt.” alone are placeholders. *Why:* by the spec coursework
-requirements hold what must be approved before the exam, also when the
-page writes it under assessment; after the pilot sections audit of
-2026-10-22 flagged them, the whole build had such sentences in
-assessment in 258 plans (UiT 76, 56 of them with no coursework section;
-USN 75; NTNU 59; UiB 26; Nord 13; UiO 7; HiØF 2). *Rejected:* applying
-the sentence rule only where the label split is on (UiB, UiO and HiØF
-write the same sentences, 35 plans, and the rule needs no per-site
-layout); moving the whole paragraph of a gate sentence (UiT 2008 plans
-put the exam, the gate and the grading in one paragraph); counting any
-sentence with “godkjent” and “eksamen” (the exam’s own parts and “48
-timer før eksamen trekker kandidaten …” matched); treating “bestått” as
-a gate word (“Praksis må være bestått før eksamen kan avlegges” stays,
-praksis being a graded part of many plans). *Consequence:* the
-assessment and coursework text of 337 plans changes: UiT 152, USN 81
-(and 20 reading lists), NTNU 56, UiB 26, Nord 13, UiO 7, HiØF 2. 65
-plans get a coursework section (UiT 2,208 to 2,264, UiO 15 to 21, Nord
-1,105 to 1,107, USN 1,224 to 1,225); the UiO median coursework section
-falls from 677 to 506 characters, since the new ones hold one sentence.
-Plans with a gate sentence left in assessment fall from 258 to 5 (NTNU,
-where it shares a line with a graded part and is copied). `course_plan`
-and the plan ids do not change. *Since:* 2026-10-22.
+før … muntlig eksamen”, “alle delene må være godkjent … for å få endelig
+karakter”, “… er deleksamen som må være godkjent …”), are a row of an
+exam table, have no subject of their own (“Må være godkjent for å …”),
+or count towards the grade (then they are copied, as for gate lines).
+The label split (`section_inline_coursework`) is now on for USN: a
+hard-wrapped sentence in USN’s text is read as one line, so it is no
+longer cut in two, and a percentage in parentheses (“Obligatorisk arbeid
+(40%)”) marks a graded part unless it is a share of attendance
+(“Obligatorisk frammøte (80%)”). USN’s stock line
+“Pensum-/litteraturliste er ikke publisert ennå.” also goes from the end
+of a reading list, and “Ikke bestemt.” and “Ingen så langt.” alone are
+placeholders. *Why:* by the spec coursework requirements hold what must
+be approved before the exam, also when the page writes it under
+assessment; after the pilot sections audit of 2026-10-22 flagged them,
+the whole build had such sentences in assessment in 360 plans (Nord 80;
+USN 79; UiT 77, 57 of them with no coursework section; NTNU 63; UiB 32;
+OsloMet 9; UiO 8; UiS 5; HiØF, NLA and UiA 2 each; Steiner 1).
+*Rejected:* applying the sentence rule only where the label split is on
+(other institutions write the same sentences, 61 plans, and the rule
+needs no per-site layout); moving the whole paragraph of a gate sentence
+(UiT 2008 plans put the exam, the gate and the grading in one
+paragraph); counting any sentence with “godkjent” and “eksamen” (the
+exam’s own parts and “48 timer før eksamen trekker kandidaten …”
+matched); treating “bestått” as a gate word (“Praksis må være bestått
+før eksamen kan avlegges” stays, praksis being a graded part of many
+plans); only the exam as the condition (the first version of the rule,
+the morning of 2026-10-22, left 103 sentences such as “… for å få
+endelig karakter i emnet” and “… til vurdering”). *Consequence:* the
+assessment and coursework text of 443 plans changes: UiT 154, USN 85
+(and 20 reading lists), Nord 80, NTNU 63, UiB 32, OsloMet 9, UiO 8, UiS
+5, HiØF, NLA and UiA 2 each, Steiner 1. 67 plans get a coursework
+section (UiT 2,208 to 2,265, UiO 15 to 21, Nord 1,105 to 1,109, USN
+1,224 to 1,225); the UiO median coursework section falls from 677 to 506
+characters, since the new ones hold one sentence. Plans with a gate
+sentence left in assessment fall from 360 to 5 (NTNU, where it shares a
+line with a graded part and is copied). `course_plan` and the plan ids
+do not change. *Since:* 2026-10-22.
 
 **HVL: exam logistics and costs leave the sections.** A sentence goes
 from any HVL section when it points to Studentweb or says where the

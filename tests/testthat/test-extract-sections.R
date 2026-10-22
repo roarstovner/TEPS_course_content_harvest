@@ -963,7 +963,16 @@ test_that("a gate sentence moves to coursework_requirements, at every institutio
               "For å kunne gå opp til eksamen må alle obligatoriske arbeidskrav være bestått.",
               "Obligatoriske innleveringer og terminprøve (juleprøve) må være bestått for å få adgang til avsluttende eksamen.",
               "Approval of this assignment is required in order to take the final exam.",
-              "1 individual assignment must be approved in order to be allowed to take the written examination.")) {
+              "1 individual assignment must be approved in order to be allowed to take the written examination.",
+              # a condition for handing in, presenting or grading the assessed work
+              "For å kunne fremstille prosjektoppgaven til vurdering må deltakerne ha fått godkjent på mellomperiodearbeidet.",
+              "Arbeidskrav må være godkjent for å få endelig karakter i emnet.",
+              "For å kunne få endelig vurdering i emnet, må både OD og AK være vurdert til godkjent.",
+              "Dei obligatoriske arbeidskrava må vere godkjende før ein kan få oppgåva vurdert.",
+              "Alle oppgaver i kurset må være gjennomført og godkjent for at eksamensoppgaven skal kunne innleveres.",
+              "All obligatorisk aktivitet må være bestått for å kunne levere bacheloroppgaven.",
+              "Arbeidskrav og obligatorisk deltakelse må være bestått for fremstilling til hjemmeeksamen.",
+              "The teacher must approve all three work requirements before the student can submit the semester paper.")) {
     expect_equal(split("Skriftlig eksamen.", x, labels = FALSE)[["coursework_requirements"]], x)
   }
   # usn's hard-wrapped sentence moves whole, line break and all
@@ -998,6 +1007,15 @@ test_that("a gate sentence moves to coursework_requirements, at every institutio
   expect_equal(s[["assessment"]], "\nEksamen og vurdering\nMuntlig eksamen.")
 })
 
+test_that("a gate sentence moved after the FS timestamp is kept (uia)", {
+  out <- tibble::tibble(section = c("assessment", "coursework_requirements"), raw_text = c(
+    "Vurderes til Bestått/Ikke bestått.\nFor at de kliniske studiene skal vurderes til Bestått, må studenten ha oppfylt kravet om tilstedeværelse.",
+    "Studenten må ha fått godkjent to refleksjonsnotat.\nSist hentet fra FS (Felles studentsystem) 16. okt. 2026 11:44:59"))
+  res <- .clean_sections(.split_inline_coursework(out, FALSE), "uia")
+  expect_equal(res$raw_text[2], paste("Studenten må ha fått godkjent to refleksjonsnotat.",
+    "For at de kliniske studiene skal vurderes til Bestått, må studenten ha oppfylt kravet om tilstedeværelse.", sep = "\n\n"))
+})
+
 test_that("exam parts, exam tables and graded components stay in assessment", {
   keep <- function(x, labels = FALSE) {
     out <- tibble::tibble(section = "assessment", raw_text = x)
@@ -1009,6 +1027,10 @@ test_that("exam parts, exam tables and graded components stay in assessment", {
   keep("Studenten leverer ein tekst. Begge må vere bestått for å få godkjent eksamen.")
   keep("Alle delene må være godkjent/bestått for å få endelig karakter i emnet.")
   keep("Praksis må være bestått før eksamen kan avlegges.")
+  keep("Emnet har en sammensatt vurdering som betyr at alle delene må være godkjent og bestått for å få endelig karakter i emnet.")
+  keep("Friluftsliv, skikurs og kanotur er deleksamen som må være godkjent for å få karakter i emnet.")
+  keep("Alle de 4 elementene i vurderingsmappen må vurderes som bestått for at kandidaten skal få godkjent vurderingsmappen.")
+  keep("For å bestå en modul må man bestå modulens test og levere et godkjent inkrement av prosjektet.")
   # a sentence without a subject names its gate in the sentence before (uis)
   keep("Mappe bestående av 6 mindre arbeider. Må være godkjent for å kunne gå opp til eksamen.")
   # a row of an exam table (hivolda)

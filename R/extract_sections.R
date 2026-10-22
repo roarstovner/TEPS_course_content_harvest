@@ -455,26 +455,32 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # emnet skal være bestått.", "The assignments have to be approved ... before
 # students are allowed to sit the final exam." It names a gate (approval,
 # arbeidskrav, attendance, obligatory work) and a condition (must ... before
-# or in order to sit the exam, access to the exam, passing the course). Not a
-# row of an exam table (tabs), nor a sentence about the exam's own parts
-# ("Begge deleksamener må være bestått ...", "Mappen må være godkjent ..."),
+# or in order to sit the exam, to hand in or present the work that is
+# assessed, to be assessed or graded, access to the exam, passing the
+# course): "For å kunne fremstille prosjektoppgaven til vurdering må
+# deltakerne ha fått godkjent ...", "Arbeidskrav må være godkjent for å få
+# endelig karakter i emnet.", "... før ein kan få oppgåva vurdert.", "...
+# before the student can submit the semester paper." Not a row of an exam
+# table (tabs), nor a sentence about the exam's own parts ("Begge
+# deleksamener må være bestått ...", "Mappen må være godkjent ...", "alle
+# delene må være godkjent ... for å få endelig karakter", "... er deleksamen
+# som må være godkjent ...", "få godkjent vurderingsmappen"),
 # nor one without a subject ("Må være godkjent for å ...", which names its
 # gate in the sentence before).
 .gate_sentence_regex <- paste0(
-  "(*UCP)(?is)^(?=[^\\t]*$)",
-  "(?=.*\\b(?:(?:godkje?n|approv)\\w*+(?!\\W+(?:\\w+\\W+)?e(?:ks|x)am)|arbeidskrav|obligatori|compulsory|mandatory|coursework|øving|",
+  "(*UCP)(?is)^(?=[^\\t]*$)(?!.*\\b(?:(?:alle|begge) (?:del(?:er|ene|ar|ane)|\\w*eksam\\w*)|er (?:en )?deleksamen)\\b)",
+  "(?=.*\\b(?:(?:godkje?n|approv)\\w*+(?!\\W+(?:\\w+\\W+)?(?:e(?:ks|x)am|\\w*vurdering|\\w*mappe))|arbeidskrav|obligatori|compulsory|mandatory|coursework|øving|",
   "øvelse|oppmøte|frammøte|fremmøte|tilstedeværelse|nærvær|attendance|participation|assignments?\\b))",
   "(?!\\W*(?:må|skal|must)\\b)(?!\\W*(?!(?:for (?:å|at)|in order|before|to)\\b)(?:\\w+\\W+){0,4}?(?:\\w*eksam|\\w*exam|delvurdering|",
   "del(?:er|ene|ar|ane)\\b|parts?\\b|mappe|portfolio)\\w*\\W+(?:\\w+\\W+){0,6}?(?:må|skal|must|ha(?:ve|s) to)\\b)",
-  "(?=.*(?:\\b(?:må|skal)\\b.{0,150}\\b(?:før|innan|innen)\\b.{0,60}(?:eksam|vurdering|sluttprøv)|",
-  "\\b(?:må|skal)\\b.{0,150}\\bfor (?:å|at)\\b.{0,60}\\b(?:gå|framstill|fremstill|avlegg|ta|levere|meld|få)",
-  "\\w*\\b.{0,40}eksam|",
-  "\\bfor (?:å|at)\\b.{0,60}\\b(?:gå opp|framstill|fremstill|avlegg)\\w*.{0,40}eksam\\w*,? (?:må|skal)\\b|",
+  "(?=.*(?:\\b(?:må|skal)\\b.{0,150}\\b(?:før|innan|innen)\\b.{0,60}(?:eksam|vurder|sluttprøv)|",
+  "\\b(?:må|skal)\\b.{0,150}\\bfor (?:å|at|(?:fram|frem)stilling til)\\b.{0,80}(?:eksam|vurder|(?:inn)?lever|framstill|fremstill|karakter)|",
+  "\\bfor (?:å|at)\\b.{0,60}\\b(?:gå opp|framstill|fremstill|avlegg|lever|vurder|få (?:\\w+ ){0,2}vurder)\\w*.{0,60},? (?:må|skal)\\b|",
   "\\b(?:må|skal)\\b.{0,150}\\bfor (?:å|at) (?:bestå\\b|(?:emnet|faget) skal (?:være|vere|kunne) bestått|",
   "få (?:emnet|faget) bestått)|",
   "\\b(?:tilgang|adgang|rett|vilkår|forutsetning|føresetnad)\\b (?:til|for) (?:å )?(?:\\w+ ){0,4}?\\w*(?:eksam|prøve)|",
   "\\b(?:must|ha(?:ve|s) to|required?|need|prerequisite|condition)\\b.{0,150}\\b(?:before|prior to|",
-  "in order to|allowed to|admitted to|eligible|qualif\\w*)\\b.{0,60}\\b(?:\\w*exam|assessment)|",
+  "in order to|allowed to|admitted to|eligible|qualif\\w*)\\b.{0,60}\\b(?:\\w*exam|assessment|submit)|",
   "\\b(?:before|in order to)\\b.{0,60}\\bexam\\w*,? .{0,60}\\b(?:must|need|have to|has to|required?)\\b))")
 
 # A hard-wrapped sentence (usn's text) is read as one line: a line that
@@ -743,10 +749,12 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 
 .clean_section_text <- function(text, section) {
   if (is.na(text)) return(text)
-  # Trailing FS (Felles studentsystem) page-generation timestamp is admin
-  # boilerplate appended at harvest time, never section content.
+  # The FS (Felles studentsystem) page-generation timestamp is admin
+  # boilerplate appended at harvest time, never section content. It ends the
+  # page (uia, hiof), but a gate sentence moved from assessment may follow it
+  # in coursework, so only its line goes.
   text <- stringr::str_remove(
-    text, "(?s)\\s*Sist hentet fra FS \\(Felles studentsystem\\).*$")
+    text, "\\s*Sist hentet fra FS \\(Felles studentsystem\\)[^\n]*")
   # A leading line that merely repeats this section's own heading is noise
   # (e.g. uia "Læringsutbytte" echoed as the first body line). Use an EXACT
   # match against the heading patterns (not the substring matcher) so we never
