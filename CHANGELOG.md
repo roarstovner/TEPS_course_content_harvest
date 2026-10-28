@@ -103,6 +103,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- mf, nmbu: glued inline text and stock boilerplate in extracted text (#462)
+- uio: login page saved as ok; exam-help navigation, status notices, BinaryValueReference (#461)
 - oslomet: prerequisite cleanup cuts the second branch of an either/or entry condition (#465)
 - sections: coursework requirements under the teaching or content heading (#463)
 - uit: gate sentence 'For å kunne fremstille X til vurdering må ... godkjent' left in assessment (#460)
