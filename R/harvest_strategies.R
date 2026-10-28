@@ -1,34 +1,17 @@
 # R/harvest_strategies.R
 # Strategy implementations for the config-driven harvest pipeline.
-# Each function receives (df, config, refetch) and returns df with
-# url, html, html_error, html_success, extracted_text columns.
+# Each function receives (df, config) and returns df with url, html,
+# html_error (text), html_success, extracted_text columns. Checkpoints are in
+# R/checkpoint.R; harvest_institution() removes them for a refetch.
 
 # --- Helpers ---
-
-#' Build checkpoint file path for an institution
-#' @param config Institution config (must have $name)
-#' @param type Checkpoint type: "html", "urls", "discovery", "pdf"
-strategy_checkpoint_path <- function(config, type = "html") {
-  file.path(RAW_DIR, "checkpoint", paste0(type, "_", config$name, ".RDS"))
-}
-
-#' Clear checkpoint if refetch is requested
-#' @param path Checkpoint file path
-#' @param refetch Logical — if TRUE, delete the checkpoint
-clear_if_refetch <- function(path, refetch) {
-  if (refetch && file.exists(path)) {
-    message("Refetch requested — clearing checkpoint: ", path)
-    file.remove(path)
-  }
-  invisible(NULL)
-}
 
 #' Ensure uniform output columns exist on df
 #' Adds missing columns with appropriate NA types.
 ensure_output_columns <- function(df) {
   if (!"url" %in% names(df)) df$url <- NA_character_
   if (!"html" %in% names(df)) df$html <- NA_character_
-  if (!"html_error" %in% names(df)) df$html_error <- vector("list", nrow(df))
+  if (!"html_error" %in% names(df)) df$html_error <- NA_character_
   if (!"html_success" %in% names(df)) df$html_success <- NA
   if (!"extracted_text" %in% names(df)) df$extracted_text <- NA_character_
   df
@@ -38,11 +21,8 @@ ensure_output_columns <- function(df) {
 # URL -> HTTP fetch -> CSS extract
 # Used by: oslomet, uia, ntnu, inn, hvl, mf, nih, nmbu, uib, nord
 
-harvest_standard <- function(df, config, refetch = FALSE) {
-  cp <- strategy_checkpoint_path(config, "html")
-  clear_if_refetch(cp, refetch)
-
-  df <- fetch_html_with_checkpoint(df, checkpoint_path = cp, config = config)
+harvest_standard <- function(df, config) {
+  df <- fetch_html_with_checkpoint(df, checkpoint_dir(config$name, "html", df$year), config = config)
 
   df$extracted_text <- extract_fulltext_from_raw(df, config)
   df
@@ -52,17 +32,12 @@ harvest_standard <- function(df, config, refetch = FALSE) {
 # URL -> discover real URL -> HTTP fetch -> CSS extract
 # Used by: hivolda, uit, uio, hiof
 
-harvest_url_discovery <- function(df, config, refetch = FALSE) {
-  url_cp <- strategy_checkpoint_path(config, "urls")
-  html_cp <- strategy_checkpoint_path(config, "html")
-  clear_if_refetch(url_cp, refetch)
-  clear_if_refetch(html_cp, refetch)
-
+harvest_url_discovery <- function(df, config) {
   # Resolve URLs (hivolda, uit, uio have institution-specific batch resolvers)
-  df <- resolve_course_urls(df, checkpoint_path = url_cp)
+  df <- resolve_course_urls(df, checkpoint_path = checkpoint_dir(config$name, "urls"))
 
   # Fetch HTML
-  df <- fetch_html_with_checkpoint(df, checkpoint_path = html_cp, config = config)
+  df <- fetch_html_with_checkpoint(df, checkpoint_dir(config$name, "html", df$year), config = config)
 
   # Extract fulltext
   df$extracted_text <- extract_fulltext_from_raw(df, config)
@@ -73,18 +48,15 @@ harvest_url_discovery <- function(df, config, refetch = FALSE) {
 # URL -> Chrome + Shadow DOM extraction (URL discovery + fetch combined)
 # Used by: usn
 
-harvest_shadow_dom <- function(df, config, refetch = FALSE) {
-  url_cp <- strategy_checkpoint_path(config, "urls")
-  clear_if_refetch(url_cp, refetch)
-
+harvest_shadow_dom <- function(df, config) {
   # resolve_course_urls for USN also fetches HTML (combined step)
-  df <- resolve_course_urls(df, checkpoint_path = url_cp)
+  df <- resolve_course_urls(df, checkpoint_path = checkpoint_dir(config$name, "urls"))
 
   # Add html_success/html_error for output consistency
   df <- df |>
     dplyr::mutate(
       html_success = !is.na(html) & html != "",
-      html_error = vector("list", dplyr::n())
+      html_error = NA_character_
     )
 
   # USN stores pre-rendered text, not raw HTML (cleanup, not CSS extraction)
@@ -96,20 +68,16 @@ harvest_shadow_dom <- function(df, config, refetch = FALSE) {
 # URL -> discover dropdown -> HTML or PDF fetch -> extract
 # Used by: uis
 
-harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
-  discovery_cp <- strategy_checkpoint_path(config, "discovery")
-  html_cp <- strategy_checkpoint_path(config, "html")
-  pdf_cp <- strategy_checkpoint_path(config, "pdf")
-  clear_if_refetch(discovery_cp, refetch)
-  clear_if_refetch(html_cp, refetch)
-  clear_if_refetch(pdf_cp, refetch)
+harvest_html_pdf_discovery <- function(df, config) {
+  discovery_cp <- checkpoint_dir(config$name, "discovery")
+  pdf_cp <- checkpoint_dir(config$name, "pdf")
 
   # --- Discovery phase: fetch base pages and parse dropdowns ---
   unique_codes <- df |>
     dplyr::distinct(course_code_raw, url) |>
     dplyr::filter(!is.na(url))
 
-  existing_discovery <- read_checkpoint(discovery_cp)
+  existing_discovery <- read_checkpoint(discovery_cp, "course_code_raw", unique_codes$course_code_raw)
 
   if (is.null(existing_discovery)) {
     codes_to_discover <- unique_codes
@@ -145,8 +113,8 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
     ) |>
       dplyr::bind_rows()
 
+    checkpoint_append(discovery_results, discovery_cp)
     updated_discovery <- dplyr::bind_rows(existing_discovery, discovery_results)
-    write_checkpoint(updated_discovery, discovery_cp)
     message("Discovery complete: ", nrow(discovery_results), " semester entries found")
   } else {
     message("All course codes already discovered (checkpoint)")
@@ -179,18 +147,18 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
   df_html <- df_matched |> dplyr::filter(url_type == "html", !is.na(url))
 
   if (nrow(df_html) > 0) {
-    df_html <- fetch_html_with_checkpoint(df_html, checkpoint_path = html_cp,
-                                           config = config)
+    df_html <- fetch_html_with_checkpoint(df_html, checkpoint_dir(config$name, "html", df$year),
+                                          config = config)
     df_html$extracted_text <- extract_fulltext_from_raw(df_html, config)
   } else {
     df_html <- df_html |>
-      dplyr::mutate(html = NA_character_, html_error = list(NULL),
+      dplyr::mutate(html = NA_character_, html_error = NA_character_,
                     html_success = NA, extracted_text = NA_character_)
   }
 
   # --- Process PDF subset ---
   df_pdf <- df_matched |> dplyr::filter(url_type == "pdf", !is.na(url))
-  existing_pdf <- read_checkpoint(pdf_cp)
+  existing_pdf <- read_checkpoint(pdf_cp, "course_id", df_pdf$course_id)
 
   if (nrow(df_pdf) > 0) {
     if (!is.null(existing_pdf)) {
@@ -231,7 +199,7 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
       fetched_pdf <- tibble::tibble(
         course_id = to_fetch_pdf$course_id,
         html = NA_character_,
-        html_error = purrr::map(pdf_results, \(r) r$error),
+        html_error = purrr::map_chr(pdf_results, \(r) r$error %||% NA_character_),
         html_success = purrr::map_lgl(pdf_results, \(r) r$success),
         extracted_text = extracted_text,
         pdf = purrr::map(pdf_results, "raw"),
@@ -239,8 +207,8 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
         requested_at = .POSIXct(purrr::map_dbl(pdf_results, "requested_at"))
       )
 
+      checkpoint_append(fetched_pdf, pdf_cp)
       updated_pdf <- dplyr::bind_rows(existing_pdf, fetched_pdf)
-      write_checkpoint(updated_pdf, pdf_cp)
     } else {
       updated_pdf <- existing_pdf
     }
@@ -253,7 +221,7 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
       )
   } else {
     df_pdf <- df_pdf |>
-      dplyr::mutate(html = NA_character_, html_error = list(NULL),
+      dplyr::mutate(html = NA_character_, html_error = NA_character_,
                     html_success = NA, extracted_text = NA_character_)
   }
 
@@ -261,7 +229,7 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
   df_none <- df_matched |> dplyr::filter(is.na(url) | (!url_type %in% c("html", "pdf")))
   if (nrow(df_none) > 0) {
     df_none <- df_none |>
-      dplyr::mutate(html = NA_character_, html_error = list(NULL),
+      dplyr::mutate(html = NA_character_, html_error = NA_character_,
                     html_success = NA, extracted_text = NA_character_)
   }
 
@@ -274,7 +242,7 @@ harvest_html_pdf_discovery <- function(df, config, refetch = FALSE) {
 # Fetch wrapper page -> download PDF -> split by emne section
 # Used by: steiner
 
-harvest_pdf_split <- function(df, config, refetch = FALSE) {
+harvest_pdf_split <- function(df, config) {
   # --- Define wrapper pages for each subject PDF ---
   wrapper_pages <- tibble::tibble(
     wrapper_url = c(
@@ -293,7 +261,7 @@ harvest_pdf_split <- function(df, config, refetch = FALSE) {
   if (!all(robots_allows(wrapper_pages$wrapper_url))) {
     why <- robots_refusal(sub("[^/]*$", "", wrapper_pages$wrapper_url[1]))
     message(why)
-    df$html_error <- rep(list(why), nrow(df))
+    df$html_error <- rep(why, nrow(df))
     return(df)
   }
   dir.create("temp/steiner", showWarnings = FALSE, recursive = TRUE)
@@ -464,25 +432,15 @@ harvest_pdf_split <- function(df, config, refetch = FALSE) {
 # URL -> HTTP fetch -> JSON extraction from <script> tag
 # Used by: nla
 
-harvest_json_extract <- function(df, config, refetch = FALSE) {
-  html_cp <- strategy_checkpoint_path(config, "html")
-  clear_if_refetch(html_cp, refetch)
-
+harvest_json_extract <- function(df, config) {
   # NLA has a page per course and academic year (/emneplan/{CODE}/2024-2025),
   # whose JSON holds the plan of that year only: each URL is fetched once
-  # (keyed by the URL in the checkpoint) and its page joined to the offerings
-  # whose URL it is (autumn 2024 and spring 2025). Harvests until 2026-10-17
+  # (fetch_html_with_checkpoint()) and its page joined to the offerings whose
+  # URL it is (autumn 2024 and spring 2025). Harvests until 2026-10-17
   # fetched one page per course code and gave it to every year.
   df <- df |>
     dplyr::mutate(academic_year = nla_academic_year(year, semester_name))
-
-  pages <- df |>
-    dplyr::filter(!is.na(url)) |>
-    dplyr::distinct(url, institution) |>
-    dplyr::mutate(course_id = as.character(url)) |>
-    fetch_html_with_checkpoint(checkpoint_path = html_cp, config = config) |>
-    dplyr::select(url, html, html_error, html_success, dplyr::any_of(REQUEST_COLUMNS))
-  df <- dplyr::left_join(df, pages, by = "url")
+  df <- fetch_html_with_checkpoint(df, checkpoint_dir(config$name, "html", df$year), config = config)
 
   # the year's plan from the JSON (the offering's academic year, from its course_id)
   df$extracted_text <- extract_fulltext_from_raw(df, config)

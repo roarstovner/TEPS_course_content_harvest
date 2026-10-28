@@ -112,6 +112,9 @@ test_that("a run is stored by year and read back in the order it was harvested",
   expect_error(write_raw_run(rows[1, ], "x", "2026-10-16", raw), "not written twice")
   expect_equal(new_harvest_run("x", raw, as.POSIXct("2026-10-16 09:10:24")), "2026-10-16_091024")
   expect_equal(new_harvest_run("x", raw, as.POSIXct("2026-10-17 09:10:24")), "2026-10-17")
+  # a run in the same second already: a second later
+  write_raw_run(rows[1, ], "x", "2026-10-16_091024", raw)
+  expect_equal(new_harvest_run("x", raw, as.POSIXct("2026-10-16 09:10:24")), "2026-10-16_091025")
   expect_setequal(raw_course_ids("x", raw), rows$course_id)
 })
 
@@ -241,12 +244,13 @@ test_that("harvest_all never writes a raw file twice", {
   # a current site takes a new snapshot of fresh pages; harvested today
   # already, so into a new file named by the time too
   institution_configs$samas$plan_years <<- "current"
-  dir.create("data/raw/checkpoint")
-  saveRDS(tibble::tibble(), "data/raw/checkpoint/html_samas.RDS")
+  checkpoint_append(tibble::tibble(url = "u", html = "old page"), checkpoint_dir("samas", "html", 2026))
+  saveRDS(tibble::tibble(), "data/raw/checkpoint/html_samas.RDS")   # until 2026-10-28: not read, kept
   before <- tools::md5sum(harvest_files("samas"))
-  Sys.sleep(1)   # runs named by the second
+  expect_message(harvest_institution("samas", dbh(2026L)), "Checkpoints removed: data/raw/checkpoint/samas")
+  expect_false(dir.exists("data/raw/checkpoint/samas"))
+  expect_true(file.exists("data/raw/checkpoint/html_samas.RDS"))
   suppressMessages(harvest_all(dbh(2026L), institutions = "samas"))
-  expect_false(file.exists("data/raw/checkpoint/html_samas.RDS"))
   files <- harvest_files("samas")
   expect_length(files, 3)
   expect_match(files[3], "/samas/2026/\\d{4}-\\d{2}-\\d{2}_\\d{6}\\.parquet$")

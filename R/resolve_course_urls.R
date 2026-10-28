@@ -4,12 +4,14 @@
 #' This function takes courses with NA urls and attempts to discover them.
 #'
 #' @param df A tibble with course_id and url columns
-#' @param checkpoint_path Path to checkpoint RDS file for URL resolution.
-#'   Set to NULL to disable checkpointing (useful for testing).
+#' @param checkpoint_path The institution's URL checkpoint folder
+#'   (checkpoint_dir(inst, "urls")); its sibling "discovery" holds the course
+#'   codes UiT and hivolda have looked up (discover_codes()). Set to NULL to
+#'   disable checkpointing (useful for testing).
 #' @param .progress Show progress bar
 #' @return df with url column filled in where possible
 resolve_course_urls <- function(df,
-                                checkpoint_path = file.path(RAW_DIR, "checkpoint", "url_resolution.RDS"),
+                                checkpoint_path = checkpoint_dir(df$institution[1], "urls"),
                                 .progress = TRUE) {
   # Guardrails
   if (!all(c("course_id", "url", "institution") %in% names(df))) {
@@ -25,10 +27,9 @@ resolve_course_urls <- function(df,
 
   # Load checkpoint if exists (unless checkpointing disabled)
   checkpoint <- if (!is.null(checkpoint_path)) {
-    read_checkpoint(checkpoint_path)
-  } else {
-    NULL
+    read_checkpoint(checkpoint_path, "course_id", needs_resolution$course_id)
   }
+  checkpoint <- checkpoint[!duplicated(checkpoint$course_id, fromLast = TRUE), ]
 
   # Skip courses already resolved in checkpoint
   n_needs_resolution <- nrow(needs_resolution)
@@ -58,13 +59,14 @@ resolve_course_urls <- function(df,
     cli::cli_alert_info("Found {n_from_checkpoint} courses in checkpoint, resolving {nrow(needs_resolution)} remaining")
   }
 
+  discovery <- if (!is.null(checkpoint_path)) file.path(dirname(checkpoint_path), "discovery")
   resolve_batch <- function(df, inst, checkpoint_path, .progress) {
     if (inst == "usn") {
       resolve_urls_usn_batch(df, checkpoint_path = checkpoint_path, .progress = .progress)
     } else if (inst == "hivolda") {
-      resolve_urls_hivolda_batch(df, .progress = .progress)
+      resolve_urls_hivolda_batch(df, .progress = .progress, checkpoint = discovery)
     } else if (inst == "uit") {
-      resolve_urls_uit_batch(df, .progress = .progress)
+      resolve_urls_uit_batch(df, .progress = .progress, checkpoint = discovery)
     } else if (inst == "uio") {
       resolve_urls_uio_batch(df)
     } else if (inst == "hiof") {
@@ -79,26 +81,13 @@ resolve_course_urls <- function(df,
     dplyr::group_modify(~ resolve_batch(.x, .y$institution, checkpoint_path, .progress)) |>
     dplyr::ungroup()
 
-  # Update checkpoint (only if checkpointing enabled)
+  # Append the offerings resolved now to the checkpoint (only if checkpointing
+  # enabled), but those USN's resolver appended as it went
   if (!is.null(checkpoint_path)) {
-    # Select columns that exist in resolved (USN includes html, others may not)
-    checkpoint_cols <- intersect(c("course_id", "url", "html"), names(resolved))
-
-    updated_checkpoint <- if (is.null(checkpoint)) {
-      resolved |> dplyr::select(dplyr::all_of(checkpoint_cols))
-    } else {
-      # Ensure checkpoint has same columns as new data
-      if ("html" %in% names(resolved) && !"html" %in% names(checkpoint)) {
-        checkpoint <- checkpoint |> dplyr::mutate(html = NA_character_)
-      }
-      dplyr::bind_rows(
-        checkpoint,
-        resolved |> dplyr::select(dplyr::all_of(checkpoint_cols))
-      )
-    }
-
-    write_checkpoint(updated_checkpoint, checkpoint_path)
-    cli::cli_alert_success("Checkpoint saved with {nrow(updated_checkpoint)} courses")
+    saved <- read_checkpoint(checkpoint_path, "course_id", resolved$course_id)$course_id
+    new <- resolved[!resolved$course_id %in% saved, ]
+    checkpoint_append(dplyr::select(new, dplyr::any_of(c("course_id", "url", "html"))), checkpoint_path)
+    cli::cli_alert_success("Checkpoint: {nrow(new)} courses added")
   }
 
   # Merge back into original df: the rows resolved now and the checkpoint's
@@ -123,6 +112,54 @@ resolve_course_urls <- function(df,
     dplyr::rows_update(merged, by = "course_id", unmatched = "ignore")
 }
 
+#' The semester pages of course codes, each code's page read once
+#'
+#' UiT and hivolda list a course's semester pages on one page per course
+#' code. A code looked up before is read from the discovery checkpoint `dir`
+#' instead, so a harvest that takes its years one at a time (harvest_all())
+#' asks for each code's page once (UiT: about 13,000 codes, 16 hours). A
+#' code without pages is kept as a row without url; a code whose page fails is
+#' not, and is asked for again next time.
+#'
+#' @param codes Course codes
+#' @param discover Function of a code: its pages, a tibble of course_code,
+#'   year, semester_name and url (an error for a page that fails)
+#' @param dir Discovery checkpoint folder (checkpoint_dir(inst,
+#'   "discovery")), or NULL for none; appended every `save_every` codes
+#' @param .progress Show progress bar
+#' @return Tibble of course_code, year, semester_name, url: the pages found
+discover_codes <- function(codes, discover, dir = NULL, save_every = 50, .progress = TRUE) {
+  codes <- unique(codes)
+  have <- if (!is.null(dir)) read_checkpoint(dir, "course_code", codes)
+  todo <- setdiff(codes, have$course_code)
+  cli::cli_alert_info("Discovering URLs for {length(todo)} course codes ({length(codes) - length(todo)} in the checkpoint)")
+
+  found <- pending <- list()
+  save <- function() {
+    if (!is.null(dir)) checkpoint_append(dplyr::bind_rows(unname(pending)), dir)
+    pending <<- list()
+  }
+  on.exit(save())   # also after an error or an interrupt
+  if (.progress && length(todo)) pb <- cli::cli_progress_bar(total = length(todo))
+  for (code in todo) {
+    pending[[code]] <- found[[code]] <- tryCatch({
+      polite_pause()
+      x <- discover(code)
+      if (nrow(x)) x else tibble::tibble(course_code = code, year = NA_integer_,
+                                         semester_name = NA_character_, url = NA_character_)
+    }, error = function(e) {
+      cli::cli_alert_warning("Failed to fetch listing for {code}: {e$message}")
+      NULL
+    })
+    if (length(pending) >= save_every) save()
+    if (.progress) cli::cli_progress_update(id = pb)
+  }
+  none <- tibble::tibble(course_code = character(), year = integer(), semester_name = character(),
+                         url = character())
+  out <- dplyr::bind_rows(unname(c(list(none, have), found)))
+  out[!is.na(out$url), names(none)]
+}
+
 #' Resolve URLs for a batch of Hivolda courses
 #'
 #' For each unique course_code, fetches the base page /emne/{CODE} and parses
@@ -131,72 +168,41 @@ resolve_course_urls <- function(df,
 #'
 #' @param df A tibble with course_code, year, semester_name columns
 #' @param .progress Show progress bar
+#' @param checkpoint Discovery checkpoint folder (discover_codes()), or NULL
 #' @return df with url column filled in where possible
-resolve_urls_hivolda_batch <- function(df, .progress = TRUE) {
+resolve_urls_hivolda_batch <- function(df, .progress = TRUE, checkpoint = NULL) {
   if (nrow(df) == 0) return(df |> dplyr::mutate(url = NA_character_))
 
-  unique_codes <- unique(df$course_code)
-  cli::cli_alert_info("Discovering URLs for {length(unique_codes)} unique Hivolda course codes")
+  lookup <- discover_codes(df$course_code, function(code) {
+    hivolda_semester_pages(site_html(paste0("https://www.hivolda.no/emne/", code)), code)
+  }, checkpoint, .progress = .progress)
 
-  if (.progress) pb <- cli::cli_progress_bar(total = length(unique_codes))
-
-  # Build lookup: course_code + year + semester -> URL
-  lookup_rows <- list()
-
-  for (code in unique_codes) {
-    tryCatch({
-      base_url <- paste0("https://www.hivolda.no/emne/", code)
-      polite_pause()
-      page <- site_html(base_url)
-
-      # Find all links under the course page that match /emne/{CODE}/{ID}
-      links <- page |>
-        rvest::html_elements("a") |>
-        purrr::keep(~ grepl(paste0("/emne/", code, "/\\d+"), rvest::html_attr(.x, "href")))
-
-      for (link in links) {
-        href <- rvest::html_attr(link, "href")
-        text <- trimws(rvest::html_text2(link))
-
-        # Parse "2024 Haust" or "2023 Vår" from link text
-        m <- stringr::str_match(text, "(\\d{4})\\s+(\\S+)")
-        if (!is.na(m[1])) {
-          year <- as.integer(m[2])
-          # Map Nynorsk to Bokmål: Haust -> Høst
-          sem_raw <- m[3]
-          sem <- dplyr::case_match(
-            tolower(sem_raw),
-            "haust" ~ "Høst",
-            "vår"   ~ "Vår",
-            .default = sem_raw
-          )
-
-          full_url <- paste0("https://www.hivolda.no", href)
-          lookup_rows <- c(lookup_rows, list(tibble::tibble(
-            course_code = code, year = year, semester_name = sem, url = full_url
-          )))
-        }
-      }
-    }, error = function(e) {
-      cli::cli_alert_warning("Failed to fetch listing for {code}: {e$message}")
-    })
-
-    if (.progress) cli::cli_progress_update(id = pb)
-  }
-
-  if (length(lookup_rows) == 0) {
+  if (nrow(lookup) == 0) {
     cli::cli_alert_warning("No semester URLs discovered")
     return(df |> dplyr::mutate(url = NA_character_))
   }
 
-  lookup <- dplyr::bind_rows(lookup_rows) |>
+  lookup <- lookup |>
     dplyr::distinct(course_code, year, semester_name, .keep_all = TRUE)
-  cli::cli_alert_success("Discovered {nrow(lookup)} semester URLs across {length(unique_codes)} course codes")
+  cli::cli_alert_success("Discovered {nrow(lookup)} semester URLs across {length(unique(df$course_code))} course codes")
 
   # Join lookup to df, replacing the NA url column
   df |>
     dplyr::select(-url) |>
     dplyr::left_join(lookup, by = c("course_code", "year", "semester_name"))
+}
+
+# The semester pages a Hivolda course page links to, /emne/{CODE}/{ID}, by
+# the link text ("2024 Haust", "2023 Vår"; Nynorsk "Haust" is "Høst").
+hivolda_semester_pages <- function(page, code) {
+  links <- rvest::html_elements(page, "a")
+  links <- links[grepl(paste0("/emne/", code, "/\\d+"), rvest::html_attr(links, "href"))]
+  m <- stringr::str_match(trimws(rvest::html_text2(links)), "(\\d{4})\\s+(\\S+)")
+  tibble::tibble(
+    course_code = code, year = as.integer(m[, 2]),
+    semester_name = dplyr::case_match(tolower(m[, 3]), "haust" ~ "Høst", "vår" ~ "Vår", .default = m[, 3]),
+    url = paste0("https://www.hivolda.no", rvest::html_attr(links, "href"))
+  )[!is.na(m[, 1]), ]
 }
 
 #' Resolve URLs for a batch of HiOF courses from the site's folder listings
@@ -361,39 +367,24 @@ uio_course_folders <- function(index = "https://www.uio.no/sitemapindex.xml") {
 #'
 #' @param df A tibble with course_code, year, semester_name columns
 #' @param .progress Show progress bar
+#' @param checkpoint Discovery checkpoint folder (discover_codes()), or NULL
 #' @return df with url column filled in where possible
-resolve_urls_uit_batch <- function(df, .progress = TRUE) {
+resolve_urls_uit_batch <- function(df, .progress = TRUE, checkpoint = NULL) {
   if (nrow(df) == 0) return(df |> dplyr::mutate(url = NA_character_))
 
-  unique_codes <- unique(df$course_code)
-  cli::cli_alert_info("Discovering URLs for {length(unique_codes)} unique UiT course codes")
+  docs <- discover_codes(df$course_code, function(code) {
+    uit_semester_documents(site_html(paste0("https://uit.no/utdanning/aktivt/emne/", toupper(code))), code)
+  }, checkpoint, .progress = .progress)
 
-  if (.progress) pb <- cli::cli_progress_bar(total = length(unique_codes))
-
-  # Build lookup: course_code + year + semester -> URL
-  lookup_rows <- list()
-
-  for (code in unique_codes) {
-    tryCatch({
-      base_url <- paste0("https://uit.no/utdanning/aktivt/emne/", toupper(code))
-      polite_pause()
-      lookup_rows <- c(lookup_rows, list(uit_semester_documents(site_html(base_url), code)))
-    }, error = function(e) {
-      cli::cli_alert_warning("Failed to fetch listing for {code}: {e$message}")
-    })
-
-    if (.progress) cli::cli_progress_update(id = pb)
-  }
-
-  if (length(lookup_rows) == 0) {
+  if (nrow(docs) == 0) {
     cli::cli_alert_warning("No semester URLs discovered")
     return(df |> dplyr::mutate(url = NA_character_))
   }
 
-  lookup <- dplyr::bind_rows(lookup_rows) |>
+  lookup <- docs |>
     dplyr::semi_join(df, by = c("course_code", "year", "semester_name")) |>
     uit_one_per_semester()
-  cli::cli_alert_success("Discovered {nrow(lookup)} semester URLs across {length(unique_codes)} course codes")
+  cli::cli_alert_success("Discovered {nrow(lookup)} semester URLs across {length(unique(df$course_code))} course codes")
 
   # Join lookup to df, replacing the NA url column
   df |>
@@ -494,11 +485,13 @@ USN_NOT_READY <- "ikke klar ennå|plan for this semester is not available yet"
 #' @param delay Seconds to wait after each page is shown, before it is read and
 #'   the next one asked for: the config's `request_delay` (the Crawl-delay of
 #'   USN's robots.txt), at least 2 for the page to render
+#' @param checkpoint_path The URL checkpoint folder, or NULL: the offerings
+#'   resolved are appended to it every `save_every` offerings
 #' @param .progress Show progress bar
 #' @return df with url and url_version columns added
 resolve_urls_usn_batch <- function(df, max_version = 3, checkpoint_path = NULL,
                                    delay = get_institution_config("usn")$request_delay,
-                                   .progress = TRUE) {
+                                   .progress = TRUE, save_every = 20) {
   if (nrow(df) == 0) {
     return(df |> dplyr::mutate(url = NA_character_, html = NA_character_))
   }
@@ -516,6 +509,12 @@ resolve_urls_usn_batch <- function(df, max_version = 3, checkpoint_path = NULL,
   # Initialize results storage
   results <- vector("list", nrow(df))
   if (.progress) pb <- cli::cli_progress_bar(total = nrow(df))
+  pending <- list()   # offerings resolved, not yet in the checkpoint
+  save <- function() {
+    if (!is.null(checkpoint_path)) checkpoint_append(dplyr::bind_rows(pending), checkpoint_path)
+    pending <<- list()
+  }
+  on.exit(save())   # also after an error or an interrupt
 
   for (i in seq_len(nrow(df))) {
     course_id <- df$course_id[i]
@@ -602,11 +601,8 @@ resolve_urls_usn_batch <- function(df, max_version = 3, checkpoint_path = NULL,
 
     results[[i]] <- list(url = result_url, html = result_html)
 
-    # Checkpoint after each course
-    if (!is.null(checkpoint_path)) {
-      row <- tibble::tibble(course_id = course_id, url = result_url, html = result_html)
-      checkpoint_append_row(row, checkpoint_path)
-    }
+    pending[[length(pending) + 1]] <- tibble::tibble(course_id = course_id, url = result_url, html = result_html)
+    if (length(pending) >= save_every) save()
 
     if (.progress) cli::cli_progress_update(id = pb)
   }

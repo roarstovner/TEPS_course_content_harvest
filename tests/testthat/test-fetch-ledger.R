@@ -238,7 +238,7 @@ test_that("a site that refuses the harvest stops it, and the pages fetched stay 
   msg <- capture_messages(harvest_all(hiof_dbh(c("A1", "B1", "C1")), institutions = "hiof"))
   expect_match(paste(msg, collapse = ""), "refuses the harvest \\(HTTP 429")
   expect_length(harvest_files("hiof"), 0)
-  expect_equal(readRDS("data/raw/checkpoint/html_hiof.RDS")$course_id, "hiof_A1_2023_autumn_1")
+  expect_equal(basename(read_checkpoint(checkpoint_dir("hiof", "html", 2023))$url), "a1.html")
 })
 
 test_that("a site refuses the harvest with a 429, or with 403 to FORBIDDEN_RUN requests in a row and to a public page", {
@@ -269,7 +269,7 @@ test_that("a site refuses the harvest with a 429, or with 403 to FORBIDDEN_RUN r
                       " in a row; https://www.hiof.no/.*/a1.html, known to be public, answered HTTP 403\\)"))
   expect_equal(sent, paste0(c(tolower(codes[-length(codes)]), "a1"), ".html"))
   expect_length(harvest_files("hiof"), 0)
-  expect_equal(readRDS("data/raw/checkpoint/html_hiof.RDS")$course_id, "hiof_A1_2023_autumn_1")
+  expect_equal(basename(read_checkpoint(checkpoint_dir("hiof", "html", 2023))$url), "a1.html")
 })
 
 test_that("403s in a row while a public page answers 200 are the pages' own; the probe is in the ledger", {
@@ -499,12 +499,147 @@ test_that("nla: each academic year's page is fetched once and read by its own of
   dbh <- tibble::tibble(institution = "nla", course_code_raw = "NO1", course_code = "NO1",
                         year = c(2023L, 2024L, 2024L), semester_name = c("Høst", "Vår", "Høst"),
                         status = 1L)
+  # 2024 first (its own run), then 2023, whose page 2024's spring offering fetched
   suppressMessages(harvest_all(dbh, institutions = "nla"))
   expect_equal(sent, c("2023-2024", "2024-2025"))
   x <- read_raw(harvest_files("nla"))
-  expect_equal(basename(x$url), c("2023-2024", "2023-2024", "2024-2025"))
-  expect_equal(!is.na(x$html), c(TRUE, TRUE, FALSE))
+  expect_equal(x$year, c(2024L, 2024L, 2023L))
+  expect_equal(basename(x$url), c("2023-2024", "2024-2025", "2023-2024"))
+  expect_equal(!is.na(x$html), c(TRUE, FALSE, TRUE))
   # the spring offering reads the 2023-2024 entry of the JSON too
-  expect_match(extract_fulltext_from_raw(x, get_institution_config("nla"))[1:2], "Tekst.", fixed = TRUE)
-  expect_equal(raw_ledger(harvest_files("nla"))$outcome, c("ok", "ok", "not_found"))
+  expect_match(extract_fulltext_from_raw(x, get_institution_config("nla"))[c(1, 3)], "Tekst.", fixed = TRUE)
+  led <- raw_ledger(harvest_files("nla"))
+  expect_equal(led$outcome, c("ok", "not_found", "ok"))
+  expect_equal(led$requested_at[3], led$requested_at[1])   # one request
+})
+
+# ntnu without its pause between requests, in a temporary working directory
+local_ntnu <- function(env = parent.frame()) {
+  withr::local_dir(withr::local_tempdir(.local_envir = env), .local_envir = env)
+  local_robots("www.ntnu.no", env = env)
+  old <- institution_configs$ntnu$request_delay
+  institution_configs$ntnu$request_delay <<- 0
+  withr::defer(institution_configs$ntnu$request_delay <<- old, envir = env)
+}
+
+ntnu_dbh <- function(code, year, semester) {
+  dbh <- tibble::tibble(institution = "ntnu", course_code_raw = code, course_code = code, year = year,
+                        semester_name = semester, status = 1L)
+  attr(dbh, "dbh_snapshot") <- "2026-10-16"
+  dbh
+}
+
+test_that("each year is its own run, newest first; a URL is fetched once for all its offerings and years", {
+  local_ntnu()
+  sent <- character()
+  httr2::local_mocked_responses(function(req) {
+    sent <<- c(sent, sub("^.*/emner/", "", req$url))
+    html_page(paste("Plan", req$url))
+  })
+  # A1 and A1-A share /A1/{year}; spring 2024 reads /A1/2023, the page of autumn 2023
+  dbh <- ntnu_dbh(c("A1", "A1", "A1-A", "A1"), c(2023L, 2024L, 2024L, 2024L), c("Høst", "Vår", "Høst", "Høst"))
+  # the 2023 run fails to be written: the checkpoints of both years stay
+  old <- write_raw_run
+  write_raw_run <<- function(rows, ...) if (rows$year[1] == 2023) stop("disk full") else old(rows, ...)
+  withr::defer(write_raw_run <<- old)
+  msg <- capture_messages(harvest_all(dbh, institutions = "ntnu"))
+  expect_match(paste(msg, collapse = ""), "ERROR harvesting ntnu: disk full")
+  expect_equal(sent, c("A1/2023", "A1/2024"))
+  expect_equal(unique(read_raw(harvest_files("ntnu"))$year), 2024L)
+  expect_equal(basename(read_checkpoint(checkpoint_dir("ntnu", "html", 2024))$url), c("2023", "2024"))
+  expect_null(read_checkpoint(checkpoint_dir("ntnu", "html", 2023)))   # its page is in 2024's
+
+  # the next harvest: 2024 is in the raw store, 2023 takes its page from 2024's checkpoint
+  write_raw_run <<- old
+  msg <- capture_messages(harvest_all(dbh, institutions = "ntnu"))
+  expect_match(paste(msg, collapse = ""), "ntnu 2024: nothing new")
+  expect_equal(sent, c("A1/2023", "A1/2024"))
+  files <- harvest_files("ntnu")
+  expect_equal(basename(dirname(files)), c("2024", "2023"))   # 2023's run is the later one
+  raw <- read_raw(files)
+  expect_equal(raw$course_id, c("ntnu_A1_2024_spring_1", "ntnu_A1-A_2024_autumn_1", "ntnu_A1_2024_autumn_1",
+                                "ntnu_A1_2023_autumn_1"))
+  expect_equal(raw$html[c(1, 4)], raw$html[c(4, 1)])
+  expect_equal(raw$html[2], raw$html[3])
+  led <- raw_ledger(files)
+  expect_equal(nrow(led), 4)
+  expect_equal(led$outcome, rep("ok", 4))
+  expect_equal(length(unique(led$requested_at)), 2)   # two requests
+  expect_false(dir.exists("data/raw/checkpoint/ntnu"))   # all written: no checkpoint left
+})
+
+test_that("a harvest resumes from the checkpoint's parts; a part half-written by a crash is deleted", {
+  local_ntnu()
+  sent <- character()
+  httr2::local_mocked_responses(function(req) {
+    sent <<- c(sent, sub("^.*/emner/", "", req$url))
+    html_page("Plan")
+  })
+  cp <- checkpoint_dir("ntnu", "html", 2025)
+  before <- rawToChar(html_page("fetched before")$body)
+  checkpoint_append(tibble::tibble(url = "https://www.ntnu.no/studier/emner/A1/2025", html = before,
+                                   html_error = NA_character_, html_success = TRUE, http_status = 200L,
+                                   requested_at = as.POSIXct("2026-10-27 22:00:00")), cp)
+  writeLines("half a part", file.path(cp, "part-000002.parquet.tmp"))
+  expect_true(file.exists(file.path(cp, "part-000002.parquet.tmp")))
+  out <- suppressMessages(harvest_institution("ntnu", ntnu_dbh(c("A1", "B1"), 2025L, "Høst")))
+  expect_equal(sent, "B1/2025")
+  expect_equal(out$html[1], before)
+  expect_equal(out$requested_at[1], as.POSIXct("2026-10-27 22:00:00"))
+  expect_equal(basename(checkpoint_parts(cp)), c("part-000001.parquet", "part-000002.parquet"))
+  expect_false(file.exists(file.path(cp, "part-000002.parquet.tmp")))
+})
+
+test_that("a batch is written without its trailing 403s, so a refusal's never reach the checkpoint", {
+  withr::local_dir(withr::local_tempdir())
+  local_robots("x.no")
+  cfg <- list(name = "x", request_delay = 0)
+  withr::defer(take_probes("x"))
+  sent <- character()
+  httr2::local_mocked_responses(function(req) {
+    sent <<- c(sent, basename(req$url))
+    if (length(sent) > 1) httr2::response(403) else html_page("Plan")
+  })
+  urls <- paste0("https://x.no/", c("ok1", paste0("f", seq_len(FORBIDDEN_RUN)), "z1"))
+  courses <- tibble::tibble(institution = "x", url = urls)
+  cp <- checkpoint_dir("x", "html", 2025)
+  # batches of 2: the 403s carry over from batch to batch until the refusal
+  expect_error(suppressMessages(fetch_html_with_checkpoint(courses, cp, .progress = FALSE, config = cfg,
+                                                           save_every = 2)),
+               "refuses the harvest")
+  expect_equal(sent, c("ok1", paste0("f", seq_len(FORBIDDEN_RUN)), "ok1"))   # the probe last
+  expect_equal(basename(read_checkpoint(cp)$url), "ok1")
+
+  # the next harvest asks for them again; a 403 between pages is the page's own and is kept
+  sent <- character()
+  httr2::local_mocked_responses(function(req) {
+    sent <<- c(sent, basename(req$url))
+    if (basename(req$url) == "f2") httr2::response(403) else html_page("Plan")
+  })
+  out <- suppressMessages(fetch_html_with_checkpoint(courses, cp, .progress = FALSE, config = cfg, save_every = 2))
+  expect_equal(sent, basename(urls[-1]))
+  expect_equal(out$http_status, c(200L, 200L, 403L, rep(200L, FORBIDDEN_RUN - 1)))
+  expect_equal(read_checkpoint(cp)$url, urls[c(1, 2:length(urls))])
+  expect_equal(read_checkpoint(cp)$html_error[3], "HTTP 403 Forbidden.")
+})
+
+test_that("a course code's semester pages are looked up once, also across years", {
+  dir <- file.path(withr::local_tempdir(), "discovery")
+  asked <- character()
+  discover <- function(code) {
+    asked <<- c(asked, code)
+    if (code == "FAIL") stop("timeout")
+    if (code == "NONE") return(tibble::tibble(course_code = character(), year = integer(),
+                                              semester_name = character(), url = character()))
+    tibble::tibble(course_code = code, year = 2023:2024, semester_name = "Høst", url = paste0("u/", code, 2023:2024))
+  }
+  old <- polite_pause
+  polite_pause <<- function(...) invisible()
+  withr::defer(polite_pause <<- old)
+  out <- suppressMessages(discover_codes(c("A", "NONE", "FAIL", "A"), discover, dir, save_every = 1, .progress = FALSE))
+  expect_equal(out$url, c("u/A2023", "u/A2024"))
+  # a code without pages is known; one whose page failed is asked for again
+  out <- suppressMessages(discover_codes(c("A", "NONE", "FAIL", "B"), discover, dir, .progress = FALSE))
+  expect_equal(asked, c("A", "NONE", "FAIL", "FAIL", "B"))
+  expect_equal(out$url, c("u/A2023", "u/A2024", "u/B2023", "u/B2024"))
 })

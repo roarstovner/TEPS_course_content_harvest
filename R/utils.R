@@ -150,10 +150,16 @@ harvest_files <- function(institution, raw_dir = RAW_DIR, year = "*") {
 }
 
 # The name of a new harvest run: today's date, with the time when the
-# institution has a run of that name already.
+# institution has a run of that name already, a second later while that is
+# taken too (harvest_all() writes a run per year, which can take less than a
+# second).
 new_harvest_run <- function(institution, raw_dir = RAW_DIR, time = Sys.time()) {
+  runs <- raw_run(harvest_files(institution, raw_dir))
   run <- format(time, "%Y-%m-%d")
-  if (run %in% raw_run(harvest_files(institution, raw_dir))) run <- format(time, "%Y-%m-%d_%H%M%S")
+  while (run %in% runs) {
+    run <- format(time, "%Y-%m-%d_%H%M%S")
+    time <- time + 1
+  }
   run
 }
 
@@ -173,12 +179,9 @@ new_harvest_run <- function(institution, raw_dir = RAW_DIR, time = Sys.time()) {
 #' @return The files written, invisibly.
 write_raw_run <- function(rows, institution, run, raw_dir = RAW_DIR) {
   html <- rows$html %||% rep(NA_character_, nrow(rows))
-  rows <- dplyr::mutate(rows, dplyr::across(dplyr::where(~ inherits(.x, "glue")), as.character))
-  rows$html_error <- fetch_error_text(rows$html_error %||% vector("list", nrow(rows)))
+  rows$html_error <- rows$html_error %||% vector("list", nrow(rows))
+  rows <- .parquet_columns(rows)
   if ("extracted_text" %in% names(rows)) rows$extracted_text[!is.na(html) & nzchar(html)] <- NA
-  if ("pdf" %in% names(rows)) {
-    rows$pdf <- structure(lapply(rows$pdf, function(x) x), class = c("arrow_binary", "vctrs_vctr", "list"))
-  }
   rows$harvest_row <- seq_len(nrow(rows))
   files <- raw_file(institution, rows$year, run, raw_dir)
   if (any(file.exists(files)) || run %in% raw_run(harvest_files(institution, raw_dir))) {
@@ -186,6 +189,17 @@ write_raw_run <- function(rows, institution, run, raw_dir = RAW_DIR) {
   }
   for (f in unique(files)) .write_plain_parquet(rows[files == f, ], f)
   invisible(unique(files))
+}
+
+# Harvested rows as the raw store and the checkpoints keep them: glue as text,
+# `html_error` as text (fetch_error_text()), `pdf` as binary.
+.parquet_columns <- function(rows) {
+  rows <- dplyr::mutate(rows, dplyr::across(dplyr::where(~ inherits(.x, "glue")), as.character))
+  if ("html_error" %in% names(rows)) rows$html_error <- fetch_error_text(rows$html_error)
+  if ("pdf" %in% names(rows)) {
+    rows$pdf <- structure(lapply(rows$pdf, function(x) x), class = c("arrow_binary", "vctrs_vctr", "list"))
+  }
+  rows
 }
 
 .write_plain_parquet <- function(df, file) {

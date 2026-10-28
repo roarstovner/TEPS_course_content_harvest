@@ -381,6 +381,24 @@ change: at NTNU and OsloMet it carries a new token on every fetch, and at UiB
 and UiS 70 pages had another body with the same text, so the plan text of
 two bodies that differ is compared. *Since:* 2026-10-16.
 
+**A harvest requests each URL once, and writes an institution's DBH years
+one at a time, newest first:** offerings that read the same URL (an
+academic-year page, read by an autumn offering and the next spring's; two
+DBH codes of one course) get the page of one request, also across the year
+runs of one harvest (the spring offerings of year Y fetch the page the
+autumn offerings of Y-1 read). Each offering keeps its own row in the raw
+run and in the fetch ledger, and the ledger rows of a shared page carry that
+request's time and status. *Why:* NTNU's 255,055 offerings in the DBH
+snapshot of 2026-10-16 have 137,474 URLs: at its Crawl-delay of 10 seconds,
+a request per offering takes about 29 days, a request per URL about 16; a
+run per year keeps one year's pages in memory, not all of an institution's
+(some 13 GB at NTNU). *Rejected:* a request per offering (the rule until
+2026-10-28, but NLA's since 2026-10-17), which asks for the same page twice;
+one run for all the years of an institution. *Consequence:* an offering's
+page can come from a request made for another offering, in the run of the
+year after; it is the page the offering's own request would have given,
+unless the site changed it in between. *Since:* 2026-10-28.
+
 **Pilot protocol and gate: an institution's full harvest waits for a pilot
 whose audits find it ready.** Before the full harvest of an institution (a new
 one, or a configured one going from teacher education to all its courses), a

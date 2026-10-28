@@ -50,10 +50,10 @@ URL must be discovered)</td>
 <td><code>resolve_course_urls()</code>
 (<code>R/resolve_course_urls.R</code>)</td>
 <td><code>url</code>, checkpoint
-<code>data/raw/checkpoint/urls_{inst}.RDS</code></td>
+<code>data/raw/checkpoint/{inst}/urls/</code></td>
 </tr>
 <tr>
-<td>4. Fetch HTML with checkpointing</td>
+<td>4. Fetch HTML with checkpointing, each URL once</td>
 <td><code>fetch_html_with_checkpoint()</code>
 (<code>R/checkpoint.R</code>, <code>R/fetch_html_cols.R</code>)</td>
 <td><code>html</code>, <code>html_success</code>,
@@ -137,15 +137,17 @@ result <- harvest_institution("hivolda", courses)
 result <- harvest_institution("oslomet", courses, year = 2025)
 result <- harvest_institution("ntnu", courses, refetch = TRUE)
 
-# Harvest into the raw store (data/raw/{inst}/{year}/{date}.parquet): all
-# institutions, or the given ones; without `courses`, every course of the
-# latest DBH snapshot (weeks at the slowest sites)
+# Harvest into the raw store (data/raw/{inst}/{year}/{date}.parquet), a run
+# per year, newest first: all institutions, or the given ones; without
+# `courses`, every course of the latest DBH snapshot (weeks at the slowest
+# sites); with `years`, only those years
 harvest_all(courses, institutions = "hivolda")
+harvest_all(institutions = "ntnu", years = 2025:2020)
 harvest_all()
 
 # Fetch again the offerings without a plan, except pages not found (README
 # "Fetch Ledger and Retries"); run targets::tar_make() first
-harvest_all(institutions = "uia", year = 2023, retry = TRUE)
+harvest_all(institutions = "uia", years = 2023, retry = TRUE)
 ```
 
 The source order matters: `R/institution_config.R` refers to functions
@@ -167,21 +169,47 @@ defined in `R/fetch_html_cols.R` and `R/extract_fulltext.R`.
 The pipeline uses **checkpointing** to avoid re-downloading data. If the
 script stops or crashes, or a site refuses the harvest (HTTP 429, or 403
 to 5 requests in a row and to a page known to be public; see “Fetch
-Ledger and Retries”):
+Ledger and Retries”), the next harvest resumes where it stopped
+(`R/checkpoint.R`):
 
-- Already-downloaded HTML is saved in
-  `data/raw/checkpoint/html_{institution}.RDS` (`course_id`, `html`,
-  `html_success`, `html_error`)
-- Re-running the script fetches only courses not in the checkpoint
-  (anti-join by `course_id`)
-- This saves time and is polite to institutional servers
+- `harvest_all()` harvests an institution one DBH year at a time, newest
+  first, and writes each year as its own run, so memory holds one year’s
+  pages.
+- Each URL is fetched once, and its page joined to every offering with
+  that URL: an academic-year page serves an autumn offering and the next
+  spring’s (NTNU’s 255,055 offerings in the DBH snapshot of 2026-10-16
+  have 137,474 URLs). The raw run and the fetch ledger keep one row per
+  offering.
+- The pages fetched are saved every 50 in
+  `data/raw/checkpoint/{inst}/{year}/html/`, keyed by URL, as
+  append-only Parquet parts (`part-000001.parquet`, …; `url`, `html`,
+  `html_error` as text, `html_success`, `http_status`, `requested_at`).
+  A part is written as `.tmp` and renamed, so a crash loses fewer than
+  50 pages and leaves at most a `.tmp`, which the next harvest deletes.
+  A part is written without its trailing 403s (they wait for the next
+  part), so the 403s of a refusal never reach it and the next harvest
+  asks for those pages again.
+- A harvest fetches only the URLs no checkpoint of the institution
+  holds, also the year before’s: the spring offerings of year Y fetch
+  the pages the autumn offerings of year Y-1 read.
+- The URL discovery (`{inst}/urls/`), the course pages UiT and hivolda
+  list their semester pages on (`{inst}/discovery/`, read once per
+  course code: UiT’s 13,000 take 16 hours) and UiS’s PDFs
+  (`{inst}/pdf/`) are kept for the institution, across its years.
 
 The checkpoint only resumes an interrupted harvest; it is a cache, not
 the record. Offerings already in a raw file are skipped by
-`harvest_all()` itself (see “Raw Store and Finalized Releases”). For
-“current” sites (`plan_years`) the checkpoint is removed before every
-harvest, because their pages change over time and an old copy must not
-stand in for a new one.
+`harvest_all()` itself (see “Raw Store and Finalized Releases”). A
+year’s html checkpoint is removed once its run and the next year’s run
+are written, and the URL, discovery and PDF checkpoints once every year
+of the harvest is: a later harvest asks for the course pages again,
+which may list semesters published since. An error keeps them all. For
+“current” sites (`plan_years`) and with `refetch = TRUE` or `retry`, the
+institution’s checkpoints are removed before the harvest, because pages
+change over time and an old copy must not stand in for a new one. The
+RDS checkpoints of the harvests until 2026-10-28
+(`data/raw/checkpoint/{type}_{inst}.RDS`) are not read; they held no
+offering missing from the raw store.
 
 ### Rebuilding Derived Data
 
@@ -336,7 +364,7 @@ order:
 
 3.  **Harvest.** `harvest_all()` fetches every offering of the snapshot
     that no raw file holds: the new year, and rows DBH added to earlier
-    years since the last snapshot. `harvest_all(year = 2026)` fetches
+    years since the last snapshot. `harvest_all(years = 2026)` fetches
     the new year only. A site that shows only the current plan gets
     another snapshot, now with the new year’s courses. At the slowest
     sites this takes days, so run institutions side by side (below). Raw
@@ -363,7 +391,7 @@ order:
     again; see “Fetch Ledger and Retries”) and rebuild:
 
     ``` r
-    harvest_all(year = 2026, retry = TRUE)
+    harvest_all(years = 2026, retry = TRUE)
     targets::tar_make()
     ```
 
@@ -413,10 +441,10 @@ pgrep -af harvest_all   # the harvests still running
 ```
 
 - **One process per institution.** Each institution has its own
-  checkpoint (`data/raw/checkpoint/*_{inst}.RDS`), raw folder, run names
-  and ledger, so processes for different institutions do not collide.
-  Never harvest one institution in two processes at once: they would
-  share its checkpoint, and the build stops at an offering in two runs.
+  checkpoints (`data/raw/checkpoint/{inst}/`), raw folder, run names and
+  ledger, so processes for different institutions do not collide. Never
+  harvest one institution in two processes at once: they would share its
+  checkpoint, and the build stops at an offering in two runs.
 - **One process per host.** A process pauses between its own requests
   (3-5 seconds, or the institution’s `request_delay`), so two processes
   on one host double the load on it. Institutions on a shared host (a
@@ -428,17 +456,17 @@ pgrep -af harvest_all   # the harvests still running
   host not in it stops (see “robots.txt”).
 - **At night.** Start long harvests in the evening, so that most
   requests come outside the sites’ busy hours. A site with the year in
-  the URL can be stopped (end the process) and started again: the
-  checkpoint, saved every 50 pages, resumes it. A “current” site fetches
-  all its pages again at every start, so let it run to the end. A site
-  that refuses the harvest (HTTP 429, or 403 to 5 requests in a row and
-  to a page known to be public) stops its own harvest; start it again
-  later.
-- **Memory and the build.** A process keeps its institution’s pages in
-  memory until it writes the run, so check free memory before starting
-  more of them. `tar_make()` (4 workers) builds the runs written so far;
-  run it when the harvests are done, or audit only the institutions
-  whose harvest has ended.
+  the URL can be stopped (end the process) and started again: the years
+  written are skipped, and the checkpoint, saved every 50 pages, resumes
+  the year it stopped in. A “current” site fetches all its pages again
+  at every start, so let it run to the end. A site that refuses the
+  harvest (HTTP 429, or 403 to 5 requests in a row and to a page known
+  to be public) stops its own harvest; start it again later.
+- **Memory and the build.** A process keeps a year’s pages in memory
+  until it writes that year’s run (NTNU: up to 13,016 offerings a year),
+  so check free memory before starting more of them. `tar_make()` (4
+  workers) builds the runs written so far; run it when the harvests are
+  done, or audit only the institutions whose harvest has ended.
 
 ## Piloting an Institution
 
@@ -592,9 +620,12 @@ the functions as in “Quick Start”, then:
 6.  **Full harvest** once all three audits find the institution ready,
     with or without known limits: `harvest_all(institutions = "ntnu")`
     fetches every other offering; the sample is in the raw store
-    already. Start the slowest first (NTNU and UiB, 10 seconds a page,
-    five to six days each), in the background, several institutions at
-    once (see “Several Institutions at Once”).
+    already. Start the slowest first, in the background, several
+    institutions at once (see “Several Institutions at Once”): NTNU and
+    UiB, at 10 seconds a page (the Crawl-delay of NTNU’s robots.txt),
+    take about 16 days each for all courses (NTNU 137,474 URLs for
+    255,055 offerings, about 29 days if each offering were fetched; UiB
+    141,206 URLs for 147,115).
 
 A site that shows only the current plan gives the plans of the academic
 year its pages were fetched in (see “Sites that show only the current
@@ -796,15 +827,16 @@ sites the checkpoint only resumes an interrupted harvest.
 
 The raw store is Parquet (zstd), one file per institution, DBH year
 (`year`) and harvest run: `data/raw/{inst}/{year}/{run}.parquet`. A run
-is named by its date, a second run of an institution the same day by
-date and time (`{date}_{HHMMSS}`, which sorts after it), so a retry need
-not wait for the next day. No raw file is written twice. A harvest
-fetches only the offerings no raw file holds yet (a current site: a new
-snapshot) and `harvest_all()` saves them as a new run
-(`write_raw_run()`), with the run’s fetch ledger (see “Fetch Ledger and
-Retries”). `harvest_all(year = 2026)` and `harvest_all()` therefore both
-just add what is new. An offering is matched on institution, code, year
-and semester: when a new DBH snapshot changes its status, it keeps the
+is named by its date, a later run of an institution the same day by date
+and time (`{date}_{HHMMSS}`, which sorts after it; a second later when
+that name is taken), so a retry need not wait for the next day. No raw
+file is written twice. A harvest fetches only the offerings no raw file
+holds yet (a current site: a new snapshot) and `harvest_all()` saves
+each DBH year’s as a new run (`write_raw_run()`), the newest year first,
+with the run’s fetch ledger (see “Fetch Ledger and Retries”).
+`harvest_all(years = 2026)` and `harvest_all()` therefore both just add
+what is new. An offering is matched on institution, code, year and
+semester: when a new DBH snapshot changes its status, it keeps the
 `course_id` it was first harvested under. `read_harvest()` combines the
 runs; an offering in two runs stops the build.
 
@@ -989,7 +1021,7 @@ site that shows only the current plan is not retried; it takes a new
 snapshot in each academic year.
 
 ``` r
-harvest_all(institutions = "uia", year = 2023, retry = TRUE)
+harvest_all(institutions = "uia", years = 2023, retry = TRUE)
 harvest_all(institutions = "uib", retry = "server_error")
 ```
 
@@ -1707,9 +1739,8 @@ names, DBH’s codes), and `year_from` and `year_to` are integers (double
 before). DBH’s snapshots, the raw files of the harvests until 2026-10-16
 and the releases up to data-2026-10-16 have DBH’s names: the pipeline
 renames them where it reads such data (`dbh_rename()`, in
-`dbh_courses()`, `read_raw()`, `read_checkpoint()`, `frozen_changes()`
-and `release_data()`). Code that reads an old release can rename it by
-the same pairs:
+`dbh_courses()`, `read_raw()`, `frozen_changes()` and `release_data()`).
+Code that reads an old release can rename it by the same pairs:
 
 ``` r
 v <- read.csv("data/variables.csv")
@@ -2345,9 +2376,10 @@ in Sámi.
 <td>Harvest one institution with its configured strategy</td>
 </tr>
 <tr>
-<td><code>harvest_all(courses, year, refetch, institutions, retry)</code></td>
+<td><code>harvest_all(courses, years, refetch, institutions, retry)</code></td>
 <td><code>R/harvest.R</code></td>
-<td>Harvest all (or the given) institutions; each harvest adds a run,
+<td>Harvest all (or the given) institutions, year by year, newest first;
+each year adds a run,
 <code>data/raw/{inst}/{year}/{date}.parquet</code></td>
 </tr>
 <tr>
@@ -2481,9 +2513,17 @@ files</td>
 <td>URL discovery (USN, UiT, hivolda, UiO, HiOF) with checkpointing</td>
 </tr>
 <tr>
-<td><code>fetch_html_with_checkpoint(courses, checkpoint_path)</code></td>
+<td><code>fetch_html_with_checkpoint(courses, checkpoint_dir)</code></td>
 <td><code>R/checkpoint.R</code></td>
-<td>Download HTML, skipping courses already in the checkpoint</td>
+<td>Download HTML, each URL once, skipping URLs already in the
+institution’s checkpoints</td>
+</tr>
+<tr>
+<td><code>checkpoint_dir()</code>, <code>read_checkpoint()</code>,
+<code>checkpoint_append()</code>, <code>remove_checkpoints()</code></td>
+<td><code>R/checkpoint.R</code></td>
+<td>The checkpoints: folders of append-only Parquet parts (“About
+Checkpointing”)</td>
 </tr>
 <tr>
 <td><code>extract_fulltext_from_raw(df, config)</code></td>
@@ -2610,14 +2650,15 @@ harvest stopped; the pages fetched so far are in the checkpoint. Harvest
 it again later (the checkpoint resumes), at night, or with a longer
 `request_delay` in `R/institution_config.R`
 
-**Checkpoint file is huge?** - This is normal - HTML is large -
-Checkpoint files are in `.gitignore`; deleting one makes the next run
-fetch again the offerings that are not yet in a raw file (never the ones
-that are)
+**Checkpoint folder is large?** - This is normal - HTML is large; a
+year’s html checkpoint is removed once the run of that year and of the
+next are written - Checkpoints are in `.gitignore`; deleting one makes
+the next run fetch again the offerings that are not yet in a raw file
+(never the ones that are)
 
 **“raw files are not written twice”?** - A run of that name exists: two
-harvests of the same institution in the same second, or a run written by
-hand. The raw store is append-only; run the harvest again
+harvests of the same institution at once (two processes), or a run
+written by hand. The raw store is append-only; run the harvest again
 
 **“offerings in more than one raw file”?** - Two runs of an institution
 hold the same `course_id` (not a retry); a file was copied into
