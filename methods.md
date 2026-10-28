@@ -692,6 +692,21 @@ section. The data do not yet follow the spec where its “Known
 deviations” says; each fix gets its own entry here, with numbers.
 *Since:* 2026-10-13.
 
+**Status banners stay out of the plan.** UiO shows “Dette emnet er
+nedlagt” (discontinued) or “Dette emnet er erstattet av UV9040 –
+Research seminar.” in a banner above the page content. The banner is
+site chrome about the course’s status, not text of its plan, so it is
+not in `course_plan` (spec: banners are boilerplate); the offering’s
+status is in the DBH columns. *Rejected:* adding the banner to
+`course_plan`, which would give a discontinued course’s plan a sentence
+that none of the seven sections can hold. *Consequence:* none for the
+data; the rule is written down. The same day the shared exam-help block
+(“Mer om eksamen ved UiO …”), MF’s library-access block and NMBU’s link
+label to the AI categories left `course_plan` and the sections as
+site-wide link lists and notices (spec: page parts); MF’s
+`<list><listitem>` lists are read as lists, so their items no longer run
+together. *Since:* 2026-10-28.
+
 ## Anonymization
 
 **All published text is anonymized** (`anonymize_text()`): staff names

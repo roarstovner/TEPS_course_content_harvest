@@ -108,7 +108,7 @@ without the title and facts box.
 | Page part | `course_plan` | Sections |
 |---|---|---|
 | Staff names, e-mail addresses, phone numbers; contact and role lines; signatures | out | out |
-| Site navigation, breadcrumbs, banners, year pickers, buttons, link labels ("Kopier lenke", "Vis timeplan", "Alt om eksamen ved NTNU"), script text | out | out |
+| Site navigation, breadcrumbs, banners (UiO's status banner "Dette emnet er nedlagt / erstattet av ..."), year pickers, buttons, link labels ("Kopier lenke", "Vis timeplan", "Alt om eksamen ved NTNU", "Her finner du KI-kategoriene beskrevet" at NMBU), script text | out | out |
 | Site-wide link lists and notices that are not part of the plan ("Mer om eksamen ved UiO …", UiB's exam footer, MF's library-access notice) | out | out |
 | Timetable and exam schedule: weeks, rooms, lecture times, teaching start, exam dates and deadlines (MF's "Eksamensdatoer", whose exam forms the plan's assessment text gives) | out | out |
 | Reading-list widget text (Leganto labels, "View online", item-type labels, tab bar); the list itself is plan text | out | out |

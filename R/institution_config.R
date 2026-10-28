@@ -285,14 +285,19 @@ institution_configs <- list(
     code = "8221",
     strategy = "standard",
     selector = "article .content-body",
-    # contact card (staff names), banner, and the facts box's buttons ("Vis
-    # flere", "Timeplan", "Kontakt studieveileder"); the 2026-04 pages name
-    # the classes template-study-program__*, later ones template-study-subject__*
-    exclude = paste(".template-study-subject__contact, .template-study-program__contact,",
+    # contact card (staff names), banner, the facts box's buttons ("Vis
+    # flere", "Timeplan", "Kontakt studieveileder"), the stock
+    # library-access block ("Tilgang til litteratur") and the button to the
+    # reading list ("Litteraturlisten for dette emnet"; the list itself is in
+    # Leganto); the 2026-04 pages name the classes template-study-program__*,
+    # later ones template-study-subject__*
+    exclude = c(paste("#block-emnelegantoinfo,",
+                    ".template-study-subject__contact, .template-study-program__contact,",
                     ".wp-block-mf-banner, .template-study-subject__details button,",
                     ".template-study-program__details button,",
                     ".template-study-subject__details .wp-block-button,",
                     ".template-study-program__details .wp-block-button"),
+                "//div[contains(@class, 'wp-block-button')][.//a[contains(@href, 'leganto')]]"),
     plan_years = "current",
     # WordPress page: details/summary accordions plus an untitled intro block
     # (only three h2s, none of them plan sections). The intro is
@@ -396,10 +401,25 @@ institution_configs <- list(
     strategy = "url_discovery",
     # The title, the plan and the facts box after it ("Fakta om emnet": level,
     # credits, semesters, language, department); not the table of contents,
-    # the links to the semester pages and the FS fetch stamp
+    # the links to the semester pages and the FS fetch stamp, nor the shared
+    # exam-help block ("Mer om eksamen ved UiO", its link list and the
+    # closing line), nor "BinaryValueReference{ref = ...}", a rendering
+    # defect in the facts box's teaching field (with its label). A page with
+    # no #vrtx-content (the Weblogin page saved in place of a closed course
+    # page) has no text, so no plan. The banner above the content ("Dette
+    # emnet er nedlagt / erstattet av ...") is outside the selector and stays
+    # out (course_plan_spec.md: banners).
     selector = "#vrtx-content",
-    exclude = paste("#vrtx-course-title-toc > :not(h1), #vrtx-course-semesters,",
-                    "#vrtx-main-content > .vrtx-date-info"),
+    exclude = c(paste("#vrtx-course-title-toc > :not(h1), #vrtx-course-semesters,",
+                      "#vrtx-main-content > .vrtx-date-info"),
+                local({
+                  h <- paste0("//h3[", paste0("normalize-space() = '", c("Mer om eksamen ved UiO",
+                                "Meir om eksamen ved UiO", "More about examinations at UiO"), "'",
+                                collapse = " or "), "]")
+                  paste0(h, " | ", h, "/following-sibling::ul[1] | ", h, "/following-sibling::p[1]")
+                }),
+                "//dt[following-sibling::dd[1][starts-with(normalize-space(), 'BinaryValueReference')]]",
+                "//dd[starts-with(normalize-space(), 'BinaryValueReference')]"),
     facts = c("#vrtx-course-title-toc", "#vrtx-additional-content"),
     plan_years = "current",
     section_strategy = "html",
@@ -482,6 +502,9 @@ institution_configs <- list(
     # workload, teaching period)
     facts = c(".layout article header", ".layout section.grid-container"),
     plan_years = "current",
+    # the link label to the AI categories ("Her finner du KI-kategoriene
+    # beskrevet."), a paragraph of nothing else, in every plan
+    exclude = "//p[a[contains(@href, '#kikategori')]][normalize-space() = normalize-space(a)]",
     # A course whose plan is only in English: the Norwegian page's "Om dette
     # emnet" (and every accordion) says "Se engelsk emnebeskrivelse" or "See
     # English text" (2025); /en/course/{code} has the plan, the same layout

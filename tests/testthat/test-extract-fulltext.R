@@ -100,3 +100,35 @@ test_that("steiner: a PDF emne joins the bachelor's DBH name, PEL1.4/1.5 also th
                list("pedagogikk og elevkunnskap2, emne 1", "norsk1, emne 3"))
   expect_equal(key("Pedagogikk og elevkunnskap 1, emne 4")[[1]][2], "pedagogikk og elevkunnskap2, emne 1")
 })
+
+test_that("uio: the exam-help block and BinaryValueReference go, a login page has no text", {
+  cfg <- .block_cfg(get_institution_config("uio"))
+  html <- "<div id='vrtx-content'><div id='vrtx-main-content'><h3>Eksamensspråk</h3><p>Norsk</p>
+    <h3>Mer om eksamen ved UiO</h3><ul><li><a href='x'>Kildebruk og referanser</a></li></ul>
+    <p>Andre veiledninger og ressurser finner du på <a href='y'>fellessiden</a>.</p></div>
+    <div id='vrtx-additional-content'><dl><dt>Credits</dt><dd>10</dd>
+    <dt>Teaching</dt><dd>BinaryValueReference{ref = 9354641623}</dd>
+    <dt>Examination</dt><dd>Spring</dd></dl></div></div>"
+  expect_equal(.blocks_text(page_blocks(html, NA, cfg)),
+               "Eksamensspråk\n\nNorsk\n\nCredits\n10\nExamination\nSpring")
+  login <- "<html><body><h1>Logg inn på Weblogin</h1><p>Logg inn med din UiO-konto</p></body></html>"
+  expect_true(is.na(page_fulltext(page_blocks(login, NA, cfg), get_institution_config("uio"))))
+})
+
+test_that("mf: <list><listitem> items are lines; the library-access block and the Leganto button go", {
+  cfg <- .block_cfg(get_institution_config("mf"))
+  html <- "<article><div class='content-body'><p>Hovedtemaer:</p><list listtype='bulleted'>
+    <listitem>Luthersk prestetjeneste i dag</listitem><listitem>Pastoralteologi</listitem></list>
+    <div class='wp-block-button'><div><a href='https://x.exlibrisgroup.com/leganto/public/1'>Litteraturlisten</a></div></div>
+    <div id='block-emnelegantoinfo'><h4>Tilgang til litteratur</h4><ul><li>Noe er digital</li></ul></div>
+    </div></article>"
+  expect_equal(.blocks_text(page_blocks(html, NA, cfg)),
+               "Hovedtemaer:\n\nLuthersk prestetjeneste i dag\nPastoralteologi")
+})
+
+test_that("nmbu: the link label to the AI categories goes, text with a link stays", {
+  cfg <- .block_cfg(get_institution_config("nmbu"))
+  html <- "<div class='layout'><div class='cke'>Full bruk av KI.<p class='pt-md'><a href='https://nmbu.no/x#kikategori'>
+    Her finner du KI-kategoriene beskrevet<!-- -->.</a></p><p>Se <a href='https://nmbu.no/x#kikategori'>reglene</a>.</p></div></div>"
+  expect_equal(.blocks_text(page_blocks(html, NA, cfg)), "Full bruk av KI.\n\nSe reglene.")
+})

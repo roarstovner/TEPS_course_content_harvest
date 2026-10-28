@@ -18,6 +18,10 @@
 .read_doc <- function(html) {
   doc <- rvest::read_html(html)
   xml2::xml_remove(rvest::html_elements(doc, "script, style, noscript, select, label"))
+  # MF's editor writes <list><listitem> for lists, which html_text2() runs
+  # together ("Luthersk prestetjeneste i dagPastoralteologi")
+  xml2::xml_set_name(xml2::xml_find_all(doc, "//list"), "ul")
+  xml2::xml_set_name(xml2::xml_find_all(doc, "//listitem"), "li")
   inline_br <- xml2::xml_find_all(doc, paste0("//", .inline_tags, "/br", collapse = " | "))
   xml2::xml_text(inline_br) <- " "
   for (w in rvest::html_elements(doc, "thead, tbody, tfoot")) {
