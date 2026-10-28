@@ -398,20 +398,16 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
 # Lines of extracted_text. A line is a heading when it
 #   - is the first line or follows a blank line,
 #   - is heading-shaped (.heading_shaped_line()),
-#   - matches a heading pattern at a word start ("elevkunnskap" does not
-#     match "kunnskap"),
+#   - is a whole heading: a heading-map pattern, with or without a closing
+#     colon ("Eksamen/vurdering", "Ny og utsatt eksamen"). A line that only
+#     contains one is text: a bullet or topic such as "Vurdering av
+#     pasientens kartlagte smerte", "Vurdering for læring" or "Litteratur og
+#     det monstrøse", or a book title such as "Kompetansemål og vurdering",
 #   - and names a section other than the open one; a line naming the open
 #     section ("Kunnskap" inside learning outcomes) is text.
 # A line after a blank line that repeats an entry of the page's table of
 # contents (usn) is a heading whatever it names: an unmapped one ("Annet",
-# "Evaluering av emnet") ends the section, as in the html reader. On such a
-# page another line switches only when it is a whole heading ("Ny og utsatt
-# eksamen"), not when a pattern is only part of it: a bullet such as
-# "Vurdering av pasientens kartlagte smerte" or "Veiledning og vurdering
-# individuelt og i gruppe" stays in its section.
-# In a reading list opened by a whole heading ("Litteratur") only another
-# whole heading switches, so a book title such as "Kompetansemål og
-# vurdering" does not.
+# "Evaluering av emnet") ends the section, as in the html reader.
 .text_blocks <- function(text, cfg) {
   if (is.na(text) || !nzchar(text)) return(.empty_blocks())
   lines <- stringr::str_split_1(text, "\\r?\\n")
@@ -444,7 +440,6 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
     }
   }
 
-  strict <- FALSE
   prev_blank <- TRUE
   for (i in seq_along(lines)) {
     if (is_blank[i]) {
@@ -456,20 +451,17 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
     if (prev_blank && trimmed %in% toc_heads) {
       current <- match_heading_to_section(trimmed)
       out$add("heading", lines[i], current)
-      strict <- identical(current, "reading_list")
       prev_blank <- FALSE
       next
     }
-    if (prev_blank && .heading_shaped_line(trimmed)) {
-      candidate <- stringr::str_remove(trimmed, "[:：]\\s*$")
-      section <- match_heading_to_section(candidate, word_start = TRUE)
-      exact <- tolower(candidate) %in% section_heading_patterns$pattern
-      if ((strict || length(toc_heads) > 0) && !exact) section <- NA_character_
+    candidate <- tolower(stringr::str_remove(trimmed, "[:：]\\s*$"))
+    if (prev_blank && .heading_shaped_line(trimmed) &&
+        candidate %in% section_heading_patterns$pattern) {
+      section <- match_heading_to_section(candidate)
     }
     if (!is.na(section) && !identical(section, current)) {
       out$add("heading", lines[i], section)
       current <- section
-      strict <- section == "reading_list" && exact
     } else {
       out$add("text", lines[i])
     }

@@ -166,7 +166,21 @@ test_that("on a page with a table of contents only whole headings switch outside
   expect_equal(s$raw_text, c(
     "Hovedtema 1\nKartlegging av smerte\nVurdering av pasientens kartlagte smerte\nEtikk og smerte\n\nAlgebra.",
     "Hjemmeeksamen.", "Neste semester."))
-  # without a table of contents a heading-shaped line still switches (uis PDFs)
-  s <- sectionize(.text_blocks(paste(lines[-(1:4)], collapse = "\n\n"), list(reader = "text")))
-  expect_match(s$raw_text[s$section == "assessment"], "^Etikk og smerte")
+})
+
+test_that("without a table of contents only whole headings switch (uis PDFs)", {
+  lines <- c("Emnekode: X", "Vurdering for læring", "Elevens egen vurdering.",
+             "Litteratur og det monstrøse", "Myter.", "Læringsutbytte",
+             "Vekt på forberedelse knyttet til kunnskapstilegnelse", "Kan ting.",
+             "Ingen forkunnskaper kreves", "Arbeidsformer", "Forelesninger.",
+             "Vilkår for å gå opp til eksamen/vurdering", "Arbeidskrav", "To oppgaver.",
+             "Eksamen/vurdering", "Hjemmeeksamen.", "Litteratur:", "Litteratur (Litteratur og myte)",
+             "Boka.")
+  s <- sectionize(.text_blocks(paste(lines, collapse = "\n\n"), list(reader = "text", text_header = "^Emnekode")))
+  expect_equal(s$section, c("course_content", "learning_outcomes", "teaching_methods",
+                            "coursework_requirements", "assessment", "reading_list"))
+  expect_equal(s$raw_text[1:2], c(
+    "Vurdering for læring\nElevens egen vurdering.\nLitteratur og det monstrøse\nMyter.",
+    "Vekt på forberedelse knyttet til kunnskapstilegnelse\nKan ting.\nIngen forkunnskaper kreves"))
+  expect_match(s$raw_text[6], "^Litteratur \\(Litteratur og myte\\)")
 })

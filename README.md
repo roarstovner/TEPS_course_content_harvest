@@ -1203,10 +1203,11 @@ that no heading on the page names</td>
 <td>Heading-shaped lines in <code>extracted_text</code>; skips the title
 and facts box and a table of contents (“Innholdsfortegnelse”, usn), and
 a line repeating one of its entries is a heading, so an unmapped one
-(“Annet”) ends the section, and any other line switches only as a whole
-heading (“Ny og utsatt eksamen”, not a bullet such as “Vurdering av
-pasientens kartlagte smerte”); inside a reading list opened by a whole
-heading only a whole heading switches section (book titles)</td>
+(“Annet”) ends the section; any other line switches only as a whole
+heading, a heading-map pattern with or without a closing colon (“Ny og
+utsatt eksamen”, “Eksamen/vurdering”; not a bullet, topic or book title
+that contains one, such as “Vurdering av pasientens kartlagte smerte” or
+“Vurdering for læring”)</td>
 </tr>
 <tr>
 <td><code>noop</code></td>
@@ -1312,18 +1313,20 @@ Other fields:
 `match_heading_to_section()` (`R/section_heading_map.R`) checks exact
 equality against every pattern first, then substring patterns in table
 order (first hit wins; rows with `exact = TRUE` only match whole
-headings). The `text` reader passes `word_start = TRUE` so
-“elevkunnskap” does not match “kunnskap”, and only accepts
-heading-shaped lines (capitalised, ≤ 8 words, no digits, no “Label:
-value”, no closing full stop). Patterns mapped to `".drop"` end the
-current section and their text is discarded: admission headings (“Opptak
-til emnet”, “Opptakskrav”, “Hvem kan ta dette emnet?”) and exam
-logistics (“Mer om eksamen ved UiO”, “Sensorordning”, resit headings
-such as “Ny/utsatt eksamen”). Exam aids, exam language and grading scale
-stay in assessment. A `label` heading (“Hjelpemidler til eksamen”,
-“Eksamensspråk”, “Fravær fra obligatorisk aktivitet”) stays as a line of
-its section, since the text under it (“Ingen”, “Norsk.”) says nothing
-alone; with nothing but a dash or pointer under it, it goes.
+headings). The `text` reader only accepts heading-shaped lines
+(capitalised, ≤ 8 words, no digits, no “Label: value”, no closing full
+stop) that are a whole pattern, so a content line such as “Vurdering for
+læring” is text; its heading counts (`page_headings`) pass
+`word_start = TRUE` so “elevkunnskap” does not match “kunnskap”.
+Patterns mapped to `".drop"` end the current section and their text is
+discarded: admission headings (“Opptak til emnet”, “Opptakskrav”, “Hvem
+kan ta dette emnet?”) and exam logistics (“Mer om eksamen ved UiO”,
+“Sensorordning”, resit headings such as “Ny/utsatt eksamen”). Exam aids,
+exam language and grading scale stay in assessment. A `label` heading
+(“Hjelpemidler til eksamen”, “Eksamensspråk”, “Fravær fra obligatorisk
+aktivitet”) stays as a line of its section, since the text under it
+(“Ingen”, “Norsk.”) says nothing alone; with nothing but a dash or
+pointer under it, it goes.
 
 HTML is parsed by `.read_doc()`, which drops `script`, `style`, `select`
 and `label` (ntnu script text, uib semester picker); the `json` reader

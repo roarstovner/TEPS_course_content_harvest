@@ -909,7 +909,7 @@ fields in `R/institution_config.R`:
 |---|---|---|
 | `html` | oslomet, uia, ntnu, inn, hiof, hivolda, hvl, mf, nord, nih, uib, uio, uis, uit, nmbu | The DOM under `selector`. Falls back to `text` when it finds < 3 sections, if the text gives more sections and one that no heading on the page names |
 | `json` | nla | Titles and contents in the embedded EmneplanPage JSON |
-| `text` | usn, steiner (+ the fallback, e.g. uis PDF plans) | Heading-shaped lines in `extracted_text`; skips the title and facts box and a table of contents ("Innholdsfortegnelse", usn), and a line repeating one of its entries is a heading, so an unmapped one ("Annet") ends the section, and any other line switches only as a whole heading ("Ny og utsatt eksamen", not a bullet such as "Vurdering av pasientens kartlagte smerte"); inside a reading list opened by a whole heading only a whole heading switches section (book titles) |
+| `text` | usn, steiner (+ the fallback, e.g. uis PDF plans) | Heading-shaped lines in `extracted_text`; skips the title and facts box and a table of contents ("Innholdsfortegnelse", usn), and a line repeating one of its entries is a heading, so an unmapped one ("Annet") ends the section; any other line switches only as a whole heading, a heading-map pattern with or without a closing colon ("Ny og utsatt eksamen", "Eksamen/vurdering"; not a bullet, topic or book title that contains one, such as "Vurdering av pasientens kartlagte smerte" or "Vurdering for læring") |
 | `noop` | samas | — |
 
 The `html` reader writes a table as one line per row, its cells separated by
@@ -1002,9 +1002,11 @@ Other fields:
 `match_heading_to_section()` (`R/section_heading_map.R`) checks exact equality
 against every pattern first, then substring patterns in table order (first hit
 wins; rows with `exact = TRUE` only match whole headings). The `text` reader
-passes `word_start = TRUE` so "elevkunnskap" does not match "kunnskap", and only
-accepts heading-shaped lines (capitalised, ≤ 8 words, no digits, no "Label:
-value", no closing full stop). Patterns mapped to `".drop"` end the current
+only accepts heading-shaped lines (capitalised, ≤ 8 words, no digits, no
+"Label: value", no closing full stop) that are a whole pattern, so a content
+line such as "Vurdering for læring" is text; its heading counts
+(`page_headings`) pass `word_start = TRUE` so "elevkunnskap" does not match
+"kunnskap". Patterns mapped to `".drop"` end the current
 section and their text is discarded: admission headings ("Opptak til emnet",
 "Opptakskrav", "Hvem kan ta dette emnet?") and exam logistics ("Mer om eksamen
 ved UiO", "Sensorordning", resit headings such as "Ny/utsatt eksamen"). Exam

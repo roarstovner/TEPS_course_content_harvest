@@ -17,6 +17,7 @@ section_heading_patterns <- tibble::tribble(
   # "Vilkår for å gå opp til eksamen" (uis, uia)) must be tested before the
   # assessment "eksamen" pattern, otherwise they leak into assessment.
   "vilkår for å gå opp til eksamen",       "coursework_requirements", FALSE,
+  "vilkår for å gå opp til eksamen/vurdering", "coursework_requirements", TRUE, # uis PDFs
   "vilkår for å avlegge eksamen",          "coursework_requirements", FALSE,
   "vilkår for å framstille seg til eksamen", "coursework_requirements", FALSE,
   "faglige krav for å kunne avlegge eksamen", "coursework_requirements", FALSE,
@@ -93,6 +94,8 @@ section_heading_patterns <- tibble::tribble(
   "vurderingsformer",                      "assessment",             FALSE,
   "forms of assessment",                   "assessment",             TRUE,   # usn English pages
   "vurderingsform",                        "assessment",             FALSE,
+  "eksamen/vurdering",                     "assessment",             TRUE,   # uis PDFs
+  "vurderingsuttrykk",                     "assessment",             TRUE,   # steiner
   "eksamensformer",                        "assessment",             FALSE,
   "vurdering",                             "assessment",             FALSE,
   "eksamen",                               "assessment",             FALSE,
@@ -204,6 +207,7 @@ section_heading_patterns <- tibble::tribble(
   "undervisingsformer",                    "teaching_methods",       FALSE,
   # Whole phrases too, so <p> sub-headings (exact match only) are caught (mf).
   "arbeidsform og organisering",           "teaching_methods",       FALSE,
+  "arbeidsformer",                         "teaching_methods",       TRUE,   # uis PDFs
   "arbeidsform",                           "teaching_methods",       FALSE,
   "arbeidsmåter",                          "teaching_methods",       FALSE,
   "arbeidsmåtar",                          "teaching_methods",       FALSE,
@@ -284,8 +288,8 @@ section_heading_patterns$label <- section_heading_patterns$pattern %in% c(
 #'
 #' @param heading Character string — the heading text to match.
 #' @param word_start If TRUE, a substring pattern must start at a word
-#'   boundary, so "elevkunnskap" does not match "kunnskap" (the text reader
-#'   uses this on plain-text lines).
+#'   boundary, so "elevkunnskap" does not match "kunnskap" (the heading
+#'   counts of pages read as text, partition_headings()).
 #' @return Character string — canonical section name, or NA_character_.
 match_heading_to_section <- function(heading, word_start = FALSE) {
   section_heading_patterns$section[heading_pattern(heading, word_start)]

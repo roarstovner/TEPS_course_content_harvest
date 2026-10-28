@@ -1353,6 +1353,35 @@ methods 259) and 3 exam dates; no section is left empty and
 `course_plan` and the plan ids do not change. In the teacher-education
 frame 527 sections of 515 plans. *Since:* 2026-10-19.
 
+**In text read line by line only a whole heading opens a section.**
+Pages without HTML structure (UiS PDF plans, USN’s rendered text,
+Steiner’s PDFs) are cut at heading-shaped lines after a blank line; such
+a line now opens a section only when it is a heading of the map as a
+whole, with or without a closing colon (“Eksamen/vurdering”,
+“Litteratur:”), not when it only contains one. UiS’s template headings
+“Arbeidsformer”, “Eksamen/vurdering” and “Vilkår for å gå opp til
+eksamen/vurdering” and Steiner’s “Vurderingsuttrykk”, which matched only
+as part of a longer pattern, are whole headings in the map, with the
+sections they had. *Why:* in UiS PDF plans content lines opened
+sections: a topic (“Vurdering for læring” in a physical-education plan
+opened assessment), a learning outcome (“Vekt på forberedelse knyttet
+til kunnskapstilegnelse”, “Ha kjennskap til … pensumtekstene” opened the
+reading list), a book or topic title (“Litteratur og det monstrøse”,
+“Siri Pettersens Odinsbarn som flerkulturell litteratur”) or a sentence
+(“Ingen forkunnskaper kreves”, “Som opptakskrav til mastergraden”, which
+dropped the text after it); found 2026-10-22 while fixing USN’s
+table-of-contents rule, on whose pages (USN) the rule already held.
+*Rejected:* matching the pattern at the start of the line (“Litteratur
+og det monstrøse” still opens the reading list); a list of UiS’s
+template headings (the map holds them once for all readers).
+*Consequence:* 26 UiS source pages lose a content line as heading, so
+its text stays in the section it belongs to, and 5 more lose a repeated
+heading line at the start of a section, as do one NMBU and one UiT plan
+(the map’s exact headings are also what the cleanup removes as a
+repeated heading). In the teacher-education frame 35 sections of 20 UiS
+plans change; USN and Steiner do not change. `course_plan` and the plan
+ids do not change. *Since:* 2026-10-28.
+
 **Practicum stays in teaching methods** rather than a section of its
 own: only HiOF and Nord give practicum its own heading (since
 2026-10-01).
