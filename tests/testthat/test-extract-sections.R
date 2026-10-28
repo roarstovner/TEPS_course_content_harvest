@@ -1016,6 +1016,73 @@ test_that("a gate sentence moved after the FS timestamp is kept (uia)", {
     "For at de kliniske studiene skal vurderes til Bestått, må studenten ha oppfylt kravet om tilstedeværelse.", sep = "\n\n"))
 })
 
+test_that("requirements under the teaching or content heading move to coursework", {
+  split <- function(section, ...) {
+    out <- tibble::tibble(section = c(section, "assessment"),
+                          raw_text = c(paste(..., sep = "\n"), "Skriftlig eksamen."))
+    res <- .split_inline_coursework(out, "heading", section)
+    stats::setNames(res$raw_text, res$section)
+  }
+  # a gate sentence, and the sentence a pointing-back gate names (nord)
+  s <- split("teaching_methods", "Forelesninger og øvinger. Det blir gitt 2 øvinger som skal leveres i Excel. Begge disse kreves godkjent for adgang til eksamen.")
+  expect_equal(s[["teaching_methods"]], "Forelesninger og øvinger.")
+  expect_equal(s[["coursework_requirements"]],
+               "Det blir gitt 2 øvinger som skal leveres i Excel. Begge disse kreves godkjent for adgang til eksamen.")
+  s <- split("teaching_methods", "Studenten skal skrive ei seminaroppgåve. Dei obligatoriske arbeidskrava må vere godkjende før ein kan få oppgåva vurdert.")
+  expect_equal(s[["teaching_methods"]], "Studenten skal skrive ei seminaroppgåve.")
+  s <- split("teaching_methods", "Lectures: 40 h. Three mandatory homework sets. A passing grade is required of two homework sets for permission to take the exam.")
+  expect_equal(s[["coursework_requirements"]], "A passing grade is required of two homework sets for permission to take the exam.")
+  s <- split("teaching_methods", "Seminars and supervision. Mandatory course work: Attendance is mandatory in all seminars. Teaching and exam terms: A thesis seminar is offered.")
+  expect_equal(s[["teaching_methods"]], "Seminars and supervision. Teaching and exam terms: A thesis seminar is offered.")
+  expect_equal(s[["coursework_requirements"]], "Mandatory course work: Attendance is mandatory in all seminars.")
+  s <- split("course_content", "Statistikk.", "The student must pass the project assignment before (s)he can take the exam.")
+  expect_equal(s[["course_content"]], "Statistikk.")
+  # a gate heading takes its block (ntnu), a line with nord's abbreviation moves
+  s <- split("teaching_methods", "Forelesninger.", "", "Obligatoriske aktiviteter:", "Deltakelse på tre seminar",
+             "75% oppmøte på seminar", "", "Undervisningen foregår på campus.")
+  expect_equal(s[["coursework_requirements"]],
+               "Obligatoriske aktiviteter:\nDeltakelse på tre seminar\n75% oppmøte på seminar")
+  expect_match(s[["teaching_methods"]], "^Forelesninger\\.\n+Undervisningen foregår på campus\\.$")
+  s <- split("teaching_methods", "Laboratoriekurs.", "Obligatorisk deltakelse (OD) på laboratorieøvelser")
+  expect_equal(s[["coursework_requirements"]], "Obligatorisk deltakelse (OD) på laboratorieøvelser")
+  # not: a teaching form named "Assignments", a mention of obligatory subjects,
+  # a description of the arbeidskrav, a gate label that only says something
+  out <- tibble::tibble(section = "teaching_methods", raw_text = paste(
+    "Lectures", "Assignments", "Project work", "Det forutsettes at studentene deltar aktivt.",
+    "Arbeidskravene har som forutsetning at studentene arbeider selvstendig.",
+    "Arbeidskrav: 20 timer", sep = "\n"))
+  expect_equal(.split_inline_coursework(out, "heading", "teaching_methods"), out)
+  out <- tibble::tibble(section = "course_content", raw_text = paste(
+    "Studentene skal utvikle kompetanse for å kunne undervise og veilede elever i de obligatoriske programfagene."))
+  expect_equal(.split_inline_coursework(out, "heading", "course_content"), out)
+})
+
+test_that("compulsory attendance stated alone moves from assessment, praksis attendance stays", {
+  out <- tibble::tibble(section = "assessment", raw_text = paste(
+    "Deltakelse på 80 % av undervisning. Deltakelse telles time for time.",
+    "70 % obligatorisk deltakelse på seminarundervisning",
+    "Hjemmeeksamen, 1 uke.", sep = "\n"))
+  res <- .split_inline_coursework(out, FALSE)
+  s <- stats::setNames(res$raw_text, res$section)
+  expect_equal(s[["assessment"]], "Deltakelse telles time for time.\nHjemmeeksamen, 1 uke.")
+  expect_equal(s[["coursework_requirements"]],
+               "Deltakelse på 80 % av undervisning.\n70 % obligatorisk deltakelse på seminarundervisning")
+  for (x in c("For å bestå praksis må studenten ha 100 % oppmøte.", "Det er krav om 100 % tilstedeværelse i praksis.")) {
+    out <- tibble::tibble(section = "assessment", raw_text = x)
+    expect_equal(.split_inline_coursework(out, FALSE), out)
+  }
+})
+
+test_that("a uit lead-in takes its list though an item names the exam", {
+  res <- .split_inline_coursework(tibble::tibble(section = "assessment", raw_text = paste(
+    "Følgende arbeidskrav må være godkjent før man kan framstille seg til eksamen:",
+    "framlegg av utkast til eksamensarbeid (hjemmeeksamen) i emnet", "utkast til bacheloroppgaven",
+    "70 % deltakelse på undervisning", "", "Eksamen i emnet består av:", "en hjemmeoppgave", sep = "\n")))
+  s <- stats::setNames(res$raw_text, res$section)
+  expect_match(s[["coursework_requirements"]], "framlegg av utkast.*\n70 % deltakelse på undervisning$")
+  expect_match(s[["assessment"]], "^\\s*Eksamen i emnet består av:\nen hjemmeoppgave$")
+})
+
 test_that("exam parts, exam tables and graded components stay in assessment", {
   keep <- function(x, labels = FALSE) {
     out <- tibble::tibble(section = "assessment", raw_text = x)
@@ -1098,6 +1165,19 @@ test_that("nmbu exam-table line stays in assessment", {
   txt <- "Muntlig eksamen.\nMuntlig eksamen Karakterregel: Bokstavkarakterer Hjelpemiddelkode: A1"
   res <- .clean_sections(tibble::tibble(section = "assessment", raw_text = txt), "nmbu")
   expect_equal(res$raw_text, txt)
+})
+
+test_that("an admission line that continues an either/or entry condition stays (oslomet)", {
+  txt <- paste("Bestått første og andre studieår eller tilsvarende i bachelorstudium i bioingeniørfag, eller",
+               "Opptak til kompletterende utdanning for bioingeniører", sep = "\n")
+  expect_equal(.strip_admission_lines(txt), txt)
+  # an admission line on its own still goes
+  expect_equal(.strip_admission_lines("Opptak til lærerutdanningen.\nEmnet bygger på Norsk 1."),
+               "Emnet bygger på Norsk 1.")
+  # a line after a comma is its own line (nord: a graded exam after a gate)
+  lines <- c("Obligatorisk deltakelse (OD): Minimum 80% deltagelse. Teller 0/100 av karakteren,",
+             "Praktisk eksamen (PE): Individuell, varighet 30 minutter. Teller 100/100 av karakteren.")
+  expect_equal(.unwrap_lines(lines), lines)
 })
 
 test_that("admission sentences are removed from prerequisites, real ones kept", {

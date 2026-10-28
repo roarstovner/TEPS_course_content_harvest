@@ -1205,8 +1205,9 @@ heading to teaching_methods or assessment (it is neither).
 change. *Since:* 2026-10-22.
 
 **A sentence that makes the exam conditional on coursework goes to
-coursework requirements, at every institution; USN’s inline split is
-on.** A sentence in assessment that names a gate (approval, arbeidskrav,
+coursework requirements, at every institution and from assessment,
+teaching methods and course content; USN’s inline split is on.** A
+sentence in assessment that names a gate (approval, arbeidskrav,
 obligatory work, attendance, exercises) and makes it a condition for the
 exam, for handing in or presenting the work that is assessed, for being
 assessed or graded, or for passing the course moves to coursework
@@ -1235,32 +1236,62 @@ longer cut in two, and a percentage in parentheses (“Obligatorisk arbeid
 (“Obligatorisk frammøte (80%)”). USN’s stock line
 “Pensum-/litteraturliste er ikke publisert ennå.” also goes from the end
 of a reading list, and “Ikke bestemt.” and “Ingen så langt.” alone are
-placeholders. *Why:* by the spec coursework requirements hold what must
-be approved before the exam, also when the page writes it under
-assessment; after the pilot sections audit of 2026-10-22 flagged them,
-the whole build had such sentences in assessment in 360 plans (Nord 80;
-USN 79; UiT 77, 57 of them with no coursework section; NTNU 63; UiB 32;
-OsloMet 9; UiO 8; UiS 5; HiØF, NLA and UiA 2 each; Steiner 1).
-*Rejected:* applying the sentence rule only where the label split is on
-(other institutions write the same sentences, 61 plans, and the rule
-needs no per-site layout); moving the whole paragraph of a gate sentence
-(UiT 2008 plans put the exam, the gate and the grading in one
-paragraph); counting any sentence with “godkjent” and “eksamen” (the
-exam’s own parts and “48 timer før eksamen trekker kandidaten …”
-matched); treating “bestått” as a gate word (“Praksis må være bestått
-før eksamen kan avlegges” stays, praksis being a graded part of many
-plans); only the exam as the condition (the first version of the rule,
-the morning of 2026-10-22, left 103 sentences such as “… for å få
-endelig karakter i emnet” and “… til vurdering”). *Consequence:* the
-assessment and coursework text of 443 plans changes: UiT 154, USN 85
-(and 20 reading lists), Nord 80, NTNU 63, UiB 32, OsloMet 9, UiO 8, UiS
-5, HiØF, NLA and UiA 2 each, Steiner 1. 67 plans get a coursework
-section (UiT 2,208 to 2,265, UiO 15 to 21, Nord 1,105 to 1,109, USN
-1,224 to 1,225); the UiO median coursework section falls from 677 to 506
-characters, since the new ones hold one sentence. Plans with a gate
-sentence left in assessment fall from 360 to 5 (NTNU, where it shares a
-line with a graded part and is copied). `course_plan` and the plan ids
-do not change. *Since:* 2026-10-22.
+placeholders. Teaching methods and course content are read the same way
+(since the evening of 2026-10-22): their gate sentences move, a gate
+heading (“Obligatoriske aktiviteter:”, “Compulsory requirements:”) takes
+its block, and a line with Nord’s abbreviation (“Obligatorisk deltakelse
+(OD) på laboratorieøvelser”) moves; the label split proper
+(“Arbeidskrav: 20 timer” is a workload line at UiS, “Assignments” a
+teaching form at NTNU) stays limited to assessment. In any of the three,
+compulsory attendance stated alone (“Deltakelse på 80 % av
+undervisning.”, “70 % obligatorisk deltakelse på seminarundervisning”;
+not attendance in praksis, which is how a practice course is assessed)
+and a sentence opened by a gate label inside a paragraph (“Mandatory
+course work: Attendance is mandatory in all seminars …”, UiT 2008) move
+too, and a gate that points back (“Begge disse kreves godkjent for
+adgang til eksamen.”) takes the sentence it names. *Why:* by the spec
+coursework requirements hold what must be approved before the exam, also
+when the page writes it under assessment, teaching or content; after the
+pilot sections audit of 2026-10-22 flagged them, the whole build had
+such sentences in assessment in 360 plans (Nord 80; USN 79; UiT 77, 57
+of them with no coursework section; NTNU 63; UiB 32; OsloMet 9; UiO 8;
+UiS 5; HiØF, NLA and UiA 2 each; Steiner 1). *Rejected:* applying the
+sentence rule only where the label split is on (other institutions write
+the same sentences, 61 plans, and the rule needs no per-site layout);
+moving the whole paragraph of a gate sentence (UiT 2008 plans put the
+exam, the gate and the grading in one paragraph); counting any sentence
+with “godkjent” and “eksamen” (the exam’s own parts and “48 timer før
+eksamen trekker kandidaten …” matched); treating “bestått” as a gate
+word (“Praksis må være bestått før eksamen kan avlegges” stays, praksis
+being a graded part of many plans); only the exam as the condition (the
+first version of the rule, the morning of 2026-10-22, left 103 sentences
+such as “… for å få endelig karakter i emnet” and “… til vurdering”).
+*Consequence:* the assessment and coursework text of 443 plans changes:
+UiT 154, USN 85 (and 20 reading lists), Nord 80, NTNU 63, UiB 32,
+OsloMet 9, UiO 8, UiS 5, HiØF, NLA and UiA 2 each, Steiner 1. 67 plans
+get a coursework section (UiT 2,208 to 2,265, UiO 15 to 21, Nord 1,105
+to 1,109, USN 1,224 to 1,225); the UiO median coursework section falls
+from 677 to 506 characters, since the new ones hold one sentence.
+Reading teaching methods and course content, and attendance stated
+alone, changes 453 more plans (NTNU 227, UiT 65, Nord 44, USN 44,
+HiVolda 26, UiA 15, UiS 9, HVL 6, UiO 6, OsloMet 5, NLA 4, INN 1, UiB 1;
+2026-10-28). At UiT it is mostly the attendance line that ends an
+arbeidskrav list (“70 % deltakelse på undervisning”), and in 4 plans the
+rest of the list under “Følgende arbeidskrav må være godkjent …:”, which
+the first version cut off when an item named the exam (“framlegg av
+utkast til eksamensarbeid”). NTNU’s median coursework section grows from
+103 to 179 characters and 3 NTNU teaching sections that held only
+requirements go; coursework sections rise at Nord 1,109 to 1,118, NTNU
+2,015 to 2,023, OsloMet 694 to 697, UiO 21 to 23 and UiT 2,265 to 2,267.
+Plans with a gate sentence left in assessment fall from 360 to 5 (NTNU,
+where it shares a line with a graded part and is copied). The admission
+cleanup of prerequisites reads a line that ends in “eller” or “or” with
+the next one, so an either/or entry condition keeps its second branch
+(“… i bioingeniørfag, eller” over “Opptak til kompletterende utdanning
+for bioingeniører”, OsloMet); not any line after a comma, which glued
+Nord’s graded “Praktisk eksamen (PE)” to the gate line above it.
+`course_plan` and the plan ids do not change. *Since:* 2026-10-22;
+corrected 2026-10-28.
 
 **HVL: exam logistics and costs leave the sections.** A sentence goes
 from any HVL section when it points to Studentweb or says where the

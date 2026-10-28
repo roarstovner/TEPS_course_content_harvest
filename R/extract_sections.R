@@ -127,6 +127,7 @@ page_sections <- function(blocks, text, cfg) {
   }
   out <- .fill_pointer_sections(out, blocks, cfg$pointer)
   out <- .split_inline_coursework(out, labels = isTRUE(cfg$inline_coursework))
+  for (s in c("teaching_methods", "course_content")) out <- .split_inline_coursework(out, "heading", s)
   out <- .split_inline_prerequisites(out)
   .clean_sections(out, cfg$institution)
 }
@@ -384,8 +385,10 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # "Spesielle vilkår") takes what it introduces (a programme list: the rest of
 # its paragraph, or the next one), and a label whose text all went goes too
 # ("Forkunnskapskrav:" over "Som opptakskrav til studieprogrammet, se ...").
+# A sentence across lines (.unwrap_lines) is read whole, so "Bestått ...,
+# eller" over "Opptak til ..." names both and stays.
 .strip_admission_lines <- function(text) {
-  lines <- stringr::str_split_1(text, "\n")
+  lines <- .unwrap_lines(stringr::str_split_1(text, "\n"))
   n <- length(lines)
   gone <- logical(n)
   for (k in seq_len(n)) {
@@ -470,26 +473,58 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 .gate_sentence_regex <- paste0(
   "(*UCP)(?is)^(?=[^\\t]*$)(?!.*\\b(?:(?:alle|begge) (?:del(?:er|ene|ar|ane)|\\w*eksam\\w*)|er (?:en )?deleksamen)\\b)",
   "(?=.*\\b(?:(?:godkje?n|approv)\\w*+(?!\\W+(?:\\w+\\W+)?(?:e(?:ks|x)am|\\w*vurdering|\\w*mappe))|arbeidskrav|obligatori|compulsory|mandatory|coursework|øving|",
-  "øvelse|oppmøte|frammøte|fremmøte|tilstedeværelse|nærvær|attendance|participation|assignments?\\b))",
+  "øvelse|oppmøte|frammøte|fremmøte|tilstedeværelse|nærvær|attendance|participation|assignments?\\b|",
+  "homework|exercises?\\b|passing grade))",
   "(?!\\W*(?:må|skal|must)\\b)(?!\\W*(?!(?:for (?:å|at)|in order|before|to)\\b)(?:\\w+\\W+){0,4}?(?:\\w*eksam|\\w*exam|delvurdering|",
   "del(?:er|ene|ar|ane)\\b|parts?\\b|mappe|portfolio)\\w*\\W+(?:\\w+\\W+){0,6}?(?:må|skal|must|ha(?:ve|s) to)\\b)",
   "(?=.*(?:\\b(?:må|skal)\\b.{0,150}\\b(?:før|innan|innen)\\b.{0,60}(?:eksam|vurder|sluttprøv)|",
-  "\\b(?:må|skal)\\b.{0,150}\\bfor (?:å|at|(?:fram|frem)stilling til)\\b.{0,80}(?:eksam|vurder|(?:inn)?lever|framstill|fremstill|karakter)|",
+  "\\b(?:må|skal)\\b.{0,150}\\bfor (?:å|at|(?:fram|frem)stilling til)\\b.{0,80}(?:eksam|vurder|\\b(?:inn)?lever|framstill|fremstill|karakter)|",
   "\\bfor (?:å|at)\\b.{0,60}\\b(?:gå opp|framstill|fremstill|avlegg|lever|vurder|få (?:\\w+ ){0,2}vurder)\\w*.{0,60},? (?:må|skal)\\b|",
   "\\b(?:må|skal)\\b.{0,150}\\bfor (?:å|at) (?:bestå\\b|(?:emnet|faget) skal (?:være|vere|kunne) bestått|",
   "få (?:emnet|faget) bestått)|",
   "\\b(?:tilgang|adgang|rett|vilkår|forutsetning|føresetnad)\\b (?:til|for) (?:å )?(?:\\w+ ){0,4}?\\w*(?:eksam|prøve)|",
   "\\b(?:must|ha(?:ve|s) to|required?|need|prerequisite|condition)\\b.{0,150}\\b(?:before|prior to|",
-  "in order to|allowed to|admitted to|eligible|qualif\\w*)\\b.{0,60}\\b(?:\\w*exam|assessment|submit)|",
+  "in order to|allowed to|admitted to|for permission to|eligible|qualif\\w*)\\b.{0,60}\\b(?:\\w*exam|assessment|submit)|",
   "\\b(?:before|in order to)\\b.{0,60}\\bexam\\w*,? .{0,60}\\b(?:must|need|have to|has to|required?)\\b))")
+
+# Compulsory attendance stated alone, without a condition: "Deltakelse på 80
+# % av undervisning.", "70 % obligatorisk deltakelse på seminarundervisning",
+# "Oppmøte undervisning: minimum 80%." (nord, uit, ntnu). The spec puts it in
+# coursework requirements. Not attendance in praksis, which is how a practice
+# course is assessed ("For å bestå praksis må studenten ... ha 100 %
+# oppmøte").
+.attendance_sentence_regex <- paste0(
+  "(*UCP)(?i)^\\s*(?=[^\\t]{0,120}$)(?!.*praksis)(?=.*(?:\\d ?(?:%|prosent)|\\balle?\\b))",
+  "(?:(?:obligatorisk|mandatory|compulsory|krav om|minimum|minst|min\\.)\\s+)*",
+  "(?:\\d+ ?(?:%|prosent)\\s+(?:\\w+\\s+){0,2}?)?(?:deltakelse|deltaking|deltagelse|oppmøte|frammøte|",
+  "fremmøte|tilstedeværelse|nærvær|attendance|participation)\\b[^.]{0,80}\\b(?:undervisning|seminar|",
+  "forelesning|samling|teaching|lecture|class|kurs|workshop|øving|lab)\\w*[^.]{0,40}\\.?\\s*$")
+# A sentence that a gate label opens inside a paragraph (uit 2008: "...
+# supervisor. Mandatory course work: Attendance is mandatory in all seminars
+# ..."); not "Arbeidskrav: 20 timer", a workload line (uis).
+.gate_label_sentence_regex <- paste0(
+  "(*UCP)(?i)^\\s*(?:(?:mandatory|compulsory|obligatory) (?:course ?work|work requirements?|assignments?|",
+  "activit(?:y|ies)|requirements?)|obligatoriske? (?:arbeidskrav|aktivitet(?:er)?))\\s*:\\s*\\S")
+# A gate sentence whose subject points back ("Begge disse kreves godkjent
+# ...", "Den må være godkjent ...", "These must be approved ..."); not a
+# determiner ("Dei obligatoriske arbeidskrava må ...", which names its gate).
+.gate_backref_regex <- paste0(
+  "(*UCP)(?i)^\\W*(?:begge disse|disse|desse|dette|den|these|this|it|they)\\W+",
+  "(?:må|skal|kreves|krevst|must|ha(?:ve|s) to|is required)\\b")
 
 # A hard-wrapped sentence (usn's text) is read as one line: a line that
 # starts in lower case continues one that ends in neither a full stop nor a
-# colon. The line break stays.
+# colon, and any line continues one that ends in "eller" or "or" ("... i
+# bioingeniørfag, eller" over "Opptak til kompletterende utdanning ...",
+# oslomet). Not any line after a comma: nord's "Obligatorisk deltakelse (OD):
+# ... Teller 0/100 av karakteren," is followed by the graded "Praktisk eksamen
+# (PE): ...". The line break stays.
 .unwrap_lines <- function(lines) {
   n <- length(lines)
-  cont <- c(FALSE, grepl("^\\s*\\p{Ll}", lines[-1], perl = TRUE) &
-              grepl("[\\p{L}\\d,)]\\s*$", lines[-n], perl = TRUE))
+  cont <- c(FALSE, (grepl("^\\s*\\p{Ll}", lines[-1], perl = TRUE) &
+                      grepl("[\\p{L}\\d,)]\\s*$", lines[-n], perl = TRUE)) |
+              (grepl("(*UCP)(?i)\\b(?:eller|or)\\s*$", lines[-n], perl = TRUE) &
+                 nzchar(trimws(lines[-1]))))
   if (!any(cont)) return(lines)
   vapply(split(lines, cumsum(!cont)), paste, character(1), collapse = "\n", USE.NAMES = FALSE)
 }
@@ -524,21 +559,43 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # a gate ("Det er derfor obligatorisk oppmøte ..."). Both stop at the next
 # assessment component ("Hjemmeeksamen (HJ): ...", "teller 100/100"). A gate
 # line that also names an exam component stays in assessment as well.
-# A gate sentence (.gate_sentence_regex) is a gate line when it is the whole
+# A gate sentence (.gate_sentence_regex, or compulsory attendance stated
+# alone, .attendance_sentence_regex) is a gate line when it is the whole
 # line, and moves by itself from a line with other sentences. Without
 # `labels` (institutions without `section_inline_coursework`) only gate
-# sentences move.
-.split_inline_coursework <- function(out, labels = TRUE) {
-  i <- which(out$section == "assessment")
+# sentences move. `section`: teaching_methods and course_content are read
+# too (labels = "heading"): their gate sentences, gate headings with their
+# block, and nord's "(OD)"/"(OA)"/"(AK)" lines move, since a requirement
+# belongs in coursework requirements whatever heading the page puts it under.
+.split_inline_coursework <- function(out, labels = TRUE, section = "assessment") {
+  i <- which(out$section == section)
   if (length(i) != 1) return(out)
   lines <- .unwrap_lines(stringr::str_split_1(out$raw_text[i], "\n"))
-  is_gate <- function(x) labels & grepl(.inline_coursework_regex, x, perl = TRUE)
+  is_gate <- function(x) {
+    if (isTRUE(labels)) return(grepl(.inline_coursework_regex, x, perl = TRUE))
+    # under teaching or content only a gate heading, not "Assignments" or
+    # "Requirements" (ntnu lists "Lectures / Assignments / Project work"),
+    # and a line naming nord's abbreviation ("Obligatorisk deltakelse (OD) på
+    # laboratorieøvelser")
+    identical(labels, "heading") &
+      ((grepl(.coursework_heading_regex, x, perl = TRUE) &
+          !grepl("(?i)^\\s*(?:(?:course )?requirements|assignments)\\b", x, perl = TRUE)) |
+         grepl("\\((?:OD|OA|AK)\\d?\\)", x, perl = TRUE))
+  }
   gate <- is_gate(lines)
   # "Arbeidskrav: ... Vurdering: ..." on one line (uit master theses)
-  lines <- unlist(lapply(seq_along(lines), function(k) if (gate[k])
+  lines <- unlist(lapply(seq_along(lines), function(k) if (gate[k] && section == "assessment")
     stringr::str_split_1(lines[k], .assessment_midline_regex) else lines[k]))
   sents <- lapply(lines, function(l) if (grepl("\t", l)) l else stringr::str_split_1(l, .sentence_end))
-  sg <- lapply(sents, grepl, pattern = .gate_sentence_regex, perl = TRUE)
+  sg <- lapply(sents, function(s) {
+    g <- grepl(.gate_sentence_regex, s, perl = TRUE) | grepl(.attendance_sentence_regex, s, perl = TRUE) |
+      grepl(.gate_label_sentence_regex, s, perl = TRUE)
+    # "Det blir gitt 2 øvinger. Begge disse kreves godkjent for adgang til
+    # eksamen." (nord): a gate that points back takes the sentence it names
+    b <- which(g & grepl(.gate_backref_regex, s, perl = TRUE))
+    g[b[b > 1] - 1] <- TRUE
+    g
+  })
   whole <- vapply(sg, all, logical(1))
   gate <- is_gate(lines) | whole
   part <- !gate & vapply(sg, any, logical(1))
@@ -563,7 +620,8 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   # a gate sentence that ends in a colon heads a block too ("The following
   # coursework requirements must be approved in order to take the exam:" over
   # list items separated by blank lines, uit)
-  heading <- gate & (grepl(.coursework_heading_regex, lines, perl = TRUE) | (whole & colon))
+  heading <- gate & (grepl(.coursework_heading_regex, lines, perl = TRUE) |
+                       (whole & colon))
   # where a gate heading's block ends: a paragraph (not a list item) that
   # does not speak of the gate, a heading naming other information, or a line
   # about the exam (in its first words) that does not speak of the gate; no
@@ -578,9 +636,10 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   ends <- exam | (!gate & !talk & !blank & !item &
                     (c(TRUE, blank[-n]) | (label & grepl("(?i)informasjon", lines))))
   block <- logical(n)
-  for (k in which(gate & (label | colon) & !both)) {
+  for (k in which(gate & (label | colon) & !both & (heading | isTRUE(labels)))) {
     from <- which(!blank & seq_len(n) > k)[1]
-    if (block[k] || is.na(from) || stop[from] || exam[from]) next
+    if (block[k] || is.na(from) || stop[from] ||
+        (exam[from] && label[from] && grepl("^\\s*\\p{Lu}", lines[from], perl = TRUE))) next
     if (heading[k] && !(gate[from] && colon[from])) {
       to <- which((stop | ends) & seq_len(n) > from)[1]
       block[from:(if (is.na(to)) n else to - 1)] <- TRUE
