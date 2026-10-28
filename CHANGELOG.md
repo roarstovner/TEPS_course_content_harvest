@@ -103,6 +103,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- harvest: fetch each URL once, page joined to every offering that uses it (#468)
+- harvest: append-only Parquet checkpoint chunks instead of one rewritten RDS (#467)
+- harvest: one run per year (harvest_all years), HTML checkpoint cleared after the run is written (#466)
 - mf, nmbu: glued inline text and stock boilerplate in extracted text (#462)
 - uio: login page saved as ok; exam-help navigation, status notices, BinaryValueReference (#461)
 - oslomet: prerequisite cleanup cuts the second branch of an either/or entry condition (#465)
