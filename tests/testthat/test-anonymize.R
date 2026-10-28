@@ -370,6 +370,14 @@ test_that("HiOF: Sist hentet fra FS removed", {
   expect_false(grepl("Sist hentet fra FS", result))
 })
 
+test_that("HiOF English page: Course Leader and Last updated from FS removed", {
+  input <- paste0("Campus:\nFredrikstad.\nCourse Leader:\nKari Nordmann\nTeaching language:\nEnglish.\n",
+                  "Reading list\nLast updated from FS (Felles studentsystem) Oct. 28, 2026 2:53:08 AM")
+  result <- anonymize_text("hiof", input, .progress = FALSE)
+  expect_false(grepl("Nordmann|Last updated", result))
+  expect_match(result, "Teaching language:\nEnglish.")
+})
+
 test_that("HiOF: Litteraturlista sist oppdatert removed", {
   input <- "Pensum\nLitteraturlista er sist oppdatert 16.08.2016\nAnnet"
   result <- anonymize_text("hiof", input, .progress = FALSE)

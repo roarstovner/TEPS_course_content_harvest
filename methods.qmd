@@ -551,6 +551,27 @@ course content only the pointer). *Since:* 2026-10-15; the other wordings and
 Nord from 2026-10-17; NTNU, and no plan for a pointer page that is not a
 shell, from 2026-10-19.
 
+**HiØF: an offering whose page is only in the English tree takes that
+page.** HiØF's URL discovery reads the folder listings of
+/english/studies/courses/ (spring/ and autumn/ for vår and høst,
+historical-courses/ for historiske-emner/) as well as /studier/emner/; an
+offering with a page in both takes the teacher-education URL, then the
+Norwegian page. The English pages have the Norwegian layout; their semester
+title ("(Autumn 2024)") is read like "(Høst 2024)", and the anonymizer
+removes "Course Leader(s):" with the names under it and "Last updated from
+FS ...", as on the Norwegian pages. *Why:* the full harvest of 2026-10-28
+gave 1,833 of HiØF's 2,787 offerings of 2024-2025 no URL; 128 of them have a
+page only in the English tree (Applied Computer Science, Green Energy
+Technology, the PhD in iio/, the Akademi for scenekunst's nta/). The rest
+have no page in either tree: 853 are the semester DBH registers a course in
+besides the one HiØF publishes, 259 Akademi and PhD offerings, 593 codes
+not taught or kept by DBH as status "Avviklet". *Rejected:* giving a renamed
+code another code's page (not this offering's plan). *Consequence:* about
+128 offerings of 2024-2025 get an English plan after a retry harvest
+(`retry = "no_url"`), and more in earlier years; their English headings not
+in the heading map ("Course evaluation", "Examiners", "Conditions for
+resit") go to an audit of their sections. *Since:* 2026-10-28.
+
 ## Unit of analysis: the unique plan
 
 **A plan is a unique anonymized text per institution and course code**

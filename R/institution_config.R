@@ -235,16 +235,18 @@ institution_configs <- list(
 
   hiof = list(
     code = "0256",
-    # faculty folders from the site's listings (resolve_urls_hiof_batch())
+    # faculty folders, Norwegian and English, from the site's listings
+    # (resolve_urls_hiof_batch())
     strategy = "url_discovery",
     selector = "#vrtx-fs-emne-content, main .entry-content, .entry-content",
     facts = c("#vrtx-fs-emne-content > h1", "#vrtx-fs-emne-facts"),
     plan_years = "url",
     user_agent = "browser",
-    # The semester in the title, "LSKNO22215 ... (Vår 2020)": the folder
-    # videre/ has pages whose title names a later semester than the URL's
+    # The semester in the title, "LSKNO22215 ... (Vår 2020)", "(Autumn 2024)"
+    # on an English page: the folder videre/ has pages whose title names a
+    # later semester than the URL's
     page_term = function(html) {
-      m <- stringr::str_match(html, "<h1>[^<]*\\((Vår|Høst) (\\d{4})\\)\\s*</h1>")
+      m <- stringr::str_match(html, "<h1>[^<]*\\((Vår|Høst|Spring|Autumn) (\\d{4})\\)\\s*</h1>")
       semester_term(m[, 3], m[, 2])
     },
     section_strategy = "html",

@@ -212,8 +212,11 @@ hivolda_semester_pages <- function(page, code) {
 #' the reorganisations (lusp/slik/, iio/ing/, nta/, videre/); a course no
 #' longer taught moves to /studier/emner/historiske-emner/{hv|ir|it|lu|oss}/
 #' with its years (up to 2024 there), and some sit in another faculty's folder
-#' (hsb1209 in ir/). hiof_course_index() lists the pages of the offerings'
-#' years; hiof_match_urls() picks the offering's.
+#' (hsb1209 in ir/). A course taught in English may have its page only in
+#' the English tree, /english/studies/courses/{folder}/{year}/{spring|autumn}/
+#' (historical-courses/ for historiske-emner/). hiof_course_index() lists the
+#' pages of the offerings' years in both trees; hiof_match_urls() picks the
+#' offering's.
 #'
 #' @param df A tibble with course_code, year, semester_name columns
 #' @param index Pages and year folders read, from hiof_course_index()
@@ -227,7 +230,8 @@ resolve_urls_hiof_batch <- function(df, index = hiof_course_index(unique(df$year
 #'
 #' The page of the offering's code (the file name, lower case), year and
 #' semester; of several, the one at the URL add_course_url_hiof() gives (the
-#' teacher-education folders), then one outside historiske-emner. An offering
+#' teacher-education folders), then a Norwegian one, then one outside
+#' historiske-emner and historical-courses. An offering
 #' without a page whose year folder at add_course_url_hiof()'s URL was not
 #' read (its listing failed) keeps that URL; else its URL is NA.
 #'
@@ -238,7 +242,8 @@ resolve_urls_hiof_batch <- function(df, index = hiof_course_index(unique(df$year
 hiof_match_urls <- function(df, index) {
   built <- as.character(add_course_url_hiof(df$course_code, df$year, df$semester_name))
   p <- index$pages
-  p <- p[order(!p$url %in% built, grepl("/historiske-emner/", p$url)), ]
+  p <- p[order(!p$url %in% built, grepl("/english/", p$url),
+               grepl("/historiske-emner/|/historical-courses/", p$url)), ]
   url <- p$url[match(paste(tolower(df$course_code), df$year, semester_to_url(df$semester_name)),
                      paste(p$code, p$year, p$semester))]
   unread <- is.na(url) & !sub("[^/]+/[^/]+$", "", built) %in% index$read
@@ -249,18 +254,20 @@ hiof_match_urls <- function(df, index) {
 
 #' HiOF's course pages of some years, from the site's folder listings
 #'
-#' Walks /studier/emner/ three levels down (faculty, department, the
+#' Walks each root three levels down (faculty, department, the
 #' historiske-emner folders) to the year folders, and reads each year folder
 #' of `years` page by page (?page=2, ...) until a page lists no new course
 #' page. About 20 pages a listing page: some 1000 requests for all years. A
-#' year folder whose listing fails is not in `read`.
+#' year folder whose listing fails is not in `read`. The English tree's
+#' semester folders are spring/ and autumn/.
 #'
 #' @param years Calendar years of the offerings
-#' @param root The course folder
+#' @param root The course folders: the Norwegian and the English tree
 #' @param delay Seconds between requests (polite_pause())
 #' @return List of `pages`, a tibble of url, code (lower case), year and
 #'   semester ("var", "host"), and `read`, the year folders read in full
-hiof_course_index <- function(years, root = "https://www.hiof.no/studier/emner/",
+hiof_course_index <- function(years, root = c("https://www.hiof.no/studier/emner/",
+                                              "https://www.hiof.no/english/studies/courses/"),
                               delay = get_institution_config("hiof")$request_delay) {
   links <- function(url) {
     polite_pause(delay)
@@ -288,7 +295,7 @@ hiof_course_index <- function(years, root = "https://www.hiof.no/studier/emner/"
     for (p in 1:100) {
       l <- links(if (p == 1) yf else paste0(yf, "?page=", p))
       if (is.null(l)) break
-      new <- setdiff(below(l, yf, "^(var|host)/[^/]+\\.html$"), pages)
+      new <- setdiff(below(l, yf, "^(var|host|spring|autumn)/[^/]+\\.html$"), pages)
       if (!length(new)) {
         read <- c(read, yf)
         break
@@ -298,9 +305,10 @@ hiof_course_index <- function(years, root = "https://www.hiof.no/studier/emner/"
     found[[yf]] <- pages
   }
   url <- unlist(found, use.names = FALSE) %||% character()
-  m <- stringr::str_match(url, "/(\\d{4})/(var|host)/([^/]+)\\.html$")
+  m <- stringr::str_match(url, "/(\\d{4})/(var|host|spring|autumn)/([^/]+)\\.html$")
   list(pages = tibble::tibble(url = url, code = tolower(vapply(m[, 4], utils::URLdecode, "", USE.NAMES = FALSE)),
-                              year = as.integer(m[, 2]), semester = m[, 3]),
+                              year = as.integer(m[, 2]),
+                              semester = unname(c(var = "var", host = "host", spring = "var", autumn = "host")[m[, 3]])),
        read = read)
 }
 

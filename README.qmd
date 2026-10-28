@@ -1299,14 +1299,24 @@ on 2026-10-21. After a harvest and `tar_make()`, run `harvest_all(institutions
 folder DBH does not give: `lusp/{lusp,pil,res,slik}/`, `hvo/{shb,vlo}/`,
 `iio/{itk,ing,ois}/` (from 2021), `nta/` (2009–2021), `videre/` (from 2008),
 `fellesemner/` (from 2022), and `historiske-emner/{hv,ir,it,lu,oss}/` for
-courses no longer taught (2005–2024, the faculties before 2021). The folder
+courses no longer taught (2005–2024, the faculties before 2021). A course
+taught in English may have its page only in the English tree,
+`/english/studies/courses/{folder}/{year}/{spring|autumn}/{code}.html` (the
+same folders, `historical-courses/` for `historiske-emner/`): the Master in
+Green Energy Technology (IRMGR), Applied Computer Science (ITI), the PhD
+courses (PHDDS, `iio/iio/`) and the Academy of Performing Arts (`nta/`, with
+pages for 2024 and 2025); the English pages have the Norwegian layout. The folder
 follows the site, not DBH's department (hsb1209, a health code, is in `ir/`),
 so `resolve_urls_hiof_batch()` (url_discovery) lists the year folders of
-the harvest's years (`hiof_course_index()`: about 20 pages a listing page,
-some 1000 requests for all years) and gives an offering the page of its
+the harvest's years in both trees (`hiof_course_index()`: about 20 pages a
+listing page, some 1000 requests for all years, 70 more for two years of the
+English tree) and gives an offering the page of its
 code, year and semester; of several, the teacher-education URL that
 `add_course_url_hiof()` builds (`historiske-emner/lu/` before autumn 2021,
-`lusp/lusp/` after), then one outside `historiske-emner`. An offering with no
+`lusp/lusp/` after), then a Norwegian page, then one outside the historical
+folders. Most offerings without a page are the other semester of a course
+DBH registers in both, or a code the site has no page for in that year (an
+old code version DBH still registers, a course not taught that year). An offering with no
 page gets no URL, unless the listing of its teacher-education year folder
 failed: then it gets that URL. The config selector lists fallbacks for the
 old and new page layouts.

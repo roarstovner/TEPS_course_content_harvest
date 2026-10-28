@@ -24,12 +24,40 @@ test_that("hiof_course_index() walks to the year folders and reads their listing
       "/historiske-emner/lu/" = hiof_links("2022/", "2007/"),
       httr2::response(404))
   })
-  idx <- hiof_course_index(2022, delay = 0)
+  idx <- hiof_course_index(2022, root = e, delay = 0)
   expect_equal(idx$read, paste0(e, "lusp/lusp/2022/"))   # lu/2022/ failed
   expect_equal(idx$pages$code, c("lmat10224", "løk101", "abc"))
   expect_equal(idx$pages$semester, c("host", "var", "host"))
   expect_equal(unique(idx$pages$year), 2022L)
   expect_false(any(grepl("/2021/|/2007/", sent)))
+})
+
+test_that("hiof_course_index() reads the English tree too, spring/ and autumn/ as var and host", {
+  local_robots("www.hiof.no")
+  e <- "https://www.hiof.no/english/studies/courses/"
+  httr2::local_mocked_responses(function(req) {
+    switch(paste0("/", sub("https://www.hiof.no/", "", req$url, fixed = TRUE)),
+      "/studier/emner/" = hiof_links("iio/"),
+      "/studier/emner/iio/" = hiof_links("ing/"),
+      "/studier/emner/iio/ing/" = hiof_links("2024/"),
+      "/studier/emner/iio/ing/2024/" = hiof_links("host/ire25717.html"),
+      "/studier/emner/iio/ing/2024/?page=2" = hiof_links(),
+      "/english/studies/courses/" = hiof_links("iio/"),
+      "/english/studies/courses/iio/" = hiof_links("ing/"),
+      "/english/studies/courses/iio/ing/" = hiof_links("2024/"),
+      "/english/studies/courses/iio/ing/2024/" = hiof_links("autumn/ire25717.html", "spring/irmgr44018.html"),
+      "/english/studies/courses/iio/ing/2024/?page=2" = hiof_links(),
+      httr2::response(404))
+  })
+  idx <- hiof_course_index(2024, delay = 0)
+  expect_equal(idx$pages$code, c("ire25717", "ire25717", "irmgr44018"))
+  expect_equal(idx$pages$semester, c("host", "host", "var"))
+  expect_length(idx$read, 2)
+  # the Norwegian page first; a code with an English page only gets it
+  df <- tibble::tibble(course_code = c("IRE25717", "IRMGR44018"), year = 2024L, semester_name = c("Høst", "Vår"))
+  expect_equal(hiof_match_urls(df, idx)$url,
+               c("https://www.hiof.no/studier/emner/iio/ing/2024/host/ire25717.html",
+                 paste0(e, "iio/ing/2024/spring/irmgr44018.html")))
 })
 
 test_that("hiof_match_urls() takes the offering's page, the teacher-ed URL first", {

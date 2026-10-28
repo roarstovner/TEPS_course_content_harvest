@@ -134,11 +134,12 @@ anonymize_text <- function(institution, text,
 
 .anon_hiof <- function(txt) {
   txt |>
-    stringr::str_remove_all("Sist hentet fra FS[^\n]*") |>
+    stringr::str_remove_all("(?:Sist hentet fra|Last updated from) FS[^\n]*") |>
     # "Litteraturlista er sist oppdatert ...", "Litteraturliste sist oppdatert"
     stringr::str_remove_all("(?m)^[ \\t]*Litteratur\\w*(?: er)? sist oppdater[^\n]*") |>
-    # Strip "Emneansvarlig(e):" + name lines until next "Heading:" line
-    stringr::str_remove("(?m)^Emneansvarlige?:\\s*\\n(?:(?![A-ZÆØÅ][\\w ]+:)[^\\n]*\\n?)*") |>
+    # Strip "Emneansvarlig(e):" ("Course Leader:" on an English page) + name
+    # lines until next "Heading:" line
+    stringr::str_remove("(?m)^(?:Emneansvarlige?|Course [Ll]eaders?):\\s*\\n(?:(?![A-ZÆØÅ][\\w ]+:)[^\\n]*\\n?)*") |>
     # "Foreleser studieåret 2018-2019: <name> (<e-mail>)", the name also on
     # the next line
     stringr::str_remove_all("(?m)^Foreleser(?:e)? studieåret[^\\n:]*:[ \\t]*(?:\\n[ \\t]*)?\\p{Lu}[^\\n]*")
