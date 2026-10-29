@@ -28,7 +28,11 @@
 #            selected start semester; nord, uis: only an academic year, which
 #            counts as its autumn); an offering whose page shows a version
 #            that starts after the offering's semester gets no plan (a later
-#            version, course_plan_spec.md). inn, nord, uis.
+#            version, course_plan_spec.md). inn, nord, uis, hiof.
+# page_end_term: function(html) giving the last semester the version a page
+#            shows is for; an offering after it gets no plan (an earlier
+#            version). hiof: a page for one semester or for two
+#            ("Høst 2013–Vår 2014", which serves the spring offering too).
 #
 # url_year: "academic"  the URL's year is the academic year the page is for
 #                       (ntnu, hvl, oslomet: "/2025" is 2025/26; uis: the
@@ -242,13 +246,13 @@ institution_configs <- list(
     facts = c("#vrtx-fs-emne-content > h1", "#vrtx-fs-emne-facts"),
     plan_years = "url",
     user_agent = "browser",
-    # The semester in the title, "LSKNO22215 ... (Vår 2020)", "(Autumn 2024)"
-    # on an English page: the folder videre/ has pages whose title names a
-    # later semester than the URL's
-    page_term = function(html) {
-      m <- stringr::str_match(html, "<h1>[^<]*\\((Vår|Høst|Spring|Autumn) (\\d{4})\\)\\s*</h1>")
-      semester_term(m[, 3], m[, 2])
-    },
+    # The semesters in the title, "LSKNO22215 ... (Vår 2020)", "(Autumn 2024)"
+    # on an English page, "(Høst 2013–Vår 2014)" for a course over two
+    # semesters (title_terms()): the folder videre/ has pages whose title
+    # names a later semester than the URL's, and a spring offering can take
+    # the autumn page of a course over two semesters (hiof_match_urls())
+    page_term = function(html) title_terms(html)$first,
+    page_end_term = function(html) title_terms(html)$last,
     section_strategy = "html",
     # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
     section_subheading_selector = "p"

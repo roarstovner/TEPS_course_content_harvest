@@ -572,6 +572,24 @@ code another code's page (not this offering's plan). *Consequence:* about
 in the heading map ("Course evaluation", "Examiners", "Conditions for
 resit") go to an audit of their sections. *Since:* 2026-10-28.
 
+**HiØF: a spring offering of a course over two semesters reads the page
+filed under the autumn before.** HiØF files a course taught over an
+academic year once, under its autumn folder, with both semesters in the
+title ("(Høst 2013–Vår 2014)"). A spring offering without a page of its
+own takes its course's page of the autumn before; the title's semesters
+(`page_term`, `page_end_term`) decide whether it is the spring offering's
+plan: a page for the autumn alone gives it no plan, as a page for a later
+version gives none. This is the page's own academic year, as at NTNU, HVL
+and OsloMet, not a plan carried forward. *Why:* 1,879 HiØF pages span an
+academic year, and 1,823 spring offerings of their courses had no plan
+(found 2026-10-21, counted 2026-10-29); most of the 853 offerings of
+2024-2025 "in the semester HiØF does not publish" above are these.
+*Rejected:* giving a spring offering any autumn page of its course, which
+would carry an autumn-only plan forward. *Consequence:* up to 1,823 spring
+offerings get a plan after a retry harvest (`retry = "no_url"`); no
+offering with a page of its own loses its plan (every HiØF page's title
+names its semesters, and none ends before its offering). *Since:* 2026-10-29.
+
 ## Unit of analysis: the unique plan
 
 **A plan is a unique anonymized text per institution and course code**

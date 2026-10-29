@@ -2331,13 +2331,18 @@ requests for all years, 70 more for two years of the English tree) and
 gives an offering the page of its code, year and semester; of several,
 the teacher-education URL that `add_course_url_hiof()` builds
 (`historiske-emner/lu/` before autumn 2021, `lusp/lusp/` after), then a
-Norwegian page, then one outside the historical folders. Most offerings
-without a page are the other semester of a course DBH registers in both,
-or a code the site has no page for in that year (an old code version DBH
-still registers, a course not taught that year). An offering with no
-page gets no URL, unless the listing of its teacher-education year
-folder failed: then it gets that URL. The config selector lists
-fallbacks for the old and new page layouts.
+Norwegian page, then one outside the historical folders. A course over
+two semesters has one page, under its autumn folder, titled “(Høst
+2013–Vår 2014)”: a spring offering without a page of its own takes its
+course’s page of the autumn before, and the title’s semesters
+(`page_term`, `page_end_term`) give it the plan only when the page is
+for its spring too. Most offerings still without a page are the other
+semester of a course DBH registers in both, or a code the site has no
+page for in that year (an old code version DBH still registers, a course
+not taught that year). An offering with no page gets no URL, unless the
+listing of its teacher-education year folder failed: then it gets that
+URL. The config selector lists fallbacks for the old and new page
+layouts.
 
 **USN.** The URL holds a version number that metadata cannot give:
 `https://www.usn.no/studier/studie-og-emneplaner/#/emne/{CODE}_{VERSION}_{YEAR}_{SEMESTER}`.

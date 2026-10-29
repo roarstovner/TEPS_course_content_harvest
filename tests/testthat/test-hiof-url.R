@@ -83,6 +83,11 @@ test_that("hiof_match_urls() takes the offering's page, the teacher-ed URL first
     NA,
     # the listing of lu/2007/ was not read: the teacher-ed URL as before
     paste0(e, "historiske-emner/lu/2007/host/la10vk1.html")))
+  # a spring offering without a page of its own: its course's page of the
+  # autumn before (a course over two semesters is filed under its autumn)
+  df <- tibble::tibble(course_code = c("HSB1209", "LMAT10224"), year = c(2014L, 2023L), semester_name = "Vår")
+  expect_equal(hiof_match_urls(df, list(pages = pages, read = c(read, paste0(e, "lusp/lusp/2023/"))))$url,
+               paste0(e, c("historiske-emner/ir/2013/host/hsb1209.html", "lusp/lusp/2022/host/lmat10224.html")))
 })
 
 test_that("add_course_url() leaves HiOF's URL to the resolver", {

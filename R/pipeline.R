@@ -35,7 +35,8 @@ partition_blocks <- function(files, config) {
 # and facts box where the config names them (`facts`) or, without blocks, the
 # text opens with them (text_plan_text()), else NA; the page's plan
 # (page_plans()); page_term, the start semester of the version the page
-# shows (`page_term`, semester_term());
+# shows (`page_term`, semester_term()) and the last semester it is for
+# (`page_end_term`);
 # english_pointer, whether the page says that the plan is on the English page
 # (`english_page`: a page fetched before its notice was known).
 partition_text <- function(files, blocks, config) {
@@ -51,13 +52,12 @@ partition_text <- function(files, blocks, config) {
                         facts = FALSE)[rows$page_id]
   }
   plan_text[rest] <- text_plan_text(text[rest], .block_cfg(config))
-  page_term <- if (is.null(config$page_term)) rep(NA_integer_, nrow(rows)) else
-    as.integer(config$page_term(.chr(rows, "html")))
+  term <- function(f) if (is.null(f)) rep(NA_integer_, nrow(rows)) else as.integer(f(.chr(rows, "html")))
   notice <- config$english_page$notice
   tibble::tibble(page_id = rows$page_id, extracted_text = unname(text), plan_text = unname(plan_text),
                  page_plans(rows$institution, unname(text), unname(plan_text),
                             isTRUE(config$exam_sessions)),
-                 page_term = page_term,
+                 page_term = term(config$page_term), page_end_term = term(config$page_end_term),
                  english_pointer = !is.null(notice) & grepl(notice %||% "", .chr(rows, "html"), perl = TRUE))
 }
 
@@ -428,8 +428,9 @@ offering_fulltext <- function(pages, page_text, config) {
 # page_plans()), before the shell rule: one row per offering of the raw store.
 # An offering whose page shows a version of the plan that starts after the
 # offering's semester (`page_term`; a page that names only an academic year
-# counts as its autumn), or only says that the plan is on the English page
-# (`english_page`), gets no plan.
+# counts as its autumn) or is for semesters before it (`page_end_term`), or
+# only says that the plan is on the English page (`english_page`), gets no
+# plan.
 plan_offerings <- function(pages, page_text, config) {
   page_cols <- c("extracted_text", "fulltext", "html", "html_error", "html_success", "url.x", "url.y")
   dplyr::bind_rows(lapply(seq_along(pages), function(i) {
@@ -438,7 +439,8 @@ plan_offerings <- function(pages, page_text, config) {
     df <- dplyr::select(pages[[i]], -dplyr::any_of(page_cols))
     df$extracted_text <- t$extracted_text
     plan <- t[c("course_plan", "course_plan_normalized", "plan_content_id", "plan_nchar")]
-    later <- (t$page_term > semester_term(df$year, df$semester_name)) %in% TRUE
+    term <- semester_term(df$year, df$semester_name)
+    later <- (t$page_term > term | (t$page_end_term %||% NA) < term) %in% TRUE
     none <- page_plans(cfg$name, NA_character_, NA_character_, isTRUE(cfg$exam_sessions))
     for (col in names(plan)) plan[[col]][is.na(t$page_id) | later | t$english_pointer %in% TRUE] <- none[[col]]
     df$course_plan <- plan$course_plan

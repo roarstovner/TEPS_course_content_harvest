@@ -340,10 +340,12 @@ test_that("a harvest run has a date only from its rows or its name", {
   expect_equal(harvest_files("y", raw), f)
 })
 
-test_that("hiof: the semester in the page title, so a later plan is dropped", {
-  py <- get_institution_config("hiof")$page_term
+test_that("hiof: the semesters in the page title, so a later or earlier plan is dropped", {
+  cfg <- get_institution_config("hiof")
   h1 <- function(s) sprintf("<h1>LSKNO22215 Litteraturhistorie (5.-10.) (%s)</h1>", s)
-  expect_equal(py(c(h1("Vår 2020"), h1("Høst 2023"), "<h1>LSKNO22215 Uten semester</h1>", NA,
-                     h1("Spring 2024"), h1("Autumn 2024"))),
-               c(4040L, 4047L, NA, NA, 4048L, 4049L))
+  html <- c(h1("Vår 2020"), h1("Høst 2023"), "<h1>LSKNO22215 Uten semester</h1>", NA,
+            h1("Spring 2024"), h1("Autumn 2024"), h1("Høst 2013–Vår 2014"), h1("Autumn 2013 - Spring 2014"))
+  expect_equal(cfg$page_term(html), c(4040L, 4047L, NA, NA, 4048L, 4049L, 4027L, 4027L))
+  # a course over two semesters: its page serves the spring offering too
+  expect_equal(cfg$page_end_term(html), c(4040L, 4047L, NA, NA, 4048L, 4049L, 4028L, 4028L))
 })

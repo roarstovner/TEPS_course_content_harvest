@@ -231,8 +231,11 @@ resolve_urls_hiof_batch <- function(df, index = hiof_course_index(unique(df$year
 #' The page of the offering's code (the file name, lower case), year and
 #' semester; of several, the one at the URL add_course_url_hiof() gives (the
 #' teacher-education folders), then a Norwegian one, then one outside
-#' historiske-emner and historical-courses. An offering
-#' without a page whose year folder at add_course_url_hiof()'s URL was not
+#' historiske-emner and historical-courses. A spring offering without a page
+#' takes its course's page of the autumn before: HiOF files a course over
+#' two semesters ("Høst 2013–Vår 2014") under its autumn only, and a page
+#' for the autumn alone gives the spring offering no plan (`page_end_term`).
+#' An offering without a page whose year folder at add_course_url_hiof()'s URL was not
 #' read (its listing failed) keeps that URL; else its URL is NA.
 #'
 #' @param df A tibble with course_code, year, semester_name
@@ -244,8 +247,10 @@ hiof_match_urls <- function(df, index) {
   p <- index$pages
   p <- p[order(!p$url %in% built, grepl("/english/", p$url),
                grepl("/historiske-emner/|/historical-courses/", p$url)), ]
-  url <- p$url[match(paste(tolower(df$course_code), df$year, semester_to_url(df$semester_name)),
-                     paste(p$code, p$year, p$semester))]
+  key <- paste(p$code, p$year, p$semester)
+  url <- p$url[match(paste(tolower(df$course_code), df$year, semester_to_url(df$semester_name)), key)]
+  spring <- is.na(url) & df$semester_name %in% "Vår"
+  url[spring] <- p$url[match(paste(tolower(df$course_code[spring]), df$year[spring] - 1L, "host"), key)]
   unread <- is.na(url) & !sub("[^/]+/[^/]+$", "", built) %in% index$read
   url[unread] <- built[unread]
   df$url <- url

@@ -102,6 +102,13 @@ test_that("each frame has the plans of its own offerings, and their sections", {
   expect_true(is.na(later$plan_content_id[2]) && is.na(later$course_plan[2]))
   expect_equal(later$extracted_text[2], text[2])
   expect_equal(later$plan_content_id[c(1, 3)], courses$plan_content_id[c(1, 3)])
+  # a page for semesters before the offering's (`page_end_term`): no plan
+  page_text$page_term <- NA_integer_
+  page_text$page_end_term <- semester_term(c(2023L, 2024L, 2023L), "Høst")
+  earlier <- plan_offerings(pages, page_text, config)
+  expect_true(is.na(earlier$plan_content_id[3]))
+  expect_equal(earlier$plan_content_id[1:2], courses$plan_content_id[1:2])
+  page_text$page_end_term <- NULL
   # a page that only says that the plan is on the English page (`english_page`): no plan
   page_text$page_term <- NA_integer_
   page_text$english_pointer <- c(FALSE, FALSE, TRUE)

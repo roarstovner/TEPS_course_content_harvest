@@ -486,6 +486,16 @@ academic_start_year <- function(year, semester) {
   year - (semester %in% c("Vår", "Sommer"))
 }
 
+# The semesters in a page title, "... (Vår 2020)</h1>", "(Autumn 2024)", or
+# a course over two semesters, "(Høst 2013–Vår 2014)" (HiOF): the first and
+# the last, as semester_term(); NA where the title names none.
+title_terms <- function(html) {
+  m <- stringr::str_match(html, paste0("<h1>[^<]*\\((Vår|Høst|Spring|Autumn) (\\d{4})",
+                                       "(?:\\s*[-–]\\s*(Vår|Høst|Spring|Autumn) (\\d{4}))?\\)\\s*</h1>"))
+  list(first = semester_term(m[, 3], m[, 2]),
+       last = semester_term(dplyr::coalesce(m[, 5], m[, 3]), dplyr::coalesce(m[, 4], m[, 2])))
+}
+
 # A semester as a sortable term: spring Y -> 2Y, autumn Y -> 2Y + 1; summer
 # counts as spring (it ends the same academic year)
 semester_term <- function(year, semester) {
