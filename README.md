@@ -458,10 +458,11 @@ pgrep -af harvest_all   # the harvests still running
   requests come outside the sites’ busy hours. A site with the year in
   the URL can be stopped (end the process) and started again: the years
   written are skipped, and the checkpoint, saved every 50 pages, resumes
-  the year it stopped in. A “current” site fetches all its pages again
-  at every start, so let it run to the end. A site that refuses the
-  harvest (HTTP 429, or 403 to 5 requests in a row and to a page known
-  to be public) stops its own harvest; start it again later.
+  the year it stopped in. So does a “current” site within the academic
+  year it started in (from 1 August); a later start fetches all its
+  pages again. A site that refuses the harvest (HTTP 429, or 403 to 5
+  requests in a row and to a page known to be public) stops its own
+  harvest; start it again later.
 - **Memory and the build.** A process keeps a year’s pages in memory
   until it writes that year’s run (NTNU: up to 13,016 offerings a year),
   so check free memory before starting more of them. `tar_make()` (4
@@ -819,9 +820,11 @@ The rest of the April backup, for sites with the year in the URL, is in
 `data/backup/2026-04-04/` and is not read. Raw files exist only locally:
 back them up.
 
-A “current” site changes its pages over time, so its checkpoints are
-removed before every harvest and all pages are fetched again; for “url”
-sites the checkpoint only resumes an interrupted harvest.
+A “current” site changes its pages over time, so a harvest started in a
+later academic year (from 1 August) removes its checkpoints and fetches
+all pages again; within the academic year recorded in
+`data/raw/checkpoint/{inst}/academic_year` it resumes, as a “url” site’s
+harvest does.
 
 ### Raw Store and Finalized Releases
 

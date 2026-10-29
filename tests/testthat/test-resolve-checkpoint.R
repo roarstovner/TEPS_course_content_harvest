@@ -36,3 +36,28 @@ test_that("a checkpoint is read part by part; a part left half-written by a cras
   checkpoint_append(tibble::tibble(course_id = c("a", "b"), pdf = list(charToRaw("%PDF"), NULL)), pdf)
   expect_equal(read_checkpoint(pdf)$pdf, list(charToRaw("%PDF"), NULL))
 })
+
+test_that("a current site's harvest resumes from checkpoints of this academic year only", {
+  withr::local_dir(withr::local_tempdir())
+  config <- list(name = "uio")
+  cp <- checkpoint_dir("uio", year = 2025)
+  part <- function() checkpoint_append(tibble::tibble(url = "u1", html = "page"), cp)
+  marker <- file.path(RAW_DIR, "checkpoint", "uio", "academic_year")
+  this <- suppressWarnings(prepare_fresh_harvest(config))
+  # a harvest that stopped in this academic year resumes
+  part()
+  suppressWarnings(prepare_fresh_harvest(config))
+  expect_length(checkpoint_parts(cp), 1)
+  # one started in an earlier academic year, or with refetch, starts again
+  writeLines(as.character(as.integer(this) - 1), marker)
+  suppressMessages(suppressWarnings(prepare_fresh_harvest(config)))
+  expect_length(checkpoint_parts(cp), 0)
+  part()
+  suppressMessages(suppressWarnings(prepare_fresh_harvest(config, refetch = TRUE)))
+  expect_length(checkpoint_parts(cp), 0)
+  expect_equal(readLines(marker), this)
+  # the marker goes with the last checkpoint
+  part()
+  suppressMessages(remove_checkpoints("uio", c("2025", "urls")))
+  expect_false(dir.exists(file.path(RAW_DIR, "checkpoint", "uio")))
+})

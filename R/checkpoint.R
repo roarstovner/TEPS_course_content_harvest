@@ -78,9 +78,12 @@ remove_checkpoints <- function(institution, parts = NULL) {
   dirs <- dirs[dir.exists(dirs)]
   if (length(dirs)) message("Checkpoints removed: ", paste(dirs, collapse = ", "))
   unlink(dirs, recursive = TRUE)
-  # and the institution's folder, when nothing is left in it
+  # and the institution's folder, when nothing but the academic year of a
+  # "current" site's harvest (prepare_fresh_harvest()) is left in it
   inst <- file.path(RAW_DIR, "checkpoint", institution)
-  if (!length(list.files(inst, recursive = TRUE, all.files = TRUE))) unlink(inst, recursive = TRUE)
+  if (!length(setdiff(list.files(inst, recursive = TRUE, all.files = TRUE), "academic_year"))) {
+    unlink(inst, recursive = TRUE)
+  }
   invisible(dirs)
 }
 

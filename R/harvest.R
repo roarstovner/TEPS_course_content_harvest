@@ -21,8 +21,8 @@
 harvest_institution <- function(institution, courses, year = NULL,
                                 refetch = FALSE, skip = character(), known = skip) {
   config <- get_institution_config(institution)
-  if (identical(config$plan_years, "current")) refetch <- prepare_fresh_harvest(config)
-  if (refetch) remove_checkpoints(institution)
+  if (identical(config$plan_years, "current")) prepare_fresh_harvest(config, refetch)
+  else if (refetch) remove_checkpoints(institution)
 
   df <- courses |>
     dplyr::filter(institution == !!institution) |>
@@ -291,19 +291,28 @@ pilot_sample <- function(institution, oldest_year = NULL, n = PILOT_N, years = P
 
 #' Before harvesting a site that shows only the current plan
 #'
-#' A "current" site replaces its plan, so a page fetched earlier must not
-#' stand in for one fetched now: its checkpoints are removed and every page is
-#' fetched again (`refetch`). A harvest in June-August may already show next
-#' year's plan, so that gives a warning.
+#' A "current" site replaces its plan, so a page fetched in an earlier
+#' academic year must not stand in for one fetched now: the checkpoints are
+#' removed unless they were started in this academic year (from 1 August),
+#' recorded in data/raw/checkpoint/{inst}/academic_year. A harvest that
+#' stopped then resumes where it was. A harvest in June-August may already
+#' show next year's plan, so that gives a warning.
 #'
 #' @param config Institution config
-#' @return TRUE, the `refetch` for harvest_institution()
-prepare_fresh_harvest <- function(config) {
+#' @param refetch TRUE removes the checkpoints in any case
+prepare_fresh_harvest <- function(config, refetch = FALSE) {
   if (as.integer(format(Sys.Date(), "%m")) %in% 6:8) {
     warning(config$name, " shows only the current plan: a harvest in June-August ",
             "may give next year's plan", call. = FALSE)
   }
-  TRUE
+  marker <- file.path(RAW_DIR, "checkpoint", config$name, "academic_year")
+  this <- as.character(as.integer(format(Sys.Date(), "%Y")) - (as.integer(format(Sys.Date(), "%m")) < 8))
+  if (refetch || !file.exists(marker) || !identical(readLines(marker, warn = FALSE), this)) {
+    remove_checkpoints(config$name)
+  }
+  dir.create(dirname(marker), recursive = TRUE, showWarnings = FALSE)
+  writeLines(this, marker)
+  invisible(this)
 }
 
 #' Apply year filter based on config
