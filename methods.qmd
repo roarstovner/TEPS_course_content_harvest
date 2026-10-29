@@ -1104,6 +1104,37 @@ their 6 offerings get a new plan id, one for one: none merge or split. In
 the teacher-education frame only PPU4000 (2014 and 2015), whose teaching
 methods section keeps the year too. *Since:* 2026-10-19.
 
+**The semester a course starts from stays.** "Emnet byrjar å gå frå våren
+2024" (UiB; also "begynner å gå fra", "starter fra") keeps its season and
+year: it says when the course was first offered, a fact of the course,
+where the date rules left "Emnet byrjar å gå frå." *Why:* found by the
+pilot anonymization re-audit of 2026-10-22; the user decided on
+2026-10-28 that the start semester is plan text. *Rejected:* removing the
+sentence, which loses when the course began. *Consequence:* 2 UiB texts
+keep the semester. The same change (2026-10-29) removes more administrative
+dates the audit found, and the fragments earlier removals left: NIH's
+"Pensumliste for." (205 texts), UiB's reading-list publication dates and
+dated room schedules, UiT's session dates ("Samling 1: Markedsstrategi -
+28-30. nov. 2007"), USN's approval dates typed with a double dot or a space;
+USN's Leganto rule no longer cuts "Journalføring" to "føring". 271 of
+32,865 distinct texts change. *Since:* 2026-10-29.
+
+**USN's approval block goes whole.** The heading "Godkjent emneplan"
+("Approved course plan") and the stamp lines under it, up to a blank line or
+the next heading, leave `course_plan`: dates, approvers' names and roles,
+initials ("LHA"), and notes on the approval. Until then a rule per stamp
+layout removed the name and kept the rest ("Approved by, Dean, 30.01.2017"),
+and layouts no rule knew kept the name ("24.11.21 <name>, Instituttleder,
+Institutt for ...", a name alone on a line). *Why:* the all-courses harvest
+of 2026-10-28 brought USN pages of the health and social sciences whose
+blocks named their approvers in new layouts; the survey of all 3,132 USN
+blocks found only approval content in them, and the spec has approval stamps
+out. *Rejected:* one more rule per layout, which the next layout escapes.
+*Consequence:* 1,345 of 4,272 USN texts change; about 20 staff names no
+longer appear in the all-courses data; plans that differed only in their
+stamps are one plan now (teacher-ed frame: USN 1,181 → 1,177 unique plans). The finalized releases (2026-10-15,
+2026-10-16) hold none of these names. *Since:* 2026-10-29.
+
 ## Sections
 
 ```{r}

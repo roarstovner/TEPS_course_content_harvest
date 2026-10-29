@@ -543,6 +543,21 @@ test_that("USN: Godkjent emneplan heading stripped", {
   expect_false(grepl("Godkjent emneplan", result))
 })
 
+test_that("USN: the Godkjent emneplan block goes with its stamps, up to a blank line or a heading", {
+  an <- function(x) anonymize_text("usn", x, .progress = FALSE)
+  stamps <- paste0("Godkjent emneplan\n\n23.11.23 Kari Nordmann\n21.11 22 Kari N. Nordmann\n",
+                   " Ola A. Hansen, Instituttleder, Institutt for helse-, sosial- og velferdsfag\n",
+                   "11.11 Kari Nordmann IHSV\n Kari Nordmann")
+  out <- an(paste0("Annet\n\nEvalueres.\n\n", stamps, "\n\nLitteratur\n\nBok, 2020."))
+  expect_false(grepl("Nordmann|Hansen|Godkjent", out))
+  expect_match(out, "Evalueres.", fixed = TRUE)
+  expect_match(out, "Litteratur\n\nBok, 2020.", fixed = TRUE)
+  # a heading right under the stamps, without a blank line, stays
+  out <- an(paste0(stamps, "\nLitteratur\nBok, 2020."))
+  expect_false(grepl("Nordmann", out))
+  expect_match(out, "Litteratur\nBok, 2020.", fixed = TRUE)
+})
+
 test_that("USN: Godkjent date line stripped", {
   input <- "Innhold\nGodkjent 22.11.2022.\nLitteratur"
   result <- anonymize_text("usn", input, .progress = FALSE)
@@ -742,8 +757,8 @@ test_that("steiner: bare PDF page numbers are removed, numbers in text kept", {
 # --- Seasons, academic years, brackets, mf and uio tails, phone numbers ---
 
 test_that("inflected and run-together season + year are removed", {
-  expect_equal(anonymize_text("nih", "Pensumliste for høsten 2025 og våren2026.", .progress = FALSE),
-               "Pensumliste for.")
+  expect_equal(anonymize_text("nih", "Kjernelitteratur\nPensumliste for høsten 2025 og våren2026.", .progress = FALSE),
+               "Kjernelitteratur")
 })
 
 test_that("academic-year ranges go, content ranges stay", {
@@ -885,7 +900,7 @@ test_that("admin dates go, government documents keep theirs", {
   expect_equal(an("oslomet", "Fagplanen ble godkjent i studieutvalget 14. november 2016.\nRedaksjonelle endringar lagt inn 3. juli 2017, 19. april og 7. juni 2018"),
                "Fagplanen ble godkjent i studieutvalget\nRedaksjonelle endringar lagt inn")
   expect_equal(an("usn", "Naturfag (MG1NA1) H2018 Notodden\nPensumliste for H2025-V2026\ndidaktisk arbeid- H23"),
-               "Naturfag (MG1NA1) Notodden\nPensumliste for\ndidaktisk arbeid")
+               "Naturfag (MG1NA1) Notodden\ndidaktisk arbeid")
   expect_equal(an("uis", "Tekst\nLENG145_1 Bokmål Versjon 20.Februar.2023\nMer"), "Tekst\nMer")
   expect_equal(an("usn", "Godkjent desember 2017.\nEmneplan godkjent mars 2022."),
                "Godkjent\nEmneplan godkjent")
@@ -1019,7 +1034,7 @@ test_that("uit: the English 2008-2011 timetable block goes, the unit line stays"
   expect_match(a[1], "Available on request")
 })
 
-test_that("usn: approval stamps with a name keep the role, not the name", {
+test_that("usn: approval stamps with a name go", {
   a <- anonymize_text(rep("usn", 5), c(
     "Godkjent emneplan\n\nGodkjent av programkoordinator Kari Nordmann, mars 2019.\n\nLitteratur",
     "Godkjent emneplan\n\nFørste gang godkjent høst 2018 ved professor Kari Nordmann, USN Handelshøyskolen.\n\nLitteratur",
@@ -1027,9 +1042,7 @@ test_that("usn: approval stamps with a name keep the role, not the name", {
     "Approved course plan\n\nApproved by Kari Ola Nordmann, Dean, 30.01.2017\n\nChange description",
     "Approved course plan\n\nApproved by the Dean Kari Nordmann 11.03.2019\n\nChange description"),
     .progress = FALSE)
-  expect_false(any(grepl("Nordmann|Kari", a)))
-  expect_match(a[2], "USN Handelshøyskolen")
-  expect_match(a[4], "Approved by, Dean")
+  expect_false(any(grepl("Nordmann|Kari|godkjent|Approved by", a)))
   expect_true(all(grepl("Litteratur|Change description", a)))
 })
 
@@ -1042,4 +1055,54 @@ test_that("usn: change-log signatures go, a reference author with the same surna
   expect_match(a, "Stubhaug, Audun & Nordmann, T. M.")
   b <- anonymize_text("usn", "Dette avklares av fagansvarlig for emnet og programkoordinator.", .progress = FALSE)
   expect_match(b, "fagansvarlig for emnet og programkoordinator")
+})
+
+test_that("leftover admin dates: usn stamps, Leganto 'Journal', uia, uit, hiof, nih", {
+  an <- function(inst, x) anonymize_text(inst, x, .progress = FALSE)
+  # usn: odd approval dates and a stamp line that opens with its date
+  expect_equal(an("usn", "Godkjent av Dekan 06.12..2018\nLitteratur"), "Godkjent av Dekan\nLitteratur")
+  expect_equal(an("usn", "Godkjent av instituttleiar Godkjent av dekan 20.10. 2017\nLitteratur"),
+               "Godkjent av instituttleiar Godkjent av dekan\nLitteratur")
+  expect_equal(an("usn", "Alle hjelpemidler.\n\n27.01.2014/dekan- godkjent i ledermøte v/Fakultet\n\nLitteratur"),
+               "Alle hjelpemidler.\n\nLitteratur")
+  expect_match(an("usn", "Godkjent 5. januar 2018 av dekan\nHøst-18, Porsgrunn"), "^Godkjent\\nPorsgrunn|, Porsgrunn")
+  expect_false(grepl("18", an("usn", "(NORVU103) Høst-18, Porsgrunn")))
+  expect_match(an("usn", "(NORVU103) Høst-18, Porsgrunn"), "NORVU103")
+  # plan text stays: the years of a change-log entry, a credits count after a season
+  expect_match(an("usn", "pensumlista for 2021 erstatter lista fra 2020."), "2021 erstatter lista fra 2020")
+  expect_match(an("usn", "Vår-10 stp"), "10 stp")
+  # Leganto item types: cut before a title, not inside "Journalføring"
+  expect_equal(an("usn", "Journalføring i barnehagen\nBookMøter med barn"), "Journalføring i barnehagen\nMøter med barn")
+  expect_equal(an("usn", "JournalNordic Journal of Studies"), "Nordic Journal of Studies")
+  # uia
+  expect_equal(an("uia", "The PhD-course is offered 17 - 21 March, 2025.\nPhysical or digital."),
+               "The PhD-course is offered.\nPhysical or digital.")
+  expect_match(an("uia", "The group has 10 - 20 students in 2025."), "10 - 20 students in")
+  # uit: session dates and the year of a deadline; the semester word before a year
+  a <- an("uit", "Samling 1: Markedsstrategi - 28-30. nov. 2007 Samling 2: Økonomi - 30. jan. - 1. feb 2008 Samling 3: Endring 6-8. august 2008.")
+  expect_equal(a, "Samling 1: Markedsstrategi Samling 2: Økonomi Samling 3: Endring.")
+  expect_equal(an("uit", "Søknadsfrist\n15. mai 2019\nEksamen"), "Søknadsfrist\n15. mai\nEksamen")
+  expect_equal(an("uit", "Søknadsfrist 11. august på UiTs Søknadsweb."), "Søknadsfrist 11. august på UiTs Søknadsweb.")
+  expect_false(grepl("2009", an("uit", "fail early in the Spring semester 2009.")))
+  expect_match(an("uit", "The spring semester is short."), "spring semester is short")
+  # uib: reading-list date sentences and variants, a dated meeting schedule
+  expect_equal(an("uib", "Litteraturliste\nLitteraturlista vil vere klar innan 1. Juni for haustsemesteret og 1. januar for vårsemesteret.\nEmneevaluering"),
+               "Litteraturliste\n\nEmneevaluering")
+  expect_equal(an("uib", "Litteraturlista vil vere tilgjengeleg på uib.no 1. juni for haustsemesteret og 1. desember for vårsemesteret.\nEmneevaluering"),
+               "Emneevaluering")
+  expect_equal(an("uib", "Pensum er 400 sider. Litteraturlista vil normalt vere klar innan 1. juni.\nEmneevaluering"),
+               "Pensum er 400 sider.\nEmneevaluering")
+  expect_equal(an("uib", "Litteraturlista vert tilgjengeleg 1. juni for haustsemesteret.\nX"), "X")
+  expect_match(an("uib", "Litteraturlista vil vere tilgjengeleg i Leganto. Se emnesida."), "tilgjengeleg i Leganto. Se emnesida.")
+  expect_match(an("uib", "Litteraturlista vert utarbeidd av instituttet og omfattar om lag 400 sider."), "400 sider")
+  expect_equal(an("uib", "Følgende rom:\n\ntirsdag 18.feb 2025 - rom 8.1 og 8.2\ntirsdag 10. februar - rom 9.1/9.2\n\nAlle lunsjene er i Laboratory building"),
+               "Følgende rom:\n\nAlle lunsjene er i Laboratory building")
+  expect_match(an("uib", "Seminar tirsdag 18. februar om skriving"), "tirsdag 18. februar om skriving")
+  # uib: the semester a course starts from is plan text
+  expect_match(an("uib", "Emnet byrjar å gå frå våren 2024."), "Emnet byrjar å gå frå våren 2024")
+  # nih: the line left bare by the removal of its semester
+  expect_equal(an("nih", "Kjernelitteratur\nPensumlista for høsten 2025.\nReduksjon"), "Kjernelitteratur\nReduksjon")
+  expect_match(an("nih", "Pensumlista for emnet finnes i Canvas."), "Pensumlista for emnet finnes i Canvas")
+  # hiof
+  expect_match(an("hiof", "hver ekskursjon vil i 2007/2008 koste om lag NOK 200"), "vil koste om lag NOK 200")
 })

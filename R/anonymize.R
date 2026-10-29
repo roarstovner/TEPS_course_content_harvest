@@ -92,6 +92,12 @@ anonymize_text <- function(institution, text,
     # none, and the table cell is then empty
     stringr::str_remove_all(paste0("(?:Innlevering|Utlevering|Dato):[ \\t]*\\d{1,2}\\.(?:\\d{1,2}\\.\\d{4}|[ \\t]*\\p{L}+)",
                                    "(?:[ \\t]*[-–][ \\t]*\\d{1,2}\\.\\d{1,2}\\.\\d{4})?(?:[ \\t]+\\d{1,2}:\\d{2})? *")) |>
+    # the dates of a course's sessions ("Samling 1: Markedsstrategi - 28-30.
+    # nov. 2007", "Samling 2: ... 30. jan. - 1. feb 2008"), and the year of an
+    # application deadline ("Søknadsfrist\n15. mai 2019"; the day stays)
+    stringr::str_replace_all(paste0("(Samling \\d+:[^:\\n]{0,60}?)[ \\t]*(?:-[ \\t]*)?\\d{1,2}(?:[ \\t]*[-–][ \\t]*\\d{1,2})?\\.?[ \\t]*",
+                                    "\\p{L}+\\.?(?:[ \\t]*[-–][ \\t]*\\d{1,2}\\.?[ \\t]*\\p{L}+\\.?)?[ \\t]*\\d{4}"), "\\1") |>
+    stringr::str_replace_all("(?m)^(Søknadsfrist[ \\t]*\\n[ \\t]*\\d{1,2}\\.[ \\t]*\\p{L}+)[ \\t]+\\d{4}[ \\t]*$", "\\1") |>
     # Strip "Kontaktperson:" + name line
     stringr::str_remove_all("(?m)^Kontaktperson:?\\s*\\n[^\\n]*") |>
     # Strip "Foreleser:" + name line
@@ -127,6 +133,8 @@ anonymize_text <- function(institution, text,
     stringr::str_remove("Forside\\s*>\\s*Studier\\s*>\\s*Emner\\s*>\\s*\\d{4}\\s*>\\s*(?:Høst|Vår|Haust)\\s+\\d{4}\\s*>\\s*") |>
     # Remove "(Høst/Vår/Haust YYYY)" from title
     stringr::str_remove_all("\\((Høst|Vår|Haust)\\s+\\d{4}\\)") |>
+    # the dates a course is offered ("offered 17 - 21 March, 2025")
+    stringr::str_remove_all("[ \\t]*\\d{1,2}[ \\t]*[-–][ \\t]*\\d{1,2}\\.?[ \\t]+\\p{L}+,?[ \\t]*20\\d{2}") |>
     # "Emneansvarlig(e):" and the name lines under it, up to the next
     # "Label:" line (Undervisningssemester:); several names are common
     stringr::str_remove_all("(?m)^Emneansvarlige?:[ \\t]*\\n(?:(?![\\p{Lu}][\\p{L} ()-]*:[ \\t]*$)[^\\n]*\\n)*")
@@ -234,7 +242,15 @@ anonymize_text <- function(institution, text,
 
 .anon_usn <- function(txt) {
   txt |>
-    stringr::str_remove_all("(?m)^Godkjent emneplan\\s*$") |>
+    # the "Godkjent emneplan" ("Approved course plan") block: approval
+    # stamps, one per line, up to a blank line ("24.11.21 Kari Nordmann,
+    # Instituttleder, Institutt for ...", "11.11 Kari Nordmann IHSV", a name
+    # alone); a heading that follows without a blank line stays
+    stringr::str_remove_all(paste0(
+      "(?m)^(?:Godkjent emneplan|Approved course plan)[ \\t]*$(?:\\n[ \\t]*(?=\\n))*",
+      "(?:\\n(?!(?:Litteratur|Emnet inngår i følgende studier|Endringsbeskrivelse|Emnets innhold|",
+      "Literature \\(reading list\\)|Course is part of these studies|Change description|Course content)[ \\t]*$)",
+      "[^\\n]*\\S[^\\n]*)*")) |>
     stringr::str_remove_all("(?m)^Godkjent\\s+\\d{1,2}\\.\\d{1,2}\\.\\d{4}[^\n]*") |>
     # "Godkjent av" with the approver's name and title on the next lines
     stringr::str_remove_all("(?m)^Godkjent av[ \\t]*\\n[^\\n]*(?:\\n(?:Institutt|Fakultet|Studie|Prorektor|Dekan)[^\\n]*)?") |>
@@ -250,6 +266,11 @@ anonymize_text <- function(institution, text,
     stringr::str_replace_all(paste0("(?m)^(Første gang godkjent[^\\n]{0,40}? ved (?:professor|dekan|instituttleder))[ \\t]+",
                                     .name_regex), "\\1") |>
     stringr::str_replace_all(paste0("(?m)^(Approved by(?:[ \\t]+the[ \\t]+Dean)?)[ \\t]+", .name_regex), "\\1") |>
+    # an approval date typed with a double dot or a space ("Godkjent av Dekan
+    # 06.12..2018", "Godkjent av dekan 20.10. 2017"), and a stamp line that
+    # opens with its date ("27.01.2014/dekan- godkjent i ledermøte v/...")
+    stringr::str_replace_all("(?m)^(Godkjent[^\\n]*?)[ \\t]+\\d{1,2}\\.\\d{1,2}\\.(?:\\.|[ \\t])\\d{4}[ \\t]*$", "\\1") |>
+    stringr::str_remove_all("(?m)^\\d{1,2}\\.\\d{1,2}\\.\\d{4}/dekan[^\\n]*(?:\\n|$)") |>
     # Leganto reading-list widget: link label, "View online", and the
     # item type glued to the title ("BookMøter med barnelitteratur")
     stringr::str_remove_all("Click to view interactive reading list in Leganto") |>
@@ -263,9 +284,10 @@ anonymize_text <- function(institution, text,
       "Book|Article|Website|Document|Thesis|Report)",
       # a title, quote, dash, bullet or link; lowercase too ("ArticleiPed",
       # "Book Chapterkapittel 10"), but not a word going on ("Booking",
-      # "Mappeinnlevering", "Videoen", "Articles:", "Documentation")
+      # "Mappeinnlevering", "Videoen", "Articles:", "Documentation",
+      # "Journalføring")
       "(?=[\\p{Lu}\\d\"«(“”‘’'–•-]|(?<!Book|Map|Video|Note|Music|Poem|Review|Report|Series|",
-      "Thesis|Conference|Presentation|Database|Anthology)(?!s(?!\\p{L})|ation|ist|wise|ing)\\p{Ll})"))
+      "Thesis|Conference|Presentation|Database|Anthology|Journal)(?!s(?!\\p{L})|ation|ist|wise|ing)\\p{Ll})"))
 }
 
 .anon_uib <- function(txt) {
@@ -279,9 +301,18 @@ anonymize_text <- function(institution, text,
     stringr::str_remove_all("(?m)^Kontakt:?\\s*[^\n]*") |>
     # When the reading list is published, a date that changes between years:
     # "Litteraturlista vil vere klar innan 01.06. for haustsemesteret og
-    # 01.12. for vårsemesteret.", "Litteraturlistene vil vere klare innan 1. juni"
-    stringr::str_remove_all(paste0("Litteraturlist\\w*(?: for [\\p{L} ]{1,30}?)? vil ver[ae] klare? inn[ae]n ",
-                                   "(?:\\d\\.(?=\\d|[ \\t]+\\p{Ll})|[^.\n])*\\.[ \\t]*"))
+    # 01.12. for vårsemesteret.", "Litteraturlistene vil vere klare innan 1. Juni",
+    # "... vil normalt vere klar innan 1. juni.", "... vil vere tilgjengeleg på
+    # uib.no 1. juni ...", "... vert tilgjengeleg 1. juni ...", "... vil
+    # publiserast innan 1. juli / 1. desember."; only where a date follows
+    stringr::str_remove_all(paste0(
+      "Litteraturlist\\w*(?: for [\\p{L} ]{1,30}?)? (?:vil (?:normalt )?(?:ver[ae]|være) ",
+      "(?:klare? inn[ae]n|tilgjengeleg(?: på uib\\.no)?)|vil publiserast innan|vert tilgjengeleg(?: på uib\\.no)?) ",
+      "(?=[^\n]{0,3}\\d{1,2}\\.)(?:\\d\\.(?=\\d|[ \\t]+\\p{Ll}|[ \\t]+", .month_regex, ")|[^.\n])*\\.?[ \\t]*")) |>
+    # a dated schedule of meetings ("tirsdag 18.feb 2025 - rom 8.1 og 8.2"):
+    # the date and the room belong to one semester's timetable
+    stringr::str_remove_all(paste0("(?m)^(?:mandag|tysdag|tirsdag|onsdag|torsdag|fredag)[ \\t]+\\d{1,2}\\.[ \\t]?\\p{L}+\\.?",
+                                   "(?:[ \\t]+\\d{4})?[ \\t]*-[ \\t]*rom [^\n]*(?:\n|$)"))
 }
 
 .anon_nmbu <- function(txt) {
@@ -446,6 +477,10 @@ anonymize_text <- function(institution, text,
 # A season word, also inflected or in a compound: "høsten", "Vårsemesteret".
 .season_regex <- "(?:(?:høst|vår|haust|sommer)(?:semester(?:et)?|en|a)?|autumn|spring|summer)"
 
+# The semester a course starts from is plan text and stays ("Emnet byrjar å gå frå
+# våren 2024"; decided 2026-10-28): a guard before the season word.
+.course_start <- "(?<!(?i:byrjar å gå frå|begynner å gå fra|starter fra)[ \\t]{0,3})"
+
 # A season after a semester label ("Undervisningssemester: Høst",
 # "Vurderingssemester\nHaust og vår", "Oppstart høst,"): the whole word and a
 # list, not the start of another word ("Våre", "Høstpraksis"); a glued next
@@ -529,7 +564,7 @@ anonymize_text <- function(institution, text,
     # Remove 2-digit season+year patterns (e.g. "Høst23", "Vår 22"), not
     # credits ("Høst 10 stp")
     stringr::str_remove_all(.not_gov_rule(paste0(.gap, "(?i:høst|vår|haust|autumn|spring)"),
-      "\\s*\\d{2}\\b(?![ \\t]*(?i:stp|sp|studiepoeng|ects|credits)\\b)")) |>
+      "(?:\\s*|-)\\d{2}\\b(?![ \\t]*(?i:stp|sp|studiepoeng|ects|credits)\\b)")) |>
     # Remove season words in semester context (next to year or semester keywords)
     # e.g. "Høst 2024", "2024 Vår", "Undervisningssemester: Vår", "Semester: Autumn"
     # Must run BEFORE year removal so "Høst 2024" matches as a unit
@@ -540,7 +575,7 @@ anonymize_text <- function(institution, text,
     # høst 2020", "MERK: Våren 2021: Skriftlig") and a colon closing the line
     # ("Høst 2024:")
     stringr::str_remove_all(.not_gov_rule(
-      paste0("(?:[ \\t]*[-–,:])?", .gap, "\\b(?i:", .season_regex, ")"),
+      paste0("(?:[ \\t]*[-–,:])?", .gap, "\\b", .course_start, "(?i:", .season_regex, "(?:[ \\t]+semester)?)"),
       paste0("\\s*\\d{4}\\b(?:[ \\t]*(?:,|og|and|[-–/])[ \\t]*(?i:", .season_regex, ")\\s*\\d{4}\\b)*",
              "(?::(?=[ \\t]*(?:\\n|$)))?"))) |>
     stringr::str_remove_all(.not_gov_rule(paste0(.gap, "\\d{4}"), "\\s+(?i:høst|vår|haust|autumn|spring|sommer|summer)")) |>
@@ -548,6 +583,8 @@ anonymize_text <- function(institution, text,
     # "(MG1NA1) H2018 Notodden", "H23: Undervisningen ..."
     stringr::str_remove_all(.not_gov_rule(
       "[ \\t]*[-–]?[ \\t]*\\b[HV]", "(?:19|20)?\\d{2}(?:[-/][HV](?:19|20)?\\d{2})?\\b:?")) |>
+    # a line left bare by the removal of its semester ("Pensumlista for høsten 2025.", nih)
+    stringr::str_remove_all("(?m)^[ \\t]*Pensumlist\\w* for\\.?[ \\t]*(?:\\n|$)") |>
     # Approval and update dates in words, twice for a second date on a
     # stamp line ("godkjent av utdanningsutvalget 3. mai 2018 og på fullmakt
     # av leder i utdanningsutvalget 4. mars 2019")
@@ -590,6 +627,8 @@ anonymize_text <- function(institution, text,
     stringr::str_replace_all(.not_gov_rule(paste0(.gap, "(?<![/\\w.])\\d{4}", .condition_year),
                                            paste0("\\s?[-–—]\\s?\\d{2,4}\\b(?!/|[-–]\\d)", .or_later)),
                              .drop_academic_year) |>
+    # "vil i 2007/2008 koste" without its year (hiof)
+    stringr::str_replace_all("\\bvil i (?=koste\\b)", "vil ") |>
     # Brackets emptied by the removals above: "Meld. St. 16 ()";
     # code such as "print()" has no space before and stays
     stringr::str_remove_all("[ \\t]+\\([ \\t]*\\)") |>
