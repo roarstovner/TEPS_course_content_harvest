@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- harvest: a current-only site's checkpoint survives a crash within the same harvest (#469)
 - uis: text reader opens sections at content lines (substring match) (#457)
 - harvest: fetch each URL once, page joined to every offering that uses it (#468)
 - harvest: append-only Parquet checkpoint chunks instead of one rewritten RDS (#467)
