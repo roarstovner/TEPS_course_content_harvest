@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- preview_change(): HEAD-vs-working-tree per-plan diff on the pilot sample, without tar_make (#471)
 - harvest: a current-only site's checkpoint survives a crash within the same harvest (#469)
 - uis: text reader opens sections at content lines (substring match) (#457)
 - harvest: fetch each URL once, page joined to every offering that uses it (#468)
