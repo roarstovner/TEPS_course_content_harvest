@@ -1149,7 +1149,10 @@ dates the audit found, and the fragments earlier removals left: NIH's
 dated room schedules, UiT's session dates ("Samling 1: Markedsstrategi -
 28-30. nov. 2007"), USN's approval dates typed with a double dot or a space;
 USN's Leganto rule no longer cuts "Journalføring" to "føring". 271 of
-32,865 distinct texts change. *Since:* 2026-10-29.
+32,865 distinct texts change. NTNU's link label "Faglærers emneside" goes
+with the heading "Andre sider om emnet" above it (160 pages), and "Emnet
+gis annethvert år, neste gang høsten 2018." loses the clause whole, not only
+its date (26 pages). *Since:* 2026-10-29.
 
 **USN's approval block goes whole.** The heading "Godkjent emneplan"
 ("Approved course plan") and the stamp lines under it, up to a blank line or

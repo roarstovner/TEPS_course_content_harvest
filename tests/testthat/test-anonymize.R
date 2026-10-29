@@ -280,6 +280,16 @@ test_that("NTNU: Blackboard links removed", {
   expect_false(grepl("Blackboard", result))
 })
 
+test_that("NTNU: the link label under 'Andre sider om emnet' and the next-time clause go", {
+  an <- function(x) anonymize_text("ntnu", x, .progress = FALSE)
+  expect_equal(an("Krav.\n\nAndre sider om emnet\nFaglærers emneside\nFagområder\nBiologi"),
+               "Krav.\n\nFagområder\nBiologi")
+  expect_equal(an("Other pages about the course\nLecturers page\nSubject areas"), "Subject areas")
+  expect_equal(an("Emnet gis annethvert år, neste gang høsten 2018. Mer."), "Emnet gis annethvert år. Mer.")
+  # "neste gang" without a date is plan text
+  expect_match(an("Hele praksisen må tas opp igjen neste gang denne praksisen arrangeres."), "neste gang denne")
+})
+
 # --- UiT ---
 
 test_that("UiT, UiS: HTML written out as text loses its tags, not its links", {

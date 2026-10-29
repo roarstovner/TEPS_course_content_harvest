@@ -65,7 +65,12 @@ anonymize_text <- function(institution, text,
     stringr::str_remove_all("(?m)^Course start\\b[^\n]*") |>
     # Strip LMS links and misc
     stringr::str_remove_all("Blackboard\\s*-\\s*\\S+") |>
-    stringr::str_remove_all("(?:Andre sider om emnet|Other pages about the course)\\s*")
+    # "Andre sider om emnet" and its link label ("Faglærers emneside")
+    stringr::str_remove_all(paste0("(?:Andre sider om emnet|Other pages about the course)\\s*",
+                                   "(?:(?:Faglærers emneside|Lecturers page)[ \\t]*(?:\\n|$))?")) |>
+    # when a course given every other year is given next: the clause goes
+    # whole, not only its date ("Emnet gis annethvert år, neste gang høsten 2018.")
+    stringr::str_remove_all(paste0(",[ \\t]*neste gang[ \\t]+", .season_regex, "[ \\t]+\\d{4}(?=\\.)"))
 }
 
 # HTML written out as text in a plan's fields (uit, uis reading-list notes:
