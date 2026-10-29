@@ -1457,7 +1457,56 @@ USN and Steiner do not change. `course_plan` and the plan ids do not change.
 *Since:* 2026-10-28.
 
 **Practicum stays in teaching methods** rather than a section of its own: only
-HiOF and Nord give practicum its own heading (since 2026-10-01).
+HiOF and Nord give practicum its own heading (since 2026-10-01). This holds
+for stock text about practicum in the teaching methods too (INN's
+"Praksisstudiet er en integrert del av fagene ..."): by the codebook
+practicum is a teaching method.
+
+**Learning-outcome group labels stay when the page makes them headings
+(INN).** INN marks "Kunnskap", "Ferdigheter" and "Generell kompetanse" as
+headings of their own (`div.label`), which opened learning outcomes again
+and dropped the label, so the section read "Studenten ... Studenten ...".
+From 2026-10-29 such a heading stays as a line of the section, as the same
+label does as a sub-heading at the other institutions. *Why:* the label says
+what kind of outcome follows; the pilot sections audit of 2026-10-17 found
+it missing at INN only. *Rejected:* removing the repeated "Studenten" (it
+opens each group on the page). *Consequence:* INN's learning outcomes gain
+their labels (about 3,000 sections, the INN learning outcomes that had
+none); `course_plan` and the plan ids do not change. *Since:* 2026-10-29.
+
+**Course evaluation, approval stamps and exam pointers leave the sections.**
+From 2026-10-29: INN's "Emneevaluering – kvalitetssystem" with its paragraph
+and UiS's "Emneevaluering" paragraph at the end of the teaching methods;
+OsloMet's approval stamps in course content ("Vedtatt i avdelingsstyret.
+Godkjent av rektor. Siste revisjon godkjent av studieutvalget ...", "Emneplanen
+er godkjent av utdanningsutvalget ved ...", "Revisjon godkjent på fullmakt
+...", "Etablert av dekanen ...", "Pensum oppdatert.", "Gjeldende fra ..."),
+removed by sentence where the sentence opens with the stamp; in assessment,
+where the resit rights are and that the student registers for a resit
+("Studentens retter og plikter ved ny/utsatt eksamen fremgår av forskrift
+... Studenter er selv ansvarlige for å melde seg opp til eventuell
+ny/utsatt eksamen (på Studentweb)", OsloMet and HiOF), OsloMet's
+"Skikkethetsvurdering" label over a pointer to the programme plan ("Se
+programplanen for bachelorstudium i barnehagelærerutdanning ... for nærmere
+informasjon."), and Nord's "Det tas forbehold om endringer i vurderingsform.
+Korrekte vurderingsform vises i StudentWeb ved oppmelding til aktuelt emne."
+`course_plan` keeps them all. *Why:* by the spec course evaluation is plan
+text in no section, approval stamps are out of the sections, and resit rules,
+registration and pointers with nothing more are not the assessment design
+(pilot sections audits, 2026-10-17). *Rejected:* removing every sentence on
+resits (OsloMet's "Studenter som på grunn av gyldig fravær ... kan melde seg
+opp til ny/utsatt eksamen. Ved framstilling til ny/utsatt eksamen kan ...",
+which also says what a resit consists of; listed in the spec's known
+deviations); dropping the "Emneevaluering" heading's text everywhere (UiT's
+coursework item "Emneevaluering" is a requirement); removing approval
+sentences anywhere in a line ("Arbeidskravet må være godkjent av
+faglærer."). *Consequence:* re-cleaning the build: OsloMet 131 course-content
+and 2 assessment sections lose stamps (no section empties; no other
+institution has a match), 43 assessment sections the resit-rights sentences
+(HiOF 5 more), 63 assessment or coursework sections the fitness pointer;
+Nord 282 assessment or coursework sections the reservation; INN 6 and UiS 3
+teaching-methods sections the evaluation. `course_plan` and the plan ids do
+not change. *Since:* 2026-10-29.
 
 **Admission text is not prerequisites** (opptakskrav, study-right sentences;
 since 2026-10-01), and credit-overlap boxes are dropped. Since 2026-10-15 the
@@ -1546,9 +1595,19 @@ reading-list sections (3,467 held only the notice and title), Volda loses
 166 of 238 and NLA 90 of 1,155; about 460 coursework sections go (OsloMet
 218, HiOF 93, NLA 82, HVL 43); about 2,000 teaching-methods sections lose a
 trailing placeholder (NLA 1,360, HiOF 395). Still kept, though the spec
-covers them: NTNU's "Endelig pensumliste legges ut på Blackboard før
-studiestart." and HiOF's "Oppgis ved semesterstart" as whole reading lists,
-and "Ingen forkunnskaper."-type prerequisites. `course_plan` and the plan
+covers them: "Ingen forkunnskaper."-type prerequisites. Also from 2026-10-29
+(later the same day): a reading list that only says it comes later or on the
+learning platform ("Endelig pensumliste legges ut på Blackboard før
+studiestart. Den kan også søkes opp på Innsida.", "Endelig semesterplan og
+pensumliste legges ut på den digitale læringsplattformen før studiestart.",
+"Oppgis ved semesterstart", "Pensum oppgis ved semesterstart", "Se
+pensumliste.") is no section, and as a leading line before references it goes
+from the list. A sentence that says something about the literature stays
+("Litteraturen er basert på matematikkdidaktiske forskningsartikler og
+oppgis ved semesterstart.", "Kursmaterialet er hovedsakelig vitenskapelige
+artikler skrevet på engelsk. Endelig pensumliste ..."). Re-cleaning the
+build: NTNU 905 reading lists go and 4 lose a leading line, HiOF 31 and 11,
+UiT 1. `course_plan` and the plan
 ids do not change. *Since:* 2026-10-29.
 
 **Prerequisites written inside the course description are prerequisites:** a

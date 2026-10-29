@@ -18,7 +18,7 @@
 #' unmapped one closes the open section, so the text under it is dropped. A
 #' sub-heading acts only inside a section a heading opened: one naming the
 #' open section is a group label and stays as content ("Kunnskap" inside
-#' learning outcomes), as does "Litteratur:" inside learning outcomes (a
+#' learning outcomes; so is a heading "Kunnskap", inn), as does "Litteratur:" inside learning outcomes (a
 #' group of outcomes, not a reading list); one naming another section
 #' switches to it;
 #' an unmapped one returns to the section its heading opened and stays as a
@@ -56,7 +56,10 @@ sectionize <- function(blocks) {
     if (role == "heading") {
       flush()
       parent <- current <- section
-      labelled <- .is_label_heading(text)
+      # a group label as a heading of its own (inn's div.label "Kunnskap")
+      # stays as content, as it does as a sub-heading
+      labelled <- .is_label_heading(text) || (identical(section, "learning_outcomes") &&
+        grepl(.lo_group_label, tolower(sub("[:：]\\s*$", "", trimws(text))), perl = TRUE))
       if (labelled) chunks <- text
     } else if (role == "start") {
       flush()
@@ -290,8 +293,9 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 #'   - removes rows that are empty or only a placeholder ("Ingen",
 #'     "Se fagplanen.", "-", a Leganto pointer; see .placeholder_phrases).
 #'   - strips page widgets, pointers and stock logistics sentences from
-#'     assessment and coursework (.section_noise), and logistics and cost
-#'     sentences from every section (.logistics_sentences).
+#'     assessment and coursework (.section_noise), and approval stamps,
+#'     logistics and cost sentences from every section
+#'     (.approval_sentence_regex, .logistics_sentences).
 #' Fuzzier cleanup (exam tables, arbeidskrav/eksamen boundaries inside one
 #' paragraph) is left to the later Phase-2 LLM lifting.
 .clean_sections <- function(out, institution = NULL) {
@@ -304,6 +308,10 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   rx <- if (!is.null(institution)) .logistics_sentences[[institution]]
   if (!is.null(rx)) out$raw_text <- vapply(out$raw_text, .strip_sentences, character(1),
                                            rx = rx, USE.NAMES = FALSE)
+  ap <- grepl("(?i)vedtatt i|godkjent|revi(?:dert|sjon)|redaksjonell|etablert av|gjeldende fra",
+              out$raw_text, perl = TRUE)
+  out$raw_text[ap] <- vapply(out$raw_text[ap], .strip_sentences, character(1),
+                             rx = .approval_sentence_regex, USE.NAMES = FALSE)
   rl <- out$section == "reading_list"
   out$raw_text[rl] <- stringr::str_remove(   # hiof date stamp line
     out$raw_text[rl], "^\\s*Litteratur\\w*(?: er)? sist oppdater[^\\n]*\\s*")
@@ -320,6 +328,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
                               character(1), USE.NAMES = FALSE)
   tm <- out$section == "teaching_methods"
   out$raw_text[tm] <- stringr::str_remove_all(out$raw_text[tm], .praksis_pointer_regex)
+  out$raw_text[tm] <- stringr::str_remove_all(out$raw_text[tm], .evaluation_part_regex)
   out$raw_text <- mapply(.strip_placeholder_lines, out$raw_text,
                          trailing = out$section != "assessment", USE.NAMES = FALSE)
   out$raw_text <- mapply(.clean_section_text, out$raw_text, out$section,
@@ -754,6 +763,10 @@ extract_sections <- function(config, html, extracted_text, course_id) {
            "blir gjennomført|vert arrangert|vert gjennomført) ",
            "(?:som (?:ved )?)?ordinær(?:e)? eksamen\\.?[ \t]*"),
     "(?m)^Se under [^.\n]{0,40}\\.?$",                           # oslomet pointer
+    # where the resit rights are and that the student registers (oslomet, hiof)
+    paste0("[ \t]*(?:Studentens (?:retter|rettigheter) og plikter ved ny/utsatt eksamen ",
+           "fr[ae]mgår av [^\n]*?\\.(?=\\s|$))?[ \t]*Studente[rn] er selv ansvarlig\\w* for å ",
+           "melde seg opp til eventuell ny/utsatt(?: eksamen)?(?: på Student[Ww]eb)?\\.?[ \t]*"),
     # a dated change-log entry: "13.03.2023: Eksamensform våren 2023 er
     # endret etter vurdering av ...", "26.09.2018: Endret arbeidskrav" (hiof)
     "(?m)^[ \t]*\\d{1,2}\\.\\d{1,2}\\.(?:\\d{4}|\\d{2})[ \t]*(?::|[-–][ \t])[^\n]*(?:\n|$)"
@@ -767,8 +780,15 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   hvl  = c("(?m)^Me(?:i)?r om hjelpemid(?:del|ler)[ \t]*$",
            paste0("(?m)[ \t]*For (?:mer |meir )?informasjon om bruk av kunstig intelligens ",
                   "\\(KI\\),? s(?:e|jå) [^\n]*$")),
-  # a pointer to the AI page, after the AI rule or alone
-  nord = "[ \t]*Informasjon om ChatGPT/kunstig intelligens[^\n]{0,20}? finner du her\\.?",
+  nord = c(
+    # a pointer to the AI page, after the AI rule or alone
+    "[ \t]*Informasjon om ChatGPT/kunstig intelligens[^\n]{0,20}? finner du her\\.?",
+    # the form may change; StudentWeb shows the right one at registration
+    paste0("[ \t]*Det tas forbehold om endringer i vurderingsform\\w*\\.?(?:[ \t]*Korrekt\\w*(?:/\\w+)? ",
+           "vurderingsform\\w* vises i StudentWeb[^.\n]*\\.?)?")),
+  # the fitness-to-practise label over a pointer to the programme plan
+  oslomet = paste0("(?im)^[ \t]*(?:Skikkethetsvurdering[ \t]*(?:[,:][ \t]*|\n[ \t]*)?)?",
+                   "se programplanen for [^\n]*?(?:skikkethetsvurdering|for nærmere informasjon)[^\n]*(?:\n|$)"),
   # the national fitness-to-practise notice (criteria a-h), the same in the
   # plans of the practice programmes
   usn  = paste0("(?s)Skikkethetsvurdering\\nKunnskapsdepartementet fastsatte .{0,1500}?",
@@ -799,6 +819,21 @@ extract_sections <- function(config, html, extracted_text, course_id) {
     "^(?![^\\n]*arbeidskrav)[^\\n]*(?:materialpeng|materialkostnad|kostpeng|e(?:i)?genandel|",
     "\\bkr\\.?[ \\t]?\\d|\\d[ \\t]?kr\\b)"
   )
+)
+
+# Approval stamps, in any section (course_plan_spec.md: out of the sections):
+# oslomet's "Vedtatt i avdelingsstyret. Godkjent av rektor. Siste revisjon
+# godkjent av studieutvalget ved fakultet LUI. Redaksjonell endring foretatt",
+# "Emneplanen er godkjent av utdanningsutvalget ved ...", "Revisjon godkjent
+# på fullmakt ...", "Etablert av dekanen <date>", "Pensum oppdatert.",
+# "Gjeldende fra <date>". A sentence goes when it opens with the stamp.
+.approval_sentence_regex <- paste0(
+  "(?i)^\\s*(?:vedtatt i \\w*styret|emneplan(?:en)? (?:er |ble |blei )?(?:godkjent|revidert)|",
+  "(?:siste )?revisjon(?:en)? (?:er |ble )?godkjent|revidert (?:versjon|emneplan)\\b[^.]*godkjent|",
+  "revidert av \\w*utvalg|godkjent (?:(?:av|i|på) )?",
+  "(?:rektor|dekan|fakultet|studieutval|utdanningsutval|doktorgradsutval|styret|fullmakt)|",
+  "redaksjonell\\w* endring|(?:studiet ble )?etablert av (?:dekan|fakultet)|",
+  "pensum oppdatert\\.?\\s*$|g(?:jeldende|yldig) fra\\b.{0,40}$)"
 )
 
 # The sentences of a text that match `rx` go (.sentence_end), and a line
@@ -908,6 +943,13 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "ta kontakt med (?:instituttet|fakultetet)(?:/(?:instituttet|fakultetet))?", "se hjemmeside(?:n)?",
   "available on request",                                             # uit 2008-2010
   "ny pensumbok vurderes",                                            # hiof
+  # the list is given at the start or put on the learning platform (hiof, ntnu)
+  "(?:(?:aktuell )?pensum(?:liste|litteratur)?|litteratur(?:en)?|bøker og artikler) ?oppgis (?:ved|før) [^.]{0,40}",
+  "oppgis (?:ved|før)(?: [^.]{0,40})?", "se pensumliste(?:n)?",
+  paste0("(?:den )?(?:endelig\\w* )?(?:pensumlist[ea]n?|semesterplan|studieplan)",
+         "(?: og (?:eventuel\\w* )?(?:pensumlist[ea]|semesterplan|studieplan|tilleggsstoff))? ?",
+         "(?:vil )?legges ut (?:på|i) (?:blackboard|(?:den digitale |studiets )?læringsplattform\\w*)[^.]{0,60}"),
+  "den kan også søkes opp på innsida",
   "oppgis senere",                                                    # ntnu
   "(?:pensum-/)?litteraturliste(?:n)? er ikke publisert ennå",        # usn
   "ikke bestemt", "ingen så langt",                                   # usn
@@ -926,6 +968,14 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "praksis, (?:se|sjå) ei?gen praksisplan\\.?|se (?:egen|eiga|egne) (?:praksisplan|",
   "plan for praksis|emneplaner om praksis)[^.\\n]{0,80}\\.?|",
   "det er ingen praksis knyt(?:tet|t) til emnet\\.?)[ \\t]*(?:\\n|$)")
+
+# The course evaluation (course_plan_spec.md: plan text in no section) as a
+# paragraph under its label at the end of the teaching methods: inn's
+# "Emneevaluering – kvalitetssystem", uis's "Emneevaluering". The label and
+# the paragraph after it go; uit's coursework item "Emneevaluering" stays.
+.evaluation_part_regex <- paste0(
+  "(?im)\\n?^[ \\t]*emneevaluering(?:[ \\t]*[-–][ \\t]*kvalitetssystem)?[ \\t]*:?[ \\t]*\\n",
+  "(?:[ \\t]*\\n)*(?:[^\\n]*\\S[^\\n]*(?:\\n|$))*")
 
 # Placeholder lines before real text go: "Ingen" (required) and then the
 # recommended prerequisites (hvl, uib), "." (nord), "Ingen" before usn's

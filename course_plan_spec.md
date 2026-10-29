@@ -149,3 +149,9 @@ the spec here:
   studiepoengs omfang og minst to års relevant yrkespraksis." and OsloMet's
   "Eksterne søkere må ha bestått lærerutdanning som kvalifiserer for arbeid i
   skolen."
+- Assessment keeps OsloMet's resit rules written as conditions ("Studenter
+  som på grunn av gyldig fravær ikke avlegger eksamen, eller som får
+  vurderingen F, kan melde seg opp til ny/utsatt eksamen."), often in one
+  paragraph with what the resit consists of ("Ved framstilling til ny/utsatt
+  eksamen kan enten en bearbeidet versjon ... leveres"), and HiOF's "Ny og
+  utsatt eksamen gjennomføres på samme måte som ved ordinær eksamen."

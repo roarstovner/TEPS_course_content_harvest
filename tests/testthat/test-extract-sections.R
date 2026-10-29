@@ -1352,3 +1352,57 @@ test_that("parts that only say they are empty or elsewhere are not sections", {
                c("Forelesninger og seminarer.", "Muntlig eksamen.\n\nIngen.",
                  "Obligatorisk deltakelse\n\nIngen"))
 })
+
+test_that("a learning-outcome group label as a heading of its own stays (inn)", {
+  html <- "<main><h2>Læringsutbytte</h2><p>Ved bestått emne:</p>
+    <div class=\"label\">Kunnskap</div><p>Studenten</p><p>har kunnskap om regi</p>
+    <div class=\"label\">Ferdigheter</div><p>Studenten</p><p>kan regissere</p>
+    <div class=\"label\">Arbeids- og undervisningsformer</div><p>Seminarer.</p></main>"
+  s <- sections_of(html, html_cfg(heading = "h2, div.label"))
+  expect_equal(s[["learning_outcomes"]],
+               "Ved bestått emne:\n\nKunnskap\nStudenten\nhar kunnskap om regi\n\nFerdigheter\nStudenten\nkan regissere")
+  expect_equal(s[["teaching_methods"]], "Seminarer.")
+})
+
+test_that("resit rights, the fitness pointer, the form reservation and approval stamps leave the sections", {
+  a <- paste0("Muntlig eksamen.\nStudentens retter og plikter ved ny/utsatt eksamen fremgår av forskrift ",
+              "om studier og eksamen ved OsloMet. Studenter er selv ansvarlige for å melde seg opp til ",
+              "eventuell ny/utsatt eksamen.\n\nSkikkethetsvurdering\nSe programplanen for bachelorstudium i ",
+              "barnehagelærerutdanning (180 studiepoeng) heltid eller https://student.oslomet.no/skikkethetsvurdering\n\n",
+              "Gradert skala A-F.")
+  cc <- paste0("Vedtatt i avdelingsstyret. Godkjent av rektor. Siste revisjon godkjent av studieutvalget ved ",
+               "fakultet LUI. Redaksjonell endring foretatt\nEmnet gir en innføring i tolking.")
+  out <- .clean_sections(tibble::tibble(section = c("assessment", "course_content"), raw_text = c(a, cc)), "oslomet")
+  expect_equal(out$raw_text, c("Muntlig eksamen.\n\nGradert skala A-F.", "Emnet gir en innføring i tolking."))
+  n <- paste0("Skoleeksamen, 4 timer, karakterregel Bokstavkarakterer. Det tas forbehold om endringer i ",
+              "vurderingsform. Korrekte vurderingsform vises i StudentWeb ved oppmelding til aktuelt emne.")
+  expect_equal(.clean_sections(tibble::tibble(section = "assessment", raw_text = n), "nord")$raw_text,
+               "Skoleeksamen, 4 timer, karakterregel Bokstavkarakterer.")
+  st <- paste0("Godkjent av studieutvalget ved fakultet LUI. Etablert av fakultetsstyret 10. april 2014. ",
+               "Revidert versjon godkjent av studieutvalget ved LUI. Pensum oppdatert. Gjeldende fra 1. august 2020.")
+  expect_equal(.strip_sentences(paste0(st, "\nEmnet gir kunnskap."), .approval_sentence_regex), "Emnet gir kunnskap.")
+  # an approval in coursework stays
+  cw <- "Arbeidskravet må være godkjent av faglærer."
+  expect_equal(.clean_sections(tibble::tibble(section = "coursework_requirements", raw_text = cw), "oslomet")$raw_text, cw)
+})
+
+test_that("the course evaluation leaves the teaching methods, uit's coursework item stays", {
+  tm <- paste0("Studenten arbeider i bedriften.\n\nEmneevaluering – kvalitetssystem\n\n",
+               "Til vanlig skal det gjennomføres evaluering av alle emner.")
+  expect_equal(.clean_sections(tibble::tibble(section = "teaching_methods", raw_text = tm), "inn")$raw_text,
+               "Studenten arbeider i bedriften.")
+  cw <- "Emneevaluering\tKarakterregel: Godkjent – ikke godkjent\nGodkjent labjournal."
+  expect_equal(.clean_sections(tibble::tibble(section = "coursework_requirements", raw_text = cw), "uit")$raw_text, cw)
+})
+
+test_that("a reading list that only says it comes later or elsewhere is not a section", {
+  drop <- c("Endelig pensumliste legges ut på Blackboard før studiestart.",
+            "Endelig pensumliste legges ut på Blackboard før studiestart. Den kan også søkes opp på Innsida.",
+            "Endelig semesterplan og pensumliste legges ut på den digitale læringsplattformen før studiestart.",
+            "Oppgis ved semesterstart", "Pensumliste oppgis ved semesterstart.", "Se pensumliste. Oppgis ved semesterstart")
+  for (t in drop) expect_false(.keep_section_row(t, "reading_list"), label = t)
+  keep <- c("Litteraturen er basert på matematikkdidaktiske forskningsartikler og oppgis ved semesterstart.",
+            "Kursmaterialet er hovedsakelig vitenskapelige artikler skrevet på engelsk. Endelig pensumliste legges ut på Blackboard før studiestart.",
+            "Oppgis ved semesterstart. Læreboka må leses.")
+  for (t in keep) expect_true(.keep_section_row(t, "reading_list"), label = t)
+})

@@ -109,7 +109,7 @@ test_that("the json reader marks the parts named in `facts`", {
   expect_false(any(page_blocks(html, NA, list(reader = "json"), "nla_NO1_2024_autumn_1")$facts))
 })
 
-test_that("fields are headings in scopes of their own; later labels are kept", {
+test_that("fields are headings in scopes of their own; learning-outcome group labels are kept", {
   html <- "<article><h1>X1 Tittel</h1><div class='field-course-content'><div class='label'>Innhald</div>Tekst</div>
     <div class='field-learning-outcome-knowledge'><div class='label'>Kunnskapar</div>Kan</div>
     <div class='field-learning-outcome-skills'><div class='label'>Ferdigheiter</div>Gjer</div>
@@ -124,7 +124,7 @@ test_that("fields are headings in scopes of their own; later labels are kept", {
   expect_equal(b$text[b$role == "text"],
                c("X1 Tittel", "Tekst", "Kan", "Ferdigheiter\nGjer", "Inngår i MGLU"))
   s <- sectionize(b)
-  expect_equal(s$raw_text, c("Tekst", "Kan\n\nFerdigheiter\nGjer"))
+  expect_equal(s$raw_text, c("Tekst", "Kunnskapar\nKan\n\nFerdigheiter\nGjer"))
   expect_match(.blocks_text(b), "^X1 Tittel\nInnhald\nTekst")
 })
 
