@@ -480,11 +480,13 @@ institution_configs <- list(
     # not the breadcrumbs and the apply button with the application period,
     # nor the link labels to the university's exam page ("Alt du trenger å
     # vite om ... : UiTs samleside om eksamen", "Her finner du mer informasjon
-    # om eksamen i nedlagte emner")
+    # om eksamen i nedlagte emner"; on English pages "Everything you need to
+    # know about ... the exam ...: UiT Exams homepage")
     selector = "#maincontents",
     exclude = c("#maincontents .hero-container1 .offset-md-1, #maincontents .breadcrumb",
-                paste0("//p[a[contains(@href, 'uit.no/eksamen')]][normalize-space() = normalize-space(a)",
-                       " or starts-with(normalize-space(), 'Alt du trenger å vite om')]")),
+                paste0("//p[a[contains(@href, 'uit.no/eksamen') or contains(@href, 'uit.no/exams')]]",
+                       "[normalize-space() = normalize-space(a) or starts-with(normalize-space(), 'Alt du trenger å vite om')",
+                       " or starts-with(normalize-space(), 'Everything you need to know about')]")),
     facts = "#maincontents > section",
     plan_years = "url",
     post_fn = .pre_uit,

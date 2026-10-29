@@ -43,6 +43,7 @@ section_heading_patterns <- tibble::tribble(
   # Most rows are exact (whole heading only), and exact matches win over
   # substrings, so "Eksamen og sensorordning" still maps to assessment.
   "undervisnings- og eksamensspråk",       ".drop",                  TRUE,   # uit 2018+ (language, facts)
+  "language of instruction and examination", ".drop",               TRUE,   # uit English pages
   "eksamensdato",                          ".drop",                  FALSE,
   "dato for eksamen",                      ".drop",                  TRUE,   # uit 2008-2011
   "dato for skoleeksamen",                 ".drop",                  TRUE,
@@ -60,6 +61,7 @@ section_heading_patterns <- tibble::tribble(
   "vilkår for ny/utsatt eksamen",          ".drop",                  TRUE,
   "syk på eksamen / utsatt eksamen",       ".drop",                  TRUE,
   "kontinuasjonseksamen",                  ".drop",                  TRUE,
+  "re-sit examination",                    ".drop",                  TRUE,   # uit English pages
   "dette bør du vite om eksamen",          ".drop",                  TRUE,
   "sensorordning",                         ".drop",                  TRUE,
   "sensurordning",                         ".drop",                  TRUE,   # uio

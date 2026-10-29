@@ -75,9 +75,10 @@ test_that("a table of contents is not course content", {
 })
 
 test_that("language metadata headings are not filed as assessment", {
-  expect_true(is.na(match_heading_to_section("Language of instruction and examination")))
-  # uit's language label is facts, not plan text
+  # uit's language label is facts, not plan text, in Norwegian and English
   expect_equal(match_heading_to_section("Undervisnings- og eksamensspråk"), ".drop")
+  expect_equal(match_heading_to_section("Language of instruction and examination"), ".drop")
+  expect_true(is.na(match_heading_to_section("Language of instruction")))
   expect_equal(match_heading_to_section("Eksamensspråk"), "assessment")
 })
 

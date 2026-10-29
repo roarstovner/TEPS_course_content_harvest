@@ -1047,6 +1047,20 @@ from the sections, as before (it stayed in `course_plan`). *Consequence:*
 split. Their sections keep their text, except the label in the 16
 assessment sections and a blank line where the label stood in 652 others.
 *Since:* 2026-10-15.
+The English pages' label, "Everything you need to know about before,
+during, and after the exam; registration, absence, appeals, and diplomas:
+UiT Exams homepage" (a link to en.uit.no/exams), goes the same way, and
+their "Language of instruction and examination" and "Re-sit examination"
+blocks leave the sections like the Norwegian "Undervisnings- og
+eksamensspråk" and "Kontinuasjonseksamen" (exam logistics and facts, not
+plan text). *Why:* found by the pilot sections re-audit of 2026-10-22: the
+language field ended teaching methods and the re-sit rules stood in
+assessment on English pages (2,419, 2,192 and 2,228 UiT pages with the
+field, the block and the label). *Consequence:* in a sample of 2 named and
+176 sampled UiT pages (`preview_change()`), 15 plans lose the label and get
+a new id; teaching methods loses the language field on 21, assessment the
+re-sit block on 15; INN's pages with the same field and NTNU are unchanged.
+*Since:* 2026-10-29.
 
 **MF and UiS: the title and the facts box are plan text.** `course_plan`
 keeps MF's title and course code and its facts box ("Emneinfo": code,
