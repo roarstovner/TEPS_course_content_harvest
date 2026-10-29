@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- hiof: pages that span 'Høst Y–Vår Y+1' for the spring offering (#444)
 - anonymizer: admin dates and fragments (hiof, nih, uia, uib, uit, usn pilot audit) (#451)
 - preview_change(): HEAD-vs-working-tree per-plan diff on the pilot sample, without tar_make (#471)
 - harvest: a current-only site's checkpoint survives a crash within the same harvest (#469)
