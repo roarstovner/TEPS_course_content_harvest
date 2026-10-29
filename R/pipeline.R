@@ -201,10 +201,11 @@ read_harvest <- function(files, config, content = TRUE) {
 # A site whose URL holds the academic year (`url_year = "academic"`): an
 # offering takes the page at the URL add_course_url() gives it (spring 2025
 # and autumn 2024: "/2024"), fetched for whichever offering; a page fetched
-# for its own offering comes first. Harvests until 2026-10-13 put the
-# calendar year in the URL of spring offerings too. An offering whose URL
-# nobody fetched keeps that URL and no page ("no page" in plan_gaps()) until
-# harvest_all(retry = TRUE) fetches it.
+# for its own offering comes first; without a page, the error of whichever
+# offering fetched it (a 404, NTNU's "no information"). Harvests until
+# 2026-10-13 put the calendar year in the URL of spring offerings too. An
+# offering whose URL nobody fetched keeps that URL and no page ("no page" in
+# plan_gaps()) until harvest_all(retry = TRUE) fetches it.
 .academic_year_pages <- function(rows) {
   cols <- intersect(c("url", "html", "html_error", "html_success", "extracted_text"), names(rows))
   fetched <- as.character(rows$url)
@@ -215,6 +216,8 @@ read_harvest <- function(files, config, content = TRUE) {
   src <- pages[match(needed, fetched[pages])]
   own <- right & (!is.na(rows$html) | is.na(src))   # its page, or its 404
   src[own] <- which(own)
+  errors <- which(is.na(rows$html) & !is.na(fetched))
+  src[is.na(src)] <- errors[match(needed[is.na(src)], fetched[errors])]
   out <- rows
   out[, cols] <- rows[src, cols]
   out$url <- needed

@@ -140,7 +140,11 @@ test_that("academic-year URLs: an offering takes the page of its academic year",
   expect_equal(out$html, c(NA, "2024/25", NA, "2024/25", "2025/26 own"))
   expect_equal(out$url, hvl(c(2023, 2024, 2023, 2024, 2025)))
   expect_equal(out$html_error[[1]], "HTTP 404")   # its own URL: the 404 stays
-  expect_null(out$html_error[[3]])                # /2023 for spring 2024: not fetched
+  expect_equal(out$html_error[[3]], "HTTP 404")   # /2023 for spring 2024: a23 fetched it, a 404
+  expect_false(out$html_success[3])
+  # a URL nobody fetched: no page and no error
+  out <- .academic_year_pages(rows[-1, ])
+  expect_null(out$html_error[[2]])
 })
 
 test_that("menu URLs (uis): an offering takes the page of its academic year", {
@@ -248,7 +252,8 @@ test_that("harvest_all never writes a raw file twice", {
   saveRDS(tibble::tibble(), "data/raw/checkpoint/html_samas.RDS")   # until 2026-10-28: not read, kept
   before <- tools::md5sum(harvest_files("samas"))
   expect_message(harvest_institution("samas", dbh(2026L)), "Checkpoints removed: data/raw/checkpoint/samas")
-  expect_false(dir.exists("data/raw/checkpoint/samas"))
+  # the earlier page is gone; the folder holds the harvest's academic year
+  expect_equal(list.files("data/raw/checkpoint/samas", recursive = TRUE), "academic_year")
   expect_true(file.exists("data/raw/checkpoint/html_samas.RDS"))
   suppressMessages(harvest_all(dbh(2026L), institutions = "samas"))
   files <- harvest_files("samas")
