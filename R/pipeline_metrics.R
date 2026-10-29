@@ -263,11 +263,11 @@ preview_change <- function(institutions, n = 5, seed = 42, course_ids = NULL, re
   for (f in unlist(lapply(institutions, harvest_files, raw_dir = raw_dir))) {
     ds <- arrow::open_dataset(f)
     has <- intersect(c("html", "extracted_text"), names(ds))
-    rows <- dplyr::collect(dplyr::select(ds, dplyr::any_of(c("harvest_row", "course_id", has))))
-    page <- Reduce(`|`, lapply(has, function(x) !is.na(rows[[x]])))
+    rows <- dplyr::collect(dplyr::select(ds, harvest_row, course_id))
+    # whether a row has a page, without reading the pages into R
+    page <- Reduce(`|`, lapply(has, function(x) dplyr::pull(dplyr::transmute(ds, v = !is.na(.data[[x]])), v)))
     pick <- if (is.null(course_ids)) rows$harvest_row[page] else rows$harvest_row[page & rows$course_id %in% course_ids]
     if (!length(pick)) next
-    rm(rows)
     keep <- sort(if (is.null(course_ids)) pick[sample.int(length(pick), min(n, length(pick)))] else pick)
     .write_plain_parquet(dplyr::collect(dplyr::filter(ds, harvest_row %in% keep)),
                          file.path(tmp, sub(paste0("^", raw_dir, "/"), "", f)))
