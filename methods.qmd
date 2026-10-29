@@ -974,7 +974,11 @@ block of UiS's PDF plans (which the section reader already skipped) and
 that of Steiner's PDF plans. As before they stay in `course_plan` and are in no section. UiA's
 breadcrumbs, which repeated the title, and its facts box's links
 ("Timeplan", "Pensumliste (Leganto)") and OsloMet's portlet name ("EPN-V2")
-leave `course_plan`, as page chrome. The sections' text fallback, tried
+leave `course_plan`, as page chrome; so do, since 2026-10-29, the year
+picker ("Emnehistorikk") and the links to the reading list and timetable
+("Pensum", "Timeplan", each followed by its semesters) in OsloMet's facts
+row, which the date rules had left as bare labels on almost every OsloMet
+page. The sections' text fallback, tried
 when the html reader finds fewer than three sections, now stands only if it
 finds a section that no heading on the page names. Without the title in
 front, it read the "Om emnet" tab of five terse NTNU plans as course content
@@ -1152,7 +1156,15 @@ USN's Leganto rule no longer cuts "Journalføring" to "føring". 271 of
 32,865 distinct texts change. NTNU's link label "Faglærers emneside" goes
 with the heading "Andre sider om emnet" above it (160 pages), and "Emnet
 gis annethvert år, neste gang høsten 2018." loses the clause whole, not only
-its date (26 pages). *Since:* 2026-10-29.
+its date (26 pages). Later that day: Volda's session schedules lose the year
+after the week numbers and keep the weeks ("Samling 4: veke 3 (2023)",
+"Uke 44 og uke 4 (2017)"), OsloMet's establishment dates go like its
+approval dates while the line stays, as its other change-log lines do
+("Etablert av dekanen 3. juli 2013"), and a date with a two-digit year
+that is not zero-padded goes when it stands alone in a table cell ("1.8.25"
+in INN's credit-overlap table), not in prose ("Fra 1.1.16 ble
+rekvireringsrett ... utvidet"): 58 distinct texts change (Volda 38, OsloMet
+14, INN 6), each only by those dates and years. *Since:* 2026-10-29.
 
 **USN's approval block goes whole.** The heading "Godkjent emneplan"
 ("Approved course plan") and the stamp lines under it, up to a blank line or

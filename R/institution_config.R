@@ -73,8 +73,12 @@ institution_configs <- list(
     code = "1175",
     strategy = "standard",
     selector = "#main-content",
-    # the portlet's name ("EPN-V2")
-    exclude = "#main-content h2.portlet-title-text",
+    # the portlet's name ("EPN-V2"), and in the facts row the year picker
+    # ("Emnehistorikk") and the links to the reading list and timetable
+    # ("Pensum", "Timeplan", each with its semesters)
+    exclude = c("#main-content h2.portlet-title-text",
+                paste0("//section[contains(@class, 'section-top')]//div[dl/dt[normalize-space() = 'Emnehistorikk' or ",
+                       "normalize-space() = 'Pensum' or normalize-space() = 'Timeplan']]")),
     # the title and the facts row (English name, credits, year, reading list,
     # timetable, programmes)
     facts = c("#main-content div.header", "#main-content section.section-top"),

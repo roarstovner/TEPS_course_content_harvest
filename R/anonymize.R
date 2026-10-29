@@ -532,9 +532,10 @@ anonymize_text <- function(institution, text,
 .gap <- "[ \\t]*"
 .clock_regex <- "(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d)?"
 # Approval and update dates in words: "godkjent i studieutvalget 14.
-# november 2016", "endringer lagt inn 3. juli 2017 og 7. mai 2024"
+# november 2016", "endringer lagt inn 3. juli 2017 og 7. mai 2024",
+# "Etablert av dekanen 3. juli 2013" (oslomet)
 .approval_date_regex <- paste0(
-  "((?<!\\p{L})(?i:godkjent|vedtatt|revidert|revisjon|foretatt|lagt inn|oppdatert|",
+  "((?<!\\p{L})(?i:godkjent|vedtatt|etablert|revidert|revisjon|foretatt|lagt inn|oppdatert|",
   "gjort tilgjengelig|sist endret)", .not_gov, "[^\\n.]{0,100}?)", .gap, "\\b", .long_dates_regex, .eol_stop)
 
 .anon_generic <- function(txt) {
@@ -610,6 +611,9 @@ anonymize_text <- function(institution, text,
       "[ \\t]*(?::|[-–](?=[ \\t]))[ \\t]*")) |>
     stringr::str_remove_all(.not_gov_rule(
       paste0(.gap, "(?<![\\d./])(?:0[1-9]|[12]\\d|3[01])"), paste0("\\.(?:0[1-9]|1[0-2])\\.\\d{2}(?![\\d/]|\\.\\w)", .eol_stop))) |>
+    # and an unpadded one alone in a table cell ("1.8.25", inn's credit-overlap
+    # table); not in prose ("Fra 1.1.16 ble rekvireringsrett ... utvidet")
+    stringr::str_remove_all("(?<=\\t)\\d{1,2}\\.\\d{1,2}\\.\\d{2}(?=[ \\t]*(?:\\t|\\n|$))") |>
     # Remove dates: dd.mm.yyyy; not inside a path or number, not a
     # regulation's date ("forskrift 28.10.2020 nr. 2474"), and not a
     # reference's publication date after a comma ("Razsviet, 4.11.1923";
@@ -623,6 +627,11 @@ anonymize_text <- function(institution, text,
     stringr::str_replace_all(.not_gov_rule(paste0(
       "((?i:opprettet|oppdatert|revidert|vedtatt|godkjent|gjeldende(?: fra)?|gyldig(?: fra)?|",
       "sist (?:endret|revidert|oppdatert)))"), "\\s+\\d{4}\\b"), "\\1") |>
+    # The year after week numbers in a schedule: "Samling 4: veke 3 (2023)",
+    # "Uke 44 og uke 4 (2017)" (hivolda); the weeks stay
+    stringr::str_replace_all(paste0(
+      "((?<!\\p{L})(?i:veke|veka|veker|uke|uka|uker|weeks?)[ \\t]+\\d{1,2}(?:[ \\t]*(?:,|og|and|[-–])[ \\t]*",
+      "(?:(?i:veke|uke|week)[ \\t]+)?\\d{1,2})*)[ \\t]*\\((?:19|20)\\d{2}\\)"), "\\1") |>
     # Remove academic year ranges: "2023/2024", "2023/24", "2019 — 2020" (nla);
     # not year paths in links ("files/2019/06/27/", "dokumentserien/2020-2021/")
     # or DOIs, or ISO dates ("2001-02-01"), or a condition (.condition_year)

@@ -907,8 +907,18 @@ test_that("admin dates go, government documents keep theirs", {
   expect_equal(an("usn", "Godkjent 9.3.21.\nEmneplan godkjent 25.03.25\nGodkjent av instituttleder 18.10.22"),
                "Godkjent\nEmneplan godkjent\nGodkjent av instituttleder")
   expect_equal(an("nord", "Oppsatt skoleeksamen 16.12.20 gjøres om."), "Oppsatt skoleeksamen gjøres om.")
+  # an unpadded date in a table cell goes, not one in prose
+  expect_equal(an("inn", "Navn\tStudiepoeng\tDato\n1MUA11 Menneske i utvikling\t15\t1.8.25\nFra 1.1.16 ble retten utvidet"),
+               "Navn\tStudiepoeng\tDato\n1MUA11 Menneske i utvikling\t15\nFra 1.1.16 ble retten utvidet")
   expect_equal(an("oslomet", "Fagplanen ble godkjent i studieutvalget 14. november 2016.\nRedaksjonelle endringar lagt inn 3. juli 2017, 19. april og 7. juni 2018"),
                "Fagplanen ble godkjent i studieutvalget\nRedaksjonelle endringar lagt inn")
+  expect_equal(an("oslomet", "Godkjent av fakultetets studieutvalg. Etablert av dekanen 3. juli 2013. Revidert emneplan"),
+               "Godkjent av fakultetets studieutvalg. Etablert av dekanen. Revidert emneplan")
+  # the year after week numbers goes, the weeks stay; a reference's year stays
+  expect_equal(an("hivolda", paste("Samling 4: veke 3 (2023) - Om oppgåveskriving", "Samlinger. Uke 44 og uke 4 (2017).",
+                                   "Samlingar veke 15 og 21 (2019).", "Kruse, Bjørn (1987). Jazzteori.", sep = "\n")),
+               paste("Samling 4: veke 3 - Om oppgåveskriving", "Samlinger. Uke 44 og uke 4.",
+                     "Samlingar veke 15 og 21.", "Kruse, Bjørn (1987). Jazzteori.", sep = "\n"))
   expect_equal(an("usn", "Naturfag (MG1NA1) H2018 Notodden\nPensumliste for H2025-V2026\ndidaktisk arbeid- H23"),
                "Naturfag (MG1NA1) Notodden\ndidaktisk arbeid")
   expect_equal(an("uis", "Tekst\nLENG145_1 Bokmål Versjon 20.Februar.2023\nMer"), "Tekst\nMer")
