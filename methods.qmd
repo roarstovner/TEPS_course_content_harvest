@@ -1058,7 +1058,7 @@ language field ended teaching methods and the re-sit rules stood in
 assessment on English pages (2,419, 2,192 and 2,228 UiT pages with the
 field, the block and the label). *Consequence:* in a sample of 2 named and
 176 sampled UiT pages (`preview_change()`), 15 plans lose the label and get
-a new id; teaching methods loses the language field on 21, assessment the
+a new id; teaching methods loses the language field on 23, assessment the
 re-sit block on 15; INN's pages with the same field and NTNU are unchanged.
 *Since:* 2026-10-29.
 
