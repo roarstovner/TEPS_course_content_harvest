@@ -201,6 +201,25 @@ in `_targets.R`), several partitions at a time. A full build takes about 21
 minutes, a build with nothing to do about 10 seconds (2026-10-16). To debug a step with `browser()`, run in the current session instead:
 `targets::tar_make(callr_function = NULL, use_crew = FALSE)`.
 
+To try a change to shared code without a full build, `preview_change()`
+(`R/pipeline_metrics.R`) runs the per-partition steps on a sample of the raw
+store (5 pages of each institution's DBH years, or the pages of the
+offerings named) with the code of a git ref and with the working tree, and
+returns the plans and sections whose text differs, in seconds to a minute:
+
+```{r}
+#| eval: false
+targets::tar_load_globals()
+preview_change(c("uib", "usn"))                            # against HEAD
+preview_change("uib", n = 20, seed = 7)                    # another, larger sample
+preview_change("uib", course_ids = "uib_HTEK101-0_2022_autumn_1")
+```
+
+It does not replace the full build: fixes tried this way are rebuilt
+together with `tar_make()` (with no harvest running: the steps need the
+memory), and each change `metrics_check` flags is explained in the commit
+that caused it.
+
 The pipeline ends by comparing the built data of each frame with a snapshot of
 per-institution and per-section counts and median text lengths
 (`R/pipeline_metrics.R`, `tests/snapshots/pipeline_metrics_{frame}.csv`).

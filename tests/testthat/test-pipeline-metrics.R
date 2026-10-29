@@ -100,3 +100,13 @@ test_that("plan_gaps() gives each course-year without a plan its reason", {
   expect_equal(g$reason[g$course_code == "B"], "no URL")
   expect_false(g$between_plans[g$course_code == "B"])
 })
+
+test_that("preview_change() loads the pipeline's code of a ref and of the working tree", {
+  skip_if_not(dir.exists(file.path(testthat::test_path("../.."), ".git")))
+  withr::local_dir(testthat::test_path("../.."))
+  for (ref in list(NULL, "HEAD")) {
+    env <- .code_env(ref)
+    expect_true(all(vapply(c("partition_blocks", "partition_text", "partition_sections", "get_institution_config"),
+                           exists, TRUE, envir = env, inherits = FALSE)))
+  }
+})

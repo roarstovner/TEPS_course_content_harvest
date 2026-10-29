@@ -63,8 +63,10 @@ the gitignored `CLAUDE.local.md`.
   may list only intended changes, headed for the next release: explain every
   row in the commit that adds it, as for `metrics_check`. A raw file changed
   or missing is never intended.
-- After changing extraction, the heading map or the anonymizer, rebuild the
-  derived data with `targets::tar_make()` and read `tar_read(metrics_check)`
+- After changing extraction, the heading map or the anonymizer, check the
+  change with `preview_change()`, then rebuild the derived data with
+  `targets::tar_make()` (once for a batch of such fixes, with no harvest
+  running) and read `tar_read(metrics_check)`
   (README "Rebuilding Derived Data"). Explain every flagged
   change; update the snapshot of the frame
   (`check_pipeline_metrics(update = TRUE, frames = ...)`) only for intended

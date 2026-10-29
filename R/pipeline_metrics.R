@@ -234,3 +234,73 @@ pilot_gate <- function(institution, thresholds = PILOT_GATE,
                readRDS(file.path(frame_dir("all"), "plan_sections.RDS")),
                targets::tar_read(page_headings), targets::tar_read(page_map), thresholds)
 }
+
+#' What a code change does to plans and sections, without tar_make()
+#'
+#' Runs the per-partition steps (partition_blocks(), partition_text(),
+#' partition_sections()) on a sample of the raw store twice, with the code of
+#' `ref` and with the working tree, and returns where they differ. For trying
+#' an extraction, heading-map or anonymizer fix in a minute: the full
+#' rebuild and metrics_check stay the check before a commit (README
+#' "Rebuilding Derived Data"). Each version's code (the files _targets.R
+#' sources) is loaded into an environment of its own; the session's is not
+#' changed.
+#'
+#' @param institutions Institutions to sample.
+#' @param n Pages per raw partition (institution x DBH year), drawn with a
+#'   seed among those with a page, so every year is in.
+#' @param seed The seed of the sample: another seed, other pages.
+#' @param course_ids Instead of a sample, the pages of these offerings.
+#' @param ref The git ref to compare with.
+#' @param raw_dir The raw store.
+#' @return One row per page and `what` ("course_plan" or a section) whose
+#'   text differs: institution, year, course_id, what, old, new (NA: none).
+preview_change <- function(institutions, n = 5, seed = 42, course_ids = NULL, ref = "HEAD",
+                           raw_dir = RAW_DIR) {
+  tmp <- tempfile("preview_raw_")
+  on.exit(unlink(tmp, recursive = TRUE))
+  withr::local_seed(seed)
+  for (f in unlist(lapply(institutions, harvest_files, raw_dir = raw_dir))) {
+    ds <- arrow::open_dataset(f)
+    has <- intersect(c("html", "extracted_text"), names(ds))
+    rows <- dplyr::collect(dplyr::select(ds, dplyr::any_of(c("harvest_row", "course_id", has))))
+    page <- Reduce(`|`, lapply(has, function(x) !is.na(rows[[x]])))
+    pick <- if (is.null(course_ids)) rows$harvest_row[page] else rows$harvest_row[page & rows$course_id %in% course_ids]
+    if (!length(pick)) next
+    rm(rows)
+    keep <- sort(if (is.null(course_ids)) pick[sample.int(length(pick), min(n, length(pick)))] else pick)
+    .write_plain_parquet(dplyr::collect(dplyr::filter(ds, harvest_row %in% keep)),
+                         file.path(tmp, sub(paste0("^", raw_dir, "/"), "", f)))
+  }
+  parts <- raw_partitions(tmp)
+  run <- function(env) dplyr::bind_rows(lapply(seq_len(nrow(parts)), function(i) {
+    files <- harvest_files(parts$institution[i], tmp, parts$year[i])
+    config <- env$get_institution_config(parts$institution[i])
+    blocks <- env$partition_blocks(files, config)
+    text <- env$partition_text(files, blocks, config)
+    sections <- env$partition_sections(blocks, text, config, text$page_id)
+    dplyr::bind_rows(tibble::tibble(page_id = text$page_id, what = "course_plan", text = text$course_plan),
+                     dplyr::rename(sections, what = section)) |>
+      dplyr::summarise(text = paste(text, collapse = "\n\n"), .by = c(page_id, what))
+  }))
+  old <- run(.code_env(ref))
+  new <- run(.code_env(NULL))
+  ids <- read_raw(harvest_files(parts$institution, tmp), page_id = TRUE)
+  dplyr::full_join(old, new, by = c("page_id", "what"), suffix = c("_old", "_new")) |>
+    dplyr::filter(is.na(text_old) != is.na(text_new) | text_old != text_new) |>
+    dplyr::left_join(dplyr::distinct(ids[c("page_id", "institution", "year", "course_id")], page_id, .keep_all = TRUE),
+                     by = "page_id") |>
+    dplyr::select(institution, year, course_id, what, old = text_old, new = text_new) |>
+    dplyr::arrange(institution, year, course_id, what)
+}
+
+# The pipeline's code (the files _targets.R sources) at a git ref, or in the
+# working tree (NULL), loaded into a new environment.
+.code_env <- function(ref = NULL) {
+  show <- function(f) if (is.null(ref)) readLines(f, warn = FALSE) else system2("git", c("show", paste0(ref, ":", f)), stdout = TRUE)
+  sources <- sub("(?s).*?tar_source\\((.*?)\\)\\).*", "\\1", paste(show("_targets.R"), collapse = "\n"), perl = TRUE)
+  files <- regmatches(sources, gregexpr("R/\\w+\\.R", sources))[[1]]
+  env <- new.env(parent = globalenv())
+  for (f in files) eval(parse(text = show(f), keep.source = FALSE), envir = env)
+  env
+}
