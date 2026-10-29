@@ -78,4 +78,8 @@ test_that("site_request() sends no request robots.txt disallows, and none to a h
   expect_length(sent, 0)
   httr2::req_perform(site_request("https://www.uis.no/nb/student/course/MGL101"))
   expect_equal(sent, "https://www.uis.no/nb/student/course/MGL101")
+  # DBH's old codes with a space: the space is percent-encoded, so the
+  # request is sent (curl refuses a URL with a space)
+  httr2::req_perform(site_request("https://www.uis.no/nb/student/course/MGL101 000"))
+  expect_equal(sent[2], "https://www.uis.no/nb/student/course/MGL101%20000")
 })

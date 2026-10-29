@@ -190,10 +190,13 @@ FETCH_BACKOFF <- 30
 
 # A request to a course site, with the user agent and the retry policy. A URL
 # robots.txt disallows is refused before any request (robots_allows()), with
-# an error of class "robots_disallowed" (outcome "robots" in the ledger).
+# an error of class "robots_disallowed" (outcome "robots" in the ledger). A
+# space in the URL (DBH's old codes "1BA132 000", "ALIKT1 000") is
+# percent-encoded: curl refuses a URL with a space, and the refusal was tried
+# again as if it were a timeout, 90 seconds a URL.
 site_request <- function(url, user_agent = TEPS_USER_AGENT) {
   if (isFALSE(robots_allows(url))) rlang::abort(robots_refusal(url), class = "robots_disallowed")
-  httr2::request(url) |>
+  httr2::request(gsub(" ", "%20", url, fixed = TRUE)) |>
     httr2::req_user_agent(user_agent) |>
     httr2::req_timeout(FETCH_TIMEOUT) |>
     httr2::req_retry(max_tries = FETCH_TRIES, retry_on_failure = TRUE,
