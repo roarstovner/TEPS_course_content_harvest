@@ -103,6 +103,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- hvl, hivolda, nla, oslomet: placeholder and pointer parts kept as sections (#423)
+- nord, hvl, nla, oslomet: admission pointers kept as prerequisites (#422)
 - hivolda: years left after week numbers (#429)
 - ntnu: anonymizer leftovers ('Faglærers emneside', 'neste gang.') (#428)
 - Pre-harvest checks: pilot fulltext audits of uio, mf, nmbu; gate comparison for the seven piloted 2026-10-17 (#456)
