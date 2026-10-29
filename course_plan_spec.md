@@ -142,9 +142,10 @@ the spec here:
   be needed to tell them from administrative dates of the same form
   ("Gjeldende fra høstsemesteret 2013", "Fra høst 2019: Endring i
   hjelpemidler"). Conditions written with an academic year stay.
-- Prerequisites keep some admission rules written as requirements, in about
-  50 sections: the grade and school-point requirements for teacher
-  education ("Minimum 35 skolepoeng", Nord and NTNU), "Opptakskrav er
-  generell studiekompetanse, i tillegg til ..." (Nord) and OsloMet's
+- Prerequisites keep some admission rules written as requirements, with no
+  "Opptakskrav" or "Søkere" opening their line: the grade and school-point
+  requirements for teacher education ("Minimum 35 skolepoeng", Nord and
+  NTNU), UiA's "Bachelorgrad eller tilsvarende utdanning av minst 180
+  studiepoengs omfang og minst to års relevant yrkespraksis." and OsloMet's
   "Eksterne søkere må ha bestått lærerutdanning som kvalifiserer for arbeid i
   skolen."

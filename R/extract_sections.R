@@ -310,6 +310,9 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   out$raw_text[rl] <- stringr::str_remove(   # usn's stock line after a list or a note
     out$raw_text[rl], paste0("(?i)\\n\\s*(?:(?:pensum-/)?litteraturliste(?:n)? er ikke publisert ennå|",
                              "the reading list is not published yet)\\.?\\s*$"))
+  out$raw_text[rl] <- stringr::str_remove(   # uit's Leganto notice and the list's title
+    out$raw_text[rl], paste0("^\\s*Du kan se og få tilgang til deler av pensum via Leganto\\.\\s*",
+                             "(?:Pensumliste for [^\\n]*(?:\\n|$))?\\s*"))
   out$raw_text[rl] <- vapply(out$raw_text[rl], .strip_list_tabs, character(1),
                              USE.NAMES = FALSE)
   pre <- out$section == "prerequisites"
@@ -317,8 +320,8 @@ extract_sections <- function(config, html, extracted_text, course_id) {
                               character(1), USE.NAMES = FALSE)
   tm <- out$section == "teaching_methods"
   out$raw_text[tm] <- stringr::str_remove_all(out$raw_text[tm], .praksis_pointer_regex)
-  out$raw_text <- vapply(out$raw_text, .strip_leading_placeholder, character(1),
-                         USE.NAMES = FALSE)
+  out$raw_text <- mapply(.strip_placeholder_lines, out$raw_text,
+                         trailing = out$section != "assessment", USE.NAMES = FALSE)
   out$raw_text <- mapply(.clean_section_text, out$raw_text, out$section,
                          USE.NAMES = FALSE)
   keep <- mapply(.keep_section_row, out$raw_text, out$section,
@@ -346,26 +349,40 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # credits, "bør", "i tillegg til", ...), or if it says there is nothing
 # beyond admission ("Ingen utover opptakskravet."). Mixed sentences
 # stay ("Opptak til femårig lektorutdanning og beståtte eksamener i henhold
-# til forskrift.").
+# til forskrift."). A line that opens with the admission rule or with the
+# applicants ("Opptakskrav er ...", "Søkere må ...") states admission and
+# goes whole (.admission_rule_regex).
 .admission_line_regex <- paste0(
   "(?i)opptak skjer|frittstående|studierett|enkeltemne|tilgjengelig som valgfag|",
-  "søke[rs]? (?:særskilt )?opptak|krever generell studiekompetanse|",
-  "(?:forutsetter|forusetter|krever|krav om|godkjent) opptak|",
+  "søke[rs]? (?:særskilt )?opptak|krev(?:er|es) generell studiekompetanse|",
+  "(?:forutsetter|forusetter|krever|krav om|godkjent|betinget) opptak|",
+  "prioritert ved opptak|rangeres (?:av|etter)|fordeler studieplass|",
   "(?:\\bfore?beholdt?|begrenset til) (?:for )?student|",   # "Emnet er forbeholdt studenter ..."
+  "må være tatt opp (?:på|til|som) (?!.*\\b(?:og|eller) (?:ha|har)\\b)|",   # study right, not "... og ha ..."
+  "åpent for studenter som er tatt opp|for å (?:kunne )?bli tatt opp|",
   "^(?:(?:jf\\.?|jamfør|som|tilsvarende) )?opptakskrav|",   # pointers to the programme
-  "^(?:se|sjå)\\b.*opptak|",
+  "må oppfylle (?:\\S+ ){0,3}opptakskrav|^studiets opptakskrav\\.?$|",
+  "^generelle opptakskrav(?: (?:for|til) [^.]*)?\\.?$|",
+  "^(?:se|sjå)\\s.*opptak|",
   "^(?:ved )?opptak (?:til|på) (?:\\S+ ){0,3}?\\S*(?:utdanning|program|studi|lektor|lærer|master)|",
   "^opptaksgrunnlag\\w*\\.?$|^spesielle vilkår$|",       # ntnu's admission heading
-  "^generell studiekompetanse(?: eller (?:godkjent )?realkompetanse)?(?: etter [^.]*)?\\.?$"
+  "^generell studiekompetanse(?: eller (?:godkjent )?realkompetanse)?(?: etter [^.]*)?\\.?$|",
+  "admission requirement|^admission to\\b|^(?:the students? (?:must|should) (?:have been|be) )?admitted to\\b"   # English pages
+)
+.admission_rule_regex <- paste0(
+  "(?i)^(?:forkunnskapskrav\\s*:\\s*)?(?:opptakskrav(?:et)?(?: til \\S+)? er\\b|opptakskrav\\s*:|",
+  "(?:slike |andre (?:kvalifiserte )?)?søkere\\b|applicants\\b)"
 )
 .no_prerequisite_regex <- paste0(
-  "(?i)^(?!.*(?:\\bmen\\b|\\bbør\\b|anbefal))",
-  "(?:(?:det (?:kreves|er)|kurset har|emnet har) )?ingen\\b.*\\b(?:ut ?over|utenom)\\b.*opptak"
+  "(?i)^(?!.*(?:\\bmen\\b|\\bbør\\b|anbefal|\\bbut\\b|recommend|advantage))(?:",
+  "(?:(?:det (?:kreves|er)|kurset har|emnet har) )?ingen\\b.*\\b(?:ut ?over|utenom)\\b.*opptak|",
+  "(?:no|this course does not require any)\\b.*\\b(?:over and above|beyond|apart from|other than)\\b.*admission)"
 )
 .real_prerequisite_regex <- paste0(
   "\\b[A-ZÆØÅ]{2,}[A-ZÆØÅ0-9-]*\\d{2,}|",
   "(?i:bestått|forkunnskap|studiepoeng|\\bstp\\b|\\bsp\\b|",
-  "\\bbør\\b|anbefal|fordel|rå til|i tillegg|inklusive|bygger på)"
+  "\\bbør\\b|anbefal|fordel(?!er )|rå til|i tillegg|inklusive|bygger på|",
+  "\\bpassed\\b|completed|prior knowledge|recommend|advantage|\\bECTS\\b|credits|in addition)"
 )
 
 .is_admission_sentence <- function(s) {
@@ -378,7 +395,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 
 # Where a sentence ends: after . ! ? before a capital, not after an
 # abbreviation ("Jf. Opptakskrav ...").
-.sentence_end <- paste0("(?<=[.!?])(?<!\\b(?i:jf|jfr|jamfør|ca|nr|kap|bl\\.a|f\\.eks|evt|osv)\\.)",
+.sentence_end <- paste0("(?<=[.!?])(?<!\\b(?i:jf|jfr|jamfør|ca|nr|kap|bl\\.a|f\\.eks|evt|osv|ph\\.d)\\.)",
                         "(?=\\s+\\p{Lu}|\\p{Lu}\\p{Ll})")
 
 # Admission sentences go from their lines. A colon-ended admission line (or
@@ -393,7 +410,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   gone <- logical(n)
   for (k in seq_len(n)) {
     s <- stringr::str_split_1(lines[k], .sentence_end)
-    a <- .is_admission_sentence(s)
+    a <- .is_admission_sentence(s) | grepl(.admission_rule_regex, trimws(s[1]), perl = TRUE)
     gone[k] <- all(a) && nzchar(trimws(lines[k]))
     if (any(a) && !gone[k]) lines[k] <- trimws(paste(s[!a], collapse = ""))
   }
@@ -859,7 +876,14 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   # bare negation / dummy values: "Ingen", "Ingen krav", "None", "x", "-", "..."
   "ingen(?: spesielle)?(?: krav| forkunnskapskrav| arbeidskrav)?", "nei", "none", "n/a", "x",
   "det er ingen (?:vurdering|eksamen) i emnet",                      # hvl
-  "[-–.…]+",
+  "[-–.…_]+", "ingen info",                                          # hvl "_", oslomet
+  # no coursework: "Ingen arbeidskrav i emnet.", "No coursework requirements."
+  paste0("(?:det er )?ingen (?:obligatoriske )?(?:arbeidskrav|obligatoriske aktivitet\\w*)",
+         "(?: ?(?:eller|og|/) ?(?:andre vilkår|obligatorisk\\w* aktivitet\\w*))?",
+         "(?: (?:i|for|knytt\\w* til) (?:dette )?(?:emnet|studiet))?"),
+  "no coursework requirements(?: or compulsory activities)?",
+  # a bare yes: coursework "Ja", "Ja, vert spesifisert i semesterplan ved semesterstart" (hvl)
+  "ja(?:,? \\(?(?:vert |blir )?spesifiser\\w* i (?:semester|undervisnings)plan\\w* ved semesterstart\\)?)?",
   "me(?:i)?r om hjelpemid(?:del|ler)",                               # hvl link
   # pointers to another document
   "(?:se|sjå) (?:fag|program|studie)?plan(?:en)?(?: for [^.]{0,100})?",
@@ -878,8 +902,12 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "ingen pensumliste(?: tilgjengelig)?(?: for dette emnet)?",
   "no reading list(?: available)?(?: for this course)?",
   "(?:gjeldende )?litteraturliste for [^.]{0,20} finner du i leganto",
-  "litteratur og faglige ressurser finner du her",
-  "pensumlist[ea] for emnet finn(?:er)? du her",
+  "litteratur og faglige ressurser finn(?:er du|es) her",
+  "follow this link for reading list and academic resources",         # nla
+  "(?:(?:se|sjå) )?pensumlist[ea] for emnet (?:finn(?:er)? du )?her",  # hivolda
+  "ta kontakt med (?:instituttet|fakultetet)(?:/(?:instituttet|fakultetet))?", "se hjemmeside(?:n)?",
+  "available on request",                                             # uit 2008-2010
+  "ny pensumbok vurderes",                                            # hiof
   "oppgis senere",                                                    # ntnu
   "(?:pensum-/)?litteraturliste(?:n)? er ikke publisert ennå",        # usn
   "ikke bestemt", "ingen så langt",                                   # usn
@@ -901,12 +929,19 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 
 # Placeholder lines before real text go: "Ingen" (required) and then the
 # recommended prerequisites (hvl, uib), "." (nord), "Ingen" before usn's
-# attendance block.
-.strip_leading_placeholder <- function(text) {
+# attendance block. So does a placeholder paragraph after a sentence, the
+# empty part that follows the section's own (nla: "Ingen." from the Praksis
+# part after the teaching methods); not in assessment, where "Ingen" may
+# answer a label ("Hjelpemidler").
+.strip_placeholder_lines <- function(text, trailing = TRUE) {
   lines <- stringr::str_split_1(text, "\n")
   real <- which(nzchar(trimws(lines)) & !.is_placeholder_text(lines))
-  if (length(real) == 0 || real[1] == 1) return(text)
-  paste(lines[real[1]:length(lines)], collapse = "\n")
+  if (length(real) == 0) return(text)
+  last <- max(real)
+  if (!trailing || last == length(lines) || nzchar(trimws(lines[last + 1])) ||
+      !grepl("[.!?]\\s*$", lines[last])) last <- length(lines)
+  if (real[1] == 1 && last == length(lines)) return(text)
+  paste(lines[real[1]:last], collapse = "\n")
 }
 
 .placeholder_regex <- paste0(

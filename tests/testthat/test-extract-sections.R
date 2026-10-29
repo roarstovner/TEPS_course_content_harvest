@@ -1292,3 +1292,63 @@ test_that("usn: reading-list placeholder and the generic fitness notice are drop
   expect_equal(res$section, c("coursework_requirements", "assessment"))
   expect_equal(trimws(res$raw_text[1]), "Arbeidskrav 1: Praksis.")
 })
+
+test_that("pointers to the admission rules and admission statements leave prerequisites", {
+  clean <- function(txt) {
+    res <- .clean_sections(tibble::tibble(section = "prerequisites", raw_text = txt))
+    if (nrow(res) == 0) NA_character_ else res$raw_text
+  }
+  for (t in c("Studenter må oppfylle gjeldene opptakskrav ved tilhørende studieprogram.",   # nord
+              "Studiets opptakskrav.", "Generelle opptakskrav.",                              # hvl, usn
+              "Ingen. Sjå opptakskrav i studieplanen.",                                       # hivolda
+              "View the admission requirements for the MA programme in Global Journalism.",   # nla
+              "Admission to the MA Programme in Global Journalism",
+              "Studenten må være tatt opp på studiet.",
+              "Det kreves generell studiekompetanse for å tas opp på innføringsstudiet.\n\nIngen",
+              # a line that opens with the admission rule or the applicants goes whole (oslomet)
+              paste("Opptakskrav er bestått lærerutdanning eller tilsvarende (15 studiepoeng).",
+                    "I tillegg kreves minst tre års yrkeserfaring.\nSøkere som mangler fag kan også søke.",
+                    "Slike søkere må i tillegg oppfylle kravet til generell studiekompetanse."))) {
+    expect_true(is.na(clean(t)), label = t)
+  }
+  expect_equal(clean("Studiets opptakskrav.\n\nØAO002 Markedsføring I"), "ØAO002 Markedsføring I")
+  expect_equal(clean(paste("No formal requirements over and above the admission requirements.",
+                           "Some knowledge of building physics is an advantage.")),
+               "Some knowledge of building physics is an advantage.")
+  # uia: study places, ranking and conditional admission go; the recommendation stays
+  expect_equal(clean(paste("Utdanningsdirektoratet fordeler studieplassene, og du søker opptak via udir.no.",
+                           "Søkere til studiet kan rangeres av oppdragsgiver.",
+                           "Det gis ikke betinget opptak til studiet.", "",
+                           "Det anbefales gode kunnskaper i engelsk.", sep = "\n")),
+               "Det anbefales gode kunnskaper i engelsk.")
+  # a requirement next to the admission pointer stays
+  for (t in c("Studiets opptakskrav, med vekt på termodynamikk og grunnleggende kjemi",
+              "Studenten må være tatt opp på masterstudiet i helsevitenskap og ha autorisasjon som fysioterapeut.",
+              "Admission to the programme is based upon a completed bachelor's degree.")) {
+    expect_equal(clean(t), t, label = t)
+  }
+})
+
+test_that("parts that only say they are empty or elsewhere are not sections", {
+  drop <- c("_", "Ingen info", "Ja", "Ja, vert spesifisert i semesterplan ved semesterstart",
+            "Ja (spesifiseres i undervisningsplanen ved semesterstart).",
+            "Sjå pensumliste for emnet her", "Litteratur og faglige ressurser finnes her.",
+            "Follow this link for reading list and academic resources.",
+            "Ta kontakt med instituttet/fakultetet", "Se hjemmeside.", "Available on request",
+            "Ny pensumbok vurderes.", "Ingen arbeidskrav i emnet.",
+            "Det er ingen arbeidskrav knyttet til emnet.", "Ingen arbeidskrav eller obligatorisk aktivitet.",
+            "Ingen arbeidskrav/obligatorisk aktivitet.", "No coursework requirements or compulsory activities.")
+  for (t in drop) expect_false(.keep_section_row(t, "reading_list"), label = t)
+  expect_true(.keep_section_row("Ingen arbeidskrav, men 80 % oppmøte.", "coursework_requirements"))
+  # uit: Leganto's notice and the list's title, with no list
+  rl <- "Du kan se og få tilgang til deler av pensum via Leganto.\nPensumliste for LER-3101 Masteremne: norskdidaktikk"
+  expect_equal(nrow(.clean_sections(tibble::tibble(section = "reading_list", raw_text = rl), "uit")), 0)
+  # nla: an empty part after the section's own text goes, not in assessment
+  out <- tibble::tibble(section = c("teaching_methods", "assessment", "coursework_requirements"),
+                        raw_text = c("Forelesninger og seminarer.\n\nIngen.",
+                                     "Muntlig eksamen.\n\nIngen.",
+                                     "Obligatorisk deltakelse\n\nIngen"))
+  expect_equal(.clean_sections(out)$raw_text,
+               c("Forelesninger og seminarer.", "Muntlig eksamen.\n\nIngen.",
+                 "Obligatorisk deltakelse\n\nIngen"))
+})

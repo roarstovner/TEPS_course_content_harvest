@@ -1488,9 +1488,68 @@ Plans with a prerequisites section: Nord 915 → 718, NTNU 1,815 → 1,622,
 NLA 122 → 111, OsloMet 83 → 70. 456 sections still mention "opptak",
 334 of them NTNU's mixed sentence. `course_plan` and the plan ids do not
 change. *Since:* 2026-10-15.
+From 2026-10-29 the rule also knows the pointers it missed: "Studenter må
+oppfylle gjeldene opptakskrav ved tilhørende studieprogram." (Nord),
+"Studiets opptakskrav." (HVL), "Generelle opptakskrav (for ...)." (USN,
+OsloMet), "Studenten må være tatt opp på studiet." (OsloMet), the Nynorsk
+"Sjå opptakskrav i studieplanen." (the old pattern missed "sjå"), and the
+English ones ("Admission to the MA Programme in Global Journalism", "View
+the admission requirements ...", "According to admission requirements.",
+"No formal requirements over and above the admission requirements."). A
+line that opens with the admission rule or the applicants ("Opptakskrav er
+...", "Søkere må ...", "Applicants ...") is admission as a whole, and so are
+sentences on study places, ranking and conditional admission (UiA's
+"Utdanningsdirektoratet fordeler studieplassene ...", "Det gis ikke betinget
+opptak til studiet."). A study-right sentence that also names a requirement
+stays ("Studenten må være tatt opp på masterstudiet ... og ha autorisasjon
+som fysioterapeut."), and English requirement words ("passed", "completed",
+ECTS) keep a sentence like the Norwegian ones. *Why:* the pilot sections
+audits (2026-10-17, 2026-10-21) found these admission pointers kept as
+prerequisites at Nord, HVL, NLA, OsloMet and UiA. *Rejected:* treating every
+sentence that names applicants or study places as admission wherever it
+stands (NLA's "Eksterne søkere ... må ha fullført og bestått ..." states a
+prior-study requirement beside the one for NLA's own students, and stays).
+*Consequence:* re-cleaning the prerequisites of the build of 2026-10-29,
+about 1,400 sections go (OsloMet 557, Nord 335, HVL 251, USN 163, NLA 68)
+and about 1,600 change (most lose a pointer line, some a trailing
+placeholder, below). Admission rules written as requirements without a
+marker stay ("Bachelorgrad eller tilsvarende utdanning av minst 180
+studiepoengs omfang ...", UiA). `course_plan` and the plan ids do not
+change. *Since:* 2026-10-29.
 
 **Placeholders are dropped** ("Ingen", "-", "Se fagplanen.", reading-list
-pointers; since 2026-10-01).
+pointers; since 2026-10-01). From 2026-10-29 the list also holds HVL's "_"
+and bare "Ja" ("Ja, vert spesifisert i semesterplan ved semesterstart") as
+coursework, OsloMet's "Ingen info", Volda's "Sjå pensumliste for emnet her",
+NLA's "Follow this link for reading list and academic resources." and
+"Litteratur og faglige ressurser finnes her.", UiT's older reading lists
+"Ta kontakt med instituttet/fakultetet", "Se hjemmeside." and "Available on
+request", HiOF's "Ny pensumbok vurderes.", and the coursework answers that
+there is none ("Ingen arbeidskrav i emnet.", "Det er ingen arbeidskrav
+knyttet til emnet.", "Ingen arbeidskrav eller obligatorisk aktivitet.", "No
+coursework requirements."), which say the same as "Ingen" under the
+coursework heading. UiT's Leganto notice and the list's title ("Du kan se og
+få tilgang til deler av pensum via Leganto. Pensumliste for LER-3101 ...")
+are widget text: the list itself is loaded by a script and is not on the
+page. A placeholder paragraph after a section's own text goes too, outside
+assessment: the empty part that follows it ("Ingen.", "None.", "Se studieplan
+for praksis." from NLA's Praksis part after the teaching methods; "Ingen" from
+an empty field after the prerequisites or coursework at HiOF, Nord, USN and
+UiB), when the text before it ends a sentence. *Why:* by the spec a part
+whose only text says that it is empty or elsewhere is not a section (pilot
+sections audits, 2026-10-17 to 2026-10-22). *Rejected:* keeping "Ingen
+arbeidskrav i emnet." as a statement (the spec drops "Ingen" under the same
+heading, so the two would differ only in wording); stripping a trailing
+"Ingen" in assessment, where it may answer an aids label. *Consequence:*
+re-cleaning the build of 2026-10-29: UiT keeps about 880 of its 4,351
+reading-list sections (3,467 held only the notice and title), Volda loses
+166 of 238 and NLA 90 of 1,155; about 460 coursework sections go (OsloMet
+218, HiOF 93, NLA 82, HVL 43); about 2,000 teaching-methods sections lose a
+trailing placeholder (NLA 1,360, HiOF 395). Still kept, though the spec
+covers them: NTNU's "Endelig pensumliste legges ut på Blackboard før
+studiestart." and HiOF's "Oppgis ved semesterstart" as whole reading lists,
+and "Ingen forkunnskaper."-type prerequisites. `course_plan` and the plan
+ids do not change. *Since:* 2026-10-29.
 
 **Prerequisites written inside the course description are prerequisites:** a
 "Forkunnskapskrav" label in course content (UiT's "Om emnet", two MF courses)
