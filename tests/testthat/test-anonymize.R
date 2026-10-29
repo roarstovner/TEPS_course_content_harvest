@@ -901,6 +901,7 @@ test_that("admin dates go, government documents keep theirs", {
             "forskrift om rammeplan, fastsatt av Kunnskapsdepartementet 7. juni 2016",
             "Ny læreplan som trer i kraft høsten 2020.",
             "https://www.stortinget.no/dokumentserien/2020-2021/dok3.pdf",
+            "https://student.oslomet.no/m5glu-fagplan-engelsk-2018-2019",
             "rapporter/2016/ungkost-rapport-24.06.16.pdf")
   for (x in keep) expect_equal(an("usn", x), x, info = x)
   expect_equal(an("nla", "Studieår: 2019 — 2020"), "Studieår:")
@@ -993,6 +994,7 @@ test_that("a removal takes the space and separators that joined it", {
   expect_equal(an("nord", "Muntlig eksamen\tDato: 27.05.2024 –31.05.2024 Varighet: 30 Minutter"),
                "Muntlig eksamen\tDato: Varighet: 30 Minutter")
   expect_equal(an("nla", "Avsluttende vurdering\nHøst 2024:\nMappe"), "Avsluttende vurdering\n\nMappe")
+  expect_equal(an("nord", "Assessment Sprign 2026:\nOP: Assignment"), "Assessment\nOP: Assignment")
   expect_equal(an("uit", "MERK: Våren 2021: Skriftlig eksamen\nmasteroppgave vår 2025: For"),
                "MERK: Skriftlig eksamen\nmasteroppgave: For")
 })

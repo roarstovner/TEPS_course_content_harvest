@@ -1164,7 +1164,13 @@ approval dates while the line stays, as its other change-log lines do
 that is not zero-padded goes when it stands alone in a table cell ("1.8.25"
 in INN's credit-overlap table), not in prose ("Fra 1.1.16 ble
 rekvireringsrett ... utvidet"): 58 distinct texts change (Volda 38, OsloMet
-14, INN 6), each only by those dates and years. *Since:* 2026-10-29.
+14, INN 6), each only by those dates and years. A year range after a word
+and a hyphen is part of a link or a code and stays
+("m5glu-fagplan-engelsk-2018-2019", "Coloplast-Dressings-Testing-2003-2004.pdf",
+"PSY-2553/2554"), where the academic-year rule had cut it; and the label
+"Assessment Sprign 2026:" (a typo, Nord) loses its semester as "Spring 2026:"
+does: 84 distinct texts change (OsloMet 69, HiØ 8, UiS 4, UiT 2, Nord 1), each
+only in that link, code or label. *Since:* 2026-10-29.
 
 **USN's approval block goes whole.** The heading "Godkjent emneplan"
 ("Approved course plan") and the stamp lines under it, up to a blank line or

@@ -479,8 +479,9 @@ anonymize_text <- function(institution, text,
   "studieåret|exception for academic year)[ \\t]{0,3}\\d{4})")
 .or_later <- "(?![ \\t]*(?i:eller|or) (?i:senere|seinare|later|tidligere|tidlegare|earlier)\\b)"
 
-# A season word, also inflected or in a compound: "høsten", "Vårsemesteret".
-.season_regex <- "(?:(?:høst|vår|haust|sommer)(?:semester(?:et)?|en|a)?|autumn|spring|summer)"
+# A season word, also inflected or in a compound: "høsten", "Vårsemesteret";
+# also a typo seen in a label ("Assessment Sprign 2026:", nord).
+.season_regex <- "(?:(?:høst|vår|haust|sommer)(?:semester(?:et)?|en|a)?|autumn|spring|sprign|summer)"
 
 # The semester a course starts from is plan text and stays ("Emnet byrjar å gå frå
 # våren 2024"; decided 2026-10-28): a guard before the season word.
@@ -633,12 +634,13 @@ anonymize_text <- function(institution, text,
       "((?<!\\p{L})(?i:veke|veka|veker|uke|uka|uker|weeks?)[ \\t]+\\d{1,2}(?:[ \\t]*(?:,|og|and|[-–])[ \\t]*",
       "(?:(?i:veke|uke|week)[ \\t]+)?\\d{1,2})*)[ \\t]*\\((?:19|20)\\d{2}\\)"), "\\1") |>
     # Remove academic year ranges: "2023/2024", "2023/24", "2019 — 2020" (nla);
-    # not year paths in links ("files/2019/06/27/", "dokumentserien/2020-2021/")
-    # or DOIs, or ISO dates ("2001-02-01"), or a condition (.condition_year)
-    stringr::str_replace_all(.not_gov_rule(paste0(.gap, "(?<![/\\w.])\\d{4}", .condition_year),
+    # not year paths in links ("files/2019/06/27/", "dokumentserien/2020-2021/",
+    # "m5glu-fagplan-engelsk-2018-2019") or DOIs, or ISO dates ("2001-02-01"),
+    # or a condition (.condition_year)
+    stringr::str_replace_all(.not_gov_rule(paste0(.gap, "(?<![/\\w.]|\\w-)\\d{4}", .condition_year),
                                            paste0("[ \\t]?/[ \\t]?\\d{2,4}\\b(?!/|[-–]\\d)", .or_later)),
                              .drop_academic_year) |>
-    stringr::str_replace_all(.not_gov_rule(paste0(.gap, "(?<![/\\w.])\\d{4}", .condition_year),
+    stringr::str_replace_all(.not_gov_rule(paste0(.gap, "(?<![/\\w.]|\\w-)\\d{4}", .condition_year),
                                            paste0("\\s?[-–—]\\s?\\d{2,4}\\b(?!/|[-–]\\d)", .or_later)),
                              .drop_academic_year) |>
     # "vil i 2007/2008 koste" without its year (hiof)
