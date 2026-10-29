@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Pre-harvest checks: pilot fulltext audits of uio, mf, nmbu; gate comparison for the seven piloted 2026-10-17 (#456)
 - harvest: URLs with a space (DBH old codes 'X 000') retried 90 s each without a request (#473)
 - hiof: pages that span 'Høst Y–Vår Y+1' for the spring offering (#444)
 - anonymizer: admin dates and fragments (hiof, nih, uia, uib, uit, usn pilot audit) (#451)
