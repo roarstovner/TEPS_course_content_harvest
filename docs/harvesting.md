@@ -355,9 +355,8 @@ The harvest requests nothing a site’s robots.txt disallows for all user
 agents (`User-agent: *`; no robots.txt names the harvest’s user agent),
 and waits at least the `Crawl-delay` it asks (`request_delay`).
 `data/robots_txt.csv` holds the robots.txt of every host the harvest
-requests, read once before the first request to the host
-(add-institution skill, Step 0; [“Piloting an
-Institution”](new-institution.md#piloting-an-institution), step 1):
+requests, read once before the first request to the host ([“Adding a New
+Institution”](new-institution.md#adding-a-new-institution), step 1):
 
 <table>
 <colgroup>

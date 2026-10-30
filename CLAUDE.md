@@ -17,8 +17,11 @@ the gitignored `CLAUDE.local.md`.
     Parquet parts, resume, when they are removed), the fetch ledger and
     retries by outcome class (coverage, changed pages), robots.txt, sites
     that show only the current plan.
-  - `docs/new-institution.qmd`: adding an institution; piloting it before its
-    full harvest (sample, `--pilot` audits, gate thresholds).
+  - `docs/new-institution.qmd`: adding an institution (robots.txt first,
+    config fields, URL builder, test; special cases: URL discovery, current
+    plan only, JavaScript, PDFs, missing-plan pages); piloting it before its
+    full harvest (sample, `--pilot` audits, gate thresholds). The
+    `/add-institution` skill only points here.
   - `docs/rebuilding.qmd`: rebuilding derived data (branches per raw
     partition, `preview_change()`, `metrics_check`), anonymization and
     deduplication, the append-only raw store and how to finalize a release,

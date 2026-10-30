@@ -39,7 +39,7 @@ test_that("robots_allows() applies the rules for all user agents, the longest ma
   # a host not read: its robots.txt may be read, nothing else
   expect_true(robots_allows("https://c.no/robots.txt"))
   expect_error(robots_allows(c("https://a.no/x", "https://c.no/emne/X")),
-               "robots.txt of c.no has not been read.*Step 0", class = "robots_unread")
+               "robots.txt of c.no has not been read.*Read robots.txt First", class = "robots_unread")
 })
 
 test_that("robots.txt disallows the UiS PDF archive; Steiner's subject PDFs are fetched by decision", {

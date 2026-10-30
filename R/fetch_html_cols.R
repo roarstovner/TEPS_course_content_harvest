@@ -246,7 +246,7 @@ robots_allows <- function(url, file = ROBOTS_FILE) {
   if (length(unread)) {
     rlang::abort(paste0("the robots.txt of ", paste(unread, collapse = ", "), " has not been read: ",
                         "read it and add its row to ", file, " before the first request to the host ",
-                        "(add-institution skill, Step 0)"), class = "robots_unread")
+                        "(docs/new-institution.md, \"Read robots.txt First\")"), class = "robots_unread")
   }
   # the length of the longest pattern that matches the path, 0 for none
   longest <- function(patterns, path) {

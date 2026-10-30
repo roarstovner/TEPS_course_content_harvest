@@ -206,9 +206,10 @@ How-to guides:
 - [Harvesting](docs/harvesting.md): the yearly harvest, several
   institutions at once, what a harvest does, checkpoints, the fetch
   ledger and retries, robots.txt, sites that show only the current plan.
-- [Adding and Piloting an Institution](docs/new-institution.md): the
-  config entry and URL builder, the pilot sample, the gate numbers and
-  the audits before a full harvest.
+- [Adding and Piloting an Institution](docs/new-institution.md):
+  robots.txt first, the config entry, the URL builder or resolver,
+  special cases (URL discovery, current plan only, PDFs), the pilot
+  sample, the gate numbers and the audits before a full harvest.
 - [Rebuilding Derived Data and Releases](docs/rebuilding.md):
   `targets::tar_make()`, `preview_change()`, `metrics_check`,
   anonymization and deduplication, the append-only raw store, finalizing

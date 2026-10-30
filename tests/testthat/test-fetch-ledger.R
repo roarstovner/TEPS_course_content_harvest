@@ -365,7 +365,7 @@ test_that("a host whose robots.txt has not been read stops its harvest before an
   })
   msg <- capture_messages(harvest_all(hiof_dbh("A1"), institutions = "hiof"))
   expect_match(paste(msg, collapse = ""),
-               "ERROR harvesting hiof: the robots.txt of www.hiof.no has not been read.*Step 0")
+               "ERROR harvesting hiof: the robots.txt of www.hiof.no has not been read.*Read robots.txt First")
   expect_equal(sent, 0)
   expect_length(harvest_files("hiof"), 0)
 })
