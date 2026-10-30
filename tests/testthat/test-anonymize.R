@@ -816,7 +816,7 @@ test_that("phone numbers after 'Tlf.' are removed", {
                "Studieadministrasjonen.")
 })
 
-# --- The shareable files (README "Data Files: Published and Internal") ---
+# --- The shareable files (docs/data-files.md "Data Files: Published and Internal") ---
 
 test_that("the personal-data check finds what the anonymizer removes", {
   f <- tempfile(fileext = ".RDS")

@@ -1,0 +1,100 @@
+---
+title: Reference
+format: md
+---
+
+## Key Functions Reference
+
+| Function | File | Purpose |
+|---|---|---|
+| `harvest_institution(institution, courses, year, refetch)` | `R/harvest.R` | Harvest one institution with its configured strategy |
+| `harvest_all(courses, years, refetch, institutions, retry)` | `R/harvest.R` | Harvest all (or the given) institutions, year by year, newest first; each year adds a run, `data/raw/{inst}/{year}/{date}.parquet` |
+| `write_raw_run(rows, institution, run)`, `read_raw(files)` | `R/utils.R` | Write a harvest run to the raw store; read raw files in harvest order |
+| `fetch_ledger(rows, institution, run)`, `raw_ledger(files)` | `R/utils.R` | A run's fetch ledger; the ledger of raw files, recorded or reconstructed (target `ledger`) |
+| `fetch_outcome(url, page, status, error)`, `offering_outcome(course_id, url, ledger)` | `R/utils.R` | Outcome class of a fetch; how an offering's URL answered last (retries) |
+| `site_request(url)` | `R/fetch_html_cols.R` | A request to a course site: user agent, timeout, retries of timeouts and server errors; refuses a URL robots.txt disallows |
+| `refusal_watch(config)` | `R/fetch_html_cols.R` | The check of a loop of requests to a site: stops it when the site refuses the harvest (HTTP 429, or 403 to `FORBIDDEN_RUN` requests in a row and to a page known to be public) |
+| `robots_allows(url)` | `R/fetch_html_cols.R` | Whether robots.txt (`data/robots_txt.csv`) lets the harvest request a URL; an error for a host not read (["robots.txt"](harvesting.md#robotstxt)) |
+| `pilot_sample(institution, oldest_year)`, `pilot_gate(institution)` | `R/harvest.R`, `R/pipeline_metrics.R` | The pilot of an institution: its stratified sample of DBH course-years; the gate numbers of the sample in the build (`gate_numbers()`) |
+| `fetch_coverage(frame, ledger, offerings)`, `page_changes(ledger, files, config)` | `R/pipeline.R` | Fetch outcome, plan and retry of every offering of a frame; pages changed between runs (targets `coverage`, `changed_pages`) |
+| `raw_partitions()`, `read_raw(files, content = FALSE)`, `raw_page_id(file, row)` | `R/utils.R` | The raw store's institution x year partitions; raw rows with the page id in place of the page |
+| `partition_blocks()`, `partition_text()`, `partition_sections()` | `R/pipeline.R` | Per raw partition: every page's blocks, text and plan (`page_plans()`), and the sections of the pages plans are cut from |
+| `plan_offerings(pages, page_text, config)` | `R/pipeline.R` | Every offering with the text, `course_plan` and plan id of its page (target `courses`) |
+| `frame_members()`, `frame_plans()`, `frame_sections()`, `frame_offerings()`, `frame_dir()` | `R/pipeline.R`, `R/utils.R` | The frames: their offerings, plans (`plan_table()`), sections and data folders |
+| `harvest_files(institution)`, `harvested_institutions()` | `R/utils.R` | An institution's raw files, run by run; the institutions with raw files |
+| `dbh_courses(frame, date)` | `R/utils.R` | DBH offerings of a snapshot: all courses, or the teacher-ed frame (`"teacher_ed"`) |
+| `dbh_rename(df)` | `R/utils.R` | DBH's column names (snapshots, raw files and releases until 2026-10-16) as the pipeline's (`DBH_COLUMNS`) |
+| `institution_from_code(code)` | `R/institution_config.R` | Institution short name for DBH institution codes |
+| `get_institution_config(inst)` | `R/institution_config.R` | Config list for one institution |
+| `add_course_id(dbh_df)` | `R/utils.R` | Unique id from institution, raw code, year, semester, status |
+| `add_course_url(df)` | `R/add_course_url.R` | Institution-specific URL builders; NA where discovery is needed |
+| `resolve_course_urls(df, checkpoint_path)` | `R/resolve_course_urls.R` | URL discovery (USN, UiT, hivolda, UiO, HiOF) with checkpointing |
+| `fetch_html_with_checkpoint(courses, checkpoint_dir)` | `R/checkpoint.R` | Download HTML, each URL once, skipping URLs already in the institution's checkpoints |
+| `checkpoint_dir()`, `read_checkpoint()`, `checkpoint_append()`, `remove_checkpoints()` | `R/checkpoint.R` | The checkpoints: folders of append-only Parquet parts (["About Checkpointing"](harvesting.md#about-checkpointing)) |
+| `extract_fulltext_from_raw(df, config)` | `R/extract_fulltext.R` | `extracted_text` from the raw harvest, per strategy |
+| `page_blocks(html, text, cfg)` | `R/blocks.R` | Read one page into a block table |
+| `page_fulltext(blocks, config)` | `R/extract_fulltext.R` | A page's `extracted_text` from its blocks |
+| `read_harvest(files, config, content)` | `R/pipeline.R` | One institution's raw files combined (`harvest_files()`): the page each offering takes; current sites matched by course code and academic year |
+| `harvested_rows(institutions)` | `R/pipeline.R` | `read_harvest()` joined with `data/interim/extracted_text.RDS` (audit scripts) |
+| `finalize_release(tag)`, `frozen_changes()` | `R/release.R` | Lock a release's raw files; list changes to it (target `frozen_check`) |
+| `release_data(tag, dest, frame)` | `R/release.R` | Copy the published files of a frame (the teacher-ed one), `methods.md`, `data/variables.csv`, a manifest and section coverage to the coding project |
+| `plan_gaps(offerings, fetch_status)` | `R/pipeline.R` | Course-years without a plan, with the reason (target `gaps`) |
+| `validate_courses(df, stage)` | `R/utils.R` | Required columns at `"initial"`, `"with_url"`, `"with_html"` |
+| `anonymize_text(institution, text)` | `R/anonymize.R` | PII and admin-date removal for `course_plan` and sections |
+| `normalize_plan_text(course_plan)` | `R/normalize_plan_text.R` | Lossy normalization for dedup hashing |
+| `plan_ids(id_text)`, `plan_table(courses)`, `deduplicate_plans(df)` | `R/deduplicate_plans.R` | Content hashes (`plan_content_id`); the unique plans of a set of offerings |
+| `page_sections(blocks, text, cfg)` | `R/extract_sections.R` | A page's sections from its blocks |
+| `extract_sections(config, html, extracted_text, course_id)` | `R/extract_sections.R` | `page_sections()` for many pages |
+| `wayback_cdx(url, match_type, from, to, filter, collapse)`, `wayback_capture_url(timestamp, original)` | `R/wayback.R` | Captures of a URL or URL prefix in the Wayback Machine; a capture's address as archived. Not used by the harvest |
+
+## File Organization
+
+```
+├── _targets.R                 # Post-harvest pipeline: targets::tar_make()
+├── methods.qmd                # Methods choices for articles (rendered to methods.md)
+├── course_plan_spec.md        # What course_plan and the sections hold, and what stays out
+├── renv.lock                  # Pinned package versions (renv::restore())
+├── .github/workflows/tests.yml # Tests on GitHub Actions
+├── R/
+│   ├── harvest.R              # Entry points: harvest_institution(), harvest_all(); pilot_sample()
+│   ├── harvest_strategies.R   # Strategy implementations
+│   ├── institution_config.R   # Institution registry (strategy, selectors, overrides, section_*)
+│   ├── utils.R                # Helpers (data paths, add_course_id, validation, normalization)
+│   ├── add_course_url.R       # URL generation logic
+│   ├── resolve_course_urls.R  # URL discovery for USN, UiT, hivolda, UiO, HiOF
+│   ├── fetch_html_cols.R      # HTML downloading (httr2)
+│   ├── extract_fulltext.R     # Config-driven text extraction
+│   ├── checkpoint.R           # Checkpoint management
+│   ├── anonymize.R            # PII removal: anonymize_text() for course_plan and sections
+│   ├── normalize_plan_text.R  # Lossy normalization for dedup hashing
+│   ├── deduplicate_plans.R    # Groups identical plans by content hash
+│   ├── section_heading_map.R  # Heading → section patterns (incl. ".drop")
+│   ├── extract_sections.R     # Section extraction strategies + cleanup
+│   ├── pipeline.R             # Steps of the {targets} pipeline (_targets.R)
+│   ├── pipeline_metrics.R     # Regression snapshot: check_pipeline_metrics(); the pilot gate numbers
+│   ├── release.R              # release_data(), finalize_release(), frozen_changes()
+│   ├── wayback.R              # Wayback Machine captures (CDX API); not used by the harvest
+│   └── audit/                # Audit harness for /audit-institutions
+├── app/
+│   ├── course_browser/        # Shiny concordance browser; build_data.R → data/ (see its README)
+│   └── course_browser_ojs/    # Static Observable JS browser; build_data.R → data/ (see its README)
+├── docs/                      # Documentation pages, docs/*.qmd rendered to .md (README "Documentation")
+├── data/                      # docs/data-files.md "Data Files: Published and Internal"
+│   ├── input/                 # DBH snapshots dbh_{courses,programmes}_{date}.parquet (in git)
+│   ├── pilot/                 # Pilot samples {inst}.csv (in git)
+│   ├── raw/                   # Harvest: {inst}/{year}/{run}.parquet, {inst}/ledger/, checkpoint/ (not in git)
+│   ├── interim/               # Rebuilt text with personal data (not in git); teacher_ed/: that frame's
+│   ├── processed/             # Anonymized data files, can be shared (not in git); teacher_ed/: that frame's
+│   ├── releases/              # Finalized releases' data (not in git)
+│   ├── backup/                # Earlier harvests, not read (not in git)
+│   ├── audit/                 # Audit findings and reports
+│   ├── variables.csv          # Every variable of the data files, old and new names
+│   ├── robots_txt.csv         # Each host's robots.txt: date read, crawl delay, disallow/allow rules
+│   └── data_notes.qmd         # Data quality notes per institution
+├── tests/
+│   ├── testthat/              # Rscript -e 'testthat::test_dir("tests/testthat")'
+│   └── snapshots/             # pipeline_metrics_{frame}.csv; raw_manifest.csv once a release is finalized
+└── data-raw/
+    ├── courses.R              # script that writes a DBH snapshot to data/input/
+    └── raw_to_parquet.R       # the one-time conversion of the RDS raw files (2026-10-16)
+```

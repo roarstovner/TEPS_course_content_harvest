@@ -1,0 +1,165 @@
+---
+title: Data Files
+format: md
+knitr:
+  opts_knit:
+    root.dir: ".."
+---
+
+```{r}
+#| echo: false
+#| output: false
+library(tidyverse)
+```
+
+## Data Files: Published and Internal
+
+Files that hold raw page text (`html`, `extracted_text`) contain staff names,
+e-mail addresses and phone numbers and are never published. Everything that is
+shared is built from the anonymized text (`anonymize_text()`). The data are
+kept in one folder per stage, so the folder says what may be shared:
+
+| Folder | Holds | Written by | In git |
+|---|---|---|---|
+| `data/input/` | the DBH snapshots, the pipeline input | `data-raw/courses.R` | yes |
+| `data/pilot/` | the pilot samples: offerings and their strata | `pilot_sample()` | yes |
+| `data/raw/` | the harvest, with personal data; append-only | harvesting only | no |
+| `data/releases/{tag}/` | offerings, plans and sections of a finalized release | `finalize_release()` | no |
+| `data/backup/` | earlier harvests kept but not read (personal data) | by hand | no |
+| `data/interim/` | text rebuilt from the harvest, with personal data; never shared | `targets::tar_make()` | no |
+| `data/processed/` | anonymized data or data without text; can be shared | `targets::tar_make()` | no |
+
+`data/processed/` may only hold text that went through `anonymize_text()`. The
+pipeline checks this on every build: target `privacy_check` scans the files for
+e-mail addresses, phone numbers, "Name (Role)" lines, "Name, dekan"
+signatures, and role labels followed by a name ("faglærer Name",
+"Emneansvarlige er: Name (sosionom)", a role heading over a name line) and
+warns, and `tests/testthat/test-anonymize.R` fails, on any hit.
+The repository is public.
+
+| File | Contents | Personal data | Status |
+|---|---|---|---|
+| `data/input/dbh_courses_{date}.parquet`, `dbh_programmes_{date}.parquet` | DBH tables 208 (courses) and 347 (programmes), the harvest input | none | in git |
+| `data/raw/{inst}/{year}/{run}.parquet`, `data/raw/checkpoint/` | raw harvest: `html` (+ text and bytes of PDFs) | yes (raw) | internal |
+| `data/raw/{inst}/ledger/{run}.parquet` | fetch ledger: URL, HTTP status, outcome and page hash per offering and run | none | internal |
+| `data/pilot/{inst}.csv` | an institution's pilot sample (["Piloting an Institution"](new-institution.md#piloting-an-institution)) | none | in git |
+| `data/variables.csv` | every variable of the published files, with its old name ("Variables") | none | in git; released with the data |
+| `data/robots_txt.csv` | each host's robots.txt: date read, Crawl-delay, the disallow and allow rules the harvest applies (["robots.txt"](harvesting.md#robotstxt)) | none | in git |
+| `data/interim/plan_gaps.RDS` | course-years without a plan, reason, URLs tried | none | internal |
+| `data/interim/extracted_text.RDS` | `extracted_text` rebuilt from the raw harvest | yes (raw) | internal |
+| `data/interim/course_offerings_full.RDS` | offerings + `url`, `extracted_text`, `course_plan` | yes (`extracted_text`) | internal |
+| `data/processed/course_offerings.RDS` | DBH metadata + `plan_content_id`, no text | none | published |
+| `data/processed/course_plans.RDS` | anonymized `course_plan` (+ `course_plan_normalized`) | anonymized | published |
+| `data/processed/plan_sections.RDS` | anonymized section `text` per plan | anonymized | publishable |
+| `data/interim/teacher_ed/`, `data/processed/teacher_ed/` | the same files for the teacher-ed frame ("Frames") | as above | as above |
+| `app/course_browser/data/browser_data.RDS` | course_browser payload: plans, offering metadata, sections | anonymized (no `extracted_text`) | internal (app) |
+| `app/course_browser_ojs/data/*.parquet` | anonymized `course_plan` + slim offering metadata | anonymized | published with the OJS page (build artifact) |
+| `data/audit/` | audit findings (quotes from anonymized text) | staff names redacted | in git |
+
+The scan catches text that skipped the anonymizer, not names the anonymizer
+misses; the anonymization audit (`/audit-institutions anonymization`) checks
+that per institution.
+
+## Frames
+
+The pipeline builds every offering in the raw store, and writes the data files
+of two frames (`FRAMES`): `all`, every harvested offering, in `data/interim/`
+and `data/processed/`; and `teacher_ed`, the offerings in the teacher-ed frame
+of the latest DBH snapshot (`dbh_courses("teacher_ed")`, matched on the
+offering without its status, `frame_members()`), in the `teacher_ed/` folders
+of both (`frame_dir()`). The text, plan id and sections of a page are the same
+in both; the plans are deduplicated within each frame (`frame_plans()`), so a
+teacher-ed plan has the years, text and sections of its own earliest
+teacher-ed offering, whatever else the raw store holds, and a harvest of other
+courses leaves the teacher-ed files as they were. The teacher-ed files are the
+releases' (`finalize_release()`, `release_data()`, target `frozen_check`), the
+browsers' and `methods.md`'s; the data notes, the gaps and the audits read
+those of all courses. Each frame has its metrics snapshot, and target
+`coverage` its DBH offerings.
+
+Per-institution prose notes are edited directly in `data/data_notes.qmd`.
+
+## Data Structure
+
+### Input Data (`data/input/dbh_*_{date}.parquet`)
+
+The harvest's input is a dated snapshot of DBH, written by
+`data-raw/courses.R` from DBH's bulk files: `dbh_courses_{date}.parquet` is
+table 208 (Emner), every course of every institution, year and semester, all
+levels and statuses, one row per course and semester;
+`dbh_programmes_{date}.parquet` is table 347 (Studieprogram), with the
+programmes' study type (`Studiumkode`). A new snapshot gets a new date and the
+old ones stay. The snapshots keep DBH's column names. `dbh_courses()` reads the
+latest (or the one of `date`), gives DBH's columns the pipeline's names
+(`DBH_COLUMNS`; see "Variables") and adds `institution` and `course_code`:
+
+```{r}
+#| echo: false
+#| output: false
+for (f in c("R/utils.R", "R/fetch_html_cols.R", "R/extract_fulltext.R", "R/institution_config.R")) source(f)
+```
+
+```{r}
+courses <- dbh_courses("teacher_ed")
+courses |> slice(1:2)
+```
+
+`dbh_courses()` is every course; `dbh_courses("teacher_ed")` keeps the
+courses of the teacher education programmes (study types in
+`TEACHER_ED_STUDIUM`, matched on institution and programme code: a programme
+code is unique only within an institution). The teacher-ed frame is a filter of
+the same snapshot, so its offerings have the same `course_id` in both.
+`harvest_all()` without `courses` harvests every course; `tar_make()` builds
+everything in `data/raw/` and writes the teacher-ed frame's files apart (see
+"Frames").
+
+Key columns:
+- `institution`: Short code (e.g., "oslomet", "uia"); NA for an institution code no config has
+- `course_code_raw`: DBH's course code (used in `course_id`)
+- `course_code`: the code with the trailing version number removed (`canon_remove_trailing_num()`: "ABC123-1" → "ABC123")
+- `year`, `semester_name` ("Vår", "Høst", "Sommer", "Vinter"; `canon_semester_name()` gives `course_id` spring, autumn, summer)
+- `programme_code`, `programme_name`: the programme DBH registers the course under (one per row)
+- `status`: course status (1 active, 2 new, 3 discontinued, 4 discontinued with active students). It is the last part of `course_id`, and a later snapshot can change it: an offering already in a raw file keeps the id it was first harvested under (`first_course_id()`)
+
+DBH lists most courses under both semesters of a year, also when they are
+taught in one. Where pages are semester-specific, about half the rows therefore
+have no plan by design; see "Semester registration in DBH" in
+`data/data_notes.qmd` before reading row-level success rates.
+
+`harvest_institution()` returns the offerings with `course_id`, `url`, `html`,
+`html_error`, `html_success` and `extracted_text` added, the rows of the raw
+store (["Raw Store and Finalized Releases"](rebuilding.md#raw-store-and-finalized-releases)).
+
+### Variables (`data/variables.csv`)
+
+`data/variables.csv` documents every variable of the published files
+(`course_offerings.RDS`, `course_plans.RDS`, `plan_sections.RDS`, of both
+frames): the file, its name, type, source (the column of DBH table 208, or
+how the pipeline gives it), meaning and codes, and `old_name`, its name in the
+releases up to data-2026-10-16. `release_data()` hands it over with the data,
+and `tests/testthat/test-dbh-input.R` checks it against the built files and
+`DBH_COLUMNS`. `course_offerings_full.RDS` (internal) adds `url`,
+`extracted_text`, `course_plan`, `course_plan_normalized` and `plan_nchar`.
+
+Since 2026-10-16 the DBH columns have English snake_case names (methods.qmd,
+"Variable names"); their values are DBH's (Norwegian names, DBH's codes), and
+`year_from` and `year_to` are integers (double before). DBH's snapshots, the
+raw files of the harvests until 2026-10-16 and the releases up to
+data-2026-10-16 have DBH's names: the pipeline renames them where it reads such
+data (`dbh_rename()`, in `dbh_courses()`, `read_raw()`,
+`frozen_changes()` and `release_data()`). Code that reads an old release can
+rename it by the same pairs:
+
+```{r}
+#| eval: false
+v <- read.csv("data/variables.csv")
+pairs <- unique(v[v$old_name != v$variable, c("variable", "old_name")])
+old <- readRDS("data/releases/data-2026-10-16/course_offerings.RDS") |>
+  dplyr::rename(dplyr::any_of(setNames(pairs$old_name, pairs$variable)))
+```
+
+```{r}
+#| echo: false
+v <- read.csv("data/variables.csv")
+knitr::kable(v)
+```

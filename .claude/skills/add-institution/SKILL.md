@@ -57,7 +57,7 @@ and add or update its row (`read_on`, HTTP `status`, `note`):
   course pages, plan PDFs or the discovery pages), and the `Allow` rules that
   override them, as robots.txt path patterns separated by spaces
   (`/dokumenter/`, `/*.pdf$ /*.doc$`). The harvest applies them
-  (`robots_allows()`, README "robots.txt"): a URL they disallow is not
+  (`robots_allows()`, `docs/harvesting.md` "robots.txt"): a URL they disallow is not
   requested (outcome `robots`), and a host with no row stops the harvest
   before its first request, so the row must exist before Step 3. Say so in
   the institution's notes in `data/data_notes.qmd`, and if the plans are only
@@ -80,9 +80,9 @@ newuni = list(
   exclude = ".contact-box",       # optional: parts of it that are not the plan
   facts = c("h1", ".facts"),      # the title and facts box: in the text, not in a section or the plan id
                                   # (a site read as text, section_strategy = "text": section_text_header
-                                  # matches the metadata lines instead; see README "Blocks and Sections")
+                                  # matches the metadata lines instead; see docs/sections.md "Blocks and Sections")
   plan_years = "url",             # "current" if the site shows only the plan in force
-  section_strategy = "html",      # read the page as html; see README "Blocks and Sections"
+  section_strategy = "html",      # read the page as html; see docs/sections.md "Blocks and Sections"
   section_heading_selector = "h2", # the section headings (default h2)
   request_delay = 10              # only if robots.txt asks a Crawl-delay above 3 s (Step 0)
 )
@@ -93,7 +93,7 @@ sections are both made from them, so `selector`/`exclude` decide what text the
 plan has and the `section_*` fields only how it is split. For pages built
 from accordions use `section_heading_selector = "summary"` (or the accordion's
 trigger) and `section_scope = "details"` (or the accordion item); for
-paragraph sub-headings use `section_subheading_selector = "p"`. README "Blocks
+paragraph sub-headings use `section_subheading_selector = "p"`. `docs/sections.md` "Blocks
 and Sections" lists every field with the institution that uses it.
 
 Optional config fields:
@@ -160,7 +160,7 @@ page_sections(b, result$extracted_text[1], cfg)
 
 ### Step 4: Pilot, then the full harvest
 
-Follow README "Piloting an Institution": a stratified sample of the
+Follow `docs/new-institution.md` "Piloting an Institution": a stratified sample of the
 institution's DBH course-years, harvested into the raw store, built, audited
 and fixed until the pilot audits find it ready; only then the full harvest.
 The gate numbers (`pilot_gate()`) flag what the audits review; they do not

@@ -6,7 +6,7 @@ and the seven sections cut from it (`data/processed/plan_sections.RDS`). Every
 rule in the pipeline that keeps or removes text must fit it. The reasons and
 the effect of each decision, with numbers, are in `methods.md` ("What the text
 holds" and the entries it points to). Which code mechanism does what is in
-`README.md` ("What Each Mechanism May Remove"). A change to this spec gets a
+`docs/sections.md` ("What Each Mechanism May Remove"). A change to this spec gets a
 `methods.qmd` entry in the same commit. Where the current data do not yet
 follow the spec, it says so under "Known deviations".
 

@@ -1,8 +1,8 @@
 # _targets.R
 # The post-harvest pipeline: targets::tar_make() rebuilds whatever is
 # outdated, from the raw store data/raw/{inst}/{year}/ to the data files of
-# each frame, the browsers' data and the data notes. See README "Rebuilding
-# Derived Data".
+# each frame, the browsers' data and the data notes. See docs/rebuilding.md
+# "Rebuilding Derived Data".
 
 library(targets)
 
@@ -58,12 +58,12 @@ list(
   tar_target(pages, read_harvest(html_file, config, content = FALSE),
              pattern = map(html_file, config), iteration = "list"),
   tar_target(fetch_status, institution_fetch_status(pages), pattern = map(pages)),
-  # how each offering of each run was fetched (README "Fetch Ledger and Retries")
+  # how each offering of each run was fetched (docs/harvesting.md "Fetch Ledger and Retries")
   tar_target(ledger, raw_ledger(html_file), pattern = map(html_file)),
   tar_target(changed_pages, page_changes(ledger, html_file, config),
              pattern = map(ledger, html_file, config)),
 
-  # All offerings, their plans, and the frames (README "Frames"): plans are
+  # All offerings, their plans, and the frames (docs/data-files.md "Frames"): plans are
   # deduplicated within each frame, and sections cut from the pages their
   # plans keep, per partition
   tar_target(page_map, offering_pages(pages)),
@@ -84,7 +84,7 @@ list(
   tar_target(heading_hits, heading_counts(page_headings, page_map, "pattern", institution)),
   tar_target(heading_use, heading_pattern_use(heading_hits)),
 
-  # Data files (README "Data Files: Published and Internal"): all offerings
+  # Data files (docs/data-files.md "Data Files: Published and Internal"): all offerings
   # in data/interim/ and data/processed/, the teacher-ed frame (te_*) in
   # their teacher_ed/ folders
   tar_target(extracted_text_file,

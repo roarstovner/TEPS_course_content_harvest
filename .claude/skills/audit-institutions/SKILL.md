@@ -21,7 +21,7 @@ context per institution is the point.
   `fulltext` or `anonymization`. Ask if missing.
 - `[inst ...]`: institutions to audit (default: all that get a packet).
 - `--pilot`: draw each institution's packet from its pilot sample only
-  (`data/pilot/{inst}.csv`, README "Piloting an Institution"); the places
+  (`data/pilot/{inst}.csv`, `docs/new-institution.md` "Piloting an Institution"); the places
   the suspects leave unused go to random controls. Pass it on to the
   prepare script. The synthesis then ends with a verdict per institution
   (step 5).

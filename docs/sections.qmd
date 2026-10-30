@@ -1,0 +1,201 @@
+---
+title: Section Extraction
+format: md
+---
+
+## Post-Harvest: Section Extraction
+
+The pipeline splits each course plan into its parts and writes
+`data/processed/plan_sections.RDS` with one row per plan and section
+(`plan_content_id`, `institution`, `course_code`, `source_course_id`, `section`,
+`text`), keyed like `course_plans.RDS`. A plan's sections are cut from the page
+of `source_course_id`, the offering whose text the plan keeps, so they match
+its `course_plan`. The seven sections are
+`course_content`, `learning_outcomes`, `teaching_methods`, `assessment`,
+`coursework_requirements`, `prerequisites` and `reading_list`. Section text is
+anonymized with the same `anonymize_text()` as `course_plan`: sections are cut
+from the raw `html`/`extracted_text`, so this step must keep anonymizing.
+Admission text, exam logistics and placeholder rows such as "Se fagplanen." are
+left out. What a section holds and what it leaves out is set by
+`course_plan_spec.md`.
+
+`tar_read(metrics)` has the number of plans with each section per
+institution and `pct_text_in_sections`, the median share of a plan's text
+that its sections hold (what is left is metadata, admission text, exam
+logistics and headings the map does not know). `tar_read(unmapped)` lists the
+headings the extractor could not map, with the number of pages each is on,
+and `tar_read(heading_use)` every pattern of the heading map with the pages
+it opens a section on: a pattern on no page is a candidate for removal (the
+html reader's text fallback, used for uis PDF plans, is not counted). To map a new heading, add a pattern to
+`R/section_heading_map.R`; how each institution is split is set by the
+`section_*` fields in `R/institution_config.R`.
+
+### Blocks and Sections
+
+Each page is read once into a **block table** (`R/blocks.R`): one row per
+heading, sub-heading or piece of text, in document order, with the section a
+heading maps to. `sectionize()` (`R/extract_sections.R`) then walks the blocks
+with the same rules for every institution: a heading opens its section (an
+unmapped one closes it), a sub-heading switches section only inside a mapped
+one, and text goes to the open section. What differs between institutions is
+how their pages are read, set by `section_strategy` and the other `section_*`
+fields in `R/institution_config.R`:
+
+| `section_strategy` | Institutions | Reads |
+|---|---|---|
+| `html` | oslomet, uia, ntnu, inn, hiof, hivolda, hvl, mf, nord, nih, uib, uio, uis, uit, nmbu | The DOM under `selector`. Falls back to `text` when it finds < 3 sections, if the text gives more sections and one that no heading on the page names |
+| `json` | nla | Titles and contents in the embedded EmneplanPage JSON |
+| `text` | usn, steiner (+ the fallback, e.g. uis PDF plans) | Heading-shaped lines in `extracted_text`; skips the title and facts box and a table of contents ("Innholdsfortegnelse", usn), and a line repeating one of its entries is a heading, so an unmapped one ("Annet") ends the section; any other line switches only as a whole heading, a heading-map pattern with or without a closing colon ("Ny og utsatt eksamen", "Eksamen/vurdering"; not a bullet, topic or book title that contains one, such as "Vurdering av pasientens kartlagte smerte" or "Vurdering for læring") |
+| `noop` | samas | — |
+
+The `html` reader writes a table as one line per row, its cells separated by
+tabs, so an exam table has one line per exam.
+
+Fields for the `html` reader:
+
+- `selector` and `exclude` (shared with the fulltext): the container, and
+  elements in it that are not read (mf's contact card, banner and the facts
+  box's buttons; uis's facts-box links; nord's "Kopier lenke" label; ntnu's timetable tab and the exam tab's
+  link, rooms and comments). `exclude` holds CSS selectors; an entry that
+  starts with "/" is XPath, for an element picked by its text (ntnu's
+  "Dato", "Tid" and "Sted og rom" labels with the value after them).
+- `facts` (shared with the fulltext): the elements that hold the title, the
+  course code and the facts box (every `html` institution; for nla's JSON
+  the parts `"title"` and `"table"`), and plan text in no section that
+  changes from year to year while the plan stays the same (ntnu's admission
+  programme list, credit-reduction box and subject areas; uia's student
+  evaluation and admission flags; hivolda's evaluation and examiner
+  sentences and programme list; nord's "Type emne"). Their blocks are flagged `facts`: in
+  `course_plan`, but in no section (a heading inside them opens none), and
+  not in the plan text (`plan_text` in the fulltext table) that the plan id,
+  the shell rule and the sections' text fallback read, so a campus or
+  programme list that changes from year to year does not split a plan. In
+  pages read as text (usn, steiner, uis PDF plans) the title and facts box
+  are the lines before the plan: a metadata block matching
+  `section_text_header`, or the lines before a table of contents (usn).
+- `section_heading_selector`: section headings (default `h2`; ntnu
+  `"h2, h3:not(.exam-assessment-form)"`, inn's `div.label`, uib's and mf's
+  `summary`, nord's `button.ac-trigger`).
+- `section_scope`: elements that hold a section of their own (`details`,
+  nord's `div.ac`); the section open around them continues after them.
+- `section_initial`: section for text before the first heading (mf's untitled
+  intro is course_content).
+- `section_untitled`: elements that hold a section without a heading, as
+  `c(selector = section)` (nord's short description `div.placeholder-text`
+  is course_content; the title and course code before it stay out).
+- `section_fields`: hivolda's Drupal fields (`div.field-<name>`) are the
+  headings, each mapped to a section by its class name; text outside the
+  fields (title, programmes) is in the fulltext but in no section.
+- `section_subheading_selector`: elements inside a section that switch to
+  another section (uio `"h3, h4, p"`; `"p"` for uia, oslomet, hiof, hvl, nmbu;
+  mf's intro paragraphs). A `<p>` counts if its whole text (minus a trailing
+  colon) equals a heading pattern, or if its leading `<em>`/`<strong>` run or
+  its first or last `<br>`-separated line does (uia `<p><em>Faget i
+  praksis</em>I løpet …</p>`). A whole-bold `<p>` that names no section is a
+  group label: it ends a sub-section and returns to the parent. Sub-headings
+  act only under a mapped heading (oslomet's programme "Fagplan" block stays
+  out); one naming the section already open ("Kunnskap") stays as content. A
+  `<p>` in a list item is skipped unless that `<li>` holds a section heading
+  (oslomet's accordion). An unmapped `h3` ("Karakterskala") hands its text
+  back to the parent section, keeping the heading as its first line. A
+  colon-ended lead-in naming a coursework gate ("… følgende obligatoriske
+  aktiviteter:") starts coursework_requirements.
+
+Other fields:
+
+- `section_text_header`: regex for a title + metadata block at the top of
+  `extracted_text` (uis PDFs: "Emnekode:", "Tilbys av:"; steiner's PDFs:
+  "Studiepoeng", "Undervisningsspråk"); the `text` reader skips it and files
+  the untitled paragraph after it as course_content, and the plan id leaves
+  it out.
+- `section_inline_coursework`: move "Arbeidskrav (AK): …" / "Obligatorisk
+  deltakelse …" lines from assessment to coursework_requirements (nord, uit,
+  ntnu, usn); a gate heading ("OBLIGATORISKE ARBEIDSKRAV", ntnu) takes the lines
+  under it up to the next heading or the first line about the exam. At every
+  institution, with or without this field, a sentence in assessment that makes
+  approval, attendance or a passed test a condition for the exam ("Arbeidskrav
+  må være godkjent før studenten kan framstille seg til eksamen") moves alone
+  (`.gate_sentence_regex`); one about the exam's own parts, a row of an exam
+  table or one that counts towards the grade stays.
+- `exam_sessions`: the page lists the exam parts once per exam session
+  (ntnu's exam tab: "Ordinær eksamen - Høst 2022", "Utsatt eksamen - …").
+  The assessment section and the plan id keep the parts of one session, the
+  first ordinary one, without the session headings and the exam system
+  (`.exam_tab_design()`); `course_plan` keeps them all.
+- `section_pointer`: a section whose text is only a pointer to another block
+  of the page ("Se fagplanen.") takes the text under a sub-heading of that
+  block, after a lead naming the source. oslomet: teaching methods from the
+  subject's "Fagplan" block ("Fagets arbeids- og undervisningsformer"), as
+  "Se fagplanen. Fagplanen sier: …". The parts under the `append`
+  sub-headings join their section when the page has it with text of its own
+  (oslomet: the Fagplan's "Arbeidskrav" and attendance parts join the
+  coursework requirements), and a line starting with a `stop` label ends a
+  part (labels the page did not mark as sub-headings: "Skikkethetsvurdering",
+  "Vurderingsuttrykk").
+
+### Heading Map and Cleanup
+
+`match_heading_to_section()` (`R/section_heading_map.R`) checks exact equality
+against every pattern first, then substring patterns in table order (first hit
+wins; rows with `exact = TRUE` only match whole headings). The `text` reader
+only accepts heading-shaped lines (capitalised, ≤ 8 words, no digits, no
+"Label: value", no closing full stop) that are a whole pattern, so a content
+line such as "Vurdering for læring" is text; its heading counts
+(`page_headings`) pass `word_start = TRUE` so "elevkunnskap" does not match
+"kunnskap". Patterns mapped to `".drop"` end the current
+section and their text is discarded: admission headings ("Opptak til emnet",
+"Opptakskrav", "Hvem kan ta dette emnet?") and exam logistics ("Mer om eksamen
+ved UiO", "Sensorordning", resit headings such as "Ny/utsatt eksamen"). Exam
+aids, exam language and grading scale stay in assessment. A `label` heading
+("Hjelpemidler til eksamen", "Eksamensspråk", "Fravær fra obligatorisk
+aktivitet") stays as a line of its section, since the text under it ("Ingen",
+"Norsk.") says nothing alone; with nothing but a dash or pointer under it, it
+goes.
+
+HTML is parsed by `.read_doc()`, which drops `script`, `style`, `select` and
+`label` (ntnu script text, uib semester picker); the `json` reader parses the
+page itself because its data is in a `<script>`.
+
+A prerequisites label inside course_content ("Forkunnskapskrav", uit's "Om
+emnet") moves the paragraph it names to prerequisites
+(`.split_inline_prerequisites()`), and a paragraph of 40 or more characters
+that its section repeats is kept once.
+
+`.clean_sections()` removes `.drop` rows, strips page widgets, pointers and
+stock logistics sentences from assessment/coursework (`.section_noise`: uib
+banner and footer, hvl's "Mer om hjelpemidler" link, oslomet's resit
+sentence, …; notices about the assessment such as AI, plagiarism and COVID
+rules stay, and so do exam tables with their header row), removes logistics
+and cost sentences from every section (`.logistics_sentences`: hvl's "Tid og
+sted for eksamen blir opplyst på Studentweb.", exam dates, material fees and
+excursion prices), removes admission
+and study-right sentences, pointers to the admission rules and "Ingen utover
+opptakskravet." from prerequisites, keeping a sentence that also names a
+prerequisite (`.strip_admission_lines()`), drops
+placeholder-only rows (`.placeholder_phrases`: "Ingen", "Se fagplanen.", "-",
+Leganto pointers, "Oppgis senere.", "… ikke publisert ennå"), and drops a first
+line that only repeats the section heading (but keeps learning-outcome group
+labels such as "Kunnskap").
+
+## What Each Mechanism May Remove
+
+`course_plan_spec.md` says what the published text holds: personal data and
+boilerplate are out of `course_plan` and the sections, other plan text stays
+in `course_plan`, and a section holds only the plan text about its part. The
+mechanisms that remove text run on different texts, so each may remove only
+some of these:
+
+| Mechanism | Code | Runs on | May remove |
+|---|---|---|---|
+| `selector` minus `exclude`; `.read_doc()` drops `script`, `style`, `noscript`, `select`, `label` | `R/institution_config.R`, `R/blocks.R`, `R/extract_fulltext.R` | `course_plan` and sections | personal data, boilerplate |
+| `post_fn` (uit banner, year picker and contact block, which keeps the unit); `.cleanup_usn_text()` | `R/extract_fulltext.R` | `course_plan` (and usn's sections, cut from the text) | personal data, boilerplate |
+| `anonymize_text()`: `.anon_*` handlers, then `.anon_generic()` | `R/anonymize.R` | `course_plan` and sections | personal data, boilerplate; a page that is not a plan (NA) |
+| `facts` (title and facts box, and lists and stock text in no section, out of the id text); `normalize_plan_text()` with `.drop_semester_values()` | `R/institution_config.R`, `R/blocks.R`, `R/normalize_plan_text.R`, `R/anonymize.R` | the plan id only | plan text that changes with the year, not with the plan |
+| `.drop` headings, unmapped headings, text before the first heading | `R/section_heading_map.R`, `R/extract_sections.R` | sections only | plan text about no section |
+| `.clean_sections()`: `.section_noise`, `.logistics_sentences`, placeholders, admission lines; `.drop_semester_values()` | `R/extract_sections.R`, `R/anonymize.R` | sections only | plan text about no section, placeholders |
+| shell rule (`SHELL_MAX_NCHAR`) | `R/pipeline.R` | whether a page has a plan | pages that are not a plan |
+
+So a rule that keeps plan text out of the sections belongs on the section side,
+not in `exclude`, `post_fn` or `anonymize_text()`, which would take it out of
+`course_plan` too. The spec's "Known deviations" lists the rules that do not
+fit yet.

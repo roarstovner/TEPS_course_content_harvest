@@ -1,0 +1,48 @@
+# Troubleshooting
+
+
+**URLs look wrong?** - Check the institution’s builder in
+`R/add_course_url.R` - Print a few:
+`courses |> filter(institution == "inst") |> add_course_url() |> select(url) |> head()`
+
+**HTML download fails?** - Check if the website is accessible in a
+browser - Count the outcomes:
+`raw_ledger(harvest_files("inst")) |> dplyr::count(outcome, http_status)` -
+Look at `html_error` for error messages - Some institutions rate-limit
+or block automated requests - For NTNU, check whether the page says no
+information is available
+
+**Extracted text is empty or wrong?** - Verify the CSS selector with
+browser dev tools on a real course page - Update the selector in
+`R/institution_config.R` if the website changed, then
+`targets::tar_make()` (no new harvest needed) - Read one page into
+blocks and look at them:
+`page_blocks(html, NA, .block_cfg(get_institution_config("inst")))` -
+Some pages have different structures for different years
+
+**Content missing from JavaScript-rendered pages?** - Shadow DOM content
+is invisible to `html_text()`; see USN in [Institution-Specific
+Notes](institutions.md) - `session$session$Runtime$evaluate("...")` runs
+JavaScript in a live session - `session$view()` opens the browser to see
+what is rendered
+
+**“the site refuses the harvest (HTTP 429 …)” or “(HTTP 403 …, 5 in a
+row; …)”?** - The site answered 429, or 403 to 5 requests in a row and
+then to a page known to be public (or no such page was known), so its
+harvest stopped; the pages fetched so far are in the checkpoint. Harvest
+it again later (the checkpoint resumes), at night, or with a longer
+`request_delay` in `R/institution_config.R`
+
+**Checkpoint folder is large?** - This is normal - HTML is large; a
+year’s html checkpoint is removed once the run of that year and of the
+next are written - Checkpoints are in `.gitignore`; deleting one makes
+the next run fetch again the offerings that are not yet in a raw file
+(never the ones that are)
+
+**“raw files are not written twice”?** - A run of that name exists: two
+harvests of the same institution at once (two processes), or a run
+written by hand. The raw store is append-only; run the harvest again
+
+**“offerings in more than one raw file”?** - Two runs of an institution
+hold the same `course_id` (not a retry); a file was copied into
+`data/raw/` by hand. Remove the copy

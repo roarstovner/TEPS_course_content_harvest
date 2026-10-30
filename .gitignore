@@ -27,7 +27,7 @@ CLAUDE.local.md
 
 meetings/
 writing/
-# Data by stage (README "Data Files: Published and Internal"). Only
+# Data by stage (docs/data-files.md "Data Files: Published and Internal"). Only
 # data/input/ is in git; raw, interim and processed are rebuilt (harvest,
 # tar_make()) and raw and interim hold personal data.
 data/raw/

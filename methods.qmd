@@ -9,7 +9,7 @@ execute:
 ```{r}
 #| label: setup
 library(dplyr, warn.conflicts = FALSE)
-# the teacher-ed frame, the frame of the releases (README "Frames")
+# the teacher-ed frame, the frame of the releases (docs/data-files.md "Frames")
 off   <- readRDS("data/processed/teacher_ed/course_offerings.RDS")
 plans <- readRDS("data/processed/teacher_ed/course_plans.RDS")
 secs  <- readRDS("data/processed/teacher_ed/plan_sections.RDS")
@@ -23,7 +23,7 @@ by topic. Each entry gives the choice, the reason, alternatives that were
 rejected, the consequence in numbers (computed from the current data when this
 file is rendered) and since when it applies (date). What the
 published text holds and what stays out, as rules, is in
-`course_plan_spec.md`; how to run the pipeline is in `README.md`;
+`course_plan_spec.md`; how to run the pipeline is in `README.md` and `docs/`;
 per-institution data quality in `data/data_notes.md`. When a decision changes
 what the data mean, add or update its entry here; each release tag freezes
 this file with the data.
@@ -140,7 +140,7 @@ under the new names, with `year_from` and `year_to` integer (double before).
 DBH's snapshots and the raw files of the harvests until 2026-10-16 keep DBH's
 names, which the pipeline renames when it reads them; data of release
 data-2026-10-16 or earlier are renamed by the pairs in `data/variables.csv`
-(README "Variables"). *Since:* 2026-10-16.
+(`docs/data-files.md` "Variables"). *Since:* 2026-10-16.
 
 ## Harvest
 
@@ -161,7 +161,7 @@ only of one crawler (Scrapy) on 2026-10-16. A URL whose path robots.txt
 disallows for all user agents is not requested, unless the institution has
 given the project permission (`robots_permission` in the config). Since
 2026-10-17 the harvest enforces this before every request (`robots_allows()`,
-README "robots.txt"): such a URL gets the outcome `robots` in the fetch
+`docs/harvesting.md` "robots.txt"): such a URL gets the outcome `robots` in the fetch
 ledger and is not retried, and a host whose robots.txt has not been read
 stops the harvest. *Why:* the harvest asks a site for no more than it allows
 crawlers. *Rejected:* one pace for every site, which is faster than NTNU and
@@ -403,7 +403,7 @@ unless the site changed it in between. *Since:* 2026-10-28.
 whose audits find it ready.** Before the full harvest of an institution (a new
 one, or a configured one going from teacher education to all its courses), a
 sample of its DBH courses is harvested, built and audited; the audits decide,
-and the sample's gate numbers flag what they review (README "Piloting an
+and the sample's gate numbers flag what they review (`docs/new-institution.md` "Piloting an
 Institution"). *The sample:* 100 course-years (a course in a year, with every
 semester DBH lists it in; about 180-200 offerings) in 2019, 2022, 2025 and the
 oldest year the site has plans for, leaving out the pilot years before it (at
@@ -732,7 +732,7 @@ assessment (AI use, plagiarism, COVID changes of the exam form) are
 assessment text, stock or not. *Why:* `course_plan` is the source text for
 readers and coders and should lose only what is of no use to someone studying
 teacher education; the sections are a convenience for coding. Before the spec the
-rules were decided one at a time in seven places (README, "What Each
+rules were decided one at a time in seven places (`docs/sections.md`, "What Each
 Mechanism May Remove"), and some went against each other: the MF and UiS
 facts boxes were left out and NTNU's kept, and the NTNU exam tab left
 `course_plan` (2026-10-12). *Rejected:* removing every AI, plagiarism and COVID line
