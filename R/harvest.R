@@ -117,6 +117,10 @@ harvest_all <- function(courses = NULL, years = NULL, refetch = FALSE,
 
   configs <- load_all_configs()
   inst_names <- if (!is.null(institutions)) institutions else names(configs)
+  # only the offerings of these institutions are kept: DBH's 2.16 million
+  # offerings (2026-10-16) take some 0.5 GB for the whole harvest
+  courses <- courses[courses$institution %in% inst_names, ]
+  gc()
 
   for (inst in inst_names) {
     message("\n=== ", inst, " ===")
@@ -150,6 +154,10 @@ harvest_all <- function(courses = NULL, years = NULL, refetch = FALSE,
         # the year before's pages, which could serve this year's offerings,
         # are in its run and this one now
         if (k > 1) remove_checkpoints(inst, inst_years[k - 1])
+        # not held while the next year is fetched: a year's pages are some
+        # 1 GB at NTNU (11,000 pages of 90 KB in 2025)
+        result <- ledger <- NULL
+        gc()
       }
       remove_checkpoints(inst, c(inst_years, "urls", "discovery", "pdf"))
     }, error = function(e) {
@@ -182,9 +190,9 @@ offerings_to_retry <- function(institution, retry = TRUE,
   o$course_id[retry_wanted(outcome, retry)]
 }
 
-# The pilot sample (README "Piloting an Institution"; methods.qmd "Pilot
-# protocol and gate"): course-years in the pilot years, with at least
-# PILOT_COVER course-years of each level group, language group and
+# The pilot sample (docs/new-institution.md "Piloting an Institution";
+# methods.qmd "Pilot protocol and gate"): course-years in the pilot years, with
+# at least PILOT_COVER course-years of each level group, language group and
 # department.
 PILOT_YEARS <- c(2019L, 2022L, 2025L)
 PILOT_N <- 100L
@@ -214,12 +222,12 @@ pilot_level <- function(level_code, programme_name) {
 
 #' A pilot sample of an institution's DBH offerings
 #'
-#' Step 1 of the pilot protocol (README "Piloting an Institution"): a
-#' stratified sample of the institution's course-years (course_code_raw x
-#' year, with every semester DBH lists for it: a course taught in one
-#' semester has no page in the other) in `oldest_year` and the `years` after
-#' it (a site has no plans before its oldest year). Drawn in a random order
-#' that `seed` fixes, in two steps: (1) cover: PILOT_COVER
+#' Step 1 of the pilot protocol (docs/new-institution.md "Piloting an
+#' Institution"): a stratified sample of the institution's course-years
+#' (course_code_raw x year, with every semester DBH lists for it: a course
+#' taught in one semester has no page in the other) in `oldest_year` and the
+#' `years` after it (a site has no plans before its oldest year). Drawn in a
+#' random order that `seed` fixes, in two steps: (1) cover: PILOT_COVER
 #' course-years of each level group (pilot_level()), of each language group
 #' (English-taught, language_code ENG in some semester, or not) and of each
 #' department (department_name: a faculty at a college, an institute at a

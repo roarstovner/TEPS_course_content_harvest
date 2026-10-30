@@ -1,8 +1,9 @@
-# Data folders (README "Data Files: Published and Internal"): data/input holds
-# the DBH snapshots (in git); data/raw the harvest, which only harvesting
-# writes; data/interim and data/processed are rebuilt by targets::tar_make(),
-# interim with raw page text (personal data, internal), processed anonymized
-# (can be shared). data/pilot holds the pilot samples (pilot_sample(), in git).
+# Data folders (docs/data-files.md "Data Files: Published and Internal"):
+# data/input holds the DBH snapshots (in git); data/raw the harvest, which only
+# harvesting writes; data/interim and data/processed are rebuilt by
+# targets::tar_make(), interim with raw page text (personal data, internal),
+# processed anonymized (can be shared). data/pilot holds the pilot samples
+# (pilot_sample(), in git).
 INPUT_DIR <- "data/input"
 RAW_DIR <- "data/raw"
 PILOT_DIR <- "data/pilot"
@@ -17,7 +18,8 @@ pilot_file <- function(institution, pilot_dir = PILOT_DIR) {
 TEACHER_ED_STUDIUM <- c("INTMASTER", "IMALU5-10", "IMALU1-7", "LUPE")
 
 # The frames the pipeline writes data files for: every harvested offering
-# ("all", the default) and the teacher-ed filter of it (README "Frames").
+# ("all", the default) and the teacher-ed filter of it (docs/data-files.md
+# "Frames").
 FRAMES <- c("all", "teacher_ed")
 
 # The folder of a frame's data files: data/{stage}/ for all courses,
@@ -43,7 +45,8 @@ dbh_snapshot_file <- function(table = c("courses", "programmes"), date = NULL,
 # and the releases up to data-2026-10-16 have them too, with `Emnekode_raw`
 # for DBH's code and `Emnekode` for the code without its version number.
 # dbh_rename() renames them where such data are read. data/variables.csv
-# documents every variable of the data files (README "Data Structure").
+# documents every variable of the data files (docs/data-files.md "Data
+# Structure").
 DBH_COLUMNS <- c(
   institution_code = "Institusjonskode", institution_name = "Institusjonsnavn",
   department_code = "Avdelingskode", department_name = "Avdelingsnavn",
@@ -109,8 +112,8 @@ dbh_courses <- function(frame = c("all", "teacher_ed"), date = NULL, input_dir =
 dbh_snapshot_date <- function(file) sub("^dbh_[a-z]+_(.*)\\.parquet$", "\\1", basename(file))
 
 # --- The raw store -----------------------------------------------------------
-# Append-only Parquet (README "Raw Store and Finalized Releases"): one file per
-# institution, DBH year and harvest run,
+# Append-only Parquet (docs/rebuilding.md "Raw Store and Finalized
+# Releases"): one file per institution, DBH year and harvest run,
 # data/raw/{inst}/{year}/{run}.parquet. A run is named by its date, a second
 # run of the institution the same day by date and time ({YYYY-MM-DD}_{HHMMSS},
 # which sorts after it). No raw file is written twice; read_harvest()
@@ -202,11 +205,31 @@ write_raw_run <- function(rows, institution, run, raw_dir = RAW_DIR) {
   rows
 }
 
-.write_plain_parquet <- function(df, file) {
-  tab <- arrow::Table$create(df)
-  tab$metadata$r <- NULL   # plain Parquet, without R's attributes
+# Written `rows` rows at a time (a row group each), all with the schema of
+# the whole of `df`: Arrow copies what it writes, and a year's pages are some
+# 1 GB at NTNU.
+.write_plain_parquet <- function(df, file, rows = 2000L) {
+  plain <- function(x) {
+    x$metadata$r <- NULL   # plain Parquet, without R's attributes
+    x
+  }
   dir.create(dirname(file), recursive = TRUE, showWarnings = FALSE)
-  arrow::write_parquet(tab, file, compression = "zstd", compression_level = 9)
+  if (nrow(df) <= rows) {
+    return(arrow::write_parquet(plain(arrow::Table$create(df)), file,
+                                compression = "zstd", compression_level = 9))
+  }
+  # (a subset's schema can differ: a time without a time zone gets "")
+  schema <- plain(arrow::infer_schema(df))
+  sink <- arrow::FileOutputStream$create(file)
+  on.exit(sink$close())
+  # as arrow::write_parquet() does, a part at a time
+  writer <- arrow::ParquetFileWriter$create(schema, sink, properties = arrow::ParquetWriterProperties$create(
+    names(schema), version = "2.4", compression = "zstd", compression_level = 9))
+  for (i in split(seq_len(nrow(df)), (seq_len(nrow(df)) - 1L) %/% rows)) {
+    tab <- plain(arrow::Table$create(df[i, , drop = FALSE], schema = schema))
+    writer$WriteTable(tab, chunk_size = rows)
+  }
+  writer$Close()
 }
 
 #' Rows of raw files in the order they were harvested
@@ -295,8 +318,8 @@ harvest_date <- function(run, harvested_at = NULL) {
 }
 
 # --- The fetch ledger --------------------------------------------------------
-# How each offering of a harvest run was fetched (README "Fetch Ledger and
-# Retries"). harvest_all() writes it with the run, as
+# How each offering of a harvest run was fetched (docs/harvesting.md "Fetch
+# Ledger and Retries"). harvest_all() writes it with the run, as
 # data/raw/{inst}/ledger/{run}.parquet (write_fetch_ledger()), append-only
 # like the raw files; raw_ledger() reads it and reconstructs it for a run
 # without one (the harvests before 2026-10-16).

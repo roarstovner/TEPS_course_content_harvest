@@ -60,7 +60,11 @@ extract_fulltext_from_raw <- function(df, config) {
     shadow_dom = .cleanup_usn_text(html),
     {
       cfg <- .block_cfg(config)
+      # a parsed page is freed (C memory, libxml2) only when R collects its
+      # garbage, which it does seldom with a year's pages in memory: a
+      # collection every 500 pages keeps the parsed pages from piling up
       vapply(seq_len(nrow(df)), function(i) {
+        if (i %% 500L == 0L) gc()
         if (is.na(html[i]) || !nzchar(html[i])) return(stored[i])
         page_fulltext(page_blocks(html[i], NA, cfg, df$course_id[i]), config)
       }, character(1))

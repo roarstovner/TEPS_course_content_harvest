@@ -27,6 +27,17 @@ test_that("read_raw() gives the raw files of the harvests until 2026-10-16 the p
   }
 })
 
+test_that("a raw file written in parts reads back as one written whole", {
+  dir <- withr::local_tempdir()
+  rows <- .parquet_columns(raw_rows(code = c("A", "B", "C"), semester = "Høst", html = c("a", NA, "c")))
+  rows$requested_at <- Sys.time() + 1:3   # no time zone: as a harvest gives it
+  .write_plain_parquet(rows, file.path(dir, "whole.parquet"))
+  .write_plain_parquet(rows, file.path(dir, "parts.parquet"), rows = 2L)
+  expect_identical(arrow::read_parquet(file.path(dir, "parts.parquet")),
+                   arrow::read_parquet(file.path(dir, "whole.parquet")))
+  expect_equal(arrow::ParquetFileReader$create(file.path(dir, "parts.parquet"))$num_row_groups, 2)
+})
+
 test_that("a current site's offering gets its course's page from a harvest in its academic year", {
   raw <- withr::local_tempdir()
   # the April 2026 snapshot was fetched for DBH 2025 rows, the old way
