@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Add-institution procedure: one copy in docs/new-institution.qmd, skill a thin pointer (#476)
 - audit: fulltext packets should say when the build gives an offering no plan (#464)
 - Split README into a short entry page + docs/ (Diataxis) (#474)
 - nord: link labels, StudentWeb notice, season words and timetable dates (#425)
