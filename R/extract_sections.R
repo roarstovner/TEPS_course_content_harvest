@@ -805,8 +805,13 @@ extract_sections <- function(config, html, extracted_text, course_id) {
            paste0("(?m)[ \t]*For (?:mer |meir )?informasjon om bruk av kunstig intelligens ",
                   "\\(KI\\),? s(?:e|jå) [^\n]*$")),
   nord = c(
-    # a pointer to the AI page, after the AI rule or alone
+    # link labels: to the AI page, after the AI rule or alone, to the aids
+    # page (with the aids heading, when it is all there is under it) and to
+    # the exam guidelines
     "[ \t]*Informasjon om ChatGPT/kunstig intelligens[^\n]{0,20}? finner du her\\.?",
+    "(?m)(?:^Hjelpemidler til eksamen[ \t]*\n)?[ \t]*Generell informasjon om hjelpemid(?:del|ler) til eksamen finn(?:er)? du her\\.?",
+    paste0("(?m)^[ \t]*(?:Praktisk informasjon og retningslinjer for eksamen|",
+           "Les mei?r om retningslinjer og praktisk informasjon om eksamen)\\.?[ \t]*$"),
     # the form may change; StudentWeb shows the right one at registration
     paste0("[ \t]*Det tas forbehold om endringer i vurderingsform\\w*\\.?(?:[ \t]*Korrekt\\w*(?:/\\w+)? ",
            "vurderingsform\\w* vises i StudentWeb[^.\n]*\\.?)?")),

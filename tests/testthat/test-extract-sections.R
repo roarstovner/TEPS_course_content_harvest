@@ -725,6 +725,14 @@ test_that("notices about the assessment stay in it", {
     "Innlevering av heimeeksamen og oppgåver - Høgskulen på Vestlandet (hvl.no)."))
   expect_equal(.clean_sections(out, "nord")$raw_text,
                sub(" Informasjon om ChatGPT[^\n]*", "", out$raw_text))
+  # and the links to the aids page and the exam guidelines
+  nd <- tibble::tibble(section = "assessment", raw_text = paste(
+    "Hjelpemidler til eksamen", "Alle hjelpemidler tillatt. Generell informasjon om hjelpemidler til eksamen finner du her.",
+    "", "Praktisk informasjon og retningslinjer for eksamen.", "Les meir om retningslinjer og praktisk informasjon om eksamen",
+    sep = "\n"))
+  expect_equal(.clean_sections(nd, "nord")$raw_text, "Hjelpemidler til eksamen\nAlle hjelpemidler tillatt.")
+  nd$raw_text <- "Karakter A-F.\n\nHjelpemidler til eksamen\nGenerell informasjon om hjelpemidler til eksamen finner du her.\n\nÅ generere besvarelse ved hjelp av ChatGPT er fusk."
+  expect_equal(.clean_sections(nd, "nord")$raw_text, "Karakter A-F.\n\nÅ generere besvarelse ved hjelp av ChatGPT er fusk.")
   expect_equal(.clean_sections(out, "hvl")$raw_text, paste0(
     "Er å regne som fusk. Informasjon om ChatGPT/kunstig intelligens mm. finner du her.\n",
     "Alle hjelpemidler er tillatt."))

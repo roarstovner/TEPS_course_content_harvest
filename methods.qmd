@@ -1310,8 +1310,13 @@ under the temporary regulations) stay, and so does an exam table's header row
 (Volda, INN, UiS) and NMBU's exam-table line. Still removed: pointers to an
 AI page with no rule of their own ("Informasjon om ChatGPT/kunstig intelligens
 mm. finner du her.", HVL's "For informasjon om bruk av kunstig intelligens
-(KI) se …"), link labels ("Mer om hjelpemidler"), OsloMet's stock resit
-sentence. In USN's text, a line that repeats an entry of the page's table of
+(KI) se …"), link labels ("Mer om hjelpemidler"; since 2026-10-30 also
+Nord's "Generell informasjon om hjelpemidler til eksamen finner du her.",
+with the aids heading when it is all there is under it, and "Praktisk
+informasjon og retningslinjer for eksamen." or "Les meir om retningslinjer
+og praktisk informasjon om eksamen": 254 Nord assessment sections, 26 of
+them losing an aids heading that held only the pointer), OsloMet's stock
+resit sentence. In USN's text, a line that repeats an entry of the page's table of
 contents is a heading, so an unmapped one ("Annet": evaluation, organisation)
 ends the section instead of running into the one before. *Why:* by the spec
 (`course_plan_spec.md`) aids and language are assessment design, and a notice
