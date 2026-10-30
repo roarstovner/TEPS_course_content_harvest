@@ -16,7 +16,7 @@ normalize_plan_text <- function(course_plan, .progress = "Normalize plan texts")
     txt |>
       # the semester fields of a facts box or an exam tab ("Undervisningssemester:
       # Høst"), plan text that changes with the year (course_plan_spec.md)
-      .drop_semester_values() |>
+      .drop_semester_values(keep_punct = FALSE) |>
       tolower() |>
       # the responsible unit, up to ntnu's exam tab; it differs between
       # years by a renamed department, not by content

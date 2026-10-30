@@ -190,6 +190,13 @@ test_that("the plan id and the sections leave a season after a semester label ou
                "Vurderingssemester\n6. semester i lektorutdanninga")
   expect_equal(an("Undervisningssemester\nHaustEmnet går første gong"), "Undervisningssemester\nEmnet går første gong")
   expect_equal(an("Gjeldende fra høstsemesteret 2021."), "Gjeldende fra.")
+  # in a sentence the punctuation stays; the plan id drops it, as before
+  x <- "Skrives over to semester, med oppstart høst. Det åpnes for Skoleeksamen høst, 4 timer"
+  expect_equal(an(x), "Skrives over to semester, med oppstart. Det åpnes for Skoleeksamen, 4 timer")
+  expect_equal(.drop_semester_values(x, keep_punct = FALSE),
+               "Skrives over to semester, med oppstart Det åpnes for Skoleeksamen 4 timer")
+  expect_equal(an("Undervisningssemester: Haust.\nOppstart høst og vår. Neste"),
+               "Undervisningssemester:\nOppstart. Neste")
   # the start of another word stays
   expect_equal(an("Eksamen\nHøstpraksis: ny praksis. Semester\nVåre dokumenter"),
                "Eksamen\nHøstpraksis: ny praksis. Semester\nVåre dokumenter")

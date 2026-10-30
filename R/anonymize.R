@@ -513,10 +513,15 @@ anonymize_text <- function(institution, text,
 # word ("HaustEmnet") starts with a capital. It is plan text, a fact of the
 # course, and stays in course_plan (course_plan_spec.md, decided 2026-10-19);
 # the plan id and the sections leave it out (.drop_semester_values()).
-.semester_value_regex <- paste0(
-  "(?<=(?i:semester|undervisning|oppstart|startsemester|eksamen)[:\\s]{0,3})(?i:",
-  .season_regex, "(?:[ \\t]*(?:,|og|and|eller|or|/|&)[ \\t]*", .season_regex,
-  ")*)(?!\\p{Ll})[.,]?[ \\t]*")
+.semester_label <- "(?i:semester|undervisning|oppstart|startsemester|eksamen)"
+.season_list <- paste0("(?i:", .season_regex, "(?:[ \\t]*(?:,|og|and|eller|or|/|&)[ \\t]*",
+                       .season_regex, ")*)")
+.semester_value_regex <- paste0("(?<=", .semester_label, "[:\\s]{0,3})", .season_list, "(?!\\p{Ll})[.,]?[ \\t]*")
+# In a sentence ("med oppstart høst. Det åpnes", "Skoleeksamen høst, 4 timer")
+# the punctuation after the season (.,;:)) is the sentence's and stays, with the
+# space before the season going: "med oppstart. Det åpnes". The whole list
+# (atomic), not its first season before a comma ("Vurderingssemester Høst, Vår").
+.semester_value_inline_regex <- paste0("(?<=", .semester_label, ")[ \\t]{1,3}(?>", .season_list, ")(?=[.,;:)])")
 
 #' Semester values out of a text
 #'
@@ -527,9 +532,13 @@ anonymize_text <- function(institution, text,
 #' section's text (partition_sections()). course_plan keeps them.
 #'
 #' @param text Character vector of anonymized text.
+#' @param keep_punct Whether the punctuation after a season within a line
+#'   stays (.semester_value_inline_regex), for the sections; the plan id
+#'   drops it with the season, as before 2026-10-30, so the ids stay.
 #' @return The text without semester values, NA where nothing is left.
-.drop_semester_values <- function(text) {
-  out <- stringr::str_remove_all(text, .semester_value_regex)
+.drop_semester_values <- function(text, keep_punct = TRUE) {
+  out <- if (keep_punct) stringr::str_remove_all(text, .semester_value_inline_regex) else text
+  out <- stringr::str_remove_all(out, .semester_value_regex)
   changed <- !is.na(text) & out != text
   out[changed] <- out[changed] |>
     stringr::str_replace_all("(?m)[ \\t]+$", "") |>
