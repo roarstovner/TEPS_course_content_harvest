@@ -1188,6 +1188,31 @@ longer appear in the all-courses data; plans that differed only in their
 stamps are one plan now (teacher-ed frame: USN 1,181 → 1,177 unique plans). The finalized releases (2026-10-15,
 2026-10-16) hold none of these names. *Since:* 2026-10-29.
 
+**The privacy check looks for approvers, and USN's stamps outside the block
+lose their names.** `privacy_check` also looks for approvers' names in layouts the
+anonymizer has no rule for: a name followed by a leader's or coordinator's
+role ("<name>, Instituttleder, ...", "<name>, Programme Coordinator") or by a
+unit on the next line; a name after "godkjent av" or "visedekan", directly,
+after a date or after a role phrase ending in a comma; a name alone under an
+approval heading. Run on USN text as anonymized before 2026-10-29, it flags
+153 texts and over 35 approvers, where the old patterns flagged 2 texts; on
+the published data it flagged 6 USN texts and no reading-list author. These
+six held stamps outside the approval block ("Endring 2021 godkjent av
+visedekan for ..., <name>, oktober 2021", "Endringer er godkjent av <name>",
+"Emneplan godkjent av <name> 27.03.2023") and change-log entries signed with
+a date, a name and a role ("15.12.15 <name>, studiekoordinator .../Endret til
+nytt kull."). Such a USN stamp line now loses the name and its date, and
+"av" before a bare name ("Endringer er godkjent"); the role stays, as in the
+other stamp rules. A signed change-log entry loses its date, name and role,
+and the change stays (the spec has the change log in). *Why:* the check missed about 20 names in the
+approval blocks of 2026-10-28; names are personal data. *Rejected:* a pattern
+for a bare name before the reading list, which flags headings such as
+"Further Reading" or "Se Leganto". "Revidert av
+<name>" stays: reading lists credit a book's revisers so. *Consequence:* 10
+of about 8,400 distinct USN texts (pages and plan texts) change, in these
+lines only; none of the six courses is in the teacher-ed frame or the
+finalized releases. *Since:* 2026-10-30.
+
 ## Sections
 
 ```{r}

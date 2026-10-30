@@ -892,6 +892,59 @@ test_that("the personal-data check finds coordinator blocks and sentences", {
   expect_equal(nrow(personal_data_in(f)), 0)
 })
 
+test_that("the personal-data check finds approvers in layouts no rule removes", {
+  # usn approval lines before the whole block went (harvest of 2026-10-28)
+  leak <- c("24.11.21 Kari A. Nordmann, Instituttleder, Institutt for helse-, sosial- og velferdsfag",
+            "22/11-23, Ola Nordmann instituttleder IHSV", "Kari Nordmann, Programme Coordinator",
+            "February 2024 Kari Nordmann, Program Coordinator", "Ola Dahl, Vice-Dean.",
+            "Kari Berg Nordmann, Vice-Rector, Department of Education",
+            "Notodden\nKari Berg Nordmann\nInstitutt for estetiske fag",
+            "Emneplan godkjent 3.nov. 2023 Kari Berg Nordmann", "Godkjent av nestleder Ola Dahl",
+            "Endring 2021 godkjent av visedekan for profesjonsutdanning, Ola Dahl, oktober 2021",
+            "Akkreditert av viserektor for utdanning Kari Berg Nordmann.",
+            "Revidert ved førstelektor Ola Dahl, USN Handelshøyskolen.", "Visedekan Ola Dahl, 27.02.2023",
+            "Approved by the Dean Kari Nordmann 11.03.2019",
+            "Godkjent emneplan\n\n23.11.23 Kari Nordmann\n Kari Nordmann")
+  # plan text and reading lists: a reviser, a committee, a table row, a pass mark
+  keep <- c("Wadel, Cato (2014) Feltarbeid. Revidert av Kari Berg Nordmann og Ola Dahl. Oslo: Cappelen.",
+            "The course description was approved by the Academic Affairs Committee",
+            "The project has to be approved by the Programme Board", "Arbeidskrav, Godkjent / Ikke Godkjent",
+            "Godkjent kalkulator Lovdata Pro", "godkjent og anbefalt av Norsk Resuscitasjonsråd",
+            "Arbeidskravene må være godkjent for å få eksamensresultatet registrert. Se Forskrift",
+            "Ved godkjent gjennomføring av ekskursjonane kan studentane få Norsk Fjellsportforum",
+            "Godkjent seminardeltagelse\nStudiepoengreduksjon\nEmnekode\tReduksjon\tFra",
+            "Midtbøen, Arnfinn, Institutt for samfunnsforskning, 2018.")
+  f <- tempfile(fileext = ".RDS")
+  saveRDS(tibble::tibble(text = leak), f)
+  hit <- vapply(leak, function(x) any(vapply(.personal_data_patterns, grepl, logical(1), x, perl = TRUE)),
+                logical(1))
+  expect_true(all(hit), label = paste(leak[!hit], collapse = " | "))
+  expect_true(all(names(.approver_patterns) %in% personal_data_in(f)$pattern))
+  saveRDS(tibble::tibble(text = keep), f)
+  expect_equal(nrow(personal_data_in(f)), 0)
+})
+
+test_that("usn: stamp lines outside the block lose the name; a signed change-log entry keeps its change", {
+  an <- function(x) anonymize_text("usn", x, .progress = FALSE)
+  stamps <- c("Endring 2021 godkjent av visedekan for profesjonsutdanning, Kari Nordmann, oktober 2021" =
+                "Endring 2021 godkjent av visedekan for profesjonsutdanning",
+              "Visedekan for profesjonsutdanning, Kari Nordmann, november 2018." = "Visedekan for profesjonsutdanning.",
+              "Endringer er godkjent av Kari Berg-Nordmann" = "Endringer er godkjent",
+              "* Godkjent emneplan Emneplan godkjent av Ola Dahl 27.03.2023" = "* Godkjent emneplan Emneplan godkjent",
+              "Godkjent av Dekan Ola Ludvig Dahl 15.12.22" = "Godkjent av Dekan")
+  for (s in names(stamps)) {
+    expect_equal(an(paste0("Ingen\n\n", s, "\n\nLitteratur")), paste0("Ingen\n\n", stamps[[s]], "\n\nLitteratur"), label = s)
+  }
+  log <- paste0("Endringsbeskrivelse\n\n15.12.15 Kari Nordmann, studiekoordinator videreutdanninger/Endret til nytt kull.\n",
+                "19.10.18 Kari Nordmann, programkoordinator videreutdanninger/ Lagt inn i ny mal.\n",
+                "26.02.24 Ola Dahl, Instituttnestleder. Endringer i faglige kriterier.\n\nLitteratur")
+  expect_equal(an(log), paste0("Endringsbeskrivelse\n\nEndret til nytt kull.\nLagt inn i ny mal.\n",
+                               "Endringer i faglige kriterier.\n\nLitteratur"))
+  # plan text with an approval and a name stays
+  keep <- "Kurset er godkjent av Norsk Sykepleierforbund som tellende til spesialistutdanning."
+  expect_equal(an(keep), keep)
+})
+
 test_that("admin dates go, government documents keep theirs", {
   an <- function(inst, x) anonymize_text(inst, x, .progress = FALSE)
   keep <- c("Meld. St. 28 (2015-2016) og St.meld. nr. 35 (2007–2008).",

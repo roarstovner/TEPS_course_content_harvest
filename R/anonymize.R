@@ -276,6 +276,26 @@ anonymize_text <- function(institution, text,
     # opens with its date ("27.01.2014/dekan- godkjent i ledermøte v/...")
     stringr::str_replace_all("(?m)^(Godkjent[^\\n]*?)[ \\t]+\\d{1,2}\\.\\d{1,2}\\.(?:\\.|[ \\t])\\d{4}[ \\t]*$", "\\1") |>
     stringr::str_remove_all("(?m)^\\d{1,2}\\.\\d{1,2}\\.\\d{4}/dekan[^\\n]*(?:\\n|$)") |>
+    # a stamp line outside the block, with the approver's name and a date
+    # ("Endring 2021 godkjent av visedekan for profesjonsutdanning, Kari
+    # Nordmann, oktober 2021", "Visedekan for ..., Kari Nordmann, november
+    # 2018.", "Endringer er godkjent av Kari Nordmann", "* Godkjent emneplan
+    # Emneplan godkjent av Kari Nordmann 27.03.2023"): the name and the date
+    # go, and "av" before a name ("Endringer er godkjent"); the role stays
+    stringr::str_replace_all(paste0(
+      "(?m)^([ \\t]*(?:[*•-][ \\t]*)?(?:Godkjent emneplan[ \\t]+)?",
+      "(?:(?:Endring(?:er)?|Emneplan(?:en)?)(?:[ \\t]+\\d{4})?(?:[ \\t]+(?:er|ble))?[ \\t]+)?",
+      "(?:(?i:godkjent av|visedekan)(?:[ \\t]+\\p{Ll}+){0,4}(?=,)|",
+      "(?i:godkjent)(?=[ \\t]+av[ \\t]+(?!", .approver_roles, ")\\p{Lu})))",
+      "(?:,|[ \\t]+av)[ \\t]+", .name_regex,
+      "(?:,?[ \\t]+(?:\\p{Ll}+[ \\t]+\\d{4}|\\d{1,2}\\.\\d{1,2}\\.\\d{2,4}))?([ \\t]*\\.?)[ \\t]*(?=\\n|$)"),
+      "\\1\\2") |>
+    # a change-log entry signed with a date, a name and a role ("15.12.15
+    # Kari Nordmann, studiekoordinator videreutdanninger/Endret til nytt
+    # kull.", "26.02.24 Kari Nordmann, Instituttnestleder. Endringer i ..."):
+    # the change stays
+    stringr::str_remove_all(paste0("(?m)^[ \\t]*(?:\\d[\\d./-]*[ \\t]+)?", .name_regex, ",[ \\t]*",
+                                   .approver_roles, "[^/.\\n]*[/.][ \\t]*(?=\\S)")) |>
     # Leganto reading-list widget: link label, "View online", and the
     # item type glued to the title ("BookMøter med barnelitteratur")
     stringr::str_remove_all("Click to view interactive reading list in Leganto") |>
@@ -667,8 +687,45 @@ anonymize_text <- function(institution, text,
 
 # --- Check of the shareable files ---
 
-# What the anonymizer removes, as patterns to look for in its output. A hit in
-# data/processed/ means a text there did not pass through anonymize_text().
+# Approvers' names in layouts the anonymizer has no rule for, found by the
+# check only (usn health and social science pages, harvest of 2026-10-28,
+# before the whole approval block went): a name with a role after it ("24.11.21
+# Kari Nordmann, Instituttleder, Institutt for ...", "Kari Nordmann
+# instituttnestleder IHSV", "Kari Nordmann, Programme Coordinator") or a unit
+# on the next line; a name after "godkjent av" or "visedekan", directly, after a
+# date or after a role phrase ending in a comma ("Emneplan godkjent 3.nov. 2023
+# Kari Nordmann", "godkjent av visedekan for profesjonsutdanning, Kari
+# Nordmann"); a name alone on a line under an approval heading. Names are
+# joined by spaces, not tabs, so table rows are no names. Not "revidert av",
+# which credits a book's revisers in reading lists.
+.check_space <- "[ \\x{00A0}]"
+.check_name <- paste0(.name_part, "(?:", .check_space, "+\\p{Lu}\\p{Ll}{0,2}\\.)*(?:",
+                      .check_space, "+", .name_part, ")+")
+.approver_roles <- paste0("(?i:", paste(c(
+  .signature_roles, "(?:institutt)?nestle(?:d|i)[ea]r", "studiele(?:d|i)[ea]r", "le(?:d|i)[ea]r for",
+  "studiekoordinator", "programkoordinator", "program(?:me)? coordinator", "emneansvarle(?:g|ig)",
+  "visedekan", "viserektor", "vice[- ]dean", "vice[- ]rector", "head of department"),
+  collapse = "|"), ")(?!\\p{L})")
+.approver_patterns <- c(
+  name_approver_role = paste0("(?m)^[^\\n]{0,30}?", .check_name, "(?:[\\h,/]+", .approver_roles,
+                              "|\\h*\\n\\h*(?:", .approver_roles, "|(?:Institutt|Fakultet) for))"),
+  approved_by_name = paste0(
+    "(?i:(?:(?:godkjent|akkreditert)", .check_space, "+(?:av|ved)|revidert", .check_space, "+ved)(?:",
+    .check_space, "+\\p{Ll}+){0,3}|godkjent|akkreditert|visedekan|viserektor)(?!\\p{L})",
+    "(?:[^\\n\\p{Lu}]{0,60}?,|", .check_space, "[\\h\\d./-]*(?:\\p{Ll}{3,5}\\.[\\h\\d.]*)?)",
+    .check_space, "*(?!Ikke\\b)", .check_name,
+    "|(?i:approved", .check_space, "+by)(?:", .check_space, "+the", .check_space,
+    "+(?i:dean|vice-dean|rector))?[\\h,]+", .check_name),
+  approval_heading_name = paste0(
+    "(?m)^\\h*(?i:godkjent|approved)(?:", .check_space,
+    "+(?i:emneplan|studieplan|course plan|programme plan|av|by))?[\\h:]*$",
+    "(?:\\n\\h*(?=\\n))*(?:\\n\\h*\\S[^\\n]*){0,5}?\\n[^\\n\\p{L}]{0,25}", .check_name,
+    "\\h*(?:\\p{Lu}{2,6})?[\\h.]*$")
+)
+
+# What the anonymizer removes, as patterns to look for in its output, and the
+# approver layouts above. A hit in data/processed/ means a text there did not
+# pass through anonymize_text(), or holds a name no rule removes.
 .personal_data_patterns <- c(
   email     = "[\\w.+-]+@[\\w-]+(?:\\.[\\w-]+)*\\.[a-zA-Z]{2,}",
   phone     = "(?i)(?:\\+47[ \\t]*\\d[\\d \\t]{6,}|(?:tlf|telefon)\\.?[ \\t]*:?[ \\t]*\\d[\\d \\t]{6,})",
@@ -678,7 +735,8 @@ anonymize_text <- function(institution, text,
   role_heading_name = .role_heading_name_regex,
   role_name_inline = .role_name_inline_regex,
   name_role_lines = .name_role_lines_regex,
-  signature = .signature_line_regex
+  signature = .signature_line_regex,
+  .approver_patterns
 )
 
 #' Personal data left in data files
