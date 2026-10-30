@@ -571,6 +571,11 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "(?i)^\\s*(?:eksamen|vurdering|vurderingsordning|vurderingsform|eksamensform|karakter(?:er)?|",
   "exam(?:ination)?|assessment|(?:further on )?evaluation|grad(?:e|ing))\\b",
   "(?:[^:：.\\n]{0,40}[:：](?!\\s*(?:godkjent|bestått|approved|pass)\\b)|\\s*$)")
+# A line under teaching methods that states the assessment form:
+# "Vurderingsform: Masteroppgaven, samt 1 times muntlig eksamen ..." (ntnu
+# masters), "Vurderingsinnhold: Kriterier for praksis" (oslomet); not "Vurdering: ..." or "Eksamen: ...", which also give topics,
+# exam dates or workload (uis "Eksamen: 6 timer").
+.design_line_regex <- "(?i)^\\s*(?:vurderings|eksamens)(?:form|innhold)\\s*[:：]\\s*\\S"
 
 # Move coursework-gate lines from assessment into coursework_requirements. A
 # gate heading (ntnu) takes the lines under it, and the paragraphs after it
@@ -592,7 +597,9 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # sentences move. `section`: teaching_methods and course_content are read
 # too (labels = "heading"): their gate sentences, gate headings with their
 # block, and nord's "(OD)"/"(OA)"/"(AK)" lines move, since a requirement
-# belongs in coursework requirements whatever heading the page puts it under.
+# belongs in coursework requirements whatever heading the page puts it under;
+# a line under teaching methods that states the assessment form
+# (.design_line_regex) moves to assessment, with the exam labels right under it.
 .split_inline_coursework <- function(out, labels = TRUE, section = "assessment") {
   i <- which(out$section == section)
   if (length(i) != 1) return(out)
@@ -625,7 +632,14 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   whole <- vapply(sg, all, logical(1))
   gate <- is_gate(lines) | whole
   part <- !gate & vapply(sg, any, logical(1))
-  if (!any(gate | part)) return(out)
+  design <- section == "teaching_methods" & grepl(.design_line_regex, lines, perl = TRUE)
+  for (k in which(design)) {   # "Karakter: Bokstavkarakter (A-F)" under it
+    m <- k + seq_len(length(lines) - k)
+    m <- m[cumprod(grepl(.assessment_label_regex, lines[m], perl = TRUE) &
+                     grepl("[:：]\\s*\\S", lines[m])) == 1]
+    design[m] <- TRUE
+  }
+  if (!any(gate | part | design)) return(out)
   orig <- lines
   aside <- character(length(lines))   # gate sentences of a line that stays
   for (k in which(part)) {
@@ -650,15 +664,18 @@ extract_sections <- function(config, html, extracted_text, course_id) {
                        (whole & colon))
   # where a gate heading's block ends: a paragraph (not a list item) that
   # does not speak of the gate, a heading naming other information, or a line
-  # about the exam (in its first words) that does not speak of the gate; no
-  # gate label takes a line about the exam ("Eksamen og vurdering")
+  # about the exam (in its first words) or the thesis ("Masteroppgaven skrives
+  # normalt i monografiform.", which ntnu writes after the arbeidskrav rules
+  # without a blank line) that does not speak of the gate; no gate label
+  # takes a line about the exam ("Eksamen og vurdering")
   item <- grepl("^\\s*(?:[-•*o]\\s|\\d+[.)])", lines)
   talk <- grepl(paste0("(?i)arbeidskrav|obligatori|godkjen|kompensatorisk|øving(?!s)|",
                        "fravær|oppmøte|tilstedeværelse|coursework|compulsory|mandatory|",
                        "approved|attendance|absence"), orig, perl = TRUE)
   exam <- !gate & !talk & !blank & !grepl("^\\s*[-•*o]\\s", lines) & grepl(paste0(
-    "(*UCP)(?i)^\\W*(?:\\w+\\W+){0,5}(?:\\w*e(?:ks|x)am|(?<!\\w)(?:(?:del)?vurdering|evaluering|karakter|",
-    "assessment|evaluation|grad(?:e|ing))(?:en|er|ene)?\\b)"), lines, perl = TRUE)
+    "(*UCP)(?i)^\\W*(?:(?:master|bachelor)oppg[aå]v|(?:\\w+\\W+){0,5}(?:\\w*e(?:ks|x)am|",
+    "(?<!\\w)(?:(?:del)?vurdering|evaluering|karakter|assessment|evaluation|grad(?:e|ing))(?:en|er|ene)?\\b))"),
+    lines, perl = TRUE)
   ends <- exam | (!gate & !talk & !blank & !item &
                     (c(TRUE, blank[-n]) | (label & grepl("(?i)informasjon", lines))))
   block <- logical(n)
@@ -683,15 +700,22 @@ extract_sections <- function(config, html, extracted_text, course_id) {
     }
   }
   gate[blank] <- FALSE
+  design <- design & !gate
   lines[gate] <- orig[gate]
-  out$raw_text[i] <- paste(lines[!gate | both], collapse = "\n")
-  moved <- paste(ifelse(gate, lines, aside)[gate | nzchar(aside)], collapse = "\n")
-  j <- which(out$section == "coursework_requirements")
+  out$raw_text[i] <- paste(lines[(!gate | both) & !design], collapse = "\n")
+  out <- .append_section(out, "coursework_requirements",
+                         paste(ifelse(gate, lines, aside)[gate | nzchar(aside)], collapse = "\n"))
+  .append_section(out, "assessment", paste(lines[design], collapse = "\n"))
+}
+
+# Add text to a section, after a blank line, or as a new row.
+.append_section <- function(out, section, text) {
+  if (!nzchar(text)) return(out)
+  j <- which(out$section == section)
   if (length(j) == 1) {
-    out$raw_text[j] <- paste(out$raw_text[j], moved, sep = "\n\n")
+    out$raw_text[j] <- paste(out$raw_text[j], text, sep = "\n\n")
   } else {
-    out <- dplyr::bind_rows(out, tibble::tibble(section = "coursework_requirements",
-                                                raw_text = moved))
+    out <- dplyr::bind_rows(out, tibble::tibble(section = section, raw_text = text))
   }
   out
 }

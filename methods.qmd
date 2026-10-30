@@ -1240,11 +1240,33 @@ section falls from 403 to 267 characters and the coursework section grows
 from 53 to 103. At Nord (10 plans) and UiT (16) a gate heading now also takes
 the lines under it that the old rule left in assessment (the pass/fail rule
 of an attendance requirement, "Studenten er forpliktet til å … levere …
-vurderingsskjema", a requirement after a lead-in). A few NTNU plans with no
-paragraph breaks move one assessment sentence along (4 found: "Masteroppgaven
-skrives normalt i monografiform …"). Arbeidskrav and "Vurderingsform:" lines
-under NTNU's teaching methods stay (52 and 19 sections); the split reads only
-assessment. `course_plan` and the plan ids do not change. *Since:* 2026-10-20.
+vurderingsskjema", a requirement after a lead-in). `course_plan` and the
+plan ids do not change. *Since:* 2026-10-20. On 2026-10-30 the block also
+ends at a line that opens on the thesis ("Masteroppgaven skrives normalt i
+monografiform …", which NTNU writes after the arbeidskrav rules with no
+paragraph break), which had moved with the arbeidskrav in 3 plans; and a
+line under teaching methods that states the assessment form
+("Vurderingsform: …", "Eksamensform: …", "Vurderingsinnhold: …") moves to
+assessment, with the exam labels right under it ("Karakter: …"), since by
+the spec assessment holds the design whatever heading the page puts it
+under. *Rejected:* ending the block at any sentence after a sentence (NTNU's
+unbulleted arbeidskrav items end in a full stop: the coursework text of 130
+plans changed, most of it going back to assessment); moving "Vurdering: …"
+and "Eksamen: …" lines too (at HiVolda, Nord and UiS they also give topics,
+exam dates and workload, "Eksamen: 6 timer"); reading course content too
+(two Nord plans of 2021 put a bare "Vurderingsform:" label there over facts
+and exam lines, so one line would move and the rest stay); moving the
+arbeidskrav prose in NTNU's teaching methods ("Det er lagt inn obligatoriske
+arbeidskrav hvor …"), which describes the teaching and whose requirements
+the coursework section already lists. The arbeidskrav list lines there had
+already moved with the reading of teaching methods on 2026-10-28.
+*Consequence:* 23 plans change. At NTNU 19 teaching-methods sections give
+their "Vurderingsform:" line to assessment (master's theses of 2007–2018,
+NORD3901 2025, SARB8002 and PED1010 2007; the 7 of GEOG3901, which held only
+that line, go; SARB8002's line takes "Undervisningen kan foregå på engelsk."
+along), and 3 coursework sections give the thesis paragraph back to
+assessment (MGLU5222-A 2022, MGLU5215-A 2025). At OsloMet FARMAPRA10 2023
+gives its two practice-assessment lines to assessment.
 
 **Nord's abbreviated, counted and English gate lines go to coursework
 requirements; a line naming a gate and an exam part stays in assessment as

@@ -876,6 +876,11 @@ test_that("a gate heading takes its block, up to a heading or the exam (ntnu)", 
     "2. Prøve ut materiell i gruppe. Arbeidskravet skal utføres i gruppe.",
     "Obligatoriske arbeidskrav vurderes som godkjent/ikke godkjent.", sep = "\n"))
   expect_match(s[["assessment"]], "^\\s*Individuell fordypningsoppgave\nOppgaven skal.*Karakter: Bokstavkarakterer$")
+  # without a blank line, a paragraph on the thesis ends the block (MGLU5222-A)
+  s <- split("Obligatoriske arbeidskrav:", "- Midtveisseminar",
+             "Obligatoriske arbeidskrav må være godkjent før en kan framstille seg til eksamen.",
+             "Masteroppgaven skrives normalt i monografiform.", "Vurderingsordning: Masteroppgave")
+  expect_equal(s[["assessment"]], "Masteroppgaven skrives normalt i monografiform.\nVurderingsordning: Masteroppgave")
   # short items without blank lines, then the exam with no blank line before it
   s <- split("Obligatoriske aktiviteter", "Muntlig gruppepresentasjon", "Inntil 8 skriftlige oppgaver",
              "Alle må være godkjent før eksamen.", "Inntil 2 obligatoriske arbeidskrav",
@@ -1046,12 +1051,25 @@ test_that("requirements under the teaching or content heading move to coursework
   expect_match(s[["teaching_methods"]], "^Forelesninger\\.\n+Undervisningen foregår på campus\\.$")
   s <- split("teaching_methods", "Laboratoriekurs.", "Obligatorisk deltakelse (OD) på laboratorieøvelser")
   expect_equal(s[["coursework_requirements"]], "Obligatorisk deltakelse (OD) på laboratorieøvelser")
+  # a line stating the assessment form moves to assessment, with the exam
+  # labels under it (ntnu masters, nord)
+  s <- split("teaching_methods", "Forelesninger, seminar, framlegg av deltakerne.",
+             "Vurderingsform: Deltakelse, paper.", "Karakter: Bokstavkarakter (A-F)", "Undervisningen er på engelsk.")
+  expect_equal(s[["teaching_methods"]], "Forelesninger, seminar, framlegg av deltakerne.\nUndervisningen er på engelsk.")
+  expect_equal(s[["assessment"]], "Skriftlig eksamen.\n\nVurderingsform: Deltakelse, paper.\nKarakter: Bokstavkarakter (A-F)")
+  expect_false("coursework_requirements" %in% names(s))
+  res <- .split_inline_coursework(tibble::tibble(section = "teaching_methods",
+    raw_text = "Vurderingsform: Masteroppgaven, samt 1 times muntlig eksamen."), "heading", "teaching_methods")
+  expect_equal(res$raw_text[res$section == "assessment"], "Vurderingsform: Masteroppgaven, samt 1 times muntlig eksamen.")
+  s <- split("teaching_methods", "Veiledning i apoteket.", "Vurderingsinnhold:  Kriterier for praksis",
+             "Vurderingsform:    Midtveisvurdering og sluttvurdering")
+  expect_equal(s[["teaching_methods"]], "Veiledning i apoteket.")
   # not: a teaching form named "Assignments", a mention of obligatory subjects,
   # a description of the arbeidskrav, a gate label that only says something
   out <- tibble::tibble(section = "teaching_methods", raw_text = paste(
     "Lectures", "Assignments", "Project work", "Det forutsettes at studentene deltar aktivt.",
     "Arbeidskravene har som forutsetning at studentene arbeider selvstendig.",
-    "Arbeidskrav: 20 timer", sep = "\n"))
+    "Arbeidskrav: 20 timer", "Vurdering: Godkjend/ ikkje godkjend.", "Eksamen: 6 timer", sep = "\n"))
   expect_equal(.split_inline_coursework(out, "heading", "teaching_methods"), out)
   out <- tibble::tibble(section = "course_content", raw_text = paste(
     "Studentene skal utvikle kompetanse for å kunne undervise og veilede elever i de obligatoriske programfagene."))
