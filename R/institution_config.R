@@ -62,9 +62,9 @@
 #                robots.txt disallows for all user agents, recorded as
 #                "granted YYYY-MM-DD by <who> (<what>)". Without one, the
 #                harvest does not request a URL that a disallow rule in
-#                data/robots_txt.csv matches (robots_allows(), README
-#                "robots.txt"). A decision of the project's own, taken
-#                without asking the institution, is recorded as such
+#                data/robots_txt.csv matches (robots_allows(),
+#                docs/harvesting.md "robots.txt"). A decision of the project's
+#                own, taken without asking the institution, is recorded as such
 #                ("decided YYYY-MM-DD by ..., not granted by ..."): steiner.
 
 institution_configs <- list(

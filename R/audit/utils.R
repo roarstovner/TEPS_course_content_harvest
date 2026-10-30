@@ -56,7 +56,8 @@ audit_args_institutions <- function() {
 }
 
 # With --pilot on the command line, an institution's packet is drawn from its
-# pilot sample only (pilot_file(), README "Piloting an Institution"):
+# pilot sample only (pilot_file(), docs/new-institution.md "Piloting an
+# Institution"):
 # audit_pilot_rows() keeps the rows of `df` whose offering (`course_id`) is
 # in it (without --pilot, `df`), and audit_sample() gives the places the
 # suspects leave unused to random controls.

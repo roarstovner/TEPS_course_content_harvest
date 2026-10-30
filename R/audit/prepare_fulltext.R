@@ -155,9 +155,9 @@ page_years <- function(heading_year, txt) {
 }
 
 # With --pilot, a site that shows only the current plan (plan_years
-# "current"; README "Sites that show only the current plan"): the pilot
-# sample's offerings with the page fetched for each in its latest run (the
-# pilot run), which read_harvest() gives only to offerings of the page's
+# "current"; docs/harvesting.md "Sites that show only the current plan"):
+# the pilot sample's offerings with the page fetched for each in its latest run
+# (the pilot run), which read_harvest() gives only to offerings of the page's
 # academic year (2026/27 pages, a DBH snapshot without 2026, 2026-10-22).
 # extracted_text comes from the pipeline's extraction
 # (extract_fulltext_from_raw()), the fetch error is prefixed by its outcome

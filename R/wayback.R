@@ -2,8 +2,8 @@
 # The Internet Archive's Wayback Machine (web.archive.org): which captures it
 # holds of a course page (its CDX API), and the address of a capture as it
 # was archived. Not used by the harvest or the pipeline: tested on
-# 2026-10-16 as a source of the plans a site no longer shows (README "Sites
-# that show only the current plan").
+# 2026-10-16 as a source of the plans a site no longer shows
+# (docs/harvesting.md "Sites that show only the current plan").
 #
 # web.archive.org has no robots.txt (404, 2026-10-16). Its terms of use give
 # access "for scholarship and research purposes only" and ask not to

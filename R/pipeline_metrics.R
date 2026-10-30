@@ -139,13 +139,14 @@ check_pipeline_metrics <- function(update = FALSE, frames = names(METRICS_SNAPSH
 }
 
 # --- Pilot gate ---------------------------------------------------------------
-# Review flags of an institution's pilot (README "Piloting an Institution";
-# methods.qmd "Pilot protocol and gate"): a share of the pilot sample's
-# course-years below its value, or `unmapped_headings` or `privacy_hits`
-# above it, is reviewed in the pilot audits. A flag does not block the full
-# harvest on its own; the audits' verdict does, and a flagged number needs a
-# fix or a reason there (decided 2026-10-17). Values from what the configured
-# institutions reach in the teacher-ed frame (2026-10-16, methods.qmd).
+# Review flags of an institution's pilot (docs/new-institution.md
+# "Piloting an Institution"; methods.qmd "Pilot protocol and gate"): a share of
+# the pilot sample's course-years below its value, or `unmapped_headings` or
+# `privacy_hits` above it, is reviewed in the pilot audits. A flag does not
+# block the full harvest on its own; the audits' verdict does, and a flagged
+# number needs a fix or a reason there (decided 2026-10-17). Values from what
+# the configured institutions reach in the teacher-ed frame (2026-10-16,
+# methods.qmd).
 PILOT_GATE <- c(fetched = 0.80, plan = 0.80, assessment = 0.90, coursework = 0.70,
                 unmapped_headings = 0.65, privacy_hits = 0)
 PILOT_GATE_MAX <- c("unmapped_headings", "privacy_hits")
@@ -241,10 +242,10 @@ pilot_gate <- function(institution, thresholds = PILOT_GATE,
 #' partition_sections()) on a sample of the raw store twice, with the code of
 #' `ref` and with the working tree, and returns where they differ. For trying
 #' an extraction, heading-map or anonymizer fix in a minute: the full
-#' rebuild and metrics_check stay the check before a commit (README
-#' "Rebuilding Derived Data"). Each version's code (the files _targets.R
-#' sources) is loaded into an environment of its own; the session's is not
-#' changed.
+#' rebuild and metrics_check stay the check before a commit
+#' (docs/rebuilding.md "Rebuilding Derived Data"). Each version's code (the
+#' files _targets.R sources) is loaded into an environment of its own; the
+#' session's is not changed.
 #'
 #' @param institutions Institutions to sample.
 #' @param n Pages per raw partition (institution x DBH year), drawn with a

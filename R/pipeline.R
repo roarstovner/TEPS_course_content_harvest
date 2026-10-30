@@ -1,10 +1,11 @@
 # R/pipeline.R
-# Steps of the {targets} pipeline in _targets.R (README "Rebuilding Derived
-# Data"): every stored page is read once, per raw partition (institution x
-# DBH year: data/raw/{inst}/{year}/); per institution, read_harvest() gives
-# each offering the page it takes, without reading the pages; the offerings
-# of all institutions then get their plans, and each frame (FRAMES) its data
-# files. The harvest itself stays outside the pipeline (network, checkpoints).
+# Steps of the {targets} pipeline in _targets.R (docs/rebuilding.md
+# "Rebuilding Derived Data"): every stored page is read once, per raw partition
+# (institution x DBH year: data/raw/{inst}/{year}/); per institution,
+# read_harvest() gives each offering the page it takes, without reading the
+# pages; the offerings of all institutions then get their plans, and each frame
+# (FRAMES) its data files. The harvest itself stays outside the pipeline
+# (network, checkpoints).
 
 # A column, or NA for each row where the data frame has none.
 .chr <- function(df, col) df[[col]] %||% rep(NA_character_, nrow(df))

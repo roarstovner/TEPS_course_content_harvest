@@ -1,5 +1,6 @@
 # R/checkpoint.R
-# Checkpoints resume an interrupted harvest (README "About Checkpointing").
+# Checkpoints resume an interrupted harvest (docs/harvesting.md "About
+# Checkpointing").
 # Each is a folder of append-only Parquet parts, part-000001.parquet,
 # part-000002.parquet, ...: data/raw/checkpoint/{inst}/{year}/html/ holds the
 # pages of a year's run, by URL; {inst}/urls/, {inst}/discovery/ and

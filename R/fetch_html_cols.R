@@ -178,12 +178,12 @@ TEPS_USER_AGENT <- "TEPS research project - https://uni.oslomet.no/teps/ - robas
 BROWSER_USER_AGENT <- paste("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
                             "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
 
-# Retries by outcome (fetch_outcome(); README "Fetch Ledger and Retries"): a
-# request without an answer in FETCH_TIMEOUT seconds or a failed connection
-# ("timeout") and HTTP 500, 502, 503 or 504 ("server_error") are tried again,
-# FETCH_TRIES times in all, after FETCH_BACKOFF seconds and then twice as
-# long. Any other answer is final: a 404 or a 403 is not tried again, and a
-# site that refuses the harvest stops it (refusal_watch()).
+# Retries by outcome (fetch_outcome(); docs/harvesting.md "Fetch Ledger and
+# Retries"): a request without an answer in FETCH_TIMEOUT seconds or a failed
+# connection ("timeout") and HTTP 500, 502, 503 or 504 ("server_error") are
+# tried again, FETCH_TRIES times in all, after FETCH_BACKOFF seconds and then
+# twice as long. Any other answer is final: a 404 or a 403 is not tried again,
+# and a site that refuses the harvest stops it (refusal_watch()).
 FETCH_TIMEOUT <- 60
 FETCH_TRIES <- 3
 FETCH_BACKOFF <- 30
@@ -211,10 +211,10 @@ site_html <- function(url) {
 
 # --- robots.txt ---------------------------------------------------------------
 # The harvest requests no URL whose path a host's robots.txt disallows for all
-# user agents (README "robots.txt"). ROBOTS_FILE holds the robots.txt of every
-# host the harvest requests, read before the first request to it: `disallow`
-# and `allow` are its rules for `User-agent: *` that touch course plans, as
-# robots.txt path patterns separated by spaces.
+# user agents (docs/harvesting.md "robots.txt"). ROBOTS_FILE holds the
+# robots.txt of every host the harvest requests, read before the first request
+# to it: `disallow` and `allow` are its rules for `User-agent: *` that touch
+# course plans, as robots.txt path patterns separated by spaces.
 ROBOTS_FILE <- "data/robots_txt.csv"
 
 #' Whether robots.txt lets the harvest request URLs

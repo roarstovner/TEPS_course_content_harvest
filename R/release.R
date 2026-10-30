@@ -3,7 +3,8 @@
 # coding project (../TEPS_course_content_coding) draws its samples from it.
 
 # Every variable of the data files: its file, type, source and meaning, and
-# its name in the releases up to data-2026-10-16 (README "Data Structure").
+# its name in the releases up to data-2026-10-16 (docs/data-files.md "Data
+# Structure").
 VARIABLES_FILE <- "data/variables.csv"
 
 #' Copy the published data files to another project, with a manifest
