@@ -658,9 +658,10 @@ test_that("smoke test: no email-shaped strings in output", {
   inputs <- c(
     "Kontakt ola.nordmann@ntnu.no for info",
     "Send til student@hivolda.no eller veileder@uia.no",
-    "Email: test.person@usn.no, backup: admin@example.com"
+    "Email: test.person@usn.no, backup: admin@example.com",
+    "kontakt eventuelt studieinfo@math.uib.noStudieinfo@math.uib.no"
   )
-  institutions <- c("ntnu", "hivolda", "uia")
+  institutions <- c("ntnu", "hivolda", "uia", "uib")
 
   for (i in seq_along(inputs)) {
     result <- anonymize_text(institutions[i], inputs[i], .progress = FALSE)
@@ -920,7 +921,9 @@ test_that("the personal-data check finds approvers in layouts no rule removes", 
             "Arbeidskravene må være godkjent for å få eksamensresultatet registrert. Se Forskrift",
             "Ved godkjent gjennomføring av ekskursjonane kan studentane få Norsk Fjellsportforum",
             "Godkjent seminardeltagelse\nStudiepoengreduksjon\nEmnekode\tReduksjon\tFra",
-            "Midtbøen, Arnfinn, Institutt for samfunnsforskning, 2018.")
+            "Midtbøen, Arnfinn, Institutt for samfunnsforskning, 2018.",
+            # an author list with a first name that is a role word
+            "Ola Dahl, Kari K. Berg, Dean Nordmann, Per Hansen (2017). Integrating Project Delivery")
   f <- tempfile(fileext = ".RDS")
   saveRDS(tibble::tibble(text = leak), f)
   hit <- vapply(leak, function(x) any(vapply(.personal_data_patterns, grepl, logical(1), x, perl = TRUE)),
@@ -938,7 +941,13 @@ test_that("usn: stamp lines outside the block lose the name; a signed change-log
               "Visedekan for profesjonsutdanning, Kari Nordmann, november 2018." = "Visedekan for profesjonsutdanning.",
               "Endringer er godkjent av Kari Berg-Nordmann" = "Endringer er godkjent",
               "* Godkjent emneplan Emneplan godkjent av Ola Dahl 27.03.2023" = "* Godkjent emneplan Emneplan godkjent",
-              "Godkjent av Dekan Ola Ludvig Dahl 15.12.22" = "Godkjent av Dekan")
+              "Godkjent av Dekan Ola Ludvig Dahl 15.12.22" = "Godkjent av Dekan",
+              # anywhere in a line, a no-break space, an initial, a role after the name
+              "Endringen er godkjent av dekan\u00a0Kari K Berg-Nordmann" = "Endringen er godkjent av dekan",
+              " Akkreditert av viserektor for utdanning Kari Berg Nordmann." = " Akkreditert av viserektor for utdanning.",
+              "Mindre endringer godkjent av visedekan Ola Dahl." = "Mindre endringer godkjent av visedekan.",
+              "Godkjent av Ola Dahl, Dekan. 09.3.21" = "Godkjent av Dekan.",
+              " Godkjent av Kari Nordmann/dekan" = " Godkjent av dekan")
   for (s in names(stamps)) {
     expect_equal(an(paste0("Ingen\n\n", s, "\n\nLitteratur")), paste0("Ingen\n\n", stamps[[s]], "\n\nLitteratur"), label = s)
   }
@@ -947,6 +956,11 @@ test_that("usn: stamp lines outside the block lose the name; a signed change-log
                 "26.02.24 Ola Dahl, Instituttnestleder. Endringer i faglige kriterier.\n\nLitteratur")
   expect_equal(an(log), paste0("Endringsbeskrivelse\n\nEndret til nytt kull.\nLagt inn i ny mal.\n",
                                "Endringer i faglige kriterier.\n\nLitteratur"))
+  # a signature alone on its line, after the change, or by two signers
+  expect_equal(an(paste0("Endringsbeskrivelse\n\n Kari Nordmann, studiekoordinator videreutdanninger\n\n",
+                         "Lagt inn i ny mal/Kari Nordmann, programkoordinator videreutdanninger\n",
+                         " Ola Dahl, fagansvarlig og Kari Nordmann, programkoordinator/ språklig forenkling\n\nLitteratur")),
+               "Endringsbeskrivelse\n\nLagt inn i ny mal/\nspråklig forenkling\n\nLitteratur")
   # plan text with an approval and a name stays
   keep <- "Kurset er godkjent av Norsk Sykepleierforbund som tellende til spesialistutdanning."
   expect_equal(an(keep), keep)

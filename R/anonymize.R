@@ -293,9 +293,13 @@ anonymize_text <- function(institution, text,
     # a change-log entry signed with a date, a name and a role ("15.12.15
     # Kari Nordmann, studiekoordinator videreutdanninger/Endret til nytt
     # kull.", "26.02.24 Kari Nordmann, Instituttnestleder. Endringer i ..."):
-    # the change stays
-    stringr::str_remove_all(paste0("(?m)^[ \\t]*(?:\\d[\\d./-]*[ \\t]+)?", .name_regex, ",[ \\t]*",
-                                   .approver_roles, "[^/.\\n]*[/.][ \\t]*(?=\\S)")) |>
+    # the change stays. Also a signature that ends its line or follows the
+    # change ("Endret innhold/Kari Nordmann, programkoordinator
+    # videreutdanninger"), and two signers ("Ola Dahl, fagansvarlig og Kari
+    # Nordmann, programkoordinator/ ...")
+    stringr::str_remove_all(paste0("(?m)(?:^[ \\t]*(?:\\d[\\d./-]*[ \\t]+)?|(?<=/))(?:", .name_regex,
+                                   ",[ \\t]*\\p{Ll}+[ \\t]+og[ \\t]+)?", .name_regex, ",[ \\t]*",
+                                   .approver_roles, "[^/.\\n]*(?:[/.][ \\t]*(?=\\S)|$)")) |>
     # Leganto reading-list widget: link label, "View online", and the
     # item type glued to the title ("BookMøter med barnelitteratur")
     stringr::str_remove_all("Click to view interactive reading list in Leganto") |>
@@ -443,9 +447,20 @@ anonymize_text <- function(institution, text,
   "(?m)^[ \\t]*", .name_regex, "[ \\t]*\\n[ \\t]*(?i:", paste(.signature_roles, collapse = "|"),
   ")[ \\t]*(?:\\n|$)"
 )
+# "Godkjent av dekan Ola Nordmann", "Akkreditert av viserektor for utdanning
+# Ola K Nordmann.", a name after a role and its unit; or a name with its role
+# after it, "Godkjent av Ola Nordmann, Dekan.", "Godkjent av Ola
+# Nordmann/dekan" (usn). The name goes, with the comma or slash after it; a
+# name with no role is an organisation's ("godkjent av Norsk
+# Sykepleierforbund"). Spaces may be no-break spaces.
+.approved_by_space <- "[ \\t\\x{00A0}]+"
+.approved_by_role <- paste0("(?i:(?:", paste(c(.signature_roles, "visedekan", "viserektor", "nestle(?:d|i)er"),
+                                             collapse = "|"), ")(?:en)?)(?!\\p{L})")
+.approved_by_who <- paste0("\\p{Lu}\\p{Ll}+(?:", .approved_by_space, "\\p{Lu}(?:\\.|[\\p{L}-]*))+")
 .approved_by_name_regex <- paste0(
-  "([Gg]odkjent av (?:[Dd]ekan(?:en)?|[Pp]rodekan|[Ii]nstitutt(?:nest)?leder|",
-  "[Ss]tudieprogramleder))[ \\t]+\\p{Lu}\\p{Ll}+(?:[ \\t]+\\p{Lu}[\\p{L}-]+)+"
+  "((?i:godkjent|akkreditert)", .approved_by_space, "av)(?:(", .approved_by_space, .approved_by_role,
+  "(?:", .approved_by_space, "\\p{Ll}+){0,3})", .approved_by_space, .approved_by_who,
+  "|(", .approved_by_space, ")", .approved_by_who, "[ \\t]*[,/][ \\t]*(?=", .approved_by_role, "))"
 )
 # PDF text wraps long links anywhere: `s` with an optional line break
 # between any two characters.
@@ -560,6 +575,7 @@ anonymize_text <- function(institution, text,
 # The space before a removed date, season or e-mail goes with it, so no
 # "Faget går ." or "studieadministrasjonen , før" is left.
 .gap <- "[ \\t]*"
+.case_break <- "(?<=\\p{Ll})(?=\\p{Lu})"
 .clock_regex <- "(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d)?"
 # Approval and update dates in words: "godkjent i studieutvalget 14.
 # november 2016", "endringer lagt inn 3. juli 2017 og 7. mai 2024",
@@ -572,9 +588,12 @@ anonymize_text <- function(institution, text,
   txt |>
     # Remove "Sist hentet/henta fra/frå FS..." timestamp
     stringr::str_remove_all("Sist hent(?:et|a) fr(?:a|å) FS \\(Felles studentsystem\\)[^\n]*") |>
-    # Remove email addresses, with their brackets: "Ta kontakt med (x@uio.no)"
+    # Remove email addresses, with their brackets: "Ta kontakt med (x@uio.no)",
+    # and two glued by a link label ("x@uib.noX@uib.no", uib): an address ends
+    # at a word boundary or where a capital follows a small letter
     stringr::str_remove_all("\\s*\\(\\s*[\\w.+-]+@[\\w.-]+\\.[a-zA-Z]{2,}\\s*\\)") |>
-    stringr::str_remove_all(paste0(.gap, "\\b[\\w.+-]+@[\\w.-]+\\.[a-zA-Z]{2,}\\b")) |>
+    stringr::str_remove_all(paste0(.gap, "(?:\\b|", .case_break, ")[\\w.+-]+@[\\w.-]+\\.[a-zA-Z]{2,}?(?:\\b|",
+                                   .case_break, ")")) |>
     stringr::str_remove_all(.openurl_regex) |>
     stringr::str_remove_all(.user_ip_regex) |>
     # Remove staff list lines "- Ola Nordmann (Emneansvarlig)"
@@ -588,7 +607,7 @@ anonymize_text <- function(institution, text,
     # and "Ola Nordmann\nInstituttnestleder"
     stringr::str_remove_all(.name_role_lines_regex) |>
     # Keep the role, drop the name: "Godkjent av dekan Ola Nordmann"
-    stringr::str_replace_all(.approved_by_name_regex, "\\1") |>
+    stringr::str_replace_all(.approved_by_name_regex, "\\1\\2\\3") |>
     # "faglærer Ola Nordmann" anywhere in a line
     stringr::str_replace_all(.role_name_inline_regex, "\\1") |>
     # Remove phone numbers: +47 XX XX XX XX, Tlf: XXXXXXXX, telefon: XX XX XX XX
@@ -706,7 +725,8 @@ anonymize_text <- function(institution, text,
 # Kari Nordmann", "godkjent av visedekan for profesjonsutdanning, Kari
 # Nordmann"); a name alone on a line under an approval heading. Names are
 # joined by spaces, not tabs, so table rows are no names. Not "revidert av",
-# which credits a book's revisers in reading lists.
+# which credits a book's revisers in reading lists, and not a role word that
+# begins a name in an author list ("Ola Dahl, Dean Nordmann, Kari Berg").
 .check_space <- "[ \\x{00A0}]"
 .check_name <- paste0(.name_part, "(?:", .check_space, "+\\p{Lu}\\p{Ll}{0,2}\\.)*(?:",
                       .check_space, "+", .name_part, ")+")
@@ -717,7 +737,7 @@ anonymize_text <- function(institution, text,
   collapse = "|"), ")(?!\\p{L})")
 .approver_patterns <- c(
   name_approver_role = paste0("(?m)^[^\\n]{0,30}?", .check_name, "(?:[\\h,/]+", .approver_roles,
-                              "|\\h*\\n\\h*(?:", .approver_roles, "|(?:Institutt|Fakultet) for))"),
+                              "(?!\\h+\\p{Lu}\\p{Ll}+,)|\\h*\\n\\h*(?:", .approver_roles, "|(?:Institutt|Fakultet) for))"),
   approved_by_name = paste0(
     "(?i:(?:(?:godkjent|akkreditert)", .check_space, "+(?:av|ved)|revidert", .check_space, "+ved)(?:",
     .check_space, "+\\p{Ll}+){0,3}|godkjent|akkreditert|visedekan|viserektor)(?!\\p{L})",
