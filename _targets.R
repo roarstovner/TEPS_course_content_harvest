@@ -11,7 +11,7 @@ tar_option_set(
   # Branches are independent, so they run on 4 local worker processes.
   # Workers read and write the store themselves, so large results do not
   # pass through the main process.
-  controller = crew::crew_controller_local(workers = 4, seconds_idle = 60),
+  controller = crew::crew_controller_local(workers = as.integer(Sys.getenv("TAR_WORKERS", "4")), seconds_idle = 60),
   storage = "worker",
   retrieval = "worker"
 )
