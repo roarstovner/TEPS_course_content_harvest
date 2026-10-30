@@ -437,6 +437,17 @@ extract_sections <- function(config, html, extracted_text, course_id) {
     i <- after(k)
     if (length(i) > 0 && all(gone[i])) gone[k] <- TRUE
   }
+  # a conjunction left dangling by a dropped paragraph goes: "..., eller" over
+  # it, or a line "eller" next to it
+  conj <- "(*UCP)(?i)[,;]?\\s*\\b(?:eller|or|og|and)\\s*$"
+  nb <- which(!blank)
+  for (k in which(!gone & grepl(conj, lines, perl = TRUE))) {
+    bare <- !grepl("\\S", sub(conj, "", lines[k], perl = TRUE))
+    if (isTRUE(gone[nb[nb > k][1]]) || (bare && isTRUE(gone[rev(nb[nb < k])[1]]))) {
+      lines[k] <- sub(conj, "", lines[k], perl = TRUE)
+      gone[k] <- bare
+    }
+  }
   paste(lines[!gone], collapse = "\n")
 }
 

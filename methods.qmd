@@ -1433,6 +1433,10 @@ The admission cleanup of prerequisites reads a line that ends in "eller" or
 branch ("... i bioingeniørfag, eller" over "Opptak til kompletterende
 utdanning for bioingeniører", OsloMet); not any line after a comma, which
 glued Nord's graded "Praktisk eksamen (PE)" to the gate line above it.
+A conjunction that a dropped paragraph leaves dangling goes with it (a
+line's closing "eller"/"og" over it, or a line "eller" next to it; since
+2026-10-30, 3 NLA plans, TEOL360 2023–2025, among 256 pages whose
+prerequisites hold a line ending in a conjunction).
 `course_plan` and the plan ids do not change. *Since:* 2026-10-22; corrected
 2026-10-28.
 

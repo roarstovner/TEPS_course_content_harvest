@@ -1201,6 +1201,13 @@ test_that("an admission line that continues an either/or entry condition stays (
   # an admission line on its own still goes
   expect_equal(.strip_admission_lines("Opptak til lærerutdanningen.\nEmnet bygger på Norsk 1."),
                "Emnet bygger på Norsk 1.")
+  # a conjunction left dangling by a dropped paragraph goes; one before a
+  # kept paragraph stays
+  expect_equal(trimws(.strip_admission_lines("Bestått MGL101, eller\n\nOpptak til lærerutdanningen.")), "Bestått MGL101")
+  expect_equal(trimws(.strip_admission_lines("Bestått MGL101\n\neller\n\nOpptak til lærerutdanningen.")), "Bestått MGL101")
+  expect_equal(trimws(.strip_admission_lines("Opptak til lærerutdanningen.\n\neller\n\nBestått MGL101")), "Bestått MGL101")
+  txt <- "Bestått MGL101, eller\n\nBestått MGL102\n\nOpptak til lærerutdanningen."
+  expect_equal(trimws(.strip_admission_lines(txt)), "Bestått MGL101, eller\n\nBestått MGL102")
   # a line after a comma is its own line (nord: a graded exam after a gate)
   lines <- c("Obligatorisk deltakelse (OD): Minimum 80% deltagelse. Teller 0/100 av karakteren,",
              "Praktisk eksamen (PE): Individuell, varighet 30 minutter. Teller 100/100 av karakteren.")
