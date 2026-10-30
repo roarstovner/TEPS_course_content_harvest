@@ -25,12 +25,20 @@
 #   uncaptured prose on the page missing from extracted_text (lines of
 #              >= 80 chars, not year pickers or breadcrumbs)
 #
+# Each course also shows whether the build gives it a plan
+# (data/processed/course_offerings.RDS) and, if not, why: a later or earlier
+# version of the plan (page_term, page_end_term), a pointer to the English
+# page, an error or placeholder page (the anonymizer drops it), or a page
+# shell (the shell rule), as plan_offerings() and frame_offerings() decide.
+# Such a page is in extracted_text but not in the data.
+#
 # Failed fetches are shown by cause (fetch error, largest first), each with
 # offerings of different course codes and, in the institution context, how
 # many codes have a page in another offering: a cause that hits a whole group
 # of codes (NTNU's "-A" codes, 2026-10) shows as such.
 #
-# Inputs:  the raw harvest (harvested_rows()) + data/interim/extracted_text.RDS;
+# Inputs:  the raw harvest (harvested_rows()) + data/interim/extracted_text.RDS
+#          + data/processed/course_offerings.RDS (plan ids);
 #          with --pilot, for plan_years "current" sites, the pilot run itself
 #          (pilot_run_rows())
 # Outputs: data/audit/fulltext/packets/{inst}.md, manifest.csv, sample.csv
@@ -64,6 +72,7 @@ source("R/pipeline.R")              # harvested_rows()
 source("R/add_course_url.R")        # read_harvest() of url_year sites
 source("R/section_heading_map.R")   # blocks.R: page_blocks() for pilot_run_rows()
 source("R/blocks.R")
+source("R/anonymize.R")             # no_plan_reason(): error pages it drops
 
 JUNK_RX <- regex(paste(
   "informasjonskapsler", "\\bcookies?\\b", "hopp til (hoved)?innhold",
@@ -154,6 +163,25 @@ page_years <- function(heading_year, txt) {
   unique(yrs[!pair | (as.integer(m[, 8]) - yrs) %% 100 == 1])
 }
 
+# Why an offering with a page has no plan in the build, in the order
+# plan_offerings(), anonymize_text() and the shell rule (frame_offerings())
+# take it away.
+no_plan_reason <- function(r, cfg) {
+  term <- semester_term(r$year, r$semester_name)
+  page_term <- function(f) if (is.null(f) || is.na(r$html)) NA_integer_ else as.integer(f(r$html))
+  from <- page_term(cfg$page_term)
+  to <- page_term(cfg$page_end_term)
+  lab <- function(t) sprintf("%s %d", if (t %% 2 == 1) "autumn" else "spring", t %/% 2)
+  if (r$txt_nchar == 0) return("no extracted text")
+  if ((from > term) %in% TRUE) return(sprintf("a later version: the page's plan starts %s", lab(from)))
+  if ((to < term) %in% TRUE) return(sprintf("an earlier version: the page's plan ends %s", lab(to)))
+  if (!is.null(cfg$english_page) && (grepl(cfg$english_page$notice, r$html, perl = TRUE) %in% TRUE))
+    return("a pointer to the English page")
+  if (is.na(anonymize_text(cfg$name, r$extracted_text, .progress = FALSE)))
+    return("an error or placeholder page (anonymize_text() drops it)")
+  sprintf("a page shell (no section, under %d chars of plan text)", SHELL_MAX_NCHAR)
+}
+
 # With --pilot, a site that shows only the current plan (plan_years
 # "current"; docs/harvesting.md "Sites that show only the current plan"):
 # the pilot sample's offerings with the page fetched for each in its latest run
@@ -185,6 +213,7 @@ if (length(institutions) == 0) stop("No raw harvest for: ",
                                     paste(requested, collapse = ", "), call. = FALSE)
 manifest <- list()
 sample   <- list()
+build_plans <- readRDS("data/processed/course_offerings.RDS")[c("course_id", "plan_content_id")]
 
 for (inst in institutions) {
   cfg <- get_institution_config(inst)
@@ -196,7 +225,10 @@ for (inst in institutions) {
   df <- if (current_pilot) pilot_run_rows(inst, cfg) else
     audit_pilot_rows(harvested_rows(inst), inst)   # extracted_text from the {targets} pipeline
   df <- df |>
+    left_join(build_plans, by = "course_id") |>
     mutate(
+      in_build  = course_id %in% build_plans$course_id,
+      has_plan  = !is.na(plan_content_id),
       html_error_msg = vapply(html_error, error_msg, character(1)),
       has_html  = !is.na(html) & nzchar(html),
       txt_nchar = nchar(coalesce(extracted_text, "")),
@@ -302,7 +334,10 @@ for (inst in institutions) {
       "For each course, audit **Extracted text** as a faithful, clean copy of the",
       "course plan on the page. **Page text not in extracted text** lists the page's",
       "lines that the extraction did not capture, with site-wide navigation/footer",
-      "lines removed — use it to judge missing content. `[FAILED]` courses were not",
+      "lines removed — use it to judge missing content. **Plan in the build** says",
+      "whether the data get a plan from this page; where not, the page is dropped",
+      "(a later version, an error page, ...): judge the fetch and that decision, not",
+      "the text of a page the build drops. `[FAILED]` courses were not",
       "fetched; judge only whether the URL looks wrong.")),
     "## Institution context",
     "",
@@ -318,6 +353,9 @@ for (inst in institutions) {
     sprintf("- %d course offerings; %d with a fetched page; %d with extracted text; median length %d chars",
             nrow(df), sum(df$has_html), sum(df$txt_nchar > 0),
             as.integer(median(df$txt_nchar[df$txt_nchar > 0]))),
+    sprintf(paste("- %d offerings with a fetched page have no plan in the build (a later version,",
+                  "an error page, a page shell, ...): their page stays in extracted_text, not in the data"),
+            sum((df$has_html | df$txt_nchar > 0) & df$in_build & !df$has_plan)),
     sprintf("- Pre-pass flag counts (all offerings): %s",
             paste(sprintf("%s %d", str_remove(flag_cols, "^flag_"), flag_counts), collapse = ", ")),
     if (length(parse_ids) == 0) "- No stored pages (text comes from PDFs)" else
@@ -347,6 +385,10 @@ for (inst in institutions) {
               r$status_name %||% r$status, r$language_code %||% "?"),
       sprintf("- URL: %s", r$url %||% "NA"),
       if (length(on) > 0) sprintf("- ⚑ flags: %s", paste(on, collapse = ", ")) else character(),
+      if (kind == "FAILED") character() else
+        if (!r$in_build) "- Plan in the build: not in the build (pilot run)" else
+        if (r$has_plan) "- Plan in the build: yes" else
+        sprintf("- Plan in the build: **none**: %s", no_plan_reason(r, cfg)),
       ""
     )
     if (kind == "FAILED") {

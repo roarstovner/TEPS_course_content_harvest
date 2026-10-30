@@ -23,7 +23,12 @@ Rscript R/audit/prepare_fulltext.R [inst ...]   # -> data/audit/fulltext/packets
 metadata, the extracted text, and **page text not in extracted text**: the
 page's lines that are not captured, after removing site chrome (lines that
 occur on ≥ 40% of the institution's pages — navigation, footers and recurring
-headings). `[FAILED]` courses show only the URL and the fetch error: a few per
+headings). A line **Plan in the build** says whether the data get a plan
+from the page (`data/processed/course_offerings.RDS`) and, if not, why: a later
+or earlier version of the plan (`page_term`, `page_end_term`), a pointer to the
+English page, an error or placeholder page (`anonymize_text()` drops it) or a
+page shell (the shell rule). `extracted_text` keeps such a page; the data do
+not. `[FAILED]` courses show only the URL and the fetch error: a few per
 cause (fetch error), of different course codes. The institution context says
 per cause how many course codes it hits and how many of them have a page in
 another offering; none suggests a URL the site does not know.
@@ -91,6 +96,19 @@ and other non-plan page text), or `whole_text`.
 - **Staff names and dates** are *not* this check's concern — the
   anonymization step removes them; report them only if they indicate the
   wrong page.
+
+## Courses without a plan in the build
+
+When **Plan in the build** is **none**, the build already drops the page:
+judge the fetch and the no-plan decision, not the page's text.
+
+- Not a finding: `wrong_year` or `wrong_page` for a page the build drops for
+  that reason (a later version shown for an earlier offering, a search or
+  error page, a pointer page), nor its junk, formatting or missing content.
+- A finding: the decision is wrong — the page is this offering's plan and the
+  build drops it (`empty_or_failed`), or the reason does not fit the page (a
+  "page shell" that is a whole plan); or the URL is wrong, so a page for the
+  right year exists but was not fetched (`empty_or_failed`, give the URL).
 
 ## Not a finding
 
