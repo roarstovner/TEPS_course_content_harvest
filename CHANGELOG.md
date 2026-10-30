@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- ntnu: arbeidskrav and 'Vurderingsform:' lines under Læringsformer stay in teaching_methods (#435)
 - inn: banner lines, outcome labels, evaluation paragraph, one date (#426)
 - hvl, hivolda, nla, oslomet: placeholder and pointer parts kept as sections (#423)
 - nord, hvl, nla, oslomet: admission pointers kept as prerequisites (#422)
