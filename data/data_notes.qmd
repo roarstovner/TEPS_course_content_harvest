@@ -248,6 +248,16 @@ Figures are in the tables above; the notes say why.
 
 ---
 
+### NHH (Norwegian School of Economics)
+
+- Added 2026-10-31 (all-courses frame). Only the plan in force is published (`plan_years = "current"`; see "Year coverage"): no plan for offerings before the academic year of the first harvest (2026/27)
+- A page per course in its teaching language, `/emner/{slug}/`, named from the title; `resolve_urls_nhh_batch()` finds it with the site search by course code (`docs/institutions.md`). A code the search does not find gets no URL: the NHH Executive courses (department "Avdeling for eksternt rettet virksomhet", 261 of the 837 codes of 2025; their programme pages describe some of them without a code), the authorised-translator exams (AUT1*, AUT2*) and some theses and courses no longer taught
+- The page shows the current semester's version ("Høst 2026"); a course taught in spring links to the next semester's version ("Vår 2027"), which is not fetched, so its spring offering gets the autumn version
+- Read from `main#mainContent`: the code and title, the semester heading, the plan's accordion and the facts aside (credits, language, teaching semester, programmes); not the course responsible box (names) and the link to the next semester's version. A page fetched at `/emner/` has the Norwegian labels in the facts box, also for a course taught in English (the plan's headings are the course's own)
+- robots.txt disallows only `/paraplyen` (the intranet)
+
+---
+
 ### NIH (Norwegian School of Sport Sciences)
 
 - Short year range. Most 404s are the other semester of a course registered in both (see "Semester registration in DBH")

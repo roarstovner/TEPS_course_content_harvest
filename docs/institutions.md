@@ -144,6 +144,25 @@ two semesters has one page under its autumn (“LOG954 Masteroppgave (Høst
 `page_end_term`) decide whether it serves a spring offering. robots.txt
 disallows only `/vrtx`.
 
+**NHH.** Norges Handelshøyskole shows only the plan in force
+(`plan_years = "current"`): one page per course, `/emner/{slug}/`, named
+from the course’s title (`/emner/finansregnskap-i/`,
+`/emner/forecasting/`), and for a course taught in English the same page
+at `/en/courses/{slug}/` (checked 2026-10-31). The slug changes with the
+title, so the sitemap’s URLs answer 404
+(`/en/courses/financial-accounting-i/` is now
+`financial-accounting-i-e/`), and the course lists
+(`/en/for-students/courses2/`) cover only the courses offered now.
+`resolve_urls_nhh_batch()` (url_discovery) searches each code once with
+the Norwegian site search, `/sok/?q={code}`, which lists the course
+pages of both languages with their code (“MRR451 (7,5 Stp)”), and takes
+the page of the exact code (not “MRR451-OSL”), one not marked
+“(expired)” or “(not offered)” first. The page shows the version of the
+current semester (“Høst 2026”); a course taught in spring links to the
+next semester’s version (`?displayNextTerm=true`, “Vår 2027”), which the
+harvest does not fetch. The NHH Executive courses (AFA, MAB, SOL …) have
+no course page. robots.txt disallows only `/paraplyen`.
+
 **USN.** The URL holds a version number that metadata cannot give:
 `https://www.usn.no/studier/studie-og-emneplaner/#/emne/{CODE}_{VERSION}_{YEAR}_{SEMESTER}`.
 Each version (1, 2, 3, …) is a revision valid for a range of years, and

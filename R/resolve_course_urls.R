@@ -6,7 +6,7 @@
 #' @param df A tibble with course_id and url columns
 #' @param checkpoint_path The institution's URL checkpoint folder
 #'   (checkpoint_dir(inst, "urls")); its sibling "discovery" holds the course
-#'   codes UiT and hivolda have looked up (discover_codes()). Set to NULL to
+#'   codes UiT, hivolda and NHH have looked up (discover_codes()). Set to NULL to
 #'   disable checkpointing (useful for testing).
 #' @param .progress Show progress bar
 #' @return df with url column filled in where possible
@@ -73,6 +73,8 @@ resolve_course_urls <- function(df,
       resolve_urls_hiof_batch(df)
     } else if (inst == "himolde") {
       resolve_urls_himolde_batch(df)
+    } else if (inst == "nhh") {
+      resolve_urls_nhh_batch(df, .progress = .progress, checkpoint = discovery)
     } else {
       df |> dplyr::mutate(url = NA_character_)
     }
@@ -255,6 +257,51 @@ resolve_urls_himolde_batch <- function(df, index = vortex_course_index(
                                          get_institution_config("himolde")$request_delay)) {
   cli::cli_alert_info("HiMolde: {nrow(index$pages)} pages in {length(index$read)} year folders")
   vortex_match_urls(df, index)
+}
+
+#' Resolve URLs for a batch of NHH courses from the site's search
+#'
+#' NHH shows only the plan in force (plan_years "current"), one page per
+#' course at a URL named from its title, /emner/{slug}/ (and, for a course
+#' taught in English, the same page at /en/courses/{slug}/), which DBH does
+#' not give and which changes with the title (checked 2026-10-31: sitemap
+#' URLs answer 404). The Norwegian site search, /sok/?q={code}, lists the
+#' course pages of both languages with their code ("MRR451 (7,5 Stp)");
+#' nhh_search_pages() picks the page of the code. Each code is searched once
+#' (discover_codes()), and every offering of the code gets its page.
+#'
+#' @param df A tibble with course_code, year, semester_name columns
+#' @param .progress Show progress bar
+#' @param checkpoint Discovery checkpoint folder (discover_codes()), or NULL
+#' @return df with url filled in where possible
+resolve_urls_nhh_batch <- function(df, .progress = TRUE, checkpoint = NULL) {
+  if (nrow(df) == 0) return(df |> dplyr::mutate(url = NA_character_))
+  lookup <- discover_codes(df$course_code, function(code) {
+    nhh_search_pages(site_html(paste0("https://www.nhh.no/sok/?q=", utils::URLencode(code, reserved = TRUE))),
+                     code)
+  }, checkpoint, .progress = .progress)
+  lookup <- lookup[!duplicated(lookup$course_code), c("course_code", "url")]
+  cli::cli_alert_success("NHH: pages for {nrow(lookup)} of {length(unique(df$course_code))} course codes")
+  df |>
+    dplyr::select(-url) |>
+    dplyr::left_join(lookup, by = "course_code")
+}
+
+# The course page of `code` in an NHH search result page: a link around an
+# article.coursePageTeaser whose courseCode is the code ("MRR451 (7,5 Stp)";
+# not "MRR451-OSL", another course); of several, the first whose title does
+# not mark it as no longer taught ("(expired)", "(not offered)", "utgått",
+# "ikke tilbudt"). A tibble of course_code, year and semester_name (NA: the
+# page serves every offering) and url; no rows if none.
+nhh_search_pages <- function(page, code) {
+  teaser <- rvest::html_elements(page, xpath = "//a[article[contains(@class, 'coursePageTeaser')]]")
+  hit_code <- trimws(sub("\\(.*", "", rvest::html_text2(rvest::html_element(teaser, ".courseCode"))))
+  title <- rvest::html_text2(rvest::html_element(teaser, ".listHeading"))
+  hit <- which(toupper(hit_code) == toupper(code))
+  old <- grepl("expired|not offered|utg\u00e5tt|ikke tilbudt", title[hit], ignore.case = TRUE)
+  hit <- c(hit[!old], hit[old])[seq_len(min(1, length(hit)))]
+  tibble::tibble(course_code = rep(code, length(hit)), year = NA_integer_, semester_name = NA_character_,
+                 url = xml2::url_absolute(rvest::html_attr(teaser[hit], "href"), "https://www.nhh.no/"))
 }
 
 #' The page of each offering, from a Vortex site's folder listings

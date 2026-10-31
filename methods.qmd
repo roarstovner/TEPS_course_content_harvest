@@ -125,6 +125,20 @@ DBH have no plan, since the site's year folders begin with autumn 2018 (the
 2017 folders hold two pages); its full harvest waits for the pilot audits (below).
 *Rejected:* none; the older years are on no public page. *Since:* 2026-10-31.
 
+**Norges Handelshøyskole (DBH code 1240) joins the frame, with the plan in
+force only.** One of the ten institutions surveyed for the all-courses frame,
+configured on 2026-10-31 as `nhh`. *Why:* its plans are public HTML pages, one
+per course in its teaching language, found by course code with the site's
+search. *Consequence:* the site shows only the plan in force (a page per
+course, no year in the URL, no earlier versions), so NHH is harvested once in
+every academic year as UiO, MF and NMBU, and its offerings before 2026/27 have
+no plan; the continuing-education courses of NHH Executive (department "Avdeling
+for eksternt rettet virksomhet", 261 of the 837 course codes of 2025) have no
+course page the search finds and so no plan; its full harvest waits for the
+pilot audits (below). *Rejected:* none so far; the Executive programmes'
+pages ("Faglig innhold") describe some of those courses without their code,
+which would need matching by name. *Since:* 2026-10-31.
+
 **Samas is excluded:** its website's course codes do not match DBH, and the
 teacher education courses are described only in programme PDFs (decided 2026-02).
 
@@ -194,7 +208,7 @@ enforced since 2026-10-17; Steiner's exception since 2026-10-19.
 **How a plan's year is known** (`plan_years` in `R/institution_config.R`):
 from the URL (most institutions; at NLA the URL holds the academic year and
 the page's JSON the plan of that year only), or only from when the page was
-fetched (UiO, MF, NMBU, Steiner publish only the plan in force). Until
+fetched (UiO, MF, NMBU, NHH, Steiner publish only the plan in force). Until
 2026-10-17 NLA's page was taken to hold the plans of several academic years
 (`plan_year_basis` "page" in release data-2026-10-16; see below). *Since:*
 2026-10-06.

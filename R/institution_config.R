@@ -364,6 +364,25 @@ institution_configs <- list(
     facts = c("title", "table")
   ),
 
+  nhh = list(
+    code = "1240",
+    # one page per course, named from its title (/emner/{slug}/), found with
+    # the site search (resolve_urls_nhh_batch())
+    strategy = "url_discovery",
+    # The title, the plan's accordion and the facts aside; not the course
+    # responsible box (names) and the link to the next semester's version
+    # ("Vår 2027", ?displayNextTerm=true)
+    selector = "main#mainContent",
+    exclude = "#mainContent .extraContent, #mainContent .expandableList__heading a",
+    # the code and title, the semester the plan is for ("Høst 2026") and the
+    # facts box (credits, language, teaching semester, the programmes the
+    # course belongs to)
+    facts = c("#mainContent h1", "#mainContent .expandableList__heading", "#mainContent .aboutStudyBlock"),
+    plan_years = "current",
+    # Accordion items, each an h2 ("Innhold", "Læringsutbytte", "Topics")
+    section_strategy = "html"
+  ),
+
   nord = list(
     code = "1174",
     strategy = "standard",
