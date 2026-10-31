@@ -7,6 +7,7 @@
 
 institution_labels <- c(
   hiof     = "HiØ",
+  himolde  = "HiMolde",
   hivolda  = "HVO",
   hvl      = "HVL",
   inn      = "INN",

@@ -205,6 +205,15 @@ Figures are in the tables above; the notes say why.
 
 ---
 
+### HiMolde (Molde University College)
+
+- Added 2026-10-31 (all-courses frame). Pages from autumn 2018 (2017: two pages, MAR300 and MAR301): DBH's offerings of 1994-2017 (some 8 700) have no plan on the site. Some DBH courses have no page in the year's listings (checked for 2025: most PhD courses, DRL and DRHS, and several health master's courses, MAK7xx; direct URLs answer 404)
+- A plan sits in a department folder DBH does not give, Norwegian or English tree; `resolve_urls_himolde_batch()` reads the folder listings (`docs/institutions.md`). An offering whose code the listings of its year do not hold gets no URL
+- robots.txt disallows only `/vrtx`, which the harvest does not request
+- Read from `#vrtx-fs-emne-content`: the title, the facts list (credits, department, campus, language, level, duration) and the plan; not the course coordinator, the timetable and reading-list links, the table of contents' heading and the FS fetch stamp. The programme list is in the facts
+
+---
+
 ### Hivolda (Volda University College)
 
 - Semester-specific pages have numeric ids (e.g. `/emne/MGL5-10NO2B/12177`) that metadata cannot give; `resolve_urls_hivolda_batch()` reads them from the course's base page, matching "Haust" to "Høst"

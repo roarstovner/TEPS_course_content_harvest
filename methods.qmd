@@ -117,6 +117,14 @@ and has a plan in one only. Coverage is therefore counted in course-years
 **Years:** DBH had no 2026 rows on 2026-10-06 or in the snapshot of 2026-10-16,
 so the frame ends with 2025.
 
+**Høgskolen i Molde (DBH code 0232) joins the frame, from autumn 2018.** One
+of the ten institutions surveyed for the all-courses frame, configured on
+2026-10-31 as `himolde`. *Why:* its plans are public HTML pages, one per course
+and semester, laid out as HiOF's. *Consequence:* its offerings of 1994-2017 in
+DBH have no plan, since the site's year folders begin with autumn 2018 (the
+2017 folders hold two pages); its full harvest waits for the pilot audits (below).
+*Rejected:* none; the older years are on no public page. *Since:* 2026-10-31.
+
 **Samas is excluded:** its website's course codes do not match DBH, and the
 teacher education courses are described only in programme PDFs (decided 2026-02).
 

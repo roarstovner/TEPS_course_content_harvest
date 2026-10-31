@@ -254,11 +254,44 @@ institution_configs <- list(
     # on an English page, "(Høst 2013–Vår 2014)" for a course over two
     # semesters (title_terms()): the folder videre/ has pages whose title
     # names a later semester than the URL's, and a spring offering can take
-    # the autumn page of a course over two semesters (hiof_match_urls())
+    # the autumn page of a course over two semesters (vortex_match_urls())
     page_term = function(html) title_terms(html)$first,
     page_end_term = function(html) title_terms(html)$last,
     section_strategy = "html",
     # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
+    section_subheading_selector = "p"
+  ),
+
+  himolde = list(
+    code = "0232",
+    # department folders, Norwegian and English, from the site's listings
+    # (resolve_urls_himolde_batch()); the layout is NIH's and HiOF's (FS
+    # pages in Vortex)
+    strategy = "url_discovery",
+    # The title, the facts list and the plan; not the course coordinator
+    # (names), the links to the timetable and the reading list, the table of
+    # contents' heading and the FS fetch stamp
+    selector = "#vrtx-fs-emne-content",
+    exclude = c(paste("#vrtx-fs-emne-content div.connected-links, #vrtx-fs-emne-content h2.vrtx-toc-header,",
+                      "#vrtx-fs-emne-content .vrtx-date-info"),
+                paste0("//div[@id='vrtx-fs-emne-facts']//div[contains(@class, 'dg')]",
+                       "[starts-with(normalize-space(), 'Emneansvarlig') or ",
+                       "starts-with(normalize-space(), 'Course Leader')]")),
+    # and the programmes the course belongs to, which change from year to year
+    facts = c("#vrtx-fs-emne-content > h1", "#vrtx-fs-emne-facts",
+              local({
+                h2 <- paste0("//h2[normalize-space() = 'Emnet er tilknyttet følgende studieprogram' or ",
+                             "normalize-space() = 'The course is connected to the following study programs']")
+                paste0(h2, " | ", h2, "/following-sibling::ul[1][contains(@class, 'vrtx-fs-programmes')]")
+              })),
+    plan_years = "url",
+    # The semesters in the title, "(Vår 2024)", "(Autumn 2024)", or a course
+    # over two semesters, "(Høst 2022–Vår 2023)" (title_terms()), filed under
+    # its autumn (vortex_match_urls())
+    page_term = function(html) title_terms(html)$first,
+    page_end_term = function(html) title_terms(html)$last,
+    section_strategy = "html",
+    # Paragraph sub-headings ("Arbeidskrav") split sections, as at HiOF.
     section_subheading_selector = "p"
   ),
 

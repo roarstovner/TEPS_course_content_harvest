@@ -13,17 +13,17 @@ html_page <- function(text, head = "") {
 
 # hiof without its pause between requests, in a temporary working directory,
 # and without its folder listings: every offering gets add_course_url_hiof()'s
-# URL (hiof_match_urls())
+# URL (vortex_match_urls())
 local_hiof <- function(env = parent.frame()) {
   withr::local_dir(withr::local_tempdir(.local_envir = env), .local_envir = env)
   old <- institution_configs$hiof$request_delay
   institution_configs$hiof$request_delay <<- 0
   withr::defer(institution_configs$hiof$request_delay <<- old, envir = env)
-  old_index <- hiof_course_index
-  hiof_course_index <<- function(...) list(pages = tibble::tibble(url = character(), code = character(),
+  old_index <- vortex_course_index
+  vortex_course_index <<- function(...) list(pages = tibble::tibble(url = character(), code = character(),
                                                                   year = integer(), semester = character()),
                                            read = character())
-  withr::defer(hiof_course_index <<- old_index, envir = env)
+  withr::defer(vortex_course_index <<- old_index, envir = env)
 }
 
 hiof_dbh <- function(codes) {

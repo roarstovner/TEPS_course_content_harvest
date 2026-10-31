@@ -71,6 +71,8 @@ resolve_course_urls <- function(df,
       resolve_urls_uio_batch(df)
     } else if (inst == "hiof") {
       resolve_urls_hiof_batch(df)
+    } else if (inst == "himolde") {
+      resolve_urls_himolde_batch(df)
     } else {
       df |> dplyr::mutate(url = NA_character_)
     }
@@ -214,70 +216,105 @@ hivolda_semester_pages <- function(page, code) {
 #' with its years (up to 2024 there), and some sit in another faculty's folder
 #' (hsb1209 in ir/). A course taught in English may have its page only in
 #' the English tree, /english/studies/courses/{folder}/{year}/{spring|autumn}/
-#' (historical-courses/ for historiske-emner/). hiof_course_index() lists the
-#' pages of the offerings' years in both trees; hiof_match_urls() picks the
-#' offering's.
+#' (historical-courses/ for historiske-emner/). vortex_course_index() lists
+#' the pages of the offerings' years in both trees; vortex_match_urls() picks
+#' the offering's, the teacher-education folders' URL (add_course_url_hiof())
+#' first.
 #'
 #' @param df A tibble with course_code, year, semester_name columns
-#' @param index Pages and year folders read, from hiof_course_index()
+#' @param index Pages and year folders read, from vortex_course_index()
 #' @return df with url filled in where possible
-resolve_urls_hiof_batch <- function(df, index = hiof_course_index(unique(df$year))) {
+resolve_urls_hiof_batch <- function(df, index = vortex_course_index(
+                                      unique(df$year),
+                                      c("https://www.hiof.no/studier/emner/", "https://www.hiof.no/english/studies/courses/"),
+                                      get_institution_config("hiof")$request_delay, BROWSER_USER_AGENT)) {
   cli::cli_alert_info("HiOF: {nrow(index$pages)} pages in {length(index$read)} year folders")
-  hiof_match_urls(df, index)
+  vortex_match_urls(df, index, as.character(add_course_url_hiof(df$course_code, df$year, df$semester_name)))
 }
 
-#' The HiOF page of each offering
+#' Resolve URLs for a batch of Høgskolen i Molde courses from its folder listings
 #'
-#' The page of the offering's code (the file name, lower case), year and
-#' semester; of several, the one at the URL add_course_url_hiof() gives (the
-#' teacher-education folders), then a Norwegian one, then one outside
-#' historiske-emner and historical-courses. A spring offering without a page
-#' takes its course's page of the autumn before: HiOF files a course over
-#' two semesters ("Høst 2013–Vår 2014") under its autumn only, and a page
-#' for the autumn alone gives the spring offering no plan (`page_end_term`).
-#' An offering without a page whose year folder at add_course_url_hiof()'s URL was not
-#' read (its listing failed) keeps that URL; else its URL is NA.
+#' As HiOF's (resolve_urls_hiof_batch()): a page is
+#' /studier/emner/{folder}/{year}/{var|host}/{code}.html, in a department
+#' folder DBH does not give (os/, log/, hs/, euv/ for continuing education),
+#' and a course taught in English may have its page only in the English tree,
+#' /english/studies/courses/{folder}/{year}/{spring|autumn}/ (checked
+#' 2026-10-31: adm120). A course over two semesters has one page, under its
+#' autumn ("LOG954 Masteroppgave (Høst 2022–Vår 2023)"), so the listings of
+#' the year before a spring offering's are read too.
+#'
+#' @param df A tibble with course_code, year, semester_name columns
+#' @param index Pages and year folders read, from vortex_course_index()
+#' @return df with url filled in where possible
+resolve_urls_himolde_batch <- function(df, index = vortex_course_index(
+                                         unique(c(df$year, df$year[df$semester_name %in% "Vår"] - 1L)),
+                                         c("https://www.himolde.no/studier/emner/",
+                                           "https://www.himolde.no/english/studies/courses/"),
+                                         get_institution_config("himolde")$request_delay)) {
+  cli::cli_alert_info("HiMolde: {nrow(index$pages)} pages in {length(index$read)} year folders")
+  vortex_match_urls(df, index)
+}
+
+#' The page of each offering, from a Vortex site's folder listings
+#'
+#' The page of the offering's code (the file name, lower case; else without
+#' Norwegian letters, ø as o), year and semester; of several, the one at `built` (hiof: the teacher-education
+#' folders), then a Norwegian one, then one outside historiske-emner and
+#' historical-courses. A spring offering without a page takes its course's
+#' page of the autumn before: HiOF and HiMolde file a course over two
+#' semesters ("Høst 2013–Vår 2014") under its autumn only, and a page for the
+#' autumn alone gives the spring offering no plan (`page_end_term`). An
+#' offering without a page whose year folder at `built` was not read (its
+#' listing failed) keeps that URL; else its URL is NA.
 #'
 #' @param df A tibble with course_code, year, semester_name
 #' @param index List of `pages` (tibble of url, code, year, semester) and
 #'   `read` (the year folders read in full)
+#' @param built The offerings' URLs built from DBH's columns, or NULL
 #' @return df with url
-hiof_match_urls <- function(df, index) {
-  built <- as.character(add_course_url_hiof(df$course_code, df$year, df$semester_name))
+vortex_match_urls <- function(df, index, built = NULL) {
   p <- index$pages
   p <- p[order(!p$url %in% built, grepl("/english/", p$url),
                grepl("/historiske-emner/|/historical-courses/", p$url)), ]
   key <- paste(p$code, p$year, p$semester)
-  url <- p$url[match(paste(tolower(df$course_code), df$year, semester_to_url(df$semester_name)), key)]
+  code <- tolower(df$course_code)
+  # the code, else the code without Norwegian letters, as Vortex names a page
+  # (HiMolde: BØK705 at bok705.html; HiOF keeps them, løk101)
+  ascii <- stringr::str_replace_all(code, c("ø" = "o", "å" = "a", "æ" = "ae"))
+  page <- function(i, year, semester) dplyr::coalesce(p$url[match(paste(code[i], year, semester), key)],
+                                                      p$url[match(paste(ascii[i], year, semester), key)])
+  url <- page(seq_along(code), df$year, semester_to_url(df$semester_name))
   spring <- is.na(url) & df$semester_name %in% "Vår"
-  url[spring] <- p$url[match(paste(tolower(df$course_code[spring]), df$year[spring] - 1L, "host"), key)]
-  unread <- is.na(url) & !sub("[^/]+/[^/]+$", "", built) %in% index$read
-  url[unread] <- built[unread]
+  url[spring] <- page(which(spring), df$year[spring] - 1L, "host")
+  if (!is.null(built)) {
+    unread <- is.na(url) & !sub("[^/]+/[^/]+$", "", built) %in% index$read
+    url[unread] <- built[unread]
+  }
   df$url <- url
   df
 }
 
-#' HiOF's course pages of some years, from the site's folder listings
+#' A Vortex site's course pages of some years, from its folder listings
 #'
 #' Walks each root three levels down (faculty, department, the
 #' historiske-emner folders) to the year folders, and reads each year folder
 #' of `years` page by page (?page=2, ...) until a page lists no new course
-#' page. About 20 pages a listing page: some 1000 requests for all years. A
-#' year folder whose listing fails is not in `read`. The English tree's
-#' semester folders are spring/ and autumn/.
+#' page. HiOF: about 20 pages a listing page, some 1000 requests for all
+#' years. A year folder that lists only its semester folders (HiMolde) is
+#' read through them. A year folder whose listing fails is not in `read`. The
+#' English tree's semester folders are spring/ and autumn/.
 #'
 #' @param years Calendar years of the offerings
-#' @param root The course folders: the Norwegian and the English tree
+#' @param root The course folders, such as the Norwegian and the English tree
 #' @param delay Seconds between requests (polite_pause())
+#' @param user_agent The user agent (hiof: BROWSER_USER_AGENT)
 #' @return List of `pages`, a tibble of url, code (lower case), year and
 #'   semester ("var", "host"), and `read`, the year folders read in full
-hiof_course_index <- function(years, root = c("https://www.hiof.no/studier/emner/",
-                                              "https://www.hiof.no/english/studies/courses/"),
-                              delay = get_institution_config("hiof")$request_delay) {
+vortex_course_index <- function(years, root, delay = NULL, user_agent = TEPS_USER_AGENT) {
   links <- function(url) {
     polite_pause(delay)
     page <- tryCatch(rvest::read_html(httr2::resp_body_string(httr2::req_perform(
-      site_request(url, BROWSER_USER_AGENT)))), error = function(e) NULL)
+      site_request(url, user_agent)))), error = function(e) NULL)
     if (is.null(page)) return(NULL)
     href <- rvest::html_attr(rvest::html_elements(page, "a[href]"), "href")
     unique(sub("[?#].*$", "", xml2::url_absolute(href, url)))
@@ -293,21 +330,34 @@ hiof_course_index <- function(years, root = c("https://www.hiof.no/studier/emner
     folders <- unique(kids[!year])
   }
 
+  # A folder's course pages, page by page, with attributes `ok` (every
+  # listing page read) and `first` (the first page's links)
+  listing <- function(folder, rx) {
+    pages <- character()
+    first <- character()
+    for (p in 1:100) {
+      l <- links(if (p == 1) folder else paste0(folder, "?page=", p))
+      if (is.null(l)) break
+      if (p == 1) first <- l
+      new <- setdiff(below(l, folder, rx), pages)
+      if (!length(new)) return(structure(pages, ok = TRUE, first = first))
+      pages <- c(pages, new)
+    }
+    structure(pages, ok = FALSE, first = first)
+  }
   read <- character()
   found <- list()
   for (yf in unique(year_folders)) {
-    pages <- character()
-    for (p in 1:100) {
-      l <- links(if (p == 1) yf else paste0(yf, "?page=", p))
-      if (is.null(l)) break
-      new <- setdiff(below(l, yf, "^(var|host|spring|autumn)/[^/]+\\.html$"), pages)
-      if (!length(new)) {
-        read <- c(read, yf)
-        break
-      }
-      pages <- c(pages, new)
+    pages <- listing(yf, "^(var|host|spring|autumn)/[^/]+\\.html$")
+    # a year folder that lists only its semester folders (HiMolde's os/2025/):
+    # their listings
+    sem <- below(attr(pages, "first"), yf, "^(var|host|spring|autumn)/$")
+    if (!length(pages) && length(sem)) {
+      sp <- lapply(sem, listing, rx = "^[^/]+\\.html$")
+      pages <- structure(unlist(sp) %||% character(), ok = all(vapply(sp, attr, logical(1), "ok")))
     }
-    found[[yf]] <- pages
+    if (attr(pages, "ok")) read <- c(read, yf)
+    found[[yf]] <- as.vector(pages)
   }
   url <- unlist(found, use.names = FALSE) %||% character()
   m <- stringr::str_match(url, "/(\\d{4})/(var|host|spring|autumn)/([^/]+)\\.html$")

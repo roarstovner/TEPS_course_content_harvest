@@ -97,7 +97,7 @@ courses (PHDDS, `iio/iio/`) and the Academy of Performing Arts (`nta/`, with
 pages for 2024 and 2025); the English pages have the Norwegian layout. The folder
 follows the site, not DBH's department (hsb1209, a health code, is in `ir/`),
 so `resolve_urls_hiof_batch()` (url_discovery) lists the year folders of
-the harvest's years in both trees (`hiof_course_index()`: about 20 pages a
+the harvest's years in both trees (`vortex_course_index()`: about 20 pages a
 listing page, some 1000 requests for all years, 70 more for two years of the
 English tree) and gives an offering the page of its
 code, year and semester; of several, the teacher-education URL that
@@ -113,6 +113,24 @@ old code version DBH still registers, a course not taught that year). An offerin
 page gets no URL, unless the listing of its teacher-education year folder
 failed: then it gets that URL. The config selector lists fallbacks for the
 old and new page layouts.
+
+**HiMolde.** Høgskolen i Molde's site is laid out as HiOF's (FS pages in
+Vortex): a page is `/studier/emner/{folder}/{year}/{var|host}/{code}.html`,
+in a department folder DBH does not give (`os/`, `log/`, `hs/`, `euv/` for
+continuing education; `hogskolen-i-molde/` from 2026), from autumn 2018
+(checked 2026-10-31; for 2017 only two pages, `log/2017/host/mar300.html` and
+`mar301.html`). A year folder may list only its semester folders
+(`os/2025/`), which `vortex_course_index()` then reads. A page is named by
+the code without Norwegian letters (BØK705 at `bok705.html`). A course taught in English
+may have its page only in the English tree,
+`/english/studies/courses/{folder}/{year}/{spring|autumn}/{code}.html`
+(ADM120). `resolve_urls_himolde_batch()` (url_discovery) reads the year
+folders of the harvest's years, and of the year before a spring offering's,
+in both trees with `vortex_course_index()`, and matches them as HiOF's
+(`vortex_match_urls()`, without a built URL): a course over two semesters
+has one page under its autumn ("LOG954 Masteroppgave (Høst 2022–Vår 2023)"),
+and the title's semesters (`page_term`, `page_end_term`) decide whether it
+serves a spring offering. robots.txt disallows only `/vrtx`.
 
 **USN.** The URL holds a version number that metadata cannot give:
 `https://www.usn.no/studier/studie-og-emneplaner/#/emne/{CODE}_{VERSION}_{YEAR}_{SEMESTER}`.

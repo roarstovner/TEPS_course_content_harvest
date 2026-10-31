@@ -12,6 +12,7 @@ add_course_url <- function(df) {
         "hivolda" ~ NA_character_,  # Hivolda requires URL discovery via resolve_course_urls()
         "hiof"    ~ NA_character_,  # HiOF's faculty folders come from its listings via resolve_course_urls()
         "hvl"     ~ add_course_url_hvl(course_code, year, semester_name),
+        "himolde" ~ NA_character_,  # HiMolde's department folders come from its listings via resolve_course_urls()
 
         "mf"      ~ add_course_url_mf(course_code),
         "nla"     ~ add_course_url_nla(course_code, year, semester_name),

@@ -324,9 +324,9 @@ a document id:
 
 The resolvers there are models. A list that holds every course: UiO’s
 sitemap (`resolve_urls_uio_batch()`) and HiOF’s folder listings
-(`hiof_course_index()`) are read once per harvest and matched by course
-code, as a course list whose links end in the code would be. A page per
-course code that lists its semester pages: UiT and Volda
+(`vortex_course_index()`) are read once per harvest and matched by
+course code, as a course list whose links end in the code would be. A
+page per course code that lists its semester pages: UiT and Volda
 (`resolve_urls_uit_batch()`, `resolve_urls_hivolda_batch()`), which read
 each code once through `discover_codes()`, so a harvest of many years
 does not ask twice. `resolve_course_urls()` keeps the URLs found in the
