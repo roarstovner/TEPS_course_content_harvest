@@ -103,6 +103,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- oslomet: link labels, resit rules, approval stamps and URL years (#424)
+- uit: English language field and re-sit block in sections (#455)
 - dplyr 1.2 deprecates case_match(): warnings in every harvest log and build (#478)
 - Privacy: approver names left in course_plan after 2026-10-30 build (usn 12, ntnu 3, uib 1, uit 1) (#477)
 - Add-institution procedure: one copy in docs/new-institution.qmd, skill a thin pointer (#476)
