@@ -200,7 +200,7 @@ hivolda_semester_pages <- function(page, code) {
   m <- stringr::str_match(trimws(rvest::html_text2(links)), "(\\d{4})\\s+(\\S+)")
   tibble::tibble(
     course_code = code, year = as.integer(m[, 2]),
-    semester_name = dplyr::case_match(tolower(m[, 3]), "haust" ~ "Høst", "vår" ~ "Vår", .default = m[, 3]),
+    semester_name = dplyr::recode_values(tolower(m[, 3]), "haust" ~ "Høst", "vår" ~ "Vår", default = m[, 3]),
     url = paste0("https://www.hivolda.no", rvest::html_attr(links, "href"))
   )[!is.na(m[, 1]), ]
 }
@@ -536,19 +536,19 @@ resolve_urls_usn_batch <- function(df, max_version = 3, checkpoint_path = NULL,
     semester <- df$semester_name[i]
 
     # Convert semester to USN format
-    sem <- dplyr::case_match(
+    sem <- dplyr::recode_values(
       semester,
       "Vår" ~ "VÅR",
       "Høst" ~ "HØST",
-      .default = toupper(semester)
+      default = toupper(semester)
     )
 
     # Normalize expected semester for comparison
-    expected_sem_norm <- dplyr::case_match(
+    expected_sem_norm <- dplyr::recode_values(
       tolower(semester),
       "vår" ~ "vår",
       "høst" ~ "høst",
-      .default = tolower(semester)
+      default = tolower(semester)
     )
 
     # Default result

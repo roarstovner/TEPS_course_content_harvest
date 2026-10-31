@@ -494,12 +494,12 @@ canon_remove_trailing_num <- function(x) {
 }
 
 canon_semester_name <- function(semester_name) {
-  dplyr::case_match(
+  dplyr::recode_values(
     semester_name,
     "Vår" ~ "spring",
     "Høst" ~ "autumn",
     "Sommer" ~ "summer",
-    .default = semester_name
+    default = semester_name
   )
 }
 
@@ -526,17 +526,17 @@ semester_term <- function(year, semester) {
 }
 
 nla_academic_year <- function(year, semester) {
-  dplyr::case_match(semester,
+  dplyr::recode_values(semester,
     "Høst"            ~ paste0(year, "-", year + 1),
     c("Vår", "Sommer") ~ paste0(year - 1, "-", year)
   )
 }
 
 semester_to_url <- function(semester) {
-  dplyr::case_match(semester,
+  dplyr::recode_values(semester,
     "Vår"  ~ "var",
     "Høst" ~ "host",
-    .default = tolower(semester)
+    default = tolower(semester)
   )
 }
 

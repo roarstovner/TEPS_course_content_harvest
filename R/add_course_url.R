@@ -1,7 +1,7 @@
 add_course_url <- function(df) {
   df |>
     dplyr::mutate(
-      url = dplyr::case_match(
+      url = dplyr::recode_values(
         institution,
 
         "oslomet" ~ add_course_url_oslomet(course_code, year, semester_name),
@@ -26,7 +26,7 @@ add_course_url <- function(df) {
         "uit"     ~ NA_character_,  # UiT requires document ID discovery via resolve_course_urls()
         "nmbu"    ~ add_course_url_nmbu(course_code),
 
-        .default  = NA_character_
+        default = NA_character_
       )
     )
 }
@@ -54,7 +54,7 @@ add_course_url_uia <- function(course_code, year, semester) {
 # A code with a space (the design semester blocks, "BAR 3") is percent-encoded:
 # a raw space made the request fail as a timeout; www4 has no page for them.
 add_course_url_uib <- function(course_code, year, semester) {
-  sem_code <- dplyr::case_match(semester, "Vår" ~ "V", "Høst" ~ "H", .default = "H")
+  sem_code <- dplyr::recode_values(semester, "Vår" ~ "V", "Høst" ~ "H", default = "H")
   code <- gsub(" ", "%20", tolower(course_code), fixed = TRUE)
   glue::glue("https://www4.uib.no/studier/emner/{code}?start_semester={year}{sem_code}")
 }
@@ -65,7 +65,7 @@ add_course_url_nord <- function(course_code, year, semester) {
   # The site maps each semester to its academic year automatically
   # (e.g. VÅR 2023 → 2022/23, HØST 2023 → 2023/24).
   # Must be percent-encoded for httr2 (server returns 400 on raw UTF-8).
-  url_semester <- dplyr::case_match(semester, "Vår" ~ "V%C3%85R", "Høst" ~ "H%C3%98ST", .default = "H%C3%98ST")
+  url_semester <- dplyr::recode_values(semester, "Vår" ~ "V%C3%85R", "Høst" ~ "H%C3%98ST", default = "H%C3%98ST")
   glue::glue("https://www.nord.no/studier/emner/{tolower(course_code)}?year={year}&semester={url_semester}")
 }
 
