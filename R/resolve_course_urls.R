@@ -217,15 +217,17 @@ hivolda_semester_pages <- function(page, code) {
 #' (hsb1209 in ir/). A course taught in English may have its page only in
 #' the English tree, /english/studies/courses/{folder}/{year}/{spring|autumn}/
 #' (historical-courses/ for historiske-emner/). vortex_course_index() lists
-#' the pages of the offerings' years in both trees; vortex_match_urls() picks
-#' the offering's, the teacher-education folders' URL (add_course_url_hiof())
+#' the pages of the offerings' years in both trees, and of the year before a
+#' spring offering's (a course over two semesters is filed under its autumn;
+#' harvest_all() resolves one year at a time); vortex_match_urls() picks the
+#' offering's, the teacher-education folders' URL (add_course_url_hiof())
 #' first.
 #'
 #' @param df A tibble with course_code, year, semester_name columns
 #' @param index Pages and year folders read, from vortex_course_index()
 #' @return df with url filled in where possible
 resolve_urls_hiof_batch <- function(df, index = vortex_course_index(
-                                      unique(df$year),
+                                      unique(c(df$year, df$year[df$semester_name %in% "Vår"] - 1L)),
                                       c("https://www.hiof.no/studier/emner/", "https://www.hiof.no/english/studies/courses/"),
                                       get_institution_config("hiof")$request_delay, BROWSER_USER_AGENT)) {
   cli::cli_alert_info("HiOF: {nrow(index$pages)} pages in {length(index$read)} year folders")

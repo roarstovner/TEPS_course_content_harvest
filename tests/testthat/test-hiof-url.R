@@ -92,6 +92,22 @@ test_that("vortex_match_urls() takes the offering's page, the teacher-ed URL fir
                paste0(e, c("historiske-emner/ir/2013/host/hsb1209.html", "lusp/lusp/2022/host/lmat10224.html")))
 })
 
+test_that("resolve_urls_hiof_batch() lists the year before a spring offering's", {
+  # harvest_all() resolves one year at a time; a course over two semesters
+  # is filed under its autumn
+  years <- NULL
+  old <- vortex_course_index
+  withr::defer(assign("vortex_course_index", old, envir = globalenv()))
+  assign("vortex_course_index", function(years, ...) {
+    years <<- years
+    list(pages = tibble::tibble(url = character(), code = character(), year = integer(),
+                                semester = character()), read = character())
+  }, envir = globalenv())
+  resolve_urls_hiof_batch(tibble::tibble(course_code = c("A1", "B1"), year = 2025L,
+                                         semester_name = c("Vår", "Høst")))
+  expect_setequal(years, c(2025L, 2024L))
+})
+
 test_that("add_course_url() leaves HiOF's URL to the resolver", {
   df <- tibble::tibble(institution = "hiof", course_code = "LMAT10224", course_code_raw = "LMAT10224-1",
                        year = 2025L, semester_name = "Vår")
