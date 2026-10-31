@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- nhh fulltext: link URLs doubled or glued to labels; spaces lost around inline emphasis (#479)
 - oslomet: link labels, resit rules, approval stamps and URL years (#424)
 - uit: English language field and re-sit block in sections (#455)
 - dplyr 1.2 deprecates case_match(): warnings in every harvest log and build (#478)
