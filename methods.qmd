@@ -227,6 +227,20 @@ files make negligible traffic. Its config records this as such
 would leave Steiner without plans from 2026/27 on. *Since:* 2026-10-16;
 enforced since 2026-10-17; Steiner's exception since 2026-10-19.
 
+**A harvest goes back year by year until a year finds no page.** Of the
+years DBH lists for an institution, `harvest_all()` harvests the newest
+first and stops after the first year in which every offering's URL answered
+"not found" or none could be built (`no_page_found()`); a year of server
+errors, refusals or page shells does not stop it. *Why:* a site holds no
+older plans than its oldest year, and the years before it cost thousands of
+requests that all answer 404: UiA's site begins in 2016, while DBH lists UiA
+courses from 2008, and the harvest of 2026-10-31 had asked for 2015 to 2011
+(3,490 to 3,949 URLs a year, all "not found") before it was stopped.
+*Consequence:* no data are lost: the years skipped had no page; a year an
+explicit `years` or a `retry` asks for is still harvested. *Rejected:* a
+first year per institution in the config, which must be found and kept by
+hand for every site. *Since:* 2026-10-31.
+
 **How a plan's year is known** (`plan_years` in `R/institution_config.R`):
 from the URL (most institutions; at NLA the URL holds the academic year and
 the page's JSON the plan of that year only), or only from when the page was

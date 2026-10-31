@@ -643,3 +643,11 @@ test_that("a course code's semester pages are looked up once, also across years"
   expect_equal(asked, c("A", "NONE", "FAIL", "FAIL", "B"))
   expect_equal(out$url, c("u/A2023", "u/A2024", "u/B2023", "u/B2024"))
 })
+
+test_that("no_page_found(): a year with only not_found and no_url ends the harvest's years", {
+  expect_true(no_page_found(c("not_found", "no_url", "not_found")))
+  expect_false(no_page_found(c("not_found", "ok")))
+  expect_false(no_page_found(c("not_found", "server_error")))   # the site failed, not the plans
+  expect_false(no_page_found(c("shell", "not_found")))
+  expect_false(no_page_found(character()))
+})

@@ -81,6 +81,11 @@ harvest_institution <- function(institution, courses, year = NULL,
 #' stops the institution's harvest with its checkpoints kept, and the next
 #' harvest resumes there.
 #'
+#' Going back from the newest year, a year whose harvest found no page
+#' (no_page_found(): every offering not found or without a URL) is the last:
+#' the site holds no older plans. Not with `years` or `retry`, which harvest
+#' every year asked for.
+#'
 #' With `retry`, a site with the year in the URL also fetches again the
 #' offerings whose page gave no plan in the current build
 #' (data/interim/course_offerings_full.RDS), by how their URL answered last
@@ -138,6 +143,7 @@ harvest_all <- function(courses = NULL, years = NULL, refetch = FALSE,
       inst_years <- harvest_years(offerings, config, years)
       if (!length(inst_years)) message(inst, ": nothing new to harvest")
       for (k in seq_along(inst_years)) {
+        oldest <- FALSE
         result <- harvest_institution(inst, offerings, inst_years[k], skip = setdiff(skip, again), known = known)
         if (nrow(result) == 0) {
           message(inst, " ", inst_years[k], ": nothing new to harvest")
@@ -150,6 +156,7 @@ harvest_all <- function(courses = NULL, years = NULL, refetch = FALSE,
           write_fetch_ledger(ledger, inst, run)
           log_summary(inst, result)
           message("  outcomes: ", paste(names(table(ledger$outcome)), table(ledger$outcome), collapse = ", "))
+          oldest <- is.null(years) && isFALSE(retry) && no_page_found(ledger$outcome)
         }
         # the year before's pages, which could serve this year's offerings,
         # are in its run and this one now
@@ -158,6 +165,10 @@ harvest_all <- function(courses = NULL, years = NULL, refetch = FALSE,
         # 1 GB at NTNU (11,000 pages of 90 KB in 2025)
         result <- ledger <- NULL
         gc()
+        if (oldest) {
+          message(inst, " ", inst_years[k], ": no page found, so no older year is harvested")
+          break
+        }
       }
       remove_checkpoints(inst, c(inst_years, "urls", "discovery", "pdf"))
     }, error = function(e) {
@@ -178,6 +189,13 @@ harvest_years <- function(courses, config, years = NULL) {
   if (is.null(years) && identical(config$plan_years, "current") && length(y)) y <- max(y)
   sort(unique(y), decreasing = TRUE)
 }
+
+# Whether a year's harvest found no page: every offering's outcome is
+# not_found or no_url (fetch_ledger()). A site holds no older plans than its
+# oldest year (UiA: none before 2016, though DBH lists its courses from 2008;
+# 2026-10-31), so harvest_all() goes back no further; a year of server
+# errors, refusals or shells does not count.
+no_page_found <- function(outcome) length(outcome) > 0 && all(outcome %in% c("not_found", "no_url"))
 
 # Offerings of an institution that harvest_all(retry = ) fetches again: no
 # plan in the current build, and an outcome retry_wanted() takes.

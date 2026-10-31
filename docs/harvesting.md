@@ -156,7 +156,10 @@ pgrep -af harvest_all   # the harvests still running
 
 1.  **`get_institution_config()`**: Looks up strategy, CSS selectors,
     and overrides
-2.  **`apply_year_filter()`**: Filters to relevant years based on config
+2.  **`apply_year_filter()`**: Filters to relevant years based on
+    config; `harvest_all()` takes the years newest first and stops after
+    a year that found no page (`no_page_found()`), as the site holds no
+    older plans
 3.  **`add_course_id()`**: Creates unique identifiers for each course
 4.  **`add_course_url()`**: Generates the correct URL for each course
 5.  **Strategy dispatch**: Routes to the right harvesting strategy
