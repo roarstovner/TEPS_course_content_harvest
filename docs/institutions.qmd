@@ -149,6 +149,29 @@ offered)" first. The page shows the version of the current semester ("Høst
 NHH Executive courses (AFA, MAB, SOL ...) have no course page. robots.txt
 disallows only `/paraplyen`.
 
+**NMH.** Norges musikkhøgskole publishes a study handbook per cohort,
+`https://nmh.no/studiehandboker/startkull-{year}/`, from 2021 (checked
+2026-10-31; no earlier handbook is on the site), each with a page per course
+named from its title: `/emner/{slug}` (`/emner/akkompagnement`,
+`/emner/masterarbeid-2`) and, from 2022, the electives' catalogue,
+`/valgemner*/{slug}` (`/valgemner-2026-27/alexanderteknikk`). The page gives
+the code in its facts box, and the handbook's course lists give each page's
+code ("AKKOMP10 - Akkompagnement", "BARENS20/21 - Barokkensemble I og II").
+`resolve_urls_nmh_batch()` (url_discovery) finds the lists in the study-plan
+sitemaps (`sitemaps-1-section-studyplans_content-1-sitemap-p*.xml`) and reads
+them (about 25 requests a harvest year). An offering takes the page of its
+code in the handbook of the cohort that starts in its academic year (spring
+2026: `startkull-2025`), else in the latest earlier handbook that lists the
+code; of two pages of a code in one handbook (56 such pairs, mostly in 2021),
+the first listed. The handbooks are copies of one set of plans, each cohort's
+for all its years of study: a course of the second year in `startkull-2026`
+is taught in 2027/28. Many DBH codes have no page: ensembles and
+orchestra projects registered per number of projects (BLENS21-BLENS27,
+OSINF60-OSINF72; the handbook has BLENS20 or none), exchange students'
+courses (UTV*) and others, about half the codes of 2025. robots.txt (nmh.no,
+www.nmh.no redirects there) disallows only Craft CMS's `/cpresources/`,
+`/vendor/` and `/cache/`.
+
 **USN.** The URL holds a version number that metadata cannot give:
 `https://www.usn.no/studier/studie-og-emneplaner/#/emne/{CODE}_{VERSION}_{YEAR}_{SEMESTER}`.
 Each version (1, 2, 3, …) is a revision valid for a range of years, and an

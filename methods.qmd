@@ -139,6 +139,28 @@ pilot audits (below). *Rejected:* none so far; the Executive programmes'
 pages ("Faglig innhold") describe some of those courses without their code,
 which would need matching by name. *Since:* 2026-10-31.
 
+**Norges musikkhøgskole (DBH code 1210) joins the frame, from autumn 2021,
+with the plan of the cohort that starts in the offering's academic year.** One
+of the ten institutions surveyed for the all-courses frame, configured on
+2026-10-31 as `nmh`. *Why:* its plans are public HTML pages in a study
+handbook per cohort (`startkull-2021` to `startkull-2026`), found by course
+code in the handbooks' course lists. *Consequence:* its offerings before
+autumn 2021 have no plan (no earlier handbook is on the site); an offering
+takes the plan in the handbook of the cohort that starts in its academic year,
+else in the latest earlier handbook that lists the code. A handbook holds
+the plans for one cohort over all its years of study, so a course of the
+second or third year is taken that academic year by students of earlier
+cohorts, whose handbook may hold another version; where the versions differ,
+the plan is the one published for the new cohort. About half of NMH's DBH
+codes have no page in any handbook (ensembles and orchestra projects
+registered per number of projects, such as BLENS21-BLENS27, exchange
+students' courses) and so no plan; its full harvest waits for the pilot
+audits (below). *Rejected:* the handbook of the cohort that takes the course
+in that year, which needs the course's year of study (given in the page's
+text only, "Gjennomføres: 2. studieår", and differing by programme); matching
+project variants to the ensemble's one page by code stem, which would give a
+variant a plan the handbook does not name. *Since:* 2026-10-31.
+
 **Samas is excluded:** its website's course codes do not match DBH, and the
 teacher education courses are described only in programme PDFs (decided 2026-02).
 

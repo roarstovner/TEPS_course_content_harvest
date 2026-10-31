@@ -17,6 +17,7 @@ add_course_url <- function(df) {
         "mf"      ~ add_course_url_mf(course_code),
         "nla"     ~ add_course_url_nla(course_code, year, semester_name),
         "nhh"     ~ NA_character_,  # NHH's page names come from its site search via resolve_course_urls()
+        "nmh"     ~ NA_character_,  # NMH's page names come from its study handbooks' course lists via resolve_course_urls()
 
         "nord"    ~ add_course_url_nord(course_code, year, semester_name),
         "nih"     ~ add_course_url_nih(course_code, year, semester_name),

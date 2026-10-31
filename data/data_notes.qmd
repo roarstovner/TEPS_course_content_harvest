@@ -285,6 +285,16 @@ Figures are in the tables above; the notes say why.
 
 ---
 
+### NMH (Norwegian Academy of Music)
+
+- Added 2026-10-31 (all-courses frame). A study handbook per cohort, `/studiehandboker/startkull-{year}/`, from 2021: offerings before autumn 2021 get no URL. An offering takes the page of its code in the handbook of the cohort that starts in its academic year, else in the latest earlier handbook that lists the code (`resolve_urls_nmh_batch()`, `docs/institutions.md`). A handbook holds one cohort's plans for all its years of study, so a second-year course gets the plan published for that year's new cohort, not necessarily the version its students follow
+- About half of DBH's codes are in no handbook and get no URL: ensembles, choirs and orchestra projects registered per number of projects (BLENS21-BLENS27, KAKOR20-KAKOR27, OSINF60-OSINF72, BFO20-BFO24; the handbook has one page, BLENS20 or KAKOR, or none), the exchange students' courses (UTV*) and courses not taught any more
+- Read from `main#main`: the title, the facts box (code, level, category, credits, cohort) and the plan; not the breadcrumb and the publication stamp. The plan begins with a list of facts ("Emnetype", "Gjennomføres", "Avsluttende vurdering", "Forhåndskrav", "Undervisningsspråk"), in no section. Courses taught in English have English pages in the Norwegian handbook ("Course description", "Learning objectives")
+- Some plans name the teacher in the text, "Faglærer i emnet: <name>." (electives and ensembles: 10 of the 106 pages of the pilot sample, 2026-10-31), which the generic anonymizer rules do not catch ("Emneansvarlig: <name>" and "Kontaktperson: <name>" they do); a rule waits for the anonymization audit
+- robots.txt disallows only Craft CMS's `/cpresources/`, `/vendor/` and `/cache/`
+
+---
+
 ### Nord (Nord University)
 
 - Year and semester in the URL, with Norwegian characters (`HØST`/`VÅR`); ASCII `HOEST` falls back to a generic page without year-specific content

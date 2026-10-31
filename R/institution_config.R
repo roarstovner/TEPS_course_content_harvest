@@ -383,6 +383,23 @@ institution_configs <- list(
     section_strategy = "html"
   ),
 
+  nmh = list(
+    code = "1210",
+    # a study handbook per cohort, a page per course named from its title,
+    # found in the handbooks' course lists (resolve_urls_nmh_batch())
+    strategy = "url_discovery",
+    # The title, the facts box and the plan; not the breadcrumb ("Emner") and
+    # the publication stamp ("Publisert: 3. apr. 2020 — Oppdatert: ...")
+    selector = "main#main",
+    exclude = "main#main nav.breadcrumbs__main, main#main > p.typo-13pt",
+    # the title and the facts box (code, level, category, credits, cohort)
+    facts = c("main#main header", "main#main .metadata__main"),
+    # the handbook's cohort, the academic year it starts (resolve_urls_nmh_batch())
+    plan_years = "url",
+    # h2s ("Kort om emnet", "Læringsmål", "Arbeidskrav", "Avsluttende vurdering")
+    section_strategy = "html"
+  ),
+
   nord = list(
     code = "1174",
     strategy = "standard",

@@ -75,6 +75,8 @@ resolve_course_urls <- function(df,
       resolve_urls_himolde_batch(df)
     } else if (inst == "nhh") {
       resolve_urls_nhh_batch(df, .progress = .progress, checkpoint = discovery)
+    } else if (inst == "nmh") {
+      resolve_urls_nmh_batch(df)
     } else {
       df |> dplyr::mutate(url = NA_character_)
     }
@@ -302,6 +304,82 @@ nhh_search_pages <- function(page, code) {
   hit <- c(hit[!old], hit[old])[seq_len(min(1, length(hit)))]
   tibble::tibble(course_code = rep(code, length(hit)), year = NA_integer_, semester_name = NA_character_,
                  url = xml2::url_absolute(rvest::html_attr(teaser[hit], "href"), "https://www.nhh.no/"))
+}
+
+#' Resolve URLs for a batch of NMH courses from its study handbooks
+#'
+#' NMH publishes a study handbook per cohort, /studiehandboker/startkull-{year}/
+#' (from 2021; checked 2026-10-31), with a page per course at a slug of its
+#' title (/emner/akkompagnement, /valgemner-2026-27/alexanderteknikk), which
+#' DBH does not give. The handbook's course lists give each page's code
+#' ("AKKOMP10 - Akkompagnement"); nmh_handbook_index() reads them. An
+#' offering takes the page of its code in the handbook of the cohort that
+#' starts in its academic year (spring 2026: startkull-2025), else in the
+#' latest earlier handbook that lists the code (a course no longer in new
+#' cohorts' plans, taught to the students of an earlier one); of two pages of
+#' a code in one handbook, the first listed. Offerings before autumn 2021
+#' get no URL, without a request.
+#'
+#' @param df A tibble with course_code, year, semester_name columns
+#' @param index Tibble of cohort, code and url, from nmh_handbook_index()
+#' @return df with url filled in where possible
+resolve_urls_nmh_batch <- function(df, index = NULL) {
+  df$.cohort <- academic_start_year(df$year, df$semester_name)
+  if (is.null(index)) {
+    index <- if (any(df$.cohort >= NMH_FIRST_COHORT)) nmh_handbook_index() else
+      tibble::tibble(cohort = integer(), code = character(), url = character())
+  }
+  index <- index[order(-index$cohort, seq_len(nrow(index))), ]
+  df$.row <- seq_len(nrow(df))
+  hit <- dplyr::inner_join(df[c(".row", "course_code", ".cohort")],
+                           dplyr::mutate(index, course_code = code),
+                           by = dplyr::join_by(course_code, .cohort >= cohort), multiple = "first")
+  df$url <- hit$url[match(df$.row, hit$.row)]
+  cli::cli_alert_success("NMH: pages for {sum(!is.na(df$url))} of {nrow(df)} offerings")
+  dplyr::select(df, -".cohort", -".row")
+}
+
+# The first cohort with a study handbook on nmh.no (startkull-2021).
+NMH_FIRST_COHORT <- 2021L
+
+# Every course page of NMH's study handbooks, from the course lists the
+# study-plan sitemaps name (/studiehandboker/startkull-{year}/emner and the
+# electives' /valgemner*, about 20 lists): a tibble of cohort, code (upper
+# case) and url, in list order. A list that cannot be read is an error, so
+# the harvest stops rather than leave its courses without a URL.
+nmh_handbook_index <- function(sitemap = "https://nmh.no/sitemaps-1-sitemap.xml") {
+  locs <- function(url) {
+    polite_pause()
+    xml <- httr2::resp_body_string(httr2::req_perform(site_request(url)))
+    stringr::str_match_all(xml, "<loc>([^<]+)</loc>")[[1]][, 2]
+  }
+  maps <- grep("section-studyplans_content", locs(sitemap), value = TRUE)
+  if (!length(maps)) stop("no study-plan sitemap in ", sitemap)
+  lists <- unique(grep("/studiehandboker/startkull-\\d{4}/(emner|valgemner[^/]*)$",
+                       unlist(lapply(maps, locs)), value = TRUE))
+  dplyr::bind_rows(lapply(lists, function(url) {
+    polite_pause()
+    nmh_list_pages(site_html(url), url)
+  }))
+}
+
+# The course pages on one of NMH's course lists: the links below the list
+# whose text starts with a code ("AKKOMP10 - Akkompagnement"). A page for
+# several codes ("BARENS20/21", "FRINST10A/B") counts for each: a part of
+# digits or letters only takes the first code's stem.
+nmh_list_pages <- function(page, list_url) {
+  a <- rvest::html_elements(page, "main a[href]")
+  href <- rvest::html_attr(a, "href")
+  m <- stringr::str_match(rvest::html_text2(a), "^\\s*([A-Za-zÆØÅæøå0-9]+(?:\\s*/\\s*[A-Za-z0-9]+)*)\\s+[-–]\\s")
+  keep <- startsWith(href, paste0(list_url, "/")) & !is.na(m[, 2])
+  parts <- strsplit(toupper(m[keep, 2]), "\\s*/\\s*")
+  code <- unlist(lapply(parts, function(p) {
+    stem <- c(digits = sub("\\d+$", "", p[1]), letters = sub("[A-Z]+$", "", p[1]))
+    c(p[1], ifelse(grepl("^\\d+$", p[-1]), paste0(stem["digits"], p[-1]),
+                   ifelse(grepl("^[A-Z]+$", p[-1]), paste0(stem["letters"], p[-1]), p[-1])))
+  }))
+  tibble::tibble(cohort = as.integer(stringr::str_match(list_url, "startkull-(\\d{4})")[, 2]),
+                 code = code, url = rep(href[keep], lengths(parts)))
 }
 
 #' The page of each offering, from a Vortex site's folder listings

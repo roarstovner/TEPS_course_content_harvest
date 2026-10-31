@@ -16,6 +16,7 @@ institution_labels <- c(
   nih      = "NIH",
   nla      = "NLA",
   nmbu     = "NMBU",
+  nmh      = "NMH",
   nord     = "Nord",
   ntnu     = "NTNU",
   oslomet  = "OsloMet",
