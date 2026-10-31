@@ -845,6 +845,7 @@ test_that("a role and names inside a line: the names go, the role stays", {
   # a role in brackets after a name goes with it, an affiliation stays
   expect_equal(an("usn", "Endringer ønsket av faglærer Kari Nordmann (UiA), meddelt via epost."),
                "Endringer ønsket av faglærer (UiA), meddelt via epost.")
+  expect_equal(an("nmh", "Faglærer i emnet: Kari Nordmann og Ola Dahl."), "Faglærer i emnet:.")
   # a role before a lower-case word or one capitalised word is prose
   expect_equal(an("usn", "Faglærer Kari gir veiledning. Veileder Universitetet i Oslo."),
                "Faglærer Kari gir veiledning. Veileder Universitetet i Oslo.")

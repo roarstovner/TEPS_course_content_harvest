@@ -415,16 +415,17 @@ anonymize_text <- function(institution, text,
 # (usn), "Studiepoeng 15 Emneansvarlig Ola Nordmann" (uis PDF), "Ta kontakt
 # med Ola K. Nordmann eller Kari Nordmann" (uio), "Kontaktpersoner er A, B og
 # C" (uit), "Emneansvarlige er: A (sosionom) og B (pedagog)." (oslomet),
-# "coordinator: assistant professor A" (oslomet). The role stays, the names
-# go, with a title before them and a role in brackets after each; an
-# affiliation in brackets stays ("faglærer <name> (UiA)", usn).
+# "coordinator: assistant professor A" (oslomet), "Faglærer i emnet: A."
+# (nmh). The role stays, the names go, with a title before them and a role
+# in brackets after each; an affiliation in brackets stays ("faglærer <name>
+# (UiA)", usn).
 .title_regex <- "(?i:(?:(?:assistant|associate)[ \\t]+)?professor|førsteamanuensis|(?:universitets|høgskole)lektor|dosent)"
 .paren_role <- "(?:[ \\t]*\\(\\p{Ll}[^()\\n]{0,29}\\))?"
 .names_regex <- paste0("(?:", .title_regex, "[ \\t]+)?", .name_regex, .paren_role,
                        "(?:[ \\t]*(?:,|og|eller|and)[ \\t]+", .name_regex, .paren_role, ")*")
 .role_name_inline_regex <- paste0(
   "(?<!\\p{L})((?i:", paste(c(.staff_roles, .signature_roles), collapse = "|"),
-  ")(?i:e|er|ar|en)?(?:[ \\t]+(?i:er|var))?:?|(?i:kontakt(?:e|er)? med|kontaktpersone?r? er))[ \\t]+",
+  ")(?i:e|er|ar|en)?(?:[ \\t]+(?i:er|var|i emnet))?:?|(?i:kontakt(?:e|er)? med|kontaktpersone?r? er))[ \\t]+",
   .names_regex
 )
 # A role heading over a line that names someone, also after blank lines and
