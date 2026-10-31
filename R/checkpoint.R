@@ -124,6 +124,9 @@ fetch_html_with_checkpoint <- function(courses, checkpoint_dir, .progress = TRUE
   to_fetch <- urls[!urls$url %in% have$url, ]
   n <- nrow(to_fetch)
   message(nrow(urls), " URLs: ", nrow(urls) - n, " in the checkpoint, ", n, " to fetch")
+  # a fetch can take days: the pages are read back from the checkpoint at the
+  # end, not held meanwhile
+  if (n) have <- NULL
 
   fetched <- vector("list", n)
   done <- saved <- 0L   # pages fetched; of these in the checkpoint
@@ -134,6 +137,7 @@ fetch_html_with_checkpoint <- function(courses, checkpoint_dir, .progress = TRUE
     new <- dplyr::bind_rows(fetched[(saved + 1L):done])
     keep <- if (all) nrow(new) else max(0L, which(!new$http_status %in% 403L))
     checkpoint_append(new[seq_len(keep), ], checkpoint_dir)
+    fetched[saved + seq_len(keep)] <<- list(NULL)
     saved <<- saved + keep
   }
   # an error, an interrupt or a refusal (refusal_watch() stops the loop):
@@ -161,10 +165,11 @@ fetch_html_with_checkpoint <- function(courses, checkpoint_dir, .progress = TRUE
     if (.progress) pb$tick()
   }
 
-  pages <- dplyr::bind_rows(c(list(
+  if (n) have <- read_checkpoint(dirs, "url", urls$url)
+  pages <- dplyr::bind_rows(
     tibble::tibble(url = character(), html = character(), html_error = character(), html_success = logical(),
                    http_status = integer(), requested_at = .POSIXct(numeric())),
-    have), fetched))
+    have)
   pages <- pages[!duplicated(pages$url, fromLast = TRUE), ]
   dplyr::bind_cols(courses, pages[match(as.character(courses$url), pages$url),
                                   c("html", "html_error", "html_success", REQUEST_COLUMNS)])
