@@ -85,6 +85,9 @@ section_heading_patterns <- tibble::tribble(
   "hjelpemidler",                          "assessment",             TRUE,
   "hjelpemiddel",                          "assessment",             TRUE,
   "examination support material",          "assessment",             TRUE,   # uio
+  "permitted support material",            "assessment",             TRUE,   # nhh English pages
+  "grading scale",                         "assessment",             TRUE,   # nhh English pages
+  "exam",                                  "assessment",             TRUE,   # himolde English pages
   "eksamensspråk",                         "assessment",             TRUE,   # uio, nla
   "language of examination",               "assessment",             TRUE,
   "assessment language",                   "assessment",             TRUE,   # nla English pages
@@ -123,6 +126,7 @@ section_heading_patterns <- tibble::tribble(
   "formal prerequisite knowledge",         "prerequisites",          TRUE,
   "recommended previous knowledge",        "prerequisites",          TRUE,
   "required previous knowledge",           "prerequisites",          TRUE,   # ntnu English pages
+  "recommended knowledge",                 "prerequisites",          TRUE,   # himolde English pages
   # hvl English pages: their "Krav til forkunnskapar". Exact, since elsewhere
   # "entry requirements" can be admission text.
   "entry requirements",                    "prerequisites",          TRUE,
@@ -152,6 +156,9 @@ section_heading_patterns <- tibble::tribble(
   "åpen for",                              ".drop",                  TRUE,
   "ope for",                               ".drop",                  TRUE,
   "overlapping",                           ".drop",                  TRUE,
+  "overlapping med andre emner",           ".drop",                  TRUE,   # nhh
+  "credit reduction due to overlap",       ".drop",                  TRUE,   # nhh English pages
+  "reduction of credits",                  ".drop",                  TRUE,   # himolde English pages
   "fakta",                                 ".drop",                  TRUE,
   "kontakt",                               ".drop",                  TRUE,
   "ansvarlig enhet",                       ".drop",                  TRUE,   # ntnu, uit: the unit
@@ -202,6 +209,7 @@ section_heading_patterns <- tibble::tribble(
   "læringsformer og aktiviteter",          "teaching_methods",       FALSE,
   "læringsaktiviteter og undervisningsmetoder", "teaching_methods",  FALSE,
   "undervisningsformer",                   "teaching_methods",       FALSE,
+  "forms of teaching and learning",        "teaching_methods",       TRUE,   # himolde English pages
   "undervisningsform",                     "teaching_methods",       TRUE,   # uit 2008-2011
   "undervisningsopplegg",                  "teaching_methods",       FALSE,
   "læringsaktiviteter",                    "teaching_methods",       FALSE,
@@ -247,6 +255,7 @@ section_heading_patterns <- tibble::tribble(
   "reading list",                          "reading_list",           FALSE,
   "recommended reading",                   "reading_list",           FALSE,  # uit 2008-2011
   "course materials",                      "reading_list",           TRUE,   # ntnu English pages
+  "literature",                            "reading_list",           TRUE,   # nhh English pages
 
   # --- course_content ---
   "mål og innhold",                        "course_content",         FALSE,
@@ -268,6 +277,7 @@ section_heading_patterns <- tibble::tribble(
   "om emnet",                              "course_content",         TRUE,   # uit
   "about the course",                      "course_content",         TRUE,
   "course content",                        "course_content",         FALSE,
+  "topics",                                "course_content",         TRUE,   # nhh English pages
   "course description",                    "course_content",         TRUE,   # nord English pages
   "content",                               "course_content",         FALSE
 )
