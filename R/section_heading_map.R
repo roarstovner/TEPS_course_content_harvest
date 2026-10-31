@@ -210,6 +210,7 @@ section_heading_patterns <- tibble::tribble(
   "læringsaktiviteter og undervisningsmetoder", "teaching_methods",  FALSE,
   "undervisningsformer",                   "teaching_methods",       FALSE,
   "forms of teaching and learning",        "teaching_methods",       TRUE,   # himolde English pages
+  "organisering",                          "teaching_methods",       TRUE,   # nmh
   "undervisningsform",                     "teaching_methods",       TRUE,   # uit 2008-2011
   "undervisningsopplegg",                  "teaching_methods",       FALSE,
   "læringsaktiviteter",                    "teaching_methods",       FALSE,
