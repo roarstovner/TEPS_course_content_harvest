@@ -22,6 +22,20 @@
   # together ("Luthersk prestetjeneste i dagPastoralteologi")
   xml2::xml_set_name(xml2::xml_find_all(doc, "//list"), "ul")
   xml2::xml_set_name(xml2::xml_find_all(doc, "//listitem"), "li")
+  # NHH's editor writes a link as <webLink><href>URL</href><linkName>label
+  # </linkName></webLink>, read as URL and label glued to each other and to
+  # the words around ("materialhttps://...https://...and"): it becomes its
+  # label, else its URL, between spaces (none before "." or after "(")
+  for (w in xml2::xml_find_all(doc, "//weblink")) {
+    txt <- stringr::str_squish(xml2::xml_text(xml2::xml_find_all(w, "linkname | href")))
+    txt <- c(rev(txt[nzchar(txt)]), "")[1]  # the linkname follows the href
+    before <- xml2::xml_text(xml2::xml_find_first(w, "preceding::text()[1]"))
+    after <- xml2::xml_text(xml2::xml_find_first(w, "following::text()[1]"))
+    xml2::xml_remove(xml2::xml_contents(w))
+    xml2::xml_set_name(w, "span")
+    xml2::xml_text(w) <- paste0(if (!grepl("[([]$", before)) " ", txt,
+                                if (!grepl("^[].,;:!?)]", after)) " ")
+  }
   inline_br <- xml2::xml_find_all(doc, paste0("//", .inline_tags, "/br", collapse = " | "))
   xml2::xml_text(inline_br) <- " "
   for (w in rvest::html_elements(doc, "thead, tbody, tfoot")) {

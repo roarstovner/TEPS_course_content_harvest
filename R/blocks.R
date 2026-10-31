@@ -220,7 +220,7 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
     } else {
       if (identical(mark, "untitled")) out$add("heading", "", xml2::xml_attr(node, "data-section"))
       if (is.na(xml2::xml_attr(node, "data-walk"))) {
-        txt <- rvest::html_text2(node)
+        txt <- .html_text2(node)
         if (nzchar(trimws(txt))) out$add("text", txt, g = tag)
       } else {
         walk_contents(node)
@@ -231,6 +231,33 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
   }
   walk_contents(root)
   out$table()
+}
+
+# rvest::html_text2() of a subtree read whole. In an element that also holds
+# blocks, html_text2() trims each text node and inline element on its own and
+# glues the words around them (nhh's "<li>A <strong>3-hour lecture on-campus
+# </strong>which consists of: <ul>" read "A3-hour lecture on-campuswhich"),
+# so each run of them goes into a <span> first, which it reads whole. Changes
+# the page: the subtree is not read again.
+.html_text2 <- function(node) {
+  block <- paste0("*[not(", paste0("self::", .inline_tags, collapse = " or "), ")]")
+  mixed <- xml2::xml_find_all(node, paste0("descendant-or-self::*[", block, "]"))
+  for (m in mixed) {
+    kids <- xml2::xml_contents(m)
+    member <- vapply(kids, function(k) xml2::xml_type(k) == "text" ||
+      (xml2::xml_name(k) %in% .inline_tags &&
+         inherits(xml2::xml_find_first(k, paste0(".//", block)), "xml_missing")), logical(1))
+    runs <- rle(member)
+    end <- cumsum(runs$lengths)
+    for (r in which(runs$values & runs$lengths > 1)) {
+      run <- kids[(end[r] - runs$lengths[r] + 1):end[r]]
+      if (!nzchar(trimws(paste(xml2::xml_text(run), collapse = "")))) next
+      span <- xml2::xml_add_sibling(run[[1]], "span", .where = "before")
+      for (k in run) xml2::xml_add_child(span, k)
+      xml2::xml_remove(run)
+    }
+  }
+  rvest::html_text2(node)
 }
 
 # The section a sub-heading's text names exactly (minus a trailing colon), or

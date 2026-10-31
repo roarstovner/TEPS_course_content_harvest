@@ -45,6 +45,25 @@ test_that("a <br> inside an inline element is a space, not glue", {
                                        "\n\nKunnskapar Studenten skal\n\nløp Læringssenteret Birkeland og"))
 })
 
+test_that("nhh's <webLink> is its label once, between spaces", {
+  # the label, else the URL; no space before "." or after "("
+  cfg <- list(reader = "html", container = "main", heading = "h2")
+  link <- function(href, label) sprintf("<webLink><href>%s</href><linkName>%s</linkName></webLink>", href, label)
+  b <- page_blocks(paste0("<main><h2>Literature</h2><p>Poldrack (2018). ", link("https://s.org/", "https://s.org/"),
+    "</p><p>Ch.4 <em>Permitted support material</em>", link("https://n.no/r/", "regulations"), "and ",
+    link("https://n.no/e/", ""), "</p><p>See (", link("https://y/", "https://y/"), ").</p></main>"), NA, cfg)
+  expect_equal(.blocks_text(b), paste0("Literature\n\nPoldrack (2018). https://s.org/\n\n",
+                                       "Ch.4 Permitted support material regulations and https://n.no/e/\n\nSee (https://y/)."))
+})
+
+test_that("words around an inline element keep their spaces in an element that holds blocks", {
+  # html_text2() trims each piece of a list item with a nested list (nhh)
+  cfg <- list(reader = "html", container = "main", heading = "h2")
+  b <- page_blocks("<main><h2>Teaching</h2><ul><li>A <strong>3-hour lecture on-campus </strong>which consists of:
+    <ul><li>1 hour Q&amp;A.</li><li>2 hours lab.</li></ul></li></ul></main>", NA, cfg)
+  expect_equal(.blocks_text(b), "Teaching\nA 3-hour lecture on-campus which consists of:\n1 hour Q&A.\n2 hours lab.")
+})
+
 test_that("noop gives NA, pdf_split keeps the harvested text, usn is cleaned", {
   df <- tibble::tibble(html = "  line keyboard_backspace\n\n\n\nnext  ",
                        extracted_text = "harvested")
