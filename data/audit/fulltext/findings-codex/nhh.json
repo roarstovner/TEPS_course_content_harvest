@@ -1,0 +1,40 @@
+{
+  "check": "fulltext",
+  "institution": "nhh",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 8,
+  "overall_assessment": "All 28 packet courses were read in full, including all eight suspects; substantive plans retain their headings, paragraphs, learning outcomes, assessment and facts, with no demonstrated loss of substantive page content. The four uncaptured suspects omit staff names/contact roles and next-semester navigation, the three short suspects faithfully reflect sparse or expired/pointer source pages, and the sampled junk flag is explained by JavaScript as a legitimate programming prerequisite; the 2026/27 headings are expected for this current-plan pilot, and the packet truncation marker is not extraction truncation. Two formatting defects remain: custom links repeat URLs or concatenate URLs with labels across suspects and random controls, and one random control loses spaces around inline emphasis.",
+  "findings": [
+    {
+      "target": "whole_text",
+      "error_type": "formatting",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "nhh_BUS476-1_2025_autumn_2",
+        "nhh_TECH3-1_2025_autumn_1",
+        "nhh_BAN403-1_2025_autumn_1"
+      ],
+      "evidence": "https://statsthinking21.org/https://statsthinking21.org/",
+      "description": "Links in reading lists, permitted examination aids and retake information are rendered as adjacent URL/URL or URL/label strings. This recurring defect also appears in random controls, so it is not confined to flagged courses; it adds repeated link text and joins URLs to surrounding prose, while the main plan structure remains readable.",
+      "root_cause_hypothesis": "Saved NHH HTML contains custom <weblink><href>...</href><linkname>...</linkname></weblink> elements. R/extract_fulltext.R::.read_doc() does not normalize them, so R/blocks.R reads both child values as ordinary adjacent text; NHH has no post_fn correcting this.",
+      "suggested_fix": "Normalize NHH weblink nodes before block extraction: turn each into an ordinary anchor with href as its attribute and linkname as its visible text, falling back to href only when the label is empty. Preserve whitespace at the surrounding text boundaries and emit a destination at most once if destinations must be retained.",
+      "confidence": "high"
+    },
+    {
+      "target": "teaching_methods",
+      "error_type": "formatting",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "nhh_FIE401-1_2025_autumn_1"
+      ],
+      "evidence": "A3-hour lecture on-campuswhich consists of:",
+      "description": "The financial econometrics teaching paragraph joins the article to the duration and the campus description to the following word. The saved HTML contains spaces before and inside the strong element, so these word boundaries are lost during extraction rather than absent from the source.",
+      "root_cause_hypothesis": "The html_text2() path used by R/blocks.R for unmarked subtrees loses boundary whitespace around an inline strong element in a list item containing a nested list. This is separate from the custom weblink defect.",
+      "suggested_fix": "Preserve whitespace around inline elements when reading nested list items, for example by flattening emphasis elements into text nodes while retaining their text and boundary whitespace before html_text2() runs; keep nested list items on separate lines.",
+      "confidence": "high"
+    }
+  ]
+}
