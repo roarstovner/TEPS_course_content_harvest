@@ -246,6 +246,7 @@ Figures are in the tables above; the notes say why.
 - Read from `main section.content`: the title, the facts list (credits, code, the programmes the course belongs to) and the plan; the title and facts list are in no section. The page has no year: it shows the version's plan as it is now
 - Courses taught in English (61 of the 703 offerings of 2025) have a full Norwegian page, which is used, and an English one at `/en/courses/{code}`
 - robots.txt (read 2026-10-16) has only comments: nothing disallowed
+- Three doctoral courses in DBH (DG900-1, DG930-1, DG950-1) have no page: the site answers 404 (pilot harvest, 2026-11-01)
 
 ---
 
