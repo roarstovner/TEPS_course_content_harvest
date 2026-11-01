@@ -58,6 +58,12 @@
 #                the raw store (fetched before the notice was known) gives
 #                no plan (plan_offerings()). hvl, nmbu, nord, ntnu.
 #
+# html_fn: function(html, course_id) giving the HTML the block reader reads
+#          in place of the stored page, NA for none: the offering's plan
+#          where the page holds the plans of several years as data (vid's
+#          JSON, vid_plan_html()). Its `selector` and `facts` name elements
+#          of that HTML.
+#
 # robots_permission: the institution's permission to harvest paths its
 #                robots.txt disallows for all user agents, recorded as
 #                "granted YYYY-MM-DD by <who> (<what>)". Without one, the
@@ -622,6 +628,28 @@ institution_configs <- list(
     section_heading_selector = "h3, summary",
     # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
     section_subheading_selector = "p"
+  ),
+
+  vid = list(
+    code = "8208",
+    # one page per course, named from its title (/studier/emner/{slug}-{code},
+    # a few with a numeric id after it), found in the sitemap
+    # (resolve_urls_vid_batch()); a page without any plan counts as not found
+    # (fetch_html_cols_single_vid())
+    strategy = "url_discovery",
+    fetch_fn = fetch_html_cols_single_vid,
+    # the page holds, as JSON, the plan of every year and semester the course
+    # is taught in from spring 2024, so every DBH year from then is harvested;
+    # the offering's plan is read from it as HTML
+    plan_years = "url",
+    html_fn = vid_plan_html,
+    selector = "main",
+    # the title and the facts list (code, credits, language, campus, duration,
+    # the programmes the course belongs to)
+    facts = c("main h1", "main dl.facts"),
+    # an h2 per paragraph and accordion of the plan ("Emnets innhold",
+    # "Læringsutbytte", "Vurderingsordning")
+    section_strategy = "html"
   ),
 
   samas = list(

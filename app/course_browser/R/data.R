@@ -28,7 +28,8 @@ institution_labels <- c(
   uio      = "UiO",
   uis      = "UiS",
   uit      = "UiT",
-  usn      = "USN"
+  usn      = "USN",
+  vid      = "VID"
 )
 
 #' Load the prebuilt browser payload

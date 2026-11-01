@@ -189,6 +189,30 @@ beskrivelse av emnet", "Læringsutbytte for emnet", "Undervisning og
 læringsformer", "Vurdering"), the coursework requirements under a paragraph
 sub-heading ("Arbeidskrav for emnet er:"). robots.txt has only comments.
 
+**VID.** VID vitenskapelige høgskole has one page per course,
+`https://www.vid.no/studier/emner/{slug}-{code}`, the slug made from the
+title and the code in lower case, a space as a hyphen
+(`/studier/emner/team-og-prosjektledelse-maverd-543`, `...-phd-dvp-902`;
+checked 2026-11-01). A few codes have a second page, with a numeric id after
+the code (`...-basos1020-1795878807970940938`), for another programme or
+semester. The sitemap, `https://www.vid.no/sitemap.xml`, lists every course
+page (717), and `resolve_urls_vid_batch()` matches the offerings' codes to
+the URLs' ends; of a code's several pages it reads each once and takes the
+one with a plan for the offering's semester. The page is rendered in the
+browser (Enonic XP, react4xp) from JSON in a script tag
+(`data-react4xp-ref="root"`): the course's title, code, credits, language,
+duration and programmes, and `plans`, one per year and semester the course
+is taught in, from spring 2024 to the next academic year (many spring 2024
+entries have no text). The HTML the server sends has the facts box and an
+empty semester picker, no plan. The harvest stores the page; the config's
+`html_fn`, `vid_plan_html()`, gives the block reader the plan of the
+offering's year and semester as HTML (title, facts list, an h2 per paragraph
+and accordion: "Emnets innhold", "Hovedtemaer", "Læringsutbytte", "Arbeids og
+undervisningsformer", "Obligatoriske aktiviteter", "Vurderingsordning", ...).
+A page with no plan with text counts as not found
+(`fetch_html_cols_single_vid()`). robots.txt allows everything for all user
+agents and blocks AI crawlers by name.
+
 **USN.** The URL holds a version number that metadata cannot give:
 `https://www.usn.no/studier/studie-og-emneplaner/#/emne/{CODE}_{VERSION}_{YEAR}_{SEMESTER}`.
 Each version (1, 2, 3, …) is a revision valid for a range of years, and an

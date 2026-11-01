@@ -77,6 +77,8 @@ resolve_course_urls <- function(df,
       resolve_urls_nhh_batch(df, .progress = .progress, checkpoint = discovery)
     } else if (inst == "nmh") {
       resolve_urls_nmh_batch(df)
+    } else if (inst == "vid") {
+      resolve_urls_vid_batch(df, .progress = .progress, checkpoint = discovery)
     } else {
       df |> dplyr::mutate(url = NA_character_)
     }
@@ -304,6 +306,64 @@ nhh_search_pages <- function(page, code) {
   hit <- c(hit[!old], hit[old])[seq_len(min(1, length(hit)))]
   tibble::tibble(course_code = rep(code, length(hit)), year = NA_integer_, semester_name = NA_character_,
                  url = xml2::url_absolute(rvest::html_attr(teaser[hit], "href"), "https://www.nhh.no/"))
+}
+
+#' Resolve URLs for a batch of VID courses from its sitemap
+#'
+#' VID has one page per course at a URL named from its title,
+#' /studier/emner/{slug}-{code} (the code in lower case, a space as "-":
+#' PHD-DVP 902 is ...-phd-dvp-902), which DBH does not
+#' give; a few codes have a second page, with a numeric id after the code,
+#' for another programme or semester (checked 2026-11-01). The sitemap lists
+#' every course page. An offering takes the page whose URL ends in its code;
+#' of several, the one whose JSON has a plan for the offering's year and
+#' semester (each such code's pages are read once, discover_codes()), else
+#' the first. The pages hold plans from spring 2024 (VID_FIRST_TERM): an
+#' earlier offering gets no URL, without a request.
+#'
+#' @param df A tibble with course_code, year, semester_name columns
+#' @param index The course pages' URLs, from vid_course_index()
+#' @param .progress Show progress bar
+#' @param checkpoint Discovery checkpoint folder (discover_codes()), or NULL
+#' @return df with url filled in where possible
+resolve_urls_vid_batch <- function(df, index = NULL, .progress = TRUE, checkpoint = NULL) {
+  df$url <- NA_character_
+  new <- semester_term(df$year, df$semester_name) >= VID_FIRST_TERM
+  if (!any(new)) return(df)
+  index <- index %||% vid_course_index()
+  slug <- sub("-[0-9]{12,}$", "", sub(".*/", "", index))
+  codes <- unique(df$course_code[new])
+  pages <- lapply(stats::setNames(codes, codes), function(code)
+    index[endsWith(slug, paste0("-", gsub(" ", "-", tolower(code))))])
+  terms <- discover_codes(names(pages)[lengths(pages) > 1], function(code) {
+    dplyr::bind_rows(lapply(pages[[code]], function(url) {
+      polite_pause()
+      page <- httr2::resp_body_string(httr2::req_perform(site_request(url)))
+      plans <- Filter(vid_has_text, vid_course_json(page)[["plans"]])
+      tibble::tibble(course_code = rep(code, length(plans)), year = as.integer(vapply(plans, `[[`, "", "year")),
+                     semester_name = vapply(plans, `[[`, "", "semester"), url = rep(url, length(plans)))
+    }))
+  }, checkpoint, .progress = .progress)
+  hit <- dplyr::left_join(df[c("course_code", "year", "semester_name")], terms[!duplicated(terms[1:3]), ],
+                          by = c("course_code", "year", "semester_name"))$url
+  first <- vapply(pages[df$course_code[new]], function(p) p[1] %||% NA_character_, "")
+  df$url[new] <- dplyr::coalesce(hit[new], unname(first))
+  cli::cli_alert_success("VID: pages for {sum(!is.na(df$url))} of {nrow(df)} offerings")
+  df
+}
+
+# The first term VID's course pages have plans for (spring 2024, though many
+# spring 2024 entries have no text; checked 2026-11-01), as semester_term().
+VID_FIRST_TERM <- semester_term(2024L, "V\u00e5r")
+
+# Every course page in VID's sitemap (/studier/emner/...). A sitemap without
+# any is an error, so the harvest stops rather than leave its courses without
+# a URL.
+vid_course_index <- function(sitemap = "https://www.vid.no/sitemap.xml") {
+  xml <- httr2::resp_body_string(httr2::req_perform(site_request(sitemap)))
+  urls <- stringr::str_match_all(xml, "<loc>(https://www\\.vid\\.no/studier/emner/[^<]+)</loc>")[[1]][, 2]
+  if (!length(urls)) stop("no course page in ", sitemap)
+  urls
 }
 
 #' Resolve URLs for a batch of NMH courses from its study handbooks

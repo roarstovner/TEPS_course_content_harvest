@@ -223,3 +223,67 @@ extract_fulltext_pdf <- function(pdf_raw) {
     stringr::str_replace_all("\\n{3,}", "\n\n") |>
     stringr::str_trim()
 }
+
+# --- VID: the plans as JSON ----------------------------------------------------
+# VID's course page (Enonic XP, react4xp) renders the plan in the browser from
+# JSON in its script tag: the course (title, code, credits, language, campus,
+# duration, programmes) and `plans`, one per year and semester the course is
+# taught in (spring 2024 on; checked 2026-11-01), each a list of articleBlocks:
+# paragraphs (title, HTML) and accordions (title, items of title and HTML).
+
+# The course object of a VID page's JSON (the one holding `plans`), or NULL.
+vid_course_json <- function(html) {
+  if (is.na(html) || !nzchar(html)) return(NULL)
+  json <- rvest::html_text(rvest::html_element(rvest::read_html(html), "script[data-react4xp-ref='root']"))
+  if (is.na(json)) return(NULL)
+  find <- function(o) {
+    if (!is.list(o)) return(NULL)
+    if (!is.null(o[["plans"]])) return(o)
+    for (v in o) if (!is.null(r <- find(v))) return(r)
+    NULL
+  }
+  find(jsonlite::fromJSON(json, simplifyVector = FALSE))
+}
+
+# A VID plan with text: one with articleBlocks (many spring 2024 entries
+# have none).
+vid_has_text <- function(plan) length(plan[["articleBlocks"]]) > 0
+
+#' The plan of a VID offering as HTML
+#'
+#' The `html_fn` of vid: the plan of the offering's year and semester (from
+#' its course id) in the page's JSON, as <main> with the title (the plan's
+#' own, titleHistory), a facts list (dl.facts) and an h2 with its HTML for
+#' each paragraph and accordion item.
+#'
+#' @param html The stored page.
+#' @param course_id The offering ("vid_VULS8001-1_2025_autumn_1").
+#' @return Character(1), NA when the page has no plan with text for the term.
+vid_plan_html <- function(html, course_id) {
+  term <- stringr::str_match(course_id %||% NA_character_, "_(\\d{4})_(spring|autumn)_\\d+$")
+  course <- if (!is.na(term[1, 1])) vid_course_json(html)
+  semester <- c(spring = "Vår", autumn = "Høst")[term[1, 3]]
+  plan <- Filter(function(p) identical(p[["year"]], term[1, 2]) && identical(p[["semester"]], unname(semester)) &&
+                   vid_has_text(p), course[["plans"]])
+  if (!length(plan)) return(NA_character_)
+  plan <- plan[[1]]
+  esc <- function(x) gsub(">", "&gt;", gsub("<", "&lt;", gsub("&", "&amp;", as.character(x))))
+  facts <- c(Emnekode = course[["code"]], Studiepoeng = course[["points"]],
+             "Undervisningsspråk" = course[["language"]], Studiested = plan[["campus"]],
+             Varighet = course[["duration"]],
+             "Tilhører" = paste(vapply(course[["studyProgrammes"]], function(p) p[["title"]] %||% "", ""),
+                                collapse = ", "))
+  facts <- facts[nzchar(facts)]
+  part <- function(title, content) {
+    if (is.list(content)) content <- content[["processedHtml"]]
+    paste0(if (nzchar(title %||% "")) paste0("<h2>", esc(title), "</h2>"), "<div>", content %||% "", "</div>")
+  }
+  body <- vapply(plan[["articleBlocks"]], function(b) {
+    x <- b[[b[["_selected"]] %||% ""]]
+    items <- if (length(x[["accordionItemSet"]])) x[["accordionItemSet"]] else list(x)
+    paste(vapply(items, function(i) part(i[["title"]], i[["content"]]), ""), collapse = "\n")
+  }, "")
+  paste0("<html><body><main><h1>", esc(plan[["titleHistory"]] %||% course[["title"]]), "</h1>\n",
+         "<dl class='facts'>", paste0("<dt>", names(facts), "</dt><dd>", esc(facts), "</dd>", collapse = ""),
+         "</dl>\n", paste(body, collapse = "\n"), "</main></body></html>")
+}

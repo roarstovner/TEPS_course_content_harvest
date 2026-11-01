@@ -27,7 +27,9 @@
 #            `section_subheading_selector`, sections of their own by
 #            `section_scope`; text before the first heading goes to
 #            `section_initial` (default: dropped); an element in
-#            `section_untitled` is a section without a heading
+#            `section_untitled` is a section without a heading. With
+#            `html_fn` (vid) the walk reads the HTML it gives instead of the
+#            page
 #            When `section_fields` is set (hivolda), each top-level
 #            `div.field-<name>` is a heading of its own (see .field_block())
 #   json   — nla's EmneplanPage JSON
@@ -63,6 +65,7 @@
     inline_coursework = isTRUE(ic$section_inline_coursework),
     exam_sessions     = isTRUE(ic$exam_sessions),
     pointer           = ic$section_pointer,
+    html_fn           = ic$html_fn,
     institution       = ic$name
   )
 }
@@ -72,11 +75,12 @@
 #' @param html Raw HTML of the page (NA for pages without HTML).
 #' @param text The page's extracted_text, read by the text reader.
 #' @param cfg Reader settings from .block_cfg().
-#' @param course_id The offering, for nla's academic year.
+#' @param course_id The offering, for nla's academic year and vid's term
+#'   (`html_fn`).
 #' @return A block table (see the top of R/blocks.R).
 page_blocks <- function(html, text, cfg, course_id = NA_character_) {
   switch(cfg$reader,
-    html   = .html_blocks(html, cfg),
+    html   = .html_blocks(if (is.null(cfg$html_fn)) html else cfg$html_fn(html, course_id), cfg),
     json   = .json_blocks(html, course_id, cfg$facts),
     text   = .text_blocks(text, cfg),
     .empty_blocks()

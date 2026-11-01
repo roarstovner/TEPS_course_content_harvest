@@ -384,3 +384,15 @@ fetch_html_cols_single_khio <- function(url) {
   }
   resp
 }
+
+# VID: a course page whose JSON holds no plan with text (vid_course_json():
+# none, or only an empty entry; MATRS5120, checked 2026-11-01)
+# counts as not found.
+fetch_html_cols_single_vid <- function(url) {
+  resp <- site_request(url) |> httr2::req_perform()
+  if (!any(vapply(vid_course_json(httr2::resp_body_string(resp))[["plans"]], vid_has_text, logical(1)))) {
+    rlang::abort("Course page without a plan (soft 404)", class = "vid_not_found_error",
+                 http_status = httr2::resp_status(resp))
+  }
+  resp
+}

@@ -17,8 +17,8 @@
 # Every page with HTML read once into blocks (R/blocks.R): page_id plus the
 # block columns. Institutions read from text (usn, steiner) have no blocks
 # here; their sections read the extracted_text. nla's reader takes the
-# offering's academic year from the course id: its pages are only ever their
-# own offering's.
+# offering's academic year from the course id, and vid's `html_fn` its year
+# and semester: their pages are only ever their own offering's.
 partition_blocks <- function(files, config) {
   rows <- read_raw(files, page_id = TRUE)
   cfg <- .block_cfg(config)

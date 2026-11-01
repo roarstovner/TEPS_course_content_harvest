@@ -1,0 +1,194 @@
+"institution","course_id","course_code_raw","year","semester_name","department_name","level","language","dbh_snapshot","seed"
+"vid","vid_BAERG1050-1_2024_autumn_1","BAERG1050-1",2024,"Høst","Institutt for helse","lower","other","2026-10-16",42
+"vid","vid_BAERG1050-1_2024_spring_1","BAERG1050-1",2024,"Vår","Institutt for helse","lower","other","2026-10-16",42
+"vid","vid_BAERG3020-1_2024_autumn_1","BAERG3020-1",2024,"Høst","Institutt for helse","lower","other","2026-10-16",42
+"vid","vid_BAERG3020-1_2024_spring_1","BAERG3020-1",2024,"Vår","Institutt for helse","lower","other","2026-10-16",42
+"vid","vid_BASOB1010-1_2024_autumn_1","BASOB1010-1",2024,"Høst","programområde kultur og religion","lower","other","2026-10-16",42
+"vid","vid_BASOB1010-1_2024_spring_1","BASOB1010-1",2024,"Vår","programområde kultur og religion","lower","other","2026-10-16",42
+"vid","vid_BASOB2020-1_2024_autumn_1","BASOB2020-1",2024,"Høst","programområde kultur og religion","lower","other","2026-10-16",42
+"vid","vid_BASOB2020-1_2024_spring_1","BASOB2020-1",2024,"Vår","programområde kultur og religion","lower","other","2026-10-16",42
+"vid","vid_BASOB3050-1_2024_autumn_1","BASOB3050-1",2024,"Høst","programområde kultur og religion","lower","other","2026-10-16",42
+"vid","vid_BASOB3050-1_2024_spring_1","BASOB3050-1",2024,"Vår","programområde kultur og religion","lower","other","2026-10-16",42
+"vid","vid_BASOS2030-1_2024_autumn_1","BASOS2030-1",2024,"Høst","programområde sosialt arbeid","lower","other","2026-10-16",42
+"vid","vid_BASOS2030-1_2024_spring_1","BASOS2030-1",2024,"Vår","programområde sosialt arbeid","lower","other","2026-10-16",42
+"vid","vid_BASP1010-1_2024_autumn_4","BASP1010-1",2024,"Høst","Institutt for sykepleie","lower","other","2026-10-16",42
+"vid","vid_BASP1010-1_2024_spring_1","BASP1010-1",2024,"Vår","Institutt for sykepleie","lower","other","2026-10-16",42
+"vid","vid_BASP1030BD-O-1_2024_autumn_3","BASP1030BD-O-1",2024,"Høst","Institutt for sykepleie","lower","other","2026-10-16",42
+"vid","vid_BASP1030BD-O-1_2024_spring_1","BASP1030BD-O-1",2024,"Vår","Institutt for sykepleie","lower","other","2026-10-16",42
+"vid","vid_BASP2030BD-O-1_2024_autumn_1","BASP2030BD-O-1",2024,"Høst","Institutt for sykepleie","lower","other","2026-10-16",42
+"vid","vid_BASP2030BD-O-1_2024_spring_1","BASP2030BD-O-1",2024,"Vår","Institutt for sykepleie","lower","other","2026-10-16",42
+"vid","vid_BASP2103-1_2024_autumn_1","BASP2103-1",2024,"Høst","Institutt for sykepleie","lower","other","2026-10-16",42
+"vid","vid_BASP2103-1_2024_spring_1","BASP2103-1",2024,"Vår","Institutt for sykepleie","lower","other","2026-10-16",42
+"vid","vid_BASP3010BD-1_2024_autumn_1","BASP3010BD-1",2024,"Høst","Institutt for sykepleie","lower","other","2026-10-16",42
+"vid","vid_BASP3010BD-1_2024_spring_1","BASP3010BD-1",2024,"Vår","Institutt for sykepleie","lower","other","2026-10-16",42
+"vid","vid_BASP3030AC-1_2024_autumn_1","BASP3030AC-1",2024,"Høst","Institutt for sykepleie","lower","other","2026-10-16",42
+"vid","vid_BASP3030AC-1_2024_spring_1","BASP3030AC-1",2024,"Vår","Institutt for sykepleie","lower","other","2026-10-16",42
+"vid","vid_BATEOL1020-1_2024_autumn_3","BATEOL1020-1",2024,"Høst","programområde teologi","lower","other","2026-10-16",42
+"vid","vid_BATEOL1020-1_2024_spring_3","BATEOL1020-1",2024,"Vår","programområde teologi","lower","other","2026-10-16",42
+"vid","vid_BATEOL2020-1_2024_autumn_3","BATEOL2020-1",2024,"Høst","programområde teologi","lower","other","2026-10-16",42
+"vid","vid_BATEOL2020-1_2024_spring_1","BATEOL2020-1",2024,"Vår","programområde teologi","lower","other","2026-10-16",42
+"vid","vid_BATEOL3090-1_2024_autumn_1","BATEOL3090-1",2024,"Høst","programområde teologi","lower","other","2026-10-16",42
+"vid","vid_BATEOL3090-1_2024_spring_1","BATEOL3090-1",2024,"Vår","programområde teologi","lower","other","2026-10-16",42
+"vid","vid_BAVER2030-1_2024_autumn_1","BAVER2030-1",2024,"Høst","Institutt for helse","lower","other","2026-10-16",42
+"vid","vid_BAVER2030-1_2024_spring_1","BAVER2030-1",2024,"Vår","Institutt for helse","lower","other","2026-10-16",42
+"vid","vid_BSNAT2-1_2024_autumn_3","BSNAT2-1",2024,"Høst","Institutt for sykepleie","lower","other","2026-10-16",42
+"vid","vid_BSNAT2-1_2024_spring_3","BSNAT2-1",2024,"Vår","Institutt for sykepleie","lower","other","2026-10-16",42
+"vid","vid_DIA5230-1_2024_autumn_1","DIA5230-1",2024,"Høst","programområde diakoni","higher","other","2026-10-16",42
+"vid","vid_DIA5230-1_2024_spring_1","DIA5230-1",2024,"Vår","programområde diakoni","higher","other","2026-10-16",42
+"vid","vid_MAB5050-1_2024_autumn_1","MAB5050-1",2024,"Høst","programområde sosialt arbeid","higher","other","2026-10-16",42
+"vid","vid_MAB5050-1_2024_spring_1","MAB5050-1",2024,"Vår","programområde sosialt arbeid","higher","other","2026-10-16",42
+"vid","vid_MAB5060-1_2024_autumn_1","MAB5060-1",2024,"Høst","programområde sosialt arbeid","higher","other","2026-10-16",42
+"vid","vid_MAB5060-1_2024_spring_1","MAB5060-1",2024,"Vår","programområde sosialt arbeid","higher","other","2026-10-16",42
+"vid","vid_MAB6062-1_2024_autumn_2","MAB6062-1",2024,"Høst","programområde sosialt arbeid","higher","other","2026-10-16",42
+"vid","vid_MABA6010-1_2024_autumn_1","MABA6010-1",2024,"Høst","programområde sosialt arbeid","higher","other","2026-10-16",42
+"vid","vid_MABA6010-1_2024_spring_1","MABA6010-1",2024,"Vår","programområde sosialt arbeid","higher","other","2026-10-16",42
+"vid","vid_MACOMM5120-O-1_2024_autumn_1","MACOMM5120-O-1",2024,"Høst","Fakultet for teologi og samfunnsvitenskap","higher","english","2026-10-16",42
+"vid","vid_MACOMM5120-O-1_2024_spring_1","MACOMM5120-O-1",2024,"Vår","Fakultet for teologi og samfunnsvitenskap","higher","english","2026-10-16",42
+"vid","vid_MACOMM5320-1_2024_autumn_1","MACOMM5320-1",2024,"Høst","Fakultet for teologi og samfunnsvitenskap","higher","english","2026-10-16",42
+"vid","vid_MACOMM5320-1_2024_spring_1","MACOMM5320-1",2024,"Vår","Fakultet for teologi og samfunnsvitenskap","higher","english","2026-10-16",42
+"vid","vid_MADIA4012-1_2024_autumn_1","MADIA4012-1",2024,"Høst","programområde diakoni","higher","other","2026-10-16",42
+"vid","vid_MADIA4012-1_2024_spring_1","MADIA4012-1",2024,"Vår","programområde diakoni","higher","other","2026-10-16",42
+"vid","vid_MAFAM5010-1_2024_autumn_1","MAFAM5010-1",2024,"Høst","programområde familieterapi og systemisk praksis","higher","other","2026-10-16",42
+"vid","vid_MAFAM5010-1_2024_spring_1","MAFAM5010-1",2024,"Vår","programområde familieterapi og systemisk praksis","higher","other","2026-10-16",42
+"vid","vid_MAKAS6021-1_2024_autumn_1","MAKAS6021-1",2024,"Høst","Institutt for sykepleie","higher","other","2026-10-16",42
+"vid","vid_MAKAS6021-1_2024_spring_2","MAKAS6021-1",2024,"Vår","Institutt for sykepleie","higher","other","2026-10-16",42
+"vid","vid_MAKSP5020-O-1_2024_autumn_1","MAKSP5020-O-1",2024,"Høst","Institutt for sykepleie","higher","other","2026-10-16",42
+"vid","vid_MAKSP5020-O-1_2024_spring_1","MAKSP5020-O-1",2024,"Vår","Institutt for sykepleie","higher","other","2026-10-16",42
+"vid","vid_MAKSP6020-B-1_2024_autumn_2","MAKSP6020-B-1",2024,"Høst","Institutt for sykepleie","higher","other","2026-10-16",42
+"vid","vid_MAKSP6200-O-1_2024_autumn_2","MAKSP6200-O-1",2024,"Høst","Institutt for sykepleie","higher","other","2026-10-16",42
+"vid","vid_MAMIKA5040-1_2024_autumn_1","MAMIKA5040-1",2024,"Høst","programområde kultur og religion","higher","other","2026-10-16",42
+"vid","vid_MAMIKA5040-1_2024_spring_1","MAMIKA5040-1",2024,"Vår","programområde kultur og religion","higher","other","2026-10-16",42
+"vid","vid_MAPBU8020-1_2024_autumn_1","MAPBU8020-1",2024,"Høst","Institutt for helse","higher","other","2026-10-16",42
+"vid","vid_MAPBU8020-1_2024_spring_1","MAPBU8020-1",2024,"Vår","Institutt for helse","higher","other","2026-10-16",42
+"vid","vid_MAPRAVB5010-1_2024_autumn_1","MAPRAVB5010-1",2024,"Høst","Fakultet for helsevitenskap","higher","other","2026-10-16",42
+"vid","vid_MAPRAVB5010-1_2024_spring_1","MAPRAVB5010-1",2024,"Vår","Fakultet for helsevitenskap","higher","other","2026-10-16",42
+"vid","vid_MAPRAVS5010-1_2024_autumn_1","MAPRAVS5010-1",2024,"Høst","Fakultet for sosialvitenskap","higher","other","2026-10-16",42
+"vid","vid_MAPRAVS5010-1_2024_spring_1","MAPRAVS5010-1",2024,"Vår","Fakultet for sosialvitenskap","higher","other","2026-10-16",42
+"vid","vid_MASOS-422-1_2024_autumn_1","MASOS-422-1",2024,"Høst","programområde sosialt arbeid","higher","other","2026-10-16",42
+"vid","vid_MASOS-422-1_2024_spring_1","MASOS-422-1",2024,"Vår","programområde sosialt arbeid","higher","other","2026-10-16",42
+"vid","vid_MATRS5220-1_2024_autumn_1","MATRS5220-1",2024,"Høst","programområde teologi","higher","other","2026-10-16",42
+"vid","vid_MATRS5220-1_2024_spring_1","MATRS5220-1",2024,"Vår","programområde teologi","higher","other","2026-10-16",42
+"vid","vid_MATRS5250-1_2024_autumn_1","MATRS5250-1",2024,"Høst","programområde teologi","higher","other","2026-10-16",42
+"vid","vid_MATRS5250-1_2024_spring_1","MATRS5250-1",2024,"Vår","programområde teologi","higher","other","2026-10-16",42
+"vid","vid_MAVERD-440-1_2024_autumn_1","MAVERD-440-1",2024,"Høst","programområde verdibasert ledelse","higher","other","2026-10-16",42
+"vid","vid_MAVERD-440-1_2024_spring_2","MAVERD-440-1",2024,"Vår","programområde verdibasert ledelse","higher","other","2026-10-16",42
+"vid","vid_MAVERD-5380-1_2024_autumn_1","MAVERD-5380-1",2024,"Høst","programområde verdibasert ledelse","higher","other","2026-10-16",42
+"vid","vid_MAVERD-5380-1_2024_spring_2","MAVERD-5380-1",2024,"Vår","programområde verdibasert ledelse","higher","other","2026-10-16",42
+"vid","vid_MPT-306-1_2024_autumn_1","MPT-306-1",2024,"Høst","programområde teologi","higher","other","2026-10-16",42
+"vid","vid_MPT-306-1_2024_spring_1","MPT-306-1",2024,"Vår","programområde teologi","higher","other","2026-10-16",42
+"vid","vid_MVBL1010-1_2024_autumn_3","MVBL1010-1",2024,"Høst","programområde verdibasert ledelse","higher","other","2026-10-16",42
+"vid","vid_MVBL1010-1_2024_spring_3","MVBL1010-1",2024,"Vår","programområde verdibasert ledelse","higher","other","2026-10-16",42
+"vid","vid_MVBL1021-1_2024_autumn_1","MVBL1021-1",2024,"Høst","programområde verdibasert ledelse","higher","other","2026-10-16",42
+"vid","vid_MVBL1021-1_2024_spring_1","MVBL1021-1",2024,"Vår","programområde verdibasert ledelse","higher","other","2026-10-16",42
+"vid","vid_PHD-DVP 904-1_2024_autumn_1","PHD-DVP 904-1",2024,"Høst","Senter for diakoni og profesjonell praksis","phd","other","2026-10-16",42
+"vid","vid_PHD-DVP 904-1_2024_spring_1","PHD-DVP 904-1",2024,"Vår","Senter for diakoni og profesjonell praksis","phd","other","2026-10-16",42
+"vid","vid_PHD-DVP 953-1_2024_autumn_1","PHD-DVP 953-1",2024,"Høst","Senter for diakoni og profesjonell praksis","phd","other","2026-10-16",42
+"vid","vid_PHD-DVP 953-1_2024_spring_1","PHD-DVP 953-1",2024,"Vår","Senter for diakoni og profesjonell praksis","phd","other","2026-10-16",42
+"vid","vid_PHD-TR 904-1_2024_autumn_1","PHD-TR 904-1",2024,"Høst","Senter for global kristendom og religion","phd","other","2026-10-16",42
+"vid","vid_PHD-TR 904-1_2024_spring_1","PHD-TR 904-1",2024,"Vår","Senter for global kristendom og religion","phd","other","2026-10-16",42
+"vid","vid_PTU2200-1_2024_autumn_1","PTU2200-1",2024,"Høst","programområde teologi","lower","other","2026-10-16",42
+"vid","vid_PTU2200-1_2024_spring_1","PTU2200-1",2024,"Vår","programområde teologi","lower","other","2026-10-16",42
+"vid","vid_SOS-203 UTV-1_2024_autumn_3","SOS-203 UTV-1",2024,"Høst","programområde sosialt arbeid","lower","other","2026-10-16",42
+"vid","vid_SOS-203 UTV-1_2024_spring_3","SOS-203 UTV-1",2024,"Vår","programområde sosialt arbeid","lower","other","2026-10-16",42
+"vid","vid_VULEVE8010-1_2024_autumn_2","VULEVE8010-1",2024,"Høst","programområde verdibasert ledelse","continuing","other","2026-10-16",42
+"vid","vid_VUSORGB8060-1_2024_autumn_1","VUSORGB8060-1",2024,"Høst","programområde sosialt arbeid","continuing","other","2026-10-16",42
+"vid","vid_VUSORGB8060-1_2024_spring_1","VUSORGB8060-1",2024,"Vår","programområde sosialt arbeid","continuing","other","2026-10-16",42
+"vid","vid_VUVERD8030-1_2024_autumn_1","VUVERD8030-1",2024,"Høst","programområde verdibasert ledelse","continuing","other","2026-10-16",42
+"vid","vid_VUVERD8030-1_2024_spring_2","VUVERD8030-1",2024,"Vår","programområde verdibasert ledelse","continuing","other","2026-10-16",42
+"vid","vid_AVH5070-1_2025_autumn_1","AVH5070-1",2025,"Høst","programområde diakoni","higher","other","2026-10-16",42
+"vid","vid_AVH5070-1_2025_spring_1","AVH5070-1",2025,"Vår","programområde diakoni","higher","other","2026-10-16",42
+"vid","vid_BAERG2030-1_2025_autumn_1","BAERG2030-1",2025,"Høst","Institutt for helse","lower","other","2026-10-16",42
+"vid","vid_BAERG2030-1_2025_spring_1","BAERG2030-1",2025,"Vår","Institutt for helse","lower","other","2026-10-16",42
+"vid","vid_BAOLEBO1010-1_2025_autumn_1","BAOLEBO1010-1",2025,"Høst","programområde verdibasert ledelse","lower","other","2026-10-16",42
+"vid","vid_BAOLEBO1010-1_2025_spring_1","BAOLEBO1010-1",2025,"Vår","programområde verdibasert ledelse","lower","other","2026-10-16",42
+"vid","vid_BASOB2014-1_2025_autumn_1","BASOB2014-1",2025,"Høst","programområde kultur og religion","lower","other","2026-10-16",42
+"vid","vid_BASOB2014-1_2025_spring_1","BASOB2014-1",2025,"Vår","programområde kultur og religion","lower","other","2026-10-16",42
+"vid","vid_BASOB2032-1_2025_autumn_1","BASOB2032-1",2025,"Høst","programområde kultur og religion","lower","other","2026-10-16",42
+"vid","vid_BASOB2032-1_2025_spring_1","BASOB2032-1",2025,"Vår","programområde kultur og religion","lower","other","2026-10-16",42
+"vid","vid_BASOB3010-1_2025_autumn_3","BASOB3010-1",2025,"Høst","programområde kultur og religion","lower","other","2026-10-16",42
+"vid","vid_BASOB3010-1_2025_spring_1","BASOB3010-1",2025,"Vår","programområde kultur og religion","lower","other","2026-10-16",42
+"vid","vid_BASP1030BD-O-1_2025_autumn_3","BASP1030BD-O-1",2025,"Høst","Institutt for sykepleie","lower","other","2026-10-16",42
+"vid","vid_BASP1030BD-O-1_2025_spring_4","BASP1030BD-O-1",2025,"Vår","Institutt for sykepleie","lower","other","2026-10-16",42
+"vid","vid_BASP2030AC-O-1_2025_autumn_1","BASP2030AC-O-1",2025,"Høst","Institutt for sykepleie","lower","other","2026-10-16",42
+"vid","vid_BASP2030AC-O-1_2025_spring_1","BASP2030AC-O-1",2025,"Vår","Institutt for sykepleie","lower","other","2026-10-16",42
+"vid","vid_BASP3010AC-O-1_2025_autumn_1","BASP3010AC-O-1",2025,"Høst","Institutt for sykepleie","lower","other","2026-10-16",42
+"vid","vid_BASP3010AC-O-1_2025_spring_1","BASP3010AC-O-1",2025,"Vår","Institutt for sykepleie","lower","other","2026-10-16",42
+"vid","vid_BASPDEL1025-1_2025_autumn_1","BASPDEL1025-1",2025,"Høst","Institutt for sykepleie","lower","other","2026-10-16",42
+"vid","vid_BASPDEL1025-1_2025_spring_1","BASPDEL1025-1",2025,"Vår","Institutt for sykepleie","lower","other","2026-10-16",42
+"vid","vid_BASPDEL2010-1_2025_autumn_1","BASPDEL2010-1",2025,"Høst","Institutt for sykepleie","lower","other","2026-10-16",42
+"vid","vid_BASPDEL2010-1_2025_spring_1","BASPDEL2010-1",2025,"Vår","Institutt for sykepleie","lower","other","2026-10-16",42
+"vid","vid_BATEOL1095-1_2025_autumn_1","BATEOL1095-1",2025,"Høst","programområde teologi","lower","other","2026-10-16",42
+"vid","vid_BATEOL1095-1_2025_spring_1","BATEOL1095-1",2025,"Vår","programområde teologi","lower","other","2026-10-16",42
+"vid","vid_BATEOL2035-1_2025_autumn_1","BATEOL2035-1",2025,"Høst","programområde teologi","lower","other","2026-10-16",42
+"vid","vid_BATEOL2035-1_2025_spring_1","BATEOL2035-1",2025,"Vår","programområde teologi","lower","other","2026-10-16",42
+"vid","vid_BATEOL3000-1_2025_autumn_1","BATEOL3000-1",2025,"Høst","programområde teologi","lower","other","2026-10-16",42
+"vid","vid_BATEOL3000-1_2025_spring_1","BATEOL3000-1",2025,"Vår","programområde teologi","lower","other","2026-10-16",42
+"vid","vid_BAVER1060-1_2025_autumn_1","BAVER1060-1",2025,"Høst","Institutt for helse","lower","other","2026-10-16",42
+"vid","vid_BAVER1060-1_2025_spring_1","BAVER1060-1",2025,"Vår","Institutt for helse","lower","other","2026-10-16",42
+"vid","vid_BAVER3015-1_2025_autumn_1","BAVER3015-1",2025,"Høst","Institutt for helse","lower","other","2026-10-16",42
+"vid","vid_BAVER3015-1_2025_spring_1","BAVER3015-1",2025,"Vår","Institutt for helse","lower","other","2026-10-16",42
+"vid","vid_BAVER3040-1_2025_autumn_1","BAVER3040-1",2025,"Høst","Institutt for helse","lower","other","2026-10-16",42
+"vid","vid_BAVER3040-1_2025_spring_1","BAVER3040-1",2025,"Vår","Institutt for helse","lower","other","2026-10-16",42
+"vid","vid_EMD 297-1_2025_autumn_1","EMD 297-1",2025,"Høst","programområde diakoni","higher","english","2026-10-16",42
+"vid","vid_EMD 297-1_2025_spring_1","EMD 297-1",2025,"Vår","programområde diakoni","higher","english","2026-10-16",42
+"vid","vid_EXPHIL2005-1_2025_autumn_1","EXPHIL2005-1",2025,"Høst","Fakultet for teologi og samfunnsvitenskap","lower","other","2026-10-16",42
+"vid","vid_EXPHIL2005-1_2025_spring_1","EXPHIL2005-1",2025,"Vår","Fakultet for teologi og samfunnsvitenskap","lower","other","2026-10-16",42
+"vid","vid_KRS8300-1_2025_autumn_3","KRS8300-1",2025,"Høst","programområde diakoni","lower","other","2026-10-16",42
+"vid","vid_KRS8300-1_2025_spring_4","KRS8300-1",2025,"Vår","programområde diakoni","lower","other","2026-10-16",42
+"vid","vid_MAB5050-1_2025_autumn_1","MAB5050-1",2025,"Høst","programområde sosialt arbeid","higher","other","2026-10-16",42
+"vid","vid_MAB5050-1_2025_spring_1","MAB5050-1",2025,"Vår","programområde sosialt arbeid","higher","other","2026-10-16",42
+"vid","vid_MAB6056-1_2025_autumn_1","MAB6056-1",2025,"Høst","programområde sosialt arbeid","higher","other","2026-10-16",42
+"vid","vid_MAB6056-1_2025_spring_1","MAB6056-1",2025,"Vår","programområde sosialt arbeid","higher","other","2026-10-16",42
+"vid","vid_MACOMM5020-O-1_2025_autumn_1","MACOMM5020-O-1",2025,"Høst","Fakultet for teologi og samfunnsvitenskap","higher","english","2026-10-16",42
+"vid","vid_MACOMM5020-O-1_2025_spring_1","MACOMM5020-O-1",2025,"Vår","Fakultet for teologi og samfunnsvitenskap","higher","english","2026-10-16",42
+"vid","vid_MACOMM5050-S-1_2025_autumn_1","MACOMM5050-S-1",2025,"Høst","Fakultet for teologi og samfunnsvitenskap","higher","english","2026-10-16",42
+"vid","vid_MACOMM5050-S-1_2025_spring_1","MACOMM5050-S-1",2025,"Vår","Fakultet for teologi og samfunnsvitenskap","higher","english","2026-10-16",42
+"vid","vid_MAKS6000-1_2025_autumn_1","MAKS6000-1",2025,"Høst","Institutt for sykepleie","higher","other","2026-10-16",42
+"vid","vid_MAKS6000-1_2025_spring_1","MAKS6000-1",2025,"Vår","Institutt for sykepleie","higher","other","2026-10-16",42
+"vid","vid_MAKS6125-1_2025_autumn_1","MAKS6125-1",2025,"Høst","Institutt for sykepleie","higher","english","2026-10-16",42
+"vid","vid_MAKS6125-1_2025_spring_1","MAKS6125-1",2025,"Vår","Institutt for sykepleie","higher","english","2026-10-16",42
+"vid","vid_MAKSP5400-B-1_2025_autumn_1","MAKSP5400-B-1",2025,"Høst","Institutt for sykepleie","higher","other","2026-10-16",42
+"vid","vid_MAKSP5400-B-1_2025_spring_1","MAKSP5400-B-1",2025,"Vår","Institutt for sykepleie","higher","other","2026-10-16",42
+"vid","vid_MAKSP6200-O-1_2025_spring_3","MAKSP6200-O-1",2025,"Vår","Institutt for sykepleie","higher","other","2026-10-16",42
+"vid","vid_MAMIKA7010-1_2025_autumn_1","MAMIKA7010-1",2025,"Høst","programområde kultur og religion","higher","other","2026-10-16",42
+"vid","vid_MAMIKA7010-1_2025_spring_1","MAMIKA7010-1",2025,"Vår","programområde kultur og religion","higher","other","2026-10-16",42
+"vid","vid_MAPBU9010-1_2025_autumn_1","MAPBU9010-1",2025,"Høst","Institutt for helse","higher","other","2026-10-16",42
+"vid","vid_MAPBU9010-1_2025_spring_1","MAPBU9010-1",2025,"Vår","Institutt for helse","higher","other","2026-10-16",42
+"vid","vid_MAPBU9020-1_2025_autumn_1","MAPBU9020-1",2025,"Høst","Institutt for helse","higher","other","2026-10-16",42
+"vid","vid_MAPBU9020-1_2025_spring_1","MAPBU9020-1",2025,"Vår","Institutt for helse","higher","other","2026-10-16",42
+"vid","vid_MAPS5010-1_2025_autumn_3","MAPS5010-1",2025,"Høst","Institutt for helse","higher","other","2026-10-16",42
+"vid","vid_MAPS5010-1_2025_spring_3","MAPS5010-1",2025,"Vår","Institutt for helse","higher","other","2026-10-16",42
+"vid","vid_MARUS5030-1_2025_autumn_1","MARUS5030-1",2025,"Høst","programområde sosialt arbeid","higher","other","2026-10-16",42
+"vid","vid_MARUS5030-1_2025_spring_1","MARUS5030-1",2025,"Vår","programområde sosialt arbeid","higher","other","2026-10-16",42
+"vid","vid_MARUS6021-1_2025_autumn_1","MARUS6021-1",2025,"Høst","programområde sosialt arbeid","higher","other","2026-10-16",42
+"vid","vid_MARUS6021-1_2025_spring_1","MARUS6021-1",2025,"Vår","programområde sosialt arbeid","higher","other","2026-10-16",42
+"vid","vid_MASOS-418-1_2025_autumn_1","MASOS-418-1",2025,"Høst","programområde sosialt arbeid","higher","other","2026-10-16",42
+"vid","vid_MASOS-418-1_2025_spring_1","MASOS-418-1",2025,"Vår","programområde sosialt arbeid","higher","other","2026-10-16",42
+"vid","vid_MASOS-420-1_2025_autumn_1","MASOS-420-1",2025,"Høst","programområde sosialt arbeid","higher","english","2026-10-16",42
+"vid","vid_MASOS-420-1_2025_spring_1","MASOS-420-1",2025,"Vår","programområde sosialt arbeid","higher","english","2026-10-16",42
+"vid","vid_MATRS5250-1_2025_autumn_1","MATRS5250-1",2025,"Høst","programområde teologi","higher","english","2026-10-16",42
+"vid","vid_MATRS5250-1_2025_spring_1","MATRS5250-1",2025,"Vår","programområde teologi","higher","english","2026-10-16",42
+"vid","vid_PHD-DVP 902-1_2025_autumn_1","PHD-DVP 902-1",2025,"Høst","Senter for diakoni og profesjonell praksis","phd","english","2026-10-16",42
+"vid","vid_PHD-DVP 902-1_2025_spring_1","PHD-DVP 902-1",2025,"Vår","Senter for diakoni og profesjonell praksis","phd","english","2026-10-16",42
+"vid","vid_PHD-DVP 904-1_2025_autumn_1","PHD-DVP 904-1",2025,"Høst","Senter for diakoni og profesjonell praksis","phd","english","2026-10-16",42
+"vid","vid_PHD-DVP 904-1_2025_spring_1","PHD-DVP 904-1",2025,"Vår","Senter for diakoni og profesjonell praksis","phd","english","2026-10-16",42
+"vid","vid_PHD-DVP 952-1_2025_autumn_1","PHD-DVP 952-1",2025,"Høst","Senter for diakoni og profesjonell praksis","phd","english","2026-10-16",42
+"vid","vid_PHD-DVP 952-1_2025_spring_1","PHD-DVP 952-1",2025,"Vår","Senter for diakoni og profesjonell praksis","phd","english","2026-10-16",42
+"vid","vid_PHD-TR 903-1_2025_autumn_1","PHD-TR 903-1",2025,"Høst","Senter for global kristendom og religion","phd","other","2026-10-16",42
+"vid","vid_PHD-TR 903-1_2025_spring_1","PHD-TR 903-1",2025,"Vår","Senter for global kristendom og religion","phd","other","2026-10-16",42
+"vid","vid_PHDHELSE 901-1_2025_autumn_2","PHDHELSE 901-1",2025,"Høst","Senter for helse og samhandling","phd","english","2026-10-16",42
+"vid","vid_PROFTEOL1030-1_2025_autumn_1","PROFTEOL1030-1",2025,"Høst","programområde teologi","lower","other","2026-10-16",42
+"vid","vid_PROFTEOL1030-1_2025_spring_1","PROFTEOL1030-1",2025,"Vår","programområde teologi","lower","other","2026-10-16",42
+"vid","vid_PROFTEOL3030-1_2025_autumn_1","PROFTEOL3030-1",2025,"Høst","programområde teologi","lower","other","2026-10-16",42
+"vid","vid_PROFTEOL3030-1_2025_spring_1","PROFTEOL3030-1",2025,"Vår","programområde teologi","lower","other","2026-10-16",42
+"vid","vid_PROFTEOL5030-1_2025_autumn_1","PROFTEOL5030-1",2025,"Høst","programområde teologi","higher","english","2026-10-16",42
+"vid","vid_PROFTEOL5030-1_2025_spring_1","PROFTEOL5030-1",2025,"Vår","programområde teologi","higher","english","2026-10-16",42
+"vid","vid_PTU6200-1_2025_autumn_1","PTU6200-1",2025,"Høst","programområde teologi","higher","other","2026-10-16",42
+"vid","vid_PTU6200-1_2025_spring_1","PTU6200-1",2025,"Vår","programområde teologi","higher","other","2026-10-16",42
+"vid","vid_VULEVE8050-1_2025_spring_3","VULEVE8050-1",2025,"Vår","programområde verdibasert ledelse","continuing","other","2026-10-16",42
+"vid","vid_VUPLU8020-1_2025_autumn_1","VUPLU8020-1",2025,"Høst","programområde verdibasert ledelse","continuing","other","2026-10-16",42
+"vid","vid_VUPLU8020-1_2025_spring_1","VUPLU8020-1",2025,"Vår","programområde verdibasert ledelse","continuing","other","2026-10-16",42
+"vid","vid_VUSANFOR8010-1_2025_autumn_1","VUSANFOR8010-1",2025,"Høst","programområde teologi","continuing","other","2026-10-16",42
+"vid","vid_VUSANFOR8010-1_2025_spring_1","VUSANFOR8010-1",2025,"Vår","programområde teologi","continuing","other","2026-10-16",42
+"vid","vid_VUVEI5300-1_2025_autumn_3","VUVEI5300-1",2025,"Høst","Institutt for helse","continuing","other","2026-10-16",42
+"vid","vid_VUVEI5300-1_2025_spring_1","VUVEI5300-1",2025,"Vår","Institutt for helse","continuing","other","2026-10-16",42

@@ -178,6 +178,22 @@ every year DBH lists that version, which assumes the text did not change
 within a version (the site gives no date or history to check it). *Since:*
 2026-11-01.
 
+**VID vitenskapelige høgskole (DBH code 8208) joins the frame, from spring
+2024.** One of the ten institutions surveyed for the all-courses frame,
+configured on 2026-11-01 as `vid`. *Why:* its plans are public, one page per
+course (found in the site's sitemap by the code at the end of its URL), whose
+JSON holds the plan of every year and semester the course is taught in.
+*Consequence:* an offering gets the plan of its own year and semester from
+that JSON, or none; the site holds plans from spring 2024 (many spring 2024
+entries are empty), so offerings before 2024 (DBH has VID from 2016) have no
+plan. A page is stored once per offering, and the plan is cut from it when
+the data are built. An offering in a semester for which the page has no
+plan gets none, also when the page has the course's plan for the other
+semester of the year. Its full harvest waits for the pilot audits (below).
+*Rejected:* giving such an offering the plan of the nearest semester, which
+would take a plan the site does not publish for that semester. *Since:*
+2026-11-01.
+
 **Samas is excluded:** its website's course codes do not match DBH, and the
 teacher education courses are described only in programme PDFs (decided 2026-02).
 
