@@ -172,6 +172,23 @@ courses (UTV*) and others, about half the codes of 2025. robots.txt (nmh.no,
 www.nmh.no redirects there) disallows only Craft CMS's `/cpresources/`,
 `/vendor/` and `/cache/`.
 
+**KHiO.** Kunsthøgskolen i Oslo shows only the plan in force
+(`plan_years = "current"`): a page per course version,
+`https://khio.no/emner/{code}-{version}`, DBH's code with its version number
+in lower case (`/emner/kk202-4`, `/emner/cdpr528-1`; checked 2026-11-01). The
+code without a version, or one that does not exist, answers 404. The page has
+no year and shows the version's plan as it is now. A version no longer taught
+keeps its page with the title, the facts list and the plan's headings, and no
+text under them (`/emner/kk202-3`, `/emner/kk202-1`):
+`fetch_html_cols_single_khio()` treats it as a missing page ("Course version
+without a plan (soft 404)", outcome `not_found`). The study programme pages,
+`/studieprogrammer/{programme}`, list the course pages. A course taught in
+English has a full Norwegian page and an English one at `/en/courses/{code}`;
+the harvest reads the Norwegian one. The plan's headings are h2s ("Kort
+beskrivelse av emnet", "Læringsutbytte for emnet", "Undervisning og
+læringsformer", "Vurdering"), the coursework requirements under a paragraph
+sub-heading ("Arbeidskrav for emnet er:"). robots.txt has only comments.
+
 **USN.** The URL holds a version number that metadata cannot give:
 `https://www.usn.no/studier/studie-og-emneplaner/#/emne/{CODE}_{VERSION}_{YEAR}_{SEMESTER}`.
 Each version (1, 2, 3, …) is a revision valid for a range of years, and an

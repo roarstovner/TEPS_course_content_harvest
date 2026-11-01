@@ -337,9 +337,10 @@ REQUEST_COLUMNS <- c("http_status", "requested_at")
 #'
 #' "ok": a page (or a PDF's text) was stored; "not_found": HTTP 404 or 410,
 #' HTTP 400 (UiB's answer for a semester before its first), or the site's
-#' own not-found page (HVL's "Course not found (soft 404)"); "forbidden":
-#' HTTP 403 to this page, among other answers (a page closed to the public; a
-#' site that answers 403 to every request refuses the harvest, which stops,
+#' own not-found page (HVL's "Course not found (soft 404)"; KHiO's empty page
+#' of a course version no longer taught); "forbidden": HTTP 403 to this
+#' page, among other answers (a page closed to the public; a site that
+#' answers 403 to every request refuses the harvest, which stops,
 #' refusal_watch()); "shell": the site answers that it has nothing for that
 #' year (NTNU's "No course information available for this academic year");
 #' "server_error": HTTP 5xx; "timeout": no answer (a timeout or a failed

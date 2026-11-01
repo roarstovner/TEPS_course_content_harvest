@@ -9,13 +9,13 @@ A new year is harvested with the same code as the first harvest:
 order:
 
 1.  **September-November: the sites that show only the current plan.**
-    UiO, MF, NMBU, NHH and Steiner replace a plan when the next academic
-    year begins, so a year without a harvest has no plans for them (see
-    “Sites that show only the current plan”). Harvest them in every
-    academic year, whether or not DBH has a new year:
+    UiO, MF, NMBU, NHH, KHiO and Steiner replace a plan when the next
+    academic year begins, so a year without a harvest has no plans for
+    them (see “Sites that show only the current plan”). Harvest them in
+    every academic year, whether or not DBH has a new year:
 
     ``` r
-    harvest_all(institutions = c("uio", "mf", "nmbu", "nhh", "steiner"))
+    harvest_all(institutions = c("uio", "mf", "nmbu", "nhh", "khio", "steiner"))
     ```
 
     This fetches again the pages of every course of the latest DBH year
@@ -440,10 +440,10 @@ the longest matching rule wins, `allow` on a tie. Since 2026-10-17:
 
 ## Sites that show only the current plan
 
-UiO, MF, NMBU, NHH and Steiner (`plan_years = "current"`) publish only
-the plan in force, without a year in the URL. A harvest therefore holds
-the plans of the academic year (August-July) it was made in, and a later
-harvest cannot recover them. Their raw files are snapshots:
+UiO, MF, NMBU, NHH, KHiO and Steiner (`plan_years = "current"`) publish
+only the plan in force, without a year in the URL. A harvest therefore
+holds the plans of the academic year (August-July) it was made in, and a
+later harvest cannot recover them. Their raw files are snapshots:
 
 - Each harvest of such a site fetches the pages of its latest DBH year
   again and adds them as a dated raw file, stamped `harvested_at`.

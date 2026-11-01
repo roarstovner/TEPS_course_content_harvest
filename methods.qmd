@@ -161,6 +161,23 @@ text only, "Gjennomføres: 2. studieår", and differing by programme); matching
 project variants to the ensemble's one page by code stem, which would give a
 variant a plan the handbook does not name. *Since:* 2026-10-31.
 
+**Kunsthøgskolen i Oslo (DBH code 6220) joins the frame, with the plan in
+force only.** One of the ten institutions surveyed for the all-courses frame,
+configured on 2026-11-01 as `khio`. *Why:* its plans are public HTML pages, one
+per course version at a URL built from DBH's code with its version number
+(`/emner/kk202-4`). *Consequence:* the page has no year and shows the
+version's plan as it is now, so KHiO is harvested once in every academic year
+as UiO, MF, NMBU and NHH, and its offerings before 2026/27 (DBH has KHiO from
+2002) have no plan. A harvest gives plans only for the academic year it is
+made in, so the pilot's gate numbers, read on the offerings of that year,
+wait for a DBH snapshot that has it. A version no longer taught keeps a page
+with the headings and no text and counts as not found. Courses taught in
+English get the Norwegian page, which holds the full plan. Its full harvest
+waits for the pilot audits (below). *Rejected:* serving a version's page to
+every year DBH lists that version, which assumes the text did not change
+within a version (the site gives no date or history to check it). *Since:*
+2026-11-01.
+
 **Samas is excluded:** its website's course codes do not match DBH, and the
 teacher education courses are described only in programme PDFs (decided 2026-02).
 

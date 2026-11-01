@@ -324,6 +324,27 @@ institution_configs <- list(
     section_subheading_selector = "p"
   ),
 
+  khio = list(
+    code = "6220",
+    # a page per course version, /emner/{code}-{version} (DBH's code with
+    # its version number); a version no longer taught keeps a page with the
+    # headings and no text (fetch_html_cols_single_khio())
+    strategy = "standard",
+    fetch_fn = fetch_html_cols_single_khio,
+    # The title, the facts list and the plan
+    selector = "main section.content",
+    # the title and the facts list (credits, code, the programmes the course
+    # belongs to, which change from year to year)
+    facts = c("main section.content h1", "main section.content .programme-meta"),
+    # the page shows the version's plan as it is now, without a year
+    plan_years = "current",
+    # h2s ("Kort beskrivelse av emnet", "Læringsutbytte for emnet",
+    # "Undervisning og læringsformer", "Vurdering"); coursework under a
+    # paragraph sub-heading ("Arbeidskrav:")
+    section_strategy = "html",
+    section_subheading_selector = "p"
+  ),
+
   mf = list(
     code = "8221",
     strategy = "standard",

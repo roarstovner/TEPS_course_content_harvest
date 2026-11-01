@@ -14,6 +14,7 @@ add_course_url <- function(df) {
         "hvl"     ~ add_course_url_hvl(course_code, year, semester_name),
         "himolde" ~ NA_character_,  # HiMolde's department folders come from its listings via resolve_course_urls()
 
+        "khio"    ~ add_course_url_khio(course_code_raw),
         "mf"      ~ add_course_url_mf(course_code),
         "nla"     ~ add_course_url_nla(course_code, year, semester_name),
         "nhh"     ~ NA_character_,  # NHH's page names come from its site search via resolve_course_urls()
@@ -111,6 +112,12 @@ add_course_url_inn <- function(course_code, year, semester) {
 
 add_course_url_mf <- function(course_code) {
   glue::glue("https://mf.no/studier/emner/{tolower(course_code)}")
+}
+
+# DBH's code with its version number ("KK202-4"): each version has its own
+# page, and the code without it has none.
+add_course_url_khio <- function(course_code_raw) {
+  glue::glue("https://khio.no/emner/{tolower(course_code_raw)}")
 }
 
 add_course_url_nla <- function(course_code, year, semester) {

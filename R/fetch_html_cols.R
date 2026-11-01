@@ -368,3 +368,19 @@ fetch_html_cols_single_hvl <- function(url) {
 
   resp
 }
+
+# KHiO: a course version no longer taught keeps its page with the title, the
+# facts list and the plan's headings, and no text under them (KK202-3,
+# checked 2026-11-01). Such a page counts as not found.
+fetch_html_cols_single_khio <- function(url) {
+  resp <- site_request(url) |> httr2::req_perform()
+  page <- rvest::read_html(httr2::resp_body_string(resp))
+  text <- rvest::html_elements(page, xpath = paste0(
+    "//main//section[contains(@class, 'content')]//*[not(self::h1 or self::h2)]",
+    "[not(ancestor-or-self::*[contains(@class, 'programme-meta')])][normalize-space(text())]"))
+  if (length(text) == 0) {
+    rlang::abort("Course version without a plan (soft 404)", class = "khio_not_found_error",
+                 http_status = httr2::resp_status(resp))
+  }
+  resp
+}

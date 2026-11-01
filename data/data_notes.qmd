@@ -239,6 +239,16 @@ Figures are in the tables above; the notes say why.
 
 ---
 
+### KHiO (Oslo National Academy of the Arts)
+
+- Added 2026-11-01 (all-courses frame). Only the plan in force is published (`plan_years = "current"`; see "Year coverage"): no plan for offerings before the academic year of the first harvest (2026/27)
+- A page per course version, `/emner/{code}-{version}` (DBH's code with its version number, lower case: KK202-4 is `/emner/kk202-4`); the code without a version has no page. A version no longer taught keeps a page with its title, facts list and the plan's headings and no text under them (KK202-3, 2026-11-01): outcome `not_found`, no plan
+- Read from `main section.content`: the title, the facts list (credits, code, the programmes the course belongs to) and the plan; the title and facts list are in no section. The page has no year: it shows the version's plan as it is now
+- Courses taught in English (61 of the 703 offerings of 2025) have a full Norwegian page, which is used, and an English one at `/en/courses/{code}`
+- robots.txt (read 2026-10-16) has only comments: nothing disallowed
+
+---
+
 ### MF (MF Norwegian School of Theology)
 
 - Only the plan in force is published (`plan_years = "current"`; see "Year coverage"). Selector `article .content-body`: the title and code, the facts box (credits, semester, language, programmes; without its buttons) and the plan; the title and facts box are in no section

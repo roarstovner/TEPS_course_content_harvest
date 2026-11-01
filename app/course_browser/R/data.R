@@ -11,6 +11,7 @@ institution_labels <- c(
   hivolda  = "HVO",
   hvl      = "HVL",
   inn      = "INN",
+  khio     = "KHiO",
   mf       = "MF",
   nhh      = "NHH",
   nih      = "NIH",

@@ -1,0 +1,199 @@
+"institution","course_id","course_code_raw","year","semester_name","department_name","level","language","dbh_snapshot","seed"
+"khio","khio_BK204-1_2025_autumn_1","BK204-1",2025,"Høst","Kunstakademiet","lower","other","2026-10-16",42
+"khio","khio_BK204-1_2025_spring_1","BK204-1",2025,"Vår","Kunstakademiet","lower","other","2026-10-16",42
+"khio","khio_BK213-1_2025_autumn_1","BK213-1",2025,"Høst","Kunstakademiet","lower","other","2026-10-16",42
+"khio","khio_BK213-1_2025_spring_1","BK213-1",2025,"Vår","Kunstakademiet","lower","other","2026-10-16",42
+"khio","khio_BK216-1_2025_autumn_1","BK216-1",2025,"Høst","Kunstakademiet","lower","other","2026-10-16",42
+"khio","khio_BK216-1_2025_spring_1","BK216-1",2025,"Vår","Kunstakademiet","lower","other","2026-10-16",42
+"khio","khio_BK306-1_2025_autumn_1","BK306-1",2025,"Høst","Kunstakademiet","lower","other","2026-10-16",42
+"khio","khio_BK306-1_2025_spring_1","BK306-1",2025,"Vår","Kunstakademiet","lower","other","2026-10-16",42
+"khio","khio_BK316-1_2025_autumn_1","BK316-1",2025,"Høst","Kunstakademiet","lower","other","2026-10-16",42
+"khio","khio_BK316-1_2025_spring_1","BK316-1",2025,"Vår","Kunstakademiet","lower","other","2026-10-16",42
+"khio","khio_CDPR507-1_2025_autumn_1","CDPR507-1",2025,"Høst","Teaterhøgskolen","higher","english","2026-10-16",42
+"khio","khio_CDPR507-1_2025_spring_1","CDPR507-1",2025,"Vår","Teaterhøgskolen","higher","english","2026-10-16",42
+"khio","khio_CDPR508-1_2025_autumn_1","CDPR508-1",2025,"Høst","Teaterhøgskolen","higher","other","2026-10-16",42
+"khio","khio_CDPR508-1_2025_spring_1","CDPR508-1",2025,"Vår","Teaterhøgskolen","higher","other","2026-10-16",42
+"khio","khio_CDPR518-1_2025_autumn_1","CDPR518-1",2025,"Høst","Teaterhøgskolen","higher","other","2026-10-16",42
+"khio","khio_CDPR518-1_2025_spring_1","CDPR518-1",2025,"Vår","Teaterhøgskolen","higher","other","2026-10-16",42
+"khio","khio_CDPR528-1_2025_autumn_1","CDPR528-1",2025,"Høst","Teaterhøgskolen","higher","english","2026-10-16",42
+"khio","khio_CDPR528-1_2025_spring_1","CDPR528-1",2025,"Vår","Teaterhøgskolen","higher","english","2026-10-16",42
+"khio","khio_DA105-1_2025_autumn_1","DA105-1",2025,"Høst","Dans","lower","other","2026-10-16",42
+"khio","khio_DA105-1_2025_spring_1","DA105-1",2025,"Vår","Dans","lower","other","2026-10-16",42
+"khio","khio_DA109-1_2025_autumn_1","DA109-1",2025,"Høst","Dans","lower","other","2026-10-16",42
+"khio","khio_DA109-1_2025_spring_1","DA109-1",2025,"Vår","Dans","lower","other","2026-10-16",42
+"khio","khio_DA207-1_2025_autumn_1","DA207-1",2025,"Høst","Dans","lower","other","2026-10-16",42
+"khio","khio_DA207-1_2025_spring_1","DA207-1",2025,"Vår","Dans","lower","other","2026-10-16",42
+"khio","khio_DA210-1_2025_autumn_1","DA210-1",2025,"Høst","Dans","lower","other","2026-10-16",42
+"khio","khio_DA210-1_2025_spring_1","DA210-1",2025,"Vår","Dans","lower","other","2026-10-16",42
+"khio","khio_DA308-1_2025_autumn_1","DA308-1",2025,"Høst","Dans","lower","other","2026-10-16",42
+"khio","khio_DA308-1_2025_spring_1","DA308-1",2025,"Vår","Dans","lower","other","2026-10-16",42
+"khio","khio_DA512-2_2025_autumn_1","DA512-2",2025,"Høst","Dans","higher","english","2026-10-16",42
+"khio","khio_DA512-2_2025_spring_1","DA512-2",2025,"Vår","Dans","higher","english","2026-10-16",42
+"khio","khio_DA550-2_2025_autumn_1","DA550-2",2025,"Høst","Dans","higher","english","2026-10-16",42
+"khio","khio_DA550-2_2025_spring_1","DA550-2",2025,"Vår","Dans","higher","english","2026-10-16",42
+"khio","khio_DE102-1_2025_autumn_1","DE102-1",2025,"Høst","Design","lower","other","2026-10-16",42
+"khio","khio_DE102-1_2025_spring_1","DE102-1",2025,"Vår","Design","lower","other","2026-10-16",42
+"khio","khio_DE504-2_2025_autumn_1","DE504-2",2025,"Høst","Design","higher","other","2026-10-16",42
+"khio","khio_DE504-2_2025_spring_1","DE504-2",2025,"Vår","Design","higher","other","2026-10-16",42
+"khio","khio_DE513-2_2025_autumn_1","DE513-2",2025,"Høst","Design","higher","other","2026-10-16",42
+"khio","khio_DE513-2_2025_spring_1","DE513-2",2025,"Vår","Design","higher","other","2026-10-16",42
+"khio","khio_DE523-3_2025_autumn_1","DE523-3",2025,"Høst","Design","higher","other","2026-10-16",42
+"khio","khio_DE523-3_2025_spring_1","DE523-3",2025,"Vår","Design","higher","other","2026-10-16",42
+"khio","khio_DE531-1_2025_autumn_1","DE531-1",2025,"Høst","Design","higher","other","2026-10-16",42
+"khio","khio_DE531-1_2025_spring_1","DE531-1",2025,"Vår","Design","higher","other","2026-10-16",42
+"khio","khio_DE541-1_2025_autumn_1","DE541-1",2025,"Høst","Design","higher","other","2026-10-16",42
+"khio","khio_DE541-1_2025_spring_1","DE541-1",2025,"Vår","Design","higher","other","2026-10-16",42
+"khio","khio_DE551-1_2025_autumn_1","DE551-1",2025,"Høst","Design","higher","other","2026-10-16",42
+"khio","khio_DE551-1_2025_spring_1","DE551-1",2025,"Vår","Design","higher","other","2026-10-16",42
+"khio","khio_DG900-1_2025_autumn_1","DG900-1",2025,"Høst","KHiO (uspesifisert underenhet)","phd","other","2026-10-16",42
+"khio","khio_DG900-1_2025_spring_1","DG900-1",2025,"Vår","KHiO (uspesifisert underenhet)","phd","other","2026-10-16",42
+"khio","khio_DG930-1_2025_autumn_1","DG930-1",2025,"Høst","KHiO (uspesifisert underenhet)","phd","other","2026-10-16",42
+"khio","khio_DG930-1_2025_spring_1","DG930-1",2025,"Vår","KHiO (uspesifisert underenhet)","phd","other","2026-10-16",42
+"khio","khio_DG950-1_2025_autumn_1","DG950-1",2025,"Høst","KHiO (uspesifisert underenhet)","phd","other","2026-10-16",42
+"khio","khio_DG950-1_2025_spring_1","DG950-1",2025,"Vår","KHiO (uspesifisert underenhet)","phd","other","2026-10-16",42
+"khio","khio_GI105-2_2025_autumn_1","GI105-2",2025,"Høst","Design","lower","other","2026-10-16",42
+"khio","khio_GI105-2_2025_spring_1","GI105-2",2025,"Vår","Design","lower","other","2026-10-16",42
+"khio","khio_GI107-2_2025_autumn_1","GI107-2",2025,"Høst","Design","lower","other","2026-10-16",42
+"khio","khio_GI107-2_2025_spring_1","GI107-2",2025,"Vår","Design","lower","other","2026-10-16",42
+"khio","khio_GI108-2_2025_autumn_1","GI108-2",2025,"Høst","Design","lower","other","2026-10-16",42
+"khio","khio_GI108-2_2025_spring_1","GI108-2",2025,"Vår","Design","lower","other","2026-10-16",42
+"khio","khio_GI212-1_2025_autumn_1","GI212-1",2025,"Høst","Design","lower","other","2026-10-16",42
+"khio","khio_GI212-1_2025_spring_1","GI212-1",2025,"Vår","Design","lower","other","2026-10-16",42
+"khio","khio_GI216-1_2025_autumn_1","GI216-1",2025,"Høst","Design","lower","other","2026-10-16",42
+"khio","khio_GI216-1_2025_spring_1","GI216-1",2025,"Vår","Design","lower","other","2026-10-16",42
+"khio","khio_IM102-1_2025_autumn_1","IM102-1",2025,"Høst","Design","lower","other","2026-10-16",42
+"khio","khio_IM102-1_2025_spring_1","IM102-1",2025,"Vår","Design","lower","other","2026-10-16",42
+"khio","khio_IM106-1_2025_autumn_1","IM106-1",2025,"Høst","Design","lower","other","2026-10-16",42
+"khio","khio_IM106-1_2025_spring_1","IM106-1",2025,"Vår","Design","lower","other","2026-10-16",42
+"khio","khio_IM211-1_2025_autumn_1","IM211-1",2025,"Høst","Design","lower","other","2026-10-16",42
+"khio","khio_IM211-1_2025_spring_1","IM211-1",2025,"Vår","Design","lower","other","2026-10-16",42
+"khio","khio_IM350-3_2025_autumn_1","IM350-3",2025,"Høst","Design","lower","other","2026-10-16",42
+"khio","khio_IM350-3_2025_spring_1","IM350-3",2025,"Vår","Design","lower","other","2026-10-16",42
+"khio","khio_JA202-1_2025_autumn_1","JA202-1",2025,"Høst","Dans","lower","other","2026-10-16",42
+"khio","khio_JA202-1_2025_spring_1","JA202-1",2025,"Vår","Dans","lower","other","2026-10-16",42
+"khio","khio_JA206-1_2025_autumn_1","JA206-1",2025,"Høst","Dans","lower","other","2026-10-16",42
+"khio","khio_JA206-1_2025_spring_1","JA206-1",2025,"Vår","Dans","lower","other","2026-10-16",42
+"khio","khio_JA212-1_2025_autumn_1","JA212-1",2025,"Høst","Dans","lower","other","2026-10-16",42
+"khio","khio_JA212-1_2025_spring_1","JA212-1",2025,"Vår","Dans","lower","other","2026-10-16",42
+"khio","khio_KB104-2_2025_autumn_1","KB104-2",2025,"Høst","Dans","lower","other","2026-10-16",42
+"khio","khio_KB104-2_2025_spring_1","KB104-2",2025,"Vår","Dans","lower","other","2026-10-16",42
+"khio","khio_KB105-2_2025_autumn_1","KB105-2",2025,"Høst","Dans","lower","other","2026-10-16",42
+"khio","khio_KB105-2_2025_spring_1","KB105-2",2025,"Vår","Dans","lower","other","2026-10-16",42
+"khio","khio_KB106-2_2025_autumn_1","KB106-2",2025,"Høst","Dans","lower","other","2026-10-16",42
+"khio","khio_KB106-2_2025_spring_1","KB106-2",2025,"Vår","Dans","lower","other","2026-10-16",42
+"khio","khio_KB107-1_2025_autumn_1","KB107-1",2025,"Høst","Dans","lower","other","2026-10-16",42
+"khio","khio_KB107-1_2025_spring_1","KB107-1",2025,"Vår","Dans","lower","other","2026-10-16",42
+"khio","khio_KB108-1_2025_autumn_1","KB108-1",2025,"Høst","Dans","lower","other","2026-10-16",42
+"khio","khio_KB108-1_2025_spring_1","KB108-1",2025,"Vår","Dans","lower","other","2026-10-16",42
+"khio","khio_KB201-1_2025_autumn_1","KB201-1",2025,"Høst","Dans","lower","other","2026-10-16",42
+"khio","khio_KB201-1_2025_spring_1","KB201-1",2025,"Vår","Dans","lower","other","2026-10-16",42
+"khio","khio_KB207-1_2025_autumn_1","KB207-1",2025,"Høst","Dans","lower","other","2026-10-16",42
+"khio","khio_KB207-1_2025_spring_1","KB207-1",2025,"Vår","Dans","lower","other","2026-10-16",42
+"khio","khio_KB217-1_2025_autumn_1","KB217-1",2025,"Høst","Dans","lower","other","2026-10-16",42
+"khio","khio_KB217-1_2025_spring_1","KB217-1",2025,"Vår","Dans","lower","other","2026-10-16",42
+"khio","khio_KB302-1_2025_autumn_1","KB302-1",2025,"Høst","Dans","lower","other","2026-10-16",42
+"khio","khio_KB302-1_2025_spring_1","KB302-1",2025,"Vår","Dans","lower","other","2026-10-16",42
+"khio","khio_KB309-1_2025_autumn_1","KB309-1",2025,"Høst","Dans","lower","other","2026-10-16",42
+"khio","khio_KB309-1_2025_spring_1","KB309-1",2025,"Vår","Dans","lower","other","2026-10-16",42
+"khio","khio_KB317-1_2025_autumn_1","KB317-1",2025,"Høst","Dans","lower","other","2026-10-16",42
+"khio","khio_KB317-1_2025_spring_1","KB317-1",2025,"Vår","Dans","lower","other","2026-10-16",42
+"khio","khio_KK105-1_2025_autumn_1","KK105-1",2025,"Høst","Design","lower","other","2026-10-16",42
+"khio","khio_KK105-1_2025_spring_1","KK105-1",2025,"Vår","Design","lower","other","2026-10-16",42
+"khio","khio_KO501-2_2025_autumn_1","KO501-2",2025,"Høst","Dans","higher","other","2026-10-16",42
+"khio","khio_KO501-2_2025_spring_1","KO501-2",2025,"Vår","Dans","higher","other","2026-10-16",42
+"khio","khio_KO502-2_2025_autumn_1","KO502-2",2025,"Høst","Dans","higher","other","2026-10-16",42
+"khio","khio_KO502-2_2025_spring_1","KO502-2",2025,"Vår","Dans","higher","other","2026-10-16",42
+"khio","khio_KO504-2_2025_autumn_1","KO504-2",2025,"Høst","Dans","higher","other","2026-10-16",42
+"khio","khio_KO504-2_2025_spring_1","KO504-2",2025,"Vår","Dans","higher","other","2026-10-16",42
+"khio","khio_KO514-2_2025_autumn_1","KO514-2",2025,"Høst","Dans","higher","other","2026-10-16",42
+"khio","khio_KO514-2_2025_spring_1","KO514-2",2025,"Vår","Dans","higher","other","2026-10-16",42
+"khio","khio_KON121-1_2025_autumn_1","KON121-1",2025,"Høst","Kunst og håndverk","lower","other","2026-10-16",42
+"khio","khio_KON121-1_2025_spring_2","KON121-1",2025,"Vår","Kunst og håndverk","lower","other","2026-10-16",42
+"khio","khio_KON231-1_2025_autumn_1","KON231-1",2025,"Høst","Kunst og håndverk","lower","other","2026-10-16",42
+"khio","khio_KON231-1_2025_spring_1","KON231-1",2025,"Vår","Kunst og håndverk","lower","other","2026-10-16",42
+"khio","khio_KPG121-1_2025_autumn_1","KPG121-1",2025,"Høst","Kunst og håndverk","lower","other","2026-10-16",42
+"khio","khio_KPG121-1_2025_spring_2","KPG121-1",2025,"Vår","Kunst og håndverk","lower","other","2026-10-16",42
+"khio","khio_KPG361-1_2025_autumn_1","KPG361-1",2025,"Høst","Kunst og håndverk","lower","other","2026-10-16",42
+"khio","khio_KPG361-1_2025_spring_2","KPG361-1",2025,"Vår","Kunst og håndverk","lower","other","2026-10-16",42
+"khio","khio_KPK231-1_2025_autumn_1","KPK231-1",2025,"Høst","Kunst og håndverk","lower","other","2026-10-16",42
+"khio","khio_KPK231-1_2025_spring_1","KPK231-1",2025,"Vår","Kunst og håndverk","lower","other","2026-10-16",42
+"khio","khio_KPM241-1_2025_autumn_1","KPM241-1",2025,"Høst","Kunst og håndverk","lower","other","2026-10-16",42
+"khio","khio_KPM241-1_2025_spring_2","KPM241-1",2025,"Vår","Kunst og håndverk","lower","other","2026-10-16",42
+"khio","khio_KPM361-1_2025_autumn_1","KPM361-1",2025,"Høst","Kunst og håndverk","lower","other","2026-10-16",42
+"khio","khio_KPM361-1_2025_spring_2","KPM361-1",2025,"Vår","Kunst og håndverk","lower","other","2026-10-16",42
+"khio","khio_KPT121-1_2025_autumn_1","KPT121-1",2025,"Høst","Kunst og håndverk","lower","other","2026-10-16",42
+"khio","khio_KPT121-1_2025_spring_2","KPT121-1",2025,"Vår","Kunst og håndverk","lower","other","2026-10-16",42
+"khio","khio_KR504-2_2025_autumn_1","KR504-2",2025,"Høst","Kunst og håndverk","higher","other","2026-10-16",42
+"khio","khio_KR504-2_2025_spring_1","KR504-2",2025,"Vår","Kunst og håndverk","higher","other","2026-10-16",42
+"khio","khio_KR524-2_2025_autumn_1","KR524-2",2025,"Høst","Kunst og håndverk","higher","other","2026-10-16",42
+"khio","khio_KR524-2_2025_spring_1","KR524-2",2025,"Vår","Kunst og håndverk","higher","other","2026-10-16",42
+"khio","khio_KR535-1_2025_autumn_1","KR535-1",2025,"Høst","Kunst og håndverk","higher","other","2026-10-16",42
+"khio","khio_KR535-1_2025_spring_1","KR535-1",2025,"Vår","Kunst og håndverk","higher","other","2026-10-16",42
+"khio","khio_KR537-1_2025_autumn_1","KR537-1",2025,"Høst","Kunst og håndverk","higher","other","2026-10-16",42
+"khio","khio_KR537-1_2025_spring_1","KR537-1",2025,"Vår","Kunst og håndverk","higher","other","2026-10-16",42
+"khio","khio_MK513-1_2025_autumn_1","MK513-1",2025,"Høst","Kunst og håndverk","higher","other","2026-10-16",42
+"khio","khio_MK513-1_2025_spring_1","MK513-1",2025,"Vår","Kunst og håndverk","higher","other","2026-10-16",42
+"khio","khio_MK521-1_2025_autumn_1","MK521-1",2025,"Høst","Kunst og håndverk","higher","other","2026-10-16",42
+"khio","khio_MK521-1_2025_spring_1","MK521-1",2025,"Vår","Kunst og håndverk","higher","other","2026-10-16",42
+"khio","khio_MS206-2_2025_autumn_1","MS206-2",2025,"Høst","Dans","lower","other","2026-10-16",42
+"khio","khio_MS206-2_2025_spring_1","MS206-2",2025,"Vår","Dans","lower","other","2026-10-16",42
+"khio","khio_MS309-2_2025_autumn_1","MS309-2",2025,"Høst","Dans","lower","other","2026-10-16",42
+"khio","khio_MS309-2_2025_spring_1","MS309-2",2025,"Vår","Dans","lower","other","2026-10-16",42
+"khio","khio_OP402-1_2025_autumn_1","OP402-1",2025,"Høst","Operahøgskolen","lower","other","2026-10-16",42
+"khio","khio_OP402-1_2025_spring_1","OP402-1",2025,"Vår","Operahøgskolen","lower","other","2026-10-16",42
+"khio","khio_OP403-1_2025_autumn_1","OP403-1",2025,"Høst","Operahøgskolen","lower","other","2026-10-16",42
+"khio","khio_OP403-1_2025_spring_1","OP403-1",2025,"Vår","Operahøgskolen","lower","other","2026-10-16",42
+"khio","khio_OP404-1_2025_autumn_1","OP404-1",2025,"Høst","Operahøgskolen","lower","other","2026-10-16",42
+"khio","khio_OP404-1_2025_spring_1","OP404-1",2025,"Vår","Operahøgskolen","lower","other","2026-10-16",42
+"khio","khio_OP406-1_2025_autumn_1","OP406-1",2025,"Høst","Operahøgskolen","lower","other","2026-10-16",42
+"khio","khio_OP406-1_2025_spring_1","OP406-1",2025,"Vår","Operahøgskolen","lower","other","2026-10-16",42
+"khio","khio_OP524-1_2025_autumn_1","OP524-1",2025,"Høst","Operahøgskolen","higher","other","2026-10-16",42
+"khio","khio_OP524-1_2025_spring_1","OP524-1",2025,"Vår","Operahøgskolen","higher","other","2026-10-16",42
+"khio","khio_OP541-1_2025_autumn_1","OP541-1",2025,"Høst","Operahøgskolen","higher","other","2026-10-16",42
+"khio","khio_OP541-1_2025_spring_1","OP541-1",2025,"Vår","Operahøgskolen","higher","other","2026-10-16",42
+"khio","khio_OP542-1_2025_autumn_1","OP542-1",2025,"Høst","Operahøgskolen","higher","other","2026-10-16",42
+"khio","khio_OP542-1_2025_spring_1","OP542-1",2025,"Vår","Operahøgskolen","higher","other","2026-10-16",42
+"khio","khio_PPU802-1_2025_autumn_1","PPU802-1",2025,"Høst","Dans","lower","other","2026-10-16",42
+"khio","khio_PPU802-1_2025_spring_1","PPU802-1",2025,"Vår","Dans","lower","other","2026-10-16",42
+"khio","khio_PPU803-1_2025_autumn_1","PPU803-1",2025,"Høst","Dans","lower","other","2026-10-16",42
+"khio","khio_PPU803-1_2025_spring_1","PPU803-1",2025,"Vår","Dans","lower","other","2026-10-16",42
+"khio","khio_RE201-2_2025_autumn_1","RE201-2",2025,"Høst","Teaterhøgskolen","lower","other","2026-10-16",42
+"khio","khio_RE201-2_2025_spring_1","RE201-2",2025,"Vår","Teaterhøgskolen","lower","other","2026-10-16",42
+"khio","khio_RE301-1_2025_autumn_1","RE301-1",2025,"Høst","Teaterhøgskolen","lower","other","2026-10-16",42
+"khio","khio_RE301-1_2025_spring_1","RE301-1",2025,"Vår","Teaterhøgskolen","lower","other","2026-10-16",42
+"khio","khio_TE508-2_2025_spring_3","TE508-2",2025,"Vår","Teaterhøgskolen","higher","other","2026-10-16",42
+"khio","khio_TE5103-1_2025_autumn_1","TE5103-1",2025,"Høst","Teaterhøgskolen","higher","english","2026-10-16",42
+"khio","khio_TE5103-1_2025_spring_2","TE5103-1",2025,"Vår","Teaterhøgskolen","higher","english","2026-10-16",42
+"khio","khio_TE5104-1_2025_autumn_1","TE5104-1",2025,"Høst","Teaterhøgskolen","higher","english","2026-10-16",42
+"khio","khio_TE5104-1_2025_spring_2","TE5104-1",2025,"Vår","Teaterhøgskolen","higher","english","2026-10-16",42
+"khio","khio_TE5105-1_2025_autumn_1","TE5105-1",2025,"Høst","Teaterhøgskolen","higher","english","2026-10-16",42
+"khio","khio_TE5105-1_2025_spring_2","TE5105-1",2025,"Vår","Teaterhøgskolen","higher","english","2026-10-16",42
+"khio","khio_TE5112-1_2025_autumn_1","TE5112-1",2025,"Høst","Teaterhøgskolen","higher","english","2026-10-16",42
+"khio","khio_TE5112-1_2025_spring_1","TE5112-1",2025,"Vår","Teaterhøgskolen","higher","english","2026-10-16",42
+"khio","khio_TE5113-1_2025_autumn_1","TE5113-1",2025,"Høst","Teaterhøgskolen","higher","english","2026-10-16",42
+"khio","khio_TE5113-1_2025_spring_1","TE5113-1",2025,"Vår","Teaterhøgskolen","higher","english","2026-10-16",42
+"khio","khio_TE5114-1_2025_autumn_1","TE5114-1",2025,"Høst","Teaterhøgskolen","higher","english","2026-10-16",42
+"khio","khio_TE5114-1_2025_spring_1","TE5114-1",2025,"Vår","Teaterhøgskolen","higher","english","2026-10-16",42
+"khio","khio_TE5201-1_2025_autumn_2","TE5201-1",2025,"Høst","Teaterhøgskolen","higher","english","2026-10-16",42
+"khio","khio_TE526-1_2025_autumn_3","TE526-1",2025,"Høst","Teaterhøgskolen","higher","other","2026-10-16",42
+"khio","khio_TE526-1_2025_spring_1","TE526-1",2025,"Vår","Teaterhøgskolen","higher","other","2026-10-16",42
+"khio","khio_TE527-1_2025_autumn_3","TE527-1",2025,"Høst","Teaterhøgskolen","higher","other","2026-10-16",42
+"khio","khio_TE527-1_2025_spring_1","TE527-1",2025,"Vår","Teaterhøgskolen","higher","other","2026-10-16",42
+"khio","khio_TE550-2_2025_autumn_3","TE550-2",2025,"Høst","Teaterhøgskolen","higher","other","2026-10-16",42
+"khio","khio_TE550-2_2025_spring_1","TE550-2",2025,"Vår","Teaterhøgskolen","higher","other","2026-10-16",42
+"khio","khio_TS107-2_2025_autumn_1","TS107-2",2025,"Høst","Teaterhøgskolen","lower","other","2026-10-16",42
+"khio","khio_TS107-2_2025_spring_1","TS107-2",2025,"Vår","Teaterhøgskolen","lower","other","2026-10-16",42
+"khio","khio_TS109-2_2025_autumn_1","TS109-2",2025,"Høst","Teaterhøgskolen","lower","other","2026-10-16",42
+"khio","khio_TS109-2_2025_spring_1","TS109-2",2025,"Vår","Teaterhøgskolen","lower","other","2026-10-16",42
+"khio","khio_TS206-2_2025_autumn_1","TS206-2",2025,"Høst","Teaterhøgskolen","lower","other","2026-10-16",42
+"khio","khio_TS206-2_2025_spring_1","TS206-2",2025,"Vår","Teaterhøgskolen","lower","other","2026-10-16",42
+"khio","khio_TS208-1_2025_autumn_1","TS208-1",2025,"Høst","Teaterhøgskolen","lower","other","2026-10-16",42
+"khio","khio_TS208-1_2025_spring_1","TS208-1",2025,"Vår","Teaterhøgskolen","lower","other","2026-10-16",42
+"khio","khio_TS210-2_2025_autumn_1","TS210-2",2025,"Høst","Teaterhøgskolen","lower","other","2026-10-16",42
+"khio","khio_TS210-2_2025_spring_1","TS210-2",2025,"Vår","Teaterhøgskolen","lower","other","2026-10-16",42
+"khio","khio_TS306-2_2025_autumn_1","TS306-2",2025,"Høst","Teaterhøgskolen","lower","other","2026-10-16",42
+"khio","khio_TS306-2_2025_spring_1","TS306-2",2025,"Vår","Teaterhøgskolen","lower","other","2026-10-16",42
+"khio","khio_TS307-2_2025_autumn_1","TS307-2",2025,"Høst","Teaterhøgskolen","lower","other","2026-10-16",42
+"khio","khio_TS307-2_2025_spring_1","TS307-2",2025,"Vår","Teaterhøgskolen","lower","other","2026-10-16",42
+"khio","khio_TS311-1_2025_autumn_1","TS311-1",2025,"Høst","Teaterhøgskolen","lower","other","2026-10-16",42
+"khio","khio_TS311-1_2025_spring_1","TS311-1",2025,"Vår","Teaterhøgskolen","lower","other","2026-10-16",42
