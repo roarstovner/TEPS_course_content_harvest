@@ -10,8 +10,10 @@ tar_option_set(
   packages = "dplyr",
   # Branches are independent, so they run on 4 local worker processes.
   # Workers read and write the store themselves, so large results do not
-  # pass through the main process.
-  controller = crew::crew_controller_local(workers = as.integer(Sys.getenv("TAR_WORKERS", "4")), seconds_idle = 60),
+  # pass through the main process. A worker restarts after 5 branches: a
+  # long-lived one kept growing (12G after 3 h, 2026-11-02).
+  controller = crew::crew_controller_local(workers = as.integer(Sys.getenv("TAR_WORKERS", "4")), seconds_idle = 60,
+    tasks_max = as.integer(Sys.getenv("TAR_TASKS_MAX", "5"))),
   storage = "worker",
   retrieval = "worker"
 )
