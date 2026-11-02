@@ -296,10 +296,12 @@ anonymize_text <- function(institution, text,
     # the change stays. Also a signature that ends its line or follows the
     # change ("Endret innhold/Kari Nordmann, programkoordinator
     # videreutdanninger"), and two signers ("Ola Dahl, fagansvarlig og Kari
-    # Nordmann, programkoordinator/ ...")
-    stringr::str_remove_all(paste0("(?m)(?:^[ \\t]*(?:\\d[\\d./-]*[ \\t]+)?|(?<=/))(?:", .name_regex,
+    # Nordmann, programkoordinator/ ..."), also after a slash and a space and
+    # with a full stop ending the line ("Lagt inn i emneplanmal / Kari
+    # Nordmann, programkoordinator videreutdanninger.")
+    stringr::str_remove_all(paste0("(?m)(?:^[ \\t]*(?:\\d[\\d./-]*[ \\t]+)?|(?<=/)[ \\t]*)(?:", .name_regex,
                                    ",[ \\t]*\\p{Ll}+[ \\t]+og[ \\t]+)?", .name_regex, ",[ \\t]*",
-                                   .approver_roles, "[^/.\\n]*(?:[/.][ \\t]*(?=\\S)|$)")) |>
+                                   .approver_roles, "[^/.\\n]*(?:[/.][ \\t]*(?=\\S)|\\.?[ \\t]*$)")) |>
     # Leganto reading-list widget: link label, "View online", and the
     # item type glued to the title ("BookMøter med barnelitteratur")
     stringr::str_remove_all("Click to view interactive reading list in Leganto") |>
@@ -728,6 +730,10 @@ anonymize_text <- function(institution, text,
 # joined by spaces, not tabs, so table rows are no names. Not "revidert av",
 # which credits a book's revisers in reading lists, and not a role word that
 # begins a name in an author list ("Ola Dahl, Dean Nordmann, Kari Berg").
+# Also a name and role signing a change after a slash ("Lagt inn i
+# emneplanmal / Kari Nordmann, programkoordinator", usn); not a font ("godkjent
+# paper på 10 sider (12 punkts skrift, Times New Roman", uit) or a college
+# ("approved by Harstad University College").
 .check_space <- "[ \\x{00A0}]"
 .check_name <- paste0(.name_part, "(?:", .check_space, "+\\p{Lu}\\p{Ll}{0,2}\\.)*(?:",
                       .check_space, "+", .name_part, ")+")
@@ -737,15 +743,15 @@ anonymize_text <- function(institution, text,
   "visedekan", "viserektor", "vice[- ]dean", "vice[- ]rector", "head of department"),
   collapse = "|"), ")(?!\\p{L})")
 .approver_patterns <- c(
-  name_approver_role = paste0("(?m)^[^\\n]{0,30}?", .check_name, "(?:[\\h,/]+", .approver_roles,
+  name_approver_role = paste0("(?m)(?:^[^\\n]{0,30}?|/\\h*)", .check_name, "(?:[\\h,/]+", .approver_roles,
                               "(?!\\h+\\p{Lu}\\p{Ll}+,)|\\h*\\n\\h*(?:", .approver_roles, "|(?:Institutt|Fakultet) for))"),
   approved_by_name = paste0(
     "(?i:(?:(?:godkjent|akkreditert)", .check_space, "+(?:av|ved)|revidert", .check_space, "+ved)(?:",
     .check_space, "+\\p{Ll}+){0,3}|godkjent|akkreditert|visedekan|viserektor)(?!\\p{L})",
     "(?:[^\\n\\p{Lu}]{0,60}?,|", .check_space, "[\\h\\d./-]*(?:\\p{Ll}{3,5}\\.[\\h\\d.]*)?)",
-    .check_space, "*(?!Ikke\\b)", .check_name,
+    .check_space, "*(?!Ikke\\b|Times New Roman\\b)", .check_name,
     "|(?i:approved", .check_space, "+by)(?:", .check_space, "+the", .check_space,
-    "+(?i:dean|vice-dean|rector))?[\\h,]+", .check_name),
+    "+(?i:dean|vice-dean|rector))?[\\h,]+(?!", .name_part, "\\h+(?:University|College)\\b)", .check_name),
   approval_heading_name = paste0(
     "(?m)^\\h*(?i:godkjent|approved)(?:", .check_space,
     "+(?i:emneplan|studieplan|course plan|programme plan|av|by))?[\\h:]*$",

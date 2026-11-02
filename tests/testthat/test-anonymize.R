@@ -913,7 +913,8 @@ test_that("the personal-data check finds approvers in layouts no rule removes", 
             "Akkreditert av viserektor for utdanning Kari Berg Nordmann.",
             "Revidert ved førstelektor Ola Dahl, USN Handelshøyskolen.", "Visedekan Ola Dahl, 27.02.2023",
             "Approved by the Dean Kari Nordmann 11.03.2019",
-            "Godkjent emneplan\n\n23.11.23 Kari Nordmann\n Kari Nordmann")
+            "Godkjent emneplan\n\n23.11.23 Kari Nordmann\n Kari Nordmann",
+            "Lagt inn i ny studie- og emneplanmal. /Kari Nordmann, programkoordinator.")
   # plan text and reading lists: a reviser, a committee, a table row, a pass mark
   keep <- c("Wadel, Cato (2014) Feltarbeid. Revidert av Kari Berg Nordmann og Ola Dahl. Oslo: Cappelen.",
             "The course description was approved by the Academic Affairs Committee",
@@ -923,6 +924,8 @@ test_that("the personal-data check finds approvers in layouts no rule removes", 
             "Ved godkjent gjennomføring av ekskursjonane kan studentane få Norsk Fjellsportforum",
             "Godkjent seminardeltagelse\nStudiepoengreduksjon\nEmnekode\tReduksjon\tFra",
             "Midtbøen, Arnfinn, Institutt for samfunnsforskning, 2018.",
+            "godkjent paper på ca 10 sider (12 punkts skrift, Times New Roman, linjeavstand 1,5)",
+            "The course was approved by Harstad University College",
             # an author list with a first name that is a role word
             "Ola Dahl, Kari K. Berg, Dean Nordmann, Per Hansen (2017). Integrating Project Delivery")
   f <- tempfile(fileext = ".RDS")
@@ -962,6 +965,10 @@ test_that("usn: stamp lines outside the block lose the name; a signed change-log
                          "Lagt inn i ny mal/Kari Nordmann, programkoordinator videreutdanninger\n",
                          " Ola Dahl, fagansvarlig og Kari Nordmann, programkoordinator/ språklig forenkling\n\nLitteratur")),
                "Endringsbeskrivelse\n\nLagt inn i ny mal/\nspråklig forenkling\n\nLitteratur")
+  # after a slash and a space, and with a full stop ending the line
+  expect_equal(an(paste0("Endringsbeskrivelse\n\n Lagt inn i emneplanmal / Kari Nordmann, programkoordinator videreutdanninger.\n",
+                         "Lagt inn i ny studie- og emneplanmal. /Kari Nordmann, programkoordinator.\n\nLitteratur")),
+               "Endringsbeskrivelse\n\n Lagt inn i emneplanmal /\nLagt inn i ny studie- og emneplanmal. /\n\nLitteratur")
   # plan text with an approval and a name stays
   keep <- "Kurset er godkjent av Norsk Sykepleierforbund som tellende til spesialistutdanning."
   expect_equal(an(keep), keep)
