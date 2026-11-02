@@ -230,6 +230,10 @@ section_heading_patterns <- tibble::tribble(
   "supervised professional training",      "teaching_methods",       TRUE,   # usn English pages
   "practice",                              "teaching_methods",       TRUE,   # nla English pages
   "gjennomføring av praksis",              "teaching_methods",       TRUE,
+  # vid: whether the course has practicum and how much ("Ja", "240 timer");
+  # labels, so a bare yes or no goes and an amount stays with its heading
+  "praksisstudier",                        "teaching_methods",       TRUE,
+  "omfang av praksisstudier",              "teaching_methods",       TRUE,
   "undervisningstider",                    "teaching_methods",       TRUE,   # nmbu
   "læringsstøtte",                         "teaching_methods",       TRUE,
   "undervisning",                          "teaching_methods",       TRUE,
@@ -276,6 +280,7 @@ section_heading_patterns <- tibble::tribble(
   "introduksjon",                          "course_content",         TRUE,
   "introduction",                          "course_content",         TRUE,   # nla English pages
   "om emnet",                              "course_content",         TRUE,   # uit
+  "hovedtemaer",                           "course_content",         TRUE,   # vid: list of topics
   "about the course",                      "course_content",         TRUE,
   "course content",                        "course_content",         FALSE,
   "topics",                                "course_content",         TRUE,   # nhh English pages
@@ -291,7 +296,7 @@ section_heading_patterns$label <- section_heading_patterns$pattern %in% c(
   "hjelpemiddel ved eksamen", "tillatte hjelpemidler", "tillatte hjelpemiddel",
   "hjelpemidler", "hjelpemiddel", "examination support material", "eksamensspråk",
   "language of examination", "permitted aids under examination", "assessment language",
-  "fravær fra obligatorisk aktivitet")
+  "fravær fra obligatorisk aktivitet", "praksisstudier", "omfang av praksisstudier")
 
 
 #' Match a heading text to a canonical section name

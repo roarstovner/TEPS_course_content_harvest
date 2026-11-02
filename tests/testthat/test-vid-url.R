@@ -20,7 +20,8 @@ vid_plan <- function(year, semester, text = TRUE) {
                           content = list(processedHtml = paste0("<p>Innhold ", semester, " ", year, " &amp; mer.</p>"))),
          `_selected` = "paragraph"),
     list(accordion = list(title = "Vurderingsordning", content = "<p>Hjemmeeksamen.</p>",
-                          accordionItemSet = list(list(title = "Vurderingsordning", content = "<p>Hjemmeeksamen.</p>"))),
+                          accordionItemSet = list(list(title = "Vurderingsordning", content = "<p>Hjemmeeksamen.</p>"),
+                                                  list(title = "Emnetype", content = "<p>Obligatorisk</p>"))),
          `_selected` = "accordion"))
   list(year = as.character(year), semester = semester, titleHistory = paste("Kunnskapsgrunnlag", year),
        campus = "Oslo", articleBlocks = blocks %||% list())
@@ -72,7 +73,10 @@ test_that("the offering's plan is read from the page's JSON as HTML", {
   cfg <- .block_cfg(get_institution_config("vid"))
   b <- page_blocks(html, NA, cfg, "vid_BASOS1020-1_2025_spring_1")
   expect_equal(b$section[b$role == "heading"], c("course_content", "assessment"))
-  expect_true(all(b$facts[b$text %in% c("Kunnskapsgrunnlag 2025")]))
+  # a facts-box item of the plan joins the facts list
+  expect_match(plan, "<dt>Emnetype</dt><dd><p>Obligatorisk</p></dd></dl>", fixed = TRUE)
+  expect_true(all(b$facts[grepl("Kunnskapsgrunnlag 2025|Obligatorisk", b$text)]))
+  expect_true(any(grepl("Obligatorisk", b$text)))
   expect_equal(nrow(page_blocks(html, NA, cfg, "vid_BASOS1020-1_2027_spring_1")), 0)
 })
 

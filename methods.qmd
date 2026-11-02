@@ -1615,6 +1615,27 @@ for stock text about practicum in the teaching methods too (INN's
 "Praksisstudiet er en integrert del av fagene ..."): by the codebook
 practicum is a teaching method.
 
+**VID: topics join course content, practicum facts join teaching methods,
+the plan's facts-box items stay out of the sections.** VID's plans end with
+items that name a part of no section on most sites. From 2026-11-02
+"Hovedtemaer" (a list of topics, under "Emnets innhold") maps to course
+content; "Praksisstudier" and "Omfang av praksisstudier" map to teaching
+methods as labels, so an amount ("240 timer") stays with its heading and a
+bare "Ja" or "Nei" goes; "Emnetype", "Obligatorisk undervisning",
+"Totalt antall studentarbeidstimer", "Tilbys som enkeltemne" and "Opptak til
+enkeltemne" join the plan's facts list (in `course_plan`, in no section, not
+in the plan id), as Nord's "Type emne" and UiA's admission flags do. *Why:* by
+the spec topics are course content and practicum a teaching method, while
+course type, workload and admission are plan text in no section; the
+compulsory-teaching flag is a bare yes or no, and the requirements it stands
+for are under "Obligatoriske aktiviteter". *Rejected:* mapping "Obligatorisk
+undervisning" to coursework requirements (a bare "Ja" says nothing there, and
+a "Nei" would make a coursework section for courses that have none); leaving
+the facts-box items as headings (their programme lists would split plans).
+*Consequence:* no section is gained or lost; VID's course content gains its
+topic list (56 of 59 pilot plans) and its teaching methods the practicum
+amount (18). *Since:* 2026-11-02.
+
 **Learning-outcome group labels stay when the page makes them headings
 (INN).** INN marks "Kunnskap", "Ferdigheter" and "Generell kompetanse" as
 headings of their own (`div.label`), which opened learning outcomes again

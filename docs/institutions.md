@@ -227,7 +227,11 @@ gives the block reader the plan of the offering’s year and semester as
 HTML (title, facts list, an h2 per paragraph and accordion: “Emnets
 innhold”, “Hovedtemaer”, “Læringsutbytte”, “Arbeids og
 undervisningsformer”, “Obligatoriske aktiviteter”, “Vurderingsordning”,
-…). A page with no plan with text counts as not found
+…). The plan’s facts-box items (“Emnetype”, “Obligatorisk undervisning”,
+“Totalt antall studentarbeidstimer”, “Tilbys som enkeltemne”, “Opptak
+til enkeltemne”; `vid_fact_items`) join the facts list instead, so they
+are in `course_plan` but in no section and not in the plan id. A page
+with no plan with text counts as not found
 (`fetch_html_cols_single_vid()`). robots.txt allows everything for all
 user agents and blocks AI crawlers by name.
 

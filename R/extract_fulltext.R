@@ -274,16 +274,28 @@ vid_plan_html <- function(html, course_id) {
              "Tilhører" = paste(vapply(course[["studyProgrammes"]], function(p) p[["title"]] %||% "", ""),
                                 collapse = ", "))
   facts <- facts[nzchar(facts)]
-  part <- function(title, content) {
-    if (is.list(content)) content <- content[["processedHtml"]]
-    paste0(if (nzchar(title %||% "")) paste0("<h2>", esc(title), "</h2>"), "<div>", content %||% "", "</div>")
-  }
-  body <- vapply(plan[["articleBlocks"]], function(b) {
+  items <- unlist(lapply(plan[["articleBlocks"]], function(b) {
     x <- b[[b[["_selected"]] %||% ""]]
-    items <- if (length(x[["accordionItemSet"]])) x[["accordionItemSet"]] else list(x)
-    paste(vapply(items, function(i) part(i[["title"]], i[["content"]]), ""), collapse = "\n")
+    if (length(x[["accordionItemSet"]])) x[["accordionItemSet"]] else list(x)
+  }), recursive = FALSE)
+  title <- vapply(items, function(i) i[["title"]] %||% "", "")
+  content <- vapply(items, function(i) {
+    x <- i[["content"]]
+    (if (is.list(x)) x[["processedHtml"]] else x) %||% ""
   }, "")
+  fact <- title %in% vid_fact_items
+  body <- paste0(ifelse(nzchar(title), paste0("<h2>", esc(title), "</h2>"), ""), "<div>", content, "</div>")
   paste0("<html><body><main><h1>", esc(plan[["titleHistory"]] %||% course[["title"]]), "</h1>\n",
          "<dl class='facts'>", paste0("<dt>", names(facts), "</dt><dd>", esc(facts), "</dd>", collapse = ""),
-         "</dl>\n", paste(body, collapse = "\n"), "</main></body></html>")
+         paste0("<dt>", esc(title[fact]), "</dt><dd>", content[fact], "</dd>", collapse = ""),
+         "</dl>\n", paste(body[!fact], collapse = "\n"), "</main></body></html>")
 }
+
+# Items of a VID plan that are its facts box: course type (compulsory or
+# elective, in which programmes), compulsory teaching (a bare yes or no; the
+# requirements themselves are under "Obligatoriske aktiviteter"), workload,
+# and whether and how the course is open on its own. They go to the facts
+# list, so they are in course_plan, in no section and not in the plan id, as
+# Nord's "Type emne" and UiA's admission flags are.
+vid_fact_items <- c("Emnetype", "Obligatorisk undervisning", "Totalt antall studentarbeidstimer",
+                    "Tilbys som enkeltemne", "Opptak til enkeltemne")
