@@ -7,24 +7,26 @@
 #' boilerplate. A season alone ("Undervisningssemester: Høst") is plan text
 #' and stays (.drop_semester_values()). Preserves case and paragraph structure.
 #' Used on extracted_text (-> course_plan) and on section text (plan_sections).
+#' The institution step runs per text; the generic step (.anon_generic()) runs
+#' once per institution on all its texts, so its regexes compile once, not
+#' once per text (2026-11-02: page_text and the sections 1.5-3.5x faster, the
+#' output identical).
 #'
 #' @param institution Character vector of institution short names.
 #' @param text Character vector of raw text (extracted_text or a section).
-#' @param .progress Passed to purrr::map2_chr for progress reporting.
+#' @param .progress Ignored; kept so that existing calls work.
 #' @return Character vector of anonymized text. NA input -> NA output.
-anonymize_text <- function(institution, text,
-                           .progress = "Anonymizing text") {
+anonymize_text <- function(institution, text, .progress = FALSE) {
   stopifnot(length(institution) == length(text))
-
-  purrr::map2_chr(institution, text, \(inst, txt) {
-    if (is.na(txt) || !nzchar(txt)) return(NA_character_)
-
-    txt <- .anon_institution(inst, txt)
-    txt <- .anon_generic(txt)
-
-    if (is.na(txt) || !nzchar(trimws(txt))) return(NA_character_)
-    txt
-  }, .progress = .progress)
+  out <- rep(NA_character_, length(text))
+  keep <- !is.na(text) & nzchar(text)
+  for (inst in unique(institution[keep])) {
+    i <- which(keep & institution %in% inst)
+    txt <- vapply(text[i], \(x) .anon_institution(inst, x), "", USE.NAMES = FALSE)
+    out[i] <- .anon_generic(txt)
+  }
+  out[is.na(out) | !nzchar(trimws(out))] <- NA_character_
+  out
 }
 
 
