@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Spec question: programme version year in plans, e.g. 'Bachelorstudium i billedkunst (2022)' (khio audit 2026-11-02): keep or drop? (#484)
 - Profile harvest memory (NTNU process ~3.2 GB RSS) (#475)
 - Harvest stops going back after a year that found no page (#480)
 - nhh fulltext: link URLs doubled or glued to labels; spaces lost around inline emphasis (#479)
