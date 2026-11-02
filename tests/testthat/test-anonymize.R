@@ -1092,6 +1092,46 @@ test_that("clock times go; durations, verses, ratios and credits stay", {
                "Tid Utlevering Innlevering. Onsdager.")
 })
 
+test_that("clock times after kl., with am/pm or dotted after at go, with their preposition", {
+  an <- function(x) anonymize_text("nhh", x, .progress = FALSE)
+  expect_equal(an("The exam starts on Monday at 12.00 and ends on Friday at 12.00."),
+               "The exam starts on Monday and ends on Friday.")
+  expect_equal(an("Classes are held 3-6pm CET. Titles available from 9.30am, Tuesday."),
+               "Classes are held. Titles available, Tuesday.")
+  expect_equal(an("Varighet fra mandag kl 12.00 til fredag kl 12.00. Innlevering innen kl. 14.00 i Canvas."),
+               "Varighet fra mandag til fredag. Innlevering i Canvas.")
+  expect_equal(an("Hver samling går over to dager, fra kl. 09.00 til 15.00. Økter kl 9.45-11.30, 12.15-14, og 14.15-16"),
+               "Hver samling går over to dager. Økter")
+  expect_equal(an("Forelesninger (2 x 45 minutter, kl. 1815 - 2000) og\nKl 09.00-09.45: Kliniske studier"),
+               "Forelesninger (2 x 45 minutter) og\nKliniske studier")
+  expect_equal(an("Handout at 09:00. Handin at 15:00 on Friday."), "Handout. Handin on Friday.")
+  # dates, codes, a class and other numbers stay
+  keep <- c("The reading list will be ready at 01.12. for the spring semester.",
+            "The curriculum will be ready by 01.06 for autumn", "4PM42 Vitenskapelig metode",
+            "Operativ samfunnssikkerhet / KL300S", "610.73 Kl", "Elever i 5. kl. 12 elever",
+            "Measured at 30.00 meters", "6 sessions, from Monday, Aug 23rd to Monday, Sept 6th.")
+  for (x in keep) expect_equal(an(x), x, info = x)
+})
+
+test_that("a time between 'between' and 'at'/'on' leaves no broken phrase", {
+  expect_equal(anonymize_text("nhh", paste(
+    "The three day take-home exam is held between 09:00 at the first day of examination and",
+    "14:00 on the third day of examination."), .progress = FALSE),
+    "The three day take-home exam is held between the first day of examination and the third day of examination.")
+})
+
+test_that("a year range in running text stays, an academic year goes", {
+  an <- function(x) anonymize_text("nhh", x, .progress = FALSE)
+  keep <- c("How did securitization contribute to the 2008-2009 financial crisis?",
+            "Innføring i skatterett 2021-2022 studiebok", "The years until 1990/91 were characterized",
+            "A new 2007 / 2008 edition might be available")
+  for (x in keep) expect_equal(an(x), x, info = x)
+  expect_equal(an("For studieåret 2019/20 er summen 300 kr. Fra 2026/2027 blir kravet skjerpet."),
+               "For studieåret er summen 300 kr. Fra blir kravet skjerpet.")
+  expect_equal(an("During the 2024-2025 academic year, the course runs. Studiehåndbok 2023-2024 for litteratur."),
+               "During the academic year, the course runs. Studiehåndbok for litteratur.")
+})
+
 test_that("data/processed holds no personal data", {
   files <- list.files(here::here("data/processed"), "\\.RDS$", recursive = TRUE, full.names = TRUE)
   skip_if(length(files) == 0, "built data not available")

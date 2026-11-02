@@ -1245,6 +1245,31 @@ their 6 offerings get a new plan id, one for one: none merge or split. In
 the teacher-education frame only PPU4000 (2014 and 2015), whose teaching
 methods section keeps the year too. *Since:* 2026-10-19.
 
+**A year range in running text stays; clock times go in more forms.** A
+range of two consecutive years went as an academic year wherever it stood;
+now one with a small-letter word after it stays ("the 2008-2009 financial
+crisis", NHH; "Innføring i skatterett 2021-2022 studiebok", "The years
+until 1990/91 were"), unless an academic-year word or a preposition stands
+before it ("For studieåret 2019/20 er summen", "Fra 2026/2027 blir") or
+"academic year" follows. Clock times went only as HH:MM; now also after
+"kl."/"klokka" with minutes ("kl. 09.00", "kl.1500", "kl 9.45-11.30"), with
+am/pm ("3-6pm", "2–6 p.m.") and dotted on the quarter hour after an English
+preposition ("at 12.00"), each with the preposition before it, a time zone
+after it and a comma left dangling ("fra mandag kl 12.00 til fredag kl
+12.00" → "fra mandag til fredag"; "held between 09:00 at the first day …
+and 14:00 on the third day" → "held between the first day … and the third
+day"). *Why:* the spec has years in the content and titles in, clock times
+out; found by the NHH anonymization audit of 2026-11-02. *Rejected:*
+requiring an administrative word before every range (would keep "Pensum
+2023-2024" style stamps written without one); dotted times without "kl." or
+an English preposition ("09.00-15.00" is also a date range "01.06-15.06");
+removing day-month dates without a year ("Aug 23rd", "due date: Feb 1st"):
+Norwegian ones ("torsdag 9. mai", "21.september") are kept too, and both
+read as content as often as admin, so they stay, a known gap. *Consequence:*
+593 published plans lose a clock time (UiT 214, USN 106, HiØ 97, NTNU
+59, Nord 40); 39 pages keep a year range (HiØ 22, UiB 6, USN 6, UiT 3, NHH
+2). *Since:* 2026-11-02.
+
 **The semester a course starts from stays.** "Emnet byrjar å gå frå våren
 2024" (UiB; also "begynner å gå fra", "starter fra") keeps its season and
 year: it says when the course was first offered, a fact of the course,

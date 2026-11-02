@@ -518,6 +518,20 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
   "(?<!(?i:(?:gjennomført|gjennomførte|avlagt|bestått|fullført|fullførte|tatt)[^\\n.]{0,60}",
   "studieåret|exception for academic year)[ \\t]{0,3}\\d{4})")
 .or_later <- "(?![ \\t]*(?i:eller|or) (?i:senere|seinare|later|tidligere|tidlegare|earlier)\\b)"
+# A range in running text stays (decided 2026-11-02): one with a small-letter
+# word after it ("the 2008-2009 financial crisis", "Innføring i skatterett
+# 2021-2022 studiebok", "The years until 1990/91 were") is content, a title
+# or an edition, unless an academic-year word or a preposition stands before
+# it ("For studieåret 2019/20 er summen", "Fra 2026/2027 blir",
+# "Studiehåndbok 2023-2024 for litteratur") or "academic year" follows ("the
+# 2024-2025 academic year"). Guards before the range's first year.
+.year_cue <- paste0(
+  "(?i:studieår(?:et)?|skoleår(?:et)?|academic year|study year|school year|year|i|in|for|fra|frå|from|",
+  "pensum(?:liste[n]?|lista)?|litteraturlist[ea]|studiehåndbok(?:a|en)?|handbook|kull|",
+  "gjennomføring(?:en)?|tilbys ikke|during)")
+.running_text_year <- paste0(
+  "(?:(?<=\\b", .year_cue, "[ \\t]{1,3}\\(?)|(?!\\d{4}\\s?[-–—/]\\s?\\d{2,4}[ \\t]+",
+  "(?!(?i:og|and|eller|or|til|to|academic|study|school|studieår\\p{L}*)\\b)\\p{Ll}))")
 
 # A season word, also inflected or in a compound: "høsten", "Vårsemesteret";
 # also a typo seen in a label ("Assessment Sprign 2026:", nord).
@@ -582,6 +596,32 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 .gap <- "[ \\t]*"
 .case_break <- "(?<=\\p{Ll})(?=\\p{Lu})"
 .clock_regex <- "(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d)?"
+# Clock times in other forms (decided 2026-11-02): after "kl."/"klokka" with
+# minutes ("kl. 09.00", "kl.1500", "kl 9.45-11.30"), with am/pm ("3-6pm", "2–6
+# p.m.", "9.30am") and, after an English preposition, a dotted time on the
+# quarter hour ("at 12.00", "by 14.00"); not a dotted date ("ready by 01.06",
+# "at 01.12."), an hour without minutes after "kl." ("kl. 12", also "class")
+# or a course code ("4PM42"). The preposition goes with the time ("innen kl.
+# 12.00", "Deadline: 5 December at 12.00", "fra kl. 09.00 til kl. 13.00"), so
+# no "at." or "fra til" is left; "fra mandag kl 12.00 til fredag kl 12.00"
+# keeps its days. After "kl." a list of times goes with the first.
+.hour <- "(?:2[0-3]|[01]?\\d)"
+.kl <- "(?<!\\p{L})(?:[Kk]l\\.?|[Kk]lokk(?:a|en))[ \\t]*"
+.clock_prep <- paste0("(?:(?<!\\p{L})(?i:at|by|from|until|till|before|after|between|fra|frå|til|innen|innan|",
+                      "før|etter|mellom)[ \\t]+)?")
+.clock_kl <- paste0(.kl, .hour, "[.:]?[0-5]\\d(?![.:]?\\d|\\p{L})")
+.clock_ampm <- paste0("(?<![\\d.,])", .hour, "(?:[.:][0-5]\\d)?(?:[ \\t]?[-–][ \\t]?", .hour, "(?:[.:][0-5]\\d)?)?",
+                      "[ \\t]?(?:am|pm|AM|PM|a\\.m\\.|p\\.m\\.)(?![\\p{L}\\d])")
+.clock_dot <- paste0(.hour, "\\.(?:00|15|30|45)(?![.:]?\\d)")
+# The end of a range: "-16.00", "–15", " til kl. 13.00", " and 14:00".
+.clock_end <- paste0("(?:[ \\t]*[-–][ \\t]*(?:", .kl, ")?", .hour, "(?:[.:]?[0-5]\\d)?(?![.:]?\\d)|",
+                     "[ \\t]+(?i:and|og|to|til|until)[ \\t]+(?:", .kl, ")?(?:", .hour, "[.:][0-5]\\d(?![.:]?\\d)|",
+                     .clock_regex, "))")
+# A time zone after a time ("3-6pm CET (Central European Time)").
+.clock_zone <- "(?:[ \\t]+(?:CET|CEST|GMT|UTC)\\b(?:[ \\t]*\\((?i:central european|greenwich|coordinated)[^)\\n]{0,30}\\))?)?"
+# A list of times after the first ("kl 9.45-11.30, 12.15-14, og 14.15-16").
+.clock_more <- paste0("(?:[ \\t]*(?:,[ \\t]*(?:og|and|&)?|og|and|&)[ \\t]*(?:", .kl, ")?", .hour, "[.:][0-5]\\d",
+                      "(?![.:]?\\d)(?:[ \\t]*[-–][ \\t]*", .hour, "(?:[.:]?[0-5]\\d)?(?![.:]?\\d))?)*")
 # Approval and update dates in words: "godkjent i studieutvalget 14.
 # november 2016", "endringer lagt inn 3. juli 2017 og 7. mai 2024",
 # "Etablert av dekanen 3. juli 2013" (oslomet)
@@ -689,25 +729,44 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     # Remove academic year ranges: "2023/2024", "2023/24", "2019 — 2020" (nla);
     # not year paths in links ("files/2019/06/27/", "dokumentserien/2020-2021/",
     # "m5glu-fagplan-engelsk-2018-2019") or DOIs, or ISO dates ("2001-02-01"),
-    # or a condition (.condition_year)
-    stringr::str_replace_all(.not_gov_rule(paste0(.gap, "(?<![/\\w.]|\\w-)\\d{4}", .condition_year),
+    # or a condition (.condition_year), or a range in running text
+    # (.running_text_year)
+    stringr::str_replace_all(.not_gov_rule(paste0(.gap, "(?<![/\\w.]|\\w-)", .running_text_year, "\\d{4}", .condition_year),
                                            paste0("[ \\t]?/[ \\t]?\\d{2,4}\\b(?!/|[-–]\\d)", .or_later)),
                              .drop_academic_year) |>
-    stringr::str_replace_all(.not_gov_rule(paste0(.gap, "(?<![/\\w.]|\\w-)\\d{4}", .condition_year),
+    stringr::str_replace_all(.not_gov_rule(paste0(.gap, "(?<![/\\w.]|\\w-)", .running_text_year, "\\d{4}", .condition_year),
                                            paste0("\\s?[-–—]\\s?\\d{2,4}\\b(?!/|[-–]\\d)", .or_later)),
                              .drop_academic_year) |>
     # "vil i 2007/2008 koste" without its year (hiof)
     stringr::str_replace_all("\\bvil i (?=koste\\b)", "vil ") |>
-    # Brackets emptied by the removals above: "Meld. St. 16 ()";
+    # A time between "between"/"and" and "at"/"on" goes with the "at"/"on":
+    # "held between 09:00 at the first day of examination and 14:00 on the
+    # third day" -> "held between the first day of examination and the third day"
+    stringr::str_remove_all(paste0("(?<=\\b(?i:between|and))[ \\t]+(?:", .clock_regex, "|", .clock_kl, "|",
+                                   .clock_ampm, "|", .clock_dot, ")[ \\t]+(?i:at|on)(?=[ \\t])")) |>
+    # A programme line opened by its time ("Kl 09.00-09.45: Kliniske ...")
+    stringr::str_remove_all(paste0("(?m)^[ \\t]*", .clock_kl, .clock_end, "?[ \\t]*:[ \\t]*")) |>
+    # Clock times after "kl.", with am/pm, and dotted after an English
+    # preposition (.clock_kl, .clock_ampm, .clock_dot), with the preposition;
+    # each leaves a mark (\001) for the comma cleanup below
+    stringr::str_replace_all(paste0(.gap, .clock_prep, .clock_kl, .clock_end, "?", .clock_more, .clock_zone), "\001") |>
+    stringr::str_replace_all(paste0(.gap, .clock_prep, .clock_ampm, .clock_zone), "\001") |>
+    stringr::str_replace_all(paste0(.gap, "(?<!\\p{L})(?i:at|by|from|until|till|before|after|between)[ \\t]+",
+                                   .clock_dot, .clock_end, "?", .clock_zone), "\001") |>
+    # Remove clock times "09:00", "23:59:59", with a preposition before; not
+    # running times ("Lengde: 2:19", "[20:28]", "Mer Film, 2:30, 2022,",
+    # "1:00:09"), verses ("Sure 3:30"), volume:pages, ISBN-10 or ratios
+    # ("60:40"); a range is one time ("14:30-15:30", "09:00 til 15:00")
+    stringr::str_replace_all(paste0(.gap, .clock_prep, "(?<!\\[|Total Pages |[\\d:])", .clock_regex,
+                                   .clock_end, "?\\b",
+                                   "(?!\\]|,[ \\t]*(?:19|20)\\d{2}\\b)", .clock_zone), "\001") |>
+    # a comma left before a full stop, comma or bracket by a removed time
+    # goes ("over to dager, fra kl. 09.00 til 15.00." -> "over to dager.")
+    stringr::str_remove_all("(?m),[ \\t]*\001(?=[ \\t]*(?:[.,;:)]|$))") |>
+    stringr::str_remove_all("\001") |>
+    # Brackets emptied by the removals above: "Meld. St. 16 ()", "by (3:00 p.m.)";
     # code such as "print()" has no space before and stays
     stringr::str_remove_all("[ \\t]+\\([ \\t]*\\)") |>
-    # Remove clock times "09:00", "23:59:59"; not running times ("Lengde:
-    # 2:19", "[20:28]", "Mer Film, 2:30, 2022,", "1:00:09"), verses ("Sure 3:30"),
-    # volume:pages, ISBN-10 or ratios ("60:40"); a range is one time
-    # ("14:30-15:30")
-    stringr::str_remove_all(paste0(.gap, "(?<!\\[|Total Pages |[\\d:])", .clock_regex,
-                                   "(?:[ \\t]*[-–][ \\t]*", .clock_regex, ")?\\b",
-                                   "(?!\\]|,[ \\t]*(?:19|20)\\d{2}\\b)")) |>
     # Remove JS artifacts
     stringr::str_remove_all("function\\s*\\([^)]*\\)\\s*\\{[^}]*\\}") |>
     stringr::str_remove_all("\\$\\([^)]+\\)\\.[^;]+;") |>
