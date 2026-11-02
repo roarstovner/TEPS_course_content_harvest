@@ -1,0 +1,69 @@
+{
+  "check": "anonymization",
+  "institution": "nhh",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "All 28 plans and their removed spans were reviewed: no personal-data leaks were found, semester-year labels and the contact email were removed, and literature authors, publication years, NOU identifiers and paragraph structure were generally preserved. The pre-pass flags were false alarms: name-like matches were course terminology, organisations, software or reference authors; BAN427 had phone-like DOI digits 02664763 and date-like DOI digits 31.2.87; CEMSBS had a high removal share only because its plan was very short. Four localized defects remain: historical crisis years were removed in one random control, administrative dates survived in three suspects, clock formats survived in two suspects, and clock removal damaged one assessment sentence; these do not establish an institution-wide failure.",
+  "findings": [
+    {
+      "target": "content_text",
+      "error_type": "over_removal",
+      "severity": "medium",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "nhh_FIE448-1_2025_autumn_1"
+      ],
+      "evidence": "… How did securitization contribute to the [−2008-2009−] financial crisis? Bank runs, financial crisis …",
+      "description": "The historical range 2008-2009 is removed three times from the Banking and Fintech plan, including its topics and learning outcomes. These years identify the financial crisis being studied and are course content, not an academic-year stamp. This defect occurs in a random control with no pre-pass flags.",
+      "root_cause_hypothesis": "R/anonymize.R: .anon_generic() sends hyphenated year ranges to .drop_academic_year(), which treats any consecutive years from 1990 onward as an academic year without requiring an administrative context. Its existing government-document and condition guards do not protect historical events.",
+      "suggested_fix": "Protect year ranges directly modifying historical-event terms such as financial crisis before applying .drop_academic_year(); for ambiguous hyphenated ranges, require an academic-year or scheduling context before removal. Add regression cases retaining all three 2008-2009 financial-crisis occurrences while still removing explicit academic-year stamps.",
+      "confidence": "high"
+    },
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "nhh_BEA512-1_2025_autumn_1",
+        "nhh_ACC421E-1_2025_autumn_1",
+        "nhh_FIN547-1_2025_autumn_1"
+      ],
+      "evidence": "6 sessions, each 3 hours, from Monday, Aug 23rd to Monday, Sept 6th.",
+      "description": "Administrative scheduling dates remain in three plans: BEA512 says For 2025 it will be at NHH, Bergen.; ACC421E retains due date: Feb 1st; FIN547 retains an Aug 23rd to Sept 6th teaching schedule. These date an offering or deadline rather than describing subject matter, and the pre-pass does not flag these formats.",
+      "root_cause_hypothesis": "NHH uses only .anon_generic(). Its year rules cover semester labels and selected administrative keywords, and its long-form date handling targets approval/update contexts; there is no rule for offering-location years or English month-first ordinal deadlines and schedules.",
+      "suggested_fix": "Add narrowly scoped scheduling rules for For YYYY it will be at location clauses, due date: English-month ordinal expressions, and from weekday/month/day to weekday/month/day schedules. Remove or rewrite the complete dated clause, preserving session counts, duration and other teaching content; protect literature and government-document dates.",
+      "confidence": "high"
+    },
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "nhh_ECN434-1_2025_autumn_1",
+        "nhh_FIN547-1_2025_autumn_1"
+      ],
+      "evidence": "The exam starts on Monday at 12.00 and ends on Friday at 12.00.",
+      "description": "Clock times survive in dot-separated and am/pm formats: ECN434 retains 12.00 twice and FIN547 retains 3-6pm CET (Central European Time). The rubric requires removal of clock times, and these are scheduling information rather than running times, ratios or reference notation.",
+      "root_cause_hypothesis": "R/anonymize.R: .clock_regex accepts only two-digit, colon-separated 24-hour clock times. It cannot match 12.00 or 3-6pm.",
+      "suggested_fix": "Extend clock removal with context-constrained dot-separated hours/minutes and am/pm ranges, using cues such as at, from, exam, classes and time-zone suffixes. Retain guards for citations, ratios and running times, and remove associated time prepositions or rewrite the clause so the sentence remains grammatical.",
+      "confidence": "high"
+    },
+    {
+      "target": "content_text",
+      "error_type": "text_corruption",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "nhh_FIE401-1_2025_autumn_1"
+      ],
+      "evidence": "The three day take-home exam is held between at the first day of examination and on the third day of examination.",
+      "description": "Removing 09:00 and 14:00 leaves the malformed phrase held between at ... and on .... Removing the clock values is correct, but the surrounding assessment sentence is damaged; this is not a harmless empty administrative label.",
+      "root_cause_hypothesis": "R/anonymize.R: the generic clock-time rule removes only each clock value and adjacent whitespace, leaving between and its dependent prepositions intact.",
+      "suggested_fix": "Before deleting individual clock values, rewrite the specific between TIME at/on DAY and TIME at/on DAY construction as from DAY to DAY, preserving the first-day and third-day information. Add a regression case for the FIE401 sentence.",
+      "confidence": "high"
+    }
+  ]
+}

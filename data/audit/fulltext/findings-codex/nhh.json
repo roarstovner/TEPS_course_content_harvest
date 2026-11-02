@@ -3,37 +3,23 @@
   "institution": "nhh",
   "model": "gpt-6.1-sol",
   "n_courses_reviewed": 28,
-  "n_suspects_reviewed": 8,
-  "overall_assessment": "All 28 packet courses were read in full, including all eight suspects; substantive plans retain their headings, paragraphs, learning outcomes, assessment and facts, with no demonstrated loss of substantive page content. The four uncaptured suspects omit staff names/contact roles and next-semester navigation, the three short suspects faithfully reflect sparse or expired/pointer source pages, and the sampled junk flag is explained by JavaScript as a legitimate programming prerequisite; the 2026/27 headings are expected for this current-plan pilot, and the packet truncation marker is not extraction truncation. Two formatting defects remain: custom links repeat URLs or concatenate URLs with labels across suspects and random controls, and one random control loses spaces around inline emphasis.",
+  "n_suspects_reviewed": 11,
+  "overall_assessment": "All 28 courses were reviewed, including 11 suspects. Extraction generally preserves the available plan and readable structure: uncaptured flags reflect excluded staff/contact boxes, next-term links or alternative link serialization; the three short suspects are sparse or expired/pointer source pages, and the visible junk-flagged blockchain plan contains legitimate subject matter rather than demonstrated site chrome. The major discrepancy is that all 28 pages are labelled absent page shells although 25 contain substantive plans; current-plan year differences are expected, and the packet/build provenance must be reconciled before attributing those absences to extraction.",
   "findings": [
     {
       "target": "whole_text",
-      "error_type": "formatting",
-      "severity": "medium",
-      "prevalence": "common",
+      "error_type": "empty_or_failed",
+      "severity": "high",
+      "prevalence": "widespread",
       "example_course_ids": [
-        "nhh_BUS476-1_2025_autumn_2",
-        "nhh_TECH3-1_2025_autumn_1",
-        "nhh_BAN403-1_2025_autumn_1"
+        "nhh_BAN427-1_2025_autumn_1",
+        "nhh_FIE420-1_2025_autumn_1",
+        "nhh_TECH3-1_2025_autumn_1"
       ],
-      "evidence": "https://statsthinking21.org/https://statsthinking21.org/",
-      "description": "Links in reading lists, permitted examination aids and retake information are rendered as adjacent URL/URL or URL/label strings. This recurring defect also appears in random controls, so it is not confined to flagged courses; it adds repeated link text and joins URLs to surrounding prose, while the main plan structure remains readable.",
-      "root_cause_hypothesis": "Saved NHH HTML contains custom <weblink><href>...</href><linkname>...</linkname></weblink> elements. R/extract_fulltext.R::.read_doc() does not normalize them, so R/blocks.R reads both child values as ordinary adjacent text; NHH has no post_fn correcting this.",
-      "suggested_fix": "Normalize NHH weblink nodes before block extraction: turn each into an ordinary anchor with href as its attribute and linkname as its visible text, falling back to href only when the label is empty. Preserve whitespace at the surrounding text boundaries and emit a destination at most once if destinations must be retained.",
-      "confidence": "high"
-    },
-    {
-      "target": "teaching_methods",
-      "error_type": "formatting",
-      "severity": "low",
-      "prevalence": "rare",
-      "example_course_ids": [
-        "nhh_FIE401-1_2025_autumn_1"
-      ],
-      "evidence": "A3-hour lecture on-campuswhich consists of:",
-      "description": "The financial econometrics teaching paragraph joins the article to the duration and the campus description to the following word. The saved HTML contains spaces before and inside the strong element, so these word boundaries are lost during extraction rather than absent from the source.",
-      "root_cause_hypothesis": "The html_text2() path used by R/blocks.R for unmarked subtrees loses boundary whitespace around an inline strong element in a list item containing a nested list. This is separate from the custom weblink defect.",
-      "suggested_fix": "Preserve whitespace around inline elements when reading nested list items, for example by flattening emphasis elements into text nodes while retaining their text and boundary whitespace before html_text2() runs; keep nested list items on separate lines.",
+      "evidence": "- Plan in the build: **none**: a page shell (no section, under 1500 chars of plan text)",
+      "description": "The stated no-plan reason contradicts the page contents for 25 of 28 courses, including all 17 random controls. For example, BAN427 has 4295 characters with topics, learning outcomes, teaching, assessment and literature; FIE420 has 3129 characters with the corresponding Norwegian sections; TECH3 has 5332 characters with a detailed plan. These are not facts-only page shells. This finding concerns the incorrect no-plan decision or its reported reason, as required by the rubric; it does not establish that the shell filter actually removed these pilot pages. BAN402 and CEMSBS are genuinely sparse, and SOL23 is an expired English-page pointer. Other text defects on pages marked dropped are not separate findings.",
+      "root_cause_hypothesis": "R/audit/prepare_fulltext.R joins pilot_run_rows() to processed build_plans by course_id, then no_plan_reason() defaults to a shell explanation without checking .shell_plans(), actual sections or plan_nchar. R/audit/utils.R documents that current-plan pilot pages are associated with the original DBH offerings while read_harvest() assigns them only to the page academic year. Thus a 2026/27 pilot page may be compared with an unrelated 2025 build absence; the packet alone cannot establish an actual shell-filter defect.",
+      "suggested_fix": "For current-plan pilot audits, trace the same fetched page through its actual build academic-year assignment before reporting plan availability. Make no_plan_reason() use recorded build exclusion provenance and emit the shell reason only when the relevant page has no sections and plan_nchar is below SHELL_MAX_NCHAR. Represent a pilot page with no matching build page explicitly instead of inferring a shell, then regenerate the packet; if matching substantive pages really fail the shell test, inspect their facts flags and section extraction before rebuilding.",
       "confidence": "high"
     }
   ]

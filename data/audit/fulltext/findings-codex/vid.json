@@ -1,0 +1,24 @@
+{
+  "check": "fulltext",
+  "institution": "vid",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 31,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "Reviewed all 28 fetched-page examples and three failed-fetch examples: the eight retained control plans are complete and readable apart from one minor numeric artefact. The 19 empty suspects, one short shell and the uncaptured flag show no omitted plan body or unjustified exclusion; the three soft-404 URLs plausibly identify courses without published plans. Repeated titles and programme labels outside the extraction are redundant, while the campus difference reflects selection of the historical plan campus rather than the general course-page campus list.",
+  "findings": [
+    {
+      "target": "assessment",
+      "error_type": "junk_included",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "vid_BAVER2030-1_2024_autumn_1"
+      ],
+      "evidence": "Høgskolen tar den endelige vurderingen om bestått / ikke bestått praksisstudium. 34 Praksisoppgaven er individuell skriftlig besvarelse.",
+      "description": "An isolated \"34\" interrupts two complete assessment sentences. It appears to be a residual page number from the source plan; otherwise the assessment and surrounding plan are intact. This is a small cleanliness defect, not evidence of missing assessment content.",
+      "root_cause_hypothesis": "R/extract_fulltext.R::vid_plan_html() passes the selected plan articleBlocks processedHtml through unchanged. The number likely survives from an upstream document import into the published HTML rather than being introduced by block extraction.",
+      "suggested_fix": "Confirm the number against the stored BAVER2030 article block, then remove the confirmed artefact with a narrowly scoped VID postprocessor replacing \"praksisstudium. 34 Praksisoppgaven\" with \"praksisstudium. Praksisoppgaven\". Preserve other numeric assessment values.",
+      "confidence": "medium"
+    }
+  ]
+}

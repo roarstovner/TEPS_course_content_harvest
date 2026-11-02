@@ -6,7 +6,7 @@
 "inn",20,8,0,"data/audit/fulltext/packets/inn.md"
 "khio",0,28,3,"data/audit/fulltext/packets/khio.md"
 "mf",19,9,6,"data/audit/fulltext/packets/mf.md"
-"nhh",8,20,0,"data/audit/fulltext/packets/nhh.md"
+"nhh",11,17,0,"data/audit/fulltext/packets/nhh.md"
 "nih",0,21,4,"data/audit/fulltext/packets/nih.md"
 "nla",20,8,3,"data/audit/fulltext/packets/nla.md"
 "nmbu",2,26,3,"data/audit/fulltext/packets/nmbu.md"
@@ -21,3 +21,4 @@
 "uis",20,8,1,"data/audit/fulltext/packets/uis.md"
 "uit",4,24,0,"data/audit/fulltext/packets/uit.md"
 "usn",3,25,0,"data/audit/fulltext/packets/usn.md"
+"vid",20,8,3,"data/audit/fulltext/packets/vid.md"

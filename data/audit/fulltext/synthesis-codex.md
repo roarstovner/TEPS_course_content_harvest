@@ -1,52 +1,66 @@
 # fulltext audit (pilot, Codex reviewers): synthesis
 
-Run 2026-11-01, `--pilot`, reviewers `codex exec -m gpt-6.1-sol`, findings
-in `findings-codex/`, report `findings-codex_report.md`. Covers khio (this
-run) and nhh (the review from 2026-10-31, kept as it was).
+Run 2026-11-02, `--pilot`, reviewers `codex exec -m gpt-6.1-sol`, findings in
+`findings-codex/`, report `findings-codex_report.md`. Covers nhh (recheck
+after e059487) and vid (this run); khio is the review of 2026-11-01, kept as
+it was (0 findings, ready pending gate numbers).
 
 ## Summary
 
-- khio: 28 pages from the pilot run (2026-11-01, the plans the site showed
-  then) plus 3 failed fetches. No findings. The orchestrator's check agrees:
-  no page has uncaptured text, every page has its facts list and a
-  "Vurdering" section, and on the raw pages the text of `main` is the same as
-  that of `main section.content` (the selector loses nothing). None of the
-  190 pages has a literature, prerequisite or admission section, so those
-  sections are missing from the site, not from the extraction.
-- khio fetch failures: 8 offerings, 4 course codes, all doctoral-programme
-  components (DG900-1, DG930-1, DG950-1 in the sample), HTTP 404 on
-  `/emner/{code}-{version}`, the same URL pattern as the 190 pages that were
-  fetched. These are likely parts of the doctoral programme with no public
-  course page; none of the four codes has a page in any other offering.
-- nhh: 2 findings from 2026-10-31, both formatting (verified ✓). The medium one
-  (NHH `<webLink>` nodes) was reviewed before commit e059487 (2026-10-31
-  13:10), which changes how those nodes are extracted. It needs a recheck
-  after the next build; there is no new review here.
+- nhh: the 2 formatting findings of 2026-10-31 (webLink URLs doubled or
+  glued, spaces lost around emphasis) are gone: e059487 fixed them. 28/28
+  courses read, no content loss.
+- nhh: 1 new "high" finding, rejected (below): a packet label, not an
+  extraction defect.
+- vid: 1 low finding: an isolated page number "34" inside an assessment
+  sentence (vid_BAVER2030-1_2024_autumn_1). 19 empty suspects are pages without a
+  plan; 3 failed fetches are soft-404s of courses with no published plan.
 
 ## Cross-institution patterns
 
-None (two institutions, with no shared root cause).
+None.
 
 ## Prioritised fix list
 
-None for khio. For nhh, see the 2026-10-31 report. After the next build,
-check whether e059487 removed the webLink finding (nhh_BUS476-1_2025_autumn_2,
-nhh_TECH3-1_2025_autumn_1).
+- vid (low): strip lone page numbers between sentences in the PDF/JSON plan
+  text (`post_fn` or the html_fn of vid). Cosmetic.
+
+## Changes since the previous run
+
+nhh: gone `whole_text/formatting`, `teaching_methods/formatting` (fixed by
+e059487). New: `whole_text/empty_or_failed` (rejected).
 
 ## Rejected findings
 
-None.
+- nhh `empty_or_failed` (high): the packet said "Plan in the build: none: a
+  page shell" for 25 pages with full plans. The build has NHH's 2025 offerings
+  but gives them no page, because the pilot run's pages are 2026/27 and the
+  DBH snapshot has no 2026 (docs/harvesting.md "Sites that show only the
+  current plan"); `no_plan_reason()` fell through to its default "page shell".
+  Packet label fixed in the working tree (`R/audit/prepare_fulltext.R`, not
+  committed).
 
-## Verdict (--pilot)
+## Verdict (--pilot, fulltext)
 
-The gate numbers (`pilot_gate()`: `fetched`, `plan`) are pending a build: the
-last `tar_make()` (2026-10-31 00:06) is older than the khio and nhh pilot
-runs, and judging their year coverage needs a DBH snapshot that lists
-2026/27.
+Gate numbers (`pilot_gate()`, build 2026-11-02):
 
-- **khio: ready for full harvest (fulltext), pending the gate numbers.** No
-  finding. The 4 doctoral course codes with a 404 are a site limit (expected
-  as "404" gaps, to be noted in `data/data_notes.qmd`), not a URL-builder
-  defect.
-- **nhh**: verdict as in the 2026-10-31 review, likewise pending the build and
-  gate numbers.
+| inst | metric | value | n | threshold | review |
+|---|---|---|---|---|---|
+| khio | fetched | 0.96 | 100 | 0.80 | FALSE |
+| khio | plan | 0.00 | 100 | 0.80 | TRUE |
+| nhh | fetched | 0.58 | 100 | 0.80 | TRUE |
+| nhh | plan | 0.00 | 100 | 0.80 | TRUE |
+| vid | fetched | 0.70 | 100 | 0.80 | TRUE |
+| vid | plan | 0.44 | 100 | 0.80 | TRUE |
+
+- **khio: ready with known limits.** `plan` 0.00: current-plan site, 2026/27
+  pages join no DBH 2025 offering until a snapshot with 2026 (a timing
+  limit, not a defect). Fetch failures: 4 doctoral codes with 404 (site).
+- **nhh: ready with known limits.** `plan` 0.00 as khio. `fetched` 0.58: 81
+  of 195 offerings have no URL (site search finds no page: NHH Executive
+  courses and translator exams), user decision pending since 2026-10-31.
+- **vid: ready with known limits**, provided the running VID retry harvest
+  does not show fetch errors that a retry should fix. `fetched` 0.70 and
+  `plan` 0.44: the 3 sampled failed fetches are soft-404s of courses
+  without a published plan and the 19 sampled empty pages have no plan text
+  (no plan text lost); the other failures were not reviewed one by one. The numbers are from the build before the retry harvest.

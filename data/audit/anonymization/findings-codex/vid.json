@@ -1,0 +1,9 @@
+{
+  "check": "anonymization",
+  "institution": "vid",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 5,
+  "overall_assessment": "No anonymization defects were found after reading all 28 courses in full, including the 23 random controls: no institutional staff names, personal contact details, administrative dates, or targeted boilerplate remain. All five pre-pass flags are false alarms: BASOB2032 cites the government regulation dated 6. januar 2017, which must be retained, while the four name_like suspects contain biblical titles or English course/programme names rather than private persons. All 28 courses have zero removed spans, so the sample shows no content over-removal, text corruption, or structure loss caused by anonymization.",
+  "findings": []
+}

@@ -1,0 +1,26 @@
+{
+  "check": "anonymization",
+  "institution": "khio",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 2,
+  "overall_assessment": "All 28 courses were read in full, including both suspects and 26 random controls. Both name_like flags are false alarms caused by capitalized course, event and institution names; no private-person names, contact details, content removal or anonymization damage were found, and all courses have zero removed spans. However, administrative programme version years remain in 27 of 28 plans, including both suspects and 25 controls, without triggering the pre-pass admin_date flag.",
+  "findings": [
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "khio_BK306-1_2025_autumn_1",
+        "khio_DA550-2_2025_autumn_1",
+        "khio_KR524-2_2025_autumn_1"
+      ],
+      "evidence": "Inngår i studieprogram\nBachelorstudium i billedkunst (2022)",
+      "description": "The programme affiliation field retains a parenthesized administrative programme version year in 27 of 28 courses. These years date the institution's programme versions rather than teaching subject matter or publications, so they fall under administrative years that must be removed. Preserve the programme names themselves. The unflagged controls show that this is an institution-wide pattern within the sample.",
+      "root_cause_hypothesis": "R/anonymize.R has no KHIO handler. Its .anon_generic() administrative-year rules recognize approval/update keywords, semester labels and academic-year ranges, but not a single parenthesized year appended to a programme affiliation. The pre-pass likewise does not recognize this context.",
+      "suggested_fix": "Add and register .anon_khio() in R/anonymize.R with a multiline rule scoped to the programme-name line immediately following 'Inngår i studieprogram': remove only its trailing space and parenthesized four-digit year, preserving the programme name, any preceding acronym parentheses and line breaks. Add a regression case for a programme name containing '(CDPR) (2021)' and a negative case preserving publication/content years; extend the audit pre-pass to flag this affiliation-year format.",
+      "confidence": "high"
+    }
+  ]
+}
