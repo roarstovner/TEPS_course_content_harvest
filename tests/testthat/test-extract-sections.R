@@ -457,6 +457,9 @@ test_that("more placeholders and list stamps are removed, exam-table headers kep
               "Litteraturlisten for høst 2026\n\nTilgang til litteratur\nNoe av litteraturen er digital.")) {
     expect_true(.is_placeholder_text(t), label = t)
   }
+  # a long run of dashes before text is no placeholder, without PCRE's match limit
+  expect_no_warning(expect_false(.is_placeholder_text(paste(strrep("_", 75), "Generelt"))))
+  expect_true(.is_placeholder_text("___ ... –"))
   out <- tibble::tibble(
     section = c("assessment", "assessment", "reading_list"),
     raw_text = c("Vurderingsform Gruppering Varighet Karakterskala Andel Kommentar Mappe Individuell A-F 100",

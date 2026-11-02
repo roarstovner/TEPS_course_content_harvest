@@ -951,7 +951,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   # bare negation / dummy values: "Ingen", "Ingen krav", "None", "x", "-", "..."
   "ingen(?: spesielle)?(?: krav| forkunnskapskrav| arbeidskrav)?", "nei", "none", "n/a", "x",
   "det er ingen (?:vurdering|eksamen) i emnet",                      # hvl
-  "[-–.…_]+", "ingen info",                                          # hvl "_", oslomet
+  "[-–.…_]++", "ingen info",                                         # hvl "_", oslomet
   # no coursework: "Ingen arbeidskrav i emnet.", "No coursework requirements."
   paste0("(?:det er )?ingen (?:obligatoriske )?(?:arbeidskrav|obligatoriske aktivitet\\w*)",
          "(?: ?(?:eller|og|/) ?(?:andre vilkår|obligatorisk\\w* aktivitet\\w*))?",
@@ -1034,8 +1034,13 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   paste(lines[real[1]:last], collapse = "\n")
 }
 
+# Possessive dashes and separators: a run of dashes could be split among
+# the repeats in every way, so a long one with other text after it ("_____
+# Generelt", 75 underscores) ran into PCRE's match limit, a warning and no
+# match (uit 2017/2018, build of 2026-11-01). No other phrase begins with a
+# separator or a dash, so the matches are the same.
 .placeholder_regex <- paste0(
-  "^(?:(?:", paste(.placeholder_phrases, collapse = "|"), ")[\\s.:;,]*)+$"
+  "^(?:(?:", paste(.placeholder_phrases, collapse = "|"), ")[\\s.:;,]*+)+$"
 )
 
 .is_placeholder_text <- function(text) {
