@@ -652,6 +652,38 @@ institution_configs <- list(
     section_strategy = "html"
   ),
 
+  phs = list(
+    code = "1301",
+    # /studier/emner/{year}/{var|host}/{code}.html from 2022, or the English
+    # tree's /english/studies/courses/{year}/{spring|autumn}/; the listings
+    # (resolve_urls_phs_batch()) hold every page, a quarter of DBH's
+    # offerings. The layout is HiMolde's (FS pages in Vortex)
+    strategy = "url_discovery",
+    # the English pages have no plan: not found (fetch_html_cols_single_phs())
+    fetch_fn = fetch_html_cols_single_phs,
+    # The title, the facts list (credits, department, semester, duration) and
+    # the plan, which here sit side by side; not the reading-list link, the
+    # table of contents' heading and the FS fetch stamp
+    selector = "#vrtx-content",
+    exclude = "#vrtx-content div.connected-links, #vrtx-content h2.vrtx-toc-header, #vrtx-content .vrtx-date-info",
+    # and the programmes the course belongs to (an empty list on most pages)
+    facts = c("#vrtx-content > h1", "#vrtx-fs-emne-facts",
+              local({
+                h2 <- paste0("//h2[normalize-space() = 'Emnet er tilknyttet følgende studieprogram' or ",
+                             "normalize-space() = 'The course is connected to the following study programs']")
+                paste0(h2, " | ", h2, "/following-sibling::ul[1][contains(@class, 'vrtx-fs-programmes')]")
+              })),
+    plan_years = "url",
+    # "(Høst 2025–Vår 2026)": a course over two semesters is filed under its
+    # autumn, as at HiMolde
+    page_term = function(html) title_terms(html)$first,
+    page_end_term = function(html) title_terms(html)$last,
+    # h2s: Innledning, Læringsutbytte, Kunnskap, Ferdigheter, Generell
+    # kompetanse, Organisering og læringsaktiviteter, Obligatorisk aktivitet,
+    # Vurdering
+    section_strategy = "html"
+  ),
+
   samas = list(
     code = "0217",
     strategy = "noop",

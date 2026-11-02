@@ -73,6 +73,8 @@ resolve_course_urls <- function(df,
       resolve_urls_hiof_batch(df)
     } else if (inst == "himolde") {
       resolve_urls_himolde_batch(df)
+    } else if (inst == "phs") {
+      resolve_urls_phs_batch(df)
     } else if (inst == "nhh") {
       resolve_urls_nhh_batch(df, .progress = .progress, checkpoint = discovery)
     } else if (inst == "nmh") {
@@ -260,6 +262,27 @@ resolve_urls_himolde_batch <- function(df, index = vortex_course_index(
                                            "https://www.himolde.no/english/studies/courses/"),
                                          get_institution_config("himolde")$request_delay)) {
   cli::cli_alert_info("HiMolde: {nrow(index$pages)} pages in {length(index$read)} year folders")
+  vortex_match_urls(df, index)
+}
+
+#' Resolve URLs for a batch of PHS courses from its folder listings
+#'
+#' As HiMolde's (resolve_urls_himolde_batch()), without department folders:
+#' a page is /studier/emner/{year}/{var|host}/{code}.html, from 2022, or
+#' /english/studies/courses/{year}/{spring|autumn}/{code}.html. The listings
+#' hold every page (checked 2026-11-02: offerings they do not list answer
+#' 404), about a quarter of DBH's offerings of 2024 and 2025. A course over
+#' two semesters is filed under its autumn.
+#'
+#' @param df A tibble with course_code, year, semester_name columns
+#' @param index Pages and year folders read, from vortex_course_index()
+#' @return df with url filled in where possible
+resolve_urls_phs_batch <- function(df, index = vortex_course_index(
+                                     unique(c(df$year, df$year[df$semester_name %in% "Vår"] - 1L)),
+                                     c("https://www.politihogskolen.no/studier/emner/",
+                                       "https://www.politihogskolen.no/english/studies/courses/"),
+                                     get_institution_config("phs")$request_delay)) {
+  cli::cli_alert_info("PHS: {nrow(index$pages)} pages in {length(index$read)} year folders")
   vortex_match_urls(df, index)
 }
 

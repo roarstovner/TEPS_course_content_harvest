@@ -385,6 +385,19 @@ fetch_html_cols_single_khio <- function(url) {
   resp
 }
 
+# PHS: the English course pages (NCFI861-*) hold the title ("NCFI861-1 null
+# (Spring 2025)"), the facts list and the programmes, and no plan (checked
+# 2026-11-02). A page without a plan section with text counts as not found.
+fetch_html_cols_single_phs <- function(url) {
+  resp <- site_request(url) |> httr2::req_perform()
+  page <- rvest::read_html(httr2::resp_body_string(resp))
+  if (!any(nzchar(trimws(rvest::html_text(rvest::html_elements(page, ".vrtx-fs-infotype-content")))))) {
+    rlang::abort("Course page without a plan (soft 404)", class = "phs_not_found_error",
+                 http_status = httr2::resp_status(resp))
+  }
+  resp
+}
+
 # VID: a course page whose JSON holds no plan with text (vid_course_json():
 # none, or only an empty entry; MATRS5120, checked 2026-11-01)
 # counts as not found.

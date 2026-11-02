@@ -339,6 +339,15 @@ Figures are in the tables above; the notes say why.
 
 ---
 
+### PHS (Norwegian Police University College)
+
+- Added 2026-11-02 (all-courses frame). Course pages from autumn 2022: DBH's offerings of 2012-2021 (some 5 600) have no plan on the site. The year folders' listings hold every page (offerings they do not list answer 404, checked 2026-11-02), and few of DBH's offerings have one: in the listings of 2026-11-02, 7 of the 463 offerings of 2022, 29 of 460 in 2023, 110 of 434 in 2024 and 112 of 392 in 2025. Most continuing-education courses (Etter- og videreutdanning) and every Master i politivitenskap course of 2024-2025 have no course page; many continuing-education programmes publish a study plan (a PDF, or an FS programme page under `/studier/master-etter-og-videreutdanninger/{programme}/studieplaner/`) instead, which the harvest does not read
+- A page is `/studier/emner/{year}/{var|host}/{code}.html` (code in lower case, Norwegian letters as ASCII: AVHØRUTD is `avhorutd.html`), or in the English tree `/english/studies/courses/{year}/{spring|autumn}/` (the NCFI861 courses of the Nordic Computer Forensic Investigators programme); `resolve_urls_phs_batch()` reads the listings. The English pages hold the title ("NCFI861-1 null (Spring 2025)"), the facts and the programme list, and no plan: `fetch_html_cols_single_phs()` counts a page without plan text as not found (outcome `not_found`, since 2026-11-02; the pilot harvest of 2026-11-02 stored the 7 English pages of its sample as fetched, before that check) A course over two semesters has one page, under its autumn ("PATRULJE01 Politipatruljen B1 (Høst 2025–Vår 2026)"); a spring offering whose autumn page is for the autumn alone gets no plan (`page_end_term`)
+- robots.txt (read 2026-10-16) disallows only `/vrtx`, which the harvest does not request
+- Read from `#vrtx-content`: the title, the facts list (credits, department, semester, duration), the programme list and the plan; not the reading-list link (Leganto), the table of contents' heading and the FS fetch stamp. The title, facts and programme list are in no section
+
+---
+
 ### Samas (Sámi University of Applied Sciences)
 
 - `noop` strategy, no plans: the website's course codes (SÁM-1005, DUO-1014, ...) do not correspond to DBH codes (V1SAM-1100-1, ...), and the V1/V5 teacher education courses appear only in programme PDFs without per-course descriptions

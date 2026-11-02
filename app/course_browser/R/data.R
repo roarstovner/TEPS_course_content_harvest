@@ -21,6 +21,7 @@ institution_labels <- c(
   nord     = "Nord",
   ntnu     = "NTNU",
   oslomet  = "OsloMet",
+  phs      = "PHS",
   samas    = "SÁMAS",
   steiner  = "Steiner",
   uia      = "UiA",

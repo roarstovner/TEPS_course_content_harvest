@@ -194,6 +194,20 @@ semester of the year. Its full harvest waits for the pilot audits (below).
 would take a plan the site does not publish for that semester. *Since:*
 2026-11-01.
 
+**Politihøgskolen (DBH code 1301) joins the frame, from autumn 2022.** One
+of the ten institutions surveyed for the all-courses frame, configured on
+2026-11-02 as `phs`. *Why:* its course plans are public HTML pages, one per
+course and semester, laid out as HiMolde's and found in the year folders'
+listings. *Consequence:* its offerings of 2012-2021 in DBH have no plan,
+since the year folders begin with 2022, and most later offerings have none
+either: the listings hold pages for about a quarter of DBH's offerings of
+2024 and 2025 (7 of 463 in 2022), mostly bachelor courses; most
+continuing-education courses and the master's courses of 2024-2025 have no
+course page. Its full harvest waits for the pilot audits (below).
+*Rejected:* reading the continuing-education programmes' study plans (PDFs
+or programme pages) as the plans of their courses, which would need matching
+programmes to DBH codes by name and reading PDFs. *Since:* 2026-11-02.
+
 **Samas is excluded:** its website's course codes do not match DBH, and the
 teacher education courses are described only in programme PDFs (decided 2026-02).
 
