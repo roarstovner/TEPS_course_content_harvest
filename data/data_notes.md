@@ -1,14 +1,14 @@
 # Data Quality Notes
 
 
-Generated: 2026-11-01
+Generated: 2026-11-02
 
 ## Overview
 
 | Institution | Rows | Codes | Years | Extracted OK | Rate | Median chars | Unique plans | Dedup % |
 |:---|---:|---:|:---|---:|:---|---:|---:|:---|
 | himolde | 189 | 98 | 2018-2025 | 78 | 41.3% | 2986 | 52 | 0.0% |
-| hiof | 41168 | 6753 | 1994-2025 | 11707 | 28.4% | 4310 | 10084 | 8.5% |
+| hiof | 41168 | 6753 | 1994-2025 | 12101 | 29.4% | 4303 | 10146 | 9.0% |
 | hivolda | 22740 | 2843 | 2000-2025 | 5181 | 22.8% | 4220 | 4331 | 16.4% |
 | hvl | 41057 | 4799 | 2017-2025 | 29026 | 70.7% | 3739 | 13582 | 53.1% |
 | inn | 28402 | 3272 | 2018-2025 | 14199 | 50.0% | 3625 | 3065 | 32.9% |
@@ -30,8 +30,9 @@ Generated: 2026-11-01
 | uis | 2921 | 316 | 2007-2025 | 2719 | 93.1% | 5760 | 1307 | 50.2% |
 | uit | 133066 | 10772 | 2004-2025 | 48389 | 36.4% | 3285 | 35465 | 21.7% |
 | usn | 38706 | 5286 | 2018-2025 | 13132 | 33.9% | 5842 | 12361 | 5.7% |
+| vid | 193 | 95 | 2024-2025 | 49 | 25.4% | 3951 | 47 | 2.1% |
 
-**Total**: 542456 rows, 262011 with extracted text (48.3%), 137208
+**Total**: 542649 rows, 262454 with extracted text (48.4%), 137326
 unique plans.
 
 **Columns:**
@@ -62,7 +63,7 @@ site still serves them. Share of offerings with a plan, by period:
 | Institution | –2014 | 2015–17 | 2018–19 | 2020–21 | 2022–23 | 2024– |
 |:------------|:------|:--------|:--------|:--------|:--------|:------|
 | himolde     |       |         | 35%     |         | 51%     | 45%   |
-| hiof        | 22%   | 30%     | 31%     | 34%     | 37%     | 49%   |
+| hiof        | 22%   | 30%     | 31%     | 34%     | 37%     | 61%   |
 | hivolda     | 0%    | 30%     | 45%     | 45%     | 48%     | 48%   |
 | hvl         |       | 34%     | 73%     | 72%     | 74%     | 82%   |
 | inn         |       |         | 0%      | 0%      | 100%    | 100%  |
@@ -84,6 +85,7 @@ site still serves them. Share of offerings with a plan, by period:
 | uis         | 92%   | 96%     | 95%     | 91%     | 92%     | 94%   |
 | uit         | 37%   | 31%     | 36%     | 40%     | 40%     | 38%   |
 | usn         |       |         | 28%     | 33%     | 36%     | 40%   |
+| vid         |       |         |         |         |         | 25%   |
 
 ## Semester registration in DBH
 
@@ -104,7 +106,7 @@ year) that have a plan in at least one semester:
 | Institution | Course-years | Both semesters in DBH | Both reg., plan in one | Both reg., plan in both | Both reg., no plan | Course-years with plan | Row rate |
 |:---|---:|:---|---:|---:|---:|:---|:---|
 | himolde | 100 | 89% | 41 | 4 | 44 | 48% | 41.3% |
-| hiof | 24063 | 71% | 8880 | 180 | 8045 | 45% | 28.4% |
+| hiof | 24063 | 71% | 8916 | 219 | 7970 | 45% | 29.4% |
 | hivolda | 12913 | 76% | 4412 | 193 | 5222 | 39% | 22.8% |
 | hvl | 21818 | 88% | 4018 | 11705 | 3516 | 79% | 70.7% |
 | inn | 14923 | 90% | 2867 | 659 | 9953 | 26% | 50.0% |
@@ -126,6 +128,7 @@ year) that have a plan in at least one semester:
 | uis | 1602 | 82% | 41 | 1165 | 113 | 91% | 93.1% |
 | uit | 69992 | 90% | 25282 | 8581 | 29211 | 52% | 36.4% |
 | usn | 20631 | 88% | 11145 | 422 | 6508 | 61% | 33.9% |
+| vid | 100 | 93% | 37 | 4 | 52 | 44% | 25.4% |
 
 ## Course-years without a plan
 
@@ -144,7 +147,7 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 | Institution | Without plan | 404 | No URL | Fetch error | Page, no plan | No page | Between plans |
 |:---|---:|---:|---:|---:|---:|---:|---:|
 | himolde | 52 | 0 | 51 | 0 | 8 | 0 | 0 |
-| hiof | 13183 | 4419 | 8494 | 105 | 446 | 0 | 306 |
+| hiof | 13100 | 4419 | 8392 | 105 | 495 | 0 | 306 |
 | hivolda | 7804 | 0 | 7804 | 0 | 0 | 0 | 133 |
 | hvl | 4583 | 4558 | 0 | 0 | 58 | 0 | 24 |
 | inn | 10940 | 0 | 7408 | 0 | 3532 | 0 | 44 |
@@ -166,6 +169,7 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 | uis | 145 | 12 | 0 | 0 | 133 | 0 | 0 |
 | uit | 31176 | 0 | 30824 | 0 | 1908 | 0 | 1775 |
 | usn | 7665 | 0 | 7665 | 0 | 21 | 0 | 458 |
+| vid | 56 | 13 | 38 | 0 | 26 | 0 | 0 |
 
 To list the gaps between plans:
 `readRDS("data/interim/plan_gaps.RDS") |> dplyr::filter(between_plans)`.
