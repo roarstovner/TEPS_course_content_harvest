@@ -182,29 +182,6 @@ no_plan_reason <- function(r, cfg) {
   sprintf("a page shell (no section, under %d chars of plan text)", SHELL_MAX_NCHAR)
 }
 
-# With --pilot, a site that shows only the current plan (plan_years
-# "current"; docs/harvesting.md "Sites that show only the current plan"):
-# the pilot sample's offerings with the page fetched for each in its latest run
-# (the pilot run), which read_harvest() gives only to offerings of the page's
-# academic year (2026/27 pages, a DBH snapshot without 2026, 2026-10-22).
-# extracted_text comes from the pipeline's extraction
-# (extract_fulltext_from_raw()), the fetch error is prefixed by its outcome
-# class in the run's ledger, and `page_year` (the page's academic year) is
-# what the year flag checks.
-pilot_run_rows <- function(inst, cfg) {
-  files <- harvest_files(inst)
-  rows <- audit_pilot_rows(read_raw(files, run = TRUE), inst)
-  rows <- rows[!duplicated(offering_key(rows$course_id), fromLast = TRUE), ]
-  rows$extracted_text <- extract_fulltext_from_raw(rows, cfg)
-  rows$page_year <- as.integer(substr(academic_year_of_date(
-    harvest_date(rows$.run, rows[["harvested_at"]])), 1, 4))
-  led <- raw_ledger(files[raw_run(files) %in% rows$.run])
-  out <- led$outcome[match(paste(rows$.run, rows$course_id), paste(led$run, led$course_id))]
-  rows$html_error <- if_else(is.na(rows$html_error), NA_character_,
-                             paste0(coalesce(out, "?"), ": ", rows$html_error))
-  rows
-}
-
 # ── Per institution ──────────────────────────────────────────────────────────
 institutions <- sort(harvested_institutions())
 requested <- audit_args_institutions()
@@ -387,6 +364,9 @@ for (inst in institutions) {
       if (length(on) > 0) sprintf("- ⚑ flags: %s", paste(on, collapse = ", ")) else character(),
       if (kind == "FAILED") character() else
         if (!r$in_build) "- Plan in the build: not in the build (pilot run)" else
+        if (current_pilot && !r$has_plan) paste(
+          "- Plan in the build: none: the build gives a page only to offerings of its",
+          "academic year, and the pilot run's year has no DBH offerings yet") else
         if (r$has_plan) "- Plan in the build: yes" else
         sprintf("- Plan in the build: **none**: %s", no_plan_reason(r, cfg)),
       ""

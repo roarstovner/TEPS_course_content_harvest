@@ -33,6 +33,8 @@ source("R/extract_fulltext.R")      # pre/post fns used by institution_config
 source("R/institution_config.R")
 source("R/pipeline.R")              # harvested_rows()
 source("R/add_course_url.R")        # read_harvest() of url_year sites
+source("R/section_heading_map.R")   # blocks.R: page_blocks() for pilot_run_rows()
+source("R/blocks.R")
 
 # ── Tunables ─────────────────────────────────────────────────────────────────
 SUSPECT_N     <- 20
@@ -119,7 +121,9 @@ manifest <- list()
 sample   <- list()
 
 for (inst in institutions) {
-  df <- audit_pilot_rows(harvested_rows(inst), inst)   # extracted_text from the {targets} pipeline
+  cfg <- get_institution_config(inst)
+  df <- if (audit_pilot() && identical(cfg$plan_years, "current")) pilot_run_rows(inst, cfg) else
+    audit_pilot_rows(harvested_rows(inst), inst)   # extracted_text from the {targets} pipeline
   df <- df |>
     select(-any_of(c("html", "html_error"))) |>
     filter(!is.na(extracted_text), nzchar(extracted_text))
