@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Add PHS (Politihøgskolen) (#400)
 - blocks target: ~8G per worker; tar_make OOM-killed at 4 and 2 workers (#481)
 - Build speed: where tar_make spends its time and how to cut it (#485)
 - Spec question: programme version year in plans, e.g. 'Bachelorstudium i billedkunst (2022)' (khio audit 2026-11-02): keep or drop? (#484)
