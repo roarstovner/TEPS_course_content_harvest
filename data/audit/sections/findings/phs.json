@@ -1,0 +1,87 @@
+{
+  "check": "sections",
+  "institution": "phs",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 18,
+  "n_suspects_reviewed": 2,
+  "overall_assessment": "All 18 packet courses were read in full as presented; the packet's own full-plan truncation markers were not treated as extraction defects. Heading boundaries generally work: all three outcome groups survive, facts and programme lists are excluded, and empty coursework placeholders are removed; both pre-pass leak flags are false alarms (IPO871 contains an outcome about teaching methods, while SKARP-INPO lists formative progression criteria rather than a leaked learning-outcomes section). Unflagged semantic assignment problems recur in the continuing-education controls, especially compulsory attendance in teaching methods and formative feedback in assessment, with smaller content/outcome, portfolio-design and out-of-scope-text problems; these are not universal across the bachelor controls.",
+  "findings": [
+    {
+      "target": "cross_section",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": [
+        "phs_IPO871-1_2025_spring_1",
+        "phs_LEDORGUTV-1_2025_autumn_1",
+        "phs_SKJULT-3E-1_2025_spring_2"
+      ],
+      "evidence": "Det er obligatorisk deltakelse på alle samlingene.",
+      "description": "Six courses retain compulsory attendance in teaching_methods instead of coursework_requirements: IPO871, SKARP-INPO, LEDORGUTV, both NBKRISE offerings and SKJULT-3E. Their coursework sections contain the separately headed assignments but omit these attendance obligations. Mandatory attendance belongs in coursework_requirements under the codebook even when described under Organisering og læringsaktiviteter.",
+      "root_cause_hypothesis": "R/extract_sections.R invokes .split_inline_coursework() for teaching_methods, but .attendance_sentence_regex expects attendance-led wording and a percentage or all-quantifier. It misses PHS formulations beginning Det er, All undervisning er, and Samlingen, as well as attendance rules without a percentage.",
+      "suggested_fix": "Extend sentence-level attendance recognition for PHS to match Det er [percentage] obligatorisk deltakelse på ... samlingene, All undervisning er obligatorisk, Det er krav til obligatorisk deltakelse på samlingen, and Samlingen ... er obligatorisk. Move only the matched obligation sentences to coursework_requirements, preserving surrounding teaching descriptions and existing assignment requirements.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "wrong_content",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "phs_LEDORGUTV-1_2025_autumn_1",
+        "phs_NBKRISE-1_2025_spring_1",
+        "phs_SKJULT-3E-1_2025_spring_2"
+      ],
+      "evidence": "Studentene blir vurdert underveis gjennom arbeidskrav og vil få tilbakemeldinger etter nærmere oppgitte kriterier forankret i læringsutbyttebeskrivelsene.",
+      "description": "Five courses (IPO871, LEDORGUTV, both NBKRISE offerings and SKJULT-3E) prepend formative feedback or supervision to assessment. These passages describe feedback on ungraded coursework or exercises, whereas assessment should hold the final assessment design. Final exams are also retained correctly, so this is contamination rather than loss of the exam section. SKARP-INPO's flagged formative progression criteria are appropriately outside assessment and do not constitute leaked outcomes.",
+      "root_cause_hypothesis": "sectionize() assigns all text under Vurdering to assessment. The later .split_inline_coursework() recognizes explicit approval gates, but these PHS feedback paragraphs contain no exam-access condition, so they remain in assessment.",
+      "suggested_fix": "Add a PHS sentence/paragraph relocation rule before .clean_sections(): move feedback explicitly tied to arbeidskrav into coursework_requirements and exercise supervision/feedback into teaching_methods. Include the IPO871 follow-up sentence about development conversations, while retaining the following final-exam paragraphs in assessment.",
+      "confidence": "high"
+    },
+    {
+      "target": "learning_outcomes",
+      "error_type": "wrong_content",
+      "severity": "medium",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "phs_IPO871-1_2025_spring_1"
+      ],
+      "evidence": "Pedagogikk i instruktørutdanningen vektlegger reflektert og begrunnet planlegging, gjennomføring og evaluering av læringssituasjoner.",
+      "description": "IPO871's learning_outcomes begins with three explanatory paragraphs about pedagogy, subject didactics and the course's knowledge base before Kunnskap. These include subject-matter descriptions and illustrative didactic questions, rather than only statements of what the graduate knows or can do. All actual Kunnskap, Ferdigheter and Generell kompetanse outcomes survive; the teaching-method leak flag itself is a false positive because discussing or applying teaching methods is a legitimate outcome in an instructor course.",
+      "root_cause_hypothesis": "The Læringsutbytte heading maps the whole introductory block to learning_outcomes, and sectionize() concatenates it with the subsequent outcome-group blocks. There is no PHS handling of this mixed subject-description introduction.",
+      "suggested_fix": "For the PHS instructor-plan template, identify the introductory block between Læringsutbytte and the first Kunnskap heading and separate its subject-description sentences into course_content. Retain explicit instructor capability statements in learning_outcomes and preserve all three outcome groups; do not globally remap the Læringsutbytte heading.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "wrong_content",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "phs_FOREBYGG02-1_2025_spring_1",
+        "phs_FOREBYGG02-1_2025_autumn_1"
+      ],
+      "evidence": "Deler av mappen vil være gjenstand for en avsluttende vurdering.",
+      "description": "Both FOREBYGG02 controls leave this statement about which portfolio material receives final assessment in teaching_methods. The assessment row only says that there is an individual pass/fail portfolio assessment. The quoted sentence is assessment design under course_plan_spec.md and should accompany that row, while the surrounding continuous portfolio work, feedback and supervision remain teaching methods.",
+      "root_cause_hypothesis": "R/extract_sections.R handles assessment design inside teaching_methods only when .design_line_regex finds a line beginning Vurderingsform/Vurderingsinnhold or Eksamensform/Eksamensinnhold. This embedded prose sentence does not match.",
+      "suggested_fix": "Add sentence-level relocation for the exact PHS portfolio-design formulation Deler av mappen vil være gjenstand for en avsluttende vurdering. Append it to assessment and remove it from teaching_methods without moving the rest of the paragraph.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "other",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "phs_IPO871-1_2025_spring_1",
+        "phs_LEDORGUTV-1_2025_autumn_1",
+        "phs_NBKRISE-1_2025_autumn_1"
+      ],
+      "evidence": "Utdanningens innhold er unik både ved PHS og FHS, og det er derfor ikke aktuelt med godskrivinger eller fritak.",
+      "description": "Sections retain plan text outside the seven canonical categories. Both NBKRISE offerings include credit-recognition/exemption policy in course_content, and IPO871, SKARP-INPO, LEDORGUTV and both NBKRISE offerings retain standalone total-workload estimates in teaching_methods. course_plan_spec.md explicitly keeps workload and credit-overlap information only in course_plan. These are not wholly boilerplate-only sections: substantive content and methods remain around the extraneous sentences.",
+      "root_cause_hypothesis": "Innledning and Organisering og læringsaktiviteter are mapped wholesale to course_content and teaching_methods. .clean_sections() strips selected administrative text but does not remove these PHS credit-recognition and total-workload formulations.",
+      "suggested_fix": "Add PHS section-only cleanup rules for the quoted godskrivinger/fritak sentence and standalone sentences beginning Omfanget på ... er anslått til or Utdanningens totale omfang er anslått til. Keep the original full-plan text and preserve hours tied to specific teaching activities or compulsory requirements.",
+      "confidence": "high"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 # sections audit — aggregated findings
 
-84 findings across 18 institutions (from 18 agent reports in `data/audit/sections/findings`; model: gpt-6.1-sol, sonnet).
-Mechanical verification: 84 passed (✓), 0 failed (✗), 0 not checkable (?, stale report or no packet).
+89 findings across 19 institutions (from 19 agent reports in `data/audit/sections/findings`; model: gpt-6.1-sol, sonnet).
+Mechanical verification: 89 passed (✓), 0 failed (✗), 0 not checkable (?, stale report or no packet).
 Sorted by severity then prevalence. Source: `R/audit/aggregate.R`.
 
 ## Failed verification — check by hand before acting
@@ -15,37 +15,29 @@ _(none)_
 
 | target | error_type | n_inst | institutions | worst |
 | --- | --- | --- | --- | --- |
+| assessment | wrong_content | 7 | hiof, nih, ntnu, oslomet, phs, uio, uit | high |
 | assessment | formatting_noise | 7 | hivolda, hvl, inn, nord, steiner, uib, uio | medium |
-| assessment | wrong_content | 6 | hiof, nih, ntnu, oslomet, uio, uit | high |
-| cross_section | wrong_content | 5 | nord, ntnu, oslomet, uit, usn | high |
+| cross_section | wrong_content | 6 | nord, ntnu, oslomet, phs, uit, usn | high |
 | coursework_requirements | wrong_content | 4 | hvl, ntnu, uia, uio | high |
 | prerequisites | wrong_content | 4 | ntnu, oslomet, uit, usn | high |
+| cross_section | other | 4 | hiof, ntnu, phs, usn | medium |
 | prerequisites | boilerplate_only | 4 | hvl, nla, nord, uia | medium |
 | assessment | truncated | 3 | hiof, ntnu, uit | high |
 | teaching_methods | merged_sections | 3 | mf, nord, ntnu | high |
 | prerequisites | empty_placeholder | 3 | hivolda, uib, uis | low |
 | cross_section | empty_placeholder | 3 | hiof, ntnu, oslomet | medium |
-| cross_section | other | 3 | hiof, ntnu, usn | medium |
-
-## Change since `HEAD` (keyed by target / error_type)
-
-| institution | n_before | n_now | persisting | new | gone |
-| --- | --- | --- | --- | --- | --- |
-| nord | 5 | 7 | prerequisites / boilerplate_only; assessment / formatting_noise | teaching_methods / merged_sections; coursework_requirements / split_section; cross_section / duplicate; reading_list / missing_section; cross_section / wrong_content | coursework_requirements / wrong_content; assessment / missing_section; prerequisites / duplicate |
-| ntnu | 6 | 8 | assessment / wrong_content; teaching_methods / merged_sections; cross_section / empty_placeholder | assessment / truncated; coursework_requirements / wrong_content; cross_section / wrong_content; prerequisites / wrong_content; cross_section / other | prerequisites / boilerplate_only; assessment / formatting_noise; course_content / duplicate |
-| oslomet | 6 | 7 | prerequisites / truncated | cross_section / wrong_content; assessment / wrong_content; cross_section / merged_sections; prerequisites / wrong_content; cross_section / empty_placeholder; course_content / formatting_noise | assessment / formatting_noise; assessment / boilerplate_only; prerequisites / empty_placeholder; prerequisites / boilerplate_only; course_content / boilerplate_only |
 
 ## By error type
 
 | error_type | severity | n |
 | --- | --- | --- |
 | formatting_noise | low | 13 |
-| wrong_content | high | 11 |
+| wrong_content | high | 12 |
+| wrong_content | medium | 11 |
 | empty_placeholder | low | 9 |
-| wrong_content | medium | 8 |
+| other | medium | 5 |
 | formatting_noise | medium | 4 |
 | missing_section | high | 4 |
-| other | medium | 4 |
 | boilerplate_only | low | 3 |
 | merged_sections | high | 3 |
 | merged_sections | medium | 3 |
@@ -66,14 +58,14 @@ _(none)_
 
 | target | n |
 | --- | --- |
-| cross_section | 19 |
-| assessment | 17 |
+| cross_section | 22 |
+| assessment | 18 |
 | prerequisites | 15 |
 | teaching_methods | 11 |
 | coursework_requirements | 6 |
 | reading_list | 6 |
 | course_content | 5 |
-| learning_outcomes | 3 |
+| learning_outcomes | 4 |
 | all | 2 |
 
 ## Per institution
@@ -91,6 +83,7 @@ _(none)_
 | nord | gpt-6.1-sol | 20 | Accordion boundaries and all learning-outcome groups are generally retained, but semantic separation is unreliable: coursework and other assessment/teaching text cross section boundaries, admission and exam logistics remain, and a random control loses its reading-list section. SOS5003's duplicate... |
 | ntnu | gpt-6.1-sol | 20 | All 20 offerings (14 suspects and 6 controls) were read in full: heading boundaries and learning-outcome groups generally survive, but recurring semantic routing errors leave compulsory work and graded assessment in the wrong sections, including in random controls. Most short/empty flags on subst... |
 | oslomet | gpt-6.1-sol | 16 | All 16 courses were reviewed: major section boundaries generally work, all learning-outcome groups survive, and exam aids and grading scales correctly remain in assessment. The four empty flags identify real placeholders; the four learning-outcome/teaching-method leak flags are false alarms from ... |
+| phs | gpt-6.1-sol | 18 | All 18 packet courses were read in full as presented; the packet's own full-plan truncation markers were not treated as extraction defects. Heading boundaries generally work: all three outcome groups survive, facts and programme lists are excluded, and empty coursework placeholders are removed; b... |
 | steiner | sonnet | 13 | Section extraction works well for Steiner: learning outcomes (all three sub-groups), content, coursework requirements (Arbeidskrav) and assessment are cut correctly in all 13 courses, including the arbeidskrav-vs-assessment split. Only minor noise (page numbers, retained exam-logistics lines) and... |
 | uia | sonnet | 20 | Section extraction works very well for UiA: the standard headings (Læringsutbytte, Innhold, Undervisnings- og læringsformer, Vilkår for å gå opp til eksamen, Eksamen) map correctly, sub-headings stay inside learning_outcomes, arbeidskrav go to coursework_requirements and the 'Ingen' placeholder i... |
 | uib | sonnet | 20 | UiB section extraction works well: the page has a fixed, regular heading set, all mapped correctly, and coursework vs. assessment, prerequisites and learning outcomes (with Kunnskap/Ferdigheter sub-groups) are intact. Remaining defects are small: a stray 'Hjelpemiddel til eksamen' label in assess... |
@@ -109,6 +102,7 @@ _(none)_
 | ✓ | ntnu | assessment | wrong_content | high | common | ntnu_HRAD2005-A_2022_spring_3; ntnu_HBIOT2039-1_2025_autu... | Extend the NTNU inline-coursework routing to recognise approval criteria, lists introduced by Obligatoriske arbeidskrav består av, validi... |
 | ✓ | ntnu | teaching_methods | merged_sections | high | common | ntnu_IMT4127-1_2022_autumn_1; ntnu_REA0012-1_2022_autumn_... | Apply gate routing to teaching_methods as well as assessment. Recognise Compulsory requirements and Krav for å kunne gå opp til ... as in... |
 | ✓ | ntnu | assessment | truncated | high | common | ntnu_TMM4140-1_2007_autumn_1; ntnu_SARB8002-1_2007_autumn... | Add bounded sentence routing for explicit Vurderingsform: labels and statements linking a named component to sluttkarakteren, karakterset... |
+| ✓ | phs | cross_section | wrong_content | high | common | phs_IPO871-1_2025_spring_1; phs_LEDORGUTV-1_2025_autumn_1... | Extend sentence-level attendance recognition for PHS to match Det er [percentage] obligatorisk deltakelse på ... samlingene, All undervis... |
 | ✓ | hiof | assessment | wrong_content | high | occasional | hiof_LU15SAMG07-1_2007_autumn_2; hiof_LA201BKHV06-1_2007_... | Enable a HiØf sentence-level coursework pass and recognize approval-gate sentences beginning Arbeidskravene or Godkjente arbeidskrav, mov... |
 | ✓ | hiof | teaching_methods | wrong_content | high | occasional | hiof_LMBPED40517-1_2025_spring_1; hiof_SFF35021-1_2025_sp... | Add a HiØf rule that moves explicit mandatory seminar/supervision sentences, including Det gis to obligatoriske veiledningstimer per oppg... |
 | ✓ | nord | coursework_requirements | split_section | high | occasional | nord_SPD1001-1_2025_spring_1; nord_SPD1001-1_2025_autumn_... | Preserve the context of a moved coursework component: for a line introducing one assignment per module, also move consecutive Modul N tas... |
@@ -136,6 +130,8 @@ _(none)_
 | ✓ | nord | assessment | formatting_noise | medium | common | nord_LED5018-1_2022_autumn_2; nord_ENT5011-1_2022_autumn_... | Add narrow Nord cleanup patterns for the quoted StudentWeb notice, the bare Praktisk informasjon og retningslinjer for eksamen pointer, e... |
 | ✓ | ntnu | cross_section | empty_placeholder | medium | common | ntnu_NORX2001-1_2025_autumn_2; ntnu_MOL3022-1_2019_autumn... | Extend whole-row placeholder matching with bounded patterns for Samme som followed only by a course code, Oppgis ved semesterstart/kursst... |
 | ✓ | ntnu | cross_section | other | medium | common | ntnu_IMT4127-1_2022_autumn_1; ntnu_IDATA2002-1_2025_autum... | Add NTNU sentence-level section cleanup for explicit resit lead-ins (Re-sit:, Utsatt eksamen, Ved utsatt eksamen, Ny/utsatt eksamen, and ... |
+| ✓ | phs | assessment | wrong_content | medium | common | phs_LEDORGUTV-1_2025_autumn_1; phs_NBKRISE-1_2025_spring_... | Add a PHS sentence/paragraph relocation rule before .clean_sections(): move feedback explicitly tied to arbeidskrav into coursework_requi... |
+| ✓ | phs | cross_section | other | medium | common | phs_IPO871-1_2025_spring_1; phs_LEDORGUTV-1_2025_autumn_1... | Add PHS section-only cleanup rules for the quoted godskrivinger/fritak sentence and standalone sentences beginning Omfanget på ... er ans... |
 | ✓ | uio | coursework_requirements | wrong_content | medium | common | uio_PROF3025-1_2025_spring_1; uio_KJM5050-1_2025_spring_1 | Add 'Obligatoriske (forhold\|komponenter)' patterns mapped to coursework_requirements in R/section_heading_map.R, and let the uio section_... |
 | ✓ | uis | cross_section | formatting_noise | medium | common | uis_LENG116-1_2015_autumn_1; uis_LFYMAS-1_2017_spring_1; ... | For uis, strip lines matching '(?m)^\s*Emne [A-ZÆØÅ0-9_]+, (?:BOKMÅL\|NYNORSK\|ENGELSK).*versjon.*$' and lines equal to '<emnekode> - <titl... |
 | ✓ | uis | reading_list | formatting_noise | medium | common | uis_MGL3066-1_2025_autumn_1; uis_MGL3066-1_2023_autumn_1;... | In the uis cleanup, remove tokens matching 'https?://bibsys-ur\.userservices\.exlibrisgroup\.com/\S*(?:\s*\n?\S*rft[._]\S*)*' up to 'View... |
@@ -145,12 +141,14 @@ _(none)_
 | ✓ | nord | prerequisites | boilerplate_only | medium | occasional | nord_IKT1013-1_2019_autumn_2; nord_SOS5003-1_2022_autumn_... | Extend sentence-level admission filtering for these exact formulations, including the source typo gjeldene and the standard gjeldende var... |
 | ✓ | oslomet | cross_section | merged_sections | medium | occasional | oslomet_PVUB7000-1_2019_autumn_1; oslomet_PVUB7000-1_2019... | Add exact .drop mappings for Målgruppe and Skikkethetsvurdering in R/section_heading_map.R so their bodies end before the next mapped sub... |
 | ✓ | oslomet | prerequisites | wrong_content | medium | occasional | oslomet_PVUB7000-1_2019_autumn_1; oslomet_PVUB7000-1_2019... | Extend .is_admission_sentence() with sentence-level patterns for these observed admission-priority and eligibility formulations. Preserve... |
+| ✓ | phs | cross_section | wrong_content | medium | occasional | phs_FOREBYGG02-1_2025_spring_1; phs_FOREBYGG02-1_2025_aut... | Add sentence-level relocation for the exact PHS portfolio-design formulation Deler av mappen vil være gjenstand for en avsluttende vurder... |
 | ✓ | uia | prerequisites | boilerplate_only | medium | occasional | uia_ORG966-1_2025_autumn_1; uia_ORG937-1_2025_autumn_1 | In .clean_sections() (or a UiA post_fn for sections) drop prerequisites paragraphs matching 'opptak\|rangeres\|studieplass\|udir\.no\|betinge... |
 | ✓ | uio | assessment | wrong_content | medium | occasional | uio_KJM5050-1_2025_spring_1; uio_KJM5930L-2_2025_spring_1 | Extend the existing whole-item coursework-gate move (#283) to UiO assessment, with patterns such as 'arbeidskrav', 'obligatoriske aktivit... |
 | ✓ | uit | teaching_methods | field_or_language_junk | medium | occasional | uit_BIO-3529-2_2025_autumn_2; uit_END-3602-1_2025_autumn_... | Add explicit handling for the exact English combined language subheading before the denylist and remove its metadata-only label/value fro... |
 | ✓ | usn | cross_section | other | medium | occasional | usn_15DIGRAF-1_2019_autumn_1; usn_NORVU103-1_2018_autumn_... | Add narrowly anchored USN section-cleanup rules for generic plan-change reservations, bare regulation cross-references with no assessment... |
 | ✓ | hvl | coursework_requirements | wrong_content | medium | rare | hvl_LSU301-1_2022_autumn_1 | Add a pattern for 'PRAKSIS ... STUDIEÅR' headings in R/section_heading_map.R (map to course_content or teaching_methods), so it ends the ... |
 | ✓ | mf | teaching_methods | merged_sections | medium | rare | mf_RL1014-1_2025_autumn_1 | Add a line-start pattern for '^Arbeidsform( og organisering)?:?$' mapped to teaching_methods in R/section_heading_map.R (and make sure th... |
+| ✓ | phs | learning_outcomes | wrong_content | medium | rare | phs_IPO871-1_2025_spring_1 | For the PHS instructor-plan template, identify the introductory block between Læringsutbytte and the first Kunnskap heading and separate ... |
 | ✓ | steiner | all | other | medium | rare | steiner_M-PEL2.2_2025_spring_1 | Check the URL built for M-PEL2.2 in R/add_course_url.R and compare the emnekode in the page text with course_code; flag mismatches in the... |
 | ✓ | uib | learning_outcomes | merged_sections | medium | rare | uib_VIT217-0_2025_autumn_1 | Make the UiB block reader split on 'Arbeids- og undervisningsformer' wherever it occurs (also inside the Emnebeskrivelse container), and ... |
 | ✓ | uit | assessment | truncated | medium | rare | uit_FYS-3730-1_2008_autumn_1 | Retain the exact Oppgaven kan skrives ... sentence from the combined language field and append it to assessment before dropping metadata-... |

@@ -63,3 +63,24 @@ high-severity finding.
   generic-rule findings go to fix issues; they need no new harvest.
 - **vid: ready for full harvest** (anonymization). No finding,
   `privacy_hits` 0 of 44.
+
+## phs (pilot, 2026-11-03)
+
+Run 2026-11-03, `--pilot`, reviewer `codex exec -m gpt-6.1-sol`; 28 courses
+(5 suspects, 23 controls), all read. No personal data and no admin dates
+left; the 4 `removed` flags are the semester labels of very short (shell)
+pages, the `name_like` flag is the course title "Core concepts in Digital
+Investigation & Forensics".
+
+- **medium, rare, kept** — over-removal of a content date:
+  "Riksadvokaten utga [−høsten 2023−] retningslinjer for politiavhør av
+  barn" (phs_AVMISBA-1_2025_spring_1). Reproduced with `anonymize_text()`
+  on the sentence. Cause (checked): `.anon_generic()` drops season + year;
+  the government-document guard does not know Riksadvokaten and looks only
+  before the date, while "retningslinjer" follows it. Fix in
+  `R/anonymize.R` (guard), rebuild only. This offering has no plan in the
+  pilot build (an earlier version), so no published text is hit yet.
+
+`privacy_hits` 0 (n 12, threshold 0).
+
+**Verdict phs (anonymization): ready** (one medium fix issue).

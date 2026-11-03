@@ -64,3 +64,41 @@ Gate numbers (`pilot_gate()`, build 2026-11-02):
   `plan` 0.44: the 3 sampled failed fetches are soft-404s of courses
   without a published plan and the 19 sampled empty pages have no plan text
   (no plan text lost); the other failures were not reviewed one by one. The numbers are from the build before the retry harvest.
+
+## phs (pilot, 2026-11-03)
+
+Run 2026-11-03 on the build of 2026-11-03 03:23, `--pilot`, reviewer
+`codex exec -m gpt-6.1-sol`; 28 courses (0 suspects, 28 random controls),
+all read. **0 findings.** The 16 plans kept are clean (breadcrumbs and the FS
+update stamp left out, as configured); the 12 pages without a plan in the
+build match their "Plan in the build" reason (earlier version or page
+shell).
+
+Gate numbers (`pilot_gate("phs")`, 100 course-years):
+
+| metric | value | n | threshold | review |
+|---|---|---|---|---|
+| fetched | 0.28 | 100 | 0.80 | TRUE |
+| plan | 0.12 | 100 | 0.80 | TRUE |
+
+- `fetched` .28: 72 course-years have no URL. PHS's year-folder listings
+  hold every page (unlisted offerings answer 404, checked 2026-11-02): DBH
+  lists course-years the site has no page for (2022: 2 of 50; most EVU and
+  master offerings have only programme plans, which the user decided
+  2026-11-02 not to use).
+- `plan` .12: of the 28 course-years with a page, 16 get no plan, by rule:
+  9 are spring 2025 offerings whose only page is the autumn 2024 one,
+  "(Høst 2024)" without "–Vår 2025" (AVHØRUTD, AVMISBA, ETTERFORDY, FLEFOL,
+  INND-PENG, RUSM-EKST, RUSM-POL, SAMETIKK01, SAMVI-ØVE; `page_end_term`,
+  an earlier version); 7 are the English NCFI861-* pages, which hold the
+  title and facts but no plan (5 titled "null"; 3J and 3L have a real
+  title). The pilot stored them before `fetch_html_cols_single_phs()` (soft
+  404) existed: it treats all 7 as not found and all 29 Norwegian pages as
+  found (checked on the stored HTML), and the shell rule or `page_end_term`
+  already keeps them out of the data. Two-semester pages "(Høst 2024–Vår
+  2025)" do give the spring offering its plan (FOREBYGG02, IPO871, NBKRISE,
+  OPERATIV02, PATRULJE01, STRAFF01).
+
+**Verdict phs (fulltext): ready with known limits** — `fetched` .28 and
+`plan` .12 below .80, both on the site (no page for most DBH course-years;
+earlier-version and plan-less English pages), no fix removes them.

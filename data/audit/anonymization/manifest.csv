@@ -12,6 +12,7 @@
 "nord",8,20,"data/audit/anonymization/packets/nord.md"
 "ntnu",20,8,"data/audit/anonymization/packets/ntnu.md"
 "oslomet",20,8,"data/audit/anonymization/packets/oslomet.md"
+"phs",5,23,"data/audit/anonymization/packets/phs.md"
 "steiner",0,8,"data/audit/anonymization/packets/steiner.md"
 "uia",10,18,"data/audit/anonymization/packets/uia.md"
 "uib",10,18,"data/audit/anonymization/packets/uib.md"

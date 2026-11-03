@@ -187,3 +187,53 @@ All fixes are rebuilt from the raw store and need no new harvest.
 Unchanged from 2026-10-21 for hiof and uit (facts box, programme lists,
 course evaluation, contact, year picker, admission; none should map). usn:
 Annet, Evaluering av emnet, Miscellaneous.
+
+## phs (pilot, 2026-11-03)
+
+Run 2026-11-03 on the build of 2026-11-03 03:23, `--pilot`, reviewer
+`codex exec -m gpt-6.1-sol` (findings in `findings/phs.json`); 18 courses
+(2 suspects, 16 controls), all read. `qa_sections.R` was run on PHS's rows
+only (the full run needs more than the 4 GB a process may take while
+harvests run; its flags are per institution, so PHS's suspects are the
+same). Both `leak` flags are false alarms. Headings split well: the three
+outcome groups survive, the facts and programme lists stay out, empty
+coursework placeholders are dropped.
+
+Findings, each checked on `plan_sections.RDS` (PHS's 18 plans):
+
+- **attendance under teaching** (high → medium, as uit HEL-3050 above):
+  "Det er obligatorisk deltakelse på alle samlingene." and similar stay in
+  `teaching_methods` in 6 plans (IPO871, LEDORGUTV, NBKRISE ×2,
+  SKARP-INPO, SKJULT-3E); `coursework_requirements` exists beside it. Cause:
+  `.attendance_sentence_regex` (`R/extract_sections.R`) wants a percentage
+  or "alle" and an attendance noun first; PHS writes "Det er …",
+  "All undervisning er …". Same class as nord/uit above.
+- **formative feedback in assessment** (medium): "Studentene blir vurdert
+  underveis gjennom arbeidskrav og vil få tilbakemeldinger …" in 4 plans
+  (IPO871, LEDORGUTV, NBKRISE ×2); the final assessment is there too.
+- **out-of-scope text in sections** (medium): credit-recognition text
+  ("ikke aktuelt med godskrivinger eller fritak") in `course_content` of
+  NBKRISE ×2; total-workload sentences in `teaching_methods` of 6 plans.
+  Section side (`.clean_sections()`), as the spec keeps them in
+  `course_plan` only.
+- **portfolio design under teaching** (medium): "Deler av mappen vil være
+  gjenstand for en avsluttende vurdering." in `teaching_methods` of
+  FOREBYGG02 ×2.
+- **intro paragraphs in learning_outcomes** (medium, rare): IPO871's three
+  paragraphs before "Kunnskap" ("Pedagogikk i instruktørutdanningen …").
+
+All rebuild from the raw store; none needs a new harvest.
+
+| metric | value | n | threshold | review |
+|---|---|---|---|---|
+| assessment | 1.00 | 12 | 0.90 | FALSE |
+| coursework | 0.83 | 12 | 0.70 | FALSE |
+| no_sections | 0 | 12 | — | — |
+| unmapped_headings | 0.14 | 254 | 0.65 | FALSE |
+
+Unmapped headings: only "Emnet er tilknyttet følgende studieprogram" and
+"The course is connected to the following study programs" (the programme
+list, kept in the facts; not plan text). No `no_sections` course ids.
+
+**Verdict phs (sections): ready** — no number flagged, medium findings only
+after re-rating (fix issues, rebuild only).

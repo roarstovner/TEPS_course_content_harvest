@@ -1,0 +1,24 @@
+{
+  "check": "anonymization",
+  "institution": "phs",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 5,
+  "overall_assessment": "Anonymization generally works well across all 28 packet records: no personal-data leaks, residual administrative dates, or removal-induced text/structure damage were observed in the supplied text. All five suspect flags are false alarms: four removal-share flags reflect correct semester-year removal from very short records, and the name_like flag concerns the course title Core concepts in Digital Investigation & Forensics. One random control loses a substantive publication date for official guidelines; every other displayed removed span is an appropriate administrative semester-year removal.",
+  "findings": [
+    {
+      "target": "content_text",
+      "error_type": "over_removal",
+      "severity": "medium",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "phs_AVMISBA-1_2025_spring_1"
+      ],
+      "evidence": "… avhør av sårbare mistenkte. Riksadvokaten utga [−høsten 2023−] retningslinjer for politiavhør av barn og …",
+      "description": "The publication date of Riksadvokaten’s guidelines for interviewing children and particularly vulnerable suspects is removed. This dates an official subject-matter document, rather than course administration or a teaching semester, and must be preserved under the content-year and government-document rules. This unflagged problem occurs in one of the 23 random controls.",
+      "root_cause_hypothesis": "In R/anonymize.R, .anon_generic() removes inflected season-plus-year expressions using .season_regex. Its .not_gov guard recognizes document/publisher cues only within the preceding 80 characters; .gov_doc_regex does not include Riksadvokaten, and the document cue retningslinjer follows the date in this sentence.",
+      "suggested_fix": "Extend the government-document guard to recognize Riksadvokaten as an official publisher and preserve season-year publication dates in bounded same-line patterns such as Riksadvokaten utga <season year> retningslinjer. Add a regression case preserving this sentence while still removing the course-header (Høst 2024).",
+      "confidence": "high"
+    }
+  ]
+}

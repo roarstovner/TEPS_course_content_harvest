@@ -1,7 +1,7 @@
 # anonymization audit — aggregated findings
 
-5 findings across 2 institutions (from 3 agent reports in `data/audit/anonymization/findings-codex`; model: gpt-6.1-sol).
-Mechanical verification: 5 passed (✓), 0 failed (✗), 0 not checkable (?, stale report or no packet).
+6 findings across 3 institutions (from 4 agent reports in `data/audit/anonymization/findings-codex`; model: gpt-6.1-sol).
+Mechanical verification: 6 passed (✓), 0 failed (✗), 0 not checkable (?, stale report or no packet).
 Sorted by severity then prevalence. Source: `R/audit/aggregate.R`.
 
 ## Failed verification — check by hand before acting
@@ -20,7 +20,7 @@ _(none)_
 | error_type | severity | n |
 | --- | --- | --- |
 | admin_date_left | medium | 3 |
-| over_removal | medium | 1 |
+| over_removal | medium | 2 |
 | text_corruption | low | 1 |
 
 ## By target
@@ -28,7 +28,7 @@ _(none)_
 | target | n |
 | --- | --- |
 | admin_date | 3 |
-| content_text | 2 |
+| content_text | 3 |
 
 ## Per institution
 
@@ -36,6 +36,7 @@ _(none)_
 | --- | --- | --- | --- |
 | khio | gpt-6.1-sol | 28 | All 28 courses were read in full, including both suspects and 26 random controls. Both name_like flags are false alarms caused by capitalized course, event and institution names; no private-person names, contact details, content removal or anonymization damage were found, and all courses have zer... |
 | nhh | gpt-6.1-sol | 28 | All 28 plans and their removed spans were reviewed: no personal-data leaks were found, semester-year labels and the contact email were removed, and literature authors, publication years, NOU identifiers and paragraph structure were generally preserved. The pre-pass flags were false alarms: name-l... |
+| phs | gpt-6.1-sol | 28 | Anonymization generally works well across all 28 packet records: no personal-data leaks, residual administrative dates, or removal-induced text/structure damage were observed in the supplied text. All five suspect flags are false alarms: four removal-share flags reflect correct semester-year remo... |
 | vid | gpt-6.1-sol | 28 | No anonymization defects were found after reading all 28 courses in full, including the 23 random controls: no institutional staff names, personal contact details, administrative dates, or targeted boilerplate remain. All five pre-pass flags are false alarms: BASOB2032 cites the government regula... |
 
 ## All findings (ranked)
@@ -46,4 +47,5 @@ _(none)_
 | ✓ | nhh | admin_date | admin_date_left | medium | occasional | nhh_BEA512-1_2025_autumn_1; nhh_ACC421E-1_2025_autumn_1; ... | Add narrowly scoped scheduling rules for For YYYY it will be at location clauses, due date: English-month ordinal expressions, and from w... |
 | ✓ | nhh | admin_date | admin_date_left | medium | occasional | nhh_ECN434-1_2025_autumn_1; nhh_FIN547-1_2025_autumn_1 | Extend clock removal with context-constrained dot-separated hours/minutes and am/pm ranges, using cues such as at, from, exam, classes an... |
 | ✓ | nhh | content_text | over_removal | medium | rare | nhh_FIE448-1_2025_autumn_1 | Protect year ranges directly modifying historical-event terms such as financial crisis before applying .drop_academic_year(); for ambiguo... |
+| ✓ | phs | content_text | over_removal | medium | rare | phs_AVMISBA-1_2025_spring_1 | Extend the government-document guard to recognize Riksadvokaten as an official publisher and preserve season-year publication dates in bo... |
 | ✓ | nhh | content_text | text_corruption | low | rare | nhh_FIE401-1_2025_autumn_1 | Before deleting individual clock values, rewrite the specific between TIME at/on DAY and TIME at/on DAY construction as from DAY to DAY, ... |
