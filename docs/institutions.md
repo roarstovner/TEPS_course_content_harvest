@@ -240,22 +240,27 @@ as HiMolde’s but without department folders:
 `https://www.politihogskolen.no/studier/emner/{year}/{var|host}/{code}.html`,
 the code in lower case with the Norwegian letters as ASCII
 (`avhorutd.html` for AVHØRUTD) and a dash kept (`ma-910.html`,
-`forebygg01-2.html`), and an English tree,
+`forebygg01-2.html`), though a few drop the dash or write æ as e
+(`elkrise.html` for EL-KRISE, `ledlerutv.html` for LEDLÆRUTV; checked
+2026-11-03), and an English tree,
 `/english/studies/courses/{year}/{spring|autumn}/`, for the courses
 taught in English (NCFI861-\*), whose pages hold the title (“NCFI861-1
 null (Spring 2025)”), the facts and the programmes and no plan:
 `fetch_html_cols_single_phs()` counts a page without plan text as not
 found. The year folders run from 2022 to 2028 (checked 2026-11-02). The
 folders’ listings hold every page, and an offering they do not list
-answers 404, so `resolve_urls_phs_batch()` reads them
-(`vortex_course_index()`, `vortex_match_urls()`). A course over two
-semesters is filed under its autumn, with both semesters in its title
-(“(Høst 2025–Vår 2026)”, `page_term` and `page_end_term`). The plan sits
-beside the title and facts list in `#vrtx-content`, not inside
-`#vrtx-fs-emne-content` as at HiMolde. The headings are h2s:
-“Innledning”, “Læringsutbytte”, “Kunnskap”, “Ferdigheter”, “Generell
-kompetanse”, “Organisering og læringsaktiviteter”, “Obligatorisk
-aktivitet”, “Vurdering”. Programme study plans
+answers 404 (checked again 2026-11-03: the sitemap, the site search, the
+programme pages and 40 unresolved codes probed in every year folder
+found no course page outside the listings), so
+`resolve_urls_phs_batch()` reads them (`vortex_course_index()`,
+`vortex_match_urls()`). A course over two semesters is filed under its
+autumn, with both semesters in its title (“(Høst 2025–Vår 2026)”,
+`page_term` and `page_end_term`). The plan sits beside the title and
+facts list in `#vrtx-content`, not inside `#vrtx-fs-emne-content` as at
+HiMolde. The headings are h2s: “Innledning”, “Læringsutbytte”,
+“Kunnskap”, “Ferdigheter”, “Generell kompetanse”, “Organisering og
+læringsaktiviteter”, “Obligatorisk aktivitet”, “Vurdering”. Programme
+study plans
 (`/studier/master-etter-og-videreutdanninger/{programme}/studieplaner/`,
 HTML or PDF) are not read. robots.txt disallows `/vrtx`.
 

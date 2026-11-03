@@ -468,7 +468,7 @@ nmh_list_pages <- function(page, list_url) {
 #' The page of each offering, from a Vortex site's folder listings
 #'
 #' The page of the offering's code (the file name, lower case; else without
-#' Norwegian letters, ø as o), year and semester; of several, the one at `built` (hiof: the teacher-education
+#' Norwegian letters, ø as o; else also without dashes, æ as e), year and semester; of several, the one at `built` (hiof: the teacher-education
 #' folders), then a Norwegian one, then one outside historiske-emner and
 #' historical-courses. A spring offering without a page takes its course's
 #' page of the autumn before: HiOF and HiMolde file a course over two
@@ -491,8 +491,16 @@ vortex_match_urls <- function(df, index, built = NULL) {
   # the code, else the code without Norwegian letters, as Vortex names a page
   # (HiMolde: BØK705 at bok705.html; HiOF keeps them, løk101)
   ascii <- stringr::str_replace_all(code, c("ø" = "o", "å" = "a", "æ" = "ae"))
+  # else both without dashes and with æ as e (PHS: EL-KRISE at elkrise.html,
+  # LEDLÆRUTV at ledlerutv.html; checked 2026-11-03)
+  loose <- function(x) gsub("-", "", stringr::str_replace_all(x, c("ø" = "o", "å" = "a", "æ" = "e")))
+  # only where no other code has the same loose form (hiof LFPTP-DX/LFPTPDX)
+  loose_key <- paste(loose(p$code), p$year, p$semester)
+  lc <- loose(code)
+  lc[lc %in% names(which(tapply(code, lc, \(x) length(unique(x))) > 1))] <- NA
   page <- function(i, year, semester) dplyr::coalesce(p$url[match(paste(code[i], year, semester), key)],
-                                                      p$url[match(paste(ascii[i], year, semester), key)])
+                                                      p$url[match(paste(ascii[i], year, semester), key)],
+                                                      p$url[match(ifelse(is.na(lc[i]), NA, paste(lc[i], year, semester)), loose_key, incomparables = NA)])
   url <- page(seq_along(code), df$year, semester_to_url(df$semester_name))
   spring <- is.na(url) & df$semester_name %in% "Vår"
   url[spring] <- page(which(spring), df$year[spring] - 1L, "host")
