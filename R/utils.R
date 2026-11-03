@@ -209,6 +209,16 @@ write_raw_run <- function(rows, institution, run, raw_dir = RAW_DIR) {
 # the whole of `df`: Arrow copies what it writes, and a year's pages are some
 # 1 GB at NTNU.
 .write_plain_parquet <- function(df, file, rows = 2000L) {
+  # Written to `<file>.partial` and renamed when complete, so a process killed
+  # while writing leaves no truncated file (NTNU 2021, 2026-11-03)
+  part <- paste0(file, ".partial")
+  on.exit(unlink(part), add = TRUE)
+  .write_parquet_rows(df, part, rows)
+  if (!file.rename(part, file)) stop("could not rename ", part, " to ", file)
+  invisible(file)
+}
+
+.write_parquet_rows <- function(df, file, rows) {
   plain <- function(x) {
     x$metadata$r <- NULL   # plain Parquet, without R's attributes
     x
@@ -221,7 +231,7 @@ write_raw_run <- function(rows, institution, run, raw_dir = RAW_DIR) {
   # (a subset's schema can differ: a time without a time zone gets "")
   schema <- plain(arrow::infer_schema(df))
   sink <- arrow::FileOutputStream$create(file)
-  on.exit(sink$close())
+  on.exit(sink$close(), add = TRUE)
   # as arrow::write_parquet() does, a part at a time
   writer <- arrow::ParquetFileWriter$create(schema, sink, properties = arrow::ParquetWriterProperties$create(
     names(schema), version = "2.4", compression = "zstd", compression_level = 9))

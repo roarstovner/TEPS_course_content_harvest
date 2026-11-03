@@ -360,3 +360,15 @@ test_that("hiof: the semesters in the page title, so a later or earlier plan is 
   # a course over two semesters: its page serves the spring offering too
   expect_equal(cfg$page_end_term(html), c(4040L, 4047L, NA, NA, 4048L, 4049L, 4028L, 4028L))
 })
+
+test_that("a failed raw write leaves neither the file nor a partial one", {
+  dir <- withr::local_tempdir()
+  f <- file.path(dir, "x.parquet")
+  bad <- data.frame(a = 1:3)
+  bad$b <- list(sum, sum, sum)   # functions: Arrow cannot write them
+  expect_error(.write_plain_parquet(bad, f))
+  expect_false(file.exists(f))
+  expect_length(list.files(dir), 0L)
+  .write_plain_parquet(data.frame(a = 1:3), f)
+  expect_equal(list.files(dir), "x.parquet")
+})
