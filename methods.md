@@ -186,6 +186,21 @@ Its full harvest waits for the pilot audits (below). *Rejected:* giving
 such an offering the plan of the nearest semester, which would take a
 plan the site does not publish for that semester. *Since:* 2026-11-01.
 
+**Politihøgskolen (DBH code 1301) joins the frame, from autumn 2022.**
+One of the ten institutions surveyed for the all-courses frame,
+configured on 2026-11-02 as `phs`. *Why:* its course plans are public
+HTML pages, one per course and semester, laid out as HiMolde’s and found
+in the year folders’ listings. *Consequence:* its offerings of 2012-2021
+in DBH have no plan, since the year folders begin with 2022, and most
+later offerings have none either: the listings hold pages for about a
+quarter of DBH’s offerings of 2024 and 2025 (7 of 463 in 2022), mostly
+bachelor courses; most continuing-education courses and the master’s
+courses of 2024-2025 have no course page. Its full harvest waits for the
+pilot audits (below). *Rejected:* reading the continuing-education
+programmes’ study plans (PDFs or programme pages) as the plans of their
+courses, which would need matching programmes to DBH codes by name and
+reading PDFs. *Since:* 2026-11-02.
+
 **Samas is excluded:** its website’s course codes do not match DBH, and
 the teacher education courses are described only in programme PDFs
 (decided 2026-02).
@@ -739,7 +754,7 @@ sections stay (OsloMet practicum courses, below). *Consequence:* 174
 plans left the data on 2026-10-06 (UiA 95, UiB 27, OsloMet 26, Nord 11,
 HVL 10, UiT 4, NTNU 1). With pages that are not the plan at all (INN’s
 course search page, OsloMet’s error page) and later versions (HiOF, INN,
-Nord, UiS), 2 291 offerings have page text but no plan (hiof 1, inn
+Nord, UiS), 2 292 offerings have page text but no plan (hiof 2, inn
 1108, nord 819, oslomet 67, uia 95, uib 80, uis 97, uit 24). *Since:*
 2026-10-06; heading lists (UiB NOLI216 and NOSP216, autumn 2018) from
 2026-10-07; NTNU pages whose only section was the exam tab from
@@ -1264,6 +1279,32 @@ offerings get a new plan id, one for one: none merge or split. In the
 teacher-education frame only PPU4000 (2014 and 2015), whose teaching
 methods section keeps the year too. *Since:* 2026-10-19.
 
+**A year range in running text stays; clock times go in more forms.** A
+range of two consecutive years went as an academic year wherever it
+stood; now one with a small-letter word after it stays (“the 2008-2009
+financial crisis”, NHH; “Innføring i skatterett 2021-2022 studiebok”,
+“The years until 1990/91 were”), unless an academic-year word or a
+preposition stands before it (“For studieåret 2019/20 er summen”, “Fra
+2026/2027 blir”) or “academic year” follows. Clock times went only as
+HH:MM; now also after “kl.”/“klokka” with minutes (“kl. 09.00”,
+“kl.1500”, “kl 9.45-11.30”), with am/pm (“3-6pm”, “2–6 p.m.”) and dotted
+on the quarter hour after an English preposition (“at 12.00”), each with
+the preposition before it, a time zone after it and a comma left
+dangling (“fra mandag kl 12.00 til fredag kl 12.00” → “fra mandag til
+fredag”; “held between 09:00 at the first day … and 14:00 on the third
+day” → “held between the first day … and the third day”). *Why:* the
+spec has years in the content and titles in, clock times out; found by
+the NHH anonymization audit of 2026-11-02. *Rejected:* requiring an
+administrative word before every range (would keep “Pensum 2023-2024”
+style stamps written without one); dotted times without “kl.” or an
+English preposition (“09.00-15.00” is also a date range “01.06-15.06”);
+removing day-month dates without a year (“Aug 23rd”, “due date: Feb
+1st”): Norwegian ones (“torsdag 9. mai”, “21.september”) are kept too,
+and both read as content as often as admin, so they stay, a known gap.
+*Consequence:* 593 published plans lose a clock time (UiT 214, USN 106,
+HiØ 97, NTNU 59, Nord 40); 39 pages keep a year range (HiØ 22, UiB 6,
+USN 6, UiT 3, NHH 2). *Since:* 2026-11-02.
+
 **The semester a course starts from stays.** “Emnet byrjar å gå frå
 våren 2024” (UiB; also “begynner å gå fra”, “starter fra”) keeps its
 season and year: it says when the course was first offered, a fact of
@@ -1652,6 +1693,28 @@ own: only HiOF and Nord give practicum its own heading (since
 2026-10-01). This holds for stock text about practicum in the teaching
 methods too (INN’s “Praksisstudiet er en integrert del av fagene …”): by
 the codebook practicum is a teaching method.
+
+**VID: topics join course content, practicum facts join teaching
+methods, the plan’s facts-box items stay out of the sections.** VID’s
+plans end with items that name a part of no section on most sites. From
+2026-11-02 “Hovedtemaer” (a list of topics, under “Emnets innhold”) maps
+to course content; “Praksisstudier” and “Omfang av praksisstudier” map
+to teaching methods as labels, so an amount (“240 timer”) stays with its
+heading and a bare “Ja” or “Nei” goes; “Emnetype”, “Obligatorisk
+undervisning”, “Totalt antall studentarbeidstimer”, “Tilbys som
+enkeltemne” and “Opptak til enkeltemne” join the plan’s facts list (in
+`course_plan`, in no section, not in the plan id), as Nord’s “Type emne”
+and UiA’s admission flags do. *Why:* by the spec topics are course
+content and practicum a teaching method, while course type, workload and
+admission are plan text in no section; the compulsory-teaching flag is a
+bare yes or no, and the requirements it stands for are under
+“Obligatoriske aktiviteter”. *Rejected:* mapping “Obligatorisk
+undervisning” to coursework requirements (a bare “Ja” says nothing
+there, and a “Nei” would make a coursework section for courses that have
+none); leaving the facts-box items as headings (their programme lists
+would split plans). *Consequence:* no section is gained or lost; VID’s
+course content gains its topic list (56 of 59 pilot plans) and its
+teaching methods the practicum amount (18). *Since:* 2026-11-02.
 
 **Learning-outcome group labels stay when the page makes them headings
 (INN).** INN marks “Kunnskap”, “Ferdigheter” and “Generell kompetanse”

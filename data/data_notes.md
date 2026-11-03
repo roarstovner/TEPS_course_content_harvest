@@ -1,14 +1,14 @@
 # Data Quality Notes
 
 
-Generated: 2026-11-02
+Generated: 2026-11-03
 
 ## Overview
 
 | Institution | Rows | Codes | Years | Extracted OK | Rate | Median chars | Unique plans | Dedup % |
 |:---|---:|---:|:---|---:|:---|---:|---:|:---|
 | himolde | 189 | 98 | 2018-2025 | 78 | 41.3% | 2986 | 52 | 0.0% |
-| hiof | 41168 | 6753 | 1994-2025 | 12101 | 29.4% | 4303 | 10146 | 9.0% |
+| hiof | 41168 | 6753 | 1994-2025 | 18136 | 44.1% | 4215 | 10415 | 20.5% |
 | hivolda | 22740 | 2843 | 2000-2025 | 5181 | 22.8% | 4220 | 4331 | 16.4% |
 | hvl | 41057 | 4799 | 2017-2025 | 29026 | 70.7% | 3739 | 13582 | 53.1% |
 | inn | 28402 | 3272 | 2018-2025 | 14199 | 50.0% | 3625 | 3065 | 32.9% |
@@ -20,19 +20,20 @@ Generated: 2026-11-02
 | nmbu | 2734 | 1438 | 2025 | 12 | 0.4% | 5858 | 12 | 0.0% |
 | nmh | 191 | 95 | 2021-2025 | 106 | 55.5% | 3173 | 72 | 32.1% |
 | nord | 35900 | 5147 | 2016-2025 | 32913 | 91.7% | 3233 | 7864 | 58.3% |
-| ntnu | 40594 | 7302 | 2004-2025 | 37838 | 93.2% | 3589 | 18116 | 52.0% |
+| ntnu | 64837 | 8720 | 2004-2025 | 60169 | 92.8% | 3469 | 27438 | 54.3% |
 | oslomet | 33318 | 3937 | 2018-2025 | 33318 | 100.0% | 3874 | 11286 | 59.5% |
+| phs | 2180 | 307 | 2021-2025 | 271 | 12.4% | 3895 | 142 | 27.2% |
 | samas | 130 | 68 | 2025 | 0 | 0.0% | NA | 0 | NaN% |
 | steiner | 244 | 125 | 2025 | 15 | 6.1% | 5027 | 15 | 0.0% |
 | uia | 55961 | 5047 | 2012-2025 | 10291 | 18.4% | 2944 | 5364 | 44.4% |
-| uib | 23929 | 4382 | 2004-2025 | 15116 | 63.2% | 3627 | 7374 | 46.6% |
+| uib | 36622 | 4570 | 2004-2025 | 22060 | 60.2% | 3582 | 9772 | 51.2% |
 | uio | 10488 | 5380 | 2025 | 47 | 0.4% | 4331 | 47 | 0.0% |
 | uis | 2921 | 316 | 2007-2025 | 2719 | 93.1% | 5760 | 1307 | 50.2% |
 | uit | 133066 | 10772 | 2004-2025 | 48389 | 36.4% | 3285 | 35465 | 21.7% |
 | usn | 38706 | 5286 | 2018-2025 | 13132 | 33.9% | 5842 | 12361 | 5.7% |
-| vid | 193 | 95 | 2024-2025 | 49 | 25.4% | 3951 | 47 | 2.1% |
+| vid | 193 | 95 | 2024-2025 | 63 | 32.6% | 3762 | 56 | 3.4% |
 
-**Total**: 542649 rows, 262454 with extracted text (48.4%), 137326
+**Total**: 581765 rows, 298049 with extracted text (51.2%), 149940
 unique plans.
 
 **Columns:**
@@ -63,7 +64,7 @@ site still serves them. Share of offerings with a plan, by period:
 | Institution | –2014 | 2015–17 | 2018–19 | 2020–21 | 2022–23 | 2024– |
 |:------------|:------|:--------|:--------|:--------|:--------|:------|
 | himolde     |       |         | 35%     |         | 51%     | 45%   |
-| hiof        | 22%   | 30%     | 31%     | 34%     | 37%     | 61%   |
+| hiof        | 34%   | 47%     | 51%     | 58%     | 59%     | 61%   |
 | hivolda     | 0%    | 30%     | 45%     | 45%     | 48%     | 48%   |
 | hvl         |       | 34%     | 73%     | 72%     | 74%     | 82%   |
 | inn         |       |         | 0%      | 0%      | 100%    | 100%  |
@@ -75,17 +76,18 @@ site still serves them. Share of offerings with a plan, by period:
 | nmbu        |       |         |         |         |         | 0%    |
 | nmh         |       |         |         | 25%     | 66%     | 73%   |
 | nord        |       | 77%     | 92%     | 97%     | 99%     | 99%   |
-| ntnu        | 81%   | 97%     | 98%     | 98%     | 94%     | 93%   |
+| ntnu        | 81%   | 97%     | 98%     | 92%     | 93%     | 93%   |
 | oslomet     |       |         | 100%    | 100%    | 100%    | 100%  |
+| phs         |       |         |         | 0%      | 4%      | 28%   |
 | samas       |       |         |         |         |         | 0%    |
 | steiner     |       |         |         |         |         | 6%    |
 | uia         | 0%    | 0%      | 0%      | 40%     | 38%     | 41%   |
-| uib         | 30%   | 44%     | 62%     | 81%     | 59%     | 68%   |
+| uib         | 30%   | 44%     | 62%     | 55%     | 57%     | 68%   |
 | uio         |       |         |         |         |         | 0%    |
 | uis         | 92%   | 96%     | 95%     | 91%     | 92%     | 94%   |
 | uit         | 37%   | 31%     | 36%     | 40%     | 40%     | 38%   |
 | usn         |       |         | 28%     | 33%     | 36%     | 40%   |
-| vid         |       |         |         |         |         | 25%   |
+| vid         |       |         |         |         |         | 33%   |
 
 ## Semester registration in DBH
 
@@ -106,7 +108,7 @@ year) that have a plan in at least one semester:
 | Institution | Course-years | Both semesters in DBH | Both reg., plan in one | Both reg., plan in both | Both reg., no plan | Course-years with plan | Row rate |
 |:---|---:|:---|---:|---:|---:|:---|:---|
 | himolde | 100 | 89% | 41 | 4 | 44 | 48% | 41.3% |
-| hiof | 24063 | 71% | 8916 | 219 | 7970 | 45% | 29.4% |
+| hiof | 24063 | 71% | 8772 | 1244 | 7089 | 49% | 44.1% |
 | hivolda | 12913 | 76% | 4412 | 193 | 5222 | 39% | 22.8% |
 | hvl | 21818 | 88% | 4018 | 11705 | 3516 | 79% | 70.7% |
 | inn | 14923 | 90% | 2867 | 659 | 9953 | 26% | 50.0% |
@@ -118,17 +120,18 @@ year) that have a plan in at least one semester:
 | nmbu | 1438 | 90% | 11 | 0 | 1285 | 1% | 0.4% |
 | nmh | 100 | 91% | 14 | 45 | 32 | 61% | 55.5% |
 | nord | 19459 | 84% | 1053 | 8177 | 7211 | 55% | 91.7% |
-| ntnu | 20935 | 91% | 901 | 17334 | 788 | 96% | 93.2% |
+| ntnu | 33704 | 90% | 1749 | 27420 | 1328 | 96% | 92.8% |
 | oslomet | 17639 | 89% | 2040 | 12246 | 1393 | 89% | 100.0% |
+| phs | 1144 | 91% | 131 | 25 | 880 | 15% | 12.4% |
 | samas | 68 | 91% | 0 | 0 | 62 | 0% | 0.0% |
 | steiner | 125 | 95% | 15 | 0 | 104 | 12% | 6.1% |
 | uia | 29493 | 90% | 8716 | 152 | 17600 | 32% | 18.4% |
-| uib | 12341 | 92% | 39 | 6712 | 4625 | 57% | 63.2% |
+| uib | 18879 | 93% | 56 | 9721 | 7754 | 54% | 60.2% |
 | uio | 5380 | 95% | 44 | 0 | 5064 | 1% | 0.4% |
 | uis | 1602 | 82% | 41 | 1165 | 113 | 91% | 93.1% |
 | uit | 69992 | 90% | 25282 | 8581 | 29211 | 52% | 36.4% |
 | usn | 20631 | 88% | 11145 | 422 | 6508 | 61% | 33.9% |
-| vid | 100 | 93% | 37 | 4 | 52 | 44% | 25.4% |
+| vid | 100 | 93% | 42 | 6 | 45 | 52% | 32.6% |
 
 ## Course-years without a plan
 
@@ -147,7 +150,7 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 | Institution | Without plan | 404 | No URL | Fetch error | Page, no plan | No page | Between plans |
 |:---|---:|---:|---:|---:|---:|---:|---:|
 | himolde | 52 | 0 | 51 | 0 | 8 | 0 | 0 |
-| hiof | 13100 | 4419 | 8392 | 105 | 495 | 0 | 306 |
+| hiof | 12166 | 4419 | 7034 | 105 | 1760 | 0 | 359 |
 | hivolda | 7804 | 0 | 7804 | 0 | 0 | 0 | 133 |
 | hvl | 4583 | 4558 | 0 | 0 | 58 | 0 | 24 |
 | inn | 10940 | 0 | 7408 | 0 | 3532 | 0 | 44 |
@@ -159,17 +162,18 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 | nmbu | 1331 | 0 | 0 | 0 | 0 | 1331 | 0 |
 | nmh | 39 | 0 | 39 | 0 | 0 | 0 | 0 |
 | nord | 8688 | 1568 | 0 | 146 | 6974 | 0 | 0 |
-| ntnu | 919 | 148 | 0 | 747 | 25 | 0 | 1 |
+| ntnu | 1503 | 250 | 0 | 1209 | 60 | 0 | 3 |
 | oslomet | 1996 | 0 | 0 | 0 | 1996 | 0 | 13 |
+| phs | 967 | 21 | 962 | 0 | 64 | 0 | 0 |
 | samas | 68 | 0 | 68 | 0 | 0 | 0 | 0 |
 | steiner | 100 | 0 | 100 | 0 | 0 | 0 | 0 |
 | uia | 19928 | 19920 | 0 | 0 | 635 | 0 | 498 |
-| uib | 5267 | 4487 | 0 | 137 | 649 | 0 | 0 |
+| uib | 8624 | 7472 | 0 | 152 | 1021 | 0 | 1 |
 | uio | 5320 | 0 | 7 | 0 | 0 | 5313 | 0 |
 | uis | 145 | 12 | 0 | 0 | 133 | 0 | 0 |
 | uit | 31176 | 0 | 30824 | 0 | 1908 | 0 | 1775 |
 | usn | 7665 | 0 | 7665 | 0 | 21 | 0 | 458 |
-| vid | 56 | 13 | 38 | 0 | 26 | 0 | 0 |
+| vid | 48 | 13 | 8 | 0 | 27 | 0 | 0 |
 
 To list the gaps between plans:
 `readRDS("data/interim/plan_gaps.RDS") |> dplyr::filter(between_plans)`.
@@ -421,11 +425,31 @@ Figures are in the tables above; the notes say why.
 - A page per course in its teaching language, `/emner/{slug}/`, named
   from the title; `resolve_urls_nhh_batch()` finds it with the site
   search by course code (`docs/institutions.md`). A code the search does
-  not find gets no URL: the NHH Executive courses (department “Avdeling
-  for eksternt rettet virksomhet”, 261 of the 837 codes of 2025; their
-  programme pages describe some of them without a code), the
-  authorised-translator exams (AUT1*, AUT2*) and some theses and courses
-  no longer taught
+  not find gets no URL (outcome `no_url`, no plan). In the pilot sample
+  (2025, checked 2026-11-02) these are 81 of 195 offerings, in three
+  groups:
+  - The translator exams (programme “Translatøreksamen”, AUT1*, AUT2*,
+    TRA1*, TRA2*, 0 credits; 11 codes, 20 offerings): the state
+    authorisation exam for translators, an exam without teaching, so no
+    course plan by nature
+  - The NHH Executive courses (department “Avdeling for eksternt rettet
+    virksomhet”, 261 of the 837 codes of 2025; 28 codes, 55 offerings):
+    continuing education under `/executive/`, where a programme or a
+    module open to all has a page for applicants (credits, start, target
+    group, fee, contacts), without a course code; a few also hold
+    learning outcomes and assessment (the module “Innovasjon og
+    omstillingskraft (NHH)”, EXECUTIVE685). Most codes are parts of a
+    programme with no page of their own: project papers and assignments
+    (AFA211O, MØS412O, SEA416), thesis parts (FINTECH3O, SEAF5D, MØM5),
+    company-internal modules (INT102D for DNB, INT161D), and Executive
+    MBA modules that the programme page describes in a few lines (MAS403
+    “Kilder til konkurransefortrinn”). A match by name would be unsafe
+    (MODUL4 “Corporate Finance”, 9 credits, matches the 30-credit
+    “Corporate Finance” programme), so they get no plan
+  - Courses no longer taught (BAN436 “(expired)”, ELE428 and ENE433
+    “(not offered)”; 3 codes, 6 offerings): the master’s course list
+    (`/for-studenter/emner2/valgfrie-emner_master/`) names them without
+    a link, and the site search has no page for them
 - The page shows the current semester’s version (“Høst 2026”); a course
   taught in spring links to the next semester’s version (“Vår 2027”),
   which is not fetched, so its spring offering gets the autumn version
@@ -661,6 +685,44 @@ Figures are in the tables above; the notes say why.
   all study years, with no markup separating the years, so it is not
   read into the course’s sections. Their `course_plan` keeps the full
   page text
+
+------------------------------------------------------------------------
+
+### PHS (Norwegian Police University College)
+
+- Added 2026-11-02 (all-courses frame). Course pages from autumn 2022:
+  DBH’s offerings of 2012-2021 (some 5 600) have no plan on the site.
+  The year folders’ listings hold every page (offerings they do not list
+  answer 404, checked 2026-11-02), and few of DBH’s offerings have one:
+  in the listings of 2026-11-02, 7 of the 463 offerings of 2022, 29 of
+  460 in 2023, 110 of 434 in 2024 and 112 of 392 in 2025. Most
+  continuing-education courses (Etter- og videreutdanning) and every
+  Master i politivitenskap course of 2024-2025 have no course page; many
+  continuing-education programmes publish a study plan (a PDF, or an FS
+  programme page under
+  `/studier/master-etter-og-videreutdanninger/{programme}/studieplaner/`)
+  instead, which the harvest does not read
+- A page is `/studier/emner/{year}/{var|host}/{code}.html` (code in
+  lower case, Norwegian letters as ASCII: AVHØRUTD is `avhorutd.html`),
+  or in the English tree
+  `/english/studies/courses/{year}/{spring|autumn}/` (the NCFI861
+  courses of the Nordic Computer Forensic Investigators programme);
+  `resolve_urls_phs_batch()` reads the listings. The English pages hold
+  the title (“NCFI861-1 null (Spring 2025)”), the facts and the
+  programme list, and no plan: `fetch_html_cols_single_phs()` counts a
+  page without plan text as not found (outcome `not_found`, since
+  2026-11-02; the pilot harvest of 2026-11-02 stored the 7 English pages
+  of its sample as fetched, before that check) A course over two
+  semesters has one page, under its autumn (“PATRULJE01 Politipatruljen
+  B1 (Høst 2025–Vår 2026)”); a spring offering whose autumn page is for
+  the autumn alone gets no plan (`page_end_term`)
+- robots.txt (read 2026-10-16) disallows only `/vrtx`, which the harvest
+  does not request
+- Read from `#vrtx-content`: the title, the facts list (credits,
+  department, semester, duration), the programme list and the plan; not
+  the reading-list link (Leganto), the table of contents’ heading and
+  the FS fetch stamp. The title, facts and programme list are in no
+  section
 
 ------------------------------------------------------------------------
 
