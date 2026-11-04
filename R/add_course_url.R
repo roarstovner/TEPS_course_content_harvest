@@ -22,6 +22,7 @@ add_course_url <- function(df) {
 
         "nord"    ~ add_course_url_nord(course_code, year, semester_name),
         "nih"     ~ add_course_url_nih(course_code, year, semester_name),
+        "fhs"     ~ NA_character_,  # FHS's versions come from each code's page via resolve_course_urls()
         "phs"     ~ NA_character_,  # PHS's pages come from its year folders' listings via resolve_course_urls()
 
         "uib"     ~ add_course_url_uib(course_code, year, semester_name),

@@ -248,6 +248,14 @@ Figures are in the tables above; the notes say why.
 
 ---
 
+### FHS (Norwegian Defence University College)
+
+- Added 2026-11-04 (all-courses frame). Course pages on Forsvaret's site from autumn 2018, a page per version of the plan; an offering gets the latest version that starts in or before its semester, the one in force (`resolve_urls_fhs_batch()`). DBH's offerings before the reorganisation of FHS's education (2016-2019; codes such as M5-023, SEF1001MAD, VBU1-LED) have no page: in the pilot of 2026-11-04 none of 47 course-years of 2018 and 3 of 47 of 2019 had one, against 36 of 39 in 2022 and 40 of 45 in 2025
+- A page is `/utdanning/emner/{CODE}/{year}-{HØST|VÅR}`; the code's page, `/utdanning/emner/{CODE}`, lists the versions and answers 404 for a code without pages. Read from `#main-container article`: the title, the facts box (credits, academic year, programmes, English title) and the plan; not the "Oppdatert" stamp and the versions menu. The title and facts box are in no section
+- Forsvaret's site has no robots.txt (404, read 2026-10-16); its sitemap answers 500
+
+---
+
 ### HiOF (Ostfold University College)
 
 - A plan sits in a faculty or department folder that DBH does not give, and a course no longer taught moves to `historiske-emner/` (`docs/institutions.md`); since 2026-10-21 `resolve_urls_hiof_batch()` reads the folder listings of the harvested years, where before only the teacher-education folders were built (11 of the 2026-10-17 pilot's 100 course-years had a page; 50 after the re-harvest of 2026-10-21). The selector lists fallbacks for the old and new page layouts

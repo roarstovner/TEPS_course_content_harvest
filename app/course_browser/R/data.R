@@ -6,6 +6,7 @@
 # rebuilds it.
 
 institution_labels <- c(
+  fhs      = "FHS",
   hiof     = "HiØ",
   himolde  = "HiMolde",
   hivolda  = "HVO",

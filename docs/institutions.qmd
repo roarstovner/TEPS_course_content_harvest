@@ -242,6 +242,25 @@ læringsaktiviteter", "Obligatorisk aktivitet", "Vurdering". Programme
 study plans (`/studier/master-etter-og-videreutdanninger/{programme}/studieplaner/`,
 HTML or PDF) are not read. robots.txt disallows `/vrtx`.
 
+**FHS.** Forsvarets høgskole's course pages are on Forsvaret's site,
+`https://www.forsvaret.no/utdanning/emner/{CODE}/{year}-{HØST|VÅR}` (the
+code without DBH's version suffix, the semester in capitals and
+percent-encoded), one page per version of the plan, for the semester the
+version starts in, from autumn 2018 (checked 2026-11-04). A course taught
+every year may have versions for some years only (MILM1701: autumn 2020,
+2021, 2023, 2025). The code's page, `/utdanning/emner/{CODE}`, redirects to
+the latest version, which lists them all in its "Emnehistorikk" menu; a code
+without pages answers 404. `resolve_urls_fhs_batch()` reads each code's page
+once and gives an offering the latest version that starts in or before its
+semester, the one in force. The page is server-rendered HTML: the title, a
+facts box (credits, academic year, programmes, English title), "Hva lærer
+du" (paragraphs with bold sub-headings: "Innledning", "Emnets temaer") and
+accordions with h3 headings ("Læringsutbytte", "Læringsaktiviteter",
+"Pensum", "Arbeidskrav og vurdering", "Utfyllende informasjon om emnet").
+The programme pages (`/utdanning/utdanninger/{slug}`) link the course pages
+of their current versions; their study plans are not read. Forsvaret's
+site has no robots.txt (404) and its sitemap answers 500.
+
 **USN.** The URL holds a version number that metadata cannot give:
 `https://www.usn.no/studier/studie-og-emneplaner/#/emne/{CODE}_{VERSION}_{YEAR}_{SEMESTER}`.
 Each version (1, 2, 3, …) is a revision valid for a range of years, and an

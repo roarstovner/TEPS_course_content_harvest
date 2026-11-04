@@ -1,0 +1,179 @@
+"institution","course_id","course_code_raw","year","semester_name","department_name","level","language","dbh_snapshot","seed"
+"fhs","fhs_AØ3052-1_2018_autumn_1","AØ3052-1",2018,"Høst","Sjøkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_AØ3052-1_2018_spring_1","AØ3052-1",2018,"Vår","Sjøkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_ENG-026-1_2018_autumn_1","ENG-026-1",2018,"Høst","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_ENG-026-1_2018_spring_1","ENG-026-1",2018,"Vår","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_GSU1005-1_2018_autumn_1","GSU1005-1",2018,"Høst","Forsvarets høgskole","other","other","2026-10-16",42
+"fhs","fhs_GSU1005-1_2018_spring_1","GSU1005-1",2018,"Vår","Forsvarets høgskole","other","other","2026-10-16",42
+"fhs","fhs_IE0010-1_2018_autumn_1","IE0010-1",2018,"Høst","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_IE0010-1_2018_spring_1","IE0010-1",2018,"Vår","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_INGP300-1_2018_autumn_1","INGP300-1",2018,"Høst","Cyberingeniørskolen","lower","other","2026-10-16",42
+"fhs","fhs_INGP300-1_2018_spring_1","INGP300-1",2018,"Vår","Cyberingeniørskolen","lower","other","2026-10-16",42
+"fhs","fhs_INGTS200-1_2018_autumn_1","INGTS200-1",2018,"Høst","Cyberingeniørskolen","lower","other","2026-10-16",42
+"fhs","fhs_INGTS200-1_2018_spring_1","INGTS200-1",2018,"Vår","Cyberingeniørskolen","lower","other","2026-10-16",42
+"fhs","fhs_JJ3050-1_2018_autumn_1","JJ3050-1",2018,"Høst","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_JJ3050-1_2018_spring_1","JJ3050-1",2018,"Vår","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_KSI17202-1_2018_autumn_2","KSI17202-1",2018,"Høst","Krigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_L02.1-1_2018_autumn_1","L02.1-1",2018,"Høst","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_L02.1-1_2018_spring_1","L02.1-1",2018,"Vår","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_LL1000-1_2018_autumn_1","LL1000-1",2018,"Høst","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_LL1000-1_2018_spring_1","LL1000-1",2018,"Vår","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_LL1012-1_2018_autumn_1","LL1012-1",2018,"Høst","Sjøkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_LL1012-1_2018_spring_1","LL1012-1",2018,"Vår","Sjøkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_M1-032-1_2018_autumn_1","M1-032-1",2018,"Høst","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_M1-032-1_2018_spring_1","M1-032-1",2018,"Vår","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_M5-023-1_2018_autumn_1","M5-023-1",2018,"Høst","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_M5-023-1_2018_spring_1","M5-023-1",2018,"Vår","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_M8-023-1_2018_autumn_1","M8-023-1",2018,"Høst","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_M8-023-1_2018_spring_1","M8-023-1",2018,"Vår","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_MET3131-1_2018_autumn_1","MET3131-1",2018,"Høst","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_MET3131-1_2018_spring_1","MET3131-1",2018,"Vår","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_MFT1000-1_2018_spring_3","MFT1000-1",2018,"Vår","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_MLMF600-1_2018_autumn_1","MLMF600-1",2018,"Høst","Cyberingeniørskolen","lower","other","2026-10-16",42
+"fhs","fhs_NN3080-1_2018_autumn_1","NN3080-1",2018,"Høst","Sjøkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_NN3080-1_2018_spring_1","NN3080-1",2018,"Vår","Sjøkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_PM1023-1_2018_autumn_1","PM1023-1",2018,"Høst","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_PM1023-1_2018_spring_1","PM1023-1",2018,"Vår","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_SEF1001MAD-1_2018_autumn_1","SEF1001MAD-1",2018,"Høst","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_SEF1001MAD-1_2018_spring_1","SEF1001MAD-1",2018,"Vår","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_SEF1001RYG-1_2018_autumn_1","SEF1001RYG-1",2018,"Høst","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_SEF1001RYG-1_2018_spring_1","SEF1001RYG-1",2018,"Vår","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_STAB4141-1_2018_autumn_1","STAB4141-1",2018,"Høst","Forsvarets høgskole","higher","other","2026-10-16",42
+"fhs","fhs_STAB4141-1_2018_spring_1","STAB4141-1",2018,"Vår","Forsvarets høgskole","higher","other","2026-10-16",42
+"fhs","fhs_VBU1-IDR-1_2018_autumn_1","VBU1-IDR-1",2018,"Høst","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_VBU1-IDR-1_2018_spring_2","VBU1-IDR-1",2018,"Vår","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_VBU1-LED-1_2018_autumn_1","VBU1-LED-1",2018,"Høst","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_VBU1-LED-1_2018_spring_2","VBU1-LED-1",2018,"Vår","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_VBU105-1_2018_autumn_1","VBU105-1",2018,"Høst","Krigsskolen","other","other","2026-10-16",42
+"fhs","fhs_VBU105-1_2018_spring_1","VBU105-1",2018,"Vår","Krigsskolen","other","other","2026-10-16",42
+"fhs","fhs_CBU1506-1_2019_autumn_2","CBU1506-1",2019,"Høst","Cyberingeniørskolen","lower","other","2026-10-16",42
+"fhs","fhs_ENG-016-1_2019_autumn_1","ENG-016-1",2019,"Høst","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_ENG-016-1_2019_spring_1","ENG-016-1",2019,"Vår","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_ENG-018-1_2019_autumn_1","ENG-018-1",2019,"Høst","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_ENG-018-1_2019_spring_1","ENG-018-1",2019,"Vår","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_FYFO-011-1_2019_autumn_1","FYFO-011-1",2019,"Høst","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_FYFO-011-1_2019_spring_1","FYFO-011-1",2019,"Vår","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_GSU1003-1_2019_autumn_1","GSU1003-1",2019,"Høst","Forsvarets høgskole","other","other","2026-10-16",42
+"fhs","fhs_GSU1003-1_2019_spring_1","GSU1003-1",2019,"Vår","Forsvarets høgskole","other","other","2026-10-16",42
+"fhs","fhs_GSU1004-1_2019_autumn_1","GSU1004-1",2019,"Høst","Forsvarets høgskole","other","other","2026-10-16",42
+"fhs","fhs_GSU1004-1_2019_spring_1","GSU1004-1",2019,"Vår","Forsvarets høgskole","other","other","2026-10-16",42
+"fhs","fhs_ING1506-1_2019_autumn_1","ING1506-1",2019,"Høst","Cyberingeniørskolen","lower","other","2026-10-16",42
+"fhs","fhs_ING1506-1_2019_spring_2","ING1506-1",2019,"Vår","Cyberingeniørskolen","lower","other","2026-10-16",42
+"fhs","fhs_INGP400-1_2019_autumn_1","INGP400-1",2019,"Høst","Cyberingeniørskolen","lower","other","2026-10-16",42
+"fhs","fhs_INGP400-1_2019_spring_1","INGP400-1",2019,"Vår","Cyberingeniørskolen","lower","other","2026-10-16",42
+"fhs","fhs_INGV600-1_2019_autumn_1","INGV600-1",2019,"Høst","Cyberingeniørskolen","lower","other","2026-10-16",42
+"fhs","fhs_INGV600-1_2019_spring_1","INGV600-1",2019,"Vår","Cyberingeniørskolen","lower","other","2026-10-16",42
+"fhs","fhs_JMA1000ØRL-1_2019_autumn_1","JMA1000ØRL-1",2019,"Høst","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_JMA1000ØRL-1_2019_spring_1","JMA1000ØRL-1",2019,"Vår","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_KSO1162-1_2019_autumn_1","KSO1162-1",2019,"Høst","Krigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_KSO1162-1_2019_spring_1","KSO1162-1",2019,"Vår","Krigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_LED101-1_2019_autumn_1","LED101-1",2019,"Høst","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_LED101-1_2019_spring_2","LED101-1",2019,"Vår","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_LL1090-1_2019_autumn_3","LL1090-1",2019,"Høst","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_LL1090-1_2019_spring_1","LL1090-1",2019,"Vår","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_LL2153-1_2019_autumn_1","LL2153-1",2019,"Høst","Sjøkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_LL2153-1_2019_spring_1","LL2153-1",2019,"Vår","Sjøkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_M3-025-1_2019_autumn_1","M3-025-1",2019,"Høst","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_M3-025-1_2019_spring_1","M3-025-1",2019,"Vår","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_M5-024-1_2019_autumn_1","M5-024-1",2019,"Høst","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_M5-024-1_2019_spring_1","M5-024-1",2019,"Vår","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_MILM1203-1_2019_autumn_2","MILM1203-1",2019,"Høst","Krigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_MILMA5020-1_2019_autumn_3","MILMA5020-1",2019,"Høst","Forsvarets høgskole","higher","other","2026-10-16",42
+"fhs","fhs_MILMA5020-1_2019_spring_3","MILMA5020-1",2019,"Vår","Forsvarets høgskole","higher","other","2026-10-16",42
+"fhs","fhs_MILMA5060-1_2019_autumn_3","MILMA5060-1",2019,"Høst","Forsvarets høgskole","higher","other","2026-10-16",42
+"fhs","fhs_MILMA5060-1_2019_spring_3","MILMA5060-1",2019,"Vår","Forsvarets høgskole","higher","other","2026-10-16",42
+"fhs","fhs_NN2042-1_2019_autumn_3","NN2042-1",2019,"Høst","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_NN2042-1_2019_spring_1","NN2042-1",2019,"Vår","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_SEF1001REN-1_2019_autumn_1","SEF1001REN-1",2019,"Høst","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_SEF1001REN-1_2019_spring_1","SEF1001REN-1",2019,"Vår","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_SEF1002OSL-1_2019_autumn_1","SEF1002OSL-1",2019,"Høst","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_SEF1002OSL-1_2019_spring_1","SEF1002OSL-1",2019,"Vår","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_TE3131-1_2019_autumn_1","TE3131-1",2019,"Høst","Sjøkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_TE3131-1_2019_spring_1","TE3131-1",2019,"Vår","Sjøkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_VBU1-LUF-1_2019_autumn_1","VBU1-LUF-1",2019,"Høst","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_VBU1-LUF-1_2019_spring_1","VBU1-LUF-1",2019,"Vår","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_VBU2-LED-1_2019_autumn_2","VBU2-LED-1",2019,"Høst","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_FHS8004-1_2022_autumn_1","FHS8004-1",2022,"Høst","Forsvarets høgskole","continuing","other","2026-10-16",42
+"fhs","fhs_ING1501-1_2022_autumn_1","ING1501-1",2022,"Høst","Cyberingeniørskolen","lower","other","2026-10-16",42
+"fhs","fhs_ING1508-1_2022_autumn_1","ING1508-1",2022,"Høst","Cyberingeniørskolen","lower","english","2026-10-16",42
+"fhs","fhs_ING1508-1_2022_spring_2","ING1508-1",2022,"Vår","Cyberingeniørskolen","lower","english","2026-10-16",42
+"fhs","fhs_ING2304-1_2022_autumn_1","ING2304-1",2022,"Høst","Sjøkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_ING2305-1_2022_autumn_1","ING2305-1",2022,"Høst","Sjøkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_ING2501-1_2022_autumn_1","ING2501-1",2022,"Høst","Cyberingeniørskolen","lower","other","2026-10-16",42
+"fhs","fhs_ING2501-1_2022_spring_1","ING2501-1",2022,"Vår","Cyberingeniørskolen","lower","other","2026-10-16",42
+"fhs","fhs_ING2505-1_2022_autumn_3","ING2505-1",2022,"Høst","Cyberingeniørskolen","lower","other","2026-10-16",42
+"fhs","fhs_ING2506-1_2022_autumn_1","ING2506-1",2022,"Høst","Cyberingeniørskolen","lower","english","2026-10-16",42
+"fhs","fhs_ING2506-1_2022_spring_2","ING2506-1",2022,"Vår","Cyberingeniørskolen","lower","english","2026-10-16",42
+"fhs","fhs_ING2507-1_2022_autumn_1","ING2507-1",2022,"Høst","Cyberingeniørskolen","lower","english","2026-10-16",42
+"fhs","fhs_ING2507-1_2022_spring_2","ING2507-1",2022,"Vår","Cyberingeniørskolen","lower","english","2026-10-16",42
+"fhs","fhs_ING3202-1_2022_autumn_1","ING3202-1",2022,"Høst","Krigsskolen","lower","english","2026-10-16",42
+"fhs","fhs_ING3202-1_2022_spring_1","ING3202-1",2022,"Vår","Krigsskolen","lower","english","2026-10-16",42
+"fhs","fhs_ING3203-1_2022_autumn_1","ING3203-1",2022,"Høst","Krigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_ING3203-1_2022_spring_1","ING3203-1",2022,"Vår","Krigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_ING3210-1_2022_autumn_1","ING3210-1",2022,"Høst","Krigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_ING3210-1_2022_spring_1","ING3210-1",2022,"Vår","Krigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_ING3306-1_2022_autumn_1","ING3306-1",2022,"Høst","Sjøkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_ING3306-1_2022_spring_1","ING3306-1",2022,"Vår","Sjøkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_ING3313-1_2022_autumn_1","ING3313-1",2022,"Høst","Sjøkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_KSGOK1812-1_2022_autumn_3","KSGOK1812-1",2022,"Høst","Krigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_LED2404-1_2022_autumn_1","LED2404-1",2022,"Høst","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_LED2404-1_2022_spring_2","LED2404-1",2022,"Vår","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_LED4101-1_2022_autumn_1","LED4101-1",2022,"Høst","Forsvarets høgskole","continuing","other","2026-10-16",42
+"fhs","fhs_MILM4103-1_2022_autumn_1","MILM4103-1",2022,"Høst","Forsvarets høgskole","continuing","other","2026-10-16",42
+"fhs","fhs_MILM4103-1_2022_spring_1","MILM4103-1",2022,"Vår","Forsvarets høgskole","continuing","other","2026-10-16",42
+"fhs","fhs_MILM4108-1_2022_autumn_1","MILM4108-1",2022,"Høst","Forsvarets høgskole","continuing","other","2026-10-16",42
+"fhs","fhs_MILM6410-1_2022_autumn_1","MILM6410-1",2022,"Høst","Luftkrigsskolen","continuing","other","2026-10-16",42
+"fhs","fhs_NAV3304-1_2022_autumn_1","NAV3304-1",2022,"Høst","Sjøkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_NAV3304-1_2022_spring_1","NAV3304-1",2022,"Vår","Sjøkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_OPG3302-1_2022_autumn_1","OPG3302-1",2022,"Høst","Sjøkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_OPG3302-1_2022_spring_1","OPG3302-1",2022,"Vår","Sjøkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_OPG3501-1_2022_autumn_1","OPG3501-1",2022,"Høst","Cyberingeniørskolen","lower","other","2026-10-16",42
+"fhs","fhs_OPG3501-1_2022_spring_1","OPG3501-1",2022,"Vår","Cyberingeniørskolen","lower","other","2026-10-16",42
+"fhs","fhs_OPS2203-1_2022_autumn_1","OPS2203-1",2022,"Høst","Krigsskolen","lower","english","2026-10-16",42
+"fhs","fhs_OPS2203-1_2022_spring_1","OPS2203-1",2022,"Vår","Krigsskolen","lower","english","2026-10-16",42
+"fhs","fhs_VBU1801-1_2022_autumn_1","VBU1801-1",2022,"Høst","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_CBU2502-1_2025_autumn_1","CBU2502-1",2025,"Høst","Cyberingeniørskolen","other","other","2026-10-16",42
+"fhs","fhs_CBU2502-1_2025_spring_1","CBU2502-1",2025,"Vår","Cyberingeniørskolen","other","other","2026-10-16",42
+"fhs","fhs_FHS8004-1_2025_spring_1","FHS8004-1",2025,"Vår","Forsvarets høgskole","continuing","other","2026-10-16",42
+"fhs","fhs_ING0321-1_2025_autumn_1","ING0321-1",2025,"Høst","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_ING0321-1_2025_spring_1","ING0321-1",2025,"Vår","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_ING0323-1_2025_autumn_1","ING0323-1",2025,"Høst","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_ING0323-1_2025_spring_1","ING0323-1",2025,"Vår","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_ING0324-1_2025_autumn_1","ING0324-1",2025,"Høst","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_ING0324-1_2025_spring_1","ING0324-1",2025,"Vår","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_ING1508-1_2025_autumn_1","ING1508-1",2025,"Høst","Cyberingeniørskolen","lower","english","2026-10-16",42
+"fhs","fhs_ING1508-1_2025_spring_1","ING1508-1",2025,"Vår","Cyberingeniørskolen","lower","english","2026-10-16",42
+"fhs","fhs_ING2302-1_2025_autumn_1","ING2302-1",2025,"Høst","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_ING2302-1_2025_spring_1","ING2302-1",2025,"Vår","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_ING2306-1_2025_autumn_1","ING2306-1",2025,"Høst","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_ING2306-1_2025_spring_1","ING2306-1",2025,"Vår","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_ING2317-1_2025_autumn_3","ING2317-1",2025,"Høst","Sjøkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_ING2317-1_2025_spring_1","ING2317-1",2025,"Vår","Sjøkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_ING3203-1_2025_autumn_1","ING3203-1",2025,"Høst","Krigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_ING3203-1_2025_spring_1","ING3203-1",2025,"Vår","Krigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_ING3204-1_2025_autumn_1","ING3204-1",2025,"Høst","Krigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_ING3204-1_2025_spring_1","ING3204-1",2025,"Vår","Krigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_ING3506-1_2025_autumn_1","ING3506-1",2025,"Høst","Cyberingeniørskolen","lower","english","2026-10-16",42
+"fhs","fhs_ING3506-1_2025_spring_1","ING3506-1",2025,"Vår","Cyberingeniørskolen","lower","english","2026-10-16",42
+"fhs","fhs_ING3512-1_2025_autumn_1","ING3512-1",2025,"Høst","Cyberingeniørskolen","lower","english","2026-10-16",42
+"fhs","fhs_ING3512-1_2025_spring_2","ING3512-1",2025,"Vår","Cyberingeniørskolen","lower","english","2026-10-16",42
+"fhs","fhs_LOG3105-1_2025_autumn_2","LOG3105-1",2025,"Høst","Forsvarets høgskole","lower","english","2026-10-16",42
+"fhs","fhs_MAFE4202-1_2025_autumn_1","MAFE4202-1",2025,"Høst","Forsvarets høgskole","higher","other","2026-10-16",42
+"fhs","fhs_MAFE4202-1_2025_spring_1","MAFE4202-1",2025,"Vår","Forsvarets høgskole","higher","other","2026-10-16",42
+"fhs","fhs_MILM1303-1_2025_spring_1","MILM1303-1",2025,"Vår","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_MILM1304-1_2025_spring_1","MILM1304-1",2025,"Vår","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_MILM1704-1_2025_autumn_2","MILM1704-1",2025,"Høst","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_MILM3301-1_2025_autumn_1","MILM3301-1",2025,"Høst","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_MILM3301-1_2025_spring_1","MILM3301-1",2025,"Vår","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_MILM3406-1_2025_autumn_1","MILM3406-1",2025,"Høst","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_MILM3406-1_2025_spring_1","MILM3406-1",2025,"Vår","Luftkrigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_MILMA5511-1_2025_autumn_1","MILMA5511-1",2025,"Høst","Forsvarets høgskole","higher","other","2026-10-16",42
+"fhs","fhs_MILMA5511-1_2025_spring_1","MILMA5511-1",2025,"Vår","Forsvarets høgskole","higher","other","2026-10-16",42
+"fhs","fhs_NAV2324-1_2025_autumn_1","NAV2324-1",2025,"Høst","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_NAV2324-1_2025_spring_2","NAV2324-1",2025,"Vår","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_OPS2201-1_2025_autumn_1","OPS2201-1",2025,"Høst","Krigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_OPS2201-1_2025_spring_1","OPS2201-1",2025,"Vår","Krigsskolen","lower","other","2026-10-16",42
+"fhs","fhs_OPS2203-1_2025_autumn_1","OPS2203-1",2025,"Høst","Krigsskolen","lower","english","2026-10-16",42
+"fhs","fhs_OPS2203-1_2025_spring_1","OPS2203-1",2025,"Vår","Krigsskolen","lower","english","2026-10-16",42
+"fhs","fhs_OPS2304-1_2025_autumn_1","OPS2304-1",2025,"Høst","Forsvarets høgskole","lower","other","2026-10-16",42
+"fhs","fhs_OPS2304-1_2025_spring_1","OPS2304-1",2025,"Vår","Forsvarets høgskole","lower","other","2026-10-16",42

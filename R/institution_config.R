@@ -684,6 +684,29 @@ institution_configs <- list(
     section_strategy = "html"
   ),
 
+  fhs = list(
+    code = "1303",
+    # On Forsvaret's site: /utdanning/emner/{CODE}/{year}-{HØST|VÅR}, a page
+    # per version of the plan from autumn 2018, listed on the code's page
+    # (resolve_urls_fhs_batch(): the version in force in the offering's
+    # semester)
+    strategy = "url_discovery",
+    # The title, the facts box (credits, academic year, programmes, English
+    # title) and the plan; not the "Oppdatert" stamp and the versions menu
+    selector = "#main-container article",
+    exclude = "#main-container article .article__meta, #main-container article .education-banner__dropdown",
+    facts = c("#main-container article h1", "#main-container article .education-banner"),
+    plan_years = "url",
+    # "Hva lærer du" (bold paragraphs: "Emnets temaer") before the accordions
+    # (h3s: Læringsutbytte, Læringsaktiviteter, Pensum, Arbeidskrav og
+    # vurdering)
+    section_strategy = "html",
+    section_heading_selector = "h3.accordion__panel-title",
+    section_scope = "li.accordion__panel",
+    section_initial = "course_content",
+    section_subheading_selector = "p"
+  ),
+
   samas = list(
     code = "0217",
     strategy = "noop",

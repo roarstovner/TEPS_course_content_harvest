@@ -32,6 +32,9 @@ section_heading_patterns <- tibble::tribble(
   "compulsory assignments",                "coursework_requirements", TRUE,   # ntnu English pages
   "obligatoriske arbeidskrav",             "coursework_requirements", TRUE,   # uit label
   "participation/compulsory work",         "coursework_requirements", TRUE,   # usn English pages
+  # fhs: the accordion of both, with "Arbeidskrav" and "Eksamen" (or only
+  # "Vurderingsform: ...") inside; its gate sentences move alone
+  "arbeidskrav og vurdering",              "assessment",             TRUE,
   "arbeidskrav",                           "coursework_requirements", FALSE,
   "studiekrav",                            "coursework_requirements", FALSE,
   "compulsory activities",                 "coursework_requirements", FALSE,
@@ -280,6 +283,7 @@ section_heading_patterns <- tibble::tribble(
   "introduksjon",                          "course_content",         TRUE,
   "introduction",                          "course_content",         TRUE,   # nla English pages
   "om emnet",                              "course_content",         TRUE,   # uit
+  "utfyllende informasjon om emnet",       "course_content",         TRUE,   # fhs: topics, organisation
   "hovedtemaer",                           "course_content",         TRUE,   # vid: list of topics
   "about the course",                      "course_content",         TRUE,
   "course content",                        "course_content",         FALSE,

@@ -75,6 +75,8 @@ resolve_course_urls <- function(df,
       resolve_urls_himolde_batch(df)
     } else if (inst == "phs") {
       resolve_urls_phs_batch(df)
+    } else if (inst == "fhs") {
+      resolve_urls_fhs_batch(df, .progress = .progress, checkpoint = discovery)
     } else if (inst == "nhh") {
       resolve_urls_nhh_batch(df, .progress = .progress, checkpoint = discovery)
     } else if (inst == "nmh") {
@@ -970,4 +972,40 @@ read_usn_live_html <- function(session) {
     message("Error in read_usn_live_html: ", conditionMessage(e))
     NULL
   })
+}
+
+#' Resolve URLs for a batch of FHS courses from each code's versions
+#'
+#' Forsvarets høgskole's course pages are on Forsvaret's site,
+#' /utdanning/emner/{CODE}/{year}-{HØST|VÅR}, a page per version of the plan
+#' from autumn 2018, for the semester it starts in: a course taught every year
+#' may have pages for some years only (MILM1701: autumn 2020, 2021, 2023 and
+#' 2025; checked 2026-11-04). The code's page, /utdanning/emner/{CODE},
+#' redirects to the latest, which lists them all ("Emnehistorikk"); a code without pages
+#' answers 404. Each code's page is read once (discover_codes()). An offering
+#' takes the latest version that starts in or before its semester: the one
+#' in force.
+#'
+#' @param df A tibble with course_code, year, semester_name columns
+#' @param .progress Show progress bar
+#' @param checkpoint Discovery checkpoint folder (discover_codes()), or NULL
+#' @return df with url filled in where possible
+resolve_urls_fhs_batch <- function(df, .progress = TRUE, checkpoint = NULL) {
+  base <- "https://www.forsvaret.no/utdanning/emner/"
+  pages <- discover_codes(df$course_code, function(code) {
+    page <- tryCatch(site_html(utils::URLencode(paste0(base, code))), httr2_http_404 = function(e) xml2::read_html("<p></p>"))
+    links <- rvest::html_elements(page, "ul[aria-labelledby='toggleSemesters'] a")
+    m <- stringr::str_match(rvest::html_attr(links, "href"), "^(\\d{4})-(HØST|VÅR)$")
+    tibble::tibble(course_code = code, year = as.integer(m[, 2]),
+                   semester_name = ifelse(m[, 3] == "VÅR", "Vår", "Høst"),
+                   url = utils::URLencode(paste0(base, code, "/", m[, 1])))[!is.na(m[, 1]), ]
+  }, checkpoint, .progress = .progress)
+  pages$term <- semester_term(pages$year, pages$semester_name)
+  term <- semester_term(df$year, df$semester_name)
+  df$url <- vapply(seq_len(nrow(df)), function(i) {
+    p <- pages[pages$course_code == df$course_code[i] & pages$term <= term[i], ]
+    if (nrow(p)) p$url[which.max(p$term)] else NA_character_
+  }, "")
+  cli::cli_alert_success("FHS: pages for {sum(!is.na(df$url))} of {nrow(df)} offerings")
+  df
 }
