@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- hiof: no_url for ~60% of 2024-2025 offerings, also outside the known limits (#470)
 - Add VID (#395)
 - Post-build checks 2026-11-01 (#482)
 - Anonymizer (generic): '2008-2009' in content removed as academic year; English admin dates and '12.00'/'3-6pm' times kept; removing clock times leaves broken phrases (nhh audit 2026-11-02) (#483)
