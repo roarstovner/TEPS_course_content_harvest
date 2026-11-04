@@ -1,7 +1,7 @@
 # Data Quality Notes
 
 
-Generated: 2026-11-03
+Generated: 2026-11-04
 
 ## Overview
 
@@ -26,14 +26,14 @@ Generated: 2026-11-03
 | samas | 130 | 68 | 2025 | 0 | 0.0% | NA | 0 | NaN% |
 | steiner | 244 | 125 | 2025 | 15 | 6.1% | 5027 | 15 | 0.0% |
 | uia | 55961 | 5047 | 2012-2025 | 10291 | 18.4% | 2944 | 5364 | 44.4% |
-| uib | 36622 | 4570 | 2004-2025 | 22060 | 60.2% | 3582 | 9772 | 51.2% |
+| uib | 42681 | 4724 | 2004-2025 | 25199 | 59.0% | 3549 | 11126 | 51.2% |
 | uio | 10488 | 5380 | 2025 | 47 | 0.4% | 4331 | 47 | 0.0% |
 | uis | 2921 | 316 | 2007-2025 | 2719 | 93.1% | 5760 | 1307 | 50.2% |
 | uit | 133066 | 10772 | 2004-2025 | 48389 | 36.4% | 3285 | 35465 | 21.7% |
 | usn | 38706 | 5286 | 2018-2025 | 13132 | 33.9% | 5842 | 12361 | 5.7% |
-| vid | 193 | 95 | 2024-2025 | 63 | 32.6% | 3762 | 56 | 3.4% |
+| vid | 4082 | 917 | 2023-2025 | 810 | 19.8% | 3640 | 588 | 23.5% |
 
-**Total**: 581765 rows, 298049 with extracted text (51.2%), 149940
+**Total**: 591713 rows, 301935 with extracted text (51.0%), 151917
 unique plans.
 
 **Columns:**
@@ -82,12 +82,12 @@ site still serves them. Share of offerings with a plan, by period:
 | samas       |       |         |         |         |         | 0%    |
 | steiner     |       |         |         |         |         | 6%    |
 | uia         | 0%    | 0%      | 0%      | 40%     | 38%     | 41%   |
-| uib         | 30%   | 44%     | 62%     | 55%     | 57%     | 68%   |
+| uib         | 30%   | 44%     | 62%     | 54%     | 57%     | 68%   |
 | uio         |       |         |         |         |         | 0%    |
 | uis         | 92%   | 96%     | 95%     | 91%     | 92%     | 94%   |
 | uit         | 37%   | 31%     | 36%     | 40%     | 40%     | 38%   |
 | usn         |       |         | 28%     | 33%     | 36%     | 40%   |
-| vid         |       |         |         |         |         | 33%   |
+| vid         |       |         |         |         | 0%      | 31%   |
 
 ## Semester registration in DBH
 
@@ -126,12 +126,12 @@ year) that have a plan in at least one semester:
 | samas | 68 | 91% | 0 | 0 | 62 | 0% | 0.0% |
 | steiner | 125 | 95% | 15 | 0 | 104 | 12% | 6.1% |
 | uia | 29493 | 90% | 8716 | 152 | 17600 | 32% | 18.4% |
-| uib | 18879 | 93% | 56 | 9721 | 7754 | 54% | 60.2% |
+| uib | 21998 | 93% | 65 | 11088 | 9318 | 53% | 59.0% |
 | uio | 5380 | 95% | 44 | 0 | 5064 | 1% | 0.4% |
 | uis | 1602 | 82% | 41 | 1165 | 113 | 91% | 93.1% |
 | uit | 69992 | 90% | 25282 | 8581 | 29211 | 52% | 36.4% |
 | usn | 20631 | 88% | 11145 | 422 | 6508 | 61% | 33.9% |
-| vid | 100 | 93% | 42 | 6 | 45 | 52% | 32.6% |
+| vid | 2113 | 93% | 569 | 73 | 1327 | 33% | 19.8% |
 
 ## Course-years without a plan
 
@@ -168,12 +168,12 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 | samas | 68 | 0 | 68 | 0 | 0 | 0 | 0 |
 | steiner | 100 | 0 | 100 | 0 | 0 | 0 | 0 |
 | uia | 19928 | 19920 | 0 | 0 | 635 | 0 | 498 |
-| uib | 8624 | 7472 | 0 | 152 | 1021 | 0 | 1 |
+| uib | 10330 | 8985 | 0 | 152 | 1214 | 0 | 2 |
 | uio | 5320 | 0 | 7 | 0 | 0 | 5313 | 0 |
 | uis | 145 | 12 | 0 | 0 | 133 | 0 | 0 |
 | uit | 31176 | 0 | 30824 | 0 | 1908 | 0 | 1775 |
 | usn | 7665 | 0 | 7665 | 0 | 21 | 0 | 458 |
-| vid | 48 | 13 | 8 | 0 | 27 | 0 | 0 |
+| vid | 1417 | 204 | 966 | 0 | 247 | 0 | 0 |
 
 To list the gaps between plans:
 `readRDS("data/interim/plan_gaps.RDS") |> dplyr::filter(between_plans)`.
@@ -191,6 +191,24 @@ for dette studieåret”; INN’s 7 show a later plan version. UiA’s 91 are
 its autumn-2023 page shells (see UiA), and REL410 2024 is registered in
 spring while UiA publishes it under autumn (the only such case among
 UiA’s 74 course-years since 2020 that are 404).
+
+## Coverage over course-years that had students
+
+DBH lists courses that did not run in a year. Coverage is therefore also
+given over two smaller sets of course-years (code with version × year),
+from DBH’s student counts of the same snapshot (methods.qmd, “Population
+and sampling frame”): **Loose**, course-years with exam registrations
+(table 905) or credits earned (table 900) in some semester of the year;
+**Strict**, both. **All** is every course-year in the data. A share is
+the course-years in the set with a plan in some semester over the
+course-years in the set: a plan of a course-year without students counts
+only under All, and no plan is dropped. The counts sit in the exam
+semester and DBH publishes them about a semester late: years marked
+**provisional** lack the latest autumn, and their Loose and Strict sets
+can still grow (Strict holds only complete years).
+
+The DBH snapshot of these data has no student counts (tables 905 and
+900), so only All can be computed: see “Semester registration in DBH”.
 
 ## Interpreting the dedup ratio
 
