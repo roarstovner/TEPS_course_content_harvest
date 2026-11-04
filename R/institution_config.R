@@ -704,7 +704,16 @@ institution_configs <- list(
     section_heading_selector = "h3.accordion__panel-title",
     section_scope = "li.accordion__panel",
     section_initial = "course_content",
-    section_subheading_selector = "p"
+    # Paragraphs switch sections, except those naming a gate ("Arbeidskrav",
+    # "Obligatorisk arbeidskrav:") in "Arbeidskrav og vurdering": they and
+    # the exam lines after them stay in assessment, where
+    # section_inline_coursework moves the gate's lines (up to
+    # "Vurderingsform:") to coursework_requirements
+    section_subheading_selector = paste0(
+      "//p[not(ancestor::li[contains(@class, 'accordion__panel')]",
+      "[.//h3[normalize-space() = 'Arbeidskrav og vurdering']]",
+      " and (contains(., 'rbeidskrav') or contains(., 'bligatorisk')))]"),
+    section_inline_coursework = TRUE
   ),
 
   samas = list(

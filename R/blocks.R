@@ -128,19 +128,20 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
                   "samp", "small", "span", "strong", "sub", "sup", "time", "u",
                   "var", "wbr")
 
+# Elements by a CSS selector, or by XPath when it starts with "/" (an element
+# picked by its text, or by the heading of the accordion it is in)
+.select <- function(x, e) if (startsWith(e, "/")) xml2::xml_find_all(x, e) else rvest::html_elements(x, e)
+
 .html_blocks <- function(html, cfg) {
   if (is.na(html) || !nzchar(html)) return(.empty_blocks())
   doc <- .read_doc(html)
-  # `exclude`: CSS selectors; an entry that starts with "/" is XPath (an
-  # element picked by its text, such as a label and the value after it)
-  for (e in cfg$exclude) xml2::xml_remove(
-    if (startsWith(e, "/")) xml2::xml_find_all(doc, e) else rvest::html_elements(doc, e))
+  # `exclude`: elements picked by .select() (a label and the value after it
+  # by its text)
+  for (e in cfg$exclude) xml2::xml_remove(.select(doc, e))
   root <- if (is.null(cfg$container)) doc else rvest::html_element(doc, cfg$container)
   if (inherits(root, "xml_missing")) return(.empty_blocks())
-  # `facts`: the title and facts box (CSS, or XPath when it starts with "/")
-  for (e in cfg$facts) xml2::xml_set_attr(
-    if (startsWith(e, "/")) xml2::xml_find_all(doc, e) else rvest::html_elements(doc, e),
-    "data-facts", "1")
+  # `facts`: the title and facts box
+  for (e in cfg$facts) xml2::xml_set_attr(.select(doc, e), "data-facts", "1")
 
   # Mark headings, sub-headings and scopes on the nodes, and their ancestors
   # as nodes to walk into; any other subtree is read whole.
@@ -149,7 +150,7 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
     xml2::xml_set_attr(rvest::html_elements(root, cfg$heading), "data-block", "heading")
   }
   if (!is.null(cfg$sub)) {
-    subs <- rvest::html_elements(root, cfg$sub)
+    subs <- .select(root, cfg$sub)
     subs <- subs[is.na(xml2::xml_attr(subs, "data-block"))]
     # A sub-heading in a list item is content, unless the item holds a
     # heading (oslomet wraps each section in an accordion <li>).

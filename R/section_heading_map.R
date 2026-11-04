@@ -98,6 +98,7 @@ section_heading_patterns <- tibble::tribble(
   "avsluttende vurdering",                 "assessment",             FALSE,
   "final assessment",                      "assessment",             TRUE,   # nla English pages
   "mer om vurdering",                      "assessment",             FALSE,
+  "spesielle forhold knyttet til vurderingene", "assessment",          TRUE,   # fhs intro
   "vurderingsordning",                     "assessment",             FALSE,
   "vurderingsformer",                      "assessment",             FALSE,
   "forms of assessment",                   "assessment",             TRUE,   # usn English pages

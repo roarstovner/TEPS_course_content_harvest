@@ -58,7 +58,7 @@ What differs between institutions is how their pages are read, set by
 <tr>
 <td><code>html</code></td>
 <td>oslomet, uia, ntnu, inn, hiof, hivolda, hvl, mf, nord, nih, uib,
-uio, uis, uit, nmbu</td>
+uio, uis, uit, nmbu, fhs</td>
 <td>The DOM under <code>selector</code>. Falls back to <code>text</code>
 when it finds &lt; 3 sections, if the text gives more sections and one
 that no heading on the page names</td>
@@ -143,7 +143,10 @@ Fields for the `html` reader:
   accordion). An unmapped `h3` (“Karakterskala”) hands its text back to
   the parent section, keeping the heading as its first line. A
   colon-ended lead-in naming a coursework gate (“… følgende
-  obligatoriske aktiviteter:”) starts coursework_requirements.
+  obligatoriske aktiviteter:”) starts coursework_requirements. A
+  selector that starts with “/” is XPath: fhs’s paragraphs, except those
+  naming a gate in the accordion “Arbeidskrav og vurdering”, which stay
+  in assessment for `section_inline_coursework`.
 
 Other fields:
 
@@ -154,15 +157,15 @@ Other fields:
   plan id leaves it out.
 - `section_inline_coursework`: move “Arbeidskrav (AK): …” /
   “Obligatorisk deltakelse …” lines from assessment to
-  coursework_requirements (nord, uit, ntnu, usn); a gate heading
-  (“OBLIGATORISKE ARBEIDSKRAV”, ntnu) takes the lines under it up to the
-  next heading or the first line about the exam. At every institution,
-  with or without this field, a sentence in assessment that makes
-  approval, attendance or a passed test a condition for the exam
-  (“Arbeidskrav må være godkjent før studenten kan framstille seg til
-  eksamen”) moves alone (`.gate_sentence_regex`); one about the exam’s
-  own parts, a row of an exam table or one that counts towards the grade
-  stays.
+  coursework_requirements (nord, uit, ntnu, usn, fhs); a gate heading
+  (“OBLIGATORISKE ARBEIDSKRAV”, ntnu; fhs’s “Obligatorisk arbeidskrav:”)
+  takes the lines under it up to the next heading or the first line
+  about the exam. At every institution, with or without this field, a
+  sentence in assessment that makes approval, attendance or a passed
+  test a condition for the exam (“Arbeidskrav må være godkjent før
+  studenten kan framstille seg til eksamen”) moves alone
+  (`.gate_sentence_regex`); one about the exam’s own parts, a row of an
+  exam table or one that counts towards the grade stays.
 - `exam_sessions`: the page lists the exam parts once per exam session
   (ntnu’s exam tab: “Ordinær eksamen - Høst 2022”, “Utsatt eksamen -
   …”). The assessment section and the plan id keep the parts of one
