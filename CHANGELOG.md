@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Retire the 2026-10-16 release: frozen_check raw-only, docs wording (#490)
 - hiof: no_url for ~60% of 2024-2025 offerings, also outside the known limits (#470)
 - Add VID (#395)
 - Post-build checks 2026-11-01 (#482)
