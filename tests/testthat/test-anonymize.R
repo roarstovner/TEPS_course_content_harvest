@@ -854,8 +854,17 @@ test_that("a role and names inside a line: the names go, the role stays", {
                "Pensum\nBok.")
   expect_equal(an("hvl", "Hjelpemidler ved eksamen\nBergen: Kari Nordmann\nStord: Ola Dahl\nSogndal: Oppgåve i to delar."),
                "Hjelpemidler ved eksamen\nSogndal: Oppgåve i to delar.")
+  # "Sensor" in a title is the English word; a sensor named after a role
+  # stays out, as do other capitalised roles after a capitalised word
+  title <- "Multi Sensor Data Fusion - Using fuzzy logic and neural networks"
+  expect_equal(an("usn", title), title)
+  expect_equal(an("usn", "Ekstern sensor er Kari Nordmann."), "Ekstern sensor er.")
+  expect_equal(an("usn", "Tekst. Sensor Kari Nordmann vurderer."), "Tekst. Sensor vurderer.")
+  expect_equal(an("uit", "Academic Coordinator Kari Nordmann"), "Academic Coordinator")
+  expect_equal(an("usn", "Tekst. Vice Dean Ola Dahl godkjente."), "Tekst. Vice Dean godkjente.")
+  expect_equal(an("uit", "Forelesning\tFagansvarlig: Kari Nordmann"), "Forelesning\tFagansvarlig:")
   f <- tempfile(fileext = ".RDS")
-  saveRDS(tibble::tibble(text = "Ta kontakt med Kari Nordmann for mer."), f)
+  saveRDS(tibble::tibble(text = c(title, "Ta kontakt med Kari Nordmann for mer.")), f)
   expect_equal(personal_data_in(f)$pattern, "role_name_inline")
 })
 

@@ -422,13 +422,17 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 # "coordinator: assistant professor A" (oslomet), "Faglærer i emnet: A."
 # (nmh). The role stays, the names go, with a title before them and a role
 # in brackets after each; an affiliation in brackets stays ("faglærer <name>
-# (UiA)", usn).
+# (UiA)", usn). "Sensor" after a capitalised word is the English word in a
+# title ("Multi Sensor Data Fusion", usn): in the raw text a sensor is named
+# only after a lower-case role ("Ekstern sensor er ..."), while other
+# capitalised roles after a capitalised word name staff ("Academic
+# Coordinator <name>", "Vice Dean <name>", uit, usn; 2026-11-04).
 .title_regex <- "(?i:(?:(?:assistant|associate)[ \\t]+)?professor|førsteamanuensis|(?:universitets|høgskole)lektor|dosent)"
 .paren_role <- "(?:[ \\t]*\\(\\p{Ll}[^()\\n]{0,29}\\))?"
 .names_regex <- paste0("(?:", .title_regex, "[ \\t]+)?", .name_regex, .paren_role,
                        "(?:[ \\t]*(?:,|og|eller|and)[ \\t]+", .name_regex, .paren_role, ")*")
 .role_name_inline_regex <- paste0(
-  "(?<!\\p{L})((?i:", paste(c(.staff_roles, .signature_roles), collapse = "|"),
+  "(?<!\\p{L})(?!(?<=\\p{Lu}\\p{Ll}{0,30} )Sensor )((?i:", paste(c(.staff_roles, .signature_roles), collapse = "|"),
   ")(?i:e|er|ar|en)?(?:[ \\t]+(?i:er|var|i emnet))?:?|(?i:kontakt(?:e|er)? med|kontaktpersone?r? er))[ \\t]+",
   .names_regex
 )

@@ -1442,6 +1442,25 @@ of about 8,400 distinct USN texts (pages and plan texts) change, in these
 lines only; none of the six courses is in the teacher-ed frame or the
 releases of 2026-10-15 and 2026-10-16. *Since:* 2026-10-30.
 
+**"Sensor" in a title is not a role.** A role word in a sentence takes the
+names after it ("faglærer <name>"), and "sensor" is one of the roles. A
+capitalised "Sensor" after a capitalised word, followed by a space, is now
+the English word in a title and takes nothing: "Multi Sensor Data Fusion -
+Using fuzzy logic and neural networks" (a USN course in the DBH data) had
+lost "Data Fusion" as a name, and `privacy_check`, which uses the same
+pattern, flagged the course name. *Why:* the title is plan text and
+metadata, not a name. *Rejected:* the same exception for every capitalised
+role after a capitalised word ("… Koordinator Programme …"): in the raw text
+of the built partitions on 2026-11-04 this layout occurs 40 times on 40
+pages (UiT 32, USN 8), and every one names a person ("Academic Coordinator
+<name>", "Vice Dean <name>", "Programme Coordinator <name>", and UiT
+timetable cells "Forelesning\tFagansvarlig: <name>"); all 40 would have
+kept the name. Of 184,167 DBH course and programme names, only this one
+title matched the pattern. A sensor named in the raw text follows a
+lower-case role ("Ekstern sensor er <name>"), which still loses the name.
+*Consequence:* no page text of the built partitions changes; the one DBH
+course name keeps its title and is no longer flagged. *Since:* 2026-11-04.
+
 ## Sections
 
 ```{r}
