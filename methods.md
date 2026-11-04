@@ -107,35 +107,39 @@ that did not run in a year, so “share of DBH’s course-years with a plan”
 mixes missing plans with courses that were never taught. The input
 therefore also holds DBH’s student counts per course and semester: exam
 registrations (table 905) and credits earned (table 900). A course-year
-(institution, code with its version, year) is in the *loose* set if it
-had exam registrations or credits in some semester of the year, and in
-the *strict* set if it had both; strict lies within loose, and loose
-within all (`offered_loose`, `offered_strict` on every offering,
-`dbh_offered()`). Coverage over a set is the course-years in the set
-with a plan, divided by the course-years in the set: the numerator is
-restricted to the set, so a plan of a course that did not run counts
-only over all. No plan is dropped. *Example:* an institution has ten
-course-years in DBH in a year. Six (A-F) had exam registrations and
-credits, and A-E have a plan. G had credits but no exam registrations
-(two students, whom DBH’s small-count rule hides), H had three re-sit
-candidates but no credits (not taught that year), and neither has a
-plan. I and J had no students at all; I has a plan (an old page still
-online). Over all, 6 of 10 course-years have a plan (60 %); over loose
-(A-H) 5 of 8 (63 %); over strict (A-F) 5 of 6 (83 %). Of the courses
-that surely ran, 83 % have a plan; counting every course DBH lists, 60
-%. If G ran and H did not, the true share for courses that ran is 5 of 7
-(71 %): the range from all to strict shows how much depends on what
-“offered” means. *Why:* the share over all DBH course-years is coverage
-of DBH’s register; it is a lower bound for the courses that ran only if
-courses that did not run have plans less often, and some have many (NTNU
-has 1 300-1 500 plans a year for course-years without students,
-2022-2025, two in five of them of discontinued courses whose pages stay
-online). The counts estimate which courses ran, with errors both ways:
-DBH hides counts of one or two at the finest grain before summing, so a
-small course can show no exam registrations (credits are not hidden);
-PhD courses often have no exam record; an exam can fall in the year
-after the teaching; re-sit candidates register for courses no longer
-taught. No set is best, and the spread between them is the uncertainty.
+(institution, code with its version, year) is in the set *with students*
+if it had exam registrations or credits in some semester of the year,
+and in the set *with exam registrations and credits* if it had both; the
+second lies within the first, and the first within all. The offerings of
+both frames carry the counts as published columns, the same on every
+offering of the course-year: `exam_registrations`, `credits_earned`,
+`had_students` (either above 0) and `counts_provisional`
+(`dbh_offered()`); a reader needs no other definition. Coverage over a
+set is the course-years in the set with a plan, divided by the
+course-years in the set: the numerator is restricted to the set, so a
+plan of a course that did not run counts only over all. No plan is
+dropped. *Example:* an institution has ten course-years in DBH in a
+year. Six (A-F) had exam registrations and credits, and A-E have a plan.
+G had credits but no exam registrations (two students, whom DBH’s
+small-count rule hides), H had three re-sit candidates but no credits
+(not taught that year), and neither has a plan. I and J had no students
+at all; I has a plan (an old page still online). Over all, 6 of 10
+course-years have a plan (60 %); over those with students (A-H) 5 of 8
+(63 %); over those with both (A-F) 5 of 6 (83 %). Of the courses that
+surely ran, 83 % have a plan; counting every course DBH lists, 60 %. If
+G ran and H did not, the true share for courses that ran is 5 of 7 (71
+%): the range from all to both shows how much depends on what “offered”
+means. *Why:* the share over all DBH course-years is coverage of DBH’s
+register; it is a lower bound for the courses that ran only if courses
+that did not run have plans less often, and some have many (NTNU has 1
+300-1 500 plans a year for course-years without students, 2022-2025, two
+in five of them of discontinued courses whose pages stay online). The
+counts estimate which courses ran, with errors both ways: DBH hides
+counts of one or two at the finest grain before summing, so a small
+course can show no exam registrations (credits are not hidden); PhD
+courses often have no exam record; an exam can fall in the year after
+the teaching; re-sit candidates register for courses no longer taught.
+No set is best, and the spread between them is the uncertainty.
 *Rejected:* “offered” per semester (DBH counts sit in the exam semester,
 not the teaching semester: a year-long course has its exam in spring, so
 a course could not be placed in the semester its plan is for); exam
@@ -145,23 +149,23 @@ had credits); replacing the frame with the courses that had students (it
 would drop real plans, and turn an estimate into the frame).
 *Consequence:* DBH publishes a semester’s counts about a semester later,
 so the latest year lacks its autumn until about March: its counts are
-provisional (`offered_provisional`) and its loose and strict sets can
-still grow, and strict holds only complete years. *The counts have their
-own snapshot date:* the first is of 2026-11-04, while the course list
-stays the snapshot of 2026-10-16 (`docs/data-files.md`, “Input Data”). A
-new course list could add or drop offerings and change the teacher-ed
-frame under the harvests running then, and once a release is finalized
-every change to its frame has to be explained; the counts only mark
-course-years of the existing frame, so they can be refreshed alone, and
-which years are provisional follows from the counts’ date, not the
-course list’s. A course-year of the course list that the counts lack had
-no students (in a provisional year: none yet). *Rejected:* one date for
-both (the counts would wait for the next course list, or force one). In
-the teacher-ed frame: 21 722 course-years, 16 880 with a plan (78 %);
-loose 16 784, of them 14 255 with a plan (85 %); strict 13 832, of them
-12 041 with a plan (87 %). Per institution and year:
-`data/data_notes.md`, “Coverage over course-years that had students”.
-*Since:* 2026-11-04.
+provisional (`counts_provisional`) and its sets with students and with
+both can still grow, and the set with both holds only complete years.
+*The counts have their own snapshot date:* the first is of 2026-11-04,
+while the course list stays the snapshot of 2026-10-16
+(`docs/data-files.md`, “Input Data”). A new course list could add or
+drop offerings and change the teacher-ed frame under the harvests
+running then, and once a release is finalized every change to its frame
+has to be explained; the counts only mark course-years of the existing
+frame, so they can be refreshed alone, and which years are provisional
+follows from the counts’ date, not the course list’s. A course-year of
+the course list that the counts lack had no students (in a provisional
+year: none yet). *Rejected:* one date for both (the counts would wait
+for the next course list, or force one). In the teacher-ed frame: 21 722
+course-years, 16 880 with a plan (78 %); with students 16 784, of them
+14 255 with a plan (85 %); with both 13 832, of them 12 041 with a plan
+(87 %). Per institution and year: `data/data_notes.md`, “Coverage over
+course-years that had students”. *Since:* 2026-11-04.
 
 **Years:** DBH had no 2026 rows on 2026-10-06 or in the snapshot of
 2026-10-16, so the frame ends with 2025.
@@ -262,6 +266,23 @@ pilot audits (below). *Rejected:* reading the continuing-education
 programmes’ study plans (PDFs or programme pages) as the plans of their
 courses, which would need matching programmes to DBH codes by name and
 reading PDFs. *Since:* 2026-11-02.
+
+**Forsvarets høgskole (DBH code 1303) joins the frame, from autumn
+2018.** One of the ten institutions surveyed for the all-courses frame,
+configured on 2026-11-04 as `fhs`. *Why:* its course plans are public
+HTML pages on Forsvaret’s site, one per version of the plan, listed on
+the course code’s page. *Consequence:* a version is published for the
+semester it starts in, and a course taught every year may have versions
+for some years only, so an offering gets the latest version that starts
+in or before its semester (the one in force), as Nord’s and INN’s
+offerings do. DBH’s offerings before FHS’s reorganised codes (2016-2019)
+mostly have no page: in the pilot, 0 of 47 course-years of 2018 and 3 of
+47 of 2019 had one, against 36 of 39 in 2022 and 40 of 45 in 2025. Its
+full harvest waits for the pilot audits (below). *Rejected:* giving an
+offering only a version for its own semester, which leaves most
+offerings of courses whose plan did not change without the plan in
+force; reading the programme study plans as course plans. *Since:*
+2026-11-04.
 
 **Samas is excluded:** its website’s course codes do not match DBH, and
 the teacher education courses are described only in programme PDFs
