@@ -103,6 +103,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Add VID (#395)
+- Post-build checks 2026-11-01 (#482)
+- Anonymizer (generic): '2008-2009' in content removed as academic year; English admin dates and '12.00'/'3-6pm' times kept; removing clock times leaves broken phrases (nhh audit 2026-11-02) (#483)
+- write_raw_run(): not atomic; NTNU harvest OOM-killed at its 4G cap while writing data/raw/ntnu/2021/2026-11-03.parquet left a corrupt file (no footer) (#489)
 - Add PHS (Politihøgskolen) (#400)
 - blocks target: ~8G per worker; tar_make OOM-killed at 4 and 2 workers (#481)
 - Build speed: where tar_make spends its time and how to cut it (#485)
