@@ -201,10 +201,30 @@ show <- function(x) x |>
 cat("All years, by institution:\n\n")
 print(knitr::kable(show(offered_coverage(df, "institution")) |>
                      rename(Institution = institution, `Some year provisional` = provisional)))
-cat("\n\nBy institution and year:\n\n")
-print(knitr::kable(show(offered_coverage(df)) |>
-                     mutate(provisional = ifelse(provisional, "provisional", "")) |>
-                     rename(Institution = institution, Year = year, Counts = provisional)))
+```
+
+By year since 2010 (a panel per institution; empty panels are sites that
+publish only the current plan, whose 2026/27 offerings are not yet in DBH):
+
+```{r}
+#| label: coverage-by-year
+#| fig-width: 10
+#| fig-height: 7.5
+library(ggplot2)
+offered_coverage(df, c("institution", "year")) |>
+  filter(year >= 2010) |>
+  tidyr::pivot_longer(c(cov_all, cov_loose, cov_strict), names_to = "set", values_to = "coverage") |>
+  mutate(set = factor(set, c("cov_all", "cov_loose", "cov_strict"),
+                      c("All DBH course-years", "With students (loose)", "With students (strict)"))) |>
+  ggplot(aes(year, coverage, colour = set)) +
+  geom_line(linewidth = 0.6, na.rm = TRUE) +
+  facet_wrap(~ institution, ncol = 5) +
+  scale_colour_manual(values = c("#2a78d6", "#eb6834", "#1baf7a"), name = NULL) +
+  scale_y_continuous(labels = scales::percent, limits = c(0, 1), breaks = c(0, .5, 1)) +
+  scale_x_continuous(breaks = c(2010, 2015, 2020, 2025), labels = c("10", "15", "20", "25")) +
+  labs(x = NULL, y = "Course-years with a plan") +
+  theme_minimal(base_size = 10) +
+  theme(legend.position = "top", panel.grid.minor = element_blank())
 ```
 
 ## Interpreting the dedup ratio
