@@ -130,6 +130,14 @@ files</td>
 (<code>"teacher_ed"</code>)</td>
 </tr>
 <tr>
+<td><code>dbh_offered(date)</code>, <code>add_offered()</code>,
+<code>offered_coverage()</code></td>
+<td><code>R/utils.R</code>, <code>R/pipeline.R</code></td>
+<td>Which course-years had students (DBH tables 905 and 900), their
+flags on the offerings, and plan coverage over all, loose and strict
+course-years</td>
+</tr>
+<tr>
 <td><code>dbh_rename(df)</code></td>
 <td><code>R/utils.R</code></td>
 <td>DBH’s column names (snapshots, raw files and releases until

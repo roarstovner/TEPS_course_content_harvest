@@ -174,6 +174,43 @@ its autumn-2023 page shells (see UiA), and REL410 2024 is registered in spring
 while UiA publishes it under autumn (the only such case among UiA's 74
 course-years since 2020 that are 404).
 
+## Coverage over course-years that had students
+
+DBH lists courses that did not run in a year. Coverage is therefore also
+given over two smaller sets of course-years (code with version × year), from
+DBH's student counts of the same snapshot (methods.qmd, "Population and
+sampling frame"): **Loose**, course-years with exam registrations (table 905)
+or credits earned (table 900) in some semester of the year; **Strict**, both.
+**All** is every course-year in the data. A share is the course-years in the
+set with a plan in some semester over the course-years in the set: a plan of a
+course-year without students counts only under All, and no plan is dropped.
+The counts sit in the exam semester and DBH publishes them about a semester
+late: years marked **provisional** lack the latest autumn, and their Loose
+and Strict sets can still grow (Strict holds only complete years).
+
+```{r}
+#| label: offered-coverage
+#| results: asis
+source("../R/pipeline.R")
+if (all(is.na(df$offered_loose))) {
+  cat("The DBH snapshot of these data has no student counts (tables 905 and 900),",
+      "so only All can be computed: see \"Semester registration in DBH\".\n")
+} else {
+  fmt <- function(k, n) ifelse(n > 0, sprintf("%d / %d (%.0f%%)", k, n, 100 * k / n), "")
+  show <- function(x) x |>
+    mutate(All = fmt(plans_all, n_all), Loose = fmt(plans_loose, n_loose),
+           Strict = fmt(plans_strict, n_strict)) |>
+    select(-starts_with(c("n_", "plans_", "cov_")))
+  cat("All years, by institution:\n\n")
+  print(knitr::kable(show(offered_coverage(df, "institution")) |>
+                       rename(Institution = institution, `Some year provisional` = provisional)))
+  cat("\n\nBy institution and year:\n\n")
+  print(knitr::kable(show(offered_coverage(df)) |>
+                       mutate(provisional = ifelse(provisional, "provisional", "")) |>
+                       rename(Institution = institution, Year = year, Counts = provisional)))
+}
+```
+
 ## Interpreting the dedup ratio
 
 High dedup (>40%) is expected for current-year-only institutions where DBH registers courses for both semesters but only one plan page exists (see "Semester registration in DBH").

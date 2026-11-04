@@ -71,3 +71,86 @@ test_that("data/variables.csv documents every variable of the data files, with i
                  v$type[v$file == f], label = f)
   }
 })
+
+# DBH's student counts (tables 905 and 900) of a snapshot: one row per course
+# and semester
+write_counts <- function(dir, date, exams, credits) {
+  arrow::write_parquet(exams, file.path(dir, paste0("dbh_exams_", date, ".parquet")))
+  arrow::write_parquet(credits, file.path(dir, paste0("dbh_credits_", date, ".parquet")))
+}
+counts <- function(code, year, semester, n, name) {
+  df <- tibble::tibble(Institusjonskode = "1130", Emnekode = code, Årstall = as.integer(year),
+                       Semester = as.integer(semester))
+  df[[name]] <- n
+  df
+}
+
+test_that("offered course-years: loose is exams or credits, strict both, summed over the year", {
+  dir <- withr::local_tempdir()
+  exams <- counts(c("BOTH-1", "BOTH-1", "EXAM-1", "SPLIT-1", "ZERO-1", "NEW-1"),
+                  c(2024, 2024, 2024, 2024, 2024, 2025), c(1, 3, 3, 1, 3, 1), c(5L, 0L, 3L, 4L, 0L, 9L),
+                  "Oppmeldt totalt")
+  # SPLIT: exams in spring, credits in autumn (a year-long course); a
+  # course-year with no row in 900 has no credits
+  credits <- counts(c("BOTH-1", "CRED-1", "SPLIT-1", "ZERO-1", "NEW-1", "LATE-1"),
+                    c(2024, 2024, 2024, 2024, 2025, 2024), c(3, 1, 3, 3, 1, 3), c(1.5, 0.25, 2, 0, 1, 0.5),
+                    "Ny produksjon totalt")
+  write_counts(dir, "2026-11-04", exams, credits)
+  o <- dbh_offered("2026-11-04", input_dir = dir)
+  get <- function(code, col) o[[col]][o$course_code_raw == code]
+  expect_equal(get("BOTH-1", "exam_registrations"), 5L)
+  expect_true(get("BOTH-1", "offered_strict"))
+  expect_true(get("SPLIT-1", "offered_strict"))
+  expect_equal(c(get("EXAM-1", "offered_loose"), get("EXAM-1", "offered_strict")), c(TRUE, FALSE))
+  expect_equal(c(get("CRED-1", "offered_loose"), get("CRED-1", "offered_strict")), c(TRUE, FALSE))
+  expect_false(get("ZERO-1", "offered_loose"))
+  # strict within loose
+  expect_true(all(o$offered_loose[o$offered_strict]))
+  # 2024's autumn is in both tables, 2025's is not: 2025 is provisional
+  expect_equal(attr(o, "complete_through"), 2024)
+  expect_equal(get("NEW-1", "offered_provisional"), TRUE)
+  expect_false(any(o$offered_provisional[o$year == 2024]))
+  # a snapshot without student counts: NULL
+  expect_null(dbh_offered("2026-10-16", input_dir = dir))
+})
+
+test_that("offerings get the flags of their course-year, by code with its version", {
+  offered <- tibble::tibble(institution_code = "1130", course_code_raw = c("ABC-1", "ABC-2"), year = 2024L,
+                            offered_loose = c(TRUE, FALSE), offered_strict = c(TRUE, FALSE))
+  attr(offered, "complete_through") <- 2024
+  off <- tibble::tibble(institution_code = "1130", course_code_raw = c("ABC-1", "ABC-1", "ABC-2", "ABC-3", "ABC-1"),
+                        course_code = "ABC", year = c(2024L, 2024L, 2024L, 2024L, 2025L),
+                        semester_name = c("Vår", "Høst", "Vår", "Vår", "Vår"))
+  x <- add_offered(off, offered)
+  expect_equal(nrow(x), nrow(off))
+  expect_equal(x$offered_loose, c(TRUE, TRUE, FALSE, FALSE, FALSE))
+  expect_equal(x$offered_strict, c(TRUE, TRUE, FALSE, FALSE, FALSE))
+  expect_equal(x$offered_provisional, c(FALSE, FALSE, FALSE, FALSE, TRUE))
+  # no student counts in the snapshot: unknown, not FALSE
+  y <- add_offered(off, NULL)
+  expect_true(all(is.na(y$offered_loose)))
+  expect_equal(names(add_offered(y, offered)), names(x))
+})
+
+test_that("coverage over each set counts only the set's plans (methods.qmd, worked example)", {
+  # ten course-years: A-F exams and credits, plans A-E; G credits only; H
+  # exams only; I and J no students, a plan for I
+  code <- LETTERS[1:10]
+  off <- tibble::tibble(institution = "x", course_code_raw = rep(code, each = 2), year = 2024L,
+                        plan_content_id = NA_character_,
+                        offered_loose = rep(code %in% LETTERS[1:8], each = 2),
+                        offered_strict = rep(code %in% LETTERS[1:6], each = 2),
+                        offered_provisional = FALSE)
+  # a plan in one semester of each of A-E and I
+  off$plan_content_id[match(c(LETTERS[1:5], "I"), off$course_code_raw)] <- "p"
+  cov <- offered_coverage(off)
+  expect_equal(unlist(cov[c("n_all", "plans_all", "n_loose", "plans_loose", "n_strict", "plans_strict")]),
+               c(n_all = 10, plans_all = 6, n_loose = 8, plans_loose = 5, n_strict = 6, plans_strict = 5))
+  expect_equal(c(cov$cov_all, cov$cov_loose, cov$cov_strict), c(6 / 10, 5 / 8, 5 / 6))
+  expect_false(cov$provisional)
+  # without student counts: only ALL
+  off[c("offered_loose", "offered_strict", "offered_provisional")] <- NA
+  cov <- offered_coverage(off)
+  expect_equal(cov$cov_all, 0.6)
+  expect_true(is.na(cov$cov_loose) && is.na(cov$cov_strict))
+})

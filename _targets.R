@@ -81,7 +81,9 @@ list(
   tar_target(source_sections, partition_sections(blocks, page_text, part_config, part_sources),
              pattern = map(blocks, page_text, part_config, part_sources)),
   tar_target(sections, lapply(plans, frame_sections, source_sections, page_map, institution)),
-  tar_target(offerings, frame_offerings(courses, frames, plans, sections)),
+  # which course-years had students (DBH tables 905 and 900, same snapshot)
+  tar_target(offered, dbh_offered(dbh_snapshot_date(dbh_file))),
+  tar_target(offerings, frame_offerings(courses, frames, plans, sections, offered)),
   tar_target(unmapped, heading_counts(page_headings, page_map, "unmapped", institution)),
   tar_target(heading_hits, heading_counts(page_headings, page_map, "pattern", institution)),
   tar_target(heading_use, heading_pattern_use(heading_hits)),

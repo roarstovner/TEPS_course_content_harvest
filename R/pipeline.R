@@ -517,14 +517,46 @@ SHELL_MAX_NCHAR <- 1500
     dplyr::select(dplyr::all_of(key))
 }
 
-frame_offerings <- function(offerings, frames, plans, sections) {
+# Each offering also gets whether its course-year had students
+# (add_offered(), `offered`: dbh_offered()).
+frame_offerings <- function(offerings, frames, plans, sections, offered = NULL) {
   stats::setNames(lapply(names(frames), function(f) {
     shell <- do.call(paste, .shell_plans(plans[[f]], sections[[f]]))
     x <- offerings[frames[[f]], ]
     x$plan_content_id <- dplyr::if_else(paste(x$plan_content_id, x$institution, x$course_code) %in% shell,
                                         NA_character_, x$plan_content_id)
-    x
+    add_offered(x, offered)
   }), names(frames))
+}
+
+#' Plan coverage over the three sets of course-years
+#'
+#' Course-years (institution, course_code_raw, year) of the offerings: ALL,
+#' LOOSE (`offered_loose`) and STRICT (`offered_strict`), each with the
+#' course-years in it that have a plan in some semester. The numerator is
+#' restricted to the set: a plan of a course-year without students counts only
+#' in ALL (methods.qmd, "Population and sampling frame").
+#'
+#' @param offerings Offerings with `plan_content_id` and the offered_* flags
+#'   (frame_offerings()).
+#' @param by Grouping columns.
+#' @return One row per group: `n_all`, `plans_all`, `n_loose`, `plans_loose`,
+#'   `n_strict`, `plans_strict`, the shares `cov_*` (NA for an empty set or
+#'   without student counts) and `provisional` (some course-year's counts are
+#'   provisional).
+offered_coverage <- function(offerings, by = c("institution", "year")) {
+  share <- function(k, n) ifelse(n > 0, k / n, NA_real_)
+  offerings |>
+    dplyr::summarise(plan = any(!is.na(plan_content_id)), loose = any(offered_loose),
+                     strict = any(offered_strict), provisional = any(offered_provisional),
+                     .by = dplyr::all_of(unique(c(by, "institution", "course_code_raw", "year")))) |>
+    dplyr::summarise(n_all = dplyr::n(), plans_all = sum(plan),
+                     n_loose = sum(loose), plans_loose = sum(plan & loose),
+                     n_strict = sum(strict), plans_strict = sum(plan & strict),
+                     provisional = any(provisional), .by = dplyr::all_of(by)) |>
+    dplyr::mutate(cov_all = share(plans_all, n_all), cov_loose = share(plans_loose, n_loose),
+                  cov_strict = share(plans_strict, n_strict)) |>
+    dplyr::arrange(dplyr::across(dplyr::all_of(by)))
 }
 
 # Published slim offerings: DBH metadata and the plan id, no url or text.
