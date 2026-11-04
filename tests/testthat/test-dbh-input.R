@@ -57,7 +57,7 @@ test_that("data/variables.csv documents every variable of the data files, with i
   v <- utils::read.csv(here::here(VARIABLES_FILE))
   expect_named(v, c("file", "variable", "old_name", "type", "source", "description"))
   expect_false(any(duplicated(v[c("file", "variable")])))
-  # every DBH column, with its name in the releases up to data-2026-10-16 (DBH_COLUMNS)
+  # every DBH column, with its name until 2026-10-16 (DBH_COLUMNS)
   dbh <- v[v$file == "course_offerings" & v$variable %in% names(DBH_COLUMNS), ]
   expect_setequal(dbh$variable, names(DBH_COLUMNS))
   expect_equal(dbh$old_name, unname(DBH_COLUMNS[dbh$variable]))

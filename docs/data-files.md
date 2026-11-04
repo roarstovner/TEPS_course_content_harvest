@@ -45,7 +45,8 @@ folder says what may be shared:
 </tr>
 <tr>
 <td><code>data/releases/{tag}/</code></td>
-<td>offerings, plans and sections of a finalized release</td>
+<td>offerings, plans and sections of a finalized release (none yet: the
+first comes when coding starts)</td>
 <td><code>finalize_release()</code></td>
 <td>no</td>
 </tr>
@@ -233,7 +234,8 @@ so a teacher-ed plan has the years, text and sections of its own
 earliest teacher-ed offering, whatever else the raw store holds, and a
 harvest of other courses leaves the teacher-ed files as they were. The
 teacher-ed files are the releases’ (`finalize_release()`,
-`release_data()`, target `frozen_check`), the browsers’ and
+`release_data()`; none is finalized yet, and until the first target
+`frozen_check` checks only the raw store), the browsers’ and
 `methods.md`’s; the data notes, the gaps and the audits read those of
 all courses. Each frame has its metrics snapshot, and target `coverage`
 its DBH offerings.
@@ -332,25 +334,26 @@ Releases”](rebuilding.md#raw-store-and-finalized-releases)).
 (`course_offerings.RDS`, `course_plans.RDS`, `plan_sections.RDS`, of
 both frames): the file, its name, type, source (the column of DBH table
 208, or how the pipeline gives it), meaning and codes, and `old_name`,
-its name in the releases up to data-2026-10-16. `release_data()` hands
-it over with the data, and `tests/testthat/test-dbh-input.R` checks it
-against the built files and `DBH_COLUMNS`. `course_offerings_full.RDS`
-(internal) adds `url`, `extracted_text`, `course_plan`,
-`course_plan_normalized` and `plan_nchar`.
+its name until 2026-10-16. `release_data()` hands it over with the data,
+and `tests/testthat/test-dbh-input.R` checks it against the built files
+and `DBH_COLUMNS`. `course_offerings_full.RDS` (internal) adds `url`,
+`extracted_text`, `course_plan`, `course_plan_normalized` and
+`plan_nchar`.
 
 Since 2026-10-16 the DBH columns have English snake_case names
 (methods.qmd, “Variable names”); their values are DBH’s (Norwegian
 names, DBH’s codes), and `year_from` and `year_to` are integers (double
 before). DBH’s snapshots, the raw files of the harvests until 2026-10-16
-and the releases up to data-2026-10-16 have DBH’s names: the pipeline
-renames them where it reads such data (`dbh_rename()`, in
-`dbh_courses()`, `read_raw()`, `frozen_changes()` and `release_data()`).
-Code that reads an old release can rename it by the same pairs:
+and the data handed to the coding project on 2026-10-15 (the retired
+release data-2026-10-15) have DBH’s names: the pipeline renames them
+where it reads such data (`dbh_rename()`, in `dbh_courses()`,
+`read_raw()` and `release_data()`). Code that reads such data can rename
+them by the same pairs:
 
 ``` r
 v <- read.csv("data/variables.csv")
 pairs <- unique(v[v$old_name != v$variable, c("variable", "old_name")])
-old <- readRDS("data/releases/data-2026-10-16/course_offerings.RDS") |>
+old <- readRDS("../TEPS_course_content_coding/data/course_offerings.RDS") |>
   dplyr::rename(dplyr::any_of(setNames(pairs$old_name, pairs$variable)))
 ```
 
@@ -619,8 +622,8 @@ Registered from autumn 2012, and for some earlier courses.</td>
 <td style="text-align: left;">How the year of the offering’s plan is
 known: “url” the page’s URL holds the year; “current” the site shows
 only the plan in force, so a page is the plan of the academic year it
-was fetched in. Release data-2026-10-16 has “page” for NLA, whose URL
-holds the academic year too.</td>
+was fetched in. The data built on 2026-10-16 had “page” for NLA, whose
+URL holds the academic year too.</td>
 </tr>
 <tr>
 <td style="text-align: left;">course_offerings</td>
@@ -755,7 +758,7 @@ course_code.</td>
 <td style="text-align: left;">integer</td>
 <td style="text-align: left;">derived</td>
 <td style="text-align: left;">First year of the offerings with this plan
-(double up to data-2026-10-16).</td>
+(double in the data built until 2026-10-16).</td>
 </tr>
 <tr>
 <td style="text-align: left;">course_plans</td>
@@ -764,7 +767,7 @@ course_code.</td>
 <td style="text-align: left;">integer</td>
 <td style="text-align: left;">derived</td>
 <td style="text-align: left;">Last year of the offerings with this plan
-(double up to data-2026-10-16).</td>
+(double in the data built until 2026-10-16).</td>
 </tr>
 <tr>
 <td style="text-align: left;">course_plans</td>

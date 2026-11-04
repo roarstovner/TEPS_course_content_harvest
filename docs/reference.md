@@ -220,7 +220,8 @@ academic year</td>
 <td><code>finalize_release(tag)</code>,
 <code>frozen_changes()</code></td>
 <td><code>R/release.R</code></td>
-<td>Lock a release’s raw files; list changes to it (target
+<td>Lock a release’s raw files; list raw files changed or missing and,
+once a release is kept, changes to it (target
 <code>frozen_check</code>)</td>
 </tr>
 <tr>

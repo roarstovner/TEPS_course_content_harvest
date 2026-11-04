@@ -36,8 +36,8 @@ plan_table <- function(courses) {
     dplyr::group_by(plan_content_id, institution, course_code) |>
     dplyr::summarise(
       # the offerings are in year order: integer also for a table without
-      # plans, where min() gives a double (as in the releases up to
-      # data-2026-10-16)
+      # plans, where min() gives a double (as in the data built until
+      # 2026-10-16)
       year_from = dplyr::first(year),
       year_to = dplyr::last(year),
       source_course_id = dplyr::first(course_id),

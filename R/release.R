@@ -1,9 +1,11 @@
 # R/release.R
 # Hand a frozen release of the published data to another project: the
 # coding project (../TEPS_course_content_coding) draws its samples from it.
+# No release is finalized yet: the first comes when coding starts (the
+# releases of 2026-10-15 and 2026-10-16 were retired on 2026-11-04).
 
 # Every variable of the data files: its file, type, source and meaning, and
-# its name in the releases up to data-2026-10-16 (docs/data-files.md "Data
+# its name until 2026-10-16 (DBH's; docs/data-files.md "Data
 # Structure").
 VARIABLES_FILE <- "data/variables.csv"
 
@@ -12,7 +14,7 @@ VARIABLES_FILE <- "data/variables.csv"
 #' Writes to `dest`: course_offerings.RDS, course_plans.RDS, plan_sections.RDS
 #' of the frame (the teacher-ed frame by default: the coding project's),
 #' methods.md as built and variables.csv (VARIABLES_FILE: every variable of
-#' the files, with its name in the releases up to data-2026-10-16);
+#' the files, with its name until 2026-10-16);
 #' `manifest.yml` (release tag, harvest repo commit, date, files with row
 #' counts and md5 sums); `section_coverage.csv` (share of
 #' plans per institution with each section; where a section is missing the
@@ -22,8 +24,8 @@ VARIABLES_FILE <- "data/variables.csv"
 #' ids through the offerings (course_id) both releases share; and
 #' `sections_changed.csv`: a section fix keeps the plan's id, so the crosswalk
 #' does not show it, yet units coded on the old section text no longer match
-#' (see section_changes()). A release in `dest` with the old names (up to
-#' data-2026-10-16) is read with the new ones (dbh_rename()).
+#' (see section_changes()). A release in `dest` with the old names (the data handed
+#' to the coding project on 2026-10-15) is read with the new ones (dbh_rename()).
 #'
 #' Tag the commit first (`git tag data-YYYY-MM-DD`) so the manifest names it.
 #'
@@ -86,7 +88,7 @@ release_data <- function(tag, dest = "../TEPS_course_content_coding/data", frame
     harvest_repo_commit = commit,
     created = format(Sys.time(), "%Y-%m-%d %H:%M"),
     methods = "methods.md (the choices behind the data, with numbers for this release)",
-    variables = "variables.csv (every variable of the files, and its name up to data-2026-10-16)",
+    variables = "variables.csv (every variable of the files, and its name until 2026-10-16)",
     files = lapply(stats::setNames(basename(files), basename(files)), function(f) {
       path <- file.path(dest, f)
       c(list(md5 = unname(tools::md5sum(path))),
@@ -155,14 +157,16 @@ finalize_release <- function(tag, raw_dir = RAW_DIR, processed = frame_dir("teac
   invisible(m)
 }
 
-#' Changes to the finalized release
+#' Changes to the raw store and to the finalized release
 #'
-#' Compares with RAW_MANIFEST and the data kept by finalize_release(): a raw
-#' file changed or missing, an offering of the release gone or with another
-#' plan, a plan of the release gone or with other text, a section of it
-#' changed. No rows before anything is finalized. A release up to
-#' data-2026-10-16 has DBH's column names, which are read as the new ones
-#' (dbh_rename()): the check compares the values.
+#' Checks that every raw file listed in RAW_MANIFEST is unchanged (check "raw
+#' file changed or missing"): the guard of the append-only raw store. When the
+#' release named in the manifest is kept in `releases` (finalize_release()),
+#' also lists an offering of it gone or with another plan, a plan of it gone or
+#' with other text and a section of it changed. No release is finalized yet
+#' (the releases of 2026-10-15 and 2026-10-16 were retired on 2026-11-04; the
+#' first comes when coding starts), so until then only the raw files are
+#' checked. No rows without a manifest.
 #'
 #' @param manifest The raw manifest file.
 #' @param offerings,plans,sections The built course_offerings, course_plans and
@@ -170,41 +174,38 @@ finalize_release <- function(tag, raw_dir = RAW_DIR, processed = frame_dir("teac
 #' @param releases Where finalize_release() keeps the plans.
 #' @return Tibble `check`, `institution`, `what`.
 frozen_changes <- function(manifest, offerings, plans, sections, releases = "data/releases") {
-  out <- tibble::tibble(check = character(), institution = character(), what = character())
+  row <- function(check, institution, what) tibble::tibble(check = check, institution = institution, what = what)
+  out <- row(character(), character(), character())
   if (!file.exists(manifest)) return(out)
   m <- utils::read.csv(manifest)
   md5 <- unname(tools::md5sum(m$file))
   bad <- is.na(md5) | md5 != m$md5
-  out <- dplyr::bind_rows(out, tibble::tibble(check = "raw file changed or missing",
-                                              institution = NA_character_, what = m$file[bad]))
+  out <- row("raw file changed or missing", NA_character_, m$file[bad])
   dir <- file.path(releases, m$release[1])
-  o <- dplyr::left_join(readRDS(file.path(dir, "course_offerings.RDS"))[c("course_id", "institution", "plan_content_id")],
-                        readRDS(offerings)[c("course_id", "plan_content_id")],
-                        by = "course_id", suffix = c("", "_now"))
-  now_ids <- readRDS(offerings)$course_id
-  moved <- !o$course_id %in% now_ids | !mapply(identical, o$plan_content_id, o$plan_content_id_now)
-  out <- dplyr::bind_rows(out, tibble::tibble(check = "offering gone or with another plan",
-                                              institution = o$institution[moved],
-                                              what = o$course_id[moved]))
-  key <- c("plan_content_id", "institution", "course_code")
-  was <- dbh_rename(readRDS(file.path(dir, "course_plans.RDS")))[c(key, "course_plan")]
-  now <- readRDS(plans)[c(key, "course_plan")]
-  p <- dplyr::left_join(was, now, by = key, suffix = c("", "_now"))
-  diff <- is.na(p$course_plan_now) | p$course_plan_now != p$course_plan
-  out <- dplyr::bind_rows(out, tibble::tibble(check = "plan gone or text changed",
-                                              institution = p$institution[diff],
-                                              what = paste(p$course_code[diff], p$plan_content_id[diff])))
-  cols <- c(key, "section", "text")
-  was_s <- dbh_rename(readRDS(file.path(dir, "plan_sections.RDS")))[cols]
-  now_s <- dplyr::semi_join(readRDS(sections)[cols], was, by = key)
-  s <- dplyr::bind_rows(dplyr::anti_join(was_s, now_s, by = cols),
-                        dplyr::anti_join(now_s, was_s, by = cols)) |>
-    dplyr::distinct(dplyr::across(dplyr::all_of(c(key, "section"))))
-  out <- dplyr::bind_rows(out, tibble::tibble(check = "section changed",
-                                              institution = s$institution,
-                                              what = paste(s$course_code, s$plan_content_id, s$section)))
+  if (dir.exists(dir)) {
+    o <- dplyr::left_join(readRDS(file.path(dir, "course_offerings.RDS"))[c("course_id", "institution", "plan_content_id")],
+                          readRDS(offerings)[c("course_id", "plan_content_id")],
+                          by = "course_id", suffix = c("", "_now"))
+    moved <- !o$course_id %in% readRDS(offerings)$course_id |
+      !mapply(identical, o$plan_content_id, o$plan_content_id_now)
+    key <- c("plan_content_id", "institution", "course_code")
+    was <- readRDS(file.path(dir, "course_plans.RDS"))[c(key, "course_plan")]
+    p <- dplyr::left_join(was, readRDS(plans)[c(key, "course_plan")], by = key, suffix = c("", "_now"))
+    diff <- is.na(p$course_plan_now) | p$course_plan_now != p$course_plan
+    cols <- c(key, "section", "text")
+    was_s <- readRDS(file.path(dir, "plan_sections.RDS"))[cols]
+    now_s <- dplyr::semi_join(readRDS(sections)[cols], was, by = key)
+    s <- dplyr::bind_rows(dplyr::anti_join(was_s, now_s, by = cols),
+                          dplyr::anti_join(now_s, was_s, by = cols)) |>
+      dplyr::distinct(dplyr::across(dplyr::all_of(c(key, "section"))))
+    out <- dplyr::bind_rows(
+      out, row("offering gone or with another plan", o$institution[moved], o$course_id[moved]),
+      row("plan gone or text changed", p$institution[diff], paste(p$course_code[diff], p$plan_content_id[diff])),
+      row("section changed", s$institution, paste(s$course_code, s$plan_content_id, s$section)))
+  }
   if (nrow(out) > 0) {
-    warning(nrow(out), " change(s) to the finalized release ", m$release[1],
+    warning(nrow(out), " change(s) to the raw store",
+            if (dir.exists(dir)) paste(" or the finalized release", m$release[1]),
             ": see tar_read(frozen_check)", call. = FALSE)
   }
   out

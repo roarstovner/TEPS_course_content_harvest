@@ -38,7 +38,7 @@ format: md
 | `page_fulltext(blocks, config)` | `R/extract_fulltext.R` | A page's `extracted_text` from its blocks |
 | `read_harvest(files, config, content)` | `R/pipeline.R` | One institution's raw files combined (`harvest_files()`): the page each offering takes; current sites matched by course code and academic year |
 | `harvested_rows(institutions)` | `R/pipeline.R` | `read_harvest()` joined with `data/interim/extracted_text.RDS` (audit scripts) |
-| `finalize_release(tag)`, `frozen_changes()` | `R/release.R` | Lock a release's raw files; list changes to it (target `frozen_check`) |
+| `finalize_release(tag)`, `frozen_changes()` | `R/release.R` | Lock a release's raw files; list raw files changed or missing and, once a release is kept, changes to it (target `frozen_check`) |
 | `release_data(tag, dest, frame)` | `R/release.R` | Copy the published files of a frame (the teacher-ed one), `methods.md`, `data/variables.csv`, a manifest and section coverage to the coding project |
 | `plan_gaps(offerings, fetch_status)` | `R/pipeline.R` | Course-years without a plan, with the reason (target `gaps`) |
 | `validate_courses(df, stage)` | `R/utils.R` | Required columns at `"initial"`, `"with_url"`, `"with_html"` |

@@ -300,11 +300,6 @@ test_that("a finalized release is locked and checked", {
   expect_equal(unname(file.access(lf, 2)), -1L)   # the fetch ledger too
   expect_equal(utils::read.csv(RAW_MANIFEST)$file, c(f, lf))
   expect_equal(nrow(check()), 0)
-  # a release with DBH's column names (up to data-2026-10-16) is compared by value
-  kept <- file.path("data/releases/data-test", c("course_plans.RDS", "plan_sections.RDS"))
-  Sys.chmod(kept, "0644")
-  for (k in kept) saveRDS(dplyr::rename(readRDS(k), Emnekode = course_code), k)
-  expect_equal(nrow(check()), 0)
 
   # a new offering and plan (a later year) are fine; any change to the release is not
   saveRDS(dplyr::bind_rows(plans, dplyr::mutate(plans, plan_content_id = "p2")),
@@ -320,6 +315,9 @@ test_that("a finalized release is locked and checked", {
   arrow::write_parquet(raw_rows(inst = "samas", html = "ny")[, c("course_id", "html")], f)
   expect_setequal(check()$check, c("raw file changed or missing", "plan gone or text changed",
                                    "section changed", "offering gone or with another plan"))
+  # without the release's folder (no release kept) only the raw files are checked
+  unlink("data/releases", recursive = TRUE, force = TRUE)
+  expect_equal(check()$check, "raw file changed or missing")
 })
 
 test_that("section_changes() lists section fixes under ids both releases hold", {

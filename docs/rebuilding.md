@@ -14,7 +14,7 @@ targets::tar_read(metrics_check)  # changes against the metrics snapshot
 targets::tar_read(unmapped)       # headings the section extractor could not map
 targets::tar_read(heading_use)    # pages per heading-map pattern (0 = unused)
 targets::tar_read(privacy_check)  # personal data found in data/processed/
-targets::tar_read(frozen_check)   # changes to the finalized release (empty before one)
+targets::tar_read(frozen_check)   # raw files changed or missing (and changes to a finalized release)
 targets::tar_read(gaps)           # course-years without a plan, and why
 targets::tar_read(coverage)       # every offering of each frame: fetch outcome, plan, retry
 targets::tar_read(changed_pages)  # pages whose text changed between harvest runs
@@ -203,7 +203,7 @@ files of the harvests before (`data/raw/html_{inst}.RDS`, the first
 harvests, and `data/raw/harvests/{date}/html_{inst}.RDS`) were written
 one to one to the Parquet store by `data-raw/raw_to_parquet.R`, which
 compares every run with its RDS file column by column and row by row,
-and `tar_make()` then rebuilt release data-2026-10-16 exactly. The first
+and `tar_make()` then rebuilt the data of 2026-10-16 exactly. The first
 harvests did not stamp `harvested_at` and were not dated: their run is
 named by the day their RDS file was written (2026-09-30 to 2026-10-06),
 and their `harvested_at` stays empty. The RDS files were removed from
@@ -214,6 +214,14 @@ A page that gave no plan can be fetched again with
 `harvest_all(retry = TRUE)` (see [“Fetch Ledger and
 Retries”](harvesting.md#fetch-ledger-and-retries)). Retry before
 finalizing a release; afterwards it changes the release.
+
+No release is finalized yet: the first comes when coding starts. The
+releases data-2026-10-15 and data-2026-10-16 were retired on 2026-11-04,
+before any coding (their git tags remain; `data/releases/` is empty; see
+`methods.qmd` “No release until coding starts”). Their raw files stay
+read-only and `tests/snapshots/raw_manifest.csv` still lists them, so
+until the first release `tar_read(frozen_check)` checks only the raw
+store: a row “raw file changed or missing” is never intended.
 
 To finalize a release, after `tar_make()` and tagging the commit:
 
@@ -228,18 +236,19 @@ overwrite then fails), lists them with md5 sums in
 `tests/snapshots/raw_manifest.csv`, and keeps the release’s offerings,
 plans and sections (the teacher-ed frame’s, see
 [“Frames”](data-files.md#frames)) in `data/releases/{tag}/`. On every
-build `tar_read(frozen_check)` lists any change to the release: a raw
-file changed or missing, an offering gone or linked to another plan, a
-plan gone or with other text, a section changed. Plans added later (a
-new DBH year) are not changes. A planned change to the release (a
-privacy fix, a section fix after the coders’ check) means a new release:
-finalize it, and `release_data()` writes the old -\> new
-`plan_content_id` crosswalk. Until then `frozen_check` lists the planned
-changes on every build, and a change nobody intended would be listed
-among them, so each commit explains the rows it adds, and the next
-release follows soon after the fixes. A section fix keeps the plan’s id,
-so the crosswalk does not show it; `release_data()` lists such sections
-(plan, section, changed, added or removed) in `sections_changed.csv`.
+build `tar_read(frozen_check)` lists a raw file changed or missing and,
+while the release’s folder exists, any change to the release: an
+offering gone or linked to another plan, a plan gone or with other text,
+a section changed. Plans added later (a new DBH year) are not changes. A
+planned change to the release (a privacy fix, a section fix after the
+coders’ check) means a new release: finalize it, and `release_data()`
+writes the old -\> new `plan_content_id` crosswalk. Until then
+`frozen_check` lists the planned changes on every build, and a change
+nobody intended would be listed among them, so each commit explains the
+rows it adds, and the next release follows soon after the fixes. A
+section fix keeps the plan’s id, so the crosswalk does not show it;
+`release_data()` lists such sections (plan, section, changed, added or
+removed) in `sections_changed.csv`.
 
 ## Auditing a Pipeline Step
 

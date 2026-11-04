@@ -62,10 +62,12 @@ order:
       the teacher-ed frame with a new year. Explain the rows in the
       commit and update the snapshots of those frames
       (`check_pipeline_metrics(update = TRUE, frames = ...)`).
-    - `frozen_check`: the plans of a new year are not listed. A row (an
-      offering that left the teacher-ed frame in the new snapshot, a
-      plan a site reworded) is a change to the last release; explain it
-      in the commit.
+    - `frozen_check`: a raw file changed or missing is never intended.
+      After a release is finalized (none is yet; the first comes when
+      coding starts), it also lists changes to the release, but not the
+      plans of a new year: a row (an offering that left the teacher-ed
+      frame in the new snapshot, a plan a site reworded) is a change to
+      the last release; explain it in the commit.
     - `privacy_check`: must have no rows.
     - `unmapped` and `heading_use`: headings of new or changed page
       layouts.
@@ -91,8 +93,9 @@ order:
     A finding is fixed in the config or the heading map and rebuilt with
     `tar_make()`, without a new harvest.
 
-6.  **Release.** Tag the commit and finalize the release (see [“Raw
-    Store and Finalized
+6.  **Release.** Once coding has started (no release is finalized yet),
+    tag the commit and finalize the release (see [“Raw Store and
+    Finalized
     Releases”](rebuilding.md#raw-store-and-finalized-releases)):
 
     ``` r

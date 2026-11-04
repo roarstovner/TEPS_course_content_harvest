@@ -45,7 +45,7 @@ dbh_snapshot_file <- function(table = c("courses", "programmes", "exams", "credi
 
 # The pipeline's names of DBH's columns (table 208), name = DBH's name. DBH's
 # snapshots keep DBH's names; the raw files of the harvests until 2026-10-16
-# and the releases up to data-2026-10-16 have them too, with `Emnekode_raw`
+# and the data handed to the coding project on 2026-10-15 have them too, with `Emnekode_raw`
 # for DBH's code and `Emnekode` for the code without its version number.
 # dbh_rename() renames them where such data are read. data/variables.csv
 # documents every variable of the data files (docs/data-files.md "Data
