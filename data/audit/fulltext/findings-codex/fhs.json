@@ -1,0 +1,9 @@
+{
+  "check": "fulltext",
+  "institution": "fhs",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "Fulltext extraction is faithful across all 28 reviewed courses (20 suspects and 8 random controls): the facts box, Hva lærer du introductions and other prose before the accordions are captured, the accordion sections are readable, and the uncaptured lines contain only update timestamps and version-menu labels. The 19 year flags are false alarms: 11 treat a spring calendar year as an autumn-start academic year, while 8 concern earlier plan versions selected under the documented FHS rule that a version remains in force until superseded (R/resolve_course_urls.R, resolve_urls_fhs_batch); references such as FOR 2011-12-22 are not plan-year evidence. The short CBU1506 plan faithfully reproduces the brief source description and placeholders, and no substantive missing content, wrong page, extraction truncation, repeated content block or page-chrome contamination was established; packet truncation markers limit visibility of the longest plans and are not extraction defects.",
+  "findings": []
+}

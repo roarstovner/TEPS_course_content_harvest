@@ -1,0 +1,42 @@
+{
+  "check": "anonymization",
+  "institution": "fhs",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 16,
+  "overall_assessment": "All 28 packet entries were read in full: administrative study-year values survive in every plan, including all 12 random controls, and semester removal breaks the literature-list sentence in four plans. No confirmed personal-data leaks were found: phone flags concern numeric identifiers in reference URLs, while name_like flags concern organisations, places, technical terms, titles and reference authors rather than institutional staff. Literature authors, publication years and government-document dates are generally preserved; the Richards removed span reflects empty-parenthesis cleanup rather than clear loss of author content.",
+  "findings": [
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "fhs_LED4101-1_2022_autumn_1",
+        "fhs_CBU1506-1_2019_autumn_2",
+        "fhs_MILM3301-1_2025_autumn_1"
+      ],
+      "evidence": "Studieår\n2021\nUtdanninger",
+      "description": "All 28 anonymized plans retain a standalone four-digit year immediately below Studieår. These are administrative course-plan year fields, not publication or subject-matter years, and must be removed under the rubric. The same defect occurs in every random control, so it is not restricted to flagged courses; the pre-pass admin_date patterns miss this label/value layout.",
+      "root_cause_hypothesis": "R/anonymize.R has no FHS institution handler. .anon_generic() removes academic-year ranges, season/year combinations and years after selected administrative keywords, but does not recognize a single year under the Studieår label.",
+      "suggested_fix": "Add an FHS handler or a narrowly anchored generic rule matching a Studieår label followed by a standalone four-digit year on the next line, removing the year while preserving adjacent fields. Add regression cases for this multiline layout and for publication years that must remain.",
+      "confidence": "high"
+    },
+    {
+      "target": "content_text",
+      "error_type": "text_corruption",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": [
+        "fhs_ING3506-1_2025_autumn_1",
+        "fhs_MILM1704-1_2025_autumn_2",
+        "fhs_ING2317-1_2025_autumn_3"
+      ],
+      "evidence": "Gjeldende litteraturliste for finner du i Leganto",
+      "description": "Four plans, including two random controls, contain this malformed prose sentence after a semester/year value is removed. Removing the administrative semester is correct, but leaving for directly before finner damages the surrounding sentence; this is running prose rather than a harmless empty administrative label.",
+      "root_cause_hypothesis": "The season/year rules in R/anonymize.R::.anon_generic() remove only the semester value. The subsequent cleanup handles bare Pensumliste for lines, but not the FHS sentence Gjeldende litteraturliste for <semester> finner du i Leganto.",
+      "suggested_fix": "Add a narrowly scoped cleanup after semester removal that rewrites Gjeldende litteraturliste for finner du i Leganto to Gjeldende litteraturliste finner du i Leganto, preserving the literature-list pointer. Cover both year-before-season and season-before-year forms in regression cases.",
+      "confidence": "high"
+    }
+  ]
+}
