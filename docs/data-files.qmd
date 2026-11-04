@@ -111,10 +111,10 @@ not the frames:
 minutes, one request per institution code and table, two seconds apart);
 `Rscript data-raw/courses.R courses` the course list alone, and without an
 argument both. `dbh_offered()` reads the latest counts for each course-year
-(target `offered`), and every offering gets `offered_loose`, `offered_strict`
-and `offered_provisional` (`add_offered()`; see "Variables" and methods.qmd):
-whether its course-year had exam registrations or credits, both, and whether
-the year's counts can still grow, which follows from the counts' own date
+(target `offered`), and every offering gets `exam_registrations`, `credits_earned`,
+`had_students` and `counts_provisional` (`add_offered()`; see "Variables" and
+methods.qmd): its course-year's counts, whether it had students (either
+count above 0), and whether the year's counts can still grow, which follows from the counts' own date
 (the years after the last one whose autumn both tables have). A new snapshot
 gets a new date and the old ones stay. The snapshots keep DBH's column names.
 `dbh_courses()` reads the latest (or the one of `date`), gives DBH's columns the pipeline's names

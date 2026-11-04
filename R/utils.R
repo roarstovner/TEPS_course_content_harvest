@@ -142,19 +142,21 @@ dbh_fetch <- function(table, codes = NULL, wait = 2) {
 #' (table 900, `Ny produksjon totalt`), per course (code with its version, as
 #' table 208's) and year, summed over the year's semesters: DBH counts sit in
 #' the exam semester, not the teaching semester, so only the year is used.
-#' Two nested sets of course-years (methods.qmd, "Population and sampling
-#' frame"): `offered_loose`, exam registrations or credits; `offered_strict`,
-#' both. A course-year with no row in either table had neither. The counts
-#' are a snapshot of their own, dated apart from the course list. DBH
-#' publishes a semester's counts about one semester later:
-#' `offered_provisional` marks the years after the last one whose autumn is in
-#' both tables of the snapshot, whose counts can still grow.
+#' `had_students` is exam registrations or credits (methods.qmd, "Population
+#' and sampling frame"); DBH zeroes small counts before summing, so a course
+#' with one or two students can have no exam registrations. A course-year
+#' with no row in either table has 0, 0 and FALSE. The counts are a snapshot
+#' of their own, dated apart from the course list. DBH publishes a
+#' semester's counts about one semester later: `counts_provisional` marks
+#' the years after the last one whose autumn is in both tables of the
+#' snapshot, whose counts can still grow.
 #'
 #' @param date The counts snapshot's date; NULL for the latest.
 #' @param input_dir Folder of the snapshots.
 #' @return One row per institution_code, course_code_raw and year in 905 or
-#'   900, with `exam_registrations`, `credits_fte` (60 credits = 1) and the
-#'   three flags; attributes `complete_through` (the last complete year) and
+#'   900, with `exam_registrations` (integer), `credits_earned` (full-time
+#'   equivalents, 60 credits = 1), `had_students` and `counts_provisional`;
+#'   attributes `complete_through` (the last complete year) and
 #'   `dbh_snapshot` (the counts' date). An error if the snapshot lacks either
 #'   table.
 dbh_offered <- function(date = NULL, input_dir = INPUT_DIR) {
@@ -172,28 +174,30 @@ dbh_offered <- function(date = NULL, input_dir = INPUT_DIR) {
     dplyr::summarise(x, n = sum(n, na.rm = TRUE), .by = dplyr::all_of(key))
   })
   out <- dplyr::full_join(dplyr::rename(per_year$exams, exam_registrations = n),
-                          dplyr::rename(per_year$credits, credits_fte = n), by = key) |>
+                          dplyr::rename(per_year$credits, credits_earned = n), by = key) |>
     dplyr::mutate(year = as.integer(year),
                   exam_registrations = dplyr::coalesce(exam_registrations, 0L),
-                  credits_fte = dplyr::coalesce(credits_fte, 0),
-                  offered_loose = exam_registrations > 0 | credits_fte > 0,
-                  offered_strict = exam_registrations > 0 & credits_fte > 0,
-                  offered_provisional = year > complete) |>
+                  credits_earned = dplyr::coalesce(credits_earned, 0),
+                  had_students = exam_registrations > 0 | credits_earned > 0,
+                  counts_provisional = year > complete) |>
     dplyr::arrange(institution_code, course_code_raw, year)
   attr(out, "complete_through") <- complete
   attr(out, "dbh_snapshot") <- format(as.Date(date))
   out
 }
 
-# The offered_* flags of dbh_offered() on offerings (or any data with
-# institution_code, course_code_raw and year): FALSE for a course-year with no
-# student counts. The provisional flag is by year.
+# The student counts of dbh_offered() on offerings (or any data with
+# institution_code, course_code_raw and year): 0, 0 and FALSE for a course-year
+# with no counts. counts_provisional is by year.
 add_offered <- function(offerings, offered) {
-  flags <- c("offered_loose", "offered_strict", "offered_provisional")
+  cols <- c("exam_registrations", "credits_earned", "had_students")
   key <- c("institution_code", "course_code_raw", "year")
-  x <- dplyr::left_join(dplyr::select(offerings, -dplyr::any_of(flags)), offered[c(key, flags[1:2])], by = key)
-  x[flags[1:2]] <- lapply(x[flags[1:2]], function(v) dplyr::coalesce(v, FALSE))
-  x$offered_provisional <- x$year > attr(offered, "complete_through")
+  x <- dplyr::left_join(dplyr::select(offerings, -dplyr::any_of(c(cols, "counts_provisional"))),
+                        offered[c(key, cols)], by = key)
+  x$exam_registrations <- dplyr::coalesce(as.integer(x$exam_registrations), 0L)
+  x$credits_earned <- dplyr::coalesce(x$credits_earned, 0)
+  x$had_students <- dplyr::coalesce(x$had_students, FALSE)
+  x$counts_provisional <- x$year > attr(offered, "complete_through")
   x
 }
 

@@ -266,15 +266,16 @@ ten minutes, one request per institution code and table, two seconds
 apart); `Rscript data-raw/courses.R courses` the course list alone, and
 without an argument both. `dbh_offered()` reads the latest counts for
 each course-year (target `offered`), and every offering gets
-`offered_loose`, `offered_strict` and `offered_provisional`
-(`add_offered()`; see “Variables” and methods.qmd): whether its
-course-year had exam registrations or credits, both, and whether the
-year’s counts can still grow, which follows from the counts’ own date
-(the years after the last one whose autumn both tables have). A new
-snapshot gets a new date and the old ones stay. The snapshots keep DBH’s
-column names. `dbh_courses()` reads the latest (or the one of `date`),
-gives DBH’s columns the pipeline’s names (`DBH_COLUMNS`; see
-“Variables”) and adds `institution` and `course_code`:
+`exam_registrations`, `credits_earned`, `had_students` and
+`counts_provisional` (`add_offered()`; see “Variables” and methods.qmd):
+its course-year’s counts, whether it had students (either count above
+0), and whether the year’s counts can still grow, which follows from the
+counts’ own date (the years after the last one whose autumn both tables
+have). A new snapshot gets a new date and the old ones stay. The
+snapshots keep DBH’s column names. `dbh_courses()` reads the latest (or
+the one of `date`), gives DBH’s columns the pipeline’s names
+(`DBH_COLUMNS`; see “Variables”) and adds `institution` and
+`course_code`:
 
 ``` r
 courses <- dbh_courses("teacher_ed")
@@ -355,12 +356,12 @@ old <- readRDS("data/releases/data-2026-10-16/course_offerings.RDS") |>
 
 <table>
 <colgroup>
+<col style="width: 3%" />
 <col style="width: 4%" />
-<col style="width: 5%" />
-<col style="width: 5%" />
-<col style="width: 2%" />
-<col style="width: 8%" />
-<col style="width: 73%" />
+<col style="width: 4%" />
+<col style="width: 1%" />
+<col style="width: 7%" />
+<col style="width: 78%" />
 </colgroup>
 <thead>
 <tr>
@@ -673,37 +674,53 @@ before anonymization; NA without text.</td>
 </tr>
 <tr>
 <td style="text-align: left;">course_offerings</td>
-<td style="text-align: left;">offered_loose</td>
-<td style="text-align: left;">offered_loose</td>
-<td style="text-align: left;">logical</td>
-<td style="text-align: left;">DBH tables 905 and 900</td>
-<td style="text-align: left;">Whether the course-year (course_code_raw
-and year, either semester) had students: exam registrations (905
-Oppmeldt totalt) or credits earned (900 Ny produksjon totalt) in some
-semester of the year. The same on every offering of the course-year.
-From the latest counts snapshot, dated apart from the course list.</td>
+<td style="text-align: left;">exam_registrations</td>
+<td style="text-align: left;">exam_registrations</td>
+<td style="text-align: left;">integer</td>
+<td style="text-align: left;">DBH table 905</td>
+<td style="text-align: left;">Exam registrations (905 Oppmeldt totalt)
+in the course-year (course_code_raw and year), summed over its
+semesters. The same on every offering of the course-year; 0 for a
+course-year with no row in DBH. DBH zeroes small counts before summing,
+so a course with one or two students can have 0 (which is why
+had_students uses either count). From the latest counts snapshot, dated
+apart from the course list.</td>
 </tr>
 <tr>
 <td style="text-align: left;">course_offerings</td>
-<td style="text-align: left;">offered_strict</td>
-<td style="text-align: left;">offered_strict</td>
-<td style="text-align: left;">logical</td>
-<td style="text-align: left;">DBH tables 905 and 900</td>
-<td style="text-align: left;">Whether the course-year had both exam
-registrations and credits earned in the year (within offered_loose).
-Read with offered_provisional: the strict set holds only years whose
-counts are complete.</td>
+<td style="text-align: left;">credits_earned</td>
+<td style="text-align: left;">credits_earned</td>
+<td style="text-align: left;">double</td>
+<td style="text-align: left;">DBH table 900</td>
+<td style="text-align: left;">Credits earned (900 Ny produksjon totalt)
+in the course-year, summed over its semesters, in full-time equivalents
+(60 credits = 1). The same on every offering of the course-year; 0 for a
+course-year with no row in DBH. Counts of the same snapshot as
+exam_registrations.</td>
 </tr>
 <tr>
 <td style="text-align: left;">course_offerings</td>
-<td style="text-align: left;">offered_provisional</td>
-<td style="text-align: left;">offered_provisional</td>
+<td style="text-align: left;">had_students</td>
+<td style="text-align: left;">had_students</td>
 <td style="text-align: left;">logical</td>
 <td style="text-align: left;">DBH tables 905 and 900</td>
-<td style="text-align: left;">Whether the year’s student counts are
-provisional: a year after the last one whose autumn DBH had published in
-both tables when the counts snapshot was taken (DBH publishes a semester
-about one semester later).</td>
+<td style="text-align: left;">Whether the course-year had students:
+exam_registrations &gt; 0 or credits_earned &gt; 0. Either count is used
+because DBH zeroes small counts before summing, so exam_registrations
+can be 0 for a course with 1-2 students. The same on every offering of
+the course-year.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">counts_provisional</td>
+<td style="text-align: left;">counts_provisional</td>
+<td style="text-align: left;">logical</td>
+<td style="text-align: left;">DBH tables 905 and 900</td>
+<td style="text-align: left;">Whether the year’s counts
+(exam_registrations, credits_earned) are not complete: a year after the
+last one whose autumn DBH had published in both tables when the counts
+snapshot was taken (DBH publishes a semester about one semester later).
+The counts of a provisional year can still grow.</td>
 </tr>
 <tr>
 <td style="text-align: left;">course_plans</td>

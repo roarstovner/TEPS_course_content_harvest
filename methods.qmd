@@ -120,10 +120,13 @@ not run in a year, so "share of DBH's course-years with a plan" mixes missing
 plans with courses that were never taught. The input therefore also holds
 DBH's student counts per course and semester: exam registrations (table 905)
 and credits earned (table 900). A course-year
-(institution, code with its version, year) is in the *loose* set if it had
-exam registrations or credits in some semester of the year, and in the
-*strict* set if it had both; strict lies within loose, and loose within all
-(`offered_loose`, `offered_strict` on every offering, `dbh_offered()`).
+(institution, code with its version, year) is in the set *with students* if it
+had exam registrations or credits in some semester of the year, and in the set
+*with exam registrations and credits* if it had both; the second lies within
+the first, and the first within all. The offerings of both frames carry the
+counts as published columns, the same on every offering of the course-year:
+`exam_registrations`, `credits_earned`, `had_students` (either above 0) and
+`counts_provisional` (`dbh_offered()`); a reader needs no other definition.
 Coverage over a set is the course-years in the set with a plan, divided by the
 course-years in the set: the numerator is restricted to the set, so a plan of a
 course that did not run counts only over all. No plan is dropped.
@@ -132,10 +135,10 @@ exam registrations and credits, and A-E have a plan. G had credits but no exam
 registrations (two students, whom DBH's small-count rule hides), H had three
 re-sit candidates but no credits (not taught that year), and neither has a
 plan. I and J had no students at all; I has a plan (an old page still online).
-Over all, 6 of 10 course-years have a plan (60 %); over loose (A-H) 5 of 8
-(63 %); over strict (A-F) 5 of 6 (83 %). Of the courses that surely ran, 83 %
+Over all, 6 of 10 course-years have a plan (60 %); over those with students (A-H)
+5 of 8 (63 %); over those with both (A-F) 5 of 6 (83 %). Of the courses that surely ran, 83 %
 have a plan; counting every course DBH lists, 60 %. If G ran and H did not, the
-true share for courses that ran is 5 of 7 (71 %): the range from all to strict
+true share for courses that ran is 5 of 7 (71 %): the range from all to both
 shows how much depends on what "offered" means. *Why:* the share over all
 DBH course-years is coverage of DBH's register; it is a lower bound for the
 courses that ran only if courses that did not run have plans less often, and
@@ -155,8 +158,8 @@ had credits); replacing the frame with the courses that had students (it
 would drop real plans, and turn an estimate into the frame). *Consequence:*
 DBH publishes a semester's counts about a semester later, so the latest year
 lacks its autumn until about March: its counts are provisional
-(`offered_provisional`) and its loose and strict sets can still grow, and
-strict holds only complete years. *The counts have their own snapshot date:*
+(`counts_provisional`) and its sets with students and with both can still
+grow, and the set with both holds only complete years. *The counts have their own snapshot date:*
 the first is of 2026-11-04, while the course list stays the snapshot of
 2026-10-16 (`docs/data-files.md`, "Input Data"). A new course list could add
 or drop offerings and change the teacher-ed frame under the harvests running
@@ -166,7 +169,7 @@ can be refreshed alone, and which years are provisional follows from the
 counts' date, not the course list's. A course-year of the course list that
 the counts lack had no students (in a provisional year: none yet). *Rejected:* one date for both (the counts
 would wait for the next course list, or force one).
-`r cy <- off |> summarise(plan = any(!is.na(plan_content_id)), loose = any(offered_loose), strict = any(offered_strict) & !any(offered_provisional), .by = c(institution, course_code_raw, year)); sprintf("In the teacher-ed frame: %s course-years, %s with a plan (%s); loose %s, of them %s with a plan (%s); strict %s, of them %s with a plan (%s).", n(nrow(cy)), n(sum(cy$plan)), pct(mean(cy$plan)), n(sum(cy$loose)), n(sum(cy$plan & cy$loose)), pct(mean(cy$plan[cy$loose])), n(sum(cy$strict)), n(sum(cy$plan & cy$strict)), pct(mean(cy$plan[cy$strict])))`
+`r cy <- off |> summarise(plan = any(!is.na(plan_content_id)), students = any(had_students), both = any(exam_registrations > 0 & credits_earned > 0) & !any(counts_provisional), .by = c(institution, course_code_raw, year)); sprintf("In the teacher-ed frame: %s course-years, %s with a plan (%s); with students %s, of them %s with a plan (%s); with both %s, of them %s with a plan (%s).", n(nrow(cy)), n(sum(cy$plan)), pct(mean(cy$plan)), n(sum(cy$students)), n(sum(cy$plan & cy$students)), pct(mean(cy$plan[cy$students])), n(sum(cy$both)), n(sum(cy$plan & cy$both)), pct(mean(cy$plan[cy$both])))`
 Per institution and year: `data/data_notes.md`, "Coverage over course-years
 that had students". *Since:* 2026-11-04.
 

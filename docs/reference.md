@@ -134,8 +134,9 @@ files</td>
 <code>offered_coverage()</code></td>
 <td><code>R/utils.R</code>, <code>R/pipeline.R</code></td>
 <td>Which course-years had students (DBH tables 905 and 900, the latest
-counts snapshot), their flags on the offerings, and plan coverage over
-all, loose and strict course-years</td>
+counts snapshot), their counts on the offerings, and plan coverage over
+all course-years, those with students and those with exam registrations
+and credits</td>
 </tr>
 <tr>
 <td><code>dbh_fetch(table, codes)</code></td>

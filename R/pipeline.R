@@ -529,32 +529,33 @@ frame_offerings <- function(offerings, frames, plans, sections) {
 
 #' Plan coverage over the three sets of course-years
 #'
-#' Course-years (institution, course_code_raw, year) of the offerings: ALL,
-#' LOOSE (`offered_loose`) and STRICT (`offered_strict` in a year whose counts
-#' are complete, not `offered_provisional`), each with the
-#' course-years in it that have a plan in some semester. The numerator is
-#' restricted to the set: a plan of a course-year without students counts only
-#' in ALL (methods.qmd, "Population and sampling frame").
+#' Course-years (institution, course_code_raw, year) of the offerings: all;
+#' those that `had_students`; and those with exam registrations and credits
+#' earned both (in a year whose counts are complete, not
+#' `counts_provisional`), each with the course-years in it that have a plan
+#' in some semester. The numerator is restricted to the set: a plan of a
+#' course-year without students counts only in "all" (methods.qmd,
+#' "Population and sampling frame").
 #'
-#' @param offerings Offerings with `plan_content_id` and the offered_* flags
+#' @param offerings Offerings with `plan_content_id` and the student counts
 #'   (add_offered()).
 #' @param by Grouping columns.
-#' @return One row per group: `n_all`, `plans_all`, `n_loose`, `plans_loose`,
-#'   `n_strict`, `plans_strict`, the shares `cov_*` (NA for an empty set) and
-#'   `provisional` (some course-year's counts are provisional).
+#' @return One row per group: `n_all`, `plans_all`, `n_students`,
+#'   `plans_students`, `n_both`, `plans_both`, the shares `cov_*` (NA for an
+#'   empty set) and `provisional` (some course-year's counts are provisional).
 offered_coverage <- function(offerings, by = c("institution", "year")) {
   share <- function(k, n) ifelse(n > 0, k / n, NA_real_)
   offerings |>
-    dplyr::summarise(plan = any(!is.na(plan_content_id)), loose = any(offered_loose),
-                     strict = any(offered_strict) & !any(offered_provisional),
-                     provisional = any(offered_provisional),
+    dplyr::summarise(plan = any(!is.na(plan_content_id)), students = any(had_students),
+                     both = any(exam_registrations > 0 & credits_earned > 0) & !any(counts_provisional),
+                     provisional = any(counts_provisional),
                      .by = dplyr::all_of(unique(c(by, "institution", "course_code_raw", "year")))) |>
     dplyr::summarise(n_all = dplyr::n(), plans_all = sum(plan),
-                     n_loose = sum(loose), plans_loose = sum(plan & loose),
-                     n_strict = sum(strict), plans_strict = sum(plan & strict),
+                     n_students = sum(students), plans_students = sum(plan & students),
+                     n_both = sum(both), plans_both = sum(plan & both),
                      provisional = any(provisional), .by = dplyr::all_of(by)) |>
-    dplyr::mutate(cov_all = share(plans_all, n_all), cov_loose = share(plans_loose, n_loose),
-                  cov_strict = share(plans_strict, n_strict)) |>
+    dplyr::mutate(cov_all = share(plans_all, n_all), cov_students = share(plans_students, n_students),
+                  cov_both = share(plans_both, n_both)) |>
     dplyr::arrange(dplyr::across(dplyr::all_of(by)))
 }
 

@@ -180,14 +180,16 @@ DBH lists courses that did not run in a year. Coverage is therefore also
 given over two smaller sets of course-years (code with version × year), from
 DBH's latest student counts, a snapshot dated apart from the course list
 (`docs/data-files.md`, "Input Data"; methods.qmd, "Population and sampling
-frame"): **Loose**, course-years with exam registrations (table 905)
-or credits earned (table 900) in some semester of the year; **Strict**, both.
-**All** is every course-year in the data. A share is the course-years in the
+frame"): **With students**, course-years with exam registrations (table 905)
+or credits earned (table 900) in some semester of the year (`had_students`);
+**With exam registrations and credits**, both. **All** is every course-year in
+the data. A share is the course-years in the
 set with a plan in some semester over the course-years in the set: a plan of a
 course-year without students counts only under All, and no plan is dropped.
 The counts sit in the exam semester and DBH publishes them about a semester
-late: years marked **provisional** lack the latest autumn, and their Loose
-and Strict sets can still grow (Strict holds only complete years).
+late: years marked **provisional** (`counts_provisional`) lack the latest autumn,
+and their sets with students and with both can still grow (the set with both
+holds only complete years).
 
 ```{r}
 #| label: offered-coverage
@@ -195,8 +197,8 @@ and Strict sets can still grow (Strict holds only complete years).
 source("../R/pipeline.R")
 fmt <- function(k, n) ifelse(n > 0, sprintf("%d / %d (%.0f%%)", k, n, 100 * k / n), "")
 show <- function(x) x |>
-  mutate(All = fmt(plans_all, n_all), Loose = fmt(plans_loose, n_loose),
-         Strict = fmt(plans_strict, n_strict)) |>
+  mutate(All = fmt(plans_all, n_all), `With students` = fmt(plans_students, n_students),
+         `With exam registrations and credits` = fmt(plans_both, n_both)) |>
   select(-starts_with(c("n_", "plans_", "cov_")))
 cat("All years, by institution:\n\n")
 print(knitr::kable(show(offered_coverage(df, "institution")) |>
@@ -213,9 +215,9 @@ publish only the current plan, whose 2026/27 offerings are not yet in DBH):
 library(ggplot2)
 offered_coverage(df, c("institution", "year")) |>
   filter(year >= 2010) |>
-  tidyr::pivot_longer(c(cov_all, cov_loose, cov_strict), names_to = "set", values_to = "coverage") |>
-  mutate(set = factor(set, c("cov_all", "cov_loose", "cov_strict"),
-                      c("All DBH course-years", "With students (loose)", "With students (strict)"))) |>
+  tidyr::pivot_longer(c(cov_all, cov_students, cov_both), names_to = "set", values_to = "coverage") |>
+  mutate(set = factor(set, c("cov_all", "cov_students", "cov_both"),
+                      c("All DBH course-years", "With students", "With exam registrations and credits"))) |>
   ggplot(aes(year, coverage, colour = set)) +
   geom_line(linewidth = 0.6, na.rm = TRUE) +
   facet_wrap(~ institution, ncol = 5) +
