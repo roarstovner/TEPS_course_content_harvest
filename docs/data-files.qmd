@@ -40,7 +40,7 @@ The repository is public.
 | File | Contents | Personal data | Status |
 |---|---|---|---|
 | `data/input/dbh_courses_{date}.parquet`, `dbh_programmes_{date}.parquet` | DBH tables 208 (courses) and 347 (programmes), the harvest input | none | in git |
-| `data/input/dbh_exams_{date}.parquet`, `dbh_credits_{date}.parquet` | DBH tables 905 (exam registrations) and 900 (credits earned) per course and semester, which course-years had students | none (counts) | in git |
+| `data/input/dbh_exams_{date}.parquet`, `dbh_credits_{date}.parquet` | DBH tables 905 (exam registrations) and 900 (credits earned) per course and semester, which course-years had students; dated apart from the course list | none (counts) | in git |
 | `data/raw/{inst}/{year}/{run}.parquet`, `data/raw/checkpoint/` | raw harvest: `html` (+ text and bytes of PDFs) | yes (raw) | internal |
 | `data/raw/{inst}/ledger/{run}.parquet` | fetch ledger: URL, HTTP status, outcome and page hash per offering and run | none | internal |
 | `data/pilot/{inst}.csv` | an institution's pilot sample (["Piloting an Institution"](new-institution.md#piloting-an-institution)) | none | in git |
@@ -84,32 +84,41 @@ Per-institution prose notes are edited directly in `data/data_notes.qmd`.
 
 ### Input Data (`data/input/dbh_*_{date}.parquet`)
 
-The harvest's input is a dated snapshot of DBH, written by
-`data-raw/courses.R` from DBH's bulk files: `dbh_courses_{date}.parquet` is
-table 208 (Emner), every course of every institution, year and semester, all
-levels and statuses, one row per course and semester;
-`dbh_programmes_{date}.parquet` is table 347 (Studieprogram), with the
-programmes' study type (`Studiumkode`). Since 2026-11-04 the snapshot also
-holds DBH's student counts per course (code with its version, as table 208's)
-and semester, at the institutions with a config, all years, from DBH's API on
-the same day: `dbh_exams_{date}.parquet` is table 905 (Eksamensdata: exam
-registrations `Oppmeldt totalt`, sat, passed) and `dbh_credits_{date}.parquet`
-table 900 (Studiepoeng: credits earned, `Ny produksjon totalt`, 1 = 60
-credits). `dbh_offered()` reads them for each course-year (target `offered`),
-and every offering gets `offered_loose`, `offered_strict` and
-`offered_provisional` (`add_offered()`; see "Variables" and methods.qmd,
-"Population and sampling frame"): whether its course-year had exam
-registrations or credits, both, and whether the year's counts can still grow.
-An older snapshot without the counts gives NA. A new snapshot gets a new date
-and the old ones stay. The snapshots keep DBH's column names. `dbh_courses()` reads the
-latest (or the one of `date`), gives DBH's columns the pipeline's names
-(`DBH_COLUMNS`; see "Variables") and adds `institution` and `course_code`:
-
 ```{r}
 #| echo: false
 #| output: false
 for (f in c("R/utils.R", "R/fetch_html_cols.R", "R/extract_fulltext.R", "R/institution_config.R")) source(f)
 ```
+
+The harvest's input is a dated snapshot of DBH's course list, written by
+`data-raw/courses.R` from DBH's bulk files: `dbh_courses_{date}.parquet` is
+table 208 (Emner), every course of every institution, year and semester, all
+levels and statuses, one row per course and semester;
+`dbh_programmes_{date}.parquet` is table 347 (Studieprogram), with the
+programmes' study type (`Studiumkode`). Beside it, with dates of their own,
+are DBH's student counts per course (code with its version, as table 208's)
+and semester, at the institutions with a config, all years, from DBH's API:
+`dbh_exams_{date}.parquet` is table 905 (Eksamensdata: exam registrations
+`Oppmeldt totalt`, sat, passed) and `dbh_credits_{date}.parquet` table 900
+(Studiepoeng: credits earned, `Ny produksjon totalt`, 1 = 60 credits). The
+pipeline reads the latest of each, now the course list of
+`r dbh_snapshot_date(dbh_snapshot_file("courses"))` and the counts of
+`r dbh_snapshot_date(dbh_snapshot_file("exams"))` (methods.qmd, "Population
+and sampling frame", says why they differ). The counts can be refreshed alone,
+since they change only which course-years are marked as having had students,
+not the frames:
+`Rscript data-raw/courses.R counts` writes both tables of the day (about ten
+minutes, one request per institution code and table, two seconds apart);
+`Rscript data-raw/courses.R courses` the course list alone, and without an
+argument both. `dbh_offered()` reads the latest counts for each course-year
+(target `offered`), and every offering gets `offered_loose`, `offered_strict`
+and `offered_provisional` (`add_offered()`; see "Variables" and methods.qmd):
+whether its course-year had exam registrations or credits, both, and whether
+the year's counts can still grow, which follows from the counts' own date
+(the years after the last one whose autumn both tables have). A new snapshot
+gets a new date and the old ones stay. The snapshots keep DBH's column names.
+`dbh_courses()` reads the latest (or the one of `date`), gives DBH's columns the pipeline's names
+(`DBH_COLUMNS`; see "Variables") and adds `institution` and `course_code`:
 
 ```{r}
 courses <- dbh_courses("teacher_ed")

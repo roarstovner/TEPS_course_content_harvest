@@ -36,10 +36,13 @@ order:
     Then, from the repository root, `Rscript data-raw/courses.R` writes
     `data/input/dbh_courses_{date}.parquet` and
     `dbh_programmes_{date}.parquet` (DBH’s whole tables 208 and 347; the
-    download of table 208 is about 700 MB). Commit both. From then on
-    `dbh_courses()` and the pipeline read the new snapshot: the
-    teacher-ed frame and target `coverage` follow it, and an offering
-    already harvested keeps its `course_id` (see [“Input
+    download of table 208 is about 700 MB), and the student counts of
+    the same day (tables 905 and 900;
+    `Rscript data-raw/courses.R counts` refreshes them alone, see
+    [“Input Data”](data-files.md#input-data-datainputdbh__dateparquet)).
+    Commit them. From then on `dbh_courses()` and the pipeline read the
+    new snapshot: the teacher-ed frame and target `coverage` follow it,
+    and an offering already harvested keeps its `course_id` (see [“Input
     Data”](data-files.md#input-data-datainputdbh__dateparquet)).
 
 3.  **Harvest.** `harvest_all()` fetches every offering of the snapshot

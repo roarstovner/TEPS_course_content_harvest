@@ -107,7 +107,8 @@ input</td>
 <td><code>data/input/dbh_exams_{date}.parquet</code>,
 <code>dbh_credits_{date}.parquet</code></td>
 <td>DBH tables 905 (exam registrations) and 900 (credits earned) per
-course and semester, which course-years had students</td>
+course and semester, which course-years had students; dated apart from
+the course list</td>
 <td>none (counts)</td>
 <td>in git</td>
 </tr>
@@ -244,28 +245,36 @@ Per-institution prose notes are edited directly in
 
 ### Input Data (`data/input/dbh_*_{date}.parquet`)
 
-The harvest’s input is a dated snapshot of DBH, written by
+The harvest’s input is a dated snapshot of DBH’s course list, written by
 `data-raw/courses.R` from DBH’s bulk files: `dbh_courses_{date}.parquet`
 is table 208 (Emner), every course of every institution, year and
 semester, all levels and statuses, one row per course and semester;
 `dbh_programmes_{date}.parquet` is table 347 (Studieprogram), with the
-programmes’ study type (`Studiumkode`). Since 2026-11-04 the snapshot
-also holds DBH’s student counts per course (code with its version, as
+programmes’ study type (`Studiumkode`). Beside it, with dates of their
+own, are DBH’s student counts per course (code with its version, as
 table 208’s) and semester, at the institutions with a config, all years,
-from DBH’s API on the same day: `dbh_exams_{date}.parquet` is table 905
-(Eksamensdata: exam registrations `Oppmeldt totalt`, sat, passed) and
+from DBH’s API: `dbh_exams_{date}.parquet` is table 905 (Eksamensdata:
+exam registrations `Oppmeldt totalt`, sat, passed) and
 `dbh_credits_{date}.parquet` table 900 (Studiepoeng: credits earned,
-`Ny produksjon totalt`, 1 = 60 credits). `dbh_offered()` reads them for
+`Ny produksjon totalt`, 1 = 60 credits). The pipeline reads the latest
+of each, now the course list of 2026-10-16 and the counts of 2026-11-04
+(methods.qmd, “Population and sampling frame”, says why they differ).
+The counts can be refreshed alone, since they change only which
+course-years are marked as having had students, not the frames:
+`Rscript data-raw/courses.R counts` writes both tables of the day (about
+ten minutes, one request per institution code and table, two seconds
+apart); `Rscript data-raw/courses.R courses` the course list alone, and
+without an argument both. `dbh_offered()` reads the latest counts for
 each course-year (target `offered`), and every offering gets
 `offered_loose`, `offered_strict` and `offered_provisional`
-(`add_offered()`; see “Variables” and methods.qmd, “Population and
-sampling frame”): whether its course-year had exam registrations or
-credits, both, and whether the year’s counts can still grow. An older
-snapshot without the counts gives NA. A new snapshot gets a new date and
-the old ones stay. The snapshots keep DBH’s column names.
-`dbh_courses()` reads the latest (or the one of `date`), gives DBH’s
-columns the pipeline’s names (`DBH_COLUMNS`; see “Variables”) and adds
-`institution` and `course_code`:
+(`add_offered()`; see “Variables” and methods.qmd): whether its
+course-year had exam registrations or credits, both, and whether the
+year’s counts can still grow, which follows from the counts’ own date
+(the years after the last one whose autumn both tables have). A new
+snapshot gets a new date and the old ones stay. The snapshots keep DBH’s
+column names. `dbh_courses()` reads the latest (or the one of `date`),
+gives DBH’s columns the pipeline’s names (`DBH_COLUMNS`; see
+“Variables”) and adds `institution` and `course_code`:
 
 ``` r
 courses <- dbh_courses("teacher_ed")
@@ -350,8 +359,8 @@ old <- readRDS("data/releases/data-2026-10-16/course_offerings.RDS") |>
 <col style="width: 5%" />
 <col style="width: 5%" />
 <col style="width: 2%" />
-<col style="width: 9%" />
-<col style="width: 72%" />
+<col style="width: 8%" />
+<col style="width: 73%" />
 </colgroup>
 <thead>
 <tr>
@@ -671,8 +680,8 @@ before anonymization; NA without text.</td>
 <td style="text-align: left;">Whether the course-year (course_code_raw
 and year, either semester) had students: exam registrations (905
 Oppmeldt totalt) or credits earned (900 Ny produksjon totalt) in some
-semester of the year. The same on every offering of the course-year. NA
-when the DBH snapshot has no student counts.</td>
+semester of the year. The same on every offering of the course-year.
+From the latest counts snapshot, dated apart from the course list.</td>
 </tr>
 <tr>
 <td style="text-align: left;">course_offerings</td>
@@ -683,8 +692,7 @@ when the DBH snapshot has no student counts.</td>
 <td style="text-align: left;">Whether the course-year had both exam
 registrations and credits earned in the year (within offered_loose).
 Read with offered_provisional: the strict set holds only years whose
-counts are complete. NA when the DBH snapshot has no student
-counts.</td>
+counts are complete.</td>
 </tr>
 <tr>
 <td style="text-align: left;">course_offerings</td>
@@ -694,9 +702,8 @@ counts.</td>
 <td style="text-align: left;">DBH tables 905 and 900</td>
 <td style="text-align: left;">Whether the year’s student counts are
 provisional: a year after the last one whose autumn DBH had published in
-both tables when the snapshot was taken (DBH publishes a semester about
-one semester later). NA when the DBH snapshot has no student
-counts.</td>
+both tables when the counts snapshot was taken (DBH publishes a semester
+about one semester later).</td>
 </tr>
 <tr>
 <td style="text-align: left;">course_plans</td>

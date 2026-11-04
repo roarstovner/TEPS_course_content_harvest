@@ -92,9 +92,7 @@ test_that("each frame has the plans of its own offerings, and their sections", {
 
   offerings <- frame_offerings(courses, frames, plans, sections)
   expect_equal(offerings$teacher_ed$course_id, courses$course_id[2:3])
-  # without student counts (NULL): the offered_* flags are NA
-  expect_identical(dplyr::select(offerings$all, -dplyr::starts_with("offered_")), courses)
-  expect_true(all(is.na(offerings$all$offered_loose)))
+  expect_identical(offerings$all, courses)
 
   # a page that shows a version starting after the offering's semester
   # (`page_term`): no plan; autumn 2023 keeps the version from autumn 2023,

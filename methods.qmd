@@ -117,9 +117,9 @@ and has a plan in one only. Coverage is therefore counted in course-years
 **Coverage is also reported over the course-years that had students, as a
 range; every course-year in DBH stays the frame.** DBH lists courses that did
 not run in a year, so "share of DBH's course-years with a plan" mixes missing
-plans with courses that were never taught. The DBH snapshot therefore also
-holds, from the same day, DBH's student counts per course and semester: exam
-registrations (table 905) and credits earned (table 900). A course-year
+plans with courses that were never taught. The input therefore also holds
+DBH's student counts per course and semester: exam registrations (table 905)
+and credits earned (table 900). A course-year
 (institution, code with its version, year) is in the *loose* set if it had
 exam registrations or credits in some semester of the year, and in the
 *strict* set if it had both; strict lies within loose, and loose within all
@@ -156,9 +156,17 @@ would drop real plans, and turn an estimate into the frame). *Consequence:*
 DBH publishes a semester's counts about a semester later, so the latest year
 lacks its autumn until about March: its counts are provisional
 (`offered_provisional`) and its loose and strict sets can still grow, and
-strict holds only complete years. Snapshots before 2026-11-04 have no counts,
-and the three columns are NA.
-`r if (any(!is.na(off$offered_loose))) { cy <- off |> summarise(plan = any(!is.na(plan_content_id)), loose = any(offered_loose), strict = any(offered_strict) & !any(offered_provisional), .by = c(institution, course_code_raw, year)); sprintf("In the teacher-ed frame: %s course-years, %s with a plan (%s); loose %s, of them %s with a plan (%s); strict %s, of them %s with a plan (%s).", n(nrow(cy)), n(sum(cy$plan)), pct(mean(cy$plan)), n(sum(cy$loose)), n(sum(cy$plan & cy$loose)), pct(mean(cy$plan[cy$loose])), n(sum(cy$strict)), n(sum(cy$plan & cy$strict)), pct(mean(cy$plan[cy$strict]))) } else "The current data come from a snapshot without counts."`
+strict holds only complete years. *The counts have their own snapshot date:*
+the first is of 2026-11-04, while the course list stays the snapshot of
+2026-10-16 (`docs/data-files.md`, "Input Data"). A new course list could add
+or drop offerings and change the teacher-ed frame under the harvests running
+then, and once a release is finalized every change to its frame has to be
+explained; the counts only mark course-years of the existing frame, so they
+can be refreshed alone, and which years are provisional follows from the
+counts' date, not the course list's. A course-year of the course list that
+the counts lack had no students (in a provisional year: none yet). *Rejected:* one date for both (the counts
+would wait for the next course list, or force one).
+`r cy <- off |> summarise(plan = any(!is.na(plan_content_id)), loose = any(offered_loose), strict = any(offered_strict) & !any(offered_provisional), .by = c(institution, course_code_raw, year)); sprintf("In the teacher-ed frame: %s course-years, %s with a plan (%s); loose %s, of them %s with a plan (%s); strict %s, of them %s with a plan (%s).", n(nrow(cy)), n(sum(cy$plan)), pct(mean(cy$plan)), n(sum(cy$loose)), n(sum(cy$plan & cy$loose)), pct(mean(cy$plan[cy$loose])), n(sum(cy$strict)), n(sum(cy$plan & cy$strict)), pct(mean(cy$plan[cy$strict])))`
 Per institution and year: `data/data_notes.md`, "Coverage over course-years
 that had students". *Since:* 2026-11-04.
 

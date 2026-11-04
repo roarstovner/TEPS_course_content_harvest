@@ -110,8 +110,48 @@ test_that("offered course-years: loose is exams or credits, strict both, summed 
   expect_equal(attr(o, "complete_through"), 2024)
   expect_equal(get("NEW-1", "offered_provisional"), TRUE)
   expect_false(any(o$offered_provisional[o$year == 2024]))
-  # a snapshot without student counts: NULL
-  expect_null(dbh_offered("2026-10-16", input_dir = dir))
+  expect_equal(attr(o, "dbh_snapshot"), "2026-11-04")
+})
+
+test_that("the student counts are a snapshot of their own, dated apart from the course list", {
+  dir <- withr::local_tempdir()
+  write_snapshot(dir, "2026-10-16", dbh_rows("1130", "P1", "A-1"),
+                 tibble::tibble(Institusjonskode = "1130", Studieprogramkode = "P1", Studiumkode = "MASTER"))
+  # two counts snapshots: the later has A-1's 2025 autumn
+  write_counts(dir, "2026-11-04", counts("A-1", 2025, 1, 3L, "Oppmeldt totalt"),
+               counts("A-1", 2025, 1, 1, "Ny produksjon totalt"))
+  write_counts(dir, "2027-03-01", counts("A-1", 2025, c(1, 3), c(3L, 4L), "Oppmeldt totalt"),
+               counts("A-1", 2025, c(1, 3), c(1, 2), "Ny produksjon totalt"))
+  # the latest counts, whatever the course list's date; their own date
+  # decides which years are provisional
+  expect_equal(attr(dbh_courses(input_dir = dir), "dbh_snapshot"), "2026-10-16")
+  o <- dbh_offered(input_dir = dir)
+  expect_equal(attr(o, "dbh_snapshot"), "2027-03-01")
+  expect_equal(c(o$exam_registrations, o$offered_provisional), c(7, 0))
+  expect_true(dbh_offered("2026-11-04", input_dir = dir)$offered_provisional)
+  # a counts snapshot needs both tables
+  file.remove(file.path(dir, "dbh_credits_2027-03-01.parquet"))
+  expect_error(dbh_offered(input_dir = dir), "No DBH credits snapshot")
+})
+
+test_that("dbh_fetch() asks DBH once per institution code, per course and semester, and trims", {
+  calls <- list()
+  local_mocked_bindings(dbh_data = function(table, filters = NULL, group_by = NULL, ...) {
+    calls[[length(calls) + 1]] <<- list(table = table, filters = filters, group_by = group_by)
+    tibble::tibble(Institusjonskode = filters$Institusjonskode, Emnekode = "ABC-1   ",
+                   Årstall = 2024L, Semester = 1L, `Oppmeldt totalt` = 5L)
+  }, .package = "rdbhapi")
+  x <- dbh_fetch(905, c("1130", "1120"), wait = 0)
+  expect_s3_class(x, "tbl_df")
+  expect_equal(x$Institusjonskode, c("1130", "1120"))
+  expect_equal(unique(x$Emnekode), "ABC-1")
+  expect_equal(vapply(calls, function(x) x$filters$Institusjonskode, ""), c("1130", "1120"))
+  expect_equal(calls[[1]]$group_by, c("Institusjonskode", "Emnekode", "Årstall", "Semester"))
+  # no codes: the whole table, one request without filters
+  calls <- list()
+  dbh_fetch(208)
+  expect_equal(length(calls), 1)
+  expect_null(calls[[1]]$filters)
 })
 
 test_that("offerings get the flags of their course-year, by code with its version", {
@@ -126,10 +166,8 @@ test_that("offerings get the flags of their course-year, by code with its versio
   expect_equal(x$offered_loose, c(TRUE, TRUE, FALSE, FALSE, FALSE))
   expect_equal(x$offered_strict, c(TRUE, TRUE, FALSE, FALSE, FALSE))
   expect_equal(x$offered_provisional, c(FALSE, FALSE, FALSE, FALSE, TRUE))
-  # no student counts in the snapshot: unknown, not FALSE
-  y <- add_offered(off, NULL)
-  expect_true(all(is.na(y$offered_loose)))
-  expect_equal(names(add_offered(y, offered)), names(x))
+  # flags already there are replaced
+  expect_equal(add_offered(x, offered), x)
 })
 
 test_that("coverage over each set counts only the set's plans (methods.qmd, worked example)", {
@@ -148,9 +186,9 @@ test_that("coverage over each set counts only the set's plans (methods.qmd, work
                c(n_all = 10, plans_all = 6, n_loose = 8, plans_loose = 5, n_strict = 6, plans_strict = 5))
   expect_equal(c(cov$cov_all, cov$cov_loose, cov$cov_strict), c(6 / 10, 5 / 8, 5 / 6))
   expect_false(cov$provisional)
-  # without student counts: only ALL
-  off[c("offered_loose", "offered_strict", "offered_provisional")] <- NA
+  # a provisional year: loose as counted so far, strict empty
+  off$offered_provisional <- TRUE
   cov <- offered_coverage(off)
-  expect_equal(cov$cov_all, 0.6)
-  expect_true(is.na(cov$cov_loose) && is.na(cov$cov_strict))
+  expect_equal(c(cov$n_loose, cov$n_strict), c(8, 0))
+  expect_true(cov$provisional && is.na(cov$cov_strict))
 })

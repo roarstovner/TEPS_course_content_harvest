@@ -23,7 +23,8 @@ format: md
 | `frame_members()`, `frame_plans()`, `frame_sections()`, `frame_offerings()`, `frame_dir()` | `R/pipeline.R`, `R/utils.R` | The frames: their offerings, plans (`plan_table()`), sections and data folders |
 | `harvest_files(institution)`, `harvested_institutions()` | `R/utils.R` | An institution's raw files, run by run; the institutions with raw files |
 | `dbh_courses(frame, date)` | `R/utils.R` | DBH offerings of a snapshot: all courses, or the teacher-ed frame (`"teacher_ed"`) |
-| `dbh_offered(date)`, `add_offered()`, `offered_coverage()` | `R/utils.R`, `R/pipeline.R` | Which course-years had students (DBH tables 905 and 900), their flags on the offerings, and plan coverage over all, loose and strict course-years |
+| `dbh_offered(date)`, `add_offered()`, `offered_coverage()` | `R/utils.R`, `R/pipeline.R` | Which course-years had students (DBH tables 905 and 900, the latest counts snapshot), their flags on the offerings, and plan coverage over all, loose and strict course-years |
+| `dbh_fetch(table, codes)` | `R/utils.R` | A DBH table from the API: the bulk file, or summed per course and semester at some institutions (`data-raw/courses.R`) |
 | `dbh_rename(df)` | `R/utils.R` | DBH's column names (snapshots, raw files and releases until 2026-10-16) as the pipeline's (`DBH_COLUMNS`) |
 | `institution_from_code(code)` | `R/institution_config.R` | Institution short name for DBH institution codes |
 | `get_institution_config(inst)` | `R/institution_config.R` | Config list for one institution |
@@ -96,6 +97,6 @@ format: md
 │   ├── testthat/              # Rscript -e 'testthat::test_dir("tests/testthat")'
 │   └── snapshots/             # pipeline_metrics_{frame}.csv; raw_manifest.csv once a release is finalized
 └── data-raw/
-    ├── courses.R              # script that writes a DBH snapshot to data/input/
+    ├── courses.R              # script that writes DBH snapshots (course list, student counts) to data/input/
     └── raw_to_parquet.R       # the one-time conversion of the RDS raw files (2026-10-16)
 ```

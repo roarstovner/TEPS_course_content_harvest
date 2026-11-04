@@ -133,9 +133,15 @@ files</td>
 <td><code>dbh_offered(date)</code>, <code>add_offered()</code>,
 <code>offered_coverage()</code></td>
 <td><code>R/utils.R</code>, <code>R/pipeline.R</code></td>
-<td>Which course-years had students (DBH tables 905 and 900), their
-flags on the offerings, and plan coverage over all, loose and strict
-course-years</td>
+<td>Which course-years had students (DBH tables 905 and 900, the latest
+counts snapshot), their flags on the offerings, and plan coverage over
+all, loose and strict course-years</td>
+</tr>
+<tr>
+<td><code>dbh_fetch(table, codes)</code></td>
+<td><code>R/utils.R</code></td>
+<td>A DBH table from the API: the bulk file, or summed per course and
+semester at some institutions (<code>data-raw/courses.R</code>)</td>
 </tr>
 <tr>
 <td><code>dbh_rename(df)</code></td>
@@ -320,5 +326,5 @@ address as archived. Not used by the harvest</td>
     │   ├── testthat/              # Rscript -e 'testthat::test_dir("tests/testthat")'
     │   └── snapshots/             # pipeline_metrics_{frame}.csv; raw_manifest.csv once a release is finalized
     └── data-raw/
-        ├── courses.R              # script that writes a DBH snapshot to data/input/
+        ├── courses.R              # script that writes DBH snapshots (course list, student counts) to data/input/
         └── raw_to_parquet.R       # the one-time conversion of the RDS raw files (2026-10-16)

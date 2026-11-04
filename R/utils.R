@@ -29,8 +29,10 @@ frame_dir <- function(frame, stage = "processed") {
 }
 
 # A DBH snapshot written by data-raw/courses.R, of `date` or the latest:
-# data/input/dbh_{table}_{YYYY-MM-DD}.parquet. "exams" (table 905) and
-# "credits" (table 900) are the student counts per course and semester.
+# data/input/dbh_{table}_{YYYY-MM-DD}.parquet. Two kinds, each with its own
+# dates: the course list ("courses", table 208, and "programmes", table 347)
+# and the student counts per course and semester ("exams", table 905, and
+# "credits", table 900; dbh_offered()).
 dbh_snapshot_file <- function(table = c("courses", "programmes", "exams", "credits"), date = NULL,
                               input_dir = INPUT_DIR) {
   table <- match.arg(table)
@@ -112,7 +114,29 @@ dbh_courses <- function(frame = c("all", "teacher_ed"), date = NULL, input_dir =
 # The date of a DBH snapshot file, "YYYY-MM-DD".
 dbh_snapshot_date <- function(file) sub("^dbh_[a-z]+_(.*)\\.parquet$", "\\1", basename(file))
 
-#' Which course-years of a DBH snapshot had students
+#' DBH tables from the API
+#'
+#' Codes are trimmed (DBH pads them with spaces) and a few names end in a
+#' newline, so every character column is trimmed.
+#'
+#' @param table DBH table number.
+#' @param codes NULL for the whole table (DBH's bulk file), or institution
+#'   codes for the table summed by DBH per course, year and semester at those
+#'   institutions: one request per code, `wait` seconds apart.
+#' @return A tibble with DBH's column names.
+dbh_fetch <- function(table, codes = NULL, wait = 2) {
+  tidy <- function(df) {
+    tibble::as_tibble(as.data.frame(dplyr::mutate(df, dplyr::across(dplyr::where(is.character), trimws))))
+  }
+  if (is.null(codes)) return(tidy(rdbhapi::dbh_data(table)))
+  dplyr::bind_rows(lapply(codes, function(code) {
+    Sys.sleep(wait)
+    tidy(rdbhapi::dbh_data(table, filters = list(Institusjonskode = code),
+                           group_by = c("Institusjonskode", "Emnekode", "Årstall", "Semester")))
+  }))
+}
+
+#' Which course-years had students
 #'
 #' DBH's exam registrations (table 905, `Oppmeldt totalt`) and credits earned
 #' (table 900, `Ny produksjon totalt`), per course (code with its version, as
@@ -120,28 +144,28 @@ dbh_snapshot_date <- function(file) sub("^dbh_[a-z]+_(.*)\\.parquet$", "\\1", ba
 #' the exam semester, not the teaching semester, so only the year is used.
 #' Two nested sets of course-years (methods.qmd, "Population and sampling
 #' frame"): `offered_loose`, exam registrations or credits; `offered_strict`,
-#' both. A course-year with no row in either table had neither. DBH publishes
-#' a semester's counts about one semester later: `offered_provisional` marks
-#' the years after the last one whose autumn is in both tables, whose counts
-#' can still grow.
+#' both. A course-year with no row in either table had neither. The counts
+#' are a snapshot of their own, dated apart from the course list. DBH
+#' publishes a semester's counts about one semester later:
+#' `offered_provisional` marks the years after the last one whose autumn is in
+#' both tables of the snapshot, whose counts can still grow.
 #'
-#' @param date,input_dir The DBH snapshot (dbh_courses()).
+#' @param date The counts snapshot's date; NULL for the latest.
+#' @param input_dir Folder of the snapshots.
 #' @return One row per institution_code, course_code_raw and year in 905 or
-#'   900, with `exam_registrations`, `credits_fte` (60 credits = 1), the
-#'   three flags, and attribute `complete_through` (the last complete year);
-#'   NULL when the snapshot of `date` has no student counts (those before
-#'   2026-11-04).
+#'   900, with `exam_registrations`, `credits_fte` (60 credits = 1) and the
+#'   three flags; attributes `complete_through` (the last complete year) and
+#'   `dbh_snapshot` (the counts' date). An error if the snapshot lacks either
+#'   table.
 dbh_offered <- function(date = NULL, input_dir = INPUT_DIR) {
-  date <- date %||% dbh_snapshot_date(dbh_snapshot_file("courses", NULL, input_dir))
-  files <- file.path(input_dir, sprintf("dbh_%s_%s.parquet", c("exams", "credits"), format(as.Date(date))))
-  if (!all(file.exists(files))) return(NULL)
+  date <- date %||% dbh_snapshot_date(dbh_snapshot_file("exams", NULL, input_dir))
   key <- c("institution_code", "course_code_raw", "year")
-  read <- function(file, count) {
+  read <- function(table, count) {
     cols <- c("Institusjonskode", "Emnekode", "Årstall", "Semester", count)
-    x <- arrow::read_parquet(file, col_select = dplyr::all_of(cols))
+    x <- arrow::read_parquet(dbh_snapshot_file(table, date, input_dir), col_select = dplyr::all_of(cols))
     stats::setNames(x, c(key, "semester", "n"))
   }
-  counts <- list(exams = read(files[1], "Oppmeldt totalt"), credits = read(files[2], "Ny produksjon totalt"))
+  counts <- list(exams = read("exams", "Oppmeldt totalt"), credits = read("credits", "Ny produksjon totalt"))
   # the last year whose autumn (semester 3) both tables have
   complete <- min(vapply(counts, function(x) max(c(x$year[x$semester == 3], -Inf)), 0))
   per_year <- lapply(counts, function(x) {
@@ -157,22 +181,17 @@ dbh_offered <- function(date = NULL, input_dir = INPUT_DIR) {
                   offered_provisional = year > complete) |>
     dplyr::arrange(institution_code, course_code_raw, year)
   attr(out, "complete_through") <- complete
+  attr(out, "dbh_snapshot") <- format(as.Date(date))
   out
 }
 
 # The offered_* flags of dbh_offered() on offerings (or any data with
 # institution_code, course_code_raw and year): FALSE for a course-year with no
-# student counts, NA for all when `offered` is NULL (no counts in the
-# snapshot). The provisional flag is by year.
+# student counts. The provisional flag is by year.
 add_offered <- function(offerings, offered) {
   flags <- c("offered_loose", "offered_strict", "offered_provisional")
-  offerings <- dplyr::select(offerings, -dplyr::any_of(flags))
-  if (is.null(offered)) {
-    offerings[flags] <- NA
-    return(offerings)
-  }
   key <- c("institution_code", "course_code_raw", "year")
-  x <- dplyr::left_join(offerings, offered[c(key, flags[1:2])], by = key)
+  x <- dplyr::left_join(dplyr::select(offerings, -dplyr::any_of(flags)), offered[c(key, flags[1:2])], by = key)
   x[flags[1:2]] <- lapply(x[flags[1:2]], function(v) dplyr::coalesce(v, FALSE))
   x$offered_provisional <- x$year > attr(offered, "complete_through")
   x
