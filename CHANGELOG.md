@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Refresh the all-frame metrics snapshot after the next build (user 2026-11-05) (#493)
 - Anonymizer: government-document guard misses 'Riksadvokaten utga høsten 2023 retningslinjer' (date removed; phs pilot audit 2026-11-03) (#487)
 - phs sections: attendance sentence in teaching_methods, formative feedback in assessment, workload in teaching_methods, portfolio design under teaching, intro paragraphs in learning outcomes (pilot audit 2026-11-03) (#486)
 - plan_gaps: 'no page' for spring offerings whose academic-year URL another offering fetched with an error (#402)
