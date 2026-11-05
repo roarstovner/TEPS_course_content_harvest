@@ -935,6 +935,7 @@ test_that("the personal-data check finds approvers in layouts no rule removes", 
             "Midtbøen, Arnfinn, Institutt for samfunnsforskning, 2018.",
             "godkjent paper på ca 10 sider (12 punkts skrift, Times New Roman, linjeavstand 1,5)",
             "The course was approved by Harstad University College", "godkjent Norsk Fonemtest",
+            "Delkarakter Godkjent/Ikke godkjent Eksamenssystem Inspera Assessment",
             # an author list with a first name that is a role word
             "Ola Dahl, Kari K. Berg, Dean Nordmann, Per Hansen (2017). Integrating Project Delivery")
   f <- tempfile(fileext = ".RDS")

@@ -816,7 +816,7 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     "(?i:(?:(?:godkjent|akkreditert)", .check_space, "+(?:av|ved)|revidert", .check_space, "+ved)(?:",
     .check_space, "+\\p{Ll}+){0,3}|godkjent|akkreditert|visedekan|viserektor)(?!\\p{L})",
     "(?:[^\\n\\p{Lu}]{0,60}?,|", .check_space, "[\\h\\d./-]*(?:\\p{Ll}{3,5}\\.[\\h\\d.]*)?)",
-    .check_space, "*(?!Ikke\\b|Times New Roman\\b|Norsk\\b)", .check_name,
+    .check_space, "*(?!Ikke\\b|Times New Roman\\b|Norsk\\b|Eksamenssystem\\b)", .check_name,
     "|(?i:approved", .check_space, "+by)(?:", .check_space, "+the", .check_space,
     "+(?i:dean|vice-dean|rector))?[\\h,]+(?!", .name_part, "\\h+(?:University|College)\\b)", .check_name),
   approval_heading_name = paste0(
