@@ -708,11 +708,21 @@ institution_configs <- list(
     # "Obligatorisk arbeidskrav:") in "Arbeidskrav og vurdering": they and
     # the exam lines after them stay in assessment, where
     # section_inline_coursework moves the gate's lines (up to
-    # "Vurderingsform:") to coursework_requirements
+    # "Vurderingsform:") to coursework_requirements; and "Emnets oppbygning:"
+    # with a colon, which lists the course's modules (MILM4106, 2018-2022),
+    # not how it is run, so they stay in course_content
     section_subheading_selector = paste0(
       "//p[not(ancestor::li[contains(@class, 'accordion__panel')]",
       "[.//h3[normalize-space() = 'Arbeidskrav og vurdering']]",
-      " and (contains(., 'rbeidskrav') or contains(., 'bligatorisk')))]"),
+      " and (contains(., 'rbeidskrav') or contains(., 'bligatorisk')))",
+      " and normalize-space() != 'Emnets oppbygning:']"),
+    # Sub-headings of "Hva lærer du" mapped here, before the heading map:
+    # "Opptakskrav" holds the courses the course requires ("Emnet forutsetter
+    # bestått eksamen i ... SPR1720 og SPR1721"), "Målgruppe" who may take it;
+    # the others (Etterretningsskolen) say how the course is run
+    section_headings = c("opptakskrav" = "prerequisites", "målgruppe" = ".drop",
+                         "emnets oppbygning" = "teaching_methods", "emnets oppbygging" = "teaching_methods",
+                         "arbeidsformer og læringsaktiviteter" = "teaching_methods"),
     section_inline_coursework = TRUE
   ),
 

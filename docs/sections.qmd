@@ -102,7 +102,16 @@ Fields for the `html` reader:
   aktiviteter:") starts coursework_requirements. A selector that starts with
   "/" is XPath: fhs's paragraphs, except those naming a gate in the
   accordion "Arbeidskrav og vurdering", which stay in assessment for
-  `section_inline_coursework`.
+  `section_inline_coursework`, and "Emnets oppbygning:" with a colon, a
+  module list in course content (MILM4106).
+- `section_headings`: sub-headings (whole `<p>` text, minus a trailing
+  colon, lower case) this institution maps on its own, looked up before the
+  heading map: fhs's "Opptakskrav" holds required courses (prerequisites,
+  where the map drops it as admission), "Målgruppe" who may take the course
+  (`.drop`), and the Etterretningsskolen's "Emnets oppbygning" (or
+  "oppbygging") and
+  "Arbeidsformer og læringsaktiviteter" (teaching_methods; the map has the
+  latter only as a substring pattern, which a `<p>` does not match).
 
 Other fields:
 

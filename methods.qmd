@@ -1897,6 +1897,27 @@ marker stay ("Bachelorgrad eller tilsvarende utdanning av minst 180
 studiepoengs omfang ...", UiA). `course_plan` and the plan ids do not
 change. *Since:* 2026-10-29.
 
+**FHS: "Opptakskrav" is prerequisites, "Målgruppe" is admission.** FHS's
+course pages give their sub-headings as plain paragraphs, which an
+institution can map itself (`section_headings`) before the heading map.
+At FHS "Opptakskrav" holds the courses a course requires ("Emnet forutsetter
+bestått eksamen i ... SPR1720 og SPR1721"), so it opens prerequisites;
+"Målgruppe" says who may take the course and goes, like other admission
+text; "Emnets oppbygning" (how the course is run: semester, hours of guided
+activity) and "Arbeidsformer og læringsaktiviteter" open teaching methods.
+*Why:* the sections audit of the full FHS harvest (2026-11-05) found the
+heading map's `.drop` for "Opptakskrav" losing these prerequisites, and the
+unread sub-headings leaving the organisation and teaching text of the
+Etterretningsskolen's plans in prerequisites. *Rejected:* mapping
+"Opptakskrav" to prerequisites everywhere (at UiT, OsloMet, UiA, NMBU and UiO
+it heads admission text, on some 19,000 pages); adding the other labels to
+the shared heading map (no other institution was measured for them).
+*Consequence:* of FHS's 839 plans, 40 have prerequisites (35 before: 11
+gain "Opptakskrav", 6 lose a section that held only organisation text, 14
+lose such text), 28 teaching-methods sections gain it, and 35
+course-content sections lose the "Målgruppe" paragraph. `course_plan` and
+the plan ids do not change. *Since:* 2026-11-05.
+
 **Placeholders are dropped** ("Ingen", "-", "Se fagplanen.", reading-list
 pointers; since 2026-10-01). From 2026-10-29 the list also holds HVL's "_"
 and bare "Ja" ("Ja, vert spesifisert i semesterplan ved semesterstart") as

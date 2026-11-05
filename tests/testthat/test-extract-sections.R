@@ -1442,3 +1442,21 @@ test_that("a reading list that only says it comes later or elsewhere is not a se
             "Oppgis ved semesterstart. Læreboka må leses.")
   for (t in keep) expect_true(.keep_section_row(t, "reading_list"), label = t)
 })
+
+test_that("fhs: its own sub-headings of Hva lærer du (section_headings)", {
+  p <- function(x, bold = FALSE) sprintf('<p><span style="%s">%s</span></p>', if (bold) "font-weight:bold" else "", x)
+  html <- paste0('<div id="main-container"><article><h1>Emne</h1>',
+    p("Hva lærer du"), p("Emnet handler om etterretning."),
+    p("Målgruppe", TRUE), p("Emnet tilbys studenter med opptak til bachelorstudiet."),
+    p("Opptakskrav", TRUE), p("Emnet forutsetter bestått eksamen i SPR1720 og SPR1721."),
+    p("Emnets oppbygning", TRUE), p("Emnet gjennomføres i femte semester."),
+    p("Arbeidsformer og læringsaktiviteter", TRUE), p("Forelesninger og seminarer."),
+    '<ul><li class="accordion__panel"><h3 class="accordion__panel-title">Læringsutbytte</h3>',
+    p("Studenten kan analysere."), '</li></ul></article></div>')
+  out <- extract_sections(get_institution_config("fhs"), html, NA_character_, "x")
+  sec <- setNames(out$raw_text, out$section)
+  expect_equal(unname(sec["prerequisites"]), "Emnet forutsetter bestått eksamen i SPR1720 og SPR1721.")
+  expect_match(sec["teaching_methods"], "^Emnet gjennomføres i femte semester\\.\\s+Arbeidsformer og læringsaktiviteter\\s+Forelesninger")
+  expect_false(grepl("opptak til bachelorstudiet", sec["course_content"]))
+  expect_false(any(grepl("opptak til bachelorstudiet", out$raw_text)))
+})

@@ -24,7 +24,8 @@
 # Readers, chosen by `section_strategy` in R/institution_config.R:
 #   html   — a DOM walk under `selector` without `exclude`; headings by
 #            `section_heading_selector` (default h2), sub-headings by
-#            `section_subheading_selector`, sections of their own by
+#            `section_subheading_selector` (mapped by the heading map, or
+#            first by `section_headings`), sections of their own by
 #            `section_scope`; text before the first heading goes to
 #            `section_initial` (default: dropped); an element in
 #            `section_untitled` is a section without a heading. With
@@ -57,6 +58,7 @@
     facts             = ic$facts,
     heading           = ic$section_heading_selector %||% "h2",
     sub               = ic$section_subheading_selector,
+    sub_map           = ic$section_headings,
     scope             = ic$section_scope,
     initial           = ic$section_initial,
     untitled          = ic$section_untitled,
@@ -219,7 +221,7 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
       txt <- rvest::html_text2(node)
       out$add("heading", txt, match_heading_to_section(txt), g = tag)
     } else if (identical(mark, "sub")) {
-      .sub_blocks(node, out$add)
+      .sub_blocks(node, out$add, cfg$sub_map)
     } else if (identical(mark, "field")) {
       read_sections <<- .field_block(node, cfg$fields, read_sections, out$add)
     } else {
@@ -267,11 +269,13 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
 
 # The section a sub-heading's text names exactly (minus a trailing colon), or
 # NA. Exact, so ordinary sentences and list-like paragraphs never split a
-# section.
-.exact_section <- function(x) {
-  x <- stringr::str_remove(stringr::str_squish(x), "[:：]$")
+# section. `sub_map` (`section_headings`): the institution's own sub-headings,
+# looked up before the heading map.
+.exact_section <- function(x, sub_map = NULL) {
+  x <- tolower(stringr::str_remove(stringr::str_squish(x), "[:：]$"))
   if (is.na(x) || !nzchar(x) || nchar(x) > 80) return(NA_character_)
-  section_heading_patterns$section[match(tolower(x), section_heading_patterns$pattern)]
+  if (x %in% names(sub_map)) return(unname(sub_map[x]))
+  section_heading_patterns$section[match(x, section_heading_patterns$pattern)]
 }
 
 .coursework_leadin <- paste0("(?i)arbeidskrav|obligatorisk\\w* (?:forhold|komponent|læringsaktivitet|aktivitet|",
@@ -294,7 +298,7 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
 #     følgende obligatoriske aktiviteter, som må være godkjent før eksamen:"):
 #     coursework_requirements, its text kept (uio).
 # Otherwise it is text.
-.sub_blocks <- function(node, add_block) {
+.sub_blocks <- function(node, add_block, sub_map = NULL) {
   raw <- rvest::html_text2(node)
   sq <- stringr::str_squish(raw)
   if (!nzchar(sq)) return(invisible())
@@ -306,7 +310,7 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
     add_block(r, t, s, k, g = if (first) "p" else "p+")
     first <<- FALSE
   }
-  sec <- .exact_section(raw)
+  sec <- .exact_section(raw, sub_map)
   if (!is.na(sec)) return(add("sub", raw, sec))
 
   lines <- stringr::str_trim(stringr::str_split_1(raw, "\n"))
@@ -317,7 +321,7 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
     stringr::str_trim(rvest::html_text2(lead_node))
   first_line <- if (length(lines) > 1) lines[1] else NA_character_
   for (head in c(lead, first_line)) {
-    sec <- .exact_section(head)
+    sec <- .exact_section(head, sub_map)
     if (is.na(sec)) next
     # the sub-heading keeps a colon that follows it ("Ferdigheter: Etter ...")
     after <- stringr::str_sub(raw, stringr::str_locate(raw, stringr::fixed(head))[, "end"] + 1)
@@ -327,7 +331,7 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
     return(invisible())
   }
   if (length(lines) > 1) {
-    sec <- .exact_section(lines[length(lines)])
+    sec <- .exact_section(lines[length(lines)], sub_map)
     if (!is.na(sec)) {
       add("text", paste(lines[-length(lines)], collapse = "\n"))
       return(add("sub", lines[length(lines)], sec))
