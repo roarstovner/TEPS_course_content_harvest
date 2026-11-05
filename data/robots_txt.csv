@@ -29,7 +29,7 @@ nhh,www.nhh.no,2026-10-31,200,,,,"Disallows /paraplyen (intranet); same robots.t
 vid,www.vid.no,2026-10-16,200,,,,"Allows everything for all user agents; blocks AI crawlers by name (GPTBot, ClaudeBot, anthropic-ai, CCBot, Google-Extended, Applebot-Extended, Meta-ExternalAgent and others)"
 himolde,www.himolde.no,2026-10-16,200,,,,Disallows /vrtx
 khio,khio.no,2026-10-16,200,,,,Comments only: nothing disallowed
-fjellhaug,fih.fjellhaug.no,2026-10-16,200,,,,"Craft CMS defaults (/cpresources/, /vendor/, /cache/)"
+fjellhaug,fih.fjellhaug.no,2026-11-05,200,,,,"Craft CMS defaults (/cpresources/, /vendor/, /.env, /cache/); names the Norwegian and English sitemaps"
 fjellhaug,www.fjellhaug.no,2026-10-16,404,,,,"Redirects to fjellhaug.no, which has no robots.txt"
 fhs,www.forsvaret.no,2026-10-16,404,,,,No robots.txt: nothing disallowed. FHS's pages are on Forsvaret's site
 phs,www.politihogskolen.no,2026-10-16,200,,,,www.phs.no redirects here; disallows /vrtx

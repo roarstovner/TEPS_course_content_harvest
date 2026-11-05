@@ -83,6 +83,8 @@ resolve_course_urls <- function(df,
       resolve_urls_nmh_batch(df)
     } else if (inst == "vid") {
       resolve_urls_vid_batch(df, .progress = .progress, checkpoint = discovery)
+    } else if (inst == "fjellhaug") {
+      resolve_urls_fjellhaug_batch(df)
     } else {
       df |> dplyr::mutate(url = NA_character_)
     }
@@ -1008,4 +1010,46 @@ resolve_urls_fhs_batch <- function(df, .progress = TRUE, checkpoint = NULL) {
   }, "")
   cli::cli_alert_success("FHS: pages for {sum(!is.na(df$url))} of {nrow(df)} offerings")
   df
+}
+
+#' Resolve URLs for a batch of Fjellhaug courses from its sitemaps
+#'
+#' Fjellhaug (fih.fjellhaug.no, Craft CMS) shows each course's plan in force,
+#' without a year, at /emne/{slug} or, for most courses taught in English,
+#' /en/subjects/{slug} only; the slug is the code in lower case, for a few
+#' courses followed by the title (/emne/btm2003n-markusevangeliet-10-ects-stp),
+#' which DBH does not give (checked 2026-11-05). fjellhaug_course_index()
+#' lists the pages. An offering takes the page of its code; DBH's codes of
+#' the Danish campuses and of some variants carry a suffix the site does not
+#' have (BTM2008-DK1, BMM1001-IS, EVU1001-EVU), and take the page of the code
+#' without it, whose facts box names the campuses ("Aarhus, København"). Of a
+#' Norwegian and an English page of one code, the Norwegian.
+#'
+#' @param df A tibble with a course_code column
+#' @param index The course pages' URLs, from fjellhaug_course_index()
+#' @return df with url filled in where possible
+resolve_urls_fjellhaug_batch <- function(df, index = fjellhaug_course_index()) {
+  index <- index[order(grepl("/en/", index, fixed = TRUE))]
+  code <- toupper(sub("-.*", "", sub(".*/", "", index)))
+  df$url <- index[match(sub("-[A-Z]+[0-9]*$", "", toupper(df$course_code)), code)]
+  cli::cli_alert_success("Fjellhaug: pages for {sum(!is.na(df$url))} of {nrow(df)} offerings")
+  df
+}
+
+# Every course page in Fjellhaug's subject sitemaps, Norwegian and English
+# (/emne/..., /en/subjects/...). The study programmes' pages link no other
+# live course page (checked 2026-11-05: their one extra link, /emne/heb1504,
+# answers 404). A site without any is an error, so the harvest stops rather
+# than leave its courses without a URL.
+fjellhaug_course_index <- function(root = "https://fih.fjellhaug.no") {
+  locs <- function(url) {
+    polite_pause()
+    xml <- httr2::resp_body_string(httr2::req_perform(site_request(url)))
+    stringr::str_match_all(xml, "<loc>([^<]+)</loc>")[[1]][, 2]
+  }
+  maps <- c(locs(paste0(root, "/sitemaps-1-sitemap.xml")), locs(paste0(root, "/en/sitemaps-1-sitemap.xml")))
+  pages <- unlist(lapply(grep("-section-subjects-", maps, value = TRUE), locs))
+  pages <- unique(grep(paste0("^", root, "/(emne|en/subjects)/[^/]+$"), pages, value = TRUE))
+  if (!length(pages)) stop("no course page in the sitemaps of ", root)
+  pages
 }

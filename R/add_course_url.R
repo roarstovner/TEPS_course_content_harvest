@@ -32,6 +32,7 @@ add_course_url <- function(df) {
         "uit"     ~ NA_character_,  # UiT requires document ID discovery via resolve_course_urls()
         "nmbu"    ~ add_course_url_nmbu(course_code),
         "vid"     ~ NA_character_,  # VID's page names come from its sitemap via resolve_course_urls()
+        "fjellhaug" ~ NA_character_,  # Fjellhaug's page names come from its sitemaps via resolve_course_urls()
 
         default = NA_character_
       )

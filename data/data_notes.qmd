@@ -256,6 +256,16 @@ Figures are in the tables above; the notes say why.
 
 ---
 
+### Fjellhaug (Fjellhaug International University College)
+
+- Added 2026-11-05 (all-courses frame). Only the plan in force is published (`plan_years = "current"`; see "Year coverage"): no plan for offerings before the academic year of the first harvest (2026/27). Earlier plans are only in PDFs (the programmes' study plans per semester from 2007, a course catalogue for autumn 2026; `/om-fih/arkiv-studieplaner`), which the harvest does not read
+- A page per course code, `/emne/{code}` or, for most courses taught in English, `/en/subjects/{code}`, a few with the title after the code; found in the subject sitemaps (`resolve_urls_fjellhaug_batch()`, `docs/institutions.md`). DBH's courses at the Danish campuses (`-DK1` København, `-DK2` Aarhus; 206 of the 532 offerings of 2025) and the variants `-IS` and `-EVU` take the page of the code without the suffix, which names the campuses in its facts box
+- Read from `main#main`: the title, the facts box (code, credits, campus, language, start, duration) and the plan; not the breadcrumb, the menu of the plan's parts and the plan's second copy in accordions for phones. The title and facts box are in no section
+- A private college; the site states no terms of use, only a privacy statement for visitors (checked 2026-11-05)
+- robots.txt (fih.fjellhaug.no, read 2026-11-05) disallows only Craft CMS's `/cpresources/`, `/vendor/`, `/.env` and `/cache/`
+
+---
+
 ### HiOF (Ostfold University College)
 
 - A plan sits in a faculty or department folder that DBH does not give, and a course no longer taught moves to `historiske-emner/` (`docs/institutions.md`); since 2026-10-21 `resolve_urls_hiof_batch()` reads the folder listings of the harvested years, where before only the teacher-education folders were built (11 of the 2026-10-17 pilot's 100 course-years had a page; 50 after the re-harvest of 2026-10-21). The selector lists fallbacks for the old and new page layouts

@@ -726,6 +726,29 @@ institution_configs <- list(
     section_inline_coursework = TRUE
   ),
 
+  fjellhaug = list(
+    code = "8234",
+    # a page per course code, /emne/{slug} or /en/subjects/{slug}, the slug
+    # sometimes with the title, found in the sitemaps
+    # (resolve_urls_fjellhaug_batch())
+    strategy = "url_discovery",
+    # The title, the facts box and the plan; not the breadcrumb, the menu of
+    # the plan's parts, and the mobile copy of the plan (accordions after it)
+    selector = "main#main",
+    exclude = paste("main#main nav[aria-label='breadcrumb'], main#main nav.sticky-nav,",
+                    "main#main section.content-stick-nav-mobile"),
+    # the title and the facts box (code, credits, campus, language, start,
+    # duration)
+    facts = "main#main section.hero",
+    # the page shows the plan in force, without a year
+    plan_years = "current",
+    # h4s ("Emnets innhold", "Læringsmål", "Vurdering og eksamen",
+    # "Pensumlitteratur"); bold paragraph sub-headings ("Arbeidskrav")
+    section_strategy = "html",
+    section_heading_selector = "h4",
+    section_subheading_selector = "p"
+  ),
+
   samas = list(
     code = "0217",
     strategy = "noop",

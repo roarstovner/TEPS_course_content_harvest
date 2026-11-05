@@ -7,6 +7,7 @@
 
 institution_labels <- c(
   fhs      = "FHS",
+  fjellhaug = "Fjellhaug",
   hiof     = "HiØ",
   himolde  = "HiMolde",
   hivolda  = "HVO",

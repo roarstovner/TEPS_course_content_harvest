@@ -238,6 +238,25 @@ every year DBH lists that version, which assumes the text did not change
 within a version (the site gives no date or history to check it). *Since:*
 2026-11-01.
 
+**Fjellhaug Internasjonale Høgskole (DBH code 8234) joins the frame, with the
+plan in force only.** One of the ten institutions surveyed for the all-courses
+frame, configured on 2026-11-05 as `fjellhaug`. A private college: its plans
+are harvested, as all institutions', and what is published is a separate
+decision (2026-10-16). *Why:* its plans are public HTML pages, one per course
+code, found in the site's subject sitemaps. *Consequence:* the page has no year
+and shows the plan in force, so Fjellhaug is harvested once in every academic
+year as UiO, MF, NMBU, NHH and KHiO, and its offerings before 2026/27 (DBH has
+Fjellhaug from 2004) have no plan; the pilot's gate numbers and audits wait for
+a DBH snapshot with 2026. The courses of the Danish campuses, which DBH codes
+with the suffix `-DK1` (København) or `-DK2` (Aarhus), take the page of the
+code without it, one plan for all campuses that names them in its facts box.
+*Rejected:* the programmes' study-plan PDFs per semester from 2007 on the
+site's archive page, which may hold the earlier course plans but are not read
+until a strategy for them exists (as for Steiner's PDFs); giving a
+campus-coded offering no plan, which would leave out two fifths of the
+offerings of 2025 although the site names those campuses on the course's
+page. *Since:* 2026-11-05.
+
 **VID vitenskapelige høgskole (DBH code 8208) joins the frame, from spring
 2024.** One of the ten institutions surveyed for the all-courses frame,
 configured on 2026-11-01 as `vid`. *Why:* its plans are public, one page per

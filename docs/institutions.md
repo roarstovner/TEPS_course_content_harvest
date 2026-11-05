@@ -206,6 +206,31 @@ emnet”, “Undervisning og læringsformer”, “Vurdering”), the coursework
 requirements under a paragraph sub-heading (“Arbeidskrav for emnet
 er:”). robots.txt has only comments.
 
+**Fjellhaug.** Fjellhaug Internasjonale Høgskole shows only the plan in
+force (`plan_years = "current"`), one page per course code on
+`fih.fjellhaug.no` (Craft CMS): `/emne/{slug}`, or for most courses
+taught in English only `/en/subjects/{slug}` (BMM, TMM). The slug is the
+code in lower case (`/emne/krle1001n`), for a few courses followed by
+the title (`/emne/btm2003n-markusevangeliet-10-ects-stp`); the bare code
+of such a course answers 404 (checked 2026-11-05).
+`resolve_urls_fjellhaug_batch()` (url_discovery) reads the subject
+sitemaps, Norwegian and English
+(`sitemaps-1-section-subjects-1-sitemap.xml`,
+`/en/sitemaps-1-section-subjects-2-sitemap.xml`; about 170 pages), and
+matches the code at the start of the slug; of a Norwegian and an English
+page of one code, the Norwegian. DBH gives the courses taught at the
+Danish campuses (Afdeling København, Aarhus) the suffix `-DK1` or
+`-DK2`, and some variants `-IS` or `-EVU` (`BTM2008-DK1`, `BMM1001-IS`):
+they take the page of the code without it, whose facts box names the
+campuses (“Aarhus, København”). The page holds the plan twice, for wide
+screens (`h4` headings next to a menu of the parts) and in accordions
+for phones; the harvest reads the first and leaves out the menu and the
+accordions. Earlier plans are only in PDFs: the programmes’ study plans
+per semester from 2007 and a course catalogue for autumn 2026, listed on
+`/om-fih/arkiv-studieplaner`, which the harvest does not read.
+robots.txt disallows only Craft CMS’s `/cpresources/`, `/vendor/`,
+`/.env` and `/cache/`.
+
 **VID.** VID vitenskapelige høgskole has one page per course,
 `https://www.vid.no/studier/emner/{slug}-{code}`, the slug made from the
 title and the code in lower case, a space as a hyphen
