@@ -103,6 +103,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Anonymizer: government-document guard misses 'Riksadvokaten utga høsten 2023 retningslinjer' (date removed; phs pilot audit 2026-11-03) (#487)
+- phs sections: attendance sentence in teaching_methods, formative feedback in assessment, workload in teaching_methods, portfolio design under teaching, intro paragraphs in learning outcomes (pilot audit 2026-11-03) (#486)
+- plan_gaps: 'no page' for spring offerings whose academic-year URL another offering fetched with an error (#402)
 - DBH student numbers per course and semester as the denominator: which course-years were actually offered (#488)
 - Hand data-2026-10-16 to the coding project (release_data) (#403)
 - FHS sections: prerequisites sub-headings (Emnets oppbygning, Arbeidsformer og læringsaktiviteter) and Opptakskrav kept as prerequisites (#492)
