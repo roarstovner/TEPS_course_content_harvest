@@ -173,9 +173,10 @@ read_harvest <- function(files, config, content = TRUE) {
     page <- rep_len(!is.na(rows[["html"]] %||% NA) | !is.na(rows[["extracted_text"]] %||% NA), nrow(rows))
     pick <- order(rows$course_id, !page, -seq_len(nrow(rows)))
     pick <- pick[!duplicated(rows$course_id[pick])]
+    dropped <- dplyr::select(rows[-pick, ], -dplyr::any_of("retry"))
     rows <- dplyr::select(rows[sort(pick), ], -dplyr::any_of("retry"))
     if (identical(config$url_year, "academic")) {
-      rows <- if (identical(config$strategy, "html_pdf_discovery")) .menu_year_pages(rows) else
+      rows <- if (identical(config$strategy, "html_pdf_discovery")) .menu_year_pages(rows, dropped) else
         .academic_year_pages(rows)
     }
     return(rows)
@@ -232,13 +233,19 @@ read_harvest <- function(files, config, content = TRUE) {
 # year, whichever offering it was fetched for, its own first. Harvests until
 # 2026-10-14 matched the menu on the calendar year, so a spring offering got
 # the next academic year's page; one whose page nobody fetched has no page,
-# at the course page's URL, until harvest_all(retry = TRUE) fetches it. The
-# course page (no year in its URL: years the menu lacks) stays with its
-# offering, unless a page of the offering's academic year was fetched.
-.menu_year_pages <- function(rows) {
+# at the course page's URL, until harvest_all(retry = TRUE) fetches it, or,
+# when the retry got an error (a 404), with that error at that URL: the
+# retry's row is in `dropped`, the rows read_harvest() left out for an earlier
+# row of the offering with a page (the wrong year's). The course page (no
+# year in its URL: years the menu lacks) stays with its offering, unless a
+# page of the offering's academic year was fetched.
+.menu_year_pages <- function(rows, dropped = rows[0, ]) {
   cols <- intersect(c("url", "html", "html_error", "html_success", "extracted_text"), names(rows))
-  m <- stringr::str_match(rows$url, "/Stine/EMNE/(\\d{4})/|[?&]semester=(\\d{4})")
-  year <- as.integer(dplyr::coalesce(m[, 2], m[, 3]))
+  url_year <- function(url) {
+    m <- stringr::str_match(url, "/Stine/EMNE/(\\d{4})/|[?&]semester=(\\d{4})")
+    as.integer(dplyr::coalesce(m[, 2], m[, 3]))
+  }
+  year <- url_year(rows$url)
   key <- paste(rows$course_code_raw, year)
   want <- paste(rows$course_code_raw, academic_start_year(rows$year, rows$semester_name))
   page <- !is.na(rows$html) | !is.na(rows$extracted_text)
@@ -249,6 +256,11 @@ read_harvest <- function(files, config, content = TRUE) {
   out <- rows
   out[, cols] <- rows[src, cols]
   none <- is.na(src)
+  error <- which(!is.na(url_year(dropped$url)) & !is.na(fetch_error_text(dropped$html_error %||% vector("list", nrow(dropped)))))
+  err <- error[match(want, paste(dropped$course_code_raw, url_year(dropped$url))[error])]
+  failed <- none & !is.na(err)
+  out[failed, cols] <- dropped[err[failed], cols]
+  none <- none & !failed
   if (any(none)) out$url[none] <- add_course_url(rows[none, ])$url
   out
 }

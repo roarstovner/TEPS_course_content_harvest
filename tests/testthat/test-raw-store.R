@@ -183,6 +183,27 @@ test_that("menu URLs (uis): an offering takes the page of its academic year", {
   expect_equal(c(s23$url, s23$extracted_text), c(page, NA))
 })
 
+test_that("menu URLs (uis): a retry's error at the academic year's URL is kept over an older page", {
+  pdf <- function(y) paste0("https://www6.uis.no/Stine/EMNE/", y, "/VÅR/Bokmål/MGL1_1.pdf")
+  raw <- withr::local_tempdir()
+  # spring 2021 got 2021/22's PDF (the calendar year) before 2026-10-14; the
+  # retry fetched 2020/21's and got a 404
+  first <- raw_rows(code = "MGL1-1", year = 2021L, semester = "Vår", inst = "uis")
+  first$url <- pdf(2021)
+  write_raw_run(first, "uis", "2026-10-01", raw)
+  again <- first
+  again$url <- pdf(2020)
+  again$html <- again$extracted_text <- NA_character_
+  again$html_error <- list("HTTP 404 Not Found.")
+  again$html_success <- FALSE
+  again$retry <- TRUE
+  write_raw_run(again, "uis", "2026-10-14", raw)
+  cfg <- list(name = "uis", plan_years = "url", url_year = "academic", strategy = "html_pdf_discovery")
+  out <- read_harvest(harvest_files("uis", raw), cfg)
+  expect_equal(nrow(out), 1)
+  expect_equal(c(out$url, out$html, fetch_error_text(out$html_error)), c(pdf(2020), NA, "HTTP 404 Not Found."))
+})
+
 test_that("nord: the academic year of the plan a page shows, as its autumn", {
   py <- get_institution_config("nord")$page_term
   expect_equal(py(c('<div class="h4 pre-title">Gjeldende emnebeskrivelse (sist oppdatert 2026/27)</div>',
