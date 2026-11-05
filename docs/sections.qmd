@@ -104,9 +104,13 @@ Fields for the `html` reader:
   accordion "Arbeidskrav og vurdering", which stay in assessment for
   `section_inline_coursework`, and "Emnets oppbygning:" with a colon, a
   module list in course content (MILM4106).
-- `section_headings`: sub-headings (whole `<p>` text, minus a trailing
-  colon, lower case) this institution maps on its own, looked up before the
-  heading map: fhs's "Opptakskrav" holds required courses (prerequisites,
+- `section_headings`: headings and sub-headings (whole text, minus a
+  trailing colon, lower case) this institution maps on its own, looked up
+  before the heading map. nord's "Adgangsregulering" mixes admission with the
+  courses the course requires; it maps to `.admission`, of which only the
+  sentences naming a prior course, credits or a passed part that are not
+  admission join prerequisites (`.admission_prerequisites()`), after the
+  page's own and without those it already says. fhs's "Opptakskrav" holds required courses (prerequisites,
   where the map drops it as admission), "Målgruppe" who may take the course
   (`.drop`), and the Etterretningsskolen's "Emnets oppbygning" (or
   "oppbygging") and
@@ -133,7 +137,15 @@ Other fields:
   attendance stated alone, from assessment, teaching methods and course
   content ("70 % obligatorisk deltakelse på seminarundervisning", "Det er
   obligatorisk deltakelse på samlingene.", "All undervisning er
-  obligatorisk."; `.attendance_sentence_regex`).
+  obligatorisk.", "Det er derfor obligatorisk oppmøte i undervisningen.",
+  "Attendance to lectures and seminars is mandatory.", "Fravær over 20 % …
+  medfører …"; `.attendance_sentence_regex`), but not a negation, attendance
+  in praksis or clinical studies, a sentence about the exam, "krever aktiv
+  deltakelse", or a list of teaching forms with attendance in it
+  ("Forelesninger, teoriøvinger og laboratoriearbeid med obligatorisk
+  tilstedeværelse."). One about
+  attendance "på disse" takes the sentence before it, which names what it
+  points to.
 - `exam_sessions`: the page lists the exam parts once per exam session
   (ntnu's exam tab: "Ordinær eksamen - Høst 2022", "Utsatt eksamen - …").
   The assessment section and the plan id keep the parts of one session, the

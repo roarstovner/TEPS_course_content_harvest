@@ -473,6 +473,10 @@ institution_configs <- list(
     page_term = function(html) semester_term(stringr::str_match(
       html, paste0("(?:Gjeldende emnebeskrivelse \\(sist oppdatert|Emnebeskrivelse for|",
                    "Current active course description \\(last updated|Course description for) (\\d{4})/"))[, 2], "Høst"),
+    # "Adgangsregulering" mixes admission ("Emnet er kun åpent for studenter
+    # på ...") with the courses the course requires ("Bestått 90 stp. i
+    # masterfaget og bestått FoU-oppgave."), which go to prerequisites
+    section_headings = c("adgangsregulering" = ".admission"),
     # Arbeidskrav/obligatorisk deltakelse are lines inside the vurdering
     # accordion, not a heading of their own.
     section_inline_coursework = TRUE

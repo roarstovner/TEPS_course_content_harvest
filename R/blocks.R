@@ -24,8 +24,8 @@
 # Readers, chosen by `section_strategy` in R/institution_config.R:
 #   html   — a DOM walk under `selector` without `exclude`; headings by
 #            `section_heading_selector` (default h2), sub-headings by
-#            `section_subheading_selector` (mapped by the heading map, or
-#            first by `section_headings`), sections of their own by
+#            `section_subheading_selector` (both mapped by the heading map,
+#            or first by `section_headings`), sections of their own by
 #            `section_scope`; text before the first heading goes to
 #            `section_initial` (default: dropped); an element in
 #            `section_untitled` is a section without a heading. With
@@ -219,7 +219,8 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
     tag <- tolower(xml2::xml_name(node))
     if (identical(mark, "heading")) {
       txt <- rvest::html_text2(node)
-      out$add("heading", txt, match_heading_to_section(txt), g = tag)
+      sec <- .exact_section(txt, cfg$sub_map, map = FALSE)
+      out$add("heading", txt, if (is.na(sec)) match_heading_to_section(txt) else sec, g = tag)
     } else if (identical(mark, "sub")) {
       .sub_blocks(node, out$add, cfg$sub_map)
     } else if (identical(mark, "field")) {
@@ -269,12 +270,13 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
 
 # The section a sub-heading's text names exactly (minus a trailing colon), or
 # NA. Exact, so ordinary sentences and list-like paragraphs never split a
-# section. `sub_map` (`section_headings`): the institution's own sub-headings,
-# looked up before the heading map.
-.exact_section <- function(x, sub_map = NULL) {
+# section. `sub_map` (`section_headings`): the institution's own headings and
+# sub-headings, looked up before the heading map (`map = FALSE`: only them).
+.exact_section <- function(x, sub_map = NULL, map = TRUE) {
   x <- tolower(stringr::str_remove(stringr::str_squish(x), "[:：]$"))
   if (is.na(x) || !nzchar(x) || nchar(x) > 80) return(NA_character_)
   if (x %in% names(sub_map)) return(unname(sub_map[x]))
+  if (!map) return(NA_character_)
   section_heading_patterns$section[match(x, section_heading_patterns$pattern)]
 }
 

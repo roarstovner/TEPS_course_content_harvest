@@ -1955,6 +1955,33 @@ lose such text), 28 teaching-methods sections gain it, and 35
 course-content sections lose the "Målgruppe" paragraph. `course_plan` and
 the plan ids do not change. *Since:* 2026-11-05.
 
+**Nord: the prerequisites in "Adgangsregulering" join prerequisites; its
+admission text stays out.** Nord's "Adgangsregulering" accordion, which the
+heading map did not know and dropped, mixes admission ("Emnet er kun åpent
+for studenter på studieprogrammet ...", "Det tas forbehold om ledig
+kapasitet på emnet.", "Søker må ha fullført en bachelorgrad ...") with the
+courses the course requires ("Bestått 90 stp. i masterfaget og bestått
+FoU-oppgave.", "Gjennomført SAM1001 Samfunnsfag 1A eller tilsvarende."). Nord
+maps it itself (`section_headings`, which now also maps an institution's
+headings, not only its sub-headings) to a block of which only the sentences
+that name a prior course, credits or a passed part and are not admission
+(nor a quota, priority, prior-learning or applicants' rule, nor the pointer
+"Eventuelle forkunnskapskrav til emnet må være oppfylt.") join
+prerequisites, after the page's own "Forkunnskapskrav" and without those it
+already says; an "Opptakskrav:" label goes from a sentence that names both
+("Generell studiekompetanse samt ... bestått eksamen i emnet NO106L"), which
+stays whole by the spec. *Why:* the sections audit of 2026-11-05 found
+prior-course requirements lost from prerequisites. *Rejected:* mapping the
+block to prerequisites whole (the admission drop leaves admission text in
+8,563 of the 13,412 pages with the block: "Emnet er kun åpent for studenter
+...", "Ta kontakt med studieveileder."); adding "Adgangsregulering" to the
+shared heading map (only Nord was measured). *Consequence:* of the 13,412
+Nord pages with the block, 1,054 gain prerequisite text (524 plans; in about
+231 the page's own prerequisites were empty). Some admission rules written
+as credits stay, as elsewhere ("For opptak stilles det krav om 30
+studiepoeng ... i pedagogikk."). `course_plan` and the plan ids do not
+change. *Since:* 2026-11-05.
+
 **PHS: attendance and feedback on coursework go to coursework requirements,
 the workload out of the sections, the portfolio's final assessment to
 assessment, and the subject text before the outcomes to course content.**
@@ -1996,6 +2023,43 @@ about 1,230 plans at other institutions (counted on the plan sections of
 2026-11-05): NTNU 528, UiA 203, HiVolda 124, UiT 112, Nord 87, HVL 49, USN
 48, HiØF 33, NLA 18, INN 10, OsloMet 9, UiO 7, FHS 4, UiB 1. `course_plan`
 and the plan ids do not change. *Since:* 2026-11-05.
+
+*Widened, the evening of 2026-11-05:* the sections audit of that day found
+attendance requirements these forms miss still in teaching methods and
+assessment. The sentence for attendance stated alone now also reads, in a
+sentence of up to 250 characters, an obligation right before the attendance
+("Det er derfor obligatorisk oppmøte i undervisningen.", "Det vil derfor
+være krav om obligatorisk deltakelse ...", "80% obligatorisk oppmøte.", "Det
+er pliktig fremmøte ..."), attendance or teaching that is compulsory
+("Attendance to lectures and seminars is mandatory.", "Undervisningen er
+obligatorisk, og krever minimum 80 % oppmøte.", "Deler av undervisningen er
+obligatorisk."), and a rule for absence beyond a limit ("Dersom fravær
+overstiger 20 prosent, mister studenten retten ..."); "kreves" or "krav"
+with a condition is a gate ("Det kreves 75 % oppmøte for å kunne fremstille
+seg til eksamen."), and an attendance sentence "på disse" takes the
+sentence before it, which names what it points to. They stay when they hold
+a negation ("Det vil ikke være noe obligatorisk oppmøte"), optional or
+recommended attendance, praksis, clinical studies or patients, the exam
+("Eksamen blir gjennomført i grupper ... der deltaking ... er obligatorisk",
+"obligatorisk frammøte under hele eksamen"), the learning outcomes, "krever aktiv deltakelse" (a description of
+the teaching), or a list of teaching forms with attendance in it
+("Forelesninger, teoriøvinger og laboratoriearbeid med obligatorisk
+tilstedeværelse.") that does not open with the requirement. *Rejected:*
+any sentence with an obligation word and an attendance word (moves "krever
+aktiv deltakelse", "krev deltaking og medansvar", "Det kreves påslått
+webkamera ... for deltakelse");
+splitting such list sentences (no sentence boundary to cut at); leaving
+"på disse" sentences behind (a requirement missing from coursework).
+*Consequence* (counted on the plan sections of 2026-11-05, all frames):
+the sections of 8,597 plans change (NTNU 2,629, UiT 1,647, UiA 1,095, Nord
+902, HVL 570, USN 504, HiVolda 429, OsloMet 285, HiØF 143, INN 132, UiB 111,
+NLA 103, VID 16, UiS 8, FHS 7, NIH 4, NMH 4, PHS 3, HiMolde 2, UiO 2),
+coursework requirements gain 10,005 sentences, and 1,091 plans gain a
+coursework section (UiT 607, NTNU 248, Nord 147). Of the 2,885 distinct
+attendance sentences the audit's crude count left outside coursework, 1,850
+now move; most that stay are descriptions ("krever aktiv deltakelse"),
+clinical studies, the exam or lists of teaching forms. `course_plan` and
+the plan ids do not change.
 
 **Placeholders are dropped** ("Ingen", "-", "Se fagplanen.", reading-list
 pointers; since 2026-10-01). From 2026-10-29 the list also holds HVL's "_"

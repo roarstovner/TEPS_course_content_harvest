@@ -303,6 +303,13 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   # ".drop" collects text under headings that end a section but are not
   # course content (admission, exam logistics; see section_heading_map.R).
   out <- out[out$section != ".drop", , drop = FALSE]
+  adm <- out$section == ".admission"
+  if (any(adm)) {
+    out$raw_text[adm] <- .admission_prerequisites(out$raw_text[adm],
+                                                  paste(out$raw_text[out$section == "prerequisites"], collapse = "\n"))
+    out$section[adm] <- "prerequisites"
+    out <- .merge_sections(out[order(adm), , drop = FALSE])   # after the page's own
+  }
   if (nrow(out) == 0) return(out)
   exam <- out$section %in% c("assessment", "coursework_requirements")
   out$raw_text[exam] <- .strip_section_noise(out$raw_text[exam], institution)
@@ -403,6 +410,32 @@ extract_sections <- function(config, html, extracted_text, course_id) {
     grepl(.no_prerequisite_regex, s, perl = TRUE)
 }
 
+# The prerequisites in a block that mixes them with admission (nord's
+# "Adgangsregulering", `section_headings` ".admission"): its sentences that
+# name a prior course, credits or a passed part ("Bestått 90 stp. i
+# masterfaget og bestått FoU-oppgave.", "Gjennomført SAM1001 Samfunnsfag 1A
+# eller tilsvarende.") and are not admission ("Emnet er kun åpent for
+# studenter på ...", "Søker må ha fullført en bachelorgrad ...", "Det tas
+# forbehold om ledig kapasitet", a quota, a pointer "Eventuelle
+# forkunnskapskrav til emnet må være oppfylt."), minus those the prerequisites already say. A
+# sentence that names both stays, without an "Opptakskrav:" label ("Opptak
+# til studieprogrammet og bestått Pedagogikk og elevkunnskap 1A",
+# "Opptakskrav: Generell studiekompetanse samt ... bestått eksamen i emnet
+# NO106L ..."). They follow the page's own prerequisites.
+.admission_prerequisites <- function(text, prerequisites = "") {
+  had <- stringr::str_squish(prerequisites)
+  lines <- vapply(.unwrap_lines(stringr::str_split_1(text, "\n")), function(l) {
+    s <- sub("(?i)^(\\s*)opptakskrav\\s*:\\s*", "\\1", stringr::str_split_1(l, .sentence_end), perl = TRUE)
+    k <- grepl(.real_prerequisite_regex, s, perl = TRUE) & !.is_admission_sentence(s) &
+      !grepl(paste0("(*UCP)(?i)^\\W*(?:søkere?|applicants?)\\b|realkompetanse|studieplass|prioriter|kvote|",
+                    "upper secondary|^\\W*(?:i tillegg må |eventuelle )?forkunnskapskrav\\w* (?:til emnet )?(?:må )?(?:være|vera) oppfylt"),
+             s, perl = TRUE) &
+      !vapply(stringr::str_squish(s), function(x) !nzchar(x) || grepl(x, had, fixed = TRUE), logical(1))
+    trimws(paste(s[k], collapse = ""))
+  }, character(1), USE.NAMES = FALSE)
+  paste(lines[nzchar(lines)], collapse = "\n")
+}
+
 # Where a sentence ends: after . ! ? before a capital, not after an
 # abbreviation ("Jf. Opptakskrav ...").
 .sentence_end <- paste0("(?<=[.!?])(?<!\\b(?i:jf|jfr|jamfør|ca|nr|kap|bl\\.a|f\\.eks|evt|osv|ph\\.d)\\.)",
@@ -495,11 +528,12 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # "Arbeidskrav inngår ikke i karakteren, men må ... være godkjent ... for at
 # emnet skal være bestått.", "The assignments have to be approved ... before
 # students are allowed to sit the final exam." It names a gate (approval,
-# arbeidskrav, attendance, obligatory work) and a condition (must ... before
-# or in order to sit the exam, to hand in or present the work that is
-# assessed, to be assessed or graded, access to the exam, passing the
-# course): "For å kunne fremstille prosjektoppgaven til vurdering må
-# deltakerne ha fått godkjent ...", "Arbeidskrav må være godkjent for å få
+# arbeidskrav, attendance, obligatory work) and a condition (must, or
+# "kreves"/"krav", ... before or in order to sit the exam, to hand in or
+# present the work that is assessed, to be assessed or graded, access to the
+# exam, passing the course): "For å kunne fremstille prosjektoppgaven til vurdering må
+# deltakerne ha fått godkjent ...", "Det kreves 75 % oppmøte for å kunne
+# fremstille seg til eksamen.", "Arbeidskrav må være godkjent for å få
 # endelig karakter i emnet.", "... før ein kan få oppgåva vurdert.", "...
 # before the student can submit the semester paper." Not a row of an exam
 # table (tabs), nor a sentence about the exam's own parts ("Begge
@@ -516,7 +550,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "(?!\\W*(?:må|skal|must)\\b)(?!\\W*(?!(?:for (?:å|at)|in order|before|to)\\b)(?:\\w+\\W+){0,4}?(?:\\w*eksam|\\w*exam|delvurdering|",
   "del(?:er|ene|ar|ane)\\b|parts?\\b|mappe|portfolio)\\w*\\W+(?:\\w+\\W+){0,6}?(?:må|skal|must|ha(?:ve|s) to)\\b)",
   "(?=.*(?:\\b(?:må|skal)\\b.{0,150}\\b(?:før|innan|innen)\\b.{0,60}(?:eksam|vurder|sluttprøv)|",
-  "\\b(?:må|skal)\\b.{0,150}\\bfor (?:å|at|(?:fram|frem)stilling til)\\b.{0,80}(?:eksam|vurder|\\b(?:inn)?lever|framstill|fremstill|karakter)|",
+  "\\b(?:må|skal|(?:kreves|krevs|krav)(?![^\\t]*praksis))\\b.{0,150}\\bfor (?:å|at|(?:fram|frem)stilling til)\\b.{0,80}(?:eksam|vurder|\\b(?:inn)?lever|framstill|fremstill|karakter)|",
   "\\bfor (?:å|at)\\b.{0,60}\\b(?:gå opp|framstill|fremstill|avlegg|lever|vurder|få (?:\\w+ ){0,2}vurder)\\w*.{0,60},? (?:må|skal)\\b|",
   "\\b(?:må|skal)\\b.{0,150}\\bfor (?:å|at) (?:bestå\\b|(?:emnet|faget) skal (?:være|vere|kunne) bestått|",
   "få (?:emnet|faget) bestått)|",
@@ -528,20 +562,63 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # Compulsory attendance stated alone, without a condition: "Deltakelse på 80
 # % av undervisning.", "70 % obligatorisk deltakelse på seminarundervisning",
 # "Oppmøte undervisning: minimum 80%." (nord, uit, ntnu). The spec puts it in
-# coursework requirements. Not attendance in praksis, which is how a practice
-# course is assessed ("For å bestå praksis må studenten ... ha 100 %
-# oppmøte"). With "Det er" before it, an obligation says it is required
-# ("Det er obligatorisk deltakelse på samlingene.", "Det er krav om 90 %
-# deltakelse på samlingene.", phs); so does "All undervisning er
-# obligatorisk".
+# coursework requirements. Not attendance in praksis or clinical studies,
+# which is how a practice course is assessed ("For å bestå praksis må
+# studenten ... ha 100 % oppmøte"). With "Det er" before it, an obligation
+# says it is required ("Det er obligatorisk deltakelse på samlingene.", "Det
+# er krav om 90 % deltakelse på samlingene.", phs); so does "All
+# undervisning er obligatorisk". Also, in a sentence of up to 250 characters
+# with no negation ("Det vil ikke være noe obligatorisk oppmøte", "frivillig"),
+# no exam ("obligatorisk frammøte under hele eksamen", "Eksamen blir
+# gjennomført i grupper ... der deltaking ... er obligatorisk"; but
+# "Eksamenskrav:" and "Forskrift om ... studium og eksamen") and
+# not about the learning outcomes: an obligation right before the attendance
+# ("Det er derfor obligatorisk oppmøte i undervisningen.", "Det vil derfor
+# være krav om obligatorisk deltakelse ...", "Det kreves 80 % tilstedeværelse.";
+# not "krever aktiv deltakelse", which describes the teaching); attendance or
+# teaching that is compulsory ("Attendance to lectures and seminars is
+# mandatory.", "Undervisningen er obligatorisk, og krever ...", "Deler av
+# undervisningen er obligatorisk."; not "dersom emnet er obligatorisk i
+# studieplanen"); a rule for absence beyond a limit ("Fravær over 20 % ...
+# medfører at ...", "Dersom fravær overstiger 20 prosent, ..."). Not a list
+# of teaching forms with attendance in it ("Forelesninger, teoriøvinger og
+# laboratoriearbeid med obligatorisk tilstedeværelse.", "Undervisning og
+# læring skjer gjennom selvstudier, forelesninger, obligatorisk deltakelse i
+# seminargrupper, ..."), which describes the teaching, unless it opens with
+# the requirement ("Det kreves minimum 80 % deltakelse på ekskursjoner,
+# laboratoriearbeid og ...").
+.teaching_form <- paste0("(?:forelesning|førelesing|lectures?|seminar|øving|øvelse|laboratori|lab\\b|gruppearbeid|",
+                         "selvstudi|sjølvstudi|veiledning|rettleiing|workshops?|verksted|feltarbeid|feltundervisning|",
+                         "ekskursjon|presentasjon|diskusjon|demonstrasjon|prosjekt|foredrag|undervisning|samling|",
+                         "kollokvi|basisgrupp|ferdighetstrening|practical work|group work)")
+.attendance_word <- "(?:\\w*(?:deltak|deltag|oppmøt|frammøt|fremmøt|tilstedevær|nærvær)\\w*|attendance|participation)"
 .attendance_sentence_regex <- paste0(
-  "(*UCP)(?i)^\\s*(?=[^\\t]{0,120}$)(?!.*praksis)(?:",
+  "(*UCP)(?i)^\\s*(?!.*(?:praksis|praktiske studier|placement|internship|professional training|klini[sk]|clinical|",
+  "pasient|læringsutbytt|learning outcome))(?:(?=[^\\t]{0,120}$)(?:",
   "alle? (?:undervisning|samling|seminar|forelesning)\\w* er obligatorisk\\w*\\b[^.]{0,80}\\.?\\s*$|",
   "(?:det er (?=[^.]*(?:obligatorisk|krav))|(?=.*(?:\\d ?(?:%|prosent)|\\balle?\\b)))",
   "(?:(?:obligatorisk|mandatory|compulsory|krav (?:om|til)|minimum|minst|min\\.)\\s+)*",
   "(?:(?:\\d+|hundre) ?(?:%|prosent)\\s+(?:\\w+\\s+){0,2}?)?(?:å delta|deltakelse|deltaking|deltagelse|",
   "oppmøte|frammøte|fremmøte|tilstedeværelse|nærvær|attendance|participation)\\b[^.]{0,80}\\b(?:undervisning|",
-  "seminar|forelesning|samling|teaching|lecture|class|kurs|workshop|øving|lab)\\w*[^.]{0,40}\\.?\\s*$)")
+  "seminar|forelesning|samling|teaching|lecture|class|kurs|workshop|øving|lab)\\w*[^.]{0,40}\\.?\\s*$)|",
+  "(?=[^\\t]{0,250}$)(?:",
+  # a rule for absence beyond a limit, also with the exam as its sanction
+  "\\W*(?:(?:ved|dersom|hvis|if)\\s+)?(?:\\w+\\s+){0,2}?(?:fravær|absence)\\w*\\b[^.]{0,30}\\b",
+  "(?:over|utover|overstig\\w*|overskrid\\w*|mer enn|more than|exceed\\w*|på mellom|beyond)\\b|",
+  "(?!.*(?:\\b(?:ikke|ikkje|not|no|ingen|uten|utan|valgfri\\w*|frivillig\\w*|optional|",
+  "uavhengig|anbefal\\w*|recommended)\\b|(?<!studium og )\\b\\w*(?:eksam|exam)(?!enskrav|ple)|",
+  "(?<!\\bi )(?<!\\bpå )\\b(?:emnet|faget|kurset|the course|the subject) (?:er|is) (?:\\w+ )?(?:obligatorisk|compulsory|mandatory)))",
+  "(?!(?!\\W*(?:det|obligatorisk|krav|mandatory|compulsory|alle?|\\d+ ?%|eksamenskrav|arbeidskrav|for å|i tillegg er det|",
+  .attendance_word, ")\\b).*", .teaching_form, "\\w*(?:\\s*\\([^)]*\\))?,\\s*(?:\\w+\\s+){0,3}?", .teaching_form, ")(?:",
+  ".*\\b(?:(?:obligatorisk\\w*|pliktig\\w*|mandatory|compulsory|krav|kreves|krevs|required)",
+  "(?:\\s+(?:om|til|derfor|minimum|minst|min\\.|full|obligatorisk\\w*|mandatory|compulsory|\\d+ ?(?:%|prosent)|at least))*",
+  "\\s+", .attendance_word, "|",
+  # "krever" with a share or "obligatorisk", or before presence: not "krev
+  # deltaking og medansvar"
+  "(?:krever|krev|requires?)(?:\\s+derfor)?(?:(?:\\s+(?:minimum|minst|min\\.|obligatorisk\\w*|\\d+ ?(?:%|prosent)|at least))+",
+  "\\s+", .attendance_word, "|\\s+(?:oppmøt|frammøt|fremmøt|tilstedevær|nærvær|attendance)\\w*))\\b|",
+  ".*(?:", .attendance_word, "|undervisning\\w*|samling\\w*|seminar\\w*|forelesning\\w*|lectures?|seminars?|classes|teaching)",
+  "\\b[^.]{0,100}?\\b(?:er|is|are|blir|vil være)\\s+(?:\\w+\\s+)?(?:obligatorisk\\w*|mandatory|compulsory|påkrevd|required)\\b)))")
 # A sentence that a gate label opens inside a paragraph (uit 2008: "...
 # supervisor. Mandatory course work: Attendance is mandatory in all seminars
 # ..."); not "Arbeidskrav: 20 timer", a workload line (uis).
@@ -550,10 +627,12 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "activit(?:y|ies)|requirements?)|obligatoriske? (?:arbeidskrav|aktivitet(?:er)?))\\s*:\\s*\\S")
 # A gate sentence whose subject points back ("Begge disse kreves godkjent
 # ...", "Den må være godkjent ...", "These must be approved ..."); not a
-# determiner ("Dei obligatoriske arbeidskrava må ...", which names its gate).
+# determiner ("Dei obligatoriske arbeidskrava må ...", which names its gate);
+# or one about attendance "på disse" ("Det er krav om 80 % oppmøte på disse
+# seminarene.", which names the seminars in the sentence before).
 .gate_backref_regex <- paste0(
   "(*UCP)(?i)^\\W*(?:begge disse|disse|desse|dette|den|these|this|it|they)\\W+",
-  "(?:må|skal|kreves|krevst|must|ha(?:ve|s) to|is required)\\b")
+  "(?:må|skal|kreves|krevst|must|ha(?:ve|s) to|is required)\\b|\\b(?:på|i|til|to|on|in|at) (?:disse|desse|these)\\b")
 
 # A hard-wrapped sentence (usn's text) is read as one line: a line that
 # starts in lower case continues one that ends in neither a full stop nor a

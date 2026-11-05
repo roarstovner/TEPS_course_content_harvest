@@ -1504,4 +1504,51 @@ test_that("phs: attendance, feedback on the arbeidskrav, workload, the portfolio
   for (a in c("Det er ikke obligatorisk deltakelse på samlingene.",
               "Studiearbeidet omfatter gruppearbeid og deltakelse i undervisning."))
     expect_no_match(a, .attendance_sentence_regex, perl = TRUE)
+  # the other forms: an obligation before the attendance, attendance or
+  # teaching that is compulsory, a rule for absence
+  att <- c("Det er derfor obligatorisk oppmøte i undervisningen.",
+           "Det vil derfor være krav om obligatorisk deltakelse i undervisningen, inkludert oppstartskurs.",
+           "Undervisningen er obligatorisk, og krever minimum 80 % oppmøte.", "80% obligatorisk oppmøte.",
+           "Attendance to lectures and seminars is mandatory.", "Deler av undervisningen er obligatorisk.",
+           "Det er pliktig fremmøte på alle forelesninger og gruppearbeid.",
+           paste("Det er obligatorisk oppmøte til all timeplanfesta aktivitet, jamfør Forskrift om opptak,",
+                 "studium og eksamen ved Høgskulen i Volda §4-6."),
+           "Dersom fravær overstiger 20 prosent, mister studenten retten til å fremstille seg til eksamen.")
+  for (a in att) expect_match(a, .attendance_sentence_regex, perl = TRUE)
+  for (a in c("Det vil ikke være noe obligatorisk oppmøte gjennom semestret.",
+              "Undervisningen krever aktiv deltakelse fra studentenes side.",
+              "Undervisninga baserer seg på studentaktive arbeidsmåtar som krev deltaking og medansvar.",
+              "Det er obligatorisk tilstedeværelse i kliniske studier.",
+              "Det er obligatorisk frammøte under hele eksamen for alle studentene.",
+              "Gis tidlig i undervisningsfritt semester, dersom emnet er obligatorisk i studieplanen.",
+              "Given early in teaching free semester, if the subject is compulsory in the study plan.",
+              "Forelesninger, teoriøvinger og laboratoriearbeid med obligatorisk tilstedeværelse.",
+              "Det kreves minimum 90% oppmøte i praksis for å få praksisemnet vurdert til bestått."))
+    expect_false(grepl(.attendance_sentence_regex, a, perl = TRUE) || grepl(.gate_sentence_regex, a, perl = TRUE))
+  # with "kreves" and a condition it is a gate
+  expect_match("Det kreves 75 % oppmøte for å kunne fremstille seg til eksamen.", .gate_sentence_regex, perl = TRUE)
+  # attendance "på disse" takes the sentence that names them
+  out <- tibble::tibble(section = "teaching_methods", raw_text = paste(
+    "Emnet har forelesninger.", "Det blir arrangert to seminarer.", "Det er krav om 80 % oppmøte på disse seminarene."))
+  out <- .split_inline_coursework(out, "heading", "teaching_methods")
+  expect_equal(out$raw_text[out$section == "teaching_methods"], "Emnet har forelesninger.")
+  expect_match(out$raw_text[out$section == "coursework_requirements"], "^Det blir arrangert to seminarer\\. Det er krav")
+})
+
+test_that("nord: Adgangsregulering gives its prerequisites, not its admission text", {
+  adm <- paste0("Opptak til Grunnskolelærerutdanningen 5 - 10 og masterfaget matematikk. ",
+                "Bestått 90 stp. i masterfaget og bestått FoU-oppgave.\n",
+                "Emnet er kun åpent for studenter på studieprogrammet MBA i strategi og ledelse.\n",
+                "Det tas forbehold om ledig kapasitet på emnet. Søker må ha fullført en bachelorgrad på 180 studiepoeng.\n",
+                "Eventuelle forkunnskapskrav til emnet må være oppfylt.\n",
+                "Opptakskrav: Generell studiekompetanse samt bestått eksamen i emnet NO106L.")
+  expect_equal(.admission_prerequisites(adm),
+               "Bestått 90 stp. i masterfaget og bestått FoU-oppgave.\nGenerell studiekompetanse samt bestått eksamen i emnet NO106L.")
+  expect_equal(.admission_prerequisites(adm, "Bestått 90 stp. i masterfaget og bestått FoU-oppgave."),
+               "Generell studiekompetanse samt bestått eksamen i emnet NO106L.")
+  out <- .clean_sections(tibble::tibble(section = c(".admission", "prerequisites"),
+                                        raw_text = c(adm, "Kurset bygger på Matematikk 1, 2 og 3")))
+  expect_equal(out$section, "prerequisites")
+  expect_match(out$raw_text, "^Kurset bygger på Matematikk 1, 2 og 3\\n\\nBestått 90 stp\\.")
+  expect_equal(get_institution_config("nord")$section_headings[["adgangsregulering"]], ".admission")
 })
