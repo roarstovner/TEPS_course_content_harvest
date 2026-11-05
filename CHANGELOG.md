@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- FHS sections: prerequisites sub-headings (Emnets oppbygning, Arbeidsformer og læringsaktiviteter) and Opptakskrav kept as prerequisites (#492)
 - Anonymizer: role word inside a title-case run ("Multi Sensor Data Fusion") removes title words as a name (#491)
 - Retire the 2026-10-16 release: frozen_check raw-only, docs wording (#490)
 - hiof: no_url for ~60% of 2024-2025 offerings, also outside the known limits (#470)
