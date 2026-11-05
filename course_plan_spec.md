@@ -12,6 +12,11 @@ follow the spec, it says so under "Known deviations".
 
 ## Four kinds of text
 
+Getting the personal data out and getting the plan text into the right
+section are equally important for the quality of the data: the plans are
+public pages, so anonymization is an improvement of the data, not a legal
+requirement (2026-11-05; `methods.md` "Anonymization").
+
 Every part of a plan's page is one of these:
 
 1. **Personal data** are out of everything published, `course_plan` and

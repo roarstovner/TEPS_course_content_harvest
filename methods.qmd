@@ -971,7 +971,10 @@ administrative dates and years ("Opprettet 2020", "2023/2024"); content years
 ("etter 1945") are kept. A check on every build (`privacy_check`) looks for
 e-mails, phone numbers, IP addresses and staff-name layouts in the published
 files. *Why:* the plans are public, but the published data should not carry
-personal data. *Since:* 2026-09 to 2026-10; UiA lists
+personal data. Removing the names is an improvement of the data, not a legal
+requirement (the plans are public pages): it weighs as much as, not more
+than, correct sections, and an error in either is a data-quality error of
+the same rank (decided 2026-11-05). *Since:* 2026-09 to 2026-10; UiA lists
 of several course coordinators and USN approval lines from 2026-10-06;
 names after a staff role anywhere in a line ("… avklares med faglærer
 <name>", "Ta kontakt med <name> eller <name>"), HVL campus contact lines and

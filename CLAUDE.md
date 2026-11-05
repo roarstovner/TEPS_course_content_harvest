@@ -66,7 +66,8 @@ the gitignored `CLAUDE.local.md`.
   are cut from raw text, so `partition_sections()` must keep anonymizing.
   Only anonymized text goes in `data/processed/` (checked by target
   `privacy_check` and `test-anonymize.R`). See `docs/data-files.md` "Data
-  Files: Published and Internal".
+  Files: Published and Internal". Anonymization improves the data but is not
+  legally required: weigh a section error as heavily as a name left in.
 - `data/raw/` is the raw harvest and append-only Parquet,
   `{inst}/{year}/{run}.parquet`: only `harvest_all()` writes it (a new run,
   `write_raw_run()`), and never the same file twice (`docs/rebuilding.md` "Raw Store

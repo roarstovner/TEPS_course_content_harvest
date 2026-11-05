@@ -78,7 +78,9 @@ first comes when coding starts)</td>
 by a name (“faglærer Name”, “Emneansvarlige er: Name (sosionom)”, a role
 heading over a name line) and warns, and
 `tests/testthat/test-anonymize.R` fails, on any hit. The repository is
-public.
+public. The plans are public pages too: anonymization improves the data
+but is not legally required, and correct sections matter as much
+(`methods.md` “Anonymization”).
 
 <table>
 <colgroup>

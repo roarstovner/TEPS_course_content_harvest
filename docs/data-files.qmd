@@ -35,7 +35,9 @@ e-mail addresses, phone numbers, "Name (Role)" lines, "Name, dekan"
 signatures, and role labels followed by a name ("faglærer Name",
 "Emneansvarlige er: Name (sosionom)", a role heading over a name line) and
 warns, and `tests/testthat/test-anonymize.R` fails, on any hit.
-The repository is public.
+The repository is public. The plans are public pages too: anonymization
+improves the data but is not legally required, and correct sections matter
+as much (`methods.md` "Anonymization").
 
 | File | Contents | Personal data | Status |
 |---|---|---|---|
