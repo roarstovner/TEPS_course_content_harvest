@@ -1,0 +1,38 @@
+{
+  "check": "sections",
+  "institution": "phs",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 14,
+  "n_suspects_reviewed": 9,
+  "overall_assessment": "Section extraction is generally sound across all 14 sampled courses: the nine suspects have false-positive heading-leak flags (instructor learning outcomes, formative progression criteria, and introductory references to learning outcomes), and the observed PHS attendance, arbeidskrav-feedback, workload-removal and learning-outcomes-introduction fixes hold; no sampled portfolio sentence permits checking that fix. Two high-severity residual classification errors occur in random controls: an absence sanction remains in teaching_methods and progression-approval gates remain in assessment; no moved attendance sentence is duplicated in its source section. All 13 attendance appendix items were judged correct and 0 wrong, including the gathering-attendance requirement in the context mentioning practice.",
+  "findings": [
+    {
+      "target": "teaching_methods",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "phs_ETF-MISHAN-1_2024_autumn_1"
+      ],
+      "evidence": "Dersom fravær overstiger 20 prosent, mister studenten retten til å fremstille seg til eksamen.",
+      "description": "In one of 14 sampled courses (a random control), the 80-percent attendance requirement moves correctly to coursework_requirements, but its immediately following absence sanction remains in teaching_methods. The spec explicitly assigns rules for absence from compulsory activities to coursework_requirements; splitting the rule leaves the exam-access condition in the wrong section. Appendix items 1 and 7 themselves are valid moves, but their context exposes this incomplete transfer.",
+      "root_cause_hypothesis": "R/extract_sections.R: .split_inline_coursework() evaluates sentences separately. .attendance_sentence_regex matches the participation sentence, while .gate_sentence_regex does not recognize a conditional loss of exam eligibility expressed with fravær and mister retten.",
+      "suggested_fix": "Extend the deterministic gate handling to move explicit absence sanctions such as this sentence to coursework_requirements, together with the attendance rule they qualify. Match conditional excessive absence plus loss of exam eligibility, preserving the complete sentence and removing it from the source section.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "phs_HUNDVÅPEN-1_2024_autumn_1"
+      ],
+      "evidence": "Studenten/ekvipasjen må tilfredsstille uttalte krav til progresjon for å få fortsette i utdanningen.",
+      "description": "In one of 14 sampled courses (a random control), assessment retains requirements for satisfactory progression, compulsory level checks between gatherings, and documentation of a passed check to gain access to the next gathering. These are approval gates during the course, distinct from the final two-day written home examination. They belong in coursework_requirements rather than being presented as final graded assessment; the continuous-assessment wording alone is not the basis for this finding.",
+      "root_cause_hypothesis": "R/extract_sections.R: the PHS .sentence_moves rules only cover specified arbeidskrav-feedback wording, and the comment explicitly leaves dog-handler continuous assessment in assessment. The shared gate recognizer does not cover progression approval required to continue the programme or attend the next gathering, so explicit gates within that retained block survive.",
+      "suggested_fix": "Split the dog-handler assessment block at the explicit progression and level-check conditions. Move the progression requirement, mandatory checks and their approval/documentation conditions to coursework_requirements, using bounded PHS paragraph patterns; retain the final home-exam design and any independently justified graded continuous assessment in assessment.",
+      "confidence": "high"
+    }
+  ]
+}

@@ -1,0 +1,146 @@
+{
+  "check": "sections",
+  "institution": "nord",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 20,
+  "n_suspects_reviewed": 14,
+  "overall_assessment": "Reviewed all 20 sampled courses (14 suspects and 6 random controls) and all 18 attendance appendix items: 18 correct moves and 0 wrong moves; no moved attendance sentence was observed duplicated in a sampled source section. Most boilerplate flags are false alarms on valid repeated teaching/attendance rules, and the empty flag on KRLE 1a 5-10 is false, whereas the SOS5003 duplication flags are real and the REL1004 leak flag exposes residual compulsory-excursion text. Section errors remain serious: missing or contaminated prerequisites, mixed assessment/coursework clauses, and teaching/assessment text assigned by source headings affect suspects and random controls; full learning-outcome groups generally survive, and packet truncation markers are not extraction defects.",
+  "findings": [
+    {
+      "target": "cross_section",
+      "error_type": "duplicate",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "nord_SOS5003-1_2021_autumn_1",
+        "nord_SOS5003-1_2020_autumn_2"
+      ],
+      "evidence": "Arbeidskrav og hjemmeeksamen (3 dager)",
+      "description": "Both SOS5003 offerings emit the entire mixed line in assessment and coursework_requirements. The duplication flags are real: the graded home examination is consequently also represented as mandatory coursework, contrary to the one-section-per-meaning rule.",
+      "root_cause_hypothesis": "R/extract_sections.R explicitly copies lines matching .coursework_and_exam_regex through the both branch of .split_inline_coursework().",
+      "suggested_fix": "Split this deterministic mixed construction at the conjunction: retain Arbeidskrav in coursework_requirements and hjemmeeksamen (3 dager) in assessment, preserving source wording and assigning each component once.",
+      "confidence": "high"
+    },
+    {
+      "target": "prerequisites",
+      "error_type": "truncated",
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": [
+        "nord_MAT5006-1_2022_spring_2",
+        "nord_SAM5003-1_2022_spring_2",
+        "nord_ENG5003-1_2022_spring_2"
+      ],
+      "evidence": "Bestått 90 stp. i masterfaget og bestått FoU-oppgave.",
+      "description": "Adgangsregulering contains substantive prior-course requirements that are discarded. MAT5006, MAT5003, SAM5003 and NAT5003 lose the passed 90-credit and FoU requirements despite retaining other prerequisites; ENG5003 loses its only prerequisite section. SPD5002 spring also loses explicit prior courses and the passed FoU requirement from this block. Repetition under Forkunnskapskrav makes the same unmapped heading harmless in several other courses.",
+      "root_cause_hypothesis": "R/section_heading_map.R leaves Adgangsregulering unmapped, so sectionize() never passes its substantive prerequisite text to the prerequisite cleaner.",
+      "suggested_fix": "Read Nord Adgangsregulering blocks as prerequisite candidates, strip programme-admission sentences, retain prior-course/credit/FoU requirements, and deduplicate requirements repeated under Forkunnskapskrav.",
+      "confidence": "high"
+    },
+    {
+      "target": "prerequisites",
+      "error_type": "missing_section",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "nord_SPD5002-1_2022_spring_2"
+      ],
+      "evidence": "Opptak til studieprogrammet, samt fulgt emnene som fører til en masteroppgave i spesialpedagogikk.",
+      "description": "The mapped Forkunnskapskrav block states both admission and completion of preceding courses, but no prerequisites row survives. The specification requires a sentence naming both admission and substantive prior study to remain whole. This is an additional loss beyond the unmapped Adgangsregulering block.",
+      "root_cause_hypothesis": "In R/extract_sections.R, .strip_admission_lines() recognizes Opptak til studieprogrammet, while .real_prerequisite_regex does not recognize fulgt emnene, causing the entire mixed sentence to be removed.",
+      "suggested_fix": "Add bounded Norwegian prior-study constructions such as fulgt emnene and gjennomført emnene to the real-prerequisite guard so mixed admission/prior-study sentences survive intact.",
+      "confidence": "high"
+    },
+    {
+      "target": "prerequisites",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": [
+        "nord_SOS5003-1_2021_autumn_1",
+        "nord_PRA5015-1_2024_autumn_3",
+        "nord_PRA1036-1_2022_autumn_2"
+      ],
+      "evidence": "Opptak på master i spesialsykepleie, ellers ingen forkunnskapskrav",
+      "description": "Prerequisites retains admission or programme-placement text without subject-matter entry requirements: both SOS5003 offerings retain a bachelor-degree/grade requirement for programme admission; PRA5015 retains admission plus an explicit absence of other prerequisites; PRA1036 retains only that the course is an elective in semester five. The real recommended prior course in PRA5015 should remain. These unflagged errors also occur in random controls.",
+      "root_cause_hypothesis": "The prerequisite cleaner relies on admission opening patterns and broad positive tokens. forkunnskapskrav protects a negated requirement in PRA5015; relevant bachelorgrad and valgemne-for-studenter wording are not recognized as admission-only content.",
+      "suggested_fix": "Add narrowly scoped admission-only patterns for these Nord constructions, including ellers ingen forkunnskapskrav; remove those sentences while preserving separately stated prior knowledge/courses and genuinely mixed substantive requirements.",
+      "confidence": "high"
+    },
+    {
+      "target": "coursework_requirements",
+      "error_type": "truncated",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "nord_REL1004-1_2019_autumn_2"
+      ],
+      "evidence": "Ekskursjonar er ein del av den obligatoriske deltakinga på studiet.",
+      "description": "Compulsory excursions remain in assessment, followed by Desse kan leggast utanom timeplanlagt undervisning. The teaching section also retains the related obligatory-excursion timing statement. This is required participation rather than graded assessment, and should join the correctly extracted OD attendance requirement. The leak flag partly identifies a real residual separation problem; general prose about how arbeidskrav support learning is not itself a missing gate.",
+      "root_cause_hypothesis": "The shared attendance regex expects an attendance term near the beginning and a bounded teaching-activity vocabulary; it misses the Nynorsk construction Ekskursjonar er ein del av den obligatoriske deltakinga. Inline coursework labels do not catch it either.",
+      "suggested_fix": "Add a bounded pattern for excursions described as part of obligatory participation, moving the requirement and its immediately referring Desse sentence together into coursework_requirements. Handle the corresponding teaching-section sentence without creating duplicated requirement text.",
+      "confidence": "high"
+    },
+    {
+      "target": "coursework_requirements",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "nord_REL1004-1_2019_autumn_2"
+      ],
+      "evidence": "Fleire arbeidsoppgåver er definerte som arbeidskrav som må vere godkjende før ein får lov til å gå opp til eksamen, andre går inn i mappevurderinga til eksamen (eksamensmappe).",
+      "description": "The entire mixed sentence is moved into coursework_requirements, including the clause about work included in the examination portfolio. That latter clause describes graded assessment. The gate part is correctly moved, but treating the full sentence as a gate silently misclassifies the examination work.",
+      "root_cause_hypothesis": ".split_inline_coursework() moves a whole sentence matching .gate_sentence_regex; the internal comma and andre clause are not a sentence boundary, and the grade-weight guard does not identify a portfolio contribution without a numeric weight.",
+      "suggested_fix": "Recognize the bounded contrast construction arbeidskrav ... , andre går inn i mappevurderinga and split at the clause boundary, assigning the gate clause to coursework_requirements and the examination-portfolio clause to assessment verbatim.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": [
+        "nord_PRA5015-1_2024_autumn_3",
+        "nord_MFL390-1_2021_autumn_1"
+      ],
+      "evidence": "PR - Eksamen: Studenten utøver intensivsykepleiefaget og blir vurdert underveis i oppnåelse av læringsutbyttene.",
+      "description": "Random controls contain practice-assessment design in teaching_methods: PRA5015 retains the PR examination and failure-warning procedure, and MFL390 retains RUTINER VED TVIL OM BESTÅTT PRAKSISOPPLÆRING with its pass/fail decision process. These describe how the practice examination is assessed. Practice attendance in these assessed placements, including 90% and 100% requirements, should remain associated with practice assessment rather than being recast as coursework gates.",
+      "root_cause_hypothesis": "Nord Praksis and learning-activity headings map whole blocks to teaching_methods; .split_inline_coursework() only relocates assessment text matching its narrow design-line patterns, missing PR - Eksamen and the practice-failure heading.",
+      "suggested_fix": "Recognize PR - Eksamen and RUTINER VED TVIL OM BESTÅTT PRAKSISOPPLÆRING as assessment sub-blocks, move their assessment-design text to assessment, and retain descriptions of supervision and practice organization in teaching_methods. Keep assessed-placement attendance with its assessment context.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "nord_MAT5006-1_2022_spring_2",
+        "nord_SOS5003-1_2020_autumn_2",
+        "nord_PRA1036-1_2022_autumn_2"
+      ],
+      "evidence": "Studenten mottar veiledning underveis i arbeidet med masteroppgaven. Masteroppgaven kan skrives individuelt eller i par.",
+      "description": "Course_content repeatedly holds teaching arrangements and assessment design merely because they occur in Beskrivelse av emnet or the introductory blurb. All eleven sampled master-thesis offerings include supervision and individual/pair thesis arrangements there; SOS5003 includes lecture/seminar and feedback arrangements, and PRA1036 includes placement organization and supervision-contract arrangements. Under the codebook these belong in teaching_methods or, for individual/pair examination submission, assessment.",
+      "root_cause_hypothesis": "sectionize() maps description and introductory blocks wholesale to course_content. Existing post-processing moves coursework gates and prerequisite labels but does not separate these recurring teaching/assessment constructions.",
+      "suggested_fix": "Add bounded Nord sentence moves for the repeated supervision and thesis-submission constructions, sending supervision to teaching_methods and individual/pair assessed-thesis rules to assessment. Split the corresponding explicit placement-organization and teaching-arrangement sentences from descriptive blocks using source-preserving sentence boundaries.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "wrong_content",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "nord_RET1009-1_2024_spring_2",
+        "nord_MFL390-1_2021_autumn_1",
+        "nord_PO111S-2_2025_autumn_3"
+      ],
+      "evidence": "Første forelesning: mandag 19. februar 2024",
+      "description": "Unflagged controls retain excluded logistics: RET1009 teaching_methods contains dated first and final lectures; MFL390 assessment includes the Ny/Utsatt eksamen block about attempts, waiting and registration; PO111S assessment retains Eksamenssted følger undervisningssted. These are scheduling, resit or location information rather than teaching methods or assessment design. Exam language, duration, aids and AI rules are valid and should remain.",
+      "root_cause_hypothesis": "R/extract_sections.R has no Nord entry in .logistics_sentences; its Nord .section_noise patterns target AI pointers and generic exam links but miss these dated teaching, resit and exam-location constructions.",
+      "suggested_fix": "Add Nord-specific logistics removal for dated Første forelesning and Avsluttende Q&A-forelesning lines, the standalone Eksamenssted sentence, and the Ny/Utsatt eksamen administrative block, stopping at the next substantive heading. Preserve actual examination design and practice failure criteria.",
+      "confidence": "high"
+    }
+  ]
+}

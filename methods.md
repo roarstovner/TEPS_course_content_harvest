@@ -237,6 +237,26 @@ to every year DBH lists that version, which assumes the text did not
 change within a version (the site gives no date or history to check it).
 *Since:* 2026-11-01.
 
+**Fjellhaug Internasjonale Høgskole (DBH code 8234) joins the frame,
+with the plan in force only.** One of the ten institutions surveyed for
+the all-courses frame, configured on 2026-11-05 as `fjellhaug`. A
+private college: its plans are harvested, as all institutions’, and what
+is published is a separate decision (2026-10-16). *Why:* its plans are
+public HTML pages, one per course code, found in the site’s subject
+sitemaps. *Consequence:* the page has no year and shows the plan in
+force, so Fjellhaug is harvested once in every academic year as UiO, MF,
+NMBU, NHH and KHiO, and its offerings before 2026/27 (DBH has Fjellhaug
+from 2004) have no plan; the pilot’s gate numbers and audits wait for a
+DBH snapshot with 2026. The courses of the Danish campuses, which DBH
+codes with the suffix `-DK1` (København) or `-DK2` (Aarhus), take the
+page of the code without it, one plan for all campuses that names them
+in its facts box. *Rejected:* the programmes’ study-plan PDFs per
+semester from 2007 on the site’s archive page, which may hold the
+earlier course plans but are not read until a strategy for them exists
+(as for Steiner’s PDFs); giving a campus-coded offering no plan, which
+would leave out two fifths of the offerings of 2025 although the site
+names those campuses on the course’s page. *Since:* 2026-11-05.
+
 **VID vitenskapelige høgskole (DBH code 8208) joins the frame, from
 spring 2024.** One of the ten institutions surveyed for the all-courses
 frame, configured on 2026-11-01 as `vid`. *Why:* its plans are public,
@@ -996,13 +1016,17 @@ and administrative dates and years (“Opprettet 2020”, “2023/2024”);
 content years (“etter 1945”) are kept. A check on every build
 (`privacy_check`) looks for e-mails, phone numbers, IP addresses and
 staff-name layouts in the published files. *Why:* the plans are public,
-but the published data should not carry personal data. *Since:* 2026-09
-to 2026-10; UiA lists of several course coordinators and USN approval
-lines from 2026-10-06; names after a staff role anywhere in a line (“…
-avklares med faglærer <name>”, “Ta kontakt med <name> eller <name>”),
-HVL campus contact lines and UiT’s 2008-2011 timetable block (teachers,
-rooms, first lectures) from 2026-10-07, after the anonymization audit of
-all institutions found them in 16 plans.
+but the published data should not carry personal data. Removing the
+names is an improvement of the data, not a legal requirement (the plans
+are public pages): it weighs as much as, not more than, correct
+sections, and an error in either is a data-quality error of the same
+rank (decided 2026-11-05). *Since:* 2026-09 to 2026-10; UiA lists of
+several course coordinators and USN approval lines from 2026-10-06;
+names after a staff role anywhere in a line (“… avklares med faglærer
+<name>”, “Ta kontakt med <name> eller <name>”), HVL campus contact lines
+and UiT’s 2008-2011 timetable block (teachers, rooms, first lectures)
+from 2026-10-07, after the anonymization audit of all institutions found
+them in 16 plans.
 
 **Coordinator blocks and role headings go with their names.** OsloMet’s
 “Emneansvarlig” block, the last part of the page before the
@@ -1037,30 +1061,31 @@ on the same line: laws and regulations, white papers and propositions
 (“Meld. St. 21 (2016–2017)”, “Prop. 57 L (2022–2023)”), NOUs, curricula
 and framework plans, national guidelines, conventions, and what the
 Storting, ministries and directorates publish (“Ny opplæringslov fra
-01.08.24”, “fastsatt av Kunnskapsdepartementet 7. juni 2016”). *Why:*
-these dates say which document is cited; they are content, not
-administration (decided 2026-10-08). *Rejected:* removing session years
-with the other academic-year ranges, which turned “Meld. St. 21
-(2016–2017)” into “Meld. St. 21” (2026-09). *Consequence:* 185 plans
-keep such dates; an access date next to a government link also stays
-(“\[Lesedato: …\]” after a udir.no address). At the same time
-administrative dates in more forms go: em-dash year ranges (“Studieår:
-2019 — 2020”, NLA), UiS version stamps, approval and update dates in
-words (“godkjent i studieutvalget 14. november 2016”) or with a
-two-digit year (“Godkjent 22.03.23”), and semester codes (“H23”,
-“H2025-V2026”): 1,683 plans lose one; 21 plans that differed only by
-such a date merge with another. *Since:* 2026-10-08. The 80 characters
-are counted from the start of the date, not its end, so “nasjonale
-retningslinjer … av 1. september 2016, revidert 17. oktober 2018” keeps
-its revision date and “høsten” over a line break stays; faculty
-regulations count as such documents (“utfyllende regler … av
-01.08.2015”). Dates in references stay too: a dd.mm.yyyy date after a
-comma, which in these pages is always a reading-list entry (“Razsviet,
-4.11.1923”, “SSB, 07.06.2023,”), and ISO dates (“2001-02-01”, read as
-the academic year “2001-02” before). *Why:* a reference’s date
-identifies the work cited (audit rubric, 2026-10-11). *Consequence:* 138
-plans change text (usn 54, oslomet 39, uis 31, uit 9, ntnu 5); none
-merge or split. *Since:* 2026-10-12.
+01.08.24”, “fastsatt av Kunnskapsdepartementet 7. juni 2016”), and from
+2026-11-05 the Director of Public Prosecutions (“Riksadvokaten utga
+høsten 2023 retningslinjer …”, PHS; 1 plan). *Why:* these dates say
+which document is cited; they are content, not administration (decided
+2026-10-08). *Rejected:* removing session years with the other
+academic-year ranges, which turned “Meld. St. 21 (2016–2017)” into
+“Meld. St. 21” (2026-09). *Consequence:* 185 plans keep such dates; an
+access date next to a government link also stays (“\[Lesedato: …\]”
+after a udir.no address). At the same time administrative dates in more
+forms go: em-dash year ranges (“Studieår: 2019 — 2020”, NLA), UiS
+version stamps, approval and update dates in words (“godkjent i
+studieutvalget 14. november 2016”) or with a two-digit year (“Godkjent
+22.03.23”), and semester codes (“H23”, “H2025-V2026”): 1,683 plans lose
+one; 21 plans that differed only by such a date merge with another.
+*Since:* 2026-10-08. The 80 characters are counted from the start of the
+date, not its end, so “nasjonale retningslinjer … av 1. september 2016,
+revidert 17. oktober 2018” keeps its revision date and “høsten” over a
+line break stays; faculty regulations count as such documents
+(“utfyllende regler … av 01.08.2015”). Dates in references stay too: a
+dd.mm.yyyy date after a comma, which in these pages is always a
+reading-list entry (“Razsviet, 4.11.1923”, “SSB, 07.06.2023,”), and ISO
+dates (“2001-02-01”, read as the academic year “2001-02” before). *Why:*
+a reference’s date identifies the work cited (audit rubric, 2026-10-11).
+*Consequence:* 138 plans change text (usn 54, oslomet 39, uis 31, uit 9,
+ntnu 5); none merge or split. *Since:* 2026-10-12.
 
 **OsloMet’s “;” glue is a space.** In 2021–2022 OsloMet’s pages put a
 “;” where a space or line break belongs (“En;viktig del;av”, “1;000
@@ -1952,6 +1977,72 @@ Admission rules written as requirements without a marker stay
 (“Bachelorgrad eller tilsvarende utdanning av minst 180 studiepoengs
 omfang …”, UiA). `course_plan` and the plan ids do not change. *Since:*
 2026-10-29.
+
+**FHS: “Opptakskrav” is prerequisites, “Målgruppe” is admission.** FHS’s
+course pages give their sub-headings as plain paragraphs, which an
+institution can map itself (`section_headings`) before the heading map.
+At FHS “Opptakskrav” holds the courses a course requires (“Emnet
+forutsetter bestått eksamen i … SPR1720 og SPR1721”), so it opens
+prerequisites; “Målgruppe” says who may take the course and goes, like
+other admission text; “Emnets oppbygning” (how the course is run:
+semester, hours of guided activity) and “Arbeidsformer og
+læringsaktiviteter” open teaching methods. *Why:* the sections audit of
+the full FHS harvest (2026-11-05) found the heading map’s `.drop` for
+“Opptakskrav” losing these prerequisites, and the unread sub-headings
+leaving the organisation and teaching text of the Etterretningsskolen’s
+plans in prerequisites. *Rejected:* mapping “Opptakskrav” to
+prerequisites everywhere (at UiT, OsloMet, UiA, NMBU and UiO it heads
+admission text, on some 19,000 pages); adding the other labels to the
+shared heading map (no other institution was measured for them).
+*Consequence:* of FHS’s 839 plans, 40 have prerequisites (35 before: 11
+gain “Opptakskrav”, 6 lose a section that held only organisation text,
+14 lose such text), 28 teaching-methods sections gain it, and 35
+course-content sections lose the “Målgruppe” paragraph. `course_plan`
+and the plan ids do not change. *Since:* 2026-11-05.
+
+**PHS: attendance and feedback on coursework go to coursework
+requirements, the workload out of the sections, the portfolio’s final
+assessment to assessment, and the subject text before the outcomes to
+course content.** PHS writes compulsory attendance under “Organisering
+og læringsaktiviteter” as “Det er (krav om) (100 %) obligatorisk
+deltakelse på samlingene.” or “All undervisning er obligatorisk”; the
+sentence for attendance stated alone now also reads these forms, at
+every institution (“Det er” with “obligatorisk” or “krav”, or “All(e)
+undervisning/samlinger … er obligatorisk”; “Det er ikke obligatorisk
+deltakelse …” stays). PHS’s feedback on the arbeidskrav, written under
+“Vurdering” before the exam (“Studentene blir vurdert underveis gjennom
+arbeidskrav, og får tilbakemeldinger på disse …”, “Noen av
+tilbakemeldingene vil gjennomføres som en utviklingssamtale”), moves to
+coursework requirements; “Deler av mappen vil være gjenstand for en
+avsluttende vurdering.” moves from teaching methods to assessment; the
+workload sentence (“Omfanget på videreutdanningen er anslått til ca. 420
+timer.”) goes from the sections; and the instructor courses’ paragraphs
+under “Læringsutbytte” before “Kunnskap” that describe the subject
+(“Pedagogikk i instruktørutdanningen vektlegger …”, “Fagdidaktikken
+binder faget og pedagogikken sammen.”) go to course content, while a
+lead-in (“Etter gjennomført emne har studenten følgende
+læringsutbytte:”) stays. *Why:* the pilot sections audit of PHS
+(2026-11-03) found them in the wrong section; by the spec, coursework
+requirements hold compulsory attendance, assessment the final assessment
+design, course content the subject, and workload belongs to no section.
+*Rejected:* moving the dog-handler courses’ continuous assessment
+(“Studenten/ekvipasjen blir vurdert gjennom hele utdanningen …”, the
+assessment those courses have) out of assessment; dropping the hours of
+the gatherings (“Samlingene utgjør inntil 320 timer …”), which say how
+the course is taught; dropping PHS’s credit-recognition text in course
+content (“ikke aktuelt med godskrivinger eller fritak”, 4 plans) by
+sentence, which would leave HUNDBOMBE’s list of creditable parts without
+its lead; moving the PHS feedback, portfolio and intro rules to every
+institution (measured only at PHS). *Consequence:* of PHS’s 142 plans
+(2026-11-05 build), 80 lose an attendance sentence from teaching
+methods, 89 the workload, 56 the feedback from assessment, 5 the
+portfolio sentence from teaching methods, and 9 the subject paragraphs
+from learning outcomes; 4 plans gain a coursework section (124 to 128).
+The attendance forms move sentences in about 1,230 plans at other
+institutions (counted on the plan sections of 2026-11-05): NTNU 528, UiA
+203, HiVolda 124, UiT 112, Nord 87, HVL 49, USN 48, HiØF 33, NLA 18, INN
+10, OsloMet 9, UiO 7, FHS 4, UiB 1. `course_plan` and the plan ids do
+not change. *Since:* 2026-11-05.
 
 **Placeholders are dropped** (“Ingen”, “-”, “Se fagplanen.”,
 reading-list pointers; since 2026-10-01). From 2026-10-29 the list also

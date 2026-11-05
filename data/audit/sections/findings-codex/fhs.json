@@ -4,83 +4,48 @@
   "model": "gpt-6.1-sol",
   "n_courses_reviewed": 18,
   "n_suspects_reviewed": 14,
-  "overall_assessment": "All 18 packet entries (14 suspects and four random controls) were read in full as displayed; packet-builder truncation limits comparison of omitted passages and is not an extraction defect. Main sections and all displayed learning-outcome groups are generally preserved, but prerequisite loss, mixed sections, admission contamination and assessment logistics occur beyond the flagged sample, including in random controls. The empty flags mostly identify genuine placeholders, whereas Selvvalgt, the CBU1503 teaching-method leak flags and the admission-worded prior-course requirements are false alarms; the OPG3701 merge and duplicate flags are genuine.",
+  "overall_assessment": "Reviewed all 18 sampled courses (14 suspects, four random controls) in full as displayed, plus both attendance appendix items: 2 correct and 0 wrong (covering all 5 moved sentences/plans); packet-builder truncation is not an extractor defect. The FHS prerequisite and teaching heading fixes hold in the displayed mappings, but high-severity semantic misclassification remains, including missed mandatory attendance, coursework/assessment confusion, mixed blocks and duplicated teaching text; random controls show additional unflagged defects. Empty flags mostly identify real placeholders, while Selvvalgt, both CBU1503 teaching leak flags and admission-worded passed-course requirements are false alarms; no duplication of moved attendance was demonstrated.",
   "findings": [
     {
-      "target": "prerequisites",
+      "target": "coursework_requirements",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "fhs_FHS8004-1_2022_autumn_1"
+      ],
+      "evidence": "Det er pliktig fremmøte på alle forelesninger og gruppearbeid.",
+      "description": "A compulsory-attendance requirement remains in course_content under Andre praktiske opplysninger rather than coursework_requirements. The widened attendance rule still misses this unambiguous obligation. Neither appendix move is wrong, and the sampled output provides no demonstrated duplicate of moved attendance text.",
+      "root_cause_hypothesis": "R/extract_sections.R .attendance_sentence_regex requires obligatorisk/krav after Det er and does not recognise pliktig.",
+      "suggested_fix": "Extend the bounded attendance matcher to Det er pliktig fremmøte, retaining safeguards for negation, optional participation and assessed practice. Move the complete sentence once and remove it from course_content.",
+      "confidence": "high"
+    },
+    {
+      "target": "coursework_requirements",
       "error_type": "missing_section",
       "severity": "high",
       "prevalence": "rare",
       "example_course_ids": [
-        "fhs_SPR2721-1_2023_spring_1"
+        "fhs_ING3511-1_2021_autumn_1"
       ],
-      "evidence": "Emnet forutsetter bestått eksamen i russiske grunnemner; SPR1720 og SPR1721.",
-      "description": "The random SPR2721 control explicitly requires two completed Russian courses, but emits no prerequisites row. Its Opptakskrav heading maps to .drop, discarding subject-matter prerequisites along with admission text. This loss is not flagged by the pre-pass.",
-      "root_cause_hypothesis": "R/section_heading_map.R maps opptakskrav unconditionally to .drop; the FHS reader does not distinguish course prerequisites within this heading from programme admission.",
-      "suggested_fix": "For FHS Opptakskrav blocks, retain sentences explicitly requiring prior knowledge or passed named courses as prerequisites, and discard only programme-admission and study-right statements.",
+      "evidence": "En obligatorisk veiledningsseanse i løpet av semesteret.",
+      "description": "The random Cybermakt control has a compulsory supervision session embedded in assessment but no coursework_requirements row. This mandatory activity is distinct from the grade-bearing report and presentation/hearing; the pre-pass does not flag it.",
+      "root_cause_hypothesis": "The inline coursework splitter recognises specific gate and attendance forms but misses compulsory supervision without an explicit exam-access clause.",
+      "suggested_fix": "Recognise a bounded obligatory-supervision sentence as coursework_requirements and remove it from assessment while retaining all graded report and presentation specifications.",
       "confidence": "high"
     },
     {
-      "target": "prerequisites",
-      "error_type": "missing_section",
-      "severity": "high",
-      "prevalence": "common",
-      "example_course_ids": [
-        "fhs_ING3330-1_2025_spring_2",
-        "fhs_ING3511-1_2021_autumn_1",
-        "fhs_CBU1503-1_2025_spring_1"
-      ],
-      "evidence": "Emnet bygger på ING2320 og ING2321.",
-      "description": "The two engineering random controls state named prior courses in course_content but emit no prerequisites. Both CBU1503 offerings likewise leave the stated prior CBU1508 training in course_content. These prior-knowledge statements should be available under prerequisites; the pre-pass cannot detect their absence.",
-      "root_cause_hypothesis": "R/extract_sections.R .split_inline_prerequisites() recognises prerequisite labels, but not unlabelled Emnet bygger på / The course is based on statements naming prior courses.",
-      "suggested_fix": "Add guarded sentence patterns for explicit builds-on statements followed by course codes, moving the prior-knowledge statement into prerequisites without moving descriptions of courses for which this course provides a foundation.",
-      "confidence": "high"
-    },
-    {
-      "target": "prerequisites",
-      "error_type": "merged_sections",
-      "severity": "high",
-      "prevalence": "occasional",
-      "example_course_ids": [
-        "fhs_OPG3701-1_2023_spring_1",
-        "fhs_SPR2710-1_2023_spring_1"
-      ],
-      "evidence": "Arbeidsformer og læringsaktiviteter\nStudentens styring av egen tid samt evt. etablering og gjennomføring av gruppearbeid, vil være påvirkende for læringsutbyttet.",
-      "description": "OPG3701 prerequisites absorb the thesis organisation and actual teaching/supervision paragraphs after the genuine prior-course requirement, confirming leak->teaching_methods. SPR2710 prerequisites similarly absorb the paragraph describing six thematic blocks and their materials. The leak->.drop flags themselves are false alarms: sentences beginning Opptak til emnet that require passed courses are valid prerequisites, including AR301 and SPR2711.",
-      "root_cause_hypothesis": "OPG3701 Emnets oppbygning and Arbeidsformer og læringsaktiviteter are absent from the headings read. Once Forkunnskapskrav opens prerequisites, sectionize() carries subsequent mixed paragraphs forward; SPR2710 has no intervening explicit heading at all.",
-      "suggested_fix": "Make the FHS reader recognise the missing organisation/teaching labels as boundaries, mapping the teaching block to teaching_methods. Add a bounded rule for SPR2710-style Emnet er strukturert paragraphs so topic/material descriptions return to course_content instead of continuing prerequisites.",
-      "confidence": "high"
-    },
-    {
-      "target": "course_content",
+      "target": "assessment",
       "error_type": "wrong_content",
       "severity": "high",
-      "prevalence": "common",
+      "prevalence": "rare",
       "example_course_ids": [
-        "fhs_LED3201-1_2022_spring_1",
-        "fhs_LOG3105-1_2025_autumn_2",
-        "fhs_INGOF2230-1_2025_spring_2"
+        "fhs_FHS8004-1_2022_autumn_1"
       ],
-      "evidence": "Praktisk organisering og arbeidsformer\nPedagogisk innretning\nDe teoretiske delene av emnet anvender egenstudier, gruppeoppgaver, forelesninger, foredrag og seminarundervisning.",
-      "description": "Whole mixed introduction and supplemental blocks are treated as subject matter. LED3201 course_content contains a lengthy teaching block also present in teaching_methods, confirming its leak flag. INGOF2230 retains the explicit seminar/group-work/feedback paragraph in course_content. LOG3105 supplemental text describes the assessed proposal deliverable. ING2318 and random ING3330 also retain teaching instructions in course_content; AR301 retains workload information there. In contrast, both CBU1503 leak->course_content flags are false alarms: their practical training descriptions properly belong in teaching_methods.",
-      "root_cause_hypothesis": "The FHS initial block defaults to course_content and Utfyllende informasjon om emnet maps unconditionally to course_content. Paragraphs about teaching, assessment and workload inherit these container labels regardless of meaning.",
-      "suggested_fix": "Route FHS supplemental and initial paragraphs by explicit bounded labels and lead-ins: Praktisk organisering og arbeidsformer and Pedagogisk innretning to teaching_methods, assessed-proposal instructions to assessment, and workload-only information to no section. Retain topic descriptions as course_content and avoid copying the same teaching passage into two sections.",
-      "confidence": "high"
-    },
-    {
-      "target": "course_content",
-      "error_type": "wrong_content",
-      "severity": "medium",
-      "prevalence": "common",
-      "example_course_ids": [
-        "fhs_OPG3701-1_2023_spring_1",
-        "fhs_AR301-1_2023_spring_1",
-        "fhs_SPR2711-1_2023_spring_1"
-      ],
-      "evidence": "Målgruppe\nEmnet tilbys studenter ved Etterretningsskolen med fordypning i arabisk. Emnet er ikke tilgjengelig for emnestudenter.",
-      "description": "Four offerings (OPG3701, AR301, SPR2710 and SPR2711) include target-group/programme-admission restrictions in course_content. These statements concern who may take the course, rather than its subject matter, and should remain only in the full plan. They are unflagged.",
-      "root_cause_hypothesis": "Målgruppe is unmapped or absent from the heading list, so its admission paragraph is appended to the initial course_content block.",
-      "suggested_fix": "Recognise the FHS Målgruppe label and terminate course_content there. Map admission-only target-group blocks to .drop, stopping at the next actual section label; retain Forkunnskapskrav sentences about passed courses.",
+      "evidence": "Det skal leveres inn to selvstendige skriftlige arbeidskrav (ca. 1000 ord) som reflekterer sentrale deler av pensum.",
+      "description": "Assessment retains the two written coursework assignments and the explanation that they do not count toward the exam grade. Only their approval-gate sentence moved to coursework_requirements, leaving that section without the number and scope of the requirements. The final home exam is the actual graded assessment.",
+      "root_cause_hypothesis": "R/extract_sections.R .split_inline_coursework() recognises the later approval-gate sentence but does not attach the earlier prose defining its arbeidskrav; Pedagogisk oppbygging is unmapped within the assessment accordion.",
+      "suggested_fix": "When an assessment paragraph explicitly defines arbeidskrav and states that they do not count toward the grade, move the defining paragraph and its explanatory continuation together with the approval-gate sentence, stopping at the final-exam description.",
       "confidence": "high"
     },
     {
@@ -92,23 +57,71 @@
         "fhs_OPG3302-1_2022_autumn_1"
       ],
       "evidence": "Oppgavens omfang for 3 kadetter som skriver sammen, skal være på maksimum 12000 ord.",
-      "description": "OPG3302 coursework_requirements mix genuine preparatory proposal requirements with the final graded thesis submission and its 12000/8000-word limits. The assessment row contains only the brief form, duration, scale and weight. Final deliverable design belongs in assessment even when listed under Arbeidskrav; this error is invisible to its empty reading-list flag.",
-      "root_cause_hypothesis": "The mapped Arbeidskrav subheading assigns all following paragraphs to coursework_requirements, and post-processing does not move final-thesis specifications back into assessment.",
-      "suggested_fix": "Within FHS thesis Arbeidskrav blocks, move the final written deliverable and its word-limit paragraphs into assessment. Keep proposal approval and other explicitly preparatory requirements in coursework_requirements; do not reclassify the whole block.",
+      "description": "The coursework section contains final graded bachelor-thesis specifications, including the written deliverable and 12000/8000-word limits. These belong in assessment, whose emitted row only gives form, duration, scale and weight. Preparatory proposal approvals are legitimate coursework requirements. Its empty reading-list flag is a false alarm: Selvvalgt specifies self-selected literature.",
+      "root_cause_hypothesis": "The Arbeidskrav subheading maps the entire mixed block to coursework_requirements, without distinguishing the final assessed thesis from preliminary approvals.",
+      "suggested_fix": "Split this FHS thesis block at Arbeidet skal presenteres skriftlig i form av en oppgave and route the final thesis and word-limit paragraphs to assessment; keep preparatory proposal and other non-graded requirements in coursework_requirements.",
       "confidence": "high"
     },
     {
       "target": "cross_section",
-      "error_type": "duplicate",
-      "severity": "medium",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": [
+        "fhs_LED3201-1_2022_spring_1",
+        "fhs_INGOF2230-1_2025_spring_2",
+        "fhs_NAV2320-1_2025_spring_2"
+      ],
+      "evidence": "Praktisk organisering og arbeidsformer\nPedagogisk innretning\nDe teoretiske delene av emnet anvender egenstudier, gruppeoppgaver, forelesninger, foredrag og seminarundervisning.",
+      "description": "Container headings still override meaning. LED3201 course_content repeats a substantial teaching passage also emitted in teaching_methods; its leak flag is real. INGOF2230 retains seminar/group-work/feedback instructions in course_content, also a real leak. ING2318 supplemental teaching instructions and LOG3105 final proposal specifications likewise land in course_content. Conversely, the random NAV2320 control puts its numbered subject-matter list in teaching_methods. Both CBU1503 leak flags are false alarms: their practical training descriptions are valid teaching methods. Displayed learning-outcome groups remain intact.",
+      "root_cause_hypothesis": "Initial FHS blocks default to course_content and Utfyllende informasjon om emnet maps wholesale to course_content in R/section_heading_map.R. The heading fixes do not resolve mixed paragraphs or repeated source passages.",
+      "suggested_fix": "Recognise Praktisk organisering og arbeidsformer and explicit teaching lead-ins as teaching boundaries; route supplemental final-deliverable specifications to assessment and NAV2320 subject lists to course_content. Assign each passage once, deduplicating repeated teaching text after routing rather than copying it across sections.",
+      "confidence": "high"
+    },
+    {
+      "target": "prerequisites",
+      "error_type": "missing_section",
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": [
+        "fhs_ING3511-1_2021_autumn_1",
+        "fhs_CBU1503-1_2025_spring_1",
+        "fhs_AR301-1_2023_spring_1"
+      ],
+      "evidence": "The course is based on ING1501 The Cyber ​​Engineer's profession and ING3508 Military information infrastructure",
+      "description": "Unlabelled statements of named prior-course knowledge remain in course_content. Random ING3511 emits no prerequisites, both CBU1503 offerings leave prior CBU1508 training there, and AR301 leaves its fuller list of prior courses in course_content while prerequisites only names AR206. The heading-map fix correctly recovers displayed Forkunnskapskrav and the random SPR2721 Opptakskrav, but does not address inline prerequisites.",
+      "root_cause_hypothesis": "R/extract_sections.R .split_inline_prerequisites() handles prerequisite labels rather than unlabelled builds-on statements followed by course codes.",
+      "suggested_fix": "Add guarded sentence patterns for Emnet bygger på/bygger videre på ferdighetene and The course is based on when they explicitly name prior courses. Route the complete prior-knowledge sentence to prerequisites; exclude statements about later courses for which this course provides a foundation.",
+      "confidence": "high"
+    },
+    {
+      "target": "prerequisites",
+      "error_type": "merged_sections",
+      "severity": "high",
       "prevalence": "rare",
       "example_course_ids": [
-        "fhs_OPG3701-1_2023_spring_1"
+        "fhs_SPR2710-1_2023_spring_1"
       ],
-      "evidence": "Prosjektbeskrivelsen skal være godkjent før arbeidet med bacheloroppgaven kan påbegynnes. Student og veileder skal inngå en skriftlig veiledningsavtale og sette opp en møteplan.",
-      "description": "The complete 177-character teaching_methods and coursework_requirements rows are identical, confirming dup_in_course. Project-description approval is an approval gate, not a teaching method. Supervision-agreement and meeting-plan arrangements should be assigned once by meaning rather than duplicated with the gate sentence.",
-      "root_cause_hypothesis": "The source places the gate under Læringsaktiviteter. R/extract_sections.R .split_inline_coursework() can retain a gate sentence when its graded-component matcher also fires, while appending it to coursework_requirements; the repeated output indicates an overbroad retain-and-copy decision or source repetition that is not resolved.",
-      "suggested_fix": "For this FHS gate, move the project-description approval sentence only to coursework_requirements and retain supervision arrangements only in teaching_methods. Narrow any graded-component exception so a reference to bacheloroppgaven does not itself make a gate grade-bearing, and remove exact cross-section copies after routing.",
+      "evidence": "Emnet er strukturert i seks hovedbolker med tema hentet fra medielandskapet i den arabiske verden.",
+      "description": "After the valid passed-course requirement, prerequisites absorbs the paragraph describing six thematic blocks and Media Arabic materials. That paragraph belongs in course_content. The leak->.drop flags for SPR2710, AR301 and SPR2711 are themselves false alarms: an admission-worded sentence requiring passed named courses is a valid prerequisite.",
+      "root_cause_hypothesis": "Forkunnskapskrav now maps correctly, but sectionize() carries the subsequent unheaded topic-description paragraph forward until Læringsutbytte.",
+      "suggested_fix": "Within FHS prerequisite blocks, terminate prior-knowledge text at a separate paragraph beginning Emnet er strukturert and route that topic/material paragraph to course_content. Preserve the preceding passed-course requirement.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "fhs_FHS8004-1_2022_autumn_1",
+        "fhs_MILM2408-1_2025_spring_1",
+        "fhs_AR301-1_2023_spring_1"
+      ],
+      "evidence": "Deltagere på emnet må ha gyldig sikkerhetsklarering til HEMMELIG",
+      "description": "Non-sectional administration survives: FHS8004 prerequisites include target-group/admission material, unspecified qualifying degrees and security clearance rather than subject-matter prior knowledge, making its long flag substantive. Its course_content includes fees, travel/accommodation, equipment and dated meeting schedules. Random MILM2408 retains a clearance condition in course_content, while AR301 retains a workload-only sentence there. These should remain only in the full plan; genuine teaching arrangements and literature provisions must be retained in their proper sections.",
+      "root_cause_hypothesis": "R/extract_sections.R admission/noise cleanup covers only some formulations and sections; unmapped Andre praktiske opplysninger and blanket supplemental course_content mapping allow administrative paragraphs to survive.",
+      "suggested_fix": "Strip target-group, security-clearance, fee/accommodation, equipment, dated schedule and workload-only spans from emitted sections. Treat mixed practical-information blocks by paragraph, first preserving attendance as coursework, teaching as teaching_methods and actual literature information as reading_list.",
       "confidence": "high"
     },
     {
@@ -117,14 +130,14 @@
       "severity": "medium",
       "prevalence": "common",
       "example_course_ids": [
+        "fhs_FHS8004-1_2022_autumn_1",
         "fhs_AR301-1_2023_spring_1",
-        "fhs_SPR2721-1_2023_spring_1",
-        "fhs_OPG3701-1_2023_spring_1"
+        "fhs_SPR2721-1_2023_spring_1"
       ],
       "evidence": "Eksamen sensureres av to sensorer. Sensorene setter karakterene i fellesskap.",
-      "description": "Assessment retains examiner arrangements in AR301 and random SPR2721, and SPR2721 also retains a resit rule. OPG3701, SPR2710 and SPR2711 tables retain Tidspunkt/assessment-semester cells; AR301 and SPR2711 additionally repeat assessment-semester notices in prose, and CBU1503 includes its assessment semester inline. These are excluded logistics/administration. Durations, scales, weights, permitted aids and individual/group design are valid assessment content and should stay.",
-      "root_cause_hypothesis": "Assessment cleanup in R/extract_sections.R does not fully recognise these FHS narrative examiner/resit rules or strip semester columns from the older assessment tables.",
-      "suggested_fix": "Remove FHS examiner-arrangement and resit sentences and assessment-semester-only notices. Parse tabular rows to omit Tidspunkt and its corresponding cells while preserving the assessment form, duration, grading scale and weight; remove only the semester clause from mixed design sentences.",
+      "description": "Assessment retains excluded logistics: FHS8004 exam-distribution/submission dates, AR301 examiner arrangements and assessment-semester notices, and random SPR2721 examiner and resit rules. SPR2710 and SPR2711 also retain Tidspunkt/semester cells and SPR2711 repeats exam-semester prose. These are distinct from valid durations, weights, scales, aids and group/individual assessment design.",
+      "root_cause_hypothesis": "R/extract_sections.R assessment noise cleanup does not fully cover FHS narrative examiner/resit/date formulations or remove assessment-semester columns from older tables.",
+      "suggested_fix": "Remove examiner-arrangement, resit and dated distribution/submission sentences, plus assessment-semester-only notices. Omit Tidspunkt and corresponding table cells while preserving forms, durations, scales, weights and permitted aids; remove only logistical clauses from mixed sentences.",
       "confidence": "high"
     },
     {
@@ -138,23 +151,9 @@
         "fhs_LOG3105-1_2025_autumn_2"
       ],
       "evidence": "**course_content** (12 chars)  ⚑ flags: empty\n\n````\nHva lærer du",
-      "description": "The empty flags identify genuine placeholder rows: CBU1506 has Må bestås as outcomes and teaching, and Blir publisert as readings; LED3201 has Avklares; LOG3105 has TBN.; ING2318 and MILM3404 have Kunngjøres. SPR2723 emits only the Hva lærer du label as course_content despite having no substantive section text. OPG3302 reading_list = Selvvalgt is a false-positive flag because it specifies self-selected literature.",
-      "root_cause_hypothesis": "R/extract_sections.R placeholder patterns omit these institution-specific bare values. The unmapped introductory Hva lærer du label survives in the default course_content row even when its block has no body.",
-      "suggested_fix": "Add whole-row, section-aware placeholder rules for Blir publisert, Avklares, TBN. and Kunngjøres, and bare Må bestås in outcomes/teaching. Suppress a course_content row consisting only of Hva lærer du. Preserve Selvvalgt and genuine pass/fail assessment descriptions.",
-      "confidence": "high"
-    },
-    {
-      "target": "coursework_requirements",
-      "error_type": "missing_section",
-      "severity": "high",
-      "prevalence": "rare",
-      "example_course_ids": [
-        "fhs_ING3511-1_2021_autumn_1"
-      ],
-      "evidence": "En obligatorisk veiledningsseanse i løpet av semesteret.",
-      "description": "The random Cybermakt control explicitly requires a compulsory supervision session inside assessment, but no coursework_requirements row is emitted. This mandatory activity is distinct from the graded report and oral presentation and should be separated from assessment. The pre-pass does not flag the omission.",
-      "root_cause_hypothesis": "The inline coursework splitter recognises specific gate/attendance sentences and labels, but misses a short compulsory-supervision sentence embedded in an assessment paragraph.",
-      "suggested_fix": "Recognise the bounded compulsory-supervision sentence as coursework_requirements and remove it from assessment while preserving the report, presentation/hearing and rules requiring both graded components to pass.",
+      "description": "Real empty flags include bare Må bestås in outcomes/teaching, Blir publisert, Avklares, TBN. and Kunngjøres, as well as a course_content row consisting only of Hva lærer du. FHS8004 also emits only a Leganto pointer and list title as reading_list. These rows have no substantive section content. Selvvalgt in OPG3302 is a valid literature-choice statement and must remain.",
+      "root_cause_hypothesis": "R/extract_sections.R placeholder patterns omit these bare FHS values and the heading-only introductory row; the two-line Leganto pointer is not recognised as wholly a pointer.",
+      "suggested_fix": "Add section-aware whole-row placeholder rules for these bare values, suppress Hva lærer du without a body, and recognise a Leganto-only pointer plus its list-title line. Preserve Selvvalgt, substantive reading notes and genuine pass/fail assessment designs.",
       "confidence": "high"
     }
   ]

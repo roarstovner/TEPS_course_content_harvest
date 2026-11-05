@@ -8,6 +8,7 @@ Generated: 2026-11-05
 | Institution | Rows | Codes | Years | Extracted OK | Rate | Median chars | Unique plans | Dedup % |
 |:---|---:|---:|:---|---:|:---|---:|---:|:---|
 | fhs | 6209 | 997 | 2017-2025 | 1903 | 30.6% | 4589 | 838 | 56.0% |
+| fjellhaug | 532 | 277 | 2025 | 0 | 0.0% | NA | 0 | NaN% |
 | himolde | 189 | 98 | 2018-2025 | 78 | 41.3% | 2986 | 52 | 0.0% |
 | hiof | 41168 | 6753 | 1994-2025 | 18136 | 44.1% | 4215 | 10415 | 20.5% |
 | hivolda | 22740 | 2843 | 2000-2025 | 5181 | 22.8% | 4220 | 4331 | 16.4% |
@@ -21,20 +22,20 @@ Generated: 2026-11-05
 | nmbu | 2734 | 1438 | 2025 | 12 | 0.4% | 5858 | 12 | 0.0% |
 | nmh | 191 | 95 | 2021-2025 | 106 | 55.5% | 3173 | 72 | 32.1% |
 | nord | 35900 | 5147 | 2016-2025 | 32913 | 91.7% | 3233 | 7864 | 58.3% |
-| ntnu | 77197 | 9428 | 2004-2025 | 71519 | 92.6% | 3404 | 31705 | 55.6% |
+| ntnu | 89261 | 9910 | 2004-2025 | 82377 | 92.3% | 3353 | 35528 | 56.7% |
 | oslomet | 33318 | 3937 | 2018-2025 | 33318 | 100.0% | 3874 | 11286 | 59.5% |
 | phs | 2180 | 307 | 2021-2025 | 271 | 12.4% | 3895 | 142 | 27.2% |
 | samas | 130 | 68 | 2025 | 0 | 0.0% | NA | 0 | NaN% |
 | steiner | 244 | 125 | 2025 | 15 | 6.1% | 5027 | 15 | 0.0% |
 | uia | 55961 | 5047 | 2012-2025 | 10291 | 18.4% | 2944 | 5364 | 44.4% |
-| uib | 42681 | 4724 | 2004-2025 | 25199 | 59.0% | 3549 | 11126 | 51.2% |
+| uib | 48610 | 4899 | 2004-2025 | 28080 | 57.8% | 3514 | 12041 | 52.5% |
 | uio | 10488 | 5380 | 2025 | 47 | 0.4% | 4331 | 47 | 0.0% |
 | uis | 2921 | 316 | 2007-2025 | 2719 | 93.1% | 5760 | 1307 | 50.2% |
 | uit | 133066 | 10772 | 2004-2025 | 48389 | 36.4% | 3285 | 35465 | 21.7% |
 | usn | 38706 | 5286 | 2018-2025 | 13132 | 33.9% | 5842 | 12361 | 5.7% |
 | vid | 4082 | 917 | 2023-2025 | 810 | 19.8% | 3640 | 588 | 23.5% |
 
-**Total**: 610282 rows, 315188 with extracted text (51.6%), 157335
+**Total**: 628807 rows, 328927 with extracted text (52.3%), 162265
 unique plans.
 
 **Columns:**
@@ -58,13 +59,15 @@ from a harvest made in its own academic year, or none
 (`docs/harvesting.md` “Sites that show only the current plan”). In this
 data the harvests are of 2026-04-04 (2025/26: autumn 2025 offerings) and
 2026-09-30 (2026/27: no DBH offerings yet), so spring 2025 offerings
-(2024/25) have no plan at these sites. They are khio, mf, nhh, nmbu,
-samas, steiner, uio. The others have historical plans as far back as the
-site still serves them. Share of offerings with a plan, by period:
+(2024/25) have no plan at these sites. They are fjellhaug, khio, mf,
+nhh, nmbu, samas, steiner, uio. The others have historical plans as far
+back as the site still serves them. Share of offerings with a plan, by
+period:
 
 | Institution | –2014 | 2015–17 | 2018–19 | 2020–21 | 2022–23 | 2024– |
 |:------------|:------|:--------|:--------|:--------|:--------|:------|
 | fhs         |       | 0%      | 5%      | 34%     | 79%     | 83%   |
+| fjellhaug   |       |         |         |         |         | 0%    |
 | himolde     |       |         | 35%     |         | 51%     | 45%   |
 | hiof        | 34%   | 47%     | 51%     | 58%     | 59%     | 61%   |
 | hivolda     | 0%    | 30%     | 45%     | 45%     | 48%     | 48%   |
@@ -78,13 +81,13 @@ site still serves them. Share of offerings with a plan, by period:
 | nmbu        |       |         |         |         |         | 0%    |
 | nmh         |       |         |         | 25%     | 66%     | 73%   |
 | nord        |       | 77%     | 92%     | 97%     | 99%     | 99%   |
-| ntnu        | 81%   | 97%     | 98%     | 92%     | 93%     | 93%   |
+| ntnu        | 81%   | 97%     | 90%     | 92%     | 93%     | 93%   |
 | oslomet     |       |         | 100%    | 100%    | 100%    | 100%  |
 | phs         |       |         |         | 0%      | 4%      | 28%   |
 | samas       |       |         |         |         |         | 0%    |
 | steiner     |       |         |         |         |         | 6%    |
 | uia         | 0%    | 0%      | 0%      | 40%     | 38%     | 41%   |
-| uib         | 30%   | 44%     | 62%     | 54%     | 57%     | 68%   |
+| uib         | 30%   | 44%     | 49%     | 54%     | 57%     | 68%   |
 | uio         |       |         |         |         |         | 0%    |
 | uis         | 92%   | 96%     | 95%     | 91%     | 92%     | 94%   |
 | uit         | 37%   | 31%     | 36%     | 40%     | 40%     | 38%   |
@@ -110,6 +113,7 @@ year) that have a plan in at least one semester:
 | Institution | Course-years | Both semesters in DBH | Both reg., plan in one | Both reg., plan in both | Both reg., no plan | Course-years with plan | Row rate |
 |:---|---:|:---|---:|---:|---:|:---|:---|
 | fhs | 3323 | 87% | 15 | 850 | 2021 | 32% | 30.6% |
+| fjellhaug | 277 | 92% | 0 | 0 | 255 | 0% | 0.0% |
 | himolde | 100 | 89% | 41 | 4 | 44 | 48% | 41.3% |
 | hiof | 24063 | 71% | 8772 | 1244 | 7089 | 49% | 44.1% |
 | hivolda | 12913 | 76% | 4412 | 193 | 5222 | 39% | 22.8% |
@@ -123,13 +127,13 @@ year) that have a plan in at least one semester:
 | nmbu | 1438 | 90% | 11 | 0 | 1285 | 1% | 0.4% |
 | nmh | 100 | 91% | 14 | 45 | 32 | 61% | 55.5% |
 | nord | 19459 | 84% | 1053 | 8177 | 7211 | 55% | 91.7% |
-| ntnu | 40201 | 90% | 2278 | 32489 | 1593 | 96% | 92.6% |
+| ntnu | 46472 | 91% | 2817 | 37396 | 1940 | 95% | 92.3% |
 | oslomet | 17639 | 89% | 2040 | 12246 | 1393 | 89% | 100.0% |
 | phs | 1144 | 91% | 131 | 25 | 880 | 15% | 12.4% |
 | samas | 68 | 91% | 0 | 0 | 62 | 0% | 0.0% |
 | steiner | 125 | 95% | 15 | 0 | 104 | 12% | 6.1% |
 | uia | 29493 | 90% | 8716 | 152 | 17600 | 32% | 18.4% |
-| uib | 21998 | 93% | 65 | 11088 | 9318 | 53% | 59.0% |
+| uib | 25052 | 93% | 78 | 12340 | 10928 | 52% | 57.8% |
 | uio | 5380 | 95% | 44 | 0 | 5064 | 1% | 0.4% |
 | uis | 1602 | 82% | 41 | 1165 | 113 | 91% | 93.1% |
 | uit | 69992 | 90% | 25282 | 8581 | 29211 | 52% | 36.4% |
@@ -153,6 +157,7 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 | Institution | Without plan | 404 | No URL | Fetch error | Page, no plan | No page | Between plans |
 |:---|---:|---:|---:|---:|---:|---:|---:|
 | fhs | 2263 | 8 | 2255 | 0 | 0 | 0 | 2 |
+| fjellhaug | 277 | 0 | 76 | 0 | 0 | 201 | 0 |
 | himolde | 52 | 0 | 51 | 0 | 8 | 0 | 0 |
 | hiof | 12166 | 4419 | 7034 | 105 | 1760 | 0 | 359 |
 | hivolda | 7804 | 0 | 7804 | 0 | 0 | 0 | 133 |
@@ -166,13 +171,13 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 | nmbu | 1331 | 0 | 0 | 0 | 0 | 1331 | 0 |
 | nmh | 39 | 0 | 39 | 0 | 0 | 0 | 0 |
 | nord | 8688 | 1568 | 0 | 146 | 6974 | 0 | 0 |
-| ntnu | 1788 | 302 | 0 | 1425 | 92 | 0 | 5 |
+| ntnu | 2174 | 355 | 0 | 1747 | 122 | 0 | 5 |
 | oslomet | 1996 | 0 | 0 | 0 | 1996 | 0 | 13 |
 | phs | 967 | 21 | 962 | 0 | 64 | 0 | 0 |
 | samas | 68 | 0 | 68 | 0 | 0 | 0 | 0 |
 | steiner | 100 | 0 | 100 | 0 | 0 | 0 | 0 |
 | uia | 19928 | 19920 | 0 | 0 | 635 | 0 | 498 |
-| uib | 10330 | 8985 | 0 | 152 | 1214 | 0 | 2 |
+| uib | 12066 | 10564 | 0 | 152 | 1371 | 0 | 3 |
 | uio | 5320 | 0 | 7 | 0 | 0 | 5313 | 0 |
 | uis | 145 | 12 | 0 | 0 | 133 | 0 | 0 |
 | uit | 31176 | 0 | 30824 | 0 | 1908 | 0 | 1775 |
@@ -219,6 +224,7 @@ All years, by institution:
 | Institution | Some year provisional | All | With students | With exam registrations and credits |
 |:---|:---|:---|:---|:---|
 | fhs | FALSE | 1053 / 3323 (32%) |  |  |
+| fjellhaug | FALSE | 0 / 277 (0%) |  |  |
 | himolde | FALSE | 48 / 100 (48%) | 43 / 59 (73%) | 42 / 55 (76%) |
 | hiof | FALSE | 11864 / 24063 (49%) | 10499 / 17087 (61%) | 9609 / 14296 (67%) |
 | hivolda | FALSE | 4988 / 12913 (39%) | 4513 / 10386 (43%) | 3955 / 9006 (44%) |
@@ -232,13 +238,13 @@ All years, by institution:
 | nmbu | FALSE | 12 / 1438 (1%) | 10 / 998 (1%) | 8 / 879 (1%) |
 | nmh | FALSE | 61 / 100 (61%) | 46 / 57 (81%) | 37 / 42 (88%) |
 | nord | FALSE | 10679 / 19459 (55%) | 8182 / 13181 (62%) | 7359 / 11484 (64%) |
-| ntnu | FALSE | 38413 / 40201 (96%) | 29230 / 29876 (98%) | 26713 / 27076 (99%) |
+| ntnu | FALSE | 44298 / 46472 (95%) | 33774 / 34557 (98%) | 30871 / 31305 (99%) |
 | oslomet | FALSE | 15643 / 17639 (89%) | 13201 / 13720 (96%) | 12103 / 12335 (98%) |
 | phs | FALSE | 170 / 1144 (15%) | 123 / 523 (24%) | 116 / 456 (25%) |
 | samas | FALSE | 0 / 68 (0%) | 0 / 37 (0%) | 0 / 8 (0%) |
 | steiner | FALSE | 15 / 125 (12%) | 13 / 70 (19%) | 5 / 45 (11%) |
 | uia | FALSE | 9497 / 29493 (32%) | 7387 / 20245 (36%) | 6708 / 17811 (38%) |
-| uib | FALSE | 11661 / 21998 (53%) | 9751 / 14181 (69%) | 8916 / 12162 (73%) |
+| uib | FALSE | 12978 / 25052 (52%) | 10887 / 16216 (67%) | 9954 / 13909 (72%) |
 | uio | FALSE | 47 / 5380 (1%) | 41 / 3139 (1%) | 32 / 2655 (1%) |
 | uis | FALSE | 1457 / 1602 (91%) | 1219 / 1329 (92%) | 957 / 1037 (92%) |
 | uit | FALSE | 36710 / 69992 (52%) | 29966 / 38036 (79%) | 26354 / 31788 (83%) |
@@ -313,6 +319,32 @@ Figures are in the tables above; the notes say why.
   The title and facts box are in no section
 - Forsvaret’s site has no robots.txt (404, read 2026-10-16); its sitemap
   answers 500
+
+------------------------------------------------------------------------
+
+### Fjellhaug (Fjellhaug International University College)
+
+- Added 2026-11-05 (all-courses frame). Only the plan in force is
+  published (`plan_years = "current"`; see “Year coverage”): no plan for
+  offerings before the academic year of the first harvest (2026/27).
+  Earlier plans are only in PDFs (the programmes’ study plans per
+  semester from 2007, a course catalogue for autumn 2026;
+  `/om-fih/arkiv-studieplaner`), which the harvest does not read
+- A page per course code, `/emne/{code}` or, for most courses taught in
+  English, `/en/subjects/{code}`, a few with the title after the code;
+  found in the subject sitemaps (`resolve_urls_fjellhaug_batch()`,
+  `docs/institutions.md`). DBH’s courses at the Danish campuses (`-DK1`
+  København, `-DK2` Aarhus; 206 of the 532 offerings of 2025) and the
+  variants `-IS` and `-EVU` take the page of the code without the
+  suffix, which names the campuses in its facts box
+- Read from `main#main`: the title, the facts box (code, credits,
+  campus, language, start, duration) and the plan; not the breadcrumb,
+  the menu of the plan’s parts and the plan’s second copy in accordions
+  for phones. The title and facts box are in no section
+- A private college; the site states no terms of use, only a privacy
+  statement for visitors (checked 2026-11-05)
+- robots.txt (fih.fjellhaug.no, read 2026-11-05) disallows only Craft
+  CMS’s `/cpresources/`, `/vendor/`, `/.env` and `/cache/`
 
 ------------------------------------------------------------------------
 

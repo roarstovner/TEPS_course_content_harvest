@@ -1,0 +1,114 @@
+{
+  "check": "sections",
+  "institution": "ntnu",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 20,
+  "n_suspects_reviewed": 14,
+  "overall_assessment": "All 20 sampled courses (14 suspects and 6 random controls) were read in full: the suspects chiefly expose English-version pointers incorrectly emitted as substantive sections, while empty flags on Seminar, Workshop and Øvinger and boilerplate on genuine mandatory activities are false alarms. All 25 attendance appendix items were judged: 23 correct moves and 2 wrong moves because the extracted requirement loses its activity-identifying antecedent; none of these 25 is a negated or optional attendance statement, and the seminar requirement in the practice-course example is distinct from placement attendance. Controls reveal unflagged routing failures and duplication, although learning-outcome groups, admission-line removal, and exam-session deduplication generally work; PHS/FHS-specific changes cannot be assessed from this NTNU packet.",
+  "findings": [
+    {
+      "target": "cross_section",
+      "error_type": "empty_placeholder",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "ntnu_TØL4010-1_2019_autumn_1",
+        "ntnu_IMT4895-1_2025_autumn_1",
+        "ntnu_AE512216-1_2024_autumn_1"
+      ],
+      "evidence": "Emnet undervises på engelsk. Se engelsk versjon for emnebeskrivelse.",
+      "description": "All 14 suspects emit English-version pointers as course content, learning outcomes, teaching methods, prerequisites and/or reading lists; many also emit pointer-only assessment. These texts exist in the source, so this is not extractor truncation or loss of Norwegian substantive content, but the spec explicitly excludes sections whose only text says the content is elsewhere. The short/duplicate/boilerplate flags therefore identify a real placeholder-cleanup failure, rather than genuinely repeated substantive sections; actual assessment design and mandatory activities must still be retained where present.",
+      "root_cause_hypothesis": "R/extract_sections.R .placeholder_phrases recognizes see english version and se engelsk beskrivelse/tekst, but omits the prevalent Norwegian se engelsk versjon, including capitalization, punctuation and the explanatory variant.",
+      "suggested_fix": "Extend case-insensitive placeholder recognition to se engelsk versjon with optional punctuation and for emnebeskrivelse, and the paired language-only sentence. Remove matching pointer lines, including repeated pointers, and drop rows left empty while preserving actual assessment or coursework content.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "ntnu_TØL4012-1_2024_autumn_1"
+      ],
+      "evidence": "Studentene skal levere to OBLIG'er og skal ila medio November velg tema for prosjketoppgaven.",
+      "description": "The assessment row mixes the graded project with two mandatory OBLIG submissions. Coursework contains only the generic label Obligatoriske arbeidskrav, so the concrete submission requirement remains misclassified. Choosing a project topic and its deadline do not describe graded assessment design either.",
+      "root_cause_hypothesis": "R/extract_sections.R .split_inline_coursework recognizes selected arbeidskrav labels or explicit approval-to-exam gates, but this inline OBLIG abbreviation states a mandatory submission without either pattern.",
+      "suggested_fix": "Recognize OBLIG/OBLIGer/OBLIG'er as mandatory submissions in sentence-level coursework routing when no grading language applies. Preserve the graded-project sentence in assessment, place the verbatim requirement clause in coursework, and exclude the topic-selection deadline from assessment.",
+      "confidence": "high"
+    },
+    {
+      "target": "teaching_methods",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "ntnu_SARB3008-1_2019_spring_1",
+        "ntnu_HBIOA2002-1_2021_autumn_1"
+      ],
+      "evidence": "Innlevering av gruppearbeid, og obligatorisk oppmøte (80%) ved teoritimer med studentframlegg og ved laboratorieteoritimer.",
+      "description": "Two of six controls retain compulsory requirements in teaching_methods. SARB3008 retains Obligatorisk oppmøte på forkurs even though the same requirement is already in coursework; HBIOA2002 leaves the detailed 80% attendance/group submission sentence and the innovation-project requirement in teaching, absent from the moved detailed coursework block. The compulsory group submissions in its pedagogical-methods lead also need separation from the teaching description.",
+      "root_cause_hypothesis": "R/extract_sections.R .attendance_sentence_regex has restricted sentence openings and activity nouns: forkurs is not matched by the standalone kurs alternative, and the HBIOA sentence starts with submission text rather than attendance. .coursework_heading_regex requires a standalone heading and does not capture the full inline arbeidskrav block.",
+      "suggested_fix": "Accept mandatory attendance at forkurs, and process an inline Obligatoriske arbeidskrav label with its complete requirement block until a genuine section boundary. Route mandatory submission clauses separately from mixed pedagogical prose; remove routed requirements from teaching_methods.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "duplicate",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "ntnu_HBIOA2002-1_2021_autumn_1"
+      ],
+      "evidence": "Obligatoriske arbeidskrav: Delta laboratorieøvinger og muntlig høring fra laboratorieøvinger (100%).",
+      "description": "This exact detailed laboratory requirement appears both in teaching_methods and in coursework_requirements after splitting. The 100% is a participation requirement, not a grade weight, so there is no assessment-design reason to copy it and leave it in the source section. This duplication is not flagged by whole-row duplicate detection.",
+      "root_cause_hypothesis": "R/extract_sections.R .graded_component_regex treats a parenthesized percentage as a grade unless selected attendance words occur. Delta laboratorieøvinger is not covered by its deltak/deltag/møte exclusions; .split_inline_coursework then retains the original line through its graded/both copy path.",
+      "suggested_fix": "Classify percentages attached to Delta laboratory exercises and other participation requirements as attendance rather than grade weights. Require explicit grading context for copying mixed lines, and verify that the moved requirement substring is removed from its original section.",
+      "confidence": "high"
+    },
+    {
+      "target": "teaching_methods",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "ntnu_MOL3901-2_2022_autumn_1",
+        "ntnu_KULT2211-1_2020_autumn_1"
+      ],
+      "evidence": "Form of examination: Thesis and oral presentation/examination.",
+      "description": "Two of six controls retain graded assessment design in teaching_methods. MOL3901 includes the thesis/oral examination, grade adjustment and exam language alongside individual supervision; KULT2211 retains Karakter gis på bakgrunn av en firetimers skriftlig eksamen, also present in assessment. Heading-based classification silently contaminates teaching-method data despite correct assessment rows elsewhere.",
+      "root_cause_hypothesis": "R/extract_sections.R .design_line_regex routes only whole lines beginning with Norwegian Vurderingsform/Vurderingsinnhold or Eksamensform/Eksamensinnhold. English assessment labels and assessment sentences embedded after teaching prose are missed.",
+      "suggested_fix": "Add sentence-level assessment-design routing for Form of examination and clear grade/exam-form statements, including their grade-adjustment and exam-language continuations. Keep supervision and actual teaching prose in teaching_methods, and avoid appending assessment sentences already present there.",
+      "confidence": "high"
+    },
+    {
+      "target": "coursework_requirements",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "ntnu_PSYPRO4800-1_2021_autumn_1",
+        "ntnu_BIM1023-1_2022_autumn_1"
+      ],
+      "evidence": "Det er krav om 80 % oppmøte på disse seminarene.",
+      "description": "Appendix ATT 17 and ATT 18 are the two wrong moves among 25 reviewed items: the standalone requirements refer to disse seminarene and disse samlingene, but the identifying antecedents are left in course_content/teaching_methods. ATT 17 requires attendance at two named seminars within a placement course, rather than attendance at the placement itself; ATT 18 refers to two physical meetings of two days each. Both are genuine obligations whose isolated relocation makes the required activity ambiguous. The other 23 displayed moved sentences identify the required activity sufficiently.",
+      "root_cause_hypothesis": "R/extract_sections.R .attendance_sentence_regex admits deictic activity references; .split_inline_coursework moves the matching sentence alone. Its existing gate-backreference handling does not preserve these attendance antecedents.",
+      "suggested_fix": "Detect disse/disse seminarene/disse samlingene and equivalent deictic attendance references before moving a sentence. Preserve the verbatim activity-identifying antecedent with the requirement in a coherent block, retaining only independently meaningful subject-matter or teaching text in the original section.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "wrong_content",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "ntnu_MOL3901-2_2022_autumn_1",
+        "ntnu_TYSK1402-1_2025_autumn_1"
+      ],
+      "evidence": "Ved gjentak av bestått emne må begge deler av eksamen tas på nytt.",
+      "description": "Assessment retains resit/repeat rules in two controls. MOL3901 includes entitlement to submit a revised thesis after F and the prohibition on reassessment after passing; TYSK1402 includes retaking both components after failure or repeating a passed course. The spec excludes resit logistics while retaining the ordinary assessment form, component pass conditions, weights, duration, aids and exam language. The displayed exam durations/aids and ordinary-session design are therefore not findings.",
+      "root_cause_hypothesis": "R/extract_sections.R .exam_tab_design correctly removes repeated exam sessions and system names, but .section_noise has only narrow stock resit patterns and no matching NTNU prose rules.",
+      "suggested_fix": "Add sentence-level NTNU cleanup for these explicit resubmission/repeat-entitlement formulations, preserving ordinary assessment components, grading and pass conditions in adjacent sentences.",
+      "confidence": "high"
+    }
+  ]
+}
