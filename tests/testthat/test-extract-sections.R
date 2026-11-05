@@ -103,7 +103,11 @@ test_that("placeholder and pointer-only rows are dropped", {
             "Se engelske nettsider for mer informasjon",
             "Emnet foregår på engelsk. Se engelske nettsider ved å velge engelsk språk.",
             "See English version.", "See English Version", "se engelsk beskrivelse", "Se engelsk beskrivelse.",
-            "Se engelsk tekst.")
+            "Se engelsk tekst.", "Se engelsk versjon Se engelsk versjon", "Se engelsk versjon / See English version",
+            "Emnet undervises på engelsk. Se engelsk versjon for emnebeskrivelse.",
+            "Se emnets engelske nettside \u0096 International MSc", "See the course's English website - International MSc",
+            "Se beskrivelse på engelsk.", "Cf. English description", "Vennligst se engelsk versjon",
+            "Oppgis ved semesterstart. Se engelsk versjon.", "Emnebeskrivelsen er kun tilgjengelig på engelsk.")
   for (t in drop) expect_false(.keep_section_row(t, "reading_list"), label = t)
   # a pointer after plan text stays (ntnu MACS490)
   expect_true(.keep_section_row("Bestått MACS4900\n\nSe engelsk beskrivelse for mer utfyllende informasjon.",

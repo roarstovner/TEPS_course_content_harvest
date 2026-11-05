@@ -161,6 +161,25 @@ test_that("ntnu: a course content that only points to the English text gives the
   out <- fetch_html_cols("https://www.ntnu.no/studier/emner/PED3001/2025", "ntnu", cfg, .progress = FALSE)
   expect_match(out$html, "Pedagogikk")
   expect_length(sent, 1)
+  # the other wordings of the pointer (2019-2025), and paragraphs with a plan of their own
+  notice <- function(content) grepl(cfg$english_page$notice, paste0('<p class="content-course-content">', content, "</p>"),
+                                    perl = TRUE)
+  for (t in c("Se engelsk versjon", "se engelsk versjon.", "<p>Se Engelsk versjon.", "Se engelsk versjon<br><br>",
+              "Se engelsk versjon / See English version", "SE engels versjon / See English version",
+              "Emnet undervises på engelsk. Se engelsk versjon for emnebeskrivelse.",
+              "Dette emnet undervises kun på engelsk, se derfor engelsk emnebeskrivelse for detaljer om emnet.",
+              "Se emnets engelske nettside \u0096 International MSc", "See the course's English website - International MSc",
+              "Se beskrivelse på engelsk.", "Cf. English description", "See in English", "Undervises kun på engelsk",
+              "Emnebeskrivelse finnes kun på engelsk.", ". Faglig innhold er beskrevet på engelsk",
+              "You will find the course description in the English version.")) {
+    expect_true(notice(t), label = t)
+  }
+  for (t in c("Se den engelske beskrivelsen dersom du finner noen av uttrykkene under litt merkelig / vanskelig å forstå.",
+              "Emnet undervises normalt annet hvert år, neste gang høsten 2019. See English text.",
+              "<p>Undervisningsspråket er engelsk.</p><p>Emnet tar for seg et utvalg kulturelle tekster.",
+              "<p><i><b>Note: This course is in English (and therefore the text below is also only in English).</b></i>")) {
+    expect_false(notice(t), label = t)
+  }
 })
 
 test_that("nmbu: an 'Om dette emnet' that only points to the English text gives the English page", {

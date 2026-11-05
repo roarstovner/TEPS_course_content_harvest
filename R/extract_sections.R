@@ -1034,8 +1034,19 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "se (?:kursinnhold|emnebeskrivelse)(?:et|n)?",                     # nord intro
   "ingen emner(?: i programmet)?",
   # the plan is on the English page (hvl, nord, ntnu; `english_page` in the config)
-  "see english version", "se engelsk (?:beskrivelse|tekst)",          # ntnu
-  "emnebeskrivelsen finnes kun på engelsk[^.]*",
+  # ntnu, some 60 wordings (2026-11-05): "Se engelsk versjon / See English
+  # version", "Emnet undervises på engelsk. Se engelsk versjon for
+  # emnebeskrivelse.", "Se emnets engelske nettside - International MSc"
+  paste0("(?:/ ?)?(?:(?:dette )?(?:emnet|faget) undervises (?:kun )?på engelsk[.,]? ?|",
+         "the subject is taught in english\\. ?|vennligst |for fullstendig emnebeskrivelse, )?",
+         "(?:se|see|cf\\.)(?: derfor)? (?:the |den |emnets |the course's )?(?:engels\\w*|english)",
+         "(?: (?:vers\\w*|vesjon|tekst|text|utgave|page|informasjon|website|nettside|emneside|kursside|",
+         "(?:emne|kurs)?beskrivelse\\w*|description))?(?: (?:for|om) [^.]{0,40})?",
+         "(?: [-–\u0096] international msc)?"),
+  "se (?:emne|kurs)?beskrivelsen? på engelsk", "see (?:the description )?in english",
+  "faglig innhold er beskrevet på engelsk", "undervises kun på engelsk",
+  "you will find the course description in the english version",
+  "emnebeskrivelsen? (?:finnes|er) kun (?:tilgjengelig )?på engelsk[^.]*",
   "gå til våre engelske nettsider[^.]*",                              # hvl, after a full stop
   "(?:dette )?emne[tr]? er (?:kun beskrevet|berre skildra) på engelsk",
   "klikk på (?:knappen )?[\"“”]?english[\"“”]?[^.]*",

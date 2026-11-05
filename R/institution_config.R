@@ -166,12 +166,24 @@ institution_configs <- list(
     request_delay = 10,  # robots.txt (data/robots_txt.csv): Crawl-delay: 10 for all user agents
     fetch_fn = fetch_html_cols_single_ntnu,
     # A course whose plan is only in English: the Norwegian page's course
-    # content, and mostly every other part, says "See English version.", "Se
-    # engelsk beskrivelse." or "Se engelsk tekst." (2021-2025); www.ntnu.edu
-    # has the plan, the same layout with English headings
+    # content, and mostly every other part, is only a pointer to the English
+    # page, some 60 wordings (2019-2025): "Se engelsk versjon", "Emnet
+    # undervises på engelsk. Se engelsk versjon for emnebeskrivelse.", "Se
+    # emnets engelske nettside - International MSc", "Se beskrivelse på
+    # engelsk.", "Cf. English description", "Emnebeskrivelsen finnes kun på
+    # engelsk.", "Undervises kun på engelsk" (2026-11-05). A paragraph that
+    # goes on with more than a short tail ("Se den engelske beskrivelsen
+    # dersom du finner ...") or starts with plan text has a plan of its own.
+    # www.ntnu.edu has the plan, the same layout with English headings
     english_page = list(
-      notice = paste0('<p class="content-course-content">\\s*(?i:see english version|',
-                      'se engelsk (?:beskrivelse|tekst))\\.?\\s*</p>'),
+      notice = paste0(
+        '<p class="content-course-content">\\s*(?:<p>\\s*)?(?i:(?:(?:dette )?(?:emnet|faget) undervises ',
+        '(?:kun )?på engelsk[.,]\\s*|the subject is taught in english\\.\\s*|vennligst\\s+|',
+        'for fullstendig emnebeskrivelse,\\s*|\\.\\s*)?(?:(?:se|see|cf\\.)(?: derfor)?\\s+',
+        "(?:the |den |emnets |the course's )?(?:engels|english)|se (?:emne|kurs)?beskrivelsen? på engelsk|",
+        'see (?:the description )?in english|emnebeskrivelsen? (?:finnes|er) kun (?:tilgjengelig )?på engelsk|',
+        'faglig innhold er beskrevet på engelsk|undervises kun på engelsk|',
+        'you will find the course description in the english version))(?:[^<]|<br\\s*/?>){0,60}</p>'),
       from = "https://www.ntnu.no/studier/emner/", to = "https://www.ntnu.edu/studies/courses/"),
     # The exam tab lists the exam parts once per exam session; the
     # assessment section and the plan id keep one session
