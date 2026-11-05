@@ -1,13 +1,13 @@
 # Data Quality Notes
 
 
-Generated: 2026-11-04
+Generated: 2026-11-05
 
 ## Overview
 
 | Institution | Rows | Codes | Years | Extracted OK | Rate | Median chars | Unique plans | Dedup % |
 |:---|---:|---:|:---|---:|:---|---:|---:|:---|
-| fhs | 178 | 96 | 2018-2025 | 79 | 44.4% | 4374 | 53 | 32.9% |
+| fhs | 6209 | 997 | 2017-2025 | 1903 | 30.6% | 4589 | 838 | 56.0% |
 | himolde | 189 | 98 | 2018-2025 | 78 | 41.3% | 2986 | 52 | 0.0% |
 | hiof | 41168 | 6753 | 1994-2025 | 18136 | 44.1% | 4215 | 10415 | 20.5% |
 | hivolda | 22740 | 2843 | 2000-2025 | 5181 | 22.8% | 4220 | 4331 | 16.4% |
@@ -21,7 +21,7 @@ Generated: 2026-11-04
 | nmbu | 2734 | 1438 | 2025 | 12 | 0.4% | 5858 | 12 | 0.0% |
 | nmh | 191 | 95 | 2021-2025 | 106 | 55.5% | 3173 | 72 | 32.1% |
 | nord | 35900 | 5147 | 2016-2025 | 32913 | 91.7% | 3233 | 7864 | 58.3% |
-| ntnu | 64837 | 8720 | 2004-2025 | 60169 | 92.8% | 3469 | 27438 | 54.3% |
+| ntnu | 77197 | 9428 | 2004-2025 | 71519 | 92.6% | 3404 | 31705 | 55.6% |
 | oslomet | 33318 | 3937 | 2018-2025 | 33318 | 100.0% | 3874 | 11286 | 59.5% |
 | phs | 2180 | 307 | 2021-2025 | 271 | 12.4% | 3895 | 142 | 27.2% |
 | samas | 130 | 68 | 2025 | 0 | 0.0% | NA | 0 | NaN% |
@@ -34,7 +34,7 @@ Generated: 2026-11-04
 | usn | 38706 | 5286 | 2018-2025 | 13132 | 33.9% | 5842 | 12361 | 5.7% |
 | vid | 4082 | 917 | 2023-2025 | 810 | 19.8% | 3640 | 588 | 23.5% |
 
-**Total**: 591891 rows, 302014 with extracted text (51.0%), 151970
+**Total**: 610282 rows, 315188 with extracted text (51.6%), 157335
 unique plans.
 
 **Columns:**
@@ -64,7 +64,7 @@ site still serves them. Share of offerings with a plan, by period:
 
 | Institution | –2014 | 2015–17 | 2018–19 | 2020–21 | 2022–23 | 2024– |
 |:------------|:------|:--------|:--------|:--------|:--------|:------|
-| fhs         |       |         | 3%      |         | 92%     | 89%   |
+| fhs         |       | 0%      | 5%      | 34%     | 79%     | 83%   |
 | himolde     |       |         | 35%     |         | 51%     | 45%   |
 | hiof        | 34%   | 47%     | 51%     | 58%     | 59%     | 61%   |
 | hivolda     | 0%    | 30%     | 45%     | 45%     | 48%     | 48%   |
@@ -109,7 +109,7 @@ year) that have a plan in at least one semester:
 
 | Institution | Course-years | Both semesters in DBH | Both reg., plan in one | Both reg., plan in both | Both reg., no plan | Course-years with plan | Row rate |
 |:---|---:|:---|---:|---:|---:|:---|:---|
-| fhs | 100 | 78% | 0 | 33 | 45 | 46% | 44.4% |
+| fhs | 3323 | 87% | 15 | 850 | 2021 | 32% | 30.6% |
 | himolde | 100 | 89% | 41 | 4 | 44 | 48% | 41.3% |
 | hiof | 24063 | 71% | 8772 | 1244 | 7089 | 49% | 44.1% |
 | hivolda | 12913 | 76% | 4412 | 193 | 5222 | 39% | 22.8% |
@@ -123,7 +123,7 @@ year) that have a plan in at least one semester:
 | nmbu | 1438 | 90% | 11 | 0 | 1285 | 1% | 0.4% |
 | nmh | 100 | 91% | 14 | 45 | 32 | 61% | 55.5% |
 | nord | 19459 | 84% | 1053 | 8177 | 7211 | 55% | 91.7% |
-| ntnu | 33704 | 90% | 1749 | 27420 | 1328 | 96% | 92.8% |
+| ntnu | 40201 | 90% | 2278 | 32489 | 1593 | 96% | 92.6% |
 | oslomet | 17639 | 89% | 2040 | 12246 | 1393 | 89% | 100.0% |
 | phs | 1144 | 91% | 131 | 25 | 880 | 15% | 12.4% |
 | samas | 68 | 91% | 0 | 0 | 62 | 0% | 0.0% |
@@ -152,7 +152,7 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 
 | Institution | Without plan | 404 | No URL | Fetch error | Page, no plan | No page | Between plans |
 |:---|---:|---:|---:|---:|---:|---:|---:|
-| fhs | 54 | 0 | 54 | 0 | 0 | 0 | 0 |
+| fhs | 2263 | 8 | 2255 | 0 | 0 | 0 | 2 |
 | himolde | 52 | 0 | 51 | 0 | 8 | 0 | 0 |
 | hiof | 12166 | 4419 | 7034 | 105 | 1760 | 0 | 359 |
 | hivolda | 7804 | 0 | 7804 | 0 | 0 | 0 | 133 |
@@ -166,7 +166,7 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 | nmbu | 1331 | 0 | 0 | 0 | 0 | 1331 | 0 |
 | nmh | 39 | 0 | 39 | 0 | 0 | 0 | 0 |
 | nord | 8688 | 1568 | 0 | 146 | 6974 | 0 | 0 |
-| ntnu | 1503 | 250 | 0 | 1209 | 60 | 0 | 3 |
+| ntnu | 1788 | 302 | 0 | 1425 | 92 | 0 | 5 |
 | oslomet | 1996 | 0 | 0 | 0 | 1996 | 0 | 13 |
 | phs | 967 | 21 | 962 | 0 | 64 | 0 | 0 |
 | samas | 68 | 0 | 68 | 0 | 0 | 0 | 0 |
@@ -218,7 +218,7 @@ All years, by institution:
 
 | Institution | Some year provisional | All | With students | With exam registrations and credits |
 |:---|:---|:---|:---|:---|
-| fhs | FALSE | 46 / 100 (46%) |  |  |
+| fhs | FALSE | 1053 / 3323 (32%) |  |  |
 | himolde | FALSE | 48 / 100 (48%) | 43 / 59 (73%) | 42 / 55 (76%) |
 | hiof | FALSE | 11864 / 24063 (49%) | 10499 / 17087 (61%) | 9609 / 14296 (67%) |
 | hivolda | FALSE | 4988 / 12913 (39%) | 4513 / 10386 (43%) | 3955 / 9006 (44%) |
@@ -232,7 +232,7 @@ All years, by institution:
 | nmbu | FALSE | 12 / 1438 (1%) | 10 / 998 (1%) | 8 / 879 (1%) |
 | nmh | FALSE | 61 / 100 (61%) | 46 / 57 (81%) | 37 / 42 (88%) |
 | nord | FALSE | 10679 / 19459 (55%) | 8182 / 13181 (62%) | 7359 / 11484 (64%) |
-| ntnu | FALSE | 32201 / 33704 (96%) | 24596 / 25160 (98%) | 22483 / 22799 (99%) |
+| ntnu | FALSE | 38413 / 40201 (96%) | 29230 / 29876 (98%) | 26713 / 27076 (99%) |
 | oslomet | FALSE | 15643 / 17639 (89%) | 13201 / 13720 (96%) | 12103 / 12335 (98%) |
 | phs | FALSE | 170 / 1144 (15%) | 123 / 523 (24%) | 116 / 456 (25%) |
 | samas | FALSE | 0 / 68 (0%) | 0 / 37 (0%) | 0 / 8 (0%) |
@@ -601,8 +601,8 @@ Figures are in the tables above; the notes say why.
   2024-2025), whose embedded JSON holds the plan of that year only; the
   json block reader (`R/blocks.R`) takes the year of the row
 - Harvests until 2026-10-17 fetched one page per course code, the URL of
-  its first offering, and gave it to every year of the course. In
-  release data-2026-10-16, 1,554 of NLA’s 2,074 teacher-ed offerings
+  its first offering, and gave it to every year of the course. In the
+  data built on 2026-10-16, 1,554 of NLA’s 2,074 teacher-ed offerings
   have another year’s page and so no plan (a plan for 2-8 % of the
   course-years 2018-2023), and 271 carry the HTTP 404 of the one URL
   requested for their course. Their own pages are fetched by a retry

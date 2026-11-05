@@ -72,9 +72,10 @@ twice); keeping the plans of all courses that have a teacher-ed offering
 frame and change with every harvest of other courses). *Consequence:* on
 2026-10-16 the raw store held only teacher-ed offerings (41 025), so
 both frames held the same data, and the teacher-ed files were byte for
-byte those of release data-2026-10-16. The releases, the browsers and
-these notes use the teacher-ed frame; the data notes all courses.
-*Since:* 2026-10-16.
+byte those of release data-2026-10-16 (retired on 2026-11-04, see “No
+release until coding starts”). The releases, the browsers and these
+notes use the teacher-ed frame; the data notes all courses. *Since:*
+2026-10-16.
 
 **An offering keeps its first `course_id`.** The id is
 `{institution}_{code}_{year}_{semester}_{status}`, and a later DBH
@@ -295,20 +296,20 @@ variable is documented in `data/variables.csv`.** `Årstall` is `year`,
 values stay DBH’s (Norwegian names, DBH’s codes). `data/variables.csv`
 gives each variable of the published files its type, source (the column
 of DBH table 208, or how the pipeline gives it), meaning and codes, and
-its name in the releases up to data-2026-10-16; it is released with the
-data. *Why:* DBH’s names mix Norwegian words, abbreviations and
-punctuation (`NUS-kode`, `Underv.språk`), and two do not say what they
-hold (`Navn` is the language of instruction, `Oppgave (ny fra h2012)`
-whether the course is a thesis); the release of all higher education is
-to be documented once, before users outside the project read it.
-*Rejected:* keeping DBH’s names with a codebook (the names would still
-need backticks in code and explaining in every analysis); translating
-the values too (they are DBH’s codes and names, which users look up in
-DBH). *Consequence:* the release schema changes once: the same files,
-rows and values under the new names, with `year_from` and `year_to`
-integer (double before). DBH’s snapshots and the raw files of the
-harvests until 2026-10-16 keep DBH’s names, which the pipeline renames
-when it reads them; data of release data-2026-10-16 or earlier are
+its name until 2026-10-16; it is released with the data. *Why:* DBH’s
+names mix Norwegian words, abbreviations and punctuation (`NUS-kode`,
+`Underv.språk`), and two do not say what they hold (`Navn` is the
+language of instruction, `Oppgave (ny fra h2012)` whether the course is
+a thesis); the release of all higher education is to be documented once,
+before users outside the project read it. *Rejected:* keeping DBH’s
+names with a codebook (the names would still need backticks in code and
+explaining in every analysis); translating the values too (they are
+DBH’s codes and names, which users look up in DBH). *Consequence:* the
+release schema changes once: the same files, rows and values under the
+new names, with `year_from` and `year_to` integer (double before). DBH’s
+snapshots and the raw files of the harvests until 2026-10-16 keep DBH’s
+names, which the pipeline renames when it reads them; data built until
+2026-10-16 (such as the coding project’s copy of data-2026-10-15) are
 renamed by the pairs in `data/variables.csv` (`docs/data-files.md`
 “Variables”). *Since:* 2026-10-16.
 
@@ -495,7 +496,31 @@ files, which rewrites frozen data. *Since:* 2026-10-06. The store is
 Parquet since 2026-10-16 (one file per institution, DBH year and harvest
 run), converted one to one from the RDS files: a format change only,
 which leaves every offering, plan and section of release data-2026-10-16
-as it was.
+as it was. No release is finalized now (see the next entry): the raw
+files of the retired releases stay read-only and listed in
+`tests/snapshots/raw_manifest.csv`, and the build checks only them.
+
+**No release until coding starts; the releases of 2026-10-15 and
+2026-10-16 are retired.** No finalized release exists until the coding
+of plans begins; the first is then finalized with `finalize_release()`
+and handed over with `release_data()`. The releases data-2026-10-15 and
+data-2026-10-16 were retired on 2026-11-04: their kept offerings, plans
+and sections (`data/releases/`) were deleted (a restic snapshot tagged
+`pre-unrelease` holds them); their git tags stay, and so do the
+read-only mode of their raw files and the raw manifest, now the guard of
+the append-only raw store. *Why:* coding had not started and no research
+assistants were hired, so no coded plan depended on them, while every
+fix since (sections, anonymization) showed up as changes to a frozen
+release that each commit had to explain. *Rejected:* keeping the
+releases and explaining every `frozen_check` row until the next release
+(work that protects no coding); a full undo that also deletes the git
+tags and unlocks the raw files (the tags are pushed, and the read-only
+raw files and their manifest still guard the raw store). *Consequence:*
+`frozen_check` lists only raw files changed or missing until the first
+real release. The coding project’s sample still names data-2026-10-15
+and its `plan_content_id`s; when coding starts, `release_data()` writes
+the crosswalk from that copy to the new release
+(`plan_id_crosswalk.csv`, `sections_changed.csv`). *Since:* 2026-11-04.
 
 **Pages that gave no plan can be fetched again before a release, except
 pages not found:** `harvest_all(retry = TRUE)` fetches the offerings
@@ -1435,9 +1460,9 @@ in them, and the spec has approval stamps out. *Rejected:* one more rule
 per layout, which the next layout escapes. *Consequence:* 1,345 of 4,272
 USN texts change; about 20 staff names no longer appear in the
 all-courses data; plans that differed only in their stamps are one plan
-now (teacher-ed frame: USN 1,181 → 1,177 unique plans). The finalized
-releases (2026-10-15, 2026-10-16) hold none of these names. *Since:*
-2026-10-29.
+now (teacher-ed frame: USN 1,181 → 1,177 unique plans). The releases of
+2026-10-15 and 2026-10-16 (retired on 2026-11-04) held none of these
+names. *Since:* 2026-10-29.
 
 **The privacy check looks for approvers, and USN’s stamps outside the
 block lose their names.** `privacy_check` also looks for approvers’
@@ -1463,8 +1488,28 @@ name before the reading list, which flags headings such as “Further
 Reading” or “Se Leganto”. “Revidert av <name>” stays: reading lists
 credit a book’s revisers so. *Consequence:* 10 of about 8,400 distinct
 USN texts (pages and plan texts) change, in these lines only; none of
-the six courses is in the teacher-ed frame or the finalized releases.
-*Since:* 2026-10-30.
+the six courses is in the teacher-ed frame or the releases of 2026-10-15
+and 2026-10-16. *Since:* 2026-10-30.
+
+**“Sensor” in a title is not a role.** A role word in a sentence takes
+the names after it (“faglærer <name>”), and “sensor” is one of the
+roles. A capitalised “Sensor” after a capitalised word, followed by a
+space, is now the English word in a title and takes nothing: “Multi
+Sensor Data Fusion - Using fuzzy logic and neural networks” (a USN
+course in the DBH data) had lost “Data Fusion” as a name, and
+`privacy_check`, which uses the same pattern, flagged the course name.
+*Why:* the title is plan text and metadata, not a name. *Rejected:* the
+same exception for every capitalised role after a capitalised word (“…
+Koordinator Programme …”): in the raw text of the built partitions on
+2026-11-04 this layout occurs 40 times on 40 pages (UiT 32, USN 8), and
+every one names a person (“Academic Coordinator <name>”, “Vice Dean
+<name>”, “Programme Coordinator <name>”, and UiT timetable cells
+“Forelesning: <name>”); all 40 would have kept the name. Of 184,167 DBH
+course and programme names, only this one title matched the pattern. A
+sensor named in the raw text follows a lower-case role (“Ekstern sensor
+er <name>”), which still loses the name. *Consequence:* no page text of
+the built partitions changes; the one DBH course name keeps its title
+and is no longer flagged. *Since:* 2026-11-04.
 
 ## Sections
 
