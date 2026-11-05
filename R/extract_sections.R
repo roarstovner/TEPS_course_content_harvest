@@ -131,6 +131,7 @@ page_sections <- function(blocks, text, cfg) {
   out <- .fill_pointer_sections(out, blocks, cfg$pointer)
   out <- .split_inline_coursework(out, labels = isTRUE(cfg$inline_coursework))
   for (s in c("teaching_methods", "course_content")) out <- .split_inline_coursework(out, "heading", s)
+  out <- .split_lo_intro(.move_sentences(out, cfg$institution), cfg$institution)
   out <- .split_inline_prerequisites(out)
   .clean_sections(out, cfg$institution)
 }
@@ -529,13 +530,18 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # "Oppmøte undervisning: minimum 80%." (nord, uit, ntnu). The spec puts it in
 # coursework requirements. Not attendance in praksis, which is how a practice
 # course is assessed ("For å bestå praksis må studenten ... ha 100 %
-# oppmøte").
+# oppmøte"). With "Det er" before it, an obligation says it is required
+# ("Det er obligatorisk deltakelse på samlingene.", "Det er krav om 90 %
+# deltakelse på samlingene.", phs); so does "All undervisning er
+# obligatorisk".
 .attendance_sentence_regex <- paste0(
-  "(*UCP)(?i)^\\s*(?=[^\\t]{0,120}$)(?!.*praksis)(?=.*(?:\\d ?(?:%|prosent)|\\balle?\\b))",
-  "(?:(?:obligatorisk|mandatory|compulsory|krav om|minimum|minst|min\\.)\\s+)*",
-  "(?:\\d+ ?(?:%|prosent)\\s+(?:\\w+\\s+){0,2}?)?(?:deltakelse|deltaking|deltagelse|oppmøte|frammøte|",
-  "fremmøte|tilstedeværelse|nærvær|attendance|participation)\\b[^.]{0,80}\\b(?:undervisning|seminar|",
-  "forelesning|samling|teaching|lecture|class|kurs|workshop|øving|lab)\\w*[^.]{0,40}\\.?\\s*$")
+  "(*UCP)(?i)^\\s*(?=[^\\t]{0,120}$)(?!.*praksis)(?:",
+  "alle? (?:undervisning|samling|seminar|forelesning)\\w* er obligatorisk\\w*\\b[^.]{0,80}\\.?\\s*$|",
+  "(?:det er (?=[^.]*(?:obligatorisk|krav))|(?=.*(?:\\d ?(?:%|prosent)|\\balle?\\b)))",
+  "(?:(?:obligatorisk|mandatory|compulsory|krav (?:om|til)|minimum|minst|min\\.)\\s+)*",
+  "(?:(?:\\d+|hundre) ?(?:%|prosent)\\s+(?:\\w+\\s+){0,2}?)?(?:å delta|deltakelse|deltaking|deltagelse|",
+  "oppmøte|frammøte|fremmøte|tilstedeværelse|nærvær|attendance|participation)\\b[^.]{0,80}\\b(?:undervisning|",
+  "seminar|forelesning|samling|teaching|lecture|class|kurs|workshop|øving|lab)\\w*[^.]{0,40}\\.?\\s*$)")
 # A sentence that a gate label opens inside a paragraph (uit 2008: "...
 # supervisor. Mandatory course work: Attendance is mandatory in all seminars
 # ..."); not "Arbeidskrav: 20 timer", a workload line (uis).
@@ -731,6 +737,59 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   out
 }
 
+# Sentences that the page writes under one section but that belong to
+# another (course_plan_spec.md), per institution: each `from` section's
+# sentences matching `rx` join the `to` section. phs: the feedback on the
+# arbeidskrav, written under "Vurdering" before the exam ("Studentene blir
+# vurdert underveis gjennom arbeidskrav, og får tilbakemeldinger på disse
+# ...", "Noen av tilbakemeldingene vil gjennomføres som en
+# utviklingssamtale"), is about the coursework requirements, not the
+# assessment; "Deler av mappen vil være gjenstand for en avsluttende
+# vurdering." under teaching says what is assessed. The continuous assessment
+# of the dog-handler courses ("Studenten/ekvipasjen blir vurdert gjennom hele
+# utdanningen ...") is their assessment and stays.
+.sentence_moves <- list(
+  phs = list(
+    list(from = "assessment", to = "coursework_requirements", rx = paste0(
+      "(?i)\\bvurdert underveis gjennom arbeidskrav|^\\s*arbeidskravene blir vurdert underveis|",
+      "^\\s*det gis tilbakemeldinger? på disse\\b|tilbakemeldingene (?:vil )?gjennomføres som en utviklingssamtale")),
+    list(from = "teaching_methods", to = "assessment",
+         rx = "(?i)^\\s*deler av mappen (?:vil )?(?:være|er) gjenstand for (?:en )?avsluttende vurdering")
+  )
+)
+.move_sentences <- function(out, institution) {
+  for (m in .sentence_moves[[institution %||% ""]]) {
+    i <- which(out$section == m$from)
+    if (length(i) != 1) next
+    x <- .strip_sentences(out$raw_text[i], m$rx, taken = TRUE)
+    if (!length(x$taken)) next
+    out$raw_text[i] <- x$rest
+    out <- .append_section(out, m$to, paste(x$taken, collapse = "\n"))
+  }
+  out
+}
+
+# Lines under the learning-outcomes heading before the first group label
+# ("Kunnskap") that describe the subject, not the outcomes, go to
+# course_content (phs's instructor courses: "Pedagogikk i
+# instruktørutdanningen vektlegger ...", "Fagdidaktikken binder faget og
+# pedagogikken sammen."); a lead-in ("Etter gjennomført emne har studenten
+# følgende læringsutbytte:") or a paragraph about the outcomes stays.
+.lo_intro_content <- "phs"
+.split_lo_intro <- function(out, institution) {
+  i <- which(out$section == "learning_outcomes")
+  if (!isTRUE(institution %in% .lo_intro_content) || length(i) != 1) return(out)
+  lines <- stringr::str_split_1(out$raw_text[i], "\n")
+  group <- which(grepl(.lo_group_label, tolower(sub("[:：]\\s*$", "", trimws(lines))), perl = TRUE))[1]
+  if (is.na(group) || group == 1) return(out)
+  intro <- seq_len(group - 1)
+  move <- intro[!grepl("(?i)læringsutbytte|learning outcome|[:：]\\s*$", lines[intro], perl = TRUE) &
+                  nzchar(trimws(lines[intro]))]
+  if (!length(move)) return(out)
+  out$raw_text[i] <- trimws(stringr::str_replace_all(paste(lines[-move], collapse = "\n"), "\n[ \t]*(?:\n[ \t]*)+\n", "\n\n"))
+  .append_section(out, "course_content", paste(lines[move], collapse = "\n\n"))
+}
+
 # A line that names what follows rather than saying it: ends with a colon, or
 # is short and does not end a sentence. "Arbeidskrav 3: credo" says it.
 .is_label <- function(lines) {
@@ -839,8 +898,8 @@ extract_sections <- function(config, html, extracted_text, course_id) {
            "\tKarakterregel:[ \t]*\nGodkjent – ikke godkjent[ \t]*")
 )
 
-# Sentences of exam logistics and costs, in any section (course_plan_spec.md:
-# plan text, but in no section), per institution. hvl: what Studentweb or the
+# Sentences of exam logistics, costs and workload, in any section
+# (course_plan_spec.md: plan text, but in no section), per institution. hvl: what Studentweb or the
 # learning platform announces ("Tid og sted for eksamen blir opplyst på
 # Studentweb.", "Innleveringsfrist blir oppgitt på Studentweb og digitalt
 # eksamenssystem.", "Tid og stad for eksamen blir gitt på Canvas."), when the
@@ -848,7 +907,10 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # student pays ("Kr 400 i materialpenger betales inn ved studiestart",
 # "Materialkostnader (kr 500) må dekkes av studentene.", an excursion's
 # "egenandel" or price); a sentence that also names a coursework requirement
-# stays.
+# stays. phs: the workload ("Omfanget på videreutdanningen er anslått til ca.
+# 420 timer.", "Utdanningen er estimert til ca. 210 timer."); the hours of the
+# gatherings ("Samlingene utgjør inntil 105 timer ...") say how the course is
+# taught and stay.
 .logistics_sentences <- list(
   hvl = paste0(
     "(?i)studentweb|",
@@ -858,7 +920,8 @@ extract_sections <- function(config, html, extracted_text, course_id) {
     "\\b(?:januar|februar|mars|april|mai|juni|juli|august|september|oktober|november|desember)\\b|",
     "^(?![^\\n]*arbeidskrav)[^\\n]*(?:materialpeng|materialkostnad|kostpeng|e(?:i)?genandel|",
     "\\bkr\\.?[ \\t]?\\d|\\d[ \\t]?kr\\b)"
-  )
+  ),
+  phs = "(?i)^\\s*(?=.*\\btimer\\b)(?:[^\\s.]+\\s+){1,4}?er\\s+(?:totalt\\s+)?(?:anslått|estimert)\\s+til\\b"
 )
 
 # Approval stamps, in any section (course_plan_spec.md: out of the sections):
@@ -877,19 +940,23 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 )
 
 # The sentences of a text that match `rx` go (.sentence_end), and a line
-# left empty with them.
-.strip_sentences <- function(text, rx) {
-  if (is.na(text)) return(text)
+# left empty with them. With `taken`, a list of the text left (`rest`) and
+# the sentences that went, a line each (`taken`).
+.strip_sentences <- function(text, rx, taken = FALSE) {
+  if (is.na(text)) return(if (taken) list(rest = text, taken = character()) else text)
   lines <- stringr::str_split_1(text, "\n")
   gone <- logical(length(lines))
+  out <- character()
   for (k in seq_along(lines)) {
     s <- stringr::str_split_1(lines[k], .sentence_end)
     drop <- stringr::str_detect(s, rx)
     if (!any(drop)) next
+    out <- c(out, trimws(paste(s[drop], collapse = "")))
     lines[k] <- trimws(paste(s[!drop], collapse = ""))
     gone[k] <- !nzchar(lines[k])
   }
-  paste(lines[!gone], collapse = "\n")
+  rest <- paste(lines[!gone], collapse = "\n")
+  if (taken) list(rest = rest, taken = out) else rest
 }
 
 .strip_section_noise <- function(text, institution = NULL) {

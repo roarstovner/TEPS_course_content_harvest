@@ -129,7 +129,11 @@ Other fields:
   approval, attendance or a passed test a condition for the exam ("Arbeidskrav
   må være godkjent før studenten kan framstille seg til eksamen") moves alone
   (`.gate_sentence_regex`); one about the exam's own parts, a row of an exam
-  table or one that counts towards the grade stays.
+  table or one that counts towards the grade stays. So does compulsory
+  attendance stated alone, from assessment, teaching methods and course
+  content ("70 % obligatorisk deltakelse på seminarundervisning", "Det er
+  obligatorisk deltakelse på samlingene.", "All undervisning er
+  obligatorisk."; `.attendance_sentence_regex`).
 - `exam_sessions`: the page lists the exam parts once per exam session
   (ntnu's exam tab: "Ordinær eksamen - Høst 2022", "Utsatt eksamen - …").
   The assessment section and the plan id keep the parts of one session, the
@@ -172,7 +176,16 @@ page itself because its data is in a `<script>`.
 A prerequisites label inside course_content ("Forkunnskapskrav", uit's "Om
 emnet") moves the paragraph it names to prerequisites
 (`.split_inline_prerequisites()`), and a paragraph of 40 or more characters
-that its section repeats is kept once.
+that its section repeats is kept once. Sentences an institution writes
+under the wrong section move to the right one (`.sentence_moves`): phs's
+feedback on the arbeidskrav, written under "Vurdering" ("Studentene blir
+vurdert underveis gjennom arbeidskrav, og får tilbakemeldinger ..."), to
+coursework requirements, and "Deler av mappen vil være gjenstand for en
+avsluttende vurdering." from teaching methods to assessment. At phs the
+paragraphs under "Læringsutbytte" before "Kunnskap" that describe the
+subject, not the outcomes ("Pedagogikk i instruktørutdanningen vektlegger
+..."), go to course content (`.split_lo_intro()`); a lead-in ("Etter
+gjennomført emne har studenten følgende læringsutbytte:") stays.
 
 `.clean_sections()` removes `.drop` rows, strips page widgets, pointers and
 stock logistics sentences from assessment/coursework (`.section_noise`: uib
@@ -181,7 +194,8 @@ sentence, …; notices about the assessment such as AI, plagiarism and COVID
 rules stay, and so do exam tables with their header row), removes logistics
 and cost sentences from every section (`.logistics_sentences`: hvl's "Tid og
 sted for eksamen blir opplyst på Studentweb.", exam dates, material fees and
-excursion prices), removes admission
+excursion prices; phs's workload, "Omfanget på videreutdanningen er anslått
+til ca. 420 timer."), removes admission
 and study-right sentences, pointers to the admission rules and "Ingen utover
 opptakskravet." from prerequisites, keeping a sentence that also names a
 prerequisite (`.strip_admission_lines()`), drops

@@ -484,12 +484,14 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
                          "\\s+", .wrapped("online"))
 
 # Government documents: laws, regulations, white papers, propositions, NOUs,
-# curricula, conventions and what ministries and directorates publish. Their
-# dates and session years are content and stay (user decision 2026-10-08): "Meld. St. 21 (2016–2017)", "Ny opplæringslov fra 01.08.24",
-# "fastsatt av Kunnskapsdepartementet 7. juni 2016".
+# curricula, conventions and what ministries, directorates and the Director
+# of Public Prosecutions publish. Their dates and session years are content
+# and stay (user decision 2026-10-08): "Meld. St. 21 (2016–2017)", "Ny
+# opplæringslov fra 01.08.24", "fastsatt av Kunnskapsdepartementet 7. juni
+# 2016", "Riksadvokaten utga høsten 2023 retningslinjer" (phs).
 .gov_doc_regex <- paste0(
   "(?:(?i:lov(?:en|a|er|ene|data|verk|verket)?s?(?!\\p{L})|forskrift|departement|",
-  "direktorat|storting|regjering|meld\\.[ \\t]?st|st\\.[ \\t]?meld|[os]t\\.[ \\t]?prp|",
+  "direktorat|riksadvokat|storting|regjering|meld\\.[ \\t]?st|st\\.[ \\t]?meld|[os]t\\.[ \\t]?prp|",
   "prop\\.[ \\t]?\\d|innst\\.[ \\t]?\\d|rundskriv|rammeplan|læreplan|kunnskapsløftet|",
   "nasjonale retningslinjer|udir|konvensjon|forente nasjoner|regler|reglement)|NOU)")
 # The date stays when such a document is named up to 80 characters before it

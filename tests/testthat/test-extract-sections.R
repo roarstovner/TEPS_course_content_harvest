@@ -1460,3 +1460,44 @@ test_that("fhs: its own sub-headings of Hva lærer du (section_headings)", {
   expect_false(grepl("opptak til bachelorstudiet", sec["course_content"]))
   expect_false(any(grepl("opptak til bachelorstudiet", out$raw_text)))
 })
+
+test_that("phs: attendance, feedback on the arbeidskrav, workload, the portfolio's assessment, the outcomes' intro", {
+  h2 <- function(x) paste0("<h2>", x, "</h2>")
+  p <- function(x) paste0("<p>", x, "</p>")
+  html <- paste0('<div id="vrtx-content"><h1>Emne</h1>',
+    h2("Innledning"), p("Emnet handler om instruksjon."),
+    h2("Læringsutbytte"), p("Pedagogikk i instruktørutdanningen vektlegger planlegging."),
+    p("Etter gjennomført emne har studenten følgende læringsutbytte:"),
+    h2("Kunnskap"), p("Studenten har kunnskap om didaktikk."),
+    h2("Organisering og læringsaktiviteter"),
+    p(paste("Studiet gjennomføres over 12 måneder. Omfanget på videreutdanningen er anslått til ca. 560 timer.",
+            "Samlingene utgjør inntil 320 timer. Det er 100 % obligatorisk deltakelse på samlingene.")),
+    p("Det er ikke obligatorisk deltakelse på nettmøtene."),
+    p("Studenten jobber med mappen. Deler av mappen vil være gjenstand for en avsluttende vurdering."),
+    h2("Obligatorisk aktivitet"), p("Et skriftlig notat."),
+    h2("Vurdering"),
+    p(paste("Studentene blir vurdert underveis gjennom arbeidskrav, og får tilbakemeldinger på disse.",
+            "Noen av tilbakemeldingene vil gjennomføres som en utviklingssamtale med studentene.")),
+    p("Studiet avsluttes med en muntlig eksamen."), "</div>")
+  out <- extract_sections(get_institution_config("phs"), html, NA_character_, "x")
+  sec <- setNames(out$raw_text, out$section)
+  expect_equal(unname(sec["teaching_methods"]), paste0(
+    "Studiet gjennomføres over 12 måneder. Samlingene utgjør inntil 320 timer.\n",
+    "Det er ikke obligatorisk deltakelse på nettmøtene.\nStudenten jobber med mappen."))
+  expect_match(sec["coursework_requirements"], paste0(
+    "^Et skriftlig notat\\.\\s+Det er 100 % obligatorisk deltakelse på samlingene\\.\\s+",
+    "Studentene blir vurdert underveis gjennom arbeidskrav.*utviklingssamtale med studentene\\.$"))
+  expect_equal(unname(sec["assessment"]), paste0(
+    "Studiet avsluttes med en muntlig eksamen.\n\nDeler av mappen vil være gjenstand for en avsluttende vurdering."))
+  expect_match(sec["course_content"], "^Emnet handler om instruksjon\\.\\s+Pedagogikk i instruktørutdanningen")
+  expect_match(sec["learning_outcomes"], "^Etter gjennomført emne har studenten følgende læringsutbytte:\\s+Kunnskap")
+  # the attendance sentence with "Det er" or "All ... er obligatorisk" moves at
+  # every institution; not without an obligation
+  att <- c("Det er obligatorisk deltakelse på samlingene.", "Det er krav om minimum 80 prosent deltakelse på samlingene.",
+           "Det er hundre prosent obligatorisk deltagelse på samlingene.", "Det er obligatorisk å delta på samlingene.",
+           "All undervisning er obligatorisk, med krav om aktiv deltakelse.")
+  for (a in att) expect_match(a, .attendance_sentence_regex, perl = TRUE)
+  for (a in c("Det er ikke obligatorisk deltakelse på samlingene.",
+              "Studiearbeidet omfatter gruppearbeid og deltakelse i undervisning."))
+    expect_no_match(a, .attendance_sentence_regex, perl = TRUE)
+})

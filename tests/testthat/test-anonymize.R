@@ -991,11 +991,14 @@ test_that("admin dates go, government documents keep theirs", {
             "LOV-1998-07-17-61 (sist endret 1.1.2018)",
             "forskrift om rammeplan, fastsatt av Kunnskapsdepartementet 7. juni 2016",
             "Ny læreplan som trer i kraft høsten 2020.",
+            "Riksadvokaten utga høsten 2023 retningslinjer for politiavhør av barn.",
             "https://www.stortinget.no/dokumentserien/2020-2021/dok3.pdf",
             "https://student.oslomet.no/m5glu-fagplan-engelsk-2018-2019",
             "rapporter/2016/ungkost-rapport-24.06.16.pdf")
   for (x in keep) expect_equal(an("usn", x), x, info = x)
   expect_equal(an("nla", "Studieår: 2019 — 2020"), "Studieår:")
+  expect_equal(an("phs", "Etterforskning (Høst 2024)\nRiksadvokaten utga høsten 2023 retningslinjer."),
+               "Etterforskning\nRiksadvokaten utga høsten 2023 retningslinjer.")
   expect_equal(an("usn", "Godkjent 9.3.21.\nEmneplan godkjent 25.03.25\nGodkjent av instituttleder 18.10.22"),
                "Godkjent\nEmneplan godkjent\nGodkjent av instituttleder")
   expect_equal(an("nord", "Oppsatt skoleeksamen 16.12.20 gjøres om."), "Oppsatt skoleeksamen gjøres om.")

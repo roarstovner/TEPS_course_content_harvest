@@ -1014,7 +1014,9 @@ the same line: laws and regulations, white papers and propositions
 ("Meld. St. 21 (2016–2017)", "Prop. 57 L (2022–2023)"), NOUs, curricula and
 framework plans, national guidelines, conventions, and what the Storting,
 ministries and directorates publish ("Ny opplæringslov fra 01.08.24",
-"fastsatt av Kunnskapsdepartementet 7. juni 2016"). *Why:* these dates say
+"fastsatt av Kunnskapsdepartementet 7. juni 2016"), and from 2026-11-05 the
+Director of Public Prosecutions ("Riksadvokaten utga høsten 2023
+retningslinjer ...", PHS; 1 plan). *Why:* these dates say
 which document is cited; they are content, not administration (decided
 2026-10-08). *Rejected:* removing session years with the other academic-year
 ranges, which turned "Meld. St. 21 (2016–2017)" into "Meld. St. 21" (2026-09). *Consequence:* 185 plans keep such dates; an access date next to a
@@ -1920,6 +1922,48 @@ gain "Opptakskrav", 6 lose a section that held only organisation text, 14
 lose such text), 28 teaching-methods sections gain it, and 35
 course-content sections lose the "Målgruppe" paragraph. `course_plan` and
 the plan ids do not change. *Since:* 2026-11-05.
+
+**PHS: attendance and feedback on coursework go to coursework requirements,
+the workload out of the sections, the portfolio's final assessment to
+assessment, and the subject text before the outcomes to course content.**
+PHS writes compulsory attendance under "Organisering og læringsaktiviteter"
+as "Det er (krav om) (100 %) obligatorisk deltakelse på samlingene." or "All
+undervisning er obligatorisk"; the sentence for attendance stated alone
+now also reads these forms, at every institution ("Det er" with
+"obligatorisk" or "krav", or "All(e) undervisning/samlinger ... er
+obligatorisk"; "Det er ikke obligatorisk deltakelse ..." stays). PHS's
+feedback on the arbeidskrav, written under "Vurdering" before the exam
+("Studentene blir vurdert underveis gjennom arbeidskrav, og får
+tilbakemeldinger på disse ...", "Noen av tilbakemeldingene vil gjennomføres
+som en utviklingssamtale"), moves to coursework requirements; "Deler av
+mappen vil være gjenstand for en avsluttende vurdering." moves from
+teaching methods to assessment; the workload sentence ("Omfanget på
+videreutdanningen er anslått til ca. 420 timer.") goes from the sections;
+and the instructor courses' paragraphs under "Læringsutbytte" before
+"Kunnskap" that describe the subject ("Pedagogikk i instruktørutdanningen
+vektlegger ...", "Fagdidaktikken binder faget og pedagogikken sammen.") go
+to course content, while a lead-in ("Etter gjennomført emne har studenten
+følgende læringsutbytte:") stays. *Why:* the pilot sections audit of PHS
+(2026-11-03) found them in the wrong section; by the spec, coursework
+requirements hold compulsory attendance, assessment the final assessment
+design, course content the subject, and workload belongs to no section.
+*Rejected:* moving the dog-handler courses' continuous assessment
+("Studenten/ekvipasjen blir vurdert gjennom hele utdanningen ...", the
+assessment those courses have) out of assessment; dropping the hours of the
+gatherings ("Samlingene utgjør inntil 320 timer ..."), which say how the
+course is taught; dropping PHS's credit-recognition text in course content
+("ikke aktuelt med godskrivinger eller fritak", 4 plans) by sentence, which
+would leave HUNDBOMBE's list of creditable parts without its lead; moving
+the PHS feedback, portfolio and intro rules to every institution (measured
+only at PHS). *Consequence:* of PHS's 142 plans (2026-11-05 build), 80 lose
+an attendance sentence from teaching methods, 89 the workload, 56 the
+feedback from assessment, 5 the portfolio sentence from teaching methods,
+and 9 the subject paragraphs from learning outcomes; 4 plans gain a
+coursework section (124 to 128). The attendance forms move sentences in
+about 1,230 plans at other institutions (counted on the plan sections of
+2026-11-05): NTNU 528, UiA 203, HiVolda 124, UiT 112, Nord 87, HVL 49, USN
+48, HiØF 33, NLA 18, INN 10, OsloMet 9, UiO 7, FHS 4, UiB 1. `course_plan`
+and the plan ids do not change. *Since:* 2026-11-05.
 
 **Placeholders are dropped** ("Ingen", "-", "Se fagplanen.", reading-list
 pointers; since 2026-10-01). From 2026-10-29 the list also holds HVL's "_"
