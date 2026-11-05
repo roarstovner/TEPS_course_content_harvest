@@ -103,6 +103,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- nord: unmapped 'Adgangsregulering' block drops prior-course requirements from prerequisites (~122 plans) (#497)
+- Sections: attendance requirements the widened rule still misses stay in teaching_methods/assessment (ntnu, uia, uit, nord, hivolda, fhs, phs) (#496)
 - Refresh the all-frame metrics snapshot after the next build (user 2026-11-05) (#493)
 - Anonymizer: government-document guard misses 'Riksadvokaten utga høsten 2023 retningslinjer' (date removed; phs pilot audit 2026-11-03) (#487)
 - phs sections: attendance sentence in teaching_methods, formative feedback in assessment, workload in teaching_methods, portfolio design under teaching, intro paragraphs in learning outcomes (pilot audit 2026-11-03) (#486)
