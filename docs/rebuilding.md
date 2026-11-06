@@ -195,8 +195,11 @@ DBH columns as they were at the harvest (under DBH’s names until
 `read_raw()` gives the rows in the order they were harvested (which
 offering a plan’s text comes from depends on it). `extracted_text` is
 kept only for a row without `html`, text read from a PDF, the raw data
-there; uis keeps the PDF’s bytes too (`pdf`, since 2026-10-16).
-Elsewhere `tar_make()` rebuilds the text from `html`.
+there; uis keeps the PDF’s bytes too (`pdf`, since 2026-10-16), and
+Steiner keeps each subject PDF on the first row its text joined to, the
+other rows of that PDF `NULL` (since 2026-11-06: a PDF holds some 7
+offerings’ emner, so a copy per row would add ~20 MB a run). Elsewhere
+`tar_make()` rebuilds the text from `html`.
 
 The format changed once, on 2026-10-16; the content did not. The RDS raw
 files of the harvests before (`data/raw/html_{inst}.RDS`, the first

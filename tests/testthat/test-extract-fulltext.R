@@ -120,6 +120,26 @@ test_that("steiner: a PDF emne joins the bachelor's DBH name, PEL1.4/1.5 also th
   expect_equal(key("Pedagogikk og elevkunnskap 1, emne 4")[[1]][2], "pedagogikk og elevkunnskap2, emne 1")
 })
 
+test_that("steiner: PEL1.4 and M-PEL2.1 both get the plan, each PDF is kept once, read from memory", {
+  pdfs <- list(charToRaw("%PDF pel"), charToRaw("%PDF nor"))
+  rlang::local_bindings(
+    robots_allows = function(url, ...) rep(TRUE, length(url)),
+    .steiner_get_pdf_url = function(w) if (grepl("pedagogikk|norsk", w)) paste0(w, ".pdf") else NA_character_,
+    .steiner_download_pdf = function(u) pdfs[[1 + grepl("norsk", u)]],
+    .steiner_extract_emner_from_pdf = function(pdf, subject, wrapper_url) tibble::tibble(
+      pdf_emne_name = paste(subject, "1, emne", if (identical(pdf, pdfs[[1]])) 4 else 1:2),
+      url = wrapper_url, extracted_text = paste(subject, "plan")),
+    .env = globalenv())
+  df <- tibble::tibble(url = NA_character_, course_name = c(
+    "Matematikk1, emne 1", "Pedagogikk og elevkunnskap 2, emne 1", "Norsk1, emne 2",
+    "Pedagogikk og elevkunnskap1, emne 4", "Norsk1, emne 1"))
+  out <- suppressMessages(harvest_pdf_split(df, get_institution_config("steiner")))
+  expect_equal(out$extracted_text, c(NA, "Pedagogikk og elevkunnskap plan", "Norsk plan",
+                                     "Pedagogikk og elevkunnskap plan", "Norsk plan"))
+  expect_equal(out$pdf, list(NULL, pdfs[[1]], pdfs[[2]], NULL, NULL))
+  expect_false("local_path" %in% names(out))
+})
+
 test_that("uio: the exam-help block and BinaryValueReference go, a login page has no text", {
   cfg <- .block_cfg(get_institution_config("uio"))
   html <- "<div id='vrtx-content'><div id='vrtx-main-content'><h3>Eksamensspråk</h3><p>Norsk</p>

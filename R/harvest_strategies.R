@@ -264,7 +264,6 @@ harvest_pdf_split <- function(df, config) {
     df$html_error <- rep(why, nrow(df))
     return(df)
   }
-  dir.create("temp/steiner", showWarnings = FALSE, recursive = TRUE)
 
   # --- Extract PDF URLs from wrapper pages ---
   wrapper_pages <- wrapper_pages |>
@@ -273,15 +272,12 @@ harvest_pdf_split <- function(df, config) {
 
   message("Found ", nrow(wrapper_pages), " PDF URLs")
 
-  # --- Download PDFs ---
-  wrapper_pages <- wrapper_pages |>
-    dplyr::mutate(
-      local_path = purrr::map2_chr(pdf_url, subject, .steiner_download_pdf)
-    )
+  # --- Download PDFs (each harvest fetches them anew, into memory) ---
+  wrapper_pages$pdf <- purrr::map(wrapper_pages$pdf_url, .steiner_download_pdf)
 
   # --- Extract emne sections ---
   pdf_emner <- purrr::pmap_dfr(
-    list(wrapper_pages$local_path, wrapper_pages$subject, wrapper_pages$wrapper_url),
+    list(wrapper_pages$pdf, wrapper_pages$subject, wrapper_pages$wrapper_url),
     .steiner_extract_emner_from_pdf
   )
 
@@ -318,6 +314,17 @@ harvest_pdf_split <- function(df, config) {
     dplyr::select(-join_key)
 
   message(sum(!is.na(df$extracted_text)), "/", nrow(df), " rows with extracted text")
+  .steiner_keep_pdf(df, wrapper_pages)
+}
+
+# Steiner helper: a subject PDF's bytes on the first row its text joined to
+# (`pdf`, the raw store's binary column), NULL on the others: a PDF holds the
+# emner of some 7 offerings, so a copy per row would add ~20 MB a run.
+.steiner_keep_pdf <- function(df, wrapper_pages) {
+  url <- df$url.y %||% df$url   # the wrapper's URL (the join's)
+  first <- match(wrapper_pages$wrapper_url, ifelse(is.na(df$extracted_text), NA, url))
+  df$pdf <- vector("list", nrow(df))
+  df$pdf[first[!is.na(first)]] <- wrapper_pages$pdf[!is.na(first)]
   df
 }
 
@@ -343,25 +350,18 @@ harvest_pdf_split <- function(df, config) {
   all_pdfs[1]
 }
 
-# Steiner helper: download PDF to temp directory
-.steiner_download_pdf <- function(pdf_url, subject) {
-  filename <- subject |>
-    stringr::str_replace_all("\\s+", "_") |>
-    stringr::str_replace_all("[^A-Za-z0-9_-]", "") |>
-    tolower()
-  local_path <- file.path("temp/steiner", paste0(filename, ".pdf"))
-
-  if (!file.exists(local_path)) {
-    message("  Downloading: ", subject)
-    polite_pause()
-    httr2::req_perform(site_request(pdf_url), path = local_path)
-  }
-  local_path
+# Steiner helper: a PDF's bytes, NULL if the download fails. Not cached on
+# disk: a file kept from an earlier harvest would give last year's plans.
+.steiner_download_pdf <- function(pdf_url) {
+  message("  Downloading: ", basename(pdf_url))
+  polite_pause()
+  tryCatch(httr2::resp_body_raw(httr2::req_perform(site_request(pdf_url))),
+           error = function(e) { message("  ", conditionMessage(e)); NULL })
 }
 
-# Steiner helper: extract emne sections from a PDF
-.steiner_extract_emner_from_pdf <- function(pdf_path, subject, wrapper_url) {
-  pages <- tryCatch(pdftools::pdf_text(pdf_path), error = function(e) NULL)
+# Steiner helper: extract emne sections from a PDF (its bytes or a path)
+.steiner_extract_emner_from_pdf <- function(pdf, subject, wrapper_url) {
+  pages <- if (is.null(pdf)) NULL else tryCatch(pdftools::pdf_text(pdf), error = function(e) NULL)
   if (is.null(pages)) return(tibble::tibble())
 
   emne_pattern <- paste0(

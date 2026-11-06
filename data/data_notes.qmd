@@ -430,10 +430,10 @@ Figures are in the tables above; the notes say why.
 
 ### Steiner (Rudolf Steiner University College)
 
-- Only the plan in force is published (`plan_years = "current"`; see "Year coverage"). Plans come from five subject PDFs at `steinerhoyskolen.no`, split by course heading; the PDFs are not stored, so the split text is the raw data
+- Only the plan in force is published (`plan_years = "current"`; see "Year coverage"). Plans come from five subject PDFs at `steinerhoyskolen.no`, split by course heading; the split text is the raw data. Runs until 2026-10 do not store the PDFs; since 2026-11-06 a run keeps each PDF's bytes on the first row its text joined to (`pdf`), and every harvest downloads the PDFs anew (until then a PDF kept in `temp/steiner/` from an earlier harvest was split again, so a harvest in a later academic year would have read last year's PDFs)
 - The site's robots.txt (read 2026-10-16) disallows `/dokumenter/`, where the five PDFs are, for all user agents. Every Steiner plan comes from that path. Since 2026-10-19 they are fetched by the project lead's decision (open data, five files, negligible traffic), not by a permission from Steiner, which was not asked (`robots_permission` in the config)
 - The five PDFs are those of the bachelor Steinerpedagogisk lærerutdanning: they cover 15 emner of five subjects, which the course names of that programme and of the 1-7 teacher programme (M- codes) match. Of DBH 2025's 125 Steiner course codes (106 without the emne suffix, 244 offerings), the all-courses harvest of 2026-10-19 (2026/27, which joins DBH 2026) found a plan for 30 (60 offerings). The others have no source: the kindergarten teacher programmes, the master in Waldorf education, social pedagogy, further education, the practicum modules (M-LP1/2/3, BDP, BLP, DLP) and the bachelor theses. Until DBH has 2026, Steiner's plans are the 15 offerings of the 2026-04-04 harvest (2025/26)
-- M-PEL2.1/M-PEL2.2 get the PDF's PEL1.4/PEL1.5 plans (`.steiner_remap_pel_emne()`), and since 2026-10-19 the bachelor's PEL1.4/PEL1.5 too; the M-PEL2 match is to be confirmed against the programme description
+- M-PEL2.1/M-PEL2.2 get the PDF's PEL1.4/PEL1.5 plans (`.steiner_remap_pel_emne()`), and since 2026-10-19 (run `2026-10-19_121636`) the bachelor's PEL1.4/PEL1.5 too: before, the remap replaced their key, so the run `2026-10-19` gave those 4 offerings no plan (56 offerings with a plan, then 60). The M-PEL2 match is to be confirmed against the programme description
 
 ---
 

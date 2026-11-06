@@ -826,6 +826,22 @@ offerings get a plan after a retry harvest (`retry = "no_url"`); no
 offering with a page of its own loses its plan (every HiØF page's title
 names its semesters, and none ends before its offering). *Since:* 2026-10-29.
 
+**Steiner: a PDF emne joins the DBH courses of its name, and PEL1.4/PEL1.5
+also M-PEL2.1/M-PEL2.2.** Steiner's five subject PDFs are those of the
+bachelor (Steinerpedagogisk lærerutdanning); their emne headings ("Norsk 1,
+emne 3") are matched to DBH course names, so a PDF emne gives its plan to the
+bachelor's course and to the 1-7 programme's (M- codes) course of the same
+name. The 1-7 programme's M-PEL2 emne 1 and 2 have no name of their own in
+the PDFs and take the plans of PEL1 emne 4 and 5 (`.steiner_remap_pel_emne()`).
+*Why:* the all-courses frame has the bachelor's PEL1 emne 4 and 5 as well as
+M-PEL2; until 2026-10-19 the PEL1.4/PEL1.5 key was replaced by the M-PEL2
+key, so the bachelor's two emner had no plan. *Rejected:* replacing the key
+(the rule before). *Consequence:* in the all-courses harvest of 2026-10-19
+(2026/27), 60 offerings have a plan, 4 more (PEL1 emne 4 and 5, two
+offerings each) than in the run before the fix; the teacher-ed frame has
+M-PEL2 only and does not change. That M-PEL2.1/2.2 are PEL1.4/1.5 is still
+to be confirmed against the programme description. *Since:* 2026-10-19.
+
 ## Unit of analysis: the unique plan
 
 **A plan is a unique anonymized text per institution and course code**

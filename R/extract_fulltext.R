@@ -59,7 +59,8 @@
 #' renders its pages in Chrome and keeps the text; rows the harvest filled from
 #' a PDF (uis archive plans, steiner) have no `html`: their stored text is the
 #' raw data and is returned as is (the PDF itself was not kept until
-#' 2026-10-16; uis keeps it since, in the raw store's `pdf` column).
+#' 2026-10-16; uis keeps it since, steiner since 2026-11-06, in the raw store's
+#' `pdf` column).
 #'
 #' @param df Harvested rows of one institution (`html`, `course_id`;
 #'   `extracted_text` for PDF rows).

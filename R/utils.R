@@ -262,8 +262,9 @@ new_harvest_run <- function(institution, raw_dir = RAW_DIR, time = Sys.time()) {
 #' the harvest gave them, except that `html_error` is kept as text
 #' (fetch_error_text()), `url` as text, and `extracted_text` only where there
 #' is no `html` (text read from a PDF, which is the raw data there; elsewhere
-#' it is rebuilt from the html). A `pdf` column (the PDF's bytes, uis since
-#' 2026-10-16) is stored as binary. `harvest_row` is each row's position in
+#' it is rebuilt from the html). A `pdf` column (the PDF's bytes: uis on each row since
+#' 2026-10-16, steiner on the first row of each subject PDF since 2026-11-06)
+#' is stored as binary. `harvest_row` is each row's position in
 #' the run, so read_raw() gives the rows in the order the harvest returned them.
 #'
 #' @param rows Harvested rows of one institution (harvest_institution()).
