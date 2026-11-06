@@ -219,7 +219,8 @@ gjennomført emne har studenten følgende læringsutbytte:") stays.
 `.clean_sections()` removes `.drop` rows, strips page widgets, pointers and
 stock logistics sentences from assessment/coursework (`.section_noise`: uib
 banner and footer, hvl's "Mer om hjelpemidler" link, oslomet's resit
-sentence, …; notices about the assessment such as AI, plagiarism and COVID
+sentence, himolde's exam system "- Inspera" after the form, a deadline
+weekday as the duration and a start time, …; notices about the assessment such as AI, plagiarism and COVID
 rules stay, and so do exam tables with their header row), removes logistics
 and cost sentences from every section (`.logistics_sentences`: hvl's "Tid og
 sted for eksamen blir opplyst på Studentweb.", exam dates, material fees and

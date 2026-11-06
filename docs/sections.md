@@ -267,19 +267,21 @@ har studenten følgende læringsutbytte:”) stays.
 `.clean_sections()` removes `.drop` rows, strips page widgets, pointers
 and stock logistics sentences from assessment/coursework
 (`.section_noise`: uib banner and footer, hvl’s “Mer om hjelpemidler”
-link, oslomet’s resit sentence, …; notices about the assessment such as
-AI, plagiarism and COVID rules stay, and so do exam tables with their
-header row), removes logistics and cost sentences from every section
-(`.logistics_sentences`: hvl’s “Tid og sted for eksamen blir opplyst på
-Studentweb.”, exam dates, material fees and excursion prices; phs’s
-workload, “Omfanget på videreutdanningen er anslått til ca. 420 timer.”;
-uia’s, ntnu’s and uit’s workload stated alone, “Emnet har et forventet
-arbeidsomfang på rundt 200 timer.”, “Forventet arbeidsinnsats i emnet er
-135 timer.”, but not a split into teaching forms, supervision hours or a
-sentence with a compulsory part), removes admission and study-right
-sentences, pointers to the admission rules and “Ingen utover
-opptakskravet.” from prerequisites, keeping a sentence that also names a
-prerequisite (`.strip_admission_lines()`), drops placeholder-only rows
+link, oslomet’s resit sentence, himolde’s exam system “- Inspera” after
+the form, a deadline weekday as the duration and a start time, …;
+notices about the assessment such as AI, plagiarism and COVID rules
+stay, and so do exam tables with their header row), removes logistics
+and cost sentences from every section (`.logistics_sentences`: hvl’s
+“Tid og sted for eksamen blir opplyst på Studentweb.”, exam dates,
+material fees and excursion prices; phs’s workload, “Omfanget på
+videreutdanningen er anslått til ca. 420 timer.”; uia’s, ntnu’s and
+uit’s workload stated alone, “Emnet har et forventet arbeidsomfang på
+rundt 200 timer.”, “Forventet arbeidsinnsats i emnet er 135 timer.”, but
+not a split into teaching forms, supervision hours or a sentence with a
+compulsory part), removes admission and study-right sentences, pointers
+to the admission rules and “Ingen utover opptakskravet.” from
+prerequisites, keeping a sentence that also names a prerequisite
+(`.strip_admission_lines()`), drops placeholder-only rows
 (`.placeholder_phrases`: “Ingen”, “Se fagplanen.”, “-”, Leganto
 pointers, “Oppgis senere.”, “… ikke publisert ennå”, uit’s “Contact the
 department/faculty.”, “Se fagbeskrivelse med pensum” and its reading

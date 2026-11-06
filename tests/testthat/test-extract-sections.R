@@ -648,6 +648,20 @@ test_that("section leftovers of the 2026-10-05 audit", {
     "Godkjent – ikke godkjent\t\nProsjektskisse\tKarakterregel:\nGodkjent – ikke godkjent\t"))
   expect_equal(.clean_sections(cw, "uit")$raw_text,
                "Følgende arbeidskrav må være godkjent\nTilstedeværelse\nProsjektskisse")
+  # himolde: the exam system, a deadline weekday and a start time go; the
+  # form, the duration and the parts of an intensive week stay
+  hm <- tibble::tibble(section = "assessment", raw_text = paste(
+    "Vurderingsform: Digital skoleeksamen - Insperia", "Form of assessment:Digital school assessment-Inspera",
+    "Group assignment (report)", "Duration: Due date on Thursday at 23:59", "Grouping: Group",
+    "Duration: 30 minutes (per group) – Friday morning, starting at 9:15.",
+    "Duration: 4 assignments are given to students every day (on Monday, Tuesday), deadline for all submissions is on Friday",
+    sep = "\n"))
+  expect_equal(.clean_sections(hm, "himolde")$raw_text, paste(
+    "Vurderingsform: Digital skoleeksamen", "Form of assessment:Digital school assessment",
+    "Group assignment (report)", "Grouping: Group", "Duration: 30 minutes (per group)",
+    "Duration: 4 assignments are given to students every day (on Monday, Tuesday), deadline for all submissions is on Friday",
+    sep = "\n"))
+  expect_equal(.clean_sections(hm, "uit")$raw_text, hm$raw_text)
   # a Leganto tab bar goes; each list keeps its label
   rl <- tibble::tibble(section = "reading_list", raw_text = paste(
     "Norsk, emne 2 (MG1NO2) Drammen", "Norsk 1-7 (MG1NO2) Notodden",

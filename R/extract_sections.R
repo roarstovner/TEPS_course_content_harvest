@@ -1033,6 +1033,17 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   # plans of the practice programmes
   usn  = paste0("(?s)Skikkethetsvurdering\\nKunnskapsdepartementet fastsatte .{0,1500}?",
                 "\\nh\\) [^\\n]*(?:\\n|$)"),
+  # the exam system after the form ("Digital skoleeksamen - Inspera",
+  # "Digital school assessment-Insperia"; the form stays), a deadline
+  # weekday as the duration ("Duration: Due date on Thursday at 23:59") and
+  # a start time after it ("30 minutes (per group) – Friday morning,
+  # starting at 9:15."; the duration stays). Which part is due on which day
+  # of an intensive week (LOG904) is the assessment's design and stays.
+  himolde = c("(?m)[ \t]*[-–][ \t]*Insperi?a[ \t]*$",
+              paste0("(?m)^Duration:[ \t]*Due date on (?:Mon|Tues|Wednes|Thurs|Fri|Satur|Sun)day",
+                     "(?: at \\d{1,2}[:.]\\d{2})?\\.?[ \t]*(?:\n|$)"),
+              paste0("[ \t]*[-–][ \t]*(?:Mon|Tues|Wednes|Thurs|Fri|Satur|Sun)day(?: morning| afternoon)?,? ",
+                     "starting at \\d{1,2}[:.]\\d{2}\\.?")),
   uit  = c("(?m)^Eksamensdato er foreløpig.*$",
            # the grading cell of each row of the 2020s gate table, the same
            # for every gate; the gate's name stays
