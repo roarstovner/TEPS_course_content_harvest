@@ -103,6 +103,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Sections minor: hivolda 'Bestått didaktikkemne 1.' as coursework; fhs unlabelled prior-course text in course_content; resit/examiner logistics in assessment (uit, ntnu, nord, fhs) (#501)
+- uit: placeholder rows ('Contact the faculty.') and admission/progression text (law) in course_content/assessment (#500)
+- uia: course_plan holds only the title in HEL611 2020/2021 and ST-301 2025 (anonymizer over-cut suspected) (#499)
+- uia/ntnu/uit: workload (arbeidsmengde/studentarbeid hours) sentences land in teaching_methods (uia 3,187 plans, ntnu 292, uit 278) (#498)
 - Add FHS (Forsvarets høgskole) (#399)
 - nord: unmapped 'Adgangsregulering' block drops prior-course requirements from prerequisites (~122 plans) (#497)
 - Sections: attendance requirements the widened rule still misses stay in teaching_methods/assessment (ntnu, uia, uit, nord, hivolda, fhs, phs) (#496)
