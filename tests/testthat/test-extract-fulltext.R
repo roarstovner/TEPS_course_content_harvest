@@ -137,6 +137,10 @@ test_that("steiner: PEL1.4 and M-PEL2.1 both get the plan, each PDF is kept once
   expect_equal(out$extracted_text, c(NA, "Pedagogikk og elevkunnskap plan", "Norsk plan",
                                      "Pedagogikk og elevkunnskap plan", "Norsk plan"))
   expect_equal(out$pdf, list(NULL, pdfs[[1]], pdfs[[2]], NULL, NULL))
+  # the wrapper's URL in `url` (the builder's NA one does not split it into url.x/url.y)
+  expect_false(any(c("url.x", "url.y") %in% names(out)))
+  expect_equal(is.na(out$url), is.na(out$extracted_text))
+  expect_match(out$url[2], "pedagogikk-og-elevkunnskap")
   expect_false("local_path" %in% names(out))
 })
 

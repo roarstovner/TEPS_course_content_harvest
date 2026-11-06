@@ -309,7 +309,10 @@ harvest_pdf_split <- function(df, config) {
   # --- Join fulltext ---
   pdf_lookup <- pdf_emner |> dplyr::select(join_key, url, extracted_text)
 
+  # the URL builder's `url` is NA here: the join's is the wrapper's (runs until
+  # 2026-11 split it into url.x, NA, and url.y, and `url` was NA)
   df <- df |>
+    dplyr::select(-dplyr::any_of(c("url", "extracted_text"))) |>
     dplyr::left_join(pdf_lookup, by = "join_key") |>
     dplyr::select(-join_key)
 
@@ -321,8 +324,7 @@ harvest_pdf_split <- function(df, config) {
 # (`pdf`, the raw store's binary column), NULL on the others: a PDF holds the
 # emner of some 7 offerings, so a copy per row would add ~20 MB a run.
 .steiner_keep_pdf <- function(df, wrapper_pages) {
-  url <- df$url.y %||% df$url   # the wrapper's URL (the join's)
-  first <- match(wrapper_pages$wrapper_url, ifelse(is.na(df$extracted_text), NA, url))
+  first <- match(wrapper_pages$wrapper_url, ifelse(is.na(df$extracted_text), NA, df$url))
   df$pdf <- vector("list", nrow(df))
   df$pdf[first[!is.na(first)]] <- wrapper_pages$pdf[!is.na(first)]
   df
