@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Sections audit after build 2026-11-05: ntnu, uia, hivolda, uit, nord, phs, fhs (attendance moves, PHS/FHS fixes) (#494)
 - read_harvest(): current-plan sites keep url from the first raw file that has an offering (url not among the page columns taken from the newest snapshot), so offerings in old runs keep url NA (steiner) or an old url; consider adding url to the page columns (rebuild, all current-plan sites) (#503)
 - steiner: rows have no url (NA url from the URL builder splits the PDF-lookup join into url.x/url.y; fetch ledger has no URL) (#502)
 - Steiner: keep the subject PDFs in the raw store; fresh PDFs at each harvest (#404)
