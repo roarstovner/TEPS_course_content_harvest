@@ -462,7 +462,9 @@ them. Their raw files are snapshots:
   the latest harvest in the offering’s academic year (autumn Y: Y/Y+1,
   spring Y: Y-1/Y), or no page. A page counts for its course and year
   whichever DBH row it was fetched for, so DBH rows published years
-  later still find it.
+  later still find it. The offering’s `url` is the URL that page was
+  fetched from (an offering without a page keeps the URL of its own
+  row); its DBH columns come from the first raw file that has it.
 - So harvest these sites once in every academic year (best
   September-November or February-April), whether or not DBH has a new
   year; a year without a harvest has no plans for them.

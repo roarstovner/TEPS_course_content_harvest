@@ -558,7 +558,9 @@ raw_ledger <- function(files) {
 #' The outcome of the latest request of the offering's URL, whichever
 #' offering it was made for (an academic-year site shares a page between
 #' offerings), but for a probe (refusal_watch()); for an offering without a
-#' URL, its own latest outcome. "not requested": nobody requested the URL;
+#' URL, its own latest outcome, and so for one whose own latest request got
+#' a page but has no URL in the ledger (Steiner's runs until 2026-11 kept the
+#' URL in url.y). "not requested": nobody requested the URL;
 #' "not harvested": the offering is in no raw run.
 #'
 #' @param course_id,url Offerings and the URL the build gives them
@@ -569,8 +571,10 @@ offering_outcome <- function(course_id, url, ledger) {
   own <- ledger[!duplicated(ledger$course_id, fromLast = TRUE), ]
   hit <- ledger[!is.na(ledger$url), ]
   hit <- hit[!duplicated(hit$url, fromLast = TRUE), ]
-  out <- dplyr::if_else(is.na(url), own$outcome[match(course_id, own$course_id)],
-                        dplyr::coalesce(hit$outcome[match(url, hit$url)], "not requested"))
+  o <- match(course_id, own$course_id)
+  out <- dplyr::coalesce(hit$outcome[match(url, hit$url)],
+                         dplyr::if_else(is.na(url) | (is.na(own$url[o]) & own$outcome[o] %in% "ok"),
+                                        own$outcome[o], "not requested"))
   out[!course_id %in% ledger$course_id] <- "not harvested"
   out
 }

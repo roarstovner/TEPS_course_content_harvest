@@ -151,7 +151,10 @@ institution_config_target <- function(institution) {
 # it was fetched for. Its files are snapshots: each offering gets the page of
 # its course code (course_code_raw) from the latest harvest in the offering's
 # academic year (autumn Y: Y/Y+1, spring Y: Y-1/Y), or no page;
-# harvested_at says which harvest that was.
+# harvested_at says which harvest that was, and url which URL the page was
+# fetched from (an offering without a page keeps the URL of its own row).
+# Steiner's runs until 2026-11 have the URL in url.y (url and url.x NA): it
+# is read as url.
 #
 # The bytes of a PDF (`pdf`) are left out: the pipeline reads the text the
 # harvest read from it (extracted_text).
@@ -165,6 +168,8 @@ read_harvest <- function(files, config, content = TRUE) {
   if (current) rows$harvested_at <- harvest_date(rows$.run, rows[["harvested_at"]])
   rows$.run <- NULL
   rows$pdf <- NULL
+  rows$url <- dplyr::coalesce(as.character(rows$url), .chr(rows, "url.y"))
+  rows <- dplyr::select(rows, -dplyr::any_of(c("url.x", "url.y")))
   if (!current) {
     retried <- rows$course_id[rows[["retry"]] %in% TRUE]
     dup <- setdiff(rows$course_id[duplicated(rows$course_id)], retried)
@@ -187,16 +192,16 @@ read_harvest <- function(files, config, content = TRUE) {
     dplyr::mutate(academic_year = academic_year_of_date(harvested_at)) |>
     dplyr::arrange(dplyr::desc(harvested_at), -seq_along(harvested_at)) |>   # same day: the later file
     dplyr::distinct(course_code_raw, academic_year, .keep_all = TRUE) |>
-    dplyr::select(course_code_raw, academic_year, dplyr::any_of(page))
+    dplyr::select(course_code_raw, academic_year, page_url = url, dplyr::any_of(page))
   # an offering's DBH columns from the first file that has it: a later file
-  # never changes an earlier row
+  # never changes an earlier row; its page and the page's URL from its snapshot
   rows |>
     dplyr::arrange(harvested_at) |>
     dplyr::distinct(course_id, .keep_all = TRUE) |>
     dplyr::select(-dplyr::any_of(page)) |>
     dplyr::mutate(academic_year = nla_academic_year(year, semester_name)) |>
     dplyr::left_join(snapshots, by = c("course_code_raw", "academic_year")) |>
-    dplyr::select(-academic_year) |>
+    dplyr::mutate(url = dplyr::coalesce(page_url, url), page_url = NULL, academic_year = NULL) |>
     dplyr::arrange(course_id)
 }
 
@@ -445,7 +450,7 @@ offering_fulltext <- function(pages, page_text, config) {
 # only says that the plan is on the English page (`english_page`), gets no
 # plan.
 plan_offerings <- function(pages, page_text, config) {
-  page_cols <- c("extracted_text", "fulltext", "html", "html_error", "html_success", "url.x", "url.y")
+  page_cols <- c("extracted_text", "fulltext", "html", "html_error", "html_success")
   dplyr::bind_rows(lapply(seq_along(pages), function(i) {
     cfg <- config[[i]]
     t <- page_text[match(offering_pages(pages[i])$page_id, page_text$page_id), ]

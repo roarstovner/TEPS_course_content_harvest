@@ -68,6 +68,29 @@ test_that("a current site's offering gets its course's page from a harvest in it
   expect_identical(academic_year_of_date(as.Date(character())), character())
 })
 
+test_that("a current site's offering takes the URL its page was fetched from", {
+  raw <- withr::local_tempdir()
+  # the first run: url NA, the page's URL in url.y (Steiner's runs until 2026-11)
+  first <- raw_rows(html = "2025/26 plan"); first$url.x <- NA_character_; first$url.y <- first$url
+  first$url <- NA_character_; first$harvested_at <- as.Date("2026-04-04")
+  write_raw_run(first, "x", "2026-04-04", raw)
+  # a later run of the same rows in the same academic year, from a moved page
+  moved <- raw_rows(html = "2025/26 plan, moved"); moved$url <- "u/A-new"
+  moved$harvested_at <- as.Date("2026-05-01")
+  write_raw_run(moved, "x", "2026-05-01", raw)
+  for (content in c(TRUE, FALSE)) {
+    out <- read_harvest(harvest_files("x", raw), list(name = "x", plan_years = "current"), content = content)
+    expect_false(any(c("url.x", "url.y") %in% names(out)))
+    expect_equal(out$url[out$semester_name == "Høst"], "u/A-new")   # 2025/26: the May page's
+    expect_true(is.na(out$html[out$semester_name == "Vår"]))         # 2024/25: no page,
+    expect_equal(out$url[out$semester_name == "Vår"], "u/A")         # the URL of its own row
+  }
+  # the ledger of the first run has no URL: the offering takes its own outcome
+  led <- tibble::tibble(course_id = c("x_A_2025_autumn_1", "x_B_2025_autumn_1"), url = NA_character_,
+                        outcome = c("ok", "no_url"))
+  expect_equal(offering_outcome(led$course_id, c("u/A", "u/B"), led), c("ok", "not requested"))
+})
+
 test_that("other sites combine their raw files, and an offering in two files is an error", {
   raw <- withr::local_tempdir()
   write_raw_run(raw_rows(), "x", "2026-09-30", raw)
