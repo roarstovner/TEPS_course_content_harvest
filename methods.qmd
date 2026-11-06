@@ -1040,6 +1040,17 @@ NATA6110 2018 only losing the placeholder; UiB 2; UiA 1); 2 OsloMet
 `course_content` sections lose the names; 14,908 plans before and after.
 The teacher-education frame does not change. *Since:* 2026-10-17.
 
+*Bounded, 2026-11-06:* UiA's "Emneansvarlig:" block runs over the name lines
+to the next "Label:" line; on pages with no such line after it (HEL611
+2020-2021, ST-301 2025) it took the whole plan, which kept only the title
+and facts box, and on IS-113 2021-2022 it took the table of contents up to
+the first outcome lead-in ("Etter fullført emne vil studentene kunne:"). The
+table of contents ("Innholdsfortegnelse") now ends the block too. *Why:* the
+sections audit of 2026-11-05. *Consequence:* of UiA's 10,386 pages, 5
+change `course_plan` (3 regain the plan, 2 the programme lines), and their
+plan ids change; no name is left (checked on all UiA pages). The sections,
+cut from the raw text, do not change.
+
 **Dates of government documents are kept.** A date or year rule does not
 fire when a government document is named up to 80 characters before it on
 the same line: laws and regulations, white papers and propositions
@@ -2060,6 +2071,103 @@ attendance sentences the audit's crude count left outside coursework, 1,850
 now move; most that stay are descriptions ("krever aktiv deltakelse"),
 clinical studies, the exam or lists of teaching forms. `course_plan` and
 the plan ids do not change.
+
+**UiA, NTNU, UiT: the workload leaves the sections.** A sentence that gives
+only the student's expected workload ("Emnet har et forventet
+arbeidsomfang på rundt 200 timer.", "Forventet arbeidsinnsats i emnet er 135
+timer.", "Forventet arbeidsbelastning for gjennomsnittsstudenten er 27 timer
+pr studiepoeng.", "For å nå læringsmålene i emnet forventes det at
+studentene arbeider 200 timer inkludert forelesninger, ...", "Estimated
+workload is about 200 hours.") goes from every section, as PHS's does; it
+stays in `course_plan`. It stays in the sections when it also says how the
+course is taught or assessed: the hours of the teaching forms ("..., der
+organisert undervisning utgjør: Forelesninger ...", "Forventet
+arbeidsbelastning per uke er 4 timer forelesninger, ..."), a split
+("fordelt slik:", "hvorav", "derav"), supervision ("Maximum workload for the
+supervisor is 20 hours ..."), the exam, praksis, a compulsory part ("... 270
+timer. 80% av undervisningen er obligatorisk.") or a grade. *Why:* the
+sections audit of 2026-11-05 found the workload in teaching methods in
+thousands of plans; by `course_plan_spec.md` workload belongs to no section.
+*Rejected:* any sentence with a workload word and hours (takes lecture and
+lab hours, supervision quotas and exam durations); the rule at every
+institution (measured at these three only). *Consequence* (counted on the
+plan sections of 2026-11-05): 5,585 sections in 5,534 plans lose a sentence
+(UiA 4,286 plans, NTNU 810, UiT 438), nearly all in teaching methods; 5
+NTNU teaching-methods sections held nothing else and go. Some remain:
+NTNU's "Forventet arbeidsmengde i emnet er 225 timer. (Forelesninger: ca
+48 timer." (55 plans; the split has no sentence boundary), and sentences
+that open with something else ("Emnet er normert til 10 studiepoeng, som
+tilsvarer en arbeidsinnsats på 250-300 timer."). `course_plan` and the plan
+ids do not change. *Since:* 2026-11-06.
+
+**UiT: admission in the course content, placeholders, and the law
+programme's progression rules.** UiT writes who may take the course in the
+course content ("Emnet kan (ikke) tas som enkeltemne.", "Emnet er forbeholdt
+studenter med studierett ved ...", "This course may be taken as a single
+course by students who meet the admission requirements ..."); such a
+sentence now leaves the sections (`.sentence_moves`, to `.drop`) when every
+clause of it says who may take the course and it names no prerequisite
+(`.uit_admission_sentence()`). A sentence that also says something else
+about the course stays whole: "Emnet utgjør praksisdelen i utdanningen og
+kan ikke tas som enkeltemne.", "Theoretical. (Åpen for UiT sine
+ph.d.-studenter ...", "Masteroppgaven er et selvstendig arbeid forbeholdt
+studenter ...", "Emnet kan tas som enkeltemne, men man må ha jobb i skolen
+...", and so does a programme placement joined to it ("Emnet er obligatorisk
+for studenter som følger studieprogrammet Bachelor i barnevern, og kan ikke
+tas som enkeltemne."). The law programme's progression rules ("Før
+studentene kan begynne på 4. avdeling, må de ha bestått 3. avdeling.", "Ex.
+fac. (JUR-0500) må være bestått før studenten får avlegge avsluttende
+eksamen ...") move from assessment and course content to prerequisites.
+Placeholders: "Contact the department/faculty.", "Please contact the
+faculty.", "Se fagbeskrivelse med pensum (for 4. avdeling)", "Se vår
+hjemmeside:", "Fagplan med pensum", and the reading list that is only on the
+learning platform or at the bookshop ("Syllabus and reading list are
+available in Fronter, or by contacting the teacher or the student
+adviser.", "Pensumlitteratur oppgis i Fronter ved semesterstart eller fås
+ved henvendelse til ...", "Bøkene kan kjøpes på www.akademika.no", "Se egen
+pensumliste for studieenheten i Canvas."), as a whole part or a line of its
+own. *Why:* the sections audit of 2026-11-05 found them; by the spec
+admission and pointers are in no section, and prior courses are
+prerequisites. *Rejected:* `.is_admission_sentence()` alone in the course
+content (it also takes "frittstående arbeid" and "det største
+enkeltemnet", which describe the course); dropping a mixed sentence whole
+(takes course text; a section error weighs as much as a name left in); the
+rule at other institutions (not measured). *Consequence* (counted on the
+plan sections of 2026-11-05): the sections of 16,511 of UiT's 35,464 plans
+change. 16,100 admission sentences leave the course content of 15,452 plans
+(78 course-content sections held nothing else and go); 231 plans gain
+prerequisites from the progression rules; the reading-list pointers go from
+987 plans and the other placeholders from 344 (reading-list sections
+emptied 1,166, learning outcomes 173, teaching methods 13, assessment 10);
+438 of the plans lose the workload (the rule above). Programme placements
+joined to admission stay in the course content. `course_plan` and the plan
+ids do not change. *Since:* 2026-11-06.
+
+**Resit and examiner rules stay in assessment at UiT, NTNU, Nord and FHS,
+a known deviation from the spec.** The spec puts resit, postponement and
+examiner rules outside the sections; the sections audit of 2026-11-05 found
+them in the assessment of these four ("Det er adgang til å kontinuere for
+studenter med studierett, jf. ...", "Eksamen sensureres av to sensorer.").
+*Why they stay:* their wordings vary from course to course and often share
+a sentence with what the resit consists of, which is assessment design.
+*Rejected:* a rule per wording (many guards, each a risk of cutting design);
+dropping any sentence with a resit word (takes the resit's form).
+*Consequence:* listed under "Known deviations" in `course_plan_spec.md`;
+the sections do not change. *Since:* 2026-11-06.
+
+**HiVolda and FHS: a prior course in coursework or course content is a
+prerequisite.** HiVolda's Didaktikk 2 courses open their coursework
+requirements with "Bestått didaktikkemne 1."; FHS writes in the course
+content which courses a course builds on ("Emnet bygger på ING1502
+Matematiske metoder 1.", "The course is based on ING1501 ..."). Both move to
+prerequisites (`.sentence_moves`); an FHS sentence that names no course
+code, or goes on about the course ("... og skal gi studentene ...", "... og
+vil gi studenten ..."), stays. *Why:* the sections audit of 2026-11-05.
+*Rejected:* any "bygger på" sentence (many describe the subject: "Dette
+temaet bygger på de to andre temaene ..."). *Consequence:* 89 HiVolda plans
+and 102 FHS plans gain prerequisites (the sentence leaves coursework or
+course content). `course_plan` and the plan ids do not change. *Since:*
+2026-11-06.
 
 **Placeholders are dropped** ("Ingen", "-", "Se fagplanen.", reading-list
 pointers; since 2026-10-01). From 2026-10-29 the list also holds HVL's "_"

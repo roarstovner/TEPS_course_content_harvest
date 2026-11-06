@@ -143,8 +143,11 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     # the dates a course is offered ("offered 17 - 21 March, 2025")
     stringr::str_remove_all("[ \\t]*\\d{1,2}[ \\t]*[-–][ \\t]*\\d{1,2}\\.?[ \\t]+\\p{L}+,?[ \\t]*20\\d{2}") |>
     # "Emneansvarlig(e):" and the name lines under it, up to the next
-    # "Label:" line (Undervisningssemester:); several names are common
-    stringr::str_remove_all("(?m)^Emneansvarlige?:[ \\t]*\\n(?:(?![\\p{Lu}][\\p{L} ()-]*:[ \\t]*$)[^\\n]*\\n)*")
+    # "Label:" line (Undervisningssemester:) or, on a page without one after
+    # it, the table of contents ("Innholdsfortegnelse", 2020-2025: the plan
+    # would go with the names); several names are common
+    stringr::str_remove_all(paste0("(?m)^Emneansvarlige?:[ \\t]*\\n(?:(?![\\p{Lu}][\\p{L} ()-]*:[ \\t]*$|",
+                                   "Innholdsfortegnelse[ \\t]*$)[^\\n]*\\n)*"))
 }
 
 .anon_hiof <- function(txt) {

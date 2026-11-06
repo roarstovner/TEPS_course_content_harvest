@@ -160,3 +160,12 @@ the spec here:
   paragraph with what the resit consists of ("Ved framstilling til ny/utsatt
   eksamen kan enten en bearbeidet versjon ... leveres"), and HiOF's "Ny og
   utsatt eksamen gjennomføres på samme måte som ved ordinær eksamen."
+- Assessment at UiT, NTNU, Nord and FHS keeps resit, postponement and
+  examiner rules ("Det er adgang til å kontinuere for studenter med
+  studierett, jf. ...", "Students who failed the exam must re-sit both the
+  written and the oral examination.", "Eksamen sensureres av to sensorer.").
+  Their wordings vary from course to course and often share a sentence with
+  what the resit consists of ("Ved utsatt eksamen kan muntlig eksamen
+  erstattes av skriftlig"), which is assessment design, so a rule for each
+  wording would be needed to take them out without taking design (sections
+  audit of 2026-11-05).

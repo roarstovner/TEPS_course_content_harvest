@@ -826,7 +826,46 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # assessment; "Deler av mappen vil være gjenstand for en avsluttende
 # vurdering." under teaching says what is assessed. The continuous assessment
 # of the dog-handler courses ("Studenten/ekvipasjen blir vurdert gjennom hele
-# utdanningen ...") is their assessment and stays.
+# utdanningen ...") is their assessment and stays. uit: the law programme's
+# progression rules, under the assessment or the course content ("Før
+# studentene kan begynne på 4. avdeling, må de ha bestått 3. avdeling.",
+# "Ex. fac. (JUR-0500) må være bestått før studenten får avlegge avsluttende
+# eksamen på avdelingen."), are prerequisites; admission and study right in
+# the course content ("Emnet kan ikke tas som enkeltemne.", "Emnet er
+# forbeholdt studenter med studierett ved ...", "This course may be taken as
+# a single course by students who meet the admission requirements ...") go
+# (".drop", .uit_admission_sentence()). hivolda:
+# the Didaktikk 2 courses open their coursework requirements with the passed
+# course before them ("Bestått didaktikkemne 1."), a prerequisite. fhs: a
+# sentence in the course content that says only which courses it builds on
+# ("Emnet bygger på ING1502 Matematiske metoder 1.", "The course is based on
+# ING1501 ...") names prerequisites; one that goes on about the course ("...
+# og skal gi studentene ...") or names no course code stays.
+# Whether each sentence says only who may take the course (uit's course
+# content): every clause of it (cut at ", og", " men er", ". ", " (E" ...)
+# opens with the course or the verb and says who may take it ("Emnet er
+# forbeholdt studenter med studierett ved ... og kan ikke tas som
+# enkeltemne.", "Kan ikke tas som enkeltemne."), and it names no
+# prerequisite (.is_admission_sentence()). A sentence that also says
+# something about the course stays whole: "Emnet utgjør praksisdelen i
+# utdanningen og kan ikke tas som enkeltemne.", "Theoretical. (Åpen for UiT
+# sine ph.d.-studenter ...", "Masteroppgaven er et selvstendig arbeid
+# forbeholdt studenter ...", "Oppgaven er det største enkeltemnet ...".
+.uit_admission_sentence <- function(s) {
+  who <- paste0(
+    "(?i)^\\W*(?:(?:(?:eksamens)?emnet|emne|det|kurset|this course|the course|it)\\s+)?",
+    "(?:(?:er|is|kan|may|can|ikke|ikkje|også|derfor|dermed|kun|bare|only|not|also|be|etter søknad|",
+    "under visse vilkår)\\s+)*",
+    "(?:(?:tas|takast|be taken) (?:som|as) (?:et |eit |a )?(?:master)?(?:enkelt ?emne|single|singular)|",
+    "forbehold\\w* (?:for )?\\w*student|tilgjengelig som enkeltemne|tas av enkeltemnestudent)")
+  vapply(s, function(x) {
+    cl <- stringr::str_split_1(trimws(x), paste0(
+      "(?i)(?:,\\s*(?:og|men|but|and)\\s+|\\s+(?:og|men|but|and)\\s+(?=(?:emnet\\s+)?(?:kan|er|is|can|may|skal|vil|",
+      "utgjør|gir|passer|inngår|tilbys|undervises|velges|gis|du|man|studenten\\w*)\\b)|\\.\\s+|",
+      "\\s+\\((?=\\p{Lu}))"))
+    all(grepl(who, cl, perl = TRUE)) && .is_admission_sentence(x)
+  }, logical(1), USE.NAMES = FALSE)
+}
 .sentence_moves <- list(
   phs = list(
     list(from = "assessment", to = "coursework_requirements", rx = paste0(
@@ -834,7 +873,18 @@ extract_sections <- function(config, html, extracted_text, course_id) {
       "^\\s*det gis tilbakemeldinger? på disse\\b|tilbakemeldingene (?:vil )?gjennomføres som en utviklingssamtale")),
     list(from = "teaching_methods", to = "assessment",
          rx = "(?i)^\\s*deler av mappen (?:vil )?(?:være|er) gjenstand for (?:en )?avsluttende vurdering")
-  )
+  ),
+  uit = c(lapply(c("assessment", "course_content"), function(from) list(
+    from = from, to = "prerequisites", rx = paste0(
+      "(?i)^\\s*(?:før studentene kan begynne på \\d\\. avdeling, må de ha (?:fullført og )?bestått|",
+      "ex\\. ?fac\\.? \\(jur-0500\\) må være bestått)"))),
+    list(list(from = "course_content", to = ".drop", rx = function(s) .uit_admission_sentence(s)))),
+  fhs = list(list(from = "course_content", to = "prerequisites", rx = paste0(
+    "^\\s*(?i:(?:dette )?emnet bygger (?:videre )?på|the course is based on) ",
+    "(?=[^.]*\\b[A-ZÆØÅ]{2,}\\d{3,})(?![^.]*\\b(?:og|and) (?:skal|vil|tar|gir|legger|søker|ser|introduserer|aims?|will)\\b)",
+    "(?!.*,\\s*$)"))),
+  hivolda = list(list(from = "coursework_requirements", to = "prerequisites",
+                      rx = "(?i)^\\s*bestått didaktikkemne \\d\\.?\\s*$"))
 )
 .move_sentences <- function(out, institution) {
   for (m in .sentence_moves[[institution %||% ""]]) {
@@ -989,7 +1039,30 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # stays. phs: the workload ("Omfanget på videreutdanningen er anslått til ca.
 # 420 timer.", "Utdanningen er estimert til ca. 210 timer."); the hours of the
 # gatherings ("Samlingene utgjør inntil 105 timer ...") say how the course is
-# taught and stay.
+# taught and stay. uia, ntnu, uit: the expected workload stated alone
+# (.workload_sentence_regex).
+# The student's expected workload, a sentence that opens with it and gives
+# one figure of hours: "Emnet har et forventet arbeidsomfang på rundt 200
+# timer.", "Forventet arbeidsinnsats i emnet er 135 timer.", "Estimated
+# workload is about 200 hours.", "For å nå læringsmålene i emnet forventes det
+# at studentene arbeider 200 timer inkludert forelesninger, ...". It stays
+# when it also says how the course is taught or assessed: the hours of the
+# teaching forms ("..., der organisert undervisning utgjør: Forelesninger
+# ...", "Forventet arbeidsbelastning per uke er 4 timer forelesninger, ..."),
+# a split ("fordelt slik:", "hvorav", "derav"), supervision ("Maximum workload
+# for the supervisor ..."), the exam, praksis, a compulsory part or a grade.
+.workload_sentence_regex <- paste0(
+  "(?i)^\\W*",
+  "(?!.*\\b(?:veiled|supervis|gruppeoppg|eksamen|exam|praksis|obligator|mandatory|compulsory|",
+  "teller|karakter|grade|derav|hvorav|av dis+e|av dette|rest)\\w*)",
+  "(?!.*\\bfordel\\w* (?!(?:på|over) (?:\\S+ )?semest))",
+  "(?!(?:(?!inkl|includ).)*\\b(?:forelesn|forelesing|øving|øvning|laborator|seminar|kollokv|lecture|",
+  "timeplan|organiser|teoritim|undervisning|teaching|krav)\\w*)",
+  "(?!(?:.*\\b(?:timer|timar|hours)\\b){2})(?!.*:\\s*$)(?=.*\\b(?:timer|timar|hours)\\b)",
+  "(?:(?:\\S+\\s+){0,6}?(?:arbeidsomfang|arbeidsbelastning|arbeidsinnsats|arbeidsmengd|workload|arbeidstimer)|",
+  "(?:\\S+\\s+){0,10}?(?:student\\w*|deltaker\\w*) (?:(?:is|are) expected to work|arbeider)\\b)"
+)
+
 .logistics_sentences <- list(
   hvl = paste0(
     "(?i)studentweb|",
@@ -1001,6 +1074,8 @@ extract_sections <- function(config, html, extracted_text, course_id) {
     "\\bkr\\.?[ \\t]?\\d|\\d[ \\t]?kr\\b)"
   ),
   phs = "(?i)^\\s*(?=.*\\btimer\\b)(?:[^\\s.]+\\s+){1,4}?er\\s+(?:totalt\\s+)?(?:anslått|estimert)\\s+til\\b"
+,
+  uia = .workload_sentence_regex, ntnu = .workload_sentence_regex, uit = .workload_sentence_regex
 )
 
 # Approval stamps, in any section (course_plan_spec.md: out of the sections):
@@ -1018,9 +1093,10 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "pensum oppdatert\\.?\\s*$|g(?:jeldende|yldig) fra\\b.{0,40}$)"
 )
 
-# The sentences of a text that match `rx` go (.sentence_end), and a line
-# left empty with them. With `taken`, a list of the text left (`rest`) and
-# the sentences that went, a line each (`taken`).
+# The sentences of a text that match `rx` (a regex, or a function of the
+# sentences that says which) go (.sentence_end), and a line left empty with
+# them. With `taken`, a list of the text left (`rest`) and the sentences that
+# went, a line each (`taken`).
 .strip_sentences <- function(text, rx, taken = FALSE) {
   if (is.na(text)) return(if (taken) list(rest = text, taken = character()) else text)
   lines <- stringr::str_split_1(text, "\n")
@@ -1028,7 +1104,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   out <- character()
   for (k in seq_along(lines)) {
     s <- stringr::str_split_1(lines[k], .sentence_end)
-    drop <- stringr::str_detect(s, rx)
+    drop <- if (is.function(rx)) rx(s) else stringr::str_detect(s, rx)
     if (!any(drop)) next
     out <- c(out, trimws(paste(s[drop], collapse = "")))
     lines[k] <- trimws(paste(s[!drop], collapse = ""))
@@ -1137,7 +1213,19 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "litteratur og faglige ressurser finn(?:er du|es) her",
   "follow this link for reading list and academic resources",         # nla
   "(?:(?:se|sjå) )?pensumlist[ea] for emnet (?:finn(?:er)? du )?her",  # hivolda
-  "ta kontakt med (?:instituttet|fakultetet)(?:/(?:instituttet|fakultetet))?", "se hjemmeside(?:n)?",
+  "ta kontakt med (?:instituttet|fakultetet)(?:/(?:instituttet|fakultetet))?",
+  "se (?:vår(?:e)? |fakultetets )?hjemmesid(?:e|en|er|ene)",
+  # uit: "Contact the department/faculty.", the law courses' "Se fagbeskrivelse
+  # med pensum", "Se vår hjemmeside: Fagplan med pensum."
+  "(?:please )?contact the (?:departe?ment|faculty)(?: ?/ ?(?:departe?ment|faculty))?",
+  "(?:se )?fag(?:beskrivelse|plan)(?:er)? med pensum(?:liste)?(?: ?for (?:\\d\\. )?avdeling)?",
+  # uit: the list is on the learning platform or got from the bookshop
+  "syllabus and reading list (?:are|will be) available in (?:fronter|canvas),? or by contacting the (?:responsible )?teacher or (?:the|a) student adviser",
+  "(?:pensumlitteratur )?(?:oppgis|opplyses) (?:i (?:fronter|canvas|uits digitale læringsplattform) )?ved (?:semester|studie)start(?: eller (?:kan oppgis og kjøpes|fås) ved henvendelse til [^.]{0,80})?",
+  "bøkene kan kjøpes på www\\.akademi[ak]a\\.no",
+  "pensumliste(?:n)? (?:vil )?legges (?:vanligvis )?ut i (?:fronter|canvas),? eller kan fås ved henvendelse til emneansvarlig eller studiekonsulent",
+  "literature will be announced in fronter at the beginning of term or may be obtained by contacting the (?:campus )?bookstore[^.]{0,60}",
+  "se egen pensumliste for studieenheten i (?:fronter|canvas)",
   "available on request",                                             # uit 2008-2010
   "ny pensumbok vurderes",                                            # hiof
   # the list is given at the start or put on the learning platform (hiof, ntnu)

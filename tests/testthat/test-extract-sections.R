@@ -1552,3 +1552,89 @@ test_that("nord: Adgangsregulering gives its prerequisites, not its admission te
   expect_match(out$raw_text, "^Kurset bygger på Matematikk 1, 2 og 3\\n\\nBestått 90 stp\\.")
   expect_equal(get_institution_config("nord")$section_headings[["adgangsregulering"]], ".admission")
 })
+
+test_that("the workload leaves the sections (uia, ntnu, uit); the hours of the teaching stay", {
+  drop <- c("Emnet har et forventet arbeidsomfang på rundt 200 timer.", "Forventet arbeidsinnsats i emnet er 135-150 timer.",
+            "Forventet arbeidsbelastning for gjennomsnittsstudenten er 27 timer pr studiepoeng.",
+            "Estimated workload is about 200 hours.", "Emnet har eit venta arbeidsomfang på 400 timar.",
+            "Emnet har et forventet arbeidsomfang på 540 timer fordelt på to semestre.",
+            paste("For å nå læringsmålene i emnet forventes det at studentene arbeider 200 timer",
+                  "inkludert forelesninger, seminar, oppgaver og selvstudium."),
+            "Students are expected to work 280 hours.")
+  for (s in drop) expect_match(s, .workload_sentence_regex, perl = TRUE)
+  keep <- c("Maximum workload for the supervisor is 20 hours, you will receive supervision within these limits.",
+            "Forventet arbeidsbelastning per uke er 4 timer forelesninger, 2 timer kollokvier, 6 timer selvstudier.",
+            "Emnet har en forventet arbeidsmengde på ca. 400 timer, der organisert undervisning utgjør: Forelesninger (inntil 40 x 2 timer).",
+            "Samlet arbeidsomfang utgjør 270 timer fordelt slik:", "Forventet arbeidsomfang er 200 timer, hvorav 40 timer er praksis.",
+            "Emnet har et forventet arbeidsomfang på ca. 270 timer. 80% av undervisningen er obligatorisk.",
+            "Lectures: 40 hours Exercises: 30 hours", "Samlingene utgjør inntil 320 timer.",
+            "Det blir lagt vekt på studentaktive arbeidsformer som gruppearbeid og skriftlige studentarbeid.")
+  for (s in keep) expect_no_match(s, .workload_sentence_regex, perl = TRUE)
+  out <- tibble::tibble(section = "teaching_methods",
+                        raw_text = "Forelesninger og gruppearbeid. Emnets forventede arbeidsomfang er 200 timer.")
+  expect_equal(.clean_sections(out, "uia")$raw_text, "Forelesninger og gruppearbeid.")
+  expect_equal(.clean_sections(out, "hvl")$raw_text, out$raw_text)
+})
+
+test_that("uit: placeholders, admission in the course content, the law programme's progression rules", {
+  for (t in c("Contact the department/faculty.", "Contact the departement/faculty.", "Please contact the faculty.",
+              "Se fagbeskrivelse med pensum", "Se Fagbeskrivelse med pensumfor 4. avdeling.",
+              "Se vår hjemmeside: Fagplan med pensum.", "Se vår hjemmeside:"))
+    expect_false(.keep_section_row(t, "learning_outcomes"), label = t)
+  expect_true(.keep_section_row("The exam form varies. Contact the department/faculty.", "assessment"))
+  out <- tibble::tibble(
+    section = c("course_content", "assessment"),
+    raw_text = c(paste0("Emnet kan ikke tas som enkeltemne.\n\n",
+                        "Før studentene kan begynne på 4. avdeling, må de ha bestått 3. avdeling.\n\n",
+                        "Emnet tar for seg forvaltningsrett. Emnet er forbeholdt studenter med studierett ved ",
+                        "bachelor i sykepleie.\n\nSe fagbeskrivelse med pensum"),
+                 paste0("Ex. fac. (JUR-0500) må være bestått før studenten får avlegge avsluttende eksamen på avdelingen.\n\n",
+                        "Eksamen består av: Skriftlig skoleeksamen over seks timer.")))
+  res <- .clean_sections(.move_sentences(out, "uit"), "uit")
+  sec <- setNames(res$raw_text, res$section)
+  expect_equal(unname(sec["course_content"]), "Emnet tar for seg forvaltningsrett.")
+  expect_equal(unname(sec["assessment"]), "Eksamen består av: Skriftlig skoleeksamen over seks timer.")
+  expect_equal(unname(sec["prerequisites"]), paste0(
+    "Ex. fac. (JUR-0500) må være bestått før studenten får avlegge avsluttende eksamen på avdelingen.\n\n",
+    "Før studentene kan begynne på 4. avdeling, må de ha bestått 3. avdeling."))
+  # a sentence that names a prerequisite too, or says something else about
+  # the course, stays whole
+  stay <- c("Kan tas som enkeltemne for studenter med bestått FIL-0700.",
+            "Emnet utgjør praksisdelen i utdanningen og kan ikke tas som enkeltemne.",
+            "Theoretical. (Åpen for UiT sine ph.d.-studenter (kategori 1) og åpen for følgende kategorier av enkeltemnestudenter:",
+            "Masteroppgaven er et selvstendig arbeid forbeholdt studenter som er tatt opp på studiet Master i rettsvitenskap.",
+            "Oppgaven er det største enkeltemnet i masterprogrammet, og gir et sammenfattende uttrykk for læringsutbytte.",
+            "Masteroppgaven kan være et frittstående arbeid eller inngå i et forskningsprosjekt.",
+            "Emnet kan tas som enkeltemne, men man må ha jobb i skolen for å gjennomføre arbeidskrav i praksis.",
+            "Emnet kan tas som enkeltemne og undervises nettbasert.")
+  expect_false(any(.uit_admission_sentence(stay)))
+  go <- c("Emnet kan ikke tas som enkeltemne.", "Kan tas som enkeltemne",
+          "Emnet er forbeholdt studenter med studierett ved Bachelorutdanningen i sykepleie og kan ikke tas som enkeltemne.",
+          "Emnet kan ikke tas som enkeltemne, men er forbeholdt studenter som er tatt opp på masterprogrammet i spansk.",
+          "This course may be taken as a single course by students who meet the admission requirements for the MA programme.")
+  expect_true(all(.uit_admission_sentence(go)))
+  # the reading list only on the learning platform or at the bookshop
+  for (t in c("Syllabus and reading list are available in Fronter, or by contacting the teacher or the student adviser.",
+              paste("Pensumlitteratur oppgis i UiTs digitale læringsplattform ved semesterstart eller fås ved henvendelse",
+                    "til bokhandelen Akademika Tromsø eller Narvik. Bøkene kan kjøpes på www.akademika.no"),
+              "Opplyses ved semesterstart eller fås ved henvendelse til Akademisk kvarter."))
+    expect_false(.keep_section_row(t, "reading_list"), label = t)
+  expect_true(.keep_section_row("Pensumlitteratur oppgis i Fronter ved semesterstart.\nHansen, K. (2010). Rett.", "reading_list"))
+})
+
+test_that("hivolda and fhs: the prior course in coursework or course content is a prerequisite", {
+  out <- tibble::tibble(section = "coursework_requirements",
+                        raw_text = "Bestått didaktikkemne 1.\n\nFrammøtekrav:\n\nDet er obligatorisk frammøte.")
+  res <- .clean_sections(.move_sentences(out, "hivolda"), "hivolda")
+  expect_equal(setNames(res$raw_text, res$section)[c("coursework_requirements", "prerequisites")],
+               c(coursework_requirements = "Frammøtekrav:\n\nDet er obligatorisk frammøte.",
+                 prerequisites = "Bestått didaktikkemne 1."))
+  cc <- tibble::tibble(section = "course_content", raw_text = paste(
+    "Emnet gir en innføring i signalbehandling. Emnet bygger på ING1502 Matematiske metoder 1.\n",
+    "Emnet bygger på ING1502 Matematiske metoder 1 og skal gi studentene grunnlag for videre studier.\n",
+    "Emnet bygger på kadettenes grunnlag fra første året ved Krigsskolen."))
+  res <- .move_sentences(cc, "fhs")
+  expect_equal(res$raw_text[res$section == "prerequisites"], "Emnet bygger på ING1502 Matematiske metoder 1.")
+  expect_false(grepl("bygger på ING1502 Matematiske metoder 1\\.", res$raw_text[res$section == "course_content"]))
+  expect_match(res$raw_text[res$section == "course_content"], "og skal gi studentene .*Krigsskolen\\.$")
+})

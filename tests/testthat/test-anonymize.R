@@ -370,6 +370,12 @@ test_that("UiA: Emneansvarlige + several name lines stripped", {
   # the role named in a sentence is not a label
   s <- "Emneansvarlig fastsetter evalueringsform.\nTilbys som enkeltemne"
   expect_equal(anonymize_text("uia", s, .progress = FALSE), s)
+  # without a label after the names, the table of contents ends them, not
+  # the page
+  s <- paste0("Ansvarlig avdeling:\nFakultet for samfunnsvitenskap\nEmneansvarlig:\nKari Nordmann\n",
+              "Innholdsfortegnelse\nLæringsutbytte\nThe student can reflect.")
+  expect_equal(anonymize_text("uia", s, .progress = FALSE),
+               "Ansvarlig avdeling:\nFakultet for samfunnsvitenskap\nInnholdsfortegnelse\nLæringsutbytte\nThe student can reflect.")
 })
 
 test_that("USN: 'Godkjent av' with the approver's name and title stripped", {
