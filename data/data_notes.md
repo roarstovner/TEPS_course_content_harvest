@@ -1,7 +1,7 @@
 # Data Quality Notes
 
 
-Generated: 2026-11-05
+Generated: 2026-11-06
 
 ## Overview
 
@@ -22,20 +22,20 @@ Generated: 2026-11-05
 | nmbu | 2734 | 1438 | 2025 | 12 | 0.4% | 5858 | 12 | 0.0% |
 | nmh | 191 | 95 | 2021-2025 | 106 | 55.5% | 3173 | 72 | 32.1% |
 | nord | 35900 | 5147 | 2016-2025 | 32913 | 91.7% | 3233 | 7864 | 58.3% |
-| ntnu | 89261 | 9910 | 2004-2025 | 82377 | 92.3% | 3353 | 34888 | 56.5% |
+| ntnu | 101281 | 10285 | 2004-2025 | 92733 | 91.6% | 3299 | 39033 | 56.8% |
 | oslomet | 33318 | 3937 | 2018-2025 | 33318 | 100.0% | 3874 | 11286 | 59.5% |
 | phs | 2180 | 307 | 2021-2025 | 271 | 12.4% | 3895 | 142 | 27.2% |
 | samas | 130 | 68 | 2025 | 0 | 0.0% | NA | 0 | NaN% |
 | steiner | 244 | 125 | 2025 | 15 | 6.1% | 5027 | 15 | 0.0% |
 | uia | 55961 | 5047 | 2012-2025 | 10291 | 18.4% | 2944 | 5364 | 44.4% |
-| uib | 48610 | 4899 | 2004-2025 | 28080 | 57.8% | 3514 | 12041 | 52.5% |
+| uib | 54515 | 5075 | 2004-2025 | 30788 | 56.5% | 3474 | 12801 | 53.8% |
 | uio | 10488 | 5380 | 2025 | 47 | 0.4% | 4331 | 47 | 0.0% |
 | uis | 2921 | 316 | 2007-2025 | 2719 | 93.1% | 5760 | 1307 | 50.2% |
-| uit | 133066 | 10772 | 2004-2025 | 48389 | 36.4% | 3285 | 35465 | 21.7% |
+| uit | 133066 | 10772 | 2004-2025 | 48389 | 36.4% | 3285 | 35459 | 21.7% |
 | usn | 38706 | 5286 | 2018-2025 | 13132 | 33.9% | 5842 | 12361 | 5.7% |
 | vid | 4082 | 917 | 2023-2025 | 810 | 19.8% | 3640 | 588 | 23.5% |
 
-**Total**: 628807 rows, 328927 with extracted text (52.3%), 161596
+**Total**: 646732 rows, 341991 with extracted text (52.9%), 166700
 unique plans.
 
 **Columns:**
@@ -81,13 +81,13 @@ period:
 | nmbu        |       |         |         |         |         | 0%    |
 | nmh         |       |         |         | 25%     | 66%     | 73%   |
 | nord        |       | 77%     | 92%     | 97%     | 99%     | 99%   |
-| ntnu        | 81%   | 97%     | 90%     | 92%     | 93%     | 93%   |
+| ntnu        | 81%   | 97%     | 88%     | 92%     | 93%     | 93%   |
 | oslomet     |       |         | 100%    | 100%    | 100%    | 100%  |
 | phs         |       |         |         | 0%      | 4%      | 28%   |
 | samas       |       |         |         |         |         | 0%    |
 | steiner     |       |         |         |         |         | 6%    |
 | uia         | 0%    | 0%      | 0%      | 40%     | 38%     | 41%   |
-| uib         | 30%   | 44%     | 49%     | 54%     | 57%     | 68%   |
+| uib         | 30%   | 44%     | 48%     | 54%     | 57%     | 68%   |
 | uio         |       |         |         |         |         | 0%    |
 | uis         | 92%   | 96%     | 95%     | 91%     | 92%     | 94%   |
 | uit         | 37%   | 31%     | 36%     | 40%     | 40%     | 38%   |
@@ -127,16 +127,16 @@ year) that have a plan in at least one semester:
 | nmbu | 1438 | 90% | 11 | 0 | 1285 | 1% | 0.4% |
 | nmh | 100 | 91% | 14 | 45 | 32 | 61% | 55.5% |
 | nord | 19459 | 84% | 1053 | 8177 | 7211 | 55% | 91.7% |
-| ntnu | 46472 | 91% | 2955 | 36429 | 2769 | 93% | 92.3% |
+| ntnu | 52574 | 91% | 3584 | 41101 | 3386 | 93% | 91.6% |
 | oslomet | 17639 | 89% | 2040 | 12246 | 1393 | 89% | 100.0% |
 | phs | 1144 | 91% | 131 | 25 | 880 | 15% | 12.4% |
 | samas | 68 | 91% | 0 | 0 | 62 | 0% | 0.0% |
 | steiner | 125 | 95% | 15 | 0 | 104 | 12% | 6.1% |
 | uia | 29493 | 90% | 8716 | 152 | 17600 | 32% | 18.4% |
-| uib | 25052 | 93% | 78 | 12340 | 10928 | 52% | 57.8% |
+| uib | 28081 | 93% | 102 | 13498 | 12622 | 51% | 56.5% |
 | uio | 5380 | 95% | 44 | 0 | 5064 | 1% | 0.4% |
 | uis | 1602 | 82% | 41 | 1165 | 113 | 91% | 93.1% |
-| uit | 69992 | 90% | 25282 | 8581 | 29211 | 52% | 36.4% |
+| uit | 69992 | 90% | 25287 | 8569 | 29218 | 52% | 36.4% |
 | usn | 20631 | 88% | 11145 | 422 | 6508 | 61% | 33.9% |
 | vid | 2113 | 93% | 569 | 73 | 1327 | 33% | 19.8% |
 
@@ -171,16 +171,16 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 | nmbu | 1331 | 0 | 0 | 0 | 0 | 1331 | 0 |
 | nmh | 39 | 0 | 39 | 0 | 0 | 0 | 0 |
 | nord | 8688 | 1568 | 0 | 146 | 6974 | 0 | 0 |
-| ntnu | 3099 | 355 | 0 | 1782 | 1047 | 0 | 6 |
+| ntnu | 3757 | 410 | 0 | 2331 | 1135 | 0 | 12 |
 | oslomet | 1996 | 0 | 0 | 0 | 1996 | 0 | 13 |
 | phs | 967 | 21 | 962 | 0 | 64 | 0 | 0 |
 | samas | 68 | 0 | 68 | 0 | 0 | 0 | 0 |
-| steiner | 100 | 0 | 100 | 0 | 0 | 0 | 0 |
+| steiner | 100 | 0 | 96 | 0 | 0 | 4 | 0 |
 | uia | 19928 | 19920 | 0 | 0 | 635 | 0 | 498 |
-| uib | 12066 | 10564 | 0 | 152 | 1371 | 0 | 3 |
+| uib | 13884 | 12213 | 0 | 152 | 1540 | 0 | 3 |
 | uio | 5320 | 0 | 7 | 0 | 0 | 5313 | 0 |
 | uis | 145 | 12 | 0 | 0 | 133 | 0 | 0 |
-| uit | 31176 | 0 | 30824 | 0 | 1908 | 0 | 1775 |
+| uit | 31183 | 0 | 30826 | 0 | 1915 | 0 | 1775 |
 | usn | 7665 | 0 | 7665 | 0 | 21 | 0 | 458 |
 | vid | 1417 | 204 | 966 | 0 | 247 | 0 | 0 |
 
@@ -238,16 +238,16 @@ All years, by institution:
 | nmbu | FALSE | 12 / 1438 (1%) | 10 / 998 (1%) | 8 / 879 (1%) |
 | nmh | FALSE | 61 / 100 (61%) | 46 / 57 (81%) | 37 / 42 (88%) |
 | nord | FALSE | 10679 / 19459 (55%) | 8182 / 13181 (62%) | 7359 / 11484 (64%) |
-| ntnu | FALSE | 43373 / 46472 (93%) | 33155 / 34557 (96%) | 30326 / 31305 (97%) |
+| ntnu | FALSE | 48817 / 52574 (93%) | 37537 / 39237 (96%) | 34335 / 35530 (97%) |
 | oslomet | FALSE | 15643 / 17639 (89%) | 13201 / 13720 (96%) | 12103 / 12335 (98%) |
 | phs | FALSE | 170 / 1144 (15%) | 123 / 523 (24%) | 116 / 456 (25%) |
 | samas | FALSE | 0 / 68 (0%) | 0 / 37 (0%) | 0 / 8 (0%) |
 | steiner | FALSE | 15 / 125 (12%) | 13 / 70 (19%) | 5 / 45 (11%) |
 | uia | FALSE | 9497 / 29493 (32%) | 7387 / 20245 (36%) | 6708 / 17811 (38%) |
-| uib | FALSE | 12978 / 25052 (52%) | 10887 / 16216 (67%) | 9954 / 13909 (72%) |
+| uib | FALSE | 14189 / 28081 (51%) | 11919 / 18248 (65%) | 10907 / 15646 (70%) |
 | uio | FALSE | 47 / 5380 (1%) | 41 / 3139 (1%) | 32 / 2655 (1%) |
 | uis | FALSE | 1457 / 1602 (91%) | 1219 / 1329 (92%) | 957 / 1037 (92%) |
-| uit | FALSE | 36710 / 69992 (52%) | 29966 / 38036 (79%) | 26354 / 31788 (83%) |
+| uit | FALSE | 36703 / 69992 (52%) | 29963 / 38036 (79%) | 26353 / 31788 (83%) |
 | usn | FALSE | 12686 / 20631 (61%) | 11707 / 14865 (79%) | 11072 / 13301 (83%) |
 | vid | FALSE | 696 / 2113 (33%) | 648 / 1408 (46%) | 619 / 1261 (49%) |
 
@@ -876,8 +876,17 @@ Figures are in the tables above; the notes say why.
 
 - Only the plan in force is published (`plan_years = "current"`; see
   “Year coverage”). Plans come from five subject PDFs at
-  `steinerhoyskolen.no`, split by course heading; the PDFs are not
-  stored, so the split text is the raw data
+  `steinerhoyskolen.no`, split by course heading; the split text is the
+  raw data. Runs until 2026-10 do not store the PDFs; since 2026-11-06 a
+  run keeps each PDF’s bytes on the first row its text joined to
+  (`pdf`), and every harvest downloads the PDFs anew (until then a PDF
+  kept in `temp/steiner/` from an earlier harvest was split again, so a
+  harvest in a later academic year would have read last year’s PDFs).
+  The runs until 2026-11 have no `url`: the PDF’s wrapper page is in
+  `url.y`, which `read_harvest()` reads as `url` (since 2026-11-06;
+  until then the pipeline left it out and their offerings had no URL);
+  later runs give it in `url` (and the fetch ledger). Their fetch ledger
+  has no URL, so an offering of theirs takes its own outcome (`ok`)
 - The site’s robots.txt (read 2026-10-16) disallows `/dokumenter/`,
   where the five PDFs are, for all user agents. Every Steiner plan comes
   from that path. Since 2026-10-19 they are fetched by the project
@@ -896,9 +905,11 @@ Figures are in the tables above; the notes say why.
   Until DBH has 2026, Steiner’s plans are the 15 offerings of the
   2026-04-04 harvest (2025/26)
 - M-PEL2.1/M-PEL2.2 get the PDF’s PEL1.4/PEL1.5 plans
-  (`.steiner_remap_pel_emne()`), and since 2026-10-19 the bachelor’s
-  PEL1.4/PEL1.5 too; the M-PEL2 match is to be confirmed against the
-  programme description
+  (`.steiner_remap_pel_emne()`), and since 2026-10-19 (run
+  `2026-10-19_121636`) the bachelor’s PEL1.4/PEL1.5 too: before, the
+  remap replaced their key, so the run `2026-10-19` gave those 4
+  offerings no plan (56 offerings with a plan, then 60). The M-PEL2
+  match is to be confirmed against the programme description
 
 ------------------------------------------------------------------------
 
