@@ -1,0 +1,9 @@
+{
+  "check": "fulltext",
+  "institution": "himolde",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 1,
+  "overall_assessment": "The 28 packet entries (one suspect and 27 random controls) show no confirmed fulltext extraction defect: retained plans preserve the visible course sections, facts boxes and readable structure, while omitted page text consists of navigation, timestamps, staff names and utility links. The short-text suspect VPL023 is genuinely a page shell and is correctly excluded; the sampled earlier-version pages are also correctly excluded, while multi-semester plans covering the offering are retained. Packet truncation markers are presentation limits, and isolated source-text irregularities do not establish extraction errors.",
+  "findings": []
+}

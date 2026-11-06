@@ -1,5 +1,6 @@
 "institution","n_suspect","n_random","packet"
 "fhs",16,12,"data/audit/anonymization/packets/fhs.md"
+"himolde",20,8,"data/audit/anonymization/packets/himolde.md"
 "hiof",7,21,"data/audit/anonymization/packets/hiof.md"
 "hivolda",20,0,"data/audit/anonymization/packets/hivolda.md"
 "hvl",11,17,"data/audit/anonymization/packets/hvl.md"

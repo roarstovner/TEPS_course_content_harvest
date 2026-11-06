@@ -1,0 +1,130 @@
+{
+  "check": "sections",
+  "institution": "himolde",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 20,
+  "n_suspects_reviewed": 4,
+  "overall_assessment": "All 20 courses were reviewed in full as presented in the packet (4 suspects and 16 random controls); packet-builder truncation markers were not treated as extraction loss. Major headings, programme-list boundaries, real prerequisites and all displayed learning-outcome groups are generally preserved, but reading-list placeholders persist in 11/20 courses, three more rows contain only widget/list titles, and occasional semantic misclassification and administrative contamination remain. The SKD204 long/coursework-leak flag is substantive (its content/outcome keyword flags do not establish additional sections), LOG904-185 duplicates originate in the source but create false prerequisites, the two TBA flags are valid, and SAF230’s assessment-leak flag is a false alarm because the presentation is explicitly an exam-entry gate.",
+  "findings": [
+    {
+      "target": "teaching_methods",
+      "error_type": "merged_sections",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "himolde_SKD204-1_2022_spring_1"
+      ],
+      "evidence": "Vurdering av arbeidskravet er godkjent/ikke godkjent. Ved vurderingen ikke godkjent kan studentene bearbeide opplegget etter avtale med faglærer.",
+      "description": "The 7,074-character teaching_methods row combines a short list of teaching activities with four detailed Arbeidskrav I–IV blocks, including approval criteria and deliverables; no coursework_requirements row is emitted. This confirms the long/leak->coursework_requirements flags. References to content and learning outcomes within these assignment instructions do not independently establish course_content or learning_outcomes leakage.",
+      "root_cause_hypothesis": "The packet maps all four numbered Arbeidskrav subheadings to unmapped, so sectionize() returns their text to the parent teaching_methods section. The inline coursework-heading regex in R/extract_sections.R accepts bare Arbeidskrav but does not cover these numbered, titled variants; the current general heading map already contains arbeidskrav, so also verify the build/version and subheading matching that produced this packet.",
+      "suggested_fix": "Ensure numbered headings matching ^Arbeidskrav\\s+[IVX0-9]+(?:\\s*[:.]|\\s) open coursework_requirements, preserving the heading and all subordinate criteria/deliverables until the next numbered requirement or top-level heading. Rebuild with the current heading map and ensure unmapped subheadings within these requirement blocks do not return their text to teaching_methods.",
+      "confidence": "high"
+    },
+    {
+      "target": "prerequisites",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "himolde_LOG904-185-1_2025_autumn_1"
+      ],
+      "evidence": "This course focuses on how to promote sustainable mobility via policy planning so to stimulate behavior change.",
+      "description": "The complete 760-character course-content description is repeated as prerequisites, without stating any prior knowledge or required course. The dup_in_course flag is real, but the duplication already appears under Recommended knowledge in the full plan: it is a source copy/paste error propagated into canonical sections, rather than text duplicated by the splitter.",
+      "root_cause_hypothesis": "Recommended knowledge maps directly to prerequisites and there is no guard for an entire prerequisites block that exactly duplicates course_content.",
+      "suggested_fix": "After whitespace normalization, suppress a prerequisites row whose entire text exactly equals course_content, keeping the source text in the full plan and the substantive course_content row. Do not apply indiscriminate deduplication to genuinely repeated assessment components.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": [
+        "himolde_ØKL110-1_2022_autumn_1",
+        "himolde_VPL033-1_2019_autumn_1",
+        "himolde_BØK411-1_2019_spring_1"
+      ],
+      "evidence": "Vurderingen i kurset vil fokusere mye på design-thinking-prosessen, den innsikten man har fått og de ferdighetene man har lært underveis i semesteret.",
+      "description": "Meaning-based boundaries are missed inside otherwise correctly located sections. ØKL110 course_content includes lectures, group case work and teacher supervision; VPL033 course_content includes explicit statements of what students shall know and be able to do; BØK411 teaching_methods includes two sentences describing what the assessment emphasizes, which belong in assessment. These problems occur in random controls without leak flags.",
+      "root_cause_hypothesis": "sectionize() assigns body text by heading. The sentence-move rules in R/extract_sections.R do not cover himolde, and the teaching-to-assessment fallback recognizes Vurderingsform/Vurderingsinnhold labels rather than this prose.",
+      "suggested_fix": "Add narrowly scoped himolde sentence moves: move the two BØK411 assessment-focus sentences beginning Vurderingen i kurset and Kvaliteten og relevansen to assessment, ØKL110 sentences beginning Kurset vil bestå and Casene skal løses to teaching_methods, and standalone Studenten skal ha/kunne outcome statements from course_content to learning_outcomes. Preserve mixed sentences whole when they cannot be split without changing source wording.",
+      "confidence": "high"
+    },
+    {
+      "target": "reading_list",
+      "error_type": "empty_placeholder",
+      "severity": "low",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "himolde_LOG904-185-1_2025_autumn_1",
+        "himolde_SAF230-1_2025_spring_1",
+        "himolde_ØKL110-1_2022_autumn_1"
+      ],
+      "evidence": "The current reading list for can be found in Leganto",
+      "description": "Eleven courses emit reading_list rows containing only TBA, a link/pointer, an unavailable-list notice, or a promise to announce literature later. Besides the two correctly flagged TBA rows, unflagged examples include Klikk her for pensumoversikt, Click here for reading list, Pensumoversikt Fant ingen pensumliste for dette emnet, and Litteratur oppgis i fronter ved studiestart. Under course_plan_spec.md these do not constitute a section; Norwegian Leganto-only pointers in VBU732 and MAR100 are already suppressed correctly.",
+      "root_cause_hypothesis": "The whole-row placeholder matcher in R/extract_sections.R lacks these English pointers, TBA, click labels, the Pensumoversikt absence message and the precise Fronter wording.",
+      "suggested_fix": "Extend whole-row placeholder recognition for these exact Norwegian/English variants, including TBA, and remove a leading Pensumoversikt widget label before checking an absence notice. Drop only rows consisting entirely of placeholders/pointers; preserve substantive bibliographic text such as the LOG904-140 references.",
+      "confidence": "high"
+    },
+    {
+      "target": "reading_list",
+      "error_type": "boilerplate_only",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "himolde_SKD204-1_2022_spring_1",
+        "himolde_VBU730-1_2022_autumn_1",
+        "himolde_SKD203-1_2022_spring_1"
+      ],
+      "evidence": "Pensumoversikt\nVBU730 Vitenskapsteori og forskningsmetode",
+      "description": "Three reading_list rows contain only Pensumoversikt and course/list titles rather than references or a substantive literature note. The two nursing courses additionally retain duplicated list titles and a Rolled over widget status. These are reading-list interface labels, not the reading list itself; the packet does not establish that any actual references were available and lost.",
+      "root_cause_hypothesis": "The himolde HTML reader includes the reading-list widget/list-link titles as body text. .strip_list_tabs() handles a different widget naming pattern and leaves these rows intact.",
+      "suggested_fix": "Exclude the himolde widget title/status/link-label nodes through its reader configuration while retaining actual reference nodes. After removal, suppress a reading_list row containing only Pensumoversikt and course/list names; keep a row whenever actual references or substantive literature descriptions remain.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "formatting_noise",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "himolde_LOG904-140-1_2022_autumn_1",
+        "himolde_LOG904-131-1_2025_autumn_1",
+        "himolde_SAF230-1_2025_spring_1"
+      ],
+      "evidence": "Duration: 30 minutes (per group) – Friday morning, starting at 9:15.",
+      "description": "Assessment retains exam logistics: LOG904-140 includes a Thursday due date and Friday start time, LOG904-131 repeats weekday submission/presentation schedules under Form of assessment and Duration, and SAF230 retains the Inspera exam-system name. Actual duration, components, weights, grouping, grading and permitted aids are valid assessment design and must stay; the mere presence of an exam table or a four-hour duration is not a defect.",
+      "root_cause_hypothesis": "These logistics are embedded in otherwise valid FS assessment fields, so heading boundaries cannot remove them. The institution-specific noise/logistics rules in R/extract_sections.R do not include himolde.",
+      "suggested_fix": "Add himolde cleanup for due-date-only Duration values and weekday/time suffixes, retaining real durations such as 30 minutes (per group). Remove weekday deadline clauses from assessment prose without removing the four assignments, oral presentation or equal weighting, and strip the -Inspera system suffix while retaining Digital school assessment.",
+      "confidence": "high"
+    },
+    {
+      "target": "course_content",
+      "error_type": "formatting_noise",
+      "severity": "medium",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "himolde_LOG904-130-1_2018_autumn_1"
+      ],
+      "evidence": "Lecturer:[name], Technical University of Denmark",
+      "description": "course_content ends with a lecturer name and affiliation. Staff/contact metadata is outside every canonical section, even though it already survives in the packet’s nominally anonymized ground truth; the surrounding port-logistics subject matter is correctly extracted.",
+      "root_cause_hypothesis": "The existing himolde staff exclusions cover facts-box Emneansvarlig/Course Leader nodes but this Lecturer line is embedded in the content body, where sectionize() retains it.",
+      "suggested_fix": "Add a himolde body-line exclusion for standalone Lecturer: staff/affiliation lines before section assignment (or the equivalent narrow section cleanup). Preserve prose about teaching activities and cited authors in real bibliographic references.",
+      "confidence": "high"
+    },
+    {
+      "target": "course_content",
+      "error_type": "formatting_noise",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "himolde_ADM420-1_2025_spring_1"
+      ],
+      "evidence": "The course will not be offered in the",
+      "description": "An incomplete course-availability notice is emitted as the opening of course_content. It is administrative offering information rather than subject matter; the marketing description that follows is correctly preserved.",
+      "root_cause_hypothesis": "The availability notice is an unmapped subheading inside Contents, which sectionize() keeps in its parent section. Earlier date/semester removal appears to have left the unfinished phrase.",
+      "suggested_fix": "Drop standalone himolde availability-notice lines beginning The course will not be offered, including this date-stripped fragment, from canonical sections while retaining the adjacent content paragraphs.",
+      "confidence": "high"
+    }
+  ]
+}

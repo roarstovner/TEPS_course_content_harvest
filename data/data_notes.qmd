@@ -281,10 +281,11 @@ Figures are in the tables above; the notes say why.
 
 ### HiMolde (Molde University College)
 
-- Added 2026-10-31 (all-courses frame). Pages from autumn 2018 (2017: two pages, MAR300 and MAR301): DBH's offerings of 1994-2017 (some 8 700) have no plan on the site. Some DBH courses have no page in the year's listings (checked for 2025: most PhD courses, DRL and DRHS, and several health master's courses, MAK7xx; direct URLs answer 404)
+- Added 2026-10-31 (all-courses frame). Pages from autumn 2018 (2017: two pages, MAR300 and MAR301): DBH's offerings of 1994-2017 (some 8 700) have no plan on the site. Some DBH courses have no page in the year's listings (checked for 2025: most PhD courses, DRL and DRHS, and several health master's courses, MAK7xx; direct URLs answer 404). In the pilot (2026-11-06), 56 of 100 sampled course-years have a page (2018 10 of 25, 2019 16, 2022 16, 2025 14); the listings of 2022 and 2025 hold no page for the others (JUR216, PMP300, SCM410; SND102, SNH102 and VIVO-2 only in 2022, ADM499 only in 2025)
+- A spring offering whose only page is the autumn before's, for that autumn alone, gets no plan (25 of the pilot's 189 offerings; the page's plan ends the term before, `page_end_term`). One page, VPL023 spring 2019, is a page shell
 - A plan sits in a department folder DBH does not give, Norwegian or English tree; `resolve_urls_himolde_batch()` reads the folder listings (`docs/institutions.md`). An offering whose code the listings of its year do not hold gets no URL
 - robots.txt disallows only `/vrtx`, which the harvest does not request
-- Read from `#vrtx-fs-emne-content`: the title, the facts list (credits, department, campus, language, level, duration) and the plan; not the course coordinator, the timetable and reading-list links, the table of contents' heading and the FS fetch stamp. The programme list is in the facts
+- Read from `#vrtx-fs-emne-content`: the title, the facts list (credits, department, campus, language, level, duration) and the plan; not the course coordinator, a guest lecturer's line or biography in the plan's text ("Lecturer:", seminar courses), the timetable and reading-list links, the reading-list widget ("Pensumoversikt" and the titles of the course's Leganto lists), the table of contents' heading and the FS fetch stamp. The programme list is in the facts. The reading list itself is in Leganto: most plans' "Pensum" holds only a link or a notice, which is no `reading_list` section
 
 ---
 

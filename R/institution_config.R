@@ -294,7 +294,25 @@ institution_configs <- list(
                       "#vrtx-fs-emne-content .vrtx-date-info"),
                 paste0("//div[@id='vrtx-fs-emne-facts']//div[contains(@class, 'dg')]",
                        "[starts-with(normalize-space(), 'Emneansvarlig') or ",
-                       "starts-with(normalize-space(), 'Course Leader')]")),
+                       "starts-with(normalize-space(), 'Course Leader')]"),
+                # nor a guest lecturer in the plan's text: a paragraph opening
+                # with a bold "Lecturer", "<strong>Lecturer</strong>:<name>,
+                # <university> (<e-mail>)", and, after a bare "Lecturer:", the
+                # paragraph of the lecturer's biography under it (seminar
+                # courses LOG904-130, IDR804-019; 2026-11-06)
+                local({
+                  p <- paste0("//div[@id='vrtx-fs-emne-content']//p[starts-with(normalize-space(), 'Lecturer')]",
+                              "[*[1][self::strong or self::b][starts-with(normalize-space(), 'Lecturer')]]")
+                  paste0(p, " | ", p, "[normalize-space() = 'Lecturer' or normalize-space() = 'Lecturer:']",
+                         "/following-sibling::p[1]")
+                }),
+                # nor the reading-list widget: its label "Pensumoversikt" and
+                # the titles of the course's Leganto lists under it (2026-11-06)
+                local({
+                  w <- paste0("//div[contains(@class, 'vrtx-fs-infotype-content')]/*[self::strong or self::p[strong]]",
+                              "[normalize-space() = 'Pensumoversikt']")
+                  paste0(w, " | ", w, "/following-sibling::ul[1][li//a[contains(@href, '/leganto/')]]")
+                })),
     # and the programmes the course belongs to, which change from year to year
     facts = c("#vrtx-fs-emne-content > h1", "#vrtx-fs-emne-facts",
               local({

@@ -1,7 +1,7 @@
 # sections audit — aggregated findings
 
-51 findings across 7 institutions (from 7 agent reports in `data/audit/sections/findings-codex`; model: gpt-6.1-sol).
-Mechanical verification: 50 passed (✓), 1 failed (✗), 0 not checkable (?, stale report or no packet).
+59 findings across 8 institutions (from 8 agent reports in `data/audit/sections/findings-codex`; model: gpt-6.1-sol).
+Mechanical verification: 58 passed (✓), 1 failed (✗), 0 not checkable (?, stale report or no packet).
 Sorted by severity then prevalence. Source: `R/audit/aggregate.R`.
 
 ## Failed verification — check by hand before acting
@@ -17,44 +17,43 @@ Usually a paraphrased quote; occasionally an invented finding.
 
 | target | error_type | n_inst | institutions | worst |
 | --- | --- | --- | --- | --- |
-| cross_section | wrong_content | 5 | fhs, hivolda, nord, uia, uit | high |
+| cross_section | wrong_content | 6 | fhs, himolde, hivolda, nord, uia, uit | high |
 | assessment | wrong_content | 4 | fhs, ntnu, phs, uit | high |
 | coursework_requirements | wrong_content | 4 | fhs, hivolda, nord, ntnu | high |
 | cross_section | empty_placeholder | 4 | fhs, hivolda, ntnu, uit | high |
 | teaching_methods | wrong_content | 4 | ntnu, phs, uia, uit | high |
 | prerequisites | missing_section | 3 | fhs, nord, uit | high |
-
-## Change since `HEAD` (keyed by target / error_type)
-
-| institution | n_before | n_now | persisting | new | gone |
-| --- | --- | --- | --- | --- | --- |
-| fhs | 8 | 7 | coursework_requirements / wrong_content; coursework_requirements / missing_section; assessment / wrong_content; prerequisites / missing_section; prerequisites / merged_sections; cross_section / empty_placeholder | cross_section / wrong_content | course_content / wrong_content; cross_section / duplicate |
+| prerequisites | wrong_content | 3 | himolde, nord, uia | high |
 
 ## By error type
 
 | error_type | severity | n |
 | --- | --- | --- |
-| wrong_content | high | 27 |
+| wrong_content | high | 29 |
 | wrong_content | medium | 7 |
 | missing_section | high | 5 |
+| empty_placeholder | low | 3 |
 | truncated | high | 3 |
 | duplicate | high | 2 |
 | empty_placeholder | high | 2 |
-| empty_placeholder | low | 2 |
+| formatting_noise | medium | 2 |
+| merged_sections | high | 2 |
 | boilerplate_only | high | 1 |
-| merged_sections | high | 1 |
+| boilerplate_only | medium | 1 |
+| formatting_noise | low | 1 |
 | other | high | 1 |
 
 ## By target
 
 | target | n |
 | --- | --- |
-| cross_section | 19 |
-| prerequisites | 8 |
-| assessment | 7 |
+| cross_section | 20 |
+| prerequisites | 9 |
+| assessment | 8 |
 | coursework_requirements | 7 |
-| teaching_methods | 6 |
-| course_content | 2 |
+| teaching_methods | 7 |
+| course_content | 4 |
+| reading_list | 2 |
 | all | 1 |
 | learning_outcomes | 1 |
 
@@ -63,6 +62,7 @@ Usually a paraphrased quote; occasionally an invented finding.
 | institution | model | n_courses_reviewed | overall_assessment |
 | --- | --- | --- | --- |
 | fhs | gpt-6.1-sol | 18 | Reviewed all 18 sampled courses (14 suspects, four random controls) in full as displayed, plus both attendance appendix items: 2 correct and 0 wrong (covering all 5 moved sentences/plans); packet-builder truncation is not an extractor defect. The FHS prerequisite and teaching heading fixes hold i... |
+| himolde | gpt-6.1-sol | 20 | All 20 courses were reviewed in full as presented in the packet (4 suspects and 16 random controls); packet-builder truncation markers were not treated as extraction loss. Major headings, programme-list boundaries, real prerequisites and all displayed learning-outcome groups are generally preserv... |
 | hivolda | gpt-6.1-sol | 16 | Reviewed all 16 sampled courses (14 suspects, 2 controls) and all 21 attendance appendix items: 19 correct moves and 2 wrong moves (ATT 11 and ATT 15, cut at jf./Jf.); no residual or duplicated attendance requirements were visible in the sampled sections. Most boilerplate flags reflect legitimate... |
 | nord | gpt-6.1-sol | 20 | Reviewed all 20 sampled courses (14 suspects and 6 random controls) and all 18 attendance appendix items: 18 correct moves and 0 wrong moves; no moved attendance sentence was observed duplicated in a sampled source section. Most boilerplate flags are false alarms on valid repeated teaching/attend... |
 | ntnu | gpt-6.1-sol | 20 | All 20 sampled courses (14 suspects and 6 random controls) were read in full: the suspects chiefly expose English-version pointers incorrectly emitted as substantive sections, while empty flags on Seminar, Workshop and Øvinger and boilerplate on genuine mandatory activities are false alarms. All ... |
@@ -79,6 +79,7 @@ Usually a paraphrased quote; occasionally an invented finding.
 | ✓ | uit | assessment | truncated | high | widespread | uit_FIN-1025-1_2015_autumn_1; uit_FYS-8804-1_2019_autumn_... | Handle combined language blocks before .drop: move explicit exam-language sentences to assessment and retain a shared bare language value... |
 | ✓ | fhs | cross_section | wrong_content | high | common | fhs_LED3201-1_2022_spring_1; fhs_INGOF2230-1_2025_spring_... | Recognise Praktisk organisering og arbeidsformer and explicit teaching lead-ins as teaching boundaries; route supplemental final-delivera... |
 | ✓ | fhs | prerequisites | missing_section | high | common | fhs_ING3511-1_2021_autumn_1; fhs_CBU1503-1_2025_spring_1;... | Add guarded sentence patterns for Emnet bygger på/bygger videre på ferdighetene and The course is based on when they explicitly name prio... |
+| ✓ | himolde | cross_section | wrong_content | high | common | himolde_ØKL110-1_2022_autumn_1; himolde_VPL033-1_2019_aut... | Add narrowly scoped himolde sentence moves: move the two BØK411 assessment-focus sentences beginning Vurderingen i kurset and Kvaliteten ... |
 | ✓ | hivolda | cross_section | wrong_content | high | common | hivolda_PPUD-DID2KH-1_2023_autumn_1; hivolda_PPUD-DID2MU-... | Add a hivolda-specific paragraph relocation in R/extract_sections.R for the observed Ein del av undervisninga ... Felles fagdidaktikk var... |
 | ✓ | hivolda | cross_section | wrong_content | high | common | hivolda_PPUD-DID2KH-1_2024_autumn_1; hivolda_PPUD-DID2MU-... | Relocate the exact standalone Bestått didaktikkemne 1. sentence from hivolda coursework_requirements to prerequisites in R/extract_sectio... |
 | ✓ | nord | prerequisites | truncated | high | common | nord_MAT5006-1_2022_spring_2; nord_SAM5003-1_2022_spring_... | Read Nord Adgangsregulering blocks as prerequisite candidates, strip programme-admission sentences, retain prior-course/credit/FoU requir... |
@@ -102,6 +103,8 @@ Usually a paraphrased quote; occasionally an invented finding.
 | ✓ | fhs | assessment | wrong_content | high | rare | fhs_FHS8004-1_2022_autumn_1 | When an assessment paragraph explicitly defines arbeidskrav and states that they do not count toward the grade, move the defining paragra... |
 | ✓ | fhs | coursework_requirements | wrong_content | high | rare | fhs_OPG3302-1_2022_autumn_1 | Split this FHS thesis block at Arbeidet skal presenteres skriftlig i form av en oppgave and route the final thesis and word-limit paragra... |
 | ✓ | fhs | prerequisites | merged_sections | high | rare | fhs_SPR2710-1_2023_spring_1 | Within FHS prerequisite blocks, terminate prior-knowledge text at a separate paragraph beginning Emnet er strukturert and route that topi... |
+| ✓ | himolde | teaching_methods | merged_sections | high | rare | himolde_SKD204-1_2022_spring_1 | Ensure numbered headings matching ^Arbeidskrav\s+[IVX0-9]+(?:\s*[:.]\|\s) open coursework_requirements, preserving the heading and all sub... |
+| ✓ | himolde | prerequisites | wrong_content | high | rare | himolde_LOG904-185-1_2025_autumn_1 | After whitespace normalization, suppress a prerequisites row whose entire text exactly equals course_content, keeping the source text in ... |
 | ✓ | nord | prerequisites | missing_section | high | rare | nord_SPD5002-1_2022_spring_2 | Add bounded Norwegian prior-study constructions such as fulgt emnene and gjennomført emnene to the real-prerequisite guard so mixed admis... |
 | ✓ | nord | coursework_requirements | truncated | high | rare | nord_REL1004-1_2019_autumn_2 | Add a bounded pattern for excursions described as part of obligatory participation, moving the requirement and its immediately referring ... |
 | ✓ | nord | coursework_requirements | wrong_content | high | rare | nord_REL1004-1_2019_autumn_2 | Recognize the bounded contrast construction arbeidskrav ... , andre går inn i mappevurderinga and split at the clause boundary, assigning... |
@@ -119,9 +122,14 @@ Usually a paraphrased quote; occasionally an invented finding.
 | ✓ | uia | teaching_methods | wrong_content | medium | widespread | uia_MA-457-1_2024_autumn_2; uia_FYS129-G_2020_autumn_2; u... | Add UiA sentence removal for explicit total expected course-workload estimates, including the approximately/ca. forms and unpunctuated li... |
 | ✓ | fhs | assessment | wrong_content | medium | common | fhs_FHS8004-1_2022_autumn_1; fhs_AR301-1_2023_spring_1; f... | Remove examiner-arrangement, resit and dated distribution/submission sentences, plus assessment-semester-only notices. Omit Tidspunkt and... |
 | ✓ | nord | cross_section | wrong_content | medium | common | nord_RET1009-1_2024_spring_2; nord_MFL390-1_2021_autumn_1... | Add Nord-specific logistics removal for dated Første forelesning and Avsluttende Q&A-forelesning lines, the standalone Eksamenssted sente... |
+| ✓ | himolde | reading_list | boilerplate_only | medium | occasional | himolde_SKD204-1_2022_spring_1; himolde_VBU730-1_2022_aut... | Exclude the himolde widget title/status/link-label nodes through its reader configuration while retaining actual reference nodes. After r... |
+| ✓ | himolde | assessment | formatting_noise | medium | occasional | himolde_LOG904-140-1_2022_autumn_1; himolde_LOG904-131-1_... | Add himolde cleanup for due-date-only Duration values and weekday/time suffixes, retaining real durations such as 30 minutes (per group).... |
 | ✓ | ntnu | assessment | wrong_content | medium | occasional | ntnu_MOL3901-2_2022_autumn_1; ntnu_TYSK1402-1_2025_autumn_1 | Add sentence-level NTNU cleanup for these explicit resubmission/repeat-entitlement formulations, preserving ordinary assessment component... |
 | ✓ | uia | teaching_methods | wrong_content | medium | occasional | uia_SV-920-1_2020_autumn_1; uia_ORG952-1_2025_spring_1; u... | Strip UiA lines consisting solely of Undervisningsspråk or Litteratur followed by language names from section text. Retain substantive re... |
 | ✓ | uit | teaching_methods | wrong_content | medium | occasional | uit_LRU-2580-1_2013_autumn_1; uit_FIN-1025-1_2015_autumn_1 | Extend teaching-method cleanup to the anchored Kvalitetssikring av emnet block and the observed course-evaluation sentences; retain stude... |
+| ✓ | himolde | course_content | formatting_noise | medium | rare | himolde_LOG904-130-1_2018_autumn_1 | Add a himolde body-line exclusion for standalone Lecturer: staff/affiliation lines before section assignment (or the equivalent narrow se... |
 | ✓ | hivolda | coursework_requirements | wrong_content | medium | rare | hivolda_MPRO110-1_2022_autumn_1 | Add a narrow hivolda .section_noise pattern for the quoted standalone Canvas-monitoring notice in R/extract_sections.R; keep it in course... |
+| ✓ | himolde | reading_list | empty_placeholder | low | widespread | himolde_LOG904-185-1_2025_autumn_1; himolde_SAF230-1_2025... | Extend whole-row placeholder recognition for these exact Norwegian/English variants, including TBA, and remove a leading Pensumoversikt w... |
 | ✓ | fhs | cross_section | empty_placeholder | low | common | fhs_CBU1506-1_2019_autumn_2; fhs_SPR2723-1_2024_autumn_1;... | Add section-aware whole-row placeholder rules for these bare values, suppress Hva lærer du without a body, and recognise a Leganto-only p... |
 | ✓ | hivolda | cross_section | empty_placeholder | low | occasional | hivolda_MD201-1_2015_autumn_1; hivolda_MD105-1_2016_spring_1 | Add an anchored (?:se\|sjå) engelsk versjon placeholder variant and suppress learning-outcome rows whose remaining text consists solely of... |
+| ✓ | himolde | course_content | formatting_noise | low | rare | himolde_ADM420-1_2025_spring_1 | Drop standalone himolde availability-notice lines beginning The course will not be offered, including this date-stripped fragment, from c... |

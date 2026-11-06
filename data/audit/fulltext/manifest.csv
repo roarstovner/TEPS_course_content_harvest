@@ -1,6 +1,6 @@
 "institution","n_suspect","n_random","n_failed","packet"
 "fhs",20,8,0,"data/audit/fulltext/packets/fhs.md"
-"himolde",20,0,0,"data/audit/fulltext/packets/himolde.md"
+"himolde",1,27,0,"data/audit/fulltext/packets/himolde.md"
 "hiof",3,25,0,"data/audit/fulltext/packets/hiof.md"
 "hivolda",0,28,0,"data/audit/fulltext/packets/hivolda.md"
 "hvl",1,27,3,"data/audit/fulltext/packets/hvl.md"

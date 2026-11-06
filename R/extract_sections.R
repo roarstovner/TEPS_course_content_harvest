@@ -1213,6 +1213,11 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "litteratur og faglige ressurser finn(?:er du|es) her",
   "follow this link for reading list and academic resources",         # nla
   "(?:(?:se|sjå) )?pensumlist[ea] for emnet (?:finn(?:er)? du )?her",  # hivolda
+  # himolde, hiof: the Leganto link's label or notice, the reading-list
+  # widget's absence note, and "TBA" (2026-11-06)
+  "klikk her for pensum(?:oversikt|litteratur)(?: \\d\\. studieår)?", "click here for (?:the )?reading list",
+  "(?:the )?current reading list(?: for)?(?: [^.]{0,30})? can be found in leganto",
+  "(?:pensumoversikt )?fant ingen pensumliste for dette emnet", "(?:pensum:? )?se leganto", "tba",
   "ta kontakt med (?:instituttet|fakultetet)(?:/(?:instituttet|fakultetet))?",
   "se (?:vår(?:e)? |fakultetets )?hjemmesid(?:e|en|er|ene)",
   # uit: "Contact the department/faculty.", the law courses' "Se fagbeskrivelse
@@ -1221,7 +1226,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "(?:se )?fag(?:beskrivelse|plan)(?:er)? med pensum(?:liste)?(?: ?for (?:\\d\\. )?avdeling)?",
   # uit: the list is on the learning platform or got from the bookshop
   "syllabus and reading list (?:are|will be) available in (?:fronter|canvas),? or by contacting the (?:responsible )?teacher or (?:the|a) student adviser",
-  "(?:pensumlitteratur )?(?:oppgis|opplyses) (?:i (?:fronter|canvas|uits digitale læringsplattform) )?ved (?:semester|studie)start(?: eller (?:kan oppgis og kjøpes|fås) ved henvendelse til [^.]{0,80})?",
+  "(?:(?:pensum)?litteratur )?(?:oppgis|opplyses) (?:i (?:fronter|canvas|uits digitale læringsplattform) )?ved (?:semester|studie)start(?: eller (?:kan oppgis og kjøpes|fås) ved henvendelse til [^.]{0,80})?",
   "bøkene kan kjøpes på www\\.akademi[ak]a\\.no",
   "pensumliste(?:n)? (?:vil )?legges (?:vanligvis )?ut i (?:fronter|canvas),? eller kan fås ved henvendelse til emneansvarlig eller studiekonsulent",
   "literature will be announced in fronter at the beginning of term or may be obtained by contacting the (?:campus )?bookstore[^.]{0,60}",

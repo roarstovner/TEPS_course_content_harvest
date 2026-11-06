@@ -1,0 +1,55 @@
+{
+  "check": "anonymization",
+  "institution": "himolde",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "Reviewed all 20 suspects and 8 random controls: lecturer names remain in two suspects, while the other 18 name_like flags are false alarms caused by course terminology, programme titles and organisation names. Semester labels and the email address are correctly removed, and reference authors, publication years, historical years and substantive course content are preserved; one unflagged clock time survives and seven courses, including one random control, have a minor grammatical artifact after semester removal. The controls show no staff-name leaks or substantive over-removal, so the privacy defect appears limited to particular lecturer layouts rather than institution-wide.",
+  "findings": [
+    {
+      "target": "person_name",
+      "error_type": "pii_leak",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "himolde_LOG904-130-1_2018_autumn_1",
+        "himolde_IDR804-019-1_2022_spring_1"
+      ],
+      "evidence": "Lecturer:[name], Technical University of Denmark",
+      "description": "Two course plans retain private persons in their institutional teaching roles: [name] after an inline Lecturer label and Chris Horbel in a biographical paragraph beneath Lecturer on a separate line. The latter also retains the identifying reference Chris’ research. The first triggers name_label and name_like; the second triggers only name_like. These are staff identities, not protected reference authors or subject-matter names.",
+      "root_cause_hypothesis": "R/anonymize.R has no himolde handler, and Lecturer is absent from the generic staff-role patterns. The inline layout also has no whitespace after its colon, and the biography is prose rather than a standalone name line, so merely adding the role to existing patterns would not cover both cases.",
+      "suggested_fix": "Add and register a .anon_himolde() handler that removes a line beginning Lecturer: with an inline value, or a standalone Lecturer: heading and its following biography up to the next known course-section heading (here The course is connected to the following study programs). Cover the no-space inline label and the blank-line biography layout, including subsequent first-name mentions, without matching reading-list authors.",
+      "confidence": "high"
+    },
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "himolde_LOG904-140-1_2022_autumn_1"
+      ],
+      "evidence": "Duration: 30 minutes (per group) – Friday morning, starting at 9:15.",
+      "description": "The scheduled presentation start time 9:15 remains, although clock times must be removed. The 30-minute duration is course content and should remain. This is outside the visible pre-pass flags for this course, which reports only name_like.",
+      "root_cause_hypothesis": "The generic .clock_regex in R/anonymize.R requires a two-digit hour, so it matches the removed 23:59 deadline in the same course but misses 9:15. The other time patterns handle dotted times, kl. and am/pm rather than this colon format.",
+      "suggested_fix": "Add a colon-time rule accepting a single-digit hour when explicitly introduced by a scheduling phrase such as starting at; remove the phrase with the time to avoid dangling prose. Preserve existing protections for running times, verses, ratios and bibliographic notation, and keep 30 minutes (per group).",
+      "confidence": "high"
+    },
+    {
+      "target": "content_text",
+      "error_type": "text_corruption",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": [
+        "himolde_IBE321-1_2025_autumn_1",
+        "himolde_TRA730-1_2025_autumn_1",
+        "himolde_SAF230-1_2025_spring_1"
+      ],
+      "evidence": "The current reading list for can be found in Leganto",
+      "description": "Removing the semester-year value inside a sentence leaves an orphaned for in seven reading-list notices (IBE321, both IBE400 offerings, TRA500, both TRA730 offerings and the SAF230 random control). This is minor grammatical damage to surrounding prose; removal of the administrative semester itself is correct and no substantive reading-list information is lost.",
+      "root_cause_hypothesis": "The generic semester-year removal in R/anonymize.R strips values such as 2025 Autumn but leaves the preceding English preposition. Cleanup handles bare Norwegian Pensumliste headings, but not this English sentence template.",
+      "suggested_fix": "For this exact reading-list notice, remove for together with its semester-year value, yielding The current reading list can be found in Leganto. Scope the cleanup to the notice template rather than removing prepositions generally.",
+      "confidence": "high"
+    }
+  ]
+}
