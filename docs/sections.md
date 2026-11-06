@@ -143,10 +143,16 @@ Fields for the `html` reader:
   accordion). An unmapped `h3` (“Karakterskala”) hands its text back to
   the parent section, keeping the heading as its first line. A
   colon-ended lead-in naming a coursework gate (“… følgende
-  obligatoriske aktiviteter:”) starts coursework_requirements. A
-  selector that starts with “/” is XPath: fhs’s paragraphs, except those
-  naming a gate in the accordion “Arbeidskrav og vurdering”, which stay
-  in assessment for `section_inline_coursework`, and “Emnets
+  obligatoriske aktiviteter:”) starts coursework_requirements. So does a
+  numbered requirement, whole `<p>` or its leading `<em>`/`<strong>` run
+  (“Arbeidskrav II: Helseundervisning”, “Obligatorisk arbeidskrav 1”,
+  “Arbeidskrav 2 - Notat”; a title after a bare space only in an
+  all-bold `<p>`, and not a sentence), keeping its text; under such a
+  sub-heading or lead-in a bold label (“Vurderingskriterier:”) stays in
+  coursework_requirements up to the next mapped sub-heading or heading.
+  A selector that starts with “/” is XPath: fhs’s paragraphs, except
+  those naming a gate in the accordion “Arbeidskrav og vurdering”, which
+  stay in assessment for `section_inline_coursework`, and “Emnets
   oppbygning:” with a colon, a module list in course content (MILM4106).
 - `section_headings`: headings and sub-headings (whole text, minus a
   trailing colon, lower case) this institution maps on its own, looked

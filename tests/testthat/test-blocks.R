@@ -63,6 +63,30 @@ test_that("a sub-heading paragraph splits into the sub-heading and its text", {
   expect_equal(roles(sub("<p>Studentene leser om arbeidskrav i skolen.</p>")), "text:NA")
 })
 
+test_that("a numbered coursework requirement is a kept coursework sub-heading", {
+  sub <- function(html) page_blocks(paste0("<main><h2>Undervisning</h2>", html, "</main>"),
+                                    NA, html_reader(sub = "p"))[-1, ]
+  for (h in c("<p><strong>Arbeidskrav II: Helseundervisning</strong></p>",
+              "<p><strong>Arbeidskrav III folkehelsearbeid i praksis</strong></p>",
+              "<p>Obligatorisk arbeidskrav 1</p>", "<p>Arbeidskrav 2 - Refleksjonsnotat</p>")) {
+    b <- sub(h)
+    expect_equal(roles(b), "sub:coursework_requirements", info = h)
+    expect_true(b$keep, info = h)
+  }
+  # a bold lead: the paragraph stays whole, so the fulltext does not change
+  lead <- sub("<p><strong>Arbeidskrav 1:</strong> Et refleksjonsnotat.</p>")
+  expect_equal(roles(lead), "sub:coursework_requirements")
+  expect_equal(lead$text, "Arbeidskrav 1: Et refleksjonsnotat.")
+  expect_equal(roles(sub("<p><strong>Arbeidskrav 1</strong> skal leveres i Canvas.</p>")), "text:NA")
+  # sentences, a title after a space in plain text, and other numbered headings are not
+  for (h in c("<p>Arbeidskrav 4 skal være godkjent før yrkespraksis kan påbegynnes</p>",
+              "<p>Arbeidskrav 1-3 må være gjennomført innen 20.09</p>",
+              "<p>Arbeidskrav 1 leveres i Canvas.</p>", "<p>Arbeidskrav 2 refleksjonsnotat</p>",
+              "<p><strong>Arbeidskrav i emnet</strong></p>", "<p><strong>Eksamen 1</strong></p>")) {
+    expect_false(identical(sub(h)$section[1], "coursework_requirements"), info = h)
+  }
+})
+
 test_that("a paragraph in a list item is text unless the item holds a heading", {
   b <- page_blocks("<main><h2>Innhold</h2><ul><li><p>Pensum</p></li></ul>
     <ul><li><h2>Vurdering</h2><p>Pensum</p></li></ul></main>", NA, html_reader(sub = "p"))

@@ -493,6 +493,25 @@ test_that("a colon-ended coursework lead-in starts coursework_requirements", {
   expect_match(s[["assessment"]], "Ingen hjelpemidler\\.$")
 })
 
+test_that("numbered coursework requirements leave teaching methods, with their own labels", {
+  html <- "<main><h2>Undervisnings- og læringsformer</h2><ul><li>Workshop</li></ul>
+    <p><strong>Arbeidskrav I: Pre/post klinikk</strong></p><p>Et intervju.</p>
+    <p><strong>Arbeidskrav II: Helseundervisning</strong></p><p>Et fremlegg.</p>
+    <p><strong>Vurderingskriterier:</strong></p><ul><li>Alle deltar</li></ul>
+    <p>Vurdering av arbeidskravet er godkjent/ikke godkjent.</p>
+    <h2>Eksamen</h2><p>Kliniske studier.</p>
+    <p><strong>Vurdering for studentar som tar faget 3. studieår</strong></p><p>Oppgåve.</p></main>"
+  s <- sections_of(html, html_cfg("p"))
+  expect_equal(s[["teaching_methods"]], "Workshop")
+  # each requirement a paragraph group of its own
+  expect_equal(s[["coursework_requirements"]], paste0(
+    "Arbeidskrav I: Pre/post klinikk\nEt intervju.\n\nArbeidskrav II: Helseundervisning\n",
+    "Et fremlegg.\nVurderingskriterier:\nAlle deltar\n",
+    "Vurdering av arbeidskravet er godkjent/ikke godkjent."))
+  # a heading ends the requirement: a bold label under it is the heading's again
+  expect_match(s[["assessment"]], "^Kliniske studier\\.\n\nVurdering for studentar som tar faget 3\\. studieår\nOppgåve\\.$")
+})
+
 # --- details_mf ---
 
 test_that("mf: intro is course_content, accordions are sections, contact card ignored", {

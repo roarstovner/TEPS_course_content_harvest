@@ -22,7 +22,10 @@
 #' group of outcomes, not a reading list); one naming another section
 #' switches to it;
 #' an unmapped one returns to the section its heading opened and stays as a
-#' line there; a `keep` sub-heading stays as the first line of its section.
+#' line there, except under a `keep` coursework sub-heading (a numbered
+#' requirement "Arbeidskrav II: ...", a lead-in "... følgende obligatoriske
+#' aktiviteter:"), whose own labels ("Vurderingskriterier:") stay in it; a
+#' `keep` sub-heading stays as the first line of its section.
 #' A `label` heading or sub-heading ("Hjelpemidler til eksamen") stays as the
 #' first line of its text; with no text, or only a dash or pointer ("-", "Se
 #' fagplanen."), it goes. "Ingen" stays: no aids is a value.
@@ -41,6 +44,7 @@ sectionize <- function(blocks) {
   parent <- current <- NA_character_
   outer <- list()
   labelled <- FALSE   # the chunks open with a label heading
+  requirement <- FALSE   # under a `keep` coursework sub-heading
   flush <- function() {
     if (!is.na(current) && length(chunks) > 0 && !(labelled && .empty_label_text(chunks[-1]))) {
       txt <- trimws(paste(chunks[nzchar(chunks)], collapse = "\n"))
@@ -55,6 +59,7 @@ sectionize <- function(blocks) {
     section <- blocks$section[i]
     if (role == "heading") {
       flush()
+      requirement <- FALSE
       parent <- current <- section
       # a group label as a heading of its own (inn's div.label "Kunnskap")
       # stays as content, as it does as a sub-heading
@@ -74,12 +79,19 @@ sectionize <- function(blocks) {
       # a group label of the open section, or "Litteratur:" inside learning
       # outcomes (hiof: literature, culture, language), which is not a
       # reading list
-      if (identical(section, current) ||
-          (identical(current, "learning_outcomes") && identical(section, "reading_list"))) {
+      # a numbered requirement starts a paragraph group of its own, also
+      # under a coursework heading (oslomet); a group label under a `keep`
+      # coursework sub-heading stays in it
+      numbered <- blocks$keep[i] && identical(section, "coursework_requirements") &&
+        .numbered_coursework(sub("[:：].*", "", text), TRUE)
+      if ((identical(section, current) && !numbered) ||
+          (identical(current, "learning_outcomes") && identical(section, "reading_list")) ||
+          (is.na(section) && requirement && !identical(current, parent))) {
         chunks <- c(chunks, text)
         next
       }
       flush()
+      requirement <- identical(section, "coursework_requirements") && blocks$keep[i]
       current <- if (is.na(section)) parent else section
       labelled <- !is.na(section) && .is_label_heading(text)
       if (is.na(section) || blocks$keep[i] || labelled) chunks <- text

@@ -298,7 +298,12 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
 #     sub-section and stays as text;
 #   - it is a colon-ended lead-in naming a coursework gate ("Emnet inkluderer
 #     følgende obligatoriske aktiviteter, som må være godkjent før eksamen:"):
-#     coursework_requirements, its text kept (uio).
+#     coursework_requirements, its text kept (uio);
+#   - it, or its opening <em>/<strong> run, is a numbered coursework
+#     requirement (.numbered_coursework(): "Arbeidskrav II: Helseundervisning",
+#     "<strong>Arbeidskrav 1:</strong> Et notat ..."): coursework_requirements,
+#     the whole paragraph kept (the fulltext does not change), and the group
+#     labels under it ("Vurderingskriterier:") stay in it (sectionize()).
 # Otherwise it is text.
 .sub_blocks <- function(node, add_block, sub_map = NULL) {
   raw <- rvest::html_text2(node)
@@ -321,6 +326,14 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
     node, "./node()[normalize-space()][1][self::em or self::strong or self::b]")
   lead <- if (inherits(lead_node, "xml_missing")) NA_character_ else
     stringr::str_trim(rvest::html_text2(lead_node))
+  bold <- !is.na(lead) && tolower(xml2::xml_name(lead_node)) %in% c("strong", "b")
+  all_bold <- bold && stringr::str_squish(lead) == sq
+  # a lead with a colon in it or after it; the paragraph stays whole, its
+  # text the requirement's first line
+  colon_lead <- !is.na(lead) && grepl("^[^:：]*[:：]", substring(sq, 1, nchar(stringr::str_squish(lead)) + 2))
+  if (.numbered_coursework(sq, all_bold) || (colon_lead && .numbered_coursework(lead, bold))) {
+    return(add("sub", raw, "coursework_requirements", TRUE))
+  }
   first_line <- if (length(lines) > 1) lines[1] else NA_character_
   for (head in c(lead, first_line)) {
     sec <- .exact_section(head, sub_map)
@@ -339,14 +352,29 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
       return(add("sub", lines[length(lines)], sec))
     }
   }
-  bold <- !is.na(lead) && tolower(xml2::xml_name(lead_node)) %in% c("strong", "b")
-  if (bold && stringr::str_squish(lead) == sq && nchar(sq) <= 80) {
+  if (all_bold && nchar(sq) <= 80) {
     return(add("sub", raw, NA_character_))
   }
   if (nchar(sq) <= 150 && grepl("[:：]$", sq) && grepl(.coursework_leadin, sq, perl = TRUE)) {
     return(add("sub", raw, "coursework_requirements", TRUE))
   }
   add("text", raw)
+}
+
+# A numbered coursework requirement as a sub-heading: a coursework heading
+# (heading map) with a number, I-X or 1-99, alone or before a short title
+# after a colon or a dash ("Arbeidskrav 1", "Arbeidskrav II: Helseundervisning",
+# "Obligatorisk arbeidskrav 2 - Refleksjonsnotat"), or, in an all-bold
+# paragraph (`bold`), after a space ("Arbeidskrav III folkehelsearbeid i
+# praksis"). Not a sentence ("Arbeidskrav 4 skal være godkjent før ...",
+# "Arbeidskrav 1-3 må være gjennomført innen 20.09").
+.numbered_coursework <- function(x, bold = FALSE) {
+  x <- stringr::str_remove(stringr::str_squish(x), "\\s*[:：]$")
+  m <- stringr::str_match(x, paste0("^(\\D{3,40}?)\\s+(?:[IVX]{1,4}|\\d{1,2})\\b",
+                                    "(?:(\\s*[:：]|\\s+[-–]\\s+|\\s+)(\\D.{0,59}))?$"))
+  !is.na(m[, 1]) && nchar(x) <= 80 && !grepl("[.!?]$", x) &&
+    (is.na(m[, 3]) || bold || grepl("\\S", m[, 3])) &&
+    identical(match_heading_to_section(m[, 2]), "coursework_requirements")
 }
 
 # --- fields (hivolda) -----------------------------------------------------------
