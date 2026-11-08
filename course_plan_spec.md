@@ -85,8 +85,10 @@ text about no part stays only in `course_plan`. Where the line runs:
   rules for coursework and attendance join the course's own coursework
   requirements, after a lead that names the source.
 - **Prerequisites** hold required and recommended prior knowledge and
-  courses, not admission (to the programme, study right, who may apply) or
-  pointers to the admission rules. A sentence that names both stays whole
+  courses for this course, not admission (to the programme, study right, who
+  may apply), pointers to the admission rules or what passing this course
+  permits later ("Emnet må være bestått for å kunne fortsette på Norsk 2.",
+  in no section). A sentence that names both stays whole
   ("Opptak til femårig lektorutdanning og beståtte eksamener i henhold til
   forskrift.").
 - A part whose only text says that it is empty or elsewhere is not a section

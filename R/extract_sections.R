@@ -129,6 +129,7 @@ sectionize <- function(blocks) {
 #' @param cfg Reader settings from .block_cfg().
 #' @return Tibble `section`, `raw_text`.
 page_sections <- function(blocks, text, cfg) {
+  title <- blocks$text[blocks$facts %in% TRUE][1]   # for .is_progression_sentence()
   if (identical(cfg$reader, "text")) blocks <- .text_blocks(text, cfg)
   out <- sectionize(blocks)
   if (identical(cfg$reader, "html") && nrow(out) < 3) {
@@ -145,7 +146,7 @@ page_sections <- function(blocks, text, cfg) {
   for (s in c("teaching_methods", "course_content")) out <- .split_inline_coursework(out, "heading", s)
   out <- .split_lo_intro(.move_sentences(out, cfg$institution), cfg$institution)
   out <- .split_inline_prerequisites(out)
-  .clean_sections(out, cfg$institution)
+  .clean_sections(out, cfg$institution, title)
 }
 
 # A prerequisites label inside course_content moves what it names to
@@ -305,13 +306,15 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 #'   - drops a leading line that merely repeats the section's own heading,
 #'   - removes rows that are empty or only a placeholder ("Ingen",
 #'     "Se fagplanen.", "-", a Leganto pointer; see .placeholder_phrases).
+#'   - removes outgoing progression rules from every section
+#'     (.is_progression_sentence()),
 #'   - strips page widgets, pointers and stock logistics sentences from
 #'     assessment and coursework (.section_noise), and approval stamps,
 #'     logistics and cost sentences from every section
 #'     (.approval_sentence_regex, .logistics_sentences).
 #' Fuzzier cleanup (exam tables, arbeidskrav/eksamen boundaries inside one
 #' paragraph) is left to the later Phase-2 LLM lifting.
-.clean_sections <- function(out, institution = NULL) {
+.clean_sections <- function(out, institution = NULL, title = NULL) {
   # ".drop" collects text under headings that end a section but are not
   # course content (admission, exam logistics; see section_heading_map.R).
   out <- out[out$section != ".drop", , drop = FALSE]
@@ -323,6 +326,9 @@ extract_sections <- function(config, html, extracted_text, course_id) {
     out <- .merge_sections(out[order(adm), , drop = FALSE])   # after the page's own
   }
   if (nrow(out) == 0) return(out)
+  pr <- grepl("(?i)for å (?:kunne )?(?:fortsette|starte|begynne|gå videre)|gå videre til", out$raw_text, perl = TRUE)
+  out$raw_text[pr] <- vapply(out$raw_text[pr], .strip_progression, character(1),
+                             title = title, USE.NAMES = FALSE)
   exam <- out$section %in% c("assessment", "coursework_requirements")
   out$raw_text[exam] <- .strip_section_noise(out$raw_text[exam], institution)
   rx <- if (!is.null(institution)) .logistics_sentences[[institution]]
@@ -387,6 +393,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "(?:forutsetter|forusetter|krever|krav om|godkjent|betinget) opptak|",
   "prioritert ved opptak|rangeres (?:av|etter)|fordeler studieplass|",
   "(?:\\bfore?beholdt?|begrenset til) (?:for )?student|",   # "Emnet er forbeholdt studenter ..."
+  "obligatorisk for studenter (?:som er )?tatt opp|",       # nmbu: "... tatt opp til studieprogrammet LUR."
   "må være tatt opp (?:på|til|som) (?!.*\\b(?:og|eller) (?:ha|har)\\b)|",   # study right, not "... og ha ..."
   "åpent for studenter som er tatt opp|for å (?:kunne )?bli tatt opp|",
   "^(?:(?:jf\\.?|jamfør|som|tilsvarende) )?opptakskrav|",   # pointers to the programme
@@ -413,6 +420,58 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "\\bbør\\b|anbefal|fordel(?!er )|rå til|i tillegg|inklusive|bygger på|",
   "\\bpassed\\b|completed|prior knowledge|recommend|advantage|\\bECTS\\b|credits|in addition)"
 )
+
+# Outgoing progression rules: what passing this course permits later is no
+# prior knowledge for it, and belongs to no section (spec: prerequisites).
+# Its subject is this course and its condition is to go on to something
+# later ("Emnet må være bestått for å kunne fortsette på Kunst og Håndverk 2
+# (GLU 1-7).", "Emnet må være bestått for å kunne starte på avsluttende
+# praktisk-teologisk utdanning (APTU).", "Må tas for å fortsette med
+# masterfag ...", "Studenten må stå i emnet for å kunne fortsette på ...",
+# "Studentene må bestå dette for å kunne starte på masteroppgaven 5.
+# studieår.", "Studenten må ha fulgt undervisningen i emnet for å kunne
+# fortsette videre i studiet", "Studenter kan, ved å gjennomføre
+# dette emnet og emnet ... gå videre til ..."), or the course it names first
+# is this one, by its title ("En må ha fulgt Kunst og håndverk 1 for å kunne
+# fortsette på Kunst og håndverk 2" in the Kunst og håndverk 1 plans,
+# "Studenten må ha fulgt undervisning og fått godkjent arbeidskravene i
+# MGLSPES101 Spesialpedagogiske grunnlagsspørsmål for å kunne fortsette på
+# MGLSPES102 ..."; in the plan of the later course the same sentence is a
+# prerequisite and stays).
+.progression_regex <- paste0(
+  "(?i)^\\W*(?:(?:(?:dette )?(?:emnet|kurset) )?må (?:være )?(?:bestått|gjennomført|fullført|tas)|",
+  "(?:studenten\\w*|en|du) må (?:stå i|bestå|ha fulgt undervisning(?:en)? i) (?:dette emnet|emnet|dette))\\b",
+  "[^.]*?\\bfor å (?:kunne )?(?:fortsette|starte|begynne|gå videre)\\b|",
+  "\\bved å (?:gjennomf(?:ø)?re|fullføre|bestå) dette emnet\\b[^.]*?\\bgå videre til\\b")
+.progression_named_regex <- paste0(
+  "(?i)^\\W*(?:en|du|studenten\\w*) må ha (?:fulgt|bestått|gjennomført|fullført) ",
+  "(?:undervisning(?:en)?,? og fått godkjent arbeidskravene (?:i|på) )?(?-i:(?:\\d?\\p{Lu}{2,}[\\p{Lu}0-9-]*\\d\\w*\\s+)?)(.+?)",
+  " for å (?:kunne )?(?:fortsette|starte|begynne|gå videre)\\b")
+.is_progression_sentence <- function(s, title = NULL) {
+  out <- grepl(.progression_regex, s, perl = TRUE)
+  t <- tolower(stringr::str_squish(title %||% NA_character_))
+  if (is.na(t) || !nzchar(t)) return(out)
+  named <- tolower(stringr::str_squish(stringr::str_match(s, .progression_named_regex)[, 2]))
+  this <- !is.na(named) & startsWith(t, named) &   # the title, or its opening before "(GLU 5-10)"
+    !grepl("^[\\p{L}\\p{N}]", substring(t, nchar(named) + 1), perl = TRUE)
+  out | this
+}
+
+# A colon-ended rule takes the list it introduces, the rest of its paragraph
+# or the next one ("Emnet må være bestått for å kunne fortsette på:" over
+# "P261 Innføring i spesialpedagogisk arbeid ...").
+.strip_progression <- function(text, title = NULL) {
+  lines <- stringr::str_split_1(text, "\n")
+  blank <- function(k) k <= length(lines) && !nzchar(trimws(lines[k]))
+  for (k in rev(which(grepl("[:：]\\s*$", lines) & .is_progression_sentence(trimws(lines), title)))) {
+    to <- k + 1
+    while (blank(to)) to <- to + 1
+    while (to <= length(lines) && !blank(to)) to <- to + 1
+    while (blank(to)) to <- to + 1
+    lines <- lines[-(k:(to - 1))]
+  }
+  .strip_sentences(paste(lines, collapse = "\n"), function(s) .is_progression_sentence(s, title))
+}
 
 .is_admission_sentence <- function(s) {
   s <- sub("(?i)^forkunnskapskrav\\s*:\\s*", "", trimws(s), perl = TRUE)

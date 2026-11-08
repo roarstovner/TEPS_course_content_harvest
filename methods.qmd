@@ -2194,6 +2194,37 @@ and 102 FHS plans gain prerequisites (the sentence leaves coursework or
 course content). `course_plan` and the plan ids do not change. *Since:*
 2026-11-06.
 
+**Outgoing progression rules are in no section.** What passing this course
+permits later is no prior knowledge for it: "Emnet må være bestått for å
+kunne fortsette på Kunst og Håndverk 2 (GLU 1-7).", "Må tas for å fortsette
+med masterfag ...", "Studenten må stå i emnet for å kunne fortsette på ...",
+VID's "Emnet må være bestått for å kunne starte på avsluttende
+praktisk-teologisk utdanning (APTU)." and "Studenter kan, ved å gjennomføre
+dette emnet og emnet ... gå videre til ...". The sentence leaves every
+section, and a colon-ended rule takes the course list it introduces. A
+sentence that names a course first ("En må ha fulgt Kunst og håndverk 1 for
+å kunne fortsette på Kunst og håndverk 2") goes only when that course is
+this one by its title; in the later course's plan it is a prerequisite and
+stays, and so do rules for later study that name earlier courses ("Studenten
+må ha bestått Norsk 1 og gjennomført Norsk 2 for å kunne starte på emner i
+syklus 2."). The spec's prerequisites now say this. Also: NMBU's and NTNU's
+"Emnet er obligatorisk for studenter (som er) tatt opp ..." is admission and
+leaves prerequisites. *Why:* the sections audit of 2026-11-08 found NLA's
+"Progresjonskrav" (mapped to prerequisites) to be the whole prerequisites
+row of its arts-and-crafts plans. *Rejected:* a heading rule for
+"Progresjonskrav" (some hold real requirements: "Norsk 1."); moving the rule
+to another section (the spec puts it in none); UiO's "Opptak til emnet" as
+admission text whose prerequisite sentences join the section, to keep
+"Opptak på emnet forutsetter ... at 80-gruppen i geofag er fullført." (five
+lektor theses in a sample of 30 UiO pages per year, but 13 other plans gained
+place counts, joint admission and pointers, since a course code counts as a
+prerequisite). *Consequence* (re-cleaning the plan sections of 2026-11-06,
+all frames, without the title form): 151 prerequisites sections of 148 NLA
+plans lose the rule (56 held nothing else and go), and 18 sections of other
+plans lose it from course content or assessment (USN 5, UiT 5, Nord 4, NTNU
+2, VID 2); the admission sentence leaves 12 prerequisites sections (NTNU 10,
+NMBU 2). `course_plan` and the plan ids do not change. *Since:* 2026-11-08.
+
 **Placeholders are dropped** ("Ingen", "-", "Se fagplanen.", reading-list
 pointers; since 2026-10-01). From 2026-10-29 the list also holds HVL's "_"
 and bare "Ja" ("Ja, vert spesifisert i semesterplan ved semesterstart") as

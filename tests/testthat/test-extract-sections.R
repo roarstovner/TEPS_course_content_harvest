@@ -142,6 +142,16 @@ text_sections <- function(txt, text_header = NULL) {
   page_sections(page_blocks(NA, txt, cfg), txt, cfg)
 }
 
+test_that("the grading scale (uib) and the AI category (nmbu) are assessment lines", {
+  for (h in c("Karakterskala", "Om bruk av KI")) {
+    expect_equal(match_heading_to_section(h), "assessment")
+    expect_true(.is_label_heading(h))
+  }
+  s <- sections_of("<main><h2>Vurderingsformer</h2><p>Munnleg eksamen.</p>
+    <h2>Karakterskala</h2><p>A-F</p></main>", html_cfg())
+  expect_equal(s[["assessment"]], "Munnleg eksamen.\n\nKarakterskala\nA-F")
+})
+
 test_that("an emphasised paragraph that equals a heading starts a section", {
   html <- "<main>
     <h2>Innhold</h2><p>Motorisk utvikling.</p>
@@ -306,13 +316,13 @@ test_that("admission text is dropped and h3 prerequisites are kept (uio)", {
     <h2>Undervisning</h2><p>Seminarer.</p>
     <p>Obligatoriske aktiviteter:</p><p>To innleveringer.</p>
     <h2>Eksamen</h2><p>Skriftlig eksamen, 4 timer.</p>
-    <h3>Karakterskala</h3><p>A-F.</p></main>"
+    <h3>Mer informasjon</h3><p>A-F.</p></main>"
   s <- sections_of(html, html_cfg("h3, h4, p"))
   expect_equal(s[["prerequisites"]], "MAT1100.")
   expect_equal(s[["teaching_methods"]], "Seminarer.")
   expect_equal(s[["coursework_requirements"]], "To innleveringer.")
   # An unmapped h3 hands its text back to the enclosing section.
-  expect_match(s[["assessment"]], "4 timer\\.\n\nKarakterskala\nA-F\\.$")
+  expect_match(s[["assessment"]], "4 timer\\.\n\nMer informasjon\nA-F\\.$")
   expect_false(any(grepl("Studentweb", s)))
 })
 
@@ -744,7 +754,7 @@ test_that("uio: exam language and the grading scale stay in assessment", {
     <p>Sensurordning:</p><p>To sensorer.</p><p>Sensurering:</p><p>Deleksamen 1 vektes 60 %.</p></main>"
   s <- sections_of(html, html_cfg("h3, h4, p"))
   expect_equal(s[["assessment"]], paste0("Skriftlig eksamen, 4 timer.\nEksamensspråk\nNynorsk.",
-                                         "\n\nKarakterskala\nBestått/ikke bestått.",
+                                         "\nKarakterskala\nBestått/ikke bestått.",
                                          "\n\nDeleksamen 1 vektes 60 %."))
 })
 
@@ -1584,6 +1594,48 @@ test_that("nord: Adgangsregulering gives its prerequisites, not its admission te
   expect_equal(out$section, "prerequisites")
   expect_match(out$raw_text, "^Kurset bygger på Matematikk 1, 2 og 3\\n\\nBestått 90 stp\\.")
   expect_equal(get_institution_config("nord")$section_headings[["adgangsregulering"]], ".admission")
+})
+
+test_that("nmbu: a compulsory course for a programme's students is admission", {
+  pre <- "Emnet er obligatorisk for studenter tatt opp til studieprogrammet LUR. Dette emnet forutsetter at studenten har bestått emnene PPXP100 og PPRA200."
+  expect_equal(.strip_admission_lines(pre), "Dette emnet forutsetter at studenten har bestått emnene PPXP100 og PPRA200.")
+})
+
+test_that("outgoing progression rules leave every section; incoming ones stay", {
+  out <- tibble::tibble(
+    section = c("prerequisites", "assessment", "course_content"),
+    raw_text = c("Norsk 1.\n\nEmnet må være bestått for å kunne fortsette på Norsk 2.",
+                 "Hjemmeeksamen. Emnet må være bestått for å kunne starte på avsluttende praktisk-teologisk utdanning (APTU).",
+                 paste("Emnet handler om sjelesorg.", "Studenter kan, ved å gjennomføre dette emnet og emnet",
+                       "\"Sjelesorg i møte med livsutfordringer\" gå videre til siste året av årsstudiet i sjelesorg.")))
+  s <- .clean_sections(out, "nla")
+  expect_equal(s$raw_text, c("Norsk 1.", "Hjemmeeksamen.", "Emnet handler om sjelesorg."))
+  # a colon-ended rule takes the list it introduces
+  pre <- paste("P101-104 Pedagogiske grunnlagsproblemer (40 sp), eller tilsvarende.",
+               "Emnet må være bestått for å kunne fortsette på:", "P261 Innføring i spesialpedagogisk arbeid.\nP291 Bacheloroppgave.",
+               "Begrenset antall plasser.", sep = "\n\n")
+  expect_equal(.strip_progression(pre), paste("P101-104 Pedagogiske grunnlagsproblemer (40 sp), eller tilsvarende.",
+                                              "Begrenset antall plasser.", sep = "\n\n"))
+  for (x in c("Må tas for å fortsette med masterfag Profesjonsrettet pedagogikk.",
+              "Studenten må stå i emnet for å kunne fortsette på Grunnskolelærarutdanning 1-7, Master i norsk.",
+              "Studentene må bestå dette for å kunne starte på masteroppgaven 5. studieår."))
+    expect_true(.is_progression_sentence(x))
+  # a course named first is this one only by the title
+  ko <- "En må ha fulgt Kunst og håndverk 1 for å kunne fortsette på Kunst og håndverk 2 (GLU 5-10)."
+  expect_true(.is_progression_sentence(ko, "Kunst og håndverk 1 (GLU 5-10)"))
+  expect_false(.is_progression_sentence(ko, "Kunst og håndverk 2 (GLU 5-10)"))
+  expect_false(.is_progression_sentence(ko, "Kunst og håndverk 10"))
+  expect_false(.is_progression_sentence(ko))
+  sp <- paste("Studenten må ha fulgt undervisning og fått godkjent arbeidskravene i 4MGLSPES101 Spesialpedagogiske",
+              "grunnlagsspørsmål for å kunne fortsette på 4MGLSPES102 Spesialpedagogikk – ulike funksjonsnedsettelser.")
+  expect_true(.is_progression_sentence(sp, "Spesialpedagogiske grunnlagsspørsmål"))
+  expect_false(.is_progression_sentence(sp, "Spesialpedagogikk – ulike funksjonsnedsettelser"))
+  expect_true(.is_progression_sentence("Studenten må ha fulgt undervisningen i emnet for å kunne fortsette videre i studiet"))
+  # incoming conditions stay
+  for (x in c("Studenten må ha bestått Norsk 1 og gjennomført Norsk 2 for å kunne starte på emner i syklus 2.",
+              "Studenten bør ha gjennomført Engelsk 1 eller tilsvarende for å kunne starte på Engelsk 2.",
+              "For å starte på emnet kreves gjennomført første studieår i lektorutdanningen."))
+    expect_false(.is_progression_sentence(x, "Norsk 2"))
 })
 
 test_that("the workload leaves the sections (uia, ntnu, uit); the hours of the teaching stay", {

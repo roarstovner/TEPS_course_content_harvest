@@ -140,20 +140,20 @@ Fields for the `html` reader:
   (oslomet’s programme “Fagplan” block stays out); one naming the
   section already open (“Kunnskap”) stays as content. A `<p>` in a list
   item is skipped unless that `<li>` holds a section heading (oslomet’s
-  accordion). An unmapped `h3` (“Karakterskala”) hands its text back to
-  the parent section, keeping the heading as its first line. A
-  colon-ended lead-in naming a coursework gate (“… følgende
-  obligatoriske aktiviteter:”) starts coursework_requirements. So does a
-  numbered requirement, whole `<p>` or its leading `<em>`/`<strong>` run
-  (“Arbeidskrav II: Helseundervisning”, “Obligatorisk arbeidskrav 1”,
-  “Arbeidskrav 2 - Notat”; a title after a bare space only in an
-  all-bold `<p>`, and not a sentence), keeping its text; under such a
-  sub-heading or lead-in a bold label (“Vurderingskriterier:”) stays in
-  coursework_requirements up to the next mapped sub-heading or heading.
-  A selector that starts with “/” is XPath: fhs’s paragraphs, except
-  those naming a gate in the accordion “Arbeidskrav og vurdering”, which
-  stay in assessment for `section_inline_coursework`, and “Emnets
-  oppbygning:” with a colon, a module list in course content (MILM4106).
+  accordion). An unmapped `h3` hands its text back to the parent
+  section, keeping the heading as its first line. A colon-ended lead-in
+  naming a coursework gate (“… følgende obligatoriske aktiviteter:”)
+  starts coursework_requirements. So does a numbered requirement, whole
+  `<p>` or its leading `<em>`/`<strong>` run (“Arbeidskrav II:
+  Helseundervisning”, “Obligatorisk arbeidskrav 1”, “Arbeidskrav 2 -
+  Notat”; a title after a bare space only in an all-bold `<p>`, and not
+  a sentence), keeping its text; under such a sub-heading or lead-in a
+  bold label (“Vurderingskriterier:”) stays in coursework_requirements
+  up to the next mapped sub-heading or heading. A selector that starts
+  with “/” is XPath: fhs’s paragraphs, except those naming a gate in the
+  accordion “Arbeidskrav og vurdering”, which stay in assessment for
+  `section_inline_coursework`, and “Emnets oppbygning:” with a colon, a
+  module list in course content (MILM4106).
 - `section_headings`: headings and sub-headings (whole text, minus a
   trailing colon, lower case) this institution maps on its own, looked
   up before the heading map. nord’s “Adgangsregulering” mixes admission
@@ -228,11 +228,11 @@ Patterns mapped to `".drop"` end the current section and their text is
 discarded: admission headings (“Opptak til emnet”, “Opptakskrav”, “Hvem
 kan ta dette emnet?”) and exam logistics (“Mer om eksamen ved UiO”,
 “Sensorordning”, resit headings such as “Ny/utsatt eksamen”). Exam aids,
-exam language and grading scale stay in assessment. A `label` heading
-(“Hjelpemidler til eksamen”, “Eksamensspråk”, “Fravær fra obligatorisk
-aktivitet”) stays as a line of its section, since the text under it
-(“Ingen”, “Norsk.”) says nothing alone; with nothing but a dash or
-pointer under it, it goes.
+exam language, grading scale and AI rules stay in assessment. A `label`
+heading (“Hjelpemidler til eksamen”, “Eksamensspråk”, “Karakterskala”,
+“Om bruk av KI”, “Fravær fra obligatorisk aktivitet”) stays as a line of
+its section, since the text under it (“Ingen”, “Norsk.”, “A-F”) says
+nothing alone; with nothing but a dash or pointer under it, it goes.
 
 HTML is parsed by `.read_doc()`, which drops `script`, `style`, `select`
 and `label` (ntnu script text, uib semester picker); the `json` reader
@@ -281,11 +281,16 @@ not a split into teaching forms, supervision hours or a sentence with a
 compulsory part), removes admission and study-right sentences, pointers
 to the admission rules and “Ingen utover opptakskravet.” from
 prerequisites, keeping a sentence that also names a prerequisite
-(`.strip_admission_lines()`), drops placeholder-only rows
-(`.placeholder_phrases`: “Ingen”, “Se fagplanen.”, “-”, Leganto
-pointers, “Oppgis senere.”, “… ikke publisert ennå”, uit’s “Contact the
-department/faculty.”, “Se fagbeskrivelse med pensum” and its reading
-lists only on the learning platform or at the bookshop,
+(`.strip_admission_lines()`), removes outgoing progression rules from
+every section, what passing this course permits later (“Emnet må være
+bestått for å kunne fortsette på Norsk 2.”, vid’s “Studenter kan, ved å
+gjennomføre dette emnet … gå videre til …”; “En må ha fulgt Kunst og
+håndverk 1 for å kunne fortsette på …” only when the course named is
+this one by its title, `.is_progression_sentence()`), drops
+placeholder-only rows (`.placeholder_phrases`: “Ingen”, “Se fagplanen.”,
+“-”, Leganto pointers, “Oppgis senere.”, “… ikke publisert ennå”, uit’s
+“Contact the department/faculty.”, “Se fagbeskrivelse med pensum” and
+its reading lists only on the learning platform or at the bookshop,
 “Pensumlitteratur oppgis i Fronter ved semesterstart eller fås ved
 henvendelse til …”), and drops a first line that only repeats the
 section heading (but keeps learning-outcome group labels such as
@@ -358,8 +363,8 @@ first heading</td>
 </tr>
 <tr>
 <td><code>.clean_sections()</code>: <code>.section_noise</code>,
-<code>.logistics_sentences</code>, placeholders, admission lines;
-<code>.drop_semester_values()</code></td>
+<code>.logistics_sentences</code>, placeholders, admission lines,
+outgoing progression rules; <code>.drop_semester_values()</code></td>
 <td><code>R/extract_sections.R</code>, <code>R/anonymize.R</code></td>
 <td>sections only</td>
 <td>plan text about no section, placeholders</td>

@@ -90,6 +90,10 @@ section_heading_patterns <- tibble::tribble(
   "examination support material",          "assessment",             TRUE,   # uio
   "permitted support material",            "assessment",             TRUE,   # nhh English pages
   "grading scale",                         "assessment",             TRUE,   # nhh English pages
+  "karakterskala",                         "assessment",             TRUE,   # uib, uio sub-heading
+  # nmbu: the AI category of the course (K1-K4), which says what aids the
+  # exam allows; the spec puts AI rules in assessment design
+  "om bruk av ki",                         "assessment",             TRUE,
   "exam",                                  "assessment",             TRUE,   # himolde English pages
   "eksamensspråk",                         "assessment",             TRUE,   # uio, nla
   "language of examination",               "assessment",             TRUE,
@@ -294,14 +298,16 @@ section_heading_patterns <- tibble::tribble(
 )
 
 # Headings that name one part of their section (exam aids, exam language, rules
-# for absence) stay as a line of it (sectionize()), since the text under them
-# ("Ingen", "Alle", "Norsk.") says nothing without them.
+# for absence, the grading scale, the AI category) stay as a line of it
+# (sectionize()), since the text under them ("Ingen", "Alle", "Norsk.", "A-F",
+# "K3") says nothing without them.
 section_heading_patterns$label <- section_heading_patterns$pattern %in% c(
   "hjelpemidler til eksamen", "hjelpemiddel til eksamen", "hjelpemidler ved eksamen",
   "hjelpemiddel ved eksamen", "tillatte hjelpemidler", "tillatte hjelpemiddel",
   "hjelpemidler", "hjelpemiddel", "examination support material", "eksamensspråk",
   "language of examination", "permitted aids under examination", "assessment language",
-  "fravær fra obligatorisk aktivitet", "praksisstudier", "omfang av praksisstudier")
+  "fravær fra obligatorisk aktivitet", "praksisstudier", "omfang av praksisstudier",
+  "karakterskala", "om bruk av ki")
 
 
 #' Match a heading text to a canonical section name

@@ -96,7 +96,7 @@ Fields for the `html` reader:
   act only under a mapped heading (oslomet's programme "Fagplan" block stays
   out); one naming the section already open ("Kunnskap") stays as content. A
   `<p>` in a list item is skipped unless that `<li>` holds a section heading
-  (oslomet's accordion). An unmapped `h3` ("Karakterskala") hands its text
+  (oslomet's accordion). An unmapped `h3` hands its text
   back to the parent section, keeping the heading as its first line. A
   colon-ended lead-in naming a coursework gate ("… følgende obligatoriske
   aktiviteter:") starts coursework_requirements. So does a numbered
@@ -181,11 +181,11 @@ line such as "Vurdering for læring" is text; its heading counts
 section and their text is discarded: admission headings ("Opptak til emnet",
 "Opptakskrav", "Hvem kan ta dette emnet?") and exam logistics ("Mer om eksamen
 ved UiO", "Sensorordning", resit headings such as "Ny/utsatt eksamen"). Exam
-aids, exam language and grading scale stay in assessment. A `label` heading
-("Hjelpemidler til eksamen", "Eksamensspråk", "Fravær fra obligatorisk
-aktivitet") stays as a line of its section, since the text under it ("Ingen",
-"Norsk.") says nothing alone; with nothing but a dash or pointer under it, it
-goes.
+aids, exam language, grading scale and AI rules stay in assessment. A `label`
+heading ("Hjelpemidler til eksamen", "Eksamensspråk", "Karakterskala", "Om bruk
+av KI", "Fravær fra obligatorisk aktivitet") stays as a line of its section,
+since the text under it ("Ingen", "Norsk.", "A-F") says nothing alone; with
+nothing but a dash or pointer under it, it goes.
 
 HTML is parsed by `.read_doc()`, which drops `script`, `style`, `select` and
 `label` (ntnu script text, uib semester picker); the `json` reader parses the
@@ -231,7 +231,12 @@ arbeidsinnsats i emnet er 135 timer.", but not a split into teaching forms,
 supervision hours or a sentence with a compulsory part), removes admission
 and study-right sentences, pointers to the admission rules and "Ingen utover
 opptakskravet." from prerequisites, keeping a sentence that also names a
-prerequisite (`.strip_admission_lines()`), drops
+prerequisite (`.strip_admission_lines()`), removes outgoing progression
+rules from every section, what passing this course permits later ("Emnet må
+være bestått for å kunne fortsette på Norsk 2.", vid's "Studenter kan, ved å
+gjennomføre dette emnet ... gå videre til ..."; "En må ha fulgt Kunst og
+håndverk 1 for å kunne fortsette på ..." only when the course named is this
+one by its title, `.is_progression_sentence()`), drops
 placeholder-only rows (`.placeholder_phrases`: "Ingen", "Se fagplanen.", "-",
 Leganto pointers, "Oppgis senere.", "… ikke publisert ennå", uit's "Contact
 the department/faculty.", "Se fagbeskrivelse med pensum" and its reading
@@ -255,7 +260,7 @@ some of these:
 | `anonymize_text()`: `.anon_*` handlers, then `.anon_generic()` | `R/anonymize.R` | `course_plan` and sections | personal data, boilerplate; a page that is not a plan (NA) |
 | `facts` (title and facts box, and lists and stock text in no section, out of the id text); `normalize_plan_text()` with `.drop_semester_values()` | `R/institution_config.R`, `R/blocks.R`, `R/normalize_plan_text.R`, `R/anonymize.R` | the plan id only | plan text that changes with the year, not with the plan |
 | `.drop` headings, unmapped headings, text before the first heading | `R/section_heading_map.R`, `R/extract_sections.R` | sections only | plan text about no section |
-| `.clean_sections()`: `.section_noise`, `.logistics_sentences`, placeholders, admission lines; `.drop_semester_values()` | `R/extract_sections.R`, `R/anonymize.R` | sections only | plan text about no section, placeholders |
+| `.clean_sections()`: `.section_noise`, `.logistics_sentences`, placeholders, admission lines, outgoing progression rules; `.drop_semester_values()` | `R/extract_sections.R`, `R/anonymize.R` | sections only | plan text about no section, placeholders |
 | shell rule (`SHELL_MAX_NCHAR`) | `R/pipeline.R` | whether a page has a plan | pages that are not a plan |
 
 So a rule that keeps plan text out of the sections belongs on the section side,
