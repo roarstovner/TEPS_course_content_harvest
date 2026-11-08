@@ -1,0 +1,24 @@
+{
+  "check": "anonymization",
+  "institution": "nmbu",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 8,
+  "n_suspects_reviewed": 0,
+  "overall_assessment": "Anonymization works well in all eight random controls: staff names, including multiple coordinators, and administrative academic years are removed, with no visible personal-data leaks or inappropriate course-content removal. All pre-pass flag counts are zero; manual review found one minor incomplete administrative sentence after year removal. All packet text and removal spans were reviewed; the Masteroppgave plan is capped by the packet builder.",
+  "findings": [
+    {
+      "target": "content_text",
+      "error_type": "text_corruption",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "nmbu_PPRA201-1_2025_autumn_1"
+      ],
+      "evidence": "Det vil imidlertid opprettes særskilt protokoll for vurdering også i.",
+      "description": "Removing the administrative academic year leaves a running sentence ending in the stranded preposition “også i.” This is a half-removed phrase, rather than a harmless empty administrative label. No date should be restored, but the dated sentence should be removed or rewritten coherently.",
+      "root_cause_hypothesis": "R/anonymize.R: .anon_generic() removes consecutive academic-year ranges through .drop_academic_year() without cleaning the surrounding administrative prose; .anon_nmbu() has no rule for this dated assessment-protocol sentence.",
+      "suggested_fix": "Before generic year removal, add a narrowly anchored rule in .anon_nmbu() to remove the complete sentence beginning “Det vil imidlertid opprettes særskilt protokoll for vurdering også i” when followed by an academic-year range and sentence terminator. Preserve unrelated assessment content.",
+      "confidence": "high"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "check": "anonymization",
+  "institution": "uio",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 10,
+  "n_suspects_reviewed": 2,
+  "overall_assessment": "All 10 packet entries were reviewed in full, including all displayed removed spans; HIS1400L is capped by the packet builder. Both name_like flags are false positives from course titles and organisation/publication names, and no personal-data leaks were found in suspects or controls. Email and dated-semester removal generally works without content loss, but two random controls expose damaged cohort-dependent examination text and unremoved submission dates; historical years, season-only teaching information and institutional contact names are correctly retained.",
+  "findings": [
+    {
+      "target": "content_text",
+      "error_type": "text_corruption",
+      "severity": "medium",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "uio_SPA4192-1_2025_autumn_1"
+      ],
+      "evidence": "Muntlig eksamen er obligatorisk for deg som fikk opptak fra og med. Muntlig eksamen er valgfritt for deg som fikk opptak til masterspesialiseringen eller tidligere.",
+      "description": "Removing the admission semesters leaves incomplete temporal conditions and makes the obligatory versus optional oral-examination distinction impossible to interpret. These are damaged substantive examination rules, not harmless dangling administrative labels. The removed spans show that the missing conditions were høsten 2021 and høsten 2020; neither suspect flag detects this defect.",
+      "root_cause_hypothesis": "R/anonymize.R:.anon_generic() removes season-plus-year tokens in running prose without handling the surrounding cohort-dependent condition. Its .course_start guard does not cover admission cohorts, and .condition_year/.or_later protect academic-year ranges rather than these semester expressions.",
+      "suggested_fix": "Add a deterministic .anon_uio() rule before generic date removal that handles these two cohort-qualified examination sentences together, replacing them with a grammatical date-free statement that the oral-examination requirement depends on admission cohort. Add a regression case ensuring that fra og med and eller tidligere are never left without their temporal operands.",
+      "confidence": "high"
+    },
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "uio_NOR4091-1_2025_autumn_1"
+      ],
+      "evidence": "Innleveringsfrister: 1. juni og 15. desember",
+      "description": "Administrative thesis-submission dates remain in the course facts box. These are submission deadlines, not government-document dates or subject-matter dates, and therefore fall under the rubric requirement to remove administrative dates. The pre-pass did not flag these written-month dates without a year.",
+      "root_cause_hypothesis": "R/anonymize.R:.anon_uio() has no submission-deadline rule. Generic date removal primarily handles numeric dates, dated semesters and approval/update contexts; .long_dates_regex requires a final year and is used for approval dates.",
+      "suggested_fix": "In .anon_uio(), strip day-and-written-month date lists following the anchored Innleveringsfrister label, including lists joined by og and dates without years, while preserving unrelated content dates. Add this exact two-deadline line as a regression case.",
+      "confidence": "high"
+    }
+  ]
+}

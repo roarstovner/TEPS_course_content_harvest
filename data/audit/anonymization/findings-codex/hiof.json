@@ -1,0 +1,100 @@
+{
+  "check": "anonymization",
+  "institution": "hiof",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "All 28 packet entries were read in full as supplied, including their removed spans; packet truncation limits visibility beyond the displayed material. Standard coordinator blocks, emails and FS timestamps are removed successfully, and none of the eight random controls shows a confirmed defect (cohort years in progression conditions are substantive conditions). Five suspect plans retain lecturer names; other defects concern administrative dates, reference-date removal and local text loss/corruption: phone flags are identifier/URL false alarms, most name_like flags are authors, titles or organisations, high removed-share flags reflect short plans rather than lost content, and artifact flags mix pre-existing empty bibliography placeholders with removal-created reference damage.",
+  "findings": [
+    {
+      "target": "person_name",
+      "error_type": "pii_leak",
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": [
+        "hiof_SFB50314-1_2016_spring_1",
+        "hiof_SFB50912-1_2017_autumn_1",
+        "hiof_SFB70019-1_2019_spring_2"
+      ],
+      "evidence": "Lecturer: [name], [name], [name], [name] ([name], [name]",
+      "description": "Five of 28 plans retain institutional lecturers: courses 2, 4, 15, 18 and 19. The name_label flags are real leaks, including Norwegian Foreleser and English Lecturer labels, multiple names and initials. Removing emails and semester/year values leaves the names visible; literature author names elsewhere are legitimate and should remain.",
+      "root_cause_hypothesis": "R/anonymize.R::.anon_hiof() only strips lecturer lines starting Foreleser(e) studieåret. It misses Foreleser høst and Lecturer spring/year variants; generic role patterns do not catch the resulting lines.",
+      "suggested_fix": "In .anon_hiof(), remove complete line-anchored Foreleser/Forelesere/Lecturer/Lecturers contact lines, allowing optional semester or academic-year text before the colon and a following name line. Run before generic semester/email removal and cover comma-separated names and initials.",
+      "confidence": "high"
+    },
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "hiof_LSPUBPD15-1_2015_autumn_2",
+        "hiof_ITF50020-1_2021_spring_1",
+        "hiof_SFB70019-1_2019_spring_2"
+      ],
+      "evidence": "Litteratur vil være tilgjengelig innen 1. juni 2020.",
+      "description": "Administrative scheduling/publication dates survive in three plans: oktober 2015 for the opening session, 1. juni 2020 for reading-list availability, and Universityvåren 2019 for a workshop. These are course-offering dates, not publication dates of cited works. The glued season/year in course 15 is also missed by the pre-pass admin_date flag.",
+      "root_cause_hypothesis": "The generic long-date rules require approval/update cues, omit month-plus-year scheduling contexts, and require a word boundary before season words. .anon_hiof() has no targeted rules for these scheduling/availability phrases.",
+      "suggested_fix": "Add contextual HiØ rules for oppstartsamling i <month> <year> and Litteratur vil være tilgjengelig innen <date>. Recognize a semester/year after a lowercase-to-uppercase or institution-name text boundary such as Universityvåren, while preserving the adjacent institution name and leaving reference dates untouched.",
+      "confidence": "high"
+    },
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "hiof_HSASO20118-1_2020_autumn_1"
+      ],
+      "evidence": "Hele. URL: https://lovdata.no/nav/rundskriv/r35-00 (Lesedato: 12.05.20)",
+      "description": "The explicit reading/access date remains in course 7. It dates the administrative consultation of a source, rather than the government document itself, so it does not qualify for the rubric exception for government publication dates. Another malformed access date is only partly removed, leaving (Lesedato:.20).",
+      "root_cause_hypothesis": "R/anonymize.R::.not_gov protects dates based on any nearby lovdata/rundskriv/lov keyword, without distinguishing Lesedato from the date of the document. The clock rule separately consumes 12:05 in a malformed access date.",
+      "suggested_fix": "Remove complete parenthesized Lesedato/accessed/retrieved-date fields before government-date guards and clock removal, accepting the observed dotted and colon-separated variants; continue preserving actual law, regulation and document dates.",
+      "confidence": "high"
+    },
+    {
+      "target": "content_text",
+      "error_type": "over_removal",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "hiof_LURLE20213-1_2017_spring_1",
+        "hiof_LRLE20213-1_2017_spring_1",
+        "hiof_LURLE20213-1_2016_spring_1"
+      ],
+      "evidence": "[−(18.11.2014)−] Should Jews visit the Temple Mount?",
+      "description": "Three religion plans lose publication dates from literature entries (including newspaper articles and institutional web sources) and edition/access ranges such as (2016-17), which are reference metadata rather than course semesters. In both 2017 plans, deleting the date embedded in Rapport_UDA_7.6.2011.pdf changes the reference URL to Rapport_UDA_.pdf. Some artifact flags reflect this damage, including F.S.(); other apparent author removals in the diff still leave the author in the displayed result and are not counted as lost names.",
+      "root_cause_hypothesis": "Generic numeric-date rules protect only limited reference punctuation and immediate path boundaries. They remove parenthesized publication dates and dates within filenames; academic-year rules also mistake consecutive-year reference metadata for offering years.",
+      "suggested_fix": "Protect full URL tokens before date removal. Within HiØ literature sections, retain dates/ranges attached to bibliographic entries and apply administrative removal only to explicit update, availability, contact or offering fields; retain removal of genuine semester labels outside reference entries.",
+      "confidence": "high"
+    },
+    {
+      "target": "content_text",
+      "error_type": "over_removal",
+      "severity": "medium",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "hiof_LURLE20213-1_2016_spring_1"
+      ],
+      "evidence": "[−Litteraturliste er sist oppdatert 3. desember 2015. Kompendium for emnet selges i bokhandel: inneholder enkeltkapitler, artikler og utdrag−]",
+      "description": "The update-stamp removal also deletes the following sentence about purchasing the course compendium and its contents. The update date should go, but the literature-availability information is course content and must remain. This collateral loss is not identifiable from the pre-pass flags alone.",
+      "root_cause_hypothesis": "R/anonymize.R::.anon_hiof() removes everything to the end of a line beginning Litteratur... sist oppdater, including subsequent content sentences on that line.",
+      "suggested_fix": "Bound the HiØ literature-update rule to the matched update phrase and its date, with an optional terminating full stop, instead of consuming the remainder of the line. Preserve any following compendium or reading-list instructions.",
+      "confidence": "high"
+    },
+    {
+      "target": "content_text",
+      "error_type": "text_corruption",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "hiof_LSPUBPD15-1_2015_autumn_2"
+      ],
+      "evidence": "Emnet har oppstartsamling i oktober 2015, og foregår i høst- og tidlig.",
+      "description": "Semester removal leaves an unfinished scheduling clause: høst- og tidlig has lost the spring-semester noun. Unlike a harmless empty administrative label, this is a broken sentence describing course duration. The artifact flag on this course also has a false-positive source: the empty (s. ) [ ] bibliography placeholder is unchanged by the displayed removals.",
+      "root_cause_hypothesis": "The generic semester/year rule removes vårsemester 2016 while preserving the preceding coordinated seasonal phrase and modifier tidlig.",
+      "suggested_fix": "For coordinated season expressions in course scheduling, remove the year while retaining the seasonal duration (høst- og tidlig vårsemester), or remove the entire dated scheduling clause with its joining punctuation. Avoid leaving adjectives or conjunctions without their complement.",
+      "confidence": "high"
+    }
+  ]
+}

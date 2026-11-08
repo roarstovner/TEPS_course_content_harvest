@@ -1,0 +1,40 @@
+{
+  "check": "anonymization",
+  "institution": "hvl",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "All 28 courses were read in full; no personal-data leaks, course-content over-removal, or structure loss were found. The phone flag is the content year range 20102014, and the name_like flags identify course/programme names or organisations such as Nautical Institute, Ungt Entreprenørskap and Ole Bull Akademiet; most admin_date flags identify legitimate curriculum or professional-guideline dates. Administrative teaching dates survive in three courses, including one random control, and a clock range also survives in one of them; the other seven controls show no defects.",
+  "findings": [
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "hvl_ANS800-1_2023_spring_1",
+        "hvl_NYB801-1_2021_spring_2",
+        "hvl_PHD907-1_2018_spring_1"
+      ],
+      "evidence": "The course is open for 6-16 students. The dates for the course are 15-16 September and 6-7 October.\n\nThe application deadline is 1th September",
+      "description": "Administrative course-session and application dates remain: ANS800 lists three dated gatherings in September 2022 and January 2023, NYB801 gives its start as 9. februar 2021, and the unflagged random control PHD907 retains English session dates and an application deadline without years. These date actual course delivery or admission, rather than government documents or subject matter, and must be removed. Other flagged dates, including the English-teaching framework dates, the curriculum introduction in hausten 2020 and the DP-Induction guideline date, are content and should remain.",
+      "root_cause_hypothesis": "R/anonymize.R: .anon_generic() removes numeric dates generally but uses .long_dates_regex only in approval/update contexts through .approval_date_regex. Ordinary teaching schedules and application deadlines are not covered by those contexts, and .anon_hvl() has no schedule-date handler; .long_dates_regex also expects a final year.",
+      "suggested_fix": "Add context-bound removal of named-month dates and day ranges in teaching-session, course-start and application-deadline clauses, covering Norwegian and English and optional years. Match cues such as samling, Oppstart med digital undervisning, dates for the course and application deadline; handle ordinal forms such as 1th September, retain government-document and content dates, and add regression cases for these three courses.",
+      "confidence": "high"
+    },
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "hvl_NYB801-1_2021_spring_2"
+      ],
+      "evidence": "Oppstart med digital undervisning 9. februar 2021, kl. 17 - 20.00, med forbehold om endring.",
+      "description": "The administrative clock range kl. 17 - 20.00 remains. This is a concrete teaching time, not a duration, ratio, verse or reference, so it should be stripped alongside administrative dates. The packet also demonstrates successful removal of klokka 15.00 in random control SPD801.",
+      "root_cause_hypothesis": "R/anonymize.R: .clock_kl requires minutes in the first clock value, so it cannot start a match at kl. 17; .clock_end can handle hour-only endpoints only after an already matched start. The trailing dotted 20.00 is not independently matched without an English preposition.",
+      "suggested_fix": "Extend the kl./klokka clock-range pattern to accept an hour-only start when followed by a range separator and a valid clock endpoint, including kl. 17 - 20.00. Require the range context so standalone class numbers and durations remain intact, and add a regression case for this exact range.",
+      "confidence": "high"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "check": "anonymization",
+  "institution": "inn",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "Anonymization generally works well: all 28 courses were reviewed in full, with no confirmed personal-data leaks, course-content over-removal, or structure damage, and all eight random controls were clean. Two offerings retain compact administrative overlap dates and two retain technical error banners. The phone flags are false alarms from adjacent numeric table cells, name_like flags identify course/organisation/technical terms rather than staff, admin_date flags identify correctly preserved regulation dates, artifact flags identify legitimate empty function-call parentheses, and high removed shares reflect appropriate notice/semester removal or rejection of a search-results placeholder rather than loss of a course plan.",
+  "findings": [
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "inn_2SPGL1-1-1_2025_spring_1",
+        "inn_2SPGL1-2-1_2025_autumn_1"
+      ],
+      "evidence": "Navn\tStudiepoeng\tDato\tKommentar\n2mped-1 Profesjonsrettet pedagogikk med fordypning i spesialpedagogikk\t15\t150925",
+      "description": "The Dato column of the credit-overlap table retains 150925, an administrative date in compact ddmmyy form (15 September 2025). Both offerings have this value; it is neither a phone number nor a protected government-document date.",
+      "root_cause_hypothesis": "R/anonymize.R .anon_generic() handles dotted dates, including unpadded dd.mm.yy table cells, but does not cover compact ddmmyy dates; .anon_inn() adds no overlap-table date rule.",
+      "suggested_fix": "In .anon_inn(), identify the Dato column within Emnet overlapper med tables and remove valid six-digit ddmmyy cell values, preserving the tab delimiters and other columns. Restrict the rule to that administrative column rather than removing six-digit numbers throughout course content.",
+      "confidence": "high"
+    },
+    {
+      "target": "boilerplate",
+      "error_type": "boilerplate_left",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "inn_2MNK172-2-1_2022_spring_1",
+        "inn_2MNK172S-2-1_2022_spring_1"
+      ],
+      "evidence": "Feilmelding\nNotice: Undefined index: Norwegian Nynorsk i eac_cd_get_cd() (linje 127 av /var/www/websites/inn-2.15/sites/all/modules/custom/eac_cd/eac_cd.courses.inc).",
+      "description": "Two otherwise complete plans retain a website error banner, including a PHP diagnostic and server path. This is institution-specific technical boilerplate rather than course content; it predates anonymization and is not text corruption caused by a removal.",
+      "root_cause_hypothesis": "R/anonymize.R .anon_inn() filters search-results error pages and removes Statusmelding banners, but has no rule for an inline Feilmelding/Notice diagnostic preceding a valid course plan.",
+      "suggested_fix": "Add a narrowly anchored .anon_inn() rule removing the Feilmelding heading and following Notice: Undefined index diagnostic line for eac_cd_get_cd(), while retaining the course title and full plan that follow.",
+      "confidence": "high"
+    }
+  ]
+}

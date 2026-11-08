@@ -1,0 +1,24 @@
+{
+  "check": "anonymization",
+  "institution": "oslomet",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "All 28 packet courses were reviewed, including all 20 suspects and eight random controls; no personal-data leak was confirmed in the displayed material, and coordinator names are correctly removed in both suspects and controls. Most flags are false alarms: name_like hits are course/programme titles or technical terms, high removed shares reflect legitimate administrative-year removal from very short records, and the admin_date flags identify government-document dates that must stay; the two phone-flagged plans have truncated reference lists and show no identifiable contact number in their displayed text. One artifact flag exposes genuine reference-URL damage from removing a publication date; semicolon-related removed spans otherwise preserve the words, and the control containing cohort years uses them to identify the students to whom assessment instructions apply.",
+  "findings": [
+    {
+      "target": "content_text",
+      "error_type": "over_removal",
+      "severity": "medium",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "oslomet_ARK1400-1_2018_spring_2"
+      ],
+      "evidence": "Noark5v4%20Standard%20for%20elektronisk%20arkiv%20().pdf",
+      "description": "The date 01.12.2016 is removed from the filename of the Riksarkivet Noark 5 standard cited in the syllabus. This is a document/publication date in a literature reference, not administrative dating of the course; deleting it leaves empty parentheses inside the URL and changes the reference link. This explains the artifact flag and is the only confirmed content damage in the packet.",
+      "root_cause_hypothesis": "R/anonymize.R: the generic dd.mm.yyyy removal in .anon_generic() can match a date inside a parenthesized URL filename because its preceding-character guard excludes digits, dots and slashes but not an opening parenthesis. The government-document guard only examines the preceding 80 characters, and the reference title is much farther away in this long URL.",
+      "suggested_fix": "Protect complete URL tokens from generic date removal, or exclude matches whose positions fall inside URL spans, while retaining removal of administrative dates outside links. Add a regression case for the exact Noark filename containing (01.12.2016).pdf and require the complete URL to remain unchanged.",
+      "confidence": "high"
+    }
+  ]
+}

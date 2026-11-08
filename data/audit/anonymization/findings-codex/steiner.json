@@ -1,0 +1,9 @@
+{
+  "check": "anonymization",
+  "institution": "steiner",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 8,
+  "n_suspects_reviewed": 0,
+  "overall_assessment": "All eight random-control courses were read in full, including every removed span; no anonymization problems were found. The pre-pass raised no flags, and manual review found no surviving personal data, administrative dates, targeted boilerplate, content over-removal, text corruption or structure loss. The 13 removed spans are PDF page numbers consistent with .anon_steiner(); semester seasons without calendar years, study-year ordinals and substantive course content are correctly preserved.",
+  "findings": []
+}

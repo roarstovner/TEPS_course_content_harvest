@@ -1,0 +1,54 @@
+{
+  "check": "anonymization",
+  "institution": "nla",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "All 28 packet entries were read in full as supplied, including every removed span; packet truncation limits conclusions about omitted portions of long plans. Academic-year headers are consistently removed, no personal-data leaks were confirmed, and all eight random controls show no confirmed anonymization defect. Visible phone/name_like flags are false alarms from bibliographic URLs, DOI/video identifiers, authors, organisations and course terminology; visible admin_date flags largely concern reference or legal-document dates, while the artifact flag exposes removal of a framework-plan date, and manual review additionally found four removed video durations and an unflagged English revision stamp.",
+  "findings": [
+    {
+      "target": "content_text",
+      "error_type": "over_removal",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "nla_3KL106-1_2020_spring_1",
+        "nla_3KL104-1_2020_spring_1",
+        "nla_3KL106-1_2019_spring_1"
+      ],
+      "evidence": "and Extreme» 2016 online video https://www.youtube.com/watch?v=2tOF698MRRw [−(16:00)−]",
+      "description": "The running time (16:00) of a reading-list video is removed in all four sampled 3KL104/3KL106 offerings from 2019 and 2020. This is course-reference content that the rubric explicitly requires keeping, not an administrative clock time; the phone/name_like flags do not detect this loss.",
+      "root_cause_hypothesis": "R/anonymize.R .anon_generic() applies .clock_regex to bare zero-padded HH:MM values. Its exceptions cover square brackets and some bibliographic forms but do not protect a parenthesised duration following an online-video URL.",
+      "suggested_fix": "Protect parenthesised m:ss or mm:ss durations following video-reference URLs or explicit video/duration cues before applying clock removal; continue removing times in scheduling contexts. Add regression cases for this YouTube reference and a genuine scheduled clock time.",
+      "confidence": "high"
+    },
+    {
+      "target": "content_text",
+      "error_type": "over_removal",
+      "severity": "medium",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "nla_BLKO4-1_2019_spring_1"
+      ],
+      "evidence": "og oppgaver. Oslo, Kunnskapsdepartementet. Nettside: https://www.udir.no/laring-og-trivsel/rammeplan [−(26.05.2017).−] ().",
+      "description": "A date attached to the ministry/UDIR framework-plan reference is removed, violating the requirement to retain government-document dates. The artifact flag is therefore a real symptom of content loss; the name_like flag is not evidence of a private-person leak. The adjacent empty parentheses are collateral reference noise rather than a separate problem type.",
+      "root_cause_hypothesis": "NLA uses only .anon_generic(). The numeric-date rule relies on .not_gov, whose government-document context is restricted to the same line; a separately rendered date can lose the reference context. Packet removal contexts flatten whitespace, so the original line boundary cannot be established from this packet alone.",
+      "suggested_fix": "Protect dates within a recognised government-document reference, including a date on an immediately following line after a ministry/UDIR framework-plan title or URL. Keep the protection bounded to that reference and add a regression case for this reference alongside an administrative date that must still be removed.",
+      "confidence": "high"
+    },
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "nla_3GJ302-1_2020_spring_1"
+      ],
+      "evidence": "Revised May 2019",
+      "description": "The syllabus revision month and year survive in the anonymized plan. This is an institutional revision stamp, not a publication year or subject-matter date, and must be removed. The course has only phone/name_like flags, so the pre-pass misses this English administrative-date format.",
+      "root_cause_hypothesis": "R/anonymize.R .approval_date_regex and the administrative-year keyword rule recognise Norwegian revision labels but not English Revised; the month-and-year branch is limited to godkjent. NLA has no institution-specific handler to remove the stamp.",
+      "suggested_fix": "Add an anchored, case-insensitive rule for standalone English revision/update stamps such as Revised May 2019, supporting English month names and preserving unrelated reference publication dates. Add this exact stamp as a regression case and extend the audit pre-pass to recognise the same administrative format.",
+      "confidence": "high"
+    }
+  ]
+}

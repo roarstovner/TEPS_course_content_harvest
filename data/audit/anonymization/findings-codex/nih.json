@@ -1,0 +1,74 @@
+{
+  "check": "anonymization",
+  "institution": "nih",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "All 28 courses were reviewed in full, including 20 suspects and eight random controls. No personal-data leaks or substantive course-content losses were found: the five removed flags reflect correct semester removal from short plans, and all name_like flags concern departments, organisations, programmes or course titles. Administrative dates remain in ten courses through three distinct rule gaps; incomplete literature phrases also occur in three courses, including one random control, while the other controls show appropriate removal without substantive damage.",
+  "findings": [
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "nih_LKI106-1_2024_spring_2",
+        "nih_KRØ101-1_2023_autumn_1",
+        "nih_LKI106-1_2025_spring_1"
+      ],
+      "evidence": "LKI106 Profesjonsfag- Elevers læring og utvikling, læreplanteori og utdanningshistorie (Vår 2024)",
+      "description": "Four course headings retain their offering semester and year: both LKI106 offerings and both KRØ101 offerings. These admin_date flags are real: a semester attached to the course title is administrative dating, even when the subject concerns curricula; it is not the date of a government document.",
+      "root_cause_hypothesis": "R/anonymize.R: .gov_doc_regex matches læreplan within Læreplanarbeid and læreplanteori; .not_gov then suppresses semester removal when that substring occurs within 80 characters before the semester in the course heading.",
+      "suggested_fix": "Strip terminal parenthesised offering semesters from identifiable course-title lines before applying the government-document date guard. Keep that guard for dates attached to government documents in course content, and avoid treating curriculum-related subject words alone as sufficient evidence of a dated document.",
+      "confidence": "high"
+    },
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "nih_PHD641-1_2025_autumn_1",
+        "nih_PHD642-1_2025_autumn_1",
+        "nih_PHD640-1_2025_autumn_1"
+      ],
+      "evidence": "Påmeldingsfrist 13. september 2025.",
+      "description": "All three sampled autumn PhD courses retain dated registration deadlines (13, 20 and 6 September 2025). These admin_date flags identify administrative dates that must be removed, rather than learning content or government-document dates.",
+      "root_cause_hypothesis": "R/anonymize.R defines .long_dates_regex but .anon_generic() applies it to approval/update contexts and timestamps, not Påmeldingsfrist lines. NIH has no institution-specific handler to remove these registration dates.",
+      "suggested_fix": "Add a line-scoped rule for Påmeldingsfrist followed by .long_dates_regex, removing the deadline value and terminal punctuation while preserving subsequent lines. Scope the rule to the administrative label so publication and government-document dates remain intact.",
+      "confidence": "high"
+    },
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "nih_FRI300-1_2024_autumn_1",
+        "nih_FRI301-1_2024_autumn_1",
+        "nih_FRI302-1_2024_autumn_1"
+      ],
+      "evidence": "Core literature for FRI301 Fall 2024.",
+      "description": "All three sampled English friluftsliv courses retain fall/Fall 2024 in their literature-list notices. These are semester-year labels, not publication dates of literature references. They occur in name_like suspects but are not flagged as admin_date, showing a blind spot in the pre-pass.",
+      "root_cause_hypothesis": "R/anonymize.R: .season_regex recognises autumn but omits its English synonym fall; the other season/year patterns also omit fall.",
+      "suggested_fix": "Recognise case-insensitive fall alongside autumn in the season-year removal patterns, with a word boundary and adjacent year. Remove any resulting empty literature-list notice as a complete line, preserving actual references.",
+      "confidence": "high"
+    },
+    {
+      "target": "content_text",
+      "error_type": "text_corruption",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "nih_PHD646-1_2025_spring_1",
+        "nih_PHD641-1_2025_autumn_1",
+        "nih_LKI510-1_2025_autumn_2"
+      ],
+      "evidence": "Anbefalt litteratur for.",
+      "description": "Semester removal leaves incomplete literature phrases: Kjernelitteratur for. in two suspects and Anbefalt litteratur for. in a random control. These are half-removed phrases with a dangling preposition, rather than the harmless bare administrative labels allowed by the rubric. No substantive reading-list entries are shown as removed.",
+      "root_cause_hypothesis": "R/anonymize.R: .anon_generic() removes the season-year value, but its cleanup for newly bare literature notices only matches lines starting Pensumlist followed by for. It misses Kjernelitteratur for and Anbefalt litteratur for.",
+      "suggested_fix": "Extend the anchored post-semester cleanup to complete lines consisting only of Kjernelitteratur for or Anbefalt litteratur for, optional punctuation and whitespace. Preserve the section heading and all lines containing reference content.",
+      "confidence": "high"
+    }
+  ]
+}
