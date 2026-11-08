@@ -32,6 +32,16 @@
 # shell (the shell rule), as plan_offerings() and frame_offerings() decide.
 # Such a page is in extracted_text but not in the data.
 #
+# An offering whose page may come from a raw run newer than the build (a raw
+# file written after data/interim/extracted_text.RDS; the raw store is
+# append-only, so a file's modification time is its run's) has no text of
+# that page yet: it is left out of the sample and counted in the context.
+#
+# Each shown text also lists its lines that course_plan drops or changes
+# (anonymize_text(): personal data, administrative dates, boilerplate such
+# as exam-date blocks and PDF page furniture), which are not extraction
+# findings.
+#
 # Failed fetches are shown by cause (fetch error, largest first), each with
 # offerings of different course codes and, in the institution context, how
 # many codes have a page in another offering: a cause that hits a whole group
@@ -54,6 +64,7 @@ FAILED_N      <- 3      # failed fetches shown per cause (URL + error)
 FAILED_CAUSES <- 3      # largest fetch-error causes shown
 TEXT_TRUNC    <- 7000   # max chars of extracted_text shown
 UNCAP_TRUNC   <- 2500   # max chars of uncaptured page text shown
+ANON_TRUNC    <- 1500   # max chars of lines the anonymizer drops shown
 PAGE_SAMPLE   <- 250    # pages parsed per institution for chrome + coverage
 CHROME_FRAC   <- 0.4
 OUTLIER_Z     <- 3
@@ -92,10 +103,11 @@ YEAR_LABEL_RX <- regex(paste0(
   "|(?<!\\()\\b(20\\d{2})\\s*[/–-]\\s*(?:20)?(\\d{2})\\b"), ignore_case = TRUE)
 # The plan's heading on the page, at some sites outside extracted_text:
 # "Emneplan for studieåret 2024/2025" (hvl), "Emnebeskrivelse for 2024/25"
-# (nord; not its "sist oppdatert" pages, which show the version in force).
+# (nord; not its "sist oppdatert" pages, which show the version in force),
+# "Course description for academic year 2025/2026" (hvl, English).
 PLAN_YEAR_RX <- regex(paste0(
   "(?:emneplan|emnebeskrivelse|emnebeskriving|course description|course plan)\\s+for\\s+",
-  "(?:studieåret\\s+|the academic year\\s+)?(20\\d{2})\\s*[/–-]\\s*(?:20)?\\d{2}\\b"),
+  "(?:studieåret\\s+|(?:the\\s+)?academic year\\s+)?(20\\d{2})\\s*[/–-]\\s*(?:20)?\\d{2}\\b"),
   ignore_case = TRUE)
 
 error_msg <- function(e) {
@@ -191,6 +203,15 @@ if (length(institutions) == 0) stop("No raw harvest for: ",
 manifest <- list()
 sample   <- list()
 build_plans <- readRDS("data/processed/course_offerings.RDS")[c("course_id", "plan_content_id")]
+build_time <- file.mtime("data/interim/extracted_text.RDS")
+
+# Lines of `ext` that `anon` (its course_plan) does not have.
+anon_dropped <- function(ext, anon) {
+  if (is.na(ext)) return("")
+  if (is.na(anon)) return("(anonymize_text() drops the whole page)")
+  l <- page_lines(ext)
+  paste(setdiff(l, page_lines(anon)), collapse = "\n")
+}
 
 for (inst in institutions) {
   cfg <- get_institution_config(inst)
@@ -201,9 +222,15 @@ for (inst in institutions) {
   current_pilot <- audit_pilot() && identical(cfg$plan_years, "current")
   df <- if (current_pilot) pilot_run_rows(inst, cfg) else
     audit_pilot_rows(harvested_rows(inst), inst)   # extracted_text from the {targets} pipeline
+  newer <- if (current_pilot) character() else
+    Filter(\(f) file.mtime(f) > build_time, harvest_files(inst))
+  newer_rows <- read_raw(newer, content = FALSE)
+  newer_ids <- newer_rows[["course_id"]][!is.na(newer_rows[["html"]] %||% NA) |
+                                      !is.na(newer_rows[["extracted_text"]] %||% NA)]
   df <- df |>
     left_join(build_plans, by = "course_id") |>
     mutate(
+      raw_newer = course_id %in% newer_ids,
       in_build  = course_id %in% build_plans$course_id,
       has_plan  = !is.na(plan_content_id),
       html_error_msg = vapply(html_error, error_msg, character(1)),
@@ -244,11 +271,11 @@ for (inst in institutions) {
   # Page-level: chrome lines and uncaptured text, on a sample of pages plus
   # every text-flagged course (bounded by PAGE_SAMPLE + flagged).
   set.seed(SEED)
-  text_flagged <- df$course_id[df$has_html & (df$flag_empty | df$flag_short |
+  text_flagged <- df$course_id[df$has_html & !df$raw_newer & (df$flag_empty | df$flag_short |
                                                 df$flag_long | df$flag_wall |
                                                 df$flag_junk | df$flag_dup_code |
                                                 df$flag_year)]
-  pool_ids <- df |> filter(has_html) |> distinct(dedup_key, .keep_all = TRUE) |>
+  pool_ids <- df |> filter(has_html, !raw_newer) |> distinct(dedup_key, .keep_all = TRUE) |>
     slice_sample(n = min(PAGE_SAMPLE, sum(df$has_html))) |> pull(course_id)
   parse_ids <- unique(c(pool_ids, head(text_flagged, 150)))
   parsed <- df |> filter(course_id %in% parse_ids) |>
@@ -276,7 +303,7 @@ for (inst in institutions) {
   # Eligible: parsed pages (so the uncaptured-text evidence exists) and text
   # without a stored page (PDF sources: steiner, part of uis).
   pool <- df |>
-    filter(course_id %in% parse_ids | (!has_html & txt_nchar > 0)) |>
+    filter(course_id %in% parse_ids | (!has_html & !raw_newer & txt_nchar > 0)) |>
     select(course_id, dedup_key, score, all_of(flag_cols))
   selected <- audit_sample(pool, SUSPECT_N, RANDOM_N, SEED, flags = flag_cols)
   df <- df |>
@@ -296,6 +323,10 @@ for (inst in institutions) {
                         tibble(course_id = failed$course_id,
                                kind = rep("FAILED", nrow(failed))))
   if (nrow(selected) == 0) next
+  shown <- df[match(selected$course_id, df$course_id), ]
+  dropped <- setNames(purrr::map2_chr(shown$extracted_text,
+                                      anonymize_text(rep(inst, nrow(shown)), shown$extracted_text), anon_dropped),
+                      shown$course_id)
 
   # ── Packet ──
   codes_with_text <- unique(df$course_code_raw[df$has_html | df$txt_nchar > 0])
@@ -314,7 +345,9 @@ for (inst in institutions) {
       "lines removed — use it to judge missing content. **Plan in the build** says",
       "whether the data get a plan from this page; where not, the page is dropped",
       "(a later version, an error page, ...): judge the fetch and that decision, not",
-      "the text of a page the build drops. `[FAILED]` courses were not",
+      "the text of a page the build drops. **Lines course_plan drops or changes**",
+      "are removed by the anonymizer (personal data, dates, boilerplate) and are not",
+      "extraction findings. `[FAILED]` courses were not",
       "fetched; judge only whether the URL looks wrong.")),
     "## Institution context",
     "",
@@ -339,6 +372,10 @@ for (inst in institutions) {
       sprintf("- %d recurring lines (site chrome and shared headings, on >= %.0f%% of %d parsed pages) left out of the page text below, e.g.: %s",
               length(chrome), 100 * CHROME_FRAC, length(parse_ids),
               paste0("\"", str_trunc(head(chrome, 8), 40), "\"", collapse = ", ")),
+    if (length(newer)) sprintf(paste(
+      "- %d offerings have a page in a raw run newer than the build (%s): their text is made",
+      "at the next build, so they are left out of the sample"),
+      sum(df$raw_newer & (df$has_html | df$txt_nchar > 0)), paste(raw_run(newer), collapse = ", ")),
     "- Fetch outcomes:",
     paste0("  - ", fetch_summary$text),
     ""
@@ -363,7 +400,8 @@ for (inst in institutions) {
       sprintf("- URL: %s", r$url %||% "NA"),
       if (length(on) > 0) sprintf("- ⚑ flags: %s", paste(on, collapse = ", ")) else character(),
       if (kind == "FAILED") character() else
-        if (!r$in_build) "- Plan in the build: not in the build (pilot run)" else
+        if (!r$in_build) paste0("- Plan in the build: not in the build",
+                                if (audit_pilot()) " (pilot run)" else "") else
         if (current_pilot && !r$has_plan) paste(
           "- Plan in the build: none: the build gives a page only to offerings of its",
           "academic year, and the pilot run's year has no DBH offerings yet") else
@@ -379,7 +417,12 @@ for (inst in institutions) {
       sprintf("### Extracted text (%d chars — audit this)", r$txt_nchar),
       "",
       audit_fence(audit_trunc(coalesce(r$extracted_text, "(empty)"), TEXT_TRUNC)),
-      "")
+      "",
+      if (nzchar(dropped[[cid]])) c(
+        "### Lines course_plan drops or changes (anonymize_text(); not an extraction finding)",
+        "",
+        audit_fence(audit_trunc(dropped[[cid]], ANON_TRUNC)),
+        ""))
     if (!r$has_html) {
       lines <- c(lines, "### Page text not in extracted text",
                  "", "_(no stored page: the text comes from a PDF — judge the text on its own)_", "")

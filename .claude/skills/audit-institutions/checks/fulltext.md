@@ -28,7 +28,12 @@ from the page (`data/processed/course_offerings.RDS`) and, if not, why: a later
 or earlier version of the plan (`page_term`, `page_end_term`), a pointer to the
 English page, an error or placeholder page (`anonymize_text()` drops it) or a
 page shell (the shell rule). `extracted_text` keeps such a page; the data do
-not. `[FAILED]` courses show only the URL and the fetch error: a few per
+not. Under the text, **Lines course_plan drops or changes** lists the lines
+that `anonymize_text()` removes or rewrites in `course_plan` (personal data,
+administrative dates, boilerplate such as MF's exam dates or PDF page
+numbers). Offerings whose page may come from a raw run newer than the build
+(a raw file written after `data/interim/extracted_text.RDS`) have no text
+yet: they are left out of the sample and counted in the institution context. `[FAILED]` courses show only the URL and the fetch error: a few per
 cause (fetch error), of different course codes. The institution context says
 per cause how many course codes it hits and how many of them have a page in
 another offering; none suggests a URL the site does not know.
@@ -113,6 +118,8 @@ judge the fetch and the no-plan decision, not the page's text.
 ## Not a finding
 
 - `…[truncated N chars]` markers — the packet caps long text.
+- Text listed under **Lines course_plan drops or changes**: the anonymizer
+  removes it from the data (report it only if it shows the wrong page).
 - Uncaptured page text that is not part of the plan (other courses, news,
   programme info, contact boxes for the department).
 - Fetch failures for courses that plausibly have no page (discontinued, not
