@@ -1,0 +1,100 @@
+{
+  "check": "sections",
+  "institution": "vid",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 20,
+  "n_suspects_reviewed": 14,
+  "overall_assessment": "The 20 packet courses (14 suspects and six controls) generally have sound section boundaries, with all learning-outcome groups preserved and substantive assessment design retained; comparisons are limited to the source text visible in the packet, whose truncation markers are not extraction defects. Most leak flags are lexical false alarms involving Litteraturstudium/Litteratursøk/Litteraturrapport, Læringsmål assignments, or a sentence mentioning vurderingsordning; the empty flags on Nærværsplikt and boilerplate flags on repeated practicum assessment designs are also false alarms. Real defects concern mixed Annet content, incomplete separation of assessment and coursework, non-subject-matter prose in course_content, retained resit/progression rules (also in a random control), and empty assessment labels, rather than institution-wide loss of sections.",
+  "findings": [
+    {
+      "target": "cross_section",
+      "error_type": "merged_sections",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "vid_MATRS5115-1_2025_spring_1"
+      ],
+      "evidence": "Annet\n\nOpptakskrav er 80 studiepoeng emner innen teologiens hoveddisipliner på bachelornivå: Det gamle testamente, Det nye testamente, kirkehistorie og systematisk teologi.",
+      "description": "The assessment row continues into an Annet block containing concrete subject prerequisites, scheduling of teaching, and detailed instructions for the mandatory literature report and peer response. No prerequisites row is emitted, and those coursework details remain outside coursework_requirements. The leak->.drop flag therefore identifies a real mixed-content boundary problem; the 80-credit disciplinary requirement is substantive prior knowledge, not merely generic admission boilerplate.",
+      "root_cause_hypothesis": "Annet is absent from the headings read for this course. VID content HTML is embedded by vid_plan_html() in R/extract_fulltext.R, while the HTML reader and sectionize() retain this internal label and its paragraphs as ordinary assessment text. The inline prerequisite splitter only operates on course_content.",
+      "suggested_fix": "Recognize standalone Annet labels within VID content blocks before sectionization and split their following paragraphs by explicit cues: route the 80-credit disciplinary requirement and relevant prior-course text to prerequisites, literature-report/peer-response instructions to coursework_requirements, and physical-meeting arrangements to teaching_methods. Keep actual assessment-design paragraphs in assessment; do not globally drop Annet, since the BATEOL3030 control uses it for genuine exam design.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "vid_PTUKUN2014-1_2025_spring_1"
+      ],
+      "evidence": "For å kunne fremstille seg til eksamen forutsettes det at obligatoriske aktiviteter er godkjent og praksis er bestått.",
+      "description": "Assessment retains the condition that mandatory activities must be approved before the exam, confirming the leak->coursework_requirements flag. This condition belongs in coursework_requirements. The separate pass/fail practicum assessment and the sentence explaining its evaluation report are valid assessment design and should remain.",
+      "root_cause_hypothesis": "R/extract_sections.R .gate_sentence_regex covers several må/skal and forutsetning forms but misses the construction For å kunne fremstille ... forutsettes det at .... Consequently .split_inline_coursework() leaves this gate sentence in assessment.",
+      "suggested_fix": "Extend .gate_sentence_regex to recognize forutsettes det at after an exam-access clause when the sentence explicitly requires approved obligatory activities. Move that sentence to coursework_requirements while preserving the practicum assessment component and its evaluation criteria.",
+      "confidence": "high"
+    },
+    {
+      "target": "coursework_requirements",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "vid_MAPBU9010-1_2025_autumn_1"
+      ],
+      "evidence": "Mappevurderingen består av et arbeidskrav og en prosjektplan.",
+      "description": "The final pass/fail portfolio explicitly comprises an arbeidskrav and a project plan, yet coursework_requirements also lists Prosjektplan and an individual written assignment with presentation. At least the project plan is explicitly a final assessment component and must not be represented as solely an ungraded exam-access requirement. The assessment leak flag is itself a false alarm: arbeidskrav here names a component of the assessed portfolio, which correctly belongs in assessment.",
+      "root_cause_hypothesis": "The heading map sends the complete Obligatoriske aktiviteter block to coursework_requirements, and postprocessing moves gate text from assessment without reconciling coursework items against explicitly named final portfolio components elsewhere in the plan.",
+      "suggested_fix": "For VID plans that explicitly say Mappevurderingen består av ..., reconcile the named components with items under Obligatoriske aktiviteter: retain final portfolio components in assessment and exclude their duplicate classification as ungraded coursework. Preserve attendance, supervision and any separately stated approval gates; match the other arbeidskrav only when its identity is explicit.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "other",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "vid_MARUS5020-1_2024_autumn_1",
+        "vid_MARUS6021-1_2024_autumn_1",
+        "vid_BASP1035L-1_2025_spring_2"
+      ],
+      "evidence": "VID arrangerer inntil tre utsatte prøver. Studenter som ikke har bestått prøve innen utgangen av tredje semester, kan ikke starte i praksis i fjerde semester og må ut i forlenget studieløp.",
+      "description": "Assessment retains rules about resits and subsequent study progression. Both MARUS suspects retain Utsatt eksamen paragraphs, and the BASP1035L random control retains the number of deferred attempts and the consequences for entering later practice. These rules are outside assessment design under course_plan_spec.md. This unflagged issue occurs in both suspects and a control; exam form, duration, grading, calculator rules and the 100% correctness criterion are valid design.",
+      "root_cause_hypothesis": "R/extract_sections.R .strip_section_noise() and .logistics_sentences lack VID-specific coverage for these running-text resit/progression formulations; heading-based exclusions cannot remove them from inside Vurderingsordning.",
+      "suggested_fix": "Add VID sentence-level cleanup for the observed Utsatt eksamen / Ved utsatt eksamen rules, VID arrangerer inntil ... utsatte prøver, and failure-to-pass progression notices. Remove administrative attempt/progression rules from sections while preserving ordinary assessment design, including any genuinely different assessment form specified for a resit.",
+      "confidence": "high"
+    },
+    {
+      "target": "course_content",
+      "error_type": "wrong_content",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "vid_BASJE1010-1_2024_autumn_1",
+        "vid_MASJE1010-1_2024_autumn_1",
+        "vid_BASOS4040-1_2025_spring_1"
+      ],
+      "evidence": "Studenter kan, ved å gjennomfre dette emnet og emnet \"Sjelesorg i møte med livsutfordringer\" gå videre til siste året av årsstudiet i sjelesorg.",
+      "description": "Course content contains prose about programme progression/credit recognition in the 2024 sjelesorg plans and teaching arrangements in multiple plans. All four sjelesorg offerings retain the shared bachelor/master teaching and differentiated assessment/literature notice; the BASOS4040 control retains the placement duration, lectures/groupwork and individual-supervision arrangement under course_content. The quoted progression notice belongs in no canonical section, while teaching arrangements belong in teaching_methods. The leak->assessment flag on the sjelesorg sentence is a lexical false alarm rather than a missed assessment heading.",
+      "root_cause_hypothesis": "R/section_heading_map.R maps the entire Emnets innhold block to course_content. R/extract_sections.R performs limited inline moves for labelled prerequisites and coursework, but has no equivalent separation of these embedded teaching arrangements and programme-progression paragraphs.",
+      "suggested_fix": "Add VID-specific paragraph/sentence rules that move the explicit shared-teaching and individual-supervision arrangements from course_content to teaching_methods, and exclude the observed Studenter kan ... innpasning / gå videre programme-progression notices from canonical sections. Preserve topic descriptions and mixed substantive sentences; do not treat Litteratursøk or Litteraturstudium as reading-list boundaries.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "formatting_noise",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": [
+        "vid_BASJE1010-1_2025_autumn_1",
+        "vid_MASJE1010-1_2024_autumn_1",
+        "vid_BASOS4040-1_2025_spring_1"
+      ],
+      "evidence": "Additional Information about Assessment:",
+      "description": "All four sjelesorg assessment rows end with Hjelpemidler tillatt: without any value, and the BASOS4040 control ends with Additional Information about Assessment: without explanatory text. These labels convey no assessment design and should be removed from otherwise substantive rows. They are visible in the uncapped extractor output and are not packet truncation artifacts.",
+      "root_cause_hypothesis": "The labels are ordinary text rather than label headings in the headings list, so sectionize() cannot apply .empty_label_text(). Subsequent cleanup preserves assessment labels without checking whether a value follows.",
+      "suggested_fix": "During VID assessment cleanup, remove a terminal standalone Hjelpemidler tillatt: or Additional Information about Assessment: when no value follows. Preserve a label with an actual value, especially Ingen when it means no aids are permitted.",
+      "confidence": "high"
+    }
+  ]
+}

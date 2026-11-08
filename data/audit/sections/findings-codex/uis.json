@@ -1,0 +1,102 @@
+{
+  "check": "sections",
+  "institution": "uis",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 18,
+  "n_suspects_reviewed": 14,
+  "overall_assessment": "All 18 packet courses were read in full as displayed; packet-builder truncation limits comparisons beyond the displayed text, and no extraction truncation is inferred from those markers. Main section boundaries and all displayed learning-outcome groups are generally preserved, but semantic misclassification, workload leakage, resit rules and reading-list widget noise remain; random controls confirm workload and widget contamination beyond the suspects. Most empty flags (Forelesninger.), boilerplate flags (valid independent work and supervision), and leak flags (literature-related vocabulary, learning-outcome wording and reference titles) are false alarms, whereas the LPRA30 duplicate is a real prerequisite misclassification and the MGL2120 teaching flags partly expose misplaced coursework instructions.",
+  "findings": [
+    {
+      "target": "cross_section",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": [
+        "uis_MGL2120-1_2025_autumn_1",
+        "uis_LPRA30-1_2016_spring_2",
+        "uis_MTLMAS-1_2014_autumn_3"
+      ],
+      "evidence": "Dette emnet har mappevurdering som eksamensform. Til vurdering vel studenten to av dei tre skriftlege arbeidskrava\nsom kan omarbeidast.",
+      "description": "Heading-based allocation leaves assessment design inside coursework_requirements in all three MGL2120 offerings; their exam-language sentence is instead in course_content, and coursework submission instructions remain in teaching_methods. LPRA30 repeats the prior-course requirement 'Må ha bestått all tidligere praksis.' as coursework_requirements, although it belongs only in prerequisites. MTLMAS leaves 'Arbeidet avsluttes med en skriftlig rapport.' inside learning_outcomes and emits no assessment section. These are semantic allocation errors rather than failed heading cuts; mentioning arbeidskrav in the actual graded portfolio design is itself valid assessment content.",
+      "root_cause_hypothesis": "R/section_heading_map.R assigns whole source blocks to their institutional heading's section. R/extract_sections.R has targeted sentence relocation in .sentence_moves/.move_sentences(), but no UiS entry to handle these mixed blocks; heading-based inline coursework splitting does not resolve them.",
+      "suggested_fix": "Add narrowly scoped UiS sentence moves: move explicit final portfolio design and report-completion statements to assessment, exam-language statements from course_content to assessment, and actual coursework submission instructions from teaching_methods to coursework_requirements. Move statements requiring previously passed practice from coursework_requirements to prerequisites and deduplicate against the existing prerequisite; preserve the distinction between graded portfolio components and approval gates.",
+      "confidence": "high"
+    },
+    {
+      "target": "course_content",
+      "error_type": "other",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "uis_MGL2120-1_2025_autumn_1",
+        "uis_MGL2120-1_2024_autumn_1"
+      ],
+      "evidence": "Arbeidsmengd\nUniversitetet i Stavanger definerer eit studieår til 40 veker, og arbeidsmengda per 30 studiepoeng er estimert til 412",
+      "description": "A complete workload block remains appended to course_content in both recent MGL2120 plans. It describes study hours and syllabus page counts rather than subject matter, and the specification excludes workload from sections. The content leak flags largely match ordinary vocabulary rather than genuine foreign section headings, but they do not adequately identify this workload contamination.",
+      "root_cause_hypothesis": "R/section_heading_map.R already maps arbeidsmengd to .drop, but R/blocks.R::.text_blocks() recognizes mapped headings only after blank lines. Here Arbeidsmengd directly follows the preceding content sentence, so the text fallback leaves the block inside course_content.",
+      "suggested_fix": "For UiS text fallback, recognize an exact standalone Arbeidsmengd/Arbeidsmengde line as a .drop boundary even without a preceding blank line; retain the workload in the full course_plan and resume extraction at the next recognized heading.",
+      "confidence": "high"
+    },
+    {
+      "target": "teaching_methods",
+      "error_type": "other",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "uis_MGL2120-1_2021_autumn_1",
+        "uis_MGL2311-1_2021_autumn_1"
+      ],
+      "evidence": "Forventet timeinnsats (413 timer): Undervisning: 77 timer\nForberedelse + etterarbeid: 214 timer\nFOU-oppgave: 100 timer\nEksamen med forberedelse: 22 timer",
+      "description": "Teaching-method prose contains inline workload budgets: Anslag over tidsforbruk and its activity-hour breakdown in MGL2120, and Forventet timeinnsats in the random mathematics control. Workload is explicitly excluded from sections by course_plan_spec.md; it should not be retained merely because it occurs under Arbeidsformer. This is independent of the missing Arbeidsmengd boundary in the newer plans.",
+      "root_cause_hypothesis": "The workload breakdown is embedded inside the teaching block rather than under a mapped workload heading. R/extract_sections.R::.clean_sections() removes some teaching noise but has no UiS rule for these workload labels and their following hour-budget lines.",
+      "suggested_fix": "Strip UiS workload spans beginning with Anslag over tidsforbruk or Forventet timeinnsats from teaching_methods, stopping after the contiguous hour-budget lines; preserve the actual teaching prose and any subsequent practicum description.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "other",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "uis_MGL2120-1_2025_autumn_1",
+        "uis_MGL2120-1_2021_autumn_1",
+        "uis_LFYBAC-1_2018_autumn_1"
+      ],
+      "evidence": "En kandidat har som hovedregel ett forsøk på en utøvende eksamen, bachelor- eller\n                                   masteroppgaven.",
+      "description": "Assessment retains resit and attempt rules in all three MGL2120 offerings and the physics bachelor plan. Examples include the ordinary resit submission period, loss of further supervision after failure, and a long regulation about first and second attempts. These are excluded logistics under the specification. Conversely, the displayed exam-table weights, duration, grading scale and permitted aids are assessment design and are correctly retained.",
+      "root_cause_hypothesis": "R/extract_sections.R::.section_noise and .logistics_sentences do not cover these UiS prose formulations. The heading map can drop a dedicated resit heading but cannot remove logistics embedded in the assessment paragraph.",
+      "suggested_fix": "Add UiS sentence/block cleanup for attempt entitlements, resit submission periods and resit supervision rules, including the quoted Forskrift section and its administrative link. Keep ordinary assessment design and any separable design facts stated inside resit paragraphs.",
+      "confidence": "high"
+    },
+    {
+      "target": "reading_list",
+      "error_type": "formatting_noise",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": [
+        "uis_MGL2120-1_2024_autumn_1",
+        "uis_MGL2311-1_2021_autumn_1",
+        "uis_LNOR115-1_2021_autumn_1"
+      ],
+      "evidence": "http://urn.nb.no/URN:NBN:no-nb_digibok_2007071901072View online",
+      "description": "All five displayed widget-style reading lists retain item-type labels such as Bok, Bokkapittel and Government Document, plus View online link text, sometimes glued directly to a URL or split over lines. The references themselves are appropriate; the reading-list leak flags triggered by titles and annotations are false alarms. Two random controls confirm that widget noise extends beyond the MGL2120 suspects.",
+      "root_cause_hypothesis": "The PDF/text fallback has already flattened reading-list widget labels into text. R/extract_sections.R::.clean_sections() handles list tabs and some pointers but does not remove these UiS item-type and access labels.",
+      "suggested_fix": "Remove standalone widget item-type labels and View online access labels from UiS reading_list text, including URL-attached and line-wrapped forms, while preserving the URLs, bibliographic references and course-specific reading notes.",
+      "confidence": "high"
+    },
+    {
+      "target": "course_content",
+      "error_type": "duplicate",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "uis_LNOR115-1_2021_autumn_1"
+      ],
+      "evidence": "og fram til dagens situasjon med to offisielle norske skriftmål, nynorsk og bokmål.\nInnhald\nEmnet gjev innføring i nordisk",
+      "description": "The random LNOR115 control repeats its full introductory sentence at the start of course_content and immediately after the retained Innhald label. The source repeats the lead, but the extracted section should avoid duplicating that same content; this is not detected by the cross-row duplicate flag.",
+      "root_cause_hypothesis": "R/blocks.R::.text_blocks() emits a recognized heading as ordinary text when it maps to the already-open section. This joins the lead and Innhald body into one chunk, preventing R/extract_sections.R::.list_to_sections() from applying its existing containment deduplication across chunks.",
+      "suggested_fix": "Emit same-section text headings as heading boundaries so sectionize() flushes separate chunks before merging; the existing normalized chunk-containment deduplication can then remove the repeated introduction while keeping the longer content paragraph.",
+      "confidence": "high"
+    }
+  ]
+}

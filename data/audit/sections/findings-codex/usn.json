@@ -1,0 +1,72 @@
+{
+  "check": "sections",
+  "institution": "usn",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 16,
+  "n_suspects_reviewed": 14,
+  "overall_assessment": "Most main section boundaries and all visible learning-outcome groups are preserved, but nursing coursework is substantially misallocated and practice sections retain assessment and mandatory-work text in teaching_methods. The repeated PPU course-content, outcomes, coursework and exam-design passages and the nursing prior-course requirements are legitimate shared plan text, so their boilerplate flags are false alarms; leak flags triggered by references to learning outcomes or required literature likewise do not establish leaked sections. Real defects include repeated external-plan placeholders (explaining the short/dup_in_course flags), nested coursework labels that switch sections, and unflagged prerequisite problems in both random controls; packet truncation markers and long reading lists are not extraction defects.",
+  "findings": [
+    {
+      "target": "cross_section",
+      "error_type": "empty_placeholder",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "usn_FKHPRA-1_2023_autumn_1",
+        "usn_FKHPR-1_2023_autumn_1",
+        "usn_2307-1_2024_autumn_1"
+      ],
+      "evidence": "Se gjeldende praksisplan for faglærerutdanningen.",
+      "description": "Both practice-only offerings emit five canonical sections containing only an external practice-plan pointer, including assessment under its aids label. The Spanish random control also emits prerequisites containing only \"Som studieprogrammet.\" These are pointers with no substantive section text and should produce no rows. The duplicate flags on the practice courses reflect the same placeholder defect, rather than a separate duplication problem.",
+      "root_cause_hypothesis": "R/extract_sections.R .placeholder_phrases does not recognize the qualified practice-plan pointer or \"Som studieprogrammet\"; .praksis_pointer_regex only covers selected alternative wordings. The missed phrase also prevents .empty_label_text() from suppressing the aids-only assessment block.",
+      "suggested_fix": "Add anchored placeholder alternatives for \"Se gjeldende praksisplan for faglærerutdanningen\" and \"Som studieprogrammet\" to .placeholder_phrases, allowing terminal punctuation. Apply the existing whole-row and label-body checks so substantive text accompanying a pointer remains untouched.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "split_section",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "usn_050-E16-1_2022_spring_1",
+        "usn_051-E16-1_2022_spring_1",
+        "usn_050-E16-1_2021_spring_1"
+      ],
+      "evidence": "Refleksjonsnotatet er godkjent når det oppfyller innhold og rammer og er presentert i den lærerstyrte refleksjonssamlingen.",
+      "description": "In all three nursing offerings, coursework_requirements retains the labels for Arbeidskrav 3 and 4 but their substantive instructions and approval criteria are filed under assessment, alongside turnus/nærvær approval requirements. In the 2021 offering, part of Arbeidskrav 2 is additionally appended to course_content. These are approval-only requirements, explicitly distinguished from the final clinical assessment; their logical blocks must stay together in coursework_requirements. The reading_list leak flags mostly detect legitimate requirements to use literature, but the rows reveal a genuine split into other canonical sections.",
+      "root_cause_hypothesis": "R/blocks.R .text_blocks() promotes standalone INNHOLD and VURDERING labels to new top-level sections through the global heading map. It has no numbered-requirement scope, and subsequent inline-coursework splitting can recover labels without their displaced bodies.",
+      "suggested_fix": "In the USN text reader, track the top-level headings identified from the table of contents and numbered Arbeidskrav blocks. Keep HENSIKT, INNHOLD, RAMMER and VURDERING within the active numbered requirement until the next requirement or actual top-level heading; reserve Vurderingsformer for final assessment and preserve the clinical assessment after it.",
+      "confidence": "high"
+    },
+    {
+      "target": "teaching_methods",
+      "error_type": "wrong_content",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "usn_PPUFRI3-1_2021_autumn_1",
+        "usn_PPUEN3-1_2020_autumn_1",
+        "usn_050-E16-1_2021_spring_1"
+      ],
+      "evidence": "Praksis vurderes til bestått/ikke bestått.",
+      "description": "All nine PPU offerings retain the practice grading statement in teaching_methods. The three nursing offerings also place practice pass/fail criteria and failure-warning procedures there; the 2021 text explicitly calls attendance registration an arbeidskrav, yet leaves its instructions in teaching_methods. A practice block can describe teaching, assessment and mandatory work, and should not be assigned wholesale to teaching_methods. The nursing leak->learning_outcomes flag is a false alarm about the word læringsutbytter, but it misses this substantive mixing.",
+      "root_cause_hypothesis": "R/section_heading_map.R maps Praksis to teaching_methods, and the text reader/cleanup does not partition its internal assessment and mandatory-work paragraphs by meaning. Attendance transfer rules in R/extract_sections.R explicitly exclude clinical/practice wording.",
+      "suggested_fix": "For USN practice blocks, split explicit grading statements and practice assessment criteria into assessment; route explicitly identified approval-only arbeidskrav and their attendance/absence rules to coursework_requirements. Leave teaching, supervision and reflection descriptions in teaching_methods, and keep administrative warning-meeting procedures outside the seven sections.",
+      "confidence": "high"
+    },
+    {
+      "target": "prerequisites",
+      "error_type": "wrong_content",
+      "severity": "medium",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "usn_MBVA100-1_2022_autumn_2"
+      ],
+      "evidence": "Ingen forkunnskaper. Studentene vil få tilgang til digitale forelesninger, oppgaver, spesielle litteraturhenvisninger",
+      "description": "The barnevern random control has no stated prior-knowledge requirement. Its prerequisites row instead describes digital lectures, exercises and reading resources supplied to prepare students for the course. This is teaching/preparation provision, not subject-matter entry requirements; the sentence remains mislabelled despite the clear opening \"Ingen forkunnskaper.\"",
+      "root_cause_hypothesis": "Heading-based assignment in R/blocks.R and R/section_heading_map.R treats the entire Forkunnskapskrav block as prerequisites. Whole-row placeholder filtering correctly avoids deleting mixed text, but does not move the substantive teaching-resource sentence.",
+      "suggested_fix": "Add a narrow USN cleanup rule for a prerequisites block beginning \"Ingen forkunnskaper.\" followed by \"Studentene vil få tilgang til\": remove the absence statement, append the resource-provision sentence to teaching_methods, and drop the resulting empty prerequisites row.",
+      "confidence": "high"
+    }
+  ]
+}

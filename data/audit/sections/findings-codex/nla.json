@@ -1,0 +1,88 @@
+{
+  "check": "sections",
+  "institution": "nla",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 16,
+  "n_suspects_reviewed": 14,
+  "overall_assessment": "All 16 packet entries were read in full; packet-imposed caps limit completeness checks against source text not displayed. Section boundaries, learning-outcome groups, and the main assessment/coursework distinction generally work, but outgoing progression rules contaminate prerequisites in all 14 suspects, with smaller recurring classification and cleanup defects. The boilerplate flags identify substantive repeated course text and the reading-list leak flags identify subject names or bibliography-writing requirements rather than actual leaks; the two random controls largely preserve the intended sections, although one retains a project-approval gate in teaching methods and an assessment-semester instruction.",
+  "findings": [
+    {
+      "target": "prerequisites",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "nla_MGL1KH101-1_2017_autumn_2",
+        "nla_4MGL1NO201-1_2021_spring_2",
+        "nla_GL5KH1-1_2022_autumn_1"
+      ],
+      "evidence": "Emnet må være bestått for å kunne fortsette på Kunst og Håndverk 2 (GLU 1-7).",
+      "description": "All 14 suspects include Progresjonskrav describing what passing or following THIS course permits later, rather than prior knowledge needed to enter this course. In the 11 arts-and-crafts entries this is the entire prerequisites row, despite the actual entry-requirements field containing only Se programplan; in the three Norwegian entries it is appended to genuine Norsk 1 prerequisites. These outgoing progression conditions should remain only in the full plan, not be interpreted as entry requirements. Both random controls have genuine subject-matter prerequisites, so the defect follows the progression heading rather than every NLA prerequisites row.",
+      "root_cause_hypothesis": "R/section_heading_map.R maps progresjonskrav and progression requirements directly to prerequisites. sectionize() merges those blocks with actual Forkunnskapskrav without checking the direction of the condition.",
+      "suggested_fix": "Add an NLA rule for Progresjonskrav that excludes outgoing conditions such as Emnet må være bestått for å kunne fortsette and En må ha fulgt ... for å kunne fortsette from sections, while retaining them in course_plan. Keep any actual prior-course requirements and continue removing the Se programplan placeholder; do not drop genuine entry requirements solely because their heading says progression.",
+      "confidence": "high"
+    },
+    {
+      "target": "course_content",
+      "error_type": "wrong_content",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "nla_4MGL1NO201-1_2021_spring_2",
+        "nla_MGL1NO201-1_2020_autumn_1",
+        "nla_MGL1KH101-1_2020_autumn_1"
+      ],
+      "evidence": "Grunnet Covid-19 situasjoen kan deler av (evt. hele) undervisningen bli gjennomført digitalt. Dette vil bli spesifisert i undervisningsplanen for emnet.",
+      "description": "Four courses retain this digital-teaching notice at the start of course_content, including nla_GL17KH1-1_2020_autumn_1 in addition to the examples. It describes how teaching may be delivered, which belongs in teaching_methods, rather than the subject matter. This is meaningful plan text to relocate, not administrative boilerplate to delete.",
+      "root_cause_hypothesis": "Innledning/Innleiing maps wholesale to course_content in R/section_heading_map.R. The sentence-move rules in R/extract_sections.R do not relocate this NLA teaching-delivery paragraph.",
+      "suggested_fix": "Add an NLA-specific sentence/paragraph move in R/extract_sections.R from course_content to teaching_methods for this COVID digital-teaching notice, including its following sentence about the undervisningsplan. Preserve the surrounding subject-matter introduction in course_content.",
+      "confidence": "high"
+    },
+    {
+      "target": "teaching_methods",
+      "error_type": "wrong_content",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "nla_MGL1KH101-1_2018_autumn_1",
+        "nla_GL17KH1-1_2022_autumn_1",
+        "nla_IKF213-1_2019_autumn_1"
+      ],
+      "evidence": "Alle læringsaktiviteter er obligatoriske.",
+      "description": "All 11 arts-and-crafts entries leave this standalone compulsory-activity rule inside teaching_methods, although mandatory participation belongs in coursework_requirements. Their coursework rows already contain the detailed attendance gate, so this is residual contamination rather than a wholly missing coursework section. The IKF213 random control similarly leaves Før avreise skal prosjektbeskrivelse og feltopplegg være godkjent av emneansvarlig in teaching_methods, while its coursework section separately identifies the project description as an approved exam gate. The main graded assessments remain correctly separated.",
+      "root_cause_hypothesis": "R/extract_sections.R already moves inline coursework, but .attendance_sentence_regex names undervisning, samling, seminar and forelesning without covering læringsaktiviteter. The project-approval wording in the random control also escapes the existing gate recognizers.",
+      "suggested_fix": "Extend the standalone compulsory-activity recognizer to cover Alle læringsaktiviteter er obligatoriske and move that sentence to coursework_requirements. Add a narrowly scoped NLA rule for the mandatory pre-departure approval of prosjektbeskrivelse og feltopplegg; move the approval clause while retaining the following supervision arrangements in teaching_methods.",
+      "confidence": "high"
+    },
+    {
+      "target": "teaching_methods",
+      "error_type": "formatting_noise",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": [
+        "nla_MGL1KH101-1_2017_autumn_2",
+        "nla_MGL1KH101-1_2022_autumn_1",
+        "nla_GL17KH1-1_2021_autumn_1"
+      ],
+      "evidence": "Det henvises til egen praksisplan.",
+      "description": "The 11 arts-and-crafts teaching_methods rows end with a pointer-only Praksis block. It gives no practice activity or arrangement and should be excluded under the spec rule for parts whose only content points elsewhere. The surrounding teaching-method list is substantive, so neither the whole section nor the repeated list should be removed as boilerplate.",
+      "root_cause_hypothesis": "Praksis maps to teaching_methods and is merged with the earlier teaching block. .praksis_pointer_regex in R/extract_sections.R removes Se egen praksisplan variants but does not match Det henvises til egen praksisplan.",
+      "suggested_fix": "Extend .praksis_pointer_regex with an anchored match for Det henvises til egen praksisplan, allowing a final period. Remove only this pointer-only line and retain any sentences describing actual placement arrangements.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "other",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "nla_IKF213-1_2019_autumn_1"
+      ],
+      "evidence": "I samme semester som prosjektoppgaven leveres, skal studentene fremstille seg for en muntlig prøve.",
+      "description": "The IKF213 random control retains a scheduling condition requiring the oral examination in the same semester as the project submission. course_plan_spec.md explicitly excludes assessment-semester logistics from sections. The existence and grading role of the oral examination are described again in the following assessment-design paragraph, so this scheduling sentence can be removed without losing the assessment component.",
+      "root_cause_hypothesis": "The sentence is embedded in Avsluttende vurdering rather than under a logistics heading, and the sentence-level logistics cleanup in R/extract_sections.R does not catch this NLA wording.",
+      "suggested_fix": "Add a narrowly anchored NLA logistics-sentence rule for I samme semester som prosjektoppgaven leveres, skal studentene fremstille seg for en muntlig prøve. Keep the following description of the oral examination and its grade adjustment, and retain the scheduling sentence in the full plan.",
+      "confidence": "high"
+    }
+  ]
+}

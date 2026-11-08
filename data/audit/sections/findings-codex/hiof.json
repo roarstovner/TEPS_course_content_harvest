@@ -1,0 +1,68 @@
+{
+  "check": "sections",
+  "institution": "hiof",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 20,
+  "n_suspects_reviewed": 14,
+  "overall_assessment": "Section boundaries generally work well: learning-outcome groups remain intact, prerequisites contain prior knowledge rather than admission rules, and coursework gates are separated from graded assessment. The leak flags are false alarms caused by subject-matter phrases about teaching methods and learning materials, and most boilerplate flags identify legitimate shared didactics text; however, all 14 suspects and one random control retain pointer-only reading-list rows. Random controls also expose one omitted teaching-hours statement, assessment logistics retained in one course, and a staff attribution retained in one reading list; packet truncation markers are not extraction defects.",
+  "findings": [
+    {
+      "target": "reading_list",
+      "error_type": "empty_placeholder",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "hiof_LPKR116-1_2019_autumn_1",
+        "hiof_LPDR216-1_2022_spring_1",
+        "hiof_LSV2MAT20-1_2024_spring_1"
+      ],
+      "evidence": "Oppdatert litteraturliste vil være tilgjengelig i Leganto ved semesterstart.",
+      "description": "15 of 20 courses emit reading_list rows whose only information is that readings are elsewhere or will be announced. The 14 suspects share a reference to the Pedagogikk course description followed by an announcement that course-specific literature will be supplied at study start/in a compendium; the random mathematics control has only the quoted Leganto notice. Under course_plan_spec.md, pointers with nothing more are not sections. This is the substantive defect behind the suspects’ reading-list boilerplate flag, rather than evidence that their other repeated sections are invalid.",
+      "root_cause_hypothesis": "R/extract_sections.R .placeholder_phrases and .is_placeholder_text() recognize several reading-list pointers but do not cover these HiOF wordings or the two-sentence shared-literature announcement.",
+      "suggested_fix": "Extend the whole-section placeholder patterns to recognize the exact Leganto availability notice and the combined Felleslitteratur reference plus Litteratur spesifikt for emnet announcement. Suppress the row only when the entire reading_list is such a pointer/announcement, preserving actual references and substantive descriptions of course materials.",
+      "confidence": "high"
+    },
+    {
+      "target": "teaching_methods",
+      "error_type": "truncated",
+      "severity": "medium",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "hiof_ITF10306-1_2013_spring_1"
+      ],
+      "evidence": "4 timer forelesning + øvinger pr. uke.",
+      "description": "The Databaser plan explicitly states weekly lectures and exercises under Undervisningssemester, but teaching_methods contains only the later teaching paragraph. The quoted sentence describes how the course is taught and must be retained by meaning even though its source heading describes the semester. This is partial loss from an existing section, independent of packet truncation.",
+      "root_cause_hypothesis": "R/extract_sections.R sectionize() closes the current section at unmapped headings. Undervisningssemester is unmapped, so teaching text embedded in that block is discarded with the semester information.",
+      "suggested_fix": "Add a HiOF-specific inline extraction rule that moves explicit lecture/exercise statements such as this hours-per-week sentence from Undervisningssemester blocks to teaching_methods, in document order. Keep the semester and programme listing outside the seven sections rather than remapping the entire heading.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "other",
+      "severity": "medium",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "hiof_SFB50314-1_2016_spring_1"
+      ],
+      "evidence": "If the candidates wish to appeal about the result, all group members must sign the letter of appeal.",
+      "description": "Media Studies assessment includes three paragraphs about resubmission after failure, submitting a new portfolio to improve a grade, and signing an appeal. These are resit and appeal rules, which course_plan_spec.md explicitly excludes from assessment; the portfolio design, group size and grading scale are correctly retained. No pre-pass flag identifies this contamination.",
+      "root_cause_hypothesis": "The rules occur as running text under Eksamen, so heading-based dropping cannot separate them. R/extract_sections.R .section_noise covers selected Norwegian resit notices but not these English resit and appeal formulations.",
+      "suggested_fix": "Add narrowly anchored HiOF English sentence/paragraph filters for the observed In the case of a Fail and If the candidates wish to improve their grade / appeal formulations. Remove these administrative paragraphs while retaining the preceding portfolio design and grading statements.",
+      "confidence": "high"
+    },
+    {
+      "target": "reading_list",
+      "error_type": "formatting_noise",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "hiof_SFB50314-1_2016_spring_1"
+      ],
+      "evidence": "Lecturer: Øystein Bonvik",
+      "description": "The Media Studies reading_list ends with a lecturer attribution. This is staff metadata rather than literature or course materials and makes the otherwise substantive reading-list section unclean. The line is already present in the packet’s full plan, but section extraction also carries it into reading_list.",
+      "root_cause_hypothesis": "HiOF has no section boundary or cleanup rule for this inline Lecturer role line, so it remains attached to the preceding Litteratur block.",
+      "suggested_fix": "Strip standalone staff-attribution lines beginning Lecturer: from extracted section text, or recognize that role line as an excluded block in the HiOF reader. Preserve nearby descriptions of the compendium and learning-platform materials.",
+      "confidence": "high"
+    }
+  ]
+}

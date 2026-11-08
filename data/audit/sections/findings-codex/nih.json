@@ -1,0 +1,55 @@
+{
+  "check": "sections",
+  "institution": "nih",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 20,
+  "n_suspects_reviewed": 14,
+  "overall_assessment": "Section boundaries and learning-outcome coverage are generally sound across all 20 courses, including the six random controls; empty reading-list headings and archive-only pointers are correctly omitted. All 13 leak flags are lexical false alarms: Arbeidskravsanalyse is a graded portfolio component, Emnets innhold introduces teaching methods, and Undervisningsopplegg names a compulsory submission; the remaining empty flag concerns the terse source prerequisite Praksis and does not establish an extraction error. Unflagged defects include teaching arrangements retained as course content, two no-prerequisite placeholders in random controls, and one examiner-arrangement sentence in assessment.",
+  "findings": [
+    {
+      "target": "course_content",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "nih_LKI236-1_2024_spring_2",
+        "nih_PPU404-1_2024_spring_1",
+        "nih_MA515-1_2025_autumn_1"
+      ],
+      "evidence": "Forelesninger vil ha en generell tilnærming til temaene, mens studentene fordyper seg i en (eller flere) selvvalgt idrett(er) eller treningsformer.",
+      "description": "Some text under Kort om emnet describes how students work rather than subject matter, but remains in course_content. LKI236 retains the quoted lecture/self-directed study paragraph; the PPU404 control retains Studentene planlegger, begrunner, gjennomfører, erfarer og vurderer egen og andres undervisning; the MA515 control retains the placement schedule and descriptions of student work in its two periods. These passages belong in teaching_methods under the codebook. The controls show that this semantic assignment problem is not limited to flagged courses.",
+      "root_cause_hypothesis": "NIH uses HTML heading-based section extraction in R/institution_config.R. Kort om emnet maps correctly as a heading, but R/extract_sections.R has no NIH entry in .sentence_moves to relocate teaching-only passages embedded in that block.",
+      "suggested_fix": "Add NIH-specific course_content-to-teaching_methods moves in .sentence_moves for the observed teaching-only sentence templates: Forelesninger vil ha en generell tilnærming, Studentene planlegger, begrunner, gjennomfører, erfarer og vurderer egen og andres undervisning, and the MA515 placement-schedule/work-phase sentences beginning Yrkespraksisen foregår, I første periode, and Selvstendig arbeid og datainnsamling. Append the verbatim passages to the existing teaching_methods row and preserve surrounding subject-matter descriptions.",
+      "confidence": "high"
+    },
+    {
+      "target": "prerequisites",
+      "error_type": "empty_placeholder",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "nih_MA515-1_2025_autumn_1",
+        "nih_KRØ101-1_2025_autumn_1"
+      ],
+      "evidence": "Ingen krav til emner på programnivå.",
+      "description": "Two random controls emit prerequisites rows whose entire text says there are no required prior courses: Ingen krav til emner på programnivå. and Ingen kav til emner. These are absence statements, not substantive prerequisites, and should yield no section. Neither was flagged by the pre-pass. By contrast, Ingen emner i programmet is correctly suppressed in the 2025 LKI110 and LKI120 suspects.",
+      "root_cause_hypothesis": "The .placeholder_phrases patterns in R/extract_sections.R cover Ingen krav and Ingen emner i programmet, but not the longer Ingen krav til emner på programnivå or the source typo kav.",
+      "suggested_fix": "Extend the whole-text prerequisite placeholder check to match Ingen krav til emner with the optional suffix på programnivå, and the observed typo Ingen kav til emner. Keep the check anchored to the entire section so substantive prior-knowledge statements are retained.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "other",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "nih_MA515-1_2025_autumn_1"
+      ],
+      "evidence": "Vurderingen gjøres av veileder ved praksisstedet i samråd med veileder/emneansvarlig ved NIH.",
+      "description": "The MA515 random control retains a sentence identifying who makes the assessment. This is examiner arrangement, which course_plan_spec.md explicitly excludes from assessment sections. The adjacent pass/fail scale, placement attendance criterion and performance criteria describe the assessment design and should remain.",
+      "root_cause_hypothesis": "The examiner-arrangement sentence is inside Vurdering/eksamen, and .section_noise in R/extract_sections.R has no NIH-specific cleanup for this wording.",
+      "suggested_fix": "Add an anchored NIH-specific .section_noise pattern removing the complete sentence beginning Vurderingen gjøres av veileder ved praksisstedet i samråd med, while retaining the remaining placement assessment criteria.",
+      "confidence": "high"
+    }
+  ]
+}

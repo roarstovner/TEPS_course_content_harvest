@@ -1,0 +1,72 @@
+{
+  "check": "sections",
+  "institution": "hvl",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 17,
+  "n_suspects_reviewed": 14,
+  "overall_assessment": "Heading-based extraction generally preserves the sections, all learning-outcome groups, and the distinction between assessment and compulsory coursework across all 17 reviewed courses. The boilerplate flags on the 13 engineering bachelor offerings mostly identify legitimate shared outcomes, teaching arrangements, coursework and assessment design; however, those offerings retain resit rules and mix teaching arrangements and programme metadata into course content, with related contamination also visible in random controls. The empty flags on the test course are valid placeholder findings; packet truncation markers are presentation limits, and the controls otherwise show no clear missing sections or loss of outcome groups.",
+  "findings": [
+    {
+      "target": "assessment",
+      "error_type": "other",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "hvl_ELE351-1_2025_autumn_1",
+        "hvl_BYG350-1_2024_autumn_1",
+        "hvl_JOR508-1_2022_autumn_1"
+      ],
+      "evidence": "Ved ikke bestått karakter på bacheloroppgaven, gis gruppen anledning til å levere en forbedret versjon i påfølgende semester.",
+      "description": "All 13 engineering bachelor offerings retain the quoted resit entitlement in assessment. The random JOR508 control also retains examiner arrangements (Intern og ekstern sensor) and rules on resubmitting a failed or passed thesis. These are exam logistics expressly excluded by course_plan_spec.md, although the surrounding assessment forms, duration, grading rules and permitted aids correctly belong in assessment. This is contamination within an otherwise substantive section, not boilerplate_only; repetition alone does not invalidate the substantive text flagged by the pre-pass.",
+      "root_cause_hypothesis": "R/extract_sections.R .section_noise$hvl strips aid-link and AI-pointer text but has no patterns for these inline resit and examiner notices. Heading-based .drop rules cannot remove notices embedded in ordinary assessment paragraphs.",
+      "suggested_fix": "Add narrowly anchored HVL sentence/line filters in .section_noise$hvl for the quoted bachelor resubmission sentence, the JOR508 Ny eksamen notice and its following resubmission restriction, and the standalone Intern og ekstern sensor line. Preserve the surrounding assessment design and aids block.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "hvl_ELE351-1_2025_autumn_1",
+        "hvl_MAS354-1_2024_autumn_1",
+        "hvl_JOR508-1_2022_autumn_1"
+      ],
+      "evidence": "Arbeidet utføres normalt i grupper og kan være et samarbeid med en bedrift eller en offentlig etat, eller den kan inngå i utdanningens satsing på forskning og utvikling.",
+      "description": "In all 13 engineering bachelor offerings, course_content includes the quoted teaching arrangement: how students work in groups and collaborate with external partners. The random JOR508 control similarly puts the normal requirement to write with a fellow student in course_content, although its assessment row already includes that arrangement. By the codebook, teaching arrangements belong in teaching_methods and graded task arrangements in assessment; the source heading does not justify leaving them among subject-matter topics. This defect is not detected by the repeated-text flags.",
+      "root_cause_hypothesis": "sectionize() in R/extract_sections.R assigns the whole Innhold og oppbygning block to course_content. The institution-specific .sentence_moves list has no HVL entry to separate these mixed-purpose paragraphs.",
+      "suggested_fix": "Add a narrowly matched HVL .sentence_moves rule moving the quoted engineering group/collaboration sentence from course_content to teaching_methods. Remove the standalone Masteroppgaven skal som hovedregel skrives sammen med en medstudent sentence from course_content when the assessment section already states the same arrangement; otherwise move it to assessment. Keep the surrounding topic descriptions.",
+      "confidence": "high"
+    },
+    {
+      "target": "course_content",
+      "error_type": "wrong_content",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "hvl_BYG350-1_2025_autumn_1",
+        "hvl_MAS355-1_2024_autumn_1",
+        "hvl_VSFO803-1_2025_autumn_1"
+      ],
+      "evidence": "Utdanningen er gratis og utgjør 7,5 studiepoeng.",
+      "description": "All 13 engineering bachelor offerings include a Studieprogram: metadata line in course_content, for example Studieprogram: Bachelor i ingeniørfag, Bygg. The unflagged VSFO803 random control includes an audience/recruitment paragraph followed by the quoted fee and credit facts. Programme affiliation, who the course suits, cost and credit facts describe the record or admission audience rather than the subject matter; they should remain only in the full plan. This demonstrates a content-cleanliness issue beyond the flagged shared bachelor text.",
+      "root_cause_hypothesis": "The HVL facts selector excludes the sidebar but not metadata embedded under the content heading. R/extract_sections.R .logistics_sentences$hvl catches material costs and numeric kr amounts but not a free-course notice, and no HVL rule removes inline programme labels or standalone recruitment text.",
+      "suggested_fix": "In HVL section cleanup, remove lines matching ^Studieprogram: from course_content and narrowly match the standalone Utdanningen er gratis og utgjør ... studiepoeng sentence and the VSFO803 sentence beginning Utdanningen passer for deg som jobber i SFO. Retain those facts in course_plan and preserve the neighbouring topic descriptions.",
+      "confidence": "high"
+    },
+    {
+      "target": "all",
+      "error_type": "empty_placeholder",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "hvl_PRV002-1_2020_autumn_1"
+      ],
+      "evidence": "**course_content** (4 chars)  ⚑ flags: empty\n\n````\nTest\n````",
+      "description": "The digital-exam test course emits six canonical section rows whose only values are Test/test; assessment additionally includes an aids label followed by test. These are dummy values, not course-plan substance. The five empty flags correctly identify the problem, and assessment has the same defect despite being unflagged because its label increases its length.",
+      "root_cause_hypothesis": "R/extract_sections.R .placeholder_phrases covers dummy values such as x and n/a but omits an exact test value. Consequently .keep_section_row() and .empty_label_text() accept the test strings and the labelled assessment fragment.",
+      "suggested_fix": "Add an exact, case-insensitive test placeholder to .placeholder_phrases, using the existing whole-text matching rather than a substring filter. Ensure the aids-label check and final row cleanup also reject a section consisting solely of test placeholders and an otherwise empty aids label.",
+      "confidence": "high"
+    }
+  ]
+}

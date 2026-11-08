@@ -1,0 +1,102 @@
+{
+  "check": "sections",
+  "institution": "oslomet",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 20,
+  "n_suspects_reviewed": 14,
+  "overall_assessment": "Reviewed all 20 packet courses (14 suspects and 6 random controls), including all displayed text; packet display truncations were not treated as extraction errors. Four substantive practicum plans lose all sections, while pointer-only rows affect nine vocational-practicum suspects and one random control; controls also expose semantic misrouting and assessment logistics. The interpreting course’s boilerplate flags reflect repeated substantive descriptions, and its leak->teaching_methods flag is a false alarm because the cited activities are compulsory exam gates; all visible knowledge, skills and general-competence groups survive in courses with substantive extracted outcomes.",
+  "findings": [
+    {
+      "target": "all",
+      "error_type": "missing_section",
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": [
+        "oslomet_M1GP4000-1_2025_autumn_2",
+        "oslomet_M5GP4000-1_2025_autumn_2",
+        "oslomet_M5GP1000-1_2020_autumn_1"
+      ],
+      "evidence": "Det er praksislærer som setter karakteren bestått/ikke bestått.",
+      "description": "All four M1GP/M5GP practicum suspects have no extracted rows despite substantive Fagplan text describing content, teaching and assessment. The visible plans alone establish missing sections; packet truncation markers are display limits, not extractor truncation. The heading inventories show that relevant subheadings were recognized.",
+      "root_cause_hypothesis": "In R/extract_sections.R, sectionize() ignores every subheading while parent is NA, as it is after the unmapped Fagplan heading. The later course sections appear to contain pointers that are cleaned away. .fill_pointer_sections() fills only one named teaching-methods subheading and appends coursework only to an already substantive row. page_sections() also rejects fallback when its section names already occur in the HTML heading inventory.",
+      "suggested_fix": "Configure OsloMet Fagplan as a scoped container whose mapped subheadings can open canonical sections without a mapped parent. Resolve same-page pointers from those sections, with source attribution, including Organisering og arbeidsmåter and Vurdering; allow fallback to recover substantive missing rows even when HTML headings name those sections. Preserve course-year boundaries and exclude programme administration.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "empty_placeholder",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "oslomet_YFHDPRA3-1_2022_spring_2",
+        "oslomet_YFPRA4-1_2025_spring_2",
+        "oslomet_ØAMAS5900-1_2025_autumn_1"
+      ],
+      "evidence": "Se omtale av praksis i programplanen",
+      "description": "Nine vocational-practicum suspects emit programme-plan pointers as content, outcomes, teaching, prerequisites and/or assessment. Several repeat the pointer within the same row. Random control ØAMAS5900 also emits a prerequisites row containing only \"Se forkunnskapskrav beskrevet under Innhold og oppbygging i programplanen.\" These rows contain no substantive section text and violate the spec. The short, duplicate and boilerplate flags on these pointers are real manifestations of this one defect, not separate findings. Substantive practicum-day requirements in courses 10–12 should remain.",
+      "root_cause_hypothesis": "R/extract_sections.R .placeholder_phrases recognizes bare Se programplanen and Se forkunnskapskrav but misses Se omtale av praksis i programplanen, the praksisi typo, Se nærmere omtale, and the longer prerequisite pointer. Consequently .strip_placeholder_lines(), .empty_label_text() and .keep_section_row() retain them.",
+      "suggested_fix": "Add anchored placeholder patterns for these exact pointer families, including praksis i/praksisi and the longer prerequisite wording. Remove repeated pointer-only lines before deciding whether a row is substantive, including labelled aids blocks. Resolve a pointer when its referent exists on the same page; otherwise omit the empty row and retain genuine requirements in mixed rows.",
+      "confidence": "high"
+    },
+    {
+      "target": "course_content",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "oslomet_SSA5910-1_2021_autumn_1",
+        "oslomet_TANNPRAINN1A-1_2018_autumn_2",
+        "oslomet_ØAMAS5900-1_2025_autumn_1"
+      ],
+      "evidence": "Individuelle oppgaver i monografiform forventes å ha et omfang på 67 sider (+/- 10 prosent)",
+      "description": "Random control SSA5910 places thesis assessment specifications under course_content: monograph/article alternatives, individual versus joint submission, length and presentation requirements. Supervision hours are also retained there. TANNPRAINN1A puts placement organization and supervision in course_content, while ØAMAS5900 retains project-start and supervisor-allocation arrangements there. These passages describe assessment or teaching rather than subject matter. This semantic misrouting is invisible to heading-leak flags.",
+      "root_cause_hypothesis": "R/section_heading_map.R maps Innledning and Innhold to course_content; unmapped Monografi and Artikkelmanus subheadings inherit that parent. R/extract_sections.R has narrowly labelled assessment/requirement moves but no routing of these thesis-design or introductory teaching paragraphs by meaning.",
+      "suggested_fix": "Add context-specific paragraph routing for OsloMet thesis plans: move monograph/article submission design and length requirements to assessment, and supervision-hour sentences to teaching_methods. Split placement and project-organization sentences under Innledning into teaching_methods while keeping subject-matter sentences in course_content. Avoid globally remapping Innhold or Monografi without thesis context.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "other",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "oslomet_ØAMAS5900-1_2025_autumn_1",
+        "oslomet_SSA5910-1_2021_autumn_1",
+        "oslomet_PSYK2600-1_2018_autumn_1"
+      ],
+      "evidence": "Masteroppgaven skal leveres i månedsskiftet mai/juni. Siste frist for innlevering vil fremgå av eksamensplanen.",
+      "description": "Assessment retains exam timing, deadlines and resit administration in four of six random controls (TAB2200, SSA5910, ØAMAS5900 and PSYK2600). ØAMAS5900 includes ordinary and resit submission periods and deadline notices; SSA5910 includes resubmission entitlements and ODA publication-agreement administration; PSYK2600 includes repeat-attempt limits. Assessment design, duration, permitted aids and grading belong here, but these logistics do not. No exam-logistics table is needed for this defect to occur.",
+      "root_cause_hypothesis": "R/extract_sections.R drops headings such as Ny/utsatt eksamen and a few stock sentences in .section_noise, but these courses express resit rules within running assessment text. .logistics_sentences has no OsloMet entry, leaving submission-calendar and deadline-pointer sentences untouched.",
+      "suggested_fix": "Add OsloMet sentence-level cleanup for submission-calendar notices, references to exam-plan deadlines, resit eligibility/attempt limits and publication-agreement notices. Separate logistics from neighbouring assessment-design sentences; retain thesis length, exam duration, component descriptions, aids and grading, and preserve the removed plan text in course_plan.",
+      "confidence": "high"
+    },
+    {
+      "target": "coursework_requirements",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "oslomet_TANNPRAINN1A-1_2018_autumn_2"
+      ],
+      "evidence": "Should a student exceed the maximum limit for absence, extra assignments will be required to compensate for his/her absence as far as possible.",
+      "description": "In this unflagged random control, assessment contains the paragraph governing compensation for excessive absence and possible extension of the placement. It elaborates the 80% attendance requirement already extracted as coursework_requirements. Under the spec, absence and compensation rules belong with that requirement; keep the actual practical-training assessment and Pass/fail in assessment.",
+      "root_cause_hypothesis": "R/extract_sections.R .split_inline_coursework() does not recognize this English conditional absence wording. .attendance_sentence_regex also excludes sentences containing practical-studies context such as learning outcomes, placement or clinical terms, so the linked paragraph is not recovered as attendance-rule content.",
+      "suggested_fix": "Recognize the anchored English absence-compensation lead-in and move its linked absence/extension paragraph into coursework_requirements when the same plan explicitly lists a compulsory attendance threshold there. Keep final practical assessment descriptions and grading in assessment; do not reclassify all practicum assessment as coursework.",
+      "confidence": "high"
+    },
+    {
+      "target": "course_content",
+      "error_type": "field_or_language_junk",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "oslomet_TAB2200-1_2024_autumn_1"
+      ],
+      "evidence": "Undervisningsspråk: Norsk",
+      "description": "The random TAB2200 control starts course_content with a standalone teaching-language metadata line. The subject-matter paragraph is otherwise intact. Language metadata belongs outside the seven sections, so this is a small unflagged cleanliness defect.",
+      "root_cause_hypothesis": "The language line occurs inside Innledning rather than the facts box, so the facts selectors in R/institution_config.R do not exclude it and .clean_sections() has no matching standalone metadata filter.",
+      "suggested_fix": "Strip anchored standalone Undervisningsspråk: <language> metadata lines from course_content during section cleanup, preserving substantive teaching descriptions and assessment-language rules in their proper sections.",
+      "confidence": "high"
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "check": "sections",
+  "institution": "mf",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 9,
+  "n_suspects_reviewed": 3,
+  "overall_assessment": "The main sections and learning-outcome groups are generally preserved across all nine courses, but heading-based extraction misses semantic boundaries in both suspects and random controls. MET5010's long teaching-methods flag and PPU1015's short prerequisite flag are length false alarms; RL1014's teaching-methods leak is real. Unflagged controls reveal misplaced prerequisites, teaching descriptions and subject/outcome prose, while exam-registration and withdrawal notices remain throughout the sample; empty reading-list headings and unmapped credit-overlap text are correctly omitted.",
+  "findings": [
+    {
+      "target": "cross_section",
+      "error_type": "merged_sections",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "mf_RL1014-1_2025_autumn_1"
+      ],
+      "evidence": "Arbeidsform og organisering\n\nEmnet organiseres i 6 moduler som alle må gjennomføres for å ta eksamen. Hver modul består av:",
+      "description": "RL1014 retains its teaching-organization heading, digital learning resources and lecture description inside coursework_requirements and emits no teaching_methods row. This confirms leak->teaching_methods. The block mixes genuine exam gates with teaching arrangements, so moving the entire block would also misclassify compulsory submissions and attendance.",
+      "root_cause_hypothesis": "The heading is absent from the packet's headings-read list even though R/section_heading_map.R already maps arbeidsform og organisering. MF's section_subheading_selector in R/institution_config.R only selects div.wp-block-group p, so this occurrence likely bypasses .sub_blocks() in R/blocks.R.",
+      "suggested_fix": "Expand MF subheading candidates to cover paragraph and h3-h6 headings inside details, and recognize the standalone Arbeidsform og organisering label before sectionize(). Route resources and lectures to teaching_methods, while retaining compulsory module completion, attendance and submissions in coursework_requirements through deterministic gate splitting.",
+      "confidence": "high"
+    },
+    {
+      "target": "prerequisites",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "mf_PPU1010-1_2025_autumn_1",
+        "mf_AVH5055-1_2025_autumn_1"
+      ],
+      "evidence": "Studenten må normalt ha bestått emner tilsvarende 40 studiepoeng på masternivå, inkludert metodeemnet, før oppmelding til masteroppgaven.",
+      "description": "Two random controls contain explicit academic prerequisites in course_content and have no prerequisites row: PPU1010 requires passed courses from semesters 1-6 including BAO2700, and AVH5055 requires 40 master-level credits including methodology. These are prior-study requirements, rather than generic admission or registration information. PPU1015's correctly extracted short requirement provides a positive control.",
+      "root_cause_hypothesis": "MF initializes the introductory block as course_content. .split_inline_prerequisites() in R/extract_sections.R recognizes prerequisite labels, but neither these unlabelled sentences nor their wording are covered by .sentence_moves for MF.",
+      "suggested_fix": "Add MF sentence moves from course_content to prerequisites for For å melde seg opp i emnet, må studenten ha bestått eksamen and Studenten må normalt ha bestått emner ... før oppmelding. Retain the named prior courses and credits, with any directly attached exception, rather than dropping the sentences as registration logistics.",
+      "confidence": "high"
+    },
+    {
+      "target": "teaching_methods",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": [
+        "mf_RL5065-1_2025_autumn_1",
+        "mf_PPU1010-1_2025_autumn_1",
+        "mf_PRA1005-1_2025_autumn_1"
+      ],
+      "evidence": "Undervisning i emnet gis i form av forelesninger og seminarer.",
+      "description": "Teaching descriptions embedded in introductory prose stay in course_content. RL5065 and PPU1010 consequently lack teaching_methods despite explicit lectures, seminars, excursions and supervised placement; PRA1005 has a teaching_methods row but leaves its placement duration and supervision statement in course_content. PPU1015 likewise leaves its 30-day placement description under course_content. This is distinct from RL1014's missed standalone heading.",
+      "root_cause_hypothesis": "MF section_initial = course_content only changes section at recognized subheadings. R/extract_sections.R has no MF sentence moves for unheaded teaching descriptions, even though .move_sentences() supports such transfers.",
+      "suggested_fix": "Add bounded MF sentence rules moving explicit teaching arrangements, such as Undervisning i emnet gis i form av, Det veksles mellom forelesninger, Praksisperioden er veiledet, and placement-duration statements, from course_content to teaching_methods. Split mixed placement paragraphs at sentence boundaries and preserve their subject-matter descriptions in course_content.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "mf_PPU1010-1_2025_autumn_1",
+        "mf_RL5075-1_2025_autumn_1"
+      ],
+      "evidence": "Disse temaene er pedagogisk historie, pedagogisk filosofi, læringsteori og pedagogisk psykologi, mangfold og inkludering, samt forholdet mellom skole og samfunn.",
+      "description": "PPU1010's learning_outcomes includes substantial subject descriptions introducing its pedagogy, didactics and placement components, including the quoted topic list, rather than only statements of student knowledge or skills. Conversely, RL5075 keeps explicit student capabilities in course_content, including making and discussing philosophical positions and reflecting on what philosophy is. The rubric assigns text by meaning, so the source headings do not justify these placements.",
+      "root_cause_hypothesis": "sectionize() follows source headings without semantic subdivision. .split_lo_intro() in R/extract_sections.R is enabled only for phs and handles only the initial introduction, whereas PPU1010 repeats descriptive introductions for several components; no MF rule moves the explicit RL5075 capability sentences in the opposite direction.",
+      "suggested_fix": "Add MF rules that separate each DELEMNE introduction in learning_outcomes from the following Studenten har/Studenten kan outcome groups and append descriptive subject paragraphs to course_content, with placement arrangements going to teaching_methods. Move RL5075's explicit De skal kunne and Studentene skal kunne capability sentences from course_content to learning_outcomes, preserving the topic introduction.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "other",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "mf_PED5610-1_2025_autumn_1",
+        "mf_AVH5055-1_2025_autumn_1",
+        "mf_PRA1005-1_2025_autumn_1"
+      ],
+      "evidence": "For ikke å bruke et eksamensforsøk, må studenten aktivt trekke sin vurderingsmelding til emnet innen trekkfristen 1. november.",
+      "description": "All nine courses retain exam-attempt or withdrawal administration in coursework_requirements, alongside real requirements; PED5610 even retains two near-duplicate notices already present in the source. AVH5055 additionally keeps submission-procedure pointers and the marking deadline in assessment, and PRA1005 keeps automatic registration in course_content. These are logistics or administration rather than coursework, assessment design or subject matter. Because the sections also contain substantive text, boilerplate_only would be inaccurate.",
+      "root_cause_hypothesis": "R/extract_sections.R applies .section_noise and institution-specific .logistics_sentences, but no MF cleanup patterns cover these withdrawal, exam-attempt, submission and registration notices. Their position inside otherwise valid sections prevents heading-level exclusions from removing them.",
+      "suggested_fix": "Add MF sentence-level cleanup for withdrawal/assessment-registration and exam-attempt consequences, automatic registration, submission-procedure pointers and Sensurfristen er normalt notices. Preserve actual compulsory attendance, assignments, absence rules, final assessment form, duration, weights, grading and permitted aids. Keep these administrative passages in course_plan where required by the specification, while excluding them from canonical sections.",
+      "confidence": "high"
+    }
+  ]
+}
