@@ -1,0 +1,42 @@
+{
+  "check": "fulltext",
+  "institution": "hiof",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 34,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "Reviewed all 28 fetched-page entries (20 suspects and 8 controls), including all text supplied before explicit packet truncation markers, and all 6 additional failed-fetch entries. The 16 year flags concern later plans correctly excluded from the build; the earlier English control is also correctly excluded, the two short pages contain all available on-page content, and the two junk flags are false alarms from legitimate textbook login instructions. No missing plan sections, generic fallback plans, or material structural loss are demonstrated; retained pages have a minor recurring navigation label, while three legacy fetches fail on malformed URLs rather than establishing that the site has no page.",
+  "findings": [
+    {
+      "target": "page_chrome",
+      "error_type": "junk_included",
+      "severity": "low",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "hiof_IRM23116-1_2019_autumn_1",
+        "hiof_SFB11615-1_2023_spring_1",
+        "hiof_ITF21013-1_2014_spring_2"
+      ],
+      "evidence": "Innholdsfortegnelse",
+      "description": "All 11 retained fetched-page entries include this standalone table-of-contents navigation label between the facts box and plan sections, including all seven retained random controls. It is a small non-plan fragment; the packet otherwise shows that navigation and breadcrumbs are excluded successfully. This issue is not what triggered the two junk flags: their logg inn wording belongs to textbook-resource instructions.",
+      "root_cause_hypothesis": "The hiof selector in R/institution_config.R reads the entire #vrtx-fs-emne-content container without an exclude or post_fn for its internal table-of-contents label; page_fulltext() preserves that block.",
+      "suggested_fix": "Add a HiOF-specific post_fn that removes only complete lines exactly equal to Innholdsfortegnelse or Table of contents, retaining every plan heading and paragraph.",
+      "confidence": "high"
+    },
+    {
+      "target": "whole_text",
+      "error_type": "empty_or_failed",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "hiof_LAÅKHX 000_2004_spring_0",
+        "hiof_SFB00204 000_2004_autumn_0",
+        "hiof_LA10NO1Y 000_2004_spring_0"
+      ],
+      "evidence": "https://www.hiof.no/studier/emner/historiske-emner/lu/2004/var/la10no1y 000.html",
+      "description": "Three of the six failed-fetch entries have literal spaces in the URL filename and fail with URL using bad/illegal format or missing URL. These requests do not establish whether a historical plan exists because the client cannot perform a valid request. The other three failures are HTTP 404s for very old offerings and are not reported as missing plans; no replacement page or valid historical-plan URL is demonstrated by this packet.",
+      "root_cause_hypothesis": "add_course_url_hiof() in R/add_course_url.R interpolates the lowercased course code directly into a filename without percent-encoding spaces. resolve_urls_hiof_batch()/vortex_match_urls() can use this constructed URL when a listing folder was not read; older stored harvest URLs may also retain this pattern.",
+      "suggested_fix": "Prefer URLs discovered from HiOF listings. When a constructed fallback is needed, percent-encode its UTF-8 filename component, including spaces, before requesting it; re-resolve or encode these stored malformed URLs and retry. Preserve a subsequent 404 or unresolved listing as unavailable rather than assuming an encoded URL proves a plan exists.",
+      "confidence": "high"
+    }
+  ]
+}

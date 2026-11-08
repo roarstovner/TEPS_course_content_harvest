@@ -1,0 +1,24 @@
+{
+  "check": "fulltext",
+  "institution": "nla",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 31,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "Reviewed all 28 sampled fetched offerings and the three appended failed-fetch examples; the available plans are generally clean, correctly keyed to the academic year, and show no demonstrated omitted page content or chrome contamination. The two year flags are false alarms caused by incidental historical/future references despite matching study-year metadata, while the 18 empty entries provide no evidence of an available plan being wrongly dropped and the three historical/discontinued-course 404 URLs show no clear construction error. One random control has a minor loss of structure between nested coursework requirements.",
+  "findings": [
+    {
+      "target": "coursework_requirements",
+      "error_type": "formatting",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "nla_IKF302-1_2018_spring_1"
+      ],
+      "evidence": "Participate on at least three methodological seminarsPresent a first draft of the methodological outline for the Master Thesis/a tentative research question on a methodological seminar for discussion",
+      "description": "The attendance requirement and its nested requirement to present a thesis-methodology draft are joined without whitespace at seminarsPresent, losing the boundary between two coursework instructions. This occurs in an unflagged random control; the packet otherwise preserves readable headings and paragraphs.",
+      "root_cause_hypothesis": "R/blocks.R .json_blocks() passes accordion HTML directly to rvest::html_text2(). The stored IKF302 page contains nonstandard nested <list listType=\"bulleted\"><listItem> markup at this boundary; these tags do not receive the separators that ordinary HTML lists receive.",
+      "suggested_fix": "Before converting NLA accordion HTML to text in .json_blocks(), normalize list elements to ul or ol according to listType and listItem elements to li, preserving their contents and nested order, so each nested requirement receives a line boundary.",
+      "confidence": "high"
+    }
+  ]
+}

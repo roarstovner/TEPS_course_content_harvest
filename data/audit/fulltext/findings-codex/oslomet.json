@@ -1,0 +1,9 @@
+{
+  "check": "fulltext",
+  "institution": "oslomet",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "All 28 courses were reviewed in full: the 10 retained plans preserve the visible plan content and readable section structure for the correct course and academic year, while 17 page shells (including the practice page with x-only sections) and one error page are appropriately excluded from the build. The short/dup_code flags reflect those excluded pages, both junk flags are false alarms triggered by legitimate uses of \"document.\", and uncaptured text consists of year selectors and reading-list/timetable links rather than omitted plan prose. The intrusive semicolons in random control ORI1070 are already present in the stored HTML, so they do not establish an extraction defect; no actionable fulltext findings were identified.",
+  "findings": []
+}

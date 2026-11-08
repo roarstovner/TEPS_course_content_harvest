@@ -1,0 +1,25 @@
+{
+  "check": "fulltext",
+  "institution": "nmbu",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 11,
+  "n_suspects_reviewed": 0,
+  "overall_assessment": "Reviewed all eight random-control plan excerpts, including the packet-capped M30-LUN excerpt, and all three failed-fetch entries. No pre-pass flags were raised; the displayed plans match their course codes, retain readable sections and facts, and have no reported uncaptured text or visible site chrome, with only occasional metadata spacing defects. Current-plan retrieval is intentional, and the three not-fetched entries have plausible URL patterns without evidence of a wrong URL; the 2722 not-fetched offerings limit conclusions about institution-wide coverage.",
+  "findings": [
+    {
+      "target": "metadata",
+      "error_type": "formatting",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "nmbu_PPFD201-1_2025_autumn_2",
+        "nmbu_M30-LUN-1_2025_autumn_1"
+      ],
+      "evidence": "Frekvens:ÅrligTilbys første gang i studieår 2025-2026.",
+      "description": "Metadata values run together in two of eight displayed plans: PPFD201 joins the frequency to the first-offering sentence without whitespace, and M30-LUN joins profile-specific frequency and teaching-period sentences after punctuation. This is a minor readability defect missed by the pre-pass; the substantive sections remain readable and no missing plan content is demonstrated.",
+      "root_cause_hypothesis": "The NMBU facts selected in R/institution_config.R are serialized by the HTML block reader in R/blocks.R. Adjacent inline fragments without explicit whitespace may be concatenated; the packet alone cannot establish whether the missing separators originate in source markup or extraction.",
+      "suggested_fix": "Add a narrowly scoped NMBU normalization in R/institution_config.R post_fn (implemented in R/extract_fulltext.R) for the observed metadata boundaries: separate ÅrligTilbys and insert a newline before Profesjonsmaster PPU when it follows sentence punctuation on Frekvens or Undervisnings- og vurderingsperiode lines. Preserve all metadata text.",
+      "confidence": "medium"
+    }
+  ]
+}

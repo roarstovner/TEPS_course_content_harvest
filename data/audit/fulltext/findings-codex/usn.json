@@ -1,0 +1,42 @@
+{
+  "check": "fulltext",
+  "institution": "usn",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "All 28 packet courses were read in full as presented, including the packet-capped texts; course codes and start terms match, all have a plan in the build, and all show zero uncaptured page text. The junk flags are false alarms where their triggers are visible: ordinary “document.” and “function (” prose or legitimate reading-access instructions; four suspects have their triggering text outside the packet cap. Independent review, including all eight random controls, nevertheless finds widespread navigation/interface noise and recurring glued reading-list labels, without evidence of substantive content loss or wrong pages/years in the supplied material.",
+  "findings": [
+    {
+      "target": "page_chrome",
+      "error_type": "junk_included",
+      "severity": "low",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "usn_SL-PTM2000-1_2025_autumn_1",
+        "usn_PRO3000K-1_2024_autumn_1",
+        "usn_FO1115-1_2021_autumn_1"
+      ],
+      "evidence": "Table of contents\n\nAcademic content in course\n\nRequired prerequisite knowledge\n\nLearning outcome",
+      "description": "Every sampled course retains an Innholdsfortegnelse/Table of contents navigation block that repeats the plan section headings. Published reading lists also retain action labels such as “Click to view interactive reading list in Leganto” and “View online”. These are interface text rather than plan content; the random controls confirm that the issue extends beyond the junk-flagged courses. Bibliographic citations, reading requirements, and access notes should remain.",
+      "root_cause_hypothesis": "R/resolve_course_urls.R read_usn_live_html() recursively collects all text in the course shadow root without excluding navigation or reading-list controls. R/extract_fulltext.R .cleanup_usn_text() removes back-arrow text and banners but leaves these controls.",
+      "suggested_fix": "Exclude the course table-of-contents component and Leganto action controls during shadow-DOM traversal. For existing stored text, remove the bounded initial table-of-contents block before the first actual content section and exact action-label strings in .cleanup_usn_text(), preserving the actual section headings, bibliography, and reading-access notes.",
+      "confidence": "high"
+    },
+    {
+      "target": "reading_list",
+      "error_type": "formatting",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": [
+        "usn_SL-PTM2000-1_2025_autumn_1",
+        "usn_CS4210-1_2025_autumn_1",
+        "usn_SUB300V-1_2025_spring_1"
+      ],
+      "evidence": "BookPort business",
+      "description": "Reading-list item types are concatenated directly with titles, for example BookPort business, BookCryptography and network security, and BookSustainable business. Similar Book Chapter, Article, and Document prefixes occur across suspects and random controls. This loses a field boundary even though the bibliography remains understandable; it is separate from the retained interface labels.",
+      "root_cause_hypothesis": "R/resolve_course_urls.R getTextWithShadow() concatenates sibling text and inline elements without a separator, inserting newlines only after a fixed set of block tags. Reading-list type badges and title elements therefore run together.",
+      "suggested_fix": "Insert a space or newline at the reading-list type/title element boundary in read_usn_live_html(). Repair already stored text in .cleanup_usn_text() with an anchored allowlist of observed bibliography type prefixes followed immediately by title text, retaining both fields.",
+      "confidence": "high"
+    }
+  ]
+}

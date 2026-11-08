@@ -1,0 +1,9 @@
+{
+  "check": "fulltext",
+  "institution": "inn",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "No reportable fulltext defects were found in the 28-course packet. The short/long and duplicate-code flags identify six search-result fallback pages, while the year flags identify fourteen later-version pages; all twenty suspects are appropriately excluded from the build, as are five later-version random controls. The three retained random controls contain readable, apparently complete course plans with metadata and separated table cells, no substantive uncaptured content, and no observed extraction-induced duplication, truncation or page chrome; this small retained sample limits institution-wide conclusions.",
+  "findings": []
+}

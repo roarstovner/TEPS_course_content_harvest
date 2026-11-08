@@ -1,0 +1,9 @@
+{
+  "check": "fulltext",
+  "institution": "uio",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 16,
+  "n_suspects_reviewed": 5,
+  "overall_assessment": "Reviewed all 16 packet entries (13 fetched plans, including five suspects and eight random controls, plus three failed-fetch entries); the available plan text is readable and shows no confirmed extraction defect. All five year flags concern last-offered spring 2025 dates on current-plan pages and are false alarms under UiO's plan_years = current policy; uncaptured text consists of navigation, semester selectors, administrative stamps, resource links and explicitly excluded status banners, while the SVLEP3090 truncation marker is a packet display limit. The three failed entries have plausible course-specific URLs and only 'not fetched' as their error, so neither incorrect URLs nor an extraction failure can be established; the institution-wide availability of only 47 fetched pages among 10,488 offerings limits conclusions about overall harvest coverage.",
+  "findings": []
+}

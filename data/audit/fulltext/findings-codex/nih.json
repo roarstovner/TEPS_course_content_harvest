@@ -1,0 +1,26 @@
+{
+  "check": "fulltext",
+  "institution": "nih",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 20,
+  "n_suspects_reviewed": 6,
+  "overall_assessment": "Reviewed all 14 fetched courses and all six failed-fetch entries. The eight retained random controls contain complete, readable course plans with matching course codes and terms; all six short flags identify genuine page shells that the build correctly excludes, and uncaptured text is breadcrumbs, staff names or fetch timestamps. The only identified defect is malformed URLs for legacy course codes containing spaces; the packet does not establish that plans exist for these old offerings, and the three ordinary 404s do not demonstrate a URL defect.",
+  "findings": [
+    {
+      "target": "whole_text",
+      "error_type": "empty_or_failed",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "nih_FAH310 000_2005_spring_0",
+        "nih_FLL231 000_2005_spring_0",
+        "nih_FAH370 000_2005_spring_0"
+      ],
+      "evidence": "https://www.nih.no/studier/emner/2005/var/fah310 000.html",
+      "description": "All three sampled bad-format failures contain literal spaces in the course slug, so the HTTP client rejects the generated URL before testing whether the server has a plan. Institution context reports 50 such failures across 44 course codes. This is a URL-construction defect, but actual loss of available plan text is unproven: the sampled offerings are from 2005 and none of the affected codes has a fetched page in another offering.",
+      "root_cause_hypothesis": "R/add_course_url.R: add_course_url_nih() lowercases and transliterates course_code, then interpolates the slug directly into the path without percent-encoding reserved characters such as spaces.",
+      "suggested_fix": "Percent-encode the course slug as a single URL path component after lowercasing and transliteration in add_course_url_nih(), including spaces as %20. Reharvest the malformed-URL failures so absent pages receive a real HTTP status; do not assume removing the legacy suffix will produce an existing plan.",
+      "confidence": "high"
+    }
+  ]
+}

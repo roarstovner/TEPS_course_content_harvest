@@ -1,0 +1,40 @@
+{
+  "check": "fulltext",
+  "institution": "uis",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 31,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "Reviewed all 28 sampled course entries (20 suspects and 8 controls), plus all 3 appended fetch failures; packet truncation markers were treated as display limits. Course content is generally readable, but eight older PDF extracts retain printing artefacts, including one random control, and one retained plan explicitly declares the preceding academic year. The four Mat og helse flags for 2010/2011 are not supported by a plan-year declaration and appear to be incidental-date false alarms; the 13 empty entries show no uncaptured plan content, and the three failed URLs follow the discovered archive pattern, so neither group establishes an extraction or URL defect.",
+  "findings": [
+    {
+      "target": "whole_text",
+      "error_type": "wrong_year",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "uis_MGL2071-1_2019_autumn_1"
+      ],
+      "evidence": "Vi gjør oppmerksom på at dette er studieinformasjon for studieår 2018-2019.",
+      "description": "The autumn 2019 offering retains a plan explicitly labeled 2018-2019, although its required academic year is 2019-2020. Unlike the incidental dates in the Mat og helse reading lists, this is a direct declaration of the plan year. The packet says the plan is included in the build; the 2019 URL and revision timestamp do not resolve the conflicting declaration.",
+      "root_cause_hypothesis": "harvest_html_pdf_discovery() in R/harvest_strategies.R matches archive URLs using menu academic-year labels. UiS page_term in R/institution_config.R reads an HTML selected option; PDF-only rows return their stored text in extract_fulltext_from_raw(), leaving explicit PDF year declarations unchecked. The archive PDF may itself contain a stale notice.",
+      "suggested_fix": "Parse anchored PDF plan-year declarations such as this studieinformasjon notice and Dette er studietilbudet for studieår, compare them with the offering academic year, and quarantine explicit conflicts for source verification rather than silently accepting the menu label. Use a verified matching archive entry when available; do not derive the plan year from bibliography dates or revision timestamps.",
+      "confidence": "medium"
+    },
+    {
+      "target": "page_chrome",
+      "error_type": "junk_included",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "uis_LNOR165-1_2019_autumn_1",
+        "uis_LPRA40-1_2018_autumn_1",
+        "uis_MENG105-1_2014_spring_1"
+      ],
+      "evidence": "Powered by TCPDF (www.tcpdf.org)",
+      "description": "All seven nonempty suspect PDF extracts and the MENG105 random control retain page numbers and repeated running headers; the two fully displayed suspect PDFs also end with TCPDF branding. Page furniture interrupts paragraphs, learning outcomes and assessment tables. This confirms the junk flags and shows that the pre-pass misses some affected PDFs; newer PDF controls are substantially cleaner.",
+      "root_cause_hypothesis": ".extract_fulltext_pdf_one() in R/extract_fulltext.R concatenates pdftools::pdf_text() pages and only normalizes whitespace. extract_fulltext_from_raw() returns PDF-only stored text without applying institution-specific cleanup.",
+      "suggested_fix": "Add UiS-specific PDF cleanup in the raw-to-fulltext path, including legacy stored-text rows: remove standalone side N lines and the TCPDF branding line, and remove repeated boundary headers matching the document course code plus language/version or course title. Preserve the title, facts, academic-year declaration and substantive table rows; join text across removed page furniture.",
+      "confidence": "high"
+    }
+  ]
+}

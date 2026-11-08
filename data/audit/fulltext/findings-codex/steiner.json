@@ -1,0 +1,26 @@
+{
+  "check": "fulltext",
+  "institution": "steiner",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 11,
+  "n_suspects_reviewed": 0,
+  "overall_assessment": "Reviewed all eight random-control plans in full and all three failed entries. The plans have readable sections and course metadata, but four of eight retain bare PDF page numbers despite zero pre-pass flags; no further defect is established from the packet, which lacks source-page comparisons. The PEL2.1/PEL1.4 discrepancy is explicitly accounted for by the pipeline alias mapping, current-plan configuration makes historical-year mismatches inapplicable, and the three failed entries have plausible URLs also used by successful examples.",
+  "findings": [
+    {
+      "target": "page_chrome",
+      "error_type": "junk_included",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "steiner_M-MAT1_1_2025_autumn_1",
+        "steiner_M-NAT1_2_2025_autumn_1",
+        "steiner_M-NAT1_1_2025_autumn_1"
+      ],
+      "evidence": "prosessen\n\n9\n\nFerdigheter\nStudenten",
+      "description": "Bare PDF page numbers interrupt learning outcomes, content and assessment or remain at the end of the extracted plan. This affects both mathematics plans and both natural-science plans (4/8 text-bearing controls), violating the requirement to exclude page numbers; the junk pre-pass did not flag them. The later anonymizer already removes these numbers, but the audited extracted_text still contains them.",
+      "root_cause_hypothesis": "R/harvest_strategies.R::.steiner_extract_emner_from_pdf() removes the labelled form Side N av M but leaves bare numeric PDF footer lines. The corresponding bare-number cleanup currently occurs only in R/anonymize.R::.anon_steiner().",
+      "suggested_fix": "Remove numeric footer lines from each PDF page before concatenation in .steiner_extract_emner_from_pdf(), restricting removal to the final nonempty line of a page and verifying sequential page numbering. Preserve numeric facts-box values such as the standalone credit value 10 or 15; do not apply the anonymizer numeric-line regex indiscriminately to fulltext.",
+      "confidence": "high"
+    }
+  ]
+}

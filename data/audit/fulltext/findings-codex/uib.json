@@ -1,0 +1,26 @@
+{
+  "check": "fulltext",
+  "institution": "uib",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 40,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "Reviewed all 28 fetched-page samples (20 suspects and 8 random controls) and all 12 additional failed-fetch entries. Sixteen suspects have empty extraction despite substantial plan content, but all are absent from the build, suggesting a coverage/join problem rather than demonstrated selector loss; all eight controls retain clean, readable plans. The two short/uncaptured shells are correctly excluded, the two year flags reflect 2023 theme labels without independently establishing a wrong historical version, and the failed URLs follow the expected pattern, so no URL defect is established; omitted semester pickers, sidebar schedules and department contact boxes, source-level repetition/inconsistent facts, and packet truncation markers are not extraction findings.",
+  "findings": [
+    {
+      "target": "whole_text",
+      "error_type": "empty_or_failed",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "uib_KJEM214-0_2015_autumn_1",
+        "uib_TEAT252-0_2017_spring_1",
+        "uib_ECON217-0_2017_autumn_1"
+      ],
+      "evidence": "Kurset tar sikte på å gi grunnleggande kunnskap i overflate- og kolloidkjemi utifrå eit fysikalsk-kjemisk perspektiv.",
+      "description": "All 16 empty/uncaptured suspects have zero extracted characters while their fetched pages contain substantial course-specific descriptions, outcomes and, where visible, assessment or other plan sections. These are genuine missing-text observations in the audited output, not unavailable-plan shells. However, every affected entry says \"not in the build (pilot run)\", unlike the two correctly dropped shells; no loss from an included production plan is demonstrated. The eight random controls extract successfully, so this is concentrated in the unmatched older offerings rather than an institution-wide failure of plan selection.",
+      "root_cause_hypothesis": "R/pipeline.R::harvested_rows() removes harvest-time text and left-joins data/interim/extracted_text.RDS by exact course_id. R/audit/prepare_fulltext.R labels any ID absent from course_offerings.RDS as \"not in the build (pilot run)\". The perfect coincidence of empty text and absent build IDs suggests stale derived artifacts or unmatched offering IDs; a failing UiB selector is not established by this packet.",
+      "suggested_fix": "Rebuild the derived extraction/build artifacts from the same raw-store snapshot, then regenerate this packet. In harvested_rows()/prepare_fulltext.R, preserve an explicit extraction-row match indicator and distinguish an unmatched course_id from a matched row whose extraction is empty; fail or separately label unmatched audit rows. If course_id changes across snapshots, reconcile only through a validated stable offering key. For any matched rows still empty, run page_blocks() on their stored HTML before changing the UiB selector.",
+      "confidence": "high"
+    }
+  ]
+}

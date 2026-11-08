@@ -1,0 +1,41 @@
+{
+  "check": "fulltext",
+  "institution": "hvl",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 34,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "Reviewed all 28 fetched course entries (20 suspects and eight controls), plus all six failed-fetch entries: full plans are generally readable and substantively captured, but 15 retained English-page pointers substitute notices for plans. Of the three year flags, SABV270 is a false alarm (spring 2026 belongs to 2025/2026); MAS502 and MAS532 contain explicit first-teaching dates after the offering year despite matching academic-year page headings. The other two short entries faithfully reproduce sparse external-reference pages; controls reveal source-level repeated learning outcomes but no demonstrated extraction duplication, and the failed URLs follow the expected pattern without evidence of an incorrect URL.",
+  "findings": [
+    {
+      "target": "whole_text",
+      "error_type": "wrong_page",
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": [
+        "hvl_PHDH913-1_2024_spring_1",
+        "hvl_DAT355-1_2025_spring_1",
+        "hvl_MARE530-1_2025_spring_1"
+      ],
+      "evidence": "This course will be taught in English, please see the English version of the course description.",
+      "description": "Fifteen of the 28 fetched entries are notices directing readers to an English course description, yet each says Plan in the build: yes. These are course-specific pointer pages rather than substantive plans: learning outcomes, teaching and assessment are absent. The affected entries are PHDH913 and courses 7–20; all eight random controls contain substantive plans, so the defect concerns language fallback rather than every HVL extraction.",
+      "root_cause_hypothesis": "The hvl english_page.notice expression in R/institution_config.R recognizes only a few wordings. It misses the packet variants, including tilgjengelig, bare beskrevet, kun skildra, finnest berre, English version and engelske nettsidene våre. R/fetch_html_cols.R uses that matcher for English fallback, and R/pipeline.R uses the same matcher to exclude previously harvested pointers, so both protections miss these pages.",
+      "suggested_fix": "Extend the HVL English-pointer detector with explicit Norwegian, Nynorsk and English variants observed in this packet, matching normalized visible notice text so inline markup cannot break the match. Reuse the detector for fetch fallback and english_pointer classification; fetch the same academic-year/course URL under /en/studies-at-hvl/study-programmes/courses/ and rebuild. Keep unresolved pointer pages out of course plans rather than accepting their notice as plan content.",
+      "confidence": "high"
+    },
+    {
+      "target": "whole_text",
+      "error_type": "wrong_year",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "hvl_MAS502-1_2023_spring_1",
+        "hvl_MAS532-1_2023_spring_2"
+      ],
+      "evidence": "Semester of instruction: Spring - first time spring 2024",
+      "description": "Two retained plans for spring 2023 explicitly say teaching starts later: MAS502 first in autumn 2023 and MAS532 first in spring 2024. Both requested URLs and omitted page headings say 2022/2023, so the evidence establishes a temporal conflict inside the fetched source rather than a proven redirect. Treating these as unqualified plans for the earlier offering risks using a later course version. SABV270 is excluded from this finding because its spring 2026 dates agree with its 2025/2026 heading.",
+      "root_cause_hypothesis": "HVL appears to have later teaching information on these historical URLs. The hvl config trusts academic-year URLs (plan_years = url) and defines no page_term function, so plan_offerings() does not reject a plan whose explicit first-teaching term is later than the offering. The pre-pass also misses English headings phrased Course description for academic year because its heading regex expects the academic year, making its inferred year label less authoritative than the actual page heading.",
+      "suggested_fix": "Add an HVL page_term parser restricted to explicit first-time teaching declarations in the instruction-semester fact, and use the existing later-version exclusion when that term follows the offering. Preserve the conflicting heading for review rather than relabeling the page from incidental dates. Extend the audit heading regex to accept academic year with or without the, so future flags distinguish the page heading from dates in plan prose.",
+      "confidence": "medium"
+    }
+  ]
+}
