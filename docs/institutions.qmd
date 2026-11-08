@@ -63,6 +63,21 @@ gives no plan, so after `tar_make()` `harvest_all(retry = "ok")` fetches it
 again (with `institutions = "ntnu"` and the years, and not while an NTNU
 harvest runs: a retry removes the institution's checkpoints).
 
+**HVL.** A course whose plan is only in English has a Norwegian page whose
+content is only a pointer to the English page, its first paragraph, in some
+30 wordings ("Emnebeskrivelsen finnes kun på engelsk, gå til ...", "Dette
+emnet er kun skildra på engelsk. Klikk på "English" ...", "Dette emnet kan
+du lese om på dei engelske nettsidene våre.", "Se engelske nettsider for mer
+informasjon", "You can read about this course on our English website.";
+some 250 course-years of 2017-2025, 2026-11-08); the harvest then fetches
+the English page, `/en/studies-at-hvl/study-programmes/courses/{year}/{code}`
+(`english_page` in the config), which has the same layout, and the row keeps
+the Norwegian URL. A pointer followed by a plan in the same content (a
+Norwegian plan after "For English course description, choose ...") is not the
+notice. A pointer page in the raw store gives no plan, so after `tar_make()`
+`harvest_all(institutions = "hvl", retry = "ok")` fetches it again (not while
+an HVL harvest runs).
+
 **UiO.** UiO publishes only the latest version of each course plan: the base
 URL always returns the current plan and older versions cannot be reached.
 Semester URLs (`/h24/`, `/v25/`) hold logistics only (teachers, timetable, exam

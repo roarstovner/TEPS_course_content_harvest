@@ -346,13 +346,35 @@ institution_configs <- list(
     plan_years = "url",
     url_year = "academic",
     fetch_fn = fetch_html_cols_single_hvl,
-    # "Emnebeskrivelsen finnes kun på engelsk", "Dette emnet er kun beskrevet
-    # på engelsk", "Dette emnet er berre skildra på engelsk", "Se engelske
-    # nettsider for mer informasjon" (2025): the English page has the same
-    # layout
+    # A course whose plan is only in English: the first paragraph of the
+    # Norwegian page's content is only a pointer to the English page, some 30
+    # wordings (2017-2025): "Emnebeskrivelsen finnes kun på engelsk, gå til
+    # ...", "Emneomtalen finnest berre på engelsk", "Dette emnet er kun skildra
+    # på engelsk. Klikk på "English" ...", "Dette emnet vert undervist på
+    # engelsk. For å sjå emneskildringa ...", "Dette emnet kan du lese om på
+    # dei engelske nettsidene våre.", "Se engelske nettsider for mer
+    # informasjon", "Kursinformasjon finnes kun på engelsk. Se informasjon på
+    # https://...", "You can read about this course on our English website.",
+    # "This course will be taught in English, please see the English version
+    # ..." (2026-11-08). A paragraph with more than a short tail, or followed
+    # by more paragraphs (a Norwegian plan after "For English course
+    # description, choose ..."), has a plan of its own. The English page has
+    # the same layout
     english_page = list(
-      notice = paste0("Emnebeskrivelsen finnes kun på engelsk|emne[tr]? er (?:kun beskrevet|berre skildra) ",
-                      "på engelsk|Se engelske nettsider"),
+      notice = paste0(
+        '<div class="l-2-col__main-content"[^>]*>\\s*(?:<h3[^>]*>[^<]*</h3>\\s*)?<p[^>]*>(?:<p>|</?a\\b[^>]*>|\\s)*(?i:',
+        "(?:(?:emne|studieprogram)?(?:beskrivelsen|planen|omtalen?|skildringa)|kursinformasjon) ",
+        "(?:finnes|finnast|finnest|finst|er) (?:kun|kunn|bare|berre) (?:tilgjengelig )?på engelsk|",
+        "(?:dette )?emne[tr]? (?:er (?:kun |bare |berre )?(?:beskrevet|skildra) på engelsk|",
+        "(?:er|undervises|vert undervist) på engelsk[.,!]? (?:klikk|for å sjå))|",
+        "(?:dette emnet kan du lese om|du finn(?:er)? (?:mer )?(?:informasjon om dette emnet|emneplanen)|",
+        "informasjon om emnet finn du) på dei? engelske nettsidene|",
+        "(?:se|sjå) (?:<a[^>]*>\\s*)?(?:den )?engelske (?:nettsider|sida)|gå til våre enge?lske nettsider|",
+        "you can read about this (?:course|topic) on our english website|",
+        "this course will be taught in english, please see the english|",
+        "to find information about the course you have to change language|",
+        "for english course descript\\w*, choose|the course description is available in english only)",
+        "(?:[^<]|<br\\s*/?>|</?a\\b[^>]*>|<p><a[^>]*></a>){0,150}</p>(?:\\s*</p>)*\\s*(?:<h3|</div>)"),
       from = "/studier/studieprogram/emne/", to = "/en/studies-at-hvl/study-programmes/courses/"),
     section_strategy = "html",
     section_heading_selector = "h3",

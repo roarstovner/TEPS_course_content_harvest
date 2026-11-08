@@ -107,7 +107,8 @@ test_that("fetch_html_cols() records each request's status and time", {
 test_that("a page that says the plan is on the English page gives the English page (hvl, nord)", {
   local_robots(c("www.hvl.no", "www.nord.no"))
   sent <- character()
-  stub <- c(hvl = "Dette emnet er berre skildra på engelsk. Klikk på knappen \"English\".",
+  stub <- c(hvl = paste0('</p><div class="l-2-col__main-content" lang="nb-NO"><h3>Innhold og oppbygning</h3><p>',
+                        'Dette emnet er berre skildra på engelsk. Klikk på knappen "English".'),
             nord = "Emnet foregår på engelsk. Se engelske nettsider ved å velge engelsk språk.")
   httr2::local_mocked_responses(function(req) {
     sent <<- c(sent, req$url)
@@ -132,6 +133,36 @@ test_that("a page that says the plan is on the English page gives the English pa
   out <- fetch("https://www.hvl.no/studier/studieprogram/emne/2025/FULL", "hvl")
   expect_match(out$html, "Læringsutbytte")
   expect_length(sent, 1)
+  # hvl: the other wordings of the pointer (2017-2025), the first paragraph of
+  # the content; a pointer with a plan after it or before it is not the notice
+  notice <- function(content) {
+    grepl(get_institution_config("hvl")$english_page$notice, perl = TRUE,
+          paste0('<div class="l-2-col__main-content" lang="nb-NO">\r\n <h3 lang="nb-NO">Innhold og oppbygning</h3>\r\n',
+                 content, "\r\n</div>"))
+  }
+  for (t in c("<p>Emneomtale finnast kunn på engelsk, gå til våre engelske heimesider ved å klikke \"English\" øvst i menyfeltet.</p>",
+              "<p>Emneplanen er kun tilgjengelig på engelsk.</p>",
+              "<p>Dette emnet vert undervist på engelsk. For å sjå emneskildringa, klikk på \"English\" øvst til høgre.</p>",
+              "<p>Dette emnet er på engelsk. Klikk på \"English\" øvst til høgre for å få fram emneskildringa!</p>",
+              "<p lang=\"nb-NO\">Se <a href=\"//www.hvl.no/en/studies-at-hvl/study-programmes/course/mmo5001\">engelske nettsider</a> for mer informasjon</p>",
+              "<p><a href=\"//www.hvl.no/en/x/mare510\">Dette emnet kan du lese om på dei engelske nettsidene våre.</a></p>",
+              "<p lang=\"nb-NO\"><p><a href=\"//www.hvl.no/en/x/mare560\">Du finn informasjon om dette emnet på dei engelske nettsidene våre.</a></p>",
+              paste0("<p>Sjå <a href=\"https://www.hvl.no/en/x/ing0101\"> den engelske sida vår</a><p><a href=\"https://www.hvl.no/en/x/ing0101\">",
+                     "</a> for meir informasjon.</p></p> <h3>Læringsutbytte</h3> <p>Sjå den engelske sida vår.</p>"),
+              paste0("<p>Kursinformasjon finnes kun på engelsk. Se informasjon på <a href=\"https://www.hvl.no/en/x/phdh913\">",
+                     "https://www.hvl.no/en/studies-at-hvl/study-programmes/courses/phdh913</a>.</p>"),
+              "<p>This course will be taught in English, please see the English version of the course description.</p> <h3>Faglig overlapping</h3>",
+              "<p>You can read about this course on our English website.</p>",
+              "<p>For english course descripton, choose English language.</p>")) {
+    expect_true(notice(t), label = t)
+  }
+  for (t in c("<p>For English course description, choose \"English\" at the top of the menu bar.</p> <p>Kursets formål er å utvikle</p>",
+              "<p>Dette emnet vert undervist på engelsk. For å sjå emneskildringa, klikk på \"English\".</p><p>The course provides</p>",
+              "<p>Emnet gir innsikt i læring.</p><p>Du finner mer informasjon om dette emnet på de engelske nettsidene våre.</p>",
+              "<p>Emnet undervises på engelsk om 3 eller flere utvekslingsstudenter velger emnet.</p>",
+              paste0("<p>Emnebeskrivelsen finnes kun på engelsk", strrep(" og mer tekst om emnet", 10), ".</p>"))) {
+    expect_false(notice(t), label = t)
+  }
 })
 
 test_that("ntnu: a course content that only points to the English text gives the English page", {

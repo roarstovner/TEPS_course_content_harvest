@@ -1283,10 +1283,25 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "se (?:emne|kurs)?beskrivelsen? på engelsk", "see (?:the description )?in english",
   "faglig innhold er beskrevet på engelsk", "undervises kun på engelsk",
   "you will find the course description in the english version",
-  "emnebeskrivelsen? (?:finnes|er) kun (?:tilgjengelig )?på engelsk[^.]*",
-  "gå til våre engelske nettsider[^.]*",                              # hvl, after a full stop
-  "(?:dette )?emne[tr]? er (?:kun beskrevet|berre skildra) på engelsk",
+  # hvl, some 30 wordings (2026-11-08): "Emneomtalen finnest berre på engelsk,
+  # gå til ...", "Dette emnet vert undervist på engelsk. For å sjå
+  # emneskildringa, klikk på "English" ...", "Kursinformasjon finnes kun på
+  # engelsk. Se informasjon på https://...", "You can read about this course
+  # on our English website."
+  paste0("(?:(?:emne|studieprogram)?(?:beskrivelsen?|planen|omtalen?|skildringa)|kursinformasjon) ",
+         "(?:finnes|finnast|finnest|finst|er) (?:kun|kunn|bare|berre) (?:tilgjengelig )?på engelsk[^.]*"),
+  "gå til våre enge?lske nettsider[^.]*",                             # hvl, after a full stop
+  "(?:dette )?emne[tr]? er (?:kun |bare |berre )?(?:beskrevet|skildra) på engelsk",
+  "(?:dette )?emne[tr]? (?:er|undervises|vert undervist) på engelsk[.,!]? (?:for å sjå emneskildringa, )?klikk på [^.]*",
   "klikk på (?:knappen )?[\"“”]?english[\"“”]?[^.]*",
+  paste0("(?:dette emnet kan du lese om|du finn(?:er)? (?:mer )?(?:informasjon om dette emnet|emneplanen)|",
+         "informasjon om emnet finn du) på dei? engelske nettsidene(?: våre)?"),
+  "sjå den engelske sida vår[^.]*", "se informasjon på https?://\\S+", "denne finn du ved å velja språk[^.]*",
+  "you can read about this (?:course|topic) on our english website",
+  "this course will be taught in english, please see the english version of the course description",
+  "to find information about the course you have to change language to english[^.]*",
+  "for english course descript\\w*, choose[^.]*",
+  "the course description is available in english only", "go to our english website by clicking[^.]*",
   "(?:emnet foregår på engelsk\\. )?se engelske nettsider[^.]*",
   # reading-list pointers and absence notes
   "ingen pensumliste(?: tilgjengelig)?(?: for dette emnet)?",

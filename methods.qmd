@@ -790,11 +790,29 @@ section. Since 2026-11-05 the notice takes them, a course content that starts
 with plan text or goes on for more than a short tail ("Se den engelske
 beskrivelsen dersom du finner ...") excepted, and the pointer wordings are
 placeholders in the sections at every institution (a section row of nothing
-else is dropped). *Consequence:* those offerings have no plan until their
-English pages are fetched (`harvest_all(retry = "ok")`). *Since:* 2026-10-15;
-the other wordings and Nord from 2026-10-17; NTNU, and no plan for a pointer
-page that is not a shell, from 2026-10-19; NTNU's other wordings from
-2026-11-05.
+else is dropped). The fulltext audit of 2026-11-08 found the same at HVL: its
+notice knew 4 of some 30 wordings ("Emneomtalen finnest berre på engelsk, gå
+til ...", "Dette emnet vert undervist på engelsk. For å sjå emneskildringa,
+klikk på "English" ...", "Dette emnet kan du lese om på dei engelske
+nettsidene våre.", "Kursinformasjon finnes kun på engelsk. Se informasjon på
+https://...", "You can read about this course on our English website.") and
+missed "Se engelske nettsider" with a link in it: 252 offerings of 2017-2025
+(252 pages, 57 course codes, none in teacher education; 2017 1, 2018 18, 2019
+21, 2020 15, 2021 36, 2022 42, 2023 39, 2024 40, 2025 40) had a pointer plan.
+Since 2026-11-08 HVL's notice is the first paragraph of the content when it
+holds one of these wordings with a short tail and no paragraph follows it
+under its heading; the HVL wordings are placeholders in the sections too.
+*Rejected:* matching the wordings anywhere in the page, as before: a page
+whose plan has the pointer after its first paragraph, or after the pointer, is
+not a pointer page (SDG234 2020-2025, a Norwegian plan after "For English
+course description, choose ..."; GE4-306 2020-2021, an English plan after
+"Dette emnet vert undervist på engelsk ..."; EISENIO3 2021, "Du finner mer
+informasjon om dette emnet på de engelske nettsidene våre." after its
+content). *Consequence:* those offerings have no plan until their English
+pages are fetched (`harvest_all(retry = "ok")`). *Since:* 2026-10-15; the
+other wordings and Nord from 2026-10-17; NTNU, and no plan for a pointer page
+that is not a shell, from 2026-10-19; NTNU's other wordings from 2026-11-05;
+HVL's from 2026-11-08.
 
 **HiØF: an offering whose page is only in the English tree takes that
 page.** HiØF's URL discovery reads the folder listings of

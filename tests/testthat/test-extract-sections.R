@@ -107,13 +107,32 @@ test_that("placeholder and pointer-only rows are dropped", {
             "Emnet undervises på engelsk. Se engelsk versjon for emnebeskrivelse.",
             "Se emnets engelske nettside \u0096 International MSc", "See the course's English website - International MSc",
             "Se beskrivelse på engelsk.", "Cf. English description", "Vennligst se engelsk versjon",
-            "Oppgis ved semesterstart. Se engelsk versjon.", "Emnebeskrivelsen er kun tilgjengelig på engelsk.")
+            "Oppgis ved semesterstart. Se engelsk versjon.", "Emnebeskrivelsen er kun tilgjengelig på engelsk.",
+            "Emneomtale finnast kunn på engelsk, gå til våre engelske heimesider ved å klikke \"English\" øvst i menyfeltet.",
+            "Emneskildringa finst berre på engelsk. Denne finn du ved å velja språk øverst til høgre.",
+            "Dette emnet er kun skildra på engelsk. Klikk på \"English\" øvst til høgre for å få fram skildringa.",
+            "Dette emnet vert undervist på engelsk. For å sjå emneskildringa, klikk på \"English\" øvst til høgre.",
+            "Dette emnet undervises på engelsk, klikk på \"English\" øverst til høgre for å få fram beskrivelsen.",
+            "Dette emnet er på engelsk. Klikk på \"English\" øvst til høgre for å få fram emneskildringa!",
+            "Dette emnet er bare beskrevet på engelsk.", "Emneplanen er kun tilgjengelig på engelsk.",
+            "Dette emnet kan du lese om på dei engelske nettsidene våre.",
+            "Du finn informasjon om dette emnet på dei engelske nettsidene våre.",
+            "Informasjon om emnet finn du på dei engelske nettsidene våre.", "Sjå den engelske sida vår for meir informasjon.",
+            "Gå til våre englske nettsider ved å klikke \"English \" øverst til høyre i menyfeltet.",
+            "Kursinformasjon finnes kun på engelsk. Se informasjon på https://www.hvl.no/en/studies-at-hvl/study-programmes/courses/phdh913.",
+            "You can read about this course on our English website.",
+            "This course will be taught in English, please see the English version of the course description.",
+            "To find information about the course you have to change language to English up in the right corner of the page.",
+            "For English course descripton, choose \"English\" at the top of the menu bar .",
+            "The course description is available in English only. Go to our English website by clicking \"English\" at the top of the menu bar.")
   for (t in drop) expect_false(.keep_section_row(t, "reading_list"), label = t)
   # a pointer after plan text stays (ntnu MACS490)
   expect_true(.keep_section_row("Bestått MACS4900\n\nSe engelsk beskrivelse for mer utfyllende informasjon.",
                                 "prerequisites"))
   # the teaching language is not a pointer (hvl MGUEN201)
   expect_true(.keep_section_row("Emnet foregår på engelsk.", "course_content"))
+  expect_true(.keep_section_row("Emnet undervises på engelsk om 3 eller flere utvekslingsstudenter velger emnet.",
+                                "course_content"))
   expect_true(.keep_section_row(paste("All undervisning i emnet foregår på engelsk, og språkøvingsaspektet",
                                       "står sentralt i studentenes arbeid."), "course_content"))
 })
