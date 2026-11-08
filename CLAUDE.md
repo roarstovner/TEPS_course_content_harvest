@@ -32,7 +32,7 @@ the gitignored `CLAUDE.local.md`.
     internal, the frames (all courses; the teacher-ed files in `teacher_ed/`
     folders, which the releases use), the DBH input, the variables.
   - `docs/institutions.qmd`: institution-specific notes (NIH, NMBU, NORD,
-    NTNU, UiO, UiB, HiOF, USN, UiT, Samas).
+    NTNU, UiO, UiB, HiOF, HVL, USN, UiT, Samas).
   - `docs/reference.qmd`: function reference, file organization.
   - `docs/troubleshooting.qmd`.
 - `data/data_notes.qmd`: per-institution data quality notes; course-years
