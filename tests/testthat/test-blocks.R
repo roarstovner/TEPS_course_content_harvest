@@ -19,6 +19,13 @@ test_that("text next to headings is kept, and inline runs stay one block", {
   expect_equal(b$text, c("Innhold", "Emnet tar for seg norsk grammatikk.", "Mer."))
 })
 
+test_that("blocks inside an inline element keep their breaks (nmbu 2026-04)", {
+  html <- "<main><h2>Om emnet</h2><p><strong>Frekvens:</strong><span class='block'><p>Årlig</p>
+    <p>Tilbys første gang 2025-2026.</p></span></p><p><strong>Språk:</strong><span>Norsk</span></p></main>"
+  b <- page_blocks(html, NA, html_reader(sub = "p"))
+  expect_equal(b$text[-1], c("Frekvens:\n\nÅrlig\n\nTilbys første gang 2025-2026.", "Språk:Norsk"))
+})
+
 test_that("excluded nodes are not read and the container limits the page", {
   b <- page_blocks("<body><nav>Meny</nav><main><h2>Innhold</h2><p>Tekst</p>
     <div class='contact'>Ola Nordmann</div></main></body>", NA,
@@ -131,6 +138,10 @@ test_that("the json reader marks the parts named in `facts`", {
   expect_equal(b$facts, c(TRUE, TRUE, TRUE, FALSE, FALSE))
   expect_equal(sectionize(b)$raw_text, "Tekst.")
   expect_false(any(page_blocks(html, NA, list(reader = "json"), "nla_NO1_2024_autumn_1")$facts))
+  # its editor's <list><listItem> are list items, a line each
+  html <- sub("<p>Tekst.</p>", '<list listType=\\\\"bulleted\\\\"><listItem>Delta på seminar</listItem><listItem>Lever utkast</listItem></list>', html)
+  b <- page_blocks(html, NA, list(reader = "json"), "nla_NO1_2024_autumn_1")
+  expect_equal(tail(b$text, 1), "Delta på seminar\nLever utkast")
 })
 
 test_that("fields are headings in scopes of their own; learning-outcome group labels are kept", {

@@ -130,6 +130,21 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
                   "samp", "small", "span", "strong", "sub", "sup", "time", "u",
                   "var", "wbr")
 
+# An inline element that holds a block element (nmbu's 2026-04 facts:
+# <p><strong>Frekvens:</strong><span><p>Årlig</p><p>Tilbys ...</p></span></p>)
+# hides the blocks from rvest::html_text2(), which reads the <p> around it as
+# one line ("Frekvens:ÅrligTilbys ..."): it becomes a <div>. After the
+# selectors have marked the page, so that they still find it.
+.unhide_blocks <- function(doc) {
+  blocks <- c("address", "article", "aside", "blockquote", "dd", "details", "div",
+              "dl", "dt", "figure", "footer", "h1", "h2", "h3", "h4", "h5", "h6",
+              "header", "li", "nav", "ol", "p", "pre", "section", "table", "ul")
+  xml2::xml_set_name(xml2::xml_find_all(doc, paste0(
+    "//*[(", paste0("self::", .inline_tags, collapse = " or "), ") and *[",
+    paste0("self::", blocks, collapse = " or "), "]]")), "div")
+  doc
+}
+
 # Elements by a CSS selector, or by XPath when it starts with "/" (an element
 # picked by its text, or by the heading of the accordion it is in)
 .select <- function(x, e) if (startsWith(e, "/")) xml2::xml_find_all(x, e) else rvest::html_elements(x, e)
@@ -182,6 +197,7 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
   }
   marked <- xml2::xml_find_all(root, ".//*[@data-block or @data-scope or @data-facts]")
   xml2::xml_set_attr(xml2::xml_find_all(marked, "ancestor::*"), "data-walk", "1")
+  .unhide_blocks(root)
 
   out <- .block_list()
   if (!is.null(cfg$initial)) out$add("heading", "", cfg$initial)
@@ -426,14 +442,15 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
   part("title", TRUE)
   if (nzchar(year_data$title %||% "")) out$add("text", year_data$title, g = "p")
   part("title", FALSE)
-  # contents are HTML (accordions; links in the table)
+  # contents are HTML (accordions; links in the table), read by .read_doc()
+  # (its editor's <list><listItem> are lists)
   item <- function(title, content) {
     title <- title %||% ""
     out$add("heading", title, match_heading_to_section(title), g = "p")
     content <- content %||% ""
     if (grepl("<", content, fixed = TRUE)) {
-      content <- rvest::html_text2(rvest::html_element(
-        rvest::read_html(paste0("<div>", content, "</div>")), "div"))
+      content <- rvest::html_text2(.unhide_blocks(rvest::html_element(
+        .read_doc(paste0("<div>", content, "</div>")), "div")))
     }
     if (nzchar(trimws(content))) out$add("text", trimws(content), g = "p+")
   }
