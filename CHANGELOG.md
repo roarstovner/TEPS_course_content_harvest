@@ -103,6 +103,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Sections: outgoing progression rules in prerequisites (nla, vid) and admission sentences (nmbu, uio, usn) (#507)
+- Sections: unmapped assessment headings 'Om bruk av KI' (nmbu) and 'Karakterskala' (uib) drop AI rules and grading scale (#506)
 - himolde: exam logistics (weekday deadlines, start times, Inspera) in assessment; consider .logistics_sentences (#505)
 - blocks: bold numbered <p> sub-headings ('Arbeidskrav I: ...' to IV) are group labels, so coursework stays in teaching_methods (himolde SKD204 2022; hiof same layout) (#504)
 - Sections audit after build 2026-11-05: ntnu, uia, hivolda, uit, nord, phs, fhs (attendance moves, PHS/FHS fixes) (#494)
