@@ -175,7 +175,16 @@ Per institution and year: `data/data_notes.md`, "Coverage over course-years
 that had students". *Since:* 2026-11-04.
 
 **Years:** DBH had no 2026 rows on 2026-10-06 or in the snapshot of 2026-10-16,
-so the frame ends with 2025.
+so the frame ended with 2025. On 2026-11-08 DBH had 2026 (spring and autumn),
+and a new snapshot of the course list and the counts was taken
+(`dbh_*_2026-11-08.parquet`, 2 249 406 course rows). *Why:* the sites that show
+only the plan in force publish the 2026/27 plans, which join only DBH's
+autumn 2026 and spring 2027 offerings, and the frame should hold the year
+being taught. *Consequence:* the frame ends with 2026; the offerings of earlier
+years can also change (DBH revises rows: status, names, credits), which the
+next build's `metrics_check` lists; harvests started before 2026-11-08 used the
+old list. *Rejected:* waiting for the first release (the current-plan
+sites' 2026/27 plans would join nothing until then). *Since:* 2026-11-08.
 
 **Høgskolen i Molde (DBH code 0232) joins the frame, from autumn 2018.** One
 of the ten institutions surveyed for the all-courses frame, configured on
