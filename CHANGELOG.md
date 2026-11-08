@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- nla/nmbu: whitespace joins in the block reader (<list>/<listItem>, nested <p> in <span>) (#518)
 - fulltext audit packet: 'pilot run' label for raw newer than the build; HVL heading regex; show course_plan cleanups (#519)
 - Sections: outgoing progression rules in prerequisites (nla, vid) and admission sentences (nmbu, uio, usn) (#507)
 - Sections: unmapped assessment headings 'Om bruk av KI' (nmbu) and 'Karakterskala' (uib) drop AI rules and grading scale (#506)
