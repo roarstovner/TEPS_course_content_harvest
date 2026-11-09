@@ -109,6 +109,11 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     stringr::str_remove_all("(?m)^Kontaktperson:?\\s*\\n[^\\n]*") |>
     # Strip "Foreleser:" + name line
     stringr::str_remove_all("(?m)^Foreleser:?\\s*\\n[^\\n]*") |>
+    # 2009 plans close with the administrator's signature ("<name> (sign)"
+    # over "kontorsjef" or "head of departmental administration"; on one line
+    # in the flattened ones)
+    stringr::str_remove_all(paste0("(?:\\p{Lu}[\\p{L}.'-]*[ \\t]+){0,4}\\(sign\\)\\s*",
+                                   "(?:kontorsjef|head of departmental administration)?")) |>
     # 2008-2011 layout: the closing timetable block ("Undervisning Høst 2010",
     # English "Lectures Autumn 2008" + teachers glued to their roles, rooms,
     # first lectures), up to the closing unit line, which stays

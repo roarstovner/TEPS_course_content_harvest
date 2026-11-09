@@ -1237,6 +1237,16 @@ test_that("uib: a name under 'Administrativt ansvarlig' goes, a unit stays", {
   expect_match(a[3], "Institutt for framandspråk")
 })
 
+test_that("uit: the 2009 administrator's signature goes, on its own lines or inline", {
+  a <- anonymize_text(rep("uit", 2), c(
+    "Tillatte hjelpemidler: Godkjent kalkulator.\n\nKari Nordmann (sign)\nkontorsjef\n",
+    "Godkjent kalkulator. Emneansvarlig: Ola Dahl (sign) head of departmental administration"),
+    .progress = FALSE)
+  expect_false(any(grepl("Nordmann|Dahl|sign\\)|kontorsjef|head of departmental", a)))
+  expect_match(a[1], "Godkjent kalkulator\\.")
+  expect_match(a[2], "Godkjent kalkulator\\.")
+})
+
 test_that("uit: the English 2008-2011 timetable block goes, the unit line stays", {
   txt <- paste0("Recommended reading/syllabus\nAvailable on request\n",
                 "Lectures Autumn 2008 First meeting: Sept. 2, room C-1005\t\n",
