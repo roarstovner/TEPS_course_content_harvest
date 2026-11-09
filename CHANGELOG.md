@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Sections: exam logistics (resit, appeal, withdrawal, examiner, deadlines) and admin sentences per institution (11 institutions) (#508)
 - hvl/uis: plan-year declarations not read (HVL 'first time' facts, UiS PDF 'studieinformasjon for studieår') (#516)
 - Sections: text reader heading boundaries in .text_blocks() (uis Arbeidsmengd without blank line; usn nursing numbered arbeidskrav labels) (#511)
 - nla/nmbu: whitespace joins in the block reader (<list>/<listItem>, nested <p> in <span>) (#518)
