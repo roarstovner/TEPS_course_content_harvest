@@ -311,7 +311,8 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 #'   - strips page widgets, pointers and stock logistics sentences from
 #'     assessment and coursework (.section_noise), and approval stamps,
 #'     logistics and cost sentences from every section
-#'     (.approval_sentence_regex, .logistics_sentences).
+#'     (.approval_sentence_regex, .logistics_sentences), and uis's workload
+#'     budget (.logistics_blocks).
 #' Fuzzier cleanup (exam tables, arbeidskrav/eksamen boundaries inside one
 #' paragraph) is left to the later Phase-2 LLM lifting.
 .clean_sections <- function(out, institution = NULL, title = NULL) {
@@ -333,7 +334,9 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   out$raw_text[exam] <- .strip_section_noise(out$raw_text[exam], institution)
   rx <- if (!is.null(institution)) .logistics_sentences[[institution]]
   if (!is.null(rx)) out$raw_text <- vapply(out$raw_text, .strip_sentences, character(1),
-                                           rx = rx, USE.NAMES = FALSE)
+                                           rx = paste0("(?:", rx, ")", collapse = "|"), USE.NAMES = FALSE)
+  for (r in if (!is.null(institution)) .logistics_blocks[[institution]])
+    out$raw_text <- stringr::str_remove_all(out$raw_text, r)
   ap <- grepl("(?i)vedtatt i|godkjent|revi(?:dert|sjon)|redaksjonell|etablert av|gjeldende fra",
               out$raw_text, perl = TRUE)
   out$raw_text[ap] <- vapply(out$raw_text[ap], .strip_sentences, character(1),
@@ -1103,6 +1106,17 @@ extract_sections <- function(config, html, extracted_text, course_id) {
                      "(?: at \\d{1,2}[:.]\\d{2})?\\.?[ \t]*(?:\n|$)"),
               paste0("[ \t]*[-–][ \t]*(?:Mon|Tues|Wednes|Thurs|Fri|Satur|Sun)day(?: morning| afternoon)?,? ",
                      "starting at \\d{1,2}[:.]\\d{2}\\.?")),
+  # PDF lines wrapped mid-sentence: the examiner, the diploma, the pointer to
+  # the rules for appeal and resit, and the resubmission after F; the grading
+  # scale in the examiner sentence before them stays
+  steiner = c("[ \t]*Veileder er vanligvis\\s+intern sensor\\.",
+              "[ \t]*Tittel og karakter på [^.]{0,40}? noteres\\s+på vitnemålet\\.",
+              "(?m)^[ \t]*Kriterier for karakterfastsettelse og bestemmelser om sensur[^.]*\\.[ \t]*(?:\n|$)",
+              "(?m)^[ \t]*Hvis oppgaven vurderes til karakteren F[^.]*?kan kandidaten levere ny\\s+oppgave[^.]*\\.[ \t]*(?:\n|$)"),
+  # the university's rule for the number of attempts at a thesis, quoted
+  # from its regulations with the link
+  uis  = paste0("(?s)[ \t]*Forskrift om studier og eksamen ved Universitetet i Stavanger §\\s?2-10 Antall forsøk.*?",
+                "(?:blir vurdert som ikke bestått\\.(?:\\s*Les mer:\\s*\\S+)?|Les mer:\\s*\\S+)[ \t]*(?:\n|$)"),
   uit  = c("(?m)^Eksamensdato er foreløpig.*$",
            # the grading cell of each row of the 2020s gate table, the same
            # for every gate; the gate's name stays
@@ -1145,19 +1159,143 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "(?:\\S+\\s+){0,10}?(?:student\\w*|deltaker\\w*) (?:(?:is|are) expected to work|arbeider)\\b)"
 )
 
+# The examiner arrangement stated alone: "Intern og ekstern sensor
+# (benyttes).", "Interne sensorar.", "Intern sensur med minst to sensorar.",
+# "Sensureres av faglærer og én ekstern sensor.", "Sensur gjennomføres av to
+# sensorer, hvorav en ekstern.", "Vurdering av bacheloroppgåva blir gjort av
+# ein intern og ein ekstern sensor.", "Eksamenskommisjonen består av ...",
+# "Veileder er ikke sensor.". A sentence that goes on after the examiners
+# ("... av intern og ekstern sensor med karakterskala A – F.", "... på
+# grunnlag av læringsutbyttebeskrivelsene"), names a grade ("Intern sensur
+# med nytt vurderingsuttrykk: Bestått / ikke bestått.") or names an exam form
+# as its subject ("Muntlig eksamen vurderes av to sensorer.") stays.
+.examiner_sentence_regex <- paste0(
+  "(?i)^(?!.*(?:karakter|vurderingsuttrykk|bestått|\\bA ?[-–] ?F\\b|\\bgrade))\\W*(?:",
+  "(?:intern\\w*|ekstern\\w*)(?: og (?:intern|ekstern))? sensor\\w*(?: og (?:intern|ekstern) sensor\\w*)?",
+  "(?: (?:benyttes|brukes|nyttast))?|",
+  "det (?:benyttes|brukes|nyttast) (?:både )?(?:ekstern og intern|intern og ekstern|to) sensor\\w*|",
+  "(?:intern|ekstern) sensur med [^.]*|",
+  "(?:sensur(?:en)? (?:gjennomføres|gjennomførast|foretas|skjer) av|sensureres av) [^.]*|",
+  "(?!(?:\\S+ ){0,4}?(?:muntl|munnl|skriftl|praktisk)\\w*)(?:[\\p{L}-]+ ){0,4}?",
+  "(?:vurderes|vurderast|blir vurdert|vert vurdert|blir gjort|vert gjort|gjøres|evalueres) av ",
+  "(?:[^.]*? )?(?:sensor\\w*|eksamenskommisjon[^.]*)",
+  "(?:,? (?:hvorav|der|ein av desse|en av disse|som høgskolen oppnevner)[^.]*)?|",
+  "(?:eksamens|sensor|klage)kommisjon\\w* (?:består|skal bestå|skal vera sett saman|er sett saman) [^.]*|",
+  "veileder(?:en)? er (?:ikke|ikkje) (?:sensor|med i (?:eksamens)?kommisjonen)|",
+  "(?:den (?:muntlige|munnlege) (?:prøven|eksamenen)) (?:gjennomføres|vert gjennomført) med \\w+ sensor\\w*",
+  ")\\W*$"
+)
+
+# Per institution, a regex or a vector of them (a sentence goes when one
+# matches). The resit and appeal rules (course_plan_spec.md: out of the
+# sections) go when they say only who may resit or resubmit, when or how
+# often, or how to appeal; a sentence that says what the resit consists of
+# stays ("Ved kontinuasjonseksamen bearbeides samme oppgave.", "Utsatt
+# eksamen er en individuell skriftlig hjemmeeksamen."). mf: withdrawal before
+# the deadline, the grading deadline and the pointers to the exam pages; uis:
+# no new supervision at a new attempt; inn: appeal, course evaluation, the
+# admission requirement in course content and the project money; nmbu: the
+# repeat of a failed practice period, the suitability notice and who
+# assesses it; oslomet: who may resit or resubmit, the publication
+# agreement, submission months and exam-plan pointers; uib: the deadlines
+# ("Fristar ...") and who attends the presentation; uio: the exam system
+# (Inspera), the examiner guide, "Adgang til undervisning:", contact
+# pointers and insurance; vid: how many resits; hiof: when the resit is held
+# and the appeal rules; hvl also the programme line ("Studieprogram: ...")
+# and "Utdanningen er gratis".
 .logistics_sentences <- list(
-  hvl = paste0(
+  hvl = c(paste0(
     "(?i)studentweb|",
     "^\\s*(?:tid|dato|frist|innleveringstidspunkt|innleveringsfrist)\\b[^\\n]*?",
     "(?:opplys|oppgi|oppgje|annonser|kunngj|publiser|blir gitt|vert gitt)|",
     "^\\s*eksamen\\w* (?:blir|vert) (?:avholdt|avhalde|halde|haldt)\\b[^\\n]*?",
     "\\b(?:januar|februar|mars|april|mai|juni|juli|august|september|oktober|november|desember)\\b|",
     "^(?![^\\n]*arbeidskrav)[^\\n]*(?:materialpeng|materialkostnad|kostpeng|e(?:i)?genandel|",
-    "\\bkr\\.?[ \\t]?\\d|\\d[ \\t]?kr\\b)"
-  ),
-  phs = "(?i)^\\s*(?=.*\\btimer\\b)(?:[^\\s.]+\\s+){1,4}?er\\s+(?:totalt\\s+)?(?:anslått|estimert)\\s+til\\b"
-,
-  uia = .workload_sentence_regex, ntnu = .workload_sentence_regex, uit = .workload_sentence_regex
+    "\\bkr\\.?[ \\t]?\\d|\\d[ \\t]?kr\\b)"),
+    "(?i)^\\W*Ved ikke bestått karakter på bacheloroppgaven,? gis [^.]*anledning til å levere en forbedret versjon",
+    "^\\W*Studieprogram:|^\\W*Utdanningen er gratis\\b",
+    .examiner_sentence_regex),
+  phs = "(?i)^\\s*(?=.*\\btimer\\b)(?:[^\\s.]+\\s+){1,4}?er\\s+(?:totalt\\s+)?(?:anslått|estimert)\\s+til\\b",
+  uia = .workload_sentence_regex, ntnu = .workload_sentence_regex, uit = .workload_sentence_regex,
+  mf = c(paste0("(?i)^\\W*(?:For ikke å bruke (?:opp )?et eksamensforsøk|",
+                "[^.]*\\btrekk(?:e|er) sin (?:oppmelding|vurderingsmelding))"),
+         "(?i)^\\W*(?:Sensurfristen\\b|Informasjon om innleveringsfrister\\b|Se eksamenssidene\\b)",
+         "(?i)^\\W*Sensorveiledning\\w*(?: for [^.]*?)? (?:er tilgjengelig|finner du|finnes)"),
+  uis = c(paste0("(?i)^\\W*(?:Studente[rn]|Studentar|Kandidat\\w*) har ikkj?e krav på nye ",
+                 "(?:veiledningstimer|rettleiingstimar) ved nytt eksamensforsøk"),
+          "(?i)^\\W*Kontinuasjonseksamen (?:vil )?følg(?:j)?e?r? (?:same|samme) oppsett som (?:ved )?ordinær eksamen\\W*$"),
+  inn = c(.examiner_sentence_regex,
+          "(?i)^\\W*(?:Eksamensresultatet|Karakteren|Resultatet) kan (?:ikke )?påklages\\W*$",
+          "(?i)^\\W*Det er kun karakteren på [^.]* som kan påklages",
+          paste0("(?i)^\\W*(?:Emneansvarlig\\w*(?: lærer)? har ansvar\\w* for at (?:studentene involveres i )?evaluering|",
+                 "(?:Det|Til vanlig skal det) gjennomføres evaluering\\w* av alle emner|",
+                 "Tidspunkt og metode avgjøres i samråd med tillitsvalgte)"),
+          "^\\W*Opptakskravet er\\b",
+          "^\\W*(?:Skolen bidrar med en fast sum prosjektmidler|Alle studenter mottar prosjektmidler|Fordeling og størrelse besluttes fra år til år)"),
+  nmbu = c("^\\W*Dersom studenten ikke består en praksisperiode, kan samme periode gjennomføres bare en gang til",
+           "^\\W*Gjennom praksisopplæringen skjer også en kontinuerlig skikkethetsvurdering",
+           "^\\W*Praksislærer\\w*/praksisskole\\w* har hovedansvaret for vurdering\\w* av praksisopplæringen"),
+  oslomet = c(paste0("(?i)^\\W*(?:Studente[rn]|Kandidate[rn])\\b[^.]{0,200}?\\b(?:kan|har rett til å) ",
+                     "(?:fremstille|framstille|melde) seg(?: opp)? til (?:ny/utsatt|utsatt/ny|ny og utsatt|ny eller utsatt) ",
+                     "eksamen(?: i emnet)?",
+                     "(?: i tråd med forskrift[^.]*)?\\W*$"),
+              paste0("(?i)^\\W*(?:Studente[rn]|Kandidate[rn])\\b[^.]{0,120}?har rett til ny/utsatt eksamen",
+                     "(?:,? som har lik utforming som ordinær(?: eksamen)?)?\\W*$"),
+              paste0("(?i)^\\W*(?:En student kan levere ny eller revidert masteroppgave|",
+                     "Dersom masteroppgaven vurderes til ikke bestått, kan studenten levere ny eller revidert oppgave|",
+                     "Der flere skriver sammen må hele gruppa levere ny eller revidert oppgave|",
+                     "Det er ikke adgang til å få vurdert en ny masteroppgave|",
+                     "For at masteroppgaven skal kunne publiseres|Forutsatt studentens godkjenning vil beståtte|",
+                     "For studenter som (?:har rett til ny/utsatt eksamen|strøk ved ordinær eksamen)|",
+                     "Studenten får da tilbud om \\w+ timer? ytterligere veiledning|",
+                     "Ny/utsatt eksamen har (?:samme|lik) form som ordinær eksamen\\W*$|",
+                     "Siste frist (?:for innlevering )?vil fremgå av eksamensplanen|",
+                     "(?:Masteroppgaven skal leveres|Innlevering vil bli) i månedsskiftet)")),
+  uib = c(.examiner_sentence_regex,
+          "(?i)^\\W*(?:Fristar\\b|Mal for oppgåva\\b|Oppgåver på \\d+ (?:stp|sp) (?:innleverast|leverast))",
+          "(?i)^\\W*Sensor og (?:veileder|rettleiar) skal (?:være|vere) til stede"),
+  uio = c(.examiner_sentence_regex,
+          paste0("(?i)^\\W*(?:(?:Oppgaven|Masteroppgaven)\\s+(?:skal\\s+)?leveres\\s+(?:elektronisk\\s+)?i\\s+Inspera|",
+                 "Innlevering av [^.]*i Inspera|Les mer om innlevering|The thesis must be uploaded electronically)"),
+          "(?i)^\\W*Sensorveiledning\\w*(?: for [^.]*?)? (?:er tilgjengelig|finner du|finnes)|samleside over tidligere eksamensoppgaver",
+          "^\\W*Adgang til undervisning:|har du (?:ikkj?e )?(?:krav på|rett til) ny undervisning\\b",
+          "(?i)^\\W*Ta kontakt med\\b[^.]*\\bfor (?:å få )?(?:mer|flere)\\b",
+          "(?i)forsikret som student|tegne en egen reise- og personskadeforsikring"),
+  vid = c(.examiner_sentence_regex,
+          "(?i)^\\W*Utsatt eksamen er tilsvarende (?:som )?ordinær(?: eksamen)?\\W*$",
+          "(?i)^\\W*VID arrangerer inntil \\w+ utsatte prøver"),
+  hiof = c(paste0("(?i)^\\W*(?:If (?:a student gets F, the re-sit exam might be arranged|less than three apply for re-sit)|",
+                  "If (?:the )?(?:students|candidates) wish to improve their grade|",
+                  "In the case of a fail(?:, the group may improve| in the oral exam the student will be reexamined)|",
+                  "If the portfolio is given a fail, it may be improved and resubmitted|",
+                  "(?:The (?:mark|grade|result)|Each partial mark)[^.]*can be appealed|",
+                  "(?:If|In the case of)\\b[^.]*\\bappeal|The result of the appeal)"),
+           paste0("(?i)^\\W*(?:Klageadgang:|Skriftlig eksamen kan påklages|Resultatet \"?ikke bestått\"? kan påklages|",
+                  "Klage på karakter\\w*[^.]*må undertegnes|Ved klage på (?:sensur|karakterfastsetting)\\b|",
+                  "Dersom studenten ønsker å klage|Resultatet av klagesensuren|Ved nytt resultat slås [^.]*sammen på nytt|",
+                  "Ved eventuell endring av karakter,? skal det arrangeres ny muntlig eksamen)"),
+           paste0("(?i)^\\W*(?:Eventuell )?(?:ny/utsatt|ny og utsatt) eksamen (?:foregår ved neste ordinære|",
+                  "må tas neste gang|kan først gjennomføres ved neste ordinære|",
+                  "gjennomføres på samme måte som (?:ved )?ordinær eksamen\\W*$)"))
+)
+
+# Blocks of workload in any section, per institution: uis's budget, a header
+# ("Forventet timeinnsats (413 timer):", "Anslag over tidsforbruk:",
+# "Arbeidsinnsatsen er beregnet slik:") and the lines of hours under it
+# ("Forberedelse + etterarbeid: 214 timer"); a header with no hours in or
+# under it stays; and the stock paragraph on the hours of a year of study
+# ("Universitetet i Stavanger definerer eit studieår til 40 veker, ...")
+# with its label.
+.logistics_blocks <- list(
+  uis = c(paste0(
+    "(?m)(?:^[ \t]*Arbeidsmengde?:?[ \t]*\n)?^[ \t]*(?:Arbeidsmengde?:[ \t]*)?Universitetet i Stavanger definerer ",
+    "e(?:it|t) studieår til 40 (?:veker|uker),(?s:.{0,900}?)\\b1200-1500 sider\\b[^.]*\\.[ \t]*(?:\n|$)"),
+    paste0(
+    "(?m)^[ \t]*(?:(?:[Ff]orventet|[Ee]stimert|[Bb]eregnet|[Tt]otal forventet)[ \t]+)?",
+    "(?:[Tt]imeinnsats|[Aa]rbeidsinnsats(?:en er beregnet slik)?|[Aa]rbeidsbelastning|[Aa]rbeidsmengde?|",
+    "Anslag over tidsforbruk)\\b",
+    "(?:[^\n]*\\d[ \t]*(?:timer|t)(?:\\b|(?=\\p{Lu}))[^\n]*|[^\n]*(?=\n[^\n]*\\d[ \t]*(?:timer|t)(?:\\b|(?=\\p{Lu}))))",
+    "(?:\n[^\n]*\\d[ \t]*(?:timer|t)(?:\\b|(?=\\p{Lu}))[^\n]*)*(?:\n|$)"))
 )
 
 # Approval stamps, in any section (course_plan_spec.md: out of the sections):

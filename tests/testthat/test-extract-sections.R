@@ -842,6 +842,66 @@ test_that("hvl: exam logistics and costs leave every section, the rest of the li
   expect_equal(.clean_sections(out[1, ], "nla")$raw_text, out$raw_text[1])
 })
 
+test_that("examiner, resit, appeal and admin sentences leave the sections; the design stays", {
+  cl <- function(inst, text, section = "assessment")
+    .clean_sections(tibble::tibble(section = section, raw_text = text), inst)$raw_text
+  # the examiner arrangement alone goes; with the scale, the criteria or an
+  # exam form as its subject it stays
+  expect_equal(cl("hvl", paste(
+    "Bacheloroppgave, 100 %.", "Intern og ekstern sensor benyttes.",
+    "Sensur gjennomføres av to sensorer, hvorav en ekstern. Karakterskala A-F.",
+    "Vurdering av bacheloroppgåva blir gjort av ein intern og ein ekstern sensor.",
+    "Oppgaven vurderes av intern og ekstern sensor på grunnlag av læringsutbyttebeskrivelser for emnet.",
+    "FoU-oppgaven blir vurdert av intern og ekstern sensor med karakterskala A – F.",
+    "Muntlig eksamen vurderes av to sensorer.",
+    "Ved ikke bestått karakter på bacheloroppgaven, gis gruppen anledning til å levere en forbedret versjon i påfølgende semester.",
+    sep = "\n")), paste(
+    "Bacheloroppgave, 100 %.", "Karakterskala A-F.",
+    "Oppgaven vurderes av intern og ekstern sensor på grunnlag av læringsutbyttebeskrivelser for emnet.",
+    "FoU-oppgaven blir vurdert av intern og ekstern sensor med karakterskala A – F.",
+    "Muntlig eksamen vurderes av to sensorer.", sep = "\n"))
+  expect_equal(cl("hvl", "Studieprogram: Bachelor i ingeniørfag, Bygg\nBacheloroppgaven er det avsluttende emnet.",
+                  "course_content"), "Bacheloroppgaven er det avsluttende emnet.")
+  # mf: the withdrawal rule goes, the gate before it stays
+  expect_equal(cl("mf", paste("Studenter som ikke oppfyller studiekravene, kan ikke gå opp til eksamen i emnet.",
+                              "For ikke å bruke et eksamensforsøk, må studenten aktivt trekke sin vurderingsmelding",
+                              "til emnet innen trekkfristen 1. mai."), "coursework_requirements"),
+               "Studenter som ikke oppfyller studiekravene, kan ikke gå opp til eksamen i emnet.")
+  # oslomet: who may resit goes; what the resit consists of stays
+  expect_equal(cl("oslomet", paste(
+    "Studenter som på grunn av gyldig fravær ikke avlegger eksamen, eller som får vurderingen F, kan melde seg opp til ny/utsatt eksamen.",
+    "Ved framstilling til ny/utsatt eksamen kan en bearbeidet versjon av oppgaven leveres.",
+    "Kandidater som ikke består eller har gyldig fravær fra ordinær eksamen kan levere en omarbeidet versjon til ny/utsatt eksamen.",
+    "Siste frist for innlevering vil fremgå av eksamensplanen.")), paste(
+    "Ved framstilling til ny/utsatt eksamen kan en bearbeidet versjon av oppgaven leveres.",
+    "Kandidater som ikke består eller har gyldig fravær fra ordinær eksamen kan levere en omarbeidet versjon til ny/utsatt eksamen."))
+  expect_equal(cl("vid", "Utsatt eksamen er tilsvarende ordinær eksamen.\nUtsatt eksamen er en individuell skriftlig hjemmeeksamen.\nVeileder er ikke sensor."),
+               "Utsatt eksamen er en individuell skriftlig hjemmeeksamen.")
+  expect_equal(cl("hiof", paste("Grades: A-F.", "In the case of a Fail, the group may improve the portfolio and resubmit it at a new exam.",
+                                "If the candidates wish to appeal about the result, all group members must sign the letter of appeal.",
+                                "At a new exam it is only necessary to retake one of the parts.", sep = "\n")),
+               "Grades: A-F.\nAt a new exam it is only necessary to retake one of the parts.")
+  expect_equal(cl("inn", "Bestått/Ikke bestått. Sensureres av faglærer og én ekstern sensor.\na. leveres som et produkt. Eksamensresultatet kan påklages."),
+               "Bestått/Ikke bestått.\na. leveres som et produkt.")
+  expect_equal(cl("uio", "Undervisningen er bundet 4 timer per uke.\nAdgang til undervisning: Undervisningen er kun åpen for studenter med opptak i emnet.",
+                  "teaching_methods"), "Undervisningen er bundet 4 timer per uke.")
+  # uis: the workload budget goes with its lines of hours, the teaching stays
+  expect_equal(cl("uis", paste("Forelesning og gruppearbeid.", "Forventet timeinnsats (413 timer): Undervisning: 77 timer",
+                               "Forberedelse + etterarbeid: 214 timer", "FOU-oppgave: 100 timer",
+                               "Studentane skal ha 5 dagar med praksis.", sep = "\n"), "teaching_methods"),
+               "Forelesning og gruppearbeid.\nStudentane skal ha 5 dagar med praksis.")
+  # steiner (wrapped PDF lines): examiner, diploma and resubmission go, the scale stays
+  expect_equal(cl("steiner", paste(
+    "FoU-oppgaven blir vurdert av intern og ekstern sensor med karakterskala A – F. Veileder er vanligvis",
+    "intern sensor. Tittel og karakter på FoU-oppgaven noteres på vitnemålet.",
+    "Hvis oppgaven vurderes til karakteren F, ikke bestått, kan kandidaten levere ny oppgave til angitt frist.", sep = "\n")),
+    "FoU-oppgaven blir vurdert av intern og ekstern sensor med karakterskala A – F.")
+  expect_equal(cl("uib", "Intern sensur med minst to sensorar.\nIntern sensur med nytt vurderingsuttrykk : Bestått / ikke bestått."),
+               "Intern sensur med nytt vurderingsuttrykk : Bestått / ikke bestått.")
+  # other institutions keep them
+  expect_equal(cl("nla", "Intern og ekstern sensor benyttes."), "Intern og ekstern sensor benyttes.")
+})
+
 test_that("uib footer and error banner are removed", {
   txt <- paste("Mappevurdering.",
                "Vi opplever problemer med å hente inn eksamensinformasjon for dette emnet.",

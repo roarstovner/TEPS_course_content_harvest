@@ -78,7 +78,10 @@ a line repeating one of its entries is a heading, so an unmapped one
 heading, a heading-map pattern with or without a closing colon (“Ny og
 utsatt eksamen”, “Eksamen/vurdering”; not a bullet, topic or book title
 that contains one, such as “Vurdering av pasientens kartlagte smerte” or
-“Vurdering for læring”)</td>
+“Vurdering for læring”) after a blank line; an exact <code>.drop</code>
+heading needs none (“Arbeidsmengd”, uis PDFs); inside a numbered
+requirement (“Arbeidskrav 2: …”, usn) its labels “INNHOLD” and
+“VURDERING” are text up to the next heading</td>
 </tr>
 <tr>
 <td><code>noop</code></td>
@@ -268,29 +271,44 @@ har studenten følgende læringsutbytte:”) stays.
 and stock logistics sentences from assessment/coursework
 (`.section_noise`: uib banner and footer, hvl’s “Mer om hjelpemidler”
 link, oslomet’s resit sentence, himolde’s exam system “- Inspera” after
-the form, a deadline weekday as the duration and a start time, …;
-notices about the assessment such as AI, plagiarism and COVID rules
-stay, and so do exam tables with their header row), removes logistics
-and cost sentences from every section (`.logistics_sentences`: hvl’s
-“Tid og sted for eksamen blir opplyst på Studentweb.”, exam dates,
-material fees and excursion prices; phs’s workload, “Omfanget på
-videreutdanningen er anslått til ca. 420 timer.”; uia’s, ntnu’s and
-uit’s workload stated alone, “Emnet har et forventet arbeidsomfang på
-rundt 200 timer.”, “Forventet arbeidsinnsats i emnet er 135 timer.”, but
-not a split into teaching forms, supervision hours or a sentence with a
-compulsory part), removes admission and study-right sentences, pointers
-to the admission rules and “Ingen utover opptakskravet.” from
-prerequisites, keeping a sentence that also names a prerequisite
-(`.strip_admission_lines()`), removes outgoing progression rules from
-every section, what passing this course permits later (“Emnet må være
-bestått for å kunne fortsette på Norsk 2.”, vid’s “Studenter kan, ved å
-gjennomføre dette emnet … gå videre til …”; “En må ha fulgt Kunst og
-håndverk 1 for å kunne fortsette på …” only when the course named is
-this one by its title, `.is_progression_sentence()`), drops
-placeholder-only rows (`.placeholder_phrases`: “Ingen”, “Se fagplanen.”,
-“-”, Leganto pointers, “Oppgis senere.”, “… ikke publisert ennå”, uit’s
-“Contact the department/faculty.”, “Se fagbeskrivelse med pensum” and
-its reading lists only on the learning platform or at the bookshop,
+the form, a deadline weekday as the duration and a start time, uis’s
+quoted rule for the number of attempts, steiner’s wrapped examiner and
+resubmission lines, …; notices about the assessment such as AI,
+plagiarism and COVID rules stay, and so do exam tables with their header
+row), removes logistics and cost sentences from every section
+(`.logistics_sentences`: hvl’s “Tid og sted for eksamen blir opplyst på
+Studentweb.”, exam dates, material fees and excursion prices; phs’s
+workload, “Omfanget på videreutdanningen er anslått til ca. 420 timer.”;
+uia’s, ntnu’s and uit’s workload stated alone, “Emnet har et forventet
+arbeidsomfang på rundt 200 timer.”, “Forventet arbeidsinnsats i emnet er
+135 timer.”, but not a split into teaching forms, supervision hours or a
+sentence with a compulsory part; the examiner arrangement stated alone,
+“Intern og ekstern sensor benyttes.”, “Intern sensur med minst to
+sensorar.”, at hvl, inn, uib, uio and vid, but not “… av intern og
+ekstern sensor med karakterskala A – F.”; resit and appeal rules that
+say only who may resit or resubmit, when or how often (“For ikke å bruke
+et eksamensforsøk, må studenten aktivt trekke sin vurderingsmelding …”,
+mf; “Studenter som … får vurderingen F, kan melde seg opp til ny/utsatt
+eksamen.”, oslomet; “The mark can be appealed.”, hiof), but not what the
+resit consists of (“Ved kontinuasjonseksamen bearbeides samme oppgave.”,
+“Utsatt eksamen er en individuell skriftlig hjemmeeksamen.”); pointers
+to the exam pages and the exam system, hvl’s “Studieprogram: …” line,
+inn’s course-evaluation sentence, uio’s “Adgang til undervisning: …”;
+and uis’s workload budget, a header such as “Forventet timeinnsats (413
+timer):” with the lines of hours under it, `.logistics_blocks`), removes
+admission and study-right sentences, pointers to the admission rules and
+“Ingen utover opptakskravet.” from prerequisites, keeping a sentence
+that also names a prerequisite (`.strip_admission_lines()`), removes
+outgoing progression rules from every section, what passing this course
+permits later (“Emnet må være bestått for å kunne fortsette på Norsk
+2.”, vid’s “Studenter kan, ved å gjennomføre dette emnet … gå videre til
+…”; “En må ha fulgt Kunst og håndverk 1 for å kunne fortsette på …” only
+when the course named is this one by its title,
+`.is_progression_sentence()`), drops placeholder-only rows
+(`.placeholder_phrases`: “Ingen”, “Se fagplanen.”, “-”, Leganto
+pointers, “Oppgis senere.”, “… ikke publisert ennå”, uit’s “Contact the
+department/faculty.”, “Se fagbeskrivelse med pensum” and its reading
+lists only on the learning platform or at the bookshop,
 “Pensumlitteratur oppgis i Fronter ved semesterstart eller fås ved
 henvendelse til …”), and drops a first line that only repeats the
 section heading (but keeps learning-outcome group labels such as
