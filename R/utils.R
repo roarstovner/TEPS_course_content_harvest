@@ -346,10 +346,15 @@ write_raw_run <- function(rows, institution, run, raw_dir = RAW_DIR) {
 #'   (raw_page_id()) where they hold a page, and `pdf` is left out. The pages
 #'   are not read into R.
 #' @param page_id Add `page_id`, the row's page id.
-read_raw <- function(files, run = FALSE, content = TRUE, page_id = FALSE) {
+#' @param course_ids Only the rows of these offerings, filtered while the file
+#'   is read, so the other rows' pages never reach R (a year of NTNU holds
+#'   ~12,000 pages; page_changes() OOM-killed builds on 2026-11-09).
+read_raw <- function(files, run = FALSE, content = TRUE, page_id = FALSE, course_ids = NULL) {
   if (!length(files)) return(tibble::tibble())
   rows <- dplyr::bind_rows(lapply(files, function(f) {
-    df <- if (content) arrow::read_parquet(f) else .raw_without_pages(f)
+    df <- if (!content) .raw_without_pages(f)
+      else if (is.null(course_ids)) arrow::read_parquet(f)
+      else tibble::as_tibble(dplyr::collect(dplyr::filter(arrow::open_dataset(f), course_id %in% course_ids)))
     df <- dbh_rename(df)
     if (page_id) df$page_id <- raw_page_id(f, df$harvest_row)
     df$.run <- raw_run(f)

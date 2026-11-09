@@ -384,7 +384,8 @@ page_changes <- function(ledger, files, config) {
                           run = ok$run, course_id = ok$course_id)
   pairs <- pairs[!is.na(before) & ok$sha256 != ok$sha256[before], ]
   if (!nrow(pairs)) return(pairs)
-  rows <- read_raw(files[raw_run(files) %in% c(pairs$run, pairs$previous_run)], run = TRUE)
+  rows <- read_raw(files[raw_run(files) %in% c(pairs$run, pairs$previous_run)], run = TRUE,
+                   course_ids = unique(c(pairs$course_id, pairs$previous_course_id)))
   key <- paste(rows$.run, rows$course_id)
   rows <- rows[key %in% c(paste(pairs$run, pairs$course_id), paste(pairs$previous_run, pairs$previous_course_id)), ]
   text <- stats::setNames(extract_fulltext_from_raw(rows, config), paste(rows$.run, rows$course_id))
