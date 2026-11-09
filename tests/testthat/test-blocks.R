@@ -219,3 +219,23 @@ test_that("without a table of contents only whole headings switch (uis PDFs)", {
     "Vekt på forberedelse knyttet til kunnskapstilegnelse\nKan ting.\nIngen forkunnskaper kreves"))
   expect_match(s$raw_text[6], "^Litteratur \\(Litteratur og myte\\)")
 })
+
+test_that("an exact .drop heading needs no blank line before it (uis PDFs)", {
+  text <- paste("Emnekode: X", "", "Tekster.", "Arbeidsmengd",
+                "Et studieår er 40 veker.", "", "Litteratur", "", "Boka.", sep = "\n")
+  s <- sectionize(.text_blocks(text, list(reader = "text", text_header = "^Emnekode")))
+  expect_equal(s$section, c("course_content", ".drop", "reading_list"))
+  expect_equal(s$raw_text[1:2], c("Tekster.", "Et studieår er 40 veker."))
+})
+
+test_that("a numbered requirement keeps its labels until the next heading (usn)", {
+  text <- paste("Innholdsfortegnelse", "", "Faglig innhold", "", "Obligatorisk aktivitet", "",
+                "Vurderingsformer", "", "Faglig innhold", "", "Pasient.", "",
+                "Obligatorisk aktivitet", "", "Arbeidskrav 1: Samtale", "", "INNHOLD:",
+                "Plan for perioden.", "", "VURDERING:", "Godkjent.", "", "Vurderingsformer", "",
+                "Bestått/ikke bestått.", sep = "\n")
+  s <- sectionize(.text_blocks(text, list(reader = "text")))
+  expect_equal(s$section, c("course_content", "coursework_requirements", "assessment"))
+  expect_match(s$raw_text[2], "INNHOLD:\nPlan for perioden.\nVURDERING:\nGodkjent.$")
+  expect_equal(s$raw_text[3], "Bestått/ikke bestått.")
+})

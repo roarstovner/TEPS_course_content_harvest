@@ -488,6 +488,11 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
 #     det monstrøse", or a book title such as "Kompetansemål og vurdering",
 #   - and names a section other than the open one; a line naming the open
 #     section ("Kunnskap" inside learning outcomes) is text.
+# An exact .drop heading needs no blank line before it: uis PDFs run
+# "Arbeidsmengd" and "Emneevaluering" on from the paragraph above.
+# Inside a numbered requirement ("Arbeidskrav 2: Refleksjonsnotat", usn
+# nursing) its labels (.requirement_labels: "INNHOLD", "VURDERING") are text,
+# up to the next heading.
 # A line after a blank line that repeats an entry of the page's table of
 # contents (usn) is a heading whatever it names: an unmapped one ("Annet",
 # "Evaluering av emnet") ends the section, as in the html reader.
@@ -523,7 +528,9 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
     }
   }
 
+  drops <- with(section_heading_patterns, pattern[section == ".drop" & exact])
   prev_blank <- TRUE
+  requirement <- FALSE
   for (i in seq_along(lines)) {
     if (is_blank[i]) {
       prev_blank <- TRUE
@@ -534,17 +541,20 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
     if (prev_blank && trimmed %in% toc_heads) {
       current <- match_heading_to_section(trimmed)
       out$add("heading", lines[i], current)
-      prev_blank <- FALSE
+      prev_blank <- requirement <- FALSE
       next
     }
     candidate <- tolower(stringr::str_remove(trimmed, "[:：]\\s*$"))
-    if (prev_blank && .heading_shaped_line(trimmed) &&
-        candidate %in% section_heading_patterns$pattern) {
+    if ((prev_blank || candidate %in% drops) && .heading_shaped_line(trimmed) &&
+        candidate %in% section_heading_patterns$pattern &&
+        !(requirement && candidate %in% .requirement_labels)) {
       section <- match_heading_to_section(candidate)
     }
+    if (grepl("^Arbeidskrav\\s*\\d", trimmed)) requirement <- TRUE
     if (!is.na(section) && !identical(section, current)) {
       out$add("heading", lines[i], section)
       current <- section
+      requirement <- FALSE
     } else {
       out$add("text", lines[i])
     }
@@ -552,6 +562,10 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
   }
   out$table()
 }
+
+# The labels of a numbered requirement's parts (usn nursing: HENSIKT,
+# INNHOLD, RAMMER, VURDERING), which name a section in the heading map.
+.requirement_labels <- c("innhold", "vurdering")
 
 # The title and facts box at the start of a page read as text: `n`, the
 # lines they take, and `intro`, whether the untitled text after them is the
