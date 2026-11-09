@@ -1172,6 +1172,59 @@ test_that("hiof: 'Foreleser studieåret' with the name on the line or under it",
   expect_match(a[2], "Litteratur\nBok")
 })
 
+test_that("hiof: 'Lecturer'/'Foreleser' with a semester or none; a sentence with a colon stays", {
+  an <- function(x) anonymize_text("hiof", x, .progress = FALSE)
+  expect_equal(an("Bøker\n\nLecturer spring 2016: Kari Nordmann, Ola Dahl (Per Berg"), "Bøker")
+  expect_equal(an("Bøker\n\nForeleser høst 2017:\nKari Nordmann\n\nLitteratur"), "Bøker\n\nLitteratur")
+  expect_equal(an("Bøker\nForeleser: Ola Dahl"), "Bøker")
+  expect_equal(an("Bøker\nLecturers autumn 2019 and spring 2020: Kari Nordmann"), "Bøker")
+  keep <- "Forelesere fra praksisfeltet underviser i: Kommunikasjon og etikk."
+  expect_equal(an(keep), keep)
+})
+
+test_that("uib: staff blocks under 'Faglig ansvar' and staff lines go, the next heading stays", {
+  an <- function(x) anonymize_text("uib", x, .progress = FALSE)
+  expect_equal(an(paste0("Total arbeidsinnsats: 76 timer\nFaglig ansvar\nHovedansvarlige:\n\nKari B. Nordmann\nOla Dahl\n\n",
+                         "Innledere\nDr. Kari B. Nordmann\n\nDr. Ola Dahl\n\nSeminarer:\n\nInviterte forelesere")),
+               "Total arbeidsinnsats: 76 timer\nSeminarer:\n\nInviterte forelesere")
+  expect_equal(an("Opplegg\nFaglig ansvar\nPer Berg\n\nKurskoordinator\nInnledere\nTBA\nKjernelitteratur\nBok"),
+               "Opplegg\nKjernelitteratur\nBok")
+  expect_equal(an("Program\nFaglig ansvar\nKari Nordmann og Ola Dahl.\nKjernelitteratur"), "Program\nKjernelitteratur")
+  expect_equal(an(paste0("Emneevaluering\nAcademic resposibility Neuro-SysMed: Kari Nordmann and Ola Dahl.\n",
+                         "Academic responsibility CCBIO: Per Berg (CCBIO)..\n\nCourse coordinator Neuro-SysMed: Kari Nordmann (kari@uib.no).\n",
+                         "Utfyllende kursomtale")),
+               "Emneevaluering\n\nUtfyllende kursomtale")
+  expect_equal(an("Programansvarlig\nStudieutvalget\n\nUndervisere: Kari Nordmann, Ola Dahl, Per Berg\nEksamen"),
+               "Programansvarlig\nStudieutvalget\n\nEksamen")
+  # a title, a unit after the name, a sub-label for the names' institution
+  expect_equal(an("Opplegg\nFaglig ansvar\nPost doktor Kari Nordmann - UiT\n\nOla van der Dahl Senter for vitskapsteori\nKjernelitteratur"),
+               "Opplegg\nKjernelitteratur")
+  expect_equal(an("Opplegg\nInnledere\nFrå UiB:\n\nProfessor Kari Nordmann, Klinisk institutt 2\nKjernelitteratur"),
+               "Opplegg\nKjernelitteratur")
+  expect_equal(an("Programutvalget.\nEmneansvarlig: Prof. Kari Nordmann"), "Programutvalget.\nEmneansvarlig:")
+  # a name after the unit goes from its line
+  expect_equal(an("Faglig ansvar\nForskarskulen i klinisk medisin. Kari Nordmann\nKjernelitteratur"),
+               "Faglig ansvar\nForskarskulen i klinisk medisin\nKjernelitteratur")
+  # a unit or a sentence under the label stays
+  for (x in c("Faglig ansvar\nInstitutt for klinisk medisin\nKjernelitteratur",
+              "Faglig ansvar\nFaculty of Psychology, University of Bergen\nGraduate School for Clinical and Developmental Psychology",
+              "Innledere\nVitskapleg tilsette ved Klinisk institutt 2.",
+              "Undervisere: Faglærere ved instituttet underviser."))
+    expect_equal(an(x), x, label = x)
+  f <- tempfile(fileext = ".RDS")
+  saveRDS(tibble::tibble(text = c("Faglig ansvar\nKari Nordmann\n\nOla Dahl", "Undervisere: Kari Nordmann, Ola Dahl")), f)
+  expect_setequal(personal_data_in(f)$pattern, c("uib_staff_block", "uib_staff_line"))
+})
+
+test_that("usn: 'Course Owner' and 'Lecturer' with a title and a name go", {
+  an <- function(x) anonymize_text("usn", x, .progress = FALSE)
+  expect_equal(an("Miscellaneous\nCourse Owner: Professor Kari Nordmann Lecturer: Associate Professor Ola Dahl\nLiterature"),
+               "Miscellaneous\nLiterature")
+  expect_equal(an("The course is given by Senior Lecturer Kari Nordmann."), "The course is given by Senior Lecturer.")
+  keep <- "Lecturer notes are available in Canvas."
+  expect_equal(an(keep), keep)
+})
+
 test_that("uib: a name under 'Administrativt ansvarlig' goes, a unit stays", {
   a <- anonymize_text(rep("uib", 3), c(
     "Emneansvarlig\nInstitutt for global helse\nAdministrativt ansvarlig\nKari Nordmann \nStudiepoeng",

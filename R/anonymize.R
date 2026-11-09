@@ -158,9 +158,15 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     # Strip "Emneansvarlig(e):" ("Course Leader:" on an English page) + name
     # lines until next "Heading:" line
     stringr::str_remove("(?m)^(?:Emneansvarlige?|Course [Ll]eaders?):\\s*\\n(?:(?![A-ZÆØÅ][\\w ]+:)[^\\n]*\\n?)*") |>
-    # "Foreleser studieåret 2018-2019: <name> (<e-mail>)", the name also on
-    # the next line
-    stringr::str_remove_all("(?m)^Foreleser(?:e)? studieåret[^\\n:]*:[ \\t]*(?:\\n[ \\t]*)?\\p{Lu}[^\\n]*")
+    # "Foreleser studieåret 2018-2019: <name> (<e-mail>)", "Lecturer spring
+    # 2016: <names>", "Foreleser høst 2017:", "Foreleser:", the names on the
+    # line or on the lines under it; before the generic rule takes the
+    # semester and leaves "Lecturer: <name>". Only a semester or year before
+    # the colon, so a sentence ("Forelesere fra praksis underviser i: ...")
+    # stays.
+    stringr::str_remove_all(paste0("(?m)^(?:Forelesere?|Lecturers?)(?:[ \\t,/-]+(?:studieåret|(?i:", .season_regex,
+                                   "|fall)|\\d{4}(?:[-/]\\d{2,4})?|og|and))*[ \\t]*:[ \\t]*",
+                                   "(?:\\p{Lu}[^\\n]*|(?:\\n[ \\t]*", .name_regex, "[^\\n]*)+)"))
 }
 
 .anon_inn <- function(txt) {
@@ -335,6 +341,10 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     stringr::str_remove_all("(?m)^Eksamensadministrasjon:?\\s*[^\n]*") |>
     # Strip "Kontakt:" section lines
     stringr::str_remove_all("(?m)^Kontakt:?\\s*[^\n]*") |>
+    # staff blocks and lines ("Faglig ansvar", "Undervisere:", .uib_staff_label)
+    stringr::str_replace_all(.uib_staff_unit_name_regex, "\\1") |>
+    stringr::str_remove_all(.uib_staff_block_regex) |>
+    stringr::str_remove_all(.uib_staff_line_regex) |>
     # When the reading list is published, a date that changes between years:
     # "Litteraturlista vil vere klar innan 01.06. for haustsemesteret og
     # 01.12. for vårsemesteret.", "Litteraturlistene vil vere klare innan 1. Juni",
@@ -381,7 +391,7 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
   "studieprogramleder", "studieprogramleiar", "programansvarlig",
   "instituttleder", "instituttleiar", "veileder", "rettleiar",
   "timelærer", "timelærar", "kontaktperson", "sensor", "coordinator",
-  "programkoordinator", "fagansvarlig"
+  "programkoordinator", "fagansvarlig", "lecturer", "course owner"
 )
 # A whole line that is only a capitalised name (particles like "van" allowed)
 # followed by "(Role)", optionally bulleted.
@@ -430,7 +440,7 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 # only after a lower-case role ("Ekstern sensor er ..."), while other
 # capitalised roles after a capitalised word name staff ("Academic
 # Coordinator <name>", "Vice Dean <name>", uit, usn; 2026-11-04).
-.title_regex <- "(?i:(?:(?:assistant|associate)[ \\t]+)?professor|førsteamanuensis|(?:universitets|høgskole)lektor|dosent)"
+.title_regex <- "(?i:(?:(?:assistant|associate)[ \\t]+)?professor|prof\\.|førsteamanuensis|(?:universitets|høgskole)lektor|dosent)"
 .paren_role <- "(?:[ \\t]*\\(\\p{Ll}[^()\\n]{0,29}\\))?"
 .names_regex <- paste0("(?:", .title_regex, "[ \\t]+)?", .name_regex, .paren_role,
                        "(?:[ \\t]*(?:,|og|eller|and)[ \\t]+", .name_regex, .paren_role, ")*")
@@ -452,6 +462,32 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
   ")(?i:e|er|ar|s)?[ \\t]*:?[ \\t]*\\n(?:[ \\t]*\\n)*[ \\t]*(?:[^\\n:]{1,60}:[ \\t]*)?",
   "(?!(?:The|Det|Den|De|Dei)[ \\t])", .names_regex, "[ \\t]*(?:[,.(][^\\n]*)?(?:\\n|$)"
 )
+# uib's staff labels (PhD courses, law): "Faglig ansvar" over name lines,
+# with sub-labels, titles, units and blank lines between ("Faglig ansvar\n
+# Hovedansvarlige:\n\nKari Nordmann\nOla Dahl, Klinisk institutt 2\n\nInnledere\n
+# Frå UiB:\nDr. Kari Nordmann"), up to the next line that is not one of these
+# ("Kjernelitteratur", "Seminarer:"); and a label with its unit and names on
+# one line ("Undervisere: A, B, C", "Academic responsibility <unit>: A and
+# B.", "Course coordinator <unit>: A"). A block needs a name line, so a unit
+# under the label stays; a name after the unit goes from it ("Faglig
+# ansvar\nForskarskulen i klinisk medisin. Kari Nordmann", "Leiar av
+# PhD-utvalet ved Institutt for biomedisin, Ola Dahl, <url>"), and a unit
+# after a name without a comma ("Ola Dahl Senter for vitskapsteori").
+.uib_staff_label <- paste0("(?:Faglig ansvar|Hovedansvarlige?|Innledere?|Undervisere?|Kurskoordinator(?:er)?|",
+                           "Koordinator(?:er)?|(?:Academic|Administrative) res\\p{L}*(?:sibility|sible)|Course coordinators?)")
+.uib_staff_name <- paste0("(?:(?:(?i:post ?doktor|postdoc|dr\\.)|", .title_regex, ")[ \\t]+)?",
+                          "\\p{Lu}[\\p{L}.'’-]*(?:[ \\t]+(?:\\p{Lu}[\\p{L}.'’-]*|van|von|de|der|den|da|di|af))+")
+.uib_staff_name_line <- paste0("\\n[ \\t]*", .uib_staff_name, "(?:[ \\t]*(?:,|og|and|&)[ \\t]+", .uib_staff_name, ")*",
+                               "(?:[ \\t]*(?:[,/(–-]|https?://)[^\\n]*|[ \\t]+(?:Senter|Institutt|Centre|Department) (?:for|of)[^\\n]*)?",
+                               "[ \\t.]*(?=\\n|$)")
+.uib_staff_fill_line <- paste0("\\n[ \\t]*(?:", .uib_staff_label, "[ \\t]*:?[ \\t]*-?|TBA\\.?|(?:Frå|Fra|From)[ \\t]+[^\\n:]{1,40}:)?",
+                               "[ \\t]*(?=\\n|$)")
+.uib_staff_block_regex <- paste0("(?m)^[ \\t]*", .uib_staff_label, "[ \\t]*:?[ \\t]*-?[ \\t]*(?=\\n)(?:", .uib_staff_fill_line, ")*",
+                                 .uib_staff_name_line, "(?:", .uib_staff_name_line, "|", .uib_staff_fill_line, ")*(?:\\n|$)")
+.uib_staff_line_regex <- paste0("(?m)^[ \\t]*", .uib_staff_label, "(?:[ \\t]+[^\\n:]{1,30})?[ \\t]*:[ \\t]*",
+                                "(?:Dr\\.[ \\t]+)?", .names_regex, "[^\\n]*(?:\\n|$)")
+.uib_staff_unit_name_regex <- paste0("(?m)(^Faglig ansvar[ \\t]*\\n[^\\n]*?[^\\s,.])[ \\t]*[,.][ \\t]+", .uib_staff_name,
+                                     ",?(?:[ \\t]*https?://\\S+)?[ \\t.]*$")
 # A name line followed by a line that is only a leader's role:
 # "Kari Nordmann\nInstituttnestleder" (usn approval blocks). Other roles
 # head the next line ("The Programme Committee\nEmneansvarlig", uib).
@@ -839,6 +875,8 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
   staff     = .staff_line_regex,
   role_name = .role_name_line_regex,
   role_heading_name = .role_heading_name_regex,
+  uib_staff_block = .uib_staff_block_regex,
+  uib_staff_line = .uib_staff_line_regex,
   role_name_inline = .role_name_inline_regex,
   name_role_lines = .name_role_lines_regex,
   signature = .signature_line_regex,
