@@ -906,7 +906,19 @@ the configuration; a page that names only an academic year counts as a
 version starting in its autumn, so the comparison is the academic year's). UiS does the same: for an academic year its menu of plans
 lacks, the harvest fetches the course page, which shows the latest version,
 the one selected in the menu ("2026 - 2027"); a course page without a menu
-names no year and stays. Longer pages without sections stay (OsloMet practicum
+names no year and stays. HVL's facts may say when a new course is first
+taught ("Undervises første gang høsten 2023", "first time autumn 2023"),
+also on its pages for the academic years before: that is the start of the
+version the page shows, so an offering before it gets no plan (since
+2026-11-09, fulltext audit of 2026-11-08: 21 offerings, 2021 1, 2022 3,
+2023 6, 2024 4, 2025 7; each page is the catalogue page of its own academic
+year, for a course not yet taught). UiS's archive PDFs name a study year
+too ("Dette er studietilbudet for studieår 2020-2021"), but it is not read:
+the three that disagree with their offering's academic year (MGL2071 autumn
+2019, LENG116 and LNOR176 autumn 2015) carry a line left from an earlier
+year, beside the right year or in a PDF headed with the right semester and
+changed since the year before, so reading it would remove plans in force
+(checked 2026-11-09). Longer pages without sections stay (OsloMet practicum
 courses, below). *Consequence:* 174 plans left the data on 2026-10-06 (UiA 95,
 UiB 27, OsloMet 26, Nord 11, HVL 10, UiT 4, NTNU 1). With pages that are not
 the plan at all (INN's course search page, OsloMet's error page) and later

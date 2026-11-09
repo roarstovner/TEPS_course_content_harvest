@@ -81,7 +81,24 @@ keeps the Norwegian URL. A pointer followed by a plan in the same
 content (a Norwegian plan after “For English course description, choose
 …”) is not the notice. A pointer page in the raw store gives no plan, so
 after `tar_make()` `harvest_all(institutions = "hvl", retry = "ok")`
-fetches it again (not while an HVL harvest runs).
+fetches it again (not while an HVL harvest runs). The facts’ teaching
+semester may say when a new course is first taught
+(“Undervisningssemester: Høst. Undervises første gang høsten 2023.”,
+“Semester of instruction: Autumn Semester - first time autumn 2023”), on
+the pages of the academic years before it too: an offering before that
+semester gets no plan (`page_term`; 21 offerings of 2021-2025, checked
+2026-11-09).
+
+**UiS.** The archive PDFs (`/Stine/EMNE/{year}/{HØST|VÅR}/`) often say
+which study year they are for (“Dette er studietilbudet for studieår
+2020-2021.”, “Vi gjør oppmerksom på at dette er studieinformasjon for
+studieår 2018-2019.”). The pipeline does not read it: where it disagrees
+with the offering’s academic year (spring offerings take their academic
+year’s page, `.menu_year_pages()`), it is a line left from an earlier
+year (MGL2071’s plans of 2019-2022 keep the 2018-2019 line in the
+introduction, beside the right year from 2020; LENG116’s and LNOR176’s
+PDFs of autumn 2015, headed “2015 HØST” and different from 2014’s, keep
+2014-2015; checked 2026-11-09).
 
 **UiO.** UiO publishes only the latest version of each course plan: the
 base URL always returns the current plan and older versions cannot be

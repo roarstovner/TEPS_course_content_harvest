@@ -182,7 +182,7 @@ spring offering reads the year before</td>
 <tr>
 <td><code>page_term</code>, <code>page_end_term</code></td>
 <td>the page says which semesters its plan version is for, and that can
-differ from the URL’s (inn, nord, uis, hiof)</td>
+differ from the URL’s (inn, nord, uis, hiof, hvl)</td>
 </tr>
 <tr>
 <td><code>english_page</code></td>

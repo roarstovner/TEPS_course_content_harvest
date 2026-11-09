@@ -257,6 +257,21 @@ test_that("uis: the academic year selected in the course page's menu, as its aut
   expect_equal(py(c(menu, "<p>Fakta</p>", NA)), c(4035L, NA, NA))
 })
 
+test_that("hvl: the semester the facts say the course is first taught", {
+  py <- get_institution_config("hvl")$page_term
+  fact <- function(s) sprintf('<div lang="nb-NO">%s</div>', s)
+  expect_equal(py(c(fact("Undervisningssemester: Høst. Undervises første gang høsten 2023."),
+                    fact("Undervisningssemester: Vår. Første gang våren 2021"),
+                    fact("Undervisningssemester: Haust - fyrste gong haust 2022"),
+                    fact("Semester of instruction: Autumn Semester - first time autumn 2023"),
+                    fact("Semester of instruction: Spring - first time spring 2024"),
+                    # the last time, or a resit, is not the version's start
+                    fact("Undervisningssemester: Høst. Emnet undervises siste gang høsten 2024"),
+                    "<p>Ved stryk på oppgåva første gong høsten 2023 ...</p>", NA)),
+               c(semester_term(c(2023L, 2021L, 2022L, 2023L, 2024L), c("Høst", "Vår", "Høst", "Høst", "Vår")),
+                 NA, NA, NA))
+})
+
 test_that("harvest_all(retry = TRUE) fetches offerings without a plan again", {
   withr::local_dir(withr::local_tempdir())
   old <- institution_configs$samas$plan_years

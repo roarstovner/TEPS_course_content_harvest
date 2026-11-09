@@ -28,7 +28,8 @@
 #            selected start semester; nord, uis: only an academic year, which
 #            counts as its autumn); an offering whose page shows a version
 #            that starts after the offering's semester gets no plan (a later
-#            version, course_plan_spec.md). inn, nord, uis, hiof.
+#            version, course_plan_spec.md). inn, nord, uis, hiof, hvl (the
+#            semester a course is first taught).
 # page_end_term: function(html) giving the last semester the version a page
 #            shows is for; an offering after it gets no plan (an earlier
 #            version). hiof: a page for one semester or for two
@@ -376,6 +377,17 @@ institution_configs <- list(
         "for english course descript\\w*, choose|the course description is available in english only)",
         "(?:[^<]|<br\\s*/?>|</?a\\b[^>]*>|<p><a[^>]*></a>){0,150}</p>(?:\\s*</p>)*\\s*(?:<h3|</div>)"),
       from = "/studier/studieprogram/emne/", to = "/en/studies-at-hvl/study-programmes/courses/"),
+    # The facts' teaching semester may say when the course is first taught
+    # ("Undervisningssemester: Høst. Undervises første gang høsten 2023.",
+    # "Vår. Første gang våren 2021", "Semester of instruction: Autumn
+    # Semester - first time autumn 2023"): a page for a year before it shows
+    # a later version
+    page_term = function(html) {
+      m <- stringr::str_match(html, paste0(
+        "(?i)(?:Undervisningssemester|Semester of instruction):[^<]*?(?:f(?:ø|y)rste (?:gang|gong|undervisning)|",
+        "first time) (?:i )?(høst|haust|vår|autumn|fall|spring)\\w* (\\d{4})"))
+      semester_term(m[, 3], ifelse(tolower(m[, 2]) %in% c("høst", "haust", "autumn", "fall"), "Høst", "Vår"))
+    },
     section_strategy = "html",
     section_heading_selector = "h3",
     # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.

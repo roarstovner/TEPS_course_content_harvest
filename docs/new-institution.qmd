@@ -150,7 +150,7 @@ with the institutions that use it:
 | `request_delay` | robots.txt asks a `Crawl-delay` above the default 3-5 seconds |
 | `user_agent` | `"browser"` if the site refuses the harvest's user agent (hiof: 403) |
 | `url_year` | `"academic"` if the URL's year is the academic year, so a spring offering reads the year before |
-| `page_term`, `page_end_term` | the page says which semesters its plan version is for, and that can differ from the URL's (inn, nord, uis, hiof) |
+| `page_term`, `page_end_term` | the page says which semesters its plan version is for, and that can differ from the URL's (inn, nord, uis, hiof, hvl) |
 | `english_page` | the Norwegian page of a course taught in English only says the plan is on the English page (hvl, nmbu, nord, ntnu) |
 | `fetch_fn` | the site answers a missing plan with a normal page (["Special Cases"](#special-cases)) |
 | `post_fn` | text to cut after the page is read (uit); like `exclude` and the anonymizer it may remove only personal data and boilerplate |
