@@ -1,7 +1,7 @@
 # Data Quality Notes
 
 
-Generated: 2026-11-06
+Generated: 2026-11-09
 
 ## Overview
 
@@ -9,33 +9,33 @@ Generated: 2026-11-06
 |:---|---:|---:|:---|---:|:---|---:|---:|:---|
 | fhs | 6209 | 997 | 2017-2025 | 1903 | 30.6% | 4589 | 838 | 56.0% |
 | fjellhaug | 532 | 277 | 2025 | 0 | 0.0% | NA | 0 | NaN% |
-| himolde | 189 | 98 | 2018-2025 | 78 | 41.3% | 2986 | 52 | 0.0% |
+| himolde | 8291 | 935 | 2017-2025 | 3608 | 43.5% | 2824 | 2028 | 18.2% |
 | hiof | 41168 | 6753 | 1994-2025 | 18136 | 44.1% | 4215 | 10415 | 20.5% |
 | hivolda | 22740 | 2843 | 2000-2025 | 5181 | 22.8% | 4220 | 4331 | 16.4% |
-| hvl | 41057 | 4799 | 2017-2025 | 29026 | 70.7% | 3739 | 13582 | 53.1% |
+| hvl | 41057 | 4799 | 2017-2025 | 29026 | 70.7% | 3739 | 13534 | 52.9% |
 | inn | 28402 | 3272 | 2018-2025 | 14199 | 50.0% | 3625 | 3065 | 32.9% |
-| khio | 198 | 100 | 2025 | 0 | 0.0% | NA | 0 | NaN% |
+| khio | 896 | 356 | 2025-2026 | 347 | 38.7% | 1992 | 328 | 5.5% |
 | mf | 605 | 311 | 2025 | 26 | 4.3% | 3304 | 26 | 0.0% |
-| nhh | 195 | 100 | 2025 | 0 | 0.0% | NA | 0 | NaN% |
+| nhh | 1511 | 698 | 2025-2026 | 455 | 30.1% | 4111 | 425 | 1.6% |
 | nih | 12285 | 1430 | 1990-2025 | 484 | 3.9% | 2376 | 442 | 7.5% |
-| nla | 17435 | 2034 | 2001-2025 | 7414 | 42.5% | 5167 | 3543 | 52.2% |
+| nla | 17435 | 2034 | 2001-2025 | 7414 | 42.5% | 5167 | 3540 | 52.3% |
 | nmbu | 2734 | 1438 | 2025 | 12 | 0.4% | 5858 | 12 | 0.0% |
 | nmh | 191 | 95 | 2021-2025 | 106 | 55.5% | 3173 | 72 | 32.1% |
 | nord | 35900 | 5147 | 2016-2025 | 32913 | 91.7% | 3233 | 7864 | 58.3% |
-| ntnu | 101281 | 10285 | 2004-2025 | 92733 | 91.6% | 3299 | 39033 | 56.8% |
+| ntnu | 134678 | 11923 | 2004-2025 | 116084 | 86.2% | 3146 | 45609 | 59.7% |
 | oslomet | 33318 | 3937 | 2018-2025 | 33318 | 100.0% | 3874 | 11286 | 59.5% |
 | phs | 2180 | 307 | 2021-2025 | 271 | 12.4% | 3895 | 142 | 27.2% |
 | samas | 130 | 68 | 2025 | 0 | 0.0% | NA | 0 | NaN% |
 | steiner | 244 | 125 | 2025 | 15 | 6.1% | 5027 | 15 | 0.0% |
 | uia | 55961 | 5047 | 2012-2025 | 10291 | 18.4% | 2944 | 5364 | 44.4% |
-| uib | 54515 | 5075 | 2004-2025 | 30788 | 56.5% | 3474 | 12801 | 53.8% |
+| uib | 77552 | 5923 | 2004-2025 | 39552 | 51.0% | 3220 | 15999 | 55.3% |
 | uio | 10488 | 5380 | 2025 | 47 | 0.4% | 4331 | 47 | 0.0% |
 | uis | 2921 | 316 | 2007-2025 | 2719 | 93.1% | 5760 | 1307 | 50.2% |
-| uit | 133066 | 10772 | 2004-2025 | 48389 | 36.4% | 3285 | 35459 | 21.7% |
+| uit | 133066 | 10772 | 2004-2025 | 48389 | 36.4% | 3286 | 35394 | 21.8% |
 | usn | 38706 | 5286 | 2018-2025 | 13132 | 33.9% | 5842 | 12361 | 5.7% |
 | vid | 4082 | 917 | 2023-2025 | 810 | 19.8% | 3640 | 588 | 23.5% |
 
-**Total**: 646732 rows, 341991 with extracted text (52.9%), 166700
+**Total**: 713282 rows, 378438 with extracted text (53.1%), 179564
 unique plans.
 
 **Columns:**
@@ -59,35 +59,34 @@ from a harvest made in its own academic year, or none
 (`docs/harvesting.md` “Sites that show only the current plan”). In this
 data the harvests are of 2026-04-04 (2025/26: autumn 2025 offerings) and
 2026-09-30 (2026/27: no DBH offerings yet), so spring 2025 offerings
-(2024/25) have no plan at these sites. They are fjellhaug, khio, mf,
-nhh, nmbu, samas, steiner, uio. The others have historical plans as far
-back as the site still serves them. Share of offerings with a plan, by
-period:
+(2024/25) have no plan at these sites. They are fjellhaug, mf, nmbu,
+samas, steiner, uio. The others have historical plans as far back as the
+site still serves them. Share of offerings with a plan, by period:
 
 | Institution | –2014 | 2015–17 | 2018–19 | 2020–21 | 2022–23 | 2024– |
 |:------------|:------|:--------|:--------|:--------|:--------|:------|
 | fhs         |       | 0%      | 5%      | 34%     | 79%     | 83%   |
 | fjellhaug   |       |         |         |         |         | 0%    |
-| himolde     |       |         | 35%     |         | 51%     | 45%   |
+| himolde     |       | 0%      | 38%     | 49%     | 53%     | 49%   |
 | hiof        | 34%   | 47%     | 51%     | 58%     | 59%     | 61%   |
 | hivolda     | 0%    | 30%     | 45%     | 45%     | 48%     | 48%   |
 | hvl         |       | 34%     | 73%     | 72%     | 74%     | 82%   |
 | inn         |       |         | 0%      | 0%      | 100%    | 100%  |
-| khio        |       |         |         |         |         | 0%    |
+| khio        |       |         |         |         |         | 39%   |
 | mf          |       |         |         |         |         | 4%    |
-| nhh         |       |         |         |         |         | 0%    |
+| nhh         |       |         |         |         |         | 30%   |
 | nih         | 0%    | 0%      | 0%      | 0%      | 13%     | 33%   |
 | nla         | 0%    | 10%     | 65%     | 71%     | 82%     | 82%   |
 | nmbu        |       |         |         |         |         | 0%    |
 | nmh         |       |         |         | 25%     | 66%     | 73%   |
 | nord        |       | 77%     | 92%     | 97%     | 99%     | 99%   |
-| ntnu        | 81%   | 97%     | 88%     | 92%     | 93%     | 93%   |
+| ntnu        | 81%   | 70%     | 88%     | 92%     | 93%     | 93%   |
 | oslomet     |       |         | 100%    | 100%    | 100%    | 100%  |
 | phs         |       |         |         | 0%      | 4%      | 28%   |
 | samas       |       |         |         |         |         | 0%    |
 | steiner     |       |         |         |         |         | 6%    |
 | uia         | 0%    | 0%      | 0%      | 40%     | 38%     | 41%   |
-| uib         | 30%   | 44%     | 48%     | 54%     | 57%     | 68%   |
+| uib         | 34%   | 39%     | 48%     | 54%     | 57%     | 68%   |
 | uio         |       |         |         |         |         | 0%    |
 | uis         | 92%   | 96%     | 95%     | 91%     | 92%     | 94%   |
 | uit         | 37%   | 31%     | 36%     | 40%     | 40%     | 38%   |
@@ -114,29 +113,29 @@ year) that have a plan in at least one semester:
 |:---|---:|:---|---:|---:|---:|:---|:---|
 | fhs | 3323 | 87% | 15 | 850 | 2021 | 32% | 30.6% |
 | fjellhaug | 277 | 92% | 0 | 0 | 255 | 0% | 0.0% |
-| himolde | 100 | 89% | 41 | 4 | 44 | 48% | 41.3% |
+| himolde | 4373 | 90% | 2001 | 134 | 1783 | 54% | 43.5% |
 | hiof | 24063 | 71% | 8772 | 1244 | 7089 | 49% | 44.1% |
 | hivolda | 12913 | 76% | 4412 | 193 | 5222 | 39% | 22.8% |
-| hvl | 21818 | 88% | 4018 | 11705 | 3516 | 79% | 70.7% |
+| hvl | 21818 | 88% | 4032 | 11593 | 3614 | 78% | 70.7% |
 | inn | 14923 | 90% | 2867 | 659 | 9953 | 26% | 50.0% |
-| khio | 100 | 98% | 0 | 0 | 98 | 0% | 0.0% |
+| khio | 452 | 98% | 341 | 0 | 103 | 77% | 38.7% |
 | mf | 311 | 95% | 25 | 0 | 269 | 8% | 4.3% |
-| nhh | 100 | 95% | 0 | 0 | 95 | 0% | 0.0% |
+| nhh | 775 | 95% | 432 | 0 | 304 | 56% | 30.1% |
 | nih | 7000 | 76% | 371 | 20 | 4894 | 7% | 3.9% |
 | nla | 9535 | 83% | 876 | 3082 | 3942 | 45% | 42.5% |
 | nmbu | 1438 | 90% | 11 | 0 | 1285 | 1% | 0.4% |
 | nmh | 100 | 91% | 14 | 45 | 32 | 61% | 55.5% |
 | nord | 19459 | 84% | 1053 | 8177 | 7211 | 55% | 91.7% |
-| ntnu | 52574 | 91% | 3584 | 41101 | 3386 | 93% | 91.6% |
+| ntnu | 69836 | 92% | 6301 | 50828 | 7077 | 89% | 86.2% |
 | oslomet | 17639 | 89% | 2040 | 12246 | 1393 | 89% | 100.0% |
 | phs | 1144 | 91% | 131 | 25 | 880 | 15% | 12.4% |
 | samas | 68 | 91% | 0 | 0 | 62 | 0% | 0.0% |
 | steiner | 125 | 95% | 15 | 0 | 104 | 12% | 6.1% |
 | uia | 29493 | 90% | 8716 | 152 | 17600 | 32% | 18.4% |
-| uib | 28081 | 93% | 102 | 13498 | 12622 | 51% | 56.5% |
+| uib | 40001 | 93% | 183 | 17432 | 19724 | 46% | 51.0% |
 | uio | 5380 | 95% | 44 | 0 | 5064 | 1% | 0.4% |
 | uis | 1602 | 82% | 41 | 1165 | 113 | 91% | 93.1% |
-| uit | 69992 | 90% | 25287 | 8569 | 29218 | 52% | 36.4% |
+| uit | 69992 | 90% | 25285 | 8571 | 29218 | 52% | 36.4% |
 | usn | 20631 | 88% | 11145 | 422 | 6508 | 61% | 33.9% |
 | vid | 2113 | 93% | 569 | 73 | 1327 | 33% | 19.8% |
 
@@ -158,26 +157,26 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 |:---|---:|---:|---:|---:|---:|---:|---:|
 | fhs | 2263 | 8 | 2255 | 0 | 0 | 0 | 2 |
 | fjellhaug | 277 | 0 | 76 | 0 | 0 | 201 | 0 |
-| himolde | 52 | 0 | 51 | 0 | 8 | 0 | 0 |
+| himolde | 1990 | 0 | 1928 | 0 | 279 | 0 | 110 |
 | hiof | 12166 | 4419 | 7034 | 105 | 1760 | 0 | 359 |
 | hivolda | 7804 | 0 | 7804 | 0 | 0 | 0 | 133 |
-| hvl | 4583 | 4558 | 0 | 0 | 58 | 0 | 24 |
+| hvl | 4704 | 4576 | 0 | 0 | 179 | 0 | 26 |
 | inn | 10940 | 0 | 7408 | 0 | 3532 | 0 | 44 |
-| khio | 100 | 0 | 0 | 0 | 0 | 100 | 0 |
+| khio | 105 | 0 | 0 | 0 | 0 | 105 | 0 |
 | mf | 285 | 0 | 0 | 0 | 0 | 285 | 0 |
-| nhh | 100 | 0 | 42 | 0 | 0 | 58 | 0 |
+| nhh | 343 | 0 | 262 | 0 | 23 | 58 | 0 |
 | nih | 6473 | 6426 | 0 | 44 | 6 | 0 | 5 |
 | nla | 5145 | 3524 | 0 | 0 | 1637 | 0 | 7 |
 | nmbu | 1331 | 0 | 0 | 0 | 0 | 1331 | 0 |
 | nmh | 39 | 0 | 39 | 0 | 0 | 0 | 0 |
 | nord | 8688 | 1568 | 0 | 146 | 6974 | 0 | 0 |
-| ntnu | 3757 | 410 | 0 | 2331 | 1135 | 0 | 12 |
+| ntnu | 7874 | 577 | 0 | 6267 | 1507 | 0 | 18 |
 | oslomet | 1996 | 0 | 0 | 0 | 1996 | 0 | 13 |
 | phs | 967 | 21 | 962 | 0 | 64 | 0 | 0 |
 | samas | 68 | 0 | 68 | 0 | 0 | 0 | 0 |
 | steiner | 100 | 0 | 96 | 0 | 0 | 4 | 0 |
 | uia | 19928 | 19920 | 0 | 0 | 635 | 0 | 498 |
-| uib | 13884 | 12213 | 0 | 152 | 1540 | 0 | 3 |
+| uib | 21633 | 19646 | 0 | 157 | 1855 | 0 | 6 |
 | uio | 5320 | 0 | 7 | 0 | 0 | 5313 | 0 |
 | uis | 145 | 12 | 0 | 0 | 133 | 0 | 0 |
 | uit | 31183 | 0 | 30826 | 0 | 1915 | 0 | 1775 |
@@ -223,28 +222,28 @@ All years, by institution:
 
 | Institution | Some year provisional | All | With students | With exam registrations and credits |
 |:---|:---|:---|:---|:---|
-| fhs | FALSE | 1053 / 3323 (32%) |  |  |
-| fjellhaug | FALSE | 0 / 277 (0%) |  |  |
-| himolde | FALSE | 48 / 100 (48%) | 43 / 59 (73%) | 42 / 55 (76%) |
+| fhs | FALSE | 1053 / 3323 (32%) | 759 / 1374 (55%) | 733 / 1223 (60%) |
+| fjellhaug | FALSE | 0 / 277 (0%) | 0 / 142 (0%) | 0 / 108 (0%) |
+| himolde | FALSE | 2346 / 4373 (54%) | 2143 / 2864 (75%) | 2087 / 2692 (78%) |
 | hiof | FALSE | 11864 / 24063 (49%) | 10499 / 17087 (61%) | 9609 / 14296 (67%) |
 | hivolda | FALSE | 4988 / 12913 (39%) | 4513 / 10386 (43%) | 3955 / 9006 (44%) |
-| hvl | FALSE | 17233 / 21818 (79%) | 14068 / 15344 (92%) | 12833 / 13585 (94%) |
+| hvl | FALSE | 17112 / 21818 (78%) | 13980 / 15344 (91%) | 12753 / 13585 (94%) |
 | inn | FALSE | 3908 / 14923 (26%) | 3216 / 11169 (29%) | 2972 / 10132 (29%) |
-| khio | FALSE | 0 / 100 (0%) | 0 / 88 (0%) | 0 / 79 (0%) |
+| khio | TRUE | 347 / 452 (77%) | 226 / 316 (72%) | 0 / 79 (0%) |
 | mf | FALSE | 26 / 311 (8%) | 25 / 199 (13%) | 22 / 167 (13%) |
-| nhh | FALSE | 0 / 100 (0%) | 0 / 49 (0%) | 0 / 49 (0%) |
+| nhh | TRUE | 432 / 775 (56%) | 169 / 261 (65%) | 0 / 49 (0%) |
 | nih | FALSE | 458 / 7000 (7%) | 410 / 4852 (8%) | 389 / 4291 (9%) |
 | nla | FALSE | 4332 / 9535 (45%) | 3513 / 6271 (56%) | 3149 / 5106 (62%) |
 | nmbu | FALSE | 12 / 1438 (1%) | 10 / 998 (1%) | 8 / 879 (1%) |
 | nmh | FALSE | 61 / 100 (61%) | 46 / 57 (81%) | 37 / 42 (88%) |
 | nord | FALSE | 10679 / 19459 (55%) | 8182 / 13181 (62%) | 7359 / 11484 (64%) |
-| ntnu | FALSE | 48817 / 52574 (93%) | 37537 / 39237 (96%) | 34335 / 35530 (97%) |
+| ntnu | FALSE | 61960 / 69836 (89%) | 47789 / 51664 (92%) | 43591 / 46614 (94%) |
 | oslomet | FALSE | 15643 / 17639 (89%) | 13201 / 13720 (96%) | 12103 / 12335 (98%) |
 | phs | FALSE | 170 / 1144 (15%) | 123 / 523 (24%) | 116 / 456 (25%) |
 | samas | FALSE | 0 / 68 (0%) | 0 / 37 (0%) | 0 / 8 (0%) |
 | steiner | FALSE | 15 / 125 (12%) | 13 / 70 (19%) | 5 / 45 (11%) |
 | uia | FALSE | 9497 / 29493 (32%) | 7387 / 20245 (36%) | 6708 / 17811 (38%) |
-| uib | FALSE | 14189 / 28081 (51%) | 11919 / 18248 (65%) | 10907 / 15646 (70%) |
+| uib | FALSE | 18357 / 40001 (46%) | 15519 / 26301 (59%) | 14178 / 22475 (63%) |
 | uio | FALSE | 47 / 5380 (1%) | 41 / 3139 (1%) | 32 / 2655 (1%) |
 | uis | FALSE | 1457 / 1602 (91%) | 1219 / 1329 (92%) | 957 / 1037 (92%) |
 | uit | FALSE | 36703 / 69992 (52%) | 29963 / 38036 (79%) | 26353 / 31788 (83%) |
@@ -426,7 +425,15 @@ Figures are in the tables above; the notes say why.
   two pages, MAR300 and MAR301): DBH’s offerings of 1994-2017 (some
   8 700) have no plan on the site. Some DBH courses have no page in the
   year’s listings (checked for 2025: most PhD courses, DRL and DRHS, and
-  several health master’s courses, MAK7xx; direct URLs answer 404)
+  several health master’s courses, MAK7xx; direct URLs answer 404). In
+  the pilot (2026-11-06), 56 of 100 sampled course-years have a page
+  (2018 10 of 25, 2019 16, 2022 16, 2025 14); the listings of 2022 and
+  2025 hold no page for the others (JUR216, PMP300, SCM410; SND102,
+  SNH102 and VIVO-2 only in 2022, ADM499 only in 2025)
+- A spring offering whose only page is the autumn before’s, for that
+  autumn alone, gets no plan (25 of the pilot’s 189 offerings; the
+  page’s plan ends the term before, `page_end_term`). One page, VPL023
+  spring 2019, is a page shell
 - A plan sits in a department folder DBH does not give, Norwegian or
   English tree; `resolve_urls_himolde_batch()` reads the folder listings
   (`docs/institutions.md`). An offering whose code the listings of its
@@ -434,9 +441,13 @@ Figures are in the tables above; the notes say why.
 - robots.txt disallows only `/vrtx`, which the harvest does not request
 - Read from `#vrtx-fs-emne-content`: the title, the facts list (credits,
   department, campus, language, level, duration) and the plan; not the
-  course coordinator, the timetable and reading-list links, the table of
-  contents’ heading and the FS fetch stamp. The programme list is in the
-  facts
+  course coordinator, a guest lecturer’s line or biography in the plan’s
+  text (“Lecturer:”, seminar courses), the timetable and reading-list
+  links, the reading-list widget (“Pensumoversikt” and the titles of the
+  course’s Leganto lists), the table of contents’ heading and the FS
+  fetch stamp. The programme list is in the facts. The reading list
+  itself is in Leganto: most plans’ “Pensum” holds only a link or a
+  notice, which is no `reading_list` section
 
 ------------------------------------------------------------------------
 
