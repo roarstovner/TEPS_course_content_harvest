@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- ntnu: 'Se engelsk versjon' pointer plans (421, 2019-2025) do not follow the English page; pointer emitted as sections (#495)
 - page_changes(): read only the changed pages' rows (changed_pages OOM-killed two builds 2026-11-09) (#524)
 - hvl: English-pointer pages kept as plans (widen english_page notice, then retry for the English pages) (#515)
 - Anonymizer: staff names under role labels (hiof Foreleser/Lecturer, uib Faglig ansvar/Hovedansvarlige/Innledere/Undervisere/Academic responsibility/Course coordinator, usn Course Owner/Lecturer) (#520)
