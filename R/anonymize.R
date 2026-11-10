@@ -454,18 +454,23 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
   ")(?i:e|er|ar|en)?(?:[ \\t]+(?i:er|var|i emnet))?:?|(?i:kontakt(?:e|er)? med|kontaktpersone?r? er))[ \\t]+",
   .names_regex
 )
-# A role heading over a line that names someone, also after blank lines and
+# A role heading over every line that names someone, also after blank lines and
 # without a colon: "Emneansvarlig\n\nKari Nordmann" (oslomet), "Emneansvarlig\nOla
-# Nordmann, <unit>" (uib), "Contact persons:\nKari Nordmann and Ola Dahl"
-# (uia), the name after a part or role label or a title ("Delemne <part>:
+# Nordmann, <unit>" (uib), a repeated heading over several names
+# ("Emneansvarlig\nEmneansvarlige:\n\nKari Nordmann\n\nProfessor Ola Dahl",
+# uib), "Contact persons:\nKari Nordmann and Ola Dahl" (uia), the name after a part or role label or a title ("Delemne <part>:
 # Kari Nordmann", "Master thesis coordinator: assistant professor Ola Dahl",
 # oslomet). The name must end the line or come before a comma, a full stop or
 # a bracket, so a committee, a unit or a sentence under the heading stays
 # ("The Programme Committee for ...", "Institutt for ...", uib).
+.role_heading_name_line <- paste0(
+  "[ \\t]*(?:[^\\n:]{1,60}:[ \\t]*)?(?!(?:The|Det|Den|De|Dei)[ \\t])", .names_regex,
+  "[ \\t]*(?:[,.(][^\\n]*)?(?:\\n|$)"
+)
 .role_heading_name_regex <- paste0(
-  "(?m)^[ \\t]*(?i:", paste(c(.staff_roles, "contact person", "course leader", "administrativt ansvarlig"), collapse = "|"),
-  ")(?i:e|er|ar|s)?[ \\t]*:?[ \\t]*\\n(?:[ \\t]*\\n)*[ \\t]*(?:[^\\n:]{1,60}:[ \\t]*)?",
-  "(?!(?:The|Det|Den|De|Dei)[ \\t])", .names_regex, "[ \\t]*(?:[,.(][^\\n]*)?(?:\\n|$)"
+  "(?m)^(?:[ \\t]*(?i:", paste(c(.staff_roles, "contact person", "course leader", "administrativt ansvarlig"), collapse = "|"),
+  ")(?i:e|er|ar|s)?[ \\t]*:?[ \\t]*\\n(?:[ \\t]*\\n)*)+",
+  .role_heading_name_line, "(?:(?:[ \\t]*\\n)*", .role_heading_name_line, ")*"
 )
 # uib's staff labels (PhD courses, law): "Faglig ansvar" over name lines,
 # with sub-labels, titles, units and blank lines between ("Faglig ansvar\n

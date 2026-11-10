@@ -889,6 +889,14 @@ test_that("usn approval block and name + leader-role lines lose the name", {
   expect_equal(an("uib", "Emneansvarlig\nOla Nordmann, Forskarskolen i klinisk medisin\nAdministrativt ansvarlig\nFakultetet"),
                "Administrativt ansvarlig\nFakultetet")
   expect_equal(an("uia", "Tekst.\nContact persons:\nKari Nordmann and Ola Dahl"), "Tekst.")
+  # every name line under the heading goes, with blank lines between, and a
+  # repeated heading (uib); a unit or a sentence after the names stays
+  expect_equal(an("uib", paste0("Innhold\nEmneansvarlig\nEmneansvarlige:\n\nKari Nordmann\n\nOla Dahl\n\n",
+                                "Anne-Kari Berg Hansen\n\nLæringsutbytte")), "Innhold\n\nLæringsutbytte")
+  expect_equal(an("uib", "Emneansvarlig\n\nKari Nordmann\nOla Dahl\n\nInstitutt for biovitenskap"),
+               "Institutt for biovitenskap")
+  expect_equal(an("uib", "Emneansvarlig\nKari Nordmann\nOla Dahl\nEmnet gir innsikt i læring."),
+               "Emnet gir innsikt i læring.")
   for (t in c("Emneansvarlig\nThe Programme Committee", "Emneansvarlig\nInstitutt for pedagogikk",
               "Emneansvarlig\nProgramstyret for nordisk", "Programansvarlig\nEmneansvarlig\nFagmiljøet i nordisk",
               "Sensor\n\nEkstern Sensor brukes jevnlig.")) {
