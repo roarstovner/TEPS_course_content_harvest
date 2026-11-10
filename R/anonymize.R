@@ -158,8 +158,17 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 .anon_hiof <- function(txt) {
   txt |>
     stringr::str_remove_all("(?:Sist hentet fra|Last updated from) FS[^\n]*") |>
-    # "Litteraturlista er sist oppdatert ...", "Litteraturliste sist oppdatert"
-    stringr::str_remove_all("(?m)^[ \\t]*Litteratur\\w*(?: er)? sist oppdater[^\n]*") |>
+    # "Litteraturlista er sist oppdatert ...", "Litteraturliste sist oppdatert":
+    # the stamp's sentence, with its date ("29.06.10.", "15.juni 2011.", "3.
+    # Desember 2015."), up to a full stop before a capital or the line's end,
+    # and a disclaimer after it ("Det tas forbehold om endringer før
+    # studiestart.", "Det kan komme endringer før semesterstart.", "Vil bli
+    # oppdatert før semesterstart."); not the
+    # sentence after them ("Kompendium for emnet selges ...")
+    stringr::str_remove_all(paste0("(?m)^[ \\t]*Litteratur\\w*(?: er)? sist oppdater",
+                                   "(?:\\.(?=[ \\t]*", .month_regex, ")|[^.\n]|\\.(?![ \\t]+\\p{Lu}|[ \\t]*(?:\\n|$)))*\\.?",
+                                   "(?:[ \\t]*(?:(?:Det (?:tas|kan (?:forekomme|komme))|Med|Forbehold)\\b[^\n]*?endring|Kan endres|Vil bli oppdatert)",
+                                   "(?:[^.\n]|\\.(?=[ \\t]*\\p{Ll}))*\\.?)?[ \\t]*")) |>
     # Strip "Emneansvarlig(e):" ("Course Leader:" on an English page) + name
     # lines until next "Heading:" line
     stringr::str_remove("(?m)^(?:Emneansvarlige?|Course [Ll]eaders?):\\s*\\n(?:(?![A-ZÆØÅ][\\w ]+:)[^\\n]*\\n?)*") |>
@@ -544,10 +553,12 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
   "prop\\.[ \\t]?\\d|innst\\.[ \\t]?\\d|rundskriv|rammeplan|læreplan|kunnskapsløftet|",
   "nasjonale retningslinjer|udir|konvensjon|forente nasjoner|regler|reglement)|NOU)")
 # The date stays when such a document is named up to 80 characters before it
-# on the same line. The guard goes after a date rule's first token: after the
-# whole date it looked back from the date's end and stopped at a line break
-# inside it; at the very start of a rule it ran at every character.
-.not_gov <- paste0("(?<!", .gov_doc_regex, "[^\\n]{0,80})")
+# on the same line, or at the end of the line above (also over a blank line)
+# when the date opens its line ("... Nettside: https://www.udir.no/.../rammeplan
+# \n\n(26.05.2017).", nla). The guard goes after a date rule's first token:
+# after the whole date it looked back from the date's end and stopped at a
+# line break inside it; at the very start of a rule it ran at every character.
+.not_gov <- paste0("(?<!", .gov_doc_regex, "[^\\n]{0,80}(?:(?:\\n[ \\t]{0,9}){1,2}[(\\[]?\\d{0,4})?)")
 # A date rule `first` + `rest` with the guard between them, run only where
 # the rest follows.
 .not_gov_rule <- function(first, rest) paste0(first, "(?=", rest, ")", .not_gov, rest)
@@ -567,10 +578,12 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 # 2026-10-19): the year a course was taken in ("gjennomført studieåret
 # 2019-2020", "ikke fullførte emnet i løpet av studieåret 2013/2014"), a year
 # and the ones after it ("avlagt studieåret 2013-2014 eller senere"), and an
-# exception for one year ("Exception for academic year 2020-2021: Spring.").
+# exception for one year ("Exception for academic year 2020-2021: Spring."),
+# and, like the semester a course starts from (.course_start), the year it is
+# first taught ("Første gang emnet undervises er studieåret 2025/26.", nmbu).
 # Guards after the range's first year.
 .condition_year <- paste0(
-  "(?<!(?i:(?:gjennomført|gjennomførte|avlagt|bestått|fullført|fullførte|tatt)[^\\n.]{0,60}",
+  "(?<!(?i:(?:gjennomført|gjennomførte|avlagt|bestått|fullført|fullførte|tatt|første gang)[^\\n.]{0,60}",
   "studieåret|exception for academic year)[ \\t]{0,3}\\d{4})")
 .or_later <- "(?![ \\t]*(?i:eller|or) (?i:senere|seinare|later|tidligere|tidlegare|earlier)\\b)"
 # A range in running text stays (decided 2026-11-02): one with a small-letter
@@ -579,14 +592,22 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 # or an edition, unless an academic-year word or a preposition stands before
 # it ("For studieåret 2019/20 er summen", "Fra 2026/2027 blir",
 # "Studiehåndbok 2023-2024 for litteratur") or "academic year" follows ("the
-# 2024-2025 academic year"). Guards before the range's first year.
+# 2024-2025 academic year"). So does, without such a word, a range that ends
+# a reference after a comma or stands in brackets before its title or source
+# ("i alderen 18-70 år, 2010-11", uis; "Kotel.org. (2016-17) The Western Wall
+# ...", hiof): a survey's or a web source's years; not one closing a line
+# ("Årsstudium i interkulturell kommunikasjon (2021-2022)", nla), or on a
+# reading list's or plan's line ("Litteraturliste for Kropp og natur del 2,
+# 2011/2012", hiof). Guards before the range's first year.
 .year_cue <- paste0(
   "(?i:studieår(?:et)?|skoleår(?:et)?|academic year|study year|school year|year|i|in|for|fra|frå|from|",
   "pensum(?:liste[n]?|lista)?|litteraturlist[ea]|studiehåndbok(?:a|en)?|handbook|kull|",
   "gjennomføring(?:en)?|tilbys ikke|during)")
+.year_range <- "\\d{4}\\s?[-–—/]\\s?\\d{2,4}"
 .running_text_year <- paste0(
-  "(?:(?<=\\b", .year_cue, "[ \\t]{1,3}\\(?)|(?!\\d{4}\\s?[-–—/]\\s?\\d{2,4}[ \\t]+",
-  "(?!(?i:og|and|eller|or|til|to|academic|study|school|studieår\\p{L}*)\\b)\\p{Ll}))")
+  "(?:(?<=\\b", .year_cue, "[ \\t]{1,3}\\(?)|(?!", .year_range, "[ \\t]+",
+  "(?!(?i:og|and|eller|or|til|to|academic|study|school|studieår\\p{L}*)\\b)\\p{Ll})",
+  "(?!(?<!(?i:litteratur|pensum|studieår|emneplan|studieplan)[^\\n]{0,80})(?<=,[ \\t]{0,3})", .year_range, "\\.?[ \\t]*(?:\\n|$)|(?<=\\()", .year_range, "\\)[.:,]?[ \\t]+[\\p{Lu}«\"“]))")
 
 # A season word, also inflected or in a compound: "høsten", "Vårsemesteret";
 # also a typo seen in a label ("Assessment Sprign 2026:", nord).
@@ -684,6 +705,18 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
   "((?<!\\p{L})(?i:godkjent|vedtatt|etablert|revidert|revisjon|foretatt|lagt inn|oppdatert|",
   "gjort tilgjengelig|sist endret)", .not_gov, "[^\\n.]{0,100}?)", .gap, "\\b", .long_dates_regex, .eol_stop)
 
+# A link's digits are part of its address, not a date, year or time
+# ("...arkiv%20(01.12.2016).pdf", oslomet; ".../Rapport_UDA_7.6.2011.pdf",
+# hiof), nor is a video's running time in brackets after it
+# ("https://www.youtube.com/watch?v=... (16:00)", nla): the date and time
+# rules see them as private-use characters, the letters stay, so a
+# government document named in a link still guards a date (.not_gov).
+.link_regex <- "(?:https?://|(?<![\\w.@/])www\\.)[^\\s<>\"]+(?:[ \\t]+\\(\\d{1,2}:\\d{2}(?::\\d{2})?\\))?"
+.digits <- "0123456789"
+.masked_digits <- intToUtf8(0xE000 + 0:9)
+.mask_link_digits <- function(txt) stringr::str_replace_all(txt, .link_regex, \(u) chartr(.digits, .masked_digits, u))
+.unmask_digits <- function(txt) chartr(.masked_digits, .digits, txt)
+
 .anon_generic <- function(txt) {
   txt |>
     # Remove "Sist hentet/henta fra/frå FS..." timestamp
@@ -713,6 +746,8 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     # Remove phone numbers: +47 XX XX XX XX, Tlf: XXXXXXXX, telefon: XX XX XX XX
     stringr::str_remove_all("(?i)(?:tlf|telefon)\\.?\\s*:?\\s*(?:\\+47\\s*)?\\d[\\d ]{6,}") |>
     stringr::str_remove_all("\\+47\\s*\\d[\\d ]{6,}") |>
+    # the digits of links are hidden from the date and time rules below
+    .mask_link_digits() |>
     # Remove Norwegian date-time format: "12. feb. 2026 02:50:04"
     stringr::str_remove_all("\\d{1,2}\\.\\s*(?:jan|feb|mar|apr|mai|jun|jul|aug|sep|okt|nov|des)\\.?\\s*\\d{4}\\s*\\d{2}:\\d{2}(?::\\d{2})?") |>
     # Date and year rules keep a government document's dates (.not_gov).
@@ -766,8 +801,11 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     # Remove dates: dd.mm.yyyy; not inside a path or number, not a
     # regulation's date ("forskrift 28.10.2020 nr. 2474"), and not a
     # reference's publication date after a comma ("Razsviet, 4.11.1923";
-    # "SSB, 07.06.2023,"); a range is one date ("27.05.2024 –31.05.2024")
-    stringr::str_remove_all(.not_gov_rule(paste0(.gap, "(?<![\\d./]|,[ \\t])\\d{1,2}"), paste0(
+    # "SSB, 07.06.2023,") or in brackets before its title or source ("Dann,
+    # Moshe (18.11.2014) Should Jews ...", "SSB (25.11.2016): SSB: ...");
+    # a range is one date ("27.05.2024 –31.05.2024")
+    stringr::str_remove_all(.not_gov_rule(paste0(.gap, "(?<![\\d./]|,[ \\t])(?!(?<=\\()\\d{1,2}\\.\\d{1,2}\\.\\d{4}\\)[.:,]?",
+                                                 "[ \\t]+[\\p{Lu}«\"“])\\d{1,2}"), paste0(
       "\\.\\d{1,2}\\.\\d{4}(?:[ \\t]*[-–][ \\t]*\\d{1,2}\\.\\d{1,2}\\.\\d{4})?",
       "(?![\\d/]|[ \\t]*nr\\.?[ \\t]*\\d)"))) |>
     # Remove years in administrative contexts only (content years like "etter 1945" preserved)
@@ -819,6 +857,7 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     # goes ("over to dager, fra kl. 09.00 til 15.00." -> "over to dager.")
     stringr::str_remove_all("(?m),[ \\t]*\001(?=[ \\t]*(?:[.,;:)]|$))") |>
     stringr::str_remove_all("\001") |>
+    .unmask_digits() |>
     # Brackets emptied by the removals above: "Meld. St. 16 ()", "by (3:00 p.m.)";
     # code such as "print()" has no space before and stays
     stringr::str_remove_all("[ \\t]+\\([ \\t]*\\)") |>

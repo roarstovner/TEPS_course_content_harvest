@@ -1340,3 +1340,33 @@ test_that("leftover admin dates: usn stamps, Leganto 'Journal', uia, uit, hiof, 
   # hiof
   expect_match(an("hiof", "hver ekskursjon vil i 2007/2008 koste om lag NOK 200"), "vil koste om lag NOK 200")
 })
+
+test_that("reading lists keep their link digits, reference dates and ranges; admin dates still go", {
+  an <- function(inst, x) anonymize_text(inst, x, .progress = FALSE)
+  # a link's digits: a date in a file name, a running time after a video link
+  u <- "https://www.arkivverket.no/a/download/4f704db6:9ca43b8a/Noark5v4%20Standard%20(01.12.2016).pdf"
+  expect_equal(an("oslomet", paste0("Riksarkivet. (2016). Noark 5 Standard.", u, "\nEksamen 12.12.2019 kl. 09:00")),
+               paste0("Riksarkivet. (2016). Noark 5 Standard.", u, "\nEksamen"))
+  expect_match(an("hiof", "Rapport http://x.no/wp-content/uploads/2016/06/Rapport_UDA_7.6.2011.pdf"), "Rapport_UDA_7.6.2011.pdf", fixed = TRUE)
+  expect_equal(an("nla", "online video https://www.youtube.com/watch?v=2tOF698MRRw (16:00)\nMøte (16:00)"),
+               "online video https://www.youtube.com/watch?v=2tOF698MRRw (16:00)\nMøte")
+  # a date in brackets before a reference's title or source
+  expect_equal(an("hiof", "Dann, Moshe (18.11.2014) Should Jews visit the Temple Mount?\nSSB (25.11.2016): SSB: Trus-\nInnlevering (01.03.2020)."),
+               "Dann, Moshe (18.11.2014) Should Jews visit the Temple Mount?\nSSB (25.11.2016): SSB: Trus-\nInnlevering.")
+  # a government document's date on the line after it, over a blank line; not further down
+  expect_equal(an("nla", "Rammeplan. Nettside: https://www.udir.no/laring-og-trivsel/rammeplan\n\n(26.05.2017).\n\nInnlevering\n12.05.2017"),
+               "Rammeplan. Nettside: https://www.udir.no/laring-og-trivsel/rammeplan\n\n(26.05.2017).\n\nInnlevering")
+  # a range that ends a reference after a comma or stands in brackets stays, an academic year goes
+  expect_equal(an("uis", "kvinner i Norge i alderen 18-70 år, 2010-11\nKotel.org. (2016-17) The Western Wall\nStudieplan 2019-20\nLitteraturliste (2016-17)\nfor studieåret (2018-19)\nÅrsstudium i kommunikasjon (2021-2022)"),
+               "kvinner i Norge i alderen 18-70 år, 2010-11\nKotel.org. (2016-17) The Western Wall\nStudieplan\nLitteraturliste\nfor studieåret\nÅrsstudium i kommunikasjon")
+  # hiof: the reading list's update stamp goes, the sentence after it stays
+  expect_equal(an("hiof", paste0("Litteraturliste er sist oppdatert 3. desember 2015. Kompendium for emnet selges i bokhandel\n",
+                                 "Litteraturlista er sist oppdatert 15.01.2016\n",
+                                 "Litteraturlisten er sist oppdatert 15.juni 2011. Med forbehold om endringer fram til semesterstart. Samling 1\n",
+                                 "Litteraturlista er sist oppdatert 29.06.10. Det tas forbehold om endringer før studiestart.\nPensum")),
+               "Kompendium for emnet selges i bokhandel\n\nSamling 1\n\nPensum")
+  expect_equal(an("hiof", "Litteraturliste for Kropp og natur del 2, 2011/2012\nX"), "Litteraturliste for Kropp og natur del 2,\nX")
+  # the academic year a course is first taught stays, like its start semester
+  expect_equal(an("nmbu", "Første gang emnet undervises er studieåret 2025/26.\nEmnet undervises studieåret 2025/26."),
+               "Første gang emnet undervises er studieåret 2025/26.\nEmnet undervises studieåret.")
+})

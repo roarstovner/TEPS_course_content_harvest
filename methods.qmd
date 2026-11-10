@@ -1564,6 +1564,33 @@ lower-case role ("Ekstern sensor er <name>"), which still loses the name.
 *Consequence:* no page text of the built partitions changes; the one DBH
 course name keeps its title and is no longer flagged. *Since:* 2026-11-04.
 
+**Reference dates and links keep their numbers.** A link's digits are part
+of its address, not a date or a time: the date and clock rules skip them
+(".../Rapport_UDA_7.6.2011.pdf", "...arkiv%20(01.12.2016).pdf"), and so does
+a video's running time in brackets after its link ("https://www.youtube.com/...
+(16:00)"). A reference's publication date in brackets before its title or
+source stays, as one after a comma already did ("Dann, Moshe (18.11.2014)
+Should Jews ...", "SSB (25.11.2016): ..."), and so does a consecutive-year
+range that ends a reference after a comma or stands in brackets before a
+title ("i alderen 18-70 år, 2010-11", "Kotel.org. (2016-17) The Western
+Wall"), unless an academic-year word stands before it or the line is a
+reading list's or plan's heading line. A government document's date on the
+line under its link stays ("…/rammeplan\n\n(26.05.2017)."). The year a
+course is first taught stays, like its start semester ("Første gang emnet
+undervises er studieåret 2025/26."). HiØ's reading-list update stamp loses
+only its sentence and a change disclaimer right after it, not the plan text
+after them on the same line. *Why:* the anonymization audit of 2026-11-08
+found these rules cut reading-list references, leaving "()" or broken file
+names, and took plan text ("Primærlitteratur:", "Totalt ca. 2100 sider")
+that shared HiØ's stamp line. *Rejected:* keeping every bracketed date or
+range (an offering year closing a line, "Årsstudium … (2021-2022)", is
+administrative); masking whole links (a government word in a link must
+still guard a date). *Consequence:* in samples of raw pages (HEAD against
+the change, 2026-11-10) every change keeps text and none removes more: HiØ
+32 of 100 plans (reference dates, plan text and some reading-list notices
+from the stamp line), UiS 2 of 100, NLA 2 of 100, NMBU 1 of 100, OsloMet 0
+of 150; no name or administrative date returns. *Since:* 2026-11-10.
+
 ## Sections
 
 ```{r}
