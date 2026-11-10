@@ -11,9 +11,9 @@ in `course_plan_spec.md`; how to run the pipeline is in `README.md` and
 decision changes what the data mean, add or update its entry here; each
 release tag freezes this file with the data.
 
-Current data, the teacher-ed frame (below): 41 025 offerings (DBH course
-× year × semester) at 19 institutions, 26 505 of them with a plan, and
-14 727 unique plans from 18 institutions (none from Samas, below).
+Current data, the teacher-ed frame (below): 41 761 offerings (DBH course
+× year × semester) at 19 institutions, 27 222 of them with a plan, and
+15 046 unique plans from 18 institutions (none from Samas, below).
 
 ## Population and sampling frame
 
@@ -162,9 +162,9 @@ frame, so they can be refreshed alone, and which years are provisional
 follows from the counts’ date, not the course list’s. A course-year of
 the course list that the counts lack had no students (in a provisional
 year: none yet). *Rejected:* one date for both (the counts would wait
-for the next course list, or force one). In the teacher-ed frame: 21 722
-course-years, 16 882 with a plan (78 %); with students 16 784, of them
-14 257 with a plan (85 %); with both 13 832, of them 12 041 with a plan
+for the next course list, or force one). In the teacher-ed frame: 22 110
+course-years, 17 263 with a plan (78 %); with students 16 986, of them
+14 458 with a plan (85 %); with both 13 832, of them 12 041 with a plan
 (87 %). Per institution and year: `data/data_notes.md`, “Coverage over
 course-years that had students”. *Since:* 2026-11-04.
 
@@ -907,7 +907,7 @@ confirmed against the programme description. *Since:* 2026-10-19.
 
 **A plan is a unique anonymized text per institution and course code**
 (`plan_content_id`, a hash of the normalized text). Offerings with the
-same text share a plan: 26 505 offerings have 14 727 plans. *Why:*
+same text share a plan: 27 222 offerings have 15 046 plans. *Why:*
 consecutive years and both semesters mostly repeat the same text.
 *Consequence:* the id changes whenever cleaning changes the text, so
 coding is tied to a frozen release and carried to later releases with a
@@ -955,9 +955,9 @@ year before, so reading it would remove plans in force (checked
 courses, below). *Consequence:* 174 plans left the data on 2026-10-06
 (UiA 95, UiB 27, OsloMet 26, Nord 11, HVL 10, UiT 4, NTNU 1). With pages
 that are not the plan at all (INN’s course search page, OsloMet’s error
-page) and later versions (HiOF, INN, Nord, UiS), 2 288 offerings have
+page) and later versions (HiOF, INN, Nord, UiS), 2 291 offerings have
 page text but no plan (hiof 2, inn 1108, nord 819, oslomet 67, uia 95,
-uib 76, uis 97, uit 24). *Since:* 2026-10-06; heading lists (UiB NOLI216
+uib 79, uis 97, uit 24). *Since:* 2026-10-06; heading lists (UiB NOLI216
 and NOSP216, autumn 2018) from 2026-10-07; NTNU pages whose only section
 was the exam tab from 2026-10-12 to 2026-10-13, when the tab came back
 (20 plans, 70 offerings). INN later versions from 2026-10-07: 1,077 INN
@@ -1627,7 +1627,7 @@ and is no longer flagged. *Since:* 2026-11-04.
 mapped through one heading table (`R/section_heading_map.R`): course
 content (99 % of plans), learning outcomes (98 %), assessment (98 %),
 teaching methods (94 %), coursework requirements (93 %), prerequisites
-(53 %) and reading list (25 %). Where a section is missing, the coders
+(53 %) and reading list (27 %). Where a section is missing, the coders
 use the whole plan.
 
 **Coursework requirements are kept apart from assessment:** arbeidskrav
