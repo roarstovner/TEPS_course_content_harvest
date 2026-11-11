@@ -385,6 +385,16 @@ test_that("USN: 'Godkjent av' with the approver's name and title stripped", {
   expect_match(result, "Litteratur")
 })
 
+test_that("USN: the table of contents goes from course_plan up to its first entry's heading", {
+  toc <- "Emneplan for Norsk 1\n\nNO1\n\nInnholdsfortegnelse\n\nLæringsutbytte\nVurdering\n\nLæringsutbytte\n\nKan ting.\n\nVurdering\nEksamen."
+  expect_equal(anonymize_text("usn", toc), "Emneplan for Norsk 1\n\nNO1\n\nLæringsutbytte\n\nKan ting.\n\nVurdering\nEksamen.")
+  en <- "Table of contents\nLearning outcome\n\nLearning outcome\nKnows things."
+  expect_equal(anonymize_text("usn", en), "Learning outcome\nKnows things.")
+  # without the repeat it is no table of contents: the text stays
+  s <- "Innholdsfortegnelse\n\nLæringsutbytte\n\nKan ting."
+  expect_equal(anonymize_text("usn", s), s)
+})
+
 # --- HiOF ---
 
 test_that("HiOF: Sist hentet fra FS removed", {

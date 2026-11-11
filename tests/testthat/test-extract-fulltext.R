@@ -175,3 +175,10 @@ test_that("nmbu: the link label to the AI categories goes, text with a link stay
     Her finner du KI-kategoriene beskrevet<!-- -->.</a></p><p>Se <a href='https://nmbu.no/x#kikategori'>reglene</a>.</p></div></div>"
   expect_equal(.blocks_text(page_blocks(html, NA, cfg)), "Full bruk av KI.\n\nSe reglene.")
 })
+
+test_that("hiof: the table of contents' heading goes, the plan's headings stay", {
+  cfg <- .block_cfg(get_institution_config("hiof"))
+  html <- "<div id='vrtx-fs-emne-content'><h1>Emne</h1><h2 class='vrtx-toc-header'>Innholdsfortegnelse</h2>
+    <h2>Læringsutbytte</h2><p>Kan ting.</p></div>"
+  expect_equal(.blocks_text(page_blocks(html, NA, cfg)), "Emne\nLæringsutbytte\n\nKan ting.")
+})

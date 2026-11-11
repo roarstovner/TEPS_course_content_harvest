@@ -514,18 +514,12 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
     current <- "course_content"
     out$add("heading", "", current)
   }
-  # Skip a table of contents (usn): from its title (.toc_titles) to where
-  # its first entry repeats as the real heading.
-  toc <- which(trimws(lines) %in% .toc_titles)[1]
-  toc_heads <- character()
-  if (!is.na(toc)) {
-    entries <- which(!is_blank & seq_along(lines) > toc)
-    body <- entries[-1][trimws(lines[entries[-1]]) == trimws(lines[entries[1]])][1]
-    if (!is.na(body)) {
-      toc_heads <- trimws(lines[entries[entries < body]])
-      lines <- lines[-(toc:(body - 1))]
-      is_blank <- is_blank[-(toc:(body - 1))]
-    }
+  # Skip a table of contents (usn, .toc_lines()); its entries are the headings.
+  toc <- .toc_lines(lines, is_blank)
+  toc_heads <- trimws(lines[toc][!is_blank[toc]][-1])
+  if (length(toc)) {
+    lines <- lines[-toc]
+    is_blank <- is_blank[-toc]
   }
 
   drops <- with(section_heading_patterns, pattern[section == ".drop" & exact])
@@ -575,6 +569,18 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
 # lines before a table of contents (usn: title, code, credits, language,
 # unit).
 .toc_titles <- c("Innholdsfortegnelse", "Table of contents")  # usn English pages
+
+# The lines of a table of contents (usn): from its title (.toc_titles) to
+# where its first entry repeats as the real heading; none without that repeat.
+# The text reader takes its entries as the headings; course_plan drops it
+# (.anon_usn()).
+.toc_lines <- function(lines, is_blank = !nzchar(trimws(lines))) {
+  toc <- which(trimws(lines) %in% .toc_titles)[1]
+  if (is.na(toc)) return(integer())
+  entries <- which(!is_blank & seq_along(lines) > toc)
+  body <- entries[-1][trimws(lines[entries[-1]]) == trimws(lines[entries[1]])][1]
+  if (is.na(body)) integer() else toc:(body - 1)
+}
 
 .text_header <- function(lines, cfg) {
   head <- utils::head(lines, 40)

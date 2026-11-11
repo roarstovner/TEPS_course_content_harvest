@@ -279,6 +279,11 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 }
 
 .anon_usn <- function(txt) {
+  # the table of contents, navigation (.toc_lines(); the text reader still
+  # takes its headings from extracted_text)
+  lines <- stringr::str_split_1(txt, "\n")
+  toc <- .toc_lines(lines)
+  if (length(toc)) txt <- paste(lines[-toc], collapse = "\n")
   txt |>
     # the "Godkjent emneplan" ("Approved course plan") block: approval
     # stamps, one per line, up to a blank line ("24.11.21 Kari Nordmann,
