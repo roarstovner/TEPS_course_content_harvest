@@ -22,7 +22,7 @@ source("R/utils.R")                 # offering_key(), pilot_file()
 # keep the two in sync.
 CANONICAL_SECTIONS <- c("course_content", "learning_outcomes", "teaching_methods",
                         "assessment", "coursework_requirements", "prerequisites",
-                        "reading_list")
+                        "reading_list", "practice")
 
 AUDIT_CHECKS <- list(
   sections = list(

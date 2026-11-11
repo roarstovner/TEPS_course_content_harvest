@@ -1,7 +1,8 @@
 # section_codebook.yml
 #
-# Coding instrument for the seven canonical sections of a Norwegian course
-# plan (emnebeskrivelse / emneplan). Two uses:
+# Coding instrument for the eight canonical sections of a Norwegian course
+# plan (emnebeskrivelse / emneplan). `practice` overlaps the others: its text
+# is also in the section it belongs to (mostly teaching_methods). Two uses:
 #
 #   1. NOW — a shared *rubric*: the section definitions below give the QA
 #      review agents one consistent, cross-institution standard for what each
@@ -28,10 +29,10 @@ schema_version: 1
 title: "Norwegian Course Plan Section Codebook"
 version: "0.1.0"
 description: >
-  Extracts the verbatim text of seven canonical sections from a Norwegian
+  Extracts the verbatim text of eight canonical sections from a Norwegian
   higher-education course plan (emnebeskrivelse) — course content, learning
   outcomes, teaching methods, assessment, prerequisites, coursework
-  requirements, and reading list. Definitions are harmonised across
+  requirements, reading list, and practice (which overlaps the others). Definitions are harmonised across
   institutions so the same canonical section means the same thing whether the
   source is UiO, HiØf, NTNU, or any other Norwegian institution. This
   instrument lifts text only; typed coding of that text is a later step.
@@ -55,7 +56,9 @@ prompt:
       list (for list-valued variables) or null (for the single-valued
       variable). Do NOT invent or infer content that is not stated.
     - Assign each piece of text to the ONE canonical section it belongs to by
-      meaning, NOT by the heading the institution happened to use. Institutions
+      meaning, NOT by the heading the institution happened to use. The one
+      exception is `practice`: text under the plan's own practice heading is
+      also copied there. Institutions
       use different and sometimes misleading headings; the definitions below
       are the authority, not the source headings.
     - Pay special attention to the assessment vs. coursework-requirements
@@ -193,6 +196,23 @@ variables:
       inventing.
     type: text
     multiple: true
+    group: descriptive
+
+  # ── practice ────────────────────────────────────────────────────────────────
+  - name: practice
+    label: "Practice (praksis)"
+    description: >
+      An overlay: a faithful copy of the text under the plan's own heading for
+      practicum or placement ("Praksis", "Faget i praksis", "Gjennomføring av
+      praksis", "Practice", "Supervised professional training"; OsloMet's
+      Fagplan parts "Praksistilknytning" and "Praksisopplæring"). The same
+      text ALSO stays in the section it belongs to (usually
+      `teaching_methods`). Exclude labels with a bare value ("Praksisstudier:
+      Ja"), pointers alone ("se egen praksisplan"), running text about
+      practice under other headings, and passed practice as a condition for
+      the exam (`coursework_requirements`). Return as a single string.
+    type: text
+    required: false
     group: descriptive
 
 groups:

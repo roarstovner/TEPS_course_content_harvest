@@ -1,12 +1,12 @@
 # Check: sections
 
 Audits **section extraction**: whether `R/extract_sections.R` splits each
-course plan into the seven canonical sections correctly.
+course plan into the eight canonical sections correctly.
 
 - **Default model:** `sonnet`
 - **Audited output:** `data/processed/plan_sections.RDS` (one row per plan × section, cut from the page of the plan's `source_course_id`)
 - **Ground truth:** the full anonymized `course_plan` (`data/interim/course_offerings_full.RDS`)
-- **Rubric:** `section_codebook.yml` (repo root) — the definitions of the seven
+- **Rubric:** `section_codebook.yml` (repo root) — the definitions of the eight
   sections. It is the authority, not the headings the institution uses.
   Where a section's line runs (assessment design vs. logistics, notices
   about the assessment) is set by `course_plan_spec.md`, "The sections".
@@ -44,12 +44,15 @@ with the full plan and ask: is every section's text **correct** (belongs to
 that section by the codebook's definition), **complete** (nothing cut off or
 dropped), and **clean** (no admin boilerplate, navigation or exam logistics)?
 Was any section present in the plan **not extracted at all**?
+`practice` overlaps: the text under a practice heading is also in the section
+that heading maps to (mostly `teaching_methods`), so the same text in both is
+not a `duplicate`.
 
 ### `target`
 
-One of the seven canonical sections (`course_content`, `learning_outcomes`,
+One of the eight canonical sections (`course_content`, `learning_outcomes`,
 `teaching_methods`, `assessment`, `coursework_requirements`, `prerequisites`,
-`reading_list`), or `cross_section` (the problem spans several sections), or
+`reading_list`, `practice`), or `cross_section` (the problem spans several sections), or
 `all`.
 
 ### `error_type`

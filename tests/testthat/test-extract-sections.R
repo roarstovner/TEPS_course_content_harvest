@@ -327,6 +327,26 @@ test_that("the Fagplan's coursework rules join a coursework section of its own",
   }
 })
 
+test_that("the Fagplan's practice parts make the practice section, pointers do not", {
+  html <- "<main><ul>
+    <li><h2>Fagplan</h2><div><p><strong>Praksistilknytning</strong></p><p>Studentene prøver ut kart i praksis.</p>
+      <p><strong>Praksisopplæring</strong></p><p>Praksisopplæring er nærmere beskrevet i programplanen.</p>
+      <p><strong>Skikkethetsvurdering</strong></p><p>Studenten vurderes gjennom hele studiet.</p></div></li>
+    <li><h2>Innhold</h2><div><p>Kart og klima.</p></div></li></ul></main>"
+  cfg <- c(html_cfg("p"), list(pointer = list(
+    heading = "Fagplan", lead = "Fagplanen sier:",
+    add = list(practice = c("Praksistilknytning", "Praksisopplæring")))))
+  s <- sections_of(html, cfg)
+  expect_equal(s[["practice"]], "Fagplanen sier:\nStudentene prøver ut kart i praksis.")
+  expect_equal(s[["course_content"]], "Kart og klima.")
+  # only the pointer: no practice
+  ptr <- sub("Studentene prøver ut kart i praksis.", "Se programplanen.", html, fixed = TRUE)
+  expect_false("practice" %in% names(sections_of(ptr, cfg)))
+  # a page whose sections only point to the Fagplan gets none (practicum courses)
+  shell <- sub("Kart og klima.", "Se fagplanen.", html, fixed = TRUE)
+  expect_false("practice" %in% names(sections_of(shell, cfg)))
+})
+
 test_that("admission text is dropped and h3 prerequisites are kept (uio)", {
   html <- "<main>
     <h2>Opptak til emnet</h2>
@@ -768,6 +788,59 @@ test_that("practicum headings are teaching methods", {
   expect_equal(match_heading_to_section("Gjennomføring av praksis"), "teaching_methods")
   # exact rows only: other headings that mention praksis are unchanged
   expect_true(is.na(match_heading_to_section("Praksisrapport")))
+})
+
+test_that("text under a practice heading is also the practice section", {
+  html <- "<main><h2>Innhold</h2><p>Geometri.</p>
+    <p><em>Faget i praksis</em>I praksis planlegger studentene en økt.</p>
+    <p>Studentene observerer.</p>
+    <p>Arbeidskrav</p><p>To innleveringer.</p>
+    <h2>Praksis</h2><p>Tre uker praksis i 2. semester.</p>
+    <h2>Vurdering</h2><p>Skriftlig eksamen.</p></main>"
+  s <- sections_of(html, html_cfg("p"))
+  expect_equal(s[["practice"]], paste(
+    "I praksis planlegger studentene en økt.\nStudentene observerer.",
+    "Tre uker praksis i 2. semester.", sep = "\n\n"))
+  # the text stays in teaching methods; other sections are unchanged
+  expect_match(s[["teaching_methods"]], "^I praksis planlegger.*Tre uker praksis i 2\\. semester\\.$")
+  expect_equal(s[["coursework_requirements"]], "To innleveringer.")
+  expect_equal(s[["assessment"]], "Skriftlig eksamen.")
+})
+
+test_that("practice: a Praksis line in teaching methods, oslomet's headings, no pointers or labels", {
+  # uit: "Praksis" as a paragraph of the teaching methods
+  html <- "<main><h2>Undervisning og pensum</h2><p>Forelesninger.</p>
+    <p>Praksis</p><p>Fire uker høstpraksis med prosjektarbeid.</p>
+    <h3>Pensum</h3><p>Bok.</p></main>"
+  s <- sections_of(html, html_cfg("h3"))
+  expect_equal(s[["practice"]], "Fire uker høstpraksis med prosjektarbeid.")
+  expect_equal(s[["teaching_methods"]], "Forelesninger.\nFire uker høstpraksis med prosjektarbeid.")
+  expect_equal(s[["reading_list"]], "Bok.")
+  # a pointer alone is no practice section
+  html <- "<main><h2>Undervisning og pensum</h2><p>Forelesninger.</p>
+    <p>Praksis</p><p>For nærmere informasjon om praksis, se egen praksisplan.</p></main>"
+  expect_false("practice" %in% names(sections_of(html, html_cfg("h3"))))
+  # nor a line that says there is none or points to the practice plan, which
+  # stays in teaching methods (hiof, nla, nord, usn, oslomet, uit)
+  for (none in c("Det er ingen veiledet praksis i emnet.", "Det er ikkje knytt praksis til emnet.",
+                 "Ingen praksis.", "Se praksisplan for MGLU5.",
+                 "Studentar som tar emnet som ein del av grunnskulelærerutdanning 1-7 følgjer eigen praksisplan.",
+                 "For studenter i grunnskolelærerutdanningen: Se plan for praksisstudiet i grunnskolelærerutdanningen for trinn 5-10.",
+                 "Se Kompetanseguiden og emnebeskrivelse for praksis 1. studieår", "Fremgår av studieprogramplan.",
+                 "Se egen emneplan for praksis for en nærmere beskrivelse.", "Det er ingen praksisopplæring knyttet til emnet.",
+                 "For info om praksis se egen praksisplan.")) {
+    s <- sections_of(sprintf("<main><h2>Praksis</h2><p>%s</p></main>", none), html_cfg())
+    expect_false("practice" %in% names(s))
+    expect_equal(s[["teaching_methods"]], none)
+  }
+  # an amount with a pointer is practice
+  s <- sections_of("<main><h2>Praksis</h2><p>Studenten har to uker praksis, se Plan for praksis.</p></main>", html_cfg())
+  expect_equal(s[["practice"]], "Studenten har to uker praksis, se Plan for praksis.")
+  # a label ("Praksisstudier: Ja") or a heading that only mentions praksis is not
+  # practice, nor a Praksis line outside teaching methods (an exam row)
+  html <- "<main><h2>Praksisstudier</h2><p>Ja</p><h2>Praksisrapport</h2><p>Rapport.</p>
+    <h2>Vurdering</h2><p>Praksis</p><p>Bestått/ikke bestått.</p></main>"
+  expect_false("practice" %in% names(sections_of(html, html_cfg())))
 })
 
 test_that("resit heading variants are dropped", {

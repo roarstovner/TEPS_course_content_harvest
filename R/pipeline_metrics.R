@@ -28,7 +28,8 @@ METRICS_SNAPSHOT <- c(all = "tests/snapshots/pipeline_metrics_all.csv",
 #'   metrics), `metric`, `value`. Metrics named n_* are counts (a plan is a
 #'   plan_content_id + course_code); median_chars is the median length of
 #'   `course_plan` or of the section text; pct_text_in_sections is the median
-#'   share (%) of a plan's text that its sections hold.
+#'   share (%) of a plan's text that its sections hold, without the overlay
+#'   section practice, whose text another section holds too.
 pipeline_metrics <- function(offerings, sections = NULL) {
   has <- function(x) !is.na(x) & nzchar(x)
   course_years <- offerings |>
@@ -41,6 +42,7 @@ pipeline_metrics <- function(offerings, sections = NULL) {
                                section = character(), text = character())
   }
   in_sections <- sections |>
+    dplyr::filter(section != "practice") |>
     dplyr::group_by(institution, source_course_id) |>
     dplyr::summarise(chars = sum(nchar(text)), .groups = "drop") |>
     dplyr::inner_join(dplyr::select(offerings, source_course_id = course_id, course_plan),

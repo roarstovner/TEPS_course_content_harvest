@@ -20,7 +20,8 @@ SECTION_LABELS <- c(
   assessment              = "Vurdering",
   coursework_requirements = "Arbeidskrav",
   prerequisites           = "Forkunnskaper",
-  reading_list            = "Pensum"
+  reading_list            = "Pensum",
+  practice                = "Praksis"
 )
 
 #' Pre-lowercase every searchable text once

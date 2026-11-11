@@ -2,7 +2,7 @@
 
 This spec says which parts of a course plan's web page (or PDF) go into the
 published text: `course_plan`, the whole plan (`data/processed/course_plans.RDS`),
-and the seven sections cut from it (`data/processed/plan_sections.RDS`). Every
+and the eight sections cut from it (`data/processed/plan_sections.RDS`). Every
 rule in the pipeline that keeps or removes text must fit it. The reasons and
 the effect of each decision, with numbers, are in `methods.md` ("What the text
 holds" and the entries it points to). Which code mechanism does what is in
@@ -45,14 +45,14 @@ Every part of a plan's page is one of these:
    went? If in doubt, it is plan text.
 3. **Plan text** is everything else on the page, and `course_plan` keeps it.
    That holds when the text is repeated in every plan of an institution (stock
-   notices, admission rules) and when it belongs to none of the seven
+   notices, admission rules) and when it belongs to none of the eight
    sections (title, facts box, admission, workload, course evaluation).
 4. **Not a plan:** a page with no plan text about the course gives its
    offering no plan. Such pages are error pages, search pages, a later
    version of the plan shown in place of the requested one, a page that says
    the plan is on the English page (which is read instead, also when the page
    has an exam tab), and page shells:
-   pages with no text about any of the seven sections below, only a title, a
+   pages with no text about any of the eight sections below, only a title, a
    facts box, headings, placeholders, or plan text about no section (a
    credit-overlap box, a programme list). A page is a shell when no section
    can be cut from it and its plan text without the title and facts box is
@@ -62,11 +62,12 @@ Every part of a plan's page is one of these:
 
 ## The sections
 
-The seven sections are defined in `section_codebook.yml`: `course_content`,
+The eight sections are defined in `section_codebook.yml`: `course_content`,
 `learning_outcomes`, `teaching_methods`, `assessment`,
-`coursework_requirements`, `prerequisites` and `reading_list`. A section holds
-the plan text about its part, whatever heading the page puts it under. Plan
-text about no part stays only in `course_plan`. Where the line runs:
+`coursework_requirements`, `prerequisites`, `reading_list` and `practice`. A
+section holds the plan text about its part, whatever heading the page puts it
+under. Plan text about no part stays only in `course_plan`. The first seven do
+not overlap; `practice` does (below). Where the line runs:
 
 - **Assessment** holds the assessment design: what is assessed and how. That
   is the form, parts and weights, duration, individual or group work, the
@@ -91,6 +92,22 @@ text about no part stays only in `course_plan`. Where the line runs:
   in no section). A sentence that names both stays whole
   ("Opptak til femårig lektorutdanning og beståtte eksamener i henhold til
   forskrift.").
+- **Practice** holds the text under a practice heading of its own
+  ("Praksis", "Faget i praksis", "Gjennomføring av praksis", "Practice",
+  "Supervised professional training"; UiT's "Praksis" line inside the
+  teaching methods), and OsloMet's "Praksistilknytning" and
+  "Praksisopplæring" in the subject's Fagplan, after the lead "Fagplanen
+  sier:". It overlaps: the same text stays in the section it was in
+  (mostly teaching methods, where by the codebook practicum belongs), so
+  section lengths summed per plan count it twice. Not practice: a label with
+  a bare value ("Praksisstudier: Ja"), a heading that only mentions practice
+  ("Praksisrapport", NTNU's exam rows), a pointer alone ("For nærmere
+  informasjon om praksis, se egen praksisplan.", "Praksisopplæring er nærmere
+  beskrevet i programplanen."), a line that says there is none ("Det er
+  ingen veiledet praksis i emnet.", which stays in teaching methods), and
+  passed practice as a condition for the
+  exam, which stays in coursework requirements. Running text about practice
+  under another heading is in that section only.
 - A part whose only text says that it is empty or elsewhere is not a section
   ("Ingen", "Ingen utover opptakskravet.", "-", "Se fagplanen.", a pointer to
   Leganto). A pointer to another

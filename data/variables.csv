@@ -47,5 +47,5 @@ plan_sections,plan_content_id,plan_content_id,character,derived,As in course_pla
 plan_sections,institution,institution,character,derived,As in course_offerings.
 plan_sections,course_code,Emnekode,character,derived,As in course_offerings.
 plan_sections,source_course_id,source_course_id,character,derived,As in course_plans.
-plan_sections,section,section,character,derived,"One of seven sections (section_codebook.yml): course_content, learning_outcomes, prerequisites, teaching_methods, coursework_requirements, assessment, reading_list."
+plan_sections,section,section,character,derived,"One of eight sections (section_codebook.yml): course_content, learning_outcomes, prerequisites, teaching_methods, coursework_requirements, assessment, reading_list, and practice, which overlaps: its text is also in another section (mostly teaching_methods), so section lengths per plan count it twice."
 plan_sections,text,text,character,"harvest, anonymized","The section's text, anonymized."

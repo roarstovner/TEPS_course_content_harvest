@@ -8,14 +8,17 @@ The pipeline splits each course plan into its parts and writes
 (`plan_content_id`, `institution`, `course_code`, `source_course_id`,
 `section`, `text`), keyed like `course_plans.RDS`. A plan’s sections are
 cut from the page of `source_course_id`, the offering whose text the
-plan keeps, so they match its `course_plan`. The seven sections are
+plan keeps, so they match its `course_plan`. The eight sections are
 `course_content`, `learning_outcomes`, `teaching_methods`, `assessment`,
-`coursework_requirements`, `prerequisites` and `reading_list`. Section
-text is anonymized with the same `anonymize_text()` as `course_plan`:
-sections are cut from the raw `html`/`extracted_text`, so this step must
-keep anonymizing. Admission text, exam logistics and placeholder rows
-such as “Se fagplanen.” are left out. What a section holds and what it
-leaves out is set by `course_plan_spec.md`.
+`coursework_requirements`, `prerequisites`, `reading_list` and
+`practice`. `practice` is an overlay: its text is also in another
+section (mostly `teaching_methods`), so section lengths summed per plan
+count it twice (Practice Overlay below). Section text is anonymized with
+the same `anonymize_text()` as `course_plan`: sections are cut from the
+raw `html`/`extracted_text`, so this step must keep anonymizing.
+Admission text, exam logistics and placeholder rows such as “Se
+fagplanen.” are left out. What a section holds and what it leaves out is
+set by `course_plan_spec.md`.
 
 `tar_read(metrics)` has the number of plans with each section per
 institution and `pct_text_in_sections`, the median share of a plan’s
@@ -215,7 +218,37 @@ Other fields:
   it with text of its own (oslomet: the Fagplan’s “Arbeidskrav” and
   attendance parts join the coursework requirements), and a line
   starting with a `stop` label ends a part (labels the page did not mark
-  as sub-headings: “Skikkethetsvurdering”, “Vurderingsuttrykk”).
+  as sub-headings: “Skikkethetsvurdering”, “Vurderingsuttrykk”). The
+  parts under the `add` sub-headings that say more than a pointer join
+  their section, or make it, on a page with a section of its own text
+  (oslomet: the Fagplan’s “Praksistilknytning” and “Praksisopplæring”
+  make `practice`, not “Praksisopplæring er nærmere beskrevet i
+  programplanen.”).
+
+### Practice Overlay
+
+`sectionize()` copies the text under a practice heading to `practice`
+while it also goes to the section that heading maps to. Practice
+headings are the heading-map rows with `practice = TRUE`
+(`R/section_heading_map.R`), matched on the whole heading minus a
+closing colon: “Praksis”, “Faget i praksis”, “Gjennomføring av praksis”,
+“Practice”, “Supervised professional training”. The copy runs to the
+next heading, start or end of a scoped element, or sub-heading; under a
+practice heading an unmapped sub-heading stays as a line. A practice
+sub-heading counts only inside a mapped section (not in oslomet’s
+Fagplan block, whose practice parts come through `section_pointer`
+`add`), and a text line that is a practice heading opens the copy inside
+teaching methods (uit’s “Praksis” paragraph), not elsewhere (an exam row
+“Praksis”). Labels (“Praksisstudier”, “Omfang av praksisstudier”) and
+headings that only mention practice are not practice headings. Practice
+is not touched by the sentence moves; `.clean_sections()` removes the
+praksis pointers (`.praksis_pointer_regex`) from it as from teaching
+methods, so a practice part that only points to a practice plan is no
+section; from practice alone go lines that say the course has none or
+only point to the practice plan (“Det er ingen veiledet praksis i
+emnet.”, “Se praksisplan for MGLU5.”, “Studenter som tar emnet som en
+del av … følger egen praksisplan.”, `.no_practice_regex`), which stay in
+teaching methods.
 
 ### Heading Map and Cleanup
 
@@ -310,10 +343,11 @@ pointers, “Oppgis senere.”, “… ikke publisert ennå”, uit’s “Conta
 department/faculty.”, “Se fagbeskrivelse med pensum” and its reading
 lists only on the learning platform or at the bookshop,
 “Pensumlitteratur oppgis i Fronter ved semesterstart eller fås ved
-henvendelse til …”, OsloMet’s “Se omtale av praksis i programplanen”,
-UiB’s “Informasjonen fins ikkje på norsk.”), and drops a first line that
-only repeats the section heading (but keeps learning-outcome group
-labels such as “Kunnskap”).
+henvendelse til …”, OsloMet’s “Se omtale av praksis i programplanen” and
+“Praksisopplæring er nærmere beskrevet i programplanen.”, UiB’s
+“Informasjonen fins ikkje på norsk.”), and drops a first line that only
+repeats the section heading (but keeps learning-outcome group labels
+such as “Kunnskap”).
 
 ## What Each Mechanism May Remove
 

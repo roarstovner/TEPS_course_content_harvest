@@ -67,9 +67,9 @@ removed later by the anonymizer):
 
 ### `target`
 
-The part of the plan affected: one of the seven canonical sections
+The part of the plan affected: one of the eight canonical sections
 (`course_content`, `learning_outcomes`, `teaching_methods`, `assessment`,
-`coursework_requirements`, `prerequisites`, `reading_list`), `metadata` (facts
+`coursework_requirements`, `prerequisites`, `reading_list`, `practice`), `metadata` (facts
 box: credits, level, language, semester, contact), `page_chrome` (navigation
 and other non-plan page text), or `whole_text`.
 

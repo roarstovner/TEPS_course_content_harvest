@@ -261,7 +261,7 @@ from DBH’s API: `dbh_exams_{date}.parquet` is table 905 (Eksamensdata:
 exam registrations `Oppmeldt totalt`, sat, passed) and
 `dbh_credits_{date}.parquet` table 900 (Studiepoeng: credits earned,
 `Ny produksjon totalt`, 1 = 60 credits). The pipeline reads the latest
-of each, now the course list of 2026-10-16 and the counts of 2026-11-04
+of each, now the course list of 2026-11-08 and the counts of 2026-11-08
 (methods.qmd, “Population and sampling frame”, says why they differ).
 The counts can be refreshed alone, since they change only which
 course-years are marked as having had students, not the frames:
@@ -289,8 +289,8 @@ courses |> slice(1:2)
     # A tibble: 2 × 25
       institution institution_code institution_name department_code department_name 
       <chr>       <chr>            <chr>            <chr>           <chr>           
-    1 samas       0217             Samisk høgskole  480000          Avdeling for du…
-    2 samas       0217             Samisk høgskole  480000          Avdeling for du…
+    1 samas       0217             Samisk høgskole  510000          Institutt for s…
+    2 samas       0217             Samisk høgskole  510000          Institutt for s…
     # ℹ 20 more variables: department_code_ssb <chr>, year <int>, semester <int>,
     #   semester_name <chr>, programme_code <chr>, programme_name <chr>,
     #   course_code_raw <chr>, course_code <chr>, course_name <chr>,
@@ -838,10 +838,12 @@ reading.</td>
 <td style="text-align: left;">section</td>
 <td style="text-align: left;">character</td>
 <td style="text-align: left;">derived</td>
-<td style="text-align: left;">One of seven sections
+<td style="text-align: left;">One of eight sections
 (section_codebook.yml): course_content, learning_outcomes,
 prerequisites, teaching_methods, coursework_requirements, assessment,
-reading_list.</td>
+reading_list, and practice, which overlaps: its text is also in another
+section (mostly teaching_methods), so section lengths per plan count it
+twice.</td>
 </tr>
 <tr>
 <td style="text-align: left;">plan_sections</td>

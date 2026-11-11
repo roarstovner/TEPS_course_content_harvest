@@ -519,7 +519,7 @@ frame_sections <- function(plans, source_sections, page_map, institutions) {
 # course_offerings_full of each frame: its offerings, without a plan where it
 # is a page shell. A page with no section to read and under SHELL_MAX_NCHAR
 # characters of plan text (without the title and facts box, `plan_nchar`) is
-# a page shell, not a plan (no text about any of the seven sections,
+# a page shell, not a plan (no text about any of the eight sections,
 # course_plan_spec.md): the facts box only (uia), a credit-overlap box
 # (nord), "Emnebeskrivelse" (uib), a pointer to the English page (hvl), every
 # section "Se fagplanen." (oslomet 2018 practicum). Longer pages without

@@ -232,7 +232,8 @@ section_heading_patterns <- tibble::tribble(
   "arbeidsmåtar",                          "teaching_methods",       FALSE,
   "praktisk organisering",                 "teaching_methods",       FALSE,
   # uia: what students do with the subject during placement. Practicum is a
-  # teaching method in the codebook, so praksis stays there by default.
+  # teaching method in the codebook, so praksis stays there; the text under
+  # these headings is also the overlay section practice (`practice` below).
   "faget i praksis",                       "teaching_methods",       FALSE,
   "praksis",                               "teaching_methods",       TRUE,
   "supervised professional training",      "teaching_methods",       TRUE,   # usn English pages
@@ -308,6 +309,20 @@ section_heading_patterns$label <- section_heading_patterns$pattern %in% c(
   "language of examination", "permitted aids under examination", "assessment language",
   "fravær fra obligatorisk aktivitet", "praksisstudier", "omfang av praksisstudier",
   "karakterskala", "om bruk av ki")
+
+# Practice headings: the whole heading (minus a closing colon) is one of
+# these. The text under them stays in their section and is also the overlay
+# section `practice` (sectionize()). Not the labels "Praksisstudier" and
+# "Omfang av praksisstudier" (vid: "Ja", "240 timer"), nor a heading that
+# only contains the word.
+section_heading_patterns$practice <- section_heading_patterns$pattern %in% c(
+  "faget i praksis", "praksis", "gjennomføring av praksis", "practice",
+  "supervised professional training")
+
+.is_practice_heading <- function(heading) {
+  h <- sub("[:：]\\s*$", "", tolower(stringr::str_squish(heading)))
+  h %in% section_heading_patterns$pattern[section_heading_patterns$practice]
+}
 
 
 #' Match a heading text to a canonical section name

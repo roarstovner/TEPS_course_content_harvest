@@ -97,9 +97,11 @@ institution_configs <- list(
     # Teaching methods that only say "Se fagplanen." take the text of the
     # subject's Fagplan block on the same page. The block's coursework and
     # attendance rules join the course's own coursework requirements, up to a
-    # label of another part (exam forms, suitability, grading).
+    # label of another part (exam forms, suitability, grading). Its parts on
+    # practice make the practice section, or join the course's own.
     section_pointer = list(
       heading = "Fagplan", lead = "Fagplanen sier:",
+      add = list(practice = c("Praksistilknytning", "Praksisopplæring")),
       sections = c(teaching_methods = "Fagets arbeids- og undervisningsformer"),
       append = list(coursework_requirements = c(
         "Arbeidskrav", "Arbeidskrav og faglig aktivitet med krav om deltakelse",

@@ -122,9 +122,11 @@ sec$leak_sections <- apply(leak_hits, 1, function(r)
 sec$flag_leak <- nzchar(sec$leak_sections)
 
 # ── Flag 5: same text under >1 section for the same course (mis-bucketing) ────
+# practice overlaps another section by design and is not counted
 sec <- sec |>
   group_by(course_id, norm) |>
-  mutate(flag_dup_in_course = !flag_empty & n_distinct(section) > 1) |>
+  mutate(flag_dup_in_course = !flag_empty & section != "practice" &
+           n_distinct(section[section != "practice"]) > 1) |>
   ungroup()
 
 # ── Flag 6: identical section text shared across many courses (boilerplate) ───

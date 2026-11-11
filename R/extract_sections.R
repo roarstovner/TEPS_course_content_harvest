@@ -34,6 +34,11 @@
 #' Text goes to the open section. Text under the same section is merged in
 #' document order. The title and facts box (`facts` blocks) are in no
 #' section.
+#' The text under a `practice` heading ("Praksis", "Faget i praksis") also
+#' goes to the overlay section `practice`, up to the next heading, start or
+#' end, or the next sub-heading (under a practice heading only one that
+#' names a section); the practice heading may also be a line of its own
+#' inside teaching methods (uit's "Praksis" paragraph).
 #'
 #' @param blocks Block table from page_blocks().
 #' @return Tibble `section`, `raw_text`.
@@ -45,6 +50,9 @@ sectionize <- function(blocks) {
   outer <- list()
   labelled <- FALSE   # the chunks open with a label heading
   requirement <- FALSE   # under a `keep` coursework sub-heading
+  over <- NA_character_   # role of the practice heading copied to `practice`
+  copied <- character()
+  practices <- .is_practice_heading(blocks$text)
   flush <- function() {
     if (!is.na(current) && length(chunks) > 0 && !(labelled && .empty_label_text(chunks[-1]))) {
       txt <- trimws(paste(chunks[nzchar(chunks)], collapse = "\n"))
@@ -53,10 +61,25 @@ sectionize <- function(blocks) {
     chunks <<- character()
     labelled <<- FALSE
   }
+  flush_practice <- function(to = NA_character_) {
+    txt <- trimws(paste(copied[nzchar(copied)], collapse = "\n"))
+    if (nzchar(txt)) sections[["practice"]] <<- c(sections[["practice"]], txt)
+    copied <<- character()
+    over <<- to
+  }
   for (i in seq_len(nrow(blocks))) {
     role <- blocks$role[i]
     text <- blocks$text[i]
     section <- blocks$section[i]
+    practice <- practices[i]
+    if (role %in% c("heading", "start", "end") ||
+        (role == "sub" && (practice || identical(over, "sub") || !is.na(section)))) {
+      flush_practice(if (practice && (role == "heading" || (role == "sub" && !is.na(parent)))) role else NA_character_)
+    } else if (role == "text" && is.na(over) && practice && identical(current, "teaching_methods")) {
+      flush_practice("sub")
+    } else if (!is.na(over)) {
+      copied <- c(copied, text)
+    }
     if (role == "heading") {
       flush()
       requirement <- FALSE
@@ -100,6 +123,7 @@ sectionize <- function(blocks) {
     }
   }
   flush()
+  flush_practice()
   .list_to_sections(sections)
 }
 
@@ -210,6 +234,9 @@ page_sections <- function(blocks, text, cfg) {
 # sub-headings join their section, after the lead, when the page has it with
 # text of its own (oslomet: the programme's coursework and attendance rules;
 # practicum courses, whose sections only say "Se fagplanen.", get none).
+# The parts under the `add` sub-headings that say more than a pointer join
+# their section, or make it, on such a page too (oslomet: the subject's
+# "Praksistilknytning" and "Praksisopplæring" make practice).
 .fill_pointer_sections <- function(out, blocks, pointer) {
   if (is.null(pointer) || nrow(out) == 0) return(out)
   heads <- which(blocks$role == "heading")
@@ -240,6 +267,12 @@ page_sections <- function(blocks, text, cfg) {
     if (is.na(i) || .is_placeholder_text(out$raw_text[i])) next
     txt <- part(pointer$append[[sec]])
     if (nzchar(txt)) out$raw_text[i] <- paste0(trimws(out$raw_text[i]), "\n\n", pointer$lead, "\n", txt)
+  }
+  if (all(.is_placeholder_text(out$raw_text))) return(out)
+  for (sec in names(pointer$add)) {
+    txt <- vapply(pointer$add[[sec]], part, character(1))
+    txt <- txt[nzchar(txt) & !.is_placeholder_text(txt)]
+    if (length(txt)) out <- .append_section(out, sec, paste0(pointer$lead, "\n", paste(txt, collapse = "\n")))
   }
   out
 }
@@ -355,8 +388,11 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   pre <- out$section == "prerequisites"
   out$raw_text[pre] <- vapply(out$raw_text[pre], .strip_admission_lines,
                               character(1), USE.NAMES = FALSE)
-  tm <- out$section == "teaching_methods"
+  tm <- out$section %in% c("teaching_methods", "practice")
   out$raw_text[tm] <- stringr::str_remove_all(out$raw_text[tm], .praksis_pointer_regex)
+  pr <- out$section == "practice"
+  out$raw_text[pr] <- stringr::str_remove_all(out$raw_text[pr], .no_practice_regex)
+  tm <- out$section == "teaching_methods"
   out$raw_text[tm] <- stringr::str_remove_all(out$raw_text[tm], .evaluation_part_regex)
   out$raw_text <- mapply(.strip_placeholder_lines, out$raw_text,
                          trailing = out$section != "assessment", USE.NAMES = FALSE)
@@ -1457,6 +1493,10 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   paste0("s?se (?:mer )?(?:nærmere |(?:mer )?utfyllende )?(?:omtale|informasjon)(?: (?:av|om) [^.]{0,60}?)? ?",
          "i (?:program-?(?: og emne)?plan(?:en|delen)?|emneplan(?:en)?)(?: og i;? praksisguide[^.]{0,80})?"),
   "se praksisguiden for [^.]{0,80}",
+  # oslomet's Fagplan (2026-11-11): "Praksisopplæring er nærmere beskrevet i
+  # programplanen.", "... i fagplan for praksisopplæring for trinn 1-7.",
+  # "Om praksisopplæringa, sjå programplanen."
+  "praksisopplæring(?:en)? er nærmere beskrevet i [^.]{0,100}", "om praksisopplæringa,? sjå programplanen",
   "se (?:kursinnhold|emnebeskrivelse)(?:et|n)?",                     # nord intro
   "ingen emner(?: i programmet)?",
   # the plan is on the English page (hvl, nord, ntnu; `english_page` in the config)
@@ -1546,13 +1586,39 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "litteraturlisten for .{0,30}tilgang til litteratur .{0,700}"
 )
 # Praksis pointers and the bare "Praksis" label, left in teaching_methods
-# since Praksis maps there. Lines that say something ("Det er tre
+# since Praksis maps there, and in practice, which a pointer alone does not
+# make. Lines that say something ("Det er tre
 # uker praksis i 6. semester. Se ...") stay.
 .praksis_pointer_regex <- paste0(
   "(?im)^[ \\t]*(?:praksis:?|(?:praksis: )?for nærm(?:ere|are) informasjon om ",
   "praksis, (?:se|sjå) ei?gen praksisplan\\.?|se (?:egen|eiga|egne) (?:praksisplan|",
   "plan for praksis|emneplaner om praksis)[^.\\n]{0,80}\\.?|",
   "det er ingen praksis knyt(?:tet|t) til emnet\\.?)[ \\t]*(?:\\n|$)")
+
+# A line that only says the course has no practice ("Det er ingen veiledet
+# praksis i emnet.", "Det er ikkje knytt praksis til emnet.", hiof) or points
+# to the practice plan ("Se praksisplan for MGLU5.", "Her henvises til egen
+# praksisplan for grunnskolelærerutdanningen.", "Sjå relevante
+# læringsutbytteformuleringar og elles eigen praksisplan.", "For studenter i
+# årsstudiet: Se studieplan.", nla; "Se studieprogrambeskrivelse.", "Se
+# Kompetanseguiden og emnebeskrivelse for praksis 1. studieår", nord;
+# "Fremgår av studieprogramplan.", "Se egen emneplan for praksis for en
+# nærmere beskrivelse.", usn) makes
+# no practice section; it stays in
+# teaching methods.
+.no_practice_regex <- local({
+  none <- paste0("(?:det er )?(?:ingen|ikke|ikkje)(?: knytt(?:et)?)? (?:veiled(?:et|a) )?praksis(?:studier|opplæring)?",
+                 "(?: (?:er )?(?:knytt(?:et)? )?(?:til|i) (?:dette )?(?:emnet|studiet))?|ingen krav til praksis")
+  pointer <- paste0("(?:for (?:nærm\\w+ )?info(?:rmasjon)? om praksis\\w*,? )?(?:for )?(?:studen\\w+ (?:i|på|som) [^:.\\n]{0,80}?(?:[:,]| -) ?)?(?:",
+                    "(?:se|sjå|seg) (?:også )?(?:relevante læringsutbytteformuler\\w+ og ell?ers )?|",
+                    "(?:her |det )?henvises (?:ellers )?til |(?:studen\\w+ som [^.\\n]{0,80}?)?følg(?:er|jer) )",
+                    "(?:egen |eigen |eiga )?(?:plan )?(?:praksisplan(?:en)?|(?:emne)?plan for praksis\\w*|studieplan(?:en)?|",
+                    "studieprogrambeskrivelse\\w*|kompetanseguiden(?: (?:og|for) [^\\n]{0,80}?)?)",
+                    "(?: (?:for|foe|i) [^.\\n]{0,80})?(?: for en nærmere beskrivelse)?|",
+                    "(?:fremkommer|fremgår|framgår) av (?:studie)?programplan(?:en)?|",
+                    "emneplanen skal gjennomføres i samsvar med emneplan i praksis")
+  paste0("(?im)^[ \\t]*(?:(?:", none, "|", pointer, ")\\.?[ \\t]*)+(?:\\n|$)")
+})
 
 # The course evaluation (course_plan_spec.md: plan text in no section) as a
 # paragraph under its label at the end of the teaching methods: inn's

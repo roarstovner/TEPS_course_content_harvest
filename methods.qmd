@@ -1006,6 +1006,7 @@ glue merge (SOA-3905 spring and autumn 2011; LER-1201 spring 2018). *Since:*
 #| label: spec
 k <- c("plan_content_id", "institution", "course_code")
 in_secs <- secs |>
+  filter(section != "practice") |>   # an overlay, already in another section
   group_by(across(all_of(k))) |>
   summarise(n = sum(nchar(text)), .groups = "drop") |>
   right_join(plans |> transmute(plan_content_id, institution, course_code,
@@ -1651,7 +1652,8 @@ through one heading table (`R/section_heading_map.R`): course content
 (`r share("learning_outcomes")`), assessment (`r share("assessment")`),
 teaching methods (`r share("teaching_methods")`), coursework requirements
 (`r share("coursework_requirements")`), prerequisites
-(`r share("prerequisites")`) and reading list (`r share("reading_list")`).
+(`r share("prerequisites")`) and reading list (`r share("reading_list")`),
+and an eighth that overlaps them, practice (`r share("practice")`; below).
 Where a section is missing, the coders use the whole plan.
 
 **Coursework requirements are kept apart from assessment:** arbeidskrav and
@@ -1941,7 +1943,38 @@ USN and Steiner do not change. `course_plan` and the plan ids do not change.
 HiOF and Nord give practicum its own heading (since 2026-10-01). This holds
 for stock text about practicum in the teaching methods too (INN's
 "Praksisstudiet er en integrert del av fagene ..."): by the codebook
-practicum is a teaching method.
+practicum is a teaching method. Since 2026-11-11 the text under a practice
+heading is also copied to the overlay section practice (next entry).
+
+**Practice is an overlay section.** The text under a plan's own practice
+heading ("Praksis", "Faget i praksis", "Gjennomføring av praksis",
+"Practice", "Supervised professional training"; UiT's "Praksis" line in the
+teaching methods) is also the section `practice`, and stays in the section it
+was in (mostly teaching methods). OsloMet's "Praksistilknytning" and
+"Praksisopplæring", parts of the subject's Fagplan that reached no section,
+go to practice only, after the lead "Fagplanen sier:", on pages with
+sections of their own. Exact headings only: not a label with a bare value
+("Praksisstudier: Ja"), NTNU's exam rows, USN's table of contents or a
+heading that only mentions practice; a practice part that only points to a
+practice plan ("se egen praksisplan", "Praksisopplæring er nærmere beskrevet
+i programplanen.") or says there is none ("Det er ingen veiledet praksis i
+emnet.", which stays in teaching methods) is no section; passed practice as a condition for the exam
+stays in coursework requirements. All courses, not only teacher education.
+*Why:* practice is central to teacher education and other professional
+programmes, and a study of it should not have to find it inside teaching
+methods; an investigation of 2026-11-08 found a practice heading in 40 % of
+the 2,653 teacher-education courses of 2025 (25 % with a substantive block;
+12 % of all courses), stable over 2023-2025: HiOF 99 %, NLA 83 %, UiT 70 %
+(mostly a pointer), INN 67 %, UiA 60 %, USN 58 % (often a pointer), Nord
+44 %, OsloMet 24 %. *Rejected:* a flag `has_practice_section` (it says that a
+plan has practice text, not what it says); nothing (practice text stays
+findable only by reading teaching methods); moving the text out of teaching
+methods (the codebook counts practicum as a teaching method, and the teaching
+methods of every plan with practice would change meaning). *Consequence:*
+sections overlap: section lengths summed per plan, or shares of a plan's text
+in its sections, count practice text twice, so such sums leave practice out.
+No other section changes: the copy reads the same blocks. `course_plan` and
+the plan ids do not change. *Since:* 2026-11-11 (user decision).
 
 **VID: topics join course content, practicum facts join teaching methods,
 the plan's facts-box items stay out of the sections.** VID's plans end with
