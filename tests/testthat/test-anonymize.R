@@ -1315,7 +1315,7 @@ test_that("leftover admin dates: usn stamps, Leganto 'Journal', uia, uit, hiof, 
   # uit: session dates and the year of a deadline; the semester word before a year
   a <- an("uit", "Samling 1: Markedsstrategi - 28-30. nov. 2007 Samling 2: Økonomi - 30. jan. - 1. feb 2008 Samling 3: Endring 6-8. august 2008.")
   expect_equal(a, "Samling 1: Markedsstrategi Samling 2: Økonomi Samling 3: Endring.")
-  expect_equal(an("uit", "Søknadsfrist\n15. mai 2019\nEksamen"), "Søknadsfrist\n15. mai\nEksamen")
+  expect_equal(an("uit", "Søknadsfrist\n15. mai 2019\nEksamen"), "Søknadsfrist\n\nEksamen")
   expect_equal(an("uit", "Søknadsfrist 11. august på UiTs Søknadsweb."), "Søknadsfrist 11. august på UiTs Søknadsweb.")
   expect_false(grepl("2009", an("uit", "fail early in the Spring semester 2009.")))
   expect_match(an("uit", "The spring semester is short."), "spring semester is short")
@@ -1369,4 +1369,52 @@ test_that("reading lists keep their link digits, reference dates and ranges; adm
   # the academic year a course is first taught stays, like its start semester
   expect_equal(an("nmbu", "Første gang emnet undervises er studieåret 2025/26.\nEmnet undervises studieåret 2025/26."),
                "Første gang emnet undervises er studieåret 2025/26.\nEmnet undervises studieåret.")
+})
+
+test_that("session dates go after their label, deadlines with a year; recurring deadlines and content dates stay", {
+  an <- function(inst, x) anonymize_text(inst, x, .progress = FALSE)
+  expect_equal(an("nih", "Påmeldingsfrist 13. september 2025.\nNeste"), "Påmeldingsfrist\nNeste")
+  expect_equal(an("uib", "Undervisningsperiode\n23.-26. oktober 2023.\nDato: 4.-6. desember\nFrist 9. oktober 2023. Merk at"),
+               "Undervisningsperiode\n\nDato:\nFrist. Merk at")
+  expect_equal(an("uib", "Motivasjonsbrevet har frist 18. desember 2024."), "Motivasjonsbrevet har frist")
+  expect_equal(an("uib", "Undervisningsperiode\n21. september – 2. oktober 2020\nStudiepoeng"), "Undervisningsperiode\n\nStudiepoeng")
+  expect_equal(an("hvl", "The dates for the course are 15-16 September and 6-7 October.\n\nThe application deadline is 1th September 2018"),
+               "The dates for the course\n\nThe application deadline")
+  expect_equal(an("hvl", "Datoer for samlinger i:\n1. samling: 5.-6. september 2022"), "Datoer for samlinger i:\n1. samling:")
+  expect_equal(an("hiof", "Litteratur vil være tilgjengelig innen 1. juni 2020.\nEmnet har oppstartsamling i oktober 2015, og foregår"),
+               "Litteratur vil være tilgjengelig\nEmnet har oppstartsamling, og foregår")
+  # a session start with an hour-only start of a kl. range
+  expect_equal(an("hvl", "Oppstart med digital undervisning 9. februar 2021, kl. 17 - 20.00, med forbehold om endring."),
+               "Oppstart med digital undervisning, med forbehold om endring.")
+  expect_match(an("hvl", "Kl. 12 er det lunsj, 5 - 7 timer"), "Kl. 12 er det lunsj, 5 - 7 timer", fixed = TRUE)
+  expect_equal(an("uib", "Frist 1. februar/1. september 2024.\nX"), "Frist\nX")
+  # a yearless deadline recurs and stays (pending a decision), as do MF's
+  # withdrawal deadline, a seminar day and a date before 2000 after a label
+  for (keep in c("Innleveringsfrister: 1. juni og 15. desember", "Søknadsfrist\n1. juni for emner som tilbys i høstsemesteret",
+                 "trekke sin vurderingsmelding til emnet innen trekkfristen 1. mai/1. november.",
+                 "Seminar tirsdag 18. februar om skriving.", "Oppstart av krigen 9. april 1940.",
+                 "Innleveringsfrist for masteroppgåva er 1. februar og 15. mai."))
+    expect_equal(an("mf", keep), keep)
+})
+
+test_that("'Fall', a glued season, læreplan words in titles, a revision stamp and INN's ddmmyy go", {
+  an <- function(inst, x) anonymize_text(inst, x, .progress = FALSE)
+  expect_equal(an("nih", "Core literature for FRI301 Fall 2024.\nin the fall 2023 semester"),
+               "Core literature for FRI301.\nin the semester")
+  expect_equal(an("nih", "Core literature\nCore literature for fall 2024.\nBok"), "Core literature\nBok")
+  expect_equal(an("usn", "The online version was started Fall 2016.\nSyllabus - Fall 2008"), "The online version was started.\nSyllabus")
+  # the Norwegian word and a journal issue's season stay
+  keep <- c("Murens fall 1989 og Frankrikes fall 1940.", "California Management Review, No. 1, Fall 1999, pp 109-122.",
+            "World Policy Journal 16:3 (Fall 1999), 20-27.", "Grey Room 29 - Fall 2007, 1-8", "vol. 8, no. 3 & 4 Fall 1986.", "In Dissent. Fall 2003: 59-66.")
+  for (k in keep) expect_equal(an("uit", k), k)
+  expect_equal(an("hiof", "workshop ved Hebei Geo Universityvåren 2019, og en andre"), "workshop ved Hebei Geo University, og en andre")
+  # "læreplan" in a course title's subject is no government document; the curriculum itself is
+  expect_equal(an("nih", "LKI106 Profesjonsfag, læreplanteori og utdanningshistorie (Vår 2024)\nKRØ101 Læreplanarbeid og vurdering (Høst 2023)"),
+               "LKI106 Profesjonsfag, læreplanteori og utdanningshistorie\nKRØ101 Læreplanarbeid og vurdering")
+  expect_equal(an("nih", "Læreplanen i engelsk (høsten 2020) gjelder"), "Læreplanen i engelsk (høsten 2020) gjelder")
+  expect_equal(an("hvl", "læreplanane som blei innført hausten 2020"), "læreplanane som blei innført hausten 2020")
+  expect_equal(an("nla", "Seminars.\nRevised May 2019\nJurrat, N. (2016) Media, revised May 2019 edition"),
+               "Seminars.\nJurrat, N. (2016) Media, revised May 2019 edition")
+  expect_equal(an("inn", "Navn\tStudiepoeng\tDato\tKommentar\n2mped-1 Profesjonsrettet pedagogikk\t15\t150925\nISBN 150925"),
+               "Navn\tStudiepoeng\tDato\tKommentar\n2mped-1 Profesjonsrettet pedagogikk\t15\nISBN 150925")
 })

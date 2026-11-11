@@ -100,11 +100,10 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     stringr::str_remove_all(paste0("(?:Innlevering|Utlevering|Dato):[ \\t]*\\d{1,2}\\.(?:\\d{1,2}\\.\\d{4}|[ \\t]*\\p{L}+)",
                                    "(?:[ \\t]*[-–][ \\t]*\\d{1,2}\\.\\d{1,2}\\.\\d{4})?(?:[ \\t]+\\d{1,2}:\\d{2})? *")) |>
     # the dates of a course's sessions ("Samling 1: Markedsstrategi - 28-30.
-    # nov. 2007", "Samling 2: ... 30. jan. - 1. feb 2008"), and the year of an
-    # application deadline ("Søknadsfrist\n15. mai 2019"; the day stays)
+    # nov. 2007", "Samling 2: ... 30. jan. - 1. feb 2008"); an application
+    # deadline ("Søknadsfrist\n15. mai 2019") goes in .deadline_date_regex
     stringr::str_replace_all(paste0("(Samling \\d+:[^:\\n]{0,60}?)[ \\t]*(?:-[ \\t]*)?\\d{1,2}(?:[ \\t]*[-–][ \\t]*\\d{1,2})?\\.?[ \\t]*",
                                     "\\p{L}+\\.?(?:[ \\t]*[-–][ \\t]*\\d{1,2}\\.?[ \\t]*\\p{L}+\\.?)?[ \\t]*\\d{4}"), "\\1") |>
-    stringr::str_replace_all("(?m)^(Søknadsfrist[ \\t]*\\n[ \\t]*\\d{1,2}\\.[ \\t]*\\p{L}+)[ \\t]+\\d{4}[ \\t]*$", "\\1") |>
     # Strip "Kontaktperson:" + name line
     stringr::str_remove_all("(?m)^Kontaktperson:?\\s*\\n[^\\n]*") |>
     # Strip "Foreleser:" + name line
@@ -158,6 +157,8 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 .anon_hiof <- function(txt) {
   txt |>
     stringr::str_remove_all("(?:Sist hentet fra|Last updated from) FS[^\n]*") |>
+    # a semester glued to a university's name ("ved Hebei Geo Universityvåren 2019")
+    stringr::str_remove_all("(?<=Universit(?:y|et))(?:våren|høsten|spring|autumn)[ \\t]*\\d{4}") |>
     # "Litteraturlista er sist oppdatert ...", "Litteraturliste sist oppdatert":
     # the stamp's sentence, with its date ("29.06.10.", "15.juni 2011.", "3.
     # Desember 2015."), up to a full stop before a capital or the line's end,
@@ -195,7 +196,11 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     # the banner over a plan published in English only ("Kun tilgjengelig på
     # engelsk", or with the language left out); the page holds the whole plan
     stringr::str_remove("(?m)^Statusmelding\\nKun tilgjengelig på[^\\n]*\\n") |>
-    stringr::str_remove_all("(?m)^\\d{4}\\s+(?:Høst|Vår|Autumn|Spring)(?:,\\s*\\d{4}\\s+(?:Høst|Vår|Autumn|Spring))*\\s*$")
+    stringr::str_remove_all("(?m)^\\d{4}\\s+(?:Høst|Vår|Autumn|Spring)(?:,\\s*\\d{4}\\s+(?:Høst|Vår|Autumn|Spring))*\\s*$") |>
+    # a compact ddmmyy date in the credit-overlap table's "Dato" column, after
+    # the credits ("...spesialpedagogikk\t15\t150925"); the tab stays
+    stringr::str_remove_all(paste0("(?<=\\t\\d{1,2}(?:[.,]\\d{1,2})?\\t)(?:0[1-9]|[12]\\d|3[01])(?:0[1-9]|1[0-2])\\d{2}",
+                                   "(?=[ \\t]*(?:\\t|\\n|$))"))
 }
 
 .anon_oslomet <- function(txt) {
@@ -542,7 +547,8 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
                          "\\s+", .wrapped("online"))
 
 # Government documents: laws, regulations, white papers, propositions, NOUs,
-# curricula, conventions and what ministries, directorates and the Director
+# curricula (the word "læreplan", not "læreplanteori" or "Læreplanarbeid" in a
+# course title), conventions and what ministries, directorates and the Director
 # of Public Prosecutions publish. Their dates and session years are content
 # and stay (user decision 2026-10-08): "Meld. St. 21 (2016–2017)", "Ny
 # opplæringslov fra 01.08.24", "fastsatt av Kunnskapsdepartementet 7. juni
@@ -550,7 +556,7 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 .gov_doc_regex <- paste0(
   "(?:(?i:lov(?:en|a|er|ene|data|verk|verket)?s?(?!\\p{L})|forskrift|departement|",
   "direktorat|riksadvokat|storting|regjering|meld\\.[ \\t]?st|st\\.[ \\t]?meld|[os]t\\.[ \\t]?prp|",
-  "prop\\.[ \\t]?\\d|innst\\.[ \\t]?\\d|rundskriv|rammeplan|læreplan|kunnskapsløftet|",
+  "prop\\.[ \\t]?\\d|innst\\.[ \\t]?\\d|rundskriv|rammeplan|læreplan(?:en|er|ene|ar|ane|verk(?:et)?)?s?(?!\\p{L})|kunnskapsløftet|",
   "nasjonale retningslinjer|udir|konvensjon|forente nasjoner|regler|reglement)|NOU)")
 # The date stays when such a document is named up to 80 characters before it
 # on the same line, or at the end of the line above (also over a blank line)
@@ -610,8 +616,16 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
   "(?!(?<!(?i:litteratur|pensum|studieår|emneplan|studieplan)[^\\n]{0,80})(?<=,[ \\t]{0,3})", .year_range, "\\.?[ \\t]*(?:\\n|$)|(?<=\\()", .year_range, "\\)[.:,]?[ \\t]+[\\p{Lu}«\"“]))")
 
 # A season word, also inflected or in a compound: "høsten", "Vårsemesteret";
-# also a typo seen in a label ("Assessment Sprign 2026:", nord).
-.season_regex <- "(?:(?:høst|vår|haust|sommer)(?:semester(?:et)?|en|a)?|autumn|spring|sprign|summer)"
+# also a typo seen in a label ("Assessment Sprign 2026:", nord); English
+# "Fall" capitalised ("started Fall 2016", "Syllabus - Fall 2008") or after
+# "in"/"the"/"for"/"during" ("Core literature for fall 2024", nih), not the
+# Norwegian word ("Murens fall 1989") nor a journal issue's season after a
+# comma, full stop or bracket, an issue number or a number and a dash
+# ("California Management Review, No. 1, Fall 1999", "16:3 (Fall 1999)", "no.
+# 3 & 4 Fall 1986", "Grey Room 29 - Fall 2007").
+.season_regex <- paste0("(?:(?:høst|vår|haust|sommer)(?:semester(?:et)?|en|a)?|autumn|spring|sprign|summer|",
+                        "(?-i:(?<![,;.(][ \\t]{0,2}|\\d[ \\t]{1,2}[-–][ \\t]{1,2}|[\\s&]\\d{1,2}[ \\t])Fall|",
+                        "(?<=\\b(?i:in|the|for|during)[ \\t])fall))")
 
 # The semester a course starts from is plan text and stays ("Emnet byrjar å gå frå
 # våren 2024"; decided 2026-10-28): a guard before the season word.
@@ -676,16 +690,17 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 # minutes ("kl. 09.00", "kl.1500", "kl 9.45-11.30"), with am/pm ("3-6pm", "2–6
 # p.m.", "9.30am") and, after an English preposition, a dotted time on the
 # quarter hour ("at 12.00", "by 14.00"); not a dotted date ("ready by 01.06",
-# "at 01.12."), an hour without minutes after "kl." ("kl. 12", also "class")
-# or a course code ("4PM42"). The preposition goes with the time ("innen kl.
-# 12.00", "Deadline: 5 December at 12.00", "fra kl. 09.00 til kl. 13.00"), so
-# no "at." or "fra til" is left; "fra mandag kl 12.00 til fredag kl 12.00"
+# "at 01.12."), an hour without minutes after "kl." ("kl. 12", also "class";
+# but "kl. 17 - 20.00", a range ending in minutes, hvl) or a course code
+# ("4PM42"). The preposition goes with the time ("innen kl. 12.00",
+# "Deadline: 5 December at 12.00", "fra kl. 09.00 til kl. 13.00"), so no "at."
+# or "fra til" is left; "fra mandag kl 12.00 til fredag kl 12.00"
 # keeps its days. After "kl." a list of times goes with the first.
 .hour <- "(?:2[0-3]|[01]?\\d)"
 .kl <- "(?<!\\p{L})(?:[Kk]l\\.?|[Kk]lokk(?:a|en))[ \\t]*"
 .clock_prep <- paste0("(?:(?<!\\p{L})(?i:at|by|from|until|till|before|after|between|fra|frå|til|innen|innan|",
                       "før|etter|mellom)[ \\t]+)?")
-.clock_kl <- paste0(.kl, .hour, "[.:]?[0-5]\\d(?![.:]?\\d|\\p{L})")
+.clock_kl <- paste0(.kl, .hour, "(?:[.:]?[0-5]\\d(?![.:]?\\d|\\p{L})|(?=[ \\t]*[-–][ \\t]*", .hour, "[.:][0-5]\\d(?![.:]?\\d)))")
 .clock_ampm <- paste0("(?<![\\d.,])", .hour, "(?:[.:][0-5]\\d)?(?:[ \\t]?[-–][ \\t]?", .hour, "(?:[.:][0-5]\\d)?)?",
                       "[ \\t]?(?:am|pm|AM|PM|a\\.m\\.|p\\.m\\.)(?![\\p{L}\\d])")
 .clock_dot <- paste0(.hour, "\\.(?:00|15|30|45)(?![.:]?\\d)")
@@ -704,6 +719,39 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 .approval_date_regex <- paste0(
   "((?<!\\p{L})(?i:godkjent|vedtatt|etablert|revidert|revisjon|foretatt|lagt inn|oppdatert|",
   "gjort tilgjengelig|sist endret)", .not_gov, "[^\\n.]{0,100}?)", .gap, "\\b", .long_dates_regex, .eol_stop)
+# A session's or deadline's dates after its label: a day or day range with
+# its month ("Undervisningsperiode\n23.-26. oktober 2023.", "21. september –
+# 2. oktober 2020", "1. samling: 5.-6. september 2022", "The dates for the
+# course are 15-16 September", "Påmeldingsfrist 13. september 2025.",
+# "tilgjengelig innen 1. juni 2020") or a month and year ("oppstartsamling i
+# oktober 2015"). The date follows the
+# label as its value (after a colon, "is"/"er", which go with it, or on the
+# next line) or, with a year from 2000, up to 40 characters later ("Oppstart
+# med digital undervisning 9. februar 2021"); a date with an earlier year is
+# content ("Oppstart av krigen 9. april 1940"). The label stays. A session's
+# dates go without a year too ("Dato: 4.-6. desember"): they belong to one
+# offering. A deadline's only with one: a yearless deadline recurs every
+# year ("Søknadsfrist\n1. juni for emner som tilbys i høstsemesteret", uit;
+# "Innleveringsfrister: 1. juni og 15. desember", uio; MF's "trekkfristen 1.
+# mai/1. november") and whether it stays waits on a decision (2026-11-11).
+.label_day <- "(?<![\\d.])\\d{1,2}(?:\\.|st|nd|rd|th)?"
+.label_day_month <- paste0(.label_day, "(?:[ \\t]*[-–][ \\t]*", .label_day, ")?[ \\t]*", .month_regex, "(?!\\p{L})",
+                           "(?:[ \\t]*[-–][ \\t]*", .label_day, "[ \\t]*", .month_regex, "(?!\\p{L}))?")
+.label_year <- "[ \\t]+20\\d{2}\\b"
+.label_dated <- paste0("(?:", .label_day_month, ",?|(?<!\\p{L})", .month_regex, ")", .label_year)
+.label_date <- paste0("(?:", .label_day_month, "(?:,?", .label_year, "|(?!,?[ \\t]*\\d{3}))|(?<!\\p{L})",
+                      .month_regex, .label_year, ")")
+.label_sep <- "[ \\t]*(?:,|og|and|&|/)[ \\t]*"
+.label_prep <- "(?:[ \\t]+(?i:i|in|inn[ae]n|by|on|før|fra|frå|from|is|are|er|var|was))?"
+.label_date_regex <- function(labels, dates) paste0(
+  "((?<!\\p{L})(?i:", labels, ")(?!\\p{L})", .not_gov, "(?:[ \\t]*:?[ \\t]*\\n[ \\t]*|[ \\t]*:|[^\\n.]{0,40}?(?=",
+  .label_prep, .gap, .label_dated, "))?)", .label_prep, .gap, dates, .eol_stop)
+.session_date_regex <- .label_date_regex(
+  "undervisningsperioden?|dato(?:er|ar)?(?=[ \\t]*(?::|for\\b))|samling(?:er|ar)?|oppstart(?:samling)?|dates? for the course|course dates?",
+  paste0(.label_date, "(?:", .label_sep, .label_date, ")*"))
+.deadline_date_regex <- .label_date_regex(
+  "(?:påmeldings|søknads|registrerings|innleverings)?frist(?:en|er|ar|ane|ene)?|deadline|tilgjengelig(?=[ \\t]+inn[ae]n)",
+  paste0("(?:", .label_date, .label_sep, ")*", .label_dated))
 
 # A link's digits are part of its address, not a date, year or time
 # ("...arkiv%20(01.12.2016).pdf", oslomet; ".../Rapport_UDA_7.6.2011.pdf",
@@ -773,13 +821,19 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     # "(MG1NA1) H2018 Notodden", "H23: Undervisningen ..."
     stringr::str_remove_all(.not_gov_rule(
       "[ \\t]*[-–]?[ \\t]*\\b[HV]", "(?:19|20)?\\d{2}(?:[-/][HV](?:19|20)?\\d{2})?\\b:?")) |>
-    # a line left bare by the removal of its semester ("Pensumlista for høsten 2025.", nih)
-    stringr::str_remove_all("(?m)^[ \\t]*Pensumlist\\w* for\\.?[ \\t]*(?:\\n|$)") |>
+    # a line left bare by the removal of its semester ("Pensumlista for høsten 2025.",
+    # "Core literature for fall 2024.", nih)
+    stringr::str_remove_all("(?m)^[ \\t]*(?:Pensumlist\\w*|Core literature) for\\.?[ \\t]*(?:\\n|$)") |>
     # Approval and update dates in words, twice for a second date on a
     # stamp line ("godkjent av utdanningsutvalget 3. mai 2018 og på fullmakt
     # av leder i utdanningsutvalget 4. mars 2019")
     stringr::str_replace_all(.approval_date_regex, "\\1") |>
     stringr::str_replace_all(.approval_date_regex, "\\1") |>
+    stringr::str_replace_all(.session_date_regex, "\\1") |>
+    stringr::str_replace_all(.deadline_date_regex, "\\1") |>
+    # a revision stamp alone on its line ("Revised May 2019", nla)
+    stringr::str_remove_all(paste0("(?m)^[ \\t]*(?i:revised|updated|last updated)[ \\t]+", .month_regex,
+                                   "[ \\t]+20\\d{2}\\.?[ \\t]*(?:\\n|$)")) |>
     # dd.mm.yy or month and year after an approval: "Godkjent 9.3.21.",
     # "Emneplan godkjent 25.03.25", "Godkjent av instituttleder 18.10.22",
     # "Godkjent desember 2017." (usn), and any zero-padded one ("Oppsatt
