@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Add Kristiania (#391)
 - Kristiania: count the public online single courses (/studier/nettstudier/enkeltemne/) against DBH 8253 courses (#527)
 - USER DECISION: sections audit 2026-11-08 — one-off mixed paragraphs, more resit known deviations, OsloMet practicum Fagplan, UiB English pages (#514)
 - Add BI (#392)
