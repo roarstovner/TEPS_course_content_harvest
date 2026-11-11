@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Spec: known deviations for one-off mixed paragraphs and resit/examiner/appeal wordings; UiB English-only notice pages in data notes (#526)
 - hiof/usn: table-of-contents labels in every course_plan (#517)
 - Add Kristiania (#391)
 - Kristiania: count the public online single courses (/studier/nettstudier/enkeltemne/) against DBH 8253 courses (#527)
