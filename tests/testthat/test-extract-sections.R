@@ -1649,6 +1649,20 @@ test_that("phs: attendance, feedback on the arbeidskrav, workload, the portfolio
     expect_false(grepl(.attendance_sentence_regex, a, perl = TRUE) || grepl(.gate_sentence_regex, a, perl = TRUE))
   # with "kreves" and a condition it is a gate
   expect_match("Det kreves 75 % oppmøte for å kunne fremstille seg til eksamen.", .gate_sentence_regex, perl = TRUE)
+  expect_match(paste("For å kunne fremstille seg til eksamen forutsettes det at obligatoriske aktiviteter",
+                     "er godkjent og praksis er bestått."), .gate_sentence_regex, perl = TRUE)
+  # all learning activities compulsory, attendance at teaching within praksis,
+  # an absence limit exceeded; not attendance in the placement itself
+  for (a in c("Alle læringsaktiviteter er obligatoriske.",
+              "Som ein del av praksisen i emnet er det obligatorisk å delta i minst 8 av 10 undervisningssamlingar.",
+              paste("Should a student exceed the maximum limit for absence, extra assignments will be required",
+                    "to compensate for his/her absence as far as possible.")))
+    expect_match(a, .attendance_sentence_regex, perl = TRUE)
+  for (a in c("Det er obligatorisk oppmøte i praksis.", "Det er obligatorisk deltakelse på praksisseminarer.",
+              "Det er 100 % obligatorisk deltakelse i praksisperioden og på samlingene.",
+              paste("If a student exceeds the maximum limit for absence during a period of practical training,",
+                    "it will be considered whether the period can be extended.")))
+    expect_no_match(a, .attendance_sentence_regex, perl = TRUE)
   # attendance "på disse" takes the sentence that names them
   out <- tibble::tibble(section = "teaching_methods", raw_text = paste(
     "Emnet har forelesninger.", "Det blir arrangert to seminarer.", "Det er krav om 80 % oppmøte på disse seminarene."))

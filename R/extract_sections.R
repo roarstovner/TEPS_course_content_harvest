@@ -608,7 +608,9 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # exam, passing the course): "For å kunne fremstille prosjektoppgaven til vurdering må
 # deltakerne ha fått godkjent ...", "Det kreves 75 % oppmøte for å kunne
 # fremstille seg til eksamen.", "Arbeidskrav må være godkjent for å få
-# endelig karakter i emnet.", "... før ein kan få oppgåva vurdert.", "...
+# endelig karakter i emnet.", "... før ein kan få oppgåva vurdert.", "For å
+# kunne fremstille seg til eksamen forutsettes det at obligatoriske aktiviteter
+# er godkjent ...", "...
 # before the student can submit the semester paper." Not a row of an exam
 # table (tabs), nor a sentence about the exam's own parts ("Begge
 # deleksamener må være bestått ...", "Mappen må være godkjent ...", "alle
@@ -625,7 +627,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "del(?:er|ene|ar|ane)\\b|parts?\\b|mappe|portfolio)\\w*\\W+(?:\\w+\\W+){0,6}?(?:må|skal|must|ha(?:ve|s) to)\\b)",
   "(?=.*(?:\\b(?:må|skal)\\b.{0,150}\\b(?:før|innan|innen)\\b.{0,60}(?:eksam|vurder|sluttprøv)|",
   "\\b(?:må|skal|(?:kreves|krevs|krav)(?![^\\t]*praksis))\\b.{0,150}\\bfor (?:å|at|(?:fram|frem)stilling til)\\b.{0,80}(?:eksam|vurder|\\b(?:inn)?lever|framstill|fremstill|karakter)|",
-  "\\bfor (?:å|at)\\b.{0,60}\\b(?:gå opp|framstill|fremstill|avlegg|lever|vurder|få (?:\\w+ ){0,2}vurder)\\w*.{0,60},? (?:må|skal)\\b|",
+  "\\bfor (?:å|at)\\b.{0,60}\\b(?:gå opp|framstill|fremstill|avlegg|lever|vurder|få (?:\\w+ ){0,2}vurder)\\w*.{0,60},? (?:må|skal|(?:forutsett|føresett)\\w* det at)\\b|",
   "\\b(?:må|skal)\\b.{0,150}\\bfor (?:å|at) (?:bestå\\b|(?:emnet|faget) skal (?:være|vere|kunne) bestått|",
   "få (?:emnet|faget) bestått)|",
   "\\b(?:tilgang|adgang|rett|vilkår|forutsetning|føresetnad)\\b (?:til|for) (?:å )?(?:\\w+ ){0,4}?\\w*(?:eksam|prøve)|",
@@ -638,10 +640,13 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # "Oppmøte undervisning: minimum 80%." (nord, uit, ntnu). The spec puts it in
 # coursework requirements. Not attendance in praksis or clinical studies,
 # which is how a practice course is assessed ("For å bestå praksis må
-# studenten ... ha 100 % oppmøte"). With "Det er" before it, an obligation
+# studenten ... ha 100 % oppmøte"), unless the attendance is at teaching
+# ("Som ein del av praksisen ... er det obligatorisk å delta i minst 8 av 10
+# undervisningssamlingar."). With "Det er" before it, an obligation
 # says it is required ("Det er obligatorisk deltakelse på samlingene.", "Det
 # er krav om 90 % deltakelse på samlingene.", phs); so does "All
-# undervisning er obligatorisk". Also, in a sentence of up to 250 characters
+# undervisning er obligatorisk" ("Alle læringsaktiviteter er obligatoriske.",
+# nla). Also, in a sentence of up to 250 characters
 # with no negation ("Det vil ikke være noe obligatorisk oppmøte", "frivillig"),
 # no exam ("obligatorisk frammøte under hele eksamen", "Eksamen blir
 # gjennomført i grupper ... der deltaking ... er obligatorisk"; but
@@ -654,7 +659,8 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # mandatory.", "Undervisningen er obligatorisk, og krever ...", "Deler av
 # undervisningen er obligatorisk."; not "dersom emnet er obligatorisk i
 # studieplanen"); a rule for absence beyond a limit ("Fravær over 20 % ...
-# medfører at ...", "Dersom fravær overstiger 20 prosent, ..."). Not a list
+# medfører at ...", "Dersom fravær overstiger 20 prosent, ...", "Should a
+# student exceed the maximum limit for absence, ..."). Not a list
 # of teaching forms with attendance in it ("Forelesninger, teoriøvinger og
 # laboratoriearbeid med obligatorisk tilstedeværelse.", "Undervisning og
 # læring skjer gjennom selvstudier, forelesninger, obligatorisk deltakelse i
@@ -667,9 +673,11 @@ extract_sections <- function(config, html, extracted_text, course_id) {
                          "kollokvi|basisgrupp|ferdighetstrening|practical work|group work)")
 .attendance_word <- "(?:\\w*(?:deltak|deltag|oppmøt|frammøt|fremmøt|tilstedevær|nærvær)\\w*|attendance|participation)"
 .attendance_sentence_regex <- paste0(
-  "(*UCP)(?i)^\\s*(?!.*(?:praksis|praktiske studier|placement|internship|professional training|klini[sk]|clinical|",
-  "pasient|læringsutbytt|learning outcome))(?:(?=[^\\t]{0,120}$)(?:",
-  "alle? (?:undervisning|samling|seminar|forelesning)\\w* er obligatorisk\\w*\\b[^.]{0,80}\\.?\\s*$|",
+  "(*UCP)(?i)^\\s*(?!(?!.*\\b(?:å delta|", .attendance_word, ")\\s+(?:i|på|ved|at|in)\\s+(?:(?!\\w*(?:praksis|placement))\\w+\\s+){0,4}?",
+  "(?:undervisning|samling|seminar|forelesning|lecture|teaching)).*(?:praksis|praktiske studier|placement|internship|",
+  "professional training|practical training))(?!.*(?:klini[sk]|clinical|pasient|læringsutbytt|learning outcome))",
+  "(?:(?=[^\\t]{0,120}$)(?:",
+  "alle? (?:undervisning|samling|seminar|forelesning|læringsaktivitet)\\w* er obligatorisk\\w*\\b[^.]{0,80}\\.?\\s*$|",
   "(?:det er (?=[^.]*(?:obligatorisk|krav))|(?=.*(?:\\d ?(?:%|prosent)|\\balle?\\b)))",
   "(?:(?:obligatorisk|mandatory|compulsory|krav (?:om|til)|minimum|minst|min\\.)\\s+)*",
   "(?:(?:\\d+|hundre) ?(?:%|prosent)\\s+(?:\\w+\\s+){0,2}?)?(?:å delta|deltakelse|deltaking|deltagelse|",
@@ -679,6 +687,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   # a rule for absence beyond a limit, also with the exam as its sanction
   "\\W*(?:(?:ved|dersom|hvis|if)\\s+)?(?:\\w+\\s+){0,2}?(?:fravær|absence)\\w*\\b[^.]{0,30}\\b",
   "(?:over|utover|overstig\\w*|overskrid\\w*|mer enn|more than|exceed\\w*|på mellom|beyond)\\b|",
+  "\\W*(?:dersom|hvis|if|should)\\s+(?:\\w+\\s+){0,3}?(?:overstig|overskrid|exceed)\\w*\\b[^.]{0,40}\\b(?:fravær|absence)|",
   "(?!.*(?:\\b(?:ikke|ikkje|not|no|ingen|uten|utan|valgfri\\w*|frivillig\\w*|optional|",
   "uavhengig|anbefal\\w*|recommended)\\b|(?<!studium og )\\b\\w*(?:eksam|exam)(?!enskrav|ple)|",
   "(?<!\\bi )(?<!\\bpå )\\b(?:emnet|faget|kurset|the course|the subject) (?:er|is) (?:\\w+ )?(?:obligatorisk|compulsory|mandatory)))",
@@ -686,7 +695,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   .attendance_word, ")\\b).*", .teaching_form, "\\w*(?:\\s*\\([^)]*\\))?,\\s*(?:\\w+\\s+){0,3}?", .teaching_form, ")(?:",
   ".*\\b(?:(?:obligatorisk\\w*|pliktig\\w*|mandatory|compulsory|krav|kreves|krevs|required)",
   "(?:\\s+(?:om|til|derfor|minimum|minst|min\\.|full|obligatorisk\\w*|mandatory|compulsory|\\d+ ?(?:%|prosent)|at least))*",
-  "\\s+", .attendance_word, "|",
+  "\\s+(?:å\\s+delta\\b|", .attendance_word, ")|",
   # "krever" with a share or "obligatorisk", or before presence: not "krev
   # deltaking og medansvar"
   "(?:krever|krev|requires?)(?:\\s+derfor)?(?:(?:\\s+(?:minimum|minst|min\\.|obligatorisk\\w*|\\d+ ?(?:%|prosent)|at least))+",
