@@ -1846,3 +1846,39 @@ test_that("hvl, usn and nla: stock sentences about teaching or the grade join th
     "Grunnet Covid-19 situasjoen kan deler av (evt. hele) undervisningen bli gjennomført digitalt.",
     "Dette vil bli spesifisert i undervisningsplanen for emnet."))
 })
+
+test_that("hiof, oslomet and uib: rows of pointers only go, pointers next to content stay or are trimmed", {
+  drop <- c(
+    paste("Felleslitteratur (pedagogikk og fagdidaktikk) fremgår av emnebeskrivelsen for Pedagogikk i",
+          "praktisk-pedagogisk utdanning.\nLitteratur spesifikt for emnet: Opplyses ved studiestart og gis til dels i kompendium."),
+    "Oppdatert litteraturliste vil være tilgjengelig i Leganto ved semesterstart.",
+    "Oppdatert litteraturliste vil vera tilgjengeleg i Leganto ved semesterstart.",
+    "Se omtale av praksis i programplanen", "Se omtale av praksisi programplanen\n\nSe omtale av praksis i programplanen",
+    "Se omtale i emneplanen", "Se omtale av arbeids- og undervisningsformer i programplandelen",
+    "Se nærmere omtale av praksis i programplanen",
+    "Se omtale av praksis i programplanen og i praksisguide for PPU-Y",
+    "SSe mer utfyllende informasjon om praksis i programplanen og i praksisguiden for PPU-Y",
+    "Se utfyllende informasjon om praksis i programplanen og i; praksisguiden for PPU-Y",
+    "Se informasjon i program- og emneplan\n\nSe praksisguiden for trafikklærerutdanningen",
+    "Se forkunnskapskrav beskrevet under Innhold og oppbygging i programplanen.",
+    "Informasjonen fins ikkje på norsk.", "TInformasjonen fins ikkje på norsk.",
+    "Informasjonen fins ikkje på norsk. Sjå dei engelske nettsidene.",
+    "For informasjon om mål og innhald i emnet - sjå dei engelske nettsidene.",
+    "Not relevant.")
+  for (t in drop) expect_false(.keep_section_row(t, "reading_list"), label = t)
+  out <- tibble::tibble(
+    section = c("reading_list", "course_content", "coursework_requirements", "prerequisites"),
+    raw_text = c(paste("Felleslitteratur (pedagogikk og fagdidaktikk) fremgår av emnebeskrivelsen for Pedagogikk i",
+                       "praktisk-pedagogisk utdanning.\nLitteratur spesifikt for emnet:\nFjørtoft, H. (2014). Norskdidaktikk."),
+                 paste("Se omtale av praksisstudiet i programplanen. Du finner praksiskalenderen,",
+                       "retningslinjer for praksis med mer her."),
+                 "Første praksisperiode består av 25 dager pedagogisk praksis.\n\nSe nærmere omtale av praksis i programplanen",
+                 "Skal ha bestått EMNE101.\n\nNot relevant."))
+  s <- stats::setNames(.clean_sections(out)$raw_text, .clean_sections(out)$section)
+  # the leading pointer line goes, the list stays
+  expect_equal(s[["reading_list"]], "Litteratur spesifikt for emnet:\nFjørtoft, H. (2014). Norskdidaktikk.")
+  # a pointer with more in the same paragraph stays whole
+  expect_equal(s[["course_content"]], out$raw_text[2])
+  expect_equal(s[["coursework_requirements"]], "Første praksisperiode består av 25 dager pedagogisk praksis.")
+  expect_equal(s[["prerequisites"]], "Skal ha bestått EMNE101.")
+})

@@ -310,9 +310,10 @@ pointers, “Oppgis senere.”, “… ikke publisert ennå”, uit’s “Conta
 department/faculty.”, “Se fagbeskrivelse med pensum” and its reading
 lists only on the learning platform or at the bookshop,
 “Pensumlitteratur oppgis i Fronter ved semesterstart eller fås ved
-henvendelse til …”), and drops a first line that only repeats the
-section heading (but keeps learning-outcome group labels such as
-“Kunnskap”).
+henvendelse til …”, OsloMet’s “Se omtale av praksis i programplanen”,
+UiB’s “Informasjonen fins ikkje på norsk.”), and drops a first line that
+only repeats the section heading (but keeps learning-outcome group
+labels such as “Kunnskap”).
 
 ## What Each Mechanism May Remove
 

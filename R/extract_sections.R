@@ -1421,6 +1421,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 .placeholder_phrases <- c(
   # bare negation / dummy values: "Ingen", "Ingen krav", "None", "x", "-", "..."
   "ingen(?: spesielle)?(?: krav| forkunnskapskrav| arbeidskrav)?", "nei", "none", "n/a", "x",
+  "not relevant",                                                    # uib
   "det er ingen (?:vurdering|eksamen) i emnet",                      # hvl
   "[-–.…_]++", "ingen info",                                         # hvl "_", oslomet
   # no coursework: "Ingen arbeidskrav i emnet.", "No coursework requirements."
@@ -1434,7 +1435,16 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   # pointers to another document
   "(?:se|sjå) (?:fag|program|studie)?plan(?:en)?(?: for [^.]{0,100})?",
   "se emnearkivet",
-  "(?:se|sjå) forkunnskapskrav(?:et|a|ene)?",       # ntnu: the recommended field points to the required
+  # ntnu: the recommended field points to the required; oslomet: "Se
+  # forkunnskapskrav beskrevet under Innhold og oppbygging i programplanen."
+  "(?:se|sjå) forkunnskapskrav(?:et|a|ene)?(?: beskrevet under [^.]{0,80})?",
+  # oslomet practicum courses (2026-11-11): "Se omtale av praksis i
+  # programplanen", "Se nærmere omtale av praksis i programplanen", "Se mer
+  # utfyllende informasjon om praksis i programplanen og i praksisguiden for
+  # PPU-Y", "Se praksisguiden for yrkesfaglærerutdanningen"
+  paste0("s?se (?:mer )?(?:nærmere |(?:mer )?utfyllende )?(?:omtale|informasjon)(?: (?:av|om) [^.]{0,60}?)? ?",
+         "i (?:program-?(?: og emne)?plan(?:en|delen)?|emneplan(?:en)?)(?: og i;? praksisguide[^.]{0,80})?"),
+  "se praksisguiden for [^.]{0,80}",
   "se (?:kursinnhold|emnebeskrivelse)(?:et|n)?",                     # nord intro
   "ingen emner(?: i programmet)?",
   # the plan is on the English page (hvl, nord, ntnu; `english_page` in the config)
@@ -1463,6 +1473,10 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "klikk på (?:knappen )?[\"“”]?english[\"“”]?[^.]*",
   paste0("(?:dette emnet kan du lese om|du finn(?:er)? (?:mer )?(?:informasjon om dette emnet|emneplanen)|",
          "informasjon om emnet finn du) på dei? engelske nettsidene(?: våre)?"),
+  # uib (2026-11-11): "Informasjonen fins ikkje på norsk. Sjå dei engelske
+  # nettsidene.", "For informasjon om mål og innhald i emnet - sjå dei
+  # engelske nettsidene."; a page of them has no plan (course_plan_spec.md)
+  "t?informasjonen fins ikkje på norsk", "(?:for informasjon om [^.]{0,60}? [-–] )?sjå dei engelske nettsidene",
   "sjå den engelske sida vår[^.]*", "se informasjon på https?://\\S+", "denne finn du ved å velja språk[^.]*",
   "you can read about this (?:course|topic) on our english website",
   "this course will be taught in english, please see the english version of the course description",
@@ -1497,6 +1511,11 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "se egen pensumliste for studieenheten i (?:fronter|canvas)",
   "available on request",                                             # uit 2008-2010
   "ny pensumbok vurderes",                                            # hiof
+  # hiof PPU didactics: the common list is in the PPU pedagogy plan, the
+  # course's own given at the start; the list is in Leganto at the start
+  "felleslitteratur \\(pedagogikk og fagdidaktikk\\) fremgår av emnebeskrivelsen for pedagogikk i praktisk-pedagogisk utdanning",
+  "(?:litteratur spesifikt for emnet: ?)?opplyses ved studiestart og gis til dels i kompendium",
+  "oppdatert litteraturliste vil v(?:æ|e)r[ae] tilgjengel[ie]g i leganto ved semesterstart",
   # the list is given at the start or put on the learning platform (hiof, ntnu)
   "(?:(?:aktuell )?pensum(?:liste|litteratur)?|litteratur(?:en)?|bøker og artikler) ?oppgis (?:ved|før) [^.]{0,40}",
   "oppgis (?:ved|før)(?: [^.]{0,40})?", "se pensumliste(?:n)?",
