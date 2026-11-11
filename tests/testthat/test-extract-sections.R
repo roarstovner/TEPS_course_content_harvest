@@ -580,6 +580,17 @@ test_that("mf: intro is course_content, accordions are sections, contact card ig
     out <- page_sections(page_blocks(h, NA, cfg), NA, cfg)
     expect_equal(out$raw_text[out$section == "course_content"], "Dette emnet gir en innføring i identitet.")
   }
+  # a paragraph sub-heading inside an accordion item switches section (RL1014)
+  acc <- '<html><body><article><div class="content-body">
+    <details class="wp-block-mf-accordion-item"><summary>Obligatoriske aktiviteter</summary>
+      <div class="wp-block-mf-accordion-item__body"><p>For å kunne ta eksamen må studenten:</p>
+      <ul><li>Delta i ekskursjon</li></ul><p>Arbeidsform og organisering</p>
+      <p>Emnet organiseres i 6 moduler.</p><ul><li>1-2 forelesninger</li></ul></div></details>
+  </div></article></body></html>'
+  out <- page_sections(page_blocks(acc, NA, cfg), NA, cfg)
+  s <- stats::setNames(out$raw_text, out$section)
+  expect_match(s[["coursework_requirements"]], "^For å kunne ta eksamen må studenten:\\s+Delta i ekskursjon$")
+  expect_match(s[["teaching_methods"]], "^Emnet organiseres i 6 moduler\\.\\s+1-2 forelesninger$")
 })
 
 test_that("uis: the facts box is in the text without its links, and in no section", {
@@ -1845,6 +1856,25 @@ test_that("hvl, usn and nla: stock sentences about teaching or the grade join th
     "Dette vil bli spesifisert i undervisningsplanen for emnet.")), "nla")$raw_text[2], paste(
     "Grunnet Covid-19 situasjoen kan deler av (evt. hele) undervisningen bli gjennomført digitalt.",
     "Dette vil bli spesifisert i undervisningsplanen for emnet."))
+})
+
+test_that("hiof: teaching hours under 'Undervisningssemester' go to teaching, the semester stays out", {
+  cfg <- .block_cfg(get_institution_config("hiof"))
+  sections <- function(sem) {
+    html <- paste0('<html><body><div id="vrtx-fs-emne-content"><h2>Innhold</h2><p>Databaser.</p>',
+                   '<h2>Undervisningssemester</h2><div>', sem, '</div>',
+                   '<h2>Arbeids- og undervisningsformer</h2><p>Prosjektarbeid.</p></div></body></html>')
+    out <- page_sections(page_blocks(html, NA, cfg), NA, cfg)
+    stats::setNames(out$raw_text, out$section)
+  }
+  s <- sections("Bachelorstudiet i informatikk: 4. semester (vår).<br><br>4 timer forelesning + øvinger pr. uke.")
+  expect_equal(s[["teaching_methods"]], "Prosjektarbeid.\n\n4 timer forelesning + øvinger pr. uke.")
+  expect_false(any(grepl("semester", s)))
+  expect_equal(sections("Timer pr. uke: 4 t plenum")[["teaching_methods"]], "Prosjektarbeid.\n\nTimer pr. uke: 4 t plenum")
+  # the workload, a semester label on the line and the semester alone stay out
+  for (sem in c("5. semester (høst).<br>Minimum 12 timer pr. uke.", "Timer pr. uke: 4",
+                "Vår 2006/ ett semester. 4 timer forelesning per uke", "1. semester (høst)."))
+    expect_equal(sections(sem)[["teaching_methods"]], "Prosjektarbeid.")
 })
 
 test_that("hiof, oslomet and uib: rows of pointers only go, pointers next to content stay or are trimmed", {

@@ -932,7 +932,15 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # overstiger 10 %") stays. nla: the COVID notice in the course content
 # ("Grunnet Covid-19 situasjoen kan deler av (evt. hele) undervisningen bli
 # gjennomført digitalt. Dette vil bli spesifisert i undervisningsplanen for
-# emnet."), teaching. A wording found in one or two courses stays (MF, UiS
+# emnet."), teaching. hiof: the plans of 2006-2015 give the teaching hours
+# under "Undervisningssemester" (`section_headings` ".drop"), on lines of
+# their own: a line that opens with hours or a teaching form and names one
+# ("4 timer forelesning + øvinger pr. uke.", "Timer pr. uke: 4 t plenum",
+# "Veiledning og forelesninger etter behov.", "Veiledningsomfanget utgjør 20
+# timer."), teaching; the semester, the workload ("Minimum 12 timer pr.
+# uke.", "Timer pr. uke: 4") and a line that opens with a semester label
+# ("Vår 2006/ ett semester. ... 4 timer forelesning per uke", 2005-2007) stay
+# out. A wording found in one or two courses stays (MF, UiS
 # MGL2120, INN SOSP3001/3002; course_plan_spec.md, known deviations).
 # Whether each sentence says only who may take the course (uit's course
 # content): every clause of it (cut at ", og", " men er", ". ", " (E" ...)
@@ -983,7 +991,11 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   usn = list(list(from = "teaching_methods", to = "assessment",
                   rx = "(?i)^\\s*praksis vurderes (?:til|med|som) (?:bestått|godkjent) ?/ ?ikke (?:bestått|godkjent)\\.?\\s*$")),
   nla = list(list(from = "course_content", to = "teaching_methods", rx = paste0(
-    "(?i)^\\s*(?:grunnet covid-19 situasjo|dette vil bli spesifisert i undervisningsplanen for emnet\\b)")))
+    "(?i)^\\s*(?:grunnet covid-19 situasjo|dette vil bli spesifisert i undervisningsplanen for emnet\\b)"))),
+  hiof = list(list(from = ".drop", to = "teaching_methods", rx = paste0(
+    "(?i)^(?=.*(?:forelesn|øving|øvelse|undervisning|veiledning|lab|seminar|workshop|plenum|oppgaveløs))",
+    "\\s*(?:timer (?:pr\\.?|per) uke\\s*:?\\s*)?(?:(?:inntil|opptil|ca\\.?|i gjennomsnitt|minimum|ingen faste)\\s+)*",
+    "(?:(?:\\d+|to|tre|fire|seks)(?:\\s*[-–x]\\s*\\d+)?\\s*(?:t|timer|timers|time|h)\\b|forelesn|veiledning)")))
 )
 .move_sentences <- function(out, institution) {
   for (m in .sentence_moves[[institution %||% ""]]) {

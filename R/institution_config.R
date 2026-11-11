@@ -280,7 +280,12 @@ institution_configs <- list(
     page_end_term = function(html) title_terms(html)$last,
     section_strategy = "html",
     # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
-    section_subheading_selector = "p"
+    section_subheading_selector = "p",
+    # The semester the course is taught in is plan text in no section, but
+    # the plans of 2006-2015 (IT and engineering) add the teaching hours
+    # under it ("4 timer forelesning + øvinger pr. uke."), which go to
+    # teaching (.sentence_moves)
+    section_headings = c("undervisningssemester" = ".drop")
   ),
 
   himolde = list(
@@ -438,10 +443,16 @@ institution_configs <- list(
     # WordPress page: details/summary accordions plus an untitled intro block
     # (only three h2s, none of them plan sections). The intro is
     # course content, with paragraph sub-headings ("Arbeidsform og
-    # organisering:"); the accordion group's h2 "Om studiet" ends it.
+    # organisering:"); the accordion group's h2 "Om studiet" ends it. An
+    # accordion item can hold that sub-heading too, as a paragraph of its own
+    # ("Arbeidsform og organisering" in "Obligatoriske aktiviteter", RL1014
+    # 2025); its other paragraphs are read whole, as the item is
     section_strategy = "html",
     section_heading_selector = "h2, summary",
-    section_subheading_selector = "div.wp-block-group p",
+    section_subheading_selector = paste0(
+      "//div[contains(concat(' ', normalize-space(@class), ' '), ' wp-block-group ')]//p | ",
+      "//div[contains(@class, 'wp-block-mf-accordion-item__body')]/p",
+      "[starts-with(normalize-space(), 'Arbeidsform og organisering')][string-length(normalize-space()) < 30]"),
     section_scope = "details",
     section_initial = "course_content",
     facts = c("hgroup", ".template-study-subject__details", ".template-study-program__details")
