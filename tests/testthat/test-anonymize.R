@@ -1418,3 +1418,46 @@ test_that("'Fall', a glued season, læreplan words in titles, a revision stamp a
   expect_equal(an("inn", "Navn\tStudiepoeng\tDato\tKommentar\n2mped-1 Profesjonsrettet pedagogikk\t15\t150925\nISBN 150925"),
                "Navn\tStudiepoeng\tDato\tKommentar\n2mped-1 Profesjonsrettet pedagogikk\t15\nISBN 150925")
 })
+
+test_that("words stranded by a removal and leftover notices are tidied, plan text stays", {
+  an <- function(inst, x) anonymize_text(inst, x, .progress = FALSE)
+  # a literature line left bare by its semester; a line with more stays
+  expect_equal(an("nih", "Kjernelitteratur\nKjernelitteratur for våren 2025.\nBok"), "Kjernelitteratur\nBok")
+  expect_equal(an("nih", "Anbefalt litteratur for høsten2025.\nBok"), "Bok")
+  expect_equal(an("nih", "Anbefalt litteratur for videre lesning.\nBok"), "Anbefalt litteratur for videre lesning.\nBok")
+  # a preposition before a semester heading a label goes with it
+  expect_equal(an("uib", "Tema for høst 2024: Diamonds and Rust in the AI Treasure Chest."),
+               "Tema: Diamonds and Rust in the AI Treasure Chest.")
+  expect_equal(an("uib", "Tema for kurset: kvantedatamaskiner."), "Tema for kurset: kvantedatamaskiner.")
+  # brackets emptied after a closing bracket; a call in code and full brackets stay
+  expect_equal(an("uib", "SAMPOL341 (10 ECTS)(spring 2014)\nKrav"), "SAMPOL341 (10 ECTS)\nKrav")
+  expect_equal(an("uib", "Bruk print() og (a)(b) i Python."), "Bruk print() og (a)(b) i Python.")
+  # "i" goes with a removed academic year; a content range keeps it
+  expect_equal(an("nmbu", "Det vil imidlertid opprettes særskilt protokoll for vurdering også i 2026/27."),
+               "Det vil imidlertid opprettes særskilt protokoll for vurdering også.")
+  expect_equal(an("nmbu", "Norsk skole i 1945-1970."), "Norsk skole i 1945-1970.")
+  # a season after "tidlig" or in "høst- og vår..." keeps its word, the year goes
+  expect_equal(an("hiof", "Emnet foregår i høst- og tidlig vårsemester 2016."), "Emnet foregår i høst- og tidlig vårsemester.")
+  expect_equal(an("hiof", "Emnet går over høst- og vårsemesteret 2016."), "Emnet går over høst- og vårsemesteret.")
+  expect_equal(an("hiof", "Emnet går våren 2016."), "Emnet går.")
+  # a malformed access date is no clock time and stays, as does a well-formed one
+  expect_equal(an("hiof", "LOV-2011-06-24-30. (Lesedato: 12:05.20). URL: https://lovdata.no/x"),
+               "LOV-2011-06-24-30. (Lesedato: 12:05.20). URL: https://lovdata.no/x")
+  expect_equal(an("hiof", "Rundskriv (Lesedato: 12.05.20)"), "Rundskriv (Lesedato: 12.05.20)")
+  expect_equal(an("hiof", "Forelesning 12:05 i aud."), "Forelesning i aud.")
+  # two addresses glued by a full stop both go
+  expect_equal(an("uib", "kontakt eventuelt studierettleiar på studieveileder@ift.uib.no.studieveileder@gfi.uib.no\nX"),
+               "kontakt eventuelt studierettleiar på\nX")
+  # uib: the reading-list notice without "innan" and in English; a description stays
+  expect_equal(an("uib", "Litteraturliste\nLitteraturlista vil vere klar 1. august for haustsemesteret og 1. januar for vårsemesteret\nEmneevaluering"),
+               "Litteraturliste\n\nEmneevaluering")
+  expect_equal(an("uib", "Litteraturliste\nThe reading list will be ready before 1 June for the autumn semester and 1 Decemeber for the spring semester.\nEmneevaluering"),
+               "Litteraturliste\n\nEmneevaluering")
+  expect_equal(an("uib", "The reading list will be available in Leganto. It has 400 pages."),
+               "The reading list will be available in Leganto. It has 400 pages.")
+  # inn: the PHP error banner over a plan goes; a plan's own word stays
+  expect_equal(an("inn", paste0("Feilmelding\nNotice: Undefined index: Norwegian Nynorsk i eac_cd_get_cd() (linje 127 av ",
+                                "/var/www/websites/inn-2.15/sites/all/modules/custom/eac_cd/eac_cd.courses.inc).\nEmnetittel\nInnhold")),
+               "Emnetittel\nInnhold")
+  expect_equal(an("inn", "Feilmelding\nStudenten lærer å lese en feilmelding."), "Feilmelding\nStudenten lærer å lese en feilmelding.")
+})

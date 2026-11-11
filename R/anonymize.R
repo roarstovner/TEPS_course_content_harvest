@@ -196,6 +196,9 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     # the banner over a plan published in English only ("Kun tilgjengelig på
     # engelsk", or with the language left out); the page holds the whole plan
     stringr::str_remove("(?m)^Statusmelding\\nKun tilgjengelig på[^\\n]*\\n") |>
+    # a PHP error banner over the plan ("Feilmelding\nNotice: Undefined index:
+    # Norwegian Nynorsk i eac_cd_get_cd() (linje 127 av /var/www/...)")
+    stringr::str_remove_all("(?m)^Feilmelding[ \\t]*\\n(?:(?:Notice|Warning|Deprecated|Error): [^\\n]*(?:\\n|$))+") |>
     stringr::str_remove_all("(?m)^\\d{4}\\s+(?:Høst|Vår|Autumn|Spring)(?:,\\s*\\d{4}\\s+(?:Høst|Vår|Autumn|Spring))*\\s*$") |>
     # a compact ddmmyy date in the credit-overlap table's "Dato" column, after
     # the credits ("...spesialpedagogikk\t15\t150925"); the tab stays
@@ -367,13 +370,17 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     # When the reading list is published, a date that changes between years:
     # "Litteraturlista vil vere klar innan 01.06. for haustsemesteret og
     # 01.12. for vårsemesteret.", "Litteraturlistene vil vere klare innan 1. Juni",
-    # "... vil normalt vere klar innan 1. juni.", "... vil vere tilgjengeleg på
-    # uib.no 1. juni ...", "... vert tilgjengeleg 1. juni ...", "... vil
-    # publiserast innan 1. juli / 1. desember."; only where a date follows
+    # "... vil vere klar 1. august ...", "... vil normalt vere klar innan 1.
+    # juni.", "... vil vere tilgjengeleg på uib.no 1. juni ...", "... vert
+    # tilgjengeleg 1. juni ...", "... vil publiserast innan 1. juli / 1.
+    # desember."; only where a date follows. In English: "The reading list
+    # will be ready before 1 June for the autumn semester and 1 December ..."
     stringr::str_remove_all(paste0(
       "Litteraturlist\\w*(?: for [\\p{L} ]{1,30}?)? (?:vil (?:normalt )?(?:ver[ae]|være) ",
-      "(?:klare? inn[ae]n|tilgjengeleg(?: på uib\\.no)?)|vil publiserast innan|vert tilgjengeleg(?: på uib\\.no)?) ",
+      "(?:klare?(?: inn[ae]n)?|tilgjengeleg(?: på uib\\.no)?)|vil publiserast innan|vert tilgjengeleg(?: på uib\\.no)?) ",
       "(?=[^\n]{0,3}\\d{1,2}\\.)(?:\\d\\.(?=\\d|[ \\t]+\\p{Ll}|[ \\t]+", .month_regex, ")|[^.\n])*\\.?[ \\t]*")) |>
+    stringr::str_remove_all(paste0("(?:The )?[Rr]eading lists? will be (?:ready|available|published)(?: before| by| on)? ",
+                                   "(?=\\d{1,2}(?:st|nd|rd|th)?\\.?[ \\t]+\\p{L})[^.\n]*\\.?[ \\t]*")) |>
     # a dated schedule of meetings ("tirsdag 18.feb 2025 - rom 8.1 og 8.2"):
     # the date and the room belong to one semester's timetable
     stringr::str_remove_all(paste0("(?m)^(?:mandag|tysdag|tirsdag|onsdag|torsdag|fredag)[ \\t]+\\d{1,2}\\.[ \\t]?\\p{L}+\\.?",
@@ -773,7 +780,8 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     # and two glued by a link label ("x@uib.noX@uib.no", uib): an address ends
     # at a word boundary or where a capital follows a small letter
     stringr::str_remove_all("\\s*\\(\\s*[\\w.+-]+@[\\w.-]+\\.[a-zA-Z]{2,}\\s*\\)") |>
-    stringr::str_remove_all(paste0(.gap, "(?:\\b|", .case_break, ")[\\w.+-]+@[\\w.-]+\\.[a-zA-Z]{2,}?(?:\\b|",
+    # or by a full stop ("x@ift.uib.no.x@gfi.uib.no"): not before an "@"
+    stringr::str_remove_all(paste0(.gap, "(?:\\b|", .case_break, ")[\\w.+-]+@[\\w.-]+\\.[a-zA-Z]{2,}?(?:\\b(?!@)|",
                                    .case_break, ")")) |>
     stringr::str_remove_all(.openurl_regex) |>
     stringr::str_remove_all(.user_ip_regex) |>
@@ -811,7 +819,14 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     # "høstsemesteret 2019"; with a dash, comma or colon before it and
     # a list after it ("15 stp, høst 2019 og vår 2020", "Naturfag 5-10 -
     # høst 2020", "MERK: Våren 2021: Skriftlig") and a colon closing the line
-    # ("Høst 2024:")
+    # ("Høst 2024:"). A season after "tidlig"/"early" or in "høst- og
+    # vårsemester 2016" keeps its word, the year goes ("foregår i høst- og
+    # tidlig vårsemester"); a preposition before a semester heading a label
+    # goes with it ("Tema for høst 2024: Diamonds" -> "Tema: Diamonds").
+    stringr::str_replace_all(paste0("((?<!\\p{L})(?i:tidlig|tidleg|sein|sent|early|late)[ \\t]+(?i:", .season_regex,
+                                    ")|\\p{L}[-–][ \\t]+(?i:og|and)[ \\t]+(?i:", .season_regex, "))[ \\t]*\\d{4}\\b"), "\\1") |>
+    stringr::str_remove_all(.not_gov_rule("[ \\t]+", paste0("(?i:for|i|in)(?=[ \\t]+(?i:", .season_regex,
+                                                            ")[ \\t]*\\d{4}[ \\t]*:)"))) |>
     stringr::str_remove_all(.not_gov_rule(
       paste0("(?:[ \\t]*[-–,:])?", .gap, "\\b", .course_start, "(?i:", .season_regex, "(?:[ \\t]+semester)?)"),
       paste0("\\s*\\d{4}\\b(?:[ \\t]*(?:,|og|and|[-–/])[ \\t]*(?i:", .season_regex, ")\\s*\\d{4}\\b)*",
@@ -822,8 +837,10 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     stringr::str_remove_all(.not_gov_rule(
       "[ \\t]*[-–]?[ \\t]*\\b[HV]", "(?:19|20)?\\d{2}(?:[-/][HV](?:19|20)?\\d{2})?\\b:?")) |>
     # a line left bare by the removal of its semester ("Pensumlista for høsten 2025.",
-    # "Core literature for fall 2024.", nih)
-    stringr::str_remove_all("(?m)^[ \\t]*(?:Pensumlist\\w*|Core literature) for\\.?[ \\t]*(?:\\n|$)") |>
+    # "Core literature for fall 2024.", "Kjernelitteratur for våren 2025.",
+    # "Anbefalt litteratur for høsten2025.", nih)
+    stringr::str_remove_all(paste0("(?m)^[ \\t]*(?:Pensumlist\\w*|(?:\\p{Lu}\\p{Ll}+[ \\t]+)?\\p{L}*(?i:litteratur|literature))",
+                                   " for\\.?[ \\t]*(?:\\n|$)")) |>
     # Approval and update dates in words, twice for a second date on a
     # stamp line ("godkjent av utdanningsutvalget 3. mai 2018 og på fullmakt
     # av leder i utdanningsutvalget 4. mars 2019")
@@ -877,15 +894,14 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     # not year paths in links ("files/2019/06/27/", "dokumentserien/2020-2021/",
     # "m5glu-fagplan-engelsk-2018-2019") or DOIs, or ISO dates ("2001-02-01"),
     # or a condition (.condition_year), or a range in running text
-    # (.running_text_year)
-    stringr::str_replace_all(.not_gov_rule(paste0(.gap, "(?<![/\\w.]|\\w-)", .running_text_year, "\\d{4}", .condition_year),
+    # (.running_text_year); "i"/"in" before it goes with it ("vurdering også i
+    # 2026/27." -> "vurdering også.", "vil i 2007/2008 koste" -> "vil koste")
+    stringr::str_replace_all(.not_gov_rule(paste0(.gap, "(?:(?<!\\p{L})in?[ \\t]+)?(?<![/\\w.]|\\w-)", .running_text_year, "\\d{4}", .condition_year),
                                            paste0("[ \\t]?/[ \\t]?\\d{2,4}\\b(?!/|[-–]\\d)", .or_later)),
                              .drop_academic_year) |>
-    stringr::str_replace_all(.not_gov_rule(paste0(.gap, "(?<![/\\w.]|\\w-)", .running_text_year, "\\d{4}", .condition_year),
+    stringr::str_replace_all(.not_gov_rule(paste0(.gap, "(?:(?<!\\p{L})in?[ \\t]+)?(?<![/\\w.]|\\w-)", .running_text_year, "\\d{4}", .condition_year),
                                            paste0("\\s?[-–—]\\s?\\d{2,4}\\b(?!/|[-–]\\d)", .or_later)),
                              .drop_academic_year) |>
-    # "vil i 2007/2008 koste" without its year (hiof)
-    stringr::str_replace_all("\\bvil i (?=koste\\b)", "vil ") |>
     # A time between "between"/"and" and "at"/"on" goes with the "at"/"on":
     # "held between 09:00 at the first day of examination and 14:00 on the
     # third day" -> "held between the first day of examination and the third day"
@@ -903,18 +919,20 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     # Remove clock times "09:00", "23:59:59", with a preposition before; not
     # running times ("Lengde: 2:19", "[20:28]", "Mer Film, 2:30, 2022,",
     # "1:00:09"), verses ("Sure 3:30"), volume:pages, ISBN-10 or ratios
-    # ("60:40"); a range is one time ("14:30-15:30", "09:00 til 15:00")
+    # ("60:40") or a malformed date ("Lesedato: 12:05.20"); a range is one
+    # time ("14:30-15:30", "09:00 til 15:00")
     stringr::str_replace_all(paste0(.gap, .clock_prep, "(?<!\\[|Total Pages |[\\d:])", .clock_regex,
                                    .clock_end, "?\\b",
-                                   "(?!\\]|,[ \\t]*(?:19|20)\\d{2}\\b)", .clock_zone), "\001") |>
+                                   "(?!\\]|\\.\\d|,[ \\t]*(?:19|20)\\d{2}\\b)", .clock_zone), "\001") |>
     # a comma left before a full stop, comma or bracket by a removed time
     # goes ("over to dager, fra kl. 09.00 til 15.00." -> "over to dager.")
     stringr::str_remove_all("(?m),[ \\t]*\001(?=[ \\t]*(?:[.,;:)]|$))") |>
     stringr::str_remove_all("\001") |>
     .unmask_digits() |>
-    # Brackets emptied by the removals above: "Meld. St. 16 ()", "by (3:00 p.m.)";
-    # code such as "print()" has no space before and stays
-    stringr::str_remove_all("[ \\t]+\\([ \\t]*\\)") |>
+    # Brackets emptied by the removals above: "Meld. St. 16 ()", "by (3:00 p.m.)",
+    # "(10 ECTS)(spring 2014)"; code such as "print()" has no space or bracket
+    # before and stays
+    stringr::str_remove_all("(?:[ \\t]+|(?<=\\)))\\([ \\t]*\\)") |>
     # Remove JS artifacts
     stringr::str_remove_all("function\\s*\\([^)]*\\)\\s*\\{[^}]*\\}") |>
     stringr::str_remove_all("\\$\\([^)]+\\)\\.[^;]+;") |>
