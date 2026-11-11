@@ -923,7 +923,17 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # sentence in the course content that says only which courses it builds on
 # ("Emnet bygger på ING1502 Matematiske metoder 1.", "The course is based on
 # ING1501 ...") names prerequisites; one that goes on about the course ("...
-# og skal gi studentene ...") or names no course code stays.
+# og skal gi studentene ...") or names no course code stays. hvl: the
+# engineering theses and projects say in their content how the work is done
+# ("Arbeidet utføres normalt i grupper og kan være et samarbeid med en
+# bedrift ..."), teaching. usn: the PPU courses grade the practice in their
+# teaching ("Praksis vurderes til bestått/ikke bestått."), assessment; a
+# grade with a condition ("... til godkjent dersom ... fravær ikke
+# overstiger 10 %") stays. nla: the COVID notice in the course content
+# ("Grunnet Covid-19 situasjoen kan deler av (evt. hele) undervisningen bli
+# gjennomført digitalt. Dette vil bli spesifisert i undervisningsplanen for
+# emnet."), teaching. A wording found in one or two courses stays (MF, UiS
+# MGL2120, INN SOSP3001/3002; course_plan_spec.md, known deviations).
 # Whether each sentence says only who may take the course (uit's course
 # content): every clause of it (cut at ", og", " men er", ". ", " (E" ...)
 # opens with the course or the verb and says who may take it ("Emnet er
@@ -967,7 +977,13 @@ extract_sections <- function(config, html, extracted_text, course_id) {
     "(?=[^.]*\\b[A-ZÆØÅ]{2,}\\d{3,})(?![^.]*\\b(?:og|and) (?:skal|vil|tar|gir|legger|søker|ser|introduserer|aims?|will)\\b)",
     "(?!.*,\\s*$)"))),
   hivolda = list(list(from = "coursework_requirements", to = "prerequisites",
-                      rx = "(?i)^\\s*bestått didaktikkemne \\d\\.?\\s*$"))
+                      rx = "(?i)^\\s*bestått didaktikkemne \\d\\.?\\s*$")),
+  hvl = list(list(from = "course_content", to = "teaching_methods",
+                  rx = "(?i)^\\s*arbeidet utføres normalt i grupper\\b")),
+  usn = list(list(from = "teaching_methods", to = "assessment",
+                  rx = "(?i)^\\s*praksis vurderes (?:til|med|som) (?:bestått|godkjent) ?/ ?ikke (?:bestått|godkjent)\\.?\\s*$")),
+  nla = list(list(from = "course_content", to = "teaching_methods", rx = paste0(
+    "(?i)^\\s*(?:grunnet covid-19 situasjo|dette vil bli spesifisert i undervisningsplanen for emnet\\b)")))
 )
 .move_sentences <- function(out, institution) {
   for (m in .sentence_moves[[institution %||% ""]]) {
@@ -976,6 +992,10 @@ extract_sections <- function(config, html, extracted_text, course_id) {
     x <- .strip_sentences(out$raw_text[i], m$rx, taken = TRUE)
     if (!length(x$taken)) next
     out$raw_text[i] <- x$rest
+    # the placeholder that ends the target ("Ingen." from nla's Praksis part)
+    # goes before the sentences follow it, as it would at the end
+    j <- which(out$section == m$to & m$to != "assessment")
+    if (length(j) == 1) out$raw_text[j] <- .strip_placeholder_lines(out$raw_text[j])
     out <- .append_section(out, m$to, paste(x$taken, collapse = "\n"))
   }
   out

@@ -1816,3 +1816,33 @@ test_that("hivolda and fhs: the prior course in coursework or course content is 
   expect_false(grepl("bygger på ING1502 Matematiske metoder 1\\.", res$raw_text[res$section == "course_content"]))
   expect_match(res$raw_text[res$section == "course_content"], "og skal gi studentene .*Krigsskolen\\.$")
 })
+
+test_that("hvl, usn and nla: stock sentences about teaching or the grade join their section", {
+  sec <- function(res) setNames(res$raw_text, res$section)
+  res <- sec(.move_sentences(tibble::tibble(section = c("course_content", "teaching_methods"), raw_text = c(
+    paste("Studentene skal gjennomføre en selvstendig oppgave. Arbeidet utføres normalt i grupper og kan være et",
+          "samarbeid med en bedrift eller en offentlig etat."), "Veiledning.")), "hvl"))
+  expect_equal(res[["course_content"]], "Studentene skal gjennomføre en selvstendig oppgave.")
+  expect_match(res[["teaching_methods"]], "^Veiledning\\.\n+Arbeidet utføres normalt i grupper .*etat\\.$")
+  tm <- paste("Praksis har en gradvis progresjon fra observasjonspraksis til individuell undervisningspraksis.",
+              "Praksis vurderes til bestått/ikke bestått.")
+  res <- sec(.move_sentences(tibble::tibble(section = "teaching_methods", raw_text = tm), "usn"))
+  expect_equal(res[["assessment"]], "Praksis vurderes til bestått/ikke bestått.")
+  # a grade with a condition stays
+  cond <- "Praksis vurderes til godkjent dersom studenten har utført arbeid som angitt og fravær ikke overstiger 10 % av praksistiden."
+  expect_equal(.move_sentences(tibble::tibble(section = "teaching_methods", raw_text = cond), "usn")$raw_text, cond)
+  # the empty Praksis part ("Ingen.") that ended the teaching methods goes
+  res <- sec(.clean_sections(.move_sentences(tibble::tibble(
+    section = c("course_content", "teaching_methods"), raw_text = c(paste0(
+      "Emnet handler om lesing.\nGrunnet Covid-19 situasjoen kan deler av (evt. hele) undervisningen bli gjennomført ",
+      "digitalt. Dette vil bli spesifisert i undervisningsplanen for emnet."), "Forelesninger.\n\nIngen.")), "nla"), "nla"))
+  expect_equal(res[["course_content"]], "Emnet handler om lesing.")
+  expect_equal(res[["teaching_methods"]], paste(
+    "Forelesninger.\n\nGrunnet Covid-19 situasjoen kan deler av (evt. hele) undervisningen bli gjennomført digitalt.",
+    "Dette vil bli spesifisert i undervisningsplanen for emnet."))
+  expect_equal(.move_sentences(tibble::tibble(section = "course_content", raw_text = paste(
+    "Grunnet Covid-19 situasjoen kan deler av (evt. hele) undervisningen bli gjennomført digitalt.",
+    "Dette vil bli spesifisert i undervisningsplanen for emnet.")), "nla")$raw_text[2], paste(
+    "Grunnet Covid-19 situasjoen kan deler av (evt. hele) undervisningen bli gjennomført digitalt.",
+    "Dette vil bli spesifisert i undervisningsplanen for emnet."))
+})
