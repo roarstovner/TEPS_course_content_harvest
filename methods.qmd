@@ -740,7 +740,10 @@ whose course content says only "See English version.", "Se engelsk
 beskrivelse." or "Se engelsk tekst." (since 2026-10-19), holds no plan, only
 a pointer to the English site, so the plan is fetched from the English page
 of the same course and year (`english_page` in the configuration; NTNU's is
-on www.ntnu.edu).
+on www.ntnu.edu). UiB's English page is not read: 10 of 17,441 UiB plans say
+only "Informasjonen fins ikkje på norsk.", and their offerings have no plan
+(2026-11-11; a harvest of the English pages is not worth it for 10 plans; a
+known deviation in `course_plan_spec.md`).
 Its headings map like the
 Norwegian ones ("Entry requirements" is prerequisites, "Compulsory learning
 activities" coursework requirements; Nord's "Course description", "Learning
@@ -1617,8 +1620,9 @@ year and do not date the offering ("Søknadsfrist 1. juni for emner som
 tilbys i høstsemesteret" in about 6,000 UiT plan texts, "Innleveringsfrist
 for masteroppgåva er 1. februar og 15. mai", "Innleveringsfrister: 1. juni
 og 15. desember", MF's "innen trekkfristen 1. mai/1. november"), many sit in
-a sentence that would be left broken, and whether they stay waits on a
-decision; a date with a year before 2000 after a label is content
+a sentence that would be left broken, and they stay (user 2026-11-11: no
+gain for the data either way, and a list of session dates per wording
+costs code); a date with a year before 2000 after a label is content
 ("Oppstart av krigen 9. april 1940"). *Consequence:* in the published texts of
 the build of 2026-11-10 (186,891 course-plan texts) the session rule matches
 in 133 texts and the deadline rule in 317 (of its 359
@@ -2272,7 +2276,35 @@ a sentence with what the resit consists of, which is assessment design.
 *Rejected:* a rule per wording (many guards, each a risk of cutting design);
 dropping any sentence with a resit word (takes the resit's form).
 *Consequence:* listed under "Known deviations" in `course_plan_spec.md`;
-the sections do not change. *Since:* 2026-11-06.
+the sections do not change. *Since:* 2026-11-06. The same holds at HVL,
+INN, MF, NMBU, OsloMet, Steiner, UiB, UiO, UiS and VID (and HiOF): their
+stock sentences leave assessment since 2026-11-09, and the rules worded once
+or sharing a sentence with the design stay ("Oppgaven vurderes av intern og
+ekstern sensor på grunnlag av læringsutbyttebeskrivelser for emnet.", HVL;
+"Hvis oppgaven vurderes til karakteren F, ikke bestått, kan kandidaten
+levere ny oppgave til angitt frist.", Steiner). *Why:* the sections audit of
+2026-11-08 found them at each; they are extraneous text that does not hide
+the design. *Rejected:* a rule per wording (user 2026-11-11: not crucial,
+and the code should stay short). *Since:* 2026-11-11.
+
+**A mixed paragraph under a mapped heading stays with its heading, a known
+deviation from the spec.** The spec files text by meaning, whatever the
+heading. Where a heading is mapped right but one of its paragraphs holds
+another section's text in a wording found in one course only, the paragraph
+stays: teaching sentences under "Kort om emnet" (NIH LKI236, UiO NOR4515
+and PROMO4) or "Mål og innhold" (UiB INF367), thesis design in course
+content or coursework (NMBU M30-LUN, OsloMet SSA5910, Steiner M-PEL2.2,
+UiB LOGO345), aims written as outcomes under the content heading (INN
+SOSP3002), subject descriptions in learning outcomes and capability
+sentences in course content (MF PPU1010, RL5075), practice assessment under
+"Gjennomføring av praksis" (UiO HIS4015L). *Why:* rare: 9 one-off wordings
+in the 280 plans of the sections audit of 2026-11-08, a sample skewed to
+suspects; a sentence rule per wording costs code and maintenance for one
+course each. *Rejected:* a sentence move per wording (moves stay for
+wordings that recur over many plans, as for HiVolda and FHS below).
+*Consequence:* listed under "Known deviations" in `course_plan_spec.md`;
+the sections do not change; such a section may hold a sentence of another
+section's meaning. *Since:* 2026-11-11 (user decision).
 
 **HiVolda and FHS: a prior course in coursework or course content is a
 prerequisite.** HiVolda's Didaktikk 2 courses open their coursework
@@ -2411,3 +2443,7 @@ page's Fagplan is the programme's practicum plan for all study years, with no
 markup separating the years. Their plan text keeps the whole page, which the
 coders read where a section is missing. *Rejected:* reading the whole practicum plan
 into each course, or slicing it by year (fragile). *Since:* 2026-10-02.
+Confirmed 2026-11-11 (user), after the sections audit of 2026-11-08 asked to
+read it: the Fagplan is not a course plan but a layer between the programme
+plan and the course plans, for the subject's progression over the study
+years.

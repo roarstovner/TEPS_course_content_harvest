@@ -163,6 +163,26 @@ the spec here:
   ekstern sensor på grunnlag av læringsutbyttebeskrivelser for emnet.", HVL;
   UiS's appeal rules on PDF lines wrapped mid-sentence, "Ved klage på
   karakterfastsetting ... skal studenten opp til ny muntlig eksamen.").
+  The sections audit of 2026-11-08 found such wordings at each of them. They
+  stay as extraneous text in assessment (user 2026-11-11): they
+  do not hide the design, and a rule per wording costs code for little gain.
+- A paragraph that mixes meanings under a correctly mapped heading stays
+  with its heading when its wording occurs in one course: teaching sentences
+  under "Kort om emnet" ("Forelesninger vil ha en generell tilnærming til
+  temaene, mens studentene fordyper seg i ...", NIH; the practice days of
+  UiO's NOR4515), thesis design in course content or coursework
+  ("Masteroppgaven kan leveres skriftlig eller i multimodal form og utføres
+  individuelt eller i samarbeid ...", NMBU; "Masteroppgåva har to deler: ei
+  innleiing (kappe) og eit artikkelmanus.", UiB), aims written as outcomes
+  under the content heading (INN), practice assessment under "Gjennomføring
+  av praksis" (UiO). The sections audit of 2026-11-08 found 9 such wordings
+  in 280 sampled plans (INN, MF, NIH, NMBU, OsloMet, Steiner, UiB, UiO); a
+  sentence is moved by meaning only where its wording recurs over many plans
+  (user 2026-11-11).
+- UiB's English page is not read: 10 of 17,441 UiB plans say only
+  "Informasjonen fins ikkje på norsk." (courses described only in English),
+  and their offerings have no plan (2026-11-11; a harvest of the English
+  pages is not worth it for 10 plans).
 - Assessment at UiT, NTNU, Nord and FHS keeps resit, postponement and
   examiner rules ("Det er adgang til å kontinuere for studenter med
   studierett, jf. ...", "Students who failed the exam must re-sit both the
