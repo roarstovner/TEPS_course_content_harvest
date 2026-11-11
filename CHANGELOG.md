@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Sections: sentence moves for stock mixed-meaning sentences (hvl, usn, nla, mf, uis, inn) (#510)
 - Sections: gate and attendance wordings missed ('Alle læringsaktiviteter er obligatoriske', 'forutsettes det at', praksis-context attendance) (#509)
 - Spec: known deviations for one-off mixed paragraphs and resit/examiner/appeal wordings; UiB English-only notice pages in data notes (#526)
 - hiof/usn: table-of-contents labels in every course_plan (#517)
