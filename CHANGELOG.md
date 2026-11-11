@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Anonymizer: stranded words and leftover boilerplate after removals (nih, uib, hiof, nmbu, inn) (#523)
 - Anonymizer: administrative dates left (deadlines, session dates, 'fall', læreplan guard in titles) (#521)
 - Anonymizer: over-removal in reading lists (dates in URLs and references, video running times, gov-guard across a line break) (#522)
 - ntnu: 'Se engelsk versjon' pointer plans (421, 2019-2025) do not follow the English page; pointer emitted as sections (#495)
