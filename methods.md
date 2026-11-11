@@ -1621,6 +1621,75 @@ er <name>”), which still loses the name. *Consequence:* no page text of
 the built partitions changes; the one DBH course name keeps its title
 and is no longer flagged. *Since:* 2026-11-04.
 
+**Reference dates and links keep their numbers.** A link’s digits are
+part of its address, not a date or a time: the date and clock rules skip
+them (“…/Rapport_UDA_7.6.2011.pdf”, “…arkiv%20(01.12.2016).pdf”), and so
+does a video’s running time in brackets after its link
+(“https://www.youtube.com/… (16:00)”). A reference’s publication date in
+brackets before its title or source stays, as one after a comma already
+did (“Dann, Moshe (18.11.2014) Should Jews …”, “SSB (25.11.2016): …”),
+and so does a consecutive-year range that ends a reference after a comma
+or stands in brackets before a title (“i alderen 18-70 år, 2010-11”,
+“Kotel.org. (2016-17) The Western Wall”), unless an academic-year word
+stands before it or the line is a reading list’s or plan’s heading line.
+A government document’s date on the line under its link stays
+(“…/rammeplan(26.05.2017).”). The year a course is first taught stays,
+like its start semester (“Første gang emnet undervises er studieåret
+2025/26.”). HiØ’s reading-list update stamp loses only its sentence and
+a change disclaimer right after it, not the plan text after them on the
+same line. *Why:* the anonymization audit of 2026-11-08 found these
+rules cut reading-list references, leaving “()” or broken file names,
+and took plan text (“Primærlitteratur:”, “Totalt ca. 2100 sider”) that
+shared HiØ’s stamp line. *Rejected:* keeping every bracketed date or
+range (an offering year closing a line, “Årsstudium … (2021-2022)”, is
+administrative); masking whole links (a government word in a link must
+still guard a date). *Consequence:* in samples of raw pages (HEAD
+against the change, 2026-11-10) every change keeps text and none removes
+more: HiØ 32 of 100 plans (reference dates, plan text and some
+reading-list notices from the stamp line), UiS 2 of 100, NLA 2 of 100,
+NMBU 1 of 100, OsloMet 0 of 150; no name or administrative date returns.
+*Since:* 2026-11-10.
+
+**Session dates go after their label; deadlines with a year.** A
+long-form date or day range after a session or deadline label goes, the
+label stays: “Undervisningsperiode 23.-26. oktober 2023”, “1. samling:
+5.-6. september 2022”, “Dato: 4.-6. desember”, “The dates for the course
+are 15-16 September”, “oppstartsamling i oktober 2015”, “Påmeldingsfrist
+13. september 2025.” → “Påmeldingsfrist”, “Litteratur vil være
+tilgjengelig innen 1. juni 2020”. The date must be the label’s value
+(after the label, a colon, “er”/“is” or on the next line) or, with a
+year from 2000, stand up to 40 characters after it (“Oppstart med
+digital undervisning 9. februar 2021”). A session’s dates go without a
+year too; a deadline’s only with one. In the same change: English “Fall
+2024” is a semester label like “Autumn 2024” (capitalised or after
+“in/the/for/during”, not after a comma, full stop, bracket or issue
+number, where it is a journal issue: “Review, No. 1, Fall 1999”); a
+course title with “læreplanteori” or “Læreplanarbeid” loses its “(Vår
+2024)”, since only the word “læreplan” and its inflections name a
+curriculum whose dates stay; a revision stamp alone on its line
+(“Revised May 2019”), an hour-only start of a clock range (“kl. 17 -
+20.00”), a season glued to a university’s name (“Universityvåren 2019”,
+HiØ) and INN’s compact “150925” in the credit-overlap table’s date
+column go. *Why:* the spec puts deadlines, teaching start and session
+dates out; the anonymization audit of 2026-11-08 found them where no
+approval word stood before the date or the year was missing. *Rejected:*
+removing yearless deadlines: they recur every year and do not date the
+offering (“Søknadsfrist 1. juni for emner som tilbys i høstsemesteret”
+in about 6,000 UiT plan texts, “Innleveringsfrist for masteroppgåva
+er 1. februar og 15. mai”, “Innleveringsfrister: 1. juni og 15.
+desember”, MF’s “innen trekkfristen 1. mai/1. november”), many sit in a
+sentence that would be left broken, and whether they stay waits on a
+decision; a date with a year before 2000 after a label is content
+(“Oppstart av krigen 9. april 1940”). *Consequence:* in the published
+texts of the build of 2026-11-10 (186,891 course-plan texts) the session
+rule matches in 133 texts and the deadline rule in 317 (of its 359
+matches UiT 233, UiB and NTNU 36 each, Nord 24), “Fall” with a year in
+95, the others in 5 to 11 each; in samples of raw pages (HEAD against
+the change, 2026-11-11, `preview_change()` n = 50 per raw file) NIH 8
+plans change, UiB 5, HiØ 5, UiO 1, NLA 1, INN 1, HVL and MF 0, and every
+removal is a session or deadline date, a semester or a stamp. *Since:*
+2026-11-11.
+
 ## Sections
 
 **Seven canonical sections** are cut from each plan by its headings,
