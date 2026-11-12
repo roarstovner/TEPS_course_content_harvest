@@ -38,7 +38,9 @@
 #' goes to the overlay section `practice`, up to the next heading, start or
 #' end, or the next sub-heading (under a practice heading only one that
 #' names a section); the practice heading may also be a line of its own
-#' inside teaching methods (uit's "Praksis" paragraph).
+#' inside teaching methods (uit's "Praksis" paragraph), when the text after
+#' it opens with a sentence, not a label or list item (not in ntnu's
+#' learning-forms list "Praksis", "Veiledning", "Obligatoriske arbeidskrav:").
 #'
 #' @param blocks Block table from page_blocks().
 #' @return Tibble `section`, `raw_text`.
@@ -75,7 +77,8 @@ sectionize <- function(blocks) {
     if (role %in% c("heading", "start", "end") ||
         (role == "sub" && (practice || identical(over, "sub") || !is.na(section)))) {
       flush_practice(if (practice && (role == "heading" || (role == "sub" && !is.na(parent)))) role else NA_character_)
-    } else if (role == "text" && is.na(over) && practice && identical(current, "teaching_methods")) {
+    } else if (role == "text" && is.na(over) && practice && identical(current, "teaching_methods") &&
+               .opens_sentence(blocks$text[i + 1])) {
       flush_practice("sub")
     } else if (!is.na(over)) {
       copied <- c(copied, text)
@@ -125,6 +128,14 @@ sectionize <- function(blocks) {
   flush()
   flush_practice()
   .list_to_sections(sections)
+}
+
+# Whether a text opens with a sentence, not a label or list item
+# ("Veiledning", "Obligatoriske arbeidskrav:", ntnu's run-together
+# "ForelesningGruppearbeidSimulering..."); NA (no text) is not.
+.opens_sentence <- function(x) {
+  l <- sub("\n.*", "", trimws(x))
+  !is.na(l) && grepl("[.!?]", l) && !.is_label(l)
 }
 
 # The text under a label heading says nothing: none, a dash or a pointer.

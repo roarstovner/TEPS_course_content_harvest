@@ -188,7 +188,10 @@ line. A practice sub-heading counts only inside a mapped section (not in
 oslomet's Fagplan block, whose practice parts come through `section_pointer`
 `add`), and a text line that is a practice heading opens the copy inside
 teaching methods (uit's "Praksis" paragraph), not elsewhere (an exam row
-"Praksis"). Labels ("Praksisstudier", "Omfang av praksisstudier") and
+"Praksis"), and only when the text after it opens with a sentence
+(`.opens_sentence()`), not with a label or list item: ntnu's learning-forms
+list ("Praksis", "Veiledning", "Utfyllende informasjon:", "Obligatoriske
+arbeidskrav:") is not practice text. Labels ("Praksisstudier", "Omfang av praksisstudier") and
 headings that only mention practice are not practice headings. Practice is
 not touched by the sentence moves; `.clean_sections()` removes the praksis
 pointers (`.praksis_pointer_regex`) from it as from teaching methods, so a

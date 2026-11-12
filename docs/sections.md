@@ -239,16 +239,20 @@ sub-heading counts only inside a mapped section (not in oslomet’s
 Fagplan block, whose practice parts come through `section_pointer`
 `add`), and a text line that is a practice heading opens the copy inside
 teaching methods (uit’s “Praksis” paragraph), not elsewhere (an exam row
-“Praksis”). Labels (“Praksisstudier”, “Omfang av praksisstudier”) and
-headings that only mention practice are not practice headings. Practice
-is not touched by the sentence moves; `.clean_sections()` removes the
-praksis pointers (`.praksis_pointer_regex`) from it as from teaching
-methods, so a practice part that only points to a practice plan is no
-section; from practice alone go lines that say the course has none or
-only point to the practice plan (“Det er ingen veiledet praksis i
-emnet.”, “Se praksisplan for MGLU5.”, “Studenter som tar emnet som en
-del av … følger egen praksisplan.”, `.no_practice_regex`), which stay in
-teaching methods.
+“Praksis”), and only when the text after it opens with a sentence
+(`.opens_sentence()`), not with a label or list item: ntnu’s
+learning-forms list (“Praksis”, “Veiledning”, “Utfyllende informasjon:”,
+“Obligatoriske arbeidskrav:”) is not practice text. Labels
+(“Praksisstudier”, “Omfang av praksisstudier”) and headings that only
+mention practice are not practice headings. Practice is not touched by
+the sentence moves; `.clean_sections()` removes the praksis pointers
+(`.praksis_pointer_regex`) from it as from teaching methods, so a
+practice part that only points to a practice plan is no section; from
+practice alone go lines that say the course has none or only point to
+the practice plan (“Det er ingen veiledet praksis i emnet.”, “Se
+praksisplan for MGLU5.”, “Studenter som tar emnet som en del av … følger
+egen praksisplan.”, `.no_practice_regex`), which stay in teaching
+methods.
 
 ### Heading Map and Cleanup
 

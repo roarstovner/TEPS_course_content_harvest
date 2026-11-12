@@ -1954,8 +1954,11 @@ was in (mostly teaching methods). OsloMet's "Praksistilknytning" and
 "Praksisopplæring", parts of the subject's Fagplan that reached no section,
 go to practice only, after the lead "Fagplanen sier:", on pages with
 sections of their own. Exact headings only: not a label with a bare value
-("Praksisstudier: Ja"), NTNU's exam rows, USN's table of contents or a
-heading that only mentions practice; a practice part that only points to a
+("Praksisstudier: Ja"), NTNU's exam rows, NTNU's learning-forms list (a
+"Praksis" line followed by other learning forms, "Utfyllende informasjon:"
+or "Obligatoriske arbeidskrav:"; a practice line opens the copy only before
+a sentence, since 2026-11-12: it took the list and coursework of 14 NTNU
+plans), USN's table of contents or a heading that only mentions practice; a practice part that only points to a
 practice plan ("se egen praksisplan", "Praksisopplæring er nærmere beskrevet
 i programplanen.") or says there is none ("Det er ingen veiledet praksis i
 emnet.", which stays in teaching methods) is no section; passed practice as a condition for the exam

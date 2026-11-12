@@ -816,6 +816,20 @@ test_that("practice: a Praksis line in teaching methods, oslomet's headings, no 
   expect_equal(s[["practice"]], "Fire uker høstpraksis med prosjektarbeid.")
   expect_equal(s[["teaching_methods"]], "Forelesninger.\nFire uker høstpraksis med prosjektarbeid.")
   expect_equal(s[["reading_list"]], "Bok.")
+  # ntnu: "Praksis" as an item of the learning-forms list, followed by more
+  # items or a label, opens no practice copy
+  for (after in c("<p><b>Veiledning</b></p><p>Utfyllende informasjon:</p><ul><li>Simulering.</li></ul>",
+                  "<p>Forelesning<br/>Gruppearbeid<br/>Veiledet praksis</p>",
+                  "<p>ForelesningGruppearbeidSimuleringNettstøttet læringSeminarVeiledet praksis</p>",
+                  "<p>Obligatoriske arbeidskrav:</p><p>Godkjent oppmøte.</p>")) {
+    html <- sprintf("<main><h2>Læringsformer og aktiviteter</h2><p><b>Praksis </b></p>%s</main>", after)
+    s <- sections_of(html, html_cfg())
+    expect_false("practice" %in% names(s))
+  }
+  # ntnu: "Praksis:" before a paragraph is practice
+  s <- sections_of("<main><h2>Læringsformer og aktiviteter</h2><p>Forelesninger.</p>
+    <p><b>Praksis:</b></p><p>Emnet inkluderer minimum 50 timers ekstern praksis.</p></main>", html_cfg())
+  expect_equal(s[["practice"]], "Emnet inkluderer minimum 50 timers ekstern praksis.")
   # a pointer alone is no practice section
   html <- "<main><h2>Undervisning og pensum</h2><p>Forelesninger.</p>
     <p>Praksis</p><p>For nærmere informasjon om praksis, se egen praksisplan.</p></main>"
