@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- preview_change(): with course_ids it sometimes omits existing pages (2016 NTNU plans) (#529)
 - Sections: ntnu practice rows take the whole learning-forms list and coursework (14 plans) (#528)
 - undersøke om praksis kan være en egen section (#350)
 - Sections: reader configuration for single courses (mf 'Arbeidsform og organisering' in details, vid 'Annet' label, hiof 2013 teaching hours under 'Undervisningssemester') (#513)
