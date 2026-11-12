@@ -768,82 +768,85 @@ engelsk. Se engelske nettsider ved å velge engelsk språk.” (since
 English version.”, “Se engelsk beskrivelse.” or “Se engelsk tekst.”
 (since 2026-10-19), holds no plan, only a pointer to the English site,
 so the plan is fetched from the English page of the same course and year
-(`english_page` in the configuration; NTNU’s is on www.ntnu.edu). Its
-headings map like the Norwegian ones (“Entry requirements” is
-prerequisites, “Compulsory learning activities” coursework requirements;
-Nord’s “Course description”, “Learning activities”, “Exam description”;
-NTNU’s “Learning methods and activities”, “Compulsory assignments”,
-“Further on evaluation”, “Required previous knowledge”, “Course
-materials”), Nord’s English year stamp (“Current active course
-description (last updated 2026/27)”) is read like the Norwegian one,
-NTNU’s exam tab and contact block are read like the Norwegian ones, and
-a page with only the pointer is a shell. Since 2026-10-19 a page with
-the pointer gives no plan also when it is not a shell
-(`plan_offerings()`): NTNU’s pointer pages keep the exam tab, which is
-an assessment section, so the shell rule would keep them as plans with
-the pointer in place of the content. *Why:* these are mostly the English
-subject modules of the teacher education programmes (MGBEN, MGUEN);
-without the English page, HVL’s English subject would have no plans. The
-pilot samples of 2026-10-17 found the other wordings in English-taught
-master’s courses (HVL ADA512, BI4-301, MAS538, MMO5010; Nord BIO5023,
-BIO5031, BIO5036, all 2025), whose pointer had counted as a plan.
-*Rejected:* leaving these offerings without a plan; at Nord, the page’s
-`hreflang="en"` link (the page has two, one of them to the current plan
-without year and semester); at NTNU, keeping the pointer page as a plan
-of its exam tab, and taking every page with the template’s “English
-version” link (all pages have it). *Consequence:* 86 offerings (10
-course codes, 2020-2025) get a plan, 46 plans more, in English. 5
-MGBPE201E offerings whose pointer had counted as a plan (one plan of 140
-characters) were not retried with them; a second retry harvest the same
-day gave them their English plan (3 plans). On 2026-10-17 the pointers
-of the pilot samples’ 10 such offerings (HVL 7, Nord 3) stopped counting
-as plans, and their English pages, fetched again, gave them 10 English
-plans (HVL 7, Nord 3) in place of 8 pointer plans. No teacher-education
-offering has one of the new wordings. At NTNU the pilot sample’s 7 such
-offerings (IMT4127 2022, IMT4312 2025, MACS490 2025, SMF1081 spring
-2022) were fetched again on 2026-10-19 and got 7 English plans in place
-of 5 pointer plans (NTNU plans 2,098 → 2,100). Three teacher-education
-offerings (GEOG2500 spring 2022, autumn 2022, spring 2023) say “Se
-engelsk tekst.” in the course content only, with Norwegian compulsory
-activities; fetched again the same day, they got one English plan (4,201
-characters, 7 sections) in place of one pointer plan (434 characters, 3
-sections, its course content only the pointer). The full NTNU harvest
-showed some 60 more wordings of the pointer (“Se engelsk versjon”,
-“Emnet undervises på engelsk. Se engelsk versjon for emnebeskrivelse.”,
-“Se emnets engelske nettside – International MSc”, “Cf. English
-description”, “Undervises kun på engelsk”), which the notice missed:
-1,897 offerings of 2019-2025 (1,099 pages; 2019 200, 2020 214, 2021 254,
-2022 277, 2023 285, 2024 324, 2025 343) had a pointer plan, the pointer
-in place of the course content and mostly of every other section. Since
-2026-11-05 the notice takes them, a course content that starts with plan
-text or goes on for more than a short tail (“Se den engelske
-beskrivelsen dersom du finner …”) excepted, and the pointer wordings are
-placeholders in the sections at every institution (a section row of
-nothing else is dropped). The fulltext audit of 2026-11-08 found the
-same at HVL: its notice knew 4 of some 30 wordings (“Emneomtalen finnest
-berre på engelsk, gå til …”, “Dette emnet vert undervist på engelsk. For
-å sjå emneskildringa, klikk på”English” …“,”Dette emnet kan du lese om
-på dei engelske nettsidene våre.”, “Kursinformasjon finnes kun på
-engelsk. Se informasjon på https://…”, “You can read about this course
-on our English website.”) and missed “Se engelske nettsider” with a link
-in it: 252 offerings of 2017-2025 (252 pages, 57 course codes, none in
-teacher education; 2017 1, 2018 18, 2019 21, 2020 15, 2021 36, 2022 42,
-2023 39, 2024 40, 2025 40) had a pointer plan. Since 2026-11-08 HVL’s
-notice is the first paragraph of the content when it holds one of these
-wordings with a short tail and no paragraph follows it under its
-heading; the HVL wordings are placeholders in the sections too.
-*Rejected:* matching the wordings anywhere in the page, as before: a
-page whose plan has the pointer after its first paragraph, or after the
-pointer, is not a pointer page (SDG234 2020-2025, a Norwegian plan after
-“For English course description, choose …”; GE4-306 2020-2021, an
-English plan after “Dette emnet vert undervist på engelsk …”; EISENIO3
-2021, “Du finner mer informasjon om dette emnet på de engelske
-nettsidene våre.” after its content). *Consequence:* those offerings
-have no plan until their English pages are fetched
-(`harvest_all(retry = "ok")`). *Since:* 2026-10-15; the other wordings
-and Nord from 2026-10-17; NTNU, and no plan for a pointer page that is
-not a shell, from 2026-10-19; NTNU’s other wordings from 2026-11-05;
-HVL’s from 2026-11-08.
+(`english_page` in the configuration; NTNU’s is on www.ntnu.edu). UiB’s
+English page is not read: 10 of 17,441 UiB plans say only “Informasjonen
+fins ikkje på norsk.”, and their offerings have no plan (2026-11-11; a
+harvest of the English pages is not worth it for 10 plans; a known
+deviation in `course_plan_spec.md`). Its headings map like the Norwegian
+ones (“Entry requirements” is prerequisites, “Compulsory learning
+activities” coursework requirements; Nord’s “Course description”,
+“Learning activities”, “Exam description”; NTNU’s “Learning methods and
+activities”, “Compulsory assignments”, “Further on evaluation”,
+“Required previous knowledge”, “Course materials”), Nord’s English year
+stamp (“Current active course description (last updated 2026/27)”) is
+read like the Norwegian one, NTNU’s exam tab and contact block are read
+like the Norwegian ones, and a page with only the pointer is a shell.
+Since 2026-10-19 a page with the pointer gives no plan also when it is
+not a shell (`plan_offerings()`): NTNU’s pointer pages keep the exam
+tab, which is an assessment section, so the shell rule would keep them
+as plans with the pointer in place of the content. *Why:* these are
+mostly the English subject modules of the teacher education programmes
+(MGBEN, MGUEN); without the English page, HVL’s English subject would
+have no plans. The pilot samples of 2026-10-17 found the other wordings
+in English-taught master’s courses (HVL ADA512, BI4-301, MAS538,
+MMO5010; Nord BIO5023, BIO5031, BIO5036, all 2025), whose pointer had
+counted as a plan. *Rejected:* leaving these offerings without a plan;
+at Nord, the page’s `hreflang="en"` link (the page has two, one of them
+to the current plan without year and semester); at NTNU, keeping the
+pointer page as a plan of its exam tab, and taking every page with the
+template’s “English version” link (all pages have it). *Consequence:* 86
+offerings (10 course codes, 2020-2025) get a plan, 46 plans more, in
+English. 5 MGBPE201E offerings whose pointer had counted as a plan (one
+plan of 140 characters) were not retried with them; a second retry
+harvest the same day gave them their English plan (3 plans). On
+2026-10-17 the pointers of the pilot samples’ 10 such offerings (HVL 7,
+Nord 3) stopped counting as plans, and their English pages, fetched
+again, gave them 10 English plans (HVL 7, Nord 3) in place of 8 pointer
+plans. No teacher-education offering has one of the new wordings. At
+NTNU the pilot sample’s 7 such offerings (IMT4127 2022, IMT4312 2025,
+MACS490 2025, SMF1081 spring 2022) were fetched again on 2026-10-19 and
+got 7 English plans in place of 5 pointer plans (NTNU plans 2,098 →
+2,100). Three teacher-education offerings (GEOG2500 spring 2022, autumn
+2022, spring 2023) say “Se engelsk tekst.” in the course content only,
+with Norwegian compulsory activities; fetched again the same day, they
+got one English plan (4,201 characters, 7 sections) in place of one
+pointer plan (434 characters, 3 sections, its course content only the
+pointer). The full NTNU harvest showed some 60 more wordings of the
+pointer (“Se engelsk versjon”, “Emnet undervises på engelsk. Se engelsk
+versjon for emnebeskrivelse.”, “Se emnets engelske nettside –
+International MSc”, “Cf. English description”, “Undervises kun på
+engelsk”), which the notice missed: 1,897 offerings of 2019-2025 (1,099
+pages; 2019 200, 2020 214, 2021 254, 2022 277, 2023 285, 2024 324, 2025
+343) had a pointer plan, the pointer in place of the course content and
+mostly of every other section. Since 2026-11-05 the notice takes them, a
+course content that starts with plan text or goes on for more than a
+short tail (“Se den engelske beskrivelsen dersom du finner …”) excepted,
+and the pointer wordings are placeholders in the sections at every
+institution (a section row of nothing else is dropped). The fulltext
+audit of 2026-11-08 found the same at HVL: its notice knew 4 of some 30
+wordings (“Emneomtalen finnest berre på engelsk, gå til …”, “Dette emnet
+vert undervist på engelsk. For å sjå emneskildringa, klikk på”English”
+…“,”Dette emnet kan du lese om på dei engelske nettsidene våre.”,
+“Kursinformasjon finnes kun på engelsk. Se informasjon på https://…”,
+“You can read about this course on our English website.”) and missed “Se
+engelske nettsider” with a link in it: 252 offerings of 2017-2025 (252
+pages, 57 course codes, none in teacher education; 2017 1, 2018 18, 2019
+21, 2020 15, 2021 36, 2022 42, 2023 39, 2024 40, 2025 40) had a pointer
+plan. Since 2026-11-08 HVL’s notice is the first paragraph of the
+content when it holds one of these wordings with a short tail and no
+paragraph follows it under its heading; the HVL wordings are
+placeholders in the sections too. *Rejected:* matching the wordings
+anywhere in the page, as before: a page whose plan has the pointer after
+its first paragraph, or after the pointer, is not a pointer page (SDG234
+2020-2025, a Norwegian plan after “For English course description,
+choose …”; GE4-306 2020-2021, an English plan after “Dette emnet vert
+undervist på engelsk …”; EISENIO3 2021, “Du finner mer informasjon om
+dette emnet på de engelske nettsidene våre.” after its content).
+*Consequence:* those offerings have no plan until their English pages
+are fetched (`harvest_all(retry = "ok")`). *Since:* 2026-10-15; the
+other wordings and Nord from 2026-10-17; NTNU, and no plan for a pointer
+page that is not a shell, from 2026-10-19; NTNU’s other wordings from
+2026-11-05; HVL’s from 2026-11-08.
 
 **HiØF: an offering whose page is only in the English tree takes that
 page.** HiØF’s URL discovery reads the folder listings of
@@ -1678,8 +1681,9 @@ offering (“Søknadsfrist 1. juni for emner som tilbys i høstsemesteret”
 in about 6,000 UiT plan texts, “Innleveringsfrist for masteroppgåva
 er 1. februar og 15. mai”, “Innleveringsfrister: 1. juni og 15.
 desember”, MF’s “innen trekkfristen 1. mai/1. november”), many sit in a
-sentence that would be left broken, and whether they stay waits on a
-decision; a date with a year before 2000 after a label is content
+sentence that would be left broken, and they stay (user 2026-11-11: no
+gain for the data either way, and a list of session dates per wording
+costs code); a date with a year before 2000 after a label is content
 (“Oppstart av krigen 9. april 1940”). *Consequence:* in the published
 texts of the build of 2026-11-10 (186,891 course-plan texts) the session
 rule matches in 133 texts and the deadline rule in 317 (of its 359
@@ -1696,8 +1700,9 @@ removal is a session or deadline date, a semester or a stamp. *Since:*
 mapped through one heading table (`R/section_heading_map.R`): course
 content (99 % of plans), learning outcomes (98 %), assessment (98 %),
 teaching methods (94 %), coursework requirements (93 %), prerequisites
-(53 %) and reading list (27 %). Where a section is missing, the coders
-use the whole plan.
+(53 %) and reading list (27 %), and an eighth that overlaps them,
+practice (19 %; below). Where a section is missing, the coders use the
+whole plan.
 
 **Coursework requirements are kept apart from assessment:** arbeidskrav
 and obligatory-activity paragraphs inside an assessment block are moved
@@ -1999,7 +2004,42 @@ ids do not change. *Since:* 2026-10-28.
 own: only HiOF and Nord give practicum its own heading (since
 2026-10-01). This holds for stock text about practicum in the teaching
 methods too (INN’s “Praksisstudiet er en integrert del av fagene …”): by
-the codebook practicum is a teaching method.
+the codebook practicum is a teaching method. Since 2026-11-11 the text
+under a practice heading is also copied to the overlay section practice
+(next entry).
+
+**Practice is an overlay section.** The text under a plan’s own practice
+heading (“Praksis”, “Faget i praksis”, “Gjennomføring av praksis”,
+“Practice”, “Supervised professional training”; UiT’s “Praksis” line in
+the teaching methods) is also the section `practice`, and stays in the
+section it was in (mostly teaching methods). OsloMet’s
+“Praksistilknytning” and “Praksisopplæring”, parts of the subject’s
+Fagplan that reached no section, go to practice only, after the lead
+“Fagplanen sier:”, on pages with sections of their own. Exact headings
+only: not a label with a bare value (“Praksisstudier: Ja”), NTNU’s exam
+rows, USN’s table of contents or a heading that only mentions practice;
+a practice part that only points to a practice plan (“se egen
+praksisplan”, “Praksisopplæring er nærmere beskrevet i programplanen.”)
+or says there is none (“Det er ingen veiledet praksis i emnet.”, which
+stays in teaching methods) is no section; passed practice as a condition
+for the exam stays in coursework requirements. All courses, not only
+teacher education. *Why:* practice is central to teacher education and
+other professional programmes, and a study of it should not have to find
+it inside teaching methods; an investigation of 2026-11-08 found a
+practice heading in 40 % of the 2,653 teacher-education courses of 2025
+(25 % with a substantive block; 12 % of all courses), stable over
+2023-2025: HiOF 99 %, NLA 83 %, UiT 70 % (mostly a pointer), INN 67 %,
+UiA 60 %, USN 58 % (often a pointer), Nord 44 %, OsloMet 24 %.
+*Rejected:* a flag `has_practice_section` (it says that a plan has
+practice text, not what it says); nothing (practice text stays findable
+only by reading teaching methods); moving the text out of teaching
+methods (the codebook counts practicum as a teaching method, and the
+teaching methods of every plan with practice would change meaning).
+*Consequence:* sections overlap: section lengths summed per plan, or
+shares of a plan’s text in its sections, count practice text twice, so
+such sums leave practice out. No other section changes: the copy reads
+the same blocks. `course_plan` and the plan ids do not change. *Since:*
+2026-11-11 (user decision).
 
 **VID: topics join course content, practicum facts join teaching
 methods, the plan’s facts-box items stay out of the sections.** VID’s
@@ -2348,7 +2388,36 @@ of, which is assessment design. *Rejected:* a rule per wording (many
 guards, each a risk of cutting design); dropping any sentence with a
 resit word (takes the resit’s form). *Consequence:* listed under “Known
 deviations” in `course_plan_spec.md`; the sections do not change.
-*Since:* 2026-11-06.
+*Since:* 2026-11-06. The same holds at HVL, INN, MF, NMBU, OsloMet,
+Steiner, UiB, UiO, UiS and VID (and HiOF): their stock sentences leave
+assessment since 2026-11-09, and the rules worded once or sharing a
+sentence with the design stay (“Oppgaven vurderes av intern og ekstern
+sensor på grunnlag av læringsutbyttebeskrivelser for emnet.”, HVL; “Hvis
+oppgaven vurderes til karakteren F, ikke bestått, kan kandidaten levere
+ny oppgave til angitt frist.”, Steiner). *Why:* the sections audit of
+2026-11-08 found them at each; they are extraneous text that does not
+hide the design. *Rejected:* a rule per wording (user 2026-11-11: not
+crucial, and the code should stay short). *Since:* 2026-11-11.
+
+**A mixed paragraph under a mapped heading stays with its heading, a
+known deviation from the spec.** The spec files text by meaning,
+whatever the heading. Where a heading is mapped right but one of its
+paragraphs holds another section’s text in a wording found in one course
+only, the paragraph stays: teaching sentences under “Kort om emnet” (NIH
+LKI236, UiO NOR4515 and PROMO4) or “Mål og innhold” (UiB INF367), thesis
+design in course content or coursework (NMBU M30-LUN, OsloMet SSA5910,
+Steiner M-PEL2.2, UiB LOGO345), aims written as outcomes under the
+content heading (INN SOSP3002), subject descriptions in learning
+outcomes and capability sentences in course content (MF PPU1010,
+RL5075), practice assessment under “Gjennomføring av praksis” (UiO
+HIS4015L). *Why:* rare: 9 one-off wordings in the 280 plans of the
+sections audit of 2026-11-08, a sample skewed to suspects; a sentence
+rule per wording costs code and maintenance for one course each.
+*Rejected:* a sentence move per wording (moves stay for wordings that
+recur over many plans, as for HiVolda and FHS below). *Consequence:*
+listed under “Known deviations” in `course_plan_spec.md`; the sections
+do not change; such a section may hold a sentence of another section’s
+meaning. *Since:* 2026-11-11 (user decision).
 
 **HiVolda and FHS: a prior course in coursework or course content is a
 prerequisite.** HiVolda’s Didaktikk 2 courses open their coursework
@@ -2493,4 +2562,7 @@ programme’s practicum plan for all study years, with no markup
 separating the years. Their plan text keeps the whole page, which the
 coders read where a section is missing. *Rejected:* reading the whole
 practicum plan into each course, or slicing it by year (fragile).
-*Since:* 2026-10-02.
+*Since:* 2026-10-02. Confirmed 2026-11-11 (user), after the sections
+audit of 2026-11-08 asked to read it: the Fagplan is not a course plan
+but a layer between the programme plan and the course plans, for the
+subject’s progression over the study years.

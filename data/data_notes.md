@@ -1,7 +1,7 @@
 # Data Quality Notes
 
 
-Generated: 2026-11-11
+Generated: 2026-11-12
 
 ## Overview
 
@@ -10,7 +10,7 @@ Generated: 2026-11-11
 | fhs | 6209 | 997 | 2017-2025 | 1903 | 30.6% | 4589 | 838 | 56.0% |
 | fjellhaug | 532 | 277 | 2025 | 0 | 0.0% | NA | 0 | NaN% |
 | himolde | 8291 | 935 | 2017-2025 | 3608 | 43.5% | 2824 | 2028 | 18.2% |
-| hiof | 41168 | 6753 | 1994-2025 | 18136 | 44.1% | 4215 | 10415 | 20.5% |
+| hiof | 41168 | 6753 | 1994-2025 | 18136 | 44.1% | 4195 | 10415 | 20.5% |
 | hivolda | 22740 | 2843 | 2000-2025 | 5181 | 22.8% | 4220 | 4331 | 16.4% |
 | hvl | 41057 | 4799 | 2017-2025 | 29026 | 70.7% | 3758 | 13649 | 52.9% |
 | inn | 28402 | 3272 | 2018-2025 | 14199 | 50.0% | 3625 | 3065 | 32.9% |
@@ -23,19 +23,19 @@ Generated: 2026-11-11
 | nmh | 191 | 95 | 2021-2025 | 106 | 55.5% | 3173 | 72 | 32.1% |
 | nord | 35900 | 5147 | 2016-2025 | 32913 | 91.7% | 3233 | 7864 | 58.3% |
 | ntnu | 146312 | 12266 | 2004-2026 | 126844 | 86.7% | 3232 | 51291 | 59.3% |
-| oslomet | 33318 | 3937 | 2018-2025 | 33318 | 100.0% | 3874 | 11286 | 59.5% |
+| oslomet | 33318 | 3937 | 2018-2025 | 33318 | 100.0% | 3874 | 11278 | 59.4% |
 | phs | 2180 | 307 | 2021-2025 | 271 | 12.4% | 3895 | 142 | 27.2% |
 | samas | 130 | 68 | 2025 | 0 | 0.0% | NA | 0 | NaN% |
 | steiner | 244 | 125 | 2025 | 15 | 6.1% | 5027 | 15 | 0.0% |
 | uia | 55961 | 5047 | 2012-2025 | 10291 | 18.4% | 2944 | 5364 | 44.4% |
-| uib | 84912 | 6163 | 2004-2026 | 44944 | 52.9% | 3295 | 17375 | 57.3% |
+| uib | 90485 | 6467 | 2004-2026 | 46673 | 51.6% | 3247 | 17690 | 58.1% |
 | uio | 10488 | 5380 | 2025 | 47 | 0.4% | 4331 | 47 | 0.0% |
 | uis | 2921 | 316 | 2007-2025 | 2719 | 93.1% | 5760 | 1307 | 50.2% |
 | uit | 133066 | 10772 | 2004-2025 | 48389 | 36.4% | 3286 | 35388 | 21.8% |
-| usn | 38706 | 5286 | 2018-2025 | 13132 | 33.9% | 5842 | 12361 | 5.7% |
+| usn | 38706 | 5286 | 2018-2025 | 13132 | 33.9% | 5842 | 12360 | 5.7% |
 | vid | 4082 | 917 | 2023-2025 | 810 | 19.8% | 3640 | 588 | 23.5% |
 
-**Total**: 732276 rows, 394590 with extracted text (53.9%), 186879
+**Total**: 737849 rows, 396319 with extracted text (53.7%), 187145
 unique plans.
 
 **Columns:**
@@ -86,7 +86,7 @@ site still serves them. Share of offerings with a plan, by period:
 | samas       |       |         |         |         |         | 0%    |
 | steiner     |       |         |         |         |         | 6%    |
 | uia         | 0%    | 0%      | 0%      | 40%     | 38%     | 41%   |
-| uib         | 34%   | 39%     | 48%     | 54%     | 57%     | 70%   |
+| uib         | 32%   | 39%     | 48%     | 54%     | 57%     | 70%   |
 | uio         |       |         |         |         |         | 0%    |
 | uis         | 92%   | 96%     | 95%     | 91%     | 92%     | 94%   |
 | uit         | 37%   | 31%     | 36%     | 40%     | 40%     | 38%   |
@@ -127,16 +127,16 @@ year) that have a plan in at least one semester:
 | nmh | 100 | 91% | 14 | 45 | 32 | 61% | 55.5% |
 | nord | 19459 | 84% | 1053 | 8177 | 7211 | 55% | 91.7% |
 | ntnu | 75873 | 92% | 6463 | 56868 | 6472 | 91% | 86.7% |
-| oslomet | 17639 | 89% | 2040 | 12246 | 1393 | 89% | 100.0% |
+| oslomet | 17639 | 89% | 2050 | 12184 | 1445 | 88% | 100.0% |
 | phs | 1144 | 91% | 131 | 25 | 880 | 15% | 12.4% |
 | samas | 68 | 91% | 0 | 0 | 62 | 0% | 0.0% |
 | steiner | 125 | 95% | 15 | 0 | 104 | 12% | 6.1% |
 | uia | 29493 | 90% | 8716 | 152 | 17600 | 32% | 18.4% |
-| uib | 43767 | 94% | 230 | 19796 | 20907 | 48% | 52.9% |
+| uib | 46679 | 93% | 245 | 20512 | 22837 | 46% | 51.6% |
 | uio | 5380 | 95% | 44 | 0 | 5064 | 1% | 0.4% |
 | uis | 1602 | 82% | 41 | 1165 | 113 | 91% | 93.1% |
 | uit | 69992 | 90% | 25285 | 8571 | 29218 | 52% | 36.4% |
-| usn | 20631 | 88% | 11145 | 422 | 6508 | 61% | 33.9% |
+| usn | 20631 | 88% | 11144 | 422 | 6509 | 61% | 33.9% |
 | vid | 2113 | 93% | 569 | 73 | 1327 | 33% | 19.8% |
 
 ## Course-years without a plan
@@ -171,16 +171,16 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 | nmh | 39 | 0 | 39 | 0 | 0 | 0 | 0 |
 | nord | 8688 | 1568 | 0 | 146 | 6974 | 0 | 0 |
 | ntnu | 7182 | 625 | 0 | 6441 | 556 | 0 | 10 |
-| oslomet | 1996 | 0 | 0 | 0 | 1996 | 0 | 13 |
+| oslomet | 2058 | 0 | 0 | 0 | 2058 | 0 | 13 |
 | phs | 967 | 21 | 962 | 0 | 64 | 0 | 0 |
 | samas | 68 | 0 | 68 | 0 | 0 | 0 | 0 |
 | steiner | 100 | 0 | 96 | 0 | 0 | 4 | 0 |
 | uia | 19928 | 19920 | 0 | 0 | 635 | 0 | 498 |
-| uib | 22901 | 20665 | 0 | 157 | 2104 | 0 | 8 |
+| uib | 25037 | 22684 | 0 | 157 | 2221 | 0 | 10 |
 | uio | 5320 | 0 | 7 | 0 | 0 | 5313 | 0 |
 | uis | 145 | 12 | 0 | 0 | 133 | 0 | 0 |
 | uit | 31183 | 0 | 30826 | 0 | 1915 | 0 | 1775 |
-| usn | 7665 | 0 | 7665 | 0 | 21 | 0 | 458 |
+| usn | 7666 | 0 | 7666 | 0 | 22 | 0 | 458 |
 | vid | 1417 | 204 | 966 | 0 | 247 | 0 | 0 |
 
 To list the gaps between plans:
@@ -238,16 +238,16 @@ All years, by institution:
 | nmh | FALSE | 61 / 100 (61%) | 46 / 57 (81%) | 37 / 42 (88%) |
 | nord | FALSE | 10679 / 19459 (55%) | 8182 / 13181 (62%) | 7359 / 11484 (64%) |
 | ntnu | TRUE | 68689 / 75873 (91%) | 51314 / 54610 (94%) | 44163 / 46614 (95%) |
-| oslomet | FALSE | 15643 / 17639 (89%) | 13201 / 13720 (96%) | 12103 / 12335 (98%) |
+| oslomet | FALSE | 15581 / 17639 (88%) | 13147 / 13720 (96%) | 12103 / 12335 (98%) |
 | phs | FALSE | 170 / 1144 (15%) | 123 / 523 (24%) | 116 / 456 (25%) |
 | samas | FALSE | 0 / 68 (0%) | 0 / 37 (0%) | 0 / 8 (0%) |
 | steiner | FALSE | 15 / 125 (12%) | 13 / 70 (19%) | 5 / 45 (11%) |
 | uia | FALSE | 9497 / 29493 (32%) | 7387 / 20245 (36%) | 6708 / 17811 (38%) |
-| uib | TRUE | 20855 / 43767 (48%) | 16932 / 27981 (61%) | 14178 / 22475 (63%) |
+| uib | TRUE | 21624 / 46679 (46%) | 17609 / 29931 (59%) | 14795 / 24123 (61%) |
 | uio | FALSE | 47 / 5380 (1%) | 41 / 3139 (1%) | 32 / 2655 (1%) |
 | uis | FALSE | 1457 / 1602 (91%) | 1219 / 1329 (92%) | 957 / 1037 (92%) |
 | uit | FALSE | 36703 / 69992 (52%) | 29963 / 38036 (79%) | 26353 / 31788 (83%) |
-| usn | FALSE | 12686 / 20631 (61%) | 11707 / 14865 (79%) | 11072 / 13301 (83%) |
+| usn | FALSE | 12685 / 20631 (61%) | 11706 / 14865 (79%) | 11072 / 13301 (83%) |
 | vid | FALSE | 696 / 2113 (33%) | 648 / 1408 (46%) | 619 / 1261 (49%) |
 
 By year since 2010 (a panel per institution; empty panels are sites that
@@ -409,6 +409,9 @@ Figures are in the tables above; the notes say why.
   in both (see “Semester registration in DBH”)
 - Reading lists are part of the plan text; `.anon_hiof()` removes only
   the “Litteraturlista er sist oppdatert” line
+- The table of contents’ heading (“Innholdsfortegnelse”,
+  `h2.vrtx-toc-header`) is not read, as at NIH and HiMolde (2026-11-11;
+  before, it was in every `course_plan`)
 - Two `videre/` pages show a later semester’s plan than their URL
   (`videre/2019/var/lskno22215` is titled “Vår 2020”,
   `videre/2022/host/lskas10116` “Høst 2023”): `page_term` reads the
@@ -832,7 +835,10 @@ Figures are in the tables above; the notes say why.
   The page’s “Fagplan” block is the programme-wide practicum plan for
   all study years, with no markup separating the years, so it is not
   read into the course’s sections. Their `course_plan` keeps the full
-  page text
+  page text. The Fagplan is not a course plan but a layer between the
+  programme plan and the course plans, for the subject’s progression
+  over the study years, so it stays unread (confirmed 2026-11-11, after
+  the sections audit of 2026-11-08 asked to read it)
 
 ------------------------------------------------------------------------
 
@@ -987,6 +993,11 @@ Figures are in the tables above; the notes say why.
   semester blocks whose DBH code has a space (`BAR 3`, `UTV VISK 5H`;
   also not as `bar3` or `bar-3`). Every course-year of the sample with a
   page is of a course DBH still lists in 2025
+- 10 of 17,441 UiB plans say only “Informasjonen fins ikkje på norsk.”
+  (also “TInformasjonen …”, with “Sjå dei engelske nettsidene.”):
+  courses described only in English, whose English page is not fetched
+  (UiB has no `english_page` setting). They count as no plan; fetching
+  the English pages is not worth a harvest for 10 plans (2026-11-11)
 
 ------------------------------------------------------------------------
 
@@ -1147,6 +1158,11 @@ Figures are in the tables above; the notes say why.
   went into their reading list (all 12), the approval stamp and change
   log into their assessment (7), and only 1 of them had a coursework
   section (now 11; assessment 11 → 12)
+- The table of contents (“Innholdsfortegnelse”, “Table of contents” and
+  the section names under it) stays in `extracted_text`, where the text
+  reader takes the headings and the end of the facts box from it, and
+  leaves `course_plan` and the plan id (`.anon_usn()`, 2026-11-11;
+  before, it was in every `course_plan`)
 
 ------------------------------------------------------------------------
 
