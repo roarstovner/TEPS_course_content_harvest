@@ -110,3 +110,24 @@ test_that("preview_change() loads the pipeline's code of a ref and of the workin
                            exists, TRUE, envir = env, inherits = FALSE)))
   }
 })
+
+test_that("preview_change() picks n pages per raw partition, or every page of the offerings named", {
+  dir <- withr::local_tempdir()
+  raw <- function(year, run, k = 400) {
+    i <- seq_len(k)
+    .write_plain_parquet(tibble::tibble(
+      harvest_row = i, course_id = paste0(year, run, "_", i),
+      html = ifelse(i %% 2 == 0, strrep("x", 5000), NA),
+      extracted_text = ifelse(i %% 3 == 0, "t", NA)), file.path(dir, "a", year, paste0(run, ".parquet")), rows = 7L)
+  }
+  raw(2020, "r1"); raw(2020, "r2"); raw(2021, "r1")
+  files <- harvest_files("a", dir)
+  # many row groups: separate scans of a file may return its rows in another order
+  ids <- paste0("2020r1_", 1:400)
+  p <- .preview_pick(files, 5, ids)
+  expect_setequal(paste0("2020r1_", p$harvest_row), ids[1:400 %% 2 == 0 | 1:400 %% 3 == 0])
+  expect_true(all(grepl("2020/r1", p$file)))
+  s <- withr::with_seed(1, .preview_pick(files, 3))
+  expect_equal(as.vector(table(basename(s$part))), c(3, 3))
+  expect_true(all(s$harvest_row %% 2 == 0 | s$harvest_row %% 3 == 0))
+})

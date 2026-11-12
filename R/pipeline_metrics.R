@@ -250,8 +250,10 @@ pilot_gate <- function(institution, thresholds = PILOT_GATE,
 #' session's is not changed.
 #'
 #' @param institutions Institutions to sample.
-#' @param n Pages per raw partition (institution x DBH year), drawn with a
-#'   seed among those with a page, so every year is in.
+#' @param n Pages per raw partition (institution x DBH year, all its raw
+#'   files together), drawn with a seed among those with a page, so every
+#'   year is in. (Until 2026-11-12 it was per raw file, so n times the
+#'   number of runs: NTNU, with many runs, ran out of 4 GB at n = 20.)
 #' @param seed The seed of the sample: another seed, other pages.
 #' @param course_ids Instead of a sample, the pages of these offerings.
 #' @param ref The git ref to compare with.
@@ -263,16 +265,11 @@ preview_change <- function(institutions, n = 5, seed = 42, course_ids = NULL, re
   tmp <- tempfile("preview_raw_")
   on.exit(unlink(tmp, recursive = TRUE))
   withr::local_seed(seed)
-  for (f in unlist(lapply(institutions, harvest_files, raw_dir = raw_dir))) {
-    ds <- arrow::open_dataset(f)
-    has <- intersect(c("html", "extracted_text"), names(ds))
-    rows <- dplyr::collect(dplyr::select(ds, harvest_row, course_id))
-    # whether a row has a page, without reading the pages into R
-    page <- Reduce(`|`, lapply(has, function(x) dplyr::pull(dplyr::transmute(ds, v = !is.na(.data[[x]])), v)))
-    pick <- if (is.null(course_ids)) rows$harvest_row[page] else rows$harvest_row[page & rows$course_id %in% course_ids]
-    if (!length(pick)) next
-    keep <- sort(if (is.null(course_ids)) pick[sample.int(length(pick), min(n, length(pick)))] else pick)
-    .write_plain_parquet(dplyr::collect(dplyr::filter(ds, harvest_row %in% keep)),
+  picks <- .preview_pick(unlist(lapply(institutions, harvest_files, raw_dir = raw_dir)), n, course_ids)
+  for (f in unique(picks$file)) {
+    keep <- picks$harvest_row[picks$file == f]
+    .write_plain_parquet(dplyr::arrange(dplyr::collect(dplyr::filter(arrow::open_dataset(f), harvest_row %in% keep)),
+                                        harvest_row),
                          file.path(tmp, sub(paste0("^", raw_dir, "/"), "", f)))
   }
   parts <- raw_partitions(tmp)
@@ -295,6 +292,30 @@ preview_change <- function(institutions, n = 5, seed = 42, course_ids = NULL, re
                      by = "page_id") |>
     dplyr::select(institution, year, course_id, what, old = text_old, new = text_new) |>
     dplyr::arrange(institution, year, course_id, what)
+}
+
+# The rows preview_change() takes from raw `files` (file, part: its
+# partition's folder, harvest_row): of the rows with a page, n per raw
+# partition, or all those of `course_ids`. Read a row group at a time with its
+# columns together: two Arrow scans of a file need not return its rows in the
+# same order (2026-11-12, pages of named offerings went missing at random).
+.preview_pick <- function(files, n, course_ids = NULL) {
+  picks <- dplyr::bind_rows(lapply(files, function(f) {
+    rd <- arrow::ParquetFileReader$create(f)
+    cols <- stats::na.omit(match(c("harvest_row", "course_id", "html", "extracted_text"), rd$GetSchema()$names))
+    dplyr::bind_rows(lapply(seq_len(rd$num_row_groups) - 1L, function(g) {
+      t <- rd$ReadRowGroup(g, cols - 1L)
+      page <- Reduce(`|`, lapply(intersect(c("html", "extracted_text"), names(t)),
+                                 function(x) as.vector(arrow::call_function("is_valid", t[[x]]))))
+      keep <- page & (is.null(course_ids) | as.vector(t$course_id) %in% course_ids)
+      rows <- as.vector(t$harvest_row)[keep]
+      rm(t)
+      gc()   # R's collector does not see Arrow memory: unfreed, it piled up over NTNU's files
+      tibble::tibble(file = f, part = dirname(f), harvest_row = rows)
+    }))
+  }))
+  if (is.null(course_ids)) picks <- dplyr::slice_sample(picks, n = n, by = part)
+  picks
 }
 
 # The pipeline's code (the files _targets.R sources) at a git ref, or in the
