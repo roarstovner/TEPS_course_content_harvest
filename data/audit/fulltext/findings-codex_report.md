@@ -1,8 +1,10 @@
 # fulltext audit — aggregated findings
 
-16 findings across 12 institutions (from 19 agent reports in `data/audit/fulltext/findings-codex`; model: gpt-6.1-sol).
-Mechanical verification: 16 passed (✓), 0 failed (✗), 0 not checkable (?, stale report or no packet).
+16 findings across 12 institutions (from 20 agent reports in `data/audit/fulltext/findings-codex`; model: gpt-6.1-sol).
+Mechanical verification: 15 passed (✓), 0 failed (✗), 1 not checkable (?, stale report or no packet).
 Sorted by severity then prevalence. Source: `R/audit/aggregate.R`.
+
+**Stale reports** (older than their packet — not from this run, or the agent never wrote its file): mf
 
 ## Failed verification — check by hand before acting
 
@@ -57,6 +59,7 @@ _(none)_
 | nih | gpt-6.1-sol | 20 | Reviewed all 14 fetched courses and all six failed-fetch entries. The eight retained random controls contain complete, readable course plans with matching course codes and terms; all six short flags identify genuine page shells that the build correctly excludes, and uncaptured text is breadcrumbs... |
 | nla | gpt-6.1-sol | 31 | Reviewed all 28 sampled fetched offerings and the three appended failed-fetch examples; the available plans are generally clean, correctly keyed to the academic year, and show no demonstrated omitted page content or chrome contamination. The two year flags are false alarms caused by incidental hi... |
 | nmbu | gpt-6.1-sol | 11 | Reviewed all eight random-control plan excerpts, including the packet-capped M30-LUN excerpt, and all three failed-fetch entries. No pre-pass flags were raised; the displayed plans match their course codes, retain readable sections and facts, and have no reported uncaptured text or visible site c... |
+| nmh | gpt-6.1-sol | 28 | Read all 28 random-control course entries in full as presented in the packet; no supported fulltext defects were found, consistent with the absence of pre-pass flags. The displayed plans retain their facts boxes, substantive sections and readable structure; omitted page text consists of publicati... |
 | oslomet | gpt-6.1-sol | 28 | All 28 courses were reviewed in full: the 10 retained plans preserve the visible plan content and readable section structure for the correct course and academic year, while 17 page shells (including the practice page with x-only sections) and one error page are appropriately excluded from the bui... |
 | phs | gpt-6.1-sol | 28 | All 28 course entries were read in full as presented in the packet; no supported fulltext defects were found in the 16 retained plans, whose visible content and metadata are cleanly structured, with only breadcrumbs and update information omitted. The 12 excluded pages match the stated earlier-ve... |
 | steiner | gpt-6.1-sol | 11 | Reviewed all eight random-control plans in full and all three failed entries. The plans have readable sections and course metadata, but four of eight retain bare PDF page numbers despite zero pre-pass flags; no further defect is established from the packet, which lacks source-page comparisons. Th... |
@@ -74,7 +77,7 @@ _(none)_
 | ✓ | hvl | whole_text | wrong_page | high | common | hvl_PHDH913-1_2024_spring_1; hvl_DAT355-1_2025_spring_1; ... | Extend the HVL English-pointer detector with explicit Norwegian, Nynorsk and English variants observed in this packet, matching normalize... |
 | ✓ | hvl | whole_text | wrong_year | high | occasional | hvl_MAS502-1_2023_spring_1; hvl_MAS532-1_2023_spring_2 | Add an HVL page_term parser restricted to explicit first-time teaching declarations in the instruction-semester fact, and use the existin... |
 | ✓ | uis | whole_text | wrong_year | high | rare | uis_MGL2071-1_2019_autumn_1 | Parse anchored PDF plan-year declarations such as this studieinformasjon notice and Dette er studietilbudet for studieår, compare them wi... |
-| ✓ | mf | page_chrome | junk_included | medium | common | mf_PED1010-1_2025_autumn_1; mf_SAM2080L-1_2025_autumn_1; ... | Add an MF-specific structural exclusion in R/institution_config.R for the schedule container headed Eksamensdatoer, bounded by that conta... |
+| ? | mf | page_chrome | junk_included | medium | common | mf_PED1010-1_2025_autumn_1; mf_SAM2080L-1_2025_autumn_1; ... | Add an MF-specific structural exclusion in R/institution_config.R for the schedule container headed Eksamensdatoer, bounded by that conta... |
 | ✓ | steiner | page_chrome | junk_included | medium | common | steiner_M-MAT1_1_2025_autumn_1; steiner_M-NAT1_2_2025_aut... | Remove numeric footer lines from each PDF page before concatenation in .steiner_extract_emner_from_pdf(), restricting removal to the fina... |
 | ✓ | uib | whole_text | empty_or_failed | medium | common | uib_KJEM214-0_2015_autumn_1; uib_TEAT252-0_2017_spring_1;... | Rebuild the derived extraction/build artifacts from the same raw-store snapshot, then regenerate this packet. In harvested_rows()/prepare... |
 | ✓ | uis | page_chrome | junk_included | medium | common | uis_LNOR165-1_2019_autumn_1; uis_LPRA40-1_2018_autumn_1; ... | Add UiS-specific PDF cleanup in the raw-to-fulltext path, including legacy stored-text rows: remove standalone side N lines and the TCPDF... |

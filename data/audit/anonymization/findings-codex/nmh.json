@@ -1,0 +1,55 @@
+{
+  "check": "anonymization",
+  "institution": "nmh",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 12,
+  "overall_assessment": "Reviewed all 28 packet entries, including 12 suspects and 16 random controls, through their displayed ends (three plans are capped by the packet builder). All name_like flags are false alarms from method names (Critical Response Process, Guided Imagery and Music), organisation/programme names (Nordic Harmony, Barratt Due, Master of Music Performance, Live Electronics), or retained reading-list authors; however, unflagged controls expose one staff-name leak and two surviving teaching-time ranges, while all 28 plans retain administrative Startkull years. Other displayed staff/contact names are correctly removed, and the removed spans show no confirmed loss of substantive course content; empty staff labels are harmless.",
+  "findings": [
+    {
+      "target": "person_name",
+      "error_type": "pii_leak",
+      "severity": "medium",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "nmh_BEVEG20-1_2022_autumn_1"
+      ],
+      "evidence": "Fagkoordinator i emnet: Bjørn Løken.",
+      "description": "One of 28 reviewed plans, a random control with no pre-pass flags, retains the named course coordinator. This is a private person named in an institutional staff role and must be removed; it is not a subject-matter name such as Feldenkrais or a reading-list author.",
+      "root_cause_hypothesis": "R/anonymize.R has no NMH handler. The generic .staff_roles list omits fagkoordinator, and the word boundary before koordinator in .role_name_inline_regex prevents that shorter role from matching inside Fagkoordinator.",
+      "suggested_fix": "Add fagkoordinator to .staff_roles so the existing inline role-name rule handles Fagkoordinator i emnet: followed by a name. Add a regression case for this exact label and verify that organisational responsibility labels and subject-matter names remain intact.",
+      "confidence": "high"
+    },
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "nmh_CRIT20-1_2025_autumn_1",
+        "nmh_ROMINT20-2_2022_spring_1",
+        "nmh_DRAVHA90-1_2025_autumn_1"
+      ],
+      "evidence": "Startkull\n\n2022",
+      "description": "All 28 reviewed plans retain a four-digit cohort year under Startkull, including all 16 random controls. These are administrative cohort dates, not historical content or publication years. The admin_date pre-pass misses this label-plus-year layout despite the institution-wide occurrence in the sample.",
+      "root_cause_hypothesis": "NMH receives only .anon_generic() in R/anonymize.R. Its administrative-year keyword rule covers approval/revision and validity labels but not Startkull, so a standalone year after that heading survives.",
+      "suggested_fix": "Add an NMH handler registered in .anon_institution() that removes a four-digit year immediately following the standalone Startkull label, allowing blank lines between label and value. Anchor the match to this metadata field rather than removing standalone years globally, and cover the multiline layout in a regression test.",
+      "confidence": "high"
+    },
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "nmh_ENSLED22-2_2022_autumn_1",
+        "nmh_BEVEG20-1_2022_autumn_1"
+      ],
+      "evidence": "Veiledende undervisningstid: Tirsdager 9.30 – 16.30, samt noe undervisning på mandager.",
+      "description": "Two unflagged random controls retain dotted clock-time ranges in teaching schedules: 9.30 – 16.30 and 14.00 – 15.30. These are actual clock times that the rubric requires removing, rather than musical durations, ratios, or reference pagination.",
+      "root_cause_hypothesis": "In R/anonymize.R, .anon_generic() removes dotted times when introduced by kl. or an English preposition. Here the dotted ranges follow a Norwegian weekday in a Veiledende undervisningstid field, so neither rule applies.",
+      "suggested_fix": "Within an NMH Veiledende undervisningstid line, remove valid dotted hour-minute ranges after weekdays, including single-digit hours and en-dash separators. Preserve the weekday and surrounding scheduling prose, and keep the rule scoped to the schedule field to protect numeric course content.",
+      "confidence": "high"
+    }
+  ]
+}

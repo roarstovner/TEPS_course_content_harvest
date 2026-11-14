@@ -879,6 +879,7 @@ test_that("a role and names inside a line: the names go, the role stays", {
   expect_equal(an("uit", "Academic Coordinator Kari Nordmann"), "Academic Coordinator")
   expect_equal(an("usn", "Tekst. Vice Dean Ola Dahl godkjente."), "Tekst. Vice Dean godkjente.")
   expect_equal(an("uit", "Forelesning\tFagansvarlig: Kari Nordmann"), "Forelesning\tFagansvarlig:")
+  expect_equal(an("nmh", "Fagkoordinator i emnet: Kari Nordmann."), "Fagkoordinator i emnet:.")
   f <- tempfile(fileext = ".RDS")
   saveRDS(tibble::tibble(text = c(title, "Ta kontakt med Kari Nordmann for mer.")), f)
   expect_equal(personal_data_in(f)$pattern, "role_name_inline")
@@ -1142,6 +1143,10 @@ test_that("clock times after kl., with am/pm or dotted after at go, with their p
   expect_equal(an("Forelesninger (2 x 45 minutter, kl. 1815 - 2000) og\nKl 09.00-09.45: Kliniske studier"),
                "Forelesninger (2 x 45 minutter) og\nKliniske studier")
   expect_equal(an("Handout at 09:00. Handin at 15:00 on Friday."), "Handout. Handin on Friday.")
+  # a dotted range after a weekday (nmh)
+  expect_equal(an("Veiledende undervisningstid: Tirsdager 9.30 – 16.30, samt noe undervisning på mandager."),
+               "Veiledende undervisningstid: Tirsdager, samt noe undervisning på mandager.")
+  expect_equal(an("Veiledende undervisningstid: Tirsdager 14.00 – 15.30."), "Veiledende undervisningstid: Tirsdager.")
   # dates, codes, a class and other numbers stay
   keep <- c("The reading list will be ready at 01.12. for the spring semester.",
             "The curriculum will be ready by 01.06 for autumn", "4PM42 Vitenskapelig metode",

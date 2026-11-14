@@ -1,0 +1,9 @@
+{
+  "check": "fulltext",
+  "institution": "nmh",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 0,
+  "overall_assessment": "Read all 28 random-control course entries in full as presented in the packet; no supported fulltext defects were found, consistent with the absence of pre-pass flags. The displayed plans retain their facts boxes, substantive sections and readable structure; omitted page text consists of publication/update stamps and elective-list breadcrumbs, and the packet truncation marker is not an extraction defect. CRIT20 uses a 2022 cohort page for autumn 2025, but the resolver explicitly permits earlier cohort handbooks and the packet does not establish that this plan is inapplicable to the offering, so this is not reported as a confirmed wrong-year defect.",
+  "findings": []
+}

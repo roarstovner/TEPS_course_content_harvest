@@ -1,7 +1,7 @@
 # anonymization audit — aggregated findings
 
-41 findings across 17 institutions (from 19 agent reports in `data/audit/anonymization/findings-codex`; model: gpt-6.1-sol).
-Mechanical verification: 37 passed (✓), 4 failed (✗), 0 not checkable (?, stale report or no packet).
+44 findings across 18 institutions (from 20 agent reports in `data/audit/anonymization/findings-codex`; model: gpt-6.1-sol).
+Mechanical verification: 40 passed (✓), 4 failed (✗), 0 not checkable (?, stale report or no packet).
 Sorted by severity then prevalence. Source: `R/audit/aggregate.R`.
 
 ## Failed verification — check by hand before acting
@@ -20,37 +20,31 @@ Usually a paraphrased quote; occasionally an invented finding.
 
 | target | error_type | n_inst | institutions | worst |
 | --- | --- | --- | --- | --- |
-| admin_date | admin_date_left | 12 | fhs, himolde, hiof, hvl, inn, khio, mf, nhh, nih, nla, uib, uio | medium |
+| admin_date | admin_date_left | 13 | fhs, himolde, hiof, hvl, inn, khio, mf, nhh, nih, nla, nmh, uib, uio | medium |
 | content_text | text_corruption | 9 | fhs, himolde, hiof, mf, nhh, nih, nmbu, uib, uio | medium |
 | content_text | over_removal | 6 | hiof, nhh, nla, oslomet, phs, uis | medium |
-| person_name | pii_leak | 4 | himolde, hiof, uib, usn | high |
-
-## Change since `HEAD` (keyed by target / error_type)
-
-| institution | n_before | n_now | persisting | new | gone |
-| --- | --- | --- | --- | --- | --- |
-| himolde | 3 | 3 | person_name / pii_leak; admin_date / admin_date_left; content_text / text_corruption |  |  |
+| person_name | pii_leak | 5 | himolde, hiof, nmh, uib, usn | high |
 
 ## By error type
 
 | error_type | severity | n |
 | --- | --- | --- |
-| admin_date_left | medium | 11 |
+| admin_date_left | medium | 12 |
 | over_removal | medium | 8 |
 | text_corruption | low | 8 |
-| admin_date_left | low | 6 |
+| admin_date_left | low | 7 |
+| pii_leak | medium | 3 |
 | boilerplate_left | low | 2 |
 | pii_leak | high | 2 |
-| pii_leak | medium | 2 |
 | text_corruption | medium | 2 |
 
 ## By target
 
 | target | n |
 | --- | --- |
-| admin_date | 17 |
+| admin_date | 19 |
 | content_text | 17 |
-| person_name | 4 |
+| person_name | 5 |
 | boilerplate | 2 |
 | email | 1 |
 
@@ -69,6 +63,7 @@ Usually a paraphrased quote; occasionally an invented finding.
 | nih | gpt-6.1-sol | 28 | All 28 courses were reviewed in full, including 20 suspects and eight random controls. No personal-data leaks or substantive course-content losses were found: the five removed flags reflect correct semester removal from short plans, and all name_like flags concern departments, organisations, prog... |
 | nla | gpt-6.1-sol | 28 | All 28 packet entries were read in full as supplied, including every removed span; packet truncation limits conclusions about omitted portions of long plans. Academic-year headers are consistently removed, no personal-data leaks were confirmed, and all eight random controls show no confirmed anon... |
 | nmbu | gpt-6.1-sol | 8 | Anonymization works well in all eight random controls: staff names, including multiple coordinators, and administrative academic years are removed, with no visible personal-data leaks or inappropriate course-content removal. All pre-pass flag counts are zero; manual review found one minor incompl... |
+| nmh | gpt-6.1-sol | 28 | Reviewed all 28 packet entries, including 12 suspects and 16 random controls, through their displayed ends (three plans are capped by the packet builder). All name_like flags are false alarms from method names (Critical Response Process, Guided Imagery and Music), organisation/programme names (No... |
 | oslomet | gpt-6.1-sol | 28 | All 28 packet courses were reviewed, including all 20 suspects and eight random controls; no personal-data leak was confirmed in the displayed material, and coordinator names are correctly removed in both suspects and controls. Most flags are false alarms: name_like hits are course/programme titl... |
 | phs | gpt-6.1-sol | 28 | Anonymization generally works well across all 28 packet records: no personal-data leaks, residual administrative dates, or removal-induced text/structure damage were observed in the supplied text. All five suspect flags are false alarms: four removal-share flags reflect correct semester-year remo... |
 | steiner | gpt-6.1-sol | 8 | All eight random-control courses were read in full, including every removed span; no anonymization problems were found. The pre-pass raised no flags, and manual review found no surviving personal data, administrative dates, targeted boilerplate, content over-removal, text corruption or structure ... |
@@ -87,6 +82,7 @@ Usually a paraphrased quote; occasionally an invented finding.
 | ✓ | fhs | admin_date | admin_date_left | medium | widespread | fhs_LED4101-1_2022_autumn_1; fhs_CBU1506-1_2019_autumn_2;... | Add an FHS handler or a narrowly anchored generic rule matching a Studieår label followed by a standalone four-digit year on the next lin... |
 | ✓ | khio | admin_date | admin_date_left | medium | widespread | khio_BK306-1_2025_autumn_1; khio_DA550-2_2025_autumn_1; k... | Add and register .anon_khio() in R/anonymize.R with a multiline rule scoped to the programme-name line immediately following 'Inngår i st... |
 | ✓ | mf | admin_date | admin_date_left | medium | widespread | mf_RL1016-1_2025_autumn_1; mf_PED5610-1_2025_autumn_1; mf... | In .anon_mf(), match yearless Norwegian day-and-month dates, including slash-separated alternatives, specifically in clauses about withdr... |
+| ✓ | nmh | admin_date | admin_date_left | medium | widespread | nmh_CRIT20-1_2025_autumn_1; nmh_ROMINT20-2_2022_spring_1;... | Add an NMH handler registered in .anon_institution() that removes a four-digit year immediately following the standalone Startkull label,... |
 | ✓ | uib | admin_date | admin_date_left | medium | common | uib_NEUROSYSM930-0_2024_autumn_1; uib_CCBIO906-0_2023_spr... | Extend .anon_uib() with context-bound removal for Norwegian month-name dates and day ranges in Undervisningsperiode, dated Undervisningss... |
 | ✗ | himolde | person_name | pii_leak | medium | occasional | himolde_LOG904-130-1_2018_autumn_1; himolde_IDR804-019-1_... | Add and register a .anon_himolde() handler that removes a line beginning Lecturer: with an inline value, or a standalone Lecturer: headin... |
 | ✓ | hiof | admin_date | admin_date_left | medium | occasional | hiof_LSPUBPD15-1_2015_autumn_2; hiof_ITF50020-1_2021_spri... | Add contextual HiØ rules for oppstartsamling i <month> <year> and Litteratur vil være tilgjengelig innen <date>. Recognize a semester/yea... |
@@ -103,6 +99,7 @@ Usually a paraphrased quote; occasionally an invented finding.
 | ✓ | mf | content_text | text_corruption | medium | rare | mf_SAM2080L-1_2025_autumn_1 | Before generic date removal, add a scoped .anon_mf() replacement for a sentence-initial semester-year phrase followed by har and the cour... |
 | ✓ | nhh | content_text | over_removal | medium | rare | nhh_FIE448-1_2025_autumn_1 | Protect year ranges directly modifying historical-event terms such as financial crisis before applying .drop_academic_year(); for ambiguo... |
 | ✓ | nla | content_text | over_removal | medium | rare | nla_BLKO4-1_2019_spring_1 | Protect dates within a recognised government-document reference, including a date on an immediately following line after a ministry/UDIR ... |
+| ✓ | nmh | person_name | pii_leak | medium | rare | nmh_BEVEG20-1_2022_autumn_1 | Add fagkoordinator to .staff_roles so the existing inline role-name rule handles Fagkoordinator i emnet: followed by a name. Add a regres... |
 | ✓ | oslomet | content_text | over_removal | medium | rare | oslomet_ARK1400-1_2018_spring_2 | Protect complete URL tokens from generic date removal, or exclude matches whose positions fall inside URL spans, while retaining removal ... |
 | ✓ | phs | content_text | over_removal | medium | rare | phs_AVMISBA-1_2025_spring_1 | Extend the government-document guard to recognize Riksadvokaten as an official publisher and preserve season-year publication dates in bo... |
 | ✓ | uio | content_text | text_corruption | medium | rare | uio_SPA4192-1_2025_autumn_1 | Add a deterministic .anon_uio() rule before generic date removal that handles these two cohort-qualified examination sentences together, ... |
@@ -112,6 +109,7 @@ Usually a paraphrased quote; occasionally an invented finding.
 | ✓ | inn | admin_date | admin_date_left | low | occasional | inn_2SPGL1-1-1_2025_spring_1; inn_2SPGL1-2-1_2025_autumn_1 | In .anon_inn(), identify the Dato column within Emnet overlapper med tables and remove valid six-digit ddmmyy cell values, preserving the... |
 | ✓ | inn | boilerplate | boilerplate_left | low | occasional | inn_2MNK172-2-1_2022_spring_1; inn_2MNK172S-2-1_2022_spri... | Add a narrowly anchored .anon_inn() rule removing the Feilmelding heading and following Notice: Undefined index diagnostic line for eac_c... |
 | ✓ | nih | content_text | text_corruption | low | occasional | nih_PHD646-1_2025_spring_1; nih_PHD641-1_2025_autumn_1; n... | Extend the anchored post-semester cleanup to complete lines consisting only of Kjernelitteratur for or Anbefalt litteratur for, optional ... |
+| ✓ | nmh | admin_date | admin_date_left | low | occasional | nmh_ENSLED22-2_2022_autumn_1; nmh_BEVEG20-1_2022_autumn_1 | Within an NMH Veiledende undervisningstid line, remove valid dotted hour-minute ranges after weekdays, including single-digit hours and e... |
 | ✓ | uib | email | text_corruption | low | occasional | uib_ENERGI322-0_2024_autumn_1; uib_ENERGI322-0_2023_spring_1 | Use Unicode-aware local-part and address boundaries, explicitly handle concatenated adviser addresses, and repeat address cleanup to a fi... |
 | ✓ | uib | content_text | text_corruption | low | occasional | uib_GOV216-0_2023_spring_2; uib_INF367-0_2025_autumn_1; u... | Remove enclosing parentheses when their entire contents are an administrative semester label, including parentheses attached to a precedi... |
 | ✓ | uib | boilerplate | boilerplate_left | low | occasional | uib_INFO284-0_2022_autumn_1; uib_MOL100-0_2024_autumn_1 | Extend the anchored UiB publication-notice patterns to cover vil vere klar followed directly by a date and the observed English ready bef... |

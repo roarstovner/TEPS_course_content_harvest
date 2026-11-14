@@ -1476,6 +1476,18 @@ read as content as often as admin, so they stay, a known gap. *Consequence:*
 59, Nord 40); 39 pages keep a year range (HiØ 22, UiB 6, USN 6, UiT 3, NHH
 2). *Since:* 2026-11-02.
 
+**A dotted time range after a weekday goes; "fagkoordinator" is a staff
+role.** "Veiledende undervisningstid: Tirsdager 9.30 – 16.30" →
+"Veiledende undervisningstid: Tirsdager" (also "Mandag 10.15-12.00",
+"Tuesday 12.15-14.00"); the weekday stays. "Fagkoordinator i emnet: <name>"
+loses the name like the other staff roles. *Why:* the NMH anonymization
+pilot audit of 2026-11-14 found both; the weekday makes a dotted range a
+clock time, which the rule of 2026-11-02 left alone without "kl." or an
+English preposition. *Rejected:* every dotted range (a date range
+"01.06-15.06" reads the same). *Consequence:* 29 plans of the build of
+2026-11-12 lose a time range (all checked as clock times; a second range
+after "og" stays, a known gap). *Since:* 2026-11-14.
+
 **The semester a course starts from stays.** "Emnet byrjar å gå frå våren
 2024" (UiB; also "begynner å gå fra", "starter fra") keeps its season and
 year: it says when the course was first offered, a fact of the course,

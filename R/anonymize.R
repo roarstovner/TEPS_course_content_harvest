@@ -422,7 +422,7 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
   "studieprogramleder", "studieprogramleiar", "programansvarlig",
   "instituttleder", "instituttleiar", "veileder", "rettleiar",
   "timelærer", "timelærar", "kontaktperson", "sensor", "coordinator",
-  "programkoordinator", "fagansvarlig", "lecturer", "course owner"
+  "programkoordinator", "fagansvarlig", "fagkoordinator", "lecturer", "course owner"
 )
 # A whole line that is only a capitalised name (particles like "van" allowed)
 # followed by "(Role)", optionally bulleted.
@@ -725,6 +725,11 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 # A list of times after the first ("kl 9.45-11.30, 12.15-14, og 14.15-16").
 .clock_more <- paste0("(?:[ \\t]*(?:,[ \\t]*(?:og|and|&)?|og|and|&)[ \\t]*(?:", .kl, ")?", .hour, "[.:][0-5]\\d",
                       "(?![.:]?\\d)(?:[ \\t]*[-–][ \\t]*", .hour, "(?:[.:]?[0-5]\\d)?(?![.:]?\\d))?)*")
+# A dotted range after a weekday ("Veiledende undervisningstid: Tirsdager
+# 9.30 – 16.30", nmh, 2026-11-14); the weekday stays.
+.clock_weekday <- paste0("(?<!\\p{L})((?i:mandag|måndag|tirsdag|tysdag|onsdag|torsdag|fredag|lørdag|laurdag|søndag|",
+                         "monday|tuesday|wednesday|thursday|friday|saturday|sunday)(?i:er|ar|ane|ene|en|s)?)[ \\t]+",
+                         .hour, "\\.[0-5]\\d[ \\t]*[-–][ \\t]*", .hour, "(?:[.:][0-5]\\d)?(?![.:]?\\d)")
 # Approval and update dates in words: "godkjent i studieutvalget 14.
 # november 2016", "endringer lagt inn 3. juli 2017 og 7. mai 2024",
 # "Etablert av dekanen 3. juli 2013" (oslomet)
@@ -919,6 +924,7 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     # each leaves a mark (\001) for the comma cleanup below
     stringr::str_replace_all(paste0(.gap, .clock_prep, .clock_kl, .clock_end, "?", .clock_more, .clock_zone), "\001") |>
     stringr::str_replace_all(paste0(.gap, .clock_prep, .clock_ampm, .clock_zone), "\001") |>
+    stringr::str_replace_all(.clock_weekday, "\\1\001") |>
     stringr::str_replace_all(paste0(.gap, "(?<!\\p{L})(?i:at|by|from|until|till|before|after|between)[ \\t]+",
                                    .clock_dot, .clock_end, "?", .clock_zone), "\001") |>
     # Remove clock times "09:00", "23:59:59", with a preposition before; not
