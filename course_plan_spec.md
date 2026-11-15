@@ -138,7 +138,7 @@ without the title and facts box.
 | Reading-list widget text (Leganto labels, "View online", item-type labels, tab bar); the list itself is plan text | out | out |
 | Fetch, version and "last updated" stamps; PDF headers, footers, page numbers | out | out |
 | Approval stamps ("Godkjent emneplan", "Godkjent av …" with date and approver) | out | out |
-| Administrative dates and years, semester labels ("Høst 2024"), clock times; "Emnet tilbys ikke 2025/2026" | out | out |
+| Administrative dates and years, semester labels ("Høst 2024"), clock times; "Emnet tilbys ikke 2025/2026"; cohort and programme-version years ("Startkull 2022", "Bachelorstudium i billedkunst (2022)") | out | out |
 | A season or year that is a fact of the course: the facts box's semester, "Oppstart høst", a year that sets a condition | in | out (a semester), in (a condition) |
 | Title, course code | in | out |
 | Facts box: credits, level, language, semester, campus, programmes | in | out |

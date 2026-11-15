@@ -49,8 +49,27 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     nmbu    = .anon_nmbu(txt),
     uio     = .anon_uio(txt),
     hvl     = .anon_hvl(txt),
+    nmh     = .anon_label_year(txt, "Startkull"),
+    fhs     = .anon_label_year(txt, "Studieår"),
+    khio    = .anon_khio(txt),
     txt
   )
+}
+
+# A facts-box label on its own line with only a year on the next: the
+# cohort ("Startkull\n\n2022", nmh) or the year of the programme plan
+# ("Studieår\n2020", fhs) is an administrative year; label and year go
+# (user decision 2026-11-14). A year in running text stays.
+.anon_label_year <- function(txt, label) {
+  stringr::str_remove_all(txt, paste0("(?m)^[ \\t]*", label, "[ \\t]*\\n\\s*(?:19|20)\\d{2}[ \\t]*(?:\\n|$)"))
+}
+
+# The programme version after each programme the course belongs to
+# ("Inngår i studieprogram\nBachelorstudium i billedkunst (2022)"): the
+# year goes, the programme stays (user decision 2026-11-14)
+.anon_khio <- function(txt) {
+  stringr::str_replace_all(txt, "(?m)^Inngår i studieprogram(?:\\s*\\n[^\\n]*\\((?:19|20)\\d{2}\\)[ \\t]*)+",
+                           \(m) stringr::str_remove_all(m, "[ \\t]*\\((?:19|20)\\d{2}\\)(?=[ \\t]*(?:\\n|$))"))
 }
 
 .anon_ntnu <- function(txt) {

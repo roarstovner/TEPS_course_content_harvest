@@ -1488,6 +1488,22 @@ English preposition. *Rejected:* every dotted range (a date range
 2026-11-12 lose a time range (all checked as clock times; a second range
 after "og" stays, a known gap). *Since:* 2026-11-14.
 
+**Cohort and programme-version years go.** A facts-box label with only a
+year on the next line loses both: NMH's cohort ("Startkull\n\n2022") and
+FHS's study year ("Studieår\n2020"). At KHiO the year of the programme
+version after each programme in "Inngår i studieprogram" goes ("Bachelorstudium
+i billedkunst (2022)" → "Bachelorstudium i billedkunst"); the programme
+stays. *Why:* they are administrative years, about the record and not the
+course; the user decided on 2026-11-14 after the KHiO anonymization pilot
+audit of 2026-11-02 and the NMH audit of 2026-11-14 found them. *Rejected:*
+a rule for every year on its own line or in brackets after a name (would
+take content years: "Verket (1913)"); keeping the label without its year
+(an empty facts-box field). Each rule is tied to its label and its
+institution. *Consequence:* in the build of 2026-11-15 every published plan
+of the three loses the year: FHS 839, KHiO 347, NMH 71; the sections are
+unchanged, and plans neither merge nor split (the plan id already ignored
+years). *Since:* 2026-11-15.
+
 **The semester a course starts from stays.** "Emnet byrjar å gå frå våren
 2024" (UiB; also "begynner å gå fra", "starter fra") keeps its season and
 year: it says when the course was first offered, a fact of the course,

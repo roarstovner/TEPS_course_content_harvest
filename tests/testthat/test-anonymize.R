@@ -107,6 +107,26 @@ test_that("years after various admin keywords are removed", {
   }
 })
 
+test_that("cohort and programme-version years go after their label (nmh, fhs, khio); running-text years stay", {
+  expect_equal(anonymize_text("nmh", "Studiepoeng\n\n10\n\nStartkull\n\n2022\nGjennomføres: To semestre."),
+               "Studiepoeng\n\n10\n\nGjennomføres: To semestre.")
+  expect_equal(anonymize_text("fhs", "Studiepoeng\n5\nStudieår\n2020\nUtdanninger\nBachelor i ingeniørfag"),
+               "Studiepoeng\n5\nUtdanninger\nBachelor i ingeniørfag")
+  expect_equal(anonymize_text("khio", paste0(
+    "Inngår i studieprogram\nBachelorstudium i jazzdans (2020)\n",
+    "Dobbelgrad Masterstudium i Comparative Dramaturgy and Performance Research (CDPR) (2021)\n",
+    "Kort beskrivelse av emnet\nVerket (1913) og koreografien fra 2020 drøftes.")),
+    paste0("Inngår i studieprogram\nBachelorstudium i jazzdans\n",
+           "Dobbelgrad Masterstudium i Comparative Dramaturgy and Performance Research (CDPR)\n",
+           "Kort beskrivelse av emnet\nVerket (1913) og koreografien fra 2020 drøftes."))
+  # the label in running text, or at another institution, keeps its year
+  for (x in c("Startkull 2022 hadde praksis i 2. studieår.", "Studieår 2020 var det første med digital eksamen."))
+    expect_equal(anonymize_text("nmh", x), x)
+  expect_equal(anonymize_text("fhs", "Studieår\nStudenten tok emnet i 2020"), "Studieår\nStudenten tok emnet i 2020")
+  expect_equal(anonymize_text("uio", "Startkull\n\n2022"), "Startkull\n\n2022")
+  expect_equal(anonymize_text("hivolda", "Bachelor i musikk (2022)"), "Bachelor i musikk (2022)")
+})
+
 test_that("academic year ranges are removed", {
   result <- anonymize_text("hivolda", "Pensum for 2023/2024 og 2024/25", .progress = FALSE)
   expect_false(grepl("2023/2024", result))
