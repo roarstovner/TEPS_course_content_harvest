@@ -20,6 +20,7 @@ uit,uit.no,2026-10-16,200,,,,"Disallows /Content/, staff pages and print views; 
 nmbu,www.nmbu.no,2026-10-16,200,,,,Allows everything
 samas,samas.no,2026-10-16,200,,,,Drupal defaults; Crawl-delay 10 only for Scrapy. Not harvested (strategy noop)
 steiner,www.steinerhoyskolen.no,2026-10-16,200,,/dokumenter/,,"The five subject PDFs (/dokumenter/laerer-bachelor-*), which the harvests up to 2026-10 fetched; also disallows /publikasjoner/"
+steiner,cdn.prod.website-files.com,2026-11-15,403,,,,"No robots.txt (S3 AccessDenied, as for a missing key): nothing disallowed (RFC 9309, 4xx). Webflow's file CDN, where Steiner's subject PDFs are since 2026-11 (the wrapper pages under /dokumenter/ link there)"
 kristiania,www.kristiania.no,2026-10-16,200,,,,Disallows /episerver
 bi,www.bi.no,2026-10-16,200,,/*.pdf$ /*.doc$ /*.docx$,,"Disallows /episerver/, */is-pages/, images and documents: a plan published as PDF or Word file is not harvested"
 bi,programmeinfo.bi.no,2026-10-16,200,10,,,"Drupal defaults. BI's programme and course information, to be confirmed as the source of the course plans"

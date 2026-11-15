@@ -81,8 +81,9 @@ Then add or update the host’s row:
 
 - `institution`: the short name; `tests/testthat/test-robots.R` fails if
   a configured institution has no row.
-- `read_on` and `status`: the date and the HTTP status. A 404 means
-  nothing is disallowed; a 5xx means the host may not be crawled at all.
+- `read_on` and `status`: the date and the HTTP status. A 404 (or
+  another 4xx, RFC 9309) means nothing is disallowed; a 5xx means the
+  host may not be crawled at all.
 - The rules for `User-agent: *` apply: no robots.txt names the harvest’s
   user agent, and a group for a named bot (Scrapy, GPTBot) does not.
 - `crawl_delay`: the `Crawl-delay` asked of all user agents. A delay
