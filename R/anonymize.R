@@ -441,7 +441,8 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
   "studieprogramleder", "studieprogramleiar", "programansvarlig",
   "instituttleder", "instituttleiar", "veileder", "rettleiar",
   "timelærer", "timelærar", "kontaktperson", "sensor", "coordinator",
-  "programkoordinator", "fagansvarlig", "fagkoordinator", "lecturer", "course owner"
+  "programkoordinator", "fagansvarlig", "fagkoordinator", "lecturer", "course owner", "foreleser",
+  "faglig ansvarlig"
 )
 # A whole line that is only a capitalised name (particles like "van" allowed)
 # followed by "(Role)", optionally bulleted.
@@ -453,11 +454,12 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 # A role label followed by a capitalised name, on the same line or (after a
 # colon) the next, and possibly an e-mail: "Emneleder Kari Nordmann
 # kari@uit.no" (uit), "Emneansvarlig Ola Nordmann" (uis PDF plans),
-# "Emneansvarlige:\nKari Nordmann" (uia). "Emneansvarlig informerer ..." is prose, and uib's
-# "Emneansvarlig\nThe Programme Committee" names no person.
+# "Emneansvarlige:\nKari Nordmann" (uia), "Foreleser:Ola Nordmann." (uit).
+# "Emneansvarlig informerer ..." is prose, and uib's "Emneansvarlig\nThe
+# Programme Committee" names no person.
 .role_name_line_regex <- paste0(
   "(?m)^[ \\t]*(?i:", paste(.staff_roles, collapse = "|"), ")(?i:e|er|ar)?",
-  "[ \\t]*(?::[ \\t]*\\n[ \\t]*|:?[ \\t]+)",   # the next line only after a colon
+  "[ \\t]*(?::[ \\t]*\\n[ \\t]*|:[ \\t]*|[ \\t]+)",   # the next line only after a colon
   "\\p{Lu}\\p{Ll}+(?:[ \\t]+\\p{Lu}[\\p{L}.'’-]*)+[^\\n]*(?:\\n|$)"
 )
 # A signature line "17.03.20 Ola Nordmann, dekan": optional date stamp, a
@@ -474,8 +476,9 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
   "[\\h]*,[\\h]*(?i:", paste(.signature_roles, collapse = "|"), ")[\\h]*(?:\\n|$)"
 )
 # A capitalised name, with initials and hyphens ("Ola K. Nordmann",
-# "Anne-Kari Nordmann-Dahl").
-.name_part <- "\\p{Lu}[\\p{Ll}'’]+(?:-\\p{Lu}?[\\p{Ll}'’]+)*"
+# "Anne-Kari Nordmann-Dahl"), not running on into a role ("Foreleser: Ola
+# Nordmann Faglig ansvarlig: Kari Nordmann", uit).
+.name_part <- "(?!(?i:faglig)[ \\t]+ansvarlig)\\p{Lu}[\\p{Ll}'’]+(?:-\\p{Lu}?[\\p{Ll}'’]+)*"
 .name_regex <- paste0(.name_part, "(?:[ \\t]+\\p{Lu}\\.)*(?:[ \\t]+", .name_part, ")+")
 # A role word followed by names anywhere in a line: "... avklares med
 # faglærer Ola Nordmann" (usn), "Godkjent emneplan av dekan Ola Nordmann"
@@ -744,11 +747,52 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 # A list of times after the first ("kl 9.45-11.30, 12.15-14, og 14.15-16").
 .clock_more <- paste0("(?:[ \\t]*(?:,[ \\t]*(?:og|and|&)?|og|and|&)[ \\t]*(?:", .kl, ")?", .hour, "[.:][0-5]\\d",
                       "(?![.:]?\\d)(?:[ \\t]*[-–][ \\t]*", .hour, "(?:[.:]?[0-5]\\d)?(?![.:]?\\d))?)*")
+.weekday <- paste0("(?i:mandag|måndag|tirsdag|tysdag|onsdag|torsdag|fredag|lørdag|laurdag|søndag|",
+                   "monday|tuesday|wednesday|thursday|friday|saturday|sunday)(?i:er|ar|ane|ene|en|s)?")
 # A dotted range after a weekday ("Veiledende undervisningstid: Tirsdager
 # 9.30 – 16.30", nmh, 2026-11-14); the weekday stays.
-.clock_weekday <- paste0("(?<!\\p{L})((?i:mandag|måndag|tirsdag|tysdag|onsdag|torsdag|fredag|lørdag|laurdag|søndag|",
-                         "monday|tuesday|wednesday|thursday|friday|saturday|sunday)(?i:er|ar|ane|ene|en|s)?)[ \\t]+",
+.clock_weekday <- paste0("(?<!\\p{L})(", .weekday, ")[ \\t]+",
                          .hour, "\\.[0-5]\\d[ \\t]*[-–][ \\t]*", .hour, "(?:[.:][0-5]\\d)?(?![.:]?\\d)")
+# A lecturer in brackets after a session's topic, in a lecture schedule
+# (uit history plans 2009, hiof, ntnu, usn; 2026-11-15): the brackets go,
+# the topic stays. A title before the name ("(Professor Torgeir Welo)") and a
+# second name ("(Stephen Ackroyd og Jan Moren)") go with it.
+.paren_lecturer <- paste0("[ \\t]*\\((?:", .title_regex, "[ \\t]+(?:II[ \\t]+)?)?", .name_regex,
+                          "(?:[ \\t]+(?:og|and)[ \\t]+", .name_regex, ")?\\)")
+# In a session's line: after a weekday, a week number or a day/month date
+# opening the line, or under a line of only a weekday, its date and time
+# ("Tuesday 13.01.09 12.15-14.00\nWhat is Sami history? (Henry Minde)",
+# "Onsdag 14.1: Nasjonalstatar og demokrati (Narve Fulsås)", "2/3
+# Skiftematerialet som kjelde (Blix Hagen).", "Week 34 (18 August): Kings
+# and Vikings (Ola Nordmann)"), ending the line or before the next session ("(Henry Minde) Tuesday ...", flattened). Not after a
+# section number ("10.5 Tests Concerning a Single Mean (Variance Known)").
+.week_no <- "(?i:week|uke|veke)[ \\t]+\\d{1,2}"
+.schedule_lecturer_regex <- paste0(
+  "(?m)((?:^[ \\t]*", .weekday, "[ \\t\\d.:/–-]*\\n(?:[ \\t]*\\n)*|(?<!\\p{L})(?:", .weekday, "|", .week_no, ")(?!\\p{L})|",
+  "^[ \\t]*\\d{1,2}/\\d{1,2}(?![\\d/]))[^\\n]*?)", .paren_lecturer,
+  "(?=[ \\t.]*$|[ \\t]+(?:", .weekday, "|", .week_no, ")(?!\\p{L}))"
+)
+# A list of topics, each line ending with a lecturer in brackets: two or more
+# lines in a row, blank lines between allowed ("1. Etikk og verdistyring (Jan
+# Moren)\n2. Bedrifters samfunnsansvar (Juliane Riese)", hiof; "- TIØ5
+# Optimering av transport (Bjørn Nygreen).", ntnu). A list of works, terms
+# or places looks the same ("Hamlet (Penguin Classics)", "FEM (Finite Element
+# Method)", "Førde (Campus Sogndal)"), so a name counts as a lecturer only
+# with a title ("(prof. Signe Kjelstrup)"), or when the list names two or
+# more and one of them recurs (a lecturer gives several sessions; one name
+# recurring alone is a source: "(Shorter Norton)") or its lines open with a
+# course part's code ("TIØ5", "TMM16"). Two different names without these
+# stay (a known gap).
+.lecturer_list_line <- paste0("^[^\\n]*?\\S", .paren_lecturer, "[ \\t]*\\.?[ \\t]*$")
+.lecturer_list_regex <- paste0("(?m)(?:", .lecturer_list_line, "\\n(?:[ \\t]*\\n)*)+", .lecturer_list_line)
+.drop_lecturer_list <- function(block) {
+  lines <- stringr::str_split(block, "\n")[[1]]
+  names <- stats::na.omit(stringr::str_extract(lines, paste0(.paren_lecturer, "(?=[ \\t]*\\.?[ \\t]*$)")))
+  if (!any(grepl(paste0("\\(", .title_regex), names, perl = TRUE)) &&
+      (length(unique(names)) < 2 || !(anyDuplicated(names) || any(grepl("^[ \\t]*(?:-[ \\t]*)?\\p{Lu}{2,4}\\d{1,2}\\b", lines, perl = TRUE)))))
+    return(block)
+  stringr::str_remove_all(block, paste0("(?m)", .paren_lecturer, "(?=[ \\t]*\\.?[ \\t]*$)"))
+}
 # Approval and update dates in words: "godkjent i studieutvalget 14.
 # november 2016", "endringer lagt inn 3. juli 2017 og 7. mai 2024",
 # "Etablert av dekanen 3. juli 2013" (oslomet)
@@ -828,6 +872,9 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     stringr::str_replace_all(.approved_by_name_regex, "\\1\\2\\3") |>
     # "faglærer Ola Nordmann" anywhere in a line
     stringr::str_replace_all(.role_name_inline_regex, "\\1") |>
+    # lecturers in brackets in a lecture schedule or a list of topics
+    stringr::str_replace_all(.schedule_lecturer_regex, "\\1") |>
+    stringr::str_replace_all(.lecturer_list_regex, \(m) vapply(m, .drop_lecturer_list, "", USE.NAMES = FALSE)) |>
     # Remove phone numbers: +47 XX XX XX XX, Tlf: XXXXXXXX, telefon: XX XX XX XX
     stringr::str_remove_all("(?i)(?:tlf|telefon)\\.?\\s*:?\\s*(?:\\+47\\s*)?\\d[\\d ]{6,}") |>
     stringr::str_remove_all("\\+47\\s*\\d[\\d ]{6,}") |>

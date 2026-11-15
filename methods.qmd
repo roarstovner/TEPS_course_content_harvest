@@ -1504,6 +1504,30 @@ of the three loses the year: FHS 839, KHiO 347, NMH 71; the sections are
 unchanged, and plans neither merge nor split (the plan id already ignored
 years). *Since:* 2026-11-15.
 
+**Lecturers in a lecture schedule go.** A name in brackets after a session's
+topic loses its brackets and the name: in a session's line after a weekday,
+a week number or a day/month date ("Onsdag 14.1: Nasjonalstatar og demokrati
+(<name>)", "2/3 Skiftematerialet som kjelde (<name>).", "Tuesday 13.01.09
+12.15-14.00\nWhat is Sami history? (<name>)", also flattened before the
+next "Tuesday"), and in
+a list of topics whose lines end with a name ("1. Etikk og verdistyring
+(<name>)") when a name carries a title ("(prof. <name>)"), one of two or
+more names recurs, or the lines open with a course part's code ("- TIØ5
+Optimering av transport (<name>)."). "Foreleser" and "faglig ansvarlig"
+are staff roles, so "Foreleser: <name>" loses the name like "Emneansvarlig"
+(also with no space after the colon). *Why:* UiT history plans of 2009 kept their lecturers
+(found by a scan of the build of 2026-11-12 for weekday times); a scan of
+all published plans found the same layouts at HiØ, NTNU and USN. *Rejected:*
+every name in brackets at a line's end (works, terms and places look the
+same: "Hamlet (Penguin Classics)", "FEM (Finite Element Method)", "Førde
+(Campus Sogndal)"); a list of two different names without title or code is
+left alone, a known gap (2 NTNU and 2 UiT plans, e.g. two invited
+lecturers). *Consequence:* applied to the published plans of the build of
+2026-11-15, 65 plans change (NTNU 36, UiT 21, HiØ 5, USN 3), all checked: the
+names go, the topics stay; `preview_change()` on their raw pages changes the
+same 65 plans and 65 of their sections (reading list 25, course content 38,
+teaching methods 2). *Since:* 2026-11-15.
+
 **The semester a course starts from stays.** "Emnet byrjar å gå frå våren
 2024" (UiB; also "begynner å gå fra", "starter fra") keeps its season and
 year: it says when the course was first offered, a fact of the course,

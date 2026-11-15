@@ -360,6 +360,55 @@ test_that("UiT: Foreleser + name line stripped", {
   expect_true(grepl("Pensum", result))
 })
 
+test_that("'Foreleser: <name>' in a schedule goes; prose about lecturers stays", {
+  an <- \(x) anonymize_text("uit", x)
+  expect_equal(an("15. januar - Framveksten av verdenssystemet.\nForeleser: Kari Nordmann\n\nForelesere: Ola Dahl og Kari Berg\nPensum"),
+               "15. januar - Framveksten av verdenssystemet.\n\nPensum")
+  expect_equal(an("Foreleser:Ola K. Dahl.\nPensum"), "Pensum")
+  expect_equal(an("Tid seminarer: Mandager Foreleser: Ola Dahl Faglig ansvarlig: Kari Nordmann 18. august Grunnbegreper"),
+               "Tid seminarer: Mandager Foreleser: Faglig ansvarlig: 18. august Grunnbegreper")
+  expect_equal(an("Foreleser: Førsteamanuensis Ola Dahl\nPensum"), "Pensum")
+  expect_equal(anonymize_text("hiof", "2. SAMFUNNSANSVAR. 25., 26. og 27. september. Foreleser: Kari Nordmann (med assistanse av Ola Dahl)."),
+               "2. SAMFUNNSANSVAR. 25., 26. og 27. september. Foreleser:.")
+  expect_equal(an("Forelesere fra praksis underviser i: Veiledning"), "Forelesere fra praksis underviser i: Veiledning")
+})
+
+test_that("a lecturer in brackets in a lecture schedule goes, the topic stays", {
+  an <- \(x) anonymize_text("uit", x)
+  expect_equal(an("Tuesday\nWhat is Sami history? (Kari Nordmann)\n\nTuesday\n\nInter-ethnic relations (Ola Dahl)"),
+               "Tuesday\nWhat is Sami history?\n\nTuesday\n\nInter-ethnic relations")
+  expect_equal(an("Tuesday 13.01.09 12.15-14.00\nWhat is Sami history? (Kari Nordmann)"), "Tuesday\nWhat is Sami history?")
+  expect_equal(an("Tuesday Sami rights from the Lapp Codicil (1751) to the Finnmark Act (Kari Nordmann) Tuesday The rise (Ola Dahl) Week 19 essay"),
+               "Tuesday Sami rights from the Lapp Codicil (1751) to the Finnmark Act Tuesday The rise Week 19 essay")
+  expect_equal(an("Onsdag 14.1: Nasjonalstatar og demokrati (Kari Nordmann)\nPensum: kap. 13"),
+               "Onsdag 14.1: Nasjonalstatar og demokrati\nPensum: kap. 13")
+  expect_equal(an("2/3 Skiftematerialet som kjelde (Blix Hagen).\nLitt.: Dyrvik 1996."),
+               "2/3 Skiftematerialet som kjelde.\nLitt.: Dyrvik 1996.")
+  expect_equal(an("Week 34 (18 August): Kings and Vikings (Kari Nordmann) Week 35 (25 August): Society (Ola Dahl)"),
+               "Week 34 (18 August): Kings and Vikings Week 35 (25 August): Society")
+  # a list of topics naming two lecturers or more, with titles and pairs
+  expect_equal(an("1. Etikk (Kari Nordmann)\n2. Globalisering (Ola Dahl og Kari Nordmann)\n\n3. Myter (Kari Nordmann)\nPensum"),
+               "1. Etikk\n2. Globalisering\n\n3. Myter\nPensum")
+  expect_equal(an("TMM4 Analyse av metallforming (Professor Ola Dahl).\nTMM16 Støperiteknikk (Professor II Kari Berg Nordmann)."),
+               "TMM4 Analyse av metallforming.\nTMM16 Støperiteknikk.")
+  expect_equal(an("Gjenvinningsteknikk (førsteamanuensis Kari Nordmann).\nGeologiske analysemetoder (førsteamanuensis Kari Nordmann)."),
+               "Gjenvinningsteknikk.\nGeologiske analysemetoder.")
+  expect_equal(an("- TIØ5 Optimering (Ola Dahl).\n- TIØ6 Planlegging (Kari Nordmann)."), "- TIØ5 Optimering.\n- TIØ6 Planlegging.")
+})
+
+test_that("brackets that are no lecturer stay: sources, terms, places, works", {
+  keep <- c("Tekster: The Norton reading (Shorter Norton)\n\nPoems (Shorter Norton)",
+            "William Shakespeare: Hamlet (Penguin Classics)\nBram Stoker: Dracula (Norton Critical Edition)",
+            "- RTK (Real Time Kinematic)\n- PPP (Precise Point Positioning)",
+            "10.5 Single Sample: Tests Concerning a Single Mean (Variance Known)",
+            "2. Olaudah Equiano, The Interesting Narrative (Penguin Classics)\nPensum",
+            "Rikets Sal (Jehovas Vitner). Krav om deltakelse på fredagsbønn.",
+            "Fredag, 13. februar: Vi møtes på Statsarkivet: IKAT (Interkommunalt Arkiv Tromsø) viser oss rundt.",
+            "Feedback etter metoden (Critical Response Process)",
+            "Lesing: Kari Nordmann (2010). Boka. Oslo.\nOla Dahl, Tittel (red. Kari Berg)")
+  expect_equal(anonymize_text(rep("uit", length(keep)), keep), keep)
+})
+
 # --- UiA ---
 
 test_that("UiA: breadcrumb removed without eating content", {
