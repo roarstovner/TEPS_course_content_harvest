@@ -1,0 +1,98 @@
+{
+  "check": "sections",
+  "institution": "khio",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 20,
+  "n_suspects_reviewed": 14,
+  "overall_assessment": "Most sections preserve the source text and boundaries well, and the 12 repeated DE/IM assessment and coursework templates are not invalid merely because they repeat; their standalone examiner-arrangement sentence should nevertheless be excluded. Real defects include two source-origin duplicates retained under incompatible labels, English coursework blocks and approval gates left in teaching or assessment, and isolated administrative/progression text; random controls confirm the English and cleanup gaps but do not support an institution-wide section-splitting failure.",
+  "findings": [
+    {
+      "target": "cross_section",
+      "error_type": "duplicate",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "khio_RE305-1_2026_autumn_1",
+        "khio_DA502-2_2026_autumn_1"
+      ],
+      "evidence": "have knowledge of the relationship between dance, movement practice and maintaining in shape",
+      "description": "Two source plans repeat an entire section under an incompatible heading, and the extractor preserves both labels: RE305 teaching methods are also emitted as assessment, while DA502 learning outcomes are also emitted as teaching methods. The duplicate flags are real semantic contamination, although the repetition already exists in the source; the RE305 leak flag identifies teaching prose rather than a missed section boundary. Neither misplaced copy supplies real assessment or teaching information.",
+      "root_cause_hypothesis": "sectionize() trusts the mapped source headings; .clean_sections() does not reconcile identical text across incompatible canonical sections.",
+      "suggested_fix": "After normalizing whitespace, detect identical non-practice section bodies within each plan. For these KHIO cases, retain an outcomes-list duplicate only in learning_outcomes and an explicit teaching-methods duplicate only in teaching_methods; remove the incompatible row and flag unresolved duplicate pairs for review. Do not infer replacement content.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "merged_sections",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "khio_DA514-2_2026_autumn_1"
+      ],
+      "evidence": "The course requirements are\nmandatory attendance and active participation in the course\ncompleted reading\nsubmission of written assignments/works",
+      "description": "The random control DA514 retains an explicit compulsory-work block at the end of teaching_methods and emits no coursework_requirements section. Mandatory attendance, completed reading and required submissions are approval requirements, not teaching methods. This defect has no pre-pass flag.",
+      "root_cause_hypothesis": "R/section_heading_map.R lacks the English paragraph label \"The course requirements are\". The fallback .coursework_heading_regex in R/extract_sections.R also accepts neither the initial article nor the trailing \"are\".",
+      "suggested_fix": "Add an exact coursework_requirements mapping for \"The course requirements are\" in R/section_heading_map.R so the existing KHIO paragraph subheading reader splits the block. Extend .coursework_heading_regex to recognize the same full-line lead-in for text fallback.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "khio_DA502-2_2026_autumn_1",
+        "khio_DA514-2_2026_autumn_1"
+      ],
+      "evidence": "All course requirements must be approved in order for a student to receive a final course assessment.",
+      "description": "Both English-language plans leave this explicit approval gate in assessment. It belongs to coursework_requirements, which is absent in both outputs. Equivalent Norwegian gate sentences are correctly moved in the other 18 plans, including the random controls, so this is a language-specific extraction gap rather than an institution-wide failure to separate coursework.",
+      "root_cause_hypothesis": "The English branch of .gate_sentence_regex in R/extract_sections.R permits only 60 characters between \"in order to\" and \"assessment\" and does not recognize \"in order for a student to receive\" as the conditional phrase. It also does not explicitly include \"course requirements\" among its gate-subject alternatives.",
+      "suggested_fix": "Extend the English gate rule to match course requirements requiring approval \"in order for [a/the] student to receive a final course assessment\". Move only that sentence to coursework_requirements, retaining the actual assessment design and pass/fail scale.",
+      "confidence": "high"
+    },
+    {
+      "target": "course_content",
+      "error_type": "other",
+      "severity": "medium",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "khio_IM210-1_2026_autumn_1"
+      ],
+      "evidence": "OBS: det kan komme mindre endringer i emnebeskrivelsen, som ikke påvirker det samlede læringsutbyttet eller oppbygningen av studiet.",
+      "description": "The course_content row opens with a two-sentence notice about possible changes to the course description and when they will be published. This is administrative information about the plan, not subject matter. Its inclusion is unflagged; the boilerplate flags on this course concern different, repeated sections.",
+      "root_cause_hypothesis": "The notice is inside the correctly mapped description block, and .clean_sections() has no KHIO-specific notice-removal rule in .logistics_sentences or .logistics_blocks.",
+      "suggested_fix": "Add a KHIO-specific cleanup rule matching the complete two-sentence notice beginning \"OBS: det kan komme mindre endringer i emnebeskrivelsen\" and ending \"det aktuelle undervisningssemesteret.\" Preserve the following project description.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "other",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "khio_DE101-1_2026_autumn_1",
+        "khio_IM103-1_2026_autumn_1",
+        "khio_DE302-1_2026_autumn_1"
+      ],
+      "evidence": "Vurderingen foretas av emneansvarlig og kan eventuelt gjøres i samarbeid med interne faglærere og/eller eksterne gjestelærere.",
+      "description": "All 12 DE/IM suspects retain this standalone examiner-arrangement sentence in assessment. course_plan_spec.md explicitly excludes examiner arrangements while retaining assessment design. The repetition-based boilerplate flags are not sufficient grounds to discard these sections: the compulsory-work items and assessment-criteria sentence are legitimate. The actual defect is this removable clause within otherwise meaningful assessment text.",
+      "root_cause_hypothesis": "R/extract_sections.R applies examiner cleanup through institution-specific .logistics_sentences entries, but KHIO has no entry. The existing .examiner_sentence_regex also does not cover \"Vurderingen foretas av emneansvarlig\" without the word sensor.",
+      "suggested_fix": "Add a narrowly anchored KHIO examiner-arrangement sentence rule to .logistics_sentences for this stock wording. Keep the preceding sentence about the assessment basis, and preserve sentences that combine examiner roles with substantive assessment design.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "other",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "khio_MK523-1_2026_autumn_1"
+      ],
+      "evidence": "Bestått semester er en forutsetning for å fortsette studiet.",
+      "description": "This random control retains an outgoing study-progression condition at the end of assessment. It describes what passing permits later, not how this course is assessed, and course_plan_spec.md assigns such rules to no canonical section. The actual semester presentation, report, assessment and grading scale are otherwise preserved.",
+      "root_cause_hypothesis": "The progression prefilter in .clean_sections() sees \"for å fortsette\", but .progression_regex only covers formulations such as \"emnet må være bestått\" and does not recognize \"Bestått semester er en forutsetning\".",
+      "suggested_fix": "Extend .progression_regex with an anchored rule for \"Bestått semester er en forutsetning for å fortsette studiet\" so .strip_progression() removes it from sections while retaining the pass/fail grading sentence.",
+      "confidence": "high"
+    }
+  ]
+}

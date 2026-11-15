@@ -1,0 +1,148 @@
+{
+  "check": "sections",
+  "institution": "nmh",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 20,
+  "n_suspects_reviewed": 6,
+  "overall_assessment": "Norwegian main headings and learning-outcome groups generally extract correctly, and exam-access gates are successfully moved into coursework_requirements, but the controls confirm widespread administrative contamination and several unflagged omissions. The three leak->reading_list flags in DRVIT90 and KPKUNST70 are false alarms about assessment descriptions; the ENSLED22 admission leak, MTMUSTER70 teaching-method leak and VEILED53 assessment-summary leak are real. All 20 packet entries were read in full as supplied; packet-builder truncation markers were not treated as extraction defects.",
+  "findings": [
+    {
+      "target": "cross_section",
+      "error_type": "missing_section",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "nmh_CONCOM70-1_2022_autumn_1"
+      ],
+      "evidence": "Headings on the page (→ section): `Course description` → course_content · `Learning objectives` → unmapped · `Overview` → unmapped · `Structure` → unmapped · `Course requirements` → unmapped",
+      "description": "This random control loses all learning outcomes and teaching methods, the substantive course-requirement list, and the content under Overview. Only the introductory description, final assessment and a generic exam-access gate survive; the latter is not a substitute for the missing requirements.",
+      "root_cause_hypothesis": "R/section_heading_map.R lacks these English headings; sectionize() closes the current section at an unmapped top-level heading and discards its body.",
+      "suggested_fix": "Add exact mappings for Learning objectives to learning_outcomes, Overview to course_content, Structure to teaching_methods and Course requirements to coursework_requirements, scoped to NMH if necessary.",
+      "confidence": "high"
+    },
+    {
+      "target": "course_content",
+      "error_type": "truncated",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "nmh_MTMUSTER70-1_2022_autumn_1"
+      ],
+      "evidence": "Instrumentasjon og notasjonsteknikker.\nSkalaer, modaliteter og tonaliteter.\nLåtskriving/arrangering/komponering for ulike målgrupper.",
+      "description": "The full plan visibly includes D: Støtteemner and its arranging/composition topics, but course_content ends after component C. D: Støtteemner is read as an unmapped heading, so this substantive subsection is lost. The second occurrence of this heading under Arbeidskrav also warrants checking when implementing the fix; its body is outside the displayed ground-truth excerpt.",
+      "root_cause_hypothesis": "The NMH HTML reader treats D: Støtteemner as a top-level heading. In sectionize(), an unmapped heading resets parent/current instead of inheriting the enclosing canonical section.",
+      "suggested_fix": "In the NMH block reader, treat D: Støtteemner as a subheading inheriting its enclosing Innhold or Arbeidskrav section; preserve both occurrences in their respective parent sections.",
+      "confidence": "high"
+    },
+    {
+      "target": "prerequisites",
+      "error_type": "missing_section",
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": [
+        "nmh_UTHO23-1_2022_spring_1",
+        "nmh_UTHO24-1_2021_autumn_1",
+        "nmh_MUSTEK22-3_2025_autumn_1"
+      ],
+      "evidence": "Forhåndskrav: DIG10/MUSTEK10 (obligatorisk i 1. avdeling) eller tilsvarende",
+      "description": "No prerequisites row is emitted for these controls despite explicit prior-course requirements in Forhåndskrav. UTHO23 and UTHO24 also retain standalone Emnet bygger på statements in course_content. Programme-admission-only Forhåndskrav lines elsewhere correctly should not become prerequisites.",
+      "root_cause_hypothesis": "NMH has no Forhåndskrav heading/inline-field rule, and pre-heading text is outside an open section. The existing sentence-move rule for Emnet bygger på is scoped to fhs, not nmh.",
+      "suggested_fix": "Parse NMH inline Forhåndskrav fields, retain prior-course or prior-knowledge requirements, and discard pure programme-admission requirements. Add an NMH sentence move for standalone Emnet bygger (videre) på statements naming a course; deduplicate matching prerequisites.",
+      "confidence": "high"
+    },
+    {
+      "target": "reading_list",
+      "error_type": "missing_section",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "nmh_DRVIT90-2_2025_autumn_1",
+        "nmh_DRVIT90-2_2025_spring_1",
+        "nmh_MPTEO73-1_2021_autumn_1"
+      ],
+      "evidence": "Pensum: Omtrent 1000 sider felles pensum som oppgis av faglærer.",
+      "description": "The MPTEO73 reading-list note remains in course_content and no reading_list row exists. Both DRVIT90 plans likewise have an explicit Pensum note before the main headings that is not extracted. These are genuine syllabus notes, unlike the false leak->reading_list flags on descriptions of essay sources or portfolio documentation.",
+      "root_cause_hypothesis": "Inline Pensum fields are not promoted to section blocks by the NMH reader; sectionize() relies on the mapped HTML headings and does not recover these notes.",
+      "suggested_fix": "Recognize standalone NMH paragraphs beginning Pensum: as inline reading-list fields, including before the first main heading. Move only that field and restore the parent section afterward; retain assessment descriptions mentioning literature in assessment.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "nmh_MTMUSTER70-1_2022_autumn_1",
+        "nmh_KPKUNST70-1_2021_autumn_1",
+        "nmh_DRAVHA90-1_2025_spring_1"
+      ],
+      "evidence": "Undervisningen vil bli gitt i form av praktiske øvelser som for eksempel rollespill, gruppearbeid, forelesninger samt demonstrasjon og analyse av audiovisuelt materiale.",
+      "description": "Heading-based routing leaves explicit teaching arrangements inside course_content, especially the multiple teaching paragraphs in MTMUSTER70; its teaching_methods row contains only a pointer and registration text. KPKUNST70 also leaves the sentence specifying portfolio documentation for final assessment in course_content, and DRAVHA90 leaves substantial thesis-format and assessment-component specifications there. These sentences belong in teaching_methods or assessment by meaning.",
+      "root_cause_hypothesis": "sectionize() assigns whole Innhold/Kort om emnet blocks by heading, while .sentence_moves has no NMH rules to separate mixed content, teaching and assessment descriptions.",
+      "suggested_fix": "Add narrowly anchored NMH sentence/block moves for the observed teaching-arrangement paragraphs and explicit assessed-deliverable specifications, sending each to teaching_methods or assessment and removing it from course_content. Preserve the surrounding subject-matter descriptions.",
+      "confidence": "high"
+    },
+    {
+      "target": "practice",
+      "error_type": "missing_section",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "nmh_DISTUD70-2_2022_autumn_1"
+      ],
+      "evidence": "D. Praksis\nDirigering av øvingsensembler.\nGjennomføre og lede ulike prosjekt.",
+      "description": "This random control has a distinct D. Praksis heading with concrete activities, but the entire block stays in course_content and no practice overlay is emitted. Under the codebook it belongs in teaching_methods and must also be copied into practice. Running mentions of practice in other courses do not establish an overlay.",
+      "root_cause_hypothesis": "The heading is absent from the reader heading list, and .is_practice_heading() recognizes the bare Praksis label rather than this letter-prefixed form. Its body is consequently treated as ordinary Innhold text.",
+      "suggested_fix": "Recognize letter-prefixed NMH component headings such as D. Praksis as subheadings, normalize the prefix for heading matching and practice detection, and route the following activities to teaching_methods plus practice up to the next component/main heading.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "wrong_content",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "nmh_DRVIT90-2_2025_autumn_1",
+        "nmh_KPKUNST70-1_2021_autumn_1",
+        "nmh_SANG20-1_2022_autumn_1"
+      ],
+      "evidence": "Inngår i studieprogram\nMASTER - Masterstudiet i komposisjon",
+      "description": "Programme-membership footers contaminate the final extracted section in 14 of 20 courses: usually assessment, but reading_list in KPKUNST70. Programme lists belong only in the full plan, not any canonical section.",
+      "root_cause_hypothesis": "Inngår i studieprogram is missing from the reported heading blocks, so the preceding section continues through the footer. The heading map also lacks this exact wording.",
+      "suggested_fix": "Make the NMH reader emit a boundary at Inngår i studieprogram and map it to .drop, or strip that anchored trailing block from extracted sections while retaining it in course_plan.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "other",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "nmh_AKULYD10-1_2025_autumn_1",
+        "nmh_MPMAST70-1_2021_autumn_4",
+        "nmh_DRAVHA90-1_2025_spring_1"
+      ],
+      "evidence": "Ny vurdering\nFor ny vurdering gjelder samme ordning som for ordinær vurdering.",
+      "description": "Assessment retains resit rules in 19 of 20 courses, including the English control, along with examiner arrangements and, in several plans, submission deadlines or other exam logistics. DRAVHA90 contains extensive committee and reassessment procedures. The spec excludes these while keeping assessment form, duration, grading, aids and language.",
+      "root_cause_hypothesis": "NMH lacks institution-specific logistics/noise cleanup in R/extract_sections.R; the reader also does not emit the Ny vurdering/New assessment labels as section-ending boundaries.",
+      "suggested_fix": "Add NMH boundaries and cleanup for Ny vurdering/New assessment, with bounded handling of doctoral resit subsections so later ordinary assessment components survive. Remove standalone examiner, submission-date and logistics sentences while retaining all assessment-design clauses, including durations and preparation periods.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "wrong_content",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "nmh_ENSLED22-2_2022_autumn_1",
+        "nmh_VEILED53-1_2022_autumn_1",
+        "nmh_MUSTEK22-3_2025_autumn_1"
+      ],
+      "evidence": "Avsluttende vurdering: Skriftlig hjemmeeksamen\nForhåndskrav: Opptak til videreutdanning i praksisveiledning\nUndervisningsspråk: Norsk",
+      "description": "Sections repeatedly retain non-section metadata: automatic enrolment notices in teaching_methods, responsible-unit labels and admission/eligibility text in course_content. The ENSLED22 leak->.drop flag correctly detects its admission block; VEILED53 leak->assessment correctly detects an inline assessment summary bundled with language/admission metadata inside course_content after an extra Kort om emnet heading. These are additional to the programme footers and exam logistics reported separately.",
+      "root_cause_hypothesis": "The NMH facts selector covers the header and metadata box, but inline metadata in the prose remains ordinary section text. There are no NMH cleanup rules for automatic registration, responsible units or admission-only statements.",
+      "suggested_fix": "Mark NMH inline summary metadata as fields, route substantive assessment/prior-course fields appropriately, and exclude language, admission and responsible-unit fields from sections. Add anchored cleanup for automatic-enrolment notices and standalone eligibility/admission sentences, retaining mixed sentences that contain substantive prior-knowledge requirements.",
+      "confidence": "high"
+    }
+  ]
+}
