@@ -144,6 +144,18 @@ test_that("steiner: PEL1.4 and M-PEL2.1 both get the plan, each PDF is kept once
   expect_false("local_path" %in% names(out))
 })
 
+test_that("steiner: no PDF read gives each offering an error, not a crash", {
+  rlang::local_bindings(
+    robots_allows = function(url, ...) rep(TRUE, length(url)),
+    .steiner_get_pdf_url = function(w) paste0(w, ".pdf"),
+    .steiner_download_pdf = function(u) NULL,
+    .env = globalenv())
+  df <- tibble::tibble(url = NA_character_, course_name = c("Norsk1, emne 1", "Matematikk1, emne 1"))
+  out <- suppressMessages(harvest_pdf_split(df, get_institution_config("steiner")))
+  expect_equal(nrow(out), 2)
+  expect_match(out$html_error, "no emne read")
+})
+
 test_that("uio: the exam-help block and BinaryValueReference go, a login page has no text", {
   cfg <- .block_cfg(get_institution_config("uio"))
   html <- "<div id='vrtx-content'><div id='vrtx-main-content'><h3>Eksamensspråk</h3><p>Norsk</p>

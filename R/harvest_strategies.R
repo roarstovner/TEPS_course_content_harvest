@@ -282,6 +282,10 @@ harvest_pdf_split <- function(df, config) {
   )
 
   message("Extracted ", nrow(pdf_emner), " emne sections from PDFs")
+  if (nrow(pdf_emner) == 0) {   # no PDF read or split: each offering says so
+    df$html_error <- rep("no emne read from Steiner's subject PDFs", nrow(df))
+    return(df)
+  }
 
   # --- Build join key and match to courses ---
   pdf_emner <- pdf_emner |>
