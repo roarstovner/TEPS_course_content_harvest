@@ -11,9 +11,9 @@ in `course_plan_spec.md`; how to run the pipeline is in `README.md` and
 decision changes what the data mean, add or update its entry here; each
 release tag freezes this file with the data.
 
-Current data, the teacher-ed frame (below): 41 761 offerings (DBH course
-× year × semester) at 19 institutions, 27 222 of them with a plan, and
-15 046 unique plans from 18 institutions (none from Samas, below).
+Current data, the teacher-ed frame (below): 46 864 offerings (DBH course
+× year × semester) at 19 institutions, 30 712 of them with a plan, and
+17 005 unique plans from 18 institutions (none from Samas, below).
 
 ## Population and sampling frame
 
@@ -162,9 +162,9 @@ frame, so they can be refreshed alone, and which years are provisional
 follows from the counts’ date, not the course list’s. A course-year of
 the course list that the counts lack had no students (in a provisional
 year: none yet). *Rejected:* one date for both (the counts would wait
-for the next course list, or force one). In the teacher-ed frame: 22 110
-course-years, 17 263 with a plan (78 %); with students 16 986, of them
-14 458 with a plan (85 %); with both 13 832, of them 12 041 with a plan
+for the next course list, or force one). In the teacher-ed frame: 24 757
+course-years, 19 607 with a plan (79 %); with students 18 359, of them
+15 771 with a plan (86 %); with both 13 832, of them 12 041 with a plan
 (87 %). Per institution and year: `data/data_notes.md`, “Coverage over
 course-years that had students”. *Since:* 2026-11-04.
 
@@ -510,8 +510,8 @@ before 2021, and none at INN, Samas and Steiner; NLA’s old site has
 362-504 course pages a year in 2017-22 for 576-695 DBH courses. A
 capture is also not always the plan of the right year (UiO and MF pages
 carry no year). The live harvest finds a plan for 80-90% of these sites’
-teacher-ed course-years. *Consequence:* at these sites 100 autumn 2025
-offerings have the April 2026 plan and 0 spring 2025 offerings have a
+teacher-ed course-years. *Consequence:* at these sites 185 autumn 2025
+offerings have the April 2026 plan and 79 spring 2025 offerings have a
 plan (no harvest from 2024/25); the September 2026 plans wait for DBH
 2026 offerings. These sites must be harvested once in every academic
 year. *Since:* 2026-10-06.
@@ -910,7 +910,7 @@ confirmed against the programme description. *Since:* 2026-10-19.
 
 **A plan is a unique anonymized text per institution and course code**
 (`plan_content_id`, a hash of the normalized text). Offerings with the
-same text share a plan: 27 222 offerings have 15 046 plans. *Why:*
+same text share a plan: 30 712 offerings have 17 005 plans. *Why:*
 consecutive years and both semesters mostly repeat the same text.
 *Consequence:* the id changes whenever cleaning changes the text, so
 coding is tied to a frozen release and carried to later releases with a
@@ -958,8 +958,8 @@ year before, so reading it would remove plans in force (checked
 courses, below). *Consequence:* 174 plans left the data on 2026-10-06
 (UiA 95, UiB 27, OsloMet 26, Nord 11, HVL 10, UiT 4, NTNU 1). With pages
 that are not the plan at all (INN’s course search page, OsloMet’s error
-page) and later versions (HiOF, INN, Nord, UiS), 2 291 offerings have
-page text but no plan (hiof 2, inn 1108, nord 819, oslomet 67, uia 95,
+page) and later versions (HiOF, INN, Nord, UiS), 2 631 offerings have
+page text but no plan (hiof 62, inn 1366, nord 819, oslomet 89, uia 95,
 uib 79, uis 97, uit 24). *Since:* 2026-10-06; heading lists (UiB NOLI216
 and NOSP216, autumn 2018) from 2026-10-07; NTNU pages whose only section
 was the exam tab from 2026-10-12 to 2026-10-13, when the tab came back
@@ -1526,6 +1526,34 @@ and both read as content as often as admin, so they stay, a known gap.
 HiØ 97, NTNU 59, Nord 40); 39 pages keep a year range (HiØ 22, UiB 6,
 USN 6, UiT 3, NHH 2). *Since:* 2026-11-02.
 
+**A dotted time range after a weekday goes; “fagkoordinator” is a staff
+role.** “Veiledende undervisningstid: Tirsdager 9.30 – 16.30” →
+“Veiledende undervisningstid: Tirsdager” (also “Mandag 10.15-12.00”,
+“Tuesday 12.15-14.00”); the weekday stays. “Fagkoordinator i emnet:
+<name>” loses the name like the other staff roles. *Why:* the NMH
+anonymization pilot audit of 2026-11-14 found both; the weekday makes a
+dotted range a clock time, which the rule of 2026-11-02 left alone
+without “kl.” or an English preposition. *Rejected:* every dotted range
+(a date range “01.06-15.06” reads the same). *Consequence:* 29 plans of
+the build of 2026-11-12 lose a time range (all checked as clock times; a
+second range after “og” stays, a known gap). *Since:* 2026-11-14.
+
+**Cohort and programme-version years go.** A facts-box label with only a
+year on the next line loses both: NMH’s cohort (“Startkull”) and FHS’s
+study year (“Studieår”). At KHiO the year of the programme version after
+each programme in “Inngår i studieprogram” goes (“Bachelorstudium i
+billedkunst (2022)” → “Bachelorstudium i billedkunst”); the programme
+stays. *Why:* they are administrative years, about the record and not
+the course; the user decided on 2026-11-14 after the KHiO anonymization
+pilot audit of 2026-11-02 and the NMH audit of 2026-11-14 found them.
+*Rejected:* a rule for every year on its own line or in brackets after a
+name (would take content years: “Verket (1913)”); keeping the label
+without its year (an empty facts-box field). Each rule is tied to its
+label and its institution. *Consequence:* in the build of 2026-11-15
+every published plan of the three loses the year: FHS 839, KHiO 347, NMH
+71; the sections are unchanged, and plans neither merge nor split (the
+plan id already ignored years). *Since:* 2026-11-15.
+
 **The semester a course starts from stays.** “Emnet byrjar å gå frå
 våren 2024” (UiB; also “begynner å gå fra”, “starter fra”) keeps its
 season and year: it says when the course was first offered, a fact of
@@ -1698,9 +1726,9 @@ removal is a session or deadline date, a semester or a stamp. *Since:*
 
 **Seven canonical sections** are cut from each plan by its headings,
 mapped through one heading table (`R/section_heading_map.R`): course
-content (99 % of plans), learning outcomes (98 %), assessment (98 %),
+content (99 % of plans), learning outcomes (99 %), assessment (98 %),
 teaching methods (94 %), coursework requirements (93 %), prerequisites
-(53 %) and reading list (27 %), and an eighth that overlaps them,
+(53 %) and reading list (25 %), and an eighth that overlaps them,
 practice (19 %; below). Where a section is missing, the coders use the
 whole plan.
 
@@ -2017,29 +2045,35 @@ section it was in (mostly teaching methods). OsloMet’s
 Fagplan that reached no section, go to practice only, after the lead
 “Fagplanen sier:”, on pages with sections of their own. Exact headings
 only: not a label with a bare value (“Praksisstudier: Ja”), NTNU’s exam
-rows, USN’s table of contents or a heading that only mentions practice;
-a practice part that only points to a practice plan (“se egen
-praksisplan”, “Praksisopplæring er nærmere beskrevet i programplanen.”)
-or says there is none (“Det er ingen veiledet praksis i emnet.”, which
-stays in teaching methods) is no section; passed practice as a condition
-for the exam stays in coursework requirements. All courses, not only
-teacher education. *Why:* practice is central to teacher education and
-other professional programmes, and a study of it should not have to find
-it inside teaching methods; an investigation of 2026-11-08 found a
-practice heading in 40 % of the 2,653 teacher-education courses of 2025
-(25 % with a substantive block; 12 % of all courses), stable over
-2023-2025: HiOF 99 %, NLA 83 %, UiT 70 % (mostly a pointer), INN 67 %,
-UiA 60 %, USN 58 % (often a pointer), Nord 44 %, OsloMet 24 %.
-*Rejected:* a flag `has_practice_section` (it says that a plan has
-practice text, not what it says); nothing (practice text stays findable
-only by reading teaching methods); moving the text out of teaching
-methods (the codebook counts practicum as a teaching method, and the
-teaching methods of every plan with practice would change meaning).
-*Consequence:* sections overlap: section lengths summed per plan, or
-shares of a plan’s text in its sections, count practice text twice, so
-such sums leave practice out. No other section changes: the copy reads
-the same blocks. `course_plan` and the plan ids do not change. *Since:*
-2026-11-11 (user decision).
+rows, NTNU’s learning-forms list (a “Praksis” line followed by other
+learning forms, “Utfyllende informasjon:” or “Obligatoriske
+arbeidskrav:”; a practice line opens the copy only before a sentence,
+since 2026-11-12: it took the list and coursework of 14 NTNU plans;
+since 2026-11-15 also before a line with a count (“15 dager”) or three
+words, not ending in “:”, since the sentence rule alone dropped UiS’s
+“Praksis” / “15 dager veiledet praksis” from 65 plans), USN’s table of
+contents or a heading that only mentions practice; a practice part that
+only points to a practice plan (“se egen praksisplan”, “Praksisopplæring
+er nærmere beskrevet i programplanen.”) or says there is none (“Det er
+ingen veiledet praksis i emnet.”, which stays in teaching methods) is no
+section; passed practice as a condition for the exam stays in coursework
+requirements. All courses, not only teacher education. *Why:* practice
+is central to teacher education and other professional programmes, and a
+study of it should not have to find it inside teaching methods; an
+investigation of 2026-11-08 found a practice heading in 40 % of the
+2,653 teacher-education courses of 2025 (25 % with a substantive block;
+12 % of all courses), stable over 2023-2025: HiOF 99 %, NLA 83 %, UiT 70
+% (mostly a pointer), INN 67 %, UiA 60 %, USN 58 % (often a pointer),
+Nord 44 %, OsloMet 24 %. *Rejected:* a flag `has_practice_section` (it
+says that a plan has practice text, not what it says); nothing (practice
+text stays findable only by reading teaching methods); moving the text
+out of teaching methods (the codebook counts practicum as a teaching
+method, and the teaching methods of every plan with practice would
+change meaning). *Consequence:* sections overlap: section lengths summed
+per plan, or shares of a plan’s text in its sections, count practice
+text twice, so such sums leave practice out. No other section changes:
+the copy reads the same blocks. `course_plan` and the plan ids do not
+change. *Since:* 2026-11-11 (user decision).
 
 **VID: topics join course content, practicum facts join teaching
 methods, the plan’s facts-box items stay out of the sections.** VID’s
@@ -2556,7 +2590,7 @@ without coursework of its own a section from the Fagplan alone
 below). *Since:* 2026-10-15 (user decision).
 
 **OsloMet practicum courses (M1GP/M5GP) whose sections only say “Se
-fagplanen.” have no sections** (45 of 85 practicum plans; the others
+fagplanen.” have no sections** (45 of 105 practicum plans; the others
 have text of their own and get its sections): the page’s Fagplan is the
 programme’s practicum plan for all study years, with no markup
 separating the years. Their plan text keeps the whole page, which the
