@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- usn: 99 GLU offerings 2026 without URL (e.g. MG1PP1_1_2026_VÅR) — render in Chrome; if a 2026 plan exists, the resolver's early break is a bug (#544)
 - uit: lecturer names left in schedule lines ('(Henry Minde) Tuesday 12.15-14.00') (#530)
 - Remove cohort/programme-version years from course_plan (nmh 'Startkull 2022', khio '(2022)', fhs 'Studieår 2022') (#533)
 - Sections regression from #528: uis loses practice on 'Praksis\n15 dager veiledet praksis' (65 TE plans) (#535)
