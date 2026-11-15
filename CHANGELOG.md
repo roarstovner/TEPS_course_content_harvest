@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Sections regression from #528: uis loses practice on 'Praksis\n15 dager veiledet praksis' (65 TE plans) (#535)
 - preview_change(): with course_ids it sometimes omits existing pages (2016 NTNU plans) (#529)
 - Sections: ntnu practice rows take the whole learning-forms list and coursework (14 plans) (#528)
 - undersøke om praksis kan være en egen section (#350)
