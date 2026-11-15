@@ -821,7 +821,8 @@ test_that("practice: a Praksis line in teaching methods, oslomet's headings, no 
   for (after in c("<p><b>Veiledning</b></p><p>Utfyllende informasjon:</p><ul><li>Simulering.</li></ul>",
                   "<p>Forelesning<br/>Gruppearbeid<br/>Veiledet praksis</p>",
                   "<p>ForelesningGruppearbeidSimuleringNettstøttet læringSeminarVeiledet praksis</p>",
-                  "<p>Obligatoriske arbeidskrav:</p><p>Godkjent oppmøte.</p>")) {
+                  "<p>Obligatoriske arbeidskrav:</p><p>Godkjent oppmøte.</p>",
+                  "<p>Observasjonspraksis 1 (høst)<br/>Barnehagepraksis (vår)</p>")) {
     html <- sprintf("<main><h2>Læringsformer og aktiviteter</h2><p><b>Praksis </b></p>%s</main>", after)
     s <- sections_of(html, html_cfg())
     expect_false("practice" %in% names(s))
@@ -830,6 +831,13 @@ test_that("practice: a Praksis line in teaching methods, oslomet's headings, no 
   s <- sections_of("<main><h2>Læringsformer og aktiviteter</h2><p>Forelesninger.</p>
     <p><b>Praksis:</b></p><p>Emnet inkluderer minimum 50 timers ekstern praksis.</p></main>", html_cfg())
   expect_equal(s[["practice"]], "Emnet inkluderer minimum 50 timers ekstern praksis.")
+  # uis: "Praksis" before a content line with a number, no full stop, is practice
+  s <- sections_of("<main><h2>Læringsformer og aktiviteter</h2><p>Forelesninger.</p>
+    <p>Praksis</p><p>15 dager veiledet praksis</p></main>", html_cfg())
+  expect_equal(s[["practice"]], "15 dager veiledet praksis")
+  s <- sections_of("<main><h2>Læringsformer og aktiviteter</h2><p>Forelesninger.</p>
+    <p>Praksis</p><p>Praksis: 15 dager</p></main>", html_cfg())
+  expect_equal(s[["practice"]], "Praksis: 15 dager")
   # a pointer alone is no practice section
   html <- "<main><h2>Undervisning og pensum</h2><p>Forelesninger.</p>
     <p>Praksis</p><p>For nærmere informasjon om praksis, se egen praksisplan.</p></main>"

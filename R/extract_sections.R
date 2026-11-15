@@ -39,7 +39,8 @@
 #' end, or the next sub-heading (under a practice heading only one that
 #' names a section); the practice heading may also be a line of its own
 #' inside teaching methods (uit's "Praksis" paragraph), when the text after
-#' it opens with a sentence, not a label or list item (not in ntnu's
+#' it opens with a sentence or a line with a count or three words (uis's
+#' "15 dager veiledet praksis"), not a label or list item (not in ntnu's
 #' learning-forms list "Praksis", "Veiledning", "Obligatoriske arbeidskrav:").
 #'
 #' @param blocks Block table from page_blocks().
@@ -130,12 +131,17 @@ sectionize <- function(blocks) {
   .list_to_sections(sections)
 }
 
-# Whether a text opens with a sentence, not a label or list item
-# ("Veiledning", "Obligatoriske arbeidskrav:", ntnu's run-together
-# "ForelesningGruppearbeidSimulering..."); NA (no text) is not.
+# Whether a text opens with a sentence or a content line, with a count or
+# three words (uis's "15 dager veiledet praksis"), not a label or list item
+# ("Veiledning", "Obligatoriske arbeidskrav:", "Observasjonspraksis 1
+# (høst)", ntnu's run-together "ForelesningGruppearbeidSimulering...");
+# NA (no text) is not.
 .opens_sentence <- function(x) {
   l <- sub("\n.*", "", trimws(x))
-  !is.na(l) && grepl("[.!?]", l) && !.is_label(l)
+  !is.na(l) && !grepl("[:：]$", l) &&
+    (grepl("[.!?]", l) && !.is_label(l) ||
+       grepl("\\d\\s+\\p{L}|\\p{L}+\\s+\\p{L}+\\s+\\p{L}", l, perl = TRUE) &&
+         !grepl("\\p{Ll}\\p{Lu}", l, perl = TRUE))
 }
 
 # The text under a label heading says nothing: none, a dash or a pointer.
