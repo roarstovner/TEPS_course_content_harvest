@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- UiT: exam/answer-language sentences of 'Undervisnings- og eksamensspråk' go to assessment (user decision 2026-11-16) (#548)
 - UiT sections: prior knowledge in Opptakskrav and content; evaluation and contact notices (#540)
 - USER DECISION: UiT exam-language field; NMH 'Pensum:' reading load (#542)
 - NMH/KHiO sections: stock admin sentences and programme footer (#539)
