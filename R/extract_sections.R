@@ -368,7 +368,9 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 #'     assessment and coursework (.section_noise), and approval stamps,
 #'     logistics and cost sentences from every section
 #'     (.approval_sentence_regex, .logistics_sentences), and uis's workload
-#'     budget (.logistics_blocks).
+#'     budget (.logistics_blocks),
+#'   - removes a section whose whole text (100+ characters) repeats an
+#'     earlier section's.
 #' Fuzzier cleanup (exam tables, arbeidskrav/eksamen boundaries inside one
 #' paragraph) is left to the later Phase-2 LLM lifting.
 .clean_sections <- function(out, institution = NULL, title = NULL) {
@@ -432,7 +434,16 @@ extract_sections <- function(config, html, extracted_text, course_id) {
                          USE.NAMES = FALSE)
   keep <- mapply(.keep_section_row, out$raw_text, out$section,
                  USE.NAMES = FALSE)
-  out[keep, , drop = FALSE]
+  out <- out[keep, , drop = FALSE]
+  # A section whose whole text of 100 or more characters repeats an earlier
+  # one's says nothing about its own part: the page copied it (khio's teaching
+  # methods under "Vurdering", its outcomes under "Undervisning og
+  # læringsformer"; inn's course content under the teaching methods). A
+  # short value each section states itself ("Individuelt.", "Må bestås")
+  # stays, and so does practice, which copies its heading's section by design.
+  sq <- stringr::str_squish(out$raw_text)
+  sq[out$section == "practice" | nchar(sq) < 100] <- NA
+  out[!duplicated(sq, incomparables = NA), , drop = FALSE]
 }
 
 # The tab bar of a Leganto widget with several lists (usn): the reading list

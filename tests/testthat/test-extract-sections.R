@@ -2220,3 +2220,21 @@ test_that("hiof, oslomet and uib: rows of pointers only go, pointers next to con
   expect_equal(s[["coursework_requirements"]], "Første praksisperiode består av 25 dager pedagogisk praksis.")
   expect_equal(s[["prerequisites"]], "Skal ha bestått EMNE101.")
 })
+
+test_that("a section that repeats an earlier section's whole text goes; practice copies stay", {
+  tm <- paste("Arbeidsformene i emnet vil bestå av lærerstyrt undervisning og selvstendig arbeid.",
+              "Undervisningen organiseres som forelesning, praktiske oppgaver, seminarer og eget arbeid.")
+  # khio RE305: the teaching methods again under "Vurdering"
+  out <- tibble::tibble(section = c("course_content", "teaching_methods", "assessment"),
+                        raw_text = c("Emnet gir kunnskap om dramaturgi.", tm, paste0(" ", sub(" i ", "\n i ", tm))))
+  expect_equal(.clean_sections(out, "khio")$section, c("course_content", "teaching_methods"))
+  # a section that only begins with the other's text stays
+  out$raw_text[3] <- paste(tm, "Vurderes til bestått/ikke bestått.")
+  expect_equal(.clean_sections(out, "khio")$section, out$section)
+  # practice holds its heading's text by design: neither it nor the section goes
+  pr <- tibble::tibble(section = c("practice", "teaching_methods"), raw_text = c(tm, tm))
+  expect_equal(.clean_sections(pr)$section, pr$section)
+  # a short value each section states itself stays (ntnu "Individuelt.")
+  iv <- tibble::tibble(section = c("prerequisites", "reading_list"), raw_text = c("Individuelt.", "Individuelt."))
+  expect_equal(.clean_sections(iv)$section, iv$section)
+})

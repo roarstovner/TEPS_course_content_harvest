@@ -2659,6 +2659,25 @@ build: NTNU 905 reading lists go and 4 lose a leading line, HiOF 31 and 11,
 UiT 1. `course_plan` and the plan
 ids do not change. *Since:* 2026-10-29.
 
+**A section that only copies an earlier one goes.** When a section's whole
+text, whitespace aside and at least 100 characters long, equals an earlier
+section's on the same page, the later one is dropped. The pages themselves
+copy it: KHiO's RE305 repeats its teaching methods under "Vurdering", DA502
+its learning outcomes under "Undervisning og læringsformer", INN's PUB3000
+its course content under the teaching methods. *Why:* the copy says nothing
+about its own part, so by the spec it is no section; RE305's page has no
+assessment of its own (sections audit of 2026-11-15). *Rejected:* a
+KHiO-only rule (INN has the same defect); no length floor (short values that
+two sections each state, NTNU's "Individuelt." as prerequisites and reading
+list, FHS's "Må bestås", UiS's "Må ha bestått all tidligere praksis.", are
+not copies); dropping a section that only begins with another's text (in a
+survey of about 5,900 pages the six such pairs were a lead sentence or a
+first label repeated, not a copied section). Practice is exempt, since it
+copies its heading's section by design. *Consequence:* all 878 KHiO pages:
+4 lose a section (2 courses, 2 offerings each); a sample of about 5,000
+pages at 25 other institutions: 1 (INN). `course_plan` and the plan ids do
+not change. *Since:* 2026-11-16.
+
 **Prerequisites written inside the course description are prerequisites:** a
 "Forkunnskapskrav" label in course content (UiT's "Om emnet", two MF courses)
 takes the paragraph it names to prerequisites. At UiT that paragraph is almost

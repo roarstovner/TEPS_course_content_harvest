@@ -368,7 +368,15 @@ henvendelse til …”, OsloMet’s “Se omtale av praksis i programplanen” a
 “Praksisopplæring er nærmere beskrevet i programplanen.”, UiB’s
 “Informasjonen fins ikkje på norsk.”), and drops a first line that only
 repeats the section heading (but keeps learning-outcome group labels
-such as “Kunnskap”).
+such as “Kunnskap”). Last, a section whose whole text, whitespace aside
+and 100 or more characters long, equals an earlier section’s on the page
+goes: the page copied it (khio’s teaching methods under “Vurdering” or
+its outcomes under “Undervisning og læringsformer”, inn’s course content
+under the teaching methods), and the copy says nothing about its own
+part. A short value two sections each state (“Individuelt.”, “Må
+bestås”) stays, so does a section that only begins with another’s text,
+and practice, which copies its heading’s section by design, neither goes
+nor counts.
 
 ## What Each Mechanism May Remove
 
@@ -438,7 +446,8 @@ first heading</td>
 <tr>
 <td><code>.clean_sections()</code>: <code>.section_noise</code>,
 <code>.logistics_sentences</code>, placeholders, admission lines,
-outgoing progression rules; <code>.drop_semester_values()</code></td>
+outgoing progression rules, a section repeating an earlier one;
+<code>.drop_semester_values()</code></td>
 <td><code>R/extract_sections.R</code>, <code>R/anonymize.R</code></td>
 <td>sections only</td>
 <td>plan text about no section, placeholders</td>
