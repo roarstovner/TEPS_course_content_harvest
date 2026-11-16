@@ -501,7 +501,8 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "(?i)^\\W*(?:(?:(?:dette )?(?:emnet|kurset) )?må (?:være )?(?:bestått|gjennomført|fullført|tas)|",
   "(?:studenten\\w*|en|du) må (?:stå i|bestå|ha fulgt undervisning(?:en)? i) (?:dette emnet|emnet|dette))\\b",
   "[^.]*?\\bfor å (?:kunne )?(?:fortsette|starte|begynne|gå videre)\\b|",
-  "\\bved å (?:gjennomf(?:ø)?re|fullføre|bestå) dette emnet\\b[^.]*?\\bgå videre til\\b")
+  "\\bved å (?:gjennomf(?:ø)?re|fullføre|bestå) dette emnet\\b[^.]*?\\bgå videre til\\b|",
+  "^\\W*bestått (?:semester|emne|studieår) er en forutsetning for å (?:kunne )?(?:fortsette|starte|begynne|gå videre)\\b")
 .progression_named_regex <- paste0(
   "(?i)^\\W*(?:en|du|studenten\\w*) må ha (?:fulgt|bestått|gjennomført|fullført) ",
   "(?:undervisning(?:en)?,? og fått godkjent arbeidskravene (?:i|på) )?(?-i:(?:\\d?\\p{Lu}{2,}[\\p{Lu}0-9-]*\\d\\w*\\s+)?)(.+?)",
@@ -1311,7 +1312,15 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # (Inspera), the examiner guide, "Adgang til undervisning:", contact
 # pointers and insurance; vid: how many resits; hiof: when the resit is held
 # and the appeal rules; hvl also the programme line ("Studieprogram: ...")
-# and "Utdanningen er gratis".
+# and "Utdanningen er gratis"; nmh: the automatic registration ("Studenten
+# meldes automatisk opp til undervisning/veiledning og vurdering i emnet
+# ..."), the pointer to the programme's "Organisering" and the stock resit
+# rule ("For ny vurdering gjelder samme ordning som for ordinær vurdering.");
+# khio: who assesses, stated alone ("Vurderingen foretas av emneansvarlig og
+# kan eventuelt gjøres i samarbeid med interne faglærere og/eller eksterne
+# gjestelærere.", "Emnet vurderes av lærerne i samråd med
+# programansvarlig."; "Studenten vurderes av pedagogen kontinuerlig ..."
+# says how and stays).
 .logistics_sentences <- list(
   hvl = c(paste0(
     "(?i)studentweb|",
@@ -1370,6 +1379,17 @@ extract_sections <- function(config, html, extracted_text, course_id) {
           "^\\W*Adgang til undervisning:|har du (?:ikkj?e )?(?:krav på|rett til) ny undervisning\\b",
           "(?i)^\\W*Ta kontakt med\\b[^.]*\\bfor (?:å få )?(?:mer|flere)\\b",
           "(?i)forsikret som student|tegne en egen reise- og personskadeforsikring"),
+  nmh = c("^\\W*(?:Studenten|Kandidaten) meldes automatisk opp til undervisning",
+          "^\\W*For oversikt over [^.]*?\\bveiledende undervisningsmengde\\b[^.]*?,? se\\b",
+          "^\\W*(?:For ny vurdering|Ved ikke bestått vurdering) gjelder samme ordning som (?:for |ved )?ordinær vurdering\\W*$"),
+  khio = c(.examiner_sentence_regex,
+           local({
+             who <- paste0("(?:emneansvarlig|programansvarlig|(?:fag)?lærer(?:e|ne)?|veileder(?:en)?|",
+                           "koreograf(?:er|ene)?|ekstern sensor|to eksterne sensorer)")
+             paste0("^\\W*(?:Vurderingen (?:foretas|gjøres)|Emnet vurderes) av (?:to sensorer\\b[^.]*|",
+                    who, "(?:(?:/| og | eller | og/eller )", who, ")*",
+                    "(?: (?:og kan eventuelt gjøres|i (?:samråd|samarbeid) med|sammen med)\\b[^.]*)?)\\W*$")
+           })),
   vid = c(.examiner_sentence_regex,
           "(?i)^\\W*Utsatt eksamen er tilsvarende (?:som )?ordinær(?: eksamen)?\\W*$",
           "(?i)^\\W*VID arrangerer inntil \\w+ utsatte prøver"),
@@ -1394,8 +1414,19 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # ("Forberedelse + etterarbeid: 214 timer"); a header with no hours in or
 # under it stays; and the stock paragraph on the hours of a year of study
 # ("Universitetet i Stavanger definerer eit studieår til 40 veker, ...")
-# with its label.
+# with its label. nmh: the programme footer ("Inngår i studieprogram" over
+# "BACHELOR - Bachelorstudiet i utøving – klassisk", the end of the page and
+# so of its last section), the responsible unit ("Emneansvarlig: Fagseksjon
+# for ...") and the resit heading "Ny vurdering" left alone at the end by
+# its stock rule (.logistics_sentences); khio: the notice that the
+# description may change ("OBS: det kan komme mindre endringer i
+# emnebeskrivelsen ...").
 .logistics_blocks <- list(
+  nmh = c("(?m)^[ \t]*Inngår i studieprogram[ \t]*(?:\n[ \t]*\\p{Lu}{2,}[\\p{Lu} ]* - [^\n]*)*(?:\n|$)",
+          "(?m)^[ \t]*Emneansvarlig:[ \t]*(?:[Ff]agseksjon|[Ii]nstitutt|[Aa]vdeling)\\b[^\n]*(?:\n|$)",
+          "\\s*(?:^|\n)[ \t]*(?:Ny vurdering|New assessment)[ \t]*\\s*$"),
+  khio = paste0("[ \t]*OBS: det kan komme mindre endringer i emnebeskrivelsen[^.]*\\.",
+                "(?:[ \t]*Endringene publiseres[^.]*\\.)?[ \t]*(?:\n|$)"),
   uis = c(paste0(
     "(?m)(?:^[ \t]*Arbeidsmengde?:?[ \t]*\n)?^[ \t]*(?:Arbeidsmengde?:[ \t]*)?Universitetet i Stavanger definerer ",
     "e(?:it|t) studieår til 40 (?:veker|uker),(?s:.{0,900}?)\\b1200-1500 sider\\b[^.]*\\.[ \t]*(?:\n|$)"),

@@ -174,12 +174,15 @@ the spec here:
   "Eksterne søkere må ha bestått lærerutdanning som kvalifiserer for arbeid i
   skolen."
 - At the institutions with rules for their stock wordings (HVL, INN, MF,
-  NMBU, OsloMet, Steiner, UiB, UiO, UiS, VID, HiOF; 2026-11-09), assessment
+  NMBU, OsloMet, Steiner, UiB, UiO, UiS, VID, HiOF; 2026-11-09; NMH and
+  KHiO, 2026-11-16), assessment
   still keeps resit, appeal and examiner rules worded once or in a sentence
   that also says something about the design ("Oppgaven vurderes av intern og
   ekstern sensor på grunnlag av læringsutbyttebeskrivelser for emnet.", HVL;
   UiS's appeal rules on PDF lines wrapped mid-sentence, "Ved klage på
-  karakterfastsetting ... skal studenten opp til ny muntlig eksamen.").
+  karakterfastsetting ... skal studenten opp til ny muntlig eksamen.";
+  NMH's resit rules under "Ny vurdering" other than the stock one, and the
+  committee procedures of its doctoral thesis).
   The sections audit of 2026-11-08 found such wordings at each of them. They
   stay as extraneous text in assessment (user 2026-11-11): they
   do not hide the design, and a rule per wording costs code for little gain.

@@ -1887,6 +1887,34 @@ test_that("outgoing progression rules leave every section; incoming ones stay", 
     expect_false(.is_progression_sentence(x, "Norsk 2"))
 })
 
+test_that("nmh and khio: stock admin text leaves the sections; the design stays", {
+  out <- tibble::tibble(
+    section = c("teaching_methods", "course_content", "assessment"),
+    raw_text = c(paste("Undervisningen gis individuelt. For oversikt over veiledende undervisningsmengde og organisering,",
+                       "se ”Organisering” under beskrivelsen av det enkelte studieprogram.",
+                       "\nStudenten meldes automatisk opp til undervisning/veiledning og vurdering i emnet, i henhold til",
+                       "den progresjon som er fastsatt i utdanningsplanen."),
+                 "Emneansvarlig: Fagseksjon for stryk og harpe.\nEmnet handler om kammermusikk.",
+                 paste0("Bestått/ikke bestått.\nNy vurdering\nFor ny vurdering gjelder samme ordning som for ordinær vurdering.\n",
+                        "Inngår i studieprogram\nBACHELOR - Bachelorstudiet i utøving – klassisk\nMASTER - Masterstudiet i utøving")))
+  expect_equal(.clean_sections(out, "nmh")$raw_text,
+               c("Undervisningen gis individuelt.", "Emnet handler om kammermusikk.", "Bestått/ikke bestått."))
+  # a resit rule that says what the resit consists of keeps its heading
+  rs <- tibble::tibble(section = "assessment", raw_text = "Konsert.\nNy vurdering\nVed ikke bestått vurdering må emnet tas på nytt.")
+  expect_equal(.clean_sections(rs, "nmh")$raw_text, rs$raw_text)
+  kh <- tibble::tibble(
+    section = c("course_content", "assessment", "assessment"),
+    raw_text = c(paste("OBS: det kan komme mindre endringer i emnebeskrivelsen, som ikke påvirker det samlede læringsutbyttet.",
+                       "Endringene publiseres så fort som mulig.\nStudenten velger eget prosjekt."),
+                 paste("Vurderingen gjøres på grunnlag av læringsmål. Vurderingen foretas av emneansvarlig og kan eventuelt",
+                       "gjøres i samarbeid med interne faglærere og/eller eksterne gjestelærere.",
+                       "Emnet vurderes av lærerne/koreografene i samråd med programansvarlig og/eller emneansvarlig.",
+                       "\nBestått semester er en forutsetning for å fortsette studiet."),
+                 "Studenten vurderes av pedagogen kontinuerlig gjennom hele semesteret i forhold til emnets læringsutbytte."))
+  expect_equal(.clean_sections(kh, "khio")$raw_text,
+               c("Studenten velger eget prosjekt.", "Vurderingen gjøres på grunnlag av læringsmål.", kh$raw_text[3]))
+})
+
 test_that("the workload leaves the sections (uia, ntnu, uit); the hours of the teaching stay", {
   drop <- c("Emnet har et forventet arbeidsomfang på rundt 200 timer.", "Forventet arbeidsinnsats i emnet er 135-150 timer.",
             "Forventet arbeidsbelastning for gjennomsnittsstudenten er 27 timer pr studiepoeng.",
