@@ -11,8 +11,8 @@ in `course_plan_spec.md`; how to run the pipeline is in `README.md` and
 decision changes what the data mean, add or update its entry here; each
 release tag freezes this file with the data.
 
-Current data, the teacher-ed frame (below): 46 864 offerings (DBH course
-× year × semester) at 19 institutions, 30 712 of them with a plan, and
+Current data, the teacher-ed frame (below): 46 882 offerings (DBH course
+× year × semester) at 19 institutions, 30 727 of them with a plan, and
 17 005 unique plans from 18 institutions (none from Samas, below).
 
 ## Population and sampling frame
@@ -162,9 +162,9 @@ frame, so they can be refreshed alone, and which years are provisional
 follows from the counts’ date, not the course list’s. A course-year of
 the course list that the counts lack had no students (in a provisional
 year: none yet). *Rejected:* one date for both (the counts would wait
-for the next course list, or force one). In the teacher-ed frame: 24 757
-course-years, 19 607 with a plan (79 %); with students 18 359, of them
-15 771 with a plan (86 %); with both 13 832, of them 12 041 with a plan
+for the next course list, or force one). In the teacher-ed frame: 24 775
+course-years, 19 622 with a plan (79 %); with students 18 368, of them
+15 779 with a plan (86 %); with both 13 832, of them 12 041 with a plan
 (87 %). Per institution and year: `data/data_notes.md`, “Coverage over
 course-years that had students”. *Since:* 2026-11-04.
 
@@ -511,7 +511,7 @@ before 2021, and none at INN, Samas and Steiner; NLA’s old site has
 capture is also not always the plan of the right year (UiO and MF pages
 carry no year). The live harvest finds a plan for 80-90% of these sites’
 teacher-ed course-years. *Consequence:* at these sites 185 autumn 2025
-offerings have the April 2026 plan and 79 spring 2025 offerings have a
+offerings have the April 2026 plan and 94 spring 2025 offerings have a
 plan (no harvest from 2024/25); the September 2026 plans wait for DBH
 2026 offerings. These sites must be harvested once in every academic
 year. *Since:* 2026-10-06.
@@ -910,7 +910,7 @@ confirmed against the programme description. *Since:* 2026-10-19.
 
 **A plan is a unique anonymized text per institution and course code**
 (`plan_content_id`, a hash of the normalized text). Offerings with the
-same text share a plan: 30 712 offerings have 17 005 plans. *Why:*
+same text share a plan: 30 727 offerings have 17 005 plans. *Why:*
 consecutive years and both semesters mostly repeat the same text.
 *Consequence:* the id changes whenever cleaning changes the text, so
 coding is tied to a frozen release and carried to later releases with a
@@ -1553,6 +1553,31 @@ label and its institution. *Consequence:* in the build of 2026-11-15
 every published plan of the three loses the year: FHS 839, KHiO 347, NMH
 71; the sections are unchanged, and plans neither merge nor split (the
 plan id already ignored years). *Since:* 2026-11-15.
+
+**Lecturers in a lecture schedule go.** A name in brackets after a
+session’s topic loses its brackets and the name: in a session’s line
+after a weekday, a week number or a day/month date (“Onsdag 14.1:
+Nasjonalstatar og demokrati (<name>)”, “2/3 Skiftematerialet som kjelde
+(<name>).”, “Tuesday 13.01.09 12.15-14.00is Sami history? (<name>)”,
+also flattened before the next “Tuesday”), and in a list of topics whose
+lines end with a name (“1. Etikk og verdistyring (<name>)”) when a name
+carries a title (“(prof. <name>)”), one of two or more names recurs, or
+the lines open with a course part’s code (“- TIØ5 Optimering av
+transport (<name>).”). “Foreleser” and “faglig ansvarlig” are staff
+roles, so “Foreleser: <name>” loses the name like “Emneansvarlig” (also
+with no space after the colon). *Why:* UiT history plans of 2009 kept
+their lecturers (found by a scan of the build of 2026-11-12 for weekday
+times); a scan of all published plans found the same layouts at HiØ,
+NTNU and USN. *Rejected:* every name in brackets at a line’s end (works,
+terms and places look the same: “Hamlet (Penguin Classics)”, “FEM
+(Finite Element Method)”, “Førde (Campus Sogndal)”); a list of two
+different names without title or code is left alone, a known gap (2 NTNU
+and 2 UiT plans, e.g. two invited lecturers). *Consequence:* applied to
+the published plans of the build of 2026-11-15, 65 plans change (NTNU
+36, UiT 21, HiØ 5, USN 3), all checked: the names go, the topics stay;
+`preview_change()` on their raw pages changes the same 65 plans and 65
+of their sections (reading list 25, course content 38, teaching methods
+2). *Since:* 2026-11-15.
 
 **The semester a course starts from stays.** “Emnet byrjar å gå frå
 våren 2024” (UiB; also “begynner å gå fra”, “starter fra”) keeps its
