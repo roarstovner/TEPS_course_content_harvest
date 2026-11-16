@@ -667,15 +667,18 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # endelig karakter i emnet.", "... før ein kan få oppgåva vurdert.", "For å
 # kunne fremstille seg til eksamen forutsettes det at obligatoriske aktiviteter
 # er godkjent ...", "...
-# before the student can submit the semester paper." Not a row of an exam
-# table (tabs), nor a sentence about the exam's own parts ("Begge
+# before the student can submit the semester paper.", "... must be approved in
+# order for a student to receive a final course assessment." (khio). Not a
+# row of an exam table (tabs), nor a sentence about the exam's own parts ("Begge
 # deleksamener må være bestått ...", "Mappen må være godkjent ...", "alle
 # delene må være godkjent ... for å få endelig karakter", "... er deleksamen
-# som må være godkjent ...", "få godkjent vurderingsmappen"),
+# som må være godkjent ...", "få godkjent vurderingsmappen", a part passed
+# with a grade: "The semester assignment must be considered as passed (A - E)
+# in order for the students to ... the oral exam.", nla),
 # nor one without a subject ("Må være godkjent for å ...", which names its
 # gate in the sentence before).
 .gate_sentence_regex <- paste0(
-  "(*UCP)(?is)^(?=[^\\t]*$)(?!.*\\b(?:(?:alle|begge) (?:del(?:er|ene|ar|ane)|\\w*eksam\\w*)|er (?:en )?deleksamen)\\b)",
+  "(*UCP)(?is)^(?=[^\\t]*$)(?!.*\\b(?:(?:alle|begge) (?:del(?:er|ene|ar|ane)|\\w*eksam\\w*)|er (?:en )?deleksamen)\\b)(?!.*\\(A ?[-–] ?E\\))",
   "(?=.*\\b(?:(?:godkje?n|approv)\\w*+(?!\\W+(?:\\w+\\W+)?(?:e(?:ks|x)am|\\w*vurdering|\\w*mappe))|arbeidskrav|obligatori|compulsory|mandatory|coursework|øving|",
   "øvelse|oppmøte|frammøte|fremmøte|tilstedeværelse|nærvær|attendance|participation|assignments?\\b|",
   "homework|exercises?\\b|passing grade))",
@@ -688,7 +691,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "få (?:emnet|faget) bestått)|",
   "\\b(?:tilgang|adgang|rett|vilkår|forutsetning|føresetnad)\\b (?:til|for) (?:å )?(?:\\w+ ){0,4}?\\w*(?:eksam|prøve)|",
   "\\b(?:must|ha(?:ve|s) to|required?|need|prerequisite|condition)\\b.{0,150}\\b(?:before|prior to|",
-  "in order to|allowed to|admitted to|for permission to|eligible|qualif\\w*)\\b.{0,60}\\b(?:\\w*exam|assessment|submit)|",
+  "in order (?:to|for (?:a|the) students? to)|allowed to|admitted to|for permission to|eligible|qualif\\w*)\\b.{0,60}\\b(?:\\w*exam|assessment|submit)|",
   "\\b(?:before|in order to)\\b.{0,60}\\bexam\\w*,? .{0,60}\\b(?:must|need|have to|has to|required?)\\b))")
 
 # Compulsory attendance stated alone, without a condition: "Deltakelse på 80
@@ -786,6 +789,12 @@ extract_sections <- function(config, html, extracted_text, course_id) {
                       grepl("[\\p{L}\\d,)]\\s*$", lines[-n], perl = TRUE)) |
               (grepl("(*UCP)(?i)\\b(?:eller|or)\\s*$", lines[-n], perl = TRUE) &
                  nzchar(trimws(lines[-1]))))
+  # a point "1)" continued after one blank line (uit 2008: "1) ... om
+  # obligatoriske" / blank / "skal løses ... for å gå opp til skriftlig eksamen.")
+  gap <- if (n > 2) which(c(FALSE, !nzchar(trimws(lines[-c(1, n)])), FALSE) &
+                 grepl("^\\s*\\d+\\)\\s.*\\p{L}\\s*$", c("", lines[-n]), perl = TRUE) &
+                 grepl("^\\s*\\p{Ll}", c(lines[-1], ""), perl = TRUE))
+  cont[c(gap, gap + 1)] <- TRUE
   if (!any(cont)) return(lines)
   vapply(split(lines, cumsum(!cont)), paste, character(1), collapse = "\n", USE.NAMES = FALSE)
 }
@@ -795,9 +804,12 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # vurdering"), "Compulsory assignments", "Coursework requirements:"; a gate
 # line by itself, so not nord's "Arbeidskrav (AK):".
 .coursework_heading_regex <- paste0(
-  "(?i)^\\s*(?:obligatoriske? \\w+(?:/\\w+)?|arbeidskrav(?:ene)?|coursework(?: requirements?)?|",
+  "(?i)^\\s*(?:(?:obligatoriske? \\w+(?:/\\w+)?|arbeidskrav(?:ene)?|coursework(?: requirements?)?|",
   "(?:course )?requirements|assignments|",
-  "(?:compulsory|mandatory) \\w+(?: \\w+)?)\\s*[:：]?\\s*$")
+  "(?:compulsory|mandatory) \\w+(?: \\w+)?)\\s*[:：]?\\s*$|",
+  # khio: "The course requirements are" over lower-case items, which
+  # .unwrap_lines reads as one line with it
+  "the course requirements are\\s*[:：]?\\s*(?:\\n|$))")
 # A line that starts the assessment proper: "Eksamen:", "Vurderingsordning
 # for emnet:", "Karakter: Bokstavkarakterer", "EKSAMEN", "Exam:", "Further
 # on evaluation"; not "Vurdering: Godkjent/ikke godkjent", which is the gate's

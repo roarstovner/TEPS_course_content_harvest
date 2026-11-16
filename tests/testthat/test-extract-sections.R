@@ -1066,6 +1066,35 @@ test_that("uit 2008: 'Beskriving av arbeidskrav' and a numbered gate point move 
                    "for å gå opp til eksamen. 2) Skriftlig eksamen utgjør 100 % av sluttkarakter."))
   expect_match(s[["coursework_requirements"]], "godkjente oppgaver for å gå opp til eksamen\\.$")
   expect_equal(s[["assessment"]], "2) Skriftlig eksamen utgjør 100 % av sluttkarakter.")
+  # the same point split by a blank line in the source
+  s <- split(paste0("1) Ved semesterstart får studenter beskjed fra faglærer om obligatoriske\n\n",
+                    "skal løses og leveres inn, og om krav til antall godkjente oppgaver for å gå opp til ",
+                    "skriftlig eksamen.\n\n2) Skriftlig eksamen utgjør 100 % av sluttkarakter."))
+  expect_match(s[["coursework_requirements"]], "^1\\) Ved .*obligatoriske\n\nskal løses .*eksamen\\.$")
+  expect_equal(trimws(s[["assessment"]]), "2) Skriftlig eksamen utgjør 100 % av sluttkarakter.")
+  # not a numbered point, or one that ends in a full stop
+  expect_equal(.unwrap_lines(c("Ved semesterstart", "", "skal")), c("Ved semesterstart", "", "skal"))
+  expect_equal(.unwrap_lines(c("1) Eksamen.", "", "skal")), c("1) Eksamen.", "", "skal"))
+  expect_equal(.unwrap_lines(c("2. studieår", "", "muntlig presentasjon")), c("2. studieår", "", "muntlig presentasjon"))
+})
+
+test_that("khio English: the gate sentence and 'The course requirements are' move out", {
+  res <- .split_inline_coursework(tibble::tibble(section = "assessment", raw_text = paste(
+    "All course requirements must be approved in order for a student to receive a final course assessment.",
+    "The course is graded pass/fail.")), labels = FALSE)
+  s <- stats::setNames(res$raw_text, res$section)
+  expect_equal(s[["coursework_requirements"]],
+               "All course requirements must be approved in order for a student to receive a final course assessment.")
+  expect_equal(s[["assessment"]], "The course is graded pass/fail.")
+  # a graded part of the exam is no gate (nla)
+  expect_no_match(paste("The semester assignment must be considered as passed (A - E) in order for the students",
+                        "to be able to present themselves to the oral exam."), .gate_sentence_regex, perl = TRUE)
+  txt <- paste("Teacher-led instruction will take place as lectures and seminars.", "The course requirements are",
+               "mandatory attendance and active participation in the course", "completed reading", sep = "\n")
+  res <- .split_inline_coursework(tibble::tibble(section = "teaching_methods", raw_text = txt), "heading", "teaching_methods")
+  s <- stats::setNames(res$raw_text, res$section)
+  expect_equal(s[["teaching_methods"]], "Teacher-led instruction will take place as lectures and seminars.")
+  expect_match(s[["coursework_requirements"]], "^The course requirements are\nmandatory attendance .*\ncompleted reading$")
 })
 
 test_that("a gate label takes the paragraph it names along", {
