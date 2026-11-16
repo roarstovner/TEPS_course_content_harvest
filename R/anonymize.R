@@ -477,8 +477,9 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 )
 # A capitalised name, with initials and hyphens ("Ola K. Nordmann",
 # "Anne-Kari Nordmann-Dahl"), not running on into a role ("Foreleser: Ola
-# Nordmann Faglig ansvarlig: Kari Nordmann", uit).
-.name_part <- "(?!(?i:faglig)[ \\t]+ansvarlig)\\p{Lu}[\\p{Ll}'’]+(?:-\\p{Lu}?[\\p{Ll}'’]+)*"
+# Nordmann Faglig ansvarlig: Kari Nordmann", uit) or into a schedule ("Course
+# Leaders: <name>/<name> Week 34 (18 August)", uit).
+.name_part <- "(?!(?i:faglig)[ \\t]+ansvarlig|Week\\b)\\p{Lu}[\\p{Ll}'’]+(?:-\\p{Lu}?[\\p{Ll}'’]+)*"
 .name_regex <- paste0(.name_part, "(?:[ \\t]+\\p{Lu}\\.)*(?:[ \\t]+", .name_part, ")+")
 # A role word followed by names anywhere in a line: "... avklares med
 # faglærer Ola Nordmann" (usn), "Godkjent emneplan av dekan Ola Nordmann"
@@ -493,13 +494,35 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 # only after a lower-case role ("Ekstern sensor er ..."), while other
 # capitalised roles after a capitalised word name staff ("Academic
 # Coordinator <name>", "Vice Dean <name>", uit, usn; 2026-11-04).
-.title_regex <- "(?i:(?:(?:assistant|associate)[ \\t]+)?professor|prof\\.|førsteamanuensis|(?:universitets|høgskole)lektor|dosent)"
+.title_regex <- paste0("(?i:(?:(?:assistant|associate)[ \\t]+)?(?:professors?|prof\\.)|førsteamanuensis|(?:universitets|høgskole)lektor|dosent|",
+                       "(?:head|director)[ \\t]+of[ \\t]+\\p{Ll}+)")
 .paren_role <- "(?:[ \\t]*\\(\\p{Ll}[^()\\n]{0,29}\\))?"
 .names_regex <- paste0("(?:", .title_regex, "[ \\t]+)?", .name_regex, .paren_role,
-                       "(?:[ \\t]*(?:,|og|eller|and)[ \\t]+", .name_regex, .paren_role, ")*")
+                       "(?:(?:[ \\t]*(?:,|og|eller|and|&)[ \\t]+|[ \\t]*/[ \\t]*)(?:", .title_regex, "[ \\t]+)?", .name_regex, .paren_role, ")*")
+# English staff labels (2026-11-16: uio PhD pages, uib, usn, uit, himolde,
+# nord): "Course leader: <name>", "Other lecturers: <name> (PRIO) and
+# <name>", "Course Leaders: <name>/<name>/<name>", "Module responsible and
+# teacher: <names>", "Lecturers are <names>", "Administrative responsible:
+# Head of administration <name>, SVT.". A bare role needs a colon or
+# "is/are" ("Teacher Education", "Market Leader Upper Intermediate" and
+# "Responsible Property Investment" are titles) and no capitalised word
+# before it ("Secondary Education Teachers: <publisher>" in a reference,
+# uit); after a qualifier the colon may be missing ("contact PhD program
+# responsible <name>"). Prose names no one ("The course leader will ...",
+# "course teachers are responsible ..."), and an institution after the label
+# stays ("Responsible: Higher Education Institutions", "Faculty responsible:
+# Nord University Business School").
+.en_role <- "(?:leader|teacher|lecturer|instructor|responsible|coordinator)s?(?:[ \\t]+and[ \\t]+(?:teacher|lecturer)s?)?"
+.en_staff_label <- paste0(
+  "(?i:(?:(?:other|guest|invited|course|module|subject|phd|program(?:me)?|administrative|(?:teacher|lecturer)s?[ \\t]+and)[ \\t]+)+",
+  .en_role, "(?:[ \\t]*:|[ \\t]+(?:is|are))?|(?<!(?-i:\\p{Lu}\\p{Ll}{1,30})[ \\t])", .en_role, "(?:[ \\t]*:|[ \\t]+(?:is|are)))",
+  "(?=[ \\t]+(?!(?:\\p{Lu}\\p{L}*[ \\t]+)*(?:University|College|School|Institut\\p{L}*|Department|Faculty|Cent(?:re|er))\\b))")
+# On its own line the label goes with the whole line, affiliations and all
+# ("Guest lecturers: <name>, University of Cyprus, <name>, <university>").
+.en_role_line_regex <- paste0("(?m)^[ \\t]*", .en_staff_label, "[ \\t]+", .names_regex, "[^\\n]*(?:\\n|$)")
 .role_name_inline_regex <- paste0(
   "(?<!\\p{L})(?!(?<=\\p{Lu}\\p{Ll}{0,30} )Sensor )((?i:", paste(c(.staff_roles, .signature_roles), collapse = "|"),
-  ")(?i:e|er|ar|en)?(?:[ \\t]+(?i:er|var|i emnet))?:?|(?i:kontakt(?:e|er)? med|kontaktpersone?r? er))[ \\t]+",
+  ")(?i:e|er|ar|en)?(?:[ \\t]+(?i:er|var|i emnet))?:?|(?i:kontakt(?:e|er)? med|kontaktpersone?r? er)|", .en_staff_label, ")[ \\t]+",
   .names_regex
 )
 # A role heading over every line that names someone, also after blank lines and
@@ -867,6 +890,8 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     stringr::str_remove_all(.role_name_line_regex) |>
     # and "Emneansvarlig\n\nOla Nordmann", a role heading over a name line
     stringr::str_remove_all(.role_heading_name_regex) |>
+    # and "Course leader: Ola Nordmann (PRIO)", an English label over the line
+    stringr::str_remove_all(.en_role_line_regex) |>
     # Remove signature lines "17.03.20 Ola Nordmann, dekan"
     stringr::str_remove_all(.signature_line_regex) |>
     # and "Ola Nordmann\nInstituttnestleder"

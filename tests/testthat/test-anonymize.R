@@ -911,6 +911,11 @@ test_that("the personal-data check finds what the anonymizer removes", {
     "Emneansvarlige:\nKari Nordmann\nUndervisningssemester:")), f)
   found <- personal_data_in(f)
   expect_setequal(found$pattern, c("email", "staff", "role_name", "role_heading_name"))
+  # English labels, also with a title before the name
+  saveRDS(tibble::tibble(text = c("Other lecturers: Kari Nordmann (PRIO)",
+                                  "Administrative responsible: Head of administration Ola Dahl, SVT.")), f)
+  found <- personal_data_in(f)
+  expect_equal(found$n[found$pattern == "role_name_inline"], 2)
   # DBH's names are not scanned: a course, not a sensor
   saveRDS(tibble::tibble(course_name = "Sensor Innovation Project"), f)
   expect_equal(nrow(personal_data_in(f)), 0)
@@ -1251,6 +1256,34 @@ test_that("uio PhD courses: names under 'Administrative responsible' and 'Other 
     "Teaching\n\nOther lecturers:\n\nKari Nordmann, Department of Political Science, University of Oslo\n",
     " Åse Dahl, Department of Political Science\nPreparations\n\nContact\n\nAdministrative responsible:\n\nOla Berg Dahl"),
     .progress = FALSE), "Teaching\n\nPreparations\n\nContact")
+})
+
+test_that("English staff labels with names on the line: the line or the names go, titles and prose stay", {
+  an <- function(x) anonymize_text("uio", x, .progress = FALSE)
+  expect_equal(an(paste0(
+    "Teaching\nCourse leader: Kari Nordmann (UiO and PRIO)\nOther lecturers: Ola Dahl (PRIO) and Åse Berg (PRIO)\n",
+    "Guest lecturers: Kari Nordmann, University of Cyprus, Ola Dahl, Södertörn University\n",
+    "Administrative responsible: Head of administration Kari Nordmann, SVT.\n",
+    "Module responsible and teacher: Kari Nordmann and Ola Dahl & Åse Berg from the University of the Arts.\n",
+    "Teachers: Professor Kari Nordmann-Dahl, Associate professors Ola Dahl and Åse Berg\n",
+    "TEACHER: Professor Ola L. Dahl\nCourse responsible: Kari Nordmann, Ola Dahl (contact person) and Åse Berg.\n",
+    "Preparations")), "Teaching\nPreparations")
+  expect_equal(an("Lectures. Lecturers are Kari Nordmann, Ola Dahl and Åse Berg. The course runs."),
+               "Lectures. Lecturers are. The course runs.")
+  expect_equal(an("The course coordinators are Associate Prof. Kari Nordmann and Prof. Ola L. Dahl."),
+               "The course coordinators are.")
+  expect_equal(an("To take this course, contact PhD program responsible Kari Nordmann Dahl."),
+               "To take this course, contact PhD program responsible.")
+  expect_equal(an("Teacher and module responsible: Kari Nordmann\nMondays to Course Leaders: Kari Nordmann/Ola Dahl/Åse Berg Week 34 (18 August)"),
+               "Mondays to Course Leaders: Week 34 (18 August)")
+  keep <- paste0(
+    "Reinhardt, S. : Teaching Civics A Manual for Secondary Education Teachers: Barbara Budrich publishers. (2015).\n",
+    "Responsible: Higher Education Institutions, partners in the Consortium.\n",
+    "Faculty responsible: Nord University Business School & Norwegian School of Economics\n",
+    "Responsible Property Investment : What the leaders are doing\nMarket Leader Upper Intermediate.\n",
+    "Helping Teachers Move Beyond Show and Tell. Primary School Teacher Education\n",
+    "The course leader will grade the essays. Course teachers are responsible for Teaching.")
+  expect_equal(an(keep), keep)
 })
 
 test_that("data/processed holds no personal data", {

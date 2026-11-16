@@ -1071,7 +1071,15 @@ names after a staff role anywhere in a line ("… avklares med faglærer
 <name>", "Ta kontakt med <name> eller <name>"), HVL campus contact lines and
 UiT's 2008-2011 timetable block (teachers, rooms, first lectures) from
 2026-10-07, after the anonymization audit of all institutions found them in
-16 plans.
+16 plans; English staff labels with the names on the same line ("Course
+leader: <name>", "Other lecturers: <name> (PRIO) and <name>", "Module
+responsible and teacher: <names>", "Lecturers are <names>",
+"Administrative responsible: Head of administration <name>, SVT."), the
+whole line when the label opens it, and a title before every name of a
+list, not only the first ("Professor <name> og førsteamanuensis <name>",
+UiB law), from 2026-11-16, found in the 2026 UiO PhD pages: run on the
+published plans of the build of 2026-11-16 it changes 108 plans (UiB 63,
+USN 16, UiT 11, UiO 8, UiA 5, HiMolde 2, NTNU 2, Nord 1) and 38 sections.
 
 **Coordinator blocks and role headings go with their names.** OsloMet's
 "Emneansvarlig" block, the last part of the page before the credit-overlap
