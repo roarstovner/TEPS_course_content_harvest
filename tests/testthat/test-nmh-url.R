@@ -1,6 +1,7 @@
 # Tests for NMH's URL discovery: the study handbooks' course lists (mocked),
 # read from the study-plan sitemaps, and the handbook of the offering's
-# academic year, else the latest earlier one.
+# academic year, else the latest earlier one; a project series' code takes
+# its series' page.
 
 nmh_html <- function(body) {
   httr2::response(200, headers = list(`Content-Type` = "text/html; charset=utf-8"),
@@ -39,11 +40,14 @@ test_that("NMH's pages come from its handbooks' course lists, by cohort", {
         paste0(hb, "2024/emner"), c("akkompagnement", "AKKOMP10 - Akkompagnement"),
         c("studioproduksjon", "MUSTEK22 - Studioproduksjon"),
         # a page for two codes, and a code with a lower-case letter
-        c("barokkensemble", "BARENS20/21 - Barokkensemble I og II"), c("instrument", "FRINST10a/B - Instrument")),
+        c("barokkensemble", "BARENS20/21 - Barokkensemble I og II"), c("instrument", "FRINST10a/B - Instrument"),
+        c("blaseensemble", "BLENS20 - Blåseensemble")),
       "https://nmh.no/studiehandboker/startkull-2025/emner" = nmh_list(
         paste0(hb, "2025/emner"), c("akkompagnement", "AKKOMP10 - Akkompagnement"),
         # two pages of a code: the first listed
         c("analyse", "ANPRAK20 - Analyse i praksis"), c("analyse-2", "ANPRAK20 - Analyse i praksis"),
+        # a page for two codes before one for the code alone: the latter
+        c("operaseminar-2", "OPERA20/21 - Operaseminar"), c("operaseminar-ii", "OPERA21 - Operaseminar II"),
         c("emne-1", "Emne 1 - Fellesfaglig kunstnerisk forankring")),
       "https://nmh.no/studiehandboker/startkull-2025/valgemner-2024-25" = nmh_list(
         paste0(hb, "2025/valgemner-2024-25"), c("valgemnekatalogen", "Valgemne-katalogen - Valgemnekatalogen"),
@@ -52,9 +56,11 @@ test_that("NMH's pages come from its handbooks' course lists, by cohort", {
   })
   df <- tibble::tibble(
     course_code = c("AKKOMP10", "AKKOMP10", "AKKOMP10", "MUSTEK22", "BARENS21", "FRINST10B", "ANPRAK20",
-                    "ALEX20", "ALEX20", "BLENS23"),
-    year = c(2025L, 2026L, 2025L, 2026L, 2024L, 2024L, 2025L, 2025L, 2024L, 2025L),
-    semester_name = c("Vår", "Vår", "Høst", "Høst", "Høst", "Høst", "Høst", "Høst", "Høst", "Høst"),
+                    "ALEX20", "ALEX20", "OPERA20", "OPERA21", "BLENS23", "BLENS20", "AKKOMP11", "OSINF61"),
+    year = c(2025L, 2026L, 2025L, 2026L, 2024L, 2024L, 2025L, 2025L, 2024L, 2025L, 2025L, 2025L, 2025L, 2025L,
+             2025L),
+    semester_name = c("Vår", "Vår", "Høst", "Høst", "Høst", "Høst", "Høst", "Høst", "Høst", "Høst", "Høst",
+                      "Høst", "Høst", "Høst", "Høst"),
     url = NA_character_)
   out <- resolve_urls_nmh_batch(df)
   expect_equal(out$url, c(
@@ -67,7 +73,12 @@ test_that("NMH's pages come from its handbooks' course lists, by cohort", {
     paste0(hb, "2025/emner/analyse"),
     paste0(hb, "2025/valgemner-2024-25/alexanderteknikk"),
     NA,                                                # only in a later handbook
-    NA))                                               # in no handbook
+    paste0(hb, "2025/emner/operaseminar-2"),
+    paste0(hb, "2025/emner/operaseminar-ii"),          # listed for the code alone
+    paste0(hb, "2024/emner/blaseensemble"),            # a project of the series: its page
+    paste0(hb, "2024/emner/blaseensemble"),
+    NA,                                                # not a series: no page by stem
+    NA))                                               # a series without a page
   # the sitemaps and the three lists, each once; no course page
   expect_equal(length(sent), 5)
   expect_named(out, names(df))

@@ -215,15 +215,20 @@ finds the lists in the study-plan sitemaps
 them (about 25 requests a harvest year). An offering takes the page of
 its code in the handbook of the cohort that starts in its academic year
 (spring 2026: `startkull-2025`), else in the latest earlier handbook
-that lists the code; of two pages of a code in one handbook (56 such
-pairs, mostly in 2021), the first listed. The handbooks are copies of
+that lists the code. Of two pages of a code in one handbook (56 such
+codes, mostly in 2021 and 2022), the one listed for the code alone
+(“OPERA21 - Operaseminar II”) goes before one listed for several
+(“OPERA20/21”), else the first listed (the second is the same text or a
+later cohort’s copy; checked 2026-11-16). The handbooks are copies of
 one set of plans, each cohort’s for all its years of study: a course of
-the second year in `startkull-2026` is taught in 2027/28. Many DBH codes
-have no page: ensembles and orchestra projects registered per number of
-projects (BLENS21-BLENS27, OSINF60-OSINF72; the handbook has BLENS20 or
-none), exchange students’ courses (UTV\*) and others, about half the
-codes of 2025. robots.txt (nmh.no, www.nmh.no redirects there) disallows
-only Craft CMS’s `/cpresources/`, `/vendor/` and `/cache/`.
+the second year in `startkull-2026` is taught in 2027/28. Ensembles and
+orchestra projects registered per number of projects (BLENS21-BLENS27,
+KAKOR20-KAKOR27, OSINF60-OSINF72, BFO20-BFO24) take their series’ page
+by code stem (BLENS20, KAKOR, BFO; OSINF has none), only these series
+(`NMH_SERIES`, user decision 2026-11-14). Many DBH codes have no page:
+exchange students’ courses (UTV\*) and others, about half the codes of
+2025. robots.txt (nmh.no, www.nmh.no redirects there) disallows only
+Craft CMS’s `/cpresources/`, `/vendor/` and `/cache/`.
 
 **KHiO.** Kunsthøgskolen i Oslo shows only the plan in force
 (`plan_years = "current"`): a page per course version,

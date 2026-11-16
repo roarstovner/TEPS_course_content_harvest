@@ -403,25 +403,39 @@ vid_course_index <- function(sitemap = "https://www.vid.no/sitemap.xml") {
 #' offering takes the page of its code in the handbook of the cohort that
 #' starts in its academic year (spring 2026: startkull-2025), else in the
 #' latest earlier handbook that lists the code (a course no longer in new
-#' cohorts' plans, taught to the students of an earlier one); of two pages of
-#' a code in one handbook, the first listed. Offerings before autumn 2021
-#' get no URL, without a request.
+#' cohorts' plans, taught to the students of an earlier one). Of two pages of
+#' a code in one handbook, the one listed for the code alone ("OPERA21 -
+#' Operaseminar II", DBH's title and credits) before one listed for several
+#' ("OPERA20/21 - Operaseminar"), else the first listed (checked 2026-11-16:
+#' the second is the same plan or the next cohort's copy). A code of the
+#' ensemble and orchestra series registered per project (NMH_SERIES: BLENS21
+#' to BLENS27) without a page of its own takes the page of its series in the
+#' same way (BLENS20, "KAKOR"). Offerings before autumn 2021 get no URL,
+#' without a request.
 #'
 #' @param df A tibble with course_code, year, semester_name columns
-#' @param index Tibble of cohort, code and url, from nmh_handbook_index()
+#' @param index Tibble of cohort, code, url and shared (listed for several
+#'   codes), from nmh_handbook_index()
 #' @return df with url filled in where possible
 resolve_urls_nmh_batch <- function(df, index = NULL) {
   df$.cohort <- academic_start_year(df$year, df$semester_name)
   if (is.null(index)) {
     index <- if (any(df$.cohort >= NMH_FIRST_COHORT)) nmh_handbook_index() else
-      tibble::tibble(cohort = integer(), code = character(), url = character())
+      tibble::tibble(cohort = integer(), code = character(), url = character(), shared = logical())
   }
-  index <- index[order(-index$cohort, seq_len(nrow(index))), ]
+  index <- index[order(-index$cohort, index$shared, seq_len(nrow(index))), ]
   df$.row <- seq_len(nrow(df))
-  hit <- dplyr::inner_join(df[c(".row", "course_code", ".cohort")],
-                           dplyr::mutate(index, course_code = code),
-                           by = dplyr::join_by(course_code, .cohort >= cohort), multiple = "first")
-  df$url <- hit$url[match(df$.row, hit$.row)]
+  find <- function(key, index_key) {
+    hit <- dplyr::inner_join(tibble::tibble(.row = df$.row, key = key, .cohort = df$.cohort),
+                             tibble::tibble(key = index_key, cohort = index$cohort, url = index$url),
+                             by = dplyr::join_by(key, .cohort >= cohort), multiple = "first", na_matches = "never")
+    hit$url[match(df$.row, hit$.row)]
+  }
+  series <- function(code) {
+    stem <- sub("\\d+$", "", code)
+    ifelse(stem %in% NMH_SERIES, stem, NA)
+  }
+  df$url <- dplyr::coalesce(find(df$course_code, index$code), find(series(df$course_code), series(index$code)))
   cli::cli_alert_success("NMH: pages for {sum(!is.na(df$url))} of {nrow(df)} offerings")
   dplyr::select(df, -".cohort", -".row")
 }
@@ -429,10 +443,16 @@ resolve_urls_nmh_batch <- function(df, index = NULL) {
 # The first cohort with a study handbook on nmh.no (startkull-2021).
 NMH_FIRST_COHORT <- 2021L
 
+# The ensemble and orchestra series DBH registers per project, a code per
+# number (BLENS21-BLENS27, KAKOR20-KAKOR27, OSINF60-OSINF72, BFO20-BFO24),
+# for which a handbook has one page (BLENS20, KAKOR, BFO) or none (OSINF);
+# only these series (user decision 2026-11-14, methods.qmd).
+NMH_SERIES <- c("BLENS", "KAKOR", "OSINF", "BFO")
+
 # Every course page of NMH's study handbooks, from the course lists the
 # study-plan sitemaps name (/studiehandboker/startkull-{year}/emner and the
 # electives' /valgemner*, about 20 lists): a tibble of cohort, code (upper
-# case) and url, in list order. A list that cannot be read is an error, so
+# case), url and shared (the page is listed for several codes), in list order. A list that cannot be read is an error, so
 # the harvest stops rather than leave its courses without a URL.
 nmh_handbook_index <- function(sitemap = "https://nmh.no/sitemaps-1-sitemap.xml") {
   locs <- function(url) {
@@ -466,7 +486,7 @@ nmh_list_pages <- function(page, list_url) {
                    ifelse(grepl("^[A-Z]+$", p[-1]), paste0(stem["letters"], p[-1]), p[-1])))
   }))
   tibble::tibble(cohort = as.integer(stringr::str_match(list_url, "startkull-(\\d{4})")[, 2]),
-                 code = code, url = rep(href[keep], lengths(parts)))
+                 code = code, url = rep(href[keep], lengths(parts)), shared = rep(lengths(parts) > 1, lengths(parts)))
 }
 
 #' The page of each offering, from a Vortex site's folder listings

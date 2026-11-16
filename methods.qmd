@@ -226,9 +226,42 @@ registered per number of projects, such as BLENS21-BLENS27, exchange
 students' courses) and so no plan; its full harvest waits for the pilot
 audits (below). *Rejected:* the handbook of the cohort that takes the course
 in that year, which needs the course's year of study (given in the page's
-text only, "Gjennomføres: 2. studieår", and differing by programme); matching
-project variants to the ensemble's one page by code stem, which would give a
-variant a plan the handbook does not name. *Since:* 2026-10-31.
+text only, "Gjennomføres: 2. studieår", and differing by programme). Matching
+project variants to the ensemble's one page by code stem, rejected here at
+first, was adopted for four named series on 2026-11-14 (next entry). *Since:*
+2026-10-31.
+
+**NMH: the project series take their series' page, and of two pages of a
+code in one handbook the one listed for the code alone.** DBH registers some
+NMH ensembles and orchestra projects as a code per number of projects
+(BLENS21-BLENS27, KAKOR20-KAKOR27, OSINF60-OSINF72, BFO20-BFO24), and the
+handbook has one page for the series (BLENS20, KAKOR, BFO) or none (OSINF).
+An offering of one of these four series without a page of its own now takes
+its series' page by code stem, with the same cohort rule as other codes; no
+other series is matched by stem. Of the 56 cases of a code with two pages in
+one handbook (29 in 2021, 22 in 2022), the page listed for the code alone
+("OPERA21 - Operaseminar II") goes before one listed for several codes
+("OPERA20/21 - Operaseminar"); where both are listed alike, the first
+listed, as before. *Why:* user decision 2026-11-14: a series' projects share
+the ensemble's plan; the page listed for the code alone has DBH's title
+("Operaseminar II", "Bruksklaver IIa") and credits, the shared page is the
+two-semester course. The pairs listed alike were compared on 2026-11-16: 9 are
+the same text (KPIMP10 in every handbook, MUSTEK21, BARIMP20); in 2021 the
+second page is the 2022 cohort's copy (its cohort "2022", without the facts
+list); TRIO20/21 of 2022 differ in one admission sentence and UTSTØ10 of
+2021 in its category, the same title and credits; INSTENS20 of 2022 has a
+second page with another title ("Didaktikk for instrumental- og
+ensembleundervisning") than DBH's, which the first has. *Consequence:* of
+NMH's 10,026 DBH offerings of 2021-2026, 188 more have a page (4,988 to
+5,176: BFO 40, BLENS 68, KAKOR 80; OSINF has none), and 81 offerings of eight
+codes (BRUKLA22/23, FOLKINST21, IMPSAMT21, INSTVAR21, JZSLAGEN21, OPERA21,
+PRØVESP21) take the page for their code instead of the shared one. A
+project of a series gets the ensemble's general plan, not one for the
+project. *Rejected:* matching every code by stem, which would give a course the
+plan of another that shares its letters; always the first listed,
+which gives the "21" codes the shared two-semester page; choosing by the
+page's cohort year, which needs every page fetched before resolving.
+*Since:* 2026-11-14.
 
 **Kunsthøgskolen i Oslo (DBH code 6220) joins the frame, with the plan in
 force only.** One of the ten institutions surveyed for the all-courses frame,
