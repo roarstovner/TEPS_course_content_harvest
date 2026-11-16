@@ -2397,6 +2397,63 @@ emptied 1,166, learning outcomes 173, teaching methods 13, assessment 10);
 joined to admission stay in the course content. `course_plan` and the plan
 ids do not change. *Since:* 2026-11-06.
 
+**UiT: prior knowledge in "Opptakskrav" and the course content joins
+prerequisites; course evaluation, intake capacity and programme placement
+leave the sections.** UiT's "Opptakskrav" (English "Admission requirements"),
+which the heading map dropped, is mapped like Nord's "Adgangsregulering"
+(`section_headings` ".admission"): its sentences that name a prior course,
+credits or a passed part join prerequisites ("For studenter som tar emnet som
+videreutdanning er forkunnskapskravet fullført lærerutdanning med minimum 60
+studiepoeng i norsk.", "Anbefalte forkunnskaper er MAT-1001 Kalkulus 1 eller
+tilsvarende."), while the admission text in the block stays out, now also
+the engineering admission routes ("bestått 1-årig forkurs ...", "2-årig
+teknisk fagskole ...", "Matematikk R1 ... programfag:"), grade averages and
+their computation, motivation, work experience, a bare label, the
+degree-and-specialisation rules for master courses without a course code
+("Avlagt bachelorgrad hvor det inngår en fordypning på minimum 80
+studiepoeng ...", "Av de 80 stp må 60 stp være fra 1000-nivå ...") and
+"søke opptak", ranking and "vurderes for opptak" (`.admission_only_regex`,
+`.degree_regex`; shared with Nord).
+In the course content, a sentence that the course presupposes knowledge
+("Det forutsettes grunnleggende kunnskaper i kjemi ...", "Undervisningen
+forutsetter forkunnskaper tilsvarende KVE-1006 ...") moves to
+prerequisites, not a bare "none". Intake capacity in course content or
+teaching ("Det forutsettes opptak av minimum 10 studenter ...", "Det tas
+opp maksimum 22 studenter.", "Det er 30-40 studieplasser på kurset.") and
+a 2008-2011 "Mål" sentence that only places the course in programmes
+("Valgfritt masteremne.", "Kan blant annet brukes som støtteemne i ...",
+"Emnet er obligatorisk i bachelorstudiet i historie.") go. In the teaching
+methods the course evaluation goes by sentence with its label
+("Kvalitetssikring (av emnet)", "Quality assurance"): "Alle emner evalueres
+en gang i løpet av programperioden.", "Programstyret avgjør hvilke emner som
+skal evalueres ...", "Evalueringen gjennomgås av faglærer ...", "The course
+undergoes a midterm evaluation ..."; not a grade, an exam, or students
+evaluating each other's work. Reading lists that only say to contact the
+student adviser about available projects or theses are placeholders.
+*Why:* sections audit of 2026-11-15 (UiT); by the spec prerequisites hold
+prior knowledge, and course evaluation, admission and programme lists are
+plan text in no section. *Rejected:* mapping the block to prerequisites
+whole (most of it is admission); the evaluation rule at all institutions
+(NIH's "Midtveisevalueringen gjennomføres som en minidisputas" and USN's
+"Sluttevalueringen gjennomføres sammen med praksisveileder" are
+assessment); programme placement in the course content (a sentence there
+usually goes on about the course). *Consequence* (UiT source pages of the build of 2026-11-16, HEAD against
+the new code, on the stored blocks): of 38,599 pages 10,625 change. Teaching
+methods change in 8,045 pages (the evaluation sentences and labels); 78
+learning-outcome sections that held only placement go and 114 change; 262
+course-content sections change (prior knowledge to prerequisites, capacity
+out); 97 reading-list placeholders go; prerequisites are new in 2,867 pages
+and change in 536. Of the 63,853 sentences in the "Opptakskrav" blocks some
+4,000 join prerequisites (about 3,250 pages); the rest stays out. Some
+admission still gets through, written as credits ("minst 30 studiepoeng på
+2000-nivå (påbyggingsnivå)" in a list under a degree rule, "I tillegg er det
+krav om grunnleggende kunnskaper på minst 30 studiepoeng innen matematikk
+eller statistikk"), as elsewhere (course_plan_spec.md, known deviations).
+At Nord the shared exclusions change the prerequisites of 34 of the 6,786
+pages with an "Adgangsregulering" block, all by removing admission rules
+(degrees, grade averages, work experience). `course_plan` and the plan ids
+do not change. *Since:* 2026-11-16.
+
 **Resit and examiner rules stay in assessment at UiT, NTNU, Nord and FHS,
 a known deviation from the spec.** The spec puts resit, postponement and
 examiner rules outside the sections; the sections audit of 2026-11-05 found

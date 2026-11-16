@@ -684,6 +684,12 @@ institution_configs <- list(
     # the 2020s exam box labels its gate table <strong class="d-block">
     # Obligatoriske arbeidskrav</strong>
     section_subheading_selector = "h3, strong.d-block",
+    # "Opptakskrav" (English pages "Admission requirements") mixes admission
+    # with the prior knowledge a course requires ("For studenter som tar
+    # emnet som videreutdanning er forkunnskapskravet fullført lærerutdanning
+    # med minimum 60 studiepoeng i norsk.", "Recommended prerequisites:
+    # MBI-2005 ..."): .admission_prerequisites() keeps the latter
+    section_headings = c("opptakskrav" = ".admission", "admission requirements" = ".admission"),
     # 2012-2019 plans list arbeidskrav inside the Eksamen text
     section_inline_coursework = TRUE
   ),

@@ -1984,6 +1984,47 @@ test_that("uit: placeholders, admission in the course content, the law programme
   expect_true(.keep_section_row("Pensumlitteratur oppgis i Fronter ved semesterstart.\nHansen, K. (2010). Rett.", "reading_list"))
 })
 
+test_that("uit: prior knowledge, intake capacity, programme placement, course evaluation, project contact", {
+  out <- tibble::tibble(
+    section = c("course_content", "learning_outcomes", "teaching_methods", "reading_list", ".admission"),
+    raw_text = c(paste0("Emnet tar for seg matvaretrygghet. Det forutsettes grunnleggende kunnskaper i kjemi.\n",
+                        "Det forutsettes opptak av minimum 10 studenter for oppstart. Det tas opp maksimum 22 studenter.\n",
+                        "Det forutsettes ingen forkunnskaper utover generell studiekompetanse for å ta dette emnet."),
+                 "Valgfritt masteremne. Kan blant annet brukes som støtteemne i historie og religionsvitenskap",
+                 paste0("Forelesninger og seminarer. Praksis gjennomføres i grupper på inntil fire studenter.\n",
+                        "Kvalitetssikring\nEmnet evalueres i henhold til instituttets retningslinjer.\n",
+                        "Alle emner evalueres en gang i løpet av programperioden. Programstyret avgjør hvilke emner ",
+                        "som skal evalueres av studenter og lærer per år.\n",
+                        "Kvalitetssikring av emnet: Emnet sluttevalueres hvert tredje år.\n",
+                        "Studentene evaluerer hverandres tekster."),
+                 "Kontakt studiekonsulenten for informasjon om tilgjengelige prosjektoppgaver.",
+                 paste0("Generell studiekompetanse eller realkompetanse.\nSøknadskode 9371 - enkeltemner på masternivå.\n",
+                        "bestått 1-årig forkurs for ingeniørutdanning, eller\n2-årig teknisk fagskole etter rammeplan\n",
+                        "Avlagt bachelorgrad hvor det inngår en fordypning på minimum 80 studiepoeng sosiologi.\n",
+                        "Karakteren beregnes som et vektet gjennomsnitt. Emner med vurderingsuttrykk «bestått» telles ikke.\n",
+                        "Anbefalte forkunnskaper:\nAnbefalte forkunnskaper er MAT-1001 Kalkulus 1 eller tilsvarende.\n",
+                        "For studenter som tar emnet som videreutdanning er forkunnskapskravet fullført ",
+                        "lærerutdanning med minimum 60 studiepoeng i norsk.")))
+  res <- .clean_sections(.move_sentences(out, "uit"), "uit")
+  sec <- setNames(res$raw_text, res$section)
+  expect_setequal(names(sec), c("course_content", "teaching_methods", "prerequisites"))
+  expect_equal(unname(sec["course_content"]), paste0(
+    "Emnet tar for seg matvaretrygghet.\n",
+    "Det forutsettes ingen forkunnskaper utover generell studiekompetanse for å ta dette emnet."))
+  expect_equal(unname(sec["teaching_methods"]), paste0(
+    "Forelesninger og seminarer. Praksis gjennomføres i grupper på inntil fire studenter.\n",
+    "Studentene evaluerer hverandres tekster."))
+  expect_equal(unname(sec["prerequisites"]), paste0(
+    "Det forutsettes grunnleggende kunnskaper i kjemi.\n\n",
+    "Anbefalte forkunnskaper er MAT-1001 Kalkulus 1 eller tilsvarende.\n",
+    "For studenter som tar emnet som videreutdanning er forkunnskapskravet fullført ",
+    "lærerutdanning med minimum 60 studiepoeng i norsk."))
+  # a grade, or a placement sentence that goes on about the course, stays
+  expect_false(grepl(.evaluation_sentence_regex, "Emnet evalueres med bokstavkarakterer (A-F).", perl = TRUE))
+  expect_false(grepl(.uit_placement_regex, paste("Emnet er obligatorisk for mastergrad i religionsvitenskap og er en",
+                                                 "videreføring av kursene REL-1050 og REL-2050."), perl = TRUE))
+})
+
 test_that("hivolda and fhs: the prior course in coursework or course content is a prerequisite", {
   out <- tibble::tibble(section = "coursework_requirements",
                         raw_text = "Bestått didaktikkemne 1.\n\nFrammøtekrav:\n\nDet er obligatorisk frammøte.")

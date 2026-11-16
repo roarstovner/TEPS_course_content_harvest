@@ -414,6 +414,9 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   out$raw_text[pr] <- stringr::str_remove_all(out$raw_text[pr], .no_practice_regex)
   tm <- out$section == "teaching_methods"
   out$raw_text[tm] <- stringr::str_remove_all(out$raw_text[tm], .evaluation_part_regex)
+  ev <- tm & identical(institution, "uit") & grepl("(?i)evalu|undergo|kvalitetssikring|quality", out$raw_text, perl = TRUE)
+  out$raw_text[ev] <- vapply(stringr::str_remove_all(out$raw_text[ev], .evaluation_label_regex), .strip_sentences,
+                             character(1), rx = .evaluation_sentence_regex, USE.NAMES = FALSE)
   out$raw_text <- mapply(.strip_placeholder_lines, out$raw_text,
                          trailing = out$section != "assessment", USE.NAMES = FALSE)
   out$raw_text <- mapply(.clean_section_text, out$raw_text, out$section,
@@ -553,14 +556,38 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # til studieprogrammet og bestått Pedagogikk og elevkunnskap 1A",
 # "Opptakskrav: Generell studiekompetanse samt ... bestått eksamen i emnet
 # NO106L ..."). They follow the page's own prerequisites.
+# What makes a sentence of such a block admission although it names credits
+# or a passed part: the applicants, prior learning, places, quotas; and
+# (uit's "Opptakskrav", 2026-11-16) the engineering admission routes
+# ("bestått 1-årig forkurs for ingeniørutdanning, eller", "2-årig teknisk
+# fagskole ...", "Matematikk R1 ... programfag:"), the grade average and how
+# it is computed, the applicant's motivation, work experience, education
+# abroad, what an admission gives access to, a bare prerequisites label
+# whose text is elsewhere ("Anbefalte forkunnskaper:"), and a degree with no
+# course code ("Avlagt bachelorgrad hvor det inngår en fordypning på minimum
+# 80 studiepoeng sosiologi ...", "Graden må ha en faglig fordypning ...",
+# .degree_regex): admission to the programme (course_plan_spec.md, known
+# deviations). "For studenter som tar emnet som videreutdanning er
+# forkunnskapskravet fullført lærerutdanning med minimum 60 studiepoeng i
+# norsk." names the subject and stays.
+.admission_only_regex <- paste0(
+  "(*UCP)(?i)^\\W*(?:søkere?|applicants?)\\b|må søkeren oppfylle|realkompetanse|studieplass|prioriter|kvote|",
+  "upper secondary|^\\W*(?:i tillegg må |eventuelle )?forkunnskapskrav\\w* (?:til emnet )?(?:må )?(?:være|vera) oppfylt|",
+  "forkurs|teknisk fagskole|realfagkurs|\\b(?:R1|R2|S1|S2)\\b|programfag|",
+  "gjennomsnittskarakter|karaktergjennomsnitt|snittkarakter|karakteren beregnes|vurderingsuttrykk|minstekrav|",
+  "motivasjon|yrkespraksis|års (?:relevant )?praksis|arbeidserfaring|fra utlandet|gir adgang til|kvalifiserer (?:også )?(?:til|for) opptak|",
+  "opptaksgrunnlag|søke opptak|vurderes for opptak|rangeres|av fordypningen|kreves karakteren|\\(jfr?\\.? opptakskrav|^\\W*fordypning(?:en)? (?:skal|må)|fordypning på minimum|fordypningsenhet|karakterkrav|^\\W*av de \\d+ (?:stp|studiepoeng)|^\\W*(?:anbefal\\w* )?(?:forkunnskap\\w*|forkunnskapskrav)(?:,? anbefal\\w* forkunnskap\\w*)?\\s*:?\\s*$")
+.degree_regex <- paste0(
+  "(?i)^\\W*(?:(?:avlagt|fullført|relevant|treårig) )?(?:bachelor\\w*|master(?:grad\\w*)?\\b|cand\\.)|^\\W*graden må|",
+  "^\\W*fordypning:|^\\W*det kreves (?:godkjent )?utdanning|krav om (?:\\S+ )?bachelorgrad|",
+  "^\\s*[-–•]\\s*(?:minst \\d+ studiepoeng|\\d-årig studium)")
 .admission_prerequisites <- function(text, prerequisites = "") {
   had <- stringr::str_squish(prerequisites)
   lines <- vapply(.unwrap_lines(stringr::str_split_1(text, "\n")), function(l) {
     s <- sub("(?i)^(\\s*)opptakskrav\\s*:\\s*", "\\1", stringr::str_split_1(l, .sentence_end), perl = TRUE)
     k <- grepl(.real_prerequisite_regex, s, perl = TRUE) & !.is_admission_sentence(s) &
-      !grepl(paste0("(*UCP)(?i)^\\W*(?:søkere?|applicants?)\\b|realkompetanse|studieplass|prioriter|kvote|",
-                    "upper secondary|^\\W*(?:i tillegg må |eventuelle )?forkunnskapskrav\\w* (?:til emnet )?(?:må )?(?:være|vera) oppfylt"),
-             s, perl = TRUE) &
+      !grepl(.admission_only_regex, s, perl = TRUE) &
+      !(grepl(.degree_regex, s, perl = TRUE) & !grepl("\\b[A-ZÆØÅ]{2,}[A-ZÆØÅ0-9-]*\\d{3,}", s, perl = TRUE)) &
       !vapply(stringr::str_squish(s), function(x) !nzchar(x) || grepl(x, had, fixed = TRUE), logical(1))
     trimws(paste(s[k], collapse = ""))
   }, character(1), USE.NAMES = FALSE)
@@ -1036,6 +1063,36 @@ extract_sections <- function(config, html, extracted_text, course_id) {
     all(grepl(who, cl, perl = TRUE)) && .is_admission_sentence(x)
   }, logical(1), USE.NAMES = FALSE)
 }
+# uit, more sentences that the course content or the 2008-2011 "Mål"
+# (learning_outcomes) hold but that belong elsewhere (2026-11-16): the prior
+# knowledge the course requires ("Det forutsettes grunnleggende kunnskaper i
+# kjemi, biokjemi og mikrobiologi.", "Undervisningen forutsetter
+# forkunnskaper tilsvarende KVE-1006 Praktisk kvensk 1.", "Emnet kan tas som
+# enkeltemne, men det forutsettes ...") goes to prerequisites, not a bare
+# "none" ("Det forutsettes ingen forkunnskaper utover generell
+# studiekompetanse ...") unless it recommends something; the intake capacity
+# ("Det forutsettes opptak av minimum 10 studenter ...", "Det tas opp
+# maksimum 22 studenter.", "Det er 30-40 studieplasser på kurset.") and the
+# programme placement that is all a "Mål" sentence says ("Valgfritt
+# masteremne.", "Kan blant annet brukes som støtteemne i historie og
+# religionsvitenskap", "Emnet er obligatorisk i bachelorstudiet i
+# historie.") go: admission and programme lists, plan text in no section.
+.uit_prior_knowledge <- function(s) {
+  grepl(paste0("(?i)^\\W*(?:emnet kan tas som enkeltemne, men )?(?:det|emnet|undervisningen|kurset) ",
+               "forutsett(?:es|er)\\b(?=[^.]{0,40}(?:kunnskap|ferdighet))"), s, perl = TRUE) &
+    (!grepl("(?i)\\b(?:ikke|ingen)\\b", s, perl = TRUE) | grepl("(?i)fordel|anbefal", s, perl = TRUE))
+}
+.uit_capacity_regex <- paste0(
+  "(?i)^\\W*(?:det forutsettes opptak av minimum|det tas opp (?:inntil|maksimum|maks\\.?|minimum) \\S+ (?:studenter|deltakere)|",
+  "(?:det er|(?:studiet|emnet|kurset|dagkurset|kveldskurset) (?:er lukket og )?har)(?: totalt)? \\d+(?:\\s*[-–]\\s*\\d+)? (?:studie)?plasser|",
+  "(?:det er (?:et )?)?begrenset antall (?:studie)?plasser|maks(?:imum|\\.)? \\d+ (?:studenter|deltakere)|",
+  "på grunn av kapasitet|studentantall på emne|om \\w+ er det totalt \\d+ plasser|",
+  "emnet (?:arrangeres|tilbys|starter|gjennomføres)\\b[^.]{0,30}\\b(?:dersom|om|hvis|forbehold om at) (?:det er )?minimum \\S+ studenter)")
+.uit_placement_regex <- paste0(
+  "(?i)^\\W*(?![^.]*\\b(?:og (?:er|skal|gir|vil)|videreføring|men)\\b)(?:",
+  "emnet (?:er|inngår)(?: \\S+){0,3}? (?:obligatorisk|valgfri\\w*|valfri\\w*|valgfag|valgemne|valemne)\\b|",
+  "obligatorisk (?:emne|del av|for|hvis|i)\\b|valgfritt(?: emne| masteremne)?\\b|",
+  "(?:emnet )?kan (?:\\S+ ){0,2}brukes som støtteemne|emnet inngår (?:som obligatorisk|i mastergradsprogram))")
 .sentence_moves <- list(
   phs = list(
     list(from = "assessment", to = "coursework_requirements", rx = paste0(
@@ -1048,7 +1105,11 @@ extract_sections <- function(config, html, extracted_text, course_id) {
     from = from, to = "prerequisites", rx = paste0(
       "(?i)^\\s*(?:før studentene kan begynne på \\d\\. avdeling, må de ha (?:fullført og )?bestått|",
       "ex\\. ?fac\\.? \\(jur-0500\\) må være bestått)"))),
-    list(list(from = "course_content", to = ".drop", rx = function(s) .uit_admission_sentence(s)))),
+    list(list(from = "course_content", to = "prerequisites", rx = function(s) .uit_prior_knowledge(s)),
+         list(from = "course_content", to = ".drop", rx = function(s) .uit_admission_sentence(s)),
+         list(from = "learning_outcomes", to = ".drop", rx = .uit_placement_regex)),
+    lapply(c("course_content", "teaching_methods"), function(from)
+      list(from = from, to = ".drop", rx = .uit_capacity_regex))),
   fhs = list(list(from = "course_content", to = "prerequisites", rx = paste0(
     "^\\s*(?i:(?:dette )?emnet bygger (?:videre )?på|the course is based on) ",
     "(?=[^.]*\\b[A-ZÆØÅ]{2,}\\d{3,})(?![^.]*\\b(?:og|and) (?:skal|vil|tar|gir|legger|søker|ser|introduserer|aims?|will)\\b)",
@@ -1625,6 +1686,12 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "literature will be announced in fronter at the beginning of term or may be obtained by contacting the (?:campus )?bookstore[^.]{0,60}",
   "se egen pensumliste for studieenheten i (?:fronter|canvas)",
   "available on request",                                             # uit 2008-2010
+  # uit project and thesis courses: "Kontakt studiekonsulenten for informasjon
+  # om tilgjengelige prosjektoppgaver.", "Please contact the study advisor for
+  # information about available master thesis' or if you have question about ..."
+  paste0("(?:please |ta )?(?:kontakt|contact) (?:the )?(?:studiekonsulent(?:en)?|stud(?:ent|y) advis[eo]r) ",
+         "for (?:informasjon om|information about) (?:tilgjengelige|available) [^.]{0,80}?",
+         "(?:,? (?:og prosedyre for|or if you have questions? about) [^.]{0,80})?"),
   "ny pensumbok vurderes",                                            # hiof
   # hiof PPU didactics: the common list is in the PPU pedagogy plan, the
   # course's own given at the start; the list is in Leganto at the start
@@ -1690,6 +1757,33 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 .evaluation_part_regex <- paste0(
   "(?im)\\n?^[ \\t]*emneevaluering(?:[ \\t]*[-–][ \\t]*kvalitetssystem)?[ \\t]*:?[ \\t]*\\n",
   "(?:[ \\t]*\\n)*(?:[^\\n]*\\S[^\\n]*(?:\\n|$))*")
+# The course evaluation in sentences of its own in the teaching methods
+# (uit, 2026-11-16, some 10,000 plans): the label "Kvalitetssikring (av
+# emnet)" / "Quality assurance" alone or before the notice, and sentences
+# whose subject is the course, the courses or the evaluation itself ("Emnet
+# evalueres i henhold til instituttets retningslinjer.", "Alle emner
+# evalueres en gang i løpet av programperioden.", "Programstyret avgjør
+# hvilke emner som skal evalueres ...", "Evalueringen gjennomgås av faglærer
+# og drøftes i programstyret.", "The course undergoes a midterm evaluation
+# ..."). Not a grade ("Emnet evalueres med bokstavkarakterer."), an exam, or
+# students evaluating their own or each other's work. Only uit: elsewhere
+# the same words also describe the assessment ("Midtveisevalueringen
+# gjennomføres som en minidisputas ...", nih; "Sluttevalueringen gjennomføres
+# sammen med praksisveileder ...", usn).
+.evaluation_label <- "(?:kvalitetssikring(?: av emnet)?|quality (?:assurance|control)(?: of (?:the )?course)?)"
+.evaluation_label_regex <- paste0("(?im)^[ \\t]*", .evaluation_label, "[ \\t]*[:;]?[ \\t]*(?:\\n|$)")
+.evaluation_sentence_regex <- paste0(
+  "(?i)^\\W*(?:", .evaluation_label, "\\s*[:;]?\\s*)?",
+  "(?![^.]*(?:karakter|grade|bestått|godkjent|eksam|exam|mappe|portfolio|innlevering))(?:",
+  "(?:alle emne[rn]?|emnet|kurset|studiet|programmet|all courses|(?:the|this) (?:course|subject|program(?:me)?))\\s+",
+  "(?:\\S+\\s+){0,4}?(?:\\S*evaluer(?:es|ast|t|te)\\b|(?:will |is to |is )?(?:be )?(?:\\S+ )?evaluated\\b|",
+  "undergo(?:es)? (?:a|an) [^.]*evaluation|har (?:\\S+ ){0,2}evaluering|gjenstand for (?:\\S+ )?evaluering)|",
+  "i henhold til kvalitets\\w* evalueres|every \\w+ year the (?:course|subject) is evaluated|",
+  "(?:programstyret|studieprogramle\\w+|emnestyret|the (?:programme |program )?board|the study programme leader)\\b[^.]*evalu|",
+  "denne gjennomgås av faglærer og drøftes|subjectid=\\d+&from(?:subject)?=0(?:#eval_emne)?\\s*$|",   # a link split at "?S"
+  "(?:underveis|slutt|midtveis)?evaluering(?:en|ene)? (?:foretas|gjennomgås|gjennomføres)|",
+  "(?:the )?(?:final |teaching )?evaluation (?:will take place|will be conducted|is normally undertaken|consists of)|",
+  "meir informasjon om emneevaluering|oversikt over kva emne som skal evaluerast)")
 
 # Placeholder lines before real text go: "Ingen" (required) and then the
 # recommended prerequisites (hvl, uib), "." (nord), "Ingen" before usn's
