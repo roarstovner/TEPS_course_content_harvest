@@ -911,6 +911,9 @@ test_that("the personal-data check finds what the anonymizer removes", {
     "Emneansvarlige:\nKari Nordmann\nUndervisningssemester:")), f)
   found <- personal_data_in(f)
   expect_setequal(found$pattern, c("email", "staff", "role_name", "role_heading_name"))
+  # DBH's names are not scanned: a course, not a sensor
+  saveRDS(tibble::tibble(course_name = "Sensor Innovation Project"), f)
+  expect_equal(nrow(personal_data_in(f)), 0)
   saveRDS(tibble::tibble(text = anonymize_text(c("uit", "uit"), c(
     "Kontakt kari.nordmann@uit.no", "- Ola Nordmann (Emneansvarlig)\nInnhold"),
     .progress = FALSE)), f)
@@ -1241,6 +1244,13 @@ test_that("a year range in running text stays, an academic year goes", {
                "For studieåret er summen 300 kr. Fra blir kravet skjerpet.")
   expect_equal(an("During the 2024-2025 academic year, the course runs. Studiehåndbok 2023-2024 for litteratur."),
                "During the academic year, the course runs. Studiehåndbok for litteratur.")
+})
+
+test_that("uio PhD courses: names under 'Administrative responsible' and 'Other lecturers' go", {
+  expect_equal(anonymize_text("uio", paste0(
+    "Teaching\n\nOther lecturers:\n\nKari Nordmann, Department of Political Science, University of Oslo\n",
+    " Åse Dahl, Department of Political Science\nPreparations\n\nContact\n\nAdministrative responsible:\n\nOla Berg Dahl"),
+    .progress = FALSE), "Teaching\n\nPreparations\n\nContact")
 })
 
 test_that("data/processed holds no personal data", {

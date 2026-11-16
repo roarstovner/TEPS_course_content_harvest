@@ -506,7 +506,9 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 # without a colon: "Emneansvarlig\n\nKari Nordmann" (oslomet), "Emneansvarlig\nOla
 # Nordmann, <unit>" (uib), a repeated heading over several names
 # ("Emneansvarlig\nEmneansvarlige:\n\nKari Nordmann\n\nProfessor Ola Dahl",
-# uib), "Contact persons:\nKari Nordmann and Ola Dahl" (uia), the name after a part or role label or a title ("Delemne <part>:
+# uib), "Contact persons:\nKari Nordmann and Ola Dahl" (uia), "Administrative
+# responsible:\n\nKari Nordmann", "Other lecturers:\n\nOla Dahl, <unit>" (uio
+# PhD courses, 2026-11-16), the name after a part or role label or a title ("Delemne <part>:
 # Kari Nordmann", "Master thesis coordinator: assistant professor Ola Dahl",
 # oslomet). The name must end the line or come before a comma, a full stop or
 # a bracket, so a committee, a unit or a sentence under the heading stays
@@ -516,7 +518,8 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
   "[ \\t]*(?:[,.(][^\\n]*)?(?:\\n|$)"
 )
 .role_heading_name_regex <- paste0(
-  "(?m)^(?:[ \\t]*(?i:", paste(c(.staff_roles, "contact person", "course leader", "administrativt ansvarlig"), collapse = "|"),
+  "(?m)^(?:[ \\t]*(?i:(?:other|guest)[ \\t]+)?(?i:", paste(c(.staff_roles, "contact person", "course leader", "administrativt ansvarlig",
+                                                       "administrative responsible"), collapse = "|"),
   ")(?i:e|er|ar|s)?[ \\t]*:?[ \\t]*\\n(?:[ \\t]*\\n)*)+",
   .role_heading_name_line, "(?:(?:[ \\t]*\\n)*", .role_heading_name_line, ")*"
 )
@@ -1084,14 +1087,15 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 #' Personal data left in data files
 #'
 #' @param files RDS files holding a data frame; every character column is
-#'   scanned.
+#'   scanned but DBH's names (`*_name`: "Sensor Innovation Project" is a
+#'   course, not a sensor, 2026-11-16).
 #' @return Tibble `file`, `column`, `pattern`, `n` (rows with a match) and
 #'   `example` (the first match); no rows when nothing is found.
 personal_data_in <- function(files) {
   found <- list()
   for (f in files) {
     df <- readRDS(f)
-    for (col in names(df)[vapply(df, is.character, logical(1))]) {
+    for (col in setdiff(names(df)[vapply(df, is.character, logical(1))], grep("_name$", names(df), value = TRUE))) {
       for (p in names(.personal_data_patterns)) {
         hit <- which(grepl(.personal_data_patterns[[p]], df[[col]], perl = TRUE))
         if (length(hit) == 0) next
