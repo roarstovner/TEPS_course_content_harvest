@@ -355,6 +355,9 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 #'
 #' Applies cheap, high-precision cleanup shared across all strategies:
 #'   - removes ".drop" rows (admission and exam-logistics headings),
+#'   - appends the exam language of an ".exam_language" row to assessment
+#'     (.exam_language_text()) and the prerequisites of an ".admission" row
+#'     to prerequisites (.admission_prerequisites()),
 #'   - strips trailing FS page-generation timestamps,
 #'   - drops a leading line that merely repeats the section's own heading,
 #'   - removes rows that are empty or only a placeholder ("Ingen",
@@ -378,6 +381,12 @@ extract_sections <- function(config, html, extracted_text, course_id) {
                                                   paste(out$raw_text[out$section == "prerequisites"], collapse = "\n"))
     out$section[adm] <- "prerequisites"
     out <- .merge_sections(out[order(adm), , drop = FALSE])   # after the page's own
+  }
+  el <- out$section == ".exam_language"
+  if (any(el)) {
+    out$raw_text[el] <- vapply(out$raw_text[el], .exam_language_text, character(1), USE.NAMES = FALSE)
+    out$section[el] <- "assessment"
+    out <- .merge_sections(out[order(el), , drop = FALSE])   # after the page's own
   }
   if (nrow(out) == 0) return(out)
   pr <- grepl("(?i)for å (?:kunne )?(?:fortsette|starte|begynne|gå videre)|gå videre til", out$raw_text, perl = TRUE)
@@ -592,6 +601,33 @@ extract_sections <- function(config, html, extracted_text, course_id) {
     trimws(paste(s[k], collapse = ""))
   }, character(1), USE.NAMES = FALSE)
   paste(lines[nzchar(lines)], collapse = "\n")
+}
+
+# The exam language in a field of both languages (uit's "Undervisnings- og
+# eksamensspråk", "Language of instruction and examination", `section_headings`
+# ".exam_language"; 2026-11-16): the label line and the sentences that say
+# what language the exam or the work handed in is in ("Eksamen gis på norsk.",
+# "The thesis must be written in English.", "Undervisnings- og eksamensspråket
+# er norsk.") or that are a bare value ("Norsk", "Norwegian or English by
+# request"), which the label makes the exam language too; they follow the
+# page's own assessment. The teaching, supervision and syllabus language alone
+# ("Undervisningsspråket er norsk.", "Samisk kan benyttes ...", "Pensum er
+# skrevet på nordisk og engelsk.", "Emnet er norskspråklig.") goes, and the
+# label with it when nothing is left.
+.exam_language_regex <- "(?i)\\b(?:eksam|eskam|exam|besvar|answer|avlegg|test)"
+.written_work_regex <- paste0("(?i)\\b(?:skriv|writ|lever|innlever|submit|thesis|essay|paper|reports?\\b|rapport|",
+                              "avhandling|artikkel|article)|oppg[aå]v")
+.teaching_language_regex <- paste0("(?i)undervis|veiled|instruction|teaching|taught|supervision|lecture|",
+                                   "forelesning|pensum|syllabus|curriculum|litteratur|seminar|reading")
+.language_value_regex <- paste0("(?i)^[\\s\\p{P}]*(?:(?:\\p{L}+sk[e]?|\\p{L}+ish|norwegian|russian|german|french|",
+                                "spanish|sami|scandinavian|bokmål|nynorsk|og|eller|and|or|ved behov|by request|",
+                                "språk|languages?)[\\s\\p{P}]*)+$")
+.exam_language_text <- function(text) {
+  lines <- stringr::str_split_1(text, "\n")
+  rest <- .strip_sentences(paste(lines[-1], collapse = "\n"), function(s) !(
+    grepl(.exam_language_regex, s, perl = TRUE) | grepl(.language_value_regex, s, perl = TRUE) |
+      grepl(.written_work_regex, s, perl = TRUE) & !grepl(.teaching_language_regex, s, perl = TRUE)))
+  if (nzchar(trimws(rest))) paste(lines[1], rest, sep = "\n") else ""
 }
 
 # Where a sentence ends: after . ! ? before a capital, not after an

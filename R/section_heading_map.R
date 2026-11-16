@@ -46,8 +46,9 @@ section_heading_patterns <- tibble::tribble(
   # The codebook keeps assessment design and excludes exam logistics.
   # Most rows are exact (whole heading only), and exact matches win over
   # substrings, so "Eksamen og sensorordning" still maps to assessment.
-  "undervisnings- og eksamensspråk",       ".drop",                  TRUE,   # uit 2018+ (language, facts)
-  "language of instruction and examination", ".drop",               TRUE,   # uit English pages
+  # inn, uit (whose `section_headings` take its exam language to assessment)
+  "undervisnings- og eksamensspråk",       ".drop",                  TRUE,
+  "language of instruction and examination", ".drop",               TRUE,
   "eksamensdato",                          ".drop",                  FALSE,
   "dato for eksamen",                      ".drop",                  TRUE,   # uit 2008-2011
   "dato for skoleeksamen",                 ".drop",                  TRUE,
@@ -309,6 +310,7 @@ section_heading_patterns$label <- section_heading_patterns$pattern %in% c(
   "hjelpemiddel ved eksamen", "tillatte hjelpemidler", "tillatte hjelpemiddel",
   "hjelpemidler", "hjelpemiddel", "examination support material", "eksamensspråk",
   "language of examination", "permitted aids under examination", "assessment language",
+  "undervisnings- og eksamensspråk", "language of instruction and examination",
   "fravær fra obligatorisk aktivitet", "praksisstudier", "omfang av praksisstudier",
   "karakterskala", "om bruk av ki")
 

@@ -330,7 +330,9 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
   sq <- stringr::str_squish(raw)
   if (!nzchar(sq)) return(invisible())
   tag <- tolower(xml2::xml_name(node))
-  if (grepl("^h[1-6]$", tag)) return(add_block("sub", raw, match_heading_to_section(sq), g = tag))
+  if (grepl("^h[1-6]$", tag))
+    return(add_block("sub", raw, dplyr::coalesce(.exact_section(sq, sub_map, map = FALSE), match_heading_to_section(sq)),
+                     g = tag))
   # pieces of one paragraph: the first is tagged "p", the rest "p+"
   first <- TRUE
   add <- function(r, t, s = NA_character_, k = FALSE) {

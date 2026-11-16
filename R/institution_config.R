@@ -689,7 +689,13 @@ institution_configs <- list(
     # emnet som videreutdanning er forkunnskapskravet fullført lærerutdanning
     # med minimum 60 studiepoeng i norsk.", "Recommended prerequisites:
     # MBI-2005 ..."): .admission_prerequisites() keeps the latter
-    section_headings = c("opptakskrav" = ".admission", "admission requirements" = ".admission"),
+    # "Undervisnings- og eksamensspråk" ("Language of instruction and
+    # examination") mixes the teaching language with the exam language: its
+    # exam-language sentences and bare values join assessment, the rest goes
+    # (.exam_language_text())
+    section_headings = c("opptakskrav" = ".admission", "admission requirements" = ".admission",
+                         "undervisnings- og eksamensspråk" = ".exam_language",
+                         "language of instruction and examination" = ".exam_language"),
     # 2012-2019 plans list arbeidskrav inside the Eksamen text
     section_inline_coursework = TRUE
   ),

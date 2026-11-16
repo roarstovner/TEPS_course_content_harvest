@@ -121,7 +121,11 @@ Fields for the `html` reader:
   courses the course requires; it maps to `.admission`, of which only the
   sentences naming a prior course, credits or a passed part that are not
   admission join prerequisites (`.admission_prerequisites()`), after the
-  page's own and without those it already says. fhs's "Opptakskrav" holds required courses (prerequisites,
+  page's own and without those it already says. uit's "Undervisnings- og
+  eksamensspråk" ("Language of instruction and examination") maps to
+  `.exam_language`, of which the label with the exam-language sentences and
+  bare values ("Norsk") joins assessment after the page's own
+  (`.exam_language_text()`); the teaching language alone goes. fhs's "Opptakskrav" holds required courses (prerequisites,
   where the map drops it as admission), "Målgruppe" who may take the course
   (`.drop`), and the Etterretningsskolen's "Emnets oppbygning" (or
   "oppbygging") and

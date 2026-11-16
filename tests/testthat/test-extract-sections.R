@@ -75,11 +75,69 @@ test_that("a table of contents is not course content", {
 })
 
 test_that("language metadata headings are not filed as assessment", {
-  # uit's language label is facts, not plan text, in Norwegian and English
+  # the field of both languages is out by the heading map (inn); uit's
+  # `section_headings` take its exam language to assessment (below)
   expect_equal(match_heading_to_section("Undervisnings- og eksamensspråk"), ".drop")
   expect_equal(match_heading_to_section("Language of instruction and examination"), ".drop")
   expect_true(is.na(match_heading_to_section("Language of instruction")))
   expect_equal(match_heading_to_section("Eksamensspråk"), "assessment")
+})
+
+test_that("uit: the exam language of 'Undervisnings- og eksamensspråk' joins assessment", {
+  el <- function(x) .exam_language_text(paste0("Undervisnings- og eksamensspråk\n", x))
+  # exam-language sentences and bare values stay, under the label
+  keep <- c("Norsk", "Norsk.", "English", "Norwegian, or English by request", "Norsk og russisk.",
+            "Skandinaviske språk.", "Bokmål", "Undervisnings- og eksamensspråket er norsk",
+            "Eksamensspråket er norsk.", "Eksamen gis på norsk.",
+            "Besvarelsen kan skrives på norsk eller engelsk.", "The exam can be answered in English.",
+            "Language of instruction and examination: English.",
+            "The thesis must be written in English.", "Mastergradsoppgaven kan skrives på engelsk eller på et skandinavisk språk.",
+            "Det kan etter søknad tillates å levere på engelsk, svensk eller dansk.", "Testspråket er norsk.",
+            "Undervisning og eksamensoppgaver vil gis på norsk, men pensumlitteraturen kan være på engelsk.")
+  for (x in keep) expect_equal(el(x), paste0("Undervisnings- og eksamensspråk\n", x), label = x)
+  # the teaching, supervision or syllabus language alone goes, and the label with it
+  go <- c("Undervisningsspråket er norsk.", "The language of instruction is English.",
+          "Samisk kan benyttes når alle parter er samiskspråklig.", "Emnet er norskspråklig.",
+          "Pensum er skrevet på nordisk og engelsk.", "The curriculum is written in both Nordic languages and English.",
+          "Undervisning/veiledning knyttet til bachelorgradsoppgaver i engelsk blir gitt på engelsk.",
+          "Oppgaveseminaret foregår vanligvis på norsk.", "Error rendering component")
+  for (x in go) expect_equal(el(x), "", label = x)
+  # in one field, the exam sentence stays alone
+  expect_equal(el(paste("The language of instruction is English and all of the syllabus material is in English.",
+                        "Examination questions will be given in English, but may be answered either in English",
+                        "or a Scandinavian language.")),
+               paste("Undervisnings- og eksamensspråk\nExamination questions will be given in English, but may",
+                     "be answered either in English or a Scandinavian language."))
+  expect_equal(el("Det blir i hovedsak undervist på norsk. Samisk språk kan benyttes der alle forstår samisk.\nEksamensspråket er norsk."),
+               "Undervisnings- og eksamensspråk\nEksamensspråket er norsk.")
+
+  # on a page: after the page's own assessment, also as its only assessment;
+  # the course plan does not change
+  page <- function(lang) paste0(
+    "<div id='maincontents'><h2>Undervisning og pensum</h2><p>Forelesninger og seminarer.</p>",
+    "<h3>Undervisnings- og eksamensspråk</h3><p>", lang, "</p>",
+    "<h2>Eksamen</h2><p>Skoleeksamen, 4 timer.</p></div>")
+  cfg <- get_institution_config("uit")
+  sec <- function(html) {
+    s <- extract_sections(cfg, html, NA_character_, "X-1")
+    stats::setNames(s$raw_text, s$section)
+  }
+  s <- sec(page("Norsk"))
+  expect_equal(s[["assessment"]], "Skoleeksamen, 4 timer.\n\nUndervisnings- og eksamensspråk\nNorsk")
+  expect_equal(s[["teaching_methods"]], "Forelesninger og seminarer.")
+  s <- sec(page("Undervisningsspråket er norsk."))
+  expect_equal(s[["assessment"]], "Skoleeksamen, 4 timer.")
+  s <- sec(sub("<h2>Eksamen</h2><p>Skoleeksamen, 4 timer.</p>", "",
+               sub("<h3>Undervisnings- og eksamensspråk</h3>", "<h3>Language of instruction and examination</h3>",
+                   page("English"))))
+  expect_equal(s[["assessment"]], "Language of instruction and examination\nEnglish")
+  b <- page_blocks(page("Norsk"), NA, .block_cfg(cfg))
+  expect_equal(.blocks_text(b), paste("Undervisning og pensum", "Forelesninger og seminarer.",
+                                      "Undervisnings- og eksamensspråk", "Norsk", "Eksamen", "Skoleeksamen, 4 timer.",
+                                      sep = "\n\n"))
+  # elsewhere the field stays out (inn)
+  s <- extract_sections(get_institution_config("inn"), sub("maincontents", "x", page("Norsk")), NA_character_, "X-1")
+  expect_false(any(grepl("språk|Norsk", s$raw_text)))
 })
 
 # --- Placeholder rows ---

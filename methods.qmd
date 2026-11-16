@@ -1409,7 +1409,9 @@ UiT Exams homepage" (a link to en.uit.no/exams), goes the same way, and
 their "Language of instruction and examination" and "Re-sit examination"
 blocks leave the sections like the Norwegian "Undervisnings- og
 eksamensspråk" and "Kontinuasjonseksamen" (exam logistics and facts, not
-plan text). *Why:* found by the pilot sections re-audit of 2026-10-22: the
+plan text; from 2026-11-16 the field's exam language is in assessment, see
+"UiT: the language field" below). *Why:* found by the pilot sections
+re-audit of 2026-10-22: the
 language field ended teaching methods and the re-sit rules stood in
 assessment on English pages (2,419, 2,192 and 2,228 UiT pages with the
 field, the block and the label). *Consequence:* in a sample of 2 named and
@@ -1877,18 +1879,45 @@ at Nord, where a COVID change of the exam form was the only assessment text.
 The median assessment section grows from 261 to 325 characters. *Since:*
 2026-10-13.
 
-**UiT: the language label and 2008 coursework gates.** The sub-heading
-"Undervisnings- og eksamensspråk" and its value ("Norsk") on UiT's 2018+ pages
-go (`.drop`); they were appended to teaching_methods on every such page. It
-states a language fact, not how the course is taught (the bare "Eksamensspråk"
-still maps to assessment, as above). In 2008 plans, "Beskriving av arbeidskrav:
-... Beskriving av eksamen: ..." and a numbered point on "godkjente oppgaver"
-now move from assessment to coursework_requirements like other inline gates.
-*Rejected:* mapping the heading to teaching_methods or assessment (it is
-neither). *Consequence:* 2,190 UiT teaching_methods sections change (median
-532 to 460 characters, all frames), 4 plans get a coursework section from the
-"Beskriving" rule and 1 from the numbered point; Nord and NTNU do not change.
-*Since:* 2026-10-22.
+**UiT: the language field and 2008 coursework gates.** UiT's field
+"Undervisnings- og eksamensspråk" ("Language of instruction and examination"
+on English pages, a heading of its own in 2008-2011) was appended to
+teaching_methods on every such page; from 2026-10-22 it went (`.drop`), as a
+language fact, not how the course is taught. From 2026-11-16 its exam
+language joins assessment, after the page's own assessment text and under the
+field's label (`section_headings` ".exam_language", `.exam_language_text()`):
+the sentences that say what language the exam or the work handed in is in
+("Eksamensspråket er norsk.", "Examination questions will be given in English,
+but may be answered either in English or a Scandinavian language.", "The
+thesis must be written in English.", "Undervisnings- og eksamensspråket er
+norsk"), and a bare value ("Norsk", "English", "Norsk og russisk."), which the
+label, naming both languages, makes the exam language as well; it is the
+field's value on most pages and the only statement of the exam language on
+them, as UiO's "Eksamensspråk: Norsk" is in assessment (as above). Sentences
+on the teaching, supervision or syllabus language alone ("Undervisningsspråket
+er norsk.", "Samisk kan benyttes når alle parter er samiskspråklig.", "The
+language of instruction is English and all of the syllabus material is in
+English.", "Emnet er norskspråklig.") stay out, and the label with them when
+nothing else is left. INN's field of the same name stays out (`.drop`). In
+2008 plans, "Beskriving av arbeidskrav: ... Beskriving av eksamen: ..." and a
+numbered point on "godkjente oppgaver" now move from assessment to
+coursework_requirements like other inline gates. *Why:* the spec counts the
+exam language as assessment design (user decision 2026-11-16; before, the
+field as a whole was taken to be a fact about the course). *Rejected:*
+mapping the heading to teaching_methods (the teaching language is not how the
+course is taught) or the whole field to assessment (its teaching-language
+sentences are not assessment); leaving the bare values out (they would leave
+more than half of UiT's plans without the exam language they state).
+*Consequence:* on 2026-10-22 2,190 UiT teaching_methods sections changed
+(median 532 to 460 characters, all frames), 4 plans got a coursework section
+from the "Beskriving" rule and 1 from the numbered point. On 2026-11-16, of
+40,913 UiT plan source pages (stored blocks, 2008-2026), 34,929 assessment
+sections gain the field (23,056 of all 36,053 with a bare value only, 12,997
+with sentences), 1,124 pages get an assessment section only from it (820 of
+them a bare value), and the median changed assessment section grows from 286
+to 352 characters; `course_plan`, the plan ids and the other sections do not
+change, nor do other institutions. *Since:* 2026-10-22; exam language
+2026-11-16.
 
 **A sentence that makes the exam conditional on coursework goes to coursework
 requirements, at every institution and from assessment, teaching methods and
