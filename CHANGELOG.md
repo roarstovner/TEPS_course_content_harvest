@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Coursework wordings: KHiO English gate/label and UiT 2008 gate split by a blank line (#538)
 - NMH sections: English headings and lettered component headings lose plan text (#536)
 - NMH resolver: project-variant series by code stem; check the 56 duplicate-page pairs (#532)
 - Steiner: PDF plan of PEL1 emne 4/5 goes to M-PEL2 only, not to its own course in the all-courses frame (#405)
