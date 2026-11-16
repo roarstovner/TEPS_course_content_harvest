@@ -554,7 +554,8 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 }
 
 # The prerequisites in a block that mixes them with admission (nord's
-# "Adgangsregulering", `section_headings` ".admission"): its sentences that
+# "Adgangsregulering", `section_headings` ".admission"; uit's "Opptakskrav";
+# nmh's summary field "Forhåndskrav:", whose label goes): its sentences that
 # name a prior course, credits or a passed part ("Bestått 90 stp. i
 # masterfaget og bestått FoU-oppgave.", "Gjennomført SAM1001 Samfunnsfag 1A
 # eller tilsvarende.") and are not admission ("Emnet er kun åpent for
@@ -576,16 +577,18 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # course code ("Avlagt bachelorgrad hvor det inngår en fordypning på minimum
 # 80 studiepoeng sosiologi ...", "Graden må ha en faglig fordypning ...",
 # .degree_regex): admission to the programme (course_plan_spec.md, known
-# deviations). "For studenter som tar emnet som videreutdanning er
-# forkunnskapskravet fullført lærerutdanning med minimum 60 studiepoeng i
-# norsk." names the subject and stays.
+# deviations), and (nmh) a passed admission audition ("Opptak til et av
+# studieprogrammene ... samt bestått opptaksprøve til ordningen."). "For
+# studenter som tar emnet som videreutdanning er forkunnskapskravet fullført
+# lærerutdanning med minimum 60 studiepoeng i norsk." names the subject and
+# stays.
 .admission_only_regex <- paste0(
   "(*UCP)(?i)^\\W*(?:søkere?|applicants?)\\b|må søkeren oppfylle|realkompetanse|studieplass|prioriter|kvote|",
   "upper secondary|^\\W*(?:i tillegg må |eventuelle )?forkunnskapskrav\\w* (?:til emnet )?(?:må )?(?:være|vera) oppfylt|",
   "forkurs|teknisk fagskole|realfagkurs|\\b(?:R1|R2|S1|S2)\\b|programfag|",
   "gjennomsnittskarakter|karaktergjennomsnitt|snittkarakter|karakteren beregnes|vurderingsuttrykk|minstekrav|",
   "motivasjon|yrkespraksis|års (?:relevant )?praksis|arbeidserfaring|fra utlandet|gir adgang til|kvalifiserer (?:også )?(?:til|for) opptak|",
-  "opptaksgrunnlag|søke opptak|vurderes for opptak|rangeres|av fordypningen|kreves karakteren|\\(jfr?\\.? opptakskrav|^\\W*fordypning(?:en)? (?:skal|må)|fordypning på minimum|fordypningsenhet|karakterkrav|^\\W*av de \\d+ (?:stp|studiepoeng)|^\\W*(?:anbefal\\w* )?(?:forkunnskap\\w*|forkunnskapskrav)(?:,? anbefal\\w* forkunnskap\\w*)?\\s*:?\\s*$")
+  "opptaksgrunnlag|søke opptak|vurderes for opptak|bestått opptaksprøve|rangeres|av fordypningen|kreves karakteren|\\(jfr?\\.? opptakskrav|^\\W*fordypning(?:en)? (?:skal|må)|fordypning på minimum|fordypningsenhet|karakterkrav|^\\W*av de \\d+ (?:stp|studiepoeng)|^\\W*(?:anbefal\\w* )?(?:forkunnskap\\w*|forkunnskapskrav)(?:,? anbefal\\w* forkunnskap\\w*)?\\s*:?\\s*$")
 .degree_regex <- paste0(
   "(?i)^\\W*(?:(?:avlagt|fullført|relevant|treårig) )?(?:bachelor\\w*|master(?:grad\\w*)?\\b|cand\\.)|^\\W*graden må|",
   "^\\W*fordypning:|^\\W*det kreves (?:godkjent )?utdanning|krav om (?:\\S+ )?bachelorgrad|",
@@ -593,7 +596,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 .admission_prerequisites <- function(text, prerequisites = "") {
   had <- stringr::str_squish(prerequisites)
   lines <- vapply(.unwrap_lines(stringr::str_split_1(text, "\n")), function(l) {
-    s <- sub("(?i)^(\\s*)opptakskrav\\s*:\\s*", "\\1", stringr::str_split_1(l, .sentence_end), perl = TRUE)
+    s <- sub("(?i)^(\\s*)(?:opptakskrav|forhåndskrav)\\s*:\\s*", "\\1", stringr::str_split_1(l, .sentence_end), perl = TRUE)
     k <- grepl(.real_prerequisite_regex, s, perl = TRUE) & !.is_admission_sentence(s) &
       !grepl(.admission_only_regex, s, perl = TRUE) &
       !(grepl(.degree_regex, s, perl = TRUE) & !grepl("\\b[A-ZÆØÅ]{2,}[A-ZÆØÅ0-9-]*\\d{3,}", s, perl = TRUE)) &
@@ -1051,10 +1054,11 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # a single course by students who meet the admission requirements ...") go
 # (".drop", .uit_admission_sentence()). hivolda:
 # the Didaktikk 2 courses open their coursework requirements with the passed
-# course before them ("Bestått didaktikkemne 1."), a prerequisite. fhs: a
+# course before them ("Bestått didaktikkemne 1."), a prerequisite. fhs and nmh: a
 # sentence in the course content that says only which courses it builds on
 # ("Emnet bygger på ING1502 Matematiske metoder 1.", "The course is based on
-# ING1501 ...") names prerequisites; one that goes on about the course ("...
+# ING1501 ...", "Emnet bygger på Hovedinstrument I (UTHO13).", nmh's codes
+# with two digits) names prerequisites; one that goes on about the course ("...
 # og skal gi studentene ...") or names no course code stays. hvl: the
 # engineering theses and projects say in their content how the work is done
 # ("Arbeidet utføres normalt i grupper og kan være et samarbeid med en
@@ -1129,6 +1133,10 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "emnet (?:er|inngår)(?: \\S+){0,3}? (?:obligatorisk|valgfri\\w*|valfri\\w*|valgfag|valgemne|valemne)\\b|",
   "obligatorisk (?:emne|del av|for|hvis|i)\\b|valgfritt(?: emne| masteremne)?\\b|",
   "(?:emnet )?kan (?:\\S+ ){0,2}brukes som støtteemne|emnet inngår (?:som obligatorisk|i mastergradsprogram))")
+.builds_on_move <- list(from = "course_content", to = "prerequisites", rx = paste0(
+  "^\\s*(?i:(?:dette )?emnet bygger (?:videre )?på|the course is based on) ",
+  "(?=[^.]*\\b[A-ZÆØÅ]{2,}\\d{2,})(?![^.]*\\b(?:og|and) (?:skal|vil|tar|gir|legger|søker|ser|introduserer|aims?|will)\\b)",
+  "(?!.*,\\s*$)"))
 .sentence_moves <- list(
   phs = list(
     list(from = "assessment", to = "coursework_requirements", rx = paste0(
@@ -1146,10 +1154,8 @@ extract_sections <- function(config, html, extracted_text, course_id) {
          list(from = "learning_outcomes", to = ".drop", rx = .uit_placement_regex)),
     lapply(c("course_content", "teaching_methods"), function(from)
       list(from = from, to = ".drop", rx = .uit_capacity_regex))),
-  fhs = list(list(from = "course_content", to = "prerequisites", rx = paste0(
-    "^\\s*(?i:(?:dette )?emnet bygger (?:videre )?på|the course is based on) ",
-    "(?=[^.]*\\b[A-ZÆØÅ]{2,}\\d{3,})(?![^.]*\\b(?:og|and) (?:skal|vil|tar|gir|legger|søker|ser|introduserer|aims?|will)\\b)",
-    "(?!.*,\\s*$)"))),
+  fhs = list(.builds_on_move),
+  nmh = list(.builds_on_move),
   hivolda = list(list(from = "coursework_requirements", to = "prerequisites",
                       rx = "(?i)^\\s*bestått didaktikkemne \\d\\.?\\s*$")),
   hvl = list(list(from = "course_content", to = "teaching_methods",

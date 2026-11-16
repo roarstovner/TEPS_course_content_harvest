@@ -505,8 +505,24 @@ institution_configs <- list(
     # h2s ("Kort om emnet", "Læringsmål", "Arbeidskrav", "Avsluttende vurdering")
     section_strategy = "html",
     # English pages: "Overview" is the course's content, "Structure" its
-    # "Organisering" (CONCOM70)
-    section_headings = c("overview" = "course_content", "structure" = "teaching_methods")
+    # "Organisering" (CONCOM70). The summary list before "Kort om emnet"
+    # (section_label_selector): the prior knowledge it names ("Forhåndskrav:
+    # Bestått 1. avdeling ...", not "Opptak til ...") joins prerequisites
+    # (".admission"), the reading-list size ("Pensum: 5-600 sider") the
+    # reading list, the exam form ("Avsluttende vurdering: Eksamenskonsert.",
+    # on some pages the only assessment text) and the permitted thesis
+    # languages assessment; its other fields (when, teaching language, level,
+    # credits, programmes, teaching times, coordinator) map nowhere: a facts
+    # box (2026-11-16)
+    section_headings = c("overview" = "course_content", "structure" = "teaching_methods",
+                         "forhåndskrav" = ".admission", "anbefalte forkunnskaper" = ".admission",
+                         "forkunnskaper" = ".admission", "prerequisites" = ".admission",
+                         "pensum" = "reading_list", "avsluttende vurdering" = "assessment",
+                         "final assessment" = "assessment", "tillatte avhandlingsspråk" = "assessment"),
+    # the summary list: first in the plan's text, before its first h2 (in an
+    # element the reader walks anyway, so the fulltext stays as it was)
+    section_label_selector = paste0("//main[@id='main']//div[contains(@class, 'text-content') and ",
+                                    "not(preceding::div[contains(@class, 'text-content')])]/*[1][self::ul][following-sibling::h2]")
   ),
 
   nord = list(

@@ -16,7 +16,8 @@
 #   keep     a sub-heading whose text stays as the first line of its section
 #   tag      the element the text came from; "p" is a paragraph (a blank line
 #            around it in the fulltext), "p+" the rest of a paragraph split at
-#            a sub-heading
+#            a sub-heading, "+" the rest of a list of labelled fields
+#            (`section_label_selector`), joined to it verbatim
 #   facts    the block is part of the title or facts box (`facts`): in the
 #            fulltext, but in no section, not in the plan id and not counted
 #            by the shell rule
@@ -28,7 +29,12 @@
 #            or first by `section_headings`), sections of their own by
 #            `section_scope`; text before the first heading goes to
 #            `section_initial` (default: dropped); an element in
-#            `section_untitled` is a section without a heading. With
+#            `section_untitled` is a section without a heading; an element
+#            in `section_label_selector` is a list of labelled fields
+#            ("Forhåndskrav: ...", nmh's summary list): each item's label
+#            (before a colon or line break) opens the section
+#            `section_headings` maps it to (only them; unmapped: none), and
+#            the item is its text. With
 #            `html_fn` (vid) the walk reads the HTML it gives instead of the
 #            page
 #            When `section_fields` is set (hivolda), each top-level
@@ -62,6 +68,7 @@
     scope             = ic$section_scope,
     initial           = ic$section_initial,
     untitled          = ic$section_untitled,
+    labels            = ic$section_label_selector,
     text_header       = ic$section_text_header,
     fields            = ic$section_fields,
     inline_coursework = isTRUE(ic$section_inline_coursework),
@@ -118,7 +125,9 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
   if (nrow(b) == 0) return(NA_character_)
   prev <- c("", b$tag[-nrow(b)])
   gap <- b$tag == "p" | (prev %in% c("p", "p+") & b$tag != "p+")
-  paste0(c("", ifelse(gap, "\n\n", "\n")[-1]), trimws(b$text), collapse = "")
+  sep <- ifelse(gap, "\n\n", "\n")
+  sep[b$tag == "+"] <- ""   # the rest of a block cut for the sections, verbatim
+  paste0(c("", sep[-1]), ifelse(b$tag == "+", b$text, trimws(b$text)), collapse = "")
 }
 
 # --- html ---------------------------------------------------------------------
@@ -188,6 +197,7 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
     xml2::xml_set_attr(nodes, "data-section", cfg$untitled[[sel]])
     xml2::xml_set_attr(nodes, "data-scope", "1")
   }
+  if (!is.null(cfg$labels)) xml2::xml_set_attr(.select(root, cfg$labels), "data-block", "label")
   if (!is.null(cfg$fields)) {
     fields <- xml2::xml_find_all(root, paste0(
       ".//div[contains(@class, 'field-') and ",
@@ -243,6 +253,28 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
       out$add(role, txt, sec, g = tag)
     } else if (identical(mark, "sub")) {
       .sub_blocks(node, out$add, cfg$sub_map)
+    } else if (identical(mark, "label")) {
+      # each item opens its section by an empty heading; its text continues
+      # the list's verbatim (tag "+"), so the fulltext reads the list as before
+      txt <- trimws(.html_text2(node))
+      items <- trimws(rvest::html_text2(xml2::xml_find_all(node, "./li")))
+      ends <- integer()
+      for (x in items[nzchar(items)]) {
+        k <- regexpr(x, substring(txt, max(ends, 0) + 1), fixed = TRUE)
+        if (k < 0) break
+        ends <- c(ends, max(ends, 0) + k + nchar(x) - 1)
+      }
+      seg <- character()   # an item not found: the list read whole
+      if (length(ends) && length(ends) == sum(nzchar(items))) {
+        ends[length(ends)] <- nchar(txt)
+        seg <- substring(txt, c(1, utils::head(ends, -1) + 1), ends)
+      }
+      for (k in seq_along(seg)) {
+        lab <- stringr::str_match(trimws(seg[k]), "^([^:：\n]{1,40}?)\\s*[:：\n]")[, 2]
+        out$add("heading", "", .exact_section(lab, cfg$sub_map, map = FALSE))
+        out$add("text", seg[k], g = if (k == 1) tag else "+")
+      }
+      if (!length(seg)) out$add("text", txt, g = tag)
     } else if (identical(mark, "field")) {
       read_sections <<- .field_block(node, cfg$fields, read_sections, out$add)
     } else {

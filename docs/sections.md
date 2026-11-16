@@ -133,6 +133,12 @@ Fields for the `html` reader:
   `c(selector = section)` (nord’s short description
   `div.placeholder-text` is course_content; the title and course code
   before it stay out).
+- `section_label_selector`: a list of labelled fields (“Forhåndskrav:
+  …”, nmh’s summary list before “Kort om emnet”). Each item’s label, the
+  text before its colon or line break, opens the section
+  `section_headings` maps it to (only those; an unmapped label opens
+  none, so its item is in no section), and the item is its text; the
+  fulltext reads the list as before.
 - `section_fields`: hivolda’s Drupal fields (`div.field-<name>`) are the
   headings, each mapped to a section by its class name; text outside the
   fields (title, programmes) is in the fulltext but in no section.
@@ -306,13 +312,14 @@ ved …”) out of the sections when every clause says who may take the
 course and none names a prerequisite (`.uit_admission_sentence()`:
 “Emnet utgjør praksisdelen i utdanningen og kan ikke tas som
 enkeltemne.” stays); hivolda’s “Bestått didaktikkemne 1.” from
-coursework to prerequisites; and fhs’s course-content sentence that
-names only the courses it builds on (“Emnet bygger på ING1502
-Matematiske metoder 1.”) to prerequisites. At phs the paragraphs under
-“Læringsutbytte” before “Kunnskap” that describe the subject, not the
-outcomes (“Pedagogikk i instruktørutdanningen vektlegger …”), go to
-course content (`.split_lo_intro()`); a lead-in (“Etter gjennomført emne
-har studenten følgende læringsutbytte:”) stays.
+coursework to prerequisites; and fhs’s and nmh’s course-content sentence
+that names only the courses it builds on (“Emnet bygger på ING1502
+Matematiske metoder 1.”, “Emnet bygger på Hovedinstrument I (UTHO13).”)
+to prerequisites. At phs the paragraphs under “Læringsutbytte” before
+“Kunnskap” that describe the subject, not the outcomes (“Pedagogikk i
+instruktørutdanningen vektlegger …”), go to course content
+(`.split_lo_intro()`); a lead-in (“Etter gjennomført emne har studenten
+følgende læringsutbytte:”) stays.
 
 `.clean_sections()` removes `.drop` rows, strips page widgets, pointers
 and stock logistics sentences from assessment/coursework

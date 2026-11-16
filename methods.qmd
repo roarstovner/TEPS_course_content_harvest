@@ -2483,6 +2483,53 @@ pages with an "Adgangsregulering" block, all by removing admission rules
 (degrees, grade averages, work experience). `course_plan` and the plan ids
 do not change. *Since:* 2026-11-16.
 
+**NMH: the summary list's prior knowledge, exam form and reading-list size
+join their sections.** NMH's plans open with a list of labelled fields before
+"Kort om emnet" ("Gjennomføres:", "Avsluttende vurdering:", "Forhåndskrav:",
+"Undervisningsspråk:", on some pages "Emnetype:", "Pensum:" and others),
+which no section read: the html reader had no section open before the first
+heading, and in a few plans (VEILED53) an extra "Kort om emnet" heading put
+the whole list into the course content. The list is now read field by field
+(`section_label_selector`, labels looked up in NMH's `section_headings`
+only). "Forhåndskrav" (and "Forkunnskaper", "Anbefalte forkunnskaper",
+"Prerequisites") is read like Nord's "Adgangsregulering" (".admission"): the
+prior courses and passed parts it names join prerequisites ("Bestått 1.
+avdeling i kandidatstudiet i utøving.", "DIG10/MUSTEK10 (obligatorisk i 1.
+avdeling) eller tilsvarende"), without the label, and admission alone
+("Opptak til mastergradsstudiet i musikkpedagogikk.") and a passed admission
+audition ("... samt bestått opptaksprøve til ordningen.",
+`.admission_only_regex`) stay out. "Pensum" ("5-600 sider felles og 250-300
+sider selvvalgt") goes to the reading list (user decision 2026-11-16). The
+exam form ("Avsluttende vurdering: Eksamenskonsert.") and the permitted thesis
+languages go to assessment, which by the spec holds the form and the exam
+language. The other fields stay in no section: when the course runs, its
+teaching language, type, level, credits, extent, teaching times, coordinator
+and programmes are the facts box, timetable and programme lists of the spec.
+FHS's move of a course-content sentence that names only the courses the
+course builds on to prerequisites now also applies to NMH, whose codes have
+two digits ("Emnet bygger på Hovedinstrument I (UTHO13).").
+*Why:* sections audit of 2026-11-15 (NMH): "Forhåndskrav" is often the only
+prerequisite text on the page, so 0 of 20 sampled NMH plans had
+prerequisites. *Rejected:* dropping the exam-form field as part of the facts
+box (on 59 of 4,348 pages with the field it is the only assessment text,
+"Avsluttende vurdering: Vurdering fra faglærer."; on the others it repeats the
+form in one line before the "Avsluttende vurdering" section); mapping
+"Forhåndskrav" to prerequisites whole (mostly admission); a heading-map row
+for the labels (the h2 "Avsluttende vurdering" shares the name, and labels
+are not headings); reading every labelled list item on the page (lists in the
+sections, "Del 1: ...", would lose their text). *Consequence* (all 5,174 NMH
+raw pages of the harvests of 2021-2026, HEAD against the new code): 4,386
+pages change. Prerequisites are new on 799 pages (from none); assessment
+gains the exam-form line on 4,321 pages and is new on 54; the course
+content loses the "bygger på" sentence on 312 pages and the summary list on
+33 (VEILED53 and the like); the reading list is new on 25. Kept
+prerequisites that name admission together with a passed part ("Kvalifisert
+for opptak til et ph.d.-programmet ... og bestått opplæringsdel.") stay whole,
+as the spec says. FHS, Nord and UiT: no change in samples of 30 pages per
+year, and none of their pages has a "Forhåndskrav:" label, "bestått
+opptaksprøve" or a "bygger på" sentence with a two-digit code.
+`course_plan` and the plan ids do not change. *Since:* 2026-11-16.
+
 **Resit and examiner rules stay in assessment at UiT, NTNU, Nord and FHS,
 a known deviation from the spec.** The spec puts resit, postponement and
 examiner rules outside the sections; the sections audit of 2026-11-05 found

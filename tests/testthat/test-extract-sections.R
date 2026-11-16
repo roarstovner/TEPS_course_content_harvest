@@ -862,6 +862,42 @@ test_that("nmh: English headings and lettered components keep their text", {
   expect_equal(s[["teaching_methods"]], "Rehearsals.")
 })
 
+test_that("nmh: the summary list's fields (section_label_selector)", {
+  cfg <- .block_cfg(get_institution_config("nmh"))
+  summary <- paste0(
+    "<ul><li><strong>Gjennomføres</strong>: 3. og 4. studieår.</li>",
+    "<li><strong>Avsluttende vurdering</strong>: Eksamenskonsert.</li>",
+    "<li><strong>Forhåndskrav</strong>: Bestått 1. avdeling i kandidatstudiet. Opptak til masterstudiet i utøving.</li>",
+    "<li>Undervisningsspråk: Norsk.<br></li><li><strong>Pensum</strong>: 5-600 sider</li></ul>")
+  body <- paste0("<h2>Kort om emnet</h2><p>Emnet gjelder sang.</p><p>Emnet bygger på Hovedinstrument I (UTHO13).</p>",
+                 "<h2>Læringsmål</h2><ul><li><strong>Del 1</strong>: Tolke musikk.</li></ul>",
+                 "<h2>Avsluttende vurdering</h2><p>Konsert på 60 minutter.</p>")
+  page <- function(x) paste0("<main id='main'><section><div class='text__content text-content'>", x,
+                             "</div></section></main>")
+  for (html in c(page(paste0(summary, body)),
+                 # VEILED53: a "Kort om emnet" heading over the summary too
+                 sub("<section>", "<section><h2>Kort om emnet</h2>", page(paste0(summary, body))))) {
+    s <- sections_of(html, cfg)
+    expect_equal(s[["prerequisites"]], "Emnet bygger på Hovedinstrument I (UTHO13).\n\nBestått 1. avdeling i kandidatstudiet.")
+    expect_equal(s[["reading_list"]], "Pensum: 5-600 sider")
+    expect_equal(s[["course_content"]], "Emnet gjelder sang.")
+    expect_equal(s[["assessment"]], "Avsluttende vurdering: Eksamenskonsert.\n\nKonsert på 60 minutter.")
+    expect_false(any(grepl("Gjennomføres|Undervisningsspråk", s)))
+    # a list in a later section is no summary
+    expect_equal(s[["learning_outcomes"]], "Del 1: Tolke musikk.")
+    # the fulltext reads the fields as one list, as without them
+    expect_equal(.blocks_text(page_blocks(html, NA, cfg)),
+                 .blocks_text(page_blocks(html, NA, utils::modifyList(cfg, list(labels = NULL)))))
+  }
+  # "Opptak til ..." alone gives no prerequisites; a two-digit code is prior knowledge
+  s <- sections_of(page(paste0("<ul><li>Forhåndskrav: Opptak til masterstudiet i musikkteori.</li></ul>", body)), cfg)
+  expect_false(grepl("Opptak", s[["prerequisites"]]))
+  s <- sections_of(page(paste0("<ul><li>Forhåndskrav: DIG10/MUSTEK10 eller tilsvarende.</li></ul>", body)), cfg)
+  expect_match(s[["prerequisites"]], "\n\nDIG10/MUSTEK10 eller tilsvarende\\.$")
+  expect_equal(.admission_prerequisites(paste("Opptak til et av studieprogrammene emnet kan inngå i samt bestått",
+                                              "opptaksprøve til ordningen. Bestått ENSLED10.")), "Bestått ENSLED10.")
+})
+
 test_that("practicum headings are teaching methods", {
   expect_equal(match_heading_to_section("Praksis"), "teaching_methods")
   expect_equal(match_heading_to_section("Gjennomføring av praksis"), "teaching_methods")
