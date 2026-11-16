@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Build 2026-11-16 00:46: privacy_check 3 rows (uib 'Administrative responsible:\n\n<name>' English staff label leak; DBH course_name 'Sensor Innovation Project' false positive) + metrics decreases to explain (all frame median_chars: nmbu -25%, uis -14%, uio -11%, mf, fhs) (#546)
 - usn: 99 GLU offerings 2026 without URL (e.g. MG1PP1_1_2026_VÅR) — render in Chrome; if a 2026 plan exists, the resolver's early break is a bug (#544)
 - uit: lecturer names left in schedule lines ('(Henry Minde) Tuesday 12.15-14.00') (#530)
 - Remove cohort/programme-version years from course_plan (nmh 'Startkull 2022', khio '(2022)', fhs 'Studieår 2022') (#533)
