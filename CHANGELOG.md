@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- USER DECISION: UiT exam-language field; NMH 'Pensum:' reading load (#542)
 - NMH/KHiO sections: stock admin sentences and programme footer (#539)
 - Coursework wordings: KHiO English gate/label and UiT 2008 gate split by a blank line (#538)
 - NMH sections: English headings and lettered component headings lose plan text (#536)
