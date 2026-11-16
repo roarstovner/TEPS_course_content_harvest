@@ -783,6 +783,27 @@ test_that("exam aids, exam language and absence rules keep their heading as a li
                "Skriftlig eksamen, 5 timer\nTillatte hjelpemidler: Ordbok.")
 })
 
+test_that("nmh: English headings and lettered components keep their text", {
+  # an unmapped component heading stays a line of the open section; a
+  # lettered "D. Praksis" line opens the practice copy outside teaching methods
+  html <- "<main><h2>Innhold</h2><h3>C. Gehørtrening</h3><p>Intervaller.</p>
+    <h3>D. Praksis</h3><ul><li>Dirigering av øvingsensembler.</li></ul>
+    <h2>D: Støtteemner</h2><p>Arrangering.</p>
+    <h2>Arbeidskrav</h2><p>Deltakelse.</p><h2>D: Støtteemner</h2><p>To arrangementer.</p>
+    <h2>Learning objectives</h2><p>Interpret music.</p>
+    <h2>Overview</h2><p>Planning a concert.</p>
+    <h2>Structure</h2><p>Rehearsals.</p>
+    <h2>Course requirements</h2><p>A recorded performance.</p></main>"
+  cfg <- utils::modifyList(html_cfg(), list(sub_map = get_institution_config("nmh")$section_headings))
+  s <- sections_of(html, cfg)
+  expect_match(s[["course_content"]], "D\\. Praksis.*D: Støtteemner\nArrangering\\..*Planning a concert\\.$")
+  expect_equal(s[["practice"]], "Dirigering av øvingsensembler.")
+  expect_equal(s[["coursework_requirements"]],
+               "Deltakelse.\n\nD: Støtteemner\nTo arrangementer.\n\nA recorded performance.")
+  expect_equal(s[["learning_outcomes"]], "Interpret music.")
+  expect_equal(s[["teaching_methods"]], "Rehearsals.")
+})
+
 test_that("practicum headings are teaching methods", {
   expect_equal(match_heading_to_section("Praksis"), "teaching_methods")
   expect_equal(match_heading_to_section("Gjennomføring av praksis"), "teaching_methods")

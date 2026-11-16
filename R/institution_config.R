@@ -503,7 +503,10 @@ institution_configs <- list(
     # the handbook's cohort, the academic year it starts (resolve_urls_nmh_batch())
     plan_years = "url",
     # h2s ("Kort om emnet", "Læringsmål", "Arbeidskrav", "Avsluttende vurdering")
-    section_strategy = "html"
+    section_strategy = "html",
+    # English pages: "Overview" is the course's content, "Structure" its
+    # "Organisering" (CONCOM70)
+    section_headings = c("overview" = "course_content", "structure" = "teaching_methods")
   ),
 
   nord = list(

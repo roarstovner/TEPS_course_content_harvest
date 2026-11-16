@@ -236,7 +236,11 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
     if (identical(mark, "heading")) {
       txt <- rvest::html_text2(node)
       sec <- .exact_section(txt, cfg$sub_map, map = FALSE)
-      out$add("heading", txt, if (is.na(sec)) match_heading_to_section(txt) else sec, g = tag)
+      if (is.na(sec)) sec <- match_heading_to_section(txt)
+      # an unmapped component heading ("D: Støtteemner", nmh) stays a line of
+      # the section open around it
+      role <- if (is.na(sec) && grepl(.component_prefix, stringr::str_squish(txt), perl = TRUE)) "sub" else "heading"
+      out$add(role, txt, sec, g = tag)
     } else if (identical(mark, "sub")) {
       .sub_blocks(node, out$add, cfg$sub_map)
     } else if (identical(mark, "field")) {

@@ -38,7 +38,8 @@
 #' goes to the overlay section `practice`, up to the next heading, start or
 #' end, or the next sub-heading (under a practice heading only one that
 #' names a section); the practice heading may also be a line of its own
-#' inside teaching methods (uit's "Praksis" paragraph), when the text after
+#' inside teaching methods (uit's "Praksis" paragraph), or anywhere as a
+#' lettered component ("D. Praksis", nmh), when the text after
 #' it opens with a sentence or a line with a count or three words (uis's
 #' "15 dager veiledet praksis"), not a label or list item (not in ntnu's
 #' learning-forms list "Praksis", "Veiledning", "Obligatoriske arbeidskrav:").
@@ -78,7 +79,9 @@ sectionize <- function(blocks) {
     if (role %in% c("heading", "start", "end") ||
         (role == "sub" && (practice || identical(over, "sub") || !is.na(section)))) {
       flush_practice(if (practice && (role == "heading" || (role == "sub" && !is.na(parent)))) role else NA_character_)
-    } else if (role == "text" && is.na(over) && practice && identical(current, "teaching_methods") &&
+    } else if (role == "text" && is.na(over) && practice &&
+               (identical(current, "teaching_methods") ||
+                  grepl(.component_prefix, stringr::str_squish(text), perl = TRUE)) &&
                .opens_sentence(blocks$text[i + 1])) {
       flush_practice("sub")
     } else if (!is.na(over)) {

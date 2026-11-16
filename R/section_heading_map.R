@@ -40,6 +40,7 @@ section_heading_patterns <- tibble::tribble(
   "compulsory activities",                 "coursework_requirements", FALSE,
   "work requirements",                     "coursework_requirements", FALSE,
   "coursework requirements",               "coursework_requirements", FALSE,
+  "course requirements",                   "coursework_requirements", TRUE,   # nmh English pages
 
   # --- .drop: exam logistics (before assessment, which "eksamen" would hit) ---
   # The codebook keeps assessment design and excludes exam logistics.
@@ -203,6 +204,7 @@ section_heading_patterns <- tibble::tribble(
   "learning outcome",                      "learning_outcomes",      FALSE,
   "objectives of the course",              "learning_outcomes",      TRUE,
   "objective of the course",               "learning_outcomes",      TRUE,   # uit 2008-2011
+  "learning objectives",                   "learning_outcomes",      TRUE,   # nmh English pages
   "mål",                                   "learning_outcomes",      TRUE,
   # English sub-headings (inn English plans). Exact, so "Prerequisite
   # knowledge" and the like are not caught.
@@ -319,8 +321,15 @@ section_heading_patterns$practice <- section_heading_patterns$pattern %in% c(
   "faget i praksis", "praksis", "gjennomføring av praksis", "practice",
   "supervised professional training")
 
+# A lettered or numbered component of a course ("D: Støtteemner", "D.
+# Praksis", "II. Bruksinstrument"; nmh): an unmapped heading of this form is a
+# sub-heading of the open section (.html_blocks()), and the practice tests
+# read the heading after it.
+.component_prefix <- "^(?:[A-H]|[IVX]{1,4})[.:]\\s+(?=\\p{L})"
+
 .is_practice_heading <- function(heading) {
   h <- sub("[:：]\\s*$", "", tolower(stringr::str_squish(heading)))
+  h <- sub(.component_prefix, "", h, perl = TRUE, ignore.case = TRUE)
   h %in% section_heading_patterns$pattern[section_heading_patterns$practice]
 }
 

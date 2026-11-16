@@ -39,8 +39,10 @@ Each page is read once into a **block table** (`R/blocks.R`): one row per
 heading, sub-heading or piece of text, in document order, with the section a
 heading maps to. `sectionize()` (`R/extract_sections.R`) then walks the blocks
 with the same rules for every institution: a heading opens its section (an
-unmapped one closes it), a sub-heading switches section only inside a mapped
-one, and text goes to the open section. What differs between institutions is
+unmapped one closes it, unless it names a lettered or numbered component of
+the course, "D: Støtteemner" (nmh), which stays a line of the open
+section), a sub-heading switches section only inside a mapped one, and
+text goes to the open section. What differs between institutions is
 how their pages are read, set by `section_strategy` and the other `section_*`
 fields in `R/institution_config.R`:
 
@@ -124,7 +126,9 @@ Fields for the `html` reader:
   (`.drop`), and the Etterretningsskolen's "Emnets oppbygning" (or
   "oppbygging") and
   "Arbeidsformer og læringsaktiviteter" (teaching_methods; the map has the
-  latter only as a substring pattern, which a `<p>` does not match).
+  latter only as a substring pattern, which a `<p>` does not match). nmh's
+  English pages: "Overview" (course_content) and "Structure" (its
+  "Organisering", teaching_methods), too generic for the map.
 
 Other fields:
 
@@ -188,8 +192,10 @@ line. A practice sub-heading counts only inside a mapped section (not in
 oslomet's Fagplan block, whose practice parts come through `section_pointer`
 `add`), and a text line that is a practice heading opens the copy inside
 teaching methods (uit's "Praksis" paragraph), not elsewhere (an exam row
-"Praksis"), and only when the text after it opens with a sentence or a
-line with a count ("15 dager") or three words (uis's "15 dager veiledet praksis";
+"Praksis") unless it is a lettered component ("D. Praksis", nmh, in course
+content; the practice tests read the heading after such a letter), and
+only when the text after it opens with a sentence or a line with a count
+("15 dager") or three words (uis's "15 dager veiledet praksis";
 `.opens_sentence()`), not with a label or list item: ntnu's learning-forms
 list ("Praksis", "Veiledning", "Utfyllende informasjon:", "Obligatoriske
 arbeidskrav:") is not practice text. Labels ("Praksisstudier", "Omfang av praksisstudier") and
