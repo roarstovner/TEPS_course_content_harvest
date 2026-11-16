@@ -103,6 +103,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Steiner: PDF plan of PEL1 emne 4/5 goes to M-PEL2 only, not to its own course in the all-courses frame (#405)
+- Data notes: INN in 'Semester registration in DBH'; OsloMet 2026/27 pages without the programme 'Fagplan' block; per-course TE 2026 count (#545)
+- Data notes: INN no practice section; MF practice heading check; NHH spring = autumn version; Steiner PEL1/M-PEL2 unconfirmed; UiB English-only pages confirmed (#534)
 - English staff roles with the name on the same line pass anonymizer and check ('Course leader: <name>', 'Other lecturers: <name> (PRIO) and ...', 'Course teacher:', 'Guest lecturers:'), ~29 plans (#547)
 - Build 2026-11-16 00:46: privacy_check 3 rows (uib 'Administrative responsible:\n\n<name>' English staff label leak; DBH course_name 'Sensor Innovation Project' false positive) + metrics decreases to explain (all frame median_chars: nmbu -25%, uis -14%, uio -11%, mf, fhs) (#546)
 - usn: 99 GLU offerings 2026 without URL (e.g. MG1PP1_1_2026_VÅR) — render in Chrome; if a 2026 plan exists, the resolver's early break is a bug (#544)
