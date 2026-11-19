@@ -1064,6 +1064,26 @@ UiA plans get new ids, and two pairs of UiT plans that differed only by such
 glue merge (SOA-3905 spring and autumn 2011; LER-1201 spring 2018). *Since:*
 2026-10-08.
 
+**Letters are in one Unicode form, and invisible characters go.** A page is
+read after its HTML or text is put in Unicode NFC (a letter and a combining
+accent become one character) and stripped of soft hyphens (U+00AD), zero-width
+spaces (U+200B), byte order marks (U+FEFF) and direction marks (U+200E/F),
+literal or as HTML entities (`clean_chars()`). *Why:* 458 of 17,005
+teacher-ed plans held such characters (2026-11-19): 447 "å" written as "a"
+and a combining ring in 181 plans (most USN, INN, HiOF), which a search for
+"å", a heading or an anonymizer pattern does not match; 306 soft hyphens in
+57 plans (NLA, NTNU, HiOF, HVL), which split words ("obli-ga-to-risk", a
+soft hyphen at each dash); 366 zero-width spaces in 205 plans (HVL, UiT,
+Nord) and 15 byte order marks (NLA). *Rejected:* cleaning only the
+published text, after the sections and the anonymizer had read the old
+one; also turning non-breaking spaces (1,609 USN and NLA plans) into
+spaces, a separate decision: they split no word.
+*Consequence:* the text of these plans changes only in these characters and
+the whitespace next to them; they get new plan ids, and two UiB plans of
+HIDID112 (2024; 2025–2026) that differed only by them merge. Seven HiOF plans'
+angle bracket U+2329 becomes U+3008, its canonical form. A second combining
+ring after an "å" in the source (9 times) stays. *Since:* 2026-11-19.
+
 ## What the text holds
 
 ```{r}

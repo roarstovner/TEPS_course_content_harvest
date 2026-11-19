@@ -239,3 +239,16 @@ test_that("a numbered requirement keeps its labels until the next heading (usn)"
   expect_match(s$raw_text[2], "INNHOLD:\nPlan for perioden.\nVURDERING:\nGodkjent.$")
   expect_equal(s$raw_text[3], "Bestått/ikke bestått.")
 })
+
+test_that("a page is read in NFC, without soft hyphens or zero-width characters", {
+  # "a" + combining ring (U+030A) is one letter and the heading maps; a soft hyphen
+  # (literal or &shy;), a zero-width space and a byte order mark go
+  b <- page_blocks(paste0("<main><h2>Vilka\u030ar for a\u030a avlegge eksamen</h2>",
+                          "<p>Studenten kan le\u0301se obli\u00adga&shy;torisk opp\u200bgave ",
+                          "pa\u030a \ufeffnorsk</p></main>"), NA, html_reader())
+  expect_equal(b$text, c("Vilk\u00e5r for \u00e5 avlegge eksamen",
+                         "Studenten kan l\u00e9se obligatorisk oppgave p\u00e5 norsk"))
+  expect_equal(b$section[1], "coursework_requirements")
+  t <- page_blocks(NA, "Pensum\nfra\u030a b\u00f8ker \u00adog\u200b artikler", list(reader = "text"))
+  expect_true(any(t$text == "fr\u00e5 b\u00f8ker og artikler"))
+})

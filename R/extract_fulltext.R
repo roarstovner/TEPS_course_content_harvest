@@ -2,6 +2,24 @@
 # The plan text (`extracted_text`) of each harvested page: the page's blocks
 # (R/blocks.R) as text, or for pages without HTML the text the harvest kept.
 
+# Characters that change how text matches but not what it says, made the same
+# before a page is read (2026-11-19), so that blocks, headings, sections, the
+# anonymizer and the plan id all see the same text: letters in Unicode NFC
+# ("a" + combining ring U+030A becomes "å": 447 such in 181 teacher-ed plans,
+# which a search for "å" and the heading and name patterns miss), without
+# soft hyphens (U+00AD, 306 in 57 plans: they split words), zero-width
+# spaces (U+200B, 366 in 205 plans), byte order marks (U+FEFF, 15 nla plans)
+# and left-to-right/right-to-left marks (U+200E/F). Literal or as an HTML
+# entity. Used on the HTML or text a page is read from (page_blocks()) and on
+# the text kept without blocks (extract_fulltext_from_raw()).
+.invisible_chars <- paste0("[\\x{00AD}\\x{200B}\\x{200E}\\x{200F}\\x{FEFF}]|",
+                           "&(?:shy|ZeroWidthSpace|lrm|rlm|#(?:173|8203|8206|8207|65279)|",
+                           "#x0*(?:ad|200b|200e|200f|feff));")
+clean_chars <- function(x) {
+  stringi::stri_replace_all_regex(stringi::stri_trans_nfc(x), .invisible_chars, "",
+                                  opts_regex = stringi::stri_opts_regex(case_insensitive = TRUE))
+}
+
 # Parse HTML without script/style text (ntnu's "function toggleRooms(...)"
 # ended up in assessment; uit's page scripts) or form widgets
 # (uib's semester picker "Vel emnebeskrivelse for semester 2027 Vår ...").
@@ -69,7 +87,7 @@
 extract_fulltext_from_raw <- function(df, config) {
   stored <- df[["extracted_text"]] %||% rep(NA_character_, nrow(df))
   html <- df[["html"]] %||% rep(NA_character_, nrow(df))
-  switch(config$strategy,
+  clean_chars(switch(config$strategy,
     noop       = rep(NA_character_, nrow(df)),
     pdf_split  = stored,
     shadow_dom = .cleanup_usn_text(html),
@@ -84,7 +102,7 @@ extract_fulltext_from_raw <- function(df, config) {
         page_fulltext(page_blocks(html[i], NA, cfg, df$course_id[i]), config)
       }, character(1))
     }
-  )
+  ))
 }
 
 #' The extracted_text of a page from its blocks

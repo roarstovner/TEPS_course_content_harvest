@@ -34,6 +34,7 @@ format: md
 | `fetch_html_with_checkpoint(courses, checkpoint_dir)` | `R/checkpoint.R` | Download HTML, each URL once, skipping URLs already in the institution's checkpoints |
 | `checkpoint_dir()`, `read_checkpoint()`, `checkpoint_append()`, `remove_checkpoints()` | `R/checkpoint.R` | The checkpoints: folders of append-only Parquet parts (["About Checkpointing"](harvesting.md#about-checkpointing)) |
 | `extract_fulltext_from_raw(df, config)` | `R/extract_fulltext.R` | `extracted_text` from the raw harvest, per strategy |
+| `clean_chars(x)` | `R/extract_fulltext.R` | Text in Unicode NFC, without soft hyphens and zero-width characters; what a page is read from |
 | `page_blocks(html, text, cfg)` | `R/blocks.R` | Read one page into a block table |
 | `page_fulltext(blocks, config)` | `R/extract_fulltext.R` | A page's `extracted_text` from its blocks |
 | `read_harvest(files, config, content)` | `R/pipeline.R` | One institution's raw files combined (`harvest_files()`): the page each offering takes; current sites matched by course code and academic year |

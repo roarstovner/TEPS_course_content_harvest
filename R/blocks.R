@@ -81,13 +81,16 @@
 
 #' Read one page into a block table
 #'
-#' @param html Raw HTML of the page (NA for pages without HTML).
+#' @param html Raw HTML of the page (NA for pages without HTML). Both it and
+#'   `text` are read after clean_chars() (NFC, no soft hyphens).
 #' @param text The page's extracted_text, read by the text reader.
 #' @param cfg Reader settings from .block_cfg().
 #' @param course_id The offering, for nla's academic year and vid's term
 #'   (`html_fn`).
 #' @return A block table (see the top of R/blocks.R).
 page_blocks <- function(html, text, cfg, course_id = NA_character_) {
+  html <- clean_chars(html)
+  text <- clean_chars(text)
   switch(cfg$reader,
     html   = .html_blocks(if (is.null(cfg$html_fn)) html else cfg$html_fn(html, course_id), cfg),
     json   = .json_blocks(html, course_id, cfg$facts),

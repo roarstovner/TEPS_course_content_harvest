@@ -194,3 +194,10 @@ test_that("hiof: the table of contents' heading goes, the plan's headings stay",
     <h2>Læringsutbytte</h2><p>Kan ting.</p></div>"
   expect_equal(.blocks_text(page_blocks(html, NA, cfg)), "Emne\nLæringsutbytte\n\nKan ting.")
 })
+
+test_that("text kept without blocks is in NFC, without soft hyphens or zero-width characters", {
+  config <- list(strategy = "pdf_split", section_strategy = "text")
+  df <- tibble::tibble(course_id = "a", html = NA_character_,
+                       extracted_text = "Emnet gir ma\u030aling og vur\u00adde\u200bring\u200e")
+  expect_equal(extract_fulltext_from_raw(df, config), "Emnet gir m\u00e5ling og vurdering")
+})

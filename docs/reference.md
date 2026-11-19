@@ -194,6 +194,12 @@ href="harvesting.md#about-checkpointing">“About Checkpointing”</a>)</td>
 <td><code>extracted_text</code> from the raw harvest, per strategy</td>
 </tr>
 <tr>
+<td><code>clean_chars(x)</code></td>
+<td><code>R/extract_fulltext.R</code></td>
+<td>Text in Unicode NFC, without soft hyphens and zero-width characters;
+what a page is read from</td>
+</tr>
+<tr>
 <td><code>page_blocks(html, text, cfg)</code></td>
 <td><code>R/blocks.R</code></td>
 <td>Read one page into a block table</td>
