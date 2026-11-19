@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Fixed
+- Extraction: NFC-normalize text and remove soft hyphens (U+00AD) (#572)
 - Section extractor bugs from QA pre-pass: route arbeidskrav/vilkår gate
   headings to coursework_requirements instead of assessment, add missing
   heading patterns, fix inn under-segmentation via class-based heading
