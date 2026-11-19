@@ -163,8 +163,8 @@ such as "lese- og skrivevansker".
   of the years with the matching versions marked, the number of hits.
 - **Right:** the course: full plan with the matches marked and a coloured
   margin showing which section each paragraph went to; tabs for sections,
-  versions (word-level comparison of any two) and source (URL, harvest date,
-  Wayback Machine link of that date, programmes and years using the plan).
+  versions (word-level comparison of any two) and source (URL, harvest date
+  where recorded, programmes and years using the plan).
 - **Views** beside the list: trend (share of course-years by year,
   institution or study type, with coverage), compare (plans side by side),
   term lists (a heatmap of saved terms x institution x year), screening
@@ -196,6 +196,22 @@ such as "lese- og skrivevansker".
 
 - `src/search/`: query parser, matcher, word forms, keyword-in-context; pure
   functions with tests (`*.test.js`).
-- `src/data/`: loading the Parquet files (hyparquet) and the cache.
-- `src/worker.js`: holds the plan text and runs searches.
-- `src/lib/`: Svelte components.
+- `src/data/`: everything but the view, with tests (`*.test.js`).
+  - `keys.js`: the identity of a course and of a plan version (`planKey()`;
+    the only place that knows how a version is identified).
+  - `load.js`: fetching the files through the Cache API (keyed on
+    `meta.version`, the app works without it) and reading Parquet.
+  - `model.js`: courses with their course-years and versions; the filtered,
+    matched view (one row per course) and its counts; the year strip.
+  - `url.js`: the state in the URL (query, scope, excluded forms, filters,
+    course, version, tab).
+  - `client.js`: the page's side of the worker (requests as promises).
+- `src/worker.js`: fetches and holds the plan and section text and runs the
+  search engine; the page gets the plans' metadata, the matches, the word
+  forms, keyword-in-context lines and the text of the plan it shows. The text
+  stays in the worker (the teacher-ed plans and sections take about 500 MB
+  there, the text plus its folded copy).
+- `src/App.svelte`: loading, state, URL, keyboard, the panes.
+- `src/lib/`: components: `Header` (search box, scope, counts), `WordForms`,
+  `Filters`, `StudyTypes` (a flat list, to be replaced by the grouped tree),
+  `Results`, `CourseView`; `format.js` (numbers, marked text).
