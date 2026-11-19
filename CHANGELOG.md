@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Browser: data build in R (build_browser_data) for a frame (#551)
 - Study types: data/study_types.csv (code, Norwegian and English name, group) (#566)
 - Browser: query engine (parser, matcher, KWIC, word forms) with tests (#552)
 - Browser: scaffold app/browser (Vite + Svelte 5 + vitest) and write the spec in its README (#550)
