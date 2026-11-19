@@ -27,6 +27,8 @@
       <span class="key none">in no section</span>
     {/if}
   </div>
+{:else}
+  <p class="legend note">loading sections…</p>
 {/if}
 <div class="plantext lines" class:overlay={overlay && sections}>
   {#each blocks as b, i (i)}

@@ -1,22 +1,33 @@
 // Search over prepared plans: matching, word forms, keyword in context and
 // highlighting. Pure functions without DOM, for use in a Web Worker.
 
-import { fold, formAt, isSpace, WORD } from './text.js'
+import { fold, FoldedText, formAt, isSpace, WORD } from './text.js'
+
+const folded = (t) => (t instanceof FoldedText ? t : new FoldedText(t))
 
 /**
- * Prepare plans for searching: keep a folded (lower-cased) copy of each text
- * whose offsets equal those of the original (see `fold`).
- * @param {{id: any, text: string, sections?: Object<string, string>}[]} plans
- * @returns {{id, text, lc, sections: Object<string, {text, lc}>}[]}
+ * Prepare plans for searching: each text as a `FoldedText` (its folded copy,
+ * whose offsets equal those of the original, and the original on demand).
+ * @param {{id: any, text: string|FoldedText, sections?: Object<string, string|FoldedText>}[]} plans
+ * @returns {FoldedText[]} each with `id` and `sections` ({code: FoldedText});
+ *   the worker adds sections later
  */
 export function prepareDocs(plans) {
   return plans.map((p) => {
-    const text = p.text ?? ''
-    const sections = {}
-    for (const [code, t] of Object.entries(p.sections ?? {})) if (t) sections[code] = { text: t, lc: fold(t) }
-    return { id: p.id, text, lc: fold(text), sections }
+    const doc = folded(p.text ?? '')
+    doc.id = p.id
+    doc.sections = {}
+    for (const [code, t] of Object.entries(p.sections ?? {})) {
+      const f = t && folded(t)
+      if (f?.lc) doc.sections[code] = f
+    }
+    return doc
   })
 }
+
+// Run a term's scanner over a FoldedText: a regular expression runs on the
+// folded copy where that is exact, the other scanners read only that copy.
+const scanIn = (term, src, hit) => term.scan(term.kind === 'regex' && !src.regexOnLc ? src.text : src.lc, src.lc, hit)
 
 // excludedForms: {termKey: forms} or Map -> array of Set by term id
 function exclusions(terms, excludedForms) {
@@ -29,25 +40,26 @@ function exclusions(terms, excludedForms) {
   })
 }
 
-// The texts a term is matched in: its section (prefix, or the search's
-// section), else the plan text; in the section-based scopes an unprefixed
-// positive term is matched in every section.
+// The texts a term is matched in, as [key, FoldedText]: its section (prefix,
+// or the search's section), else the plan text; in the section-based scopes
+// an unprefixed positive term is matched in every section.
 function textsOf(term, doc, section, perSection) {
   const code = term.section ?? section
   if (code) {
     const s = doc.sections[code]
-    return s ? [[code, s.text, s.lc]] : []
+    return s ? [[code, s]] : []
   }
-  if (perSection && !term.negated) return Object.entries(doc.sections).map(([k, s]) => [k, s.text, s.lc])
-  return [['', doc.text, doc.lc]]
+  if (perSection && !term.negated) return Object.entries(doc.sections)
+  return [['', doc]]
 }
 
 // Count the matches of a term in texts, without those inside excluded forms;
 // `first`: stop at the first.
 function count(term, texts, excl, first) {
   let n = 0
-  for (const [, text, lc] of texts) {
-    term.scan(text, lc, (s, e) => {
+  for (const [, src] of texts) {
+    const lc = src.lc
+    scanIn(term, src, (s, e) => {
       if (excl && excl.has(formAt(lc, s, e))) return false
       n++
       return first
@@ -59,26 +71,28 @@ function count(term, texts, excl, first) {
 
 function hitList(term, texts, excl) {
   const out = []
-  for (const [key, text, lc] of texts)
-    term.scan(text, lc, (s, e) => {
-      if (!excl || !excl.has(formAt(lc, s, e))) out.push([key, s, e, text, lc])
+  for (const [key, src] of texts)
+    scanIn(term, src, (s, e) => {
+      if (!excl || !excl.has(formAt(src.lc, s, e))) out.push([key, s, e, src])
       return false
     })
   return out
 }
 
-// Start of the unit (line or sentence) that position s falls in.
-function lineStart(text, s) {
-  return text.lastIndexOf('\n', s - 1) + 1
+// Start of the unit (line or sentence) that position s falls in (folding
+// leaves line breaks, punctuation, spaces and digits as they are).
+function lineStart(lc, s) {
+  return lc.lastIndexOf('\n', s - 1) + 1
 }
-function sentenceStart(text, lc, s) {
+function sentenceStart(src, s) {
+  const lc = src.lc
   for (let i = s - 1; i >= 0; i--) {
-    const c = text[i]
+    const c = lc[i]
     if (c === '\n') return i + 1
-    if ((c === '.' || c === '!' || c === '?') && isSpace(text, i + 1)) {
+    if ((c === '.' || c === '!' || c === '?') && isSpace(lc, i + 1)) {
       let j = i + 1
-      while (j < s && isSpace(text, j)) j++
-      if (j <= s && (text[j] !== lc[j] || /\d/.test(text[j]))) return j
+      while (j < s && isSpace(lc, j)) j++
+      if (j <= s && (src.differs(j) || /\d/.test(lc[j]))) return j
     }
   }
   return 0
@@ -153,10 +167,11 @@ function unitMatch(ast, terms, doc, tx, excl, scope, words, evalPlan) {
   for (const t of terms) {
     if (t.negated) continue
     const ex = excl[t.id]
-    for (const [key, text, lc] of tx(t)) {
+    for (const [key, src] of tx(t)) {
       let e = byKey.get(key)
-      if (!e) byKey.set(key, (e = { text, lc, codes: [] }))
-      t.scan(text, lc, (s, end) => {
+      if (!e) byKey.set(key, (e = { src, codes: [] }))
+      const lc = src.lc
+      scanIn(t, src, (s, end) => {
         if (!ex || !ex.has(formAt(lc, s, end))) e.codes.push(s * M + t.id)
         return false
       })
@@ -165,7 +180,8 @@ function unitMatch(ast, terms, doc, tx, excl, scope, words, evalPlan) {
 
   const flag = new Uint8Array(M)
   const inFlag = (t) => flag[t.id] === 1
-  for (const { text, lc, codes } of byKey.values()) {
+  for (const { src, codes } of byKey.values()) {
+    const lc = src.lc
     if (scope === 'section') {
       flag.fill(0)
       for (const c of codes) flag[c % M] = 1
@@ -201,7 +217,7 @@ function unitMatch(ast, terms, doc, tx, excl, scope, words, evalPlan) {
     let unit = -1
     for (const c of sorted) {
       const s = Math.floor(c / M)
-      const u = scope === 'paragraph' ? lineStart(text, s) : sentenceStart(text, lc, s)
+      const u = scope === 'paragraph' ? lineStart(lc, s) : sentenceStart(src, s)
       if (u !== unit) {
         flag.fill(0)
         unit = u
@@ -228,9 +244,9 @@ export function wordForms(docs, matcher, opts = {}) {
     const forms = new Map()
     for (const doc of docs) {
       const seen = new Set()
-      for (const [, text, lc] of textsOf(t, doc, section, false))
-        t.scan(text, lc, (s, e) => {
-          const f = formAt(lc, s, e)
+      for (const [, src] of textsOf(t, doc, section, false))
+        scanIn(t, src, (s, e) => {
+          const f = formAt(src.lc, s, e)
           let r = forms.get(f)
           if (!r) forms.set(f, (r = { form: f, plans: 0, count: 0 }))
           r.count++
@@ -241,10 +257,27 @@ export function wordForms(docs, matcher, opts = {}) {
           return false
         })
     }
-    const list = [...forms.values()].sort(
-      (a, b) => b.count - a.count || b.plans - a.plans || (a.form < b.form ? -1 : a.form > b.form ? 1 : 0),
-    )
-    return { id: t.id, key: t.key, forms: list }
+    return { id: t.id, key: t.key, forms: sortForms([...forms.values()]) }
+  })
+}
+
+const sortForms = (list) =>
+  list.sort((a, b) => b.count - a.count || b.plans - a.plans || (a.form < b.form ? -1 : a.form > b.form ? 1 : 0))
+
+/** The word forms of disjoint sets of plans (`wordForms` of each) as one. */
+export function mergeForms(parts) {
+  if (parts.length === 1) return parts[0]
+  return parts[0].map((t, i) => {
+    const forms = new Map()
+    for (const p of parts)
+      for (const f of p[i].forms) {
+        const r = forms.get(f.form)
+        if (r) {
+          r.plans += f.plans
+          r.count += f.count
+        } else forms.set(f.form, { ...f })
+      }
+    return { ...t, forms: sortForms([...forms.values()]) }
   })
 }
 
@@ -267,15 +300,15 @@ export function kwic(doc, matcher, opts = {}) {
   const hits = []
   for (const t of matcher.terms) {
     if (t.negated) continue
-    for (const [key, s, e, text] of hitList(t, textsOf(t, doc, section, false), excl[t.id]))
-      hits.push({ term: t.id, source: key, start: s, end: e, text })
+    for (const [key, s, e, src] of hitList(t, textsOf(t, doc, section, false), excl[t.id]))
+      hits.push({ term: t.id, source: key, start: s, end: e, src })
   }
   hits.sort((a, b) => (a.source < b.source ? -1 : a.source > b.source ? 1 : a.start - b.start || a.term - b.term))
-  return hits.slice(0, max).map(({ text, ...h }) => ({
+  return hits.slice(0, max).map(({ src, ...h }) => ({
     ...h,
-    before: squash(text.slice(Math.max(0, h.start - context), h.start)),
-    match: squash(text.slice(h.start, h.end)),
-    after: squash(text.slice(h.end, h.end + context)),
+    before: squash(src.slice(Math.max(0, h.start - context), h.start)),
+    match: squash(src.slice(h.start, h.end)),
+    after: squash(src.slice(h.end, h.end + context)),
   }))
 }
 
@@ -290,11 +323,11 @@ export function kwic(doc, matcher, opts = {}) {
 export function highlights(text, matcher, opts = {}) {
   const { section = null } = opts
   const excl = exclusions(matcher.terms, opts.excludedForms)
-  const lc = fold(text)
+  const src = new FoldedText(text)
   const hits = []
   for (const t of matcher.terms) {
     if (t.negated || (section && t.section && t.section !== section)) continue
-    for (const [, s, e] of hitList(t, [['', text, lc]], excl[t.id])) hits.push([s, e, t.id])
+    for (const [, s, e] of hitList(t, [['', src]], excl[t.id])) hits.push([s, e, t.id])
   }
   hits.sort((a, b) => a[0] - b[0] || b[1] - a[1])
   const out = []

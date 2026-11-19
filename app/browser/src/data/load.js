@@ -2,7 +2,7 @@
 // reading Parquet. Works in the page and in the worker; every cache access is
 // guarded, so the app works where the Cache API is missing or blocked.
 
-import { parquetReadObjects } from 'hyparquet'
+import { parquetMetadata, parquetReadObjects, parquetSchema } from 'hyparquet'
 import { compressors } from 'hyparquet-compressors'
 
 const CACHE = 'teps-course-browser'
@@ -69,7 +69,15 @@ export async function fetchMeta(base) {
   return res.json()
 }
 
-/** Rows of a Parquet file as objects. */
-export function readParquet(buf, columns) {
-  return parquetReadObjects({ file: buf, compressors, columns })
+/** Rows of a Parquet file as objects; `opts` as in hyparquet: `rowStart`,
+ *  `rowEnd`, `parsers` (e.g. `stringFromBytes`, to turn each text into
+ *  something else as it is read). */
+export function readParquet(buf, columns, opts = {}) {
+  return parquetReadObjects({ file: buf, compressors, columns, ...opts })
+}
+
+/** The column names and the number of rows of a Parquet file. */
+export function parquetInfo(buf) {
+  const md = parquetMetadata(buf)
+  return { columns: parquetSchema(md).children.map((c) => c.element.name), rows: Number(md.num_rows) }
 }

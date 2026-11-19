@@ -16,6 +16,7 @@
     progress,
     plansReady,
     sectionsLoaded,
+    sectionsLoading,
     error,
     ondownload,
   } = $props()
@@ -99,7 +100,8 @@
     {#each loading as f (f)}
       <span class="note">· loading {f} {mb(progress[f].loaded)} / {mb(progress[f].total)}</span>
     {/each}
-    {#if progress.plans && !loading.length && !sectionsLoaded}<span class="note">· preparing text…</span>{/if}
+    {#if progress.plans && !loading.length && !plansReady}<span class="note">· preparing text…</span>{/if}
+    {#if sectionsLoading && !sectionsLoaded}<span class="note">· loading sections…</span>{/if}
     {#if error}<span class="fail">· {error}</span>{/if}
   </div>
 </header>

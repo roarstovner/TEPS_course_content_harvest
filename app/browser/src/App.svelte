@@ -24,6 +24,7 @@
   let baseModel = $state.raw(null)
   let plansMeta = $state.raw(null)
   let sectionsLoaded = $state(false)
+  let sectionsLoading = $state(false) // the worker reads the sections' text (on first need)
   let planSections = $state.raw(null) // plan key -> Set of its sections
   let progress = $state({}) // file -> {loaded, total}
   let error = $state(null)
@@ -53,10 +54,9 @@
   function onEvent(e) {
     if (e.type === 'progress') progress[e.file] = { loaded: e.loaded, total: e.total }
     else if (e.type === 'plans') plansMeta = e.plans
-    else if (e.type === 'sections') {
-      sectionsLoaded = true
-      planSections = new Map(e.has.map(([k, codes]) => [k, new Set(codes)]))
-    }
+    else if (e.type === 'sectionIndex') planSections = new Map(e.has.map(([k, codes]) => [k, new Set(codes)]))
+    else if (e.type === 'sectionsLoading') sectionsLoading = true
+    else if (e.type === 'sections') sectionsLoaded = true
     else if (e.type === 'error') error = e.message
   }
 
@@ -79,6 +79,7 @@
     const on = queryOn && !!plansMeta
     clearTimeout(timer)
     if (!queryOn) {
+      worker?.call('cancel') // stop a running search
       searchId++
       result = null
       searching = false
@@ -90,14 +91,11 @@
       searching = true
       try {
         const r = await worker.call('search', { q, scope, n, excl: ex })
-        if (id !== searchId) return
+        if (id !== searchId || r.superseded) return
         searching = false
         // the word forms do not depend on the excluded forms or the scope
         const forms = q === result?.q ? result.forms : []
         result = r.error ? null : { q, excl: ex, matches: new Map(r.matches), ms: r.ms, forms }
-        if (r.error || forms.length) return
-        const f = await worker.call('forms', { q })
-        if (id === searchId) result = { ...result, forms: f }
       } catch (e) {
         if (id === searchId) {
           searching = false
@@ -105,6 +103,28 @@
         }
       }
     }, 150)
+  })
+
+  // the word forms of the terms over the plans in the filters (asked after
+  // the search, so that the results show first; again when the filters change)
+  const formKeys = $derived(
+    model && plansMeta && queryOn ? filterView(model, s, null, planSections).rows.flatMap((r) => r.versions.map((v) => v.key)) : null,
+  )
+  let formsFor = null // {q, keys} of the forms in `result`
+  let formsId = 0
+  $effect(() => {
+    const q = result?.q
+    const keys = formKeys
+    if (!q || !keys || (formsFor?.q === q && formsFor.keys === keys)) return
+    const id = ++formsId
+    worker.call('forms', { q, keys }).then(
+      (f) => {
+        if (id !== formsId || !f || result?.q !== q) return
+        formsFor = { q, keys }
+        result = { ...result, forms: f }
+      },
+      () => {},
+    )
   })
 
   const matches = $derived(queryOn ? (result?.matches ?? null) : null)
@@ -192,6 +212,7 @@
     {progress}
     plansReady={!!plansMeta}
     {sectionsLoaded}
+    {sectionsLoading}
     {error}
     ondownload={model && plansMeta && !searching && (!queryOn || result) ? () => (downloadOpen = true) : null}
   />

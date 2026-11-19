@@ -83,7 +83,11 @@ snapshot.
 
 The page loads `meta.json`, `courses`, `course_years` and `programmes` first
 (well under 1 MB for the teacher-ed frame), shows the list, and loads the
-plan text in a Web Worker in the background. The files are cached in the
+plan text in a Web Worker in the background. Of `sections.parquet` the
+worker reads at first only which sections each plan has (the sections
+filter); their text is read on first need: a query with a section prefix,
+the section scope of AND, the Sections tab or margin of an opened plan, a
+section download ("loading sections…" meanwhile). The files are cached in the
 browser under `meta.version`, so a second visit starts from the cache.
 
 ## Query Syntax
@@ -140,9 +144,10 @@ section prefix, use the sections' text: a term without a prefix then matches
 in any section.
 
 **Word forms.** Under the search box each term lists the distinct words it
-matched, with the number of plans. Unticking a form drops the matches inside
-that word: `fremmedspråk*` matches *fremmedspråksdidaktikk* but also
-*Fremmedspråksenteret*, an institution's name. Unticked forms are part of the
+matched in the plans in the filters, with the number of plans. Unticking a
+form drops the matches inside that word: `fremmedspråk*` matches
+*fremmedspråksdidaktikk* but also *Fremmedspråksenteret*, an institution's
+name. Unticked forms are part of the
 query, in the URL and in the download manifest. Forms are lower-cased and
 belong to a term (as written, lower-cased, with its section prefix); a match
 that spans words (a phrase, a regular expression) has those words as its
@@ -239,13 +244,22 @@ such as "lese- og skrivevansker".
 | plan text loaded | < 5 s |
 | literal search over the teacher-ed plans | < 100 ms (a plain scan takes 30-50 ms) |
 | regular expression | < 500 ms |
+| a new query while a slow one runs | as if alone, plus at most one chunk of the old (1,000 plans) |
 | open a plan | < 50 ms |
 | second visit | from the browser cache |
 
 ## Code
 
 - `src/search/`: query parser, matcher, word forms, keyword-in-context; pure
-  functions with tests (`*.test.js`).
+  functions with tests (`*.test.js`). `text.js` also holds `FoldedText`, a
+  text kept once: its folded (lower-cased) copy, which the matchers read,
+  plus the offsets and characters where the original differs (3% of the
+  characters), from which the original or a piece of it is rebuilt for
+  display. A regular expression runs on the folded copy, which is exact
+  with the flags `i` and `u` unless a character folds otherwise than it
+  lower-cases (as *İ*); such a text is searched in the original. `chunks.js`:
+  a scan in chunks that yields between them and stops when a newer request
+  makes it stale.
 - `src/data/`: everything but the view, with tests (`*.test.js`).
   - `keys.js`: the identity of a course and of a plan version (`planKey()`;
     the only place that knows how a version is identified).
@@ -267,8 +281,17 @@ such as "lese- og skrivevansker".
 - `src/worker.js`: fetches and holds the plan and section text and runs the
   search engine; the page gets the plans' metadata, the matches, the word
   forms, keyword-in-context lines and the text of the plan it shows. The text
-  stays in the worker (the teacher-ed plans and sections take about 500 MB
-  there, the text plus its folded copy).
+  stays in the worker, each text once as a `FoldedText`, folded while the
+  Parquet is decoded: the teacher-ed plans take a JavaScript heap of 150 MB
+  there, 270 MB with the sections (2026-11-19, Chromium; before, the text plus
+  its folded copy took 500 MB in node, 250 MB of heap plus the originals
+  outside it in Chromium; the tab's memory fell from 575 to 260 MB). Searches
+  and word forms run in chunks of 1,000 plans: a new search stops a running
+  one (and its word forms) at the next chunk, so a slow regular expression
+  no longer holds up the next query (in node, a literal search sent during a
+  1 s regular expression answered after 120 ms instead of 1,060), and reading
+  the sections gives way to them. The word forms are counted over the plans
+  in the filters (the page sends their keys).
 - `src/App.svelte`: loading, state, URL, keyboard, the panes.
 - `src/lib/`: components: `Header` (search box, scope, counts), `WordForms`,
   `Filters` (with `StudyTypes`, the study type tree, and `CheckList`, a
