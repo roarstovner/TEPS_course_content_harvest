@@ -83,8 +83,29 @@ browser under `meta.version`, so a second visit starts from the cache.
 | `dybdelæring OR "deep learning"` | either |
 | `-praksis`, `NOT praksis` | plans without it |
 | `(lesing OR skriving) vurdering` | grouping |
-| `outcomes:dybdelæring` | in one section only (`content`, `outcomes`, `prerequisites`, `teaching`, `coursework`, `assessment`, `reading`, `practice`) |
+| `outcomes:dybdelæring` | in one section only (`content`, `outcomes`, `prerequisites`, `teaching`, `coursework`, `assessment`, `reading`, `practice`; or `innhold`, `læringsutbytte`, `forkunnskaper`, `undervisning`, `arbeidskrav`, `vurdering`, `pensum`, `praksis`) |
 | `/utforsk(e\|ende\|ing)/` | a regular expression (JavaScript, case-insensitive) |
+
+Precisely (`src/search/`):
+
+- `OR`, `NOT` and an optional `AND` are operators only in upper case. `NOT`
+  and `-` bind tightest, then `OR`, then the implicit AND: `a b OR c` is
+  *a* and (*b* or *c*), `-a OR b` is (not *a*) or *b*. `-` must be attached
+  to its term (`-praksis`); a hyphen inside a term is a letter (`1-7`).
+- `*` stands for any letters and digits (not hyphens) and may appear anywhere
+  in a term; the match is the whole word (for marking and word forms).
+  Quoted terms take no wildcards.
+- A quoted term or phrase needs a non-letter, non-digit before and after it;
+  a hyphen counts as one, so `"ikt"` also matches *IKT-basert* (shown as the
+  word form *ikt-basert*, which can be unticked).
+- Regular expressions run with the flags `i`, `u` and `m` (`^` and `$` match
+  at line breaks). In JavaScript `\b` knows only ASCII letters and fails next
+  to æ, ø and å: use `(?<!\p{L})økonomi(?!\p{L})`.
+- A section prefix can apply to a group, `outcomes:(lesing OR skriving)`; a
+  prefix inside the group wins. `-outcomes:praksis` finds plans whose
+  outcomes section lacks *praksis* (plans without that section included).
+- Hit counts are all matches in the plan (or the term's section), also
+  outside the unit that satisfied the scope of AND.
 
 Matching ignores case (æ, ø and å included). A word is a run of letters and
 digits, with inner hyphens (*IKT-basert*); a hyphen before a space is kept,
@@ -93,13 +114,24 @@ so split compounds show up as a form of their own (*fremmedspråks-* in
 
 **Scope of AND.** A setting chooses where all terms must occur: in the plan
 (default), the same section, the same paragraph, the same sentence, or within
-N words.
+N words. A paragraph is a line (the extraction puts each paragraph, heading
+and list item on a line of its own). A sentence ends at a line break or at
+`.`, `!` or `?` followed by whitespace and a capital letter or digit (so
+"bl.a. lesing" does not end one). Within N words: the matched words are at
+most N words apart (`lese x x skrive` is 3 apart). OR is evaluated inside the
+unit; NOT always on the whole plan, or on its section with a prefix. The
+section scope, and the paragraph, sentence and word scopes when a term has a
+section prefix, use the sections' text: a term without a prefix then matches
+in any section.
 
 **Word forms.** Under the search box each term lists the distinct words it
 matched, with the number of plans. Unticking a form drops the matches inside
 that word: `fremmedspråk*` matches *fremmedspråksdidaktikk* but also
 *Fremmedspråksenteret*, an institution's name. Unticked forms are part of the
-query, in the URL and in the download manifest.
+query, in the URL and in the download manifest. Forms are lower-cased and
+belong to a term (as written, lower-cased, with its section prefix); a match
+that spans words (a phrase, a regular expression) has those words as its
+form.
 
 Why it matters, measured on the teacher-ed plans (2026-11-19):
 `fremmedspråksdidaktikk AND morsmålsdidaktikk` finds no plan, while
