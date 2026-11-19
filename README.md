@@ -188,7 +188,7 @@ variable are in [Data Files](docs/data-files.md).
 `teacher_ed/` folders, see [“Frames”](docs/data-files.md#frames)):
 
 - `data/processed/course_offerings.RDS` — published slim dataset: course
-  rows with DBH metadata + `plan_content_id` FK (no url, no text)
+  rows with DBH metadata + `plan_id` FK (no url, no text)
 - `data/interim/course_offerings_full.RDS` — internal working file: same
   rows plus `url`, `extracted_text`, `course_plan`,
   `course_plan_normalized`; the teacher-ed one is used by the

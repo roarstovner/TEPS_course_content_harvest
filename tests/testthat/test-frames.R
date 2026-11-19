@@ -92,7 +92,14 @@ test_that("each frame has the plans of its own offerings, and their sections", {
 
   offerings <- frame_offerings(courses, frames, plans, sections)
   expect_equal(offerings$teacher_ed$course_id, courses$course_id[2:3])
-  expect_identical(offerings$all, courses)
+  expect_identical(dplyr::select(offerings$all, -plan_id), courses)
+  # plan_id: the plan's key, in plans, sections and offerings alike
+  id <- plan_key_id("x", "A", courses$plan_content_id[2])
+  expect_equal(plans$teacher_ed$plan_id, id)
+  expect_equal(sections$teacher_ed$plan_id, rep(id, 2))
+  expect_equal(offerings$teacher_ed$plan_id, rep(id, 2))
+  expect_equal(names(offerings$all)[match("plan_id", names(offerings$all)) + 1], "plan_content_id")
+  expect_true(is.na(offerings$all$plan_id[4]))
 
   # a page that shows a version starting after the offering's semester
   # (`page_term`): no plan; autumn 2023 keeps the version from autumn 2023,

@@ -44,7 +44,7 @@ format: md
 | `validate_courses(df, stage)` | `R/utils.R` | Required columns at `"initial"`, `"with_url"`, `"with_html"` |
 | `anonymize_text(institution, text)` | `R/anonymize.R` | PII and admin-date removal for `course_plan` and sections |
 | `normalize_plan_text(course_plan)` | `R/normalize_plan_text.R` | Lossy normalization for dedup hashing |
-| `plan_ids(id_text)`, `plan_table(courses)`, `deduplicate_plans(df)` | `R/deduplicate_plans.R` | Content hashes (`plan_content_id`); the unique plans of a set of offerings |
+| `plan_ids(id_text)`, `plan_table(courses)`, `deduplicate_plans(df)`, `plan_key_id()`, `check_plan_id_unique()` | `R/deduplicate_plans.R` | Content hashes (`plan_content_id`); the unique plans of a set of offerings; the plan key `plan_id` and its uniqueness check |
 | `page_sections(blocks, text, cfg)` | `R/extract_sections.R` | A page's sections from its blocks |
 | `extract_sections(config, html, extracted_text, course_id)` | `R/extract_sections.R` | `page_sections()` for many pages |
 | `wayback_cdx(url, match_type, from, to, filter, collapse)`, `wayback_capture_url(timestamp, original)` | `R/wayback.R` | Captures of a URL or URL prefix in the Wayback Machine; a capture's address as archived. Not used by the harvest |

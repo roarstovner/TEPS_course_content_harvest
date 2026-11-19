@@ -26,7 +26,8 @@ course_offerings,subject_code,Fagkode,character,DBH table 208 Fagkode,"Subject (
 course_offerings,subject_name,Fagnavn,character,DBH table 208 Fagnavn,"Name of the subject (""Kunst og Håndverk"")."
 course_offerings,thesis,Oppgave (ny fra h2012),integer,DBH table 208 Oppgave (ny fra h2012),"Whether the course is a thesis: 0 no, 1 a bachelor's thesis or project, 2 a master's (or hovedfag) thesis. Registered from autumn 2012, and for some earlier courses."
 course_offerings,plan_year_basis,plan_year_basis,character,harvest,"How the year of the offering's plan is known: ""url"" the page's URL holds the year; ""current"" the site shows only the plan in force, so a page is the plan of the academic year it was fetched in. The data built on 2026-10-16 had ""page"" for NLA, whose URL holds the academic year too."
-course_offerings,plan_content_id,plan_content_id,character,derived,"The offering's plan in course_plans (with institution and course_code); NA when the offering has no plan. A SHA-256 hash of course_plan_normalized, so offerings with the same plan text share it."
+course_offerings,plan_id,plan_id,character,derived,"The offering's plan in course_plans: {institution}_{course_code}_{the first 10 characters of plan_content_id}; NA when the offering has no plan. Join offerings to plans and sections on it (added 2026-11-19)."
+course_offerings,plan_content_id,plan_content_id,character,derived,"Fingerprint of the plan's text: a SHA-256 hash of course_plan_normalized, so offerings with the same plan text share it, also across parallel course codes of an institution. Not unique per plan: join on plan_id. NA when the offering has no plan."
 course_offerings,harvested_at,harvested_at,Date,harvest,"Date of the harvest of the offering's row (recorded since 2026-10-06, else NA); at a site that shows only the current plan, the date of the harvest whose page the offering takes."
 course_offerings,academic_year,academic_year,character,harvest,"NLA only: the academic year (""2023-2024"") whose part of the course page holds the offering's plan; NA elsewhere."
 course_offerings,has_extracted_text,has_extracted_text,logical,derived,Whether text was read from the offering's page.
@@ -35,7 +36,8 @@ course_offerings,exam_registrations,exam_registrations,integer,DBH table 905,"Ex
 course_offerings,credits_earned,credits_earned,double,DBH table 900,"Credits earned (900 Ny produksjon totalt) in the course-year, summed over its semesters, in full-time equivalents (60 credits = 1). The same on every offering of the course-year; 0 for a course-year with no row in DBH. Counts of the same snapshot as exam_registrations."
 course_offerings,had_students,had_students,logical,DBH tables 905 and 900,"Whether the course-year had students: exam_registrations > 0 or credits_earned > 0. Either count is used because DBH zeroes small counts before summing, so exam_registrations can be 0 for a course with 1-2 students. The same on every offering of the course-year."
 course_offerings,counts_provisional,counts_provisional,logical,DBH tables 905 and 900,"Whether the year's counts (exam_registrations, credits_earned) are not complete: a year after the last one whose autumn DBH had published in both tables when the counts snapshot was taken (DBH publishes a semester about one semester later). The counts of a provisional year can still grow."
-course_plans,plan_content_id,plan_content_id,character,derived,"Plan id: a SHA-256 hash of course_plan_normalized. A plan is a plan_content_id, institution and course_code."
+course_plans,plan_id,plan_id,character,derived,"Plan id, unique: {institution}_{course_code}_{the first 10 characters of plan_content_id}. A plan is a plan_content_id, institution and course_code (added 2026-11-19)."
+course_plans,plan_content_id,plan_content_id,character,derived,"Fingerprint of the plan's text: a SHA-256 hash of course_plan_normalized. Parallel course codes of an institution that publish the same text share it, so it is not unique per plan: join on plan_id; it finds identical texts across courses."
 course_plans,institution,institution,character,derived,As in course_offerings.
 course_plans,course_code,Emnekode,character,derived,As in course_offerings.
 course_plans,year_from,year_from,integer,derived,First year of the offerings with this plan (double in the data built until 2026-10-16).
@@ -43,6 +45,7 @@ course_plans,year_to,year_to,integer,derived,Last year of the offerings with thi
 course_plans,source_course_id,source_course_id,character,derived,The plan's earliest offering: course_plan and the sections are read from its page.
 course_plans,course_plan,course_plan,character,"harvest, anonymized","The plan's text, anonymized (course_plan_spec.md)."
 course_plans,course_plan_normalized,course_plan_normalized,character,derived,"course_plan lower-cased, without structural headings and labels, whitespace squished (normalize_plan_text()): the text the id is made from. Not for reading."
+plan_sections,plan_id,plan_id,character,derived,As in course_plans. A section is a plan_id and section.
 plan_sections,plan_content_id,plan_content_id,character,derived,As in course_plans.
 plan_sections,institution,institution,character,derived,As in course_offerings.
 plan_sections,course_code,Emnekode,character,derived,As in course_offerings.

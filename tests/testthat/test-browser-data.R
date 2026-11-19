@@ -46,11 +46,11 @@ test_that("browser_tables() follows the data contract", {
                              "language_code", "subject_code", "subject_name", "nus_code",
                              "department_name", "year_first", "year_last"))
   expect_named(tb$course_years, c("institution", "course_code", "year", "programme_code", "study_type",
-                                  "plan_content_id", "had_students", "no_plan_reason"))
+                                  "plan_id", "plan_content_id", "had_students", "no_plan_reason"))
   expect_named(tb$programmes, c("institution", "programme_code", "programme_name", "study_type"))
-  expect_named(tb$plans, c("plan_content_id", "institution", "course_code", "year_from", "year_to",
+  expect_named(tb$plans, c("plan_id", "plan_content_id", "institution", "course_code", "year_from", "year_to",
                            "source_url", "harvested_at", "course_plan"))
-  expect_named(tb$sections, c("plan_content_id", "institution", "course_code", "section", "text"))
+  expect_named(tb$sections, c("plan_id", "plan_content_id", "institution", "course_code", "section", "text"))
 
   # courses: attributes of the latest offering
   expect_equal(tb$courses$course_code, c("A", "B"))
@@ -73,6 +73,10 @@ test_that("browser_tables() follows the data contract", {
   expect_equal(tb$plans$plan_content_id, c("pb1", "pb2"))
   expect_equal(tb$plans$source_url, c("https://x.no/x_B_2024_1_P1", "https://x.no/x_B_2025_3_P1"))
   expect_equal(tb$sections$text, c("content 1", "exam 1", "out 2", "content 2"))
+  # plan_id made from the key where the input (built before 2026-11-19) lacks it
+  expect_equal(tb$plans$plan_id, c("x_B_pb1", "x_B_pb2"))
+  expect_equal(dplyr::filter(cy, course_code == "B", year == 2025L)$plan_id, c("x_B_pb1", "x_B_pb2"))
+  expect_true(is.na(cy$plan_id[cy$course_code == "A"]))
 
   # meta
   expect_equal(tb$meta$counts$course_years, 3)

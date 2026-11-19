@@ -17,6 +17,38 @@ plan_ids <- function(id_text, exam_sessions = FALSE) {
                  plan_nchar = nchar(id_text))
 }
 
+#' Plan key of offerings, plans or sections
+#'
+#' plan_content_id is a hash of the plan text, so parallel course codes of an
+#' institution that publish the same text share it; a plan is a
+#' plan_content_id, institution and course_code. `plan_id` is that key in one
+#' readable column, in the style of course_id:
+#' `{institution}_{course_code}_{first 10 hex characters of plan_content_id}`.
+#'
+#' @param institution,course_code,plan_content_id Vectors of one length.
+#' @return Character vector; NA where plan_content_id is NA.
+plan_key_id <- function(institution, course_code, plan_content_id) {
+  ifelse(is.na(plan_content_id), NA_character_,
+         paste(institution, course_code, substr(plan_content_id, 1, 10), sep = "_"))
+}
+
+#' Stop unless plan_id is unique per plan
+#'
+#' Two plans of a course whose plan_content_id start with the same 10 hex
+#' characters would share a plan_id: improbable, but it must not pass silently.
+#'
+#' @param plans Tibble with `plan_id`, `plan_content_id`, `institution`,
+#'   `course_code`, one row per plan.
+#' @return `plans`, invisibly.
+check_plan_id_unique <- function(plans) {
+  dup <- unique(plans$plan_id[duplicated(plans$plan_id)])
+  if (length(dup) > 0) {
+    stop("plan_id is not unique per plan (two plan_content_id of a course share their ",
+         "first 10 characters): ", paste(utils::head(dup, 5), collapse = ", "), call. = FALSE)
+  }
+  invisible(plans)
+}
+
 #' The plans of a set of offerings
 #'
 #' One row per unique plan per course code per institution: offerings with the
@@ -27,8 +59,10 @@ plan_ids <- function(id_text, exam_sessions = FALSE) {
 #'
 #' @param courses Offerings with `course_id`, `institution`, `course_code`,
 #'   `year`, `course_plan` and the columns of plan_ids().
-#' @return Tibble plan_content_id, institution, course_code, year_from, year_to,
-#'   source_course_id, course_plan, course_plan_normalized, plan_nchar.
+#' @return Tibble plan_id (plan_key_id(); stops if it is not unique,
+#'   check_plan_id_unique()), plan_content_id, institution, course_code,
+#'   year_from, year_to, source_course_id, course_plan, course_plan_normalized,
+#'   plan_nchar.
 plan_table <- function(courses) {
   courses |>
     dplyr::filter(!is.na(plan_content_id)) |>
@@ -45,7 +79,9 @@ plan_table <- function(courses) {
       course_plan_normalized = dplyr::first(course_plan_normalized),
       plan_nchar = dplyr::first(plan_nchar),
       .groups = "drop"
-    )
+    ) |>
+    dplyr::mutate(plan_id = plan_key_id(institution, course_code, plan_content_id), .before = 1) |>
+    check_plan_id_unique()
 }
 
 #' Deduplicate course plans across years

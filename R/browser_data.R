@@ -61,7 +61,9 @@ build_browser_data <- function(frame = "teacher_ed", out_dir = "app/browser/publ
 #' course-year x programme x plan once (DBH lists a course once per semester
 #' and programme), with one NA-plan row per programme when the course-year has
 #' no plan. `had_students` is TRUE when any of the course-year's offerings had
-#' students.
+#' students. `plans`, `sections` and `course_years` carry `plan_id`, the
+#' plan's key (plan_key_id()); it is made here for input built before
+#' 2026-11-19, which does not have it.
 #'
 #' @param plans,sections,offerings The frame's course_plans, plan_sections and
 #'   course_offerings
@@ -73,6 +75,13 @@ build_browser_data <- function(frame = "teacher_ed", out_dir = "app/browser/publ
 #' @return List of tibbles `courses`, `course_years`, `programmes`, `plans`,
 #'   `sections` and the list `meta`
 browser_tables <- function(plans, sections, offerings, sources, programmes, gaps, version, frame) {
+  with_plan_id <- function(x) {
+    if (!"plan_id" %in% names(x)) x$plan_id <- plan_key_id(x$institution, x$course_code, x$plan_content_id)
+    x
+  }
+  plans <- with_plan_id(plans)
+  sections <- with_plan_id(sections)
+  offerings <- with_plan_id(offerings)
   cy_key <- c("institution", "course_code", "year")
   # the study type of each programme-year: the one of most snapshot rows
   study_types <- programmes |>
@@ -85,7 +94,7 @@ browser_tables <- function(plans, sections, offerings, sources, programmes, gaps
   course_years <- offerings |>
     dplyr::distinct(institution, institution_code, course_code, year, programme_code) |>
     dplyr::left_join(dplyr::filter(offerings, !is.na(plan_content_id)) |>
-                       dplyr::distinct(institution, course_code, year, plan_content_id),
+                       dplyr::distinct(institution, course_code, year, plan_id, plan_content_id),
                      by = cy_key, relationship = "many-to-many") |>
     dplyr::left_join(study_types, by = c("institution_code", "programme_code", "year")) |>
     dplyr::left_join(dplyr::summarise(offerings, had_students = any(had_students), .by = dplyr::all_of(cy_key)),
@@ -93,7 +102,7 @@ browser_tables <- function(plans, sections, offerings, sources, programmes, gaps
     dplyr::left_join(dplyr::filter(gaps, !has_plan) |> dplyr::select(dplyr::all_of(cy_key), reason),
                      by = cy_key) |>
     dplyr::mutate(no_plan_reason = dplyr::if_else(is.na(plan_content_id), reason, NA_character_)) |>
-    dplyr::select(institution, course_code, year, programme_code, study_type, plan_content_id,
+    dplyr::select(institution, course_code, year, programme_code, study_type, plan_id, plan_content_id,
                   had_students, no_plan_reason) |>
     dplyr::arrange(institution, course_code, year, programme_code, plan_content_id)
 
@@ -114,15 +123,14 @@ browser_tables <- function(plans, sections, offerings, sources, programmes, gaps
     dplyr::select(institution, programme_code, programme_name, study_type) |>
     dplyr::arrange(institution, programme_code)
 
-  plan_key <- c("plan_content_id", "institution", "course_code")
+  plan_key <- c("plan_id", "plan_content_id", "institution", "course_code")
   plan_table <- plans |>
     dplyr::left_join(dplyr::rename(sources, source_url = url), by = c(source_course_id = "course_id")) |>
     dplyr::select(dplyr::all_of(plan_key), year_from, year_to, source_url, harvested_at, course_plan) |>
     dplyr::arrange(institution, course_code, year_from, year_to, plan_content_id)
   # sections in the plans' order, each plan's in their own order
   section_table <- sections |>
-    dplyr::mutate(.plan = match(paste(plan_content_id, institution, course_code),
-                                do.call(paste, plan_table[plan_key])),
+    dplyr::mutate(.plan = match(plan_id, plan_table$plan_id),
                   .row = dplyr::row_number()) |>
     dplyr::filter(!is.na(.plan)) |>
     dplyr::arrange(.plan, .row) |>

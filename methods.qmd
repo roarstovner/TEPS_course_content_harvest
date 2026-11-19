@@ -916,6 +916,37 @@ the text, so coding is tied to a frozen release and carried to later releases
 with a crosswalk.
 
 ```{r}
+#| label: plan-id
+shared <- plans |> add_count(plan_content_id) |> filter(n > 1)
+with_plan <- filter(off, !is.na(plan_content_id))
+dup_off <- with_plan |>
+  inner_join(select(plans, plan_content_id), by = "plan_content_id", relationship = "many-to-many") |>
+  count(course_id) |> filter(n > 1)
+```
+
+**Plans are joined on `plan_id`, not on `plan_content_id`.** `plan_id` is
+`{institution}_{course_code}_{the first 10 characters of plan_content_id}`,
+in `course_offerings` (NA without a plan), `course_plans` and
+`plan_sections`; the build stops if two plans of a course share one.
+`plan_content_id` stays as it was: the fingerprint of the text, which finds
+identical texts across courses. *Why:* parallel course codes of an
+institution that publish the same text (UiT LRU-3672 and LRU-3672F, NTNU
+PPU4621/4623/4625/4627, NLA 4MGL1DIP and MGL1DIP, OsloMet M5GMT2100 and
+M5GMT3100) share a `plan_content_id`: `r n(n_distinct(shared$plan_content_id))`
+ids are shared by `r n(nrow(shared))` plans (never across institutions), and
+joining offerings to plans on `plan_content_id` alone duplicates
+`r n(nrow(dup_off))` of the `r n(nrow(with_plan))` offerings with a plan
+(2026-11-19: 256 ids, 687 plans, 1,449 of 30,727 offerings). The key
+`plan_content_id` + `institution` + `course_code` was documented, but easy to
+miss. *Rejected:* documenting the three-column key only (the silent
+duplicates stay one join away); making `plan_content_id` itself unique by
+hashing institution and course code into it, which changes every id and
+breaks the joins of the data handed to the coding project on 2026-10-15.
+*Consequence:* one more column in the three files; no plan, offering or text
+changes, and joins on the three columns give the same result. *Since:*
+2026-11-19.
+
+```{r}
 #| label: shells
 shell <- full |> filter(has_extracted_text, is.na(plan_content_id))
 ```

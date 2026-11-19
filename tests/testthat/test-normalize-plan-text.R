@@ -126,6 +126,36 @@ test_that("vectorized hashing works", {
   expect_false(ids[1] == ids[2])
 })
 
+# --- plan_id ---
+
+test_that("plan_id is institution, course code and the start of plan_content_id", {
+  h <- build_plan_id("same text")
+  expect_equal(plan_key_id(c("uit", "uit", "uit"), c("LRU-3672", "LRU-3672F", "X"), c(h, h, NA)),
+               paste0(c("uit_LRU-3672_", "uit_LRU-3672F_"), substr(h, 1, 10)) |> c(NA))
+  # parallel codes with the same text: one plan_content_id, two plans
+  df <- tibble::tibble(course_id = c("a1", "b1", "a2"), institution = "uit",
+                       course_code = c("LRU-3672", "LRU-3672F", "LRU-3672"), year = c(2024, 2024, 2025),
+                       course_plan = "Same plan text")
+  plans <- deduplicate_plans(df)$plans
+  expect_equal(names(plans)[1:2], c("plan_id", "plan_content_id"))
+  expect_equal(length(unique(plans$plan_content_id)), 1)
+  expect_false(anyDuplicated(plans$plan_id) > 0)
+})
+
+test_that("plan_table() stops when two plans of a course share a plan_id", {
+  plans <- tibble::tibble(plan_id = c("x_A_0123456789", "x_A_0123456789", "x_B_0123456789"),
+                          plan_content_id = c("0123456789aa", "0123456789bb", "0123456789aa"),
+                          institution = "x", course_code = c("A", "A", "B"))
+  expect_error(check_plan_id_unique(plans), "not unique.*x_A_0123456789")
+  expect_identical(check_plan_id_unique(plans[2:3, ]), plans[2:3, ])
+  # through plan_table(): two texts of a course whose hashes start alike
+  courses <- tibble::tibble(course_id = c("1", "2"), institution = "x", course_code = "A",
+                            year = c(2024, 2025), course_plan = "t", course_plan_normalized = "t",
+                            plan_content_id = c("0123456789aa", "0123456789bb"), plan_nchar = 1L)
+  expect_error(plan_table(courses), "not unique")
+  expect_equal(plan_table(courses[1, ])$plan_id, "x_A_0123456789")
+})
+
 # --- deduplicate_plans ---
 
 test_that("deduplicate_plans returns correct structure", {

@@ -108,7 +108,8 @@ The pipeline anonymizes and deduplicates the course plans in three stages:
 | `course_plan` | Anonymized, readable text (primary column for consumers) |
 | `extracted_text` | Raw extracted text (kept for debugging) |
 | `course_plan_normalized` | Lossy normalized text (internal, for hashing) |
-| `plan_content_id` | SHA-256 hash of `course_plan_normalized` |
+| `plan_content_id` | SHA-256 hash of `course_plan_normalized`: the text's fingerprint, shared by parallel course codes with the same text |
+| `plan_id` | The plan's key, `{institution}_{course_code}_{first 10 characters of plan_content_id}` (`plan_key_id()`, since 2026-11-19): join on it |
 | `plan_year_basis` | How the plan's year is known: `url` or `current` (`plan_years` in the config; `page` for NLA in release data-2026-10-16) |
 | `harvested_at` | For `current` sites: the date of the harvest the page comes from |
 

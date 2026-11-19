@@ -7,8 +7,8 @@ format: md
 
 The pipeline splits each course plan into its parts and writes
 `data/processed/plan_sections.RDS` with one row per plan and section
-(`plan_content_id`, `institution`, `course_code`, `source_course_id`, `section`,
-`text`), keyed like `course_plans.RDS`. A plan's sections are cut from the page
+(`plan_id`, `plan_content_id`, `institution`, `course_code`, `source_course_id`,
+`section`, `text`), keyed like `course_plans.RDS`. A plan's sections are cut from the page
 of `source_course_id`, the offering whose text the plan keeps, so they match
 its `course_plan`. The eight sections are
 `course_content`, `learning_outcomes`, `teaching_methods`, `assessment`,

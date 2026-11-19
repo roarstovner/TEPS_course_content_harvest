@@ -181,7 +181,7 @@ href="harvesting.md#robotstxt">“robots.txt”</a>)</td>
 </tr>
 <tr>
 <td><code>data/processed/course_offerings.RDS</code></td>
-<td>DBH metadata + <code>plan_content_id</code>, no text</td>
+<td>DBH metadata + <code>plan_id</code>, no text</td>
 <td>none</td>
 <td>published</td>
 </tr>
@@ -353,6 +353,39 @@ DBH” in `data/data_notes.qmd` before reading row-level success rates.
 `html`, `html_error`, `html_success` and `extracted_text` added, the
 rows of the raw store ([“Raw Store and Finalized
 Releases”](rebuilding.md#raw-store-and-finalized-releases)).
+
+### Keys of the Published Files
+
+``` mermaid
+erDiagram
+    course_plans |o--o{ course_offerings : "plan_id (NA without a plan)"
+    course_plans ||--o{ plan_sections : "plan_id"
+    course_offerings {
+        string course_id PK
+        string plan_id FK
+        string plan_content_id "text fingerprint, not a key"
+    }
+    course_plans {
+        string plan_id PK "institution_course_code_hash10"
+        string plan_content_id "text fingerprint, not a key"
+        string institution
+        string course_code
+    }
+    plan_sections {
+        string plan_id PK, FK
+        string section PK
+        string plan_content_id "text fingerprint, not a key"
+        string text
+    }
+```
+
+Join offerings, plans and sections on `plan_id`
+(`{institution}_{course_code}_{first 10 characters of plan_content_id}`,
+since 2026-11-19), which is unique per plan. `plan_content_id` is a hash
+of the normalized text, shared by parallel course codes of an
+institution that publish the same text, so it finds identical texts
+across courses, and a join on it alone duplicates offerings
+(methods.qmd, “Unit of analysis: the unique plan”).
 
 ### Variables (`data/variables.csv`)
 
@@ -653,14 +686,25 @@ URL holds the academic year too.</td>
 </tr>
 <tr>
 <td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">plan_id</td>
+<td style="text-align: left;">plan_id</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">derived</td>
+<td style="text-align: left;">The offering’s plan in course_plans:
+{institution}<em>{course_code}</em>{the first 10 characters of
+plan_content_id}; NA when the offering has no plan. Join offerings to
+plans and sections on it (added 2026-11-19).</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
 <td style="text-align: left;">plan_content_id</td>
 <td style="text-align: left;">plan_content_id</td>
 <td style="text-align: left;">character</td>
 <td style="text-align: left;">derived</td>
-<td style="text-align: left;">The offering’s plan in course_plans (with
-institution and course_code); NA when the offering has no plan. A
-SHA-256 hash of course_plan_normalized, so offerings with the same plan
-text share it.</td>
+<td style="text-align: left;">Fingerprint of the plan’s text: a SHA-256
+hash of course_plan_normalized, so offerings with the same plan text
+share it, also across parallel course codes of an institution. Not
+unique per plan: join on plan_id. NA when the offering has no plan.</td>
 </tr>
 <tr>
 <td style="text-align: left;">course_offerings</td>
@@ -753,13 +797,25 @@ The counts of a provisional year can still grow.</td>
 </tr>
 <tr>
 <td style="text-align: left;">course_plans</td>
+<td style="text-align: left;">plan_id</td>
+<td style="text-align: left;">plan_id</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">derived</td>
+<td style="text-align: left;">Plan id, unique:
+{institution}<em>{course_code}</em>{the first 10 characters of
+plan_content_id}. A plan is a plan_content_id, institution and
+course_code (added 2026-11-19).</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_plans</td>
 <td style="text-align: left;">plan_content_id</td>
 <td style="text-align: left;">plan_content_id</td>
 <td style="text-align: left;">character</td>
 <td style="text-align: left;">derived</td>
-<td style="text-align: left;">Plan id: a SHA-256 hash of
-course_plan_normalized. A plan is a plan_content_id, institution and
-course_code.</td>
+<td style="text-align: left;">Fingerprint of the plan’s text: a SHA-256
+hash of course_plan_normalized. Parallel course codes of an institution
+that publish the same text share it, so it is not unique per plan: join
+on plan_id; it finds identical texts across courses.</td>
 </tr>
 <tr>
 <td style="text-align: left;">course_plans</td>
@@ -823,6 +879,15 @@ and the sections are read from its page.</td>
 structural headings and labels, whitespace squished
 (normalize_plan_text()): the text the id is made from. Not for
 reading.</td>
+</tr>
+<tr>
+<td style="text-align: left;">plan_sections</td>
+<td style="text-align: left;">plan_id</td>
+<td style="text-align: left;">plan_id</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">derived</td>
+<td style="text-align: left;">As in course_plans. A section is a plan_id
+and section.</td>
 </tr>
 <tr>
 <td style="text-align: left;">plan_sections</td>

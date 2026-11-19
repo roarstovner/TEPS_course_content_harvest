@@ -148,7 +148,14 @@ stages:
 </tr>
 <tr>
 <td><code>plan_content_id</code></td>
-<td>SHA-256 hash of <code>course_plan_normalized</code></td>
+<td>SHA-256 hash of <code>course_plan_normalized</code>: the text’s
+fingerprint, shared by parallel course codes with the same text</td>
+</tr>
+<tr>
+<td><code>plan_id</code></td>
+<td>The plan’s key,
+<code>{institution}_{course_code}_{first 10 characters of plan_content_id}</code>
+(<code>plan_key_id()</code>, since 2026-11-19): join on it</td>
 </tr>
 <tr>
 <td><code>plan_year_basis</code></td>

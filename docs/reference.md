@@ -256,10 +256,12 @@ sections</td>
 </tr>
 <tr>
 <td><code>plan_ids(id_text)</code>, <code>plan_table(courses)</code>,
-<code>deduplicate_plans(df)</code></td>
+<code>deduplicate_plans(df)</code>, <code>plan_key_id()</code>,
+<code>check_plan_id_unique()</code></td>
 <td><code>R/deduplicate_plans.R</code></td>
 <td>Content hashes (<code>plan_content_id</code>); the unique plans of a
-set of offerings</td>
+set of offerings; the plan key <code>plan_id</code> and its uniqueness
+check</td>
 </tr>
 <tr>
 <td><code>page_sections(blocks, text, cfg)</code></td>

@@ -5,20 +5,21 @@
 
 The pipeline splits each course plan into its parts and writes
 `data/processed/plan_sections.RDS` with one row per plan and section
-(`plan_content_id`, `institution`, `course_code`, `source_course_id`,
-`section`, `text`), keyed like `course_plans.RDS`. A plan’s sections are
-cut from the page of `source_course_id`, the offering whose text the
-plan keeps, so they match its `course_plan`. The eight sections are
-`course_content`, `learning_outcomes`, `teaching_methods`, `assessment`,
-`coursework_requirements`, `prerequisites`, `reading_list` and
-`practice`. `practice` is an overlay: its text is also in another
-section (mostly `teaching_methods`), so section lengths summed per plan
-count it twice (Practice Overlay below). Section text is anonymized with
-the same `anonymize_text()` as `course_plan`: sections are cut from the
-raw `html`/`extracted_text`, so this step must keep anonymizing.
-Admission text, exam logistics and placeholder rows such as “Se
-fagplanen.” are left out. What a section holds and what it leaves out is
-set by `course_plan_spec.md`.
+(`plan_id`, `plan_content_id`, `institution`, `course_code`,
+`source_course_id`, `section`, `text`), keyed like `course_plans.RDS`. A
+plan’s sections are cut from the page of `source_course_id`, the
+offering whose text the plan keeps, so they match its `course_plan`. The
+eight sections are `course_content`, `learning_outcomes`,
+`teaching_methods`, `assessment`, `coursework_requirements`,
+`prerequisites`, `reading_list` and `practice`. `practice` is an
+overlay: its text is also in another section (mostly
+`teaching_methods`), so section lengths summed per plan count it twice
+(Practice Overlay below). Section text is anonymized with the same
+`anonymize_text()` as `course_plan`: sections are cut from the raw
+`html`/`extracted_text`, so this step must keep anonymizing. Admission
+text, exam logistics and placeholder rows such as “Se fagplanen.” are
+left out. What a section holds and what it leaves out is set by
+`course_plan_spec.md`.
 
 `tar_read(metrics)` has the number of plans with each section per
 institution and `pct_text_in_sections`, the median share of a plan’s

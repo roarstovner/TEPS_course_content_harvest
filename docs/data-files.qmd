@@ -52,7 +52,7 @@ as much (`methods.md` "Anonymization").
 | `data/interim/plan_gaps.RDS` | course-years without a plan, reason, URLs tried | none | internal |
 | `data/interim/extracted_text.RDS` | `extracted_text` rebuilt from the raw harvest | yes (raw) | internal |
 | `data/interim/course_offerings_full.RDS` | offerings + `url`, `extracted_text`, `course_plan` | yes (`extracted_text`) | internal |
-| `data/processed/course_offerings.RDS` | DBH metadata + `plan_content_id`, no text | none | published |
+| `data/processed/course_offerings.RDS` | DBH metadata + `plan_id`, no text | none | published |
 | `data/processed/course_plans.RDS` | anonymized `course_plan` (+ `course_plan_normalized`) | anonymized | published |
 | `data/processed/plan_sections.RDS` | anonymized section `text` per plan | anonymized | publishable |
 | `data/interim/teacher_ed/`, `data/processed/teacher_ed/` | the same files for the teacher-ed frame ("Frames") | as above | as above |
@@ -169,6 +169,39 @@ have no plan by design; see "Semester registration in DBH" in
 `harvest_institution()` returns the offerings with `course_id`, `url`, `html`,
 `html_error`, `html_success` and `extracted_text` added, the rows of the raw
 store (["Raw Store and Finalized Releases"](rebuilding.md#raw-store-and-finalized-releases)).
+
+### Keys of the Published Files
+
+```mermaid
+erDiagram
+    course_plans |o--o{ course_offerings : "plan_id (NA without a plan)"
+    course_plans ||--o{ plan_sections : "plan_id"
+    course_offerings {
+        string course_id PK
+        string plan_id FK
+        string plan_content_id "text fingerprint, not a key"
+    }
+    course_plans {
+        string plan_id PK "institution_course_code_hash10"
+        string plan_content_id "text fingerprint, not a key"
+        string institution
+        string course_code
+    }
+    plan_sections {
+        string plan_id PK, FK
+        string section PK
+        string plan_content_id "text fingerprint, not a key"
+        string text
+    }
+```
+
+Join offerings, plans and sections on `plan_id`
+(`{institution}_{course_code}_{first 10 characters of plan_content_id}`, since
+2026-11-19), which is unique per plan. `plan_content_id` is a hash of the
+normalized text, shared by parallel course codes of an institution that
+publish the same text, so it finds identical texts across courses, and a join
+on it alone duplicates offerings (methods.qmd, "Unit of analysis: the unique
+plan").
 
 ### Variables (`data/variables.csv`)
 

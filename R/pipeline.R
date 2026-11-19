@@ -509,9 +509,10 @@ plan_source_pages <- function(plans, page_map) {
 # each in the order of its plans.
 frame_sections <- function(plans, source_sections, page_map, institutions) {
   src <- plans[c("plan_content_id", "institution", "course_code", "source_course_id")]
+  src$plan_id <- plan_key_id(src$institution, src$course_code, src$plan_content_id)
   src$page_id <- page_map$page_id[match(src$source_course_id, page_map$course_id)]
   sections <- dplyr::inner_join(src, source_sections, by = "page_id", relationship = "many-to-many") |>
-    dplyr::select(plan_content_id, institution, course_code, source_course_id, section, text)
+    dplyr::select(plan_id, plan_content_id, institution, course_code, source_course_id, section, text)
   # combined as {targets} combines branches (vctrs), so the file keeps its bytes
   do.call(vctrs::vec_rbind, unname(split(sections, factor(sections$institution, institutions))))
 }
@@ -541,7 +542,10 @@ frame_offerings <- function(offerings, frames, plans, sections) {
     x <- offerings[frames[[f]], ]
     x$plan_content_id <- dplyr::if_else(paste(x$plan_content_id, x$institution, x$course_code) %in% shell,
                                         NA_character_, x$plan_content_id)
-    x
+    # the offering's plan in course_plans (NA without one): join on it, not
+    # on plan_content_id, which parallel course codes can share
+    x$plan_id <- plan_key_id(x$institution, x$course_code, x$plan_content_id)
+    dplyr::relocate(x, plan_id, .before = plan_content_id)
   }), names(frames))
 }
 
