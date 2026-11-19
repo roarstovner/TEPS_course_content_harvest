@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Browser: query engine (parser, matcher, KWIC, word forms) with tests (#552)
 - Browser: scaffold app/browser (Vite + Svelte 5 + vitest) and write the spec in its README (#550)
 - KHiO sections: section text repeated under a second heading in the source (#541)
 - NMH sections: summary fields before the first heading (Forhåndskrav, Pensum) in no section (#537)
