@@ -28,7 +28,7 @@ export function buildModel({ courses, courseYears }) {
     if (!c) continue
     let cy = c.years.get(r.year)
     if (!cy) {
-      cy = { year: r.year, studyTypes: new Set(), plans: new Set() }
+      cy = { year: r.year, studyTypes: new Set(), plans: new Set(), programmes: new Set(), hadStudents: false, noPlanReason: null }
       c.years.set(r.year, cy)
       cys.push(cy)
       if (r.year < yearMin) yearMin = r.year
@@ -36,6 +36,9 @@ export function buildModel({ courses, courseYears }) {
     }
     if (r.study_type) cy.studyTypes.add(r.study_type)
     if (r.plan_content_id) cy.plans.add(planKey(r))
+    if (r.programme_code) cy.programmes.add(r.programme_code)
+    if (r.had_students) cy.hadStudents = true
+    if (r.no_plan_reason) cy.noPlanReason = r.no_plan_reason
   }
   return { courses: list, byKey, courseYears: cys, yearMin, yearMax }
 }
@@ -59,6 +62,16 @@ export function addPlans(model, plans) {
 }
 
 const overlaps = (v, y0, y1) => v.year_from <= y1 && v.year_to >= y0
+
+/** The year range of the filter and whether a course-year is in the filter
+ *  (years and study types). */
+export function yearFilter(model, f) {
+  const y0 = f.y0 ?? model.yearMin
+  const y1 = f.y1 ?? model.yearMax
+  const st = f.st.length ? new Set(f.st) : null
+  return { y0, y1, cyIn: (cy) => cy.year >= y0 && cy.year <= y1 && (!st || [...cy.studyTypes].some((s) => st.has(s))) }
+}
+
 const sum = (a) => a.reduce((s, x) => s + x, 0)
 
 /**
@@ -75,11 +88,8 @@ const sum = (a) => a.reduce((s, x) => s + x, 0)
  *   matching courses per institution, ignoring the institution filter
  */
 export function filterView(model, f, matches) {
-  const y0 = f.y0 ?? model.yearMin
-  const y1 = f.y1 ?? model.yearMax
+  const { y0, y1, cyIn } = yearFilter(model, f)
   const inst = f.inst.length ? new Set(f.inst) : null
-  const st = f.st.length ? new Set(f.st) : null
-  const cyIn = (cy) => cy.year >= y0 && cy.year <= y1 && (!st || [...cy.studyTypes].some((s) => st.has(s)))
   const rows = []
   const counts = { courses: 0, versions: 0, courseYears: 0, withPlan: 0, matching: 0 }
   const instCounts = new Map()

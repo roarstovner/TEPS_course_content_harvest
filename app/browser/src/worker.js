@@ -89,6 +89,49 @@ const handlers = {
     }
     return { text: d.text, marks: marks(d.text, null), sections }
   },
+  /** Rows of a download and the texts over Excel's cell limit: {rows, long}. */
+  async downloadCount(args) {
+    const [rows, { EXCEL_MAX }] = await Promise.all([downloadRows(args), import('./download/encode.js')])
+    return { rows: rows.length, long: rows.filter((r) => (r.course_plan ?? r.text)?.length > EXCEL_MAX).length }
+  },
+  /** A download as {name, blob} (download/bundle.js). */
+  async download(args) {
+    const [rows, { buildDownload }, { default: dictionary }] = await Promise.all([
+      downloadRows(args),
+      import('./download/bundle.js'),
+      import('./download/dictionary.js'),
+    ])
+    if (!rows.length) throw new Error('Nothing to download')
+    const { name, bytes, truncated } = await buildDownload({ ...args, rows, dictionary })
+    return { name, truncated, blob: new Blob([bytes], { type: 'application/zip' }) }
+  },
+}
+
+// The table of a download unit, with the text this worker holds.
+async function downloadRows({ unit, sel, ctx, sectionOrder }) {
+  const { unitRows, TEXT_UNITS } = await import('./download/table.js')
+  if (!TEXT_UNITS.has(unit)) return unitRows(unit, sel)
+  const m = ctx.q ? await ready(ctx.q, ctx.scope) : null
+  if (unit === 'section') await sectionsReady
+  const on = m && !m.error && m.ast
+  const excludedForms = ctx.excl
+  const hits = (k, section) => {
+    const d = byKey.get(k)
+    return d && on ? kwic(d, m, { excludedForms, section, max: Infinity, context: 80 }) : []
+  }
+  return unitRows(
+    unit,
+    sel,
+    {
+      plan: (k) => byKey.get(k)?.text,
+      sections: (k) => Object.fromEntries(Object.entries(byKey.get(k)?.sections ?? {}).map(([c, s]) => [c, s.text])),
+      sectionHits: on
+        ? (k) => Object.fromEntries(Object.keys(byKey.get(k)?.sections ?? {}).map((c) => [c, hits(k, c).filter((h) => h.source === c).length]))
+        : null,
+      hits: (k) => hits(k, null).map((h) => ({ ...h, term: m.terms[h.term].key })),
+    },
+    sectionOrder,
+  )
 }
 
 self.onmessage = async ({ data }) => {

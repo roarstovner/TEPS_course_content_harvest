@@ -10,14 +10,21 @@ export const mb = (bytes) => `${(bytes / 1e6).toFixed(1)} MB`
  * @param {{start: number, end: number, terms: number[]}[]} marks sorted, disjoint
  * @returns {{text: string, term: number}[]} term -1 for plain text
  */
-export function segments(text, marks) {
+export const segments = (text, marks) => segmentsIn(text, 0, text.length, marks)
+
+/** `segments` of the range [start, end) of `text`; marks are clipped to it. */
+export function segmentsIn(text, start, end, marks) {
   const out = []
-  let pos = 0
+  let pos = start
   for (const m of marks) {
-    if (m.start > pos) out.push({ text: text.slice(pos, m.start), term: -1 })
-    out.push({ text: text.slice(m.start, m.end), term: m.terms[0] })
-    pos = m.end
+    if (m.end <= start) continue
+    if (m.start >= end) break
+    const s = Math.max(m.start, start)
+    const e = Math.min(m.end, end)
+    if (s > pos) out.push({ text: text.slice(pos, s), term: -1 })
+    out.push({ text: text.slice(s, e), term: m.terms[0] })
+    pos = e
   }
-  if (pos < text.length) out.push({ text: text.slice(pos), term: -1 })
+  if (pos < end) out.push({ text: text.slice(pos, end), term: -1 })
   return out
 }

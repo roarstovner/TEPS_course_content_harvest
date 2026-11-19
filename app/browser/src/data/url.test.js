@@ -25,6 +25,12 @@ describe('URL state', () => {
     expect(decodeState(encodeState(s))).toEqual(s)
   })
 
+  it('keeps the compared version on the versions tab only', () => {
+    const s = { ...defaultState(), course: 'uio|A', tab: 'versions', cmp: 'abc' }
+    expect(decodeState(encodeState(s))).toEqual(s)
+    expect(encodeState({ ...s, tab: 'source' })).toBe('course=uio%3AA&tab=source')
+  })
+
   it('drops N outside the words scope, empty exclusions and the version without a course', () => {
     const s = { ...defaultState(), n: 4, excl: { a: [] }, version: 'x' }
     expect(encodeState(s)).toBe('')

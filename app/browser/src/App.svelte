@@ -12,6 +12,7 @@
   import Filters from './lib/Filters.svelte'
   import Results from './lib/Results.svelte'
   import CourseView from './lib/CourseView.svelte'
+  import Download from './lib/Download.svelte'
 
   const base = new URL('data/', document.baseURI).href
 
@@ -27,6 +28,7 @@
   let active = $state(0) // keyboard cursor in the results
   let worker = $state.raw(null)
   let searchBox = $state()
+  let downloadOpen = $state(false)
 
   onMount(async () => {
     try {
@@ -174,7 +176,11 @@
     plansReady={!!plansMeta}
     {sectionsLoaded}
     {error}
+    ondownload={model && plansMeta && !searching && (!queryOn || result) ? () => (downloadOpen = true) : null}
   />
+  {#if downloadOpen && model && plansMeta}
+    <Download bind:open={downloadOpen} {model} {view} {s} {excl} {matches} {meta} {worker} />
+  {/if}
   {#if model}
     <aside class="filters"><Filters bind:state={s} {meta} {model} instCounts={view.instCounts} /></aside>
     <main class="results">
@@ -203,8 +209,12 @@
           plansReady={!!plansMeta}
           {sectionsLoaded}
           sectionsMeta={meta.sections}
+          {model}
+          studyTypes={meta.study_types}
           bind:tab={s.tab}
+          bind:cmp={s.cmp}
           onversion={(v) => (s.version = versionId(v))}
+          onopen={(c, v) => ((s.course = c.key), (s.version = versionId(v)))}
           onclose={close}
         />
       {:else}

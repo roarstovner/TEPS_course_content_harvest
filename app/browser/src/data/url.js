@@ -2,6 +2,7 @@
 // bookmarked and cited. Only values that differ from the defaults are written.
 
 export const SCOPES = ['plan', 'section', 'paragraph', 'sentence', 'words']
+export const TABS = ['plan', 'sections', 'versions', 'source']
 
 export const defaultState = () => ({
   q: '', // query
@@ -14,7 +15,8 @@ export const defaultState = () => ({
   st: [], // study types; empty = all
   course: null, // selected course, `institution|course_code`
   version: null, // its version (versionId)
-  tab: 'plan', // 'plan' or 'sections'
+  tab: 'plan', // one of TABS
+  cmp: null, // the version compared with it, tab 'versions' (versionId)
 })
 
 const list = (s) => (s ? s.split(',').filter(Boolean) : [])
@@ -37,6 +39,7 @@ export function encodeState(s) {
     p.set('course', s.course.replace('|', ':'))
     if (s.version) p.set('v', s.version)
     if (s.tab !== 'plan') p.set('tab', s.tab)
+    if (s.tab === 'versions' && s.cmp) p.set('cmp', s.cmp)
   }
   return p.toString()
 }
@@ -63,7 +66,8 @@ export function decodeState(search) {
   if (c && c.includes(':')) {
     s.course = c.replace(':', '|')
     s.version = p.get('v') || null
-    if (p.get('tab') === 'sections') s.tab = 'sections'
+    if (TABS.includes(p.get('tab'))) s.tab = p.get('tab')
+    s.cmp = p.get('cmp') || null
   }
   return s
 }

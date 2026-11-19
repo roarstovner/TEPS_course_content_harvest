@@ -1,10 +1,31 @@
 <script>
-  // Right pane: one course, a version of its plan with the matches marked,
-  // its versions, and its sections. The text comes from the worker.
+  // Right pane: one course, a version of its plan with the matches marked
+  // and the sections in the margin, its sections (also those it lacks), a
+  // comparison of two versions, and the source. The text comes from the
+  // worker.
   import { segments } from './format.js'
+  import PlanText from './PlanText.svelte'
+  import Versions from './Versions.svelte'
+  import Source from './Source.svelte'
 
-  let { course, version, matched, worker, q, excl, plansReady, sectionsLoaded, sectionsMeta, tab = $bindable(), onversion, onclose } =
-    $props()
+  let {
+    course,
+    version,
+    matched,
+    worker,
+    q,
+    excl,
+    plansReady,
+    sectionsLoaded,
+    sectionsMeta,
+    model,
+    studyTypes,
+    tab = $bindable(),
+    cmp = $bindable(),
+    onversion,
+    onopen,
+    onclose,
+  } = $props()
 
   let doc = $state.raw(null)
   let body = $state()
@@ -33,10 +54,15 @@
   })
 
   const years = (v) => (v.year_from === v.year_to ? `${v.year_from}` : `${v.year_from}–${v.year_to}`)
-  const sections = $derived(
-    doc?.sections ? sectionsMeta.filter((s) => doc.sections[s.code]).map((s) => ({ ...s, ...doc.sections[s.code] })) : [],
-  )
+  const TABS = [
+    ['plan', 'Plan'],
+    ['sections', 'Sections'],
+    ['versions', 'Versions'],
+    ['source', 'Source'],
+  ]
 </script>
+
+{#snippet marked(text, marks)}{#each segments(text, marks) as g, i (i)}{#if g.term < 0}{g.text}{:else}<mark class="t{g.term % 6}">{g.text}</mark>{/if}{/each}{/snippet}
 
 <div class="courseview">
   <div class="chead">
@@ -60,9 +86,10 @@
       </div>
     {/if}
     <div class="tabs">
-      <button class:current={tab === 'plan'} onclick={() => (tab = 'plan')}>Plan</button>
-      <button class:current={tab === 'sections'} onclick={() => (tab = 'sections')}>Sections</button>
-      {#if version}<a class="src" href={version.source_url} target="_blank" rel="noopener noreferrer">source</a>{/if}
+      {#each TABS as [t, name] (t)}
+        <button class:current={tab === t} onclick={() => (tab = t)}>{name}{#if t === 'versions' && course.versions.length > 1}&nbsp;<small>{course.versions.length}</small>{/if}</button>
+      {/each}
+      {#if version}<a class="src" href={version.source_url} target="_blank" rel="noopener noreferrer">source ↗</a>{/if}
     </div>
   </div>
 
@@ -72,15 +99,20 @@
     {:else if !doc || doc.key !== version?.key}
       <p class="hint">Loading the plan text…</p>
     {:else if tab === 'plan'}
-      <div class="plantext">{#each segments(doc.text, doc.marks) as g, i (i)}{#if g.term < 0}{g.text}{:else}<mark class="t{g.term % 6}">{g.text}</mark>{/if}{/each}</div>
+      <PlanText text={doc.text} marks={doc.marks} sections={doc.sections} {sectionsMeta} />
+    {:else if tab === 'versions'}
+      <Versions {course} {version} {doc} {worker} {q} {excl} bind:cmp {onversion} />
+    {:else if tab === 'source'}
+      <Source {course} {version} {model} {studyTypes} {onopen} />
     {:else if !doc.sections}
       <p class="hint">Loading the sections…</p>
-    {:else if !sections.length}
-      <p class="hint">No sections were extracted from this plan.</p>
     {:else}
-      {#each sections as s (s.code)}
-        <h3 title={s.label_en}>{s.label_no} <small>{s.query}:</small></h3>
-        <div class="plantext">{#each segments(s.text, s.marks) as g, i (i)}{#if g.term < 0}{g.text}{:else}<mark class="t{g.term % 6}">{g.text}</mark>{/if}{/each}</div>
+      {#each sectionsMeta as s, i (s.code)}
+        {@const sec = doc.sections[s.code]}
+        <h3 class="sechead s{i}" class:absent={!sec} title={s.label_en}>
+          {s.label_no} <small>{s.query}:</small>{#if !sec}<small> not in this plan</small>{/if}
+        </h3>
+        {#if sec}<div class="plantext">{@render marked(sec.text, sec.marks)}</div>{/if}
       {/each}
     {/if}
   </div>

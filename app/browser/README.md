@@ -165,21 +165,43 @@ such as "lese- og skrivevansker".
 - **Middle:** results, one row per course: institution, code, name, a strip
   of the years with the matching versions marked, the number of hits.
 - **Right:** the course: full plan with the matches marked and a coloured
-  margin showing which section each paragraph went to; tabs for sections,
-  versions (word-level comparison of any two) and source (URL, harvest date
-  where recorded, programmes and years using the plan).
+  margin showing which section each line went to (a dotted mark for lines in
+  no section; a legend, which can switch it off); tabs for sections (those
+  the plan lacks greyed), versions (word-level comparison of any two, the
+  shown one and the previous by default, matches kept) and source (URL,
+  harvest date where recorded, programmes and years using the plan, other
+  courses of the institution with the same text). Sections are cut from the
+  plan and cleaned, so a line goes to the section that holds the same line
+  (case and whitespace ignored); on the teacher-ed plans 99% of the section
+  lines are found in their plan, and 64% of the plan's lines are in a section
+  (headings and course facts are not; 2026-11-19).
 - **Views** beside the list: trend (share of course-years by year,
   institution or study type, with coverage), compare (plans side by side),
   term lists (a heatmap of saved terms x institution x year), screening
   (tag hits include, exclude or maybe, with a note), random sample (seeded).
-- **Download:** the current selection, as one row per course, plan version,
-  course-year, section or hit; CSV (UTF-8 with BOM for Excel), XLSX (plans
-  over Excel's 32,767 characters per cell are flagged), Parquet, a
-  keyword-in-context table, or a ZIP of one text file per plan with a sheet of
-  their metadata (the import format of NVivo, MAXQDA and ATLAS.ti). Each
-  download carries a manifest (query, filters, data version, date, counts),
-  `data/variables.csv` and R and Python code that rebuilds the subset from the
-  release.
+- **Download:** the button in the header opens a dialog for the current
+  selection, exactly what the list shows (filters, query, unticked word
+  forms), as one row per course, plan version, course-year, section or hit
+  (keyword in context, 80 characters on either side), with a preview of the
+  row count. Formats: CSV (UTF-8 with BOM for Excel, RFC 4180, line breaks
+  kept inside quoted cells), XLSX (text over Excel's 32,767 characters per cell
+  is cut and the row flagged in `truncated`; 41 teacher-ed plans exceed it),
+  Parquet, or QDA: one UTF-8 text file per plan version (named
+  `{institution}_{course code}_{years}`, the plan under a short header) with a
+  classification sheet (CSV and XLSX, one row per document; the import format
+  of NVivo, MAXQDA and ATLAS.ti, with a README on importing). Every download is
+  one ZIP named after the data version, unit and time
+  (`course-plans_{version}_{unit}_{UTC time}.zip`), so that a table never
+  travels without: `manifest.json` (query, scope, excluded forms, filters, data
+  version, time, counts, the link to the view), `variables.csv` (the
+  exported columns, described from `data/variables.csv` or, for the
+  browser's own columns, in `src/download/bundle.js`), `keys.csv` (the plan
+  versions: `plan_id` and its parts), `course_year_keys.csv` (for the course
+  and course-year units) and `rebuild.R`/`rebuild.py`, which read the release
+  files (`course_offerings`, `course_plans`, `plan_sections`; Parquet or RDS)
+  and keep the rows by those keys; the query is not re-run, so hits are
+  rebuilt as the plans they are in. The worker builds the file (it holds the
+  text) and the page saves it.
 - **State in the URL**, so every view can be bookmarked and cited.
 - **Keyboard:** `/` search, `j`/`k` next and previous course, `Enter` open,
   `Esc` back, `?` help.
@@ -207,7 +229,10 @@ such as "lese- og skrivevansker".
   - `model.js`: courses with their course-years and versions; the filtered,
     matched view (one row per course) and its counts; the year strip.
   - `url.js`: the state in the URL (query, scope, excluded forms, filters,
-    course, version, tab).
+    course, version, tab, compared version).
+  - `overlay.js`: the section of each line of a plan.
+  - `related.js`: the programmes and years that use a version, other courses
+    with the same text.
   - `client.js`: the page's side of the worker (requests as promises).
 - `src/worker.js`: fetches and holds the plan and section text and runs the
   search engine; the page gets the plans' metadata, the matches, the word
@@ -217,4 +242,13 @@ such as "lese- og skrivevansker".
 - `src/App.svelte`: loading, state, URL, keyboard, the panes.
 - `src/lib/`: components: `Header` (search box, scope, counts), `WordForms`,
   `Filters`, `StudyTypes` (a flat list, to be replaced by the grouped tree),
-  `Results`, `CourseView`; `format.js` (numbers, marked text).
+  `Results`, `CourseView` (with `PlanText`, the plan with the section
+  margin, `Versions`, the comparison, and `Source`); `format.js` (numbers,
+  marked text); `diff.js` (word-level comparison; jsdiff is loaded on first
+  use, a separate chunk of 22 kB); `Download` (the download dialog).
+- `src/download/`: downloads, with tests (`download.test.js`). `table.js`: the
+  selection as tables of each unit; `encode.js`: CSV, XLSX (a minimal writer on
+  fflate) and Parquet (hyparquet-writer); `rebuild.js`: the R and Python code;
+  `bundle.js`: the column descriptions, manifest, QDA files and the ZIP;
+  `dictionary.js`: `data/variables.csv`, built in. The libraries and the
+  dictionary are loaded in the worker on the first download (about 100 kB).

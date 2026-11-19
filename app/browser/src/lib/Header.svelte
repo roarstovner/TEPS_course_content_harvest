@@ -16,6 +16,7 @@
     plansReady,
     sectionsLoaded,
     error,
+    ondownload,
   } = $props()
 
   const SCOPES = [
@@ -58,6 +59,7 @@
     {#if state.scope === 'words'}
       <label>N <input class="n" type="number" min="1" max="1000" bind:value={state.n} /></label>
     {/if}
+    <button type="button" class="dlbutton" onclick={ondownload} disabled={!ondownload} title="Download the selection">Download</button>
   </div>
 
   {#if err}
