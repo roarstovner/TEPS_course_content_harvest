@@ -145,6 +145,14 @@ Institution”</a>)</td>
 <td>in git; released with the data</td>
 </tr>
 <tr>
+<td><code>data/study_types.csv</code></td>
+<td>DBH’s study types (table 347 <code>Studiumkode</code>): Norwegian
+and English name, group of the browser’s tree, years,
+<code>te_frame</code> (the teacher-ed frame’s four)</td>
+<td>none</td>
+<td>in git</td>
+</tr>
+<tr>
 <td><code>data/robots_txt.csv</code></td>
 <td>each host’s robots.txt: date read, Crawl-delay, the disallow and
 allow rules the harvest applies (<a
@@ -306,6 +314,22 @@ frame is a filter of the same snapshot, so its offerings have the same
 `course_id` in both. `harvest_all()` without `courses` harvests every
 course; `tar_make()` builds everything in `data/raw/` and writes the
 teacher-ed frame’s files apart (see “Frames”).
+
+A study type (`Studiumkode` in table 347) is DBH’s classification of a
+programme: a profession (SYK nursing, ING engineering, PRAKTPED the
+practical-pedagogical education), a programme model (GLU1-7, IMALU1-7)
+or a broad field (HUMAN, REALFAG, SAMVIT). Every programme has one per
+year. `data/study_types.csv` lists the study types of the latest
+snapshot with DBH’s Norwegian name, an English name, a group for the
+browser’s study-type tree (teacher education, health and welfare, broad
+fields and so on), the years they appear, and `te_frame`. The teacher-ed
+frame is four of them (INTMASTER, IMALU1-7, IMALU5-10 and LUPE,
+`TEACHER_ED_STUDIUM`; methods.qmd, “Population and sampling frame”),
+marked `te_frame`; the other teacher education study types (GLU,
+PRAKTPED, BLU and others) are in the group but outside the frame.
+`tests/testthat/test-study-types.R` checks that the file covers the
+latest snapshot and that `te_frame` matches `TEACHER_ED_STUDIUM`: a new
+snapshot with a new study type needs a row added by hand.
 
 Key columns: - `institution`: Short code (e.g., “oslomet”, “uia”); NA
 for an institution code no config has - `course_code_raw`: DBH’s course

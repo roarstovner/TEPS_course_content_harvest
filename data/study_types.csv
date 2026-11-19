@@ -1,0 +1,67 @@
+study_type,name_no,name_en,group,group_label_en,group_label_no,first_year,last_year,te_frame
+ALU,Allmennlærerutdanning,"General teacher education (allmennlærer, replaced by GLU in 2010)",teacher_education,Teacher education,Lærerutdanning,1995,2026,FALSE
+BLU,Barnehagelærerutdanning,Kindergarten teacher education,teacher_education,Teacher education,Lærerutdanning,2012,2026,FALSE
+INTMASTER,Femårig lektorutdanning,"Lektor education, years 8-13, 5-year master",teacher_education,Teacher education,Lærerutdanning,2003,2026,TRUE
+PRAKTPED,Praktisk-pedagogisk utdanning,Practical-pedagogical education (PPU),teacher_education,Teacher education,Lærerutdanning,1995,2026,FALSE
+FLU,Førskolelærerutdanning,"Preschool teacher education (førskolelærer, replaced by kindergarten teacher education in 2012)",teacher_education,Teacher education,Lærerutdanning,1995,2024,FALSE
+GLU1-7,Grunnskolelærerutdanning 1-7 trinn,"Primary and lower secondary teacher education, years 1-7 (4-year)",teacher_education,Teacher education,Lærerutdanning,2009,2026,FALSE
+IMALU1-7,5-årig masterprogram i grunnskolelærerutdanning 1-7 trinn,"Primary and lower secondary teacher education, years 1-7, 5-year master",teacher_education,Teacher education,Lærerutdanning,2010,2026,TRUE
+GLU5-10,Grunnskolelærerutdanning 5-10 trinn,"Primary and lower secondary teacher education, years 5-10 (4-year)",teacher_education,Teacher education,Lærerutdanning,2009,2026,FALSE
+IMALU5-10,5-årig masterprogram i grunnskolelærerutdanning 5-10 trinn,"Primary and lower secondary teacher education, years 5-10, 5-year master",teacher_education,Teacher education,Lærerutdanning,2010,2026,TRUE
+FAG,Faglærerutdanning,Subject teacher education,teacher_education,Teacher education,Lærerutdanning,1995,2026,FALSE
+LUPE,Lærerutdanning i praktiske og estetiske fag,"Teacher education in practical and aesthetic subjects, years 1-13, 5-year master",teacher_education,Teacher education,Lærerutdanning,2021,2026,TRUE
+YRKESFAG,Yrkesfaglærerutdanning,Vocational teacher education,teacher_education,Teacher education,Lærerutdanning,2000,2026,FALSE
+AUD,Audiografutdanning,Audiology,health_welfare,Health and welfare,Helse- og sosialfag,1995,2026,FALSE
+BIO,Bioingeniørutdanning,Biomedical laboratory science,health_welfare,Health and welfare,Helse- og sosialfag,1995,2026,FALSE
+BAR,Barnevernpedagogutdanning,Child welfare,health_welfare,Health and welfare,Helse- og sosialfag,1995,2026,FALSE
+TANNPL,Tannpleier,Dental hygiene,health_welfare,Health and welfare,Helse- og sosialfag,1995,2026,FALSE
+TANNTEKN,Tannteknikerutdanning,Dental technology,health_welfare,Health and welfare,Helse- og sosialfag,1999,2026,FALSE
+ODO,Odontologi,Dentistry,health_welfare,Health and welfare,Helse- og sosialfag,1996,2026,FALSE
+MEDISIN,Medisin,Medicine,health_welfare,Health and welfare,Helse- og sosialfag,1996,2026,FALSE
+SYK,Sykepleierutdanning,Nursing,health_welfare,Health and welfare,Helse- og sosialfag,1995,2026,FALSE
+ERNÆRING,Ernæring,Nutrition,health_welfare,Health and welfare,Helse- og sosialfag,1996,2026,FALSE
+ERG,Ergoterapeututdanning,Occupational therapy,health_welfare,Health and welfare,Helse- og sosialfag,1995,2026,FALSE
+ORT,Ortopediingeniørutdanning,Orthopaedic engineering,health_welfare,Health and welfare,Helse- og sosialfag,1995,2026,FALSE
+FARMASI,Farmasi,Pharmacy,health_welfare,Health and welfare,Helse- og sosialfag,1996,2026,FALSE
+FYS,Fysioterapeututdanning,Physiotherapy,health_welfare,Health and welfare,Helse- og sosialfag,1995,2026,FALSE
+RES,Reseptarutdanning,Prescriptionist (bachelor in pharmacy),health_welfare,Health and welfare,Helse- og sosialfag,1995,2026,FALSE
+PSYKOLOGI,Psykologi,Psychology,health_welfare,Health and welfare,Helse- og sosialfag,1996,2026,FALSE
+RAD,Radiografutdanning,Radiography,health_welfare,Health and welfare,Helse- og sosialfag,1995,2026,FALSE
+VER,Vernepleierutdanning,Social education (vernepleie),health_welfare,Health and welfare,Helse- og sosialfag,1995,2026,FALSE
+SOS,Sosionomutdanning/sosialt arbeid,Social work,health_welfare,Health and welfare,Helse- og sosialfag,1995,2026,FALSE
+VET,Veterinærutdanning,Veterinary medicine,health_welfare,Health and welfare,Helse- og sosialfag,1996,2026,FALSE
+DYR,Dyrepleie,Veterinary nursing,health_welfare,Health and welfare,Helse- og sosialfag,1996,2026,FALSE
+JUS,Juridiske fag,Law,law_police_military,"Law, police and military","Jus, politi og militær",1995,2026,FALSE
+MILITÆR,Militær utdanning,Military education,law_police_military,"Law, police and military","Jus, politi og militær",2016,2026,FALSE
+POLITI,Politiutdanning,Police education,law_police_military,"Law, police and military","Jus, politi og militær",2012,2026,FALSE
+ING,Ingeniørutdanning,Engineering,technology_engineering,Technology and engineering,Teknologi og ingeniørfag,1995,2026,FALSE
+MAR,Maritim utdanning,Maritime education,technology_engineering,Technology and engineering,Teknologi og ingeniørfag,1995,2026,FALSE
+SIVING,Sivilingeniørutdanning,"Master of science in engineering (sivilingeniør, until 2007)",technology_engineering,Technology and engineering,Teknologi og ingeniørfag,1995,2007,FALSE
+ARKITEKTUR,Arkitektur,Architecture,arts_design_architecture,"Arts, design and architecture","Kunst, design og arkitektur",1996,2026,FALSE
+KU,Kunstnerisk utviklingsarbeid,Artistic research,arts_design_architecture,"Arts, design and architecture","Kunst, design og arkitektur",2018,2026,FALSE
+DESIGN,Designutdanning,Design,arts_design_architecture,"Arts, design and architecture","Kunst, design og arkitektur",1996,2026,FALSE
+BILDEKUNST,Kunstfagutdanning,Fine art,arts_design_architecture,"Arts, design and architecture","Kunst, design og arkitektur",1997,2026,FALSE
+ID,Industridesign,Industrial design,arts_design_architecture,"Arts, design and architecture","Kunst, design og arkitektur",1996,2026,FALSE
+MUSIKK,Utøvende musikkutdanning,Music performance,arts_design_architecture,"Arts, design and architecture","Kunst, design og arkitektur",1995,2026,FALSE
+KUNST,Utøvende kunstutdanning,Performing arts education,arts_design_architecture,"Arts, design and architecture","Kunst, design og arkitektur",2014,2021,FALSE
+SCEKUN,Scenekunst,Stage arts,arts_design_architecture,"Arts, design and architecture","Kunst, design og arkitektur",1996,2026,FALSE
+VISKUN,Visuell kunst,Visual arts,arts_design_architecture,"Arts, design and architecture","Kunst, design og arkitektur",1996,2026,FALSE
+LU,Landbruksutdanning,Agriculture,primary_industries,"Agriculture, fisheries and environment","Landbruk, fiskeri og miljø",1995,2026,FALSE
+UTVMILJØ,Utvikling og miljø,Development and environment,primary_industries,"Agriculture, fisheries and environment","Landbruk, fiskeri og miljø",1996,2026,FALSE
+FISKERIFAG,Fiskerifag,Fisheries,primary_industries,"Agriculture, fisheries and environment","Landbruk, fiskeri og miljø",1996,2026,FALSE
+JOU,Journalist-/fotoutdanning,Journalism and photojournalism,other_professional,Other professional programmes,Andre profesjonsutdanninger,1995,2026,FALSE
+BIB,Bibliotekarutdanning,Library and information science,other_professional,Other professional programmes,Andre profesjonsutdanninger,1995,2026,FALSE
+SIVOK,Siviløkonomutdanning,"Master of business (siviløkonom, until 2007)",other_professional,Other professional programmes,Andre profesjonsutdanninger,1995,2007,FALSE
+DOV,Tegnspråk,Sign language and interpreting,other_professional,Other professional programmes,Andre profesjonsutdanninger,1995,2026,FALSE
+IU,Idrettsutdanning,Sports and physical education,other_professional,Other professional programmes,Andre profesjonsutdanninger,1992,2026,FALSE
+ØA,Økonomisk-administrativ utdanning,Economics and administration,broad_fields,Broad fields of study,Brede fagområder,1992,2026,FALSE
+UVFAG,Pedagogiske fag,Education (pedagogy),broad_fields,Broad fields of study,Brede fagområder,1995,2026,FALSE
+EXPHIL,Examen philosophicum,Examen philosophicum,broad_fields,Broad fields of study,Brede fagområder,1995,2026,FALSE
+HELSEFAG,Helsefag,Health sciences,broad_fields,Broad fields of study,Brede fagområder,1990,2026,FALSE
+HUMAN,Historisk-filosofiske fag,Humanities,broad_fields,Broad fields of study,Brede fagområder,1995,2026,FALSE
+REALFAG,Matematisk-naturvitenskapelige fag,Mathematics and natural sciences,broad_fields,Broad fields of study,Brede fagområder,1995,2026,FALSE
+ANNET,Annet,Other,broad_fields,Broad fields of study,Brede fagområder,1981,2026,FALSE
+SAMVIT,Samfunnsvitenskap,Social sciences,broad_fields,Broad fields of study,Brede fagområder,1995,2026,FALSE
+TEKNOLOGI,Teknologi,Technology,broad_fields,Broad fields of study,Brede fagområder,1986,2026,FALSE
+TEOLOGI,Teologi,Theology,broad_fields,Broad fields of study,Brede fagområder,1996,2026,FALSE
+VIDEREG,Studieprogram videregående nivå,Upper secondary level programmes,broad_fields,Broad fields of study,Brede fagområder,1995,2026,FALSE
