@@ -1117,17 +1117,20 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 #' @return Tibble `file`, `column`, `pattern`, `n` (rows with a match) and
 #'   `example` (the first match); no rows when nothing is found.
 personal_data_in <- function(files) {
+  dplyr::bind_rows(personal_data_in_frame(data.frame(), NA_character_),
+                   lapply(files, function(f) personal_data_in_frame(readRDS(f), f)))
+}
+
+# personal_data_in() of one data frame `df`, reported under the name `file`.
+personal_data_in_frame <- function(df, file) {
   found <- list()
-  for (f in files) {
-    df <- readRDS(f)
-    for (col in setdiff(names(df)[vapply(df, is.character, logical(1))], grep("_name$", names(df), value = TRUE))) {
-      for (p in names(.personal_data_patterns)) {
-        hit <- which(grepl(.personal_data_patterns[[p]], df[[col]], perl = TRUE))
-        if (length(hit) == 0) next
-        found[[length(found) + 1]] <- tibble::tibble(
-          file = f, column = col, pattern = p, n = length(hit),
-          example = stringr::str_extract(df[[col]][hit[1]], .personal_data_patterns[[p]]))
-      }
+  for (col in setdiff(names(df)[vapply(df, is.character, logical(1))], grep("_name$", names(df), value = TRUE))) {
+    for (p in names(.personal_data_patterns)) {
+      hit <- which(grepl(.personal_data_patterns[[p]], df[[col]], perl = TRUE))
+      if (length(hit) == 0) next
+      found[[length(found) + 1]] <- tibble::tibble(
+        file = file, column = col, pattern = p, n = length(hit),
+        example = stringr::str_extract(df[[col]][hit[1]], .personal_data_patterns[[p]]))
     }
   }
   dplyr::bind_rows(tibble::tibble(file = character(), column = character(),

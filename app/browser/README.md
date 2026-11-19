@@ -13,7 +13,7 @@ page is not published until the terms of use of the plan text are settled.
 
 ```sh
 # data (from the repository root; R, reads data/processed/ and data/input/):
-Rscript -e 'source("R/utils.R"); source("R/browser_data.R"); build_browser_data("teacher_ed")'
+Rscript -e 'source("R/utils.R"); source("R/anonymize.R"); source("R/browser_data.R"); build_browser_data("teacher_ed")'
 # app:
 cd app/browser
 npm ci
@@ -52,19 +52,31 @@ Node 20 or later. `public/data/` and `dist/` are build output (gitignored).
 ## Data Contract
 
 `build_browser_data(frame)` (`R/browser_data.R`) writes `public/data/`. All
-Parquet files are zstd-compressed. Text files are sorted by institution,
-course code and first year, so that consecutive versions of a course sit next
-to each other and compress to a fraction (the teacher-ed plans: 5.5 MB
-sorted, 18 MB unsorted).
+Parquet files are zstd-compressed (level 19). Text files are sorted by
+institution, course code and first year, so that consecutive versions of a
+course sit next to each other and compress to a fraction (the teacher-ed
+plans: 5.5 MB sorted, 18 MB unsorted). It stops before writing when a text
+column holds personal data (the patterns of target `privacy_check`).
+
+A plan version is `plan_content_id` + `institution` + `course_code`: the id
+is a hash of the normalized text, which two courses of an institution can
+share while their `course_plan` differs (16,574 ids for the 17,005 teacher-ed plans,
+2026-11-19).
 
 | File | One row per | Columns |
 |---|---|---|
-| `meta.json` | | `version` (the data version, used as cache key), `built_at`, `frame`, counts, institutions (code, name, `plan_year_basis`), study types (code, name), sections (code, Norwegian and English label) |
+| `meta.json` | | `version` (the data version, used as cache key: frame and time of `course_plans.RDS`), `built_at`, `frame`, counts, institutions (code, latest name, `plan_year_basis`), study types (code, DBH's `Studnavn`), sections (`code` as in `sections.parquet`, `query` its name in the query syntax, `label_no`, `label_en`) |
 | `courses.parquet` | course | `institution`, `course_code`, `course_name`, `level_code`, `credits`, `language_code`, `subject_code`, `subject_name`, `nus_code`, `department_name` (from the latest offering), `year_first`, `year_last` |
-| `course_years.parquet` | course-year x programme x plan | `institution`, `course_code`, `year`, `programme_code`, `study_type`, `plan_content_id` (NA without a plan), `had_students`, `no_plan_reason` |
+| `course_years.parquet` | course-year x programme x plan | `institution`, `course_code`, `year`, `programme_code`, `study_type`, `plan_content_id` (NA without a plan), `had_students` (any offering of the course-year), `no_plan_reason` (`reason` of `data/interim/plan_gaps.RDS`; NA with a plan) |
 | `programmes.parquet` | programme | `institution`, `programme_code`, `programme_name`, `study_type` |
-| `plans.parquet` | plan version | `plan_content_id`, `institution`, `course_code`, `year_from`, `year_to`, `source_url`, `harvested_at`, `course_plan` |
-| `sections.parquet` | plan x section | `plan_content_id`, `section`, `text` |
+| `plans.parquet` | plan version | `plan_content_id`, `institution`, `course_code`, `year_from`, `year_to`, `source_url`, `harvested_at` (NA where the harvest did not record it), `course_plan` |
+| `sections.parquet` | plan x section | `plan_content_id`, `institution`, `course_code`, `section`, `text` |
+
+A course-year belongs to every programme DBH lists it under that year and has
+every plan of its offerings that year (a new plan in the autumn gives two), so
+a course-year with two programmes and two plans has four rows. Its study type
+is the programme's `Studiumkode` that year in the latest DBH programmes
+snapshot.
 
 The page loads `meta.json`, `courses`, `course_years` and `programmes` first
 (well under 1 MB for the teacher-ed frame), shows the list, and loads the

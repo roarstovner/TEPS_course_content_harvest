@@ -28,6 +28,7 @@ source(here::here("R/harvest_strategies.R"))
 source(here::here("R/harvest.R"))
 source(here::here("R/release.R"))
 source(here::here("R/wayback.R"))
+source(here::here("R/browser_data.R"))
 
 # The robots.txt table (data/robots_txt.csv), also from the tests' folder and
 # the temporary folders the harvest tests run in
