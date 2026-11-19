@@ -18,9 +18,16 @@ describe('URL state', () => {
       y0: 2018,
       y1: 2024,
       st: ['IMALU1-7'],
+      subj: ['Norsk, nynorsk', 'Pedagogikk'],
+      lvl: ['LN', 'HN'],
+      cr: ['lt7.5', '15'],
+      lang: ['ENG'],
+      sec: ['learning_outcomes', 'reading_list'],
       course: 'uio|EDU:1000',
       version: 'abcdef012345',
       tab: 'sections',
+      view: 'trend',
+      by: 'inst',
     }
     expect(decodeState(encodeState(s))).toEqual(s)
   })
@@ -34,10 +41,11 @@ describe('URL state', () => {
   it('drops N outside the words scope, empty exclusions and the version without a course', () => {
     const s = { ...defaultState(), n: 4, excl: { a: [] }, version: 'x' }
     expect(encodeState(s)).toBe('')
+    expect(encodeState({ ...defaultState(), view: 'coverage', by: 'st' })).toBe('view=coverage')
   })
 
   it('falls back to defaults on invalid values', () => {
-    const s = decodeState('scope=nonsense&n=-3&x=%7Bbroken&from=20x&course=nocolon')
+    const s = decodeState('scope=nonsense&n=-3&x=%7Bbroken&from=20x&course=nocolon&view=chart&by=x')
     expect(s).toEqual(defaultState())
   })
 })

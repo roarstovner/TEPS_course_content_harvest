@@ -34,10 +34,15 @@ browser_fixture <- function() {
     Institusjonskode = "0001", Studieprogramkode = c("P1", "P1", "P2", "P2", "P1"),
     Årstall = c(2024L, 2024L, 2024L, 2025L, 2025L), Studiumkode = c("GLU", "GLU", "LEKTOR", "LEKTOR", "GLU"),
     Studnavn = c("Grunnskole", "Grunnskole", "Lektor", "Lektor", "Grunnskole"))
+  # LEKTOR missing from the tree: added with DBH's name
+  types <- data.frame(study_type = c("GLU", "BLU"), name_no = c("Grunnskolelærer", "Barnehagelærer"),
+                      name_en = c("Primary teacher", "Kindergarten teacher"), group = "teacher_education",
+                      group_label_en = "Teacher education", group_label_no = "Lærerutdanning",
+                      first_year = 2000L, last_year = 2026L, te_frame = c(TRUE, FALSE))
   gaps <- tibble::tibble(institution = "x", course_code = c("A", "B", "B"), year = c(2025L, 2024L, 2025L),
                          has_plan = c(FALSE, TRUE, TRUE), reason = c("404", "plan", "plan"))
   list(plans = plans, sections = sections, offerings = offerings, sources = sources,
-       programmes = programmes, gaps = gaps, version = "test 1", frame = "teacher_ed")
+       programmes = programmes, types = types, gaps = gaps, version = "test 1", frame = "teacher_ed")
 }
 
 test_that("browser_tables() follows the data contract", {
@@ -82,7 +87,13 @@ test_that("browser_tables() follows the data contract", {
   expect_equal(tb$meta$counts$course_years, 3)
   expect_equal(tb$meta$counts$course_years_with_plan, 2)
   expect_equal(tb$meta$institutions$institution_name, "Inst 2025")
-  expect_equal(tb$meta$study_types$name, c("Grunnskole", "Lektor"))
+  st <- tb$meta$study_types
+  expect_named(st, c("code", "name_no", "name_en", "group", "group_label_en", "group_label_no", "te_frame", "courses"))
+  expect_equal(st$code, c("GLU", "BLU", "LEKTOR"))     # every row of the tree, in its order
+  expect_equal(st$courses, c(2L, 0L, 1L))              # courses with a course-year of the type
+  expect_equal(st$te_frame, c(TRUE, FALSE, FALSE))
+  expect_equal(unlist(st[3, c("name_en", "group", "group_label_en")], use.names = FALSE),
+               c("Lektor", "other", "Other"))
   expect_true(all(tb$sections$section %in% tb$meta$sections$code))
 })
 

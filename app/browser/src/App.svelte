@@ -13,6 +13,9 @@
   import Results from './lib/Results.svelte'
   import CourseView from './lib/CourseView.svelte'
   import Download from './lib/Download.svelte'
+  import Trend from './lib/Trend.svelte'
+  import Coverage from './lib/Coverage.svelte'
+  import { trend } from './data/trend.js'
 
   const base = new URL('data/', document.baseURI).href
 
@@ -21,6 +24,7 @@
   let baseModel = $state.raw(null)
   let plansMeta = $state.raw(null)
   let sectionsLoaded = $state(false)
+  let planSections = $state.raw(null) // plan key -> Set of its sections
   let progress = $state({}) // file -> {loaded, total}
   let error = $state(null)
   let result = $state.raw(null) // {q, excl, matches: Map, ms, forms}
@@ -49,7 +53,10 @@
   function onEvent(e) {
     if (e.type === 'progress') progress[e.file] = { loaded: e.loaded, total: e.total }
     else if (e.type === 'plans') plansMeta = e.plans
-    else if (e.type === 'sections') sectionsLoaded = true
+    else if (e.type === 'sections') {
+      sectionsLoaded = true
+      planSections = new Map(e.has.map(([k, codes]) => [k, new Set(codes)]))
+    }
     else if (e.type === 'error') error = e.message
   }
 
@@ -101,8 +108,10 @@
   })
 
   const matches = $derived(queryOn ? (result?.matches ?? null) : null)
-  const view = $derived(model ? filterView(model, s, matches) : null)
-  const y0 = $derived(s.y0 ?? model?.yearMin)
+  const view = $derived(model ? filterView(model, s, matches, planSections) : null)
+  // the latest year of the filter, for the counts line
+  const latest = $derived(model && matches ? trend(model, s, matches).total.at(-1) : null)
+  const y0 = $derived(s.y0 ?? model?.yearFrom)
   const y1 = $derived(s.y1 ?? model?.yearMax)
   const selected = $derived(model && s.course ? (model.byKey.get(s.course) ?? null) : null)
   const selectedRow = $derived(selected && view ? view.rows.find((r) => r.course === selected) : null)
@@ -134,6 +143,13 @@
     s.version = null
     s.course = course.key
   }
+  // a number in the trend or coverage view: its courses in the list
+  function pick({ y0, y1, inst, st }) {
+    if (y0 != null) [s.y0, s.y1] = [y0, y1]
+    if (inst) s.inst = [inst]
+    if (st) s.st = [st]
+    s.view = 'list'
+  }
   function close() {
     s.course = null
     s.version = null
@@ -154,7 +170,7 @@
       searchBox?.focus()
     } else if (e.key === 'j' && n) active = Math.min(n - 1, active + 1)
     else if (e.key === 'k' && n) active = Math.max(0, active - 1)
-    else if (e.key === 'Enter' && n && !(t instanceof Element && t.closest('button, a, summary'))) open(view.rows[active].course)
+    else if (e.key === 'Enter' && n && s.view === 'list' && !(t instanceof Element && t.closest('button, a, summary'))) open(view.rows[active].course)
     else return
     e.preventDefault()
   }
@@ -170,6 +186,7 @@
     {result}
     {searching}
     counts={view?.counts}
+    {latest}
     {queryOn}
     waiting={queryOn && !plansMeta}
     {progress}
@@ -182,20 +199,31 @@
     <Download bind:open={downloadOpen} {model} {view} {s} {excl} {matches} {meta} {worker} />
   {/if}
   {#if model}
-    <aside class="filters"><Filters bind:state={s} {meta} {model} instCounts={view.instCounts} /></aside>
+    <aside class="filters"><Filters bind:state={s} {meta} {model} facets={view.facets} sectionsReady={!!planSections} /></aside>
     <main class="results">
-      <Results
-        rows={view.rows}
-        {y0}
-        {y1}
-        {matches}
-        {active}
-        selectedKey={s.course}
-        {worker}
-        q={queryOn ? result?.q : null}
-        excl={result?.excl}
-        onopen={open}
-      />
+      <nav class="viewtabs" aria-label="View">
+        {#each [['list', 'List'], ['trend', 'Trend'], ['coverage', 'Coverage']] as [v, label] (v)}
+          <button class:current={s.view === v} aria-pressed={s.view === v} onclick={() => (s.view = v)}>{label}</button>
+        {/each}
+      </nav>
+      {#if s.view === 'trend'}
+        <Trend {model} f={s} {matches} {queryOn} q={result?.q} {meta} bind:by={s.by} onpick={pick} />
+      {:else if s.view === 'coverage'}
+        <Coverage {model} f={s} {meta} onpick={pick} />
+      {:else}
+        <Results
+          rows={view.rows}
+          {y0}
+          {y1}
+          {matches}
+          {active}
+          selectedKey={s.course}
+          {worker}
+          q={queryOn ? result?.q : null}
+          excl={result?.excl}
+          onopen={open}
+        />
+      {/if}
     </main>
     <section class="course">
       {#if selected}

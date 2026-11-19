@@ -10,6 +10,7 @@
     result,
     searching,
     counts,
+    latest,
     queryOn,
     waiting,
     progress,
@@ -83,6 +84,12 @@
           counts.matching,
           counts.withPlan,
         )})
+        {#if latest?.withPlan}
+          · {pct(latest.matching, latest.withPlan)} of course-years in force in {latest.year} (coverage {pct(
+            latest.withPlan,
+            latest.n,
+          )})
+        {/if}
       {/if}
       · coverage {pct(counts.withPlan, counts.courseYears)} of {num(counts.courseYears)} course-years
     {/if}

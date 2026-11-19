@@ -1,8 +1,9 @@
 # Data files of the static course plan browser (app/browser/README.md, "Data
 # Contract"). Built from the anonymized files of a frame (data/processed/), the
 # source URL and harvest date of each plan (data/interim/, url and
-# harvested_at only), the DBH programmes snapshot (study types) and the plan
-# gaps (why a course-year has no plan).
+# harvested_at only), the DBH programmes snapshot (study types), the study
+# type tree (data/study_types.csv) and the plan gaps (why a course-year has no
+# plan).
 
 # The sections of plan_sections.RDS in the browser: `code` as in the data,
 # `query` the name of the query syntax ("outcomes:dybdelæring"), and the
@@ -25,15 +26,18 @@ BROWSER_SECTIONS <- tibble::tribble(
 #' `course_offerings.RDS` (data/processed/), the `url` and `harvested_at` of
 #' each plan's source offering from the frame's `course_offerings_full.RDS`
 #' (data/interim/; no other column, so neither `html` nor `extracted_text`
-#' gets in), the study types of the latest DBH programmes snapshot and the
-#' reasons of data/interim/plan_gaps.RDS, and writes the files of
+#' gets in), the study types of the latest DBH programmes snapshot, the study
+#' type tree of `types_file` and the reasons of data/interim/plan_gaps.RDS,
+#' and writes the files of
 #' app/browser/README.md "Data Contract" to `out_dir`.
 #'
 #' @param frame A frame of `FRAMES`
 #' @param out_dir Folder to write to (created; files there are replaced)
+#' @param types_file The study types (data/study_types.csv)
 #' @return The paths written, invisibly. Stops before writing anything when a
 #'   text column holds personal data (the patterns of target privacy_check).
-build_browser_data <- function(frame = "teacher_ed", out_dir = "app/browser/public/data") {
+build_browser_data <- function(frame = "teacher_ed", out_dir = "app/browser/public/data",
+                               types_file = "data/study_types.csv") {
   stopifnot(frame %in% FRAMES)
   processed <- frame_dir(frame)
   plans_file <- file.path(processed, "course_plans.RDS")
@@ -48,7 +52,7 @@ build_browser_data <- function(frame = "teacher_ed", out_dir = "app/browser/publ
   tables <- browser_tables(
     plans = plans, sections = readRDS(file.path(processed, "plan_sections.RDS")),
     offerings = readRDS(file.path(processed, "course_offerings.RDS")), sources = sources,
-    programmes = programmes, gaps = readRDS(file.path(frame_dir("all", "interim"), "plan_gaps.RDS")),
+    programmes = programmes, types = utils::read.csv(types_file, encoding = "UTF-8"), gaps = readRDS(file.path(frame_dir("all", "interim"), "plan_gaps.RDS")),
     version = paste(frame, "processed", format(file.mtime(plans_file), "%Y-%m-%dT%H:%M")),
     frame = frame)
   write_browser_data(tables, out_dir)
@@ -70,11 +74,16 @@ build_browser_data <- function(frame = "teacher_ed", out_dir = "app/browser/publ
 #' @param sources `course_id`, `url`, `harvested_at` of the offerings
 #' @param programmes DBH programmes snapshot (DBH's column names):
 #'   Institusjonskode, Studieprogramkode, Årstall, Studiumkode, Studnavn
+#' @param types data/study_types.csv: study_type, name_no, name_en, group,
+#'   group_label_en, group_label_no, te_frame. `meta$study_types` has every
+#'   row, in its order, and `courses`, the number of courses with a course-year
+#'   of the type (0 for a type not in the data); a type of the data missing from
+#'   it is added at the end with DBH's name in group "other".
 #' @param gaps plan_gaps(): institution, course_code, year, has_plan, reason
 #' @param version,frame For meta.json
 #' @return List of tibbles `courses`, `course_years`, `programmes`, `plans`,
 #'   `sections` and the list `meta`
-browser_tables <- function(plans, sections, offerings, sources, programmes, gaps, version, frame) {
+browser_tables <- function(plans, sections, offerings, sources, programmes, types, gaps, version, frame) {
   with_plan_id <- function(x) {
     if (!"plan_id" %in% names(x)) x$plan_id <- plan_key_id(x$institution, x$course_code, x$plan_content_id)
     x
@@ -142,7 +151,19 @@ browser_tables <- function(plans, sections, offerings, sources, programmes, gaps
     dplyr::arrange(code)
   type_names <- dplyr::distinct(programmes, code = Studiumkode, name = Studnavn) |>
     dplyr::distinct(code, .keep_all = TRUE)
-  used_types <- sort(unique(stats::na.omit(c(course_years$study_type, programme_table$study_type))))
+  type_courses <- dplyr::filter(course_years, !is.na(study_type)) |>
+    dplyr::distinct(institution, course_code, code = study_type) |>
+    dplyr::count(code, name = "courses")
+  tree <- tibble::as_tibble(types) |>
+    dplyr::transmute(code = study_type, name_no, name_en, group, group_label_en, group_label_no,
+                     te_frame = as.logical(te_frame))
+  missing <- dplyr::filter(type_courses, !code %in% tree$code) |>
+    dplyr::left_join(type_names, by = "code") |>
+    dplyr::transmute(code, name_no = dplyr::coalesce(name, code), name_en = name_no, group = "other",
+                     group_label_en = "Other", group_label_no = "Annet", te_frame = FALSE)
+  tree <- dplyr::bind_rows(tree, missing) |>
+    dplyr::left_join(type_courses, by = "code") |>
+    dplyr::mutate(courses = dplyr::coalesce(courses, 0L))
   meta <- list(
     version = version,
     built_at = format(Sys.time(), "%Y-%m-%dT%H:%M:%S%z"),
@@ -156,7 +177,7 @@ browser_tables <- function(plans, sections, offerings, sources, programmes, gaps
       plans = nrow(plan_table),
       sections = nrow(section_table)),
     institutions = institutions,
-    study_types = dplyr::left_join(tibble::tibble(code = used_types), type_names, by = "code"),
+    study_types = tree,
     sections = BROWSER_SECTIONS)
   list(courses = courses, course_years = course_years, programmes = programme_table,
        plans = plan_table, sections = section_table, meta = meta)

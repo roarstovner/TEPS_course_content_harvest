@@ -34,7 +34,7 @@
     scope: s.scope,
     n: s.n,
     excl: $state.snapshot(excl),
-    filters: { inst: [...s.inst], y0: s.y0 ?? model.yearMin, y1: s.y1 ?? model.yearMax, st: [...s.st] },
+    filters: { inst: [...s.inst], y0: s.y0 ?? model.yearFrom, y1: s.y1 ?? model.yearMax, st: [...s.st], subj: [...s.subj], lvl: [...s.lvl], cr: [...s.cr], lang: [...s.lang], sec: [...s.sec] },
     url: location.href,
     meta: { version: meta.version, frame: meta.frame, built_at: meta.built_at },
     date: new Date(),

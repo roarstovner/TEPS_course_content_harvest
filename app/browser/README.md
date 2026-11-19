@@ -13,7 +13,7 @@ page is not published until the terms of use of the plan text are settled.
 
 ```sh
 # data (from the repository root; R, reads data/processed/ and data/input/):
-Rscript -e 'source("R/utils.R"); source("R/anonymize.R"); source("R/browser_data.R"); build_browser_data("teacher_ed")'
+Rscript -e 'for (f in c("utils", "anonymize", "deduplicate_plans", "browser_data")) source(file.path("R", paste0(f, ".R"))); build_browser_data("teacher_ed")'
 # app:
 cd app/browser
 npm ci
@@ -68,7 +68,7 @@ it, and `browser_tables()` makes it from the three columns.
 
 | File | One row per | Columns |
 |---|---|---|
-| `meta.json` | | `version` (the data version, used as cache key: frame and time of `course_plans.RDS`), `built_at`, `frame`, counts, institutions (code, latest name, `plan_year_basis`), study types (code, DBH's `Studnavn`), sections (`code` as in `sections.parquet`, `query` its name in the query syntax, `label_no`, `label_en`) |
+| `meta.json` | | `version` (the data version, used as cache key: frame and time of `course_plans.RDS`), `built_at`, `frame`, counts, institutions (code, latest name, `plan_year_basis`), study types (every row of `data/study_types.csv`: `code`, `name_no`, `name_en`, `group`, `group_label_en`, `group_label_no`, `te_frame`, plus `courses`, the courses with a course-year of the type, 0 when not in this data; a type of the data missing from the CSV is added with DBH's `Studnavn` in group `other`), sections (`code` as in `sections.parquet`, `query` its name in the query syntax, `label_no`, `label_en`) |
 | `courses.parquet` | course | `institution`, `course_code`, `course_name`, `level_code`, `credits`, `language_code`, `subject_code`, `subject_name`, `nus_code`, `department_name` (from the latest offering), `year_first`, `year_last` |
 | `course_years.parquet` | course-year x programme x plan | `institution`, `course_code`, `year`, `programme_code`, `study_type`, `plan_id`, `plan_content_id` (both NA without a plan), `had_students` (any offering of the course-year), `no_plan_reason` (`reason` of `data/interim/plan_gaps.RDS`; NA with a plan) |
 | `programmes.parquet` | programme | `institution`, `programme_code`, `programme_name`, `study_type` |
@@ -159,9 +159,20 @@ such as "lese- og skrivevansker".
 
 - **Header:** search box, scope of AND, search in full plan or one section,
   the word forms of each term, and a line of counts ("312 courses, 1,204
-  plan versions; 8.2% of course-years in force in 2024, coverage 71%").
-- **Left:** filters: study type tree, institution, years, subject, level,
-  credits, language, sections the plan has.
+  plan versions; 8.2% of course-years in force in 2024, coverage 71%"; the
+  share is of the course-years with a plan in the last year of the filter).
+  The years run by default from the first year with a plan in the data (2007
+  in the teacher-ed data) to the last; earlier DBH years can be selected.
+- **Left:** filters, each a collapsible section: years, study type tree,
+  institution, subject (DBH `subject_name`), level, credits (in ranges),
+  language, sections the plan has (a version qualifies when it has every
+  ticked section, a course when a matching version does). Each value shows
+  the courses matching the query and every other filter (its own ignored).
+  The study type tree follows the groups of `data/study_types.csv`, with a
+  tri-state checkbox per group, English names (Norwegian on hover), per type
+  the courses and the coverage of its course-years, and the presets "Teacher
+  education (TE frame)" and "Clear"; types without courses in this data are
+  greyed and folded in their group (the all-courses data adds them).
 - **Middle:** results, one row per course: institution, code, name, a strip
   of the years with the matching versions marked, the number of hits.
 - **Right:** the course: full plan with the matches marked and a coloured
@@ -175,8 +186,22 @@ such as "lese- og skrivevansker".
   (case and whitespace ignored); on the teacher-ed plans 99% of the section
   lines are found in their plan, and 64% of the plan's lines are in a section
   (headings and course facts are not; 2026-11-19).
-- **Views** beside the list: trend (share of course-years by year,
-  institution or study type, with coverage), compare (plans side by side),
+- **Views** beside the list (List | Trend | Coverage, in the URL as
+  `view`): trend: by year, the share of the course-years in force in the
+  filter whose plan matches the query, out of those with a plan (a
+  course-year matches when any of its plans does); one line overall, per
+  institution or per study type (`by`; a course-year counts in each of its
+  study types), at most 8 lines (the largest 7 by course-years with a plan,
+  the rest under "others", each course-year once); under it the coverage per
+  year as bars, so missing plans are not read as absence; without a query the
+  lines are the coverage. A tooltip gives the counts (matching / with a
+  plan / all course-years), a table under the chart the numbers, and
+  clicking a point, bar or cell sets the year (and institution or study type)
+  and shows the list. Coverage: per institution the course-years, those with
+  a plan, the share, how plan years were found (`plan_year_basis`; sites that
+  show only the current plan are flagged) and the most common no-plan
+  reasons; a cell without a plan in the year strip gives its reason on hover.
+  Planned: compare (plans side by side),
   term lists (a heatmap of saved terms x institution x year), screening
   (tag hits include, exclude or maybe, with a note), random sample (seeded).
 - **Download:** the button in the header opens a dialog for the current
@@ -227,9 +252,14 @@ such as "lese- og skrivevansker".
   - `load.js`: fetching the files through the Cache API (keyed on
     `meta.version`, the app works without it) and reading Parquet.
   - `model.js`: courses with their course-years and versions; the filtered,
-    matched view (one row per course) and its counts; the year strip.
+    matched view (one row per course), its counts and the counts of each
+    filter value (ignoring its own filter); the year strip.
+  - `trend.js`: course-years by year and institution or study type, matching
+    and with a plan (the trend view), and coverage per institution.
+  - `filters.js`: the course filters (institution, subject, level, credits,
+    language), their values and readable names.
   - `url.js`: the state in the URL (query, scope, excluded forms, filters,
-    course, version, tab, compared version).
+    course, version, tab, compared version, view, trend lines).
   - `overlay.js`: the section of each line of a plan.
   - `related.js`: the programmes and years that use a version, other courses
     with the same text.
@@ -241,11 +271,13 @@ such as "lese- og skrivevansker".
   there, the text plus its folded copy).
 - `src/App.svelte`: loading, state, URL, keyboard, the panes.
 - `src/lib/`: components: `Header` (search box, scope, counts), `WordForms`,
-  `Filters`, `StudyTypes` (a flat list, to be replaced by the grouped tree),
+  `Filters` (with `StudyTypes`, the study type tree, and `CheckList`, a
+  collapsible checkbox filter with counts),
   `Results`, `CourseView` (with `PlanText`, the plan with the section
   margin, `Versions`, the comparison, and `Source`); `format.js` (numbers,
   marked text); `diff.js` (word-level comparison; jsdiff is loaded on first
-  use, a separate chunk of 22 kB); `Download` (the download dialog).
+  use, a separate chunk of 22 kB); `Download` (the download dialog);
+  `Trend` (plain SVG, colours from CSS custom properties) and `Coverage`.
 - `src/download/`: downloads, with tests (`download.test.js`). `table.js`: the
   selection as tables of each unit; `encode.js`: CSV, XLSX (a minimal writer on
   fflate) and Parquet (hyparquet-writer); `rebuild.js`: the R and Python code;

@@ -20,6 +20,9 @@
   --s0: #2b6cb0; --s1: #d0661c; --s2: #2f8f4e; --s3: #c2306a;
   --s4: #7b4fc4; --s5: #13909b; --s6: #a07d12; --s7: #8b5a3c;
   --ins: #d6f5dc; --del: #fbdcdc;
+  /* trend lines, in order (a validated categorical palette); others grey */
+  --c1: #2a78d6; --c2: #eb6834; --c3: #1baf7a; --c4: #eda100;
+  --c5: #e87ba4; --c6: #008300; --c7: #6250d6; --c8: #e34948; --c-other: #9a9a94;
   --font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
   color-scheme: light dark;
@@ -46,6 +49,8 @@
     --s0: #6ea8ee; --s1: #f29b55; --s2: #62c486; --s3: #ee7aa8;
     --s4: #ae90f2; --s5: #4fc6cf; --s6: #d8b74c; --s7: #c79574;
     --ins: #173d22; --del: #4a1d1d;
+    --c1: #3987e5; --c2: #d95926; --c3: #199e70; --c4: #c98500;
+    --c5: #d55181; --c6: #0ca30c; --c7: #9085e9; --c8: #e66767; --c-other: #6f6f69;
   }
 }
 
@@ -67,13 +72,13 @@ kbd { font: 12px var(--mono); border: 1px solid var(--line); border-radius: 3px;
 /* layout: header over three panes, each scrolling on its own */
 .app {
   display: grid;
-  grid-template: auto 1fr / 220px minmax(340px, 1fr) minmax(400px, 1.25fr);
+  grid-template: auto 1fr / 260px minmax(340px, 1fr) minmax(400px, 1.25fr);
   grid-template-areas: 'head head head' 'filters results course';
   height: 100vh;
   min-width: 1000px;
 }
 @media (max-width: 1200px) {
-  .app { grid-template-columns: 180px minmax(320px, 1fr) minmax(400px, 1.2fr); }
+  .app { grid-template-columns: 220px minmax(320px, 1fr) minmax(400px, 1.2fr); }
 }
 .header { grid-area: head; padding: 10px 16px 8px; border-bottom: 1px solid var(--line); background: var(--bg-2); }
 .filters { grid-area: filters; overflow: hidden auto; padding: 8px 12px; border-right: 1px solid var(--line); }
@@ -106,6 +111,21 @@ legend { font-weight: 600; font-size: 12px; text-transform: uppercase; letter-sp
 .check { display: flex; gap: 6px; align-items: baseline; font-size: 13px; padding: 1px 0; cursor: pointer; }
 .check span { flex: 1; overflow-wrap: anywhere; }
 .years { display: flex; gap: 6px; align-items: center; }
+.filter { margin: 0 0 10px; }
+.filter > summary { font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.03em; color: var(--fg-2); cursor: pointer; padding: 2px 0; }
+.badge { background: var(--accent); color: var(--bg); border-radius: 8px; padding: 0 5px; font-size: 11px; letter-spacing: 0; }
+.fnote { text-transform: none; font-weight: normal; letter-spacing: 0; margin-left: 4px; }
+.presets { display: flex; gap: 4px 10px; flex-wrap: wrap; margin: 2px 0 4px; }
+.ffilter { width: 100%; margin: 2px 0 4px; font-size: 12px; }
+.flist.long { max-height: 16em; overflow: auto; }
+.check.zero, .check.absent { color: var(--fg-2); }
+.check.absent { opacity: 0.6; cursor: default; }
+.check small { text-align: right; font-size: 11px; line-height: 1.2; }
+.tree, .tree ul { list-style: none; margin: 0; padding: 0; }
+.tree ul { padding-left: 16px; }
+.tree .group { display: flex; align-items: baseline; }
+.tree .group .check { flex: 1; font-weight: 600; }
+.twist { border: 0; background: none; padding: 0; width: 14px; cursor: pointer; color: var(--fg-2); flex: none; }
 
 /* results */
 .row {
@@ -187,3 +207,40 @@ del { background: var(--del); text-decoration: line-through; text-decoration-col
 .progs th, .progs td { text-align: left; padding: 3px 12px 3px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
 .progs th { color: var(--fg-2); font-weight: 600; }
 .progs td:last-child { white-space: nowrap; }
+
+/* middle pane views: list, trend, coverage */
+.viewtabs { position: sticky; top: 0; z-index: 2; display: flex; gap: 2px; padding: 6px 12px 0; background: var(--bg); border-bottom: 1px solid var(--line); }
+.viewtabs button { border: 1px solid transparent; border-bottom: 0; background: none; padding: 3px 12px; cursor: pointer; border-radius: 4px 4px 0 0; color: var(--fg-2); }
+.viewtabs button.current { border-color: var(--line); background: var(--bg); color: var(--fg); margin-bottom: -1px; }
+.trend { padding: 8px 16px 32px; }
+.trend h3 { font-size: 14px; margin: 10px 0 2px; }
+.trend .sub { font-size: 12px; margin: 2px 0 6px; max-width: 70ch; }
+.trendbar { display: flex; gap: 12px; align-items: center; font-size: 13px; flex-wrap: wrap; }
+.trend .legend { list-style: none; padding: 0; margin: 4px 0; font-size: 12px; color: var(--fg); position: static; }
+.trend .legend li { display: inline-flex; align-items: center; gap: 5px; }
+.trend i { display: inline-block; width: 12px; height: 3px; border-radius: 2px; margin-right: 5px; vertical-align: middle; }
+.chart { position: relative; }
+.chart svg { display: block; overflow: visible; }
+.chart .grid { stroke: var(--line); stroke-width: 1; }
+.chart .axis { fill: var(--fg-2); font-size: 11px; }
+.chart .cross { stroke: var(--fg-2); stroke-width: 1; opacity: 0.5; }
+.chart .band { fill: transparent; cursor: pointer; }
+.chart .line { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; pointer-events: none; }
+.chart .dot { stroke: var(--bg); stroke-width: 2; pointer-events: none; }
+.chart .hit { fill: transparent; cursor: pointer; }
+.chart .track { fill: var(--bg-2); }
+.chart .cov { fill: var(--cell-plan); pointer-events: none; }
+.chart .track { pointer-events: none; }
+.tip { position: absolute; top: 0; width: max-content; max-width: 340px; pointer-events: none; background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 6px 8px; font-size: 12px; box-shadow: 0 2px 8px rgb(0 0 0 / 0.15); }
+.tip table { border-collapse: collapse; margin: 2px 0; width: 100%; }
+.tip td, .tip th { padding: 1px 6px 1px 0; white-space: nowrap; text-align: left; font-weight: normal; }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+.ttable { margin-top: 10px; font-size: 13px; }
+.ttable summary { cursor: pointer; color: var(--fg-2); }
+.trend .progs td .link { font-size: 13px; }
+.progs.cov th.num, .progs.cov td.num { text-align: right; padding-right: 12px; }
+.progs.cov td.flag { font-style: italic; }
+.progs.cov td:nth-child(5) { white-space: nowrap; }
+.progs.cov .reasons { font-size: 12px; white-space: normal; }
+.progs.cov .reasons > span { white-space: nowrap; }
+.progs.cov tfoot th { border-top: 1px solid var(--fg-2); }

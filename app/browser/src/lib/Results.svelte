@@ -77,7 +77,10 @@
       <span class="name">{c.course_name}</span>
       <span class="hits">{#if matches}{num(r.hits)} hits{#if r.versions.length > 1} · {r.versions.length} versions{/if}{/if}</span>
       <span class="strip" aria-hidden="true">
-        {#each yearStrip(c, y0, y1, matchedKeys(r)) as cell (cell.year)}<i class={cell.state} title="{cell.year}"></i>{/each}
+        {#each yearStrip(c, y0, y1, matchedKeys(r)) as cell (cell.year)}<i
+            class={cell.state}
+            title={cell.state === 'none' ? `${cell.year}: taught, no plan (${cell.reason ?? 'reason not recorded'})` : cell.year}
+          ></i>{/each}
       </span>
       {#if k}<span class="kwic">…{tail(k.before)}<mark class="t{k.term % 6}">{k.match}</mark>{k.after}…</span>{/if}
     </button>

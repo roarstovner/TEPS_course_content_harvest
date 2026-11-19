@@ -5,9 +5,9 @@ import { planKey, versionId } from './keys.js'
 // Two courses at uio, one at ntnu. A course-year has a row per programme and
 // plan, as in course_years.parquet.
 const courses = [
-  { institution: 'uio', course_code: 'B2', course_name: 'Bee' },
-  { institution: 'ntnu', course_code: 'N1', course_name: 'En' },
-  { institution: 'uio', course_code: 'A1', course_name: 'Ay' },
+  { institution: 'uio', course_code: 'B2', course_name: 'Bee', level_code: 'HN', credits: 15, language_code: 'ENG', subject_name: 'Pedagogikk' },
+  { institution: 'ntnu', course_code: 'N1', course_name: 'En', level_code: 'LN', credits: 7.5, language_code: 'NOR', subject_name: 'Norsk' },
+  { institution: 'uio', course_code: 'A1', course_name: 'Ay', level_code: 'LN', credits: 15, language_code: 'NOR', subject_name: 'Pedagogikk' },
 ]
 const cy = (institution, course_code, year, study_type, plan_content_id = null) => ({
   institution,
@@ -22,7 +22,7 @@ const courseYears = [
   cy('uio', 'A1', 2021, 'GLU', 'p1'),
   cy('uio', 'A1', 2021, 'GLU', 'p2'), // a second plan that year
   cy('uio', 'A1', 2022, 'GLU', 'p2'),
-  cy('uio', 'B2', 2021, 'LEKTOR'), // no plan
+  { ...cy('uio', 'B2', 2021, 'LEKTOR'), no_plan_reason: '404' }, // no plan
   cy('uio', 'B2', 2022, 'LEKTOR', 'p1'), // same id as A1's p1, other course
   cy('ntnu', 'N1', 2022, 'GLU', 'q1'),
 ]
@@ -33,7 +33,7 @@ const plans = [
   { institution: 'ntnu', course_code: 'N1', plan_content_id: 'q1', year_from: 2022, year_to: 2022 },
 ]
 const make = () => addPlans(buildModel({ courses, courseYears }), plans)
-const all = { inst: [], y0: null, y1: null, st: [] }
+const all = { inst: [], y0: null, y1: null, st: [], subj: [], lvl: [], cr: [], lang: [], sec: [] }
 const codes = (v) => v.rows.map((r) => r.course.key)
 
 describe('buildModel', () => {
@@ -86,12 +86,50 @@ describe('filterView', () => {
   })
 })
 
+describe('course filters, sections and facets', () => {
+  const secs = new Map([
+    ['uio_A1_p1', new Set(['learning_outcomes'])],
+    ['uio_A1_p2', new Set(['learning_outcomes', 'assessment'])],
+    ['uio_B2_p1', new Set(['assessment'])],
+  ])
+  const facet = (m) => Object.fromEntries(m)
+  it('filters by subject, level, credits and language; each facet ignores its own filter', () => {
+    const m = make()
+    const v = filterView(m, { ...all, lvl: ['LN'], cr: ['15'] }, null)
+    expect(codes(v)).toEqual(['uio|A1'])
+    expect(facet(v.facets.lvl)).toEqual({ LN: 1, HN: 1 }) // level ignored: A1 and B2 (15 credits)
+    expect(facet(v.facets.cr)).toEqual({ 15: 1, 7.5: 1 }) // credits ignored: A1 and N1 (LN)
+    expect(facet(v.facets.subj)).toEqual({ Pedagogikk: 1 })
+    expect(codes(filterView(m, { ...all, lang: ['ENG'] }, null))).toEqual(['uio|B2'])
+    expect(codes(filterView(m, { ...all, subj: ['Norsk', 'Pedagogikk'], inst: ['ntnu'] }, null))).toEqual(['ntnu|N1'])
+  })
+  it('a study type counts the courses of the other filters, with the coverage of its course-years', () => {
+    const v = filterView(make(), { ...all, st: ['LEKTOR'], inst: ['uio'] }, null)
+    expect(v.facets.st.get('GLU')).toEqual({ courses: 1, courseYears: 3, withPlan: 3 })
+    expect(v.facets.st.get('LEKTOR')).toEqual({ courses: 2, courseYears: 3, withPlan: 2 })
+    expect(facet(v.instCounts)).toEqual({ uio: 2 }) // N1 is not LEKTOR
+  })
+  it('a version qualifies when it has every ticked section; waits for the sections', () => {
+    const m = make()
+    expect(codes(filterView(m, { ...all, sec: ['assessment'] }, null))).toEqual(['ntnu|N1', 'uio|A1', 'uio|B2'])
+    const v = filterView(m, { ...all, sec: ['assessment'] }, null, secs)
+    expect(codes(v)).toEqual(['uio|A1', 'uio|B2'])
+    expect(v.rows[0].versions.map((x) => x.plan_content_id)).toEqual(['p2'])
+    expect(facet(v.facets.sec)).toEqual({ learning_outcomes: 1, assessment: 2 })
+    // with a query: only matching versions count
+    const q = filterView(m, { ...all, sec: ['assessment'] }, new Map([['uio_A1_p1', [1]]]), secs)
+    expect(codes(q)).toEqual([])
+    expect(facet(q.facets.sec)).toEqual({ learning_outcomes: 1 })
+  })
+})
+
 describe('yearStrip and pickVersion', () => {
   it('marks years by matching version, plan, no plan and not taught', () => {
     const m = make()
     const b = m.byKey.get('uio|B2')
     expect(yearStrip(b, 2020, 2022, new Set(['uio_B2_p1'])).map((c) => c.state)).toEqual(['', 'none', 'match'])
     expect(yearStrip(b, 2020, 2022, null).map((c) => c.state)).toEqual(['', 'none', 'plan'])
+    expect(yearStrip(b, 2020, 2022, null).map((c) => c.reason)).toEqual([null, '404', null])
   })
   it('picks the requested, else the latest matching, else the latest version', () => {
     const m = make()

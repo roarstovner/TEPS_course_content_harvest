@@ -8,7 +8,7 @@
 
   const use = $derived(planUse(course, version.key, model.programmes))
   const same = $derived(sameText(model, version))
-  const typeName = $derived(new Map(studyTypes.map((t) => [t.code, t.name])))
+  const typeName = $derived(new Map(studyTypes.map((t) => [t.code, t.name_en ?? t.name])))
   const day = (d) => (d instanceof Date ? d.toISOString().slice(0, 10) : d)
 </script>
 

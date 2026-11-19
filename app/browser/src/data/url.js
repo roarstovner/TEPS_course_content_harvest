@@ -3,6 +3,8 @@
 
 export const SCOPES = ['plan', 'section', 'paragraph', 'sentence', 'words']
 export const TABS = ['plan', 'sections', 'versions', 'source']
+export const VIEWS = ['list', 'trend', 'coverage']
+export const BY = ['all', 'inst', 'st']
 
 export const defaultState = () => ({
   q: '', // query
@@ -13,10 +15,17 @@ export const defaultState = () => ({
   y0: null, // year range; null = open
   y1: null,
   st: [], // study types; empty = all
+  subj: [], // DBH subject names (repeated `subj`: names hold commas)
+  lvl: [], // level codes
+  cr: [], // credit ranges (filters.js)
+  lang: [], // language codes
+  sec: [], // sections a plan must all have
   course: null, // selected course, `institution|course_code`
   version: null, // its version (versionId)
   tab: 'plan', // one of TABS
   cmp: null, // the version compared with it, tab 'versions' (versionId)
+  view: 'list', // middle pane, one of VIEWS
+  by: 'all', // trend lines: overall, per institution or per study type (BY)
 })
 
 const list = (s) => (s ? s.split(',').filter(Boolean) : [])
@@ -34,6 +43,10 @@ export function encodeState(s) {
   if (s.y0 != null) p.set('from', String(s.y0))
   if (s.y1 != null) p.set('to', String(s.y1))
   if (s.st.length) p.set('st', s.st.join(','))
+  for (const v of s.subj) p.append('subj', v)
+  for (const k of ['lvl', 'cr', 'lang', 'sec']) if (s[k].length) p.set(k, s[k].join(','))
+  if (s.view !== 'list') p.set('view', s.view)
+  if (s.view === 'trend' && s.by !== 'all') p.set('by', s.by)
   if (s.course) {
     // `inst:code`; institution codes hold no ':'
     p.set('course', s.course.replace('|', ':'))
@@ -62,6 +75,10 @@ export function decodeState(search) {
   s.y0 = year(p.get('from'))
   s.y1 = year(p.get('to'))
   s.st = list(p.get('st'))
+  s.subj = p.getAll('subj')
+  for (const k of ['lvl', 'cr', 'lang', 'sec']) s[k] = list(p.get(k))
+  if (VIEWS.includes(p.get('view'))) s.view = p.get('view')
+  if (BY.includes(p.get('by'))) s.by = p.get('by')
   const c = p.get('course')
   if (c && c.includes(':')) {
     s.course = c.replace(':', '|')

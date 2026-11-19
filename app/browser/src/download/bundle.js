@@ -143,7 +143,7 @@ without .txt) with its attributes.
 
 /**
  * The manifest of a download.
- * @param {object} ctx {q, scope, n, excl, filters: {inst, y0, y1, st}, url,
+ * @param {object} ctx {q, scope, n, excl, filters: {inst, y0, y1, st, subj, lvl, cr, lang, sec}, url,
  *   meta: {version, frame, built_at}, date}
  */
 export function manifest(ctx, unit, format, counts, files) {
@@ -160,6 +160,11 @@ export function manifest(ctx, unit, format, counts, files) {
       institutions: ctx.filters.inst,
       years: [ctx.filters.y0, ctx.filters.y1],
       study_types: ctx.filters.st,
+      subjects: ctx.filters.subj ?? [],
+      levels: ctx.filters.lvl ?? [],
+      credits: ctx.filters.cr ?? [],
+      languages: ctx.filters.lang ?? [],
+      sections: ctx.filters.sec ?? [],
     },
     counts,
     url: ctx.url,

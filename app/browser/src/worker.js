@@ -3,7 +3,8 @@
 // shows; the text itself stays here (README "Data Contract").
 //
 // Events (no id): {type: 'progress', file, loaded, total}, {type: 'plans',
-// plans, ms}, {type: 'sections', ms}, {type: 'error', message}.
+// plans, ms}, {type: 'sections', ms, has: [[plan key, [section codes]]]},
+// {type: 'error', message}.
 // Requests ({id, type, ...}) are answered with {id, result} or {id, error}.
 
 import { compileQuery, fold, highlights, kwic, prepareDocs, search, wordForms } from './search/index.js'
@@ -35,7 +36,7 @@ async function load({ base, version }) {
   }
   sectionsLoaded = true
   sectionsDone()
-  postMessage({ type: 'sections', ms: performance.now() - t })
+  postMessage({ type: 'sections', ms: performance.now() - t, has: docs.map((d) => [d.id, Object.keys(d.sections)]) })
 }
 
 let last = { q: null, m: null }
