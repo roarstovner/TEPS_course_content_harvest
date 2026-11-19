@@ -103,6 +103,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Browser: counting, trends and coverage (#556)
+- Browser: facets incl. programme-type checkbox tree (#554)
 - Browser: downloads (#557)
 - Browser: plan view (section overlay, versions and diff, provenance) (#555)
 - Data: a unique plan_id (institution_course_code_hash) as the plan key; keep plan_content_id as the text fingerprint; ER diagram of the keys in docs (#573)
