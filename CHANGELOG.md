@@ -104,6 +104,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Browser: layout polish from the first review (#576)
+- Browser: retire the Shiny and OJS browsers (#563)
 - Browser: worker memory and responsiveness (#575)
 - Browser: counting, trends and coverage (#556)
 - Browser: facets incl. programme-type checkbox tree (#554)
