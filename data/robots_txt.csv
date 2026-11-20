@@ -34,4 +34,14 @@ fjellhaug,fih.fjellhaug.no,2026-11-05,200,,,,"Craft CMS defaults (/cpresources/,
 fjellhaug,www.fjellhaug.no,2026-10-16,404,,,,"Redirects to fjellhaug.no, which has no robots.txt"
 fhs,www.forsvaret.no,2026-10-16,404,,,,No robots.txt: nothing disallowed. FHS's pages are on Forsvaret's site
 phs,www.politihogskolen.no,2026-10-16,200,,,,www.phs.no redirects here; disallows /vrtx
+aho,www.aho.no,2026-11-20,200,,,,"aho.no redirects here; disallows /vrtx (the CMS), allowing its CSS and images"
+ldh,ldh.no,2026-11-20,404,,,,No robots.txt: nothing disallowed (RFC 9309; the 404 is an HTML error page)
+dmmh,www.dmmh.no,2026-11-20,404,,,,"dmmh.no redirects here. Served with status 404 but holds Craft CMS defaults (/cpresources/, /vendor/, /.env, /cache/), blocks GPTBot, Google-Extended and PerplexityBot by name, and names the Norwegian and English sitemaps"
+dmmh,studier.dmmh.no,2026-11-20,200,10,,,"Drupal 7 defaults (/includes/, /misc/, /modules/, /admin/, /search/, /user/ login pages, /node/add/ and their ?q= forms); Crawl-delay 10. DMMH's study and course plans (www.dmmh.no/for-studenter/dine-studier/studieplan redirects here)"
+onh,oslonyehoyskole.no,2026-11-20,200,,,,"Drupal defaults (/core/, /profiles/, /admin/, /search/, /user/ login pages, /node/add/); names /sitemap.xml"
+nski,www.nski.no,2026-11-20,200,,,,"nski.no redirects here. Nothing disallowed; a Content-Signal line (search, ai-input, ai-train yes); names /sitemap.xml"
+nski,drive.google.com,2026-11-20,200,1,/,/file /fileview /document,"Disallows everything but listed viewer paths (/file, /fileview, /document and others) and /open; Crawl-delay 1. NSKI's study plans (PDF) are Drive files: /file/d/{id}/view is allowed but is a JavaScript viewer, and the download (/uc, drive.usercontent.google.com) is disallowed"
+nski,drive.usercontent.google.com,2026-11-20,200,,/,,"Disallows everything: Google Drive file downloads, where NSKI's study plan PDFs would be fetched from"
+nski,docs.google.com,2026-11-20,200,1,/,/document,"Disallows everything but listed paths (/document, /spreadsheet, /presentation, /forms and others); Crawl-delay 1. A Google Doc linked from NSKI's Bachelor i regi page (the admission test, not a plan); its /export redirects to doc-*-docstext.googleusercontent.com"
+barrattdue,barrattdue.no,2026-11-20,200,,,,Yoast (WordPress) default: nothing disallowed; names /sitemap_index.xml
 ,web.archive.org,2026-10-16,404,,,,"No robots.txt: nothing disallowed. The Wayback Machine (R/wayback.R), not used by the harvest"
