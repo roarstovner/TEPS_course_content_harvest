@@ -192,6 +192,13 @@ such as "lese- og skrivevansker".
   (case and whitespace ignored); on the teacher-ed plans 99% of the section
   lines are found in their plan, and 64% of the plan's lines are in a section
   (headings and course facts are not; 2026-11-19).
+- **Panes:** the course pane takes room only while a plan is open in the
+  list view; in Trend and Coverage, or with no course open, the middle pane
+  takes the width. In the plan tab the section legend sits above the text,
+  which scrolls on its own, and the margin switch is remembered in the
+  browser (localStorage; without storage it starts on). Below 1250 px the
+  filters narrow; below 900 px an open course replaces the list; below 640 px
+  the panes stack in one column and the page scrolls.
 - **Views** beside the list (List | Trend | Coverage, in the URL as
   `view`): trend: by year, the share of the course-years in force in the
   filter whose plan matches the query, out of those with a plan (a
