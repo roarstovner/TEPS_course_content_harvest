@@ -45,7 +45,9 @@ folder says what may be shared:
 </tr>
 <tr>
 <td><code>data/releases/{tag}/</code></td>
-<td>offerings, plans and sections of a finalized release (none yet: the
+<td>offerings, plans and sections of a finalized release, both frames
+(the teacher-ed frame’s in the folder, all courses’ in
+<code>all/</code>), and <code>study_types.csv</code> (none yet: the
 first comes when coding starts)</td>
 <td><code>finalize_release()</code></td>
 <td>no</td>
@@ -147,10 +149,11 @@ Institution”</a>)</td>
 <tr>
 <td><code>data/study_types.csv</code></td>
 <td>DBH’s study types (table 347 <code>Studiumkode</code>): Norwegian
-and English name, group of the browser’s tree, years,
-<code>te_frame</code> (the teacher-ed frame’s four)</td>
+and English name, the project’s group (<code>study_type_group</code> of
+the offerings, the browser’s tree), years, <code>te_frame</code> (the
+teacher-ed frame’s four)</td>
 <td>none</td>
-<td>in git</td>
+<td>in git; released with the data</td>
 </tr>
 <tr>
 <td><code>data/robots_txt.csv</code></td>
@@ -181,7 +184,8 @@ href="harvesting.md#robotstxt">“robots.txt”</a>)</td>
 </tr>
 <tr>
 <td><code>data/processed/course_offerings.RDS</code></td>
-<td>DBH metadata + <code>plan_id</code>, no text</td>
+<td>DBH metadata + <code>plan_id</code> and the programme’s study type,
+no text</td>
 <td>none</td>
 <td>published</td>
 </tr>
@@ -238,13 +242,15 @@ status, `frame_members()`), in the `teacher_ed/` folders of both
 in both; the plans are deduplicated within each frame (`frame_plans()`),
 so a teacher-ed plan has the years, text and sections of its own
 earliest teacher-ed offering, whatever else the raw store holds, and a
-harvest of other courses leaves the teacher-ed files as they were. The
-teacher-ed files are the releases’ (`finalize_release()`,
-`release_data()`; none is finalized yet, and until the first target
-`frozen_check` checks only the raw store), the browser’s and
-`methods.md`’s; the data notes, the gaps and the audits read those of
-all courses. Each frame has its metrics snapshot, and target `coverage`
-its DBH offerings.
+harvest of other courses leaves the teacher-ed files as they were. A
+release keeps both frames (`finalize_release()`, since 2026-11-20): it
+cuts nothing, and users filter by frame or study type. The teacher-ed
+files are the ones target `frozen_check` checks once a release is
+finalized (none is yet, and until the first it checks only the raw
+store), the ones `release_data()` hands to the coding project by
+default, the browser’s and `methods.md`’s; the data notes, the gaps and
+the audits read those of all courses. Each frame has its metrics
+snapshot, and target `coverage` its DBH offerings.
 
 Per-institution prose notes are edited directly in
 `data/data_notes.qmd`.
@@ -314,18 +320,48 @@ teacher-ed frame’s files apart (see “Frames”).
 A study type (`Studiumkode` in table 347) is DBH’s classification of a
 programme: a profession (SYK nursing, ING engineering, PRAKTPED the
 practical-pedagogical education), a programme model (GLU1-7, IMALU1-7)
-or a broad field (HUMAN, REALFAG, SAMVIT). Every programme has one per
-year. `data/study_types.csv` lists the study types of the latest
-snapshot with DBH’s Norwegian name, an English name, a group for the
-browser’s study-type tree (teacher education, health and welfare, broad
-fields and so on), the years they appear, and `te_frame`. The teacher-ed
-frame is four of them (INTMASTER, IMALU1-7, IMALU5-10 and LUPE,
+or a broad field (HUMAN, REALFAG, SAMVIT). DBH registers it per
+programme and semester; a programme can change type within a year (956
+programme-years in the snapshot of 2026-11-08), never within a semester.
+`data/study_types.csv` lists the study types of the latest snapshot with
+DBH’s Norwegian name, an English name, a group for the browser’s
+study-type tree (teacher education, health and welfare, broad fields and
+so on), the years they appear, and `te_frame`. The teacher-ed frame is
+four of them (INTMASTER, IMALU1-7, IMALU5-10 and LUPE,
 `TEACHER_ED_STUDIUM`; methods.qmd, “Population and sampling frame”),
 marked `te_frame`; the other teacher education study types (GLU,
 PRAKTPED, BLU and others) are in the group but outside the frame.
 `tests/testthat/test-study-types.R` checks that the file covers the
 latest snapshot and that `te_frame` matches `TEACHER_ED_STUDIUM`: a new
 snapshot with a new study type needs a row added by hand.
+
+### Study Types of the Offerings
+
+Every offering carries the study type of its programme that semester
+(`programme_study_types()`, `add_study_types()`; methods.qmd, “Study
+type of an offering”): `study_type_code` (`Studiumkode`) and
+`study_type_name` (`Studnavn`, DBH’s Norwegian name), from table 347 of
+the same snapshot as the course list, joined on `institution_code`,
+`programme_code`, `year` and `semester`; and `study_type_group`, the
+project’s group of the type, column `group` of `data/study_types.csv`
+(eight groups made for the browser on 2026-11-19, not a DBH
+classification). They are NA where the programme has no table 347 row
+that semester (one offering in the snapshot of 2026-11-08). The study
+type is that of the one programme DBH registers the offering under
+(table 208 has one programme per course and semester): a course that
+other programmes use too shows only that programme’s type, and a course
+registered under different programmes in different semesters has the
+type of each. The file `study_types.csv` goes with every release as the
+definition of the groups.
+
+The offerings keep DBH’s keys, so other DBH tables join to them:
+`institution_code` (DBH’s institution code), `programme_code` (unique
+only within an institution), `course_code_raw` (DBH’s course code with
+its version number, as in tables 208, 900 and 905), `year` and
+`semester` (0 winter, 1 spring, 2 summer, 3 autumn). A programme table
+(such as 347) joins on `institution_code`, `programme_code`, `year` and
+`semester`; a course table (such as 900 or 905) on `institution_code`,
+`course_code_raw`, `year` and `semester`.
 
 Key columns: - `institution`: Short code (e.g., “oslomet”, “uia”); NA
 for an institution code no config has - `course_code_raw`: DBH’s course
@@ -387,8 +423,8 @@ across courses, and a join on it alone duplicates offerings
 
 `data/variables.csv` documents every variable of the published files
 (`course_offerings.RDS`, `course_plans.RDS`, `plan_sections.RDS`, of
-both frames): the file, its name, type, source (the column of DBH table
-208, or how the pipeline gives it), meaning and codes, and `old_name`,
+both frames): the file, its name, type, source (the column of the DBH
+table, or how the pipeline gives it), meaning and codes, and `old_name`,
 its name until 2026-10-16. `release_data()` hands it over with the data,
 and `tests/testthat/test-dbh-input.R` checks it against the built files
 and `DBH_COLUMNS`. `course_offerings_full.RDS` (internal) adds `url`,
@@ -414,12 +450,12 @@ old <- readRDS("../TEPS_course_content_coding/data/course_offerings.RDS") |>
 
 <table>
 <colgroup>
+<col style="width: 2%" />
 <col style="width: 3%" />
-<col style="width: 4%" />
-<col style="width: 4%" />
+<col style="width: 3%" />
 <col style="width: 1%" />
-<col style="width: 7%" />
-<col style="width: 78%" />
+<col style="width: 6%" />
+<col style="width: 81%" />
 </colgroup>
 <thead>
 <tr>
@@ -790,6 +826,45 @@ the course-year.</td>
 last one whose autumn DBH had published in both tables when the counts
 snapshot was taken (DBH publishes a semester about one semester later).
 The counts of a provisional year can still grow.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">study_type_code</td>
+<td style="text-align: left;">study_type_code</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">DBH table 347 Studiumkode</td>
+<td style="text-align: left;">Study type of the offering’s programme
+(programme_code) in that semester (“INTMASTER”, “SYK”, “HUMAN”): DBH’s
+classification of a programme as a profession, a programme model or a
+broad field. Joined from table 347 of the course list’s snapshot on
+institution_code, programme_code, year and semester; NA when the
+programme has no table 347 row that semester. Only the type of the
+programme DBH registers the offering under, not of other programmes that
+use the course (added 2026-11-20).</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">study_type_name</td>
+<td style="text-align: left;">study_type_name</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">DBH table 347 Studnavn</td>
+<td style="text-align: left;">DBH’s Norwegian name of the study type
+(“Femårig lektorutdanning”); NA with study_type_code.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">study_type_group</td>
+<td style="text-align: left;">study_type_group</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">project grouping,
+data/study_types.csv</td>
+<td style="text-align: left;">The project’s group of the study type,
+defined by the project, not by DBH: column group of data/study_types.csv
+(released with the data), one of teacher_education, health_welfare,
+law_police_military, technology_engineering, arts_design_architecture,
+primary_industries, other_professional, broad_fields. NA with
+study_type_code, or for a study type the file lacks (added
+2026-11-20).</td>
 </tr>
 <tr>
 <td style="text-align: left;">course_plans</td>

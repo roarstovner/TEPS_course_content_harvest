@@ -24,7 +24,7 @@ kept in one folder per stage, so the folder says what may be shared:
 | `data/input/` | the DBH snapshots, the pipeline input | `data-raw/courses.R` | yes |
 | `data/pilot/` | the pilot samples: offerings and their strata | `pilot_sample()` | yes |
 | `data/raw/` | the harvest, with personal data; append-only | harvesting only | no |
-| `data/releases/{tag}/` | offerings, plans and sections of a finalized release (none yet: the first comes when coding starts) | `finalize_release()` | no |
+| `data/releases/{tag}/` | offerings, plans and sections of a finalized release, both frames (the teacher-ed frame's in the folder, all courses' in `all/`), and `study_types.csv` (none yet: the first comes when coding starts) | `finalize_release()` | no |
 | `data/backup/` | earlier harvests kept but not read (personal data) | by hand | no |
 | `data/interim/` | text rebuilt from the harvest, with personal data; never shared | `targets::tar_make()` | no |
 | `data/processed/` | anonymized data or data without text; can be shared | `targets::tar_make()` | no |
@@ -47,12 +47,12 @@ as much (`methods.md` "Anonymization").
 | `data/raw/{inst}/ledger/{run}.parquet` | fetch ledger: URL, HTTP status, outcome and page hash per offering and run | none | internal |
 | `data/pilot/{inst}.csv` | an institution's pilot sample (["Piloting an Institution"](new-institution.md#piloting-an-institution)) | none | in git |
 | `data/variables.csv` | every variable of the published files, with its old name ("Variables") | none | in git; released with the data |
-| `data/study_types.csv` | DBH's study types (table 347 `Studiumkode`): Norwegian and English name, group of the browser's tree, years, `te_frame` (the teacher-ed frame's four) | none | in git |
+| `data/study_types.csv` | DBH's study types (table 347 `Studiumkode`): Norwegian and English name, the project's group (`study_type_group` of the offerings, the browser's tree), years, `te_frame` (the teacher-ed frame's four) | none | in git; released with the data |
 | `data/robots_txt.csv` | each host's robots.txt: date read, Crawl-delay, the disallow and allow rules the harvest applies (["robots.txt"](harvesting.md#robotstxt)) | none | in git |
 | `data/interim/plan_gaps.RDS` | course-years without a plan, reason, URLs tried | none | internal |
 | `data/interim/extracted_text.RDS` | `extracted_text` rebuilt from the raw harvest | yes (raw) | internal |
 | `data/interim/course_offerings_full.RDS` | offerings + `url`, `extracted_text`, `course_plan` | yes (`extracted_text`) | internal |
-| `data/processed/course_offerings.RDS` | DBH metadata + `plan_id`, no text | none | published |
+| `data/processed/course_offerings.RDS` | DBH metadata + `plan_id` and the programme's study type, no text | none | published |
 | `data/processed/course_plans.RDS` | anonymized `course_plan` (+ `course_plan_normalized`) | anonymized | published |
 | `data/processed/plan_sections.RDS` | anonymized section `text` per plan | anonymized | publishable |
 | `data/interim/teacher_ed/`, `data/processed/teacher_ed/` | the same files for the teacher-ed frame ("Frames") | as above | as above |
@@ -74,10 +74,12 @@ of both (`frame_dir()`). The text, plan id and sections of a page are the same
 in both; the plans are deduplicated within each frame (`frame_plans()`), so a
 teacher-ed plan has the years, text and sections of its own earliest
 teacher-ed offering, whatever else the raw store holds, and a harvest of other
-courses leaves the teacher-ed files as they were. The teacher-ed files are the
-releases' (`finalize_release()`, `release_data()`; none is finalized yet,
-and until the first target `frozen_check` checks only the raw store), the
-browser's and `methods.md`'s; the data notes, the gaps and the audits read
+courses leaves the teacher-ed files as they were. A release keeps both
+frames (`finalize_release()`, since 2026-11-20): it cuts nothing, and users
+filter by frame or study type. The teacher-ed files are the ones target
+`frozen_check` checks once a release is finalized (none is yet, and until
+the first it checks only the raw store), the ones `release_data()` hands to
+the coding project by default, the browser's and `methods.md`'s; the data notes, the gaps and the audits read
 those of all courses. Each frame has its metrics snapshot, and target
 `coverage` its DBH offerings.
 
@@ -140,7 +142,9 @@ everything in `data/raw/` and writes the teacher-ed frame's files apart (see
 A study type (`Studiumkode` in table 347) is DBH's classification of a
 programme: a profession (SYK nursing, ING engineering, PRAKTPED the
 practical-pedagogical education), a programme model (GLU1-7, IMALU1-7) or a
-broad field (HUMAN, REALFAG, SAMVIT). Every programme has one per year.
+broad field (HUMAN, REALFAG, SAMVIT). DBH registers it per programme and
+semester; a programme can change type within a year (956 programme-years
+in the snapshot of 2026-11-08), never within a semester.
 `data/study_types.csv` lists the study types of the latest snapshot with
 DBH's Norwegian name, an English name, a group for the browser's study-type
 tree (teacher education, health and welfare, broad fields and so on), the
@@ -151,6 +155,33 @@ education study types (GLU, PRAKTPED, BLU and others) are in the group but
 outside the frame. `tests/testthat/test-study-types.R` checks that the file
 covers the latest snapshot and that `te_frame` matches `TEACHER_ED_STUDIUM`:
 a new snapshot with a new study type needs a row added by hand.
+
+### Study Types of the Offerings
+
+Every offering carries the study type of its programme that semester
+(`programme_study_types()`, `add_study_types()`; methods.qmd, "Study type
+of an offering"): `study_type_code` (`Studiumkode`) and `study_type_name`
+(`Studnavn`, DBH's Norwegian name), from table 347 of the same snapshot as
+the course list, joined on `institution_code`, `programme_code`, `year` and
+`semester`; and `study_type_group`, the project's group of the type, column
+`group` of `data/study_types.csv` (eight groups made for the browser on
+2026-11-19, not a DBH classification). They are NA where the programme has
+no table 347 row that semester (one offering in the snapshot of
+2026-11-08). The study type is that of the one programme DBH registers the
+offering under (table 208 has one programme per course and semester): a
+course that other programmes use too shows only that programme's type, and
+a course registered under different programmes in different semesters has
+the type of each. The file
+`study_types.csv` goes with every release as the definition of the groups.
+
+The offerings keep DBH's keys, so other DBH tables join to them:
+`institution_code` (DBH's institution code), `programme_code` (unique only
+within an institution), `course_code_raw` (DBH's course code with its
+version number, as in tables 208, 900 and 905), `year` and `semester`
+(0 winter, 1 spring, 2 summer, 3 autumn). A programme table (such as 347)
+joins on `institution_code`, `programme_code`, `year` and `semester`; a
+course table (such as 900 or 905) on `institution_code`, `course_code_raw`,
+`year` and `semester`.
 
 Key columns:
 - `institution`: Short code (e.g., "oslomet", "uia"); NA for an institution code no config has
@@ -206,7 +237,7 @@ plan").
 
 `data/variables.csv` documents every variable of the published files
 (`course_offerings.RDS`, `course_plans.RDS`, `plan_sections.RDS`, of both
-frames): the file, its name, type, source (the column of DBH table 208, or
+frames): the file, its name, type, source (the column of the DBH table, or
 how the pipeline gives it), meaning and codes, and `old_name`, its name until
 2026-10-16. `release_data()` hands it over with the data,
 and `tests/testthat/test-dbh-input.R` checks it against the built files and

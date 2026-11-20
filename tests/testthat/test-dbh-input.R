@@ -170,6 +170,33 @@ test_that("offerings get the flags of their course-year, by code with its versio
   expect_equal(add_offered(x, offered), x)
 })
 
+test_that("offerings get their programme's study type that semester, NA without one", {
+  # P1 changes type between the semesters of 2024 (two table 347 rows in the
+  # autumn); P2 has no row in 2025; LUPE is not in the project's groups
+  programmes <- tibble::tibble(
+    Institusjonskode = "1130", Studieprogramkode = c("P1", "P1", "P1", "P2", "P3"),
+    Årstall = 2024L, Semester = c(1L, 3L, 3L, 1L, 1L), Studiumkode = c("GLU1-7", "INTMASTER", "INTMASTER", "SYK", "LUPE"),
+    Studnavn = c("Grunnskole", "Lektor", "Lektor", "Sykepleie", "Praktiske og estetiske fag"))
+  types <- data.frame(study_type = c("GLU1-7", "INTMASTER", "SYK"),
+                      group = c("teacher_education", "teacher_education", "health_welfare"))
+  st <- programme_study_types(programmes, types)
+  expect_equal(nrow(st), 4)
+  off <- tibble::tibble(institution_code = "1130", programme_code = c("P1", "P1", "P1", "P2", "P2", "P3"),
+                        course_code_raw = c("A-1", "B-1", "A-1", "A-1", "A-1", "C-1"),
+                        year = c(2024L, 2024L, 2024L, 2024L, 2025L, 2024L), semester = c(1L, 1L, 3L, 1L, 1L, 1L))
+  x <- add_study_types(off, st)
+  expect_equal(x[names(off)], off)      # no row added or lost
+  expect_equal(x$study_type_code, c("GLU1-7", "GLU1-7", "INTMASTER", "SYK", NA, "LUPE"))
+  expect_equal(x$study_type_name[3], "Lektor")
+  expect_equal(x$study_type_group, c("teacher_education", "teacher_education", "teacher_education",
+                                     "health_welfare", NA, NA))
+  expect_equal(add_study_types(x, st), x)   # columns already there are replaced
+  # two types in a semester: the first kept, one row per offering
+  two <- dplyr::bind_rows(programmes, dplyr::mutate(programmes[4, ], Studiumkode = "BIO", Studnavn = "Bio"))
+  expect_warning(st2 <- programme_study_types(two, types), "two study types")
+  expect_equal(add_study_types(off, st2)$study_type_code[4], "BIO")
+})
+
 test_that("coverage over each set counts only the set's plans (methods.qmd, worked example)", {
   # ten course-years: A-F exams and credits, plans A-E; G credits only; H
   # exams only; I and J no students, a plan for I

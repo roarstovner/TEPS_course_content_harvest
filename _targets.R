@@ -86,7 +86,17 @@ list(
   tar_target(counts_file, dbh_snapshot_file("exams"), format = "file",
              cue = tar_cue(mode = "always")),
   tar_target(offered, dbh_offered(dbh_snapshot_date(counts_file))),
-  tar_target(offerings, lapply(frame_offerings(courses, frames, plans, sections), add_offered, offered)),
+  # the study type of each offering's programme: DBH table 347 of the course
+  # list's snapshot, and the project's groups of data/study_types.csv
+  tar_target(programmes_file, dbh_snapshot_file("programmes", dbh_snapshot_date(dbh_file)),
+             format = "file"),
+  tar_target(study_types_file, "data/study_types.csv", format = "file"),
+  tar_target(study_types, programme_study_types(
+    arrow::read_parquet(programmes_file, col_select = c("Institusjonskode", "Studieprogramkode", "Årstall",
+                                                        "Semester", "Studiumkode", "Studnavn")),
+    utils::read.csv(study_types_file, encoding = "UTF-8"))),
+  tar_target(offerings, lapply(frame_offerings(courses, frames, plans, sections),
+                               function(x) add_study_types(add_offered(x, offered), study_types))),
   tar_target(unmapped, heading_counts(page_headings, page_map, "unmapped", institution)),
   tar_target(heading_hits, heading_counts(page_headings, page_map, "pattern", institution)),
   tar_target(heading_use, heading_pattern_use(heading_hits)),
@@ -146,13 +156,9 @@ list(
   # The browser's data (teacher-ed frame, app/browser/README.md "Data
   # Contract"), the methods notes (teacher-ed frame, the release's) and the
   # data notes (all offerings)
-  tar_target(programmes_file, dbh_snapshot_file("programmes"), format = "file",
-             cue = tar_cue(mode = "always")),
-  tar_target(study_types_file, "data/study_types.csv", format = "file"),
   tar_target(browser_data_files, {
     # the files build_browser_data() reads, named so that a change reruns it
-    c(te_course_plans_file, te_sections_file, te_offerings_file, te_offerings_full_file,
-      gaps_file, programmes_file)
+    c(te_course_plans_file, te_sections_file, te_offerings_file, te_offerings_full_file, gaps_file)
     build_browser_data("teacher_ed", types_file = study_types_file)
   }, format = "file"),
   tar_target(methods_qmd, "methods.qmd", format = "file"),

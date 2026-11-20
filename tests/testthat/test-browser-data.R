@@ -9,7 +9,9 @@ browser_fixture <- function() {
       year = year, semester = semester, programme_code = programme, programme_name = paste("Prog", programme),
       course_code = code, course_name = paste(code, year), level_code = "LN", credits = 15,
       nus_code = "1", language_code = "NOR", subject_code = "S", subject_name = "Subject",
-      plan_year_basis = "url", plan_content_id = plan, had_students = students)
+      plan_year_basis = "url", plan_content_id = plan, had_students = students,
+      study_type_code = c(P1 = "GLU", P2 = "LEKTOR")[[programme]],
+      study_type_name = c(P1 = "Grunnskole", P2 = "Lektor")[[programme]])
   }
   offerings <- dplyr::bind_rows(
     # B 2024: two semesters x two programmes, one plan: one course-year
@@ -30,10 +32,6 @@ browser_fixture <- function() {
   sources <- offerings |>
     dplyr::transmute(course_id, url = paste0("https://x.no/", course_id), harvested_at = as.Date("2026-01-01"),
                      extracted_text = "Kontakt: ola@x.no", html = "<p>raw</p>")
-  programmes <- tibble::tibble(
-    Institusjonskode = "0001", Studieprogramkode = c("P1", "P1", "P2", "P2", "P1"),
-    Årstall = c(2024L, 2024L, 2024L, 2025L, 2025L), Studiumkode = c("GLU", "GLU", "LEKTOR", "LEKTOR", "GLU"),
-    Studnavn = c("Grunnskole", "Grunnskole", "Lektor", "Lektor", "Grunnskole"))
   # LEKTOR missing from the tree: added with DBH's name
   types <- data.frame(study_type = c("GLU", "BLU"), name_no = c("Grunnskolelærer", "Barnehagelærer"),
                       name_en = c("Primary teacher", "Kindergarten teacher"), group = "teacher_education",
@@ -42,7 +40,7 @@ browser_fixture <- function() {
   gaps <- tibble::tibble(institution = "x", course_code = c("A", "B", "B"), year = c(2025L, 2024L, 2025L),
                          has_plan = c(FALSE, TRUE, TRUE), reason = c("404", "plan", "plan"))
   list(plans = plans, sections = sections, offerings = offerings, sources = sources,
-       programmes = programmes, types = types, gaps = gaps, version = "test 1", frame = "teacher_ed")
+       types = types, gaps = gaps, version = "test 1", frame = "teacher_ed")
 }
 
 test_that("browser_tables() follows the data contract", {

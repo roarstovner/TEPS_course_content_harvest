@@ -581,6 +581,43 @@ offered_coverage <- function(offerings, by = c("institution", "year")) {
     dplyr::arrange(dplyr::across(dplyr::all_of(by)))
 }
 
+#' The study type of each programme and semester
+#'
+#' DBH table 347 registers a programme's study type per semester. A programme
+#' can change type within a year (956 programme-years in the snapshot of
+#' 2026-11-08, one type each semester), never within a semester; should a
+#' later snapshot have two in a semester, the first in alphabetical order is
+#' kept, with a warning.
+#'
+#' @param programmes DBH programmes snapshot (DBH's column names):
+#'   Institusjonskode, Studieprogramkode, Årstall, Semester, Studiumkode,
+#'   Studnavn
+#' @param types data/study_types.csv (`study_type`, `group`)
+#' @return One row per institution_code, programme_code, year and semester:
+#'   `study_type_code` (Studiumkode), `study_type_name` (Studnavn) and
+#'   `study_type_group`, the project's group of the type (NA for a type not
+#'   in `types`)
+programme_study_types <- function(programmes, types) {
+  key <- c("institution_code", "programme_code", "year", "semester")
+  x <- dbh_rename(programmes) |>
+    dplyr::distinct(dplyr::across(dplyr::all_of(key)), study_type_code = Studiumkode,
+                    study_type_name = Studnavn) |>
+    dplyr::arrange(dplyr::across(dplyr::all_of(c(key, "study_type_code"))))
+  if (anyDuplicated(x[key])) warning("A programme has two study types in a semester: the first kept")
+  dplyr::distinct(x, dplyr::across(dplyr::all_of(key)), .keep_all = TRUE) |>
+    dplyr::left_join(dplyr::select(types, study_type_code = study_type, study_type_group = group),
+                     by = "study_type_code")
+}
+
+# Offerings with the study type of their programme that semester
+# (programme_study_types()); NA without a table 347 row. Columns already
+# there are replaced.
+add_study_types <- function(offerings, study_types) {
+  key <- c("institution_code", "programme_code", "year", "semester")
+  dplyr::left_join(dplyr::select(offerings, -dplyr::any_of(setdiff(names(study_types), key))), study_types,
+                   by = key, relationship = "many-to-one")
+}
+
 # Published slim offerings: DBH metadata and the plan id, no url or text.
 slim_offerings <- function(offerings) {
   dplyr::select(offerings, -url, -extracted_text, -course_plan, -course_plan_normalized,

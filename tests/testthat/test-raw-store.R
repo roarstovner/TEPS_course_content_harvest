@@ -335,7 +335,7 @@ test_that("harvest_all never writes a raw file twice", {
 
 test_that("a finalized release is locked and checked", {
   withr::local_dir(withr::local_tempdir())
-  processed <- frame_dir("teacher_ed")   # a release is of the teacher-ed frame
+  processed <- frame_dir("teacher_ed")   # frozen_check checks the teacher-ed frame
   for (d in c("data/raw", processed, "tests/snapshots")) dir.create(d, recursive = TRUE)
   f <- write_raw_run(raw_rows(inst = "samas"), "samas", "2026-10-01")
   lf <- write_fetch_ledger(fetch_ledger(raw_rows(inst = "samas"), "samas", "2026-10-01"),
@@ -349,6 +349,10 @@ test_that("a finalized release is locked and checked", {
   saveRDS(offs, file.path(processed, "course_offerings.RDS"))
   saveRDS(plans, file.path(processed, "course_plans.RDS"))
   saveRDS(secs, file.path(processed, "plan_sections.RDS"))
+  # all courses' files and the study types: kept too, a release cuts nothing
+  for (name in c("course_offerings", "course_plans", "plan_sections"))
+    saveRDS(tibble::tibble(all = name), file.path(frame_dir("all"), paste0(name, ".RDS")))
+  writeLines("study_type,group", STUDY_TYPES_FILE)
   check <- function() suppressWarnings(frozen_changes(
     RAW_MANIFEST, file.path(processed, "course_offerings.RDS"), file.path(processed, "course_plans.RDS"),
     file.path(processed, "plan_sections.RDS")))
@@ -359,6 +363,12 @@ test_that("a finalized release is locked and checked", {
   expect_equal(unname(file.access(lf, 2)), -1L)   # the fetch ledger too
   expect_equal(utils::read.csv(RAW_MANIFEST)$file, c(f, lf))
   expect_equal(nrow(check()), 0)
+  kept <- list.files("data/releases/data-test", recursive = TRUE)
+  expect_setequal(kept, c(paste0(rep(c("", "all/"), each = 3),
+                                 c("course_offerings.RDS", "course_plans.RDS", "plan_sections.RDS")),
+                          "study_types.csv"))
+  expect_equal(readRDS("data/releases/data-test/all/course_plans.RDS")$all, "course_plans")
+  expect_equal(unname(file.access("data/releases/data-test/all/course_plans.RDS", 2)), -1L)
 
   # a new offering and plan (a later year) are fine; any change to the release is not
   saveRDS(dplyr::bind_rows(plans, dplyr::mutate(plans, plan_content_id = "p2")),

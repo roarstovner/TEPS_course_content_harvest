@@ -73,8 +73,9 @@ frame and change with every harvest of other courses). *Consequence:* on
 2026-10-16 the raw store held only teacher-ed offerings (41 025), so
 both frames held the same data, and the teacher-ed files were byte for
 byte those of release data-2026-10-16 (retired on 2026-11-04, see “No
-release until coding starts”). The releases, the browser and these notes
-use the teacher-ed frame; the data notes all courses. *Since:*
+release until coding starts”). The browser and these notes use the
+teacher-ed frame, the data notes all courses; a release holds both
+(since 2026-11-20, see “Study type of an offering”). *Since:*
 2026-10-16.
 
 **An offering keeps its first `course_id`.** The id is
@@ -377,6 +378,48 @@ names, which the pipeline renames when it reads them; data built until
 2026-10-16 (such as the coding project’s copy of data-2026-10-15) are
 renamed by the pairs in `data/variables.csv` (`docs/data-files.md`
 “Variables”). *Since:* 2026-10-16.
+
+**Study type of an offering: the type of the programme DBH registers it
+under, that semester, and a project grouping of the types.** Every
+offering gets `study_type_code` and `study_type_name` (DBH table 347
+`Studiumkode` and `Studnavn`) of its programme (table 208’s
+`programme_code`), from table 347 of the same snapshot as the course
+list, joined on institution, programme code, year and semester; and
+`study_type_group`, the project’s group of the type (column `group` of
+`data/study_types.csv`, not a DBH value). Table 347 registers a
+programme per semester: in the snapshot of 2026-11-08 a programme
+changes type within a year in 956 programme-years (1 407 offerings of
+all courses, none in the teacher-ed frame), and never has two types in a
+semester, so the semester’s type is unique and no offering is
+duplicated. The eight groups were drawn for the browser’s study-type
+tree on 2026-11-19: six fields of professional programmes (teacher
+education; health and welfare; law, police and military; technology and
+engineering; arts, design and architecture; agriculture, fisheries and
+environment), other professional programmes (journalism, library
+science, sign language, sports, the former siviløkonom), and broad
+fields, the study types that name a discipline rather than a profession
+(humanities, social sciences, mathematics and natural sciences,
+education, economics and administration, examen philosophicum, “other”
+and others). A type of a later snapshot that the file lacks has no group
+until a row is added. *Why:* users of the all-courses data select
+programmes by kind (teacher education, nursing, engineering), which DBH
+records as the study type, and the release then needs no cut by study
+type. *Rejected:* cutting releases into frames by study type (a release
+keeps both frames and cuts nothing; users filter on these columns);
+grouping by NUS field instead of the project’s groups: checked
+2026-11-20, 41 of the 66 study types have programmes in two or more NUS
+fields (NUS classifies a programme’s subject field, the study type the
+kind of programme), and the course’s own `nus_code` is already
+published; joining on the year alone, which needs a rule for the 956
+programme-years with two types. *Consequence:* the study type is that of
+the one programme DBH registers the offering under (table 208 has one
+programme per course and semester): a course other programmes also use
+shows only that programme’s type, so a filter on study type finds the
+courses registered under the type, not every course its students take.
+One offering of all courses (2026-11-08) has no table 347 row that
+semester and has NA; every teacher-ed offering is in the group teacher
+education. `data/study_types.csv` goes with every release as the
+definition of the groups. *Since:* 2026-11-20.
 
 ## Harvest
 

@@ -24,6 +24,7 @@ format: md
 | `harvest_files(institution)`, `harvested_institutions()` | `R/utils.R` | An institution's raw files, run by run; the institutions with raw files |
 | `dbh_courses(frame, date)` | `R/utils.R` | DBH offerings of a snapshot: all courses, or the teacher-ed frame (`"teacher_ed"`) |
 | `dbh_offered(date)`, `add_offered()`, `offered_coverage()` | `R/utils.R`, `R/pipeline.R` | Which course-years had students (DBH tables 905 and 900, the latest counts snapshot), their counts on the offerings, and plan coverage over all course-years, those with students and those with exam registrations and credits |
+| `programme_study_types()`, `add_study_types()` | `R/pipeline.R` | The study type of each offering's programme that semester (DBH table 347) and the project's group of it (`data/study_types.csv`) |
 | `dbh_fetch(table, codes)` | `R/utils.R` | A DBH table from the API: the bulk file, or summed per course and semester at some institutions (`data-raw/courses.R`) |
 | `dbh_rename(df)` | `R/utils.R` | DBH's column names (snapshots, raw files and releases until 2026-10-16) as the pipeline's (`DBH_COLUMNS`) |
 | `institution_from_code(code)` | `R/institution_config.R` | Institution short name for DBH institution codes |
@@ -39,8 +40,8 @@ format: md
 | `page_fulltext(blocks, config)` | `R/extract_fulltext.R` | A page's `extracted_text` from its blocks |
 | `read_harvest(files, config, content)` | `R/pipeline.R` | One institution's raw files combined (`harvest_files()`): the page each offering takes; current sites matched by course code and academic year |
 | `harvested_rows(institutions)` | `R/pipeline.R` | `read_harvest()` joined with `data/interim/extracted_text.RDS` (audit scripts) |
-| `finalize_release(tag)`, `frozen_changes()` | `R/release.R` | Lock a release's raw files; list raw files changed or missing and, once a release is kept, changes to it (target `frozen_check`) |
-| `release_data(tag, dest, frame)` | `R/release.R` | Copy the published files of a frame (the teacher-ed one), `methods.md`, `data/variables.csv`, a manifest and section coverage to the coding project |
+| `finalize_release(tag)`, `frozen_changes()` | `R/release.R` | Lock a release's raw files and keep its files of both frames; list raw files changed or missing and, once a release is kept, changes to it (target `frozen_check`) |
+| `release_data(tag, dest, frame)` | `R/release.R` | Copy the published files of a frame (the teacher-ed one), `methods.md`, `data/variables.csv`, `data/study_types.csv`, a manifest and section coverage to the coding project |
 | `plan_gaps(offerings, fetch_status)` | `R/pipeline.R` | Course-years without a plan, with the reason (target `gaps`) |
 | `validate_courses(df, stage)` | `R/utils.R` | Required columns at `"initial"`, `"with_url"`, `"with_html"` |
 | `anonymize_text(institution, text)` | `R/anonymize.R` | PII and admin-date removal for `course_plan` and sections |

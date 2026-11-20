@@ -69,7 +69,7 @@ it, and `browser_tables()` makes it from the three columns.
 
 | File | One row per | Columns |
 |---|---|---|
-| `meta.json` | | `version` (the data version, used as cache key: frame and time of `course_plans.RDS`), `built_at`, `frame`, counts, institutions (code, latest name, `plan_year_basis`), study types (every row of `data/study_types.csv`: `code`, `name_no`, `name_en`, `group`, `group_label_en`, `group_label_no`, `te_frame`, plus `courses`, the courses with a course-year of the type, 0 when not in this data; a type of the data missing from the CSV is added with DBH's `Studnavn` in group `other`), sections (`code` as in `sections.parquet`, `query` its name in the query syntax, `label_no`, `label_en`) |
+| `meta.json` | | `version` (the data version, used as cache key: frame and time of `course_plans.RDS`), `built_at`, `frame`, counts, institutions (code, latest name, `plan_year_basis`), study types (every row of `data/study_types.csv`: `code`, `name_no`, `name_en`, `group`, `group_label_en`, `group_label_no`, `te_frame`, plus `courses`, the courses with a course-year of the type, 0 when not in this data; a type of the data missing from the CSV is added with DBH's name (`study_type_name`) in group `other`), sections (`code` as in `sections.parquet`, `query` its name in the query syntax, `label_no`, `label_en`) |
 | `courses.parquet` | course | `institution`, `course_code`, `course_name`, `level_code`, `credits`, `language_code`, `subject_code`, `subject_name`, `nus_code`, `department_name` (from the latest offering), `year_first`, `year_last` |
 | `course_years.parquet` | course-year x programme x plan | `institution`, `course_code`, `year`, `programme_code`, `study_type`, `plan_id`, `plan_content_id` (both NA without a plan), `had_students` (any offering of the course-year), `no_plan_reason` (`reason` of `data/interim/plan_gaps.RDS`; NA with a plan) |
 | `programmes.parquet` | programme | `institution`, `programme_code`, `programme_name`, `study_type` |
@@ -79,8 +79,10 @@ it, and `browser_tables()` makes it from the three columns.
 A course-year belongs to every programme DBH lists it under that year and has
 every plan of its offerings that year (a new plan in the autumn gives two), so
 a course-year with two programmes and two plans has four rows. Its study type
-is the programme's `Studiumkode` that year in the latest DBH programmes
-snapshot.
+is the programme's study type that year, `study_type_code` of
+`course_offerings` (DBH table 347 `Studiumkode`, registered per semester;
+where a programme changes type within the year, the type of most of the
+course's offerings).
 
 The page loads `meta.json`, `courses`, `course_years` and `programmes` first
 (well under 1 MB for the teacher-ed frame), shows the list, and loads the

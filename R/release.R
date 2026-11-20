@@ -8,13 +8,17 @@
 # its name until 2026-10-16 (DBH's; docs/data-files.md "Data
 # Structure").
 VARIABLES_FILE <- "data/variables.csv"
+# DBH's study types with the project's groups (study_type_group of
+# course_offerings; docs/data-files.md "Study Types of the Offerings")
+STUDY_TYPES_FILE <- "data/study_types.csv"
 
 #' Copy the published data files to another project, with a manifest
 #'
 #' Writes to `dest`: course_offerings.RDS, course_plans.RDS, plan_sections.RDS
 #' of the frame (the teacher-ed frame by default: the coding project's),
-#' methods.md as built and variables.csv (VARIABLES_FILE: every variable of
-#' the files, with its name until 2026-10-16);
+#' methods.md as built, variables.csv (VARIABLES_FILE: every variable of
+#' the files, with its name until 2026-10-16) and study_types.csv
+#' (STUDY_TYPES_FILE: the project's groups of study types, study_type_group);
 #' `manifest.yml` (release tag, harvest repo commit, date, files with row
 #' counts and md5 sums); `section_coverage.csv` (share of
 #' plans per institution with each section; where a section is missing the
@@ -35,7 +39,8 @@ VARIABLES_FILE <- "data/variables.csv"
 #' @return `dest`, invisibly.
 release_data <- function(tag, dest = "../TEPS_course_content_coding/data", frame = "teacher_ed") {
   files <- c(file.path(frame_dir(frame), c("course_offerings.RDS", "course_plans.RDS",
-                                           "plan_sections.RDS")), "methods.md", VARIABLES_FILE)
+                                           "plan_sections.RDS")), "methods.md", VARIABLES_FILE,
+             STUDY_TYPES_FILE)
   stopifnot(all(file.exists(files)), dir.exists(dest))
   commit <- system2("git", c("rev-parse", "HEAD"), stdout = TRUE)
   if (length(system2("git", c("status", "--porcelain", "--", "R", "_targets.R"), stdout = TRUE))) {
@@ -89,6 +94,7 @@ release_data <- function(tag, dest = "../TEPS_course_content_coding/data", frame
     created = format(Sys.time(), "%Y-%m-%d %H:%M"),
     methods = "methods.md (the choices behind the data, with numbers for this release)",
     variables = "variables.csv (every variable of the files, and its name until 2026-10-16)",
+    study_types = "study_types.csv (DBH's study types and the project's groups of them, study_type_group)",
     files = lapply(stats::setNames(basename(files), basename(files)), function(f) {
       path <- file.path(dest, f)
       c(list(md5 = unname(tools::md5sum(path))),
@@ -131,16 +137,22 @@ RAW_MANIFEST <- "tests/snapshots/raw_manifest.csv"
 #' every raw file (harvest_files() and the fetch ledgers, ledger_files(), of
 #' all institutions) read-only, so a
 #' later write fails loudly; lists them with md5 sums in RAW_MANIFEST (commit
-#' it); and keeps the release's offerings, plans and sections (those of the
-#' teacher-ed frame) in data/releases/{tag}/. frozen_changes() then checks on every build that
-#' nothing of the release has changed. A later harvest only adds raw files
-#' (harvest_all()), so a new DBH year leaves the release as it was.
+#' it); and keeps the release's offerings, plans and sections in
+#' data/releases/{tag}/: both frames, so a release cuts nothing (users filter
+#' by frame or study type), the teacher-ed frame's in the folder itself, all
+#' courses' in all/, with STUDY_TYPES_FILE, the definition of
+#' study_type_group. frozen_changes() then checks on every build that nothing
+#' of the teacher-ed frame's files has changed. A later harvest only adds raw
+#' files (harvest_all()), so a new DBH year leaves the release as it was.
 #'
 #' @param tag Release name, the git tag of the release.
-#' @param raw_dir,processed,releases,manifest Locations (defaults: the repo's).
+#' @param raw_dir,processed,processed_all,releases,manifest Locations
+#'   (defaults: the repo's); `processed` the teacher-ed frame's files,
+#'   `processed_all` all courses'.
 #' @return The manifest, invisibly.
 finalize_release <- function(tag, raw_dir = RAW_DIR, processed = frame_dir("teacher_ed"),
-                             releases = "data/releases", manifest = RAW_MANIFEST) {
+                             processed_all = frame_dir("all"), releases = "data/releases",
+                             manifest = RAW_MANIFEST) {
   # build first, so the release is what the code makes; tar_outdated() cannot
   # tell: html_file runs on every build, so all after it always count as outdated
   if (file.exists("_targets.R")) targets::tar_make()
@@ -148,9 +160,13 @@ finalize_release <- function(tag, raw_dir = RAW_DIR, processed = frame_dir("teac
     c(harvest_files(i, raw_dir), ledger_files(i, raw_dir))))
   m <- tibble::tibble(release = tag, file = files, md5 = unname(tools::md5sum(files)))
   dir <- file.path(releases, tag)
-  dir.create(dir, recursive = TRUE, showWarnings = FALSE)
-  kept <- file.path(dir, c("course_offerings.RDS", "course_plans.RDS", "plan_sections.RDS"))
-  file.copy(file.path(processed, basename(kept)), kept)
+  data_files <- c("course_offerings.RDS", "course_plans.RDS", "plan_sections.RDS")
+  from <- c(file.path(processed, data_files), file.path(processed_all, data_files), STUDY_TYPES_FILE)
+  kept <- c(file.path(dir, data_files), file.path(dir, "all", data_files),
+            file.path(dir, basename(STUDY_TYPES_FILE)))
+  stopifnot(all(file.exists(from)))
+  dir.create(file.path(dir, "all"), recursive = TRUE, showWarnings = FALSE)
+  file.copy(from, kept)
   Sys.chmod(c(files, kept), "0444")
   utils::write.csv(m, manifest, row.names = FALSE)
   message(length(files), " raw files locked for ", tag, "; commit ", manifest)

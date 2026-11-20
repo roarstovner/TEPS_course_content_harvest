@@ -139,6 +139,14 @@ all course-years, those with students and those with exam registrations
 and credits</td>
 </tr>
 <tr>
+<td><code>programme_study_types()</code>,
+<code>add_study_types()</code></td>
+<td><code>R/pipeline.R</code></td>
+<td>The study type of each offering’s programme that semester (DBH table
+347) and the project’s group of it
+(<code>data/study_types.csv</code>)</td>
+</tr>
+<tr>
 <td><code>dbh_fetch(table, codes)</code></td>
 <td><code>R/utils.R</code></td>
 <td>A DBH table from the API: the bulk file, or summed per course and
@@ -226,16 +234,17 @@ academic year</td>
 <td><code>finalize_release(tag)</code>,
 <code>frozen_changes()</code></td>
 <td><code>R/release.R</code></td>
-<td>Lock a release’s raw files; list raw files changed or missing and,
-once a release is kept, changes to it (target
-<code>frozen_check</code>)</td>
+<td>Lock a release’s raw files and keep its files of both frames; list
+raw files changed or missing and, once a release is kept, changes to it
+(target <code>frozen_check</code>)</td>
 </tr>
 <tr>
 <td><code>release_data(tag, dest, frame)</code></td>
 <td><code>R/release.R</code></td>
 <td>Copy the published files of a frame (the teacher-ed one),
-<code>methods.md</code>, <code>data/variables.csv</code>, a manifest and
-section coverage to the coding project</td>
+<code>methods.md</code>, <code>data/variables.csv</code>,
+<code>data/study_types.csv</code>, a manifest and section coverage to
+the coding project</td>
 </tr>
 <tr>
 <td><code>plan_gaps(offerings, fetch_status)</code></td>

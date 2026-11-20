@@ -245,21 +245,22 @@ release_data("data-YYYY-MM-DD")       # hand-over to the coding project
 `finalize_release()` makes every raw file and fetch ledger read-only (an
 overwrite then fails), lists them with md5 sums in
 `tests/snapshots/raw_manifest.csv`, and keeps the release’s offerings,
-plans and sections (the teacher-ed frame’s, see
-[“Frames”](data-files.md#frames)) in `data/releases/{tag}/`. On every
+plans and sections of both frames in `data/releases/{tag}/` (the
+teacher-ed frame’s in the folder, all courses’ in `all/`, see
+[“Frames”](data-files.md#frames)) with `data/study_types.csv`. On every
 build `tar_read(frozen_check)` lists a raw file changed or missing and,
-while the release’s folder exists, any change to the release: an
-offering gone or linked to another plan, a plan gone or with other text,
-a section changed. Plans added later (a new DBH year) are not changes. A
-planned change to the release (a privacy fix, a section fix after the
-coders’ check) means a new release: finalize it, and `release_data()`
-writes the old -\> new `plan_content_id` crosswalk. Until then
-`frozen_check` lists the planned changes on every build, and a change
-nobody intended would be listed among them, so each commit explains the
-rows it adds, and the next release follows soon after the fixes. A
-section fix keeps the plan’s id, so the crosswalk does not show it;
-`release_data()` lists such sections (plan, section, changed, added or
-removed) in `sections_changed.csv`.
+while the release’s folder exists, any change to the teacher-ed frame’s
+files: an offering gone or linked to another plan, a plan gone or with
+other text, a section changed. Plans added later (a new DBH year) are
+not changes. A planned change to the release (a privacy fix, a section
+fix after the coders’ check) means a new release: finalize it, and
+`release_data()` writes the old -\> new `plan_content_id` crosswalk.
+Until then `frozen_check` lists the planned changes on every build, and
+a change nobody intended would be listed among them, so each commit
+explains the rows it adds, and the next release follows soon after the
+fixes. A section fix keeps the plan’s id, so the crosswalk does not show
+it; `release_data()` lists such sections (plan, section, changed, added
+or removed) in `sections_changed.csv`.
 
 ## Auditing a Pipeline Step
 
