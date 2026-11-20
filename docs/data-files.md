@@ -206,16 +206,12 @@ href="harvesting.md#robotstxt">“robots.txt”</a>)</td>
 <td>as above</td>
 </tr>
 <tr>
-<td><code>app/course_browser/data/browser_data.RDS</code></td>
-<td>course_browser payload: plans, offering metadata, sections</td>
+<td><code>app/browser/public/data/</code></td>
+<td>the browser’s data (target <code>browser_data_files</code>, <a
+href="../app/browser/README.md"><code>app/browser/README.md</code></a>
+“Data Contract”): plans, sections, course-years, metadata</td>
 <td>anonymized (no <code>extracted_text</code>)</td>
-<td>internal (app)</td>
-</tr>
-<tr>
-<td><code>app/course_browser_ojs/data/*.parquet</code></td>
-<td>anonymized <code>course_plan</code> + slim offering metadata</td>
-<td>anonymized</td>
-<td>published with the OJS page (build artifact)</td>
+<td>build output (gitignored), to be published with the page</td>
 </tr>
 <tr>
 <td><code>data/audit/</code></td>
@@ -245,7 +241,7 @@ earliest teacher-ed offering, whatever else the raw store holds, and a
 harvest of other courses leaves the teacher-ed files as they were. The
 teacher-ed files are the releases’ (`finalize_release()`,
 `release_data()`; none is finalized yet, and until the first target
-`frozen_check` checks only the raw store), the browsers’ and
+`frozen_check` checks only the raw store), the browser’s and
 `methods.md`’s; the data notes, the gaps and the audits read those of
 all courses. Each frame has its metrics snapshot, and target `coverage`
 its DBH offerings.

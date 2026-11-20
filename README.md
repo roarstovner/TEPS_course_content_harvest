@@ -191,8 +191,8 @@ variable are in [Data Files](docs/data-files.md).
   rows with DBH metadata + `plan_id` FK (no url, no text)
 - `data/interim/course_offerings_full.RDS` — internal working file: same
   rows plus `url`, `extracted_text`, `course_plan`,
-  `course_plan_normalized`; the teacher-ed one is used by the
-  course_browser app
+  `course_plan_normalized`; the teacher-ed one gives the browser each
+  plan’s source URL and harvest date
 - `data/processed/course_plans.RDS` — one row per unique plan per course
   code per institution, with the offering its text comes from
   (`source_course_id`)
@@ -233,9 +233,8 @@ Explanation and reference:
   the sections hold and what stays out.
 - [`data/data_notes.md`](data/data_notes.md): data quality notes per
   institution, and the course-years without a plan.
-- [`app/course_browser/README.md`](app/course_browser/README.md),
-  [`app/course_browser_ojs/README.md`](app/course_browser_ojs/README.md):
-  the two browsers.
+- [`app/browser/README.md`](app/browser/README.md): the course plan
+  browser.
 
 The `docs/*.qmd` pages, like this README, are rendered to Markdown with
 `quarto render docs/<page>.qmd`; edit the `.qmd`.

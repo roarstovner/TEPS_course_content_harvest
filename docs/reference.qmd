@@ -73,14 +73,14 @@ format: md
 │   ├── deduplicate_plans.R    # Groups identical plans by content hash
 │   ├── section_heading_map.R  # Heading → section patterns (incl. ".drop")
 │   ├── extract_sections.R     # Section extraction strategies + cleanup
+│   ├── browser_data.R         # The browser's data files: build_browser_data()
 │   ├── pipeline.R             # Steps of the {targets} pipeline (_targets.R)
 │   ├── pipeline_metrics.R     # Regression snapshot: check_pipeline_metrics(); the pilot gate numbers
 │   ├── release.R              # release_data(), finalize_release(), frozen_changes()
 │   ├── wayback.R              # Wayback Machine captures (CDX API); not used by the harvest
 │   └── audit/                # Audit harness for /audit-institutions
 ├── app/
-│   ├── course_browser/        # Shiny concordance browser; build_data.R → data/ (see its README)
-│   └── course_browser_ojs/    # Static Observable JS browser; build_data.R → data/ (see its README)
+│   └── browser/               # Static course plan browser (Vite + Svelte); data from build_browser_data() (see its README)
 ├── docs/                      # Documentation pages, docs/*.qmd rendered to .md (README "Documentation")
 ├── data/                      # docs/data-files.md "Data Files: Published and Internal"
 │   ├── input/                 # DBH snapshots dbh_{courses,programmes}_{date}.parquet (in git)

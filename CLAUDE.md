@@ -43,8 +43,7 @@ the gitignored `CLAUDE.local.md`.
   stays out (personal data, boilerplate, plan text, not a plan), with its
   known deviations. `docs/sections.md` "What Each Mechanism May Remove" maps it
   to code.
-- `app/course_browser/README.md`, `app/course_browser_ojs/README.md`: the two
-  browsers.
+- `app/browser/README.md`: the course plan browser.
 - `R/institution_config.R`: per-institution configuration (single source of
   truth). Function contracts are in the roxygen comments in `R/*.R`.
 - Skills: `/add-institution`, `/audit-institutions`.

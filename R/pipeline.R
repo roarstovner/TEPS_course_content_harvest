@@ -642,13 +642,6 @@ check_personal_data <- function(files) {
   found
 }
 
-# Run a script for the files it writes. `inputs` is not used: naming the input
-# targets in the call is what makes {targets} rerun the script when they change.
-run_r_script <- function(script, outputs, inputs = NULL, chdir = FALSE) {
-  source(script, local = new.env(), chdir = chdir)
-  outputs
-}
-
 render_quarto <- function(qmd, output, inputs = NULL) {
   if (system2("quarto", c("render", qmd)) != 0) stop("quarto render failed: ", qmd)
   output

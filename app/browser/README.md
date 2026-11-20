@@ -2,8 +2,8 @@
 
 A static web app for reading, searching and downloading the harvested course
 plans. It runs in the browser without a server, so it can be published on
-GitHub Pages; the data are Parquet files next to the page. It replaces the
-Shiny `course_browser` and the Observable proof of concept.
+GitHub Pages; the data are Parquet files next to the page. It replaced a
+Shiny app and an Observable page (retired 2026-11-20).
 
 Status: under construction. The first version covers the teacher-education
 frame; the full harvest (all courses, filtered by study type) follows. The
@@ -12,7 +12,8 @@ page is not published until the terms of use of the plan text are settled.
 ## Build and run
 
 ```sh
-# data (from the repository root; R, reads data/processed/ and data/input/):
+# data: targets::tar_make() rebuilds it (target browser_data_files); by hand,
+# from the repository root (R, reads data/processed/, data/interim/ and data/input/):
 Rscript -e 'for (f in c("utils", "anonymize", "deduplicate_plans", "browser_data")) source(file.path("R", paste0(f, ".R"))); build_browser_data("teacher_ed")'
 # app:
 cd app/browser

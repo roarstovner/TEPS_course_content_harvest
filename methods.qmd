@@ -87,7 +87,7 @@ with every harvest of other courses). *Consequence:* on 2026-10-16 the raw
 store held only teacher-ed offerings (41 025), so both frames held the same
 data, and the teacher-ed files were byte for byte those of release
 data-2026-10-16 (retired on 2026-11-04, see "No release until coding starts").
-The releases, the browsers and these notes use the teacher-ed
+The releases, the browser and these notes use the teacher-ed
 frame; the data notes all courses. *Since:* 2026-10-16.
 
 **An offering keeps its first `course_id`.** The id is

@@ -56,8 +56,7 @@ as much (`methods.md` "Anonymization").
 | `data/processed/course_plans.RDS` | anonymized `course_plan` (+ `course_plan_normalized`) | anonymized | published |
 | `data/processed/plan_sections.RDS` | anonymized section `text` per plan | anonymized | publishable |
 | `data/interim/teacher_ed/`, `data/processed/teacher_ed/` | the same files for the teacher-ed frame ("Frames") | as above | as above |
-| `app/course_browser/data/browser_data.RDS` | course_browser payload: plans, offering metadata, sections | anonymized (no `extracted_text`) | internal (app) |
-| `app/course_browser_ojs/data/*.parquet` | anonymized `course_plan` + slim offering metadata | anonymized | published with the OJS page (build artifact) |
+| `app/browser/public/data/` | the browser's data (target `browser_data_files`, [`app/browser/README.md`](../app/browser/README.md) "Data Contract"): plans, sections, course-years, metadata | anonymized (no `extracted_text`) | build output (gitignored), to be published with the page |
 | `data/audit/` | audit findings (quotes from anonymized text) | staff names redacted | in git |
 
 The scan catches text that skipped the anonymizer, not names the anonymizer
@@ -78,7 +77,7 @@ teacher-ed offering, whatever else the raw store holds, and a harvest of other
 courses leaves the teacher-ed files as they were. The teacher-ed files are the
 releases' (`finalize_release()`, `release_data()`; none is finalized yet,
 and until the first target `frozen_check` checks only the raw store), the
-browsers' and `methods.md`'s; the data notes, the gaps and the audits read
+browser's and `methods.md`'s; the data notes, the gaps and the audits read
 those of all courses. Each frame has its metrics snapshot, and target
 `coverage` its DBH offerings.
 

@@ -41,9 +41,10 @@ all offerings (`courses`, `plans`, `sections`, `offerings`) join the
 partitions’ results by page id. The pipeline writes the data files of
 each frame (see [“Frames”](data-files.md#frames)) in `data/interim/` and
 `data/processed/` (see [“Data Files: Published and
-Internal”](data-files.md#data-files-published-and-internal)),
-`app/course_browser/data/browser_data.RDS`, the OJS Parquet files,
-`data/data_notes.md` and `methods.md`. The harvest is not part of it.
+Internal”](data-files.md#data-files-published-and-internal)), the
+browser’s data in `app/browser/public/data/` (target
+`browser_data_files`), `data/data_notes.md` and `methods.md`. The
+harvest is not part of it.
 
 `methods.md` (from `methods.qmd`) holds the choices behind the data that
 an article’s methods section must report, by topic, with numbers

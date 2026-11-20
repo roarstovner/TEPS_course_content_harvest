@@ -1,7 +1,7 @@
 # _targets.R
 # The post-harvest pipeline: targets::tar_make() rebuilds whatever is
 # outdated, from the raw store data/raw/{inst}/{year}/ to the data files of
-# each frame, the browsers' data and the data notes. See docs/rebuilding.md
+# each frame, the browser's data and the data notes. See docs/rebuilding.md
 # "Rebuilding Derived Data".
 
 library(targets)
@@ -23,7 +23,7 @@ tar_source(c(
   "R/institution_config.R", "R/section_heading_map.R", "R/blocks.R",
   "R/extract_sections.R",
   "R/anonymize.R", "R/normalize_plan_text.R", "R/deduplicate_plans.R",
-  "R/pipeline_metrics.R", "R/pipeline.R", "R/release.R"
+  "R/pipeline_metrics.R", "R/pipeline.R", "R/release.R", "R/browser_data.R"
 ))
 
 # Read when the pipeline is loaded; {targets} tracks these globals, so a new
@@ -143,21 +143,18 @@ list(
              frozen_changes(RAW_MANIFEST, te_offerings_file, te_course_plans_file, te_sections_file),
              cue = tar_cue(mode = "always")),
 
-  # The browsers (teacher-ed frame), the methods notes (teacher-ed frame, the
-  # release's) and the data notes (all offerings)
-  tar_target(browser_script, "app/course_browser/build_data.R", format = "file"),
-  tar_target(browser_data_file,
-             run_r_script(browser_script, "app/course_browser/data/browser_data.RDS",
-                          c(te_course_plans_file, te_offerings_full_file, te_sections_file),
-                          chdir = TRUE),
-             format = "file"),
-  tar_target(ojs_script, "app/course_browser_ojs/build_data.R", format = "file"),
-  tar_target(ojs_data_files,
-             run_r_script(ojs_script,
-                          c("app/course_browser_ojs/data/plans.parquet",
-                            "app/course_browser_ojs/data/offerings.parquet"),
-                          c(te_course_plans_file, te_offerings_file), chdir = TRUE),
-             format = "file"),
+  # The browser's data (teacher-ed frame, app/browser/README.md "Data
+  # Contract"), the methods notes (teacher-ed frame, the release's) and the
+  # data notes (all offerings)
+  tar_target(programmes_file, dbh_snapshot_file("programmes"), format = "file",
+             cue = tar_cue(mode = "always")),
+  tar_target(study_types_file, "data/study_types.csv", format = "file"),
+  tar_target(browser_data_files, {
+    # the files build_browser_data() reads, named so that a change reruns it
+    c(te_course_plans_file, te_sections_file, te_offerings_file, te_offerings_full_file,
+      gaps_file, programmes_file)
+    build_browser_data("teacher_ed", types_file = study_types_file)
+  }, format = "file"),
   tar_target(methods_qmd, "methods.qmd", format = "file"),
   tar_target(methods_file,
              render_quarto(methods_qmd, "methods.md",

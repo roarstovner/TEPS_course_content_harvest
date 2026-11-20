@@ -300,8 +300,6 @@ look for it:
   show only the current
   plan”](harvesting.md#sites-that-show-only-the-current-plan)), since it
   must be harvested every academic year;
-- `institution_labels` in `app/course_browser/R/data.R`: its label in
-  the browser;
 - `methods.qmd`: the institutions with a config are part of the frame
   (“Population and sampling frame”), so a new one gets an entry there.
 
