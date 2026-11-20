@@ -350,6 +350,23 @@ matching rule wins, `allow` on a tie. Since 2026-10-17:
   before any request to it (`harvest_all()` goes on with the next
   institution): read its robots.txt and add its row first. Only
   `/robots.txt` itself may be requested from a host not in the table.
+- **Redirects are checked hop by hop** (since 2026-11-20, after curl
+  was found to follow `aho.no` to `www.aho.no`, `www.dmmh.no` to
+  `studier.dmmh.no` and a Google Docs export to `googleusercontent.com`
+  unchecked). curl does not follow redirects; `site_perform()`, which
+  performs every `site_request()`, follows each `Location` itself, at
+  most 5 hops, and checks each hop's host and path as above before
+  requesting it. A hop robots.txt disallows is not requested: the row
+  gets "robots.txt disallows {hop}, redirected from {url}
+  (data/robots_txt.csv): not requested" and the outcome `robots` (the
+  first URL was requested, though the ledger shows no `requested_at`).
+  A hop to a host not in the table stops the harvest of the institution
+  as that host's own URL would: read the host's robots.txt, add its row
+  (with the institution whose pages lead there) and harvest again; the
+  page is requested anew. The ledger records the URL requested, not
+  where its redirects ended. Hops follow one another without a pause, so
+  a redirect to a host with a longer `Crawl-delay` than the
+  institution's `request_delay` needs that delay in the config.
 
 ## Sites that show only the current plan
 

@@ -72,7 +72,7 @@ user agent, before any other request to the host:
 source("R/fetch_html_cols.R")
 site_request("https://www.newuni.no/robots.txt") |>
   httr2::req_error(is_error = \(resp) FALSE) |>
-  httr2::req_perform() |>
+  site_perform() |>
   httr2::resp_body_string() |>
   cat()
 ```
@@ -316,10 +316,10 @@ a document id:
     them with `url` filled where a page was found, and `NA` where none
     was. Add it to the dispatch in `resolve_batch()` inside
     `resolve_course_urls()`.
-3.  Send every request with `site_html()` or `site_request()`
-    (`R/fetch_html_cols.R`), which apply the user agent, the retries and
-    robots.txt, and wait `polite_pause(config$request_delay)` between
-    requests.
+3.  Send every request with `site_html()` or `site_request()` performed
+    by `site_perform()` (`R/fetch_html_cols.R`), which apply the user
+    agent, the retries and robots.txt (also to each redirect), and wait
+    `polite_pause(config$request_delay)` between requests.
 
 The resolvers there are models. A list that holds every course: UiO’s
 sitemap (`resolve_urls_uio_batch()`) and HiOF’s folder listings
@@ -361,12 +361,13 @@ year to the first HTML year and note the rest in `data/data_notes.qmd`.
 without a plan with a page that says so (NTNU: “Det finnes ingen
 informasjon for dette studieåret”), or with an error page under HTTP 200
 (HVL), needs a `fetch_fn`: a function of the URL that requests it with
-`site_request()` (with the browser user agent if the site needs it:
-`user_agent` does not apply to a `fetch_fn`), raises an error with the
-response’s `http_status` when the page says the plan is missing, and
-returns the response otherwise (`fetch_html_cols_single_ntnu()`,
-`fetch_html_cols_single_hvl()` in `R/fetch_html_cols.R`). The offering
-then counts as a fetch error, not as a plan.
+`site_request()` and `site_perform()` (with the browser user agent if
+the site needs it: `user_agent` does not apply to a `fetch_fn`), raises
+an error with the response’s `http_status` when the page says the plan
+is missing, and returns the response otherwise
+(`fetch_html_cols_single_ntnu()`, `fetch_html_cols_single_hvl()` in
+`R/fetch_html_cols.R`). The offering then counts as a fetch error, not
+as a plan.
 
 **The plan is spread over several parts of the page.** Use the narrowest
 element that holds all of them, the title and facts box included

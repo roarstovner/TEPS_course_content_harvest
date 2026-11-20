@@ -365,7 +365,7 @@ resolve_urls_vid_batch <- function(df, index = NULL, .progress = TRUE, checkpoin
   terms <- discover_codes(names(pages)[lengths(pages) > 1], function(code) {
     dplyr::bind_rows(lapply(pages[[code]], function(url) {
       polite_pause()
-      page <- httr2::resp_body_string(httr2::req_perform(site_request(url)))
+      page <- httr2::resp_body_string(site_perform(site_request(url)))
       plans <- Filter(vid_has_text, vid_course_json(page)[["plans"]])
       tibble::tibble(course_code = rep(code, length(plans)), year = as.integer(vapply(plans, `[[`, "", "year")),
                      semester_name = vapply(plans, `[[`, "", "semester"), url = rep(url, length(plans)))
@@ -387,7 +387,7 @@ VID_FIRST_TERM <- semester_term(2024L, "V\u00e5r")
 # any is an error, so the harvest stops rather than leave its courses without
 # a URL.
 vid_course_index <- function(sitemap = "https://www.vid.no/sitemap.xml") {
-  xml <- httr2::resp_body_string(httr2::req_perform(site_request(sitemap)))
+  xml <- httr2::resp_body_string(site_perform(site_request(sitemap)))
   urls <- stringr::str_match_all(xml, "<loc>(https://www\\.vid\\.no/studier/emner/[^<]+)</loc>")[[1]][, 2]
   if (!length(urls)) stop("no course page in ", sitemap)
   urls
@@ -457,7 +457,7 @@ NMH_SERIES <- c("BLENS", "KAKOR", "OSINF", "BFO")
 nmh_handbook_index <- function(sitemap = "https://nmh.no/sitemaps-1-sitemap.xml") {
   locs <- function(url) {
     polite_pause()
-    xml <- httr2::resp_body_string(httr2::req_perform(site_request(url)))
+    xml <- httr2::resp_body_string(site_perform(site_request(url)))
     stringr::str_match_all(xml, "<loc>([^<]+)</loc>")[[1]][, 2]
   }
   maps <- grep("section-studyplans_content", locs(sitemap), value = TRUE)
@@ -555,7 +555,7 @@ vortex_match_urls <- function(df, index, built = NULL) {
 vortex_course_index <- function(years, root, delay = NULL, user_agent = TEPS_USER_AGENT) {
   links <- function(url) {
     polite_pause(delay)
-    page <- tryCatch(rvest::read_html(httr2::resp_body_string(httr2::req_perform(
+    page <- tryCatch(rvest::read_html(httr2::resp_body_string(site_perform(
       site_request(url, user_agent)))), error = function(e) NULL)
     if (is.null(page)) return(NULL)
     href <- rvest::html_attr(rvest::html_elements(page, "a[href]"), "href")
@@ -1064,7 +1064,7 @@ resolve_urls_fjellhaug_batch <- function(df, index = fjellhaug_course_index()) {
 fjellhaug_course_index <- function(root = "https://fih.fjellhaug.no") {
   locs <- function(url) {
     polite_pause()
-    xml <- httr2::resp_body_string(httr2::req_perform(site_request(url)))
+    xml <- httr2::resp_body_string(site_perform(site_request(url)))
     stringr::str_match_all(xml, "<loc>([^<]+)</loc>")[[1]][, 2]
   }
   maps <- c(locs(paste0(root, "/sitemaps-1-sitemap.xml")), locs(paste0(root, "/en/sitemaps-1-sitemap.xml")))

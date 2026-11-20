@@ -83,3 +83,48 @@ test_that("site_request() sends no request robots.txt disallows, and none to a h
   httr2::req_perform(site_request("https://www.uis.no/nb/student/course/MGL101 000"))
   expect_equal(sent[2], "https://www.uis.no/nb/student/course/MGL101%20000")
 })
+
+test_that("site_perform() follows redirects by hand, robots.txt checked at each hop", {
+  local_robots(c("a.no", "www.a.no"), disallow = c(NA, "/dok/"))
+  expect_false(site_request("https://a.no/x")$options$followlocation)
+  sent <- character()
+  httr2::local_mocked_responses(function(req) {
+    sent <<- c(sent, req$url)
+    to <- switch(req$url,
+                 "https://a.no/x" = "https://www.a.no/emne/X",   # another host, allowed
+                 "https://a.no/rel" = "/y?z=1",                   # relative, same host
+                 "https://a.no/dok" = "https://www.a.no/dok/X",   # disallowed
+                 "https://a.no/new" = "https://new.a.no/emne/X",  # a host not read
+                 "https://a.no/loop" = "https://a.no/loop",
+                 NULL)
+    if (is.null(to)) httr2::response(200, body = charToRaw(req$url))
+    else httr2::response(301, headers = list(Location = to))
+  })
+  resp <- site_perform(site_request("https://a.no/x"))
+  expect_equal(httr2::resp_status(resp), 200L)
+  expect_equal(sent, c("https://a.no/x", "https://www.a.no/emne/X"))
+  site_perform(site_request("https://a.no/rel"))
+  expect_equal(sent[4], "https://a.no/y?z=1")
+
+  sent <- character()
+  expect_error(site_perform(site_request("https://a.no/dok")),
+               "robots.txt disallows https://www.a.no/dok/X, redirected from https://a.no/dok .*not requested",
+               class = "robots_disallowed")
+  expect_error(site_perform(site_request("https://a.no/new")), "robots.txt of new.a.no has not been read",
+               class = "robots_unread")
+  expect_equal(sent, c("https://a.no/dok", "https://a.no/new"))   # the hops were not requested
+  expect_error(site_perform(site_request("https://a.no/loop")), "more than 5 redirects",
+               class = "too_many_redirects")
+
+  # in a harvest: a disallowed hop is outcome "robots"; a hop to a host not
+  # read stops the fetch
+  out <- fetch_html_cols("https://a.no/dok", "x", .progress = FALSE)
+  expect_equal(fetch_outcome("u", FALSE, out$http_status, fetch_error_text(out$html_error)), "robots")
+  expect_error(fetch_html_cols("https://a.no/new", "x", .progress = FALSE), class = "robots_unread")
+})
+
+test_that("every request of a site is performed by site_perform()", {
+  code <- unlist(lapply(list.files(here::here("R"), "\\.R$", full.names = TRUE), readLines))
+  expect_equal(grep("req_perform(", code, fixed = TRUE, value = TRUE),
+               "    resp <- httr2::req_perform(req)")
+})

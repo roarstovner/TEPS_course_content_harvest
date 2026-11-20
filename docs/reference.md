@@ -57,6 +57,12 @@ reconstructed (target <code>ledger</code>)</td>
 and server errors; refuses a URL robots.txt disallows</td>
 </tr>
 <tr>
+<td><code>site_perform(req)</code></td>
+<td><code>R/fetch_html_cols.R</code></td>
+<td>Performs a <code>site_request()</code>, following redirects by hand
+(at most 5), robots.txt checked at each hop</td>
+</tr>
+<tr>
 <td><code>refusal_watch(config)</code></td>
 <td><code>R/fetch_html_cols.R</code></td>
 <td>The check of a loop of requests to a site: stops it when the site

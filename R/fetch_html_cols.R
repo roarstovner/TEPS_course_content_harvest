@@ -38,7 +38,11 @@ fetch_html_cols <- function(urls, institution = NULL, config = NULL,
     },
     .progress = .progress
   )
-  
+  # a redirect to a host whose robots.txt has not been read (site_perform())
+  # stops the harvest, as that host's own URL would
+  unread <- purrr::detect(http_resps, function(x) inherits(x$error, "robots_unread"))
+  if (!is.null(unread)) stop(unread$error)
+
   # html (character)
   html <- character(length(urls))
   html[!is_valid] <- NA_character_
@@ -144,7 +148,7 @@ probe_request <- function(url, config = NULL) {
   polite_pause(config$request_delay)
   requested_at <- Sys.time()
   agent <- if (identical(config$user_agent, "browser")) BROWSER_USER_AGENT else TEPS_USER_AGENT
-  status <- http_status_of(tryCatch(httr2::req_perform(site_request(url, agent)), error = identity))
+  status <- http_status_of(tryCatch(site_perform(site_request(url, agent)), error = identity))
   if (length(config$name)) {
     assign(config$name, rbind(take_probes(config$name),
                               data.frame(url = url, requested_at = requested_at, http_status = status)),
@@ -193,20 +197,51 @@ FETCH_BACKOFF <- 30
 # an error of class "robots_disallowed" (outcome "robots" in the ledger). A
 # space in the URL (DBH's old codes "1BA132 000", "ALIKT1 000") is
 # percent-encoded: curl refuses a URL with a space, and the refusal was tried
-# again as if it were a timeout, 90 seconds a URL.
+# again as if it were a timeout, 90 seconds a URL. curl does not follow
+# redirects (followlocation off): site_perform() does, checking each hop.
 site_request <- function(url, user_agent = TEPS_USER_AGENT) {
   if (isFALSE(robots_allows(url))) rlang::abort(robots_refusal(url), class = "robots_disallowed")
   httr2::request(gsub(" ", "%20", url, fixed = TRUE)) |>
     httr2::req_user_agent(user_agent) |>
     httr2::req_timeout(FETCH_TIMEOUT) |>
+    httr2::req_options(followlocation = FALSE) |>
     httr2::req_retry(max_tries = FETCH_TRIES, retry_on_failure = TRUE,
                      is_transient = function(resp) httr2::resp_status(resp) %in% c(500L, 502L, 503L, 504L),
                      backoff = function(i) FETCH_BACKOFF * 2^(i - 1))
 }
 
+# Redirects site_perform() follows for one request at most.
+MAX_REDIRECTS <- 5L
+
+# Performs a site_request(), following its redirects (HTTP 301, 302, 303, 307,
+# 308) by hand: robots.txt applies to each hop as to the first URL (found
+# 2026-11-20: curl had followed aho.no to www.aho.no, www.dmmh.no to
+# studier.dmmh.no and a Google Docs export to googleusercontent.com without a
+# check). A hop robots.txt disallows is not requested ("robots_disallowed",
+# outcome "robots"); a hop to a host not in ROBOTS_FILE is an error of class
+# "robots_unread", which stops the harvest as for the first URL
+# (fetch_html_cols()); more than MAX_REDIRECTS hops is an error. Each hop
+# keeps the request's user agent, timeout and retries, with no pause between
+# them (as curl and browsers follow). Every request of a site goes through
+# here: the response of the last hop.
+site_perform <- function(req) {
+  from <- req$url
+  for (hop in 0:MAX_REDIRECTS) {
+    resp <- httr2::req_perform(req)
+    if (!httr2::resp_status(resp) %in% c(301L, 302L, 303L, 307L, 308L) ||
+        !httr2::resp_header_exists(resp, "location")) return(resp)
+    if (hop == MAX_REDIRECTS) break
+    to <- gsub(" ", "%20", xml2::url_absolute(httr2::resp_header(resp, "location"), req$url), fixed = TRUE)
+    if (isFALSE(robots_allows(to))) rlang::abort(robots_refusal(to, from), class = "robots_disallowed")
+    req <- httr2::req_url(req, to)
+  }
+  rlang::abort(paste0("more than ", MAX_REDIRECTS, " redirects from ", from, ": stopped at ", req$url),
+               class = "too_many_redirects")
+}
+
 # A course site's page as an HTML document (site_request()).
 site_html <- function(url) {
-  rvest::read_html(httr2::resp_body_string(httr2::req_perform(site_request(url))))
+  rvest::read_html(httr2::resp_body_string(site_perform(site_request(url))))
 }
 
 # --- robots.txt ---------------------------------------------------------------
@@ -272,9 +307,10 @@ robots_rx <- function(pattern) {
 }
 
 # Why a URL was not requested, as the fetch error that fetch_outcome() reads
-# as "robots".
-robots_refusal <- function(url) {
-  paste0("robots.txt disallows ", url, " (", ROBOTS_FILE, "): not requested")
+# as "robots"; `from`, the URL requested when `url` is a redirect's hop.
+robots_refusal <- function(url, from = url) {
+  paste0("robots.txt disallows ", url, if (!identical(from, url)) paste0(", redirected from ", from),
+         " (", ROBOTS_FILE, "): not requested")
 }
 
 # A course page: the response to its URL, or, for a course whose Norwegian
@@ -314,7 +350,7 @@ fetch_page <- function(url, institution = NULL, config = NULL) {
   # User agent: config-driven or legacy fallback
   browser <- if (!is.null(config)) identical(config$user_agent, "browser") else identical(institution, "hiof")
   site_request(url, if (browser) BROWSER_USER_AGENT else TEPS_USER_AGENT) |>
-    httr2::req_perform()
+    site_perform()
 }
 
 #' Fetch HTML for a single NTNU course URL
@@ -329,7 +365,7 @@ fetch_page <- function(url, institution = NULL, config = NULL) {
 #'
 #' @noRd
 fetch_html_cols_single_ntnu <- function(url) {
-  resp <- site_request(url) |> httr2::req_perform()
+  resp <- site_request(url) |> site_perform()
   
   html_content <- httr2::resp_body_string(resp)
   
@@ -356,7 +392,7 @@ fetch_html_cols_single_ntnu <- function(url) {
 #'
 #' @noRd
 fetch_html_cols_single_hvl <- function(url) {
-  resp <- site_request(url) |> httr2::req_perform()
+  resp <- site_request(url) |> site_perform()
 
   html_content <- httr2::resp_body_string(resp)
 
@@ -373,7 +409,7 @@ fetch_html_cols_single_hvl <- function(url) {
 # facts list and the plan's headings, and no text under them (KK202-3,
 # checked 2026-11-01). Such a page counts as not found.
 fetch_html_cols_single_khio <- function(url) {
-  resp <- site_request(url) |> httr2::req_perform()
+  resp <- site_request(url) |> site_perform()
   page <- rvest::read_html(httr2::resp_body_string(resp))
   text <- rvest::html_elements(page, xpath = paste0(
     "//main//section[contains(@class, 'content')]//*[not(self::h1 or self::h2)]",
@@ -389,7 +425,7 @@ fetch_html_cols_single_khio <- function(url) {
 # (Spring 2025)"), the facts list and the programmes, and no plan (checked
 # 2026-11-02). A page without a plan section with text counts as not found.
 fetch_html_cols_single_phs <- function(url) {
-  resp <- site_request(url) |> httr2::req_perform()
+  resp <- site_request(url) |> site_perform()
   page <- rvest::read_html(httr2::resp_body_string(resp))
   if (!any(nzchar(trimws(rvest::html_text(rvest::html_elements(page, ".vrtx-fs-infotype-content")))))) {
     rlang::abort("Course page without a plan (soft 404)", class = "phs_not_found_error",
@@ -402,7 +438,7 @@ fetch_html_cols_single_phs <- function(url) {
 # none, or only an empty entry; MATRS5120, checked 2026-11-01)
 # counts as not found.
 fetch_html_cols_single_vid <- function(url) {
-  resp <- site_request(url) |> httr2::req_perform()
+  resp <- site_request(url) |> site_perform()
   if (!any(vapply(vid_course_json(httr2::resp_body_string(resp))[["plans"]], vid_has_text, logical(1)))) {
     rlang::abort("Course page without a plan (soft 404)", class = "vid_not_found_error",
                  http_status = httr2::resp_status(resp))

@@ -96,7 +96,7 @@ harvest_html_pdf_discovery <- function(df, config) {
       \(code, base_url) {
         if (robots_allows(base_url)) polite_pause(config$request_delay)
         tryCatch({
-          resp <- site_request(base_url) |> httr2::req_perform()
+          resp <- site_request(base_url) |> site_perform()
           refused(httr2::resp_status(resp), base_url)
           html <- httr2::resp_body_string(resp)
           parsed <- .parse_uis_semester_dropdown(html)
@@ -180,7 +180,7 @@ harvest_html_pdf_discovery <- function(df, config) {
           if (robots_allows(pdf_url)) polite_pause(config$request_delay)
           requested_at <- Sys.time()
           tryCatch({
-            resp <- site_request(pdf_url) |> httr2::req_perform()
+            resp <- site_request(pdf_url) |> site_perform()
             refused(httr2::resp_status(resp), pdf_url)
             list(raw = httr2::resp_body_raw(resp), error = NULL, success = TRUE,
                  status = httr2::resp_status(resp), requested_at = requested_at)
@@ -361,7 +361,7 @@ harvest_pdf_split <- function(df, config) {
 .steiner_download_pdf <- function(pdf_url) {
   message("  Downloading: ", basename(pdf_url))
   polite_pause()
-  tryCatch(httr2::resp_body_raw(httr2::req_perform(site_request(pdf_url))),
+  tryCatch(httr2::resp_body_raw(site_perform(site_request(pdf_url))),
            error = function(e) { message("  ", conditionMessage(e)); NULL })
 }
 

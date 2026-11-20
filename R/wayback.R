@@ -35,7 +35,7 @@ wayback_cdx <- function(url, match_type = "exact", from = NULL, to = NULL, filte
                         limit = NULL) {
   polite_pause(WAYBACK_DELAY)
   resp <- wayback_cdx_request(url, match_type, from, to, filter, collapse, fl, limit) |>
-    httr2::req_perform()
+    site_perform()
   wayback_parse_cdx(httr2::resp_body_string(resp))
 }
 
