@@ -104,6 +104,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Decision: study type in the published offerings and frames by study type in releases (#571)
+- Study type in course_offerings (both frames) and the all frame in releases (#577)
 - ntnu: all courses (#372)
 - Browser: layout polish from the first review (#576)
 - Browser: retire the Shiny and OJS browsers (#563)
