@@ -136,6 +136,8 @@
   const selected = $derived(model && s.course ? (model.byKey.get(s.course) ?? null) : null)
   const selectedRow = $derived(selected && view ? view.rows.find((r) => r.course === selected) : null)
   const version = $derived(selected ? pickVersion(selected, selectedRow, s.version, versionId) : null)
+  // the plan pane takes room only when it shows a plan (list view, a course open)
+  const showCourse = $derived(!!selected && s.view === 'list')
 
   // a new result list starts the cursor at the top
   $effect(() => {
@@ -198,7 +200,7 @@
 
 <svelte:window onkeydown={onKey} onpopstate={onPopState} />
 
-<div class="app">
+<div class="app" class:withcourse={showCourse}>
   <Header
     bind:state={s}
     bind:input={searchBox}
@@ -244,10 +246,11 @@
           excl={result?.excl}
           onopen={open}
         />
+        {#if !selected}<p class="hint">Select a course to read its plan. Keys: <kbd>/</kbd> search, <kbd>j</kbd>/<kbd>k</kbd> move, <kbd>Enter</kbd> open, <kbd>Esc</kbd> back.</p>{/if}
       {/if}
     </main>
-    <section class="course">
-      {#if selected}
+    {#if showCourse}
+      <section class="course">
         <CourseView
           course={selected}
           {version}
@@ -266,10 +269,8 @@
           onopen={(c, v) => ((s.course = c.key), (s.version = versionId(v)))}
           onclose={close}
         />
-      {:else}
-        <p class="hint">Select a course to read its plan. Keys: <kbd>/</kbd> search, <kbd>j</kbd>/<kbd>k</kbd> move, <kbd>Enter</kbd> open, <kbd>Esc</kbd> back.</p>
-      {/if}
-    </section>
+      </section>
+    {/if}
   {:else if !error}
     <p class="loading">Loading courses…</p>
   {/if}

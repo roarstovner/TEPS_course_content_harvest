@@ -49,7 +49,7 @@
     queueMicrotask(() => {
       const m = body?.querySelector('mark')
       if (m) m.scrollIntoView({ block: 'center' })
-      else body?.scrollTo?.(0, 0)
+      else (body?.querySelector('.ptext') ?? body)?.scrollTo?.(0, 0)
     })
   })
 
@@ -93,7 +93,8 @@
     </div>
   </div>
 
-  <div class="cbody" bind:this={body}>
+  <!-- the plan scrolls in its own box under the section legend (PlanText) -->
+  <div class="cbody" class:plan={tab === 'plan' && doc?.key === version?.key} bind:this={body}>
     {#if !course.versions.length && plansReady}
       <p class="hint">No plan was found for this course.</p>
     {:else if !doc || doc.key !== version?.key}

@@ -1,12 +1,29 @@
 <script>
   // The full plan with the matches marked and, in the margin, the section
-  // each line went to (README "Layout"); a legend switches the margin on/off.
+  // each line went to (README "Layout"); a legend switches the margin on/off
+  // (remembered in localStorage). The legend stays above the text's own
+  // scroller, so it never covers a line.
   import { lineBlocks, lineSections } from '../data/overlay.js'
   import { segmentsIn } from './format.js'
 
   let { text, marks, sections, sectionsMeta } = $props()
 
-  let overlay = $state(true)
+  const KEY = 'plan-overlay'
+  let overlay = $state(load())
+  function load() {
+    try {
+      return localStorage.getItem(KEY) !== 'off'
+    } catch {
+      return true
+    }
+  }
+  $effect(() => {
+    try {
+      localStorage.setItem(KEY, overlay ? 'on' : 'off')
+    } catch {
+      // storage blocked: the toggle lasts until the page is left
+    }
+  })
   const colour = $derived(new Map(sectionsMeta.map((s, i) => [s.code, i])))
   const label = $derived(new Map(sectionsMeta.map((s) => [s.code, s.label_en])))
   const blocks = $derived(
@@ -30,16 +47,18 @@
 {:else}
   <p class="legend note">loading sections…</p>
 {/if}
-<div class="plantext lines" class:overlay={overlay && sections}>
-  {#each blocks as b, i (i)}
-    {@const sec = label.get(b.kind)}
-    <!-- a block with a section can take focus, to show its label -->
-    <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-    <div
-      class="blk {sec ? `s${colour.get(b.kind)}` : b.kind}"
-      data-label={sec}
-      title={sec}
-      tabindex={sec && overlay && sections ? 0 : undefined}
-    >{#each segmentsIn(text, b.start, b.end, marks) as g, j (j)}{#if g.term < 0}{g.text}{:else}<mark class="t{g.term % 6}">{g.text}</mark>{/if}{/each}{#if b.kind === 'blank'}&#8203;{/if}</div>
-  {/each}
+<div class="ptext">
+  <div class="plantext lines" class:overlay={overlay && sections}>
+    {#each blocks as b, i (i)}
+      {@const sec = label.get(b.kind)}
+      <!-- a block with a section can take focus, to show its label -->
+      <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+      <div
+        class="blk {sec ? `s${colour.get(b.kind)}` : b.kind}"
+        data-label={sec}
+        title={sec}
+        tabindex={sec && overlay && sections ? 0 : undefined}
+      >{#each segmentsIn(text, b.start, b.end, marks) as g, j (j)}{#if g.term < 0}{g.text}{:else}<mark class="t{g.term % 6}">{g.text}</mark>{/if}{/each}{#if b.kind === 'blank'}&#8203;{/if}</div>
+    {/each}
+  </div>
 </div>
