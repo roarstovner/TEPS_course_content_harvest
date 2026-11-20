@@ -104,6 +104,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Add NSKI Høyskole (#583)
 - Decision: study type in the published offerings and frames by study type in releases (#571)
 - Study type in course_offerings (both frames) and the all frame in releases (#577)
 - ntnu: all courses (#372)
