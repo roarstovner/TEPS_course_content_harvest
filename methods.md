@@ -12,7 +12,7 @@ decision changes what the data mean, add or update its entry here; each
 release tag freezes this file with the data.
 
 Current data, the teacher-ed frame (below): 46 882 offerings (DBH course
-× year × semester) at 19 institutions, 30 727 of them with a plan, and
+× year × semester) at 19 institutions, 30 731 of them with a plan, and
 17 005 unique plans from 18 institutions (none from Samas, below).
 
 ## Population and sampling frame
@@ -73,8 +73,8 @@ frame and change with every harvest of other courses). *Consequence:* on
 2026-10-16 the raw store held only teacher-ed offerings (41 025), so
 both frames held the same data, and the teacher-ed files were byte for
 byte those of release data-2026-10-16 (retired on 2026-11-04, see “No
-release until coding starts”). The releases, the browsers and these
-notes use the teacher-ed frame; the data notes all courses. *Since:*
+release until coding starts”). The releases, the browser and these notes
+use the teacher-ed frame; the data notes all courses. *Since:*
 2026-10-16.
 
 **An offering keeps its first `course_id`.** The id is
@@ -163,7 +163,7 @@ follows from the counts’ date, not the course list’s. A course-year of
 the course list that the counts lack had no students (in a provisional
 year: none yet). *Rejected:* one date for both (the counts would wait
 for the next course list, or force one). In the teacher-ed frame: 24 775
-course-years, 19 622 with a plan (79 %); with students 18 368, of them
+course-years, 19 625 with a plan (79 %); with students 18 368, of them
 15 779 with a plan (86 %); with both 13 832, of them 12 041 with a plan
 (87 %). Per institution and year: `data/data_notes.md`, “Coverage over
 course-years that had students”. *Since:* 2026-11-04.
@@ -225,9 +225,44 @@ of projects, such as BLENS21-BLENS27, exchange students’ courses) and so
 no plan; its full harvest waits for the pilot audits (below).
 *Rejected:* the handbook of the cohort that takes the course in that
 year, which needs the course’s year of study (given in the page’s text
-only, “Gjennomføres: 2. studieår”, and differing by programme); matching
-project variants to the ensemble’s one page by code stem, which would
-give a variant a plan the handbook does not name. *Since:* 2026-10-31.
+only, “Gjennomføres: 2. studieår”, and differing by programme). Matching
+project variants to the ensemble’s one page by code stem, rejected here
+at first, was adopted for four named series on 2026-11-14 (next entry).
+*Since:* 2026-10-31.
+
+**NMH: the project series take their series’ page, and of two pages of a
+code in one handbook the one listed for the code alone.** DBH registers
+some NMH ensembles and orchestra projects as a code per number of
+projects (BLENS21-BLENS27, KAKOR20-KAKOR27, OSINF60-OSINF72,
+BFO20-BFO24), and the handbook has one page for the series (BLENS20,
+KAKOR, BFO) or none (OSINF). An offering of one of these four series
+without a page of its own now takes its series’ page by code stem, with
+the same cohort rule as other codes; no other series is matched by stem.
+Of the 56 cases of a code with two pages in one handbook (29 in 2021, 22
+in 2022), the page listed for the code alone (“OPERA21 - Operaseminar
+II”) goes before one listed for several codes (“OPERA20/21 -
+Operaseminar”); where both are listed alike, the first listed, as
+before. *Why:* user decision 2026-11-14: a series’ projects share the
+ensemble’s plan; the page listed for the code alone has DBH’s title
+(“Operaseminar II”, “Bruksklaver IIa”) and credits, the shared page is
+the two-semester course. The pairs listed alike were compared on
+2026-11-16: 9 are the same text (KPIMP10 in every handbook, MUSTEK21,
+BARIMP20); in 2021 the second page is the 2022 cohort’s copy (its cohort
+“2022”, without the facts list); TRIO20/21 of 2022 differ in one
+admission sentence and UTSTØ10 of 2021 in its category, the same title
+and credits; INSTENS20 of 2022 has a second page with another title
+(“Didaktikk for instrumental- og ensembleundervisning”) than DBH’s,
+which the first has. *Consequence:* of NMH’s 10,026 DBH offerings of
+2021-2026, 188 more have a page (4,988 to 5,176: BFO 40, BLENS 68, KAKOR
+80; OSINF has none), and 81 offerings of eight codes (BRUKLA22/23,
+FOLKINST21, IMPSAMT21, INSTVAR21, JZSLAGEN21, OPERA21, PRØVESP21) take
+the page for their code instead of the shared one. A project of a series
+gets the ensemble’s general plan, not one for the project. *Rejected:*
+matching every code by stem, which would give a course the plan of
+another that shares its letters; always the first listed, which gives
+the “21” codes the shared two-semester page; choosing by the page’s
+cohort year, which needs every page fetched before resolving. *Since:*
+2026-11-14.
 
 **Kunsthøgskolen i Oslo (DBH code 6220) joins the frame, with the plan
 in force only.** One of the ten institutions surveyed for the
@@ -910,11 +945,33 @@ confirmed against the programme description. *Since:* 2026-10-19.
 
 **A plan is a unique anonymized text per institution and course code**
 (`plan_content_id`, a hash of the normalized text). Offerings with the
-same text share a plan: 30 727 offerings have 17 005 plans. *Why:*
+same text share a plan: 30 731 offerings have 17 005 plans. *Why:*
 consecutive years and both semesters mostly repeat the same text.
 *Consequence:* the id changes whenever cleaning changes the text, so
 coding is tied to a frozen release and carried to later releases with a
 crosswalk.
+
+**Plans are joined on `plan_id`, not on `plan_content_id`.** `plan_id`
+is
+`{institution}_{course_code}_{the first 10 characters of plan_content_id}`,
+in `course_offerings` (NA without a plan), `course_plans` and
+`plan_sections`; the build stops if two plans of a course share one.
+`plan_content_id` stays as it was: the fingerprint of the text, which
+finds identical texts across courses. *Why:* parallel course codes of an
+institution that publish the same text (UiT LRU-3672 and LRU-3672F, NTNU
+PPU4621/4623/4625/4627, NLA 4MGL1DIP and MGL1DIP, OsloMet M5GMT2100 and
+M5GMT3100) share a `plan_content_id`: 258 ids are shared by 691 plans
+(never across institutions), and joining offerings to plans on
+`plan_content_id` alone duplicates 1 457 of the 30 731 offerings with a
+plan (2026-11-19: 256 ids, 687 plans, 1,449 of 30,727 offerings). The
+key `plan_content_id` + `institution` + `course_code` was documented,
+but easy to miss. *Rejected:* documenting the three-column key only (the
+silent duplicates stay one join away); making `plan_content_id` itself
+unique by hashing institution and course code into it, which changes
+every id and breaks the joins of the data handed to the coding project
+on 2026-10-15. *Consequence:* one more column in the three files; no
+plan, offering or text changes, and joins on the three columns give the
+same result. *Since:* 2026-11-19.
 
 **Page shells are not plans:** a page with no plan section to read and
 under 1,500 characters of plan text (without the title and facts box,
@@ -958,9 +1015,9 @@ year before, so reading it would remove plans in force (checked
 courses, below). *Consequence:* 174 plans left the data on 2026-10-06
 (UiA 95, UiB 27, OsloMet 26, Nord 11, HVL 10, UiT 4, NTNU 1). With pages
 that are not the plan at all (INN’s course search page, OsloMet’s error
-page) and later versions (HiOF, INN, Nord, UiS), 2 631 offerings have
+page) and later versions (HiOF, INN, Nord, UiS), 2 627 offerings have
 page text but no plan (hiof 62, inn 1366, nord 819, oslomet 89, uia 95,
-uib 79, uis 97, uit 24). *Since:* 2026-10-06; heading lists (UiB NOLI216
+uib 79, uis 97, uit 20). *Since:* 2026-10-06; heading lists (UiB NOLI216
 and NOSP216, autumn 2018) from 2026-10-07; NTNU pages whose only section
 was the exam tab from 2026-10-12 to 2026-10-13, when the tab came back
 (20 plans, 70 offerings). INN later versions from 2026-10-07: 1,077 INN
@@ -1038,6 +1095,27 @@ ids, and two pairs of UiT plans that differed only by such glue merge
 (SOA-3905 spring and autumn 2011; LER-1201 spring 2018). *Since:*
 2026-10-08.
 
+**Letters are in one Unicode form, and invisible characters go.** A page
+is read after its HTML or text is put in Unicode NFC (a letter and a
+combining accent become one character) and stripped of soft hyphens
+(U+00AD), zero-width spaces (U+200B), byte order marks (U+FEFF) and
+direction marks (U+200E/F), literal or as HTML entities
+(`clean_chars()`). *Why:* 458 of 17,005 teacher-ed plans held such
+characters (2026-11-19): 447 “å” written as “a” and a combining ring in
+181 plans (most USN, INN, HiOF), which a search for “å”, a heading or an
+anonymizer pattern does not match; 306 soft hyphens in 57 plans (NLA,
+NTNU, HiOF, HVL), which split words (“obli-ga-to-risk”, a soft hyphen at
+each dash); 366 zero-width spaces in 205 plans (HVL, UiT, Nord) and 15
+byte order marks (NLA). *Rejected:* cleaning only the published text,
+after the sections and the anonymizer had read the old one; also turning
+non-breaking spaces (1,609 USN and NLA plans) into spaces, a separate
+decision: they split no word. *Consequence:* the text of these plans
+changes only in these characters and the whitespace next to them; they
+get new plan ids, and two UiB plans of HIDID112 (2024; 2025–2026) that
+differed only by them merge. Seven HiOF plans’ angle bracket U+2329
+becomes U+3008, its canonical form. A second combining ring after an “å”
+in the source (9 times) stays. *Since:* 2026-11-19.
+
 ## What the text holds
 
 **The published text follows a written spec, `course_plan_spec.md`.**
@@ -1063,7 +1141,7 @@ removing every AI, plagiarism and COVID line from assessment (the rule
 since 2026-10-01), which also removed rules for the use of AI and the
 exam forms that replaced written exams during COVID; keeping the NTNU
 exam tab out of the sections, which leaves 743 NTNU plans without an
-assessment section. *Consequence:* the sections hold a median 82 % of a
+assessment section. *Consequence:* the sections hold a median 83 % of a
 plan’s text, and 45 plans have no section. The data do not yet follow
 the spec where its “Known deviations” says; each fix gets its own entry
 here, with numbers. *Since:* 2026-10-13.
@@ -1102,7 +1180,16 @@ names after a staff role anywhere in a line (“… avklares med faglærer
 <name>”, “Ta kontakt med <name> eller <name>”), HVL campus contact lines
 and UiT’s 2008-2011 timetable block (teachers, rooms, first lectures)
 from 2026-10-07, after the anonymization audit of all institutions found
-them in 16 plans.
+them in 16 plans; English staff labels with the names on the same line
+(“Course leader: <name>”, “Other lecturers: <name> (PRIO) and <name>”,
+“Module responsible and teacher: <names>”, “Lecturers are <names>”,
+“Administrative responsible: Head of administration <name>, SVT.”), the
+whole line when the label opens it, and a title before every name of a
+list, not only the first (“Professor <name> og førsteamanuensis <name>”,
+UiB law), from 2026-11-16, found in the 2026 UiO PhD pages: run on the
+published plans of the build of 2026-11-16 it changes 108 plans (UiB 63,
+USN 16, UiT 11, UiO 8, UiA 5, HiMolde 2, NTNU 2, Nord 1) and 38
+sections.
 
 **Coordinator blocks and role headings go with their names.** OsloMet’s
 “Emneansvarlig” block, the last part of the page before the
@@ -1413,14 +1500,15 @@ homepage” (a link to en.uit.no/exams), goes the same way, and their
 “Language of instruction and examination” and “Re-sit examination”
 blocks leave the sections like the Norwegian “Undervisnings- og
 eksamensspråk” and “Kontinuasjonseksamen” (exam logistics and facts, not
-plan text). *Why:* found by the pilot sections re-audit of 2026-10-22:
-the language field ended teaching methods and the re-sit rules stood in
-assessment on English pages (2,419, 2,192 and 2,228 UiT pages with the
-field, the block and the label). *Consequence:* in a sample of 2 named
-and 176 sampled UiT pages (`preview_change()`), 15 plans lose the label
-and get a new id; teaching methods loses the language field on 23,
-assessment the re-sit block on 15; INN’s pages with the same field and
-NTNU are unchanged. *Since:* 2026-10-29.
+plan text; from 2026-11-16 the field’s exam language is in assessment,
+see “UiT: the language field” below). *Why:* found by the pilot sections
+re-audit of 2026-10-22: the language field ended teaching methods and
+the re-sit rules stood in assessment on English pages (2,419, 2,192 and
+2,228 UiT pages with the field, the block and the label). *Consequence:*
+in a sample of 2 named and 176 sampled UiT pages (`preview_change()`),
+15 plans lose the label and get a new id; teaching methods loses the
+language field on 23, assessment the re-sit block on 15; INN’s pages
+with the same field and NTNU are unchanged. *Since:* 2026-10-29.
 
 **MF and UiS: the title and the facts box are plan text.** `course_plan`
 keeps MF’s title and course code and its facts box (“Emneinfo”: code,
@@ -1751,9 +1839,9 @@ removal is a session or deadline date, a semester or a stamp. *Since:*
 
 **Seven canonical sections** are cut from each plan by its headings,
 mapped through one heading table (`R/section_heading_map.R`): course
-content (99 % of plans), learning outcomes (99 %), assessment (98 %),
+content (99 % of plans), learning outcomes (99 %), assessment (99 %),
 teaching methods (94 %), coursework requirements (93 %), prerequisites
-(53 %) and reading list (25 %), and an eighth that overlaps them,
+(55 %) and reading list (25 %), and an eighth that overlaps them,
 practice (19 %; below). Where a section is missing, the coders use the
 whole plan.
 
@@ -1892,19 +1980,47 @@ assessment section, 14 of them at Nord, where a COVID change of the exam
 form was the only assessment text. The median assessment section grows
 from 261 to 325 characters. *Since:* 2026-10-13.
 
-**UiT: the language label and 2008 coursework gates.** The sub-heading
-“Undervisnings- og eksamensspråk” and its value (“Norsk”) on UiT’s 2018+
-pages go (`.drop`); they were appended to teaching_methods on every such
-page. It states a language fact, not how the course is taught (the bare
-“Eksamensspråk” still maps to assessment, as above). In 2008 plans,
-“Beskriving av arbeidskrav: … Beskriving av eksamen: …” and a numbered
-point on “godkjente oppgaver” now move from assessment to
-coursework_requirements like other inline gates. *Rejected:* mapping the
-heading to teaching_methods or assessment (it is neither).
-*Consequence:* 2,190 UiT teaching_methods sections change (median 532 to
-460 characters, all frames), 4 plans get a coursework section from the
-“Beskriving” rule and 1 from the numbered point; Nord and NTNU do not
-change. *Since:* 2026-10-22.
+**UiT: the language field and 2008 coursework gates.** UiT’s field
+“Undervisnings- og eksamensspråk” (“Language of instruction and
+examination” on English pages, a heading of its own in 2008-2011) was
+appended to teaching_methods on every such page; from 2026-10-22 it went
+(`.drop`), as a language fact, not how the course is taught. From
+2026-11-16 its exam language joins assessment, after the page’s own
+assessment text and under the field’s label (`section_headings`
+“.exam_language”, `.exam_language_text()`): the sentences that say what
+language the exam or the work handed in is in (“Eksamensspråket er
+norsk.”, “Examination questions will be given in English, but may be
+answered either in English or a Scandinavian language.”, “The thesis
+must be written in English.”, “Undervisnings- og eksamensspråket er
+norsk”), and a bare value (“Norsk”, “English”, “Norsk og russisk.”),
+which the label, naming both languages, makes the exam language as well;
+it is the field’s value on most pages and the only statement of the exam
+language on them, as UiO’s “Eksamensspråk: Norsk” is in assessment (as
+above). Sentences on the teaching, supervision or syllabus language
+alone (“Undervisningsspråket er norsk.”, “Samisk kan benyttes når alle
+parter er samiskspråklig.”, “The language of instruction is English and
+all of the syllabus material is in English.”, “Emnet er norskspråklig.”)
+stay out, and the label with them when nothing else is left. INN’s field
+of the same name stays out (`.drop`). In 2008 plans, “Beskriving av
+arbeidskrav: … Beskriving av eksamen: …” and a numbered point on
+“godkjente oppgaver” now move from assessment to coursework_requirements
+like other inline gates. *Why:* the spec counts the exam language as
+assessment design (user decision 2026-11-16; before, the field as a
+whole was taken to be a fact about the course). *Rejected:* mapping the
+heading to teaching_methods (the teaching language is not how the course
+is taught) or the whole field to assessment (its teaching-language
+sentences are not assessment); leaving the bare values out (they would
+leave more than half of UiT’s plans without the exam language they
+state). *Consequence:* on 2026-10-22 2,190 UiT teaching_methods sections
+changed (median 532 to 460 characters, all frames), 4 plans got a
+coursework section from the “Beskriving” rule and 1 from the numbered
+point. On 2026-11-16, of 40,913 UiT plan source pages (stored blocks,
+2008-2026), 34,929 assessment sections gain the field (23,056 of all
+36,053 with a bare value only, 12,997 with sentences), 1,124 pages get
+an assessment section only from it (820 of them a bare value), and the
+median changed assessment section grows from 286 to 352 characters;
+`course_plan`, the plan ids and the other sections do not change, nor do
+other institutions. *Since:* 2026-10-22; exam language 2026-11-16.
 
 **A sentence that makes the exam conditional on coursework goes to
 coursework requirements, at every institution and from assessment,
@@ -2436,6 +2552,115 @@ assessment 10); 438 of the plans lose the workload (the rule above).
 Programme placements joined to admission stay in the course content.
 `course_plan` and the plan ids do not change. *Since:* 2026-11-06.
 
+**UiT: prior knowledge in “Opptakskrav” and the course content joins
+prerequisites; course evaluation, intake capacity and programme
+placement leave the sections.** UiT’s “Opptakskrav” (English “Admission
+requirements”), which the heading map dropped, is mapped like Nord’s
+“Adgangsregulering” (`section_headings` “.admission”): its sentences
+that name a prior course, credits or a passed part join prerequisites
+(“For studenter som tar emnet som videreutdanning er forkunnskapskravet
+fullført lærerutdanning med minimum 60 studiepoeng i norsk.”, “Anbefalte
+forkunnskaper er MAT-1001 Kalkulus 1 eller tilsvarende.”), while the
+admission text in the block stays out, now also the engineering
+admission routes (“bestått 1-årig forkurs …”, “2-årig teknisk fagskole
+…”, “Matematikk R1 … programfag:”), grade averages and their
+computation, motivation, work experience, a bare label, the
+degree-and-specialisation rules for master courses without a course code
+(“Avlagt bachelorgrad hvor det inngår en fordypning på minimum 80
+studiepoeng …”, “Av de 80 stp må 60 stp være fra 1000-nivå …”) and “søke
+opptak”, ranking and “vurderes for opptak” (`.admission_only_regex`,
+`.degree_regex`; shared with Nord). In the course content, a sentence
+that the course presupposes knowledge (“Det forutsettes grunnleggende
+kunnskaper i kjemi …”, “Undervisningen forutsetter forkunnskaper
+tilsvarende KVE-1006 …”) moves to prerequisites, not a bare “none”.
+Intake capacity in course content or teaching (“Det forutsettes opptak
+av minimum 10 studenter …”, “Det tas opp maksimum 22 studenter.”, “Det
+er 30-40 studieplasser på kurset.”) and a 2008-2011 “Mål” sentence that
+only places the course in programmes (“Valgfritt masteremne.”, “Kan
+blant annet brukes som støtteemne i …”, “Emnet er obligatorisk i
+bachelorstudiet i historie.”) go. In the teaching methods the course
+evaluation goes by sentence with its label (“Kvalitetssikring (av
+emnet)”, “Quality assurance”): “Alle emner evalueres en gang i løpet av
+programperioden.”, “Programstyret avgjør hvilke emner som skal evalueres
+…”, “Evalueringen gjennomgås av faglærer …”, “The course undergoes a
+midterm evaluation …”; not a grade, an exam, or students evaluating each
+other’s work. Reading lists that only say to contact the student adviser
+about available projects or theses are placeholders. *Why:* sections
+audit of 2026-11-15 (UiT); by the spec prerequisites hold prior
+knowledge, and course evaluation, admission and programme lists are plan
+text in no section. *Rejected:* mapping the block to prerequisites whole
+(most of it is admission); the evaluation rule at all institutions
+(NIH’s “Midtveisevalueringen gjennomføres som en minidisputas” and USN’s
+“Sluttevalueringen gjennomføres sammen med praksisveileder” are
+assessment); programme placement in the course content (a sentence there
+usually goes on about the course). *Consequence* (UiT source pages of
+the build of 2026-11-16, HEAD against the new code, on the stored
+blocks): of 38,599 pages 10,625 change. Teaching methods change in 8,045
+pages (the evaluation sentences and labels); 78 learning-outcome
+sections that held only placement go and 114 change; 262 course-content
+sections change (prior knowledge to prerequisites, capacity out); 97
+reading-list placeholders go; prerequisites are new in 2,867 pages and
+change in 536. Of the 63,853 sentences in the “Opptakskrav” blocks some
+4,000 join prerequisites (about 3,250 pages); the rest stays out. Some
+admission still gets through, written as credits (“minst 30 studiepoeng
+på 2000-nivå (påbyggingsnivå)” in a list under a degree rule, “I tillegg
+er det krav om grunnleggende kunnskaper på minst 30 studiepoeng innen
+matematikk eller statistikk”), as elsewhere (course_plan_spec.md, known
+deviations). At Nord the shared exclusions change the prerequisites of
+34 of the 6,786 pages with an “Adgangsregulering” block, all by removing
+admission rules (degrees, grade averages, work experience).
+`course_plan` and the plan ids do not change. *Since:* 2026-11-16.
+
+**NMH: the summary list’s prior knowledge, exam form and reading-list
+size join their sections.** NMH’s plans open with a list of labelled
+fields before “Kort om emnet” (“Gjennomføres:”, “Avsluttende
+vurdering:”, “Forhåndskrav:”, “Undervisningsspråk:”, on some pages
+“Emnetype:”, “Pensum:” and others), which no section read: the html
+reader had no section open before the first heading, and in a few plans
+(VEILED53) an extra “Kort om emnet” heading put the whole list into the
+course content. The list is now read field by field
+(`section_label_selector`, labels looked up in NMH’s `section_headings`
+only). “Forhåndskrav” (and “Forkunnskaper”, “Anbefalte forkunnskaper”,
+“Prerequisites”) is read like Nord’s “Adgangsregulering” (“.admission”):
+the prior courses and passed parts it names join prerequisites
+(“Bestått 1. avdeling i kandidatstudiet i utøving.”, “DIG10/MUSTEK10
+(obligatorisk i 1. avdeling) eller tilsvarende”), without the label, and
+admission alone (“Opptak til mastergradsstudiet i musikkpedagogikk.”)
+and a passed admission audition (“… samt bestått opptaksprøve til
+ordningen.”, `.admission_only_regex`) stay out. “Pensum” (“5-600 sider
+felles og 250-300 sider selvvalgt”) goes to the reading list (user
+decision 2026-11-16). The exam form (“Avsluttende vurdering:
+Eksamenskonsert.”) and the permitted thesis languages go to assessment,
+which by the spec holds the form and the exam language. The other fields
+stay in no section: when the course runs, its teaching language, type,
+level, credits, extent, teaching times, coordinator and programmes are
+the facts box, timetable and programme lists of the spec. FHS’s move of
+a course-content sentence that names only the courses the course builds
+on to prerequisites now also applies to NMH, whose codes have two digits
+(“Emnet bygger på Hovedinstrument I (UTHO13).”). *Why:* sections audit
+of 2026-11-15 (NMH): “Forhåndskrav” is often the only prerequisite text
+on the page, so 0 of 20 sampled NMH plans had prerequisites. *Rejected:*
+dropping the exam-form field as part of the facts box (on 59 of 4,348
+pages with the field it is the only assessment text, “Avsluttende
+vurdering: Vurdering fra faglærer.”; on the others it repeats the form
+in one line before the “Avsluttende vurdering” section); mapping
+“Forhåndskrav” to prerequisites whole (mostly admission); a heading-map
+row for the labels (the h2 “Avsluttende vurdering” shares the name, and
+labels are not headings); reading every labelled list item on the page
+(lists in the sections, “Del 1: …”, would lose their text).
+*Consequence* (all 5,174 NMH raw pages of the harvests of 2021-2026,
+HEAD against the new code): 4,386 pages change. Prerequisites are new on
+799 pages (from none); assessment gains the exam-form line on 4,321
+pages and is new on 54; the course content loses the “bygger på”
+sentence on 312 pages and the summary list on 33 (VEILED53 and the
+like); the reading list is new on 25. Kept prerequisites that name
+admission together with a passed part (“Kvalifisert for opptak til et
+ph.d.-programmet … og bestått opplæringsdel.”) stay whole, as the spec
+says. FHS, Nord and UiT: no change in samples of 30 pages per year, and
+none of their pages has a “Forhåndskrav:” label, “bestått opptaksprøve”
+or a “bygger på” sentence with a two-digit code. `course_plan` and the
+plan ids do not change. *Since:* 2026-11-16.
+
 **Resit and examiner rules stay in assessment at UiT, NTNU, Nord and
 FHS, a known deviation from the spec.** The spec puts resit,
 postponement and examiner rules outside the sections; the sections audit
@@ -2570,6 +2795,26 @@ semesterstart.”, “Kursmaterialet er hovedsakelig vitenskapelige artikler
 skrevet på engelsk. Endelig pensumliste …”). Re-cleaning the build: NTNU
 905 reading lists go and 4 lose a leading line, HiOF 31 and 11, UiT 1.
 `course_plan` and the plan ids do not change. *Since:* 2026-10-29.
+
+**A section that only copies an earlier one goes.** When a section’s
+whole text, whitespace aside and at least 100 characters long, equals an
+earlier section’s on the same page, the later one is dropped. The pages
+themselves copy it: KHiO’s RE305 repeats its teaching methods under
+“Vurdering”, DA502 its learning outcomes under “Undervisning og
+læringsformer”, INN’s PUB3000 its course content under the teaching
+methods. *Why:* the copy says nothing about its own part, so by the spec
+it is no section; RE305’s page has no assessment of its own (sections
+audit of 2026-11-15). *Rejected:* a KHiO-only rule (INN has the same
+defect); no length floor (short values that two sections each state,
+NTNU’s “Individuelt.” as prerequisites and reading list, FHS’s “Må
+bestås”, UiS’s “Må ha bestått all tidligere praksis.”, are not copies);
+dropping a section that only begins with another’s text (in a survey of
+about 5,900 pages the six such pairs were a lead sentence or a first
+label repeated, not a copied section). Practice is exempt, since it
+copies its heading’s section by design. *Consequence:* all 878 KHiO
+pages: 4 lose a section (2 courses, 2 offerings each); a sample of about
+5,000 pages at 25 other institutions: 1 (INN). `course_plan` and the
+plan ids do not change. *Since:* 2026-11-16.
 
 **Prerequisites written inside the course description are
 prerequisites:** a “Forkunnskapskrav” label in course content (UiT’s “Om

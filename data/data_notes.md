@@ -1,7 +1,7 @@
 # Data Quality Notes
 
 
-Generated: 2026-11-16
+Generated: 2026-11-20
 
 ## Overview
 
@@ -9,33 +9,33 @@ Generated: 2026-11-16
 |:---|---:|---:|:---|---:|:---|---:|---:|:---|
 | fhs | 6752 | 1040 | 2017-2026 | 2384 | 35.3% | 4522 | 997 | 58.2% |
 | fjellhaug | 1064 | 295 | 2025-2026 | 212 | 19.9% | 4648 | 151 | 28.8% |
-| himolde | 9468 | 979 | 2017-2026 | 4188 | 44.2% | 2919 | 2277 | 21.0% |
+| himolde | 9468 | 979 | 2017-2026 | 4188 | 44.2% | 2918 | 2277 | 21.0% |
 | hiof | 42678 | 6852 | 1994-2026 | 19142 | 44.9% | 4224 | 11000 | 20.3% |
 | hivolda | 23892 | 2889 | 2000-2026 | 5725 | 24.0% | 4189 | 4758 | 16.9% |
-| hvl | 45232 | 4983 | 2017-2026 | 32579 | 72.0% | 3815 | 15085 | 53.6% |
+| hvl | 45232 | 4983 | 2017-2026 | 32579 | 72.0% | 3815 | 15081 | 53.6% |
 | inn | 31672 | 3427 | 2018-2026 | 17469 | 55.2% | 3647 | 3802 | 41.1% |
 | khio | 896 | 356 | 2025-2026 | 347 | 38.7% | 1992 | 328 | 5.5% |
 | mf | 1233 | 348 | 2025-2026 | 346 | 28.1% | 3504 | 317 | 7.8% |
 | nhh | 1511 | 698 | 2025-2026 | 455 | 30.1% | 4111 | 425 | 1.6% |
 | nih | 12793 | 1460 | 1990-2026 | 652 | 5.1% | 2420 | 578 | 10.5% |
-| nla | 18647 | 2110 | 2001-2026 | 8423 | 45.2% | 5097 | 3947 | 53.1% |
+| nla | 18647 | 2110 | 2001-2026 | 8423 | 45.2% | 5097 | 3946 | 53.2% |
 | nmbu | 5584 | 1590 | 2025-2026 | 1055 | 18.9% | 3918 | 1031 | 2.3% |
-| nmh | 191 | 95 | 2021-2025 | 106 | 55.5% | 3173 | 71 | 33.0% |
-| nord | 39221 | 5419 | 2016-2026 | 36217 | 92.3% | 3298 | 9170 | 58.4% |
-| ntnu | 191014 | 13917 | 2004-2026 | 160179 | 83.9% | 2994 | 60383 | 62.1% |
-| oslomet | 37353 | 4113 | 2018-2026 | 37353 | 100.0% | 3940 | 12750 | 59.3% |
+| nmh | 10026 | 1000 | 2021-2026 | 5174 | 51.6% | 3205 | 1164 | 76.1% |
+| nord | 39221 | 5419 | 2016-2026 | 36217 | 92.3% | 3298 | 9169 | 58.4% |
+| ntnu | 266689 | 22376 | 1997-2026 | 180919 | 67.8% | 2837 | 63785 | 64.5% |
+| oslomet | 37353 | 4113 | 2018-2026 | 37353 | 100.0% | 3939 | 12745 | 59.3% |
 | phs | 2589 | 321 | 2021-2026 | 316 | 12.2% | 3800 | 154 | 31.6% |
 | samas | 519 | 209 | 2025-2026 | 0 | 0.0% | NA | 0 | NaN% |
 | steiner | 370 | 128 | 2025-2026 | 30 | 8.1% | 5027 | 15 | 50.0% |
 | uia | 60346 | 5239 | 2012-2026 | 12101 | 20.1% | 2972 | 6128 | 46.3% |
-| uib | 114529 | 7678 | 2004-2026 | 51596 | 45.1% | 3115 | 18938 | 59.0% |
+| uib | 114529 | 7678 | 2004-2026 | 51596 | 45.1% | 3115 | 18928 | 59.0% |
 | uio | 20850 | 5731 | 2025-2026 | 4143 | 19.9% | 3951 | 4046 | 1.6% |
 | uis | 6527 | 2083 | 2007-2026 | 4814 | 73.8% | 4812 | 2940 | 37.3% |
-| uit | 140699 | 11168 | 2004-2026 | 51100 | 36.3% | 3366 | 38060 | 20.7% |
+| uit | 140699 | 11168 | 2004-2026 | 51100 | 36.3% | 3366 | 38092 | 20.7% |
 | usn | 42755 | 5504 | 2018-2026 | 14954 | 35.0% | 5910 | 13994 | 6.3% |
 | vid | 5312 | 995 | 2023-2026 | 1308 | 24.6% | 3672 | 848 | 31.7% |
 
-**Total**: 863697 rows, 467194 with extracted text (54.1%), 217535
+**Total**: 949207 rows, 493002 with extracted text (51.9%), 222305
 unique plans.
 
 **Columns:**
@@ -78,9 +78,9 @@ offerings with a plan, by period:
 | nih         | 0%    | 0%      | 0%      | 0%      | 13%     | 33%   |
 | nla         | 0%    | 10%     | 65%     | 71%     | 82%     | 83%   |
 | nmbu        |       |         |         |         |         | 19%   |
-| nmh         |       |         |         | 25%     | 66%     | 73%   |
+| nmh         |       |         |         | 27%     | 54%     | 57%   |
 | nord        |       | 77%     | 92%     | 97%     | 99%     | 99%   |
-| ntnu        | 75%   | 70%     | 88%     | 92%     | 93%     | 93%   |
+| ntnu        | 45%   | 70%     | 88%     | 92%     | 93%     | 93%   |
 | oslomet     |       |         | 100%    | 100%    | 100%    | 100%  |
 | phs         |       |         |         | 0%      | 4%      | 23%   |
 | samas       |       |         |         |         |         | 0%    |
@@ -99,9 +99,12 @@ DBH lists most courses under both spring and autumn of a year, also when
 the course is taught, and its plan published, in one semester only. How
 this shows up depends on the website:
 
-- **Semester-specific pages** (HiOF, Hivolda, NIH, NLA, UiA, USN): the
-  other semester has no page (a 404, or no USN version), so about half
-  of the rows lack text by design.
+- **Semester-specific pages** (HiOF, Hivolda, INN, NIH, NLA, UiA, USN):
+  the other semester has no page (a 404, no USN version, or an INN page
+  that shows a version starting later, see INN), so about half of the
+  rows lack text by design. In 2026 this is most offerings without a
+  plan in the teacher-education frame (INN 247, UiA 195, USN 171; gap
+  analysis of 2026-11-15).
 - **One page per course or year**: both rows get the same page, and
   deduplication collapses them.
 
@@ -124,9 +127,9 @@ year) that have a plan in at least one semester:
 | nih | 7265 | 76% | 516 | 26 | 4986 | 9% | 5.1% |
 | nla | 10170 | 83% | 924 | 3539 | 4014 | 48% | 45.2% |
 | nmbu | 2927 | 91% | 947 | 11 | 1699 | 36% | 18.9% |
-| nmh | 100 | 91% | 14 | 45 | 32 | 61% | 55.5% |
+| nmh | 5125 | 96% | 388 | 2169 | 2344 | 53% | 51.6% |
 | nord | 21236 | 85% | 1066 | 9639 | 7280 | 58% | 92.3% |
-| ntnu | 97008 | 88% | 7600 | 68203 | 9941 | 87% | 83.9% |
+| ntnu | 137222 | 72% | 8289 | 68264 | 21754 | 69% | 67.8% |
 | oslomet | 19751 | 89% | 2224 | 13808 | 1570 | 89% | 100.0% |
 | phs | 1352 | 91% | 140 | 35 | 1062 | 14% | 12.2% |
 | samas | 273 | 90% | 0 | 0 | 246 | 0% | 0.0% |
@@ -135,7 +138,7 @@ year) that have a plan in at least one semester:
 | uib | 57906 | 89% | 330 | 21718 | 29287 | 41% | 45.1% |
 | uio | 10710 | 95% | 3878 | 42 | 6220 | 38% | 19.9% |
 | uis | 3529 | 85% | 1183 | 1542 | 273 | 89% | 73.8% |
-| uit | 73965 | 90% | 27067 | 8947 | 30720 | 53% | 36.3% |
+| uit | 73965 | 90% | 27078 | 8969 | 30687 | 53% | 36.3% |
 | usn | 22756 | 88% | 12709 | 504 | 6786 | 63% | 35.0% |
 | vid | 2755 | 93% | 899 | 125 | 1533 | 41% | 24.6% |
 
@@ -168,9 +171,9 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 | nih | 6568 | 6521 | 0 | 44 | 6 | 0 | 6 |
 | nla | 5228 | 3555 | 0 | 0 | 1689 | 0 | 7 |
 | nmbu | 1723 | 0 | 0 | 0 | 0 | 1723 | 0 |
-| nmh | 39 | 0 | 39 | 0 | 0 | 0 | 0 |
+| nmh | 2330 | 0 | 2211 | 0 | 154 | 0 | 0 |
 | nord | 8763 | 1577 | 0 | 147 | 7039 | 0 | 0 |
-| ntnu | 12184 | 876 | 0 | 11184 | 605 | 0 | 19 |
+| ntnu | 42648 | 2474 | 0 | 40040 | 642 | 0 | 23 |
 | oslomet | 2264 | 0 | 0 | 0 | 2264 | 0 | 17 |
 | phs | 1155 | 24 | 1150 | 0 | 73 | 0 | 0 |
 | samas | 273 | 0 | 273 | 0 | 0 | 0 | 0 |
@@ -179,7 +182,7 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 | uib | 34312 | 28927 | 0 | 2848 | 2565 | 0 | 21 |
 | uio | 6617 | 0 | 7 | 0 | 48 | 6562 | 0 |
 | uis | 368 | 153 | 0 | 18 | 197 | 0 | 0 |
-| uit | 32739 | 0 | 32382 | 0 | 1915 | 0 | 1884 |
+| uit | 32707 | 0 | 32364 | 0 | 1883 | 0 | 1885 |
 | usn | 8043 | 0 | 8043 | 0 | 23 | 0 | 514 |
 | vid | 1638 | 282 | 985 | 0 | 371 | 0 | 21 |
 
@@ -235,9 +238,9 @@ All years, by institution:
 | nih | TRUE | 620 / 7265 (9%) | 522 / 4995 (10%) | 389 / 4291 (9%) |
 | nla | TRUE | 4884 / 10170 (48%) | 3803 / 6593 (58%) | 3149 / 5106 (62%) |
 | nmbu | TRUE | 1044 / 2927 (36%) | 562 / 1657 (34%) | 8 / 879 (1%) |
-| nmh | FALSE | 61 / 100 (61%) | 46 / 57 (81%) | 37 / 42 (88%) |
+| nmh | TRUE | 2702 / 5125 (53%) | 1716 / 2251 (76%) | 1069 / 1306 (82%) |
 | nord | TRUE | 12381 / 21236 (58%) | 9068 / 14082 (64%) | 7359 / 11484 (64%) |
-| ntnu | TRUE | 84817 / 97008 (87%) | 64253 / 69326 (93%) | 55660 / 59544 (93%) |
+| ntnu | TRUE | 94079 / 137222 (69%) | 71547 / 103004 (69%) | 62130 / 87313 (71%) |
 | oslomet | TRUE | 17487 / 19751 (89%) | 14386 / 14995 (96%) | 12103 / 12335 (98%) |
 | phs | TRUE | 190 / 1352 (14%) | 142 / 611 (23%) | 116 / 456 (25%) |
 | samas | TRUE | 0 / 273 (0%) | 0 / 94 (0%) | 0 / 8 (0%) |
@@ -246,7 +249,7 @@ All years, by institution:
 | uib | TRUE | 23485 / 57906 (41%) | 19217 / 37151 (52%) | 16260 / 30349 (54%) |
 | uio | TRUE | 4068 / 10710 (38%) | 1724 / 5033 (34%) | 32 / 2655 (1%) |
 | uis | TRUE | 3149 / 3529 (89%) | 2236 / 2414 (93%) | 957 / 1037 (92%) |
-| uit | TRUE | 39038 / 73965 (53%) | 31310 / 39636 (79%) | 26353 / 31788 (83%) |
+| uit | TRUE | 39072 / 73965 (53%) | 31318 / 39636 (79%) | 26355 / 31788 (83%) |
 | usn | TRUE | 14424 / 22756 (63%) | 12895 / 16133 (80%) | 11072 / 13301 (83%) |
 | vid | TRUE | 1117 / 2755 (41%) | 913 / 1715 (53%) | 619 / 1261 (49%) |
 
@@ -435,8 +438,8 @@ Figures are in the tables above; the notes say why.
   SNH102 and VIVO-2 only in 2022, ADM499 only in 2025)
 - A spring offering whose only page is the autumn before’s, for that
   autumn alone, gets no plan (25 of the pilot’s 189 offerings; the
-  page’s plan ends the term before, `page_end_term`). One page, VPL023
-  spring 2019, is a page shell
+  page’s plan ends the term before, `page_end_term`; accepted by the
+  user 2026-11-14). One page, VPL023 spring 2019, is a page shell
 - A plan sits in a department folder DBH does not give, Norwegian or
   English tree; `resolve_urls_himolde_batch()` reads the folder listings
   (`docs/institutions.md`). An offering whose code the listings of its
@@ -524,6 +527,18 @@ Figures are in the tables above; the notes say why.
   på” with the language left out, 26 pages) over a plan published in
   English only is cut as site boilerplate (since 2026-10-20). The April
   2026 harvest shows the same notice on the same pages
+- DBH lists most INN courses in both semesters, while INN publishes one
+  version a year: the other semester’s page shows the version that
+  starts later and gets no plan (see “Semester registration in DBH”; 247
+  of the 258 teacher-education offerings of 2026 without a plan,
+  2026-11-15)
+- No `practice` section: “Praksis” is a bold paragraph (`<p><strong>`)
+  inside “Arbeids- og undervisningsformer”, not a heading, and under it
+  stands one stock paragraph of the primary teacher programmes
+  (“Praksisstudiet er en integrert del av fagene …”, 284
+  teacher-education sections of the build of 2026-11-16) that says
+  nothing about the course. It stays in teaching methods; the gap is
+  recorded, not fixed (user decision 2026-11-14)
 
 ------------------------------------------------------------------------
 
@@ -565,6 +580,11 @@ Figures are in the tables above; the notes say why.
   every user agent, a browser’s too (access-restricted Drupal nodes: the
   PHI courses, such as PHI2030 and PHI2115, on 2026-10-17): outcome
   `forbidden`, no plan, not fetched again by `retry = TRUE`
+- No `practice` section: the practice part of the PPU courses (“DELEMNE
+  C: PRAKSIS 30 DAGER”, PPU1010, PPU1015, PPU1020) is an upper-case
+  paragraph (`<p>`) inside the course description beside the other parts
+  (DELEMNE A, B), not a heading, so it stays in course content (checked
+  2026-11-16)
 
 ------------------------------------------------------------------------
 
@@ -604,6 +624,7 @@ Figures are in the tables above; the notes say why.
 - The page shows the current semester’s version (“Høst 2026”); a course
   taught in spring links to the next semester’s version (“Vår 2027”),
   which is not fetched, so its spring offering gets the autumn version
+  (user decision 2026-11-14: the next semester’s version is not fetched)
 - Read from `main#mainContent`: the code and title, the semester
   heading, the plan’s accordion and the facts aside (credits, language,
   teaching semester, programmes); not the course responsible box (names)
@@ -708,11 +729,22 @@ Figures are in the tables above; the notes say why.
   one cohort’s plans for all its years of study, so a second-year course
   gets the plan published for that year’s new cohort, not necessarily
   the version its students follow
-- About half of DBH’s codes are in no handbook and get no URL:
-  ensembles, choirs and orchestra projects registered per number of
-  projects (BLENS21-BLENS27, KAKOR20-KAKOR27, OSINF60-OSINF72,
-  BFO20-BFO24; the handbook has one page, BLENS20 or KAKOR, or none),
-  the exchange students’ courses (UTV\*) and courses not taught any more
+- About half of DBH’s codes are in no handbook and get no URL: the
+  exchange students’ courses (UTV\*), courses not taught any more and
+  others. Ensembles, choirs and orchestra projects registered per number
+  of projects (BLENS21-BLENS27, KAKOR20-KAKOR27, OSINF60-OSINF72,
+  BFO20-BFO24) take their series’ one page (BLENS20, KAKOR, BFO) by code
+  stem, only these four series (user decision 2026-11-14): 188 more
+  offerings of 2021-2026 with a page, the ensemble’s general plan rather
+  than one for the project. OSINF has no page in any handbook
+- In 56 cases a code has two pages in one handbook (29 in 2021, 22 in
+  2022). The page listed for the code alone (“OPERA21 - Operaseminar
+  II”, DBH’s title and credits) is used rather than one listed for
+  several codes (“OPERA20/21 - Operaseminar”): 81 offerings of eight
+  codes. Of two pages listed alike, the first: compared on 2026-11-16,
+  they are the same text (KPIMP10, MUSTEK21, BARIMP20) or the second is
+  a later copy (in 2021 the 2022 cohort’s, without the facts list);
+  INSTENS20 of 2022 has a second page with another title than DBH’s
 - Read from `main#main`: the title, the facts box (code, level,
   category, credits, cohort) and the plan; not the breadcrumb and the
   publication stamp. The plan begins with a list of facts (“Emnetype”,
@@ -839,6 +871,12 @@ Figures are in the tables above; the notes say why.
   programme plan and the course plans, for the subject’s progression
   over the study years, so it stays unread (confirmed 2026-11-11, after
   the sections audit of 2026-11-08 asked to read it)
+- The 2026/27 pages no longer carry the programme-wide “Fagplan” block
+  (0 of 175 teacher-education plans, against 54 of 169 in 2025/26), so
+  the median teacher-education plan is 12% shorter in the build of
+  2026-11-15. This is composition, not lost text: a course’s plan of
+  2026/27 has the same length per section as its plan of 2025/26 (median
+  ratio 1.00), and nothing was cut by the pipeline
 
 ------------------------------------------------------------------------
 
@@ -894,19 +932,20 @@ Figures are in the tables above; the notes say why.
 - Only the plan in force is published (`plan_years = "current"`; see
   “Year coverage”). Plans come from five subject PDFs linked from
   wrapper pages at `steinerhoyskolen.no` (the PDFs themselves on
-  Webflow’s CDN `cdn.prod.website-files.com` since 2026-11; its
-  robots.txt, read 2026-11-15, is a 403: nothing disallowed), split by
-  course heading; the split text is the raw data. Runs until 2026-10 do
-  not store the PDFs; since 2026-11-06 a run keeps each PDF’s bytes on
-  the first row its text joined to (`pdf`), and every harvest downloads
-  the PDFs anew (until then a PDF kept in `temp/steiner/` from an
-  earlier harvest was split again, so a harvest in a later academic year
-  would have read last year’s PDFs). The runs until 2026-11 have no
-  `url`: the PDF’s wrapper page is in `url.y`, which `read_harvest()`
-  reads as `url` (since 2026-11-06; until then the pipeline left it out
-  and their offerings had no URL); later runs give it in `url` (and the
-  fetch ledger). Their fetch ledger has no URL, so an offering of theirs
-  takes its own outcome (`ok`)
+  Webflow’s CDN `cdn.prod.website-files.com` since 2026; its robots.txt,
+  read 2026-11-15, is a 403, read as nothing disallowed, and the project
+  lead allowed the harvest that day), split by course heading; the split
+  text is the raw data. Runs until 2026-10 do not store the PDFs; since
+  2026-11-06 a run keeps each PDF’s bytes on the first row its text
+  joined to (`pdf`), and every harvest downloads the PDFs anew (until
+  then a PDF kept in `temp/steiner/` from an earlier harvest was split
+  again, so a harvest in a later academic year would have read last
+  year’s PDFs). The runs until 2026-11 have no `url`: the PDF’s wrapper
+  page is in `url.y`, which `read_harvest()` reads as `url` (since
+  2026-11-06; until then the pipeline left it out and their offerings
+  had no URL); later runs give it in `url` (and the fetch ledger). Their
+  fetch ledger has no URL, so an offering of theirs takes its own
+  outcome (`ok`)
 - The site’s robots.txt (read 2026-10-16) disallows `/dokumenter/`,
   where the five PDFs are, for all user agents. Every Steiner plan comes
   from that path. Since 2026-10-19 they are fetched by the project
@@ -922,14 +961,18 @@ Figures are in the tables above; the notes say why.
   The others have no source: the kindergarten teacher programmes, the
   master in Waldorf education, social pedagogy, further education, the
   practicum modules (M-LP1/2/3, BDP, BLP, DLP) and the bachelor theses.
-  Until DBH has 2026, Steiner’s plans are the 15 offerings of the
-  2026-04-04 harvest (2025/26)
+  The 2026 run (2026-11-15, the first from the CDN; until then the new
+  host had no robots.txt reading and its requests were refused) gives 30
+  of DBH 2026’s 126 offerings a text and 15 a plan: the autumn 2026
+  offerings, since spring 2026 is before the academic year of the
+  harvest (TE frame 15 of 18)
 - M-PEL2.1/M-PEL2.2 get the PDF’s PEL1.4/PEL1.5 plans
   (`.steiner_remap_pel_emne()`), and since 2026-10-19 (run
   `2026-10-19_121636`) the bachelor’s PEL1.4/PEL1.5 too: before, the
   remap replaced their key, so the run `2026-10-19` gave those 4
-  offerings no plan (56 offerings with a plan, then 60). The M-PEL2
-  match is to be confirmed against the programme description
+  offerings no plan (56 offerings with a plan, then 60). That M-PEL2
+  emne 1/2 is PEL1 emne 4/5 is unconfirmed (2026-11-14): it rests on the
+  course names, not on the programme description
 
 ------------------------------------------------------------------------
 
@@ -1000,7 +1043,8 @@ Figures are in the tables above; the notes say why.
   (also “TInformasjonen …”, with “Sjå dei engelske nettsidene.”):
   courses described only in English, whose English page is not fetched
   (UiB has no `english_page` setting). They count as no plan; fetching
-  the English pages is not worth a harvest for 10 plans (2026-11-11)
+  the English pages is not worth a harvest for 10 plans (2026-11-11,
+  confirmed by the user 2026-11-14)
 
 ------------------------------------------------------------------------
 
@@ -1052,6 +1096,13 @@ Figures are in the tables above; the notes say why.
   navigation and contact footer; the facts box (“Fakta”: code, credits,
   semesters, language) is in `course_plan` without its timetable and
   Leganto links, and in no section
+- The 2026 plans come from the course web pages alone, since the PDF
+  archive is disallowed (requests refused since 2026-10-17, outcome
+  `robots`). A web page’s plan differs from a PDF’s: no reading list, a
+  shorter exam table, and the “Vilkår” block in coursework requirements;
+  so a 2026 plan is not comparable in length or sections with the PDF
+  plans of earlier years (all courses 2026: 2,069 of 3,606 offerings
+  with a plan; teacher education 327 of 353)
 
 ------------------------------------------------------------------------
 
@@ -1166,6 +1217,13 @@ Figures are in the tables above; the notes say why.
   reader takes the headings and the end of the facts box from it, and
   leaves `course_plan` and the plan id (`.anon_usn()`, 2026-11-11;
   before, it was in every `course_plan`)
+- 99 GLU offerings of 2026 (55 codes, e.g. MG1PP1 spring, MG1NO1 autumn)
+  have no URL: USN has not published their 2026 plans yet. Their pages
+  show the 2025 plan under “MERK: Emneplanen for dette semesteret er
+  ikke klar ennå”, and no later version exists (checked in Chromium
+  2026-11-15), so the resolver is right to keep none. Retry after USN
+  publishes:
+  `harvest_all(institutions = "usn", years = 2026, retry = TRUE)`
 
 ------------------------------------------------------------------------
 
