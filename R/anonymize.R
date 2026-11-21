@@ -52,8 +52,36 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     nmh     = .anon_label_year(txt, "Startkull"),
     fhs     = .anon_label_year(txt, "Studieår"),
     khio    = .anon_khio(txt),
+    aho     = .anon_aho(txt),
+    ldh     = .anon_ldh(txt),
     txt
   )
+}
+
+# AHO names staff in English prose (2026-11-21, pilot audit): "The course
+# will be led by <name>, a game-designer ..." goes whole; a research project
+# "led by <name> and <name> and is ..." loses the names; "Supervised by
+# Professor <name> and OICL's PhD candidates" keeps the rest. A semester
+# opening a sentence goes, the next word capitalised: "In 2023 the course
+# will focus on games" -> "The course will focus on games", "In the fall of
+# 2024, Re-Store: ..." -> "Re-Store: ...". "In the early months of 2025,
+# fires raged across Los Angeles" is content and stays.
+.anon_aho <- function(txt) {
+  txt |>
+    stringr::str_remove_all(paste0("(?<=^|\\n|[.!?][ \\t])[ \\t]*The (?:course|studio|seminar|workshop) (?:will be|is) ",
+                                   "led by ", .names_regex, "[^.\\n]*\\.[ \\t]*")) |>
+    stringr::str_remove_all(paste0("[ \\t]+led by[ \\t]+", .names_regex)) |>
+    stringr::str_replace_all(paste0("((?i:supervised|taught) by)[ \\t]+", .names_regex, "[ \\t]+and(?=[ \\t])"), "\\1") |>
+    stringr::str_replace_all(paste0("(?<=^|\\n|[.!?][ \\t])In (?:the (?:fall|spring|autumn) of |)20\\d{2},?[ \\t]+",
+                                    "(?=(?:the (?:course|studio|seminar|workshop)\\b|\\p{Lu}))(\\p{L})"),
+                             \(m) toupper(stringr::str_sub(m, -1L)))
+}
+
+# The cohort a course page belongs to ("Gjelder BIS24", the bachelor in
+# nursing's cohort pages): one course's plan would differ per cohort by its
+# label alone, so the line goes (2026-11-21).
+.anon_ldh <- function(txt) {
+  stringr::str_remove_all(txt, "(?m)^[ \\t]*Gjelder[ \\t]+\\p{Lu}{2,6}\\d{2}[ \\t]*(?:\\n|$)")
 }
 
 # A facts-box label on its own line with only a year on the next: the
@@ -442,7 +470,7 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
   "instituttleder", "instituttleiar", "veileder", "rettleiar",
   "timelærer", "timelærar", "kontaktperson", "sensor", "coordinator",
   "programkoordinator", "fagansvarlig", "fagkoordinator", "lecturer", "course owner", "foreleser",
-  "faglig ansvarlig"
+  "faglig ansvarlig", "kursansvarlig"
 )
 # A whole line that is only a capitalised name (particles like "van" allowed)
 # followed by "(Role)", optionally bulleted.
@@ -508,18 +536,25 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 # "Responsible Property Investment" are titles) and no capitalised word
 # before it ("Secondary Education Teachers: <publisher>" in a reference,
 # uit); after a qualifier the colon may be missing ("contact PhD program
-# responsible <name>"). Prose names no one ("The course leader will ...",
+# responsible <name>"; "Track responsible: <name>", aho 2026-11-21). Prose names no one ("The course leader will ...",
 # "course teachers are responsible ..."), and an institution after the label
 # stays ("Responsible: Higher Education Institutions", "Faculty responsible:
 # Nord University Business School").
 .en_role <- "(?:leader|teacher|lecturer|instructor|responsible|coordinator)s?(?:[ \\t]+and[ \\t]+(?:teacher|lecturer)s?)?"
 .en_staff_label <- paste0(
-  "(?i:(?:(?:other|guest|invited|course|module|subject|phd|program(?:me)?|administrative|(?:teacher|lecturer)s?[ \\t]+and)[ \\t]+)+",
+  "(?i:(?:(?:other|guest|invited|course|module|subject|track|phd|program(?:me)?|administrative|(?:teacher|lecturer)s?[ \\t]+and)[ \\t]+)+",
   .en_role, "(?:[ \\t]*:|[ \\t]+(?:is|are))?|(?<!(?-i:\\p{Lu}\\p{Ll}{1,30})[ \\t])", .en_role, "(?:[ \\t]*:|[ \\t]+(?:is|are)))",
   "(?=[ \\t]+(?!(?:\\p{Lu}\\p{L}*[ \\t]+)*(?:University|College|School|Institut\\p{L}*|Department|Faculty|Cent(?:re|er))\\b))")
 # On its own line the label goes with the whole line, affiliations and all
 # ("Guest lecturers: <name>, University of Cyprus, <name>, <university>").
 .en_role_line_regex <- paste0("(?m)^[ \\t]*", .en_staff_label, "[ \\t]+", .names_regex, "[^\\n]*(?:\\n|$)")
+# A Norwegian teacher label with a colon opening the line, over a name list:
+# "Lærere: <name> (kursansvarlig), <name> og <name>", "Flere undervisere:
+# <name> og <name>." (aho, uit; 2026-11-21). The whole line goes. Without
+# the colon the words are content ("Lærere og elever i skolen ...",
+# "Undervisere i nettstudier vil ...").
+.no_staff_label_line_regex <- paste0("(?m)^[ \\t]*(?i:(?:flere|andre)[ \\t]+)?(?i:lærere|undervisere)[ \\t]*:[ \\t]*",
+                                     .names_regex, "[^\\n]*(?:\\n|$)")
 .role_name_inline_regex <- paste0(
   "(?<!\\p{L})(?!(?<=\\p{Lu}\\p{Ll}{0,30} )Sensor )((?i:", paste(c(.staff_roles, .signature_roles), collapse = "|"),
   ")(?i:e|er|ar|en)?(?:[ \\t]+(?i:er|var|i emnet))?:?|(?i:kontakt(?:e|er)? med|kontaktpersone?r? er)|", .en_staff_label, ")[ \\t]+",
@@ -531,8 +566,9 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 # ("Emneansvarlig\nEmneansvarlige:\n\nKari Nordmann\n\nProfessor Ola Dahl",
 # uib), "Contact persons:\nKari Nordmann and Ola Dahl" (uia), "Administrative
 # responsible:\n\nKari Nordmann", "Other lecturers:\n\nOla Dahl, <unit>" (uio
-# PhD courses, 2026-11-16), the name after a part or role label or a title ("Delemne <part>:
-# Kari Nordmann", "Master thesis coordinator: assistant professor Ola Dahl",
+# PhD courses, 2026-11-16), "Andre undervisere:\n\nKari Nordmann\nOla Dahl
+# (USN)" (uio), "Undervisere er bl.a.:\nKari Nordmann, UiB" (uit; 2026-11-21),
+# the name after a part or role label or a title ("Delemne <part>: Kari Nordmann", "Master thesis coordinator: assistant professor Ola Dahl",
 # oslomet). The name must end the line or come before a comma, a full stop or
 # a bracket, so a committee, a unit or a sentence under the heading stays
 # ("The Programme Committee for ...", "Institutt for ...", uib).
@@ -542,7 +578,8 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 )
 .role_heading_name_regex <- paste0(
   "(?m)^(?:[ \\t]*(?i:(?:other|guest)[ \\t]+)?(?i:", paste(c(.staff_roles, "contact person", "course leader", "administrativt ansvarlig",
-                                                       "administrative responsible"), collapse = "|"),
+                                                       "administrative responsible", "(?:andre|flere) underviser",
+                                                       "undervisere er bl\\.a\\."), collapse = "|"),
   ")(?i:e|er|ar|s)?[ \\t]*:?[ \\t]*\\n(?:[ \\t]*\\n)*)+",
   .role_heading_name_line, "(?:(?:[ \\t]*\\n)*", .role_heading_name_line, ")*"
 )
@@ -651,6 +688,10 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 .condition_year <- paste0(
   "(?<!(?i:(?:gjennomført|gjennomførte|avlagt|bestått|fullført|fullførte|tatt|første gang)[^\\n.]{0,60}",
   "studieåret|exception for academic year)[ \\t]{0,3}\\d{4})")
+# A crisis's or a war's years after "i"/"in" are content, not an academic
+# year: "i etterkant av finanskrisen i 2007-08." (onh), "the Gulf War in
+# 1990-91" (2026-11-21). Guards before the range's first year.
+.event_year <- "(?<!(?i:kris[ea]n?|crisis|krig(?:en)?|war)[ \\t]{1,3}(?i:i|in)[ \\t]{1,3})"
 .or_later <- "(?![ \\t]*(?i:eller|or) (?i:senere|seinare|later|tidligere|tidlegare|earlier)\\b)"
 # A range in running text stays (decided 2026-11-02): one with a small-letter
 # word after it ("the 2008-2009 financial crisis", "Innføring i skatterett
@@ -892,6 +933,8 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     stringr::str_remove_all(.role_heading_name_regex) |>
     # and "Course leader: Ola Nordmann (PRIO)", an English label over the line
     stringr::str_remove_all(.en_role_line_regex) |>
+    # and "Lærere: Ola Nordmann (kursansvarlig), Kari Nordmann"
+    stringr::str_remove_all(.no_staff_label_line_regex) |>
     # Remove signature lines "17.03.20 Ola Nordmann, dekan"
     stringr::str_remove_all(.signature_line_regex) |>
     # and "Ola Nordmann\nInstituttnestleder"
@@ -989,6 +1032,13 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     stringr::str_replace_all(.not_gov_rule(paste0(
       "((?i:opprettet|oppdatert|revidert|vedtatt|godkjent|gjeldende(?: fra)?|gyldig(?: fra)?|",
       "sist (?:endret|revidert|oppdatert)))"), "\\s+\\d{4}\\b"), "\\1") |>
+    # The years of a quality system's period: "Kvalitetssikringssystem for
+    # Høyskolen Barratt Due 2023-2027" (barrattdue, 2026-11-21); not
+    # consecutive, so the academic-year rule below keeps them
+    stringr::str_replace_all("((?i:kvalitets(?:sikrings)?system)[^\\n.]{0,60}?)[ \\t]+20\\d{2}[ \\t]*[-–][ \\t]*20\\d{2}\\b", "\\1") |>
+    # A change's month and year: "Emnets tittel ble endret i juni 2019." (onh, 2026-11-21)
+    stringr::str_replace_all(paste0("((?<!\\p{L})(?i:ble|blei|vart|was) (?i:endret|endra|changed)", .not_gov, ")[ \\t]+(?i:i|in)[ \\t]+",
+                                    .month_regex, "[ \\t]+20\\d{2}\\b"), "\\1") |>
     # The year after week numbers in a schedule: "Samling 4: veke 3 (2023)",
     # "Uke 44 og uke 4 (2017)" (hivolda); the weeks stay
     stringr::str_replace_all(paste0(
@@ -1000,10 +1050,10 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     # or a condition (.condition_year), or a range in running text
     # (.running_text_year); "i"/"in" before it goes with it ("vurdering også i
     # 2026/27." -> "vurdering også.", "vil i 2007/2008 koste" -> "vil koste")
-    stringr::str_replace_all(.not_gov_rule(paste0(.gap, "(?:(?<!\\p{L})in?[ \\t]+)?(?<![/\\w.]|\\w-)", .running_text_year, "\\d{4}", .condition_year),
+    stringr::str_replace_all(.not_gov_rule(paste0(.gap, "(?:(?<!\\p{L})in?[ \\t]+)?(?<![/\\w.]|\\w-)", .running_text_year, .event_year, "\\d{4}", .condition_year),
                                            paste0("[ \\t]?/[ \\t]?\\d{2,4}\\b(?!/|[-–]\\d)", .or_later)),
                              .drop_academic_year) |>
-    stringr::str_replace_all(.not_gov_rule(paste0(.gap, "(?:(?<!\\p{L})in?[ \\t]+)?(?<![/\\w.]|\\w-)", .running_text_year, "\\d{4}", .condition_year),
+    stringr::str_replace_all(.not_gov_rule(paste0(.gap, "(?:(?<!\\p{L})in?[ \\t]+)?(?<![/\\w.]|\\w-)", .running_text_year, .event_year, "\\d{4}", .condition_year),
                                            paste0("\\s?[-–—]\\s?\\d{2,4}\\b(?!/|[-–]\\d)", .or_later)),
                              .drop_academic_year) |>
     # A time between "between"/"and" and "at"/"on" goes with the "at"/"on":
@@ -1101,6 +1151,7 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
   staff     = .staff_line_regex,
   role_name = .role_name_line_regex,
   role_heading_name = .role_heading_name_regex,
+  no_staff_label = .no_staff_label_line_regex,
   uib_staff_block = .uib_staff_block_regex,
   uib_staff_line = .uib_staff_line_regex,
   role_name_inline = .role_name_inline_regex,

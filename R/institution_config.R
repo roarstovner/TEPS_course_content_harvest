@@ -1004,9 +1004,9 @@ institution_configs <- list(
     # split by course heading; an offering takes the cohort that has the
     # course in its semester (harvest_cohort_plans(), ldh_plan_index())
     strategy = "cohort_plans",
-    # A course page: the title, the cohort ("Gjelder BIS25"), the facts box
-    # and the plan; not the breadcrumb, the facts box's copy in the sidebar
-    # and the publication dates
+    # A course page: the title, the cohort ("Gjelder BIS25"; the anonymizer
+    # drops it, .anon_ldh(), 2026-11-21), the facts box and the plan; not the
+    # breadcrumb, the facts box's copy in the sidebar and the publication dates
     selector = "main",
     exclude = "main .breadcrumbs__wrapper, main .ContentBlocks__sidebar, main .ContentBlocks__publication",
     facts = c("main .Hero", "main .ContentBlocks__card"),

@@ -1348,7 +1348,7 @@ test_that("uib: staff blocks under 'Faglig ansvar' and staff lines go, the next 
     expect_equal(an(x), x, label = x)
   f <- tempfile(fileext = ".RDS")
   saveRDS(tibble::tibble(text = c("Faglig ansvar\nKari Nordmann\n\nOla Dahl", "Undervisere: Kari Nordmann, Ola Dahl")), f)
-  expect_setequal(personal_data_in(f)$pattern, c("uib_staff_block", "uib_staff_line"))
+  expect_setequal(personal_data_in(f)$pattern, c("uib_staff_block", "uib_staff_line", "no_staff_label"))
 })
 
 test_that("usn: 'Course Owner' and 'Lecturer' with a title and a name go", {
@@ -1587,4 +1587,47 @@ test_that("words stranded by a removal and leftover notices are tidied, plan tex
                                 "/var/www/websites/inn-2.15/sites/all/modules/custom/eac_cd/eac_cd.courses.inc).\nEmnetittel\nInnhold")),
                "Emnetittel\nInnhold")
   expect_equal(an("inn", "Feilmelding\nStudenten lærer å lese en feilmelding."), "Feilmelding\nStudenten lærer å lese en feilmelding.")
+})
+
+test_that("aho: teacher labels, track leaders and staff in prose go; content stays", {
+  an <- function(inst, x) anonymize_text(inst, x, .progress = FALSE)
+  expect_equal(an("aho", "Tema.\n\nLærere: Ola Nordmann (kursansvarlig), Kari Berg, Per Dahl og Anne Lie\nLæringsutbytte for emnet"),
+               "Tema.\n\nLæringsutbytte for emnet")
+  expect_equal(an("aho", "Prosjektoppgave.\n\nFlere undervisere: Ola Nordmann og Kari Berg.\nBeskrivelse av eksamen"),
+               "Prosjektoppgave.\n\nBeskrivelse av eksamen")
+  expect_equal(an("aho", "1. LAB: Design\n\nTrack responsible: Ola Nordmann\n\nMax amount of students: 8"),
+               "1. LAB: Design\n\nMax amount of students: 8")
+  expect_equal(an("aho", "Kurset holdes med KHIO og foreleser og kursansvarlig er Kari Berg Dahl."),
+               "Kurset holdes med KHIO og foreleser og kursansvarlig er.")
+  expect_equal(an("aho", "Part of the research project Circularity led by Kari Berg and Ola Dahl and is the second in a series."),
+               "Part of the research project Circularity and is the second in a series.")
+  expect_equal(an("aho", "A theme. The course will be led by Kari Berg, a game-designer working with VR. The course will look at games."),
+               "A theme. The course will look at games.")
+  expect_equal(an("aho", "Supervised by Professor Ola Dahl and OICL's PhD candidates, this course provides"),
+               "Supervised by OICL's PhD candidates, this course provides")
+  # a semester opening a sentence goes; a past event stays
+  expect_equal(an("aho", "A new theme each year. In 2023 the course will focus on games."),
+               "A new theme each year. The course will focus on games.")
+  expect_equal(an("aho", "The second. In the fall of 2024, Re-Store explored a museum."), "The second. Re-Store explored a museum.")
+  expect_equal(an("aho", "In the early months of 2025, fires raged across Los Angeles."),
+               "In the early months of 2025, fires raged across Los Angeles.")
+  expect_equal(an("aho", "Weekly seminars led by OCCAS teachers will present approaches."),
+               "Weekly seminars led by OCCAS teachers will present approaches.")
+  # without a colon the words are content
+  expect_equal(an("uit", "Lærere og elever i skolen skal samarbeide."), "Lærere og elever i skolen skal samarbeide.")
+  expect_equal(an("nord", "Undervisere i nettstudier vil ha andre utfordringer."), "Undervisere i nettstudier vil ha andre utfordringer.")
+  expect_equal(an("uio", "Kontakt.\n\nAndre undervisere:\n\nOla Nordmann\nKari Berg (USN)\nKostnader ved å ta emnet"),
+               "Kontakt.\n\nKostnader ved å ta emnet")
+})
+
+test_that("a cohort label, a quality system's period and a change's date go; a crisis's years stay", {
+  an <- function(inst, x) anonymize_text(inst, x, .progress = FALSE)
+  expect_equal(an("ldh", "BSY-221 Farmakologi\n\nGjelder BIS24\nOm emnet"), "BSY-221 Farmakologi\n\nOm emnet")
+  expect_equal(an("barrattdue", "Emnet evalueres i henhold til Kvalitetssikringssystem for Høyskolen X 2023-2027\nNeste"),
+               "Emnet evalueres i henhold til Kvalitetssikringssystem for Høyskolen X\nNeste")
+  expect_equal(an("onh", "Emnets tittel ble endret i juni 2019. Tittel gjeldende frem til endring var Y."),
+               "Emnets tittel ble endret. Tittel gjeldende frem til endring var Y.")
+  expect_equal(an("onh", "ikke minst i etterkant av finanskrisen i 2007-08. I faget"),
+               "ikke minst i etterkant av finanskrisen i 2007-08. I faget")
+  expect_equal(an("onh", "Pensum gjelder i 2007-08. I faget"), "Pensum gjelder. I faget")
 })
