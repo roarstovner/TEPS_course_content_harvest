@@ -170,10 +170,14 @@ Fields for the `html` reader:
   module list in course content (MILM4106).
 - `section_headings`: headings and sub-headings (whole text, minus a
   trailing colon, lower case) this institution maps on its own, looked
-  up before the heading map. nord’s “Adgangsregulering” mixes admission
-  with the courses the course requires; it maps to `.admission`, of
-  which only the sentences naming a prior course, credits or a passed
-  part that are not admission join prerequisites
+  up before the heading map, by both readers: the html reader’s headings
+  and sub-headings, and the text reader’s heading lines (PDF plans, the
+  html reader’s text fallback; since 2026-11-20: ldh’s study-plan PDFs,
+  “Emnets læringsutbytte”, “Vurderings-/eksamensform og
+  vurderingsuttrykk”). nord’s “Adgangsregulering” mixes admission with
+  the courses the course requires; it maps to `.admission`, of which
+  only the sentences naming a prior course, credits or a passed part
+  that are not admission join prerequisites
   (`.admission_prerequisites()`), after the page’s own and without those
   it already says. uit’s “Undervisnings- og eksamensspråk” (“Language of
   instruction and examination”) maps to `.exam_language`, of which the

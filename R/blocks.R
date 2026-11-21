@@ -522,8 +522,10 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
 # Lines of extracted_text. A line is a heading when it
 #   - is the first line or follows a blank line,
 #   - is heading-shaped (.heading_shaped_line()),
-#   - is a whole heading: a heading-map pattern, with or without a closing
-#     colon ("Eksamen/vurdering", "Ny og utsatt eksamen"). A line that only
+#   - is a whole heading, with or without a closing colon: one of the
+#     institution's own headings (`section_headings`, looked up first, as
+#     the html reader does, .exact_section()), else a heading-map pattern
+#     ("Eksamen/vurdering", "Ny og utsatt eksamen"). A line that only
 #     contains one is text: a bullet or topic such as "Vurdering av
 #     pasientens kartlagte smerte", "Vurdering for læring" or "Litteratur og
 #     det monstrøse", or a book title such as "Kompetansemål og vurdering",
@@ -580,10 +582,11 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
       next
     }
     candidate <- tolower(stringr::str_remove(trimmed, "[:：]\\s*$"))
+    own <- candidate %in% names(cfg$sub_map)
     if ((prev_blank || candidate %in% drops) && .heading_shaped_line(trimmed) &&
-        candidate %in% section_heading_patterns$pattern &&
+        (own || candidate %in% section_heading_patterns$pattern) &&
         !(requirement && candidate %in% .requirement_labels)) {
-      section <- match_heading_to_section(candidate)
+      section <- if (own) unname(cfg$sub_map[candidate]) else match_heading_to_section(candidate)
     }
     if (grepl("^Arbeidskrav\\s*\\d", trimmed)) requirement <- TRUE
     if (!is.na(section) && !identical(section, current)) {

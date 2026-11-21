@@ -252,3 +252,17 @@ test_that("a page is read in NFC, without soft hyphens or zero-width characters"
   t <- page_blocks(NA, "Pensum\nfra\u030a b\u00f8ker \u00adog\u200b artikler", list(reader = "text"))
   expect_true(any(t$text == "fr\u00e5 b\u00f8ker og artikler"))
 })
+
+test_that("the text reader looks up the institution's own headings first", {
+  text <- paste("Hensikten med emnet", "Emnet gir en innføring.", "", "Emnets læringsutbytte", "Studenten kan forklare.",
+                "", "Vurderings-/eksamensform og vurderingsuttrykk:", "Skoleeksamen, A-F.", "", "Vurdering",
+                "Muntlig.", sep = "\n")
+  own <- c("emnets læringsutbytte" = "learning_outcomes",
+           "vurderings-/eksamensform og vurderingsuttrykk" = "assessment", "vurdering" = ".drop")
+  b <- .text_blocks(text, list(reader = "text", sub_map = own))
+  expect_equal(b$section[b$role == "heading"], c("learning_outcomes", "assessment", ".drop"))
+  # without them, only the heading map's: "Vurdering" is assessment
+  b <- .text_blocks(text, list(reader = "text"))
+  expect_equal(b$text[b$role == "heading"], "Vurdering")
+  expect_equal(b$section[b$role == "heading"], "assessment")
+})
