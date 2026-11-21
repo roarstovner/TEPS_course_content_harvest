@@ -321,13 +321,14 @@ harvest_pdf_split <- function(df, config) {
     dplyr::select(-join_key)
 
   message(sum(!is.na(df$extracted_text)), "/", nrow(df), " rows with extracted text")
-  .steiner_keep_pdf(df, wrapper_pages)
+  .keep_pdf_once(df, wrapper_pages)
 }
 
-# Steiner helper: a subject PDF's bytes on the first row its text joined to
-# (`pdf`, the raw store's binary column), NULL on the others: a PDF holds the
-# emner of some 7 offerings, so a copy per row would add ~20 MB a run.
-.steiner_keep_pdf <- function(df, wrapper_pages) {
+# A PDF's bytes on the first row its text joined to (`pdf`, the raw store's
+# binary column; `wrapper_url` the row's `url`), NULL on the others: a PDF
+# holds the plans of several offerings (Steiner: some 7), so a copy per row
+# would add ~20 MB a run (steiner, ldh).
+.keep_pdf_once <- function(df, wrapper_pages) {
   first <- match(wrapper_pages$wrapper_url, ifelse(is.na(df$extracted_text), NA, df$url))
   df$pdf <- vector("list", nrow(df))
   df$pdf[first[!is.na(first)]] <- wrapper_pages$pdf[!is.na(first)]
@@ -462,4 +463,140 @@ harvest_noop <- function(df, config) {
   df$extracted_text <- NA_character_
   message("0/", nrow(df), " rows with extracted text (noop strategy)")
   df
+}
+
+# --- Strategy: cohort_plans ---
+# A plan per programme cohort: HTML course pages of some cohorts, and the
+# programme study plans as PDFs, each split by course heading; an offering
+# takes the plan of the cohort that has the course in its semester.
+# Used by: ldh
+
+harvest_cohort_plans <- function(df, config) {
+  index <- ldh_plan_index()
+  m <- cohort_plan_match(df$course_code, semester_term(df$year, df$semester_name), index)
+  df$url <- index$url[m]
+  pdf <- !is.na(m) & !is.na(index$text[m])
+  df <- fetch_html_with_checkpoint(dplyr::mutate(df, url = ifelse(pdf, NA_character_, url)),
+                                   checkpoint_dir(config$name, "html", df$year), config = config)
+  df$url[pdf] <- index$url[m[pdf]]
+  df$extracted_text <- extract_fulltext_from_raw(df, config)
+  df$extracted_text[pdf] <- clean_chars(index$text[m[pdf]])
+  message(sum(!is.na(df$extracted_text)), "/", nrow(df), " rows with extracted text (", sum(pdf), " from PDFs)")
+  pdfs <- attr(index, "pdfs")
+  .keep_pdf_once(df, tibble::tibble(wrapper_url = names(pdfs), pdf = unname(pdfs)))
+}
+
+#' The plan of each offering among a cohort-plan index
+#'
+#' A cohort that starts in term `start` (semester_term()) has a course in its
+#' semesters `k1` to `k2` of the plan, so in the terms start + k1 - 1 to
+#' start + k2 - 1: an offering in term `term` takes the entry of its code
+#' whose terms hold it, an HTML page before a PDF, then the latest cohort
+#' (an entry without its semester, `k1` NA, holds every term from its start).
+#' Else, as for a re-sit or a delayed student of an earlier cohort (DBH
+#' registers BSY-301 of the plan of 2019-2023 up to 2025), the cohort that had
+#' the course last before the offering's term. Codes are compared in upper
+#' case without spaces.
+#'
+#' @param code,term The offerings' course codes and terms
+#' @param index Tibble of code, start, k1, k2, url and text (NA for an HTML
+#'   page), from ldh_plan_index()
+#' @return Row of `index` for each offering, NA for none
+cohort_plan_match <- function(code, term, index) {
+  key <- function(x) gsub(" ", "", toupper(x), fixed = TRUE)
+  first <- index$start + dplyr::coalesce(index$k1, 1L) - 1L
+  last <- ifelse(is.na(index$k1), Inf, index$start + index$k2 - 1L)
+  o <- order(!is.na(index$text), -index$start)
+  vapply(seq_along(code), function(i) {
+    same <- o[key(index$code[o]) == key(code[i]) & first[o] <= term[i]]
+    hit <- same[term[i] <= last[same]]
+    if (length(hit)) hit[1] else if (length(same)) same[order(-first[same])][1] else NA_integer_
+  }, integer(1))
+}
+
+# LDH: the cohort-plan index (cohort_plan_match()). The bachelor in nursing's
+# course pages of the cohorts on the site (/emnerBIS/emnerBIS25/bsy-321: BIS25
+# starts in autumn 2025, and the code's first digit is the course's
+# semester, as the page's "3. semester: høst 2026" says), from the sitemap;
+# and the courses of every programme study plan (PDF) linked from the
+# programme pages and the page of earlier plans (ldh_pdf_courses()). The PDFs'
+# bytes are attribute `pdfs`, by URL. Checked 2026-11-20.
+ldh_plan_index <- function(root = "https://ldh.no") {
+  locs <- sitemap_locs(paste0(root, "/sitemap.xml"))
+  m <- stringr::str_match(locs, "/emnerBIS/emnerBIS(\\d{2})/([a-z]+-\\d+[a-z]?)$")
+  k <- as.integer(substr(stringr::str_extract(m[, 3], "\\d+"), 1, 1))
+  html <- tibble::tibble(code = toupper(m[, 3]), start = semester_term(2000L + as.integer(m[, 2]), "Høst"),
+                         k1 = k, k2 = k, url = locs, text = NA_character_)[!is.na(m[, 1]), ]
+  pages <- c(grep(paste0("^", root, "/studietilbud/(masterstudier|videreutdanninger)/[^/]+$"), locs, value = TRUE),
+             paste0(root, c("/studietilbud/bachelor-i-sykepleie",
+                            "/student/semester-og-eksamensoversikt/tidligere-studieplaner")))
+  links <- unique(unlist(lapply(pages, function(p) {
+    polite_pause()
+    a <- tryCatch(rvest::html_elements(site_html(p), "a[href]"), error = function(e) NULL)
+    href <- xml2::url_absolute(rvest::html_attr(a, "href"), p)
+    href[grepl("(?i)(studieplan|fagplan)", utils::URLdecode(href), perl = TRUE) &
+           startsWith(href, root) & !href %in% pages]
+  })))
+  pdfs <- list()
+  pdf <- dplyr::bind_rows(lapply(links, function(url) {
+    polite_pause()
+    bytes <- tryCatch(httr2::resp_body_raw(site_perform(site_request(url))), error = function(e) NULL)
+    courses <- if (!is.null(bytes)) ldh_pdf_courses(bytes, url)
+    if (!NROW(courses)) return(NULL)
+    pdfs[[url]] <<- bytes
+    courses
+  }))
+  message("LDH: ", nrow(html), " course pages, ", nrow(pdf), " courses in ", length(pdfs), " study plans")
+  out <- dplyr::bind_rows(html, pdf)
+  if (!nrow(out)) stop("no course plan found at ", root)
+  structure(out, pdfs = pdfs)
+}
+
+# LDH: the courses of a programme study plan (a PDF's bytes, or its pages'
+# text), each from its heading, a line that starts with the code ("MAPSY-100:
+# Innføring i ...", "BSY-100 Sykepleie, ...") followed within six lines by
+# "Engelsk emnenavn" (or "Engelsk navn"), to the next heading or a heading of
+# the plan in capitals ("STUDIETS OVERORDNEDE LÆRINGSUTBYTTER"),
+# "Referanser" or "Vedlegg"; without the page header
+# ("Lovisenberg diakonale høgskole") and footers (programme, cohort, page
+# number). The cohort's first term is the title page's or the file name's
+# "Kull H2024", "Kull V2025" or "kull 2019" (autumn), else "BIS21" (autumn
+# 2021), else the file name's "H2023"; a plan without it is left out. The course's semesters are its "Semester: 5 og 6" or "Semester
+# Første semester, høst". A code that a plan has twice keeps the first.
+ldh_pdf_courses <- function(pdf, url) {
+  pages <- if (is.character(pdf)) pdf else tryCatch(pdftools::pdf_text(pdf), error = function(e) character())
+  none <- tibble::tibble(code = character(), start = integer(), k1 = integer(), k2 = integer(),
+                         url = character(), text = character())
+  if (!length(pages)) return(none)
+  title <- paste(pages[1], utils::URLdecode(basename(url)))
+  kull <- stringr::str_match(title, "(?i)\\bkull\\s+(H|V)?\\s?(\\d{4})")
+  bis <- stringr::str_match(title, "\\bBIS(\\d{2})\\b")[, 2]
+  name <- stringr::str_match(utils::URLdecode(basename(url)), "\\b(H|V)(\\d{4})\\b")
+  start <- if (!is.na(kull[1, 1])) semester_term(kull[1, 3], if (toupper(kull[1, 2]) %in% "V") "Vår" else "Høst") else
+    if (!is.na(bis)) semester_term(2000L + as.integer(bis), "Høst") else
+    if (!is.na(name[1, 1])) semester_term(name[1, 3], c(H = "Høst", V = "Vår")[[name[1, 2]]]) else NA
+  if (is.na(start)) return(none)
+
+  lines <- unlist(strsplit(paste(pages, collapse = "\n"), "\n"))
+  lines <- lines[!grepl("^\\s*Lovisenberg diakonale høgskole( AS)?\\s*$", lines) &
+                   !grepl("^\\s{10,}\\S.*\\s{3,}\\d{1,3}\\s*$", lines)]
+  code_rx <- "^([A-ZÆØÅ]{2,8}-\\s?\\d{2,4}[A-Z]?)\\b:?\\s+\\S"
+  head <- which(grepl(code_rx, lines) & vapply(seq_along(lines), function(i)
+    any(grepl("Engelsk (emne)?navn", lines[i + seq_len(6)])), logical(1)))
+  if (!length(head)) return(none)
+  stop <- c(which(grepl("^(?:[A-ZÆØÅ][A-ZÆØÅ .,–-]{8,}|Referanser|Vedlegg( \\d+)?)\\s*$", lines, perl = TRUE)),
+            length(lines) + 1L)
+  end <- pmin(c(head[-1], length(lines) + 1L), stop[findInterval(head, stop) + 1L]) - 1L
+  ord <- c(første = 1, andre = 2, tredje = 3, fjerde = 4, femte = 5, sjette = 6)
+  out <- dplyr::bind_rows(lapply(seq_along(head), function(j) {
+    sec <- lines[head[j]:end[j]]
+    sem <- tolower(stringr::str_match(sec[seq_len(min(15, length(sec)))], "^\\s*Semester:?\\s+(.+)$")[, 2])
+    sem <- sem[!is.na(sem)][1]
+    k <- c(as.integer(stringr::str_extract_all(sem, "\\d")[[1]]), unname(ord[stringr::str_extract_all(sem, paste(names(ord), collapse = "|"))[[1]]]))
+    text <- stringr::str_trim(stringr::str_replace_all(paste(sub("\\s+$", "", sec), collapse = "\n"), "\\n{3,}", "\n\n"))
+    tibble::tibble(code = gsub(" ", "", stringr::str_match(sec[1], code_rx)[, 2]),
+                   start = as.integer(start), k1 = if (length(k)) as.integer(min(k)) else NA_integer_,
+                   k2 = if (length(k)) as.integer(max(k)) else NA_integer_, url = url, text = text)
+  }))
+  out[!duplicated(out$code), ]
 }

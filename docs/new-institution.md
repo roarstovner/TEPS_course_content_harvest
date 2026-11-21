@@ -349,13 +349,15 @@ needs a resolver of its own.
 `standard` and `url_discovery` are written for one institution each:
 `html_pdf_discovery` (UiS: the semester menu, then an HTML page or a
 PDF), `pdf_split` (Steiner: a PDF per subject, split into courses),
-`json_extract` (NLA: the plan in the page’s JSON), `shadow_dom` (USN)
-and `noop` (Samas: nothing to fetch). A site like one of them needs a
-strategy function of its own in `R/harvest_strategies.R`, modelled on
-it, and a case in the `switch()` of `harvest_institution()`
-(`R/harvest.R`). Years published only as PDFs, next to HTML pages for
-later years, are left out until such a function exists: set the oldest
-year to the first HTML year and note the rest in `data/data_notes.qmd`.
+`cohort_plans` (LDH: a plan per programme cohort, as course pages or
+study-plan PDFs split into courses), `json_extract` (NLA: the plan in
+the page’s JSON), `shadow_dom` (USN) and `noop` (Samas: nothing to
+fetch). A site like one of them needs a strategy function of its own in
+`R/harvest_strategies.R`, modelled on it, and a case in the `switch()`
+of `harvest_institution()` (`R/harvest.R`). Years published only as
+PDFs, next to HTML pages for later years, are left out until such a
+function exists: set the oldest year to the first HTML year and note the
+rest in `data/data_notes.qmd`.
 
 **A missing plan comes as a normal page.** A site that answers a year
 without a plan with a page that says so (NTNU: “Det finnes ingen

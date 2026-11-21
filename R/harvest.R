@@ -49,6 +49,7 @@ harvest_institution <- function(institution, courses, year = NULL,
     html_pdf_discovery = harvest_html_pdf_discovery(df, config),
     pdf_split          = harvest_pdf_split(df, config),
     json_extract       = harvest_json_extract(df, config),
+    cohort_plans       = harvest_cohort_plans(df, config),
     noop               = harvest_noop(df, config),
     stop("Unknown strategy: ", config$strategy)
   )

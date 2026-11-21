@@ -99,12 +99,12 @@ each frame</td>
 Stages 1-5 are run per institution by `harvest_institution()`, which
 dispatches to a strategy in `R/harvest_strategies.R` (`standard`,
 `url_discovery`, `shadow_dom`, `html_pdf_discovery`, `pdf_split`,
-`json_extract`, `noop`). `R/institution_config.R` is the single source
-of truth for each institution: strategy, the part of the page that holds
-the plan (`selector`, minus `exclude`), how a plan’s year is known
-(`plan_years`: `"url"` or `"current"`), pre/post functions, fetch
-overrides and the `section_*` fields. Stages 6-8 and everything after
-them are a {targets} pipeline (see [“Rebuilding Derived
+`cohort_plans`, `json_extract`, `noop`). `R/institution_config.R` is the
+single source of truth for each institution: strategy, the part of the
+page that holds the plan (`selector`, minus `exclude`), how a plan’s
+year is known (`plan_years`: `"url"` or `"current"`), pre/post
+functions, fetch overrides and the `section_*` fields. Stages 6-8 and
+everything after them are a {targets} pipeline (see [“Rebuilding Derived
 Data”](docs/rebuilding.md#rebuilding-derived-data)).
 
 The raw harvest is append-only Parquet: every harvest adds one file per

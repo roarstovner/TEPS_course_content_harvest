@@ -85,6 +85,12 @@ resolve_course_urls <- function(df,
       resolve_urls_vid_batch(df, .progress = .progress, checkpoint = discovery)
     } else if (inst == "fjellhaug") {
       resolve_urls_fjellhaug_batch(df)
+    } else if (inst == "aho") {
+      resolve_urls_aho_batch(df)
+    } else if (inst == "onh") {
+      resolve_urls_onh_batch(df)
+    } else if (inst == "barrattdue") {
+      resolve_urls_barrattdue_batch(df)
     } else {
       df |> dplyr::mutate(url = NA_character_)
     }
@@ -601,12 +607,60 @@ vortex_course_index <- function(years, root, delay = NULL, user_agent = TEPS_USE
     if (attr(pages, "ok")) read <- c(read, yf)
     found[[yf]] <- as.vector(pages)
   }
-  url <- unlist(found, use.names = FALSE) %||% character()
+  list(pages = vortex_pages(unlist(found, use.names = FALSE) %||% character()), read = read)
+}
+
+# Vortex course pages, .../{year}/{var|host|spring|autumn}/{code}.html, as
+# a tibble of url, code (lower case), year and semester ("var", "host");
+# other URLs are left out.
+vortex_pages <- function(url) {
   m <- stringr::str_match(url, "/(\\d{4})/(var|host|spring|autumn)/([^/]+)\\.html$")
-  list(pages = tibble::tibble(url = url, code = tolower(vapply(m[, 4], utils::URLdecode, "", USE.NAMES = FALSE)),
-                              year = as.integer(m[, 2]),
-                              semester = unname(c(var = "var", host = "host", spring = "var", autumn = "host")[m[, 3]])),
-       read = read)
+  url <- url[!is.na(m[, 1])]
+  m <- m[!is.na(m[, 1]), , drop = FALSE]
+  tibble::tibble(url = url, code = tolower(vapply(m[, 4], utils::URLdecode, "", USE.NAMES = FALSE)),
+                 year = as.integer(m[, 2]),
+                 semester = unname(c(var = "var", host = "host", spring = "var", autumn = "host")[m[, 3]]))
+}
+
+# The URLs a sitemap lists (its <loc> elements), after polite_pause(delay).
+sitemap_locs <- function(url, delay = NULL) {
+  polite_pause(delay)
+  rvest::html_text(rvest::html_elements(site_html(url), "loc"), trim = TRUE)
+}
+
+#' Resolve URLs for a batch of AHO courses from the sitemap
+#'
+#' AHO's course pages are FS pages in Vortex, laid out as PHS's:
+#' /studier/emner/{year}/{var|host}/{code}.html, or
+#' /english/studies/courses/{year}/{spring|autumn}/{code}.html for a course
+#' taught in English, from 2024 (three pages; 2025 on, checked 2026-11-20). The
+#' sitemap lists every course page (the year folders' listings hold the same
+#' pages), so it is read in place of the listings: one request. DBH's code
+#' with a space is the page's with a dash ("40 333" at 40-333.html); the
+#' match is vortex_match_urls()'s, so a spring offering without a page takes
+#' the autumn before's, whose title says whether it is for both semesters
+#' (`page_end_term`).
+#'
+#' @param df A tibble with course_code, year, semester_name columns
+#' @param index List of `pages`, from vortex_pages() of the sitemap's URLs
+#' @return df with url filled in where possible
+resolve_urls_aho_batch <- function(df, index = aho_course_index()) {
+  code <- df$course_code
+  df$course_code <- gsub(" ", "-", code, fixed = TRUE)
+  df <- vortex_match_urls(df, index)
+  df$course_code <- code
+  cli::cli_alert_success("AHO: pages for {sum(!is.na(df$url))} of {nrow(df)} offerings")
+  df
+}
+
+# Every course page in AHO's sitemap, both trees. A sitemap without any is an
+# error, so the harvest stops rather than leave its courses without a URL.
+aho_course_index <- function(sitemap = "https://www.aho.no/sitemap.xml") {
+  urls <- grep("^https://www\\.aho\\.no/(studier/emner|english/studies/courses)/", sitemap_locs(sitemap),
+               value = TRUE)
+  pages <- vortex_pages(unique(urls))
+  if (!nrow(pages)) stop("no course page in ", sitemap)
+  list(pages = pages, read = character())
 }
 
 #' Resolve URLs for a batch of UiO courses from the sitemap
@@ -1071,5 +1125,86 @@ fjellhaug_course_index <- function(root = "https://fih.fjellhaug.no") {
   pages <- unlist(lapply(grep("-section-subjects-", maps, value = TRUE), locs))
   pages <- unique(grep(paste0("^", root, "/(emne|en/subjects)/[^/]+$"), pages, value = TRUE))
   if (!length(pages)) stop("no course page in the sitemaps of ", root)
+  pages
+}
+
+#' Resolve URLs for a batch of Oslo Nye Høyskole courses from the sitemap
+#'
+#' ONH shows only the plan in force (plan_years "current"), one page per
+#' course at a URL named from its title, code and credits, which DBH does not
+#' give, in several spellings (checked 2026-11-20):
+#' /Emner/Psykologi-som-fag-og-vitenskap-PSY1120-15-sp, /emner/...-OKAD1250-75sp,
+#' /emner/okad3110-Etikk-baerekraft-og-samfunnsansvar-15-sp, the code with Ø
+#' (/emner/Digital-technologies-%C3%98KAD1150-75sp), and a few under a
+#' programme (/digital-markedsforing/emner/okad1110-bedriftsokonomi). The
+#' sitemap lists them. An offering takes the page whose path has its code as
+#' a part between dashes or slashes, compared in upper case with Ø, Å as O,
+#' A (DBH's ØKAD1110 is the site's OKAD1110 or ØKAD1110); of several, one
+#' under /Emner/ before one under a programme, then the sitemap's first.
+#'
+#' @param df A tibble with a course_code column
+#' @param index The course pages' URLs, from onh_course_index()
+#' @return df with url filled in where possible
+resolve_urls_onh_batch <- function(df, index = onh_course_index()) {
+  index <- index[order(!grepl("^https://[^/]+/emner/", index, ignore.case = TRUE))]
+  df$url <- code_in_path(df$course_code, index, c("Ø" = "O", "Å" = "A", "Æ" = "AE"))
+  cli::cli_alert_success("ONH: pages for {sum(!is.na(df$url))} of {nrow(df)} offerings")
+  df
+}
+
+# The first of `urls` whose path (percent-decoded) has the code as a part
+# between dashes, slashes or en dashes, compared in upper case with the
+# Norwegian letters replaced by `letters` as the site names them; NA for
+# none (onh, barrattdue).
+code_in_path <- function(code, urls, letters) {
+  norm <- function(x) stringr::str_replace_all(toupper(x), letters)
+  path <- norm(vapply(sub("^https://[^/]+/", "", urls), utils::URLdecode, "", USE.NAMES = FALSE))
+  parts <- strsplit(path, "[-/\u2013]")
+  urls <- rep(urls, lengths(parts))
+  urls[match(norm(code), unlist(parts))]
+}
+
+# Every course page in ONH's sitemap (a path with /emner/ or /Emner/). A
+# sitemap without any is an error, so the harvest stops rather than leave its
+# courses without a URL.
+onh_course_index <- function(sitemap = "https://oslonyehoyskole.no/sitemap.xml") {
+  pages <- unique(grep("^https://oslonyehoyskole\\.no/(?:[^/]+/)?emner/[^/]+$", sitemap_locs(sitemap),
+                       ignore.case = TRUE, perl = TRUE, value = TRUE))
+  if (!length(pages)) stop("no course page in ", sitemap)
+  pages
+}
+
+#' Resolve URLs for a batch of Barratt Due courses from the sitemap
+#'
+#' Barratt Due shows only the plan in force (plan_years "current"), one page
+#' per course under its programme (WordPress), named from the code in lower
+#' case with Ø as "oe" (HØR1100 at hoer1100/), some with the title after it
+#' (valgemner/nokv5100-norske-kvinnelige-utovere-og-komponister/), and a
+#' course taught in English also under /en/studier/ (checked 2026-11-20).
+#' The studies' sitemap lists them. An offering takes the page whose path has
+#' its code as a part (code_in_path()); of several, a Norwegian one before an
+#' English one, and one named by the code alone before one with something
+#' after it: verk2100/ is the plan in force and verk2100-2025/ the version
+#' for students "t.o.m. 2025/2026"; ped2/ and ped2-2/ are two pages of PED2.
+#'
+#' @param df A tibble with a course_code column
+#' @param index The course pages' URLs, from barrattdue_course_index()
+#' @return df with url filled in where possible
+resolve_urls_barrattdue_batch <- function(df, index = barrattdue_course_index()) {
+  index <- index[order(grepl("/en/", index, fixed = TRUE), grepl("-", basename(index), fixed = TRUE))]
+  df$url <- code_in_path(df$course_code, index, c("Ø" = "OE", "Å" = "AA", "Æ" = "AE"))
+  cli::cli_alert_success("Barratt Due: pages for {sum(!is.na(df$url))} of {nrow(df)} offerings")
+  df
+}
+
+# Every page of higher education in Barratt Due's studies sitemap, Norwegian
+# and English (/studier/hoyere-utdanning/..., /en/studier/...); the code
+# match leaves out the programme and information pages. A sitemap without
+# any is an error, so the harvest stops rather than leave its courses without
+# a URL.
+barrattdue_course_index <- function(sitemap = "https://barrattdue.no/studier-sitemap.xml") {
+  pages <- unique(grep("^https://barrattdue\\.no/(studier/hoyere-utdanning|en/studier)/", sitemap_locs(sitemap),
+                       value = TRUE))
+  if (!length(pages)) stop("no course page in ", sitemap)
   pages
 }

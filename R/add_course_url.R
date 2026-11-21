@@ -33,6 +33,10 @@ add_course_url <- function(df) {
         "nmbu"    ~ add_course_url_nmbu(course_code),
         "vid"     ~ NA_character_,  # VID's page names come from its sitemap via resolve_course_urls()
         "fjellhaug" ~ NA_character_,  # Fjellhaug's page names come from its sitemaps via resolve_course_urls()
+        "dmmh"    ~ add_course_url_dmmh(course_code, year, semester_name),
+        "aho"     ~ NA_character_,  # AHO's pages come from its sitemap via resolve_course_urls()
+        "onh"     ~ NA_character_,  # ONH's page names come from its sitemap via resolve_course_urls()
+        "barrattdue" ~ NA_character_,  # Barratt Due's page names come from its sitemap via resolve_course_urls()
 
         default = NA_character_
       )
@@ -155,4 +159,14 @@ add_course_url_nmbu <- function(course_code) {
   slug <- toupper(course_code) |>
     stringr::str_replace_all(c("Ø" = "O", "Å" = "A", "Æ" = "AE"))
   glue::glue("https://www.nmbu.no/emne/{slug}")
+}
+
+# The catalogue of inn's software (Edutorium): /nb/emne/{CODE}/{year}-{host|var},
+# DBH's code as it is. The catalogue starts in autumn 2014 (its semester
+# menu; the oldest version seen, checked 2026-11-20, is of autumn 2015): a
+# semester before has no URL.
+add_course_url_dmmh <- function(course_code, year, semester) {
+  dplyr::if_else(semester_term(year, semester) >= semester_term(2014L, "Høst"),
+                 glue::glue("https://studier.dmmh.no/nb/emne/{course_code}/{year}-{semester_to_url(semester)}"),
+                 NA_character_)
 }

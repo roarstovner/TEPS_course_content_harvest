@@ -863,6 +863,174 @@ institution_configs <- list(
     section_subheading_selector = "p"
   ),
 
+  dmmh = list(
+    code = "8224",
+    # /nb/emne/{CODE}/{year}-{host|var}, the catalogue software of inn's
+    # (Edutorium); a code without any plan redirects to the course search
+    # (fetch_html_cols_single_dmmh())
+    strategy = "standard",
+    fetch_fn = fetch_html_cols_single_dmmh,
+    # The title, the facts list and the plan; not the table of contents, the
+    # approval (the approver's initials and the date), the course leaders
+    # in the facts list and the wide copy of each table (the narrow copy
+    # holds the same rows under a label: "Obligatoriske arbeidskrav:",
+    # "Vurderinger:")
+    selector = "section#main-content",
+    exclude = c("#toc-container, div.wide-table",
+                local({
+                  h2 <- "//h2[contains(@class, 'field-approval-sign') or contains(@class, 'field-approval-date')]"
+                  paste0(h2, " | ", h2, "/following-sibling::div[1][contains(@class, 'item')]")
+                }),
+                paste0("//ul[@id='facts']//li[div[contains(@class, 'facts-label')]",
+                       "[normalize-space() = 'Emneansvarlig' or normalize-space() = 'Person in charge']]")),
+    # the title and the facts list (credits, semesters, level, programme,
+    # language), as inn's, but not the prerequisites
+    facts = c("section#main-content > header",
+              paste0("//ul[@id='facts']//li[div[contains(@class, 'facts-label')]]",
+                     "[not(div[contains(@class, 'facts-label')][normalize-space() = 'Forkunnskapskrav' or ",
+                     "normalize-space() = 'Required prerequisite knowledge'])]")),
+    plan_years = "url",
+    request_delay = 10,  # robots.txt (data/robots_txt.csv): Crawl-delay: 10 for all user agents
+    # The first teaching semester of the version the page shows ("2025 høst,
+    # 2026 vår"; "2026 autumn" on an English page): for a semester without a
+    # version of its own the page shows the latest, with or without the
+    # notice "The course description for the semester you wanted is not
+    # published yet"
+    page_term = function(html) {
+      m <- stringr::str_match(html, paste0("(?:Undervisningssemester|Teaching semester)</div>\\s*",
+                                           "<div class=\"facts-item\">\\s*(\\d{4}) (høst|vår|autumn|spring)"))
+      semester_term(m[, 2], ifelse(m[, 3] %in% c("vår", "spring"), "Vår", "Høst"))
+    },
+    # h2s and the labels of the facts list (prerequisites) and of the tables
+    section_strategy = "html",
+    section_heading_selector = "h2, div.label, div.facts-label",
+    # the English pages' headings (courses taught in English): "Evaluation"
+    # is their "Informasjon om eksamen/vurdering i emnet"
+    section_headings = c("readinglist" = "reading_list", "working and learning activities" = "teaching_methods",
+                         "mandatory coursework" = "coursework_requirements", "assessments" = "assessment",
+                         "evaluation" = "assessment")
+  ),
+
+  aho = list(
+    code = "1220",
+    # /studier/emner/{year}/{var|host}/{code}.html from 2025 (three pages in
+    # 2024), or the English tree's /english/studies/courses/{year}/{spring|autumn}/;
+    # the sitemap lists every page (resolve_urls_aho_batch()). The layout is
+    # PHS's (FS pages in Vortex)
+    strategy = "url_discovery",
+    # The title, the facts list and the plan; not the course leaders (names),
+    # the reading-list link, the table of contents' heading and the FS fetch
+    # stamp
+    selector = "#vrtx-content",
+    exclude = c("#vrtx-content div.connected-links, #vrtx-content h2.vrtx-toc-header, #vrtx-content .vrtx-date-info",
+                paste0("//div[@id='vrtx-fs-emne-facts']//div[contains(@class, 'dg')]",
+                       "[starts-with(normalize-space(), 'Emneansvarlig') or ",
+                       "starts-with(normalize-space(), 'Course Leader')]")),
+    # and the programmes the course belongs to
+    facts = c("#vrtx-content > h1", "#vrtx-fs-emne-facts",
+              local({
+                h2 <- paste0("//h2[normalize-space() = 'Emnet er tilknyttet følgende studieprogram' or ",
+                             "normalize-space() = 'The course is connected to the following study programs']")
+                paste0(h2, " | ", h2, "/following-sibling::ul[1][contains(@class, 'vrtx-fs-programmes')]")
+              })),
+    plan_years = "url",
+    # the semesters in the title, "(Vår 2025)", "(Autumn 2025)", as at PHS
+    page_term = function(html) title_terms(html)$first,
+    page_end_term = function(html) title_terms(html)$last,
+    # h2s: Emnets innhold, Læringsutbytte for emnet, Undervisningsmetode for
+    # emnet, Beskrivelse av eksamen for kurset
+    section_strategy = "html",
+    section_headings = c("undervisningsmetode for emnet" = "teaching_methods")
+  ),
+
+  onh = list(
+    code = "1407",
+    # a page per course code, /Emner/{title}-{CODE}-{credits}-sp in most
+    # spellings, found in the sitemap (resolve_urls_onh_batch())
+    strategy = "url_discovery",
+    # The title, the summary, the facts (study form, credits, place, start,
+    # exam form) and the plan; not the breadcrumb, the price and its notice,
+    # the application form and the sidebar
+    selector = "main > article",
+    exclude = c(paste("main > article nav[aria-label='breadcrumb'], main > article .application-box,",
+                      "main > article .sidebar, main > article li.cost"),
+                paste0("//div[@id='block-onh-content']//p[starts-with(normalize-space(), 'Registreringsavgift og utgifter')]",
+                       " | //div[@id='block-onh-content']//p[a[contains(@href, '/studentinfo/eksamen')]]")),
+    facts = c("main > article h1", "main > article p.lead", "main > article ul.nav",
+              "//div[@id='block-onh-content']//table[.//td[starts-with(normalize-space(), 'Studiested')]]"),
+    # the page shows the plan in force, without a year
+    plan_years = "current",
+    # "Om emnet:" and accordions with h2 headings ("Innhold i emnet",
+    # "Læringsutbytte", "Arbeidskrav og eksamen"); in the last, the
+    # sub-headings "Arbeidskrav" and "Eksamen" (h2 or h3; on English pages
+    # "Requirement", "Exam"). Not the link "Finn dato for eksamen og mer
+    # eksamensinfo" (excluded above)
+    section_strategy = "html",
+    section_subheading_selector = "h3",
+    section_headings = c("om emnet" = "course_content", "about the course" = "course_content",
+                         "arbeidskrav og eksamen" = "assessment", "requirement" = "coursework_requirements")
+  ),
+
+  barrattdue = list(
+    code = "8227",
+    # a page per course under its programme, /studier/hoyere-utdanning/{programme}/{code}/
+    # (some with the title after the code), found in the studies sitemap
+    # (resolve_urls_barrattdue_batch())
+    strategy = "url_discovery",
+    # The title (code and name), the facts column ("Kort om emnet": credits,
+    # level, semesters, admission, place, final assessment), the plan's
+    # columns ("Læringsutbytte", "Undervisning og læringsformer") and its
+    # accordions; not the breadcrumb
+    selector = "main#main",
+    exclude = "main#main nav[aria-label='Breadcrumb'], main#main .scroll-to-top",
+    facts = c("main#main .hero-text",
+              "//div[contains(@class, 'info-column')][h4[starts-with(normalize-space(), 'Kort om emnet') or starts-with(normalize-space(), 'Course overview')]]"),
+    # the page shows the plan in force, without a year
+    plan_years = "current",
+    # h4 columns, the h2 "Mer om emnet" over h3 accordions ("Læremiddelomtale/pensum",
+    # "Organisering og arbeidsformer", "Arbeidskrav", "Vurderingsformer",
+    # "Ny vurdering", "Karakterskala", "Emneevaluering")
+    section_strategy = "html",
+    section_heading_selector = "h2, h3, h4",
+    # "Læremiddelomtale" (without "/pensum") is the reading list
+    section_headings = c("læremiddelomtale" = "reading_list")
+  ),
+
+  ldh = list(
+    code = "8202",
+    # a plan per programme cohort: the bachelor in nursing's course pages of
+    # the cohorts BIS24-BIS26 (/emnerBIS/emnerBIS25/bsy-321), and the courses
+    # of the programme study plans (PDFs) of the other cohorts and programmes,
+    # split by course heading; an offering takes the cohort that has the
+    # course in its semester (harvest_cohort_plans(), ldh_plan_index())
+    strategy = "cohort_plans",
+    # A course page: the title, the cohort ("Gjelder BIS25"), the facts box
+    # and the plan; not the breadcrumb, the facts box's copy in the sidebar
+    # and the publication dates
+    selector = "main",
+    exclude = "main .breadcrumbs__wrapper, main .ContentBlocks__sidebar, main .ContentBlocks__publication",
+    facts = c("main .Hero", "main .ContentBlocks__card"),
+    plan_years = "url",
+    # the term the page's course is taught in ("3. semester: høst 2026")
+    page_term = function(html) {
+      m <- stringr::str_match(html, "\\d\\. semester:\\s*</strong>\\s*(høst|vår) (\\d{4})")
+      semester_term(m[, 3], ifelse(m[, 2] %in% "vår", "Vår", "Høst"))
+    },
+    page_end_term = function(html) institution_configs$ldh$page_term(html),
+    # h2s on a page ("Hensikt", "Innhold", "Læringsutbytte", "Obligatorisk
+    # aktivitet", "Vurderings-/eksamensform og vurderingsuttrykk"); a PDF's
+    # course is read as text, after its metadata lines
+    section_strategy = "html",
+    # the purpose ("Hensikt" on a page, "Hensikten med emnet" in a PDF) is
+    # the course's content; the PDFs' learning outcomes and assessment
+    # headings for the text reader
+    section_headings = c("hensikt" = "course_content", "hensikten med emnet" = "course_content",
+                         "emnets læringsutbytte" = "learning_outcomes",
+                         "vurderings-/eksamensform og vurderingsuttrykk" = "assessment"),
+    section_text_header = paste0("^\\s*(?:Engelsk (?:emne)?navn|Studiepoeng|Semester|Undervisningsspråk|",
+                                 "Krav til forkunnskaper|Emnekode og emnenavn|Studieprogrammet emnet|inngår i)\\b")
+  ),
+
   samas = list(
     code = "0217",
     strategy = "noop",

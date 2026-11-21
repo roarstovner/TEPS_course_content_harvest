@@ -251,6 +251,36 @@ Figures are in the tables above; the notes say why.
 
 ---
 
+### AHO (Oslo School of Architecture and Design)
+
+- Added 2026-11-20 (all-courses frame); its pilot and full harvest wait. Course pages from 2025 (three pages in 2024, none before; checked 2026-11-20), so DBH's offerings of 2000-2024 have no plan. A page per course and semester, `https://www.aho.no/studier/emner/{year}/{var|host}/{code}.html`, or in the English tree `/english/studies/courses/{year}/{spring|autumn}/` for a course taught in English; found in the sitemap (`resolve_urls_aho_batch()`), DBH's code with a space as the page's with a dash ("40 333" at `40-333.html`)
+- Against the sitemap of 2026-11-20, 114 of DBH's 167 course-years of 2025 and 151 of 160 of 2026 have a page. Of the 53 course-years of 2025 without one, 37 have no page in any year (the PhD courses, PHD-FRAMING, PHD-READING; the Master of Landscape Architecture's 61-series; 85 301) and 16 only in another year. DBH registers most courses in both semesters, the site in the semester taught: the other semester gets no page
+- Read from `#vrtx-content`, as at PHS: the title (with its semester, `page_term`), the facts list (credits, department, semester, language, level, duration) and the programme list, in no section, and the plan's h2s ("Emnets innhold", "Læringsutbytte for emnet", "Undervisningsmetode for emnet", "Beskrivelse av eksamen for kurset"; on English pages "Course description", "Learning Outcome", "Teaching", "Examination"); not the course leaders ("Emneansvarlig", "Course Leaders"), the reading-list link (Leganto), the table of contents' heading and the FS fetch stamp
+- robots.txt (www.aho.no, read 2026-11-20) disallows only `/vrtx`, which the harvest does not request
+
+---
+
+### Barratt Due (Barratt Due Institute of Music)
+
+- Added 2026-11-20 (all-courses frame); its pilot and full harvest wait. Only the plan in force is published (`plan_years = "current"`; see "Year coverage"): no plan for offerings before the academic year of the first harvest (2026/27; DBH has Barratt Due from 2001)
+- A page per course under its programme, `https://barrattdue.no/studier/hoyere-utdanning/{programme}/{code}/` (HØR1100 at `hoer1100/`; some with the title after the code; electives under `valgemner/`), and for courses taught in English under `/en/studier/`; found in the studies sitemap (`resolve_urls_barrattdue_batch()`). Against the sitemap of 2026-11-20, 46 of DBH's 71 codes of 2026 have a page; none for the master's courses (UTPR*, EXHINS*: the master's programme has a study-plan page, not course pages), the further-education courses VU-MUSDID and VU-PRAKSIS, PRAKSIS1-2, "UNGFIL I-III", MIP2100 and some electives (EKS5100, KKOR5110, OORK5110, SPIN5120, GRUSKU5120)
+- Two Norwegian pages of a code: VERK2100 has `verk2100/` (the plan in force) and `verk2100-2025/` ("tilhørende studieår t.o.m. 2025/2026"), PED2 `ped2/` and `ped2-2/` (the second adds "Innhold"); the page named by the code alone is taken. Which of PED2's is meant for 2026/27 is not known
+- Read from `main#main`: the code and name (in no section), the facts column "Kort om emnet" (credits, level, semesters, admission, place, final assessment; in no section), the columns "Læringsutbytte" and "Undervisning og læringsformer" and the accordions under "Mer om emnet"; not the breadcrumb. No staff names on the pages tested. One page's learning outcomes open with a split word ("S" / "tudenter", VERK2100), as on the site
+- robots.txt (barrattdue.no, read 2026-11-20) disallows nothing
+
+---
+
+### DMMH (Queen Maud University College of Early Childhood Education)
+
+- Added 2026-11-20 (all-courses frame); its pilot and full harvest wait. A page per course and semester on DMMH's course catalogue, `https://studier.dmmh.no/nb/emne/{CODE}/{year}-{host|var}` (the catalogue software of INN's), DBH's code as it is. The catalogue's semester menu starts in autumn 2014, so offerings before have no URL; the oldest version seen is of autumn 2015 (BPBUL1000, checked 2026-11-20). DMMH says plans before autumn 2017 are only sent by e-mail; the pilot will show how many pages 2015-2017 hold
+- A code without any page redirects to the course search (MATE2010, MVBBB6100 in 2017; the variants with `-TD` and `-OV1`/`-OV2`, 2017-2018, such as BHKKK1010-TD, whose base code has a page): outcome `not_found` (`fetch_html_cols_single_dmmh()`). The variants are not given their base code's page, which may be another programme's plan
+- Where a semester has no version, the page shows the latest one, with or without the notice "The course description for the semester you wanted is not published yet" (BLSRL1010 spring 2025 shows autumn 2025; BUPRA300 spring 2025, English only, autumn 2026; BPBUL1000 in 2016 and 2017 the version of autumn 2015). The version's first teaching semester ("Undervisningssemester", `page_term`) decides: an offering before it gets no plan, one after it gets that version, as at INN
+- Read from `section#main-content`: the title, the facts list (credits, semesters, level, programme, language; in no section, except the prerequisites) and the plan; not the table of contents, the approval (approver's initials, date), the course leaders ("Emneansvarlig", "Person in charge") and the wide copy of the coursework and assessment tables (the narrow copy holds the same rows under the labels "Obligatoriske arbeidskrav:" and "Vurderinger:", which open those sections). The reading list on current pages is loaded from Leganto by script and is not in the page: "Pensumliste" is empty; older pages (2015-2017) hold the list
+- Courses taught in English (NECEC*, BUPRA300) have English pages under `/nb/`, with English headings mapped in the config (`section_headings`)
+- robots.txt (studier.dmmh.no, read 2026-11-20) asks a Crawl-delay of 10 seconds (`request_delay = 10`) and disallows only Drupal's defaults
+
+---
+
 ### FHS (Norwegian Defence University College)
 
 - Added 2026-11-04 (all-courses frame). Course pages on Forsvaret's site from autumn 2018, a page per version of the plan; an offering gets the latest version that starts in or before its semester, the one in force (`resolve_urls_fhs_batch()`). DBH's offerings before the reorganisation of FHS's education (2016-2019; codes such as M5-023, SEF1001MAD, VBU1-LED) have no page: in the pilot of 2026-11-04 none of 47 course-years of 2018 and 3 of 47 of 2019 had one, against 36 of 39 in 2022 and 40 of 45 in 2025
@@ -329,6 +359,17 @@ Figures are in the tables above; the notes say why.
 - Courses taught in English (61 of the 703 offerings of 2025) have a full Norwegian page, which is used, and an English one at `/en/courses/{code}`
 - robots.txt (read 2026-10-16) has only comments: nothing disallowed
 - Three doctoral courses in DBH (DG900-1, DG930-1, DG950-1) have no page: the site answers 404 (pilot harvest, 2026-11-01)
+
+---
+
+### LDH (Lovisenberg Diakonale University College)
+
+- Added 2026-11-20 (all-courses frame); its pilot and full harvest wait. A plan per programme cohort (`strategy = "cohort_plans"`, `harvest_cohort_plans()`): the bachelor in nursing's course pages of the cohorts BIS24-BIS26 (`/studietilbud/bachelor-i-sykepleie/emnerBIS/emnerBIS25/bsy-321`, in the sitemap), and the programme study plans (PDFs) linked from the programme pages and the page of earlier plans (`/student/semester-og-eksamensoversikt/tidligere-studieplaner`), each split by course heading (`ldh_pdf_courses()`): the older bachelor cohorts (BIS19-BIS23, the plan of 2019-2023 with the codes BSY-100 to BSYP-503) and every master's and further-education programme, whose current plans are PDFs too. The split text is the raw data; a run keeps each PDF's bytes on the first row its text joined to (`pdf`), as Steiner's
+- Which cohort's plan an offering gets: a cohort that starts in a term (BIS25: autumn 2025; MAPRA "Kull V2025": spring 2025) has a course in the plan's semesters k1 to k2 ("Semester: 5 og 6"; "Tredje semester, høst"; on a course page the code's first digit, BSY-321 in semester 3, as the page's "3. semester: høst 2026" says), so in its terms start + k1 - 1 to start + k2 - 1 (the plan's semesters are consecutive terms, also in part-time plans). An offering takes the cohort whose terms hold the offering's term (a course page before a PDF), else the cohort that had the course last before it (a re-sit or delayed student: DBH registers codes of the plan of 2019-2023 up to 2025). BSY-321 in autumn 2026 is BIS25's; MFSY-500 of MAPRA V2025 is in spring and autumn 2027. A course page whose term ("3. semester: høst 2026", `page_term`) is not the offering's gives no plan
+- Without a plan: the exchange-practice codes (MOBP-6 to MOBP-30, eight codes), "BIS-EMNE" codes, the variants BSYP-300B, BSYP-400B, BSYP-501B to BSYP-503B, and the further education in palliative care (VIP), whose plan names its modules "EMNE 1"-"EMNE 3" without DBH's codes (PALEKS1, PALEKS2 are its exams). MAKS has a full-time and a part-time plan of the same cohort (H2022), which the match does not tell apart (the first linked is taken)
+- The oldest plan linked is the bachelor's "Fagplan BIS12, justert for kull 2019" (autumn 2019); the master's plans from 2021 (MAKNY V2021, MAKS H2021). On a sample of three study plans (MAPRA 2025, BIS21, BIS22; 2026-11-20) the split found every course; their text is the plan's (purpose, content, learning outcomes, teaching, coursework, assessment) without staff names
+- A course page is read from `main`: the title, the cohort ("Gjelder BIS25") and the facts box ("Om emnet": English name, programme, credits, semester and term, language, prerequisites) in no section, and the plan's h2s; not the breadcrumb, the facts box's copy in the sidebar and the publication dates. A PDF's course is read as text after its metadata lines (`section_text_header`)
+- ldh.no has no robots.txt (404, read 2026-11-20): nothing disallowed
 
 ---
 
@@ -413,6 +454,15 @@ Figures are in the tables above; the notes say why.
 - A course whose plan is only in English (master's courses at Gjøvik in the pilot sample: IMT4127 2022, IMT4312 2025, MACS490 2025, SMF1081 spring 2022) has a Norwegian page whose course content, and mostly every other part, says only "See English version.", "Se engelsk beskrivelse." or "Se engelsk tekst."; since 2026-10-19 the English page on www.ntnu.edu is fetched instead (`english_page` in the config), with the same layout and English headings. Such a page fetched before gives no plan, though its exam tab would make it one. The 7 pilot offerings were fetched again on 2026-10-19 and got the English plan, as did GEOG2500 spring 2022, autumn 2022 and spring 2023 (3 teacher-education offerings), whose course content says only "Se engelsk tekst."
 - The spring and autumn offerings of a year read the same page, fetched at different times. Between the fetches NTNU reworded the stock credit-overlap note ("Dette emne har …" / "Dette emnet har …") and changed programme lists, so 555 pages gave two plans until 2026-10-13. The admission programme list, the credit-reduction box and the subject areas are now outside the plan id, and the banners ("Nytt fra studieåret …", "Undervises ikke studieåret …") are not read
 - UNIS courses that DBH lists under NTNU (164 course-years of 2026: AB202, AG335, AGF216, AT324, AS101; UNIS publishes them on unis.no) answer "Det finnes ingen informasjon for dette studieåret" (`ntnu_no_info_error`, outcome fetch error), also for 2026/27 (AB202, checked 2026-11-20). They are most of NTNU's 211 fetch errors of 2026; the others are courses DBH marks as discontinued (33) and 8 codes with a variant suffix other than -A (SOL420-B, BØA2020-C, LVUT8005-K), whose page is at the code without it (`/SOL420/2026` has the plan, `/SOL420-B/2026` has no information); the URL builder drops only -A
+
+---
+
+### ONH (Oslo New University College)
+
+- Added 2026-11-20 (all-courses frame); its pilot and full harvest wait. Only the plan in force is published (`plan_years = "current"`; see "Year coverage"): no plan for offerings before the academic year of the first harvest (2026/27; DBH has ONH from 2021)
+- A page per course code, its URL named from the title, code and credits in several spellings (`/Emner/Psykologi-som-fag-og-vitenskap-PSY1120-15-sp`, `/emner/okad3110-Etikk-...-15-sp`, `/digital-markedsforing/emner/okad1110-bedriftsokonomi`); found in the sitemap (`resolve_urls_onh_batch()`). DBH's ØKAD codes are the site's OKAD (or ØKAD, percent-encoded). Against the sitemap of 2026-11-20, 196 of DBH's 234 codes of 2026 have a page; none for most international-studies master's courses (INT6010-INT6940), the psychology master's PSY4410-PSY4430 and PSY6120-PSY6160, the statistics courses (STAT1120, STAT1125, STAT3210), the medical preparatory courses (MB1110-MB1820, "Ungarsk 1", "Ungarsk 2") and "Valgemne 22,5 sp". PSY2281 has two pages ("Fremtidens arbeidsliv 2" and "II"): the first is taken
+- Read from `main > article`: the title, the summary under it, the facts (study form, credits, place, start, exam form) and the plan, "Om emnet:" and accordions ("Innhold i emnet", "Læringsutbytte", "Arbeidskrav og eksamen" with the sub-headings "Arbeidskrav" and "Eksamen"); not the breadcrumb, the price and its notice ("Registreringsavgift og utgifter til materiell kommer i tillegg"), the link to the exam dates, the application form and the sidebar. No staff names on the pages tested
+- robots.txt (oslonyehoyskole.no, read 2026-11-20) disallows only Drupal's defaults
 
 ---
 

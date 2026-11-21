@@ -9,14 +9,15 @@ A new year is harvested with the same code as the first harvest:
 order:
 
 1.  **September-November: the sites that show only the current plan.**
-    UiO, MF, NMBU, NHH, KHiO, Fjellhaug and Steiner replace a plan when
-    the next academic year begins, so a year without a harvest has no
-    plans for them (see “Sites that show only the current plan”).
-    Harvest them in every academic year, whether or not DBH has a new
-    year:
+    UiO, MF, NMBU, NHH, KHiO, Fjellhaug, Oslo Nye Høyskole, Barratt Due
+    and Steiner replace a plan when the next academic year begins, so a
+    year without a harvest has no plans for them (see “Sites that show
+    only the current plan”). Harvest them in every academic year,
+    whether or not DBH has a new year:
 
     ``` r
-    harvest_all(institutions = c("uio", "mf", "nmbu", "nhh", "khio", "fjellhaug", "steiner"))
+    harvest_all(institutions = c("uio", "mf", "nmbu", "nhh", "khio", "fjellhaug", "onh", "barrattdue",
+                "steiner"))
     ```
 
     This fetches again the pages of every course of the latest DBH year
@@ -444,14 +445,31 @@ the longest matching rule wins, `allow` on a tie. Since 2026-10-17:
   before any request to it (`harvest_all()` goes on with the next
   institution): read its robots.txt and add its row first. Only
   `/robots.txt` itself may be requested from a host not in the table.
+- **Redirects are checked hop by hop** (since 2026-11-20, after curl was
+  found to follow `aho.no` to `www.aho.no`, `www.dmmh.no` to
+  `studier.dmmh.no` and a Google Docs export to `googleusercontent.com`
+  unchecked). curl does not follow redirects; `site_perform()`, which
+  performs every `site_request()`, follows each `Location` itself, at
+  most 5 hops, and checks each hop’s host and path as above before
+  requesting it. A hop robots.txt disallows is not requested: the row
+  gets “robots.txt disallows {hop}, redirected from {url}
+  (data/robots_txt.csv): not requested” and the outcome `robots` (the
+  first URL was requested, though the ledger shows no `requested_at`). A
+  hop to a host not in the table stops the harvest of the institution as
+  that host’s own URL would: read the host’s robots.txt, add its row
+  (with the institution whose pages lead there) and harvest again; the
+  page is requested anew. The ledger records the URL requested, not
+  where its redirects ended. Hops follow one another without a pause, so
+  a redirect to a host with a longer `Crawl-delay` than the
+  institution’s `request_delay` needs that delay in the config.
 
 ## Sites that show only the current plan
 
-UiO, MF, NMBU, NHH, KHiO, Fjellhaug and Steiner
-(`plan_years = "current"`) publish only the plan in force, without a
-year in the URL. A harvest therefore holds the plans of the academic
-year (August-July) it was made in, and a later harvest cannot recover
-them. Their raw files are snapshots:
+UiO, MF, NMBU, NHH, KHiO, Fjellhaug, Oslo Nye Høyskole, Barratt Due and
+Steiner (`plan_years = "current"`) publish only the plan in force,
+without a year in the URL. A harvest therefore holds the plans of the
+academic year (August-July) it was made in, and a later harvest cannot
+recover them. Their raw files are snapshots:
 
 - Each harvest of such a site fetches the pages of its latest DBH year
   again and adds them as a dated raw file, stamped `harvested_at`.

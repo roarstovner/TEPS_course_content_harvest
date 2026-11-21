@@ -346,6 +346,91 @@ which leaves most offerings of courses whose plan did not change without the
 plan in force; reading the programme study plans as course plans. *Since:*
 2026-11-04.
 
+**Dronning Mauds Minne Høgskole (DBH code 8224) joins the frame, from
+autumn 2014.** Configured on 2026-11-20 as `dmmh`, after a probe of the
+public plans of six institutions outside the configured ones. *Why:* it
+completes a profession in the all-courses frame: DMMH educates kindergarten
+teachers, and its plans are public HTML pages, one per course and semester,
+at a URL built from DBH's code. *Consequence:* the catalogue starts in
+autumn 2014 (the oldest version seen is of autumn 2015; DMMH sends plans
+before autumn 2017 only by e-mail), so its offerings of 2001-2014 in DBH
+have no plan; a semester without a version of its own gets the latest
+version that starts in or before it, as at INN, and none if the latest
+starts later. Its pilot and full harvest wait for the pilot audits (below).
+*Rejected:* giving DBH's programme variants (`-TD`, `-OV1`, 2017-2018) the
+page of their base code, which may be another programme's plan. *Since:*
+2026-11-20.
+
+**Arkitektur- og designhøgskolen i Oslo (DBH code 1220) joins the frame,
+from 2025.** Configured on 2026-11-20 as `aho`, after the same probe. *Why:*
+it completes a profession in the all-courses frame (architecture, landscape
+architecture and industrial design), and its plans are public HTML pages,
+one per course and semester, laid out as PHS's and listed in the site's
+sitemap. *Consequence:* the pages start with 2025 (three in 2024), so its
+offerings of 2000-2024 in DBH have no plan; of the course-years of 2025, 114
+of 167 have a page in the sitemap of 2026-11-20 (none for the PhD courses
+and the landscape-architecture master's 61-series). Its pilot and full
+harvest wait for the pilot audits (below). *Rejected:* none; no older plans
+are on the site. *Since:* 2026-11-20.
+
+**Oslo Nye Høyskole (DBH code 1407) joins the frame, with the plan in force
+only.** Configured on 2026-11-20 as `onh`, after the same probe. *Why:* it
+adds current plans of a private college's psychology, nutrition,
+international-studies and economics programmes; its plans are public HTML
+pages, one per course code, found in the site's sitemap. *Consequence:* the
+page has no year and shows the plan in force, so ONH is harvested once in
+every academic year as the other current-plan sites, and its offerings
+before 2026/27 (DBH has ONH from 2021) have no plan; 196 of DBH's 234 codes
+of 2026 have a page (none for most master's courses in international
+studies and psychology, the statistics courses and the medical preparatory
+courses). Its pilot and full harvest wait for the pilot audits (below).
+*Rejected:* none; the site has no earlier versions. *Since:* 2026-11-20.
+
+**Barratt Due musikkinstitutt (DBH code 8227) joins the frame, with the plan
+in force only.** Configured on 2026-11-20 as `barrattdue`, after the same
+probe. *Why:* it adds current plans of a private music college (bachelor in
+music performance, the practical-pedagogical education); its plans are
+public HTML pages, one per course, found in the site's studies sitemap.
+*Consequence:* the page has no year and shows the plan in force, so Barratt
+Due is harvested once in every academic year as the other current-plan
+sites, and its offerings before 2026/27 have no plan; 46 of DBH's 71 codes of
+2026 have a page (none for the master's courses, whose programme has only a
+study-plan page). Of a code's two pages the one named by the code alone is
+taken. Its pilot and full harvest wait for the pilot audits (below).
+*Rejected:* reading the master's study-plan page as its courses' plans,
+which would need splitting it by course. Of the six institutions probed,
+NSKI Høyskole (DBH code 1404) is not added: its plans are
+only PDFs on Google Drive, whose download host's robots.txt disallows them.
+*Since:* 2026-11-20.
+
+**Lovisenberg diakonale høgskole (DBH code 8202) joins the frame, with the
+plan of the cohort that has the course in the offering's term.** Configured
+on 2026-11-20 as `ldh`, after the same probe, with its study-plan PDFs split
+into courses (user decision 2026-11-20). *Why:* it adds a nursing college's
+bachelor and its master's and further-education programmes; the bachelor's
+newest cohorts (BIS24-BIS26) have a public page per course, and every other
+plan, the current master's plans too, is a programme study plan (PDF, one per
+programme and cohort) that writes each course out under its DBH code, as
+Steiner's subject PDFs do. *The rule:* a cohort that starts in a term has a
+course in the plan's semesters k1 to k2, which are consecutive terms from
+the cohort's start, so in terms start + k1 - 1 to start + k2 - 1 (BIS25
+starts in autumn 2025 and has BSY-321, its third semester, in autumn 2026;
+MAPRA "Kull V2025" has the master's thesis, semesters 5 and 6, in spring and
+autumn 2027). An offering takes the cohort whose terms hold its term, a
+course page before a PDF; else the cohort that had the course last before
+it (re-sits and delayed students: DBH registers codes of the bachelor plan of
+2019-2023 up to 2025). *Consequence:* plans from the oldest linked cohort,
+autumn 2019 (bachelor; master's from 2021), so DBH's offerings before have
+none; the exchange-practice codes (MOBP), the code variants (BSYP-501B) and
+the further education in palliative care (whose plan names its modules
+without DBH's codes) have no plan; of two plans of one cohort (MAKS
+full-time and part-time, H2022) the first linked is taken. Its pilot and
+full harvest wait for the pilot audits (below). *Rejected:* NMH's rule (the
+cohort that starts in the offering's academic year, which gives a
+second-year course the plan of the cohort that takes it a year later);
+leaving the PDFs out, which would leave every master's course without a
+plan. *Since:* 2026-11-20.
+
 **Samas is excluded:** its website's course codes do not match DBH, and the
 teacher education courses are described only in programme PDFs (decided 2026-02).
 

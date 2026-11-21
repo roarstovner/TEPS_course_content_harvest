@@ -352,6 +352,106 @@ emnet”). The programme pages (`/utdanning/utdanninger/{slug}`) link the
 course pages of their current versions; their study plans are not read.
 Forsvaret’s site has no robots.txt (404) and its sitemap answers 500.
 
+**DMMH.** Dronning Mauds Minne Høgskole’s course catalogue runs on INN’s
+catalogue software (Edutorium, Drupal 7): a page per course and
+semester, `https://studier.dmmh.no/nb/emne/{CODE}/{year}-{host|var}`,
+DBH’s code as it is, built by `add_course_url_dmmh()` from autumn 2014
+(the first semester of the catalogue’s menu). www.dmmh.no’s study-plan
+links redirect there; the URLs go to studier.dmmh.no directly. A
+semester without a version of its own shows the latest version, with or
+without the notice “The course description for the semester you wanted
+is not published yet”; `page_term` reads the version’s first teaching
+semester in the facts list (“Undervisningssemester 2025 høst, 2026 vår”;
+“Teaching semester” on an English page), as at INN. A code without any
+page redirects to the course search
+(`/nb/emne?sem=2017-autumn&title_search=...`), which
+`fetch_html_cols_single_dmmh()` counts as not found. The page is server
+rendered: the title, the facts list, a table of contents, h2 sections
+(“Emneinnhold”, “Læringsutbytte”, “Pensumliste”, “Arbeids- og
+læringsaktiviteter”, “Karakterskala”, “Informasjon om eksamen/vurdering
+i emnet”) and two tables without an h2, coursework and assessment, each
+twice: a wide copy and a narrow one under a `div.label` (“Obligatoriske
+arbeidskrav:”, “Vurderinger:”), of which the narrow one is read. Courses
+taught in English have English pages under `/nb/` (“Readinglist”,
+“Working and learning activities”, “Evaluation”; `section_headings` in
+the config). robots.txt asks a Crawl-delay of 10 seconds.
+
+**AHO.** Arkitektur- og designhøgskolen i Oslo’s course pages are FS
+pages in Vortex, laid out as PHS’s (title with its semester, facts list,
+programme list, h2 sections, in `#vrtx-content`):
+`https://www.aho.no/studier/emner/{year}/{var|host}/{code}.html`, or
+`/english/studies/courses/{year}/{spring|autumn}/{code}.html` for a
+course taught in English (one code can have both). The code is DBH’s in
+lower case with a dash for its space (“40 333” at `40-333.html`, “MURB9”
+at `murb9.html`). Pages start with 2025 (2024: three pages; 2023 answers
+404) and the folders run to 2029 (checked 2026-11-20). The sitemap,
+`https://www.aho.no/sitemap.xml`, lists every course page, the pages of
+the year folders’ listings too, so `resolve_urls_aho_batch()` reads it
+once (`aho_course_index()`) and matches the codes as at PHS
+(`vortex_match_urls()`): a spring offering without a page takes the
+autumn before’s, which serves it only if its title names both semesters.
+aho.no redirects to www.aho.no, which the URLs name directly. robots.txt
+disallows only `/vrtx`.
+
+**ONH.** Oslo Nye Høyskole shows only the plan in force
+(`plan_years = "current"`), one page per course code (Drupal), at a URL
+named from the title, the code and the credits, spelled in several ways:
+`https://oslonyehoyskole.no/Emner/{Title}-{CODE}-{credits}-sp` mostly
+(7.5 credits as `75`), also `-15sp`, `-15-ECT`, the code first
+(`/emner/okad3110-Etikk-...`), the code with Ø (`%C3%98KAD1150`), and a
+few pages under a programme
+(`/digital-markedsforing/emner/okad1110-bedriftsokonomi`) (checked
+2026-11-20). The sitemap lists them; `resolve_urls_onh_batch()` takes
+the page whose path has the offering’s code as a part between dashes or
+slashes, upper case with Ø as O. The page: title, a summary, a facts row
+(study form, credits, price), a facts table (admission, place, start,
+exam form), “Om emnet:” and accordions with h2 headings, in the last
+(“Arbeidskrav og eksamen”) h3 sub-headings “Arbeidskrav” and “Eksamen”;
+English pages have “About the Course:”, “Learning outcomes”,
+“Assessment” with “Requirement” and “Exam”. robots.txt disallows only
+Drupal’s defaults.
+
+**Barratt Due.** Barratt Due musikkinstitutt shows only the plan in
+force (`plan_years = "current"`), one page per course under its
+programme (WordPress):
+`https://barrattdue.no/studier/hoyere-utdanning/{programme}/{code}/`,
+the code in lower case with Ø as “oe” (`hoer1100/` for HØR1100), some
+with the title after the code
+(`valgemner/nokv5100-norske-kvinnelige-utovere-og-komponister/`), and
+courses taught in English also under `/en/studier/` (checked
+2026-11-20). The studies sitemap, `studier-sitemap.xml`, lists them;
+`resolve_urls_barrattdue_batch()` takes the page whose path has the code
+as a part (`code_in_path()`, shared with ONH), Norwegian before English,
+the page named by the code alone before one with a suffix
+(`verk2100-2025/` is the version for students up to 2025/26). The page:
+the code as h1 and the name under it, three columns with h4 headings
+(“Kort om emnet”, the facts; “Læringsutbytte”; “Undervisning og
+læringsformer”), then “Mer om emnet” (h2) over accordions with h3
+headings. The master’s programme has a study-plan page and no course
+pages. robots.txt disallows nothing.
+
+**LDH.** Lovisenberg diakonale høgskole publishes a plan per programme
+cohort (Enonic XP; checked 2026-11-20). The bachelor in nursing has a
+page per course and cohort for the cohorts BIS24-BIS26,
+`https://ldh.no/studietilbud/bachelor-i-sykepleie/emnerBIS/emnerBIS25/bsy-321`
+(16 a cohort, in the sitemap), with a facts box that names the course’s
+semester and term (“3. semester: høst 2026”) and h2 sections (“Hensikt”,
+“Innhold”, “Læringsutbytte”, “Obligatorisk aktivitet”,
+“Vurderings-/eksamensform og vurderingsuttrykk”). Every other plan is a
+programme study plan as a PDF, one per programme and cohort (“Kull
+H2024”, “Kull V2025”; the bachelor’s “BIS21”), linked from the programme
+pages (`/studietilbud/masterstudier/...`,
+`/studietilbud/videreutdanninger/...`) and the page of earlier plans,
+which writes each course out under a heading line that starts with its
+code, followed by “Engelsk emnenavn”, the credits, “Semester: 2” and the
+plan’s parts. `harvest_cohort_plans()` reads the index of both
+(`ldh_plan_index()`: the sitemap, the programme pages and every study
+plan, each harvest anew), splits the PDFs (`ldh_pdf_courses()`) and
+gives each offering the cohort that has the course in its term
+(`cohort_plan_match()`; the rule is in `data/data_notes.md`, LDH). The
+course pages are fetched as pages; a PDF’s course is stored as its text,
+with the PDF’s bytes on its first row.
+
 **USN.** The URL holds a version number that metadata cannot give:
 `https://www.usn.no/studier/studie-og-emneplaner/#/emne/{CODE}_{VERSION}_{YEAR}_{SEMESTER}`.
 Each version (1, 2, 3, …) is a revision valid for a range of years, and

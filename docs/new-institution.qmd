@@ -293,7 +293,9 @@ resolver of its own.
 **The plans are in PDFs or in JSON.** The strategies other than `standard`
 and `url_discovery` are written for one institution each: `html_pdf_discovery`
 (UiS: the semester menu, then an HTML page or a PDF), `pdf_split` (Steiner: a
-PDF per subject, split into courses), `json_extract` (NLA: the plan in the
+PDF per subject, split into courses), `cohort_plans` (LDH: a plan per
+programme cohort, as course pages or study-plan PDFs split into courses),
+`json_extract` (NLA: the plan in the
 page's JSON), `shadow_dom` (USN) and `noop` (Samas: nothing to fetch). A
 site like one of them needs a strategy function of its own in
 `R/harvest_strategies.R`, modelled on it, and a case in the `switch()` of

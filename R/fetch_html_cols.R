@@ -405,6 +405,19 @@ fetch_html_cols_single_hvl <- function(url) {
   resp
 }
 
+# DMMH: a code without any plan, or a semester before the catalogue's
+# first (autumn 2014), redirects to the course search
+# (/nb/emne?sem=2017-autumn&title_search=MATE2010; checked 2026-11-20).
+# A page without the facts list counts as not found.
+fetch_html_cols_single_dmmh <- function(url) {
+  resp <- site_request(url) |> site_perform()
+  if (!grepl("<ul id=[\"']facts[\"']", httr2::resp_body_string(resp))) {
+    rlang::abort("Course search instead of a plan (soft 404)", class = "dmmh_not_found_error",
+                 http_status = httr2::resp_status(resp))
+  }
+  resp
+}
+
 # KHiO: a course version no longer taught keeps its page with the title, the
 # facts list and the plan's headings, and no text under them (KK202-3,
 # checked 2026-11-01). Such a page counts as not found.
