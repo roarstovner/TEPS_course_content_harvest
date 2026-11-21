@@ -1,0 +1,9 @@
+{
+  "check": "anonymization",
+  "institution": "dmmh",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 18,
+  "overall_assessment": "Reviewed all material supplied for 28 courses (18 suspects and 10 random controls): no confirmed personal-data leaks, administrative dates left behind, content over-removal, or damaging text/structure changes were found. The name_like flags reflect course/programme titles, organisations and literature-related text; the admin_date flag identifies a correctly preserved law amendment date, and visible phone matches are DOI identifiers rather than telephone numbers (the phone flag for MVSTY6000 cannot be resolved from the capped course text). Removed spans consistently concern semester/academic years and clock times; the random controls show the same appropriate behaviour, subject to the packet's stated truncation limits.",
+  "findings": []
+}

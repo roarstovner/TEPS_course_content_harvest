@@ -1,0 +1,40 @@
+{
+  "check": "fulltext",
+  "institution": "ldh",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 2,
+  "overall_assessment": "The 28 packet entries generally contain readable, course-specific plans, but one PDF course includes a substantial programme-wide appendix and four retain standalone page numbers. Both year flags correctly identify earlier HTML plans already excluded from the build, so neither is a finding; cohort PDFs for delayed/resit offerings do not by themselves establish a wrong-year error. No other clear content loss, wrong-page extraction or structural failure is evident in the supplied material; PDF completeness cannot be compared against stored pages.",
+  "findings": [
+    {
+      "target": "whole_text",
+      "error_type": "junk_included",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "ldh_BSYP-503-1_2025_autumn_1"
+      ],
+      "evidence": "Studiets overordnede læringsutbytter\n\nForskrift om nasjonal retningslinje for sykepleierutdanning –\nkompetanseområder og overordnede læringsutbytter:",
+      "description": "The BIS23 BSYP-503 extract continues after its completed assessment section into programme-wide learning outcomes and statutory competence areas. Its 14,664 characters therefore include substantial material outside this course plan. The other two sampled BSYP-503 cohort extracts end at the course assessment, supporting an isolated PDF boundary failure rather than course content.",
+      "root_cause_hypothesis": "R/harvest_strategies.R: ldh_pdf_courses() ends a course at the next course heading, an uppercase programme heading, Referanser or Vedlegg. The mixed-case heading \"Studiets overordnede læringsutbytter\" does not match its uppercase stop pattern, so the final course absorbs the following programme appendix.",
+      "suggested_fix": "In ldh_pdf_courses(), add an anchored, case-insensitive stop heading for \"Studiets overordnede læringsutbytter\" when calculating course boundaries, then rebuild the LDH PDF extracts and downstream data.",
+      "confidence": "high"
+    },
+    {
+      "target": "page_chrome",
+      "error_type": "junk_included",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "ldh_MALSY-100-1_2025_autumn_1",
+        "ldh_VIB-101-1_2025_autumn_2",
+        "ldh_MOPNA-100-1_2025_autumn_1"
+      ],
+      "evidence": "   •   inngående kunnskap om anatomi, inkludert struktur og funksjon av organer og vev\n\n                                                                                          16",
+      "description": "Standalone PDF page numbers interrupt otherwise readable plan text in four controls: MALSY-100 (18–20), VIB-101 (14–15), MOPSY-100 (13–15), and MOPNA-100 (16–17). Unlike the running programme/update lines explicitly listed as removed, these numbers are absent from the packet's anonymizer removal lists and remain extraction noise.",
+      "root_cause_hypothesis": "R/harvest_strategies.R: ldh_pdf_courses() removes footer lines containing text followed by a separated number, but does not remove a number printed alone on its own line. LDH has no institution-specific anonymizer that strips standalone PDF page numbers.",
+      "suggested_fix": "In ldh_pdf_courses(), remove lines matching ^[ \\t]*[0-9]{1,3}[ \\t]*$ from each PDF page before concatenation, preferably restricted to the page margin/footer region, and rebuild the extracts.",
+      "confidence": "high"
+    }
+  ]
+}

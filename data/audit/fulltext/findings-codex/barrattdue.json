@@ -1,0 +1,24 @@
+{
+  "check": "fulltext",
+  "institution": "barrattdue",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 2,
+  "overall_assessment": "Extraction is substantially complete and clean across all 28 sampled plans: facts boxes and course sections retain readable structure, and uncaptured text consists of breadcrumbs or redundant course titles. Both long flags (DID1 and DID2) are false alarms caused by detailed subcourse descriptions; their truncation markers are packet display limits, and current-plan handling gives no evidence of wrong-year content. One random control has a minor split-word formatting defect; internal editorial inconsistencies do not establish wrong-page selection or extraction-induced duplication.",
+  "findings": [
+    {
+      "target": "learning_outcomes",
+      "error_type": "formatting",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "barrattdue_VERK2100-1_2026_autumn_1"
+      ],
+      "evidence": "Læringsutbytte\nS\n\ntudenter som har fullført emnet må kunne vise til følgende:",
+      "description": "The opening word Studenter is split into an isolated S and a separate paragraph beginning tudenter. This is a cosmetic readability defect in an otherwise complete learning-outcomes section, found in one of the 28 reviewed plans.",
+      "root_cause_hypothesis": "The source likely separates the initial letter from the remaining text with block markup. R/blocks.R (.html_text2() / .blocks_text()) preserves those boundaries, and the Barratt Due configuration has no normalization for this split; the packet does not establish whether the break also appears visually on the source page.",
+      "suggested_fix": "Add a narrowly scoped Barratt Due post_fn in R/institution_config.R that replaces the exact sequence Læringsutbytte\\nS\\n\\ntudenter with Læringsutbytte\\nStudenter, preserving other paragraph boundaries, then rebuild extracted_text.",
+      "confidence": "high"
+    }
+  ]
+}

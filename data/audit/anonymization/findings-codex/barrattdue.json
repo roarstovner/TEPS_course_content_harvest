@@ -1,0 +1,24 @@
+{
+  "check": "anonymization",
+  "institution": "barrattdue",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 4,
+  "overall_assessment": "All 28 packet courses were reviewed, including all four suspects; no personal-data leaks, content over-removal, or anonymization-induced corruption were found in the displayed material. The name_like flags are false alarms involving reference authors and titles in HIST1100, repertoire/composer names and titles in PNOS5100, Ole Bull Akademiet in HIST2100, and Høyskolen Barratt Due in KKOR5100. One random control retains an administrative quality-system validity range; recurring yearless submission deadlines are explicitly retained pending a decision in R/anonymize.R, and the packet-truncated DID1/DID2 text was reviewed in full as displayed.",
+  "findings": [
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "barrattdue_PED2-1_2026_autumn_1"
+      ],
+      "evidence": "Emnet evalueres i henhold til Kvalitetssikringssystem for Høyskolen Barratt Due 2023-2027",
+      "description": "PED2 retains the institution quality-system validity range 2023-2027 in its evaluation clause (1 of 28 reviewed courses). This dates an internal administrative policy, rather than course subject matter, a literature publication, or a government document, and should be removed under the administrative-dating rubric. The pre-pass did not flag it.",
+      "root_cause_hypothesis": "R/anonymize.R has no barrattdue-specific handler. The generic year-range replacement delegates to .drop_academic_year(), which removes only consecutive years, so the four-year internal quality-system validity range survives; the administrative-keyword rules also do not cover this context.",
+      "suggested_fix": "Add a barrattdue handler in R/anonymize.R that removes a trailing YYYY-YYYY validity range specifically from lines naming the institution Kvalitetssikringssystem, preserving the evaluation clause and institution name. Add a regression case for this exact line and a preservation case for historical content ranges such as 1800-2000.",
+      "confidence": "high"
+    }
+  ]
+}

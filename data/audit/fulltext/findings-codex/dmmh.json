@@ -1,0 +1,9 @@
+{
+  "check": "fulltext",
+  "institution": "dmmh",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "Reviewed all 25 course-text entries (20 suspects and five random controls) and all three failed-fetch entries; no reportable fulltext defects were established, and the six retained plans preserve the available plan content and readable structure without page chrome. All 19 year-flagged pages correctly have no plan in the build because their teaching semesters start after the offering; uncaptured flags reflect tables already preserved as labelled fields, Unicode differences, and omitted staff/editor/date metadata, while the long flag concerns a legitimately detailed plan already excluded for its later version. The five random controls reveal no additional omissions, duplication, formatting defects or wrong plans, and the three soft-404 URLs follow the expected pattern for discontinued courses with no evidence that a suitable historical page was missed.",
+  "findings": []
+}

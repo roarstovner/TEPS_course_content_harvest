@@ -1,0 +1,9 @@
+{
+  "check": "fulltext",
+  "institution": "onh",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 2,
+  "overall_assessment": "No reportable fulltext defects were established in the 28-course packet: all sampled pages are excluded from the build because the pilot pages belong to 2026/2027 and the sampled offerings precede that academic year, with no evidence that these exclusions are incorrect. The INT1140 year flag mistakes the historical reference to the 2007-08 financial crisis for a plan year, while MB1221 is genuinely concise and captures the available description, learning outcomes, teaching, coursework and examination text. The 26 random controls reveal no additional fetch or exclusion problems; under the recipe, noise or formatting in these excluded pages is not a finding, so this sample cannot establish the quality of plans retained in the build.",
+  "findings": []
+}

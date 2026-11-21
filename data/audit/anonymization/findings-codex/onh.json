@@ -1,0 +1,38 @@
+{
+  "check": "anonymization",
+  "institution": "onh",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 12,
+  "overall_assessment": "All 28 packet entries were read in full, including their removal spans; INT1140 contains a packet truncation marker. All 12 name_like flags are false alarms caused by legitimate subject-matter names, place and organisation names, course titles, or capitalised English phrases; no private-person names, contact details, or contact blocks were found. Anonymization generally preserves the content, but one suspect loses a historical year range and one random control retains a course-title revision date; the other 15 random controls show no confirmed anonymization defect.",
+  "findings": [
+    {
+      "target": "content_text",
+      "error_type": "over_removal",
+      "severity": "medium",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "onh_INT1140_2026_spring_1"
+      ],
+      "evidence": "… landene, ikke minst i etterkant av [−2007-08.−] finanskrisen. I introduksjonsfaget i internasjonal historie …",
+      "description": "The historical dating of the financial crisis, 2007-08, is removed. This is a content year range that the rubric requires keeping, rather than an academic year. The name_like flag is unrelated and is a false alarm; this content loss was found by reviewing the removed spans.",
+      "root_cause_hypothesis": "R/anonymize.R: .anon_generic() applies .drop_academic_year() to consecutive year ranges from 1990 onward. The .running_text_year guard and .year_cue allow removal after the preposition i and at a sentence ending, so finanskrisen i 2007-08 is misclassified as administrative dating.",
+      "suggested_fix": "Require an explicit academic-year, semester, cohort, or administrative cue before removing a consecutive year range from running prose; a bare i/in before a sentence-final range should not suffice. Preserve the range and preceding words in finanskrisen i 2007-08, and add a regression case alongside a genuine studieåret 2007-08 removal case.",
+      "confidence": "high"
+    },
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "onh_INT2210_2026_spring_1"
+      ],
+      "evidence": "* Emnets tittel ble endret i juni 2019. Tittel gjeldende frem til endring var Global sikkerhet.",
+      "description": "The month and year of an administrative course-title revision survive in the anonymized plan. juni 2019 dates a change to the course record, not historical subject matter or a publication. This random control has no pre-pass flag, demonstrating a blind spot in administrative-date detection.",
+      "root_cause_hypothesis": "ONH has no institution-specific handler. The generic administrative-year rule expects a year immediately after a limited keyword set, while other month-year rules cover specific approval or revision-stamp layouts. The prose form Emnets tittel ble endret i juni 2019 is not covered.",
+      "suggested_fix": "Extend .anon_generic() with a bounded administrative revision pattern for Emnets tittel ble endret i followed by a month and year. Remove the date with its preceding i while retaining the title-history text, and add this sentence as a regression case without broadening removal to historical month-year references.",
+      "confidence": "high"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "check": "fulltext",
+  "institution": "aho",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 0,
+  "overall_assessment": "All 28 random controls were read in full as presented in the packet; no confirmed fulltext extraction defects were found, consistent with the absence of pre-pass flags. Retained plans preserve the course sections, facts and readable structure, while uncaptured text consists of breadcrumbs, course-leader names and FS update timestamps; isolated repeated programme labels and stale dates within otherwise correctly titled plans do not establish an extraction or wrong-page error. The autumn 2024 plan linked to a spring 2025 offering is correctly excluded from the build, and the packet does not establish that a valid replacement URL was missed.",
+  "findings": []
+}

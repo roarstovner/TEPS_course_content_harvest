@@ -1,0 +1,25 @@
+{
+  "check": "anonymization",
+  "institution": "ldh",
+  "model": "gpt-6.1-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 0,
+  "overall_assessment": "All 28 random controls were reviewed in full as presented in the packet; there were no suspects or pre-pass flags to adjudicate. No personal-data leaks, substantive content loss, or anonymization-induced structure damage were visible: dated semester and update stamps were removed, undated season words were preserved, and programme names remained intact despite apparent word removals in the footer diffs. The only observed gap is the apparent cohort-year applicability stamp “Gjelder BIS24”, retained in two courses and missed by the pre-pass.",
+  "findings": [
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "ldh_BSY-221-1_2025_autumn_1",
+        "ldh_BSYP-220-1_2025_autumn_1"
+      ],
+      "evidence": "Gjelder BIS24",
+      "description": "Both plans retain this standalone applicability line. BIS24 appears to identify the 2024 nursing cohort, so the line preserves administrative dating in an encoded cohort label even though the explicit “semester: vår 2025” value is removed. This is a minor dating residue, rather than personal data; the cohort-year interpretation is inferred from the label and context.",
+      "root_cause_hypothesis": "LDH has no institution-specific handler in R/anonymize.R. The generic rules cover explicit administrative years and H/V semester codes but do not recognize the standalone LDH cohort label “Gjelder BIS24”.",
+      "suggested_fix": "Add a narrowly scoped LDH rule removing standalone applicability lines matching ^[ \\t]*Gjelder BIS[0-9]{2}[ \\t]*$ in multiline mode; preserve programme and course codes elsewhere. Extend the admin-date pre-pass to recognize this same cohort-stamp format.",
+      "confidence": "medium"
+    }
+  ]
+}
