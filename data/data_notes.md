@@ -1,12 +1,15 @@
 # Data Quality Notes
 
 
-Generated: 2026-11-20
+Generated: 2026-11-21
 
 ## Overview
 
 | Institution | Rows | Codes | Years | Extracted OK | Rate | Median chars | Unique plans | Dedup % |
 |:---|---:|---:|:---|---:|:---|---:|---:|:---|
+| aho | 168 | 100 | 2025 | 72 | 42.9% | 3446 | 66 | 7.0% |
+| barrattdue | 136 | 71 | 2026 | 46 | 33.8% | 2668 | 46 | 0.0% |
+| dmmh | 196 | 85 | 2015-2025 | 150 | 76.5% | 5304 | 69 | 8.0% |
 | fhs | 6752 | 1040 | 2017-2026 | 2384 | 35.3% | 4522 | 997 | 58.2% |
 | fjellhaug | 1064 | 295 | 2025-2026 | 212 | 19.9% | 4648 | 151 | 28.8% |
 | himolde | 9468 | 979 | 2017-2026 | 4188 | 44.2% | 2918 | 2277 | 21.0% |
@@ -15,6 +18,7 @@ Generated: 2026-11-20
 | hvl | 45232 | 4983 | 2017-2026 | 32579 | 72.0% | 3815 | 15081 | 53.6% |
 | inn | 31672 | 3427 | 2018-2026 | 17469 | 55.2% | 3647 | 3802 | 41.1% |
 | khio | 896 | 356 | 2025-2026 | 347 | 38.7% | 1992 | 328 | 5.5% |
+| ldh | 189 | 80 | 2019-2025 | 39 | 20.6% | 3183 | 24 | 35.1% |
 | mf | 1233 | 348 | 2025-2026 | 346 | 28.1% | 3504 | 317 | 7.8% |
 | nhh | 1511 | 698 | 2025-2026 | 455 | 30.1% | 4111 | 425 | 1.6% |
 | nih | 12793 | 1460 | 1990-2026 | 652 | 5.1% | 2420 | 578 | 10.5% |
@@ -23,6 +27,7 @@ Generated: 2026-11-20
 | nmh | 10026 | 1000 | 2021-2026 | 5174 | 51.6% | 3205 | 1164 | 76.1% |
 | nord | 39221 | 5419 | 2016-2026 | 36217 | 92.3% | 3298 | 9169 | 58.4% |
 | ntnu | 266689 | 22376 | 1997-2026 | 180919 | 67.8% | 2837 | 63785 | 64.5% |
+| onh | 100 | 100 | 2026 | 0 | 0.0% | NA | 0 | NaN% |
 | oslomet | 37353 | 4113 | 2018-2026 | 37353 | 100.0% | 3939 | 12745 | 59.3% |
 | phs | 2589 | 321 | 2021-2026 | 316 | 12.2% | 3800 | 154 | 31.6% |
 | samas | 519 | 209 | 2025-2026 | 0 | 0.0% | NA | 0 | NaN% |
@@ -35,7 +40,7 @@ Generated: 2026-11-20
 | usn | 42755 | 5504 | 2018-2026 | 14954 | 35.0% | 5910 | 13994 | 6.3% |
 | vid | 5312 | 995 | 2023-2026 | 1308 | 24.6% | 3672 | 848 | 31.7% |
 
-**Total**: 949207 rows, 493002 with extracted text (51.9%), 222305
+**Total**: 949996 rows, 493309 with extracted text (51.9%), 222511
 unique plans.
 
 **Columns:**
@@ -57,14 +62,18 @@ Sites that show only the plan in force (`plan_years = "current"` in
 academic year only. Each harvest is kept, and an offering gets the plan
 from a harvest made in its own academic year, or none
 (`docs/harvesting.md` “Sites that show only the current plan”). In this
-data the harvests are of 2026-04-04 (2025/26: autumn 2025 offerings) and
-2026-09-30 (2026/27: no DBH offerings yet), so spring 2025 offerings
-(2024/25) have no plan at these sites. They are . The others have
-historical plans as far back as the site still serves them. Share of
-offerings with a plan, by period:
+data their plans come from the harvests of 2025/26 (2026-04-04, 195
+offerings) and 2026/27 (2026-10-17 to 2026-11-21, 6381 offerings), so
+their offerings of other academic years have no plan. They are
+barrattdue, fjellhaug, khio, mf, nhh, nmbu, onh, samas, steiner, uio.
+The others have historical plans as far back as the site still serves
+them. Share of offerings with a plan, by period:
 
 | Institution | –2014 | 2015–17 | 2018–19 | 2020–21 | 2022–23 | 2024– |
 |:------------|:------|:--------|:--------|:--------|:--------|:------|
+| aho         |       |         |         |         |         | 43%   |
+| barrattdue  |       |         |         |         |         | 34%   |
+| dmmh        |       | 35%     | 78%     |         | 96%     | 96%   |
 | fhs         |       | 0%      | 5%      | 34%     | 79%     | 85%   |
 | fjellhaug   |       |         |         |         |         | 20%   |
 | himolde     |       | 0%      | 38%     | 49%     | 53%     | 49%   |
@@ -73,6 +82,7 @@ offerings with a plan, by period:
 | hvl         |       | 34%     | 73%     | 72%     | 74%     | 83%   |
 | inn         |       |         | 0%      | 0%      | 100%    | 100%  |
 | khio        |       |         |         |         |         | 39%   |
+| ldh         |       |         | 0%      |         | 26%     | 38%   |
 | mf          |       |         |         |         |         | 28%   |
 | nhh         |       |         |         |         |         | 30%   |
 | nih         | 0%    | 0%      | 0%      | 0%      | 13%     | 33%   |
@@ -81,6 +91,7 @@ offerings with a plan, by period:
 | nmh         |       |         |         | 27%     | 54%     | 57%   |
 | nord        |       | 77%     | 92%     | 97%     | 99%     | 99%   |
 | ntnu        | 45%   | 70%     | 88%     | 92%     | 93%     | 93%   |
+| onh         |       |         |         |         |         | 0%    |
 | oslomet     |       |         | 100%    | 100%    | 100%    | 100%  |
 | phs         |       |         |         | 0%      | 4%      | 23%   |
 | samas       |       |         |         |         |         | 0%    |
@@ -114,6 +125,9 @@ year) that have a plan in at least one semester:
 
 | Institution | Course-years | Both semesters in DBH | Both reg., plan in one | Both reg., plan in both | Both reg., no plan | Course-years with plan | Row rate |
 |:---|---:|:---|---:|---:|---:|:---|:---|
+| aho | 100 | 68% | 51 | 3 | 14 | 68% | 42.9% |
+| barrattdue | 71 | 92% | 42 | 0 | 23 | 65% | 33.8% |
+| dmmh | 100 | 96% | 62 | 6 | 28 | 69% | 76.5% |
 | fhs | 3609 | 87% | 15 | 1080 | 2048 | 36% | 35.3% |
 | fjellhaug | 552 | 93% | 202 | 0 | 310 | 38% | 19.9% |
 | himolde | 4985 | 90% | 2314 | 165 | 2004 | 54% | 44.2% |
@@ -122,6 +136,7 @@ year) that have a plan in at least one semester:
 | hvl | 23994 | 89% | 4295 | 13286 | 3657 | 80% | 72.0% |
 | inn | 16658 | 90% | 3990 | 950 | 10074 | 33% | 55.2% |
 | khio | 452 | 98% | 341 | 0 | 103 | 77% | 38.7% |
+| ldh | 100 | 89% | 7 | 12 | 70 | 25% | 20.6% |
 | mf | 640 | 93% | 274 | 26 | 293 | 50% | 28.1% |
 | nhh | 775 | 95% | 432 | 0 | 304 | 56% | 30.1% |
 | nih | 7265 | 76% | 516 | 26 | 4986 | 9% | 5.1% |
@@ -130,6 +145,7 @@ year) that have a plan in at least one semester:
 | nmh | 5125 | 96% | 388 | 2169 | 2344 | 53% | 51.6% |
 | nord | 21236 | 85% | 1066 | 9639 | 7280 | 58% | 92.3% |
 | ntnu | 137222 | 72% | 8289 | 68264 | 21754 | 69% | 67.8% |
+| onh | 100 | 0% | 0 | 0 | 0 | 0% | 0.0% |
 | oslomet | 19751 | 89% | 2224 | 13808 | 1570 | 89% | 100.0% |
 | phs | 1352 | 91% | 140 | 35 | 1062 | 14% | 12.2% |
 | samas | 273 | 90% | 0 | 0 | 246 | 0% | 0.0% |
@@ -158,6 +174,9 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 
 | Institution | Without plan | 404 | No URL | Fetch error | Page, no plan | No page | Between plans |
 |:---|---:|---:|---:|---:|---:|---:|---:|
+| aho | 31 | 0 | 31 | 0 | 0 | 0 | 0 |
+| barrattdue | 25 | 0 | 25 | 0 | 0 | 0 | 0 |
+| dmmh | 31 | 24 | 0 | 0 | 7 | 0 | 0 |
 | fhs | 2298 | 8 | 2290 | 0 | 0 | 0 | 4 |
 | fjellhaug | 340 | 0 | 138 | 0 | 0 | 202 | 0 |
 | himolde | 2227 | 0 | 2156 | 0 | 318 | 0 | 123 |
@@ -166,6 +185,7 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 | hvl | 4772 | 4748 | 0 | 0 | 41 | 0 | 29 |
 | inn | 11074 | 0 | 7408 | 0 | 3666 | 0 | 74 |
 | khio | 105 | 0 | 0 | 0 | 0 | 105 | 0 |
+| ldh | 75 | 0 | 75 | 0 | 0 | 0 | 0 |
 | mf | 322 | 0 | 0 | 0 | 2 | 320 | 0 |
 | nhh | 343 | 0 | 262 | 0 | 23 | 58 | 0 |
 | nih | 6568 | 6521 | 0 | 44 | 6 | 0 | 6 |
@@ -174,6 +194,7 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 | nmh | 2330 | 0 | 2211 | 0 | 154 | 0 | 0 |
 | nord | 8763 | 1577 | 0 | 147 | 7039 | 0 | 0 |
 | ntnu | 42648 | 2474 | 0 | 40040 | 642 | 0 | 23 |
+| onh | 100 | 0 | 18 | 0 | 0 | 82 | 0 |
 | oslomet | 2264 | 0 | 0 | 0 | 2264 | 0 | 17 |
 | phs | 1155 | 24 | 1150 | 0 | 73 | 0 | 0 |
 | samas | 273 | 0 | 273 | 0 | 0 | 0 | 0 |
@@ -225,6 +246,9 @@ All years, by institution:
 
 | Institution | Some year provisional | All | With students | With exam registrations and credits |
 |:---|:---|:---|:---|:---|
+| aho | FALSE | 68 / 100 (68%) |  |  |
+| barrattdue | TRUE | 46 / 71 (65%) |  |  |
+| dmmh | FALSE | 69 / 100 (69%) |  |  |
 | fhs | TRUE | 1304 / 3609 (36%) | 885 / 1511 (59%) | 733 / 1223 (60%) |
 | fjellhaug | TRUE | 212 / 552 (38%) | 68 / 219 (31%) | 0 / 108 (0%) |
 | himolde | TRUE | 2716 / 4985 (54%) | 2376 / 3119 (76%) | 2087 / 2692 (78%) |
@@ -233,6 +257,7 @@ All years, by institution:
 | hvl | TRUE | 19220 / 23994 (80%) | 15161 / 16474 (92%) | 12845 / 13585 (95%) |
 | inn | TRUE | 5502 / 16658 (33%) | 4162 / 12163 (34%) | 2972 / 10132 (29%) |
 | khio | TRUE | 347 / 452 (77%) | 226 / 316 (72%) | 0 / 79 (0%) |
+| ldh | FALSE | 25 / 100 (25%) |  |  |
 | mf | TRUE | 318 / 640 (50%) | 139 / 318 (44%) | 22 / 167 (13%) |
 | nhh | TRUE | 432 / 775 (56%) | 169 / 261 (65%) | 0 / 49 (0%) |
 | nih | TRUE | 620 / 7265 (9%) | 522 / 4995 (10%) | 389 / 4291 (9%) |
@@ -241,6 +266,7 @@ All years, by institution:
 | nmh | TRUE | 2702 / 5125 (53%) | 1716 / 2251 (76%) | 1069 / 1306 (82%) |
 | nord | TRUE | 12381 / 21236 (58%) | 9068 / 14082 (64%) | 7359 / 11484 (64%) |
 | ntnu | TRUE | 94079 / 137222 (69%) | 71547 / 103004 (69%) | 62130 / 87313 (71%) |
+| onh | TRUE | 0 / 100 (0%) |  |  |
 | oslomet | TRUE | 17487 / 19751 (89%) | 14386 / 14995 (96%) | 12103 / 12335 (98%) |
 | phs | TRUE | 190 / 1352 (14%) | 142 / 611 (23%) | 116 / 456 (25%) |
 | samas | TRUE | 0 / 273 (0%) | 0 / 94 (0%) | 0 / 8 (0%) |
@@ -300,6 +326,111 @@ the harvest’s user agent.
 ## Per-Institution Notes
 
 Figures are in the tables above; the notes say why.
+
+------------------------------------------------------------------------
+
+### AHO (Oslo School of Architecture and Design)
+
+- Added 2026-11-20 (all-courses frame); its pilot and full harvest wait.
+  Course pages from 2025 (three pages in 2024, none before; checked
+  2026-11-20), so DBH’s offerings of 2000-2024 have no plan. A page per
+  course and semester,
+  `https://www.aho.no/studier/emner/{year}/{var|host}/{code}.html`, or
+  in the English tree `/english/studies/courses/{year}/{spring|autumn}/`
+  for a course taught in English; found in the sitemap
+  (`resolve_urls_aho_batch()`), DBH’s code with a space as the page’s
+  with a dash (“40 333” at `40-333.html`)
+- Against the sitemap of 2026-11-20, 114 of DBH’s 167 course-years of
+  2025 and 151 of 160 of 2026 have a page. Of the 53 course-years of
+  2025 without one, 37 have no page in any year (the PhD courses,
+  PHD-FRAMING, PHD-READING; the Master of Landscape Architecture’s
+  61-series; 85 301) and 16 only in another year. DBH registers most
+  courses in both semesters, the site in the semester taught: the other
+  semester gets no page
+- Read from `#vrtx-content`, as at PHS: the title (with its semester,
+  `page_term`), the facts list (credits, department, semester, language,
+  level, duration) and the programme list, in no section, and the plan’s
+  h2s (“Emnets innhold”, “Læringsutbytte for emnet”,
+  “Undervisningsmetode for emnet”, “Beskrivelse av eksamen for kurset”;
+  on English pages “Course description”, “Learning Outcome”, “Teaching”,
+  “Examination”); not the course leaders (“Emneansvarlig”, “Course
+  Leaders”), the reading-list link (Leganto), the table of contents’
+  heading and the FS fetch stamp
+- robots.txt (www.aho.no, read 2026-11-20) disallows only `/vrtx`, which
+  the harvest does not request
+
+------------------------------------------------------------------------
+
+### Barratt Due (Barratt Due Institute of Music)
+
+- Added 2026-11-20 (all-courses frame); its pilot and full harvest wait.
+  Only the plan in force is published (`plan_years = "current"`; see
+  “Year coverage”): no plan for offerings before the academic year of
+  the first harvest (2026/27; DBH has Barratt Due from 2001)
+- A page per course under its programme,
+  `https://barrattdue.no/studier/hoyere-utdanning/{programme}/{code}/`
+  (HØR1100 at `hoer1100/`; some with the title after the code; electives
+  under `valgemner/`), and for courses taught in English under
+  `/en/studier/`; found in the studies sitemap
+  (`resolve_urls_barrattdue_batch()`). Against the sitemap of
+  2026-11-20, 46 of DBH’s 71 codes of 2026 have a page; none for the
+  master’s courses (UTPR*, EXHINS*: the master’s programme has a
+  study-plan page, not course pages), the further-education courses
+  VU-MUSDID and VU-PRAKSIS, PRAKSIS1-2, “UNGFIL I-III”, MIP2100 and some
+  electives (EKS5100, KKOR5110, OORK5110, SPIN5120, GRUSKU5120)
+- Two Norwegian pages of a code: VERK2100 has `verk2100/` (the plan in
+  force) and `verk2100-2025/` (“tilhørende studieår t.o.m. 2025/2026”),
+  PED2 `ped2/` and `ped2-2/` (the second adds “Innhold”); the page named
+  by the code alone is taken. Which of PED2’s is meant for 2026/27 is
+  not known
+- Read from `main#main`: the code and name (in no section), the facts
+  column “Kort om emnet” (credits, level, semesters, admission, place,
+  final assessment; in no section), the columns “Læringsutbytte” and
+  “Undervisning og læringsformer” and the accordions under “Mer om
+  emnet”; not the breadcrumb. No staff names on the pages tested. One
+  page’s learning outcomes open with a split word (“S” / “tudenter”,
+  VERK2100), as on the site
+- robots.txt (barrattdue.no, read 2026-11-20) disallows nothing
+
+------------------------------------------------------------------------
+
+### DMMH (Queen Maud University College of Early Childhood Education)
+
+- Added 2026-11-20 (all-courses frame); its pilot and full harvest wait.
+  A page per course and semester on DMMH’s course catalogue,
+  `https://studier.dmmh.no/nb/emne/{CODE}/{year}-{host|var}` (the
+  catalogue software of INN’s), DBH’s code as it is. The catalogue’s
+  semester menu starts in autumn 2014, so offerings before have no URL;
+  the oldest version seen is of autumn 2015 (BPBUL1000, checked
+  2026-11-20). DMMH says plans before autumn 2017 are only sent by
+  e-mail; the pilot will show how many pages 2015-2017 hold
+- A code without any page redirects to the course search (MATE2010,
+  MVBBB6100 in 2017; the variants with `-TD` and `-OV1`/`-OV2`,
+  2017-2018, such as BHKKK1010-TD, whose base code has a page): outcome
+  `not_found` (`fetch_html_cols_single_dmmh()`). The variants are not
+  given their base code’s page, which may be another programme’s plan
+- Where a semester has no version, the page shows the latest one, with
+  or without the notice “The course description for the semester you
+  wanted is not published yet” (BLSRL1010 spring 2025 shows autumn 2025;
+  BUPRA300 spring 2025, English only, autumn 2026; BPBUL1000 in 2016 and
+  2017 the version of autumn 2015). The version’s first teaching
+  semester (“Undervisningssemester”, `page_term`) decides: an offering
+  before it gets no plan, one after it gets that version, as at INN
+- Read from `section#main-content`: the title, the facts list (credits,
+  semesters, level, programme, language; in no section, except the
+  prerequisites) and the plan; not the table of contents, the approval
+  (approver’s initials, date), the course leaders (“Emneansvarlig”,
+  “Person in charge”) and the wide copy of the coursework and assessment
+  tables (the narrow copy holds the same rows under the labels
+  “Obligatoriske arbeidskrav:” and “Vurderinger:”, which open those
+  sections). The reading list on current pages is loaded from Leganto by
+  script and is not in the page: “Pensumliste” is empty; older pages
+  (2015-2017) hold the list
+- Courses taught in English (NECEC\*, BUPRA300) have English pages under
+  `/nb/`, with English headings mapped in the config
+  (`section_headings`)
+- robots.txt (studier.dmmh.no, read 2026-11-20) asks a Crawl-delay of 10
+  seconds (`request_delay = 10`) and disallows only Drupal’s defaults
 
 ------------------------------------------------------------------------
 
@@ -498,6 +629,12 @@ Figures are in the tables above; the notes say why.
   etter” in every harvest up to 2026-10-15); 39 of them had read
   2020/21’s plan before. Soft-404 “course not found” pages are detected
   at fetch time (`fetch_html_cols_single_hvl()`) and stored as no HTML
+- The drug-calculation exams (“Medikamentregning”: SYKB001, SYKF001,
+  SYKH001, SYKS001, SYKDB001, SYKDH001, BSDAUT001 and others, 0 credits,
+  up to 750 exam registrations a year) have no course page:
+  `/emne/2026/SYKF001` answers “Vi kunne ikkje finne emnet du ser etter”
+  (checked 2026-11-20). They are exams within the nursing programmes,
+  not courses, so their 10 course-years of 2026 have no plan
 - Read from `div.l-body`: the title, the facts aside (credits, campus,
   semesters, language, programmes) and the plan; not the year stamp and
   links, and from the aside not the course coordinators (names), the
@@ -562,6 +699,58 @@ Figures are in the tables above; the notes say why.
 - robots.txt (read 2026-10-16) has only comments: nothing disallowed
 - Three doctoral courses in DBH (DG900-1, DG930-1, DG950-1) have no
   page: the site answers 404 (pilot harvest, 2026-11-01)
+
+------------------------------------------------------------------------
+
+### LDH (Lovisenberg Diakonale University College)
+
+- Added 2026-11-20 (all-courses frame); its pilot and full harvest wait.
+  A plan per programme cohort (`strategy = "cohort_plans"`,
+  `harvest_cohort_plans()`): the bachelor in nursing’s course pages of
+  the cohorts BIS24-BIS26
+  (`/studietilbud/bachelor-i-sykepleie/emnerBIS/emnerBIS25/bsy-321`, in
+  the sitemap), and the programme study plans (PDFs) linked from the
+  programme pages and the page of earlier plans
+  (`/student/semester-og-eksamensoversikt/tidligere-studieplaner`), each
+  split by course heading (`ldh_pdf_courses()`): the older bachelor
+  cohorts (BIS19-BIS23, the plan of 2019-2023 with the codes BSY-100 to
+  BSYP-503) and every master’s and further-education programme, whose
+  current plans are PDFs too. The split text is the raw data; a run
+  keeps each PDF’s bytes on the first row its text joined to (`pdf`), as
+  Steiner’s
+- Which cohort’s plan an offering gets: a cohort that starts in a term
+  (BIS25: autumn 2025; MAPRA “Kull V2025”: spring 2025) has a course in
+  the plan’s semesters k1 to k2 (“Semester: 5 og 6”; “Tredje semester,
+  høst”; on a course page the code’s first digit, BSY-321 in semester 3,
+  as the page’s “3. semester: høst 2026” says), so in its terms start +
+  k1 - 1 to start + k2 - 1 (the plan’s semesters are consecutive terms,
+  also in part-time plans). An offering takes the cohort whose terms
+  hold the offering’s term (a course page before a PDF), else the cohort
+  that had the course last before it (a re-sit or delayed student: DBH
+  registers codes of the plan of 2019-2023 up to 2025). BSY-321 in
+  autumn 2026 is BIS25’s; MFSY-500 of MAPRA V2025 is in spring and
+  autumn 2027. A course page whose term (“3. semester: høst 2026”,
+  `page_term`) is not the offering’s gives no plan
+- Without a plan: the exchange-practice codes (MOBP-6 to MOBP-30, eight
+  codes), “BIS-EMNE” codes, the variants BSYP-300B, BSYP-400B, BSYP-501B
+  to BSYP-503B, and the further education in palliative care (VIP),
+  whose plan names its modules “EMNE 1”-“EMNE 3” without DBH’s codes
+  (PALEKS1, PALEKS2 are its exams). MAKS has a full-time and a part-time
+  plan of the same cohort (H2022), which the match does not tell apart
+  (the first linked is taken)
+- The oldest plan linked is the bachelor’s “Fagplan BIS12, justert for
+  kull 2019” (autumn 2019); the master’s plans from 2021 (MAKNY V2021,
+  MAKS H2021). On a sample of three study plans (MAPRA 2025, BIS21,
+  BIS22; 2026-11-20) the split found every course; their text is the
+  plan’s (purpose, content, learning outcomes, teaching, coursework,
+  assessment) without staff names
+- A course page is read from `main`: the title, the cohort (“Gjelder
+  BIS25”) and the facts box (“Om emnet”: English name, programme,
+  credits, semester and term, language, prerequisites) in no section,
+  and the plan’s h2s; not the breadcrumb, the facts box’s copy in the
+  sidebar and the publication dates. A PDF’s course is read as text
+  after its metadata lines (`section_text_header`)
+- ldh.no has no robots.txt (404, read 2026-11-20): nothing disallowed
 
 ------------------------------------------------------------------------
 
@@ -707,6 +896,14 @@ Figures are in the tables above; the notes say why.
 - Only the plan in force is published (`plan_years = "current"`; see
   “Year coverage”); few course codes. Rows without a plan are 404s for
   discontinued courses, or spring 2025 offerings
+- Of the 392 course-years of 2026 without a plan (checked 2026-11-20),
+  most are codes without a course page: continuing-education courses
+  with a `VU-` code (78 of the 91 in DBH 2026; `/emne/VU-APL375` and
+  `/emne/VU-VET330` answer “Ikke funnet”), UNIS courses that DBH lists
+  under NMBU (105: AB-202, AGF-216, “The University Centre in Svalbard”
+  in the title; UNIS publishes them on unis.no), master’s theses and
+  veterinary research and elective modules (79: M30-VET, VETFORSK403,
+  22FRIE-VET), and courses DBH marks as discontinued (68)
 - A course whose plan is only in English (M60-IES and NOVA-416 in the
   pilot sample, 4 offerings) has a Norwegian page with “Se engelsk
   emnebeskrivelse” or “See English text” under every heading; since
@@ -845,6 +1042,48 @@ Figures are in the tables above; the notes say why.
   The admission programme list, the credit-reduction box and the subject
   areas are now outside the plan id, and the banners (“Nytt fra
   studieåret …”, “Undervises ikke studieåret …”) are not read
+- UNIS courses that DBH lists under NTNU (164 course-years of 2026:
+  AB202, AG335, AGF216, AT324, AS101; UNIS publishes them on unis.no)
+  answer “Det finnes ingen informasjon for dette studieåret”
+  (`ntnu_no_info_error`, outcome fetch error), also for 2026/27 (AB202,
+  checked 2026-11-20). They are most of NTNU’s 211 fetch errors of 2026;
+  the others are courses DBH marks as discontinued (33) and 8 codes with
+  a variant suffix other than -A (SOL420-B, BØA2020-C, LVUT8005-K),
+  whose page is at the code without it (`/SOL420/2026` has the plan,
+  `/SOL420-B/2026` has no information); the URL builder drops only -A
+
+------------------------------------------------------------------------
+
+### ONH (Oslo New University College)
+
+- Added 2026-11-20 (all-courses frame); its pilot and full harvest wait.
+  Only the plan in force is published (`plan_years = "current"`; see
+  “Year coverage”): no plan for offerings before the academic year of
+  the first harvest (2026/27; DBH has ONH from 2021)
+- A page per course code, its URL named from the title, code and credits
+  in several spellings
+  (`/Emner/Psykologi-som-fag-og-vitenskap-PSY1120-15-sp`,
+  `/emner/okad3110-Etikk-...-15-sp`,
+  `/digital-markedsforing/emner/okad1110-bedriftsokonomi`); found in the
+  sitemap (`resolve_urls_onh_batch()`). DBH’s ØKAD codes are the site’s
+  OKAD (or ØKAD, percent-encoded). Against the sitemap of 2026-11-20,
+  196 of DBH’s 234 codes of 2026 have a page; none for most
+  international-studies master’s courses (INT6010-INT6940), the
+  psychology master’s PSY4410-PSY4430 and PSY6120-PSY6160, the
+  statistics courses (STAT1120, STAT1125, STAT3210), the medical
+  preparatory courses (MB1110-MB1820, “Ungarsk 1”, “Ungarsk 2”) and
+  “Valgemne 22,5 sp”. PSY2281 has two pages (“Fremtidens arbeidsliv 2”
+  and “II”): the first is taken
+- Read from `main > article`: the title, the summary under it, the facts
+  (study form, credits, place, start, exam form) and the plan, “Om
+  emnet:” and accordions (“Innhold i emnet”, “Læringsutbytte”,
+  “Arbeidskrav og eksamen” with the sub-headings “Arbeidskrav” and
+  “Eksamen”); not the breadcrumb, the price and its notice
+  (“Registreringsavgift og utgifter til materiell kommer i tillegg”),
+  the link to the exam dates, the application form and the sidebar. No
+  staff names on the pages tested
+- robots.txt (oslonyehoyskole.no, read 2026-11-20) disallows only
+  Drupal’s defaults
 
 ------------------------------------------------------------------------
 
@@ -1136,6 +1375,16 @@ Figures are in the tables above; the notes say why.
     courses of UNIS on Svalbard, which publishes its plans on its own
     site; UiT’s pages have at most a 2012 document or none. They are not
     harvested
+  - Some courses taught every year have no document for years at a
+    stretch (checked 2026-11-20): FIL-0700 (Examen philosophicum, about
+    1,000 exam registrations in DBH 2026) and JUR-1003 list documents up
+    to spring 2023 and show spring 2027, with none for autumn 2023 to
+    autumn 2026; MUS-2218 lists autumn 2024, then spring 2027. So their
+    course-years 2024-2026 have no URL. Such a gap is not a course
+    without teaching: of the 2026 course-years without a document, 87
+    are of courses with students in DBH 2026 and a document in an
+    earlier year (most of the other 1,469 are courses with no students
+    in 2026, discontinued courses, PhD courses and UNIS courses)
 - The plan is read from `#maincontents`: the course code and title, the
   facts (campus, semester, credits, level) and `.mainContent` (since
   2026-10; the old `.hovedfelt > main > div.col-md-12` matched nothing

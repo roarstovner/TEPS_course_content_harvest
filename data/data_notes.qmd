@@ -38,7 +38,14 @@ total_rows     <- nrow(df)
 total_text <- sum(df$has_extracted_text)
 total_rate     <- sprintf("%.1f%%", total_text / total_rows * 100)
 total_plans    <- nrow(plans)
-single_year    <- sort(unique(df$institution[ave(df$year, df$institution, FUN = function(y) length(unique(y))) == 1]))
+# sites that show only the plan in force, and the harvests their plans come
+# from, by academic year (from 1 August)
+current_sites  <- sort(unique(df$institution[df$plan_year_basis %in% "current"]))
+cur_dates      <- as.Date(df$harvested_at[df$plan_year_basis %in% "current" & !is.na(df$plan_content_id)])
+cur_by_year    <- split(cur_dates, as.integer(format(cur_dates, "%Y")) - (as.integer(format(cur_dates, "%m")) < 8))
+current_harvests <- paste(mapply(function(y, d) sprintf("%s/%02d (%s, %d offerings)", y, (as.integer(y) + 1) %% 100,
+                                                        paste(unique(range(d)), collapse = " to "), length(d)),
+                                 names(cur_by_year), cur_by_year), collapse = " and ")
 ```
 
 Generated: `r Sys.Date()`
@@ -68,10 +75,9 @@ Sites that show only the plan in force (`plan_years = "current"` in
 `R/institution_config.R`) give, at each harvest, the plan of that academic
 year only. Each harvest is kept, and an offering gets the plan from a harvest
 made in its own academic year, or none (`docs/harvesting.md` "Sites that show only the
-current plan"). In this data the harvests are of 2026-04-04 (2025/26:
-autumn 2025 offerings) and 2026-09-30 (2026/27: no DBH offerings yet), so
-spring 2025 offerings (2024/25) have no plan at these sites. They are
-`r paste(single_year, collapse = ", ")`.
+current plan"). In this data their plans come from the harvests of
+`r current_harvests`, so their offerings of other academic years have no
+plan. They are `r paste(current_sites, collapse = ", ")`.
 The others have historical plans as far back as the site still serves them.
 Share of offerings with a plan, by period:
 
