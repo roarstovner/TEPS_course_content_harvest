@@ -104,6 +104,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Sections (LDH): placement arrangements under 'Innhold' of BSYP courses; check DMMH BLPRA100's Forkunnskapskrav (#600)
+- Sections: placeholders 'Se avsnittet «…» i studieplanens generelle del.' (DMMH), 'I emnet inngår ingen obligatorisk aktivitet.' (LDH) (#599)
+- Sections: stock logistics of DMMH and Barratt Due; Barratt Due validity and progression sentences (#598)
+- Sections (DMMH): coursework gates out of assessment (section_inline_coursework) (#597)
+- Sections (Barratt Due): 'Undervisning og læringsformer' is the course description; 'Delemner' sub-courses lost (#596)
+- Sections: prerequisites from labelled facts (Barratt Due 'Kort om emnet', LDH facts card and PDF header line) (#595)
 - Anonymizer: administrative dates in prose (AHO, ONH, Barratt Due, LDH 'Gjelder BIS24'); content range after 'av' (ONH) (#601)
 - Anonymizer: AHO staff names in teacher lists and prose roles (#594)
 - LDH PDF split: stop at mixed-case programme headings, drop page numbers and 'Sist oppdatert' footers (before LDH's full harvest) (#593)
