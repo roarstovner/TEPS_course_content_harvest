@@ -1,0 +1,190 @@
+"institution","course_id","course_code_raw","year","semester_name","department_name","level","language","dbh_snapshot","seed"
+"ldh","ldh_BIS-EMNE 1-4_2019_autumn_1","BIS-EMNE 1-4",2019,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BIS-EMNE 1-4_2019_spring_1","BIS-EMNE 1-4",2019,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BIS-EMNE 10-1_2019_autumn_1","BIS-EMNE 10-1",2019,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BIS-EMNE 10-1_2019_spring_1","BIS-EMNE 10-1",2019,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BIS-EMNE 14A-1_2019_autumn_1","BIS-EMNE 14A-1",2019,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BIS-EMNE 14A-1_2019_spring_1","BIS-EMNE 14A-1",2019,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BIS-EMNE 14B-1_2019_autumn_1","BIS-EMNE 14B-1",2019,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BIS-EMNE 14B-1_2019_spring_1","BIS-EMNE 14B-1",2019,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BIS-EMNE 2A-1_2019_autumn_1","BIS-EMNE 2A-1",2019,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BIS-EMNE 2A-1_2019_spring_1","BIS-EMNE 2A-1",2019,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BIS-EMNE 2B-1_2019_autumn_1","BIS-EMNE 2B-1",2019,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BIS-EMNE 2B-1_2019_spring_1","BIS-EMNE 2B-1",2019,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BIS-EMNE 3-3_2019_autumn_1","BIS-EMNE 3-3",2019,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BIS-EMNE 3-3_2019_spring_1","BIS-EMNE 3-3",2019,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_EMNEARTIKKEL-1_2019_autumn_1","EMNEARTIKKEL-1",2019,"Høst","Avdeling for videreutdanning","lower","other","2026-11-08",42
+"ldh","ldh_EMNEARTIKKEL-1_2019_spring_1","EMNEARTIKKEL-1",2019,"Vår","Avdeling for videreutdanning","lower","other","2026-11-08",42
+"ldh","ldh_K-MODUL 1-1_2019_autumn_1","K-MODUL 1-1",2019,"Høst","Avdeling for videreutdanning","lower","other","2026-11-08",42
+"ldh","ldh_K-MODUL 1-1_2019_spring_1","K-MODUL 1-1",2019,"Vår","Avdeling for videreutdanning","lower","other","2026-11-08",42
+"ldh","ldh_K-MODUL 2-1_2019_autumn_1","K-MODUL 2-1",2019,"Høst","Avdeling for videreutdanning","lower","other","2026-11-08",42
+"ldh","ldh_K-MODUL 2-1_2019_spring_1","K-MODUL 2-1",2019,"Vår","Avdeling for videreutdanning","lower","other","2026-11-08",42
+"ldh","ldh_K-MODUL 3-1_2019_autumn_1","K-MODUL 3-1",2019,"Høst","Avdeling for videreutdanning","lower","other","2026-11-08",42
+"ldh","ldh_K-MODUL 3-1_2019_spring_1","K-MODUL 3-1",2019,"Vår","Avdeling for videreutdanning","lower","other","2026-11-08",42
+"ldh","ldh_KNIHS-1_2019_autumn_1","KNIHS-1",2019,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_KNIHS-1_2019_spring_1","KNIHS-1",2019,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_MAKS-A2-A 2-1_2019_autumn_1","MAKS-A2-A 2-1",2019,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MAKS-A2-A 2-1_2019_spring_1","MAKS-A2-A 2-1",2019,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MAKS-A2-I 1-1_2019_autumn_1","MAKS-A2-I 1-1",2019,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MAKS-A2-I 1-1_2019_spring_1","MAKS-A2-I 1-1",2019,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MAKS-A2-I 2-1_2019_autumn_1","MAKS-A2-I 2-1",2019,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MAKS-A2-I 2-1_2019_spring_1","MAKS-A2-I 2-1",2019,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MAKS-A4-1_2019_autumn_1","MAKS-A4-1",2019,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MAKS-A4-1_2019_spring_1","MAKS-A4-1",2019,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MAKS-B2-1_2019_autumn_1","MAKS-B2-1",2019,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MAKS-B2-1_2019_spring_1","MAKS-B2-1",2019,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MAKS-C2-I-1_2019_autumn_1","MAKS-C2-I-1",2019,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MAKS-C2-I-1_2019_spring_1","MAKS-C2-I-1",2019,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MAKS-EMNE B2-2_2019_autumn_1","MAKS-EMNE B2-2",2019,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MAKS-EMNE B2-2_2019_spring_1","MAKS-EMNE B2-2",2019,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MAKS-EMNE D-1_2019_autumn_1","MAKS-EMNE D-1",2019,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MAKS-EMNE D-1_2019_spring_1","MAKS-EMNE D-1",2019,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MFSA-300-1_2019_autumn_3","MFSA-300-1",2019,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MFSA-300-1_2019_spring_2","MFSA-300-1",2019,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MFSY-100-1_2019_autumn_1","MFSY-100-1",2019,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MFSY-100-1_2019_spring_1","MFSY-100-1",2019,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MFVA-100-1_2019_autumn_2","MFVA-100-1",2019,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MNNA-100-1_2019_autumn_1","MNNA-100-1",2019,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MNNA-100-1_2019_spring_1","MNNA-100-1",2019,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MNSY-100-1_2019_autumn_1","MNSY-100-1",2019,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MNSY-100-1_2019_spring_1","MNSY-100-1",2019,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_VNS1-1_2019_autumn_1","VNS1-1",2019,"Høst","Avdeling for videreutdanning","continuing","other","2026-11-08",42
+"ldh","ldh_VNS1-1_2019_spring_1","VNS1-1",2019,"Vår","Avdeling for videreutdanning","continuing","other","2026-11-08",42
+"ldh","ldh_VNS3-1_2019_autumn_1","VNS3-1",2019,"Høst","Avdeling for videreutdanning","continuing","other","2026-11-08",42
+"ldh","ldh_VNS3-1_2019_spring_1","VNS3-1",2019,"Vår","Avdeling for videreutdanning","continuing","other","2026-11-08",42
+"ldh","ldh_VNS4-1_2019_autumn_1","VNS4-1",2019,"Høst","Avdeling for videreutdanning","continuing","other","2026-11-08",42
+"ldh","ldh_VNS4-1_2019_spring_1","VNS4-1",2019,"Vår","Avdeling for videreutdanning","continuing","other","2026-11-08",42
+"ldh","ldh_VOPSA3-1_2019_autumn_1","VOPSA3-1",2019,"Høst","Avdeling for videreutdanning","continuing","other","2026-11-08",42
+"ldh","ldh_VOPSA3-1_2019_spring_1","VOPSA3-1",2019,"Vår","Avdeling for videreutdanning","continuing","other","2026-11-08",42
+"ldh","ldh_VOPSB1-1_2019_autumn_1","VOPSB1-1",2019,"Høst","Avdeling for videreutdanning","continuing","other","2026-11-08",42
+"ldh","ldh_VOPSB1-1_2019_spring_1","VOPSB1-1",2019,"Vår","Avdeling for videreutdanning","continuing","other","2026-11-08",42
+"ldh","ldh_VOPSC1-1_2019_autumn_1","VOPSC1-1",2019,"Høst","Avdeling for videreutdanning","continuing","other","2026-11-08",42
+"ldh","ldh_VOPSC1-1_2019_spring_1","VOPSC1-1",2019,"Vår","Avdeling for videreutdanning","continuing","other","2026-11-08",42
+"ldh","ldh_VPED-100-1_2019_autumn_1","VPED-100-1",2019,"Høst","Avdeling for videreutdanning","lower","other","2026-11-08",42
+"ldh","ldh_VPED-100-1_2019_spring_1","VPED-100-1",2019,"Vår","Avdeling for videreutdanning","lower","other","2026-11-08",42
+"ldh","ldh_VSGE1-1_2019_autumn_1","VSGE1-1",2019,"Høst","Avdeling for videreutdanning","continuing","other","2026-11-08",42
+"ldh","ldh_VSGE1-1_2019_spring_1","VSGE1-1",2019,"Vår","Avdeling for videreutdanning","continuing","other","2026-11-08",42
+"ldh","ldh_VSGE2-1_2019_autumn_1","VSGE2-1",2019,"Høst","Avdeling for videreutdanning","continuing","other","2026-11-08",42
+"ldh","ldh_VSGE2-1_2019_spring_1","VSGE2-1",2019,"Vår","Avdeling for videreutdanning","continuing","other","2026-11-08",42
+"ldh","ldh_BIS-EMNE 1-4_2022_autumn_4","BIS-EMNE 1-4",2022,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BIS-EMNE 1-4_2022_spring_4","BIS-EMNE 1-4",2022,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BIS-EMNE 10-1_2022_autumn_1","BIS-EMNE 10-1",2022,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BIS-EMNE 10-1_2022_spring_1","BIS-EMNE 10-1",2022,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BIS-EMNE 14B-1_2022_autumn_4","BIS-EMNE 14B-1",2022,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BIS-EMNE 14B-1_2022_spring_1","BIS-EMNE 14B-1",2022,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BIS-EMNE 3-3_2022_autumn_4","BIS-EMNE 3-3",2022,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BIS-EMNE 3-3_2022_spring_4","BIS-EMNE 3-3",2022,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BIS-EMNE 4-1_2022_autumn_4","BIS-EMNE 4-1",2022,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BIS-EMNE 4-1_2022_spring_4","BIS-EMNE 4-1",2022,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BIS-EMNE 5-2_2022_autumn_4","BIS-EMNE 5-2",2022,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BIS-EMNE 5-2_2022_spring_4","BIS-EMNE 5-2",2022,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BIS-EMNE 8A-1_2022_autumn_1","BIS-EMNE 8A-1",2022,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BIS-EMNE 8A-1_2022_spring_1","BIS-EMNE 8A-1",2022,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSY-101-1_2022_autumn_1","BSY-101-1",2022,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSY-101-1_2022_spring_1","BSY-101-1",2022,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSY-201-1_2022_autumn_1","BSY-201-1",2022,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSY-201-1_2022_spring_1","BSY-201-1",2022,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSY-202-1_2022_autumn_1","BSY-202-1",2022,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSY-202-1_2022_spring_1","BSY-202-1",2022,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSY-301-1_2022_autumn_1","BSY-301-1",2022,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSY-301-1_2022_spring_1","BSY-301-1",2022,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSY-401-1_2022_autumn_1","BSY-401-1",2022,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSY-401-1_2022_spring_2","BSY-401-1",2022,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSYP-200-1_2022_autumn_1","BSYP-200-1",2022,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSYP-200-1_2022_spring_1","BSYP-200-1",2022,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSYP-300-1_2022_autumn_1","BSYP-300-1",2022,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSYP-300-1_2022_spring_1","BSYP-300-1",2022,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSYP-501-1_2022_autumn_2","BSYP-501-1",2022,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSYP-503-1_2022_autumn_2","BSYP-503-1",2022,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_K-FOAKSK-1_2022_autumn_1","K-FOAKSK-1",2022,"Høst","Institutt for master-, etter- og videreutdanning","lower","other","2026-11-08",42
+"ldh","ldh_K-FOAKSK-1_2022_spring_1","K-FOAKSK-1",2022,"Vår","Institutt for master-, etter- og videreutdanning","lower","other","2026-11-08",42
+"ldh","ldh_MAINA-200-1_2022_autumn_1","MAINA-200-1",2022,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MAINA-200-1_2022_spring_1","MAINA-200-1",2022,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MAL-VALGEMNE-1_2022_autumn_3","MAL-VALGEMNE-1",2022,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MALSY-100-1_2022_autumn_1","MALSY-100-1",2022,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MALSY-100-1_2022_spring_1","MALSY-100-1",2022,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MALSY-200-1_2022_autumn_1","MALSY-200-1",2022,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MALSY-200-1_2022_spring_1","MALSY-200-1",2022,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MALSY-300-1_2022_autumn_1","MALSY-300-1",2022,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MALSY-300-1_2022_spring_1","MALSY-300-1",2022,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MASY-100-1_2022_autumn_1","MASY-100-1",2022,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MASY-100-1_2022_spring_1","MASY-100-1",2022,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MFME-100-1_2022_autumn_1","MFME-100-1",2022,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MFME-100-1_2022_spring_1","MFME-100-1",2022,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MFME-200-1_2022_autumn_1","MFME-200-1",2022,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MFME-200-1_2022_spring_1","MFME-200-1",2022,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MNNA-200-1_2022_autumn_1","MNNA-200-1",2022,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MNNA-200-1_2022_spring_1","MNNA-200-1",2022,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MNSY-300-1_2022_autumn_1","MNSY-300-1",2022,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MNSY-300-1_2022_spring_1","MNSY-300-1",2022,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MOBP-12-1_2022_autumn_2","MOBP-12-1",2022,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_MOBP-30-1_2022_autumn_2","MOBP-30-1",2022,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_PALEKS1-1_2022_autumn_1","PALEKS1-1",2022,"Høst","Institutt for master-, etter- og videreutdanning","continuing","other","2026-11-08",42
+"ldh","ldh_PALEKS1-1_2022_spring_1","PALEKS1-1",2022,"Vår","Institutt for master-, etter- og videreutdanning","continuing","other","2026-11-08",42
+"ldh","ldh_VOPSA1-1_2022_autumn_1","VOPSA1-1",2022,"Høst","Institutt for master-, etter- og videreutdanning","continuing","other","2026-11-08",42
+"ldh","ldh_VOPSA1-1_2022_spring_1","VOPSA1-1",2022,"Vår","Institutt for master-, etter- og videreutdanning","continuing","other","2026-11-08",42
+"ldh","ldh_VOPSA2-1_2022_autumn_1","VOPSA2-1",2022,"Høst","Institutt for master-, etter- og videreutdanning","continuing","other","2026-11-08",42
+"ldh","ldh_VOPSA2-1_2022_spring_1","VOPSA2-1",2022,"Vår","Institutt for master-, etter- og videreutdanning","continuing","other","2026-11-08",42
+"ldh","ldh_VPED-100-1_2022_autumn_1","VPED-100-1",2022,"Høst","Institutt for master-, etter- og videreutdanning","continuing","other","2026-11-08",42
+"ldh","ldh_VPED-100-1_2022_spring_1","VPED-100-1",2022,"Vår","Institutt for master-, etter- og videreutdanning","continuing","other","2026-11-08",42
+"ldh","ldh_BIS-EMNE 2A-1_2025_autumn_1","BIS-EMNE 2A-1",2025,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BIS-EMNE 2A-1_2025_spring_1","BIS-EMNE 2A-1",2025,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSY-100-1_2025_spring_3","BSY-100-1",2025,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSY-102-1_2025_autumn_1","BSY-102-1",2025,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSY-102-1_2025_spring_1","BSY-102-1",2025,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSY-202-1_2025_autumn_3","BSY-202-1",2025,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSY-202-1_2025_spring_1","BSY-202-1",2025,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSY-221-1_2025_autumn_1","BSY-221-1",2025,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSY-221-1_2025_spring_2","BSY-221-1",2025,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSY-302-1_2025_spring_3","BSY-302-1",2025,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSY-401-1_2025_autumn_1","BSY-401-1",2025,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSY-401-1_2025_spring_1","BSY-401-1",2025,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSYP-200-1_2025_autumn_3","BSYP-200-1",2025,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSYP-200-1_2025_spring_1","BSYP-200-1",2025,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSYP-220-1_2025_autumn_1","BSYP-220-1",2025,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSYP-220-1_2025_spring_2","BSYP-220-1",2025,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSYP-300-1_2025_spring_3","BSYP-300-1",2025,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSYP-501B-1_2025_autumn_1","BSYP-501B-1",2025,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSYP-501B-1_2025_spring_1","BSYP-501B-1",2025,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSYP-503-1_2025_autumn_1","BSYP-503-1",2025,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_BSYP-503-1_2025_spring_1","BSYP-503-1",2025,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_MAKS-EMNE D-1_2025_autumn_1","MAKS-EMNE D-1",2025,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MAKS-EMNE D-1_2025_spring_1","MAKS-EMNE D-1",2025,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MALNA-200-1_2025_autumn_1","MALNA-200-1",2025,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MALNA-200-1_2025_spring_1","MALNA-200-1",2025,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MALSY-100-1_2025_autumn_1","MALSY-100-1",2025,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MALSY-100-1_2025_spring_1","MALSY-100-1",2025,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MALSY-300-1_2025_autumn_1","MALSY-300-1",2025,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MALSY-300-1_2025_spring_1","MALSY-300-1",2025,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MFME-200-1_2025_autumn_1","MFME-200-1",2025,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MFME-200-1_2025_spring_1","MFME-200-1",2025,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MFSY-500-1_2025_autumn_1","MFSY-500-1",2025,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MFSY-500-1_2025_spring_1","MFSY-500-1",2025,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MINA-100-1_2025_autumn_1","MINA-100-1",2025,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MINA-100-1_2025_spring_1","MINA-100-1",2025,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MINA-200-1_2025_autumn_1","MINA-200-1",2025,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MINA-200-1_2025_spring_1","MINA-200-1",2025,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MISY-100-1_2025_autumn_1","MISY-100-1",2025,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MISY-100-1_2025_spring_1","MISY-100-1",2025,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MISY-300-1_2025_autumn_1","MISY-300-1",2025,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MISY-300-1_2025_spring_1","MISY-300-1",2025,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MNNA-100-1_2025_autumn_1","MNNA-100-1",2025,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MNNA-100-1_2025_spring_1","MNNA-100-1",2025,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MNNA-200-1_2025_autumn_1","MNNA-200-1",2025,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MNNA-200-1_2025_spring_1","MNNA-200-1",2025,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MNSY-400-1_2025_autumn_1","MNSY-400-1",2025,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MNSY-400-1_2025_spring_1","MNSY-400-1",2025,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MOBP-12-1_2025_autumn_1","MOBP-12-1",2025,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_MOBP-12-1_2025_spring_1","MOBP-12-1",2025,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_MOBP-6-1_2025_autumn_1","MOBP-6-1",2025,"Høst","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_MOBP-6-1_2025_spring_2","MOBP-6-1",2025,"Vår","Institutt for bachelorutdanning","lower","other","2026-11-08",42
+"ldh","ldh_MOPNA-100-1_2025_autumn_1","MOPNA-100-1",2025,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MOPNA-100-1_2025_spring_1","MOPNA-100-1",2025,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MOPSY-100-1_2025_autumn_1","MOPSY-100-1",2025,"Høst","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_MOPSY-100-1_2025_spring_1","MOPSY-100-1",2025,"Vår","Institutt for master-, etter- og videreutdanning","higher","other","2026-11-08",42
+"ldh","ldh_PALEKS2-1_2025_autumn_3","PALEKS2-1",2025,"Høst","Institutt for master-, etter- og videreutdanning","continuing","other","2026-11-08",42
+"ldh","ldh_PALEKS2-1_2025_spring_1","PALEKS2-1",2025,"Vår","Institutt for master-, etter- og videreutdanning","continuing","other","2026-11-08",42
+"ldh","ldh_VIB-101-1_2025_autumn_2","VIB-101-1",2025,"Høst","Institutt for master-, etter- og videreutdanning","continuing","other","2026-11-08",42
+"ldh","ldh_VOPSA3-1_2025_spring_3","VOPSA3-1",2025,"Vår","Institutt for master-, etter- og videreutdanning","continuing","other","2026-11-08",42
+"ldh","ldh_VPED-100-1_2025_autumn_1","VPED-100-1",2025,"Høst","Institutt for master-, etter- og videreutdanning","continuing","other","2026-11-08",42
+"ldh","ldh_VPED-100-1_2025_spring_1","VPED-100-1",2025,"Vår","Institutt for master-, etter- og videreutdanning","continuing","other","2026-11-08",42

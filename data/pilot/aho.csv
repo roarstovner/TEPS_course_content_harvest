@@ -1,0 +1,169 @@
+"institution","course_id","course_code_raw","year","semester_name","department_name","level","language","dbh_snapshot","seed"
+"aho","aho_12 701-1_2025_autumn_3","12 701-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_12 701-1_2025_spring_1","12 701-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_12 803-1_2025_autumn_3","12 803-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_12 803-1_2025_spring_1","12 803-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_40 120-2_2025_autumn_3","40 120-2",2025,"Høst","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_40 120-2_2025_spring_1","40 120-2",2025,"Vår","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_40 130-1_2025_autumn_3","40 130-1",2025,"Høst","AHO (uspesifisert underenhet)","lower","english","2026-11-08",42
+"aho","aho_40 130-1_2025_spring_1","40 130-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_40 132-1_2025_autumn_3","40 132-1",2025,"Høst","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_40 132-1_2025_spring_1","40 132-1",2025,"Vår","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_40 329-1_2025_spring_3","40 329-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_40 332-1_2025_spring_3","40 332-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_40 335-1_2025_autumn_2","40 335-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_40 336-1_2025_autumn_2","40 336-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_40 337-1_2025_autumn_2","40 337-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_40 552-1_2025_autumn_3","40 552-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_40 552-1_2025_spring_3","40 552-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_40 565-1_2025_spring_3","40 565-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_40 567-1_2025_spring_3","40 567-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_40 568-1_2025_spring_3","40 568-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_40 570-1_2025_autumn_2","40 570-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_40 571-1_2025_autumn_2","40 571-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_40 572-1_2025_autumn_2","40 572-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_40 574-1_2025_autumn_2","40 574-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_40 575-1_2025_autumn_2","40 575-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_60 161-1_2025_autumn_3","60 161-1",2025,"Høst","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_60 161-1_2025_spring_1","60 161-1",2025,"Vår","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_60 314-1_2025_autumn_3","60 314-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_60 314-1_2025_spring_3","60 314-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_60 315-1_2025_autumn_2","60 315-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_60 526-1_2025_autumn_3","60 526-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_60 526-1_2025_spring_1","60 526-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_60 538-1_2025_spring_3","60 538-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_60 540-1_2025_autumn_2","60 540-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_60 541-1_2025_autumn_2","60 541-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_60 619-3_2025_spring_3","60 619-3",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_60 701-1_2025_autumn_3","60 701-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_60 701-1_2025_spring_1","60 701-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_61 110-1_2025_autumn_3","61 110-1",2025,"Høst","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_61 110-2_2025_spring_1","61 110-2",2025,"Vår","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_61 121-1_2025_autumn_3","61 121-1",2025,"Høst","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_61 121-1_2025_spring_1","61 121-1",2025,"Vår","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_61 131-1_2025_autumn_3","61 131-1",2025,"Høst","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_61 131-1_2025_spring_1","61 131-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_61 134-1_2025_autumn_3","61 134-1",2025,"Høst","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_61 134-1_2025_spring_1","61 134-1",2025,"Vår","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_61 150-1_2025_autumn_3","61 150-1",2025,"Høst","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_61 150-1_2025_spring_1","61 150-1",2025,"Vår","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_61 160-1_2025_autumn_3","61 160-1",2025,"Høst","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_61 160-1_2025_spring_1","61 160-1",2025,"Vår","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_61 161-1_2025_autumn_3","61 161-1",2025,"Høst","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_61 161-1_2025_spring_1","61 161-1",2025,"Vår","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_70 111-2_2025_autumn_3","70 111-2",2025,"Høst","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_70 111-2_2025_spring_1","70 111-2",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_70 123-1_2025_autumn_3","70 123-1",2025,"Høst","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_70 123-1_2025_spring_1","70 123-1",2025,"Vår","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_70 125-1_2025_autumn_3","70 125-1",2025,"Høst","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_70 125-1_2025_spring_1","70 125-1",2025,"Vår","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_70 132-2_2025_autumn_3","70 132-2",2025,"Høst","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_70 132-2_2025_spring_1","70 132-2",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_70 133-1_2025_autumn_3","70 133-1",2025,"Høst","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_70 133-1_2025_spring_1","70 133-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_70 142-1_2025_autumn_3","70 142-1",2025,"Høst","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_70 142-1_2025_spring_1","70 142-1",2025,"Vår","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_70 153-1_2025_autumn_3","70 153-1",2025,"Høst","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_70 153-1_2025_spring_1","70 153-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_70 154-1_2025_autumn_3","70 154-1",2025,"Høst","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_70 154-1_2025_spring_1","70 154-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_70 161-3_2025_autumn_3","70 161-3",2025,"Høst","AHO (uspesifisert underenhet)","lower","english","2026-11-08",42
+"aho","aho_70 161-3_2025_spring_1","70 161-3",2025,"Vår","AHO (uspesifisert underenhet)","lower","english","2026-11-08",42
+"aho","aho_70 174-1_2025_autumn_3","70 174-1",2025,"Høst","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_70 174-1_2025_spring_1","70 174-1",2025,"Vår","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_70 175-1_2025_autumn_3","70 175-1",2025,"Høst","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_70 175-1_2025_spring_1","70 175-1",2025,"Vår","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_70 303-3_2025_autumn_3","70 303-3",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_70 303-3_2025_spring_3","70 303-3",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_70 304-1_2025_spring_3","70 304-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_70 305-1_2025_autumn_3","70 305-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_70 305-1_2025_spring_3","70 305-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_70 308-1_2025_spring_3","70 308-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_70 401-1_2025_spring_3","70 401-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_70 403-1_2025_spring_3","70 403-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_70 405-1_2025_spring_3","70 405-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_70 505-1_2025_autumn_3","70 505-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_70 505-1_2025_spring_1","70 505-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_70 509-1_2025_autumn_3","70 509-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_70 509-1_2025_spring_1","70 509-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_70 512-1_2025_autumn_3","70 512-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_70 512-1_2025_spring_1","70 512-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_70 514-1_2025_autumn_3","70 514-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_70 514-1_2025_spring_1","70 514-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_70 600-1_2025_spring_3","70 600-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_70 602-1_2025_autumn_3","70 602-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_70 602-1_2025_spring_1","70 602-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_70 700-1_2025_autumn_3","70 700-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_70 700-1_2025_spring_1","70 700-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_80 131-1_2025_autumn_3","80 131-1",2025,"Høst","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_80 131-1_2025_spring_1","80 131-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_80 162-1_2025_autumn_3","80 162-1",2025,"Høst","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_80 162-1_2025_spring_1","80 162-1",2025,"Vår","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_80 302-1_2025_autumn_3","80 302-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_80 302-1_2025_spring_3","80 302-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_ARK4006-1_2025_autumn_3","ARK4006-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_ARK4006-1_2025_spring_2","ARK4006-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_ARK4106-1_2025_autumn_3","ARK4106-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_ARK4106-1_2025_spring_2","ARK4106-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_ARK5106-1_2025_autumn_3","ARK5106-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_ARK5106-1_2025_spring_2","ARK5106-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_DES4006-1_2025_autumn_3","DES4006-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_DES4006-1_2025_spring_2","DES4006-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_DES4016-1_2025_autumn_3","DES4016-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_DES4016-1_2025_spring_2","DES4016-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_DES4106-1_2025_autumn_3","DES4106-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_DES4106-1_2025_spring_2","DES4106-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_LAND4106-1_2025_autumn_3","LAND4106-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_LAND4106-1_2025_spring_2","LAND4106-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_LAND5006-1_2025_autumn_3","LAND5006-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_LAND5006-1_2025_spring_2","LAND5006-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_LAND5012-1_2025_autumn_3","LAND5012-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","english","2026-11-08",42
+"aho","aho_MARV1-1_2025_autumn_3","MARV1-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_MARV1-1_2025_spring_1","MARV1-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_MARV10-1_2025_autumn_3","MARV10-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_MARV10-1_2025_spring_1","MARV10-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_MARV6-2_2025_autumn_3","MARV6-2",2025,"Høst","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_MARV6-2_2025_spring_1","MARV6-2",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_MARV7-2_2025_autumn_3","MARV7-2",2025,"Høst","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_MARV7-2_2025_spring_1","MARV7-2",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_MARV9-1_2025_autumn_3","MARV9-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_MARV9-1_2025_spring_1","MARV9-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_MURB MO10-14-1_2025_spring_3","MURB MO10-14-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_MURB1-1_2025_spring_3","MURB1-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_MURB1-2_2025_autumn_3","MURB1-2",2025,"Høst","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_MURB1-2_2025_spring_2","MURB1-2",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_MURB2-1_2025_autumn_3","MURB2-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_MURB2-1_2025_spring_1","MURB2-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_MURB3-1_2025_autumn_3","MURB3-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_MURB3-1_2025_spring_1","MURB3-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_MURB5-1_2025_autumn_3","MURB5-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_MURB5-1_2025_spring_1","MURB5-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_MURB6-2_2025_autumn_3","MURB6-2",2025,"Høst","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_MURB6-2_2025_spring_1","MURB6-2",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_MURB8-1_2025_spring_3","MURB8-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_PHD-FRAMING-1_2025_autumn_3","PHD-FRAMING-1",2025,"Høst","AHO (uspesifisert underenhet)","phd","other","2026-11-08",42
+"aho","aho_PHD-FRAMING-1_2025_spring_1","PHD-FRAMING-1",2025,"Vår","AHO (uspesifisert underenhet)","phd","other","2026-11-08",42
+"aho","aho_PHD-READING-1_2025_autumn_3","PHD-READING-1",2025,"Høst","AHO (uspesifisert underenhet)","phd","english","2026-11-08",42
+"aho","aho_PHD-READING-1_2025_spring_1","PHD-READING-1",2025,"Vår","AHO (uspesifisert underenhet)","phd","english","2026-11-08",42
+"aho","aho_PHD-RESEARCH-1_2025_autumn_3","PHD-RESEARCH-1",2025,"Høst","AHO (uspesifisert underenhet)","phd","english","2026-11-08",42
+"aho","aho_PHD-RESEARCH-1_2025_spring_1","PHD-RESEARCH-1",2025,"Vår","AHO (uspesifisert underenhet)","phd","english","2026-11-08",42
+"aho","aho_PHD-SPESIAL-1_2025_autumn_3","PHD-SPESIAL-1",2025,"Høst","AHO (uspesifisert underenhet)","phd","english","2026-11-08",42
+"aho","aho_PHD-SPESIAL-1_2025_spring_1","PHD-SPESIAL-1",2025,"Vår","AHO (uspesifisert underenhet)","phd","english","2026-11-08",42
+"aho","aho_PHD-WRITING-1_2025_autumn_3","PHD-WRITING-1",2025,"Høst","AHO (uspesifisert underenhet)","phd","english","2026-11-08",42
+"aho","aho_PHD-WRITING-1_2025_spring_1","PHD-WRITING-1",2025,"Vår","AHO (uspesifisert underenhet)","phd","english","2026-11-08",42
+"aho","aho_SELVPROG-2_2025_spring_3","SELVPROG-2",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_SOD2-1_2025_autumn_3","SOD2-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_SOD2-1_2025_spring_1","SOD2-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_SOD5-1_2025_autumn_3","SOD5-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_SOD5-1_2025_spring_1","SOD5-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_SOD7-1_2025_autumn_3","SOD7-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_SOD7-1_2025_spring_1","SOD7-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_SOD8-1_2025_autumn_3","SOD8-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_SOD8-1_2025_spring_1","SOD8-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_SOD9-1_2025_autumn_3","SOD9-1",2025,"Høst","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_SOD9-1_2025_spring_1","SOD9-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_VALG3-1_2025_autumn_3","VALG3-1",2025,"Høst","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_VALG3-1_2025_spring_1","VALG3-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_VALG5-1_2025_autumn_3","VALG5-1",2025,"Høst","AHO (uspesifisert underenhet)","lower","other","2026-11-08",42
+"aho","aho_VALG5-1_2025_spring_1","VALG5-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
+"aho","aho_VALG6-1_2025_spring_3","VALG6-1",2025,"Vår","AHO (uspesifisert underenhet)","higher","other","2026-11-08",42
