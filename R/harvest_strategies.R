@@ -556,13 +556,20 @@ ldh_plan_index <- function(root = "https://ldh.no") {
 # text), each from its heading, a line that starts with the code ("MAPSY-100:
 # Innføring i ...", "BSY-100 Sykepleie, ...") followed within six lines by
 # "Engelsk emnenavn" (or "Engelsk navn"), to the next heading or a heading of
-# the plan in capitals ("STUDIETS OVERORDNEDE LÆRINGSUTBYTTER"),
-# "Referanser" or "Vedlegg"; without the page header
-# ("Lovisenberg diakonale høgskole") and footers (programme, cohort, page
-# number). The cohort's first term is the title page's or the file name's
-# "Kull H2024", "Kull V2025" or "kull 2019" (autumn), else "BIS21" (autumn
-# 2021), else the file name's "H2023"; a plan without it is left out. The course's semesters are its "Semester: 5 og 6" or "Semester
-# Første semester, høst". A code that a plan has twice keeps the first.
+# the plan: in capitals ("STUDIETS OVERORDNEDE LÆRINGSUTBYTTER"), "Studiets
+# overordnede læringsutbytter" (BIS23; not a course's own "Læringsutbytte"),
+# "Referanser" or "Vedlegg" ("Vedlegg til studieplan – selvvalgte emner").
+# Without the page chrome: the header ("Lovisenberg diakonale høgskole"), the
+# footers ("Bachelor i sykepleie BIS23     38", "Master i klinisk
+# intensivsykepleie H2025. Sist oppdatert 07.09.26") and a page number on a
+# line of its own among a page's last three lines (not a number in a table;
+# 2026-11-21, the pilot audit found BIS23's last course running into the
+# national competence areas and page numbers left in). The cohort's first
+# term is the title page's or the file name's "Kull H2024", "Kull V2025" or
+# "kull 2019" (autumn), else "BIS21" (autumn 2021), else the file name's
+# "H2023"; a plan without it is left out. The course's semesters are its
+# "Semester: 5 og 6" or "Semester Første semester, høst". A code that a plan
+# has twice keeps the first.
 ldh_pdf_courses <- function(pdf, url) {
   pages <- if (is.character(pdf)) pdf else tryCatch(pdftools::pdf_text(pdf), error = function(e) character())
   none <- tibble::tibble(code = character(), start = integer(), k1 = integer(), k2 = integer(),
@@ -578,13 +585,18 @@ ldh_pdf_courses <- function(pdf, url) {
   if (is.na(start)) return(none)
 
   lines <- unlist(strsplit(paste(pages, collapse = "\n"), "\n"))
+  page <- rep(seq_along(pages), stringr::str_count(pages, "\n") + 1L)[seq_along(lines)]
+  full <- which(nzchar(trimws(lines)))
+  last <- full[stats::ave(full, page[full], FUN = function(i) rev(seq_along(i))) <= 3]
   lines <- lines[!grepl("^\\s*Lovisenberg diakonale høgskole( AS)?\\s*$", lines) &
-                   !grepl("^\\s{10,}\\S.*\\s{3,}\\d{1,3}\\s*$", lines)]
+                   !grepl("^\\s{10,}\\S.*\\s{3,}\\d{1,3}\\s*$", lines) &
+                   !grepl("^\\s*\\S.*\\bSist oppdatert \\d{2}\\.\\d{2}\\.\\d{2,4}(\\s+\\d{1,3})?\\s*$", lines) &
+                   !(seq_along(lines) %in% last & grepl("^\\s*\\d{1,3}\\s*$", lines))]
   code_rx <- "^([A-ZÆØÅ]{2,8}-\\s?\\d{2,4}[A-Z]?)\\b:?\\s+\\S"
   head <- which(grepl(code_rx, lines) & vapply(seq_along(lines), function(i)
     any(grepl("Engelsk (emne)?navn", lines[i + seq_len(6)])), logical(1)))
   if (!length(head)) return(none)
-  stop <- c(which(grepl("^(?:[A-ZÆØÅ][A-ZÆØÅ .,–-]{8,}|Referanser|Vedlegg( \\d+)?)\\s*$", lines, perl = TRUE)),
+  stop <- c(which(grepl("^(?:[A-ZÆØÅ][A-ZÆØÅ .,–-]{8,}|Studiets overordnede læringsutbytter|Referanser|Vedlegg( \\d+| til studieplan.*)?)\\s*$", lines, perl = TRUE)),
             length(lines) + 1L)
   end <- pmin(c(head[-1], length(lines) + 1L), stop[findInterval(head, stop) + 1L]) - 1L
   ord <- c(første = 1, andre = 2, tredje = 3, fjerde = 4, femte = 5, sjette = 6)

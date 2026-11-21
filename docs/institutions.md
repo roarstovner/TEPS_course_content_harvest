@@ -446,8 +446,11 @@ which writes each course out under a heading line that starts with its
 code, followed by “Engelsk emnenavn”, the credits, “Semester: 2” and the
 plan’s parts. `harvest_cohort_plans()` reads the index of both
 (`ldh_plan_index()`: the sitemap, the programme pages and every study
-plan, each harvest anew), splits the PDFs (`ldh_pdf_courses()`) and
-gives each offering the cohort that has the course in its term
+plan, each harvest anew), splits the PDFs (`ldh_pdf_courses()`: a course
+runs to the next course heading or a heading of the plan, such as
+“Studiets overordnede læringsutbytter”, “Referanser” or “Vedlegg”,
+without the page header, the footers and the page numbers) and gives
+each offering the cohort that has the course in its term
 (`cohort_plan_match()`; the rule is in `data/data_notes.md`, LDH). The
 course pages are fetched as pages; a PDF’s course is stored as its text,
 with the PDF’s bytes on its first row.

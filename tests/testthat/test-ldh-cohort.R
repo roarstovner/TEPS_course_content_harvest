@@ -34,6 +34,24 @@ test_that("a study plan is split into its courses, with cohort and semesters", {
   expect_equal(nrow(ldh_pdf_courses("Studieplan uten kull\n", "https://ldh.no/x/plan.pdf")), 0)
 })
 
+test_that("a course ends at the plan's mixed-case heading, without page numbers and footers", {
+  x <- ldh_pdf_courses(c(
+    "Studieplan\nBachelor i sykepleie\n            Kull BIS23\n",
+    paste("BSYP-503 Sykepleier som fagutvikler", "Engelsk emnenavn: Leadership", "Semester: Femte (høst)", "",
+          "Læringsutbytte", "Etter avsluttede praksisstudier skal studenten kunne", "", "Antall: 30",
+          "                                 120", "", "                                    38",
+          "    Master i klinisk intensivsykepleie H2025. Sist oppdatert 07.09.26",
+          "                               Lovisenberg diakonale høgskole", sep = "\n"),
+    paste("Vurderings-/eksamensform og vurderingsuttrykk", "Bestått/ikke bestått.", "",
+          "Studiets overordnede læringsutbytter", "", "Forskrift om nasjonal retningslinje", "Kandidaten", sep = "\n")),
+    "https://ldh.no/x/Studieplan%20BIS23.pdf")
+  expect_equal(x$code, "BSYP-503")
+  expect_match(x$text, "Læringsutbytte\nEtter avsluttede")         # a course's own heading does not end it
+  expect_match(x$text, "\n {2,}120\n")                            # a number within the page stays
+  expect_match(x$text, "Bestått/ikke bestått.$")                  # across the page break, to the plan's heading
+  expect_no_match(x$text, "\\b38\\b|Sist oppdatert|Lovisenberg|overordnede|Kandidaten")
+})
+
 test_that("an offering takes the cohort that has the course in its term", {
   t <- function(y, s) semester_term(y, s)
   index <- tibble::tibble(
