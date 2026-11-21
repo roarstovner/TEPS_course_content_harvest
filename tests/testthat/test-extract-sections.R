@@ -2238,3 +2238,89 @@ test_that("a section that repeats an earlier section's whole text goes; practice
   iv <- tibble::tibble(section = c("prerequisites", "reading_list"), raw_text = c("Individuelt.", "Individuelt."))
   expect_equal(.clean_sections(iv)$section, iv$section)
 })
+
+test_that("barrattdue: prerequisites from the facts column, the description column and sub-courses", {
+  cfg <- .block_cfg(get_institution_config("barrattdue"))
+  col <- function(h, x) paste0("<div class='info-column'><h4>", h, "</h4>", x, "</div>")
+  acc <- function(h, x) paste0("<div class='accordion'><h3><button>", h, "</button></h3>",
+                               "<div class='accordion-content'><div class='inner'>", x, "</div></div></div>")
+  page <- function(pre) paste0(
+    "<main id='main'><div class='hero-text'><h1>HIST2100</h1><p>Norsk musikkhistorie</p></div>",
+    col("Kort om emnet", paste0("<ul><li>Studiepoeng: 5</li><li>Krav til forkunnskaper: ", pre, "</li>",
+                                "<li>Avsluttende vurdering: Eksamen</li></ul>")),
+    col("Læringsutbytte", "<p>Studenter som har fullført emnet</p><ul><li>har kunnskap om repertoar</li></ul>"),
+    col("Undervisning og læringsformer", "<p>Emnet omfatter norsk kunstmusikk.</p>"),
+    "<h2>Mer om emnet</h2>",
+    acc("Delemner", "<h4>Generell musikkdidaktikk 1</h4><p>Delemnet omfatter planlegging.</p>"),
+    acc("Organisering og arbeidsformer", paste0("<p>Gruppeundervisning.</p><p>Gjennomført undervisning og arbeidskrav ",
+                                               "er gyldig inntil to semestre etter ordinær eksamen.</p>")),
+    acc("Vurderingsformer", paste0("<p>Muntlig skoleeksamen.</p><h4>1: Eksamensmappe</h4><p>Et hefte.</p>",
+                                  "<p>Sensur med to interne sensorer, normalt seksjonsleder og hovedinstrumentlærer.</p>",
+                                  "<p>Frist for innlevering av årsrapport 15.mai</p>",
+                                  "<p>Eksamen må være bestått for at studenten skal kunne fortsette PPU-studiet 2. år.</p>")),
+    acc("Ny vurdering", "<p>Studenten må gjennomføre hele eller deler av emnet på nytt. Dette avgjøres individuelt av faglærer.</p>"),
+    "</main>")
+  s <- sections_of(page("Bestått HIST11 Musikkhistorie og repertoarkunnskap"), cfg)
+  expect_equal(s[["prerequisites"]], "Bestått HIST11 Musikkhistorie og repertoarkunnskap")
+  expect_equal(s[["course_content"]], paste0("Emnet omfatter norsk kunstmusikk.\n\nGenerell musikkdidaktikk 1\n",
+                                             "Delemnet omfatter planlegging."))
+  expect_equal(s[["teaching_methods"]], "Gruppeundervisning.")
+  expect_equal(s[["coursework_requirements"]],
+               "Gjennomført undervisning og arbeidskrav er gyldig inntil to semestre etter ordinær eksamen.")
+  expect_equal(s[["assessment"]], paste0("Muntlig skoleeksamen.\n1: Eksamensmappe\nEt hefte.\n\n",
+                                         "Studenten må gjennomføre hele eller deler av emnet på nytt."))
+  expect_false(any(grepl("Studiepoeng|Avsluttende vurdering: Eksamen", s)))
+  # an admission is no prerequisite
+  expect_false("prerequisites" %in% names(sections_of(page("Bestått opptaksprøve til bachelorprogram i utøvende musikk"), cfg)))
+  expect_false("prerequisites" %in% names(sections_of(
+    page("Bachelorgrad i musikk og Opptak til Praktisk-pedagogisk utdanning"), cfg)))
+})
+
+test_that("dmmh: coursework codes and gates after the exam table move; the graded exam stays", {
+  cw <- function(x) {
+    out <- .split_inline_coursework(tibble::tibble(section = "assessment", raw_text = x), labels = TRUE)
+    out <- .clean_sections(out, "dmmh")
+    stats::setNames(out$raw_text, out$section)
+  }
+  s <- cw(paste0("Vurderingsform:\tPraktisk eksamen\t\nMerknader:\tDagene inneholder følgende obligatoriske aktiviteter: ",
+                 "- oppstart - veiledning\t\nKode:\tPEK1\t\nSensorordning:\tIntern og ekstern\n\nKarakterskala\nA-F\n\n",
+                 "(P) betyr at arbeidskravet bygger på oppgaver som gjøres i praksisstudiet.\n\n",
+                 "Arbeidskrav som være bestått for å få gå opp til eksamen:\n\nPEK1: K1-DR1 og K1-DR2\n\n",
+                 "PEK2: K1-MU, K1-TF2 og OBLTS\n\nArbeidskrav er ekvivalent med tidligere arbeidskrav fra BKKKK1010\n\n",
+                 "K1-TF2 ekvivalent til K1-TF1\nIngen ekvivalente til N1-NA1 og N1-NA2"))
+  expect_equal(s[["assessment"]], paste0("Vurderingsform:\tPraktisk eksamen\t\nMerknader:\tDagene inneholder følgende ",
+                                         "obligatoriske aktiviteter: - oppstart - veiledning\t\nKode:\tPEK1\t\n\nKarakterskala\nA-F"))
+  expect_equal(s[["coursework_requirements"]], paste(
+    "(P) betyr at arbeidskravet bygger på oppgaver som gjøres i praksisstudiet.",
+    "Arbeidskrav som være bestått for å få gå opp til eksamen:", "PEK1: K1-DR1 og K1-DR2", "PEK2: K1-MU, K1-TF2 og OBLTS",
+    "Arbeidskrav er ekvivalent med tidligere arbeidskrav fra BKKKK1010", "K1-TF2 ekvivalent til K1-TF1",
+    "Ingen ekvivalente til N1-NA1 og N1-NA2", sep = "\n"))
+  # a label under the gate's list ends it; the resubmission rules go
+  s <- cw(paste0("Karakterskala\nBestått/Ikke bestått\n\nArbeidskrav som må godkjennes for å starte i praksis:\n- PL1\n",
+                 "Midtveisvurdering:\nMidtveisvurdering skal gjennomføres midt i praksisperioden.\n",
+                 "Egenvurderingen skal leveres innen 6 virkedager. Ved ikke godkjent egenvurdering gis det mulighet til å ",
+                 "levere en gang til. Om egenvurderingen ikke er levert innen fastsatt innleveringsfrist, regnes dette som ",
+                 "ett forsøk. Studenter med restpraksis grunnet gyldig fravær vil få ny frist for innlevering av egenvurderingen."))
+  expect_equal(s[["coursework_requirements"]], "Arbeidskrav som må godkjennes for å starte i praksis:\n- PL1")
+  expect_equal(s[["assessment"]], paste0("Karakterskala\nBestått/Ikke bestått\n\nMidtveisvurdering:\nMidtveisvurdering ",
+                                         "skal gjennomføres midt i praksisperioden.\nEgenvurderingen skal leveres innen 6 virkedager."))
+  # a grade scale is no code
+  expect_no_match("A-F", .coursework_code_row_regex, perl = TRUE)
+  expect_match("MUN: L-TF1 og OBLTS", .coursework_code_row_regex, perl = TRUE)
+})
+
+test_that("dmmh and ldh: pointers and 'none' are placeholders; dmmh's practice prerequisites", {
+  for (x in c("Se avsnittet «Arbeids-, lærings- og vurderingsformer» i studieplanens generelle del.",
+              "Se avsnittet \"Arbeids-, lærings-og vurderingsformer\" i studieplanens generelle del.",
+              "Se studieplanens generelle del.", "I emnet inngår ingen obligatorisk aktivitet."))
+    expect_true(.is_placeholder_text(x))
+  out <- .move_sentences(tibble::tibble(section = "prerequisites", raw_text = paste(
+    "All undervisning i kunnskapsområdene bidrar til studentens forberedelse til praksis, så tilstedeværelse i",
+    "undervisningen er en forutsetning for studentens faglige utbytte av praksis. Ved overflytting fra annet",
+    "studieprogram vil det bli foretatt en særskilt faglig vurdering av om tidligere gjennomførte praksisemner",
+    "oppfyller forkunnskapskravene for dette emnet.\n\nBLPRA100")), "dmmh")
+  expect_equal(stats::setNames(trimws(out$raw_text), out$section)[c("prerequisites", "coursework_requirements")],
+               c(prerequisites = "BLPRA100", coursework_requirements = paste(
+                 "All undervisning i kunnskapsområdene bidrar til studentens forberedelse til praksis, så tilstedeværelse i",
+                 "undervisningen er en forutsetning for studentens faglige utbytte av praksis.")))
+})

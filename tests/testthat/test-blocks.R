@@ -266,3 +266,40 @@ test_that("the text reader looks up the institution's own headings first", {
   expect_equal(b$text[b$role == "heading"], "Vurdering")
   expect_equal(b$section[b$role == "heading"], "assessment")
 })
+
+test_that("a labelled field that maps is plan text inside a facts box; the fulltext stays", {
+  # barrattdue's facts column (a list), ldh's facts card (paragraphs)
+  li <- paste0("<main><div class='col'><h4>Kort om emnet</h4><ul><li>Studiepoeng: 5</li>",
+               "<li>Krav til forkunnskaper: Bestått HIST11</li><li>Undervisningssted: Oslo</li></ul></div>",
+               "<h2>Læringsutbytte</h2><p>Kan ting.</p></main>")
+  p <- paste0("<main><div class='card'><h2>Om emnet</h2><div class='content'><p>Studiepoeng: 5</p>",
+              "<p>Krav til forkunnskaper: BSY-100, BSY-101</p></div></div><h2>Læringsutbytte</h2><p>Kan ting.</p></main>")
+  for (x in list(list(html = li, facts = "div.col", labels = "div.col > ul", pre = "Krav til forkunnskaper: Bestått HIST11"),
+                 list(html = p, facts = "div.card", labels = "div.content", pre = "Krav til forkunnskaper: BSY-100, BSY-101"))) {
+    cfg <- html_reader(c("h2, h4"), facts = x$facts, labels = x$labels,
+                       sub_map = c("krav til forkunnskaper" = ".admission"))
+    b <- page_blocks(x$html, NA, cfg)
+    expect_equal(trimws(b$text[!b$facts & b$role == "text"]), c(x$pre, "Kan ting."))
+    expect_equal(stats::setNames(sectionize(b)$raw_text, sectionize(b)$section),
+                 c(.admission = x$pre, learning_outcomes = "Kan ting."))
+    expect_equal(.blocks_text(b), .blocks_text(page_blocks(x$html, NA, utils::modifyList(cfg, list(labels = NULL)))))
+  }
+})
+
+test_that("the text reader makes a mapped field of the metadata block a section of its own (ldh)", {
+  own <- c("krav til forkunnskaper" = ".admission")
+  hdr <- "^\\s*(?:Studiepoeng|Krav til forkunnskaper)\\b"
+  cfg <- list(reader = "text", text_header = hdr, sub_map = own)
+  pdf <- "Sykepleie\nStudiepoeng: 15\nKrav til forkunnskaper: BSY-100, BSY-101\n\nHensikt\nEmnet gir."
+  b <- .text_blocks(pdf, cfg)
+  expect_equal(b$section[b$role == "heading"][1], ".admission")
+  expect_equal(b$text[b$role == "text"][1], "BSY-100, BSY-101")
+  # the table layout, with a wrapped value; an empty field gives none
+  tab <- paste0(" Studiepoeng                        15\n Krav til forkunnskaper             BSY-100, BSY-201\n",
+                "                                    BSYP-200\n\nHensikt\nEmnet gir.")
+  expect_equal(.header_fields(stringr::str_split_1(tab, "\n")[1:3], own),
+               list(c(section = ".admission", text = "BSY-100, BSY-201 BSYP-200")))
+  expect_length(.header_fields(c(" Studiepoeng   15", " Krav til forkunnskaper"), own), 0)
+  # without the institution's own map, no field opens a section
+  expect_length(.header_fields(stringr::str_split_1(pdf, "\n"), NULL), 0)
+})

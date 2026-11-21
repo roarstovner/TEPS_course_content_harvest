@@ -908,7 +908,13 @@ institution_configs <- list(
     # is their "Informasjon om eksamen/vurdering i emnet"
     section_headings = c("readinglist" = "reading_list", "working and learning activities" = "teaching_methods",
                          "mandatory coursework" = "coursework_requirements", "assessments" = "assessment",
-                         "evaluation" = "assessment")
+                         "evaluation" = "assessment"),
+    # The assessment's text after the table names the coursework each exam
+    # part requires ("Arbeidskrav som må være bestått for å få gå opp til
+    # eksamen:" over "PEK1: K1-DR1 og K1-DR2"), before placement
+    # ("Arbeidskrav som må godkjennes for å starte i praksis:" over "- PL1")
+    # and its equivalents in earlier versions (2026-11-21)
+    section_inline_coursework = TRUE
   ),
 
   aho = list(
@@ -989,11 +995,27 @@ institution_configs <- list(
     plan_years = "current",
     # h4 columns, the h2 "Mer om emnet" over h3 accordions ("Læremiddelomtale/pensum",
     # "Organisering og arbeidsformer", "Arbeidskrav", "Vurderingsformer",
-    # "Ny vurdering", "Karakterskala", "Emneevaluering")
+    # "Ny vurdering", "Karakterskala", "Emneevaluering"); an h4 in an
+    # accordion is a sub-heading: DID1's sub-course titles under "Delemner",
+    # the exam parts under "Vurderingsformer" ("1: Eksamensmappe")
     section_strategy = "html",
-    section_heading_selector = "h2, h3, h4",
-    # "Læremiddelomtale" (without "/pensum") is the reading list
-    section_headings = c("læremiddelomtale" = "reading_list")
+    section_heading_selector = "h2, h3, div.info-column > h4",
+    section_subheading_selector = "div.accordion-content h4",
+    # The facts column's list is read as labelled fields
+    # (section_label_selector): its prerequisites ("Krav til forkunnskaper:
+    # Bestått HIST11 ...", the only ones the page names; 2026-11-21) join
+    # prerequisites, without an admission ("Bestått opptaksprøve ...",
+    # "Bachelorgrad i musikk og Opptak til ...", .admission_prerequisites());
+    # its other fields map nowhere and stay facts
+    section_label_selector = paste0("//div[contains(@class, 'info-column')][h4[starts-with(normalize-space(), 'Kort om emnet') ",
+                                    "or starts-with(normalize-space(), 'Course overview')]]/ul"),
+    # "Læremiddelomtale" (without "/pensum") is the reading list. The column
+    # "Undervisning og læringsformer" describes the course ("Emnet omfatter
+    # arbeid med ..."; teaching methods are in "Organisering og
+    # arbeidsformer"), and so do the accordion "Delemner" and its sub-course
+    # descriptions (2026-11-21)
+    section_headings = c("læremiddelomtale" = "reading_list", "undervisning og læringsformer" = "course_content",
+                         "delemner" = "course_content", "krav til forkunnskaper" = ".admission")
   ),
 
   ldh = list(
@@ -1021,12 +1043,18 @@ institution_configs <- list(
     # aktivitet", "Vurderings-/eksamensform og vurderingsuttrykk"); a PDF's
     # course is read as text, after its metadata lines
     section_strategy = "html",
+    # The courses the course requires ("Krav til forkunnskaper: BSY-100,
+    # ..."), a field of the facts box on a page (section_label_selector) and
+    # of a PDF's metadata lines (2026-11-21: in no section before), join
+    # prerequisites; "Ingen" goes (.admission_prerequisites())
+    section_label_selector = "//div[contains(@class, 'ContentBlocks__card')]//div[contains(@class, 'CardAside__content')]",
     # the purpose ("Hensikt" on a page, "Hensikten med emnet" in a PDF) is
     # the course's content; the PDFs' learning outcomes and assessment
     # headings for the text reader
     section_headings = c("hensikt" = "course_content", "hensikten med emnet" = "course_content",
                          "emnets læringsutbytte" = "learning_outcomes",
-                         "vurderings-/eksamensform og vurderingsuttrykk" = "assessment"),
+                         "vurderings-/eksamensform og vurderingsuttrykk" = "assessment",
+                         "krav til forkunnskaper" = ".admission"),
     section_text_header = paste0("^\\s*(?:Engelsk (?:emne)?navn|Studiepoeng|Semester|Undervisningsspråk|",
                                  "Krav til forkunnskaper|Emnekode og emnenavn|Studieprogrammet emnet|inngår i)\\b")
   ),

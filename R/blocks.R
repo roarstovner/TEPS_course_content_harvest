@@ -99,16 +99,17 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
   )
 }
 
-# Collects blocks in order; $add(role, text, section, keep, tag), $table().
-# Blocks added between $facts(TRUE) and $facts(FALSE) are facts.
+# Collects blocks in order; $add(role, text, section, keep, tag, facts), $table().
+# Blocks added between $facts(TRUE) and $facts(FALSE) are facts, unless
+# added with facts = FALSE.
 .block_list <- function() {
   role <- text <- section <- tag <- character()
   keep <- facts <- logical()
   depth <- 0L
   list(
-    add = function(r, t, s = NA_character_, k = FALSE, g = "") {
+    add = function(r, t, s = NA_character_, k = FALSE, g = "", f = NA) {
       role <<- c(role, r); text <<- c(text, t); section <<- c(section, s)
-      keep <<- c(keep, k); tag <<- c(tag, g); facts <<- c(facts, depth > 0L)
+      keep <<- c(keep, k); tag <<- c(tag, g); facts <<- c(facts, if (is.na(f)) depth > 0L else f)
     },
     facts = function(on) depth <<- depth + if (on) 1L else -1L,
     table = function() tibble::tibble(role = role, text = text, section = section,
@@ -257,10 +258,15 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
     } else if (identical(mark, "sub")) {
       .sub_blocks(node, out$add, cfg$sub_map)
     } else if (identical(mark, "label")) {
-      # each item opens its section by an empty heading; its text continues
-      # the list's verbatim (tag "+"), so the fulltext reads the list as before
+      # each item (a list's <li>, else a child element: ldh's facts box of
+      # <p>s) opens its section by an empty heading; its text continues the
+      # list's verbatim (tag "+"), so the fulltext reads the list as before.
+      # In a facts box, an item whose label maps is plan text, not facts
+      # (barrattdue's and ldh's "Krav til forkunnskaper", 2026-11-21)
       txt <- trimws(.html_text2(node))
-      items <- trimws(rvest::html_text2(xml2::xml_find_all(node, "./li")))
+      items <- xml2::xml_find_all(node, "./li")
+      if (!length(items)) items <- xml2::xml_children(node)
+      items <- trimws(rvest::html_text2(items))
       ends <- integer()
       for (x in items[nzchar(items)]) {
         k <- regexpr(x, substring(txt, max(ends, 0) + 1), fixed = TRUE)
@@ -274,8 +280,10 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
       }
       for (k in seq_along(seg)) {
         lab <- stringr::str_match(trimws(seg[k]), "^([^:：\n]{1,40}?)\\s*[:：\n]")[, 2]
-        out$add("heading", "", .exact_section(lab, cfg$sub_map, map = FALSE))
-        out$add("text", seg[k], g = if (k == 1) tag else "+")
+        sec <- .exact_section(lab, cfg$sub_map, map = FALSE)
+        f <- if (is.na(sec)) NA else FALSE
+        out$add("heading", "", sec, f = f)
+        out$add("text", seg[k], g = if (k == 1) tag else "+", f = f)
       }
       if (!length(seg)) out$add("text", txt, g = tag)
     } else if (identical(mark, "field")) {
@@ -550,6 +558,10 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
   # the untitled text is the course introduction.
   hdr <- .text_header(lines, cfg)
   if (hdr$n > 0) {
+    for (f in .header_fields(lines[seq_len(hdr$n)], cfg$sub_map)) {
+      out$add("heading", "", f[["section"]])
+      out$add("text", f[["text"]])
+    }
     lines <- lines[-seq_len(hdr$n)]
     is_blank <- is_blank[-seq_len(hdr$n)]
   }
@@ -636,6 +648,24 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
   }
   toc <- which(trimws(head) %in% .toc_titles)[1]
   list(n = if (is.na(toc)) 0L else toc - 1L, intro = FALSE)
+}
+
+# The fields of a metadata block that the institution maps
+# (`section_headings`): a line "Label: value" or, in a table, "Label   value",
+# whose label (lower case) names a section, with its value's wrapped lines
+# (indented 10+ spaces) up to the next field; ldh's "Krav til forkunnskaper:
+# BSY-100, ..." (".admission", 2026-11-21: the header held the only
+# prerequisites of its PDF plans). A list of c(section, text).
+.header_fields <- function(lines, sub_map) {
+  if (!length(sub_map)) return(list())
+  m <- stringr::str_match(lines, "^\\s*([^:：\\s][^:：]{0,39}?)(?:\\s*[:：]|\\s{2,}|\\s*$)\\s*(.*)$")
+  sec <- unname(sub_map[tolower(m[, 2])])
+  lapply(which(!is.na(sec)), function(i) {
+    j <- i
+    while (j < length(lines) && grepl("^\\s{10,}\\S", lines[j + 1])) j <- j + 1
+    txt <- trimws(paste(c(m[i, 3], trimws(lines[seq_len(j - i) + i])), collapse = " "))
+    if (nzchar(txt)) c(section = sec[i], text = txt)
+  }) |> Filter(f = Negate(is.null))
 }
 
 #' The plan text of pages read as text

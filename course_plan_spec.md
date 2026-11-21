@@ -175,7 +175,7 @@ the spec here:
   skolen."
 - At the institutions with rules for their stock wordings (HVL, INN, MF,
   NMBU, OsloMet, Steiner, UiB, UiO, UiS, VID, HiOF; 2026-11-09; NMH and
-  KHiO, 2026-11-16), assessment
+  KHiO, 2026-11-16; DMMH and Barratt Due, 2026-11-21), assessment
   still keeps resit, appeal and examiner rules worded once or in a sentence
   that also says something about the design ("Oppgaven vurderes av intern og
   ekstern sensor på grunnlag av læringsutbyttebeskrivelser for emnet.", HVL;
@@ -198,7 +198,15 @@ the spec here:
   av praksis" (UiO). The sections audit of 2026-11-08 found 9 such wordings
   in 280 sampled plans (INN, MF, NIH, NMBU, OsloMet, Steiner, UiB, UiO); a
   sentence is moved by meaning only where its wording recurs over many plans
-  (user 2026-11-11).
+  (user 2026-11-11). A recurring wording stays too when it shares its sentence
+  with the course's subject: LDH's placement courses open "Innhold" with
+  "Emnet omfatter praksisforberedende studier ..., hvorav normalt 8 uker
+  (240 timer) er tilstedeværelse i klinisk kontekst, der sykepleie tilpasses
+  ..." (2026-11-21), and Barratt Due's column "Undervisning og
+  læringsformer", course content on most pages, lists the activities of the
+  main-instrument and chamber-music courses ("Individuell undervisning med
+  hovedinstrumentlærer", "Prosjektuke med fordypning i repertoar og
+  samspill").
 - UiB's English page is not read: 10 of 17,441 UiB plans say only
   "Informasjonen fins ikkje på norsk." (courses described only in English),
   and their offerings have no plan (2026-11-11; a harvest of the English

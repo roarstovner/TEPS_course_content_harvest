@@ -391,7 +391,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
     out <- .merge_sections(out[order(el), , drop = FALSE])   # after the page's own
   }
   if (nrow(out) == 0) return(out)
-  pr <- grepl("(?i)for å (?:kunne )?(?:fortsette|starte|begynne|gå videre)|gå videre til", out$raw_text, perl = TRUE)
+  pr <- grepl("(?i)(?:for å|skal) (?:kunne )?(?:fortsette|starte|begynne|gå videre)|gå videre til", out$raw_text, perl = TRUE)
   out$raw_text[pr] <- vapply(out$raw_text[pr], .strip_progression, character(1),
                              title = title, USE.NAMES = FALSE)
   exam <- out$section %in% c("assessment", "coursework_requirements")
@@ -513,7 +513,9 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # "Studentene må bestå dette for å kunne starte på masteroppgaven 5.
 # studieår.", "Studenten må ha fulgt undervisningen i emnet for å kunne
 # fortsette videre i studiet", "Studenter kan, ved å gjennomføre
-# dette emnet og emnet ... gå videre til ..."), or the course it names first
+# dette emnet og emnet ... gå videre til ...", barrattdue's "Eksamen må være
+# bestått for at studenten skal kunne fortsette PPU-studiet 2. år."), or the
+# course it names first
 # is this one, by its title ("En må ha fulgt Kunst og håndverk 1 for å kunne
 # fortsette på Kunst og håndverk 2" in the Kunst og håndverk 1 plans,
 # "Studenten må ha fulgt undervisning og fått godkjent arbeidskravene i
@@ -525,7 +527,8 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "(?:studenten\\w*|en|du) må (?:stå i|bestå|ha fulgt undervisning(?:en)? i) (?:dette emnet|emnet|dette))\\b",
   "[^.]*?\\bfor å (?:kunne )?(?:fortsette|starte|begynne|gå videre)\\b|",
   "\\bved å (?:gjennomf(?:ø)?re|fullføre|bestå) dette emnet\\b[^.]*?\\bgå videre til\\b|",
-  "^\\W*bestått (?:semester|emne|studieår) er en forutsetning for å (?:kunne )?(?:fortsette|starte|begynne|gå videre)\\b")
+  "^\\W*bestått (?:semester|emne|studieår) er en forutsetning for å (?:kunne )?(?:fortsette|starte|begynne|gå videre)\\b|",
+  "^\\W*eksamen må være bestått for at (?:studenten|du) skal kunne (?:fortsette|starte|begynne|gå videre)\\b")
 .progression_named_regex <- paste0(
   "(?i)^\\W*(?:en|du|studenten\\w*) må ha (?:fulgt|bestått|gjennomført|fullført) ",
   "(?:undervisning(?:en)?,? og fått godkjent arbeidskravene (?:i|på) )?(?-i:(?:\\d?\\p{Lu}{2,}[\\p{Lu}0-9-]*\\d\\w*\\s+)?)(.+?)",
@@ -566,7 +569,8 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 
 # The prerequisites in a block that mixes them with admission (nord's
 # "Adgangsregulering", `section_headings` ".admission"; uit's "Opptakskrav";
-# nmh's summary field "Forhåndskrav:", whose label goes): its sentences that
+# nmh's summary field "Forhåndskrav:", barrattdue's and ldh's "Krav til
+# forkunnskaper:", whose label goes): its sentences that
 # name a prior course, credits or a passed part ("Bestått 90 stp. i
 # masterfaget og bestått FoU-oppgave.", "Gjennomført SAM1001 Samfunnsfag 1A
 # eller tilsvarende.") and are not admission ("Emnet er kun åpent for
@@ -607,7 +611,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 .admission_prerequisites <- function(text, prerequisites = "") {
   had <- stringr::str_squish(prerequisites)
   lines <- vapply(.unwrap_lines(stringr::str_split_1(text, "\n")), function(l) {
-    s <- sub("(?i)^(\\s*)(?:opptakskrav|forhåndskrav)\\s*:\\s*", "\\1", stringr::str_split_1(l, .sentence_end), perl = TRUE)
+    s <- sub("(?i)^(\\s*)(?:opptakskrav|forhåndskrav|krav til forkunnskaper)\\s*:\\s*", "\\1", stringr::str_split_1(l, .sentence_end), perl = TRUE)
     k <- grepl(.real_prerequisite_regex, s, perl = TRUE) & !.is_admission_sentence(s) &
       !grepl(.admission_only_regex, s, perl = TRUE) &
       !(grepl(.degree_regex, s, perl = TRUE) & !grepl("\\b[A-ZÆØÅ]{2,}[A-ZÆØÅ0-9-]*\\d{3,}", s, perl = TRUE)) &
@@ -705,6 +709,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "(?:\\d+|en|ett?|ei|to|tre|fire|fem|seks|sju|syv|åtte|ni|ti) (?:\\w+ )?arbeidskrav(?:ene|et)?|",
   "følg(?:ende|jande) (?:obligatoriske )?arbeidskrav|(?:beskriv\\w+ av )?arbeidskrav(?:ene|et)?|",
   "\\d\\) [^.\\n]{0,200}\\bgodkjente oppgaver|",   # uit 2008: "1) ... krav til antall godkjente oppgaver"
+  "\\(\\p{Lu}\\) betyr at arbeidskrav\\w*|",       # dmmh: "(P) betyr at arbeidskravet bygger på oppgaver ..."
   "(?-i:AK|OD|OA)\\d*|",                         # nord: AK, OD2 as their label
   "obligatoriske? (?:deltakelse|deltagelse|deltaking|arbeid|arbeidskrav|",
   "aktivitet(?:er)?|oppmøte|frammøte|fremmøte)|",
@@ -1016,13 +1021,24 @@ extract_sections <- function(config, html, extracted_text, course_id) {
     }
     if (!colon[k] && label[from]) next
     repeat {
-      to <- which((blank | stop | ends) & seq_len(n) > from)[1]
+      # a label under a colon-ended lead ends it ("Midtveisvurdering:" after
+      # "Arbeidskrav som må godkjennes for å starte i praksis:" over "- PL1",
+      # dmmh)
+      to <- which((blank | stop | ends | (colon[k] & colon & label & !gate & !item)) & seq_len(n) > from)[1]
       gate[from:(if (is.na(to)) n else to - 1)] <- TRUE
       if (colon[k] || is.na(to)) break
       from <- which(!blank & seq_len(n) > to)[1]
       if (is.na(from) || stop[from] || label[from] ||
           !grepl(.coursework_leadin, lines[from], perl = TRUE)) break
     }
+  }
+  # rows of codes under a gate, across blank lines (dmmh: "PEK1: K1-DR1 og
+  # K1-DR2", "OPG1: F-TF1 og F-TF4" under "Arbeidskrav som må godkjennes for å
+  # gå opp til eksamen:", "F-TF1 er ekvivalent med AK 1" under "Arbeidskrav
+  # som er ekvivalent med tidligere arbeidskrav:"), join it
+  if (isTRUE(labels)) for (k in which(grepl(.coursework_code_row_regex, lines, perl = TRUE))) {
+    p <- utils::tail(which(!blank & seq_len(n) < k), 1)
+    if (length(p) && gate[p]) gate[k] <- TRUE
   }
   gate[blank] <- FALSE
   design <- design & !gate
@@ -1032,6 +1048,18 @@ extract_sections <- function(config, html, extracted_text, course_id) {
                          paste(ifelse(gate, lines, aside)[gate | nzchar(aside)], collapse = "\n"))
   .append_section(out, "assessment", paste(lines[design], collapse = "\n"))
 }
+
+# A line of coursework codes (dmmh): codes, or an exam part's code and the
+# codes of the coursework it requires ("PEK3: K1-MU, K1-TF2 og OBLTS",
+# "- PL1"), or a code's equivalents in an earlier version ("K1-MU1 og K1-MU2
+# ekvivalent til K1-MU", "F-TF1 er ekvivalent med AK 1", "Ingen ekvivalente
+# til ..."). A code has a digit or three capitals: not a grade scale "A-F".
+.coursework_code <- "(?=[A-ZÆØÅ0-9-]*(?:\\d|[A-ZÆØÅ]{3}))[A-ZÆØÅ][A-ZÆØÅ0-9]*(?:-[A-ZÆØÅ0-9]+)*"
+.coursework_code_row_regex <- local({
+  codes <- paste0(.coursework_code, "(?:\\s*(?:,|og|and|&)\\s*", .coursework_code, ")*")
+  paste0("^\\s*(?:[-•]\\s*)?(?:", codes, "(?:\\s*[:：]\\s*", codes, ")?\\s*$|",
+         .coursework_code, "\\b.*\\bekvivalent|(?i:ingen ekvivalent))")
+})
 
 # Add text to a section, after a blank line, or as a new row.
 .append_section <- function(out, section, text) {
@@ -1171,6 +1199,24 @@ extract_sections <- function(config, html, extracted_text, course_id) {
                       rx = "(?i)^\\s*bestått didaktikkemne \\d\\.?\\s*$")),
   hvl = list(list(from = "course_content", to = "teaching_methods",
                   rx = "(?i)^\\s*arbeidet utføres normalt i grupper\\b")),
+  # dmmh: the practice courses' "Forkunnskapskrav" (2026-11-21): attendance
+  # as the condition for a placement ("All undervisning i kunnskapsområdene
+  # bidrar til studentens forberedelse til praksis, så tilstedeværelse i
+  # undervisningen er en forutsetning ...", "Mangelfull tilstedeværelse i
+  # undervisningen kan gjøre det nødvendig å foreta en skjønnsmessig vurdering
+  # av om studenten kan tilbys praksisplass.") is a coursework requirement;
+  # the transfer rule ("Ved overflytting fra annet studieprogram vil det bli
+  # foretatt en særskilt faglig vurdering ...") is admission, in no section
+  dmmh = list(list(from = "prerequisites", to = "coursework_requirements", rx = paste0(
+                "^\\W*(?:All undervisning i kunnskapsområdene bidrar til studentens forberedelse til praksis|",
+                "Mangelfull tilstedeværelse i undervisningen kan gjøre det nødvendig)")),
+              list(from = "prerequisites", to = ".drop",
+                   rx = "^\\W*Ved overflytting fra annet studieprogram vil det bli foretatt en særskilt faglig vurdering")),
+  # barrattdue: how long completed teaching and coursework count, written
+  # under "Organisering og arbeidsformer" ("Gjennomført undervisning og
+  # arbeidskrav er gyldig inntil to semestre etter ordinær eksamen.")
+  barrattdue = list(list(from = "teaching_methods", to = "coursework_requirements",
+                         rx = "^\\W*Gjennomført undervisning og arbeidskrav er gyldig\\b")),
   usn = list(list(from = "teaching_methods", to = "assessment",
                   rx = "(?i)^\\s*praksis vurderes (?:til|med|som) (?:bestått|godkjent) ?/ ?ikke (?:bestått|godkjent)\\.?\\s*$")),
   nla = list(list(from = "course_content", to = "teaching_methods", rx = paste0(
@@ -1434,7 +1480,26 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # kan eventuelt gjøres i samarbeid med interne faglærere og/eller eksterne
 # gjestelærere.", "Emnet vurderes av lærerne i samråd med
 # programansvarlig."; "Studenten vurderes av pedagogen kontinuerlig ..."
-# says how and stays).
+# says how and stays); dmmh and barrattdue (2026-11-21): the examiners and
+# who they normally are ("Intern sensor er normalt samme person som var
+# opponent ...", "Sensur med to interne sensorer, normalt seksjonsleder og
+# hovedinstrumentlærer.", "To interne sensorer.", "Studentens
+# hovedinstrumentlærer inngår normalt som en av sensorene."); dmmh: the
+# resubmission rules ("Ved ikke godkjent praksisrapport gis det mulighet til
+# å levere en gang til.", "Dersom rapporten vurderes til ikke å kunne
+# godkjennes, får studenten 5 virkedager til å forbedre den.", "Om
+# praksisrapport ikke er levert innen fastsatt innleveringsfrist, regnes
+# dette som et forsøk.", "Studenter som har fått
+# restpraksis grunnet gyldig fravær, vil få ny innleveringsfrist ...");
+# barrattdue: who decides how the resit is held ("Dette avgjøres individuelt
+# av faglærer.") and the dated deadlines ("Frist for innlevering av
+# årsrapport 15.mai"); "Ny eksamen", "Den delen som ikke er bestått må
+# gjennomføres på nytt." say what the resit is and stay.
+.examiner_role_regex <- paste0(
+  "(?i)^\\W*(?:(?:intern |ekstern )?sensur med (?:minst |minimum )?(?:\\w+ )?(?:interne? |eksterne? )?sensor[^.]*|",
+  "(?:en|to|tre|\\d) (?:interne? |eksterne? )?sensor(?:er)?\\b[^.]*|",
+  "(?:(?:intern |ekstern |en )?sensor(?:en)?|en av sensorene|studentens \\w*lærer(?: i emnet)?) ",
+  "(?:er|inngår) normalt\\b[^.]*)\\W*$")
 .logistics_sentences <- list(
   hvl = c(paste0(
     "(?i)studentweb|",
@@ -1504,6 +1569,15 @@ extract_sections <- function(config, html, extracted_text, course_id) {
                     who, "(?:(?:/| og | eller | og/eller )", who, ")*",
                     "(?: (?:og kan eventuelt gjøres|i (?:samråd|samarbeid) med|sammen med)\\b[^.]*)?)\\W*$")
            })),
+  dmmh = c(.examiner_sentence_regex, .examiner_role_regex,
+           "(?i)^\\W*Ved ikke godkjent \\w+ (?:gis det|får studenten)\\b[^.]*\\blevere en gang til\\b",
+           "(?i)^\\W*Om \\w+ ikke er levert innen fastsatt innleveringsfrist, regnes dette som ett? forsøk",
+           "(?i)^\\W*Dersom \\w+ vurderes til ikke å kunne godkjennes, får studenten \\w+ virkedager til å forbedre",
+           "(?i)^\\W*Studenter (?:som har fått|med) restpraksis grunnet gyldig fravær,? vil få ny (?:innleverings)?frist"),
+  barrattdue = c(.examiner_sentence_regex, .examiner_role_regex,
+                 "(?i)^\\W*Det(?:te)? avgjøres individuelt av faglærer",
+                 paste0("(?i)^\\W*Frist (?:for )?innlevering av [^.]*?\\d{1,2}\\.\\s?",
+                        "(?:januar|februar|mars|april|mai|juni|juli|august|september|oktober|november|desember)\\W*$")),
   vid = c(.examiner_sentence_regex,
           "(?i)^\\W*Utsatt eksamen er tilsvarende (?:som )?ordinær(?: eksamen)?\\W*$",
           "(?i)^\\W*VID arrangerer inntil \\w+ utsatte prøver"),
@@ -1534,8 +1608,10 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # for ...") and the resit heading "Ny vurdering" left alone at the end by
 # its stock rule (.logistics_sentences); khio: the notice that the
 # description may change ("OBS: det kan komme mindre endringer i
-# emnebeskrivelsen ...").
+# emnebeskrivelsen ..."); dmmh: the examiner row of the exam table
+# ("Sensorordning:\tIntern og ekstern", "Censor type:\tInternal"; 2026-11-21).
 .logistics_blocks <- list(
+  dmmh = "(?m)^[ \t]*(?:Sensorordning|Censor type):[^\n]*(?:\n|$)",
   nmh = c("(?m)^[ \t]*Inngår i studieprogram[ \t]*(?:\n[ \t]*\\p{Lu}{2,}[\\p{Lu} ]* - [^\n]*)*(?:\n|$)",
           "(?m)^[ \t]*Emneansvarlig:[ \t]*(?:[Ff]agseksjon|[Ii]nstitutt|[Aa]vdeling)\\b[^\n]*(?:\n|$)",
           "\\s*(?:^|\n)[ \t]*(?:Ny vurdering|New assessment)[ \t]*\\s*$"),
@@ -1654,12 +1730,16 @@ extract_sections <- function(config, html, extracted_text, course_id) {
          "(?: ?(?:eller|og|/) ?(?:andre vilkår|obligatorisk\\w* aktivitet\\w*))?",
          "(?: (?:i|for|knytt\\w* til) (?:dette )?(?:emnet|studiet))?"),
   "no coursework requirements(?: or compulsory activities)?",
+  "i emnet inngår ingen obligatoriske? aktivitet\\w*",            # ldh (2026-11-21)
   # a bare yes: coursework "Ja", "Ja, vert spesifisert i semesterplan ved semesterstart" (hvl)
   "ja(?:,? \\(?(?:vert |blir )?spesifiser\\w* i (?:semester|undervisnings)plan\\w* ved semesterstart\\)?)?",
   "me(?:i)?r om hjelpemid(?:del|ler)",                               # hvl link
   # pointers to another document
   "(?:se|sjå) (?:fag|program|studie)?plan(?:en)?(?: for [^.]{0,100})?",
   "se emnearkivet",
+  # dmmh (2026-11-21): "Se avsnittet «Arbeids-, lærings- og vurderingsformer»
+  # i studieplanens generelle del.", "Se studieplanens generelle del."
+  "se (?:avsnitt(?:et)? [«\"“][^»\"”]{1,80}[»\"”] i )?studieplanens generelle del",
   # ntnu: the recommended field points to the required; oslomet: "Se
   # forkunnskapskrav beskrevet under Innhold og oppbygging i programplanen."
   "(?:se|sjå) forkunnskapskrav(?:et|a|ene)?(?: beskrevet under [^.]{0,80})?",
