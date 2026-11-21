@@ -104,6 +104,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Anonymizer: administrative dates in prose (AHO, ONH, Barratt Due, LDH 'Gjelder BIS24'); content range after 'av' (ONH) (#601)
+- Anonymizer: AHO staff names in teacher lists and prose roles (#594)
 - LDH PDF split: stop at mixed-case programme headings, drop page numbers and 'Sist oppdatert' footers (before LDH's full harvest) (#593)
 - site_request(): robots.txt is checked for the first URL only; redirects are followed unchecked (#586)
 - Add NSKI Høyskole (#583)
