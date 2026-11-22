@@ -82,15 +82,34 @@ are titles, organisations, places, composers and reference authors; AHO's
 phone flag is an attachment id in a reading-list URL; Barratt Due's
 repertoire names stay.
 
+## Re-audit of AHO 2026-11-22 (after the fix)
+
+Batches A and B were fixed and rebuilt (build of 2026-11-22, 00:18-10:40);
+C too (the content range "finanskrisen i 2007-08" stays). AHO re-run with
+the newest Codex model, `gpt-6.2-sol`, on a fresh packet of the same seed
+(20 suspects, 8 controls; `findings-codex/aho.json`): "no confirmed
+personal data left in the displayed plans"; the staff names show only in
+the removal spans. 3 findings, all verified:
+
+- medium, English scheduling dates in two PhD courses ("Preparation of
+  Literature review/theoretical framing by April 30, 2026", an AHO
+  Colloquium session on 6 November; `aho_PHD-READING-1_2025_autumn_3`,
+  `aho_PHD-RESEARCH-1_2025_autumn_3`): English "by <Month> <day>, <year>"
+  dates the generic rules do not read.
+- low, a clock range ("Forelesning fra 9-12 hver mandag formiddag",
+  `aho_70 123-1_2025_spring_1`).
+- low, the role left after its name ("... og foreleser og kursansvarlig
+  er."): the inline rule always keeps the role.
+
 ## Verdict
 
-Gate number of this check (build of 2026-11-21; `PILOT_GATE`: privacy_hits
+Gate number of this check (build of 2026-11-22; `PILOT_GATE`: privacy_hits
 0): `privacy_hits` 0 at all five.
 
 | Institution | privacy_hits | Verdict |
 |---|---|---|
 | dmmh | 0 | **ready for full harvest** |
-| aho | 0 | **not ready**: batch A (staff names; rebuild-only) |
+| aho | 0 | **ready for full harvest** (re-audit 2026-11-22; medium and low left, rebuild-only; not ready on 2026-11-21) |
 | ldh | 0 | **ready for full harvest** (batch B, low) |
 | onh | 0 | **ready for full harvest** (batches B, C, low) |
 | barrattdue | 0 | **ready for full harvest** (batch B, low) |

@@ -1,41 +1,73 @@
 {
   "check": "sections",
   "institution": "dmmh",
-  "model": "gpt-6.1-sol",
-  "n_courses_reviewed": 17,
+  "model": "gpt-6.2-sol",
+  "n_courses_reviewed": 16,
   "n_suspects_reviewed": 14,
-  "overall_assessment": "Section boundaries and the three learning-outcome groups are generally preserved across all 17 packet courses, but pointer-only sections, residual coursework in assessment, and examiner logistics need cleanup. The duplicate/short flags on study-plan pointers expose invalid placeholder rows rather than extractor-created duplication; long practice activities and short prerequisite course codes are valid, while course-content/learning-outcome leak flags mostly match assessment sublabels rather than merged sections. All three controls retain examiner logistics, so that issue extends beyond the suspects; comparisons are limited to the full text actually supplied in the packet, whose builder caps several plans.",
+  "overall_assessment": "All 16 packet entries were reviewed, including 14 suspects and two controls, with completeness comparisons limited by the packet’s display caps. Major section boundaries and learning-outcome groups generally hold: all seven leak flags were false alarms for merged sections (two match Innledning in self-evaluation instructions and five match learning-outcome references in assessment criteria), the four short and one empty prerequisite flags cover valid complete course-code lists, and the long MKPRO5500 row is valid while the long VUUHP6100 row includes administrative prose. Approval-only work still appears in assessment and teaching, and exam logistics remain in both controls, which cover two versions of the same programme.",
   "findings": [
     {
-      "target": "cross_section",
-      "error_type": "empty_placeholder",
-      "severity": "medium",
-      "prevalence": "common",
-      "example_course_ids": [
-        "dmmh_VUBHP6000-1_2025_autumn_1",
-        "dmmh_VUBHP6000-1_2019_autumn_1",
-        "dmmh_BDBUL1001-1_2025_autumn_1"
-      ],
-      "evidence": "Se avsnittet «Arbeids-, lærings- og vurderingsformer» i studieplanens generelle del.",
-      "description": "Eight of 17 courses emit sections containing only a pointer to the general study plan. Both VUBHP offerings emit the same pointer as course_content, learning_outcomes and teaching_methods; six further courses emit a pointer-only teaching_methods row. These rows contain no substantive section text and should be absent under course_plan_spec.md. The duplication and boilerplate flags therefore identify placeholder retention, not copied substantive content or missing text demonstrable in this packet.",
-      "root_cause_hypothesis": "R/extract_sections.R .placeholder_phrases handles simple study-plan pointers but does not cover the possessive wording studieplanens generelle del or the Se avsnittet formulation.",
-      "suggested_fix": "Extend whole-section placeholder matching to the two exact recurring DMMH pointer formulations, including optional final punctuation. Drop rows consisting solely of these pointers; preserve rows containing additional substantive text.",
-      "confidence": "high"
-    },
-    {
-      "target": "cross_section",
+      "target": "assessment",
       "error_type": "wrong_content",
       "severity": "high",
       "prevalence": "common",
       "example_course_ids": [
-        "dmmh_BKKKK1013-1_2022_autumn_1",
-        "dmmh_BLPRA100-1_2025_autumn_1",
-        "dmmh_BHFOR3561-1_2025_autumn_1"
+        "dmmh_BHPRA200-1_2022_autumn_3",
+        "dmmh_BNPRA200-1_2019_spring_1",
+        "dmmh_BLPRA100-1_2025_autumn_1"
       ],
-      "evidence": "Arbeidskrav som være bestått for å få gå opp til eksamen:",
-      "description": "Assessment retains explicit coursework gates and equivalence rules in at least five courses (BLPRA100, BFPRA200, BKKKK1013, BFLSU3053 and BHFOR3561). Examples include PL1/PF2 requirements before placement, the malformed BKKKK exam-access heading and its requirement codes, and equivalence blocks. In BHFOR3561 the MUN1 gate moves to coursework_requirements but OPG1: F-TF1 og F-TF4 remains in assessment after an intervening exam-description paragraph. Thus coursework_requirements loses part of the gate information even when the main requirement table is extracted correctly. Mandatory activities explicitly forming a graded practical exam are valid assessment content and are not the defect.",
-      "root_cause_hypothesis": "DMMH has no section_inline_coursework configuration in R/institution_config.R. R/extract_sections.R .split_inline_coursework moves recognized gate sentences but misses malformed gate leads, placement-start conditions, equivalence labels and separated continuation rows.",
-      "suggested_fix": "Enable bounded inline coursework-block recognition for DMMH and add explicit matches for the recurring placement-start, malformed exam-access and equivalence headings. Use known exam and arbeidskrav codes to move gate-reference rows, including OPG1 after intervening assessment prose, without moving descriptions of graded exam activities.",
+      "evidence": "Praksisrapport (praksisrapport vurderes til godkjent/ikke godkjent).",
+      "description": "Five older placement offerings describe the practice report’s approval-only evaluation in assessment even though coursework_requirements already records that the report must be approved for the placement to pass. BLPRA100 does the same with the self-evaluation’s separate approval decision. This mixes approval conditions into the graded assessment row, which also contains the legitimate criteria for the overall placement grade.",
+      "root_cause_hypothesis": "The DMMH inline coursework split in R/extract_sections.R recognizes the explicit approval condition but leaves the companion sentence naming the artifact and its godkjent/ikke godkjent treatment.",
+      "suggested_fix": "When a DMMH placement coursework row names a report or self-evaluation as an approval condition, move the standalone sentence rating that artifact godkjent/ikke godkjent from assessment to coursework_requirements. Keep criteria for the overall practice grade and descriptions of how the self-evaluation contributes to that grade.",
+      "confidence": "high"
+    },
+    {
+      "target": "teaching_methods",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": [
+        "dmmh_MVSTY6001-1_2022_autumn_1",
+        "dmmh_BHPRA200-1_2019_spring_1",
+        "dmmh_BLPRA100-1_2025_autumn_1"
+      ],
+      "evidence": "Godkjenning av fagnotat og presentasjon av utviklingsarbeid gjøres av faglærer, og vurderes som godkjent/ikke godkjent.",
+      "description": "In the 2022 random control, teaching_methods contains the writing and presentation deliverables and their approval decision, even though coursework_requirements identifies those deliverables as gates to the final exam. Placement offerings likewise leave instructions to write the approval-only report or self-evaluation in teaching_methods while filing the explicit pass condition under coursework_requirements.",
+      "root_cause_hypothesis": "DMMH’s Arbeids- og læringsaktiviteter blocks are classified by heading, and the inline coursework recognizer does not link these unlabelled deliverable and approval sentences back to the named coursework items.",
+      "suggested_fix": "Use DMMH’s named coursework items or explicit practice approval condition to identify and move matching deliverable and approval sentences out of the teaching block. Preserve peer guidance, collaboration and placement activities that describe how students learn.",
+      "confidence": "high"
+    },
+    {
+      "target": "course_content",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "dmmh_MKPRO5500-1_2022_autumn_1",
+        "dmmh_MLVFM5020-1_2019_autumn_1",
+        "dmmh_BLFOR4030-1_2025_autumn_1"
+      ],
+      "evidence": "Prosjektskissen er fagets arbeidskrav.",
+      "description": "Emneinnhold blocks retain prose that specifies other sections. MLVFM5020 explicitly identifies a master’s project proposal as coursework, but its coursework row mentions only the separately listed method note. MKPRO5500 describes what the assessed project presentation and report cover and how students work in study groups. Both BLFOR4030 offerings leave the optional study tour in course_content and emit no teaching_methods row.",
+      "root_cause_hypothesis": "R/extract_sections.R assigns Emneinnhold blocks by heading without DMMH sentence moves for explicit coursework, assessment or teaching statements in that block.",
+      "suggested_fix": "Add DMMH sentence moves for explicit declaration patterns such as Prosjektskissen er fagets arbeidskrav, the MKPRO assessment descriptions of the project presentation and report, and the optional study-tour sentence. Route each to its canonical section and deduplicate against text already present there.",
+      "confidence": "high"
+    },
+    {
+      "target": "prerequisites",
+      "error_type": "wrong_content",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "dmmh_VUUHP6100-1_2025_autumn_1",
+        "dmmh_BHPRA200-1_2022_autumn_3",
+        "dmmh_BNPRA200-1_2019_spring_1"
+      ],
+      "evidence": "Emnet er primært rettet inn mot tilsatte som har undervisningsoppgaver ved DMMH, men er også åpent for andre som er tilknyttet undervisning i høyere utdanning.",
+      "description": "The long VUUHP6100 row mixes the valid VUUHP6000 requirement with meriting context, audience eligibility and a condition about having teaching duties while taking the course. Its explicit prior subject competence statement remains in course_content. Three older placement offerings also retain an unspecified progression requirement and a study-plan pointer beside a valid prior course code.",
+      "root_cause_hypothesis": "Forkunnskapskrav and Forkunnskapskrav - emner both feed prerequisites. The admission and placeholder filters in R/extract_sections.R miss the audience wording and the progression-plus-pointer formulation beside a course code. There is no DMMH move for the explicit subject competence sentence.",
+      "suggested_fix": "Add DMMH sentence rules to remove the VUUHP6100 audience and meriting prose and the unspecified Oppfylt progresjonskrav with its study-plan pointer. Retain named prior-course codes and move the explicit Det forutsetter, og bygger videre på statement of subject competence into prerequisites.",
       "confidence": "high"
     },
     {
@@ -44,28 +76,28 @@
       "severity": "medium",
       "prevalence": "widespread",
       "example_course_ids": [
-        "dmmh_VUBHP6000-1_2025_autumn_1",
-        "dmmh_MVPLK6000-1_2025_autumn_1",
-        "dmmh_BDFOR4550-1_2025_autumn_1"
+        "dmmh_MVSTY6000-1_2019_autumn_1",
+        "dmmh_MVSTY6001-1_2022_autumn_1",
+        "dmmh_BILSU3053-1_2022_autumn_1"
       ],
-      "evidence": "Sensorordning:\tIntern og ekstern",
-      "description": "Every sampled assessment, including all three random controls, retains Sensorordning examiner-arrangement rows. These are explicitly excluded logistics under course_plan_spec.md, even though exam form, duration, weights, grading scale and permitted aids belong in assessment. The practice courses also retain recurring examiner-role and resubmission/deadline procedures. This is recurring noise inside otherwise useful assessment text, not a reason to discard the assessment tables.",
-      "root_cause_hypothesis": "The DMMH reader keeps the narrow assessment tables under Vurderinger, while R/extract_sections.R lacks DMMH-specific cleanup for labelled Sensorordning rows and recurring assessment-logistics prose.",
-      "suggested_fix": "In section cleanup, remove complete Sensorordning label/value rows, handling both tab-separated and separate-line values. Add bounded DMMH rules for standalone examiner-role and resubmission/deadline notices while retaining sentences describing assessment criteria or design and all duration/aids fields.",
+      "evidence": "Oppgaven gis ut den første dagen, og besvarelsen leveres inn den tredje dagen.",
+      "description": "Assessment retains release and submission scheduling in both random controls despite a dedicated duration field. Other courses retain month-level deadlines, submission-system instructions or placement report deadlines and examiner arrangements. These are logistics within otherwise useful assessment text. The visible Sensorordning table rows in the source are already removed from the corresponding outputs.",
+      "root_cause_hypothesis": "The existing DMMH logistics patterns in R/extract_sections.R strip Sensorordning and selected notices but miss schedule clauses under Merknader, Wiseflow instructions and remaining placement examiner or deadline wording.",
+      "suggested_fix": "Add DMMH cleanup for release and submission clauses, month-only deadline notes, submission-system phrases and standalone examiner assignments. Preserve the remaining text in mixed Merknader rows, especially word counts, and retain duration and grading information.",
       "confidence": "high"
     },
     {
-      "target": "prerequisites",
-      "error_type": "wrong_content",
-      "severity": "medium",
+      "target": "reading_list",
+      "error_type": "empty_placeholder",
+      "severity": "low",
       "prevalence": "rare",
       "example_course_ids": [
-        "dmmh_BLPRA100-1_2025_autumn_1"
+        "dmmh_MLVFM5020-1_2019_autumn_1"
       ],
-      "evidence": "Mangelfull tilstedeværelse i undervisningen kan gjøre det nødvendig å foreta en skjønnsmessig vurdering av om studenten kan tilbys praksisplass.",
-      "description": "The entire prerequisites row is an explanation of teaching attendance and possible refusal of a practice placement. It specifies no required or recommended subject knowledge or prior course. The long flag therefore exposes a semantic misclassification rather than merely an unusually long legitimate prerequisite.",
-      "root_cause_hypothesis": "Forkunnskapskrav is mapped directly to prerequisites, and the prerequisite cleaner does not recognize this attendance/placement-access wording.",
-      "suggested_fix": "Add a narrowly scoped DMMH rule for this recurring attendance paragraph: keep the pedagogical explanation in teaching_methods and the explicit placement-access attendance condition in coursework_requirements, removing the resulting empty prerequisites row. Continue retaining genuine prerequisite course-code lists.",
+      "evidence": "Her finner du pensumliste for studieåret",
+      "description": "The extracted reading_list consists solely of generic link text pointing elsewhere, with no references or usable destination in the row. Under the course-plan specification a pointer elsewhere alone does not constitute a section. Bare Pensumliste headings elsewhere in the packet do not establish missing reading-list content.",
+      "root_cause_hypothesis": "R/extract_sections.R matches several pointer-only reading-list formulations but does not recognize this DMMH phrase.",
+      "suggested_fix": "Add this exact phrase, with optional final punctuation, to the whole-row reading-list placeholder matcher. Keep reading-list rows that contain bibliographic entries.",
       "confidence": "high"
     }
   ]

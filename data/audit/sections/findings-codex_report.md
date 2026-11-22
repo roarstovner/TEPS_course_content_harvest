@@ -1,7 +1,7 @@
 # sections audit — aggregated findings
 
-158 findings across 27 institutions (from 27 agent reports in `data/audit/sections/findings-codex`; model: gpt-6.1-sol).
-Mechanical verification: 156 passed (✓), 2 failed (✗), 0 not checkable (?, stale report or no packet).
+174 findings across 28 institutions (from 28 agent reports in `data/audit/sections/findings-codex`; model: gpt-6.1-sol, gpt-6.2-sol).
+Mechanical verification: 172 passed (✓), 2 failed (✗), 0 not checkable (?, stale report or no packet).
 Sorted by severity then prevalence. Source: `R/audit/aggregate.R`.
 
 ## Failed verification — check by hand before acting
@@ -18,68 +18,80 @@ Usually a paraphrased quote; occasionally an invented finding.
 
 | target | error_type | n_inst | institutions | worst |
 | --- | --- | --- | --- | --- |
-| cross_section | wrong_content | 17 | barrattdue, dmmh, fhs, himolde, hivolda, hvl, inn, mf, nmbu, nmh, nord, steiner, uia, uib, uio, uis, uit | high |
-| assessment | other | 11 | hiof, hvl, inn, khio, nih, nla, nmh, oslomet, uio, uis, vid | medium |
-| assessment | wrong_content | 10 | barrattdue, fhs, khio, nmbu, ntnu, phs, steiner, uib, uit, vid | high |
-| teaching_methods | wrong_content | 10 | barrattdue, ldh, mf, nla, nmbu, ntnu, phs, uia, uit, usn | high |
+| cross_section | wrong_content | 16 | barrattdue, fhs, himolde, hivolda, hvl, inn, mf, nmbu, nmh, nord, steiner, uia, uib, uio, uis, uit | high |
+| assessment | wrong_content | 12 | aho, dmmh, fhs, khio, ldh, nmbu, ntnu, phs, steiner, uib, uit, vid | high |
+| assessment | other | 12 | barrattdue, hiof, hvl, inn, khio, nih, nla, nmh, oslomet, uio, uis, vid | medium |
+| teaching_methods | wrong_content | 10 | dmmh, ldh, mf, nla, nmbu, ntnu, phs, uia, uit, usn | high |
+| coursework_requirements | wrong_content | 9 | barrattdue, fhs, hivolda, ldh, nord, ntnu, oslomet, uio, vid | high |
+| course_content | wrong_content | 8 | dmmh, hvl, nih, nla, oslomet, uia, uio, vid | high |
 | prerequisites | wrong_content | 8 | dmmh, himolde, mf, nla, nmbu, nord, uia, usn | high |
-| course_content | wrong_content | 7 | hvl, nih, nla, oslomet, uia, uio, vid | high |
-| coursework_requirements | wrong_content | 7 | fhs, hivolda, nord, ntnu, oslomet, uio, vid | high |
-| cross_section | empty_placeholder | 7 | dmmh, fhs, hivolda, ntnu, oslomet, uib, usn | high |
-| prerequisites | missing_section | 7 | barrattdue, fhs, ldh, nmh, nord, uio, uit | high |
+| prerequisites | missing_section | 7 | aho, barrattdue, fhs, nmh, nord, uio, uit | high |
+| cross_section | empty_placeholder | 6 | fhs, hivolda, ntnu, oslomet, uib, usn | high |
+| reading_list | empty_placeholder | 5 | aho, dmmh, himolde, hiof, nmbu | medium |
+| cross_section | duplicate | 4 | aho, khio, nord, ntnu | high |
 | assessment | formatting_noise | 4 | dmmh, himolde, steiner, vid | medium |
-| cross_section | duplicate | 3 | khio, nord, ntnu | high |
+| assessment | truncated | 3 | barrattdue, uib, uit | high |
 | cross_section | merged_sections | 3 | khio, mf, vid | high |
 | cross_section | other | 3 | inn, mf, uia | high |
-| reading_list | empty_placeholder | 3 | himolde, hiof, nmbu | medium |
+| course_content | other | 3 | barrattdue, khio, uis | medium |
+
+## Change since `HEAD` (keyed by target / error_type)
+
+| institution | n_before | n_now | persisting | new | gone |
+| --- | --- | --- | --- | --- | --- |
+| barrattdue | 5 | 6 | cross_section / wrong_content; prerequisites / missing_section | coursework_requirements / wrong_content; assessment / other; assessment / truncated; course_content / other | course_content / missing_section; assessment / wrong_content; teaching_methods / wrong_content |
+| dmmh | 4 | 6 | prerequisites / wrong_content; assessment / formatting_noise | assessment / wrong_content; teaching_methods / wrong_content; course_content / wrong_content; reading_list / empty_placeholder | cross_section / empty_placeholder; cross_section / wrong_content |
+| ldh | 5 | 6 | assessment / merged_sections; teaching_methods / wrong_content; cross_section / formatting_noise | coursework_requirements / wrong_content; learning_outcomes / wrong_content; assessment / wrong_content | prerequisites / missing_section; coursework_requirements / empty_placeholder |
 
 ## By error type
 
 | error_type | severity | n |
 | --- | --- | --- |
-| wrong_content | high | 49 |
+| wrong_content | high | 54 |
 | wrong_content | medium | 26 |
-| other | medium | 15 |
-| missing_section | high | 14 |
-| empty_placeholder | low | 8 |
-| merged_sections | high | 7 |
-| formatting_noise | low | 6 |
+| other | medium | 17 |
+| missing_section | high | 15 |
+| empty_placeholder | low | 9 |
+| merged_sections | high | 8 |
+| formatting_noise | low | 7 |
 | truncated | high | 6 |
+| formatting_noise | medium | 5 |
 | duplicate | high | 4 |
-| empty_placeholder | medium | 4 |
-| formatting_noise | medium | 4 |
+| truncated | medium | 4 |
+| duplicate | low | 3 |
+| empty_placeholder | medium | 3 |
 | other | low | 3 |
 | boilerplate_only | medium | 2 |
-| duplicate | low | 2 |
-| truncated | medium | 2 |
+| wrong_content | low | 2 |
 | boilerplate_only | high | 1 |
+| duplicate | medium | 1 |
 | empty_placeholder | high | 1 |
 | field_or_language_junk | low | 1 |
 | other | high | 1 |
 | split_section | high | 1 |
-| wrong_content | low | 1 |
 
 ## By target
 
 | target | n |
 | --- | --- |
 | cross_section | 46 |
-| assessment | 34 |
-| prerequisites | 20 |
-| teaching_methods | 18 |
-| course_content | 15 |
-| coursework_requirements | 12 |
-| reading_list | 8 |
+| assessment | 37 |
+| prerequisites | 21 |
+| teaching_methods | 20 |
+| course_content | 17 |
+| coursework_requirements | 17 |
+| reading_list | 10 |
 | all | 2 |
+| learning_outcomes | 2 |
 | practice | 2 |
-| learning_outcomes | 1 |
 
 ## Per institution
 
 | institution | model | n_courses_reviewed | overall_assessment |
 | --- | --- | --- | --- |
-| barrattdue | gpt-6.1-sol | 20 | Both pre-pass flags are false alarms: GRUSKU5100 has a legitimate brief materials note and VERK2100 a valid longer bibliography. The random controls reveal systematic omission of academic prerequisites, subject matter assigned to teaching methods, and assessment logistics retained; DID1 additiona... |
-| dmmh | gpt-6.1-sol | 17 | Section boundaries and the three learning-outcome groups are generally preserved across all 17 packet courses, but pointer-only sections, residual coursework in assessment, and examiner logistics need cleanup. The duplicate/short flags on study-plan pointers expose invalid placeholder rows rather... |
+| aho | gpt-6.2-sol | 20 | Top-level boundaries and learning-outcome groups generally survive, but controls repeatedly lose prerequisites, retain assessment logistics or misfile mandatory coursework. Both long reading-list flags are valid bibliographies, Design Studio's leak is real at the track level, and VALG3's blob ref... |
+| barrattdue | gpt-6.2-sol | 20 | All four pre-pass flags are false alarms: the two Vurderingsformer lines describe topics in music didactics, GRUSKU5100 has a complete one-line materials note, and VERK2100 has a legitimate long bibliography. The extractor preserves the learning-outcome groups, detailed DID subcourses and explici... |
+| dmmh | gpt-6.2-sol | 16 | All 16 packet entries were reviewed, including 14 suspects and two controls, with completeness comparisons limited by the packet’s display caps. Major section boundaries and learning-outcome groups generally hold: all seven leak flags were false alarms for merged sections (two match Innledning in... |
 | fhs | gpt-6.1-sol | 18 | Reviewed all 18 sampled courses (14 suspects, four random controls) in full as displayed, plus both attendance appendix items: 2 correct and 0 wrong (covering all 5 moved sentences/plans); packet-builder truncation is not an extractor defect. The FHS prerequisite and teaching heading fixes hold i... |
 | himolde | gpt-6.1-sol | 20 | All 20 courses were reviewed in full as presented in the packet (4 suspects and 16 random controls); packet-builder truncation markers were not treated as extraction loss. Major headings, programme-list boundaries, real prerequisites and all displayed learning-outcome groups are generally preserv... |
 | hiof | gpt-6.1-sol | 20 | Section boundaries generally work well: learning-outcome groups remain intact, prerequisites contain prior knowledge rather than admission rules, and coursework gates are separated from graded assessment. The leak flags are false alarms caused by subject-matter phrases about teaching methods and ... |
@@ -87,7 +99,7 @@ Usually a paraphrased quote; occasionally an invented finding.
 | hvl | gpt-6.1-sol | 17 | Heading-based extraction generally preserves the sections, all learning-outcome groups, and the distinction between assessment and compulsory coursework across all 17 reviewed courses. The boilerplate flags on the 13 engineering bachelor offerings mostly identify legitimate shared outcomes, teach... |
 | inn | gpt-6.1-sol | 20 | Section boundaries generally work across all 20 reviewed courses: all learning-outcome groups survive, assessment design tables are retained correctly, and empty prerequisites/reading-list placeholders and trailing metadata are excluded. Most pre-pass flags are false alarms: the practicum labels ... |
 | khio | gpt-6.1-sol | 20 | Most sections preserve the source text and boundaries well, and the 12 repeated DE/IM assessment and coursework templates are not invalid merely because they repeat; their standalone examiner-arrangement sentence should nevertheless be excluded. Real defects include two source-origin duplicates r... |
-| ldh | gpt-6.1-sol | 20 | All 20 packet courses were reviewed, including both suspects. Course-specific learning-outcome lists and most assessment/coursework boundaries are preserved, but five courses lose substantive prerequisites, seven placement courses misfile teaching arrangements as course content, and five courses ... |
+| ldh | gpt-6.2-sol | 20 | The 20 plans retain substantive prerequisites and the structured course-specific outcome lists, with recurring PDF extraction errors in placement arrangements, statements of purpose and page footers. Five plans keep an embedded coursework approval condition in assessment, and both assessment flag... |
 | mf | gpt-6.1-sol | 9 | The main sections and learning-outcome groups are generally preserved across all nine courses, but heading-based extraction misses semantic boundaries in both suspects and random controls. MET5010's long teaching-methods flag and PPU1015's short prerequisite flag are length false alarms; RL1014's... |
 | nih | gpt-6.1-sol | 20 | Section boundaries and learning-outcome coverage are generally sound across all 20 courses, including the six random controls; empty reading-list headings and archive-only pointers are correctly omitted. All 13 leak flags are lexical false alarms: Arbeidskravsanalyse is a graded portfolio compone... |
 | nla | gpt-6.1-sol | 16 | All 16 packet entries were read in full; packet-imposed caps limit completeness checks against source text not displayed. Section boundaries, learning-outcome groups, and the main assessment/coursework distinction generally work, but outgoing progression rules contaminate prerequisites in all 14 ... |
@@ -116,17 +128,18 @@ Usually a paraphrased quote; occasionally an invented finding.
 | ✓ | nord | cross_section | wrong_content | high | widespread | nord_MAT5006-1_2022_spring_2; nord_SOS5003-1_2020_autumn_... | Add bounded Nord sentence moves for the repeated supervision and thesis-submission constructions, sending supervision to teaching_methods... |
 | ✓ | ntnu | cross_section | empty_placeholder | high | widespread | ntnu_TØL4010-1_2019_autumn_1; ntnu_IMT4895-1_2025_autumn_... | Extend case-insensitive placeholder recognition to se engelsk versjon with optional punctuation and for emnebeskrivelse, and the paired l... |
 | ✓ | uit | assessment | truncated | high | widespread | uit_STA-3003-1_2008_autumn_1; uit_JUR-3902-1_2022_autumn_... | Process combined language blocks before discarding them: route explicit examination-language sentences to assessment, and retain the orig... |
-| ✓ | barrattdue | prerequisites | missing_section | high | common | barrattdue_HIST2100-1_2026_autumn_1; barrattdue_HØR2100-1... | Extract Krav til forkunnskaper values from the Barratt Due facts column into dedicated prerequisites blocks before excluding other facts;... |
-| ✓ | barrattdue | cross_section | wrong_content | high | common | barrattdue_GRUSKU5100-1_2026_autumn_1; barrattdue_VERK210... | Add Barratt Due block-level overrides that separate descriptive introductions and lists introduced by Emnet omfatter or Emnet inneholder ... |
-| ✓ | dmmh | cross_section | wrong_content | high | common | dmmh_BKKKK1013-1_2022_autumn_1; dmmh_BLPRA100-1_2025_autu... | Enable bounded inline coursework-block recognition for DMMH and add explicit matches for the recurring placement-start, malformed exam-ac... |
+| ✓ | aho | prerequisites | missing_section | high | common | aho_80 162-1_2025_spring_1; aho_61 131-1_2025_autumn_3; a... | Map both AHO headings to .admission. Extend .admission_prerequisites() for AHO's standalone spaced course codes and English completion wo... |
+| ✓ | barrattdue | cross_section | wrong_content | high | common | barrattdue_HINS2200-1_2026_autumn_1; barrattdue_KAM4200-1... | Add a Barratt Due refinement that moves standalone delivery lines and activity lists from this heading into teaching_methods, using the r... |
+| ✓ | dmmh | assessment | wrong_content | high | common | dmmh_BHPRA200-1_2022_autumn_3; dmmh_BNPRA200-1_2019_sprin... | When a DMMH placement coursework row names a report or self-evaluation as an approval condition, move the standalone sentence rating that... |
+| ✓ | dmmh | teaching_methods | wrong_content | high | common | dmmh_MVSTY6001-1_2022_autumn_1; dmmh_BHPRA200-1_2019_spri... | Use DMMH’s named coursework items or explicit practice approval condition to identify and move matching deliverable and approval sentence... |
 | ✓ | fhs | cross_section | wrong_content | high | common | fhs_LED3201-1_2022_spring_1; fhs_INGOF2230-1_2025_spring_... | Recognise Praktisk organisering og arbeidsformer and explicit teaching lead-ins as teaching boundaries; route supplemental final-delivera... |
 | ✓ | fhs | prerequisites | missing_section | high | common | fhs_ING3511-1_2021_autumn_1; fhs_CBU1503-1_2025_spring_1;... | Add guarded sentence patterns for Emnet bygger på/bygger videre på ferdighetene and The course is based on when they explicitly name prio... |
 | ✓ | himolde | cross_section | wrong_content | high | common | himolde_ØKL110-1_2022_autumn_1; himolde_VPL033-1_2019_aut... | Add narrowly scoped himolde sentence moves: move the two BØK411 assessment-focus sentences beginning Vurderingen i kurset and Kvaliteten ... |
 | ✓ | hivolda | cross_section | wrong_content | high | common | hivolda_PPUD-DID2KH-1_2023_autumn_1; hivolda_PPUD-DID2MU-... | Add a hivolda-specific paragraph relocation in R/extract_sections.R for the observed Ein del av undervisninga ... Felles fagdidaktikk var... |
 | ✓ | hivolda | cross_section | wrong_content | high | common | hivolda_PPUD-DID2KH-1_2024_autumn_1; hivolda_PPUD-DID2MU-... | Relocate the exact standalone Bestått didaktikkemne 1. sentence from hivolda coursework_requirements to prerequisites in R/extract_sectio... |
 | ✓ | inn | cross_section | wrong_content | high | common | inn_SOSP3002-1_2025_spring_1; inn_SOSP3002-1_2024_spring_... | Extend .split_lo_intro() to INN for the descriptive paragraph before the actual outcome lead, preserving that lead and all three outcome ... |
-| ✓ | ldh | prerequisites | missing_section | high | common | ldh_BSYP-503-1_2025_autumn_1; ldh_BSYP-300-1_2025_spring_... | Extract LDH Krav til forkunnskaper values, including aligned table cells and continuation lines, into a prerequisites block before removi... |
-| ✓ | ldh | teaching_methods | wrong_content | high | common | ldh_BSYP-200-1_2025_autumn_3; ldh_BSYP-300-1_2025_spring_... | Add an LDH-specific sentence relocation in R/extract_sections.R for the placement-arrangement lead beginning Emnet omfatter praksisforber... |
+| ✓ | ldh | teaching_methods | wrong_content | high | common | ldh_BSYP-200-1_2025_autumn_3; ldh_BSYP-300-1_2025_spring_... | In the LDH PDF path, split the stock lead-in beginning Emnet omfatter praksisforberedende studier at the end of the clinical attendance c... |
+| ✓ | ldh | coursework_requirements | wrong_content | high | common | ldh_BSYP-200-1_2025_autumn_3; ldh_BSYP-300-1_2025_spring_... | Add an anchored LDH rule for Praksisstudier med godkjent arbeidskrav vurderes til bestått/ikke bestått. Extract the exact requirement phr... |
 | ✓ | mf | teaching_methods | wrong_content | high | common | mf_RL5065-1_2025_autumn_1; mf_PPU1010-1_2025_autumn_1; mf... | Add bounded MF sentence rules moving explicit teaching arrangements, such as Undervisning i emnet gis i form av, Det veksles mellom forel... |
 | ✓ | nmbu | cross_section | wrong_content | high | common | nmbu_M30-LUN-1_2025_autumn_1; nmbu_PPRA201-1_2025_autumn_... | Add narrowly scoped NMBU sentence routing after sectionization: move thesis submission-format and individual/group-contribution sentences... |
 | ✓ | nmh | prerequisites | missing_section | high | common | nmh_UTHO23-1_2022_spring_1; nmh_UTHO24-1_2021_autumn_1; n... | Parse NMH inline Forhåndskrav fields, retain prior-course or prior-knowledge requirements, and discard pure programme-admission requireme... |
@@ -139,6 +152,11 @@ Usually a paraphrased quote; occasionally an invented finding.
 | ✓ | uib | cross_section | wrong_content | high | common | uib_INF367-0_2025_spring_1; uib_NOSP216-0_2024_spring_1; ... | Add narrow sentence/block routing rules in R/extract_sections.R for the observed wording: move Masteroppgåva har to deler and its thesis-... |
 | ✓ | uio | coursework_requirements | wrong_content | high | common | uio_KJM5050-1_2025_autumn_1; uio_BIOS5000-1_2025_autumn_1... | Add UiO-specific sentence/block routing for the observed compulsory-practice and Nynorsk seminar-attendance formulations. When an explici... |
 | ✓ | uis | cross_section | wrong_content | high | common | uis_MGL2120-1_2025_autumn_1; uis_LPRA30-1_2016_spring_2; ... | Add narrowly scoped UiS sentence moves: move explicit final portfolio design and report-completion statements to assessment, exam-languag... |
+| ✓ | aho | teaching_methods | missing_section | high | occasional | aho_VALG3-1_2025_autumn_3; aho_80 131-1_2025_autumn_3 | For AHO plans with an absent or empty teaching block, route whole sentences matching the observed delivery-form leads, such as Kurset er ... |
+| ✓ | aho | assessment | wrong_content | high | occasional | aho_61 121-1_2025_spring_1; aho_60 541-1_2025_autumn_2; a... | Enable section_inline_coursework for AHO. Extend the gate rules for the observed labels and For å få semesterkarakter eligibility phrasin... |
+| ✓ | barrattdue | prerequisites | missing_section | high | occasional | barrattdue_ENT2100-1_2026_autumn_1; barrattdue_SPIN5110-1... | Recognize Gjennomført and Normalt gjennomført followed by numbered study years in the labelled prerequisite field, including optional whi... |
+| ✓ | barrattdue | coursework_requirements | wrong_content | high | occasional | barrattdue_DID1-1_2026_autumn_1; barrattdue_DID2-1_2026_a... | Extend the Barratt Due coursework extraction to move the complete standalone line when Obligatorisk kurs is immediately followed by an in... |
+| ✓ | dmmh | course_content | wrong_content | high | occasional | dmmh_MKPRO5500-1_2022_autumn_1; dmmh_MLVFM5020-1_2019_aut... | Add DMMH sentence moves for explicit declaration patterns such as Prosjektskissen er fagets arbeidskrav, the MKPRO assessment description... |
 | ✓ | fhs | cross_section | wrong_content | high | occasional | fhs_FHS8004-1_2022_autumn_1; fhs_MILM2408-1_2025_spring_1... | Strip target-group, security-clearance, fee/accommodation, equipment, dated schedule and workload-only spans from emitted sections. Treat... |
 | ✓ | khio | cross_section | duplicate | high | occasional | khio_RE305-1_2026_autumn_1; khio_DA502-2_2026_autumn_1 | After normalizing whitespace, detect identical non-practice section bodies within each plan. For these KHIO cases, retain an outcomes-lis... |
 | ✓ | khio | assessment | wrong_content | high | occasional | khio_DA502-2_2026_autumn_1; khio_DA514-2_2026_autumn_1 | Extend the English gate rule to match course requirements requiring approval "in order for [a/the] student to receive a final course asse... |
@@ -156,7 +174,8 @@ Usually a paraphrased quote; occasionally an invented finding.
 | ✓ | uit | cross_section | wrong_content | high | occasional | uit_STA-3003-1_2008_autumn_1; uit_BIO-2606-1_2022_autumn_1 | Extend teaching-to-coursework splitting to the observed counted mandatory homework and Studentene skal avholde et obligatorisk seminar se... |
 | ✓ | uit | cross_section | wrong_content | high | occasional | uit_ARK-3021-1_2008_autumn_1; uit_HEL-6308-1_2019_autumn_1 | Drop anchored programme-placement-only Mål text and intake-capacity sentences from UiT sections, while retaining them in course_plan. Rem... |
 | ✓ | usn | cross_section | split_section | high | occasional | usn_050-E16-1_2022_spring_1; usn_051-E16-1_2022_spring_1;... | In the USN text reader, track the top-level headings identified from the table of contents and numbered Arbeidskrav blocks. Keep HENSIKT,... |
-| ✓ | barrattdue | course_content | missing_section | high | rare | barrattdue_DID1-1_2026_autumn_1 | Map Delemner and the four named DID1 subcourse headings to course_content in Barratt Due section_headings; preserve their labels and bodi... |
+| ✓ | aho | course_content | merged_sections | high | rare | aho_70 505-1_2025_autumn_3 | Within the AHO Course description track blocks, recognize the exact inline labels EXPECTED OUTCOME, LEARNING OUTCOMES, COURSE ACTIVITIES ... |
+| ✓ | barrattdue | prerequisites | missing_section | high | rare | barrattdue_KAM4300-1_2026_autumn_1 | In the Barratt Due facts reader, route otherwise unlabelled items starting with Bestått and a course code to the existing prerequisite fi... |
 | ✓ | fhs | coursework_requirements | wrong_content | high | rare | fhs_FHS8004-1_2022_autumn_1 | Extend the bounded attendance matcher to Det er pliktig fremmøte, retaining safeguards for negation, optional participation and assessed ... |
 | ✓ | fhs | coursework_requirements | missing_section | high | rare | fhs_ING3511-1_2021_autumn_1 | Recognise a bounded obligatory-supervision sentence as coursework_requirements and remove it from assessment while retaining all graded r... |
 | ✓ | fhs | assessment | wrong_content | high | rare | fhs_FHS8004-1_2022_autumn_1 | When an assessment paragraph explicitly defines arbeidskrav and states that they do not count toward the grade, move the defining paragra... |
@@ -166,7 +185,7 @@ Usually a paraphrased quote; occasionally an invented finding.
 | ✓ | himolde | prerequisites | wrong_content | high | rare | himolde_LOG904-185-1_2025_autumn_1 | After whitespace normalization, suppress a prerequisites row whose entire text exactly equals course_content, keeping the source text in ... |
 | ✓ | inn | teaching_methods | duplicate | high | rare | inn_PUB3000-1_2024_autumn_2 | Add an INN guard for a teaching_methods body identical after whitespace normalization to course_content and beginning Emnet er bygd opp a... |
 | ✓ | khio | cross_section | merged_sections | high | rare | khio_DA514-2_2026_autumn_1 | Add an exact coursework_requirements mapping for "The course requirements are" in R/section_heading_map.R so the existing KHIO paragraph ... |
-| ✓ | ldh | assessment | merged_sections | high | rare | ldh_BSYP-503-1_2025_autumn_1 | Add an LDH text-reader boundary for Studiets overordnede læringsutbytter mapped to .drop, ending assessment before the programme-wide app... |
+| ✓ | ldh | assessment | merged_sections | high | rare | ldh_BSYP-503-1_2025_autumn_1 | Recognize Studiets overordnede læringsutbytter as an exact LDH text boundary mapped to .drop. Stop the open assessment block at that head... |
 | ✓ | mf | cross_section | merged_sections | high | rare | mf_RL1014-1_2025_autumn_1 | Expand MF subheading candidates to cover paragraph and h3-h6 headings inside details, and recognize the standalone Arbeidsform og organis... |
 | ✓ | nmh | cross_section | missing_section | high | rare | nmh_CONCOM70-1_2022_autumn_1 | Add exact mappings for Learning objectives to learning_outcomes, Overview to course_content, Structure to teaching_methods and Course req... |
 | ✓ | nmh | course_content | truncated | high | rare | nmh_MTMUSTER70-1_2022_autumn_1 | In the NMH block reader, treat D: Støtteemner as a subheading inheriting its enclosing Innhold or Arbeidskrav section; preserve both occu... |
@@ -194,12 +213,12 @@ Usually a paraphrased quote; occasionally an invented finding.
 | ✓ | vid | cross_section | merged_sections | high | rare | vid_MATRS5115-1_2025_spring_1 | Recognize standalone Annet labels within VID content blocks before sectionization and split their following paragraphs by explicit cues: ... |
 | ✓ | vid | assessment | wrong_content | high | rare | vid_PTUKUN2014-1_2025_spring_1 | Extend .gate_sentence_regex to recognize forutsettes det at after an exam-access clause when the sentence explicitly requires approved ob... |
 | ✓ | vid | coursework_requirements | wrong_content | high | rare | vid_MAPBU9010-1_2025_autumn_1 | For VID plans that explicitly say Mappevurderingen består av ..., reconcile the named components with items under Obligatoriske aktivitet... |
-| ✓ | barrattdue | assessment | wrong_content | medium | widespread | barrattdue_HINS1300-1_2026_autumn_1; barrattdue_HINS4200-... | Add Barratt Due sentence/line cleanup for dated Frist for innlevering lines and examiner arrangements, and drop its Ny vurdering blocks b... |
-| ✓ | dmmh | assessment | formatting_noise | medium | widespread | dmmh_VUBHP6000-1_2025_autumn_1; dmmh_MVPLK6000-1_2025_aut... | In section cleanup, remove complete Sensorordning label/value rows, handling both tab-separated and separate-line values. Add bounded DMM... |
+| ✓ | dmmh | assessment | formatting_noise | medium | widespread | dmmh_MVSTY6000-1_2019_autumn_1; dmmh_MVSTY6001-1_2022_aut... | Add DMMH cleanup for release and submission clauses, month-only deadline notes, submission-system phrases and standalone examiner assignm... |
 | ✓ | hiof | reading_list | empty_placeholder | medium | widespread | hiof_LPKR116-1_2019_autumn_1; hiof_LPDR216-1_2022_spring_... | Extend the whole-section placeholder patterns to recognize the exact Leganto availability notice and the combined Felleslitteratur refere... |
 | ✓ | hvl | assessment | other | medium | widespread | hvl_ELE351-1_2025_autumn_1; hvl_BYG350-1_2024_autumn_1; h... | Add narrowly anchored HVL sentence/line filters in .section_noise$hvl for the quoted bachelor resubmission sentence, the JOR508 Ny eksame... |
 | ✓ | hvl | course_content | wrong_content | medium | widespread | hvl_BYG350-1_2025_autumn_1; hvl_MAS355-1_2024_autumn_1; h... | In HVL section cleanup, remove lines matching ^Studieprogram: from course_content and narrowly match the standalone Utdanningen er gratis... |
 | ✓ | khio | assessment | other | medium | widespread | khio_DE101-1_2026_autumn_1; khio_IM103-1_2026_autumn_1; k... | Add a narrowly anchored KHIO examiner-arrangement sentence rule to .logistics_sentences for this stock wording. Keep the preceding senten... |
+| ✓ | ldh | learning_outcomes | wrong_content | medium | widespread | ldh_BSY-401-1_2022_autumn_1; ldh_BSY-202-1_2022_autumn_1;... | For LDH purpose blocks, match complete sentences with explicit student-capability leads such as Videre skal studenten kunne and Studenten... |
 | ✓ | mf | cross_section | other | medium | widespread | mf_PED5610-1_2025_autumn_1; mf_AVH5055-1_2025_autumn_1; m... | Add MF sentence-level cleanup for withdrawal/assessment-registration and exam-attempt consequences, automatic registration, submission-pr... |
 | ✓ | nmh | cross_section | wrong_content | medium | widespread | nmh_DRVIT90-2_2025_autumn_1; nmh_KPKUNST70-1_2021_autumn_... | Make the NMH reader emit a boundary at Inngår i studieprogram and map it to .drop, or strip that anchored trailing block from extracted s... |
 | ✓ | nmh | assessment | other | medium | widespread | nmh_AKULYD10-1_2025_autumn_1; nmh_MPMAST70-1_2021_autumn_... | Add NMH boundaries and cleanup for Ny vurdering/New assessment, with bounded handling of doctoral resit subsections so later ordinary ass... |
@@ -208,12 +227,12 @@ Usually a paraphrased quote; occasionally an invented finding.
 | ✓ | uia | teaching_methods | wrong_content | medium | widespread | uia_MA-457-1_2024_autumn_2; uia_FYS129-G_2020_autumn_2; u... | Add UiA sentence removal for explicit total expected course-workload estimates, including the approximately/ca. forms and unpunctuated li... |
 | ✓ | uib | assessment | truncated | medium | widespread | uib_INF367-0_2025_spring_1; uib_ARK212-0_2021_spring_1; u... | Add an exact case-insensitive Karakterskala -> assessment mapping in R/section_heading_map.R, retaining its text alongside the other asse... |
 | ✓ | usn | teaching_methods | wrong_content | medium | widespread | usn_PPUFRI3-1_2021_autumn_1; usn_PPUEN3-1_2020_autumn_1; ... | For USN practice blocks, split explicit grading statements and practice assessment criteria into assessment; route explicitly identified ... |
-| ✓ | barrattdue | teaching_methods | wrong_content | medium | common | barrattdue_VERK2100-1_2026_autumn_1; barrattdue_HIST2100-... | Move sentences matching Gjennomført undervisning og arbeidskrav er gyldig/gyldige ... from teaching_methods to coursework_requirements fo... |
-| ✓ | dmmh | cross_section | empty_placeholder | medium | common | dmmh_VUBHP6000-1_2025_autumn_1; dmmh_VUBHP6000-1_2019_aut... | Extend whole-section placeholder matching to the two exact recurring DMMH pointer formulations, including optional final punctuation. Dro... |
+| ✓ | aho | cross_section | formatting_noise | medium | common | aho_80 131-1_2025_autumn_3; aho_MURB3-1_2025_spring_1; ah... | Add narrow AHO cleanup patterns for the observed WISEflow instructions, deadline sentences, examiner-only sentences and diploma withdrawa... |
+| ✓ | barrattdue | assessment | other | medium | common | barrattdue_DID2-1_2026_autumn_1; barrattdue_PED2-1_2026_a... | Keep Barratt Due Ny vurdering blocks distinct until cleanup. Remove the repeated PPU failed-component policy, generic course-repeat instr... |
 | ✓ | fhs | assessment | wrong_content | medium | common | fhs_FHS8004-1_2022_autumn_1; fhs_AR301-1_2023_spring_1; f... | Remove examiner-arrangement, resit and dated distribution/submission sentences, plus assessment-semester-only notices. Omit Tidspunkt and... |
 | ✓ | inn | cross_section | wrong_content | medium | common | inn_SOSP3002-1_2025_spring_1; inn_SOSP3002-1_2024_spring_... | Add narrow INN sentence moves from teaching_methods to coursework_requirements for ^Arbeidskravene fordrer and the AUD sentence containin... |
 | ✓ | inn | cross_section | other | medium | common | inn_DOKHIS-1_2023_autumn_3; inn_AUD3003-1_2025_spring_1; ... | Add precise INN cleanup rules in .clean_sections() or .sentence_moves: drop the standalone general-admission sentence from course_content... |
-| ✓ | ldh | cross_section | formatting_noise | medium | common | ldh_MISY-100-1_2025_autumn_1; ldh_MALSY-100-1_2025_autumn... | Before LDH PDF sectionization, strip whole footer lines matching Master i ... Sist oppdatert or Videreutdanning i ... Sist oppdatert, and... |
+| ✓ | ldh | cross_section | formatting_noise | medium | common | ldh_MISY-100-1_2025_autumn_1; ldh_MALSY-100-1_2025_autumn... | Strip complete LDH PDF footer lines matching the Master i or Videreutdanning i programme name plus Sist oppdatert, along with numeric-onl... |
 | ✓ | nla | course_content | wrong_content | medium | common | nla_4MGL1NO201-1_2021_spring_2; nla_MGL1NO201-1_2020_autu... | Add an NLA-specific sentence/paragraph move in R/extract_sections.R from course_content to teaching_methods for this COVID digital-teachi... |
 | ✓ | nla | teaching_methods | wrong_content | medium | common | nla_MGL1KH101-1_2018_autumn_1; nla_GL17KH1-1_2022_autumn_... | Extend the standalone compulsory-activity recognizer to cover Alle læringsaktiviteter er obligatoriske and move that sentence to coursewo... |
 | ✓ | nord | cross_section | wrong_content | medium | common | nord_RET1009-1_2024_spring_2; nord_MFL390-1_2021_autumn_1... | Add Nord-specific logistics removal for dated Første forelesning and Avsluttende Q&A-forelesning lines, the standalone Eksamenssted sente... |
@@ -224,7 +243,11 @@ Usually a paraphrased quote; occasionally an invented finding.
 | ✓ | uis | assessment | other | medium | common | uis_MGL2120-1_2025_autumn_1; uis_MGL2120-1_2021_autumn_1;... | Add UiS sentence/block cleanup for attempt entitlements, resit submission periods and resit supervision rules, including the quoted Forsk... |
 | ✓ | uit | assessment | wrong_content | medium | common | uit_HEL-6308-1_2019_autumn_1; uit_SPL-6900-1_2008_autumn_... | Add UiT sentence-level cleanup for exam venues, submission-calendar notices and resit eligibility/timing; recognize embedded Kontinuasjon... |
 | ✓ | vid | course_content | wrong_content | medium | common | vid_BASJE1010-1_2024_autumn_1; vid_MASJE1010-1_2024_autum... | Add VID-specific paragraph/sentence rules that move the explicit shared-teaching and individual-supervision arrangements from course_cont... |
-| ✓ | barrattdue | assessment | wrong_content | medium | occasional | barrattdue_DID1-1_2026_autumn_1; barrattdue_PED1-1_2026_a... | Extend .progression_regex and its cleanup trigger to recognise the explicit outgoing formulation Eksamen må være bestått for at studenten... |
+| ✓ | aho | coursework_requirements | truncated | medium | occasional | aho_PHD-READING-1_2025_autumn_3; aho_70 174-1_2025_spring... | Treat an AHO Assignments block as coursework when it follows a compulsory-activities block that explicitly requires assignment completion... |
+| ✓ | barrattdue | coursework_requirements | wrong_content | medium | occasional | barrattdue_SGRU1300-1_2026_autumn_1; barrattdue_SPIN5110-... | Allow both gyldig and gyldige in the existing sentence move to coursework_requirements. |
+| ✓ | barrattdue | assessment | truncated | medium | occasional | barrattdue_GRUSKU5100-1_2026_autumn_1; barrattdue_HINS120... | Read Avsluttende vurdering from the facts column and use its value to supplement the ordinary assessment row when the detailed text does ... |
+| ✓ | barrattdue | course_content | other | medium | occasional | barrattdue_KAMFOR5100-2_2026_autumn_1; barrattdue_SPIN511... | Apply a Barratt Due sentence filter for its explicit elective selection and capacity phrases, including Opptak i emnet forutsetter and th... |
+| ✓ | dmmh | prerequisites | wrong_content | medium | occasional | dmmh_VUUHP6100-1_2025_autumn_1; dmmh_BHPRA200-1_2022_autu... | Add DMMH sentence rules to remove the VUUHP6100 audience and meriting prose and the unspecified Oppfylt progresjonskrav with its study-pl... |
 | ✓ | himolde | reading_list | boilerplate_only | medium | occasional | himolde_SKD204-1_2022_spring_1; himolde_VBU730-1_2022_aut... | Exclude the himolde widget title/status/link-label nodes through its reader configuration while retaining actual reference nodes. After r... |
 | ✓ | himolde | assessment | formatting_noise | medium | occasional | himolde_LOG904-140-1_2022_autumn_1; himolde_LOG904-131-1_... | Add himolde cleanup for due-date-only Duration values and weekday/time suffixes, retaining real durations such as 30 minutes (per group).... |
 | ✓ | inn | assessment | other | medium | occasional | inn_AUD3003-1_2025_spring_1; inn_MUSB2900-1_2025_autumn_1 | Add sentence-level INN assessment cleanup matching ^Sensureres av faglærer og én ekstern sensor and ^Eksamensresultatet kan (?:ikke )?påk... |
@@ -237,12 +260,13 @@ Usually a paraphrased quote; occasionally an invented finding.
 | ✓ | uis | teaching_methods | other | medium | occasional | uis_MGL2120-1_2021_autumn_1; uis_MGL2311-1_2021_autumn_1 | Strip UiS workload spans beginning with Anslag over tidsforbruk or Forventet timeinnsats from teaching_methods, stopping after the contig... |
 | ✓ | uit | teaching_methods | wrong_content | medium | occasional | uit_LER-3101-1_2025_spring_1; uit_LRU-3909-1_2018_spring_... | Extend evaluation cleanup to standalone Kvalitetssikring blocks and the observed course-evaluation sentences in teaching_methods. Keep pe... |
 | ✓ | vid | assessment | other | medium | occasional | vid_MARUS5020-1_2024_autumn_1; vid_MARUS6021-1_2024_autum... | Add VID sentence-level cleanup for the observed Utsatt eksamen / Ved utsatt eksamen rules, VID arrangerer inntil ... utsatte prøver, and ... |
-| ✓ | dmmh | prerequisites | wrong_content | medium | rare | dmmh_BLPRA100-1_2025_autumn_1 | Add a narrowly scoped DMMH rule for this recurring attendance paragraph: keep the pedagogical explanation in teaching_methods and the exp... |
+| ✓ | aho | cross_section | duplicate | medium | rare | aho_PHD-READING-1_2025_autumn_3 | For AHO, remove an exact normalized teaching-method sentence from course_content when the same full sentence is already present in teachi... |
 | ✗ | himolde | course_content | formatting_noise | medium | rare | himolde_LOG904-130-1_2018_autumn_1 | Add a himolde body-line exclusion for standalone Lecturer: staff/affiliation lines before section assignment (or the equivalent narrow se... |
 | ✓ | hiof | teaching_methods | truncated | medium | rare | hiof_ITF10306-1_2013_spring_1 | Add a HiOF-specific inline extraction rule that moves explicit lecture/exercise statements such as this hours-per-week sentence from Unde... |
 | ✓ | hiof | assessment | other | medium | rare | hiof_SFB50314-1_2016_spring_1 | Add narrowly anchored HiOF English sentence/paragraph filters for the observed In the case of a Fail and If the candidates wish to improv... |
 | ✓ | hivolda | coursework_requirements | wrong_content | medium | rare | hivolda_MPRO110-1_2022_autumn_1 | Add a narrow hivolda .section_noise pattern for the quoted standalone Canvas-monitoring notice in R/extract_sections.R; keep it in course... |
 | ✓ | khio | course_content | other | medium | rare | khio_IM210-1_2026_autumn_1 | Add a KHIO-specific cleanup rule matching the complete two-sentence notice beginning "OBS: det kan komme mindre endringer i emnebeskrivel... |
+| ✓ | ldh | coursework_requirements | wrong_content | medium | rare | ldh_MALSY-100-1_2025_autumn_1 | For this LDH template, when coursework_requirements explicitly requires documentation of ten systematiske helhetsundersøkelser to sit the... |
 | ✓ | steiner | assessment | wrong_content | medium | rare | steiner_M-PEL2.2_2025_autumn_1 | Add Steiner-specific sentence cleanup for the examiner-only, diploma-recording, handbook/learning-platform appeal pointer and failed-assi... |
 | ✓ | uib | assessment | wrong_content | medium | rare | uib_BIO399-0_2025_autumn_1 | Add UiB-specific cleanup for the exact Fristar submission-deadline/template block and the standalone sentence Sensor og veileder skal vær... |
 | ✓ | uit | reading_list | boilerplate_only | medium | rare | uit_FYS-3730-1_2008_autumn_1 | Add an anchored whole-placeholder rule for this contact notice in reading_list; omit the row when no substantive reading material remains. |
@@ -253,14 +277,18 @@ Usually a paraphrased quote; occasionally an invented finding.
 | ✓ | nla | teaching_methods | formatting_noise | low | common | nla_MGL1KH101-1_2017_autumn_2; nla_MGL1KH101-1_2022_autum... | Extend .praksis_pointer_regex with an anchored match for Det henvises til egen praksisplan, allowing a final period. Remove only this poi... |
 | ✓ | uis | reading_list | formatting_noise | low | common | uis_MGL2120-1_2024_autumn_1; uis_MGL2311-1_2021_autumn_1;... | Remove standalone widget item-type labels and View online access labels from UiS reading_list text, including URL-attached and line-wrapp... |
 | ✓ | vid | assessment | formatting_noise | low | common | vid_BASJE1010-1_2025_autumn_1; vid_MASJE1010-1_2024_autum... | During VID assessment cleanup, remove a terminal standalone Hjelpemidler tillatt: or Additional Information about Assessment: when no val... |
+| ✓ | aho | teaching_methods | formatting_noise | low | occasional | aho_40 336-1_2025_autumn_2; aho_60 526-1_2025_autumn_3 | Strip AHO's observed materials-purchase, expense and excursion-payment sentences from teaching_methods. Preserve the underlying studio ac... |
+| ✓ | aho | reading_list | empty_placeholder | low | occasional | aho_80 162-1_2025_spring_1; aho_61 121-1_2025_spring_1 | Add whole-row matches for Pensumlisten publiseres i Leganto and Litteraturliste vil være tilgjengelig i Leganto, allowing terminal punctu... |
 | ✓ | hivolda | cross_section | empty_placeholder | low | occasional | hivolda_MD201-1_2015_autumn_1; hivolda_MD105-1_2016_spring_1 | Add an anchored (?:se\|sjå) engelsk versjon placeholder variant and suppress learning-outcome rows whose remaining text consists solely of... |
 | ✓ | nih | prerequisites | empty_placeholder | low | occasional | nih_MA515-1_2025_autumn_1; nih_KRØ101-1_2025_autumn_1 | Extend the whole-text prerequisite placeholder check to match Ingen krav til emner with the optional suffix på programnivå, and the obser... |
 | ✓ | usn | cross_section | empty_placeholder | low | occasional | usn_FKHPRA-1_2023_autumn_1; usn_FKHPR-1_2023_autumn_1; us... | Add anchored placeholder alternatives for "Se gjeldende praksisplan for faglærerutdanningen" and "Som studieprogrammet" to .placeholder_p... |
+| ✓ | aho | coursework_requirements | duplicate | low | rare | aho_70 154-1_2025_autumn_3 | Deduplicate exact normalized coursework paragraphs after all inline moves and preserve first occurrence and verbatim text. |
+| ✓ | dmmh | reading_list | empty_placeholder | low | rare | dmmh_MLVFM5020-1_2019_autumn_1 | Add this exact phrase, with optional final punctuation, to the whole-row reading-list placeholder matcher. Keep reading-list rows that co... |
 | ✓ | himolde | course_content | formatting_noise | low | rare | himolde_ADM420-1_2025_spring_1 | Drop standalone himolde availability-notice lines beginning The course will not be offered, including this date-stripped fragment, from c... |
 | ✓ | hiof | reading_list | formatting_noise | low | rare | hiof_SFB50314-1_2016_spring_1 | Strip standalone staff-attribution lines beginning Lecturer: from extracted section text, or recognize that role line as an excluded bloc... |
 | ✓ | hvl | all | empty_placeholder | low | rare | hvl_PRV002-1_2020_autumn_1 | Add an exact, case-insensitive test placeholder to .placeholder_phrases, using the existing whole-text matching rather than a substring f... |
 | ✓ | khio | assessment | other | low | rare | khio_MK523-1_2026_autumn_1 | Extend .progression_regex with an anchored rule for "Bestått semester er en forutsetning for å fortsette studiet" so .strip_progression()... |
-| ✓ | ldh | coursework_requirements | empty_placeholder | low | rare | ldh_BSY-221-1_2025_spring_2 | Extend the whole-row placeholder matcher with the anchored LDH phrase I emnet inngår ingen obligatorisk aktivitet, allowing a terminal pe... |
+| ✓ | ldh | assessment | wrong_content | low | rare | ldh_BSY-102-1_2025_autumn_1 | Within LDH course content, suppress the standalone I emnet inngår nasjonal deleksamen announcement when the extracted assessment already ... |
 | ✓ | nih | assessment | other | low | rare | nih_MA515-1_2025_autumn_1 | Add an anchored NIH-specific .section_noise pattern removing the complete sentence beginning Vurderingen gjøres av veileder ved praksisst... |
 | ✓ | nla | assessment | other | low | rare | nla_IKF213-1_2019_autumn_1 | Add a narrowly anchored NLA logistics-sentence rule for I samme semester som prosjektoppgaven leveres, skal studentene fremstille seg for... |
 | ✓ | nmbu | teaching_methods | wrong_content | low | rare | nmbu_PPFO301-1_2025_autumn_1 | Remove NMBU sentences matching Oversikt over samlingene vil bli lagt fram ... from teaching_methods, preserving profile labels where need... |

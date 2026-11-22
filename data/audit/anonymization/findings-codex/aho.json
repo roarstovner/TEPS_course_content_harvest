@@ -1,40 +1,52 @@
 {
   "check": "anonymization",
   "institution": "aho",
-  "model": "gpt-6.1-sol",
+  "model": "gpt-6.2-sol",
   "n_courses_reviewed": 28,
   "n_suspects_reviewed": 20,
-  "overall_assessment": "Reviewed all 28 packet entries, including every displayed plan and removed span; some plans are capped by the packet. Semester headings are removed without confirmed loss of course content, but staff names survive in six suspects and offering years survive in two. Most name_like flags are false alarms from titles, organisations, subject-matter names and reference authors, and the phone flag is the attachment identifier 32539747 in a reading-list URL; none of the eight random controls has a confirmed anonymization defect.",
+  "overall_assessment": "Reviewed all text and removal spans supplied for 20 suspects and 8 random controls, with five plans capped by the packet. The phone flag matched the attachment ID 32539747 in a reading-list URL, and the name_like flags picked up titles, organisations, cited authors and people discussed as course subject matter, with no confirmed personal data left in the displayed plans. Semester headers and the staff names shown in the removal spans were stripped, but some English scheduling dates and one lecture time survived and one staff-name removal left an unfinished sentence, all in suspects.",
   "findings": [
-    {
-      "target": "person_name",
-      "error_type": "pii_leak",
-      "severity": "high",
-      "prevalence": "common",
-      "example_course_ids": [
-        "aho_70 161-3_2025_spring_1",
-        "aho_70 505-1_2025_autumn_3",
-        "aho_70 123-1_2025_spring_1"
-      ],
-      "evidence": "Lærere: [name] (kursansvarlig), [name], [name] og [name]",
-      "description": "Institutional staff remain identifiable in six suspects (courses 1, 4, 12, 13, 14 and 20). Surviving contexts include labelled teachers, track responsibility, supervision and course/research leadership in prose: [name], [name] and [name], the quoted teacher list, [name], [name], and [name] and [name]. These are people named in institutional roles, rather than literature authors or historical subject matter, and must be removed. The name_like flags therefore include real leaks as well as numerous false positives; no random control shows this defect.",
-      "root_cause_hypothesis": "R/anonymize.R has no AHO handler. The generic staff-role vocabulary omits lærer/lærere, underviser/undervisere, kursansvarlig and track responsibility, and the inline matcher does not cover course leadership expressed as 'will be led by', research 'led by', or 'Supervised by Professor'. The same staff member can consequently survive both a label and a prose mention.",
-      "suggested_fix": "Add an AHO handler or narrowly scoped generic staff patterns for 'Lærere:', 'Flere undervisere:', 'Track responsible:', 'foreleser og kursansvarlig er', course/research leadership 'led by', and 'Supervised by Professor', consuming coordinated name lists and parenthesized roles. Remove only the staff names or complete staff-only lines, preserving surrounding course/research descriptions and reading-list authors. Verify all six affected packet entries, including repeated prose mentions of [name].",
-      "confidence": "high"
-    },
     {
       "target": "admin_date",
       "error_type": "admin_date_left",
       "severity": "medium",
       "prevalence": "occasional",
       "example_course_ids": [
-        "aho_70 305-1_2025_autumn_3",
-        "aho_40 335-1_2025_autumn_2"
+        "aho_PHD-READING-1_2025_autumn_3",
+        "aho_PHD-RESEARCH-1_2025_autumn_3"
       ],
-      "evidence": "In 2023 the course will focus on games and game-technologies.",
-      "description": "Two course descriptions retain offering dates despite having no admin_date pre-pass flag. The quoted year dates an annual course theme; course 4 also retains 'In the fall of 2024' when describing a previous Re-Store offering. These are administrative course/semester dates under the rubric, distinct from the historical building dates, publication years and subject-matter event years that should remain.",
-      "root_cause_hypothesis": "The generic season pattern expects the season next to its year and misses the intervening 'of' in 'fall of 2024'. Administrative-year removal is keyword-based and does not recognize the offering-specific construction 'In 2023 the course will focus'. The pre-pass similarly misses these prose forms.",
-      "suggested_fix": "Recognize English semester-year expressions with optional 'of' before the year, retaining the existing guards for references and subject matter. Add a targeted rule for 'In <year> the course will focus' that drops the year-bearing introductory phrase while retaining the course theme. Extend the audit pre-pass to these contexts and verify that historical events, publication years and the course-series origin statement remain intact.",
+      "evidence": "Preparation of Literature review/theoretical framing by April 30, 2026",
+      "description": "Apparatus Reading retains four dated assignment and presentation entries, including a repeated January deadline and a May date without a comma. Designing Research Methods also retains the 6 November date for a specific AHO Colloquium session. These dates describe course scheduling and none triggered the admin_date pre-pass.",
+      "root_cause_hypothesis": "In R/anonymize.R, the generic long-form scheduling rules expect labels such as 'deadline' or 'course dates' and day-before-month dates. They have no matching context for dates attached directly to prose assignment and session entries. The packet pre-pass also lacks these English date forms.",
+      "suggested_fix": "Recognise English month-day-year with an optional comma on assignment, submission and presentation lines. Match comma-delimited day-month dates attached to named course sessions, such as an AHO Colloquium session, with the existing content-date guard. Strip the date and its introducer while retaining the activity or deliverable, and flag the same contexts in the pre-pass.",
+      "confidence": "high"
+    },
+    {
+      "target": "admin_date",
+      "error_type": "admin_date_left",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "aho_70 123-1_2025_spring_1"
+      ],
+      "evidence": "Forelesning fra 9-12 hver mandag formiddagi auditoriet på KHIO.",
+      "description": "The weekly lecture's 9-to-12 clock range survives in the teaching section. The weekday and morning context identify the range as a clock time under the rubric.",
+      "root_cause_hypothesis": "The clock rules in .anon_generic() use minute fields, explicit clock markers or AM/PM in their start patterns. The bare-hour range before a weekday falls outside these patterns.",
+      "suggested_fix": "In teaching schedule text, remove 'fra' and a dash-separated pair of valid bare hours when followed by 'hver' and a weekday. Keep the weekday and venue and cover examples of week ranges and numeric scales in regression tests.",
+      "confidence": "high"
+    },
+    {
+      "target": "content_text",
+      "error_type": "text_corruption",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "aho_70 123-1_2025_spring_1"
+      ],
+      "evidence": "Kurset holdes sammen med studenter fra KHIO og foreleser og kursansvarlig er.",
+      "description": "The name was removed from a coordinated prose clause, leaving the incomplete phrase 'og foreleser og kursansvarlig er.' inside a teaching paragraph.",
+      "root_cause_hypothesis": "The generic inline role matcher replaces a role-and-name span with its captured role phrase, including 'er' in this case. The capture is preserved inside a full sentence without a grammatical completion.",
+      "suggested_fix": "Before generic inline role removal, match the sentence-final staff attribution 'og foreleser og kursansvarlig er <name>' and remove the entire attribution. Keep the sentence-ending punctuation and the preceding information about joint teaching with KHIO students.",
       "confidence": "high"
     }
   ]

@@ -1,4 +1,4 @@
-# Sections audit, pilots of 2026-11-21: DMMH, LDH, Barratt Due (AHO open)
+# Sections audit, pilots of 2026-11-21 (DMMH, LDH, Barratt Due) and re-audit of 2026-11-22 (with AHO)
 
 Run 2026-11-21 on the build of 2026-11-21 (10:21-20:21, commit d77a254),
 `--pilot` samples. Review agents: Codex `gpt-6.1-sol`, one per institution.
@@ -139,18 +139,83 @@ None. The reviewers' own rejections, kept: GRUSKU5100's short reading list
 duplicate/short flags on pointers are placeholders (batch F), not copied
 content; VIB-101's coursework "Praksisstudier" is a real requirement.
 
+## Re-audit 2026-11-22 (after the fixes)
+
+Batches B-F and H were fixed and rebuilt (build of 2026-11-22, 00:18-10:40);
+G stays as a known deviation; A is in the harvest code and takes effect
+with LDH's full harvest. Re-run with the newest Codex model, `gpt-6.2-sol`
+(user 2026-11-21: new audits use the newest Sol model), on fresh packets of
+the same seed: dmmh, ldh, barrattdue and, for the first time, aho
+(`findings-codex/{inst}.json`; the 2026-11-21 findings are the baseline in
+git). All 31 findings passed mechanical verification. gpt-6.2-sol reads
+more strictly than gpt-6.1-sol, so new findings are partly the model's,
+not new defects.
+
+- **Fixed**: DMMH's coursework gates in assessment (the reviewer finds the
+  gates in coursework_requirements and the graded practical exams in
+  assessment); Barratt Due's description now course_content, DID's
+  sub-courses kept; LDH's prerequisites ("The 20 plans retain substantive
+  prerequisites"); the placeholders; DMMH's "Sensorordning:" rows.
+- **DMMH, left** (no confirmed high after re-rating): approval-only
+  sentences of placement reports and self-evaluations in assessment or
+  teaching_methods ("Praksisrapport (praksisrapport vurderes til
+  godkjent/ikke godkjent).", `dmmh_BNPRA200-1_2019_spring_1`; medium: the
+  report's evaluation is part of how the placement is assessed, and the
+  requirement is in coursework too); one-off mixed paragraphs under a
+  mapped heading ("Prosjektskissen er fagets arbeidskrav." in course
+  content, `dmmh_MLVFM5020-1_2019_autumn_1`; known deviation); one-off
+  scheduling ("Oppgaven gis ut den første dagen, ..."; known deviation);
+  a reading-list pointer "Her finner du pensumliste for studieåret" (low).
+- **LDH, left**: BSYP-503's appendix and the PDF footers (fixed in the
+  harvest code; gone after the full harvest); the placement sentence (known
+  deviation, 2026-11-21); "Praksisstudier med godkjent arbeidskrav vurderes
+  til bestått/ikke bestått." names the requirement in the assessment
+  sentence (medium; one sentence, design and gate together); goals under
+  "Hensikt" in course_content (the aims-as-outcomes known deviation);
+  MALSY-100's minimum of ten examinations in teaching_methods (medium).
+- **Barratt Due, left**: prerequisites still missing in 3 of 20: ENT2100
+  and SPIN5110 ("Gjennomført 1.studieår bachelor i utøvende musikk.", a
+  form `.real_prerequisite_regex` lacks) and KAM4300 (the page gives
+  "Bestått KAM3300 ..." with no label); the validity sentence in its plural
+  form ("... er gyldige i to semestre ...", 2 plans); DID's "Obligatorisk
+  kurs: instrumentalteknikk og kroppsbevissthet" in course_content; "Avsluttende
+  vurdering: Mappevurdering" in the facts column, not in assessment
+  (GRUSKU5100, HINS1200); elective admission and capacity rules in course
+  content (KAMFOR5100, SPIN5110); the HINS/KAM activity lists in course
+  content (the known deviation of 2026-11-21, a decision for the user);
+  resit rules that say what the resit is (kept on purpose).
+- **AHO** (first review): high, prerequisites lost under the unmapped
+  access headings "Generell adgangsinformasjon for emnet" / "Admission
+  requirements" ("Bestått alle emner i GK1 og GK2. Bestått studiodelen av
+  GK3 og GK4.", 6 controls; `aho_80 162-1_2025_spring_1`,
+  `aho_61 131-1_2025_autumn_3`); high, coursework left in assessment under
+  an "Obligatorisk arbeidskrav" sub-heading or as attendance gates
+  (`aho_61 121-1_2025_spring_1`, `aho_60 541-1_2025_autumn_2`,
+  `aho_70 154-1_2025_autumn_3`): AHO has no `section_inline_coursework`,
+  which explains coursework 0.28; medium, Design Studio's track structure
+  (a track's "LEARNING OUTCOMES" line inside course_content,
+  `aho_70 505-1_2025_autumn_3`); medium, stock logistics ("Besvarelsen
+  leveres i Wiseflow. Du må gjøre deg kjent med innlogging ..."), assignment
+  lists left in teaching_methods, a sentence in both course_content and
+  teaching_methods (PHD-READING); low, a Leganto pointer ("Pensumlisten
+  publiseres i Leganto."), material costs.
+
 ## Verdict
 
-Gate numbers of this check (build of 2026-11-21; `PILOT_GATE`: assessment
+Gate numbers of this check (build of 2026-11-22; `PILOT_GATE`: assessment
 0.90, coursework 0.70, unmapped_headings at most 0.65):
 
 | Institution | assessment | coursework | no_sections | unmapped_headings | Verdict |
 |---|---|---|---|---|---|
-| dmmh | 1.00 (n 69) | 0.93 (69) | 0 | 0.50 (n 2262) | **not ready**: batch D (high); E, F medium. All rebuild-only |
-| aho | 1.00 (n 68) | **0.28** (68) | 0 | 0.275 (n 356) | **open**: no review yet; coursework 0.28 unexplained |
-| ldh | 1.00 (n 25) | **0.40** (25) | 0 | 0 (n 20) | **not ready**: batch B (high, rebuild-only) and A (needs the harvest) |
-| barrattdue | 1.00 (n 46) | 1.00 (46) | 0 | 0.105 (n 526) | **not ready**: batches B, C (high); E medium. All rebuild-only |
+| dmmh | 1.00 (n 69) | 0.94 (69) | 0 | 0.50 (n 2262) | **ready for full harvest**: medium and low left, rebuild-only |
+| aho | 1.00 (n 68) | **0.28** (68) | 0 | 0.275 (n 356) | **not ready**: prerequisites under the access headings, coursework in assessment (high, rebuild-only) |
+| ldh | 1.00 (n 25) | **0.36** (25) | 0 | 0 (n 20) | **ready with known limits**: coursework 0.36 (the site's PDFs, below); the appendix and footers go with the full harvest |
+| barrattdue | 1.00 (n 46) | 1.00 (46) | 0 | 0.098 (n 471) | **not ready**: prerequisites still missing in 3 of 20 (high, rebuild-only); medium left |
 | onh | – | – | – | – | **open**: waits for a DBH snapshot with autumn 2026 |
+
+The verdicts of 2026-11-21 (all three not ready, AHO open) are in git
+history. The notes below are from that run and still hold (LDH's coursework
+is 0.36 now: the "ingen obligatorisk aktivitet" row no longer counts).
 
 - **LDH coursework 0.40** has a cause on the site: the bachelor study-plan
   PDFs (BIS20-23) have no coursework block; their placement courses name the
