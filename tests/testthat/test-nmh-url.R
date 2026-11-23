@@ -41,7 +41,7 @@ test_that("NMH's pages come from its handbooks' course lists, by cohort", {
         c("studioproduksjon", "MUSTEK22 - Studioproduksjon"),
         # a page for two codes, and a code with a lower-case letter
         c("barokkensemble", "BARENS20/21 - Barokkensemble I og II"), c("instrument", "FRINST10a/B - Instrument"),
-        c("blaseensemble", "BLENS20 - Blåseensemble")),
+        c("blaseensemble", "BLENS20 - Blåseensemble"), c("christiania-blaseensemble", "CBE - Christiania Blåseensemble")),
       "https://nmh.no/studiehandboker/startkull-2025/emner" = nmh_list(
         paste0(hb, "2025/emner"), c("akkompagnement", "AKKOMP10 - Akkompagnement"),
         # two pages of a code: the first listed
@@ -56,11 +56,11 @@ test_that("NMH's pages come from its handbooks' course lists, by cohort", {
   })
   df <- tibble::tibble(
     course_code = c("AKKOMP10", "AKKOMP10", "AKKOMP10", "MUSTEK22", "BARENS21", "FRINST10B", "ANPRAK20",
-                    "ALEX20", "ALEX20", "OPERA20", "OPERA21", "BLENS23", "BLENS20", "AKKOMP11", "OSINF61"),
+                    "ALEX20", "ALEX20", "OPERA20", "OPERA21", "BLENS23", "BLENS20", "AKKOMP11", "OSINF61", "CBE27"),
     year = c(2025L, 2026L, 2025L, 2026L, 2024L, 2024L, 2025L, 2025L, 2024L, 2025L, 2025L, 2025L, 2025L, 2025L,
-             2025L),
+             2025L, 2026L),
     semester_name = c("Vår", "Vår", "Høst", "Høst", "Høst", "Høst", "Høst", "Høst", "Høst", "Høst", "Høst",
-                      "Høst", "Høst", "Høst", "Høst"),
+                      "Høst", "Høst", "Høst", "Høst", "Vår"),
     url = NA_character_)
   out <- resolve_urls_nmh_batch(df)
   expect_equal(out$url, c(
@@ -78,7 +78,8 @@ test_that("NMH's pages come from its handbooks' course lists, by cohort", {
     paste0(hb, "2024/emner/blaseensemble"),            # a project of the series: its page
     paste0(hb, "2024/emner/blaseensemble"),
     NA,                                                # not a series: no page by stem
-    NA))                                               # a series without a page
+    NA,                                                # a series without a page
+    paste0(hb, "2024/emner/christiania-blaseensemble"))) # CBE's projects: the series' page
   # the sitemaps and the three lists, each once; no course page
   expect_equal(length(sent), 5)
   expect_named(out, names(df))

@@ -44,10 +44,14 @@ add_course_url <- function(df) {
 }
 
 # The year in the URL is the academic year it starts ("/2025": 2025/26), so a
-# spring offering reads the year before (url_year = "academic"). DBH's "-A"
-# codes (MGLU1101-A) are the site's code without the suffix.
+# spring offering reads the year before (url_year = "academic"). DBH's variant
+# suffixes of one letter (MGLU1101-A, SOL420-B, BØA2020-C, LVUT8005-K) are not
+# in the site's code: with them the site has no information (every one of the
+# 260 such offerings in the raw store, 2026-11-22), without them the plan
+# (SOL420, BØA2020, LVUT8005, 2026-11-20). No NTNU code in DBH ends in a
+# hyphen and a letter that is part of the code.
 add_course_url_ntnu <- function(course_code, year, semester) {
-  glue::glue("https://www.ntnu.no/studier/emner/{sub('-A$', '', toupper(course_code))}/",
+  glue::glue("https://www.ntnu.no/studier/emner/{sub('-[A-Z]$', '', toupper(course_code))}/",
              "{academic_start_year(year, semester)}")
 }
 
@@ -65,9 +69,14 @@ add_course_url_uia <- function(course_code, year, semester) {
 
 # A code with a space (the design semester blocks, "BAR 3") is percent-encoded:
 # a raw space made the request fail as a timeout; www4 has no page for them.
+# The page is named without the Norwegian letters (ITØK264 -> itok264,
+# LÆFR101 -> laefr101; with them, www4 answers 404; checked 2026-11-20). å ->
+# a follows Drupal's transliteration (no UiB code with å since 2020 to check).
+# www4 redirects each page to www.uib.no (302, seen 2026-11-22).
 add_course_url_uib <- function(course_code, year, semester) {
   sem_code <- dplyr::recode_values(semester, "Vår" ~ "V", "Høst" ~ "H", default = "H")
-  code <- gsub(" ", "%20", tolower(course_code), fixed = TRUE)
+  code <- tolower(course_code) |>
+    stringr::str_replace_all(c("ø" = "o", "å" = "a", "æ" = "ae", " " = "%20"))
   glue::glue("https://www4.uib.no/studier/emner/{code}?start_semester={year}{sem_code}")
 }
 

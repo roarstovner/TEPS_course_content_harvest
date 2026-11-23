@@ -348,11 +348,15 @@ nhh_search_pages <- function(page, code) {
 #' PHD-DVP 902 is ...-phd-dvp-902), which DBH does not
 #' give; a few codes have a second page, with a numeric id after the code,
 #' for another programme or semester (checked 2026-11-01). The sitemap lists
-#' every course page. An offering takes the page whose URL ends in its code;
-#' of several, the one whose JSON has a plan for the offering's year and
-#' semester (each such code's pages are read once, discover_codes()), else
-#' the first. The pages hold plans from spring 2024 (VID_FIRST_TERM): an
-#' earlier offering gets no URL, without a request.
+#' every course page. An offering takes the page whose URL ends in its code,
+#' else (since 2026-11-22) one whose URL ends in its code with a variant
+#' suffix of one or two letters stripped on both sides (BASOS3030-H:
+#' ...-basos3030, BAVER2040: ...-baver2040-d; a campus or form of delivery,
+#' so the page may be another campus's, methods.qmd); of several, the one
+#' whose JSON has a plan for the offering's year and semester (each such
+#' code's pages are read once, discover_codes()), else the first. The pages
+#' hold plans from spring 2024 (VID_FIRST_TERM): an earlier offering gets no
+#' URL, without a request.
 #'
 #' @param df A tibble with course_code, year, semester_name columns
 #' @param index The course pages' URLs, from vid_course_index()
@@ -366,8 +370,12 @@ resolve_urls_vid_batch <- function(df, index = NULL, .progress = TRUE, checkpoin
   index <- index %||% vid_course_index()
   slug <- sub("-[0-9]{12,}$", "", sub(".*/", "", index))
   codes <- unique(df$course_code[new])
-  pages <- lapply(stats::setNames(codes, codes), function(code)
-    index[endsWith(slug, paste0("-", gsub(" ", "-", tolower(code))))])
+  key <- function(code) paste0("-", gsub(" ", "-", tolower(code)))
+  stem <- function(x) sub("-[a-z]{1,2}$", "", x)
+  pages <- lapply(stats::setNames(codes, codes), function(code) {
+    p <- index[endsWith(slug, key(code))]
+    if (length(p)) p else index[endsWith(stem(slug), stem(key(code)))]
+  })
   terms <- discover_codes(names(pages)[lengths(pages) > 1], function(code) {
     dplyr::bind_rows(lapply(pages[[code]], function(url) {
       polite_pause()
@@ -450,10 +458,12 @@ resolve_urls_nmh_batch <- function(df, index = NULL) {
 NMH_FIRST_COHORT <- 2021L
 
 # The ensemble and orchestra series DBH registers per project, a code per
-# number (BLENS21-BLENS27, KAKOR20-KAKOR27, OSINF60-OSINF72, BFO20-BFO24),
-# for which a handbook has one page (BLENS20, KAKOR, BFO) or none (OSINF);
-# only these series (user decision 2026-11-14, methods.qmd).
-NMH_SERIES <- c("BLENS", "KAKOR", "OSINF", "BFO")
+# number (BLENS21-BLENS27, KAKOR20-KAKOR27, OSINF60-OSINF72, BFO20-BFO24,
+# CBE20-CBE32, JAENS20-JAENS29), for which a handbook has one page (BLENS20,
+# KAKOR, BFO, CBE, JAENS: "2 studiepoeng per prosjekt") or none (OSINF); only
+# these series (user decisions 2026-11-14 and, for CBE and JAENS, 2026-11-20,
+# methods.qmd).
+NMH_SERIES <- c("BLENS", "KAKOR", "OSINF", "BFO", "CBE", "JAENS")
 
 # Every course page of NMH's study handbooks, from the course lists the
 # study-plan sitemaps name (/studiehandboker/startkull-{year}/emner and the

@@ -44,20 +44,21 @@ academic year the page is for (`/2025` is “Studieår 2025/2026”), so a
 spring or summer offering reads the year before
 (`url_year = "academic"`; HVL and OsloMet likewise), and
 `read_harvest()` gives an offering the page at its URL whichever
-offering it was fetched for. DBH’s “-A” codes (MGLU1101-A) are the
-site’s code without the suffix. A page saying no information is
-available raises `ntnu_no_info_error`. robots.txt asks for a 10-second
-crawl delay (`request_delay` in the config). The page’s exam tab
-(`#omEksamen`: assessment form, grading scale, exam sessions and their
-parts) is read without its link, rooms, comments, dates and times; the
-assessment section gets one session of it (`exam_sessions`). The
-timetable tab (`#timeplan`, from 2025) is not read. A course whose plan
-is only in English has a Norwegian page whose course content is only a
-pointer to the English page, in some 60 wordings (“Se engelsk versjon”,
-“Emnet undervises på engelsk. Se engelsk versjon for emnebeskrivelse.”,
-“Se emnets engelske nettside – International MSc”, “Cf. English
-description”; some 1,900 course-years of 2019-2025, 2026-11-05); the
-harvest then fetches the English page,
+offering it was fetched for. DBH’s codes with a one-letter variant
+suffix (MGLU1101-A, SOL420-B, BØA2020-C, LVUT8005-K; before 2026-11-22
+only -A) are the site’s code without the suffix. A page saying no
+information is available raises `ntnu_no_info_error`. robots.txt asks
+for a 10-second crawl delay (`request_delay` in the config). The page’s
+exam tab (`#omEksamen`: assessment form, grading scale, exam sessions
+and their parts) is read without its link, rooms, comments, dates and
+times; the assessment section gets one session of it (`exam_sessions`).
+The timetable tab (`#timeplan`, from 2025) is not read. A course whose
+plan is only in English has a Norwegian page whose course content is
+only a pointer to the English page, in some 60 wordings (“Se engelsk
+versjon”, “Emnet undervises på engelsk. Se engelsk versjon for
+emnebeskrivelse.”, “Se emnets engelske nettside – International MSc”,
+“Cf. English description”; some 1,900 course-years of 2019-2025,
+2026-11-05); the harvest then fetches the English page,
 `https://www.ntnu.edu/studies/courses/{code}/{year}` (`english_page` in
 the config, as at HVL and Nord), and the row keeps the Norwegian URL.
 Every page has a link titled “English version” in its template, so the
@@ -118,8 +119,10 @@ is O (`MØNA2504` is in `hf/ikos/MONA2504/`).
 
 **UiB.** A page is
 `https://www4.uib.no/studier/emner/{code}?start_semester={year}{V|H}`
-(the code in lower case, a space as `%20`; summer is H). A course has
-one page with a semester picker back to 2004; a course UiB no longer
+(the code in lower case, a space as `%20`, the Norwegian letters as
+ASCII: ITØK264 is `itok264`, LÆFR101 `laefr101`, since 2026-11-22;
+summer is H). www4 redirects to `www.uib.no` (seen 2026-11-22). A course
+has one page with a semester picker back to 2004; a course UiB no longer
 offers, a master’s thesis, a UNIS course and most PhD courses have no
 page in any semester (404). UiB’s site also answers 404 now and then for
 pages it has: in the pilot of 2026-10-17, 29 of the 74 course-years that
@@ -223,9 +226,10 @@ later cohort’s copy; checked 2026-11-16). The handbooks are copies of
 one set of plans, each cohort’s for all its years of study: a course of
 the second year in `startkull-2026` is taught in 2027/28. Ensembles and
 orchestra projects registered per number of projects (BLENS21-BLENS27,
-KAKOR20-KAKOR27, OSINF60-OSINF72, BFO20-BFO24) take their series’ page
-by code stem (BLENS20, KAKOR, BFO; OSINF has none), only these series
-(`NMH_SERIES`, user decision 2026-11-14). Many DBH codes have no page:
+KAKOR20-KAKOR27, OSINF60-OSINF72, BFO20-BFO24, CBE20-CBE32,
+JAENS20-JAENS29) take their series’ page by code stem (BLENS20, KAKOR,
+BFO, CBE, JAENS; OSINF has none), only these series (`NMH_SERIES`, user
+decisions 2026-11-14 and 2026-11-20). Many DBH codes have no page:
 exchange students’ courses (UTV\*) and others, about half the codes of
 2025. robots.txt (nmh.no, www.nmh.no redirects there) disallows only
 Craft CMS’s `/cpresources/`, `/vendor/` and `/cache/`.
@@ -284,24 +288,27 @@ programme or semester. The sitemap, `https://www.vid.no/sitemap.xml`,
 lists every course page (717), and `resolve_urls_vid_batch()` matches
 the offerings’ codes to the URLs’ ends; of a code’s several pages it
 reads each once and takes the one with a plan for the offering’s
-semester. The page is rendered in the browser (Enonic XP, react4xp) from
-JSON in a script tag (`data-react4xp-ref="root"`): the course’s title,
-code, credits, language, duration and programmes, and `plans`, one per
-year and semester the course is taught in, from spring 2024 to the next
-academic year (many spring 2024 entries have no text). The HTML the
-server sends has the facts box and an empty semester picker, no plan.
-The harvest stores the page; the config’s `html_fn`, `vid_plan_html()`,
-gives the block reader the plan of the offering’s year and semester as
-HTML (title, facts list, an h2 per paragraph and accordion: “Emnets
-innhold”, “Hovedtemaer”, “Læringsutbytte”, “Arbeids og
-undervisningsformer”, “Obligatoriske aktiviteter”, “Vurderingsordning”,
-…). The plan’s facts-box items (“Emnetype”, “Obligatorisk undervisning”,
-“Totalt antall studentarbeidstimer”, “Tilbys som enkeltemne”, “Opptak
-til enkeltemne”; `vid_fact_items`) join the facts list instead, so they
-are in `course_plan` but in no section and not in the plan id. A page
-with no plan with text counts as not found
-(`fetch_html_cols_single_vid()`). robots.txt allows everything for all
-user agents and blocks AI crawlers by name.
+semester. A code that ends no URL takes the pages that end in it once a
+suffix of one or two letters is stripped from both (BASOS3030-H:
+`...-basos3030`, BAVER2040: `...-baver2040-d`; since 2026-11-22), which
+may be another campus’s. The page is rendered in the browser (Enonic XP,
+react4xp) from JSON in a script tag (`data-react4xp-ref="root"`): the
+course’s title, code, credits, language, duration and programmes, and
+`plans`, one per year and semester the course is taught in, from spring
+2024 to the next academic year (many spring 2024 entries have no text).
+The HTML the server sends has the facts box and an empty semester
+picker, no plan. The harvest stores the page; the config’s `html_fn`,
+`vid_plan_html()`, gives the block reader the plan of the offering’s
+year and semester as HTML (title, facts list, an h2 per paragraph and
+accordion: “Emnets innhold”, “Hovedtemaer”, “Læringsutbytte”, “Arbeids
+og undervisningsformer”, “Obligatoriske aktiviteter”,
+“Vurderingsordning”, …). The plan’s facts-box items (“Emnetype”,
+“Obligatorisk undervisning”, “Totalt antall studentarbeidstimer”,
+“Tilbys som enkeltemne”, “Opptak til enkeltemne”; `vid_fact_items`) join
+the facts list instead, so they are in `course_plan` but in no section
+and not in the plan id. A page with no plan with text counts as not
+found (`fetch_html_cols_single_vid()`). robots.txt allows everything for
+all user agents and blocks AI crawlers by name.
 
 **PHS.** Politihøgskolen’s course pages are FS pages in Vortex, laid out
 as HiMolde’s but without department folders:

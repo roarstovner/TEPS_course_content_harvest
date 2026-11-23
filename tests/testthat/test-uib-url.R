@@ -1,4 +1,4 @@
-test_that("UiB page URLs: lower case, semester code, space percent-encoded", {
+test_that("UiB page URLs: lower case, semester code, space percent-encoded, no Norwegian letters", {
   expect_equal(as.character(add_course_url_uib("DIDASAK1", 2010L, "Høst")),
                "https://www4.uib.no/studier/emner/didasak1?start_semester=2010H")
   expect_equal(as.character(add_course_url_uib("EXPHIL-HFSEM", 2019L, "Vår")),
@@ -7,4 +7,7 @@ test_that("UiB page URLs: lower case, semester code, space percent-encoded", {
                "https://www4.uib.no/studier/emner/geov106?start_semester=2010H")
   expect_equal(as.character(add_course_url_uib("UTV VISK 5H", 2022L, "Høst")),
                "https://www4.uib.no/studier/emner/utv%20visk%205h?start_semester=2022H")
+  expect_equal(as.character(add_course_url_uib(c("ITØK264", "LÆFR101", "MED7-ØYE", "MEDOVERG4.ÅR"), 2026L, "Høst")),
+               paste0("https://www4.uib.no/studier/emner/", c("itok264", "laefr101", "med7-oye", "medoverg4.ar"),
+                      "?start_semester=2026H"))
 })

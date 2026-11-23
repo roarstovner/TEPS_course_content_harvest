@@ -235,16 +235,23 @@ first, was adopted for four named series on 2026-11-14 (next entry). *Since:*
 **NMH: the project series take their series' page, and of two pages of a
 code in one handbook the one listed for the code alone.** DBH registers some
 NMH ensembles and orchestra projects as a code per number of projects
-(BLENS21-BLENS27, KAKOR20-KAKOR27, OSINF60-OSINF72, BFO20-BFO24), and the
-handbook has one page for the series (BLENS20, KAKOR, BFO) or none (OSINF).
-An offering of one of these four series without a page of its own now takes
-its series' page by code stem, with the same cohort rule as other codes; no
-other series is matched by stem. Of the 56 cases of a code with two pages in
+(BLENS21-BLENS27, KAKOR20-KAKOR27, OSINF60-OSINF72, BFO20-BFO24, and since
+2026-11-22 CBE20-CBE32 and JAENS20-JAENS29), and the handbook has one page
+for the series (BLENS20, KAKOR, BFO, CBE, JAENS) or none (OSINF). An offering
+of one of these six series without a page of its own now takes its series'
+page by code stem, with the same cohort rule as other codes; no other series
+is matched by stem. The pages of CBE (Christiania Blåseensemble, every
+handbook) and JAENS (Jazzensemble, the handbooks of 2021 and 2022 only, so
+later offerings take the 2022 page) are the series' plan, "2 studiepoeng per
+prosjekt", three to four projects a year (read in the raw store on
+2026-11-22); they add 256 offerings of 2021-2026 (131 course-years, 22 of
+2026). Of the 56 cases of a code with two pages in
 one handbook (29 in 2021, 22 in 2022), the page listed for the code alone
 ("OPERA21 - Operaseminar II") goes before one listed for several codes
 ("OPERA20/21 - Operaseminar"); where both are listed alike, the first
-listed, as before. *Why:* user decision 2026-11-14: a series' projects share
-the ensemble's plan; the page listed for the code alone has DBH's title
+listed, as before. *Why:* user decision 2026-11-14 (CBE and JAENS: 2026-11-20,
+after a coverage check found their projects without a page): a series'
+projects share the ensemble's plan; the page listed for the code alone has DBH's title
 ("Operaseminar II", "Bruksklaver IIa") and credits, the shared page is the
 two-semester course. The pairs listed alike were compared on 2026-11-16: 9 are
 the same text (KPIMP10 in every handbook, MUSTEK21, BARIMP20); in 2021 the
@@ -262,7 +269,7 @@ project. *Rejected:* matching every code by stem, which would give a course the
 plan of another that shares its letters; always the first listed,
 which gives the "21" codes the shared two-semester page; choosing by the
 page's cohort year, which needs every page fetched before resolving.
-*Since:* 2026-11-14.
+*Since:* 2026-11-14; CBE and JAENS since 2026-11-22.
 
 **Kunsthøgskolen i Oslo (DBH code 6220) joins the frame, with the plan in
 force only.** One of the ten institutions surveyed for the all-courses frame,
@@ -315,6 +322,27 @@ semester of the year. Its full harvest waits for the pilot audits (below).
 *Rejected:* giving such an offering the plan of the nearest semester, which
 would take a plan the site does not publish for that semester. *Since:*
 2026-11-01.
+
+**VID: a code without a page of its own takes the page of its code with the
+variant suffix stripped.** DBH and the site do not always write a course's
+variant suffix alike: DBH's BASOS3030-H and BASOS3030-D have no page, the
+site's page is `...-basos3030`; DBH's BAVER2040 has none, the site's is
+`...-baver2040-d`; DBH's MACOMM5360-O has none, the site's is
+`...-macomm5360-s`. An offering whose code ends no page's URL now takes a
+page whose URL ends in its code once a suffix of one or two letters is
+stripped from both (a number after a hyphen, MAVERD-543, is part of the
+code); of several, the one with a plan for the offering's year and semester,
+as for a code's own pages. *Why:* a coverage check of 2026-11-20 found these
+courses without a URL though the site has their plan under the other
+spelling. *Consequence:* 13 codes, 70 offerings from spring 2024 (35
+course-years, 10 of 2026), get a page; an offering still gets a plan only if
+the page has one for its year and semester. The suffix names a campus or a
+form of delivery (D, H, O, S), so the page may be another campus's
+(`basos3030` is Oslo's) and the offering then gets that campus's plan for the
+same course, year and semester. *Rejected:* leaving them without a plan,
+which loses courses the site publishes; stripping only DBH's suffix, which
+misses BAVER2040 and the MACOMM codes; matching by title, which DBH and the
+site do not write alike either. *Since:* 2026-11-22.
 
 **Politihøgskolen (DBH code 1301) joins the frame, from autumn 2022.** One
 of the ten institutions surveyed for the all-courses frame, configured on

@@ -12,6 +12,7 @@ nla,www.nla.no,2026-10-16,200,,,,Allows everything
 nord,www.nord.no,2026-10-16,200,,,,Drupal defaults; Crawl-delay 10 only for Scrapy
 nih,www.nih.no,2026-10-16,200,,,,Disallows /vrtx
 uib,www4.uib.no,2026-10-16,200,,,,Drupal defaults; Crawl-delay 10 only for Scrapy. request_delay stays 10 (set 2026-09-30)
+uib,www.uib.no,2026-11-22,200,,,,"Drupal defaults, as www4.uib.no, which redirects its course pages here (302, seen 2026-11-22); Crawl-delay 10 only for Scrapy; /studier/emner/ is allowed"
 uio,www.uio.no,2026-10-16,200,,,,"Disallows /vrtx, /bilder, /intranett and single pages; none under /studier/emner/"
 uis,www.uis.no,2026-10-16,200,,,,Drupal defaults; Crawl-delay 10 only for Scrapy
 uis,www6.uis.no,2026-10-16,200,,/,/ansatt/,"The PDF archive of course plans (/Stine/EMNE/{year}/...), which the harvests up to 2026-10 fetched"

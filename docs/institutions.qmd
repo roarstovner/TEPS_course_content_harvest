@@ -42,8 +42,9 @@ keeps the Norwegian URL (`english_page` in the config; HVL likewise, from
 year the page is for (`/2025` is "Studieår 2025/2026"), so a spring or summer
 offering reads the year before (`url_year = "academic"`; HVL and OsloMet
 likewise), and `read_harvest()` gives an offering the page at its URL
-whichever offering it was fetched for. DBH's "-A" codes (MGLU1101-A) are the
-site's code without the suffix. A page saying no
+whichever offering it was fetched for. DBH's codes with a one-letter variant
+suffix (MGLU1101-A, SOL420-B, BØA2020-C, LVUT8005-K; before 2026-11-22 only
+-A) are the site's code without the suffix. A page saying no
 information is available raises `ntnu_no_info_error`. robots.txt asks for a
 10-second crawl delay (`request_delay` in the config). The page's exam tab
 (`#omEksamen`: assessment form, grading scale, exam sessions and their parts)
@@ -110,7 +111,9 @@ case (`sv/iss/sos9009`), and the URL must be too; Ø is O (`MØNA2504` is in
 
 **UiB.** A page is
 `https://www4.uib.no/studier/emner/{code}?start_semester={year}{V|H}` (the
-code in lower case, a space as `%20`; summer is H). A course has one page
+code in lower case, a space as `%20`, the Norwegian letters as ASCII: ITØK264
+is `itok264`, LÆFR101 `laefr101`, since 2026-11-22; summer is H). www4
+redirects to `www.uib.no` (seen 2026-11-22). A course has one page
 with a semester picker back to 2004; a course UiB no longer offers, a
 master's thesis, a UNIS course and most PhD courses have no page in any
 semester (404). UiB's site also answers 404 now and then for pages it has: in the
@@ -204,9 +207,10 @@ second is the same text or a later cohort's copy; checked 2026-11-16). The
 handbooks are copies of one set of plans, each cohort's for all its years of
 study: a course of the second year in `startkull-2026` is taught in 2027/28.
 Ensembles and orchestra projects registered per number of projects
-(BLENS21-BLENS27, KAKOR20-KAKOR27, OSINF60-OSINF72, BFO20-BFO24) take their
-series' page by code stem (BLENS20, KAKOR, BFO; OSINF has none), only these
-series (`NMH_SERIES`, user decision 2026-11-14). Many DBH codes have no page:
+(BLENS21-BLENS27, KAKOR20-KAKOR27, OSINF60-OSINF72, BFO20-BFO24, CBE20-CBE32,
+JAENS20-JAENS29) take their series' page by code stem (BLENS20, KAKOR, BFO,
+CBE, JAENS; OSINF has none), only these series (`NMH_SERIES`, user decisions
+2026-11-14 and 2026-11-20). Many DBH codes have no page:
 exchange students' courses (UTV*) and others, about half the codes of 2025. robots.txt (nmh.no,
 www.nmh.no redirects there) disallows only Craft CMS's `/cpresources/`,
 `/vendor/` and `/cache/`.
@@ -260,7 +264,10 @@ the code (`...-basos1020-1795878807970940938`), for another programme or
 semester. The sitemap, `https://www.vid.no/sitemap.xml`, lists every course
 page (717), and `resolve_urls_vid_batch()` matches the offerings' codes to
 the URLs' ends; of a code's several pages it reads each once and takes the
-one with a plan for the offering's semester. The page is rendered in the
+one with a plan for the offering's semester. A code that ends no URL takes
+the pages that end in it once a suffix of one or two letters is stripped
+from both (BASOS3030-H: `...-basos3030`, BAVER2040: `...-baver2040-d`; since
+2026-11-22), which may be another campus's. The page is rendered in the
 browser (Enonic XP, react4xp) from JSON in a script tag
 (`data-react4xp-ref="root"`): the course's title, code, credits, language,
 duration and programmes, and `plans`, one per year and semester the course

@@ -32,7 +32,10 @@ index <- c("https://www.vid.no/studier/emner/kunnskapsgrunnlag-basos1020",
            "https://www.vid.no/studier/emner/folkehelse-basp2040ac-o",
            "https://www.vid.no/studier/emner/folkehelse-basp2040ac",
            "https://www.vid.no/studier/emner/team-og-prosjektledelse-maverd-543",
-           "https://www.vid.no/studier/emner/philosophy-of-science-research-ethics-phd-dvp-902")
+           "https://www.vid.no/studier/emner/philosophy-of-science-research-ethics-phd-dvp-902",
+           "https://www.vid.no/studier/emner/kunnskapsutvikling-i-sosialt-arbeid-basos3030",
+           "https://www.vid.no/studier/emner/psykisk-helse-baver2040-d",
+           "https://www.vid.no/studier/emner/research-seminar-macomm5360-s")
 
 test_that("VID's pages come from the sitemap by code; a code's pages are read for their plans", {
   local_robots("www.vid.no")
@@ -59,6 +62,16 @@ test_that("VID's pages come from the sitemap by code; a code's pages are read fo
   expect_equal(out$url, c(index[1], index[2], NA, index[4], index[5], NA, NA, index[6]))
   # only the two pages of the code with two pages are read
   expect_equal(length(sent), 2)
+})
+
+test_that("a VID code without a page of its own takes the page of its code with the variant suffix stripped", {
+  httr2::local_mocked_responses(function(req) stop("no request expected: ", req$url))
+  df <- tibble::tibble(course_code = c("BASOS3030-H", "BAVER2040", "MACOMM5360-O", "BASP2040AC-O", "MAVERD-5"),
+                       year = 2026L, semester_name = "Høst", url = NA_character_)
+  out <- resolve_urls_vid_batch(df, index = index, .progress = FALSE)
+  # stripped from DBH's code, from the page's, from both; a code's own page
+  # first; a number after a hyphen is not a suffix
+  expect_equal(out$url, c(index[7], index[8], index[9], index[3], NA))
 })
 
 test_that("the offering's plan is read from the page's JSON as HTML", {

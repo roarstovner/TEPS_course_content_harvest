@@ -158,6 +158,11 @@ test_that("academic-year URLs: an offering takes the page of its academic year",
     department_name = NA_character_))$url
   expect_equal(u("ntnu", "MGLU1101-A", 2022L, "Vår"), "https://www.ntnu.no/studier/emner/MGLU1101/2021")
   expect_equal(u("ntnu", "MGLU1101", 2022L, "Høst"), "https://www.ntnu.no/studier/emner/MGLU1101/2022")
+  # any one-letter variant suffix is dropped, not a longer one
+  expect_equal(u("ntnu", "SOL420-B", 2026L, "Høst"), "https://www.ntnu.no/studier/emner/SOL420/2026")
+  expect_equal(u("ntnu", "BØA2020-C", 2026L, "Vår"), "https://www.ntnu.no/studier/emner/BØA2020/2025")
+  expect_equal(u("ntnu", "LVUT8005-K", 2026L, "Høst"), "https://www.ntnu.no/studier/emner/LVUT8005/2026")
+  expect_equal(u("ntnu", "XYZ100-AB", 2026L, "Høst"), "https://www.ntnu.no/studier/emner/XYZ100-AB/2026")
   expect_equal(u("oslomet", "M1GSF2110", 2022L, "Vår"),
                "https://student.oslomet.no/studier/-/studieinfo/emne/M1GSF2110/2021/HØST")
   expect_equal(u("hvl", "MGX1", 2025L, "Sommer"), "https://www.hvl.no/studier/studieprogram/emne/2024/MGX1")
