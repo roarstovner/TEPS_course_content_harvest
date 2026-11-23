@@ -2274,18 +2274,50 @@ test_that("barrattdue: prerequisites from the facts column, the description colu
                paste0("Gjennomført undervisning og arbeidskrav er gyldige i to semestre etter ordinær eksamen.\n\n",
                       "Obligatorisk kurs: instrumentalteknikk og kroppsbevissthet"))
   # the final assessment of the facts column opens assessment
-  expect_equal(s[["assessment"]], paste0("Avsluttende vurdering: Eksamen\n\nMuntlig skoleeksamen.\n1: Eksamensmappe\nEt hefte.\n\n",
-                                         "Studenten må gjennomføre hele eller deler av emnet på nytt."))
+  # the stock resit rule goes (2026-11-23)
+  expect_equal(s[["assessment"]], "Avsluttende vurdering: Eksamen\n\nMuntlig skoleeksamen.\n1: Eksamensmappe\nEt hefte.")
   expect_false(any(grepl("Studiepoeng|studierett", s)))
   # a completed study year is a prerequisite
   expect_equal(sections_of(page("Gjennomført 1.studieår bachelor i utøvende musikk."), cfg)[["prerequisites"]],
                "Gjennomført 1.studieår bachelor i utøvende musikk.\nBestått KAM3300 Ensemblesang og kammermusikk 2")
   expect_equal(.admission_prerequisites("Krav til forkunnskaper: Normalt gjennomført 1. og 2. studieår"),
                "Normalt gjennomført 1. og 2. studieår")
-  # an admission is no prerequisite
+  # an admission is no prerequisite, nor a bare degree
   for (x in c("Bestått opptaksprøve til bachelorprogram i utøvende musikk",
-              "Bachelorgrad i musikk og Opptak til Praktisk-pedagogisk utdanning"))
+              "Opptak til Praktisk-pedagogisk utdanning", "Bachelorgrad i musikk"))
     expect_equal(sections_of(page(x), cfg)[["prerequisites"]], "Bestått KAM3300 Ensemblesang og kammermusikk 2")
+  # a degree in a subject next to the admission names both and stays whole
+  # (2026-11-23)
+  expect_equal(sections_of(page("Bachelorgrad i musikk og Opptak til Praktisk-pedagogisk utdanning"), cfg)[["prerequisites"]],
+               paste0("Bachelorgrad i musikk og Opptak til Praktisk-pedagogisk utdanning\n",
+                      "Bestått KAM3300 Ensemblesang og kammermusikk 2"))
+  expect_equal(.admission_prerequisites("Krav til forkunnskaper: Bachelorgrad i musikk og Opptak til Praktisk-pedagogisk utdanning"),
+               "Bachelorgrad i musikk og Opptak til Praktisk-pedagogisk utdanning")
+  expect_equal(.admission_prerequisites("Bachelorgrad og opptak til studiet."), "")
+})
+
+test_that("barrattdue: stock resit rules leave assessment, the elective admission rule course content", {
+  cl <- function(section, x) {
+    out <- .clean_sections(.move_sentences(tibble::tibble(section = section, raw_text = x), "barrattdue"), "barrattdue")
+    stats::setNames(out$raw_text, out$section)
+  }
+  # the PPU plans' resit rule, the repeat rule and who assesses the resit go;
+  # what the resit consists of stays
+  for (x in c("Den delen som ikke er bestått må gjennomføres på nytt. Deretter gis det ny samlet vurdering.",
+              "Studenten må gjennomføre hele eller deler av emnet på nytt. Dette avgjøres individuelt av faglærer(e).",
+              "Individuell vurdering av faglærer/seksjonsleder."))
+    expect_equal(cl("assessment", paste0("De to delene teller 50% hver.\n\n", x))[["assessment"]], "De to delene teller 50% hver.")
+  for (x in c("Ny innlevering av refleksjonsnotat, repertoarrapport og ny praktisk eksamen.", "Ny muntlig eksamen.",
+              "Studenten må gjennomføre ny praktisk eksamen"))
+    expect_equal(cl("assessment", paste0("Mappevurdering.\n\n", x))[["assessment"]], paste0("Mappevurdering.\n\n", x))
+  # the elective's admission rule goes; what the course is stays
+  s <- cl("course_content", paste0("Studenten får praktisk erfaring med en reell kammermusikalsk situasjon.\n",
+                                   "Opptak i emnet forutsetter at kriterier som besetning og repertoar oppfylles på bakgrunn av ",
+                                   "søkermasse og tilgjengelig undervisningsressurs.\n",
+                                   "Emnet er et valgemne og kommer i tillegg til regulær kammermusikkundervisning."))
+  expect_equal(s[["course_content"]], paste0("Studenten får praktisk erfaring med en reell kammermusikalsk situasjon.\n",
+                                             "Emnet er et valgemne og kommer i tillegg til regulær kammermusikkundervisning."))
+  expect_false(".drop" %in% names(s))
 })
 
 test_that("aho: prerequisites of the access field, coursework of the exam description, its logistics", {

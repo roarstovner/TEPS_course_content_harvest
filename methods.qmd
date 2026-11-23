@@ -2925,6 +2925,44 @@ godkjent/ikke godkjent).") stays as part of the placement's assessment.
 2026); on 20 pages per raw partition of every institution no other section
 changes. *Since:* 2026-11-23.
 
+**Barratt Due: the PPU degree requirement, stock resit rules, the
+electives' admission rule.** The PPU plans' prerequisite field "Krav til
+forkunnskaper: Bachelorgrad i musikk og Opptak til Praktisk-pedagogisk
+utdanning" now joins prerequisites whole: a sentence that joins a degree in
+a named subject to the admission names both prior knowledge and admission,
+which the spec keeps whole (`.admission_prerequisites()`, shared; before,
+the degree rule dropped it as admission). A bare degree or a bare admission
+("Opptak til ...") stays out. The stock resit rules under "Ny vurdering"
+leave assessment, as logistics by the spec: the PPU plans' "Den delen som
+ikke er bestått må gjennomføres på nytt. Deretter gis det ny samlet
+vurdering." (kept on 2026-11-21 as saying what the resit is), "Studenten må
+gjennomføre hele eller deler av emnet på nytt." and "Individuell vurdering
+av faglærer/seksjonsleder" (`.logistics_sentences`); resit lines that say
+what the resit consists of stay ("Ny muntlig eksamen.", "Ny innlevering av
+refleksjonsnotat, repertoarrapport og ny praktisk eksamen."). The elective
+chamber-music courses' admission rule in course content ("Opptak i emnet
+forutsetter at kriterier som besetning og repertoar oppfylles på bakgrunn
+av søkermasse og tilgjengelig undervisningsressurs.", KAMFOR5100 and
+KAMP5100) is admission and goes on the section side; `course_plan` keeps
+all of these. *Why:* sections audit of 2026-11-23 (Codex): DID1's
+prerequisites missing; resit rules recurring in assessment; elective
+admission in course content. *Rejected:* removing these in `course_plan`
+(`exclude`/`post_fn` may cut only personal data and boilerplate); dropping
+SPIN5110's priority and allocation sentences ("Avgangsstudenter
+prioriteres. Fordeling skjer forøvrig ...") and its other one-off mixed
+text: their wording occurs in one plan, so they stay, as the known
+deviation of 2026-11-11 says; keeping a degree without a course code
+anywhere (the degree rule takes UiT's and others' programme admission out).
+*Consequence* (all 88 Barratt Due pages of the 2026-11-23 run, HEAD
+against the new code): prerequisites are new on the 4 pages of DID1 and
+PED1; assessment loses a resit sentence on 30 pages of 16 courses (PPU
+rule: 8 pages of DID1, DID2, PED1 and PED2; repeat rule: 18 pages of 10
+courses; resit assessor: 4 pages of SGRU1300 and SGRU2300); course content
+loses the admission rule on the 4 pages of KAMFOR5100 and KAMP5100. No
+section of another institution changes (5 pages per raw partition of every
+institution). `course_plan` and the plan ids do not change. *Since:*
+2026-11-23.
+
 **Resit and examiner rules stay in assessment at UiT, NTNU, Nord and FHS,
 a known deviation from the spec.** The spec puts resit, postponement and
 examiner rules outside the sections; the sections audit of 2026-11-05 found

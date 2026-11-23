@@ -138,7 +138,10 @@ Fields for the `html` reader:
   courses the course requires; it maps to `.admission`, of which only the
   sentences naming a prior course, credits or a passed part that are not
   admission join prerequisites (`.admission_prerequisites()`), after the
-  page's own and without those it already says; so do aho's access field,
+  page's own and without those it already says, and so does a sentence
+  that joins a degree in a named subject to the admission ("Bachelorgrad i
+  musikk og Opptak til Praktisk-pedagogisk utdanning", barrattdue; since
+  2026-11-23), whole; so do aho's access field,
   "Generell adgangsinformasjon for emnet" ("Admission requirements"; since
   2026-11-22), whose course codes ("61 110", "70 111 GK1 Introduksjon til
   design") under "Gjennomført:" count as prior courses, and whose label
@@ -289,8 +292,11 @@ clause says who may take the course and none names a prerequisite
 kan ikke tas som enkeltemne." stays); hivolda's "Bestått didaktikkemne 1." from
 coursework to prerequisites; barrattdue's "Gjennomført undervisning og
 arbeidskrav er gyldig(e) inntil to semestre etter ordinær eksamen." from
-teaching methods to coursework, and DID's "Obligatorisk kurs:
-instrumentalteknikk og kroppsbevissthet" from course content to coursework;
+teaching methods to coursework, DID's "Obligatorisk kurs:
+instrumentalteknikk og kroppsbevissthet" from course content to coursework,
+and the elective chamber-music courses' admission rule ("Opptak i emnet
+forutsetter at kriterier som besetning og repertoar oppfylles ...",
+2026-11-23) out of the sections;
 aho's gates written in the teaching text or the exam comment
 (`.aho_gate_sentence()`, 2026-11-23), from assessment and teaching methods
 to coursework: a sentence about attendance or submission that states a
@@ -342,8 +348,13 @@ levere en gang til."); aho's exam system ("Besvarelsen leveres i
 Wiseflow.", "Du må gjøre deg kjent med innlogging og innleveringsmåte ..."),
 source-use notice, Moodle pointers and the diploma's withdrawal deadline,
 but not "Fem timers skriftlig hjemmeeksamen i Wiseflow."; and barrattdue's dated deadlines ("Frist for
-innlevering av årsrapport 15.mai") and who decides the resit ("Dette
-avgjøres individuelt av faglærer."); resit and
+innlevering av årsrapport 15.mai"), who decides or assesses the resit
+("Dette avgjøres individuelt av faglærer.", "Individuell vurdering av
+faglærer/seksjonsleder") and (2026-11-23) its stock resit rules ("Den
+delen som ikke er bestått må gjennomføres på nytt. Deretter gis det ny
+samlet vurdering.", "Studenten må gjennomføre hele eller deler av emnet på
+nytt."), but not "Ny innlevering av refleksjonsnotat, repertoarrapport og
+ny praktisk eksamen."; resit and
 appeal rules that say only who may resit or resubmit, when or how often
 ("For ikke å bruke et eksamensforsøk, må studenten aktivt trekke sin
 vurderingsmelding ...", mf; "Studenter som ... får vurderingen F, kan melde

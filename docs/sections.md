@@ -188,24 +188,26 @@ Fields for the `html` reader:
   only the sentences naming a prior course, credits or a passed part
   that are not admission join prerequisites
   (`.admission_prerequisites()`), after the page’s own and without those
-  it already says; so do aho’s access field, “Generell
-  adgangsinformasjon for emnet” (“Admission requirements”; since
-  2026-11-22), whose course codes (“61 110”, “70 111 GK1 Introduksjon
-  til design”) under “Gjennomført:” count as prior courses, and whose
-  label “Recommended previous knowledge” keeps the lines after it whole
-  (but a link), without the label. uit’s “Undervisnings- og
-  eksamensspråk” (“Language of instruction and examination”) maps to
-  `.exam_language`, of which the label with the exam-language sentences
-  and bare values (“Norsk”) joins assessment after the page’s own
-  (`.exam_language_text()`); the teaching language alone goes. fhs’s
-  “Opptakskrav” holds required courses (prerequisites, where the map
-  drops it as admission), “Målgruppe” who may take the course (`.drop`),
-  and the Etterretningsskolen’s “Emnets oppbygning” (or “oppbygging”)
-  and “Arbeidsformer og læringsaktiviteter” (teaching_methods; the map
-  has the latter only as a substring pattern, which a `<p>` does not
-  match). nmh’s English pages: “Overview” (course_content) and
-  “Structure” (its “Organisering”, teaching_methods), too generic for
-  the map.
+  it already says, and so does a sentence that joins a degree in a named
+  subject to the admission (“Bachelorgrad i musikk og Opptak til
+  Praktisk-pedagogisk utdanning”, barrattdue; since 2026-11-23), whole;
+  so do aho’s access field, “Generell adgangsinformasjon for emnet”
+  (“Admission requirements”; since 2026-11-22), whose course codes (“61
+  110”, “70 111 GK1 Introduksjon til design”) under “Gjennomført:” count
+  as prior courses, and whose label “Recommended previous knowledge”
+  keeps the lines after it whole (but a link), without the label. uit’s
+  “Undervisnings- og eksamensspråk” (“Language of instruction and
+  examination”) maps to `.exam_language`, of which the label with the
+  exam-language sentences and bare values (“Norsk”) joins assessment
+  after the page’s own (`.exam_language_text()`); the teaching language
+  alone goes. fhs’s “Opptakskrav” holds required courses (prerequisites,
+  where the map drops it as admission), “Målgruppe” who may take the
+  course (`.drop`), and the Etterretningsskolen’s “Emnets oppbygning”
+  (or “oppbygging”) and “Arbeidsformer og læringsaktiviteter”
+  (teaching_methods; the map has the latter only as a substring pattern,
+  which a `<p>` does not match). nmh’s English pages: “Overview”
+  (course_content) and “Structure” (its “Organisering”,
+  teaching_methods), too generic for the map.
 
 Other fields:
 
@@ -347,34 +349,36 @@ course and none names a prerequisite (`.uit_admission_sentence()`:
 enkeltemne.” stays); hivolda’s “Bestått didaktikkemne 1.” from
 coursework to prerequisites; barrattdue’s “Gjennomført undervisning og
 arbeidskrav er gyldig(e) inntil to semestre etter ordinær eksamen.” from
-teaching methods to coursework, and DID’s “Obligatorisk kurs:
+teaching methods to coursework, DID’s “Obligatorisk kurs:
 instrumentalteknikk og kroppsbevissthet” from course content to
-coursework; aho’s gates written in the teaching text or the exam comment
-(`.aho_gate_sentence()`, 2026-11-23), from assessment and teaching
-methods to coursework: a sentence about attendance or submission that
-states a requirement (“Students are required to attend weekly
-seminars.”, “Final reviews are mandatory”, “Oppmøte påkrevd: Ja”), a
-consequence (“Alle oppgaver må være levert for å bli sensurert i
-kurset.”, “… in order to be assessed”, “Kurset er praksisbasert der høyt
-oppmøte … er en forutsetning for gjennomføring av kurset.”) or an
-attendance threshold (“det forventes 80 % oppmøte på forelesninger”); a
-bare expectation (“Fysisk oppmøte … er forventet og nødvendig for å
-oppfylle læringsutbytte.”), the assessment design, the final work, the
-portfolio’s parts (“Alle prosjektoppgavene må leveres.”), deadlines and
-a lead-in (“… the following activities and assignments:”) stay, and an
-“Attendance:”/“Oppmøte” label goes with the paragraph under it only when
-all of it moves (a move’s `label`); dmmh’s practice courses’ attendance
-rule (“All undervisning i kunnskapsområdene bidrar til studentens
-forberedelse til praksis, så tilstedeværelse … er en forutsetning …”)
-from prerequisites to coursework, and their transfer rule (“Ved
-overflytting fra annet studieprogram …”) out of the sections; and fhs’s
-and nmh’s course-content sentence that names only the courses it builds
-on (“Emnet bygger på ING1502 Matematiske metoder 1.”, “Emnet bygger på
-Hovedinstrument I (UTHO13).”) to prerequisites. At phs the paragraphs
-under “Læringsutbytte” before “Kunnskap” that describe the subject, not
-the outcomes (“Pedagogikk i instruktørutdanningen vektlegger …”), go to
-course content (`.split_lo_intro()`); a lead-in (“Etter gjennomført emne
-har studenten følgende læringsutbytte:”) stays.
+coursework, and the elective chamber-music courses’ admission rule
+(“Opptak i emnet forutsetter at kriterier som besetning og repertoar
+oppfylles …”, 2026-11-23) out of the sections; aho’s gates written in
+the teaching text or the exam comment (`.aho_gate_sentence()`,
+2026-11-23), from assessment and teaching methods to coursework: a
+sentence about attendance or submission that states a requirement
+(“Students are required to attend weekly seminars.”, “Final reviews are
+mandatory”, “Oppmøte påkrevd: Ja”), a consequence (“Alle oppgaver må
+være levert for å bli sensurert i kurset.”, “… in order to be assessed”,
+“Kurset er praksisbasert der høyt oppmøte … er en forutsetning for
+gjennomføring av kurset.”) or an attendance threshold (“det forventes 80
+% oppmøte på forelesninger”); a bare expectation (“Fysisk oppmøte … er
+forventet og nødvendig for å oppfylle læringsutbytte.”), the assessment
+design, the final work, the portfolio’s parts (“Alle prosjektoppgavene
+må leveres.”), deadlines and a lead-in (“… the following activities and
+assignments:”) stay, and an “Attendance:”/“Oppmøte” label goes with the
+paragraph under it only when all of it moves (a move’s `label`); dmmh’s
+practice courses’ attendance rule (“All undervisning i kunnskapsområdene
+bidrar til studentens forberedelse til praksis, så tilstedeværelse … er
+en forutsetning …”) from prerequisites to coursework, and their transfer
+rule (“Ved overflytting fra annet studieprogram …”) out of the sections;
+and fhs’s and nmh’s course-content sentence that names only the courses
+it builds on (“Emnet bygger på ING1502 Matematiske metoder 1.”, “Emnet
+bygger på Hovedinstrument I (UTHO13).”) to prerequisites. At phs the
+paragraphs under “Læringsutbytte” before “Kunnskap” that describe the
+subject, not the outcomes (“Pedagogikk i instruktørutdanningen
+vektlegger …”), go to course content (`.split_lo_intro()`); a lead-in
+(“Etter gjennomført emne har studenten følgende læringsutbytte:”) stays.
 
 `.clean_sections()` removes `.drop` rows, strips page widgets, pointers
 and stock logistics sentences from assessment/coursework
@@ -404,11 +408,16 @@ system (“Besvarelsen leveres i Wiseflow.”, “Du må gjøre deg kjent med
 innlogging og innleveringsmåte …”), source-use notice, Moodle pointers
 and the diploma’s withdrawal deadline, but not “Fem timers skriftlig
 hjemmeeksamen i Wiseflow.”; and barrattdue’s dated deadlines (“Frist for
-innlevering av årsrapport 15.mai”) and who decides the resit (“Dette
-avgjøres individuelt av faglærer.”); resit and appeal rules that say
-only who may resit or resubmit, when or how often (“For ikke å bruke et
-eksamensforsøk, må studenten aktivt trekke sin vurderingsmelding …”, mf;
-“Studenter som … får vurderingen F, kan melde seg opp til ny/utsatt
+innlevering av årsrapport 15.mai”), who decides or assesses the resit
+(“Dette avgjøres individuelt av faglærer.”, “Individuell vurdering av
+faglærer/seksjonsleder”) and (2026-11-23) its stock resit rules (“Den
+delen som ikke er bestått må gjennomføres på nytt. Deretter gis det ny
+samlet vurdering.”, “Studenten må gjennomføre hele eller deler av emnet
+på nytt.”), but not “Ny innlevering av refleksjonsnotat,
+repertoarrapport og ny praktisk eksamen.”; resit and appeal rules that
+say only who may resit or resubmit, when or how often (“For ikke å bruke
+et eksamensforsøk, må studenten aktivt trekke sin vurderingsmelding …”,
+mf; “Studenter som … får vurderingen F, kan melde seg opp til ny/utsatt
 eksamen.”, oslomet; “The mark can be appealed.”, hiof), but not what the
 resit consists of (“Ved kontinuasjonseksamen bearbeides samme oppgave.”,
 “Utsatt eksamen er en individuell skriftlig hjemmeeksamen.”); pointers

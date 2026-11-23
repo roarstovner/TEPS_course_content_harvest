@@ -615,6 +615,12 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "(?i)^\\W*(?:(?:avlagt|fullført|relevant|treårig) )?(?:bachelor\\w*|master(?:grad\\w*)?\\b|cand\\.)|^\\W*graden må|",
   "^\\W*fordypning:|^\\W*det kreves (?:godkjent )?utdanning|krav om (?:\\S+ )?bachelorgrad|",
   "^\\s*[-–•]\\s*(?:minst \\d+ studiepoeng|\\d-årig studium)")
+# A degree in a named subject joined to the admission in one sentence names
+# both and stays whole (barrattdue's PPU field "Krav til forkunnskaper:
+# Bachelorgrad i musikk og Opptak til Praktisk-pedagogisk utdanning";
+# 2026-11-23, in no section before); a bare degree or a bare admission
+# ("Opptak til ...") does not.
+.degree_admission_regex <- "(?i)^\\W*(?:(?:avlagt|fullført) )?(?:bachelor|master)\\w* i \\p{L}[^.]*?\\bog opptak (?:til|på)\\b"
 # A label in the block that opens recommended prior knowledge (aho's
 # "Recommended previous knowledge." over a list of topics, "Recommended
 # prerequisite knowledge" over "The course builds on the design skills ...";
@@ -629,9 +635,10 @@ extract_sections <- function(config, html, extracted_text, course_id) {
     l <- ul[i]
     if (rec[i]) return(if (grepl(.recommended_knowledge_regex, l, perl = TRUE)) "" else trimws(l))
     s <- sub("(?i)^(\\s*)(?:opptakskrav|forhåndskrav|krav til forkunnskaper)\\s*:\\s*", "\\1", stringr::str_split_1(l, .sentence_end), perl = TRUE)
-    k <- grepl(.real_prerequisite_regex, s, perl = TRUE) & !.is_admission_sentence(s) &
+    k <- (grepl(.real_prerequisite_regex, s, perl = TRUE) & !.is_admission_sentence(s) &
       !grepl(.admission_only_regex, s, perl = TRUE) &
-      !(grepl(.degree_regex, s, perl = TRUE) & !grepl("\\b[A-ZÆØÅ]{2,}[A-ZÆØÅ0-9-]*\\d{3,}", s, perl = TRUE)) &
+      !(grepl(.degree_regex, s, perl = TRUE) & !grepl("\\b[A-ZÆØÅ]{2,}[A-ZÆØÅ0-9-]*\\d{3,}", s, perl = TRUE)) |
+      grepl(.degree_admission_regex, s, perl = TRUE)) &
       !vapply(stringr::str_squish(s), function(x) !nzchar(x) || grepl(x, had, fixed = TRUE), logical(1))
     trimws(paste(s[k], collapse = ""))
   }, character(1), USE.NAMES = FALSE)
@@ -1288,7 +1295,13 @@ extract_sections <- function(config, html, extracted_text, course_id) {
                     # kurs: instrumentalteknikk og kroppsbevissthet", "Obligatorisk kurs
                     # i ..."), as its list under "Obligatorisk kurs:" (2026-11-22)
                     list(from = "course_content", to = "coursework_requirements",
-                         rx = "^\\W*Obligatorisk kurs(?:\\s*:|\\s+i)\\s+\\S")),
+                         rx = "^\\W*Obligatorisk kurs(?:\\s*:|\\s+i)\\s+\\S"),
+                    # the elective chamber-music courses' admission rule ("Opptak i emnet
+                    # forutsetter at kriterier som besetning og repertoar oppfylles på
+                    # bakgrunn av søkermasse og tilgjengelig undervisningsressurs.",
+                    # KAMFOR5100 and KAMP5100) is admission, in no section (2026-11-23)
+                    list(from = "course_content", to = ".drop",
+                         rx = "^\\W*Opptak i emnet forutsetter at kriterier som besetning og repertoar")),
   # aho: a gate written in the teaching text or the exam description
   # (.aho_gate_sentence()); an "Oppmøte"/"Attendance:" label goes with the
   # paragraph under it when all of that moves
@@ -1578,9 +1591,13 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # dette som et forsøk.", "Studenter som har fått
 # restpraksis grunnet gyldig fravær, vil få ny innleveringsfrist ...");
 # barrattdue: who decides how the resit is held ("Dette avgjøres individuelt
-# av faglærer.") and the dated deadlines ("Frist for innlevering av
-# årsrapport 15.mai"); "Ny eksamen", "Den delen som ikke er bestått må
-# gjennomføres på nytt." say what the resit is and stay.
+# av faglærer.", "Individuell vurdering av faglærer/seksjonsleder"), the
+# dated deadlines ("Frist for innlevering av årsrapport 15.mai") and
+# (2026-11-23) the stock resit rules under "Ny vurdering" ("Den delen som
+# ikke er bestått må gjennomføres på nytt. Deretter gis det ny samlet
+# vurdering.", the PPU plans; "Studenten må gjennomføre hele eller deler av
+# emnet på nytt."); "Ny eksamen", "Ny innlevering av refleksjonsnotat,
+# repertoarrapport og ny praktisk eksamen." say what the resit is and stay.
 .examiner_role_regex <- paste0(
   "(?i)^\\W*(?:(?:intern |ekstern )?sensur med (?:minst |minimum )?(?:\\w+ )?(?:interne? |eksterne? )?sensor[^.]*|",
   "(?:en|to|tre|\\d) (?:interne? |eksterne? )?sensor(?:er)?\\b[^.]*|",
@@ -1661,7 +1678,9 @@ extract_sections <- function(config, html, extracted_text, course_id) {
            "(?i)^\\W*Dersom \\w+ vurderes til ikke å kunne godkjennes, får studenten \\w+ virkedager til å forbedre",
            "(?i)^\\W*Studenter (?:som har fått|med) restpraksis grunnet gyldig fravær,? vil få ny (?:innleverings)?frist"),
   barrattdue = c(.examiner_sentence_regex, .examiner_role_regex,
-                 "(?i)^\\W*Det(?:te)? avgjøres individuelt av faglærer",
+                 "(?i)^\\W*(?:Det(?:te)? avgjøres individuelt av faglærer|Individuell vurdering av faglærer/seksjonsleder\\W*$)",
+                 paste0("(?i)^\\W*(?:Den delen som ikke er bestått må gjennomføres på nytt|Deretter gis det ny samlet vurdering|",
+                        "Studenten må gjennomføre hele eller deler av emnet på nytt)\\W*$"),
                  paste0("(?i)^\\W*Frist (?:for )?innlevering av [^.]*?\\d{1,2}\\.\\s?",
                         "(?:januar|februar|mars|april|mai|juni|juli|august|september|oktober|november|desember)\\W*$")),
   aho = c(paste0("(?i)^\\W*(?:(?:Besvarelsen|Essayet|Oppgaven|Masteroppgaven|Rapporten) (?:skal )?leveres ",
