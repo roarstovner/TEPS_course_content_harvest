@@ -1932,6 +1932,46 @@ raw file) NIH 8 plans change, UiB 5, HiØ 5, UiO 1, NLA 1, INN 1, HVL and MF
 0, and every removal is a session or deadline date, a semester or a stamp.
 *Since:* 2026-11-11.
 
+**English deadlines after "by", weekly hours and staff clauses go.** A
+deadline after "by" with a year, month or day first, goes with the "by":
+"Minimum 50 titles by January 14, 2026" → "Minimum 50 titles"; at AHO the
+date closing an entry of a PhD course's activity list goes after its comma
+("Presentation of Research Design (final presentation), May 7 2026", and a
+session's date without a year, "... one session of the AHO Colloquium, 6
+November."). A range of bare hours before "hver"/"every" and a weekday goes
+with its preposition ("Forelesning fra 9-12 hver mandag" → "Forelesning
+hver mandag"). A staff clause closing a sentence after "og" or a comma goes
+whole, not only its names ("... studenter fra KHIO og foreleser og
+kursansvarlig er <name>." → "... studenter fra KHIO."), and so does a
+sentence that is only such a clause ("Emneansvarleg er <name>.", UiB,
+where "Emneansvarlig er." was left in 23 plans). Also: names in
+capitals after "Lærere:" ("Lærere: <NAME>, ...", UiB), a part between the
+role and its colon ("Kursansvarlig - engelsk del: <name>", HiØ), UiB's
+"Undervisning foregår i fellesskap med <name>" (the names with "i
+fellesskap med"), a revision's month and year ("sist revidert i mars
+2019", HiØ), and a title and a name alone in brackets anywhere in a line
+("Anvendt bergmekanikk (professor <name>), Industrimineraler (professor
+<name>)", NTNU's topic lists; "the course coordinator (professor <name>)",
+UiO), where before only a list of such lines lost them. *Why:* the AHO
+anonymization re-audit of 2026-11-22 found the English dates and the clock
+range, and the stranded "... kursansvarlig er."; the rest were found in a
+corpus check on 2026-11-21, the bracketed names (65 NTNU and 2 UiO plans)
+while checking the "by" rule's hits on 2026-11-23. These follow the rules
+of 2026-11-11 (session dates go, deadlines with a year) in English forms
+those rules did not read. *Rejected:* every English month-day date with a
+year (reference and newspaper dates have the same form); a yearless "by"
+deadline ("Submit by 15 October.", "submitted by May 15th"), which recurs
+every year and stays as after a deadline label; any line at AHO ending in
+a date after a comma (a reference does too). *Consequence:* in the plans
+of the 2026-11-23 build the "by" rule finds 26 plans at 7 institutions,
+every hit a registration, submission or notification deadline ("Other
+applicants apply by 1 December 2021 in Søknadsweb." → "Other applicants
+apply in Søknadsweb."); the bracketed names 67 plans, the stranded role
+sentence 23, UiB's capitals 2 and "i fellesskap med" 3, HiØ's 3, AHO's 3.
+On 20 pages per raw partition of every institution (`preview_change()`)
+2 pages change, both intended (an AHO session date, an OsloMet deadline).
+*Since:* 2026-11-23.
+
 ## Sections
 
 ```{r}
@@ -2777,6 +2817,29 @@ assessment gains the final-assessment line on 78 pages, prerequisites on 6
 more pages. Elsewhere (15 pages per raw partition of every institution) one
 UiT and one NMBU page change (the gate list, a doubled line). `course_plan`
 and the plan ids do not change. *Since:* 2026-11-22.
+
+**DMMH's and LDH's reading-list pointers alone are placeholders.** A
+reading list that is only "Her finner du pensumliste for studieåret" (DMMH:
+the label of a link to the list, its academic year removed by the
+anonymizer), or only LDH's Leganto notice and its links' labels
+("Pensumlister finnes i Leganto og er lenket til under. Obs! For å få
+tilgang til kompendiefiler, ... Kjernelitteratur finner du her.
+Emnespesifikk litteratur finner du her."), is dropped, like the other
+pointers elsewhere (`.placeholder_phrases`). A row with references under
+the label stays. *Why:* sections audit of 2026-11-22 (Codex, DMMH) and the
+metrics check of the 2026-11-23 build (LDH, two plans of 2026): a pointer
+alone is no section by the spec. *Rejected:* moving the
+approval sentence of one DMMH plan's teaching methods ("Godkjenning av
+fagnotat og presentasjon av utviklingsarbeid gjøres av faglærer, og vurderes
+som godkjent/ikke godkjent.") to coursework requirements: its wording occurs
+in one plan, so it stays, as the known deviation of 2026-11-11 says; a
+generic rule for "vurderes til godkjent/ikke godkjent" would also take a
+pass/fail exam or placement out of its section. The placement reports'
+approval in assessment ("Praksisrapport (praksisrapport vurderes til
+godkjent/ikke godkjent).") stays as part of the placement's assessment.
+*Consequence:* 3 reading lists go (one DMMH plan of 2019, two LDH plans of
+2026); on 20 pages per raw partition of every institution no other section
+changes. *Since:* 2026-11-23.
 
 **Resit and examiner rules stay in assessment at UiT, NTNU, Nord and FHS,
 a known deviation from the spec.** The spec puts resit, postponement and

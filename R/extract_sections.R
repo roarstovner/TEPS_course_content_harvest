@@ -1894,6 +1894,15 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "oppdatert litteraturliste vil v(?:æ|e)r[ae] tilgjengel[ie]g i leganto ved semesterstart",
   # aho (2026-11-22): "Pensumlisten publiseres i Leganto.", "Litteraturliste vil være tilgjengelig i Leganto."
   "(?:pensumlist|litteraturlist)(?:en|a|e)? (?:publiseres|vil (?:bli publisert|være tilgjengelig)) i leganto",
+  # dmmh (2026-11-23): a link's label alone, "Her finner du pensumliste for
+  # studieåret" (its academic year gone with the anonymizer, or not yet)
+  "her finner du pensumlist(?:en|a|e)? for studieåret(?: \\d{4} ?[-–/] ?\\d{2,4})?",
+  # ldh (2026-11-23): the Leganto notice and its links' labels, "Pensumlister
+  # finnes i Leganto og er lenket til under. Obs! For å få tilgang til
+  # kompendiefiler, ... Kjernelitteratur finner du her. ..."
+  "pensumlist(?:er|ene|a|en|e)? finnes i leganto(?: og er lenket til (?:under|nedenfor))?",
+  "(?:obs! )?for å få tilgang til kompendiefiler,? må du gå inn i pensumlistene via emnet i canvas",
+  "(?:kjerne|emnespesifikk )litteratur finner du her",
   # the list is given at the start or put on the learning platform (hiof, ntnu)
   "(?:(?:aktuell )?pensum(?:liste|litteratur)?|litteratur(?:en)?|bøker og artikler) ?oppgis (?:ved|før) [^.]{0,40}",
   "oppgis (?:ved|før)(?: [^.]{0,40})?", "se pensumliste(?:n)?",

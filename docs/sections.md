@@ -426,18 +426,20 @@ its reading lists only on the learning platform or at the bookshop,
 henvendelse til …”, OsloMet’s “Se omtale av praksis i programplanen” and
 “Praksisopplæring er nærmere beskrevet i programplanen.”, UiB’s
 “Informasjonen fins ikkje på norsk.”, DMMH’s “Se avsnittet «Arbeids-,
-lærings- og vurderingsformer» i studieplanens generelle del.”, LDH’s “I
-emnet inngår ingen obligatorisk aktivitet.”), and drops a first line
-that only repeats the section heading (but keeps learning-outcome group
-labels such as “Kunnskap”). Last, a section whose whole text, whitespace
-aside and 100 or more characters long, equals an earlier section’s on
-the page goes: the page copied it (khio’s teaching methods under
-“Vurdering” or its outcomes under “Undervisning og læringsformer”, inn’s
-course content under the teaching methods), and the copy says nothing
-about its own part. A short value two sections each state
-(“Individuelt.”, “Må bestås”) stays, so does a section that only begins
-with another’s text, and practice, which copies its heading’s section by
-design, neither goes nor counts.
+lærings- og vurderingsformer» i studieplanens generelle del.” and its
+link label “Her finner du pensumliste for studieåret”, LDH’s “I emnet
+inngår ingen obligatorisk aktivitet.” and its Leganto notice
+“Pensumlister finnes i Leganto og er lenket til under.” with its links’
+labels), and drops a first line that only repeats the section heading
+(but keeps learning-outcome group labels such as “Kunnskap”). Last, a
+section whose whole text, whitespace aside and 100 or more characters
+long, equals an earlier section’s on the page goes: the page copied it
+(khio’s teaching methods under “Vurdering” or its outcomes under
+“Undervisning og læringsformer”, inn’s course content under the teaching
+methods), and the copy says nothing about its own part. A short value
+two sections each state (“Individuelt.”, “Må bestås”) stays, so does a
+section that only begins with another’s text, and practice, which copies
+its heading’s section by design, neither goes nor counts.
 
 ## What Each Mechanism May Remove
 

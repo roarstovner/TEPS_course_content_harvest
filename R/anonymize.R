@@ -74,7 +74,17 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     stringr::str_replace_all(paste0("((?i:supervised|taught) by)[ \\t]+", .names_regex, "[ \\t]+and(?=[ \\t])"), "\\1") |>
     stringr::str_replace_all(paste0("(?<=^|\\n|[.!?][ \\t])In (?:the (?:fall|spring|autumn) of |)20\\d{2},?[ \\t]+",
                                     "(?=(?:the (?:course|studio|seminar|workshop)\\b|\\p{Lu}))(\\p{L})"),
-                             \(m) toupper(stringr::str_sub(m, -1L)))
+                             \(m) toupper(stringr::str_sub(m, -1L))) |>
+    # The date closing an entry of a PhD course's activity list, after a
+    # comma (2026-11-23): "Presentation of Research Design (final
+    # presentation), May 7 2026", "Chairing ... one session of the AHO
+    # Colloquium, 6 November."; the activity and the full stop stay. A
+    # session's date goes without a year, as after a session label. Only a
+    # line opened by one of these activity words, so a reference ending in a
+    # date ("Dezeen, 7 May 2021") stays.
+    stringr::str_replace_all(paste0("(?m)^((?:Presentation|Preparation|Submission|Chairing)\\b[^\\n]*?),[ \\t]*(?:",
+                                    .month_regex, "[ \\t]+\\d{1,2}(?:st|nd|rd|th)?|\\d{1,2}(?:st|nd|rd|th)?\\.?[ \\t]+",
+                                    .month_regex, ")(?![\\p{L}\\d])(?:,?[ \\t]+20\\d{2}\\b)?(?=[ \\t]*\\.?[ \\t]*$)"), "\\1")
 }
 
 # The cohort a course page belongs to ("Gjelder BIS24", the bachelor in
@@ -436,7 +446,13 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     # a dated schedule of meetings ("tirsdag 18.feb 2025 - rom 8.1 og 8.2"):
     # the date and the room belong to one semester's timetable
     stringr::str_remove_all(paste0("(?m)^(?:mandag|tysdag|tirsdag|onsdag|torsdag|fredag)[ \\t]+\\d{1,2}\\.[ \\t]?\\p{L}+\\.?",
-                                   "(?:[ \\t]+\\d{4})?[ \\t]*-[ \\t]*rom [^\n]*(?:\n|$)"))
+                                   "(?:[ \\t]+\\d{4})?[ \\t]*-[ \\t]*rom [^\n]*(?:\n|$)")) |>
+    # A teacher the teaching is shared with: "Undervisning foregår i
+    # fellesskap med <name>." -> "Undervisning foregår." (2026-11-23). Only
+    # two or more capitalised words: a course ("MUSP123") or a unit in one
+    # word ("Griegakademiet") stays; "Norges Handelshøyskole" would go.
+    stringr::str_replace_all(paste0("((?i:undervisning(?:en)?)[ \\t]+(?:foregår|skjer|gis|blir gitt|holdes))",
+                                    "[ \\t]+i fellesskap med[ \\t]+", .names_regex), "\\1")
 }
 
 .anon_nmbu <- function(txt) {
@@ -484,9 +500,12 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 # kari@uit.no" (uit), "Emneansvarlig Ola Nordmann" (uis PDF plans),
 # "Emneansvarlige:\nKari Nordmann" (uia), "Foreleser:Ola Nordmann." (uit).
 # "Emneansvarlig informerer ..." is prose, and uib's "Emneansvarlig\nThe
-# Programme Committee" names no person.
+# Programme Committee" names no person. A part after a dash may stand
+# between role and colon: "Kursansvarlig - engelsk del: <name>" (hiof,
+# 2026-11-23); it could also take "Emneansvarlig - se Canvas: <Two Words>".
 .role_name_line_regex <- paste0(
   "(?m)^[ \\t]*(?i:", paste(.staff_roles, collapse = "|"), ")(?i:e|er|ar)?",
+  "(?:[ \\t]+[-–][ \\t]+[\\p{L} ]{1,30}?(?=[ \\t]*:))?",
   "[ \\t]*(?::[ \\t]*\\n[ \\t]*|:[ \\t]*|[ \\t]+)",   # the next line only after a colon
   "\\p{Lu}\\p{Ll}+(?:[ \\t]+\\p{Lu}[\\p{L}.'’-]*)+[^\\n]*(?:\\n|$)"
 )
@@ -552,14 +571,31 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 # "Lærere: <name> (kursansvarlig), <name> og <name>", "Flere undervisere:
 # <name> og <name>." (aho, uit; 2026-11-21). The whole line goes. Without
 # the colon the words are content ("Lærere og elever i skolen ...",
-# "Undervisere i nettstudier vil ...").
+# "Undervisere i nettstudier vil ..."). Names may be in capitals: "Lærere:
+# KARI NORDMANN, ..." (uib, 2026-11-23); two capitals' words would also take
+# a line of acronyms ("Lærere: UIB OG HVL").
+.upper_name <- "\\p{Lu}{2,}(?:-\\p{Lu}{2,})*(?:[ \\t]+\\p{Lu}{2,}(?:-\\p{Lu}{2,})*)+"
 .no_staff_label_line_regex <- paste0("(?m)^[ \\t]*(?i:(?:flere|andre)[ \\t]+)?(?i:lærere|undervisere)[ \\t]*:[ \\t]*",
-                                     .names_regex, "[^\\n]*(?:\\n|$)")
+                                     "(?:", .names_regex, "|", .upper_name, ")[^\\n]*(?:\\n|$)")
 .role_name_inline_regex <- paste0(
   "(?<!\\p{L})(?!(?<=\\p{Lu}\\p{Ll}{0,30} )Sensor )((?i:", paste(c(.staff_roles, .signature_roles), collapse = "|"),
   ")(?i:e|er|ar|en)?(?:[ \\t]+(?i:er|var|i emnet))?:?|(?i:kontakt(?:e|er)? med|kontaktpersone?r? er)|", .en_staff_label, ")[ \\t]+",
   .names_regex
 )
+# A staff clause after "og" or a comma closing a sentence goes whole, the
+# full stop stays: "Kurset holdes sammen med studenter fra KHIO og foreleser
+# og kursansvarlig er <name>." -> "Kurset holdes sammen med studenter fra
+# KHIO." (aho, 2026-11-23), where .role_name_inline_regex left "og foreleser
+# og kursansvarlig er.". The names are those the inline rule takes anyway;
+# this rule adds only the clause's "og <role> er".
+.role_word <- paste0("(?i:", paste(.staff_roles, collapse = "|"), ")(?i:e|er|ar|en)?")
+.role_clause_regex <- paste0("[ \\t]*(?:,(?:[ \\t]+og)?|(?<!\\p{L})og)[ \\t]+", .role_word, "(?:[ \\t]+(?:og|eller)[ \\t]+", .role_word,
+                             ")*[ \\t]+(?i:er|var)[ \\t]+", .names_regex, "(?=[ \\t]*(?:[.!?]|\\n|$))")
+# A sentence that is only that clause goes with its full stop: 'Tema for
+# hausten er "...". Emneansvarleg er <name>.' -> 'Tema for hausten er
+# "...".' (uib, 23 plans with "Emneansvarlig er." left; 2026-11-23)
+.role_sentence_regex <- paste0("(?m)(?:^[ \\t]*|(?<=[.!?:\"”»])[ \\t]+)", .role_word, "(?:[ \\t]+(?:og|eller)[ \\t]+", .role_word,
+                               ")*[ \\t]+(?i:er|var)[ \\t]+", .names_regex, "[ \\t]*(?:[.!?](?=[ \\t]|$)|(?=\\n|$))[ \\t]*")
 # A role heading over every line that names someone, also after blank lines and
 # without a colon: "Emneansvarlig\n\nKari Nordmann" (oslomet), "Emneansvarlig\nOla
 # Nordmann, <unit>" (uib), a repeated heading over several names
@@ -850,6 +886,12 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 # recurring alone is a source: "(Shorter Norton)") or its lines open with a
 # course part's code ("TIØ5", "TMM16"). Two different names without these
 # stay (a known gap).
+# A title and a name alone in brackets, anywhere: "Anvendt bergmekanikk
+# (professor <name>), Industrimineraler (professor <name>)" in one line
+# (ntnu topic lists, 65 plans), "sent to the course coordinator (professor
+# <name>)" (uio; 2026-11-23). The title makes it a person, as in a list.
+.paren_titled_regex <- paste0("[ \\t]*\\(", .title_regex, "[ \\t]+(?:II[ \\t]+)?", .name_regex,
+                              "(?:[ \\t]*(?:,|og|and)[ \\t]+(?:", .title_regex, "[ \\t]+)?", .name_regex, ")*\\)")
 .lecturer_list_line <- paste0("^[^\\n]*?\\S", .paren_lecturer, "[ \\t]*\\.?[ \\t]*$")
 .lecturer_list_regex <- paste0("(?m)(?:", .lecturer_list_line, "\\n(?:[ \\t]*\\n)*)+", .lecturer_list_line)
 .drop_lecturer_list <- function(block) {
@@ -941,11 +983,15 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     stringr::str_remove_all(.name_role_lines_regex) |>
     # Keep the role, drop the name: "Godkjent av dekan Ola Nordmann"
     stringr::str_replace_all(.approved_by_name_regex, "\\1\\2\\3") |>
+    # "... og foreleser og kursansvarlig er Ola Nordmann." whole, then
     # "faglærer Ola Nordmann" anywhere in a line
+    stringr::str_remove_all(.role_sentence_regex) |>
+    stringr::str_remove_all(.role_clause_regex) |>
     stringr::str_replace_all(.role_name_inline_regex, "\\1") |>
     # lecturers in brackets in a lecture schedule or a list of topics
     stringr::str_replace_all(.schedule_lecturer_regex, "\\1") |>
     stringr::str_replace_all(.lecturer_list_regex, \(m) vapply(m, .drop_lecturer_list, "", USE.NAMES = FALSE)) |>
+    stringr::str_remove_all(.paren_titled_regex) |>
     # Remove phone numbers: +47 XX XX XX XX, Tlf: XXXXXXXX, telefon: XX XX XX XX
     stringr::str_remove_all("(?i)(?:tlf|telefon)\\.?\\s*:?\\s*(?:\\+47\\s*)?\\d[\\d ]{6,}") |>
     stringr::str_remove_all("\\+47\\s*\\d[\\d ]{6,}") |>
@@ -995,6 +1041,16 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     stringr::str_replace_all(.approval_date_regex, "\\1") |>
     stringr::str_replace_all(.session_date_regex, "\\1") |>
     stringr::str_replace_all(.deadline_date_regex, "\\1") |>
+    # A deadline after "by" with its year, month or day first: "Minimum 50
+    # titles by January 14, 2026", "framing by 30 April 2026" (aho PhD
+    # courses, 2026-11-23); "by" goes with it. A yearless one ("submitted by
+    # May 15th", "Submit by 15 October.") recurs every year and stays, as
+    # after a deadline label. Lower-case "by" only, so a sentence opened by
+    # "By May 1, 2026, ..." stays; Norwegian "by" (town) before a date with
+    # a year would also go.
+    stringr::str_remove_all(.not_gov_rule(paste0(.gap, "(?<!\\p{L})by"), paste0(
+      "[ \\t]+(?:", .month_regex, "[ \\t]+\\d{1,2}(?:st|nd|rd|th)?,?|\\d{1,2}(?:st|nd|rd|th)?\\.?[ \\t]+", .month_regex,
+      ",?)[ \\t]+20\\d{2}\\b"))) |>
     # a revision stamp alone on its line ("Revised May 2019", nla)
     stringr::str_remove_all(paste0("(?m)^[ \\t]*(?i:revised|updated|last updated)[ \\t]+", .month_regex,
                                    "[ \\t]+20\\d{2}\\.?[ \\t]*(?:\\n|$)")) |>
@@ -1036,8 +1092,11 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     # Høyskolen Barratt Due 2023-2027" (barrattdue, 2026-11-21); not
     # consecutive, so the academic-year rule below keeps them
     stringr::str_replace_all("((?i:kvalitets(?:sikrings)?system)[^\\n.]{0,60}?)[ \\t]+20\\d{2}[ \\t]*[-–][ \\t]*20\\d{2}\\b", "\\1") |>
-    # A change's month and year: "Emnets tittel ble endret i juni 2019." (onh, 2026-11-21)
-    stringr::str_replace_all(paste0("((?<!\\p{L})(?i:ble|blei|vart|was) (?i:endret|endra|changed)", .not_gov, ")[ \\t]+(?i:i|in)[ \\t]+",
+    # A change's month and year: "Emnets tittel ble endret i juni 2019." (onh,
+    # 2026-11-21), "Litteraturlisten er sist revidert i mars 2019." (hiof,
+    # 2026-11-23); a law's revision keeps it (.not_gov)
+    stringr::str_replace_all(paste0("((?<!\\p{L})(?:(?i:ble|blei|vart|was) (?i:endret|endra|changed)|",
+                                    "(?i:sist (?:revidert|endret|oppdatert)))", .not_gov, ")[ \\t]+(?i:i|in)[ \\t]+",
                                     .month_regex, "[ \\t]+20\\d{2}\\b"), "\\1") |>
     # The year after week numbers in a schedule: "Samling 4: veke 3 (2023)",
     # "Uke 44 og uke 4 (2017)" (hivolda); the weeks stay
@@ -1069,6 +1128,12 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     stringr::str_replace_all(paste0(.gap, .clock_prep, .clock_kl, .clock_end, "?", .clock_more, .clock_zone), "\001") |>
     stringr::str_replace_all(paste0(.gap, .clock_prep, .clock_ampm, .clock_zone), "\001") |>
     stringr::str_replace_all(.clock_weekday, "\\1\001") |>
+    # A range of bare hours before "hver"/"every" and a weekday, with the
+    # preposition: "Forelesning fra 9-12 hver mandag formiddag" ->
+    # "Forelesning hver mandag formiddag" (aho, 2026-11-23); a count of the
+    # same shape ("grupper fra 3-5 hver mandag") would go too.
+    stringr::str_replace_all(paste0(.gap, "(?<!\\p{L})(?i:fra|frå|from)[ \\t]+", .hour, "[ \\t]*[-–][ \\t]*", .hour,
+                                    "(?![\\d.:])(?=[ \\t]+(?i:hver|kvar|every)[ \\t]+", .weekday, "(?!\\p{L}))"), "\001") |>
     stringr::str_replace_all(paste0(.gap, "(?<!\\p{L})(?i:at|by|from|until|till|before|after|between)[ \\t]+",
                                    .clock_dot, .clock_end, "?", .clock_zone), "\001") |>
     # Remove clock times "09:00", "23:59:59", with a preposition before; not

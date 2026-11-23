@@ -2398,8 +2398,14 @@ test_that("dmmh: coursework codes and gates after the exam table move; the grade
 test_that("dmmh and ldh: pointers and 'none' are placeholders; dmmh's practice prerequisites", {
   for (x in c("Se avsnittet «Arbeids-, lærings- og vurderingsformer» i studieplanens generelle del.",
               "Se avsnittet \"Arbeids-, lærings-og vurderingsformer\" i studieplanens generelle del.",
-              "Se studieplanens generelle del.", "I emnet inngår ingen obligatorisk aktivitet."))
+              "Se studieplanens generelle del.", "I emnet inngår ingen obligatorisk aktivitet.",
+              "Her finner du pensumliste for studieåret", "Her finner du pensumliste for studieåret 2019-2020.",
+              paste("Pensumlister finnes i Leganto og er lenket til under.\n\nObs! For å få tilgang til kompendiefiler,",
+                    "må du gå inn i pensumlistene via emnet i Canvas.\nKjernelitteratur finner du her.",
+                    "\nEmnespesifikk litteratur finner du her.")))
     expect_true(.is_placeholder_text(x))
+  # the label over a reading list stays with it
+  expect_false(.is_placeholder_text("Her finner du pensumliste for studieåret\nNordmann, K. (2019). Barnehagen. Oslo: Forlag."))
   out <- .move_sentences(tibble::tibble(section = "prerequisites", raw_text = paste(
     "All undervisning i kunnskapsområdene bidrar til studentens forberedelse til praksis, så tilstedeværelse i",
     "undervisningen er en forutsetning for studentens faglige utbytte av praksis. Ved overflytting fra annet",

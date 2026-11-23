@@ -1598,7 +1598,7 @@ test_that("aho: teacher labels, track leaders and staff in prose go; content sta
   expect_equal(an("aho", "1. LAB: Design\n\nTrack responsible: Ola Nordmann\n\nMax amount of students: 8"),
                "1. LAB: Design\n\nMax amount of students: 8")
   expect_equal(an("aho", "Kurset holdes med KHIO og foreleser og kursansvarlig er Kari Berg Dahl."),
-               "Kurset holdes med KHIO og foreleser og kursansvarlig er.")
+               "Kurset holdes med KHIO.")
   expect_equal(an("aho", "Part of the research project Circularity led by Kari Berg and Ola Dahl and is the second in a series."),
                "Part of the research project Circularity and is the second in a series.")
   expect_equal(an("aho", "A theme. The course will be led by Kari Berg, a game-designer working with VR. The course will look at games."),
@@ -1630,4 +1630,49 @@ test_that("a cohort label, a quality system's period and a change's date go; a c
   expect_equal(an("onh", "ikke minst i etterkant av finanskrisen i 2007-08. I faget"),
                "ikke minst i etterkant av finanskrisen i 2007-08. I faget")
   expect_equal(an("onh", "Pensum gjelder i 2007-08. I faget"), "Pensum gjelder. I faget")
+})
+
+test_that("dated activities, deadlines with 'by', weekly hours and staff clauses go; yearless deadlines stay", {
+  an <- function(inst, x) anonymize_text(inst, x, .progress = FALSE)
+  # aho: a deadline after "by" with its year, and the date closing an activity line
+  expect_equal(an("aho", "Preparation of Reading list. Minimum 50 titles by January 14, 2026\n\nNeste"),
+               "Preparation of Reading list. Minimum 50 titles\n\nNeste")
+  expect_equal(an("aho", "Preparation of Literature review by 30 April 2026."), "Preparation of Literature review.")
+  expect_equal(an("aho", "Presentation of Research Design (final presentation), May 7 2026\nExamination"),
+               "Presentation of Research Design (final presentation)\nExamination")
+  expect_equal(an("aho", "Chairing the discussion in one session of the AHO Colloquium, 6 November.\nExamination"),
+               "Chairing the discussion in one session of the AHO Colloquium.\nExamination")
+  # a yearless deadline, a reference's date and a sentence opened by "By" stay
+  expect_equal(an("aho", "Submit by 15 October."), "Submit by 15 October.")
+  expect_equal(an("nord", "The thesis should be submitted by May 15th or November 1st."),
+               "The thesis should be submitted by May 15th or November 1st.")
+  expect_equal(an("aho", "Dezeen, 7 May 2021."), "Dezeen, 7 May 2021.")
+  # a range of bare hours before a weekly weekday; a span of years or grades stays
+  expect_equal(an("aho", "Forelesning fra 9-12 hver mandag formiddag i auditoriet."),
+               "Forelesning hver mandag formiddag i auditoriet.")
+  expect_equal(an("uib", "Elever fra 5-10 trinn hver mandag."), "Elever fra 5-10 trinn hver mandag.")
+  # a staff clause closing a sentence goes whole; a role before other words stays
+  expect_equal(an("nord", "Emnet gis i Tromsø, og emneansvarlig er Kari Nordmann.\nNeste"), "Emnet gis i Tromsø.\nNeste")
+  expect_equal(an("nord", "Studentene og faglærer er i dialog."), "Studentene og faglærer er i dialog.")
+  # a sentence that is only the clause goes whole
+  expect_equal(an("uib", "Tema for hausten er \"Estetikk\". Emneansvarleg er Kari Nordmann.\nNeste"),
+               "Tema for hausten er \"Estetikk\".\nNeste")
+  expect_equal(an("uib", "Kursansvarlig er Kari Nordmann. Undervisning foregår i fellesskap med Ola Dahl."),
+               "Undervisning foregår.")
+  expect_equal(an("uib", "Emneansvarlig er instituttet."), "Emneansvarlig er instituttet.")
+  # uib: names in capitals after "Lærere:"; a teacher the teaching is shared with
+  expect_equal(an("uib", "Undervisning\nLærere: KARI NORDMANN, OLA DAHL-BERG\nNeste"), "Undervisning\nNeste")
+  expect_equal(an("uib", "Undervisning foregår i fellesskap med Kari Nordmann."), "Undervisning foregår.")
+  expect_equal(an("uib", "Undervisning foregår i fellesskap med MUSP123."), "Undervisning foregår i fellesskap med MUSP123.")
+  # hiof: a part between role and colon; a revision's month and year
+  expect_equal(an("hiof", "Innhold.\nKursansvarlig - engelsk del: Kari Nordmann\nNeste"), "Innhold.\nNeste")
+  expect_equal(an("hiof", "Litteraturlisten er sist revidert i mars 2019. Bok"), "Litteraturlisten er sist revidert. Bok")
+  expect_equal(an("hiof", "Forskriften ble sist revidert i mars 2019."), "Forskriften ble sist revidert i mars 2019.")
+  # a title and a name alone in brackets go anywhere; a bracket without a title stays
+  expect_equal(an("ntnu", "Velg to tema: Anvendt bergmekanikk (professor Kari Nordmann), Gruvedrift (førsteamanuensis Ola Dahl)."),
+               "Velg to tema: Anvendt bergmekanikk, Gruvedrift.")
+  expect_equal(an("uio", "Documentation should be sent to the course coordinator (professor Kari Nordmann)."),
+               "Documentation should be sent to the course coordinator.")
+  expect_equal(an("uio", "Read Hamlet (Penguin Classics) and FEM (Finite Element Method)."),
+               "Read Hamlet (Penguin Classics) and FEM (Finite Element Method).")
 })
