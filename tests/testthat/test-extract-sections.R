@@ -2247,13 +2247,16 @@ test_that("barrattdue: prerequisites from the facts column, the description colu
   page <- function(pre) paste0(
     "<main id='main'><div class='hero-text'><h1>HIST2100</h1><p>Norsk musikkhistorie</p></div>",
     col("Kort om emnet", paste0("<ul><li>Studiepoeng: 5</li><li>Krav til forkunnskaper: ", pre, "</li>",
+                                "<li>Krav til studierett: Bachelorprogram i utøvende musikk</li>",
+                                "<li>Bestått KAM3300 Ensemblesang og kammermusikk 2</li>",
                                 "<li>Avsluttende vurdering: Eksamen</li></ul>")),
     col("Læringsutbytte", "<p>Studenter som har fullført emnet</p><ul><li>har kunnskap om repertoar</li></ul>"),
     col("Undervisning og læringsformer", "<p>Emnet omfatter norsk kunstmusikk.</p>"),
     "<h2>Mer om emnet</h2>",
-    acc("Delemner", "<h4>Generell musikkdidaktikk 1</h4><p>Delemnet omfatter planlegging.</p>"),
+    acc("Delemner", paste0("<h4>Generell musikkdidaktikk 1</h4><p>Delemnet omfatter planlegging.</p>",
+                           "<p>Obligatorisk kurs: instrumentalteknikk og kroppsbevissthet</p>")),
     acc("Organisering og arbeidsformer", paste0("<p>Gruppeundervisning.</p><p>Gjennomført undervisning og arbeidskrav ",
-                                               "er gyldig inntil to semestre etter ordinær eksamen.</p>")),
+                                               "er gyldige i to semestre etter ordinær eksamen.</p>")),
     acc("Vurderingsformer", paste0("<p>Muntlig skoleeksamen.</p><h4>1: Eksamensmappe</h4><p>Et hefte.</p>",
                                   "<p>Sensur med to interne sensorer, normalt seksjonsleder og hovedinstrumentlærer.</p>",
                                   "<p>Frist for innlevering av årsrapport 15.mai</p>",
@@ -2261,19 +2264,102 @@ test_that("barrattdue: prerequisites from the facts column, the description colu
     acc("Ny vurdering", "<p>Studenten må gjennomføre hele eller deler av emnet på nytt. Dette avgjøres individuelt av faglærer.</p>"),
     "</main>")
   s <- sections_of(page("Bestått HIST11 Musikkhistorie og repertoarkunnskap"), cfg)
-  expect_equal(s[["prerequisites"]], "Bestått HIST11 Musikkhistorie og repertoarkunnskap")
+  # the unlabelled "Bestått KAM3300 ..." field joins too, not the study right
+  expect_equal(s[["prerequisites"]], paste0("Bestått HIST11 Musikkhistorie og repertoarkunnskap\n",
+                                            "Bestått KAM3300 Ensemblesang og kammermusikk 2"))
   expect_equal(s[["course_content"]], paste0("Emnet omfatter norsk kunstmusikk.\n\nGenerell musikkdidaktikk 1\n",
                                              "Delemnet omfatter planlegging."))
   expect_equal(s[["teaching_methods"]], "Gruppeundervisning.")
   expect_equal(s[["coursework_requirements"]],
-               "Gjennomført undervisning og arbeidskrav er gyldig inntil to semestre etter ordinær eksamen.")
-  expect_equal(s[["assessment"]], paste0("Muntlig skoleeksamen.\n1: Eksamensmappe\nEt hefte.\n\n",
+               paste0("Gjennomført undervisning og arbeidskrav er gyldige i to semestre etter ordinær eksamen.\n\n",
+                      "Obligatorisk kurs: instrumentalteknikk og kroppsbevissthet"))
+  # the final assessment of the facts column opens assessment
+  expect_equal(s[["assessment"]], paste0("Avsluttende vurdering: Eksamen\n\nMuntlig skoleeksamen.\n1: Eksamensmappe\nEt hefte.\n\n",
                                          "Studenten må gjennomføre hele eller deler av emnet på nytt."))
-  expect_false(any(grepl("Studiepoeng|Avsluttende vurdering: Eksamen", s)))
+  expect_false(any(grepl("Studiepoeng|studierett", s)))
+  # a completed study year is a prerequisite
+  expect_equal(sections_of(page("Gjennomført 1.studieår bachelor i utøvende musikk."), cfg)[["prerequisites"]],
+               "Gjennomført 1.studieår bachelor i utøvende musikk.\nBestått KAM3300 Ensemblesang og kammermusikk 2")
+  expect_equal(.admission_prerequisites("Krav til forkunnskaper: Normalt gjennomført 1. og 2. studieår"),
+               "Normalt gjennomført 1. og 2. studieår")
   # an admission is no prerequisite
-  expect_false("prerequisites" %in% names(sections_of(page("Bestått opptaksprøve til bachelorprogram i utøvende musikk"), cfg)))
-  expect_false("prerequisites" %in% names(sections_of(
-    page("Bachelorgrad i musikk og Opptak til Praktisk-pedagogisk utdanning"), cfg)))
+  for (x in c("Bestått opptaksprøve til bachelorprogram i utøvende musikk",
+              "Bachelorgrad i musikk og Opptak til Praktisk-pedagogisk utdanning"))
+    expect_equal(sections_of(page(x), cfg)[["prerequisites"]], "Bestått KAM3300 Ensemblesang og kammermusikk 2")
+})
+
+test_that("aho: prerequisites of the access field, coursework of the exam description, its logistics", {
+  cfg <- get_institution_config("aho")
+  expect_equal(unname(cfg$section_headings[c("generell adgangsinformasjon for emnet", "admission requirements")]),
+               c(".admission", ".admission"))
+  expect_true(cfg$section_inline_coursework)
+  # prior courses and credits stay, with aho's codes and their lead-in;
+  # admission and study right go; recommended knowledge stays whole, without
+  # its label and a link
+  expect_equal(.admission_prerequisites("Bestått alle emner i GK1 og GK2. Bestått studiodelen av GK3 og GK4."),
+               "Bestått alle emner i GK1 og GK2. Bestått studiodelen av GK3 og GK4.")
+  expect_equal(.admission_prerequisites("61 110\n\n61 120"), "61 110\n61 120")
+  expect_equal(.admission_prerequisites("Gjennomført:\n\n70 111 GK1 Introduksjon til design"),
+               "Gjennomført:\n70 111 GK1 Introduksjon til design")
+  expect_equal(.admission_prerequisites(paste(
+    "Passed foundation level (BA-level) at AHO or equivalent education with 180 ECTS.\n\nStudents who have taken",
+    "Service Design 1 will be preferred.\n\nRecommended previous knowledge.\n\nPrototyping\n\n",
+    "Upload portfolio here: https://example.org/a")),
+    "Passed foundation level (BA-level) at AHO or equivalent education with 180 ECTS.\nPrototyping")
+  expect_equal(.admission_prerequisites("Det kreves ingen forkunnskaper utover opptakskrav i studieprogrammet."), "")
+  expect_equal(.admission_prerequisites("Completed 240 ECTS (5 year degree) or 90 ECTS (2 year degree) in total."),
+               "Completed 240 ECTS (5 year degree) or 90 ECTS (2 year degree) in total.")
+  expect_no_match("20 000 kroner", .real_prerequisite_regex, perl = TRUE)
+
+  ic <- function(x, inst = "aho") {
+    out <- .split_inline_coursework(tibble::tibble(section = "assessment", raw_text = x), labels = TRUE)
+    out <- .clean_sections(.move_sentences(out, inst), inst)
+    stats::setNames(out$raw_text, out$section)
+  }
+  s <- ic(paste0("Obligatorisk arbeidskrav\n\nØvinger: Innlevering av mappe med tekst- og skisseøvelser\n\n",
+                 "Vurderingsform\n\nHjemmeeksamen: Fem timers skriftlig hjemmeeksamen i Wiseflow. Alle hjelpemidler tillatt.\n\n",
+                 "Karakterskala: A-F"))
+  expect_equal(s[["coursework_requirements"]],
+               "Obligatorisk arbeidskrav\nØvinger: Innlevering av mappe med tekst- og skisseøvelser")
+  expect_equal(s[["assessment"]], paste0("Hjemmeeksamen: Fem timers skriftlig hjemmeeksamen i Wiseflow. ",
+                                         "Alle hjelpemidler tillatt.\n\nKarakterskala: A-F"))
+  # two gate headings in a row (one misspelt): each takes its own paragraph
+  s <- ic(paste0("Compulasory attendance requirements:\n\nStudents will be assessed on their active participation.\n\n",
+                 "Compulsory work requirements:\n\nStudents are required to present their work at the end of each module.\n\n",
+                 "Form of assessment: Assessment folder\n\nGrading scale: Pass/fail"))
+  expect_equal(s[["coursework_requirements"]], paste(
+    "Compulasory attendance requirements:", "Students will be assessed on their active participation.",
+    "Compulsory work requirements:", "Students are required to present their work at the end of each module.", sep = "\n"))
+  expect_equal(s[["assessment"]], "Form of assessment: Assessment folder\n\nGrading scale: Pass/fail")
+  # the condition for being assessed and the attendance block move; a
+  # wording of one plan stays; the exam system, the source-use notice and
+  # the Moodle pointer go
+  s <- ic(paste0("Vurderingsform: Vurderingsmappe\n\nKommentar: Hver modul blir vurdert separat. For å få semesterkarakter må ",
+                 "sluttleveranse av alle moduler være innlevert. Students need to present and submit all projects in order ",
+                 "to be assessed for the course. Besvarelsen leveres i Wiseflow. Du må gjøre deg kjent med innlogging og ",
+                 "innleveringsmåte i forkant av frist for innlevering av besvarelse. Ved brudd på reglene kan du bli mistenkt ",
+                 "for fusk/forsøk på fusk. Eksakt frist for innlevering er opplyst på Moodle.\n\nOppmøte\n\n",
+                 "Kurset er praksisbasert der høyt oppmøte og stor egeninnsats er en forutsetning for gjennomføring av kurset."))
+  expect_equal(s[["assessment"]], paste0("Vurderingsform: Vurderingsmappe\n\nKommentar: Hver modul blir vurdert separat. ",
+                                         "For å få semesterkarakter må sluttleveranse av alle moduler være innlevert."))
+  expect_equal(s[["coursework_requirements"]], paste0(
+    "Students need to present and submit ",
+    "all projects in order to be assessed for the course.\nOppmøte\nKurset er praksisbasert der høyt oppmøte og stor ",
+    "egeninnsats er en forutsetning for gjennomføring av kurset."))
+  # the exam form in Wiseflow stays; elsewhere the logistics stay
+  expect_equal(ic("Hjemmeeksamen: Fem timers skriftlig hjemmeeksamen i Wiseflow.")[["assessment"]],
+               "Hjemmeeksamen: Fem timers skriftlig hjemmeeksamen i Wiseflow.")
+  expect_equal(ic("Besvarelsen leveres i Wiseflow. Karakterskala: A-F", "ntnu")[["assessment"]],
+               "Besvarelsen leveres i Wiseflow. Karakterskala: A-F")
+  # the Leganto notice alone is a placeholder
+  for (x in c("Pensumlisten publiseres i Leganto.", "Litteraturliste vil være tilgjengelig i Leganto.",
+              "Litteraturlisten vil være tilgjengelig i Leganto."))
+    expect_true(.is_placeholder_text(x))
+  # a requirement stated twice is added once, also with a label
+  out <- .append_section(tibble::tibble(section = "coursework_requirements",
+                                        raw_text = "Kurset er praksisbasert der høyt oppmøte er en forutsetning."),
+                         "coursework_requirements", "Oppmøte: Kurset er praksisbasert der høyt oppmøte er en forutsetning.")
+  expect_equal(out$raw_text, "Kurset er praksisbasert der høyt oppmøte er en forutsetning.")
 })
 
 test_that("dmmh: coursework codes and gates after the exam table move; the graded exam stays", {

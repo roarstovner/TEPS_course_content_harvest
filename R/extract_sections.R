@@ -498,6 +498,13 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 )
 .real_prerequisite_regex <- paste0(
   "\\b[A-ZÆØÅ]{2,}[A-ZÆØÅ0-9-]*\\d{2,}|",
+  # aho's course codes on a line of their own or before the title ("61
+  # 110", "70 111 GK1 Introduksjon til design") and the lead-in over them
+  # ("Gjennomført:"); completed study years ("Gjennomført 1.studieår
+  # bachelor i utøvende musikk.", "Normalt gjennomført 1. og 2. studieår",
+  # barrattdue); 2026-11-22
+  "^\\s*\\d{2} \\d{3}(?:\\s*$|\\s+\\p{Lu})|(?i:^\\s*(?:gjennomført|fullført)\\s*:\\s*$)|",
+  "(?i:(?:gjennomført|fullført)(?:\\s+(?:\\d\\.|og|til|[-–]|første|andre|tredje|fjerde))+\\s?studieår)|",
   "(?i:bestått|forkunnskap|studiepoeng|\\bstp\\b|\\bsp\\b|",
   "\\bbør\\b|anbefal|fordel(?!er )|rå til|i tillegg|inklusive|bygger på|",
   "\\bpassed\\b|completed|prior knowledge|recommend|advantage|\\bECTS\\b|credits|in addition)"
@@ -608,9 +615,19 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "(?i)^\\W*(?:(?:avlagt|fullført|relevant|treårig) )?(?:bachelor\\w*|master(?:grad\\w*)?\\b|cand\\.)|^\\W*graden må|",
   "^\\W*fordypning:|^\\W*det kreves (?:godkjent )?utdanning|krav om (?:\\S+ )?bachelorgrad|",
   "^\\s*[-–•]\\s*(?:minst \\d+ studiepoeng|\\d-årig studium)")
+# A label in the block that opens recommended prior knowledge (aho's
+# "Recommended previous knowledge." over a list of topics, "Recommended
+# prerequisite knowledge" over "The course builds on the design skills ...";
+# 2026-11-22) keeps the lines after it whole, but a link ("Upload portfolio
+# here: https://..."); the label itself goes.
+.recommended_knowledge_regex <- "(?i)^\\W*recommended (?:previous|prerequisite|prior) knowledge\\W*$"
 .admission_prerequisites <- function(text, prerequisites = "") {
   had <- stringr::str_squish(prerequisites)
-  lines <- vapply(.unwrap_lines(stringr::str_split_1(text, "\n")), function(l) {
+  ul <- .unwrap_lines(stringr::str_split_1(text, "\n"))
+  rec <- cumsum(grepl(.recommended_knowledge_regex, ul, perl = TRUE)) > 0 & !grepl("https?://", ul)
+  lines <- vapply(seq_along(ul), function(i) {
+    l <- ul[i]
+    if (rec[i]) return(if (grepl(.recommended_knowledge_regex, l, perl = TRUE)) "" else trimws(l))
     s <- sub("(?i)^(\\s*)(?:opptakskrav|forhåndskrav|krav til forkunnskaper)\\s*:\\s*", "\\1", stringr::str_split_1(l, .sentence_end), perl = TRUE)
     k <- grepl(.real_prerequisite_regex, s, perl = TRUE) & !.is_admission_sentence(s) &
       !grepl(.admission_only_regex, s, perl = TRUE) &
@@ -714,7 +731,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "obligatoriske? (?:deltakelse|deltagelse|deltaking|arbeid|arbeidskrav|",
   "aktivitet(?:er)?|oppmøte|frammøte|fremmøte)|",
   "deltakelse i undervisning(?:en)? er obligatorisk|coursework(?: requirements?)?|",
-  "(?:compulsory|mandatory) (?:participation|attendance|work|assignments?|",
+  "(?:compul\\w?s[ou]ry|mandatory) (?:participation|attendance|work|assignments?|",   # aho: "Compulasory", "Compulsury"
   "(?:learning )?activit(?:y|ies))|",
   "(?:(?:course )?requirements|assignments)(?=\\s*[:：]?\\s*$))\\b"   # uit: "Requirements", "Assignments:"
 )
@@ -889,7 +906,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 .coursework_heading_regex <- paste0(
   "(?i)^\\s*(?:(?:obligatoriske? \\w+(?:/\\w+)?|arbeidskrav(?:ene)?|coursework(?: requirements?)?|",
   "(?:course )?requirements|assignments|",
-  "(?:compulsory|mandatory) \\w+(?: \\w+)?)\\s*[:：]?\\s*$|",
+  "(?:compul\\w?s[ou]ry|mandatory) \\w+(?: \\w+)?)\\s*[:：]?\\s*$|",
   # khio: "The course requirements are" over lower-case items, which
   # .unwrap_lines reads as one line with it
   "the course requirements are\\s*[:：]?\\s*(?:\\n|$))")
@@ -1014,7 +1031,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
     if (block[k] || is.na(from) || stop[from] ||
         (exam[from] && label[from] && grepl("^\\s*\\p{Lu}", lines[from], perl = TRUE))) next
     if (heading[k] && !(gate[from] && colon[from])) {
-      to <- which((stop | ends) & seq_len(n) > from)[1]
+      to <- which((stop | ends | heading) & seq_len(n) > from)[1]   # or the next gate heading, which takes its own
       block[from:(if (is.na(to)) n else to - 1)] <- TRUE
       gate <- gate | block
       next
@@ -1061,10 +1078,22 @@ extract_sections <- function(config, html, extracted_text, course_id) {
          .coursework_code, "\\b.*\\bekvivalent|(?i:ingen ekvivalent))")
 })
 
-# Add text to a section, after a blank line, or as a new row.
+# Add text to a section, after a blank line, or as a new row. A line of 20
+# or more characters that the section already has, also without its label,
+# is not added again: a requirement the page states under the teaching and
+# again in the exam description (aho: "Det er krav om tilstedeværelse på
+# delgjennomganger og presentasjoner.", "Oppmøte: Kurset er praksisbasert
+# ..."; 2026-11-22).
 .append_section <- function(out, section, text) {
-  if (!nzchar(text)) return(out)
   j <- which(out$section == section)
+  if (length(j) == 1 && nzchar(text)) {
+    had <- stringr::str_squish(stringr::str_split_1(out$raw_text[j], "\n"))
+    lines <- stringr::str_split_1(text, "\n")
+    sq <- stringr::str_squish(lines)
+    dup <- nchar(sq) >= 20 & (sq %in% had | sub("^[^:]{1,30}:\\s*", "", sq) %in% had)
+    if (any(dup)) text <- trimws(gsub("\n{3,}", "\n\n", paste(lines[!dup], collapse = "\n")))
+  }
+  if (!nzchar(text)) return(out)
   if (length(j) == 1) {
     out$raw_text[j] <- paste(out$raw_text[j], text, sep = "\n\n")
   } else {
@@ -1216,7 +1245,24 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   # under "Organisering og arbeidsformer" ("Gjennomført undervisning og
   # arbeidskrav er gyldig inntil to semestre etter ordinær eksamen.")
   barrattdue = list(list(from = "teaching_methods", to = "coursework_requirements",
-                         rx = "^\\W*Gjennomført undervisning og arbeidskrav er gyldig\\b")),
+                         rx = "^\\W*Gjennomført undervisning og arbeidskrav er gyldige?\\b"),
+                    # DID's obligatory course in a sub-course's topics ("Obligatorisk
+                    # kurs: instrumentalteknikk og kroppsbevissthet", "Obligatorisk kurs
+                    # i ..."), as its list under "Obligatorisk kurs:" (2026-11-22)
+                    list(from = "course_content", to = "coursework_requirements",
+                         rx = "^\\W*Obligatorisk kurs(?:\\s*:|\\s+i)\\s+\\S")),
+  # aho (2026-11-22): the Industridesign courses' attendance rule, written
+  # under the teaching and in the exam description ("Oppmøte: Kurset er
+  # praksisbasert der høyt oppmøte og stor egeninnsats er en forutsetning
+  # for gjennomføring av kurset."); in the exam description also the label
+  # line "Oppmøte" over it, and the condition for being assessed in its
+  # comment ("Students need to present and submit all projects ... in order
+  # to be assessed for the course."). Wordings found in one plan stay
+  # (course_plan_spec.md, known deviations).
+  aho = lapply(c("assessment", "teaching_methods"), function(from) list(
+    from = from, to = "coursework_requirements", rx = paste0(
+      "^\\W*(?:Oppmøte\\s*:\\s*)?Kurset er praksisbasert der høyt oppmøte\\b",
+      if (from == "assessment") "|^\\s*Oppmøte\\s*$|\\bin order to be assessed\\b"))),
   usn = list(list(from = "teaching_methods", to = "assessment",
                   rx = "(?i)^\\s*praksis vurderes (?:til|med|som) (?:bestått|godkjent) ?/ ?ikke (?:bestått|godkjent)\\.?\\s*$")),
   nla = list(list(from = "course_content", to = "teaching_methods", rx = paste0(
@@ -1480,7 +1526,15 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # kan eventuelt gjøres i samarbeid med interne faglærere og/eller eksterne
 # gjestelærere.", "Emnet vurderes av lærerne i samråd med
 # programansvarlig."; "Studenten vurderes av pedagogen kontinuerlig ..."
-# says how and stays); dmmh and barrattdue (2026-11-21): the examiners and
+# says how and stays); aho (2026-11-22): the exam system ("Besvarelsen
+# leveres i Wiseflow.", "Du må gjøre deg kjent med innlogging og
+# innleveringsmåte ...", "Se informasjon om Wiseflow på nettsiden."), the
+# source-use notice ("Ved oppgaveskriving plikter du ... kildebruk ...",
+# "Ved brudd på reglene ... fusk"), the pointers to Moodle's deadline and
+# delivery rules, and the diploma's withdrawal deadline ("A diploma project
+# may be withdrawn from examination by December 1st ..."); "Fem timers
+# skriftlig hjemmeeksamen i Wiseflow." gives the exam form and stays; dmmh
+# and barrattdue (2026-11-21): the examiners and
 # who they normally are ("Intern sensor er normalt samme person som var
 # opponent ...", "Sensur med to interne sensorer, normalt seksjonsleder og
 # hovedinstrumentlærer.", "To interne sensorer.", "Studentens
@@ -1578,6 +1632,13 @@ extract_sections <- function(config, html, extracted_text, course_id) {
                  "(?i)^\\W*Det(?:te)? avgjøres individuelt av faglærer",
                  paste0("(?i)^\\W*Frist (?:for )?innlevering av [^.]*?\\d{1,2}\\.\\s?",
                         "(?:januar|februar|mars|april|mai|juni|juli|august|september|oktober|november|desember)\\W*$")),
+  aho = c(paste0("(?i)^\\W*(?:(?:Besvarelsen|Essayet|Oppgaven|Masteroppgaven|Rapporten) (?:skal )?leveres ",
+                 "(?:som (?:en )?pdf )?i wiseflow\\W*$|Du må gjøre deg kjent med innlogging og innleveringsmåte|",
+                 "Se informasjon om wiseflow|Se nettsiden for mer informasjon\\W*$)"),
+          paste0("(?i)^\\W*(?:Ved oppgaveskriving plikter du å gjøre deg kjent med reglene for kildebruk|",
+                 "Ved brudd på reglene kan du bli mistenkt for fusk)"),
+          "(?i)^\\W*(?:Eksakt frist for innlevering er opplyst|Endelige innleveringskrav er beskrevet i detalj) på Moodle\\W*$",
+          "^\\W*A diploma project may be withdrawn from examination by\\b"),
   vid = c(.examiner_sentence_regex,
           "(?i)^\\W*Utsatt eksamen er tilsvarende (?:som )?ordinær(?: eksamen)?\\W*$",
           "(?i)^\\W*VID arrangerer inntil \\w+ utsatte prøver"),
@@ -1831,6 +1892,8 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "felleslitteratur \\(pedagogikk og fagdidaktikk\\) fremgår av emnebeskrivelsen for pedagogikk i praktisk-pedagogisk utdanning",
   "(?:litteratur spesifikt for emnet: ?)?opplyses ved studiestart og gis til dels i kompendium",
   "oppdatert litteraturliste vil v(?:æ|e)r[ae] tilgjengel[ie]g i leganto ved semesterstart",
+  # aho (2026-11-22): "Pensumlisten publiseres i Leganto.", "Litteraturliste vil være tilgjengelig i Leganto."
+  "(?:pensumlist|litteraturlist)(?:en|a|e)? (?:publiseres|vil (?:bli publisert|være tilgjengelig)) i leganto",
   # the list is given at the start or put on the learning platform (hiof, ntnu)
   "(?:(?:aktuell )?pensum(?:liste|litteratur)?|litteratur(?:en)?|bøker og artikler) ?oppgis (?:ved|før) [^.]{0,40}",
   "oppgis (?:ved|før)(?: [^.]{0,40})?", "se pensumliste(?:n)?",

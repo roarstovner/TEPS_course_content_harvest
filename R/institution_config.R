@@ -946,7 +946,22 @@ institution_configs <- list(
     # h2s: Emnets innhold, Læringsutbytte for emnet, Undervisningsmetode for
     # emnet, Beskrivelse av eksamen for kurset
     section_strategy = "html",
-    section_headings = c("undervisningsmetode for emnet" = "teaching_methods")
+    # The access field ("Generell adgangsinformasjon for emnet", English
+    # "Admission requirements") gives the courses the course requires
+    # ("Bestått alle emner i GK1 og GK2. Bestått studiodelen av GK3 og
+    # GK4.", "Passed foundation level ... 180 ECTS.", "61 110") next to
+    # admission and study right ("Åpent for studenter på tredje år
+    # design", "Admission to AHO"): its prerequisites join prerequisites
+    # (.admission_prerequisites(); 2026-11-22, in no section before)
+    section_headings = c("undervisningsmetode for emnet" = "teaching_methods",
+                         "generell adgangsinformasjon for emnet" = ".admission",
+                         "admission requirements" = ".admission"),
+    # The exam description opens with the coursework, as a label line over
+    # its list ("Obligatorisk arbeidskrav" over "Øvinger: Innlevering av
+    # mappe ...", "Compulsory work requirements: ...", "Obligatorisk
+    # deltagelse eller innleveringer: ...") before "Vurderingsform"
+    # (2026-11-22)
+    section_inline_coursework = TRUE
   ),
 
   onh = list(
@@ -1006,7 +1021,11 @@ institution_configs <- list(
     # Bestått HIST11 ...", the only ones the page names; 2026-11-21) join
     # prerequisites, without an admission ("Bestått opptaksprøve ...",
     # "Bachelorgrad i musikk og Opptak til ...", .admission_prerequisites());
-    # its other fields map nowhere and stay facts
+    # so does a field without a label that names a passed course ("Bestått
+    # KAM3300 Ensemblesang og kammermusikk 2" under "Krav til studierett",
+    # labelled by its first word, page_blocks(); 2026-11-22). The final
+    # assessment ("Avsluttende vurdering: Mappevurdering") joins assessment,
+    # as at nmh (2026-11-22); its other fields map nowhere and stay facts
     section_label_selector = paste0("//div[contains(@class, 'info-column')][h4[starts-with(normalize-space(), 'Kort om emnet') ",
                                     "or starts-with(normalize-space(), 'Course overview')]]/ul"),
     # "Læremiddelomtale" (without "/pensum") is the reading list. The column
@@ -1015,7 +1034,8 @@ institution_configs <- list(
     # arbeidsformer"), and so do the accordion "Delemner" and its sub-course
     # descriptions (2026-11-21)
     section_headings = c("læremiddelomtale" = "reading_list", "undervisning og læringsformer" = "course_content",
-                         "delemner" = "course_content", "krav til forkunnskaper" = ".admission")
+                         "delemner" = "course_content", "krav til forkunnskaper" = ".admission",
+                         "bestått" = ".admission", "avsluttende vurdering" = "assessment")
   ),
 
   ldh = list(

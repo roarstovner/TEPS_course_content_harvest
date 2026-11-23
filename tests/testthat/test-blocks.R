@@ -286,6 +286,18 @@ test_that("a labelled field that maps is plan text inside a facts box; the fullt
   }
 })
 
+test_that("an unlabelled field that names a passed course maps only where 'bestått' is mapped", {
+  html <- paste0("<main><div class='col'><h4>Kort om emnet</h4><ul><li>Studiepoeng: 5</li>",
+                 "<li>Bestått KAM3300 Ensemblesang 2</li><li>Bestått opptaksprøve</li></ul></div>",
+                 "<h2>Læringsutbytte</h2><p>Kan ting.</p></main>")
+  cfg <- html_reader(c("h2, h4"), facts = "div.col", labels = "div.col > ul", sub_map = c("bestått" = ".admission"))
+  b <- page_blocks(html, NA, cfg)
+  expect_equal(stats::setNames(sectionize(b)$raw_text, sectionize(b)$section),
+               c(.admission = "Bestått KAM3300 Ensemblesang 2", learning_outcomes = "Kan ting."))
+  b <- page_blocks(html, NA, utils::modifyList(cfg, list(sub_map = c("krav til forkunnskaper" = ".admission"))))
+  expect_equal(sectionize(b)$section, "learning_outcomes")
+})
+
 test_that("the text reader makes a mapped field of the metadata block a section of its own (ldh)", {
   own <- c("krav til forkunnskaper" = ".admission")
   hdr <- "^\\s*(?:Studiepoeng|Krav til forkunnskaper)\\b"

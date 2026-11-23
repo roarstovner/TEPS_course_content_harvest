@@ -2734,6 +2734,50 @@ year, and none of their pages has a "Forhåndskrav:" label, "bestått
 opptaksprøve" or a "bygger på" sentence with a two-digit code.
 `course_plan` and the plan ids do not change. *Since:* 2026-11-16.
 
+**AHO and Barratt Due: prior courses of the access fields, coursework of
+the exam description, the final-assessment field.** AHO's access field
+("Generell adgangsinformasjon for emnet", "Admission requirements") is read
+like Nord's "Adgangsregulering" (".admission"): its prior courses and credits
+join prerequisites ("Bestått alle emner i GK1 og GK2. Bestått studiodelen av
+GK3 og GK4.", "Passed foundation level ... 180 ECTS."), and so do AHO's own
+course codes ("61 110", "70 111 GK1 Introduksjon til design", under
+"Gjennomført:") and, after a "Recommended previous knowledge" label, the
+lines it introduces (without the label); admission and study right stay
+out. A completed study year counts as a prior course everywhere
+("Gjennomført 1.studieår bachelor i utøvende musikk.", "Normalt gjennomført 1. og 2. studieår", Barratt Due).
+AHO's exam description is read with `section_inline_coursework`, so its
+coursework labels ("Obligatorisk arbeidskrav", "Compulsory work
+requirements:", also misspelt) take their text to coursework requirements,
+and two such labels in a row each take their own paragraph (a fix that also
+moves a UiT 2014 gate list after its lead-in). The condition for being
+assessed in three plans ("Students need to present and submit all projects
+... in order to be assessed") and the Industridesign attendance rule of two
+("Kurset er praksisbasert der høyt oppmøte ... er en forutsetning for
+gjennomføring av kurset.") move there too; wordings found in one plan ("For
+å få semesterkarakter må sluttleveranse ... være innlevert ...") stay, as
+the known deviation of 2026-11-11 says; a line the coursework section
+already has is not added twice. Barratt Due's facts
+field "Avsluttende vurdering: Mappevurdering" joins assessment, as at NMH,
+and its unlabelled field "Bestått KAM3300 ..." joins prerequisites; the
+obligatory course in DID's sub-course topics ("Obligatorisk kurs:
+instrumentalteknikk og kroppsbevissthet") moves from course content to
+coursework requirements. AHO's
+exam-system and Moodle notices, the diploma's withdrawal deadline and the
+Leganto notice alone go, as logistics and placeholders by the spec.
+*Why:* sections audit of 2026-11-22 (Codex): prerequisites missing in 6 of
+16 AHO controls and 3 of 20 Barratt Due plans; coursework left in AHO's
+assessment (AHO's coursework gate 0.28). *Rejected:* mapping the access
+field to prerequisites whole (it mixes admission, study right and programme
+notes); moving one Design Studio track's "LEARNING OUTCOMES" line out of
+the course content (it describes one track, not the course). *Consequence*
+(all 72 AHO and 88 Barratt Due pilot pages, HEAD against the new code): AHO
+prerequisites on 24 of 72 pages (from 1), coursework requirements on 26
+(from 20; 0.28 to 0.36), 5 Leganto-only reading lists gone; Barratt Due
+assessment gains the final-assessment line on 78 pages, prerequisites on 6
+more pages. Elsewhere (15 pages per raw partition of every institution) one
+UiT and one NMBU page change (the gate list, a doubled line). `course_plan`
+and the plan ids do not change. *Since:* 2026-11-22.
+
 **Resit and examiner rules stay in assessment at UiT, NTNU, Nord and FHS,
 a known deviation from the spec.** The spec puts resit, postponement and
 examiner rules outside the sections; the sections audit of 2026-11-05 found

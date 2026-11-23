@@ -280,6 +280,11 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
       }
       for (k in seq_along(seg)) {
         lab <- stringr::str_match(trimws(seg[k]), "^([^:：\n]{1,40}?)\\s*[:：\n]")[, 2]
+        # an item without a label that names a passed course ("Bestått
+        # KAM3300 Ensemblesang og kammermusikk 2", barrattdue; 2026-11-22)
+        # is labelled by its first word, which maps only where
+        # `section_headings` names it
+        if (is.na(lab)) lab <- stringr::str_match(trimws(seg[k]), "^(Bestått)\\s+[A-ZÆØÅ]{2,}[A-ZÆØÅ0-9-]*\\d")[, 2]
         sec <- .exact_section(lab, cfg$sub_map, map = FALSE)
         f <- if (is.na(sec)) NA else FALSE
         out$add("heading", "", sec, f = f)

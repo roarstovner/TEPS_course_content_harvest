@@ -143,8 +143,12 @@ Fields for the `html` reader:
   none, so its item is in no section), and the item is its text; the
   fulltext reads the list as before. Inside a facts box, an item whose
   label maps is plan text, not facts (barrattdue’s and ldh’s “Krav til
-  forkunnskaper”, `.admission`, since 2026-11-21); the other items stay
-  facts.
+  forkunnskaper”, `.admission`, since 2026-11-21; barrattdue’s
+  “Avsluttende vurdering”, assessment, since 2026-11-22); the other
+  items stay facts. An item without a label that names a passed course
+  (“Bestått KAM3300 Ensemblesang og kammermusikk 2”, barrattdue) is
+  labelled by its first word, “Bestått”, which maps only where
+  `section_headings` names it (barrattdue, `.admission`; 2026-11-22).
 - `section_fields`: hivolda’s Drupal fields (`div.field-<name>`) are the
   headings, each mapped to a section by its class name; text outside the
   fields (title, programmes) is in the fulltext but in no section.
@@ -184,18 +188,24 @@ Fields for the `html` reader:
   only the sentences naming a prior course, credits or a passed part
   that are not admission join prerequisites
   (`.admission_prerequisites()`), after the page’s own and without those
-  it already says. uit’s “Undervisnings- og eksamensspråk” (“Language of
-  instruction and examination”) maps to `.exam_language`, of which the
-  label with the exam-language sentences and bare values (“Norsk”) joins
-  assessment after the page’s own (`.exam_language_text()`); the
-  teaching language alone goes. fhs’s “Opptakskrav” holds required
-  courses (prerequisites, where the map drops it as admission),
-  “Målgruppe” who may take the course (`.drop`), and the
-  Etterretningsskolen’s “Emnets oppbygning” (or “oppbygging”) and
-  “Arbeidsformer og læringsaktiviteter” (teaching_methods; the map has
-  the latter only as a substring pattern, which a `<p>` does not match).
-  nmh’s English pages: “Overview” (course_content) and “Structure” (its
-  “Organisering”, teaching_methods), too generic for the map.
+  it already says; so do aho’s access field, “Generell
+  adgangsinformasjon for emnet” (“Admission requirements”; since
+  2026-11-22), whose course codes (“61 110”, “70 111 GK1 Introduksjon
+  til design”) under “Gjennomført:” count as prior courses, and whose
+  label “Recommended previous knowledge” keeps the lines after it whole
+  (but a link), without the label. uit’s “Undervisnings- og
+  eksamensspråk” (“Language of instruction and examination”) maps to
+  `.exam_language`, of which the label with the exam-language sentences
+  and bare values (“Norsk”) joins assessment after the page’s own
+  (`.exam_language_text()`); the teaching language alone goes. fhs’s
+  “Opptakskrav” holds required courses (prerequisites, where the map
+  drops it as admission), “Målgruppe” who may take the course (`.drop`),
+  and the Etterretningsskolen’s “Emnets oppbygning” (or “oppbygging”)
+  and “Arbeidsformer og læringsaktiviteter” (teaching_methods; the map
+  has the latter only as a substring pattern, which a `<p>` does not
+  match). nmh’s English pages: “Overview” (course_content) and
+  “Structure” (its “Organisering”, teaching_methods), too generic for
+  the map.
 
 Other fields:
 
@@ -209,15 +219,16 @@ Other fields:
   forkunnskaper: BSY-100, …” (`.admission`, 2026-11-21).
 - `section_inline_coursework`: move “Arbeidskrav (AK): …” /
   “Obligatorisk deltakelse …” lines from assessment to
-  coursework_requirements (nord, uit, ntnu, usn, fhs, dmmh); a gate
+  coursework_requirements (nord, uit, ntnu, usn, fhs, dmmh, aho); a gate
   heading (“OBLIGATORISKE ARBEIDSKRAV”, ntnu; fhs’s “Obligatorisk
-  arbeidskrav:”) takes the lines under it up to the next heading or the
-  first line about the exam. A colon-ended gate line takes the paragraph
-  under it up to a label (“Midtveisvurdering:” after “Arbeidskrav som må
-  godkjennes for å starte i praksis:” over “- PL1”, dmmh), and lines of
-  coursework codes after a gate, across blank lines, follow it (dmmh:
-  “PEK1: K1-DR1 og K1-DR2”, “F-TF1 er ekvivalent med AK 1”;
-  `.coursework_code_row_regex`), as does dmmh’s “(P) betyr at
+  arbeidskrav:”; aho’s “Compulsory work requirements:”, also misspelt
+  “Compulasory”) takes the lines under it up to the next heading, gate
+  heading or the first line about the exam. A colon-ended gate line
+  takes the paragraph under it up to a label (“Midtveisvurdering:” after
+  “Arbeidskrav som må godkjennes for å starte i praksis:” over “- PL1”,
+  dmmh), and lines of coursework codes after a gate, across blank lines,
+  follow it (dmmh: “PEK1: K1-DR1 og K1-DR2”, “F-TF1 er ekvivalent med AK
+  1”; `.coursework_code_row_regex`), as does dmmh’s “(P) betyr at
   arbeidskravet bygger på oppgaver …”. At every institution, with or
   without this field, a sentence in assessment that makes approval,
   attendance or a passed test a condition for the exam (“Arbeidskrav må
@@ -316,7 +327,10 @@ parses the page itself because its data is in a `<script>`.
 A prerequisites label inside course_content (“Forkunnskapskrav”, uit’s
 “Om emnet”) moves the paragraph it names to prerequisites
 (`.split_inline_prerequisites()`), and a paragraph of 40 or more
-characters that its section repeats is kept once. Sentences an
+characters that its section repeats is kept once. A moved line of 20 or
+more characters that its new section already has, also without a label
+(“Oppmøte: …”), is not added again (aho states attendance under the
+teaching and in the exam description; 2026-11-22). Sentences an
 institution writes under the wrong section move to the right one
 (`.sentence_moves`): phs’s feedback on the arbeidskrav, written under
 “Vurdering” (“Studentene blir vurdert underveis gjennom arbeidskrav, og
@@ -332,14 +346,21 @@ course and none names a prerequisite (`.uit_admission_sentence()`:
 “Emnet utgjør praksisdelen i utdanningen og kan ikke tas som
 enkeltemne.” stays); hivolda’s “Bestått didaktikkemne 1.” from
 coursework to prerequisites; barrattdue’s “Gjennomført undervisning og
-arbeidskrav er gyldig inntil to semestre etter ordinær eksamen.” from
-teaching methods to coursework; dmmh’s practice courses’ attendance rule
-(“All undervisning i kunnskapsområdene bidrar til studentens
-forberedelse til praksis, så tilstedeværelse … er en forutsetning …”)
-from prerequisites to coursework, and their transfer rule (“Ved
-overflytting fra annet studieprogram …”) out of the sections; and fhs’s
-and nmh’s course-content sentence that names only the courses it builds
-on (“Emnet bygger på ING1502 Matematiske metoder 1.”, “Emnet bygger på
+arbeidskrav er gyldig(e) inntil to semestre etter ordinær eksamen.” from
+teaching methods to coursework, and DID’s “Obligatorisk kurs:
+instrumentalteknikk og kroppsbevissthet” from course content to
+coursework; aho’s condition for being assessed (“Students need to
+present and submit all projects … in order to be assessed”) and its
+Industridesign attendance rule (“Kurset er praksisbasert der høyt
+oppmøte … er en forutsetning for gjennomføring av kurset.”) from
+assessment and teaching methods to coursework (wordings found in one
+plan stay); dmmh’s practice courses’ attendance rule (“All undervisning
+i kunnskapsområdene bidrar til studentens forberedelse til praksis, så
+tilstedeværelse … er en forutsetning …”) from prerequisites to
+coursework, and their transfer rule (“Ved overflytting fra annet
+studieprogram …”) out of the sections; and fhs’s and nmh’s
+course-content sentence that names only the courses it builds on (“Emnet
+bygger på ING1502 Matematiske metoder 1.”, “Emnet bygger på
 Hovedinstrument I (UTHO13).”) to prerequisites. At phs the paragraphs
 under “Læringsutbytte” before “Kunnskap” that describe the subject, not
 the outcomes (“Pedagogikk i instruktørutdanningen vektlegger …”), go to
@@ -369,19 +390,22 @@ sensorer, normalt seksjonsleder og hovedinstrumentlærer.”, “Intern
 sensor er normalt samme person som var opponent …”,
 `.examiner_role_regex`), but not “… av intern og ekstern sensor med
 karakterskala A – F.”; dmmh’s resubmission rules (“Ved ikke godkjent
-praksisrapport gis det mulighet til å levere en gang til.”) and
-barrattdue’s dated deadlines (“Frist for innlevering av årsrapport
-15.mai”) and who decides the resit (“Dette avgjøres individuelt av
-faglærer.”); resit and appeal rules that say only who may resit or
-resubmit, when or how often (“For ikke å bruke et eksamensforsøk, må
-studenten aktivt trekke sin vurderingsmelding …”, mf; “Studenter som …
-får vurderingen F, kan melde seg opp til ny/utsatt eksamen.”, oslomet;
-“The mark can be appealed.”, hiof), but not what the resit consists of
-(“Ved kontinuasjonseksamen bearbeides samme oppgave.”, “Utsatt eksamen
-er en individuell skriftlig hjemmeeksamen.”); pointers to the exam pages
-and the exam system, hvl’s “Studieprogram: …” line, inn’s
-course-evaluation sentence, uio’s “Adgang til undervisning: …”; and
-uis’s workload budget, a header such as “Forventet timeinnsats (413
+praksisrapport gis det mulighet til å levere en gang til.”); aho’s exam
+system (“Besvarelsen leveres i Wiseflow.”, “Du må gjøre deg kjent med
+innlogging og innleveringsmåte …”), source-use notice, Moodle pointers
+and the diploma’s withdrawal deadline, but not “Fem timers skriftlig
+hjemmeeksamen i Wiseflow.”; and barrattdue’s dated deadlines (“Frist for
+innlevering av årsrapport 15.mai”) and who decides the resit (“Dette
+avgjøres individuelt av faglærer.”); resit and appeal rules that say
+only who may resit or resubmit, when or how often (“For ikke å bruke et
+eksamensforsøk, må studenten aktivt trekke sin vurderingsmelding …”, mf;
+“Studenter som … får vurderingen F, kan melde seg opp til ny/utsatt
+eksamen.”, oslomet; “The mark can be appealed.”, hiof), but not what the
+resit consists of (“Ved kontinuasjonseksamen bearbeides samme oppgave.”,
+“Utsatt eksamen er en individuell skriftlig hjemmeeksamen.”); pointers
+to the exam pages and the exam system, hvl’s “Studieprogram: …” line,
+inn’s course-evaluation sentence, uio’s “Adgang til undervisning: …”;
+and uis’s workload budget, a header such as “Forventet timeinnsats (413
 timer):” with the lines of hours under it, and dmmh’s examiner row of
 the exam table, “Sensorordning:og ekstern”, `.logistics_blocks`),
 removes admission and study-right sentences, pointers to the admission
