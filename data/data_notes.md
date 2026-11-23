@@ -1,15 +1,15 @@
 # Data Quality Notes
 
 
-Generated: 2026-11-22
+Generated: 2026-11-23
 
 ## Overview
 
 | Institution | Rows | Codes | Years | Extracted OK | Rate | Median chars | Unique plans | Dedup % |
 |:---|---:|---:|:---|---:|:---|---:|---:|:---|
-| aho | 168 | 100 | 2025 | 72 | 42.9% | 3446 | 66 | 7.0% |
+| aho | 1411 | 384 | 2023-2026 | 316 | 22.4% | 3398 | 200 | 18.4% |
 | barrattdue | 136 | 71 | 2026 | 46 | 33.8% | 2668 | 46 | 0.0% |
-| dmmh | 196 | 85 | 2015-2025 | 150 | 76.5% | 5304 | 69 | 8.0% |
+| dmmh | 841 | 165 | 2015-2026 | 740 | 88.0% | 5230 | 287 | 34.6% |
 | fhs | 6752 | 1040 | 2017-2026 | 2384 | 35.3% | 4522 | 997 | 58.2% |
 | fjellhaug | 1064 | 295 | 2025-2026 | 212 | 19.9% | 4648 | 151 | 28.8% |
 | himolde | 9468 | 979 | 2017-2026 | 4188 | 44.2% | 2918 | 2277 | 21.0% |
@@ -18,29 +18,29 @@ Generated: 2026-11-22
 | hvl | 45232 | 4983 | 2017-2026 | 32579 | 72.0% | 3815 | 15081 | 53.6% |
 | inn | 31672 | 3427 | 2018-2026 | 17469 | 55.2% | 3647 | 3802 | 41.1% |
 | khio | 896 | 356 | 2025-2026 | 347 | 38.7% | 1992 | 328 | 5.5% |
-| ldh | 189 | 80 | 2019-2025 | 39 | 20.6% | 3183 | 24 | 35.1% |
+| ldh | 1237 | 165 | 2019-2026 | 313 | 25.3% | 3187 | 107 | 64.0% |
 | mf | 1233 | 348 | 2025-2026 | 346 | 28.1% | 3504 | 317 | 7.8% |
 | nhh | 1511 | 698 | 2025-2026 | 455 | 30.1% | 4111 | 425 | 1.6% |
 | nih | 12793 | 1460 | 1990-2026 | 652 | 5.1% | 2420 | 578 | 10.5% |
 | nla | 18647 | 2110 | 2001-2026 | 8423 | 45.2% | 5097 | 3946 | 53.2% |
 | nmbu | 5584 | 1590 | 2025-2026 | 1055 | 18.9% | 3918 | 1031 | 2.3% |
-| nmh | 10026 | 1000 | 2021-2026 | 5174 | 51.6% | 3205 | 1164 | 76.1% |
+| nmh | 10026 | 1000 | 2021-2026 | 5430 | 54.2% | 3070 | 1164 | 77.3% |
 | nord | 39221 | 5419 | 2016-2026 | 36217 | 92.3% | 3298 | 9169 | 58.4% |
-| ntnu | 266689 | 22376 | 1997-2026 | 180919 | 67.8% | 2837 | 63785 | 64.5% |
+| ntnu | 266689 | 22376 | 1997-2026 | 181083 | 67.9% | 2838 | 63856 | 64.5% |
 | onh | 100 | 100 | 2026 | 0 | 0.0% | NA | 0 | NaN% |
 | oslomet | 37353 | 4113 | 2018-2026 | 37353 | 100.0% | 3939 | 12745 | 59.3% |
 | phs | 2589 | 321 | 2021-2026 | 316 | 12.2% | 3800 | 154 | 31.6% |
 | samas | 519 | 209 | 2025-2026 | 0 | 0.0% | NA | 0 | NaN% |
 | steiner | 370 | 128 | 2025-2026 | 30 | 8.1% | 5027 | 15 | 50.0% |
 | uia | 60346 | 5239 | 2012-2026 | 12101 | 20.1% | 2972 | 6128 | 46.3% |
-| uib | 114529 | 7678 | 2004-2026 | 51596 | 45.1% | 3115 | 18928 | 59.0% |
+| uib | 114529 | 7678 | 2004-2026 | 51789 | 45.2% | 3118 | 19005 | 59.0% |
 | uio | 20850 | 5731 | 2025-2026 | 4143 | 19.9% | 3951 | 4046 | 1.6% |
 | uis | 6527 | 2083 | 2007-2026 | 4814 | 73.8% | 4812 | 2940 | 37.3% |
 | uit | 140699 | 11168 | 2004-2026 | 51100 | 36.3% | 3366 | 38092 | 20.7% |
 | usn | 42755 | 5504 | 2018-2026 | 14954 | 35.0% | 5910 | 13994 | 6.3% |
-| vid | 5312 | 995 | 2023-2026 | 1308 | 24.6% | 3672 | 848 | 31.7% |
+| vid | 5312 | 995 | 2023-2026 | 1342 | 25.3% | 3636 | 852 | 32.9% |
 
-**Total**: 949996 rows, 493309 with extracted text (51.9%), 222511
+**Total**: 952932 rows, 495064 with extracted text (52.0%), 223147
 unique plans.
 
 **Columns:**
@@ -63,7 +63,7 @@ academic year only. Each harvest is kept, and an offering gets the plan
 from a harvest made in its own academic year, or none
 (`docs/harvesting.md` “Sites that show only the current plan”). In this
 data their plans come from the harvests of 2025/26 (2026-04-04, 195
-offerings) and 2026/27 (2026-10-17 to 2026-11-21, 6381 offerings), so
+offerings) and 2026/27 (2026-10-17 to 2026-11-23, 6381 offerings), so
 their offerings of other academic years have no plan. They are
 barrattdue, fjellhaug, khio, mf, nhh, nmbu, onh, samas, steiner, uio.
 The others have historical plans as far back as the site still serves
@@ -71,9 +71,9 @@ them. Share of offerings with a plan, by period:
 
 | Institution | –2014 | 2015–17 | 2018–19 | 2020–21 | 2022–23 | 2024– |
 |:------------|:------|:--------|:--------|:--------|:--------|:------|
-| aho         |       |         |         |         |         | 43%   |
+| aho         |       |         |         |         | 0%      | 36%   |
 | barrattdue  |       |         |         |         |         | 34%   |
-| dmmh        |       | 35%     | 78%     |         | 96%     | 96%   |
+| dmmh        |       | 35%     | 78%     |         | 96%     | 92%   |
 | fhs         |       | 0%      | 5%      | 34%     | 79%     | 85%   |
 | fjellhaug   |       |         |         |         |         | 20%   |
 | himolde     |       | 0%      | 38%     | 49%     | 53%     | 49%   |
@@ -82,27 +82,27 @@ them. Share of offerings with a plan, by period:
 | hvl         |       | 34%     | 73%     | 72%     | 74%     | 83%   |
 | inn         |       |         | 0%      | 0%      | 100%    | 100%  |
 | khio        |       |         |         |         |         | 39%   |
-| ldh         |       |         | 0%      |         | 26%     | 38%   |
+| ldh         |       |         | 0%      | 6%      | 25%     | 46%   |
 | mf          |       |         |         |         |         | 28%   |
 | nhh         |       |         |         |         |         | 30%   |
 | nih         | 0%    | 0%      | 0%      | 0%      | 13%     | 33%   |
 | nla         | 0%    | 10%     | 65%     | 71%     | 82%     | 83%   |
 | nmbu        |       |         |         |         |         | 19%   |
-| nmh         |       |         |         | 27%     | 54%     | 57%   |
+| nmh         |       |         |         | 28%     | 57%     | 60%   |
 | nord        |       | 77%     | 92%     | 97%     | 99%     | 99%   |
-| ntnu        | 45%   | 70%     | 88%     | 92%     | 93%     | 93%   |
+| ntnu        | 45%   | 70%     | 89%     | 92%     | 93%     | 93%   |
 | onh         |       |         |         |         |         | 0%    |
 | oslomet     |       |         | 100%    | 100%    | 100%    | 100%  |
 | phs         |       |         |         | 0%      | 4%      | 23%   |
 | samas       |       |         |         |         |         | 0%    |
 | steiner     |       |         |         |         |         | 8%    |
 | uia         | 0%    | 0%      | 0%      | 40%     | 38%     | 41%   |
-| uib         | 24%   | 39%     | 48%     | 54%     | 57%     | 70%   |
+| uib         | 25%   | 40%     | 48%     | 54%     | 58%     | 70%   |
 | uio         |       |         |         |         |         | 20%   |
 | uis         | 92%   | 96%     | 95%     | 91%     | 92%     | 64%   |
 | uit         | 37%   | 31%     | 36%     | 40%     | 40%     | 37%   |
 | usn         |       |         | 28%     | 33%     | 36%     | 42%   |
-| vid         |       |         |         |         | 0%      | 34%   |
+| vid         |       |         |         |         | 0%      | 35%   |
 
 ## Semester registration in DBH
 
@@ -125,9 +125,9 @@ year) that have a plan in at least one semester:
 
 | Institution | Course-years | Both semesters in DBH | Both reg., plan in one | Both reg., plan in both | Both reg., no plan | Course-years with plan | Row rate |
 |:---|---:|:---|---:|---:|---:|:---|:---|
-| aho | 100 | 68% | 51 | 3 | 14 | 68% | 42.9% |
+| aho | 799 | 77% | 180 | 5 | 427 | 30% | 22.4% |
 | barrattdue | 71 | 92% | 42 | 0 | 23 | 65% | 33.8% |
-| dmmh | 100 | 96% | 62 | 6 | 28 | 69% | 76.5% |
+| dmmh | 429 | 96% | 278 | 74 | 60 | 85% | 88.0% |
 | fhs | 3609 | 87% | 15 | 1080 | 2048 | 36% | 35.3% |
 | fjellhaug | 552 | 93% | 202 | 0 | 310 | 38% | 19.9% |
 | himolde | 4985 | 90% | 2314 | 165 | 2004 | 54% | 44.2% |
@@ -136,27 +136,27 @@ year) that have a plan in at least one semester:
 | hvl | 23994 | 89% | 4295 | 13286 | 3657 | 80% | 72.0% |
 | inn | 16658 | 90% | 3990 | 950 | 10074 | 33% | 55.2% |
 | khio | 452 | 98% | 341 | 0 | 103 | 77% | 38.7% |
-| ldh | 100 | 89% | 7 | 12 | 70 | 25% | 20.6% |
+| ldh | 661 | 87% | 37 | 117 | 422 | 27% | 25.3% |
 | mf | 640 | 93% | 274 | 26 | 293 | 50% | 28.1% |
 | nhh | 775 | 95% | 432 | 0 | 304 | 56% | 30.1% |
 | nih | 7265 | 76% | 516 | 26 | 4986 | 9% | 5.1% |
 | nla | 10170 | 83% | 924 | 3539 | 4014 | 48% | 45.2% |
 | nmbu | 2927 | 91% | 947 | 11 | 1699 | 36% | 18.9% |
-| nmh | 5125 | 96% | 388 | 2169 | 2344 | 53% | 51.6% |
+| nmh | 5125 | 96% | 410 | 2285 | 2206 | 55% | 54.2% |
 | nord | 21236 | 85% | 1066 | 9639 | 7280 | 58% | 92.3% |
-| ntnu | 137222 | 72% | 8289 | 68264 | 21754 | 69% | 67.8% |
+| ntnu | 137222 | 72% | 8308 | 68333 | 21666 | 69% | 67.9% |
 | onh | 100 | 0% | 0 | 0 | 0 | 0% | 0.0% |
 | oslomet | 19751 | 89% | 2224 | 13808 | 1570 | 89% | 100.0% |
 | phs | 1352 | 91% | 140 | 35 | 1062 | 14% | 12.2% |
 | samas | 273 | 90% | 0 | 0 | 246 | 0% | 0.0% |
 | steiner | 251 | 47% | 15 | 0 | 104 | 12% | 8.1% |
 | uia | 31774 | 90% | 10259 | 226 | 18087 | 35% | 20.1% |
-| uib | 57906 | 89% | 330 | 21718 | 29287 | 41% | 45.1% |
+| uib | 57906 | 89% | 331 | 21805 | 29199 | 41% | 45.2% |
 | uio | 10710 | 95% | 3878 | 42 | 6220 | 38% | 19.9% |
 | uis | 3529 | 85% | 1183 | 1542 | 273 | 89% | 73.8% |
 | uit | 73965 | 90% | 27078 | 8969 | 30687 | 53% | 36.3% |
 | usn | 22756 | 88% | 12709 | 504 | 6786 | 63% | 35.0% |
-| vid | 2755 | 93% | 899 | 125 | 1533 | 41% | 24.6% |
+| vid | 2755 | 93% | 910 | 133 | 1514 | 41% | 25.3% |
 
 ## Course-years without a plan
 
@@ -174,9 +174,9 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 
 | Institution | Without plan | 404 | No URL | Fetch error | Page, no plan | No page | Between plans |
 |:---|---:|---:|---:|---:|---:|---:|---:|
-| aho | 31 | 0 | 31 | 0 | 0 | 0 | 0 |
+| aho | 534 | 0 | 516 | 0 | 30 | 0 | 0 |
 | barrattdue | 25 | 0 | 25 | 0 | 0 | 0 | 0 |
-| dmmh | 31 | 24 | 0 | 0 | 7 | 0 | 0 |
+| dmmh | 64 | 52 | 0 | 0 | 12 | 0 | 3 |
 | fhs | 2298 | 8 | 2290 | 0 | 0 | 0 | 4 |
 | fjellhaug | 340 | 0 | 138 | 0 | 0 | 202 | 0 |
 | himolde | 2227 | 0 | 2156 | 0 | 318 | 0 | 123 |
@@ -185,27 +185,27 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 | hvl | 4772 | 4748 | 0 | 0 | 41 | 0 | 29 |
 | inn | 11074 | 0 | 7408 | 0 | 3666 | 0 | 74 |
 | khio | 105 | 0 | 0 | 0 | 0 | 105 | 0 |
-| ldh | 75 | 0 | 75 | 0 | 0 | 0 | 0 |
+| ldh | 479 | 0 | 479 | 0 | 0 | 0 | 0 |
 | mf | 322 | 0 | 0 | 0 | 2 | 320 | 0 |
 | nhh | 343 | 0 | 262 | 0 | 23 | 58 | 0 |
 | nih | 6568 | 6521 | 0 | 44 | 6 | 0 | 6 |
 | nla | 5228 | 3555 | 0 | 0 | 1689 | 0 | 7 |
 | nmbu | 1723 | 0 | 0 | 0 | 0 | 1723 | 0 |
-| nmh | 2330 | 0 | 2211 | 0 | 154 | 0 | 0 |
+| nmh | 2199 | 0 | 2080 | 0 | 154 | 0 | 0 |
 | nord | 8763 | 1577 | 0 | 147 | 7039 | 0 | 0 |
-| ntnu | 42648 | 2474 | 0 | 40040 | 642 | 0 | 23 |
+| ntnu | 42557 | 2474 | 0 | 39948 | 645 | 0 | 23 |
 | onh | 100 | 0 | 18 | 0 | 0 | 82 | 0 |
 | oslomet | 2264 | 0 | 0 | 0 | 2264 | 0 | 17 |
 | phs | 1155 | 24 | 1150 | 0 | 73 | 0 | 0 |
 | samas | 273 | 0 | 273 | 0 | 0 | 0 | 0 |
 | steiner | 201 | 0 | 192 | 0 | 0 | 9 | 0 |
 | uia | 20510 | 20498 | 0 | 0 | 671 | 0 | 514 |
-| uib | 34312 | 28927 | 0 | 2848 | 2565 | 0 | 21 |
+| uib | 34216 | 28828 | 0 | 2848 | 2568 | 0 | 22 |
 | uio | 6617 | 0 | 7 | 0 | 48 | 6562 | 0 |
 | uis | 368 | 153 | 0 | 18 | 197 | 0 | 0 |
 | uit | 32707 | 0 | 32364 | 0 | 1883 | 0 | 1885 |
 | usn | 8043 | 0 | 8043 | 0 | 23 | 0 | 514 |
-| vid | 1638 | 282 | 985 | 0 | 371 | 0 | 21 |
+| vid | 1619 | 290 | 950 | 0 | 379 | 0 | 21 |
 
 To list the gaps between plans:
 `readRDS("data/interim/plan_gaps.RDS") |> dplyr::filter(between_plans)`.
@@ -246,9 +246,9 @@ All years, by institution:
 
 | Institution | Some year provisional | All | With students | With exam registrations and credits |
 |:---|:---|:---|:---|:---|
-| aho | FALSE | 68 / 100 (68%) |  |  |
+| aho | TRUE | 240 / 799 (30%) |  |  |
 | barrattdue | TRUE | 46 / 71 (65%) |  |  |
-| dmmh | FALSE | 69 / 100 (69%) |  |  |
+| dmmh | TRUE | 365 / 429 (85%) |  |  |
 | fhs | TRUE | 1304 / 3609 (36%) | 885 / 1511 (59%) | 733 / 1223 (60%) |
 | fjellhaug | TRUE | 212 / 552 (38%) | 68 / 219 (31%) | 0 / 108 (0%) |
 | himolde | TRUE | 2716 / 4985 (54%) | 2376 / 3119 (76%) | 2087 / 2692 (78%) |
@@ -257,27 +257,27 @@ All years, by institution:
 | hvl | TRUE | 19220 / 23994 (80%) | 15161 / 16474 (92%) | 12845 / 13585 (95%) |
 | inn | TRUE | 5502 / 16658 (33%) | 4162 / 12163 (34%) | 2972 / 10132 (29%) |
 | khio | TRUE | 347 / 452 (77%) | 226 / 316 (72%) | 0 / 79 (0%) |
-| ldh | FALSE | 25 / 100 (25%) |  |  |
+| ldh | TRUE | 180 / 661 (27%) |  |  |
 | mf | TRUE | 318 / 640 (50%) | 139 / 318 (44%) | 22 / 167 (13%) |
 | nhh | TRUE | 432 / 775 (56%) | 169 / 261 (65%) | 0 / 49 (0%) |
 | nih | TRUE | 620 / 7265 (9%) | 522 / 4995 (10%) | 389 / 4291 (9%) |
 | nla | TRUE | 4884 / 10170 (48%) | 3803 / 6593 (58%) | 3149 / 5106 (62%) |
 | nmbu | TRUE | 1044 / 2927 (36%) | 562 / 1657 (34%) | 8 / 879 (1%) |
-| nmh | TRUE | 2702 / 5125 (53%) | 1716 / 2251 (76%) | 1069 / 1306 (82%) |
+| nmh | TRUE | 2842 / 5125 (55%) | 1797 / 2251 (80%) | 1108 / 1306 (85%) |
 | nord | TRUE | 12381 / 21236 (58%) | 9068 / 14082 (64%) | 7359 / 11484 (64%) |
-| ntnu | TRUE | 94079 / 137222 (69%) | 71547 / 103004 (69%) | 62130 / 87313 (71%) |
+| ntnu | TRUE | 94170 / 137222 (69%) | 71626 / 103004 (70%) | 62204 / 87313 (71%) |
 | onh | TRUE | 0 / 100 (0%) |  |  |
 | oslomet | TRUE | 17487 / 19751 (89%) | 14386 / 14995 (96%) | 12103 / 12335 (98%) |
 | phs | TRUE | 190 / 1352 (14%) | 142 / 611 (23%) | 116 / 456 (25%) |
 | samas | TRUE | 0 / 273 (0%) | 0 / 94 (0%) | 0 / 8 (0%) |
 | steiner | TRUE | 30 / 251 (12%) | 21 / 125 (17%) | 5 / 45 (11%) |
 | uia | TRUE | 11194 / 31774 (35%) | 8305 / 21391 (39%) | 6708 / 17811 (38%) |
-| uib | TRUE | 23485 / 57906 (41%) | 19217 / 37151 (52%) | 16260 / 30349 (54%) |
+| uib | TRUE | 23581 / 57906 (41%) | 19300 / 37151 (52%) | 16325 / 30349 (54%) |
 | uio | TRUE | 4068 / 10710 (38%) | 1724 / 5033 (34%) | 32 / 2655 (1%) |
 | uis | TRUE | 3149 / 3529 (89%) | 2236 / 2414 (93%) | 957 / 1037 (92%) |
 | uit | TRUE | 39072 / 73965 (53%) | 31318 / 39636 (79%) | 26355 / 31788 (83%) |
 | usn | TRUE | 14424 / 22756 (63%) | 12895 / 16133 (80%) | 11072 / 13301 (83%) |
-| vid | TRUE | 1117 / 2755 (41%) | 913 / 1715 (53%) | 619 / 1261 (49%) |
+| vid | TRUE | 1136 / 2755 (41%) | 930 / 1715 (54%) | 631 / 1261 (50%) |
 
 By year since 2010 (a panel per institution; empty panels are sites that
 publish only the current plan, whose 2026/27 offerings are not yet in
@@ -933,7 +933,12 @@ Figures are in the tables above; the notes say why.
   BFO20-BFO24) take their series’ one page (BLENS20, KAKOR, BFO) by code
   stem, only these four series (user decision 2026-11-14): 188 more
   offerings of 2021-2026 with a page, the ensemble’s general plan rather
-  than one for the project. OSINF has no page in any handbook
+  than one for the project. OSINF has no page in any handbook.
+  CBE20-CBE32 and JAENS20-JAENS29 (Christiania Blåseensemble,
+  Jazzensemble) joined the series on 2026-11-22 (user 2026-11-20): 256
+  offerings of 2021-2026 (131 course-years, 22 of 2026); JAENS’s page is
+  in the handbooks of 2021 and 2022 only, so later projects take the
+  2022 page
 - In 56 cases a code has two pages in one handbook (29 in 2021, 22 in
   2022). The page listed for the code alone (“OPERA21 - Operaseminar
   II”, DBH’s title and credits) is used rather than one listed for
@@ -1005,10 +1010,13 @@ Figures are in the tables above; the notes say why.
   study year’s plan). The site has no plans before 2007/08 (“Det finnes
   ingen informasjon for dette studieåret”), so the 150 spring and summer
   2007 offerings, which read 2006/07, have none; 147 of them had read
-  2007/08’s plan before. DBH’s “-A” codes (MGLU1101-A, the primary
-  teacher courses) are fetched without the suffix; with it the site has
-  no page. Pages saying no information is available raise
-  `ntnu_no_info_error`; robots.txt asks for a 10-second crawl delay
+  2007/08’s plan before. DBH’s codes with a one-letter variant suffix
+  are fetched without it: “-A” (MGLU1101-A, the primary teacher courses)
+  and, since 2026-11-22, “-B”, “-C”, “-E”, “-K” and “-X” (SOL420-B,
+  BØA2020-C, LVUT8005-K; 136 course-years, 7 of 2026); with the suffix
+  the site has no information. Pages saying no information is available
+  raise `ntnu_no_info_error`; robots.txt asks for a 10-second crawl
+  delay
 - The exam tab (FS’s exam registration: assessment form, grading scale,
   and per exam session the exam parts with weight, duration and
   permitted aids) is in `course_plan` without dates, times, rooms and
@@ -1050,7 +1058,9 @@ Figures are in the tables above; the notes say why.
   the others are courses DBH marks as discontinued (33) and 8 codes with
   a variant suffix other than -A (SOL420-B, BØA2020-C, LVUT8005-K),
   whose page is at the code without it (`/SOL420/2026` has the plan,
-  `/SOL420-B/2026` has no information); the URL builder drops only -A
+  `/SOL420-B/2026` has no information); the URL builder dropped only -A
+  until 2026-11-22 and drops any one-letter suffix since, so a retry
+  fetches them
 
 ------------------------------------------------------------------------
 
@@ -1278,6 +1288,11 @@ Figures are in the tables above; the notes say why.
   semester blocks whose DBH code has a space (`BAR 3`, `UTV VISK 5H`;
   also not as `bar3` or `bar-3`). Every course-year of the sample with a
   page is of a course DBH still lists in 2025
+- Codes with Æ, Ø or Å (ITØK\*, HELØK610, OD2RØNT, MED7-ØYE, LÆFR101,
+  TPBARØN) were requested with the letters until 2026-11-22 and answered
+  404 (543 offerings, 2009-2026); the page is named with them as ASCII
+  (`itok264`, `laefr101`), which the URL builder writes since (18
+  course-years of 2026, 367 of 2004-2026)
 - 10 of 17,441 UiB plans say only “Informasjonen fins ikkje på norsk.”
   (also “TInformasjonen …”, with “Sjå dei engelske nettsidene.”):
   courses described only in English, whose English page is not fetched
@@ -1488,7 +1503,13 @@ Figures are in the tables above; the notes say why.
   offering takes the one with a plan for its semester. DBH codes without
   a course page (pilot, 2026-11-01: BASP1010, BATEOL1020, DIA5230,
   MAPS5010, MVBL1010, SOS-203 UTV, VULEVE8010; the site has, e.g.,
-  BASP1010-O and MVBL1021) have no plan
+  BASP1010-O and MVBL1021) have no plan. Since 2026-11-22 a code that
+  ends no page’s URL takes a page whose URL ends in it once a suffix of
+  one or two letters is stripped from both (BASOS3030-H and -D:
+  `...-basos3030`, BASP1010: `...-basp1010-o`, BAVER2040:
+  `...-baver2040-d`, MACOMM5360-O: `...-macomm5360-s`): 13 codes, 35
+  course-years from 2024 (10 of 2026); the suffix names a campus or form
+  of delivery, so the plan may be another campus’s (`methods.qmd`)
 - The plan is in the page’s JSON, not its HTML; `vid_plan_html()` reads
   the offering’s year and semester from it. A page whose JSON has no
   plan with text (MATRS5120) is outcome `not_found`. A page with plans

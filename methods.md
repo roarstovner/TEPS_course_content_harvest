@@ -12,8 +12,8 @@ decision changes what the data mean, add or update its entry here; each
 release tag freezes this file with the data.
 
 Current data, the teacher-ed frame (below): 46 882 offerings (DBH course
-× year × semester) at 19 institutions, 30 731 of them with a plan, and
-17 005 unique plans from 18 institutions (none from Samas, below).
+× year × semester) at 19 institutions, 30 732 of them with a plan, and
+17 006 unique plans from 18 institutions (none from Samas, below).
 
 ## Population and sampling frame
 
@@ -164,7 +164,7 @@ follows from the counts’ date, not the course list’s. A course-year of
 the course list that the counts lack had no students (in a provisional
 year: none yet). *Rejected:* one date for both (the counts would wait
 for the next course list, or force one). In the teacher-ed frame: 24 775
-course-years, 19 625 with a plan (79 %); with students 18 368, of them
+course-years, 19 626 with a plan (79 %); with students 18 368, of them
 15 779 with a plan (86 %); with both 13 832, of them 12 041 with a plan
 (87 %). Per institution and year: `data/data_notes.md`, “Coverage over
 course-years that had students”. *Since:* 2026-11-04.
@@ -235,15 +235,22 @@ at first, was adopted for four named series on 2026-11-14 (next entry).
 code in one handbook the one listed for the code alone.** DBH registers
 some NMH ensembles and orchestra projects as a code per number of
 projects (BLENS21-BLENS27, KAKOR20-KAKOR27, OSINF60-OSINF72,
-BFO20-BFO24), and the handbook has one page for the series (BLENS20,
-KAKOR, BFO) or none (OSINF). An offering of one of these four series
-without a page of its own now takes its series’ page by code stem, with
-the same cohort rule as other codes; no other series is matched by stem.
-Of the 56 cases of a code with two pages in one handbook (29 in 2021, 22
-in 2022), the page listed for the code alone (“OPERA21 - Operaseminar
-II”) goes before one listed for several codes (“OPERA20/21 -
-Operaseminar”); where both are listed alike, the first listed, as
-before. *Why:* user decision 2026-11-14: a series’ projects share the
+BFO20-BFO24, and since 2026-11-22 CBE20-CBE32 and JAENS20-JAENS29), and
+the handbook has one page for the series (BLENS20, KAKOR, BFO, CBE,
+JAENS) or none (OSINF). An offering of one of these six series without a
+page of its own now takes its series’ page by code stem, with the same
+cohort rule as other codes; no other series is matched by stem. The
+pages of CBE (Christiania Blåseensemble, every handbook) and JAENS
+(Jazzensemble, the handbooks of 2021 and 2022 only, so later offerings
+take the 2022 page) are the series’ plan, “2 studiepoeng per prosjekt”,
+three to four projects a year (read in the raw store on 2026-11-22);
+they add 256 offerings of 2021-2026 (131 course-years, 22 of 2026). Of
+the 56 cases of a code with two pages in one handbook (29 in 2021, 22 in
+2022), the page listed for the code alone (“OPERA21 - Operaseminar II”)
+goes before one listed for several codes (“OPERA20/21 - Operaseminar”);
+where both are listed alike, the first listed, as before. *Why:* user
+decision 2026-11-14 (CBE and JAENS: 2026-11-20, after a coverage check
+found their projects without a page): a series’ projects share the
 ensemble’s plan; the page listed for the code alone has DBH’s title
 (“Operaseminar II”, “Bruksklaver IIa”) and credits, the shared page is
 the two-semester course. The pairs listed alike were compared on
@@ -263,7 +270,7 @@ matching every code by stem, which would give a course the plan of
 another that shares its letters; always the first listed, which gives
 the “21” codes the shared two-semester page; choosing by the page’s
 cohort year, which needs every page fetched before resolving. *Since:*
-2026-11-14.
+2026-11-14; CBE and JAENS since 2026-11-22.
 
 **Kunsthøgskolen i Oslo (DBH code 6220) joins the frame, with the plan
 in force only.** One of the ten institutions surveyed for the
@@ -318,6 +325,28 @@ when the page has the course’s plan for the other semester of the year.
 Its full harvest waits for the pilot audits (below). *Rejected:* giving
 such an offering the plan of the nearest semester, which would take a
 plan the site does not publish for that semester. *Since:* 2026-11-01.
+
+**VID: a code without a page of its own takes the page of its code with
+the variant suffix stripped.** DBH and the site do not always write a
+course’s variant suffix alike: DBH’s BASOS3030-H and BASOS3030-D have no
+page, the site’s page is `...-basos3030`; DBH’s BAVER2040 has none, the
+site’s is `...-baver2040-d`; DBH’s MACOMM5360-O has none, the site’s is
+`...-macomm5360-s`. An offering whose code ends no page’s URL now takes
+a page whose URL ends in its code once a suffix of one or two letters is
+stripped from both (a number after a hyphen, MAVERD-543, is part of the
+code); of several, the one with a plan for the offering’s year and
+semester, as for a code’s own pages. *Why:* a coverage check of
+2026-11-20 found these courses without a URL though the site has their
+plan under the other spelling. *Consequence:* 13 codes, 70 offerings
+from spring 2024 (35 course-years, 10 of 2026), get a page; an offering
+still gets a plan only if the page has one for its year and semester.
+The suffix names a campus or a form of delivery (D, H, O, S), so the
+page may be another campus’s (`basos3030` is Oslo’s) and the offering
+then gets that campus’s plan for the same course, year and semester.
+*Rejected:* leaving them without a plan, which loses courses the site
+publishes; stripping only DBH’s suffix, which misses BAVER2040 and the
+MACOMM codes; matching by title, which DBH and the site do not write
+alike either. *Since:* 2026-11-22.
 
 **Politihøgskolen (DBH code 1301) joins the frame, from autumn 2022.**
 One of the ten institutions surveyed for the all-courses frame,
@@ -1076,7 +1105,7 @@ confirmed against the programme description. *Since:* 2026-10-19.
 
 **A plan is a unique anonymized text per institution and course code**
 (`plan_content_id`, a hash of the normalized text). Offerings with the
-same text share a plan: 30 731 offerings have 17 005 plans. *Why:*
+same text share a plan: 30 732 offerings have 17 006 plans. *Why:*
 consecutive years and both semesters mostly repeat the same text.
 *Consequence:* the id changes whenever cleaning changes the text, so
 coding is tied to a frozen release and carried to later releases with a
@@ -1093,7 +1122,7 @@ institution that publish the same text (UiT LRU-3672 and LRU-3672F, NTNU
 PPU4621/4623/4625/4627, NLA 4MGL1DIP and MGL1DIP, OsloMet M5GMT2100 and
 M5GMT3100) share a `plan_content_id`: 258 ids are shared by 691 plans
 (never across institutions), and joining offerings to plans on
-`plan_content_id` alone duplicates 1 457 of the 30 731 offerings with a
+`plan_content_id` alone duplicates 1 457 of the 30 732 offerings with a
 plan (2026-11-19: 256 ids, 687 plans, 1,449 of 30,727 offerings). The
 key `plan_content_id` + `institution` + `course_code` was documented,
 but easy to miss. *Rejected:* documenting the three-column key only (the
@@ -1272,7 +1301,7 @@ removing every AI, plagiarism and COVID line from assessment (the rule
 since 2026-10-01), which also removed rules for the use of AI and the
 exam forms that replaced written exams during COVID; keeping the NTNU
 exam tab out of the sections, which leaves 743 NTNU plans without an
-assessment section. *Consequence:* the sections hold a median 83 % of a
+assessment section. *Consequence:* the sections hold a median 82 % of a
 plan’s text, and 45 plans have no section. The data do not yet follow
 the spec where its “Known deviations” says; each fix gets its own entry
 here, with numbers. *Since:* 2026-10-13.
@@ -2791,6 +2820,52 @@ says. FHS, Nord and UiT: no change in samples of 30 pages per year, and
 none of their pages has a “Forhåndskrav:” label, “bestått opptaksprøve”
 or a “bygger på” sentence with a two-digit code. `course_plan` and the
 plan ids do not change. *Since:* 2026-11-16.
+
+**AHO and Barratt Due: prior courses of the access fields, coursework of
+the exam description, the final-assessment field.** AHO’s access field
+(“Generell adgangsinformasjon for emnet”, “Admission requirements”) is
+read like Nord’s “Adgangsregulering” (“.admission”): its prior courses
+and credits join prerequisites (“Bestått alle emner i GK1 og GK2.
+Bestått studiodelen av GK3 og GK4.”, “Passed foundation level … 180
+ECTS.”), and so do AHO’s own course codes (“61 110”, “70 111 GK1
+Introduksjon til design”, under “Gjennomført:”) and, after a
+“Recommended previous knowledge” label, the lines it introduces (without
+the label); admission and study right stay out. A completed study year
+counts as a prior course everywhere (“Gjennomført 1.studieår bachelor i
+utøvende musikk.”, “Normalt gjennomført 1. og 2. studieår”, Barratt
+Due). AHO’s exam description is read with `section_inline_coursework`,
+so its coursework labels (“Obligatorisk arbeidskrav”, “Compulsory work
+requirements:”, also misspelt) take their text to coursework
+requirements, and two such labels in a row each take their own paragraph
+(a fix that also moves a UiT 2014 gate list after its lead-in). The
+condition for being assessed in three plans (“Students need to present
+and submit all projects … in order to be assessed”) and the
+Industridesign attendance rule of two (“Kurset er praksisbasert der høyt
+oppmøte … er en forutsetning for gjennomføring av kurset.”) move there
+too; wordings found in one plan (“For å få semesterkarakter må
+sluttleveranse … være innlevert …”) stay, as the known deviation of
+2026-11-11 says; a line the coursework section already has is not added
+twice. Barratt Due’s facts field “Avsluttende vurdering: Mappevurdering”
+joins assessment, as at NMH, and its unlabelled field “Bestått KAM3300
+…” joins prerequisites; the obligatory course in DID’s sub-course topics
+(“Obligatorisk kurs: instrumentalteknikk og kroppsbevissthet”) moves
+from course content to coursework requirements. AHO’s exam-system and
+Moodle notices, the diploma’s withdrawal deadline and the Leganto notice
+alone go, as logistics and placeholders by the spec. *Why:* sections
+audit of 2026-11-22 (Codex): prerequisites missing in 6 of 16 AHO
+controls and 3 of 20 Barratt Due plans; coursework left in AHO’s
+assessment (AHO’s coursework gate 0.28). *Rejected:* mapping the access
+field to prerequisites whole (it mixes admission, study right and
+programme notes); moving one Design Studio track’s “LEARNING OUTCOMES”
+line out of the course content (it describes one track, not the course).
+*Consequence* (all 72 AHO and 88 Barratt Due pilot pages, HEAD against
+the new code): AHO prerequisites on 24 of 72 pages (from 1), coursework
+requirements on 26 (from 20; 0.28 to 0.36), 5 Leganto-only reading lists
+gone; Barratt Due assessment gains the final-assessment line on 78
+pages, prerequisites on 6 more pages. Elsewhere (15 pages per raw
+partition of every institution) one UiT and one NMBU page change (the
+gate list, a doubled line). `course_plan` and the plan ids do not
+change. *Since:* 2026-11-22.
 
 **Resit and examiner rules stay in assessment at UiT, NTNU, Nord and
 FHS, a known deviation from the spec.** The spec puts resit,
