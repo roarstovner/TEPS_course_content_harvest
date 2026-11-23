@@ -104,6 +104,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Anonymizer: a title and a name alone in brackets (ntnu topic lists, uio) (#609)
+- Sections (LDH): reading_list that is only a Leganto pointer (#608)
+- Anonymizer (AHO): English scheduling dates 'by April 30, 2026', a session date '6 November', clock range '9-12 hver mandag' (#607)
+- Sections (DMMH) mediums from the re-audit: approval sentences in teaching_methods, reading-list pointer (#606)
+- Anonymizer leftovers seen 2026-11-21: names in capitals after 'Lærere:' (uib), 'i fellesskap med <name>' (uib), 'Kursansvarlig - engelsk del: <name>' (hiof), 'sist revidert i mars 2019' (hiof) (#603)
+- Barratt Due: drop cap split from its word ('S' / 'tudenter', VERK2100) (#602)
+- steiner: PDFs moved to cdn.prod.website-files.com (no robots row) -> all refused; strategy crashes on 0 sections (pdf_emne_name not found, R/harvest_strategies.R:288); no 2026 run (#543)
 - Sections (Barratt Due) follow-ups: 'Gjennomført 1.studieår' as a prerequisite, unlabelled 'Bestått KAM3300 ...' field, plural 'gyldige', 'Avsluttende vurdering:' to assessment, DID 'Obligatorisk kurs:' (#605)
 - Sections (AHO): prerequisites under 'Generell adgangsinformasjon for emnet' / 'Admission requirements'; coursework out of assessment; Wiseflow logistics; Leganto pointer (#604)
 - NMH: add the project series CBE and JAENS to NMH_SERIES (#591)
