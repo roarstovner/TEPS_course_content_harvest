@@ -32,8 +32,23 @@ thus gets the Norwegian URL, and its English page with the next retry of
 pages not found (`retry = "not_found"`). The Norwegian listings are not
 read: UiA’s stop at 500 pages, so they cannot show that a page is
 missing. The English pages have the Norwegian layout with English labels
-(“Course Leader:”, which the anonymizer removes, “Teaching and learning
-methods”, “Examinations”). robots.txt disallows only `/vrtx` at both.
+(“Course Leader:”, “Teaching and learning methods”, “Examinations”) and
+read as the Norwegian ones (since 2026-11-23): UiA’s “Student
+evaluation”, “Offered as a free-standing course” and “Admission for
+external candidates” are facts, as “Studentevaluering”, “Tilbys som
+enkeltemne” and “Tilgang for privatister” are; “Course Leader” is not
+read, as “Emneansvarlig” is not (`exclude`; at UiA both since then: the
+anonymizer had left names with an apostrophe or a lower-case particle on
+English pages), nor UiA’s FS stamp “Last updated from FS …” (the
+anonymizer removes only the Norwegian one); and the headings map as
+their Norwegian counterparts: UiA’s “Examination requirements” (“Vilkår
+for å gå opp til eksamen”) to coursework requirements, not assessment,
+and “Admission Requirement if given as a free-standing course”
+(“Opptakskrav hvis tilbudt som enkeltemne”) out of the sections; NIH’s
+“Assessment/exam”, “Prerequisite” and “Core literature”
+(“Vurdering/eksamen”, “Forkrav”, “Kjernelitteratur”) to assessment,
+prerequisites and reading list. robots.txt disallows only `/vrtx` at
+both.
 
 **NMBU.** The page is `https://www.nmbu.no/emne/{CODE}`, with the code
 without Norwegian letters (MILJØ300 is `MILJO300`; with Ø, raw or

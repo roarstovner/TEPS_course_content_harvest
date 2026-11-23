@@ -80,3 +80,25 @@ test_that("add_course_url() leaves UiA's URL to the resolver", {
   expect_true(is.na(add_course_url(df)$url))
   expect_equal(get_institution_config("uia")$strategy, "url_discovery")
 })
+
+test_that("UiA's English pages read as its Norwegian ones: evaluation and admission flags are facts, the exam gate is coursework", {
+  cfg <- get_institution_config("uia")
+  part <- function(h, x) paste0("<h2 class='vrtx-fs-infotype-title'>", h, "</h2><div>", x, "</div>")
+  html <- paste0("<div id='right-main'><div id='vrtx-fs-emne-content'><h1>MA-100 Calculus</h1>",
+                 part("Contents", "Limits and derivatives."),
+                 part("Examination requirements", "Approved mandatory assignments."),
+                 part("Examinations", "Written exam, 4 hours."),
+                 part("Admission Requirement if given as a free-standing course", "General admission."),
+                 part("Student evaluation", "The course is evaluated by the quality system."),
+                 part("Offered as a free-standing course", "Yes"),
+                 part("Admission for external candidates", "No"), "</div></div>")
+  blocks <- page_blocks(html, NA, .block_cfg(cfg))
+  plan <- page_fulltext(blocks, cfg, facts = FALSE)
+  expect_false(grepl("Student evaluation|quality system|free-standing course\nYes|external candidates", plan))
+  expect_match(plan, "Examination requirements\nApproved mandatory assignments.", fixed = TRUE)
+  sec <- extract_sections(cfg, html, NA_character_, "x")
+  sec <- setNames(sec$raw_text, sec$section)
+  expect_equal(unname(sec["coursework_requirements"]), "Approved mandatory assignments.")
+  expect_equal(unname(sec["assessment"]), "Written exam, 4 hours.")
+  expect_false(any(grepl("General admission", sec)))
+})

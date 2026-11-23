@@ -264,7 +264,14 @@ aids, exam language, grading scale and AI rules stay in assessment. A `label`
 heading ("Hjelpemidler til eksamen", "Eksamensspråk", "Karakterskala", "Om bruk
 av KI", "Fravær fra obligatorisk aktivitet") stays as a line of its section,
 since the text under it ("Ingen", "Norsk.", "A-F") says nothing alone; with
-nothing but a dash or pointer under it, it goes.
+nothing but a dash or pointer under it, it goes. An English heading maps as
+its Norwegian counterpart on the same site: on UiA's and NIH's English-tree
+pages (since 2026-11-23) "Examination requirements" ("Vilkår for å gå opp
+til eksamen") to coursework requirements, ahead of the substring
+"examination"; "Assessment/exam", "Prerequisite" and "Core literature"
+("Vurdering/eksamen", "Forkrav", "Kjernelitteratur") to assessment,
+prerequisites and reading list; "Admission Requirement if given as a
+free-standing course" to `.drop` (all exact rows).
 
 HTML is parsed by `.read_doc()`, which drops `script`, `style`, `select` and
 `label` (ntnu script text, uib semester picker); the `json` reader parses the

@@ -41,6 +41,7 @@ section_heading_patterns <- tibble::tribble(
   "work requirements",                     "coursework_requirements", FALSE,
   "coursework requirements",               "coursework_requirements", FALSE,
   "course requirements",                   "coursework_requirements", TRUE,   # nmh English pages
+  "examination requirements",              "coursework_requirements", TRUE,   # uia English pages ("Vilkår for å gå opp til eksamen")
 
   # --- .drop: exam logistics (before assessment, which "eksamen" would hit) ---
   # The codebook keeps assessment design and excludes exam logistics.
@@ -110,6 +111,7 @@ section_heading_patterns <- tibble::tribble(
   "forms of assessment",                   "assessment",             TRUE,   # usn English pages
   "vurderingsform",                        "assessment",             FALSE,
   "eksamen/vurdering",                     "assessment",             TRUE,   # uis PDFs
+  "assessment/exam",                       "assessment",             TRUE,   # nih English pages
   "vurderingsuttrykk",                     "assessment",             TRUE,   # steiner
   "eksamensformer",                        "assessment",             FALSE,
   "vurdering",                             "assessment",             FALSE,
@@ -141,6 +143,7 @@ section_heading_patterns <- tibble::tribble(
   # "entry requirements" can be admission text.
   "entry requirements",                    "prerequisites",          TRUE,
   "prerequisites",                         "prerequisites",          FALSE,
+  "prerequisite",                          "prerequisites",          TRUE,   # nih English pages ("Forkrav")
 
   # --- .drop: headings that end a section but carry no course content ---
   # Text under them is discarded by .clean_sections(). Admission and
@@ -150,6 +153,7 @@ section_heading_patterns <- tibble::tribble(
   "opptakskrav",                           ".drop",                  FALSE,
   "opptak til emnet",                      ".drop",                  FALSE,
   "admission to the course",               ".drop",                  FALSE,
+  "admission requirement if given as a free-standing course", ".drop", TRUE, # uia English pages
   "hvem kan ta dette emnet",               ".drop",                  FALSE,
   "krav til studierett",                   ".drop",                  FALSE,
   # Programme list in the page footer (usn, hivolda).
@@ -273,6 +277,7 @@ section_heading_patterns <- tibble::tribble(
   "recommended reading",                   "reading_list",           FALSE,  # uit 2008-2011
   "course materials",                      "reading_list",           TRUE,   # ntnu English pages
   "literature",                            "reading_list",           TRUE,   # nhh English pages
+  "core literature",                       "reading_list",           TRUE,   # nih English pages
 
   # --- course_content ---
   "mål og innhold",                        "course_content",         FALSE,

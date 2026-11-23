@@ -22,6 +22,27 @@ test_that("NIH: the English tree's page where the Norwegian URL answered 404, el
   expect_equal(get_institution_config("nih")$strategy, "url_discovery")
 })
 
+test_that("NIH's English pages read as its Norwegian ones: no course leader, the headings map", {
+  cfg <- get_institution_config("nih")
+  dg <- function(dt, dd) paste0("<div class='dg'><dt>", dt, "</dt><dd>", dd, "</dd></div>")
+  part <- function(h, x) paste0("<h2 class='vrtx-fs-infotype-title'>", h, "</h2><div>", x, "</div>")
+  html <- paste0("<div id='vrtx-fs-emne-content'><h1>THP111 Training</h1>",
+                 "<div id='vrtx-fs-emne-facts'><dl>", dg("ECTS Credits:", "15"),
+                 dg("Course Leader:", "Kari Nordmann"), dg("Emneansvarlige:", "Ola Nordmann"), "</dl></div>",
+                 part("Introduction", "The course is about training."),
+                 part("Prerequisite", "THP110 Basic training"),
+                 part("Assessment/exam", "Oral exam. Graded A-F."),
+                 part("Core literature", "Smith (2020). Training. Oslo: Press."), "</div>")
+  text <- page_fulltext(page_blocks(html, NA, .block_cfg(cfg)), cfg)
+  expect_false(grepl("Nordmann|Course Leader|Emneansvarlige", text))
+  expect_match(text, "ECTS Credits:", fixed = TRUE)
+  sec <- extract_sections(cfg, html, NA_character_, "x")
+  sec <- setNames(sec$raw_text, sec$section)
+  expect_equal(unname(sec[c("course_content", "prerequisites", "assessment", "reading_list")]),
+               c("The course is about training.", "THP110 Basic training", "Oral exam. Graded A-F.",
+                 "Smith (2020). Training. Oslo: Press."))
+})
+
 test_that("NMBU page URLs: upper case, Norwegian letters transliterated", {
   expect_equal(as.character(add_course_url_nmbu("bio100")), "https://www.nmbu.no/emne/BIO100")
   expect_equal(as.character(add_course_url_nmbu("MILJØ300")), "https://www.nmbu.no/emne/MILJO300")

@@ -120,16 +120,27 @@ institution_configs <- list(
     strategy = "url_discovery",
     selector = "#right-main",
     # the breadcrumbs (they end with the title) and the facts' links
-    # ("Timeplan", "Pensumliste (Leganto)")
-    exclude = "nav#breadcrumbs, #vrtx-fs-emne-content div.connected-links",
+    # ("Timeplan", "Pensumliste (Leganto)"); the FS fetch stamp and the
+    # course leaders (names), which the anonymizer removed only from the
+    # Norwegian pages ("Sist hentet fra FS", "Emneansvarlig") and not always
+    # from the English tree's ("Last updated from FS", "Course Leader" with a
+    # name with an apostrophe or a lower-case particle; 2026-11-23)
+    exclude = c("nav#breadcrumbs, #vrtx-fs-emne-content div.connected-links, #right-main .vrtx-date-info",
+                paste0("//div[@id='vrtx-fs-emne-facts']//div[contains(@class, 'dg')]",
+                       "[starts-with(normalize-space(), 'Emneansvarlig') or ",
+                       "starts-with(normalize-space(), 'Course Leader')]")),
     # and the stock student evaluation text and the admission flags (single
-    # course, external candidates), each an h2 and the div after it
+    # course, external candidates), each an h2 and the div after it; on the
+    # English tree's pages "Student evaluation", "Offered as a free-standing
+    # course", "Admission for external candidates" (2026-11-23)
     facts = c("#vrtx-fs-emne-content div.page-intro", "#vrtx-fs-emne-facts",
               local({
                 h2 <- paste0("//h2[contains(@class, 'vrtx-fs-infotype-title')][",
                              paste0("normalize-space() = '", c("Studentevaluering", "Tilbys som enkeltemne",
                                     "Vert tilbydd som enkeltemne", "Tilgang for privatister",
-                                    "Tilgang for privatistar"), "'", collapse = " or "), "]")
+                                    "Tilgang for privatistar", "Student evaluation",
+                                    "Offered as a free-standing course",
+                                    "Admission for external candidates"), "'", collapse = " or "), "]")
                 paste0(h2, " | ", h2, "/following-sibling::div[1]")
               })),
     plan_years = "url",
@@ -575,11 +586,13 @@ institution_configs <- list(
     # as uia's: the Norwegian page, or the English tree's
     strategy = "url_discovery",
     # The title, the facts list and the plan; not the course coordinator
-    # (names), the table of contents' heading and the FS fetch stamp
+    # (names; "Course Leader" on the English tree's pages), the table of
+    # contents' heading and the FS fetch stamp
     selector = "#vrtx-fs-emne-content",
     exclude = c("#vrtx-fs-emne-content > h2.vrtx-toc-header, #vrtx-fs-emne-content > .vrtx-date-info",
                 paste0("//div[@id='vrtx-fs-emne-facts']//div[contains(@class, 'dg')]",
-                       "[starts-with(normalize-space(), 'Emneansvarlig')]")),
+                       "[starts-with(normalize-space(), 'Emneansvarlig') or ",
+                       "starts-with(normalize-space(), 'Course Leader')]")),
     facts = c("#vrtx-fs-emne-content > h1", "#vrtx-fs-emne-facts"),
     plan_years = "url",
     section_strategy = "html"
