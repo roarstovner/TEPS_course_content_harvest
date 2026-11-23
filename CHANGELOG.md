@@ -104,6 +104,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Sections (AHO): coursework gates in teaching text, coursework gate 0.37 (#610)
 - Anonymizer: a title and a name alone in brackets (ntnu topic lists, uio) (#609)
 - Sections (LDH): reading_list that is only a Leganto pointer (#608)
 - Anonymizer (AHO): English scheduling dates 'by April 30, 2026', a session date '6 November', clock range '9-12 hver mandag' (#607)
