@@ -3,25 +3,9 @@
   "institution": "aho",
   "model": "gpt-6.2-sol",
   "n_courses_reviewed": 20,
-  "n_suspects_reviewed": 4,
-  "overall_assessment": "Top-level boundaries and learning-outcome groups generally survive, but controls repeatedly lose prerequisites, retain assessment logistics or misfile mandatory coursework. Both long reading-list flags are valid bibliographies, Design Studio's leak is real at the track level, and VALG3's blob reflects the source layout with teaching methods embedded in course content. The review included all 20 packet entries and the omitted tails of capped excerpts.",
+  "n_suspects_reviewed": 6,
+  "overall_assessment": "AHO generally preserves top-level section boundaries and learning-outcome groups, and several controls correctly separate coursework gates from assessment, but controls also show incomplete prerequisites, misfiled teaching and coursework, and retained exam logistics. Design Studio's learning-outcome leak is real, and VALG3's blob reflects a long description that also contains teaching methods with no separate output row. The empty flag on the two prerequisite course codes and the four long flags on two bibliographies and two substantive prerequisite rows are length-based false alarms.",
   "findings": [
-    {
-      "target": "prerequisites",
-      "error_type": "missing_section",
-      "severity": "high",
-      "prevalence": "common",
-      "example_course_ids": [
-        "aho_80 162-1_2025_spring_1",
-        "aho_61 131-1_2025_autumn_3",
-        "aho_12 701-1_2025_autumn_3"
-      ],
-      "evidence": "Generell adgangsinformasjon for emnet\nBestått alle emner i GK1 og GK2. Bestått studiodelen av GK3 og GK4.",
-      "description": "The extractor drops required prior courses or completed credits under AHO's Norwegian and English access headings. Six controls lack a prerequisite row despite such requirements. Design Studio also loses the general foundation-course requirement while retaining track prerequisites.",
-      "root_cause_hypothesis": "AHO's section_headings leaves Generell adgangsinformasjon for emnet and Admission requirements unmapped. sectionize() discards their blocks.",
-      "suggested_fix": "Map both AHO headings to .admission. Extend .admission_prerequisites() for AHO's standalone spaced course codes and English completion wording. Keep sentences that combine admission with an explicit prior-course requirement and drop standalone application, eligibility and progression text.",
-      "confidence": "high"
-    },
     {
       "target": "course_content",
       "error_type": "merged_sections",
@@ -31,130 +15,113 @@
         "aho_70 505-1_2025_autumn_3"
       ],
       "evidence": "**course_content** (8125 chars)  ⚑ flags: leak->learning_outcomes",
-      "description": "Design Studio's flag is a true positive. The uncapped section contains the Service Design track's LEARNING OUTCOMES line. The track's course activities and evaluation criteria also remain in course_content alongside the separately extracted course-level sections.",
-      "root_cause_hypothesis": "AHO's reader reports the outer Course description heading but does not promote the track's inline labels to section boundaries.",
-      "suggested_fix": "Within the AHO Course description track blocks, recognize the exact inline labels EXPECTED OUTCOME, LEARNING OUTCOMES, COURSE ACTIVITIES and EVALUATION. Route the text to the corresponding canonical section and keep the track name with it. Reset to course_content at the next track or COURSE CONTENT label.",
+      "description": "The uncapped Design Studio row confirms that the Service Design track's LEARNING OUTCOMES, COURSE ACTIVITIES and EVALUATION text remains under course_content. The course-level outcome, teaching and assessment rows omit this track-specific material.",
+      "root_cause_hypothesis": "The AHO HTML reader recognizes the outer Course description heading. The labelled track passages stay inside its text block.",
+      "suggested_fix": "Extend the AHO section splitter to recognize line-leading LEARNING OUTCOMES, COURSE ACTIVITIES and EVALUATION labels inside track descriptions, and route their text to the matching sections with the original track context. Treat each new numbered track and COURSE CONTENT label as a boundary.",
       "confidence": "high"
     },
     {
-      "target": "teaching_methods",
-      "error_type": "missing_section",
+      "target": "cross_section",
+      "error_type": "wrong_content",
       "severity": "high",
-      "prevalence": "occasional",
+      "prevalence": "common",
       "example_course_ids": [
         "aho_VALG3-1_2025_autumn_3",
-        "aho_80 131-1_2025_autumn_3"
+        "aho_DES4016-1_2025_autumn_3",
+        "aho_12 701-1_2025_autumn_3"
       ],
       "evidence": "Kurset er lagt opp som et verkstedkurs for koding, hvor studentene øves i teknologiske verktøy og ferdigheter.",
-      "description": "VALG3's blob flag reflects a long source description and correctly separated top-level outcomes and assessment. It also points to a real omission: the empty teaching heading yields no row even though the description specifies workshops, lectures and exercises. GK3 Arkitekturhistorie 2 likewise leaves its stated lecture format in course_content.",
-      "root_cause_hypothesis": "AHO's heading-based mapping keeps delivery descriptions inside Emnets innhold when there is no populated teaching block.",
-      "suggested_fix": "For AHO plans with an absent or empty teaching block, route whole sentences matching the observed delivery-form leads, such as Kurset er lagt opp som et verkstedkurs and Kurset er strukturert som en forelesningsrekke, from course_content into teaching_methods.",
+      "description": "Teaching descriptions embedded in prose stay in course_content. VALG3 has no teaching_methods row despite workshop, lecture and exercise descriptions, and its Formnerd capability statement also stays in course_content. Interaction Design 2's module and workshop format sentence and Diploma's appointed-supervisor sentence remain in course_content alongside populated teaching rows.",
+      "root_cause_hypothesis": "Heading-based extraction preserves unlabelled prose under the mapped heading without recognizing semantic changes inside it.",
+      "suggested_fix": "Add an AHO rule to move complete delivery sentences with observed leads such as Kurset er lagt opp som et verkstedkurs, The semester is structured around and Each student has one main appointed supervisor from course_content to teaching_methods, creating the row if needed. Route Formnerd's explicit Målet er at studentene gjennom fire uker skal utvikle sentence to learning_outcomes and retain the source track labels for moved text.",
+      "confidence": "high"
+    },
+    {
+      "target": "prerequisites",
+      "error_type": "truncated",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "aho_DES4016-1_2025_autumn_3"
+      ],
+      "evidence": "2 year international master students must have been accepted for interaction design courses, and have taken Interaction Design 1.",
+      "description": "Interaction Design 2 preserves the 180-ECTS requirement but drops the explicit Interaction Design 1 requirement for international master students and the prior GK5/GK6 specialization requirement for AHO students. The latter appears in a sentence that also states admission priorities.",
+      "root_cause_hypothesis": "The .admission heading is mapped correctly. In .admission_prerequisites(), the positive matcher misses prior-study wording such as have taken with a spelled-out course title, and the priority exclusion can discard a sentence containing an independent prior-specialization clause.",
+      "suggested_fix": "Recognize have taken plus a named prior course, and must have chosen plus a named specialization and GK course references, in AHO access blocks. Preserve the sentence combining international eligibility with prior coursework, and retain the independent specialization clause before the admission-priority clauses.",
       "confidence": "high"
     },
     {
       "target": "assessment",
       "error_type": "wrong_content",
       "severity": "high",
-      "prevalence": "occasional",
+      "prevalence": "rare",
       "example_course_ids": [
-        "aho_61 121-1_2025_spring_1",
-        "aho_60 541-1_2025_autumn_2",
-        "aho_70 154-1_2025_autumn_3"
+        "aho_70 509-1_2025_autumn_3"
       ],
-      "evidence": "Obligatorisk arbeidskrav\n\nØvinger: Innlevering av mappe med tekst- og skisseøvelser",
-      "description": "An exercise portfolio stays in assessment alongside a separately graded home exam, and the presentation and process-sketchbook requirements in Post-growth stay beside the final assessment folder. Industridesign also leaves attendance and absence documentation that gate receipt of a semester grade in assessment. In ACDL Venues the gate body moves, leaving its heading behind.",
-      "root_cause_hypothesis": "AHO does not enable section_inline_coursework for assessment, so .split_inline_coursework() handles individual gate sentences but misses several heading-led blocks and grade-eligibility wordings.",
-      "suggested_fix": "Enable section_inline_coursework for AHO. Extend the gate rules for the observed labels and For å få semesterkarakter eligibility phrasing, and keep adjacent absence documentation with the gate. Stop at Vurderingsform or Form of assessment, preserve explicitly graded participation, and move or remove orphaned gate labels.",
+      "evidence": "The student must submit all assignments in the course to receive final assessment.",
+      "description": "Digital Commons leaves an explicit submission gate inside the assessment comment and emits no coursework_requirements row. The adjacent evaluation of project quality and participation describes the graded assessment.",
+      "root_cause_hypothesis": "The English condition matcher in .gate_sentence_regex does not cover the direct infinitive to receive final assessment.",
+      "suggested_fix": "Recognize must submit or complete assignments to receive final assessment as a gate sentence in .split_inline_coursework(). Move only that sentence to coursework_requirements and keep the evaluation criteria in assessment.",
       "confidence": "high"
     },
     {
       "target": "coursework_requirements",
       "error_type": "truncated",
       "severity": "medium",
-      "prevalence": "occasional",
-      "example_course_ids": [
-        "aho_PHD-READING-1_2025_autumn_3",
-        "aho_70 174-1_2025_spring_1",
-        "aho_70 154-1_2025_autumn_3"
-      ],
-      "evidence": "Assignments\n\nPreparation of Reading list. Minimum 50 titles by January 14, 2026",
-      "description": "Apparatus: Reading extracts a requirement to complete assignments, but leaves the actual assignment list in teaching_methods. The two Industridesign plans move the explicit attendance sentence while leaving the high-attendance and own-effort condition in teaching_methods.",
-      "root_cause_hypothesis": "The teaching-side inline splitter treats Assignments as a general teaching label and does not carry the adjacent list forward from the compulsory-activities block. Its attendance rules miss the forutsetning for gjennomføring wording.",
-      "suggested_fix": "Treat an AHO Assignments block as coursework when it follows a compulsory-activities block that explicitly requires assignment completion. Extend the teaching-side attendance rule to recognize høyt oppmøte stated as a forutsetning for gjennomføring.",
-      "confidence": "high"
-    },
-    {
-      "target": "coursework_requirements",
-      "error_type": "duplicate",
-      "severity": "low",
-      "prevalence": "rare",
-      "example_course_ids": [
-        "aho_70 154-1_2025_autumn_3"
-      ],
-      "evidence": "Det er krav om tilstedeværelse på delgjennomganger og presentasjoner.\n\nDet er krav om tilstedeværelse på delgjennomganger og presentasjoner.",
-      "description": "The same attendance requirement appears twice in one coursework_requirements row because the plan states it separately under teaching and examination.",
-      "root_cause_hypothesis": "The two inline splits append the identical sentence to the same destination through .append_section(), after the earlier block-level deduplication.",
-      "suggested_fix": "Deduplicate exact normalized coursework paragraphs after all inline moves and preserve first occurrence and verbatim text.",
-      "confidence": "high"
-    },
-    {
-      "target": "cross_section",
-      "error_type": "duplicate",
-      "severity": "medium",
       "prevalence": "rare",
       "example_course_ids": [
         "aho_PHD-READING-1_2025_autumn_3"
       ],
-      "evidence": "The course is organized through dialogue-driven seminars/workshops in which the discussions centre on each candidate’s research topics, methods, and challenges.",
-      "description": "The same sentence appears verbatim in course_content and teaching_methods. It describes the teaching method.",
-      "root_cause_hypothesis": "Heading-based extraction keeps the repeated sentence in both sections. Cleanup only compares whole section rows.",
-      "suggested_fix": "For AHO, remove an exact normalized teaching-method sentence from course_content when the same full sentence is already present in teaching_methods.",
+      "evidence": "Assignments\n\nPreparation of Reading list. Minimum 50 titles by January 14, 2026",
+      "description": "Apparatus: Reading extracts the directive to attend workshops, complete assignments and join the final presentation. The adjacent list specifying the required reading list, annotated bibliography, literature review and presentation remains in teaching_methods.",
+      "root_cause_hypothesis": "In teaching blocks, .split_inline_coursework() treats Assignments as a general teaching label even after a compulsory-activities block explicitly requiring those assignments.",
+      "suggested_fix": "In AHO teaching blocks, carry an immediately following Assignments heading and its items into coursework_requirements when the preceding compulsory-activities block explicitly requires assignment completion. Stop at the next unrelated heading.",
       "confidence": "high"
     },
     {
-      "target": "cross_section",
+      "target": "assessment",
       "error_type": "formatting_noise",
       "severity": "medium",
       "prevalence": "common",
       "example_course_ids": [
-        "aho_80 131-1_2025_autumn_3",
-        "aho_MURB3-1_2025_spring_1",
-        "aho_12 701-1_2025_autumn_3"
+        "aho_61 121-1_2025_spring_1",
+        "aho_DES4016-1_2025_autumn_3",
+        "aho_MURB3-1_2025_spring_1"
       ],
-      "evidence": "Besvarelsen leveres i Wiseflow. Du må gjøre deg kjent med innlogging og innleveringsmåte i forkant av frist for innlevering av besvarelse.",
-      "description": "Assessment retains submission systems, deadlines and examiner arrangements. Diploma teaching_methods also retains an exam-withdrawal deadline and withdrawal instructions. These logistics sit beside valid design or teaching text.",
-      "root_cause_hypothesis": "There is no AHO-specific cleanup for the sentence and paragraph forms of these notices.",
-      "suggested_fix": "Add narrow AHO cleanup patterns for the observed WISEflow instructions, deadline sentences, examiner-only sentences and diploma withdrawal dates. Remove exam-system phrases from mixed sentences while preserving exam duration, format, aids and source-use rules.",
+      "evidence": "Hjemmeeksamen: Fem timers skriftlig hjemmeeksamen i Wiseflow. Alle hjelpemidler tillatt.",
+      "description": "Otherwise substantive assessment rows retain exam-system wording, examiner arrangements and submission timing. The history exam includes its delivery platform, Interaction Design 2 retains an external-examiner notice and a failed-module resubmission window, and Studietur retains a deadline measured from the last seminar.",
+      "root_cause_hypothesis": "The AHO patterns in .logistics_sentences cover selected standalone WISEflow and deadline notices. These variants and the platform phrase embedded in an assessment-design sentence survive.",
+      "suggested_fix": "Strip the AHO exam-system suffix i Wiseflow within the exam-form sentence, preserving the five-hour duration and permitted aids. Add narrow assessment cleanup for standalone examiner notices, the timing clause in the failed-module notice and the Innlevering av eksamen er ... etter ... deadline sentence.",
       "confidence": "high"
     },
     {
-      "target": "teaching_methods",
+      "target": "cross_section",
       "error_type": "formatting_noise",
       "severity": "low",
       "prevalence": "occasional",
       "example_course_ids": [
         "aho_40 336-1_2025_autumn_2",
-        "aho_60 526-1_2025_autumn_3"
+        "aho_60 526-1_2025_autumn_3",
+        "aho_70 505-1_2025_autumn_3"
       ],
       "evidence": "The students will need to buy materials. Depending on what you already have available, the expenses will be about 1500-3000,-.",
-      "description": "Materials expenses and excursion payment arrangements are included in otherwise substantive teaching methods.",
-      "root_cause_hypothesis": "The prose is inside a mapped Teaching block and no AHO cleanup removes standalone expense sentences.",
-      "suggested_fix": "Strip AHO's observed materials-purchase, expense and excursion-payment sentences from teaching_methods. Preserve the underlying studio activities, excursion and alternative learning task.",
+      "description": "Otherwise substantive teaching rows retain material expenses and excursion payment arrangements. Design Studio retains track capacity lines inside course_content.",
+      "root_cause_hypothesis": "AHO's cleanup leaves these cost sentences and track-capacity lines inside mapped prose blocks.",
+      "suggested_fix": "Extend the AHO cleanup to strip the observed material-purchase and excursion-payment sentences and standalone Max amount of students lines. Preserve the descriptions of the materials-based teaching, the excursion and the design tracks.",
       "confidence": "high"
     },
     {
-      "target": "reading_list",
-      "error_type": "empty_placeholder",
+      "target": "cross_section",
+      "error_type": "duplicate",
       "severity": "low",
-      "prevalence": "occasional",
+      "prevalence": "rare",
       "example_course_ids": [
-        "aho_80 162-1_2025_spring_1",
-        "aho_61 121-1_2025_spring_1"
+        "aho_PHD-READING-1_2025_autumn_3"
       ],
-      "evidence": "Pensumlisten publiseres i Leganto.",
-      "description": "Two reading_list rows consist only of notices that the list will be available in Leganto. The course-plan specification excludes these pointers from sections.",
-      "root_cause_hypothesis": "The placeholder matcher does not cover these two AHO formulations.",
-      "suggested_fix": "Add whole-row matches for Pensumlisten publiseres i Leganto and Litteraturliste vil være tilgjengelig i Leganto, allowing terminal punctuation.",
+      "evidence": "The course is organized through dialogue-driven seminars/workshops in which the discussions centre on each candidate’s research topics, methods, and challenges.",
+      "description": "The plan repeats this teaching-method sentence verbatim under Course description and Teaching, and the extractor carries it into both course_content and teaching_methods.",
+      "root_cause_hypothesis": "Heading-based extraction preserves the two copies in rows whose full texts differ, so row-level deduplication cannot resolve the repeated sentence.",
+      "suggested_fix": "Remove the exact normalized seminar/workshop sentence from course_content when the same full sentence is already present in teaching_methods. Retain its verbatim teaching_methods copy.",
       "confidence": "high"
     }
   ]

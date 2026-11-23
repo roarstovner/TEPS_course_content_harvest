@@ -200,21 +200,73 @@ not new defects.
   teaching_methods (PHD-READING); low, a Leganto pointer ("Pensumlisten
   publiseres i Leganto."), material costs.
 
+## Re-audit 2026-11-23 (AHO and Barratt Due, after the fixes)
+
+The fixes for AHO's access field and exam description and for Barratt
+Due's prerequisite and final-assessment fields were rebuilt in the build
+of 2026-11-23 (08:36-18:59, with both full harvests). Re-run on
+`gpt-6.2-sol`, fresh packets of the same seed with `--pilot` (the sample's
+courses; AHO's suspects changed with the fixes, so 7 of its 20 plans are
+new); the 2026-11-22 findings are the baseline in git. 14 findings, all
+verified.
+
+- **AHO, fixed**: prerequisites under the access headings (the sample has
+  21 plans with prerequisites, 1 before; the reviewer finds one clause
+  missing in one plan); coursework under the exam description's gate
+  heading; the stock Wiseflow notices; the Leganto pointer.
+- **AHO, left**: coursework gates written in the teaching text or under
+  an "Attendance:" label, not under a gate heading ("Students are required
+  to attend at least 80% of the main course events", "Final reviews are
+  mandatory", "Alle oppgaver må være levert for å bli sensurert i kurset",
+  "The student must submit all assignments in the course to receive final
+  assessment.", `aho_70 509-1_2025_autumn_3`, high): of the sample's 42
+  plans without a coursework section, 20 mention attendance or submission,
+  some as expectations only ("Fysisk oppmøte til undervisning ... er
+  forventet og nødvendig for å oppfylle læringsutbytte.", a stock wording),
+  which is no gate; this is coursework 0.37. One-plan highs: Design
+  Studio's tracks carry their own "LEARNING OUTCOMES" / "EVALUATION"
+  lines inside course_content (`aho_70 505-1_2025_autumn_3`); Interaction
+  Design 2 loses "have taken Interaction Design 1" for international
+  students in a sentence that also gives admission priorities
+  (`aho_DES4016-1_2025_autumn_3`). Teaching sentences in course
+  descriptions (VALG3, "Kurset er lagt opp som et verkstedkurs ...") are
+  the known deviation of mixed paragraphs under a mapped heading. Medium:
+  "i Wiseflow" inside the exam-form sentence, examiner notices; low:
+  material costs, a sentence in both course_content and teaching_methods.
+  The PhD reading course's assignment list stays in teaching_methods
+  (medium); its dates go with the anonymizer fix of 2026-11-23.
+- **Barratt Due, fixed**: the prerequisites of ENT2100, SPIN5110 and
+  KAM4300 (missing in 3 of 20, now 1); the validity sentence's plural;
+  DID's "Obligatorisk kurs"; "Avsluttende vurdering" in assessment.
+- **Barratt Due, left**: DID1's prerequisite field "Bachelorgrad i musikk
+  og Opptak til Praktisk-pedagogisk utdanning" is dropped as admission,
+  though it names a degree (high, one plan); HIST1100's coursework field
+  opens with three sentences on what the writing module teaches (high, one
+  plan; mixed paragraph under a mapped heading, known deviation); the PPU
+  plans' resit policy "Den delen som ikke er bestått må gjennomføres på
+  nytt. Deretter gis det ny samlet vurdering." (medium, 3 plans, a stock
+  wording); elective admission and capacity rules in course content
+  (KAMFOR5100, SPIN5110; medium, as before); the HINS/KAM activity lists in
+  course content (high as rated, but the user kept them on 2026-11-23: the
+  known deviation); ALEX5100's assessment names its parts while their
+  lengths are in the coursework field (medium; the page's own layout).
+
 ## Verdict
 
-Gate numbers of this check (build of 2026-11-22; `PILOT_GATE`: assessment
-0.90, coursework 0.70, unmapped_headings at most 0.65):
+Gate numbers of this check (build of 2026-11-22 for DMMH and LDH, of
+2026-11-23 for AHO and Barratt Due; `PILOT_GATE`: assessment 0.90,
+coursework 0.70, unmapped_headings at most 0.65):
 
 | Institution | assessment | coursework | no_sections | unmapped_headings | Verdict |
 |---|---|---|---|---|---|
 | dmmh | 1.00 (n 69) | 0.94 (69) | 0 | 0.50 (n 2262) | **ready for full harvest**: medium and low left, rebuild-only |
-| aho | 1.00 (n 68) | **0.28** (68) | 0 | 0.275 (n 356) | **not ready**: prerequisites under the access headings, coursework in assessment (high, rebuild-only) |
+| aho | 1.00 (n 68) | **0.37** (68) | 0 | 0.22 (n 330) | **ready with known limits** (full harvest done): coursework gates in the teaching text (high, rebuild-only); one-plan highs left |
 | ldh | 1.00 (n 25) | **0.36** (25) | 0 | 0 (n 20) | **ready with known limits**: coursework 0.36 (the site's PDFs, below); the appendix and footers go with the full harvest |
-| barrattdue | 1.00 (n 46) | 1.00 (46) | 0 | 0.098 (n 471) | **not ready**: prerequisites still missing in 3 of 20 (high, rebuild-only); medium left |
+| barrattdue | 1.00 (n 46) | 1.00 (46) | 0 | 0.098 (n 471) | **ready** (full harvest done): DID1's prerequisites (one plan) and medium left, rebuild-only |
 | onh | – | – | – | – | **open**: waits for a DBH snapshot with autumn 2026 |
 
-The verdicts of 2026-11-21 (all three not ready, AHO open) are in git
-history. The notes below are from that run and still hold (LDH's coursework
+The verdicts of 2026-11-21 (all three not ready, AHO open) and of
+2026-11-22 (AHO and Barratt Due not ready) are in git history. The notes below are from that run and still hold (LDH's coursework
 is 0.36 now: the "ingen obligatorisk aktivitet" row no longer counts).
 
 - **LDH coursework 0.40** has a cause on the site: the bachelor study-plan

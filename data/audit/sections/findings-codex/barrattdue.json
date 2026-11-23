@@ -4,7 +4,7 @@
   "model": "gpt-6.2-sol",
   "n_courses_reviewed": 20,
   "n_suspects_reviewed": 4,
-  "overall_assessment": "All four pre-pass flags are false alarms: the two Vurderingsformer lines describe topics in music didactics, GRUSKU5100 has a complete one-line materials note, and VERK2100 has a legitimate long bibliography. The extractor preserves the learning-outcome groups, detailed DID subcourses and explicit PPU exam-entry gates. The controls show a recurring mix of teaching activities and subject matter, residual resit rules and several missed academic prerequisites.",
+  "overall_assessment": "All four pre-pass flags are false alarms: the DID lines describe music-didactics topics, GRUSKU5100 has a complete one-line materials note, and VERK2100 has a legitimate bibliography. The 16 random controls reveal recurring teaching activities filed under course content and occasional elective administration, while assessment retains recurring resit rules across both samples. Learning-outcome groups and explicit PPU exam-entry gates are preserved in the visible material, with two source-plan tails capped by the packet builder.",
   "findings": [
     {
       "target": "cross_section",
@@ -17,24 +17,9 @@
         "barrattdue_KAM4300-1_2026_autumn_1"
       ],
       "evidence": "Individuell undervisning med hovedinstrumentlærer\nAkkompagnement med instituttets akkompagnatør",
-      "description": "At least six random controls place discrete delivery activities such as individual lessons, masterclasses, workshops or independent rehearsal in course_content. HINS2200's course_content row consists entirely of teaching activities. KAM4300 combines distinct repertoire categories and teaching activities within one block.",
-      "root_cause_hypothesis": "The Barratt Due heading override in R/institution_config.R maps all of Undervisning og læringsformer to course_content. The specification documents this behavior for the mixed blocks.",
-      "suggested_fix": "Add a Barratt Due refinement that moves standalone delivery lines and activity lists from this heading into teaching_methods, using the recurring main-instrument and chamber-music list wording. Keep subject entries such as Stemmeanatomi and chamber repertoire categories in course_content.",
-      "confidence": "high"
-    },
-    {
-      "target": "prerequisites",
-      "error_type": "missing_section",
-      "severity": "high",
-      "prevalence": "occasional",
-      "example_course_ids": [
-        "barrattdue_ENT2100-1_2026_autumn_1",
-        "barrattdue_SPIN5110-1_2026_autumn_1"
-      ],
-      "evidence": "Krav til forkunnskaper: Gjennomført 1.studieår bachelor i utøvende musikk.",
-      "description": "The explicit prior-study requirements in ENT2100 and SPIN5110 produce no prerequisites row. ENT2100 requires completion of year one and SPIN5110 names completion of years one and two as the normal expectation.",
-      "root_cause_hypothesis": "The labelled-facts reader passes the field to .admission_prerequisites() in R/extract_sections.R, whose positive prerequisite regex does not recognize these Gjennomført formulations with no Bestått or course code.",
-      "suggested_fix": "Recognize Gjennomført and Normalt gjennomført followed by numbered study years in the labelled prerequisite field, including optional whitespace after the ordinal dot and a second year joined by og.",
+      "description": "Six random controls file delivery activities such as individual lessons, workshops and independent rehearsals under course_content. HINS2200 consists entirely of such activities in that row, while KAM4300 includes both repertoire categories and delivery activities.",
+      "root_cause_hypothesis": "The Barratt Due override in R/institution_config.R sends the whole Undervisning og læringsformer column to course_content.",
+      "suggested_fix": "Route the recurring HINS lesson and performance activity lines and KAM workshop, group instruction and rehearsal lists to teaching_methods. Preserve subject entries such as Stemmeanatomi and repertoire categories in course_content.",
       "confidence": "high"
     },
     {
@@ -43,73 +28,28 @@
       "severity": "high",
       "prevalence": "rare",
       "example_course_ids": [
-        "barrattdue_KAM4300-1_2026_autumn_1"
+        "barrattdue_DID1-1_2026_autumn_1"
       ],
-      "evidence": "Bestått KAM3300 Ensemblesang og kammermusikk 2",
-      "description": "The requirement to have passed KAM3300 is visible in the facts column but produces no prerequisites row.",
-      "root_cause_hypothesis": "The facts-list reader in R/blocks.R relies on a mapped field label. The standalone Bestått line has no label and stays in facts.",
-      "suggested_fix": "In the Barratt Due facts reader, route otherwise unlabelled items starting with Bestått and a course code to the existing prerequisite filter. Check standalone lines in a facts item as well as separate list items.",
-      "confidence": "high"
-    },
-    {
-      "target": "coursework_requirements",
-      "error_type": "wrong_content",
-      "severity": "high",
-      "prevalence": "occasional",
-      "example_course_ids": [
-        "barrattdue_DID1-1_2026_autumn_1",
-        "barrattdue_DID2-1_2026_autumn_1"
-      ],
-      "evidence": "Obligatorisk kurs: instrumentalteknikk og kroppsbevissthet",
-      "description": "Both DID plans require approval of participation in mandatory courses. The named instrumental technique and body awareness course remains in course_content and is absent from coursework_requirements, which correctly contains each plan's other obligatory-course list.",
-      "root_cause_hypothesis": "The inline coursework splitter handles the standalone Obligatorisk kurs label and its list. The inline colon form and the sentence form with i fail to move.",
-      "suggested_fix": "Extend the Barratt Due coursework extraction to move the complete standalone line when Obligatorisk kurs is immediately followed by an inline title after a colon or by i and a title. Preserve the current handling for a separate list.",
-      "confidence": "high"
-    },
-    {
-      "target": "coursework_requirements",
-      "error_type": "wrong_content",
-      "severity": "medium",
-      "prevalence": "occasional",
-      "example_course_ids": [
-        "barrattdue_SGRU1300-1_2026_autumn_1",
-        "barrattdue_SPIN5110-1_2026_autumn_1"
-      ],
-      "evidence": "Gjennomført undervisning og arbeidskrav er gyldige i to semestre etter ordinær eksamen.",
-      "description": "SGRU1300 and SPIN5110 keep the validity period of completed coursework in teaching_methods, leaving that condition out of coursework_requirements. Their source uses the plural gyldige.",
-      "root_cause_hypothesis": "The Barratt Due .sentence_moves rule in R/extract_sections.R ends its pattern at a word boundary after singular gyldig.",
-      "suggested_fix": "Allow both gyldig and gyldige in the existing sentence move to coursework_requirements.",
+      "evidence": "Krav til forkunnskaper: Bachelorgrad i musikk og Opptak til Praktisk-pedagogisk utdanning",
+      "description": "DID1 has no prerequisites row even though its prerequisite field specifies a completed degree in music alongside admission to the programme. The specification keeps a mixed requirement together when it names academic preparation and admission.",
+      "root_cause_hypothesis": "The positive prerequisite pattern and the generic degree exclusion in .admission_prerequisites() in R/extract_sections.R can reject this subject-specific degree clause.",
+      "suggested_fix": "Recognize Bachelorgrad i musikk followed by the PPU admission clause in the Barratt Due prerequisite field. Retain the whole requirement under the mixed-sentence rule and continue filtering bare programme admission.",
       "confidence": "high"
     },
     {
       "target": "assessment",
       "error_type": "other",
       "severity": "medium",
-      "prevalence": "common",
+      "prevalence": "widespread",
       "example_course_ids": [
         "barrattdue_DID2-1_2026_autumn_1",
-        "barrattdue_PED2-1_2026_autumn_1",
-        "barrattdue_SPIN5110-1_2026_autumn_1"
+        "barrattdue_GRUSKU5100-1_2026_autumn_1",
+        "barrattdue_HINS2200-1_2026_autumn_1"
       ],
       "evidence": "Den delen som ikke er bestått må gjennomføres på nytt. Deretter gis det ny samlet vurdering.",
-      "description": "Assessment still retains recurring resit policies after the logistics cleanup. The three PPU plans tell students to repeat the failed component and receive a new overall result. Other plans retain generic instructions to repeat all or part of a course, or repeat the ordinary exam format as a resit. These lines add no ordinary assessment design and appear in suspects and controls.",
-      "root_cause_hypothesis": "Ny vurdering maps to assessment and is merged with the ordinary design before cleanup. R/extract_sections.R removes examiner and deadline lines but deliberately preserves several stock resit formulations.",
-      "suggested_fix": "Keep Barratt Due Ny vurdering blocks distinct until cleanup. Remove the repeated PPU failed-component policy, generic course-repeat instructions and resit lines that merely repeat the ordinary format. Preserve a distinct assessment design if one is specified.",
-      "confidence": "high"
-    },
-    {
-      "target": "assessment",
-      "error_type": "truncated",
-      "severity": "medium",
-      "prevalence": "occasional",
-      "example_course_ids": [
-        "barrattdue_GRUSKU5100-1_2026_autumn_1",
-        "barrattdue_HINS1200-1_2026_autumn_1"
-      ],
-      "evidence": "Avsluttende vurdering: Mappevurdering",
-      "description": "The source explicitly designates portfolio assessment in these two overviews. The ordinary assessment rows retain details about the assessed work and grading but omit that designation. HINS1200 names the portfolio only in the resit line.",
-      "root_cause_hypothesis": "The Barratt Due labelled-facts reader recognizes the prerequisite label but leaves the summary assessment-form label in facts.",
-      "suggested_fix": "Read Avsluttende vurdering from the facts column and use its value to supplement the ordinary assessment row when the detailed text does not already name the same form.",
+      "description": "Assessment retains resit policy across suspects and controls. Three PPU plans repeat the same failed-component policy. Other recurring forms instruct students to repeat all or part of the course or restate the ordinary assessment format as a resit.",
+      "root_cause_hypothesis": "Ny vurdering maps to assessment. The Barratt Due cleanup in R/extract_sections.R removes individual decision and examiner language but leaves these recurring resit instructions.",
+      "suggested_fix": "Use the Ny vurdering heading to identify resit text before section consolidation. Remove the recurring failed-component and course-repeat policies and resit lines that only repeat the ordinary form. Keep any distinct assessment design.",
       "confidence": "high"
     },
     {
@@ -122,9 +62,37 @@
         "barrattdue_SPIN5110-1_2026_autumn_1"
       ],
       "evidence": "Opptak i emnet forutsetter at kriterier som besetning og repertoar oppfylles på bakgrunn av søkermasse og tilgjengelig undervisningsressurs.",
-      "description": "Elective admission, priority and capacity rules remain inside course_content. KAMFOR5100 describes selection by applicant pool and teaching resources. SPIN5110 retains the priority for graduating students and allocation according to staff availability.",
-      "root_cause_hypothesis": "The Barratt Due Undervisning og læringsformer override sends the entire block to course_content. Section cleanup does not filter these elective-allocation sentences from that target.",
-      "suggested_fix": "Apply a Barratt Due sentence filter for its explicit elective selection and capacity phrases, including Opptak i emnet forutsetter and the SPIN5110 priority and allocation sentences. Preserve the repertoire descriptions and instrument list.",
+      "description": "Course content retains elective admission and capacity language in KAMFOR5100 and student priority and staff allocation rules in SPIN5110.",
+      "root_cause_hypothesis": "The Barratt Due heading override routes the prose to course_content and the cleanup leaves the elective-allocation sentences in that section.",
+      "suggested_fix": "Filter the explicit elective-admission sentence in KAMFOR5100 and the priority and allocation sentences in SPIN5110 from the Barratt Due course_content row. Preserve the programme subject and repertoire text.",
+      "confidence": "high"
+    },
+    {
+      "target": "course_content",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "barrattdue_HIST1100-1_2026_autumn_1"
+      ],
+      "evidence": "Kurset gir innføring i grunnleggende formell akademisk skriving og en grunnleggende innføring i bruk av KI.",
+      "description": "The HIST1100 coursework row contains three sentences on what the academic-writing module teaches, including AI use and artistic development work in performance. Those details are absent from course_content. The following weekly assignments and approval condition are genuine coursework requirements.",
+      "root_cause_hypothesis": "The Arbeidskrav mapping leaves the entire mixed Akademisk skriving paragraph in coursework_requirements.",
+      "suggested_fix": "For the HIST1100 academic-writing paragraph, move the subject-description sentences before Det gis 1-3 korte, ukentlige oppgaver to course_content. Keep the assignments and their approval condition in coursework_requirements.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "truncated",
+      "severity": "medium",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "barrattdue_ALEX5100-1_2026_autumn_1"
+      ],
+      "evidence": "Avsluttende essay på mellom 1600 og 2000 ord basert på erfaringer med teknikken gjennom emnet",
+      "description": "The portfolio explicitly assesses the written assignments and final essay, but the assessment row gives only their general names. The number of assignments and the essay length and subject are available solely in the coursework row, where these submissions also have an explicit approval requirement.",
+      "root_cause_hypothesis": "The Arbeidskrav and Vurderingsformer heading mappings do not link the brief portfolio description to the listed submissions it assesses.",
+      "suggested_fix": "When the Barratt Due portfolio explicitly assesses the same named assignments and essay, place their verbatim submission specifications with assessment and retain the explicit approval condition in coursework_requirements.",
       "confidence": "high"
     }
   ]
