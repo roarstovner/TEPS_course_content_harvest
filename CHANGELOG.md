@@ -104,6 +104,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- English-tree pages (UiA, NIH): facts labels and Course Leader, English headings (#612)
 - Sections (Barratt Due) from the 2026-11-23 re-audit: DID1 prerequisites, PPU resit wording, elective admission (#611)
 - Sections (AHO): coursework gates in teaching text, coursework gate 0.37 (#610)
 - Anonymizer: a title and a name alone in brackets (ntnu topic lists, uio) (#609)
