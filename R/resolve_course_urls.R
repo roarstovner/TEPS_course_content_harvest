@@ -75,6 +75,8 @@ resolve_course_urls <- function(df,
       resolve_urls_himolde_batch(df)
     } else if (inst == "phs") {
       resolve_urls_phs_batch(df)
+    } else if (inst %in% c("uia", "nih")) {
+      resolve_urls_english_tree_batch(df, inst)
     } else if (inst == "fhs") {
       resolve_urls_fhs_batch(df, .progress = .progress, checkpoint = discovery)
     } else if (inst == "nhh") {
@@ -294,6 +296,58 @@ resolve_urls_phs_batch <- function(df, index = vortex_course_index(
                                      get_institution_config("phs")$request_delay)) {
   cli::cli_alert_info("PHS: {nrow(index$pages)} pages in {length(index$read)} year folders")
   vortex_match_urls(df, index)
+}
+
+#' Resolve URLs for a batch of UiA or NIH courses: the Norwegian page, or
+#' the English tree's where the Norwegian page is missing
+#'
+#' A UiA or NIH page is /studier/emner/{year}/{var|host}/{code}.html
+#' (add_course_url_uia(), add_course_url_nih()), but a course taught in
+#' English may have its page only in the English tree,
+#' /english/studies/courses/{year}/{spring|autumn}/{code}.html (checked
+#' 2026-11-23: UiA's MF-102 and NIH's LKI152 answer 404 on the Norwegian
+#' path, 200 there). The English tree also holds a translation of most
+#' courses that have a Norwegian page (UiA: some 1,600 English pages a year,
+#' two thirds of them with a Norwegian page that answered 200), so the
+#' English page is taken only where the Norwegian URL answered 404 when last
+#' requested (raw_not_found_urls()): a course-year new to the harvest gets the
+#' Norwegian URL first, and a retry (`retry = "not_found"`) the English page.
+#' vortex_course_index() lists the English tree's pages of the offerings'
+#' years; the page must be of the offering's year and semester. The Norwegian
+#' listings are not read: UiA's stop at 500 pages, so they cannot tell that a
+#' page is missing.
+#'
+#' @param df A tibble with course_code, year, semester_name columns
+#' @param inst "uia" or "nih"
+#' @param index Pages of the English tree, from vortex_course_index()
+#' @param gone The Norwegian URLs that answered 404, from raw_not_found_urls()
+#' @return df with url filled in
+resolve_urls_english_tree_batch <- function(df, inst, index = NULL, gone = raw_not_found_urls(inst)) {
+  built <- as.character(switch(inst, uia = add_course_url_uia, nih = add_course_url_nih)(
+    df$course_code, df$year, df$semester_name))
+  df$url <- built
+  if (!any(built %in% gone)) return(df)
+  index <- index %||% vortex_course_index(unique(df$year[built %in% gone]),
+                                          sub("/studier/emner/.*", "/english/studies/courses/", built[1]),
+                                          get_institution_config(inst)$request_delay)
+  # the page's code as the builder writes it (UiA without DBH's -G suffix,
+  # NIH without the Norwegian letters)
+  key <- paste(sub("\\.html$", "", basename(built)), df$year, semester_to_url(df$semester_name))
+  english <- index$pages$url[match(key, paste(index$pages$code, index$pages$year, index$pages$semester))]
+  english[!built %in% gone] <- NA
+  cli::cli_alert_info("{toupper(inst)}: the English page for {sum(!is.na(english))} of {nrow(df)} offerings")
+  df$url <- dplyr::coalesce(english, built)
+  df
+}
+
+# The URLs of an institution whose latest request in the raw store answered
+# not found (fetch_outcome(), as in its fetch ledger), read without the pages.
+raw_not_found_urls <- function(inst, raw_dir = RAW_DIR) {
+  rows <- read_raw(harvest_files(inst, raw_dir), content = FALSE)
+  if (!nrow(rows)) return(character())
+  led <- fetch_ledger(rows, inst, "", raw_dir = raw_dir)
+  led <- led[!is.na(led$url) & !duplicated(led$url, fromLast = TRUE), ]
+  led$url[led$outcome == "not_found"]
 }
 
 #' Resolve URLs for a batch of NHH courses from the site's search

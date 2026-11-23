@@ -115,7 +115,9 @@ institution_configs <- list(
 
   uia = list(
     code = "1171",
-    strategy = "standard",
+    # the Norwegian page, or the English tree's where the Norwegian page
+    # answered 404 (resolve_urls_english_tree_batch())
+    strategy = "url_discovery",
     selector = "#right-main",
     # the breadcrumbs (they end with the title) and the facts' links
     # ("Timeplan", "Pensumliste (Leganto)")
@@ -570,7 +572,8 @@ institution_configs <- list(
 
   nih = list(
     code = "1260",
-    strategy = "standard",
+    # as uia's: the Norwegian page, or the English tree's
+    strategy = "url_discovery",
     # The title, the facts list and the plan; not the course coordinator
     # (names), the table of contents' heading and the FS fetch stamp
     selector = "#vrtx-fs-emne-content",

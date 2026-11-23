@@ -7,7 +7,33 @@ the code in lower case and the Norwegian letters written as ASCII
 (`/studier/emner/{year}/{host|var}/`, paged with `?page=n&u-page=n`)
 list only the courses that have a page: 5 for 2021, 22 for 2022, 163 for
 2025. A 404 for a course the index of its year does not list is final:
-NIH has no page for it (`data/data_notes.qmd`, NIH).
+NIH has no page for it (`data/data_notes.qmd`, NIH). A course taught in
+English may have its page only in the English tree,
+`/english/studies/courses/{year}/{spring|autumn}/{code}.html` (THP111,
+LKI152, SPM123; from 2023), found as UiA’s below.
+
+**UiA.** The page is `/studier/emner/{year}/{host|var}/{code}.html`, the
+code in lower case without DBH’s variant suffixes `-G`, `-G2` and `-D`
+(`add_course_url_uia()`; `data/data_notes.qmd`, UiA). A course taught in
+English may have its page only in the English tree,
+`/english/studies/courses/{year}/{spring|autumn}/{code}.html` (MF-102,
+ME-112, ORG208, IS-100: 404 on the Norwegian path; from 2020). The
+English tree also holds a translation of most courses with a Norwegian
+page: some 1,600 English pages a year at UiA (2020-2026; 50 at NIH), and
+of UiA’s 11,694 English pages of 2020-2027, 7,779 have a Norwegian page
+that answered 200 (read 2026-11-23). So
+`resolve_urls_english_tree_batch()` (url_discovery, UiA and NIH, since
+2026-11-23) gives every offering the Norwegian URL, and the English page
+only where the Norwegian URL answered 404 when last requested
+(`raw_not_found_urls()`, from the raw store) and the English tree’s
+listing of the offering’s year (`vortex_course_index()`, read only then)
+has a page of its code in its semester. A course-year new to the harvest
+thus gets the Norwegian URL, and its English page with the next retry of
+pages not found (`retry = "not_found"`). The Norwegian listings are not
+read: UiA’s stop at 500 pages, so they cannot show that a page is
+missing. The English pages have the Norwegian layout with English labels
+(“Course Leader:”, which the anonymizer removes, “Teaching and learning
+methods”, “Examinations”). robots.txt disallows only `/vrtx` at both.
 
 **NMBU.** The page is `https://www.nmbu.no/emne/{CODE}`, with the code
 without Norwegian letters (MILJØ300 is `MILJO300`; with Ø, raw or

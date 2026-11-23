@@ -19,7 +19,7 @@ ensure_output_columns <- function(df) {
 
 # --- Strategy: standard ---
 # URL -> HTTP fetch -> CSS extract
-# Used by: oslomet, uia, ntnu, inn, hvl, mf, nih, nmbu, uib, nord
+# Used by: oslomet, ntnu, inn, hvl, mf, nmbu, uib, nord
 
 harvest_standard <- function(df, config) {
   df <- fetch_html_with_checkpoint(df, checkpoint_dir(config$name, "html", df$year), config = config)
@@ -30,7 +30,7 @@ harvest_standard <- function(df, config) {
 
 # --- Strategy: url_discovery ---
 # URL -> discover real URL -> HTTP fetch -> CSS extract
-# Used by: hivolda, uit, uio, hiof
+# Used by: hivolda, uit, uio, hiof, uia, nih
 
 harvest_url_discovery <- function(df, config) {
   # Resolve URLs (hivolda, uit, uio have institution-specific batch resolvers)

@@ -1042,6 +1042,36 @@ offerings get a plan after a retry harvest (`retry = "no_url"`); no
 offering with a page of its own loses its plan (every HiØF page's title
 names its semesters, and none ends before its offering). *Since:* 2026-10-29.
 
+**UiA and NIH: an offering whose Norwegian page answered 404 takes its page
+in the English tree.** A course taught in English may have its page only at
+/english/studies/courses/{year}/{spring|autumn}/{code}.html, not at the
+Norwegian /studier/emner/{year}/{var|host}/{code}.html (UiA's MF-102, some
+800 exam registrations a year, ME-112 and ORG208; NIH's THP111 and LKI152).
+Since 2026-11-23 the URL discovery reads the English tree's year listing and
+gives such an offering that page when its Norwegian URL answered 404 when
+last requested and the listing has a page of its code in its year and
+semester (`resolve_urls_english_tree_batch()`, `docs/institutions.md`
+"UiA"); every other offering keeps the Norwegian URL. The English pages have
+the Norwegian layout, and the anonymizer removes "Course Leader:" with the
+name as on the Norwegian pages. *Why:* these offerings had no plan though
+their institution publishes one. *Rejected:* the English page wherever the
+English tree lists one: the English tree holds a translation of most courses
+(of UiA's 11,694 English pages of 2020-2027, 7,779 have a Norwegian page that
+answered 200), so the plans of those offerings would change language
+between harvests; deciding from the Norwegian listings, since UiA's stop at
+500 pages and cannot show a page missing; trying the English URL after each
+404 inside the fetch, which would store the English page under the
+Norwegian URL in the raw store and the fetch ledger. *Consequence:* by the
+English listings of 2026-11-23 and the raw store and gaps of the 2026-11-23
+build, 1,743 UiA offerings (1,704 course-years without a plan, 487 codes;
+324 course-years of 2026, 104-323 a year in 2020-2025) and 148 NIH
+offerings (125 course-years, 53 codes; 38 of 2026, 2023-2026) get an
+English URL and, after a retry harvest, an English plan; about half the
+UiA offerings are of courses DBH registers as taught in Norwegian (901 of
+1,743). A course-year new to a harvest gets the English page only with the
+next retry of pages not found (`retry = "not_found"`). English headings not
+in the heading map go to an audit of their sections. *Since:* 2026-11-23.
+
 **Steiner: a PDF emne joins the DBH courses of its name, and PEL1.4/PEL1.5
 also M-PEL2.1/M-PEL2.2.** Steiner's five subject PDFs are those of the
 bachelor (Steinerpedagogisk lærerutdanning); their emne headings ("Norsk 1,

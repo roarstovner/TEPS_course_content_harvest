@@ -5,7 +5,7 @@ add_course_url <- function(df) {
         institution,
 
         "oslomet" ~ add_course_url_oslomet(course_code, year, semester_name),
-        "uia"     ~ add_course_url_uia(course_code, year, semester_name),
+        "uia"     ~ NA_character_,  # UiA's Norwegian page or English-tree page via resolve_course_urls()
         "ntnu"    ~ add_course_url_ntnu(course_code, year, semester_name),
         "inn"     ~ add_course_url_inn(course_code, year, semester_name),
 
@@ -21,7 +21,7 @@ add_course_url <- function(df) {
         "nmh"     ~ NA_character_,  # NMH's page names come from its study handbooks' course lists via resolve_course_urls()
 
         "nord"    ~ add_course_url_nord(course_code, year, semester_name),
-        "nih"     ~ add_course_url_nih(course_code, year, semester_name),
+        "nih"     ~ NA_character_,  # NIH's Norwegian page or English-tree page via resolve_course_urls()
         "fhs"     ~ NA_character_,  # FHS's versions come from each code's page via resolve_course_urls()
         "phs"     ~ NA_character_,  # PHS's pages come from its year folders' listings via resolve_course_urls()
 
