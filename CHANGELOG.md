@@ -104,6 +104,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- NMH: add the project series CBE and JAENS to NMH_SERIES (#591)
+- VID: suffix fallback in the sitemap match (BASOS3030-H -> basos3030, BAVER2040 -> baver2040-d) (#590)
+- NTNU URL builder: drop any one-letter variant suffix (-B, -C, -K), not only -A (#588)
+- UiB URL builder: transliterate æ/ø/å in course codes (#587)
 - Sections (LDH): placement arrangements under 'Innhold' of BSYP courses; check DMMH BLPRA100's Forkunnskapskrav (#600)
 - Sections: placeholders 'Se avsnittet «…» i studieplanens generelle del.' (DMMH), 'I emnet inngår ingen obligatorisk aktivitet.' (LDH) (#599)
 - Sections: stock logistics of DMMH and Barratt Due; Barratt Due validity and progression sentences (#598)
