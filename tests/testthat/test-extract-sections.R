@@ -2331,8 +2331,8 @@ test_that("aho: prerequisites of the access field, coursework of the exam descri
     "Compulasory attendance requirements:", "Students will be assessed on their active participation.",
     "Compulsory work requirements:", "Students are required to present their work at the end of each module.", sep = "\n"))
   expect_equal(s[["assessment"]], "Form of assessment: Assessment folder\n\nGrading scale: Pass/fail")
-  # the condition for being assessed and the attendance block move; a
-  # wording of one plan stays; the exam system, the source-use notice and
+  # the condition for being assessed and the attendance block move; the
+  # parts of the portfolio stay; the exam system, the source-use notice and
   # the Moodle pointer go
   s <- ic(paste0("Vurderingsform: Vurderingsmappe\n\nKommentar: Hver modul blir vurdert separat. For å få semesterkarakter må ",
                  "sluttleveranse av alle moduler være innlevert. Students need to present and submit all projects in order ",
@@ -2346,6 +2346,52 @@ test_that("aho: prerequisites of the access field, coursework of the exam descri
     "Students need to present and submit ",
     "all projects in order to be assessed for the course.\nOppmøte\nKurset er praksisbasert der høyt oppmøte og stor ",
     "egeninnsats er en forutsetning for gjennomføring av kurset."))
+  # gates in the teaching text and the exam comment move: a requirement, a
+  # consequence or an attendance threshold; a bare expectation, the
+  # assessment design, the final work and a lead-in stay
+  mv <- function(x, from) {
+    out <- .move_sentences(tibble::tibble(section = from, raw_text = x), "aho")
+    stats::setNames(trimws(out$raw_text), out$section)
+  }
+  s <- mv(paste0("Attendance:\n\nAttendance is expected. Final reviews are mandatory\n\nExcursion:\n\n",
+                 "Fysisk oppmøte til undervisning, veiledning og andre undervisningsaktiviteter er forventet og ",
+                 "nødvendig for å oppfylle læringsutbytte. Det forventes av studentene at de er aktivt deltakende, ",
+                 "og det forventes 80 % oppmøte på forelesninger. Students are required to attend weekly seminars."),
+          "teaching_methods")
+  expect_equal(s[["teaching_methods"]], paste0(
+    "Attendance:\n\nAttendance is expected.\n\nExcursion:\n\nFysisk oppmøte til undervisning, veiledning og andre ",
+    "undervisningsaktiviteter er forventet og nødvendig for å oppfylle læringsutbytte."))
+  expect_equal(s[["coursework_requirements"]], paste0(
+    "Final reviews are mandatory\nDet forventes av studentene at de er aktivt deltakende, og det forventes 80 % ",
+    "oppmøte på forelesninger. Students are required to attend weekly seminars."))
+  # the label goes with a paragraph that all moves, and stays over one that stays
+  expect_equal(mv("Oppmøte:\n\nStudenter må delta på minimum 50 % av forelesningene.\n\nVeiledning", "teaching_methods"),
+               c(teaching_methods = "Veiledning",
+                 coursework_requirements = "Oppmøte:\nStudenter må delta på minimum 50 % av forelesningene."))
+  expect_equal(mv("Oppmøte\n\nDet er forventet tilstedeværelse på sal.", "assessment"),
+               c(assessment = "Oppmøte\n\nDet er forventet tilstedeværelse på sal."))
+  s <- mv(paste0("Obligatorisk innleveringer av en del mindre skriftlige oppgaver underveis i kurset. Alle oppgaver må ",
+                 "være levert for å bli sensurert i kurset.\n\nEt avsluttende obligatorisk essay på slutten av kurset ",
+                 "må leveres.\n\nComment: The students will be assessed on the quality of submitted design projects. ",
+                 "The student must submit all assignments in the course to receive final assessment. Assessment ",
+                 "criteria: Students are assessed based on two mandatory coursework assignments. Deliveries from all ",
+                 "three phases are required. Alle prosjektoppgavene må leveres. Oppmøte påkrevd: Ja\n\n",
+                 "In order to be assessed in this course, the student must have completed the following activities ",
+                 "and assignments:\n\nThe portfolio consists of individual and group work."), "assessment")
+  expect_equal(s[["assessment"]], paste0(
+    "Et avsluttende obligatorisk essay på slutten av kurset må leveres.\n\nComment: The students will be assessed ",
+    "on the quality of submitted design projects. Assessment criteria: Students are assessed based on two mandatory ",
+    "coursework assignments. Deliveries from all three phases are required. Alle prosjektoppgavene må leveres.\n\n",
+    "In order to be assessed in this course, the student must have completed the following activities and ",
+    "assignments:\n\nThe portfolio consists of individual and group work."))
+  expect_equal(s[["coursework_requirements"]], paste0(
+    "Obligatorisk innleveringer av en del mindre skriftlige oppgaver underveis i kurset. Alle oppgaver må være ",
+    "levert for å bli sensurert i kurset.\nThe student must submit all assignments in the course to receive final ",
+    "assessment. Oppmøte påkrevd: Ja"))
+  for (x in c("The course is run as a design studio, so it requires a high degree of studio work and presence from the students.",
+              "In addition, students must work independently on research and assignments between sessions.",
+              "Du må gjøre deg kjent med innlogging og innleveringsmåte i forkant av frist for innlevering av besvarelse."))
+    expect_false(.aho_gate_sentence(x))
   # the exam form in Wiseflow stays; elsewhere the logistics stay
   expect_equal(ic("Hjemmeeksamen: Fem timers skriftlig hjemmeeksamen i Wiseflow.")[["assessment"]],
                "Hjemmeeksamen: Fem timers skriftlig hjemmeeksamen i Wiseflow.")

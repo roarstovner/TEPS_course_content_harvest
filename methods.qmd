@@ -2848,6 +2848,60 @@ more pages. Elsewhere (15 pages per raw partition of every institution) one
 UiT and one NMBU page change (the gate list, a doubled line). `course_plan`
 and the plan ids do not change. *Since:* 2026-11-22.
 
+**AHO: coursework gates in the teaching text and the exam comment.** AHO
+writes most of its gates in running text under the teaching or in the exam
+description's comment, or under an "Attendance:"/"Oppmøte:" label, not under
+a coursework heading. A sentence there about attendance or submission now
+moves to coursework requirements when it states a requirement (mandatory,
+compulsory, required, obligatorisk, må: "Students are required to attend
+weekly seminars.", "Final reviews are mandatory", "Obligatorisk
+innleveringer av en del mindre skriftlige oppgaver underveis i kurset.",
+"Oppmøte påkrevd: Ja"), a consequence ("Alle oppgaver må være levert for å
+bli sensurert i kurset.", "The student must submit all assignments in the
+course to receive final assessment.", "... in order to pass the course") or
+an attendance threshold, also when phrased as an expectation ("det
+forventes 80 % oppmøte på forelesninger", "There is at least a 90 %
+expected attendance ..."). A bare expectation without a threshold stays
+where it is: the stock "Fysisk oppmøte til undervisning, veiledning og andre
+undervisningsaktiviteter er forventet og nødvendig for å oppfylle
+læringsutbytte." (21 plans), its English versions (27), "Det forventes
+oppmøte på forelesninger, workshops og annen kursaktivitet for øvrig.",
+"Attendance is expected.". The assessment design stays in assessment: what
+is assessed and how ("Students are assessed based on ... two mandatory
+coursework assignments"), the final work ("Et avsluttende obligatorisk
+essay ... må leveres."), the parts of the portfolio ("Alle
+prosjektoppgavene må leveres.", 6 plans; "Alle moduler må være levert og
+presentert."; "Deliveries from all three phases are required."), deadlines
+and the exam system. Whole sentences move; an "Attendance:"/"Oppmøte:"
+label goes with the paragraph under it when all of it moves and otherwise
+stays (the earlier rule moved the bare "Oppmøte" label of three pages
+alone, leaving the expectations under it). The rule replaces the two
+wording rules of 2026-11-22, whose sentences it also moves.
+*Why:* AHO's coursework gate was 0.37 of its pilot sample (68 plans;
+threshold 0.70), and 20 of the 42 sample plans without coursework mention
+attendance or submission in other sections. Gates in running text are AHO's
+usual way of writing them, so the rule goes by meaning, not by recurring
+wording: an exception for AHO to the known deviation of 2026-11-11, where a
+sentence moves by meaning only where its wording recurs (most AHO gate
+sentences occur in one or two courses). *Rejected:* a rule per wording
+(about 15 wordings, most in one course); moving every sentence that
+mentions attendance (the stock expectations are teaching text, no gate);
+moving the stock lead-in "In order to be assessed in this course, the
+student must have completed the following activities and assignments:"
+(15 plans of 2026), which most fill with the exam's description ("The
+portfolio consists of ..."); moving the "final submission ... which both
+are compulsory" of AHO 700-1 and module deliveries that must be approved
+(the exam's own parts, assessment by the spec). *Consequence* (all 316 AHO
+raw pages, HEAD against the new code): 39 pages of 20 courses change;
+coursework requirements are new on 25 pages and gain a sentence on 14;
+assessment loses sentences on 25 pages and teaching methods on 14. On the
+pilot sample the coursework share rises from 0.37 to 0.49 (25 to 33 of 68
+plans). The rest of the 42: plans without a gate (exam text only, diploma
+and master's courses), bare expectations, the stock lead-in over exam text,
+and the portfolio's parts. Other institutions: no change (5 pages per raw
+partition of every institution). `course_plan` and the plan ids do not
+change. *Since:* 2026-11-23.
+
 **DMMH's and LDH's reading-list pointers alone are placeholders.** A
 reading list that is only "Her finner du pensumliste for studieåret" (DMMH:
 the label of a link to the list, its academic year removed by the

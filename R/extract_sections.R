@@ -1205,6 +1205,44 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "^\\s*(?i:(?:dette )?emnet bygger (?:videre )?på|the course is based on) ",
   "(?=[^.]*\\b[A-ZÆØÅ]{2,}\\d{2,})(?![^.]*\\b(?:og|and) (?:skal|vil|tar|gir|legger|søker|ser|introduserer|aims?|will)\\b)",
   "(?!.*,\\s*$)"))
+# aho's coursework gates, written in the teaching text or in the exam
+# description (2026-11-22, 2026-11-23): a sentence about attendance or
+# submission that states a requirement ("Students are required to attend
+# weekly seminars.", "Final reviews are mandatory", "Obligatorisk
+# innleveringer av ...", "Oppmøte påkrevd: Ja", "the seminar requires
+# full-day attendance"), a consequence ("Alle oppgaver må være levert for å
+# bli sensurert i kurset.", "The student must submit all assignments in the
+# course to receive final assessment.", "All deliveries/presentations ...
+# must be completed in order to be assessed.", "Kurset er praksisbasert der
+# høyt oppmøte ... er en forutsetning for gjennomføring av kurset.") or an
+# attendance threshold ("det forventes 80 % oppmøte på forelesninger"). A
+# bare expectation stays ("Fysisk oppmøte til undervisning ... er forventet
+# og nødvendig for å oppfylle læringsutbytte.", "Attendance is expected.",
+# "it requires a high degree of studio work and presence"), and so does the
+# assessment design: what is assessed and how ("assessed based on ... two
+# mandatory coursework assignments"), the final work, the parts of the
+# portfolio and its deliverables ("Et avsluttende obligatorisk essay ... må
+# leveres.", "Alle prosjektoppgavene må leveres.", "Deliveries from all
+# three phases are required."), deadlines and the exam system ("Du må gjøre
+# deg kjent med ... frist for innlevering av besvarelse."), and a lead-in
+# ending in a colon or naming "the following" (the stock "In order to be
+# assessed in this course, the student must have completed the following
+# activities and assignments:", which most pages fill with the exam).
+.aho_gate_sentence <- function(s) {
+  attend <- "(*UCP)(?i)oppmøte|tilstedeværelse|deltakelse|deltagelse|\\bdelta på|attend|presence|participat|\\breviews?\\b"
+  submit <- paste0("(*UCP)(?i)\\bsubmi(?:t|ssion)|\\binnlevering|\\b(?:levert|leveres|levere|lever)\\b|",
+                   "\\b(?:assignments?|oppgaver)\\b.{0,40}\\b(?:approved|completed|godkjent)")
+  must <- paste0("(*UCP)(?i)obligatori|mandatory|compul|compl\\w*sory|\\brequir|påkrevd|\\bkrav\\b|\\bmå\\b|\\bmust\\b|",
+                 "prerequisite|forutsetning|for å bli (?:sensurert|vurdert)|to receive (?:a )?final assessment|",
+                 "in order to be assessed|to pass the course|for å bestå")
+  design <- paste0("(*UCP)(?i)consists of|består av|\\b(?:assessed|evaluated) (?:as|on|based)|vektlegg|bedøm|karakter|",
+                   "avsluttende|\\bfinal (?:portfolio|paper|project|submission|delivery|exhibition)|deliverables|",
+                   "prosjektoppgavene|alle moduler|the following|a high degree|frist|kursslutt|deadline|besvarelse|[:：]\\s*$")
+  att <- grepl(attend, s, perl = TRUE)
+  (att | grepl(submit, s, perl = TRUE) | grepl("\\bin order to be assessed\\b", s, perl = TRUE)) &
+    !grepl(design, s, perl = TRUE) &
+    (grepl(must, s, perl = TRUE) | (att & grepl("\\d ?%", s, perl = TRUE)))
+}
 .sentence_moves <- list(
   phs = list(
     list(from = "assessment", to = "coursework_requirements", rx = paste0(
@@ -1251,18 +1289,12 @@ extract_sections <- function(config, html, extracted_text, course_id) {
                     # i ..."), as its list under "Obligatorisk kurs:" (2026-11-22)
                     list(from = "course_content", to = "coursework_requirements",
                          rx = "^\\W*Obligatorisk kurs(?:\\s*:|\\s+i)\\s+\\S")),
-  # aho (2026-11-22): the Industridesign courses' attendance rule, written
-  # under the teaching and in the exam description ("Oppmøte: Kurset er
-  # praksisbasert der høyt oppmøte og stor egeninnsats er en forutsetning
-  # for gjennomføring av kurset."); in the exam description also the label
-  # line "Oppmøte" over it, and the condition for being assessed in its
-  # comment ("Students need to present and submit all projects ... in order
-  # to be assessed for the course."). Wordings found in one plan stay
-  # (course_plan_spec.md, known deviations).
+  # aho: a gate written in the teaching text or the exam description
+  # (.aho_gate_sentence()); an "Oppmøte"/"Attendance:" label goes with the
+  # paragraph under it when all of that moves
   aho = lapply(c("assessment", "teaching_methods"), function(from) list(
-    from = from, to = "coursework_requirements", rx = paste0(
-      "^\\W*(?:Oppmøte\\s*:\\s*)?Kurset er praksisbasert der høyt oppmøte\\b",
-      if (from == "assessment") "|^\\s*Oppmøte\\s*$|\\bin order to be assessed\\b"))),
+    from = from, to = "coursework_requirements", rx = function(s) .aho_gate_sentence(s),
+    label = "(?i)^\\s*(?:oppmøte|attend[ae]nce)\\s*:?\\s*$")),
   usn = list(list(from = "teaching_methods", to = "assessment",
                   rx = "(?i)^\\s*praksis vurderes (?:til|med|som) (?:bestått|godkjent) ?/ ?ikke (?:bestått|godkjent)\\.?\\s*$")),
   nla = list(list(from = "course_content", to = "teaching_methods", rx = paste0(
@@ -1276,7 +1308,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   for (m in .sentence_moves[[institution %||% ""]]) {
     i <- which(out$section == m$from)
     if (length(i) != 1) next
-    x <- .strip_sentences(out$raw_text[i], m$rx, taken = TRUE)
+    x <- .strip_sentences(out$raw_text[i], m$rx, taken = TRUE, label = m$label)
     if (!length(x$taken)) next
     out$raw_text[i] <- x$rest
     # the placeholder that ends the target ("Ingen." from nla's Praksis part)
@@ -1706,23 +1738,31 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 
 # The sentences of a text that match `rx` (a regex, or a function of the
 # sentences that says which) go (.sentence_end), and a line left empty with
-# them. With `taken`, a list of the text left (`rest`) and the sentences that
+# them; so does a line matching `label` when the next line with text all
+# went. With `taken`, a list of the text left (`rest`) and the sentences that
 # went, a line each (`taken`).
-.strip_sentences <- function(text, rx, taken = FALSE) {
+.strip_sentences <- function(text, rx, taken = FALSE, label = NULL) {
   if (is.na(text)) return(if (taken) list(rest = text, taken = character()) else text)
   lines <- stringr::str_split_1(text, "\n")
   gone <- logical(length(lines))
-  out <- character()
+  out <- character(length(lines))
   for (k in seq_along(lines)) {
     s <- stringr::str_split_1(lines[k], .sentence_end)
     drop <- if (is.function(rx)) rx(s) else stringr::str_detect(s, rx)
     if (!any(drop)) next
-    out <- c(out, trimws(paste(s[drop], collapse = "")))
+    out[k] <- trimws(paste(s[drop], collapse = ""))
     lines[k] <- trimws(paste(s[!drop], collapse = ""))
     gone[k] <- !nzchar(lines[k])
   }
+  if (!is.null(label)) for (k in which(grepl(label, lines, perl = TRUE) & !gone)) {
+    nxt <- which(seq_along(lines) > k & (gone | grepl("\\S", lines)))[1]
+    if (isTRUE(gone[nxt])) {
+      out[k] <- trimws(lines[k])
+      gone[k] <- TRUE
+    }
+  }
   rest <- paste(lines[!gone], collapse = "\n")
-  if (taken) list(rest = rest, taken = out) else rest
+  if (taken) list(rest = rest, taken = out[nzchar(out)]) else rest
 }
 
 .strip_section_noise <- function(text, institution = NULL) {

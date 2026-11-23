@@ -349,18 +349,27 @@ coursework to prerequisites; barrattdue’s “Gjennomført undervisning og
 arbeidskrav er gyldig(e) inntil to semestre etter ordinær eksamen.” from
 teaching methods to coursework, and DID’s “Obligatorisk kurs:
 instrumentalteknikk og kroppsbevissthet” from course content to
-coursework; aho’s condition for being assessed (“Students need to
-present and submit all projects … in order to be assessed”) and its
-Industridesign attendance rule (“Kurset er praksisbasert der høyt
-oppmøte … er en forutsetning for gjennomføring av kurset.”) from
-assessment and teaching methods to coursework (wordings found in one
-plan stay); dmmh’s practice courses’ attendance rule (“All undervisning
-i kunnskapsområdene bidrar til studentens forberedelse til praksis, så
-tilstedeværelse … er en forutsetning …”) from prerequisites to
-coursework, and their transfer rule (“Ved overflytting fra annet
-studieprogram …”) out of the sections; and fhs’s and nmh’s
-course-content sentence that names only the courses it builds on (“Emnet
-bygger på ING1502 Matematiske metoder 1.”, “Emnet bygger på
+coursework; aho’s gates written in the teaching text or the exam comment
+(`.aho_gate_sentence()`, 2026-11-23), from assessment and teaching
+methods to coursework: a sentence about attendance or submission that
+states a requirement (“Students are required to attend weekly
+seminars.”, “Final reviews are mandatory”, “Oppmøte påkrevd: Ja”), a
+consequence (“Alle oppgaver må være levert for å bli sensurert i
+kurset.”, “… in order to be assessed”, “Kurset er praksisbasert der høyt
+oppmøte … er en forutsetning for gjennomføring av kurset.”) or an
+attendance threshold (“det forventes 80 % oppmøte på forelesninger”); a
+bare expectation (“Fysisk oppmøte … er forventet og nødvendig for å
+oppfylle læringsutbytte.”), the assessment design, the final work, the
+portfolio’s parts (“Alle prosjektoppgavene må leveres.”), deadlines and
+a lead-in (“… the following activities and assignments:”) stay, and an
+“Attendance:”/“Oppmøte” label goes with the paragraph under it only when
+all of it moves (a move’s `label`); dmmh’s practice courses’ attendance
+rule (“All undervisning i kunnskapsområdene bidrar til studentens
+forberedelse til praksis, så tilstedeværelse … er en forutsetning …”)
+from prerequisites to coursework, and their transfer rule (“Ved
+overflytting fra annet studieprogram …”) out of the sections; and fhs’s
+and nmh’s course-content sentence that names only the courses it builds
+on (“Emnet bygger på ING1502 Matematiske metoder 1.”, “Emnet bygger på
 Hovedinstrument I (UTHO13).”) to prerequisites. At phs the paragraphs
 under “Læringsutbytte” before “Kunnskap” that describe the subject, not
 the outcomes (“Pedagogikk i instruktørutdanningen vektlegger …”), go to
