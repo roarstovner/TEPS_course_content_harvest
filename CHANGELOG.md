@@ -104,6 +104,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- UiA and NIH: English-taught courses live in the Vortex English tree (/english/studies/courses/{year}/{spring|autumn}/) (#589)
 - Anonymizer: names with an apostrophe or a lower-case particle after a staff label (#613)
 - English-tree pages (UiA, NIH): facts labels and Course Leader, English headings (#612)
 - Sections (Barratt Due) from the 2026-11-23 re-audit: DID1 prerequisites, PPU resit wording, elective admission (#611)
