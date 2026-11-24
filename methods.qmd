@@ -2028,6 +2028,27 @@ professor with a particle in brackets after a topic), NMBU 1. Reading-list
 authors, titles and places with particles or apostrophes ("Van de Walle",
 "O'Reilly", "Cerro de la Máscara") do not change. *Since:* 2026-11-24.
 
+**Names before a unit, after "lecturers will be" and after "led by"
+go.** Under a role heading a name line may end in a unit without a comma
+("Professor <name> van der <name> Senter for vitskapsteori (SVT)"), as in
+UiB's staff blocks; an English staff label may be followed by "will be"
+like "is/are" ("The main lecturers will be <name>, <name> and <name> from
+<unit>"); and "leia/leidd/ledet/ledes/ledd av" followed by up to two words
+and names drops the names ("leia av kunstnarane <name> og <name> frå KMD" →
+"leia av kunstnarane frå KMD", "ledes av Dr. <name>"); a title "Dr." may now
+stand before the names after any staff label or role. *Why:* three plans
+reported 2026-11-24 still published these names (UiB, UiO). *Rejected:*
+any words between "av" and the names (a preposition stops it: "ledes av
+lærere fra Høgskolen i ..."); names after an institution word ("ledet av
+Norsk Sykepleierforbund", "Universitet", "Høgskole", "Senter", "Statens"
+stay); a profession word before a name anywhere ("kunstnaren <name>"),
+which would take titles and references. *Consequence:* re-anonymizing every
+page of the build of 2026-11-24 that holds one of these wordings changes 40
+pages (NTNU 21, UiB 9, UiT 7, UiO 2, NLA 1), each losing only names, or a
+staff line under its heading: no plan text goes. A dangling "ledes av." or
+"will be, <university>" stays where the name stood, as after other roles.
+*Since:* 2026-11-24.
+
 ## Sections
 
 ```{r}

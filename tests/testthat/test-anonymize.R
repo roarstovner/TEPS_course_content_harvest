@@ -1699,3 +1699,28 @@ test_that("names with an apostrophe or a lower-case particle go after staff labe
   expect_equal(an(rep("uib", length(keep)), keep), keep)
   expect_equal(an("uit", "Faglærer vil gi nærmere orientering om pensum."), "Faglærer vil gi nærmere orientering om pensum.")
 })
+
+test_that("a name before a unit under a role heading, 'lecturers will be' and 'led by' names go; units and groups stay", {
+  an <- function(inst, x) anonymize_text(inst, x)
+  # a role heading over a titled name followed by a unit without a comma
+  expect_equal(an("uib", "Innhold\nEmneansvarlig\nProfessor Kari van der Berg Senter for vitskapsteori (SVT)\nNeste"),
+               "Innhold\nNeste")
+  expect_equal(an("uib", "Innhold\nEmneansvarlig\nSenter for vitskapsteori (SVT)\nNeste"),
+               "Innhold\nEmneansvarlig\nSenter for vitskapsteori (SVT)\nNeste")
+  # English "lecturers will be" before names; before a verb or a group it is prose
+  expect_equal(an("uio", "The main lecturers will be Kari Nordmann, Ola Dahl and Per de Vries from the centre."),
+               "The main lecturers will be from the centre.")
+  expect_equal(an("uio", "Guest lecturers will be invited. The lecturer will be announced."),
+               "Guest lecturers will be invited. The lecturer will be announced.")
+  # "leia av" / "ledes av", with words between, before names; a group or a place stays
+  expect_equal(an("uib", "Seminaret blir leia av kunstnarane Kari Nordmann og Ola Dahl frå KMD."),
+               "Seminaret blir leia av kunstnarane frå KMD.")
+  expect_equal(an("ntnu", "Kurset ledes av Dr. Kari Nordmann. Kurset består av forelesninger."),
+               "Kurset ledes av. Kurset består av forelesninger.")
+  keep <- c("Undervisningen ledes av lærere fra Høgskolen i Oslo og Akershus.",
+            "Kurset ledes av Forskerskolens styre.",
+            "Landet ble delt i to soner ledet av henholdsvis Sovjetunion og USA.",
+            "Prosjektet er ledet av Norsk Sykepleierforbund.",
+            "Gruppene blir leia av studentane sjølve.")
+  expect_equal(an(rep("uib", length(keep)), keep), keep)
+})

@@ -555,10 +555,12 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 # English staff labels (2026-11-16: uio PhD pages, uib, usn, uit, himolde,
 # nord): "Course leader: <name>", "Other lecturers: <name> (PRIO) and
 # <name>", "Course Leaders: <name>/<name>/<name>", "Module responsible and
-# teacher: <names>", "Lecturers are <names>", "Administrative responsible:
+# teacher: <names>", "Lecturers are <names>", "The main lecturers will be
+# <names> from <unit>" (uio, 2026-11-24), "Administrative responsible:
 # Head of administration <name>, SVT.". A bare role needs a colon or
-# "is/are" ("Teacher Education", "Market Leader Upper Intermediate" and
-# "Responsible Property Investment" are titles) and no capitalised word
+# "is/are/will be" ("lecturers will be announced" names no one; "Teacher
+# Education", "Market Leader Upper Intermediate" and "Responsible Property
+# Investment" are titles) and no capitalised word
 # before it ("Secondary Education Teachers: <publisher>" in a reference,
 # uit); after a qualifier the colon may be missing ("contact PhD program
 # responsible <name>"; "Track responsible: <name>", aho 2026-11-21). Prose names no one ("The course leader will ...",
@@ -568,7 +570,8 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 .en_role <- "(?:leader|teacher|lecturer|instructor|responsible|coordinator)s?(?:[ \\t]+and[ \\t]+(?:teacher|lecturer)s?)?"
 .en_staff_label <- paste0(
   "(?i:(?:(?:other|guest|invited|course|module|subject|track|phd|program(?:me)?|administrative|(?:teacher|lecturer)s?[ \\t]+and)[ \\t]+)+",
-  .en_role, "(?:[ \\t]*:|[ \\t]+(?:is|are))?|(?<!(?-i:\\p{Lu}\\p{Ll}{1,30})[ \\t])", .en_role, "(?:[ \\t]*:|[ \\t]+(?:is|are)))",
+  .en_role, "(?:[ \\t]*:|[ \\t]+(?:is|are|will[ \\t]+be))?|(?<!(?-i:\\p{Lu}\\p{Ll}{1,30})[ \\t])", .en_role,
+  "(?:[ \\t]*:|[ \\t]+(?:is|are|will[ \\t]+be)))",
   "(?=[ \\t]+(?!(?:\\p{Lu}\\p{L}*[ \\t]+)*(?:University|College|School|Institut\\p{L}*|Department|Faculty|Cent(?:re|er))\\b))")
 # On its own line the label goes with the whole line, affiliations and all
 # ("Guest lecturers: <name>, University of Cyprus, <name>, <university>").
@@ -583,10 +586,19 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 .upper_name <- "\\p{Lu}{2,}(?:-\\p{Lu}{2,})*(?:[ \\t]+\\p{Lu}{2,}(?:-\\p{Lu}{2,})*)+"
 .no_staff_label_line_regex <- paste0("(?m)^[ \\t]*(?i:(?:flere|andre)[ \\t]+)?(?i:lærere|undervisere)[ \\t]*:[ \\t]*",
                                      "(?:", .names_regex, "|", .upper_name, ")[^\\n]*(?:\\n|$)")
+# "Led by" with up to two words between: "Seminaret blir leia av kunstnarane
+# <name> og <name> frå KMD", "ledes av Dr. <name>" (uib, ntnu, uit, nla;
+# 2026-11-24). The words stay, the names go. Not a group or a place: "ledes
+# av lærere fra Høgskolen i ...", "ledes av Forskerskolens styre", "ledet av
+# henholdsvis Sovjetunion og USA" (uio), nor a two-word institution.
+.led_by <- paste0("(?i:lei(?:a|dd|dde|ast|est|es)|led(?:et|es|d))[ \\t]+av",
+                  "(?:[ \\t]+(?!(?i:fra|frå|ved|i|på|og|med|av|for|til)[ \\t])(?:\\p{Ll}+|\\p{Lu}\\p{Ll}*-\\p{Ll}+)){0,2}",
+                  "(?![ \\t]+(?:Dr\\.[ \\t]+)?(?:\\p{Lu}\\p{L}*[ \\t]+)*(?:Universit|Høgsk|Senter|Institutt|Fakultet|Norsk|Norges|Statens|",
+                  "College|School|Department|Faculty|Cent(?:re|er)))")
 .role_name_inline_regex <- paste0(
   "(?<!\\p{L})(?!(?<=\\p{Lu}\\p{Ll}{0,30} )Sensor )((?i:", paste(c(.staff_roles, .signature_roles), collapse = "|"),
-  ")(?i:e|er|ar|en)?(?:[ \\t]+(?i:er|var|i emnet))?:?|(?i:kontakt(?:e|er)? med|kontaktpersone?r? er)|", .en_staff_label, ")[ \\t]+",
-  .names_regex
+  ")(?i:e|er|ar|en)?(?:[ \\t]+(?i:er|var|i emnet))?:?|(?i:kontakt(?:e|er)? med|kontaktpersone?r? er)|", .led_by, "|",
+  .en_staff_label, ")[ \\t]+(?:Dr\\.[ \\t]+)?", .names_regex
 )
 # A staff clause after "og" or a comma closing a sentence goes whole, the
 # full stop stays: "Kurset holdes sammen med studenter fra KHIO og foreleser
@@ -611,12 +623,14 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 # PhD courses, 2026-11-16), "Andre undervisere:\n\nKari Nordmann\nOla Dahl
 # (USN)" (uio), "Undervisere er bl.a.:\nKari Nordmann, UiB" (uit; 2026-11-21),
 # the name after a part or role label or a title ("Delemne <part>: Kari Nordmann", "Master thesis coordinator: assistant professor Ola Dahl",
-# oslomet). The name must end the line or come before a comma, a full stop or
-# a bracket, so a committee, a unit or a sentence under the heading stays
-# ("The Programme Committee for ...", "Institutt for ...", uib).
+# oslomet). The name must end the line or come before a comma, a full stop,
+# a bracket or a unit ("Professor Ola van der Dahl Senter for vitskapsteori
+# (SVT)", uib 2026-11-24), so a committee, a unit or a sentence under the
+# heading stays ("The Programme Committee for ...", "Institutt for ...", uib).
+.staff_unit <- "[ \\t]+(?:Senter|Institutt|Centre|Department) (?:for|of)[^\\n]*"
 .role_heading_name_line <- paste0(
   "[ \\t]*(?:[^\\n:]{1,60}:[ \\t]*)?(?!(?:The|Det|Den|De|Dei)[ \\t])", .names_regex,
-  "[ \\t]*(?:[,.(][^\\n]*)?(?:\\n|$)"
+  "(?:[ \\t]*(?:[,.(][^\\n]*)?|", .staff_unit, ")(?:\\n|$)"
 )
 .role_heading_name_regex <- paste0(
   "(?m)^(?:[ \\t]*(?i:(?:other|guest)[ \\t]+)?(?i:", paste(c(.staff_roles, "contact person", "course leader", "administrativt ansvarlig",
@@ -641,7 +655,7 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 .uib_staff_name <- paste0("(?:(?:(?i:post ?doktor|postdoc|dr\\.)|", .title_regex, ")[ \\t]+)?",
                           "\\p{Lu}[\\p{L}.'’-]*(?:[ \\t]+(?:\\p{Lu}[\\p{L}.'’-]*|", .name_particle, "))+")
 .uib_staff_name_line <- paste0("\\n[ \\t]*", .uib_staff_name, "(?:[ \\t]*(?:,|og|and|&)[ \\t]+", .uib_staff_name, ")*",
-                               "(?:[ \\t]*(?:[,/(–-]|https?://)[^\\n]*|[ \\t]+(?:Senter|Institutt|Centre|Department) (?:for|of)[^\\n]*)?",
+                               "(?:[ \\t]*(?:[,/(–-]|https?://)[^\\n]*|", .staff_unit, ")?",
                                "[ \\t.]*(?=\\n|$)")
 .uib_staff_fill_line <- paste0("\\n[ \\t]*(?:", .uib_staff_label, "[ \\t]*:?[ \\t]*-?|TBA\\.?|(?:Frå|Fra|From)[ \\t]+[^\\n:]{1,40}:)?",
                                "[ \\t]*(?=\\n|$)")
