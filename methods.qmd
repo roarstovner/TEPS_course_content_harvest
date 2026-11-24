@@ -2002,6 +2002,32 @@ On 20 pages per raw partition of every institution (`preview_change()`)
 2 pages change, both intended (an AHO session date, an OsloMet deadline).
 *Since:* 2026-11-23.
 
+**Names with an apostrophe or a particle go like other names.** Every
+rule that removes a name after a staff label, a role or a title (the shared
+name pattern) takes a capital after an apostrophe inside a name part
+("O'<Name>", "N’<Name>" with a typographic apostrophe) and up to two
+lower-case particles between two capitalised parts, from a closed list (van,
+von, de, da, di, der, den, la, le, du, dos, das, del, bin, ibn, af, zu:
+"<Name> van der <Name>", "<Name> de <Name>"); the lines that list a name
+with its role or sign with one, UiB's staff blocks, the approver after
+"Godkjent av" and `privacy_check`'s approver patterns use the same list.
+*Why:* the English UiA pages, read like the Norwegian ones from 2026-11-24,
+left such names after "Course Leader:" in 8 of 670 plans and NIH's in 1;
+those lines now go by the institutions' config, but the anonymizer stopped
+at the apostrophe or the particle everywhere. *Rejected:* any lower-case
+word between capitalised words (it would take "Lærere og elever i
+skolen ..." and titles); a particle at the start or end of a name (only
+between two parts, so "de" and "du" in Norwegian text stay); a rule per
+layout. *Consequence:* re-anonymizing the published texts of the build of
+2026-11-23 that hold such a name form (3,017 plan texts, 2,983 sections)
+changes 21 plan texts and 5 sections, each losing only a name and, where
+the whole line or heading goes, its label: UiB 15 (one course leader with an
+apostrophe on 13 MOL200/MOL213 texts, a "Programansvarlig" and
+"Emneansvarlig" with a particle on 2), NTNU 5 plans and 5 sections (a
+professor with a particle in brackets after a topic), NMBU 1. Reading-list
+authors, titles and places with particles or apostrophes ("Van de Walle",
+"O'Reilly", "Cerro de la Máscara") do not change. *Since:* 2026-11-24.
+
 ## Sections
 
 ```{r}

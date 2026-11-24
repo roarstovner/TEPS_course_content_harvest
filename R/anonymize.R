@@ -488,11 +488,15 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
   "programkoordinator", "fagansvarlig", "fagkoordinator", "lecturer", "course owner", "foreleser",
   "faglig ansvarlig", "kursansvarlig"
 )
+# Lower-case particles inside a name: "Kari van der Berg", "Ola de Souza",
+# "Ali ibn Rashid" (a closed list; in .name_regex only between two
+# capitalised parts, so "de" or "du" in ordinary text is no name; 2026-11-24).
+.name_particle <- "(?:van|von|de|da|di|der|den|la|le|du|dos|das|del|bin|ibn|af|zu)"
 # A whole line that is only a capitalised name (particles like "van" allowed)
 # followed by "(Role)", optionally bulleted.
 .staff_line_regex <- paste0(
   "(?m)^[ \\t]*[-•*]?[ \\t]*",
-  "\\p{Lu}[\\p{L}.'’-]*(?:[ \\t]+(?:\\p{Lu}[\\p{L}.'’-]*|van|von|de|der|den|da|di|af))+",
+  "\\p{Lu}[\\p{L}.'’-]*(?:[ \\t]+(?:\\p{Lu}[\\p{L}.'’-]*|", .name_particle, "))+",
   "[ \\t]*\\((?i:", paste(.staff_roles, collapse = "|"), ")\\)[ \\t]*(?:\\n|$)"
 )
 # A role label followed by a capitalised name, on the same line or (after a
@@ -507,7 +511,7 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
   "(?m)^[ \\t]*(?i:", paste(.staff_roles, collapse = "|"), ")(?i:e|er|ar)?",
   "(?:[ \\t]+[-–][ \\t]+[\\p{L} ]{1,30}?(?=[ \\t]*:))?",
   "[ \\t]*(?::[ \\t]*\\n[ \\t]*|:[ \\t]*|[ \\t]+)",   # the next line only after a colon
-  "\\p{Lu}\\p{Ll}+(?:[ \\t]+\\p{Lu}[\\p{L}.'’-]*)+[^\\n]*(?:\\n|$)"
+  "\\p{Lu}(?:['’]\\p{Lu})?\\p{Ll}+(?:[ \\t]+(?:", .name_particle, "[ \\t]+){0,2}\\p{Lu}[\\p{L}.'’-]*)+[^\\n]*(?:\\n|$)"
 )
 # A signature line "17.03.20 Ola Nordmann, dekan": optional date stamp, a
 # capitalised name, then ", role" ending the line (usn approval stamps,
@@ -519,15 +523,17 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
                       "instituttnestleder", "instituttnestleiar")
 .signature_line_regex <- paste0(
   "(?m)^[\\h]*(?:\\d[\\d.\\h]*[\\h]+)?",
-  "\\p{Lu}[\\p{L}.'’-]*(?:[\\h]+(?:\\p{Lu}[\\p{L}.'’-]*|van|von|de|der|den|da|di|af))+",
+  "\\p{Lu}[\\p{L}.'’-]*(?:[\\h]+(?:\\p{Lu}[\\p{L}.'’-]*|", .name_particle, "))+",
   "[\\h]*,[\\h]*(?i:", paste(.signature_roles, collapse = "|"), ")[\\h]*(?:\\n|$)"
 )
 # A capitalised name, with initials and hyphens ("Ola K. Nordmann",
 # "Anne-Kari Nordmann-Dahl"), not running on into a role ("Foreleser: Ola
 # Nordmann Faglig ansvarlig: Kari Nordmann", uit) or into a schedule ("Course
-# Leaders: <name>/<name> Week 34 (18 August)", uit).
-.name_part <- "(?!(?i:faglig)[ \\t]+ansvarlig|Week\\b)\\p{Lu}[\\p{Ll}'’]+(?:-\\p{Lu}?[\\p{Ll}'’]+)*"
-.name_regex <- paste0(.name_part, "(?:[ \\t]+\\p{Lu}\\.)*(?:[ \\t]+", .name_part, ")+")
+# Leaders: <name>/<name> Week 34 (18 August)", uit). A capital may follow an
+# apostrophe ("O'Brien", "N’Diaye") and up to two particles may stand
+# between two parts ("Kari van der Berg"; 2026-11-24).
+.name_part <- "(?!(?i:faglig)[ \\t]+ansvarlig|Week\\b)\\p{Lu}(?:['’]\\p{Lu})?[\\p{Ll}'’]+(?:-\\p{Lu}?[\\p{Ll}'’]+)*"
+.name_regex <- paste0(.name_part, "(?:[ \\t]+\\p{Lu}\\.)*(?:[ \\t]+(?:", .name_particle, "[ \\t]+){0,2}", .name_part, ")+")
 # A role word followed by names anywhere in a line: "... avklares med
 # faglærer Ola Nordmann" (usn), "Godkjent emneplan av dekan Ola Nordmann"
 # (usn), "Studiepoeng 15 Emneansvarlig Ola Nordmann" (uis PDF), "Ta kontakt
@@ -633,7 +639,7 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 .uib_staff_label <- paste0("(?:Faglig ansvar|Hovedansvarlige?|Innledere?|Undervisere?|Kurskoordinator(?:er)?|",
                            "Koordinator(?:er)?|(?:Academic|Administrative) res\\p{L}*(?:sibility|sible)|Course coordinators?)")
 .uib_staff_name <- paste0("(?:(?:(?i:post ?doktor|postdoc|dr\\.)|", .title_regex, ")[ \\t]+)?",
-                          "\\p{Lu}[\\p{L}.'’-]*(?:[ \\t]+(?:\\p{Lu}[\\p{L}.'’-]*|van|von|de|der|den|da|di|af))+")
+                          "\\p{Lu}[\\p{L}.'’-]*(?:[ \\t]+(?:\\p{Lu}[\\p{L}.'’-]*|", .name_particle, "))+")
 .uib_staff_name_line <- paste0("\\n[ \\t]*", .uib_staff_name, "(?:[ \\t]*(?:,|og|and|&)[ \\t]+", .uib_staff_name, ")*",
                                "(?:[ \\t]*(?:[,/(–-]|https?://)[^\\n]*|[ \\t]+(?:Senter|Institutt|Centre|Department) (?:for|of)[^\\n]*)?",
                                "[ \\t.]*(?=\\n|$)")
@@ -661,7 +667,8 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 .approved_by_space <- "[ \\t\\x{00A0}]+"
 .approved_by_role <- paste0("(?i:(?:", paste(c(.signature_roles, "visedekan", "viserektor", "nestle(?:d|i)er"),
                                              collapse = "|"), ")(?:en)?)(?!\\p{L})")
-.approved_by_who <- paste0("\\p{Lu}\\p{Ll}+(?:", .approved_by_space, "\\p{Lu}(?:\\.|[\\p{L}-]*))+")
+.approved_by_who <- paste0("\\p{Lu}\\p{Ll}+(?:", .approved_by_space, "(?:", .name_particle, .approved_by_space, "){0,2}",
+                           "\\p{Lu}(?:\\.|[\\p{L}'’-]*))+")
 .approved_by_name_regex <- paste0(
   "((?i:godkjent|akkreditert)", .approved_by_space, "av)(?:(", .approved_by_space, .approved_by_role,
   "(?:", .approved_by_space, "\\p{Ll}+){0,3})", .approved_by_space, .approved_by_who,
@@ -1183,7 +1190,7 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 # ("approved by Harstad University College").
 .check_space <- "[ \\x{00A0}]"
 .check_name <- paste0(.name_part, "(?:", .check_space, "+\\p{Lu}\\p{Ll}{0,2}\\.)*(?:",
-                      .check_space, "+", .name_part, ")+")
+                      .check_space, "+(?:", .name_particle, .check_space, "+){0,2}", .name_part, ")+")
 .approver_roles <- paste0("(?i:", paste(c(
   .signature_roles, "(?:institutt)?nestle(?:d|i)[ea]r", "studiele(?:d|i)[ea]r", "le(?:d|i)[ea]r for",
   "studiekoordinator", "programkoordinator", "program(?:me)? coordinator", "emneansvarle(?:g|ig)",

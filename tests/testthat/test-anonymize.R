@@ -1676,3 +1676,26 @@ test_that("dated activities, deadlines with 'by', weekly hours and staff clauses
   expect_equal(an("uio", "Read Hamlet (Penguin Classics) and FEM (Finite Element Method)."),
                "Read Hamlet (Penguin Classics) and FEM (Finite Element Method).")
 })
+
+test_that("names with an apostrophe or a lower-case particle go after staff labels; the words stay elsewhere", {
+  an <- function(inst, x) anonymize_text(inst, x)
+  # an apostrophe before a capital, typographic too, and particles between two parts
+  expect_equal(an("uia", "Innhold\nCourse Leader: Sean O'Brien\nNeste"), "Innhold\nNeste")
+  expect_equal(an("uia", "Innhold\nCourse Leader: Amara N’Diaye\nNeste"), "Innhold\nNeste")
+  expect_equal(an("uib", "Innhold\nEmneansvarlig\nKari van der Berg\nNeste"), "Innhold\nNeste")
+  expect_equal(an("uib", "Innhold\nEmneansvarlig\nSiobhan O'Neill\nNeste"), "Innhold\nNeste")
+  expect_equal(an("nmbu", "Innhold\nEmneansvarlig:\nOla de Souza\nNeste"), "Innhold\n\nNeste")
+  expect_equal(an("uio", "Spørsmål avklares med faglærer Ali ibn Rashid og Kari Nordmann."),
+               "Spørsmål avklares med faglærer.")
+  expect_equal(an("uit", "Innhold\nLecturers: Kari Nordmann and Ola de Vries.\nNeste"), "Innhold\nNeste")
+  expect_equal(an("usn", "Godkjent av dekan Priya D'Souza."), "Godkjent av dekan.")
+  expect_equal(an("usn", "Innhold\nKari van Dahl (Emneansvarlig)\nNeste"), "Innhold\nNeste")
+  # particles and apostrophes in ordinary text, titles, places and references stay
+  keep <- c("Elevene lærer om de Forente Nasjoner og om da Vinci.",
+            "Lærere og elever i skolen arbeider med de Nordiske landene.",
+            "Ekskursjon til Cerro de la Máscara og Rio de Janeiro.",
+            "Van de Walle, J. (2015). Elementary and Middle School Mathematics.",
+            "Teaching mathematics: L'Hôpital's rule and O'Neill's theorem.")
+  expect_equal(an(rep("uib", length(keep)), keep), keep)
+  expect_equal(an("uit", "Faglærer vil gi nærmere orientering om pensum."), "Faglærer vil gi nærmere orientering om pensum.")
+})
