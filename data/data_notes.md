@@ -1,7 +1,7 @@
 # Data Quality Notes
 
 
-Generated: 2026-11-23
+Generated: 2026-11-24
 
 ## Overview
 
@@ -9,7 +9,7 @@ Generated: 2026-11-23
 |:---|---:|---:|:---|---:|:---|---:|---:|:---|
 | aho | 1411 | 384 | 2023-2026 | 316 | 22.4% | 3398 | 200 | 18.4% |
 | barrattdue | 136 | 71 | 2026 | 46 | 33.8% | 2668 | 46 | 0.0% |
-| dmmh | 841 | 165 | 2015-2026 | 740 | 88.0% | 5230 | 287 | 34.6% |
+| dmmh | 3219 | 391 | 2015-2026 | 2407 | 74.8% | 5230 | 884 | 37.6% |
 | fhs | 6752 | 1040 | 2017-2026 | 2384 | 35.3% | 4522 | 997 | 58.2% |
 | fjellhaug | 1064 | 295 | 2025-2026 | 212 | 19.9% | 4648 | 151 | 28.8% |
 | himolde | 9468 | 979 | 2017-2026 | 4188 | 44.2% | 2918 | 2277 | 21.0% |
@@ -21,7 +21,7 @@ Generated: 2026-11-23
 | ldh | 1237 | 165 | 2019-2026 | 313 | 25.3% | 3187 | 107 | 64.0% |
 | mf | 1233 | 348 | 2025-2026 | 346 | 28.1% | 3504 | 317 | 7.8% |
 | nhh | 1511 | 698 | 2025-2026 | 455 | 30.1% | 4111 | 425 | 1.6% |
-| nih | 12793 | 1460 | 1990-2026 | 652 | 5.1% | 2420 | 578 | 10.5% |
+| nih | 12793 | 1460 | 1990-2026 | 800 | 6.3% | 2458 | 704 | 11.2% |
 | nla | 18647 | 2110 | 2001-2026 | 8423 | 45.2% | 5097 | 3946 | 53.2% |
 | nmbu | 5584 | 1590 | 2025-2026 | 1055 | 18.9% | 3918 | 1031 | 2.3% |
 | nmh | 10026 | 1000 | 2021-2026 | 5430 | 54.2% | 3070 | 1164 | 77.3% |
@@ -32,15 +32,15 @@ Generated: 2026-11-23
 | phs | 2589 | 321 | 2021-2026 | 316 | 12.2% | 3800 | 154 | 31.6% |
 | samas | 519 | 209 | 2025-2026 | 0 | 0.0% | NA | 0 | NaN% |
 | steiner | 370 | 128 | 2025-2026 | 30 | 8.1% | 5027 | 15 | 50.0% |
-| uia | 60346 | 5239 | 2012-2026 | 12101 | 20.1% | 2972 | 6128 | 46.3% |
-| uib | 114529 | 7678 | 2004-2026 | 51789 | 45.2% | 3118 | 19005 | 59.0% |
+| uia | 60346 | 5239 | 2012-2026 | 13844 | 22.9% | 2882 | 7094 | 45.7% |
+| uib | 114529 | 7678 | 2004-2026 | 51789 | 45.2% | 3118 | 19003 | 59.0% |
 | uio | 20850 | 5731 | 2025-2026 | 4143 | 19.9% | 3951 | 4046 | 1.6% |
 | uis | 6527 | 2083 | 2007-2026 | 4814 | 73.8% | 4812 | 2940 | 37.3% |
 | uit | 140699 | 11168 | 2004-2026 | 51100 | 36.3% | 3366 | 38092 | 20.7% |
 | usn | 42755 | 5504 | 2018-2026 | 14954 | 35.0% | 5910 | 13994 | 6.3% |
 | vid | 5312 | 995 | 2023-2026 | 1342 | 25.3% | 3636 | 852 | 32.9% |
 
-**Total**: 952932 rows, 495064 with extracted text (52.0%), 223147
+**Total**: 955310 rows, 498622 with extracted text (52.2%), 224839
 unique plans.
 
 **Columns:**
@@ -73,7 +73,7 @@ them. Share of offerings with a plan, by period:
 |:------------|:------|:--------|:--------|:--------|:--------|:------|
 | aho         |       |         |         |         | 0%      | 36%   |
 | barrattdue  |       |         |         |         |         | 34%   |
-| dmmh        |       | 35%     | 78%     |         | 96%     | 92%   |
+| dmmh        |       | 37%     | 65%     | 90%     | 92%     | 92%   |
 | fhs         |       | 0%      | 5%      | 34%     | 79%     | 85%   |
 | fjellhaug   |       |         |         |         |         | 20%   |
 | himolde     |       | 0%      | 38%     | 49%     | 53%     | 49%   |
@@ -85,7 +85,7 @@ them. Share of offerings with a plan, by period:
 | ldh         |       |         | 0%      | 6%      | 25%     | 46%   |
 | mf          |       |         |         |         |         | 28%   |
 | nhh         |       |         |         |         |         | 30%   |
-| nih         | 0%    | 0%      | 0%      | 0%      | 13%     | 33%   |
+| nih         | 0%    | 0%      | 0%      | 0%      | 16%     | 40%   |
 | nla         | 0%    | 10%     | 65%     | 71%     | 82%     | 83%   |
 | nmbu        |       |         |         |         |         | 19%   |
 | nmh         |       |         |         | 28%     | 57%     | 60%   |
@@ -96,7 +96,7 @@ them. Share of offerings with a plan, by period:
 | phs         |       |         |         | 0%      | 4%      | 23%   |
 | samas       |       |         |         |         |         | 0%    |
 | steiner     |       |         |         |         |         | 8%    |
-| uia         | 0%    | 0%      | 0%      | 40%     | 38%     | 41%   |
+| uia         | 0%    | 0%      | 0%      | 43%     | 43%     | 49%   |
 | uib         | 25%   | 40%     | 48%     | 54%     | 58%     | 70%   |
 | uio         |       |         |         |         |         | 20%   |
 | uis         | 92%   | 96%     | 95%     | 91%     | 92%     | 64%   |
@@ -127,7 +127,7 @@ year) that have a plan in at least one semester:
 |:---|---:|:---|---:|---:|---:|:---|:---|
 | aho | 799 | 77% | 180 | 5 | 427 | 30% | 22.4% |
 | barrattdue | 71 | 92% | 42 | 0 | 23 | 65% | 33.8% |
-| dmmh | 429 | 96% | 278 | 74 | 60 | 85% | 88.0% |
+| dmmh | 1733 | 86% | 826 | 251 | 409 | 67% | 74.8% |
 | fhs | 3609 | 87% | 15 | 1080 | 2048 | 36% | 35.3% |
 | fjellhaug | 552 | 93% | 202 | 0 | 310 | 38% | 19.9% |
 | himolde | 4985 | 90% | 2314 | 165 | 2004 | 54% | 44.2% |
@@ -139,7 +139,7 @@ year) that have a plan in at least one semester:
 | ldh | 661 | 87% | 37 | 117 | 422 | 27% | 25.3% |
 | mf | 640 | 93% | 274 | 26 | 293 | 50% | 28.1% |
 | nhh | 775 | 95% | 432 | 0 | 304 | 56% | 30.1% |
-| nih | 7265 | 76% | 516 | 26 | 4986 | 9% | 5.1% |
+| nih | 7265 | 76% | 611 | 42 | 4875 | 10% | 6.3% |
 | nla | 10170 | 83% | 924 | 3539 | 4014 | 48% | 45.2% |
 | nmbu | 2927 | 91% | 947 | 11 | 1699 | 36% | 18.9% |
 | nmh | 5125 | 96% | 410 | 2285 | 2206 | 55% | 54.2% |
@@ -150,7 +150,7 @@ year) that have a plan in at least one semester:
 | phs | 1352 | 91% | 140 | 35 | 1062 | 14% | 12.2% |
 | samas | 273 | 90% | 0 | 0 | 246 | 0% | 0.0% |
 | steiner | 251 | 47% | 15 | 0 | 104 | 12% | 8.1% |
-| uia | 31774 | 90% | 10259 | 226 | 18087 | 35% | 20.1% |
+| uia | 31774 | 90% | 11664 | 265 | 16643 | 40% | 22.9% |
 | uib | 57906 | 89% | 331 | 21805 | 29199 | 41% | 45.2% |
 | uio | 10710 | 95% | 3878 | 42 | 6220 | 38% | 19.9% |
 | uis | 3529 | 85% | 1183 | 1542 | 273 | 89% | 73.8% |
@@ -176,7 +176,7 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 |:---|---:|---:|---:|---:|---:|---:|---:|
 | aho | 534 | 0 | 516 | 0 | 30 | 0 | 0 |
 | barrattdue | 25 | 0 | 25 | 0 | 0 | 0 | 0 |
-| dmmh | 64 | 52 | 0 | 0 | 12 | 0 | 3 |
+| dmmh | 567 | 484 | 0 | 0 | 83 | 0 | 50 |
 | fhs | 2298 | 8 | 2290 | 0 | 0 | 0 | 4 |
 | fjellhaug | 340 | 0 | 138 | 0 | 0 | 202 | 0 |
 | himolde | 2227 | 0 | 2156 | 0 | 318 | 0 | 123 |
@@ -188,7 +188,7 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 | ldh | 479 | 0 | 479 | 0 | 0 | 0 | 0 |
 | mf | 322 | 0 | 0 | 0 | 2 | 320 | 0 |
 | nhh | 343 | 0 | 262 | 0 | 23 | 58 | 0 |
-| nih | 6568 | 6521 | 0 | 44 | 6 | 0 | 6 |
+| nih | 6444 | 6397 | 0 | 44 | 7 | 0 | 6 |
 | nla | 5228 | 3555 | 0 | 0 | 1689 | 0 | 7 |
 | nmbu | 1723 | 0 | 0 | 0 | 0 | 1723 | 0 |
 | nmh | 2199 | 0 | 2080 | 0 | 154 | 0 | 0 |
@@ -199,7 +199,7 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 | phs | 1155 | 24 | 1150 | 0 | 73 | 0 | 0 |
 | samas | 273 | 0 | 273 | 0 | 0 | 0 | 0 |
 | steiner | 201 | 0 | 192 | 0 | 0 | 9 | 0 |
-| uia | 20510 | 20498 | 0 | 0 | 671 | 0 | 514 |
+| uia | 18894 | 18882 | 0 | 0 | 759 | 0 | 587 |
 | uib | 34216 | 28828 | 0 | 2848 | 2568 | 0 | 22 |
 | uio | 6617 | 0 | 7 | 0 | 48 | 6562 | 0 |
 | uis | 368 | 153 | 0 | 18 | 197 | 0 | 0 |
@@ -248,7 +248,7 @@ All years, by institution:
 |:---|:---|:---|:---|:---|
 | aho | TRUE | 240 / 799 (30%) |  |  |
 | barrattdue | TRUE | 46 / 71 (65%) |  |  |
-| dmmh | TRUE | 365 / 429 (85%) |  |  |
+| dmmh | TRUE | 1166 / 1733 (67%) |  |  |
 | fhs | TRUE | 1304 / 3609 (36%) | 885 / 1511 (59%) | 733 / 1223 (60%) |
 | fjellhaug | TRUE | 212 / 552 (38%) | 68 / 219 (31%) | 0 / 108 (0%) |
 | himolde | TRUE | 2716 / 4985 (54%) | 2376 / 3119 (76%) | 2087 / 2692 (78%) |
@@ -260,7 +260,7 @@ All years, by institution:
 | ldh | TRUE | 180 / 661 (27%) |  |  |
 | mf | TRUE | 318 / 640 (50%) | 139 / 318 (44%) | 22 / 167 (13%) |
 | nhh | TRUE | 432 / 775 (56%) | 169 / 261 (65%) | 0 / 49 (0%) |
-| nih | TRUE | 620 / 7265 (9%) | 522 / 4995 (10%) | 389 / 4291 (9%) |
+| nih | TRUE | 751 / 7265 (10%) | 619 / 4995 (12%) | 460 / 4291 (11%) |
 | nla | TRUE | 4884 / 10170 (48%) | 3803 / 6593 (58%) | 3149 / 5106 (62%) |
 | nmbu | TRUE | 1044 / 2927 (36%) | 562 / 1657 (34%) | 8 / 879 (1%) |
 | nmh | TRUE | 2842 / 5125 (55%) | 1797 / 2251 (80%) | 1108 / 1306 (85%) |
@@ -271,7 +271,7 @@ All years, by institution:
 | phs | TRUE | 190 / 1352 (14%) | 142 / 611 (23%) | 116 / 456 (25%) |
 | samas | TRUE | 0 / 273 (0%) | 0 / 94 (0%) | 0 / 8 (0%) |
 | steiner | TRUE | 30 / 251 (12%) | 21 / 125 (17%) | 5 / 45 (11%) |
-| uia | TRUE | 11194 / 31774 (35%) | 8305 / 21391 (39%) | 6708 / 17811 (38%) |
+| uia | TRUE | 12810 / 31774 (40%) | 9525 / 21391 (45%) | 7712 / 17811 (43%) |
 | uib | TRUE | 23581 / 57906 (41%) | 19300 / 37151 (52%) | 16325 / 30349 (54%) |
 | uio | TRUE | 4068 / 10710 (38%) | 1724 / 5033 (34%) | 32 / 2655 (1%) |
 | uis | TRUE | 3149 / 3529 (89%) | 2236 / 2414 (93%) | 957 / 1037 (92%) |
@@ -842,6 +842,12 @@ Figures are in the tables above; the notes say why.
   in both, and the codes with Norwegian letters: the page of KRØ100 is
   `kro100.html`, which the harvest requested as `krø100.html` until
   2026-10-21 (`add_course_url_nih()` now writes ø as o)
+- A course taught in English may have its page only in the English tree,
+  `/english/studies/courses/{year}/{spring|autumn}/{code}.html` (THP111,
+  LKI152, SPM123; from 2023): since 2026-11-23 an offering whose
+  Norwegian URL answered 404 takes that page when the English tree lists
+  it, as at UiA (148 offerings of 2023-2026 on 2026-11-23, before their
+  retry harvest)
 - Codes with a space or hyphen that are not course codes (MAS- ESSAY,
   UTV-ESSAY, essays on the master’s programmes) have no page in any year
 - Read from `#vrtx-fs-emne-content`: the title, the facts list (credits,
@@ -1241,7 +1247,13 @@ Figures are in the tables above; the notes say why.
   the offerings stay without one
 - URL pattern:
   `https://www.uia.no/studier/emner/{year}/{semester}/{course_code}.html`;
-  the semester folders are `host` and `var`
+  the semester folders are `host` and `var`. A course taught in English
+  may have its page only in the English tree,
+  `/english/studies/courses/{year}/{spring|autumn}/{course_code}.html`
+  (MF-102, ME-112, ORG208): since 2026-11-23 an offering whose Norwegian
+  URL answered 404 takes that page when the English tree lists it
+  (`docs/institutions.md`, UiA; 1,743 offerings of 2020-2026 on
+  2026-11-23, before their retry harvest)
 - DBH’s variant suffixes `-G`, `-G2` and `-D` (MA-015-G, TFL011-G2,
   PRA090-D) are not in the site’s code: ma-015, tfl011, pra090 answer,
   the codes with the suffix never do (checked 2026-10-21). Until then

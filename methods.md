@@ -12,8 +12,8 @@ decision changes what the data mean, add or update its entry here; each
 release tag freezes this file with the data.
 
 Current data, the teacher-ed frame (below): 46 882 offerings (DBH course
-× year × semester) at 19 institutions, 30 732 of them with a plan, and
-17 006 unique plans from 18 institutions (none from Samas, below).
+× year × semester) at 19 institutions, 30 736 of them with a plan, and
+17 010 unique plans from 18 institutions (none from Samas, below).
 
 ## Population and sampling frame
 
@@ -164,8 +164,8 @@ follows from the counts’ date, not the course list’s. A course-year of
 the course list that the counts lack had no students (in a provisional
 year: none yet). *Rejected:* one date for both (the counts would wait
 for the next course list, or force one). In the teacher-ed frame: 24 775
-course-years, 19 626 with a plan (79 %); with students 18 368, of them
-15 779 with a plan (86 %); with both 13 832, of them 12 041 with a plan
+course-years, 19 629 with a plan (79 %); with students 18 368, of them
+15 781 with a plan (86 %); with both 13 832, of them 12 042 with a plan
 (87 %). Per institution and year: `data/data_notes.md`, “Coverage over
 course-years that had students”. *Since:* 2026-11-04.
 
@@ -1084,6 +1084,39 @@ to 1,823 spring offerings get a plan after a retry harvest
 (every HiØF page’s title names its semesters, and none ends before its
 offering). *Since:* 2026-10-29.
 
+**UiA and NIH: an offering whose Norwegian page answered 404 takes its
+page in the English tree.** A course taught in English may have its page
+only at /english/studies/courses/{year}/{spring\|autumn}/{code}.html,
+not at the Norwegian /studier/emner/{year}/{var\|host}/{code}.html
+(UiA’s MF-102, some 800 exam registrations a year, ME-112 and ORG208;
+NIH’s THP111 and LKI152). Since 2026-11-23 the URL discovery reads the
+English tree’s year listing and gives such an offering that page when
+its Norwegian URL answered 404 when last requested and the listing has a
+page of its code in its year and semester
+(`resolve_urls_english_tree_batch()`, `docs/institutions.md` “UiA”);
+every other offering keeps the Norwegian URL. The English pages have the
+Norwegian layout, and the anonymizer removes “Course Leader:” with the
+name as on the Norwegian pages. *Why:* these offerings had no plan
+though their institution publishes one. *Rejected:* the English page
+wherever the English tree lists one: the English tree holds a
+translation of most courses (of UiA’s 11,694 English pages of 2020-2027,
+7,779 have a Norwegian page that answered 200), so the plans of those
+offerings would change language between harvests; deciding from the
+Norwegian listings, since UiA’s stop at 500 pages and cannot show a page
+missing; trying the English URL after each 404 inside the fetch, which
+would store the English page under the Norwegian URL in the raw store
+and the fetch ledger. *Consequence:* by the English listings of
+2026-11-23 and the raw store and gaps of the 2026-11-23 build, 1,743 UiA
+offerings (1,704 course-years without a plan, 487 codes; 324
+course-years of 2026, 104-323 a year in 2020-2025) and 148 NIH offerings
+(125 course-years, 53 codes; 38 of 2026, 2023-2026) get an English URL
+and, after a retry harvest, an English plan; about half the UiA
+offerings are of courses DBH registers as taught in Norwegian (901 of
+1,743). A course-year new to a harvest gets the English page only with
+the next retry of pages not found (`retry = "not_found"`). English
+headings not in the heading map go to an audit of their sections.
+*Since:* 2026-11-23.
+
 **Steiner: a PDF emne joins the DBH courses of its name, and
 PEL1.4/PEL1.5 also M-PEL2.1/M-PEL2.2.** Steiner’s five subject PDFs are
 those of the bachelor (Steinerpedagogisk lærerutdanning); their emne
@@ -1105,7 +1138,7 @@ confirmed against the programme description. *Since:* 2026-10-19.
 
 **A plan is a unique anonymized text per institution and course code**
 (`plan_content_id`, a hash of the normalized text). Offerings with the
-same text share a plan: 30 732 offerings have 17 006 plans. *Why:*
+same text share a plan: 30 736 offerings have 17 010 plans. *Why:*
 consecutive years and both semesters mostly repeat the same text.
 *Consequence:* the id changes whenever cleaning changes the text, so
 coding is tied to a frozen release and carried to later releases with a
@@ -1122,7 +1155,7 @@ institution that publish the same text (UiT LRU-3672 and LRU-3672F, NTNU
 PPU4621/4623/4625/4627, NLA 4MGL1DIP and MGL1DIP, OsloMet M5GMT2100 and
 M5GMT3100) share a `plan_content_id`: 258 ids are shared by 691 plans
 (never across institutions), and joining offerings to plans on
-`plan_content_id` alone duplicates 1 457 of the 30 732 offerings with a
+`plan_content_id` alone duplicates 1 457 of the 30 736 offerings with a
 plan (2026-11-19: 256 ids, 687 plans, 1,449 of 30,727 offerings). The
 key `plan_content_id` + `institution` + `course_code` was documented,
 but easy to miss. *Rejected:* documenting the three-column key only (the
@@ -1995,6 +2028,74 @@ plans change, UiB 5, HiØ 5, UiO 1, NLA 1, INN 1, HVL and MF 0, and every
 removal is a session or deadline date, a semester or a stamp. *Since:*
 2026-11-11.
 
+**English deadlines after “by”, weekly hours and staff clauses go.** A
+deadline after “by” with a year, month or day first, goes with the “by”:
+“Minimum 50 titles by January 14, 2026” → “Minimum 50 titles”; at AHO
+the date closing an entry of a PhD course’s activity list goes after its
+comma (“Presentation of Research Design (final presentation), May 7
+2026”, and a session’s date without a year, “… one session of the AHO
+Colloquium, 6 November.”). A range of bare hours before “hver”/“every”
+and a weekday goes with its preposition (“Forelesning fra 9-12 hver
+mandag” → “Forelesning hver mandag”). A staff clause closing a sentence
+after “og” or a comma goes whole, not only its names (“… studenter fra
+KHIO og foreleser og kursansvarlig er <name>.” → “… studenter fra
+KHIO.”), and so does a sentence that is only such a clause
+(“Emneansvarleg er <name>.”, UiB, where “Emneansvarlig er.” was left in
+23 plans). Also: names in capitals after “Lærere:” (“Lærere: <NAME>, …”,
+UiB), a part between the role and its colon (“Kursansvarlig - engelsk
+del: <name>”, HiØ), UiB’s “Undervisning foregår i fellesskap med <name>”
+(the names with “i fellesskap med”), a revision’s month and year (“sist
+revidert i mars 2019”, HiØ), and a title and a name alone in brackets
+anywhere in a line (“Anvendt bergmekanikk (professor <name>),
+Industrimineraler (professor <name>)”, NTNU’s topic lists; “the course
+coordinator (professor <name>)”, UiO), where before only a list of such
+lines lost them. *Why:* the AHO anonymization re-audit of 2026-11-22
+found the English dates and the clock range, and the stranded “…
+kursansvarlig er.”; the rest were found in a corpus check on 2026-11-21,
+the bracketed names (65 NTNU and 2 UiO plans) while checking the “by”
+rule’s hits on 2026-11-23. These follow the rules of 2026-11-11 (session
+dates go, deadlines with a year) in English forms those rules did not
+read. *Rejected:* every English month-day date with a year (reference
+and newspaper dates have the same form); a yearless “by” deadline
+(“Submit by 15 October.”, “submitted by May 15th”), which recurs every
+year and stays as after a deadline label; any line at AHO ending in a
+date after a comma (a reference does too). *Consequence:* in the plans
+of the 2026-11-23 build the “by” rule finds 26 plans at 7 institutions,
+every hit a registration, submission or notification deadline (“Other
+applicants apply by 1 December 2021 in Søknadsweb.” → “Other applicants
+apply in Søknadsweb.”); the bracketed names 67 plans, the stranded role
+sentence 23, UiB’s capitals 2 and “i fellesskap med” 3, HiØ’s 3, AHO’s
+3. On 20 pages per raw partition of every institution
+(`preview_change()`) 2 pages change, both intended (an AHO session date,
+an OsloMet deadline). *Since:* 2026-11-23.
+
+**Names with an apostrophe or a particle go like other names.** Every
+rule that removes a name after a staff label, a role or a title (the
+shared name pattern) takes a capital after an apostrophe inside a name
+part (“O’<Name>”, “N’<Name>” with a typographic apostrophe) and up to
+two lower-case particles between two capitalised parts, from a closed
+list (van, von, de, da, di, der, den, la, le, du, dos, das, del, bin,
+ibn, af, zu: “<Name> van der <Name>”, “<Name> de <Name>”); the lines
+that list a name with its role or sign with one, UiB’s staff blocks, the
+approver after “Godkjent av” and `privacy_check`‘s approver patterns use
+the same list. *Why:* the English UiA pages, read like the Norwegian
+ones from 2026-11-24, left such names after “Course Leader:” in 8 of 670
+plans and NIH’s in 1; those lines now go by the institutions’ config,
+but the anonymizer stopped at the apostrophe or the particle everywhere.
+*Rejected:* any lower-case word between capitalised words (it would take
+“Lærere og elever i skolen …” and titles); a particle at the start or
+end of a name (only between two parts, so “de” and “du” in Norwegian
+text stay); a rule per layout. *Consequence:* re-anonymizing the
+published texts of the build of 2026-11-23 that hold such a name form
+(3,017 plan texts, 2,983 sections) changes 21 plan texts and 5 sections,
+each losing only a name and, where the whole line or heading goes, its
+label: UiB 15 (one course leader with an apostrophe on 13 MOL200/MOL213
+texts, a “Programansvarlig” and “Emneansvarlig” with a particle on 2),
+NTNU 5 plans and 5 sections (a professor with a particle in brackets
+after a topic), NMBU 1. Reading-list authors, titles and places with
+particles or apostrophes (“Van de Walle”, “O’Reilly”, “Cerro de la
+Máscara”) do not change. *Since:* 2026-11-24.
+
 ## Sections
 
 **Seven canonical sections** are cut from each plan by its headings,
@@ -2866,6 +2967,124 @@ pages, prerequisites on 6 more pages. Elsewhere (15 pages per raw
 partition of every institution) one UiT and one NMBU page change (the
 gate list, a doubled line). `course_plan` and the plan ids do not
 change. *Since:* 2026-11-22.
+
+**AHO: coursework gates in the teaching text and the exam comment.** AHO
+writes most of its gates in running text under the teaching or in the
+exam description’s comment, or under an “Attendance:”/“Oppmøte:” label,
+not under a coursework heading. A sentence there about attendance or
+submission now moves to coursework requirements when it states a
+requirement (mandatory, compulsory, required, obligatorisk, må:
+“Students are required to attend weekly seminars.”, “Final reviews are
+mandatory”, “Obligatorisk innleveringer av en del mindre skriftlige
+oppgaver underveis i kurset.”, “Oppmøte påkrevd: Ja”), a consequence
+(“Alle oppgaver må være levert for å bli sensurert i kurset.”, “The
+student must submit all assignments in the course to receive final
+assessment.”, “… in order to pass the course”) or an attendance
+threshold, also when phrased as an expectation (“det forventes 80 %
+oppmøte på forelesninger”, “There is at least a 90 % expected attendance
+…”). A bare expectation without a threshold stays where it is: the stock
+“Fysisk oppmøte til undervisning, veiledning og andre
+undervisningsaktiviteter er forventet og nødvendig for å oppfylle
+læringsutbytte.” (21 plans), its English versions (27), “Det forventes
+oppmøte på forelesninger, workshops og annen kursaktivitet for øvrig.”,
+“Attendance is expected.”. The assessment design stays in assessment:
+what is assessed and how (“Students are assessed based on … two
+mandatory coursework assignments”), the final work (“Et avsluttende
+obligatorisk essay … må leveres.”), the parts of the portfolio (“Alle
+prosjektoppgavene må leveres.”, 6 plans; “Alle moduler må være levert og
+presentert.”; “Deliveries from all three phases are required.”),
+deadlines and the exam system. Whole sentences move; an
+“Attendance:”/“Oppmøte:” label goes with the paragraph under it when all
+of it moves and otherwise stays (the earlier rule moved the bare
+“Oppmøte” label of three pages alone, leaving the expectations under
+it). The rule replaces the two wording rules of 2026-11-22, whose
+sentences it also moves. *Why:* AHO’s coursework gate was 0.37 of its
+pilot sample (68 plans; threshold 0.70), and 20 of the 42 sample plans
+without coursework mention attendance or submission in other sections.
+Gates in running text are AHO’s usual way of writing them, so the rule
+goes by meaning, not by recurring wording: an exception for AHO to the
+known deviation of 2026-11-11, where a sentence moves by meaning only
+where its wording recurs (most AHO gate sentences occur in one or two
+courses). *Rejected:* a rule per wording (about 15 wordings, most in one
+course); moving every sentence that mentions attendance (the stock
+expectations are teaching text, no gate); moving the stock lead-in “In
+order to be assessed in this course, the student must have completed the
+following activities and assignments:” (15 plans of 2026), which most
+fill with the exam’s description (“The portfolio consists of …”); moving
+the “final submission … which both are compulsory” of AHO 700-1 and
+module deliveries that must be approved (the exam’s own parts,
+assessment by the spec). *Consequence* (all 316 AHO raw pages, HEAD
+against the new code): 39 pages of 20 courses change; coursework
+requirements are new on 25 pages and gain a sentence on 14; assessment
+loses sentences on 25 pages and teaching methods on 14. On the pilot
+sample the coursework share rises from 0.37 to 0.49 (25 to 33 of 68
+plans). The rest of the 42: plans without a gate (exam text only,
+diploma and master’s courses), bare expectations, the stock lead-in over
+exam text, and the portfolio’s parts. Other institutions: no change (5
+pages per raw partition of every institution). `course_plan` and the
+plan ids do not change. *Since:* 2026-11-23.
+
+**DMMH’s and LDH’s reading-list pointers alone are placeholders.** A
+reading list that is only “Her finner du pensumliste for studieåret”
+(DMMH: the label of a link to the list, its academic year removed by the
+anonymizer), or only LDH’s Leganto notice and its links’ labels
+(“Pensumlister finnes i Leganto og er lenket til under. Obs! For å få
+tilgang til kompendiefiler, … Kjernelitteratur finner du her.
+Emnespesifikk litteratur finner du her.”), is dropped, like the other
+pointers elsewhere (`.placeholder_phrases`). A row with references under
+the label stays. *Why:* sections audit of 2026-11-22 (Codex, DMMH) and
+the metrics check of the 2026-11-23 build (LDH, two plans of 2026): a
+pointer alone is no section by the spec. *Rejected:* moving the approval
+sentence of one DMMH plan’s teaching methods (“Godkjenning av fagnotat
+og presentasjon av utviklingsarbeid gjøres av faglærer, og vurderes som
+godkjent/ikke godkjent.”) to coursework requirements: its wording occurs
+in one plan, so it stays, as the known deviation of 2026-11-11 says; a
+generic rule for “vurderes til godkjent/ikke godkjent” would also take a
+pass/fail exam or placement out of its section. The placement reports’
+approval in assessment (“Praksisrapport (praksisrapport vurderes til
+godkjent/ikke godkjent).”) stays as part of the placement’s assessment.
+*Consequence:* 3 reading lists go (one DMMH plan of 2019, two LDH plans
+of 2026); on 20 pages per raw partition of every institution no other
+section changes. *Since:* 2026-11-23.
+
+**Barratt Due: the PPU degree requirement, stock resit rules, the
+electives’ admission rule.** The PPU plans’ prerequisite field “Krav til
+forkunnskaper: Bachelorgrad i musikk og Opptak til Praktisk-pedagogisk
+utdanning” now joins prerequisites whole: a sentence that joins a degree
+in a named subject to the admission names both prior knowledge and
+admission, which the spec keeps whole (`.admission_prerequisites()`,
+shared; before, the degree rule dropped it as admission). A bare degree
+or a bare admission (“Opptak til …”) stays out. The stock resit rules
+under “Ny vurdering” leave assessment, as logistics by the spec: the PPU
+plans’ “Den delen som ikke er bestått må gjennomføres på nytt. Deretter
+gis det ny samlet vurdering.” (kept on 2026-11-21 as saying what the
+resit is), “Studenten må gjennomføre hele eller deler av emnet på nytt.”
+and “Individuell vurdering av faglærer/seksjonsleder”
+(`.logistics_sentences`); resit lines that say what the resit consists
+of stay (“Ny muntlig eksamen.”, “Ny innlevering av refleksjonsnotat,
+repertoarrapport og ny praktisk eksamen.”). The elective chamber-music
+courses’ admission rule in course content (“Opptak i emnet forutsetter
+at kriterier som besetning og repertoar oppfylles på bakgrunn av
+søkermasse og tilgjengelig undervisningsressurs.”, KAMFOR5100 and
+KAMP5100) is admission and goes on the section side; `course_plan` keeps
+all of these. *Why:* sections audit of 2026-11-23 (Codex): DID1’s
+prerequisites missing; resit rules recurring in assessment; elective
+admission in course content. *Rejected:* removing these in `course_plan`
+(`exclude`/`post_fn` may cut only personal data and boilerplate);
+dropping SPIN5110’s priority and allocation sentences (“Avgangsstudenter
+prioriteres. Fordeling skjer forøvrig …”) and its other one-off mixed
+text: their wording occurs in one plan, so they stay, as the known
+deviation of 2026-11-11 says; keeping a degree without a course code
+anywhere (the degree rule takes UiT’s and others’ programme admission
+out). *Consequence* (all 88 Barratt Due pages of the 2026-11-23 run,
+HEAD against the new code): prerequisites are new on the 4 pages of DID1
+and PED1; assessment loses a resit sentence on 30 pages of 16 courses
+(PPU rule: 8 pages of DID1, DID2, PED1 and PED2; repeat rule: 18 pages
+of 10 courses; resit assessor: 4 pages of SGRU1300 and SGRU2300); course
+content loses the admission rule on the 4 pages of KAMFOR5100 and
+KAMP5100. No section of another institution changes (5 pages per raw
+partition of every institution). `course_plan` and the plan ids do not
+change. *Since:* 2026-11-23.
 
 **Resit and examiner rules stay in assessment at UiT, NTNU, Nord and
 FHS, a known deviation from the spec.** The spec puts resit,
