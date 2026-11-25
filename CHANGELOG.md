@@ -104,6 +104,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Add Barratt Due Musikkinstitutt (#584)
+- Add DMMH (Dronning Mauds Minne Høgskole) (#581)
+- Add Lovisenberg diakonale høgskole (#580)
+- Add AHO (Arkitektur- og designhøgskolen i Oslo) (#579)
+- Data notes: AHO, Barratt Due, DMMH and LDH still say 'its pilot and full harvest wait' (#616)
 - Anonymizer: names in three layouts the rules do not read (UiB MNF990, UiO GLOBE4512, UiB PRO325) (#614)
 - UiA and NIH: English-taught courses live in the Vortex English tree (/english/studies/courses/{year}/{spring|autumn}/) (#589)
 - Anonymizer: names with an apostrophe or a lower-case particle after a staff label (#613)
