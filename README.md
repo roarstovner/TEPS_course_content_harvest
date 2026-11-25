@@ -223,6 +223,9 @@ Explanation and reference:
   mechanism may remove.
 - [Data Files](docs/data-files.md): published and internal files,
   privacy, the frames, the DBH input and the variables.
+- [Codebook](docs/codebook.md): the variables, codes and keys of the
+  published files, rendered from `data/variables.csv`, `data/codes.csv`
+  and `data/study_types.csv`; it goes with every release.
 - [Institution-Specific Notes](docs/institutions.md): URL patterns and
   quirks of NIH, NMBU, NORD, NTNU, UiO, UiB, HiOF, USN, UiT and Samas.
 - [Reference](docs/reference.md): key functions and the file

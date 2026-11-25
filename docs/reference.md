@@ -247,10 +247,20 @@ raw files changed or missing and, once a release is kept, changes to it
 <tr>
 <td><code>release_data(tag, dest, frame)</code></td>
 <td><code>R/release.R</code></td>
-<td>Copy the published files of a frame (the teacher-ed one),
+<td>Copy the published files of a frame (the teacher-ed one), with their
+Parquet copies and <code>datapackage.json</code>,
 <code>methods.md</code>, <code>data/variables.csv</code>,
-<code>data/study_types.csv</code>, a manifest and section coverage to
-the coding project</td>
+<code>data/study_types.csv</code>, <code>data/codes.csv</code>, the
+codebook, a manifest and section coverage to the coding project</td>
+</tr>
+<tr>
+<td><code>release_codes()</code>, <code>datapackage_descriptor()</code>,
+<code>write_datapackage()</code>, <code>check_datapackage()</code></td>
+<td><code>R/release.R</code></td>
+<td>The value labels of the coded columns (<code>data/codes.csv</code>
+with the study types); the Data Package (v2) descriptor of the published
+tables (types, codes, keys <code>RELEASE_KEYS</code>); write the tables
+as Parquet with it; check tables against it</td>
 </tr>
 <tr>
 <td><code>plan_gaps(offerings, fetch_status)</code></td>
@@ -329,7 +339,7 @@ address as archived. Not used by the harvest</td>
     │   ├── browser_data.R         # The browser's data files: build_browser_data()
     │   ├── pipeline.R             # Steps of the {targets} pipeline (_targets.R)
     │   ├── pipeline_metrics.R     # Regression snapshot: check_pipeline_metrics(); the pilot gate numbers
-    │   ├── release.R              # release_data(), finalize_release(), frozen_changes()
+    │   ├── release.R              # release_data(), datapackage_descriptor(), finalize_release(), frozen_changes()
     │   ├── wayback.R              # Wayback Machine captures (CDX API); not used by the harvest
     │   └── audit/                # Audit harness for /audit-institutions
     ├── app/

@@ -11,6 +11,29 @@ VARIABLES_FILE <- "data/variables.csv"
 # DBH's study types with the project's groups (study_type_group of
 # course_offerings; docs/data-files.md "Study Types of the Offerings")
 STUDY_TYPES_FILE <- "data/study_types.csv"
+# The value labels of the coded columns (docs/codebook.md); with
+# STUDY_TYPES_FILE, release_codes()
+CODES_FILE <- "data/codes.csv"
+# The human codebook, rendered from VARIABLES_FILE and release_codes()
+CODEBOOK_FILE <- "docs/codebook.md"
+
+# The keys of the published files (docs/data-files.md "Keys of the Published
+# Files"): plan_id is unique per plan; plan_content_id is a text
+# fingerprint, not a key
+RELEASE_KEYS <- list(
+  course_offerings = list(primaryKey = "course_id",
+                          foreignKeys = list(list(fields = "plan_id",
+                                                  reference = list(resource = "course_plans", fields = "plan_id")))),
+  course_plans = list(primaryKey = "plan_id"),
+  plan_sections = list(primaryKey = c("plan_id", "section"),
+                       foreignKeys = list(list(fields = "plan_id",
+                                               reference = list(resource = "course_plans", fields = "plan_id"))))
+)
+
+# Table Schema types of the types in VARIABLES_FILE, and the R type a
+# column of each has
+TABLE_SCHEMA_TYPES <- c(character = "string", integer = "integer", double = "number",
+                        logical = "boolean", Date = "date")
 
 #' Copy the published data files to another project, with a manifest
 #'
@@ -19,7 +42,11 @@ STUDY_TYPES_FILE <- "data/study_types.csv"
 #' methods.md as built, variables.csv (VARIABLES_FILE: every variable of
 #' the files, with its name until 2026-10-16) and study_types.csv
 #' (STUDY_TYPES_FILE: the project's groups of study types, study_type_group);
-#' `manifest.yml` (release tag, harvest repo commit, date, files with row
+#' codes.csv (CODES_FILE: the value labels of the coded columns) and
+#' codebook.md (CODEBOOK_FILE, rendered from the variables and codes); the
+#' three tables again as Parquet with `datapackage.json`, their Data Package
+#' (v2) descriptor (write_datapackage(); it stops if the tables do not match
+#' it); `manifest.yml` (release tag, harvest repo commit, date, files with row
 #' counts and md5 sums); `section_coverage.csv` (share of
 #' plans per institution with each section; where a section is missing the
 #' coders use the whole plan); and, when `dest` already holds a release,
@@ -40,7 +67,7 @@ STUDY_TYPES_FILE <- "data/study_types.csv"
 release_data <- function(tag, dest = "../TEPS_course_content_coding/data", frame = "teacher_ed") {
   files <- c(file.path(frame_dir(frame), c("course_offerings.RDS", "course_plans.RDS",
                                            "plan_sections.RDS")), "methods.md", VARIABLES_FILE,
-             STUDY_TYPES_FILE)
+             STUDY_TYPES_FILE, CODES_FILE, CODEBOOK_FILE)
   stopifnot(all(file.exists(files)), dir.exists(dest))
   commit <- system2("git", c("rev-parse", "HEAD"), stdout = TRUE)
   if (length(system2("git", c("status", "--porcelain", "--", "R", "_targets.R"), stdout = TRUE))) {
@@ -73,6 +100,11 @@ release_data <- function(tag, dest = "../TEPS_course_content_coding/data", frame
     utils::write.csv(changed, file.path(dest, "sections_changed.csv"), row.names = FALSE)
   }
 
+  # Parquet and the descriptor first: it stops before any file is copied if
+  # the tables do not match the descriptor
+  tables <- list(course_offerings = off, course_plans = plans, plan_sections = secs)
+  parquet <- write_datapackage(tables, dest, tag, frame)
+  rows <- vapply(tables, nrow, 1L)
   file.copy(files, dest, overwrite = TRUE)
 
   key <- c("plan_content_id", "institution", "course_code")
@@ -95,16 +127,161 @@ release_data <- function(tag, dest = "../TEPS_course_content_coding/data", frame
     methods = "methods.md (the choices behind the data, with numbers for this release)",
     variables = "variables.csv (every variable of the files, and its name until 2026-10-16)",
     study_types = "study_types.csv (DBH's study types and the project's groups of them, study_type_group)",
-    files = lapply(stats::setNames(basename(files), basename(files)), function(f) {
-      path <- file.path(dest, f)
-      c(list(md5 = unname(tools::md5sum(path))),
-        if (grepl("\\.RDS$", f)) list(rows = nrow(readRDS(path))))
+    codes = "codes.csv (the value labels of the coded columns; the study types are in study_types.csv)",
+    codebook = "codebook.md (the variables, codes and keys of the files)",
+    datapackage = "datapackage.json (Data Package v2 descriptor of the Parquet files: types, codes, keys)",
+    files = lapply(stats::setNames(nm = c(basename(files), basename(parquet))), function(f) {
+      table <- tools::file_path_sans_ext(f)
+      c(list(md5 = unname(tools::md5sum(file.path(dest, f)))),
+        if (table %in% names(rows) && grepl("\\.(RDS|parquet)$", f)) list(rows = rows[[table]]))
     }),
     institutions = lapply(split(by_inst[-1], by_inst$institution), as.list)
   )
   yaml::write_yaml(manifest, file.path(dest, "manifest.yml"))
   message("Release ", tag, " written to ", dest)
   invisible(dest)
+}
+
+#' Value labels of the coded columns of the published files
+#'
+#' CODES_FILE (one row per allowed value of a variable, in every file that has
+#' it) and, from STUDY_TYPES_FILE, the study types (study_type_code, DBH's,
+#' with the project's English name) and their groups (study_type_group, the
+#' project's), so the study types are kept in one file.
+#'
+#' @param codes_file,study_types_file The two tables.
+#' @return Data frame `variable`, `code` (character), `label`, `source` (DBH
+#'   or project), `description`.
+release_codes <- function(codes_file = CODES_FILE, study_types_file = STUDY_TYPES_FILE) {
+  codes <- utils::read.csv(codes_file, colClasses = "character", na.strings = NULL)
+  st <- utils::read.csv(study_types_file, colClasses = "character")
+  groups <- st[!duplicated(st$group), ]
+  rbind(codes,
+        data.frame(variable = "study_type_code", code = st$study_type, label = st$name_en,
+                   source = "DBH", description = paste0("DBH: ", st$name_no, "; group ", st$group)),
+        data.frame(variable = "study_type_group", code = groups$group, label = groups$group_label_en,
+                   source = "project", description = groups$group_label_no))
+}
+
+#' The Data Package (v2) descriptor of a release's tables
+#'
+#' One resource per published file, `{file}.parquet`, with a Table Schema:
+#' the fields of VARIABLES_FILE (type, description, source), an enum
+#' constraint and labelled categories for each coded variable
+#' (release_codes()), and the keys of RELEASE_KEYS.
+#'
+#' @param tag Release name (the package version).
+#' @param frame The frame of the files (FRAMES).
+#' @param variables,codes VARIABLES_FILE and release_codes().
+#' @param files Optional named vector of the written Parquet files, by
+#'   resource, to add their bytes and md5 hash.
+#' @return The descriptor, a list for jsonlite::write_json(auto_unbox = TRUE).
+datapackage_descriptor <- function(tag, frame, variables = utils::read.csv(VARIABLES_FILE),
+                                   codes = release_codes(), files = NULL) {
+  resource <- function(name) {
+    v <- variables[variables$file == name, ]
+    fields <- lapply(seq_len(nrow(v)), function(i) {
+      type <- unname(TABLE_SCHEMA_TYPES[v$type[i]])
+      f <- list(name = v$variable[i], type = type, description = v$description[i], source = v$source[i])
+      cd <- codes[codes$variable == v$variable[i], ]
+      if (nrow(cd)) {
+        value <- if (type == "integer") as.integer(cd$code) else cd$code
+        f$constraints <- list(enum = I(value))
+        f$categories <- lapply(seq_along(value), function(j) list(value = value[j], label = cd$label[j]))
+      }
+      f
+    })
+    keys <- RELEASE_KEYS[[name]]
+    r <- list(name = name, path = paste0(name, ".parquet"), format = "parquet",
+              mediatype = "application/vnd.apache.parquet")
+    if (!is.null(files)) {
+      r$bytes <- unname(file.size(files[[name]]))
+      r$hash <- unname(tools::md5sum(files[[name]]))
+    }
+    r$schema <- c(list(fields = fields, primaryKey = I(keys$primaryKey)),
+                  if (length(keys$foreignKeys)) list(foreignKeys = lapply(keys$foreignKeys, function(k)
+                    list(fields = I(k$fields), reference = list(resource = k$reference$resource,
+                                                                fields = I(k$reference$fields))))))
+    r
+  }
+  list(`$schema` = "https://datapackage.org/profiles/2.0/datapackage.json",
+       name = paste0("teps-course-plans-", gsub("_", "-", frame)),
+       title = paste0("Norwegian course plans (", frame, " frame)"),
+       description = paste("Course offerings from DBH, their course plans (anonymized) and the plans'",
+                           "sections; codebook.md describes the variables and codes."),
+       version = tag,
+       created = format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ", tz = "UTC"),
+       resources = lapply(names(RELEASE_KEYS), resource))
+}
+
+#' Write a release's tables as Parquet with their datapackage.json
+#'
+#' @param tables Named list of the published tables (names of RELEASE_KEYS).
+#' @param dest Directory to write to.
+#' @inheritParams datapackage_descriptor
+#' @return The paths written, invisibly. Stops if the tables do not match
+#'   the descriptor (check_datapackage()).
+write_datapackage <- function(tables, dest, tag, frame, variables = utils::read.csv(VARIABLES_FILE),
+                              codes = release_codes()) {
+  desc <- datapackage_descriptor(tag, frame, variables, codes)
+  problems <- check_datapackage(desc, tables)
+  if (length(problems)) stop("The tables do not match the descriptor:\n", paste(problems, collapse = "\n"))
+  files <- stats::setNames(file.path(dest, paste0(names(RELEASE_KEYS), ".parquet")), names(RELEASE_KEYS))
+  for (n in names(files)) arrow::write_parquet(tables[[n]], files[[n]])
+  desc <- datapackage_descriptor(tag, frame, variables, codes, files)
+  json <- file.path(dest, "datapackage.json")
+  jsonlite::write_json(desc, json, auto_unbox = TRUE, pretty = TRUE, digits = NA)
+  invisible(c(files, datapackage = json))
+}
+
+#' Check tables against a Data Package descriptor
+#'
+#' Fields (names and order), types, enum constraints, primary keys (unique, no
+#' NA) and foreign keys (every non-NA value in the referenced table).
+#'
+#' @param desc The descriptor (datapackage_descriptor(), or
+#'   jsonlite::read_json() of a datapackage.json).
+#' @param tables Named list of data frames, by resource name.
+#' @return Character vector of problems; empty when the tables match.
+check_datapackage <- function(desc, tables) {
+  r_type <- function(col) if (inherits(col, "Date")) "Date" else typeof(col)
+  key_of <- function(x, cols) do.call(paste, c(unname(as.list(x[unlist(cols)])), sep = "\r"))
+  out <- character()
+  for (r in desc$resources) {
+    x <- tables[[r$name]]
+    if (is.null(x)) { out <- c(out, paste(r$name, "missing")); next }
+    fields <- r$schema$fields
+    names_f <- vapply(fields, `[[`, "", "name")
+    if (!identical(names(x), names_f)) {
+      out <- c(out, sprintf("%s: columns %s, descriptor %s", r$name, toString(names(x)), toString(names_f)))
+      next
+    }
+    for (f in fields) {
+      col <- x[[f$name]]
+      want <- names(TABLE_SCHEMA_TYPES)[TABLE_SCHEMA_TYPES == f$type]
+      if (r_type(col) != want) out <- c(out, sprintf("%s.%s: %s, not %s", r$name, f$name, r_type(col), f$type))
+      enum <- unlist(f$constraints$enum)
+      bad <- setdiff(unique(col[!is.na(col)]), enum)
+      if (length(enum) && length(bad)) {
+        out <- c(out, sprintf("%s.%s: values not in the codes: %s", r$name, f$name, toString(utils::head(bad, 10))))
+      }
+    }
+    pk <- unlist(r$schema$primaryKey)
+    if (anyNA(x[pk]) || anyDuplicated(key_of(x, pk))) {
+      out <- c(out, sprintf("%s: primary key (%s) not unique or NA", r$name, toString(pk)))
+    }
+    for (fk in r$schema$foreignKeys) {
+      ref <- tables[[fk$reference$resource]]
+      if (is.null(ref)) next
+      v <- x[stats::complete.cases(x[unlist(fk$fields)]), , drop = FALSE]
+      miss <- !key_of(v, fk$fields) %in% key_of(ref, fk$reference$fields)
+      if (any(miss)) {
+        out <- c(out, sprintf("%s: %d row(s) with %s not in %s", r$name, sum(miss),
+                              toString(unlist(fk$fields)), fk$reference$resource))
+      }
+    }
+  }
+  out
 }
 
 #' Sections that differ between two releases, for the plans both hold

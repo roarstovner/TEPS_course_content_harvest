@@ -1,0 +1,71 @@
+---
+title: Codebook
+format: md
+knitr:
+  opts_knit:
+    root.dir: ".."
+---
+
+```{r}
+#| echo: false
+#| output: false
+source("R/release.R")
+v <- read.csv(VARIABLES_FILE)
+codes <- release_codes()
+# underscores in the descriptions stay underscores, not emphasis
+esc <- function(x) gsub("_", "\\\\_", x)
+```
+
+The variables, codes and keys of the published files of a release:
+`course_offerings`, `course_plans` and `plan_sections`, of both frames
+(all courses and the teacher-ed frame; [Data Files](data-files.md)
+"Frames"). It is rendered from `data/variables.csv` (the variables),
+`data/codes.csv` (the value labels of the coded columns) and
+`data/study_types.csv` (the study types and their groups), which go with
+every release, as does this codebook. The same tables make the release's
+`datapackage.json`, a [Data Package](https://datapackage.org) (v2) descriptor
+of the Parquet copies of the files (`datapackage_descriptor()`).
+
+Source: "DBH table ..." is the column of a DBH table (its Norwegian name),
+"derived" or "harvest" a column the pipeline makes, and a code whose source
+is "project" is defined by the project, not by DBH. Codes are DBH's unless
+marked. Missing values are NA (null in Parquet).
+
+```{r}
+#| echo: false
+#| results: asis
+for (f in names(RELEASE_KEYS)) {
+  cat("\n## ", f, "\n\n", sep = "")
+  k <- RELEASE_KEYS[[f]]
+  cat("Primary key: ", paste0("`", k$primaryKey, "`", collapse = " + "), ".", sep = "")
+  for (fk in k$foreignKeys) {
+    cat(" Foreign key: `", fk$fields, "` → `", fk$reference$resource, ".", fk$reference$fields, "`.", sep = "")
+  }
+  cat("\n\n")
+  vf <- v[v$file == f, c("variable", "type", "source", "description")]
+  vf$variable <- paste0("`", vf$variable, "`")
+  vf$description <- esc(vf$description)
+  print(knitr::kable(vf, row.names = FALSE))
+  cat("\n")
+}
+```
+
+## Codes
+
+The allowed values of the coded columns, in every file that has the column.
+Open DBH code lists (`language_code`, `subject_code`, `nus_code`,
+`department_code`, `programme_code`) are not listed: their values are DBH's
+and vary between snapshots.
+
+```{r}
+#| echo: false
+#| results: asis
+for (var in unique(codes$variable)) {
+  cat("\n### `", var, "`\n\n", sep = "")
+  cv <- codes[codes$variable == var, c("code", "label", "source", "description")]
+  cv$code <- paste0("`", cv$code, "`")
+  cv$description <- esc(cv$description)
+  print(knitr::kable(cv, row.names = FALSE))
+  cat("\n")
+}
+```

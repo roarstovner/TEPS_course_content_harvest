@@ -147,6 +147,13 @@ Institution”</a>)</td>
 <td>in git; released with the data</td>
 </tr>
 <tr>
+<td><code>data/codes.csv</code></td>
+<td>the value labels of the coded columns of the published files, DBH’s
+or the project’s (“Variables”, <a href="codebook.md">Codebook</a>)</td>
+<td>none</td>
+<td>in git; released with the data</td>
+</tr>
+<tr>
 <td><code>data/study_types.csv</code></td>
 <td>DBH’s study types (table 347 <code>Studiumkode</code>): Norwegian
 and English name, the project’s group (<code>study_type_group</code> of
@@ -430,6 +437,24 @@ and `tests/testthat/test-dbh-input.R` checks it against the built files
 and `DBH_COLUMNS`. `course_offerings_full.RDS` (internal) adds `url`,
 `extracted_text`, `course_plan`, `course_plan_normalized` and
 `plan_nchar`.
+
+The allowed values of the coded columns are in `data/codes.csv`
+(variable, code, English label, source DBH or project, description; one
+row per value, for every file with the column), except the study types
+and their groups, which `data/study_types.csv` holds (`release_codes()`
+joins the two). Open DBH code lists (language, subject, NUS, unit,
+programme) are not listed. The [Codebook](codebook.md)
+(`docs/codebook.qmd`) is rendered from these tables with the keys of the
+files (`RELEASE_KEYS`), and so is the release’s `datapackage.json`, a
+Data Package (v2) descriptor of the Parquet copies of the three files:
+field types, the codes as enum constraints with labels, primary and
+foreign keys (`datapackage_descriptor()`). `release_data()` writes the
+Parquet copies and the descriptor beside the RDS files, stops if the
+tables do not match it (`check_datapackage()`), and hands over
+`codes.csv` and the codebook; `tests/testthat/test-release.R` checks the
+built teacher-ed files against the descriptor. A new code in the data (a
+DBH level, a new institution) needs a row in `codes.csv`, and the
+codebook rendered again.
 
 Since 2026-10-16 the DBH columns have English snake_case names
 (methods.qmd, “Variable names”); their values are DBH’s (Norwegian

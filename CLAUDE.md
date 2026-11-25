@@ -31,6 +31,9 @@ the gitignored `CLAUDE.local.md`.
   - `docs/data-files.qmd`: which data files are published and which are
     internal, the frames (all courses; the teacher-ed files in `teacher_ed/`
     folders, which the releases use), the DBH input, the variables.
+  - `docs/codebook.qmd`: the codebook of the published files, generated
+    from `data/variables.csv`, `data/codes.csv` (value labels) and
+    `data/study_types.csv`, which also make the release's `datapackage.json`.
   - `docs/institutions.qmd`: institution-specific notes (NIH, NMBU, NORD,
     NTNU, UiO, UiB, HiOF, HVL, USN, UiT, Samas).
   - `docs/reference.qmd`: function reference, file organization.

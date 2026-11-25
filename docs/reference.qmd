@@ -42,7 +42,8 @@ format: md
 | `read_harvest(files, config, content)` | `R/pipeline.R` | One institution's raw files combined (`harvest_files()`): the page each offering takes; current sites matched by course code and academic year |
 | `harvested_rows(institutions)` | `R/pipeline.R` | `read_harvest()` joined with `data/interim/extracted_text.RDS` (audit scripts) |
 | `finalize_release(tag)`, `frozen_changes()` | `R/release.R` | Lock a release's raw files and keep its files of both frames; list raw files changed or missing and, once a release is kept, changes to it (target `frozen_check`) |
-| `release_data(tag, dest, frame)` | `R/release.R` | Copy the published files of a frame (the teacher-ed one), `methods.md`, `data/variables.csv`, `data/study_types.csv`, a manifest and section coverage to the coding project |
+| `release_data(tag, dest, frame)` | `R/release.R` | Copy the published files of a frame (the teacher-ed one), with their Parquet copies and `datapackage.json`, `methods.md`, `data/variables.csv`, `data/study_types.csv`, `data/codes.csv`, the codebook, a manifest and section coverage to the coding project |
+| `release_codes()`, `datapackage_descriptor()`, `write_datapackage()`, `check_datapackage()` | `R/release.R` | The value labels of the coded columns (`data/codes.csv` with the study types); the Data Package (v2) descriptor of the published tables (types, codes, keys `RELEASE_KEYS`); write the tables as Parquet with it; check tables against it |
 | `plan_gaps(offerings, fetch_status)` | `R/pipeline.R` | Course-years without a plan, with the reason (target `gaps`) |
 | `validate_courses(df, stage)` | `R/utils.R` | Required columns at `"initial"`, `"with_url"`, `"with_html"` |
 | `anonymize_text(institution, text)` | `R/anonymize.R` | PII and admin-date removal for `course_plan` and sections |
@@ -78,7 +79,7 @@ format: md
 │   ├── browser_data.R         # The browser's data files: build_browser_data()
 │   ├── pipeline.R             # Steps of the {targets} pipeline (_targets.R)
 │   ├── pipeline_metrics.R     # Regression snapshot: check_pipeline_metrics(); the pilot gate numbers
-│   ├── release.R              # release_data(), finalize_release(), frozen_changes()
+│   ├── release.R              # release_data(), datapackage_descriptor(), finalize_release(), frozen_changes()
 │   ├── wayback.R              # Wayback Machine captures (CDX API); not used by the harvest
 │   └── audit/                # Audit harness for /audit-institutions
 ├── app/

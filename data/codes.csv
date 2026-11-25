@@ -1,0 +1,76 @@
+variable,code,label,source,description
+semester,0,Winter,DBH,
+semester,1,Spring,DBH,
+semester,2,Summer,DBH,
+semester,3,Autumn,DBH,
+semester_name,Vinter,Winter,DBH,semester 0
+semester_name,Vår,Spring,DBH,semester 1
+semester_name,Sommer,Summer,DBH,semester 2
+semester_name,Høst,Autumn,DBH,semester 3
+status,0,No data,DBH,"Ikke data"
+status,1,Active,DBH,"Aktivt"
+status,2,New,DBH,"Nytt"
+status,3,Discontinued,DBH,"Avviklet"
+status,4,Discontinued with active students,DBH,"Avviklet med aktive studenter: exams still held"
+status_name,Ikke data,No data,DBH,status 0
+status_name,Aktivt,Active,DBH,status 1
+status_name,Nytt,New,DBH,status 2
+status_name,Avviklet,Discontinued,DBH,status 3
+status_name,Avviklet med aktive studenter,Discontinued with active students,DBH,status 4
+level_code,LN,"Lower degree level (other)",DBH,"Lavere nivå (øvrige)"
+level_code,HN,"Higher degree level (other)",DBH,"Høyere nivå (øvrige)"
+level_code,AR,"One-year programme, 60 credits",DBH,"Årsstudium, 60-studiepoeng"
+level_code,B3,"Bachelor, 3-year",DBH,"Bachelor, 3-årig"
+level_code,M2,"Master, 2-year",DBH,"Master, 2-årig"
+level_code,ME,"Experience-based master, 1.5-2 years",DBH,"Master, erfaringsbasert, 1,5-2 år"
+level_code,HK,"University college graduate, 2-year",DBH,"Høyskolekandidat, 2-årig"
+level_code,YU,"Vocational education, 4-year",DBH,"Yrkesutdanning, 4-årig"
+level_code,FU,Doctoral (researcher) education,DBH,"Forskerutdanning"
+level_code,VS,Upper secondary level,DBH,"Videregående skoles nivå"
+level_code,50,Older code without a name,DBH,"level_name NA"
+level_code,AN,Code without a name,DBH,"level_name NA"
+thesis,0,Not a thesis,DBH,
+thesis,1,Bachelor's thesis or project,DBH,
+thesis,2,Master's (or hovedfag) thesis,DBH,
+plan_year_basis,url,The page's URL holds the year,project,"The plan is that of the year (or academic year) in the URL."
+plan_year_basis,current,The site shows only the plan in force,project,"A page is the plan of the academic year it was fetched in (docs/harvesting.md, sites that show only the current plan)."
+section,course_content,Course content,project,"What the course is about: subject matter, topics, themes."
+section,learning_outcomes,Learning outcomes,project,"What the student knows or can do after the course (knowledge, skills, general competence)."
+section,prerequisites,Prerequisites,project,"Required or recommended prior knowledge and courses."
+section,teaching_methods,Teaching and learning methods,project,"How the course is taught and how students work."
+section,coursework_requirements,Coursework requirements (arbeidskrav),project,"Mandatory work that must be approved before the exam and is not itself graded."
+section,assessment,Assessment and examination,project,"The final graded assessment(s) that set the course grade."
+section,reading_list,Reading list,project,"Required and recommended literature and course materials."
+section,practice,Practice (praksis),project,"Text under the plan's own heading for practicum or placement; overlaps: also in another section (mostly teaching_methods)."
+institution,aho,Arkitektur- og designhøgskolen i Oslo,project,DBH code 1220
+institution,barrattdue,Barratt Due Musikkinstitutt,project,DBH code 8227
+institution,dmmh,Dronning Mauds Minne Høgskole,project,DBH code 8224
+institution,fhs,Forsvarets høgskole,project,DBH code 1303
+institution,fjellhaug,Fjellhaug Internasjonale Høgskole,project,DBH code 8234
+institution,himolde,"Høgskolen i Molde, vitenskapelig høgskole i logistikk",project,DBH code 0232
+institution,hiof,Høgskolen i Østfold,project,DBH code 0256
+institution,hivolda,Høgskulen i Volda,project,DBH code 0236
+institution,hvl,Høgskulen på Vestlandet,project,DBH code 0238
+institution,inn,Universitetet i Innlandet,project,"DBH codes 1177 and 0264 (Høgskolen i Innlandet, the earlier code)"
+institution,khio,Kunsthøgskolen i Oslo,project,DBH code 6220
+institution,ldh,Lovisenberg diakonale høgskole,project,DBH code 8202
+institution,mf,MF vitenskapelig høyskole,project,DBH code 8221
+institution,nhh,Norges handelshøyskole,project,DBH code 1240
+institution,nih,Norges idrettshøgskole,project,DBH code 1260
+institution,nla,NLA Høgskolen,project,DBH code 8223
+institution,nmbu,Norges miljø- og biovitenskapelige universitet,project,DBH code 1173
+institution,nmh,Norges musikkhøgskole,project,DBH code 1210
+institution,nord,Nord universitet,project,DBH code 1174
+institution,ntnu,Norges teknisk-naturvitenskapelige universitet,project,DBH code 1150
+institution,onh,Oslo Nye Høyskole,project,DBH code 1407
+institution,oslomet,OsloMet – storbyuniversitetet,project,DBH code 1175
+institution,phs,Politihøgskolen,project,DBH code 1301
+institution,samas,Samisk høgskole,project,DBH code 0217
+institution,steiner,Steinerhøyskolen,project,DBH code 8225
+institution,uia,Universitetet i Agder,project,DBH code 1171
+institution,uib,Universitetet i Bergen,project,DBH code 1120
+institution,uio,Universitetet i Oslo,project,DBH code 1110
+institution,uis,Universitetet i Stavanger,project,DBH code 1160
+institution,uit,Universitetet i Tromsø - Norges arktiske universitet,project,DBH code 1130
+institution,usn,Universitetet i Sørøst-Norge,project,DBH code 1176
+institution,vid,VID vitenskapelige høgskole,project,DBH code 8208
