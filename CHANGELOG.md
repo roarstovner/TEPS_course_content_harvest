@@ -104,6 +104,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Plan the data dictionary for the releases (#578)
+- Sections audit of the UiA/NIH English-tree pages (Codex gpt-6.2-sol) (#620)
+- Data dictionary: codebook rendered from variables.csv + codes.csv, shipped with each release (#619)
+- Data dictionary: datapackage.json (Data Package v2) written by release_data() from variables.csv + codes.csv, Parquet copies, testthat check (#618)
+- Data dictionary: codes.csv with value labels for the coded columns (#617)
 - Browser: seeded random sample and screening mode (#558)
 - Browser: CI tests and a Pages deploy workflow (disabled until publishing is decided) (#562)
 - Add Barratt Due Musikkinstitutt (#584)
