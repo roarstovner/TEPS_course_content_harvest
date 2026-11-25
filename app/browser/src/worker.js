@@ -14,6 +14,7 @@
 import { chunked, compileQuery, FoldedText, generations, highlights, kwic, mergeForms, pause, prepareDocs, search, wordForms } from './search/index.js'
 import { fetchCached, parquetInfo, readParquet } from './data/load.js'
 import { planKey } from './data/keys.js'
+import { sampleIndices } from './data/screening.js'
 
 const CHUNK = 1000 // plans per chunk of a search
 let docs = []
@@ -168,6 +169,12 @@ const handlers = {
     if (sectionsLoaded) sections = Object.fromEntries(Object.entries(d.sections).map(([code, s]) => [code, shown(s, code)]))
     else loadSections()
     return { ...shown(d, null), sections }
+  },
+  /** A seeded random sample of `size` hits of the selection (rows of the
+   *  download unit `hit`): {total, hits} (data/screening.js). */
+  async sample({ sel, ctx, size, seed }) {
+    const rows = await downloadRows({ unit: 'hit', sel, ctx })
+    return { total: rows.length, hits: sampleIndices(rows.length, size, seed).map((i) => rows[i]) }
   },
   /** Rows of a download and the texts over Excel's cell limit: {rows, long}. */
   async downloadCount(args) {

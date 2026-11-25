@@ -3,7 +3,7 @@
 
 export const SCOPES = ['plan', 'section', 'paragraph', 'sentence', 'words']
 export const TABS = ['plan', 'sections', 'versions', 'source']
-export const VIEWS = ['list', 'trend', 'coverage']
+export const VIEWS = ['list', 'trend', 'coverage', 'screen']
 export const BY = ['all', 'inst', 'st']
 
 export const defaultState = () => ({
@@ -26,6 +26,8 @@ export const defaultState = () => ({
   cmp: null, // the version compared with it, tab 'versions' (versionId)
   view: 'list', // middle pane, one of VIEWS
   by: 'all', // trend lines: overall, per institution or per study type (BY)
+  sample: 50, // screening: hits in the random sample
+  seed: null, // screening: the sample's seed (data/screening.js)
 })
 
 const list = (s) => (s ? s.split(',').filter(Boolean) : [])
@@ -47,6 +49,10 @@ export function encodeState(s) {
   for (const k of ['lvl', 'cr', 'lang', 'sec']) if (s[k].length) p.set(k, s[k].join(','))
   if (s.view !== 'list') p.set('view', s.view)
   if (s.view === 'trend' && s.by !== 'all') p.set('by', s.by)
+  if (s.view === 'screen') {
+    if (Number.isInteger(s.sample) && s.sample !== 50) p.set('sample', String(s.sample))
+    if (s.seed) p.set('seed', s.seed)
+  }
   if (s.course) {
     // `inst:code`; institution codes hold no ':'
     p.set('course', s.course.replace('|', ':'))
@@ -79,6 +85,9 @@ export function decodeState(search) {
   for (const k of ['lvl', 'cr', 'lang', 'sec']) s[k] = list(p.get(k))
   if (VIEWS.includes(p.get('view'))) s.view = p.get('view')
   if (BY.includes(p.get('by'))) s.by = p.get('by')
+  const k = Number(p.get('sample'))
+  if (Number.isInteger(k) && k >= 1 && k <= 100000) s.sample = k
+  if (/^[\w-]{1,40}$/.test(p.get('seed') ?? '')) s.seed = p.get('seed')
   const c = p.get('course')
   if (c && c.includes(':')) {
     s.course = c.replace(':', '|')

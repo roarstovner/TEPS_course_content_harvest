@@ -42,10 +42,17 @@ describe('URL state', () => {
     const s = { ...defaultState(), n: 4, excl: { a: [] }, version: 'x' }
     expect(encodeState(s)).toBe('')
     expect(encodeState({ ...defaultState(), view: 'coverage', by: 'st' })).toBe('view=coverage')
+    expect(encodeState({ ...defaultState(), sample: 20, seed: '42' })).toBe('')
+  })
+
+  it('keeps the sample size and seed in the screening view', () => {
+    const s = { ...defaultState(), q: 'ikt', view: 'screen', sample: 20, seed: '123456' }
+    expect(encodeState(s)).toBe('q=ikt&view=screen&sample=20&seed=123456')
+    expect(decodeState(encodeState(s))).toEqual(s)
   })
 
   it('falls back to defaults on invalid values', () => {
-    const s = decodeState('scope=nonsense&n=-3&x=%7Bbroken&from=20x&course=nocolon&view=chart&by=x')
+    const s = decodeState('scope=nonsense&n=-3&x=%7Bbroken&from=20x&course=nocolon&view=chart&by=x&sample=0&seed=a%20b')
     expect(s).toEqual(defaultState())
   })
 })

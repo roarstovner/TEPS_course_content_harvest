@@ -15,6 +15,7 @@
   import Download from './lib/Download.svelte'
   import Trend from './lib/Trend.svelte'
   import Coverage from './lib/Coverage.svelte'
+  import Screen from './lib/Screen.svelte'
   import { trend } from './data/trend.js'
 
   const base = new URL('data/', document.baseURI).href
@@ -172,6 +173,13 @@
     if (st) s.st = [st]
     s.view = 'list'
   }
+  // a hit in the screening view: its plan version in the list view
+  function openHit(h) {
+    s.course = `${h.institution}|${h.course_code}`
+    s.version = versionId(h)
+    s.tab = 'plan'
+    s.view = 'list'
+  }
   function close() {
     s.course = null
     s.version = null
@@ -190,7 +198,8 @@
     if (e.key === '/') {
       e.preventDefault()
       searchBox?.focus()
-    } else if (e.key === 'j' && n) active = Math.min(n - 1, active + 1)
+    } else if (s.view === 'screen') return // the screening view has its own keys
+    else if (e.key === 'j' && n) active = Math.min(n - 1, active + 1)
     else if (e.key === 'k' && n) active = Math.max(0, active - 1)
     else if (e.key === 'Enter' && n && s.view === 'list' && !(t instanceof Element && t.closest('button, a, summary'))) open(view.rows[active].course)
     else return
@@ -225,7 +234,7 @@
     <aside class="filters"><Filters bind:state={s} {meta} {model} facets={view.facets} sectionsReady={!!planSections} /></aside>
     <main class="results">
       <nav class="viewtabs" aria-label="View">
-        {#each [['list', 'List'], ['trend', 'Trend'], ['coverage', 'Coverage']] as [v, label] (v)}
+        {#each [['list', 'List'], ['trend', 'Trend'], ['coverage', 'Coverage'], ['screen', 'Screen']] as [v, label] (v)}
           <button class:current={s.view === v} aria-pressed={s.view === v} onclick={() => (s.view = v)}>{label}</button>
         {/each}
       </nav>
@@ -233,6 +242,8 @@
         <Trend {model} f={s} {matches} {queryOn} q={result?.q} {meta} bind:by={s.by} onpick={pick} />
       {:else if s.view === 'coverage'}
         <Coverage {model} f={s} {meta} onpick={pick} />
+      {:else if s.view === 'screen'}
+        <Screen {model} {view} bind:s q={matches ? result.q : ''} excl={result?.excl ?? {}} {matches} {meta} {worker} onopen={openHit} />
       {:else}
         <Results
           rows={view.rows}

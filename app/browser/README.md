@@ -233,9 +233,27 @@ such as "lese- og skrivevansker".
   a plan, the share, how plan years were found (`plan_year_basis`; sites that
   show only the current plan are flagged) and the most common no-plan
   reasons; a cell without a plan in the year strip gives its reason on hover.
-  Planned: compare (plans side by side),
-  term lists (a heatmap of saved terms x institution x year), screening
-  (tag hits include, exclude or maybe, with a note), random sample (seeded).
+  Screen (needs a query): a random sample of N hits of the selection (the
+  hits of the download unit *hit*: each match in the matching plans, 80
+  characters of context on either side), drawn with a seed; size and seed
+  are in the URL (`sample`, default 50; `seed`, six digits drawn on entering
+  the view, or any text), so a precision check can be cited and redrawn.
+  Each hit is equally likely and drawn at most once (a partial Fisher-Yates
+  shuffle on a seeded generator); the sample is listed in the order of the
+  results, so the hits of a plan stay together, and N at or above the number
+  of hits takes them all. Step through it with `j`/`k` (or the arrow keys),
+  tag a hit `i` include, `e` exclude or `m` maybe (the same key again clears
+  it; tagging moves on), `n` writes a note, `o` opens the plan. A line counts
+  the tags and the precision (include of include + exclude). Tags are kept in
+  the browser (localStorage; every access guarded, and a warning when the
+  browser does not keep them) under the data frame and the query (with its
+  scope and unticked word forms), per hit (plan version, term, section,
+  position): another seed, sample size or filter keeps the tags of the hits
+  it shares. Export CSV writes the sample, one row per hit (`sample_rank`,
+  institution, course code and name, `plan_id`, years, section, term,
+  position, the context before, match and after, tag, note, query, seed).
+  Planned: compare (plans side by side), term lists (a heatmap of saved terms
+  x institution x year).
 - **Download:** the button in the header opens a dialog for the current
   selection, exactly what the list shows (filters, query, unticked word
   forms), as one row per course, plan version, course-year, section or hit
@@ -261,7 +279,7 @@ such as "lese- og skrivevansker".
   text) and the page saves it.
 - **State in the URL**, so every view can be bookmarked and cited.
 - **Keyboard:** `/` search, `j`/`k` next and previous course, `Enter` open,
-  `Esc` back, `?` help.
+  `Esc` back, `?` help; in Screen the keys above.
 
 ## Performance Budgets
 
@@ -300,10 +318,13 @@ such as "lese- og skrivevansker".
   - `filters.js`: the course filters (institution, subject, level, credits,
     language), their values and readable names.
   - `url.js`: the state in the URL (query, scope, excluded forms, filters,
-    course, version, tab, compared version, view, trend lines).
+    course, version, tab, compared version, view, trend lines, screening
+    sample size and seed).
   - `overlay.js`: the section of each line of a plan.
   - `related.js`: the programmes and years that use a version, other courses
     with the same text.
+  - `screening.js`: the seeded sample, the identity and storage of a hit's
+    tags, and the screening CSV.
   - `client.js`: the page's side of the worker (requests as promises).
 - `src/worker.js`: fetches and holds the plan and section text and runs the
   search engine; the page gets the plans' metadata, the matches, the word
@@ -327,7 +348,8 @@ such as "lese- og skrivevansker".
   margin, `Versions`, the comparison, and `Source`); `format.js` (numbers,
   marked text); `diff.js` (word-level comparison; jsdiff is loaded on first
   use, a separate chunk of 22 kB); `Download` (the download dialog);
-  `Trend` (plain SVG, colours from CSS custom properties) and `Coverage`.
+  `Trend` (plain SVG, colours from CSS custom properties), `Coverage` and
+  `Screen` (the screening view; the worker draws the sample from the hits).
 - `src/download/`: downloads, with tests (`download.test.js`). `table.js`: the
   selection as tables of each unit; `encode.js`: CSV, XLSX (a minimal writer on
   fflate) and Parquet (hyparquet-writer); `rebuild.js`: the R and Python code;
