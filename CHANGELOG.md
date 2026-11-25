@@ -104,6 +104,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Add Molde (#396)
+- Add NHH (#394)
+- Add NMH (Norges musikkhøgskole) (#393)
+- Add KHiO (Kunsthøgskolen i Oslo) (#397)
+- Browser: saved term lists and term heatmap (#560)
+- Browser: compare view (#559)
 - Plan the data dictionary for the releases (#578)
 - Sections audit of the UiA/NIH English-tree pages (Codex gpt-6.2-sol) (#620)
 - Data dictionary: codebook rendered from variables.csv + codes.csv, shipped with each release (#619)
