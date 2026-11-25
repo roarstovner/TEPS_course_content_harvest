@@ -1,0 +1,89 @@
+{
+  "check": "sections",
+  "institution": "nhh",
+  "model": "gpt-6.2-sol",
+  "n_courses_reviewed": 20,
+  "n_suspects_reviewed": 14,
+  "overall_assessment": "NHH generally extracts the accordion sections cleanly, preserving all displayed learning-outcome groups and keeping admission text out of prerequisites, but both coursework leak flags are real and the controls also show assessment noise and lost labels. All seven empty flags and the short flag are false alarms (Papers., Lectures., ECS508., Presentation., Attendance., BED3, Pass/fail, and Karakterskala A-F are substantive). The four blob flags reflect source pages dominated by Topics or Innhold, and BEA528 is correctly content-only, while BUD5, EBO4 and MAB4 also embed teaching descriptions in their Topics text.",
+  "findings": [
+    {
+      "target": "assessment",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "nhh_BEA512-1_2026_autumn_1",
+        "nhh_ECS530-1_2026_autumn_1"
+      ],
+      "evidence": "Compulsory activities (work requirements) is valid for one semester after the semester it was obtained.",
+      "description": "Both coursework leak flags identify the validity period of approved coursework in assessment. BEA512 repeats the same sentence in coursework_requirements. ECS530 keeps the validity sentence only in assessment, leaving its coursework_requirements incomplete.",
+      "root_cause_hypothesis": "The gate patterns in R/extract_sections.R do not recognize NHH's English coursework-validity formula when it appears under Assessment.",
+      "suggested_fix": "Recognize the NHH validity sentence in .split_inline_coursework(), move it to coursework_requirements, and suppress a verbatim repeat already in that row.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "formatting_noise",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "nhh_ECS509-1_2026_autumn_1",
+        "nhh_ECS530-1_2026_autumn_1",
+        "nhh_FIN539B-1_2026_autumn_1"
+      ],
+      "evidence": "The assignment will be distributed in January. The submission deadline will be in April.",
+      "description": "The assessment rows retain assignment release and submission schedules, a submission platform, resit availability, and semester timing for graded sessions. The same issue occurs in suspects and in the FIN539B control. Exam duration, component weights and participation thresholds are assessment design and should be preserved.",
+      "root_cause_hypothesis": "The NHH accordion provides a single Assessment block for design and logistical prose, with no NHH-specific cleanup for these scheduling patterns in R/extract_sections.R.",
+      "suggested_fix": "Add NHH-scoped cleanup rules for standalone release, deadline, presentation scheduling and resit-availability sentences. Match the submission-platform and semester clauses separately where they share a sentence with the assessment design.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "formatting_noise",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "nhh_ECO422-1_2026_autumn_1",
+        "nhh_BED2-1_2026_autumn_1",
+        "nhh_BUS446-1_2026_autumn_1"
+      ],
+      "evidence": "All in accordance with Supplementary provisions to the Regulations for Full-time Study Programmes at the Norwegian School of Economics Ch.4 Permitted support material",
+      "description": "The genuine permitted-aids list is followed by a standard regulations-and-links paragraph in four courses, including three random controls. The paragraph adds no course-specific aid permissions.",
+      "root_cause_hypothesis": "The mapped permitted-aids blocks carry their full body text into assessment, and .strip_section_noise() has no NHH rule for the standard Norwegian and English regulations paragraphs.",
+      "suggested_fix": "Strip the exact Norwegian and English NHH regulations-and-links paragraph variants following permitted-aids lists in assessment. Keep the heading and the course's stated aid permissions.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "truncated",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "nhh_ECO422-1_2026_autumn_1",
+        "nhh_ENE423-1_2026_autumn_1",
+        "nhh_FSK504-1_2026_autumn_1"
+      ],
+      "evidence": "Permitted Support Material\nCalculator\n\nOne bilingual dictionary (Category I)",
+      "description": "The English permitted-aids heading drops out even though the values survive. The Norwegian Hjelpemidler til eksamen heading is preserved. Grading Scale and Vurderingsuttrykk likewise lose their labels, leaving bare A-F or Pass/fail values. The assessment specification calls for keeping these design details with their headings.",
+      "root_cause_hypothesis": "R/section_heading_map.R maps these headings to assessment but leaves them out of section_heading_patterns$label, so sectionize() omits their labels.",
+      "suggested_fix": "Include Permitted Support Material, Grading Scale and Vurderingsuttrykk in the assessment label handling used by sectionize(). Preserve genuine short scales and aids values.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "wrong_content",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "nhh_MAB4-1_2026_autumn_1",
+        "nhh_FIN539B-1_2026_autumn_1",
+        "nhh_ECN435-1_2026_autumn_1"
+      ],
+      "evidence": "Pedagogical Approach:\n\nMAB4 adopts a problem-based, student-centric pedagogy, prioritizing the practical application of theoretical concepts through case studies and interactive discussions.",
+      "description": "The source puts identifiable teaching passages under Topics. MAB4 has an explicit Pedagogical Approach subsection, while EBO4 describes lectures, supervised group assignments and guest lectures in its topic narrative. Both lack a teaching_methods row. ECN435 has a teaching_methods row but its separate paragraph on lectures, problem sets, and proposal feedback stays in course_content. The FIN539B control also leaves an instruction to participate in class discussions in reading_list.",
+      "root_cause_hypothesis": "The NHH HTML reader recognizes the outer accordion heading, and sectionize() gives its body the outer section's classification. The subsequent sentence moves have no NHH rule for an explicit embedded pedagogy heading.",
+      "suggested_fix": "Recognize a standalone Pedagogical Approach line in NHH Topics as an embedded teaching_methods heading, ending at the next labeled subsection. Use narrowly matched sentence moves for recurring standalone descriptions of the teaching format. Scope a separate sentence move to the NHH class-discussion instruction under Literature.",
+      "confidence": "high"
+    }
+  ]
+}

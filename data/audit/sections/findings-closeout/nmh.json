@@ -1,0 +1,129 @@
+{
+  "check": "sections",
+  "institution": "nmh",
+  "model": "gpt-6.2-sol",
+  "n_courses_reviewed": 20,
+  "n_suspects_reviewed": 14,
+  "overall_assessment": "NMH generally captures the main sections and correctly routes explicit exam gates, while missed boundaries, embedded requirements and assessment logistics reduce accuracy in suspects and random controls. Two leakage flags identify merged sections and both .drop flags identify retained admissions text, and the remaining leakage flags match essay-source rules, a graded portfolio component, a module description or an outcomes cross-reference. The CBE boilerplate flags reflect repeated substantive plan text across offerings, with incidental administrative text in course content.",
+  "findings": [
+    {
+      "target": "cross_section",
+      "error_type": "merged_sections",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "nmh_KUNSTHO71B-1_2026_autumn_1",
+        "nmh_ALEX20-2_2025_autumn_1"
+      ],
+      "evidence": "Obligatorisk deltakelse på ett samspillprosjekt per studieår ved behov.\nAvsluttende vurdering\nAlle arbeidskrav i emnet må være godkjent for at studenten skal få gå opp til avsluttende vurdering.",
+      "description": "Both flags identify real boundary failures. KUNSTHO71B appends final grading criteria and the pass/fail scale to coursework requirements, leaving only the summary label in assessment. ALEX20 appends required and recommended references to assessment and emits no reading-list row.",
+      "root_cause_hypothesis": "The packet lists no heading blocks for KUNSTHO71B's body Avsluttende vurdering or ALEX20's Pensumlitteratur and Anbefalt litteratur. The HTML reader in R/blocks.R likely delivers those labels as ordinary text, so sectionize() carries forward the previous section.",
+      "suggested_fix": "Promote standalone rich-text blocks with the exact labels Avsluttende vurdering, Pensumlitteratur or Anbefalt litteratur to section boundaries in the NMH HTML reader. Keep same-line metadata and essay-source prose in their existing roles and continue routing coursework gates to coursework_requirements.",
+      "confidence": "high"
+    },
+    {
+      "target": "reading_list",
+      "error_type": "missing_section",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "nmh_MPTEO73-1_2021_autumn_1"
+      ],
+      "evidence": "Pensum: Omtrent 1000 sider felles pensum som oppgis av faglærer.",
+      "description": "The random control's explicit syllabus note remains inside course content, leaving no reading-list row. The note states a concrete common reading load.",
+      "root_cause_hypothesis": "NMH's section_label_selector covers the introductory summary list. The labeled body paragraph falls outside that selector.",
+      "suggested_fix": "Route standalone NMH body paragraphs beginning with the exact label Pensum: and a substantive value to reading_list. Remove the paragraph from its previous section.",
+      "confidence": "high"
+    },
+    {
+      "target": "prerequisites",
+      "error_type": "missing_section",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "nmh_ENSLED22-2_2025_autumn_1"
+      ],
+      "evidence": "Opptakskrav: 120 stp. høyere utdanning innen musikk, gjennomført Ensembleledelse I eller tilsvarende og bestått opptaksprøve.",
+      "description": "The .drop flag catches a mixed admissions line retained in course content. It includes prior music study and a named prior course or equivalent, with no prerequisites row. A nearby audition-information pointer adds administrative noise.",
+      "root_cause_hypothesis": "The body label Opptakskrav: bypasses NMH's .admission route, and the course-content rules in R/extract_sections.R miss this inline form and the prior course named without a code.",
+      "suggested_fix": "Send inline Opptakskrav: body labels through the prerequisite filter and retain sentences that specify prior subject study or a prior course, preserving mixed substantive sentences whole as specified. Drop standalone audition pointers and pure admissions notices.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "nmh_FOLKDANS20-1_2024_autumn_1",
+        "nmh_KPKUNST70-1_2021_autumn_1",
+        "nmh_KUNSTHO71B-1_2026_autumn_1"
+      ],
+      "evidence": "Undervisningen vil foregå i gruppe. Faglærer vil instruere de ulike dansene. Gruppen vil mot slutten av semesteret delta på dansefest.",
+      "description": "Correctly recognized headings can contain mixed prose. FOLKDANS keeps group instruction under course content, KPKUNST70 keeps a statement that project documentation forms part of final assessment under course content, and KUNSTHO71B appends progression assessment criteria to its otherwise complete learning outcomes.",
+      "root_cause_hypothesis": "The NMH sentence moves in R/extract_sections.R handle some prerequisites and coursework gates. Other teaching and grading statements follow their enclosing heading.",
+      "suggested_fix": "Move standalone NMH group-instruction paragraphs beginning with Undervisningen vil foregå to teaching_methods. Route sentences about project documentation that inngår som en del av avsluttende vurdering and current-course grading criteria to assessment. Keep actual outcomes and topic descriptions in their own sections.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "formatting_noise",
+      "severity": "medium",
+      "prevalence": "widespread",
+      "example_course_ids": [
+        "nmh_PEDUT52-1_2026_autumn_1",
+        "nmh_MPHO22-1_2023_autumn_1",
+        "nmh_MPTEO73-1_2021_autumn_1"
+      ],
+      "evidence": "Frist: Innen 10. juni leveres rapporten i NMHs digitale eksamenssystem (Inspera). Les mer på vår informasjonsside om eksamensinnlevering.",
+      "description": "Assessment retains out-of-scope deadlines, platform instructions, exam semesters and examiner arrangements in suspects and controls. Some logistics sit inside legitimate assessment descriptions, such as the deadlines in MPTEO73's two-text requirement. Some rows also keep rules about repeating the course after failure.",
+      "root_cause_hypothesis": "The NMH cleanup in R/extract_sections.R handles a stock resit sentence and automatic registration but misses several deadline, platform, examiner and repeat-course forms.",
+      "suggested_fix": "Add assessment-only cleanup for standalone logistics and bounded clauses such as parenthetical frist dates and calendar-semester phrases. Remove labels left empty by cleanup. Preserve exam durations, forms, weights, scales and separately specified resit design.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "truncated",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "nmh_MUSPED55-1_2021_autumn_1"
+      ],
+      "evidence": "`Avsluttende vurdering - NMH` → assessment · `Avsluttende vurdering - NTNU` → assessment",
+      "description": "Both assessment variants survive, but their source headings are discarded. The 50/50 individual-project route and the 40/60 group-research route land in one row without direct cohort labels. The retained scroll directions refer to the other route.",
+      "root_cause_hypothesis": "sectionize() merges chunks with the same canonical key and normally drops their headings unless marked as labels.",
+      "suggested_fix": "Preserve the exact NMH and NTNU assessment headings when consolidating the chunks into one assessment row. Remove the redundant scroll directions and the study-committee update stamp.",
+      "confidence": "high"
+    },
+    {
+      "target": "coursework_requirements",
+      "error_type": "duplicate",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "nmh_MUSPED55-1_2021_autumn_1"
+      ],
+      "evidence": "Alle arbeidskrav i emnet må være godkjent og praksis må være bestått for at studenten skal få avsluttende vurdering.",
+      "description": "The same gate appears on adjacent lines in the control's coursework requirements. Both lines state the same approval and passed-practice condition.",
+      "root_cause_hypothesis": "R/extract_sections.R moves the same gate sentence from both assessment blocks. Its whole-row duplicate check cannot catch repetition inside one row.",
+      "suggested_fix": "Deduplicate exactly matching moved gate sentences when appending them, keeping the wording and order of the first occurrence.",
+      "confidence": "high"
+    },
+    {
+      "target": "course_content",
+      "error_type": "formatting_noise",
+      "severity": "medium",
+      "prevalence": "common",
+      "example_course_ids": [
+        "nmh_IMPRO27-1_2025_autumn_1",
+        "nmh_CBE-1_2024_autumn_1",
+        "nmh_FOLKDANS20-1_2024_autumn_1"
+      ],
+      "evidence": "Opptak til emnet forutsetter at deltagerne kan utgjøre et funksjonsdyktig ensemble.",
+      "description": "The IMPRO .drop flag is a real cleanliness problem. The sentence is about the institution's ability to assemble a viable group. CBE retains enrollment instructions and a participation pointer, while the FOLKDANS control retains enrollment priorities. All these rows contain valid subject matter as well.",
+      "root_cause_hypothesis": "The .drop map acts on recognized headings, while inline administrative sentences in Kort om emnet can pass through NMH's cleanup.",
+      "suggested_fix": "Strip standalone NMH sentences matching the observed ensemble-formation condition, application instructions, participation pointers and enrollment priorities. Preserve subject-matter prerequisites and substantive description in the same paragraph.",
+      "confidence": "high"
+    }
+  ]
+}

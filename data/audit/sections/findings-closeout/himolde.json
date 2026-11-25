@@ -1,0 +1,158 @@
+{
+  "check": "sections",
+  "institution": "himolde",
+  "model": "gpt-6.2-sol",
+  "n_courses_reviewed": 20,
+  "n_suspects_reviewed": 14,
+  "overall_assessment": "Standard course sections and learning-outcome groups were generally captured correctly across the 20 offerings, and the repeated lecture and exam text flagged as boilerplate is substantive. The paired leak and empty flags identify one coursework boundary error in three SYD204 offerings, while the thesis leak and length flags reflect overlapping thesis guidance and misrouted assessment subheadings. The random controls exposed admission-only prerequisites, omitted or misplaced assessment and coursework details, and minor template noise.",
+  "findings": [
+    {
+      "target": "cross_section",
+      "error_type": "merged_sections",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "himolde_SYD204-1_2023_autumn_1",
+        "himolde_SYD204-1_2022_spring_1",
+        "himolde_SYD204-1_2021_autumn_1"
+      ],
+      "evidence": "Arbeidskravet omhandler det nyfødte barnet. Arbeidskravet omfatter en oppgavebesvarelse og en medstudentrespons.",
+      "description": "The leak and empty flags are two effects of the same boundary error. Teaching methods contains both mandatory assignments, including the peer response and the workshop presentation, while the coursework row contains only “Arbeidskrav I”. All three sampled SYD204 offerings show the error.",
+      "root_cause_hypothesis": "In R/extract_sections.R, sectionize() opens coursework at the mapped Arbeidskrav subheading, then reverts to the outer teaching section at unmapped assignment titles because this heading does not open a retained coursework group.",
+      "suggested_fix": "For the HiMolde paragraph subheading that exactly matches Arbeidskrav, retain the coursework group through numbered items and their unmapped titles until the next genuine section boundary. Test that both assignments move together.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "duplicate",
+      "severity": "medium",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "himolde_MHS704-2_2025_autumn_1"
+      ],
+      "evidence": "Oppgavens volum (antall ord):\nIntroduksjon til artikkel - maks 15.000 ord.\nMonografi - maks 30.000 ord.",
+      "description": "The thesis deliverable instructions, including word limits, references and structural guidance, appear under both course content and assessment. The leak flag has a substantive basis, and the long assessment row contains both real assessment design and repeated thesis guidance.",
+      "root_cause_hypothesis": "The source repeats thesis instructions under Emnets innhold and Eksamen. The final deduplication in .clean_sections() compares whole rows, so it misses identical blocks within different rows.",
+      "suggested_fix": "Within HiMolde thesis plans, compare normalized paragraphs of the thesis instructions under contents and exam. Remove identical deliverable-instruction paragraphs from course content when the assessment row already contains them, preserving unique subject-matter and assessment text.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "truncated",
+      "severity": "medium",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "himolde_MHS704-2_2025_autumn_1"
+      ],
+      "evidence": "RETNINGSLINJER FOR MONOGRAFI\n\nHovedelementene\n\nVarighet av muntlig eksaminasjon:",
+      "description": "The visible assessment extract jumps from the monograph structure lead-in to oral exam duration. Its heading trace maps the exam-side Introduksjon to course content and marks Innholdsfortegnelse as .drop. The first occurrence of the latter in the full-plan excerpt introduces instructions about the thesis deliverable, which shows why the label is ambiguous in this plan.",
+      "root_cause_hypothesis": "R/section_heading_map.R treats Introduksjon as course content and Innholdsfortegnelse as navigation without using the parent exam context. sectionize() then switches away from assessment at those subheadings.",
+      "suggested_fix": "Under Eksamen in a HiMolde thesis plan, retain Introduksjon and Innholdsfortegnelse as internal assessment labels within the thesis-guidelines block. Check the two occurrences against the uncapped source in a regression fixture.",
+      "confidence": "medium"
+    },
+    {
+      "target": "prerequisites",
+      "error_type": "boilerplate_only",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "himolde_TRA715-1_2024_spring_1",
+        "himolde_TRA725-1_2026_autumn_1",
+        "himolde_IDR208-1_2021_spring_1"
+      ],
+      "evidence": "As for admission to masters in Sustainable Transport and Urban Mobility\n\nNo specific recommended previous knowledge",
+      "description": "Three of the six random controls emit prerequisites consisting entirely of programme-admission references, an eligibility restriction, or statements that there are no prerequisites. None supplies subject-matter entry knowledge. The explicit prior courses in SYD204 and BØK205 are appropriately extracted.",
+      "root_cause_hypothesis": "The admission and placeholder filters in R/extract_sections.R miss the HiMolde formulations, including English admission pointers and a Norwegian restriction following an absence statement.",
+      "suggested_fix": "Extend prerequisite cleanup for the exact admission-pointer and absence formulations in the packet and strip the sentence beginning “Opptak i kurset begrenser seg til studenter”. Drop the row if no subject-matter requirement remains.",
+      "confidence": "high"
+    },
+    {
+      "target": "coursework_requirements",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "himolde_TRA715-1_2024_spring_1"
+      ],
+      "evidence": "If attendance falls below this level without justification, an additional assignment will be set to compensate for and test what was missed.",
+      "description": "The attendance threshold was moved to coursework requirements, but its make-up assignment rule was left in teaching methods. This leaves a mandatory condition in the wrong section and separates the phrase “this level” from the threshold it references.",
+      "root_cause_hypothesis": "The inline coursework handling in R/extract_sections.R can recognize the mandatory-attendance sentence without recognizing the next conditional sentence as its continuation.",
+      "suggested_fix": "When moving a mandatory-attendance sentence, also move the immediately following sentence if it refers to attendance falling below that threshold and requires a make-up assignment. Keep both sentences together in source order.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "truncated",
+      "severity": "medium",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "himolde_TRA715-1_2024_spring_1"
+      ],
+      "evidence": "Course evaluation\n\n1-2 assignments (Pass/Fail)\n\nHome exam (A-F)",
+      "description": "The unmapped Course evaluation block contains student assessment details. Its graded home-exam statement is omitted, and its statement about pass/fail assignments clarifies the coursework gate. The source also lists a school assessment in a structured exam block, so both source statements matter for interpreting the design.",
+      "root_cause_hypothesis": "R/section_heading_map.R does not map this heading, and sectionize() drops the body under an unmapped top-level heading.",
+      "suggested_fix": "For HiMolde, classify a Course evaluation block only when its contents explicitly name student exam components and grading scales. Append the graded exam statement to assessment with its heading, retain the structured exam details, and route a pass/fail assignment line to coursework if it adds gate details.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "formatting_noise",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": [
+        "himolde_SYD204-1_2023_autumn_1",
+        "himolde_MAR200-1_2022_spring_1",
+        "himolde_TRA725-1_2026_autumn_1"
+      ],
+      "evidence": "Andel: %\nVarighet: -",
+      "description": "Structured exam and coursework blocks retain fields with no value, including bare percentages, dash durations, empty aids, and empty coursework counts. The populated assessment and coursework information remains usable. In TRA715 the empty coursework form also contributes a default “Presence: Not required” that conflicts with the explicit attendance rule.",
+      "root_cause_hypothesis": "R/extract_sections.R cleans whole placeholders but leaves individual empty fields in structured HiMolde blocks with other populated lines.",
+      "suggested_fix": "Drop HiMolde structured fields whose values are blank, a bare percent sign or a dash. Suppress the default attendance field when the rest of its coursework record is empty and the plan supplies an explicit attendance rule. Preserve explicit no-aids values and populated counts.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "formatting_noise",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "himolde_SAF140-1_2021_autumn_1",
+        "himolde_MHS704-2_2025_autumn_1"
+      ],
+      "evidence": "Vurderingsform: Digital skoleeksamen - Inspera",
+      "description": "The packet retains the exam platform suffix in SAF140 and the submission-platform line in the MHS704 thesis instructions. The platform is logistics under the specification. The exam form, oral examination duration and thesis format carry assessment design.",
+      "root_cause_hypothesis": "The packet retains text covered in part by the HiMolde logistics cleanup in R/extract_sections.R. The existing exam-form suffix pattern does not cover the standalone thesis submission line.",
+      "suggested_fix": "Check the existing HiMolde exam-form suffix rule against SAF140, and strip the submission platform from the standalone “I pdf-format via Inspera.” line while retaining the file-format requirement.",
+      "confidence": "high"
+    },
+    {
+      "target": "reading_list",
+      "error_type": "empty_placeholder",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "himolde_MAR200-1_2021_spring_1",
+        "himolde_IDR208-1_2021_spring_1"
+      ],
+      "evidence": "Litteratur oppgis i høgskolens læringsplattform ved semesterstart.",
+      "description": "Two reading-list rows contain only notices that the reading list will be supplied elsewhere or at course start. The section specification excludes these pointer-only rows, as it does Leganto-only notes.",
+      "root_cause_hypothesis": "The placeholder phrases in R/extract_sections.R cover several named systems and announcement forms but miss these HiMolde phrasings.",
+      "suggested_fix": "Add anchored reading-list-only placeholder patterns for the learning-platform announcement and “Pensum oppgis av instruktører ved oppstarten av emnet”. Keep any substantive reading entries in the same section.",
+      "confidence": "high"
+    },
+    {
+      "target": "reading_list",
+      "error_type": "formatting_noise",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "himolde_SYD204-1_2022_spring_1"
+      ],
+      "evidence": "Pensumoversikt\nSYD204/SKD204 Fagforståelse og -utøvelse i Folkehelse, reproduktiv helse og pediatrisk sykepleie - Deltid",
+      "description": "The entire reading-list row consists of the widget label and the course's list title. It contains no readings or substantive reading note.",
+      "root_cause_hypothesis": "The HiMolde exclusions in R/institution_config.R already target a Pensumoversikt widget layout, but the packet shows a retained variant of the label and title.",
+      "suggested_fix": "Check the archived widget markup for this offering and extend the selector to remove the Pensumoversikt widget and its linked list title where that pair is the only content. Preserve any bibliographic entries.",
+      "confidence": "high"
+    }
+  ]
+}

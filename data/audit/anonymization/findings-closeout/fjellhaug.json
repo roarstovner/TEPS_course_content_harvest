@@ -1,0 +1,26 @@
+{
+  "check": "anonymization",
+  "institution": "fjellhaug",
+  "model": "gpt-6.2-sol",
+  "n_courses_reviewed": 28,
+  "n_suspects_reviewed": 20,
+  "overall_assessment": "Across all 28 packet entries, including eight random controls, the visible course plans contained no confirmed personal data leaks or offering-specific administrative dates. The name_like flags picked up legitimate terms such as Old Testament and church or institution names, and the three admin_date flags matched the date of the Cairo Declaration and two citations of the same John Wesley diary entry. The generic clock rule damaged Bible references in three suspect plans and none of the controls, and four course plans had packet-truncated tails.",
+  "findings": [
+    {
+      "target": "content_text",
+      "error_type": "over_removal",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "fjellhaug_BMM1006-1_2026_autumn_1",
+        "fjellhaug_BTM2517-DK1_2026_autumn_1",
+        "fjellhaug_BMM1503-1_2026_autumn_1"
+      ],
+      "evidence": "… texts from Genesis (1:1-3:24;-12:9), Exodus (3:1-20; [−19:1-20:21),−] 19:1-), Psalms (1; 8; 13; 48; …",
+      "description": "Clock-time removal deletes parts of assigned Bible passage ranges in the Biblical Exegesis and Exposition plan and removes verse numbers from two cited article titles. These references are course content. The damage appears in three of 20 suspects and zero of eight random controls. The small deletions and incomplete ranges triggered neither the removed flag nor the empty-bracket artifact flag.",
+      "root_cause_hypothesis": "The bare colon-time substitution in .anon_generic() in R/anonymize.R allows the clock preposition to be absent, so .clock_regex matches valid chapter-and-verse numbers. The substitution can also match within a verse range. Running the current function on the original snippets reproduced the packet's edits.",
+      "suggested_fix": "Before clock stripping, temporarily mask numeric spans in Bible references introduced by recognized book names or abbreviations, including parenthesized passage lists, semicolon-separated continuations, and hyphen or en-dash ranges. Restore those spans after clock stripping and cover the three examples alongside genuine clock times in regression tests.",
+      "confidence": "high"
+    }
+  ]
+}

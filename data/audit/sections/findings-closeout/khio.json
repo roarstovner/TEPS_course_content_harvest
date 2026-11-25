@@ -1,0 +1,70 @@
+{
+  "check": "sections",
+  "institution": "khio",
+  "model": "gpt-6.2-sol",
+  "n_courses_reviewed": 20,
+  "n_suspects_reviewed": 14,
+  "overall_assessment": "Section extraction is generally sound across the 14 suspects and six random controls, with learning outcomes intact and explicit coursework blocks and approval gates separated from assessment. All 28 boilerplate flags are false alarms for extraction quality: the repeated coursework text sets real approval requirements, and the repeated assessment text preserves the source's sparse statement of the criteria used. The defects are unflagged and concern individual sentences or clauses, including in the random controls.",
+  "findings": [
+    {
+      "target": "course_content",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": ["khio_IM210-1_2026_autumn_1"],
+      "evidence": "Prosjektets utviklingsprosess og resultat dokumenteres i en egnet skriftlig og visuell presentasjon som grunnlag for vurdering.",
+      "description": "The project documentation sentence specifies the work and format used for assessment. It stays in course_content, leaving the assessment row with generic criteria and omitting the concrete basis on which the student is assessed.",
+      "root_cause_hypothesis": "The short description maps correctly to course_content, but .sentence_moves in R/extract_sections.R has no KHiO rule for an assessment-design sentence embedded in that block.",
+      "suggested_fix": "Add a KHiO sentence move from course_content to assessment for the documented project process and result presented 'som grunnlag for vurdering', matching the full sentence or its specific framing.",
+      "confidence": "high"
+    },
+    {
+      "target": "teaching_methods",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": ["khio_MK522-1_2026_autumn_1"],
+      "evidence": "Deltakelse på teoriforelesninger, skrivepraksis-workshops og veiledninger er obligatorisk.",
+      "description": "The named compulsory activities remain in teaching_methods. The coursework_requirements row captures active participation and the approval gate but omits which activities require attendance.",
+      "root_cause_hypothesis": "The heading and approval-gate handling work, but .sentence_moves in R/extract_sections.R has no KHiO move for a standalone mandatory-attendance sentence inside teaching methods.",
+      "suggested_fix": "Add a KHiO sentence move from teaching_methods to coursework_requirements for standalone statements of the form 'Deltakelse på ... er obligatorisk.' Keep the preceding description of teaching formats in teaching_methods.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "wrong_content",
+      "severity": "medium",
+      "prevalence": "rare",
+      "example_course_ids": ["khio_PPU800-1_2026_autumn_1"],
+      "evidence": "Den kan inkludere egenvurdering, hverandrevurdering og tilbakemelding fra studiets ulike fagansatte.",
+      "description": "The assessment row places formative feedback practices alongside the separate final examination. The paragraph describes support for learning and development through self-assessment, peer assessment and staff feedback. The plan gives the course's graded assessment design under the following Avsluttende vurdering subheading.",
+      "root_cause_hypothesis": "Both Vurdering and Avsluttende vurdering map to assessment. The extractor merges the blocks without distinguishing this formative paragraph from the final assessment.",
+      "suggested_fix": "For KHiO, move the paragraph opening 'Vurderingen underveis i studiet skal være individbasert' and its following feedback sentence to teaching_methods when followed by Avsluttende vurdering. Keep continuous assessment where it is the stated basis of the course grade.",
+      "confidence": "high"
+    },
+    {
+      "target": "course_content",
+      "error_type": "wrong_content",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": ["khio_IM209-1_2026_autumn_1", "khio_IM210-1_2026_autumn_1", "khio_DA502-2_2026_autumn_1"],
+      "evidence": "In consultation with the programme coordinator, students shall establish a movement practice that is relevant to their own specialisation.",
+      "description": "Standalone sentences about how students work are kept in course_content, including the closing exhibition in IM209, the option to carry out the project as part of an external workshop in IM210, and the arrangement for establishing an individual movement practice in DA502. In DA502 the source repeats the outcomes under its teaching heading and the extractor correctly suppresses the copy. The actual teaching arrangement appears under the short description and is still available to be routed to teaching_methods.",
+      "root_cause_hypothesis": "The short-description heading supplies the default section, and .sentence_moves in R/extract_sections.R has no KHiO rule that routes these standalone teaching arrangements.",
+      "suggested_fix": "Add KHiO sentence moves from course_content to teaching_methods for the standalone closing-exhibition, optional external-workshop, and programme-coordinator consultation constructions shown here. Keep surrounding subject-matter sentences in course_content and retain suppression of the copied outcomes block.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "formatting_noise",
+      "severity": "low",
+      "prevalence": "occasional",
+      "example_course_ids": ["khio_MK522-1_2026_autumn_1", "khio_RE103-1_2026_autumn_1"],
+      "evidence": "Ved semestergjennomgangen presenterer hver student sitt arbeid for en komite bestående av hovedveileder og en annen faglig ansatt.",
+      "description": "Examiner arrangements remain embedded in otherwise valid assessment text. MK522 names the committee's staff composition in the presentation sentence, and RE103 appends the examiner's role to its pass/fail scale.",
+      "root_cause_hypothesis": "The KHiO .logistics_sentences rules in R/extract_sections.R remove whole sentences devoted to examiner arrangements. These cases embed the details in sentences that also state the assessment form or grading scale.",
+      "suggested_fix": "Use scoped KHiO phrase removal for the committee composition after 'komite' and the trailing 'av fagansvarlig' after a pass/fail grade, preserving the presentation format and grading scale.",
+      "confidence": "high"
+    }
+  ]
+}
