@@ -6,7 +6,7 @@
   import { fetchCached, fetchMeta, readParquet } from './data/load.js'
   import { startWorker } from './data/client.js'
   import { addPlans, buildModel, filterView, pickVersion } from './data/model.js'
-  import { decodeState, encodeState } from './data/url.js'
+  import { applyExample, decodeState, encodeState } from './data/url.js'
   import { versionId } from './data/keys.js'
   import Header from './lib/Header.svelte'
   import Filters from './lib/Filters.svelte'
@@ -18,6 +18,7 @@
   import Screen from './lib/Screen.svelte'
   import Compare from './lib/Compare.svelte'
   import TermLists from './lib/TermLists.svelte'
+  import Help from './lib/Help.svelte'
   import { planRef } from './data/compare.js'
   import { trend } from './data/trend.js'
 
@@ -208,16 +209,29 @@
     s.course = null
     s.version = null
   }
+  // the user guide: opened from the header or with `?`, closed back to the
+  // view it was opened from
+  let helpFrom = 'list'
+  function toggleHelp() {
+    if (s.view === 'help') s.view = helpFrom
+    else [helpFrom, s.view] = [s.view, 'help']
+  }
 
   function onKey(e) {
     const t = e.target
     const typing = t instanceof HTMLElement && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))
     if (e.key === 'Escape') {
       if (typing) t.blur()
+      else if (s.view === 'help') toggleHelp()
       else if (s.course) close()
       return
     }
-    if (typing || e.ctrlKey || e.metaKey || e.altKey || !view) return
+    if (typing || e.ctrlKey || e.metaKey || e.altKey) return
+    if (e.key === '?') {
+      e.preventDefault()
+      return toggleHelp()
+    }
+    if (!view) return
     const n = view.rows.length
     if (e.key === '/') {
       e.preventDefault()
@@ -249,6 +263,7 @@
     {sectionsLoaded}
     {sectionsLoading}
     {error}
+    onhelp={toggleHelp}
     ondownload={model && plansMeta && !searching && (!queryOn || result) ? () => (downloadOpen = true) : null}
   />
   {#if downloadOpen && model && plansMeta}
@@ -262,7 +277,9 @@
           <button class:current={s.view === v} aria-pressed={s.view === v} onclick={() => (s.view = v)}>{label}</button>
         {/each}
       </nav>
-      {#if s.view === 'trend'}
+      {#if s.view === 'help'}
+        <Help onexample={(h) => applyExample(s, h)} />
+      {:else if s.view === 'trend'}
         <Trend {model} f={s} {matches} {queryOn} q={result?.q} {meta} bind:by={s.by} onpick={pick} />
       {:else if s.view === 'coverage'}
         <Coverage {model} f={s} {meta} onpick={pick} />
@@ -285,7 +302,7 @@
           excl={result?.excl}
           onopen={open}
         />
-        {#if !selected}<p class="hint">Select a course to read its plan. Keys: <kbd>/</kbd> search, <kbd>j</kbd>/<kbd>k</kbd> move, <kbd>Enter</kbd> open, <kbd>Esc</kbd> back.</p>{/if}
+        {#if !selected}<p class="hint">Select a course to read its plan. Keys: <kbd>/</kbd> search, <kbd>j</kbd>/<kbd>k</kbd> move, <kbd>Enter</kbd> open, <kbd>Esc</kbd> back, <kbd>?</kbd> help.</p>{/if}
       {/if}
     </main>
     {#if showCourse}

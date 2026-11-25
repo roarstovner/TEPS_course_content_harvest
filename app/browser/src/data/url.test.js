@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { decodeState, defaultState, encodeState } from './url.js'
+import { applyExample, decodeState, defaultState, encodeState } from './url.js'
 
 describe('URL state', () => {
   it('writes nothing for the defaults', () => {
@@ -69,6 +69,17 @@ describe('URL state', () => {
     expect(decodeState(encodeState(s))).toEqual(s)
     expect(encodeState({ ...s, view: 'list' })).toBe('from=2015')
     expect(decodeState('view=terms&trows=x&tval=y')).toEqual({ ...defaultState(), view: 'terms' })
+  })
+
+  it('keeps the help view, and runs a guide example with the other filters kept', () => {
+    const help = { ...defaultState(), view: 'help', q: 'samisk' }
+    expect(encodeState(help)).toBe('q=samisk&view=help')
+    expect(decodeState(encodeState(help))).toEqual(help)
+    const s = { ...help, inst: ['uit'], sec: ['practice'], course: 'uit|EDU-1@x', scope: 'sentence' }
+    applyExample(s, '?q=outcomes:samisk%20content:urfolk')
+    expect(s).toMatchObject({ q: 'outcomes:samisk content:urfolk', scope: 'plan', sec: [], view: 'list', inst: ['uit'], course: 'uit|EDU-1@x' })
+    applyExample(s, '?q=samisk&view=trend&by=inst&sec=learning_outcomes')
+    expect(s).toMatchObject({ view: 'trend', by: 'inst', sec: ['learning_outcomes'] })
   })
 
   it('falls back to defaults on invalid values', () => {

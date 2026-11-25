@@ -5,6 +5,8 @@ plans. It runs in the browser without a server, so it can be published on
 GitHub Pages; the data are Parquet files next to the page. It replaced a
 Shiny app and an Observable page (retired 2026-11-20).
 
+For users: the [user guide](GUIDE.md), also the app's Help view. This README is the developer spec.
+
 Status: under construction. The first version covers the teacher-education
 frame; the full harvest (all courses, filtered by study type) follows. The
 page is not published until the terms of use of the plan text are settled.
@@ -305,6 +307,11 @@ such as "lese- og skrivevansker".
   and keep the rows by those keys; the query is not re-run, so hits are
   rebuilt as the plans they are in. The worker builds the file (it holds the
   text) and the page saves it.
+- **Help:** the header's *Help* button or `?` (`Esc` or `?` again goes
+  back to the view it came from) shows the user guide, `GUIDE.md`, in the
+  middle pane (`view=help`). The guide is the one source, read on GitHub
+  too; its example queries are links (`?q=...`) that in the app set the
+  query, scope, sections filter and view and keep the other filters.
 - **State in the URL**, so every view can be bookmarked and cited.
 - **Keyboard:** `/` search, `j`/`k` next and previous course, `Enter` open,
   `Esc` back, `?` help; in Screen the keys above.
@@ -421,7 +428,9 @@ maps, folded strings and quoting that a small parser would get wrong.
   `Screen` (the screening view; the worker draws the sample from the hits),
   `Compare` (the compare view; the worker sends the texts with their
   sections), `TermLists` (term lists and the heatmap; the worker runs the
-  terms).
+  terms), `Help` (the user guide, `GUIDE.md` imported as text and rendered by
+  `markdown.js`, a small renderer of the Markdown the guide uses; its test
+  checks that every example link of the guide parses).
 - `src/download/`: downloads, with tests (`download.test.js`). `table.js`: the
   selection as tables of each unit; `encode.js`: CSV, XLSX (a minimal writer on
   fflate) and Parquet (hyparquet-writer); `rebuild.js`: the R and Python code;

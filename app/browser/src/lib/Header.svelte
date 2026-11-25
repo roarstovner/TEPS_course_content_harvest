@@ -19,6 +19,7 @@
     sectionsLoading,
     error,
     ondownload,
+    onhelp,
   } = $props()
 
   const SCOPES = [
@@ -62,6 +63,7 @@
       <label>N <input class="n" type="number" min="1" max="1000" bind:value={state.n} /></label>
     {/if}
     <button type="button" class="dlbutton" onclick={ondownload} disabled={!ondownload} title="Download the selection">Download</button>
+    <button type="button" class="dlbutton" aria-pressed={state.view === 'help'} onclick={onhelp} title="User guide (?)">Help</button>
   </div>
 
   {#if err}

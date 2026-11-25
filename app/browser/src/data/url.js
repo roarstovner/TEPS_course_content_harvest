@@ -3,7 +3,7 @@
 
 export const SCOPES = ['plan', 'section', 'paragraph', 'sentence', 'words']
 export const TABS = ['plan', 'sections', 'versions', 'source']
-export const VIEWS = ['list', 'trend', 'coverage', 'screen', 'compare', 'terms']
+export const VIEWS = ['list', 'trend', 'coverage', 'screen', 'compare', 'terms', 'help']
 export const COMPARE_MODES = ['pair', 'across']
 export const BY = ['all', 'inst', 'st']
 
@@ -25,7 +25,7 @@ export const defaultState = () => ({
   version: null, // its version (versionId)
   tab: 'plan', // one of TABS
   cmp: null, // the version compared with it, tab 'versions' (versionId)
-  view: 'list', // middle pane, one of VIEWS
+  view: 'list', // middle pane, one of VIEWS ('help': the user guide)
   by: 'all', // trend lines: overall, per institution or per study type (BY)
   sample: 50, // screening: hits in the random sample
   seed: null, // screening: the sample's seed (data/screening.js)
@@ -84,6 +84,15 @@ export function encodeState(s) {
     if (s.tab === 'versions' && s.cmp) p.set('cmp', s.cmp)
   }
   return p.toString()
+}
+
+/** The state after an example link of the user guide (`?q=...&view=...`):
+ *  its query, scope, sections filter, view and view settings; the other
+ *  filters and the open course are kept. */
+export function applyExample(s, search) {
+  const d = decodeState(search)
+  for (const k of ['q', 'scope', 'n', 'sec', 'view', 'by', 'sample', 'seed']) s[k] = d[k]
+  return s
 }
 
 /** Query string -> state; invalid values fall back to the defaults. */

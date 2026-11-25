@@ -265,3 +265,19 @@ del { background: var(--del); text-decoration: line-through; text-decoration-col
 .progs.cov .reasons { font-size: 12px; white-space: normal; }
 .progs.cov .reasons > span { white-space: nowrap; }
 .progs.cov tfoot th { border-top: 1px solid var(--fg-2); }
+.help { padding: 8px 16px 40px; }
+.helptoc { display: flex; flex-wrap: wrap; gap: 4px 14px; padding: 4px 0 8px; border-bottom: 1px solid var(--line); }
+.helptoc .link { font-size: 13px; }
+.guide { max-width: 82ch; }
+.guide h1 { font-size: 18px; margin: 12px 0 4px; }
+.guide h2 { font-size: 15px; margin: 22px 0 4px; scroll-margin-top: 40px; }
+.guide h3 { font-size: 14px; margin: 14px 0 4px; }
+.guide p, .guide ul { margin: 6px 0; }
+.guide ul { padding-left: 20px; }
+.guide li { margin: 2px 0; }
+.guide code { font: 12.5px var(--mono); background: var(--bg-2); border-radius: 3px; padding: 0 3px; }
+.guide a { color: var(--accent); }
+.guide a code { color: inherit; }
+.guide table { border-collapse: collapse; margin: 6px 0; font-size: 13px; display: block; overflow-x: auto; }
+.guide th, .guide td { border-bottom: 1px solid var(--line); padding: 3px 10px 3px 0; text-align: left; vertical-align: top; }
+.dlbutton[aria-pressed='true'] { background: var(--accent-bg); border-color: var(--accent); }
