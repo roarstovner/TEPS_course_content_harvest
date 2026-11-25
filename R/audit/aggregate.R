@@ -10,7 +10,8 @@
 # Verification (mechanical — catches invented findings, not wrong judgement):
 #   - schema:   enum values are allowed for the check (AUDIT_CHECKS)
 #   - ids:      every example_course_id was in that institution's packet
-#               (data/audit/{check}/sample.csv)
+#               (data/audit/{check}/sample.csv; for findings-{tag}/ from
+#               packets built with --tag, packets/{tag}/ and sample-{tag}.csv)
 #   - evidence: the quoted evidence occurs verbatim in the packet
 #               (whitespace/case-insensitive; "…" separates fragments)
 #
@@ -42,6 +43,11 @@ base_dir    <- audit_dir(check)
 find_dir    <- opt("dir", file.path(base_dir, "findings"))
 compare_ref <- opt("compare", "HEAD")
 out_stem    <- file.path(base_dir, basename(find_dir))
+# findings-{tag}/ from packets built with --tag {tag}: their packets and
+# sample; otherwise (a tagged run of the canonical packets) the canonical ones.
+tag <- str_remove(basename(find_dir), "^findings-?")
+if (!nzchar(tag) || !dir.exists(audit_packet_dir(check, tag))) tag <- ""
+packet_dir  <- audit_packet_dir(check, tag)
 
 files <- list.files(find_dir, pattern = "\\.json$", full.names = TRUE)
 if (length(files) == 0) stop("No findings JSON in ", find_dir,
@@ -85,7 +91,7 @@ for (f in files) {
   inst <- str_remove(basename(f), "\\.json$")
   # A report older than its institution's packet was written for an earlier
   # packet (or the agent never wrote this run's file); it cannot be verified.
-  packet <- file.path(base_dir, "packets", paste0(inst, ".md"))
+  packet <- file.path(packet_dir, paste0(inst, ".md"))
   reports[[inst]] <- tibble(institution = inst,
                             stale = file.exists(packet) && file.mtime(f) < file.mtime(packet),
                             model = chr(obj$model),
@@ -110,7 +116,7 @@ bad_enum <- function(x, allowed, field) {
   ifelse(is.na(x) | x %in% allowed, NA_character_, paste0(field, "='", x, "'"))
 }
 
-sample_path <- file.path(base_dir, "sample.csv")
+sample_path <- audit_index_path(check, "sample", tag)
 sample_ids <- if (file.exists(sample_path)) read.csv(sample_path, stringsAsFactors = FALSE) else NULL
 
 # Bullet glyphs (incl. the private-use bullets PDFs emit) are formatting that
@@ -127,7 +133,7 @@ norm_txt <- function(x) {
 packet_text <- list()
 get_packet <- function(inst) {
   if (is.null(packet_text[[inst]])) {
-    p <- file.path(base_dir, "packets", paste0(inst, ".md"))
+    p <- file.path(packet_dir, paste0(inst, ".md"))
     packet_text[[inst]] <<- if (file.exists(p)) norm_txt(paste(readLines(p, warn = FALSE), collapse = "\n")) else NA_character_
   }
   packet_text[[inst]]

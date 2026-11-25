@@ -46,7 +46,7 @@ OUTLIER_Z     <- 3
 SEED          <- 42
 
 CHECK   <- "anonymization"
-out_dir <- file.path(audit_dir(CHECK), "packets")
+out_dir <- audit_packet_dir(CHECK)   # packets/{tag}/ with --tag
 dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
 
 EMAIL_RX <- "\\b[\\w.+-]+@[\\w.-]+\\.[a-zA-Z]{2,}\\b"

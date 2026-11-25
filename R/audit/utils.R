@@ -49,10 +49,43 @@ AUDIT_CHECKS <- list(
 
 audit_dir <- function(check) file.path("data", "audit", check)
 
+# Options that take a value (`--name value`); their values are not institutions.
+AUDIT_VALUE_OPTS <- c("--tag", "--url-pattern")
+
 # Institutions requested on the command line (empty = all).
 audit_args_institutions <- function() {
   args <- commandArgs(trailingOnly = TRUE)
-  args[!startsWith(args, "--")]
+  is_val <- c(FALSE, head(args, -1) %in% AUDIT_VALUE_OPTS)
+  args[!startsWith(args, "--") & !is_val]
+}
+
+# Value of `--name value` on the command line, or `default`.
+audit_opt <- function(name, default = NULL) {
+  args <- commandArgs(trailingOnly = TRUE)
+  i <- match(paste0("--", name), args)
+  if (is.na(i) || i == length(args)) default else args[i + 1]
+}
+
+# With --tag <label>, a prepare script writes its packets to
+# packets/{label}/ and its index to manifest-{label}.csv and sample-{label}.csv,
+# so a tagged run (an experiment, a subset such as --url-pattern) leaves the
+# canonical packets alone. Findings go to findings-{label}/ (SKILL.md);
+# aggregate.R finds the tagged packets from that folder's name.
+audit_tag <- function() audit_opt("tag", "")
+audit_packet_dir <- function(check, tag = audit_tag()) {
+  file.path(audit_dir(check), "packets", tag)
+}
+audit_index_path <- function(check, file, tag = audit_tag()) {
+  file.path(audit_dir(check), paste0(file, if (nzchar(tag)) paste0("-", tag), ".csv"))
+}
+
+# With --url-pattern <regex>, only offerings whose page URL matches it are
+# sampled (e.g. "/english/" for the English-tree pages of UiA and NIH).
+audit_url_rows <- function(df) {
+  pat <- audit_opt("url-pattern")
+  if (is.null(pat)) return(df)
+  if (!"url" %in% names(df)) stop("--url-pattern needs a `url` column", call. = FALSE)
+  df[grepl(pat, df$url) %in% TRUE, ]
 }
 
 # With --pilot on the command line, an institution's packet is drawn from its
@@ -132,7 +165,6 @@ audit_packet_header <- function(check, inst, selected, what) {
 # Write the packets' index files. When only some institutions were rebuilt,
 # rows for the other institutions are kept.
 audit_write_index <- function(check, manifest, sample) {
-  dir <- audit_dir(check)
   merge_csv <- function(new, path) {
     if (file.exists(path)) {
       old <- read.csv(path, stringsAsFactors = FALSE)
@@ -144,10 +176,11 @@ audit_write_index <- function(check, manifest, sample) {
     new <- arrange(new, institution)
     write.csv(new, path, row.names = FALSE)
   }
-  merge_csv(manifest, file.path(dir, "manifest.csv"))
-  merge_csv(sample, file.path(dir, "sample.csv"))
-  cat(sprintf("\nWrote %d packet(s) to %s/packets/ (manifest.csv, sample.csv updated)\n",
-              nrow(manifest), dir))
+  merge_csv(manifest, audit_index_path(check, "manifest"))
+  merge_csv(sample, audit_index_path(check, "sample"))
+  cat(sprintf("\nWrote %d packet(s) to %s/ (%s, %s updated)\n",
+              nrow(manifest), audit_packet_dir(check), basename(audit_index_path(check, "manifest")),
+              basename(audit_index_path(check, "sample"))))
 }
 
 # Fail early when an input is older than the file it is derived from.

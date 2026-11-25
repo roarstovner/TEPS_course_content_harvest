@@ -1,0 +1,100 @@
+{
+  "check": "sections",
+  "institution": "uia",
+  "model": "gpt-6.2-sol",
+  "n_courses_reviewed": 20,
+  "n_suspects_reviewed": 14,
+  "overall_assessment": "UiA's English headings map reliably, both examination headings usually separate graded assessment from coursework gates, and the learning-outcome groups are intact. The two empty flags on bare 'No' are valid, while three 'Lectures.' empty flags and ten boilerplate flags mark genuine teaching methods after workload removal. The six random controls confirm that prose-level mistakes can escape the flags, especially coursework gates and their details left under teaching methods, and generic Canvas notices left beside substantive text.",
+  "findings": [
+    {
+      "target": "cross_section",
+      "error_type": "empty_placeholder",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "uia_IS-608-1_2026_spring_2"
+      ],
+      "evidence": "**prerequisites** (2 chars)  ⚑ flags: empty\n\n````\nNo\n````",
+      "description": "IS-608 emits two rows containing only 'No', one for recommended prior knowledge and one for examination requirements. Neither row supplies a prerequisite or a coursework gate.",
+      "root_cause_hypothesis": "The bare-negation list in R/extract_sections.R recognizes 'nei' and 'none' but omits standalone English 'no'.",
+      "suggested_fix": "Suppress standalone 'No' and 'No.' case-insensitively in prerequisite and coursework-requirement rows. Keep full negative statements and exam-aid labels with substantive values.",
+      "confidence": "high"
+    },
+    {
+      "target": "teaching_methods",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "common",
+      "example_course_ids": [
+        "uia_HI-408-1_2026_autumn_1",
+        "uia_MM-922-1_2026_spring_1"
+      ],
+      "evidence": "The course comprises both lectures and seminars. Students are required to participate regularly and actively in both.",
+      "description": "Two of six controls retain mandatory coursework in teaching methods. HI-408 leaves compulsory participation and substantive details of the approved literature review and peer feedback in teaching methods, including the review length and how readings must be selected. MM-922 repeats a reference to mandatory tasks in its teaching list although the next section explicitly says all such tasks must be approved.",
+      "root_cause_hypothesis": "The heading map recognizes Examination requirements, but the sentence moves do not fully handle English gates embedded under UiA's teaching heading or connect task descriptions there to approvals under the next heading.",
+      "suggested_fix": "For UiA, move explicit participation requirements and the HI-408 assignment-detail block into coursework when the approved task names match. Remove the redundant mandatory-task reference from the MM-922 teaching list where the requirements row already supplies the gate. Preserve generic teaching descriptions and participation expectations.",
+      "confidence": "high"
+    },
+    {
+      "target": "prerequisites",
+      "error_type": "truncated",
+      "severity": "high",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "uia_MF-203-1_2025_spring_1",
+        "uia_BE-318-1_2026_autumn_1",
+        "uia_BE-318-1_2025_autumn_1"
+      ],
+      "evidence": "MF-102 Marketing, or equivalent in addition to Higher Education entrance qualifications.",
+      "description": "The free-standing admission block states a subject-specific prior-course requirement in three offerings. The prerequisites rows retain those course names as recommendations but lose their required status for free-standing students. The generic programme and capacity notices are correctly excluded.",
+      "root_cause_hypothesis": "R/section_heading_map.R unconditionally maps this English heading to .drop, so the block never reaches the selective .admission processing in .clean_sections().",
+      "suggested_fix": "Route this exact heading to .admission and retain verbatim sentences with an explicit prior-course code or equivalent subject-matter requirement, keeping the free-standing condition in the heading. Filter out generic entrance and programme-admission statements. Preserve the requirement alongside a recommendation for the same course.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "wrong_content",
+      "severity": "medium",
+      "prevalence": "occasional",
+      "example_course_ids": [
+        "uia_EN-212-1_2024_spring_1",
+        "uia_EN-465-1_2025_spring_1"
+      ],
+      "evidence": "The student's thesis must fulfill the requirements of form, structure and contents described in the department's guidelines for BA theses.",
+      "description": "Two English controls put material about what students do or submit under headings for other purposes. EN-212 keeps an academic-writing outcome and assessed thesis specifications in course content. EN-465 leaves the activity of compiling a syllabus for the graded term paper in course content and mentions the graded term paper in teaching methods. The assessed thesis and paper are already identified under assessment.",
+      "root_cause_hypothesis": "Section assignment follows the source heading for this mixed prose, and the UiA cleanup rules do not reassign these identifiable clauses.",
+      "suggested_fix": "Match the explicit EN-212 learning-outcome and thesis-specification sentence starters and route their sentences to outcomes and assessment, respectively. For EN-465, move the syllabus-compilation activity to teaching methods and omit the redundant term-paper reference there when a matching final paper is already present in assessment.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "formatting_noise",
+      "severity": "low",
+      "prevalence": "common",
+      "example_course_ids": [
+        "uia_BE-318-1_2026_autumn_1",
+        "uia_MF-203-1_2025_spring_1",
+        "uia_HI-408-1_2026_autumn_1"
+      ],
+      "evidence": "Approved compulsory assignment(s). More information will be given in Canvas at the start of the semester.",
+      "description": "Seven offerings, including three controls, retain generic Canvas directions in coursework requirements or assessment. These notices merely tell students where to get more information and add no gate or assessment-design detail.",
+      "root_cause_hypothesis": "The cleanup for assessment and coursework in R/extract_sections.R has no UiA rule for these standalone English pointers.",
+      "suggested_fix": "Strip the UiA standalone 'More information will be given/provided in/on Canvas' and 'Please refer to Canvas for more information' sentences, including the optional semester-start phrase. Keep sentences that describe a concrete task, grade component, or assessment rule.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "formatting_noise",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "uia_ME-437-1_2026_autumn_1"
+      ],
+      "evidence": "Due to grade requirements for state authorised auditors, a regular examination will be held both autumn and spring.",
+      "description": "The assessment row includes the semesters in which the exam is offered. The preceding sentence already gives the exam design, including its duration, supervision and grading scale.",
+      "root_cause_hypothesis": "The UiA logistics cleanup in R/extract_sections.R handles workload but does not recognize this English exam scheduling sentence.",
+      "suggested_fix": "Filter standalone UiA sentences stating that a regular exam will be held in specified semesters. Preserve duration, assessment form, and grading information.",
+      "confidence": "high"
+    }
+  ]
+}

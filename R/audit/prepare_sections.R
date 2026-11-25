@@ -19,8 +19,10 @@
 # Outputs:
 #   data/audit/sections/packets/{inst}.md
 #   data/audit/sections/manifest.csv, sample.csv
+#   (with --tag <label>: packets/{label}/, manifest-{label}.csv, sample-{label}.csv)
 #
-# Run:  Rscript R/audit/prepare_sections.R [inst ...] [--pilot]
+# Run:  Rscript R/audit/prepare_sections.R [inst ...] [--pilot] [--tag <label>]
+#         [--url-pattern <regex>]   # only plans whose source page URL matches
 
 source("R/audit/utils.R")
 source("R/anonymize.R")             # heading texts are raw page text
@@ -42,7 +44,7 @@ MAX_KB      <- 150    # packet budget: see the fitting loop below
 SEED        <- 42
 
 CHECK   <- "sections"
-out_dir <- file.path(audit_dir(CHECK), "packets")
+out_dir <- audit_packet_dir(CHECK)
 dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
 
 # ── Load ─────────────────────────────────────────────────────────────────────
@@ -57,8 +59,9 @@ suspects <- readRDS("data/audit/sections/sections_qa_suspects.RDS")
 sources  <- readRDS("data/processed/course_plans.RDS")$source_course_id
 offerings <- readRDS("data/interim/course_offerings_full.RDS") |>
   select(course_id, institution, course_plan, plan_content_id,
-         course_code_raw, course_name, year, semester_name)
-plans    <- filter(offerings, course_id %in% sources)
+         course_code_raw, course_name, year, semester_name, url)
+# with --url-pattern, only plans whose source offering's page matches
+plans    <- audit_url_rows(filter(offerings, course_id %in% sources))
 
 # Headings on each source page and where they map (target `blocks`, keyed by
 # page; `page_map`: each offering's page): shows why text went where it did.

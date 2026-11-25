@@ -73,7 +73,7 @@ UNCAP_MIN     <- 200    # uncaptured prose chars that raise a flag
 SEED          <- 42
 
 CHECK   <- "fulltext"
-out_dir <- file.path(audit_dir(CHECK), "packets")
+out_dir <- audit_packet_dir(CHECK)   # packets/{tag}/ with --tag
 dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
 
 source("R/fetch_html_cols.R")       # institution_config depends on fetch_fn refs
