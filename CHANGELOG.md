@@ -104,6 +104,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Browser: seeded random sample and screening mode (#558)
+- Browser: CI tests and a Pages deploy workflow (disabled until publishing is decided) (#562)
 - Add Barratt Due Musikkinstitutt (#584)
 - Add DMMH (Dronning Mauds Minne Høgskole) (#581)
 - Add Lovisenberg diakonale høgskole (#580)
