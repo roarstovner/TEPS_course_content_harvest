@@ -786,7 +786,9 @@ uio_course_folders <- function(index = "https://www.uio.no/sitemapindex.xml") {
 #' Resolve URLs for a batch of UiT courses via document ID discovery
 #'
 #' For each unique course_code, fetches the active page /utdanning/aktivt/emne/{CODE}
-#' and reads its documents with uit_semester_documents().
+#' and reads its documents with uit_semester_documents(). An offering whose
+#' semester the page does not list takes its document from the semester's
+#' course list (uit_listed_documents()).
 #'
 #' @param df A tibble with course_code, year, semester_name columns
 #' @param .progress Show progress bar
@@ -798,6 +800,16 @@ resolve_urls_uit_batch <- function(df, .progress = TRUE, checkpoint = NULL) {
   docs <- discover_codes(df$course_code, function(code) {
     uit_semester_documents(site_html(paste0("https://uit.no/utdanning/aktivt/emne/", toupper(code))), code)
   }, checkpoint, .progress = .progress)
+  key <- c("course_code", "year", "semester_name")
+  missing <- dplyr::anti_join(dplyr::distinct(df, dplyr::across(dplyr::all_of(key))), docs, by = key)
+  if (nrow(missing)) {
+    listed <- uit_listed_documents(dplyr::distinct(missing, year, semester_name),
+                                   if (!is.null(checkpoint)) file.path(checkpoint, "listing"))
+    listed$course_code <- missing$course_code[match(toupper(listed$course_code), toupper(missing$course_code))]
+    listed <- dplyr::semi_join(listed, missing, by = key)
+    cli::cli_alert_info("{nrow(dplyr::distinct(listed, dplyr::across(dplyr::all_of(key))))} of {nrow(missing)} semesters the course pages do not list are in the semester lists")
+    docs <- dplyr::bind_rows(docs, listed)
+  }
 
   if (nrow(docs) == 0) {
     cli::cli_alert_warning("No semester URLs discovered")
@@ -850,6 +862,65 @@ uit_semester_documents <- function(page, code) {
     }
   }
   docs
+}
+
+#' UiT's documents of semesters, from its course lists
+#'
+#' The course list /utdanning/emner?ar={YEAR}&semester={H|V} links every
+#' course of a semester to its document of that semester, 50 to a page
+#' (`ikb6.startrow`). A course page's picker can lack a semester whose
+#' document uit.no still serves: in November 2026 FIL-0700's listed none
+#' from autumn 2023 to spring 2026, which the list has. The list's semester
+#' is not taken on trust: the pipeline keeps a document's plan only for the
+#' semester the document names (`page_term`, `page_end_term`). Each
+#' semester's list is read once and kept in the checkpoint `dir`.
+#'
+#' @param semesters Tibble of year and semester_name ("Høst", "Vår")
+#' @param dir Checkpoint folder, or NULL for none
+#' @return Tibble of course_code, year, semester_name, url, in list order
+uit_listed_documents <- function(semesters, dir = NULL) {
+  semesters <- semesters[semesters$semester_name %in% c("Høst", "Vår") & !is.na(semesters$year), ]
+  have <- if (!is.null(dir)) read_checkpoint(dir)
+  todo <- dplyr::anti_join(semesters, have %||% semesters[0, ], by = c("year", "semester_name"))
+  for (i in seq_len(nrow(todo))) {
+    rows <- uit_semester_list(todo$year[i], todo$semester_name[i])
+    # a semester without courses is kept as a row without url
+    if (!nrow(rows)) rows <- tibble::tibble(course_code = NA_character_, year = todo$year[i],
+                                            semester_name = todo$semester_name[i], url = NA_character_)
+    if (!is.null(dir)) checkpoint_append(rows, dir)
+    have <- dplyr::bind_rows(have, rows)
+  }
+  if (is.null(have)) return(tibble::tibble(course_code = character(), year = integer(),
+                                           semester_name = character(), url = character()))
+  dplyr::semi_join(have, semesters, by = c("year", "semester_name")) |>
+    dplyr::filter(!is.na(url))
+}
+
+# One semester's course list, page by page, until a page adds no document.
+uit_semester_list <- function(year, semester_name) {
+  base <- paste0("https://uit.no/utdanning/emner?ar=", year, "&semester=", substr(semester_name, 1, 1))
+  out <- list()
+  start <- 1
+  repeat {
+    polite_pause()
+    rows <- uit_list_documents(site_html(paste0(base, if (start > 1) paste0("&ikbAction=ikb6&ikb6.startrow=", start))),
+                               year, semester_name)
+    rows <- rows[!rows$url %in% unlist(lapply(out, `[[`, "url")), ]
+    if (!nrow(rows)) break
+    out[[length(out) + 1]] <- rows
+    start <- start + nrow(rows)
+  }
+  cli::cli_alert_info("UiT {semester_name} {year}: {sum(vapply(out, nrow, 0L))} documents in the course list")
+  dplyr::bind_rows(tibble::tibble(course_code = character(), year = integer(), semester_name = character(),
+                                  url = character()), out)
+}
+
+# The documents a page of UiT's course list links to: "{CODE}: {title}".
+uit_list_documents <- function(page, year, semester_name) {
+  a <- rvest::html_elements(page, "span.studieProgramTittel a[href*='p_document_id=']")
+  code <- stringr::str_match(rvest::html_text2(a), "^\\s*([^:\\s]+):")[, 2]
+  tibble::tibble(course_code = code, year = as.integer(year), semester_name = semester_name,
+                 url = xml2::url_absolute(rvest::html_attr(a, "href"), "https://uit.no"))[!is.na(code), ]
 }
 
 #' One UiT document per semester

@@ -551,5 +551,15 @@ Norwegian one; `uit_one_per_semester()` fetches those and keeps the
 first Norwegian one. The same CSS selector works for active and
 historical pages.
 
+The picker can lack semesters whose documents uit.no still serves (in
+November 2026 FIL-0700’s listed none from autumn 2023 to spring 2026).
+For an offering whose semester its course page lacks,
+`uit_listed_documents()` reads the semester’s course list,
+`/utdanning/emner?ar={YEAR}&semester={H|V}` (50 courses to a page,
+`ikb6.startrow`; about 30 pages a semester), once per semester, kept in
+the checkpoint `discovery/listing/`. A document serves only the semester
+it names under “Semester / år” (`page_term`, `page_end_term` in the
+config).
+
 **Samas.** `noop` strategy: `extracted_text` is NA, since the plans are
 in Sámi.

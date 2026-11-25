@@ -916,6 +916,35 @@ the first option (the rule before, which took the English twin).
 ENG-3981 spring 2016, LRU-1300 autumn 2010, LER-1150 autumn 2018), 2 of them
 a plan not in the data before. *Since:* 2026-10-08.
 
+**UiT: a semester the course page no longer lists takes its document from
+the semester's course list:** where a course page's semester picker lacks an
+offering's semester, the document comes from UiT's course list of that
+semester (`/utdanning/emner?ar={year}&semester={H|V}`, every course of the
+semester with its document), fetched live from uit.no like the others; a
+document serves only the semester it names under "Semester / år", so a list
+that put a document under the wrong semester gives no plan. *Why:* the
+picker dropped recent semesters whose documents uit.no still serves: in
+November 2026 FIL-0700 (Examen philosophicum, about 1,200 exam registrations
+a year in DBH 2024-2025) listed documents up to spring 2023 and showed spring 2027, while
+the course lists have every semester from spring 2023 to autumn 2026, with
+the ids the page's picker had in the Internet Archive's capture of 2026-05-15
+(autumn 2025 874490, spring 2026 905709). Every document already stored
+names its offering's semester (51,082 of 51,122; 40 name none), so the
+semester check removes no plan. *Rejected:* carrying the latest earlier
+document forward to the semesters without one (rejected 2026-11-20: it
+assumes an unchanged plan, and the documents exist); the document ids of the
+picker in the Internet Archive's latest capture of each course page, with the
+documents fetched live (two requests per course at 6-8 seconds, many courses
+have no capture, and no capture lists a semester published after it, such as
+autumn 2026); the course lists for every offering (the picker gives the same
+documents with no extra request for most of them). *Consequence:* in the
+build of 2026-11-24, 5,664 UiT course-years of 2023-2026 had no URL (964 with
+students in DBH); the course lists of these eight semesters (about 30 pages
+each) have a document of the offering's own semester for 206 of them (167
+with students; 2026: 71 and 56), which gain a URL with a retry harvest of
+these course-years. Most of the other course-years with students are UNIS courses
+(AG-, AGF-, AS- codes: 153), which UiT does not publish. *Since:* 2026-11-25.
+
 **HVL, Nord and NTNU: a plan published only in English is read from the
 English page:** an HVL page that says "Emnebeskrivelsen finnes kun på engelsk"
 (or, since 2026-10-17, "Dette emnet er kun beskrevet på engelsk", "Dette

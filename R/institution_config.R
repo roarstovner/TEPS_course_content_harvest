@@ -721,6 +721,16 @@ institution_configs <- list(
     # emnet som videreutdanning er forkunnskapskravet fullført lærerutdanning
     # med minimum 60 studiepoeng i norsk.", "Recommended prerequisites:
     # MBI-2005 ..."): .admission_prerequisites() keeps the latter
+    # The semester a document is for ("Semester / år": "Høst 2025", "Spring
+    # 2025"), so a document from the course list (uit_listed_documents())
+    # serves only its own semester; every stored document named its
+    # offering's semester, or none (40 of 51,122, 2026-11-25)
+    page_term = function(html) {
+      m <- stringr::str_match(html, paste0('id="semester"[^>]*>\\s*<span[^>]*>[^<]*</span>\\s*',
+                                           '<span class="sub_hero_text_innhold">\\s*(Høst|Vår|Autumn|Spring)\\s+(\\d{4})'))
+      semester_term(m[, 3], m[, 2])
+    },
+    page_end_term = function(html) institution_configs$uit$page_term(html),
     # "Undervisnings- og eksamensspråk" ("Language of instruction and
     # examination") mixes the teaching language with the exam language: its
     # exam-language sentences and bare values join assessment, the rest goes
