@@ -26,6 +26,7 @@ let sectionsReady = null // promise, from the first need
 let sectionsLoaded = false
 const newSearch = generations()
 const newForms = generations()
+const newTerms = generations()
 let scans = 0 // searches and word forms running
 
 // a search or word forms over plans in chunks; null when superseded
@@ -137,6 +138,26 @@ const handlers = {
     const ds = keys.map((k) => byKey.get(k)).filter(Boolean)
     const parts = await scan(ds, (d) => wordForms(d, m), stale)
     return parts && mergeForms(parts)
+  },
+  /** The plans each query of a term list matches, over all plans (the page
+   *  applies the filters): {results: [{keys} | {error}]}, or {superseded:
+   *  true} when a newer run came first. Runs in chunks like `search`. */
+  async terms({ queries, scope, n }) {
+    const stale = newTerms()
+    await plansReady
+    const results = []
+    for (const q of queries) {
+      const m = compileQuery(q)
+      if (m.error || !m.ast) {
+        results.push({ error: m.error?.message ?? 'empty query' })
+        continue
+      }
+      if (scope === 'section' || m.terms.some((t) => t.section)) await loadSections()
+      const parts = await scan(docs, (ds) => search(ds, m, { scope, words: n || 10 }), stale)
+      if (!parts) return { superseded: true }
+      results.push({ keys: parts.flat().map((r) => r.id) })
+    }
+    return { results }
   },
   /** Stop a running search and word forms (the query was cleared). */
   cancel() {

@@ -3,7 +3,7 @@
 
 export const SCOPES = ['plan', 'section', 'paragraph', 'sentence', 'words']
 export const TABS = ['plan', 'sections', 'versions', 'source']
-export const VIEWS = ['list', 'trend', 'coverage', 'screen', 'compare']
+export const VIEWS = ['list', 'trend', 'coverage', 'screen', 'compare', 'terms']
 export const COMPARE_MODES = ['pair', 'across']
 export const BY = ['all', 'inst', 'st']
 
@@ -35,6 +35,9 @@ export const defaultState = () => ({
   csec: null, // compare: one section only (its code); null = the whole plan
   cyear: null, // compare across: the year; null = the last year of the filter
   diff: true, // compare two plans: mark the differences
+  tl: null, // term lists: the list shown (its name; the lists are kept in the browser)
+  trows: 'all', // term heatmap rows: a term ('all') or a term per institution ('inst')
+  tval: 'share', // term heatmap cells: 'share' of course-years with a plan, or 'count'
 })
 
 const list = (s) => (s ? s.split(',').filter(Boolean) : [])
@@ -67,6 +70,11 @@ export function encodeState(s) {
     if (s.cm === 'pair' && !s.diff) p.set('diff', '0')
     if (s.cm === 'across' && s.cyear != null) p.set('cyear', String(s.cyear))
     if (s.csec) p.set('csec', s.csec)
+  }
+  if (s.view === 'terms') {
+    if (s.tl) p.set('tl', s.tl)
+    if (s.trows === 'inst') p.set('trows', 'inst')
+    if (s.tval === 'count') p.set('tval', 'count')
   }
   if (s.course) {
     // `inst:code`; institution codes hold no ':'
@@ -108,6 +116,9 @@ export function decodeState(search) {
   s.csec = p.get('csec') || null
   s.cyear = year(p.get('cyear'))
   s.diff = p.get('diff') !== '0'
+  s.tl = p.get('tl') || null
+  if (p.get('trows') === 'inst') s.trows = 'inst'
+  if (p.get('tval') === 'count') s.tval = 'count'
   const c = p.get('course')
   if (c && c.includes(':')) {
     s.course = c.replace(':', '|')

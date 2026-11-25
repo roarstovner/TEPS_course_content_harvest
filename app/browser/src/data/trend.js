@@ -11,9 +11,11 @@ export const GROUPS = ['all', 'inst', 'st']
 export const MAX_SERIES = 8
 export const OTHERS = '(others)'
 
-const blank = (year) => ({ year, n: 0, withPlan: 0, matching: 0 })
+export const blank = (year) => ({ year, n: 0, withPlan: 0, matching: 0 })
 
-function add(p, cy, matches) {
+/** Count a course-year in a point: in force, with a plan, matching (any of
+ *  its plans in `matches`, a Map or Set of plan keys). */
+export function add(p, cy, matches) {
   p.n++
   if (!cy.plans.size) return
   p.withPlan++
@@ -22,7 +24,7 @@ function add(p, cy, matches) {
 
 /** The course-years in the filter (the course filters, years and study
  *  types), each with its course: calls `fn(course, courseYear)`. */
-function eachCourseYear(model, f, fn) {
+export function eachCourseYear(model, f, fn) {
   const { cyIn } = yearFilter(model, f)
   const tests = Object.entries(COURSE_FILTERS)
     .filter(([k]) => f[k]?.length)

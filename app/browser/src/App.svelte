@@ -17,6 +17,7 @@
   import Coverage from './lib/Coverage.svelte'
   import Screen from './lib/Screen.svelte'
   import Compare from './lib/Compare.svelte'
+  import TermLists from './lib/TermLists.svelte'
   import { planRef } from './data/compare.js'
   import { trend } from './data/trend.js'
 
@@ -175,6 +176,12 @@
     if (st) s.st = [st]
     s.view = 'list'
   }
+  // a cell of the term heatmap: the term as the query, its courses in the list
+  function pickTerm({ q, inst, y }) {
+    s.q = q
+    s.course = null
+    pick({ y0: y, y1: y, inst })
+  }
   // a hit in the screening view: its plan version in the list view
   function openHit(h) {
     s.course = `${h.institution}|${h.course_code}`
@@ -251,7 +258,7 @@
     <aside class="filters"><Filters bind:state={s} {meta} {model} facets={view.facets} sectionsReady={!!planSections} /></aside>
     <main class="results">
       <nav class="viewtabs" aria-label="View">
-        {#each [['list', 'List'], ['trend', 'Trend'], ['coverage', 'Coverage'], ['screen', 'Screen'], ['compare', 'Compare']] as [v, label] (v)}
+        {#each [['list', 'List'], ['trend', 'Trend'], ['coverage', 'Coverage'], ['screen', 'Screen'], ['compare', 'Compare'], ['terms', 'Term lists']] as [v, label] (v)}
           <button class:current={s.view === v} aria-pressed={s.view === v} onclick={() => (s.view = v)}>{label}</button>
         {/each}
       </nav>
@@ -263,6 +270,8 @@
         <Screen {model} {view} bind:s q={matches ? result.q : ''} excl={result?.excl ?? {}} {matches} {meta} {worker} onopen={openHit} />
       {:else if s.view === 'compare'}
         <Compare {model} {view} bind:s {y0} {y1} {meta} {worker} q={queryOn ? (result?.q ?? '') : ''} excl={result?.excl} onopen={openPlan} />
+      {:else if s.view === 'terms'}
+        <TermLists {model} bind:s {meta} {worker} plansReady={!!plansMeta} onpick={pickTerm} />
       {:else}
         <Results
           rows={view.rows}

@@ -218,8 +218,8 @@ such as "lese- og skrivevansker".
   browser (localStorage; without storage it starts on). Below 1250 px the
   filters narrow; below 900 px an open course replaces the list; below 640 px
   the panes stack in one column and the page scrolls.
-- **Views** beside the list (List | Trend | Coverage | Screen | Compare, in
-  the URL as `view`): trend: by year, the share of the course-years in force in the
+- **Views** beside the list (List | Trend | Coverage | Screen | Compare |
+  Term lists, in the URL as `view`): trend: by year, the share of the course-years in force in the
   filter whose plan matches the query, out of those with a plan (a
   course-year matches when any of its plans does); one line overall, per
   institution or per study type (`by`; a course-year counts in each of its
@@ -265,8 +265,23 @@ such as "lese- og skrivevansker".
   institution, at most 40 plans. Either mode shows the whole plan or one
   section; the matches of the query stay marked. In the URL: `cm` (`pair` or
   `across`), `ca`, `cb` (`institution:course_code@version`), `diff=0`,
-  `cyear` and `csec`. Planned: term lists (a heatmap of saved terms x
-  institution x year).
+  `cyear` and `csec`.
+  Term lists: named lists of terms, each a query (Norwegian and English
+  variants joined by OR), kept in the browser (localStorage, every access
+  guarded, a warning when the browser does not keep them), imported from and
+  exported to YAML (below, "Term Lists"). The list is run in the worker, a
+  term at a time in chunks of plans, with the scope of AND of the header, as
+  a heatmap: rows a term, or a term per institution (`trows=inst`); columns
+  the years of the filter; cells the share of the course-years with a plan
+  whose plan matches the term, or their number (`tval=count`), counted as
+  the trend view counts (the filters apply; the shade is relative to the
+  darkest cell). A cell sets the term as the query, its year (and
+  institution) and shows the list. Export CSV writes the matrix in long form,
+  one row per term, institution (`all` for the total) and year: `list`,
+  `term_id`, `term_label`, `query`, `scope`, `institution`, `year`,
+  `course_years`, `with_plan`, `matching`, `share`. The list shown is in the
+  URL by name (`tl`); its terms are only in the browser that holds it, so
+  share the YAML file with the link.
 - **Download:** the button in the header opens a dialog for the current
   selection, exactly what the list shows (filters, query, unticked word
   forms), as one row per course, plan version, course-year, section or hit
@@ -293,6 +308,41 @@ such as "lese- og skrivevansker".
 - **State in the URL**, so every view can be bookmarked and cited.
 - **Keyboard:** `/` search, `j`/`k` next and previous course, `Enter` open,
   `Esc` back, `?` help; in Screen the keys above.
+
+## Term Lists
+
+A term list is YAML in the format of `emneplan_LK20/LK20_terms.yaml` (a
+sibling project), so that the same file serves R (`yaml::read_yaml()`) and
+the browser:
+
+```yaml
+name: LK20 terms          # optional: the file name otherwise
+categories: {...}         # any other field is kept as it is
+terms:
+  - id: dybdelaering
+    label: "Dybdelæring"
+    query: 'dybdelæring OR "deep learning"'   # the browser's query syntax
+  - id: livsmestring
+    label: "Livsmestring"
+    regex: 'folkehelse|livs(meistring|mestring)'   # without query: /regex/
+    nynorsk: livsmeistring                          # (kept; the regex holds it)
+  - id: utforsking
+    variants: [utforsk*, inquiry]       # without query and regex: joined by OR
+    english: inquiry-based learning     # nynorsk and english are variants too
+```
+
+A term's query is its `query`, else its `regex` as a regular expression,
+else its `variants`, `nynorsk` and `english` (a string or a list each) joined
+by OR, a variant with spaces as a quoted phrase. Every other field of a term
+or of the list (LK20's `category`, `strength`, `notes`, `categories`) is kept
+and written back; `query` is written only where it differs from the one the
+other fields give, so an imported `LK20_terms.yaml` exports in its own shape.
+Shorter forms are read too: `terms` as a list of strings or as a map from a
+term to its query (a string) or variants (a list), and a file without
+`terms` as several lists, `{list name: {term: [variants]}}`. YAML is read
+and written with the `yaml` package (no dependencies; a separate chunk of
+100 kB, loaded on the first import or export): the LK20 file uses nested
+maps, folded strings and quoting that a small parser would get wrong.
 
 ## Performance Budgets
 
@@ -332,13 +382,16 @@ such as "lese- og skrivevansker".
     language), their values and readable names.
   - `url.js`: the state in the URL (query, scope, excluded forms, filters,
     course, version, tab, compared version, view, trend lines, screening
-    sample size and seed, the plans or year compared).
+    sample size and seed, the plans or year compared, the term list and
+    the heatmap's rows and cells).
   - `overlay.js`: the section of each line of a plan.
   - `related.js`: the programmes and years that use a version, other courses
     with the same text.
   - `compare.js`: the plans of the compare view (a plan as
     `institution|course_code@version`, the course picker, the plans of a year
     a column per institution).
+  - `termlists.js`: term lists (their YAML, the query of a term, storage),
+    the heatmap matrix (counted with `trend.js`) and its CSV.
   - `screening.js`: the seeded sample, the identity and storage of a hit's
     tags, and the screening CSV.
   - `client.js`: the page's side of the worker (requests as promises).
@@ -367,7 +420,8 @@ such as "lese- og skrivevansker".
   `Trend` (plain SVG, colours from CSS custom properties), `Coverage` and
   `Screen` (the screening view; the worker draws the sample from the hits),
   `Compare` (the compare view; the worker sends the texts with their
-  sections).
+  sections), `TermLists` (term lists and the heatmap; the worker runs the
+  terms).
 - `src/download/`: downloads, with tests (`download.test.js`). `table.js`: the
   selection as tables of each unit; `encode.js`: CSV, XLSX (a minimal writer on
   fflate) and Parquet (hyparquet-writer); `rebuild.js`: the R and Python code;

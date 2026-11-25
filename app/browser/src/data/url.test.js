@@ -63,6 +63,14 @@ describe('URL state', () => {
     expect(decodeState('view=compare&ca=nocolon&cm=x&cyear=24').ca).toBeNull()
   })
 
+  it('keeps the term list and heatmap settings in the term list view', () => {
+    const s = { ...defaultState(), view: 'terms', tl: 'LK20 terms', trows: 'inst', tval: 'count', y0: 2015 }
+    expect(encodeState(s)).toBe('from=2015&view=terms&tl=LK20+terms&trows=inst&tval=count')
+    expect(decodeState(encodeState(s))).toEqual(s)
+    expect(encodeState({ ...s, view: 'list' })).toBe('from=2015')
+    expect(decodeState('view=terms&trows=x&tval=y')).toEqual({ ...defaultState(), view: 'terms' })
+  })
+
   it('falls back to defaults on invalid values', () => {
     const s = decodeState('scope=nonsense&n=-3&x=%7Bbroken&from=20x&course=nocolon&view=chart&by=x&sample=0&seed=a%20b')
     expect(s).toEqual(defaultState())
