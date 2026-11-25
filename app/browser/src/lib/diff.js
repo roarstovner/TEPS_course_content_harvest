@@ -52,3 +52,14 @@ export const diffStats = (parts) => {
   for (const p of parts) if (p.op !== 'eq') n[p.op] += words(p.text)
   return n
 }
+
+/** The parts of each side, for a side-by-side view: `a` the old text with
+ *  its deletions, `b` the new with its insertions; `start` is the offset in
+ *  that side's text. */
+export function sides(parts) {
+  const side = (skip) => {
+    let pos = 0
+    return parts.filter((p) => p.op !== skip).map((p) => ({ ...p, start: (pos += p.text.length) - p.text.length }))
+  }
+  return { a: side('ins'), b: side('del') }
+}

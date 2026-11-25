@@ -51,6 +51,18 @@ describe('URL state', () => {
     expect(decodeState(encodeState(s))).toEqual(s)
   })
 
+  it('keeps what is compared in the compare view', () => {
+    const pair = { ...defaultState(), view: 'compare', ca: 'uio|EDU:1000@abcdef012345', cb: 'ntnu|MA1@0123456789ab', csec: 'learning_outcomes', diff: false }
+    expect(encodeState(pair)).toBe('view=compare&ca=uio%3AEDU%3A1000%40abcdef012345&cb=ntnu%3AMA1%400123456789ab&diff=0&csec=learning_outcomes')
+    expect(decodeState(encodeState(pair))).toEqual(pair)
+    const across = { ...defaultState(), view: 'compare', cm: 'across', cyear: 2024, st: ['GLU1-7'] }
+    expect(decodeState(encodeState(across))).toEqual(across)
+    // the plans of the pair are not written across institutions, nor anything outside the view
+    expect(encodeState({ ...across, ca: 'uio|A@x' })).toBe(encodeState(across))
+    expect(encodeState({ ...pair, view: 'list' })).toBe('')
+    expect(decodeState('view=compare&ca=nocolon&cm=x&cyear=24').ca).toBeNull()
+  })
+
   it('falls back to defaults on invalid values', () => {
     const s = decodeState('scope=nonsense&n=-3&x=%7Bbroken&from=20x&course=nocolon&view=chart&by=x&sample=0&seed=a%20b')
     expect(s).toEqual(defaultState())

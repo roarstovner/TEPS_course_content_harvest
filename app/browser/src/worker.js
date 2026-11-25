@@ -170,6 +170,13 @@ const handlers = {
     else loadSections()
     return { ...shown(d, null), sections }
   },
+  /** The text of several plans with their sections (read first when not
+   *  yet), each as `doc` gives it, null for an unknown key (compare view). */
+  async docs({ keys, q, excl }) {
+    await plansReady
+    await loadSections()
+    return Promise.all(keys.map((key) => handlers.doc({ key, q, excl })))
+  },
   /** A seeded random sample of `size` hits of the selection (rows of the
    *  download unit `hit`): {total, hits} (data/screening.js). */
   async sample({ sel, ctx, size, seed }) {

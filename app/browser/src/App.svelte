@@ -16,6 +16,8 @@
   import Trend from './lib/Trend.svelte'
   import Coverage from './lib/Coverage.svelte'
   import Screen from './lib/Screen.svelte'
+  import Compare from './lib/Compare.svelte'
+  import { planRef } from './data/compare.js'
   import { trend } from './data/trend.js'
 
   const base = new URL('data/', document.baseURI).href
@@ -180,6 +182,21 @@
     s.tab = 'plan'
     s.view = 'list'
   }
+  // a plan in the compare view: its version in the list view
+  function openPlan(course, version) {
+    s.course = course.key
+    s.version = versionId(version)
+    s.tab = 'plan'
+    s.view = 'list'
+  }
+  // the shown plan to the compare view: side A, or B when A holds another plan
+  function compare(course, version) {
+    const ref = planRef(course, version)
+    if (!s.ca || s.ca === ref) s.ca = ref
+    else s.cb = ref
+    s.cm = 'pair'
+    s.view = 'compare'
+  }
   function close() {
     s.course = null
     s.version = null
@@ -234,7 +251,7 @@
     <aside class="filters"><Filters bind:state={s} {meta} {model} facets={view.facets} sectionsReady={!!planSections} /></aside>
     <main class="results">
       <nav class="viewtabs" aria-label="View">
-        {#each [['list', 'List'], ['trend', 'Trend'], ['coverage', 'Coverage'], ['screen', 'Screen']] as [v, label] (v)}
+        {#each [['list', 'List'], ['trend', 'Trend'], ['coverage', 'Coverage'], ['screen', 'Screen'], ['compare', 'Compare']] as [v, label] (v)}
           <button class:current={s.view === v} aria-pressed={s.view === v} onclick={() => (s.view = v)}>{label}</button>
         {/each}
       </nav>
@@ -244,6 +261,8 @@
         <Coverage {model} f={s} {meta} onpick={pick} />
       {:else if s.view === 'screen'}
         <Screen {model} {view} bind:s q={matches ? result.q : ''} excl={result?.excl ?? {}} {matches} {meta} {worker} onopen={openHit} />
+      {:else if s.view === 'compare'}
+        <Compare {model} {view} bind:s {y0} {y1} {meta} {worker} q={queryOn ? (result?.q ?? '') : ''} excl={result?.excl} onopen={openPlan} />
       {:else}
         <Results
           rows={view.rows}
@@ -278,6 +297,7 @@
           bind:cmp={s.cmp}
           onversion={(v) => (s.version = versionId(v))}
           onopen={(c, v) => ((s.course = c.key), (s.version = versionId(v)))}
+          oncompare={(v) => compare(selected, v)}
           onclose={close}
         />
       </section>

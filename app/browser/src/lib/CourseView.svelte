@@ -24,6 +24,7 @@
     cmp = $bindable(),
     onversion,
     onopen,
+    oncompare,
     onclose,
   } = $props()
 
@@ -89,6 +90,7 @@
       {#each TABS as [t, name] (t)}
         <button class:current={tab === t} onclick={() => (tab = t)}>{name}{#if t === 'versions' && course.versions.length > 1}&nbsp;<small>{course.versions.length}</small>{/if}</button>
       {/each}
+      {#if version}<button class="link cmpbtn" onclick={() => oncompare(version)} title="Show this plan in the compare view (side A, or B when A holds another plan)">compare</button>{/if}
       {#if version}<a class="src" href={version.source_url} target="_blank" rel="noopener noreferrer">source ↗</a>{/if}
     </div>
   </div>

@@ -3,7 +3,8 @@
 
 export const SCOPES = ['plan', 'section', 'paragraph', 'sentence', 'words']
 export const TABS = ['plan', 'sections', 'versions', 'source']
-export const VIEWS = ['list', 'trend', 'coverage', 'screen']
+export const VIEWS = ['list', 'trend', 'coverage', 'screen', 'compare']
+export const COMPARE_MODES = ['pair', 'across']
 export const BY = ['all', 'inst', 'st']
 
 export const defaultState = () => ({
@@ -28,6 +29,12 @@ export const defaultState = () => ({
   by: 'all', // trend lines: overall, per institution or per study type (BY)
   sample: 50, // screening: hits in the random sample
   seed: null, // screening: the sample's seed (data/screening.js)
+  cm: 'pair', // compare: two plans side by side, or one year across institutions (COMPARE_MODES)
+  ca: null, // compare: plan A, `institution|course_code@versionId` (data/compare.js)
+  cb: null, // compare: plan B
+  csec: null, // compare: one section only (its code); null = the whole plan
+  cyear: null, // compare across: the year; null = the last year of the filter
+  diff: true, // compare two plans: mark the differences
 })
 
 const list = (s) => (s ? s.split(',').filter(Boolean) : [])
@@ -52,6 +59,14 @@ export function encodeState(s) {
   if (s.view === 'screen') {
     if (Number.isInteger(s.sample) && s.sample !== 50) p.set('sample', String(s.sample))
     if (s.seed) p.set('seed', s.seed)
+  }
+  if (s.view === 'compare') {
+    if (s.cm !== 'pair') p.set('cm', s.cm)
+    // `inst:code@version`; institution codes hold no ':'
+    if (s.cm === 'pair') for (const k of ['ca', 'cb']) if (s[k]) p.set(k, s[k].replace('|', ':'))
+    if (s.cm === 'pair' && !s.diff) p.set('diff', '0')
+    if (s.cm === 'across' && s.cyear != null) p.set('cyear', String(s.cyear))
+    if (s.csec) p.set('csec', s.csec)
   }
   if (s.course) {
     // `inst:code`; institution codes hold no ':'
@@ -88,6 +103,11 @@ export function decodeState(search) {
   const k = Number(p.get('sample'))
   if (Number.isInteger(k) && k >= 1 && k <= 100000) s.sample = k
   if (/^[\w-]{1,40}$/.test(p.get('seed') ?? '')) s.seed = p.get('seed')
+  if (COMPARE_MODES.includes(p.get('cm'))) s.cm = p.get('cm')
+  for (const k of ['ca', 'cb']) if (/^[^:]+:.+@\w+$/.test(p.get(k) ?? '')) s[k] = p.get(k).replace(':', '|')
+  s.csec = p.get('csec') || null
+  s.cyear = year(p.get('cyear'))
+  s.diff = p.get('diff') !== '0'
   const c = p.get('course')
   if (c && c.includes(':')) {
     s.course = c.replace(':', '|')

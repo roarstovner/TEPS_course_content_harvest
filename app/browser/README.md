@@ -218,8 +218,8 @@ such as "lese- og skrivevansker".
   browser (localStorage; without storage it starts on). Below 1250 px the
   filters narrow; below 900 px an open course replaces the list; below 640 px
   the panes stack in one column and the page scrolls.
-- **Views** beside the list (List | Trend | Coverage, in the URL as
-  `view`): trend: by year, the share of the course-years in force in the
+- **Views** beside the list (List | Trend | Coverage | Screen | Compare, in
+  the URL as `view`): trend: by year, the share of the course-years in force in the
   filter whose plan matches the query, out of those with a plan (a
   course-year matches when any of its plans does); one line overall, per
   institution or per study type (`by`; a course-year counts in each of its
@@ -252,8 +252,21 @@ such as "lese- og skrivevansker".
   it shares. Export CSV writes the sample, one row per hit (`sample_rank`,
   institution, course code and name, `plan_id`, years, section, term,
   position, the context before, match and after, tag, note, query, seed).
-  Planned: compare (plans side by side), term lists (a heatmap of saved terms
-  x institution x year).
+  Compare: two plan versions side by side (any two, or two versions of one
+  course), each picked by institution, code or name, or with *compare* in a
+  course's plan pane (side A, or B when A holds another plan); B is by
+  default the version before A. With *mark differences* (default) the words
+  only in A are struck through on the left and those only in B underlined on
+  the right (the word-level comparison of the versions tab); without it each
+  side shows the plan with its section margin. Or one year across
+  institutions: the plans in force that year of the courses in the list
+  (filters and query, matching versions only; set the subject or study type
+  to line up one subject, as *Matematikk 1* in GLU 1-7), a column per
+  institution, at most 40 plans. Either mode shows the whole plan or one
+  section; the matches of the query stay marked. In the URL: `cm` (`pair` or
+  `across`), `ca`, `cb` (`institution:course_code@version`), `diff=0`,
+  `cyear` and `csec`. Planned: term lists (a heatmap of saved terms x
+  institution x year).
 - **Download:** the button in the header opens a dialog for the current
   selection, exactly what the list shows (filters, query, unticked word
   forms), as one row per course, plan version, course-year, section or hit
@@ -319,10 +332,13 @@ such as "lese- og skrivevansker".
     language), their values and readable names.
   - `url.js`: the state in the URL (query, scope, excluded forms, filters,
     course, version, tab, compared version, view, trend lines, screening
-    sample size and seed).
+    sample size and seed, the plans or year compared).
   - `overlay.js`: the section of each line of a plan.
   - `related.js`: the programmes and years that use a version, other courses
     with the same text.
+  - `compare.js`: the plans of the compare view (a plan as
+    `institution|course_code@version`, the course picker, the plans of a year
+    a column per institution).
   - `screening.js`: the seeded sample, the identity and storage of a hit's
     tags, and the screening CSV.
   - `client.js`: the page's side of the worker (requests as promises).
@@ -346,10 +362,12 @@ such as "lese- og skrivevansker".
   collapsible checkbox filter with counts),
   `Results`, `CourseView` (with `PlanText`, the plan with the section
   margin, `Versions`, the comparison, and `Source`); `format.js` (numbers,
-  marked text); `diff.js` (word-level comparison; jsdiff is loaded on first
-  use, a separate chunk of 22 kB); `Download` (the download dialog);
+  marked text); `diff.js` (word-level comparison, and its two sides for the
+  compare view; jsdiff is loaded on first use, a separate chunk of 22 kB); `Download` (the download dialog);
   `Trend` (plain SVG, colours from CSS custom properties), `Coverage` and
-  `Screen` (the screening view; the worker draws the sample from the hits).
+  `Screen` (the screening view; the worker draws the sample from the hits),
+  `Compare` (the compare view; the worker sends the texts with their
+  sections).
 - `src/download/`: downloads, with tests (`download.test.js`). `table.js`: the
   selection as tables of each unit; `encode.js`: CSV, XLSX (a minimal writer on
   fflate) and Parquet (hyparquet-writer); `rebuild.js`: the R and Python code;
