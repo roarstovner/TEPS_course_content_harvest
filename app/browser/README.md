@@ -23,7 +23,24 @@ npm test         # vitest
 npm run build    # static site in dist/
 ```
 
-Node 20 or later. `public/data/` and `dist/` are build output (gitignored).
+Node 22.12 or later (vitest needs it; `.nvmrc` names the version CI uses).
+`public/data/` and `dist/` are build output (gitignored).
+
+## CI and Publishing
+
+- `.github/workflows/browser.yml` runs `npm ci`, `npm test` and
+  `npm run build` in `app/browser` (Node from `.nvmrc`, npm cache) on a push
+  or pull request to `main` that touches `app/browser/` or
+  `data/variables.csv` (built into the downloads). The build has no data:
+  it checks that the app compiles.
+- `.github/workflows/browser-pages.yml` publishes the page on GitHub Pages
+  with the data of a finalized release, downloaded from Zenodo when the site
+  is built (record id and file name as inputs, the file checked against
+  Zenodo's MD5), so that no plan text enters the git history. It is
+  **disabled** (`if: false` on its build job, run only by hand) until
+  publishing is decided: the terms of use of the plan text, and a first
+  finalized release that holds the browser data as a ZIP of `public/data/`.
+  The top of the file says how to enable it.
 
 ## Decisions
 

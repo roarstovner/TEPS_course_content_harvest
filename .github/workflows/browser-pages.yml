@@ -1,0 +1,86 @@
+# Publish the course plan browser on GitHub Pages, with the data of a
+# finalized release downloaded from Zenodo at build time, so that no plan
+# text enters the git history.
+#
+# DISABLED: the build job has `if: false` until publishing is decided (the
+# terms of use of the plan text, and the first finalized release that holds
+# the browser data). To enable: set Settings > Pages > Source to "GitHub
+# Actions", replace `if: false` below by `if: true` in a commit that says
+# why, and run the workflow by hand (Actions > browser-pages > Run workflow)
+# with the release's Zenodo record id and the name of its browser-data
+# archive (a ZIP of what build_browser_data() writes to public/data/:
+# meta.json and the Parquet files).
+name: browser-pages
+
+on:
+  workflow_dispatch:
+    inputs:
+      record:
+        description: 'Zenodo record id of the release (placeholder: the release is not out)'
+        required: true
+        default: '0000000'
+      file:
+        description: 'Browser-data archive in the record (ZIP of public/data/)'
+        required: true
+        default: 'browser-data.zip'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: false # DISABLED until publishing is decided (see the top of this file)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app/browser
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: app/browser/.nvmrc
+          cache: npm
+          cache-dependency-path: app/browser/package-lock.json
+
+      - name: Download the release's browser data from Zenodo
+        env:
+          RECORD: ${{ inputs.record }}
+          FILE: ${{ inputs.file }}
+        run: |
+          set -euo pipefail
+          [[ "$RECORD" =~ ^[0-9]+$ ]] || { echo "record must be a number"; exit 1; }
+          # the checksum Zenodo lists for the file ("md5:...")
+          md5=$(curl -fsSL "https://zenodo.org/api/records/$RECORD" \
+            | jq -r --arg f "$FILE" '.files[] | select(.key == $f) | .checksum' | sed 's/^md5://')
+          [ -n "$md5" ] || { echo "no file $FILE in record $RECORD"; exit 1; }
+          curl -fsSL -o "$RUNNER_TEMP/data.zip" "https://zenodo.org/records/$RECORD/files/$FILE?download=1"
+          echo "$md5  $RUNNER_TEMP/data.zip" | md5sum -c -
+          mkdir -p public/data
+          unzip -o -j "$RUNNER_TEMP/data.zip" -d public/data
+          test -f public/data/meta.json
+          jq '{version, frame, built_at}' public/data/meta.json
+
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: app/browser/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

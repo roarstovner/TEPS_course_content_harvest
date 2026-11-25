@@ -1,0 +1,33 @@
+# Test and build the course plan browser (app/browser). The build has no
+# data (public/data/ is gitignored and built by R), so it checks only that the
+# app compiles; the tests use their own small fixtures. The build also reads
+# data/variables.csv (the data dictionary, built into the downloads).
+name: browser
+
+on:
+  push:
+    branches: [main]
+    paths: ['app/browser/**', 'data/variables.csv', '.github/workflows/browser.yml']
+  pull_request:
+    branches: [main]
+    paths: ['app/browser/**', 'data/variables.csv', '.github/workflows/browser.yml']
+  workflow_dispatch:
+
+jobs:
+  test-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app/browser
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: app/browser/.nvmrc
+          cache: npm
+          cache-dependency-path: app/browser/package-lock.json
+
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
