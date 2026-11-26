@@ -1724,3 +1724,37 @@ test_that("a name before a unit under a role heading, 'lecturers will be' and 'l
             "Gruppene blir leia av studentane sjølve.")
   expect_equal(an(rep("uib", length(keep)), keep), keep)
 })
+
+test_that("'innspel frå <profession>', '<role>, Dr.', 'taught by' and '<role> (<name>, <place>)' names go; groups and institutions stay", {
+  an <- function(inst, x) anonymize_text(inst, x)
+  # input from a profession and a name, twice; the words stay
+  expect_equal(an("uib", "Det vil kome innspel frå kunstnaren Kari Nordmann og arkitekten Ola Dahl frå BAS, blant andre."),
+               "Det vil kome innspel frå kunstnaren og arkitekten frå BAS, blant andre.")
+  # a comma after the role word
+  expect_equal(an("ntnu", "Individuell veiledning fra faglærer, Dr. Kari Nordmann. Videre seminarer."),
+               "Individuell veiledning fra faglærer. Videre seminarer.")
+  # "held/given/taught by" after a teaching word, with titles
+  expect_equal(an("uit", "Lecturers will be held by Professor Kari Nordmann, Ola Dahl and others."),
+               "Lecturers will be held by and others.")
+  expect_equal(an("uio", "Lectures will be given by Prof. Dr. Kari Nordmann, Professor of Finance."),
+               "Lectures will be given by, Professor of Finance.")
+  expect_equal(an("uit", "The course will be taught by PhD student Ola Dahl of the institute."),
+               "The course will be taught by PhD student of the institute.")
+  # a list closing with ", and"
+  expect_equal(an("usn", "The course will be taught by Kari Nordmann, Ola Dahl, and Per Hansen, at the institute."),
+               "The course will be taught by, at the institute.")
+  # a name in brackets after a role, with a place
+  expect_equal(an("uit", "Den første dagen skal en invitert gjesteforeleser (Kari Nordmann, Roskilde) holde seminar."),
+               "Den første dagen skal en invitert gjesteforeleser holde seminar.")
+  keep <- c("Arbeidet dokumenteres i en felles tekst der innspill fra den enkelte inngår.",
+            "Kulturen var sterkt preget av innspill fra den jødiske gruppen.",
+            "Problemstillingen avtales med veileder, Handelshøgskolen ved UiT godkjenner den.",
+            "The course is given by Sør-Trøndelag University College (HiST).",
+            "Lectures will be held by Institute of Psychology employees and Yale Child Study Center staff.",
+            "Seminars will be led by two teachers co-teaching.",
+            "The civil rights movement led by Martin Luther King.",
+            "Forelesninger (foreleser), seminar og veiledning (veileder).",
+            "She is a Lecturer (Assistant Professor) in Climate Justice.",
+            "Dean, Kenda Creasy (2004). Practicing Passion. Grand Rapids: Eerdmans.")
+  expect_equal(an(rep("uit", length(keep)), keep), keep)
+})

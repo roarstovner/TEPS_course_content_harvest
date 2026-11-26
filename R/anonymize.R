@@ -540,18 +540,21 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 # med Ola K. Nordmann eller Kari Nordmann" (uio), "Kontaktpersoner er A, B og
 # C" (uit), "Emneansvarlige er: A (sosionom) og B (pedagog)." (oslomet),
 # "coordinator: assistant professor A" (oslomet), "Faglærer i emnet: A."
-# (nmh). The role stays, the names go, with a title before them and a role
+# (nmh), "veiledning fra faglærer, Dr. A" (ntnu; a comma after the role
+# only before a title: "Dean, <first names>" is an author in a reference;
+# 2026-11-25). The role stays, the names go, with a title before them and a role
 # in brackets after each; an affiliation in brackets stays ("faglærer <name>
 # (UiA)", usn). "Sensor" after a capitalised word is the English word in a
 # title ("Multi Sensor Data Fusion", usn): in the raw text a sensor is named
 # only after a lower-case role ("Ekstern sensor er ..."), while other
 # capitalised roles after a capitalised word name staff ("Academic
-# Coordinator <name>", "Vice Dean <name>", uit, usn; 2026-11-04).
+# Coordinator <name>", "Vice Dean <name>", uit, usn; 2026-11-04). A list
+# may close with ", and" ("<name>, <name>, and <name>", usn; 2026-11-25).
 .title_regex <- paste0("(?i:(?:(?:assistant|associate)[ \\t]+)?(?:professors?|prof\\.)|førsteamanuensis|(?:universitets|høgskole)lektor|dosent|",
                        "(?:head|director)[ \\t]+of[ \\t]+\\p{Ll}+)")
 .paren_role <- "(?:[ \\t]*\\(\\p{Ll}[^()\\n]{0,29}\\))?"
 .names_regex <- paste0("(?:", .title_regex, "[ \\t]+)?", .name_regex, .paren_role,
-                       "(?:(?:[ \\t]*(?:,|og|eller|and|&)[ \\t]+|[ \\t]*/[ \\t]*)(?:", .title_regex, "[ \\t]+)?", .name_regex, .paren_role, ")*")
+                       "(?:(?:[ \\t]*(?:,(?:[ \\t]+(?:og|and|&))?|og|eller|and|&)[ \\t]+|[ \\t]*/[ \\t]*)(?:", .title_regex, "[ \\t]+)?", .name_regex, .paren_role, ")*")
 # English staff labels (2026-11-16: uio PhD pages, uib, usn, uit, himolde,
 # nord): "Course leader: <name>", "Other lecturers: <name> (PRIO) and
 # <name>", "Course Leaders: <name>/<name>/<name>", "Module responsible and
@@ -591,14 +594,33 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 # 2026-11-24). The words stay, the names go. Not a group or a place: "ledes
 # av lærere fra Høgskolen i ...", "ledes av Forskerskolens styre", "ledet av
 # henholdsvis Sovjetunion og USA" (uio), nor a two-word institution.
+.not_institution <- paste0("(?![ \\t]+(?:(?:Dr|Prof)\\.[ \\t]+)*(?:\\p{Lu}[\\p{L}.-]*[ \\t]+)*(?:Universit|Høgsk|Senter|Institut|Fakultet|Norsk|",
+                           "Norges|Statens|College|School|Department|Faculty|Cent(?:re|er)))")
 .led_by <- paste0("(?i:lei(?:a|dd|dde|ast|est|es)|led(?:et|es|d))[ \\t]+av",
                   "(?:[ \\t]+(?!(?i:fra|frå|ved|i|på|og|med|av|for|til)[ \\t])(?:\\p{Ll}+|\\p{Lu}\\p{Ll}*-\\p{Ll}+)){0,2}",
-                  "(?![ \\t]+(?:Dr\\.[ \\t]+)?(?:\\p{Lu}\\p{L}*[ \\t]+)*(?:Universit|Høgsk|Senter|Institutt|Fakultet|Norsk|Norges|Statens|",
-                  "College|School|Department|Faculty|Cent(?:re|er)))")
+                  .not_institution)
+# "Taught by" after a teaching word: "Lectures are held by Associate
+# Professor <name>", "Lecturers will be held by Professor <name>, ...", "The
+# course will be taught by Prof. Dr. <name>, Professor of ... at <university>",
+# "taught by PhD student <name>" (uio, uit, ntnu, usn; 2026-11-25). Without
+# the teaching word "led by" names historical figures ("a movement led by
+# ..."); an institution stays ("The course is given by Sør-Trøndelag
+# University College"), and a staff label after it keeps its words ("given by
+# Senior Lecturer <name>", usn).
+.taught_by <- paste0("(?i:(?:lecture|lecturer|course|seminar|class|teaching|workshop|module|session|tutorial)s?",
+                     "[ \\t]+(?:(?:will|is|are|was|were)[ \\t]+)?(?:be[ \\t]+)?(?:held|given|taught|led|run|conducted)[ \\t]+by",
+                     "(?:[ \\t]+phd[ \\t]+(?:student|candidate))?)", .not_institution,
+                     "(?![ \\t]+(?:\\p{Lu}\\p{L}*[ \\t]+)*(?i:", .en_role, ")\\b)")
+# "Input from" a profession and a name, twice at most: "det vil kome innspel
+# frå kunstnaren <name> og arkitekten <name> frå BAS" (uib, 2026-11-25). The
+# words stay, the names go. A profession word before a name elsewhere stays:
+# it would take titles and references.
+.input_from_regex <- paste0("((?i:innsp(?:el|ill))[ \\t]+(?i:fr[åa])[ \\t]+\\p{Ll}{3,}(?:en|a))", .not_institution, "[ \\t]+",
+                            .name_regex, "(?:([ \\t]+og[ \\t]+\\p{Ll}{3,}(?:en|a))", .not_institution, "[ \\t]+", .name_regex, ")?")
 .role_name_inline_regex <- paste0(
   "(?<!\\p{L})(?!(?<=\\p{Lu}\\p{Ll}{0,30} )Sensor )((?i:", paste(c(.staff_roles, .signature_roles), collapse = "|"),
   ")(?i:e|er|ar|en)?(?:[ \\t]+(?i:er|var|i emnet))?:?|(?i:kontakt(?:e|er)? med|kontaktpersone?r? er)|", .led_by, "|",
-  .en_staff_label, ")[ \\t]+(?:Dr\\.[ \\t]+)?", .names_regex
+  .taught_by, "|", .en_staff_label, ")(?:,(?=[ \\t]+(?:Dr\\.|", .title_regex, ")))?[ \\t]+(?:(?i:prof\\.)[ \\t]+)?(?:Dr\\.[ \\t]+)?", .names_regex
 )
 # A staff clause after "og" or a comma closing a sentence goes whole, the
 # full stop stays: "Kurset holdes sammen med studenter fra KHIO og foreleser
@@ -913,6 +935,11 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 # <name>)" (uio; 2026-11-23). The title makes it a person, as in a list.
 .paren_titled_regex <- paste0("[ \\t]*\\(", .title_regex, "[ \\t]+(?:II[ \\t]+)?", .name_regex,
                               "(?:[ \\t]*(?:,|og|and)[ \\t]+(?:", .title_regex, "[ \\t]+)?", .name_regex, ")*\\)")
+# A name in brackets after a role, with a place: "en invitert
+# gjesteforeleser (<name>, Roskilde)" (uit 2008; 2026-11-25). The role stays,
+# and so does a title alone in brackets ("a Lecturer (Assistant Professor) in ...").
+.paren_role_name_regex <- paste0("(?<!\\p{L})((?i:gjeste)?(?i:", paste(.staff_roles, collapse = "|"), ")(?i:e|er|ar|en)?)",
+                                 "[ \\t]*\\((?!", .title_regex, "[ \\t]*\\))", .names_regex, "(?:,[ \\t]*[^()\\n,]{1,40})?\\)")
 .lecturer_list_line <- paste0("^[^\\n]*?\\S", .paren_lecturer, "[ \\t]*\\.?[ \\t]*$")
 .lecturer_list_regex <- paste0("(?m)(?:", .lecturer_list_line, "\\n(?:[ \\t]*\\n)*)+", .lecturer_list_line)
 .drop_lecturer_list <- function(block) {
@@ -1008,11 +1035,13 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     # "faglærer Ola Nordmann" anywhere in a line
     stringr::str_remove_all(.role_sentence_regex) |>
     stringr::str_remove_all(.role_clause_regex) |>
+    stringr::str_replace_all(.input_from_regex, "\\1\\2") |>
     stringr::str_replace_all(.role_name_inline_regex, "\\1") |>
     # lecturers in brackets in a lecture schedule or a list of topics
     stringr::str_replace_all(.schedule_lecturer_regex, "\\1") |>
     stringr::str_replace_all(.lecturer_list_regex, \(m) vapply(m, .drop_lecturer_list, "", USE.NAMES = FALSE)) |>
     stringr::str_remove_all(.paren_titled_regex) |>
+    stringr::str_replace_all(.paren_role_name_regex, "\\1") |>
     # Remove phone numbers: +47 XX XX XX XX, Tlf: XXXXXXXX, telefon: XX XX XX XX
     stringr::str_remove_all("(?i)(?:tlf|telefon)\\.?\\s*:?\\s*(?:\\+47\\s*)?\\d[\\d ]{6,}") |>
     stringr::str_remove_all("\\+47\\s*\\d[\\d ]{6,}") |>

@@ -2078,6 +2078,37 @@ staff line under its heading: no plan text goes. A dangling "ledes av." or
 "will be, <university>" stays where the name stood, as after other roles.
 *Since:* 2026-11-24.
 
+**Names after "taught by", "innspel frå <profession>", "<role>, Dr." and
+in "<role> (<name>, <place>)" go.** After a teaching word, "held/given/
+taught/led/run/conducted by" drops the names that follow, with their titles
+("Lectures are held by Associate Professor <name>", "Lecturers will be held
+by Professor <name>, ...", "The course will be taught by Prof. Dr. <name>,
+Professor of ... at <university>", "taught by PhD student <name>");
+"innspel/innspill frå/fra" with a profession word drops one or two names
+("innspel frå kunstnaren <name> og arkitekten <name> frå BAS" → "innspel frå
+kunstnaren og arkitekten frå BAS"); a role may be followed by a comma before
+a title ("veiledning fra faglærer, Dr. <name>"); a role followed by a name
+in brackets drops the brackets ("gjesteforeleser (<name>, Roskilde)"); and a
+name list may close with ", and" ("<name>, <name>, and <name>"). The words
+stay, the names go. *Why:* four wordings reported 2026-11-24 still
+published names (UiB, NTNU, UiT). *Rejected:* "led/given by" without a
+teaching word before it ("a movement led by ..." names historical figures);
+a comma after a role before any name ("Dean, <first names>" is an author in
+a reference); a profession word before a name anywhere ("kunstnaren
+<name>"), which would take titles and references; names after an
+institution word ("given by Sør-Trøndelag University College") or a staff
+label ("given by Senior Lecturer <name>", left to that label); a title alone
+in brackets ("a Lecturer (Assistant Professor) in ...") stays; and the whole
+line after "taught by", which would take a talk's title ("given by <name>
+with the title: ..."). *Consequence:* re-anonymizing every published text of
+the build of 2026-11-24 that holds one of these wordings (17,348 plan texts,
+17,152 sections) changes 42 plan texts (NTNU 19, UiT 9, UiO 7, USN 5, UiB 2)
+and 42 sections (NTNU 21, UiT 9, UiO 7, USN 5), each losing only names: no
+plan text goes. A dangling "taught by, Professor of ..." stays where the
+name stood. One name after an affiliation in a list stays ("held by <names>,
+University of Aberdeen, UK, Associate professor <name>, UiT", a known gap).
+*Since:* 2026-11-25.
+
 ## Sections
 
 ```{r}
