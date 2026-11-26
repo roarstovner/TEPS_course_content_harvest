@@ -168,6 +168,18 @@ coding (their git tags remain; `data/releases/` is empty; see `methods.qmd`
 release `tar_read(frozen_check)` checks only the raw store: a row "raw file
 changed or missing" is never intended.
 
+A development hand-over gives the coding project current data to build and
+check its code on (segmenting, sampling), before coding starts: `release_data()`
+alone, named `dev-YYYY-MM-DD`, after a build whose checks passed. Nothing is
+frozen or tagged; the manifest says `finalized: false` and names the commit,
+and the next hand-over writes the crosswalk and `sections_changed.csv` from
+it. Nothing coded for analysis rests on a development hand-over.
+
+```r
+source("R/utils.R"); source("R/release.R")
+release_data("dev-YYYY-MM-DD")        # Parquet, datapackage.json, manifest
+```
+
 To finalize a release, after `tar_make()` and tagging the commit:
 
 ```r

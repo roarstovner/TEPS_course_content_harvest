@@ -191,8 +191,8 @@ href="harvesting.md#robotstxt">“robots.txt”</a>)</td>
 </tr>
 <tr>
 <td><code>data/processed/course_offerings.RDS</code></td>
-<td>DBH metadata + <code>plan_id</code> and the programme’s study type,
-no text</td>
+<td>DBH metadata + the page’s <code>url</code>, <code>plan_id</code> and
+the programme’s study type, no text</td>
 <td>none</td>
 <td>published</td>
 </tr>
@@ -434,9 +434,10 @@ both frames): the file, its name, type, source (the column of the DBH
 table, or how the pipeline gives it), meaning and codes, and `old_name`,
 its name until 2026-10-16. `release_data()` hands it over with the data,
 and `tests/testthat/test-dbh-input.R` checks it against the built files
-and `DBH_COLUMNS`. `course_offerings_full.RDS` (internal) adds `url`,
+and `DBH_COLUMNS`. `course_offerings_full.RDS` (internal) adds
 `extracted_text`, `course_plan`, `course_plan_normalized` and
-`plan_nchar`.
+`plan_nchar` (and held `url` alone until 2026-11-26, when the published
+offerings gained it).
 
 The allowed values of the coded columns are in `data/codes.csv`
 (variable, code, English label, source DBH or project, description; one
@@ -446,15 +447,16 @@ joins the two). Open DBH code lists (language, subject, NUS, unit,
 programme) are not listed. The [Codebook](codebook.md)
 (`docs/codebook.qmd`) is rendered from these tables with the keys of the
 files (`RELEASE_KEYS`), and so is the release’s `datapackage.json`, a
-Data Package (v2) descriptor of the Parquet copies of the three files:
-field types, the codes as enum constraints with labels, primary and
-foreign keys (`datapackage_descriptor()`). `release_data()` writes the
-Parquet copies and the descriptor beside the RDS files, stops if the
-tables do not match it (`check_datapackage()`), and hands over
-`codes.csv` and the codebook; `tests/testthat/test-release.R` checks the
-built teacher-ed files against the descriptor. A new code in the data (a
-DBH level, a new institution) needs a row in `codes.csv`, and the
-codebook rendered again.
+Data Package (v2) descriptor of the Parquet files of the release: field
+types, the codes as enum constraints with labels, primary and foreign
+keys (`datapackage_descriptor()`). `release_data()` writes the three
+tables as Parquet with the descriptor (beside RDS copies until
+2026-11-26; Parquet only since), stops if the tables do not match it
+(`check_datapackage()`), and hands over `codes.csv` and the codebook;
+`tests/testthat/test-release.R` checks the built teacher-ed files
+against the descriptor. A new code in the data (a DBH level, a new
+institution) needs a row in `codes.csv`, and the codebook rendered
+again.
 
 Since 2026-10-16 the DBH columns have English snake_case names
 (methods.qmd, “Variable names”); their values are DBH’s (Norwegian
@@ -728,6 +730,18 @@ Håndverk”).</td>
 <td style="text-align: left;">Whether the course is a thesis: 0 no, 1 a
 bachelor’s thesis or project, 2 a master’s (or hovedfag) thesis.
 Registered from autumn 2012, and for some earlier courses.</td>
+</tr>
+<tr>
+<td style="text-align: left;">course_offerings</td>
+<td style="text-align: left;">url</td>
+<td style="text-align: left;">url</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">harvest</td>
+<td style="text-align: left;">URL of the course page requested for the
+offering: the page its plan was read from when plan_id is set; NA when
+the harvest found no URL. At a site that shows only the current plan,
+the page as fetched on harvested_at. Public pages, no personal data
+(published from 2026-11-26).</td>
 </tr>
 <tr>
 <td style="text-align: left;">course_offerings</td>

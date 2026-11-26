@@ -119,7 +119,7 @@ are internal and why, the privacy check, the input and every variable are in
 
 **Output files** (of all courses; the teacher-ed frame's in the `teacher_ed/` folders, see ["Frames"](docs/data-files.md#frames)):
 
-- `data/processed/course_offerings.RDS` — published slim dataset: course rows with DBH metadata + `plan_id` FK (no url, no text)
+- `data/processed/course_offerings.RDS` — published slim dataset: course rows with DBH metadata, the course page's `url` + `plan_id` FK (no text)
 - `data/interim/course_offerings_full.RDS` — internal working file: same rows plus `url`, `extracted_text`, `course_plan`, `course_plan_normalized`; the teacher-ed one gives the browser each plan's source URL and harvest date
 - `data/processed/course_plans.RDS` — one row per unique plan per course code per institution, with the offering its text comes from (`source_course_id`)
 - `data/processed/plan_sections.RDS` — one row per plan and section, anonymized (see [Section Extraction](docs/sections.md))

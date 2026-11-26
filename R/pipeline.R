@@ -618,9 +618,11 @@ add_study_types <- function(offerings, study_types) {
                    by = key, relationship = "many-to-one")
 }
 
-# Published slim offerings: DBH metadata and the plan id, no url or text.
+# Published slim offerings: DBH metadata, the page's URL and the plan id, no
+# text (the URL is public and holds no personal data: published from
+# 2026-11-26, so users can open the page a plan was read from).
 slim_offerings <- function(offerings) {
-  dplyr::select(offerings, -url, -extracted_text, -course_plan, -course_plan_normalized,
+  dplyr::select(offerings, -extracted_text, -course_plan, -course_plan_normalized,
                 -dplyr::any_of("plan_nchar"))
 }
 

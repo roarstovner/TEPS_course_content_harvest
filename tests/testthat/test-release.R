@@ -53,6 +53,18 @@ test_that("write_datapackage() writes Parquet files and a v2 descriptor that rea
   expect_identical(check_datapackage(desc, back), character())
 })
 
+test_that("read_release_table() reads a release from Parquet, else from RDS with the old names", {
+  pq <- withr::local_tempdir()
+  rds <- withr::local_tempdir()
+  arrow::write_parquet(tibble::tibble(course_id = "a", institution = "uio"), file.path(pq, "course_offerings.parquet"))
+  saveRDS(tibble::tibble(course_id = "b", institution_short = "uib"), file.path(pq, "course_offerings.RDS"))
+  saveRDS(tibble::tibble(course_id = "b", institution_short = "uib"), file.path(rds, "course_offerings.RDS"))
+  expect_equal(read_release_table(pq, "course_offerings")$course_id, "a")   # Parquet first
+  expect_equal(read_release_table(rds, "course_offerings"),
+               tibble::tibble(course_id = "b", institution = "uib"))
+  expect_null(read_release_table(rds, "course_plans"))
+})
+
 test_that("check_datapackage() finds wrong types, unknown codes and broken keys", {
   x <- fixture()
   desc <- datapackage_descriptor("t", "all", x$variables, x$codes)

@@ -1,8 +1,10 @@
 # R/release.R
-# Hand a frozen release of the published data to another project: the
-# coding project (../TEPS_course_content_coding) draws its samples from it.
-# No release is finalized yet: the first comes when coding starts (the
-# releases of 2026-10-15 and 2026-10-16 were retired on 2026-11-04).
+# Hand the published data to another project: the coding project
+# (../TEPS_course_content_coding) develops and checks its code on it, and
+# draws its samples from it. A development hand-over (dev-YYYY-MM-DD) is
+# release_data() alone; a frozen release is finalize_release() too. No
+# release is finalized yet: the first comes when coding starts (the releases
+# of 2026-10-15 and 2026-10-16 were retired on 2026-11-04).
 
 # Every variable of the data files: its file, type, source and meaning, and
 # its name until 2026-10-16 (DBH's; docs/data-files.md "Data
@@ -37,17 +39,17 @@ TABLE_SCHEMA_TYPES <- c(character = "string", integer = "integer", double = "num
 
 #' Copy the published data files to another project, with a manifest
 #'
-#' Writes to `dest`: course_offerings.RDS, course_plans.RDS, plan_sections.RDS
-#' of the frame (the teacher-ed frame by default: the coding project's),
+#' Writes to `dest`: course_offerings.parquet, course_plans.parquet and
+#' plan_sections.parquet of the frame (the teacher-ed frame by default: the
+#' coding project's) with `datapackage.json`, their Data Package (v2)
+#' descriptor (write_datapackage(); it stops if the tables do not match it);
 #' methods.md as built, variables.csv (VARIABLES_FILE: every variable of
 #' the files, with its name until 2026-10-16) and study_types.csv
 #' (STUDY_TYPES_FILE: the project's groups of study types, study_type_group);
 #' codes.csv (CODES_FILE: the value labels of the coded columns) and
-#' codebook.md (CODEBOOK_FILE, rendered from the variables and codes); the
-#' three tables again as Parquet with `datapackage.json`, their Data Package
-#' (v2) descriptor (write_datapackage(); it stops if the tables do not match
-#' it); `manifest.yml` (release tag, harvest repo commit, date, files with row
-#' counts and md5 sums); `section_coverage.csv` (share of
+#' codebook.md (CODEBOOK_FILE, rendered from the variables and codes);
+#' `manifest.yml` (release tag, whether it is finalized, harvest repo commit,
+#' date, files with row counts and md5 sums); `section_coverage.csv` (share of
 #' plans per institution with each section; where a section is missing the
 #' coders use the whole plan); and, when `dest` already holds a release,
 #' `plan_id_crosswalk.csv`: plan_content_id is a hash of the cleaned text, so a
@@ -55,38 +57,44 @@ TABLE_SCHEMA_TYPES <- c(character = "string", integer = "integer", double = "num
 #' ids through the offerings (course_id) both releases share; and
 #' `sections_changed.csv`: a section fix keeps the plan's id, so the crosswalk
 #' does not show it, yet units coded on the old section text no longer match
-#' (see section_changes()). A release in `dest` with the old names (the data handed
-#' to the coding project on 2026-10-15) is read with the new ones (dbh_rename()).
+#' (see section_changes()). The release in `dest` is read from Parquet, or
+#' from RDS as written until 2026-11-26 (read_release_table()); one with the
+#' old names (the data handed to the coding project on 2026-10-15) is read
+#' with the new ones (dbh_rename()).
 #'
-#' Tag the commit first (`git tag data-YYYY-MM-DD`) so the manifest names it.
+#' A release to be finalized: tag the commit first (`git tag
+#' data-YYYY-MM-DD`) so the manifest names it, then finalize_release(). A
+#' development hand-over (`dev-YYYY-MM-DD`: data to build and check code on,
+#' not frozen; `finalized: false` in the manifest) needs no tag: the manifest
+#' names the commit.
 #'
-#' @param tag Release name, e.g. "data-2026-10-09"; should be a git tag.
+#' @param tag Release name, e.g. "data-2026-10-09" (a git tag) or
+#'   "dev-2026-11-26".
 #' @param dest Directory to write to.
 #' @param frame The frame whose files are released (FRAMES).
 #' @return `dest`, invisibly.
 release_data <- function(tag, dest = "../TEPS_course_content_coding/data", frame = "teacher_ed") {
-  files <- c(file.path(frame_dir(frame), c("course_offerings.RDS", "course_plans.RDS",
-                                           "plan_sections.RDS")), "methods.md", VARIABLES_FILE,
-             STUDY_TYPES_FILE, CODES_FILE, CODEBOOK_FILE)
-  stopifnot(all(file.exists(files)), dir.exists(dest))
+  data_files <- file.path(frame_dir(frame), paste0(names(RELEASE_KEYS), ".RDS"))
+  files <- c("methods.md", VARIABLES_FILE, STUDY_TYPES_FILE, CODES_FILE, CODEBOOK_FILE)
+  stopifnot(all(file.exists(c(data_files, files))), dir.exists(dest))
   commit <- system2("git", c("rev-parse", "HEAD"), stdout = TRUE)
   if (length(system2("git", c("status", "--porcelain", "--", "R", "_targets.R"), stdout = TRUE))) {
     warning("Uncommitted code changes: the manifest's commit does not describe the data")
   }
-  if (!tag %in% system2("git", c("tag", "--points-at", "HEAD"), stdout = TRUE)) {
+  if (!startsWith(tag, "dev-") && !tag %in% system2("git", c("tag", "--points-at", "HEAD"), stdout = TRUE)) {
     warning("HEAD is not tagged ", tag)
   }
 
-  off <- readRDS(files[1])
-  plans <- readRDS(files[2])
-  secs <- readRDS(files[3])
+  off <- readRDS(data_files[1])
+  plans <- readRDS(data_files[2])
+  secs <- readRDS(data_files[3])
 
   # crosswalk from the release already in dest, before it is overwritten
-  old_file <- file.path(dest, "course_offerings.RDS")
-  if (file.exists(old_file)) {
+  old_off <- read_release_table(dest, "course_offerings")
+  if (!is.null(old_off)) {
     old_tag <- tryCatch(yaml::read_yaml(file.path(dest, "manifest.yml"))$release,
                         error = function(e) NA_character_)
-    crosswalk <- dbh_rename(readRDS(old_file)) |>
+    crosswalk <- old_off |>
       dplyr::filter(!is.na(plan_content_id)) |>
       dplyr::select(course_id, institution, course_code, old_plan_content_id = plan_content_id) |>
       dplyr::left_join(dplyr::select(off, course_id, new_plan_content_id = plan_content_id),
@@ -94,8 +102,8 @@ release_data <- function(tag, dest = "../TEPS_course_content_coding/data", frame
       dplyr::distinct(institution, course_code, old_plan_content_id, new_plan_content_id) |>
       dplyr::mutate(old_release = old_tag %||% NA_character_, new_release = tag)
     utils::write.csv(crosswalk, file.path(dest, "plan_id_crosswalk.csv"), row.names = FALSE)
-    changed <- section_changes(dbh_rename(readRDS(file.path(dest, "plan_sections.RDS"))), secs,
-                               dbh_rename(readRDS(file.path(dest, "course_plans.RDS"))), plans) |>
+    changed <- section_changes(read_release_table(dest, "plan_sections"), secs,
+                               read_release_table(dest, "course_plans"), plans) |>
       dplyr::mutate(old_release = old_tag %||% NA_character_, new_release = tag)
     utils::write.csv(changed, file.path(dest, "sections_changed.csv"), row.names = FALSE)
   }
@@ -106,6 +114,11 @@ release_data <- function(tag, dest = "../TEPS_course_content_coding/data", frame
   parquet <- write_datapackage(tables, dest, tag, frame)
   rows <- vapply(tables, nrow, 1L)
   file.copy(files, dest, overwrite = TRUE)
+  old_rds <- file.path(dest, paste0(names(RELEASE_KEYS), ".RDS"))
+  if (any(file.exists(old_rds))) {
+    warning("dest still holds ", toString(basename(old_rds[file.exists(old_rds)])),
+            " of an earlier release (RDS until 2026-11-26): not this release")
+  }
 
   key <- c("plan_content_id", "institution", "course_code")
   coverage <- secs |>
@@ -122,6 +135,8 @@ release_data <- function(tag, dest = "../TEPS_course_content_coding/data", frame
     dplyr::left_join(dplyr::count(plans, institution, name = "plans"), by = "institution")
   manifest <- list(
     release = tag,
+    # finalize_release() keeps a finalized release's files in data/releases/
+    finalized = dir.exists(file.path("data/releases", tag)),
     harvest_repo_commit = commit,
     created = format(Sys.time(), "%Y-%m-%d %H:%M"),
     methods = "methods.md (the choices behind the data, with numbers for this release)",
@@ -133,13 +148,26 @@ release_data <- function(tag, dest = "../TEPS_course_content_coding/data", frame
     files = lapply(stats::setNames(nm = c(basename(files), basename(parquet))), function(f) {
       table <- tools::file_path_sans_ext(f)
       c(list(md5 = unname(tools::md5sum(file.path(dest, f)))),
-        if (table %in% names(rows) && grepl("\\.(RDS|parquet)$", f)) list(rows = rows[[table]]))
+        if (table %in% names(rows)) list(rows = rows[[table]]))
     }),
     institutions = lapply(split(by_inst[-1], by_inst$institution), as.list)
   )
   yaml::write_yaml(manifest, file.path(dest, "manifest.yml"))
   message("Release ", tag, " written to ", dest)
   invisible(dest)
+}
+
+#' A table of the release in a directory, from Parquet or RDS
+#'
+#' @param dir The release's directory.
+#' @param name The table (names of RELEASE_KEYS).
+#' @return The table with the current names (dbh_rename()), or NULL when
+#'   `dir` holds neither `{name}.parquet` nor `{name}.RDS` (as written until
+#'   2026-11-26).
+read_release_table <- function(dir, name) {
+  f <- file.path(dir, paste0(name, c(".parquet", ".RDS")))
+  if (file.exists(f[1])) return(dbh_rename(tibble::as_tibble(arrow::read_parquet(f[1]))))
+  if (file.exists(f[2])) dbh_rename(readRDS(f[2]))
 }
 
 #' Value labels of the coded columns of the published files

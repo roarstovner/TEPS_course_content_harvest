@@ -725,6 +725,29 @@ release. The coding project's sample still names data-2026-10-15 and its
 from that copy to the new release (`plan_id_crosswalk.csv`,
 `sections_changed.csv`). *Since:* 2026-11-04.
 
+**Before the first release, the coding project gets development
+hand-overs: Parquet, not frozen, with the page's URL.** The teacher-ed frame
+goes to the coding project as `dev-YYYY-MM-DD` with `release_data()` alone:
+the three tables as Parquet with their `datapackage.json` (types, codes,
+keys), methods, codebook and a manifest that says `finalized: false` and
+names the harvest commit. The offerings now carry `url`, the course page the
+plan was read from (also in the published all-courses file). *Why:* the
+coding project builds and checks its code (segmenting plans into units,
+drawing samples) on current data before coding starts, and a frozen release
+would have to explain every later fix (see the entry above); a coder or a
+reader checks a plan against its page, and the coding project read the URLs
+from the harvest's internal file, which holds raw text and changes with
+every build. URLs are public and hold no personal data. *Rejected:*
+finalizing a release now (the reason the earlier ones were retired);
+keeping the RDS copies beside the Parquet files (two copies of each table,
+readable only in R; Parquet with its descriptor is typed and read by any
+language); handing over the internal offerings file. *Consequence:* nothing
+coded for analysis rests on a development hand-over; each one writes
+`plan_id_crosswalk.csv` and `sections_changed.csv` from the one before (the
+first from the retired data-2026-10-15 still in the coding project's
+folder), so the coding project sees what a rebuild changed. The first
+finalized release follows when coding starts. *Since:* 2026-11-26.
+
 **Pages that gave no plan can be fetched again before a release, except
 pages not found:** `harvest_all(retry = TRUE)` fetches the offerings without a
 plan again and adds them as a new raw file; a retried offering takes its

@@ -223,6 +223,16 @@ bachelor’s thesis or project, 2 a master’s (or hovedfag) thesis.
 Registered from autumn 2012, and for some earlier courses.</td>
 </tr>
 <tr>
+<td style="text-align: left;"><code>url</code></td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">harvest</td>
+<td style="text-align: left;">URL of the course page requested for the
+offering: the page its plan was read from when plan_id is set; NA when
+the harvest found no URL. At a site that shows only the current plan,
+the page as fetched on harvested_at. Public pages, no personal data
+(published from 2026-11-26).</td>
+</tr>
+<tr>
 <td style="text-align: left;"><code>plan_year_basis</code></td>
 <td style="text-align: left;">character</td>
 <td style="text-align: left;">harvest</td>
