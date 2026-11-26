@@ -104,6 +104,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Browser: header 'search in' section control, section coverage in Coverage, guide without dated counts (#630)
 - Fjellhaug URL resolver: code from the slug before its first hyphen gives BTM1003/RLE1001 another course's page; retry harvest (#623)
 - Sections (UiA/NIH English tree): NIH gate wordings, English placeholders, Canvas/exam-semester/Wiseflow logistics (#622)
 - Sections: admission blocks with required prior study dropped (UiA, NIH; English and Norwegian headings) (#621)
