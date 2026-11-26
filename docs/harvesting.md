@@ -217,10 +217,16 @@ the harvest is: a later harvest asks for the course pages again, which
 may list semesters published since. An error keeps them all. For
 “current” sites (`plan_years`) and with `refetch = TRUE` or `retry`, the
 institution’s checkpoints are removed before the harvest, because pages
-change over time and an old copy must not stand in for a new one. The
-RDS checkpoints of the harvests until 2026-10-28
-(`data/raw/checkpoint/{type}_{inst}.RDS`) are not read; they held no
-offering missing from the raw store.
+change over time and an old copy must not stand in for a new one. A
+retry records when it started in `data/raw/checkpoint/{inst}/retry`:
+everything in the checkpoints after that was fetched by the retry, so a
+retry stopped (for a build, say) and started again with `retry` keeps
+them all and resumes, its URL discovery and course listings too (UiT’s
+discovery for one year takes 2 hours; until 2026-11-26 a restart lost
+it). The marker is removed with the other checkpoints once every year is
+written; `refetch = TRUE` starts a retry afresh. The RDS checkpoints of
+the harvests until 2026-10-28 (`data/raw/checkpoint/{type}_{inst}.RDS`)
+are not read; they held no offering missing from the raw store.
 
 ## Fetch Ledger and Retries
 

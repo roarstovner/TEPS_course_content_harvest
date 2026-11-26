@@ -96,6 +96,8 @@ harvest_institution <- function(institution, courses, year = NULL,
 #' `retry = "not_found"` for pages published late, `retry = "robots"` after a
 #' permission (`robots_permission`). They are saved with `retry = TRUE`, and read_harvest()
 #' takes their new page. Run targets::tar_make() first, and narrow it with `years`.
+#' A retry starts without the checkpoints of earlier harvests, and a retry
+#' stopped and started again resumes from its own (prepare_retry()).
 #'
 #' @param courses Data frame from dbh_courses(). If NULL, every course of the
 #'   latest DBH snapshot (all years: weeks at some sites; the teacher-ed
@@ -138,8 +140,9 @@ harvest_all <- function(courses = NULL, years = NULL, refetch = FALSE,
       again <- if (!isFALSE(retry) && length(skip)) intersect(skip, offerings_to_retry(inst, retry)) else character()
       if (length(again)) message(inst, ": ", length(again), " offerings without a plan to retry")
       take_probes(inst)   # none from an earlier harvest that stopped
-      # a retry fetches again, so the checkpoints' old pages are not reused
-      if (refetch || length(again)) remove_checkpoints(inst)
+      # a retry fetches again, so an earlier harvest's pages are not reused;
+      # a retry started again resumes from its own (prepare_retry())
+      if (length(again)) prepare_retry(inst, refetch) else if (refetch) remove_checkpoints(inst)
       offerings <- courses[courses$institution %in% inst, ]
       inst_years <- harvest_years(offerings, config, years)
       if (!length(inst_years)) message(inst, ": nothing new to harvest")
@@ -171,7 +174,7 @@ harvest_all <- function(courses = NULL, years = NULL, refetch = FALSE,
           break
         }
       }
-      remove_checkpoints(inst, c(inst_years, "urls", "discovery", "pdf"))
+      remove_checkpoints(inst, c(inst_years, "urls", "discovery", "pdf", "retry"))
     }, error = function(e) {
       message("ERROR harvesting ", inst, ": ", conditionMessage(e))
     })
@@ -340,6 +343,33 @@ prepare_fresh_harvest <- function(config, refetch = FALSE) {
   dir.create(dirname(marker), recursive = TRUE, showWarnings = FALSE)
   writeLines(this, marker)
   invisible(this)
+}
+
+#' Before a retry
+#'
+#' A retry fetches again pages that gave no plan, so a page in a checkpoint
+#' of an earlier harvest must not stand in for it: the institution's
+#' checkpoints are removed, and data/raw/checkpoint/{inst}/retry records when
+#' the retry started. Every checkpoint written after that holds pages, URLs
+#' and course listings fetched since, so a retry stopped (for a build) and
+#' started again keeps them all and resumes, whatever its years or outcome
+#' classes: UiT's URL discovery for 2022 took 2 hours (2026-11-26) and was
+#' lost when the restart removed it. harvest_all() removes the marker with
+#' the other checkpoints once every year is written.
+#'
+#' @param institution The institution
+#' @param refetch TRUE removes the checkpoints in any case (a retry afresh)
+prepare_retry <- function(institution, refetch = FALSE) {
+  marker <- file.path(RAW_DIR, "checkpoint", institution, "retry")
+  if (!refetch && file.exists(marker)) {
+    message(institution, ": resuming the retry started ", readLines(marker, warn = FALSE),
+            " from its checkpoints (refetch = TRUE starts afresh)")
+    return(invisible(FALSE))
+  }
+  remove_checkpoints(institution)
+  dir.create(dirname(marker), recursive = TRUE, showWarnings = FALSE)
+  writeLines(format(Sys.time(), "%Y-%m-%d %H:%M"), marker)
+  invisible(TRUE)
 }
 
 #' Apply year filter based on config

@@ -280,6 +280,54 @@ test_that("harvest_all() writes the fetch ledger with the run, and a retry skips
   expect_error(harvest_all(dbh, institutions = "hiof", retry = "gone"), "outcome classes")
 })
 
+test_that("a retry drops an earlier harvest's checkpoints, and resumes from its own when started again", {
+  local_hiof()
+  page <- "Plan"
+  httr2::local_mocked_responses(function(req) html_page(page))
+  dbh <- hiof_dbh(c("A1", "B1", "C1"))
+  suppressMessages(harvest_all(dbh, institutions = "hiof"))
+  led <- arrow::read_parquet(ledger_file("hiof", raw_run(harvest_files("hiof"))))
+  dir.create("data/interim")
+  saveRDS(dplyr::transmute(led, course_id, institution, url, plan_content_id = NA_character_),
+          "data/interim/course_offerings_full.RDS")
+  # checkpoints of an earlier harvest: an old copy of A1's page and a course listing
+  checkpoint_append(tibble::tibble(url = led$url[1], html = "<p>Old</p>", html_error = NA_character_,
+                                   html_success = TRUE, http_status = 200L, requested_at = Sys.time()),
+                    checkpoint_dir("hiof", "html", 2023))
+  checkpoint_append(tibble::tibble(code = "OLD"), checkpoint_dir("hiof", "discovery"))
+
+  # the retry starts afresh, fetches A1, and is stopped at B1
+  page <- "New"
+  httr2::local_mocked_responses(function(req) if (grepl("b1", req$url)) httr2::response(429) else html_page(page))
+  Sys.sleep(1)   # runs named by the second
+  suppressMessages(harvest_all(dbh, institutions = "hiof", retry = TRUE))
+  expect_length(harvest_files("hiof"), 1)
+  cp <- read_checkpoint(checkpoint_dir("hiof", "html", 2023))
+  expect_equal(cp$url, led$url[1])
+  expect_match(cp$html, "New")
+  expect_false(dir.exists(checkpoint_dir("hiof", "discovery")))
+  expect_true(file.exists("data/raw/checkpoint/hiof/retry"))
+  # the retry's own course listing, as a site with URL discovery writes it
+  checkpoint_append(tibble::tibble(code = "A1"), checkpoint_dir("hiof", "discovery"))
+
+  # started again: its checkpoints are kept, so A1 is not fetched again
+  sent <- character()
+  page <- "Newer"
+  httr2::local_mocked_responses(function(req) {
+    sent <<- c(sent, req$url)
+    expect_equal(read_checkpoint(checkpoint_dir("hiof", "discovery"))$code, "A1")
+    html_page(page)
+  })
+  msg <- capture_messages(harvest_all(dbh, institutions = "hiof", retry = TRUE))
+  expect_match(paste(msg, collapse = ""), "resuming the retry started")
+  expect_equal(sent, led$url[2:3])
+  rows <- read_raw(harvest_files("hiof")[2])
+  expect_equal(grepl("Newer", rows$html), c(FALSE, TRUE, TRUE))   # A1 from the checkpoint
+  expect_true(all(grepl("New", rows$html)))
+  # done: no checkpoint and no marker left
+  expect_false(dir.exists("data/raw/checkpoint/hiof"))
+})
+
 test_that("a site that refuses the harvest stops it, and the pages fetched stay in the checkpoint", {
   local_hiof()
   httr2::local_mocked_responses(function(req) {

@@ -71,12 +71,13 @@ checkpoint_append <- function(rows, dir) {
 #'
 #' @param institution The institution
 #' @param parts Folders in its checkpoint folder: years (the year's html
-#'   checkpoint) or "urls", "discovery", "pdf"; NULL for all of them. The RDS
-#'   checkpoints until 2026-10-28 stay.
+#'   checkpoint) or "urls", "discovery", "pdf", or the marker "retry"
+#'   (prepare_retry()); NULL for all of them. The RDS checkpoints until
+#'   2026-10-28 stay.
 remove_checkpoints <- function(institution, parts = NULL) {
   dirs <- file.path(RAW_DIR, "checkpoint", institution)
   if (!is.null(parts)) dirs <- file.path(dirs, parts)
-  dirs <- dirs[dir.exists(dirs)]
+  dirs <- dirs[file.exists(dirs)]
   if (length(dirs)) message("Checkpoints removed: ", paste(dirs, collapse = ", "))
   unlink(dirs, recursive = TRUE)
   # and the institution's folder, when nothing but the academic year of a
