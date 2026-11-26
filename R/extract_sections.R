@@ -150,7 +150,7 @@ sectionize <- function(blocks) {
 # The text under a label heading says nothing: none, a dash or a pointer.
 .empty_label_text <- function(x) {
   v <- stringr::str_squish(paste(x, collapse = " "))
-  !nzchar(v) || (.is_placeholder_text(v) && !grepl("^(?i:ingen|none)\\b", v, perl = TRUE))
+  !nzchar(v) || (.is_placeholder_text(v) && !grepl("^(?i:ingen|none|no)\\b", v, perl = TRUE))
 }
 
 #' Sections of one page
@@ -603,10 +603,20 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # studieprogrammene ... samt bestått opptaksprøve til ordningen."). "For
 # studenter som tar emnet som videreutdanning er forkunnskapskravet fullført
 # lærerutdanning med minimum 60 studiepoeng i norsk." names the subject and
-# stays.
+# stays. Also admission (uia's and nih's admission fields, 2026-11-25): the
+# pointer "I tillegg må eventuelle forkunnskapskrav vere oppfylte.", "I
+# tillegg må det avklares at studentene har tilstrekkelig tid ...", who is
+# pre-approved ("Det er også personer som har ..."); and in .degree_regex a
+# degree named as the admission rule ("Opptakskrav er bachelorgrad ...",
+# "Krav til opptak er bachelorgrad (180 studiepoeng) i helse- og sosialfag.",
+# not "... og grunnleggende forkunnskaper innen e-helse") and a completed
+# teacher education with no credits ("For enkeltemnestudenter: fullført
+# lærerutdanning ..., samt ordinære forkunnskapskrav."; "..., og minst 60 stp
+# i engelsk." stays).
 .admission_only_regex <- paste0(
   "(*UCP)(?i)^\\W*(?:søkere?|applicants?)\\b|må søkeren oppfylle|realkompetanse|studieplass|prioriter|kvote|",
-  "upper secondary|^\\W*(?:i tillegg må |eventuelle )?forkunnskapskrav\\w* (?:til emnet )?(?:må )?(?:være|vera) oppfylt|",
+  "upper secondary|^\\W*(?:i tillegg må )?(?:eventuelle )?forkunnskapskrav\\w* (?:til emnet )?(?:må )?(?:være|vera|vere) oppfylt|",
+  "må det avklares|^\\W*(?:det er også )?personer (?:som|med)\\b|",
   "forkurs|teknisk fagskole|realfagkurs|\\b(?:R1|R2|S1|S2)\\b|programfag|",
   "gjennomsnittskarakter|karaktergjennomsnitt|snittkarakter|karakteren beregnes|vurderingsuttrykk|minstekrav|",
   "motivasjon|yrkespraksis|års (?:relevant )?praksis|arbeidserfaring|fra utlandet|gir adgang til|kvalifiserer (?:også )?(?:til|for) opptak|",
@@ -614,7 +624,10 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 .degree_regex <- paste0(
   "(?i)^\\W*(?:(?:avlagt|fullført|relevant|treårig) )?(?:bachelor\\w*|master(?:grad\\w*)?\\b|cand\\.)|^\\W*graden må|",
   "^\\W*fordypning:|^\\W*det kreves (?:godkjent )?utdanning|krav om (?:\\S+ )?bachelorgrad|",
-  "^\\s*[-–•]\\s*(?:minst \\d+ studiepoeng|\\d-årig studium)")
+  "^\\s*[-–•]\\s*(?:minst \\d+ studiepoeng|\\d-årig studium)|",
+  "^\\W*(?:generelt )?(?:opptakskrav|krav til opptak) er (?:en )?(?:\\p{L}+ )?bachelorgrad(?![^.]*forkunnskap)|",
+  "^\\W*(?:for enkeltemnestudent\\w*:\\s*|opptakskrav for enkeltemnestudent\\w* er\\s+)?(?:fullført|godkjent) ",
+  "lær[ae]r\\w*utdanning\\b(?![^.]*\\b(?:stp|studiepoeng|sp)\\b)")
 # A degree in a named subject joined to the admission in one sentence names
 # both and stays whole (barrattdue's PPU field "Krav til forkunnskaper:
 # Bachelorgrad i musikk og Opptak til Praktisk-pedagogisk utdanning";
@@ -634,7 +647,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   lines <- vapply(seq_along(ul), function(i) {
     l <- ul[i]
     if (rec[i]) return(if (grepl(.recommended_knowledge_regex, l, perl = TRUE)) "" else trimws(l))
-    s <- sub("(?i)^(\\s*)(?:opptakskrav|forhåndskrav|krav til forkunnskaper)\\s*:\\s*", "\\1", stringr::str_split_1(l, .sentence_end), perl = TRUE)
+    s <- sub("(?i)^(\\s*)(?:opptakskrav(?: for enkeltemnestudent\\w*)?|forhåndskrav|krav til forkunnskaper)\\s*:\\s*", "\\1", stringr::str_split_1(l, .sentence_end), perl = TRUE)
     k <- (grepl(.real_prerequisite_regex, s, perl = TRUE) & !.is_admission_sentence(s) &
       !grepl(.admission_only_regex, s, perl = TRUE) &
       !(grepl(.degree_regex, s, perl = TRUE) & !grepl("\\b[A-ZÆØÅ]{2,}[A-ZÆØÅ0-9-]*\\d{3,}", s, perl = TRUE)) |
@@ -642,7 +655,13 @@ extract_sections <- function(config, html, extracted_text, course_id) {
       !vapply(stringr::str_squish(s), function(x) !nzchar(x) || grepl(x, had, fixed = TRUE), logical(1))
     trimws(paste(s[k], collapse = ""))
   }, character(1), USE.NAMES = FALSE)
-  paste(lines[nzchar(lines)], collapse = "\n")
+  lines <- lines[nzchar(lines)]
+  # a bare lead-in of up to six words whose list all went or the page
+  # already says ("I tillegg:", "Anbefalte krav:", uia; "Recommended
+  # prerequisites:", uit) goes with it
+  while (length(lines) && grepl("^\\W*(?:\\S+\\s+){0,5}\\S+[:：]\\s*$", lines[length(lines)], perl = TRUE))
+    lines <- lines[-length(lines)]
+  paste(lines, collapse = "\n")
 }
 
 # The exam language in a field of both languages (uit's "Undervisnings- og
@@ -783,7 +802,13 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # with a grade: "The semester assignment must be considered as passed (A - E)
 # in order for the students to ... the oral exam.", nla),
 # nor one without a subject ("Må være godkjent for å ...", which names its
-# gate in the sentence before).
+# gate in the sentence before). Losing the right to the exam is a condition
+# too (nih, 2026-11-25: "... and forfeit the right to take the final
+# examination (see below) if the group assignments are unsatisfactory.",
+# "... mister retten til å gå opp til avsluttende eksamen dersom
+# arbeidskravene ikke er tilfredsstilt."; uit, usn, ntnu: "Student som ikke
+# oppfyller arbeidskrav mister retten til å framstille seg til eksamen.");
+# not the right to feedback or supervision.
 .gate_sentence_regex <- paste0(
   "(*UCP)(?is)^(?=[^\\t]*$)(?!.*\\b(?:(?:alle|begge) (?:del(?:er|ene|ar|ane)|\\w*eksam\\w*)|er (?:en )?deleksamen)\\b)(?!.*\\(A ?[-–] ?E\\))",
   "(?=.*\\b(?:(?:godkje?n|approv)\\w*+(?!\\W+(?:\\w+\\W+)?(?:e(?:ks|x)am|\\w*vurdering|\\w*mappe))|arbeidskrav|obligatori|compulsory|mandatory|coursework|øving|",
@@ -799,7 +824,9 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "\\b(?:tilgang|adgang|rett|vilkår|forutsetning|føresetnad)\\b (?:til|for) (?:å )?(?:\\w+ ){0,4}?\\w*(?:eksam|prøve)|",
   "\\b(?:must|ha(?:ve|s) to|required?|need|prerequisite|condition)\\b.{0,150}\\b(?:before|prior to|",
   "in order (?:to|for (?:a|the) students? to)|allowed to|admitted to|for permission to|eligible|qualif\\w*)\\b.{0,60}\\b(?:\\w*exam|assessment|submit)|",
-  "\\b(?:before|in order to)\\b.{0,60}\\bexam\\w*,? .{0,60}\\b(?:must|need|have to|has to|required?)\\b))")
+  "\\b(?:before|in order to)\\b.{0,60}\\bexam\\w*,? .{0,60}\\b(?:must|need|have to|has to|required?)\\b|",
+  "\\b(?:forfeits?|loses?) the right to (?:take|sit)\\b.{0,40}\\bexam|",
+  "\\b(?:mister|taper) (?:retten|rett) til å (?:avlegge|ta|gå opp til|fr[ae]mstille seg til)\\b.{0,30}eksam))")
 
 # Compulsory attendance stated alone, without a condition: "Deltakelse på 80
 # % av undervisning.", "70 % obligatorisk deltakelse på seminarundervisning",
@@ -1603,6 +1630,24 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "(?:en|to|tre|\\d) (?:interne? |eksterne? )?sensor(?:er)?\\b[^.]*|",
   "(?:(?:intern |ekstern |en )?sensor(?:en)?|en av sensorene|studentens \\w*lærer(?: i emnet)?) ",
   "(?:er|inngår) normalt\\b[^.]*)\\W*$")
+# UiA's pointers to Canvas alone, on both trees (2026-11-25): "Nærmere
+# informasjon gis i Canvas ved semesterstart.", "Se Canvas for nærmere
+# informasjon om eksamen.", "Nærmere informasjon om krav til mappen blir gitt
+# i Canvas.", "More information will be given in Canvas at the start of the
+# semester.", "Please refer to Canvas for more information."; not a sentence
+# that says more ("Approved mandatory assignment, further information will be
+# given in Canvas ...", "Alle obligatoriske øvelser ... må være godkjent, se
+# Canvas for mer informasjon.").
+.canvas_pointer_regex <- paste0(
+  "(?i)^\\W*(?:(?:for (?:datoer og andre detaljer|nærmere spesifisering),? )?(?:se|sjå) (?:nærmere |mer |utfyllende )?",
+  "(?:informasjon )?(?:i |på )?canvas(?: for (?:mer|nærmere|detaljert|utfyllende|ytterligere) informasjon(?: om eksamen)?| for detaljer)?|",
+  "(?:please )?refer to canvas for (?:more|further) information|det vises til (?:ytterligere|nærmere) informasjon i canvas|",
+  "(?:(?:nærmere|mer(?: detaljert)?|utfyllende|ytterligere|further|more(?: detailed)?|detailed)\\s+)?(?:informasjon|information)",
+  "(?: (?:om|about|on) [^.]{0,80}?)?(?: (?:gis|finnes|legges ut|kommer|fremlegges|publiseres|er publisert|blir gitt|",
+  "vil (?:bli )?(?:gitt|gis|lagt ut|publisert|gjort tilgjengelig)|will be (?:given|provided|available|posted|published)|",
+  "is (?:given|provided|available|posted)|can be found))? (?:i|på|in|on|through) (?:the )?",
+  "(?:studentenes læringsstøttesystem |emnerommet i )?canvas)",
+  "(?: (?:ved|før|at|by|when|i starten|in the beginning) [^.]{0,60})?\\W*$")
 .logistics_sentences <- list(
   hvl = c(paste0(
     "(?i)studentweb|",
@@ -1616,7 +1661,12 @@ extract_sections <- function(config, html, extracted_text, course_id) {
     "^\\W*Studieprogram:|^\\W*Utdanningen er gratis\\b",
     .examiner_sentence_regex),
   phs = "(?i)^\\s*(?=.*\\btimer\\b)(?:[^\\s.]+\\s+){1,4}?er\\s+(?:totalt\\s+)?(?:anslått|estimert)\\s+til\\b",
-  uia = .workload_sentence_regex, ntnu = .workload_sentence_regex, uit = .workload_sentence_regex,
+  uia = c(.workload_sentence_regex, .canvas_pointer_regex,
+          # the exam held both semesters for the auditors' grade requirement
+          "(?i)^\\W*(?:due to|av hensyn til|på grunn av) (?:the )?(?:grade requirements?|karakterkrav\\w*) for (?:state authori[sz]ed|statsautoriserte)"),
+  nih = paste0("(?i)^\\W*(?:the )?(?:project )?(?:assignment|prosjektoppgaven|oppgaven)\\b[^.]{0,30}?\\b(?:submitted in|leveres i) ",
+               "wiseflow (?:during|i) (?:a designated|en oppgitt) (?:submission period|innleveringsperiode)"),
+  ntnu = .workload_sentence_regex, uit = .workload_sentence_regex,
   mf = c(paste0("(?i)^\\W*(?:For ikke å bruke (?:opp )?et eksamensforsøk|",
                 "[^.]*\\btrekk(?:e|er) sin (?:oppmelding|vurderingsmelding))"),
          "(?i)^\\W*(?:Sensurfristen\\b|Informasjon om innleveringsfrister\\b|Se eksamenssidene\\b)",
@@ -1841,7 +1891,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # content that merely starts with "Ingen" or mentions Leganto is kept.
 .placeholder_phrases <- c(
   # bare negation / dummy values: "Ingen", "Ingen krav", "None", "x", "-", "..."
-  "ingen(?: spesielle)?(?: krav| forkunnskapskrav| arbeidskrav)?", "nei", "none", "n/a", "x",
+  "ingen(?: spesielle)?(?: krav| forkunnskapskrav| arbeidskrav)?", "nei", "none", "no", "n/a", "x",
   "not relevant",                                                    # uib
   "det er ingen (?:vurdering|eksamen) i emnet",                      # hvl
   "[-–.…_]++", "ingen info",                                         # hvl "_", oslomet
@@ -1976,6 +2026,11 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "litteratur(?:lista|listen)? vil være klart? [^.]{0,80}",           # hiof
   "(?:pensumlist[ea]|anbefalt litteratur) for (?:høsten|våren) ?\\d{4}(?:(?: og |-)(?:høsten|våren) ?\\d{4})?",  # nih
   "ettersom vi er i en overgangsfase mellom to systemer .{0,300}",    # nih
+  # nih's English pages (2026-11-25): the same notice, "No subjects (in the
+  # program / at program level)." in prerequisites, a list label without
+  # its year ("Core reading for.", "Reading list for")
+  "as we are in a transition phase between two systems,? .{0,300}",
+  "no subjects?(?: in the program(?:me)?| at program(?:me)? level)?", "(?:core reading|reading list) for",
   # mf: the library-access notice alone (~600 chars), no list
   "litteraturlisten for .{0,30}tilgang til litteratur .{0,700}"
 )

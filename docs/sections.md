@@ -195,19 +195,31 @@ Fields for the `html` reader:
   (“Admission requirements”; since 2026-11-22), whose course codes (“61
   110”, “70 111 GK1 Introduksjon til design”) under “Gjennomført:” count
   as prior courses, and whose label “Recommended previous knowledge”
-  keeps the lines after it whole (but a link), without the label. uit’s
-  “Undervisnings- og eksamensspråk” (“Language of instruction and
-  examination”) maps to `.exam_language`, of which the label with the
-  exam-language sentences and bare values (“Norsk”) joins assessment
-  after the page’s own (`.exam_language_text()`); the teaching language
-  alone goes. fhs’s “Opptakskrav” holds required courses (prerequisites,
-  where the map drops it as admission), “Målgruppe” who may take the
-  course (`.drop`), and the Etterretningsskolen’s “Emnets oppbygning”
-  (or “oppbygging”) and “Arbeidsformer og læringsaktiviteter”
-  (teaching_methods; the map has the latter only as a substring pattern,
-  which a `<p>` does not match). nmh’s English pages: “Overview”
-  (course_content) and “Structure” (its “Organisering”,
-  teaching_methods), too generic for the map.
+  keeps the lines after it whole (but a link), without the label. So do
+  uia’s admission field for single-course students, “Opptakskrav hvis
+  tilbudt som enkeltemne” (“om tilbydd”, “Admission Requirement if given
+  as a free-standing course”), and nih’s “Hvem kan ta dette emnet?”
+  (“Admission to the course”), which the map drops (“BE-110 … or
+  equivalent in addition to Higher Education entrance qualifications.”,
+  “Enkeltemnesøkere må ha fullført 60 studiepoeng friluftslivsfag …”;
+  since 2026-11-25); there a degree or a completed teacher education the
+  applicants hold, with no course code or credits in a subject
+  (“Opptakskrav er bachelorgrad …”, “For enkeltemnestudenter: fullført
+  lærerutdanning …, samt ordinære forkunnskapskrav.”), is admission, and
+  a bare lead-in of up to six words left last (“I tillegg:”,
+  “Recommended prerequisites:”) goes. uit’s “Undervisnings- og
+  eksamensspråk” (“Language of instruction and examination”) maps to
+  `.exam_language`, of which the label with the exam-language sentences
+  and bare values (“Norsk”) joins assessment after the page’s own
+  (`.exam_language_text()`); the teaching language alone goes. fhs’s
+  “Opptakskrav” holds required courses (prerequisites, where the map
+  drops it as admission), “Målgruppe” who may take the course (`.drop`),
+  and the Etterretningsskolen’s “Emnets oppbygning” (or “oppbygging”)
+  and “Arbeidsformer og læringsaktiviteter” (teaching_methods; the map
+  has the latter only as a substring pattern, which a `<p>` does not
+  match). nmh’s English pages: “Overview” (course_content) and
+  “Structure” (its “Organisering”, teaching_methods), too generic for
+  the map.
 
 Other fields:
 
@@ -234,15 +246,19 @@ Other fields:
   arbeidskravet bygger på oppgaver …”. At every institution, with or
   without this field, a sentence in assessment that makes approval,
   attendance or a passed test a condition for the exam (“Arbeidskrav må
-  være godkjent før studenten kan framstille seg til eksamen”) moves
-  alone (`.gate_sentence_regex`); one about the exam’s own parts, a row
-  of an exam table or one that counts towards the grade stays. So does
-  compulsory attendance stated alone, from assessment, teaching methods
-  and course content (“70 % obligatorisk deltakelse på
-  seminarundervisning”, “Det er obligatorisk deltakelse på samlingene.”,
-  “All undervisning er obligatorisk.”, “Det er derfor obligatorisk
-  oppmøte i undervisningen.”, “Attendance to lectures and seminars is
-  mandatory.”, “Fravær over 20 % … medfører …”;
+  være godkjent før studenten kan framstille seg til eksamen”), or that
+  takes the right to the exam for want of it (“Student som ikke
+  oppfyller arbeidskrav mister retten til å framstille seg til
+  eksamen.”, nih’s “… forfeit the right to take the final examination
+  (see below) if the group assignments are unsatisfactory.”; since
+  2026-11-25), moves alone (`.gate_sentence_regex`); one about the
+  exam’s own parts, a row of an exam table or one that counts towards
+  the grade stays. So does compulsory attendance stated alone, from
+  assessment, teaching methods and course content (“70 % obligatorisk
+  deltakelse på seminarundervisning”, “Det er obligatorisk deltakelse på
+  samlingene.”, “All undervisning er obligatorisk.”, “Det er derfor
+  obligatorisk oppmøte i undervisningen.”, “Attendance to lectures and
+  seminars is mandatory.”, “Fravær over 20 % … medfører …”;
   `.attendance_sentence_regex`), but not a negation, attendance in
   praksis or clinical studies, a sentence about the exam, “krever aktiv
   deltakelse”, or a list of teaching forms with attendance in it
@@ -326,9 +342,10 @@ UiA’s and NIH’s English-tree pages (since 2026-11-23) “Examination
 requirements” (“Vilkår for å gå opp til eksamen”) to coursework
 requirements, ahead of the substring “examination”; “Assessment/exam”,
 “Prerequisite” and “Core literature” (“Vurdering/eksamen”, “Forkrav”,
-“Kjernelitteratur”) to assessment, prerequisites and reading list;
-“Admission Requirement if given as a free-standing course” to `.drop`
-(all exact rows).
+“Kjernelitteratur”) to assessment, prerequisites and reading list (all
+exact rows). “Admission Requirement if given as a free-standing course”
+(“Opptakskrav hvis tilbudt som enkeltemne”), which the map drops, is
+UiA’s `.admission` (below).
 
 HTML is parsed by `.read_doc()`, which drops `script`, `style`, `select`
 and `label` (ntnu script text, uib semester picker); the `json` reader
@@ -415,39 +432,49 @@ praksisrapport gis det mulighet til å levere en gang til.”); aho’s exam
 system (“Besvarelsen leveres i Wiseflow.”, “Du må gjøre deg kjent med
 innlogging og innleveringsmåte …”), source-use notice, Moodle pointers
 and the diploma’s withdrawal deadline, but not “Fem timers skriftlig
-hjemmeeksamen i Wiseflow.”; and barrattdue’s dated deadlines (“Frist for
-innlevering av årsrapport 15.mai”), who decides or assesses the resit
-(“Dette avgjøres individuelt av faglærer.”, “Individuell vurdering av
-faglærer/seksjonsleder”) and (2026-11-23) its stock resit rules (“Den
-delen som ikke er bestått må gjennomføres på nytt. Deretter gis det ny
-samlet vurdering.”, “Studenten må gjennomføre hele eller deler av emnet
-på nytt.”), but not “Ny innlevering av refleksjonsnotat,
-repertoarrapport og ny praktisk eksamen.”; resit and appeal rules that
-say only who may resit or resubmit, when or how often (“For ikke å bruke
-et eksamensforsøk, må studenten aktivt trekke sin vurderingsmelding …”,
-mf; “Studenter som … får vurderingen F, kan melde seg opp til ny/utsatt
-eksamen.”, oslomet; “The mark can be appealed.”, hiof), but not what the
-resit consists of (“Ved kontinuasjonseksamen bearbeides samme oppgave.”,
-“Utsatt eksamen er en individuell skriftlig hjemmeeksamen.”); pointers
-to the exam pages and the exam system, hvl’s “Studieprogram: …” line,
-inn’s course-evaluation sentence, uio’s “Adgang til undervisning: …”;
-and uis’s workload budget, a header such as “Forventet timeinnsats (413
-timer):” with the lines of hours under it, and dmmh’s examiner row of
-the exam table, “Sensorordning:og ekstern”, `.logistics_blocks`),
-removes admission and study-right sentences, pointers to the admission
-rules and “Ingen utover opptakskravet.” from prerequisites, keeping a
-sentence that also names a prerequisite (`.strip_admission_lines()`),
-removes outgoing progression rules from every section, what passing this
-course permits later (“Emnet må være bestått for å kunne fortsette på
-Norsk 2.”, vid’s “Studenter kan, ved å gjennomføre dette emnet … gå
-videre til …”, barrattdue’s “Eksamen må være bestått for at studenten
-skal kunne fortsette PPU-studiet 2. år.”; “En må ha fulgt Kunst og
-håndverk 1 for å kunne fortsette på …” only when the course named is
-this one by its title, `.is_progression_sentence()`), drops
-placeholder-only rows (`.placeholder_phrases`: “Ingen”, “Se fagplanen.”,
-“-”, Leganto pointers, “Oppgis senere.”, “… ikke publisert ennå”, uit’s
-“Contact the department/faculty.”, “Se fagbeskrivelse med pensum” and
-its reading lists only on the learning platform or at the bookshop,
+hjemmeeksamen i Wiseflow.”; uia’s pointers to Canvas alone on both trees
+(“Nærmere informasjon gis i Canvas ved semesterstart.”, “More
+information will be given in Canvas at the start of the semester.”,
+“Please refer to Canvas for more information.”, not “Approved mandatory
+assignment, further information will be given in Canvas …”) and its exam
+held both semesters for the auditors (“Due to grade requirements for
+state authorised auditors, a regular examination will be held both
+autumn and spring.”), and nih’s submission period (“Prosjektoppgaven
+leveres i Wiseflow i en oppgitt innleveringsperiode på slutten av
+semestret.”, also in English; 2026-11-25); and barrattdue’s dated
+deadlines (“Frist for innlevering av årsrapport 15.mai”), who decides or
+assesses the resit (“Dette avgjøres individuelt av faglærer.”,
+“Individuell vurdering av faglærer/seksjonsleder”) and (2026-11-23) its
+stock resit rules (“Den delen som ikke er bestått må gjennomføres på
+nytt. Deretter gis det ny samlet vurdering.”, “Studenten må gjennomføre
+hele eller deler av emnet på nytt.”), but not “Ny innlevering av
+refleksjonsnotat, repertoarrapport og ny praktisk eksamen.”; resit and
+appeal rules that say only who may resit or resubmit, when or how often
+(“For ikke å bruke et eksamensforsøk, må studenten aktivt trekke sin
+vurderingsmelding …”, mf; “Studenter som … får vurderingen F, kan melde
+seg opp til ny/utsatt eksamen.”, oslomet; “The mark can be appealed.”,
+hiof), but not what the resit consists of (“Ved kontinuasjonseksamen
+bearbeides samme oppgave.”, “Utsatt eksamen er en individuell skriftlig
+hjemmeeksamen.”); pointers to the exam pages and the exam system, hvl’s
+“Studieprogram: …” line, inn’s course-evaluation sentence, uio’s “Adgang
+til undervisning: …”; and uis’s workload budget, a header such as
+“Forventet timeinnsats (413 timer):” with the lines of hours under it,
+and dmmh’s examiner row of the exam table, “Sensorordning:og ekstern”,
+`.logistics_blocks`), removes admission and study-right sentences,
+pointers to the admission rules and “Ingen utover opptakskravet.” from
+prerequisites, keeping a sentence that also names a prerequisite
+(`.strip_admission_lines()`), removes outgoing progression rules from
+every section, what passing this course permits later (“Emnet må være
+bestått for å kunne fortsette på Norsk 2.”, vid’s “Studenter kan, ved å
+gjennomføre dette emnet … gå videre til …”, barrattdue’s “Eksamen må
+være bestått for at studenten skal kunne fortsette PPU-studiet 2. år.”;
+“En må ha fulgt Kunst og håndverk 1 for å kunne fortsette på …” only
+when the course named is this one by its title,
+`.is_progression_sentence()`), drops placeholder-only rows
+(`.placeholder_phrases`: “Ingen”, “Se fagplanen.”, “-”, Leganto
+pointers, “Oppgis senere.”, “… ikke publisert ennå”, uit’s “Contact the
+department/faculty.”, “Se fagbeskrivelse med pensum” and its reading
+lists only on the learning platform or at the bookshop,
 “Pensumlitteratur oppgis i Fronter ved semesterstart eller fås ved
 henvendelse til …”, OsloMet’s “Se omtale av praksis i programplanen” and
 “Praksisopplæring er nærmere beskrevet i programplanen.”, UiB’s
@@ -456,16 +483,20 @@ lærings- og vurderingsformer» i studieplanens generelle del.” and its
 link label “Her finner du pensumliste for studieåret”, LDH’s “I emnet
 inngår ingen obligatorisk aktivitet.” and its Leganto notice
 “Pensumlister finnes i Leganto og er lenket til under.” with its links’
-labels), and drops a first line that only repeats the section heading
-(but keeps learning-outcome group labels such as “Kunnskap”). Last, a
-section whose whole text, whitespace aside and 100 or more characters
-long, equals an earlier section’s on the page goes: the page copied it
-(khio’s teaching methods under “Vurdering” or its outcomes under
-“Undervisning og læringsformer”, inn’s course content under the teaching
-methods), and the copy says nothing about its own part. A short value
-two sections each state (“Individuelt.”, “Må bestås”) stays, so does a
-section that only begins with another’s text, and practice, which copies
-its heading’s section by design, neither goes nor counts.
+labels; since 2026-11-25 a bare “No”, NIH’s “No subjects (in the program
+/ at program level).”, its English archive notice “As we are in a
+transition phase between two systems, we refer to the Study Handbook …”
+and “Core reading for.” / “Reading list for” without their year), and
+drops a first line that only repeats the section heading (but keeps
+learning-outcome group labels such as “Kunnskap”). Last, a section whose
+whole text, whitespace aside and 100 or more characters long, equals an
+earlier section’s on the page goes: the page copied it (khio’s teaching
+methods under “Vurdering” or its outcomes under “Undervisning og
+læringsformer”, inn’s course content under the teaching methods), and
+the copy says nothing about its own part. A short value two sections
+each state (“Individuelt.”, “Må bestås”) stays, so does a section that
+only begins with another’s text, and practice, which copies its
+heading’s section by design, neither goes nor counts.
 
 ## What Each Mechanism May Remove
 

@@ -1939,6 +1939,50 @@ test_that("nord: Adgangsregulering gives its prerequisites, not its admission te
   expect_equal(get_institution_config("nord")$section_headings[["adgangsregulering"]], ".admission")
 })
 
+test_that("uia, nih: the admission field gives its prerequisites, not its admission text", {
+  for (inst in c("uia", "nih")) expect_true(all(get_institution_config(inst)$section_headings == ".admission"))
+  expect_equal(unname(get_institution_config("uia")$section_headings["admission requirement if given as a free-standing course"]),
+               ".admission")
+  expect_equal(unname(get_institution_config("nih")$section_headings[c("hvem kan ta dette emnet?", "admission to the course")]),
+               c(".admission", ".admission"))
+  ap <- .admission_prerequisites
+  # required courses and credits stay, also next to the entrance qualification
+  for (x in c("BE-110 Introduction to management Accounting or equivalent in addition to Higher Education entrance qualifications.",
+              "Generell studiekompetanse og bestått årsstudium i idrett eller IDR116 Idrettsfaglig basisemne eller tilsvarende.",
+              "For enkeltemnestudenter: fullført lærerutdanning rettet inn mot grunnskolen/videregående opplæring, og minst 60 stp i engelsk.",
+              "Bestått minst 45 studiepoeng fra første år i bachelorprogrammet i kommunikasjon eller tilsvarende."))
+    expect_equal(ap(x), x)
+  expect_equal(ap(paste("Programstudents BA FRI and international exchange students. Individual course students upon application.",
+                        "Individual course applicants must have completed 60 ECTS credits in outdoor studies to qualify for admission.",
+                        "\n\nThe course will be conducted with a minimum of 10 students.")),
+               "Individual course applicants must have completed 60 ECTS credits in outdoor studies to qualify for admission.")
+  expect_equal(ap("Programstudenter TI. Bygger på TI310 Idrettspsykologi 2."), "Bygger på TI310 Idrettspsykologi 2.")
+  expect_equal(ap("Opptakskrav for enkeltemnestudenter: Fullført 60 studiepoeng i matematikk"), "Fullført 60 studiepoeng i matematikk")
+  # admission alone goes: the entrance qualification, the programme, the
+  # degree or teacher education the applicants hold, a pointer to the
+  # prerequisites, who is pre-approved
+  for (x in c("Higher Education Entrance Qualification", "Programstudenter LUPE",
+              "The same admission requirements as for the Master's Programme in Political Science and Management.",
+              paste("Opptakskrav er bachelorgrad eller tilsvarende utdanning av minimum tre års omfang (180 studiepoeng).",
+                    "I tillegg kreves minst 2 års relevant yrkespraksis etter avsluttet utdanning."),
+              "Krav til opptak er bachelorgrad (180 studiepoeng) i helse- og sosialfag.",
+              "Generelt opptakskrav er en samfunnsvitenskapelig bachelorgrad eller tilsvarende utdanning av minimum tre års omfang (180 studiepoeng).",
+              "For enkeltemnestudenter: fullført lærerutdanning rettet inn mot grunnskolen/videregående opplæring, samt ordinære forkunnskapskrav.",
+              "Opptakskrav for enkeltemnestudenter er fullført lærerutdanning rettet mot grunnskolen/ videregående opplæring, samt ordinære forkunnskapskrav.",
+              "Tar eller har fullført lærarutdanning retta mot grunnskulen/vidaregåande opplæring. I tillegg må eventuelle forkunnskapskrav vere oppfylte.",
+              "I tillegg må det avklares at studentene har tilstrekkelig tid i løpet av studiet til å gjennomføre den praksis som kreves.",
+              "Det er også personer som har en personlig trener-utdanning som gir rett til studiepoeng."))
+    expect_equal(ap(x), "")
+  # in the page: the field joins the prerequisites, no longer dropped whole
+  page <- paste0('<div id="right-main"><h2>Innhold</h2><p>Om bedrifter.</p>',
+                 "<h2>Admission Requirement if given as a free-standing course</h2>",
+                 "<p>ORG109 Organisation Theory, or equivalent in addition to Higher Education entrance qualifications.</p>",
+                 "<h2>Learning outcomes</h2><p>The student can analyse firms.</p></div>")
+  s <- extract_sections(get_institution_config("uia"), page, NA, "uia_X")
+  expect_equal(s$raw_text[s$section == "prerequisites"],
+               "ORG109 Organisation Theory, or equivalent in addition to Higher Education entrance qualifications.")
+})
+
 test_that("nmbu: a compulsory course for a programme's students is admission", {
   pre <- "Emnet er obligatorisk for studenter tatt opp til studieprogrammet LUR. Dette emnet forutsetter at studenten har bestått emnene PPXP100 og PPRA200."
   expect_equal(.strip_admission_lines(pre), "Dette emnet forutsetter at studenten har bestått emnene PPXP100 og PPRA200.")
@@ -2493,4 +2537,64 @@ test_that("dmmh and ldh: pointers and 'none' are placeholders; dmmh's practice p
                c(prerequisites = "BLPRA100", coursework_requirements = paste(
                  "All undervisning i kunnskapsområdene bidrar til studentens forberedelse til praksis, så tilstedeværelse i",
                  "undervisningen er en forutsetning for studentens faglige utbytte av praksis.")))
+})
+
+test_that("uia, nih: English gates, placeholders and logistics of both trees", {
+  # losing the right to the exam is a gate condition; losing feedback is not
+  for (x in c(paste("The students shall participate actively and sufficiently in the classes and forfeit the right to take",
+                    "the final examination (see below) if the group assignments are unsatisfactory."),
+              paste("The student forfeits the right to take the final examination (see below) if the given group",
+                    "assignment has not been conducted by set deadline, or if conducted assignment are not approved."),
+              paste("Studentene skal delta aktivt og tilstrekkelig i undervisningen og mister retten til å gå opp til",
+                    "avsluttende eksamen dersom arbeidskravene ikke er tilfredsstilt."),
+              "Student som ikke oppfyller arbeidskrav mister retten til å framstille seg til eksamen."))
+    expect_match(x, .gate_sentence_regex, perl = TRUE)
+  for (x in c("Studenter som ikke leverer læringsmapper og/eller møter på gjennomganger, mister retten til å få tilbakemelding.",
+              "Studenter som har et fravær på mer enn 20% mister retten til aktiv deltagelse i undervisningen og til kontinuerlig veiledning."))
+    expect_no_match(x, .gate_sentence_regex, perl = TRUE)
+  res <- .split_inline_coursework(tibble::tibble(section = "teaching_methods", raw_text = paste(
+    "Week 1 and 2 comprise lectures and group coursework.",
+    "The students shall participate actively and sufficiently in the classes and forfeit the right to take",
+    "the final examination (see below) if the group assignments are unsatisfactory.")), "heading", "teaching_methods")
+  s <- stats::setNames(res$raw_text, res$section)
+  expect_equal(s[["teaching_methods"]], "Week 1 and 2 comprise lectures and group coursework.")
+  expect_match(s[["coursework_requirements"]], "^The students shall participate")
+
+  # English placeholders
+  for (x in c("No", "No.", "No subjects.", "No subjects in the program", "No subjects at program level.",
+              "Core reading for.", "Reading list for",
+              paste("As we are in a transition phase between two systems, we refer to the Study Handbook for literature",
+                    "for courses in the academic year: https://www.nih.no/studier/program-og-emneplan-arkiv/2023-2024/")))
+    expect_true(.is_placeholder_text(x), label = x)
+  for (x in c("No prior knowledge is required, but MA-100 is recommended.", "Core reading\nSmith, J. (2020). Sport. Oslo."))
+    expect_false(.is_placeholder_text(x), label = x)
+  # a label over "No" says something, as over "None"
+  expect_false(.empty_label_text("No"))
+
+  cl <- function(section, x, inst) {
+    out <- .clean_sections(tibble::tibble(section = section, raw_text = x), inst)
+    stats::setNames(out$raw_text, out$section)
+  }
+  # UiA's Canvas pointers alone go, on both trees; a sentence that says more stays
+  for (x in c("More information will be given in Canvas at the start of the semester.",
+              "Please refer to Canvas for more information.", "Nærmere informasjon gis i Canvas ved semesterstart.",
+              "Se Canvas for nærmere informasjon om eksamen.", "Nærmere informasjon om krav til mappen blir gitt i Canvas."))
+    expect_equal(cl("coursework_requirements", paste("Two approved assignments.", x), "uia")[["coursework_requirements"]],
+                 "Two approved assignments.")
+  for (x in c("Approved mandatory assignment, further information will be given in Canvas at the start of the semester.",
+              "Alle obligatoriske øvelser, oppgaver og seminararbeid må være godkjent, se Canvas for mer informasjon.",
+              "Students must use Canvas, which is the university's learning support system."))
+    expect_equal(cl("coursework_requirements", x, "uia")[["coursework_requirements"]], x)
+  # the exam held both semesters for the auditors' grade requirement
+  for (x in c("Due to grade requirements for state authorised auditors, a regular examination will be held both autumn and spring.",
+              "Av hensyn til karakterkrav for statsautoriserte revisorer arrangeres det ordinær eksamen i dette emnet både høst og vår."))
+    expect_equal(cl("assessment", paste("Written exam, 4 hours.", x), "uia")[["assessment"]], "Written exam, 4 hours.")
+  expect_equal(cl("assessment", "Det er mulig å levere masteroppgaven i både vår og høstsemesteret.", "uia")[["assessment"]],
+               "Det er mulig å levere masteroppgaven i både vår og høstsemesteret.")
+  # NIH's submission period in Wiseflow
+  for (x in c("The project assignment must be submitted in Wiseflow during a designated submission period at the end of the semester.",
+              "Prosjektoppgaven leveres i Wiseflow i en oppgitt innleveringsperiode på slutten av semestret."))
+    expect_equal(cl("assessment", paste("Project assignment, graded A-F.", x), "nih")[["assessment"]], "Project assignment, graded A-F.")
+  expect_equal(cl("assessment", "Tasks submitted via Wiseflow will be run through plagiarism control.", "nih")[["assessment"]],
+               "Tasks submitted via Wiseflow will be run through plagiarism control.")
 })

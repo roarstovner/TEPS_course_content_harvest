@@ -3032,6 +3032,100 @@ godkjent/ikke godkjent).") stays as part of the placement's assessment.
 2026); on 20 pages per raw partition of every institution no other section
 changes. *Since:* 2026-11-23.
 
+**UiA and NIH: the prerequisites in the admission field join
+prerequisites; its admission text stays out.** UiA's field for
+single-course students, "Opptakskrav hvis tilbudt som enkeltemne" ("om
+tilbydd", "Admission Requirement if given as a free-standing course"), and
+NIH's "Hvem kan ta dette emnet?" ("Admission to the course"), which the
+heading map dropped whole as admission, often name the courses or credits
+the course requires ("BE-110 Introduction to management Accounting or
+equivalent in addition to Higher Education entrance qualifications.",
+"Individual course applicants must have completed 60 ECTS credits in
+outdoor studies to qualify for admission.", "Emnet bygger på LKI105 og
+LKI106."). Both institutions now map these headings themselves to
+`.admission`, read like Nord's "Adgangsregulering": only the sentences that
+name a prior course, credits or a passed part and are not admission join
+prerequisites, after the page's own and without those it already says. New
+admission wordings stay out, shared with the other `.admission` fields: a
+degree named as the admission rule ("Opptakskrav er bachelorgrad ... (180
+studiepoeng).", "Krav til opptak er bachelorgrad (180 studiepoeng) i helse-
+og sosialfag."), a completed teacher education without credits in a subject
+("For enkeltemnestudenter: fullført lærerutdanning ..., samt ordinære
+forkunnskapskrav."; "..., og minst 60 stp i engelsk." stays), the pointer
+"I tillegg må eventuelle forkunnskapskrav vere oppfylte.", who is
+pre-approved, and a bare lead-in of up to six words left last ("I tillegg:",
+"Recommended prerequisites:"). *Why:* sections audit of the English-tree
+pages, 2026-11-25 (Codex): required prior study lost in 36 English plans
+(UiA 31, NIH 5); the Norwegian pages do the same. *Rejected:* changing the
+shared heading map for every institution with these headings (UiO 14,000
+pages, OsloMet 6,000, NMBU 3,500: their blocks hold registration notices,
+"Eksterne søkere ..." rules and, at NMBU, the credits and workload, so each
+needs its own reading); mapping the field to prerequisites whole (it is
+mostly programme lists, "Same admission requirements as for the master's
+programme ...", upper-secondary subjects); keeping "Higher Education
+Entrance Qualification" out of a sentence that also names a course (the
+spec keeps a sentence that names both whole). *Consequence* (all raw pages
+of the 3,594 UiA and NIH offerings with the field, HEAD against the new
+code): prerequisites gain text on 256 UiA pages of 73 courses (on 23 of
+them the page had none) and 20 NIH pages of 15 courses (9 had none); no
+page loses prerequisite text, and no other section changes. Where the page
+already words the same requirement slightly differently, both stay
+("Bestått første år av idrett, bachelorprogram." and "Generell
+studiekompetanse og bestått første år av idrett, bachelorprogram.", 4 UiA
+pages). At Nord and UiT 39 distinct
+admission blocks change (the nynorsk pointer, one degree rule, trailing
+labels such as "Recommended prerequisites:"). Some admission rules written
+as credits stay, as elsewhere ("Minimum 180 studiepoeng innen
+lærerutdanning"). `course_plan` and the plan ids do not change. *Since:*
+2026-11-25.
+
+**UiA and NIH (both trees): NIH's exam-forfeit gates, English placeholders,
+Canvas pointers and exam-session sentences.** A sentence that takes the
+right to the exam for want of coursework or attendance is a gate and moves
+to coursework requirements (`.gate_sentence_regex`, every institution:
+NIH's "... and forfeit the right to take the final examination (see below)
+if the group assignments are unsatisfactory." and "... mister retten til å
+gå opp til avsluttende eksamen dersom arbeidskravene ikke er tilfredsstilt."
+in teaching methods; UiT's "Student som ikke oppfyller arbeidskrav mister
+retten til å framstille seg til eksamen."), not the right to feedback or
+supervision. Placeholders (`.placeholder_phrases`, every institution): a
+bare "No", NIH's "No subjects (in the program / at program level).", its
+English archive notice "As we are in a transition phase between two
+systems, we refer to the Study Handbook ..." next to the Norwegian one, and
+"Core reading for." / "Reading list for" without their year. Logistics
+(`.logistics_sentences`): UiA's pointers to Canvas alone, on both trees
+("Nærmere informasjon gis i Canvas ved semesterstart.", "Nærmere
+informasjon om krav til mappen blir gitt i Canvas.", "Please refer to
+Canvas for more information."), and its exam held both semesters for the
+auditors' grade requirement ("Due to grade requirements for state
+authorised auditors, a regular examination will be held both autumn and
+spring.", "Av hensyn til karakterkrav for statsautoriserte revisorer
+arrangeres det ordinær eksamen i dette emnet både høst og vår."); NIH's
+submission period ("Prosjektoppgaven leveres i Wiseflow i en oppgitt
+innleveringsperiode på slutten av semestret.", also in English). *Why:*
+sections audit of the English-tree pages, 2026-11-25 (Codex). A pointer
+alone, an exam session and the exam system are out of the sections by the
+spec; the Norwegian pages hold the same wordings, so one rule covers both
+trees. *Rejected:* moving an approval-only item in assessment ("Group
+assignment in the format of oral presentation during course. Approved/not
+approved.", NIH MAS449; "Participants submit individual written essay of
+6000-8000 words. Approved/Not approved.", UiA) to coursework requirements:
+the words alone do not tell a gate from a pass/fail exam; a pointer
+sentence that also says something ("Approved mandatory assignment, further
+information will be given in Canvas ...", "Alle obligatoriske øvelser ...
+må være godkjent, se Canvas for mer informasjon.") stays whole; a bare
+"Core reading." (one plan) stays, since "Core reading" also labels lists.
+*Consequence* (current build, sections of the plans' source pages): UiA
+loses Canvas pointers on 2,478 pages (coursework requirements 1,873 rows,
+assessment 903, teaching methods 300) and the auditors' sentence on 79;
+NIH loses "No subjects" prerequisites on 26 pages, the archive notice on 31
+reading lists, 3 bare labels and the Wiseflow sentence on 6; the forfeit
+gates move on NIH 10, UiT 20, USN 6 and NTNU 2 pages; a bare "No" goes
+from 2 UiA sections and 19 elsewhere (NLA 9, NTNU 3, HVL 2, Nord 2, HiVolda 1, INN 1,
+VID 1). On 2 pages per raw partition of every institution only UiA's
+pointer and auditor sentences change. `course_plan` and the plan ids do not
+change. *Since:* 2026-11-25.
+
 **Barratt Due: the PPU degree requirement, stock resit rules, the
 electives' admission rule.** The PPU plans' prerequisite field "Krav til
 forkunnskaper: Bachelorgrad i musikk og Opptak til Praktisk-pedagogisk

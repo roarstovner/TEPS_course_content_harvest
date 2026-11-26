@@ -153,7 +153,7 @@ section_heading_patterns <- tibble::tribble(
   "opptakskrav",                           ".drop",                  FALSE,
   "opptak til emnet",                      ".drop",                  FALSE,
   "admission to the course",               ".drop",                  FALSE,
-  "admission requirement if given as a free-standing course", ".drop", TRUE, # uia English pages
+  "admission requirement if given as a free-standing course", ".drop", TRUE, # uia English pages (uia: .admission)
   "hvem kan ta dette emnet",               ".drop",                  FALSE,
   "krav til studierett",                   ".drop",                  FALSE,
   # Programme list in the page footer (usn, hivolda).

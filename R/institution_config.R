@@ -146,7 +146,14 @@ institution_configs <- list(
     plan_years = "url",
     section_strategy = "html",
     # Paragraph sub-headings ("Arbeidskrav", "Faget i praksis") split sections.
-    section_subheading_selector = "p"
+    section_subheading_selector = "p",
+    # The admission field for single-course students names the courses or
+    # credits the course requires ("BE-110 ... or equivalent in addition to
+    # Higher Education entrance qualifications."); its prerequisites join
+    # them, its admission text goes (2026-11-25; the map drops the heading)
+    section_headings = c("opptakskrav hvis tilbudt som enkeltemne" = ".admission",
+                         "opptakskrav om tilbydd som enkeltemne" = ".admission",
+                         "admission requirement if given as a free-standing course" = ".admission")
   ),
 
   ntnu = list(
@@ -595,7 +602,14 @@ institution_configs <- list(
                        "starts-with(normalize-space(), 'Course Leader')]")),
     facts = c("#vrtx-fs-emne-content > h1", "#vrtx-fs-emne-facts"),
     plan_years = "url",
-    section_strategy = "html"
+    section_strategy = "html",
+    # who may take the course, and for single-course students the credits
+    # or courses it requires ("Enkeltemnesøkere må ha fullført 60
+    # studiepoeng friluftslivsfag ...", "Emnet bygger på LKI105 og LKI106."):
+    # its prerequisites join them, its admission text goes (2026-11-25; the
+    # map drops the heading)
+    section_headings = c("hvem kan ta dette emnet?" = ".admission", "hvem kan ta dette emnet" = ".admission",
+                         "admission to the course" = ".admission")
   ),
 
   uib = list(
@@ -707,6 +721,16 @@ institution_configs <- list(
                        " or starts-with(normalize-space(), 'Everything you need to know about')]")),
     facts = "#maincontents > section",
     plan_years = "url",
+    # The semester a document is for ("Semester / år": "Høst 2025", "Spring
+    # 2025"), so a document from the course list (uit_listed_documents())
+    # serves only its own semester; every stored document named its
+    # offering's semester, or none (40 of 51,122, 2026-11-25)
+    page_term = function(html) {
+      m <- stringr::str_match(html, paste0('id="semester"[^>]*>\\s*<span[^>]*>[^<]*</span>\\s*',
+                                           '<span class="sub_hero_text_innhold">\\s*(Høst|Vår|Autumn|Spring)\\s+(\\d{4})'))
+      semester_term(m[, 3], m[, 2])
+    },
+    page_end_term = function(html) institution_configs$uit$page_term(html),
     post_fn = .pre_uit,
     section_strategy = "html",
     # 2008-2011 plans (old FS layout) head each field with a
@@ -721,16 +745,6 @@ institution_configs <- list(
     # emnet som videreutdanning er forkunnskapskravet fullført lærerutdanning
     # med minimum 60 studiepoeng i norsk.", "Recommended prerequisites:
     # MBI-2005 ..."): .admission_prerequisites() keeps the latter
-    # The semester a document is for ("Semester / år": "Høst 2025", "Spring
-    # 2025"), so a document from the course list (uit_listed_documents())
-    # serves only its own semester; every stored document named its
-    # offering's semester, or none (40 of 51,122, 2026-11-25)
-    page_term = function(html) {
-      m <- stringr::str_match(html, paste0('id="semester"[^>]*>\\s*<span[^>]*>[^<]*</span>\\s*',
-                                           '<span class="sub_hero_text_innhold">\\s*(Høst|Vår|Autumn|Spring)\\s+(\\d{4})'))
-      semester_term(m[, 3], m[, 2])
-    },
-    page_end_term = function(html) institution_configs$uit$page_term(html),
     # "Undervisnings- og eksamensspråk" ("Language of instruction and
     # examination") mixes the teaching language with the exam language: its
     # exam-language sentences and bare values join assessment, the rest goes
