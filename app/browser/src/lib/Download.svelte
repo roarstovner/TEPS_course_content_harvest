@@ -5,7 +5,7 @@
   import { EXCEL_MAX } from '../download/encode.js'
   import { num } from './format.js'
 
-  let { open = $bindable(), model, view, s, excl, matches, meta, worker } = $props()
+  let { open = $bindable(), model, view, s, query, excl, matches, meta, worker } = $props() // query: as run (in the header's section)
 
   let dialog = $state()
   let unit = $state('plan')
@@ -16,7 +16,7 @@
 
   const instNames = $derived(Object.fromEntries((meta?.institutions ?? []).map((i) => [i.code, i.institution_name])))
   const sel = $derived(open && view ? selection(model, view, s, matches, instNames) : null)
-  const q = $derived(matches ? s.q : '')
+  const q = $derived(matches ? query : '')
   const disabled = (u) => u === 'hit' && !q
 
   $effect(() => {

@@ -98,5 +98,39 @@ export function coverage(model, f) {
     .map((r) => ({ ...r, reasons: [...r.reasons].sort((a, b) => b[1] - a[1]) }))
 }
 
+/**
+ * The sections the plans have, per institution in the filter: the plan
+ * versions of the course-years in the filter (each version once), and of
+ * them how many have each section (what a section search can see).
+ * @param {Map<string, Set<string>>} planSections plan key -> its sections
+ * @returns {{rows: Map<string, {plans: number, has: Map<string, number>}>, total: {plans, has}}}
+ *   rows by institution; a plan without sections counts in `plans` only
+ */
+export function sectionCoverage(model, f, planSections) {
+  const keys = new Map() // institution -> Set of plan keys
+  eachCourseYear(model, f, (c, cy) => {
+    if (!cy.plans.size) return
+    let k = keys.get(c.institution)
+    if (!k) keys.set(c.institution, (k = new Set()))
+    for (const p of cy.plans) k.add(p)
+  })
+  const blankRow = () => ({ plans: 0, has: new Map() })
+  const total = blankRow()
+  const rows = new Map()
+  for (const [inst, ks] of keys) {
+    const r = blankRow()
+    rows.set(inst, r)
+    for (const k of ks) {
+      r.plans++
+      total.plans++
+      for (const code of planSections.get(k) ?? []) {
+        r.has.set(code, (r.has.get(code) ?? 0) + 1)
+        total.has.set(code, (total.has.get(code) ?? 0) + 1)
+      }
+    }
+  }
+  return { rows, total }
+}
+
 /** Share of `a` in `b`, null when `b` is 0. */
 export const share = (a, b) => (b ? a / b : null)

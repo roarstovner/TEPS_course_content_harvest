@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { href, renderMarkdown, REPO, slug } from './markdown.js'
-import { parseQuery } from '../search/index.js'
+import { parseQuery, sectionCode } from '../search/index.js'
 
 describe('markdown for the user guide', () => {
   it('renders headings, paragraphs, lists, tables and code', () => {
@@ -36,8 +36,9 @@ describe('markdown for the user guide', () => {
       const url = h.replace(/&amp;/g, '&')
       if (url.startsWith('#')) expect(ids, url).toContain(url.slice(1))
       else {
-        const q = new URLSearchParams(url).get('q') ?? ''
-        expect(parseQuery(q).error, url).toBeFalsy()
+        const p = new URLSearchParams(url)
+        expect(parseQuery(p.get('q') ?? '').error, url).toBeFalsy()
+        if (p.has('in')) expect(sectionCode(p.get('in')), url).toBeTruthy()
       }
     }
   })

@@ -82,8 +82,33 @@ describe('URL state', () => {
     expect(s).toMatchObject({ view: 'trend', by: 'inst', sec: ['learning_outcomes'] })
   })
 
+  it('keeps the section searched, by its name, in every view', () => {
+    const s = { ...defaultState(), q: 'samisk', in: 'learning_outcomes' }
+    expect(encodeState(s)).toBe('q=samisk&in=outcomes')
+    expect(decodeState(encodeState(s))).toEqual(s)
+    expect(decodeState(encodeState({ ...s, view: 'trend' }))).toEqual({ ...s, view: 'trend' })
+    expect(decodeState('in=l%C3%A6ringsutbytte').in).toBe('learning_outcomes')
+    expect(decodeState('in=reading_list').in).toBe('reading_list')
+    expect(decodeState('in=nonsense').in).toBeNull()
+    expect(encodeState({ ...defaultState(), in: 'nonsense' })).toBe('')
+    // a guide example sets it (or clears it) like the scope
+    const t = { ...s, inst: ['uit'] }
+    applyExample(t, '?q=samisk&in=reading')
+    expect(t).toMatchObject({ q: 'samisk', in: 'reading_list', inst: ['uit'] })
+    applyExample(t, '?q=samisk')
+    expect(t.in).toBeNull()
+  })
+
+  it('keeps the section coverage in the coverage view', () => {
+    const s = { ...defaultState(), view: 'coverage', cov: 'sections' }
+    expect(encodeState(s)).toBe('view=coverage&cov=sections')
+    expect(decodeState(encodeState(s))).toEqual(s)
+    expect(encodeState({ ...s, view: 'list' })).toBe('')
+    expect(decodeState('view=coverage&cov=x').cov).toBe('plans')
+  })
+
   it('falls back to defaults on invalid values', () => {
-    const s = decodeState('scope=nonsense&n=-3&x=%7Bbroken&from=20x&course=nocolon&view=chart&by=x&sample=0&seed=a%20b')
+    const s = decodeState('scope=nonsense&n=-3&x=%7Bbroken&from=20x&course=nocolon&view=chart&by=x&sample=0&seed=a%20b&in=x&cov=y')
     expect(s).toEqual(defaultState())
   })
 })

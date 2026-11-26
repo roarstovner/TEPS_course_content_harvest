@@ -1,5 +1,5 @@
 <script>
-  // Search box, scope of AND, word forms and the counts line.
+  // Search box, scope of AND, the section searched, word forms and the counts line.
   import WordForms from './WordForms.svelte'
   import { mb, num, pct } from './format.js'
 
@@ -17,6 +17,7 @@
     plansReady,
     sectionsLoaded,
     sectionsLoading,
+    sections, // meta.sections: {code, query, label_en, label_no}
     error,
     ondownload,
     onhelp,
@@ -62,6 +63,15 @@
     {#if state.scope === 'words'}
       <label>N <input class="n" type="number" min="1" max="1000" bind:value={state.n} /></label>
     {/if}
+    <label
+      title="Search the whole plan or one section: a term without a section prefix searches the section chosen here; a term with its own prefix (content:urfolk) keeps it. The same as putting the section's prefix on every term."
+    >
+      in
+      <select bind:value={state.in} aria-label="Search in" class:on={!!state.in}>
+        <option value={null}>full plan</option>
+        {#each sections as x (x.code)}<option value={x.code} title="{x.label_no} ({x.query}:)">{x.label_en.toLowerCase()}</option>{/each}
+      </select>
+    </label>
     <button type="button" class="dlbutton" onclick={ondownload} disabled={!ondownload} title="Download the selection">Download</button>
     <button type="button" class="dlbutton" aria-pressed={state.view === 'help'} onclick={onhelp} title="User guide (?)">Help</button>
   </div>

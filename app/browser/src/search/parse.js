@@ -31,6 +31,30 @@ for (const [code, ...names] of SECTIONS) {
   for (const n of [code, ...names]) PREFIX.set(n, code)
 }
 
+/** The section code of a section name (code, English or Norwegian query
+ *  name, any case), or null. */
+export const sectionCode = (name) => PREFIX.get(String(name ?? '').toLowerCase()) ?? null
+/** The query name of a section code (`learning_outcomes` -> `outcomes`). */
+export const sectionName = (code) => SHORT.get(code) ?? null
+
+/**
+ * A query searched in one section: the section's prefix on the whole query,
+ * so that a term without a prefix searches that section and a term with its
+ * own prefix keeps it (a prefix inside a group wins). `samisk content:urfolk`
+ * in `learning_outcomes` is `outcomes:(samisk content:urfolk)`, the same
+ * query as `outcomes:samisk content:urfolk`. An empty query, a query with an
+ * error or no section is returned as it is (its error then points into it).
+ * @param {string} q
+ * @param {string|null} code a section code, or null for the full plan
+ */
+export function inSection(q, code) {
+  const name = SHORT.get(code)
+  q = q ?? ''
+  if (!name || !q.trim()) return q
+  const p = parseQuery(q)
+  return p.error || !p.ast ? q : `${name}:(${q.trim()})`
+}
+
 class QueryError extends Error {
   constructor(message, start, end) {
     super(message)

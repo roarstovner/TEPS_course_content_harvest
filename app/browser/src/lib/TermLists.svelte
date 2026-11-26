@@ -3,7 +3,7 @@
   // imported from and exported to YAML (the format of LK20_terms.yaml), run
   // in the worker as a heatmap term x institution x year, counted as the
   // trend view counts; a cell lists its courses; the matrix exports as CSV.
-  import { parseQuery } from '../search/index.js'
+  import { inSection, parseQuery } from '../search/index.js'
   import { loadLists, matrixCsv, parseTermLists, saveLists, serializeTermList, slug, termMatrix } from '../data/termlists.js'
   import { share } from '../data/trend.js'
   import { num, pct } from './format.js'
@@ -90,11 +90,12 @@
   }
   function exportCsv() {
     const stamp = new Date().toISOString().slice(0, 19).replace(/[-:]/g, '')
-    saveFile(matrixCsv(name, terms, matrix, s.scope), `terms_${meta.version}_${name}_${stamp}Z.csv`, 'text/csv;charset=utf-8')
+    saveFile(matrixCsv(name, terms.map((t, k) => ({ ...t, query: queries[k] })), matrix, s.scope), `terms_${meta.version}_${name}_${stamp}Z.csv`, 'text/csv;charset=utf-8')
   }
 
-  // the run: the plans each term matches, in the worker (filters apply here)
-  const queries = $derived(terms.map((t) => t.query))
+  // the run: the plans each term matches, in the worker (filters apply here),
+  // in the header's section when one is chosen (a term's own prefix wins)
+  const queries = $derived(terms.map((t) => inSection(t.query, s.in)))
   const sig = $derived(JSON.stringify([queries, s.scope, s.scope === 'words' ? s.n : null]))
   let run = $state.raw(null) // {sig, results: [{keys: Set} | {error}], ms}
   let running = $state(false)
@@ -152,7 +153,7 @@
   </div>
   <p class="note sub">
     A term is a query (Norwegian and English variants joined by OR, as <code>dybdelæring OR "deep learning"</code>), run
-    with the scope of AND set above. Lists are kept in this browser{#if !stored}<strong class="fail">
+    with the scope of AND and the section set above. Lists are kept in this browser{#if !stored}<strong class="fail">
         — this browser does not store them: export before leaving</strong
       >{/if}; YAML in the format of <code>LK20_terms.yaml</code> (README "Term Lists").
   </p>

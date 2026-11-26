@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { buildModel } from './model.js'
-import { MAX_SERIES, OTHERS, coverage, trend } from './trend.js'
+import { MAX_SERIES, OTHERS, coverage, sectionCoverage, trend } from './trend.js'
+import { planKey } from './keys.js'
 
 // A course-year has a row per programme and plan, as in course_years.parquet.
 const courses = [
@@ -105,5 +106,32 @@ describe('coverage', () => {
       { institution: 'uio', n: 5, withPlan: 4, reasons: [['404', 1]] },
     ])
     expect(coverage(model, { ...all, y0: 2018 })[0].n).toBe(3)
+  })
+})
+
+describe('sectionCoverage', () => {
+  // plan keys as model.js makes them (keys.js planKey)
+  const pk = (institution, course_code, id) => planKey({ institution, course_code, plan_content_id: id })
+  const has = new Map([
+    [pk('uio', 'A1', 'p1'), new Set(['learning_outcomes', 'course_content'])],
+    [pk('uio', 'A1', 'p2'), new Set(['learning_outcomes'])],
+    [pk('uio', 'B2', 'p1'), new Set(['reading_list'])],
+    // ntnu's q1 has no sections
+  ])
+  const counts = (r) => [r.plans, Object.fromEntries(r.has)]
+  it('counts each plan version of the course-years in the filter once, per institution', () => {
+    const { rows, total } = sectionCoverage(model, all, has)
+    expect(counts(rows.get('uio'))).toEqual([3, { learning_outcomes: 2, course_content: 1, reading_list: 1 }])
+    expect(counts(rows.get('ntnu'))).toEqual([1, {}])
+    expect(counts(total)).toEqual([4, { learning_outcomes: 2, course_content: 1, reading_list: 1 }])
+  })
+  it('follows the years and study types of the filter', () => {
+    expect(counts(sectionCoverage(model, { ...all, y0: 2022, y1: 2022 }, has).rows.get('uio'))).toEqual([
+      2,
+      { learning_outcomes: 1, reading_list: 1 },
+    ])
+    const { rows } = sectionCoverage(model, { ...all, st: ['LEKTOR'] }, has)
+    expect([...rows.keys()]).toEqual(['uio'])
+    expect(rows.get('uio').plans).toBe(2) // A1's p1 (2020) and B2's p1
   })
 })

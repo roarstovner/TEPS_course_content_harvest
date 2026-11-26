@@ -109,6 +109,7 @@ kbd { font: 12px var(--mono); border: 1px solid var(--line); border-radius: 3px;
 .dlbutton { border: 1px solid var(--line); background: var(--bg); border-radius: 4px; padding: 4px 12px; cursor: pointer; }
 .dlbutton:disabled { opacity: 0.5; cursor: default; }
 .searchrow .n { width: 5em; }
+.searchrow select.on { background: var(--accent-bg); border-color: var(--accent); }
 .qerror { margin-top: 6px; display: flex; gap: 12px; align-items: baseline; color: var(--error); }
 .qerror code { font: 13px var(--mono); color: var(--fg); white-space: pre; }
 .qerror mark { background: none; text-decoration: wavy underline var(--error); }
@@ -265,6 +266,9 @@ del { background: var(--del); text-decoration: line-through; text-decoration-col
 .progs.cov .reasons { font-size: 12px; white-space: normal; }
 .progs.cov .reasons > span { white-space: nowrap; }
 .progs.cov tfoot th { border-top: 1px solid var(--fg-2); }
+.progs.cov .cur { background: var(--accent-bg); }
+.progs.cov td.low .link { color: var(--error); }
+.trend .sub label { margin-left: 12px; white-space: nowrap; }
 .help { padding: 8px 16px 40px; }
 .helptoc { display: flex; flex-wrap: wrap; gap: 4px 14px; padding: 4px 0 8px; border-bottom: 1px solid var(--line); }
 .helptoc .link { font-size: 13px; }

@@ -3,9 +3,8 @@
 A quick guide to the course plan browser: how to search, what the numbers
 mean, and what each view does. Press `?` in the browser to open it, `Esc` or
 `?` to close it. The examples are links: in the browser they run the query
-and keep your other filters. The counts given are from the teacher-education
-data of 25 November 2026 (all years from 2007); they change with each data
-build. The precise rules are in the
+and keep your other filters; the line under the search box then gives the
+counts in the data the browser holds. The precise rules are in the
 [developer README](README.md#query-syntax).
 
 ## The Data
@@ -32,18 +31,18 @@ build. The precise rules are in the
 Type in the search box (`/` jumps there). Case never matters, æ, ø and å
 included. Terms separated by spaces must all match (AND).
 
-| Query | Finds | Courses |
-|---|---|---|
-| [`samisk`](?q=samisk) | the letters anywhere, also inside words: *nordsamisk*, *samiskfaget* | 605 |
-| [`"samisk"`](?q=%22samisk%22) | the whole word only (and *samisk-norsk*, a hyphen counts as a word end) | 462 |
-| [`samisk*`](?q=samisk*) | words that start with *samisk*: *samiske*, *samiskspråklige* | 603 |
-| [`*samisk`](?q=*samisk) | words that end with *samisk*: *sørsamisk*, *lulesamisk* | 466 |
-| [`"samisk kultur"`](?q=%22samisk%20kultur%22) | the exact phrase | 74 |
-| [`samisk urfolk`](?q=samisk%20urfolk) | plans with both words | 111 |
-| [`samisk OR urfolk`](?q=samisk%20OR%20urfolk) | plans with either | 690 |
-| [`urfolk -samisk`](?q=urfolk%20-samisk) | *urfolk* but not *samisk* (same as `urfolk NOT samisk`) | 120 |
-| [`(samisk OR urfolk) lesing`](?q=(samisk%20OR%20urfolk)%20lesing) | grouping: either of the first two, and *lesing* | 220 |
-| [`/urfolk(et\|ene)?/`](?q=/urfolk(et%7Cene)?/) | a regular expression (JavaScript) | 202 |
+| Query | Finds |
+|---|---|
+| [`samisk`](?q=samisk) | the letters anywhere, also inside words: *nordsamisk*, *samiskfaget* |
+| [`"samisk"`](?q=%22samisk%22) | the whole word only (and *samisk-norsk*, a hyphen counts as a word end) |
+| [`samisk*`](?q=samisk*) | words that start with *samisk*: *samiske*, *samiskspråklige* |
+| [`*samisk`](?q=*samisk) | words that end with *samisk*: *sørsamisk*, *lulesamisk* |
+| [`"samisk kultur"`](?q=%22samisk%20kultur%22) | the exact phrase |
+| [`samisk urfolk`](?q=samisk%20urfolk) | plans with both words |
+| [`samisk OR urfolk`](?q=samisk%20OR%20urfolk) | plans with either |
+| [`urfolk -samisk`](?q=urfolk%20-samisk) | *urfolk* but not *samisk* (same as `urfolk NOT samisk`) |
+| [`(samisk OR urfolk) lesing`](?q=(samisk%20OR%20urfolk)%20lesing) | grouping: either of the first two, and *lesing* |
+| [`/urfolk(et\|ene)?/`](?q=/urfolk(et%7Cene)?/) | a regular expression (JavaScript) |
 
 - `OR`, `NOT` and `AND` are operators only in capitals; `or` is a word.
 - `-` must touch its term (`-praksis`); a hyphen inside a word is a letter.
@@ -60,28 +59,43 @@ the link and in downloads.
 **Where must all terms occur?** The setting *all terms in the same ...*
 beside the search box (the scope of AND):
 
-| Scope | [`samisk urfolk`](?q=samisk%20urfolk) finds |
+| Scope | [`samisk urfolk`](?q=samisk%20urfolk) in the same ... |
 |---|---|
-| plan (default) | [111 courses](?q=samisk%20urfolk&scope=plan) |
-| section | [64](?q=samisk%20urfolk&scope=section) |
-| line (a paragraph, heading or list item) | [62](?q=samisk%20urfolk&scope=paragraph) |
-| sentence | [60](?q=samisk%20urfolk&scope=sentence) |
-| within N words (here 5) | [49](?q=samisk%20urfolk&scope=words&n=5) |
+| plan (default) | [plan](?q=samisk%20urfolk&scope=plan) |
+| section | [section](?q=samisk%20urfolk&scope=section) |
+| line (a paragraph, heading or list item) | [line](?q=samisk%20urfolk&scope=paragraph) |
+| sentence | [sentence](?q=samisk%20urfolk&scope=sentence) |
+| within N words (here 5) | [within 5 words](?q=samisk%20urfolk&scope=words&n=5) |
 
-A narrower scope finds the words used together rather than somewhere in the
-same plan. The section scope reads only the sections' text, so text outside
+A narrower scope usually finds fewer courses (run them in turn and watch the
+counts): the words used together rather than somewhere in the same plan. The section scope reads only the sections' text, so text outside
 every section cannot match there. NOT is always tested on the whole plan.
 
 ## Searching Within a Section
 
-Put a section name and a colon before a term:
+Two ways, which give the same result:
 
-| Query | Courses |
+- **The *in* control** beside the search box: *full plan* (default) or one
+  section. The whole query then searches that section. It stays in the link
+  (`in=outcomes`) and applies in every view: the counts, Trend, Screen,
+  Compare, Term lists and downloads.
+- **A section prefix**: a section name and a colon before a term, for one
+  term only.
+
+| Query | Searches |
 |---|---|
-| [`outcomes:samisk`](?q=outcomes:samisk), the same as [`læringsutbytte:samisk`](?q=l%C3%A6ringsutbytte:samisk) | 352 |
-| [`outcomes:samisk content:urfolk`](?q=outcomes:samisk%20content:urfolk): *samisk* in the outcomes and *urfolk* in the content | 21 |
-| [`outcomes:(samisk OR urfolk)`](?q=outcomes:(samisk%20OR%20urfolk)): a whole group in one section | 441 |
-| [`reading:samisk`](?q=reading:samisk): in the reading list | 132 |
+| [`samisk` in learning outcomes](?q=samisk&in=outcomes) | the learning outcomes (the control) |
+| [`outcomes:samisk`](?q=outcomes:samisk), the same as [`læringsutbytte:samisk`](?q=l%C3%A6ringsutbytte:samisk) | the same, with the prefix |
+| [`outcomes:samisk content:urfolk`](?q=outcomes:samisk%20content:urfolk) | *samisk* in the outcomes and *urfolk* in the content |
+| [`samisk content:urfolk` in learning outcomes](?q=samisk%20content:urfolk&in=outcomes) | the same: a term's own prefix wins over the control |
+| [`outcomes:(samisk OR urfolk)`](?q=outcomes:(samisk%20OR%20urfolk)) | a whole group in one section |
+| [`reading:samisk`](?q=reading:samisk) | the reading list |
+
+**How they combine.** The control puts its section's prefix on every term
+that has none: with the control on *learning outcomes*, `samisk
+content:urfolk` is `outcomes:samisk content:urfolk`. The word forms show it:
+each term is listed with the section it searched (`outcomes:samisk`).
+Without the control, a term without a prefix searches the whole plan.
 
 Section names, English or Norwegian:
 
@@ -96,40 +110,40 @@ Section names, English or Norwegian:
 | `reading` | `pensum` | reading list |
 | `practice` | `praksis` | practice (placement) |
 
-To search the whole query in one section, wrap it in a group:
-`outcomes:(samisk urfolk)`. A term without a prefix searches the whole plan.
-`-outcomes:samisk` finds plans whose outcomes do not mention *samisk*,
-including plans without an outcomes section.
+`-outcomes:samisk` (or `-samisk` with the control on learning outcomes)
+finds plans whose outcomes do not mention *samisk*, including plans without
+an outcomes section.
 
 **The limits.** A section search can only find plans where that section was
-extracted, and that share differs by section and by institution. Almost
-every plan has learning outcomes, content and assessment (92-100% at every
-institution), but only 25% have a reading list (none at HVL, INN or
-HiVolda) and 19% a practice section. So
-[`reading:samisk`](?q=reading:samisk) (132 courses) misses most of the 605
-courses of [`samisk`](?q=samisk), and it says nothing about HVL's reading
-lists. Before you compare institutions on a section search:
+extracted, and that share differs by section and by institution: almost
+every plan has learning outcomes, content and assessment, but far fewer
+have a reading list or a practice section, and some institutions have none.
+[`reading:samisk`](?q=reading:samisk) therefore misses most of the courses
+of [`samisk`](?q=samisk), and says nothing about an institution whose plans
+have no reading list. Before you compare institutions on a section search:
 
+- Open [section coverage](?view=coverage&cov=sections) (Coverage, *sections
+  in the plans*): per institution, the share of the plan versions in the
+  filter that have each section. A low share means the section search sees
+  few of that institution's plans.
 - Run the plain query too, and compare. The difference is what the section
   search leaves out: text in other sections, text outside every section, and
   plans without the section.
-- See which sections an institution's plans have: tick the institution in
-  the filters and read the counts in the *Sections* filter, or open a plan
-  and its *Sections* tab (sections the plan lacks are greyed). In the plan
-  tab the coloured margin shows which section each line went to; lines with
-  a dotted mark are in no section.
+- Open a plan and its *Sections* tab (sections the plan lacks are greyed).
+  In the plan tab the coloured margin shows which section each line went
+  to; lines with a dotted mark are in no section.
 
 **The *Sections* filter is not a search scope.** Ticking *Learning outcomes*
 there keeps the plans that *have* such a section; the query still searches
-the whole plan. [`samisk` with that filter](?q=samisk&sec=learning_outcomes)
-finds 605 courses, [`outcomes:samisk`](?q=outcomes:samisk) 352.
+the whole plan. Compare [`samisk` with that filter](?q=samisk&sec=learning_outcomes)
+with [`samisk` in learning outcomes](?q=samisk&in=outcomes).
 
 ## What the Numbers Mean
 
-The line under the search box, for example *605 courses, 2,210 plan
-versions · 2,472 of 19,533 course-years with a plan match (12.7%) · 11.8%
-of course-years in force in 2026 (coverage 89.9%) · coverage 79.5% of
-24,566 course-years*:
+The line under the search box reads, with made-up numbers, *600 courses,
+2,200 plan versions · 2,500 of 19,500 course-years with a plan match
+(12.8%) · 11.8% of course-years in force in 2026 (coverage 90.0%) ·
+coverage 79.5% of 24,500 course-years*:
 
 - **Courses**: an institution and a course code. A course matches when one
   of its plan versions in force in the selected years matches.
@@ -151,8 +165,8 @@ the Coverage view):
 - *URL year*: the site keeps a page per academic year. An autumn course
   reads the plan of its academic year, a spring or summer course the
   academic year that began the autumn before.
-- *Current only*: the site shows only the plan in force (UiO, MF, NMBU,
-  Samas, Steiner in this data). A harvest counts only for the academic year
+- *Current only*: the site shows only the plan in force (flagged in the
+  Coverage view). A harvest counts only for the academic year
   it was made in, so such a site has plans only for the years it was
   harvested, and earlier years have no plan.
 
@@ -174,8 +188,10 @@ The tabs above the results. Each keeps the query and the filters.
   list its courses. Example: [`samisk` per institution](?q=samisk&view=trend&by=inst).
 - **Coverage**: per institution, course-years, those with a plan, the
   share, how plan years are found, and the most common reasons for a
-  missing plan. Example: [open it](?view=coverage) before comparing
-  institutions.
+  missing plan; or, with *sections in the plans*, the share of the plan
+  versions that have each section. Example: [open it](?view=coverage)
+  before comparing institutions, and [section coverage](?view=coverage&cov=sections)
+  before a section search.
 - **Screen**: a random sample of hits (each match with 80 characters of
   context), drawn with a seed so it can be redrawn and cited. Tag each hit
   include (`i`), exclude (`e`) or maybe (`m`), add a note (`n`), and read the

@@ -1,16 +1,20 @@
 // The app state in the URL query string, so that every view can be
 // bookmarked and cited. Only values that differ from the defaults are written.
 
+import { sectionCode, sectionName } from '../search/parse.js'
+
 export const SCOPES = ['plan', 'section', 'paragraph', 'sentence', 'words']
 export const TABS = ['plan', 'sections', 'versions', 'source']
 export const VIEWS = ['list', 'trend', 'coverage', 'screen', 'compare', 'terms', 'help']
 export const COMPARE_MODES = ['pair', 'across']
 export const BY = ['all', 'inst', 'st']
+export const COVERAGE = ['plans', 'sections']
 
 export const defaultState = () => ({
   q: '', // query
   scope: 'plan', // scope of AND
   n: 10, // words, for scope 'words'
+  in: null, // search in one section (its code; `in=outcomes` in the URL); null = the full plan
   excl: {}, // excluded word forms: {termKey: [form, ...]}
   inst: [], // institutions; empty = all
   y0: null, // year range; null = open
@@ -27,6 +31,7 @@ export const defaultState = () => ({
   cmp: null, // the version compared with it, tab 'versions' (versionId)
   view: 'list', // middle pane, one of VIEWS ('help': the user guide)
   by: 'all', // trend lines: overall, per institution or per study type (BY)
+  cov: 'plans', // coverage: no-plan reasons ('plans') or the sections the plans have ('sections')
   sample: 50, // screening: hits in the random sample
   seed: null, // screening: the sample's seed (data/screening.js)
   cm: 'pair', // compare: two plans side by side, or one year across institutions (COMPARE_MODES)
@@ -49,6 +54,7 @@ export function encodeState(s) {
   if (s.q) p.set('q', s.q)
   if (s.scope !== 'plan') p.set('scope', s.scope)
   if (s.scope === 'words' && Number.isInteger(s.n) && s.n !== 10) p.set('n', String(s.n))
+  if (s.in && sectionName(s.in)) p.set('in', sectionName(s.in))
   const ex = Object.entries(s.excl).filter(([, f]) => f.length)
   if (ex.length) p.set('x', JSON.stringify(Object.fromEntries(ex)))
   if (s.inst.length) p.set('inst', s.inst.join(','))
@@ -59,6 +65,7 @@ export function encodeState(s) {
   for (const k of ['lvl', 'cr', 'lang', 'sec']) if (s[k].length) p.set(k, s[k].join(','))
   if (s.view !== 'list') p.set('view', s.view)
   if (s.view === 'trend' && s.by !== 'all') p.set('by', s.by)
+  if (s.view === 'coverage' && s.cov !== 'plans') p.set('cov', s.cov)
   if (s.view === 'screen') {
     if (Number.isInteger(s.sample) && s.sample !== 50) p.set('sample', String(s.sample))
     if (s.seed) p.set('seed', s.seed)
@@ -87,11 +94,11 @@ export function encodeState(s) {
 }
 
 /** The state after an example link of the user guide (`?q=...&view=...`):
- *  its query, scope, sections filter, view and view settings; the other
+ *  its query, scope, section searched, sections filter, view and view settings; the other
  *  filters and the open course are kept. */
 export function applyExample(s, search) {
   const d = decodeState(search)
-  for (const k of ['q', 'scope', 'n', 'sec', 'view', 'by', 'sample', 'seed']) s[k] = d[k]
+  for (const k of ['q', 'scope', 'n', 'in', 'sec', 'view', 'by', 'cov', 'sample', 'seed']) s[k] = d[k]
   return s
 }
 
@@ -103,6 +110,7 @@ export function decodeState(search) {
   if (SCOPES.includes(p.get('scope'))) s.scope = p.get('scope')
   const n = Number(p.get('n'))
   if (Number.isInteger(n) && n >= 1 && n <= 1000) s.n = n
+  s.in = sectionCode(p.get('in')) // any section name
   try {
     const x = JSON.parse(p.get('x') ?? '{}')
     for (const [k, f] of Object.entries(x)) if (Array.isArray(f)) s.excl[k] = f.filter((v) => typeof v === 'string')
@@ -117,6 +125,7 @@ export function decodeState(search) {
   for (const k of ['lvl', 'cr', 'lang', 'sec']) s[k] = list(p.get(k))
   if (VIEWS.includes(p.get('view'))) s.view = p.get('view')
   if (BY.includes(p.get('by'))) s.by = p.get('by')
+  if (COVERAGE.includes(p.get('cov'))) s.cov = p.get('cov')
   const k = Number(p.get('sample'))
   if (Number.isInteger(k) && k >= 1 && k <= 100000) s.sample = k
   if (/^[\w-]{1,40}$/.test(p.get('seed') ?? '')) s.seed = p.get('seed')

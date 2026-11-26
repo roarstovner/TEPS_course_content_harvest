@@ -2,7 +2,7 @@
   // The app shell: loads the data, keeps the state (mirrored in the URL),
   // sends searches to the worker and lays out the panes (README "Layout").
   import { onMount, untrack } from 'svelte'
-  import { parseQuery } from './search/index.js'
+  import { inSection, parseQuery } from './search/index.js'
   import { fetchCached, fetchMeta, readParquet } from './data/load.js'
   import { startWorker } from './data/client.js'
   import { addPlans, buildModel, filterView, pickVersion } from './data/model.js'
@@ -68,7 +68,10 @@
   // versions are attached once the worker has sent the plans' metadata
   const model = $derived(baseModel && plansMeta ? addPlans(baseModel, plansMeta) : baseModel)
 
-  const parsed = $derived(parseQuery(s.q))
+  // the query as run: in the section of the header's control, when one is
+  // chosen (a term's own prefix wins; search/parse.js `inSection`)
+  const query = $derived(inSection(s.q, s.in))
+  const parsed = $derived(parseQuery(query))
   const queryOn = $derived(!!parsed.ast && !parsed.error)
   // excluded forms of the terms in the query (others stay in `s.excl`, so
   // that retyping a term brings them back, but are not applied or written)
@@ -79,7 +82,8 @@
   let timer
   let searchId = 0
   $effect(() => {
-    const { q, scope, n } = s
+    const { scope, n } = s
+    const q = query
     const ex = excl
     const on = queryOn && !!plansMeta
     clearTimeout(timer)
@@ -262,12 +266,13 @@
     plansReady={!!plansMeta}
     {sectionsLoaded}
     {sectionsLoading}
+    sections={meta?.sections ?? []}
     {error}
     onhelp={toggleHelp}
     ondownload={model && plansMeta && !searching && (!queryOn || result) ? () => (downloadOpen = true) : null}
   />
   {#if downloadOpen && model && plansMeta}
-    <Download bind:open={downloadOpen} {model} {view} {s} {excl} {matches} {meta} {worker} />
+    <Download bind:open={downloadOpen} {model} {view} {s} {query} {excl} {matches} {meta} {worker} />
   {/if}
   {#if model}
     <aside class="filters"><Filters bind:state={s} {meta} {model} facets={view.facets} sectionsReady={!!planSections} /></aside>
@@ -282,7 +287,7 @@
       {:else if s.view === 'trend'}
         <Trend {model} f={s} {matches} {queryOn} q={result?.q} {meta} bind:by={s.by} onpick={pick} />
       {:else if s.view === 'coverage'}
-        <Coverage {model} f={s} {meta} onpick={pick} />
+        <Coverage {model} bind:f={s} {meta} {planSections} onpick={pick} />
       {:else if s.view === 'screen'}
         <Screen {model} {view} bind:s q={matches ? result.q : ''} excl={result?.excl ?? {}} {matches} {meta} {worker} onopen={openHit} />
       {:else if s.view === 'compare'}

@@ -107,7 +107,7 @@ The page loads `meta.json`, `courses`, `course_years` and `programmes` first
 (well under 1 MB for the teacher-ed frame), shows the list, and loads the
 plan text in a Web Worker in the background. Of `sections.parquet` the
 worker reads at first only which sections each plan has (the sections
-filter); their text is read on first need: a query with a section prefix,
+filter); their text is read on first need: a query with a section prefix or the *in* control,
 the section scope of AND, the Sections tab or margin of an opened plan, a
 section download ("loading sections…" meanwhile). The files are cached in the
 browser under `meta.version`, so a second visit starts from the cache.
@@ -143,7 +143,13 @@ Precisely (`src/search/`):
   at line breaks). In JavaScript `\b` knows only ASCII letters and fails next
   to æ, ø and å: use `(?<!\p{L})økonomi(?!\p{L})`.
 - A section prefix can apply to a group, `outcomes:(lesing OR skriving)`; a
-  prefix inside the group wins. `-outcomes:praksis` finds plans whose
+  prefix inside the group wins.
+- The header's *in* control (one section instead of the full plan) puts
+  that section's prefix on the whole query (`inSection()` in `parse.js`):
+  `samisk content:urfolk` in learning outcomes runs as
+  `outcomes:(samisk content:urfolk)`, so a term's own prefix wins for its
+  term and the result, the term keys (word forms, unticked forms, screening
+  tags) and the query in a download manifest are those of the prefixed query. `-outcomes:praksis` finds plans whose
   outcomes section lacks *praksis* (plans without that section included).
 - Hit counts are all matches in the plan (or the term's section), also
   outside the unit that satisfied the scope of AND.
@@ -184,8 +190,9 @@ such as "lese- og skrivevansker".
 
 ## Layout
 
-- **Header:** search box, scope of AND, search in full plan or one section,
-  the word forms of each term, and a line of counts ("312 courses, 1,204
+- **Header:** search box, scope of AND, search in the full plan or one
+  section (*in*, a select of the sections; in the URL as `in=outcomes`;
+  above, Query Syntax), the word forms of each term, and a line of counts ("312 courses, 1,204
   plan versions; 8.2% of course-years in force in 2024, coverage 71%"; the
   share is of the course-years with a plan in the last year of the filter).
   The years run by default from the first year with a plan in the data (2007
@@ -235,6 +242,13 @@ such as "lese- og skrivevansker".
   a plan, the share, how plan years were found (`plan_year_basis`; sites that
   show only the current plan are flagged) and the most common no-plan
   reasons; a cell without a plan in the year strip gives its reason on hover.
+  With *sections in the plans* (`cov=sections`) the last columns are instead
+  the plan versions of the course-years in the filter (each once) and, per
+  section, the share of them that have it (the sections index the Sections
+  filter uses; shares under half marked, the section of the *in* control
+  highlighted), so that a user sees what a section search cannot find; a
+  share sets the institution and the Sections filter and shows the list. It
+  is counted on the page once per change of the filters, not of the query.
   Screen (needs a query): a random sample of N hits of the selection (the
   hits of the download unit *hit*: each match in the matching plans, 80
   characters of context on either side), drawn with a seed; size and seed
@@ -273,15 +287,17 @@ such as "lese- og skrivevansker".
   guarded, a warning when the browser does not keep them), imported from and
   exported to YAML (below, "Term Lists"). The list is run in the worker, a
   term at a time in chunks of plans, with the scope of AND of the header, as
-  a heatmap: rows a term, or a term per institution (`trows=inst`); columns
+  a heatmap (in the section of the header's *in* control, when one is
+  chosen): rows a term, or a term per institution (`trows=inst`); columns
   the years of the filter; cells the share of the course-years with a plan
   whose plan matches the term, or their number (`tval=count`), counted as
   the trend view counts (the filters apply; the shade is relative to the
   darkest cell). A cell sets the term as the query, its year (and
   institution) and shows the list. Export CSV writes the matrix in long form,
   one row per term, institution (`all` for the total) and year: `list`,
-  `term_id`, `term_label`, `query`, `scope`, `institution`, `year`,
-  `course_years`, `with_plan`, `matching`, `share`. The list shown is in the
+  `term_id`, `term_label`, `query` (as run, with the *in* section's prefix),
+  `scope`, `institution`, `year`, `course_years`, `with_plan`, `matching`,
+  `share`. The list shown is in the
   URL by name (`tl`); its terms are only in the browser that holds it, so
   share the YAML file with the link.
 - **Download:** the button in the header opens a dialog for the current
@@ -311,7 +327,8 @@ such as "lese- og skrivevansker".
   back to the view it came from) shows the user guide, `GUIDE.md`, in the
   middle pane (`view=help`). The guide is the one source, read on GitHub
   too; its example queries are links (`?q=...`) that in the app set the
-  query, scope, sections filter and view and keep the other filters.
+  query, scope, section searched (*in*), sections filter, view and its
+  settings, and keep the other filters.
 - **State in the URL**, so every view can be bookmarked and cited.
 - **Keyboard:** `/` search, `j`/`k` next and previous course, `Enter` open,
   `Esc` back, `?` help; in Screen the keys above.
@@ -384,11 +401,13 @@ maps, folded strings and quoting that a small parser would get wrong.
     matched view (one row per course), its counts and the counts of each
     filter value (ignoring its own filter); the year strip.
   - `trend.js`: course-years by year and institution or study type, matching
-    and with a plan (the trend view), and coverage per institution.
+    and with a plan (the trend view), and coverage per institution, of
+    course-years and of sections (`sectionCoverage()`).
   - `filters.js`: the course filters (institution, subject, level, credits,
     language), their values and readable names.
-  - `url.js`: the state in the URL (query, scope, excluded forms, filters,
-    course, version, tab, compared version, view, trend lines, screening
+  - `url.js`: the state in the URL (query, scope, section searched, excluded forms, filters,
+    course, version, tab, compared version, view, trend lines, coverage
+    columns, screening
     sample size and seed, the plans or year compared, the term list and
     the heatmap's rows and cells).
   - `overlay.js`: the section of each line of a plan.

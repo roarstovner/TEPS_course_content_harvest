@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { compileQuery, fold, formAt, highlights, kwic, prepareDocs, search, wordForms } from './index.js'
+import { compileQuery, fold, formAt, highlights, inSection, kwic, parseQuery, prepareDocs, search, wordForms } from './index.js'
 
 const PLANS = [
   { id: 'a', text: 'Emnet gir innføring i fremmedspråksdidaktikk og morsmålsdidaktikk.' },
@@ -155,6 +155,44 @@ describe('sections', () => {
       ['', 'lesing'],
       ['learning_outcomes', 'dybdelæring'],
     ])
+  })
+})
+
+describe('searching in one section (the header control)', () => {
+  const sdocs = prepareDocs([
+    { id: 1, text: 'x', sections: { learning_outcomes: 'samisk kultur', course_content: 'urfolk' } },
+    { id: 2, text: 'x', sections: { learning_outcomes: 'samisk og urfolk', course_content: 'lesing' } },
+    { id: 3, text: 'samisk urfolk', sections: { course_content: 'samisk urfolk' } },
+    { id: 4, text: 'x', sections: { learning_outcomes: 'lesing praksis' } },
+  ])
+  const sids = (q, opts) => search(sdocs, compileQuery(q), opts).map((r) => r.id)
+  const LO = 'learning_outcomes'
+  it('puts the section prefix on the whole query', () => {
+    expect(inSection('samisk content:urfolk', LO)).toBe('outcomes:(samisk content:urfolk)')
+    expect(inSection(' samisk ', 'course_content')).toBe('content:(samisk)')
+    expect(inSection('samisk', null)).toBe('samisk')
+    expect(inSection('', LO)).toBe('')
+    expect(inSection('samisk (', LO)).toBe('samisk (') // an error stays where it is
+    expect(inSection('"samisk', LO)).toBe('"samisk')
+  })
+  it('lets a term\'s own prefix win for that term', () => {
+    const t = parseQuery(inSection('samisk content:urfolk -praksis', LO)).terms
+    expect(t.map((x) => [x.key, x.section])).toEqual([
+      ['outcomes:samisk', LO],
+      ['content:urfolk', 'course_content'],
+      ['outcomes:praksis', LO],
+    ])
+    expect(sids(inSection('samisk content:urfolk', LO))).toEqual([1])
+    expect(sids(inSection('samisk content:urfolk', LO))).toEqual(sids('outcomes:samisk content:urfolk'))
+  })
+  it('matches as the prefix on every term, and as search\'s section option', () => {
+    for (const q of ['samisk', 'samisk urfolk', 'samisk OR lesing', '-samisk', '/urfolk|lesing/', '(samisk OR urfolk) -praksis'])
+      for (const scope of ['plan', 'section', 'paragraph']) {
+        const got = sids(inSection(q, LO), { scope })
+        expect(got).toEqual(sids(q, { scope, section: LO }))
+      }
+    expect(sids(inSection('samisk urfolk', LO))).toEqual(sids('outcomes:samisk outcomes:urfolk'))
+    expect(sids(inSection('-samisk', LO))).toEqual([3, 4]) // plans without the section included, as -outcomes:samisk
   })
 })
 
