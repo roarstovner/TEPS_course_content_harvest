@@ -64,6 +64,7 @@
     facts             = ic$facts,
     heading           = ic$section_heading_selector %||% "h2",
     sub               = ic$section_subheading_selector,
+    sub_exact         = isTRUE(ic$section_subheading_exact),
     sub_map           = ic$section_headings,
     scope             = ic$section_scope,
     initial           = ic$section_initial,
@@ -256,7 +257,7 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
       role <- if (is.na(sec) && grepl(.component_prefix, stringr::str_squish(txt), perl = TRUE)) "sub" else "heading"
       out$add(role, txt, sec, g = tag)
     } else if (identical(mark, "sub")) {
-      .sub_blocks(node, out$add, cfg$sub_map)
+      .sub_blocks(node, out$add, cfg$sub_map, cfg$sub_exact)
     } else if (identical(mark, "label")) {
       # each item (a list's <li>, else a child element: ldh's facts box of
       # <p>s) opens its section by an empty heading; its text continues the
@@ -352,7 +353,11 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
                              "oppmøte|frammøte|fremmøte|deltak|deltag)")
 
 # A sub-heading candidate (`section_subheading_selector`) as blocks. Heading
-# tags (h3-h6) are sub-headings, mapped like headings; an unmapped one
+# tags (h3-h6) are sub-headings, mapped like headings, or only by their whole
+# text with `exact` (`section_subheading_exact`, nmh: its h3s name course
+# topics and exam parts, "Orgelkunnskap", "Dokumentere gjennomført
+# eksamenskonsert 1", which substring patterns would map to learning outcomes
+# and assessment; 2026-11-26); an unmapped one
 # (<h3>Karakterskala</h3>) stays as a line of the enclosing section. Any other
 # element (a <p>) is a sub-heading when
 #   - its whole text names a section exactly;
@@ -373,14 +378,20 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
 #     the whole paragraph kept (the fulltext does not change), and the group
 #     labels under it ("Vurderingskriterier:") stay in it (sectionize()).
 # Otherwise it is text.
-.sub_blocks <- function(node, add_block, sub_map = NULL) {
+.sub_blocks <- function(node, add_block, sub_map = NULL, exact = FALSE) {
   raw <- rvest::html_text2(node)
   sq <- stringr::str_squish(raw)
   if (!nzchar(sq)) return(invisible())
   tag <- tolower(xml2::xml_name(node))
-  if (grepl("^h[1-6]$", tag))
-    return(add_block("sub", raw, dplyr::coalesce(.exact_section(sq, sub_map, map = FALSE), match_heading_to_section(sq)),
-                     g = tag))
+  if (grepl("^h[1-6]$", tag)) {
+    exact <- isTRUE(exact)
+    sec <- if (exact) .exact_section(sq, sub_map) else
+      dplyr::coalesce(.exact_section(sq, sub_map, map = FALSE), match_heading_to_section(sq))
+    # with `exact`, an unmapped one is a line of the section the walk is in,
+    # not a return to the heading's ("1. Obligatorisk deltagelse ..." under
+    # an h3 "Arbeidskrav" inside "Organisering")
+    return(add_block(if (exact && is.na(sec)) "text" else "sub", raw, sec, g = tag))
+  }
   # pieces of one paragraph: the first is tagged "p", the rest "p+"
   first <- TRUE
   add <- function(r, t, s = NA_character_, k = FALSE) {

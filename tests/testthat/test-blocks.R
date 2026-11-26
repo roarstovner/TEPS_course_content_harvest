@@ -94,6 +94,19 @@ test_that("a numbered coursework requirement is a kept coursework sub-heading", 
   }
 })
 
+test_that("with section_subheading_exact, heading tags map only by their whole text (nmh)", {
+  page <- "<main><h2>Innhold</h2><h3>Orgelkunnskap</h3><h3>Avsluttende vurdering</h3>
+    <h3>Pensum</h3><h3>Anbefalt litteratur</h3></main>"
+  map <- c("pensum" = "reading_list", "anbefalt litteratur" = "reading_list")
+  b <- page_blocks(page, NA, html_reader(sub = "h3", sub_map = map, sub_exact = TRUE))
+  # an unmapped one is a line of the section the walk is in
+  expect_equal(roles(b), c("heading:course_content", "text:NA", "sub:assessment",
+                           "sub:reading_list", "sub:reading_list"))
+  # without it a substring pattern maps a topic ("kunnskap")
+  b <- page_blocks(page, NA, html_reader(sub = "h3", sub_map = map))
+  expect_equal(b$section[2], "learning_outcomes")
+})
+
 test_that("a paragraph in a list item is text unless the item holds a heading", {
   b <- page_blocks("<main><h2>Innhold</h2><ul><li><p>Pensum</p></li></ul>
     <ul><li><h2>Vurdering</h2><p>Pensum</p></li></ul></main>", NA, html_reader(sub = "p"))

@@ -538,7 +538,18 @@ institution_configs <- list(
                          "forhåndskrav" = ".admission", "anbefalte forkunnskaper" = ".admission",
                          "forkunnskaper" = ".admission", "prerequisites" = ".admission",
                          "pensum" = "reading_list", "avsluttende vurdering" = "assessment",
-                         "final assessment" = "assessment", "tillatte avhandlingsspråk" = "assessment"),
+                         "final assessment" = "assessment", "tillatte avhandlingsspråk" = "assessment",
+                         "anbefalt litteratur" = "reading_list"),
+    # h3s in the body are sub-headings, mapped only by their whole text: the
+    # exam's "Avsluttende vurdering" after the numbered requirements under
+    # "Arbeidskrav" (KUNSTHO71B), "Pensum", "Pensumlitteratur" and
+    # "Anbefalt litteratur" under "Avsluttende vurdering" (ALEX20); the rest
+    # (exam parts, course topics, "1. Offentlige fremføringer") stay lines of
+    # their section (2026-11-26). Only h3s after an h2 heading: a page with
+    # h3s for headings and no h2 (PERFPRAK20, DANS22, PRAKSADM20) is read
+    # from its text as before
+    section_subheading_selector = "//main//h3[preceding::*[@data-block='heading']]",
+    section_subheading_exact = TRUE,
     # the summary list: first in the plan's text, before its first h2 (in an
     # element the reader walks anyway, so the fulltext stays as it was)
     section_label_selector = paste0("//main[@id='main']//div[contains(@class, 'text-content') and ",

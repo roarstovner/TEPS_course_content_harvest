@@ -862,6 +862,33 @@ test_that("nmh: English headings and lettered components keep their text", {
   expect_equal(s[["teaching_methods"]], "Rehearsals.")
 })
 
+test_that("nmh: h3s in the body open a section only by their whole text", {
+  cfg <- .block_cfg(get_institution_config("nmh"))
+  page <- function(x) paste0("<main id='main'><section><div class='text__content text-content'>", x,
+                             "</div></section></main>")
+  # KUNSTHO71B: the exam after the numbered requirements; ALEX20: the reading list
+  s <- sections_of(page(paste0(
+    "<h2>Innhold</h2><p>Folkemusikk.</p><h3>Orgelkunnskap</h3><p>Registrering.</p>",
+    "<h2>Arbeidskrav</h2><h3>1. Offentlige fremføringer</h3><p>45 minutter.</p>",
+    "<h3>Avsluttende vurdering</h3><p>Vurdering fra faglærer.</p>",
+    "<h3>Pensumlitteratur</h3><ul><li>F. M. Alexander, The Use of the Self</li></ul>",
+    "<h3>Anbefalt litteratur</h3><ul><li>M. Gelb, Body Learning</li></ul>")), cfg)
+  expect_equal(s[["course_content"]], "Folkemusikk.\nOrgelkunnskap\nRegistrering.")
+  expect_equal(s[["coursework_requirements"]], "1. Offentlige fremføringer\n45 minutter.")
+  expect_equal(s[["assessment"]], "Vurdering fra faglærer.")
+  expect_match(s[["reading_list"]], "^F. M. Alexander.*\nAnbefalt litteratur\nM. Gelb")
+  # UTHO20: numbered requirements under an h3 "Arbeidskrav" inside "Organisering" stay with it
+  s <- sections_of(page(paste0(
+    "<h2>Organisering</h2><p>Ukentlig veiledning.</p><h3>Arbeidskrav</h3>",
+    "<h3>1. Obligatorisk deltagelse på forum</h3><p>Det forventes aktiv deltagelse.</p>",
+    "<h3>2. Levere hovedinstrumentrapport</h3><p>Innen 15. april.</p>")), cfg)
+  expect_equal(s[["teaching_methods"]], "Ukentlig veiledning.")
+  expect_match(s[["coursework_requirements"]], "1. Obligatorisk deltagelse på forum\nDet forventes.*2. Levere")
+  # PERFPRAK20: h3s and no h2 are no sub-headings (the page is read from its text)
+  b <- page_blocks(page("<h3>Learning Objectives</h3><p>Interpret.</p><h3>Final assessment</h3><p>Pass.</p>"), NA, cfg)
+  expect_false(any(b$role == "sub"))
+})
+
 test_that("nmh: the summary list's fields (section_label_selector)", {
   cfg <- .block_cfg(get_institution_config("nmh"))
   summary <- paste0(

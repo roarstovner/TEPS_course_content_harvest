@@ -3240,6 +3240,38 @@ its own (25 pages drawn of each institution with the heading): OsloMet's
 which already kept it as a line, and nothing changes. `course_plan` and the
 plan ids do not change. *Since:* 2026-11-26.
 
+**NMH: sub-headings in the plan body map only by their whole text.**
+NMH's plans put `h3`s under an `h2` for course topics ("Orgelkunnskap"),
+exam parts ("Dokumentere gjennomført eksamenskonsert 1"), numbered
+requirements ("1. Offentlige fremføringer") and now and then a part of the
+plan: the exam's "Avsluttende vurdering" after the numbered requirements
+under "Arbeidskrav" (KUNSTHO71B), "Pensum", "Pensumlitteratur" and
+"Anbefalt litteratur" under "Avsluttende vurdering" (ALEX20). Read as text,
+the exam stayed in coursework and the reading list in assessment. Now an
+`h3` after an `h2` is a sub-heading that maps only by its whole text
+(`section_subheading_exact`; "Anbefalt litteratur" joins NMH's
+`section_headings`), and an unmapped one is a line of the section it is in.
+Pages with `h3` headings and no `h2` (PERFPRAK20, DANS22, PRAKSADM20 before
+autumn 2024) are read from their text as before. *Why:* close-out sections
+audit, 2026-11-25. *Rejected:* the substring patterns of the heading map
+for these `h3`s (they read course topics and exam parts as learning
+outcomes and assessment); an unmapped `h3` handing the text back to its
+`h2`'s section, as at other institutions (UTHO20's numbered requirements
+under an `h3` "Arbeidskrav" inside "Organisering" fell back to teaching
+methods); every `h3` as a sub-heading (the pages without an `h2` lost all
+their sections: 10 pages in the first preview). *Consequence* (all raw NMH
+pages, before and after): 232 pages and 456 section rows change, and no
+page loses section text (the largest net change is -31 characters,
+ALEX20). Lines move from assessment to the reading list (332), from course
+content to the reading list (104), from coursework to assessment (83, the
+exam after the requirements), from course content and coursework to
+practice (30; 15 pages gain a practice section), and 55 otherwise; heading
+labels now read as headings leave the text (Pensum 111, Ny vurdering 76,
+Avsluttende vurdering 43, Arbeidskrav 33, Praksis 15). PRAKSADM20 from
+autumn 2024 gets course content (its "Innhold" text was in learning
+outcomes). `course_plan` changes on 9 PIANO21 pages by one blank line after
+the `h3` "Final assessment", and their plan ids change. *Since:* 2026-11-26.
+
 **Barratt Due: the PPU degree requirement, stock resit rules, the
 electives' admission rule.** The PPU plans' prerequisite field "Krav til
 forkunnskaper: Bachelorgrad i musikk og Opptak til Praktisk-pedagogisk

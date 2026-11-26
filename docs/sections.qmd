@@ -116,7 +116,12 @@ Fields for the `html` reader:
   out); one naming the section already open ("Kunnskap") stays as content. A
   `<p>` in a list item is skipped unless that `<li>` holds a section heading
   (oslomet's accordion). An unmapped `h3` hands its text
-  back to the parent section, keeping the heading as its first line. A
+  back to the parent section, keeping the heading as its first line.
+  With `section_subheading_exact` (nmh, whose `h3`s after an `h2` name
+  topics, exam parts and numbered requirements), a heading tag maps only by
+  its whole text ("Avsluttende vurdering", "Pensumlitteratur", "Anbefalt
+  litteratur"), not by a substring pattern ("Orgelkunnskap" is no learning
+  outcome), and an unmapped one is a line of the section it is in. A
   colon-ended lead-in naming a coursework gate ("… følgende obligatoriske
   aktiviteter:") starts coursework_requirements. So does a numbered
   requirement, whole `<p>` or its leading `<em>`/`<strong>` run ("Arbeidskrav II:
