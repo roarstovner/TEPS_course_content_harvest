@@ -10,6 +10,18 @@ holds" and the entries it points to). Which code mechanism does what is in
 `methods.qmd` entry in the same commit. Where the current data do not yet
 follow the spec, it says so under "Known deviations".
 
+The harvest says what the page says and where; the coding project
+(`TEPS_course_content_coding`) says what it means. The harvest delivers the
+page's text, its sections, and the headings and labels that say what a
+passage is ("Anbefalte forkunnskaper", "Karakterskala", "Hjelpemidler til
+eksamen") as the page words them, together with DBH's fields. It uses none of
+the coding project's categories (no codes for grading scales, exam forms or
+required and recommended prior knowledge) and does not interpret wording. The
+coding project maps the source's words to its categories, reading only the
+published data, never the harvest's internal files or the pages. So a heading
+or label that qualifies the text under it stays as a line of its section
+(2026-11-26).
+
 ## Four kinds of text
 
 Getting the personal data out and getting the plan text into the right
@@ -156,6 +168,13 @@ without the title and facts box.
 The data built on 2026-10-16 do not yet follow
 the spec here:
 
+- The headings that say whether prior knowledge is required or recommended
+  ("Krav til forkunnskaper", "Absolutte forkunnskaper", "Anbefalte
+  forkunnskaper", "Tilrådde forkunnskapar") are not in `prerequisites` at
+  most institutions (the teacher-ed frame of 2026-11-25: none of 1,108 HVL,
+  864 NTNU, 620 HiØ and 557 UiB plans that have one), so a bare list there
+  ("Engelsk 1, 2, 3 og 4") does not say which it is. A fix is planned
+  (2026-11-26).
 - UiB's responsible unit, an unlabelled link in the page's sidebar, is not in
   `course_plan`. Every UiB offering has its unit from DBH (`department_name`).
 - A condition written with a season and a year loses both, with the

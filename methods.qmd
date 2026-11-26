@@ -1336,6 +1336,33 @@ assessment section. *Consequence:* the sections hold a median
 the spec where its "Known deviations" says; each fix gets its own
 entry here, with numbers. *Since:* 2026-10-13.
 
+**The harvest delivers the page's words; the coding says what they mean.**
+The harvest delivers the page's text, its sections, and the headings and
+labels that say what a passage is ("Anbefalte forkunnskaper",
+"Karakterskala", "Hjelpemidler til eksamen") as the page words them, with
+DBH's fields. It uses none of the coding project's categories and does not
+interpret wording; the coding project (TEPS_course_content_coding) maps the
+source's words to its categories and reads only the published data, not the
+harvest's internal files or the pages (`course_plan_spec.md`, agreed with the
+coding project). A heading or label that qualifies the text under it
+therefore stays as a line of its section. *Why:* the data serve uses beyond
+one coding project, so they should hold what the pages say, not one
+codebook's reading of it; a coding decision is documented and tested for
+reliability where it is made, and a change to a codebook needs no rebuild of
+the harvest. *Rejected:* coding categories in the harvest, such as a grading
+scale or exam form normalized to a code, or prior knowledge marked as
+required or recommended (the coding project codes these from the labels);
+coding from the pages or the harvest's internal files (they change with
+every build, while coding is tied to a release). *Consequence:* the headings
+that say whether prior knowledge is required or recommended are missing from
+`prerequisites` at most institutions (teacher-ed frame, build of
+2026-11-25: none of 1,108 HVL, 864 NTNU, 620 HiØ and 557 UiB plans that have
+one), a known deviation of the spec until it is fixed; the grading labels
+are kept ("Karakterskala" at UiB and UiO, NTNU's "Karakter:", HiØ's
+"Karakterregel" in the exam row; OsloMet's "Vurderingsuttrykk" since
+2026-11-26). For the same reason the hand-over to the coding project is to carry
+the page URL (planned). *Since:* 2026-11-26.
+
 **Status banners stay out of the plan.** UiO shows "Dette emnet er nedlagt"
 (discontinued) or "Dette emnet er erstattet av UV9040 – Research seminar." in
 a banner above the page content. The banner is site chrome about the course's
