@@ -4,21 +4,62 @@
   "model": "gpt-6.2-sol",
   "n_courses_reviewed": 20,
   "n_suspects_reviewed": 14,
-  "overall_assessment": "NHH generally extracts the accordion sections cleanly, preserving all displayed learning-outcome groups and keeping admission text out of prerequisites, but both coursework leak flags are real and the controls also show assessment noise and lost labels. All seven empty flags and the short flag are false alarms (Papers., Lectures., ECS508., Presentation., Attendance., BED3, Pass/fail, and Karakterskala A-F are substantive). The four blob flags reflect source pages dominated by Topics or Innhold, and BEA528 is correctly content-only, while BUD5, EBO4 and MAB4 also embed teaching descriptions in their Topics text.",
+  "overall_assessment": "NHH generally preserves the main accordion sections, the displayed learning-outcome groups and labeled assessment values, though assessment logistics persist in both suspects and controls. All six empty flags are false alarms (Papers., Lectures., ECS508., Presentation., Attendance. and BED3), while both short flags identify pointer or test text and the sole leak flag identifies a real teaching boundary error in RET1. All five blob flags reflect source plans with one top-level substantive block, so the size alone is a false alarm for a failed split, although MAB4 has a missed pedagogy subsection and BUD5 and EBO4 embed teaching descriptions in their Topics prose.",
   "findings": [
     {
-      "target": "assessment",
+      "target": "learning_outcomes",
+      "error_type": "merged_sections",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "nhh_RET1-1_2026_autumn_1"
+      ],
+      "evidence": "Undervisningsopplegg\n\nForelesninger, seminar, oppgavekurs og innleveringsoppgaver på Canvas.",
+      "description": "RET1 has two Undervisningsopplegg blocks. The first is appended to learning_outcomes and the second supplies teaching_methods. The seminar appears only in the misplaced block. All actual outcome groups survive.",
+      "root_cause_hypothesis": "The NHH HTML reader sees the accordion heading but leaves the earlier standalone Undervisningsopplegg line inside the learning-outcome body as text.",
+      "suggested_fix": "In the NHH reader or .text_subheadings(), recognize the standalone Undervisningsopplegg line inside Læringsutbytte as a teaching_methods boundary. Keep distinct source statements in teaching_methods and collapse exact repeats.",
+      "confidence": "high"
+    },
+    {
+      "target": "teaching_methods",
+      "error_type": "missing_section",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "nhh_MAB4-1_2026_autumn_1"
+      ],
+      "evidence": "Pedagogical Approach:\n\nMAB4 adopts a problem-based, student-centric pedagogy, prioritizing the practical application of theoretical concepts through case studies and interactive discussions.",
+      "description": "MAB4 has an explicit pedagogy subsection inside Topics. Its teaching description is filed entirely under course_content and no teaching_methods row is emitted.",
+      "root_cause_hypothesis": "The NHH HTML reader classifies the outer Topics accordion and provides no inner boundary for the pedagogy subsection.",
+      "suggested_fix": "Recognize a standalone Pedagogical Approach label within NHH Topics as a teaching_methods opener, then return to course_content at Detailed Course Outline.",
+      "confidence": "high"
+    },
+    {
+      "target": "prerequisites",
       "error_type": "wrong_content",
       "severity": "high",
-      "prevalence": "occasional",
+      "prevalence": "rare",
       "example_course_ids": [
-        "nhh_BEA512-1_2026_autumn_1",
-        "nhh_ECS530-1_2026_autumn_1"
+        "nhh_BUS444N-1_2026_autumn_1"
       ],
-      "evidence": "Compulsory activities (work requirements) is valid for one semester after the semester it was obtained.",
-      "description": "Both coursework leak flags identify the validity period of approved coursework in assessment. BEA512 repeats the same sentence in coursework_requirements. ECS530 keeps the validity sentence only in assessment, leaving its coursework_requirements incomplete.",
-      "root_cause_hypothesis": "The gate patterns in R/extract_sections.R do not recognize NHH's English coursework-validity formula when it appears under Assessment.",
-      "suggested_fix": "Recognize the NHH validity sentence in .split_inline_coursework(), move it to coursework_requirements, and suppress a verbatim repeat already in that row.",
+      "evidence": "Godkjent obligatorisk aktivitet fra SKL402 er et krav for å kunne gå opp til vurdering i dette emnet. SKL402 og BUS444N kan tas i samme semester.",
+      "description": "BUS444N prerequisites contain a concurrent SKL402 coursework approval gate, exam registration and withdrawal instructions, and degree-profile rules alongside a genuine recommended statistics and methods prerequisite. The SKL402 approval condition is absent from coursework_requirements.",
+      "root_cause_hypothesis": "The NHH reader sends the whole Krav til forkunnskaper block to prerequisites, and prerequisite cleanup does not recognize the mixed SKL402 block.",
+      "suggested_fix": "Add an NHH-scoped rule matching the explicit SKL402 approval-for-assessment sentence and its concurrent-enrolment qualification to coursework_requirements. Strip the SKL402 exam-registration, withdrawal and degree-profile paragraphs and retain the recommended subject knowledge.",
+      "confidence": "high"
+    },
+    {
+      "target": "reading_list",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "nhh_RET1-1_2026_autumn_1"
+      ],
+      "evidence": "· Ordbok: èn tospråklig ordbok tillatt (kategori 1)\n\n· Kalkulator",
+      "description": "RET1 lists exam aids under Litteratur as well as under Hjelpemidler til eksamen. The dictionary permission, calculator and Category 2 aids block are filed as readings alongside the genuine textbook. The permitted-aids section already supplies exam aid information.",
+      "root_cause_hypothesis": "The Litteratur accordion is mapped as a whole to reading_list, leaving the aid list under the source heading and partly duplicating assessment.",
+      "suggested_fix": "In RET1, recognize the aids list starting at the explicit dictionary permission and ending with the Category 2 list. Compare those items with the labeled assessment aids and retain any distinct permissions there. Keep the textbook entry in reading_list.",
       "confidence": "high"
     },
     {
@@ -28,61 +69,41 @@
       "prevalence": "common",
       "example_course_ids": [
         "nhh_ECS509-1_2026_autumn_1",
-        "nhh_ECS530-1_2026_autumn_1",
-        "nhh_FIN539B-1_2026_autumn_1"
+        "nhh_ECN435-1_2026_autumn_1",
+        "nhh_EEU416-1_2026_autumn_1"
       ],
-      "evidence": "The assignment will be distributed in January. The submission deadline will be in April.",
-      "description": "The assessment rows retain assignment release and submission schedules, a submission platform, resit availability, and semester timing for graded sessions. The same issue occurs in suspects and in the FIN539B control. Exam duration, component weights and participation thresholds are assessment design and should be preserved.",
-      "root_cause_hypothesis": "The NHH accordion provides a single Assessment block for design and logistical prose, with no NHH-specific cleanup for these scheduling patterns in R/extract_sections.R.",
-      "suggested_fix": "Add NHH-scoped cleanup rules for standalone release, deadline, presentation scheduling and resit-availability sentences. Match the submission-platform and semester clauses separately where they share a sentence with the assessment design.",
+      "evidence": "The presentations will happen continuously throughout the course. Division of groups and dates for presentations will be done in January.",
+      "description": "Assessment retains presentation scheduling in ECS509, a term-paper deadline in ECN435, a relative deadline in ECS576, and an appeal rule in the EEU416 control. Standalone assignment release and deadline sentences in ECS509 are already removed. The surviving logistics are embedded in prose rather than an exam table.",
+      "root_cause_hypothesis": "The NHH rules in .logistics_sentences cover some stock release and submission sentences, but the remaining timing and appeal wordings escape those rules. Some deadlines share a sentence with the assessment design.",
+      "suggested_fix": "Extend NHH cleanup to the presentation-scheduling and standalone deadline and appeal variants observed here. For a relative deadline attached to the assessment form, remove only the scheduling clause and keep the assignment type, language, weights and any stated working time.",
       "confidence": "high"
     },
     {
-      "target": "assessment",
-      "error_type": "formatting_noise",
-      "severity": "medium",
-      "prevalence": "occasional",
+      "target": "course_content",
+      "error_type": "empty_placeholder",
+      "severity": "low",
+      "prevalence": "rare",
       "example_course_ids": [
-        "nhh_ECO422-1_2026_autumn_1",
-        "nhh_BED2-1_2026_autumn_1",
-        "nhh_BUS446-1_2026_autumn_1"
+        "nhh_SOL23-1_2026_autumn_1"
       ],
-      "evidence": "All in accordance with Supplementary provisions to the Regulations for Full-time Study Programmes at the Norwegian School of Economics Ch.4 Permitted support material",
-      "description": "The genuine permitted-aids list is followed by a standard regulations-and-links paragraph in four courses, including three random controls. The paragraph adds no course-specific aid permissions.",
-      "root_cause_hypothesis": "The mapped permitted-aids blocks carry their full body text into assessment, and .strip_section_noise() has no NHH rule for the standard Norwegian and English regulations paragraphs.",
-      "suggested_fix": "Strip the exact Norwegian and English NHH regulations-and-links paragraph variants following permitted-aids lists in assessment. Keep the heading and the course's stated aid permissions.",
+      "evidence": "Se de engelske sidene for emnebeskrivelse",
+      "description": "The expired SOL23 page yields a course_content row containing only a pointer to the English description. The packet supplies no subject text to extract.",
+      "root_cause_hypothesis": "The pointer survives .keep_section_row() because its wording is absent from .placeholder_phrases.",
+      "suggested_fix": "Drop a course_content row whose entire normalized text matches this English-page pointer, allowing optional terminal punctuation.",
       "confidence": "high"
     },
     {
-      "target": "assessment",
-      "error_type": "truncated",
-      "severity": "medium",
-      "prevalence": "widespread",
+      "target": "learning_outcomes",
+      "error_type": "empty_placeholder",
+      "severity": "low",
+      "prevalence": "rare",
       "example_course_ids": [
-        "nhh_ECO422-1_2026_autumn_1",
-        "nhh_ENE423-1_2026_autumn_1",
-        "nhh_FSK504-1_2026_autumn_1"
+        "nhh_TEST-1_2026_autumn_1"
       ],
-      "evidence": "Permitted Support Material\nCalculator\n\nOne bilingual dictionary (Category I)",
-      "description": "The English permitted-aids heading drops out even though the values survive. The Norwegian Hjelpemidler til eksamen heading is preserved. Grading Scale and Vurderingsuttrykk likewise lose their labels, leaving bare A-F or Pass/fail values. The assessment specification calls for keeping these design details with their headings.",
-      "root_cause_hypothesis": "R/section_heading_map.R maps these headings to assessment but leaves them out of section_heading_patterns$label, so sectionize() omits their labels.",
-      "suggested_fix": "Include Permitted Support Material, Grading Scale and Vurderingsuttrykk in the assessment label handling used by sectionize(). Preserve genuine short scales and aids values.",
-      "confidence": "high"
-    },
-    {
-      "target": "cross_section",
-      "error_type": "wrong_content",
-      "severity": "medium",
-      "prevalence": "common",
-      "example_course_ids": [
-        "nhh_MAB4-1_2026_autumn_1",
-        "nhh_FIN539B-1_2026_autumn_1",
-        "nhh_ECN435-1_2026_autumn_1"
-      ],
-      "evidence": "Pedagogical Approach:\n\nMAB4 adopts a problem-based, student-centric pedagogy, prioritizing the practical application of theoretical concepts through case studies and interactive discussions.",
-      "description": "The source puts identifiable teaching passages under Topics. MAB4 has an explicit Pedagogical Approach subsection, while EBO4 describes lectures, supervised group assignments and guest lectures in its topic narrative. Both lack a teaching_methods row. ECN435 has a teaching_methods row but its separate paragraph on lectures, problem sets, and proposal feedback stays in course_content. The FIN539B control also leaves an instruction to participate in class discussions in reading_list.",
-      "root_cause_hypothesis": "The NHH HTML reader recognizes the outer accordion heading, and sectionize() gives its body the outer section's classification. The subsequent sentence moves have no NHH rule for an explicit embedded pedagogy heading.",
-      "suggested_fix": "Recognize a standalone Pedagogical Approach line in NHH Topics as an embedded teaching_methods heading, ending at the next labeled subsection. Use narrowly matched sentence moves for recurring standalone descriptions of the teaching format. Scope a separate sentence move to the NHH class-discussion instruction under Literature.",
+      "evidence": "Læringsutbytte på bokmål\n\nTekst om hva du lærer",
+      "description": "The TEST Testemne page emits dummy labels and sample copy as learning_outcomes. Its separate teaching and application prompts are also dummy text.",
+      "root_cause_hypothesis": "The two mapped outcome headings lead to a section body which passes the whole-row placeholder check.",
+      "suggested_fix": "Suppress this known NHH test stub by matching the TEST Testemne title and the emitted placeholder body together.",
       "confidence": "high"
     }
   ]

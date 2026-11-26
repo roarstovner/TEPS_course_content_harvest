@@ -2,56 +2,10 @@
   "check": "sections",
   "institution": "fjellhaug",
   "model": "gpt-6.2-sol",
-  "n_courses_reviewed": 17,
-  "n_suspects_reviewed": 14,
-  "overall_assessment": "Course descriptions and learning outcomes were generally intact in the packet, but seven of the 17 courses placed graded assessment components in coursework requirements. All four coursework-to-assessment leak flags were confirmed, and the reverse flag on BTM2001 was triggered by prose about access to an alternative exam after the actual requirements had been separated. The prerequisite empty flags all contained real prerequisites, with an extra placeholder on PT1501, while BTM1002’s empty assessment flag flagged a bare exam-aid value and the random controls exposed further issues with exam-aid labels, coursework wording, and reading-list placement.",
+  "n_courses_reviewed": 16,
+  "n_suspects_reviewed": 12,
+  "overall_assessment": "Learning outcomes and graded assessment descriptions, including the prose and table variants, were generally intact across all 16 courses. All 12 prerequisite empty flags came from genuine short values, with one stray placeholder in PT1501, and the BTM2001 leak flag came from a wrapped sentence about switching exam routes after the coursework gates had already been extracted. Unflagged errors included coursework requirements filed under teaching methods, a flawed attendance split and misplaced portfolio submission instructions in the BTM2506 control, and assigned readings left in course content in the GT606 control.",
   "findings": [
-    {
-      "target": "coursework_requirements",
-      "error_type": "merged_sections",
-      "severity": "high",
-      "prevalence": "occasional",
-      "example_course_ids": [
-        "fjellhaug_PT2005-1_2026_autumn_1",
-        "fjellhaug_KRLE1001N-1_2026_autumn_1",
-        "fjellhaug_KRLE1003N-1_2026_autumn_1"
-      ],
-      "evidence": "Vurderingsform\tVarighet\tVarighetstype\nMuntlig eksamen på nett\t20\tminutter\nEndelig vurdering i emnet skjer på grunnlag av muntlig eksamen.",
-      "description": "In PT2005 and all three KRLE suspects, tables describing graded exams or final assignments and the grading text that follows them appear after genuine coursework gates in coursework_requirements. All four leak->assessment flags refer to these tables. KRLE1003N has an assessment row for exam aids, but the graded home assignment is entirely absent from that row.",
-      "root_cause_hypothesis": "The assessment table arrives as text under the open coursework subheading. The table's Vurderingsform column header is visible in the row but is absent from the packet's list of read headings, so sectionize() never switches back to assessment at that point.",
-      "suggested_fix": "For Fjellhaug, detect tables whose first column is Vurderingsform and whose other columns describe duration, scope or weighting inside the assessment section. Start an assessment block at the table, keep its header and design rows, and keep subsequent grading prose in assessment until the next mapped boundary.",
-      "confidence": "high"
-    },
-    {
-      "target": "coursework_requirements",
-      "error_type": "merged_sections",
-      "severity": "high",
-      "prevalence": "occasional",
-      "example_course_ids": [
-        "fjellhaug_BTM1002-1_2026_autumn_1",
-        "fjellhaug_BTM2010-1_2026_autumn_1",
-        "fjellhaug_PT1501-1_2026_autumn_1"
-      ],
-      "evidence": "Sluttvurdering Skriftlig skoleeksamen med varighet på 5 timer.\nVed karakterfastsettelse benyttes en gradert karakterskala fra A til F, der E er laveste ståkarakter.",
-      "description": "Prose describing graded final assignments and exams stays attached to the preceding Arbeidskrav in three courses. In BTM1002, assessment retains only the exam-aid value. In BTM2010, it retains introductory text and an aid value, while both final assessment options are filed under coursework. PT1501 has no assessment row despite the final written assignment. The leak pre-pass missed these prose boundaries.",
-      "root_cause_hypothesis": "Sluttvurdering has no mapped assessment boundary. In these layouts the reader also fails to emit it as a separate subheading, as seen in the inline BTM1002 wording and its absence from the heading list in all three examples.",
-      "suggested_fix": "Add an exact Fjellhaug subheading mapping from Sluttvurdering to assessment. In R/blocks.R, recognize it both as a standalone line and at the start of a paragraph with assessment prose, including when the label and description share a line. Leave the preceding Arbeidskrav in coursework_requirements.",
-      "confidence": "high"
-    },
-    {
-      "target": "coursework_requirements",
-      "error_type": "truncated",
-      "severity": "high",
-      "prevalence": "rare",
-      "example_course_ids": [
-        "fjellhaug_PT1501-1_2026_autumn_1"
-      ],
-      "evidence": "Oppmøte og fravær\n\nFor å kunne få sluttvurdering i emnet må studenten ha fullført følgende krav",
-      "description": "A separate attendance section explicitly introduces requirements for receiving final assessment, but its text is absent from the extracted coursework requirements. The packet shows the gate statement and caps the source before the detailed conditions.",
-      "root_cause_hypothesis": "The reader recognizes Oppmøte og fravær as a top-level heading, but its unmapped value closes the current section and leaves subsequent blocks without a destination.",
-      "suggested_fix": "Map the exact Fjellhaug heading Oppmøte og fravær to coursework_requirements so the attendance gate is retained alongside the other requirements.",
-      "confidence": "high"
-    },
     {
       "target": "teaching_methods",
       "error_type": "wrong_content",
@@ -63,25 +17,81 @@
         "fjellhaug_PT1501-1_2026_autumn_1"
       ],
       "evidence": "Som et arbeidskrav skal studentene i emnet delta ved en apologetikkonferanse.",
-      "description": "Teaching methods contains explicit or separately corroborated coursework gates. PT2005's conference attendance appears only in teaching methods. The repeated draft-submission wording in PT2005, BTM2006 and BTM2010 and the retreat and logged exercises in PT1501 also describe requirements already listed under Arbeidskrav.",
-      "root_cause_hypothesis": "The coursework pass for teaching_methods is oriented around headings. It leaves explicit coursework sentences and recurring restatements of the same gates under Organisering og arbeidsmåter.",
-      "suggested_fix": "Add a Fjellhaug rule that moves full sentences beginning Som et arbeidskrav into coursework_requirements. When the existing requirements already specify the same draft submission or retreat and exercise log, remove the redundant requirement sentence from teaching_methods and keep any separate guidance or supervision text there.",
+      "description": "PT2005's mandatory conference attendance appears only in teaching methods. PT2005, BTM2006 and BTM2010 also repeat the required draft submission there, and PT1501 repeats the required retreat and exercise log. Those gates belong in coursework requirements, alongside the existing details for the ones already recorded there.",
+      "root_cause_hypothesis": "The teaching-methods pass in .split_inline_coursework() recognizes established gate and attendance forms, but misses the explicit Som et arbeidskrav lead and the recurring restatements of gates stated more fully elsewhere in the plan.",
+      "suggested_fix": "Within Fjellhaug's teaching-methods blocks, route sentences beginning Som et arbeidskrav skal to coursework requirements. For the recurring draft-submission sentence, keep the guidance and feedback in teaching methods and use the fuller submission requirement already in coursework requirements when present. Apply the same check to PT1501's retreat and exercise-log requirements.",
+      "confidence": "high"
+    },
+    {
+      "target": "cross_section",
+      "error_type": "wrong_content",
+      "severity": "high",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "fjellhaug_BTM2506-DK1_2026_autumn_1"
+      ],
+      "evidence": "Arbeidsmetodene krever aktiv deltakelse fra studentene, som ikke må ha et fravær på mer enn 30%.",
+      "description": "The BTM2506 control's teaching row consists only of a participation sentence with an explicit 30% absence limit. The preceding sentence describing 40 hours of lectures and seminars was moved in full to coursework requirements because it mentions compulsory attendance. The teaching design and the operative attendance rule are in the wrong rows.",
+      "root_cause_hypothesis": ".split_inline_coursework() evaluates attendance one sentence at a time. It matches obligatorisk oppmøte inside the mixed teaching sentence and misses the quantified limit written as a relative clause in the following sentence.",
+      "suggested_fix": "For Fjellhaug, keep the opening teaching sentence with the lecture and seminar details when it contains med obligatorisk oppmøte and the immediately following sentence sets a numerical absence limit. Move that following sentence verbatim to coursework requirements.",
+      "confidence": "high"
+    },
+    {
+      "target": "coursework_requirements",
+      "error_type": "wrong_content",
+      "severity": "medium",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "fjellhaug_BTM2506-DK1_2026_autumn_1"
+      ],
+      "evidence": "Mappeoppgavene bedømmes samlet.",
+      "description": "The BTM2506 control lists submission instructions for the portfolio tasks as coursework requirements. The final-assessment section identifies those same tasks as the contents of the graded portfolio. The instructions specify what makes up the graded submission, with no separate approval gate stated for those tasks.",
+      "root_cause_hypothesis": "The Arbeidskrav subheading sets the section before .text_subheadings() switches at Sluttvurdering. That switch does not reassess the preceding submission instructions in light of the graded portfolio wording.",
+      "suggested_fix": "For Fjellhaug, route the clauses on the number and submission of mappeoppgaver to assessment when the following Sluttvurdering explicitly makes those same tasks the contents of the graded portfolio and the source states no separate approval condition. Keep mandatory attendance in coursework requirements.",
+      "confidence": "high"
+    },
+    {
+      "target": "course_content",
+      "error_type": "merged_sections",
+      "severity": "medium",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "fjellhaug_GT606-1_2026_autumn_1"
+      ],
+      "evidence": "Israel og folkeslagene (9 sider)\nDeut 7:1-26; Deut 20:10-20; Jes 10:1-34; Esek 28:1-19; Amos 1-2; Mika 4:1-5",
+      "description": "The GT606 control's subject description includes a separate list of six syllabus options with assigned passages and page counts. The reading list captures the books under Pensumlitteratur but omits the six options.",
+      "root_cause_hypothesis": "The reading choices are inside Emnets innhold and the heading reader provides no separate boundary for the lead-in and its passage groups.",
+      "suggested_fix": "In Fjellhaug's course-content blocks, recognize the lead-in Studenten skal velge ett av de følgende seks tekstområder when followed by named groups with page counts and biblical citations. Route the full group of choices, including the substitution note, to the reading list up to the next main heading.",
       "confidence": "high"
     },
     {
       "target": "assessment",
-      "error_type": "truncated",
-      "severity": "medium",
+      "error_type": "wrong_content",
+      "severity": "low",
+      "prevalence": "rare",
+      "example_course_ids": [
+        "fjellhaug_BTM2503-DK1_2026_autumn_1"
+      ],
+      "evidence": "Det er faglærer som bestemmer innhold og tidsfrister for gjennomføring av arbeidskrav",
+      "description": "BTM2503's assessment row starts with a sentence about who defines coursework content and deadlines. The two preceding sentences from the same source paragraph were moved into coursework requirements, leaving their continuation under assessment.",
+      "root_cause_hypothesis": "The gate match moves the approval sentence and its antecedent but stops before the next sentence because it does not independently express an exam gate.",
+      "suggested_fix": "When the Fjellhaug gate pass moves the approval sentences, include the immediately following stock sentence about the instructor setting coursework content and deadlines, with or without final punctuation.",
+      "confidence": "high"
+    },
+    {
+      "target": "assessment",
+      "error_type": "formatting_noise",
+      "severity": "low",
       "prevalence": "common",
       "example_course_ids": [
-        "fjellhaug_BTM1002-1_2026_autumn_1",
-        "fjellhaug_BTM2501-1_2026_autumn_1",
-        "fjellhaug_KRLE1001N-1_2026_autumn_1"
+        "fjellhaug_BTM2001-1_2026_autumn_1",
+        "fjellhaug_BTM2010-1_2026_autumn_1",
+        "fjellhaug_RLE1007N-1_2026_autumn_1"
       ],
-      "evidence": "Hjelpemiddeliste ved eksamen\n\nListe A",
-      "description": "The exam-aid heading is dropped for Fjellhaug's Hjelpemiddeliste and Hjelpemiddelliste variants, leaving detached values such as Liste A, Liste B, Liste E or Ingen in assessment. The empty flag for BTM1002 detects a short genuine exam-aid value whose heading and graded exam are both missing from the assessment row. BTM2501 also retains an N/A value after the real exam description, while the BTM2508 control's N/A is removed.",
-      "root_cause_hypothesis": "The variants map to assessment but do not match the exact label-preserving patterns. Once values have been merged with the assessment text, placeholder cleanup may retain them.",
-      "suggested_fix": "Add exact assessment mappings for Hjelpemiddeliste ved eksamen and Hjelpemiddelliste ved eksamen and register both as retained labels. Drop a source exam-aid block with only N/A or a dash before merging, and retain the heading with meaningful values including Ingen.",
+      "evidence": "Ved stryk får studentene anledning til å ta ny eksamen i perioden for ny/utsatt eksamen. Ny eksamen blir gitt som sekstimers hjemmeeksamen.",
+      "description": "Four alternative-assessment BTM plans retain a stock sentence on access to and timing of the resit next to a separate sentence specifying its form and duration. RLE1007N also keeps a standalone notice about when submission deadlines are announced. These notices are exam logistics.",
+      "root_cause_hypothesis": "The institution has no matching entries for these standalone sentences in .logistics_sentences.",
+      "suggested_fix": "Add Fjellhaug sentence patterns for the exact resit-period notice and the standalone sentence Frister for innleveringer blir kunngjort ved starten av semesteret. Preserve the adjacent resit design and coursework deadlines stated as conditions for exam access.",
       "confidence": "high"
     },
     {
@@ -93,68 +103,9 @@
         "fjellhaug_PT1501-1_2026_autumn_1"
       ],
       "evidence": "**prerequisites** (14 chars)  ⚑ flags: empty\n\n````\nBTM1001\n\nIngen",
-      "description": "A bare Ingen from a separate prerequisite block is appended to PT1501's real BTM1001 prerequisite. The empty flag is a false alarm about row emptiness, but it surfaced a real stray placeholder. The other short flagged prerequisite rows contain course codes or Latin.",
-      "root_cause_hypothesis": "Prerequisite blocks are joined before placeholder cleanup, which does not drop the final placeholder after a code lacking sentence punctuation.",
-      "suggested_fix": "Filter standalone placeholder-only prerequisite blocks before concatenating the required and recommended prerequisite text. Preserve BTM1001 and other short real requirements.",
-      "confidence": "high"
-    },
-    {
-      "target": "assessment",
-      "error_type": "wrong_content",
-      "severity": "low",
-      "prevalence": "occasional",
-      "example_course_ids": [
-        "fjellhaug_BTM2503-DK1_2026_autumn_1",
-        "fjellhaug_HEB1501-1_2026_autumn_1"
-      ],
-      "evidence": "Det er faglærer som bestemmer innhold og tidsfrister for gjennomføring av arbeidskrav.",
-      "description": "The shared coursework introduction is split. Its first two gate sentences move to coursework_requirements, but the recurring sentence specifying who sets the coursework content and deadlines remains in assessment. The HEB1501 random control shows the same result as BTM2503.",
-      "root_cause_hypothesis": "The sentence-level coursework gate pass matches the approval condition but leaves the adjacent stock coursework sentence behind.",
-      "suggested_fix": "Extend the Fjellhaug gate move to take the following stock sentence about who sets the requirements and deadlines when it immediately follows the matched coursework approval condition.",
-      "confidence": "high"
-    },
-    {
-      "target": "assessment",
-      "error_type": "formatting_noise",
-      "severity": "low",
-      "prevalence": "occasional",
-      "example_course_ids": [
-        "fjellhaug_BTM2001-1_2026_autumn_1",
-        "fjellhaug_BTM2006-1_2026_autumn_1",
-        "fjellhaug_BTM2009-1_2026_autumn_1"
-      ],
-      "evidence": "Ved stryk får studentene anledning til å ta ny eksamen i perioden for ny/utsatt eksamen. Ny eksamen blir gitt som sekstimers hjemmeeksamen.",
-      "description": "Assessment retains a recurring resit scheduling notice beside a separate sentence that gives the replacement exam form and duration.",
-      "root_cause_hypothesis": "Fjellhaug has no assessment cleanup rule for this stock resit scheduling sentence.",
-      "suggested_fix": "Add a Fjellhaug logistics rule for the exact sentence beginning Ved stryk får studentene anledning and ending i perioden for ny/utsatt eksamen. Keep the following sentence specifying the replacement assessment.",
-      "confidence": "high"
-    },
-    {
-      "target": "course_content",
-      "error_type": "merged_sections",
-      "severity": "medium",
-      "prevalence": "rare",
-      "example_course_ids": [
-        "fjellhaug_GRE1002-1_2026_autumn_1"
-      ],
-      "evidence": "Tekster\nJoh. 1,1-34 (2,5 s)\nJoh. 2,13-5,30 (10 s)\nTil sammen 12,5 sider fra Nestle-Aland Novum Testamentum Graece",
-      "description": "The GRE1002 control appends an itemized block of assigned passages and page counts to course_content. Its existing reading_list gives the edition and other materials but omits those passage assignments.",
-      "root_cause_hypothesis": "The reader emits Tekster as an unmapped subheading and sectionize() leaves its block with the parent course_content.",
-      "suggested_fix": "Route a Fjellhaug Tekster subheading under Emnets innhold to reading_list when it introduces itemized citations with page counts. Preserve the descriptive paragraphs before that subheading in course_content.",
-      "confidence": "high"
-    },
-    {
-      "target": "course_content",
-      "error_type": "formatting_noise",
-      "severity": "low",
-      "prevalence": "rare",
-      "example_course_ids": [
-        "fjellhaug_GRE1002-1_2026_autumn_1"
-      ],
-      "evidence": "Les mer\nTekstene fra Johannesevangeliet er valgt ut fra to hensyn.",
-      "description": "The GRE1002 control includes a standalone Les mer interface label in the section text.",
-      "root_cause_hypothesis": "The Fjellhaug reader includes the control label in the text it passes to the sectionizer.",
-      "suggested_fix": "Remove the exact standalone Les mer line for Fjellhaug at section cleanup, preserving the following expanded prose.",
+      "description": "PT1501 appends a standalone Ingen from the recommended-prerequisite block to its required BTM1001. The row contains a real prerequisite and falls below the pre-pass length threshold, as do the 11 other flagged rows with course codes or Latin.",
+      "root_cause_hypothesis": ".strip_placeholder_lines() runs after the prerequisite blocks are joined. It only removes a trailing placeholder paragraph when the preceding text ends in sentence punctuation, which a bare course code lacks.",
+      "suggested_fix": "Discard placeholder-only required and recommended prerequisite blocks before joining them, then preserve the real course code.",
       "confidence": "high"
     }
   ]

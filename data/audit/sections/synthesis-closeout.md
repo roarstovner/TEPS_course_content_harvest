@@ -200,3 +200,69 @@ None; severities re-rated as marked.
 - NMH: **not ready** (M1), rebuild-only.
 - HiMolde: **not ready** (H1), rebuild-only; coursework .662 on the site
   (plans without coursework text) apart from SYD204.
+
+## Re-run of Fjellhaug, NHH and NMH (2026-11-26)
+
+After the section fixes of 2026-11-25/26 (Fjellhaug's English layout,
+attendance headings, final assessment after the arbeidskrav; NHH's validity
+rule, regulations pointer and logistics; NMH's h3 sub-headings mapped by
+whole text; the scripture references in the anonymizer) and the build of
+2026-11-26. Same command (`prepare_sections.R fjellhaug nhh nmh --tag
+closeout`, fixed seed); the samples differ in part because the data changed.
+Codex `gpt-6.2-sol`. 20 findings, all verified mechanically; each high
+checked against its packet and, where it could recur, the whole build.
+
+Gate numbers, whole build (Fjellhaug and NHH 2026, NMH 2021-2026):
+
+| inst | n plans | assessment (≥ .90) | coursework (≥ .70) | no_sections | unmapped_headings (≤ .65) |
+|---|---|---|---|---|---|
+| fjellhaug | 215 | .986 (was .726) | .833 (was .613) | 0 | .075 (was .123; n 2,216) |
+| nhh | 432 | .975 | .792 | 0 | .323 (n 5,344) |
+| nmh | 2,842 | 1.000 | .961 | 0 | .003 (n 30,988) |
+
+Fixed since 2026-11-25 (gone from the change table): Fjellhaug's coursework
+merged with and truncating the final assessment, assessment truncated,
+course-content noise; NHH's assessment wrong content and truncation and the
+cross-section validity rule; NMH's merged sections under h3 sub-headings,
+assessment truncated, coursework duplicates.
+
+Highs kept, with what they are:
+
+- Fjellhaug BTM2506 (control): "Emnet består av totalt 40
+  undervisningstimer i form av forelesninger og seminarer med obligatorisk
+  oppmøte, ..." moved to coursework by the attendance-sentence rule, while
+  the absence limit after it ("... som ikke må ha et fravær på mer enn
+  30%") stayed in teaching methods. The rule's exception for a list of
+  teaching forms with attendance in it does not catch "i form av ... med
+  obligatorisk oppmøte". One plan in the build (the sentence occurs in no
+  other Fjellhaug plan): low, a fix item.
+- NMH DISTUD78 (2 plans): an h3 "Praksis" inside "Arbeidskrav" maps to
+  practice and teaching methods, so the participation requirement under it
+  leaves coursework. Only DISTUD78 has "Praksis" under "Arbeidskrav" among
+  NMH's 1,241 plans: low.
+- NHH RET1: the page repeats "Undervisningsopplegg" inside the outcomes
+  field, so its first teaching line stays in learning outcomes (flagged
+  leak->teaching_methods). The only NHH plan of 418 with that line: low.
+
+Rejected as findings (the spec keeps the text where the page puts it: a
+paragraph that mixes meanings stays with its heading when its wording
+occurs in one course, `course_plan_spec.md` "The sections"): Fjellhaug's
+course-specific gates under "Organisering og arbeidsmåter" (PT2005's
+conference, draft submissions, PT1501's retreat) and the BTM2506 portfolio
+instructions under the arbeidskrav; NHH MAB4's pedagogy inside "Topics",
+BUS444N's gate and registration text under its prerequisites heading,
+RET1's exam aids under "Litteratur"; NMH's admission statement in course
+content, MPTEO73's reading note under "Innhold", and teaching details in
+NMH's "Kort om emnet" and "Innhold". The coding project segments these
+(the harvest delivers the page's words). Logistics left in assessment
+(NHH, NMH, Fjellhaug's stock resit sentence) are the extraneous text the
+spec accepts there (user 2026-11-11). Placeholders: Fjellhaug PT1501's
+"Ingen" after a real prerequisite, NHH SOL23's pointer and the TEST page.
+
+Verdict (sections): Fjellhaug, NHH and NMH ready. No gate number of this
+check is flagged, and no confirmed high is left: the three highs kept affect
+one course each and are low fix items. For Fjellhaug, with the fulltext
+fix in (BTM1003 and RLE1001 now read /emne/btm1003 and /emne/rle1001) and
+the anonymizer's scripture fix: ready with known limits. fetched .785 and
+plan .782 (n 275) are under .80 because 62 course-years have no page in
+the site's subject sitemaps.
