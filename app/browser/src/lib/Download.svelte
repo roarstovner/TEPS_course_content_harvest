@@ -4,10 +4,13 @@
   import { FORMATS, selection, UNITS } from '../download/table.js'
   import { EXCEL_MAX } from '../download/encode.js'
   import { num } from './format.js'
+  import { t } from './i18n.js'
 
   let { open = $bindable(), model, view, s, query, excl, matches, meta, worker } = $props() // query: as run (in the header's section)
 
   let dialog = $state()
+  const back = document.activeElement // the focus returns there on closing
+  $effect(() => () => back instanceof HTMLElement && back.isConnected && back.focus())
   let unit = $state('plan')
   let format = $state('csv')
   let count = $state.raw(null) // {rows, long} from the worker; null while counting
@@ -74,65 +77,55 @@
 
 <dialog bind:this={dialog} class="dl" onclose={() => (open = false)} aria-labelledby="dl-title">
   {#if sel}
-    <h2 id="dl-title">Download the selection</h2>
+    <h2 id="dl-title">{t('dl.title')}</h2>
     <p class="note">
-      What the list shows: {num(sel.courses.length)} courses, {num(sel.plans.length)} plan versions{#if q}, matching
-        <code>{q}</code>{/if}, with the filters{#if Object.keys(excl).length} and unticked word forms{/if}.
+      {t('dl.what', { c: num(sel.courses.length), p: num(sel.plans.length) })}{#if q}{t('dl.matching')}
+        <code>{q}</code>{/if}{t('dl.filters')}{#if Object.keys(excl).length}{t('dl.excl')}{/if}.
     </p>
     <div class="cols">
       <fieldset>
-        <legend>One row per</legend>
-        {#each Object.entries(UNITS) as [u, label] (u)}
+        <legend>{t('dl.unit')}</legend>
+        {#each Object.keys(UNITS) as u (u)}
           <label class="check"
             ><input type="radio" bind:group={unit} value={u} disabled={disabled(u)} /><span
-              >{label}{#if u === 'hit' && !q}<small> (needs a query)</small>{/if}</span
+              >{t(`unit.${u}`)}{#if u === 'hit' && !q}<small>{t('dl.needsQ')}</small>{/if}</span
             ></label
           >
         {/each}
       </fieldset>
       <fieldset>
-        <legend>Format</legend>
+        <legend>{t('dl.format')}</legend>
         {#each Object.entries(FORMATS) as [f, label] (f)}
           <label class="check"
-            ><input type="radio" bind:group={format} value={f} disabled={f === 'qda' && unit !== 'plan'} /><span>{label}</span></label
+            ><input type="radio" bind:group={format} value={f} disabled={f === 'qda' && unit !== 'plan'} /><span>{f === 'qda' ? t('fmt.qda') : label}</span></label
           >
         {/each}
       </fieldset>
     </div>
     <p class="count" aria-live="polite">
-      {#if count}<strong>{num(count.rows)}</strong> rows{:else if !error}counting…{/if}
+      {#if count}<strong>{num(count.rows)}</strong> {t('dl.rows')}{:else if !error}{t('dl.counting')}{/if}
     </p>
     {#if format === 'xlsx' && (unit === 'plan' || unit === 'section')}
       <p class="note">
-        Excel holds at most {num(EXCEL_MAX)} characters in a cell: longer texts are cut, and the column
-        <code>truncated</code> flags the row{#if count}{' '}({num(count.long)} here){/if}. CSV and Parquet keep the whole text.
+        {t('dl.excel1', { n: num(EXCEL_MAX) })} <code>truncated</code> {t('dl.excel2')}{#if count}{' '}{t('dl.excelHere', { n: num(count.long) })}{/if}{t('dl.excel3')}
       </p>
     {/if}
     <p class="note">
-      A ZIP with the {format === 'qda' ? 'text files and the classification sheet' : 'table'}, <code>manifest.json</code> (query,
-      filters, data version, counts, the link to this view), <code>variables.csv</code>, the keys of the rows and
-      <code>rebuild.R</code>/<code>rebuild.py</code>, which take the same rows from the published release.
+      {format === 'qda' ? t('dl.zipQda') : t('dl.zipTable')} <code>manifest.json</code> {t('dl.zip2')} <code>variables.csv</code>{t('dl.zip3')}
+      <code>rebuild.R</code>/<code>rebuild.py</code>{t('dl.zip4')}
     </p>
-    {#if error}<p class="fail">{error}</p>{/if}
+    {#if error}<p class="fail" role="alert">{error}</p>{/if}
     <div class="buttons">
-      <button type="button" onclick={() => (open = false)}>Cancel</button>
+      <button type="button" onclick={() => (open = false)}>{t('dl.cancel')}</button>
       <button type="button" class="primary" onclick={download} disabled={busy || !count?.rows}
-        >{busy ? 'Building…' : 'Download'}</button
+        >{busy ? t('dl.building') : t('dl.download')}</button
       >
     </div>
   {/if}
 </dialog>
 
 <style>
-  .dl { border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--fg); padding: 16px 20px; width: min(560px, calc(100vw - 32px)); }
-  .dl::backdrop { background: rgb(0 0 0 / 0.35); }
-  h2 { margin: 0 0 6px; font-size: 17px; }
   .cols { display: flex; gap: 24px; flex-wrap: wrap; margin-top: 10px; }
   .cols fieldset { flex: 1; min-width: 200px; }
-  .note { font-size: 13px; margin: 6px 0; }
   .count { margin: 4px 0; }
-  .buttons { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
-  .buttons button { border: 1px solid var(--line); background: var(--bg-2); border-radius: 4px; padding: 4px 14px; cursor: pointer; }
-  .buttons .primary { background: var(--accent); border-color: var(--accent); color: var(--bg); }
-  .buttons button:disabled { opacity: 0.5; cursor: default; }
 </style>

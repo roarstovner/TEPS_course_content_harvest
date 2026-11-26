@@ -5,6 +5,7 @@
   // scroller, so it never covers a line.
   import { lineBlocks, lineSections } from '../data/overlay.js'
   import { segmentsIn } from './format.js'
+  import { local, other, t } from './i18n.js'
 
   let { text, marks, sections, sectionsMeta } = $props()
 
@@ -25,7 +26,7 @@
     }
   })
   const colour = $derived(new Map(sectionsMeta.map((s, i) => [s.code, i])))
-  const label = $derived(new Map(sectionsMeta.map((s) => [s.code, s.label_en])))
+  const label = $derived(new Map(sectionsMeta.map((s) => [s.code, local(s, 'label')])))
   const blocks = $derived(
     lineBlocks(lineSections(text, sections ? sectionsMeta.filter((s) => sections[s.code]).map((s) => [s.code, sections[s.code].text]) : [])),
   )
@@ -33,19 +34,19 @@
 </script>
 
 {#if sections}
-  <div class="legend" aria-label="Sections in the margin">
-    <label><input type="checkbox" bind:checked={overlay} /> sections in the margin</label>
+  <div class="legend" role="group" aria-label={t('pt.legend')}>
+    <label><input type="checkbox" bind:checked={overlay} /> {t('pt.toggle')}</label>
     {#if overlay}
       {#each sectionsMeta as s (s.code)}
-        <span class="key s{colour.get(s.code)}" class:absent={!present.has(s.code)} title={present.has(s.code) ? s.label_no : `${s.label_no}: not in this plan`}
-          >{s.label_en}</span
+        <span class="key s{colour.get(s.code)}" class:absent={!present.has(s.code)} title={present.has(s.code) ? other(s, 'label') : t('pt.notIn', { s: other(s, 'label') })}
+          >{local(s, 'label')}</span
         >
       {/each}
-      <span class="key none">in no section</span>
+      <span class="key none">{t('pt.none')}</span>
     {/if}
   </div>
 {:else}
-  <p class="legend note">loading sections…</p>
+  <p class="legend note" role="status">{t('c.sections')}</p>
 {/if}
 <div class="ptext">
   <div class="plantext lines" class:overlay={overlay && sections}>

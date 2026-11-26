@@ -7,6 +7,7 @@
   import { loadLists, matrixCsv, parseTermLists, saveLists, serializeTermList, slug, termMatrix } from '../data/termlists.js'
   import { share } from '../data/trend.js'
   import { num, pct } from './format.js'
+  import { t as tr } from './i18n.js'
 
   let { model, s = $bindable(), meta, worker, plansReady, onpick } = $props()
 
@@ -27,7 +28,7 @@
     return n
   }
   function newList() {
-    const n = unique('New list')
+    const n = unique(tr('tl.newName'))
     lists[n] = { terms: [], meta: {} }
     s.tl = n
     save()
@@ -42,7 +43,7 @@
     save()
   }
   function remove() {
-    if (!list || !confirm(`Delete the term list "${name}" from this browser?`)) return
+    if (!list || !confirm(tr('tl.confirm', { n: name }))) return
     delete lists[name]
     s.tl = null
     save()
@@ -129,7 +130,7 @@
   )
   const value = (p) => (s.tval === 'count' ? (p.withPlan ? p.matching : null) : share(p.matching, p.withPlan))
   const top = $derived(Math.max(0, ...rows.flatMap((r) => (r.points ?? []).map(value).filter((v) => v != null))))
-  const shade = (v) => (top ? Math.round((100 * v) / top) : 0)
+  const shade = (v) => (top ? Math.round((100 * v) / top) : 0) // 0-100, scaled to --cell-max in the CSS
   // a share as a percentage: one decimal under 10%, so that a few plans do not read as 0
   const cellText = (v) => (s.tval === 'count' ? num(v) : v && v < 0.1 ? (100 * v).toFixed(1) : `${Math.round(100 * v)}`)
   const instName = $derived(new Map(meta.institutions.map((i) => [i.code, i.institution_name])))
@@ -138,54 +139,50 @@
 <div class="trend terms">
   <div class="trendbar">
     <label
-      >List <select value={name} onchange={(e) => (s.tl = e.currentTarget.value)} disabled={!names.length}>
+      >{tr('tl.list')} <select value={name} onchange={(e) => (s.tl = e.currentTarget.value)} disabled={!names.length}>
         {#each names as n (n)}<option value={n}>{n}</option>{/each}
       </select></label
     >
-    {#if list}<input class="lname" value={name} aria-label="Name of the list" onchange={(e) => rename(e.currentTarget.value)} />{/if}
-    <button class="link" onclick={newList}>new list</button>
-    <button class="link" onclick={() => fileInput.click()}>import YAML</button>
+    {#if list}<input class="lname" value={name} aria-label={tr('tl.name')} onchange={(e) => rename(e.currentTarget.value)} />{/if}
+    <button class="link" onclick={newList}>{tr('tl.new')}</button>
+    <button class="link" onclick={() => fileInput.click()}>{tr('tl.import')}</button>
     <input type="file" accept=".yaml,.yml,text/yaml" hidden bind:this={fileInput} onchange={(e) => (e.currentTarget.files[0] && importFile(e.currentTarget.files[0]), (e.currentTarget.value = ''))} />
     {#if list}
-      <button class="link" onclick={exportYaml}>export YAML</button>
-      <button class="link" onclick={remove}>delete list</button>
+      <button class="link" onclick={exportYaml}>{tr('tl.exportYaml')}</button>
+      <button class="link" onclick={remove}>{tr('tl.delete')}</button>
     {/if}
   </div>
   <p class="note sub">
-    A term is a query (Norwegian and English variants joined by OR, as <code>dybdelæring OR "deep learning"</code>), run
-    with the scope of AND and the section set above. Lists are kept in this browser{#if !stored}<strong class="fail">
-        — this browser does not store them: export before leaving</strong
-      >{/if}; YAML in the format of <code>LK20_terms.yaml</code> (README "Term Lists").
+    {tr('tl.intro1')} <code>dybdelæring OR "deep learning"</code>{tr('tl.intro2')}{#if !stored}<strong class="fail">{tr('sc.notStored')}</strong
+      >{/if}{tr('tl.intro3')} <code>LK20_terms.yaml</code> (README "Term Lists").
   </p>
-  {#if error}<p class="fail">{error}</p>{/if}
+  {#if error}<p class="fail" role="alert">{error}</p>{/if}
 
   {#if !list}
-    <p class="hint">No term list yet: make a new one or import a YAML file.</p>
+    <p class="hint">{tr('tl.none')}</p>
   {:else}
     {#if terms.length}
-      <h3>Share of course-years with a plan whose plan matches each term</h3>
+      <h3>{tr('tl.head')}</h3>
       <div class="trendbar">
-        <span class="note">Rows</span>
-        <label><input type="radio" bind:group={s.trows} value="all" /> term</label>
-        <label><input type="radio" bind:group={s.trows} value="inst" /> term per institution</label>
-        <span class="note">Cells</span>
-        <label><input type="radio" bind:group={s.tval} value="share" /> share (%)</label>
-        <label><input type="radio" bind:group={s.tval} value="count" /> course-years</label>
-        <span class="note">{#if running || !ready}running {terms.length} terms…{:else}{num(Math.round(run.ms))} ms{/if}</span>
-        <button class="dlbutton" onclick={exportCsv} disabled={!matrix}>Export CSV</button>
+        <span class="note">{tr('tl.rows')}</span>
+        <label><input type="radio" bind:group={s.trows} value="all" /> {tr('tl.term')}</label>
+        <label><input type="radio" bind:group={s.trows} value="inst" /> {tr('tl.termInst')}</label>
+        <span class="note">{tr('tl.cells')}</span>
+        <label><input type="radio" bind:group={s.tval} value="share" /> {tr('tl.share')}</label>
+        <label><input type="radio" bind:group={s.tval} value="count" /> {tr('tl.cy')}</label>
+        <span class="note">{#if running || !ready}{tr('tl.running', { n: terms.length })}{:else}{num(Math.round(run.ms))} ms{/if}</span>
+        <button class="dlbutton" onclick={exportCsv} disabled={!matrix}>{tr('sc.export')}</button>
       </div>
       <p class="note sub">
-        Course-years in force in the filter, as in the trend view: a course-year matches when any of its plans matches the
-        term; the share is of the course-years with a plan (empty: none). Darkest: {#if s.tval === 'count'}{num(top)}{:else}{pct(top, 1)}{/if}.
-        Click a cell to list its courses.
+        {tr('tl.heatIntro')} {#if s.tval === 'count'}{num(top)}{:else}{pct(top, 1)}{/if}. {tr('tl.click')}
       </p>
       {#if matrix}
         <div class="heatwrap">
           <table class="heat">
             <thead>
               <tr>
-                <th>Term</th>
-                {#if s.trows === 'inst'}<th>Institution</th>{/if}
+                <th>{tr('tl.termHead')}</th>
+                {#if s.trows === 'inst'}<th>{tr('tl.inst')}</th>{/if}
                 {#each matrix.years as y (y)}<th class="yr">{String(y).slice(2)}</th>{/each}
               </tr>
             </thead>
@@ -193,7 +190,7 @@
               {#each rows as r (`${r.k}|${r.inst}`)}
                 <tr class:first={!r.inst}>
                   <th title={r.t.query}>{r.inst ? '' : r.t.label || r.t.id}</th>
-                  {#if s.trows === 'inst'}<td class="inst" title={instName.get(r.inst)}>{r.inst ? r.inst.toUpperCase() : 'all'}</td>{/if}
+                  {#if s.trows === 'inst'}<td class="inst" title={instName.get(r.inst)}>{r.inst ? r.inst.toUpperCase() : tr('tl.all')}</td>{/if}
                   {#if r.error}
                     <td class="fail" colspan={matrix.years.length}>{r.error}</td>
                   {:else}
@@ -201,11 +198,12 @@
                       {@const v = value(p)}
                       <td>
                         {#if v != null}
+                          {@const tip = tr('tl.cell', { t: r.t.label || r.t.id, i: r.inst ? r.inst.toUpperCase() : tr('tl.all'), y: p.year, m: num(p.matching), w: num(p.withPlan), p: pct(p.matching, p.withPlan), n: num(p.n) })}
                           <button
                             class="cell"
-                            class:dark={shade(v) > 55}
-                            style:background="color-mix(in srgb, var(--cell-match) {shade(v)}%, transparent)"
-                            title="{r.t.label || r.t.id} · {r.inst ? r.inst.toUpperCase() : 'all'} · {p.year}: {num(p.matching)} matching of {num(p.withPlan)} with a plan ({pct(p.matching, p.withPlan)}); {num(p.n)} course-years"
+                            style:--p={shade(v)}
+                            title={tip}
+                            aria-label={tip}
                             onclick={() => onpick({ q: r.t.query, inst: r.inst, y: p.year })}>{cellText(v)}</button
                           >
                         {/if}
@@ -220,25 +218,25 @@
       {/if}
     {/if}
     <details class="ttable" open>
-      <summary>Terms ({terms.length})</summary>
+      <summary>{tr('tl.terms', { n: terms.length })}</summary>
       <table class="progs termtable">
-        <thead><tr><th>Label</th><th>Query</th><th></th></tr></thead>
+        <thead><tr><th>{tr('tl.label')}</th><th>{tr('tl.query')}</th><th></th></tr></thead>
         <tbody>
           {#each terms as t, i (i)}
             {@const err = t.query ? parseQuery(t.query).error : null}
             <tr>
-              <td><input value={t.label} placeholder={t.id} aria-label="Label" onchange={(e) => edit(i, 'label', e.currentTarget.value)} /></td>
+              <td><input value={t.label} placeholder={t.id} aria-label={tr('tl.label')} onchange={(e) => edit(i, 'label', e.currentTarget.value)} /></td>
               <td>
-                <input class="q" value={t.query} aria-label="Query" aria-invalid={!!err} title={err?.message ?? ''} onchange={(e) => edit(i, 'query', e.currentTarget.value)} />
+                <input class="q" value={t.query} aria-label={tr('tl.query')} aria-invalid={!!err} title={err?.message ?? ''} onchange={(e) => edit(i, 'query', e.currentTarget.value)} />
               </td>
-              <td><button class="link" onclick={() => drop(i)} aria-label="Remove {t.label || t.id}">remove</button></td>
+              <td><button class="link" onclick={() => drop(i)} aria-label={tr('tl.removeAria', { t: t.label || t.id })}>{tr('tl.remove')}</button></td>
             </tr>
           {/each}
         </tbody>
       </table>
       <div class="trendbar">
-        <button class="link" onclick={() => addTerm()}>add a term</button>
-        {#if s.q.trim()}<button class="link" onclick={() => addTerm(s.q.trim())}>add the current query</button>{/if}
+        <button class="link" onclick={() => addTerm()}>{tr('tl.add')}</button>
+        {#if s.q.trim()}<button class="link" onclick={() => addTerm(s.q.trim())}>{tr('tl.addQ')}</button>{/if}
       </div>
     </details>
   {/if}
@@ -258,7 +256,7 @@
   .heat td { padding: 1px; }
   .heat td.inst { color: var(--fg-2); padding-right: 8px; }
   .heat tr.first > * { border-top: 1px solid var(--line); }
-  .cell { width: 2.6em; height: 1.7em; border: 0; border-radius: 2px; font: 11px var(--font); font-variant-numeric: tabular-nums; cursor: pointer; padding: 0; outline: 1px solid var(--line); outline-offset: -1px; }
-  .cell.dark { color: var(--bg); }
+  /* --p: 0-100 of the darkest cell, which is --cell-max of --cell-match (app.css) */
+  .cell { background: color-mix(in srgb, var(--cell-match) calc(var(--p) * var(--cell-max) * 1%), transparent); width: 2.6em; height: 1.7em; border: 0; border-radius: 2px; font: 11px var(--font); font-variant-numeric: tabular-nums; cursor: pointer; padding: 0; outline: 1px solid var(--line); outline-offset: -1px; }
   .cell:hover { outline: 2px solid var(--accent); }
 </style>

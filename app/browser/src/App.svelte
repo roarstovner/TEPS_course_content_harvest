@@ -1,7 +1,7 @@
 <script>
   // The app shell: loads the data, keeps the state (mirrored in the URL),
   // sends searches to the worker and lays out the panes (README "Layout").
-  import { onMount, untrack } from 'svelte'
+  import { onMount, tick, untrack } from 'svelte'
   import { inSection, parseQuery } from './search/index.js'
   import { fetchCached, fetchMeta, readParquet } from './data/load.js'
   import { startWorker } from './data/client.js'
@@ -19,6 +19,8 @@
   import Compare from './lib/Compare.svelte'
   import TermLists from './lib/TermLists.svelte'
   import Help from './lib/Help.svelte'
+  import Shortcuts from './lib/Shortcuts.svelte'
+  import { initialLang, setLang, t } from './lib/i18n.js'
   import { planRef } from './data/compare.js'
   import { trend } from './data/trend.js'
 
@@ -39,6 +41,19 @@
   let worker = $state.raw(null)
   let searchBox = $state()
   let downloadOpen = $state(false)
+  let keysOpen = $state(false) // the shortcuts overlay
+  let resultsPane = $state()
+
+  // the UI language: the page re-renders under {#key lang} when it changes
+  let lang = $state(initialLang())
+  setLang(untrack(() => lang))
+  async function switchLang() {
+    const l = lang === 'nb' ? 'en' : 'nb'
+    setLang(l, true)
+    lang = l
+    await tick()
+    document.getElementById('lang-toggle')?.focus()
+  }
 
   onMount(async () => {
     try {
@@ -209,9 +224,14 @@
     s.cm = 'pair'
     s.view = 'compare'
   }
-  function close() {
+  // the focus goes back to the course's row (the pane it was in is gone)
+  async function close() {
+    const key = s.course
     s.course = null
     s.version = null
+    await tick()
+    const f = document.activeElement
+    if (key && (!f || f === document.body)) resultsPane?.querySelector(`.row[data-key="${CSS.escape(key)}"]`)?.focus()
   }
   // the user guide: opened from the header or with `?`, closed back to the
   // view it was opened from
@@ -221,11 +241,20 @@
     else [helpFrom, s.view] = [s.view, 'help']
   }
 
+  // j/k: the cursor moves and the row takes the focus (screen readers follow)
+  async function move(i) {
+    active = i
+    await tick()
+    resultsPane?.querySelector(`.row[data-i="${i}"]`)?.focus()
+  }
+
   function onKey(e) {
-    const t = e.target
-    const typing = t instanceof HTMLElement && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))
+    const el = e.target
+    // a dialog (download, shortcuts) keeps its own keys; Esc closes it
+    if (keysOpen || downloadOpen || (el instanceof Element && el.closest('dialog'))) return
+    const typing = el instanceof HTMLElement && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName))
     if (e.key === 'Escape') {
-      if (typing) t.blur()
+      if (typing) el.blur()
       else if (s.view === 'help') toggleHelp()
       else if (s.course) close()
       return
@@ -233,17 +262,22 @@
     if (typing || e.ctrlKey || e.metaKey || e.altKey) return
     if (e.key === '?') {
       e.preventDefault()
-      return toggleHelp()
+      keysOpen = true
+      return
     }
     if (!view) return
     const n = view.rows.length
+    const row = el instanceof Element ? el.closest('.row') : null
+    const onRow = !!row
+    const cur = row ? Number(row.dataset.i) : active
     if (e.key === '/') {
       e.preventDefault()
       searchBox?.focus()
     } else if (s.view === 'screen') return // the screening view has its own keys
-    else if (e.key === 'j' && n) active = Math.min(n - 1, active + 1)
-    else if (e.key === 'k' && n) active = Math.max(0, active - 1)
-    else if (e.key === 'Enter' && n && s.view === 'list' && !(t instanceof Element && t.closest('button, a, summary'))) open(view.rows[active].course)
+    else if (s.view !== 'list') return
+    else if ((e.key === 'j' || (e.key === 'ArrowDown' && onRow)) && n) move(Math.min(n - 1, cur + 1))
+    else if ((e.key === 'k' || (e.key === 'ArrowUp' && onRow)) && n) move(Math.max(0, cur - 1))
+    else if (e.key === 'Enter' && n && s.view === 'list' && !(el instanceof Element && el.closest('button, a, summary'))) open(view.rows[active].course)
     else return
     e.preventDefault()
   }
@@ -251,6 +285,8 @@
 
 <svelte:window onkeydown={onKey} onpopstate={onPopState} />
 
+{#key lang}
+<a class="skip" href="#results" onclick={(e) => (e.preventDefault(), resultsPane?.focus())}>{t('app.skip')}</a>
 <div class="app" class:withcourse={showCourse}>
   <Header
     bind:state={s}
@@ -269,17 +305,22 @@
     sections={meta?.sections ?? []}
     {error}
     onhelp={toggleHelp}
+    onkeys={() => (keysOpen = true)}
+    onlang={switchLang}
     ondownload={model && plansMeta && !searching && (!queryOn || result) ? () => (downloadOpen = true) : null}
   />
   {#if downloadOpen && model && plansMeta}
     <Download bind:open={downloadOpen} {model} {view} {s} {query} {excl} {matches} {meta} {worker} />
   {/if}
+  {#if keysOpen}
+    <Shortcuts bind:open={keysOpen} onguide={() => s.view !== 'help' && toggleHelp()} />
+  {/if}
   {#if model}
-    <aside class="filters"><Filters bind:state={s} {meta} {model} facets={view.facets} sectionsReady={!!planSections} /></aside>
-    <main class="results">
-      <nav class="viewtabs" aria-label="View">
-        {#each [['list', 'List'], ['trend', 'Trend'], ['coverage', 'Coverage'], ['screen', 'Screen'], ['compare', 'Compare'], ['terms', 'Term lists']] as [v, label] (v)}
-          <button class:current={s.view === v} aria-pressed={s.view === v} onclick={() => (s.view = v)}>{label}</button>
+    <aside class="filters" aria-label={t('f.label')}><Filters bind:state={s} {meta} {model} facets={view.facets} sectionsReady={!!planSections} /></aside>
+    <main class="results" id="results" tabindex="-1" bind:this={resultsPane}>
+      <nav class="viewtabs" aria-label={t('app.views')}>
+        {#each ['list', 'trend', 'coverage', 'screen', 'compare', 'terms'] as v (v)}
+          <button class:current={s.view === v} aria-pressed={s.view === v} onclick={() => (s.view = v)}>{t(`view.${v}`)}</button>
         {/each}
       </nav>
       {#if s.view === 'help'}
@@ -307,11 +348,11 @@
           excl={result?.excl}
           onopen={open}
         />
-        {#if !selected}<p class="hint">Select a course to read its plan. Keys: <kbd>/</kbd> search, <kbd>j</kbd>/<kbd>k</kbd> move, <kbd>Enter</kbd> open, <kbd>Esc</kbd> back, <kbd>?</kbd> help.</p>{/if}
+        {#if !selected}<p class="hint">{t('app.hint')}</p>{/if}
       {/if}
     </main>
     {#if showCourse}
-      <section class="course">
+      <section class="course" aria-label={selected.course_code}>
         <CourseView
           course={selected}
           {version}
@@ -334,6 +375,7 @@
       </section>
     {/if}
   {:else if !error}
-    <p class="loading">Loading courses…</p>
+    <p class="loading" role="status">{t('app.loading')}</p>
   {/if}
 </div>
+{/key}

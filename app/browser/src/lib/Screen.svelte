@@ -6,6 +6,7 @@
   import { selection } from '../download/table.js'
   import { hitId, loadTags, newSeed, saveTags, screeningCsv, storeKey, TAGS } from '../data/screening.js'
   import { num, pct } from './format.js'
+  import { t as tr } from './i18n.js'
 
   let { model, view, s = $bindable(), q, excl, matches, meta, worker, onopen } = $props()
 
@@ -85,6 +86,7 @@
   function onKey(e) {
     const t = e.target
     if (t instanceof HTMLElement && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return
+    if (t instanceof Element && t.closest('dialog')) return // a dialog keeps its keys
     if (e.ctrlKey || e.metaKey || e.altKey || !hits?.length) return
     const g = Object.keys(TAGS).find((k) => TAGS[k] === e.key)
     if (e.key === 'j' || e.key === 'ArrowDown' || e.key === 'ArrowRight') go(cur + 1)
@@ -110,30 +112,27 @@
 <svelte:window onkeydown={onKey} />
 
 <div class="trend screen">
-  <h3>Screening</h3>
+  <h3>{tr('sc.title')}</h3>
   {#if !q}
-    <p class="note sub">Screening needs a query: it draws a random sample of its hits (keyword in context).</p>
+    <p class="note sub">{tr('sc.needQ')}</p>
   {:else}
     <div class="trendbar">
-      <label>Sample <input type="number" class="n" min="1" max="100000" bind:value={s.sample} /> hits</label>
-      <label>seed <input class="seed" bind:value={s.seed} spellcheck="false" /></label>
-      <button class="link" onclick={() => (s.seed = newSeed())}>new sample</button>
-      <span class="note">{#if hits}{num(hits.length)} of {num(total)} hits{:else if !error}drawing…{/if}</span>
-      <button class="dlbutton" onclick={exportCsv} disabled={!hits?.length}>Export CSV</button>
+      <label>{tr('sc.sample')} <input type="number" class="n" min="1" max="100000" bind:value={s.sample} /> {tr('sc.hits')}</label>
+      <label>{tr('sc.seed')} <input class="seed" bind:value={s.seed} spellcheck="false" /></label>
+      <button class="link" onclick={() => (s.seed = newSeed())}>{tr('sc.new')}</button>
+      <span class="note" role="status">{#if hits}{tr('sc.of', { a: num(hits.length), b: num(total) })}{:else if !error}{tr('sc.drawing')}{/if}</span>
+      <button class="dlbutton" onclick={exportCsv} disabled={!hits?.length}>{tr('sc.export')}</button>
     </div>
     <p class="note sub">
-      The sample and the seed are in the link. Tags are kept in this browser for this query and data frame{#if !stored}<strong class="fail">
-          — this browser does not store them: export before leaving</strong
-        >{/if}. Keys: <kbd>j</kbd>/<kbd>k</kbd> next, previous, <kbd>i</kbd> include, <kbd>e</kbd> exclude, <kbd>m</kbd> maybe,
-      <kbd>n</kbd> note, <kbd>o</kbd> open the plan.
+      {tr('sc.note')}{#if !stored}<strong class="fail">{tr('sc.notStored')}</strong>{/if}. {tr('sc.keys')}
     </p>
-    {#if error}<p class="fail">{error}</p>{/if}
+    {#if error}<p class="fail" role="alert">{error}</p>{/if}
     {#if hits?.length}
       {@const tagged = tally.include + tally.exclude}
       <p class="tally">
-        Include {num(tally.include)} · exclude {num(tally.exclude)} · maybe {num(tally.maybe)} · untagged
-        {num(hits.length - tagged - tally.maybe)}{#if tagged}{' · '}precision {pct(tally.include, tagged)}
-          <span class="note">(include of include + exclude)</span>{/if}
+        {tr('tag.include')} {num(tally.include)} · {tr('tag.exclude')} {num(tally.exclude)} · {tr('tag.maybe')} {num(tally.maybe)} · {tr('sc.untagged')}
+        {num(hits.length - tagged - tally.maybe)}{#if tagged}{' · '}{tr('sc.precision')} {pct(tally.include, tagged)}
+          <span class="note">{tr('sc.precisionNote')}</span>{/if}
       </p>
       {#if hit}
         <article class="card {mine.tag ?? ''}">
@@ -145,25 +144,26 @@
           <p class="ctx">…{hit.before}<mark>{hit.match}</mark>{hit.after}…</p>
           <div class="tags">
             {#each Object.entries(TAGS) as [g, k] (g)}
-              <button class={g} aria-pressed={mine.tag === g} onclick={() => tag(g)}>{g} <kbd>{k}</kbd></button>
+              <button class={g} aria-pressed={mine.tag === g} aria-keyshortcuts={k} onclick={() => tag(g)}>{tr(`tag.${g}`)} <kbd>{k}</kbd></button>
             {/each}
-            <button class="link" onclick={() => onopen(hit)}>open the plan</button>
+            <button class="link" aria-keyshortcuts="o" onclick={() => onopen(hit)}>{tr('sc.open')}</button>
           </div>
           <textarea
             bind:this={noteBox}
             rows="2"
-            placeholder="Note"
+            placeholder={tr('sc.notePh')}
+            aria-label={tr('sc.notePh')}
             value={mine.note ?? ''}
             onchange={(e) => set(hit, { note: e.currentTarget.value })}
           ></textarea>
         </article>
       {/if}
-      <ol class="hitlist" bind:this={list}>
+      <ol class="hitlist" bind:this={list} aria-label={tr('sc.list')}>
         {#each hits as h, i (hitId(h))}
           {@const g = tags[hitId(h)]?.tag}
           <li data-i={i} class:current={i === cur}>
-            <button class="row2" onclick={() => (cur = i)}>
-              <span class="tag {g ?? ''}">{g ? g[0].toUpperCase() : '·'}</span>
+            <button class="row2" aria-current={i === cur ? 'true' : undefined} onclick={() => (cur = i)}>
+              <span class="tag {g ?? ''}" aria-hidden="true" title={g ? tr(`tag.${g}`) : undefined}>{g ? TAGS[g].toUpperCase() : '·'}</span>{#if g}<span class="sr">{tr(`tag.${g}`)}</span>{/if}
               <span class="where">{h.institution.toUpperCase()} {h.course_code}</span>
               <span class="kw">{h.before.slice(-40)}<mark>{h.match}</mark>{h.after.slice(0, 40)}</span>
             </button>
@@ -171,7 +171,7 @@
         {/each}
       </ol>
     {:else if hits}
-      <p class="note sub">No hits in the selection.</p>
+      <p class="note sub">{tr('sc.noHits')}</p>
     {/if}
   {/if}
 </div>
@@ -186,16 +186,16 @@
   .card header { font-size: 13px; color: var(--fg-2); }
   .ctx { font-size: 15px; margin: 8px 0; white-space: pre-wrap; overflow-wrap: anywhere; }
   .tags { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-  .tags button:not(.link) { border: 1px solid var(--line); background: var(--bg-2); border-radius: 4px; padding: 2px 10px; cursor: pointer; }
+  .tags button:not(.link) { border: 1px solid var(--ctl); background: var(--bg-2); border-radius: 4px; padding: 2px 10px; cursor: pointer; }
   .tags button[aria-pressed='true'] { background: var(--accent); border-color: var(--accent); color: var(--bg); }
   .tags button[aria-pressed='true'] kbd { border-color: var(--bg); }
-  textarea { display: block; width: 100%; margin-top: 8px; font: inherit; color: inherit; background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 4px 6px; }
+  textarea { display: block; width: 100%; margin-top: 8px; font: inherit; color: inherit; background: var(--bg); border: 1px solid var(--ctl); border-radius: 4px; padding: 4px 6px; }
   .hitlist { list-style: none; margin: 0; padding: 0; font-size: 12px; }
   .hitlist li.current { background: var(--accent-bg); }
   .row2 { display: grid; grid-template-columns: 1.5em 9em 1fr; gap: 8px; width: 100%; text-align: left; border: 0; border-bottom: 1px solid var(--line); background: none; padding: 2px 4px; cursor: pointer; }
   .kw { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
   .tag { text-align: center; font-weight: 600; color: var(--fg-2); }
-  .tag.include { color: var(--c3); }
-  .tag.exclude { color: var(--c8); }
-  .tag.maybe { color: var(--c4); }
+  .tag.include { color: var(--tag-include); }
+  .tag.exclude { color: var(--tag-exclude); }
+  .tag.maybe { color: var(--tag-maybe); }
 </style>

@@ -4,6 +4,7 @@
   // comparison of two versions, and the source. The text comes from the
   // worker.
   import { segments } from './format.js'
+  import { local, other, t } from './i18n.js'
   import PlanText from './PlanText.svelte'
   import Versions from './Versions.svelte'
   import Source from './Source.svelte'
@@ -56,10 +57,10 @@
 
   const years = (v) => (v.year_from === v.year_to ? `${v.year_from}` : `${v.year_from}–${v.year_to}`)
   const TABS = [
-    ['plan', 'Plan'],
-    ['sections', 'Sections'],
-    ['versions', 'Versions'],
-    ['source', 'Source'],
+    ['plan', 'cv.plan'],
+    ['sections', 'cv.sections'],
+    ['versions', 'cv.versionsTab'],
+    ['source', 'cv.source'],
   ]
 </script>
 
@@ -67,40 +68,41 @@
 
 <div class="courseview">
   <div class="chead">
-    <button class="link back" onclick={onclose} title="Back to the list (Esc)">← list</button>
+    <button class="link back" onclick={onclose} title={t('cv.backTitle')} aria-keyshortcuts="Escape">{t('cv.back')}</button>
     <h2><span class="code">{course.course_code}</span> {course.course_name}</h2>
     <p class="sub">
-      {course.institution.toUpperCase()} · {course.credits} credits · level {course.level_code}
-      {#if course.subject_name}· {course.subject_name}{/if} · taught {course.year_first}–{course.year_last}
+      {course.institution.toUpperCase()} · {t('cv.credits', { n: course.credits })} · {t('cv.level', { l: course.level_code })}
+      {#if course.subject_name}· {course.subject_name}{/if} · {t('cv.taught', { a: course.year_first, b: course.year_last })}
     </p>
     {#if course.versions.length}
-      <div class="versions" role="tablist" aria-label="Plan versions">
+      <div class="versions" role="group" aria-label={t('cv.versions')}>
         {#each course.versions as v (v.key)}
           <button
             class="ver"
             class:current={v.key === version?.key}
             class:match={matchedKeys.has(v.key)}
+            aria-pressed={v.key === version?.key}
             onclick={() => onversion(v)}
             title={v.source_url}>{years(v)}</button
           >
         {/each}
       </div>
     {/if}
-    <div class="tabs">
-      {#each TABS as [t, name] (t)}
-        <button class:current={tab === t} onclick={() => (tab = t)}>{name}{#if t === 'versions' && course.versions.length > 1}&nbsp;<small>{course.versions.length}</small>{/if}</button>
+    <div class="tabs" role="group" aria-label={t('cv.tabs')}>
+      {#each TABS as [k, name] (k)}
+        <button class:current={tab === k} aria-pressed={tab === k} onclick={() => (tab = k)}>{t(name)}{#if k === 'versions' && course.versions.length > 1}&nbsp;<small>{course.versions.length}</small>{/if}</button>
       {/each}
-      {#if version}<button class="link cmpbtn" onclick={() => oncompare(version)} title="Show this plan in the compare view (side A, or B when A holds another plan)">compare</button>{/if}
-      {#if version}<a class="src" href={version.source_url} target="_blank" rel="noopener noreferrer">source ↗</a>{/if}
+      {#if version}<button class="link cmpbtn" onclick={() => oncompare(version)} title={t('cv.compareTitle')}>{t('cv.compare')}</button>{/if}
+      {#if version}<a class="src" href={version.source_url} target="_blank" rel="noopener noreferrer">{t('cv.sourceLink')}<span class="sr">{t('cv.newTab')}</span></a>{/if}
     </div>
   </div>
 
   <!-- the plan scrolls in its own box under the section legend (PlanText) -->
   <div class="cbody" class:plan={tab === 'plan' && doc?.key === version?.key} bind:this={body}>
     {#if !course.versions.length && plansReady}
-      <p class="hint">No plan was found for this course.</p>
+      <p class="hint">{t('cv.noPlan')}</p>
     {:else if !doc || doc.key !== version?.key}
-      <p class="hint">Loading the plan text…</p>
+      <p class="hint" role="status">{t('cv.loadingText')}</p>
     {:else if tab === 'plan'}
       <PlanText text={doc.text} marks={doc.marks} sections={doc.sections} {sectionsMeta} />
     {:else if tab === 'versions'}
@@ -108,12 +110,12 @@
     {:else if tab === 'source'}
       <Source {course} {version} {model} {studyTypes} {onopen} />
     {:else if !doc.sections}
-      <p class="hint">Loading the sections…</p>
+      <p class="hint" role="status">{t('cv.loadingSections')}</p>
     {:else}
       {#each sectionsMeta as s, i (s.code)}
         {@const sec = doc.sections[s.code]}
-        <h3 class="sechead s{i}" class:absent={!sec} title={s.label_en}>
-          {s.label_no} <small>{s.query}:</small>{#if !sec}<small> not in this plan</small>{/if}
+        <h3 class="sechead s{i}" class:absent={!sec} title={other(s, 'label')}>
+          {local(s, 'label')} <small>{s.query}:</small>{#if !sec}<small> {t('cv.notIn')}</small>{/if}
         </h3>
         {#if sec}<div class="plantext">{@render marked(sec.text, sec.marks)}</div>{/if}
       {/each}

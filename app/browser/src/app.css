@@ -4,12 +4,19 @@
   --fg: #1d1d1b;
   --fg-2: #5d5d58;
   --line: #deded8;
+  /* borders of form controls: 3:1 on --bg and --bg-2 (WCAG 1.4.11) */
+  --ctl: #85857f;
   --accent: #1f5fa8;
   --accent-bg: #e3edf9;
   --cell-plan: #b9c3cf;
   --cell-none: #e8d9cf;
   --cell-match: #1f5fa8;
   --error: #b3261e;
+  /* screening tags as text (4.5:1); the trend colours are too light for it */
+  --tag-include: #1e7a4f; --tag-exclude: var(--error); --tag-maybe: #8a6100;
+  /* the darkest heatmap cell, as a share of --cell-match over --bg, so that
+     --fg on any cell stays at 4.5:1 or more */
+  --cell-max: 0.72;
   --m0: #fde68a;
   --m1: #bfdbfe;
   --m2: #bbf7d0;
@@ -34,12 +41,15 @@
     --fg: #e6e6e3;
     --fg-2: #a2a29c;
     --line: #36373b;
+    --ctl: #76777c;
     --accent: #7fb0ec;
     --accent-bg: #23344a;
     --cell-plan: #4b5563;
     --cell-none: #5a4436;
     --cell-match: #7fb0ec;
     --error: #f2948c;
+    --tag-include: var(--c3); --tag-exclude: var(--c8); --tag-maybe: var(--c4);
+    --cell-max: 0.48;
     --m0: #6b5a12;
     --m1: #1e3a66;
     --m2: #14532d;
@@ -58,8 +68,12 @@
 html, body { margin: 0; height: 100%; }
 body { background: var(--bg); color: var(--fg); font: 14px/1.45 var(--font); }
 button, input, select { font: inherit; color: inherit; }
-input, select { background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 3px 6px; }
-input:focus-visible, select:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+input, select { background: var(--bg); border: 1px solid var(--ctl); border-radius: 4px; padding: 3px 6px; }
+/* a visible focus on everything that takes it (WCAG 2.4.7) */
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+main:focus { outline: none; } /* the skip link's target */
+.skip { position: absolute; left: 8px; top: -40px; z-index: 10; background: var(--bg); color: var(--accent); padding: 4px 10px; border: 2px solid var(--accent); border-radius: 4px; }
+.skip:focus { top: 8px; }
 mark { background: var(--m0); color: inherit; border-radius: 2px; }
 mark.t1 { background: var(--m1); } mark.t2 { background: var(--m2); } mark.t3 { background: var(--m3); }
 mark.t4 { background: var(--m4); } mark.t5 { background: var(--m5); }
@@ -106,7 +120,7 @@ kbd { font: 12px var(--mono); border: 1px solid var(--line); border-radius: 3px;
 .searchrow input[type='search'] { flex: 1; min-width: min(320px, 100%); padding: 6px 10px; font-size: 15px; }
 .searchrow input[aria-invalid='true'] { border-color: var(--error); }
 .searchrow label { color: var(--fg-2); white-space: nowrap; }
-.dlbutton { border: 1px solid var(--line); background: var(--bg); border-radius: 4px; padding: 4px 12px; cursor: pointer; }
+.dlbutton { border: 1px solid var(--ctl); background: var(--bg); border-radius: 4px; padding: 4px 12px; cursor: pointer; }
 .dlbutton:disabled { opacity: 0.5; cursor: default; }
 .searchrow .n { width: 5em; }
 .searchrow select.on { background: var(--accent-bg); border-color: var(--accent); }
@@ -116,7 +130,7 @@ kbd { font: 12px var(--mono); border: 1px solid var(--line); border-radius: 3px;
 .forms { margin-top: 6px; display: flex; flex-direction: column; gap: 3px; max-height: 9.5em; overflow: auto; }
 .term { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
 .term .key { font: 12px var(--mono); margin-right: 4px; }
-.chip { display: inline-flex; gap: 3px; align-items: center; border: 1px solid var(--line); border-radius: 10px; padding: 0 7px 0 3px; font-size: 12px; background: var(--bg); cursor: pointer; }
+.chip { display: inline-flex; gap: 3px; align-items: center; border: 1px solid var(--ctl); border-radius: 10px; padding: 0 7px 0 3px; font-size: 12px; background: var(--bg); cursor: pointer; }
 .chip input { margin: 0; }
 .chip.off { text-decoration: line-through; color: var(--fg-2); }
 .counts { margin-top: 6px; font-size: 13px; }
@@ -159,6 +173,8 @@ legend { font-weight: 600; font-size: 12px; text-transform: uppercase; letter-sp
 }
 .row:hover { background: var(--bg-2); }
 .row.active { box-shadow: inset 3px 0 var(--accent); }
+.row:focus-visible { outline-offset: -2px; }
+.list { list-style: none; margin: 0; padding: 0; }
 .row.selected { background: var(--accent-bg); }
 .row .inst { grid-area: inst; color: var(--fg-2); font-size: 12px; text-transform: uppercase; }
 .row .code { grid-area: code; font: 12px var(--mono); overflow: hidden; text-overflow: ellipsis; }
@@ -179,7 +195,7 @@ legend { font-weight: 600; font-size: 12px; text-transform: uppercase; letter-sp
 .chead h2 .code { font-family: var(--mono); font-size: 15px; color: var(--fg-2); }
 .chead .sub { margin: 0 0 6px; color: var(--fg-2); font-size: 12px; }
 .versions { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 6px; }
-.ver { border: 1px solid var(--line); background: var(--bg); border-radius: 4px; padding: 0 6px; font-size: 12px; cursor: pointer; }
+.ver { border: 1px solid var(--ctl); background: var(--bg); border-radius: 4px; padding: 0 6px; font-size: 12px; cursor: pointer; }
 .ver.match { border-color: var(--cell-match); }
 .ver.current { background: var(--accent); border-color: var(--accent); color: var(--bg); }
 .tabs { display: flex; gap: 2px; align-items: end; }
@@ -204,7 +220,8 @@ legend { font-weight: 600; font-size: 12px; text-transform: uppercase; letter-sp
 .legend .key { display: inline-flex; align-items: center; gap: 4px; }
 .legend .key::before { content: ''; width: 4px; height: 13px; border-radius: 1px; background: var(--c, transparent); }
 .legend .key.none::before { border-left: 2px dotted var(--fg-2); width: 0; }
-.legend .key.absent { opacity: 0.45; text-decoration: line-through; }
+.legend .key.absent { text-decoration: line-through; }
+.legend .key.absent::before { opacity: 0.45; }
 .s0 { --c: var(--s0); } .s1 { --c: var(--s1); } .s2 { --c: var(--s2); } .s3 { --c: var(--s3); }
 .s4 { --c: var(--s4); } .s5 { --c: var(--s5); } .s6 { --c: var(--s6); } .s7 { --c: var(--s7); }
 .plantext.lines { white-space: normal; }
@@ -215,9 +232,9 @@ legend { font-weight: 600; font-size: 12px; text-transform: uppercase; letter-sp
   content: attr(data-label); position: absolute; top: 0; right: 0; font-size: 11px; line-height: 1.3;
   padding: 1px 6px; border-radius: 3px; background: var(--bg-2); color: var(--fg); border: 1px solid var(--c);
 }
-.lines .blk:focus { outline: 1px dotted var(--c); }
+.lines .blk:focus-visible { outline: 2px solid var(--c, var(--accent)); outline-offset: 0; }
 .sechead::before { content: ''; display: inline-block; width: 4px; height: 0.9em; margin-right: 6px; background: var(--c); vertical-align: -1px; }
-.sechead.absent { color: var(--fg-2); opacity: 0.6; font-weight: normal; }
+.sechead.absent { color: var(--fg-2); font-weight: normal; }
 .diffhead { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: baseline; font-size: 13px; }
 ins { background: var(--ins); text-decoration: none; border-bottom: 1px solid var(--s2); }
 del { background: var(--del); text-decoration: line-through; text-decoration-color: var(--s3); }
@@ -285,3 +302,16 @@ del { background: var(--del); text-decoration: line-through; text-decoration-col
 .guide table { border-collapse: collapse; margin: 6px 0; font-size: 13px; display: block; overflow-x: auto; }
 .guide th, .guide td { border-bottom: 1px solid var(--line); padding: 3px 10px 3px 0; text-align: left; vertical-align: top; }
 .dlbutton[aria-pressed='true'] { background: var(--accent-bg); border-color: var(--accent); }
+
+/* dialogs (download, keyboard shortcuts): native modal <dialog>, Esc closes */
+dialog.dl { border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--fg); padding: 16px 20px; width: min(560px, calc(100vw - 32px)); }
+dialog.dl::backdrop { background: rgb(0 0 0 / 0.35); }
+dialog.dl h2 { margin: 0 0 6px; font-size: 17px; }
+dialog.dl .note { font-size: 13px; margin: 6px 0; }
+dialog.dl .buttons { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
+dialog.dl .buttons button { border: 1px solid var(--ctl); background: var(--bg-2); border-radius: 4px; padding: 4px 14px; cursor: pointer; }
+dialog.dl .buttons .primary { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+dialog.dl .buttons button:disabled { opacity: 0.5; cursor: default; }
+.langbtn { font-size: 13px; }
+/* read by screen readers only */
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }

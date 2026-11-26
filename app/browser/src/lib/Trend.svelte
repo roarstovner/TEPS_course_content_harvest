@@ -5,24 +5,21 @@
   // coverage. Every point, bar and table cell lists its courses (`onpick`).
   import { share, trend } from '../data/trend.js'
   import { num, pct } from './format.js'
+  import { local, t as tr } from './i18n.js'
 
   let { model, f, matches, queryOn, q, meta, by = $bindable(), onpick } = $props()
 
-  const BYS = [
-    ['all', 'overall'],
-    ['inst', 'per institution'],
-    ['st', 'per study type'],
-  ]
+  const BYS = ['all', 'inst', 'st']
   const current = $derived(new Set(meta.institutions.filter((i) => i.plan_year_basis === 'current').map((i) => i.code)))
-  const stName = $derived(new Map(meta.study_types.map((t) => [t.code, t.name_en ?? t.name])))
+  const stName = $derived(new Map(meta.study_types.map((x) => [x.code, local(x, 'name') ?? x.name])))
   const t = $derived(trend(model, f, matches, by))
   const series = $derived(
     by === 'all'
-      ? [{ key: null, label: 'All course-years in the filter', points: t.total }]
+      ? [{ key: null, label: tr('t.allLabel'), points: t.total }]
       : t.series.map((s) => ({
           ...s,
-          label: s.other ? 'others' : by === 'inst' ? s.key.toUpperCase() + (current.has(s.key) ? '*' : '') : s.key,
-          title: s.other ? 'the course-years of every other group' : by === 'st' ? stName.get(s.key) : meta.institutions.find((i) => i.code === s.key)?.institution_name,
+          label: s.other ? tr('t.others') : by === 'inst' ? s.key.toUpperCase() + (current.has(s.key) ? '*' : '') : s.key,
+          title: s.other ? tr('t.othersTitle') : by === 'st' ? stName.get(s.key) : meta.institutions.find((i) => i.code === s.key)?.institution_name,
         })),
   )
   const value = (p) => (queryOn ? share(p.matching, p.withPlan) : share(p.withPlan, p.n))
@@ -66,29 +63,26 @@
   const pickSeries = (s, i) =>
     onpick({ y0: year(i), y1: year(i), ...(s.key && !s.other ? { [by]: s.key } : {}) })
   const counts = (p) => (queryOn ? `${num(p.matching)} / ${num(p.withPlan)} / ${num(p.n)}` : `${num(p.withPlan)} / ${num(p.n)}`)
-  const countsHead = $derived(queryOn ? 'matching / with a plan / all' : 'with a plan / all')
+  const countsHead = $derived(queryOn ? tr('t.countsQ') : tr('t.counts'))
 </script>
 
 <div class="trend">
   <div class="trendbar">
-    <span class="note">Lines</span>
-    {#each BYS as [v, label] (v)}
-      <label><input type="radio" bind:group={by} value={v} /> {label}</label>
+    <span class="note">{tr('t.lines')}</span>
+    {#each BYS as v (v)}
+      <label><input type="radio" bind:group={by} value={v} /> {tr(`t.${v}`)}</label>
     {/each}
   </div>
   {#if queryOn && !matches}
-    <p class="hint">The trend shows when the search has run.</p>
+    <p class="hint">{tr('t.wait')}</p>
   {:else if !t.total.some((p) => p.n)}
-    <p class="hint">No course-years in the filter.</p>
+    <p class="hint">{tr('t.noYears')}</p>
   {:else}
     <h3>
-      {#if queryOn}Share of course-years with a plan whose plan matches <q>{q}</q>{:else}Coverage: share of course-years
-        with a plan{/if}
+      {#if queryOn}{tr('t.headQ')} <q>{q}</q>{:else}{tr('t.headCov')}{/if}
     </h3>
     <p class="note sub">
-      Course-years in force in the filter, by year. {#if queryOn}A course-year matches when any of its plans matches;
-        the bars below are the coverage, the share of course-years that have a plan, so missing plans are not read as
-        absence.{:else}Type a query to see the share of plans that match it.{/if} Click a point or bar to list its courses.
+      {tr('t.sub')} {#if queryOn}{tr('t.subQ')}{:else}{tr('t.subNoQ')}{/if} {tr('t.click')}
     </p>
     {#if series.length > 1}
       <ul class="legend">
@@ -98,7 +92,7 @@
       </ul>
     {/if}
     <div class="chart" bind:clientWidth={width} role="presentation" onpointerleave={() => (hover = null)}>
-      <svg {width} height={H + CH} aria-label="Trend chart; the table below has the numbers">
+      <svg {width} height={H + CH} role="img" aria-label={tr('t.chart')}>
         {#each ticks as v (v)}
           <line class="grid" x1={M.l} x2={width - M.r} y1={y(v)} y2={y(v)} />
           <text class="axis" x={M.l - 6} y={y(v) + 4} text-anchor="end">{tickLabel(v)}</text>
@@ -117,7 +111,7 @@
             height={H + CH}
             role="button"
             tabindex="-1"
-            aria-label="{yr}: list the courses"
+            aria-label={tr('t.listYear', { y: yr })}
             onpointerenter={() => (hover = i)}
             onclick={() => pickYear(i)}
             onkeydown={(e) => e.key === 'Enter' && pickYear(i)}
@@ -147,7 +141,7 @@
           {/each}
         {/each}
         <!-- coverage -->
-        {#if CH}<text class="axis" x={M.l - 6} y={H + 12} text-anchor="end">coverage</text>{/if}
+        {#if CH}<text class="axis" x={M.l - 6} y={H + 12} text-anchor="end">{tr('t.coverage')}</text>{/if}
         {#each t.total as p, i (p.year)}
           {#if p.n && CH}
             <rect class="track" x={x(i) - barW / 2} y={H + 2} width={barW} height={CH - 14} rx="2" />
@@ -165,7 +159,7 @@
               {#each series as s, si (s.key)}
                 {@const p = s.points[hover]}
                 <tr>
-                  <td><i style:background={colour(s, si)}></i>{by === 'all' ? 'all' : s.label}</td>
+                  <td><i style:background={colour(s, si)}></i>{by === 'all' ? tr('t.allShort') : s.label}</td>
                   <td class="num">{pct(queryOn ? p.matching : p.withPlan, queryOn ? p.withPlan : p.n)}</td>
                   <td class="note">{counts(p)}</td>
                 </tr>
@@ -173,23 +167,22 @@
             </tbody>
           </table>
           <div class="note">
-            {num(tot.n)} course-years, {num(tot.withPlan)} with a plan (coverage {pct(tot.withPlan, tot.n)}){#if queryOn},
-              {num(tot.matching)} matching{/if}
+            {tr('t.tip', { n: num(tot.n), w: num(tot.withPlan), c: pct(tot.withPlan, tot.n) })}{#if queryOn}{tr('t.tipMatch', { m: num(tot.matching) })}{/if}
           </div>
         </div>
       {/if}
     </div>
     {#if by === 'inst' && series.some((s) => current.has(s.key))}
-      <p class="note sub">* The site shows only the current plan; earlier years come from earlier harvests.</p>
+      <p class="note sub">{tr('t.foot')}</p>
     {/if}
     <details class="ttable">
-      <summary>Table</summary>
+      <summary>{tr('t.table')}</summary>
       <table class="progs">
         <thead>
           <tr>
-            <th>Year</th>
-            {#each series as s (s.key)}<th title={s.title}>{by === 'all' ? (queryOn ? 'matching' : 'with a plan') : s.label}</th>{/each}
-            <th>coverage</th>
+            <th>{tr('t.year')}</th>
+            {#each series as s (s.key)}<th title={s.title}>{by === 'all' ? (queryOn ? tr('t.matching') : tr('t.withPlan')) : s.label}</th>{/each}
+            <th>{tr('t.coverage')}</th>
           </tr>
         </thead>
         <tbody>
@@ -201,7 +194,7 @@
                 {@const p = s.points[i]}
                 <td><button class="link" title="{countsHead}: {counts(p)}" onclick={() => pickSeries(s, i)}>{pct(queryOn ? p.matching : p.withPlan, queryOn ? p.withPlan : p.n)}</button></td>
               {/each}
-              <td><button class="link" title="{num(tot.withPlan)} of {num(tot.n)}" onclick={() => pickYear(i)}>{pct(tot.withPlan, tot.n)}</button></td>
+              <td><button class="link" title={tr('t.of', { a: num(tot.withPlan), b: num(tot.n) })} onclick={() => pickYear(i)}>{pct(tot.withPlan, tot.n)}</button></td>
             </tr>
           {/each}
         </tbody>

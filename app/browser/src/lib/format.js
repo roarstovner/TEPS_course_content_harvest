@@ -1,8 +1,13 @@
 // Number formatting and text marking for the components.
 
-export const num = (n) => n.toLocaleString('en')
-export const pct = (a, b) => (b ? `${((100 * a) / b).toFixed(1)}%` : '–')
-export const mb = (bytes) => `${(bytes / 1e6).toFixed(1)} MB`
+// the UI language's number format (i18n.js sets it): nb writes 1 234,5 %
+let locale = 'en'
+export const setNumberLocale = (l) => (locale = l)
+const dec = (x) => (locale === 'nb' ? x.replace('.', ',') : x)
+
+export const num = (n) => n.toLocaleString(locale)
+export const pct = (a, b) => (b ? `${dec(((100 * a) / b).toFixed(1))}${locale === 'nb' ? '\u00a0' : ''}%` : '–')
+export const mb = (bytes) => `${dec((bytes / 1e6).toFixed(1))} MB`
 
 /**
  * Split a text into plain and marked pieces.

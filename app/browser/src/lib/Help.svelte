@@ -4,6 +4,7 @@
   // with the filters kept; a `#...` link scrolls to that heading.
   import guide from '../../GUIDE.md?raw'
   import { renderMarkdown } from './markdown.js'
+  import { t } from './i18n.js'
 
   let { onexample } = $props()
 
@@ -27,9 +28,10 @@
 </script>
 
 <div class="help" bind:this={box}>
-  <nav class="helptoc" aria-label="Guide contents">
+  {#if t('help.enOnly')}<p class="note" lang="nb">{t('help.enOnly')}</p>{/if}
+  <nav class="helptoc" aria-label={t('help.toc')}>
     {#each toc as t (t.id)}<button class="link" onclick={() => go(t.id)}>{t.text}</button>{/each}
   </nav>
-  <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions (the links inside take the keys) -->
-  <article class="guide" {onclick}>{@html html}</article>
+  <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_noninteractive_element_interactions (the links inside take the keys) -->
+  <article class="guide" lang="en" {onclick}>{@html html}</article>
 </div>

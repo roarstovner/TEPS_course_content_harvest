@@ -68,6 +68,22 @@ Node 22.12 or later (vitest needs it; `.nvmrc` names the version CI uses).
   reported.
 - **Only anonymized text.** The page holds `course_plan` and the sections from
   `data/processed/`, never `html` or `extracted_text`.
+- **Norwegian or English UI, plan text as it is** (2026-11-26, so that
+  Norwegian users can work in Norwegian and others in English). Every UI
+  string is in `src/lib/i18n.js` in English and Norwegian Bokmål; the header's
+  language button switches, the choice is remembered in the browser
+  (localStorage, guarded), and the first visit follows the browser's language
+  (`nb`, `nn` or `no`: Norwegian, else English). Section and study type names
+  come in both languages from `meta.json`; numbers follow the language
+  (`1 234,5 %`). Not translated: the plans, the user guide (`GUIDE.md`,
+  English only, marked `lang="en"`), the query parser's error messages,
+  coverage reasons from the data, and downloads (column names, CSV text).
+- **WCAG 2.1 AA** (2026-11-26): visible focus on everything that takes it, a
+  skip link to the results, labels on every control, the counts line as a
+  polite live region, dialogs as native modal `<dialog>` (Esc closes, the
+  focus returns), text at 4.5:1 and control borders at 3:1 in both themes
+  (`--ctl`, `--tag-*`, `--cell-max` in `app.css`). Not yet checked against
+  1.4.11: the year strip's and the trend lines' colours.
 
 ## Data Contract
 
@@ -323,15 +339,18 @@ such as "lese- og skrivevansker".
   and keep the rows by those keys; the query is not re-run, so hits are
   rebuilt as the plans they are in. The worker builds the file (it holds the
   text) and the page saves it.
-- **Help:** the header's *Help* button or `?` (`Esc` or `?` again goes
-  back to the view it came from) shows the user guide, `GUIDE.md`, in the
-  middle pane (`view=help`). The guide is the one source, read on GitHub
+- **Help:** the header's *Help* button (`Esc` goes back to the view it came
+  from) shows the user guide, `GUIDE.md`, in the middle pane (`view=help`). The guide is the one source, read on GitHub
   too; its example queries are links (`?q=...`) that in the app set the
   query, scope, section searched (*in*), sections filter, view and its
   settings, and keep the other filters.
 - **State in the URL**, so every view can be bookmarked and cited.
-- **Keyboard:** `/` search, `j`/`k` next and previous course, `Enter` open,
-  `Esc` back, `?` help; in Screen the keys above.
+- **Keyboard:** `/` search, `j`/`k` next and previous course (the row takes
+  the focus, so a screen reader reads it; `↓`/`↑` too on a row), `Enter`
+  open, `Esc` back (the focus returns to the course's row), `?` (or the
+  header's *Keys*) a dialog listing the keys in the UI language, with a
+  button to the guide; in Screen the keys above. No key acts while the focus
+  is in a field or a dialog.
 
 ## Term Lists
 
@@ -435,7 +454,8 @@ maps, folded strings and quoting that a small parser would get wrong.
   1 s regular expression answered after 120 ms instead of 1,060), and reading
   the sections gives way to them. The word forms are counted over the plans
   in the filters (the page sends their keys).
-- `src/App.svelte`: loading, state, URL, keyboard, the panes.
+- `src/App.svelte`: loading, state, URL, keyboard, the panes, the UI
+  language (the page re-renders under `{#key lang}` when it changes).
 - `src/lib/`: components: `Header` (search box, scope, counts), `WordForms`,
   `Filters` (with `StudyTypes`, the study type tree, and `CheckList`, a
   collapsible checkbox filter with counts),
@@ -447,7 +467,9 @@ maps, folded strings and quoting that a small parser would get wrong.
   `Screen` (the screening view; the worker draws the sample from the hits),
   `Compare` (the compare view; the worker sends the texts with their
   sections), `TermLists` (term lists and the heatmap; the worker runs the
-  terms), `Help` (the user guide, `GUIDE.md` imported as text and rendered by
+  terms), `Shortcuts` (the `?` dialog), `i18n.js` (the UI strings in English
+  and Norwegian, the language, the keyboard shortcuts; its test checks that
+  every key a component uses exists in both), `Help` (the user guide, `GUIDE.md` imported as text and rendered by
   `markdown.js`, a small renderer of the Markdown the guide uses; its test
   checks that every example link of the guide parses).
 - `src/download/`: downloads, with tests (`download.test.js`). `table.js`: the

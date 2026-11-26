@@ -4,6 +4,7 @@
   // matching version.
   import { yearStrip } from '../data/model.js'
   import { num } from './format.js'
+  import { t } from './i18n.js'
 
   let { rows, y0, y1, matches, active, selectedKey, worker, q, excl, onopen } = $props()
 
@@ -58,36 +59,36 @@
   const matchedKeys = (r) => (matches ? new Set(r.course.versions.filter((v) => matches.has(v.key)).map((v) => v.key)) : null)
 </script>
 
-<div class="list" bind:this={list} role="listbox" aria-label="Courses">
-  {#if !rows.length}<p class="hint">No course matches.</p>{/if}
+{#if !rows.length}<p class="hint">{t('r.none')}</p>{/if}
+<ul class="list" bind:this={list} aria-label={t('r.label')}>
   {#each rows.slice(0, limit) as r, i (r.course.key)}
     {@const c = r.course}
     {@const k = snippets.get(r.versions[0]?.key)?.[0]}
-    <button
+    <li><button
       class="row"
       class:active={i === active}
       class:selected={c.key === selectedKey}
       data-i={i}
-      role="option"
-      aria-selected={c.key === selectedKey}
+      data-key={c.key}
+      aria-current={c.key === selectedKey ? 'true' : undefined}
       onclick={() => onopen(c)}
     >
       <span class="inst">{c.institution}</span>
       <span class="code">{c.course_code}</span>
       <span class="name">{c.course_name}</span>
-      <span class="hits">{#if matches}{num(r.hits)} hits{#if r.versions.length > 1} · {r.versions.length} versions{/if}{/if}</span>
+      <span class="hits">{#if matches}{t('r.hits', { n: num(r.hits) })}{#if r.versions.length > 1} · {t('r.versions', { n: r.versions.length })}{/if}{/if}</span>
       <span class="strip" aria-hidden="true">
         {#each yearStrip(c, y0, y1, matchedKeys(r)) as cell (cell.year)}<i
             class={cell.state}
-            title={cell.state === 'none' ? `${cell.year}: taught, no plan (${cell.reason ?? 'reason not recorded'})` : cell.year}
+            title={cell.state === 'none' ? t('r.noPlan', { y: cell.year, r: cell.reason ?? t('r.noReason') }) : cell.year}
           ></i>{/each}
       </span>
       {#if k}<span class="kwic">…{tail(k.before)}<mark class="t{k.term % 6}">{k.match}</mark>{k.after}…</span>{/if}
-    </button>
+    </button></li>
   {/each}
-  {#if rows.length > limit}
-    <div bind:this={sentinel} class="more">
-      <button class="link" onclick={() => (limit += PAGE)}>Show more ({num(rows.length - limit)} left)</button>
-    </div>
-  {/if}
-</div>
+</ul>
+{#if rows.length > limit}
+  <div bind:this={sentinel} class="more">
+    <button class="link" onclick={() => (limit += PAGE)}>{t('r.more', { n: num(rows.length - limit) })}</button>
+  </div>
+{/if}

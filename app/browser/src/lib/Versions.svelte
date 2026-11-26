@@ -5,6 +5,7 @@
   import { versionId } from '../data/keys.js'
   import { diffStats, wordDiff } from './diff.js'
   import { segmentsIn } from './format.js'
+  import { t } from './i18n.js'
 
   let { course, version, doc, worker, q, excl, cmp = $bindable(), onversion } = $props()
 
@@ -41,27 +42,27 @@
 {#snippet marked(segs)}{#each segs as g, j (j)}{#if g.term < 0}{g.text}{:else}<mark class="t{g.term % 6}">{g.text}</mark>{/if}{/each}{/snippet}
 
 {#if course.versions.length < 2}
-  <p class="hint">Only one version of this plan was harvested.</p>
+  <p class="hint">{t('v.one')}</p>
 {:else}
   <div class="diffhead">
     <label
-      >Compare <select value={versionId(other)} onchange={(e) => (cmp = e.currentTarget.value)}>
+      >{t('v.compare')} <select value={versionId(other)} onchange={(e) => (cmp = e.currentTarget.value)}>
         {#each course.versions as v (v.key)}{#if v !== version}<option value={versionId(v)}>{label(v)}</option>{/if}{/each}
       </select></label
     >
     <label
-      >with the shown <select value={versionId(version)} onchange={(e) => onversion(course.versions.find((v) => versionId(v) === e.currentTarget.value))}>
+      >{t('v.with')} <select value={versionId(version)} onchange={(e) => onversion(course.versions.find((v) => versionId(v) === e.currentTarget.value))}>
         {#each course.versions as v (v.key)}<option value={versionId(v)}>{label(v)}</option>{/each}
       </select></label
     >
     {#if ready}
-      <span class="note"><ins>+{res.stats.ins}</ins> <del>−{res.stats.del}</del> words from {years(swap ? version : other)} to {years(swap ? other : version)}</span>
+      <span class="note"><ins>+{res.stats.ins}</ins> <del>−{res.stats.del}</del> {t('v.words', { a: years(swap ? version : other), b: years(swap ? other : version) })}</span>
     {/if}
   </div>
   {#if !ready}
-    <p class="hint">Comparing…</p>
+    <p class="hint" role="status">{t('v.comparing')}</p>
   {:else if !res.stats.ins && !res.stats.del}
-    <p class="hint">The two texts differ only in spacing.</p>
+    <p class="hint">{t('v.spacing')}</p>
   {:else}
     <div class="plantext diff" bind:this={box}>{#each res.parts as p, i (i)}{@const src = p.op === 'del' ? res.a : res.b}{@const segs = segmentsIn(src.text, p.start, p.start + p.text.length, src.marks)}{#if p.op === 'eq'}{@render marked(segs)}{:else if p.op === 'ins'}<ins>{@render marked(segs)}</ins>{:else}<del>{@render marked(segs)}</del>{/if}{/each}</div>
   {/if}

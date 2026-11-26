@@ -1,8 +1,9 @@
 # User Guide
 
 A quick guide to the course plan browser: how to search, what the numbers
-mean, and what each view does. Press `?` in the browser to open it, `Esc` or
-`?` to close it. The examples are links: in the browser they run the query
+mean, and what each view does. *Help* in the header opens it, `Esc` closes
+it. The browser speaks English or Norwegian: the button at the right of the
+header switches (the plans and this guide are not translated). The examples are links: in the browser they run the query
 and keep your other filters; the line under the search box then gives the
 counts in the data the browser holds. The precise rules are in the
 [developer README](README.md#query-syntax).
@@ -236,7 +237,10 @@ the row in `truncated`.
 |---|---|
 | `/` | go to the search box |
 | `j` / `k` | next / previous course in the list |
+| `↓` / `↑` | the same, when a course in the list has the focus |
 | `Enter` | open the course |
-| `Esc` | leave the search box, close the course or this guide |
-| `?` | open or close this guide |
+| `Esc` | leave the search box; close a dialog, the course or this guide |
+| `?` | list the keyboard shortcuts (also *Keys* in the header) |
 | Screen: `j` / `k`, `i` / `e` / `m`, `n`, `o` | next / previous hit; include / exclude / maybe; note; open the plan |
+
+The keys do nothing while you type in a field; `Esc` leaves it.

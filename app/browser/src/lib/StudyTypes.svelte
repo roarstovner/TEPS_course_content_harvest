@@ -6,6 +6,7 @@
   // Types without courses in this data are greyed and folded in their group.
   import { untrack } from 'svelte'
   import { num, pct } from './format.js'
+  import { local, other, t as tr } from './i18n.js'
 
   let { types, selected = $bindable(), counts } = $props()
 
@@ -21,7 +22,7 @@
     const by = new Map()
     for (const t of types) {
       if (q && ![t.code, t.name_en, t.name_no].some((s) => s?.toLowerCase().includes(q))) continue
-      const g = by.get(t.group) ?? by.set(t.group, { code: t.group, label: t.group_label_en, title: t.group_label_no, items: [], absent: [] }).get(t.group)
+      const g = by.get(t.group) ?? by.set(t.group, { code: t.group, label: local(t, 'group_label'), title: other(t, 'group_label'), items: [], absent: [] }).get(t.group)
       ;(t.courses ? g.items : g.absent).push(t)
     }
     return [...by.values()]
@@ -42,19 +43,19 @@
 </script>
 
 <details class="filter" open>
-  <summary>Study type {#if selected.length}<span class="badge">{selected.length}</span>{/if}</summary>
+  <summary>{tr('st.title')} {#if selected.length}<span class="badge">{selected.length}</span>{/if}</summary>
   <div class="presets">
-    <button class="link" onclick={() => (selected = [...te])} title={te.join(', ')}>Teacher education (TE frame)</button>
-    {#if selected.length}<button class="link" onclick={() => (selected = [])}>Clear</button>{/if}
+    <button class="link" onclick={() => (selected = [...te])} title={te.join(', ')}>{tr('st.te')}</button>
+    {#if selected.length}<button class="link" onclick={() => (selected = [])}>{tr('f.clear')}</button>{/if}
   </div>
-  <input class="ffilter" type="search" placeholder="Filter {types.length} study types" aria-label="Filter study types" bind:value={text} />
+  <input class="ffilter" type="search" placeholder={tr('st.filter', { n: types.length })} aria-label={tr('st.filterAria')} bind:value={text} />
   <ul class="tree">
     {#each groups as g (g.code)}
       {@const n = ticked(g)}
       {@const isOpen = searching || open.has(g.code)}
       <li>
         <div class="group">
-          <button class="twist" aria-expanded={isOpen} aria-label="{isOpen ? 'Collapse' : 'Expand'} {g.label}" onclick={() => (open = flip(open, g.code))}>{isOpen ? '▾' : '▸'}</button>
+          <button class="twist" aria-expanded={isOpen} aria-label={tr(isOpen ? 'st.collapse' : 'st.expand', { g: g.label })} onclick={() => (open = flip(open, g.code))}>{isOpen ? '▾' : '▸'}</button>
           <label class="check" title={g.title}>
             <input
               type="checkbox"
@@ -72,13 +73,10 @@
             {#each g.items as t (t.code)}
               {@const c = counts?.get(t.code)}
               <li>
-                <label class="check" title="{t.name_no} ({t.code})">
+                <label class="check" title="{other(t, 'name')} ({t.code})">
                   <input type="checkbox" checked={selected.includes(t.code)} onchange={(e) => toggle([t.code], e.currentTarget.checked)} />
-                  <span>{t.name_en}</span>
-                  <small
-                    title="{num(c?.courses ?? 0)} courses match the query and the other filters; coverage: {num(c?.withPlan ?? 0)} of {num(
-                      c?.courseYears ?? 0,
-                    )} course-years have a plan">{num(c?.courses ?? 0)}<br />{pct(c?.withPlan ?? 0, c?.courseYears ?? 0)}</small
+                  <span>{local(t, 'name')}</span>
+                  <small title={tr('st.count', { c: num(c?.courses ?? 0), w: num(c?.withPlan ?? 0), n: num(c?.courseYears ?? 0) })}>{num(c?.courses ?? 0)}<br />{pct(c?.withPlan ?? 0, c?.courseYears ?? 0)}</small
                   >
                 </label>
               </li>
@@ -87,15 +85,15 @@
               {@const absOpen = searching || openAbsent.has(g.code)}
               <li>
                 <button class="link absent-toggle" aria-expanded={absOpen} onclick={() => (openAbsent = flip(openAbsent, g.code))}
-                  >{absOpen ? '▾' : '▸'} {g.absent.length} not in this data</button
+                  >{absOpen ? '▾' : '▸'} {tr('st.absent', { n: g.absent.length })}</button
                 >
               </li>
               {#if absOpen}
                 {#each g.absent as t (t.code)}
                   <li>
-                    <label class="check absent" title="{t.name_no} ({t.code}): not in this data; the all-courses data adds it">
+                    <label class="check absent" title={tr('st.absentTitle', { name: other(t, 'name'), code: t.code })}>
                       <input type="checkbox" disabled checked={selected.includes(t.code)} />
-                      <span>{t.name_en}</span>
+                      <span>{local(t, 'name')}</span>
                     </label>
                   </li>
                 {/each}
@@ -105,7 +103,7 @@
         {/if}
       </li>
     {:else}
-      <li><small>No study type matches.</small></li>
+      <li><small>{tr('st.none')}</small></li>
     {/each}
   </ul>
 </details>
