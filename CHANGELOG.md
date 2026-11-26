@@ -104,6 +104,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Fjellhaug URL resolver: code from the slug before its first hyphen gives BTM1003/RLE1001 another course's page; retry harvest (#623)
+- Sections (UiA/NIH English tree): NIH gate wordings, English placeholders, Canvas/exam-semester/Wiseflow logistics (#622)
+- Sections: admission blocks with required prior study dropped (UiA, NIH; English and Norwegian headings) (#621)
+- Anonymizer: names #614 left (UiB PRO325 'innspel frå kunstnaren', NTNU 'faglærer, Dr.', UiT 'will be held by', UiT '(<name>, Roskilde)') (#615)
+- Browser: user guide in the app (help page) — query syntax, section search and its limits, views, screening, term lists, compare, downloads, what coverage means (#629)
 - Add Molde (#396)
 - Add NHH (#394)
 - Add NMH (Norges musikkhøgskole) (#393)
