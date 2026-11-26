@@ -1001,6 +1001,35 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
 .masked_digits <- intToUtf8(0xE000 + 0:9)
 .mask_link_digits <- function(txt) stringr::str_replace_all(txt, .link_regex, \(u) chartr(.digits, .masked_digits, u))
 .unmask_digits <- function(txt) chartr(.masked_digits, .digits, txt)
+# A scripture reference is a book and chapter:verse, not a clock time
+# ("Genesis (11:27-12:9)", "Matt 13:10-17", "1. Mos 12:1-9; 22:1-19", "Sure
+# 18:65", fjellhaug, 2026-11-26): its digits are masked like a link's. A
+# book is a Norwegian or English name or abbreviation with a capital, with
+# a number before it ("1. Mos", "2 Kor", "II Kings"); a list of references
+# after it (";", ",", "og"/"and") goes with it. The first reference after
+# the book has a colon, so "Rom 101, 12:15-14:00" (a room, then a time) is
+# no reference.
+.scripture_books <- paste0(
+  "(?:Mos(?:ebok)?|Jos(?:va)?|Dom(?:mer(?:ne)?)?|Rut|Sam(?:uel)?|Kong(?:ebok)?|Krøn(?:ikebok)?|Esra|",
+  "Neh(?:emja|emiah)?|Est(?:er|her)?|Esth|Job|Sal(?:me(?:r|ne)?|menes bok)?|Ordspr?(?:åkene)?|",
+  "Fork(?:ynneren)?|Høys(?:angen)?|Jes(?:aja)?|Jer(?:emia|emiah)?|Klag(?:esangene)?|Esek(?:iel)?|",
+  "Dan(?:iel)?|Hos(?:ea)?|Joel|Amos|Obad(?:ja|iah)?|Jona[h]?|Mi(?:ka|cah)|Nah(?:um)?|Hab(?:akkuk)?|",
+  "Sef(?:anja)?|Hag(?:gai)?|Sak(?:arja)?|Mal(?:aki|achi)?|Matt(?:eus|hew)?|Mt|Mark(?:us)?|Mk|",
+  "Luk(?:as|e)?|Lk|Joh(?:annes|n)?|Jn|Apg|Acts|Rom(?:erbrevet|ans)?|Kor(?:inter(?:brev(?:et)?)?)?|",
+  "Corinthians|Cor|Gal(?:ater(?:brevet)?|atians)?|Ef(?:es(?:er(?:brevet)?)?)?|Eph(?:esians)?|",
+  "Fil(?:ipper(?:brevet)?)?|Phil(?:ippians)?|Kol(?:osser(?:brevet)?)?|Col(?:ossians)?|",
+  "Tess(?:alonikerbrev(?:et)?)?|Thess(?:alonians)?|Tim(?:oteus(?:brev(?:et)?)?|othy)?|Tit(?:us)?|",
+  "Filem(?:on)?|Philem(?:on)?|Hebr?(?:eerbrevet|ews)?|Jak(?:obs brev)?|Jas|James|Pet(?:er)?|",
+  "Jud(?:as|e)?|Åp(?:enbaringen|b)?|Rev(?:elation)?|Gen(?:esis)?|Ex(?:od(?:us)?)?|Lev(?:iticus)?|",
+  "Num(?:bers)?|Deut(?:eronomy)?|Josh(?:ua)?|Judg(?:es)?|Ruth|Kings|Kgs|Chr(?:on(?:icles)?)?|",
+  "Ezra|Ps(?:a|s|alms?)?|Prov(?:erbs)?|Eccl?(?:esiastes)?|Isa(?:iah)?|Lam(?:entations)?|",
+  "Ezek(?:iel)?|Zeph(?:aniah)?|Zech(?:ariah)?|Sir(?:ak|ach)?|Makk|Macc|Sur(?:e|a|ah))(?!\\p{L})")
+.scripture_unit <- paste0("\\d{1,3}(?::\\d{1,3}[a-f]?)?(?:[ \\t]*[-–][ \\t]*\\d{1,3}(?::\\d{1,3}[a-f]?)?)?",
+                          "(?![\\d\\p{L}]|[.:]\\d)")
+.scripture_regex <- paste0("(?<![\\p{L}\\d])(?:[1-5]\\.?[ \\t]?|I{1,3}[ \\t]+)?", .scripture_books,
+                           "\\.?[ \\t\\u00a0]*\\(?[ \\t]*(?=\\d{1,3}:\\d)", .scripture_unit,
+                           "(?:(?:[ \\t]*[;,][ \\t]*|[ \\t]+(?:og|and|&)[ \\t]+)", .scripture_unit, ")*")
+.mask_scripture_digits <- function(txt) stringr::str_replace_all(txt, .scripture_regex, \(u) chartr(.digits, .masked_digits, u))
 
 .anon_generic <- function(txt) {
   txt |>
@@ -1045,8 +1074,10 @@ anonymize_text <- function(institution, text, .progress = FALSE) {
     # Remove phone numbers: +47 XX XX XX XX, Tlf: XXXXXXXX, telefon: XX XX XX XX
     stringr::str_remove_all("(?i)(?:tlf|telefon)\\.?\\s*:?\\s*(?:\\+47\\s*)?\\d[\\d ]{6,}") |>
     stringr::str_remove_all("\\+47\\s*\\d[\\d ]{6,}") |>
-    # the digits of links are hidden from the date and time rules below
+    # the digits of links and scripture references are hidden from the date
+    # and time rules below
     .mask_link_digits() |>
+    .mask_scripture_digits() |>
     # Remove Norwegian date-time format: "12. feb. 2026 02:50:04"
     stringr::str_remove_all("\\d{1,2}\\.\\s*(?:jan|feb|mar|apr|mai|jun|jul|aug|sep|okt|nov|des)\\.?\\s*\\d{4}\\s*\\d{2}:\\d{2}(?::\\d{2})?") |>
     # Date and year rules keep a government document's dates (.not_gov).

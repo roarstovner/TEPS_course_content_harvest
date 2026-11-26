@@ -1207,6 +1207,17 @@ test_that("clock times go; durations, verses, ratios and credits stay", {
                "Tid Utlevering Innlevering. Onsdager.")
 })
 
+test_that("scripture references are no clock times", {
+  an <- function(x) anonymize_text("fjellhaug", x, .progress = FALSE)
+  keep <- c("Genesis (11:27-12:9)", "Les 1. Mos 12:1-9; 22:1-19 og Matt 13:10-17, 24:1.",
+            "Sure 18:65", "Salme 23:1-6", "II Kings 17:24", "Joh 3:16 og 17:3", "Matt. 5:3-12",
+            "Åp 21:1–22:5", "Rom 12:1-2", "Gen 1-11; 12:1-9", "Psalms 22:1", "2 Kor 5:17")
+  for (x in keep) expect_equal(an(x), x, info = x)
+  # a book's name without chapter:verse after it guards no time
+  expect_equal(an("Rom 101, 12:15-14:00. Matteus-seminar fra 10:00"), "Rom 101. Matteus-seminar")
+  expect_equal(an("Innlevering innen 23:59 i Canvas."), "Innlevering i Canvas.")
+})
+
 test_that("clock times after kl., with am/pm or dotted after at go, with their preposition", {
   an <- function(x) anonymize_text("nhh", x, .progress = FALSE)
   expect_equal(an("The exam starts on Monday at 12.00 and ends on Friday at 12.00."),

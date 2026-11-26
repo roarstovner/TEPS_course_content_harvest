@@ -2109,6 +2109,35 @@ name stood. One name after an affiliation in a list stays ("held by <names>,
 University of Aberdeen, UK, Associate professor <name>, UiT", a known gap).
 *Since:* 2026-11-25.
 
+**Scripture references are no clock times.** A book of the Bible (or a
+sura) followed by chapter:verse is hidden from the date and clock rules, as
+a link's digits are: a Norwegian or English name or abbreviation with a
+capital, with a number before it where it has one ("Genesis", "1. Mos", "2
+Kor", "Matt.", "Salme", "Luke", "Sure"), then a chapter:verse, a range, and
+the list after it joined by ";", "," or "og"/"and" ("Genesis (1:1-3:24;
+11:27-12:9)", "Lukas 1:31-56; ... 7:17-23, 36-50; 10:25-37"). The clock rule
+removed a two-digit chapter with a verse of 00-59 as a time ("Genesis
+(1:1-3:24;-12:9)", "Deuteronomy 17:14–20" → "Deuteronomy,"); a one-digit
+chapter ("Sure 3:30") already stayed. Clock times go because the spec
+counts them as administrative (exam, hand-in and teaching times that change
+each year, with dates and semester labels), not as personal data; that
+stays. *Why:* the Fjellhaug close-out anonymization audit of 2026-11-25
+found reading lists and course content that lost verse references; the
+anonymizer also cuts `course_plan`, so it may remove only personal data and
+boilerplate. *Rejected:* dropping the HH:MM rule (it removes real hand-in
+and exam times); any number after a book's name, which would keep the time
+after a room ("Rom 101, 12:15-14:00"), so the first reference after the
+book must have a colon; verse lists in the Norwegian comma form
+("21,1-21"), which the clock rule never read. *Consequence:* of the raw
+texts with such a reference (31,240 distinct texts of the build of
+2026-11-25), 12 offerings' pages change (Fjellhaug 8, NLA 2, MF 1, UiT 1):
+12 `course_plan` texts and 12 sections (reading list 8, course content 3,
+learning outcomes 1) get their verses back, and nothing else changes; their
+plans get a new plan id.
+A two-digit chapter of 10-23 with a verse of 00-59 that follows only a
+chapter range without a colon ("Gen 1-11; 12:10-19") still goes, a known
+gap. *Since:* 2026-11-26.
+
 ## Sections
 
 ```{r}
