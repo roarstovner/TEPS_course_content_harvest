@@ -104,6 +104,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- UiT: semesters the course page no longer lists: document ids from Wayback captures of the active page, documents fetched live (#592)
 - Sections (NMH): paragraph headings inside the body not read as headings (KUNSTHO71B grading criteria in coursework, ALEX20 Pensumlitteratur in assessment) (#625)
 - Anonymizer: the clock rule removes Bible verse references (Genesis (11:27-12:9) loses 11:27) (#628)
 - Sections (NHH): coursework validity in assessment, assessment logistics, regulations paragraph after aids, dropped labels (Permitted Support Material, Grading Scale, Vurderingsuttrykk) (#627)
