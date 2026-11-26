@@ -104,6 +104,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Sections (NMH): paragraph headings inside the body not read as headings (KUNSTHO71B grading criteria in coursework, ALEX20 Pensumlitteratur in assessment) (#625)
+- Anonymizer: the clock rule removes Bible verse references (Genesis (11:27-12:9) loses 11:27) (#628)
+- Sections (NHH): coursework validity in assessment, assessment logistics, regulations paragraph after aids, dropped labels (Permitted Support Material, Grading Scale, Vurderingsuttrykk) (#627)
+- Sections (Fjellhaug): 'Exam and Assessment' and 'Oppmøte og fravær'/'Attendance and absence' unmapped; exam table in coursework; 'Hjelpemiddeliste' label dropped (#624)
 - Browser: header 'search in' section control, section coverage in Coverage, guide without dated counts (#630)
 - Fjellhaug URL resolver: code from the slug before its first hyphen gives BTM1003/RLE1001 another course's page; retry harvest (#623)
 - Sections (UiA/NIH English tree): NIH gate wordings, English placeholders, Canvas/exam-semester/Wiseflow logistics (#622)
