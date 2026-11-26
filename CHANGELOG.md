@@ -104,6 +104,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Retry harvest: pausing it loses its URL-discovery progress (checkpoints removed at start) (#634)
 - Browser: accessibility, Norwegian/English UI, keyboard shortcuts (#561)
 - Add Fjellhaug (#398)
 - Dev hand-over of the teacher-ed frame to the coding project (Parquet only, url in offerings, finalized: false) (#631)
