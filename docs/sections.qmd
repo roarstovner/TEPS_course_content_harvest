@@ -122,6 +122,9 @@ Fields for the `html` reader:
   its whole text ("Avsluttende vurdering", "Pensumlitteratur", "Anbefalt
   litteratur"), not by a substring pattern ("Orgelkunnskap" is no learning
   outcome), and an unmapped one is a line of the section it is in. A
+  practice heading ("Praksis") there is a part of the `h2` it is under: a
+  line of that section whose text is also practice (DISTUD78's "Praksis"
+  under "Arbeidskrav", coursework; since 2026-11-26). A
   colon-ended lead-in naming a coursework gate ("… følgende obligatoriske
   aktiviteter:") starts coursework_requirements. So does a numbered
   requirement, whole `<p>` or its leading `<em>`/`<strong>` run ("Arbeidskrav II:
@@ -129,7 +132,9 @@ Fields for the `html` reader:
   a title after a bare space only in an all-bold `<p>`, and not a sentence),
   keeping its text; under such a sub-heading or lead-in a bold label
   ("Vurderingskriterier:") stays in coursework_requirements up to the next
-  mapped sub-heading or heading. A selector that starts with
+  mapped sub-heading or heading, and so it does under a numbered requirement
+  that is a list item of its own in coursework (himolde's `<li>Arbeidskrav
+  I</li>` over a bold title; since 2026-11-26). A selector that starts with
   "/" is XPath: fhs's paragraphs, except those naming a gate in the
   accordion "Arbeidskrav og vurdering", which stay in assessment for
   `section_inline_coursework`, and "Emnets oppbygning:" with a colon, a
@@ -151,7 +156,9 @@ Fields for the `html` reader:
   2026-11-22), whose course codes ("61 110", "70 111 GK1 Introduksjon til
   design") under "Gjennomført:" count as prior courses, and whose label
   "Recommended previous knowledge" keeps the lines after it whole (but a
-  link), without the label. So do uia's admission field for
+  link), with the label (since 2026-11-26). A prerequisite label line
+  ("Krav til forkunnskaper") or a field's label ("Krav til forkunnskaper:
+  BSY-100", ldh, barrattdue) stays before what is kept (since 2026-11-26). So do uia's admission field for
   single-course students, "Opptakskrav hvis tilbudt som enkeltemne" ("om
   tilbydd", "Admission Requirement if given as a free-standing course"),
   and nih's "Hvem kan ta dette emnet?" ("Admission to the course"), which
@@ -218,7 +225,8 @@ Other fields:
   in praksis or clinical studies, a sentence about the exam, "krever aktiv
   deltakelse", or a list of teaching forms with attendance in it
   ("Forelesninger, teoriøvinger og laboratoriearbeid med obligatorisk
-  tilstedeværelse."). One about
+  tilstedeværelse.", "... undervisningstimer i form av forelesninger og
+  seminarer med obligatorisk oppmøte, ...", fjellhaug, since 2026-11-26). One about
   attendance "på disse" takes the sentence before it, which names what it
   points to.
 - `exam_sessions`: the page lists the exam parts once per exam session
@@ -287,9 +295,19 @@ aids, exam language, grading scale and AI rules stay in assessment. A `label`
 heading ("Hjelpemidler til eksamen", "Eksamensspråk", "Karakterskala", "Om bruk
 av KI", "Fravær fra obligatorisk aktivitet"; since 2026-11-26 also "Grading
 scale", "Vurderingsuttrykk", nhh's "Permitted Support Material" and
-fjellhaug's "Hjelpemiddel(l)iste ved eksamen") stays as a line of its section,
-since the text under it ("Ingen", "Norsk.", "A-F", "Liste A") says nothing alone; with
-nothing but a dash or pointer under it ("N/A"), it goes. An English heading maps as
+fjellhaug's "Hjelpemiddel(l)iste ved eksamen"; since 2026-11-26 also the
+prerequisite headings that say whether prior knowledge is required or
+recommended: "Krav til forkunnskaper/-ar", "Forkunnskapskrav", "Anbefalte
+forkunnskaper", "Tilrådde forkunnskapar", "Absolutte forkunnskaper",
+"Obligatoriske forkunnskaper", "Forutsatte forkunnskaper", "Required/Recommended
+prerequisites", "Recommended previous knowledge", "Formal prerequisite
+knowledge", hvl's "Entry requirements"; not "Forkunnskaper", "Forkrav" or
+"Prerequisites", which only name the section) stays as a line of its section,
+since the text under it ("Ingen", "Norsk.", "A-F", "Liste A", "Engelsk 1, 2, 3
+og 4") says nothing alone; with nothing but a dash or pointer under it ("N/A"),
+it goes, and so does a prerequisite label over "Ingen", the placeholder it is
+in prerequisites. A label line whose text the cleanup took (an admission
+sentence) goes too (`.drop_empty_labels()`). An English heading maps as
 its Norwegian counterpart on the same site: on UiA's and NIH's English-tree
 pages (since 2026-11-23) "Examination requirements" ("Vilkår for å gå opp
 til eksamen") to coursework requirements, ahead of the substring
@@ -454,7 +472,11 @@ lenket til under." with its links' labels; since 2026-11-25 a bare "No",
 NIH's "No subjects (in the program / at program level).", its English
 archive notice "As we are in a transition phase between two systems, we
 refer to the Study Handbook ..." and "Core reading for." / "Reading list
-for" without their year), and drops a first
+for" without their year; since 2026-11-26 the reading list's label alone,
+"Pensum.", "Pensumliste", "Litteraturliste", "Reading list", nhh's "Se de
+engelske sidene for emnebeskrivelse" and its unfilled page template
+"Læringsutbytte på bokmål" / "Tekst om hva du lærer" of the test course
+"Testemne", whose page is then a shell), and drops a first
 line that only repeats the section heading (but keeps learning-outcome group
 labels such as "Kunnskap"). Last, a section whose whole text, whitespace
 aside and 100 or more characters long, equals an earlier section's on the

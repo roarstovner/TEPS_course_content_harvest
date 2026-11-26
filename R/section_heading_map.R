@@ -128,8 +128,20 @@ section_heading_patterns <- tibble::tribble(
   "sensurering",                           "assessment",             TRUE,   # uio: weighting
 
   # --- prerequisites ---
+  # Whether prior knowledge is required or recommended: these headings stay
+  # as a line of the section (`label` below); "Forkunnskaper", "Forkrav"
+  # and "Prerequisites" only name it.
   "krav til forkunnskaper",                "prerequisites",          FALSE,
+  "krav til forkunnskapar",                "prerequisites",          FALSE,
   "anbefalte forkunnskaper",               "prerequisites",          FALSE,
+  "anbefalte forkunnskap",                 "prerequisites",          FALSE,  # -ar, fjellhaug's -åer
+  "anbefalt forkunnskap",                  "prerequisites",          FALSE,
+  "tilrådde forkunnskap",                  "prerequisites",          FALSE,
+  "tilrådd forkunnskap",                   "prerequisites",          FALSE,
+  "absolutte forkunnskap",                 "prerequisites",          FALSE,  # hiof
+  "obligatoriske forkunnskap",             "prerequisites",          FALSE,  # uio, fjellhaug, uit
+  "obligatorisk forkunnskap",              "prerequisites",          FALSE,  # uit
+  "forutsatte forkunnskap",                "prerequisites",          FALSE,  # nmbu
   "forkunnskapskrav",                      "prerequisites",          FALSE,
   "forkunnskaper",                         "prerequisites",          FALSE,
   "forkunnskap",                           "prerequisites",          FALSE,
@@ -138,6 +150,9 @@ section_heading_patterns <- tibble::tribble(
   "progression requirements",              "prerequisites",          TRUE,   # nla English pages
   "required prerequisite knowledge",       "prerequisites",          FALSE,
   "recommended prerequisite knowledge",    "prerequisites",          FALSE,
+  "required prerequisite",                 "prerequisites",          FALSE,  # nhh
+  "recommended prerequisite",              "prerequisites",          FALSE,  # nhh, nord, nmbu, uit
+  "obligatory prerequisite",               "prerequisites",          FALSE,  # uit
   "formal prerequisite knowledge",         "prerequisites",          TRUE,
   "recommended previous knowledge",        "prerequisites",          TRUE,
   "required previous knowledge",           "prerequisites",          TRUE,   # ntnu English pages
@@ -310,11 +325,13 @@ section_heading_patterns <- tibble::tribble(
 )
 
 # Headings that name one part of their section (exam aids, exam language, rules
-# for absence, the grading scale, the AI category) stay as a line of it
-# (sectionize()), since the text under them ("Ingen", "Alle", "Norsk.", "A-F",
-# "K3", "Liste A", "Calculator") says nothing without them. "Grading scale",
+# for absence, the grading scale, the AI category, whether prior knowledge is
+# required or recommended) stay as a line of it (sectionize()), since the text
+# under them ("Ingen", "Alle", "Norsk.", "A-F", "K3", "Liste A", "Calculator",
+# "Engelsk 1, 2, 3 og 4") says nothing without them. "Grading scale",
 # "Vurderingsuttrykk", "Permitted support material" and fjellhaug's aid lists
-# since 2026-11-26.
+# since 2026-11-26, and the prerequisite headings (the coding of
+# the plans asked whether a prerequisite is required or recommended).
 section_heading_patterns$label <- section_heading_patterns$pattern %in% c(
   "hjelpemidler til eksamen", "hjelpemiddel til eksamen", "hjelpemidler ved eksamen",
   "hjelpemiddel ved eksamen", "tillatte hjelpemidler", "tillatte hjelpemiddel",
@@ -323,7 +340,14 @@ section_heading_patterns$label <- section_heading_patterns$pattern %in% c(
   "undervisnings- og eksamensspråk", "language of instruction and examination",
   "fravær fra obligatorisk aktivitet", "praksisstudier", "omfang av praksisstudier",
   "karakterskala", "om bruk av ki", "grading scale", "vurderingsuttrykk",
-  "permitted support material", "hjelpemiddelliste ved eksamen", "hjelpemiddeliste ved eksamen")
+  "permitted support material", "hjelpemiddelliste ved eksamen", "hjelpemiddeliste ved eksamen",
+  "krav til forkunnskaper", "krav til forkunnskapar", "anbefalte forkunnskaper", "anbefalte forkunnskap",
+  "anbefalt forkunnskap", "tilrådde forkunnskap", "tilrådd forkunnskap", "absolutte forkunnskap",
+  "obligatoriske forkunnskap", "obligatorisk forkunnskap", "forutsatte forkunnskap", "forkunnskapskrav",
+  "required prerequisite knowledge", "recommended prerequisite knowledge", "required prerequisite",
+  "recommended prerequisite", "obligatory prerequisite", "formal prerequisite knowledge",
+  "recommended previous knowledge", "required previous knowledge", "recommended knowledge",
+  "entry requirements")
 
 # Practice headings: the whole heading (minus a closing colon) is one of
 # these. The text under them stays in their section and is also the overlay

@@ -58,7 +58,7 @@ sectionize <- function(blocks) {
   copied <- character()
   practices <- .is_practice_heading(blocks$text)
   flush <- function() {
-    if (!is.na(current) && length(chunks) > 0 && !(labelled && .empty_label_text(chunks[-1]))) {
+    if (!is.na(current) && length(chunks) > 0 && !(labelled && .empty_label_text(chunks[-1], current))) {
       txt <- trimws(paste(chunks[nzchar(chunks)], collapse = "\n"))
       if (nzchar(txt)) sections[[current]] <<- c(sections[[current]], txt)
     }
@@ -127,6 +127,10 @@ sectionize <- function(blocks) {
       if (is.na(section) || blocks$keep[i] || labelled) chunks <- text
     } else if (!is.na(current)) {
       chunks <- c(chunks, text)
+      # a numbered requirement as a list item under a coursework sub-heading
+      # (himolde's "Arbeidskrav I" over a bold title): the group labels under
+      # it stay in coursework, as under a `keep` sub-heading
+      if (identical(current, "coursework_requirements") && .numbered_coursework(text)) requirement <- TRUE
     }
   }
   flush()
@@ -148,9 +152,42 @@ sectionize <- function(blocks) {
 }
 
 # The text under a label heading says nothing: none, a dash or a pointer.
-.empty_label_text <- function(x) {
+# "Ingen" answers an aid or a language label, but under a prerequisite label
+# ("Krav til forkunnskaper", "Anbefalte forkunnskaper") it is the placeholder
+# it is in a prerequisites section without one, and goes with its label.
+.empty_label_text <- function(x, section = NA_character_) {
   v <- stringr::str_squish(paste(x, collapse = " "))
-  !nzchar(v) || (.is_placeholder_text(v) && !grepl("^(?i:ingen|none|no)\\b", v, perl = TRUE))
+  !nzchar(v) || (.is_placeholder_text(v) &&
+                   (identical(section, "prerequisites") || !grepl("^(?i:ingen|none|no)\\b", v, perl = TRUE)))
+}
+
+# A line that is only a label heading, opening with its pattern
+# ("Anbefalte forkunnskaper", "Hjelpemidler:", "Forkunnskapskrav utover
+# opptakskrav"), not a sentence, a label with its value or a phrase with the
+# word ("Studiets forkunnskapskrav.").
+.label_line <- function(x) {
+  s <- tolower(sub("[.:：]\\s*$", "", stringr::str_squish(x)))
+  out <- nchar(s) > 0 & nchar(s) <= 60 & !grepl("[.!?:：]", s)
+  out[out] <- vapply(s[out], function(l) .is_label_heading(l) &&
+                       startsWith(l, section_heading_patterns$pattern[heading_pattern(l)]),
+                     logical(1), USE.NAMES = FALSE)
+  out
+}
+
+# Label lines whose text went in the cleanup (an admission sentence, a
+# progression rule) or that have none go: up to the next label line, the
+# text under a label must say something (.empty_label_text()).
+.drop_empty_labels <- function(text, section) {
+  lines <- stringr::str_split_1(text, "\n")
+  lab <- which(.label_line(lines))
+  if (!length(lab)) return(text)
+  gone <- logical(length(lines))
+  for (k in seq_along(lab)) {
+    under <- seq_len(length(lines))[seq_along(lines) > lab[k] &
+                                      seq_along(lines) < c(lab, length(lines) + 1)[k + 1]]
+    if (.empty_label_text(lines[under], section)) gone[c(lab[k], under)] <- TRUE
+  }
+  paste(lines[!gone], collapse = "\n")
 }
 
 #' Sections of one page
@@ -394,6 +431,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 #'     to prerequisites (.admission_prerequisites()),
 #'   - strips trailing FS page-generation timestamps,
 #'   - drops a leading line that merely repeats the section's own heading,
+#'   - removes label lines with nothing under them (.drop_empty_labels()),
 #'   - removes rows that are empty or only a placeholder ("Ingen",
 #'     "Se fagplanen.", "-", a Leganto pointer; see .placeholder_phrases).
 #'   - removes outgoing progression rules from every section
@@ -462,6 +500,7 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   ev <- tm & identical(institution, "uit") & grepl("(?i)evalu|undergo|kvalitetssikring|quality", out$raw_text, perl = TRUE)
   out$raw_text[ev] <- vapply(stringr::str_remove_all(out$raw_text[ev], .evaluation_label_regex), .strip_sentences,
                              character(1), rx = .evaluation_sentence_regex, USE.NAMES = FALSE)
+  out$raw_text <- mapply(.drop_empty_labels, out$raw_text, out$section, USE.NAMES = FALSE)
   out$raw_text <- mapply(.strip_placeholder_lines, out$raw_text,
                          trailing = out$section != "assessment", USE.NAMES = FALSE)
   out$raw_text <- mapply(.clean_section_text, out$raw_text, out$section,
@@ -672,7 +711,11 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # "Recommended previous knowledge." over a list of topics, "Recommended
 # prerequisite knowledge" over "The course builds on the design skills ...";
 # 2026-11-22) keeps the lines after it whole, but a link ("Upload portfolio
-# here: https://..."); the label itself goes.
+# here: https://..."). The label stays, as does a label line ("Krav til
+# forkunnskaper", "Anbefalte forkunnskaper") or the label of a field ("Krav
+# til forkunnskaper: BSY-100", ldh) before what is kept (2026-11-26: they say
+# whether it is required or recommended); .drop_empty_labels() takes a label
+# with nothing after it.
 .recommended_knowledge_regex <- "(?i)^\\W*recommended (?:previous|prerequisite|prior) knowledge\\W*$"
 .admission_prerequisites <- function(text, prerequisites = "") {
   had <- stringr::str_squish(prerequisites)
@@ -680,14 +723,15 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   rec <- cumsum(grepl(.recommended_knowledge_regex, ul, perl = TRUE)) > 0 & !grepl("https?://", ul)
   lines <- vapply(seq_along(ul), function(i) {
     l <- ul[i]
-    if (rec[i]) return(if (grepl(.recommended_knowledge_regex, l, perl = TRUE)) "" else trimws(l))
+    if (rec[i] || .label_line(l)) return(trimws(l))
+    lab <- stringr::str_match(l, "(?i)^\\s*(krav til forkunnskaper\\s*:)")[, 2]
     s <- sub("(?i)^(\\s*)(?:opptakskrav(?: for enkeltemnestudent\\w*)?|forhåndskrav|krav til forkunnskaper)\\s*:\\s*", "\\1", stringr::str_split_1(l, .sentence_end), perl = TRUE)
     k <- (grepl(.real_prerequisite_regex, s, perl = TRUE) & !.is_admission_sentence(s) &
       !grepl(.admission_only_regex, s, perl = TRUE) &
       !(grepl(.degree_regex, s, perl = TRUE) & !grepl("\\b[A-ZÆØÅ]{2,}[A-ZÆØÅ0-9-]*\\d{3,}", s, perl = TRUE)) |
       grepl(.degree_admission_regex, s, perl = TRUE)) &
       !vapply(stringr::str_squish(s), function(x) !nzchar(x) || grepl(x, had, fixed = TRUE), logical(1))
-    trimws(paste(s[k], collapse = ""))
+    trimws(paste(c(if (!is.na(lab) && k[1]) lab, s[k]), collapse = if (!is.na(lab) && k[1]) " " else ""))
   }, character(1), USE.NAMES = FALSE)
   lines <- lines[nzchar(lines)]
   # a bare lead-in of up to six words whose list all went or the page
@@ -891,7 +935,10 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 # of teaching forms with attendance in it ("Forelesninger, teoriøvinger og
 # laboratoriearbeid med obligatorisk tilstedeværelse.", "Undervisning og
 # læring skjer gjennom selvstudier, forelesninger, obligatorisk deltakelse i
-# seminargrupper, ..."), which describes the teaching, unless it opens with
+# seminargrupper, ...", "Emnet består av totalt 40 undervisningstimer i form av
+# forelesninger og seminarer med obligatorisk oppmøte, ...", fjellhaug
+# 2026-11-26; not "... i form av seminarer, og det er obligatorisk oppmøte
+# ..."), which describes the teaching, unless it opens with
 # the requirement ("Det kreves minimum 80 % deltakelse på ekskursjoner,
 # laboratoriearbeid og ...").
 .teaching_form <- paste0("(?:forelesning|førelesing|lectures?|seminar|øving|øvelse|laboratori|lab\\b|gruppearbeid|",
@@ -919,7 +966,8 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "uavhengig|anbefal\\w*|recommended)\\b|(?<!studium og )\\b\\w*(?:eksam|exam)(?!enskrav|ple)|",
   "(?<!\\bi )(?<!\\bpå )\\b(?:emnet|faget|kurset|the course|the subject) (?:er|is) (?:\\w+ )?(?:obligatorisk|compulsory|mandatory)))",
   "(?!(?!\\W*(?:det|obligatorisk|krav|mandatory|compulsory|alle?|\\d+ ?%|eksamenskrav|arbeidskrav|for å|i tillegg er det|",
-  .attendance_word, ")\\b).*", .teaching_form, "\\w*(?:\\s*\\([^)]*\\))?,\\s*(?:\\w+\\s+){0,3}?", .teaching_form, ")(?:",
+  .attendance_word, ")\\b).*(?:", .teaching_form, "\\w*(?:\\s*\\([^)]*\\))?,\\s*(?:\\w+\\s+){0,3}?", .teaching_form,
+  "|\\bi form av\\s+(?:\\w+\\s+){0,2}?", .teaching_form, "[^,.;]{0,60}?\\bmed (?:obligatorisk|pliktig)))(?:",
   ".*\\b(?:(?:obligatorisk\\w*|pliktig\\w*|mandatory|compulsory|krav|kreves|krevs|required)",
   "(?:\\s+(?:om|til|derfor|minimum|minst|min\\.|full|obligatorisk\\w*|mandatory|compulsory|\\d+ ?(?:%|prosent)|at least))*",
   "\\s+(?:å\\s+delta\\b|", .attendance_word, ")|",
@@ -1946,9 +1994,12 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 
 # A row that only lists headings, half of them section names (uib 2018 shell
 # pages: "Læringsutbytte\nFulltid/deltid\nKrav til forkunnskaper\n...").
+# Label lines ("Anbefalte forkunnskaper") do not count: under them short
+# values look like headings ("Etter avtale med instituttet", ntnu).
 .is_heading_list <- function(text) {
   l <- trimws(stringr::str_split_1(text, "\n"))
   l <- l[nzchar(l)]
+  l <- l[!.label_line(l)]
   length(l) >= 3 && all(nchar(l) <= 80) &&
     all(vapply(l, .heading_shaped_line, logical(1))) &&
     mean(!is.na(vapply(l, .exact_section, character(1)))) >= 0.5
@@ -1995,13 +2046,14 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "se (?:kursinnhold|emnebeskrivelse)(?:et|n)?",                     # nord intro
   "ingen emner(?: i programmet)?",
   # the plan is on the English page (hvl, nord, ntnu; `english_page` in the config)
+  # nhh (2026-11-26): "Se de engelske sidene for emnebeskrivelse"
   # ntnu, some 60 wordings (2026-11-05): "Se engelsk versjon / See English
   # version", "Emnet undervises på engelsk. Se engelsk versjon for
   # emnebeskrivelse.", "Se emnets engelske nettside - International MSc"
   paste0("(?:/ ?)?(?:(?:dette )?(?:emnet|faget) undervises (?:kun )?på engelsk[.,]? ?|",
          "the subject is taught in english\\. ?|vennligst |for fullstendig emnebeskrivelse, )?",
-         "(?:se|see|cf\\.)(?: derfor)? (?:the |den |emnets |the course's )?(?:engels\\w*|english)",
-         "(?: (?:vers\\w*|vesjon|tekst|text|utgave|page|informasjon|website|nettside|emneside|kursside|",
+         "(?:se|see|cf\\.)(?: derfor)? (?:the |den |de |emnets |the course's )?(?:engels\\w*|english)",
+         "(?: (?:vers\\w*|vesjon|tekst|text|utgave|page|informasjon|website|nettside|emneside|kursside|sidene|",
          "(?:emne|kurs)?beskrivelse\\w*|description))?(?: (?:for|om) [^.]{0,40})?",
          "(?: [-–\u0096] international msc)?"),
   "se (?:emne|kurs)?beskrivelsen? på engelsk", "see (?:the description )?in english",
@@ -2100,7 +2152,14 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "as we are in a transition phase between two systems,? .{0,300}",
   "no subjects?(?: in the program(?:me)?| at program(?:me)? level)?", "(?:core reading|reading list) for",
   # mf: the library-access notice alone (~600 chars), no list
-  "litteraturlisten for .{0,30}tilgang til litteratur .{0,700}"
+  "litteraturlisten for .{0,30}tilgang til litteratur .{0,700}",
+  # the reading list's label alone, its list a link or gone (2026-11-26:
+  # "Pensum.", "Litteraturliste", nih; "Pensumliste", "Pensumlitteratur",
+  # ntnu; "Pensum", uit; "Litteraturliste", uib; "Reading list", hivolda)
+  "pensum(?:liste|litteratur)?", "litteraturliste", "reading list",
+  # nhh's page template left unfilled (the test course TEST "Testemne",
+  # 2026-11-26): its page is then a shell, with no plan
+  "læringsutbytte på bokmål", "tekst om hva du lærer"
 )
 # Praksis pointers and the bare "Praksis" label, left in teaching_methods
 # since Praksis maps there, and in practice, which a pointer alone does not

@@ -98,7 +98,9 @@ not overlap; `practice` does (below). Where the line runs:
   rules for coursework and attendance join the course's own coursework
   requirements, after a lead that names the source.
 - **Prerequisites** hold required and recommended prior knowledge and
-  courses for this course, not admission (to the programme, study right, who
+  courses for this course, with the heading that says which it is
+  ("Anbefalte forkunnskaper" over "Engelsk 1, 2, 3 og 4"; over only "Ingen"
+  or "-" it says nothing and goes), not admission (to the programme, study right, who
   may apply), pointers to the admission rules or what passing this course
   permits later ("Emnet må være bestått for å kunne fortsette på Norsk 2.",
   in no section). A sentence that names both stays whole
@@ -168,13 +170,6 @@ without the title and facts box.
 The data built on 2026-10-16 do not yet follow
 the spec here:
 
-- The headings that say whether prior knowledge is required or recommended
-  ("Krav til forkunnskaper", "Absolutte forkunnskaper", "Anbefalte
-  forkunnskaper", "Tilrådde forkunnskapar") are not in `prerequisites` at
-  most institutions (the teacher-ed frame of 2026-11-25: none of 1,108 HVL,
-  864 NTNU, 620 HiØ and 557 UiB plans that have one), so a bare list there
-  ("Engelsk 1, 2, 3 og 4") does not say which it is. A fix is planned
-  (2026-11-26).
 - UiB's responsible unit, an unlabelled link in the page's sidebar, is not in
   `course_plan`. Every UiB offering has its unit from DBH (`department_name`).
 - A condition written with a season and a year loses both, with the

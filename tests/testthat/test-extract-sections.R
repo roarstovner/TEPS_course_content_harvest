@@ -415,7 +415,8 @@ test_that("admission text is dropped and h3 prerequisites are kept (uio)", {
     <h2>Eksamen</h2><p>Skriftlig eksamen, 4 timer.</p>
     <h3>Mer informasjon</h3><p>A-F.</p></main>"
   s <- sections_of(html, html_cfg("h3, h4, p"))
-  expect_equal(s[["prerequisites"]], "MAT1100.")
+  # the heading says the prior knowledge is required (2026-11-26)
+  expect_equal(s[["prerequisites"]], "Obligatoriske forkunnskaper\nMAT1100.")
   expect_equal(s[["teaching_methods"]], "Seminarer.")
   expect_equal(s[["coursework_requirements"]], "To innleveringer.")
   # An unmapped h3 hands its text back to the enclosing section.
@@ -427,7 +428,7 @@ test_that("text_split ends a section at an admission heading and drops it", {
   txt <- "Forkunnskapskrav\nMAT1\n\nOpptakskrav\nGenerell studiekompetanse.\n\nVurdering\nSkriftlig eksamen."
   out <- text_sections(txt)
   s <- stats::setNames(out$raw_text, out$section)
-  expect_equal(s[["prerequisites"]], "MAT1")
+  expect_equal(s[["prerequisites"]], "Forkunnskapskrav\nMAT1")
   expect_equal(s[["assessment"]], "Skriftlig eksamen.")
   expect_false(any(grepl("studiekompetanse", s)))
 })
@@ -2181,7 +2182,7 @@ test_that("uit: prior knowledge, intake capacity, programme placement, course ev
     "Studentene evaluerer hverandres tekster."))
   expect_equal(unname(sec["prerequisites"]), paste0(
     "Det forutsettes grunnleggende kunnskaper i kjemi.\n\n",
-    "Anbefalte forkunnskaper er MAT-1001 Kalkulus 1 eller tilsvarende.\n",
+    "Anbefalte forkunnskaper:\nAnbefalte forkunnskaper er MAT-1001 Kalkulus 1 eller tilsvarende.\n",
     "For studenter som tar emnet som videreutdanning er forkunnskapskravet fullført ",
     "lærerutdanning med minimum 60 studiepoeng i norsk."))
   # a grade, or a placement sentence that goes on about the course, stays
@@ -2336,7 +2337,8 @@ test_that("barrattdue: prerequisites from the facts column, the description colu
     "</main>")
   s <- sections_of(page("Bestått HIST11 Musikkhistorie og repertoarkunnskap"), cfg)
   # the unlabelled "Bestått KAM3300 ..." field joins too, not the study right
-  expect_equal(s[["prerequisites"]], paste0("Bestått HIST11 Musikkhistorie og repertoarkunnskap\n",
+  # the field's label stays (2026-11-26)
+  expect_equal(s[["prerequisites"]], paste0("Krav til forkunnskaper: Bestått HIST11 Musikkhistorie og repertoarkunnskap\n",
                                             "Bestått KAM3300 Ensemblesang og kammermusikk 2"))
   expect_equal(s[["course_content"]], paste0("Emnet omfatter norsk kunstmusikk.\n\nGenerell musikkdidaktikk 1\n",
                                              "Delemnet omfatter planlegging."))
@@ -2350,9 +2352,9 @@ test_that("barrattdue: prerequisites from the facts column, the description colu
   expect_false(any(grepl("Studiepoeng|studierett", s)))
   # a completed study year is a prerequisite
   expect_equal(sections_of(page("Gjennomført 1.studieår bachelor i utøvende musikk."), cfg)[["prerequisites"]],
-               "Gjennomført 1.studieår bachelor i utøvende musikk.\nBestått KAM3300 Ensemblesang og kammermusikk 2")
+               "Krav til forkunnskaper: Gjennomført 1.studieår bachelor i utøvende musikk.\nBestått KAM3300 Ensemblesang og kammermusikk 2")
   expect_equal(.admission_prerequisites("Krav til forkunnskaper: Normalt gjennomført 1. og 2. studieår"),
-               "Normalt gjennomført 1. og 2. studieår")
+               "Krav til forkunnskaper: Normalt gjennomført 1. og 2. studieår")
   # an admission is no prerequisite, nor a bare degree
   for (x in c("Bestått opptaksprøve til bachelorprogram i utøvende musikk",
               "Opptak til Praktisk-pedagogisk utdanning", "Bachelorgrad i musikk"))
@@ -2360,10 +2362,10 @@ test_that("barrattdue: prerequisites from the facts column, the description colu
   # a degree in a subject next to the admission names both and stays whole
   # (2026-11-23)
   expect_equal(sections_of(page("Bachelorgrad i musikk og Opptak til Praktisk-pedagogisk utdanning"), cfg)[["prerequisites"]],
-               paste0("Bachelorgrad i musikk og Opptak til Praktisk-pedagogisk utdanning\n",
+               paste0("Krav til forkunnskaper: Bachelorgrad i musikk og Opptak til Praktisk-pedagogisk utdanning\n",
                       "Bestått KAM3300 Ensemblesang og kammermusikk 2"))
   expect_equal(.admission_prerequisites("Krav til forkunnskaper: Bachelorgrad i musikk og Opptak til Praktisk-pedagogisk utdanning"),
-               "Bachelorgrad i musikk og Opptak til Praktisk-pedagogisk utdanning")
+               "Krav til forkunnskaper: Bachelorgrad i musikk og Opptak til Praktisk-pedagogisk utdanning")
   expect_equal(.admission_prerequisites("Bachelorgrad og opptak til studiet."), "")
 })
 
@@ -2397,8 +2399,8 @@ test_that("aho: prerequisites of the access field, coursework of the exam descri
                c(".admission", ".admission"))
   expect_true(cfg$section_inline_coursework)
   # prior courses and credits stay, with aho's codes and their lead-in;
-  # admission and study right go; recommended knowledge stays whole, without
-  # its label and a link
+  # admission and study right go; recommended knowledge stays whole, with its
+  # label (2026-11-26), without a link
   expect_equal(.admission_prerequisites("Bestått alle emner i GK1 og GK2. Bestått studiodelen av GK3 og GK4."),
                "Bestått alle emner i GK1 og GK2. Bestått studiodelen av GK3 og GK4.")
   expect_equal(.admission_prerequisites("61 110\n\n61 120"), "61 110\n61 120")
@@ -2408,7 +2410,7 @@ test_that("aho: prerequisites of the access field, coursework of the exam descri
     "Passed foundation level (BA-level) at AHO or equivalent education with 180 ECTS.\n\nStudents who have taken",
     "Service Design 1 will be preferred.\n\nRecommended previous knowledge.\n\nPrototyping\n\n",
     "Upload portfolio here: https://example.org/a")),
-    "Passed foundation level (BA-level) at AHO or equivalent education with 180 ECTS.\nPrototyping")
+    "Passed foundation level (BA-level) at AHO or equivalent education with 180 ECTS.\nRecommended previous knowledge.\nPrototyping")
   expect_equal(.admission_prerequisites("Det kreves ingen forkunnskaper utover opptakskrav i studieprogrammet."), "")
   expect_equal(.admission_prerequisites("Completed 240 ECTS (5 year degree) or 90 ECTS (2 year degree) in total."),
                "Completed 240 ECTS (5 year degree) or 90 ECTS (2 year degree) in total.")
@@ -2712,4 +2714,90 @@ test_that("nhh: assessment labels, the coursework validity rule, the regulations
   # another institution keeps them
   expect_equal(.clean_sections(tibble::tibble(section = "assessment", raw_text = "The submission deadline will be in April."), "uia")$raw_text,
                "The submission deadline will be in April.")
+})
+
+test_that("prerequisite headings that say required or recommended stay as label lines", {
+  for (h in c("Krav til forkunnskaper", "Krav til forkunnskapar", "Anbefalte forkunnskaper", "Anbefalte forkunnskapar",
+              "Tilrådde forkunnskapar", "Anbefalt forkunnskap", "Absolutte forkunnskaper", "Obligatoriske forkunnskaper",
+              "Obligatorisk forkunnskapskrav", "Forutsatte forkunnskaper", "Forkunnskapskrav",
+              "Forkunnskapskrav utover opptakskrav", "Recommended prerequisites", "Required prerequisite knowledge",
+              "Recommended previous knowledge", "Formal prerequisite knowledge", "Entry requirements")) {
+    expect_equal(match_heading_to_section(h), "prerequisites", label = h)
+    expect_true(.is_label_heading(h), label = h)
+  }
+  # headings that only name the section are no labels
+  for (h in c("Forkunnskaper", "Forkrav", "Prerequisites", "Progresjonskrav"))
+    expect_false(.is_label_heading(h), label = h)
+  # hvl: "Ingen" under the required heading goes with it; the recommended
+  # list keeps its heading
+  s <- sections_of("<main><h2>Krav til forkunnskapar</h2><p>Ingen</p>
+    <h2>Tilrådde forkunnskapar</h2><p>Engelsk 1, 2, 3 og 4</p><h2>Læringsutbytte</h2><p>Kan drøfte.</p></main>",
+    html_cfg())
+  expect_equal(s[["prerequisites"]], "Tilrådde forkunnskapar\nEngelsk 1, 2, 3 og 4")
+  s <- sections_of("<main><h2>Krav til forkunnskaper</h2><p>Bestått ENG101.</p>
+    <h2>Anbefalte forkunnskaper</h2><p>-</p></main>", html_cfg())
+  expect_equal(s[["prerequisites"]], "Krav til forkunnskaper\nBestått ENG101.")
+  s <- sections_of("<main><h2>Forkunnskapskrav</h2><p>Ingen</p><h2>Anbefalte forkunnskaper</h2><p>Ingen</p>
+    <h2>Innhold</h2><p>Grammatikk.</p></main>", html_cfg())
+  expect_false("prerequisites" %in% names(s))
+  # a label whose text the cleanup took (an admission sentence) goes too
+  s <- sections_of("<main><h2>Krav til forkunnskaper</h2><p>Opptak til studieprogrammet.</p>
+    <h2>Anbefalte forkunnskaper</h2><p>Engelsk 1</p></main>", html_cfg())
+  expect_equal(s[["prerequisites"]], "Anbefalte forkunnskaper\nEngelsk 1")
+  expect_equal(.drop_empty_labels("Krav til forkunnskaper\n\nAnbefalte forkunnskaper\nENG101", "prerequisites"),
+               "Anbefalte forkunnskaper\nENG101")
+  expect_equal(.drop_empty_labels("Anbefalte forkunnskaper\nIngen", "prerequisites"), "")
+  expect_equal(.drop_empty_labels("Hjelpemidler\nIngen", "assessment"), "Hjelpemidler\nIngen")
+  # short values under labels are no heading list (ntnu)
+  expect_true(.keep_section_row(paste0("Anbefalte forkunnskaper\nEtter avtale med Instituttet\n\n",
+                                       "Forkunnskapskrav\nVurderes etter avtale med instituttet"), "prerequisites"))
+  # a phrase with the word is no label line
+  expect_false(.label_line("Studiets forkunnskapskrav."))
+  expect_true(.label_line("Recommended previous knowledge."))
+  # the admission field keeps its label with what it keeps (ldh)
+  expect_equal(.admission_prerequisites("Krav til forkunnskaper: BSY-100 Anatomi"),
+               "Krav til forkunnskaper: BSY-100 Anatomi")
+  expect_equal(.admission_prerequisites("Krav til forkunnskaper\nBSY-100 Anatomi"),
+               "Krav til forkunnskaper\nBSY-100 Anatomi")
+})
+
+test_that("himolde: numbered requirements as list items keep their bold titles in coursework", {
+  s <- sections_of(paste0(
+    "<main><h2>Undervisnings- og læringsformer</h2><ul><li>Forelesninger</li></ul><p>Arbeidskrav</p>",
+    "<ul><li>Arbeidskrav I</li></ul><p><strong>Det nyfødte barnet </strong></p><p>En oppgavebesvarelse.</p>",
+    "<ul><li>Arbeidskrav II</li></ul><p><strong>Forberedelse til workshop</strong></p><p>Presenteres muntlig.</p>",
+    "<h2>Eksamen</h2><p>Skriftlig skoleeksamen.</p></main>"), html_cfg("p"))
+  expect_equal(s[["teaching_methods"]], "Forelesninger")
+  expect_equal(s[["coursework_requirements"]], paste0(
+    "Arbeidskrav I\nDet nyfødte barnet\nEn oppgavebesvarelse.\nArbeidskrav II\nForberedelse til workshop\n",
+    "Presenteres muntlig."))
+})
+
+test_that("nmh: an h3 Praksis inside Arbeidskrav stays coursework, and is practice", {
+  html <- "<main><h2>Organisering</h2><p>Individuell undervisning.</p>
+    <h2>Arbeidskrav</h2><h3>Praksis</h3><p>Deltagelse i praksisaktiviteter er obligatorisk.</p>
+    <h2>Avsluttende vurdering</h2><p>Rapport.</p></main>"
+  s <- sections_of(html, utils::modifyList(html_cfg("h3"), list(sub_exact = TRUE)))
+  expect_equal(s[["teaching_methods"]], "Individuell undervisning.")
+  expect_equal(s[["coursework_requirements"]], "Praksis\nDeltagelse i praksisaktiviteter er obligatorisk.")
+  expect_equal(s[["practice"]], "Deltagelse i praksisaktiviteter er obligatorisk.")
+  # elsewhere a practice sub-heading opens teaching methods, as before
+  s <- sections_of(html, html_cfg("h3"))
+  expect_match(s[["teaching_methods"]], "Deltagelse i praksisaktiviteter")
+})
+
+test_that("a list of teaching forms 'i form av ... med obligatorisk oppmøte' describes the teaching (fjellhaug)", {
+  f <- function(x) grepl(.attendance_sentence_regex, x, perl = TRUE)
+  expect_false(f(paste("Emnet består av totalt 40 undervisningstimer i form av forelesninger og seminarer med",
+                       "obligatorisk oppmøte, der kildetekstene blir gjennomgått og diskutert.")))
+  expect_true(f("Undervisningen gis i form av seminarer, og det er obligatorisk oppmøte på minst 80 % av seminarene."))
+  expect_true(f("Det er obligatorisk oppmøte i undervisningen."))
+})
+
+test_that("bare reading-list labels, the English pointer and an unfilled template are placeholders", {
+  for (t in c("Pensum.", "Pensum", "PENSUM.", "Litteraturliste", "Pensumliste.", "Pensumlitteratur", "Reading list",
+              "Se de engelske sidene for emnebeskrivelse", "Læringsutbytte på bokmål\n\nTekst om hva du lærer"))
+    expect_false(.keep_section_row(t, "reading_list"), label = t)
+  for (t in c("Pensum er 800 sider.", "Pensum: Hansen, A. (2020). Didaktikk."))
+    expect_true(.keep_section_row(t, "reading_list"), label = t)
 })

@@ -385,6 +385,12 @@ page_blocks <- function(html, text, cfg, course_id = NA_character_) {
   tag <- tolower(xml2::xml_name(node))
   if (grepl("^h[1-6]$", tag)) {
     exact <- isTRUE(exact)
+    # with `exact`, a practice heading is a part of the heading it is under
+    # (nmh's h3 "Praksis" under "Arbeidskrav", 2026-11-26): a sub-heading of
+    # no section, so its text stays in that section and is also practice
+    h <- tolower(sub("[:：]$", "", sq))
+    if (exact && h %in% section_heading_patterns$pattern[section_heading_patterns$practice] && !h %in% names(sub_map))
+      return(add_block("sub", raw, NA_character_, g = tag))
     sec <- if (exact) .exact_section(sq, sub_map) else
       dplyr::coalesce(.exact_section(sq, sub_map, map = FALSE), match_heading_to_section(sq))
     # with `exact`, an unmapped one is a line of the section the walk is in,
