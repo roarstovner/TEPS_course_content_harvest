@@ -104,6 +104,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Add Fjellhaug (#398)
 - Dev hand-over of the teacher-ed frame to the coding project (Parquet only, url in offerings, finalized: false) (#631)
 - UiT: semesters the course page no longer lists: document ids from Wayback captures of the active page, documents fetched live (#592)
 - Sections (NMH): paragraph headings inside the body not read as headings (KUNSTHO71B grading criteria in coursework, ALEX20 Pensumlitteratur in assessment) (#625)
