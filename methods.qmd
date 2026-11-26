@@ -2161,6 +2161,37 @@ teaching methods (`r share("teaching_methods")`), coursework requirements
 and an eighth that overlaps them, practice (`r share("practice")`; below).
 Where a section is missing, the coders use the whole plan.
 
+**The section is the finest unit the harvest delivers; exam parts and
+coursework requirements are units of the coding.** The harvest cuts a plan
+into sections and no finer: one row per plan and section. Splitting the
+assessment text into exams was examined on 2026-10-08. Splitting at blank
+lines matched the number of exams in the page's own exam table for 1% of the
+plans with two or more exams at INN, 0% at Volda, 28% at NTNU and 62% at UiT
+(2022 on), since a blank line separates an exam from its grading scale as
+often as from the next exam; only about a third of the assessment texts come
+with a table that lists the exams (INN, Volda, UiT from 2022, NTNU, UiS), so
+rules would leave two thirds unsplit; and what counts as one exam (weighted
+parts, components graded together, a portfolio, an oral that adjusts a
+grade, a thesis and its defence, alternative arrangements) is a coding
+definition. *Choice:* exam parts and coursework requirements are units of
+the coding project (TEPS_course_content_coding): a language model segments
+the assessment and coursework sections into verbatim passages, one per exam
+part or requirement, each checked as a substring of its section. The
+harvest's part is clean input: table rows as lines, no words glued at a
+line break, NTNU's exam parts kept. *Rejected:* rule-based splitting in the
+harvest, and splitting at blank lines (above). Learning outcomes are one
+section too. A check of the teacher-ed frame's 16,755 learning-outcome
+sections on 2026-11-26 (build of 2026-11-25) found 91% laid out as a list
+under the labels of the qualifications framework ("Kunnskap",
+"Ferdigheter", "Generell kompetanse", which stay as lines of the section
+since 2026-10-01), 7% as a list without them (NIH, most of UiO, a fifth of
+NTNU and UiB), 1% as prose and 1% with one or two items, a median of 11-17
+items per section by institution. On an HTML page a line is an element of
+the page; on a PDF page it is a layout line (UiS: 17% of the item lines
+continue the item above, Steiner 28%). Learning outcomes are not split.
+*Since:* 2026-10-08 (exams and coursework); learning outcomes checked
+2026-11-26.
+
 **Coursework requirements are kept apart from assessment:** arbeidskrav and
 obligatory-activity paragraphs inside an assessment block are moved to
 coursework requirements (since 2026-10-01).
