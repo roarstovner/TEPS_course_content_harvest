@@ -3126,6 +3126,91 @@ VID 1). On 2 pages per raw partition of every institution only UiA's
 pointer and auditor sentences change. `course_plan` and the plan ids do not
 change. *Since:* 2026-11-25.
 
+**Fjellhaug: the English layout's assessment, attendance requirements, the
+final assessment after the arbeidskrav, aid-list labels.** The pages for
+courses taught in English put the assessment and the coursework under one
+heading, "Exam and Assessment" (sub-headings "Course Requirements:" and
+"Final Assessment:"), which now maps to assessment (an exact row of the
+heading map; no other institution has the heading). "Oppmøte og fravær" (also
+"(gjelder samlingsbasert BTM)") and "Attendance and absence" hold the
+attendance requirement for the final assessment, the absence limit, its
+consequence and the alternative when too few students enrol: coursework
+requirements by the spec (Fjellhaug's `section_headings`), as are the
+rarer wordings of "Organisering og arbeidsmåter" teaching methods. The
+final assessment follows the arbeidskrav in the same paragraph group, so the
+walk stayed in coursework: a paragraph opening with "Sluttvurdering" (bold
+alone, before a line break, or a sentence, "Sluttvurdering i emnet er
+mappevurdering ...") and the exam table's header row (first cells "Vurderingsform", "Varighet"
+or "Form of assessment", "Duration") now switch back to assessment,
+with the grading sentence after them (`.text_subheading_rules`, a sub-heading
+in all but markup). The aid list's heading, "Hjelpemiddeliste ved eksamen"
+(sic) or "Hjelpemiddelliste ved eksamen", is a label like "Hjelpemidler ved
+eksamen": it stays over its value ("Liste A", "Ingen"), and with only "N/A"
+under it both go. *Why:* close-out sections audit, 2026-11-25 (Codex and the
+headings of the whole build): the 48 plans with the English layout had no
+assessment and no coursework section, 34 of the 67 plans with an attendance
+heading no coursework section, 7 of 17 sampled plans their graded
+assessment in coursework, and "Liste A" stood bare. *Rejected:* mapping the
+attendance headings for every institution (their wording is Fjellhaug's,
+and its bracketed variant only there); a boundary at "Sluttvurdering" inside
+the joined coursework text (it would also take a second arbeidskrav group
+of the page); taking the resit sentences out ("Ved stryk avlegger studenten
+en tre-timers skoleeksamen i perioden for ny og utsatt eksamen.", "In case
+of “fail”, the students are allowed to revise and resubmit their essay
+..."): they say what the resit consists of, which stays at every
+institution. *Consequence* (all 429 raw pages of 2026, two harvests, before
+and after the change): assessment gains a section on 108 pages (32 course
+codes) and changes on 209, coursework requirements gain one on 98 (30
+codes) and change on 104, teaching methods gain one on 5 and change on 20;
+no section is lost. Pages with assessment 316 → 424 and with coursework
+requirements 259 → 357; the coursework moved to assessment is the exam
+form, the table and the grading sentence (200 lines), and 66 bare "N/A" go.
+`course_plan` and the plan ids do not change. *Since:* 2026-11-26.
+
+**Assessment labels "Grading scale", "Vurderingsuttrykk", "Permitted
+Support Material"; NHH's coursework validity rule, regulations pointer and
+logistics.** The three headings join the `label` headings (with
+"Karakterskala", "Hjelpemidler til eksamen"): the heading stays as a line
+over its value ("A - F", "Pass/Fail", "Calculator"), at every institution
+that has them ("Grading scale": DMMH, HVL, NHH, OsloMet, UiO;
+"Vurderingsuttrykk": FHS, HVL, NHH, OsloMet, Steiner, USN). At NHH the stock
+sentence "Compulsory activities (work requirements) is valid for one
+semester after the semester it was obtained.", which many pages give under
+both "Compulsory Activity" and "Assessment", moves to coursework
+requirements and is kept once (`.sentence_moves`); the pointer to the exam
+regulations after the permitted aids ("All in accordance with Supplementary
+provisions to the Regulations ... Ch.4 Permitted support material
+https://...", "Alt i henhold til Utfyllende bestemmelser til Forskrift om
+fulltidsstudiene ved Norges Handelshøyskole Kap 4 https://...", "For details
+see ...", "See also: Forskrift om ...") goes, with the aids heading when it is
+all there is under it (`.section_noise`); and a hand-out or deadline stated
+alone ("The assignment will be distributed in January.", "The submission
+deadline will be in April.", "Submission deadline is 7 weeks after the last
+lecture.") and the stock resit rule ("Re-take is offered the semester after
+the course was offered for students with valid compulsory activities (work
+requirements).") go as logistics (`.logistics_sentences`). *Why:* NHH's
+first sections audit, 2026-11-25 (Codex): a value without its heading does
+not say what it is, and the spec keeps the grading scale and the aids with
+their heading; a rule for coursework belongs with the coursework; a pointer
+alone, deadlines and resit rules are out of the sections. *Rejected:* making
+the labels NHH's own (the label list is shared, and "Karakterskala" is
+already one everywhere); taking out a sentence that also gives the time to
+do the work ("The assignment will be distributed after the final lecture and
+must be submitted within three weeks.", "... and students have 4 weeks to
+complete it.": the duration is design). *Consequence* (all 864 raw NHH pages
+of 2026): assessment changes on 836 pages: "Grading Scale" stays on 626,
+"Permitted Support Material" on 222, "Vurderingsuttrykk" on 204; the
+regulations pointer goes from 334 (the median assessment section 422 → 250
+characters); the validity sentence leaves assessment on 4 pages, the re-take
+rule goes from 18 and a hand-out or deadline sentence from 20. Elsewhere only
+the label line is added, on pages where the heading opened assessment on
+its own (25 pages drawn of each institution with the heading): OsloMet's
+"Vurderingsuttrykk" (all 25; some 31,000 raw pages have it), Steiner's (25;
+138 pages), DMMH's English "Grading scale" (25; 73 pages) and USN's (2 of
+3); at UiO, HVL and FHS the heading is a sub-heading inside assessment,
+which already kept it as a line, and nothing changes. `course_plan` and the
+plan ids do not change. *Since:* 2026-11-26.
+
 **Barratt Due: the PPU degree requirement, stock resit rules, the
 electives' admission rule.** The PPU plans' prerequisite field "Krav til
 forkunnskaper: Bachelorgrad i musikk og Opptak til Praktisk-pedagogisk

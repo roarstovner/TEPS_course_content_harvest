@@ -219,7 +219,9 @@ Fields for the `html` reader:
   has the latter only as a substring pattern, which a `<p>` does not
   match). nmh’s English pages: “Overview” (course_content) and
   “Structure” (its “Organisering”, teaching_methods), too generic for
-  the map.
+  the map. fjellhaug’s attendance headings, “Oppmøte og fravær” and
+  “Attendance and absence” (the attendance requirement and the absence
+  limit), are coursework requirements (2026-11-26).
 
 Other fields:
 
@@ -334,18 +336,20 @@ kan ta dette emnet?”) and exam logistics (“Mer om eksamen ved UiO”,
 “Sensorordning”, resit headings such as “Ny/utsatt eksamen”). Exam aids,
 exam language, grading scale and AI rules stay in assessment. A `label`
 heading (“Hjelpemidler til eksamen”, “Eksamensspråk”, “Karakterskala”,
-“Om bruk av KI”, “Fravær fra obligatorisk aktivitet”) stays as a line of
-its section, since the text under it (“Ingen”, “Norsk.”, “A-F”) says
-nothing alone; with nothing but a dash or pointer under it, it goes. An
-English heading maps as its Norwegian counterpart on the same site: on
-UiA’s and NIH’s English-tree pages (since 2026-11-23) “Examination
-requirements” (“Vilkår for å gå opp til eksamen”) to coursework
-requirements, ahead of the substring “examination”; “Assessment/exam”,
-“Prerequisite” and “Core literature” (“Vurdering/eksamen”, “Forkrav”,
-“Kjernelitteratur”) to assessment, prerequisites and reading list (all
-exact rows). “Admission Requirement if given as a free-standing course”
-(“Opptakskrav hvis tilbudt som enkeltemne”), which the map drops, is
-UiA’s `.admission` (below).
+“Om bruk av KI”, “Fravær fra obligatorisk aktivitet”; since 2026-11-26
+also “Grading scale”, “Vurderingsuttrykk”, nhh’s “Permitted Support
+Material” and fjellhaug’s “Hjelpemiddel(l)iste ved eksamen”) stays as a
+line of its section, since the text under it (“Ingen”, “Norsk.”, “A-F”,
+“Liste A”) says nothing alone; with nothing but a dash or pointer under
+it (“N/A”), it goes. An English heading maps as its Norwegian
+counterpart on the same site: on UiA’s and NIH’s English-tree pages
+(since 2026-11-23) “Examination requirements” (“Vilkår for å gå opp til
+eksamen”) to coursework requirements, ahead of the substring
+“examination”; “Assessment/exam”, “Prerequisite” and “Core literature”
+(“Vurdering/eksamen”, “Forkrav”, “Kjernelitteratur”) to assessment,
+prerequisites and reading list (all exact rows). “Admission Requirement
+if given as a free-standing course” (“Opptakskrav hvis tilbudt som
+enkeltemne”), which the map drops, is UiA’s `.admission` (below).
 
 HTML is parsed by `.read_doc()`, which drops `script`, `style`, `select`
 and `label` (ntnu script text, uib semester picker); the `json` reader
@@ -397,43 +401,59 @@ practice courses’ attendance rule (“All undervisning i kunnskapsområdene
 bidrar til studentens forberedelse til praksis, så tilstedeværelse … er
 en forutsetning …”) from prerequisites to coursework, and their transfer
 rule (“Ved overflytting fra annet studieprogram …”) out of the sections;
-and fhs’s and nmh’s course-content sentence that names only the courses
-it builds on (“Emnet bygger på ING1502 Matematiske metoder 1.”, “Emnet
-bygger på Hovedinstrument I (UTHO13).”) to prerequisites. At phs the
-paragraphs under “Læringsutbytte” before “Kunnskap” that describe the
-subject, not the outcomes (“Pedagogikk i instruktørutdanningen
-vektlegger …”), go to course content (`.split_lo_intro()`); a lead-in
-(“Etter gjennomført emne har studenten følgende læringsutbytte:”) stays.
+nhh’s stock rule for how long approved coursework counts (“Compulsory
+activities (work requirements) is valid for one semester after the
+semester it was obtained.”, 2026-11-26) from assessment to coursework,
+once when the page says it under both; and fhs’s and nmh’s
+course-content sentence that names only the courses it builds on (“Emnet
+bygger på ING1502 Matematiske metoder 1.”, “Emnet bygger på
+Hovedinstrument I (UTHO13).”) to prerequisites. At phs the paragraphs
+under “Læringsutbytte” before “Kunnskap” that describe the subject, not
+the outcomes (“Pedagogikk i instruktørutdanningen vektlegger …”), go to
+course content (`.split_lo_intro()`); a lead-in (“Etter gjennomført emne
+har studenten følgende læringsutbytte:”) stays.
+
+A paragraph can open a section as a sub-heading would, keeping its text
+(`.text_subheading_rules`, per institution): fjellhaug writes the final
+assessment after the arbeidskrav in one paragraph group, so
+“Sluttvurdering” (bold alone, before a line break, or opening a
+sentence, “Sluttvurdering i emnet er mappevurdering …”) and the exam
+table’s header row (first cells “Vurderingsform”, “Varighet” or “Form of
+assessment”, “Duration”) switch back to assessment, with the grading
+sentence after them (2026-11-26).
 
 `.clean_sections()` removes `.drop` rows, strips page widgets, pointers
 and stock logistics sentences from assessment/coursework
 (`.section_noise`: uib banner and footer, hvl’s “Mer om hjelpemidler”
 link, oslomet’s resit sentence, himolde’s exam system “- Inspera” after
-the form, a deadline weekday as the duration and a start time, uis’s
-quoted rule for the number of attempts, steiner’s wrapped examiner and
-resubmission lines, …; notices about the assessment such as AI,
-plagiarism and COVID rules stay, and so do exam tables with their header
-row), removes logistics and cost sentences from every section
-(`.logistics_sentences`: hvl’s “Tid og sted for eksamen blir opplyst på
-Studentweb.”, exam dates, material fees and excursion prices; phs’s
-workload, “Omfanget på videreutdanningen er anslått til ca. 420 timer.”;
-uia’s, ntnu’s and uit’s workload stated alone, “Emnet har et forventet
-arbeidsomfang på rundt 200 timer.”, “Forventet arbeidsinnsats i emnet er
-135 timer.”, but not a split into teaching forms, supervision hours or a
-sentence with a compulsory part; the examiner arrangement stated alone,
-“Intern og ekstern sensor benyttes.”, “Intern sensur med minst to
-sensorar.”, at hvl, inn, uib, uio, vid, dmmh and barrattdue, and at dmmh
-and barrattdue who the examiners normally are (“Sensur med to interne
-sensorer, normalt seksjonsleder og hovedinstrumentlærer.”, “Intern
-sensor er normalt samme person som var opponent …”,
-`.examiner_role_regex`), but not “… av intern og ekstern sensor med
-karakterskala A – F.”; dmmh’s resubmission rules (“Ved ikke godkjent
-praksisrapport gis det mulighet til å levere en gang til.”); aho’s exam
-system (“Besvarelsen leveres i Wiseflow.”, “Du må gjøre deg kjent med
-innlogging og innleveringsmåte …”), source-use notice, Moodle pointers
-and the diploma’s withdrawal deadline, but not “Fem timers skriftlig
-hjemmeeksamen i Wiseflow.”; uia’s pointers to Canvas alone on both trees
-(“Nærmere informasjon gis i Canvas ved semesterstart.”, “More
+the form, nhh’s pointer to the exam regulations after the permitted aids
+(“All in accordance with Supplementary provisions to the Regulations …”,
+“Alt i henhold til Utfyllende bestemmelser …”, with the aids heading
+when it is all there is under it), a deadline weekday as the duration
+and a start time, uis’s quoted rule for the number of attempts,
+steiner’s wrapped examiner and resubmission lines, …; notices about the
+assessment such as AI, plagiarism and COVID rules stay, and so do exam
+tables with their header row), removes logistics and cost sentences from
+every section (`.logistics_sentences`: hvl’s “Tid og sted for eksamen
+blir opplyst på Studentweb.”, exam dates, material fees and excursion
+prices; phs’s workload, “Omfanget på videreutdanningen er anslått til
+ca. 420 timer.”; uia’s, ntnu’s and uit’s workload stated alone, “Emnet
+har et forventet arbeidsomfang på rundt 200 timer.”, “Forventet
+arbeidsinnsats i emnet er 135 timer.”, but not a split into teaching
+forms, supervision hours or a sentence with a compulsory part; the
+examiner arrangement stated alone, “Intern og ekstern sensor benyttes.”,
+“Intern sensur med minst to sensorar.”, at hvl, inn, uib, uio, vid, dmmh
+and barrattdue, and at dmmh and barrattdue who the examiners normally
+are (“Sensur med to interne sensorer, normalt seksjonsleder og
+hovedinstrumentlærer.”, “Intern sensor er normalt samme person som var
+opponent …”, `.examiner_role_regex`), but not “… av intern og ekstern
+sensor med karakterskala A – F.”; dmmh’s resubmission rules (“Ved ikke
+godkjent praksisrapport gis det mulighet til å levere en gang til.”);
+aho’s exam system (“Besvarelsen leveres i Wiseflow.”, “Du må gjøre deg
+kjent med innlogging og innleveringsmåte …”), source-use notice, Moodle
+pointers and the diploma’s withdrawal deadline, but not “Fem timers
+skriftlig hjemmeeksamen i Wiseflow.”; uia’s pointers to Canvas alone on
+both trees (“Nærmere informasjon gis i Canvas ved semesterstart.”, “More
 information will be given in Canvas at the start of the semester.”,
 “Please refer to Canvas for more information.”, not “Approved mandatory
 assignment, further information will be given in Canvas …”) and its exam
@@ -441,40 +461,45 @@ held both semesters for the auditors (“Due to grade requirements for
 state authorised auditors, a regular examination will be held both
 autumn and spring.”), and nih’s submission period (“Prosjektoppgaven
 leveres i Wiseflow i en oppgitt innleveringsperiode på slutten av
-semestret.”, also in English; 2026-11-25); and barrattdue’s dated
-deadlines (“Frist for innlevering av årsrapport 15.mai”), who decides or
-assesses the resit (“Dette avgjøres individuelt av faglærer.”,
-“Individuell vurdering av faglærer/seksjonsleder”) and (2026-11-23) its
-stock resit rules (“Den delen som ikke er bestått må gjennomføres på
-nytt. Deretter gis det ny samlet vurdering.”, “Studenten må gjennomføre
-hele eller deler av emnet på nytt.”), but not “Ny innlevering av
-refleksjonsnotat, repertoarrapport og ny praktisk eksamen.”; resit and
-appeal rules that say only who may resit or resubmit, when or how often
-(“For ikke å bruke et eksamensforsøk, må studenten aktivt trekke sin
-vurderingsmelding …”, mf; “Studenter som … får vurderingen F, kan melde
-seg opp til ny/utsatt eksamen.”, oslomet; “The mark can be appealed.”,
-hiof), but not what the resit consists of (“Ved kontinuasjonseksamen
-bearbeides samme oppgave.”, “Utsatt eksamen er en individuell skriftlig
-hjemmeeksamen.”); pointers to the exam pages and the exam system, hvl’s
-“Studieprogram: …” line, inn’s course-evaluation sentence, uio’s “Adgang
-til undervisning: …”; and uis’s workload budget, a header such as
-“Forventet timeinnsats (413 timer):” with the lines of hours under it,
-and dmmh’s examiner row of the exam table, “Sensorordning:og ekstern”,
-`.logistics_blocks`), removes admission and study-right sentences,
-pointers to the admission rules and “Ingen utover opptakskravet.” from
-prerequisites, keeping a sentence that also names a prerequisite
-(`.strip_admission_lines()`), removes outgoing progression rules from
-every section, what passing this course permits later (“Emnet må være
-bestått for å kunne fortsette på Norsk 2.”, vid’s “Studenter kan, ved å
-gjennomføre dette emnet … gå videre til …”, barrattdue’s “Eksamen må
-være bestått for at studenten skal kunne fortsette PPU-studiet 2. år.”;
-“En må ha fulgt Kunst og håndverk 1 for å kunne fortsette på …” only
-when the course named is this one by its title,
-`.is_progression_sentence()`), drops placeholder-only rows
-(`.placeholder_phrases`: “Ingen”, “Se fagplanen.”, “-”, Leganto
-pointers, “Oppgis senere.”, “… ikke publisert ennå”, uit’s “Contact the
-department/faculty.”, “Se fagbeskrivelse med pensum” and its reading
-lists only on the learning platform or at the bookshop,
+semestret.”, also in English; 2026-11-25); nhh’s hand-out and deadline
+stated alone (“The assignment will be distributed in January.”, “The
+submission deadline will be in April.”, “Submission deadline is 7 weeks
+after the last lecture.”, not “… and must be submitted within three
+weeks.”) and its stock resit rule (“Re-take is offered the semester
+after the course was offered for students with valid compulsory
+activities …”; 2026-11-26); and barrattdue’s dated deadlines (“Frist for
+innlevering av årsrapport 15.mai”), who decides or assesses the resit
+(“Dette avgjøres individuelt av faglærer.”, “Individuell vurdering av
+faglærer/seksjonsleder”) and (2026-11-23) its stock resit rules (“Den
+delen som ikke er bestått må gjennomføres på nytt. Deretter gis det ny
+samlet vurdering.”, “Studenten må gjennomføre hele eller deler av emnet
+på nytt.”), but not “Ny innlevering av refleksjonsnotat,
+repertoarrapport og ny praktisk eksamen.”; resit and appeal rules that
+say only who may resit or resubmit, when or how often (“For ikke å bruke
+et eksamensforsøk, må studenten aktivt trekke sin vurderingsmelding …”,
+mf; “Studenter som … får vurderingen F, kan melde seg opp til ny/utsatt
+eksamen.”, oslomet; “The mark can be appealed.”, hiof), but not what the
+resit consists of (“Ved kontinuasjonseksamen bearbeides samme oppgave.”,
+“Utsatt eksamen er en individuell skriftlig hjemmeeksamen.”); pointers
+to the exam pages and the exam system, hvl’s “Studieprogram: …” line,
+inn’s course-evaluation sentence, uio’s “Adgang til undervisning: …”;
+and uis’s workload budget, a header such as “Forventet timeinnsats (413
+timer):” with the lines of hours under it, and dmmh’s examiner row of
+the exam table, “Sensorordning:og ekstern”, `.logistics_blocks`),
+removes admission and study-right sentences, pointers to the admission
+rules and “Ingen utover opptakskravet.” from prerequisites, keeping a
+sentence that also names a prerequisite (`.strip_admission_lines()`),
+removes outgoing progression rules from every section, what passing this
+course permits later (“Emnet må være bestått for å kunne fortsette på
+Norsk 2.”, vid’s “Studenter kan, ved å gjennomføre dette emnet … gå
+videre til …”, barrattdue’s “Eksamen må være bestått for at studenten
+skal kunne fortsette PPU-studiet 2. år.”; “En må ha fulgt Kunst og
+håndverk 1 for å kunne fortsette på …” only when the course named is
+this one by its title, `.is_progression_sentence()`), drops
+placeholder-only rows (`.placeholder_phrases`: “Ingen”, “Se fagplanen.”,
+“-”, Leganto pointers, “Oppgis senere.”, “… ikke publisert ennå”, uit’s
+“Contact the department/faculty.”, “Se fagbeskrivelse med pensum” and
+its reading lists only on the learning platform or at the bookshop,
 “Pensumlitteratur oppgis i Fronter ved semesterstart eller fås ved
 henvendelse til …”, OsloMet’s “Se omtale av praksis i programplanen” and
 “Praksisopplæring er nærmere beskrevet i programplanen.”, UiB’s

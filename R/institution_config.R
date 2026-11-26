@@ -901,7 +901,18 @@ institution_configs <- list(
     # "Pensumlitteratur"); bold paragraph sub-headings ("Arbeidskrav")
     section_strategy = "html",
     section_heading_selector = "h4",
-    section_subheading_selector = "p"
+    section_subheading_selector = "p",
+    # the attendance requirement and the absence limit ("For å kunne få
+    # sluttvurdering i emnet må studenten ha fullført følgende krav til
+    # oppmøte: ... Fraværet skal ikke overstige 30 %") are coursework
+    # requirements, and the rarer wordings of "Organisering og arbeidsmåter"
+    # teaching methods (2026-11-26)
+    section_headings = c("oppmøte og fravær" = "coursework_requirements",
+                         "oppmøte og fravær (gjelder samlingsbasert btm)" = "coursework_requirements",
+                         "attendance and absence" = "coursework_requirements",
+                         "organisering og arbeidmåter" = "teaching_methods",
+                         "organisering og arbeidsmåte" = "teaching_methods",
+                         "organisering og undervisning" = "teaching_methods")
   ),
 
   dmmh = list(

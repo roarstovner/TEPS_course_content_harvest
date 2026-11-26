@@ -175,7 +175,7 @@ sectionize <- function(blocks) {
 page_sections <- function(blocks, text, cfg) {
   title <- blocks$text[blocks$facts %in% TRUE][1]   # for .is_progression_sentence()
   if (identical(cfg$reader, "text")) blocks <- .text_blocks(text, cfg)
-  out <- sectionize(blocks)
+  out <- sectionize(.text_subheadings(blocks, cfg$institution))
   if (identical(cfg$reader, "html") && nrow(out) < 3) {
     fallback <- sectionize(.text_blocks(text, cfg))
     named <- blocks$section[blocks$role %in% c("heading", "sub")]
@@ -191,6 +191,40 @@ page_sections <- function(blocks, text, cfg) {
   out <- .split_lo_intro(.move_sentences(out, cfg$institution), cfg$institution)
   out <- .split_inline_prerequisites(out)
   .clean_sections(out, cfg$institution, title)
+}
+
+# Paragraphs that open another section with no sub-heading of their own, per
+# institution: as a sub-heading would, a text block matching the pattern
+# switches to its section and keeps its text, and an unmapped sub-heading
+# matching it maps there and stays a line of it. fjellhaug writes the final
+# assessment after the arbeidskrav, in the same paragraph group:
+# "Sluttvurdering" in bold alone, before a line break ("Sluttvurdering\n
+# Skriftlig skoleeksamen ...") or in a sentence ("Sluttvurdering i emnet er
+# mappevurdering ..."), and the exam table with its header row
+# ("Vurderingsform\tVarighet\t...", "Form of assessment\tDuration\t..."),
+# with the grading-scale sentence after it (2026-11-26). "I tillegg til
+# sluttvurdering er det tre arbeidskrav" stays.
+.text_subheading_rules <- list(
+  fjellhaug = c(assessment = "^\\s*(?:Sluttvurdering\\b|(?:Vurderingsform|Form of assessment)\t)")
+)
+.text_subheadings <- function(blocks, institution) {
+  rules <- .text_subheading_rules[[institution %||% ""]]
+  if (is.null(rules) || !nrow(blocks)) return(blocks)
+  for (s in names(rules)) {
+    hit <- grepl(rules[[s]], blocks$text, perl = TRUE) & !blocks$facts %in% TRUE
+    sub <- hit & blocks$role == "sub" & is.na(blocks$section)
+    blocks$section[sub] <- s
+    blocks$keep[sub] <- TRUE   # stays a line, as before it said where the walk went back to
+    txt <- which(hit & blocks$role == "text")
+    if (!length(txt)) next
+    opener <- blocks[txt, ]
+    opener$role <- "sub"
+    opener$text <- ""
+    opener$section <- s
+    opener$keep <- FALSE
+    blocks <- dplyr::bind_rows(blocks, opener)[order(c(seq_len(nrow(blocks)), txt - 0.5)), ]
+  }
+  blocks
 }
 
 # A prerequisites label inside course_content moves what it names to
@@ -1296,6 +1330,12 @@ extract_sections <- function(config, html, extracted_text, course_id) {
       list(from = from, to = ".drop", rx = .uit_capacity_regex))),
   fhs = list(.builds_on_move),
   nmh = list(.builds_on_move),
+  # nhh: how long approved coursework counts, a stock sentence under
+  # "Assessment" too ("Compulsory activities (work requirements) is valid for
+  # one semester after the semester it was obtained."; once in coursework
+  # when the page says it under both; 2026-11-26)
+  nhh = list(list(from = "assessment", to = "coursework_requirements",
+                  rx = "^\\W*Compulsory activities \\(work requirements\\) (?:is|are) valid for one semester after\\b")),
   hivolda = list(list(from = "coursework_requirements", to = "prerequisites",
                       rx = "(?i)^\\s*bestått didaktikkemne \\d\\.?\\s*$")),
   hvl = list(list(from = "course_content", to = "teaching_methods",
@@ -1461,6 +1501,18 @@ extract_sections <- function(config, html, extracted_text, course_id) {
     "(?m)^Vi opplever problemer med å hente inn eksamensinformasjon.*\n(?:Lukk\n.*)?",
     "(?m)^Til toppen$"
   ),
+  # the pointer to the exam regulations after the permitted aids ("All in
+  # accordance with Supplementary provisions to the Regulations for Full-time
+  # Study Programmes at the Norwegian School of Economics Ch.4 Permitted
+  # support material https://...", "Alt i henhold til Utfyllende bestemmelser
+  # til Forskrift om fulltidsstudiene ved Norges Handelshøyskole Kap 4
+  # https://... og informasjonen som er gitt her: https://...", "For details
+  # see ...", "See also: Forskrift om ..."; 2026-11-26), with the aids
+  # heading when it is all there is under it
+  nhh  = paste0("(?im)(?:^(?:Permitted Support Material|Hjelpemidler til eksamen)[ \t]*\n)?",
+                "^[ \t]*(?:(?:All |Alt )?(?:in accordance with|i henhold til)[ \t]*|",
+                "For det(?:ails see|aljer se)[ \t]+|See also:[ \t]*)",
+                "(?:Supplementary provisions to the Regulations|Utfyllende bestemmelser til|Forskrift om)[^\n]*(?:\n|$)"),
   # the aids link text; a pointer to the AI page, after the aids rule or alone
   hvl  = c("(?m)^Me(?:i)?r om hjelpemid(?:del|ler)[ \t]*$",
            paste0("(?m)[ \t]*For (?:mer |meir )?informasjon om bruk av kunstig intelligens ",
@@ -1666,6 +1718,22 @@ extract_sections <- function(config, html, extracted_text, course_id) {
           "(?i)^\\W*(?:due to|av hensyn til|på grunn av) (?:the )?(?:grade requirements?|karakterkrav\\w*) for (?:state authori[sz]ed|statsautoriserte)"),
   nih = paste0("(?i)^\\W*(?:the )?(?:project )?(?:assignment|prosjektoppgaven|oppgaven)\\b[^.]{0,30}?\\b(?:submitted in|leveres i) ",
                "wiseflow (?:during|i) (?:a designated|en oppgitt) (?:submission period|innleveringsperiode)"),
+  # nhh: when the assignment is handed out or due, stated alone ("The
+  # assignment will be distributed in January.", "The submission deadline will
+  # be in April.", "Submission deadline is 7 weeks after the last lecture."),
+  # and the stock resit rule "Re-take is offered the semester after the
+  # course was offered for students with valid compulsory activities (work
+  # requirements)." (2026-11-26); not a sentence with the task, the group
+  # size, a weight or the time to do it ("3-day group home exam (30%). The
+  # exam will be distributed on day 1, with submission deadline on day 3."
+  # keeps its first sentence only; "The assignment will be distributed after
+  # the final lecture and must be submitted within three weeks." stays)
+  nhh = paste0("(?i)^\\W*(?:(?:The )?(?:final )?submission deadline (?:is |will be )?(?:approximately |approx\\. )?",
+               "(?:in|at|by|during|\\d+ weeks?)\\b[^.%]*|",
+               "The (?:assignment|exam|term paper)s? will be (?:distributed|released|handed out)\\b",
+               "(?![^.]*\\b(?:within|to complete|ha(?:ve|s) \\d))[^.%]*|",
+               "Re-take is offered (?:for [^.]{0,40}?)?the semester after the course was (?:offered|provided) ",
+               "for students with valid compulsory activities\\b[^.]*)\\W*$"),
   ntnu = .workload_sentence_regex, uit = .workload_sentence_regex,
   mf = c(paste0("(?i)^\\W*(?:For ikke å bruke (?:opp )?et eksamensforsøk|",
                 "[^.]*\\btrekk(?:e|er) sin (?:oppmelding|vurderingsmelding))"),

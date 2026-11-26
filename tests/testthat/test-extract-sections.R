@@ -2598,3 +2598,91 @@ test_that("uia, nih: English gates, placeholders and logistics of both trees", {
   expect_equal(cl("assessment", "Tasks submitted via Wiseflow will be run through plagiarism control.", "nih")[["assessment"]],
                "Tasks submitted via Wiseflow will be run through plagiarism control.")
 })
+
+test_that("fjellhaug: the final assessment and exam table after the arbeidskrav, attendance, English layout, aid lists", {
+  cfg <- .block_cfg(get_institution_config("fjellhaug"))
+  fj <- function(body) sections_of(paste0('<main id="main"><section class="hero"><h1>BTM1002 Kirkehistorie</h1></section>',
+                                          body, "<h4>Pensumlitteratur</h4><p>Sødal, H. K. (2026). Kristendommens historie.</p></main>"), cfg)
+  s <- fj(paste0("<h4>Hjelpemiddeliste ved eksamen</h4><p>Liste A</p>",
+                 "<h4>Vurdering og eksamen</h4><p><strong>Arbeidskrav</strong></p>",
+                 "<p>I tillegg til sluttvurdering er det tre (3) arbeidskrav i emnet.</p>",
+                 "<ol><li>Delta på ekskursjonsdag.</li></ol>",
+                 "<p><strong>Sluttvurdering<br /></strong>Skriftlig skoleeksamen med varighet på 5 timer.</p>",
+                 "<p>Ved karakterfastsettelse benyttes en gradert karakterskala fra A til F.</p>",
+                 "<h4>Oppmøte og fravær</h4><p>For å kunne få sluttvurdering i emnet må studenten ha fullført følgende krav til oppmøte:</p>",
+                 "<ol><li>Delta i den obligatoriske undervisningen. Fraværet skal ikke overstige 30 %.</li></ol>"))
+  # the aid list keeps its label
+  expect_match(s[["assessment"]], "^Hjelpemiddeliste ved eksamen\nListe A\n")
+  expect_match(s[["assessment"]], "Skriftlig skoleeksamen med varighet på 5 timer\\.\nVed karakterfastsettelse")
+  expect_match(s[["coursework_requirements"]], "^I tillegg til sluttvurdering er det tre \\(3\\) arbeidskrav i emnet\\.\nDelta på ekskursjonsdag\\.")
+  expect_match(s[["coursework_requirements"]], "Fraværet skal ikke overstige 30 %\\.$")
+  expect_no_match(s[["coursework_requirements"]], "skoleeksamen|karakterskala")
+
+  # the exam table and a sentence opening with "Sluttvurdering" leave the coursework
+  s <- fj(paste0("<h4>Vurdering og eksamen</h4><p><strong>Arbeidskrav</strong></p>",
+                 "<p>For å kunne ta eksamen må følgende arbeidskrav være godkjent.</p><ol><li>10 minutters muntlig presentasjon.</li></ol>",
+                 "<table><tr><td>Vurderingsform</td><td>Varighet</td></tr><tr><td>Muntlig eksamen</td><td>20 minutter</td></tr></table>",
+                 "<p>Ved karakterfastsettelse benyttes en gradert karakterskala fra A til F.</p>",
+                 "<p><strong>Studiekrav</strong></p><p>Levere en logg.</p>",
+                 "<p>Sluttvurdering i emnet er mappevurdering, der mappen skal inneholde to oppgaver.</p>"))
+  expect_equal(s[["coursework_requirements"]],
+               "For å kunne ta eksamen må følgende arbeidskrav være godkjent.\n10 minutters muntlig presentasjon.\n\nLevere en logg.")
+  expect_match(s[["assessment"]], "^Vurderingsform\tVarighet\nMuntlig eksamen\t20 minutter\nVed karakterfastsettelse")
+  expect_match(s[["assessment"]], "Sluttvurdering i emnet er mappevurdering, der mappen skal inneholde to oppgaver\\.$")
+
+  # the English layout: "Exam and Assessment" with its sub-headings, "Attendance and absence"
+  s <- fj(paste0("<h4>Exam and Assessment</h4><p>All course requirements and exams are individual.</p>",
+                 "<p><strong>Course Requirements:</strong></p><ul><li>Submit two papers.</li></ul>",
+                 "<p><strong>Final Assessment:</strong></p>",
+                 "<table><tr><td>Form of assessment</td><td>Duration</td></tr><tr><td>Oral Exam</td><td>15 minutes</td></tr></table>",
+                 "<h4>Attendance and absence</h4><p>Attendance at 70 % of the teaching is required.</p>"))
+  expect_match(s[["assessment"]], "^All course requirements and exams are individual\\.\n\nForm of assessment\tDuration\nOral Exam")
+  expect_equal(s[["coursework_requirements"]], "Submit two papers.\n\nAttendance at 70 % of the teaching is required.")
+
+  # another institution's paragraphs are not read so
+  b <- tibble::tibble(role = c("heading", "text"), text = c("Arbeidskrav", "Sluttvurdering i emnet er en oppgave."),
+                      section = c("coursework_requirements", NA), keep = FALSE, tag = c("h2", "p"), facts = FALSE)
+  expect_identical(.text_subheadings(b, "uia"), b)
+  for (h in c("Hjelpemiddelliste ved eksamen", "Hjelpemiddeliste ved eksamen", "Exam and Assessment"))
+    expect_equal(match_heading_to_section(h), "assessment")
+})
+
+test_that("nhh: assessment labels, the coursework validity rule, the regulations pointer and logistics", {
+  for (h in c("Grading Scale", "Permitted Support Material", "Vurderingsuttrykk")) {
+    expect_equal(match_heading_to_section(h), "assessment")
+    expect_true(.is_label_heading(h), label = h)
+  }
+  expect_false(.is_label_heading("Vurderingsordning"))
+  cfg <- .block_cfg(get_institution_config("nhh"))
+  valid <- "Compulsory activities (work requirements) is valid for one semester after the semester it was obtained."
+  s <- sections_of(paste0('<main id="mainContent"><h1>BEA512 Stochastic programming</h1>',
+                          "<h2>Compulsory Activity</h2><p>Attendance is required.</p><p>", valid, "</p>",
+                          "<h2>Assessment</h2><p>Each student must hand in an essay. Submission deadline is 7 weeks after the last lecture.</p>",
+                          "<p>", valid, "</p><h2>Grading Scale</h2><p>Pass/Fail</p>",
+                          "<h2>Permitted Support Material</h2><p>Calculator</p><p>All in accordance with Supplementary provisions to the ",
+                          "Regulations for Full-time Study Programmes at the Norwegian School of Economics Ch.4 Permitted support material ",
+                          "https://www.nhh.no/en/for-students/regulations/</p></main>"), cfg)
+  expect_equal(s[["coursework_requirements"]], paste0("Attendance is required.\n", valid))
+  expect_equal(s[["assessment"]], "Each student must hand in an essay.\n\nGrading Scale\nPass/Fail\n\nPermitted Support Material\nCalculator")
+  # under an aids heading with nothing else, the pointer takes the heading with it
+  s <- sections_of(paste0('<main id="mainContent"><h1>BED2</h1><h2>Vurderingsordning</h2><p>Skriftlig skoleeksamen, 4 timer.</p>',
+                          "<h2>Hjelpemidler til eksamen</h2><p>Alt i henhold til Utfyllende bestemmelser til Forskrift om fulltidsstudiene ",
+                          "ved Norges Handelshøyskole Kap 4 https://www.nhh.no/for-studenter/forskrifter/ og informasjonen som er gitt her: ",
+                          "https://www.nhh.no/for-studenter/eksamen/</p></main>"), cfg)
+  expect_equal(s[["assessment"]], "Skriftlig skoleeksamen, 4 timer.")
+
+  cl <- function(x) .clean_sections(tibble::tibble(section = "assessment", raw_text = x), "nhh")$raw_text
+  for (x in c("The assignment will be distributed in January.", "The submission deadline will be in April.",
+              "Submission deadline approximately 3 weeks after the final lecture.",
+              "Re-take is offered the semester after the course was offered for students with valid compulsory activities (work requirements).",
+              "Re-take is offered for the final course paper the semester after the course was offered for students with valid compulsory activities (work requirements)"))
+    expect_equal(cl(paste("Term paper in groups of 3-4 students (100%).", x)), "Term paper in groups of 3-4 students (100%).", label = x)
+  for (x in c("3-day group home exam (30%).", "The assignment will be distributed after the final lecture and must be submitted within three weeks.",
+              "The term paper will be handed out towards the end of the teaching period, and students have 4 weeks to complete it.",
+              "The final course grade is determined by an individual written term paper (100%).",
+              "Calculator approved by NHHs exam regulations"))
+    expect_equal(cl(x), x)
+  # another institution keeps them
+  expect_equal(.clean_sections(tibble::tibble(section = "assessment", raw_text = "The submission deadline will be in April."), "uia")$raw_text,
+               "The submission deadline will be in April.")
+})

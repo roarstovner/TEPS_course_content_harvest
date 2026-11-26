@@ -85,6 +85,8 @@ section_heading_patterns <- tibble::tribble(
   "hjelpemiddel til eksamen",              "assessment",             FALSE,
   "hjelpemidler ved eksamen",              "assessment",             FALSE,
   "hjelpemiddel ved eksamen",              "assessment",             FALSE,
+  "hjelpemiddelliste ved eksamen",         "assessment",             TRUE,   # fjellhaug
+  "hjelpemiddeliste ved eksamen",          "assessment",             TRUE,   # fjellhaug (sic)
   "tillatte hjelpemidler",                 "assessment",             FALSE,  # nla
   "tillatte hjelpemiddel",                 "assessment",             FALSE,
   "permitted aids under examination",      "assessment",             TRUE,   # nla English pages
@@ -102,6 +104,7 @@ section_heading_patterns <- tibble::tribble(
   "language of examination",               "assessment",             TRUE,
   "assessment language",                   "assessment",             TRUE,   # nla English pages
   "vurdering og eksamen",                  "assessment",             FALSE,
+  "exam and assessment",                   "assessment",             TRUE,   # fjellhaug English pages
   "avsluttende vurdering",                 "assessment",             FALSE,
   "final assessment",                      "assessment",             TRUE,   # nla English pages
   "mer om vurdering",                      "assessment",             FALSE,
@@ -309,7 +312,9 @@ section_heading_patterns <- tibble::tribble(
 # Headings that name one part of their section (exam aids, exam language, rules
 # for absence, the grading scale, the AI category) stay as a line of it
 # (sectionize()), since the text under them ("Ingen", "Alle", "Norsk.", "A-F",
-# "K3") says nothing without them.
+# "K3", "Liste A", "Calculator") says nothing without them. "Grading scale",
+# "Vurderingsuttrykk", "Permitted support material" and fjellhaug's aid lists
+# since 2026-11-26.
 section_heading_patterns$label <- section_heading_patterns$pattern %in% c(
   "hjelpemidler til eksamen", "hjelpemiddel til eksamen", "hjelpemidler ved eksamen",
   "hjelpemiddel ved eksamen", "tillatte hjelpemidler", "tillatte hjelpemiddel",
@@ -317,7 +322,8 @@ section_heading_patterns$label <- section_heading_patterns$pattern %in% c(
   "language of examination", "permitted aids under examination", "assessment language",
   "undervisnings- og eksamensspråk", "language of instruction and examination",
   "fravær fra obligatorisk aktivitet", "praksisstudier", "omfang av praksisstudier",
-  "karakterskala", "om bruk av ki")
+  "karakterskala", "om bruk av ki", "grading scale", "vurderingsuttrykk",
+  "permitted support material", "hjelpemiddelliste ved eksamen", "hjelpemiddeliste ved eksamen")
 
 # Practice headings: the whole heading (minus a closing colon) is one of
 # these. The text under them stays in their section and is also the overlay
