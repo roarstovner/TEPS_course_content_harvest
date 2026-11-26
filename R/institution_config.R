@@ -873,10 +873,11 @@ institution_configs <- list(
     # (resolve_urls_fjellhaug_batch())
     strategy = "url_discovery",
     # The title, the facts box and the plan; not the breadcrumb, the menu of
-    # the plan's parts, and the mobile copy of the plan (accordions after it)
+    # the plan's parts, the mobile copy of the plan (accordions after it) and
+    # the label "Les mer" of the button that opens a long part
     selector = "main#main",
     exclude = paste("main#main nav[aria-label='breadcrumb'], main#main nav.sticky-nav,",
-                    "main#main section.content-stick-nav-mobile"),
+                    "main#main section.content-stick-nav-mobile, main#main a.read-more"),
     # the title and the facts box (code, credits, campus, language, start,
     # duration)
     facts = "main#main section.hero",

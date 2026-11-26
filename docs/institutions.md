@@ -306,15 +306,23 @@ sitemaps, Norwegian and English
 (`sitemaps-1-section-subjects-1-sitemap.xml`,
 `/en/sitemaps-1-section-subjects-2-sitemap.xml`; about 170 pages), and
 matches the code at the start of the slug; of a Norwegian and an English
-page of one code, the Norwegian. DBH gives the courses taught at the
-Danish campuses (Afdeling København, Aarhus) the suffix `-DK1` or
-`-DK2`, and some variants `-IS` or `-EVU` (`BTM2008-DK1`, `BMM1001-IS`):
-they take the page of the code without it, whose facts box names the
-campuses (“Aarhus, København”). The page holds the plan twice, for wide
-screens (`h4` headings next to a menu of the parts) and in accordions
-for phones; the harvest reads the first and leaves out the menu and the
-accordions. Earlier plans are only in PDFs: the programmes’ study plans
-per semester from 2007 and a course catalogue for autumn 2026, listed on
+page of one code, the Norwegian. A slug of a code and a number only
+(`/emne/btm1003-2`, `/emne/rle1001-2`) is the CMS’s copy of another
+page’s slug and holds another course (RLE1003N, RLE1001N), listed before
+the code’s own page (`/emne/btm1003`): the resolver reads the code of
+such a page from its title (“Fjellhaug - RLE1003N Kristen tro, etikk og
+livstolkning”; two pages, checked 2026-11-25). Until 2026-11-25 it took
+the code before the hyphen, so BTM1003 and RLE1001 had those pages and
+RLE1003N and RLE1001N none. DBH gives the courses taught at the Danish
+campuses (Afdeling København, Aarhus) the suffix `-DK1` or `-DK2`, and
+some variants `-IS` or `-EVU` (`BTM2008-DK1`, `BMM1001-IS`): they take
+the page of the code without it, whose facts box names the campuses
+(“Aarhus, København”). The page holds the plan twice, for wide screens
+(`h4` headings next to a menu of the parts) and in accordions for
+phones; the harvest reads the first and leaves out the menu, the
+accordions and the label of the “Les mer” button that opens a long part.
+Earlier plans are only in PDFs: the programmes’ study plans per semester
+from 2007 and a course catalogue for autumn 2026, listed on
 `/om-fih/arkiv-studieplaner`, which the harvest does not read.
 robots.txt disallows only Craft CMS’s `/cpresources/`, `/vendor/`,
 `/.env` and `/cache/`.

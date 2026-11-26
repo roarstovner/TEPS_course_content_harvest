@@ -1232,17 +1232,34 @@ resolve_urls_fhs_batch <- function(df, .progress = TRUE, checkpoint = NULL) {
 #' the Danish campuses and of some variants carry a suffix the site does not
 #' have (BTM2008-DK1, BMM1001-IS, EVU1001-EVU), and take the page of the code
 #' without it, whose facts box names the campuses ("Aarhus, København"). Of a
-#' Norwegian and an English page of one code, the Norwegian.
+#' Norwegian and an English page of one code, the Norwegian. A slug of a
+#' code and a number only (/emne/btm1003-2, /emne/rle1001-2) is the CMS's
+#' copy of another page's slug and may hold another course (RLE1003N,
+#' RLE1001N; the code's own page has the bare slug, /emne/btm1003; checked
+#' 2026-11-25): its code is read from the page's title.
 #'
 #' @param df A tibble with a course_code column
 #' @param index The course pages' URLs, from fjellhaug_course_index()
 #' @return df with url filled in where possible
 resolve_urls_fjellhaug_batch <- function(df, index = fjellhaug_course_index()) {
   index <- index[order(grepl("/en/", index, fixed = TRUE))]
-  code <- toupper(sub("-.*", "", sub(".*/", "", index)))
+  slug <- sub(".*/", "", index)
+  code <- toupper(sub("-.*", "", slug))
+  copy <- grepl("^[^-]+-[0-9]+$", slug)
+  code[copy] <- vapply(index[copy], fjellhaug_page_code, "", USE.NAMES = FALSE)
   df$url <- index[match(sub("-[A-Z]+[0-9]*$", "", toupper(df$course_code)), code)]
   cli::cli_alert_success("Fjellhaug: pages for {sum(!is.na(df$url))} of {nrow(df)} offerings")
   df
+}
+
+# The course code in a Fjellhaug page's title ("Fjellhaug - RLE1003N Kristen
+# tro, etikk og livstolkning"); NA for a page that does not answer or names
+# none.
+fjellhaug_page_code <- function(url) {
+  polite_pause()
+  title <- tryCatch(rvest::html_text2(rvest::html_element(site_html(url), "title")),
+                    error = function(e) NA_character_)
+  stringr::str_match(title, "^Fjellhaug - ([A-Z]+[0-9]+[A-Z]*)\\b")[, 2]
 }
 
 # Every course page in Fjellhaug's subject sitemaps, Norwegian and English

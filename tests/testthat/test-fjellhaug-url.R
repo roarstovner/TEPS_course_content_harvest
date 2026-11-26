@@ -49,6 +49,37 @@ test_that("Fjellhaug's pages come from its subject sitemaps", {
     NA))                                                      # another course (N: online), not BTM2008
 })
 
+test_that("a Fjellhaug slug of a code and a number serves the code in its page's title", {
+  # The sitemap lists /emne/btm1003-2 (RLE1003N's page) before /emne/btm1003
+  # (checked 2026-11-25)
+  local_robots("fih.fjellhaug.no")
+  old <- polite_pause
+  polite_pause <<- function(...) invisible(NULL)
+  withr::defer(polite_pause <<- old)
+  r <- "https://fih.fjellhaug.no/emne/"
+  page <- function(title) httr2::response(200, headers = list(`Content-Type` = "text/html"),
+                                          body = charToRaw(paste0("<html><head><title>", title, "</title></head></html>")))
+  sent <- character()
+  httr2::local_mocked_responses(function(req) {
+    sent <<- c(sent, req$url)
+    switch(req$url,
+      "https://fih.fjellhaug.no/emne/btm1003-2" = page("Fjellhaug - RLE1003N Kristen tro, etikk og livstolkning"),
+      "https://fih.fjellhaug.no/emne/rle1001-2" = page("Fjellhaug - RLE1001N Innføring i Bibelen"),
+      httr2::response(404))
+  })
+  index <- paste0(r, c("btm1003-2", "btm1003", "rle1001-2", "rle1001", "btm2003n-markusevangeliet-10-ects-stp",
+                       "sje1011-sjelesorg-livsfaser-og-livshendelser-15-stp-ects", "gre1002-3"))
+  df <- tibble::tibble(course_code = c("BTM1003", "BTM1003-DK1", "RLE1001", "RLE1003N", "RLE1003N-DK1", "RLE1001N",
+                                       "BTM2003N", "SJE1011", "GRE1002"),
+                       url = NA_character_)
+  out <- resolve_urls_fjellhaug_batch(df, index)
+  expect_equal(out$url, c(paste0(r, c("btm1003", "btm1003", "rle1001", "btm1003-2", "btm1003-2", "rle1001-2",
+                                      "btm2003n-markusevangeliet-10-ects-stp",
+                                      "sje1011-sjelesorg-livsfaser-og-livshendelser-15-stp-ects")),
+                          NA))                              # a copy whose page does not answer serves no code
+  expect_setequal(sent, paste0(r, c("btm1003-2", "rle1001-2", "gre1002-3")))  # only the copies are requested
+})
+
 test_that("add_course_url() leaves Fjellhaug's URL to the resolver", {
   df <- tibble::tibble(institution = "fjellhaug", course_code = "KRLE1001N", course_code_raw = "KRLE1001N-1",
                        year = 2025L, semester_name = "Høst")
