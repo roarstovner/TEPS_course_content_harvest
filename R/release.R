@@ -152,7 +152,8 @@ release_data <- function(tag, dest = "../TEPS_course_content_coding/data", frame
     }),
     institutions = lapply(split(by_inst[-1], by_inst$institution), as.list)
   )
-  yaml::write_yaml(manifest, file.path(dest, "manifest.yml"))
+  # true/false, not yaml 1.1's yes/no, which YAML 1.2 readers take as strings
+  yaml::write_yaml(manifest, file.path(dest, "manifest.yml"), handlers = list(logical = yaml::verbatim_logical))
   message("Release ", tag, " written to ", dest)
   invisible(dest)
 }
