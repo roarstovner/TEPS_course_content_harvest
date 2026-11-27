@@ -1,6 +1,7 @@
 <script>
-  // Left pane: years, study type, institution, subject, level, credits,
-  // language, sections; each count ignores its own filter (model.js facets).
+  // Left pane: years, study type, institution, subject, NUS field, level,
+  // credits, language, sections; each count ignores its own filter (model.js
+  // facets).
   import StudyTypes from './StudyTypes.svelte'
   import CheckList from './CheckList.svelte'
   import { filterValues, valueLabel } from '../data/filters.js'
@@ -12,7 +13,25 @@
   const label = (key, v) => (getLang() === 'nb' ? (v === '' ? t('f.notGiven') : (NB_VALUES[key]?.[v] ?? valueLabel(key, v))) : valueLabel(key, v))
   const values = (key) => filterValues(model.courses, key).map((v) => ({ value: v, label: label(key, v), title: v || undefined }))
   const institutions = $derived(meta.institutions.map((i) => ({ value: i.code, label: i.code.toUpperCase(), title: i.institution_name })))
-  const subjects = $derived(values('subj'))
+  // a subject name with its DBH subject codes (Fagkode; codes are per
+  // institution, so several share a name)
+  const subjectCodes = $derived.by(() => {
+    const m = new Map()
+    for (const c of model.courses) if (c.subject_code) (m.get(c.subject_name ?? '') ?? m.set(c.subject_name ?? '', new Set()).get(c.subject_name ?? '')).add(c.subject_code)
+    return m
+  })
+  const subjects = $derived(values('subj').map((i) => ({ ...i, title: [i.label, [...(subjectCodes.get(i.value) ?? [])].sort().join(', ')].filter(Boolean).join(': ') })))
+  // NUS subject groups under their field (meta.nus_fields), in code order
+  const nusGroup = $derived(new Map((meta.nus_fields ?? []).map((g) => [g.code, g])))
+  const nus = $derived(
+    filterValues(model.courses, 'nus')
+      .sort((a, b) => (!a) - (!b) || a.localeCompare(b))
+      .map((v) => {
+        const g = nusGroup.get(v)
+        if (!g) return { value: v, label: v ? v : label('nus', v), title: v || undefined }
+        return { value: v, label: local(g, 'name'), title: `${other(g, 'name')} (NUS x${v}xxx)`, group: g.field, groupLabel: local(g, 'field_name'), groupTitle: `${other(g, 'field_name')} (NUS x${g.field}xxxx)` }
+      }),
+  )
   const levels = $derived(values('lvl'))
   const credits = $derived(values('cr'))
   const languages = $derived(values('lang'))
@@ -41,6 +60,7 @@
 <StudyTypes types={meta.study_types} bind:selected={state.st} counts={facets.st} uncovered={meta.uncovered} />
 <CheckList title={t('f.inst')} items={institutions} bind:selected={state.inst} counts={facets.inst} open />
 <CheckList title={t('f.subj')} items={subjects} bind:selected={state.subj} counts={facets.subj} />
+<CheckList title={t('f.nus')} items={nus} bind:selected={state.nus} counts={facets.nus} />
 <CheckList title={t('f.lvl')} items={levels} bind:selected={state.lvl} counts={facets.lvl} />
 <CheckList title={t('f.cr')} items={credits} bind:selected={state.cr} counts={facets.cr} />
 <CheckList title={t('f.lang')} items={languages} bind:selected={state.lang} counts={facets.lang} />

@@ -36,10 +36,19 @@ frame_dir <- function(frame, stage = "processed") {
 dbh_snapshot_file <- function(table = c("courses", "programmes", "exams", "credits"), date = NULL,
                               input_dir = INPUT_DIR) {
   table <- match.arg(table)
-  files <- if (is.null(date)) sort(Sys.glob(file.path(input_dir, paste0("dbh_", table, "_*.parquet")))) else
-    file.path(input_dir, sprintf("dbh_%s_%s.parquet", table, format(as.Date(date))))
+  input_snapshot(paste0("dbh_", table), date, input_dir, paste("DBH", table))
+}
+
+# The NUS snapshot written by data-raw/courses.R, of `date` or the latest:
+# data/input/nus_{YYYY-MM-DD}.parquet (nus_fetch()).
+nus_snapshot_file <- function(date = NULL, input_dir = INPUT_DIR) input_snapshot("nus", date, input_dir, "NUS")
+
+# data/input/{prefix}_{YYYY-MM-DD}.parquet of `date`, or the latest.
+input_snapshot <- function(prefix, date, input_dir, what) {
+  files <- if (is.null(date)) sort(Sys.glob(file.path(input_dir, paste0(prefix, "_*.parquet")))) else
+    file.path(input_dir, sprintf("%s_%s.parquet", prefix, format(as.Date(date))))
   files <- files[file.exists(files)]
-  if (!length(files)) stop("No DBH ", table, " snapshot in ", input_dir, ": run data-raw/courses.R")
+  if (!length(files)) stop("No ", what, " snapshot in ", input_dir, ": run data-raw/courses.R")
   files[length(files)]
 }
 
@@ -111,8 +120,8 @@ dbh_courses <- function(frame = c("all", "teacher_ed"), date = NULL, input_dir =
   courses
 }
 
-# The date of a DBH snapshot file, "YYYY-MM-DD".
-dbh_snapshot_date <- function(file) sub("^dbh_[a-z]+_(.*)\\.parquet$", "\\1", basename(file))
+# The date of a snapshot file of data/input (DBH or NUS), "YYYY-MM-DD".
+dbh_snapshot_date <- function(file) sub("^.*_(\\d{4}-\\d{2}-\\d{2})\\.parquet$", "\\1", basename(file))
 
 #' DBH tables from the API
 #'
@@ -134,6 +143,65 @@ dbh_fetch <- function(table, codes = NULL, wait = 2) {
     tidy(rdbhapi::dbh_data(table, filters = list(Institusjonskode = code),
                            group_by = c("Institusjonskode", "Emnekode", "Årstall", "Semester")))
   }))
+}
+
+#' The NUS classification from SSB's KLASS API
+#'
+#' NUS (Norsk standard for utdanningsgruppering, KLASS classification 36)
+#' gives each education a six-digit code: level (1 digit), field (fagfelt,
+#' 2 digits), subject group (faggruppe, 3), 4 digits and the education (6);
+#' DBH's `nus_code` is the six-digit one. Every code valid from 2000 to `to`
+#' (Norwegian names) and from 2007, the first version KLASS has in English
+#' (English names), so that codes DBH still gives for older courses are there
+#' too; a code renamed in the period has its latest name. Two requests, by
+#' jsonlite with its own generic user agent (as dbh_fetch()'s by rdbhapi):
+#' KLASS is an open statistics API, not a course site, so site_request() and
+#' robots.txt do not apply.
+#'
+#' @param to The last date (today)
+#' @return One row per code: `code`, `parent_code`, `level` (1-5, KLASS's),
+#'   `name`, `name_en` (NA for a code that ended before 2007), `valid_from`,
+#'   `valid_to` (the period's ends when valid throughout)
+nus_fetch <- function(to = Sys.Date()) {
+  get <- function(from, language) {
+    Sys.sleep(1)
+    url <- sprintf("https://data.ssb.no/api/klass/v1/classifications/36/codes.json?from=%s&to=%s&language=%s",
+                   from, format(as.Date(to) + 1), language)
+    tibble::as_tibble(jsonlite::fromJSON(url)$codes) |>
+      dplyr::arrange(code, dplyr::desc(validToInRequestedRange)) |>
+      dplyr::summarise(parent_code = parentCode[1], level = as.integer(level[1]), name = name[1],
+                       valid_from = min(validFromInRequestedRange), valid_to = max(validToInRequestedRange),
+                       .by = code)
+  }
+  en <- get("2007-01-01", "en")
+  dplyr::left_join(get("2000-01-01", "nb"), dplyr::select(en, code, name_en = name), by = "code") |>
+    dplyr::relocate(name_en, .after = name)
+}
+
+#' The NUS fields and subject groups, without the level
+#'
+#' The second digit of a NUS code is its field and the second and third its
+#' subject group, whatever the level (first digit): KLASS gives a field or
+#' group the same name at every level (2026-11-27), so "722105" (master,
+#' grades 1-7 teacher education) is in field "2" and group "22" with "622101"
+#' (its bachelor counterpart). The level is the browser's level filter.
+#'
+#' @param nus nus_fetch() (a NUS snapshot)
+#' @return One row per subject group: `code` (2 digits), `name_no`,
+#'   `name_en`, `field` (1 digit), `field_name_no`, `field_name_en`, by code
+nus_fields <- function(nus) {
+  named <- function(lv) {
+    x <- nus[nus$level == lv, ]
+    x <- x[order(is.na(x$name_en)), ]   # a level with an English name first
+    x <- x[!duplicated(substring(x$code, 2)), ]
+    tibble::tibble(code = substring(x$code, 2), name_no = x$name, name_en = dplyr::coalesce(x$name_en, x$name))
+  }
+  fields <- named(2L)
+  named(3L) |>
+    dplyr::mutate(field = substr(code, 1, 1)) |>
+    dplyr::left_join(dplyr::rename(fields, field = code, field_name_no = name_no, field_name_en = name_en),
+                     by = "field") |>
+    dplyr::arrange(code)
 }
 
 #' Which course-years had students

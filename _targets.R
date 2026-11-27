@@ -91,6 +91,9 @@ list(
   tar_target(programmes_file, dbh_snapshot_file("programmes", dbh_snapshot_date(dbh_file)),
              format = "file"),
   tar_target(study_types_file, "data/study_types.csv", format = "file"),
+  # the NUS classification (SSB KLASS 36), for the browser's NUS field filter:
+  # the latest snapshot, so that a new one reruns browser_data_files
+  tar_target(nus_file, nus_snapshot_file(), format = "file", cue = tar_cue(mode = "always")),
   tar_target(study_types, programme_study_types(
     arrow::read_parquet(programmes_file, col_select = c("Institusjonskode", "Studieprogramkode", "Årstall",
                                                         "Semester", "Studiumkode", "Studnavn")),
@@ -161,7 +164,7 @@ list(
     c(te_course_plans_file, te_sections_file, te_offerings_file, te_offerings_full_file, gaps_file,
       programmes_file)
     build_browser_data("teacher_ed", types_file = study_types_file, dbh_date = dbh_snapshot_date(dbh_file),
-                       covered = institutions)
+                       covered = institutions, nus_file = nus_file)
   }, format = "file"),
   tar_target(methods_qmd, "methods.qmd", format = "file"),
   tar_target(methods_file,

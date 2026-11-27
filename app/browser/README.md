@@ -119,7 +119,7 @@ it, and `browser_tables()` makes it from the three columns.
 
 | File | One row per | Columns |
 |---|---|---|
-| `meta.json` | | `version` (the data version, used as cache key: frame and time of `course_plans.RDS`), `built_at`, `frame`, counts, institutions (code, latest name, `plan_year_basis`), study types (every row of `data/study_types.csv`: `code`, `name_no`, `name_en`, `group`, `group_label_en`, `group_label_no`, `te_frame`, plus `courses`, the courses with a course-year of the type, 0 when not in this data; a type of the data missing from the CSV is added with DBH's name (`study_type_name`) in group `other`), uncovered (`year`, DBH's last year, and `by_type`, one row per study type and institution code not harvested with a DBH course of the type: `study_type`, `institution_code`, `institution_name` (latest), `courses` (all years), `courses_current` (courses in `year`), `year_last`; from tables 208 and 347 of the DBH snapshot, `uncovered_study_types()`), sections (`code` as in `sections.parquet`, `query` its name in the query syntax, `label_no`, `label_en`) |
+| `meta.json` | | `version` (the data version, used as cache key: frame and time of `course_plans.RDS`), `built_at`, `frame`, counts, institutions (code, latest name, `plan_year_basis`), study types (every row of `data/study_types.csv`: `code`, `name_no`, `name_en`, `group`, `group_label_en`, `group_label_no`, `te_frame`, plus `courses`, the courses with a course-year of the type, 0 when not in this data; a type of the data missing from the CSV is added with DBH's name (`study_type_name`) in group `other`), uncovered (`year`, DBH's last year, and `by_type`, one row per study type and institution code not harvested with a DBH course of the type: `study_type`, `institution_code`, `institution_name` (latest), `courses` (all years), `courses_current` (courses in `year`), `year_last`; from tables 208 and 347 of the DBH snapshot, `uncovered_study_types()`), nus_fields (the NUS subject groups without the level, from the latest `data/input/nus_{date}.parquet`, `nus_fields()`: `code`, digits 2-3 of a `nus_code`, `name_no`, `name_en`, `field`, digit 2, `field_name_no`, `field_name_en`), sections (`code` as in `sections.parquet`, `query` its name in the query syntax, `label_no`, `label_en`) |
 | `courses.parquet` | course | `institution`, `course_code`, `course_name`, `level_code`, `credits`, `language_code`, `subject_code`, `subject_name`, `nus_code`, `department_name` (from the latest offering), `year_first`, `year_last` |
 | `course_years.parquet` | course-year x programme x plan | `institution`, `course_code`, `year`, `programme_code`, `study_type`, `plan_id`, `plan_content_id` (both NA without a plan), `had_students` (any offering of the course-year), `no_plan_reason` (`reason` of `data/interim/plan_gaps.RDS`; NA with a plan) |
 | `programmes.parquet` | programme | `institution`, `programme_code`, `programme_name`, `study_type` |
@@ -229,8 +229,12 @@ such as "lese- og skrivevansker".
   The years run by default from the first year with a plan in the data (2007
   in the teacher-ed data) to the last; earlier DBH years can be selected.
 - **Left:** filters, each a collapsible section: years, study type tree,
-  institution, subject (DBH `subject_name`), level, credits (in ranges),
-  language, sections the plan has (a version qualifies when it has every
+  institution, subject (DBH `subject_name`, its subject codes `subject_code`
+  on hover; DBH's codes are per institution, so a name can have several),
+  NUS field (the course's `nus_code` by its subject group, digits 2-3, under
+  its field, digit 2, whatever the level digit, with KLASS's names from
+  `meta.nus_fields`; a tree like the study types', a tri-state box per
+  field), level, credits (in ranges), language, sections the plan has (a version qualifies when it has every
   ticked section, a course when a matching version does). Each value shows
   the courses matching the query and every other filter (its own ignored).
   The study type tree follows the groups of `data/study_types.csv`, with a
@@ -440,8 +444,8 @@ maps, folded strings and quoting that a small parser would get wrong.
   - `trend.js`: course-years by year and institution or study type, matching
     and with a plan (the trend view), and coverage per institution, of
     course-years and of sections (`sectionCoverage()`).
-  - `filters.js`: the course filters (institution, subject, level, credits,
-    language), their values and readable names.
+  - `filters.js`: the course filters (institution, subject, NUS subject
+    group, level, credits, language), their values and readable names.
   - `url.js`: the state in the URL (query, scope, section searched, excluded forms, filters,
     course, version, tab, compared version, view, trend lines, coverage
     columns, screening

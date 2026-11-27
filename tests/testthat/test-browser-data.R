@@ -95,6 +95,39 @@ test_that("browser_tables() follows the data contract", {
   expect_true(all(tb$sections$section %in% tb$meta$sections$code))
   expect_equal(tb$meta$uncovered$year, 2025L)          # none given: empty, the data's last year
   expect_equal(nrow(tb$meta$uncovered$by_type), 0)
+  expect_named(tb$meta$nus_fields, c("code", "name_no", "name_en", "field", "field_name_no", "field_name_en"))
+  expect_equal(nrow(tb$meta$nus_fields), 0)            # none given: empty
+})
+
+test_that("the NUS snapshot gives the fields and subject groups without the level", {
+  # a tiny KLASS 36: levels 6 and 7 name field 2 and group 22 alike
+  nus <- tibble::tibble(
+    code = c("6", "62", "622", "6221", "622101", "7", "72", "722", "721", "7221", "722105", "79", "799"),
+    parent_code = c(NA, "6", "62", "622", "6221", NA, "7", "72", "72", "722", "7221", "7", "79"),
+    level = c(1L, 2L, 3L, 4L, 5L, 1L, 2L, 3L, 3L, 4L, 5L, 2L, 3L),
+    name = c("Lavere", "Lærerutdanninger", "Grunnskolelærer", "G4", "Bachelor GLU", "Høyere", "Lærerutdanninger",
+             "Grunnskolelærer", "Barnehagelærer", "G4", "Master GLU", "Uoppgitt fagfelt", "Uoppgitt faggruppe"),
+    name_en = c(rep(NA, 7), "General teacher", "Pre-school teacher", NA, NA, "Unspecified", "Unspecified group"),
+    valid_from = "2000-01-01", valid_to = "2026-11-28")
+  dir <- withr::local_tempdir()
+  arrow::write_parquet(nus[1:5, ], file.path(dir, "nus_2026-01-01.parquet"))
+  arrow::write_parquet(nus, file.path(dir, "nus_2026-11-27.parquet"))
+  f <- nus_snapshot_file(input_dir = dir)
+  expect_equal(basename(f), "nus_2026-11-27.parquet")  # the latest
+  expect_equal(dbh_snapshot_date(f), "2026-11-27")
+  expect_equal(nrow(arrow::read_parquet(nus_snapshot_file("2026-01-01", dir))), 5)
+  expect_error(nus_snapshot_file("2025-01-01", dir), "No NUS snapshot")
+
+  x <- nus_fields(arrow::read_parquet(f))
+  expect_equal(x$code, c("21", "22", "99"))            # one row per group, whatever the level
+  expect_equal(x$field, c("2", "2", "9"))
+  expect_equal(x$name_no, c("Barnehagelærer", "Grunnskolelærer", "Uoppgitt faggruppe"))
+  expect_equal(x$name_en, c("Pre-school teacher", "General teacher", "Unspecified group"))  # from level 7
+  expect_equal(x$field_name_no, c("Lærerutdanninger", "Lærerutdanninger", "Uoppgitt fagfelt"))
+  expect_equal(x$field_name_en, c("Lærerutdanninger", "Lærerutdanninger", "Unspecified"))  # Norwegian without English
+
+  tb <- do.call(browser_tables, c(browser_fixture(), list(nus = x)))
+  expect_equal(tb$meta$nus_fields, x)
 })
 
 test_that("uncovered_study_types() counts the courses of institutions not harvested, per study type", {

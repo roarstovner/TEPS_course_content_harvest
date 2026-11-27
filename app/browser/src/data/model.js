@@ -84,7 +84,7 @@ const sum = (a) => a.reduce((s, x) => s + x, 0)
 /**
  * The courses in the filter that match, with counts.
  * @param {object} model from `buildModel`
- * @param {{inst, y0, y1, st, subj, lvl, cr, lang, sec}} f the filters (url.js);
+ * @param {{inst, y0, y1, st, subj, nus, lvl, cr, lang, sec}} f the filters (url.js);
  *   `sec`: sections a version must all have
  * @param {Map<string, number[]>|null} matches plan key -> hit counts per term;
  *   null without a query (every course in the filter matches)

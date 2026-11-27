@@ -181,7 +181,7 @@ describe('bundle', () => {
     const m = manifest(ctx, 'plan', 'csv', { rows: 2 }, ['plans.csv'])
     expect(m).toMatchObject({ unit: 'plan', format: 'csv', query: { q: 'lese*', scope: 'plan', excluded_forms: { 'lese*': ['leseren'] } } })
     expect(m.query.n).toBeUndefined()
-    expect(m.filters).toEqual({ institutions: ['uio'], years: [2020, 2022], study_types: [], subjects: [], levels: [], credits: [], languages: [], sections: [] })
+    expect(m.filters).toEqual({ institutions: ['uio'], years: [2020, 2022], study_types: [], subjects: [], nus_groups: [], levels: [], credits: [], languages: [], sections: [] })
     expect(m.data.version).toBe(ctx.meta.version)
   })
   it('zips the table with its manifest, variables, keys and rebuild code', async () => {

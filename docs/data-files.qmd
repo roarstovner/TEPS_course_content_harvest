@@ -21,7 +21,7 @@ kept in one folder per stage, so the folder says what may be shared:
 
 | Folder | Holds | Written by | In git |
 |---|---|---|---|
-| `data/input/` | the DBH snapshots, the pipeline input | `data-raw/courses.R` | yes |
+| `data/input/` | the DBH snapshots, the pipeline input, and the NUS classification | `data-raw/courses.R` | yes |
 | `data/pilot/` | the pilot samples: offerings and their strata | `pilot_sample()` | yes |
 | `data/raw/` | the harvest, with personal data; append-only | harvesting only | no |
 | `data/releases/{tag}/` | offerings, plans and sections of a finalized release, both frames (the teacher-ed frame's in the folder, all courses' in `all/`), and `study_types.csv` (none yet: the first comes when coding starts) | `finalize_release()` | no |
@@ -43,6 +43,7 @@ as much (`methods.md` "Anonymization").
 |---|---|---|---|
 | `data/input/dbh_courses_{date}.parquet`, `dbh_programmes_{date}.parquet` | DBH tables 208 (courses) and 347 (programmes), the harvest input | none | in git |
 | `data/input/dbh_exams_{date}.parquet`, `dbh_credits_{date}.parquet` | DBH tables 905 (exam registrations) and 900 (credits earned) per course and semester, which course-years had students; dated apart from the course list | none (counts) | in git |
+| `data/input/nus_{date}.parquet` | the NUS classification (SSB KLASS 36) with Norwegian and English names, for the browser's NUS field filter | none | in git |
 | `data/raw/{inst}/{year}/{run}.parquet`, `data/raw/checkpoint/` | raw harvest: `html` (+ text and bytes of PDFs) | yes (raw) | internal |
 | `data/raw/{inst}/ledger/{run}.parquet` | fetch ledger: URL, HTTP status, outcome and page hash per offering and run | none | internal |
 | `data/pilot/{inst}.csv` | an institution's pilot sample (["Piloting an Institution"](new-institution.md#piloting-an-institution)) | none | in git |
@@ -139,6 +140,18 @@ the same snapshot, so its offerings have the same `course_id` in both.
 `harvest_all()` without `courses` harvests every course; `tar_make()` builds
 everything in `data/raw/` and writes the teacher-ed frame's files apart (see
 "Frames").
+
+`nus_{date}.parquet` is the NUS classification (Norsk standard for
+utdanningsgruppering, SSB's KLASS classification 36), which gives DBH's
+`nus_code` its names: every code valid from 2000 to the day, one row per code
+with `code`, `parent_code`, `level` (KLASS's 1-5: education level, field,
+subject group, 4 digits, the education's 6 digits), `name`, `name_en` (KLASS
+has English from 2007), `valid_from` and `valid_to` (the ends of the period
+asked for when valid throughout), a renamed code under its latest name.
+`Rscript data-raw/courses.R nus` writes it from KLASS's API (two requests,
+`nus_fetch()`); the browser data read the latest (`nus_snapshot_file()`, now
+`r dbh_snapshot_date(nus_snapshot_file())`), whose fields and subject groups
+without the level (`nus_fields()`) are the browser's NUS field filter.
 
 A study type (`Studiumkode` in table 347) is DBH's classification of a
 programme: a profession (SYK nursing, ING engineering, PRAKTPED the

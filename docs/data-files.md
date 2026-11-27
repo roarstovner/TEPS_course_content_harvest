@@ -27,7 +27,8 @@ folder says what may be shared:
 <tbody>
 <tr>
 <td><code>data/input/</code></td>
-<td>the DBH snapshots, the pipeline input</td>
+<td>the DBH snapshots, the pipeline input, and the NUS
+classification</td>
 <td><code>data-raw/courses.R</code></td>
 <td>yes</td>
 </tr>
@@ -115,6 +116,13 @@ input</td>
 course and semester, which course-years had students; dated apart from
 the course list</td>
 <td>none (counts)</td>
+<td>in git</td>
+</tr>
+<tr>
+<td><code>data/input/nus_{date}.parquet</code></td>
+<td>the NUS classification (SSB KLASS 36) with Norwegian and English
+names, for the browser’s NUS field filter</td>
+<td>none</td>
 <td>in git</td>
 </tr>
 <tr>
@@ -324,6 +332,19 @@ frame is a filter of the same snapshot, so its offerings have the same
 `course_id` in both. `harvest_all()` without `courses` harvests every
 course; `tar_make()` builds everything in `data/raw/` and writes the
 teacher-ed frame’s files apart (see “Frames”).
+
+`nus_{date}.parquet` is the NUS classification (Norsk standard for
+utdanningsgruppering, SSB’s KLASS classification 36), which gives DBH’s
+`nus_code` its names: every code valid from 2000 to the day, one row per
+code with `code`, `parent_code`, `level` (KLASS’s 1-5: education level,
+field, subject group, 4 digits, the education’s 6 digits), `name`,
+`name_en` (KLASS has English from 2007), `valid_from` and `valid_to`
+(the ends of the period asked for when valid throughout), a renamed code
+under its latest name. `Rscript data-raw/courses.R nus` writes it from
+KLASS’s API (two requests, `nus_fetch()`); the browser data read the
+latest (`nus_snapshot_file()`, now 2026-11-27), whose fields and subject
+groups without the level (`nus_fields()`) are the browser’s NUS field
+filter.
 
 A study type (`Studiumkode` in table 347) is DBH’s classification of a
 programme: a profession (SYK nursing, ING engineering, PRAKTPED the

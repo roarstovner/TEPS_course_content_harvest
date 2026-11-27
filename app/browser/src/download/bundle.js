@@ -161,6 +161,7 @@ export function manifest(ctx, unit, format, counts, files) {
       years: [ctx.filters.y0, ctx.filters.y1],
       study_types: ctx.filters.st,
       subjects: ctx.filters.subj ?? [],
+      nus_groups: ctx.filters.nus ?? [],
       levels: ctx.filters.lvl ?? [],
       credits: ctx.filters.cr ?? [],
       languages: ctx.filters.lang ?? [],

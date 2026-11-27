@@ -1,6 +1,7 @@
 // The course filters beside study type and years: institution, subject,
-// level, credits and language (attributes of courses.parquet, one value per
-// course), and the readable names of their values.
+// NUS subject group, level, credits and language (attributes of
+// courses.parquet, one value per course), and the readable names of their
+// values.
 
 export const LEVELS = {
   LN: 'Lower degree',
@@ -46,6 +47,9 @@ export const creditBin = (x) => (x == null || Number.isNaN(x) ? '' : CREDIT_BINS
 export const COURSE_FILTERS = {
   inst: (c) => c.institution,
   subj: (c) => c.subject_name ?? '',
+  // digits 2-3 of the NUS code, the subject group whatever the level
+  // (meta.nus_fields, nus_fields() in R/utils.R)
+  nus: (c) => (c.nus_code ? String(c.nus_code).slice(1, 3) : ''),
   lvl: (c) => c.level_code ?? '',
   cr: (c) => creditBin(c.credits),
   lang: (c) => c.language_code ?? '',

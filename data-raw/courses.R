@@ -1,9 +1,10 @@
 ## The DBH input: dated snapshots of every course of every institution, and
-## of the student counts per course
+## of the student counts per course; and the NUS classification
 ##
-##   Rscript data-raw/courses.R           both
+##   Rscript data-raw/courses.R           the course list and the counts
 ##   Rscript data-raw/courses.R courses   the course list
 ##   Rscript data-raw/courses.R counts    the student counts
+##   Rscript data-raw/courses.R nus       the NUS classification
 ##
 ## The course list: data/input/dbh_courses_{date}.parquet (DBH table 208,
 ## Emner: every course x year x semester, all levels and statuses) and
@@ -15,19 +16,22 @@
 ## the institutions with a config, from the API: data/input/dbh_exams_{date}.parquet
 ## (table 905, Eksamensdata: exam registrations) and dbh_credits_{date}.parquet
 ## (table 900, Studiepoeng: credits earned), which dbh_offered() reads, the
-## latest apart from the course list's date. Run it from the repository root;
+## latest apart from the course list's date. The NUS classification (SSB
+## KLASS 36, with Norwegian and English names, nus_fetch()):
+## data/input/nus_{date}.parquet, which the browser's NUS field filter reads
+## (nus_snapshot_file(), the latest). Run it from the repository root;
 ## a new snapshot gets a new date and the old ones stay (methods.qmd,
 ## "Population and sampling frame").
 
 for (f in c("R/utils.R", "R/fetch_html_cols.R", "R/extract_fulltext.R", "R/institution_config.R")) source(f)
 what <- commandArgs(TRUE)
 if (!length(what)) what <- c("courses", "counts")
-stopifnot(what %in% c("courses", "counts"))
+stopifnot(what %in% c("courses", "counts", "nus"))
 date <- format(Sys.Date())
 options(timeout = 3600)   # table 208's bulk file is ~700 MB
 
-write_snapshot <- function(df, name) {
-  file <- file.path("data/input", sprintf("dbh_%s_%s.parquet", name, date))
+write_snapshot <- function(df, name, prefix = "dbh_") {
+  file <- file.path("data/input", sprintf("%s%s_%s.parquet", prefix, name, date))
   if (file.exists(file)) stop(file, " exists: a snapshot is not written twice")
   arrow::write_parquet(df, file, compression = "zstd", compression_level = 9)
   message(file, ": ", nrow(df), " rows")
@@ -46,3 +50,4 @@ if ("counts" %in% what) {
   write_snapshot(exams, "exams")
   write_snapshot(credits, "credits")
 }
+if ("nus" %in% what) write_snapshot(nus_fetch(), "nus", prefix = "")

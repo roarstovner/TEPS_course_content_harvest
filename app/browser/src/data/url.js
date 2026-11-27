@@ -21,6 +21,7 @@ export const defaultState = () => ({
   y1: null,
   st: [], // study types; empty = all
   subj: [], // DBH subject names (repeated `subj`: names hold commas)
+  nus: [], // NUS subject groups (digits 2-3 of the NUS code)
   lvl: [], // level codes
   cr: [], // credit ranges (filters.js)
   lang: [], // language codes
@@ -62,7 +63,7 @@ export function encodeState(s) {
   if (s.y1 != null) p.set('to', String(s.y1))
   if (s.st.length) p.set('st', s.st.join(','))
   for (const v of s.subj) p.append('subj', v)
-  for (const k of ['lvl', 'cr', 'lang', 'sec']) if (s[k].length) p.set(k, s[k].join(','))
+  for (const k of ['nus', 'lvl', 'cr', 'lang', 'sec']) if (s[k].length) p.set(k, s[k].join(','))
   if (s.view !== 'list') p.set('view', s.view)
   if (s.view === 'trend' && s.by !== 'all') p.set('by', s.by)
   if (s.view === 'coverage' && s.cov !== 'plans') p.set('cov', s.cov)
@@ -122,7 +123,7 @@ export function decodeState(search) {
   s.y1 = year(p.get('to'))
   s.st = list(p.get('st'))
   s.subj = p.getAll('subj')
-  for (const k of ['lvl', 'cr', 'lang', 'sec']) s[k] = list(p.get(k))
+  for (const k of ['nus', 'lvl', 'cr', 'lang', 'sec']) s[k] = list(p.get(k))
   if (VIEWS.includes(p.get('view'))) s.view = p.get('view')
   if (BY.includes(p.get('by'))) s.by = p.get('by')
   if (COVERAGE.includes(p.get('cov'))) s.cov = p.get('cov')

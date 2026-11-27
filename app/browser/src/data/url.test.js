@@ -19,6 +19,7 @@ describe('URL state', () => {
       y1: 2024,
       st: ['IMALU1-7'],
       subj: ['Norsk, nynorsk', 'Pedagogikk'],
+      nus: ['22', '53'],
       lvl: ['LN', 'HN'],
       cr: ['lt7.5', '15'],
       lang: ['ENG'],

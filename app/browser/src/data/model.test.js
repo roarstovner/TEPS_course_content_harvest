@@ -5,8 +5,8 @@ import { planKey, versionId } from './keys.js'
 // Two courses at uio, one at ntnu. A course-year has a row per programme and
 // plan, as in course_years.parquet.
 const courses = [
-  { institution: 'uio', course_code: 'B2', course_name: 'Bee', level_code: 'HN', credits: 15, language_code: 'ENG', subject_name: 'Pedagogikk' },
-  { institution: 'ntnu', course_code: 'N1', course_name: 'En', level_code: 'LN', credits: 7.5, language_code: 'NOR', subject_name: 'Norsk' },
+  { institution: 'uio', course_code: 'B2', course_name: 'Bee', level_code: 'HN', credits: 15, language_code: 'ENG', subject_name: 'Pedagogikk', nus_code: '724101' },
+  { institution: 'ntnu', course_code: 'N1', course_name: 'En', level_code: 'LN', credits: 7.5, language_code: 'NOR', subject_name: 'Norsk', nus_code: '611199' },
   { institution: 'uio', course_code: 'A1', course_name: 'Ay', level_code: 'LN', credits: 15, language_code: 'NOR', subject_name: 'Pedagogikk' },
 ]
 const cy = (institution, course_code, year, study_type, plan_content_id = null) => ({
@@ -33,7 +33,7 @@ const plans = [
   { institution: 'ntnu', course_code: 'N1', plan_content_id: 'q1', year_from: 2022, year_to: 2022 },
 ]
 const make = () => addPlans(buildModel({ courses, courseYears }), plans)
-const all = { inst: [], y0: null, y1: null, st: [], subj: [], lvl: [], cr: [], lang: [], sec: [] }
+const all = { inst: [], y0: null, y1: null, st: [], subj: [], nus: [], lvl: [], cr: [], lang: [], sec: [] }
 const codes = (v) => v.rows.map((r) => r.course.key)
 
 describe('buildModel', () => {
@@ -102,6 +102,9 @@ describe('course filters, sections and facets', () => {
     expect(facet(v.facets.subj)).toEqual({ Pedagogikk: 1 })
     expect(codes(filterView(m, { ...all, lang: ['ENG'] }, null))).toEqual(['uio|B2'])
     expect(codes(filterView(m, { ...all, subj: ['Norsk', 'Pedagogikk'], inst: ['ntnu'] }, null))).toEqual(['ntnu|N1'])
+    // NUS subject group: digits 2-3 of the code, whatever the level; A1 has none
+    expect(facet(filterView(m, all, null).facets.nus)).toEqual({ 24: 1, 11: 1, '': 1 })
+    expect(codes(filterView(m, { ...all, nus: ['24'] }, null))).toEqual(['uio|B2'])
   })
   it('a study type counts the courses of the other filters, with the coverage of its course-years', () => {
     const v = filterView(make(), { ...all, st: ['LEKTOR'], inst: ['uio'] }, null)

@@ -2,8 +2,9 @@
 # Contract"). Built from the anonymized files of a frame (data/processed/), the
 # source URL and harvest date of each plan (data/interim/, url and
 # harvested_at only), the study type tree (data/study_types.csv), the plan
-# gaps (why a course-year has no plan) and, from the DBH input, the courses of
-# each study type at institutions not harvested.
+# gaps (why a course-year has no plan), the NUS fields (data/input/nus_*) and,
+# from the DBH input, the courses of each study type at institutions not
+# harvested.
 
 # The sections of plan_sections.RDS in the browser: `code` as in the data,
 # `query` the name of the query syntax ("outcomes:dybdelæring"), and the
@@ -29,7 +30,8 @@ BROWSER_SECTIONS <- tibble::tribble(
 #' gets in), the study type tree of `types_file` and the reasons of
 #' data/interim/plan_gaps.RDS and the courses of each study type at the
 #' institutions not harvested (DBH tables 208 and 347, uncovered_study_types()),
-#' and writes the files of app/browser/README.md "Data Contract" to `out_dir`.
+#' the NUS fields and subject groups of `nus_file` (nus_fields()), and writes
+#' the files of app/browser/README.md "Data Contract" to `out_dir`.
 #'
 #' @param frame A frame of `FRAMES`
 #' @param out_dir Folder to write to (created; files there are replaced)
@@ -37,11 +39,12 @@ BROWSER_SECTIONS <- tibble::tribble(
 #' @param dbh_date Date of the DBH snapshot (courses and programmes); NULL for
 #'   the latest
 #' @param covered The institutions harvested (harvested_institutions())
+#' @param nus_file The NUS snapshot (nus_snapshot_file())
 #' @return The paths written, invisibly. Stops before writing anything when a
 #'   text column holds personal data (the patterns of target privacy_check).
 build_browser_data <- function(frame = "teacher_ed", out_dir = "app/browser/public/data",
                                types_file = "data/study_types.csv", dbh_date = NULL,
-                               covered = harvested_institutions()) {
+                               covered = harvested_institutions(), nus_file = nus_snapshot_file()) {
   stopifnot(frame %in% FRAMES)
   types <- utils::read.csv(types_file, encoding = "UTF-8")
   dbh_date <- dbh_date %||% dbh_snapshot_date(dbh_snapshot_file("courses"))
@@ -63,7 +66,7 @@ build_browser_data <- function(frame = "teacher_ed", out_dir = "app/browser/publ
     offerings = readRDS(file.path(processed, "course_offerings.RDS")), sources = sources,
     types = types, gaps = readRDS(file.path(frame_dir("all", "interim"), "plan_gaps.RDS")),
     version = paste(frame, "processed", format(file.mtime(plans_file), "%Y-%m-%dT%H:%M")),
-    frame = frame, uncovered = uncovered)
+    frame = frame, uncovered = uncovered, nus = nus_fields(arrow::read_parquet(nus_file)))
   write_browser_data(tables, out_dir)
 }
 
@@ -130,9 +133,13 @@ uncovered_study_types <- function(courses, study_types, covered) {
 #' @param gaps plan_gaps(): institution, course_code, year, has_plan, reason
 #' @param version,frame For meta.json
 #' @param uncovered uncovered_study_types(), `meta$uncovered`; NULL for none
+#' @param nus nus_fields(), `meta$nus_fields`: the browser's NUS field filter
+#'   groups a course's `nus_code` by its digits 2-3 (subject group) under
+#'   digit 2 (field); NULL for none
 #' @return List of tibbles `courses`, `course_years`, `programmes`, `plans`,
 #'   `sections` and the list `meta`
-browser_tables <- function(plans, sections, offerings, sources, types, gaps, version, frame, uncovered = NULL) {
+browser_tables <- function(plans, sections, offerings, sources, types, gaps, version, frame, uncovered = NULL,
+                           nus = NULL) {
   with_plan_id <- function(x) {
     if (!"plan_id" %in% names(x)) x$plan_id <- plan_key_id(x$institution, x$course_code, x$plan_content_id)
     x
@@ -231,6 +238,8 @@ browser_tables <- function(plans, sections, offerings, sources, types, gaps, ver
     uncovered = uncovered %||% list(year = max(offerings$year), by_type = tibble::tibble(
       study_type = character(), institution_code = character(), institution_name = character(),
       courses = integer(), courses_current = integer(), year_last = integer())),
+    nus_fields = nus %||% nus_fields(tibble::tibble(code = character(), level = integer(), name = character(),
+                                                    name_en = character())),
     sections = BROWSER_SECTIONS)
   list(courses = courses, course_years = course_years, programmes = programme_table,
        plans = plan_table, sections = section_table, meta = meta)

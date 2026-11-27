@@ -152,6 +152,7 @@ const D = {
   'f.to': ['To year', 'Til år'],
   'f.inst': ['Institution', 'Institusjon'],
   'f.subj': ['Subject', 'Fag'],
+  'f.nus': ['NUS field', 'NUS-fagfelt'],
   'f.lvl': ['Level', 'Nivå'],
   'f.cr': ['Credits', 'Studiepoeng'],
   'f.lang': ['Language', 'Språk'],
