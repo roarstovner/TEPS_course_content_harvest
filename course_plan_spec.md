@@ -168,39 +168,44 @@ without the title and facts box.
 ## Known deviations
 
 The data do not yet follow the spec here (a release ships the spec in the
-version its data follow):
+version its data follow). Each item opens with what it concerns, in
+parentheses: the sections by name, `course_plan` for the plan text, and "no
+plan" for offerings left without one.
 
-- UiB's responsible unit, an unlabelled link in the page's sidebar, is not in
-  `course_plan`. Every UiB offering has its unit from DBH (`department_name`).
-- A condition written with a season and a year loses both, with the
-  semester labels: "studenter tatt opp på studieplanen som gjelder fra og med
-  høsten 2013" (UiT), "fikk opptak fra og med høsten 2021" (UiO), "tatt opp
-  til femårig lektorutdanning høsten 2012 eller tidligere" (NTNU); 24 plans,
-  all in the teacher-education frame (UiT 22). A guard for each wording would
-  be needed to tell them from administrative dates of the same form
-  ("Gjeldende fra høstsemesteret 2013", "Fra høst 2019: Endring i
-  hjelpemidler"). Conditions written with an academic year stay.
-- Prerequisites keep some admission rules written as requirements, with no
-  "Opptakskrav" or "Søkere" opening their line: the grade and school-point
-  requirements for teacher education ("Minimum 35 skolepoeng", Nord and
-  NTNU), UiA's "Bachelorgrad eller tilsvarende utdanning av minst 180
-  studiepoengs omfang og minst to års relevant yrkespraksis." and OsloMet's
-  "Eksterne søkere må ha bestått lærerutdanning som kvalifiserer for arbeid i
-  skolen."
-- At the institutions with rules for their stock wordings (HVL, INN, MF,
-  NMBU, OsloMet, Steiner, UiB, UiO, UiS, VID, HiOF; 2026-11-09; NMH and
-  KHiO, 2026-11-16; DMMH and Barratt Due, 2026-11-21), assessment
-  still keeps resit, appeal and examiner rules worded once or in a sentence
-  that also says something about the design ("Oppgaven vurderes av intern og
+- (`course_plan`) UiB's responsible unit, an unlabelled link in the page's
+  sidebar, is not in `course_plan`. Every UiB offering has its unit from DBH
+  (`department_name`).
+- (`course_plan`, all sections) A condition written with a season and a year
+  loses both, with the semester labels: "studenter tatt opp på studieplanen
+  som gjelder fra og med høsten 2013" (UiT), "fikk opptak fra og med høsten
+  2021" (UiO), "tatt opp til femårig lektorutdanning høsten 2012 eller
+  tidligere" (NTNU); 24 plans, all in the teacher-education frame (UiT 22). A
+  guard for each wording would be needed to tell them from administrative
+  dates of the same form ("Gjeldende fra høstsemesteret 2013", "Fra høst 2019:
+  Endring i hjelpemidler"). Conditions written with an academic year stay.
+- (`prerequisites`) Prerequisites keep some admission rules written as
+  requirements, with no "Opptakskrav" or "Søkere" opening their line: the
+  grade and school-point requirements for teacher education ("Minimum 35
+  skolepoeng", Nord and NTNU), UiA's "Bachelorgrad eller tilsvarende utdanning
+  av minst 180 studiepoengs omfang og minst to års relevant yrkespraksis." and
+  OsloMet's "Eksterne søkere må ha bestått lærerutdanning som kvalifiserer for
+  arbeid i skolen."
+- (`assessment`) At the institutions with rules for their stock wordings (HVL,
+  INN, MF, NMBU, OsloMet, Steiner, UiB, UiO, UiS, VID, HiOF; 2026-11-09; NMH
+  and KHiO, 2026-11-16; DMMH and Barratt Due, 2026-11-21), assessment still
+  keeps resit, appeal and examiner rules worded once or in a sentence that
+  also says something about the design ("Oppgaven vurderes av intern og
   ekstern sensor på grunnlag av læringsutbyttebeskrivelser for emnet.", HVL;
   UiS's appeal rules on PDF lines wrapped mid-sentence, "Ved klage på
-  karakterfastsetting ... skal studenten opp til ny muntlig eksamen.";
-  NMH's resit rules under "Ny vurdering" other than the stock one, and the
-  committee procedures of its doctoral thesis).
-  The sections audit of 2026-11-08 found such wordings at each of them. They
-  stay as extraneous text in assessment (user 2026-11-11): they
-  do not hide the design, and a rule per wording costs code for little gain.
-- A paragraph that mixes meanings under a correctly mapped heading stays
+  karakterfastsetting ... skal studenten opp til ny muntlig eksamen."; NMH's
+  resit rules under "Ny vurdering" other than the stock one, and the committee
+  procedures of its doctoral thesis). The sections audit of 2026-11-08 found
+  such wordings at each of them. They stay as extraneous text in assessment
+  (user 2026-11-11): they do not hide the design, and a rule per wording costs
+  code for little gain.
+- (`course_content`, `learning_outcomes`, `teaching_methods`, `assessment`,
+  `coursework_requirements`, `practice`) A paragraph that mixes meanings
+  under a correctly mapped heading stays
   with its heading when its wording occurs in one course: teaching sentences
   under "Kort om emnet" ("Forelesninger vil ha en generell tilnærming til
   temaene, mens studentene fordyper seg i ...", NIH; the practice days of
@@ -221,16 +226,16 @@ version its data follow):
   main-instrument and chamber-music courses ("Individuell undervisning med
   hovedinstrumentlærer", "Prosjektuke med fordypning i repertoar og
   samspill").
-- UiB's English page is not read: 10 of 17,441 UiB plans say only
+- (no plan) UiB's English page is not read: 10 of 17,441 UiB plans say only
   "Informasjonen fins ikkje på norsk." (courses described only in English),
   and their offerings have no plan (2026-11-11; a harvest of the English
   pages is not worth it for 10 plans).
-- Assessment at UiT, NTNU, Nord and FHS keeps resit, postponement and
-  examiner rules ("Det er adgang til å kontinuere for studenter med
-  studierett, jf. ...", "Students who failed the exam must re-sit both the
-  written and the oral examination.", "Eksamen sensureres av to sensorer.").
-  Their wordings vary from course to course and often share a sentence with
-  what the resit consists of ("Ved utsatt eksamen kan muntlig eksamen
-  erstattes av skriftlig"), which is assessment design, so a rule for each
-  wording would be needed to take them out without taking design (sections
-  audit of 2026-11-05).
+- (`assessment`) Assessment at UiT, NTNU, Nord and FHS keeps resit,
+  postponement and examiner rules ("Det er adgang til å kontinuere for
+  studenter med studierett, jf. ...", "Students who failed the exam must
+  re-sit both the written and the oral examination.", "Eksamen sensureres av
+  to sensorer."). Their wordings vary from course to course and often share a
+  sentence with what the resit consists of ("Ved utsatt eksamen kan muntlig
+  eksamen erstattes av skriftlig"), which is assessment design, so a rule for
+  each wording would be needed to take them out without taking design
+  (sections audit of 2026-11-05).
