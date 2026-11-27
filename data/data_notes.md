@@ -1,7 +1,7 @@
 # Data Quality Notes
 
 
-Generated: 2026-11-26
+Generated: 2026-11-27
 
 ## Overview
 
@@ -12,7 +12,7 @@ Generated: 2026-11-26
 | dmmh | 5151 | 609 | 2013-2026 | 2732 | 53.0% | 5230 | 951 | 37.4% |
 | fhs | 6752 | 1040 | 2017-2026 | 2384 | 35.3% | 4522 | 997 | 58.2% |
 | fjellhaug | 1064 | 295 | 2025-2026 | 215 | 20.2% | 4636 | 153 | 28.8% |
-| himolde | 9468 | 979 | 2017-2026 | 4188 | 44.2% | 2918 | 2277 | 21.0% |
+| himolde | 9468 | 979 | 2017-2026 | 4188 | 44.2% | 2918 | 2276 | 20.9% |
 | hiof | 42678 | 6852 | 1994-2026 | 19142 | 44.9% | 4224 | 11000 | 20.3% |
 | hivolda | 23892 | 2889 | 2000-2026 | 5725 | 24.0% | 4189 | 4758 | 16.9% |
 | hvl | 45232 | 4983 | 2017-2026 | 32579 | 72.0% | 3815 | 15081 | 53.6% |
@@ -20,7 +20,7 @@ Generated: 2026-11-26
 | khio | 896 | 356 | 2025-2026 | 347 | 38.7% | 1992 | 328 | 5.5% |
 | ldh | 1237 | 165 | 2019-2026 | 313 | 25.3% | 3187 | 107 | 64.0% |
 | mf | 1233 | 348 | 2025-2026 | 346 | 28.1% | 3504 | 317 | 7.8% |
-| nhh | 1511 | 698 | 2025-2026 | 455 | 30.1% | 4111 | 425 | 1.6% |
+| nhh | 1511 | 698 | 2025-2026 | 455 | 30.1% | 4111 | 423 | 1.6% |
 | nih | 12793 | 1460 | 1990-2026 | 800 | 6.3% | 2458 | 704 | 11.2% |
 | nla | 18647 | 2110 | 2001-2026 | 8423 | 45.2% | 5097 | 3946 | 53.2% |
 | nmbu | 5584 | 1590 | 2025-2026 | 1055 | 18.9% | 3918 | 1031 | 2.3% |
@@ -36,11 +36,11 @@ Generated: 2026-11-26
 | uib | 114529 | 7678 | 2004-2026 | 51789 | 45.2% | 3118 | 19003 | 59.0% |
 | uio | 20850 | 5731 | 2025-2026 | 4143 | 19.9% | 3951 | 4046 | 1.6% |
 | uis | 6527 | 2083 | 2007-2026 | 4814 | 73.8% | 4812 | 2940 | 37.3% |
-| uit | 140699 | 11168 | 2004-2026 | 51630 | 36.7% | 3364 | 38425 | 20.9% |
+| uit | 140699 | 11168 | 2004-2026 | 51663 | 36.7% | 3365 | 38448 | 21.0% |
 | usn | 42755 | 5504 | 2018-2026 | 14954 | 35.0% | 5910 | 13994 | 6.3% |
 | vid | 5312 | 995 | 2023-2026 | 1342 | 25.3% | 3636 | 852 | 32.9% |
 
-**Total**: 957242 rows, 499480 with extracted text (52.2%), 225243
+**Total**: 957242 rows, 499513 with extracted text (52.2%), 225316
 unique plans.
 
 **Columns:**
@@ -63,7 +63,7 @@ academic year only. Each harvest is kept, and an offering gets the plan
 from a harvest made in its own academic year, or none
 (`docs/harvesting.md` “Sites that show only the current plan”). In this
 data their plans come from the harvests of 2025/26 (2026-04-04, 195
-offerings) and 2026/27 (2026-10-17 to 2026-11-26, 6384 offerings), so
+offerings) and 2026/27 (2026-10-17 to 2026-11-26, 6382 offerings), so
 their offerings of other academic years have no plan. They are
 barrattdue, fjellhaug, khio, mf, nhh, nmbu, onh, samas, steiner, uio.
 The others have historical plans as far back as the site still serves
@@ -130,7 +130,7 @@ year) that have a plan in at least one semester:
 | dmmh | 2853 | 81% | 884 | 262 | 1152 | 44% | 53.0% |
 | fhs | 3609 | 87% | 15 | 1080 | 2048 | 36% | 35.3% |
 | fjellhaug | 552 | 93% | 205 | 0 | 307 | 39% | 20.2% |
-| himolde | 4985 | 90% | 2314 | 165 | 2004 | 54% | 44.2% |
+| himolde | 4985 | 90% | 2311 | 165 | 2007 | 54% | 44.2% |
 | hiof | 24872 | 72% | 9302 | 1300 | 7204 | 50% | 44.9% |
 | hivolda | 13514 | 77% | 4880 | 216 | 5282 | 41% | 24.0% |
 | hvl | 23994 | 89% | 4295 | 13286 | 3657 | 80% | 72.0% |
@@ -138,7 +138,7 @@ year) that have a plan in at least one semester:
 | khio | 452 | 98% | 341 | 0 | 103 | 77% | 38.7% |
 | ldh | 661 | 87% | 37 | 117 | 422 | 27% | 25.3% |
 | mf | 640 | 93% | 274 | 26 | 293 | 50% | 28.1% |
-| nhh | 775 | 95% | 432 | 0 | 304 | 56% | 30.1% |
+| nhh | 775 | 95% | 430 | 0 | 306 | 55% | 30.1% |
 | nih | 7265 | 76% | 611 | 42 | 4875 | 10% | 6.3% |
 | nla | 10170 | 83% | 924 | 3539 | 4014 | 48% | 45.2% |
 | nmbu | 2927 | 91% | 947 | 11 | 1699 | 36% | 18.9% |
@@ -154,8 +154,8 @@ year) that have a plan in at least one semester:
 | uib | 57906 | 89% | 331 | 21805 | 29199 | 41% | 45.2% |
 | uio | 10710 | 95% | 3878 | 42 | 6220 | 38% | 19.9% |
 | uis | 3529 | 85% | 1183 | 1542 | 273 | 89% | 73.8% |
-| uit | 73965 | 90% | 27068 | 9235 | 30431 | 53% | 36.7% |
-| usn | 22756 | 88% | 12709 | 504 | 6786 | 63% | 35.0% |
+| uit | 73965 | 90% | 27109 | 9260 | 30365 | 53% | 36.7% |
+| usn | 22756 | 88% | 12710 | 504 | 6785 | 63% | 35.0% |
 | vid | 2755 | 93% | 910 | 133 | 1514 | 41% | 25.3% |
 
 ## Course-years without a plan
@@ -179,7 +179,7 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 | dmmh | 1592 | 1009 | 563 | 0 | 198 | 0 | 51 |
 | fhs | 2298 | 8 | 2290 | 0 | 0 | 0 | 4 |
 | fjellhaug | 337 | 0 | 135 | 0 | 0 | 202 | 0 |
-| himolde | 2227 | 0 | 2156 | 0 | 318 | 0 | 123 |
+| himolde | 2230 | 0 | 2158 | 0 | 321 | 0 | 122 |
 | hiof | 12340 | 4419 | 7173 | 105 | 1841 | 0 | 379 |
 | hivolda | 7884 | 0 | 7884 | 0 | 0 | 0 | 154 |
 | hvl | 4772 | 4748 | 0 | 0 | 41 | 0 | 29 |
@@ -187,7 +187,7 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 | khio | 105 | 0 | 0 | 0 | 0 | 105 | 0 |
 | ldh | 479 | 0 | 479 | 0 | 0 | 0 | 0 |
 | mf | 322 | 0 | 0 | 0 | 2 | 320 | 0 |
-| nhh | 343 | 0 | 262 | 0 | 23 | 58 | 0 |
+| nhh | 345 | 0 | 262 | 0 | 25 | 58 | 0 |
 | nih | 6444 | 6397 | 0 | 44 | 7 | 0 | 6 |
 | nla | 5228 | 3555 | 0 | 0 | 1689 | 0 | 7 |
 | nmbu | 1723 | 0 | 0 | 0 | 0 | 1723 | 0 |
@@ -203,8 +203,8 @@ or a missed page; these are the ones to check by hand (`url_tried`, and
 | uib | 34216 | 28828 | 0 | 2848 | 2568 | 0 | 22 |
 | uio | 6617 | 0 | 7 | 0 | 48 | 6562 | 0 |
 | uis | 368 | 153 | 0 | 18 | 197 | 0 | 0 |
-| uit | 32503 | 0 | 32160 | 0 | 1884 | 0 | 1887 |
-| usn | 8043 | 0 | 8043 | 0 | 23 | 0 | 514 |
+| uit | 32438 | 0 | 32097 | 0 | 1838 | 0 | 1914 |
+| usn | 8042 | 0 | 8042 | 0 | 22 | 0 | 515 |
 | vid | 1619 | 290 | 950 | 0 | 379 | 0 | 21 |
 
 To list the gaps between plans:
@@ -251,7 +251,7 @@ All years, by institution:
 | dmmh | TRUE | 1256 / 2853 (44%) |  |  |
 | fhs | TRUE | 1304 / 3609 (36%) | 885 / 1511 (59%) | 733 / 1223 (60%) |
 | fjellhaug | TRUE | 215 / 552 (39%) | 69 / 219 (32%) | 0 / 108 (0%) |
-| himolde | TRUE | 2716 / 4985 (54%) | 2376 / 3119 (76%) | 2087 / 2692 (78%) |
+| himolde | TRUE | 2713 / 4985 (54%) | 2374 / 3119 (76%) | 2085 / 2692 (77%) |
 | hiof | TRUE | 12499 / 24872 (50%) | 10883 / 17519 (62%) | 9609 / 14296 (67%) |
 | hivolda | TRUE | 5509 / 13514 (41%) | 4570 / 10445 (44%) | 3955 / 9006 (44%) |
 | hvl | TRUE | 19220 / 23994 (80%) | 15161 / 16474 (92%) | 12845 / 13585 (95%) |
@@ -259,7 +259,7 @@ All years, by institution:
 | khio | TRUE | 347 / 452 (77%) | 226 / 316 (72%) | 0 / 79 (0%) |
 | ldh | TRUE | 180 / 661 (27%) |  |  |
 | mf | TRUE | 318 / 640 (50%) | 139 / 318 (44%) | 22 / 167 (13%) |
-| nhh | TRUE | 432 / 775 (56%) | 169 / 261 (65%) | 0 / 49 (0%) |
+| nhh | TRUE | 430 / 775 (55%) | 169 / 261 (65%) | 0 / 49 (0%) |
 | nih | TRUE | 751 / 7265 (10%) | 619 / 4995 (12%) | 460 / 4291 (11%) |
 | nla | TRUE | 4884 / 10170 (48%) | 3803 / 6593 (58%) | 3149 / 5106 (62%) |
 | nmbu | TRUE | 1044 / 2927 (36%) | 562 / 1657 (34%) | 8 / 879 (1%) |
@@ -275,8 +275,8 @@ All years, by institution:
 | uib | TRUE | 23581 / 57906 (41%) | 19300 / 37151 (52%) | 16325 / 30349 (54%) |
 | uio | TRUE | 4068 / 10710 (38%) | 1724 / 5033 (34%) | 32 / 2655 (1%) |
 | uis | TRUE | 3149 / 3529 (89%) | 2236 / 2414 (93%) | 957 / 1037 (92%) |
-| uit | TRUE | 39334 / 73965 (53%) | 31499 / 39636 (79%) | 26447 / 31788 (83%) |
-| usn | TRUE | 14424 / 22756 (63%) | 12895 / 16133 (80%) | 11072 / 13301 (83%) |
+| uit | TRUE | 39401 / 73965 (53%) | 31530 / 39636 (80%) | 26473 / 31788 (83%) |
+| usn | TRUE | 14425 / 22756 (63%) | 12896 / 16133 (80%) | 11073 / 13301 (83%) |
 | vid | TRUE | 1136 / 2755 (41%) | 930 / 1715 (54%) | 631 / 1261 (50%) |
 
 By year since 2010 (a panel per institution; empty panels are sites that
@@ -522,6 +522,12 @@ Figures are in the tables above; the notes say why.
   the exam table), and goes back to assessment from there. The aid
   list’s heading (“Hjelpemiddeliste ved eksamen”) stays over its value
   (“Liste A”); “N/A” under it is no assessment text
+- Sections (2026-11-26): “Emnet består av totalt 40 undervisningstimer i
+  form av forelesninger og seminarer med obligatorisk oppmøte, …”
+  (BTM2506) describes the teaching and stays in teaching methods; its
+  absence limit after it (“… som ikke må ha et fravær på mer enn 30%”)
+  stays there too. “Anbefalte forkunnskaper” over “Ingen” after a
+  required course (PT1501) is no longer in prerequisites
 - A private college; the site states no terms of use, only a privacy
   statement for visitors (checked 2026-11-05)
 - robots.txt (fih.fjellhaug.no, read 2026-11-05) disallows only Craft
@@ -642,6 +648,10 @@ Figures are in the tables above; the notes say why.
   fetch stamp. The programme list is in the facts. The reading list
   itself is in Leganto: most plans’ “Pensum” holds only a link or a
   notice, which is no `reading_list` section
+- Sections (2026-11-26): where the numbered requirements are list items
+  (“Arbeidskrav I”, “Arbeidskrav II”) over a bold title (SYD204,
+  2021-2024), title and text stay in coursework requirements; before,
+  all but “Arbeidskrav I” fell back to teaching methods
 
 ------------------------------------------------------------------------
 
@@ -906,6 +916,10 @@ Figures are in the tables above; the notes say why.
   re-take rule and a hand-out or deadline stated alone. The stock rule
   that approved coursework is valid for one semester, which many pages
   state under “Assessment” too, is in coursework requirements once
+- Sections (2026-11-26): a page whose only text is the pointer “Se de
+  engelske sidene for emnebeskrivelse” (SOL23) has no section, and so no
+  plan; nor has the test course TEST “Testemne”, whose page holds the
+  template text (“Læringsutbytte på bokmål”, “Tekst om hva du lærer”)
 - robots.txt disallows only `/paraplyen` (the intranet)
 
 ------------------------------------------------------------------------
@@ -939,6 +953,9 @@ Figures are in the tables above; the notes say why.
 - Read from `#vrtx-fs-emne-content`: the title, the facts list (credits,
   department, semester, duration, language) and the plan; not the course
   coordinator, the table of contents’ heading and the FS fetch stamp
+- Sections (2026-11-26): a reading list that is only its label
+  (“Pensum.”, “Pensum”, “Litteraturliste”; 12 plans in the build of
+  2026-11-26) is no section
 
 ------------------------------------------------------------------------
 
@@ -1061,6 +1078,11 @@ Figures are in the tables above; the notes say why.
   course topics, exam parts and numbered requirements stay lines of
   their section. Pages with `h3` headings and no `h2` (PERFPRAK20,
   DANS22, PRAKSADM20 before autumn 2024) are read from their text
+- Sections (2026-11-26): an `h3` “Praksis” is a part of the `h2` it is
+  under: under “Arbeidskrav” (DISTUD78) it stays in coursework
+  requirements, as a line over its text, which is also practice, and
+  under “Innhold” (INSTENS20) in course content; before, it opened
+  teaching methods
 - Some plans name the teacher in the text, “Faglærer i emnet: <name>.”
   (electives and ensembles: 10 of the 106 pages of the pilot sample,
   2026-10-31), which the generic anonymizer rules did not catch

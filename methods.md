@@ -12,8 +12,8 @@ decision changes what the data mean, add or update its entry here; each
 release tag freezes this file with the data.
 
 Current data, the teacher-ed frame (below): 46 882 offerings (DBH course
-× year × semester) at 19 institutions, 30 759 of them with a plan, and
-17 029 unique plans from 18 institutions (none from Samas, below).
+× year × semester) at 19 institutions, 30 769 of them with a plan, and
+17 038 unique plans from 18 institutions (none from Samas, below).
 
 ## Population and sampling frame
 
@@ -164,8 +164,8 @@ follows from the counts’ date, not the course list’s. A course-year of
 the course list that the counts lack had no students (in a provisional
 year: none yet). *Rejected:* one date for both (the counts would wait
 for the next course list, or force one). In the teacher-ed frame: 24 775
-course-years, 19 650 with a plan (79 %); with students 18 368, of them
-15 795 with a plan (86 %); with both 13 832, of them 12 051 with a plan
+course-years, 19 658 with a plan (79 %); with students 18 368, of them
+15 801 with a plan (86 %); with both 13 832, of them 12 056 with a plan
 (87 %). Per institution and year: `data/data_notes.md`, “Coverage over
 course-years that had students”. *Since:* 2026-11-04.
 
@@ -1194,7 +1194,7 @@ confirmed against the programme description. *Since:* 2026-10-19.
 
 **A plan is a unique anonymized text per institution and course code**
 (`plan_content_id`, a hash of the normalized text). Offerings with the
-same text share a plan: 30 759 offerings have 17 029 plans. *Why:*
+same text share a plan: 30 769 offerings have 17 038 plans. *Why:*
 consecutive years and both semesters mostly repeat the same text.
 *Consequence:* the id changes whenever cleaning changes the text, so
 coding is tied to a frozen release and carried to later releases with a
@@ -1211,7 +1211,7 @@ institution that publish the same text (UiT LRU-3672 and LRU-3672F, NTNU
 PPU4621/4623/4625/4627, NLA 4MGL1DIP and MGL1DIP, OsloMet M5GMT2100 and
 M5GMT3100) share a `plan_content_id`: 258 ids are shared by 691 plans
 (never across institutions), and joining offerings to plans on
-`plan_content_id` alone duplicates 1 457 of the 30 759 offerings with a
+`plan_content_id` alone duplicates 1 458 of the 30 769 offerings with a
 plan (2026-11-19: 256 ids, 687 plans, 1,449 of 30,727 offerings). The
 key `plan_content_id` + `institution` + `course_code` was documented,
 but easy to miss. *Rejected:* documenting the three-column key only (the
@@ -1390,7 +1390,7 @@ removing every AI, plagiarism and COVID line from assessment (the rule
 since 2026-10-01), which also removed rules for the use of AI and the
 exam forms that replaced written exams during COVID; keeping the NTNU
 exam tab out of the sections, which leaves 743 NTNU plans without an
-assessment section. *Consequence:* the sections hold a median 82 % of a
+assessment section. *Consequence:* the sections hold a median 83 % of a
 plan’s text, and 45 plans have no section. The data do not yet follow
 the spec where its “Known deviations” says; each fix gets its own entry
 here, with numbers. *Since:* 2026-10-13.
@@ -3468,6 +3468,81 @@ autumn 2024 gets course content (its “Innhold” text was in learning
 outcomes). `course_plan` changes on 9 PIANO21 pages by one blank line
 after the `h3` “Final assessment”, and their plan ids change. *Since:*
 2026-11-26.
+
+**Prerequisites keep the heading that says required or recommended.**
+The headings that say whether prior knowledge is required or recommended
+join the `label` headings (with “Karakterskala”, “Hjelpemidler til
+eksamen”): “Krav til forkunnskaper/-ar”, “Forkunnskapskrav” (also “…
+utover opptakskrav”, “… - emner”), “Anbefalte forkunnskaper/-ar”,
+“Anbefalt forkunnskap”, “Tilrådde forkunnskapar”, “Absolutte
+forkunnskaper”, “Obligatoriske forkunnskaper”, “Obligatorisk
+forkunnskapskrav”, “Forutsatte forkunnskaper”, “Required/Recommended
+prerequisite(s/ knowledge)”, “Recommended/Required previous knowledge”,
+“Formal prerequisite knowledge”, “Obligatory prerequisites” and HVL’s
+“Entry requirements”. Such a heading stays as a line over its text
+(“Tilrådde forkunnskapar” over “Engelsk 1, 2, 3 og 4”); over only
+“Ingen”, “-” or a pointer it goes with its text, since “Ingen” is the
+placeholder in prerequisites it was before; a label line whose text the
+cleanup takes (an admission sentence) goes too (`.drop_empty_labels()`).
+The admission fields that join prerequisites keep the label of what they
+keep (“Krav til forkunnskaper: BSY-100”, LDH, Barratt Due; AHO’s
+“Recommended previous knowledge.”). “Forkunnskaper”, “Forkrav” and
+“Prerequisites” only name the section and stay out. *Why:* the coding
+project (2026-11-26) could not tell whether a bare list (“Engelsk 1, 2,
+3 og 4”) is required or recommended: in the teacher-ed frame of
+2026-11-25 none of 1,108 HVL, 864 NTNU, 620 HiØ and 557 UiB plans with
+such a heading kept it; the spec has the harvest deliver the qualifying
+headings as the page words them (`course_plan_spec.md`, “Prerequisites”,
+which now says so; its known deviation is removed). *Rejected:* a
+required/recommended code per line (a coding category, not the
+harvest’s); only the “recommended” headings (at NTNU, Nord, OsloMet, UiA
+and UiS “Forkunnskapskrav” is the required half of the pair, so text
+above an “Anbefalte forkunnskaper” line would stay unmarked); keeping
+“Ingen” under a label (it would add a prerequisites section of only
+“Krav til forkunnskaper / Ingen” to many plans that have none today).
+*Consequence* (`preview_change()`, 4 pages per raw partition of every
+institution but UiT and Samas, at most 1,296 pages): prerequisites
+change on 421 pages at 22 institutions (NTNU 57, UiB 54, HiØ 46, UiS 44,
+DMMH 31, Hivolda 27, HVL 26, HiMolde 25, Nord 21, …); the heading lines
+added are mostly “Forkunnskapskrav” (158), “Anbefalte forkunnskaper”
+(153), “Krav til forkunnskaper/-ar” (64), “Forkunnskapskrav - emner”
+(27, DMMH) and “… utover opptakskrav” (23, HiØ). No line of plan text
+leaves a section: lines lost are “Ingen” under a label (3) and the
+admission fields’ values, which come back with their label. A short
+prerequisites section of labels and short values (“Anbefalte
+forkunnskaper / Etter avtale med Instituttet / Forkunnskapskrav / …”,
+NTNU) is no longer read as a list of headings (`.is_heading_list()`).
+`course_plan` and the plan ids do not change. *Since:* 2026-11-26.
+
+**Small section fixes of the 2026-11-26 re-audit.** (1) HiMolde SYD204:
+numbered requirements written as list items (“Arbeidskrav I”) over a
+bold title keep title and text in coursework requirements (before, all
+but “Arbeidskrav I” fell back to teaching methods; 5 pages); a numbered
+list item in coursework now acts as a `keep` sub-heading. (2) NMH
+DISTUD78: with `section_subheading_exact`, an `h3` “Praksis” is a part
+of the `h2` it is under, so under “Arbeidskrav” its text stays in
+coursework requirements and is also practice (11 pages). Rejected: a
+practice sub-heading inside coursework at every institution, which would
+move 477 OsloMet and 16 HVL “Praksis” parts that mostly describe the
+practicum. NMH’s other `h3` “Praksis” (INSTENS20, 3 pages, a part of the
+course under “Innhold”) now stays a line of course content instead of
+opening teaching methods. (3) Fjellhaug BTM2506: “… undervisningstimer i
+form av forelesninger og seminarer med obligatorisk oppmøte, …”
+describes the teaching and stays in teaching methods (the attendance
+rule’s exception for a list of teaching forms now also takes “i form av
+… med obligatorisk”; of 1,830 “i form av” sentences in teaching methods
+and coursework, only this one changes); its absence limit (“… som ikke
+må ha et fravær på mer enn 30%”) stays in teaching methods, a one-course
+wording. (4) Placeholders: a reading list that is only its label
+(“Pensum.”, “Pensumliste”, “Pensumlitteratur”, “Litteraturliste”,
+“Reading list”; in the 2026-11-26 build NIH 12, NTNU 75, UiT 69, UiB 24,
+Hivolda 13, HiMolde 3 rows), NHH’s “Se de engelske sidene for
+emnebeskrivelse” (SOL23) and NHH’s unfilled template (“Læringsutbytte på
+bokmål”, “Tekst om hva du lærer”) of the test course TEST “Testemne”:
+with no section left, their pages are shells and get no plan, as the
+spec has for a pointer to the English page and a page of placeholders.
+*Why:* close-out sections audit of 2026-11-25 and re-audit of
+2026-11-26. `course_plan` does not change. *Since:* 2026-11-26.
 
 **Barratt Due: the PPU degree requirement, stock resit rules, the
 electives’ admission rule.** The PPU plans’ prerequisite field “Krav til
