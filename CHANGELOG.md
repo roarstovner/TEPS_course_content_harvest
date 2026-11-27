@@ -104,6 +104,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Spec: mark each known deviation with the section(s) it concerns (#639)
+- Sections (UiS): 'Forkunnskapskrav' over only 'Ingen' kept as the whole prerequisites section (4 plans) (#637)
 - Release: ship course_plan_spec.md in the release (coding project request) (#638)
 - Study types: show DBH courses at institutions we do not harvest (#569)
 - Browser: graphics contrast of the year strip and trend line (WCAG 1.4.11, 3:1) (#636)
