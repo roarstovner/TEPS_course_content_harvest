@@ -16,7 +16,7 @@ page is not published until the terms of use of the plan text are settled.
 ```sh
 # data: targets::tar_make() rebuilds it (target browser_data_files); by hand,
 # from the repository root (R, reads data/processed/, data/interim/ and data/input/):
-Rscript -e 'for (f in c("utils", "anonymize", "deduplicate_plans", "browser_data")) source(file.path("R", paste0(f, ".R"))); build_browser_data("teacher_ed")'
+Rscript -e 'for (f in c("utils", "fetch_html_cols", "extract_fulltext", "institution_config", "pipeline", "anonymize", "deduplicate_plans", "browser_data")) source(file.path("R", paste0(f, ".R"))); build_browser_data("teacher_ed")'
 # app:
 cd app/browser
 npm ci
@@ -63,6 +63,15 @@ Node 22.12 or later (vitest needs it; `.nvmrc` names the version CI uses).
   registers the course under a programme of that type in that year. The
   preset "Teacher education (TE frame)" ticks the study types of the
   teacher-ed frame.
+- **Say which institutions a study type leaves out** (2026-11-27, so that a
+  filter's coverage is honest: law without Høyskolen Kristiania is not all
+  law). Under the study type tree, per ticked type, the institutions with
+  DBH courses of the type that are not harvested (no raw files: no config,
+  or a former institution's own code), from the whole DBH input, not the
+  frame: those with courses in the current year (DBH's last) by name and
+  number of courses, the former ones folded, with their courses of all
+  years and their last year. Not per selected year range: the note says
+  what the data cannot hold, not what the filter shows.
 - **Search is loose by default and exact on request** (below), and every
   term shows the word forms it matched, so a query can be checked and
   reported.
@@ -110,7 +119,7 @@ it, and `browser_tables()` makes it from the three columns.
 
 | File | One row per | Columns |
 |---|---|---|
-| `meta.json` | | `version` (the data version, used as cache key: frame and time of `course_plans.RDS`), `built_at`, `frame`, counts, institutions (code, latest name, `plan_year_basis`), study types (every row of `data/study_types.csv`: `code`, `name_no`, `name_en`, `group`, `group_label_en`, `group_label_no`, `te_frame`, plus `courses`, the courses with a course-year of the type, 0 when not in this data; a type of the data missing from the CSV is added with DBH's name (`study_type_name`) in group `other`), sections (`code` as in `sections.parquet`, `query` its name in the query syntax, `label_no`, `label_en`) |
+| `meta.json` | | `version` (the data version, used as cache key: frame and time of `course_plans.RDS`), `built_at`, `frame`, counts, institutions (code, latest name, `plan_year_basis`), study types (every row of `data/study_types.csv`: `code`, `name_no`, `name_en`, `group`, `group_label_en`, `group_label_no`, `te_frame`, plus `courses`, the courses with a course-year of the type, 0 when not in this data; a type of the data missing from the CSV is added with DBH's name (`study_type_name`) in group `other`), uncovered (`year`, DBH's last year, and `by_type`, one row per study type and institution code not harvested with a DBH course of the type: `study_type`, `institution_code`, `institution_name` (latest), `courses` (all years), `courses_current` (courses in `year`), `year_last`; from tables 208 and 347 of the DBH snapshot, `uncovered_study_types()`), sections (`code` as in `sections.parquet`, `query` its name in the query syntax, `label_no`, `label_en`) |
 | `courses.parquet` | course | `institution`, `course_code`, `course_name`, `level_code`, `credits`, `language_code`, `subject_code`, `subject_name`, `nus_code`, `department_name` (from the latest offering), `year_first`, `year_last` |
 | `course_years.parquet` | course-year x programme x plan | `institution`, `course_code`, `year`, `programme_code`, `study_type`, `plan_id`, `plan_content_id` (both NA without a plan), `had_students` (any offering of the course-year), `no_plan_reason` (`reason` of `data/interim/plan_gaps.RDS`; NA with a plan) |
 | `programmes.parquet` | programme | `institution`, `programme_code`, `programme_name`, `study_type` |
@@ -228,7 +237,10 @@ such as "lese- og skrivevansker".
   tri-state checkbox per group, English names (Norwegian on hover), per type
   the courses and the coverage of its course-years, and the presets "Teacher
   education (TE frame)" and "Clear"; types without courses in this data are
-  greyed and folded in their group (the all-courses data adds them).
+  greyed and folded in their group (the all-courses data adds them). Below
+  the tree, with types ticked, the institutions not harvested that have
+  courses of them (Decisions, "Say which institutions a study type leaves
+  out").
 - **Middle:** results, one row per course: institution, code, name, a strip
   of the years with the matching versions marked, the number of hits.
 - **Right:** the course: full plan with the matches marked and a coloured

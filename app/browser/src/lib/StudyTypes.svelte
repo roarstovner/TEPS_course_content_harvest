@@ -4,11 +4,14 @@
   // other filters and the coverage of its course-years. A course-year belongs
   // to a type when DBH lists it under a programme of that type that year.
   // Types without courses in this data are greyed and folded in their group.
+  // Below the tree, per ticked type, the institutions with DBH courses of the
+  // type that are not harvested (meta.uncovered): those with courses in the
+  // current year first, former ones folded.
   import { untrack } from 'svelte'
   import { num, pct } from './format.js'
   import { local, other, t as tr } from './i18n.js'
 
-  let { types, selected = $bindable(), counts } = $props()
+  let { types, selected = $bindable(), counts, uncovered } = $props()
 
   let text = $state('')
   // open groups: those with a ticked type, else the first
@@ -37,6 +40,19 @@
     return s
   }
   const ticked = (g) => g.items.filter((t) => selected.includes(t.code)).length
+  // per ticked type with uncovered institutions: those with courses in
+  // uncovered.year (current) and the former ones
+  let openFormer = $state(new Set())
+  const missing = $derived.by(() => {
+    const rows = uncovered?.by_type ?? []
+    return types
+      .filter((t) => selected.includes(t.code))
+      .map((t) => {
+        const r = rows.filter((x) => x.study_type === t.code)
+        return { type: t, current: r.filter((x) => x.courses_current > 0), former: r.filter((x) => !x.courses_current) }
+      })
+      .filter((m) => m.current.length || m.former.length)
+  })
   const indeterminate = (n) => (el) => {
     el.indeterminate = n
   }
@@ -106,4 +122,35 @@
       <li><small>{tr('st.none')}</small></li>
     {/each}
   </ul>
+  {#if selected.length && uncovered}
+    {@const y = uncovered.year}
+    <div class="uncovered" role="note" aria-label={tr('st.uncAria')}>
+      {#if missing.length}
+        <p>{tr('st.unc', { y })}</p>
+        <ul>
+          {#each missing as m (m.type.code)}
+            {@const fOpen = openFormer.has(m.type.code)}
+            <li>
+              <span title="{other(m.type, 'name')} ({m.type.code})">{local(m.type, 'name')}:</span>
+              {#each m.current as r, i (r.institution_code)}{i ? '; ' : ' '}{tr('st.uncInst', { name: r.institution_name, n: num(r.courses_current), y })}{:else}{' '}{tr('st.uncNone', { y })}{/each}
+              {#if m.former.length}
+                <br /><button class="link" aria-expanded={fOpen} onclick={() => (openFormer = flip(openFormer, m.type.code))}
+                  >{fOpen ? '▾' : '▸'} {tr('st.uncFormer', { n: m.former.length, y })}</button
+                >
+                {#if fOpen}
+                  <ul>
+                    {#each m.former as r (r.institution_code)}
+                      <li>{tr('st.uncFormerInst', { name: r.institution_name, n: num(r.courses), last: r.year_last })}</li>
+                    {/each}
+                  </ul>
+                {/if}
+              {/if}
+            </li>
+          {/each}
+        </ul>
+      {:else}
+        <p>{tr('st.uncAll')}</p>
+      {/if}
+    </div>
+  {/if}
 </details>

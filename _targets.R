@@ -158,8 +158,10 @@ list(
   # data notes (all offerings)
   tar_target(browser_data_files, {
     # the files build_browser_data() reads, named so that a change reruns it
-    c(te_course_plans_file, te_sections_file, te_offerings_file, te_offerings_full_file, gaps_file)
-    build_browser_data("teacher_ed", types_file = study_types_file)
+    c(te_course_plans_file, te_sections_file, te_offerings_file, te_offerings_full_file, gaps_file,
+      programmes_file)
+    build_browser_data("teacher_ed", types_file = study_types_file, dbh_date = dbh_snapshot_date(dbh_file),
+                       covered = institutions)
   }, format = "file"),
   tar_target(methods_qmd, "methods.qmd", format = "file"),
   tar_target(methods_file,

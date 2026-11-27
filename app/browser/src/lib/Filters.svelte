@@ -38,7 +38,7 @@
   </div>
 </fieldset>
 
-<StudyTypes types={meta.study_types} bind:selected={state.st} counts={facets.st} />
+<StudyTypes types={meta.study_types} bind:selected={state.st} counts={facets.st} uncovered={meta.uncovered} />
 <CheckList title={t('f.inst')} items={institutions} bind:selected={state.inst} counts={facets.inst} open />
 <CheckList title={t('f.subj')} items={subjects} bind:selected={state.subj} counts={facets.subj} />
 <CheckList title={t('f.lvl')} items={levels} bind:selected={state.lvl} counts={facets.lvl} />

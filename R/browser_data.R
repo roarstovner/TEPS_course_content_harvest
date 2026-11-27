@@ -1,8 +1,9 @@
 # Data files of the static course plan browser (app/browser/README.md, "Data
 # Contract"). Built from the anonymized files of a frame (data/processed/), the
 # source URL and harvest date of each plan (data/interim/, url and
-# harvested_at only), the study type tree (data/study_types.csv) and the plan
-# gaps (why a course-year has no plan).
+# harvested_at only), the study type tree (data/study_types.csv), the plan
+# gaps (why a course-year has no plan) and, from the DBH input, the courses of
+# each study type at institutions not harvested.
 
 # The sections of plan_sections.RDS in the browser: `code` as in the data,
 # `query` the name of the query syntax ("outcomes:dybdelæring"), and the
@@ -26,17 +27,30 @@ BROWSER_SECTIONS <- tibble::tribble(
 #' each plan's source offering from the frame's `course_offerings_full.RDS`
 #' (data/interim/; no other column, so neither `html` nor `extracted_text`
 #' gets in), the study type tree of `types_file` and the reasons of
-#' data/interim/plan_gaps.RDS, and writes the files of app/browser/README.md
-#' "Data Contract" to `out_dir`.
+#' data/interim/plan_gaps.RDS and the courses of each study type at the
+#' institutions not harvested (DBH tables 208 and 347, uncovered_study_types()),
+#' and writes the files of app/browser/README.md "Data Contract" to `out_dir`.
 #'
 #' @param frame A frame of `FRAMES`
 #' @param out_dir Folder to write to (created; files there are replaced)
 #' @param types_file The study types (data/study_types.csv)
+#' @param dbh_date Date of the DBH snapshot (courses and programmes); NULL for
+#'   the latest
+#' @param covered The institutions harvested (harvested_institutions())
 #' @return The paths written, invisibly. Stops before writing anything when a
 #'   text column holds personal data (the patterns of target privacy_check).
 build_browser_data <- function(frame = "teacher_ed", out_dir = "app/browser/public/data",
-                               types_file = "data/study_types.csv") {
+                               types_file = "data/study_types.csv", dbh_date = NULL,
+                               covered = harvested_institutions()) {
   stopifnot(frame %in% FRAMES)
+  types <- utils::read.csv(types_file, encoding = "UTF-8")
+  dbh_date <- dbh_date %||% dbh_snapshot_date(dbh_snapshot_file("courses"))
+  programmes <- arrow::read_parquet(dbh_snapshot_file("programmes", dbh_date),
+                                    col_select = c("Institusjonskode", "Studieprogramkode", "Årstall",
+                                                   "Semester", "Studiumkode", "Studnavn"))
+  uncovered <- uncovered_study_types(dbh_courses("all", dbh_date), programme_study_types(programmes, types),
+                                     covered)
+  rm(programmes)
   processed <- frame_dir(frame)
   plans_file <- file.path(processed, "course_plans.RDS")
   full <- readRDS(file.path(frame_dir(frame, "interim"), "course_offerings_full.RDS"))
@@ -47,10 +61,51 @@ build_browser_data <- function(frame = "teacher_ed", out_dir = "app/browser/publ
   tables <- browser_tables(
     plans = plans, sections = readRDS(file.path(processed, "plan_sections.RDS")),
     offerings = readRDS(file.path(processed, "course_offerings.RDS")), sources = sources,
-    types = utils::read.csv(types_file, encoding = "UTF-8"), gaps = readRDS(file.path(frame_dir("all", "interim"), "plan_gaps.RDS")),
+    types = types, gaps = readRDS(file.path(frame_dir("all", "interim"), "plan_gaps.RDS")),
     version = paste(frame, "processed", format(file.mtime(plans_file), "%Y-%m-%dT%H:%M")),
-    frame = frame)
+    frame = frame, uncovered = uncovered)
   write_browser_data(tables, out_dir)
+}
+
+#' Courses of each study type at the institutions not harvested
+#'
+#' So that a study type filter can say which institutions it leaves out (as
+#' Lovisenberg for nursing, BI and Kristiania for law): every DBH course
+#' (table 208) of an institution code that no harvested institution has,
+#' under a programme of each study type (table 347) that semester. Former
+#' institutions (merged into a harvested one under a code of their own) count
+#' too, for the years they had courses.
+#'
+#' @param courses dbh_courses("all"): institution (NA without a config),
+#'   institution_code, institution_name, course_code, year, semester,
+#'   programme_code
+#' @param study_types programme_study_types()
+#' @param covered The institutions harvested (harvested_institutions())
+#' @return List of `year`, the last year of `courses` (the current one), and
+#'   `by_type`: one row per study type and institution code with a course of
+#'   the type, `study_type`, `institution_code`, `institution_name` (its
+#'   latest), `courses` (all years), `courses_current` (courses offered in
+#'   `year`) and `year_last`, sorted by type, `courses_current` and `courses`
+#'   (most first)
+uncovered_study_types <- function(courses, study_types, covered) {
+  year <- max(courses$year)
+  x <- courses[is.na(courses$institution) | !courses$institution %in% covered,
+               c("institution_code", "institution_name", "course_code", "year", "semester", "programme_code")]
+  x <- add_study_types(x, study_types)
+  x <- dplyr::rename(x[!is.na(x$study_type_code), ], study_type = study_type_code)
+  names <- x |>
+    dplyr::arrange(dplyr::desc(year), dplyr::desc(semester)) |>
+    dplyr::distinct(institution_code, institution_name)
+  names <- names[!duplicated(names$institution_code), ]
+  by_type <- x |>
+    dplyr::summarise(courses = dplyr::n_distinct(course_code),
+                     courses_current = dplyr::n_distinct(course_code[year == .env$year]),
+                     year_last = max(year),
+                     .by = c(study_type, institution_code)) |>
+    dplyr::left_join(names, by = "institution_code") |>
+    dplyr::relocate(institution_name, .after = institution_code) |>
+    dplyr::arrange(study_type, dplyr::desc(courses_current), dplyr::desc(courses), institution_code)
+  list(year = year, by_type = by_type)
 }
 
 #' The browser's tables from the frame's data
@@ -74,9 +129,10 @@ build_browser_data <- function(frame = "teacher_ed", out_dir = "app/browser/publ
 #'   it is added at the end with DBH's name in group "other".
 #' @param gaps plan_gaps(): institution, course_code, year, has_plan, reason
 #' @param version,frame For meta.json
+#' @param uncovered uncovered_study_types(), `meta$uncovered`; NULL for none
 #' @return List of tibbles `courses`, `course_years`, `programmes`, `plans`,
 #'   `sections` and the list `meta`
-browser_tables <- function(plans, sections, offerings, sources, types, gaps, version, frame) {
+browser_tables <- function(plans, sections, offerings, sources, types, gaps, version, frame, uncovered = NULL) {
   with_plan_id <- function(x) {
     if (!"plan_id" %in% names(x)) x$plan_id <- plan_key_id(x$institution, x$course_code, x$plan_content_id)
     x
@@ -172,6 +228,9 @@ browser_tables <- function(plans, sections, offerings, sources, types, gaps, ver
       sections = nrow(section_table)),
     institutions = institutions,
     study_types = tree,
+    uncovered = uncovered %||% list(year = max(offerings$year), by_type = tibble::tibble(
+      study_type = character(), institution_code = character(), institution_name = character(),
+      courses = integer(), courses_current = integer(), year_last = integer())),
     sections = BROWSER_SECTIONS)
   list(courses = courses, course_years = course_years, programmes = programme_table,
        plans = plan_table, sections = section_table, meta = meta)

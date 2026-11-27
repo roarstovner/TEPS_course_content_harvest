@@ -175,6 +175,19 @@ const D = {
   'st.absent': ['{n} not in this data', '{n} ikke i disse dataene'],
   'st.absentTitle': ['{name} ({code}): not in this data; the all-courses data adds it', '{name} ({code}): ikke i disse dataene; dataene med alle emner tar den med'],
   'st.none': ['No study type matches.', 'Ingen studietype treffer.'],
+  'st.uncAria': ['Institutions not harvested', 'Institusjoner som ikke er høstet'],
+  'st.unc': [
+    'Not harvested: institutions with courses of the ticked study types in DBH, with their courses in {y}',
+    'Ikke høstet: institusjoner med emner av de avkryssede studietypene i DBH, med emnene deres i {y}',
+  ],
+  'st.uncInst': ['{name} ({n} courses)', '{name} ({n} emner)'],
+  'st.uncNone': ['none with courses in {y}', 'ingen med emner i {y}'],
+  'st.uncFormer': ['{n} former, without courses in {y}', '{n} tidligere, uten emner i {y}'],
+  'st.uncFormerInst': ['{name}: {n} courses, last in {last}', '{name}: {n} emner, sist i {last}'],
+  'st.uncAll': [
+    'Every institution with courses of the ticked study types in DBH is harvested.',
+    'Alle institusjoner med emner av de avkryssede studietypene i DBH er høstet.',
+  ],
 
   // help
   'help.toc': ['Guide contents', 'Innhold i veiledningen'],

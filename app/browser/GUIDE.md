@@ -23,6 +23,11 @@ counts in the data the browser holds. The precise rules are in the
 - **Only what the sites hold.** Some sites keep older plans, others show
   only the current one; years without a plan are counted, not hidden
   (see [What the Numbers Mean](#what-the-numbers-mean)).
+- **Only the institutions harvested.** Some institutions with courses in
+  DBH are not harvested. With study types ticked, a note under the study
+  type tree names, per type, those with courses in the current year (for
+  example Høyskolen Kristiania for law) and, folded, former institutions
+  whose courses DBH lists under a code of their own.
 - More: [what the data files hold](../../docs/data-files.md),
   [per-institution notes](../../data/data_notes.md), and the
   [methods notes](../../methods.md).

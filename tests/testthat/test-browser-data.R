@@ -93,6 +93,38 @@ test_that("browser_tables() follows the data contract", {
   expect_equal(unlist(st[3, c("name_en", "group", "group_label_en")], use.names = FALSE),
                c("Lektor", "other", "Other"))
   expect_true(all(tb$sections$section %in% tb$meta$sections$code))
+  expect_equal(tb$meta$uncovered$year, 2025L)          # none given: empty, the data's last year
+  expect_equal(nrow(tb$meta$uncovered$by_type), 0)
+})
+
+test_that("uncovered_study_types() counts the courses of institutions not harvested, per study type", {
+  dbh <- function(inst, code, name, course, year, semester, programme) {
+    tibble::tibble(institution = inst, institution_code = code, institution_name = name, course_code = course,
+                   year = year, semester = semester, programme_code = programme)
+  }
+  courses <- dplyr::bind_rows(
+    dbh("x", "0001", "X", "A", 2026L, 1L, "P1"),                    # harvested
+    dbh(NA, "0002", "Old Y", "A", 2025L, 1L, "N"),                   # no config
+    dbh(NA, "0002", "Y", c("A", "B"), 2026L, 1L, "N"),               # latest name; one course-year per course
+    dbh(NA, "0002", "Y", "A", 2026L, 3L, "N"),
+    dbh(NA, "0002", "Y", "C", 2026L, 1L, "L"),
+    dbh(NA, "0002", "Y", "D", 2026L, 1L, "NONE"),                    # programme without a study type
+    dbh("z", "0003", "Z", "A", 2010L, 1L, "N"))                      # config, not harvested: a former college
+  programmes <- tibble::tibble(
+    Institusjonskode = c("0001", "0002", "0002", "0002", "0002", "0003"),
+    Studieprogramkode = c("P1", "N", "N", "N", "L", "N"), Årstall = c(2026L, 2025L, 2026L, 2026L, 2026L, 2010L),
+    Semester = c(1L, 1L, 1L, 3L, 1L, 1L), Studiumkode = c("SYK", "SYK", "SYK", "SYK", "JUS", "SYK"),
+    Studnavn = c("Sykepleie", "Sykepleie", "Sykepleie", "Sykepleie", "Jus", "Sykepleie"))
+  types <- data.frame(study_type = c("SYK", "JUS"), group = c("health_welfare", "law_police_military"))
+  u <- uncovered_study_types(courses, programme_study_types(programmes, types), covered = "x")
+  expect_equal(u$year, 2026L)
+  expect_named(u$by_type, c("study_type", "institution_code", "institution_name", "courses", "courses_current",
+                            "year_last"))
+  expect_equal(u$by_type$study_type, c("JUS", "SYK", "SYK"))
+  expect_equal(u$by_type$institution_name, c("Y", "Y", "Z"))
+  expect_equal(u$by_type$courses, c(1L, 2L, 1L))
+  expect_equal(u$by_type$courses_current, c(1L, 2L, 0L))
+  expect_equal(u$by_type$year_last, c(2026L, 2026L, 2010L))
 })
 
 test_that("write_browser_data() writes no raw text and stops on personal data", {
