@@ -6,7 +6,7 @@
   import { num } from './format.js'
   import { t } from './i18n.js'
 
-  let { open = $bindable(), model, view, s, query, excl, matches, meta, worker } = $props() // query: as run (in the header's section)
+  let { open = $bindable(), model, view, s, query, excl, matches, meta, shards = null, worker } = $props() // query: as run (in the header's section); shards: those loaded (sharded data)
 
   let dialog = $state()
   const back = document.activeElement // the focus returns there on closing
@@ -39,7 +39,7 @@
     excl: $state.snapshot(excl),
     filters: { inst: [...s.inst], y0: s.y0 ?? model.yearFrom, y1: s.y1 ?? model.yearMax, st: [...s.st], subj: [...s.subj], nus: [...s.nus], lvl: [...s.lvl], cr: [...s.cr], lang: [...s.lang], sec: [...s.sec] },
     url: location.href,
-    meta: { version: meta.version, frame: meta.frame, built_at: meta.built_at },
+    meta: { version: meta.version, frame: meta.frame, built_at: meta.built_at, ...(shards ? { shards: [...shards] } : {}) },
     date: new Date(),
   })
   const args = () => ({ unit, sel, ctx: ctx(), sectionOrder: meta.sections.map((s) => s.code) })

@@ -192,8 +192,7 @@ variable are in [Data Files](docs/data-files.md).
   text)
 - `data/interim/course_offerings_full.RDS` — internal working file: same
   rows plus `url`, `extracted_text`, `course_plan`,
-  `course_plan_normalized`; the teacher-ed one gives the browser each
-  plan’s source URL and harvest date
+  `course_plan_normalized`
 - `data/processed/course_plans.RDS` — one row per unique plan per course
   code per institution, with the offering its text comes from
   (`source_course_id`)

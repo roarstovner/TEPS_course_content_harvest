@@ -9,8 +9,10 @@ export const VIEWS = ['list', 'trend', 'coverage', 'screen', 'compare', 'terms',
 export const COMPARE_MODES = ['pair', 'across']
 export const BY = ['all', 'inst', 'st']
 export const COVERAGE = ['plans', 'sections']
+export const DATA = ['te', 'all'] // the data sets (data/shards.js DATASETS)
 
 export const defaultState = () => ({
+  data: 'te', // data set: the teacher-ed frame, or all courses loaded per study type ('all')
   q: '', // query
   scope: 'plan', // scope of AND
   n: 10, // words, for scope 'words'
@@ -52,6 +54,7 @@ const year = (s) => (/^\d{4}$/.test(s ?? '') ? Number(s) : null)
 /** State -> query string (without '?'). */
 export function encodeState(s) {
   const p = new URLSearchParams()
+  if (s.data !== 'te') p.set('data', s.data)
   if (s.q) p.set('q', s.q)
   if (s.scope !== 'plan') p.set('scope', s.scope)
   if (s.scope === 'words' && Number.isInteger(s.n) && s.n !== 10) p.set('n', String(s.n))
@@ -107,6 +110,7 @@ export function applyExample(s, search) {
 export function decodeState(search) {
   const p = new URLSearchParams(search)
   const s = defaultState()
+  if (DATA.includes(p.get('data'))) s.data = p.get('data')
   s.q = p.get('q') ?? ''
   if (SCOPES.includes(p.get('scope'))) s.scope = p.get('scope')
   const n = Number(p.get('n'))

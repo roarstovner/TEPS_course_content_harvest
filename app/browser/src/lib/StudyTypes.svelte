@@ -6,12 +6,15 @@
   // Types without courses in this data are greyed and folded in their group.
   // Below the tree, per ticked type, the institutions with DBH courses of the
   // type that are not harvested (meta.uncovered): those with courses in the
-  // current year first, former ones folded.
+  // current year first, former ones folded. In sharded data (all courses) a
+  // type's courses are loaded when it is ticked: until then it shows the
+  // courses of the whole data (meta) and the size of its shard.
   import { untrack } from 'svelte'
-  import { num, pct } from './format.js'
+  import { mb, num, pct } from './format.js'
   import { local, other, t as tr } from './i18n.js'
 
-  let { types, selected = $bindable(), counts, uncovered } = $props()
+  let { types, selected = $bindable(), counts, uncovered, shards = null, loaded = [] } = $props()
+  const shardOf = $derived(new Map((shards ?? []).map((x) => [x.code, x])))
 
   let text = $state('')
   // open groups: those with a ticked type, else the first
@@ -88,12 +91,16 @@
           <ul>
             {#each g.items as t (t.code)}
               {@const c = counts?.get(t.code)}
+              {@const sh = shardOf.get(t.code)}
               <li>
                 <label class="check" title="{other(t, 'name')} ({t.code})">
                   <input type="checkbox" checked={selected.includes(t.code)} onchange={(e) => toggle([t.code], e.currentTarget.checked)} />
                   <span>{local(t, 'name')}</span>
-                  <small title={tr('st.count', { c: num(c?.courses ?? 0), w: num(c?.withPlan ?? 0), n: num(c?.courseYears ?? 0) })}>{num(c?.courses ?? 0)}<br />{pct(c?.withPlan ?? 0, c?.courseYears ?? 0)}</small
-                  >
+                  {#if sh && !loaded.includes(t.code)}
+                    <small class="unloaded" title={tr('st.unloaded', { c: num(t.courses), mb: mb(sh.bytes) })}>{num(t.courses)}<br />{mb(sh.bytes)}</small>
+                  {:else}
+                    <small title={tr('st.count', { c: num(c?.courses ?? 0), w: num(c?.withPlan ?? 0), n: num(c?.courseYears ?? 0) })}>{num(c?.courses ?? 0)}<br />{pct(c?.withPlan ?? 0, c?.courseYears ?? 0)}</small>
+                  {/if}
                 </label>
               </li>
             {/each}

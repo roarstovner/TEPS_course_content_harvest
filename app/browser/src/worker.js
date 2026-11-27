@@ -4,12 +4,16 @@
 // (search/text.js `FoldedText`). The sections' text is read on first need:
 // a section-based query, the Sections tab or margin of an opened plan, a
 // section download. Searches and word forms run in chunks, so that a newer
-// request supersedes an older one (search/chunks.js).
+// request supersedes an older one (search/chunks.js). Sharded data (the
+// all-courses data, data/shards.js) come a shard at a time: each `load` adds
+// one, its plans not already loaded from another shard, and requests wait
+// for the shards asked for before them.
 //
 // Events (no id): {type: 'progress', file, loaded, total}, {type: 'plans',
-// plans, ms}, {type: 'sectionIndex', has: [[plan key, [section codes]]]},
-// {type: 'sectionsLoading'}, {type: 'sections', ms}, {type: 'error', message}.
-// Requests ({id, type, ...}) are answered with {id, result} or {id, error}.
+// plans, ms} (the plans a shard added), {type: 'sectionIndex', has: [[plan
+// key, [section codes]]]} (of those plans), {type: 'sectionsLoading'},
+// {type: 'sections', ms}, {type: 'error', message}. Requests ({id, type,
+// ...}) are answered with {id, result} or {id, error}.
 
 import { chunked, compileQuery, FoldedText, generations, highlights, kwic, mergeForms, pause, prepareDocs, search, wordForms } from './search/index.js'
 import { fetchCached, parquetInfo, readParquet } from './data/load.js'
@@ -19,10 +23,10 @@ import { sampleIndices } from './data/screening.js'
 const CHUNK = 1000 // plans per chunk of a search
 let docs = []
 const byKey = new Map()
-let plansDone
-const plansReady = new Promise((r) => (plansDone = r))
-let sectionsFile // promise of the bytes of sections.parquet
-let sectionsReady = null // promise, from the first need
+let plansReady = Promise.resolve() // the shards asked for so far
+const shards = [] // {file: promise of the bytes of sections.parquet, keys: its plans, text: promise, done}
+let sectionsWanted = false // the sections' text was needed: a later shard's is read at once
+let sectionsReady = Promise.resolve()
 let sectionsLoaded = false
 const newSearch = generations()
 const newForms = generations()
@@ -61,44 +65,69 @@ async function readWithText(buf, col, wait = pause, slice = 10000) {
   return [rows, texts]
 }
 
-async function load({ base, version }) {
+// add a shard (the data folder itself for unsharded data): its plans
+async function load({ base, version, dir = '' }) {
   const progress = (file) => (loaded, total) => postMessage({ type: 'progress', file, loaded, total })
-  const url = (f) => new URL(f, base).href
+  const url = (f) => new URL(dir + f, base).href
   const buf = await fetchCached(url('plans.parquet'), version, progress('plans'))
   const t = performance.now()
-  const [rows, texts] = await readWithText(buf, 'course_plan')
-  docs = prepareDocs(rows.map((r, i) => ({ id: planKey(r), text: texts[i] })))
-  for (const d of docs) byKey.set(d.id, d)
-  sectionsFile = fetchCached(url('sections.parquet'), version, progress('sections'))
-  plansDone()
+  const [all, texts] = await readWithText(buf, 'course_plan')
+  const rows = []
+  const added = []
+  all.forEach((r, i) => {
+    const id = planKey(r)
+    if (byKey.has(id)) return // loaded with another shard
+    rows.push(r)
+    added.push({ id, text: texts[i] })
+  })
+  const ds = prepareDocs(added)
+  for (const d of ds) byKey.set(d.id, d)
+  docs = docs.concat(ds)
+  const shard = { file: fetchCached(url('sections.parquet'), version, progress('sections')), keys: new Set(ds.map((d) => d.id)), text: null, done: false }
+  shards.push(shard)
   postMessage({ type: 'plans', plans: rows, ms: performance.now() - t })
+  if (sectionsWanted) loadSections()
+  // not awaited: requests wait for the plans only
+  sectionIndex(shard).catch((e) => postMessage({ type: 'error', message: String(e?.message ?? e) }))
+}
 
-  // which sections each plan has (the sections filter), without their text
+// which sections each plan of a shard has (the sections filter), without their text
+async function sectionIndex(shard) {
   const has = new Map()
-  const sbuf = await sectionsFile
+  const sbuf = await shard.file
   for (const r of await readParquet(sbuf, parquetInfo(sbuf).columns.filter((c) => c !== 'text'))) {
     const k = planKey(r)
+    if (!shard.keys.has(k)) continue
     if (!has.has(k)) has.set(k, [])
     has.get(k).push(r.section)
   }
   postMessage({ type: 'sectionIndex', has: [...has] })
 }
 
-/** Read the sections' text into the plans, once (after the plans). */
+/** Read the sections' text into the plans, once per shard (after its plans). */
 function loadSections() {
-  if (sectionsReady) return sectionsReady
-  sectionsReady = (async () => {
-    postMessage({ type: 'sectionsLoading' })
-    const buf = await sectionsFile
-    const t = performance.now()
-    const [rows, texts] = await readWithText(buf, 'text', idle)
-    rows.forEach((r, i) => {
-      const d = byKey.get(planKey(r))
-      if (d && texts[i]?.lc) d.sections[r.section] = texts[i]
-    })
+  sectionsWanted = true
+  const todo = shards.filter((sh) => !sh.text)
+  if (!todo.length) return sectionsReady
+  sectionsLoaded = false
+  postMessage({ type: 'sectionsLoading' })
+  const t = performance.now()
+  for (const sh of todo) {
+    sh.text = (async () => {
+      const [rows, texts] = await readWithText(await sh.file, 'text', idle)
+      rows.forEach((r, i) => {
+        const k = planKey(r)
+        const d = sh.keys.has(k) && byKey.get(k)
+        if (d && texts[i]?.lc) d.sections[r.section] = texts[i]
+      })
+      sh.done = true
+    })()
+  }
+  sectionsReady = Promise.all(shards.map((sh) => sh.text)).then(() => {
+    if (sectionsLoaded || !shards.every((sh) => sh.done)) return
     sectionsLoaded = true
     postMessage({ type: 'sections', ms: performance.now() - t })
-  })()
+  })
   sectionsReady.catch((e) => postMessage({ type: 'error', message: String(e?.message ?? e) }))
   return sectionsReady
 }
@@ -251,7 +280,7 @@ async function downloadRows({ unit, sel, ctx, sectionOrder }) {
 
 self.onmessage = async ({ data }) => {
   if (data.type === 'load') {
-    load(data).catch((e) => postMessage({ type: 'error', message: String(e?.message ?? e) }))
+    plansReady = plansReady.then(() => load(data)).catch((e) => postMessage({ type: 'error', message: String(e?.message ?? e) }))
     return
   }
   try {

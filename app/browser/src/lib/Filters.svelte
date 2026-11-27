@@ -1,13 +1,14 @@
 <script>
-  // Left pane: years, study type, institution, subject, NUS field, level,
-  // credits, language, sections; each count ignores its own filter (model.js
-  // facets).
+  // Left pane: the data set (when the site has both), years, study type,
+  // institution, subject, NUS field, level, credits, language, sections; each
+  // count ignores its own filter (model.js facets).
   import StudyTypes from './StudyTypes.svelte'
   import CheckList from './CheckList.svelte'
   import { filterValues, valueLabel } from '../data/filters.js'
   import { getLang, local, NB_VALUES, other, t } from './i18n.js'
+  import { encodeState } from '../data/url.js'
 
-  let { state = $bindable(), meta, model, facets, sectionsReady } = $props()
+  let { state = $bindable(), meta, model, facets, sectionsReady, datasets = [], loaded = [] } = $props()
 
   // value names in the UI language (filters.js has the English ones)
   const label = (key, v) => (getLang() === 'nb' ? (v === '' ? t('f.notGiven') : (NB_VALUES[key]?.[v] ?? valueLabel(key, v))) : valueLabel(key, v))
@@ -44,6 +45,16 @@
   }
 </script>
 
+{#if datasets.length > 1}
+  <fieldset class="datasets">
+    <legend>{t('f.data')}</legend>
+    <!-- a link, not a toggle: the page loads the other data set afresh, keeping the filters and query -->
+    {#each datasets as d (d)}
+      <a href="?{encodeState({ ...state, data: d, course: null })}" aria-current={d === state.data ? 'true' : undefined} title={t(`f.data_${d}_title`)}>{t(`f.data_${d}`)}</a>
+    {/each}
+  </fieldset>
+{/if}
+
 <fieldset>
   <legend>{t('f.years')}</legend>
   <div class="years">
@@ -57,7 +68,7 @@
   </div>
 </fieldset>
 
-<StudyTypes types={meta.study_types} bind:selected={state.st} counts={facets.st} uncovered={meta.uncovered} />
+<StudyTypes types={meta.study_types} bind:selected={state.st} counts={facets.st} uncovered={meta.uncovered} shards={meta.shards} {loaded} />
 <CheckList title={t('f.inst')} items={institutions} bind:selected={state.inst} counts={facets.inst} open />
 <CheckList title={t('f.subj')} items={subjects} bind:selected={state.subj} counts={facets.subj} />
 <CheckList title={t('f.nus')} items={nus} bind:selected={state.nus} counts={facets.nus} />

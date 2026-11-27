@@ -13,7 +13,8 @@ export function startWorker(onEvent) {
   }
   w.onerror = (e) => onEvent({ type: 'error', message: e.message || 'worker failed' })
   return {
-    load: (base, version) => w.postMessage({ type: 'load', base, version }),
+    // a shard of the data (data/shards.js): its folder, '' for the data folder itself
+    load: (base, version, dir = '') => w.postMessage({ type: 'load', base, version, dir }),
     call: (type, args) =>
       new Promise((resolve, reject) => {
         const id = next++

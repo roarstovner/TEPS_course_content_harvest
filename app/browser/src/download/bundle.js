@@ -144,14 +144,15 @@ without .txt) with its attributes.
 /**
  * The manifest of a download.
  * @param {object} ctx {q, scope, n, excl, filters: {inst, y0, y1, st, subj, lvl, cr, lang, sec}, url,
- *   meta: {version, frame, built_at}, date}
+ *   meta: {version, frame, built_at, shards}, date}; `shards`, in sharded data, the study types loaded
+ *   (the selection is of their courses)
  */
 export function manifest(ctx, unit, format, counts, files) {
   const m = ctx.meta
   return {
     title: 'Course plan browser download',
     created_at: ctx.date.toISOString(),
-    data: { version: m.version, frame: m.frame, built_at: m.built_at },
+    data: { version: m.version, frame: m.frame, built_at: m.built_at, ...(m.shards ? { shards_loaded: m.shards } : {}) },
     unit,
     unit_label: UNITS[unit],
     format,

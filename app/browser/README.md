@@ -7,16 +7,19 @@ Shiny app and an Observable page (retired 2026-11-20).
 
 For users: the [user guide](GUIDE.md), also the app's Help view. This README is the developer spec.
 
-Status: under construction. The first version covers the teacher-education
-frame; the full harvest (all courses, filtered by study type) follows. The
-page is not published until the terms of use of the plan text are settled.
+Status: under construction. It holds two data sets: the teacher-education
+frame (the default, `data/`) and all courses (`data/all/`, `?data=all`),
+loaded a study type at a time (Data Contract, "Shards"). The page is not
+published until the terms of use of the plan text are settled.
 
 ## Build and run
 
 ```sh
-# data: targets::tar_make() rebuilds it (target browser_data_files); by hand,
-# from the repository root (R, reads data/processed/, data/interim/ and data/input/):
+# data: targets::tar_make() rebuilds it (targets browser_data_files, the
+# teacher-ed frame, and browser_all_files, all courses in public/data/all/); by
+# hand, from the repository root (R, reads data/processed/, data/interim/ and data/input/):
 Rscript -e 'for (f in c("utils", "fetch_html_cols", "extract_fulltext", "institution_config", "pipeline", "anonymize", "deduplicate_plans", "browser_data")) source(file.path("R", paste0(f, ".R"))); build_browser_data("teacher_ed")'
+# all courses: build_browser_data("all", out_dir = "app/browser/public/data/all", shards = TRUE)
 # app:
 cd app/browser
 npm ci
@@ -72,6 +75,25 @@ Node 22.12 or later (vitest needs it; `.nvmrc` names the version CI uses).
   number of courses, the former ones folded, with their courses of all
   years and their last year. Not per selected year range: the note says
   what the data cannot hold, not what the filter shows.
+- **All courses in shards by study type** (2026-11-27, so that every
+  profession and discipline can be read and downloaded like the teacher-ed
+  frame). The all frame (97,878 courses, 225,294 plan versions, 950 million
+  characters of plan text) is too large to load at once, so it is a second
+  data set in `data/all/`, split by DBH study type: nothing is loaded at
+  first, and ticking a study type loads its shard (Data Contract, "Shards").
+  A second data set, not a mode of one: the teacher-ed data stay as they
+  were, and the app treats unsharded data as one shard loaded at start, so
+  one code path serves both. A course goes whole into the shard of each of
+  its study types (rather than each plan once, in one shard, with the others
+  pointing to it): a shard is complete on its own, so loading is a fetch and
+  a merge that keeps the first copy of a course. The copies are few: 2,977
+  courses have more than one study type, and the shards hold 239,027 plan
+  versions for the 225,294 (6% more text). Shards per study type rather
+  than per group: the large generic types (HUMAN, REALFAG, SAMVIT,
+  TEKNOLOGI) are already 80-130 million characters each, a group of them
+  would be too much at once. With no type ticked the list is empty and asks
+  for one; a type not loaded shows its courses in the whole data and the
+  size of its shard.
 - **Search is loose by default and exact on request** (below), and every
   term shows the word forms it matched, so a query can be checked and
   reported.
@@ -102,7 +124,8 @@ Node 22.12 or later (vitest needs it; `.nvmrc` names the version CI uses).
 
 ## Data Contract
 
-`build_browser_data(frame)` (`R/browser_data.R`) writes `public/data/`. All
+`build_browser_data(frame)` (`R/browser_data.R`) writes `public/data/` (the
+teacher-ed frame) or, sharded, `public/data/all/` (the all frame). All
 Parquet files are zstd-compressed (level 19). Text files are sorted by
 institution, course code and first year, so that consecutive versions of a
 course sit next to each other and compress to a fraction (the teacher-ed
@@ -119,7 +142,7 @@ it, and `browser_tables()` makes it from the three columns.
 
 | File | One row per | Columns |
 |---|---|---|
-| `meta.json` | | `version` (the data version, used as cache key: frame and time of `course_plans.RDS`), `built_at`, `frame`, counts, institutions (code, latest name, `plan_year_basis`), study types (every row of `data/study_types.csv`: `code`, `name_no`, `name_en`, `group`, `group_label_en`, `group_label_no`, `te_frame`, plus `courses`, the courses with a course-year of the type, 0 when not in this data; a type of the data missing from the CSV is added with DBH's name (`study_type_name`) in group `other`), uncovered (`year`, DBH's last year, and `by_type`, one row per study type and institution code not harvested with a DBH course of the type: `study_type`, `institution_code`, `institution_name` (latest), `courses` (all years), `courses_current` (courses in `year`), `year_last`; from tables 208 and 347 of the DBH snapshot, `uncovered_study_types()`), nus_fields (the NUS subject groups without the level, from the latest `data/input/nus_{date}.parquet`, `nus_fields()`: `code`, digits 2-3 of a `nus_code`, `name_no`, `name_en`, `field`, digit 2, `field_name_no`, `field_name_en`), sections (`code` as in `sections.parquet`, `query` its name in the query syntax, `label_no`, `label_en`) |
+| `meta.json` | | `version` (the data version, used as cache key: frame and time of `course_plans.RDS`), `built_at`, `frame`, counts, institutions (code, latest name, `plan_year_basis`), study types (every row of `data/study_types.csv`: `code`, `name_no`, `name_en`, `group`, `group_label_en`, `group_label_no`, `te_frame`, plus `courses`, the courses with a course-year of the type, 0 when not in this data; a type of the data missing from the CSV is added with DBH's name (`study_type_name`) in group `other`), shards (sharded data only, below: `code`, `dir`, `courses`, `plans`, `bytes`), uncovered (`year`, DBH's last year, and `by_type`, one row per study type and institution code not harvested with a DBH course of the type: `study_type`, `institution_code`, `institution_name` (latest), `courses` (all years), `courses_current` (courses in `year`), `year_last`; from tables 208 and 347 of the DBH snapshot, `uncovered_study_types()`), nus_fields (the NUS subject groups without the level, from the latest `data/input/nus_{date}.parquet`, `nus_fields()`: `code`, digits 2-3 of a `nus_code`, `name_no`, `name_en`, `field`, digit 2, `field_name_no`, `field_name_en`), sections (`code` as in `sections.parquet`, `query` its name in the query syntax, `label_no`, `label_en`) |
 | `courses.parquet` | course | `institution`, `course_code`, `course_name`, `level_code`, `credits`, `language_code`, `subject_code`, `subject_name`, `nus_code`, `department_name` (from the latest offering), `year_first`, `year_last` |
 | `course_years.parquet` | course-year x programme x plan | `institution`, `course_code`, `year`, `programme_code`, `study_type`, `plan_id`, `plan_content_id` (both NA without a plan), `had_students` (any offering of the course-year), `no_plan_reason` (`reason` of `data/interim/plan_gaps.RDS`; NA with a plan) |
 | `programmes.parquet` | programme | `institution`, `programme_code`, `programme_name`, `study_type` |
@@ -134,6 +157,32 @@ is the programme's study type that year, `study_type_code` of
 where a programme changes type within the year, the type of most of the
 course's offerings).
 
+### Shards
+
+The all frame is split by study type (`write_browser_data(shards = TRUE)`,
+`browser_shards()`). `public/data/all/` holds `meta.json` and a folder per
+study type, `st/{code}/` (lower case, `ÆØÅ` as `AOA`, other characters as
+`_`), with the five Parquet files above. A course goes whole (every
+course-year, programme, plan and section) into the shard of every study type
+it has a course-year of, so a shard needs no other; the page and the worker
+keep the first copy of a course or plan they have loaded (`src/data/shards.js`
+`mergeShard()`). Course-years whose programme has no study type get the type
+`unknown` (added to `study_types`, group `other`), so every course is in a
+shard. `meta.shards` lists them in the order of the study type tree: `code`,
+`dir`, `courses`, `plans` (rows of the shard's files) and `bytes` (their
+size). Everything else in `meta.json` is of the whole frame: the counts, and
+the `courses` of each study type, which the tree shows for the types not
+loaded. Data without `shards` are one shard, in the data folder itself.
+
+Sizes in the all frame (2026-11-27, from `extracted_text_nchar`: about
+0.11 MB of Parquet per million characters, as in the teacher-ed files): 64
+shards, about 113 MB in all; the largest HUMAN (7,610 courses, 32,420 plan
+versions, about 14 MB), REALFAG, SAMVIT and TEKNOLOGI (about 9-10 MB each),
+half of them under 3 MB. The worker holds a shard's text as the teacher-ed
+frame's (150 MB of heap for 100 million characters of plans; HUMAN has 126).
+
+### Loading
+
 The page loads `meta.json`, `courses`, `course_years` and `programmes` first
 (well under 1 MB for the teacher-ed frame), shows the list, and loads the
 plan text in a Web Worker in the background. Of `sections.parquet` the
@@ -141,7 +190,13 @@ worker reads at first only which sections each plan has (the sections
 filter); their text is read on first need: a query with a section prefix or the *in* control,
 the section scope of AND, the Sections tab or margin of an opened plan, a
 section download ("loading sections…" meanwhile). The files are cached in the
-browser under `meta.version`, so a second visit starts from the cache.
+browser under `meta.version`, so a second visit starts from the cache. In
+sharded data the page loads `meta.json` only, and then, for each study type
+ticked, the shard's `courses`, `course_years` and `programmes` (merged with
+those loaded, and the model rebuilt) while the worker reads its plans (and
+its sections' text at once when the sections were needed before). A shard
+stays loaded when its type is unticked; with no type ticked the filters
+show every course loaded.
 
 ## Query Syntax
 
@@ -228,7 +283,10 @@ such as "lese- og skrivevansker".
   share is of the course-years with a plan in the last year of the filter).
   The years run by default from the first year with a plan in the data (2007
   in the teacher-ed data) to the last; earlier DBH years can be selected.
-- **Left:** filters, each a collapsible section: years, study type tree,
+- **Left:** filters, each a collapsible section: the data set (links to
+  *Teacher education* and *All courses*, `data=all` in the URL, shown when
+  the site has both: the page checks for the other `meta.json`; a link
+  reloads the page and keeps the filters and query), years, study type tree,
   institution, subject (DBH `subject_name`, its subject codes `subject_code`
   on hover; DBH's codes are per institution, so a name can have several),
   NUS field (the course's `nus_code` by its subject group, digits 2-3, under
@@ -241,7 +299,9 @@ such as "lese- og skrivevansker".
   tri-state checkbox per group, English names (Norwegian on hover), per type
   the courses and the coverage of its course-years, and the presets "Teacher
   education (TE frame)" and "Clear"; types without courses in this data are
-  greyed and folded in their group (the all-courses data adds them). Below
+  greyed and folded in their group (the all-courses data adds them). In
+  sharded data a type not loaded shows, in italics, its courses in the whole
+  data and the size of its shard. Below
   the tree, with types ticked, the institutions not harvested that have
   courses of them (Decisions, "Say which institutions a study type leaves
   out").
@@ -352,7 +412,7 @@ such as "lese- og skrivevansker".
   one ZIP named after the data version, unit and time
   (`course-plans_{version}_{unit}_{UTC time}.zip`), so that a table never
   travels without: `manifest.json` (query, scope, excluded forms, filters, data
-  version, time, counts, the link to the view), `variables.csv` (the
+  version, the study types loaded in sharded data (`shards_loaded`), time, counts, the link to the view), `variables.csv` (the
   exported columns, described from `data/variables.csv` or, for the
   browser's own columns, in `src/download/bundle.js`), `keys.csv` (the plan
   versions: `plan_id` and its parts), `course_year_keys.csv` (for the course
@@ -436,6 +496,8 @@ maps, folded strings and quoting that a small parser would get wrong.
 - `src/data/`: everything but the view, with tests (`*.test.js`).
   - `keys.js`: the identity of a course and of a plan version (`planKey()`;
     the only place that knows how a version is identified).
+  - `shards.js`: the data sets and their shards (which to load for the
+    ticked study types, merging a shard's tables into those loaded).
   - `load.js`: fetching the files through the Cache API (keyed on
     `meta.version`, the app works without it) and reading Parquet.
   - `model.js`: courses with their course-years and versions; the filtered,
@@ -446,7 +508,7 @@ maps, folded strings and quoting that a small parser would get wrong.
     course-years and of sections (`sectionCoverage()`).
   - `filters.js`: the course filters (institution, subject, NUS subject
     group, level, credits, language), their values and readable names.
-  - `url.js`: the state in the URL (query, scope, section searched, excluded forms, filters,
+  - `url.js`: the state in the URL (data set, query, scope, section searched, excluded forms, filters,
     course, version, tab, compared version, view, trend lines, coverage
     columns, screening
     sample size and seed, the plans or year compared, the term list and
@@ -462,7 +524,8 @@ maps, folded strings and quoting that a small parser would get wrong.
   - `screening.js`: the seeded sample, the identity and storage of a hit's
     tags, and the screening CSV.
   - `client.js`: the page's side of the worker (requests as promises).
-- `src/worker.js`: fetches and holds the plan and section text and runs the
+- `src/worker.js`: fetches and holds the plan and section text (a shard at
+  a time: each `load` adds a shard's plans not yet loaded) and runs the
   search engine; the page gets the plans' metadata, the matches, the word
   forms, keyword-in-context lines and the text of the plan it shows. The text
   stays in the worker, each text once as a `FoldedText`, folded while the

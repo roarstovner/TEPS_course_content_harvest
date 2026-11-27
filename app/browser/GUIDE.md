@@ -28,6 +28,12 @@ counts in the data the browser holds. The precise rules are in the
   type tree names, per type, those with courses in the current year (for
   example Høyskolen Kristiania for law) and, folded, former institutions
   whose courses DBH lists under a code of their own.
+- **Two data sets.** *Teacher education* (the default) is the
+  teacher-education frame, loaded at once. *All courses* (the links at the
+  top of the filters, where the site has both) holds every harvested
+  course, too much to load at once: tick a study type and its courses and
+  plans are loaded (the size is beside each type until then). Searches,
+  views and downloads cover the study types loaded.
 - More: [what the data files hold](../../docs/data-files.md),
   [per-institution notes](../../data/data_notes.md), and the
   [methods notes](../../methods.md).

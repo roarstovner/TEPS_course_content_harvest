@@ -156,15 +156,21 @@ list(
              frozen_changes(RAW_MANIFEST, te_offerings_file, te_course_plans_file, te_sections_file),
              cue = tar_cue(mode = "always")),
 
-  # The browser's data (teacher-ed frame, app/browser/README.md "Data
-  # Contract"), the methods notes (teacher-ed frame, the release's) and the
+  # The browser's data (app/browser/README.md "Data Contract"): the teacher-ed
+  # frame, and the all frame split by study type in data/all/ (loaded per
+  # study type); the methods notes (teacher-ed frame, the release's) and the
   # data notes (all offerings)
   tar_target(browser_data_files, {
     # the files build_browser_data() reads, named so that a change reruns it
-    c(te_course_plans_file, te_sections_file, te_offerings_file, te_offerings_full_file, gaps_file,
-      programmes_file)
+    c(te_course_plans_file, te_sections_file, te_offerings_file, gaps_file, programmes_file)
     build_browser_data("teacher_ed", types_file = study_types_file, dbh_date = dbh_snapshot_date(dbh_file),
                        covered = institutions, nus_file = nus_file)
+  }, format = "file"),
+  tar_target(browser_all_files, {
+    c(course_plans_file, sections_file, offerings_file, gaps_file, programmes_file)
+    build_browser_data("all", out_dir = "app/browser/public/data/all", types_file = study_types_file,
+                       dbh_date = dbh_snapshot_date(dbh_file), covered = institutions, nus_file = nus_file,
+                       shards = TRUE)
   }, format = "file"),
   tar_target(methods_qmd, "methods.qmd", format = "file"),
   tar_target(methods_file,

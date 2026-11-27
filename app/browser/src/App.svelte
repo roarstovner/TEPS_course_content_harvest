@@ -6,6 +6,7 @@
   import { fetchCached, fetchMeta, readParquet } from './data/load.js'
   import { startWorker } from './data/client.js'
   import { addPlans, buildModel, filterView, pickVersion } from './data/model.js'
+  import { DATASETS, mergeShard, shardsFor } from './data/shards.js'
   import { applyExample, decodeState, encodeState } from './data/url.js'
   import { versionId } from './data/keys.js'
   import Header from './lib/Header.svelte'
@@ -24,12 +25,15 @@
   import { planRef } from './data/compare.js'
   import { trend } from './data/trend.js'
 
-  const base = new URL('data/', document.baseURI).href
-
   let s = $state(decodeState(location.search))
+  // the data set: the teacher-ed frame, or all courses (sharded, data/shards.js)
+  const base = new URL(DATASETS[untrack(() => s.data)], document.baseURI).href
+  let datasets = $state([untrack(() => s.data)]) // those this site has
   let meta = $state.raw(null)
   let baseModel = $state.raw(null)
   let plansMeta = $state.raw(null)
+  let plansPending = $state(0) // shards whose plans the worker is reading
+  let loaded = $state.raw([]) // codes of the shards loaded (sharded data)
   let sectionsLoaded = $state(false)
   let sectionsLoading = $state(false) // the worker reads the sections' text (on first need)
   let planSections = $state.raw(null) // plan key -> Set of its sections
@@ -56,32 +60,67 @@
   }
 
   onMount(async () => {
+    // the other data set, when this site has it (a link in the filters)
+    const other = s.data === 'te' ? 'all' : 'te'
+    fetch(new URL(`${DATASETS[other]}meta.json`, document.baseURI), { method: 'HEAD', cache: 'no-cache' }).then(
+      (r) => r.ok && r.headers.get('content-type')?.includes('json') && (datasets = ['te', 'all']),
+      () => {},
+    )
     try {
       meta = await fetchMeta(base)
       worker = startWorker(onEvent)
-      worker.load(base, meta.version)
-      const get = (f) =>
-        fetchCached(new URL(`${f}.parquet`, base).href, meta.version, (loaded, total) => (progress[f] = { loaded, total })).then(
-          (buf) => readParquet(buf),
-        )
-      const [courses, courseYears, programmes] = await Promise.all(['courses', 'course_years', 'programmes'].map(get))
-      baseModel = { ...buildModel({ courses, courseYears }), programmes }
+      if (meta.shards) {
+        // nothing loaded until a study type is ticked
+        baseModel = { ...buildModel({ courses: [], courseYears: [], year: meta.uncovered?.year }), programmes: [] }
+        plansMeta = []
+      }
     } catch (e) {
       error = String(e?.message ?? e)
     }
   })
 
+  // the shards of the ticked study types (all of unsharded data), each once:
+  // the worker reads its plans, the page its courses, merged with those loaded
+  let tables = { courses: [], courseYears: [], programmes: [] }
+  let queue = Promise.resolve()
+  $effect(() => {
+    if (!meta || !worker) return
+    const want = shardsFor(meta, s.st)
+    untrack(() => {
+      for (const sh of want.filter((x) => !loaded.includes(x.code))) {
+        loaded = [...loaded, sh.code]
+        plansPending++
+        worker.load(base, meta.version, sh.dir)
+        const get = (f) =>
+          fetchCached(new URL(`${sh.dir}${f}.parquet`, base).href, meta.version, (l, total) => (progress[f] = { loaded: l, total })).then((buf) =>
+            readParquet(buf),
+          )
+        queue = queue
+          .then(async () => {
+            const [courses, courseYears, programmes] = await Promise.all(['courses', 'course_years', 'programmes'].map(get))
+            tables = mergeShard(tables, { courses, courseYears, programmes })
+            baseModel = { ...buildModel({ ...tables, year: meta.uncovered?.year }), programmes: tables.programmes }
+          })
+          .catch((e) => (error = String(e?.message ?? e)))
+      }
+    })
+  })
+
   function onEvent(e) {
     if (e.type === 'progress') progress[e.file] = { loaded: e.loaded, total: e.total }
-    else if (e.type === 'plans') plansMeta = e.plans
-    else if (e.type === 'sectionIndex') planSections = new Map(e.has.map(([k, codes]) => [k, new Set(codes)]))
-    else if (e.type === 'sectionsLoading') sectionsLoading = true
+    else if (e.type === 'plans') {
+      plansMeta = plansMeta ? plansMeta.concat(e.plans) : e.plans
+      plansPending = Math.max(0, plansPending - 1)
+    } else if (e.type === 'sectionIndex') planSections = new Map([...(planSections ?? []), ...e.has.map(([k, codes]) => [k, new Set(codes)])])
+    else if (e.type === 'sectionsLoading') [sectionsLoading, sectionsLoaded] = [true, false]
     else if (e.type === 'sections') sectionsLoaded = true
     else if (e.type === 'error') error = e.message
   }
 
   // versions are attached once the worker has sent the plans' metadata
   const model = $derived(baseModel && plansMeta ? addPlans(baseModel, plansMeta) : baseModel)
+  // the plans of every shard asked for are in the worker
+  const plansReady = $derived(!!plansMeta && !plansPending)
 
   // the query as run: in the section of the header's control, when one is
   // chosen (a term's own prefix wins; search/parse.js `inSection`)
@@ -100,7 +139,7 @@
     const { scope, n } = s
     const q = query
     const ex = excl
-    const on = queryOn && !!plansMeta
+    const on = queryOn && plansReady
     clearTimeout(timer)
     if (!queryOn) {
       worker?.call('cancel') // stop a running search
@@ -132,7 +171,7 @@
   // the word forms of the terms over the plans in the filters (asked after
   // the search, so that the results show first; again when the filters change)
   const formKeys = $derived(
-    model && plansMeta && queryOn ? filterView(model, s, null, planSections).rows.flatMap((r) => r.versions.map((v) => v.key)) : null,
+    model && plansReady && queryOn ? filterView(model, s, null, planSections).rows.flatMap((r) => r.versions.map((v) => v.key)) : null,
   )
   let formsFor = null // {q, keys} of the forms in `result`
   let formsId = 0
@@ -297,9 +336,9 @@
     counts={view?.counts}
     {latest}
     {queryOn}
-    waiting={queryOn && !plansMeta}
+    waiting={queryOn && !plansReady}
     {progress}
-    plansReady={!!plansMeta}
+    {plansReady}
     {sectionsLoaded}
     {sectionsLoading}
     sections={meta?.sections ?? []}
@@ -307,16 +346,16 @@
     onhelp={toggleHelp}
     onkeys={() => (keysOpen = true)}
     onlang={switchLang}
-    ondownload={model && plansMeta && !searching && (!queryOn || result) ? () => (downloadOpen = true) : null}
+    ondownload={model && plansReady && !searching && (!queryOn || result) ? () => (downloadOpen = true) : null}
   />
-  {#if downloadOpen && model && plansMeta}
-    <Download bind:open={downloadOpen} {model} {view} {s} {query} {excl} {matches} {meta} {worker} />
+  {#if downloadOpen && model && plansReady}
+    <Download bind:open={downloadOpen} {model} {view} {s} {query} {excl} {matches} {meta} shards={meta.shards ? loaded : null} {worker} />
   {/if}
   {#if keysOpen}
     <Shortcuts bind:open={keysOpen} onguide={() => s.view !== 'help' && toggleHelp()} />
   {/if}
   {#if model}
-    <aside class="filters" aria-label={t('f.label')}><Filters bind:state={s} {meta} {model} facets={view.facets} sectionsReady={!!planSections} /></aside>
+    <aside class="filters" aria-label={t('f.label')}><Filters bind:state={s} {meta} {model} facets={view.facets} sectionsReady={!!planSections} {datasets} {loaded} /></aside>
     <main class="results" id="results" tabindex="-1" bind:this={resultsPane}>
       <nav class="viewtabs" aria-label={t('app.views')}>
         {#each ['list', 'trend', 'coverage', 'screen', 'compare', 'terms'] as v (v)}
@@ -334,7 +373,7 @@
       {:else if s.view === 'compare'}
         <Compare {model} {view} bind:s {y0} {y1} {meta} {worker} q={queryOn ? (result?.q ?? '') : ''} excl={result?.excl} onopen={openPlan} />
       {:else if s.view === 'terms'}
-        <TermLists {model} bind:s {meta} {worker} plansReady={!!plansMeta} onpick={pickTerm} />
+        <TermLists {model} bind:s {meta} {worker} {plansReady} onpick={pickTerm} />
       {:else}
         <Results
           rows={view.rows}
@@ -348,7 +387,8 @@
           excl={result?.excl}
           onopen={open}
         />
-        {#if !selected}<p class="hint">{t('app.hint')}</p>{/if}
+        {#if meta.shards && !loaded.length}<p class="hint">{t('app.pickTypes')}</p>
+        {:else if !selected}<p class="hint">{t('app.hint')}</p>{/if}
       {/if}
     </main>
     {#if showCourse}
@@ -360,7 +400,7 @@
           {worker}
           q={queryOn ? (result?.q ?? '') : ''}
           excl={result?.excl}
-          plansReady={!!plansMeta}
+          {plansReady}
           {sectionsLoaded}
           sectionsMeta={meta.sections}
           {model}

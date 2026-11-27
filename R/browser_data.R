@@ -24,10 +24,11 @@ BROWSER_SECTIONS <- tibble::tribble(
 #' Write the data files of the course plan browser
 #'
 #' Reads a frame's `course_plans.RDS`, `plan_sections.RDS` and
-#' `course_offerings.RDS` (data/processed/), the `url` and `harvested_at` of
-#' each plan's source offering from the frame's `course_offerings_full.RDS`
-#' (data/interim/; no other column, so neither `html` nor `extracted_text`
-#' gets in), the study type tree of `types_file` and the reasons of
+#' `course_offerings.RDS` (data/processed/; the offerings give the `url` and
+#' `harvested_at` of each plan's source offering, the same as those of
+#' data/interim/'s `course_offerings_full.RDS`, which the build read before
+#' 2026-11-27 and which is too large for the all frame), the study type tree of
+#' `types_file` and the reasons of
 #' data/interim/plan_gaps.RDS and the courses of each study type at the
 #' institutions not harvested (DBH tables 208 and 347, uncovered_study_types()),
 #' the NUS fields and subject groups of `nus_file` (nus_fields()), and writes
@@ -40,11 +41,14 @@ BROWSER_SECTIONS <- tibble::tribble(
 #'   the latest
 #' @param covered The institutions harvested (harvested_institutions())
 #' @param nus_file The NUS snapshot (nus_snapshot_file())
+#' @param shards TRUE to split the data by study type (browser_shards(); the
+#'   all frame, too large to load at once)
 #' @return The paths written, invisibly. Stops before writing anything when a
 #'   text column holds personal data (the patterns of target privacy_check).
 build_browser_data <- function(frame = "teacher_ed", out_dir = "app/browser/public/data",
                                types_file = "data/study_types.csv", dbh_date = NULL,
-                               covered = harvested_institutions(), nus_file = nus_snapshot_file()) {
+                               covered = harvested_institutions(), nus_file = nus_snapshot_file(),
+                               shards = FALSE) {
   stopifnot(frame %in% FRAMES)
   types <- utils::read.csv(types_file, encoding = "UTF-8")
   dbh_date <- dbh_date %||% dbh_snapshot_date(dbh_snapshot_file("courses"))
@@ -56,18 +60,17 @@ build_browser_data <- function(frame = "teacher_ed", out_dir = "app/browser/publ
   rm(programmes)
   processed <- frame_dir(frame)
   plans_file <- file.path(processed, "course_plans.RDS")
-  full <- readRDS(file.path(frame_dir(frame, "interim"), "course_offerings_full.RDS"))
-  sources <- full[c("course_id", "url", "harvested_at")]
-  rm(full)
+  offerings <- readRDS(file.path(processed, "course_offerings.RDS"))
   plans <- readRDS(plans_file)
   plans$course_plan_normalized <- NULL
   tables <- browser_tables(
     plans = plans, sections = readRDS(file.path(processed, "plan_sections.RDS")),
-    offerings = readRDS(file.path(processed, "course_offerings.RDS")), sources = sources,
+    offerings = offerings, sources = offerings[c("course_id", "url", "harvested_at")],
     types = types, gaps = readRDS(file.path(frame_dir("all", "interim"), "plan_gaps.RDS")),
     version = paste(frame, "processed", format(file.mtime(plans_file), "%Y-%m-%dT%H:%M")),
     frame = frame, uncovered = uncovered, nus = nus_fields(arrow::read_parquet(nus_file)))
-  write_browser_data(tables, out_dir)
+  rm(plans, offerings)
+  write_browser_data(tables, out_dir, shards = shards)
 }
 
 #' Courses of each study type at the institutions not harvested
@@ -245,16 +248,72 @@ browser_tables <- function(plans, sections, offerings, sources, types, gaps, ver
        plans = plan_table, sections = section_table, meta = meta)
 }
 
+# The study type of course-years whose programme has none (the sharded data
+# give them a shard of their own, so that every course can be loaded)
+UNKNOWN_STUDY_TYPE <- "unknown"
+
+#' Split browser_tables() by study type
+#'
+#' The all frame is too large to load at once, so the browser loads it per
+#' study type (app/browser/README.md "Data Contract", "Shards"). A course goes
+#' whole (all its course-years, programmes, plans and sections) into the shard
+#' of every study type it has a course-year of, so a shard needs no other and
+#' the browser keeps the first copy of a course it has loaded. Course-years
+#' without a study type get UNKNOWN_STUDY_TYPE, added to `meta$study_types`.
+#' Courses of several types are few (2,977 of 97,878 in the all frame,
+#' 2026-11-27), so the copies add 6% to the plans.
+#'
+#' @param tables browser_tables()
+#' @return List of `meta` (with `shards`: `code`, `dir`, the folder of the
+#'   shard's files, `courses` and `plans`) and `shards`, a list (one per row
+#'   of `meta$shards`) of the tables `courses`, `course_years`, `programmes`,
+#'   `plans` and `sections`
+browser_shards <- function(tables) {
+  unknown <- function(x) replace(x, is.na(x), UNKNOWN_STUDY_TYPE)
+  cy <- tables$course_years
+  cy$study_type <- unknown(cy$study_type)
+  programmes <- tables$programmes
+  programmes$study_type <- unknown(programmes$study_type)
+  meta <- tables$meta
+  if (UNKNOWN_STUDY_TYPE %in% cy$study_type && !UNKNOWN_STUDY_TYPE %in% meta$study_types$code) {
+    meta$study_types <- dplyr::bind_rows(meta$study_types, tibble::tibble(
+      code = UNKNOWN_STUDY_TYPE, name_no = "Uten studiumkode", name_en = "No study type", group = "other",
+      group_label_en = "Other", group_label_no = "Annet", te_frame = FALSE,
+      courses = nrow(dplyr::distinct(cy[cy$study_type == UNKNOWN_STUDY_TYPE, ], institution, course_code))))
+  }
+  key <- function(x) paste(x$institution, x$course_code, sep = "|")
+  keys <- list(courses = key(tables$courses), course_years = key(cy), plans = key(tables$plans),
+               sections = key(tables$sections))
+  codes <- intersect(meta$study_types$code, cy$study_type)   # in the tree's order
+  dirs <- paste0("st/", gsub("[^a-z0-9-]", "_", tolower(chartr("ÆØÅæøå", "AOAaoa", codes))))
+  stopifnot(!anyDuplicated(dirs))
+  shards <- lapply(codes, function(code) {
+    k <- unique(keys$course_years[cy$study_type == code])
+    rows <- cy[keys$course_years %in% k, ]
+    list(courses = tables$courses[keys$courses %in% k, ], course_years = rows,
+         programmes = programmes[paste(programmes$institution, programmes$programme_code) %in%
+                                   paste(rows$institution, rows$programme_code), ],
+         plans = tables$plans[keys$plans %in% k, ], sections = tables$sections[keys$sections %in% k, ])
+  })
+  meta$shards <- tibble::tibble(code = codes, dir = dirs,
+                                courses = vapply(shards, function(s) nrow(s$courses), integer(1)),
+                                plans = vapply(shards, function(s) nrow(s$plans), integer(1)))
+  list(meta = meta, shards = shards)
+}
+
 #' Write browser_tables() to `out_dir`
 #'
 #' Scans every character column of every table with the patterns of target
 #' privacy_check (personal_data_in_frame()) and stops on a hit, before
-#' writing. Parquet files are zstd-compressed (level 19).
+#' writing. Parquet files are zstd-compressed (level 19). Sharded, the tables
+#' of each shard go to its folder (`meta$shards$dir`, under `st/`, replaced
+#' whole) and `meta$shards$bytes` holds the size of its files.
 #'
 #' @param tables browser_tables()
 #' @param out_dir Folder to write to
+#' @param shards TRUE to split the tables by study type (browser_shards())
 #' @return The paths written, invisibly
-write_browser_data <- function(tables, out_dir) {
+write_browser_data <- function(tables, out_dir, shards = FALSE) {
   parquet <- setdiff(names(tables), "meta")
   found <- dplyr::bind_rows(lapply(parquet, function(n) personal_data_in_frame(tables[[n]], n)))
   if (nrow(found) > 0) {
@@ -262,13 +321,29 @@ write_browser_data <- function(tables, out_dir) {
          paste(sprintf("%s$%s (%s, %d rows)", found$file, found$column, found$pattern, found$n),
                collapse = "; "), call. = FALSE)
   }
-  dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
-  paths <- file.path(out_dir, paste0(parquet, ".parquet"))
-  for (i in seq_along(parquet)) {
-    # level 19: the teacher-ed plans 5.6 MB, 7.8 MB at the default level 3 (2026-11-19)
-    arrow::write_parquet(tables[[parquet[i]]], paths[i], compression = "zstd", compression_level = 19)
+  write_tables <- function(x, dir) {
+    dir.create(dir, recursive = TRUE, showWarnings = FALSE)
+    paths <- file.path(dir, paste0(parquet, ".parquet"))
+    for (i in seq_along(parquet)) {
+      # level 19: the teacher-ed plans 5.6 MB, 7.8 MB at the default level 3 (2026-11-19)
+      arrow::write_parquet(x[[parquet[i]]], paths[i], compression = "zstd", compression_level = 19)
+    }
+    paths
+  }
+  meta <- tables$meta
+  if (shards) {
+    split <- browser_shards(tables)
+    rm(tables)
+    meta <- split$meta
+    unlink(file.path(out_dir, "st"), recursive = TRUE)
+    files <- lapply(seq_along(split$shards),
+                    function(i) write_tables(split$shards[[i]], file.path(out_dir, meta$shards$dir[i])))
+    meta$shards$bytes <- vapply(files, function(f) sum(file.size(f)), numeric(1))
+    paths <- unlist(files)
+  } else {
+    paths <- write_tables(tables, out_dir)
   }
   meta_path <- file.path(out_dir, "meta.json")
-  jsonlite::write_json(tables$meta, meta_path, auto_unbox = TRUE, pretty = TRUE, na = "null")
+  jsonlite::write_json(meta, meta_path, auto_unbox = TRUE, pretty = TRUE, na = "null")
   invisible(c(meta_path, paths))
 }

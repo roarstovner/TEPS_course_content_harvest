@@ -183,6 +183,10 @@ describe('bundle', () => {
     expect(m.query.n).toBeUndefined()
     expect(m.filters).toEqual({ institutions: ['uio'], years: [2020, 2022], study_types: [], subjects: [], nus_groups: [], levels: [], credits: [], languages: [], sections: [] })
     expect(m.data.version).toBe(ctx.meta.version)
+    expect(m.data.shards_loaded).toBeUndefined()
+    // sharded data: the study types loaded
+    const ms = manifest({ ...ctx, meta: { ...ctx.meta, shards: ['GLU1-7', 'SYK'] } }, 'plan', 'csv', { rows: 2 }, [])
+    expect(ms.data.shards_loaded).toEqual(['GLU1-7', 'SYK'])
   })
   it('zips the table with its manifest, variables, keys and rebuild code', async () => {
     const sel = selOf()

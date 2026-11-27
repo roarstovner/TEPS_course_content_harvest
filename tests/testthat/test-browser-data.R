@@ -175,3 +175,46 @@ test_that("write_browser_data() writes no raw text and stops on personal data", 
   expect_error(write_browser_data(tb, out2), "personal data.*plans\\$course_plan \\(email")
   expect_false(dir.exists(out2))
 })
+
+test_that("the sharded data put each course whole into the shard of every study type it has", {
+  fx <- browser_fixture()
+  # C: a course whose programme has no study type
+  c_row <- fx$offerings[fx$offerings$course_code == "A", ]
+  c_row$course_code <- "C"
+  c_row$course_id <- "x_C_2025_3_P9"
+  c_row$programme_code <- "P9"
+  c_row$study_type_code <- NA_character_
+  fx$offerings <- dplyr::bind_rows(fx$offerings, c_row)
+  tb <- do.call(browser_tables, fx)
+  sh <- browser_shards(tb)
+  expect_equal(sh$meta$shards$code, c("GLU", "LEKTOR", UNKNOWN_STUDY_TYPE))   # the tree's order, BLU has none
+  expect_equal(sh$meta$shards$dir, c("st/glu", "st/lektor", "st/unknown"))
+  expect_equal(sh$meta$shards$courses, c(2L, 1L, 1L))
+  glu <- sh$shards[[1]]
+  lektor <- sh$shards[[2]]
+  expect_equal(glu$courses$course_code, c("A", "B"))
+  # B whole in LEKTOR: its GLU course-years and both plans too
+  expect_equal(lektor$courses$course_code, "B")
+  expect_equal(lektor$course_years, glu$course_years[glu$course_years$course_code == "B", ])
+  expect_equal(lektor$plans$plan_content_id, c("pb1", "pb2"))
+  expect_equal(lektor$sections, tb$sections)
+  expect_setequal(lektor$programmes$programme_code, c("P1", "P2"))
+  unk <- sh$shards[[3]]
+  expect_equal(unk$course_years$study_type, UNKNOWN_STUDY_TYPE)
+  expect_equal(nrow(unk$plans), 0)
+  st <- sh$meta$study_types
+  expect_equal(st$courses[st$code == UNKNOWN_STUDY_TYPE], 1L)
+  expect_equal(st$group[st$code == UNKNOWN_STUDY_TYPE], "other")
+
+  out <- withr::local_tempdir()
+  dir.create(file.path(out, "st", "gone"), recursive = TRUE)   # a shard of an earlier build
+  paths <- write_browser_data(tb, out, shards = TRUE)
+  expect_false(dir.exists(file.path(out, "st", "gone")))
+  expect_false(file.exists(file.path(out, "plans.parquet")))  # only meta.json at the top
+  expect_true(file.exists(file.path(out, "st", "lektor", "sections.parquet")))
+  expect_length(paths, 1 + 3 * 5)
+  meta <- jsonlite::read_json(file.path(out, "meta.json"), simplifyVector = TRUE)
+  expect_named(meta$shards, c("code", "dir", "courses", "plans", "bytes"))
+  expect_equal(meta$shards$bytes[2], sum(file.size(file.path(out, "st", "lektor",
+                                                               paste0(names(sh$shards[[2]]), ".parquet")))))
+})

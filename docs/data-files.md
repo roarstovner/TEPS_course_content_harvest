@@ -229,7 +229,9 @@ the programme’s study type, no text</td>
 <td>the browser’s data (target <code>browser_data_files</code>, <a
 href="../app/browser/README.md"><code>app/browser/README.md</code></a>
 “Data Contract”): plans, sections, course-years, metadata (with, per
-study type, the DBH courses of the institutions not harvested)</td>
+study type, the DBH courses of the institutions not harvested); the
+teacher-ed frame, and in <code>all/</code> the all frame split by study
+type (target <code>browser_all_files</code>)</td>
 <td>anonymized (no <code>extracted_text</code>)</td>
 <td>build output (gitignored), to be published with the page</td>
 </tr>

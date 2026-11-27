@@ -9,14 +9,15 @@ const cmp = (a, b) => (a < b ? -1 : a > b ? 1 : 0)
 
 /**
  * Index courses with their course-years (the course_years rows collapsed to
- * one per course and year).
+ * one per course and year). Without course-years (sharded data before a
+ * shard is loaded) the years are `year`.
  * @returns {{courses, byKey: Map, courseYears, yearMin: number, yearMax: number, yearFrom: number}}
  *   yearFrom: the first year with a plan, the default start of the year filter
  *   each course: its row plus `key`, `years` (Map year -> course-year) and
  *   `versions` (empty until `addPlans`); each course-year: `{year,
  *   studyTypes: Set, plans: Set of plan keys}`
  */
-export function buildModel({ courses, courseYears }) {
+export function buildModel({ courses, courseYears, year = new Date().getFullYear() }) {
   const byKey = new Map()
   const list = courses
     .map((c) => ({ ...c, key: courseKey(c), years: new Map(), versions: [] }))
@@ -46,6 +47,7 @@ export function buildModel({ courses, courseYears }) {
     if (r.had_students) cy.hadStudents = true
     if (r.no_plan_reason) cy.noPlanReason = r.no_plan_reason
   }
+  if (!cys.length) yearMin = yearMax = year
   if (yearFrom > yearMax) yearFrom = yearMin
   return { courses: list, byKey, courseYears: cys, yearMin, yearMax, yearFrom }
 }

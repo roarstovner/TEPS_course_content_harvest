@@ -88,6 +88,10 @@ const D = {
   'app.views': ['View', 'Visning'],
   'app.loading': ['Loading courses…', 'Laster emner…'],
   'app.hint': ['Select a course to read its plan. Press ? for the keyboard shortcuts.', 'Velg et emne for å lese planen. Trykk ? for hurtigtastene.'],
+  'app.pickTypes': [
+    'All courses: tick one or more study types to load their courses and plans (the size of each is beside it).',
+    'Alle emner: kryss av for én eller flere studietyper for å laste emnene og planene deres (størrelsen står ved hver).',
+  ],
   'view.list': ['List', 'Liste'],
   'view.trend': ['Trend', 'Trend'],
   'view.coverage': ['Coverage', 'Dekning'],
@@ -147,6 +151,11 @@ const D = {
 
   // filters
   'f.label': ['Filters', 'Filtre'],
+  'f.data': ['Data', 'Data'],
+  'f.data_te': ['Teacher education', 'Lærerutdanning'],
+  'f.data_te_title': ['The teacher-education frame, loaded at once', 'Lærerutdanningsrammen, lastet med én gang'],
+  'f.data_all': ['All courses', 'Alle emner'],
+  'f.data_all_title': ['Every harvested course, loaded per study type', 'Alle høstede emner, lastet per studietype'],
   'f.years': ['Years', 'År'],
   'f.from': ['From year', 'Fra år'],
   'f.to': ['To year', 'Til år'],
@@ -176,6 +185,7 @@ const D = {
   'st.absent': ['{n} not in this data', '{n} ikke i disse dataene'],
   'st.absentTitle': ['{name} ({code}): not in this data; the all-courses data adds it', '{name} ({code}): ikke i disse dataene; dataene med alle emner tar den med'],
   'st.none': ['No study type matches.', 'Ingen studietype treffer.'],
+  'st.unloaded': ['{c} courses in the data; not loaded: ticking it loads {mb}', '{c} emner i dataene; ikke lastet: avkrysning laster {mb}'],
   'st.uncAria': ['Institutions not harvested', 'Institusjoner som ikke er høstet'],
   'st.unc': [
     'Not harvested: institutions with courses of the ticked study types in DBH, with their courses in {y}',

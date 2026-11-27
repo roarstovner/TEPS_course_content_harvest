@@ -10,6 +10,7 @@ describe('URL state', () => {
   it('round-trips every field', () => {
     const s = {
       ...defaultState(),
+      data: 'all',
       q: 'fremmedspråk* "ikt" outcomes:(a OR b)',
       scope: 'words',
       n: 5,
@@ -31,6 +32,11 @@ describe('URL state', () => {
       by: 'inst',
     }
     expect(decodeState(encodeState(s))).toEqual(s)
+  })
+
+  it('falls back to the teacher-ed data for an unknown data set', () => {
+    expect(decodeState('?data=xyz').data).toBe('te')
+    expect(encodeState({ ...defaultState(), data: 'all' })).toBe('data=all')
   })
 
   it('keeps the compared version on the versions tab only', () => {
