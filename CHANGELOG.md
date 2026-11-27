@@ -104,6 +104,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Study types: show DBH courses at institutions we do not harvest (#569)
 - Browser: graphics contrast of the year strip and trend line (WCAG 1.4.11, 3:1) (#636)
 - Sections: small items from the 2026-11-26 re-audit (attendance-rule exception, Praksis under Arbeidskrav, placeholders) (#635)
 - NIH reading list: bare "Pensum", "Pensum." and "Litteraturliste" left as the whole section (12 plans) (#633)
