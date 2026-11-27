@@ -167,8 +167,8 @@ without the title and facts box.
 
 ## Known deviations
 
-The data built on 2026-10-16 do not yet follow
-the spec here:
+The data do not yet follow the spec here (a release ships the spec in the
+version its data follow):
 
 - UiB's responsible unit, an unlabelled link in the page's sidebar, is not in
   `course_plan`. Every UiB offering has its unit from DBH (`department_name`).

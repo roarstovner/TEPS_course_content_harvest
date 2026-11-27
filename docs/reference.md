@@ -251,7 +251,8 @@ raw files changed or missing and, once a release is kept, changes to it
 Parquet copies and <code>datapackage.json</code>,
 <code>methods.md</code>, <code>data/variables.csv</code>,
 <code>data/study_types.csv</code>, <code>data/codes.csv</code>, the
-codebook, a manifest and section coverage to the coding project</td>
+codebook, <code>course_plan_spec.md</code>, a manifest and section
+coverage to the coding project</td>
 </tr>
 <tr>
 <td><code>release_codes()</code>, <code>datapackage_descriptor()</code>,

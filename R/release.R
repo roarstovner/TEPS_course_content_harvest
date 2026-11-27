@@ -18,6 +18,9 @@ STUDY_TYPES_FILE <- "data/study_types.csv"
 CODES_FILE <- "data/codes.csv"
 # The human codebook, rendered from VARIABLES_FILE and release_codes()
 CODEBOOK_FILE <- "docs/codebook.md"
+# What course_plan and the sections hold and what stays out (agreed with the
+# coding project)
+SPEC_FILE <- "course_plan_spec.md"
 
 # The keys of the published files (docs/data-files.md "Keys of the Published
 # Files"): plan_id is unique per plan; plan_content_id is a text
@@ -46,8 +49,11 @@ TABLE_SCHEMA_TYPES <- c(character = "string", integer = "integer", double = "num
 #' methods.md as built, variables.csv (VARIABLES_FILE: every variable of
 #' the files, with its name until 2026-10-16) and study_types.csv
 #' (STUDY_TYPES_FILE: the project's groups of study types, study_type_group);
-#' codes.csv (CODES_FILE: the value labels of the coded columns) and
-#' codebook.md (CODEBOOK_FILE, rendered from the variables and codes);
+#' codes.csv (CODES_FILE: the value labels of the coded columns),
+#' codebook.md (CODEBOOK_FILE, rendered from the variables and codes) and
+#' course_plan_spec.md (SPEC_FILE: what course_plan and the sections hold,
+#' in the version the data follow; the coders tell a harvest error from a
+#' known deviation with it, 2026-11-27);
 #' `manifest.yml` (release tag, whether it is finalized, harvest repo commit,
 #' date, files with row counts and md5 sums); `section_coverage.csv` (share of
 #' plans per institution with each section; where a section is missing the
@@ -75,7 +81,7 @@ TABLE_SCHEMA_TYPES <- c(character = "string", integer = "integer", double = "num
 #' @return `dest`, invisibly.
 release_data <- function(tag, dest = "../TEPS_course_content_coding/data", frame = "teacher_ed") {
   data_files <- file.path(frame_dir(frame), paste0(names(RELEASE_KEYS), ".RDS"))
-  files <- c("methods.md", VARIABLES_FILE, STUDY_TYPES_FILE, CODES_FILE, CODEBOOK_FILE)
+  files <- c("methods.md", VARIABLES_FILE, STUDY_TYPES_FILE, CODES_FILE, CODEBOOK_FILE, SPEC_FILE)
   stopifnot(all(file.exists(c(data_files, files))), dir.exists(dest))
   commit <- system2("git", c("rev-parse", "HEAD"), stdout = TRUE)
   if (length(system2("git", c("status", "--porcelain", "--", "R", "_targets.R"), stdout = TRUE))) {
@@ -144,6 +150,7 @@ release_data <- function(tag, dest = "../TEPS_course_content_coding/data", frame
     study_types = "study_types.csv (DBH's study types and the project's groups of them, study_type_group)",
     codes = "codes.csv (the value labels of the coded columns; the study types are in study_types.csv)",
     codebook = "codebook.md (the variables, codes and keys of the files)",
+    spec = "course_plan_spec.md (what course_plan and the sections hold and what stays out, with its known deviations)",
     datapackage = "datapackage.json (Data Package v2 descriptor of the Parquet files: types, codes, keys)",
     files = lapply(stats::setNames(nm = c(basename(files), basename(parquet))), function(f) {
       table <- tools::file_path_sans_ext(f)
