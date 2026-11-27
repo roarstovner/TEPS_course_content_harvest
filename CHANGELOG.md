@@ -104,6 +104,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Sections: small items from the 2026-11-26 re-audit (attendance-rule exception, Praksis under Arbeidskrav, placeholders) (#635)
+- NIH reading list: bare "Pensum", "Pensum." and "Litteraturliste" left as the whole section (12 plans) (#633)
+- Sections (HiMolde): SYD204 coursework items in teaching_methods (variant of the bold 'Arbeidskrav I-IV' layout) (#626)
+- Sections: required/recommended prerequisite headings stay as label lines in prerequisites (#632)
 - Retry harvest: pausing it loses its URL-discovery progress (checkpoints removed at start) (#634)
 - Browser: accessibility, Norwegian/English UI, keyboard shortcuts (#561)
 - Add Fjellhaug (#398)
