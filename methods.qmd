@@ -3423,7 +3423,15 @@ bokmål", "Tekst om hva du lærer") of the test course TEST "Testemne": with
 no section left, their pages are shells and get no plan, as the spec has
 for a pointer to the English page and a page of placeholders. *Why:*
 close-out sections audit of 2026-11-25 and re-audit of 2026-11-26.
-`course_plan` does not change. *Since:* 2026-11-26.
+`course_plan` does not change. From 2026-11-27 the empty-label and
+placeholder checks also run after anonymizing, which can take the text
+under a label: in that build UiS loses 5 prerequisites rows of
+"Forkunnskapskrav / Ingen" over a PDF page break (4 plans), NIH 14 reading
+lists that were only "Pensum høsten 2022" (the anonymizer takes "høsten
+2022" as a semester label), and
+59 UiT offerings of 2012-2019, whose page is only "Om emnet /
+Forkunnskapskrav / Ansvarlig enhet", lose their plan as shells. *Since:*
+2026-11-26.
 
 **Barratt Due: the PPU degree requirement, stock resit rules, the
 electives' admission rule.** The PPU plans' prerequisite field "Krav til

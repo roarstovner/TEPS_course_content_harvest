@@ -12,8 +12,8 @@ decision changes what the data mean, add or update its entry here; each
 release tag freezes this file with the data.
 
 Current data, the teacher-ed frame (below): 46 882 offerings (DBH course
-× year × semester) at 19 institutions, 30 769 of them with a plan, and
-17 038 unique plans from 18 institutions (none from Samas, below).
+× year × semester) at 19 institutions, 30 809 of them with a plan, and
+17 065 unique plans from 18 institutions (none from Samas, below).
 
 ## Population and sampling frame
 
@@ -164,8 +164,8 @@ follows from the counts’ date, not the course list’s. A course-year of
 the course list that the counts lack had no students (in a provisional
 year: none yet). *Rejected:* one date for both (the counts would wait
 for the next course list, or force one). In the teacher-ed frame: 24 775
-course-years, 19 658 with a plan (79 %); with students 18 368, of them
-15 801 with a plan (86 %); with both 13 832, of them 12 056 with a plan
+course-years, 19 698 with a plan (80 %); with students 18 368, of them
+15 837 with a plan (86 %); with both 13 832, of them 12 086 with a plan
 (87 %). Per institution and year: `data/data_notes.md`, “Coverage over
 course-years that had students”. *Since:* 2026-11-04.
 
@@ -1194,7 +1194,7 @@ confirmed against the programme description. *Since:* 2026-10-19.
 
 **A plan is a unique anonymized text per institution and course code**
 (`plan_content_id`, a hash of the normalized text). Offerings with the
-same text share a plan: 30 769 offerings have 17 038 plans. *Why:*
+same text share a plan: 30 809 offerings have 17 065 plans. *Why:*
 consecutive years and both semesters mostly repeat the same text.
 *Consequence:* the id changes whenever cleaning changes the text, so
 coding is tied to a frozen release and carried to later releases with a
@@ -1209,9 +1209,9 @@ in `course_offerings` (NA without a plan), `course_plans` and
 finds identical texts across courses. *Why:* parallel course codes of an
 institution that publish the same text (UiT LRU-3672 and LRU-3672F, NTNU
 PPU4621/4623/4625/4627, NLA 4MGL1DIP and MGL1DIP, OsloMet M5GMT2100 and
-M5GMT3100) share a `plan_content_id`: 258 ids are shared by 691 plans
+M5GMT3100) share a `plan_content_id`: 263 ids are shared by 701 plans
 (never across institutions), and joining offerings to plans on
-`plan_content_id` alone duplicates 1 458 of the 30 769 offerings with a
+`plan_content_id` alone duplicates 1 470 of the 30 809 offerings with a
 plan (2026-11-19: 256 ids, 687 plans, 1,449 of 30,727 offerings). The
 key `plan_content_id` + `institution` + `course_code` was documented,
 but easy to miss. *Rejected:* documenting the three-column key only (the
@@ -1264,9 +1264,9 @@ year before, so reading it would remove plans in force (checked
 courses, below). *Consequence:* 174 plans left the data on 2026-10-06
 (UiA 95, UiB 27, OsloMet 26, Nord 11, HVL 10, UiT 4, NTNU 1). With pages
 that are not the plan at all (INN’s course search page, OsloMet’s error
-page) and later versions (HiOF, INN, Nord, UiS), 2 629 offerings have
+page) and later versions (HiOF, INN, Nord, UiS), 2 630 offerings have
 page text but no plan (hiof 62, inn 1366, nord 819, oslomet 89, uia 95,
-uib 79, uis 97, uit 22). *Since:* 2026-10-06; heading lists (UiB NOLI216
+uib 79, uis 97, uit 23). *Since:* 2026-10-06; heading lists (UiB NOLI216
 and NOSP216, autumn 2018) from 2026-10-07; NTNU pages whose only section
 was the exam tab from 2026-10-12 to 2026-10-13, when the tab came back
 (20 plans, 70 offerings). INN later versions from 2026-10-07: 1,077 INN
@@ -2270,7 +2270,7 @@ of 00-59 that follows only a chapter range without a colon (“Gen 1-11;
 mapped through one heading table (`R/section_heading_map.R`): course
 content (99 % of plans), learning outcomes (99 %), assessment (99 %),
 teaching methods (94 %), coursework requirements (93 %), prerequisites
-(55 %) and reading list (25 %), and an eighth that overlaps them,
+(54 %) and reading list (25 %), and an eighth that overlaps them,
 practice (19 %; below). Where a section is missing, the coders use the
 whole plan.
 
@@ -3542,7 +3542,14 @@ bokmål”, “Tekst om hva du lærer”) of the test course TEST “Testemne”
 with no section left, their pages are shells and get no plan, as the
 spec has for a pointer to the English page and a page of placeholders.
 *Why:* close-out sections audit of 2026-11-25 and re-audit of
-2026-11-26. `course_plan` does not change. *Since:* 2026-11-26.
+2026-11-26. `course_plan` does not change. From 2026-11-27 the
+empty-label and placeholder checks also run after anonymizing, which can
+take the text under a label: in that build UiS loses 5 prerequisites
+rows of “Forkunnskapskrav / Ingen” over a PDF page break (4 plans), NIH
+14 reading lists that were only “Pensum høsten 2022” (the anonymizer
+takes “høsten 2022” as a semester label), and 59 UiT offerings of
+2012-2019, whose page is only “Om emnet / Forkunnskapskrav / Ansvarlig
+enhet”, lose their plan as shells. *Since:* 2026-11-26.
 
 **Barratt Due: the PPU degree requirement, stock resit rules, the
 electives’ admission rule.** The PPU plans’ prerequisite field “Krav til
