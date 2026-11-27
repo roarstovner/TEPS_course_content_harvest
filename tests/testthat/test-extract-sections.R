@@ -2748,6 +2748,15 @@ test_that("prerequisite headings that say required or recommended stay as label 
                "Anbefalte forkunnskaper\nENG101")
   expect_equal(.drop_empty_labels("Anbefalte forkunnskaper\nIngen", "prerequisites"), "")
   expect_equal(.drop_empty_labels("Hjelpemidler\nIngen", "assessment"), "Hjelpemidler\nIngen")
+  # and a label whose text the anonymizer took: uis's PDF page break under it
+  txt <- paste0("Arbeidsformer\n  Forelesning og gruppearbeid.\n\nForkunnskapskrav\n  Ingen\n\n",
+                "                    side 1\n\n          MHIS100_1 - Moderne historie 1914-2000\n\n",
+                "Eksamen/vurdering\n Skriftlig eksamen, 2 timer.\n\nLitteratur\n Furre, Berge: Norsk historie.\n")
+  s <- partition_sections(tibble::tibble(page_id = character(), .empty_blocks()),
+                          tibble::tibble(page_id = "uis/1", plan_text = NA_character_, extracted_text = txt),
+                          get_institution_config("uis"), "uis/1")
+  expect_true("assessment" %in% s$section)
+  expect_false("prerequisites" %in% s$section)
   # short values under labels are no heading list (ntnu)
   expect_true(.keep_section_row(paste0("Anbefalte forkunnskaper\nEtter avtale med Instituttet\n\n",
                                        "Forkunnskapskrav\nVurderes etter avtale med instituttet"), "prerequisites"))

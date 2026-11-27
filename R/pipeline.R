@@ -76,7 +76,10 @@ page_plans <- function(institution, text, plan_text, exam_sessions = FALSE) {
 
 # The sections of the pages a plan is cut from (`ids`, plan_source_pages()),
 # anonymized: sections are cut from raw text. A season after a semester label
-# is timing, not section text, and goes (.drop_semester_values()). The text
+# is timing, not section text, and goes (.drop_semester_values()). A label
+# whose text the anonymizer took goes with it, as in .clean_sections(): uis's
+# PDF page break ("side 1" and the running header) under "Forkunnskapskrav
+# Ingen" hid the placeholder until then (2026-11-27). The text
 # fallback reads the plan text, without the title and facts box; pages read
 # as text (no blocks) cut them in the reader (.text_header()).
 partition_sections <- function(blocks, page_text, config, ids) {
@@ -94,6 +97,8 @@ partition_sections <- function(blocks, page_text, config, ids) {
     dplyr::mutate(text = .drop_semester_values(
       anonymize_text(rep(config$name, dplyr::n()), raw_text, .progress = FALSE))) |>
     dplyr::filter(!is.na(text)) |>
+    dplyr::mutate(text = trimws(as.character(mapply(.drop_empty_labels, text, section, USE.NAMES = FALSE)))) |>
+    dplyr::filter(as.logical(mapply(.keep_section_row, text, section, USE.NAMES = FALSE))) |>
     dplyr::select(page_id, section, text)
 }
 

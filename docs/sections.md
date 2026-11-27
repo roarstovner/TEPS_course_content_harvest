@@ -367,16 +367,18 @@ under it (“Ingen”, “Norsk.”, “A-F”, “Liste A”, “Engelsk 1, 2, 
 says nothing alone; with nothing but a dash or pointer under it (“N/A”),
 it goes, and so does a prerequisite label over “Ingen”, the placeholder
 it is in prerequisites. A label line whose text the cleanup took (an
-admission sentence) goes too (`.drop_empty_labels()`). An English
-heading maps as its Norwegian counterpart on the same site: on UiA’s and
-NIH’s English-tree pages (since 2026-11-23) “Examination requirements”
-(“Vilkår for å gå opp til eksamen”) to coursework requirements, ahead of
-the substring “examination”; “Assessment/exam”, “Prerequisite” and “Core
-literature” (“Vurdering/eksamen”, “Forkrav”, “Kjernelitteratur”) to
-assessment, prerequisites and reading list (all exact rows). “Admission
-Requirement if given as a free-standing course” (“Opptakskrav hvis
-tilbudt som enkeltemne”), which the map drops, is UiA’s `.admission`
-(below).
+admission sentence) or the anonymizer took (uis’s PDF page break, “side
+1” and the running header, under “Forkunnskapskrav Ingen”; 2026-11-27)
+goes too (`.drop_empty_labels()`, again after anonymization in
+`partition_sections()`). An English heading maps as its Norwegian
+counterpart on the same site: on UiA’s and NIH’s English-tree pages
+(since 2026-11-23) “Examination requirements” (“Vilkår for å gå opp til
+eksamen”) to coursework requirements, ahead of the substring
+“examination”; “Assessment/exam”, “Prerequisite” and “Core literature”
+(“Vurdering/eksamen”, “Forkrav”, “Kjernelitteratur”) to assessment,
+prerequisites and reading list (all exact rows). “Admission Requirement
+if given as a free-standing course” (“Opptakskrav hvis tilbudt som
+enkeltemne”), which the map drops, is UiA’s `.admission` (below).
 
 HTML is parsed by `.read_doc()`, which drops `script`, `style`, `select`
 and `label` (ntnu script text, uib semester picker); the `json` reader
