@@ -82,8 +82,14 @@ Node 22.12 or later (vitest needs it; `.nvmrc` names the version CI uses).
   skip link to the results, labels on every control, the counts line as a
   polite live region, dialogs as native modal `<dialog>` (Esc closes, the
   focus returns), text at 4.5:1 and control borders at 3:1 in both themes
-  (`--ctl`, `--tag-*`, `--cell-max` in `app.css`). Not yet checked against
-  1.4.11: the year strip's and the trend lines' colours.
+  (`--ctl`, `--tag-*`, `--cell-max` in `app.css`). Graphics at 3:1
+  (2026-11-27): the year strip's cells and the coverage bars on `--bg`,
+  `--bg-2` and `--accent-bg` (`--cell-plan` darker; a year without a plan
+  keeps its pale fill inside a 3:1 outline, `--cell-none-edge`, so it differs
+  from a plan by shape, not only colour), and the trend lines on `--bg` (light
+  `--c3`, `--c4`, `--c5`, `--c-other` darkened; the dark ones passed). The
+  strip's empty cells (no course-year) keep a faint outline: they mark a
+  position, not a value.
 
 ## Data Contract
 

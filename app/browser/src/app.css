@@ -8,8 +8,12 @@
   --ctl: #85857f;
   --accent: #1f5fa8;
   --accent-bg: #e3edf9;
-  --cell-plan: #b9c3cf;
+  /* year strip and coverage bars: --cell-plan, --cell-none-edge (the outline
+     of a year without a plan) and --cell-match at 3:1 on --bg, --bg-2 and
+     --accent-bg (WCAG 1.4.11) */
+  --cell-plan: #7e8792;
   --cell-none: #e8d9cf;
+  --cell-none-edge: #bd7446;
   --cell-match: #1f5fa8;
   --error: #b3261e;
   /* screening tags as text (4.5:1); the trend colours are too light for it */
@@ -27,9 +31,10 @@
   --s0: #2b6cb0; --s1: #d0661c; --s2: #2f8f4e; --s3: #c2306a;
   --s4: #7b4fc4; --s5: #13909b; --s6: #a07d12; --s7: #8b5a3c;
   --ins: #d6f5dc; --del: #fbdcdc;
-  /* trend lines, in order (a validated categorical palette); others grey */
-  --c1: #2a78d6; --c2: #eb6834; --c3: #1baf7a; --c4: #eda100;
-  --c5: #e87ba4; --c6: #008300; --c7: #6250d6; --c8: #e34948; --c-other: #9a9a94;
+  /* trend lines, in order (a validated categorical palette, with --c3, --c4,
+     --c5 and --c-other darkened to 3:1 on --bg, WCAG 1.4.11); others grey */
+  --c1: #2a78d6; --c2: #eb6834; --c3: #00a672; --c4: #cc8200;
+  --c5: #db6f98; --c6: #008300; --c7: #6250d6; --c8: #e34948; --c-other: #92928c;
   --font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
   color-scheme: light dark;
@@ -44,8 +49,9 @@
     --ctl: #76777c;
     --accent: #7fb0ec;
     --accent-bg: #23344a;
-    --cell-plan: #4b5563;
+    --cell-plan: #737e8d;
     --cell-none: #5a4436;
+    --cell-none-edge: #b07a58;
     --cell-match: #7fb0ec;
     --error: #f2948c;
     --tag-include: var(--c3); --tag-exclude: var(--c8); --tag-maybe: var(--c4);
@@ -184,7 +190,7 @@ legend { font-weight: 600; font-size: 12px; text-transform: uppercase; letter-sp
 .strip { grid-area: strip; display: flex; gap: 1px; margin: 3px 0 1px; }
 .strip i { width: 9px; height: 6px; border-radius: 1px; background: transparent; outline: 1px solid var(--line); outline-offset: -1px; }
 .strip i.plan { background: var(--cell-plan); outline: 0; }
-.strip i.none { background: var(--cell-none); outline: 0; }
+.strip i.none { background: var(--cell-none); outline-color: var(--cell-none-edge); }
 .strip i.match { background: var(--cell-match); outline: 0; }
 .more { padding: 12px; text-align: center; }
 
