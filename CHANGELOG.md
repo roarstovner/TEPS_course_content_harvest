@@ -104,6 +104,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set samas fulltext to NA for rows with program plans instead of course plans (#89)
 
 ### Changed
+- Disciplines: NUS names from SSB KLASS and DBH subject as facets (#568)
 - Spec: mark each known deviation with the section(s) it concerns (#639)
 - Sections (UiS): 'Forkunnskapskrav' over only 'Ingen' kept as the whole prerequisites section (4 plans) (#637)
 - Release: ship course_plan_spec.md in the release (coding project request) (#638)
