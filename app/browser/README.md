@@ -45,11 +45,12 @@ Node 22.12 or later (vitest needs it; `.nvmrc` names the version CI uses).
   **disabled** (`if: false` on its build job, run only by hand) until
   publishing is decided: the terms of use of the plan text, and a first
   finalized release that holds the browser data as a ZIP of `public/data/`.
-  The top of the file says how to enable it. It unpacks the archive flat
-  into `public/data/`, so the site would hold the teacher-ed frame only: the
-  all-courses data (`public/data/all/`, in folders per shard) are built and
-  tested locally for now and not published with the Pages site (2026-11-28,
-  while the browser's handling of their size is tried out).
+  The top of the file says how to enable it. No browser data are published
+  yet. When the site is enabled it takes the teacher-ed frame only (the
+  workflow unpacks the archive flat into `public/data/`): the all-courses
+  data (`public/data/all/`, in folders per shard) are for trying the browser
+  on one's own machine (`npm run dev`) until they are needed on the site
+  (2026-11-28).
 
 ## Decisions
 
