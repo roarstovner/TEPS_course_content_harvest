@@ -545,12 +545,17 @@ and “Core reading for.” / “Reading list for” without their year; since
 “Litteraturliste”, “Reading list”, nhh’s “Se de engelske sidene for
 emnebeskrivelse” and its unfilled page template “Læringsutbytte på
 bokmål” / “Tekst om hva du lærer” of the test course “Testemne”, whose
-page is then a shell), and drops a first line that only repeats the
-section heading (but keeps learning-outcome group labels such as
-“Kunnskap”). Last, a section whose whole text, whitespace aside and 100
-or more characters long, equals an earlier section’s on the page goes:
-the page copied it (khio’s teaching methods under “Vurdering” or its
-outcomes under “Undervisning og læringsformer”, inn’s course content
+page is then a shell; since 2026-11-28 a reading list that comes later,
+is on the learning platform or does not exist, “Pensumliste vil
+foreligge innen 15. juni”, “Pensum publiseres i Blackboard ved oppstart
+av emnet”, “Det er ikke noe pensum knyttet til mastergradsoppgaven.”,
+“Reading list will be published in Leganto.”, where a sentence or a
+reference after it keeps the text), and drops a first line that only
+repeats the section heading (but keeps learning-outcome group labels
+such as “Kunnskap”). Last, a section whose whole text, whitespace aside
+and 100 or more characters long, equals an earlier section’s on the page
+goes: the page copied it (khio’s teaching methods under “Vurdering” or
+its outcomes under “Undervisning og læringsformer”, inn’s course content
 under the teaching methods), and the copy says nothing about its own
 part. A short value two sections each state (“Individuelt.”, “Må
 bestås”) stays, so does a section that only begins with another’s text,

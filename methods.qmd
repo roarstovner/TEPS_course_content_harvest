@@ -3433,6 +3433,36 @@ lists that were only "Pensum høsten 2022" (the anonymizer takes "høsten
 Forkunnskapskrav / Ansvarlig enhet", lose their plan as shells. *Since:*
 2026-11-26.
 
+**A reading list that only says when or where the list comes, or that
+there is none, is a placeholder.** "Pensumliste vil foreligge innen 15.
+juni", "For emner som starter om høsten, vil pensumliste foreligge 15.
+juni. ...", "Pensum publiseres i Blackboard ved oppstart av emnet",
+"Litteraturliste foreligger ved semesterstart.", "Pensum kommer senere.",
+"Det er ikke noe pensum knyttet til mastergradsoppgaven.", "Reading list
+will be published in Leganto.", "Syllabus and reading list will be
+announced prior to course start." leave the sections when they are the
+whole section, or a line of their own before the list
+(`.placeholder_phrases`); they stay in `course_plan`. What follows the
+phrase may only say where or when (60 characters, no digits but a date's),
+so a text that also gives the size ("Pensum er på ca. 1000 sider."), a
+reference, what the material is ("Pensum foreligger i kompendier og
+bøker:") or a condition ("Det er ikke pensum knyttet til faget, men
+studenten må ...") stays whole. *Why:* by the spec placeholders and pointers
+with nothing more are in no section; a check of the reading lists on
+2026-11-28 found these wordings in 238 of UiT's 889 teacher-ed reading
+lists. *Rejected:* a rule for UiT's wordings only (NTNU, HiØ and others
+write the same with "publiseres"); a longer free tail after the phrase
+(the sections are squished before the test, so a reference on the next
+line without a full stop would go too). *Consequence* (counted with the
+working tree's phrases on the plan sections of 2026-11-28; the next build
+gives the final numbers): whole reading-list sections dropped, teacher-ed
+frame UiT 240, NTNU 9, HiØ 5; all frame NTNU 807, UiT 652, HiØ 64, UiB 15,
+NMBU 8, HiMolde 3, NHH 2, AHO 1, USN 1; a leading placeholder line goes
+before a real list in about 100 more (mostly NTNU, "Publiseres i Canvas ved
+oppstart av emnet." over "Lenke til pensumliste i Leganto"). No other
+section and no `course_plan` changes (`preview_change()` on these pages and
+on a sample of UiT and NTNU). *Since:* 2026-11-28.
+
 **Barratt Due: the PPU degree requirement, stock resit rules, the
 electives' admission rule.** The PPU plans' prerequisite field "Krav til
 forkunnskaper: Bachelorgrad i musikk og Opptak til Praktisk-pedagogisk

@@ -433,7 +433,8 @@ extract_sections <- function(config, html, extracted_text, course_id) {
 #'   - drops a leading line that merely repeats the section's own heading,
 #'   - removes label lines with nothing under them (.drop_empty_labels()),
 #'   - removes rows that are empty or only a placeholder ("Ingen",
-#'     "Se fagplanen.", "-", a Leganto pointer; see .placeholder_phrases).
+#'     "Se fagplanen.", "-", a Leganto pointer, "Pensumliste vil foreligge
+#'     innen 15. juni"; see .placeholder_phrases).
 #'   - removes outgoing progression rules from every section
 #'     (.is_progression_sentence()),
 #'   - strips page widgets, pointers and stock logistics sentences from
@@ -2005,6 +2006,12 @@ extract_sections <- function(config, html, extracted_text, course_id) {
     mean(!is.na(vapply(l, .exact_section, character(1)))) >= 0.5
 }
 
+# Where or when a reading list comes, after "vil foreligge" and the like:
+# at most 60 characters, no digits but a date's ("15. juni", "15.6.").
+.placeholder_when <- paste0(
+  "(?:[^.:\\d()]|\\d{1,2}\\. ?(?:\\d{1,2}\\.?|januar|februar|mars|april|mai|juni|juli|august|",
+  "september|oktober|november|desember)){0,60}")
+
 # Phrases that say a section is absent or lives elsewhere. A row is a
 # placeholder only when its WHOLE text is made of these phrases, so real
 # content that merely starts with "Ingen" or mentions Leganto is kept.
@@ -2153,6 +2160,24 @@ extract_sections <- function(config, html, extracted_text, course_id) {
   "no subjects?(?: in the program(?:me)?| at program(?:me)? level)?", "(?:core reading|reading list) for",
   # mf: the library-access notice alone (~600 chars), no list
   "litteraturlisten for .{0,30}tilgang til litteratur .{0,700}",
+  # the list comes later or is elsewhere, or there is none (2026-11-28; uit
+  # ~500 sections, ntnu, hiof, nmbu, himolde, nhh, usn): "Pensumliste vil
+  # foreligge innen 15. juni", "Vil foreligge før 15.6.", "Pensum er
+  # tilgjengelig i Fronter", "For emner som starter om høsten, vil
+  # pensumliste foreligge 15. juni.", "Pensum publiseres i Blackboard ved
+  # oppstart av emnet", "Det er ikke noe pensum knytta til
+  # mastergradsoppgaven.", "Reading list will be published in Leganto."
+  # Its tail (where, when) holds no digits but a date's, whose full stop does
+  # not end the phrase, so a reference run on after it without a full stop
+  # ("... ved semesterstart Hansen (2019)") keeps the text.
+  paste0("(?:(?:oppdatert |endelig )?pensum(?:list(?:e|en|a)|litteratur(?:en)?)? )?",
+         "(?:vil (?:foreligge\\w*|være tilgjengelig|bli publisert)|foreligger|er tilgjengelig|publiseres|kommer senere)",
+         "(?![^.]*(?:kompendi|bøker|papir))",   # what it is: "Pensum foreligger i kompendier og bøker:"
+         .placeholder_when),
+  paste0("for emner som starter om (?:høsten|våren),? vil pensum(?:list(?:e|en|a))? foreligge", .placeholder_when),
+  "det er ikke (?:noe )?pensum knyt\\w* til [^.,:\\d()]{0,40}",
+  paste0("(?:the )?(?:required )?(?:syllabus and )?reading list (?:will be|is) (?:available|published|announced)",
+         .placeholder_when),
   # the reading list's label alone, its list a link or gone (2026-11-26:
   # "Pensum.", "Litteraturliste", nih; "Pensumliste", "Pensumlitteratur",
   # ntnu; "Pensum", uit; "Litteraturliste", uib; "Reading list", hivolda)

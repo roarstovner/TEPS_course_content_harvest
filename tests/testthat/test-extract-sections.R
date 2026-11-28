@@ -2810,3 +2810,29 @@ test_that("bare reading-list labels, the English pointer and an unfilled templat
   for (t in c("Pensum er 800 sider.", "Pensum: Hansen, A. (2020). Didaktikk."))
     expect_true(.keep_section_row(t, "reading_list"), label = t)
 })
+
+test_that("a reading list that comes later or is elsewhere, or none, is a placeholder; a list after it stays", {
+  for (t in c("Pensumliste vil foreligge innen 15. juni", "Vil foreligge innen 15. juni",
+              "Pensum er tilgjengelig innen 15. juni.", "Vil foreligge før 15.6.", "Pensumliste vil foreligge fra15. juni.",
+              paste("For emner som starter om høsten, vil pensumliste foreligge 15. juni.",
+                    "For emner som starter om våren, vil pensumliste foreligge 15. desember."),
+              "Det er ikke pensum knyttet til mastergradsoppgaven.",
+              "Det er ikke noe pensum knytta til mastergradsoppgaven.", "Pensum er tilgjengelig i Fronter",
+              "Pensum publiseres i Blackboard ved oppstart av emnet", "Litteraturliste foreligger ved semesterstart.",
+              "Pensum kommer senere.", "Publiseres ved semesterstart Lenke til pensumliste i Leganto",
+              "Reading list will be published in Leganto.", "Reading list will be published in December.",
+              "The required reading list will be available at the beginning of the semester.",
+              "Syllabus and reading list will be announced prior to course start."))
+    expect_false(.keep_section_row(t, "reading_list"), label = t)
+  # more than where and when: the size, a reference, a condition
+  for (t in c("Pensumliste vil foreligge før studiestart. Pensum er på ca. 1000 sider.",
+              "Pensumliste vil foreligge ved semesterstart Hansen, A. (2020) Didaktikk",
+              "Pensum foreligger i kompendier og bøker:",
+              "Pensumliste foreligger ved semesterstart. Utvalgte deler av Fennema's Food Chemistry, 5th edition",
+              paste("Det er ikke pensum knyttet til faget, men studenten må i rapporten bringe inn",
+                    "faglig litteratur som er relevant for studieprogrammet")))
+    expect_true(.keep_section_row(t, "reading_list"), label = t)
+  out <- tibble::tibble(section = "reading_list",
+    raw_text = "Pensumliste vil foreligge innen 15. juni.\nHansen, A. (2020). Didaktikk. Oslo: Forlag.")
+  expect_equal(.clean_sections(out)$raw_text, "Hansen, A. (2020). Didaktikk. Oslo: Forlag.")
+})
