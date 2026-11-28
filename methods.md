@@ -12,8 +12,8 @@ decision changes what the data mean, add or update its entry here; each
 release tag freezes this file with the data.
 
 Current data, the teacher-ed frame (below): 46 882 offerings (DBH course
-× year × semester) at 19 institutions, 30 809 of them with a plan, and
-17 065 unique plans from 18 institutions (none from Samas, below).
+× year × semester) at 19 institutions, 31 001 of them with a plan, and
+17 177 unique plans from 18 institutions (none from Samas, below).
 
 ## Population and sampling frame
 
@@ -164,9 +164,9 @@ follows from the counts’ date, not the course list’s. A course-year of
 the course list that the counts lack had no students (in a provisional
 year: none yet). *Rejected:* one date for both (the counts would wait
 for the next course list, or force one). In the teacher-ed frame: 24 775
-course-years, 19 698 with a plan (80 %); with students 18 368, of them
-15 837 with a plan (86 %); with both 13 832, of them 12 086 with a plan
-(87 %). Per institution and year: `data/data_notes.md`, “Coverage over
+course-years, 19 875 with a plan (80 %); with students 18 368, of them
+15 964 with a plan (87 %); with both 13 832, of them 12 186 with a plan
+(88 %). Per institution and year: `data/data_notes.md`, “Coverage over
 course-years that had students”. *Since:* 2026-11-04.
 
 **Years:** DBH had no 2026 rows on 2026-10-06 or in the snapshot of
@@ -1194,7 +1194,7 @@ confirmed against the programme description. *Since:* 2026-10-19.
 
 **A plan is a unique anonymized text per institution and course code**
 (`plan_content_id`, a hash of the normalized text). Offerings with the
-same text share a plan: 30 809 offerings have 17 065 plans. *Why:*
+same text share a plan: 31 001 offerings have 17 177 plans. *Why:*
 consecutive years and both semesters mostly repeat the same text.
 *Consequence:* the id changes whenever cleaning changes the text, so
 coding is tied to a frozen release and carried to later releases with a
@@ -1209,9 +1209,9 @@ in `course_offerings` (NA without a plan), `course_plans` and
 finds identical texts across courses. *Why:* parallel course codes of an
 institution that publish the same text (UiT LRU-3672 and LRU-3672F, NTNU
 PPU4621/4623/4625/4627, NLA 4MGL1DIP and MGL1DIP, OsloMet M5GMT2100 and
-M5GMT3100) share a `plan_content_id`: 263 ids are shared by 701 plans
+M5GMT3100) share a `plan_content_id`: 285 ids are shared by 747 plans
 (never across institutions), and joining offerings to plans on
-`plan_content_id` alone duplicates 1 470 of the 30 809 offerings with a
+`plan_content_id` alone duplicates 1 553 of the 31 001 offerings with a
 plan (2026-11-19: 256 ids, 687 plans, 1,449 of 30,727 offerings). The
 key `plan_content_id` + `institution` + `course_code` was documented,
 but easy to miss. *Rejected:* documenting the three-column key only (the
@@ -1264,9 +1264,9 @@ year before, so reading it would remove plans in force (checked
 courses, below). *Consequence:* 174 plans left the data on 2026-10-06
 (UiA 95, UiB 27, OsloMet 26, Nord 11, HVL 10, UiT 4, NTNU 1). With pages
 that are not the plan at all (INN’s course search page, OsloMet’s error
-page) and later versions (HiOF, INN, Nord, UiS), 2 630 offerings have
+page) and later versions (HiOF, INN, Nord, UiS), 2 643 offerings have
 page text but no plan (hiof 62, inn 1366, nord 819, oslomet 89, uia 95,
-uib 79, uis 97, uit 23). *Since:* 2026-10-06; heading lists (UiB NOLI216
+uib 79, uis 97, uit 36). *Since:* 2026-10-06; heading lists (UiB NOLI216
 and NOSP216, autumn 2018) from 2026-10-07; NTNU pages whose only section
 was the exam tab from 2026-10-12 to 2026-10-13, when the tab came back
 (20 plans, 70 offerings). INN later versions from 2026-10-07: 1,077 INN
