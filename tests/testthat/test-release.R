@@ -107,3 +107,19 @@ test_that("the built teacher-ed files match the descriptor: types, codes and key
   tables <- stats::setNames(lapply(files, readRDS), names(RELEASE_KEYS))
   expect_identical(check_datapackage(desc, tables), character())
 })
+
+test_that("release_data() never rewrites a hand-over", {
+  dest <- withr::local_tempdir()
+  expect_error(release_data("dev-2026-11-28", dest = dest, base = NULL), "never rewritten")
+  expect_true(dir.exists(dest))
+})
+
+test_that("coding_release() finds the hand-over the coding project is on", {
+  coding <- withr::local_tempdir()
+  handovers <- withr::local_tempdir()
+  expect_null(coding_release(coding, handovers))
+  yaml::write_yaml(list(release = "dev-2026-11-28"), file.path(coding, "manifest.yml"))
+  expect_equal(coding_release(coding, handovers), coding)   # handed over before the folders
+  dir.create(file.path(handovers, "dev-2026-11-28"))
+  expect_equal(coding_release(coding, handovers), file.path(handovers, "dev-2026-11-28"))
+})

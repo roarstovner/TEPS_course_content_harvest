@@ -103,5 +103,9 @@ the gitignored `CLAUDE.local.md`.
   "robots.txt"). A path robots.txt disallows is not requested without the
   institution's recorded `robots_permission`; never add one the user has not
   reported.
+- A hand-over (`release_data()`) goes to `data/handovers/{tag}/` and is never
+  rewritten. Never write into `../TEPS_course_content_coding`: the coding
+  project takes a release in itself (`docs/rebuilding.md` "Raw Store and
+  Finalized Releases").
 - UiO: never switch to semester URLs (`/h24/`, `/v25/`). They hold logistics,
   not the course plan (`docs/institutions.md`).

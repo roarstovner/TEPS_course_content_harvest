@@ -172,13 +172,24 @@ changed or missing" is never intended.
 A development hand-over gives the coding project current data to build and
 check its code on (segmenting, sampling), before coding starts: `release_data()`
 alone, named `dev-YYYY-MM-DD`, after a build whose checks passed. Nothing is
-frozen or tagged; the manifest says `finalized: false` and names the commit,
-and the next hand-over writes the crosswalk and `sections_changed.csv` from
-it. Nothing coded for analysis rests on a development hand-over.
+frozen or tagged; the manifest says `finalized: false` and names the commit.
+Nothing coded for analysis rests on a development hand-over.
+
+Every hand-over, development or finalized, goes to its own folder,
+`data/handovers/{tag}/`, which is never rewritten (`release_data()` stops if it
+exists and makes its files read-only) and is backed up nightly with the raw
+store. The harvest never writes into the coding repository: the coding project
+takes a hand-over in itself, copying it into its `data/` and checking the
+manifest's md5 sums, when its project lead decides, and goes back to an earlier
+one the same way. Until 2026-11-28 `release_data()` wrote into the coding
+repository's `data/`, so a hand-over also replaced the release the coders were
+on, whose Parquet files then existed nowhere else. The crosswalk and
+`sections_changed.csv` compare with the release the coding project is on
+(`coding_release()`: the hand-over its `data/manifest.yml` names).
 
 ```r
 source("R/utils.R"); source("R/release.R")
-release_data("dev-YYYY-MM-DD")        # Parquet, datapackage.json, manifest
+release_data("dev-YYYY-MM-DD")        # data/handovers/dev-YYYY-MM-DD/: Parquet, datapackage.json, manifest
 ```
 
 To finalize a release, after `tar_make()` and tagging the commit:
@@ -186,7 +197,7 @@ To finalize a release, after `tar_make()` and tagging the commit:
 ```r
 source("R/utils.R"); source("R/release.R")
 finalize_release("data-YYYY-MM-DD")   # then commit tests/snapshots/raw_manifest.csv
-release_data("data-YYYY-MM-DD")       # hand-over to the coding project
+release_data("data-YYYY-MM-DD")       # the hand-over, data/handovers/data-YYYY-MM-DD/
 ```
 
 `finalize_release()` makes every raw file and fetch ledger read-only (an overwrite then fails),

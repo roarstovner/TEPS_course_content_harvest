@@ -106,10 +106,11 @@ order:
     finalize_release("data-YYYY-MM-DD")   # then commit tests/snapshots/raw_manifest.csv
     ```
 
-    The hand-over to the coding project,
-    `release_data("data-YYYY-MM-DD")` (into
-    `../TEPS_course_content_coding/data`), is the project lead’s
-    decision and step, because the coders work from that repository.
+    The hand-over, `release_data("data-YYYY-MM-DD")`, goes to
+    `data/handovers/data-YYYY-MM-DD/`; the coding project takes it in
+    from there when its project lead decides (see [“Raw Store and
+    Finalized
+    Releases”](rebuilding.md#raw-store-and-finalized-releases)).
 
 ## Several Institutions at Once
 

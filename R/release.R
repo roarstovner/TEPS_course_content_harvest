@@ -5,6 +5,16 @@
 # release_data() alone; a frozen release is finalize_release() too. No
 # release is finalized yet: the first comes when coding starts (the releases
 # of 2026-10-15 and 2026-10-16 were retired on 2026-11-04).
+#
+# The harvest writes a hand-over to its own folder and never into the coding
+# repo, which takes one in itself: until 2026-11-28 release_data() wrote into
+# the coding repo's data/, so handing a release over also replaced the one
+# the coders were on, which then existed nowhere else.
+
+# Every hand-over, one folder per tag, never rewritten (backed up nightly)
+HANDOVERS_DIR <- "data/handovers"
+# The coding project's data: the release it has taken in (read, never written)
+CODING_DATA <- "../TEPS_course_content_coding/data"
 
 # Every variable of the data files: its file, type, source and meaning, and
 # its name until 2026-10-16 (DBH's; docs/data-files.md "Data
@@ -40,9 +50,11 @@ RELEASE_KEYS <- list(
 TABLE_SCHEMA_TYPES <- c(character = "string", integer = "integer", double = "number",
                         logical = "boolean", Date = "date")
 
-#' Copy the published data files to another project, with a manifest
+#' Write a hand-over of the published data files, with a manifest
 #'
-#' Writes to `dest`: course_offerings.parquet, course_plans.parquet and
+#' Writes to `dest`, a new folder (an existing one is an error: a hand-over is
+#' never rewritten, so every release the coding project has been on can be
+#' taken in again): course_offerings.parquet, course_plans.parquet and
 #' plan_sections.parquet of the frame (the teacher-ed frame by default: the
 #' coding project's) with `datapackage.json`, their Data Package (v2)
 #' descriptor (write_datapackage(); it stops if the tables do not match it);
@@ -57,16 +69,19 @@ TABLE_SCHEMA_TYPES <- c(character = "string", integer = "integer", double = "num
 #' `manifest.yml` (release tag, whether it is finalized, harvest repo commit,
 #' date, files with row counts and md5 sums); `section_coverage.csv` (share of
 #' plans per institution with each section; where a section is missing the
-#' coders use the whole plan); and, when `dest` already holds a release,
+#' coders use the whole plan); and, when there is a `base` release,
 #' `plan_id_crosswalk.csv`: plan_content_id is a hash of the cleaned text, so a
 #' cleaning change renames plans, and the crosswalk carries codes to the new
 #' ids through the offerings (course_id) both releases share; and
 #' `sections_changed.csv`: a section fix keeps the plan's id, so the crosswalk
 #' does not show it, yet units coded on the old section text no longer match
-#' (see section_changes()). The release in `dest` is read from Parquet, or
+#' (see section_changes()). The base release is read from Parquet, or
 #' from RDS as written until 2026-11-26 (read_release_table()); one with the
 #' old names (the data handed to the coding project on 2026-10-15) is read
 #' with the new ones (dbh_rename()).
+#'
+#' The coding project takes a hand-over in itself (its own copy, checked
+#' against the manifest's md5 sums), when its user decides to.
 #'
 #' A release to be finalized: tag the commit first (`git tag
 #' data-YYYY-MM-DD`) so the manifest names it, then finalize_release(). A
@@ -76,13 +91,18 @@ TABLE_SCHEMA_TYPES <- c(character = "string", integer = "integer", double = "num
 #'
 #' @param tag Release name, e.g. "data-2026-10-09" (a git tag) or
 #'   "dev-2026-11-26".
-#' @param dest Directory to write to.
+#' @param dest Folder to write to, which must not exist yet.
+#' @param base Folder of the release the crosswalk and the changed sections
+#'   compare with (default: the one the coding project is on,
+#'   coding_release()); NULL for none.
 #' @param frame The frame whose files are released (FRAMES).
 #' @return `dest`, invisibly.
-release_data <- function(tag, dest = "../TEPS_course_content_coding/data", frame = "teacher_ed") {
+release_data <- function(tag, dest = file.path(HANDOVERS_DIR, tag), base = coding_release(),
+                         frame = "teacher_ed") {
+  if (file.exists(dest)) stop(dest, " exists: a hand-over is never rewritten")
   data_files <- file.path(frame_dir(frame), paste0(names(RELEASE_KEYS), ".RDS"))
   files <- c("methods.md", VARIABLES_FILE, STUDY_TYPES_FILE, CODES_FILE, CODEBOOK_FILE, SPEC_FILE)
-  stopifnot(all(file.exists(c(data_files, files))), dir.exists(dest))
+  stopifnot(all(file.exists(c(data_files, files))))
   commit <- system2("git", c("rev-parse", "HEAD"), stdout = TRUE)
   if (length(system2("git", c("status", "--porcelain", "--", "R", "_targets.R"), stdout = TRUE))) {
     warning("Uncommitted code changes: the manifest's commit does not describe the data")
@@ -95,10 +115,12 @@ release_data <- function(tag, dest = "../TEPS_course_content_coding/data", frame
   plans <- readRDS(data_files[2])
   secs <- readRDS(data_files[3])
 
-  # crosswalk from the release already in dest, before it is overwritten
-  old_off <- read_release_table(dest, "course_offerings")
+  dir.create(dest, recursive = TRUE)
+  done <- FALSE
+  on.exit(if (!done) unlink(dest, recursive = TRUE), add = TRUE)   # no half-written hand-over
+  old_off <- if (!is.null(base)) read_release_table(base, "course_offerings")
   if (!is.null(old_off)) {
-    old_tag <- tryCatch(yaml::read_yaml(file.path(dest, "manifest.yml"))$release,
+    old_tag <- tryCatch(yaml::read_yaml(file.path(base, "manifest.yml"))$release,
                         error = function(e) NA_character_)
     crosswalk <- old_off |>
       dplyr::filter(!is.na(plan_content_id)) |>
@@ -108,8 +130,8 @@ release_data <- function(tag, dest = "../TEPS_course_content_coding/data", frame
       dplyr::distinct(institution, course_code, old_plan_content_id, new_plan_content_id) |>
       dplyr::mutate(old_release = old_tag %||% NA_character_, new_release = tag)
     utils::write.csv(crosswalk, file.path(dest, "plan_id_crosswalk.csv"), row.names = FALSE)
-    changed <- section_changes(read_release_table(dest, "plan_sections"), secs,
-                               read_release_table(dest, "course_plans"), plans) |>
+    changed <- section_changes(read_release_table(base, "plan_sections"), secs,
+                               read_release_table(base, "course_plans"), plans) |>
       dplyr::mutate(old_release = old_tag %||% NA_character_, new_release = tag)
     utils::write.csv(changed, file.path(dest, "sections_changed.csv"), row.names = FALSE)
   }
@@ -119,12 +141,7 @@ release_data <- function(tag, dest = "../TEPS_course_content_coding/data", frame
   tables <- list(course_offerings = off, course_plans = plans, plan_sections = secs)
   parquet <- write_datapackage(tables, dest, tag, frame)
   rows <- vapply(tables, nrow, 1L)
-  file.copy(files, dest, overwrite = TRUE)
-  old_rds <- file.path(dest, paste0(names(RELEASE_KEYS), ".RDS"))
-  if (any(file.exists(old_rds))) {
-    warning("dest still holds ", toString(basename(old_rds[file.exists(old_rds)])),
-            " of an earlier release (RDS until 2026-11-26): not this release")
-  }
+  file.copy(files, dest)
 
   key <- c("plan_content_id", "institution", "course_code")
   coverage <- secs |>
@@ -161,8 +178,24 @@ release_data <- function(tag, dest = "../TEPS_course_content_coding/data", frame
   )
   # true/false, not yaml 1.1's yes/no, which YAML 1.2 readers take as strings
   yaml::write_yaml(manifest, file.path(dest, "manifest.yml"), handlers = list(logical = yaml::verbatim_logical))
+  Sys.chmod(list.files(dest, full.names = TRUE), "0444")   # an overwrite fails
+  done <- TRUE
   message("Release ", tag, " written to ", dest)
   invisible(dest)
+}
+
+#' The release the coding project is on
+#'
+#' @param coding_data The coding project's data folder (CODING_DATA).
+#' @param handovers HANDOVERS_DIR.
+#' @return The folder of the hand-over its manifest names, or `coding_data`
+#'   itself for a release handed over before 2026-11-28 (no hand-over folder);
+#'   NULL when it holds no manifest.
+coding_release <- function(coding_data = CODING_DATA, handovers = HANDOVERS_DIR) {
+  manifest <- file.path(coding_data, "manifest.yml")
+  if (!file.exists(manifest)) return(NULL)
+  dir <- file.path(handovers, yaml::read_yaml(manifest)$release)
+  if (dir.exists(dir)) dir else coding_data
 }
 
 #' A table of the release in a directory, from Parquet or RDS

@@ -245,14 +245,17 @@ raw files changed or missing and, once a release is kept, changes to it
 (target <code>frozen_check</code>)</td>
 </tr>
 <tr>
-<td><code>release_data(tag, dest, frame)</code></td>
+<td><code>release_data(tag, dest, base, frame)</code></td>
 <td><code>R/release.R</code></td>
-<td>Copy the published files of a frame (the teacher-ed one), with their
-Parquet copies and <code>datapackage.json</code>,
-<code>methods.md</code>, <code>data/variables.csv</code>,
-<code>data/study_types.csv</code>, <code>data/codes.csv</code>, the
-codebook, <code>course_plan_spec.md</code>, a manifest and section
-coverage to the coding project</td>
+<td>Write a hand-over of the published files of a frame (the teacher-ed
+one) to <code>data/handovers/{tag}/</code>, never rewritten: Parquet and
+<code>datapackage.json</code>, <code>methods.md</code>,
+<code>data/variables.csv</code>, <code>data/study_types.csv</code>,
+<code>data/codes.csv</code>, the codebook,
+<code>course_plan_spec.md</code>, a manifest, section coverage, and the
+crosswalk and changed sections against the release the coding project is
+on (<code>coding_release()</code>), which takes the hand-over in
+itself</td>
 </tr>
 <tr>
 <td><code>release_codes()</code>, <code>datapackage_descriptor()</code>,

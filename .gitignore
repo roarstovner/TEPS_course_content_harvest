@@ -33,6 +33,7 @@ writing/
 data/raw/
 data/backup/
 data/releases/
+data/handovers/
 data/interim/
 data/processed/
 data/*.RDS
