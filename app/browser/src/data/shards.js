@@ -18,6 +18,37 @@ export function shardsFor(meta, st) {
   return meta.shards.filter((s) => on.has(s.code)).map((s) => ({ code: s.code, dir: `${s.dir}/` }))
 }
 
+/** Shard data past which a selection asks first, and again at each further
+ *  step of this size beyond the level last accepted (user 2026-11-28: a
+ *  generic group is ~45 MB of shards and ~600 MB of tab memory). */
+export const WARN_BYTES = 30e6
+/** Tab memory per byte of shard data, roughly (the worker's heap and the
+ *  page's model: ~600 MB for ~45 MB of shards). */
+export const MEMORY_FACTOR = 13
+
+/**
+ * Which shards of the ticked study types to load now and which to hold for
+ * confirmation: all new ones are held when the shards loaded plus these
+ * reach a further `WARN_BYTES` step than `accepted` (the bytes last
+ * accepted, 0 at first). Unsharded data never ask.
+ * @param {object} meta
+ * @param {string[]} st the ticked study types
+ * @param {string[]} loaded codes of the shards loaded
+ * @param {number} accepted
+ * @returns {{load: {code, dir}[], hold: {code, dir}[], bytes: number, more: number}}
+ *   bytes: all the selection would hold; more: those of the new shards
+ */
+export function planLoad(meta, st, loaded, accepted = 0) {
+  const fresh = shardsFor(meta, st).filter((x) => !loaded.includes(x.code))
+  const size = new Map((meta.shards ?? []).map((x) => [x.code, x.bytes ?? 0]))
+  const sum = (codes) => codes.reduce((a, c) => a + (size.get(c) ?? 0), 0)
+  const more = sum(fresh.map((x) => x.code))
+  const bytes = sum(loaded) + more
+  const step = (b) => Math.floor(b / WARN_BYTES)
+  const warn = !!meta.shards && fresh.length > 0 && step(bytes) > step(accepted)
+  return { load: warn ? [] : fresh, hold: warn ? fresh : [], bytes, more }
+}
+
 const programmeKey = (p) => `${p.institution}|${p.programme_code}`
 
 /**

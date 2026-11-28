@@ -186,6 +186,12 @@ const D = {
   'st.absentTitle': ['{name} ({code}): not in this data; the all-courses data adds it', '{name} ({code}): ikke i disse dataene; dataene med alle emner tar den med'],
   'st.none': ['No study type matches.', 'Ingen studietype treffer.'],
   'st.unloaded': ['{c} courses in the data; not loaded: ticking it loads {mb}', '{c} emner i dataene; ikke lastet: avkrysning laster {mb}'],
+  'st.big': [
+    'Loading this selection downloads {more}; with the study types already loaded the tab holds {all} of data, about {mem} of memory. A large selection can make the tab slow or crash it, phones especially.',
+    'Dette utvalget laster ned {more}; med studietypene som alt er lastet, holder fanen {all} data, omtrent {mem} minne. Et stort utvalg kan gjøre fanen treg eller få den til å krasje, særlig på mobil.',
+  ],
+  'st.bigLoad': ['Load anyway', 'Last likevel'],
+  'st.bigUndo': ['Undo', 'Angre'],
   'st.uncAria': ['Institutions not harvested', 'Institusjoner som ikke er høstet'],
   'st.unc': [
     'Not harvested: institutions with courses of the ticked study types in DBH, with their courses in {y}',

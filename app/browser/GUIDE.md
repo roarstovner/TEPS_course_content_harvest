@@ -33,7 +33,13 @@ counts in the data the browser holds. The precise rules are in the
   top of the filters, where the site has both) holds every harvested
   course, too much to load at once: tick a study type and its courses and
   plans are loaded (the size is beside each type until then). Searches,
-  views and downloads cover the study types loaded.
+  views and downloads cover the study types loaded. A large selection (more
+  than 30 MB of data, such as a whole group, and again at every further
+  30 MB) asks first: a warning above the study types gives the download
+  size and the memory the tab will need (about 13 times the data), since a
+  large selection can make the tab slow or crash it, phones especially.
+  *Load anyway* loads it; *Undo* unticks the types just added. A link that
+  ticks many types asks the same way.
 - More: [what the data files hold](../../docs/data-files.md),
   [per-institution notes](../../data/data_notes.md), and the
   [methods notes](../../methods.md).

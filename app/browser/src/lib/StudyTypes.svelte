@@ -8,12 +8,15 @@
   // type that are not harvested (meta.uncovered): those with courses in the
   // current year first, former ones folded. In sharded data (all courses) a
   // type's courses are loaded when it is ticked: until then it shows the
-  // courses of the whole data (meta) and the size of its shard.
+  // courses of the whole data (meta) and the size of its shard. A selection
+  // past a size step (`held`, App.svelte) waits above the tree for "load
+  // anyway" or "undo".
   import { untrack } from 'svelte'
   import { mb, num, pct } from './format.js'
   import { local, other, t as tr } from './i18n.js'
+  import { MEMORY_FACTOR } from '../data/shards.js'
 
-  let { types, selected = $bindable(), counts, uncovered, shards = null, loaded = [] } = $props()
+  let { types, selected = $bindable(), counts, uncovered, shards = null, loaded = [], held = null, onaccept, onundo } = $props()
   const shardOf = $derived(new Map((shards ?? []).map((x) => [x.code, x])))
 
   let text = $state('')
@@ -61,6 +64,16 @@
   }
 </script>
 
+{#if held}
+  {@const codes = held.hold.map((x) => x.code).join(', ')}
+  <div class="bigload" role="alert">
+    <p>{tr('st.big', { more: mb(held.more), all: mb(held.bytes), mem: mb(held.bytes * MEMORY_FACTOR) })}</p>
+    <div class="presets">
+      <button onclick={onaccept}>{tr('st.bigLoad')}</button>
+      <button onclick={onundo} title={codes}>{tr('st.bigUndo')}</button>
+    </div>
+  </div>
+{/if}
 <details class="filter" open>
   <summary>{tr('st.title')} {#if selected.length}<span class="badge">{selected.length}</span>{/if}</summary>
   <div class="presets">

@@ -45,7 +45,11 @@ Node 22.12 or later (vitest needs it; `.nvmrc` names the version CI uses).
   **disabled** (`if: false` on its build job, run only by hand) until
   publishing is decided: the terms of use of the plan text, and a first
   finalized release that holds the browser data as a ZIP of `public/data/`.
-  The top of the file says how to enable it.
+  The top of the file says how to enable it. It unpacks the archive flat
+  into `public/data/`, so the site would hold the teacher-ed frame only: the
+  all-courses data (`public/data/all/`, in folders per shard) are built and
+  tested locally for now and not published with the Pages site (2026-11-28,
+  while the browser's handling of their size is tried out).
 
 ## Decisions
 
@@ -198,6 +202,20 @@ its sections' text at once when the sections were needed before). A shard
 stays loaded when its type is unticked; with no type ticked the filters
 show every course loaded.
 
+A large selection asks first (2026-11-28: a generic group is about 45 MB of
+shards and 600 MB of tab memory, enough to make a tab slow or crash it on a
+phone). `planLoad()` in `src/data/shards.js` sums the bytes of the shards
+loaded and of those the ticked types add (`meta.shards[].bytes`); when the
+sum reaches a further step of `WARN_BYTES` (30 MB) than the bytes the user
+last accepted (0 at first), the new shards are held, not loaded, and a
+warning (`role="alert"`) above the study type tree says how much they
+download, the shard data the tab would then hold and the tab memory, about
+`MEMORY_FACTOR` (13) times that, with two buttons: *Load anyway* loads them
+and records the sum as accepted, so that a small addition later loads at
+once and the warning returns at the next 30 MB step; *Undo* unticks the
+types held. A selection restored from a link is held the same way.
+Unsharded data (the teacher-ed frame) never ask.
+
 ## Query Syntax
 
 | Query | Matches |
@@ -301,7 +319,8 @@ such as "lese- og skrivevansker".
   education (TE frame)" and "Clear"; types without courses in this data are
   greyed and folded in their group (the all-courses data adds them). In
   sharded data a type not loaded shows, in italics, its courses in the whole
-  data and the size of its shard. Below
+  data and the size of its shard, and a large selection waits above the
+  tree for confirmation (Loading). Below
   the tree, with types ticked, the institutions not harvested that have
   courses of them (Decisions, "Say which institutions a study type leaves
   out").

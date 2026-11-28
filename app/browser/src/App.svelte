@@ -6,7 +6,7 @@
   import { fetchCached, fetchMeta, readParquet } from './data/load.js'
   import { startWorker } from './data/client.js'
   import { addPlans, buildModel, filterView, pickVersion } from './data/model.js'
-  import { DATASETS, mergeShard, shardsFor } from './data/shards.js'
+  import { DATASETS, mergeShard, planLoad } from './data/shards.js'
   import { applyExample, decodeState, encodeState } from './data/url.js'
   import { versionId } from './data/keys.js'
   import Header from './lib/Header.svelte'
@@ -34,6 +34,8 @@
   let plansMeta = $state.raw(null)
   let plansPending = $state(0) // shards whose plans the worker is reading
   let loaded = $state.raw([]) // codes of the shards loaded (sharded data)
+  let accepted = $state(0) // shard bytes the user last accepted loading
+  let held = $state.raw(null) // a large selection's new shards, until accepted or undone
   let sectionsLoaded = $state(false)
   let sectionsLoading = $state(false) // the worker reads the sections' text (on first need)
   let planSections = $state.raw(null) // plan key -> Set of its sections
@@ -80,14 +82,16 @@
   })
 
   // the shards of the ticked study types (all of unsharded data), each once:
-  // the worker reads its plans, the page its courses, merged with those loaded
+  // the worker reads its plans, the page its courses, merged with those loaded.
+  // A selection past a size step is held until accepted (shards.js planLoad)
   let tables = { courses: [], courseYears: [], programmes: [] }
   let queue = Promise.resolve()
   $effect(() => {
     if (!meta || !worker) return
-    const want = shardsFor(meta, s.st)
+    const p = planLoad(meta, s.st, untrack(() => loaded), accepted)
     untrack(() => {
-      for (const sh of want.filter((x) => !loaded.includes(x.code))) {
+      held = p.hold.length ? p : null
+      for (const sh of p.load) {
         loaded = [...loaded, sh.code]
         plansPending++
         worker.load(base, meta.version, sh.dir)
@@ -355,7 +359,20 @@
     <Shortcuts bind:open={keysOpen} onguide={() => s.view !== 'help' && toggleHelp()} />
   {/if}
   {#if model}
-    <aside class="filters" aria-label={t('f.label')}><Filters bind:state={s} {meta} {model} facets={view.facets} sectionsReady={!!planSections} {datasets} {loaded} /></aside>
+    <aside class="filters" aria-label={t('f.label')}>
+      <Filters
+        bind:state={s}
+        {meta}
+        {model}
+        facets={view.facets}
+        sectionsReady={!!planSections}
+        {datasets}
+        {loaded}
+        {held}
+        onaccept={() => (accepted = held.bytes)}
+        onundo={() => (s.st = s.st.filter((c) => !held.hold.some((x) => x.code === c)))}
+      />
+    </aside>
     <main class="results" id="results" tabindex="-1" bind:this={resultsPane}>
       <nav class="viewtabs" aria-label={t('app.views')}>
         {#each ['list', 'trend', 'coverage', 'screen', 'compare', 'terms'] as v (v)}
@@ -387,7 +404,7 @@
           excl={result?.excl}
           onopen={open}
         />
-        {#if meta.shards && !loaded.length}<p class="hint">{t('app.pickTypes')}</p>
+        {#if meta.shards && !loaded.length && !held}<p class="hint">{t('app.pickTypes')}</p>
         {:else if !selected}<p class="hint">{t('app.hint')}</p>{/if}
       {/if}
     </main>

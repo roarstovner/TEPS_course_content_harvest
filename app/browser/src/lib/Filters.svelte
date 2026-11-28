@@ -8,7 +8,7 @@
   import { getLang, local, NB_VALUES, other, t } from './i18n.js'
   import { encodeState } from '../data/url.js'
 
-  let { state = $bindable(), meta, model, facets, sectionsReady, datasets = [], loaded = [] } = $props()
+  let { state = $bindable(), meta, model, facets, sectionsReady, datasets = [], loaded = [], held = null, onaccept, onundo } = $props()
 
   // value names in the UI language (filters.js has the English ones)
   const label = (key, v) => (getLang() === 'nb' ? (v === '' ? t('f.notGiven') : (NB_VALUES[key]?.[v] ?? valueLabel(key, v))) : valueLabel(key, v))
@@ -68,7 +68,7 @@
   </div>
 </fieldset>
 
-<StudyTypes types={meta.study_types} bind:selected={state.st} counts={facets.st} uncovered={meta.uncovered} shards={meta.shards} {loaded} />
+<StudyTypes types={meta.study_types} bind:selected={state.st} counts={facets.st} uncovered={meta.uncovered} shards={meta.shards} {loaded} {held} {onaccept} {onundo} />
 <CheckList title={t('f.inst')} items={institutions} bind:selected={state.inst} counts={facets.inst} open />
 <CheckList title={t('f.subj')} items={subjects} bind:selected={state.subj} counts={facets.subj} />
 <CheckList title={t('f.nus')} items={nus} bind:selected={state.nus} counts={facets.nus} />
